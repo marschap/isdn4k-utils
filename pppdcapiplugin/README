@@ -2,8 +2,13 @@
 You need a pppd with plugin support:
 	kernel 2.2.X	-	ppp-2.3.11
 	kernel 2.3.99	-	ppp-2.4.0b2
+	kernel 2.4.X	-	ppp-2.4.1
+since ppp-2.4.1 the pppd will load the plugins from
+/usr/lib/ppp/<version>.
+So use "plugin capiplugin.so" instead of
+"plugin /etc/ppp/plugin/capiplugin.so" with ppp-2.4.1 or later.
 
-usage example:
+Usage example:
 
 Make a single call to arcor:
 	pppd call isdn/arcor
