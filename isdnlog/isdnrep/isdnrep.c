@@ -1,4 +1,4 @@
-/* $Id: isdnrep.c,v 1.82 1999/11/08 21:09:40 akool Exp $
+/* $Id: isdnrep.c,v 1.83 1999/11/27 19:24:19 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -24,6 +24,9 @@
  *
  *
  * $Log: isdnrep.c,v $
+ * Revision 1.83  1999/11/27 19:24:19  akool
+ * isdnlog-3.69
+ *
  * Revision 1.82  1999/11/08 21:09:40  akool
  * isdnlog-3.65
  *   - added "B:" Tag to "rate-xx.dat"
@@ -982,7 +985,7 @@ int read_logfile(char *myname)
   initHoliday(holifile, NULL);
   initDest(destfile, NULL);
   initRate(rateconf, ratefile, zonefile, NULL);
-  
+
   interns0 = 3; /* Fixme: */
 
   msn_sum = calloc(mymsns + 1, sizeof(double));
@@ -1091,7 +1094,7 @@ int read_logfile(char *myname)
 					fputs(string,ftmp);
 				else
 					continue;
-			}		
+			}
 		}
 
 		if (!verbose && cur_call.duration == 0)
@@ -1334,7 +1337,7 @@ static int print_bottom(double unit, char *start, char *stop)
                         100.0 * (usage_provider[i] - provider_failed[i]) / usage_provider[i]);
                     else
                       *sx = 0;
-    		   p = getProvider(i);
+    		   p = getProvider(pnum2prefix(i, 0));
     		   if (!p || p[strlen(p) - 1] == '?') /* UNKNOWN Provider */
                       p = "UNKNOWN";
 
@@ -1749,7 +1752,7 @@ static int print_line(int status, one_call *cur_call, int computed, char *overla
 				          	{
                                                         register char *p;
 
-                                                        p = (cur_call->provider >= 0) ? getProvider(cur_call->provider) : "";
+                                                        p = (cur_call->provider >= 0) ? getProvider(pnum2prefix(cur_call->provider, 0)) : "";
 
                                                         if (cur_call->dir == DIALIN)
                                                           p = "";
@@ -2573,7 +2576,7 @@ static void repair(one_call *cur_call)
   call[0].connect = cur_call->t;
   call[0].disconnect = cur_call->t + cur_call->duration;
   call[0].intern[CALLED] = strlen(cur_call->num[CALLED]) < interns0;
-  call[0].provider = cur_call->provider = pnum2prefix(cur_call->provider,cur_call->t);
+  call[0].provider = cur_call->provider; /* = pnum2prefix(cur_call->provider,cur_call->t); */
   call[0].aoce = cur_call->eh;
   call[0].dialin = 0;
   strcpy(call[0].num[CALLED], cur_call->num[CALLED]);
@@ -2581,7 +2584,7 @@ static void repair(one_call *cur_call)
 
   normalizeNumber("4321",&srcnum,TN_ALL); /* this is a local number */
   destnum.nprovider = cur_call->provider;
-  Strncpy(destnum.provider,getProvider(cur_call->provider),TN_MAX_PROVIDER_LEN);
+  Strncpy(destnum.provider,getProvider(cur_call->provider), TN_MAX_PROVIDER_LEN);
   normalizeNumber(cur_call->num[CALLED], &destnum, TN_NO_PROVIDER);
   call[0].sondernummer[CALLED] = destnum.ncountry==0;
 
@@ -2600,7 +2603,7 @@ static void repair(one_call *cur_call)
        cur_call->pay = Rate.Charge; /* Fixme: is that ok, propably rates have changed */
     cur_call->zone = Rate._zone;
     zones_names[Rate._zone] = Rate.Zone ? strdup(Rate.Zone) : strdup("??");
-  }  
+  }
 } /* repair */
 
 /*****************************************************************************/
@@ -2747,7 +2750,7 @@ static int set_caller_infos(one_call *cur_call, char *string, time_t from)
   if ((cur_call->dir == DIALOUT) &&
       (cur_call->duration > 0) &&
       *cur_call->num[1]
-     ) 
+     )
     repair(cur_call);
 
   return(0);
@@ -2932,7 +2935,7 @@ static time_t get_time(char *String, int TimeStatus)
 	  else
 	    TimeStruct->tm_year = Year;
         }
-      }		
+      }
       TimeStruct->tm_mon--;
       break;
   }
@@ -2947,13 +2950,13 @@ static time_t get_time(char *String, int TimeStatus)
         TimeStruct->tm_min == 0   )
         TimeStruct->tm_hour++;
       else {
-        if (TimeStruct->tm_sec == 0   ) 
+        if (TimeStruct->tm_sec == 0   )
           TimeStruct->tm_min++;
         else
           TimeStruct->tm_sec++;
       }
-    }  
-  }  
+    }
+  }
   return mktime(TimeStruct);
 }
 

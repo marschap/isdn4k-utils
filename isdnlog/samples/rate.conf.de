@@ -1,89 +1,191 @@
-# Dont use EWE Tel
-P:14=99
+# rate.conf  1.10  26-Nov-99  16:51
 
-# Use RSL-COM CbC
-P:15=1
-
-# dont use debitel
-P:18=99
-
-# dont use ISIS isiFON classic
-P:20=99
-
-# Dont use NetCologne
-P:22=99
-
-# Dont use tesion))
-P:23=99
-
-# Use TelePassport CbC
-P:24=2
-
-# Dont use CityKom
-P:25=99
-
-# Dont use Nordcom Butensurf
-P:27=99
-
-# Dont use Telebridge
-P:28=99
-
-# Use DTAG AktivPlus
-# P:33=4
-
-# Dont use Hutchison
-P:36=99
-
-# Dont use HanseNet
-P:41=99
-
-# Dont use TeleBeL
-P:42=99
-
-# Dont use VEW TELNET
-P:44=99
-
-# Dont use KomTel
-P:46=99
-
-# Dont use DOKOM
-P:48=99
-
-# Dont use ACC
-P:49=99
-
-# Use Talkline CbC
-P:50=1
-
-# Dont use WOBCOM
-P:53=99
-
-# Kennzahl 70, moegliche Varianten:
-#   1=Arcor CbC
-#   2=Arcor Town to Town
-#   3=Arcor Town to Town Sekunde
-# use Arcor CbC
-P:70=1
-
-# Kennzahl 98, moegliche Varianten:
-#   0=Star
-#   1=Mox Telecom AG
-#   2=Nikoma Minutentakt
-#   3=Nikoma Sekundentakt
-#   4=Nikocity Minutentakt
-#   5=Nikocity Sekundentakt
-#   6=C@llas Clever Communications
-# use Nikoma
-P:98=5
-
-# Dont use ECONOPHONE
-P:99=99
-
-# my LCR
-#P:11=99
-#P:13=99
-#P:18=99
-#P:19=99
-#P:24=99
-#P:40=99
-#P:70=99
+# P:10=0 # Teleglobe
+P:11=0 # o.tel.o CbC
+# P:11=1 # o.tel.o private Preselection
+# P:11=2 # o.tel.o private plus Preselection
+# P:11=3 # o.tel.o professional plus Preselection
+# P:11=4 # o.tel.o international plus Preselection
+# P:12=0 # Tele Danmark
+P:13=0 # Tele 2 Privatkunden
+# P:13=1 # Tele 2 Geschaeftskunden
+P:14=0 # EWE TEL CbC national
+# P:14=1 # EWE TEL CbC/pre-select regional
+# P:14=2 # EWE TEL direct
+P:15=0 # RSL clever call
+# P:15=1 # RSL CleverLine global
+# P:15=2 # RSL CleverLine metropolitan
+# P:16=0 # LausitzNet
+# P:17=0 # SEC
+P:18=0 # debitel
+# P:18=1 # debitel DirectLine Profi-Tarif 30 Sekunden
+# P:18=2 # debitel DirectLine Privat-Tarif Sekunden Takt
+# P:18=3 # debitel DirectLine Profi-Tarif Sekunden Takt
+P:19=0 # Mobilcom CbC
+# P:19=1 # Mobilcom Preselection/Business
+# P:19=2 # Mobilcom Preselection/Privat
+P:20=0 # ISIS isiFON classic
+# P:20=1 # ISIS isiFON plus
+# P:20=2 # ISIS Preselection
+# P:21=0 # QS
+P:22=0 # NetCologne
+# P:23=0 # tesion connectClassic
+# P:23=1 # tesion connectProfi
+P:23=2 # tesion CbC
+# P:24=0 # Telepassport 99 Plus
+# P:24=1 # Telepassport Plus
+P:24=2 # Telepassport CbC
+# P:24=3 # Telepassport RegionalTarif Plus
+# P:24=4 # Telepassport SüdOst-Tarif
+# P:24=5 # Telepassport SüdOst
+# P:24=6 # Telepassport StudentenTarif
+# P:24=7 # Super 24
+P:25=0 # CityKom
+# P:25=1 # CityKom Preselection
+# P:26=0 # ECN
+P:27=0 # Nordcom Butensurf
+# P:27=1 # Nordcom Butensurf Plus
+P:28=0 # TeleBridge CbC
+# P:28=1 # TeleBridge EasyBridge
+# P:28=2 # UPX Super 8
+# P:29=0 # Unisource
+P:30=0 # TelDaFax
+# P:31=0 # HEAG
+# P:32=0 # KDD
+P:33=0 # DTAG
+# P:33=1 # DTAG CityPlus
+# P:33=2 # DTAG CityWeekend
+# P:33=3 # DTAG CityWeekend & CityPlus
+# P:33=4 # DTAG AktivPlus
+P:34=0 # NEFkom
+# P:35=0 # interCOM
+P:36=0 # Hutchison fairfon
+# P:36=1 # Hutchison easyfon
+# P:36=2 # Hutchison o.tel.o private
+# P:36=3 # Hutchison fairfon Sekundentakt
+# P:36=4 # Hutchison easyfon Sekundentakt
+# P:37=0 # ETS
+# P:38=0 # MediaWays
+P:39=0 # First Telecom CbC
+P:40=0 # GTS Esprit
+P:41=0 # HanseNet
+# P:41=1 # HanseNet Preselection
+P:42=0 # TeleBeL ISDN Plus
+# P:42=1 # TeleBeL ISDN XL
+P:43=0 # KielNet CbC
+# P:43=1 # KielNet Preselection
+P:43=2 # KielNet Telefonanschluß
+P:44=0 # VEW TELNET
+# P:45=0 # Global Network
+P:46=0 # KomTel
+# P:46=1 # KomTel MoinMoin
+# P:47=0 # PrimeTec
+P:48=0 # DOKOM
+# P:49=0 # ACC ACCess Direkt Pre-Selection Einheitentarif
+# P:49=1 # ACC ACCess Direkt Pre-Selection Minutentarif
+P:49=2 # ACC ACCess Einheitentarif CbC
+# P:49=3 # ACC ACCess Minutentarif CbC
+P:50=0 # Talkline CbC
+# P:50=1 # Talkline EasyLine
+# P:50=2 # Talkline talkmax
+# P:50=3 # Talkline BusinessLine Classic
+# P:50=4 # Talkline BusinessLine Local
+P:51=0 # 01051
+# P:52=0 # Long Distance
+P:53=0 # WOBCOM
+# P:54=0 # USFI
+# P:55=0 # ESPRIT Telecom Deutschland GmbH, August-Thyssen-Str. 1
+# P:56=0 # BITel
+# P:57=0 # Mox
+# P:58=0 # KaTel
+# P:59=0 # Pacific Gateway Exchange
+# P:60=0 # Telecom-InfoService
+# P:61=0 # TelSA
+# P:62=0 # DENTEL
+P:63=0 # KDD-Conos PrivateCall easy
+# P:63=1 # KDD-Conos PrivateCall genau
+# P:64=0 # Hannoversche
+# P:65=0 # Rapid Link
+P:66=0 # Interoute
+# P:67=0 # RegioCom
+# P:68=0 # Tele Media
+# P:69=0 # Primus
+P:70=0 # Arcor CbC
+# P:70=1 # Arcor Town to Town
+# P:70=2 # Arcor Town to Town Sekunde
+# P:71=0 # DeTeMobil
+# P:72=0 # Mannesmann
+# P:73=0 # AXXON
+# P:74=0 # Alpha
+P:75=0 # Callino
+# P:76=0 # QuickNet
+# P:77=0 # E-Plus
+P:78=0 # 3U
+P:79=0 # Viatel
+P:80=0 # Telegate
+# P:81=0 # Infotel
+# P:82=0 # AugustaKom
+# P:83=0 # Wuerzburger
+# P:84=0 # Telegroup
+P:85=0 # GTS-WESTCom
+# P:86=0 # ONE.TEL
+# P:87=0 # HAMCOM
+P:88=0 # WorldCom
+# P:88=1 # Hutchison CbC
+# P:89=0 # M'net
+P:90=0 # Viag Interkom
+# P:91=0 # IDT
+# P:92=0 # Hallo Telefon Service
+# P:93=0 # Kray
+# P:94=0 # Global Communications
+# P:95=0 # Teleos
+# P:96=0 # GELSEN-NET
+# P:97=0 # AT & T-Unisource
+P:98=0 # Mox
+# P:98=1 # Nikocity Study&Surf
+# P:98=2 # Nikocity
+P:99=0 # ECONOPHONE
+P:100=0 # TELELEV
+# P:100=1 # Meocom
+# P:101=0 # Netnet
+# P:102=0 # EncoTel
+# P:103=0 # mevacom
+# P:107=0 # KPN
+# P:108=0 # USA Global Link
+# P:109=0 # ChemTel
+# P:110=0 # Bertelsmann mediaSystems
+# P:111=0 # RED LINE
+# P:112=0 # MEGASAT
+# P:115=0 # Delta Three
+# P:118=0 # MFS
+# P:119=0 # E.T.H.
+# P:120=0 # Komm Consult
+# P:122=0 # Motorola
+# P:125=0 # Mediascape
+# P:130=0 # tnp telenet
+# P:131=0 # accom
+# P:132=0 # SD
+# P:133=0 # Level 3
+# P:140=0 # VossNet
+# P:142=0 # connection 42
+# P:144=0 # Carrier 1
+P:150=0 # Drillisch Superregionen
+# P:150=1 # Drillisch
+# P:154=0 # Osnatel
+# P:155=0 # Telia
+# P:156=0 # NETCOM
+# P:160=0 # JelloCom
+# P:168=0 # VSE
+# P:170=0 # Deutsche Telefon- und Marketing Services
+# P:173=0 # TFN COM SA
+# P:175=0 # Gigabell
+# P:177=0 # WorldxChange
+# P:178=0 # Cybernet
+# P:180=0 # FaciliCom
+# P:181=0 # Daten- und Telekommunikations-GmbH Dessau
+# P:184=0 # Startec
+# P:185=0 # FirstMark
+# P:188=0 # jk-tel
+# P:190=0 # CNE
+# P:195=0 # TeleNec
+# P:199=0 # ESTel

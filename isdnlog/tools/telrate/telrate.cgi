@@ -1638,7 +1638,7 @@ nolegend:
     }	
     print(qq(</MAP>\n));
     print(img({-src=>"$tempdir_url/$tempf", -height=>$H+$DEP, -border=>0,
-    	-width=>$W+$LEG+$DEP, -align=>'"CENTER"', -usemap=>'#map'}),br);
+    	-width=>$W+$LEG+$DEP, -align=>'CENTER', -usemap=>'#map'}),br);
     if ($mix) {
 	print_ign($ign1, $ign2);
     }
@@ -1662,14 +1662,15 @@ sub _x {
 }   
  
 # del gifs older then 1 hour
-sub clean_up {
+sub 
+clean_up {
     my(@All, $file, $now);
     opendir(DIR, $tempdir);
     @All = readdir(DIR);
     closedir(DIR);
     $now=time();
     foreach $file (@All) {
-	if($now - (stat("$tempdir/$file"))[9] > 3600 && $file =~ /^ir.{6}\.gif/) {
+	if($now - (stat("$tempdir/$file"))[9] > 3600 && $file =~ /^ir.{6}\.(gif|png)/) {
 	    unlink("$tempdir/$file");
 	}
     }
@@ -1678,6 +1679,10 @@ sub clean_up {
 sub get_info {
     my ($pnum, $sect, $bsp) = @_;
     my (@lines, $t);
+    if($sect eq 'NR') {
+      $pnum=~s/_.*$//;
+      return $pnum;
+    }  
     $pnum = provider2prefix($pnum);
     my @args=($ISDNRATE,"-p$pnum -X$sect");
     _call_isdnrate(\@lines, @args);
