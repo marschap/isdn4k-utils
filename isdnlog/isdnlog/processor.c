@@ -1,4 +1,4 @@
-/* $Id: processor.c,v 1.91 1999/11/12 20:50:49 akool Exp $
+/* $Id: processor.c,v 1.92 1999/12/12 14:35:53 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.92  1999/12/12 14:35:53  akool
+ * isdnlog-3.75
+ *  - ABC_LCR support (untested)
+ *
  * Revision 1.91  1999/11/12 20:50:49  akool
  * isdnlog-3.66
  *   - Patch from Jochen Erwied <mack@joker.e.ruhr.de>
@@ -840,6 +844,10 @@
 #include "asn1.h"
 #include "zone.h"
 #include "telnum.h"
+#if HAVE_ABCEXT
+#include <linux/isdn_dwabc.h>
+#endif
+
 #define preselect pnum2prefix(preselect, cur_time)
 
 static int    HiSax = 0, hexSeen = 0, uid = UNKNOWN, lfd = 0;
@@ -4824,6 +4832,96 @@ void processflow()
 } /* processflow */
 
 
+#if HAVE_ABCEXT
+static void processlcr(char *p)
+{
+  auto char                        res[BUFSIZ], s[BUFSIZ];
+  register char 		  *pres = res;
+  auto TELNUM  	 		   destnum;
+  auto RATE    	 		   Rate, Cheap;
+  auto struct ISDN_DWABC_LCR_IOCTL i;
+  auto int     	 		   prefix, cc;
+  auto char    	 		   ji[20];
+  auto char    	 		   kenn[40];
+  auto char    	 		   cid[40];
+  auto char    	 		   eaz[40];
+  auto char    	 		   dst[40];
+  auto char    	 		   prov[TN_MAX_PROVIDER_LEN];
+  auto char    	 		   amtsholung[BUFSIZ];
+
+
+  sscanf(p, "%s %s %s %s %s", ji, kenn, cid, eaz, dst);
+
+  if (trimo)
+    strncpy(amtsholung, dst, trimo);
+  else
+    *amtsholung = 0;
+
+  normalizeNumber(dst + trimo, &destnum, TN_ALL);
+
+  sprintf(s, "ABC_LCR: Request for number %s\n", formatNumber("%l via %p", &destnum));
+  info(chan, PRT_SHOWNUMBERS, STATE_RING, s);
+
+  clearRate(&Rate);
+  time(&Rate.start);
+  Rate.now = Rate.start + LCR_DURATION;
+
+  Rate.src[0] = mycountry;
+  Rate.src[1] = myarea;
+  Rate.src[2] = "";
+
+  Rate.dst[0] = destnum.country;
+  Rate.dst[1] = destnum.area;
+  Rate.dst[2] = destnum.msn;
+
+  prefix = getLeastCost(&Rate, &Cheap, 1, -1);
+
+  if (prefix != UNKNOWN) {
+    (void)prefix2provider(prefix, prov);
+
+    if (*amtsholung)
+      pres += sprintf(pres, "%s", amtsholung);
+
+    pres += sprintf(pres, "%s", prov);
+
+    if (strcmp(mycountry, destnum.country))
+      pres += sprintf(pres, "00%s", destnum.country + 1); /* skip "+" */
+    else
+      pres += sprintf(pres, "0");
+
+    if (strcmp(myarea, destnum.area))
+      pres += sprintf(pres, "%s", destnum.area);
+
+    pres += sprintf(pres, "%s", destnum.msn);
+
+
+    if (strlen(res) < sizeof(i.lcr_ioctl_nr)) {
+      memset(&i, 0, sizeof(i));
+
+      i.lcr_ioctl_sizeof = sizeof(i);
+      i.lcr_ioctl_callid = atol(cid);
+      i.lcr_ioctl_flags = DWABC_LCR_FLG_NEWNUMBER;
+      strcpy(i.lcr_ioctl_nr, res);
+
+      cc = ioctl(sockets[ISDNCTRL].descriptor, IIOCNETLCR, &i));
+
+      sprintf(s, "ABC_LCR: New number \"%s\" (via %s:%s) -- RESULT=%d\n",
+        res, prov, getProvider(prefix), cc);
+      info(chan, PRT_SHOWNUMBERS, STATE_RING, s);
+    }
+    else {
+      sprintf(s, "ABC_LCR: Resulting new number \"%s\" too long -- aborting\n", res);
+      info(chan, PRT_SHOWNUMBERS, STATE_RING, s);
+    } /* else */
+  }
+  else {
+    sprintf(s, "ABC_LCR: Can't find cheaper provider\n");
+    info(chan, PRT_SHOWNUMBERS, STATE_RING, s);
+  } /* else */
+} /* processlcr */
+#endif
+
+
 int morectrl(int card)
 {
   register char      *p, *p1, *p2, *p3;
@@ -4891,22 +4989,29 @@ retry:
           processctrl(atoi(p3), p3 + 3);
       }
       else {
-        go = 1;
+#if HAVE_ABCEXT
+        if (!memcmp(p1 + 9, "DW_ABC_LCR", 10))
+          processlcr(p1);
+        else
+#endif
+        {
+          go = 1;
 
-        if (((ignoreRR & 1) == 1) && (strlen(p1) < 17))
-          go = 0;
+          if (((ignoreRR & 1) == 1) && (strlen(p1) < 17))
+            go = 0;
 
-        if (((ignoreRR & 2) == 2) && !memcmp(p1 + 14, "AA", 2))
-          go = 0;
+          if (((ignoreRR & 2) == 2) && !memcmp(p1 + 14, "AA", 2))
+            go = 0;
 
-        if (go) {
-          if (!memcmp(p1, "ECHO:", 5)) { /* Echo-channel from HFC card */
-	    memcpy(p1 + 1, "HEX", 3);
-            processctrl(card + 1, p1 + 1);
-          }
-          else
-            processctrl(card, p1);
-        } /* if */
+          if (go) {
+            if (!memcmp(p1, "ECHO:", 5)) { /* Echo-channel from HFC card */
+	      memcpy(p1 + 1, "HEX", 3);
+              processctrl(card + 1, p1 + 1);
+            }
+            else
+              processctrl(card, p1);
+          } /* if */
+        } /* else */
       } /* else */
 
       p1 = p2 + 1;

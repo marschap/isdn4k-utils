@@ -1,4 +1,4 @@
-V:1.10-Germany [07-Dec-1999 20:39:05]
+V:1.10-Germany [09-Dec-1999 19:08:45]
 
 # Währungsformat
 U:%.3f DM
@@ -8,7 +8,7 @@ U:%.3f DM
 #
 # (C) Copyright 1999 by Andreas Kool (akool@isdn4linux.de)
 #
-# $Id: rate-de.dat.src,v 1.16 1999/12/07 20:07:20 akool Exp $
+# $Id: rate-de.dat.src,v 1.17 1999/12/12 14:35:52 akool Exp $
 #
 #
 # Das "A:" Tag muß folgendermaßen gefüllt werden:
@@ -305,7 +305,10 @@ N:0190600000 # Virtual Interactive Phone GmbH, VIP Wecker (0,81 Pf/min)
 #
 P:10 Teleglobe
 B:01010
-C:GmbH, Gutleutstraße 85, 60329 Frankfurt 01010
+C:Name:Teleglobe
+C:Address:Teleglobe GmbH, Gutleutstraße 85, 60329 Frankfurt
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 #####################################################################
 #
 #
@@ -313,10 +316,12 @@ P:11 o.tel.o CbC
 B:01011
 # G:01-Aug-1999
 D:dtag
-C:Mannesmann Zwölfte Verwaltungsgesellschaft mbH, Mannesmannufer 2, 40213 Düsseldorf
-C:Homepage: http://www.o-tel-o.de
-C:Hotline:  01803/1998 oder 0800/7370 (Geschaeftskunden)
-C:Adresse:  96038 Bamberg
+C:Name:o.tel.o CbC
+C:Address:Mannesmann Zwölfte Verwaltungsgesellschaft mbH, Mannesmannufer 2, 40213 Düsseldorf
+C:Homepage:http://www.o-tel-o.de
+C:Hotline:01803/1998 oder 0800/7370 (Geschaeftskunden)
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 C:Erfasste Zonen:
 C:0, 2	-   4	Deutschland
 C:10	-  11	Mobilfunk
@@ -548,10 +553,12 @@ T:*/*=2.79/60
 #####################################################################
 P:11,1 o.tel.o private Preselection
 B:01011
-C:Mannesmann Zwölfte Verwaltungsgesellschaft mbH, Mannesmannufer 2, 40213 Düsseldorf
-C:Homepage: http://www.o-tel-o.de
-C:Hotline:  01803/1998 oder 0800/7370 (Geschaeftskunden)
-C:Adresse:  96038 Bamberg
+C:Name:o.tel.o private Preselection
+C:Address:Mannesmann Zwölfte Verwaltungsgesellschaft mbH, Mannesmannufer 2, 40213 Düsseldorf
+C:Homepage:http://www.o-tel-o.de
+C:Hotline:01803/1998 oder 0800/7370 (Geschaeftskunden)
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 C:Erfasste Zonen:
 C:0, 2	-   4	Deutschland
 C:10	-  11	Mobilfunk
@@ -796,11 +803,13 @@ T:*/*=0.05/0,2.79(60)/1
 #####################################################################
 P:11,2 o.tel.o private plus Preselection
 B:01011
+C:Name:o.tel.o private plus Preselection
+C:Address:Mannesmann Zwölfte Verwaltungsgesellschaft mbH, Mannesmannufer 2, 40213 Düsseldorf
+C:Homepage:http://www.o-tel-o.de
+C:Hotline:01803/1998 oder 0800/7370 (Geschaeftskunden)
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 C:DM 8,90 Grundgebühr / Monat
-C:Mannesmann Zwölfte Verwaltungsgesellschaft mbH, Mannesmannufer 2, 40213 Düsseldorf
-C:Homepage: http://www.o-tel-o.de
-C:Hotline:  01803/1998 oder 0800/7370 (Geschaeftskunden)
-C:Adresse:  96038 Bamberg
 C:Erfasste Zonen:
 C:0, 2	-   4	Deutschland
 C:10	-  11	Mobilfunk
@@ -1046,11 +1055,13 @@ T:*/*=0.05/0,2.79(60)/1
 #####################################################################
 P:11,3 o.tel.o professional plus Preselection
 B:01011
+C:Name:o.tel.o professional plus Preselection
+C:Address:Mannesmann Zwölfte Verwaltungsgesellschaft mbH, Mannesmannufer 2, 40213 Düsseldorf
+C:Homepage:http://www.o-tel-o.de
+C:Hotline:01803/1998 oder 0800/7370 (Geschaeftskunden)
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 C:DM 8,90 Grundgebühr / Monat
-C:Mannesmann Zwölfte Verwaltungsgesellschaft mbH, Mannesmannufer 2, 40213 Düsseldorf
-C:Homepage: http://www.o-tel-o.de
-C:Hotline:  01803/1998 oder 0800/7370 (Geschaeftskunden)
-C:Adresse:  96038 Bamberg
 C:Erfasste Zonen:
 C:0, 2	-   4	Deutschland
 C:10	-  11	Mobilfunk
@@ -1292,11 +1303,13 @@ T:*/*=0.05/0,2.79(60)/1
 #####################################################################
 P:11,4 o.tel.o international plus Preselection
 B:01011
+C:Name:o.tel.o international plus Preselection
+C:Address:Mannesmann Zwölfte Verwaltungsgesellschaft mbH, Mannesmannufer 2, 40213 Düsseldorf
+C:Homepage:http://www.o-tel-o.de
+C:Hotline:01803/1998 oder 0800/7370 (Geschaeftskunden)
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 C:DM 8,90 Grundgebühr / Monat
-C:Mannesmann Zwölfte Verwaltungsgesellschaft mbH, Mannesmannufer 2, 40213 Düsseldorf
-C:Homepage: http://www.o-tel-o.de
-C:Hotline:  01803/1998 oder 0800/7370 (Geschaeftskunden)
-C:Adresse:  96038 Bamberg
 C:Erfasste Zonen:
 C:0, 2	-   4	Deutschland
 C:10	-  11	Mobilfunk
@@ -1528,17 +1541,21 @@ T:*/*=2.49(60)/1
 #
 P:12 Tele Danmark
 B:01012
-C:Internetz GmbH, Süderstraße 75, 20097 Hamburg 01012
+C:Name:Tele Danmark
+C:Address:Tele Danmark Internetz GmbH, Süderstraße 75, 20097 Hamburg
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 #####################################################################
 #
 #
 P:13 Tele 2 Privatkunden
 B:01013
-C:Telecommunications Services GmbH, Düsseldorf
-C:Homepage: http://www.tele2.de
-C:Hotline:  0800/24-01013
-C:Adresse:  Postfach 130840, 40558
-C:	    Duesseldorf
+C:Name:Tele 2 Privatkunden
+C:Address:Telecommunications Services GmbH, Postfach 130840, 40558 Düsseldorf
+C:Homepage:http://www.tele2.de
+C:Hotline:0800/24-01013
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 C:Erfasste Zonen:
 C:2	-   4	Deutschland
 C:10		Mobilfunk
@@ -1609,11 +1626,12 @@ T:*/*=2.44/60
 #####################################################################
 P:13,1 Tele 2 Geschaeftskunden
 B:01013
-C:Telecommunications Services GmbH, Düsseldorf
-C:Homepage: http://www.tele2.de
-C:Hotline:  0800/24-01013
-C:Adresse:  Postfach 130840, 40558
-C:	    Duesseldorf
+C:Name:Tele 2 Geschaeftskunden
+C:Address:Telecommunications Services GmbH, Postfach 130840, 40558 Düsseldorf
+C:Homepage:http://www.tele2.de
+C:Hotline:0800/24-01013
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 C:Erfasste Zonen:
 C:2	-   4	Deutschland
 C:10		Mobilfunk
@@ -1686,9 +1704,12 @@ T:*/*=2.44/60
 #
 P:14 EWE TEL CbC national
 B:01014
-C:Cloppenburger Str. 300, 26133 Oldenburg
-C:Homepage: http://www.ewetel.de
-C:Hotline: (07-22h) 01803/25 24 23
+C:Name:EWE TEL CbC national
+C:Address:EWE TEL, Cloppenburger Str. 300, 26133 Oldenburg
+C:Homepage:http://www.ewetel.de
+C:Hotline:(07-22h) 01803/25 24 23
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 C:Regionaltarif gilt nur in bestimmten Orten in der Nähe von Oldenburg
 C:Erfasste Zonen:
 C:0	-   4	Deutschland
@@ -1756,9 +1777,12 @@ T:*/*=2.99(60)/1
 #####################################################################
 P:14,1 EWE TEL CbC/pre-select regional
 B:01014
-C:Cloppenburger Str. 300, 26133 Oldenburg
-C:Homepage: http://www.ewetel.de
-C:Hotline: (07-22h) 01803/25 24 23
+C:Name:EWE TEL CbC/pre-select regional
+C:Address:EWE TEL, Cloppenburger Str. 300, 26133 Oldenburg
+C:Homepage:http://www.ewetel.de
+C:Hotline:(07-22h) 01803/25 24 23
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 C:Regionaltarif gilt nur in bestimmten Orten in der Nähe von Oldenburg
 C:Erfasste Zonen:
 C:0	-   4	Deutschland
@@ -1836,9 +1860,12 @@ T:*/*=2.99(60)/1
 #####################################################################
 P:14,2 EWE TEL direct
 B:01014
-C:GmbH, Donnerschweer Straße 22-26, 26123 Oldenburg 01014
-C:Homepage: http://www.ewetel.de
-C:Hotline: (07-22h) 01803/25 24 23
+C:Name:EWE TEL direct
+C:Address:EWE TEL, Cloppenburger Str. 300, 26133 Oldenburg
+C:Homepage:http://www.ewetel.de
+C:Hotline:(07-22h) 01803/25 24 23
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 C:Regionaltarif gilt nur in bestimmten Orten in der Nähe von Oldenburg
 C:Erfasste Zonen:
 C:0	-   4	Deutschland
@@ -1921,7 +1948,11 @@ B:01015
 ##
 ## macht *keinen* Tarifwechsel in laufender Verbindung!
 ##
-C:RSL COM Deutschland GmbH, Lyoner Straße 36, 60528 Frankfurt/Main 01015
+C:Name:RSL clever call
+C:Address:RSL COM Deutschland GmbH, Lyoner Straße 36, 60528 Frankfurt/Main
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Special:Macht keinen Tarifwechsel in laufender Verbindung!
 C:Erfasste Zonen:
 C:0, 2	-   4	Deutschland
 C:10		Mobilfunk
@@ -2783,7 +2814,11 @@ T:*/*=0.89/60
 #####################################################################
 P:15,1 RSL CleverLine global
 B:01015
-C:RSL COM Deutschland GmbH, Lyoner Straße 36, 60528 Frankfurt/Main 01015
+C:Name:RSL CleverLine global
+C:Address:RSL COM Deutschland GmbH, Lyoner Straße 36, 60528 Frankfurt/Main
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Special:Macht keinen Tarifwechsel in laufender Verbindung!
 C:Erfasste Zonen:
 C:0, 2	-   4	Deutschland
 C:10		Mobilfunk
@@ -3651,7 +3686,11 @@ T:*/*=0.89(60)/1
 #####################################################################
 P:15,2 RSL CleverLine metropolitan
 B:01015
-C:RSL COM Deutschland GmbH, Lyoner Straße 36, 60528 Frankfurt/Main 01015
+C:Name:RSL CleverLine metropolitan
+C:Address:RSL COM Deutschland GmbH, Lyoner Straße 36, 60528 Frankfurt/Main
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Special:Macht keinen Tarifwechsel in laufender Verbindung!
 C:Erfasste Zonen:
 C:0, 2	-   4	Deutschland
 C:10		Mobilfunk
@@ -4521,20 +4560,27 @@ T:*/*=0.89(60)/1
 #
 P:16 LausitzNet
 B:01016
-C:Telekommunikationsgesellschaft mbH, Lausitzer Straße 1-7, 03046 Cottbus 01016
+C:Name:LausitzNet
+C:Address:LausitzNet Telekommunikationsgesellschaft mbH, Lausitzer Straße 1-7, 03046 Cottbus
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 #####################################################################
 #
 #
 P:17 SEC
 B:01017
-C:Service AG, Dieskaustraße 246, 04249 Leipzig 01017
+C:Name:SEC
+C:Address:SEC Service AG, Dieskaustraße 246, 04249 Leipzig
 #####################################################################
 #
 #
 P:18 debitel
 B:01018
 # DirectLine Privat-Tarif Minuten
-C:Kommunikationstechnik GmbH & Co KG, Schelmenwasenstr. 37 - 39, 70567 Stuttgart 01018
+C:Name:debitel DirectLine Privat-Tarif Minuten
+C:Address:debitel Kommunikationstechnik GmbH & Co KG, Schelmenwasenstr. 37 - 39, 70567 Stuttgart
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 C:Erfasste Zonen:
 C:2	-   4	Deutschland
 C:10		Mobilfunk
@@ -4585,7 +4631,10 @@ T:*/*=2.49/60
 #####################################################################
 P:18,1 debitel DirectLine Profi-Tarif 30 Sekunden
 B:01018
-C:Kommunikationstechnik GmbH & Co KG, Schelmenwasenstr. 37 - 39, 70567 Stuttgart 01018
+C:Name:debitel DirectLine Profi-Tarif 30 Sekunden
+C:Address:debitel Kommunikationstechnik GmbH & Co KG, Schelmenwasenstr. 37 - 39, 70567 Stuttgart
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 C:Erfasste Zonen:
 C:2	-   4	Deutschland
 C:10		Mobilfunk
@@ -4633,7 +4682,10 @@ T:*/*=2.49/30
 #####################################################################
 P:18,2 debitel DirectLine Privat-Tarif Sekunden Takt
 B:01018
-C:Kommunikationstechnik GmbH & Co KG, Schelmenwasenstr. 37 - 39, 70567 Stuttgart 01018
+C:Name:debitel DirectLine Privat-Tarif Sekunden Takt
+C:Address:debitel Kommunikationstechnik GmbH & Co KG, Schelmenwasenstr. 37 - 39, 70567 Stuttgart
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 C:Erfasste Zonen:
 C:2	-   4	Deutschland
 C:10		Mobilfunk
@@ -4683,7 +4735,10 @@ T:*/*=0.05/0,2.49/60
 #####################################################################
 P:18,3 debitel DirectLine Profi-Tarif Sekunden Takt
 B:01018
-C:Kommunikationstechnik GmbH & Co KG, Schelmenwasenstr. 37 - 39, 70567 Stuttgart 01018
+C:Name:debitel DirectLine Profi-Tarif Sekunden Takt
+C:Address:debitel Kommunikationstechnik GmbH & Co KG, Schelmenwasenstr. 37 - 39, 70567 Stuttgart
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 # G:01.06.1999
 C:Erfasste Zonen:
 C:2	-   4	Deutschland
@@ -4733,12 +4788,12 @@ T:*/*=0.05/0,2.49/30
 #
 P:19 Mobilcom CbC
 B:01019
-C:City LINE GmbH, Holler Str. 126, 24782 Büdelsdorf
-C:MobilCom AG
-C:Homepage: http://www.mobilcom.de
-C:Hotline:  01805/191919
-C:Adresse:  Postfach 1249
-C:	    24822 Schleswig
+C:Name:MobilCom CbC
+C:Address:City LINE GmbH, Holler Str. 126, 24782 Büdelsdorf
+C:Homepage:http://www.mobilcom.de
+C:Hotline:01805/191919
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 C:Erfasste Zonen:
 C:2	-   4	Deutschland
 C:10		Mobilfunk
@@ -4774,7 +4829,12 @@ T:*/*=0.49/60
 #####################################################################
 P:19,1 Mobilcom Preselection/Business
 B:01019
-C:City LINE GmbH, Holler Str. 126, 24782 Büdelsdorf
+C:Name:MobilCom Preselection/Business
+C:Address:City LINE GmbH, Holler Str. 126, 24782 Büdelsdorf
+C:Homepage:http://www.mobilcom.de
+C:Hotline:01805/191919
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 C:Erfasste Zonen:
 C:2	-   4	Deutschland
 C:10		Mobilfunk
@@ -4829,12 +4889,12 @@ T:*/*=1.49(60)/1
 #####################################################################
 P:19,2 Mobilcom Preselection/Privat
 B:01019
-C:City LINE GmbH, Holler Str. 126, 24782 Büdelsdorf
-C:MobilCom AG
-C:Homepage: http://www.mobilcom.de
-C:Hotline:  01805/191919
-C:Adresse:  Postfach 1249
-C:	    24822 Schleswig
+C:Name:MobilCom Preselection/Privat
+C:Address:City LINE GmbH, Holler Str. 126, 24782 Büdelsdorf
+C:Homepage:http://www.mobilcom.de
+C:Hotline:01805/191919
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 C:Erfasste Zonen:
 C:2	-   4	Deutschland
 C:10		Mobilfunk
@@ -4886,11 +4946,14 @@ T:*/*=1.49(60)/1
 #
 P:20 ISIS isiFON classic
 B:01020
-C:ISIS Multimedia Net GmbH, Kaistraße 6, 40221 Düsseldorf 01020
-C:Homepage: http://www.isis.de
-C:Telefon:  0800/809 0100
-C:Telefax:  0211/85 27 610
-C:Faxabruf: 0800/809 0111
+C:Name:ISIS isiFON classic
+C:Address:ISIS Multimedia Net GmbH, Kaistraße 6, 40221 Düsseldorf
+C:Homepage:http://www.isis.de
+C:Telefon:0800/809 0100
+C:Telefax:0211/85 27 610
+C:Faxabruf:0800/809 0111
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 C:Spezialtarif "isiFON-zu-isiFON": Gilt innerhalb des gleichen Ortsnetzes,
 C:wenn beide Teilnehmer einen ISIS-Telefonanschluß haben.
 C:Erfasste Zonen:
@@ -5059,11 +5122,14 @@ T:*/*=2.61/60
 #####################################################################
 P:20,1 ISIS isiFON plus
 B:01020
-C:ISIS Multimedia Net GmbH, Kaistraße 6, 40221 Düsseldorf 01020
-C:Homepage: http://www.isis.de
-C:Telefon:  0800/809 0100
-C:Telefax:  0211/85 27 610
-C:Faxabruf: 0800/809 0111
+C:Name:ISIS isiFON plus
+C:Address:ISIS Multimedia Net GmbH, Kaistraße 6, 40221 Düsseldorf
+C:Homepage:http://www.isis.de
+C:Telefon:0800/809 0100
+C:Telefax:0211/85 27 610
+C:Faxabruf:0800/809 0111
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 C:Spezialtarif "isiFON-zu-isiFON": Gilt innerhalb des gleichen Ortsnetzes,
 C:wenn beide Teilnehmer einen ISIS-Telefonanschluß haben.
 C:Erfasste Zonen:
@@ -5229,11 +5295,14 @@ T:*/*=2.61/60
 #####################################################################
 P:20,2 ISIS Preselection
 B:01020
-C:ISIS Multimedia Net GmbH, Kaistraße 6, 40221 Düsseldorf 01020
-C:Homepage: http://www.isis.de
-C:Telefon:  0800/809 0100
-C:Telefax:  0211/85 27 610
-C:Faxabruf: 0800/809 0111
+C:Name:ISIS Preselection
+C:Address:ISIS Multimedia Net GmbH, Kaistraße 6, 40221 Düsseldorf
+C:Homepage:http://www.isis.de
+C:Telefon:0800/809 0100
+C:Telefax:0211/85 27 610
+C:Faxabruf:0800/809 0111
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 C:Erfasste Zonen:
 C:0	-   4	Deutschland
 C:10		Mobilfunk
@@ -5395,15 +5464,21 @@ T:*/*=2.61/60
 #
 P:21 QS
 B:01021
-C:Communication Service GmbH, Oberländer Ufer 180-182, 50968 Köln 01021
+C:Name:QS
+C:Address:QS Communication Service GmbH, Oberländer Ufer 180-182, 50968 Köln
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 #####################################################################
 #
 #
 P:22 NetCologne
 B:01022
-C:GmbH, Maarweg 163, 50825 Köln 01022
-C:Homepage: http://www.netcologne.de
-C:Tarife: http://www.netcologne.de/tarife/tarif1.html
+C:Name:NetCologne
+C:Address:NetCologne GmbH, Maarweg 163, 50825 Köln
+C:Homepage:http://www.netcologne.de
+C:TarifURL:http://www.netcologne.de/tarife/tarif1.html
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 C:Erfasste Zonen:
 C:1	-   4	Deutschland
 C:10		Mobilfunk
@@ -5534,9 +5609,11 @@ T:*/*=2.75(60)/1
 #
 P:23 tesion connectClassic
 B:01023
-C:Communikationsnetze Süd-West GmbH & Co. KG, Kriegsbergstr. 11
-C:70174 Stuttgart 01023
-C:Homepage: http://www.tesion.de
+C:Name:tesion connectClassic
+C:Address:Communikationsnetze Süd-West GmbH & Co. KG, Kriegsbergstr. 11, 70174 Stuttgart
+C:Homepage:http://www.tesion.de
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 C:Erfasste Zonen:
 C:1	-   4	Deutschland
 C:10		Mobilfunk
@@ -5599,8 +5676,11 @@ T:*/*=2.31(60)/1
 #####################################################################
 P:23,1 tesion connectProfi
 B:01023
-C:Communikationsnetze Süd-West GmbH & Co. KG, Kriegsbergstr. 11, 70174 Stuttgart 01023
-C:Homepage: http://www.tesion.de
+C:Name:tesion connectProfi
+C:Address:Communikationsnetze Süd-West GmbH & Co. KG, Kriegsbergstr. 11, 70174
+C:Homepage:http://www.tesion.de
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com
 C:Erfasste Zonen:
 C:1	-   4	Deutschland
 C:10		Mobilfunk
@@ -5661,8 +5741,11 @@ T:*/*=2.31(60)/1
 #####################################################################
 P:23,2 tesion CbC
 B:01023
-C:Communikationsnetze Süd-West GmbH & Co. KG, Kriegsbergstr. 11, 70174 Stuttgart 01023
-C:Homepage: http://www.tesion.de
+C:Name:tesion CbC
+C:Address:Communikationsnetze Süd-West GmbH & Co. KG, Kriegsbergstr. 11, 70174
+C:Homepage:http://www.tesion.de
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com
 C:Erfasste Zonen:
 C:1	-   4	Deutschland
 C:10		Mobilfunk
@@ -5704,14 +5787,15 @@ T:*/*=0.06/0,0.46(60)/1
 #
 P:24 Telepassport 99 Plus
 B:01024
-C:GmbH, Schwindstraße 3, 60325 Frankfurt
-C:Name:     TelePassport Service GmbH
-C:Homepage: http://www.telepassport.de
-C:Hotline:  0800/808 808 8
-C:Telefon:  0361/594 2500
-C:Telefax:  0800/808 808 9
-C:Adresse:  Juri-Gagarin-Ring 88, 99084
-C:	    Erfurt
+C:Name:Telepassport 99 Plus
+C:Address:Telepassport Service GmbH, Schwindstraße 3, 60325 Frankfurt
+C:Adresss:Telepassprt, Juri-Gagarin-Ring 88, 99084 Erfurt
+C:Homepage:http://www.telepassport.de
+C:Hotline:0800/808 808 8
+C:Telefon:0361/594 2500
+C:Telefax:0800/808 808 9
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 C:Erfasste Zonen:
 C:2	-   4	Deutschland
 C:10		Mobilfunk
@@ -5771,14 +5855,15 @@ T:*/*=1.96/60
 P:24,1 Telepassport Plus
 B:01024
 # G:15-Jul-1999
-C:GmbH, Schwindstraße 3, 60325 Frankfurt
-C:Name:     TelePassport Service GmbH
-C:Homepage: http://www.telepassport.de
-C:Hotline:  0800/808 808 8
-C:Telefon:  0361/594 2500
-C:Telefax:  0800/808 808 9
-C:Adresse:  Juri-Gagarin-Ring 88, 99084
-C:	    Erfurt
+C:Name:Telepassport Plus
+C:Address:Telepassport Service GmbH, Schwindstraße 3, 60325 Frankfurt
+C:Adresss:Telepassport, Juri-Gagarin-Ring 88, 99084 Erfurt
+C:Homepage:http://www.telepassport.de
+C:Hotline:0800/808 808 8
+C:Telefon:0361/594 2500
+C:Telefax:0800/808 808 9
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 C:Erfasste Zonen:
 C:2	-   4	Deutschland
 C:10		Mobilfunk
@@ -5828,14 +5913,15 @@ T:*/*=1.96/60
 P:24,2 Telepassport CbC
 B:01024
 # G:15-Jul-1999
-C:GmbH, Schwindstraße 3, 60325 Frankfurt
-C:Name:     TelePassport Service GmbH
-C:Homepage: http://www.telepassport.de
-C:Hotline:  0800/808 808 8
-C:Telefon:  0361/594 2500
-C:Telefax:  0800/808 808 9
-C:Adresse:  Juri-Gagarin-Ring 88, 99084
-C:	    Erfurt
+C:Name:Telepassport CbC
+C:Address:Telepassport Service GmbH, Schwindstraße 3, 60325 Frankfurt
+C:Adresss:Telepassport, Juri-Gagarin-Ring 88, 99084 Erfurt
+C:Homepage:http://www.telepassport.de
+C:Hotline:0800/808 808 8
+C:Telefon:0361/594 2500
+C:Telefax:0800/808 808 9
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 C:Erfasste Zonen:
 C:2	-   4	Deutschland
 C:10		Mobilfunk
@@ -5884,14 +5970,15 @@ T:*/*=1.96/60
 P:24,3 Telepassport RegionalTarif Plus
 B:01024
 # G:01.05.1999
-C:GmbH, Schwindstraße 3, 60325 Frankfurt
-C:Name:     TelePassport Service GmbH
-C:Homepage: http://www.telepassport.de
-C:Hotline:  0800/808 808 8
-C:Telefon:  0361/594 2500
-C:Telefax:  0800/808 808 9
-C:Adresse:  Juri-Gagarin-Ring 88, 99084
-C:	    Erfurt
+C:Name:Telepassport RegionalTarif Plus
+C:Address:Telepassport Service GmbH, Schwindstraße 3, 60325 Frankfurt
+C:Adresss:Telepassport, Juri-Gagarin-Ring 88, 99084 Erfurt
+C:Homepage:http://www.telepassport.de
+C:Hotline:0800/808 808 8
+C:Telefon:0361/594 2500
+C:Telefax:0800/808 808 9
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 C:Sondertarif 5 "Bundesland/Region":Gespräche innerhalb des Bundeslandes/Region
 C:Erfasste Zonen:
 C:2	-   4	Deutschland
@@ -5939,14 +6026,15 @@ T:*/*=1.96/60
 P:24,4 Telepassport SüdOst-Tarif
 B:01024
 # G:01.05.1999
-C:GmbH, Schwindstraße 3, 60325 Frankfurt
-C:Name:     TelePassport Service GmbH
-C:Homepage: http://www.telepassport.de
-C:Hotline:  0800/808 808 8
-C:Telefon:  0361/594 2500
-C:Telefax:  0800/808 808 9
-C:Adresse:  Juri-Gagarin-Ring 88, 99084
-C:	    Erfurt
+C:Name:Telepassport SüdOst-Tarif
+C:Address:Telepassport Service GmbH, Schwindstraße 3, 60325 Frankfurt
+C:Adresss:Telepassport, Juri-Gagarin-Ring 88, 99084 Erfurt
+C:Homepage:http://www.telepassport.de
+C:Hotline:0800/808 808 8
+C:Telefon:0361/594 2500
+C:Telefax:0800/808 808 9
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 C:Erfasste Zonen:
 C:2	-   4	Deutschland
 C:10		Mobilfunk
@@ -6004,14 +6092,15 @@ T:*/*=1.98/60
 P:24,5 Telepassport SüdOst
 B:01024
 # G:01.05.1999
-C:GmbH, Schwindstraße 3, 60325 Frankfurt
-C:Name:     TelePassport Service GmbH
-C:Homepage: http://www.telepassport.de
-C:Hotline:  0800/808 808 8
-C:Telefon:  0361/594 2500
-C:Telefax:  0800/808 808 9
-C:Adresse:  Juri-Gagarin-Ring 88, 99084
-C:	    Erfurt
+C:Name:Telepassport SüdOst
+C:Address:Telepassport Service GmbH, Schwindstraße 3, 60325 Frankfurt
+C:Adresss:Telepassport, Juri-Gagarin-Ring 88, 99084 Erfurt
+C:Homepage:http://www.telepassport.de
+C:Hotline:0800/808 808 8
+C:Telefon:0361/594 2500
+C:Telefax:0800/808 808 9
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 Z:1-4 Inland
 A:+49
 T:W/08-18=0.18/60 Geschäftszeit
@@ -6054,14 +6143,15 @@ T:*/*=1.98/60
 P:24,6 Telepassport StudentenTarif
 B:01024
 # G:01.05.1999
-C:GmbH, Schwindstraße 3, 60325 Frankfurt
-C:Name:     TelePassport Service GmbH
-C:Homepage: http://www.telepassport.de
-C:Hotline:  0800/808 808 8
-C:Telefon:  0361/594 2500
-C:Telefax:  0800/808 808 9
-C:Adresse:  Juri-Gagarin-Ring 88, 99084
-C:	    Erfurt
+C:Name:Telepassport StudentenTarif
+C:Address:Telepassport Service GmbH, Schwindstraße 3, 60325 Frankfurt
+C:Adresss:Telepassport, Juri-Gagarin-Ring 88, 99084 Erfurt
+C:Homepage:http://www.telepassport.de
+C:Hotline:0800/808 808 8
+C:Telefon:0361/594 2500
+C:Telefax:0800/808 808 9
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 Z:1-2 Lokal
 T:*/*=0.10/60
 Z:3 Nah
@@ -6111,8 +6201,11 @@ T:*/*=1.98/60
 #####################################################################
 P:24,7 Super 24
 B:01024
-C:Hotline: 0800/24-01024
-C:Homepage: http://www.super24.com
+C:Name:Super 24
+C:Hotline:0800/24-01024
+C:Homepage:http://www.super24.com
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 C:Erfasste Zonen:
 C:2	-   4	Deutschland
 C:10		Mobilfunk
@@ -6153,8 +6246,12 @@ T:*/*=1.85/60
 #
 P:25 CityKom
 B:01025
-C:Münster, Haferlandweg 8, 48155 Münster 01025
-C:homepage:	http://www.citykom.de
+C:Name:CityKom
+C:Address:CityKom Münster, Haferlandweg 8, 48155 Münster
+C:Homepage:http://www.citykom.de
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+##
 C:nur Preselection oder Direct Access in der Gegend von Münster!
 C:Achtung!
 C:Ortsbereich ist erweitert von 20km auf 30km um Münster.  Orte siehe unten.
@@ -6671,8 +6768,12 @@ T:*/*=0.07/1.8
 #####################################################################
 P:25,1 CityKom Preselection
 B:01025
-C:Münster, Haferlandweg 8, 48155 Münster 01025
-C:homepage:	http://www.citykom.de
+C:Name:CityKom Preselection
+C:Address:CityKom Münster, Haferlandweg 8, 48155 Münster
+C:Homepage:http://www.citykom.de
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com
+##
 C:nur Preselection oder Direct Access in der Gegend von Münster!
 C:Achtung!
 C:Ortsbereich ist erweitert von 20km auf 30km um Münster.  Orte siehe unten.
@@ -7182,17 +7283,21 @@ T:*/*=0.07/1.8
 #
 P:26 ECN
 B:01026
-C:Telekommunikation GmbH, Schmickstraße 38-40, 60314 Frankfurt 01026
+C:Name:ECN
+C:Address:ECN Telekommunikation GmbH, Schmickstraße 38-40, 60314 Frankfurt
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 #####################################################################
 #
 #
 P:27 Nordcom Butensurf
 B:01027
-C:Communications Netzmanagement Bremen GmbH
-C:Theodor-Heuss-Allee 20, 28215 Bremen 01027
-C:Sondertarif 5 "Nordcom-Nordcom": Netzinterne Gespräche zwischen Nordcom
-C:Kunden
-C:URL: http://www.nordcom.net
+C:Name:Nordcom Butensurf
+C:Address:Communications Netzmanagement Bremen GmbH, Theodor-Heuss-Allee 20, 28215 Bremen
+C:Homepage:http://www.nordcom.net
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Sondertarif 5 "Nordcom-Nordcom": Netzinterne Gespräche zwischen Nordcom Kunden
 C:Erfasste Zonen:
 C:1	-   4	Deutschland
 C:5		Sondertarif
@@ -7283,8 +7388,10 @@ T:*/*=1.99(60)/1
 #####################################################################
 P:27,1 Nordcom Butensurf Plus
 B:01027
-C:Communications Netzmanagement Bremen GmbH
-C:Theodor-Heuss-Allee 20, 28215 Bremen 01027
+C:Name:Nordcom Butensurf Plus
+C:Address:Communications Netzmanagement Bremen GmbH, Theodor-Heuss-Allee 20, 28215 Bremen
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 C:Sondertarif 5 "Nordcom-Nordcom": Netzinterne Gespräche zwischen Nordcom
 C:Kunden
 C:Erfasste Zonen:
@@ -7384,8 +7491,11 @@ T:*/*=1.99(60)/1
 #####################################################################
 P:28 TeleBridge CbC
 B:01028
-C:TeleBridge ist Reseller von COLT.
-C:Homepage: http://www.telebridge.de
+C:Name:TeleBridge CbC
+C:Homepage:http://www.telebridge.de
+C:Special:TeleBridge ist Reseller von COLT
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 C:Erfasste Zonen:
 C:2	-   4	Deutschland
 C:10		Mobilfunk
@@ -7559,11 +7669,12 @@ T:*/*=0/5,2.22/60
 #####################################################################
 P:28,1 TeleBridge EasyBridge
 B:01028
-C:TeleBridge ist Reseller von COLT.
-C:Homepage: http://www.telebridge.de
-C:Preselection Tarif
-C:Mindestumsatz: 39,- DM bei 12 Monaten Bindung
-C:               19,- DM bei 24 Monaten
+C:Name:TeleBridge EasyBridge (Preselection)
+C:Homepage:http://www.telebridge.de
+C:Special:TeleBridge ist Reseller von COLT.
+C:Special:Mindestumsatz: 39,- DM bei 12 Monaten Bindung, 19,- DM bei 24 Monaten
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 C:Erfasste Zonen:
 C:2	-   4	Deutschland
 C:10		Mobilfunk
@@ -7741,8 +7852,11 @@ T:*/*=0/5,2.22/60
 #####################################################################
 P:28,2 UPX Super 8
 B:01028
-C:Homepage: http://www.upx.de
-C:Preselection
+C:Name:UPX Super 8 (Preselection)
+C:Homepage:http://www.upx.de
+C:Special:UPX Super 8 ist Reseller von COLT
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 C:Erfasste Zonen:
 C:2	-   4	Deutschland
 C:10		Mobilfunk
@@ -8497,7 +8611,10 @@ T:*/*=2.57520(60)/1
 #
 P:29 Unisource
 B:01029
-C:Carrier Services, Industriestraße 21, CH-8304 Wallisellen/Schweiz 01029
+C:Name:Unisource
+C:Address:Unisource Carrier Services, Industriestraße 21, CH-8304 Wallisellen/Schweiz
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 #####################################################################
 #
 #
@@ -8505,13 +8622,15 @@ P:30 TelDaFax
 B:01030
 # G:01-Aug-1999
 D:dtag
-C:Telefon-, Daten- und Fax-Transfer GmbH & Co. KG, Schuppertsgasse 30, 35083 Wetter (Hessen) 01030
-C:Name:	    TeDaFax Telefon-, Daten- und Faxtransfer AG
-C:Homepage: http://www.teldafax.de
-C:Hotline:  0800/01030-23
-C:Hotfax:   0800/01030-35
-C:Adresse:  Postfach 2206
-C:	    35010 Marburg
+C:Name:TelDaFax
+C:Address:Telefon-, Daten- und Fax-Transfer GmbH & Co. KG, Schuppertsgasse 30, 35083 Wetter (Hessen)
+C:Address:TeDaFax, Telefon-, Daten- und Faxtransfer AG, Postfach 2206, 35010 Marburg
+C:Homepage:http://www.teldafax.de
+C:Hotline:0800/01030-23
+C:Hotfax:0800/01030-33
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+##
 C:Erfasste Zonen:
 C:2	-   4	Deutschland
 C:10		Mobilfunk
@@ -8582,13 +8701,19 @@ T:*/*=1.49(60)/1
 #
 P:31 HEAG
 B:01031
-C:MediaNet GmbH, Luisenplatz 6, 64283 Darmstadt 01031
+C:Name:HEAG
+C:Address:HEAG MediaNet GmbH, Luisenplatz 6, 64283 Darmstadt
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 #####################################################################
 #
 #
 P:32 KDD
 B:01032
-C:Deutschland GmbH, Immermannstraße 45, 40210 Düsseldorf 01032
+C:Name:KDD
+C:Address:KDD Deutschland GmbH, Immermannstraße 45, 40210 Düsseldorf 01032
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 C:Ist das KDD-Conos? Wenn ja, Tarife bei 01063
 #####################################################################
 #
@@ -8597,10 +8722,12 @@ P:33 DTAG
 B:01033
 # G:01-Jun-1999
 D:dtag
-C:Deutsche Telekom AG, Friedrich-Ebert-Allee 140, 53113 Bonn 01033
-C:Name:     Deutsche Telekom AG
-C:Homepage: http://www.dtag.de
-C:Hotline:  0800/33-01000, T-Online Tarifhotline: 0800/33-03333
+C:Name:Deutsche Telekom AG
+C:Address:Deutsche Telekom AG, Friedrich-Ebert-Allee 140, 53113 Bonn
+C:Homepage:http://www.dtag.de
+C:Hotline:0800/33-01000, T-Online Tarifhotline: 0800/33-03333
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 C:Internet-Zugang: monatliche Grundgebühr DM 8,00 enthalten 2 Freistunden
 C:		   dort ist nur das Verbindungsentgeld faellig
 C:ISDN-Tarif
@@ -8846,10 +8973,12 @@ C:Ist das CityPlus-Budget überschritten, ist die Gebührenberechnung
 C:zwischen 05-09 und 18-21 Uhr inkorrekt. Ebenso werden Ortsverbindungen
 C:nur dann korrekt verrechnet, wenn die angerufene Nummer für CityPlus
 C:reserviert ist.
-C:Deutsche Telekom AG, Friedrich-Ebert-Allee 140, 53113 Bonn 01033
-C:Name:     Deutsche Telekom AG
+C:Name:Deutsche Telekom AG CityPlus
+C:Address:Deutsche Telekom AG, Friedrich-Ebert-Allee 140, 53113 Bonn
 C:Homepage: http://www.dtag.de
-C:Hotline:  0800/33-01000, T-Online Tarifhotline: 0800/33-03333
+C:Hotline:0800/33-01000, T-Online Tarifhotline: 0800/33-03333
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 C:Internet-Zugang: monatliche Grundgebühr DM 8,00 enthalten 2 Freistunden
 C:		   dort ist nur das Verbindungsentgeld faellig
 C:ISDN-Tarif
@@ -9074,10 +9203,12 @@ T:*/*=0.12/2.61
 #####################################################################
 P:33,2 DTAG CityWeekend
 B:01033
-C:Deutsche Telekom AG, Friedrich-Ebert-Allee 140, 53113 Bonn 01033
-C:Name:     Deutsche Telekom AG
-C:Homepage: http://www.dtag.de
-C:Hotline:  0800/33-01000, T-Online Tarifhotline: 0800/33-03333
+C:Name:Deutsche Telekom AG CityWeekend
+C:Address:Deutsche Telekom AG, Friedrich-Ebert-Allee 140, 53113 Bonn
+C:Homepage:http://www.dtag.de
+C:Hotline:0800/33-01000, T-Online Tarifhotline: 0800/33-03333
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 C:Internet-Zugang: monatliche Grundgebühr DM 8,00 enthalten 2 Freistunden
 C:		   dort ist nur das Verbindungsentgeld faellig
 C:ISDN-Tarif
@@ -9311,12 +9442,14 @@ C:Ist das CityPlus-Budget überschritten, ist die Gebührenberechnung
 C:zwischen 05-09 und 18-21 Uhr inkorrekt. Ebenso werden Ortsverbindungen
 C:nur dann korrekt verrechnet, wenn die angerufene Nummer für CityPlus
 C:reserviert ist.
-C:Deutsche Telekom AG, Friedrich-Ebert-Allee 140, 53113 Bonn 01033
-C:Name:     Deutsche Telekom AG
-C:Homepage: http://www.dtag.de
-C:Hotline:  0800/33-01000, T-Online Tarifhotline: 0800/33-03333
+C:Name:Deutsche Telekom AG CityWeekend & CityPlus
+C:Address:Deutsche Telekom AG, Friedrich-Ebert-Allee 140, 53113 Bonn
+C:Homepage:http://www.dtag.de
+C:Hotline:0800/33-01000, T-Online Tarifhotline: 0800/33-03333
 C:Internet-Zugang: monatliche Grundgebühr DM 8,00 enthalten 2 Freistunden
 C:		   dort ist nur das Verbindungsentgeld faellig
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 C:ISDN-Tarif
 C:FORMEL: 7,2 / Minutenpreis => Taktlaenge
 C:Quelle: http://www.telekom.de/untern/tarife/mobil/index.htm
@@ -9543,10 +9676,12 @@ P:33,4 DTAG AktivPlus
 B:01033
 # G:01-Jun-1999
 D:dtag
-C:Deutsche Telekom AG, Friedrich-Ebert-Allee 140, 53113 Bonn 01033
-C:Name:     Deutsche Telekom AG
-C:Homepage: http://www.dtag.de
-C:Hotline:  0800/33-01000, T-Online Tarifhotline: 0800/33-03333
+C:Name:Deutsche Telekom AG AktivPlus
+C:Address:Deutsche Telekom AG, Friedrich-Ebert-Allee 140, 53113 Bonn
+C:Homepage:http://www.dtag.de
+C:Hotline:0800/33-01000, T-Online Tarifhotline: 0800/33-03333
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 C:Internet-Zugang: monatliche Grundgebühr DM 8,00 enthalten 2 Freistunden
 C:		   dort ist nur das Verbindungsentgeld faellig
 C:ISDN-Tarif
@@ -9771,7 +9906,10 @@ T:*/*=0.12/2.61
 #
 P:34 NEFkom
 B:01034
-C:Telekommunikation GmbH & Co. KG, Bärenschanzstraße 4, 90429 Nürnberg 01034
+C:Name:NEFkom
+C:Address:NEFkom Telekommunikation GmbH & Co. KG, Bärenschanzstraße 4, 90429 Nürnberg
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 C:Nur Direkt Anschluß in folgenden Vorwahlgebieten:
 C:0911 Nürnberg/Fürth
 C:09131 Erlangen
@@ -9842,14 +9980,20 @@ T:*/*=2.59(60)/1
 #
 P:35 interCOM
 B:01035
-C:GmbH, Hauptstraße 52a, 28876 Oyten 01035
+C:Name:interCOM
+C:Address:interCOM GmbH, Hauptstraße 52a, 28876 Oyten
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 #####################################################################
 #
 #
 P:36 Hutchison fairfon
 B:01036
 D:dtag
-C:Münsterstraße 109, 48155 Münster 01036
+C:Name:Hutchison fairfon
+C:Address:Hutchison, Münsterstraße 109, 48155 Münster
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 C:Sondertarif 11 "Hutchison Mobilfunk-Kunde": Vergünstigte Gespräche zu
 C:Hutchison Mobilfunk Teilnehmern
 C:Call By Call (nur für Mobilfunk Kunden!) siehe 01088
@@ -9902,7 +10046,10 @@ T:*/*=2.42(60)/15
 #####################################################################
 P:36,1 Hutchison easyfon
 B:01036
-C:Münsterstraße 109, 48155 Münster 01036
+C:Name:Hutchison easyfon
+C:Address:Hutchison, Münsterstraße 109, 48155 Münster
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 C:Mindestumsatz: 69,- DM
 C:Sondertarif 11 "Hutchison Mobilfunk-Kunde": Vergünstigte Gespräche zu
 C:Hutchison Mobilfunk Teilnehmern
@@ -9947,7 +10094,10 @@ T:*/*=2.42(60)/15
 #####################################################################
 P:36,2 Hutchison o.tel.o private
 B:01036
-C:Münsterstraße 109, 48155 Münster 01036
+C:Name:Hutchison o.tel.o private
+C:Address:Hutchison, Münsterstraße 109, 48155 Münster
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 C:Erfasste Zonen:
 C:2	-   4	Deutschland
 C:10		Mobilfunk
@@ -10001,7 +10151,10 @@ T:*/*=0.05/0,2.79(60)/1
 #####################################################################
 P:36,3 Hutchison fairfon Sekundentakt
 B:01036
-C:Münsterstraße 109, 48155 Münster 01036
+C:Name:Hutchison fairfon Sekundentakt
+C:Address:Hutchison, Münsterstraße 109, 48155 Münster
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 C:Sondertarif 11 "Hutchison Mobilfunk-Kunde": Vergünstigte Gespräche zu
 C:Hutchison Mobilfunk Teilnehmern
 C:Grundgebühr: 11,- DM, oder Abschluß eines 12 Monatsvertrages
@@ -10054,7 +10207,10 @@ T:*/*=2.42(60)/1
 #####################################################################
 P:36,4 Hutchison easyfon Sekundentakt
 B:01036
-C:Münsterstraße 109, 48155 Münster 01036
+C:Name:Hutchison easyfon Sekundentakt
+C:Address:Hutchison, Münsterstraße 109, 48155 Münster 01036
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 C:Mindestumsatz: 69,- DM
 C:Sondertarif 11 "Hutchison Mobilfunk-Kunde": Vergünstigte Gespräche zu
 C:Hutchison Mobilfunk Teilnehmern
@@ -10102,13 +10258,19 @@ T:*/*=2.42(60)/1
 #
 P:37 ETS
 B:01037
-C:Verwaltung für Sprach- und Datennetze GmbH, Brunnenstraße 4, 61191 Rosbach 01037
+C:Name:ETS
+C:Address:Verwaltung für Sprach- und Datennetze GmbH, Brunnenstraße 4, 61191 Rosbach
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 #####################################################################
 #
 #
 P:38 MediaWays
 B:01038
-C:GmbH, An der Autobahn, 33311 Gütersloh 01038
+C:Name:MediaWays
+C:Address:MediaWays GmbH, An der Autobahn, 33311 Gütersloh 01038
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 #####################################################################
 #
 #
@@ -10116,7 +10278,10 @@ P:39 First Telecom CbC
 B:01039
 # G:16-Aug-1999
 D:dtag
-C:GmbH, Lyoner Straße 51, 60528 Frankfurt/Main 01039
+C:Name:First Telecom
+C:Address:First Telecom GmbH, Lyoner Straße 51, 60528 Frankfurt/Main
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 C:Erfasste Zonen:
 C:2	-   4	Deutschland
 C:10		Mobilfunk
@@ -10148,7 +10313,7 @@ B:01040
 # Call by Night
 C:beim RegTP eingetragen als:
 C:PLUSNET
-C:Gesellschaft für Netzwerk Services mbH, August-Thyssen-Straße 1, 40211 Düsseldorf 01040
+C:Address:Gesellschaft für Netzwerk Services mbH, August-Thyssen-Straße 1, 40211 Düsseldorf
 # G:01-Oct-1999
 D:dtag
 C:Telecom Deutschland GmbH, Kaistraße 16 A, 40221 Düsseldorf 01055
@@ -10231,7 +10396,10 @@ T:*/*=2.79/60
 #
 P:41 HanseNet
 B:01041
-C:Telekommunikation GmbH, Hammerbrookstraße 63, 20097 Hamburg 01041
+C:Address:HanseNet Telekommunikation GmbH, Hammerbrookstraße 63, 20097 Hamburg
+C:Name:HanseNet
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 C:Erfasste Zonen:
 C:2	-   4	Deutschland
 C:10		Mobilfunk
@@ -10285,6 +10453,10 @@ T:*/*=2.80/60
 #####################################################################
 P:41,1 HanseNet Preselection
 B:01041
+C:Address:HanseNet Telekommunikation GmbH, Hammerbrookstraße 63, 20097 Hamburg
+C:Name:HanseNet Preselection
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com
 C:Erfasste Zonen:
 C:2	-   4	Deutschland
 C:10		Mobilfunk
@@ -10352,7 +10524,10 @@ T:*/*=2.80/60
 #
 P:42 TeleBeL ISDN Plus
 B:01042
-C:Telekommunikation Bergisches Land GmbH, Johannisberg 7, 42103 Wuppertal 01042
+C:Address:Telekommunikation Bergisches Land GmbH, Johannisberg 7, 42103 Wuppertal
+C:Name:TeleBeL ISDN Plus
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 C:Hotline:	01802 / 244 544
 C:Homepage:	http://www.telebel.de
 C:nur Direct Access in der Region um Wuppertal
@@ -10503,7 +10678,10 @@ T:*/*=2.55(60)/1
 #####################################################################
 P:42,1 TeleBeL ISDN XL
 B:01042
-C:Telekommunikation Bergisches Land GmbH, Johannisberg 7, 42103 Wuppertal 01042
+C:Address:Telekommunikation Bergisches Land GmbH, Johannisberg 7, 42103 Wuppertal 01042
+C:Name:TeleBeL ISDN XL
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 C:Hotline:	01802 / 244 544
 C:Homepage:	http://www.telebel.de
 C:nur Direct Access in der Region um Wuppertal
@@ -10656,8 +10834,11 @@ T:*/*=2.55(60)/1
 #
 P:43 KielNet CbC
 B:01043
-C:GmbH, Postfach 41 60, 24100 Kiel 01043
+C:Address:KielNet GmbH, Postfach 41 60, 24100 Kiel
 C:Homepage: http://www.kielnet.de
+C:Name:KielNet CbC
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 C:Erfasste Zonene
 C:   1 -    4	Deutschland
 C:   5		Sondertarif
@@ -10710,7 +10891,11 @@ T:*/*=0.69/60
 P:43,1 KielNet Preselection
 B:01043
 C:GmbH, Postfach 41 60, 24100 Kiel 01043
+C:Address:KielNet GmbH, Postfach 41 60, 24100 Kiel
 C:Homepage: http://www.kielnet.de
+C:Name:KielNet Preselection
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com
 C:Erfasste Zonene
 C:   1 -    4	Deutschland
 C:   5		Sondertarif
@@ -10782,7 +10967,12 @@ T:*/*=2.69/60
 P:43,2 KielNet Telefonanschluß
 B:01043
 C:GmbH, Postfach 41 60, 24100 Kiel 01043
+C:Address:KielNet GmbH, Postfach 41 60, 24100 Kiel
 C:Homepage: http://www.kielnet.de
+C:Name:KielNet Telefonanschluß
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com
+C:Special:Gespräche zwischen KielNet Kunden sind kostenfrei!
 C:Erfasste Zonene
 C:   1 -    4	Deutschland
 C:   5		Sondertarif
@@ -10863,7 +11053,10 @@ T:*/*=2.69/60
 #
 P:44 VEW TELNET
 B:01044
-C:Gesellschaft für Telekommunikation und Netzdienste mbH, Unterste-Wilms-Straße 29, 44143 Dortmund 01044
+C:Address:VEW TELNET, Gesellschaft für Telekommunikation und Netzdienste mbH, Unterste-Wilms-Straße 29, 44143 Dortmund
+C:Name:VEW TELNET
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 C:Erfasste Zonen:
 C:0	-   4	Deutschland
 C:10		Mobilfunk
@@ -11035,15 +11228,20 @@ T:*/22-08=2.75/120 Nacht
 #
 P:45 Global Network
 B:01045
-C:Telephone Deutschland, Grosser Plan 8, 29221 Celle 01045
+C:Address:Global Network Telephone Deutschland, Grosser Plan 8, 29221 Celle
+C:Name:Global Network
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 #####################################################################
 #
 #
 P:46 KomTel
 B:01046
 D:dtag
-C:Gesellschaft für Kommunikation und Informationsdienste GmbH
-C:Batteriestraße 48, 24937 Flensburg 01046
+C:Address:Gesellschaft für Kommunikation und Informationsdienste GmbH, Batteriestraße 48, 24937 Flensburg
+C:Name:KomTel
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 C:Homepage: http://www.komtel.de
 C:Spezialtarif 5 "Nord-Ostsee": gilt für Verbindungen mit Niedersachsen,
 C:Bremen, Mecklenburg-Vorpommern, Schleswig-Holstein und Hamburg
@@ -11349,7 +11547,10 @@ T:*/*=1.99(60)/1
 #####################################################################
 P:46,1 KomTel MoinMoin
 B:01046
-C:Gesellschaft für Kommunikation und Informationsdienste GmbH, Batteriestraße 48, 24937 Flensburg 01046
+C:Address:Gesellschaft für Kommunikation und Informationsdienste GmbH, Batteriestraße 48, 24937 Flensburg
+C:Name:KomTel MoinMoin
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 C:Spezialtarif 5 "Nord-Ostsee": gilt für Verbindungen mit Niedersachsen,
 C:Bremen, Mecklenburg-Vorpommern, Schleswig-Holstein und Hamburg
 C:Erfasste Zonen:
@@ -11675,13 +11876,19 @@ T:*/*=1.99(60)/1
 #
 P:47 PrimeTec
 B:01047
-C:International Europe Ltd. 01047
+C:Address:PrimeTec International Europe Ltd.
+C:Name:PrimeTec
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 #####################################################################
 #
 #
 P:48 DOKOM
 B:01048
-C:GmbH, Im Defdahl 5, 44141 Dortmund 01048
+C:Address:DOKOM GmbH, Im Defdahl 5, 44141 Dortmund
+C:Name:DOKOM
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 C:Sondertarif 5 "Surf-Tarif": "Der günstige Surf-Tarif für DOKOM-Kunden,
 C:die auch einen Internetanschluss bei uns haben." ?  Gilt der Tarif nur
 C:für´s Surfen, oder allgemein im Stadtgebiet ?
@@ -11760,7 +11967,10 @@ T:*/*=0.1044/2.31
 #
 P:49 ACC ACCess Direkt Pre-Selection Einheitentarif
 B:01049
-C:Telekommunikation GmbH, Heinrich-Heine-Allee 53, 40213 Düsseldorf 01049
+C:Address:ACC Telekommunikation GmbH, Heinrich-Heine-Allee 53, 40213 Düsseldorf
+C:Name:ACCess Direkt Pre-Selection Einheitentarif
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 C:Homepage: http://www.acctelecom.de
 C:Erfasste Zonen:
 C:2	-   4	Deutschland
@@ -11844,6 +12054,10 @@ T:*/*=0.09/2.3
 P:49,1 ACC ACCess Direkt Pre-Selection Minutentarif
 B:01049
 C:Telekommunikation GmbH, Heinrich-Heine-Allee 53, 40213 Düsseldorf 01049
+C:Address:ACC Telekommunikation GmbH, Heinrich-Heine-Allee 53, 40213 Düsseldorf
+C:Name:ACCess Direkt Pre-Selection Minutentarif
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com
 C:Homepage: http://www.acctelecom.de
 C:Erfasste Zonen:
 C:2	-   4	Deutschland
@@ -11925,6 +12139,10 @@ T:*/*=2.35(60)/1
 P:49,2 ACC ACCess Einheitentarif CbC
 B:01049
 C:Telekommunikation GmbH, Heinrich-Heine-Allee 53, 40213 Düsseldorf 01049
+C:Address:ACC Telekommunikation GmbH, Heinrich-Heine-Allee 53, 40213 Düsseldorf
+C:Name:ACCess Einheitentarif CbC
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com
 C:Homepage: http://www.acctelecom.de
 C:Erfasste Zonen:
 C:2	-   4	Deutschland
@@ -12029,6 +12247,10 @@ T:*/*=0.09/2.3
 P:49,3 ACC ACCess Minutentarif CbC
 B:01049
 C:Telekommunikation GmbH, Heinrich-Heine-Allee 53, 40213 Düsseldorf 01049
+C:Address:ACC Telekommunikation GmbH, Heinrich-Heine-Allee 53, 40213 Düsseldorf
+C:Name:ACCess Minutentarif CbC
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com
 C:Homepage: http://www.acctelecom.de
 # G:01.06.1999
 C:Erfasste Zonen:
@@ -12127,6 +12349,13 @@ T:*/*=2.35(60)/1
 #####################################################################
 P:50 Talkline CbC
 B:01050
+C:Name:Talkline CbC
+C:Address:PS PhoneServices GmbH, Adenauer Damm 1, 25337 Elmshorn
+C:Homepage:http://www.talkline.de
+C:Telefon:01802 / 2002
+C:Telefax:01802 / 2001
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 C:Erfasste Zonen:
 C:   1 -   4	Deutschland
 C:  10 -  15	Mobilfunk
@@ -12189,6 +12418,13 @@ T:*/*=3.00/60
 #####################################################################
 P:50,1 Talkline EasyLine
 B:01050
+C:Name:Talkline EasyLine
+C:Address:PS PhoneServices GmbH, Adenauer Damm 1, 25337 Elmshorn
+C:Homepage:http://www.talkline.de
+C:Telefon:01802 / 2002
+C:Telefax:01802 / 2001
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com
 C:Preselection
 C:Erfasste Zonen:
 C:   1 -   4	Deutschland
@@ -12258,6 +12494,13 @@ T:*/*=3.00/60
 #####################################################################
 P:50,2 Talkline talkmax
 B:01050
+C:Name:Talkline talkmax
+C:Address:PS PhoneServices GmbH, Adenauer Damm 1, 25337 Elmshorn
+C:Homepage:http://www.talkline.de
+C:Telefon:01802 / 2002
+C:Telefax:01802 / 2001
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com
 C:Preselection
 C:Erfasste Zonen:
 C:   1 -   4	Deutschland
@@ -12321,6 +12564,13 @@ T:*/*=3.00/60
 #####################################################################
 P:50,3 Talkline BusinessLine Classic
 B:01050
+C:Name:Talkline BusinessLine Classic
+C:Address:PS PhoneServices GmbH, Adenauer Damm 1, 25337 Elmshorn
+C:Homepage:http://www.talkline.de
+C:Telefon:01802 / 2002
+C:Telefax:01802 / 2001
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com
 C:Preselection
 C:Mindestumsatz: DM 116,- / Monat
 C:Erfasste Zonen:
@@ -12392,6 +12642,13 @@ T:*/*=2.3084(60)/1
 #####################################################################
 P:50,4 Talkline BusinessLine Local
 B:01050
+C:Name:Talkline BusinessLine Local
+C:Address:PS PhoneServices GmbH, Adenauer Damm 1, 25337 Elmshorn
+C:Homepage:http://www.talkline.de
+C:Telefon:01802 / 2002
+C:Telefax:01802 / 2001
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com
 C:Preselection
 C:Mindestumsatz: DM 116,- / Monat
 C:Gilt nur in folgenden Großräumen: Berlin, Düsseldorf, Frankfurt
@@ -12475,11 +12732,13 @@ T:*/*=2.3084(60)/1
 #
 P:51 01051
 B:01051
-C:ID-Switch GmbH, Graf-Adolf-Straße, 40210 Düsseldorf 01051
+C:ID-Switch GmbH, Graf-Adolf-Straße, 40210 Düsseldorf
 # G:01-Dec-1999
 C:Homepage: http://www.01051.com
-C:Adresse:  Koenigsallee 60f
-C:	    40210 Duesseldorf
+C:Adresse:  ID-Switch GmbH, Koenigsallee 60f, 40210 Duesseldorf
+C:Name:01051
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 D:dtag
 Z:2-4 Ferngespräche
 A:Deutschland
@@ -12714,16 +12973,22 @@ T:*/*=99.99/60
 #
 P:52 Long Distance
 B:01052
-C:International Ltd., 5 Duke's Gate Acton, London W 4 5 DX, GB 01052
+C:Address:Long Distance International Ltd., 5 Duke's Gate Acton, London W 4 5 DX, GB
+C:Name:Long Distance
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 #####################################################################
 #
 #
 P:53 WOBCOM
 B:01053
 # G:01.04.1999
-C:GmbH Wolfsburg, Heßlinger Str. 1-5, 38440 Wolfsburg 01053
+C:Address:WOBCOM GmbH Wolfsburg, Heßlinger Str. 1-5, 38440 Wolfsburg
 C:Homepage http://www.wobkom.de
-C:Quelle http://www.wobkom.de/telefonie/tarife.htm
+C:Name:WOBCOM
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:TarifURL:http://www.wobkom.de/telefonie/tarife.htm
 # Eigene Verzonung - TODO
 D:dtag # 53
 # Sondernummern
@@ -12753,7 +13018,6 @@ A:+49511,+49531,+495341,+49561,+4937604,+49371,+494921,+497132,+49841
 T:W/8-18=0.06/22.5
 T:W/18-8=0.06/36
 T:E,H/*=0.06/36 Wochenende
-
 # Mobilfunk
 Z:10-11 C-Netz
 A:0161
@@ -12956,63 +13220,94 @@ T:*/*=0.06/1.29
 #
 P:54 USFI
 B:01054
-C:Global Network Services Germany GmbH, Kindsbacherstraße 41, 66877 Ramstein 01054
+C:Address:USFI Global Network Services Germany GmbH, Kindsbacherstraße 41, 66877 Ramstein
+C:Name:USFI
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 #####################################################################
 #
 #
-P:55 ESPRIT Telecom Deutschland GmbH, August-Thyssen-Str. 1
+P:55 ESPRIT
 B:01055
-C:40211 Düsseldorf
+C:Address:ESPRIT Telecom Deutschland GmbH, August-Thyssen-Str. 1, 40211 Düsseldorf
+C:Name:ESPRIT
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 #####################################################################
 #
 #
 P:56 BITel
 B:01056
-C:Gesellschaft für kommunale Telekommunikation mbh, Schildescher Straße 16, 33611 Bielefeld 01056
+C:Address:BITel Gesellschaft für kommunale Telekommunikation mbh, Schildescher Straße 16, 33611 Bielefeld
+C:Name:BITel
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 #####################################################################
 #
 #
 P:57 Mox
 B:01057
-C:Telecom GmbH, Industriestraße 3a, 40878 Ratingen 01057
+C:Mox Telecom GmbH, Industriestraße 3a, 40878 Ratingen
+C:Name:Mox
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 #####################################################################
 #
 #
 P:58 KaTel
 B:01058
-C:Gesellschaft für Telekommunikation mbH, Mathias-Brüggen-Straße 87-89, 50829 Köln 01058
+C:Address:KaTel Gesellschaft für Telekommunikation mbH, Mathias-Brüggen-Straße 87-89, 50829 Köln
+C:Name:KaTel
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 #####################################################################
 #
 #
 P:59 Pacific Gateway Exchange
 B:01059
-C:Inc., 533 Airport Boulevard, Suite 505, Burlingame, CA 94010, USA 01059
+C:Address:Pacific Gateway Exchange Inc., 533 Airport Boulevard, Suite 505, Burlingame, CA 94010, USA
+C:Name:Pacific Gateway Exchange
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 #####################################################################
 #
 #
 P:60 Telecom-InfoService
 B:01060
-C:GmbH, Postfach 174, A-1000 Wien (A) 01060
+C:Address:Telecom-InfoService GmbH, Postfach 174, A-1000 Wien (A)
+C:Name:Telecom-InfoService
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 #####################################################################
 #
 #
 P:61 TelSA
 B:01061
-C:Telekommunikationsgesellschaft mbH, Magdeburger Str. 51, 06112 Halle 01061
+C:Address:TelSA Telekommunikationsgesellschaft mbH, Magdeburger Str. 51, 06112 Halle
+C:Name:TelSA
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 #####################################################################
 #
 #
 P:62 DENTEL
 B:01062
-C:GmbH i.G. Grimmstraße 4 80336 München 01062
+C:Address:DENTEL GmbH i.G. Grimmstraße 4 80336 München
+C:Name:DENTEL
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 #####################################################################
 #
 #
 P:63 KDD-Conos PrivateCall easy
 B:01063
-C:Corporate Network & Services Aktiengesellschaft Lievelingsweg 125
-C:52119 Bonn 01063
+C:Address:Corporate Network & Services Aktiengesellschaft, Lievelingsweg 125, 52119 Bonn
 C:URL: http://www.kdd-conos.de
+C:Name:KDD-Conos PrivateCall easy
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Special:Preselection
+C:Special:Sondertarif für Gespräche zu KDD-Conos Mobilfunkteilnehmern vorhanden
 C:Preselection
 C:Erfasste Zonen:
 C:0	-   4	Deutschland
@@ -13089,7 +13384,13 @@ T:*/*=1.99/60
 P:63,1 KDD-Conos PrivateCall genau
 B:01063
 C:Corporate Network & Services Aktiengesellschaft Lievelingsweg 125 52119 Bonn 01063
+C:Address:Corporate Network & Services Aktiengesellschaft, Lievelingsweg 125, 5
 C:URL: http://www.kdd-conos.de
+C:Name:KDD-Conos PrivateCall genau
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com
+C:Special:Preselection
+C:Special:Sondertarif für Gespräche zu KDD-Conos Mobilfunkteilnehmern vorhanden
 C:Preselection
 C:Erfasste Zonen:
 C:0	-   4	Deutschland
@@ -13168,19 +13469,28 @@ T:*/*=2.19(60)/1
 #
 P:64 Hannoversche
 B:01064
-C:Telekommunikations- und Netzgesellschaft mbH, Glockseestraße 33, 30161 Hannover 01064
+C:Address:Hannoversche Telekommunikations- und Netzgesellschaft mbH, Glockseestraße 33, 30161 Hannover
+C:Name:Hannoversche
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 #####################################################################
 #
 #
 P:65 Rapid Link
 B:01065
-C:Telecommunications GmbH, Donaustraße 68, 68199 Mannheim 01065
+C:Address:Rapid Link Telecommunications GmbH, Donaustraße 68, 68199 Mannheim
+C:Name:Rapid Link
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 #####################################################################
 #
 #
 P:66 Interoute
 B:01066
-C:Telecom Deutschland GmbH, Lyoner Str. 15, 60528 Frankfurt 01066
+C:Address:Interoute Telecom Deutschland GmbH, Lyoner Str. 15, 60528 Frankfurt
+C:Name:Interoute
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 C:Bei Preselection sekundengenaue Taktung
 D:dtag
 # G:15-Oct-1999
@@ -13275,19 +13585,28 @@ T:*/*=2.48(60)/1
 #
 P:67 RegioCom
 B:01067
-C:GmbH, Steinfeldstraße 3, 39179 Barleben 01067
+C:RegioCom GmbH, Steinfeldstraße 3, 39179 Barleben
+C:Name:RegioCom
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 #####################################################################
 #
 #
 P:68 Tele Media
 B:01068
-C:International, Wilhelm-Leuschner-Strasse 23-25, 60329 Frankfurt/Main 01068
+C:Address:Tele Media International, Wilhelm-Leuschner-Strasse 23-25, 60329 Frankfurt/Main
+C:Name:Tele Media
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 #####################################################################
 #
 #
 P:69 Primus
 B:01069
-C:Telecommunications Ltd. 01069
+C:Address:Primus Telecommunications Ltd.
+C:Name:Primus
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 #####################################################################
 #
 #
@@ -13295,7 +13614,10 @@ P:70 Arcor CbC
 B:01070
 # G:01-Dec-1999
 C:Mannesmann Arcor
-C:Mannesmann AG & Co., Kölner Str. 12, 65760 Eschborn 01070
+C:Address:Mannesmann AG & Co., Kölner Str. 12, 65760 Eschborn
+C:Name:Arcor CbC
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 D:dtag
 Z:1-3 Regio Plus
 T:W/06-09=0.07/60
@@ -13613,6 +13935,10 @@ B:01070
 # G:01.04.99
 C:Mannesmann Arcor
 C:Mannesmann AG & Co., Kölner Str. 12, 65760 Eschborn 01070
+C:Address:Mannesmann AG & Co., Kölner Str. 12, 65760 Eschborn
+C:Name:Arcor Town to Town
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com
 D:dtag
 Z:1-2 Nah
 T:W/06-09=0.05(60)/30 Freizeit
@@ -13642,6 +13968,10 @@ B:01070
 # G:01.04.99
 C:Mannesmann Arcor
 C:Mannesmann AG & Co., Kölner Str. 12, 65760 Eschborn 01070
+C:Address:Mannesmann AG & Co., Kölner Str. 12, 65760 Eschborn
+C:Name:Arcor Town to Town Sekunde
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com
 D:dtag
 Z:1-2 Nah
 T:W/06-09=0.058/0,0.05(60)/1 Freizeit
@@ -13670,32 +14000,47 @@ A:+49
 #
 P:71 DeTeMobil
 B:01071
-C:Deutsche Telekom MobilNet GmbH, Landgrabenweg 151, 53227 Bonn 01071
+C:Address:Deutsche Telekom MobilNet GmbH, Landgrabenweg 151, 53227 Bonn
+C:Name:DeTeMobil
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 #####################################################################
 #
 #
 P:72 Mannesmann
 B:01072
-C:Mobilfunk GmbH, Am Seestern 1, 40547 Düsseldorf 01072
+C:Address:Mannesmann Mobilfunk GmbH, Am Seestern 1, 40547 Düsseldorf
+C:Name:Mannesmann
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 #####################################################################
 #
 #
 P:73 AXXON
 B:01073
-C:Telecom GmbH, Am Seestern 24, 40547 Düsseldorf 01073
+C:AXXON Telecom GmbH, Am Seestern 24, 40547 Düsseldorf
+C:Name:AXXON
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 #####################################################################
 #
 #
 P:74 Alpha
 B:01074
-C:Telecom GmbH, Beethovenstraße 1-3, 60325 Frankfurt/Main 01074
+C:Address:Alpha Telecom GmbH, Beethovenstraße 1-3, 60325 Frankfurt/Main
+C:Name:Alpha
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 #####################################################################
 #
 #
 P:75 Callino
 B:01075
 # G:15-Nov-99
-C:ARCIS Media Com Management GmbH, Maximilianstr. 14, 80539 München 01075
+C:Address:ARCIS Media Com Management GmbH, Maximilianstr. 14, 80539 München
+C:Name:Callino
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 D:dtag
 Z:1-4 Fern
 A:+49
@@ -13781,20 +14126,29 @@ T:*/*=1.49/60
 #
 P:76 QuickNet
 B:01076
-C:Telenetworks & Service AG, Else-Lasker-Schüler-Straße 47, 42107 Wuppertal 01076
+C:Address:QuickNet Telenetworks & Service AG, Else-Lasker-Schüler-Straße 47, 42107 Wuppertal
+C:Name:QuickNet
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 #####################################################################
 #
 #
 P:77 E-Plus
 B:01077
-C:Mobilfunk GmbH, E-Plus-Platz 1, 40468 Düsseldorf 01077
+C:Address:E-Plus Mobilfunk GmbH, E-Plus-Platz 1, 40468 Düsseldorf
+C:Name:E-Plus
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 #####################################################################
 #
 #
 P:78 3U
 B:01078
 # G:27-Oct-1999
-C:Telekommunikation GmbH, Äußere Zittauer Straße 51, 02708 Löbau 01078
+C:Address:3U Telekommunikation GmbH, Äußere Zittauer Straße 51, 02708 Löbau
+C:Name:3U
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 C:3U Telekommunikation GmbH
 C:Homepage: http://www.uuu.de
 C:Hotline:  01805/01078-0
@@ -14805,8 +15159,11 @@ C:Homepage: http://www.viatel.de
 C:Hotline:  0800/79-01079
 C:Telefon:  069/94 994-0
 C:Telefax:  069/94 994-100
-C:Adresse:  Hanauer Landstrasse 187-189
-C:	    60314 Frankfurt am Main
+C:Adresse:  VIAPHONE GmbH, Hanauer Landstrasse 187-189, 60314 Frankfurt am Main
+C:Name:Viatel
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Special:Macht keinen Tarifwechsel in laufender Verbindung!
 D:dtag
 Z:1-4 National
 T:W/09-18=0.102/60 Hauptzeit
@@ -15001,7 +15358,10 @@ P:80 Telegate
 B:01080
 # G:01-Aug-1999
 D:dtag
-C:Aktiengesellschaft für telefonische Informationsdienste, Bahnhofstraße 26, 82211 Herrsching 01080
+C:Address:Aktiengesellschaft für telefonische Informationsdienste, Bahnhofstraße 26, 82211 Herrsching
+C:Name:Telegate
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 # Bislang kann dieses Angebot nicht im Vorwahlgebiet 02 (NRW)
 # genutzt werden.
 Z:1-4 Inlandsverbindungen
@@ -15037,25 +15397,37 @@ T:*/*=3.51/60
 #
 P:81 Infotel
 B:01081
-C:bV, Onderlangs 120, 6812 CJ Arnhem, Niederlande 01081
+C:Infotel bV, Onderlangs 120, 6812 CJ Arnhem, Niederlande
+C:Name:Infotel
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 #####################################################################
 #
 #
 P:82 AugustaKom
 B:01082
-C:Telekommunikation GmbH & Co.KG Hoher Weg 1 86152 Augsburg 01082
+C:Address:AugustaKom Telekommunikation GmbH & Co.KG Hoher Weg 1 86152 Augsburg
+C:Name:AugustaKom
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 #####################################################################
 #
 #
 P:83 Wuerzburger
 B:01083
-C:Telekommunikationsgesellschaft mbH, Bahnhofstraße 12-18, 97070 Würzburg 01083
+C:Address:Wuerzburger Telekommunikationsgesellschaft mbH, Bahnhofstraße 12-18, 97070 Würzburg
+C:Name:Wuerzburger
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 #####################################################################
 #
 #
 P:84 Telegroup
 B:01084
-C:Network Services GmbH, Grossenbaumer Weg 6, 40472 Düsseldorf 01084
+C:Telegroup Network Services GmbH, Grossenbaumer Weg 6, 40472 Düsseldorf
+C:Name:Telegroup
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 #####################################################################
 #
 #
@@ -15065,8 +15437,10 @@ B:01085
 C:GmbH, Hebelstraße 22 c, 69115 Heidelberg 01085
 C:Homepage: http://www.westcom.de
 C:Hotline:  0800/937-8266
-C:Adresse:  Hebelstrasse 22c
-C:	    69115 Heidelberg
+C:Adresse:  GTS-WESTCom, Hebelstrasse 22c, 69115 Heidelberg
+C:Name:GTS-WESTCom privat
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 C:
 C:Tarif: Westcom privat
 D:dtag
@@ -15118,13 +15492,19 @@ A:+
 #
 P:86 ONE.TEL
 B:01086
-C:Limited (UK), Clements House, 14-18 Gresham Street, London, EC2V 7JE, England 01086
+C:Address:ONE.TEL Limited (UK), Clements House, 14-18 Gresham Street, London, EC2V 7JE, England
+C:Name:ONE.TEL
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 #####################################################################
 #
 #
 P:87 HAMCOM
 B:01087
-C:GmbH Telekommunikation, Südring 1-3, 59065 Hamm 01087
+C:HAMCOM GmbH Telekommunikation, Südring 1-3, 59065 Hamm
+C:Name:HAMCOM
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 #####################################################################
 #
 #
@@ -15153,8 +15533,11 @@ T:*/21-09=0.049/60
 #####################################################################
 P:88,1 Hutchison CbC
 B:01088
-C:Nur für Mobilfunkkunden von Hutchison!
-C:Homepage: http://www.hutchison.de
+C:Name:Hutchison CbC
+C:Homepage:http://www.hutchison.de
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Special:Nur für Mobilfunkkunden von Hutchison!
 C:Erfasste Zonen:
 C:2	-   4	Deutschland
 C:10		Mobilfunk
@@ -15203,14 +15586,20 @@ T:*/*=2.42/60
 #
 P:89 M'net
 B:01089
-C:Telekommunikations GmbH, Corneliusstraße 10, 80469 München 01089
+C:Address:M'net Telekommunikations GmbH, Corneliusstraße 10, 80469 München
+C:Name:M'net
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 #####################################################################
 #
 #
 P:90 Viag Interkom
 B:01090
 # G:01-May-1999
-C:GmbH & Co. KG, Elsenheimer Straße 11, 81927 München 01090
+C:Address:Viag Interkom GmbH & Co. KG, Elsenheimer Straße 11, 81927 München
+C:Name:Viag Interkom
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 D:dtag
 Z:1-4 Fern
 T:W/06-08=0.10/60 Sparzeit
@@ -15263,43 +15652,64 @@ T:*/*=1.49/60
 #
 P:91 IDT
 B:01091
-C:Global Limited, London, United Kingdom 01091
+C:Address:IDT Global Limited, London, United Kingdom
+C:Name:IDT
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 #####################################################################
 #
 #
 P:92 Hallo Telefon Service
 B:01092
-C:GmbH Dinkelbergstraße 6 76684 Östringen 01092
+C:Address:Hallo Telefon Service GmbH Dinkelbergstraße 6 76684 Östringen
+C:Name:Hallo Telefon Service
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 #####################################################################
 #
 #
 P:93 Kray
 B:01093
-C:Informationssysteme, Brüder-Grimm-Allee 73 A, 37085 Göttingen 01093
+C:Address:Informationssysteme, Brüder-Grimm-Allee 73 A, 37085 Göttingen
+C:Name:Kray
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 #####################################################################
 #
 #
 P:94 Global Communications
 B:01094
-C:GmbH, Eupener Straße 57 - 59, 50933 Köln 01094
+C:Address:Global Communications GmbH, Eupener Straße 57 - 59, 50933 Köln
+C:Name:Global Communications
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 #####################################################################
 #
 #
 P:95 Teleos
 B:01095
-C:GmbH, Bielefelder Straße 3, 32051 Herford 01095
+C:Address:Teleos GmbH, Bielefelder Straße 3, 32051 Herford
+C:Name:TeleOs
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 #####################################################################
 #
 #
 P:96 GELSEN-NET
 B:01096
-C:Kommunikationsgesellschaft mbH, Munscheidstraße 14, 45886 Gelsenkirchen 01096
+C:Address:GELSEN-NET, Kommunikationsgesellschaft mbH, Munscheidstraße 14, 45886 Gelsenkirchen
+C:Name:GELSEN-NET
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 #####################################################################
 #
 #
 P:97 AT & T-Unisource
 B:01097
-C:Communication Services (Deutschland) GmbH, Lyoner Str. 15, 60528 Frankfurt 01097
+C:Address:Communication Services (Deutschland) GmbH, Lyoner Str. 15, 60528 Frankfurt
+C:Name:AT&T-Unisource
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 #####################################################################
 #
 #
@@ -15312,6 +15722,11 @@ P:98 Mox
 B:01098
 # G:01.05.1999
 C:Mox Telecom AG
+C:Name:Mox
+C:Address:Mox Telecom AG
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Special:Reseller von Star Telecom (01098)
 C:Reseller von Star Telecom
 D:dtag
 Z:1-4 Deutschlandweit
@@ -15406,6 +15821,11 @@ P:98,1 Nikocity Study&Surf
 B:01098
 # G:01-Sep-1999
 C:Nikoma, Reseller von Star Telekom
+C:Name:Nikocity Study&Surf
+C:Address:Nikoma
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Special:Reseller von Star Telecom (01098)
 C:Homepage: http://www.nikoma.de/
 C:Nikocity gilt nur in den Städten Augsburg, Berlin, Bremen, Bielefeld,
 C:Düsseldorf, Dortmund, Frankfurt, Hamburg, Hannover, München, Nürnberg,
@@ -15438,6 +15858,11 @@ T:*/1-8=0.0299(60)/1
 P:98,2 Nikocity
 B:01098
 # G:01-Sep-1999
+C:Name:Nikocity
+C:Address:Nikoma
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Special:Reseller von Star Telecom (01098)
 C:Nikoma, Reseller von Star Telekom
 C:Homepage: http://www.nikoma.de/
 C:Nikocity gilt nur in den Städten Augsburg, Berlin, Bremen, Bielefeld,
@@ -15466,15 +15891,48 @@ A:0193434
 T:*/8-1=0.0479(60)/1
 T:*/1-8=0.0299(60)/1
 #####################################################################
+P:98,3 Nikoma by Call
+B:01098
+# G:01-Sep-1999
+C:Name:Nikoma by Call
+C:Address:Nikoma
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Special:Reseller von Star Telecom (01098)
+C:Nikoma, Reseller von Star Telekom
+C:Homepage: http://www.nikoma.de/
+C:Nikoma Internet By Call
+Z:1-4 Deutschlandweit
+T:*/9-21=0.12(60)/1 Hauptzeit
+T:*/21-9=0.07(60)/1 Nebenzeit
+A:+49
+Z:10-15 Mobil
+# Tarife werden zum 1.11.1999 erhöht!
+A:01618       # T-C-Tel Voice Mail
+A:01610,01611,01612,01613,01614,01615,01616,01617,01619 #
+C
+A:0170,0171         # D1
+A:0172,0173         # D2
+A:0177,0178         # Eplus
+A:0176,0179         # E2
+T:*/*=0.46(60)/1
+Z:100 Internet
+A:0193434
+T:*/8-1=0.0479(60)/1
+T:*/1-8=0.0299(60)/1
+#####################################################################
 #
 #
 P:99 ECONOPHONE
 B:01099
 # G:17.05.1999
-C:GmbH, Flughafenstraße 54b, 22335 Hamburg 01099
-C:CallByCall nur in den Bereichen 03, 04, 06 (Stand: 14.06.99)
-C:bei Preselection bundesweit, Anmeldung kostenfrei
-C:Reseller von ECONOPHONE : Telco
+C:Name:EconoPhone
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Address:EconoPhone GmbH, Flughafenstraße 54b, 22335 Hamburg
+C:Special:CallByCall nur in den Bereichen 03, 04, 06 (Stand: 14.06.99)
+C:Special:bei Preselection bundesweit, Anmeldung kostenfrei
+C:Special:Reseller von ECONOPHONE : Telco
 D:dtag
 # Inlands-Tarife
 Z:1-4 Inland
@@ -15705,13 +16163,20 @@ A:Zypern
 #
 P:100 TELELEV
 B:010000
-C:Telekommunikation GmbH, Dönhoffstraße 39, 51373 Leverkusen 010000
+C:Address:Telekommunikation GmbH, Dönhoffstraße 39, 51373 Leverkusen
+C:Name:TELELEV
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+##################################################################
 P:100,1 Meocom
 B:010000
 C:EMail: service@meocom.de
 C:Address: MEOCOM Telekommunikation, Burgstr. 1, 45467 Mülheim a. d. Ruhr
-C:Telefon: 08000/636636
+C:Telefon: 0800/0-636-636
 C:Homepage: http://www.meocom.de
+C:Name:Meocom spontan
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 C:Meocom spontan ist Call-by-Call (60 Sekunden Takt)
 C:Meocom abo isd Preselection (sekundengenaue Abrechnung)
 C:Surftarif ist ebenfalls vorhanden, Rufnummer und Tarife fehlen noch
@@ -15863,35 +16328,53 @@ T:*/*=1.89/60
 #
 P:101 Netnet
 B:010001
-C:International AB, P.O. Box 6708, S-11385 Stockholm 010001
+C:Netnet International AB, P.O. Box 6708, S-11385 Stockholm
+C:Name:Netnet
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 #####################################################################
 #
 #
 P:102 EncoTel
 B:010002
 C:GmbH & Co.KG, Leibnitzstraße 73, 07548 Gera 010002
+C:Name:EncoTel
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 #####################################################################
 #
 #
 P:103 mevacom
 B:010003
-C:Telekommunikationsdienstleistungen GmbH, Posthofstraße 16, 14467 Potsdam 010003
+C:Address:mevacom Telekommunikationsdienstleistungen GmbH, Posthofstraße 16, 14467 Potsdam
+C:Name:mevacom
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 #####################################################################
 #
 #
 P:107 KPN
 B:010007
 C:Telecom BV, Prinses Beatrixlaan 23, 2595 AK's Gravenhage, Niederlande 010007
+C:Name:KPN
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 #####################################################################
 #
 #
 P:108 USA Global Link
 B:010008
-C:Deutschland GmbH, Theaterstraße 90, 52062 Aachen 010008
+C:Address:USA Global Link Deutschland GmbH, Theaterstraße 90, 52062 Aachen
+C:Name:USA Global Link
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 #####################################################################
 P:109 ChemTel
 B:010009
-C:Telekommunikations GmbH Chemnitz, Postfach 510, 09031 Chemnitz
+C:Name:ChemTel
+C:Address:Telekommunikations GmbH Chemnitz, Postfach 510, 09031 Chemnitz
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 #####################################################################
 #
 #
@@ -15899,17 +16382,26 @@ C:Telekommunikations GmbH Chemnitz, Postfach 510, 09031 Chemnitz
 #
 P:110 Bertelsmann mediaSystems
 B:010010
-C:GmbH, An der Autobahn, 33311 Gütersloh 010010
+C:Address:Bertelsmann mediaSystems GmbH, An der Autobahn, 33311 Gütersloh
+C:Name:Bertelsmann mediaSystems
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 #####################################################################
 #
 #
 P:111 RED LINE
 B:010011
 C:Telekommunikationsgesellschaft mbH, Brückenstraße 17, 63897 Miltenberg 010011
+C:Name:RED LINE
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 #####################################################################
 P:112 MEGASAT
 B:010012
-C:Friedrich-Krupp-Str. 16-18, 45164 Kaarst
+C:Address:MEGASAT, Friedrich-Krupp-Str. 16-18, 45164 Kaarst
+C:Name:MEGASAT
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 #####################################################################
 #
 #
@@ -15918,10 +16410,16 @@ C:Friedrich-Krupp-Str. 16-18, 45164 Kaarst
 P:115 Delta Three
 B:010015
 C:Inc., 430 Park Ave, New York 010015
+C:Name:Delta Three
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 #####################################################################
 P:118 MFS
 B:010018
-C:MFS Communications GmbH, Postfach 190409, 60091 Frankfurt am Main
+C:Address:MFS Communications GmbH, Postfach 190409, 60091 Frankfurt am Main
+C:Name:MFS
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 #####################################################################
 #
 #
@@ -15930,22 +16428,34 @@ C:MFS Communications GmbH, Postfach 190409, 60091 Frankfurt am Main
 P:119 E.T.H.
 B:010019
 C:Telefondienste GmbH, Bettinastraße 25a, 60325 Frankfurt 010019
+C:Name:E.T.H.
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 #####################################################################
 #
 #
 P:120 Komm Consult
 B:010020
-C:Oberweg 15, 82024 Taufkirchen bei München 010020
+C:Address:Komm Consult, Oberweg 15, 82024 Taufkirchen bei München
+C:Name:Komm Consult
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 #####################################################################
 #
 #
 P:122 Motorola
 B:010022
 C:Electronic GmbH, Hagenauer Straße 47, 65203 Wiesbaden 010022
+C:Name:Motorola
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 #####################################################################
 P:125 Mediascape
 B:010025
-C:Mediascape Communications GmbH, Usedomstraße 19, 22047 Hamburg
+C:Address:Mediascape Communications GmbH, Usedomstraße 19, 22047 Hamburg
+C:Name:Mediascape
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 #####################################################################
 #
 #
@@ -15954,16 +16464,25 @@ C:Mediascape Communications GmbH, Usedomstraße 19, 22047 Hamburg
 P:130 tnp telenet
 B:010030
 C:potsdam, kommunikationsgesellschaft mbH, Erich-Weinert-Straße 100, 14478 Potsdam 010030
+C:Name:tnp telenet
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 #####################################################################
 #
 #
 P:131 accom
 B:010031
-C:Gesellschaft für Telekommunikationsnetze und -dienstleistungen GmbH & Co.KG, Borngasse 34, 52064 Aachen 010031
+C:Address:accom Gesellschaft für Telekommunikationsnetze und -dienstleistungen GmbH & Co.KG, Borngasse 34, 52064 Aachen
+C:Name:accom
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 #####################################################################
 P:132 SD
 B:010032
-C:SD Telecom Telekommunikations GmbH, Heinersdorfer Damm 55-57, 16303 Schwedt
+C:Name:SD Telecom
+C:Address:SD Telecom Telekommunikations GmbH, Heinersdorfer Damm 55-57, 16303 Schwedt
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 #####################################################################
 #
 #
@@ -15971,11 +16490,17 @@ C:SD Telecom Telekommunikations GmbH, Heinersdorfer Damm 55-57, 16303 Schwedt
 #
 P:133 Level 3
 B:010033
-C:Communications GmbH, Oberlindau 54 - 56, 60323 Frankfurt/Main 010033
+C:Address:Level 3 Communications GmbH, Oberlindau 54 - 56, 60323 Frankfurt/Main
+C:Name:Level 3
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 #####################################################################
 P:140 VossNet
 B:010040
-C:VossNet Communications GmbH, 28199 Bremen
+C:Name:VossNet
+C:Address:VossNet Communications GmbH, 28199 Bremen
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 #####################################################################
 #
 #
@@ -15983,13 +16508,19 @@ C:VossNet Communications GmbH, 28199 Bremen
 #
 P:142 connection 42
 B:010042
-C:Ernst-Abbe-Straße 10, 25451 Quickborn 010042
+C:Address:connection 42, Ernst-Abbe-Straße 10, 25451 Quickborn
+C:Name:connection 42
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 #####################################################################
 #
 #
 P:144 Carrier 1
 B:010044
 C:AG, Militärstraße 36, CH-8004 Zürich 010044
+C:Name:Carrier 1
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 #####################################################################
 #
 #
@@ -16000,7 +16531,10 @@ P:150 Drillisch Superregionen
 B:010050
 # G:05-Nov-1999
 D:dtag
-C:AG, Horbeller Straße 33, 50858 Köln 010050
+C:Address:Drillisch AG, Horbeller Straße 33, 50858 Köln
+C:Name:Drillisch Superregionen
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 Z:1-4 Deutschland
 A:+49
 T:W/08-21=0.098/60
@@ -16023,7 +16557,10 @@ P:150,1 Drillisch
 B:010050
 # G:05-Nov-1999
 D:dtag
-C:AG, Horbeller Straße 33, 50858 Köln 010050
+C:Address:Drillisch AG, Horbeller Straße 33, 50858 Köln
+C:Name:Drillisch
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 Z:1-4 Deutschland
 A:+49
 T:W/08-21=0.119/60
@@ -16044,7 +16581,10 @@ T:W/21-08=0.59/60
 #####################################################################
 P:154 Osnatel
 B:010054
-C:Osnatel GmbH, Luisenstraße 16, 49074 Osnabrück
+C:Name:Osnatel
+C:Address:Osnatel GmbH, Luisenstraße 16, 49074 Osnabrück
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 #####################################################################
 #
 #
@@ -16052,23 +16592,35 @@ C:Osnatel GmbH, Luisenstraße 16, 49074 Osnabrück
 #
 P:155 Telia
 B:010055
-C:Telekommunikation GmbH, Herrengraben 3, 20459 Hamburg 010055
+C:Address:Telia Telekommunikation GmbH, Herrengraben 3, 20459 Hamburg
+C:Name:Telia
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 #####################################################################
 #
 #
 P:156 NETCOM
 B:010056
 C:Kassel GmbH, Königstor 3 - 13, 34117 Kassel 010056
+C:Name:NETCOM
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 #####################################################################
 #
 #
 P:160 JelloCom
 B:010060
-C:GmbH & Co.KG, Prüssingstraße 41, 07745 Jena 010060
+C:Address:JelloCom GmbH & Co.KG, Prüssingstraße 41, 07745 Jena
+C:Name:JelloCom
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 #####################################################################
 P:168 VSE
 B:010068
-C:VSE Net GmbH, Postfach, 103232, 66032 Saarbrücken
+C:Address:VSE Net GmbH, Postfach, 103232, 66032 Saarbrücken
+C:Name:VSE
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 #####################################################################
 #
 #
@@ -16076,17 +16628,26 @@ C:VSE Net GmbH, Postfach, 103232, 66032 Saarbrücken
 #
 P:170 Deutsche Telefon- und Marketing Services
 B:010070
-C:GmbH, Isaac-Fulda-Allee 16, 55124 Mainz 010070
+C:Address:Deutsche Telefon-und Marketing Services GmbH, Isaac-Fulda-Allee 16, 55124 Mainz
+C:Name:Deutsche Telefon- und Marketing Services
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 #####################################################################
 #
 #
 P:173 TFN COM SA
 B:010073
-C:World Of Communication, Via Greina 2 CP 2950, CH-6901 Lugano 010073
+C:TFN COM SA World Of Communication, Via Greina 2 CP 2950, CH-6901 Lugano
+C:Name:TFN COM SA
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 #####################################################################
 P:175 Gigabell
 B:010075
-C:Gigabell AG, 60325 Frankfurt am Main
+C:Address:Gigabell AG, 60325 Frankfurt am Main
+C:Name:Gigabell
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 #####################################################################
 #
 #
@@ -16094,11 +16655,17 @@ C:Gigabell AG, 60325 Frankfurt am Main
 #
 P:177 WorldxChange
 B:010077
-C:Communications GmbH, Am Seedamm 44, 60489 Frankfurt 010077
+C:Address:WorldxChange Communications GmbH, Am Seedamm 44, 60489 Frankfurt
+C:Name:WorldxChange
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 #####################################################################
 P:178 Cybernet
 B:010078
 C:Cybernet Internet-Dienstleistungen AG, Stefan-George-Ring 19-23, 81929 München
+C:Name:Cybernet
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 #####################################################################
 #
 #
@@ -16106,11 +16673,17 @@ C:Cybernet Internet-Dienstleistungen AG, Stefan-George-Ring 19-23, 81929 München
 #
 P:180 FaciliCom
 B:010080
-C:Telekommunikation GmbH; Windmühlstraße 1, 60329 Frankfurt/Main 010080
+C:Address:FaciliCom Telekommunikation GmbH, Windmühlstraße 1, 60329 Frankfurt/Main
+C:Name:FaciliCom
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 #####################################################################
 P:181 Daten- und Telekommunikations-GmbH Dessau
 B:010081
 C:Daten- und Telekommunikations-GmbH Dessau, Willy-Lohmann-Straße 6a, 06844 Dessau
+C:Name:Daten- und Telekommunikations-GmbH
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 #####################################################################
 #
 #
@@ -16118,11 +16691,17 @@ C:Daten- und Telekommunikations-GmbH Dessau, Willy-Lohmann-Straße 6a, 06844 Dess
 #
 P:184 Startec
 B:010084
-C:Global Communications (Germany) GmbH, Broßstraße 6, 60487 Frankfurt 010084
+C:Address:Startec Global Communications (Germany) GmbH, Broßstraße 6, 60487 Frankfurt
+C:Name:Startec
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 #####################################################################
 P:185 FirstMark
 B:010085
-C:Communications Deutschland GmbH, Am Opernplatz 2, 60313 Frankfurt am Main
+C:FirstMark Communications Deutschland GmbH, Am Opernplatz 2, 60313 Frankfurt am Main
+C:Name:FirstMark
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 #####################################################################
 #
 #
@@ -16130,25 +16709,37 @@ C:Communications Deutschland GmbH, Am Opernplatz 2, 60313 Frankfurt am Main
 #
 P:188 jk-tel
 B:010088
-C:GmbH i.G., Hopfenplatz 5, 39120 Magdeburg 010088
+C:jk-tel GmbH i.G., Hopfenplatz 5, 39120 Magdeburg
+C:Name:jk-tel
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 #####################################################################
 #
 #
 P:190 CNE
 B:010090
-C:Corporate Network Essen Gesellschaft für Telekommunikation mbH, Kruppstraße 82 - 100, 45145 Essen 010090
+C:Corporate Network Essen Gesellschaft für Telekommunikation mbH, Kruppstraße 82 - 100, 45145 Essen
+C:Name:CNE
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 #####################################################################
 #
 #
 P:195 TeleNec
 B:010095
-C:Telekommunikation Neustadt GmbH & Co.KG, Postfach 14 40, 96459 Neustadt 010095
+C:Address:Telenec Telekommunikation Neustadt GmbH & Co.KG, Postfach 14 40, 96459 Neustadt
+C:Name:TeleNec
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 #####################################################################
 #
 #
 P:199 ESTel
 B:010099
-C:Energieversorgung Südsachsen Telekommunikationsgesellschaft mbH, Postfach 2 38, 09002 Chemnitz 010099
+C:Energieversorgung Südsachsen Telekommunikationsgesellschaft mbH, Postfach 2 38, 09002 Chemnitz
+C:Name:ESTel
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 #####################################################################
 #
 #
@@ -16208,6 +16799,7 @@ C:Energieversorgung Südsachsen Telekommunikationsgesellschaft mbH, Postfach 2 38
 #
 # Für die Mithilfe möchten wir uns bedanken bei:
 #
+# Tobias Kretschmar <tobias.kretschmar@hecker.oderwitz.de> (Nikocity IbC)
 # Roland Rosenfeld <roland@spinnaker.de> (Nikocity)
 # Volker Widor <volker@widor.de>
 #

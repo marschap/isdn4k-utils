@@ -1,4 +1,4 @@
-/* $Id: isdnbill.c,v 1.7 1999/12/07 20:07:21 akool Exp $
+/* $Id: isdnbill.c,v 1.8 1999/12/12 14:35:53 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Billing-module)
  *
@@ -134,11 +134,11 @@ typedef struct {
   int    ibytes;
   int    obytes;
   double compute;
-  int	 ihome;
-  int	 si1;
+  int    ihome;
+  int    si1;
 } PARTNER;
 
-static char  options[]   = "nv:V";
+static char  options[]   = "nv:VioeaN:";
 static char  usage[]     = "%s: usage: %s [ -%s ]\n";
 
 
@@ -152,11 +152,15 @@ static TELNUM   number[2];
 static char     rstr[BUFSIZ];
 static char     home[BUFSIZ];
 static int      nhome = 0;
-static int	nunknown[2] = { 0, 0 };
+static int      nunknown[2] = { 0, 0 };
 
 int verbose = 0;
 
-static int      onlynumbers = 0;
+static int      onlynumbers = 0;      /* -n */
+static int      showincoming = 0;     /* -i */
+static int      showoutgoing = 0;     /* -o */
+static int      showerrors = 0;       /* -e */
+static char     onlythis[32] = { 0 }; /* -N */
 
 
 int print_msg(int Level, const char *fmt, ...)
@@ -410,11 +414,11 @@ static void total(int w)
       printf("%5d %s  %s %9.4f  %s %9.4f  %s %9.4f\n",
         zonesum[w][i].ncalls,
         timestr(zonesum[w][i].duration),
-    	c.currency,
+        c.currency,
         zonesum[w][i].pay,
-    	c.currency,
+        c.currency,
         zonesum[w][i].compute,
-    	c.currency,
+        c.currency,
         zonesum[w][i].aktiv);
 
       ncalls   += zonesum[w][i].ncalls;
@@ -513,66 +517,68 @@ static void showpartner()
 
 
   for (k = 0; k < 2; k++) {
-    switch (k) {
-      case 0 : printf("\nAnrufer (DIALIN)          calls   Duration\n");
-      	       strich('-', 42);
-      	       break;
+    if (((k == 0) && showincoming) || ((k == 1) && showoutgoing)) {
+      switch (k) {
+        case 0 : printf("\nAnrufer (DIALIN)          calls   Duration\n");
+                 strich('-', 42);
+                 break;
 
-      case 1 : printf("\nAngerufene (DIALOUT)      calls   Charge        Duration    Computed\n");
-      	       strich('-', 73);
-      	       break;
-    } /* switch */
+        case 1 : printf("\nAngerufene (DIALOUT)      calls   Charge        Duration    Computed\n");
+                 strich('-', 73);
+                 break;
+      } /* switch */
 
-    for (i = 0; i < knowns; i++)
-      if (partner[k][i].ncalls) {
-        if (k)
-          printf("%-25s %5d   %s %9.4f %s   %s %9.4f\n",
-            known[i]->who,
-            partner[k][i].ncalls,
-    	    c.currency,
-            partner[k][i].pay,
-            timestr(partner[k][i].duration),
-    	    c.currency,
-            partner[k][i].compute);
-        else
-          printf("%-25s %5d %s\n",
-            known[i]->who,
-            partner[k][i].ncalls,
-            timestr(partner[k][i].duration));
-      } /* if */
+      for (i = 0; i < knowns; i++)
+        if (partner[k][i].ncalls) {
+          if (k)
+            printf("%-25s %5d   %s %9.4f %s   %s %9.4f\n",
+              known[i]->who,
+              partner[k][i].ncalls,
+              c.currency,
+              partner[k][i].pay,
+              timestr(partner[k][i].duration),
+              c.currency,
+              partner[k][i].compute);
+          else
+            printf("%-25s %5d %s\n",
+              known[i]->who,
+              partner[k][i].ncalls,
+              timestr(partner[k][i].duration));
+        } /* if */
 
-    printf("\n");
+      printf("\n");
 
-    switch (k) {
-      case 0 : printf("\nunbekannte Anrufer (DIALIN)         an Rufnummer calls   Duration\n");
-      	       strich('-', 65);
-      	       break;
+      switch (k) {
+        case 0 : printf("\nunbekannte Anrufer (DIALIN)         an Rufnummer calls   Duration\n");
+                 strich('-', 65);
+                 break;
 
-      case 1 : printf("\nunbekannte Angerufene (DIALOUT)     von          calls   Charge         Duration    Computed\n");
-      	       strich('-', 97);
-      	       break;
-    } /* switch */
+        case 1 : printf("\nunbekannte Angerufene (DIALOUT)     von          calls   Charge         Duration    Computed\n");
+                 strich('-', 97);
+                 break;
+      } /* switch */
 
-    for (i = 0; i < nunknown[k]; i++)
-      if (unknown[k][i].ncalls) {
-        p = beautify(unknown[k][i].num);
+      for (i = 0; i < nunknown[k]; i++)
+        if (unknown[k][i].ncalls) {
+          p = beautify(unknown[k][i].num);
 
-        if (k)
-          printf("%-16s <- %-12s %5d   %s %9.4f  %s   %s %9.4f\n",
-            p,
-            msnsum[SUBTOTAL][unknown[k][i].si1][unknown[k][i].ihome].alias,
-            unknown[k][i].ncalls,
-            c.currency,
-            unknown[k][i].pay,
-            timestr(unknown[k][i].duration),
-            c.currency,
-            unknown[k][i].compute);
-        else
-          printf("%-16s -> %-12s %5d %s\n",
-            p,
-            msnsum[SUBTOTAL][unknown[k][i].si1][unknown[k][i].ihome].alias,
-            unknown[k][i].ncalls,
-            timestr(unknown[k][i].duration));
+          if (k)
+            printf("%-16s <- %-12s %5d   %s %9.4f  %s   %s %9.4f\n",
+              p,
+              msnsum[SUBTOTAL][unknown[k][i].si1][unknown[k][i].ihome].alias,
+              unknown[k][i].ncalls,
+              c.currency,
+              unknown[k][i].pay,
+              timestr(unknown[k][i].duration),
+              c.currency,
+              unknown[k][i].compute);
+          else
+            printf("%-16s -> %-12s %5d %s\n",
+              p,
+              msnsum[SUBTOTAL][unknown[k][i].si1][unknown[k][i].ihome].alias,
+              unknown[k][i].ncalls,
+              timestr(unknown[k][i].duration));
+        } /* if */
       } /* if */
   } /* for */
 } /* showpartner */
@@ -583,7 +589,7 @@ static char *numtonam(int n, int other)
   register UC *p;
   register int i, j = UNKNOWN;
   static   UC  hash[32 * 255] = { 0 };
-  auto	   UC  s[32];
+  auto     UC  s[32];
 
 
   if (onlynumbers)
@@ -781,10 +787,29 @@ int main(int argc, char *argv[], char *envp[])
         case 'V' : print_version(myname);
                    exit(0);
 
+        case 'i' : showincoming++;
+                   break;
+
+        case 'o' : showoutgoing++;
+                   break;
+
+        case 'e' : showerrors++;
+                   break;
+
+        case 'a' : showincoming = showoutgoing = showerrors = 1;
+                   break;
+
+        case 'N' : strcpy(onlythis, optarg);
+                   break;
+
         case '?' : printf(usage, argv[0], argv[0], options);
                    return(1);
       } /* switch */
 
+    if (!showincoming && !showoutgoing && !showerrors) {
+      printf("This makes no sense! You must specify -i, -o or -e\n");
+      return(1);
+    } /* if */
 
     *home = 0;
 
@@ -915,11 +940,10 @@ int main(int argc, char *argv[], char *envp[])
           } /* if */
         } /* if */
 
-        /* if (c.dialout) */
-        /* if (c.duration) */
-        /* if (c.provider != UNKNOWN) */
-
-        if (*c.num[CALLING] && *c.num[CALLED]) {
+        if (*c.num[CALLING] && *c.num[CALLED] &&
+            ((c.dialout && showoutgoing) || (!c.dialout && showincoming)) &&
+            (c.duration || showerrors) &&
+            (!onlythis || strstr(c.num[CALLING], onlythis) || strstr(c.num[CALLED], onlythis))) {
 
           when(s, &day, &month);
 
@@ -963,7 +987,71 @@ int main(int argc, char *argv[], char *envp[])
               sprintf(c.sprovider, "%s%03d:%-*s", vbn, c.provider - 100, PROVLEN, s);
 
 
-            if (!c.duration) {
+            if (c.duration) {
+              if ((c.zone == 1) || (c.zone == 2)) {
+                auto struct tm *tm = localtime(&c.connect);
+                auto int        takte;
+                auto double     price;
+
+
+                takte = (c.duration + 59) / 60;
+
+                if ((tm->tm_wday > 0) && (tm->tm_wday < 5)) {   /* Wochentag */
+                  if ((tm->tm_hour > 8) && (tm->tm_hour < 18))  /* Hauptzeit */
+                    price = 0.06;
+                  else
+                    price = 0.03;
+                }
+                else                                            /* Wochenende */
+                  price = 0.03;
+
+                c.aktiv = takte * price;
+
+                msnsum[SUBTOTAL][c.si1][c.ihome].aktiv += c.aktiv;
+                provsum[SUBTOTAL][c.provider].aktiv += c.aktiv;
+                zonesum[SUBTOTAL][c.zone].aktiv += c.aktiv;
+              } /* if */
+
+              if (c.pay < 0.0) { /* impossible! */
+                c.pay = c.compute;
+                c.computed++;
+              } /* if */
+
+              if (c.compute && fabs(c.pay - c.compute) > 1.00) {
+                c.pay = c.compute;
+                c.computed++;
+              } /* if */
+
+
+              if (c.pay)
+                printf("%s%9.4f%s ", c.currency, c.pay, c.computed ? "*" : " ");
+              else
+                printf("%*s", 13, "");
+
+              printf("%s%s%s", c.country, c.sprovider, c.error);
+
+              if (c.aktiv)
+                printf(" AktivPlus - %s%9.4f", c.currency, c.pay - c.aktiv);
+
+              msnsum[SUBTOTAL][c.si1][c.ihome].pay += c.pay;
+              msnsum[SUBTOTAL][c.si1][c.ihome].duration += c.duration;
+              msnsum[SUBTOTAL][c.si1][c.ihome].compute += c.compute;
+              msnsum[SUBTOTAL][c.si1][c.ihome].ibytes += c.ibytes;
+              msnsum[SUBTOTAL][c.si1][c.ihome].obytes += c.obytes;
+
+              provsum[SUBTOTAL][c.provider].pay += c.pay;
+              provsum[SUBTOTAL][c.provider].duration += c.duration;
+              provsum[SUBTOTAL][c.provider].compute += c.compute;
+              provsum[SUBTOTAL][c.provider].ibytes += c.ibytes;
+              provsum[SUBTOTAL][c.provider].obytes += c.obytes;
+
+              zonesum[SUBTOTAL][c.zone].pay += c.pay;
+              zonesum[SUBTOTAL][c.zone].duration += c.duration;
+              zonesum[SUBTOTAL][c.zone].compute += c.compute;
+              zonesum[SUBTOTAL][c.zone].ibytes += c.ibytes;
+              zonesum[SUBTOTAL][c.zone].obytes += c.obytes;
+            }
+            else {
               printf("%*s%s%s", 13, "", c.country, c.sprovider);
 
               if ((c.cause != 0x1f) && /* Normal, unspecified */
@@ -974,73 +1062,7 @@ int main(int argc, char *argv[], char *envp[])
                   (c.cause == 0x2a) || /* Switching equipment congestion */
                   (c.cause == 0x2f))   /* Resource unavailable, unspecified */
                 provsum[SUBTOTAL][c.provider].failed++;
-
-                printf("\n");
-                continue;
-            } /* if */
-
-            if ((c.zone == 1) || (c.zone == 2)) {
-              auto struct tm *tm = localtime(&c.connect);
-              auto int        takte;
-              auto double     price;
-
-
-              takte = (c.duration + 59) / 60;
-
-              if ((tm->tm_wday > 0) && (tm->tm_wday < 5)) {   /* Wochentag */
-                if ((tm->tm_hour > 8) && (tm->tm_hour < 18))  /* Hauptzeit */
-                  price = 0.06;
-                else
-                  price = 0.03;
-              }
-              else                                            /* Wochenende */
-                price = 0.03;
-
-              c.aktiv = takte * price;
-
-              msnsum[SUBTOTAL][c.si1][c.ihome].aktiv += c.aktiv;
-              provsum[SUBTOTAL][c.provider].aktiv += c.aktiv;
-              zonesum[SUBTOTAL][c.zone].aktiv += c.aktiv;
-            } /* if */
-
-            if (c.pay < 0.0) { /* impossible! */
-              c.pay = c.compute;
-              c.computed++;
-            } /* if */
-
-            if (c.compute && fabs(c.pay - c.compute) > 1.00) {
-              c.pay = c.compute;
-              c.computed++;
-            } /* if */
-
-
-            if (c.pay)
-              printf("%s%9.4f%s ", c.currency, c.pay, c.computed ? "*" : " ");
-            else
-              printf("%*s", 13, "");
-
-            printf("%s%s%s", c.country, c.sprovider, c.error);
-
-            if (c.aktiv)
-              printf(" AktivPlus - %s%9.4f", c.currency, c.pay - c.aktiv);
-
-            msnsum[SUBTOTAL][c.si1][c.ihome].pay += c.pay;
-            msnsum[SUBTOTAL][c.si1][c.ihome].duration += c.duration;
-            msnsum[SUBTOTAL][c.si1][c.ihome].compute += c.compute;
-            msnsum[SUBTOTAL][c.si1][c.ihome].ibytes += c.ibytes;
-            msnsum[SUBTOTAL][c.si1][c.ihome].obytes += c.obytes;
-
-            provsum[SUBTOTAL][c.provider].pay += c.pay;
-            provsum[SUBTOTAL][c.provider].duration += c.duration;
-            provsum[SUBTOTAL][c.provider].compute += c.compute;
-            provsum[SUBTOTAL][c.provider].ibytes += c.ibytes;
-            provsum[SUBTOTAL][c.provider].obytes += c.obytes;
-
-            zonesum[SUBTOTAL][c.zone].pay += c.pay;
-            zonesum[SUBTOTAL][c.zone].duration += c.duration;
-            zonesum[SUBTOTAL][c.zone].compute += c.compute;
-            zonesum[SUBTOTAL][c.zone].ibytes += c.ibytes;
-            zonesum[SUBTOTAL][c.zone].obytes += c.obytes;
+            } /* else */
           }
           else { /* Dialin: */
             justify(number[CALLED].msn, c.num[CALLING], number[CALLING]);
@@ -1048,7 +1070,7 @@ int main(int argc, char *argv[], char *envp[])
           } /* else */
 
 
-	  if (c.known[OTHER] == UNKNOWN) {
+          if (c.known[OTHER] == UNKNOWN) {
             l = UNKNOWN;
 
             for (i = 0; i < nunknown[c.dialout]; i++) {
@@ -1064,9 +1086,9 @@ int main(int argc, char *argv[], char *envp[])
               nunknown[c.dialout]++;
 
               if (!l)
-      	        unknown[c.dialout] = (PARTNER *)malloc(sizeof(PARTNER));
+                unknown[c.dialout] = (PARTNER *)malloc(sizeof(PARTNER));
               else
-      	        unknown[c.dialout] = (PARTNER *)realloc(unknown[c.dialout], sizeof(PARTNER) * nunknown[c.dialout]);
+                unknown[c.dialout] = (PARTNER *)realloc(unknown[c.dialout], sizeof(PARTNER) * nunknown[c.dialout]);
 
               memset(&unknown[c.dialout][l], 0, sizeof(PARTNER));
             } /* if */
