@@ -1,4 +1,4 @@
-/* $Id: isdnrate.c,v 1.39 2002/08/15 17:22:43 akool Exp $
+/* $Id: isdnrate.c,v 1.40 2003/09/04 19:45:07 tobiasb Exp $
 
  * ISDN accounting for isdn4linux. (rate evaluation)
  *
@@ -19,6 +19,11 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnrate.c,v $
+ * Revision 1.40  2003/09/04 19:45:07  tobiasb
+ * New option for isdnrate: `-rvNN' requires a vbn starting with NN.
+ * Suggested by Thomas Richter on isdn4linux mailinglist, for reference see
+ * http://listserv.isdn4linux.de/pipermail/isdn4linux/2003-September/000011.html
+ *
  * Revision 1.39  2002/08/15 17:22:43  akool
  * isdnlog-4.63
  *  - new rates/provider ...
@@ -310,7 +315,7 @@
 static void print_header(void);
 
 static char *myname, *myshortname;
-static char options[] = "ab:d:f:h:l:op:st:v::x:CD::G:HLNP:O:S:TUVX::Z";
+static char options[] = "ab:d:f:h:l:op:r:st:v::x:CD::G:HLNP:O:S:TUVX::Z";
 static char usage[] = "%s: usage: %s [ -%s ] Destination ...\n";
 
 static int header = 0, best = MAXPROVIDER, table = 0, explain = 0;
@@ -333,6 +338,7 @@ static int xbusiness = 0;
 static int all = 0;
 static int booked = 0;
 static int service = 0;
+static char *require_vbn = NULL;
 
 #define SOCKNAME "/tmp/isdnrate"
 static int is_daemon = 0;
@@ -596,6 +602,11 @@ static int opts(int argc, char *argv[])
 	}
 	free(arg);
       }
+      break;
+
+    case 'r':			/* require certain providers properties */
+      if (optarg[0]=='v') 	/* only (start of) vbn supported so far */
+	require_vbn = strdup(optarg+1);
       break;
 
     case 'v':
@@ -913,6 +924,9 @@ static int compute(char *num)
       if (booked && !isProviderBooked(i))
 	continue;
       if (!all && !isProviderValid(i, start))
+	continue;
+      if ( require_vbn && 
+           strncmp(getProviderVBN(i), require_vbn, strlen(require_vbn)) )
 	continue;
       t = getProvider(i);
       if (!t || t[strlen(t) - 1] == '?')	/* UNKNOWN Provider */
@@ -1780,6 +1794,7 @@ int     main(int argc, char *argv[], char *envp[])
     print_msg(PRT_A, "\t-l duration\tduration of call in seconds (default %d seconds)\n", LCR_DURATION);
     print_msg(PRT_A, "\t-o \t show only booked providers\n");
     print_msg(PRT_A, "\t-p prov|B[,prov...]\t show only these providers\n");
+    print_msg(PRT_A, "\t-r vNN\tonly providers whose vbn begins with <NN>\n");
     print_msg(PRT_A, "\t-s \t consider 'Destination' as a service name\n");
     print_msg(PRT_A, "\t-t takt\t\tshow providers if chargeduration<=takt\n");
     print_msg(PRT_A, "\t-v [level]\tverbose\n");

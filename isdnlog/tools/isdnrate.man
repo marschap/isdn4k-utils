@@ -1,11 +1,12 @@
-.\" CHECKIN $Date: 2000/09/01 12:35:44 $
+.\" CHECKIN $Date: 2003/09/04 19:45:07 $
 .TH ISDNRATE 1 "@MANDATE@" -lt-
 .SH NAME
 isdnrate \- Print telefon rates and various info from rate\-files(5).
 .SH SYNOPSIS
 .BI "isdnrate \-b" best " \-d" day " \-f" from " \-h" hour " \-l" len
 .B \-o
-.BI \-p provs
+.BI "\-p" provs " \-r"
+.I \fPv\fINN
 .B \-s
 .BI "\-t" takt " \-v" verbose " \-x" exclude
 .BI " \-C \-D" det " -\G" data " \-H \-L \-N \-O" socketfile " \-P" piddir
@@ -106,6 +107,10 @@ is the provider number, without the leading VBN, or
 if there are more variations, or
 .I B
 for business providers.
+.P
+\fB\-r\fPv\fINN\fP
+Show only providers whose vbn begins with \fINN\fP.
+The vbn is also known as provider prefix consisting of VBN and provider number.
 .P
 .B \-s
 Consider
@@ -266,6 +271,13 @@ for a connection length of 2 Minutes.
 .br
 Show rates and zones for destination USA for providers
 .IR "1_2 " and " 24" .
+.P
+.I isdnrate -C -l60 -rv010 HAM
+.br
+Show rates for a one minute call to Hamburg (HAM: airport code) and
+use only providers whose vbn begins with 010.
+So provider A with vbn 01030 is displayed,
+provider B with vbn 0190023 is not.
 .P
 .I isdnrate -CX -H -dW -b5 US CA
 .br
