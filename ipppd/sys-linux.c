@@ -22,7 +22,7 @@
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-char sys_rcsid[] = "$Id: sys-linux.c,v 1.22 1999/09/24 21:21:55 keil Exp $";
+char sys_rcsid[] = "$Id: sys-linux.c,v 1.23 1999/10/25 12:17:29 keil Exp $";
 
 #define _LINUX_STRING_H_
 
@@ -1258,8 +1258,6 @@ static void decode_version (char *buf, int *version,
     
     if (*buf != '\0' && strncmp(buf, "-pre", 4) && strncmp(buf, "pre", 3))  /* ignore any "-preX" part */
       {
-	*version      =
-	*modification =
 	*patch        = 0;
       }
   }
