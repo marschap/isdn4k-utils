@@ -2,7 +2,7 @@ dnl
 dnl Process this file with autoconf to produce a configure script.
 dnl 
 
-AC_REVISION($Id: configure.in,v 1.6 1999/10/08 00:31:04 he Exp $)dnl
+AC_REVISION($Id: configure.in,v 1.7 1999/10/27 17:23:27 he Exp $)dnl
 
 AC_INIT(COPYING.authlib)
 
@@ -49,7 +49,7 @@ dnl RUNDIR=`eval echo ${CONFIG_RUNDIR:-'\\${localstatedir}/run'}`
 dnl enforce a unique dire for pidfiles, independent of install patch
 RUNDIR=`eval echo ${CONFIG_RUNDIR:-"/var/run"}`
 
-SYSVINIT_RC_DIR=`eval echo ${CONFIG_SYSVINIT_RC_DIR:-"/sbin/init.d"}`
+SYSVINIT_RC_DIR=`eval echo ${CONFIG_SYSVINIT_RC_DIR:-"/etc/rc.d/init.d"}`
 
 EFT_TOPDIR=${EFT_TOPDIR:-$PWD}
 

@@ -564,7 +564,7 @@ SBINDIR=`eval echo ${CONFIG_SBINDIR:-'\\${sbindir}'}`
 KERNELDIR=`eval echo ${CONFIG_KERNELDIR:-"/usr/src/linux"}`
 RUNDIR=`eval echo ${CONFIG_RUNDIR:-"/var/run"}`
 
-SYSVINIT_RC_DIR=`eval echo ${CONFIG_SYSVINIT_RC_DIR:-"/sbin/init.d"}`
+SYSVINIT_RC_DIR=`eval echo ${CONFIG_SYSVINIT_RC_DIR:-"/etc/rc.d/init.d"}`
 
 EFT_TOPDIR=${EFT_TOPDIR:-$PWD}
 
