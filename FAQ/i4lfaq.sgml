@@ -93,27 +93,27 @@ cards are supported see section <ref id="hardware" name="hardware">.
 <sect1> general_features: What features are supported by isdn4linux?  
 <label id="general_features">
 <p>
-Basically, isdn4linux can receive and transmit data via ISDN in many ways
+Basically, isdn4linux can receive and transmit data via ISDN in several ways
 (X.75, HDLC, raw ip, synchronous ppp, asynchronous ppp, V.110). Some of its
 utilities offer additional features. Two examples are <tt/isdnlog/, which
-allows to log and react upon ISDN events (including calculating any charges);
-and <tt/vbox/ which provides voice answering machine capabilities. For more
+allows logging of and reaction to ISDN events (including calculating any charges);
+and <tt/vbox/, which provides voice answering machine capabilities. For more
 details see the section <ref id="feature" name="feature">.
 
 <sect1> general_countries: Which countries are supported by isdn4linux?  
 <label id="general_countries">
 <p>
 At least all countries which use Euro-ISDN are supported, however some
-pecularities apply. To find more about your country, check section
+pecularities apply. To find more about your country, check the section
 <ref id="countries" name="countries">.
 
-<sect1> general_docu: Where do I find more documentation, howto's, helpful tips  
+<sect1> general_docu: Where do I find more documentation, how-to's, helpful tips  
 &amp; tricks?  
 <label id="general_docu">
 <p>
-Besides this FAQ have a look at the various man pages and Readme's that come
+Besides this FAQ, take a look at the various man pages and Readme's that come
 with the isdn4linux package. Then there is the isdn4linux website:
-<url url="http://www.isdn4linux.de">. And there is also a news group and a
+<url url="http://www.isdn4linux.de">. There is also a news group and a
 mailing list on isdn4linux which will give you the most up to date
 information. To find out more about these great information sources, see
 section <ref id="docu" name="docu">.
@@ -154,7 +154,7 @@ Additionally, you just need to get the current isdn4k-utils package from
 <url url="ftp://ftp.isdn4linux.de/pub/isdn4linux/"> - unless it's already
 included in your distribution.
 
-<item>You have an older kernels (before 2.0.36/2.2.11/2.3.14):
+<item>You have an older kernel (before 2.0.36/2.2.11/2.3.14):
 An upgrade to a recent kernel is HIGHLY recommended. And it is MUCH easier
 to do a kernel upgrade than to get ISDN to work with your older kernel.
 Ok, now if you still want to keep your old kernel, here is how to do it:
@@ -180,18 +180,19 @@ development/what is the CVS tree all about?
 CVS - Concurrent Version System:
 
 This is a multiuser/server extension to RCS (Revision Control System).
-The I4L drivers are developed under CVS, and there exists on server
-(cvs.isdn4linux.de) a CVS tree to which all developers have access.
-In addition, Fritz has configured an anonymous read-only access. If you
-must have the very newest versions, you can get them there, however they
-may contain more bugs than the released versions!!!
+The I4L drivers are developed under CVS, and there is a server
+(cvs.isdn4linux.de) with a CVS tree to which all developers have
+access.  In addition, Fritz has configured anonymous read-only access
+to the CVS tree . If you must have the very latest versions, you can
+get them there, however they may contain more bugs than the released
+versions!!!
 
 Here is how to get the latest version:
 <enum>
 <item>Create and go to the directory where you want to store i4l
 <code>mkdir ~/cvs; cd ~/cvs
 cvs -d :pserver:guest@cvs.isdn4linux.de:/i4ldev login</code>
-<item>Login in (asks for a password, enter <em>readonly</em>)
+<item>Log in (asks for a password, enter <em>readonly</em>)
 <item>Get the isdn kernel driver stuff (same hierarchy as in the linux source)
 <code>cvs -d :pserver:guest@cvs.isdn4linux.de:/i4ldev checkout isdn</code>
 <item>Get the utility package into the current directory
@@ -207,12 +208,12 @@ Tip: since cvs stores the password on your first login, you don't need to login
 again when updating.
 </enum>
 
-WATCH OUT!!! THE NEWEST STUFF SOMETIMES IS REALLY INSTABLE OR EVEN
-DOES NOT COMPILE WITHOUT PROGRAMMING KNOWLEDGE -
-No newbies questions on this PLEASE! Use the source, Luke!
+WARNING!! THE NEWEST STUFF SOMETIMES IS VERY INSTABLE OR MAY NOT EVEN
+COMPILE WITHOUT PROGRAMMING KNOWLEDGE -
+No newbie questions on this PLEASE! Use the source, Luke!
 
-People who want to help <em>continuously</em> developing isdn4linux by writing
-new driver etc. can get a real account for full access. In this case write
+People who want to <em>continuously</em> help developing isdn4linux by writing
+new drivers etc. can get a real account for full access. In this case write
 an email to Fritz Elfert <tt><htmlurl url="mailto:fritz@isdn4linux.de"
 name="fritz@isdn4linux.de"></tt>
 
@@ -223,7 +224,7 @@ name="fritz@isdn4linux.de"></tt>
 <sect> Features
 <label id="feature">
 
-<sect1> feature_not: Which ISDN features can not be offered by isdn4linux?  
+<sect1> feature_not: Which ISDN features cannot be offered by isdn4linux?  
 <label id="feature_not">
 <p>
 Some ISDN features are device-specific and cannot be activated by
