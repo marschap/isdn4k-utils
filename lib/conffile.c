@@ -1,4 +1,4 @@
-/* $Id: conffile.c,v 1.19 1998/05/20 12:22:15 paul Exp $
+/* $Id: conffile.c,v 1.20 1999/11/03 16:13:36 paul Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: conffile.c,v $
+ * Revision 1.20  1999/11/03 16:13:36  paul
+ * Added { } to suppress egcs warnings.
+ *
  * Revision 1.19  1998/05/20 12:22:15  paul
  * More paranoid about freeing pointers.
  *
@@ -801,11 +804,12 @@ static int Compare_Sections(section* sec1, section *sec2, char **variables)
 						found2++;
 
 				if ((++Cnt)%width == 0)
+                {
 					if(found1 == 0)
 						found2 = 0;
 					else
 						exist = 0;
-
+                }
 				if (array != NULL)
 				{
 					del_Array(array);
