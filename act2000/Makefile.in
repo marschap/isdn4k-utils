@@ -1,4 +1,4 @@
-# $Id: Makefile.in,v 1.1 1997/09/25 21:41:36 fritz Exp $
+# $Id: Makefile.in,v 1.2 1997/10/23 22:47:47 fritz Exp $
 #
 # Makefile for actctrl
 # (C) 1997 Fritz Elfert
@@ -6,7 +6,7 @@
 #
 SHELL			= /bin/sh
 CFLAGS			= -Wall -O2
-INCLUDES		= -I. @DEBUGVAR@ -I@KERNELDIR@/drivers/isdn/act2000
+INCLUDES		= -I. @DEBUGVAR@ -I@KERNELDIR@/include -I@KERNELDIR@/drivers/isdn/act2000
 DEFS			=
 LDFLAGS			= -L../lib @LIBS@
 PROGRAM			= actctrl
@@ -63,7 +63,7 @@ install-data: firmware/$(FIRMWARE)
 	mkdir -p $(DATADIR)
 	$(INSTALL_DATA) $< $(DATADIR)/$(FIRMWARE)
 
-install: $(PROGRAM) install-man
+install: $(PROGRAM) install-man install-data
 	$(INSTALL_PROGRAM) $(PROGRAM) $(SBINDIR)/$(PROGRAM)
 
 install-strip: $(PROGRAM)
