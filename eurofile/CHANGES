@@ -1,4 +1,4 @@
-/* $Id: CHANGES,v 1.2 1999/06/29 18:37:10 he Exp $
+/* $Id: CHANGES,v 1.3 1999/06/30 22:00:27 he Exp $
 #  Change log for eftp4Linux
 #
 # [new] means 'new feature added'
@@ -18,6 +18,10 @@
 #
 
 $Log: CHANGES,v $
+Revision 1.3  1999/06/30 22:00:27  he
+Version 0.0.11
+
+===============
 Revision 1.2  1999/06/29 18:37:10  he
 Were initially missing or wrong
 
