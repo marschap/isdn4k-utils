@@ -10,6 +10,9 @@ P:22=99
 # Dont use tesion))
 P:23=99
 
+# Use TelePassport 01024 by Call
+P:24=1
+
 # Dont use CityKom
 P:25=99
 
@@ -18,6 +21,9 @@ P:27=99
 
 # Dont use Telebridge
 P:28=99
+
+# Use DTAG AktivPlus
+P:33=4
 
 # Dont use HanseNet
 P:41=99
@@ -33,6 +39,9 @@ P:48=99
 
 # Dont use ACC
 P:49=99
+
+# Use Talkline CbC
+P:50=1
 
 # Dont use WOBCOM
 P:53=99
@@ -52,8 +61,11 @@ P:70=1
 #   4=Nikocity Minutentakt
 #   5=Nikocity Sekundentakt
 #   6=C@llas Clever Communications
-# dont use Star
+# use Nikoma
 P:98=5
+
+# Dont use ECONOPHONE
+P:99=99
 
 # Dont use Drillisch
 P:150=99

@@ -1,4 +1,4 @@
-/* $Id: rate.c,v 1.30 1999/07/01 20:40:24 akool Exp $
+/* $Id: rate.c,v 1.31 1999/07/02 18:21:03 akool Exp $
  *
  * Tarifdatenbank
  *
@@ -19,6 +19,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rate.c,v $
+ * Revision 1.31  1999/07/02 18:21:03  akool
+ * rate-de.dat V:1.02-Germany [02-Jul-1999 20:29:21]
+ * country-de.dat V:1.02-Germany [02-Jul-1999 19:13:54]
+ *
  * Revision 1.30  1999/07/01 20:40:24  akool
  * isdnrate optimized
  *
@@ -373,7 +377,7 @@ static void notice (char *fmt, ...)
 #ifdef STANDALONE
   fprintf(stderr, "%s\n", msg);
 #else
-  print_msg(PRT_ERR, "%s\n", msg);
+  print_msg(PRT_NORMAL, "%s\n", msg);
 #endif
 }
 

@@ -1,4 +1,4 @@
-/* $Id: isdnrate.c,v 1.5 1999/07/01 20:40:07 akool Exp $
+/* $Id: isdnrate.c,v 1.6 1999/07/02 18:20:50 akool Exp $
  *
  * ISDN accounting for isdn4linux. (rate evaluation)
  *
@@ -19,6 +19,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnrate.c,v $
+ * Revision 1.6  1999/07/02 18:20:50  akool
+ * rate-de.dat V:1.02-Germany [02-Jul-1999 20:29:21]
+ * country-de.dat V:1.02-Germany [02-Jul-1999 19:13:54]
+ *
  * Revision 1.5  1999/07/01 20:40:07  akool
  * isdnrate optimized
  *
@@ -345,7 +349,7 @@ static int compute()
     Rate.start = start;
     Rate.now   = start + duration;
 
-    if (!getRate(&Rate, NULL)) {
+    if (!getRate(&Rate, NULL) && (Rate.Price != 99.99)) {
       sort[n].prefix = Rate.prefix;
       sort[n].rate = Rate.Charge;
       sort[n].explain = strdup(printrate(Rate));
