@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# $Id: makedev.sh,v 1.2 1998/11/18 13:12:15 paul Exp $
+# $Id: makedev.sh,v 1.3 1998/11/23 10:02:34 fritz Exp $
 #
 # This script creates all ISDN devices under /dev .
 # Many/most distributions don't include these devices.
@@ -11,7 +11,11 @@ if [ "`id | grep uid=0`" = "" ]; then
 fi
 echo -e "Creating device inodes ... \c"
 
-DEV=/dev
+if [ $# = 1 ] ; then
+	DEV=$1/dev
+else
+	DEV=/dev
+fi
 
 MAJ=45
 MIN=0

@@ -139,17 +139,14 @@ Here is a list of mirrors; thanks to Herbert Rosmanith
 <herp@wildsau.idv-edu.uni-linz.ac.at> for compiling it initially. Whoever 
 knows of any mirrors not listed here, please let us know!
 !verbon
-  !link ftp://freja.frontier.dk/linux/isdn4linux/;
   !link ftp://ftp.cs.tu-berlin.de/pub/net/isdn/isdn4linux/;
-  !link ftp://ftp.fokus.gmd.de/.mount2/pub/Linux/isdn/isdn4linux/;
+  !link ftp://ftp.fokus.gmd.de/pub/Linux/isdn/isdn4linux/;
   !link ftp://ftp.franken.de/pub/isdn4linux/;
-  !link ftp://ftp.germany.eu.net/pub/os/Linux/Local.EUnet/ISDN/isdn4linux/;
   !link ftp://ftp.kiss.de/pub/linux/isdn4linux/;
-  !link ftp://ftp.leo.org/pub/comp/os/linux/isdn/isdn4linux/;
-  !link ftp://ftp.lame.org/mirrors/isdn/;
-  !link ftp://ftp.mathematik.th-darmstadt.de/pub/linux/mirrors/misc/isdn4linux/;
+  !link ftp://ftp.leo.org/pub/comp/os/unix/linux/isdn/isdn4linux/;
+  !link ftp://linux.mathematik.th-darmstadt.de/pub/linux/mirrors/misc/isdn4linux/;
   !link ftp://ftp.nvg.unit.no/pub/linux/isdn/;
-  !link ftp://ftp.pop.de/pub/local/linux/isdn/;
+  !link ftp://ftp.pop.de/pub/linux/isdn/;
   !link ftp://ftp.rz.fh-hannover.de/pub/linux/local/isdn4linux/;
   !link ftp://ftp.rz.hu-berlin.de:/pub/linux/isdn4linux/;  
   !link ftp://ftp.tu-dresden.de/pub/soft/isdn/isdn4linux/;

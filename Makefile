@@ -1,11 +1,11 @@
-# $Id: Makefile,v 1.30 1998/11/17 13:52:50 fritz Exp $
+# $Id: Makefile,v 1.31 1998/11/23 10:02:13 fritz Exp $
 #
 # Toplevel Makefile for isdn4k-utils
 #
 
 .EXPORT_ALL_VARIABLES:
 
-export I4LVERSION = 3.0beta1
+export I4LVERSION = 3.0beta2
 
 all:	do-it-all
 
@@ -129,11 +129,11 @@ rootperm:
 
 install: rootperm
 	set -e; for i in `echo $(SUBDIRS)`; do $(MAKE) -C $$i install; done
-	@if [ -c /dev/isdnctrl0 ] && ls -l /dev/isdnctrl0 | egrep "[[:space:]]45,[[:space:]]+64[[:space:]]" > /dev/null; \
+	@if [ -c $(DESTDIR)/dev/isdnctrl0 ] && ls -l $(DESTDIR)/dev/isdnctrl0 | egrep "[[:space:]]45,[[:space:]]+64[[:space:]]" > /dev/null; \
 	then \
 		echo -e '(some) ISDN devices already exist, not creating them.\nUse scripts/makedev.sh manually if necessary.'; \
 	else \
-		sh scripts/makedev.sh; \
+		sh scripts/makedev.sh $(DESTDIR) ; \
 	fi
 
 uninstall: rootperm
@@ -167,7 +167,8 @@ distclean: clean
 		fi ; \
 	done;
 	-rm -f *~ .config .config.old scripts/autoconf.h .menuconfig \
-		Makefile.tmp .menuconfig.log scripts/defconfig.old .#* scripts/.#*
+		Makefile.tmp .menuconfig.log scripts/defconfig.old
+	find . -name '.#*' -exec rm -f {} \;
 
 scripts/lxdialog/lxdialog:
 	@$(MAKE) -C scripts/lxdialog all
