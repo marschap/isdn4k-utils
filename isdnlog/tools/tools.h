@@ -1,4 +1,4 @@
-/* $Id: tools.h,v 1.4 1997/03/20 22:42:41 akool Exp $
+/* $Id: tools.h,v 1.5 1997/03/23 21:04:10 luethje Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools.h,v $
+ * Revision 1.5  1997/03/23 21:04:10  luethje
+ * some bugfixes
+ *
  * Revision 1.4  1997/03/20 22:42:41  akool
  * Some minor enhancements.
  *
@@ -88,7 +91,7 @@
 
 /****************************************************************************/
 
-#define GNU_SOURCE
+#define _GNU_SOURCE 1
 
 #include <stdio.h>
 #include <string.h>
@@ -352,6 +355,15 @@
 #define CONF_ENT_GROUP   "GROUP"
 #define CONF_ENT_INTVAL  "INTERVAL"
 #define CONF_ENT_TIME    "TIME"
+
+/****************************************************************************/
+
+#define PRT_ERR                1
+#define PRT_WARN               2
+#define PRT_INFO               4
+#define PRT_PROG_OUT           4
+#define PRT_NORMAL             4
+#define PRT_LOG                8
 
 /****************************************************************************/
 

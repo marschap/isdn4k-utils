@@ -13,7 +13,7 @@ Fuer alle, die es nun ueberhaupt nicht mehr abwarten koennen, hier das
 Quick-Installation-Guide
 ------------------------
 
-1. Linux-2.0.1 (oder besser) nebst dort enthaltenem ISDN-Treiber verwenden:
+1. Linux-2.0.29 + isdn4liunx-Patches (oder 2.0.30???) verwenden:
      CONFIG_ISDN=m
      CONFIG_ISDN_DRV_TELES=m
 
@@ -24,6 +24,7 @@ Quick-Installation-Guide
      make install
 
 3. Konfigurationsdatei fuer isdnlog fuellen:
+
      vi | emacs | vim | e | nedit | ... | /etc/isdn/isdn.conf
 
    -----------------------------------------------------
@@ -35,7 +36,11 @@ Quick-Installation-Guide
    ILABEL    = %b %e %T %ICall to tei %t from %N2 on %n2
    OLABEL    = %b %e %T %Itei %t calling %N2 with %n2
    CHARGEMAX = 1000.00
+   -----------------------------------------------------
 
+     vi | emacs | vim | e | nedit | ... | /etc/isdn/callerid.conf
+
+   -----------------------------------------------------
    [MSN]
    NUMBER = 4711
    SI     = 1
@@ -53,7 +58,6 @@ Quick-Installation-Guide
    SI     = 1
    ALIAS  = X.75
    ZONE   = 1
-
    -----------------------------------------------------
    mit:
      AREACODE=<Eigene_Vorwahl>
@@ -63,7 +67,6 @@ Quick-Installation-Guide
      SI = <Dienstkennung>
      ALIAS = <Alias>
      ZONE = 1
-   -----------------------------------------------------
 
 4. isdn4linux das D-Kanal-Protokoll entlocken:
 
@@ -2037,11 +2040,15 @@ Daher steht dann hier die von isdnrep errechnete Anzahl Einheiten.
 11. Das Konfigurations-Tool isdnconf
 ------------------------------------
 
-Dieses Programm bearbeitet oder interpretiert die Datei /etc/isdn/isdn.conf.
+Dieses Programm bearbeitet oder interpretiert die Datei /etc/isdn/callerid.conf
+sowie ~/.isdn.
 Es koennen hiermit Eintraege in dieser Datei angelegt oder geloescht werden.
 Des weiteren koennen wie mit einem Grep Eintraege gesucht und angezeigt werden.
 Unter einen Eintrag ist eine eigene MSN ([MSN]) oder eine Telefonnummer
 ([NUMBER]) gemeint.
+
+Dieses Programm hat seine Staerken als ein Suchprogramm in einem persoenlichem
+Telefonbuch.
 
 Hier nun die Optionen des Programmes:
 
@@ -2138,7 +2145,7 @@ Kommentare werden geloescht.
 
   -w          "word"    Der Ganze String von -a und -n muss auf den
                         angewendeteten String passen.
-                        Beispiele:
+                        Beispiele (hier fuer -n):
                           "*34*" -> 123456, 345677, 1234
                           "34*"  -> 34567, 34111
                           "34??" -> 3411, 3456
