@@ -1,4 +1,4 @@
-/* $Id: isdnctrl.c,v 1.14 1998/03/08 00:18:25 detabc Exp $
+/* $Id: isdnctrl.c,v 1.15 1998/03/08 01:04:19 fritz Exp $
  * ISDN driver for Linux. (Control-Utility)
  *
  * Copyright 1994,95 by Fritz Elfert (fritz@wuemaus.franken.de)
@@ -21,6 +21,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnctrl.c,v $
+ * Revision 1.15  1998/03/08 01:04:19  fritz
+ * Fix: Did not compile without TIMRU in kernel.
+ *
  * Revision 1.14  1998/03/08 00:18:25  detabc
  * include config-support for abc-extension
  * only isdnctrl encap will be used and only use the options [-ATU]rawip
@@ -328,7 +331,13 @@ static void listif(int isdnctrl, char *name, int errexit)
         printf("Phone number(s):\n");
         printf("  Outgoing:             %s\n", ph.n);
         printf("  Incoming:             %s\n", nn);
+#ifdef I4L_CTRL_TIMRU
+#ifdef HAVE_TIMRU
         printf("Status:                 %s\n", cfg.stopped ? "off" : "on");
+#else
+        printf("Status:                 No TIMRU in Kernel\n");
+#endif
+#endif
         printf("Secure:                 %s\n", cfg.secure ? "on" : "off");
         printf("Callback:               %s\n", num2callb[cfg.callback]);
         if (cfg.callback == 2)
@@ -337,8 +346,10 @@ static void listif(int isdnctrl, char *name, int errexit)
                 printf("Reject before Callback: %s\n", cfg.cbhup ? "on" : "off");
         printf("Callback-delay:         %d\n", cfg.cbdelay / 5);
         printf("Dialmax:                %d\n", cfg.dialmax);
+#ifdef HAVE_TIMRU
         printf("Dial-Timeout:           %d\n", cfg.dialtimeout);
         printf("Dial-Wait:              %d\n", cfg.dialwait);
+#endif
         printf("Hangup-Timeout:         %d\n", cfg.onhtime);
         printf("Incoming-Hangup:        %s\n", cfg.ihup ? "on" : "off");
         printf("ChargeHangup:           %s\n", cfg.chargehup ? "on" : "off");
@@ -1177,7 +1188,9 @@ int exec_args(int fd, int argc, char **argv)
 			        break;
 
 
+#ifdef I4L_CTRL_TIMRU
 			case DIALTIMEOUT:
+#ifdef HAVE_TIMRU
 			        strcpy(cfg.name, id);
                 		if((result = ioctl(fd, IIOCNETGCF, &cfg)) < 0) {
                        			perror(id);
@@ -1197,9 +1210,14 @@ int exec_args(int fd, int argc, char **argv)
                                 	}
                         	}
                         	printf("Dial-Timeout for %s is %d sec.\n", cfg.name, cfg.dialtimeout);
+#else
+					fprintf(stderr, "No TIMRU in Kernel\n");
+					exit(-1);
+#endif
                         	break;
 
                 	case DIALWAIT:
+#ifdef HAVE_TIMRU
                         	strcpy(cfg.name, id);
                         	if ((result = ioctl(fd, IIOCNETGCF, &cfg)) < 0) {
                                 	perror(id);
@@ -1219,9 +1237,14 @@ int exec_args(int fd, int argc, char **argv)
                                 	}
                         	}
                         	printf("Dial-Wait for %s is %d sec.\n", cfg.name, cfg.dialwait);
+#else
+					fprintf(stderr, "No TIMRU in Kernel\n");
+					exit(-1);
+#endif
                         	break;
 
                 	case STATUS:
+#ifdef HAVE_TIMRU
                         	strcpy(cfg.name, id);
                         	if ((result = ioctl(fd, IIOCNETGCF, &cfg)) < 0) {
                                 	perror(id);
@@ -1239,9 +1262,12 @@ int exec_args(int fd, int argc, char **argv)
                             		}
 				}
                         	printf("Status for %s is %s.\n", cfg.name, (cfg.stopped ? "off" : "on"));
+#else
+					fprintf(stderr, "No TIMRU in Kernel\n");
+					exit(-1);
+#endif
                         	break;
 
-#ifdef I4L_CTRL_TIMRU
                 	case ADDRULE:
                 	case INSRULE:
                 	case DELRULE:
@@ -1249,20 +1275,30 @@ int exec_args(int fd, int argc, char **argv)
                 	case FLUSHRULES:
                 	case FLUSHALLRULES:
                 	case DEFAULT:
+#ifdef HAVE_TIMRU
                         	if((args = hdl_timeout_rule(fd, id, i, argc, argv)) < 0)
 					exit(-1);
 				argc -= args;
 				argv += args;
+#else
+					fprintf(stderr, "No TIMRU in Kernel\n");
+					exit(-1);
+#endif
                         	break;
 
 			case BUDGET:
 			case SHOWBUDGETS:
 			case SAVEBUDGETS:
 			case RESTOREBUDGETS:
+#ifdef HAVE_TIMRU
                         	if((args = hdl_budget(fd, id, i, argc, argv)) < 0)
 					exit(-1);
 				argc -= args;
 				argv += args;
+#else
+					fprintf(stderr, "No TIMRU in Kernel\n");
+					exit(-1);
+#endif
                         	break;
 #endif
 

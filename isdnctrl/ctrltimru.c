@@ -33,10 +33,11 @@
 #include <linux/isdn_timru.h>
 #include <linux/isdn_budget.h>
 
-
+#include "config.h"
 #include "isdnctrl.h"
 #include "ctrlconf.h"
 
+#ifdef HAVE_TIMRU
 /* TimRu - Erweiterung */
 /*
 06.06.97:cal:turnaround_rule(): bei nicht-umkehrbarer Regel mit 0 zurueckkehren
@@ -1120,3 +1121,4 @@ output_budgets(int fd, char *id, int cmd, int firstarg, int argc, char *argv [])
 
 	return(0);
 }
+#endif

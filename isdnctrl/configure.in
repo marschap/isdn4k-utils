@@ -34,6 +34,7 @@ dnl Check for triggercps and ciscok depend on CONFIG_KERNELDIR,
 dnl so AC_FIND_KERNEL must be called before.
 AC_CHECK_TRIGGERCPS
 AC_CHECK_CISCOK
+AC_CHECK_TIMRU
 
 dnl Checks for typedefs, structures, and compiler characteristics.
 
