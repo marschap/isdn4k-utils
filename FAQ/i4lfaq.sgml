@@ -4,7 +4,7 @@
 
 <title>FAQ for isdn4linux
 <author>Matthias Hessler (<tt><htmlurl url="mailto:hessler@isdn4linux.de" name="hessler@isdn4linux.de"></tt>)
-<date>v2.0.29, 29. December 1999
+<date>v2.0.30, 31. December 1999
 <abstract>
 If you are reading this FAQ online, you may consider downloading the whole
 thing, and reading it offline (much cheaper). To download the latest
@@ -744,6 +744,14 @@ available to the developers, and provided a lot of support, resulting in an
 excellent driver. Also, their cards are certified for usage in Germany, see
 question <ref id="country_certified" name="country_certified">.
 
+If you want to buy an active card, then the developers would recommend
+the PCI Server from Eicon. The reason is that it can fax on both channels.
+The AVM B1 works also very well, but can only fax on one channel.
+
+If faxing is important for you, but you don't want to spent the money for an
+active card, then a card with ISAR chipset may work well for you, e.g.
+Sedlbauer Speedfax+ (in Germany you may be able to buy it at Conrads).
+
 <sect1> hardware_external: Does isdn4linux support external terminal adapters?  
 <label id="hardware_external">
 <p>
@@ -946,9 +954,9 @@ course you can always send a patch.
 <label id="hardware_avmb1">
 <p>
 This card supports many special features in its firmware and is very well
-supported by its Linux driver. It's currently the only ISDN card that you
-can use to fax under ISDN4LINUX, as well as the only one which has a CAPI
-2.0 interface. You can get the newest driver from:
+supported by its Linux driver. It's currently one of the only ISDN cards
+that you can use to fax under ISDN4LINUX, as well as the only one which
+has a CAPI 2.0 interface. You can get the newest driver from:
 <url url="ftp://calle.in-berlin.de/pub/linux/avmb1">
 or
 <url url="ftp://ftp.avm.de/cardware/b1/linux/">.
