@@ -1,4 +1,4 @@
-/* $Id: eft_names.c,v 1.2 1999/10/05 21:23:21 he Exp $ */
+/* $Id: eft_names.c,v 1.3 1999/10/06 18:16:22 he Exp $ */
 /*
   Copyright 1998 by Henner Eisen
 
@@ -67,34 +67,6 @@ void eft_free_namelist(int ndirs, struct dirent **namelist)
 }
 
 /*
- * Work around some common bugs of non-eftp4linux eurofile clients.
- */
-#if 0
-void eft_set_case_fix(struct eft * eft, int fix)
-{
-	eft_case_fix = fix;
-	
-}
-
-
-int eft_need_case_fix(struct eft * eft)
-{
-	return eft_case_fix;
-}
-
-
-void eft_set_slash_fix(struct eft * eft, int fix)
-{
-	eft_slash_fix = fix;
-}
-
-
-int eft_need_slash_fix(struct eft * eft)
-{
-	return eft_slash_fix;
-}
-#endif
-/*
  * check whether a dirent case-insensitivly matches g_fname
  */
 static int dent_casecmp(CONST_DIRENT struct dirent * dent)
@@ -128,7 +100,7 @@ void eft_fix_cases(unsigned char * fn)
 	strcpy(g_fname,bn);
 	bn[0] = 0;
 	p=dir;
-#if 0
+#ifdef EFT_NAMES_DEBUG
 	printf( "eft_fix_cases: dir=\"%s\", base=\"%s\"\n", dir, g_fname);
 #endif
 	while( *p ){
@@ -145,14 +117,14 @@ void eft_fix_cases(unsigned char * fn)
 	 */
 	ndirs = scandir(dir, &namelist, dent_casecmp, alphasort);
 	if( ndirs >=1 ){
-#if 0
+#ifdef EFT_NAMES_DEBUG
 		printf( "fixing: dir=\"%s\", base=\"%s\"\n",
 			dir, namelist[0]->d_name);
 #endif
 		strcpy(bn,namelist[0]->d_name);
 		eft_free_namelist(ndirs,namelist);
 	} else {
-#if 0
+#ifdef EFT_NAMES_DEBUG
 		printf( "no case fix found\n");
 #endif
 		*bn = *g_fname;
@@ -255,11 +227,7 @@ int eft_file_is_tabu( unsigned char * name ){
 	char *tabu_list[]={ "*core", "*passwd", NULL }, **f=tabu_list;
 
 	while( *f != NULL ){
-#if 0
-		if( strcmp(*f,name) == 0 ) return 1;
-#else
 		if( fnmatch(*f,name,0) != FNM_NOMATCH ) return 1;
-#endif
 		f++;
 	}
 	return 0;
@@ -367,7 +335,7 @@ unsigned char * eft_fn_by_tn(unsigned char * fn, unsigned char * tn,
 		}
 		if( case_fix ){
 			eft_fix_cases(fn);
-#if 0
+#ifdef EFT_NAMES_DEBUG
 			printf("fixed cases, file name now %s\n",tn);
 #endif
 		}
@@ -513,7 +481,7 @@ int eft_file_is_hidden(const char * fn)
 	int hlen = strlen(hide_prefix);
 	struct stat s[1];
 	int old_errno = errno;
-#if 0
+#ifdef EFT_NAMES_DEBUG
 	printf("checking for existence of %s\n",buf);
 #endif	
 	if( !strncmp(fn,EFT_METAFILE_PREFIX,6) ){return 1;}
@@ -607,7 +575,7 @@ char * eft_lookup_tname(char *tn, const char *fn)
 char * eft_lookup_fname(char *fn, const char *tn, int case_fix, int dos)
 {
 	char * ret;
-	/* XXX use different pürefixes for DOS-constraint mapping*/
+	/* XXX use different prefixes for DOS-constraint mapping*/
 
 #ifdef EFT_ADD_LINK
         ret = eft_lookup_entry(fn, tn, tn_prefix, MAXPATHLEN, case_fix);

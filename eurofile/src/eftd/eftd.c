@@ -1,4 +1,4 @@
-/* $Id: eftd.c,v 1.3 1999/10/05 21:23:22 he Exp $ */
+/* $Id: eftd.c,v 1.4 1999/10/06 18:16:23 he Exp $ */
 /*
   Copyright 1998 by Henner Eisen
 
@@ -119,12 +119,14 @@ static int eft_check_user( struct eft *eft, char* user, char* pass, char *isdn_n
 
 	if( ! verified ){
 		setreuid(-1,-1); /* nobody */
+		setregid(-1,-1);
 		tdu_printf(TDU_LOG_WARN, "autentification of user \"%s\" failed.", user);   
 		/* seems better then TDU_RE_WRONG_ID, but EFT_RE_ID_REJECTED
 		 * needs to be appended by caller */
 		  return TDU_RE_OTHER_REASON;	
 	}
 	setreuid(geteuid(),geteuid());
+	setregid(getegid(),getegid());
 	tdu_printf(TDU_LOG_LOG,"eftd(wu-auth): user \"%s\" logged in.\n",user);
 	/*
 	 * passing this additional info my means global variables is ugly but
@@ -230,9 +232,8 @@ static int eft_setup_user(struct eft * eft)
 #if 0	/*
 	 * FIXME: for stuff like sending messages, which can only be
 	 * execuded after access regime is established, we need to
-	 * implement a hook function tdu state machine which is called
-	 * after access regime is
-	 * established.
+	 * implement a hook function in the tdu state machine which
+	 * is called after access regime is established.
 	 */
 	eft_msg(eft,autherrmsg);
 #endif
@@ -773,6 +774,10 @@ int main(int argc, char** argv)
 		eft_server_mainloop(eft);
 		tdu_printf(TDU_LOG_AP2, "SES: END    duration=%.f\n",
 			   difftime(time(NULL),session_start));
+#if 0		
+		/* Core dump test. Dumping will not work after setre[ug]id */
+		*((int *) 0) = 0;
+#endif
 		tdu_printf(TDU_LOG_LOG, "eftd: waiting for connection to "
 			   "terminate\n");
 		if(close(ns)) perror("close()");

@@ -1,4 +1,4 @@
-/* $Id: CHANGES,v 1.6 1999/10/05 21:23:20 he Exp $
+/* $Id: CHANGES,v 1.7 1999/10/06 18:16:21 he Exp $
 #  Change log for eftp4Linux
 #
 # [new] means 'new feature added'
@@ -18,9 +18,17 @@
 #
 
 $Log: CHANGES,v $
+Revision 1.7  1999/10/06 18:16:21  he
+removed some dead code and pipe proof command line reading (eftp)
+
+
+- [imp] eftp.c: new cmd read implementation. Should now work under any
+	circumstances such as when reading from a pipe. readline()
+	support can now also be disabled by command line option -r.
+	
+
 Revision 1.6  1999/10/05 21:23:20  he
 glibc2 compatibility and misc other cleanups
-
 
 - [chg] src/eft* #include <stdlib.h> where needed for realpath()
 	(for glibc2 support)

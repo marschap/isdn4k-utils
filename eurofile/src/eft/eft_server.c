@@ -1,4 +1,4 @@
-/* $Id: eft_server.c,v 1.2 1999/10/05 21:23:21 he Exp $ */
+/* $Id: eft_server.c,v 1.3 1999/10/06 18:16:22 he Exp $ */
 /*
   Copyright 1998 by Henner Eisen
 
@@ -145,12 +145,14 @@ static int assoc_ind( struct tdu_user *usr, struct tdu_param *par)
 	respar->resp_timeout = 15;
 	respar->called_len = LIMIT(strlen(eft->address), TDU_PLEN_ADDR);
 	memcpy( respar->called_addr, eft->address, respar->called_len);
-#if 0
-	respar->udata_len = -1;
-#else
-	respar->udata_len = LIMIT(strlen(eft_signature), TDU_PLEN_UDATA);
-	memcpy( respar->udata, eft_signature, respar->udata_len);
-#endif
+
+	if(! eft_signature ){
+		respar->udata_len = -1;
+	} else {
+		respar->udata_len = LIMIT(strlen(eft_signature), TDU_PLEN_UDATA);
+		memcpy( respar->udata, eft_signature, respar->udata_len);
+	}
+
 	if( par->reason ) {
 		tdu_printf(TDU_LOG_AP1,"REJ: ASSOC  user=%s from=%s\n",
 		   user, eft_peer_phone(eft)); 
@@ -574,6 +576,3 @@ void eft_set_auth(struct eft * eft,
 	eft->setup_user = setup_user ? *setup_user : NULL;
 	eft->cleanup_user = cleanup_user ? *cleanup_user : NULL;
 }
-
-
-

@@ -1,4 +1,4 @@
-/* $Id: eft_client.c,v 1.1 1999/06/30 17:18:12 he Exp $ */
+/* $Id: eft_client.c,v 1.2 1999/10/06 18:16:22 he Exp $ */
 /*
   Copyright 1998 by Henner Eisen
 
@@ -121,7 +121,7 @@ int eft_xdir_txt(struct eft * eft, unsigned char * pattern)
 	eft->fh->fh_type=0;
 	fd2 = eft_get_tmp(eft);
 #if 0
-	/* This #ifdef branch for testing xdir fallback */
+	/* This #if branch for testing xdir fallback */
 	ret = eft_dir_fd(eft, fd2, pattern, 0);
 #else
 	ret = eft_dir_fd(eft, fd2, pattern, 1);
@@ -363,13 +363,13 @@ static int eft_associate(struct eft * eft, unsigned char * ident )
 	}
 	par.req_ident = TDU_BIT_REQ_ID;
 	par.req_ident = 0;
-#if 0
-	printf("NO SIGNATURE !!!!!!\n");
-	par.udata_len = -1;
-#else
-	par.udata_len = LIMIT(strlen(eft_signature), TDU_PLEN_UDATA);
-	memcpy( par.udata, eft_signature, par.udata_len);
-#endif
+
+	if(! eft_signature){
+		par.udata_len = -1;
+	} else {
+		par.udata_len = LIMIT(strlen(eft_signature), TDU_PLEN_UDATA);
+		memcpy( par.udata, eft_signature, par.udata_len);
+	}
 	tdu_assoc_req(fsm,&par);
 	return tdu_wait_for_not_associating( fsm, 0 );
 }

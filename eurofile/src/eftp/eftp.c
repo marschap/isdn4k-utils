@@ -1,4 +1,4 @@
-/* $Id: eftp.c,v 1.4 1999/10/05 21:23:22 he Exp $ */
+/* $Id: eftp.c,v 1.5 1999/10/06 18:16:24 he Exp $ */
 /*
   Copyright 1997 by Henner Eisen
 
@@ -135,7 +135,7 @@
 #define X25_MAX_CUD_LEN 128
 #endif
 
-
+#undef PIPE_DEBUG
 #ifdef CONFIG_EFTP_READLINE
 
 #include <readline/readline.h>
@@ -180,7 +180,7 @@ static int multi_prompt_yes(char* cmdname, char* filename)
 int process_cmd_line (struct eft *eft, unsigned char *buf)
 {
 	static int mget_case_ignore = 0;
-	char **pp = (char **) & buf, *c, *arg1, *arg2, *obuf=buf, *cmd;
+	char **pp = (char **) & buf, *c, *arg1, *arg2, *cmd;
 
 	int ret = 1, count, r;
 	
@@ -207,6 +207,9 @@ int process_cmd_line (struct eft *eft, unsigned char *buf)
 		ret = eft_xdir_txt ( eft, arg1 );
 	} else if( strcmp(c, "msg") == 0 ){
 		if( (arg1 == NULL) || (*arg1 == 0) ) {
+			char obuf[255];
+			/* FIXME: this might block as it does not use the
+			 * eft select loop */
 			eft_prompt("EFT-Message: ");
 			count = read( STDIN_FILENO, obuf, 254);
 			if ( count < 0 ) {
@@ -413,9 +416,9 @@ int process_cmd_line (struct eft *eft, unsigned char *buf)
 
 
 static struct eft *eft;
+static int disconnect_please = 0;
 
 #ifdef CONFIG_EFTP_READLINE
-static int disconnect_please = 0;
 
 static void readline_callback_handler(void)
 {
@@ -449,10 +452,92 @@ static void readline_callback_handler(void)
 }
 #endif
 
+#define MAX_CALLBACK_LINE_SIZE 1026
+char pipe_callback_line_buf[MAX_CALLBACK_LINE_SIZE];
+int interactive = 0, pipe_buf_pos = 0;
+
+static void pipe_callback_read(void)
+{
+	int r, l, size, offset, line_complete=0;
+	char *start, *eor=NULL;
+
+	l = read(STDIN_FILENO, pipe_callback_line_buf+pipe_buf_pos,
+		 MAX_CALLBACK_LINE_SIZE-pipe_buf_pos-1);
+	pipe_callback_line_buf[MAX_CALLBACK_LINE_SIZE-1]=0;
+	pipe_callback_line_buf[pipe_buf_pos+l]=0;
+#ifdef PIPE_DEBUG
+	fprintf(stderr,"%d chars read\n",l);
+	fprintf(stderr,"read buffer is: '%s'\n",pipe_callback_line_buf+pipe_buf_pos);
+#endif
+	if( l<0 ) goto disconnect;
+	if( (l==0) ){
+#ifdef PIPE_DEBUG
+		fprintf(stderr,"EOF condition detected\n");
+#endif
+		if (pipe_buf_pos==0) goto disconnect;
+		line_complete=1;
+#ifdef PIPE_DEBUG
+		fprintf(stderr,"command line terminated by EOF\n");
+#endif
+	}
+	pipe_buf_pos += l;
+	eor = pipe_callback_line_buf;
+	if( l>0 ){
+		start = strsep(&eor,"\n\r");
+		if( !eor ){
+#ifdef PIPE_DEBUG
+			fprintf(stderr,"no line end found, ");
+			fprintf(stderr,"current buffer is: '%s'\n",pipe_callback_line_buf);
+#endif
+			if( pipe_buf_pos >= (MAX_CALLBACK_LINE_SIZE-1) ){
+#ifdef PIPE_DEBUG
+				fprintf(stderr,"eftp command line too long\n");
+#endif
+				pipe_buf_pos=0;
+			}
+			return;
+		} else {
+			line_complete = 1;
+#ifdef PIPE_DEBUG
+			fprintf(stderr,"line end detected\n");
+			if(*eor) fprintf(stderr,"there are still more commands in the buffer:'%s'\n",eor);
+#endif
+		}
+	}
+	if(line_complete){
+#ifdef PIPE_DEBUG
+		fprintf(stderr,"executing command line: '%s'\n",
+			pipe_callback_line_buf);
+#endif
+		if( (r=process_cmd_line(eft, pipe_callback_line_buf)) < 0 ){
+			if( r < -1) 
+#ifdef PIPE_DEBUG
+				fprintf(stderr,"cmd execution error %d<0\n",r);
+#endif
+			goto disconnect;
+		}
+	}
+	offset = ( eor - pipe_callback_line_buf);
+	pipe_buf_pos -= offset;
+	if( l==0 ) goto disconnect;
+	size = MAX_CALLBACK_LINE_SIZE - offset;
+	memmove(pipe_callback_line_buf, eor, size);
+#ifdef PIPE_DEBUG
+	fprintf(stderr,"shifted: buffer is now: '%s'\n",pipe_callback_line_buf);
+#endif
+	
+	if(! pipe_buf_pos && interactive) eft_prompt("eftp> ");
+
+	return;
+disconnect:
+	disconnect_please = 1;
+	return;
+}
+
 static void pr_usage(FILE * f, char *cmd)
 {
 	fprintf(f,"usage: %s eftp [ -i ISDN_NO | -x X25_ADDRESS  ]"
-		       " [ -u USER[/PASSWORD] ] [-p] [-h]\n", cmd);
+		       " [ -u USER[/PASSWORD] ] [-p] [-h] [-r]\n", cmd);
 }
 
 static void show_help(char *cmd)
@@ -463,6 +548,7 @@ static void show_help(char *cmd)
 	       "\t-u\t user name used to login on server. A password may\n"
 	       "\t\t be appended, separated by a '/' character\n"
 	       "\t-p\t inhibit prompting for a password\n"
+	       "\t-r\t inhibit use of readline command line editing\n"
 	       "\t-h\t show help message\n"
 		);
 }
@@ -475,7 +561,7 @@ int main(int argc, char **argv)
  */
 	struct sockaddr_x25 x25bind, x25connect;
 	struct x25_route_struct x25_route;
-	int s, count, on=1, selval, prompt_for_pw = 1;
+	int s, count, on=1, selval, prompt_for_pw = 1, use_readline=1;
 	unsigned char called[TDU_PLEN_ADDR+1], udata[TDU_PLEN_UDATA+1];
 	uid_t ruid, euid;
 
@@ -495,6 +581,13 @@ int main(int argc, char **argv)
                                500   /* wait up to 5 seconds on close */ };
 	sigset_t sig_pipe;
 
+#ifdef CONFIG_EFTP_READLINE
+	rl_readline_name = "eftp";
+	rl_inhibit_completion = 1;
+#else
+	use_readline = 0;
+#endif
+
         sigemptyset(&sig_pipe);
         sigaddset(&sig_pipe, SIGPIPE);
 
@@ -510,7 +603,7 @@ int main(int argc, char **argv)
 		exit(1);
 	}
 
-	while ((c = getopt(argc, argv, "i:x:u:ph")) != EOF) {
+	while ((c = getopt(argc, argv, "i:x:u:prh")) != EOF) {
 		switch (c) {
 		case 'u':
 			user = optarg;
@@ -523,6 +616,9 @@ int main(int argc, char **argv)
 			break;
 		case 'p':
 			prompt_for_pw=0;
+			break;
+		case 'r':
+			use_readline = 0;
 			break;
 		case 'h':
 			show_help(arg0);
@@ -838,61 +934,41 @@ int main(int argc, char **argv)
 	/*
 	 * Now the main loop processing commands from stdin
 	 */
-#ifdef CONFIG_EFTP_READLINE
-        
-	rl_readline_name = "eftp";
-	rl_inhibit_completion = 1;
 
-        if(isatty(STDIN_FILENO)) {
-		rl_callback_handler_install("eftp> ",readline_callback_handler);
-		while ( !disconnect_please && eft_is_up(eft) ) {
-			FD_ZERO(&rfds);
-			FD_SET(STDIN_FILENO, &rfds);
-			selval = eft_select(eft, STDIN_FILENO+1,
-					    &rfds, NULL, NULL, NULL);
-			if( selval < 0 ) {
-				disconnect_please = 1;
-                        } else {
-				rl_callback_read_char();
-			}
-		}
-	        rl_callback_handler_remove();
-	} else        /* use the old style loop if stdin is not a tty */        
+	if(isatty(STDIN_FILENO)) interactive = 1;
+	if(interactive){
+		if(use_readline){
+#ifdef CONFIG_EFTP_READLINE
+			rl_callback_handler_install("eftp> ",
+						    readline_callback_handler);
 #endif
-    {
-	while ( eft_is_up(eft) ) {
+		} else {
+			eft_prompt("eftp> ");
+		}
+	}
+	while ( !disconnect_please && eft_is_up(eft) ) {
 		FD_ZERO(&rfds);
 		FD_SET(STDIN_FILENO, &rfds);
-		eft_prompt("eftp> ");
 		selval = eft_select(eft, STDIN_FILENO+1,
 				    &rfds, NULL, NULL, NULL);
-		fprintf(stderr,"aft_sel\n");
-		if( selval < 0 ) goto disconnect;
-#ifdef HAVE_GETDELIM
-		/* XXX replace this by a non-blocking version
-		    getline()/getdelim() is a GNU extension:
-		    it reads whole lines like fgets(), but it's safer.
-		*/
-		count = getdelim( &buf, &buflen, '\n' , stdin );
-#else
-		/* In case you don't have getdelim(). */
-		count = fgets( buf, buflen, stdin )? strlen(buf) : -1;
-#endif
-		if ( count < 0 ) {
-			perror("while reading cmd line, count<0");
-			goto disconnect;
+		if( selval < 0 ) {
+			disconnect_please = 1;
 		} else {
-			int r;
-			if( (r=process_cmd_line(eft, buf)) < 0 ){
-				if(r < -1) fprintf(stderr,"cmd execution error %d<0\n",r);
-				goto disconnect;
+			if(interactive && use_readline){
+#ifdef CONFIG_EFTP_READLINE
+				rl_callback_read_char();
+#endif
+			} else {
+				pipe_callback_read();
 			}
 		}
 	}
-        /* ??? fclose(my_stdin) ??? */
-    }
+	if( interactive && use_readline ){
+#ifdef CONFIG_EFTP_READLINE
+		rl_callback_handler_remove();
+#endif
+	}
 
-disconnect:
 	printf("eftp: requesting eft_disconnect()\n");
 	eft_disconnect( eft );
 	/* XXX why this? Without sleep, disconnect processing does not

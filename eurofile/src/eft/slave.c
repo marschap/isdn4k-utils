@@ -1,4 +1,4 @@
-/* $Id: slave.c,v 1.1 1999/06/30 17:18:38 he Exp $ */
+/* $Id: slave.c,v 1.2 1999/10/06 18:16:22 he Exp $ */
 /*
   Copyright 1997 by Henner Eisen
 
@@ -139,9 +139,6 @@ int tdu_load_dir_received(struct tdu_fsm * fsm, struct tdu_buf * tb,
 		goto error;
 	}
 	par.par.transfer = &tp;
-#if 0
-	par.res.stream = &st;
-#endif
 	if( ! func(fsm->user, &par) ){
 		/* request was allowd to be performed */
 		ret = tdu_send_response_pos( fsm, load_dir); 

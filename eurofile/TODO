@@ -1,4 +1,4 @@
-$Id: TODO,v 1.5 1999/10/05 21:23:20 he Exp $
+$Id: TODO,v 1.6 1999/10/06 18:16:21 he Exp $
 
 
 Important:
@@ -15,7 +15,6 @@ Important:
 Not showstoppers, but should be done before a possible stable release:
 
 	- 'make install', with reasonable default config files.
-	- remove old execve()/script related stuff from setup/autoconf
 	- more casefix testing with new mangeling method
 	- selectively and automatically (for file systems not supporting
 	  symlinks) disallow symlink-based transfer name database
@@ -23,12 +22,11 @@ Not showstoppers, but should be done before a possible stable release:
 	- certain disconnect scenarios result in error/warning
           messages which are harmless, but might confuse novice users.
 	  (in particular, release/wait for release seems to be buggy)
-	- make eftp command input working when stdin is a pipe.
 	- scan all source files for FIXME/XXX/#if 0 labels and
 	  try cleaning this up.
 	- improve autoconf readline support (support non-default 
           locations of libreadline and lib[n]curses).
-	- autoconf is somewhat ugly as several configuration variable
+	- autoconf is somewhat ugly as several configuration variables
 	  are passed to the source files by different channels
 	  (config.h, -D option) and name schemes are inconsistent.
 	- improved event logging (with error indications and

@@ -1,4 +1,4 @@
-/* $Id: eft_dir.c,v 1.2 1999/10/05 21:23:21 he Exp $ */
+/* $Id: eft_dir.c,v 1.3 1999/10/06 18:16:22 he Exp $ */
 /*
   Copyright 1998 by Henner Eisen
 
@@ -179,8 +179,8 @@ int eft_valid_dent_d(CONST_DIRENT struct dirent * dent)
 static int eft_dir_is_hidden(char * dname, int strict_tree)
 {
 	
-#if 0
-	fprintf(stderr,"eft_dir_is_hidden: checking %s\n",dname);
+#ifdef EFT_DIR_DEBUG
+	printf("eft_dir_is_hidden: checking %s\n",dname);
 #endif
 	if( 
 		(strcmp( dname, eft_flat_dir_name) == 0) ||
@@ -295,7 +295,7 @@ void eft_update_db(const char * dname)
 	 * is really necessary, i.e. by
 	 * checking last modification time of the directory
 	 */
-#if 0
+#ifdef EFT_DIR_DEBUG
         printf("scanning dir %s for ordered list of tkey symlinks\n",dname);
 #endif
 	ndirs = scandir(dname, &namelist, eft_valid_dent_s_k,
@@ -313,7 +313,7 @@ void eft_update_db(const char * dname)
 		}
 		eft_free_namelist(ndirs,namelist);
 	}
-#if 0	
+#ifdef EFT_DIR_DEBUG	
         printf("scanning dir %s for non-tkey regular files\n",dname);
 #endif
 	ndirs = scandir(dname, &namelist, eft_invalid_dent_r_k,	alphasort);
@@ -491,8 +491,8 @@ static char * eft_get_fstore_ref(char *ref, const char * dir_path, int strict, c
 			perror("eft_get_fs_ref:chdir");
 			goto error;
 		};
-#if 0
-		fprintf(stderr, "scanning dir \"%s\" for \"%s\"\n", dir,p+1);
+#ifdef EFT_DIR_DEBUG
+		fprintf("scanning dir \"%s\" for \"%s\"\n", dir,p+1);
 #endif
 		g_dir=".";
 		ndirs = scandir(dir, &namelist, eft_valid_dent_d, alphasort);
@@ -500,23 +500,23 @@ static char * eft_get_fstore_ref(char *ref, const char * dir_path, int strict, c
 			perror("eft_get_fstore_ref:scandir()");
 			goto error;
 		}
-#if 0
+#ifdef EFT_DIR_DEBUG
 		fprintf(stderr, "%d dirs found in \"%s\"\n", ndirs,dir);
 #endif
 		j=0;
 		for(i=0; i<ndirs; i++){
 			if(eft_dir_is_hidden(namelist[i]->d_name,strict)){
-#if 0
-			fprintf(stderr, "d_name \"%s\" is hidden %d \n", namelist[i]->d_name, j);
+#ifdef EFT_DIR_DEBUG
+			printf("d_name \"%s\" is hidden %d \n", namelist[i]->d_name, j);
 #endif
 				continue;
 			}
-#if 0
-			fprintf(stderr, "comparing d_name \"%s\" with \"%s\" %d \n", namelist[i]->d_name, p+1,j);
+#ifdef EFT_DIR_DEBUG
+			printf("comparing d_name \"%s\" with \"%s\" %d \n", namelist[i]->d_name, p+1,j);
 #endif
 			if( (strcmp( namelist[i]->d_name, p+1) == 0) ){
-#if 0
-				fprintf(stderr, "found entry \"%s\"\n", p+1);
+#ifdef EFT_DIR_DEBUG
+				printf("found entry \"%s\"\n", p+1);
 #endif
 				r[0] = 'A'+(j/26);
 				r[1] = 'A'+(j%26);
@@ -526,14 +526,14 @@ static char * eft_get_fstore_ref(char *ref, const char * dir_path, int strict, c
 		};
 		eft_free_namelist(ndirs,namelist);
 		if ( ! *r ){
-#if 0
-			fprintf(stderr, "eft_get_fstore_name(): internal error"
+#ifdef EFT_DIR_DEBUG
+			printf("eft_get_fstore_name(): internal error"
 				": \"%s\" not in \"%s\"\n", p+1,dir);
 #endif
 			goto error;
 		}
-#if 0
-		fprintf(stderr,"\"%s\" in \"%s\" has reference \"%s\"\n",p+1,dir,r);
+#ifdef EFT_DIR_DEBUG
+		printf("\"%s\" in \"%s\" has reference \"%s\"\n",p+1,dir,r);
 #endif
 	}
 
@@ -606,7 +606,7 @@ int eft_store_slist(struct eft * eft, const char * dname
 				/* namelist contains valid fstore names only*/
 				path = namelist[i]->d_name;
 			}
-#if 0
+#ifdef EFT_DIR_DEBUG
 			printf( "%s%c%c %s\r\n", prefix,
 				'A'+(j/26), 'A'+(j%26), path);
 #endif

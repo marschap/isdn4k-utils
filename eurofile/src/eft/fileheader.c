@@ -1,4 +1,4 @@
-/* $Id: fileheader.c,v 1.1 1999/06/30 17:18:27 he Exp $ */
+/* $Id: fileheader.c,v 1.2 1999/10/06 18:16:22 he Exp $ */
 /*
   Copyright 1998 by Henner Eisen
 
@@ -286,10 +286,11 @@ int tdu_parse_fh(struct fileheader_par * par, struct tdu_buf * tb)
 		tdu_printf( TDU_LOG_ERR, "tdu_parse_fh: tb overflow\n");
 		return -TDU_RE_SYNTAX_ERROR;
 	}
-	tdu_printf( TDU_LOG_DBG, "[%d](", len );
+	tdu_printf( TDU_LOG_DBG|TDU_LOG_FH, "[%d](", len );
 	tb->pn = tb->data;
 
 	while( tb->data < fh_tail ) {
+		unsigned char * this = tb->data;
 		pi = tdu_get_next_pi(tb);
 		tdu_printf(TDU_LOG_DBG, "parsing parameter %d\n",pi);
 		if( pi < 0 ) return -pi;
@@ -323,19 +324,14 @@ int tdu_parse_fh(struct fileheader_par * par, struct tdu_buf * tb)
 			break;
 		default:
 			/* FIXME: parse more parameters */
-#if 0
-			tdu_printf(TDU_LOG_LOG, "tdu_parse_fh(): skipping unexpected"
+			tdu_printf(TDU_LOG_DBG, "tdu_parse_fh(): skipping unexpected"
 				   " parameter '%s' ignored\n",
 				   tdu_param_descr(pi) );
-#endif
-#if 0
-			tdu_print_file_par(TDU_LOG_FH, tb->pi, fh_tail,4);
-#else
-#endif
 			tb->data = tb->pn;
 		};
+		tdu_print_file_par(TDU_LOG_FH, this, fh_tail,4);
 	}
-	tdu_printf( TDU_LOG_DBG, ")");
+	tdu_printf( TDU_LOG_DBG|TDU_LOG_FH, ")");
 	return (tb->data - start);
 }
 
