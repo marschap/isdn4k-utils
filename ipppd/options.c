@@ -17,7 +17,7 @@
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-char options_rcsid[] = "$Id: options.c,v 1.22 2002/07/06 00:34:08 keil Exp $";
+char options_rcsid[] = "$Id: options.c,v 1.23 2003/01/20 02:23:28 keil Exp $";
 
 #include <stdio.h>
 #include <errno.h>
@@ -479,26 +479,25 @@ static struct cmd {
 #define IMPLEMENTATION ""
 #endif
 
-static char *usage_string = "\
-ipppd version %s patch level %d%s\n\
-Usage: %s [ options ], where options are:\n\
-\t<device>	Communicate over the named device\n\
+static char *usage_string = "ipppd version %s patch level %d%s\n"
+"Usage: %s [ options ], where options are:\n"
+"\t<device>	Communicate over the named device\n"
 #ifdef INCLUDE_OBSOLETE_FEATURES
-\tcrtscts		Use hardware RTS/CTS flow control\n\
-\t<speed>		Set the baud rate to <speed>\n\
-\tmodem		Use modem control lines\n\
+"\tcrtscts		Use hardware RTS/CTS flow control\n"
+"\t<speed>		Set the baud rate to <speed>\n"
+"\tmodem		Use modem control lines\n"
 #endif
-\t<loc>:<rem>	Set the local and/or remote interface IP\n\
-\t\taddresses.  (you also may use the option 'useifip' to get IPs).\n\
-\tasyncmap <n>	Set the desired async map to hex <n>\n\
-\tauth		Require authentication from peer\n\
-\tconnect <p>     Invoke shell command <p> to set up the serial line\n\
-\tdefaultroute	Add default route through interface\n\
-\tfile <f>	Take options from file <f>\n\
-\tmru <n>		Set MRU value to <n> for negotiation\n\
-\tnetmask <n>	Set interface netmask to <n>\n\
-See ipppd(8) for more options.\n\
-";
+"\t<loc>:<rem>	Set the local and/or remote interface IP\n"
+"\t\taddresses.  (you also may use the option 'useifip' to get IPs).\n"
+"\tasyncmap <n>	Set the desired async map to hex <n>\n"
+"\tauth		Require authentication from peer\n"
+"\tconnect <p>     Invoke shell command <p> to set up the serial line\n"
+"\tdefaultroute	Add default route through interface\n"
+"\tfile <f>	Take options from file <f>\n"
+"\tmru <n>		Set MRU value to <n> for negotiation\n"
+"\tnetmask <n>	Set interface netmask to <n>\n"
+"See ipppd(8) for more options.\n"
+;
 
 static char *current_option;   /* the name of the option being parsed */
 
