@@ -17,7 +17,7 @@
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-char options_rcsid[] = "$Id: options.c,v 1.21 2002/07/06 00:12:26 keil Exp $";
+char options_rcsid[] = "$Id: options.c,v 1.22 2002/07/06 00:34:08 keil Exp $";
 
 #include <stdio.h>
 #include <errno.h>
@@ -93,6 +93,8 @@ int	lockflag = 0;		/* Create lock file to lock the serial dev */
 int	nodetach = 0;		/* Don't detach from controlling tty */
 char user[MAXNAMELEN];	/* Username for PAP */
 char passwd[MAXSECRETLEN];	/* Password for PAP */
+int	ask_passwd = 0;		/* Ask user for password */
+int	fdpasswd = 0;		/* Password via filedescriptor */
 int	auth_required = 0;	/* Peer is required to authenticate */
 int	defaultroute = 0;	/* assign default route through interface */
 int hostroute = 1;
@@ -201,6 +203,9 @@ static int setname __P((int,char **));
 static int setuser __P((int,char **));
 static int setremote __P((int,char **));
 static int setauth __P((int));
+static int setaskpw __P((int));
+static int unsetaskpw __P((int));
+static int setfdpw __P((int,char **));
 static int setnoauth __P((int));
 static int readfile __P((int,char **));
 static int pidfile __P((int,char **));
@@ -368,6 +373,10 @@ static struct cmd {
     {"user", 1, setuser},      /* Set name for auth with peer */
     {"usehostname", 0, setusehostname},	/* Must use hostname for auth. */
     {"remotename", 1, setremote}, /* Set remote name for authentication */
+    {"askpassword", 0, setaskpw}, /* Ask user password on start */
+    {"noaskpassword", 0, unsetaskpw}, /* Ask user password on start */
+    {"-askpassword", 0, unsetaskpw}, /* Ask user password on start */
+    {"passwordfd", 1, setfdpw}, /* Read password from fd */
     {"auth", 0, setauth},	/* Require authentication from peer */
     {"noauth", 0, setnoauth},  /* Don't require peer to authenticate */
     {"file", 1, readfile},	/* Take options from a file */
@@ -1932,6 +1941,23 @@ static int setremote(int slot,char **argv)
     strncpy(remote_name, argv[0], MAXNAMELEN);
     remote_name[MAXNAMELEN-1] = 0;
     return 1;
+}
+
+static int setaskpw(int slot)
+{
+    ask_passwd = 1;
+    return 1;
+}
+
+static int unsetaskpw(int slot)
+{
+    ask_passwd = 0;
+    return 1;
+}
+
+static int setfdpw(int slot,char **argv)
+{
+    return int_option(*argv, &fdpasswd);
 }
 
 static int setauth(int slot)

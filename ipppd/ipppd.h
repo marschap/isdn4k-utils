@@ -18,7 +18,7 @@
  * IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Id: ipppd.h,v 1.21 2002/07/06 00:11:18 keil Exp $
+ * $Id: ipppd.h,v 1.22 2002/07/06 00:34:08 keil Exp $
  */
 
 /*
@@ -198,6 +198,8 @@ extern char	*connector;	/* Script to establish physical link */
 extern char	*disconnector;	/* Script to disestablish physical link */
 extern char	user[];		/* Username for PAP */
 extern char	passwd[];	/* Password for PAP */
+extern int	ask_passwd;	/* Ask user for password */
+extern int	fdpasswd;	/* Password via filedescriptor */
 extern int	auth_required;	/* Peer is required to authenticate */
 extern int	proxyarp;	/* Set up proxy ARP entry for peer */
 extern int	persist;	/* Reopen link after it goes down */
