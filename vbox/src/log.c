@@ -1,5 +1,5 @@
 /*
-** $Id: log.c,v 1.6 1997/10/22 20:47:07 fritz Exp $
+** $Id: log.c,v 1.7 2002/03/11 16:23:51 paul Exp $
 **
 ** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
 */
@@ -125,7 +125,7 @@ void log_line(long level, char *fmt, ...)
                         
 			if ((timel = localtime(&timec))) {
 				if (strftime(timeline, 20, "%d-%b %H:%M:%S", timel) != 15) {
-					strcpy(timeline, "??-??? ??:??:??");
+					strcpy(timeline, "??" "-??" "? ??" ":??" ":??");
 				}
 			}
 
