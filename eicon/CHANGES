@@ -1,4 +1,7 @@
-$Id: CHANGES,v 1.4 2000/06/07 21:08:35 armin Exp $
+$Id: CHANGES,v 1.5 2000/07/08 14:18:52 armin Exp $
+
+V2.2 - 2000-07-08 - Capable for 2.4 devfs.
+                    ("/dev/isdnctrl" -> "/dev/isdn/isdnctrl")
 
 V2.1 - 2000-06-07 - Fixed OAD, OSA and SPID parameter settings.
                     Thanks to Brian Moran.

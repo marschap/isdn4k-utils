@@ -100,6 +100,7 @@ int main( int argc, char *argv[] )
     bzero(&card, sizeof(dia_card_t));
 
     printf("divaload: Firmware loader for Eicon DIVA Server ISDN adapters\n");
+    if ((dev_id = open(DIVAS_DEVICE_DFS, O_RDONLY, 0)) < 0)
     if ((dev_id = open(DIVAS_DEVICE, O_RDONLY, 0)) == -1)
     {
         fprintf(stderr, "Couldn't open %s\n", DIVAS_DEVICE);

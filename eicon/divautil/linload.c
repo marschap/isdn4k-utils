@@ -79,6 +79,7 @@ int DivaALoad(char *dsp_name, dia_config_t *options, dia_card_t *card, char *msg
 	start.card_id = options->card_id;
 
     /* open the Divas device */
+    if ((loadfd = open(DIVAS_DEVICE_DFS,  O_RDONLY, 0)) < 0)
     if ((loadfd = open(DIVAS_DEVICE,  O_RDONLY, 0)) == -1)
     {
         sprintf(msg,DIVAS_DEVICE);
@@ -240,6 +241,7 @@ int DivaALoad(char *dsp_name, dia_config_t *options, dia_card_t *card, char *msg
 		}
 
     /* open the Divas device */
+    if ((loadfd = open(DIVAS_DEVICE_DFS, O_RDONLY, 0)) < 0)
     if ((loadfd = open(DIVAS_DEVICE, O_RDONLY, 0)) == -1)
     {
         sprintf(msg,DIVAS_DEVICE);

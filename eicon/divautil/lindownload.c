@@ -825,6 +825,7 @@ int download(char *block, dword size, int code)
     load.card_id = card_id;
 
     /* open the Divas device */
+	if ((fd = open(DIVAS_DEVICE_DFS, O_RDONLY, 0)) < 0)
 	if ((fd = open(DIVAS_DEVICE, O_RDONLY, 0)) == -1)
 	{
 		perror("Error opening DIVA Server device");

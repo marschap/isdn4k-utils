@@ -699,6 +699,7 @@ int     main(int argc, char *argv[])
 
     /* open the driver */
 
+    if ((log_fd = open(DIVAS_DEVICE_DFS, O_RDONLY)) < 0)
     if ((log_fd = open(DIVAS_DEVICE, O_RDONLY)) == -1)
     {
         perror("divalogd: open of log device");

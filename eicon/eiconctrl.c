@@ -1,4 +1,4 @@
-/* $Id: eiconctrl.c,v 1.19 2000/06/12 12:29:06 armin Exp $
+/* $Id: eiconctrl.c,v 1.20 2000/07/08 14:18:52 armin Exp $
  *
  * Eicon-ISDN driver for Linux. (Control-Utility)
  *
@@ -21,6 +21,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA. 
  *
  * $Log: eiconctrl.c,v $
+ * Revision 1.20  2000/07/08 14:18:52  armin
+ * Changes for devfs.
+ *
  * Revision 1.19  2000/06/12 12:29:06  armin
  * removed compiler warnings.
  *
@@ -208,7 +211,7 @@ char *spid_state[] =
 __u16 xlog(FILE * stream,void * buffer);
 
 void eiconctrl_usage() {
-  fprintf(stderr,"Eiconctrl Utility Version 2.1                      (c) 2000 Cytronics & Melware\n");
+  fprintf(stderr,"Eiconctrl Utility Version 2.2                      (c) 2000 Cytronics & Melware\n");
   fprintf(stderr,"usage: %s add <DriverID> <membase> <irq>              (add card)\n",cmd);
   fprintf(stderr,"   or: %s [-d <DriverID>] membase [membase-addr]      (get/set memaddr)\n",cmd);
   fprintf(stderr,"   or: %s [-d <DriverID>] irq   [irq-nr]              (get/set irq)\n",cmd);
@@ -1390,7 +1393,9 @@ int main(int argc, char **argv) {
 	ac = argc - (arg_ofs - 1);
 	if (arg_ofs >= argc)
 		eiconctrl_usage();
-	fd = open("/dev/isdnctrl",O_RDWR | O_NONBLOCK);
+	fd = open("/dev/isdn/isdnctrl",O_RDWR | O_NONBLOCK);
+	if (fd < 0)
+		fd = open("/dev/isdnctrl",O_RDWR | O_NONBLOCK);
 	if (fd < 0) {
 		perror("/dev/isdnctrl");
 		exit(-1);
