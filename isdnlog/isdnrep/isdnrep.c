@@ -1,4 +1,4 @@
-/* $Id: isdnrep.c,v 1.94 2001/02/08 14:04:53 paul Exp $
+/* $Id: isdnrep.c,v 1.95 2001/03/21 10:24:01 paul Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -24,6 +24,12 @@
  *
  *
  * $Log: isdnrep.c,v $
+ * Revision 1.95  2001/03/21 10:24:01  paul
+ * Previous patch for correctly deleting entries messed up the printing
+ * of a specific date (or range), now hopefully fixed. Please test!
+ * Also replaced usage of tmpnam() with more secure mkstemp().
+ * Reindented some lines, tabstop of 2 is really strange.
+ *
  * Revision 1.94  2001/02/08 14:04:53  paul
  * Fix bug where deleting up to 31/12/99 caused ALL entries to be deleted;
  * now the entries being deleted are output (as usual with isdnrep), and
@@ -491,7 +497,6 @@ int read_logfile(char *myname)
   auto 	   struct tm *tm;
   auto     int        lday = UNKNOWN;
   auto	   char	      start[20] = "", stop[20];
-  auto	   char*      tmpfile = NULL;
   auto     FILE      *fi, *ftmp = NULL;
   auto     char       string[BUFSIZ], s[BUFSIZ];
   one_call            cur_call;
@@ -561,18 +566,16 @@ int read_logfile(char *myname)
     }
     else
     {
-      if ((tmpfile = tmpnam(NULL)) == NULL)
-        return(UNKNOWN);
-
-  		if ((ftmp = fopen(tmpfile, "w")) == (FILE *)NULL)
+      if ((ftmp = tmpfile()) == NULL)
       {
-        print_msg(PRT_ERR, msg1, tmpfile, strerror(errno));
+        print_msg(PRT_ERR, msg1, "tmpfile", strerror(errno));
         return(UNKNOWN);
       }
     }
   }
 
   if (!timearea) { /* from darf nicht gesetzt werden, wenn alle Telefonate angezeigt werden sollen */
+		/* get time of start of today (midnight) */
     time(&now);
     	/* aktuelle Zeit wird gesetzt */
     tm = localtime(&now);
@@ -596,24 +599,25 @@ int read_logfile(char *myname)
 		if (*s == '#')
 			continue;
 
-		if (set_caller_infos(&cur_call,s,from) != 0 && !timearea && !delentries)
-			continue;
+		/* set_caller_infos() returns UNKNOWN also if outside time range */
+		/* but if we are deleting, then the line must be copied to tempfile */
+		/* so no direct "continue;" in that case */
 
-		if (!begintime)
-			begintime = cur_call.t;
-
-                /* if delete entries, only list those that are being deleted */
-		if (timearea) {
-			if (delentries) {
-				if (cur_call.t > endtime) {
-					fputs(string,ftmp);
-                                        continue;
-                                }
+		if (set_caller_infos(&cur_call,s,from) == UNKNOWN) {
+		  if (!delentries)
+			  continue;
+			if (cur_call.t >= endtime) {
+				/* past end: stop delete, start copying */
+				fputs(string,ftmp);
+				continue;
 			}
 		}
 
 		if (!print_failed && cur_call.duration == 0)
 			continue;
+
+		if (!begintime)
+			begintime = cur_call.t;
 
 		if (phonenumberonly)
 			if (!show_msn(&cur_call))
@@ -664,9 +668,9 @@ int read_logfile(char *myname)
 	fclose(fi);
 
 	if (delentries) /* Erzeugt neue verkuerzte Datei */
-                lday = UNKNOWN;
+    lday = UNKNOWN;
 
-        if (lday == UNKNOWN && html)
+  if (lday == UNKNOWN && html)
 	{
 		if (begintime == 0)
 			begintime = time(NULL);
@@ -691,22 +695,17 @@ int read_logfile(char *myname)
                 lday = UNKNOWN;
 	}
 
-        if (lday != UNKNOWN && header)
+  if (lday != UNKNOWN && header)
 		print_bottom(einheit, start, stop);
 
 	if (delentries) /* Erzeugt neue verkuerzte Datei */
 	{
-		fclose(ftmp);
+		rewind(ftmp);
 
-		if ((ftmp = fopen(tmpfile, "r")) == (FILE *)NULL)
-		{
-			print_msg(PRT_ERR, msg1, tmpfile, strerror(errno));
-                        return(UNKNOWN);
-		}
 		if ((fi = fopen(logfile, "w")) == (FILE *)NULL)
 		{
 			print_msg(PRT_ERR, msg1, logfile, strerror(errno));
-                        return(UNKNOWN);
+      return(UNKNOWN);
 		}
 
 		while (fgets(s, BUFSIZ, ftmp))
@@ -714,8 +713,6 @@ int read_logfile(char *myname)
 
 		fclose(fi);
 		fclose(ftmp);
-
-		unlink(tmpfile);
 	}
 
 	if (html & H_PRINT_HEADER)
@@ -2148,6 +2145,7 @@ static void repair(one_call *cur_call)
 
 static int set_caller_infos(one_call *cur_call, char *string, time_t from)
 {
+	int      rc;
   register int    i = 0, adapt = 0;
   auto     char **array;
   auto     double dur1 = 0.0, dur2 = 0.0;
@@ -2156,28 +2154,31 @@ static int set_caller_infos(one_call *cur_call, char *string, time_t from)
 	array = string_to_array(string);
 
 	if (array[5] == NULL)
-                return(UNKNOWN);
+    return(UNKNOWN);
 
 	cur_call->t = atol(array[5]);
 
-	if (timearea && (cur_call->t < begintime || cur_call->t > endtime))
-                return(UNKNOWN);
+	rc = 0;
+	if (delentries && cur_call->t < endtime)
+		rc = UNKNOWN; /* return this, but first process the record */
+	else if (timearea && (cur_call->t < begintime || cur_call->t > endtime))
+    return(UNKNOWN);
 	else
 		if (cur_call->t < from)
-                        return(UNKNOWN);
+      return(UNKNOWN);
 
 	cur_call->eh = 0;
-        cur_call->dir = UNKNOWN;
-        cur_call->cause = UNKNOWN;
+  cur_call->dir = UNKNOWN;
+  cur_call->cause = UNKNOWN;
 	cur_call->ibytes = cur_call->obytes = 0L;
-        cur_call->pay    = 0.0;
+  cur_call->pay    = 0.0;
 	cur_call->version[0] = '\0';
 	cur_call->si = cur_call->si1 = 0;
 	cur_call->dir = DIALOUT;
 	cur_call->who[0][0] = '\0';
 	cur_call->who[1][0] = '\0';
-        cur_call->provider = UNDEFINED;
-        cur_call->zone = UNDEFINED;
+  cur_call->provider = UNDEFINED;
+  cur_call->zone = UNDEFINED;
 
 	for (i = 1; array[i] != NULL; i++)
 	{
@@ -2188,33 +2189,31 @@ static int set_caller_infos(one_call *cur_call, char *string, time_t from)
 			case  1 : strcpy(cur_call->num[0], Kill_Blanks(array[i]));
 			          break;
 			case  2 : strcpy(cur_call->num[1], Kill_Blanks(array[i]));
+								/* Korrektur der falschen Eintraege aus den ersten Januar-Tagen 1998 */
+								if (!memcmp(cur_call->num[1], "+491019", 7)) {
+									cur_call->provider = 19;
+									memmove(cur_call->num[1] + 3, cur_call->num[1] + 8, strlen(cur_call->num[1]) - 7);
+									adapt++;
+								}
+								else if (!memcmp(cur_call->num[1], "+491033", 7)) {
+									cur_call->provider = 33;
+									memmove(cur_call->num[1] + 3, cur_call->num[1] + 8, strlen(cur_call->num[1]) - 7);
+									adapt++;
+								}
+								else if (!memcmp(cur_call->num[1], "+491070", 7)) {
+									cur_call->provider = 70;
+									memmove(cur_call->num[1] + 3, cur_call->num[1] + 8, strlen(cur_call->num[1]) - 7);
+									adapt++;
+								} /* else */
+								if (adapt)
+									strcpy(cur_call->version, LOG_VERSION_4);
 
-                              	  /* Korrektur der falschen Eintraege aus den ersten Januar-Tagen 1998 */
-                              	  if (!memcmp(cur_call->num[1], "+491019", 7)) {
-                                    cur_call->provider = 19;
-                                    memmove(cur_call->num[1] + 3, cur_call->num[1] + 8, strlen(cur_call->num[1]) - 7);
-                              	    adapt++;
-				  }
-				  else if (!memcmp(cur_call->num[1], "+491033", 7)) {
-                                    cur_call->provider = 33;
-                                    memmove(cur_call->num[1] + 3, cur_call->num[1] + 8, strlen(cur_call->num[1]) - 7);
-                              	    adapt++;
-			          }
-				  else if (!memcmp(cur_call->num[1], "+491070", 7)) {
-                                    cur_call->provider = 70;
-                                    memmove(cur_call->num[1] + 3, cur_call->num[1] + 8, strlen(cur_call->num[1]) - 7);
-                              	    adapt++;
-			          } /* else */
-
-                                  if (adapt)
-                                    strcpy(cur_call->version, LOG_VERSION_4);
-
+								break;
+			case  3 : dur1 = cur_call->duration = strtod(array[i],NULL);
+								if (dur1 < 0)  /* wrong entry on some incoming voice calls */
+									dur1 = cur_call->duration = 0;
 			          break;
-                        case  3 : dur1 = cur_call->duration = strtod(array[i],NULL);
-				  if (dur1 < 0)  /* wrong entry on some incoming voice calls */
-				    dur1 = cur_call->duration = 0;
-			          break;
-                        case  4 : dur2 = cur_call->duration = strtod(array[i],NULL)/HZ;
+			case  4 : dur2 = cur_call->duration = strtod(array[i],NULL)/HZ;
 			          break;
 			case  5 : /*cur_call->t = atol(array[i]);*/
 			          break;
@@ -2239,34 +2238,32 @@ static int set_caller_infos(one_call *cur_call, char *string, time_t from)
 			          break;
 			case  15: strncpy(cur_call->currency, array[i], 3);
 			          break;
-                        case  16: cur_call->pay = atof(array[i]);
-                                  /* Korrektur der falschen Eintr„ge vor dem 16-Jan-99 */
-                                  if (cur_call->pay == -1.0)
-                                    cur_call->pay = 0.0;
+      case  16: cur_call->pay = atof(array[i]);
+								/* Korrektur der falschen Eintr„ge vor dem 16-Jan-99 */
+								if (cur_call->pay == -1.0)
+									cur_call->pay = 0.0;
 			          break;
-
-                        case  17: if (!adapt) {
+			case  17: if (!adapt) {
 			      	    cur_call->provider = atoi(array[i]);
+									/* Korrektur der falschen Eintrage bis zum 16-Jan-99 */
+									if (cur_call->provider <= UNKNOWN || cur_call->provider >= MAXPROVIDER)
+										cur_call->provider = preselect;
+									/* -lt- provider-# may change during time */
+									cur_call->provider = pnum2prefix(cur_call->provider,cur_call->t);
+								} /* if */
+								break;
 
-                                    /* Korrektur der falschen Eintrage bis zum 16-Jan-99 */
-                                    if (cur_call->provider <= UNKNOWN || cur_call->provider >= MAXPROVIDER)
-                                      cur_call->provider = preselect;
-				    /* -lt- provider-# may change during time */
-				    cur_call->provider = pnum2prefix(cur_call->provider,cur_call->t);
-                                  } /* if */
-                                  break;
-
-                                  /* Seit 21-Jan-99 steht die Zone im Logfile */
-                        case  18: cur_call->zone = atoi(array[i]);
+			/* Seit 21-Jan-99 steht die Zone im Logfile */
+			case  18: cur_call->zone = atoi(array[i]);
 			      	  break;
 
-                        default : print_msg(PRT_ERR, "isdnrep: unknown element found `%s'!\n",array[i]);
+			default : print_msg(PRT_ERR, "isdnrep: unknown element found `%s'!\n",array[i]);
 			          break;
 		}
 	}
 
 	if (i < 3)
-                return(UNKNOWN);
+		return(UNKNOWN);
 
   /* alle Eintraege vor dem 21-Jan-99 ergaenzen:
        - zone fehlte
@@ -2291,8 +2288,9 @@ static int set_caller_infos(one_call *cur_call, char *string, time_t from)
 
   repair(cur_call);
 
-  return(0);
+  return(rc);
 }
+
 
 /*****************************************************************************/
 
@@ -2302,10 +2300,10 @@ static char **string_to_array(char *string)
 	auto   char *ptr;
 	auto   int   i = 0;
 
+	memset(array, 0, sizeof(array));
 	if ((ptr = strrchr(string,C_DELIM)) != NULL)
 		*ptr = '\0';
 
-	array[5] = NULL;
 	array[0] = string;
 
 	while((string = strchr(string,C_DELIM)) != NULL)
@@ -3353,10 +3351,12 @@ static char *create_vbox_file(char *file, int *compression)
 		if (compression != NULL)
 			*compression = ntohl(header.compression);
 
-		if ((fileout = tmpnam(NULL)) == NULL || (fdout = open(fileout,O_WRONLY | O_CREAT,0444)) == -1)
+		fileout = strdup("/tmp/isdnrepXXXXXX");
+		if( (fdout = mkstemp(fileout)) < 0 )
 		{
 			print_msg(PRT_ERR, msg1, fileout, strerror(errno));
 			close(fdin);
+			free(fileout);
 			return NULL;
 		}
 
@@ -3368,6 +3368,7 @@ static char *create_vbox_file(char *file, int *compression)
 				close(fdout);
 				close(fdin);
 				unlink(fileout);
+				free(fileout);
 				return NULL;
 			}
 		}
@@ -3379,6 +3380,7 @@ static char *create_vbox_file(char *file, int *compression)
 			print_msg(PRT_ERR, "isdnrep: can't read from file `%s': %s!\n", file, strerror(errno));
 			close(fdin);
 			unlink(fileout);
+			free(fileout);
 			return NULL;
 		}
 	}
@@ -3596,4 +3598,5 @@ static int app_fmt_string(char *target, int targetlen, char *fmt, int condition,
 	return snprintf(target,targetlen,tmpfmt,value);
 }
 
+/* vim:set ts=2: */
 /*****************************************************************************/
