@@ -1,4 +1,4 @@
-/* $Id: tools.c,v 1.43 1999/12/31 13:57:20 akool Exp $
+/* $Id: tools.c,v 1.44 2000/01/01 15:05:24 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -19,6 +19,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools.c,v $
+ * Revision 1.44  2000/01/01 15:05:24  akool
+ * isdnlog-4.01
+ *  - first Y2K-Bug fixed
+ *
  * Revision 1.43  1999/12/31 13:57:20  akool
  * isdnlog-4.00 (Millenium-Edition)
  *  - Oracle support added by Jan Bolt (Jan.Bolt@t-online.de)
@@ -480,7 +484,7 @@ time_t atom(register char *p)
   p += 4;
   *p = 0;
 
-  tm.tm_year = atoi(p1 + 2);
+  tm.tm_year = atoi(p1) - 1900;
 
 #ifdef DEBUG_1
   if (tm.tm_year < 1995) {

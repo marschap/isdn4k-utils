@@ -1,4 +1,4 @@
-/* $Id: processor.c,v 1.93 1999/12/31 13:30:02 akool Exp $
+/* $Id: processor.c,v 1.94 2000/01/01 15:05:23 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.94  2000/01/01 15:05:23  akool
+ * isdnlog-4.01
+ *  - first Y2K-Bug fixed
+ *
  * Revision 1.93  1999/12/31 13:30:02  akool
  * isdnlog-4.00 (Millenium-Edition)
  *  - Oracle support added by Jan Bolt (Jan.Bolt@t-online.de)
@@ -1937,6 +1941,8 @@ static void decode(int chan, register char *p, int type, int version, int tei)
 		    }
 		    else if ((element == 0x29) && (version != VERSION_1TR6)) {
 			tm.tm_year  = strtol(p += 3, NIL, 16);
+			if (tm.tm_year < 70)
+			  tm.tm_year += 100;
 			tm.tm_mon   = strtol(p += 3, NIL, 16) - 1;
 			tm.tm_mday  = strtol(p += 3, NIL, 16);
 			tm.tm_hour  = strtol(p += 3, NIL, 16);
