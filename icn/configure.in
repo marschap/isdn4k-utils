@@ -3,6 +3,7 @@ AC_INIT(icnctrl.c)
 AC_PREFIX_DEFAULT(/usr)
 
 I4LCONFDIR=${I4LCONFDIR:-"/etc/isdn"}
+I4LVERSION=${I4LVERSION:-"?.?"}
 MANDATE=`grep CHECKIN icnctrl.man.in | awk '{print $4}'`
 
 dnl Checks for programs.
