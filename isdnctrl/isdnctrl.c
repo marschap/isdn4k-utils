@@ -1,7 +1,7 @@
-/* $Id: isdnctrl.c,v 1.33 1999/06/07 19:25:38 paul Exp $
+/* $Id: isdnctrl.c,v 1.34 1999/09/06 08:03:25 fritz Exp $
  * ISDN driver for Linux. (Control-Utility)
  *
- * Copyright 1994,95 by Fritz Elfert (fritz@wuemaus.franken.de)
+ * Copyright 1994,95 by Fritz Elfert (fritz@isdn4linux.de)
  * Copyright 1995 Thinking Objects Software GmbH Wuerzburg
  *
  * This file is part of Isdn4Linux.
@@ -21,6 +21,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnctrl.c,v $
+ * Revision 1.34  1999/09/06 08:03:25  fritz
+ * Changed my mail-address.
+ *
  * Revision 1.33  1999/06/07 19:25:38  paul
  * isdnctrl.man.in
  *

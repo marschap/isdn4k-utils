@@ -1,6 +1,6 @@
-.\" $Id: loopctrl.man.in,v 1.1 1997/03/24 23:38:46 fritz Exp $
+.\" $Id: loopctrl.man.in,v 1.2 1999/09/06 08:03:27 fritz Exp $
 .\"
-.\" CHECKIN $Date: 1997/03/24 23:38:46 $
+.\" CHECKIN $Date: 1999/09/06 08:03:27 $
 .\"
 .\" Process this file with
 .\" groff -man -Tascii icnctrl.1 for ASCII output, or
@@ -122,7 +122,7 @@ This program and the isdnloop driver are
 code. The main intention for this driver is for testing the link level
 and applications.
 .SH AUTHOR
-\(co 1997 by Fritz Elfert <fritz@wuemaus.franken.de>
+\(co 1997 by Fritz Elfert <fritz@isdn4linux.de>
 .LP
 .SH SEE ALSO
 .BR isdnctrl "(8), " isdnloop "(4), " isdninfo "(4), " isdnctrl "(4), " ttyI (4).

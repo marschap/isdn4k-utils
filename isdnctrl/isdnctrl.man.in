@@ -1,6 +1,6 @@
-.\" $Id: isdnctrl.man.in,v 1.17 1999/06/07 19:27:49 paul Exp $
+.\" $Id: isdnctrl.man.in,v 1.18 1999/09/06 08:03:26 fritz Exp $
 .\"
-.\" CHECKIN $Date: 1999/06/07 19:27:49 $
+.\" CHECKIN $Date: 1999/09/06 08:03:26 $
 .\"
 .\" Process this file with
 .\" groff -man -Tascii isdnctrl.8 for ASCII output, or
@@ -562,7 +562,7 @@ if this appears as the first character in a list, inverts the list.
 This man page is not complete.
 .LP
 .SH AUTHOR
-Fritz Elfert <fritz@wuemaus.franken.de>
+Fritz Elfert <fritz@isdn4linux.de>
 .LP
 .SH SEE ALSO
 .BR ttyI "(4), " isdnctrl "(4), " isdninfo "(4), " isdn_audio "(4), "

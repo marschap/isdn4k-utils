@@ -1,6 +1,6 @@
-.\" $Id: iprofd.man.in,v 1.1 1997/10/26 23:10:46 fritz Exp $
+.\" $Id: iprofd.man.in,v 1.2 1999/09/06 08:03:25 fritz Exp $
 .\"
-.\" CHECKIN $Date: 1997/10/26 23:10:46 $
+.\" CHECKIN $Date: 1999/09/06 08:03:25 $
 .\"
 .\" Process this file with
 .\" groff -man -Tascii iprofd.8 for ASCII output, or
@@ -27,7 +27,7 @@ reads the current settings of the modem-registers and stores them into
 .IR registerfile .
 .LP
 .SH AUTHOR
-Fritz Elfert <fritz@wuemaus.franken.de>
+Fritz Elfert <fritz@isdn4linux.de>
 .LP
 .SH SEE ALSO
 .I ttyI\c

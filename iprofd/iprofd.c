@@ -1,8 +1,8 @@
-/* $Id: iprofd.c,v 1.6 1998/07/22 19:07:13 keil Exp $
+/* $Id: iprofd.c,v 1.7 1999/09/06 08:03:25 fritz Exp $
 
  * Daemon for saving ttyIx-profiles to a file.
  *
- * Copyright 1994,95 by Fritz Elfert (fritz@wuemaus.franken.de)
+ * Copyright 1994,95 by Fritz Elfert (fritz@isdn4linux.de)
  * Copyright 1995 Thinking Objects Software GmbH Wuerzburg
  *
  * This file is part of Isdn4Linux.
@@ -22,6 +22,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: iprofd.c,v $
+ * Revision 1.7  1999/09/06 08:03:25  fritz
+ * Changed my mail-address.
+ *
  * Revision 1.6  1998/07/22 19:07:13  keil
  * Make it compiling with older I4L versions
  *

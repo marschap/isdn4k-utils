@@ -1,6 +1,6 @@
-.\" $Id: imon.man.in,v 1.1 1997/10/26 23:02:56 fritz Exp $
+.\" $Id: imon.man.in,v 1.2 1999/09/06 08:03:24 fritz Exp $
 .\"
-.\" CHECKIN $Date: 1997/10/26 23:02:56 $
+.\" CHECKIN $Date: 1999/09/06 08:03:24 $
 .\"
 .\" Process this file with
 .\" groff -man -Tascii imon.8 for ASCII output, or
@@ -41,7 +41,7 @@ between display of strings and phone numbers. Pressing 'R' rereads the
 phonebook file in case of changes during program execution.
 .LP
 .SH AUTHOR
-Fritz Elfert <fritz@wuemaus.franken.de>
+Fritz Elfert <fritz@isdn4linux.de>
 .LP
 .SH SEE ALSO
 .I ttyI\c

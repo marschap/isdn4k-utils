@@ -1,6 +1,6 @@
-.\" $Id: isdnctrl.man.in,v 1.3 1998/12/02 16:53:29 paul Exp $
+.\" $Id: isdnctrl.man.in,v 1.4 1999/09/06 08:03:23 fritz Exp $
 .\"
-.\" CHECKIN $Date: 1998/12/02 16:53:29 $
+.\" CHECKIN $Date: 1999/09/06 08:03:23 $
 .\"
 .\" Process this file with
 .\" groff -man -Tascii isdnctrl.4 for ASCII output, or
@@ -466,6 +466,6 @@ The return code depends on the driver's ioctl function. Usually,
 .RE
 
 .SH AUTHOR
-Fritz Elfert <fritz@wuemaus.franken.de>
+Fritz Elfert <fritz@isdn4linux.de>
 .SH SEE ALSO
 .BR isdninfo "(4), " icnctrl (4).

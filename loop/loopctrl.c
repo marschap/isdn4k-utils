@@ -1,8 +1,8 @@
-/* $Id: loopctrl.c,v 1.2 1997/05/17 12:23:41 fritz Exp $
+/* $Id: loopctrl.c,v 1.3 1999/09/06 08:03:26 fritz Exp $
 
  * loop-ISDN driver for Linux. (Control-Utility)
  *
- * Copyright 1994,95 by Fritz Elfert (fritz@wuemaus.franken.de)
+ * Copyright 1994,95 by Fritz Elfert (fritz@isdn4linux.de)
  *
  * This file is part of Isdn4Linux.
  *
@@ -21,6 +21,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: loopctrl.c,v $
+ * Revision 1.3  1999/09/06 08:03:26  fritz
+ * Changed my mail-address.
+ *
  * Revision 1.2  1997/05/17 12:23:41  fritz
  * Corrected some Copyright notes to refer to GPL.
  *

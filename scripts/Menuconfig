@@ -1,6 +1,6 @@
 #! /bin/sh
 #
-# $Id: Menuconfig,v 1.6 1998/11/11 17:06:07 paul Exp $
+# $Id: Menuconfig,v 1.7 1999/09/06 08:03:27 fritz Exp $
 #
 # This script is borrowed from the linux Menuconfig script.
 #
@@ -666,7 +666,7 @@ the scripts/lxdialog directory and issuing the
 "make clean all" command.
 
 If you have verified that your ncurses install is correct, you may email
-<fritz@wuemaus.franken.de> or post a message on the de.alt.comm.isdn4linux
+<fritz@isdn4linux.de> or post a message on the de.alt.comm.isdn4linux
 news group for additional assistance. 
 
 EOM

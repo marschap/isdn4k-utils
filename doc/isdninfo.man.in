@@ -1,6 +1,6 @@
-.\" $Id: isdninfo.man.in,v 1.3 1998/12/02 16:53:31 paul Exp $
+.\" $Id: isdninfo.man.in,v 1.4 1999/09/06 08:03:23 fritz Exp $
 .\"
-.\" CHECKIN $Date: 1998/12/02 16:53:31 $
+.\" CHECKIN $Date: 1999/09/06 08:03:23 $
 .\"
 .\" Process this file with
 .\" groff -man -Tascii isdninfo.4 for ASCII output, or
@@ -175,6 +175,6 @@ Other constants, necessary for ioctl's on
 are listed in
 .BR isdnctrl (4).
 .SH AUTHOR
-Fritz Elfert <fritz@wuemaus.franken.de>
+Fritz Elfert <fritz@isdn4linux.de>
 .SH SEE ALSO
 .BR isdnctrl "(4), " icnctrl (4).

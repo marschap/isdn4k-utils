@@ -1,6 +1,6 @@
-.\" $Id: icnctrl.man.in,v 1.7 1997/10/23 22:46:08 fritz Exp $
+.\" $Id: icnctrl.man.in,v 1.8 1999/09/06 08:03:24 fritz Exp $
 .\"
-.\" CHECKIN $Date: 1997/10/23 22:46:08 $
+.\" CHECKIN $Date: 1999/09/06 08:03:24 $
 .\"
 .\" Process this file with
 .\" groff -man -Tascii icnctrl.1 for ASCII output, or
@@ -190,7 +190,7 @@ has less than 65536 bytes length or could not be read.
 .SH BUGS
 No bugs so far.
 .SH AUTHOR
-\(co 1997 by Fritz Elfert <fritz@wuemaus.franken.de>
+\(co 1997 by Fritz Elfert <fritz@isdn4linux.de>
 .LP
 .SH SEE ALSO
 .BR isdnctrl "(8), " icn "(4), " isdnctrl "(4), " ttyI (4).

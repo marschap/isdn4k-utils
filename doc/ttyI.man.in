@@ -1,6 +1,6 @@
-.\" $Id: ttyI.man.in,v 1.8 1999/07/11 17:21:41 armin Exp $
+.\" $Id: ttyI.man.in,v 1.9 1999/09/06 08:03:23 fritz Exp $
 .\"
-.\" CHECKIN $Date: 1999/07/11 17:21:41 $
+.\" CHECKIN $Date: 1999/09/06 08:03:23 $
 .\"
 .\" Process this file with
 .\" groff -man -Tascii ttyI.4 for ASCII output, or
@@ -419,7 +419,7 @@ Bit	Description
 	1 = Enable CPN extended RING.
 .TP
 .SH AUTHOR
-Fritz Elfert <fritz@wuemaus.franken.de>
+Fritz Elfert <fritz@isdn4linux.de>
 .SH SEE ALSO
 .BR icnctrl "(8), " telesctrl "(8), " isdninfo "(4), " isdn_audio "(4), "
 .BR isdnctrl (8).
