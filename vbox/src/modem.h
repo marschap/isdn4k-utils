@@ -1,5 +1,5 @@
 /*
-** $Id: modem.h,v 1.5 1997/05/10 10:58:45 michael Exp $
+** $Id: modem.h,v 1.6 1998/03/26 13:10:36 keil Exp $
 **
 ** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
 */
@@ -83,5 +83,6 @@ extern int		modem_check_input(void);
 extern int		modem_hangup(void);
 extern char	  *modem_get_s_register(int);
 extern int		modem_get_sequence(char *);
+extern int		modem_wait_sequence(char *);
 
 #endif /* _VBOX_MODEM_H */

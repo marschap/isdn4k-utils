@@ -1,5 +1,5 @@
 /*
-** $Id: modem.c,v 1.11 1997/10/22 20:47:10 fritz Exp $
+** $Id: modem.c,v 1.12 1998/03/26 13:10:34 keil Exp $
 **
 ** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
 */
@@ -467,9 +467,9 @@ int modem_get_sequence(char *seq)
 }
 
 /*************************************************************************/
-/** modem_get_rawsequence():	Reads a raw sequence from modem. This is	**/
-/**									a subroutine for modem_get_sequence() &	**/
-/**									modem_get_echo().									**/
+/** modem_get_rawsequence():	Reads a raw sequence from modem. This is**/
+/**				a subroutine for modem_get_sequence() &	**/
+/**				modem_get_echo().			**/
 /*************************************************************************/
 
 static int modem_get_rawsequence(char *line, int echo)
@@ -519,6 +519,48 @@ static int modem_get_rawsequence(char *line, int echo)
 	}
 	
 	returnok();
+}
+
+/*************************************************************************/
+/** modem_wait_sequence():	Reads a sequence from modem and breaks	**/
+/**				on timeout or if the sequence was	**/
+/**				matched.				**/
+/*************************************************************************/
+
+int modem_wait_sequence(char *line)
+{
+	char	c;
+	int	i=0;
+	int	timeout;
+	
+	timeout = setup.modem.timeout_cmd;
+	log_line(L_DEBUG, "Waiting (%d secs timeout) for sequence \"", timeout);
+	log_code(L_DEBUG, line);
+	log_text(L_DEBUG, "\"... ");
+	modem_set_timeout(timeout);
+	while (1)
+	{
+		if ((modem_raw_read(&c, 1) != 1) || (modem_get_timeout()))
+		{
+			modem_set_timeout(0);
+			log_text(L_DEBUG, " NOT FOUND\n");
+			returnerror();
+		}
+
+		if (line[i] == c)
+		{
+			i++;
+			if (i==strlen(line)) {
+				modem_set_timeout(0);
+				log_text(L_DEBUG, " GOT IT\n");
+				returnok();
+			}
+		} else {
+			i=0;
+			if (line[i] == c)
+				i++;
+		}
+	}
 }
 
 /*************************************************************************/

@@ -1,5 +1,5 @@
 /*
-** $Id: vbox.c,v 1.6 1997/10/22 20:47:16 fritz Exp $
+** $Id: vbox.c,v 1.7 1998/03/26 13:10:37 keil Exp $
 **
 ** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
 */
@@ -65,11 +65,12 @@ static int   forcepass  = FALSE;
 static struct statusled statusleds[] =
 {
 	{  1, CTRL_NAME_STOP     , 0, "" },
-   {  5, CTRL_NAME_REJECT   , 0, "" },
+	{  5, CTRL_NAME_REJECT   , 0, "" },
 	{  7, CTRL_NAME_ANSWERNOW, 0, "" },
 	{  9, CTRL_NAME_ANSWERALL, 0, "" },
 	{ 11, CTRL_NAME_AUDIO    , 0, "" },
-   { -1, NULL               , 0, "" }
+	{ 13, CTRL_NAME_SUSPEND  , 0, "" },
+	{ -1, NULL               , 0, "" }
 };
 
 static struct colortable colortable[] =

@@ -1,5 +1,5 @@
 /*
-** $Id: voice.c,v 1.11 1997/05/10 10:59:01 michael Exp $
+** $Id: voice.c,v 1.12 1998/03/26 13:10:39 keil Exp $
 **
 ** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
 */
@@ -312,6 +312,23 @@ int voice_put_message(char *message)
 			}
 			else log(L_ERROR, "Can't read input from modem.\n");
 		}
+		if (ctrl_ishere(setup.spool, CTRL_NAME_SUSPEND)) {   
+			log(L_INFO, "Control file \"%s\" exists - suspending call...\n", CTRL_NAME_SUSPEND);
+			if (!ctrl_remove(setup.spool, CTRL_NAME_SUSPEND)) {
+				log(L_WARN, "Can't remove control file \"%s\"!\n", CTRL_NAME_SUSPEND);
+			}
+			log(L_JUNK, "Sending \"<DLE><ETX>\"...\n");
+			printstring(line_o, "%c%c", DLE, ETX);
+			modem_raw_write(line_o, strlen(line_o));
+			if (modem_command("", "VCON")>0) {
+				if (modem_command("AT+S1", "OK") <= 0) {
+					log(L_WARN, "Can't suspend call\n");
+				} else {
+					log(L_INFO, "Call suspended\n");
+					voicestatus = VOICE_ACTION_REMOTEHANGUP;
+				}
+			}
+		}
 	}
 
 	timeend = time(NULL);
@@ -351,11 +368,8 @@ int voice_put_message(char *message)
 			 */
 
 		log(L_JUNK, "Sending \"<DLE><ETX>\"...\n");
-
 		printstring(line_o, "%c%c", DLE, ETX);
-                    
 		modem_raw_write(line_o, strlen(line_o));
-
 		modem_command("", "VCON");
 	}
 
@@ -506,6 +520,26 @@ int voice_get_message(char *name, char *timestr, int save)
 				voicestatus = VOICE_ACTION_ERROR;
 			}
 			else voicestatus = VOICE_ACTION_TIMEOUT;
+		}
+
+		if ((result == 1) && (ctrl_ishere(setup.spool, CTRL_NAME_SUSPEND))) {   
+			log(L_INFO, "Control file \"%s\" exists - suspending call...\n", CTRL_NAME_SUSPEND);
+			if (!ctrl_remove(setup.spool, CTRL_NAME_SUSPEND)) {
+				log(L_WARN, "Can't remove control file \"%s\"!\n", CTRL_NAME_SUSPEND);
+			}
+			log(L_JUNK, "Sending \"<DLE><DC4>\"...\n");
+			printstring(line_o, "%c%c", DLE, DC4);
+			printstring(line_i, "%c%c", DLE, ETX);
+			modem_raw_write(line_o, strlen(line_o));
+			modem_wait_sequence(line_i);
+			if (modem_command("", "VCON")>0) {
+				if (modem_command("AT+S1", "OK") <= 0) {
+					log(L_WARN, "Can't suspend call\n");
+				} else {
+					log(L_INFO, "Call suspended\n");
+					voicestatus = VOICE_ACTION_REMOTEHANGUP;
+				}
+			}
 		}
 
 		if ((voicestatus == VOICE_ACTION_OK) || (voicestatus == VOICE_ACTION_TIMEOUT))

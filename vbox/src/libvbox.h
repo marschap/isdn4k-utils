@@ -1,5 +1,5 @@
 /*
-** $Id: libvbox.h,v 1.7 1997/05/10 10:58:43 michael Exp $
+** $Id: libvbox.h,v 1.8 1998/03/26 13:10:33 keil Exp $
 **
 ** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
 */
@@ -74,11 +74,12 @@ extern char *vboxd_get_message(void);
 
 #define CTRL_NAME_MAGIC       "vboxctrl-"
 
-#define CTRL_NAME_STOP			CTRL_NAME_MAGIC "stop"
+#define CTRL_NAME_STOP		CTRL_NAME_MAGIC "stop"
 #define CTRL_NAME_ANSWERNOW	CTRL_NAME_MAGIC "answernow"
 #define CTRL_NAME_ANSWERALL	CTRL_NAME_MAGIC "answerall"
-#define CTRL_NAME_REJECT		CTRL_NAME_MAGIC "reject"
-#define CTRL_NAME_AUDIO       CTRL_NAME_MAGIC "audio"
+#define CTRL_NAME_REJECT	CTRL_NAME_MAGIC "reject"
+#define CTRL_NAME_AUDIO		CTRL_NAME_MAGIC "audio"
+#define CTRL_NAME_SUSPEND	CTRL_NAME_MAGIC "suspend"
 
 #define CTRL_MODE_REMOVE		(0)
 #define CTRL_MODE_CREATE		(1)
