@@ -1,4 +1,4 @@
-/* $Id: conffile.c,v 1.17 1998/05/20 09:25:01 paul Exp $
+/* $Id: conffile.c,v 1.18 1998/05/20 09:56:14 paul Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -19,6 +19,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: conffile.c,v $
+ * Revision 1.18  1998/05/20 09:56:14  paul
+ * Oops, the temp string _was_ necessary. Made it static so that returning a
+ * pointer to it is not a problem.
+ *
  * Revision 1.17  1998/05/20 09:25:01  paul
  * function Find_Section returned pointer to local automatic variable. Local
  * variable removed, as it was not necessary; now return parameter.
@@ -308,8 +312,10 @@ static section *Read_Lines(section *Section, FILE *fp, const char *FileName, int
 static char *Find_Section(char* String)
 {
 	char *Ptr = NULL;
+	static char Help[SHORT_STRING_SIZE];
 
-	Kill_Blanks(String);
+	strcpy(Help,String);
+	String = Kill_Blanks(Help);
 
 	if (*String == '\0' || *String != C_BEGIN_SECTION)
 		return NULL;
