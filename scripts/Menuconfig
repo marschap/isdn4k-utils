@@ -1,6 +1,6 @@
 #! /bin/sh
 #
-# $Id: Menuconfig,v 1.4 1997/03/23 00:22:09 fritz Exp $
+# $Id: Menuconfig,v 1.5 1997/03/23 19:48:03 fritz Exp $
 #
 # This script is borrowed from the linux Menuconfig script.
 #
@@ -333,14 +333,14 @@ function l_int () {
 			answer="`cat MCdialog.out`"
 			answer="${answer:-$3}"
 
-			if expr $answer : '0$\|-\?[1-9][0-9]*$' >/dev/null
+			if expr $answer : '0$\|[1-9][0-9]*$' >/dev/null
 			then
 				eval $2="$answer"
 			else
 				eval $2="$3"
 				echo -en "\007"
 				${DIALOG} --backtitle "$backtitle" \
-					--msgbox "You have made an invalid entry." 3 43
+					--msgbox "You have made an invalid entry." 5 43
 			fi
 
 			break
@@ -1035,7 +1035,7 @@ followed by the <SPACE BAR>.
 Press <?> for additional information about this option."
 
 inputbox_instructions_int="\
-Please enter a decimal value between 1 and 9999. \
+Please enter a decimal value between 1 and 99999. \
 Fractions will not be accepted.  \
 Use the <TAB> key to move from the input field to the buttons below it."
 
