@@ -1498,6 +1498,8 @@ fi
 # ...and create the files from *.in...
 #--------------------------------------------------------------------------
 
+bindir=xxx
+
 trap '' 1 2 15
 cat > confcache <<\EOF
 # This file is a shell script that caches the results of configure

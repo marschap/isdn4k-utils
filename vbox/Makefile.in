@@ -1,5 +1,5 @@
 #
-# $Id: Makefile.in,v 1.6 1997/03/02 19:42:58 fritz Exp $
+# $Id: Makefile.in,v 1.7 1997/03/07 08:15:36 michael Exp $
 
 #----------------------------------------------------------------------------#
 # Things you can change to personalize the Makefile for your own site.       #
@@ -271,6 +271,7 @@ distclean:	  clean
 		  @$(RM) -f $(TOPDIR)/utils/vboxmail
 		  @$(RM) -f $(TOPDIR)/utils/vboxplay
 		  @$(RM) -f config.cache config.log config.status
+		  @$(RM) -f .config
 
 clean:		  ignore
 		  @$(ECHO) ""
