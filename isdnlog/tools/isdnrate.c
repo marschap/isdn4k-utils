@@ -1,4 +1,5 @@
-/* $Id: isdnrate.c,v 1.11 1999/07/15 16:42:04 akool Exp $
+#undef LEOx
+/* $Id: isdnrate.c,v 1.12 1999/07/24 08:45:17 akool Exp $
  *
  * ISDN accounting for isdn4linux. (rate evaluation)
  *
@@ -19,6 +20,13 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnrate.c,v $
+ * Revision 1.12  1999/07/24 08:45:17  akool
+ * isdnlog-3.42
+ *   rate-de.dat 1.02-Germany [18-Jul-1999 10:44:21]
+ *   better Support for Ackermann Euracom
+ *   WEB-Interface for isdnrate
+ *   many small fixes
+ *
  * Revision 1.11  1999/07/15 16:42:04  akool
  * small enhancement's and fixes
  *
@@ -59,23 +67,31 @@
 
 #include "isdnlog.h"
 #include "tools/zone.h"
+#include <unistd.h>
 
 #define WIDTH   19
-#define MAXLAST	 5
+#define MAXLAST	 ((best>=20||best<=2)?5:best)
 #define ZAUNPFAHL  1 /* FIXME: Michi: Offset */
 
 static char *myname, *myshortname;
-static char  options[] = "Vvd:h:l:Hb:s:tx::u";
+static char  options[] = "b:d:f:h:l:p:vx:DG:HLTUVX::";
 static char  usage[]   = "%s: usage: %s [ -%s ] Destination ...\n";
 
 static int    verbose = 0, header = 0, best = MAXPROVIDER, table = 0, explain = 0;
 static int    usestat = 0, provider = UNKNOWN;
 static int    duration = LCR_DURATION;
 static time_t start;
-static int    day, month, year, hour, min;
+static int    day, month, year, hour, min, sec;
 static char   country[BUFSIZ], area[BUFSIZ], msn[BUFSIZ];
+static char   smyarea[BUFSIZ], sarea[BUFSIZ];
 static char   ignore[MAXPROVIDER];
-
+static char * fromarea = 0;
+static char   wanted_day;
+static int	  list = 0;
+static int 	*providers=0; /* incl/ excl these */
+static int 	n_providers=0;
+static int 	exclude=0;
+static int 	is_daemon=0;
 
 typedef struct {
   int    prefix;
@@ -90,36 +106,44 @@ typedef struct {
 
 static SORT sort[MAXPROVIDER];
 
+#define PRT_V 17 /* verbose */
+#define PRT_A 18 /* always on stderr */
 int print_msg(int Level, const char *fmt, ...)
 {
   auto va_list ap;
   auto char    String[BUFSIZ * 3];
 
+  if (Level == PRT_ERR || (Level == PRT_V && !verbose))
+    return(1);
 
   va_start(ap, fmt);
   (void)vsnprintf(String, BUFSIZ * 3, fmt, ap);
   va_end(ap);
 
-  if (Level == PRT_ERR)
-    return(1);
-
-  fprintf(Level == PRT_ERR ? stderr : stdout, "%s", String);
+  fprintf(Level == PRT_NORMAL ? stdout : stderr, "%s", String);
 
   return(0);
 } /* print_msg */
 
-
+#ifdef LEO
+#undef DTAG
+#define DTAG 1
+static void pre_init()
+{
+  preselect = DTAG;      /* Telekomik */
+  vbn = strdup("10"); 	 /* austria */
+} /* pre_init */
+#else
 static void pre_init()
 {
   preselect = DTAG;      /* Telekomik */
   vbn = strdup("010"); 	 /* Germany */
 } /* pre_init */
-
+#endif
 
 static void init()
 {
   auto char *version, **message;
-
 
   if (readconfig(myshortname) < 0)
     exit(1);
@@ -132,91 +156,167 @@ static void init()
   initHoliday(holifile, message);
 
   if (*version && verbose)
-    print_msg(PRT_NORMAL, "%s\n", version);
+    print_msg(PRT_V, "%s\n", version);
 
   initCountry(countryfile, message);
 
   if (*version && verbose)
-    print_msg(PRT_NORMAL, "%s\n", version);
+    print_msg(PRT_V, "%s\n", version);
 
   initRate(rateconf, ratefile, zonefile, message);
 
   if (*version && verbose)
-    print_msg(PRT_NORMAL, "%s\n", version);
+    print_msg(PRT_V, "%s\n", version);
 } /* init */
 
+/* calc a day/time W | E | H */
+static void get_day(char d) {
+  struct tm *tm;
+  bitfield mask;
+  int what=0;
+  tm = localtime(&start); /* now */
+  switch(d) {
+	case 'W': /* we need a normal weekday, so we take today and inc. day
+				if today is holiday */
+		what = WORKDAY;
+		hour = 10;
+		break;
+	case 'N':
+		what = WORKDAY;
+		hour = 23;
+		break;
+	case 'E':
+		what = SUNDAY;
+		hour = 10;
+		break;
+  }
+  mask = 1 << what;
+  while (isDay(tm, mask, 0) != what) {
+    tm->tm_mday++;
+  }
+  min = sec = 0;
+  day = tm->tm_mday;
+  month = tm->tm_mon+1;
+  year = tm->tm_year+1900;
+}
 
 static void post_init()
 {
   auto char s[BUFSIZ];
 
+  if (fromarea) {
+	free(myarea);
+	myarea = fromarea;
+  }
+  if (wanted_day)
+	get_day(wanted_day);
+  *smyarea = 0;
 
   sprintf(s, "%s%s", mycountry, myarea);
   mynum = strdup(s);
 } /* post_init */
-
 
 static int opts(int argc, char *argv[])
 {
   register int   c;
   register char *p;
 
-
+  optind=0; /* make it repeatable */
   while ((c = getopt(argc, argv, options)) != EOF) {
     switch (c) {
-      case 'V' : print_version(myshortname);
-      	       	 exit(0);
-
-      case 'v' : verbose++;
-      	       	 break;
-
-      case 'l' : duration = strtol(optarg, NIL, 0); /* l wie lt */
-      	       	 break;
-
-      case 'H' : header++;
-      	       	 break;
-
       case 'b' : best = strtol(optarg, NIL, 0);
       	       	 break;
 
-      case 'd' : day = atoi(optarg);
-      	       	 if ((p = strchr(optarg, '/'))) {
-                   month = atoi(p + 1);
+/* case 'c': countr */
 
-                   if ((p = strchr(p + 1, '/'))) {
+      case 'd' :
+		  for (p=optarg; *p && isspace(*p); p++)
+			;
+		  if (isdigit(*p)) {
+			wanted_day = '\0';
+			day = atoi(optarg);
+  	       	  if ((p = strchr(optarg, '.'))) {
+                 month = atoi(p + 1);
+                 if ((p = strchr(p + 1, '.'))) {
                      year = atoi(p + 1);
-
            	     if (year < 50)
                        year += 2000;
 		     else if (year < 100)  
                        year += 1900;
                    }
       	       	 }
-                 break;
-      case 'h': hour = atoi(optarg);		  
-                   if ((p = strchr(p + 1, ':')))
-                         min = atoi(p + 1);
+			} /* isdigit */
+			else {
+			  wanted_day = *p;
+			}
                  break;
 
-      case 't' : table++;
+      case 'f': if (optarg) { /* from */
+				  for (p=optarg; (isspace(*p) || *p == '0') && *p; p++);
+					;
+				  fromarea = strdup(p);
+				}
+				break;
+
+      case 'h': hour = atoi(optarg);		  
+                if ((p = strchr(optarg + 1, ':'))) {
+                         min = atoi(p + 1);
+                    if ((p = strchr(p + 1, ':')))
+                	  sec = atoi(p + 1);
+				}
+                 break;
+
+      case 'l' : duration = strtol(optarg, NIL, 0); /* l wie lt */
       	       	 break;
 
-      case 'x' : explain++;
-                 {
-		   int x;
-                   if (optarg && (x=atoi(optarg)))
-		     explain=x;
+      case 'x': /* eXclude Poviders */
+		exclude = 1;
+		/* goon */
+      case 'p': /* Providers ... */
+		p = strtok(optarg, ",");
+		while (p) {
+		  providers = realloc(providers, n_providers+1);
+		  providers[n_providers] = atoi(p);
+		  p = strtok(0, ",");
+		  n_providers++;
 		 }     
       	       	 break;
+      case 'v' : verbose++;
+      	       	 break;
+/* Uppercase options are for output format */
 
-      case 'u' : usestat++;
+      case 'D' : is_daemon = 1;
       	       	 break;
 
-      case '?' : print_msg(PRT_ERR, usage, myshortname, myshortname, options);
+      case 'G' : explain=atoi(optarg);
+      	       	 break;
+      case 'H' : header++;
+      	       	 break;
+      case 'L' : list++;
+				 explain=9;
+      	       	 break;
+      case 'T' : table++;
+      	       	 break;
+/* Fixme: check/warn illegal kombinations of options */
+      case 'U' : usestat++;
+      	       	 break;
+
+      case 'V' : print_version(myshortname);
+      	       	 exit(0);
+
+      case 'X' :
+		if (explain == 0) {
+      	  int x;
+		  explain++;
+          if (optarg && (x=atoi(optarg)))
+			explain=x;
+      	  break;
+		}
+		/* follthrough */
+      case '?' : print_msg(PRT_A, usage, myshortname, myshortname, options);
       	       	 break;
     } /* switch */
   } /* while */
-
   if (argc > optind)
   return(optind);
   else
@@ -285,8 +385,7 @@ static void buildtime()
 {
   auto struct tm tm;
 
-
-  tm.tm_sec = 0;
+  tm.tm_sec = sec;
   tm.tm_min = min;
   tm.tm_hour = hour;
   tm.tm_mday = day;
@@ -303,15 +402,13 @@ static void splittime()
   auto struct tm *tm;
 
   tm = localtime(&start);
-
-
+  sec = tm->tm_sec;
   min = tm->tm_min;
   hour = tm->tm_hour;
   day = tm->tm_mday;
   month = tm->tm_mon + 1;
-  year = tm->tm_year + 1900; /* ja, ja, ich weiá ;-) */
+  year = tm->tm_year + 1900;
 } /* splittime */
-
 
 static char *Provider(int prefix)
 {
@@ -340,33 +437,35 @@ static void numsplit(char *num)
 {
   register int   l1, l3, zone;
   auto	   int	 l2;
-  register char *p;
+  register char *p = 0;
   auto	   char *s;
 
 
-  print_msg(PRT_NORMAL, "NUMSPLIT(%s)\n", num);
+  print_msg(PRT_V, "NUMSPLIT(%s)\n", num);
 
   *country = *area = *msn = 0;
+  *sarea = 0;
 
   if (verbose && (provider != UNKNOWN))
-    print_msg(PRT_NORMAL, " Provider %s\n", Provider(provider));
+    print_msg(PRT_V, " Provider %s\n", Provider(provider));
 
   if ((l1 = getCountrycode(num, &s)) != UNKNOWN) {
     Strncpy(country, num, l1 + 1);
 
     if (verbose)
-      print_msg(PRT_NORMAL, " Country %s : %s\n", country, s);
+      print_msg(PRT_V, " Country %s : %s\n", country, s);
+   strcpy(sarea, s);
 
     if ((p = get_areacode(num, &l2, C_NO_WARN | C_NO_EXPAND | C_NO_ERROR))) {
       Strncpy(area, num + l1, l2 + 1 - l1);
 
       if (verbose)
-        print_msg(PRT_NORMAL, " Area %s : %s\n", area, p);
+        print_msg(PRT_V, " Area %s : %s\n", area, p);
 
       strcpy(msn, num + l2);
 
       if (verbose && *msn)
-        print_msg(PRT_NORMAL, " Number %s\n", msn);
+        print_msg(PRT_V, " Number %s\n", msn);
     } /* if */
 
     p = country;
@@ -376,31 +475,33 @@ static void numsplit(char *num)
 
     l3 = getAreacode(atoi(p), num + l1, &s);
 
-    if (1 /* l3 != UNKNOWN */) {
-      print_msg(PRT_NORMAL, "getAreacode(%d, %s, %s)=%d\n", atoi(p), num + l1, s, l3);
-      if (l3 != UNKNOWN)
-      free(s);
+    if (1) {
+      print_msg(PRT_V, "getAreacode(%d, %s, %s)=%d\n", atoi(p), num + l1, s, l3);
       zone = getZone(DTAG, myarea, num + l1);
-      print_msg(PRT_NORMAL, "getZone(%d,%s,%s)=%d\n", DTAG, myarea, num + l1, zone);
+      print_msg(PRT_V, "getZone(%d,%s,%s)=%d\n", DTAG, myarea, num + l1, zone);
 
       switch (zone) {
-         case 1 : print_msg(PRT_NORMAL, "Ortszone\n");     break;
-         case 2 : print_msg(PRT_NORMAL, "Cityzone\n");     break;
-         case 3 : print_msg(PRT_NORMAL, "Regionalzone\n"); break;
-         case 4 : print_msg(PRT_NORMAL, "Fernzone\n");    break;
-        default : print_msg(PRT_NORMAL, "*** BUG ***\n");  break;
+         case 1 : print_msg(PRT_V, "Ortszone\n");     break;
+         case 2 : print_msg(PRT_V, "Cityzone\n");     break;
+         case 3 : print_msg(PRT_V, "Regionalzone\n"); break;
+         case 4 : print_msg(PRT_V, "Fernzone\n");    break;
+        default : print_msg(PRT_V, "*** BUG ***\n");  break;
       } /* switch */
     } /* if */
+    if (l3 != UNKNOWN) {
+       strcpy(sarea, s);
+  	   free(s);
+	}
   }
   else {
     l3 = getAreacode(49, num, &s);
 
     if (l3 != UNKNOWN) {
-      print_msg(PRT_NORMAL, "getAreacode(%d, %s, %s)=%d\n", atoi(p), num + l1, s, l3);
+      print_msg(PRT_V, "getAreacode(%d, %s, %s)=%d\n", atoi(p), num + l1, s, l3);
       free(s);
 
       zone = getZone(DTAG, mynum, num);
-      print_msg(PRT_NORMAL, "getZone=%d\n", zone);
+      print_msg(PRT_V, "getZone=%d\n", zone);
     } /* if */
   } /* else */
 } /* numsplit */
@@ -418,7 +519,7 @@ static int normalizeNumber(char *target)
     if (getCountry(target, &Country) != UNKNOWN)
       strcpy(num, Country->Code[0]);
     else {
-      print_msg(PRT_NORMAL, "Unknown country \"%s\"\n", target);
+      print_msg(PRT_A, "Unknown country \"%s\"\n", target);
       return(0);
     } /* else */
   }
@@ -464,24 +565,53 @@ static int normalizeNumber(char *target)
   return(1);
 } /* normalizeNumber */
 
-
+#define P_EMPTY(s) s ? s : ""
+#define DEL ';'
 static int compute()
 {
   register int  i, n = 0;
   register int	low = 0, high = MAXPROVIDER - 1;
   auto 	   RATE Rate;
   auto	   char s[BUFSIZ];
+  struct tm *tm;
 
 
   if (provider != UNKNOWN) {
     low = high = provider;
   } /* if */
 
+  buildtime();
+  if (explain == 98 || explain == 97) { /* Minutenpreis fuer diese Woche */
+ 	tm = localtime(&start);
+	tm->tm_hour=0;
+	tm->tm_min=1;
+	tm->tm_sec=0;
+	start = mktime(tm);
+    if (explain == 98) {
+	  while (tm->tm_wday) {      /* find last monday */
+    	start -= (60 * 60 * 24);
+        tm = localtime(&start);
+	  } /* while */
+  	  start += (60 * 60 * 24);
+	}
+  }
   for (i = low; i <= high; i++) {
+	int found, p;
 
     if (ignore[i])
       continue;
-
+    if (!getProvider(i))
+      continue;
+	found = 0;
+	if (n_providers) {
+	  for (p=0; p < n_providers ; p++)
+		if (providers[p] == i) {
+		  found = 1;
+		  break;
+		}
+	  if ((!found && !exclude) || (found && exclude))
+		continue;
+	}
     clearRate(&Rate);
     Rate.src[0] = mycountry;
     Rate.src[1] = myarea;
@@ -495,18 +625,63 @@ static int compute()
 
     Rate.prefix = i;
 
-    buildtime();
-
     Rate.start = start;
     Rate.now   = start + duration - ZAUNPFAHL;
-
+    if(verbose==2)
+	  fprintf(stderr,"@ %s%0*d  ", vbn, Rate.prefix>100?3:2,
+		Rate.prefix>100?Rate.prefix-100:Rate.prefix);
+    if (explain == 99) {
+	  int j;
+	  double oldCharge = -1.0;
+	  printf("@ %s%0*d\n", vbn, Rate.prefix>100?3:2,
+		Rate.prefix>100?Rate.prefix-100:Rate.prefix);
+	  Rate.now = start+1;
+	  for (j=1;j<duration; j++) {
+		if (!getRate(&Rate, NULL) && (Rate.Price != 99.99)) {
+		  if (Rate.Charge != oldCharge || j == duration-1) {
+			printf("%d %.4f\n", j, Rate.Charge);
+			oldCharge=Rate.Charge;
+		  }
+		}
+		else
+		  break;
+		Rate.now++;
+	  }
+	  printf("@----- %s %s\n", currency, Rate.Provider);
+    }
+    if (explain == 98||explain==97) { /* Minutenpreis fuer diese Woche/Tag */
+	  int j;
+	  printf("@ %s%0*d\n", vbn, Rate.prefix>100?3:2,
+		Rate.prefix>100?Rate.prefix-100:Rate.prefix);
+	  for (j=0;j < (explain==98 ? 7*24 : 24); j++) {
+		if (!getRate(&Rate, NULL) && (Rate.Price != 99.99)) {
+			printf("%d %.4f\n",j, Rate.Charge);
+		}
+		else
+		  break;
+		Rate.now+=3600;
+		Rate.start+=3600;
+	  }
+	  printf("@----- %s %s\n", currency, Rate.Provider);
+    }
+	else {
     /* kludge to suppress "impossible" Rates */
-
     if (!getRate(&Rate, NULL) && (Rate.Price != 99.99)) {
       sort[n].prefix = Rate.prefix;
       sort[n].rate = Rate.Charge;
-
-      if (explain == 2) {
+		if (explain == 9) { /* used by list */
+		  double cpm = Rate.Duration > 0 ? 60 * Rate.Price / Rate.Duration : 99.99;
+		  sprintf(s, "%s%0*d%c"
+				   "%s%c%s%c%s%c%s%c"
+				   "%s%c"
+				   "%.3f%c%.4f%c%.2f%c%.3f",
+			vbn, Rate.prefix>100?3:2, Rate.prefix>100?Rate.prefix-100:Rate.prefix,DEL,
+			Rate.Provider,DEL,P_EMPTY(Rate.Zone),DEL, P_EMPTY(Rate.Day),DEL, P_EMPTY(Rate.Hour),DEL,
+			currency,DEL, /* Fixme: global or per Provider?? wg. EURO */
+			Rate.Charge,DEL, Rate.Price,DEL, Rate.Duration,DEL, cpm);
+      	  sort[n].explain = strdup(s);
+		}
+    	else if (explain == 2) {
         sprintf(s, " (%s)", printrate(&Rate));
         sort[n].explain = strdup(s);
       }
@@ -519,13 +694,35 @@ static int compute()
 
       n++;
     } /* if */
-  } /* for */
-
+	}  /* else 99 */
+  } /* for i */
+  if (explain <10)
   qsort((void *)sort, n, sizeof(SORT), compare);
+
+  { char *p;
+  char *a;
+  for (p=mycountry; !isdigit(*p); p++)
+    ;
+  if (getAreacode(atoi(p), myarea, &a) != UNKNOWN) {
+	  strcpy(smyarea, a);
+	  free(a);
+  }}
 
   return(n);
 } /* compute */
+#undef P_EMPTY
 
+static void printList(char *target, int n) {
+  int i;
+  if (header)
+    print_msg(PRT_NORMAL, "Eine %d Sekunden lange Verbindung von %s %s (%s) nach %s %s %s (%s) kostet am %s\n",
+      duration, mycountry, myarea, smyarea, country, area, msn, sarea, ctime(&start));
+  if (n > best)
+    n = best;
+
+  for (i = 0; i < n; i++)
+    print_msg(PRT_NORMAL, "%s\n", sort[i].explain);
+}
 
 static void result(char *target, int n)
 {
@@ -537,12 +734,12 @@ static void result(char *target, int n)
   *num = 0; /* FIXME */
 
   if (header)
-    print_msg(PRT_NORMAL, "Eine %d Sekunden lange Verbindung von %s %s nach %s %s %s kostet am %s\n",
-      duration, mycountry, myarea, country, area, msn, ctime(&start));
+    print_msg(PRT_NORMAL, "Eine %d Sekunden lange Verbindung von %s %s (%s) nach %s %s %s (%s) kostet am %s\n",
+      duration, mycountry, myarea, smyarea, country, area, msn, sarea, ctime(&start));
 
   if (n > best)
     n = best;
-
+  if (explain < 10)
   for (i = 0; i < n; i++)
     print_msg(PRT_NORMAL, "%s %s %8.3f%s\n",
       Provider(sort[i].prefix), currency, sort[i].rate, sort[i].explain);
@@ -745,7 +942,7 @@ static void printTable()
       } /* if */
 
     if ((best < MAXPROVIDER) && (best < useds)) {
-      print_msg(PRT_NORMAL, "Retrying with only %d provider(s), eliminating %d provider(s)\n", best, useds - best);
+      print_msg(PRT_A, "Retrying with only %d provider(s), eliminating %d provider(s)\n", best, useds - best);
 
       qsort((void *)wsort, useds, sizeof(SORT2), compare2);
 
@@ -769,23 +966,23 @@ static void printTable()
   } /* if */
 } /* printTable */
 
+static void clean_up() {
+  if (providers)
+	free(providers);
+  providers=0;
+  if (fromarea)
+	free(fromarea);
+  fromarea=0;
+  is_daemon=table=list=header=explain=0;
+  usestat = 0;
+  provider = UNKNOWN;
+  duration = LCR_DURATION;
+  wanted_day = '\0';
+}
 
-int main(int argc, char *argv[], char *envp[])
-{
-  register int i, n;
-
-
-  myname = argv[0];
-  myshortname = basename(myname);
-
-  time(&start);
-  splittime();
-
-  if ((i = opts(argc, argv))) {
-    pre_init();
-    init();
+static void	doit(int i, int argc, char *argv[]) {
+  int n;
     post_init();
-
     memset(ignore, 0, sizeof(ignore));
 
     while (i < argc) {
@@ -794,27 +991,172 @@ int main(int argc, char *argv[], char *envp[])
           printTable();
         else {
           n = compute();
+		  if(list)
+			printList(argv[i], n);
+		  else
 	  result(argv[i], n);
 	  purge(n);
         } /* else */
       } /* if */
       i++;
     } /* while */
+	clean_up();
+}
+
+static void err(char *s) {
+  fprintf(stderr, "%s - %s\n", s, strerror (errno));
+  exit(2);
+}
+
+static int handle_client(int fd) {
+  char buffer[BUFSIZ];
+  int argc, n, i;
+  char **argv;
+  char *p;
+
+  if ((n=read(fd, buffer, BUFSIZ)) < 0)
+	err("Read");
+  if (n) {
+	argv = calloc(sizeof(char*),20);
+	buffer[n] = '\0';
+	if(verbose==2)
+	  fprintf(stderr, "got '%s' (bs=%d)\n", buffer, BUFSIZ);
+    argc = 0;
+	argv[argc++] = strdup(myname);
+	p = strtok(buffer, "\t\n ");
+    while (p) {
+	  argv[argc++]=strdup(p);
+	  p = strtok(0, "\t\n ");
+	  if (argc >= 20)
+		break;
+	}
+	if ((i = opts(argc, argv))) {
+	  if (shutdown(fd, 0)<0)  /* no read any more */
+		err("shutdown");
+	  if (dup2(fd, STDOUT_FILENO)<0)  /* stdout to sock */
+	    err("dup");
+  	  doit(i, argc, argv);
+	  fflush(stdout);
+	  fclose(stdout);
+	}
+	for (i=0;i<argc; i++)
+	  free(argv[i]);
+	free(argv);
+  }
+  return n == 0 ? -1 : 0;
+}
+
+static void setup_daemon() {
+  int sock;
+  struct sockaddr_un sa;
+  struct sockaddr_in client;
+  fd_set active_fd_set, read_fd_set;
+  char sock_name[] = "/tmp/isdnrate";
+  size_t size;
+  struct stat stat_buf;
+  int i;
+
+  if(verbose)
+	fprintf(stderr,"Setup sockets\n");
+  if ((sock=socket(PF_FILE, SOCK_STREAM, 0)) < 0)
+	err("Can't open socket");
+  sa.sun_family = AF_FILE;
+  unlink(sock_name);
+  strcpy(sa.sun_path, sock_name);
+  size = offsetof(struct sockaddr_un, sun_path) + strlen(sa.sun_path)+1;
+  if (bind(sock, (struct sockaddr*) &sa, size) < 0)
+	err("Can't bind sock");
+  stat(sock_name, &stat_buf);
+  chmod(sock_name,	stat_buf.st_mode | S_IWOTH | S_IWGRP); /* wwwrun nogroup */
+/*  if (listen(sock, 1) < 0) */
+  if (listen(sock, SOMAXCONN) < 0)
+	err("Can't listen");
+  FD_ZERO(&active_fd_set);
+  FD_SET(sock, &active_fd_set);
+  while (1) {
+	read_fd_set = active_fd_set;
+	if (select(FD_SETSIZE, &read_fd_set, 0,0,0) < 0)
+	  err("select");
+	  for (i=0; i<FD_SETSIZE; i++)
+		if (FD_ISSET(i, &read_fd_set)) {
+		  if (i==sock) { /* request on orig */
+			int new;
+			size = sizeof(client);
+			if ((new = accept(sock, (struct sockaddr*) &client, &size)) <0)
+			  err("accept");
+			if(verbose)
+			  fprintf(stderr,"Accepted %d\n", new);
+			FD_SET(new, &active_fd_set);
+		  }
+		  else { /* already connected */
+			pid_t pid;
+			int status;
+			if(verbose)
+			  fprintf(stderr,"Handle client %d\n",i);
+			pid=fork();
+			if (pid == 0) {
+			  handle_client(i);
+			  _exit(EXIT_SUCCESS);
+			}
+			else if(pid < 0) {
+			  err("fork");
   }
   else {
-    print_msg(PRT_NORMAL, usage, myshortname, myshortname, options);
-    print_msg(PRT_NORMAL, "\n");
-    print_msg(PRT_NORMAL, "\t-V\t\tshow version infos\n");
-    print_msg(PRT_NORMAL, "\t-v\t\tverbose\n");
-    print_msg(PRT_NORMAL, "\t-l duration\t duration of call in seconds (default %d seconds)\n", LCR_DURATION);
-    print_msg(PRT_NORMAL, "\t-H\t\tshow a header\n");
-    print_msg(PRT_NORMAL, "\t-t\t\tshow a table\n");
-    print_msg(PRT_NORMAL, "\t-b best\tshow only the first <best> provider(s) (default %d)\n", MAXPROVIDER);
-    print_msg(PRT_NORMAL, "\t-d d/m/y\tstart date of call (default now)\n");
-    print_msg(PRT_NORMAL, "\t-h h:/m\tstart time of call (default now)\n");
-    print_msg(PRT_NORMAL, "\t-x\texplain each rate\n");
-    print_msg(PRT_NORMAL, "\t-x2\texplain more\n");
-    print_msg(PRT_NORMAL, "\t-u\tshow usage stats\n");
+			  if(waitpid(pid, &status, 0)  != pid)
+				err("waitpid");
+			  close(i);
+			  FD_CLR(i, &active_fd_set);
+			}
+		  } /* if i */
+		} /* if	ISSET */
+  } /* while */
+}
+
+
+int main(int argc, char *argv[], char *envp[])
+{
+  register int i;
+
+
+  myname = argv[0];
+  myshortname = basename(myname);
+
+  time(&start);
+  splittime();
+
+  if ((i = opts(argc, argv)) || is_daemon) {
+    pre_init();
+    init();
+	if (is_daemon) {
+	  clean_up();
+	  setup_daemon();
+	}
+	else
+	  doit(i, argc, argv);
+  }
+  else {
+    print_msg(PRT_A, usage, myshortname, myshortname, options);
+    print_msg(PRT_A, "\n");
+    print_msg(PRT_A, "\t-b best\tshow only the first <best> provider(s) (default %d)\n", MAXPROVIDER);
+    print_msg(PRT_A, "\t-d d[.m[.y]] | {W|N|E}\tstart date of call (default now)\n");
+    print_msg(PRT_A, "\t-f areacode\tyou are calling from <areacode>\n");
+    print_msg(PRT_A, "\t-h h[:m[:s]]\tstart time of call (default now)\n");
+    print_msg(PRT_A, "\t-l duration\t duration of call in seconds (default %d seconds)\n", LCR_DURATION);
+    print_msg(PRT_A, "\t-p prov[,prov...]\t show only these providers\n");
+    print_msg(PRT_A, "\t-v\t\tverbose\n");
+    print_msg(PRT_A, "\t-x prov[,prov...]\t exclude these providers\n");
+
+    print_msg(PRT_A, "\n\tOutput options\n");
+    print_msg(PRT_A, "\t-D\trun as daemon\n");
+    print_msg(PRT_A, "\t-G which\tshow raw data\n");
+    print_msg(PRT_A, "\t-H\tshow a header\n");
+    print_msg(PRT_A, "\t-L\tshow a det. list\n");
+    print_msg(PRT_A, "\t-T\tshow a table of day/night week/weekend\n");
+    print_msg(PRT_A, "\t-U\tshow usage stats\n");
+    print_msg(PRT_A, "\t-V\tshow version infos\n");
+    print_msg(PRT_A, "\t-X\texplain each rate\n");
+    print_msg(PRT_A, "\t-X2\texplain more\n");
+    print_msg(PRT_A, "\n\te.g.\t%s -b5 -f31 -TH Zaire\n",myshortname);
   } /* else */
 
   return(0);

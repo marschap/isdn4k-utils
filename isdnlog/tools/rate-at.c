@@ -131,7 +131,7 @@ void rate_1001_old(void) {
 		     { "Regionalzone", "+43660" }, 
 		     { "Fernzone 1", "" },
 		     { "Fernzone 2", "Österreich" },
-		     { "Online-Tarif", "+437189,19430,19440" },
+		     { "Online-Tarif", "+437189,19411,19430,19440" },
 		     { "Mobilfunk", "+43663,+43664,+43676,+43699" },
 		     { "Ausland Zone 1", "Deutschland, Italien, Liechtenstein, Schweiz, Slowakei, Slowenien, Tschechien, Ungarn" },
 		     { "Ausland Zone 2", "Albanien, Andorra, Belarus, Belgien, Bosnien-Herzegowina, Bulgarien, Dänemark,Finnland, Frankreich, Großbritannien, Nordirland, Irland, Jugoslawien, Serbien, Montenegro, Kroatien, Luxemburg, Malta, Mazedonien, Monaco, Niederlande, Norwegen, Rumänien, San Marino, Schweden, Spanien, Ukraine, Vatikanstadt, Zypern" },
@@ -244,12 +244,12 @@ void rate_1001(void) {
 
   double Tarif[] = { 1.116, 1.056, 0.996, 0.936, 0.816 };
 
-  char *Zone[][2] = {{ "FreePhone", "112,122,133,141,142,144,+43800,+43800,+43801,+43802,+43803,+43804" },
+  char *Zone[][2] = {{ "FreePhone", "112,122,133,141,142,144,+43800,+43801,+43802,+43803,+43804" },
 		     { "Regionalzone", "111*,11820,15*,+437111,+437112,+437113,+437114,+43810" }, 
 		     { "Österreichzone", "Österreich" },
 		     { "Mobilfunk 1", "+43663,+43664,+43676" },
 		     { "Mobilfunk 2", "+43699" },
-		     { "Online", "+437189,19430,19440" },
+		     { "Online", "+437189,19411,19430,19440" },
 		     { "Ausland Zone 1", "Deutschland, Italien, Liechtenstein, Schweiz, Slowakei, Slowenien, Tschechien, Ungarn" },
 		     { "Ausland Zone 2", "Albanien, Andorra, Belarus, Belgien, Bosnien-Herzegowina, Bulgarien, Dänemark,Finnland, Frankreich, Großbritannien, Nordirland, Irland, Jugoslawien, Serbien, Montenegro, Kroatien, Luxemburg, Malta, Mazedonien, Monaco, Niederlande, Norwegen, Rumänien, San Marino, Schweden, Spanien, Ukraine, Vatikanstadt, Zypern" },
 		     { "Ausland Zone 3", "Algerien, Estland, Färöer-Inseln, Georgien, Gibraltar, Island, Israel, Lettland, Litauen, Marokko, Portugal, Russische Föderation, Tadschikistan, Turkmenistan, Usbekistan" },
@@ -1030,7 +1030,7 @@ int main (int argc, char *argv[])
   printf ("# Many thanks to Daniela Bruder <dbruder@sime.com>\n");
   printf ("# for collecting and preparing most of the call charges.\n\n\n");
 
-  printf ("V:1.80-Austria [06-Jul-1999]\n\n");
+  printf ("V:1.81-Austria [22-Jul-1999]\n\n");
   printf ("U:%%.3f öS\n");
 
 #if 0

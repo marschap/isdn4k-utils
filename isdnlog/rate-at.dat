@@ -11,7 +11,7 @@
 # for collecting and preparing most of the call charges.
 
 
-V:1.80-Austria [06-Jul-1999]
+V:1.81-Austria [22-Jul-1999]
 
 U:%.3f öS
 
@@ -57,7 +57,7 @@ Z:4                                Online-Tarif
 T:1-5/08-18=1.116/120              Tageszeit
 T:1-5/18-8=1.116/360               Sparzeit
 T:E,H/*=1.116/360                  Sparzeit
-A:+437189, 19430, 19440
+A:+437189, 19411, 19430, 19440
 
 Z:5                                Mobilfunk
 T:1-5/08-18=1.116/12               Tageszeit
@@ -283,7 +283,7 @@ Z:4                                Online-Tarif
 T:1-5/08-18=1.056/120              Tageszeit
 T:1-5/18-8=1.056/360               Sparzeit
 T:E,H/*=1.056/360                  Sparzeit
-A:+437189, 19430, 19440
+A:+437189, 19411, 19430, 19440
 
 Z:5                                Mobilfunk
 T:1-5/08-18=1.056/12               Tageszeit
@@ -509,7 +509,7 @@ Z:4                                Online-Tarif
 T:1-5/08-18=0.996/120              Tageszeit
 T:1-5/18-8=0.996/360               Sparzeit
 T:E,H/*=0.996/360                  Sparzeit
-A:+437189, 19430, 19440
+A:+437189, 19411, 19430, 19440
 
 Z:5                                Mobilfunk
 T:1-5/08-18=0.996/12               Tageszeit
@@ -735,7 +735,7 @@ Z:4                                Online-Tarif
 T:1-5/08-18=0.936/120              Tageszeit
 T:1-5/18-8=0.936/360               Sparzeit
 T:E,H/*=0.936/360                  Sparzeit
-A:+437189, 19430, 19440
+A:+437189, 19411, 19430, 19440
 
 Z:5                                Mobilfunk
 T:1-5/08-18=0.936/12               Tageszeit

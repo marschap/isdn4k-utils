@@ -1,4 +1,4 @@
-V:1.02-Germany [18-Jul-1999 10:44:21]
+V:1.02-Germany [23-Jul-1999 22:39:23]
 
 # Währungsformat
 U:%.3f DM
@@ -8,7 +8,7 @@ U:%.3f DM
 #
 # (C) Copyright 1999 by Andreas Kool (akool@isdn4linux.de)
 #
-# $Id: rate-de.dat,v 1.32 1999/07/18 08:39:16 akool Exp $
+# $Id: rate-de.dat,v 1.33 1999/07/24 08:43:54 akool Exp $
 #
 # Zonenzuordnung für Deutschland
 #
@@ -748,6 +748,7 @@ T:W/06-18=0.18(60)/1 Tagestarif
 T:W/18-21=0.12(60)/1 Abendtarif
 T:E,H/06-21=0.12(60)/1 Tagestarif
 T:*/21-06=0.08(60)/1 Nachttarif
+A:+49
 Z:10 C-Netz
 A:+491618		# T-C-Tel Voice Mail
 A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
@@ -826,6 +827,7 @@ T:W/06-18=0.18(60)/1 Tagestarif
 T:W/18-21=0.12(60)/1 Abendtarif
 T:E,H/06-21=0.12(60)/1 Tagestarif
 T:*/21-06=0.07(60)/1 Nachttarif
+A:+49
 Z:10 C-Netz
 A:+491618		# T-C-Tel Voice Mail
 A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
@@ -904,6 +906,7 @@ T:W/06-18=0.18(60)/1 Tagestarif
 T:W/18-21=0.12(60)/1 Abendtarif
 T:E,H/06-21=0.12(60)/1 Tagestarif
 T:*/21-06=0.06(60)/1 Nachttarif
+A:+49
 Z:10 C-Netz
 A:+491618		# T-C-Tel Voice Mail
 A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
@@ -3987,6 +3990,7 @@ Z:4 Distanz
 T:W/09-18=0.1044/15 Hauptzeit
 T:W/18-09=0.1044/30 Nebenzeit
 T:E,H/*=0.1044/30 Wochenende
+A:+49
 Z:5 isiFON-zu-isiFON
 T:W/09-18=0.1044/300 Hauptzeit
 T:W/18-09=0.1044/600 Nebenzeit
@@ -4159,6 +4163,7 @@ Z:4 Distanz
 T:W/09-18=0.1044/33 Hauptzeit
 T:W/18-09=0.1044/69 Nebenzeit
 T:E,H/*=0.1044/33 Wochenende
+A:+49
 Z:5 isiFON-zu-isiFON
 T:W/09-18=0.1044/300 Hauptzeit
 T:W/18-09=0.1044/600 Nebenzeit
@@ -4328,6 +4333,7 @@ Z:4 Distanz
 T:W/09-18=0.1044/33 Hauptzeit
 T:W/18-09=0.1044/69 Nebenzeit
 T:E,H/*=0.1044/69 Wochenende
+A:+49
 Z:10 Mobilfunk
 A:+491618		# T-C-Tel Voice Mail
 A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
@@ -5656,6 +5662,7 @@ Z:4 CITYMS-100 plus
 T:W/09-18=0.07/60 Hauptzeit
 T:W/18-09=0.07/60 Nebenzeit
 T:E,H/*=0.07/60 Nebenzeit
+A:+49
 Z:5 CITYMS-Jovel
 T:W/09-18=0.056/60 Hauptzeit
 T:*/18-21=0.056/106 Nebenzeit
@@ -10123,6 +10130,7 @@ Z:4 Deutschland
 T:W/08-18=0.22(60)/1 Hauptzeit
 T:W/18-08=0.11(60)/1 Nebenzeit
 T:E,H/*=0.11(60)/1 Nebenzeit
+A:+49
 Z:5 Unter Uns
 T:*/*=0.02(60)/1
 Z:10 Mobilfunk
@@ -11100,6 +11108,7 @@ T:W/18-21=0.1044/60 Freizeit
 T:E,H/05-21=0.1044/60 Freizeit
 T:W/21-09=0.0522/60 Nacht
 T:E,H/21-05=0.0522/60 Nacht
+A:+49
 Z:5 Surf-Tarif
 T:W/09-18=0.0696/90 Tag
 T:W/18-21=0.0696/150 Freizeit

@@ -1,4 +1,4 @@
-/* $Id: isdnrep.c,v 1.72 1999/07/23 09:09:38 calle Exp $
+/* $Id: isdnrep.c,v 1.73 1999/07/24 08:44:44 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -24,6 +24,13 @@
  *
  *
  * $Log: isdnrep.c,v $
+ * Revision 1.73  1999/07/24 08:44:44  akool
+ * isdnlog-3.42
+ *   rate-de.dat 1.02-Germany [18-Jul-1999 10:44:21]
+ *   better Support for Ackermann Euracom
+ *   WEB-Interface for isdnrate
+ *   many small fixes
+ *
  * Revision 1.72  1999/07/23 09:09:38  calle
  * Bugfix: getProvider sometimes returns NULL and isdnrep crashed ...
  *
@@ -1188,6 +1195,9 @@ static int print_bottom(double unit, char *start, char *stop)
 	strich(2);
 	print_sum_calls(&all_sum,0);
 
+	if (bill)
+          return(0);
+
 	if (all_com_sum.eh)
 	{
 		print_sum_calls(&all_com_sum,1);
@@ -1307,8 +1317,10 @@ static int print_bottom(double unit, char *start, char *stop)
                     else
                       *sx = 0;
 
-		    print_line3(NULL, "Provider", string,
-		      getProvider(i) ? getProvider(i) : "",
+                    if ((p = getProvider(i)) == NULL)
+                      p = "UNKNOWN";
+
+		    print_line3(NULL, "Provider", string, p,
 		      usage_provider[i],
 		      double2clock(duration_provider[i]),
                       print_currency(pay_provider[i], 0), sx);
@@ -1862,7 +1874,7 @@ static int print_line(int status, one_call *cur_call, int computed, char *overla
 
 static void numsplit(char *num)
 {
-  register int   l1, l3, zone;
+  register int   l1, l3, l4, zone;
   auto	   int	 l2;
   register char *p;
   auto	   char *s;
@@ -1879,6 +1891,9 @@ static void numsplit(char *num)
       print_msg(PRT_NORMAL, "%s, ", s);
 
     if ((p = get_areacode(num, &l2, C_NO_WARN | C_NO_EXPAND | C_NO_ERROR)) && (l2 > 0)) {
+      l4 = l2 + 1 - l1;
+
+      if (l4 > 0)
       Strncpy(area, num + l1, l2 + 1 - l1);
 
       print_msg(PRT_NORMAL, "%s", p);
@@ -1929,21 +1944,38 @@ static void numsplit(char *num)
 
 static void bprint(one_call *call)
 {
+  register char *p = call->num[CALLED];
+  auto	   char	 target[BUFSIZ];
+
+
+  if (call->duration) {
+    if (*p == '+') {
+      if (!memcmp(call->num[CALLED], mycountry, strlen(mycountry))) { /* eigenes Land */
+        p += strlen(mycountry);
+        sprintf(target, "0%s", p);
+      }
+      else
+        sprintf(target, "00%s", p + 1);
+    }
+    else
+      sprintf(target, "%s", p);
+
   print_msg(PRT_NORMAL, "%s %s %-16s  ",
-    get_time_value(0,NULL,GET_TIME),
+      get_time_value(0,NULL, GET_TIME),
     double2clock(call->duration),
-    call->num[CALLED]);
+      target);
 
   if (call->duration) {
     print_msg(PRT_NORMAL, "%s %-15s",
-      print_currency(call->pay, 0),
-      getProvider(call->provider) ? getProvider(call->provider) : "");
+      print_currency(call->pay * 100.0 / 116.0, 0),
+        getProvider(call->provider));
+
     numsplit(call->num[CALLED]);
     print_msg(PRT_NORMAL, "\n");
   }
   else
     print_msg(PRT_NORMAL, "%*s** %s\n", 30, "", qmsg(TYPE_CAUSE, VERSION_EDSS1, call->cause));
-
+  } /* if */
 /*
   int    eh;
   int    cause;
@@ -3144,7 +3176,7 @@ static char *print_currency(double money, int computed)
   static char RetCode[256];
 
 
-	sprintf(RetCode,"%s %s%c", double2str(money,8,2,0),currency,computed?'*':' ');
+	sprintf(RetCode,"%s %s%c", double2str(money, 8, 4, 0), currency, computed ? '*' : ' ');
   return RetCode;
 }
 
@@ -3157,6 +3189,9 @@ static int print_sum_calls(sum_calls *s, int computed)
   int RetCode;
 
 
+  if (bill)
+    print_msg(PRT_NORMAL, "%*s%s\n", 36, "", print_currency(s->pay, 0));
+  else {
 	if ((tmp_call = (one_call*) calloc(1,sizeof(one_call))) == NULL)
 	{
 		print_msg(PRT_ERR, nomemory);
@@ -3177,6 +3212,9 @@ static int print_sum_calls(sum_calls *s, int computed)
 
   RetCode = print_line(F_BODY_BOTTOM1,tmp_call,computed,String);
 	free(tmp_call);
+
+  } /* else */
+
   return RetCode;
 }
 

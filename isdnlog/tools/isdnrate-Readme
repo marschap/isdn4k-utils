@@ -1,0 +1,50 @@
+Isdnrate CGI 
+------------
+
+Installation
+------------
+
+- Automatic
+
+ $ ./configure
+ # make install
+ 
+- Manual
+ 
+edit isdnrate:
+ location of code file
+ location of isdnrate
+ location if mktemp
+ 
+ if your /tmp ist not writable by all users, turn of $use_sockets
+ or change the location of the unix socket in both isdnrate's.
+ 
+ make a tmp dir below htdocs
+ # mkdir /usr/local/httpd/htdocs/tmp
+ # chmod 700 /usr/local/httpd/htdocs/tmp
+ # chown wwwrun.nogrup tmp
+  (or whatever uid.gid your webserver runs with)
+  
+ # cp isdnrate /usr/local/httpd/cgi-bin
+ # chmod 755 /usr/local/httpd/cgi-bin/isdnrate
+ # chmod 644 /etc/isdn/isdn.conf  
+ 
+ edit isdnrate.c
+  first line defines LEO (AT) else DE is assumed
+
+NB: isdnrate uses the following pel modules:
+ CGI, GD, IO::Handle
+ if you don't have these, point your browser to www.perl.org, 
+ and look for CPAN mirrors near your location.
+
+
+Running the Program
+-------------------
+
+if $use_sockets is on, start the server instance of isdnlog/bin/isdnrate with
+options -D [-v]
+as soon as you see "Setup sockets" you can point your browser to 
+/cgi-bin/isdnrate and fill the form with the desired destination.
+Click on table or grafik
+
+Enjoy

@@ -1,0 +1,588 @@
+#!/usr/bin/perl
+#
+# Copyright 1999 by Leopold Toetsch <lt@toetsch.at>
+#
+# This program is free for private use. Private use means, you
+# may install and run this program on your home/office computer(s).
+# But you are not allowed to use this program on public webservers.
+#
+# For commercial usage on public webservers contact the author.
+
+use CGI qw(:standard);
+use strict;
+use GD;
+use IO::Handle;
+my $use_sockets=1;
+use Socket;
+my $server='/tmp/isdnrate';
+
+# configure adjusts these n/y :-(
+my $MKTEMP= '/bin/mktemp';
+my $ISDNRATE='/home/lt/src/testi4l/isdnlog/bin/isdnrate';
+my $CODEF=   '/home/lt/src/testi4l/isdnlog/tools/zone/de/code';
+my $tempdir=$ENV{'DOCUMENT_ROOT'};
+# end configurable
+
+my $debug=0;
+my $LEER='--kein--';
+$tempdir = "$tempdir/tmp";
+my $tempdir_url = '/tmp';
+
+my $q=new CGI;
+
+# some security things
+$CGI::POST_MAX=400;
+$CGI::DISABLE_UPLOADS=1;
+
+# data
+my @countries=($LEER, "Afghanistan","Ägypten","Alaska","Albanien","Algerien",
+"Amerikanisch-Samoa","Amerikanische Jungferninseln","Andorra",
+"Angola","Anguilla","Antarktis","Antigua und Barbuda","Äquatorial-Guinea",
+"Argentinien","Armenien","Aruba","Ascension",
+"Aserbaidschan","Äthiopien","Atlantischer Ozean (Ost)",
+"Atlantischer Ozean (West)","Australien","Azoren",
+"Bahamas","Bahrain","Bangladesch","Barbados","Belgien",
+"Belize","Benin","Bermuda","Bhutan","Bilbao","Bolivien","Bosnien-Herzegowina",
+"Botsuana Botswana","Brasilien","Britische Jungferninseln",
+"Brunei","Bulgarien","Burkina Faso Obervolta","Burundi","Cape Verde",
+"Chatham-Inseln","Chile","China","Cookinseln","Costa Rica",
+"Deutschland","Diego Garcia","Dominica","Dominikanische Republik","Dschibuti",
+"Dänemark","Ecuador","Edinburgh",
+"El Salvador","Elfenbeinküste Cote de Ivoire",
+"Eritrea","Estland","Falklandinseln","Fidschi","Finnland","Frankfurt",
+"Frankreich","Französisch-Guayana","Französisch-Polynesien",
+"Freephone Niederlande","Freephone Schweiz","Färöer-Inseln","Gabun",
+"Gambia","Georgien","Gerona","Ghana","Gibraltar","Grenada","Griechenland",
+"Großbritannien","Grönland","Guadeloupe","Guam",
+"Guantanamo","Guantanamo Bay","Guatemala","Guinea","Guinea-Bissau","Guyana",
+"Haiti","Hawaii","Honduras","Hongkong","Indien",
+"Indischer Ozean","Indonesien","Inmarsat A","Inmarsat A Daten/Fax",
+"Inmarsat Aero","Inmarsat B","Inmarsat B HSD","Inmarsat M","Inmarsat Mini-M",
+"Irak","Iran","Iridium 008816","Iridium 008817","Irland",
+"Island","Israel","Italien","Jamaika",
+"Japan","Jemen (Arab. Republik)","Jordanien","Jugoslawien",
+"Kaimaninseln","Kambodscha","Kamerun","Kanada","Kanarische Inseln","Kasachstan",
+"Katar","Kenia","Kirgisien","Kirgistan","Kiribati","Kokosinseln","Kolumbien",
+"Kongo","Korea Rep. (South)","Kroatien","Kuba",
+"Kuwait","Laos","Lesotho","Lettland","Leuven","Libanon",
+"Liberia","Libyen","Liechtenstein","Litauen","Luxemburg","Macao","Madagaskar",
+"Madeira","Malawi","Malaysia","Malediven","Mali","Mallorca","Malta",
+"Marianen (SaipanNord-)","Marokko","Marshallinseln","Martinique / Franz. Antillen",
+"Mauretanien","Mauritius","Mayotte","Mazedonien","Mexiko","Midway-Inseln",
+"Mikronesien","Moldavien Moldau (Republik)","Monaco","Mongolei","Montserrat",
+"Mosambik","Myanmar Burma","Namibia","Nauru","Nepal","Neukaledonien",
+"Neuseeland","Nicaragua","Niederl. Antillen","Niederlande",
+"Niger","Nigeria","Niue-Inseln","Nordirland","Nordkorea","Norfolkinseln",
+"Norwegen","Oman","Österreich","Pakistan","Palau /Belau","Panama",
+"Papua-Neuguinea","Paraguay","Pazifischer Ozean",
+"Peru","Philippinen","Pitcairn Inseln","Pitcairn Islands",
+"Polen","Portugal","Puerto Rico","Reunion","Rotterdam","Ruanda","Rumänien",
+"Russische Föderat. (westl.)","Russische Förderation (östl.)",
+"Salomonen","Sambia","San Marino","Sao Tome und Principe","Saudi Arabien",
+"Schweden","Schweiz","Senegal",
+"Seyschellen","Sierra Leone","Simbabwe","Singapur","Slowakische Republik",
+"Slowenien","Somalia","Spanien","Sri Lanka","St. Helena",
+"St. Kitts und Nevis","St. Lucia","St. Pierre und Miquelon","St. Vincent und Grenadinen",
+"Sudan","Suriname","Swasiland","Syrien","Südafrika","Südkorea",
+"Tadschikistan","Taiwan","Tansania","Tarragona","Teneriffa",
+"Thailand","Togo","Tokelan","Tokyo","Tonga","Trinidad und Tobago",
+"Tristan da Cunha","Tschad","Tschechische Republik","Tunesien","Turkmenistan",
+"Turks- und Caicosinseln","Tuvalu","Türkei","USA",
+"Uganda","Ukraine","Ungarn","Uruguay","Usbekistan","Valencia","Vanuatu",
+"Vatikan","Venezuela","Ver. Arabische Emirate",
+"Vietnam","Wake Inseln","Wallis und Futuna","Weihnachtsinseln","Weissrussland",
+"West-Samoa","Zaire","Zentralafrikanische Republik","Zypern");
+
+my %towns = (0 => $LEER);
+# main
+
+&html_header;
+&read_towns;
+if ($debug==2) {
+    $q->print(hr, $q->dump());
+    $q->print(hr);
+}    
+my ($weekly, $daily);
+$weekly=param('graf') =~ /Wo/;
+$daily=param('graf') =~ /Tag/;
+&get_results if(param('tab') eq 'Tabelle');
+&make_graf if(param('graf'));
+&print_form;
+&clean_up;
+$q->print(end_html);
+1;
+
+# subs
+
+sub html_header {
+    $q->print(header);
+    $q->print(start_html(-title=>'Telefon-Kosten', -bgcolor=>'#f0f0f0',
+	-script=> q(
+    tim = 0;
+    function start(but) {
+	if(document.form.Start.value=='Start') {	
+	    tim=setInterval("run()",1000);
+	    document.form.len.value=0;
+	    document.form.Start.value='Stop';
+	    document.form.now.checked=false;
+	    j=new Date();
+	    document.form.day.value=j.getDate()+'.'+(j.getMonth()+1)+'.'+j.getYear();
+	    document.form.hour.value=j.getHours()+':'+j.getMinutes()+':'+j.getSeconds();	
+	}			
+	else {
+	    clearInterval(tim);
+	    document.form.Start.value='Start';
+    	}
+    }
+    function run() {
+       document.form.len.value++;
+    }   
+
+-->    
+</SCRIPT>    
+<STYLE>
+<!--
+.t {font-face:Sans Serif;font-size:10pt}
+.sm {font-face:Sans Serif;font-size:9pt}
+--> 
+</STYLE>
+<SCRIPT> 
+<!--   
+    )  ),
+    h1({-align=>'center'},'Telefon-Kosten'));
+}
+    
+sub read_towns {
+   my($c, $t);	
+   open(IN, $CODEF) || $q->print("Can't read $CODEF");	
+   while (<IN>) {
+	chomp;
+        ($c, $t) = split(/\t/,$_,2);
+   	$towns{$c}=$t;
+   }
+   close(IN);
+}   
+
+sub print_form {
+    my($t, @cod);
+    foreach $t (sort {$towns{$a} cmp $towns{$b}	} (keys(%towns))) {
+	push(@cod, $t)
+    }	
+    if (param()) {
+	$q->print(p, hr, h3('Neue Eingabe'));
+    }
+    else {
+	param('now','on');
+	param('best',20);
+    }	
+    $q->print(
+    	start_form(-name=>'form'),
+	table({-border=>8},
+	    Tr(td(table({-bgcolor=>'#ffffe0', -cellspacing=>0, -cellpadding=>0}, 
+	    Tr([
+	    td([ b("Ich wähle von: "),
+    		textfield(-name=>'from', -size=>20, -maxlength=>20),'&nbsp;','&nbsp;']),
+	    td({-colspan=>4},hr),
+    	    td(["<b>nach</b> TelefonNummer: ",
+    	    textfield(-name=>'tel', -size=>20, -maxlength=>20),'&nbsp;','&nbsp;']),
+	    td(["oder Stadt: ",
+    		popup_menu(-name=>'town', -values=> \@cod, -labels=> \%towns),
+    		"oder Ausland: ",
+    		popup_menu(-name=>'country', -values=> \@countries)]),
+	    td({-colspan=>4},hr),
+	    td(["<b>Dauer</b> (sec)",
+    		textfield(-name=>'len', -size=>4, -maxlength=>4, -value=>60),
+		"Stoppuhr",
+		button(-name=>'Start',-value=>'Start', -onClick=>'start()')]),
+	    td([checkbox(-name=>'now', -label=>'Jetzt  - oder am'),
+    		popup_menu(-name=>'dday', -values=> ['W','N','E'],
+		    -labels=> {'W' =>'Wochentag-10 h','N'=>'Nacht','E'=>'Sonntag'}),
+		'&nbsp;','&nbsp;']),
+	    td(["oder um (hh[:mm[:ss]]) ",
+    		textfield(-name=>'hour', -size=>8, -maxlength=>8),
+    		"am (dd[.mm[.jj]]) ",
+    		textfield(-name=>'day', -size=>10, -maxlength=>10)]),
+	    td({-colspan=>4},hr),
+	    td({-bgcolor=>'#ffc080'},[b(" Ausgabe "),
+    		submit('tab','Tabelle'), 
+    		"mit",
+    		popup_menu(-name=>'explain', -values=> [0,1,2],
+		-labels=> {0 =>'Nur Kosten',1=>'Zonen',2=>'Details'})]),
+    	    td({-bgcolor=>'#00bfff'},["oder",
+    		submit('graf',' Grafik '), 
+		"Größe",
+    		popup_menu(-name=>'swidth', -values=> ['1024','800','640'],
+		    -labels=> {'1024' =>'groß','800'=>'mittel','640'=>'klein'})]),
+    	    td({-bgcolor=>'#ffdead'},[
+		"oder Tagespreise",
+    		submit('graf','  Tag   '),
+		"oder Wochenpreise",
+    		submit('graf','Woche ')
+		]), 
+	    td({-colspan=>4},hr),
+    	    td([" der besten ",
+    		textfield(-name=>'best', -size=>2, -maxlength=>2),
+		"Provider",'&nbsp;']),
+	    td(['oder nur Provider',	
+    		textfield(-name=>'prov', -size=>20, -maxlength=>100),
+		'oder nicht Provider',
+    		textfield(-name=>'xprov', -size=>20, -maxlength=>100)]),
+	    td(['&nbsp;','&nbsp;',	
+		reset('Reset'),
+		defaults('Löschen')])
+	]))))),
+    	end_form,
+	p,
+	hr,
+	div({-class=>'sm'},
+	    'Die Tarife der Provider ändern sich häufig und können daher ',
+	    'eventuell ungenau sein. Wenn ein Tarif falsch sein sollte, wenden ',
+	    'Sie sich bitte',
+	    ul(li('in Österreich an ',
+	    a({-href=>'mailto:reinelt@eunet.at?subject=Tarife'},
+	    'Michael Reinelt')),
+	    li('in Deutschland an ',
+	    a({-href=>'mailto:rate-de@Joker.E.Ruhr.de?subject=Tarife'},
+	    'die deutsche ISDN-Rate Crew'))),
+	    ' oder an den Autor dieses Pogrammes ',
+	    a({-href=>'mailto:lt@toetsch.at?subject=Tarife'},'Leopold Tötsch.') ),
+	);
+}	
+
+sub call_isdnrate {	
+    my ($hour, $day);
+    my ($len, $lines) = @_;
+    my ($now, $explain, $tel, $from, $best, $prov);
+    if (param('town') != '0') {
+	param('country', $LEER);
+	$tel = '0'.param('town');
+	param('tel',$tel);
+    }
+    elsif (param('country') !~ /--/) {
+	param('tel','');
+	param('town', $LEER);
+	$tel=param('country');
+	$tel =~s/ /_/g; # preserv spaces
+    }
+    else {	
+	$tel = param('tel') =~ /\d+/ ? $& : '';
+    }	
+    return if($tel eq '');		
+    my @args=($ISDNRATE,"-H", $tel);
+    unless (param('now')) {
+    	push(@args, "-h$hour") if ($hour=param('hour'));
+    	push(@args, "-d$day") if ($day=param('day')||param('hour')?param('day'):param('dday'));
+    }	
+    if ($prov=param('xprov')) {
+	$prov =~ s/\s//g;
+	push(@args, "-x$prov");
+    }	
+    elsif ($prov=param('prov')) {
+	$prov =~ s/\s//g;
+	push(@args, "-p$prov");
+    }	
+    push(@args, "-f$from") if ($from=param('from'));
+    if (param('graf')) {
+	push(@args,$weekly? '-G98':$daily?'-G97':'-G99');
+    }
+    else {  
+	push(@args, "-X$explain") if ($explain=param('explain'));
+    }  
+    push(@args, "-l$len");
+    $best=param('best');
+    param('best', $best>0 ? $best: 20); 
+    push(@args, "-b$best") ;
+    print "<pre>@args</pre>" if($debug==2);
+    if ($use_sockets) {
+	socket(SOCK, PF_UNIX, SOCK_STREAM, 0) || die("socket: $!");
+	connect(SOCK, sockaddr_un($server)) || die("connect: $!");
+	shift(@args);
+	foreach (@args) {
+	    print SOCK "$_ ";
+	}
+	SOCK->autoflush(1);
+	my $line;
+	while (defined($line = <SOCK>)) {
+	    push(@$lines, $line);
+	}    
+	close(SOCK);
+    }
+    else {
+	open(PIPE, "-|") || exec(@args) == 0 or die "Can't @args: $?";
+        @$lines = <PIPE>;
+        close(PIPE);
+    }  
+}
+
+sub get_results {
+    my (@lines, $len);
+    my($pnum, $prov, $cur, $charge, $bgcolor, $i, $rest);
+    $len=sprintf("%d",param('len')) || 60;
+    &call_isdnrate($len, \@lines);
+    param('len',$len);
+    $lines[0] = &fmt_date($lines[0]);
+    $q->print(hr, $lines[0], p);
+    shift(@lines); # -H
+    shift(@lines); # empty
+    (undef, $cur) = split(/  +/, $lines[0]);
+    $q->print("<table><tr><th>Nr.</th><th>Provider</th><th>$cur</th>");
+    $q->print("<th>Info</th>") if(param('explain'));
+    $q->print("</tr>\n");
+    $i=0;
+    foreach (@lines) {
+    	($pnum, $prov, $cur, $charge, $rest) = &split_line($_);
+	$bgcolor=++$i&1?' bgcolor="#e0e0e0"':'';
+	$q->print(qq(<tr$bgcolor><td>$pnum</td><td>$prov</td><td align="right">$charge</td>));
+	$q->print(qq(<td><font size="-1">$rest</font></td>)) if(param('explain'));
+	$q->print("</tr>\n");
+    }
+    $q->print("</table>\n");
+}
+
+sub split_line {
+   my $l = $_[0];	
+   my ($pnum,$prov, $cur, $charge, $rest); 
+   ($prov, $cur, $charge) = split(/  +/, $l);
+   ($pnum,$prov) = split(/:/, $prov);
+   if(param('explain')) {
+	($charge,$rest) = split(/ /, $charge, 2);
+	$rest =~ s/0+s/0s/g;
+   }
+   ($pnum,$prov, $cur, $charge, $rest); 	
+}
+   
+sub fmt_date {
+    my %days=(Mon=>'Mo',Tue=>'Di',Wed=>'Mi',Thu=>'Do',Fri=>'Fr',Sat=>'Sa',Sun=>'So');
+    my %mons=(Mar=>'Mär',May=>'Mai',Oct=>'Okt',Dez=>'Dez');
+    my ($db, $m, $d, $t, $y, $k);
+    if ($_[0] =~ m/(\d+) Sekunden/) {
+        $k = $&;
+    	$d = $1;
+	if ($d >= 60) {
+	    $m = int($d / 60);
+	    $d = $d % 60;
+	    my $mn = $m > 1 ? 'n' : '';
+	    my $sn = $d > 1 ? 'n' : '';
+	    my $st = $d ? " $d Sekunde$sn": '';
+	    $_[0] =~ s/$k/$m Minute$mn$st/;
+	}
+    }	    	
+    if ($_[0] =~ s/(\w{3}) (\w{3}) (\d\d?) (\S{8}) (\d{4})//) {
+    	($db, $m, $d, $t, $y) = ($1,$2,$3,$4,$5);
+    	$db=$days{$db};
+    	$m=$mons{$m} ? $mons{$m} : $m;
+    	$_[0] .= "$db $d. $m $y um $t";
+    }	
+    $_[0];
+}        
+
+sub min {
+ $_[0] < $_[1] ? $_[0]	: $_[1];
+}
+sub max {
+ $_[0] > $_[1] ? $_[0]	: $_[1];
+}
+sub make_graf {	
+    my ($W, $H, $LEG, $LIN, $white, $black, $lgrey, $llgrey, $tempf, $i);
+    my (@lines, $n, $xo, $yo, $dx, @rawcolors, @colors, %pstring, %unused);
+    my ($prov, $cur, $charge, $pnum, %pc, %pt, $r, $g, $bl, $len);
+    my ($swidth, %dim);
+    $swidth=param('swidth')||1024;
+    # dimensions
+    %dim = (1024=>[700,350,240], 800=>[500,250,200],640=>[300,200,200]);
+    $W=$dim{$swidth}[0]; 
+    $H=$dim{$swidth}[1]; 
+    $LEG=$dim{$swidth}[2];
+    $LIN=50;
+    $dx = 10;
+    $xo=25; $yo=20;
+    $len=min(param('len'), 600);
+    param('len', $len);
+    # make some colors
+    $n=0;
+    foreach $g ('00','33','66','99') {
+    	foreach $r ('00','33','66','99') {
+    	    foreach $bl ('00','33','66','99') {
+		$i= ++$n*29 % (4*4*4);
+	    	push(@rawcolors, "$i-0x$r-0x$g-0x$bl");
+	    }
+	}
+    }
+    @rawcolors=sort(@rawcolors);		
+    # make img
+    my $im = new GD::Image($W+$LEG, $H);	
+    $white = $im->colorAllocate(255,255,255);
+    $llgrey = $im->colorAllocate(0xf0,0xf0,0xf0);
+    $im->transparent($llgrey);
+    $lgrey = $im->colorAllocate(0xe0,0xe0,0xe0);
+    $black = $im->colorAllocate(0,0,0);
+    # draw axis region
+    my $poly = new GD::Polygon;
+    $poly->addPt(0,0);
+    $poly->addPt(0,$H-1);
+    $poly->addPt($W-1,$H-1);
+    $poly->addPt($W-1,$H-$yo);
+    $poly->addPt($xo,$H-$yo);
+    $poly->addPt($xo,0);
+    $im->filledPolygon($poly, $lgrey);
+    # get data
+    my ($c,$text);
+    &call_isdnrate($len, \@lines);
+    foreach (@lines) {
+	if (/^\@--+ (\S+) (\S.*)/) { # end
+	    if ($pnum && $#{ $pc{$pnum} } == 0) { # any data
+	        pop( @{ $pt{$pnum} } );
+	        pop( @{ $pc{$pnum} } );
+		delete $pstring{$pnum};
+		$unused{$pnum}++;
+		next;
+	    }		
+	    $pstring{$pnum} = $2;
+	    $cur=$1;
+	    $pnum = '';
+	}
+        elsif (/^\@ (\d+)/) { # start
+    	    $pnum=$1;
+	    push( @{ $pt{$pnum} }, 0); # time
+	    push( @{ $pc{$pnum} }, 0); # charge
+	}	
+	elsif (/(\d+) (\d+\.\d+)/ && $pnum) {	
+	    push( @{ $pt{$pnum} }, $1==1?0.1:$1); # time
+	    push( @{ $pc{$pnum} }, $2); # charge
+	}
+	elsif (/ekunden/) { # -H text
+	    $text = $_;
+	}    
+    }
+    # info
+    $text = &fmt_date($text);
+    $q->print(p({-class=>'t'},$text));
+    # alloc colors
+    my(%rcols);
+    $c = 0;
+    my ($p, $max, $dy, $my);
+    $max=$n=0;
+    foreach $p (sort { $pc{$a}[$#{$pc{$a}}] <=> $pc{$b}[$#{$pc{$b}}] } (keys(%pstring))) {
+	(undef, $r, $g, $b) = split(/-/, $rawcolors[$n]);
+    	$rcols{$p} = $im->colorAllocate(eval($r), eval($g), eval($b));
+	# calc max
+	foreach $i (0 .. $#{ $pc{$p} }) {
+	    $max = $pc{$p}[$i] if ($pc{$p}[$i] > $max);
+	}
+	last if (++$n >= param('best'));
+    }	    
+    return unless($n);
+    my ($xs, $ys, $font, $tx);
+    $font = GD::gdMediumBoldFont;
+    
+    # y-axis
+    $my = $max>100?int(($max+99.9)/100)*100: $max>10?int(($max+9.9)/10)*10 : 
+	$max>1 ? int($max+0.99) : int(($max+0.099)*10)/10;
+    $ys = ($H-$yo)/$my;
+    $dy=$my>=100?100:$my>=10?10:$my>=1?1:0.1;
+    for ($i = $dy; $i <= $my; $i+=$dy) {
+    	$im->line($xo/2, $H-$yo-$i*$ys,$xo,$H-$yo-$i*$ys,$black); # tick
+    	$im->dashedLine($xo+1, $H-$yo-$i*$ys,$W-1,$H-$yo-$i*$ys,$lgrey) if($i<$my);
+	$im->string($font, 4, $H-$yo-$i*$ys+2, $i, $black); # price
+    }
+    $im->string($font, 4, $H-$yo-$my*$ys+3+$font->height, $cur, $black);
+    # x-axis
+    if ($weekly) {
+	$len=7*24;
+	$dx=1;
+    }
+    elsif ($daily) {
+	$len=24;
+	$dx=1;
+    }	
+    else {	
+	$dx = $len>240 ? 60 : $len>=120 ? 20 : 10;
+    }	
+    $xs = ($W-$xo)/($len-1);
+    my @days= qw(Mo Di Mi Do Fr Sa So);
+    for ($i = 0; $i < $len; $i+=$dx) {
+	if (($weekly && $i%4==0) || !$weekly) {
+	    $im->dashedLine($xo+$i*$xs-1, $H-$yo-1, $xo+$i*$xs-1, 1, $lgrey);
+	    $im->line($xo+$i*$xs-1, $H-$yo/2, $xo+$i*$xs-1, $H-$yo, $black); # tick
+	}    
+	if ($weekly) {
+	    $tx='';
+	    if ($i % 4==0) {
+		$tx = $i % 24 == 0 ? $days[$i/24] : $i % 24;
+	    }	
+	}
+	elsif ($daily) {
+	    $tx = $i;
+	}    
+	else {    
+	    $tx = $i == int($len/$dx)-2 ? $i ." s" : $i; # nn s
+	}    
+	$im->string($font, $xo+$i*$xs+3, $H-$yo+2, $tx, $black); 
+    }	
+    # data	
+    my ($ii,$k);
+    foreach $p (sort { $pc{$a}[$#{$pc{$a}}] <=> $pc{$b}[$#{$pc{$b}}] } (keys(%rcols))) {
+	foreach $i (0 .. $#{ $pc{$p} }-1) {
+	    $ii=$i+1;
+	    for $k (0..1) {
+		if ($pt{$p}[$i]+1 == $pt{$p}[$ii] && !$daily && !$weekly) {
+    		    $im->line($k+$xo+$pt{$p}[$i]*$xs, $k+$H-$yo-$pc{$p}[$i]*$ys,
+	    		$k+$xo+$pt{$p}[$ii]*$xs, $k+$H-$yo-$pc{$p}[$ii]*$ys,$rcols{$p});
+		}
+		else {	
+    		    $im->line($k+$xo+$pt{$p}[$i]*$xs, $k+$H-$yo-$pc{$p}[$i]*$ys,
+	    		$k+$xo+$pt{$p}[$ii]*$xs, $k+$H-$yo-$pc{$p}[$i]*$ys,$rcols{$p});
+    		    $im->line($k+$xo+$pt{$p}[$ii]*$xs, $k+$H-$yo-$pc{$p}[$i]*$ys,
+	    		$k+$xo+$pt{$p}[$ii]*$xs, $k+$H-$yo-$pc{$p}[$ii]*$ys,$rcols{$p});
+		}	
+	    }	
+	}
+    }
+    
+    # borders
+    $im->rectangle(0,0,$W-1,$H-1,$black); # 0.0 is left upper
+    $im->rectangle($xo,0,$W-1,$H-$yo,$black);
+    # legend
+    $im->filledRectangle($W+1,0,$W+$LEG-1,$H-1,$llgrey);
+    my ($ndy, $y, $sy);
+    $y=2;
+    $i=min($n,keys(%rcols));
+    $n=0;
+    foreach $p (sort { $pc{$a}[$#{$pc{$a}}] <=> $pc{$b}[$#{$pc{$b}}] } (keys(%rcols))) {
+    	$ndy = $H-$yo-($font->height + 1)*$i;
+	$sy = $pc{$p}[$#{$pc{$p}}]*$ys;
+	$y = max($y,min($ndy,$sy));
+	$im->dashedLine($W+2,$H-$yo-$sy, $W+$LIN,$H-$yo-$y, $rcols{$p});	
+	$im->dashedLine(1+$W+2,1+$H-$yo-$sy,1+$W+$LIN,1+$H-$yo-$y, $rcols{$p});
+	$im->string($font, $W+$LIN+5, $H-$yo-$y-$font->height/2, "$p ".$pstring{$p}, $rcols{$p});
+	$y += $font->height+1;
+	$i--;
+#	last if (++$n >= param('best'));
+    }	
+    # write file
+    $tempf = `$MKTEMP -q "$tempdir/irXXXXXX"`;
+    chomp($tempf);
+    rename($tempf, "$tempf.gif") || $q->print(p,"Can't rename $tempf");;
+    $tempf = "$tempf.gif";
+    open(TEMP,">$tempf") || $q->print(p,"Can't write $tempf");
+    print(TEMP $im->gif);
+    close(TEMP);
+    # ret img tag
+    $tempf =~ s!^$tempdir/!!;
+    $q->print(img({-src=>"$tempdir_url/$tempf", -height=>$H, 
+    	-width=>$W+$LEG, -align=>'"CENTER"'}));
+}
+
+# del gifs older then 1 hour
+sub clean_up {
+    my(@All, $file, $now);
+    opendir(DIR, $tempdir);
+    @All = readdir(DIR);
+    closedir(DIR);
+    $now=time();
+    foreach $file (@All) {
+	if($now - (stat("$tempdir/$file"))[9] > 3600 && $file =~ /^ir.{6}\.gif/) {
+	    unlink("$tempdir/$file");
+	}
+    }
+}    	    

@@ -1,4 +1,4 @@
-/* $Id: tools.c,v 1.31 1999/06/22 19:41:25 akool Exp $
+/* $Id: tools.c,v 1.32 1999/07/24 08:45:26 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -19,6 +19,13 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools.c,v $
+ * Revision 1.32  1999/07/24 08:45:26  akool
+ * isdnlog-3.42
+ *   rate-de.dat 1.02-Germany [18-Jul-1999 10:44:21]
+ *   better Support for Ackermann Euracom
+ *   WEB-Interface for isdnrate
+ *   many small fixes
+ *
  * Revision 1.31  1999/06/22 19:41:25  akool
  * zone-1.1 fixes
  *
@@ -1066,6 +1073,9 @@ go:   	         if (!ndigit)
                    *sx = 0;
                  p = s + strlen(s);
                  break;
+
+      case 'S' : p = itoa(call[chan].si1, p, 10, 0);
+      	       	 break;
 
       default  : *p++ = c;
 	         break;

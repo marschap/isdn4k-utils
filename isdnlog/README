@@ -1,10 +1,10 @@
-ISDNLOG - Version 3.32 -  				13-Jun-99  14:46
+ISDNLOG - Version 3.42 -  				21-Jul-99  19:16
 
 
 isdnlog ist ein Utility zur Auswertung des D-Kanals eines
 ISDN-BRI Anschlusses.
 
-isdnlog-3.32 wurde ausgiebig mit Linux-2.0.36 getestet.
+isdnlog-3.42 wurde ausgiebig mit Linux-2.0.37 getestet.
 
 
 Fuer alle, die es nun ueberhaupt nicht mehr abwarten koennen, hier das
@@ -195,9 +195,7 @@ Ein Bitte noch:
 Alle Anfragen zum isdnlog bitte nicht an meine Email-Adresse senden,
 sondern an
 
-     i4l-isdnlog@franken.de
-
-Bitte auch nicht mehr die alte Adresse isdnlog@Kool.f.EUnet.de verwenden.
+     akool@isdn4linux.de
 
 So bekommen alle Entwickler die Anfragen direkt mit, und muessen nicht
 von mir extra weitergeleitet werden. Dadurch wird die Anfrage mit
@@ -2412,8 +2410,10 @@ angegeben werden.
      die causes der an der Verbindung beteiligten Geraete angezeigt.
      (other={yes|no})
 
- -ux Unterdruecken der RR (Receiver ready) Frames.
-     Z.Zt. wird als value nur "1" erkannt.
+ -ux Unterdruecken von "unwichtigen" Frames.
+     Fuer "x" kann angegeben werden:
+       1 = keine RR (Receiver ready) Frames.
+       2 = keine EMP (Euracom Management Protokoll) Frames.
      (ignoreRR="value")
 
  -Ux Ignorieren der COLP/CLIP Frames.
@@ -3074,7 +3074,7 @@ REPFMTWWW     = "%X %D %17.17H %T %-17.17F %-20.20l SI: %S %9u %U %I %O %G %C"
 
 Falls jemand andere/bessere Skripte/Loesungen hat, sollte er sie unbedingt an
 
-i4l-isdnlog@franken.de
+akool@isdn4linux.de
 
 senden, damit diese in der naechsten Version vom isdnlog aufgenommen werden
 koennen.
@@ -4454,7 +4454,7 @@ sowie
 Zeilen enthalten (resp. beim HiSax-Treiber nur noch die "HEX:" Zeilen),
 der Rest wird von isdnlog nicht benoetigt!
 
-Diese Fehlermeldung sollte bitte an "i4l-isdnlog@franken.de" geschickt
+Diese Fehlermeldung sollte bitte an "akool@isdn4linux.de" geschickt
 werden.
 
 
@@ -4526,7 +4526,7 @@ entsprechenden Benutzers in der Datei /etc/isdn/isdnlog.users.
 Wenn der isdnlog mit einem Segmentation-fault oder mit der Meldung
 "Got signal 11" abbricht, dann sollten folgende Schritte durchgefuehrt
 werden, um Debuginformationen zu erlangen, die an die
-"i4l-isdnlog@franken.de" zu senden sind:
+"akool@isdn4linux.de" zu senden sind:
 
 Im isdnlog-Verzeichnis
 

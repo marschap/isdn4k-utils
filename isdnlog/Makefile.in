@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.94 1999/07/10 21:37:36 akool Exp $
+## $Id: Makefile.in,v 1.95 1999/07/24 08:43:38 akool Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,13 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.95  1999/07/24 08:43:38  akool
+## isdnlog-3.42
+##   rate-de.dat 1.02-Germany [18-Jul-1999 10:44:21]
+##   better Support for Ackermann Euracom
+##   WEB-Interface for isdnrate
+##   many small fixes
+##
 ## Revision 1.94  1999/07/10 21:37:36  akool
 ## isdnlog-3.41
 ##   rate-de.dat V:1.02-Germany [10-Jul-1999 23:32:27]
@@ -717,7 +724,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 3.41
+VERSION     = 3.42
 
 MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 \
 	      isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 \
