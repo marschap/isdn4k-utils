@@ -383,8 +383,11 @@ editieren, da diese Eintraege ueberschrieben werden.
     (Diese Einstellung laesst sich spaeter noch zur Laufzeit in der isdn.conf
     aendern)
 
+  LOCKDIR  (/var/lock/)
+  	Wol liegen die lock files (lock-Dateien).
+
   RUNDIR  (/var/run/)
-  	Wol liegen die pid files (lock-Dateien).
+  	Wol liegen die pid files (pid-Dateien).
 
   SBINDIR   (/sbin)
     Wohin soll "isdnlog" installiert werden
