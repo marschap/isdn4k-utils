@@ -1,4 +1,4 @@
-/* $Id: eiconctrl.c,v 1.2 1999/01/20 21:16:45 armin Exp $
+/* $Id: eiconctrl.c,v 1.3 1999/02/25 22:35:14 armin Exp $
  *
  * Eicon-ISDN driver for Linux. (Control-Utility)
  *
@@ -21,6 +21,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA. 
  *
  * $Log: eiconctrl.c,v $
+ * Revision 1.3  1999/02/25 22:35:14  armin
+ * Did not compile with new version.
+ *
  * Revision 1.2  1999/01/20 21:16:45  armin
  * Added some debugging features.
  *
@@ -43,6 +46,7 @@
 #include <ncurses.h>
 
 
+#include <linux/types.h>
 #include <linux/isdn.h>
 #include <eicon.h>
 
