@@ -1,5 +1,5 @@
-.\" $Id: isdnlog.8.in,v 1.13 2004/02/12 23:52:30 tobiasb Exp $
-.\" CHECKIN $Date: 2004/02/12 23:52:30 $
+.\" $Id: isdnlog.8.in,v 1.14 2004/09/05 22:04:55 tobiasb Exp $
+.\" CHECKIN $Date: 2004/09/05 22:04:55 $
 .TH isdnlog 8 "@MANDATE_ISDNLOG8@" "ISDN 4 Linux @I4LVERSION@" "Linux System Administration"
 .PD 0
 .SH NAME
@@ -118,6 +118,14 @@ Sometimes the COLP number is a number in a different areacode to the
 number that was dialled, and then the cost calculation would be wrong.
 .br
 With value 2 the ignored COLP number is displayed.
+
+.TP
+.B	 ignoreUPD={yes|no}
+(There is no commandline option for this.)
+A PABX may cause numerous messages
+like "Unexpected discriminator 0x47 -- ignored!" resulting from
+protocol discriminator values in layer 3 not known to isdnlog.
+Set ignoreUPD to yes to suppress this messages.
 
 .TP
 .B \-2\fIx\fB	dual="value"

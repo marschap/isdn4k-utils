@@ -1,4 +1,4 @@
-/* $Id: processor.c,v 1.128 2004/08/25 21:22:06 tobiasb Exp $
+/* $Id: processor.c,v 1.129 2004/09/05 22:04:56 tobiasb Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,11 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.129  2004/09/05 22:04:56  tobiasb
+ * New parameter file entry "ignoreUPD" for suppressing "Unexpected
+ * discrimator (...)" messages, demanded by Günther J. Niederwimmer
+ * on the suse-isdn mailing list.
+ *
  * Revision 1.128  2004/08/25 21:22:06  tobiasb
  * Minor fixes, required by gcc-3.4: Label at end of block, double function
  * declaration.  Revealed by Andreas Jochens as Debian bug #266523.
@@ -4794,8 +4799,10 @@ static void processctrl(int card, char *s)
 		  return;
 
       default   : version = VERSION_UNKNOWN;
-		  sprintf(sx, "Unexpected discriminator 0x%02x -- ignored!", i);
-		  info(chan, PRT_SHOWNUMBERS, STATE_RING, sx);
+		  if (!ignore_unknown_PD) {
+		    sprintf(sx, "Unexpected discriminator 0x%02x -- ignored!", i);
+		    info(chan, PRT_SHOWNUMBERS, STATE_RING, sx);
+		  }
 		  return;
     } /* switch */
 

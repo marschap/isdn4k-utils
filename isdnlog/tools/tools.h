@@ -1,4 +1,4 @@
-/* $Id: tools.h,v 1.61 2004/07/24 16:16:56 tobiasb Exp $
+/* $Id: tools.h,v 1.62 2004/09/05 22:04:57 tobiasb Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,11 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools.h,v $
+ * Revision 1.62  2004/09/05 22:04:57  tobiasb
+ * New parameter file entry "ignoreUPD" for suppressing "Unexpected
+ * discrimator (...)" messages, demanded by Günther J. Niederwimmer
+ * on the suse-isdn mailing list.
+ *
  * Revision 1.61  2004/07/24 16:16:56  tobiasb
  * New entry `REPOPTIONS' in section [ISDNLOG] of the isdn configuration
  * file.  This will be used for commandline options defaults of isdnrep.
@@ -896,6 +901,7 @@
 #define CONF_ENT_ABCLCR	"ABCLCR"
 #define CONF_ENT_PROVIDERCHANGE "PROVIDERCHANGE"
 #define CONF_ENT_CLOSEFDS  "CLOSEFDS"
+#define CONF_ENT_IGNOREUPD "IGNOREUPD"
 /****************************************************************************/
 
 /* Keywords for isdn.conf */

@@ -1,4 +1,4 @@
-/* $Id: isdnlog.h,v 1.28 2004/01/28 14:27:46 tobiasb Exp $
+/* $Id: isdnlog.h,v 1.29 2004/09/05 22:04:56 tobiasb Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,11 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnlog.h,v $
+ * Revision 1.29  2004/09/05 22:04:56  tobiasb
+ * New parameter file entry "ignoreUPD" for suppressing "Unexpected
+ * discrimator (...)" messages, demanded by Günther J. Niederwimmer
+ * on the suse-isdn mailing list.
+ *
  * Revision 1.28  2004/01/28 14:27:46  tobiasb
  * Second step in restricting fds at isdnlog restart and script starting.
  * The fd limit is now taken from getrlimit() instead of NR_OPEN.
@@ -443,11 +448,13 @@ typedef struct _interval {
 #define _EXTERN
 socket_queue *sockets = NULL;
 _EXTERN int     ignore_unknown_IE = 0xFE;    /* codesets 7 to 1 */
+_EXTERN int     ignore_unknown_PD = 0;
 _EXTERN int     param_closefds = 0;
 #else
 #define _EXTERN extern
 extern socket_queue *sockets;
 _EXTERN int     ignore_unknown_IE;
+_EXTERN int     ignore_unknown_PD;
 _EXTERN int     param_closefds;
 #endif
 

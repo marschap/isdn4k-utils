@@ -1,4 +1,4 @@
-/* $Id: isdnlog.c,v 1.72 2004/01/28 14:27:46 tobiasb Exp $
+/* $Id: isdnlog.c,v 1.73 2004/09/05 22:04:55 tobiasb Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,11 @@
  * along with this program; if not, write to the Free Software
  *
  * $Log: isdnlog.c,v $
+ * Revision 1.73  2004/09/05 22:04:55  tobiasb
+ * New parameter file entry "ignoreUPD" for suppressing "Unexpected
+ * discrimator (...)" messages, demanded by Günther J. Niederwimmer
+ * on the suse-isdn mailing list.
+ *
  * Revision 1.72  2004/01/28 14:27:46  tobiasb
  * Second step in restricting fds at isdnlog restart and script starting.
  * The fd limit is now taken from getrlimit() instead of NR_OPEN.
@@ -1277,6 +1282,9 @@ static int read_param_file(char *FileName)
 				else
 				if (!strcmp(Ptr->name,CONF_ENT_CLOSEFDS))
 					param_closefds = toupper(*(Ptr->value)) == 'Y'?1:0;
+				else
+				if (!strcmp(Ptr->name,CONF_ENT_IGNOREUPD))
+					ignore_unknown_PD = toupper(*(Ptr->value)) == 'Y'?1:0;
 				else
 					print_msg(PRT_ERR,"Error: Invalid entry `%s'!\n",Ptr->name);
 

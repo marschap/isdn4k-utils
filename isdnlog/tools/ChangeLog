@@ -1,3 +1,7 @@
+2004-09-05  Tobias Becker  <tobiasb@isdn4linux.de>
+	* tools.h (CONF_ENT_IGNOREUPD): New entry "IGNOREUPD" in parameter
+	file of isdnlog, entry name defined here.
+
 2004-08-25  Tobias Becker  <tobiasb@isdn4linux.de>
 
 	* rate.c (initRate, get_area1): Put a minimal statement after label

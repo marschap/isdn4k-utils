@@ -1,3 +1,11 @@
+2004-09-05  Tobias Becker  <tobiasb@isdn4linux.de>
+
+	* isdnlog.h (ignore_unknown_PD): New global variable.
+	* isdnlog.c (read_param_file): Store ignoreUPD setting in parameter
+	file to ignore_unknown_PD.
+	* processor.c (processctrl): Show warning "Unexpected discriminator"
+	only if not suppressed by ignore_unknown_PD.
+
 2004-08-25  Tobias Becker  <tobiasb@isdn4linux.de>
 
 	* processor.c (processctrl): Removed declaration of moreinfo, it is
