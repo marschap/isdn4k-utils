@@ -16,6 +16,8 @@ bool 'Prompt for development and/or incomplete code' CONFIG_EXPERIMENTAL
 endmenu
 mainmenu_option next_comment
 comment 'General configuration'
+comment 'Build options'
+bool 'Build programs which need X11 installed' CONFIG_BUILDX11
 comment 'Destination directories'
 string 'Directory to install binaries' CONFIG_BINDIR /usr/bin
 string 'Directory to install admin binaries' CONFIG_SBINDIR /sbin
@@ -64,8 +66,8 @@ bool 'isdnlog' CONFIG_ISDNLOG
 if [ "$CONFIG_ISDNLOG" = "y" ] ; then
 	source isdnlog/.Config.in
 fi
-dep_bool 'xisdnload' CONFIG_XISDNLOAD CONFIG_HASX11
-dep_bool 'xmonisdn' CONFIG_XMONISDN CONFIG_HASX11
+dep_bool 'xisdnload' CONFIG_XISDNLOAD CONFIG_BUILDX11
+dep_bool 'xmonisdn' CONFIG_XMONISDN CONFIG_BUILDX11
 if [ "$CONFIG_XMONISDN" = "y" ] ; then
 	mainmenu_option nextcomment
 	comment 'Options for xmonisdn'
