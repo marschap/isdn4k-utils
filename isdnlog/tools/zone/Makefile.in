@@ -76,6 +76,12 @@ test:
 	
 zonefiles:	
 	./$(PROGRAM) -d ../../zone-at-1012$(DBEXT) -r at/1012/zred-at-1012 -c at/code -v -l4
+	bzip2 -d at/uta/zred.uta.bz2
 	./$(PROGRAM) -d ../../zone-at-uta$(DBEXT) -r at/uta/zred.uta -c at/code -v
+	bzip2 -9 at/uta/zred.uta
+	bzip2 -d at/pta/zred.pta.bz2
 	./$(PROGRAM) -d ../../zone-at-pta$(DBEXT) -r at/pta/zred.pta -c at/code -v
+	bzip2 -9 at/pta/zred.pta
+	bzip2 -d de/01033/zred.dtag.bz2
 	./$(PROGRAM) -d ../../zone-de-dtag$(DBEXT) -r de/01033/zred.dtag -c de/code -v
+	bzip2 -9 de/01033/zred.dtag
