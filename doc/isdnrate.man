@@ -7,7 +7,7 @@ isdnrate \- Print telefon rates and various info from rate\-files(5).
 .BI \-p provs
 .B \-s
 .BI "\-t" takt " \-v" verbose " \-x" exclude
-.BI " \-C \-D" det " -\G" data " \-H \-L \-N \-P" piddir
+.BI " \-C \-D" det " -\G" data " \-H \-L \-N \-O" socketfile " \-P" piddir
 .BI " \-S" sort " \-T \-U \-V \-X" explain
 .BI -Z
 .B NUMBER ...
@@ -150,6 +150,10 @@ duration ; charge/min ; takt ; minimum price
 Show info about following numbers. If no provider is given, the preselected
 provider is used.
 .P
+.BI \-O socketfile
+Write socket to given filename on start of daemon. Default is
+.IR tmp/isdnrate .
+.P
 .BI \-P piddir
 Write own PID to
 .I piddir/isdnrate.pid
@@ -228,6 +232,12 @@ and more.
 .I isdnrate -D2
 .br
 Start the isdnrate daemon.
+.P
+.I isdnrate -D2 -P /var/run -O /tmp/isdnr_socket
+.br
+Start the isdnrate daemon, write
+.I isdnrate.pid
+to /var/run and create thew given socket.
 .P
 .I isdnrate -CH -b5 -f01 -l120 Attersee
 .br
