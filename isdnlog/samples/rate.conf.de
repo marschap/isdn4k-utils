@@ -34,8 +34,14 @@ P:70=1
 #   4=Nikocity Minutentakt
 #   5=Nikocity Sekundentakt
 #   6=C@llas Clever Communications
-# use Mox
-P:98=1
+# dont use 98
+P:98=99
 
 # Dont use Drillisch
 P:150=99
+
+
+# my LCR
+P:11=99
+P:13=99
+P:55=99

@@ -1,4 +1,4 @@
-/* $Id: isdnconf.c,v 1.25 1999/05/09 18:24:10 akool Exp $
+/* $Id: isdnconf.c,v 1.26 1999/05/13 11:39:09 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -20,6 +20,18 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnconf.c,v $
+ * Revision 1.26  1999/05/13 11:39:09  akool
+ * isdnlog Version 3.28
+ *
+ *  - "-u" Option corrected
+ *  - "ausland.dat" removed
+ *  - "countries-de.dat" fully integrated
+ *      you should add the entry
+ *      "COUNTRYFILE = /usr/lib/isdn/countries-de.dat"
+ *      into section "[ISDNLOG]" of your config file!
+ *  - rate-de.dat V:1.02-Germany [13-May-1999 12:26:24]
+ *  - countries-de.dat V:1.02-Germany [13-May-1999 12:26:26]
+ *
  * Revision 1.25  1999/05/09 18:24:10  akool
  * isdnlog Version 3.25
  *
@@ -696,7 +708,7 @@ static void showLCR(int duration)
   auto int   useds = 0, maxhour, leastprovider = UNKNOWN;
   auto int   ignoreprovider = UNKNOWN;
   auto RATE  Rate;
-  auto int   probe[] = { REGIOCALL, GERMANCALL, D2_NETZ, 0 };
+  auto int   probe[] = { REGIOCALL, GERMANCALL, C_NETZ, D1_NETZ, D2_NETZ, E_PLUS_NETZ, E2_NETZ, INTERNET, AUKUNFT_IN, AUSKUNFT_AUS, 0 };
   auto int   used[MAXPROVIDER];
   auto int   hours[MAXPROVIDER];
   auto char  lastmessage[BUFSIZ], message[BUFSIZ], *px;
@@ -738,9 +750,16 @@ retry:
     while (*p) {
 
       switch (*p) {
-        case REGIOCALL  : print_msg(PRT_NORMAL, "\tRegioCall:\n");  break;
-        case GERMANCALL : print_msg(PRT_NORMAL, "\tGermanCall:\n"); break;
-        case D2_NETZ    : print_msg(PRT_NORMAL, "\tD2Call:\n");     break;
+        case REGIOCALL    : print_msg(PRT_NORMAL, "\tRegioCall:\n");        break;
+        case GERMANCALL   : print_msg(PRT_NORMAL, "\tGermanCall:\n");       break;
+	case C_NETZ       : print_msg(PRT_NORMAL, "\tC Mobilfunk:\n");      break;
+	case D1_NETZ      : print_msg(PRT_NORMAL, "\tD1 Mobilfunk:\n");     break;
+	case D2_NETZ      : print_msg(PRT_NORMAL, "\tD2 Mobilfunk:\n");     break;
+	case E_PLUS_NETZ  : print_msg(PRT_NORMAL, "\tEplus Mobilfunk:\n");  break;
+	case E2_NETZ      : print_msg(PRT_NORMAL, "\tE2 Mobilfunk:\n");     break;
+	case INTERNET     : print_msg(PRT_NORMAL, "\tInternet:\n");         break;
+	case AUKUNFT_IN   : print_msg(PRT_NORMAL, "\tAuskunft Inland:\n");  break;
+	case AUSKUNFT_AUS : print_msg(PRT_NORMAL, "\tAuskunft Ausland:\n"); break;
       } /* switch */
 
       lastprovider = UNKNOWN;
@@ -799,8 +818,13 @@ retry:
 
       px = getProvidername(lastprovider);
 
-      print_msg(PRT_NORMAL, "\t\t%02d:00 .. %02d:59 010%02d:%s%*s(%s)\n",
-        lasthour, hour - 1, lastprovider, px, 14 - strlen(px), "", lastmessage);
+      if ((lasthour == 7) && (hour == 7))
+        print_msg(PRT_NORMAL, "\t\timmer          010%02d:%s%*s(%s)\n",
+          lastprovider, px, 14 - strlen(px), "", lastmessage);
+      else
+        print_msg(PRT_NORMAL, "\t\t%02d:00 .. %02d:59 010%02d:%s%*s(%s)\n",
+          lasthour, hour - 1, lastprovider, px, 14 - strlen(px), "", lastmessage);
+
       used[lastprovider] = 1;
 
       if (lasthour >= hour)
@@ -1012,7 +1036,7 @@ int main(int argc, char *argv[], char *envp[])
 
 
  		initHoliday(holifile, NULL);
- 		initRate("/etc/isdn/rate.conf", "/usr/lib/isdn/rate-de.dat", NULL);
+ 		initRate("/etc/isdn/rate.conf", "/usr/lib/isdn/rate-de.dat", "/usr/lib/isdn/countries-de.dat", NULL, NULL);
  		/* initRate(NULL, "/usr/lib/isdn/rate-de.dat", NULL); */
 		currency = strdup("DEM");
 

@@ -1,4 +1,4 @@
-/* $Id: rate.c,v 1.16 1999/05/11 20:27:22 akool Exp $
+/* $Id: rate.c,v 1.17 1999/05/13 11:40:03 akool Exp $
  *
  * Tarifdatenbank
  *
@@ -19,6 +19,18 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rate.c,v $
+ * Revision 1.17  1999/05/13 11:40:03  akool
+ * isdnlog Version 3.28
+ *
+ *  - "-u" Option corrected
+ *  - "ausland.dat" removed
+ *  - "countries-de.dat" fully integrated
+ *      you should add the entry
+ *      "COUNTRYFILE = /usr/lib/isdn/countries-de.dat"
+ *      into section "[ISDNLOG]" of your config file!
+ *  - rate-de.dat V:1.02-Germany [13-May-1999 12:26:24]
+ *  - countries-de.dat V:1.02-Germany [13-May-1999 12:26:26]
+ *
  * Revision 1.16  1999/05/11 20:27:22  akool
  * isdnlog Version 3.27
  *
@@ -162,7 +174,7 @@
  * void exitRate(void)
  *   deinitialisiert die Tarifdatenbank
  *
- * void initRate(char *conf, char *dat, char **msg)
+ * void initRate(char *conf, char *dat, char *countryfile, char **msg, char **countrymsg)
  *   initialisiert die Tarifdatenbank
  *
  * char* getProvidername (int prefix)
@@ -306,47 +318,57 @@ static void down(register char *p)
 } /* down */
 
 
-static void initCountry(char *fn)
+static void initCountry(char *fn, char *version)
 {
-  register char *p1, *p2, *p3;
+  register char *p1, *p2;
   auto     char  s[BUFSIZ];
   auto     FILE *f;
 
+
+  *version = 0;
 
   if ((f = fopen(fn, "r")) != (FILE *)NULL) {
     while (fgets(s, BUFSIZ, f)) {
       if ((p1 = strchr(s, '#')))
         *p1 = 0;
 
-      if (*s && (p1 = strchr(s, ':'))) {
+      if ((p1 = strchr(s, '\n')))
         *p1 = 0;
 
-        if ((p2 = strchr(p1 + 1, ':')))
-          *p2 = 0;
+      if (*s) {
+        if (!memcmp(s, "V:", 2))
+          strcpy(version, s + 2);
+        else {
+          if ((p1 = strchr(s, ':'))) {
+            *p1 = 0;
 
-        if ((p3 = strchr(((p2 == NULL) ? p1 + 1 : p2 + 1), '\n')))
-          *p3 = 0;
+            if ((p2 = strchr(p1 + 1, ':')))
+              *p2 = 0;
 
-        Country = realloc(Country, (nCountry + 1) * sizeof(COUNTRY));
-        Country[nCountry].prefix = strdup(s);
-        Country[nCountry].name = strdup(p1 + 1);
-        Country[nCountry].match = strdup(p1 + 1);
-        down(Country[nCountry].match);
+            Country = realloc(Country, (nCountry + 1) * sizeof(COUNTRY));
+            Country[nCountry].prefix = strdup(s);
+            Country[nCountry].name = strdup(p1 + 1);
+            Country[nCountry].match = strdup(p1 + 1);
+            down(Country[nCountry].match);
 
-        if (p2 != NULL) {
-	  Country[nCountry].hints = strdup(p2 + 1);
-          down(Country[nCountry].hints);
-        }
-        else
-	  Country[nCountry].hints = strdup("");
+            if (p2 != NULL) {
+   	      Country[nCountry].hints = strdup(p2 + 1);
+              down(Country[nCountry].hints);
+            }
+            else
+	      Country[nCountry].hints = strdup("");
 
-        nCountry++;
+            nCountry++;
+          } /* if */
+        } /* else */
       } /* if */
     } /* while */
 
     fclose(f);
 
-  } /* if */
+  }
+  else
+    sprintf(version, "Error: could not load country database from %s: %s", fn, strerror(errno));
 } /* initCountry */
 
 
@@ -605,14 +627,14 @@ void exitRate(void)
   }
 }
 
-int initRate(char *conf, char *dat, char **msg)
+int initRate(char *conf, char *dat, char *countries, char **msg, char **cmsg)
 {
-  static char message[LENGTH];
+  static char message[LENGTH], cmessage[LENGTH];
   FILE    *stream;
   STACK   *zones=NULL, *zp;
   bitfield day, hour;
   double   price, divider, duration;
-  char     buffer[LENGTH], Version[LENGTH]="<unknown>";
+  char     buffer[LENGTH], Version[LENGTH]="<unknown>", cversion[LENGTH];
   char    *a, *c, *s;
   int      booked[MAXPROVIDER], variant[MAXPROVIDER];
   int      Providers=0, Areas=0, Zones=0, Hours=0;
@@ -623,12 +645,15 @@ int initRate(char *conf, char *dat, char **msg)
   if (msg)
     *(*msg=message)='\0';
 
+  if (cmsg)
+    *(*cmsg=cmessage)='\0';
+
   for (i=0; i<MAXPROVIDER; i++) {
     booked[i]=0;
     variant[i]=UNKNOWN;
   }
 
-  initCountry("/usr/lib/isdn/ausland.dat");
+  initCountry(countries, cversion);
 
   if (conf && *conf) {
     if ((stream=fopen(conf,"r"))==NULL) {
@@ -1112,9 +1137,11 @@ int initRate(char *conf, char *dat, char **msg)
     }
   }
 
-  if (msg) snprintf (message, LENGTH, "Rate Version %s loaded [%d Providers, %d Zones, %d Areas, %d Rates from %s]",
+  if (msg) snprintf (message, LENGTH, "Rates   Version %s loaded [%d Providers, %d Zones, %d Areas, %d Rates from %s]",
 		     Version, Providers, Zones, Areas, Hours, dat);
 
+  if (cmsg) snprintf(cmessage, LENGTH, "Country Version %s loaded [%d prefixes from %s]",
+		     cversion, nCountry, countries);
   return 0;
 }
 

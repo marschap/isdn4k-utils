@@ -1,4 +1,4 @@
-/* $Id: rate.h,v 1.6 1999/05/09 18:24:26 akool Exp $
+/* $Id: rate.h,v 1.7 1999/05/13 11:40:07 akool Exp $
  *
  * Tarifdatenbank
  *
@@ -19,6 +19,18 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rate.h,v $
+ * Revision 1.7  1999/05/13 11:40:07  akool
+ * isdnlog Version 3.28
+ *
+ *  - "-u" Option corrected
+ *  - "ausland.dat" removed
+ *  - "countries-de.dat" fully integrated
+ *      you should add the entry
+ *      "COUNTRYFILE = /usr/lib/isdn/countries-de.dat"
+ *      into section "[ISDNLOG]" of your config file!
+ *  - rate-de.dat V:1.02-Germany [13-May-1999 12:26:24]
+ *  - countries-de.dat V:1.02-Germany [13-May-1999 12:26:26]
+ *
  * Revision 1.6  1999/05/09 18:24:26  akool
  * isdnlog Version 3.25
  *
@@ -108,7 +120,7 @@ typedef struct {
 
 int   abroad(char *key, char *result);
 void  exitRate(void);
-int   initRate(char *conf, char *dat, char **msg);
+int   initRate(char *conf, char *dat, char *countries, char **msg, char **cmsg);
 char *getProvidername(int prefix);
 int   getZone(int prefix, char *num);
 int   getRate(RATE *Rate, char **msg);

@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.80 1999/05/11 20:27:01 akool Exp $
+## $Id: Makefile.in,v 1.81 1999/05/13 11:38:43 akool Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,18 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.81  1999/05/13 11:38:43  akool
+## isdnlog Version 3.28
+##
+##  - "-u" Option corrected
+##  - "ausland.dat" removed
+##  - "countries-de.dat" fully integrated
+##      you should add the entry
+##      "COUNTRYFILE = /usr/lib/isdn/countries-de.dat"
+##      into section "[ISDNLOG]" of your config file!
+##  - rate-de.dat V:1.02-Germany [13-May-1999 12:26:24]
+##  - countries-de.dat V:1.02-Germany [13-May-1999 12:26:26]
+##
 ## Revision 1.80  1999/05/11 20:27:01  akool
 ## isdnlog Version 3.27
 ##
@@ -634,7 +646,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 3.27
+VERSION     = 3.28
 
 MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 \
 	      isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 \
@@ -746,7 +758,7 @@ uninstall: rootperm
 			$(DESTDIR)$(MAN5DIR)/callerid.conf$(MAN5EXT)	\
 			$(DESTDIR)$(MAN5DIR)/isdnlog$(MAN5EXT)		\
 			$(DESTDIR)$(MAN5DIR)/isdnlog.users$(MAN5EXT)    \
-			$(DESTDIR)$(DATADIR)/ausland.dat		\
+			$(DESTDIR)$(DATADIR)/countries-$(NATION).dat	\
 			$(DESTDIR)$(DATADIR)/rate-$(NATION).dat         \
 			$(DESTDIR)$(DATADIR)/vorwahl.dat                \
 
@@ -782,7 +794,7 @@ install: all rootperm installdirs
 		$(INSTALL_DATA) isdnlog/callerid.conf.5 $(DESTDIR)$(MAN5DIR)/callerid.conf$(MAN5EXT)
 		$(INSTALL_DATA) isdnlog/isdnlog.5       $(DESTDIR)$(MAN5DIR)/isdnlog$(MAN5EXT)
 		$(INSTALL_DATA) isdnlog/isdnlog.users.5 $(DESTDIR)$(MAN5DIR)/isdnlog.users$(MAN5EXT)
-		$(INSTALL_DATA) ausland.dat		$(DESTDIR)$(DATADIR)
+		$(INSTALL_DATA) countries-$(NATION).dat	$(DESTDIR)$(DATADIR)
 		$(INSTALL_DATA) rate-$(NATION).dat      $(DESTDIR)$(DATADIR)
 		$(INSTALL_DATA) holiday-$(NATION).dat   $(DESTDIR)$(DATADIR)
 		$(INSTALL_DATA) vorwahl.dat.bz2         $(DESTDIR)$(DATADIR)

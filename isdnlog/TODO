@@ -17,14 +17,20 @@ Vorschlaege von ak realisieren
  - decode() schieát bei B1-Frames ber das Ziel hinaus ...
    Am Anfang von decode() ist nach einer "Calling party number"
    p bereits auf dem n„chsten Byte, nicht auf dem letzten!
-
- - "-uX" Option prfen - Unterdrckung der RR Frames, damit die
-   /tmp/isdnctrl0" nicht mehr so stark anw„chst!
+   (siehe "/tmp/b1", danach "Wolfgang <wood.stock@gmx.net>" Erfolg melden!)
 
  - in tools/isdnconf.c Set_Globals() alle neueren conf-Entr„ge
    (AMT, INTERNS0, usw.) parsen!
 
- - SPECIALNUMBERS Eintrag und alles rund um sondernummern entfernen
+ - "make install" muá noch den neuen Eintrag
+   [ISDNLOG]
+   COUNTRYFILE    = /usr/lib/isdn/countries-de.dat
+   automatisch durchfhren!
+
+ - TEI Management fertig ausdecodieren!
+
+ - IDEE: Immer, wenn CHARGEMAX ausgegeben wird, und die Datei
+   "/etc/isdn/nohup" existiert, HUPTIMEOUT > CHARGEINT stellen
 
  - FIXME's
 

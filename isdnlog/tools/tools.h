@@ -1,4 +1,4 @@
-/* $Id: tools.h,v 1.40 1999/05/09 18:24:31 akool Exp $
+/* $Id: tools.h,v 1.41 1999/05/13 11:40:11 akool Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,18 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools.h,v $
+ * Revision 1.41  1999/05/13 11:40:11  akool
+ * isdnlog Version 3.28
+ *
+ *  - "-u" Option corrected
+ *  - "ausland.dat" removed
+ *  - "countries-de.dat" fully integrated
+ *      you should add the entry
+ *      "COUNTRYFILE = /usr/lib/isdn/countries-de.dat"
+ *      into section "[ISDNLOG]" of your config file!
+ *  - rate-de.dat V:1.02-Germany [13-May-1999 12:26:24]
+ *  - countries-de.dat V:1.02-Germany [13-May-1999 12:26:26]
+ *
  * Revision 1.40  1999/05/09 18:24:31  akool
  * isdnlog Version 3.25
  *
@@ -515,6 +527,9 @@
 #define WELT_2       15
 #define WELT_3       16
 #define WELT_4       17
+#define INTERNET     20
+#define	AUKUNFT_IN   21
+#define AUSKUNFT_AUS 22
 
 /* Fixme: this is specific to Germany */
 #define	DTAG	     33
@@ -710,12 +725,11 @@
 #define CONF_ENT_CALLFILE "CALLFILE"
 #define CONF_ENT_CALLFMT  "CALLFMT"
 
-#define CONF_ENT_SNFILE   "SPECIALNUMBERS"
-#define CONF_ENT_HOLIFILE "HOLIDAYS"
-#define CONF_ENT_RATECONF "RATECONF"
-#define CONF_ENT_RATEFILE "RATEFILE"
-
-#define CONF_ENT_LCDFILE  "LCDFILE"
+#define CONF_ENT_HOLIFILE    "HOLIDAYS"
+#define CONF_ENT_RATECONF    "RATECONF"
+#define CONF_ENT_RATEFILE    "RATEFILE"
+#define CONF_ENT_COUNTRYFILE "COUNTRYFILE"
+#define CONF_ENT_LCDFILE     "LCDFILE"
 
 #define CONF_ENT_VBOXVER  "VBOXVERSION"
 #define CONF_ENT_VBOXPATH "VBOXPATH"
@@ -988,6 +1002,7 @@ _EXTERN char* logfile   = LOGFILE;
 _EXTERN char* callfile  = NULL;
 _EXTERN char* callfmt   = NULL;
 _EXTERN char* holifile  = NULL;
+_EXTERN char* countryfile = NULL;
 _EXTERN char* rateconf  = NULL;
 _EXTERN char* ratefile  = NULL;
 _EXTERN char* lcdfile   = NULL;
@@ -1009,6 +1024,7 @@ _EXTERN char* rebootcmd;
 _EXTERN char* logfile;
 _EXTERN char* callfile;
 _EXTERN char* callfmt;
+_EXTERN char* countryfile;
 _EXTERN char* holifile;
 _EXTERN char* rateconf;
 _EXTERN char* ratefile;

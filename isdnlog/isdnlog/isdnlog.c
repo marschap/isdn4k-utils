@@ -1,4 +1,4 @@
-/* $Id: isdnlog.c,v 1.41 1999/05/04 19:32:37 akool Exp $
+/* $Id: isdnlog.c,v 1.42 1999/05/13 11:39:18 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,18 @@
  * along with this program; if not, write to the Free Software
  *
  * $Log: isdnlog.c,v $
+ * Revision 1.42  1999/05/13 11:39:18  akool
+ * isdnlog Version 3.28
+ *
+ *  - "-u" Option corrected
+ *  - "ausland.dat" removed
+ *  - "countries-de.dat" fully integrated
+ *      you should add the entry
+ *      "COUNTRYFILE = /usr/lib/isdn/countries-de.dat"
+ *      into section "[ISDNLOG]" of your config file!
+ *  - rate-de.dat V:1.02-Germany [13-May-1999 12:26:24]
+ *  - countries-de.dat V:1.02-Germany [13-May-1999 12:26:26]
+ *
  * Revision 1.41  1999/05/04 19:32:37  akool
  * isdnlog Version 3.24
  *
@@ -1065,7 +1077,7 @@ int main(int argc, char *argv[], char *envp[])
   register int    i, res = 0;
   auto     int    lastarg;
   auto     char   rlogfile[PATH_MAX];
-  auto	   char	  *version;
+  auto	   char	  *version, *cversion;
   auto     char **devices = NULL;
   sigset_t        unblock_set;
 #ifdef TESTCENTER
@@ -1285,7 +1297,11 @@ int main(int argc, char *argv[], char *envp[])
 	    if (!Q931dmp && *version)
 	      print_msg(PRT_NORMAL, "%s\n", version);
 
-	    initRate(rateconf, ratefile, &version);
+	    initRate(rateconf, ratefile, countryfile, &version, &cversion);
+
+	    if (!Q931dmp && *cversion)
+	      print_msg(PRT_NORMAL, "%s\n", cversion);
+
 	    if (!Q931dmp && *version)
 	      print_msg(PRT_NORMAL, "%s\n", version);
 

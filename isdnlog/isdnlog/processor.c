@@ -1,4 +1,4 @@
-/* $Id: processor.c,v 1.61 1999/05/10 20:37:27 akool Exp $
+/* $Id: processor.c,v 1.62 1999/05/13 11:39:24 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,18 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.62  1999/05/13 11:39:24  akool
+ * isdnlog Version 3.28
+ *
+ *  - "-u" Option corrected
+ *  - "ausland.dat" removed
+ *  - "countries-de.dat" fully integrated
+ *      you should add the entry
+ *      "COUNTRYFILE = /usr/lib/isdn/countries-de.dat"
+ *      into section "[ISDNLOG]" of your config file!
+ *  - rate-de.dat V:1.02-Germany [13-May-1999 12:26:24]
+ *  - countries-de.dat V:1.02-Germany [13-May-1999 12:26:26]
+ *
  * Revision 1.61  1999/05/10 20:37:27  akool
  * isdnlog Version 3.26
  *
@@ -4636,15 +4648,15 @@ retry:
                  !memcmp(p3, "D3<: ", 5) ||
                  !memcmp(p3, "D3>: ", 5))
           processctrl(0, p3);
-        else if (!memcmp(p3 + 3, "HEX: ", 5)) {
-          if (ignoreRR && (strlen(p3 + 8) < 13))
-            ;
-          else
-            processctrl(atoi(p3), p3 + 3);
-        } /* else */
+        else if (!memcmp(p3 + 3, "HEX: ", 5))
+          processctrl(atoi(p3), p3 + 3);
       }
-      else
-        processctrl(card, p1);
+      else {
+        if (ignoreRR && (strlen(p1) < 17))
+          ;
+        else
+          processctrl(card, p1);
+      } /* else */
 
       p1 = p2 + 1;
     } /* while */
