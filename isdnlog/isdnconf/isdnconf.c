@@ -1,4 +1,4 @@
-/* $Id: isdnconf.c,v 1.33 1999/06/16 19:12:21 akool Exp $
+/* $Id: isdnconf.c,v 1.34 1999/06/22 19:40:37 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -20,6 +20,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnconf.c,v $
+ * Revision 1.34  1999/06/22 19:40:37  akool
+ * zone-1.1 fixes
+ *
  * Revision 1.33  1999/06/16 19:12:21  akool
  * isdnlog Version 3.34
  *   fixed some memory faults
@@ -943,7 +946,7 @@ retry:
       	else if (hour == 7)
           break;
       } /* for */
-
+ 
       if (lastprovider == UNKNOWN)
         px = "";
       else

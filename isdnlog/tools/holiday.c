@@ -1,4 +1,4 @@
- /* $Id: holiday.c,v 1.13 1999/06/15 20:05:04 akool Exp $
+ /* $Id: holiday.c,v 1.14 1999/06/22 19:41:19 akool Exp $
  *
  * Feiertagsberechnung
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: holiday.c,v $
+ * Revision 1.14  1999/06/22 19:41:19  akool
+ * zone-1.1 fixes
+ *
  * Revision 1.13  1999/06/15 20:05:04  akool
  * isdnlog Version 3.33
  *   - big step in using the new zone files
@@ -166,7 +169,9 @@
 #include <time.h>
 #include <unistd.h>
 #include <errno.h>
+#ifndef __GLIBC__
 extern const char *basename (const char *name);
+#endif
 #else
 #include "isdnlog.h"
 #include "tools.h"

@@ -1,4 +1,4 @@
-/* $Id: zone.c,v 1.6 1999/06/22 16:31:15 akool Exp $
+/* $Id: zone.c,v 1.7 1999/06/22 19:41:28 akool Exp $
  *
  * Zonenberechnung
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: zone.c,v $
+ * Revision 1.7  1999/06/22 19:41:28  akool
+ * zone-1.1 fixes
+ *
  * Revision 1.6  1999/06/22 16:31:15  akool
  * zone-1.10
  *
@@ -63,11 +66,7 @@
 #include <time.h>
 #include <unistd.h>
 #include <errno.h>
-/* Fixme: basename() ist bei libc5 anscheinend nicht definiert
- * könnte da mal jemand ein passende #ifdef herumstricken?
- */
- /* lt: folgendes funkt bei mir */
-#ifndef __USE_MISC
+#ifndef __GLIBC__
 extern const char *basename (const char *name);
 #endif
 #else
@@ -189,10 +188,15 @@ int initZone(int provider, char *path, char **msg)
 	if (msg)
     	*(*msg=message)='\0';
 	res = _initZone(provider, path, msg, ZONES);
-	if (area_read)
+	if (area_read || res)
 		return res;
 
 	area_read = true;	
+	if ((p = strrchr(path, '/')) == 0) {
+		dir = "./";
+		file = path;
+	}
+	else {
 	if ((dir = strdup(path)) == 0) {
 		if (msg)
 			snprintf (message, LENGTH,
@@ -207,6 +211,7 @@ int initZone(int provider, char *path, char **msg)
 		return res;
 	}
 	p[1] = '\0';
+	}	
 	if ((dp = opendir(dir)) == 0) {
 		if (msg)
 			snprintf (message, LENGTH,
@@ -227,8 +232,10 @@ int initZone(int provider, char *path, char **msg)
 		}	
 	}
 	closedir(dp);
+	if ((p = strrchr(path, '/')) != 0) {
 	free(dir);
 	free(file);
+	}	
 	if (msg && strlen(message) < LENGTH-5) {
 		strcat(message, " - ");
 		for (i=0; i<count; i++)
@@ -401,9 +408,9 @@ static int _initZone(int provider, char *path, char **msg, bool area_only)
 			exitZone(provider);
 			return -1;
 		}
-		sthp[ocount].pack_table = sthp[ocount].pack_table == 'C' ? sizeof(char) :
-				sthp[ocount].pack_table == 'S' ? sizeof(short) : sizeof(long);
-		sthp[ocount].pack_key = sthp[ocount].pack_key == 'S' ? sizeof(short) : sizeof(long);
+		sthp[ocount].pack_table = sthp[ocount].pack_table == 'C' ? 1 :
+				sthp[ocount].pack_table == 'S' ? 2 : 4;
+		sthp[ocount].pack_key = sthp[ocount].pack_key == 'S' ? 2 : 4;
 
 		if (area_only) {
 			if (sthp[ocount].cc == 0)		
@@ -596,7 +603,7 @@ int getAreacode(int country, char *from, char **text)
 	return UNKNOWN;	
 }
 
-#ifdef STANDALONE
+#ifdef ZONETEST
 
 static int checkZone(char *zf, char* df,int num1,int num2, bool verbose)
 {

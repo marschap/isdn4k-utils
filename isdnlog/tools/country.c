@@ -1,4 +1,4 @@
-/* $Id: country.c,v 1.4 1999/06/16 19:12:53 akool Exp $
+/* $Id: country.c,v 1.5 1999/06/22 19:41:03 akool Exp $
  *
  * Länderdatenbank
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: country.c,v $
+ * Revision 1.5  1999/06/22 19:41:03  akool
+ * zone-1.1 fixes
+ *
  * Revision 1.4  1999/06/16 19:12:53  akool
  * isdnlog Version 3.34
  *   fixed some memory faults
@@ -72,7 +75,7 @@
 #include <time.h>
 #include <unistd.h>
 #include <errno.h>
-#if 1
+#ifndef __GLIBC__
 extern const char *basename (const char *name);
 #endif
 #else
@@ -414,7 +417,7 @@ int getCountry (char *name, COUNTRY **country)
       }
     }
   }
-  return((m == 666) ? UNKNOWN : m);
+  return (m==666 ? UNKNOWN : m);
 }
 
 int getCountrycode(char *number, char **name)

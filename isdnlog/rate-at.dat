@@ -10,7 +10,7 @@
 # for collecting and preparing most of the call charges.
 
 
-V:1.56-Austria [11-Jun-1999]
+V:1.60-Austria [22-Jun-1999]
 
 U:%.3f öS
 
@@ -921,71 +921,86 @@ A:+43717
 P:02                               UTA
 C:Fixme:                           Bundesland-Verzonung nicht implementiert
 Z:1                                Bundeslandzone
-T:*/*=1.00(60)/1                   Geschäftszeit
-T:*/*=0.88(60)/1                   Freizeit
+T:1-5/8-18=1.00(60)/1              Geschäftszeit
+T:1-5/18-8=0.88(60)/1              Freizeit
+T:E,H/*=0.88(60)/1                 Freizeit
 Z:2                                Österreichzone
-T:*/*=2.50(60)/1                   Geschäftszeit
-T:*/*=1.00(60)/1                   Freizeit
+T:1-5/8-18=2.50(60)/1              Geschäftszeit
+T:1-5/18-8=1.00(60)/1              Freizeit
+T:E,H/*=1.00(60)/1                 Freizeit
 A:Österreich
 Z:3                                special friends
-T:*/*=1.80(60)/1                   Geschäftszeit
-T:*/*=0.88(60)/1                   Freizeit
+T:1-5/8-18=1.80(60)/1              Geschäftszeit
+T:1-5/18-8=0.88(60)/1              Freizeit
+T:E,H/*=0.88(60)/1                 Freizeit
 Z:4                                Mobilnetz
-T:*/*=4.20(60)/1                   Geschäftszeit
-T:*/*=2.88(60)/1                   Freizeit
+T:1-5/8-18=4.20(60)/1              Geschäftszeit
+T:1-5/18-8=2.88(60)/1              Freizeit
+T:E,H/*=2.88(60)/1                 Freizeit
 A:+43663, +43664, +43676, +43699
 Z:5                                EasyInternet
-T:*/*=1.00(60)/1                   Geschäftszeit
-T:*/*=1.00(60)/1                   Freizeit
+T:1-5/8-18=1.00(60)/1              Geschäftszeit
+T:1-5/18-8=1.00(60)/1              Freizeit
+T:E,H/*=1.00(60)/1                 Freizeit
 Z:6                                Nachbarländer West
-T:*/*=3.60(60)/1                   Geschäftszeit
-T:*/*=3.40(60)/1                   Freizeit
+T:1-5/8-18=3.60(60)/1              Geschäftszeit
+T:1-5/18-8=3.40(60)/1              Freizeit
+T:E,H/*=3.40(60)/1                 Freizeit
 A:Deutschland, Italien, Liechtenstein, Schweiz
 Z:7                                Nachbarländer Ost
-T:*/*=3.70(60)/1                   Geschäftszeit
-T:*/*=3.50(60)/1                   Freizeit
+T:1-5/8-18=3.70(60)/1              Geschäftszeit
+T:1-5/18-8=3.50(60)/1              Freizeit
+T:E,H/*=3.50(60)/1                 Freizeit
 A:Slowakei, Slowenien, Tschechien, Ungarn
 Z:8                                Europa 3, USA
-T:*/*=4.40(60)/1                   Geschäftszeit
-T:*/*=4.00(60)/1                   Freizeit
+T:1-5/8-18=4.40(60)/1              Geschäftszeit
+T:1-5/18-8=4.00(60)/1              Freizeit
+T:E,H/*=4.00(60)/1                 Freizeit
 A:Belgien, Dänemark, Frankreich, Großbritannien, Irland
 A:Amerikanische Jungferninseln, Kanada, Luxemburg, Niederlande, Norwegen
 A:Puerto Rico, Schweden, Großbritannien, Vereinigte Staaten (USA), Alaska
 A:Hawaii
 Z:9                                Europa 4
-T:*/*=5.60(60)/1                   Geschäftszeit
-T:*/*=5.40(60)/1                   Freizeit
+T:1-5/8-18=5.60(60)/1              Geschäftszeit
+T:1-5/18-8=5.40(60)/1              Freizeit
+T:E,H/*=5.40(60)/1                 Freizeit
 A:Andorra, Bosnien-Herzegowina, Finnland, Griechenland, Kanarische Inseln
 A:Kroatien, Madeira, Monaco, Polen, Portugal, San Marino, Spanien, Vatikan
 Z:10                               Europa 5
-T:*/*=6.10(60)/1                   Geschäftszeit
-T:*/*=5.90(60)/1                   Freizeit
+T:1-5/8-18=6.10(60)/1              Geschäftszeit
+T:1-5/18-8=5.90(60)/1              Freizeit
+T:E,H/*=5.90(60)/1                 Freizeit
 A:Albanien, Azoren, Belarus, Bulgarien, Estland, Lettland, Malta, Mazedonien
 A:Rumänien, Türkei, Ukraine, Zypern
 Z:11                               Europa 6
-T:*/*=8.00(60)/1                   Geschäftszeit
-T:*/*=7.80(60)/1                   Freizeit
+T:1-5/8-18=8.00(60)/1              Geschäftszeit
+T:1-5/18-8=7.80(60)/1              Freizeit
+T:E,H/*=7.80(60)/1                 Freizeit
 A:Algerien, Färöer-Inseln, Georgien, Gibraltar, Island, Israel, Litauen
 A:Marokko, Rußland, Tadschikistan, Turkmenistan, Usbekistan
 Z:12                               Fernost, Südafrika
-T:*/*=9.80(60)/1                   Geschäftszeit
-T:*/*=9.60(60)/1                   Freizeit
+T:1-5/8-18=9.80(60)/1              Geschäftszeit
+T:1-5/18-8=9.60(60)/1              Freizeit
+T:E,H/*=9.60(60)/1                 Freizeit
 A:Australien, Hongkong, Japan, Kokosinseln, Neuseeland, Singapur, Südafrika
 A:Südkorea, Weihnachtsinseln
 Z:13                               Welt 1
-T:*/*=11.00(60)/1                  Geschäftszeit
-T:*/*=10.80(60)/1                  Freizeit
+T:1-5/8-18=11.00(60)/1             Geschäftszeit
+T:1-5/18-8=10.80(60)/1             Freizeit
+T:E,H/*=10.80(60)/1                Freizeit
 A:Armenien, Aserbaidschan, Chile, Französisch-Guayana, Guadeloupe, Libyen
 A:Martinique, Reunion
 Z:14                               Welt 2
-T:*/*=14.40(60)/1                  Geschäftszeit
-T:*/*=14.20(60)/1                  Freizeit
+T:1-5/8-18=14.40(60)/1             Geschäftszeit
+T:1-5/18-8=14.20(60)/1             Freizeit
+T:E,H/*=14.20(60)/1                Freizeit
 A:Angola, Antarktis, Bermuda, Bhutan, Brasilien, China, Ecuador, Iran, Kuwait
 A:Macao, Malaysia, Mexiko, Saint Pierre und Miquelon, Moldau
 A:Niederländische Antillen, Philippinen, Saipan, Saudi-Arabien, Venezuela
 Z:15                               Welt 3
-T:*/*=18.70(60)/1                  Geschäftszeit
-T:*/*=18.50(60)/1                  Freizeit
+T:1-5/8-18=18.70(60)/1             Geschäftszeit
+T:1-5/18-8=18.50(60)/1             Freizeit
+T:E,H/*=18.50(60)/1                Freizeit
 A:Ägypten, Äquatorial-Guinea, Aruba, Bahamas, Bahrain, Barbados, Belize
 A:Botswana, Brunei, Burundi, Dominica, Dominikanische Republik
 A:Elfenbeinküste, Gabun, Ghana, Grenada, Grönland, Guinea, Guinea-Bissau
@@ -998,8 +1013,9 @@ A:Saint Vincent und die Grenadinen, Sudan, Swasiland, Syrien, Tansania, Tonga
 A:Trinidad & Tobago, Turks- und Caicos-Inseln, Vereinigte Arabische Emirate
 A:Samoa
 Z:16                               Welt 4
-T:*/*=24.80(60)/1                  Geschäftszeit
-T:*/*=24.60(60)/1                  Freizeit
+T:1-5/8-18=24.80(60)/1             Geschäftszeit
+T:1-5/18-8=24.60(60)/1             Freizeit
+T:E,H/*=24.60(60)/1                Freizeit
 A:Anguilla, Argentinien, Äthiopien, Benin, Bolivien, Caymaninseln, Costa Rica
 A:Dschibuti, Fidschi, Französisch-Polynesien, Gambia, Indien, Indonesien
 A:Irak, Jamaica, Kenia, Kiribati, Kuba, Malediven, Mauretanien, Mauritius
@@ -1007,8 +1023,9 @@ A:Mongolei, Mosambik, Myanmar, Nicaragua, Niger, Niue, Nordkorea, Oman
 A:Papua-Neuguinea, Paraguay, Ruanda, Sierra Leone, Sri Lanka, Surinam, Taiwan
 A:Togo, Uganda, Uruguay, Vanuatu, Zentralafrikanische Republik
 Z:17                               Welt 5
-T:*/*=28.00(60)/1                  Geschäftszeit
-T:*/*=27.80(60)/1                  Freizeit
+T:1-5/8-18=28.00(60)/1             Geschäftszeit
+T:1-5/18-8=27.80(60)/1             Freizeit
+T:E,H/*=27.80(60)/1                Freizeit
 A:Afghanistan, Amerikanisch-Samoa, Antigua & Barbuda, Ascension, Bangladesch
 A:Burkina Faso, Cook-Inseln, Diego Garcia, El Salvador, Eritrea
 A:Falklandinseln, Guam, Guantanamo, Guatemala, Haiti, Kamerun, Kongo
@@ -1389,6 +1406,103 @@ Z:19                               Grenznahverkehr
 T:1-5/08-18=2.820(60)/1            Tageszeit
 T:1-5/18-8=2.112(60)/1             Sparzeit
 T:E,H/*=2.112(60)/1                Sparzeit
+
+P:11                               RSL COM
+Z:1                                Bundesland
+T:1-5/8-18=1.00(60)/1              Tag
+T:1-5/18-8=0.88(60)/1              Nacht
+T:E/*=0.88(60)/1                   Weekend
+Z:2                                Österreich
+T:1-5/8-18=1.68(60)/1              Tag
+T:1-5/18-8=0.88(60)/1              Nacht
+T:E/*=0.88(60)/1                   Weekend
+A:Österreich
+Z:3                                Mobilfunk
+T:*/*=4.00(60)/1                   rund um die Uhr
+A:+43663, +43664, +43676, +43699
+Z:4                                Deutschland
+T:*/*=3.00(60)/1                   rund um die Uhr
+A:Deutschland
+Z:5                                Ausland 1
+T:*/*=3.60(60)/1                   rund um die Uhr
+A:Frankreich, Großbritannien, Italien, Liechtenstein, Paraguay, Schweiz
+A:Slowakei, Slowenien, Tschechien, Ungarn, Vatikanstadt
+Z:6                                Ausland 2
+T:*/*=4.20(60)/1                   rund um die Uhr
+A:Belgien, Dänemark, Finnland, Irland, Kanada, Luxemburg, Niederlande
+A:Norwegen, Papua-Neuguinea, San Marino, Schweden, Spanien
+A:Vereinigte Staaten (USA)
+Z:7                                Ausland 3
+T:*/*=4.80(60)/1                   rund um die Uhr
+A:Andorra, Bosnien-Herzegowina, Bulgarien, Kroatien, Malediven, Zypern
+Z:8                                Ausland 4
+T:*/*=5.40(60)/1                   rund um die Uhr
+A:Weißrußland, Färöer-Inseln, Griechenland, Jugoslawien, Serbien, Montenegro
+A:Britische Jungferninseln, Kanarische Inseln, Palau, Rumänien, Tunesien
+A:Türkei, Ukraine
+Z:9                                Ausland 5
+T:*/*=6.00(60)/1                   rund um die Uhr
+A:Albanien, Algerien, Antarktis, Australien, Estland, Lettland, Malawi
+A:Malaysia, Marokko, Moldau, Moldau
+Z:10                               Ausland 6
+T:*/*=6.60(60)/1                   rund um die Uhr
+A:Gibraltar, Island, Israel
+Z:11                               Ausland 7
+T:*/*=7.20(60)/1                   rund um die Uhr
+A:Litauen, Russische Föderation, Tadschikistan
+Z:12                               Ausland 8
+T:*/*=7.80(60)/1                   rund um die Uhr
+A:Georgien, Hongkong, Japan, Südkorea, Neuseeland, Singapur, Turkmenistan
+A:Usbekistan
+Z:13                               Ausland 9
+T:*/*=8.40(60)/1                   rund um die Uhr
+A:Armenien, Aserbaidschan, Weihnachtsinseln, Kokosinseln, Mauritius, Mexiko
+Z:14                               Ausland 10
+T:*/*=9.60(60)/1                   rund um die Uhr
+A:Chile, Französisch-Guayana, Guadeloupe, Libyen, Peru, Reunion
+A:St. Pierre und Miquelon, Südafrika
+Z:15                               Ausland 11
+T:*/*=12.00(60)/1                  rund um die Uhr
+A:Brasilien, Niederländische Antillen
+Z:16                               Ausland 12
+T:*/*=13.20(60)/1                  rund um die Uhr
+A:Angola, Bermuda, Bhutan, China, Ecuador, Iran, Kuwait, Mali, Saudi-Arabien
+A:Venezuela, Vereinigte Arabische Emirate
+Z:17                               Ausland 13
+T:*/*=14.40(60)/1                  rund um die Uhr
+A:Bahamas, Dominikanische Republik, Madagaskar, Ägypten
+Z:18                               Ausland 14
+T:*/*=15.60(60)/1                  rund um die Uhr
+A:Aruba, Barbados, Belize, Botswana, Brunei, Burundi, El Salvador, Gabun
+A:Ghana, Grönland, Guinea-Bissau, Guyana, Jordanien, Katar, Kirgisistan
+A:Kolumbien, Libanon, Martinique, Mayotte, Sao Tome und Principe
+A:Saint Vincent und die Grenadinen, Taiwan, Trinidad und Tobago
+A:Äquatorial-Guinea
+Z:19                               Ausland 15
+T:*/*=18.00(60)/1                  rund um die Uhr
+A:Argentinien, Bahrain, Benin, Cote d'Ivoire, Dominica, Grenada, Guinea
+A:Kasachstan, Kenia, Komoren, Laos, Lesotho, Liberia, Mauretanien, Namibia
+A:Nauru, Nepal, Neukaledonien, Nigeria, Norfolk-Inseln, Sambia, Samoa
+A:Simbabwe, St. Helena, Saint Kitts und Nevis, St. Lucia, Sudan, Swasiland
+A:Syrien, Tansania, Tonga, Turks- und Caicos-Inseln
+Z:20                               Ausland 16
+T:*/*=19.20(60)/1                  rund um die Uhr
+A:Mikronesien, Mikronesien, Äthiopien
+Z:21                               Ausland 17
+T:*/*=20.40(60)/1                  rund um die Uhr
+A:Costa Rica, Fidschi, Französisch-Polynesien, Gambia, Indonesien, Irak
+A:Jamaika, Kiribati, Nicaragua, Niue, Oman, Panama, Philippinen, Ruanda
+A:Amerikanisch-Samoa, Suriname, Thailand, Togo, Uganda, Vanuatu
+A:Zentralafrikanische Republik
+Z:22                               Ausland 18
+T:*/*=24.00(60)/1                  rund um die Uhr
+A:Afghanistan, Anguilla, Antigua und Barbuda, Ascension, Bangladesch
+A:Bolivien, Burkina Faso, Cook-Inseln, Caymaninseln, Dschibuti, Eritrea
+A:Falklandinseln, Guam, Guantanamo, Guatemala, Haiti, Honduras, Indien, Jemen
+A:Kambodscha, Kamerun, Kap Verde, Kongo, Nordkorea, Kuba, Macao, Malta
+A:Marshallinseln, Mazedonien, Mazedonien, Niger, Pakistan, Salomonen, Senegal
+A:Seychellen, Sierra Leone, Somalia, Sri Lanka, Tschad, Tuvalu, Uruguay
+A:Vietnam, Wallis- und Futuna-Inseln, Zaire
 
 P:12                               1012
 D:1012                             # Verzonung

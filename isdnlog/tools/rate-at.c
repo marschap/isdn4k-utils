@@ -277,8 +277,9 @@ void rate_1002(void) {
   rprintf ("Bundesland-Verzonung nicht implementiert", "C:Fixme:");
   for (z=0; z<COUNT(Zone); z++) {
     rprintf (Zone[z][0], "Z:%d", z+1);
-    rprintf ("Geschäftszeit", "T:*/*=%.2f(60)/1", Tarif[z][0]);
-    rprintf ("Freizeit", "T:*/*=%.2f(60)/1", Tarif[z][1]);
+    rprintf ("Geschäftszeit", "T:1-5/8-18=%.2f(60)/1", Tarif[z][0]);
+    rprintf ("Freizeit", "T:1-5/18-8=%.2f(60)/1", Tarif[z][1]);
+    rprintf ("Freizeit", "T:E,H/*=%.2f(60)/1", Tarif[z][1]);
     print_area(Zone[z][1]);
   }
 }    
@@ -481,8 +482,8 @@ void rate_1011(void) {
 		     {"Ausland 17", "Costa Rica, Fidschi, Französisch-Polynesien, Gambia, Indonesien, Irak, Jamaika, Kiribati, Nicaragua, Niue, Oman, Panama, Philippinen, Ruanda, Amerikanisch-Samoa, Suriname, Thailand, Togo, Uganda, Vanuatu, Zentralafrikanische Republik"},
 		     {"Ausland 18", "Afghanistan, Anguilla, Antigua und Barbuda, Ascension, Bangladesch, Bolivien, Burkina Faso, Cook-Inseln, Caymaninseln, Dschibuti, Eritrea, Falklandinseln, Guam, Guantanamo, Guatemala, Haiti, Honduras, Indien, Jemen, Kambodscha, Kamerun, Kap Verde, Kongo, Nordkorea, Kuba, Macao, Malta, Marshallinseln, Mazedonien, Mazedonien, Niger, Pakistan, Salomonen, Senegal, Seychellen, Sierra Leone, Somalia, Sri Lanka, Tschad, Tuvalu, Uruguay, Vietnam, Wallis- und Futuna-Inseln, Zaire"}};
   
-  double Tarif[][2] = {{ 1.00, 1.00 },
-		       { 1.98, 1.20 },
+  double Tarif[][2] = {{ 1.00, 0.88 },
+		       { 1.68, 0.88 },
 		       { 4.00, 4.00 },
 		       { 3.00, 3.00 },
 		       { 3.60, 3.60 },
@@ -855,7 +856,7 @@ void main (int argc, char *argv[])
   printf ("# Many thanks to Daniela Bruder <dbruder@sime.com>\n");
   printf ("# for collecting and preparing most of the call charges.\n\n\n");
 
-  printf ("V:1.56-Austria [11-Jun-1999]\n\n");
+  printf ("V:1.60-Austria [22-Jun-1999]\n\n");
   printf ("U:%%.3f öS\n");
 
 #if 0
@@ -866,6 +867,7 @@ void main (int argc, char *argv[])
   rate_1003();
   rate_1005();
   rate_1007();
+  rate_1011();
   rate_1012();
   rate_1024();
   rate_1029();

@@ -1,4 +1,4 @@
-/* $Id: rate.c,v 1.24 1999/06/21 19:34:28 akool Exp $
+/* $Id: rate.c,v 1.25 1999/06/22 19:41:23 akool Exp $
  *
  * Tarifdatenbank
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rate.c,v $
+ * Revision 1.25  1999/06/22 19:41:23  akool
+ * zone-1.1 fixes
+ *
  * Revision 1.24  1999/06/21 19:34:28  akool
  * isdnlog Version 3.35
  *   zone data for .nl (many thanks to Paul!)
@@ -261,7 +264,10 @@
 #include <ctype.h>
 #include <time.h>
 #include <unistd.h>
+#include <errno.h>
+#ifndef __GLIBC__
 extern const char *basename (const char *name);
+#endif
 #define mycountry "+43"
 #define vbn "010"
 #else
@@ -423,7 +429,7 @@ static int strmatch (const char *pattern, const char *string)
 static int appendArea (int prefix, char *code, char *name, int zone, int *domestic, char *msg)
 {
   int i;
-
+  
   for (i=0; i<Provider[prefix].nArea; i++) {
     if (strcmp (Provider[prefix].Area[i].Code,code)==0) {
       if (msg)
@@ -617,8 +623,6 @@ int initRate(char *conf, char *dat, char *dom, char **msg)
 	}
 	v=strtol(s, &s, 10);
       }
-      /* Fixme: is this correct? */
-      /* if ((variant[prefix]!=UNKNOWN) && (v!=UNKNOWN) && (variant[prefix]!=v)) { */
       if (variant[prefix]==v) {
 	ignore = 0;
       } else {
@@ -1019,11 +1023,6 @@ int initRate(char *conf, char *dat, char *dom, char **msg)
 	    duration=delay;
 	  }
 
-          if (!duration && !*s) { /* FIXME!!AK:14-Jun-99 */
-	    warning(dat, "zero duration impossible, duration set to 60!");
-	    duration = 60;
-          } /* if */
-
 	  u=Provider[prefix].Zone[zone].Hour[t].nUnit++;
 	  Provider[prefix].Zone[zone].Hour[t].Unit=realloc(Provider[prefix].Zone[zone].Hour[t].Unit, (u+1)*sizeof(UNIT));
 	  Provider[prefix].Zone[zone].Hour[t].Unit[u].Duration=duration;
@@ -1227,11 +1226,10 @@ int getRate(RATE *Rate, char **msg)
       Unit=Hour->Unit;
     }
 
-    Rate->Charge+=Unit->Price;
-    Rate->Duration=Unit->Duration;
-    Rate->Rest+=Unit->Duration;
     now+=Unit->Duration;
     run+=Unit->Duration;
+    Rate->Charge+=Unit->Price;
+    Rate->Duration=Unit->Duration;
     if (run==0.0 && Unit->Duration==0.0)
       Rate->Basic=Unit->Price;
     else
@@ -1240,9 +1238,13 @@ int getRate(RATE *Rate, char **msg)
       Rate->Units++;
     if (Unit->Delay!=UNKNOWN && Unit->Delay<=run)
       Unit++;
+    else if (Unit->Duration==0.0)
+      break;
   }
 
-  Rate->Rest-=Rate->Time;
+  if (run>0.0)
+    Rate->Rest=run-Rate->Time;
+  
   return 0;
 }
 
@@ -1345,7 +1347,7 @@ void main (int argc, char *argv[])
   initHoliday ("../holiday-at.dat", &msg);
   printf ("%s\n", msg);
 
-  initCountry ("../prefixes.dat", &msg);
+  initCountry ("../countries-de.dat", &msg);
   printf ("%s\n", msg);
 
   initRate ("/etc/isdn/rate.conf", "../rate-at.dat", "../zone-at-%s.gdbm", &msg);
@@ -1364,7 +1366,7 @@ void main (int argc, char *argv[])
     else
       Rate.dst="+4314711";
   }
-
+     
   time(&Rate.start);
   time(&Rate.now);
   if (getRate(&Rate, &msg)==UNKNOWN) {
@@ -1372,12 +1374,12 @@ void main (int argc, char *argv[])
     exit (1);
   }
 
-  printf ("domestic=%d area=%d zone=%d Country=%s Zone=%s Service=%s Flags=%s\n",
-	  Rate.domestic, Rate.area, Rate.zone, Rate.Country, Rate.Zone, Rate.Service, Rate.Flags);
+  printf ("domestic=%d _area=%d _zone=%d zone=%d Country=%s Zone=%s Service=%s Flags=%s\n",
+	  Rate.domestic, Rate._area, Rate._zone, Rate.zone, Rate.Country, Rate.Zone, Rate.Service, Rate.Flags);
 
   printf ("%s\n\n", explainRate(&Rate));
 
-  exit (0);
+  /*  exit (0); */
 
   printf ("---Date--- --Time--  --Charge-- ( Basic  Price)  Unit   Dur  Time  Rest\n");
 
@@ -1388,7 +1390,7 @@ void main (int argc, char *argv[])
       exit (1);
     }
     now=*localtime(&Rate.now);
-    printf ("%02d.%02d.%04d %02d:%02d:%02d  %s (%6.3f %6.3f)  %4d  %4.1f  %4ld  %4ld\n",
+    printf ("%02d.%02d.%04d %02d:%02d:%02d  %10s (%6.3f %6.3f)  %4d  %4.1f  %4ld  %4ld\n",
 	    now.tm_mday, now.tm_mon+1, now.tm_year+1900,
 	    now.tm_hour, now.tm_min, now.tm_sec,
 	    printRate (Rate.Charge), Rate.Basic, Rate.Price, Rate.Units, Rate.Duration, Rate.Time, Rate.Rest);
