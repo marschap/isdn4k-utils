@@ -1,7 +1,7 @@
-V:1.56 Int [20-Oct-2003 01:00:00]
+V:1.57 Int [01-Nov-2003 01:00:00]
 #
 # This version of country.dat originates from rates4linux:
-# $Id: country-de.dat,v 1.45 2003/10/29 17:41:34 tobiasb Exp $
+# $Id: country-de.dat,v 1.46 2004/02/12 23:52:28 tobiasb Exp $
 # The rates4linux homepage: http://www.sourceforge.net/projects/rates4linux/
 # It bases on Rev. 1.39 of isdn4k-utils/isdnlog/country-de.dat 
 # in the CVS at http://www.isdn4linux.de.
@@ -23,7 +23,7 @@ V:1.56 Int [20-Oct-2003 01:00:00]
 # Partial source for national numbering plans (2002-08-23):
 # http://www.itu.int/ITU-T/inr/nnp/index.html
 #
-# Offical German language country names (2002-06-11):
+# Offical German language country names (2003-07-23):
 # http://www.auswaertiges-amt.de/www/de/infoservice/download/pdf/publikationen/staatennamen.pdf
 #
 # Note: The information in this file gets included in the destination database
@@ -93,9 +93,19 @@ C:+9929190		# Dushanbe
 R:TJ
 T:_TJMF
 
+# Source (2003-11-01):
+# http://www.iran-telecom.com/numbering/
 N:Iran
+A:Islamische Republik Iran, Islamic Republic of Iran
 C:+98
 T:IR
+
+N:Iran Mobilfunk
+E:Iran cellphone
+A:Islamische Republik Iran Mobilfunk, Islamic Republic of Iran cellphone
+C:+9891 	# may be inaccurate
+R:IR
+T:_IRMF
 
 N:Nepal
 C:+977
@@ -3026,6 +3036,8 @@ E:Virgin Islands (British), Virgin Islands (UK)
 C:+1284
 T:VG
 
+# Source (2003-07-29):
+# http://www.itu.int/itudoc/itu-t/number/s/svg/82143_ww9.doc
 N:St. Vincent und Grenadinen
 A:St. Vincent and the Grenadines, Saint Vincent und die Grenadinen, St. Vincent and Grenadines, St. Vincent und die Grenadien, St. Vincent Und Die Grenadinen
 A:St. Vincent & Greens.,St. Vincent,St. Vincent & Grenadinen
@@ -3033,6 +3045,14 @@ A:Saint Vincent und Grenadinen, St. Vincent und Grenada
 E:Saint Vincent and the Grenadines
 C:+1784
 T:VC
+
+N:St. Vincent und die Grenadinen Mobilfunk
+E:Saint Vincent and the Grenadines cellphone
+A:St. Vincent und Grenadinen Mobilfunk
+C:+1784454, +1784455, +1784492, +1784493, +1784593
+C:+1784526, +1784527, +1784528, +1784529, +1784530, +1784531 	# GSM
+R:VC
+T:_VCMF
 
 N:Dominica
 A:Domenica

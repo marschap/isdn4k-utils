@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.211 2003/10/29 17:41:33 tobiasb Exp $
+## $Id: Makefile.in,v 1.212 2004/02/12 23:52:28 tobiasb Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,21 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.212  2004/02/12 23:52:28  tobiasb
+## isdnlog-4.68:
+##  - New German ratefile, rate-de.dat version 3.08 from rates4linux,
+##    included rates have been reviewed in January 2004 or later.
+##  - New setting for parameterfile: closefds=yes
+##    See isdnlog(8) or isdnlog/start_prog.c for details.
+##  - Changes checked in earlier but after step to isdnlog-4.67:
+##    - Added Belgian area codes.
+##    - Supported database are shown at isdnlog's startup.
+##    - isdnlog now tries to reconnect to a mysql server if necessary.
+##    - Fixed SIGSEGV in isdnrep with missing zonenames in ratefile.
+##    - New options -c and -i for isdnrate.
+##    - Some small fixes for redirs in ratefiles.
+##    - Disabled unicode for filehandles in Perl scripts.
+##
 ## Revision 1.211  2003/10/29 17:41:33  tobiasb
 ## isdnlog-4.67:
 ##  - Enhancements for isdnrep:
@@ -1651,7 +1666,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 4.67
+VERSION     = 4.68
 
 # fallback to I4L-Version as set at configure time
 ifndef (I4LVERSION)

@@ -1,6 +1,6 @@
 # rate.conf zur rate-de.dat für Konfiguration der aktiven Provider.
 # 
-# $Id: rate.conf.de,v 1.37 2003/08/07 21:08:51 tobiasb Exp $
+# $Id: rate.conf.de,v 1.38 2004/02/12 23:52:31 tobiasb Exp $
 # Basiert auf Rev. 1.35 von isdn4k-utils/isdnlog/samples/rate.conf.de
 # zu isdnlog-4.64 im isdn4linux-CVS.
 # Üblicherweise in /etc/isdn installiert.
@@ -13,38 +13,41 @@
 P:11=0    #E o.tel.o CbC
 P:13=0    #E Tele 2 Privat CbC (Anmeldung fuer separate Rechnung)
 # P:13=1  #A Tele 2 Privat Preselection
-# P:13=2  #A Tele 2 Turbo CbC
-# P:13=3  #A Tele 2 Turbo Preselection
 P:15=0    #E Maestro Telekom
 P:19=0    #E 01019 CbC (ehemals Mobilcom)
 # P:19=1  #A 01019 Profi 
 # P:19=2  #A 01019 Privat
-# P:19=3  #A 01019 Aktiv 8
 P:24=0    #E 01024 CbC
 # P:27=0  #A Nordcom nordFon(Net) ISDN
 # P:27=1  #A Nordcom nordFonNet Pro
+P:30=0    #E 01030 CbC			# -> 01077 Callax
 P:33=0  #E DTAG T-ISDN Standard
 # P:33=1  #A DTAG AktivPlus
-# P:33=2  #A DTAG AktivPlus xxl
+# P:33=2  #A DTAG AktivPlus xxl sunday	# bis 2003-12: "Aktiv Plus xxl"
 # P:33=3  #A DTAG AktivPlus basis
+# P:33=4  #A DTAG AktivPlus xxl (neu)
 P:39=0    #E 01039 Call-Mc-Call
 P:40=0    #E Ventelo
 # P:41=0  #E HanseNet CbC (nur aus Hamburg)
 # P:41=1  #A HanseNet Preselection
-# P:41=2  #A HanseNet Komplett Standard
-# P:41=3  #A HanseNet Komplett Profi
+# P:41=2  #A HanseNet allFon
+# P:41=3  #A HanseNet MovieStar
+# P:41=4  #A HanseNet allFon Talk4Free
+# P:41=5  #A HanseNet MovieStar Talk4Free
+# P:41=6  #A HanseNet MovieStar bestCall
 P:50=0    #E Talkline CbC
 P:51=0    #E 01051
 P:55=0    #E prompt
 P:58=0    #E 01058 (vormals KaTel)
-P:63=0    #E Conos CbC
-# P:63=1  #A oneVoice Second
-# P:63=2  #A oneVoice Minute
+P:63=0    #E 01063 Telecom
+# P:63=1  #A TelDaFax private second
+# P:63=2  #A TelDaFax private minute
 P:70=0    #E Arcor CbC
 # P:70=1  #A Arcor Preselect standard
-# P:70=2  #A Arcor Preselect world
-P:77=0    #E 01077
+# P:70=2  #A Arcor Preselect 760
+P:77=0    #E 01077 (Callax)
 P:78=0    #E 3U
+P:79=0    #E star79 CbC (Ventelo)
 P:80=0    #E Telegate
 P:81=0    #E 01081
 P:86=0    #E 01086 by Call (Standard)  # aus dem übrigen Bundesgebiet
@@ -55,11 +58,8 @@ P:86=0    #E 01086 by Call (Standard)  # aus dem übrigen Bundesgebiet
 # P:89=3  #A M'net ISDN privat sekundengenau
 P:90=0    #E BT Ignite CbC (vormals Viag Interkom)
 P:94=0    #E Startec
-# P:100=0 #A Meocom ISDN
-# P:100=1 #A Meocom ISDN plus
 P:112=0   #E 11883 Telecom
 P:123=0   #E 010023 CbC (VarTec Telecom)
-P:223=0     #E HugoTel          # -> 01063 Conos AG
 P:224=0		#E Pennyphone     # -> 01058
 P:225=0     #E Clever25         # -> 01050 Talkline ID
 P:228=0		#E maxTEL	  # -> 01058
@@ -73,10 +73,15 @@ P:249=0		#E Germanphone	  # -> 01058
 P:251=0		#E Junior Telecom # -> 01051
 P:254=0		#E Calladin	  # -> 01058
 P:271=0		#E RapidCall	  # -> 01058
-P:273=0		#A Tele2 Ortstarif *experimentell*
 P:276=0		#E Telestunt	  # -> 01051
 P:279=0		#E smart79	  # -> Ventelo
 P:282=0		#E lightTalk	  # -> 01058
 P:284=0		#E maxbell	  # -> 01058
 P:287=0		#E Phonecraft	  # -> 01058
 P:295=0		#E superdump	  # -> 01058
+
+P:300=0		#E Servicerufnummern (SMS u. a.), immer aktiv
+
+P:321=0		#E Tele2 iHear (01900732)
+P:322=0		#E Centalk (090050)  # nur Mobilfunk- und Auslandgespräche
+P:323=0		#E Centel (09005310)

@@ -1,5 +1,5 @@
-.\" $Id: isdnlog.8.in,v 1.12 2003/08/14 12:18:57 tobiasb Exp $
-.\" CHECKIN $Date: 2003/08/14 12:18:57 $
+.\" $Id: isdnlog.8.in,v 1.13 2004/02/12 23:52:30 tobiasb Exp $
+.\" CHECKIN $Date: 2004/02/12 23:52:30 $
 .TH isdnlog 8 "@MANDATE_ISDNLOG8@" "ISDN 4 Linux @I4LVERSION@" "Linux System Administration"
 .PD 0
 .SH NAME
@@ -405,7 +405,7 @@ For changing the ISP a script is called. s. next option 'providerchange'
 
 .TP
 .B	providerchange="path_top_script"
-(There is no commandline option for this)
+(There is no commandline option for this.)
 This script is called with 3 parameters, the new provider number
 (from rate-CC.dat), the number, which would be dialed, and the servicename.
 The script should adjust routing, name resolution and so on to
@@ -461,6 +461,14 @@ disabled unless you activate it with:
 .B \-S	start={yes|no}
 active "START" feature. Please read callerid.conf(5) for more
 information.
+
+.TP
+.B	closefds={yes|no}
+(There is no commandline option for this.) 
+If set to yes, isdnlog will close all unnecessarily opened file descriptors
+before a "START" program is executed.
+This closing will also take place at isdnlog's restart after SIGHUP.
+Default is no.
 
 .SH "CONNECTION LOG MODULE"
 
