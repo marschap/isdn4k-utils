@@ -1,6 +1,6 @@
-.\" $Id: ttyI.man.in,v 1.2 1997/02/23 10:45:27 fritz Exp $
+.\" $Id: ttyI.man.in,v 1.3 1997/02/23 10:52:11 fritz Exp $
 .\"
-.\" CHECKIN $Date: 1997/02/23 10:45:27 $
+.\" CHECKIN $Date: 1997/02/23 10:52:11 $
 .\"
 .\" Process this file with
 .\" groff -man -Tascii icnctrl.1 for ASCII output, or
@@ -150,7 +150,7 @@ DTR falling edge: hang up, return to command mode and reset all
 registers.
 .TP
 .BI AT&E x
-Set MSN (Euro-ISDN, E-DSS1) or EAZ (German 1TR6) to value
+Set MSN (Euro-ISDN, EDSS1) or EAZ (German 1TR6) to value
 .IR  x .
 For MSNs,
 .I x
@@ -336,8 +336,8 @@ Note:
 It is possible to set more than one bit. In this case, on outgoing
 calls, the most significant 1-bit is chosen to select the outgoing
 service octet. On incoming calls the selected services are accepted,
-contentnts of register 14 is ignored and the Layer-2-protocol is
-automatcally set with the following values to match the service
+contents of register 14 is ignored and the Layer-2-protocol is
+automatically set with the following values to match the service
 of the incoming call:
 .RS
 .TP
