@@ -26,7 +26,7 @@
 #include <linux/if.h>
 #include <linux/in.h>
 
-static char *revision = "$Revision: 1.18 $";
+static char *revision = "$Revision: 1.19 $";
 
 /* -------------------------------------------------------------------- */
 
@@ -362,8 +362,12 @@ static void plugin_check_options(void)
 	 * coso
 	 */
 	if (opt_coso == 0) {
-	   if (opt_cbflag) coso = COSO_LOCAL;
-	   else coso = COSO_CALLER;
+	   if (opt_cbflag) {
+	      if (opt_number) coso = COSO_REMOTE;
+	      else coso = COSO_LOCAL;
+	   } else {
+	      coso = COSO_CALLER;
+	   }
 	} else if (strcasecmp(opt_coso, "caller") == 0) {
 	   coso = COSO_CALLER;
 	} else if (strcasecmp(opt_coso, "local") == 0) {
@@ -374,8 +378,17 @@ static void plugin_check_options(void)
 	    option_error("capiplugin: wrong value for option coso");
 	    die(1);
 	}
-	if (opt_cbflag && coso != COSO_LOCAL)
-	   option_error("capiplugin: option cbflag ignored");
+	if (opt_cbflag) {
+	   if (opt_coso) {
+	      option_error("capiplugin: option clicb ignored");
+	   } else if (coso == COSO_REMOTE) {
+	      dbglog("clicb selected coso remote");
+	   } else if (coso == COSO_LOCAL) {
+	      dbglog("clicb selected coso local");
+	   } else {
+	      option_error("capiplugin: option clicb ignored");
+	   }
+	}
 
 	/*
 	 * leased line
