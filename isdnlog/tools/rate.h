@@ -1,4 +1,4 @@
-/* $Id: rate.h,v 1.17 1999/12/01 21:47:25 akool Exp $
+/* $Id: rate.h,v 1.18 1999/12/24 14:17:06 akool Exp $
  *
  * Tarifdatenbank
  *
@@ -19,6 +19,28 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rate.h,v $
+ * Revision 1.18  1999/12/24 14:17:06  akool
+ * isdnlog-3.81
+ *  - isdnlog/tools/NEWS
+ *  - isdnlog/tools/telrate/info.html.in  ... bugfix
+ *  - isdnlog/tools/telrate/telrate.cgi.in ... new Service query
+ *  - isdnlog/tools/telrate/Makefile.in ... moved tmp below telrate
+ *  - isdnlog/samples/rate.conf.at ... fixed
+ *  - isdnlog/tools/rate-at.c ... some changes
+ *  - isdnlog/rate-at.dat ... ditto
+ *  - isdnlog/tools/Makefile ... added path to pp_rate
+ *  - isdnlog/tools/rate.{c,h}  ... getServiceNames, Date-Range in T:-Tag
+ *  - isdnlog/tools/isdnrate.c ... fixed sorting of services, -X52 rets service names
+ *  - isdnlog/tools/rate-files.man ... Date-Range in T:-Tag, moved from doc
+ *  - isdnlog/tools/isdnrate.man ... moved from doc
+ *  - doc/Makefile.in ... moved man's from doc to tools
+ *  - isdnlog/Makefile.in ... man's, install isdn.conf.5
+ *  - isdnlog/configure{,.in} ... sed, awk for man's
+ *  - isdnlog/tools/zone/Makefile.in ... dataclean
+ *  - isdnlog/tools/dest/Makefile.in ... dataclean
+ *  - isdnlog/isdnlog/isdnlog.8.in ... upd
+ *  - isdnlog/isdnlog/isdn.conf.5.in ... upd
+ *
  * Revision 1.17  1999/12/01 21:47:25  akool
  * isdnlog-3.72
  *   - new rates for 01051
@@ -213,6 +235,7 @@ char *getProvider(int prefix);
 int   getSpecial(char *number);
 char* getSpecialName(char *number);
 char *getServiceNum(char *name);
+char *getServiceNames(int first);
 char *getComment(int prefix, char *key);
 void  clearRate (RATE *Rate);
 int   getRate(RATE *Rate, char **msg);

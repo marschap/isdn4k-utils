@@ -18,9 +18,13 @@ all: ;
 .PHONY: install-file install uninstall clean distclean all
 install-file: $(FILES)
 	mkdir -p $(TELDIR)
-	for F in `echo $(FILES)` ; do \
+	mkdir -p $(TELDIR)/tmp
+	@for F in `echo $(FILES)` ; do \
 		$(INSTALL_FILE) $$F $(TELDIR)/$$F ; \
-	done
+	done ; \
+	echo "" ; \
+	echo Please chmod $(TELDIR)/tmp to uid/gid of your web server. ;\
+	echo "" ; sleep 3
 
 install: $(PROGRAM) install-file
 	$(INSTALL_PROGRAM) $(PROGRAM) $(CGIDIR)/$(PROGRAM)

@@ -104,7 +104,7 @@ Gespr&auml;chsl&auml;nge. </DD>
 wirklichen Kosten &uuml;berein, wenn 60 durch den Takt ohne Rest teilbar ist. </DD>
 <DT><span class="in">S</span>chwund</DT>
 <DD>Die durch die Taktung oder Mindestentgelte verursachte Gespr&auml;chsgeb&uuml;hr.
-<br>Tip: versuchen Sie mal eine <a href ="/@CGIBIN@/telrate.cgi?tel=usa&len=5&now=on&tab=GO&_3D=on">5 Sekunden lange Verbindung in die USA</a> (z.B. es
+<br>Tip: versuchen Sie mal eine <a href ="/@CGIBIN@/telrate.cgi?tel=US&len=5&now=on&tab=GO&_3D=on">5 Sekunden lange Verbindung in die USA</a> (z.B. es
 meldet sich der Anrufbeantworter und Sie legen auf), ob Sie 30g oder 4 Schilling zahlen,
 ist ein sch&ouml;ner Unterschied, besonders wenn das h&auml;ufiger passiert.
 <DT><span class="in">T</span>ag / Zeit</DT>

@@ -67,22 +67,23 @@ void rprintf (char *fmt, char *name, ...)
   len=vsnprintf(buf, BUFSIZ, fmt, ap);
   if (name && *name) {
     p=buf+len;
-    for (p=buf+len; len<TABSTOP;len++)
+    for (p=buf+len; len<TABSTOP-1;len++)
       *(p++)=' ';
+    *(p++)=' ';
     *p='\0';
     s = buf;
     switch (*s) {
     case 'P':
       s+=2;
       while (isblank(*s)) s++;
+      if ((p=strchr(s,']')) != 0) // past daterange
+        s=p+1;
       prefix = strtol(s, &s ,10);
-      while (isblank(*s)) s++;
       printf("\n###########################\n");
       v=0;
       printf ("%s%s\n", buf, name);
       sprintf(buf,"%4d",1000+prefix);
       printf("B:%s\n",prefix<95?buf:"Kabel");
-      printf("C:NR:%s\n",prefix<95?buf:"Kabel");
       return;
     case 'Z':
       printf("\n");
@@ -251,8 +252,8 @@ void rate_1001_old(void)
   char s[BUFSIZ];
 
   for (t=0; t<4; t++) {
-    rprintf ("P:01,%d", "Telekom Austria Alt" , t+1);
-    rprintf ("G:-01.09.1999","#Valid til 00:00");
+    rprintf ("P: [-01.09.1999] 01,%d", "Telekom Austria Alt" , t+1);
+    rprintf ("# G:-01.09.1999","#Valid til 00:00");
     rprintf ("C:Maintainer:", "Michael Reinelt <reinelt@eunet.at>" );
     rprintf ("C:Zone:", "Die Regionalzone geht bis zu einer Entfernung von 50 Km, " );
     rprintf ("C:Zone:", "Fernzone 1 bis 200 Km, Fernzone 2 darüber." );
@@ -380,8 +381,8 @@ void rate_1001(void)
 		"Grundgebühr ATS 468","Grundgebühr ATS 1788, Businesskunden"};
   for (t=0; t<5; t++) {
     sprintf(s,"Telekom Austria %s",Name[t]);
-    rprintf ("P:01,%d", s , t+1);
-    rprintf ("G:01.09.1999","#Valid from");
+    rprintf ("P: [01.09.1999] 01,%d", s , t+1);
+    rprintf ("# G:01.09.1999","#Valid from");
     rprintf ("C:Maintainer:", "Michael Reinelt <reinelt@eunet.at>" );
     rprintf ("C:TarifChanged:", "01.09.1999" );
     rprintf ("C:Zone:", "Die Regionalzone geht bis zu einer Entfernung von 50 Km, alles andere ist Österreichzone." );
@@ -1015,7 +1016,7 @@ void rate_1011(void) {
 
   int z;
 
-  rprintf ("P:11", "RSL COM" );
+  rprintf ("P:11,0", "RSL COM" );
   rprintf ("D:1012", "# Verzonung" );
   rprintf ("C:Name:", "RSL COM Austria AG" );
   rprintf ("C:Address:", "Marktstr. 3, A-7000 Eisenstadt" );
@@ -1111,7 +1112,7 @@ void rate_1012(what) { /* 1012 == 1044 (Citykom) */
   int z;
   if(what==1012) {
     rprintf ("P:12", "1012" );
-    rprintf ("C:TarifChanged:", "14.09.1999" );
+    rprintf ("C:TarifChanged:", "21.12.1999" );
     rprintf ("C:Name:", "1012 privat" );
     rprintf ("C:Address:", "Linzer Str. 221, A-1140 Wien" );
     rprintf ("C:Homepage:", "http://www.1012privat.at" );
@@ -1129,7 +1130,13 @@ void rate_1012(what) { /* 1012 == 1044 (Citykom) */
   }
   for (z=0; z<COUNT(Zone); z++) {
     rprintf ("Z:%d", Zone[z][0] , z+1);
-    rprintf ("T:*/*=%.2f(60)/60/1", "0-24h" , Tarif[z]);
+    if (z==0 && what==1012) {
+      rprintf ("T: [15.11.1999-01.02.2000] */17-19=%.2f(60)/60/1", "Happy Hour" , 0.79);
+      rprintf ("T: [15.11.1999-01.02.2000] */19-17=%.2f(60)/60/1", "0-24h o.HH" , Tarif[z]);
+      rprintf ("T:*/*=%.2f(60)/60/1", "0-24h" , Tarif[z]);
+    }
+    else
+      rprintf ("T:*/*=%.2f(60)/60/1", "0-24h" , Tarif[z]);
     print_area(Zone[z][1]);
   }
 }
@@ -2345,7 +2352,7 @@ int main (int argc, char *argv[])
   printf ("# Many thanks to Daniela Bruder <dbruder@sime.com>\n");
   printf ("# for collecting and preparing most of the call charges.\n\n\n");
 
-  printf ("V:1.90-Austria [06-Nov-1999]\n\n");
+  printf ("V:1.91-Austria [21-Dec-1999]\n\n");
   printf ("U:%%.3f öS\n");
   write_services();
 

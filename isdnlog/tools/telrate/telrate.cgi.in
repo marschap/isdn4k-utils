@@ -47,8 +47,8 @@ $docroot=$ENV{'DOCUMENT_ROOT'};
 # rest should be ok
 use vars qw ( $tempdir $tempdir_url $DEFLEN $debug $LEER $DEFBEST );
 
-$tempdir = "$docroot/tmp";
-$tempdir_url = '/tmp';
+$tempdir = "$docroot/telrate/tmp";
+$tempdir_url = 'tmp';
 
 $DEFLEN=60;
 $DEFBEST=30;
@@ -85,7 +85,7 @@ foreach (@names) {
 
 if ($debug) {
     html_header('debug',1);
-    print(hr, dump());
+    print(hr, CGI::dump());
     print(hr);
 }
 
@@ -120,6 +120,7 @@ else {
     $help=0;
     push(@names, 'help_tel.x') if (@names && !param('tel') &&
 	!param('town') && !param('country') &&
+	!param('service') && !param('getservice') &&
 	!param('gettown') && !param('getcountry') && !param('mix') && !param('help'));
     foreach (@names) {
 	if (/help_(.*?)\.x/) {
@@ -532,6 +533,13 @@ sub show_help {
 	    'Um kleinere Bilder (schneller) zu erhalten, verringern Sie die Größe ',
 	    'und/oder schalten Sie ',i('3D'),' aus.');
     }
+    elsif ($what eq 'service') {
+    	print(br,'Unter Service sind diverse Dienste wie Auskunft oder Internet ',
+	    'abrufbar. Es werden alle Provider mit allen Nummern gelistet. ',
+	    'Daher ist die im Kopf angezeigte Nummer eventuell nur eine von vielen ',
+	    'unter der dieses Service erreichbar ist.',br,
+	    'Hinweis: eine Grafikausgabe ist dzt. nicht vorgesehen.');
+    }
     if ($what =~ /tab|graf/) {
 	print(br,'Sie können auf die Providerbezeichnung ',
 	    'klicken um weitere Information über den jeweiligen Provider zu ',
@@ -589,6 +597,7 @@ sub byname {
 sub print_form {
     my($t,  $i);
     my @codes = sort byname (keys(%towns));
+    my (@lines);
     $t= q!print(
 	div({-align=>'center'},
     	start_form(-name=>'form',-action=>url),
@@ -637,7 +646,7 @@ sub print_form {
 	$t .= q!Tr(
 		td(['&nbsp;','oder Stadt: ']),!;
 	if(param('town') || param('gettown')) {
-	    $cs = param('gettown') ? 1: 2;
+	    $cs = param('town') ? 2: 1;
     	    $t.= q!td({-colspan=>!. $cs. q!},popup_menu(-name=>'town', -values=> \@codes)),!;
 	}
 	if(!param('town') || length(param('town'))==1 || param('gettown')) {
@@ -653,7 +662,7 @@ sub print_form {
 	$t .= q!Tr(
 		td(['&nbsp;','oder Ausland: ']),!;
 	if(param('country') || param('getcountry')) {
-	    $cs = param('getcountry') ? 1: 2;
+	    $cs = param('country') ? 2: 1;
     	    $t.= q!td({-colspan=>!. $cs. q!},popup_menu(-name=>'country', -values=> \@countries)),!;
 	}
 	if(!param('country') || length(param('country'))==1 || param('getcountry')) {
@@ -664,6 +673,32 @@ sub print_form {
 	    $t.= q! td('&nbsp;'),!;
 	}
 	$t .= '),';
+	# Service
+	$cs=2;
+	$t .= q!
+	    Tr(td({-colspan=>6},hr)),
+	    Tr(td(['&nbsp;','oder Service']),!;
+        if (param('getservice') || param('service')) {
+	    $cs += 3;
+  	    my @args = ( "$ISDNRATE", '-X52' );
+  	    _call_isdnrate (\@lines,@args);
+    	    $t.= q!td({-colspan=>2},popup_menu(-name=>'service', -values=> \@lines)),!;
+    	    $t .= q!td(submit(-name=>'tab',-value=>'GO')),!;
+	    if(param('getservice')) {
+	    	param('tel','');
+	    	param('town','');
+	    	param('country','');
+	    }
+	}
+	else {
+    	    $t .= q!td(submit(-name=>'getservice',-value=>'Serviceliste')),!;
+	    $cs++;
+	}
+	while ($cs++<5) {
+	    $t.= q! td('&nbsp;'),!;
+	}
+	$t .= q!td(&help('service'))),!;
+	# Dauer
 	$t .= q!
 	Tr([
 	    td({-colspan=>6},hr),
@@ -896,20 +931,30 @@ sub call_isdnrate {
 	param('country', '') if(param('country'));
 	$tel = '0' . $towns{param('town')};
 	param('tel',$tel);
+	param('service','');
     }
     elsif (length(param('country'))>1&&param('country') !~ /--/ && !$mix) {
 	param('tel','');
 	param('town', '') if(param('town'));
+	param('service','');
 	$tel=param('country');
     }
-    else {
+    elsif (param('tel')) {
 	param('country','') if (param('country') =~ /--/);
 	param('town','') if (param('town') =~ /--/);
+	param('service','');
 	$tel = param('tel');
+    }
+    elsif (param('service')) {
+	param('tel','');
+    	$tel=param('service');
     }
     $tel =~s/ /_/g; # preserv spaces
     return if($tel eq '');
     my @args=($ISDNRATE,"-H", $tel);
+    if(param('service')) {
+   	push(@args,'-s');
+    }
     unless (param('now')) {
     	push(@args, "-h$hour") if (($hour=checkp('hour')) ne'');
     	push(@args, "-d$day") if ($day=($day=checkp('day'))||$hour ne''?$day:param('dday'));
@@ -1436,7 +1481,7 @@ sub make_graf {
     	$rcols{$p} = $im->colorAllocate(eval($r), eval($g), eval($b));
     }
     $white = $im->colorAllocate(255,255,255);
-    $trans = $im->colorAllocate(0xff,0xff,0xfe);
+    $trans = $im->colorAllocate(0xff,0xff,0xe0);
     $im->transparent($trans);
     $llgrey = $im->colorAllocate(0xf0,0xf0,0xf0);
     $lgrey = $im->colorAllocate(0xe0,0xe0,0xe0);

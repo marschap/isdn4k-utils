@@ -112,6 +112,8 @@ fi
 dnl Checks for programs.
 AC_PROG_CC
 AC_PROG_INSTALL
+AC_PROG_AWK
+AC_PATH_PROG(SED,sed)
 AC_PROG_MAKE_SET
 AC_PATH_PROGS(BZIP2, bzip2, /usr/bin/bzip2, $PATH:/bin:/usr/bin:/usr/local/bin)
 

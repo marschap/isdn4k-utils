@@ -1,4 +1,4 @@
-/* $Id: tools.c,v 1.41 1999/11/07 13:29:29 akool Exp $
+/* $Id: tools.c,v 1.42 1999/12/24 14:17:06 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -19,6 +19,28 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools.c,v $
+ * Revision 1.42  1999/12/24 14:17:06  akool
+ * isdnlog-3.81
+ *  - isdnlog/tools/NEWS
+ *  - isdnlog/tools/telrate/info.html.in  ... bugfix
+ *  - isdnlog/tools/telrate/telrate.cgi.in ... new Service query
+ *  - isdnlog/tools/telrate/Makefile.in ... moved tmp below telrate
+ *  - isdnlog/samples/rate.conf.at ... fixed
+ *  - isdnlog/tools/rate-at.c ... some changes
+ *  - isdnlog/rate-at.dat ... ditto
+ *  - isdnlog/tools/Makefile ... added path to pp_rate
+ *  - isdnlog/tools/rate.{c,h}  ... getServiceNames, Date-Range in T:-Tag
+ *  - isdnlog/tools/isdnrate.c ... fixed sorting of services, -X52 rets service names
+ *  - isdnlog/tools/rate-files.man ... Date-Range in T:-Tag, moved from doc
+ *  - isdnlog/tools/isdnrate.man ... moved from doc
+ *  - doc/Makefile.in ... moved man's from doc to tools
+ *  - isdnlog/Makefile.in ... man's, install isdn.conf.5
+ *  - isdnlog/configure{,.in} ... sed, awk for man's
+ *  - isdnlog/tools/zone/Makefile.in ... dataclean
+ *  - isdnlog/tools/dest/Makefile.in ... dataclean
+ *  - isdnlog/isdnlog/isdnlog.8.in ... upd
+ *  - isdnlog/isdnlog/isdn.conf.5.in ... upd
+ *
  * Revision 1.41  1999/11/07 13:29:29  akool
  * isdnlog-3.64
  *  - new "Sonderrufnummern" handling
@@ -461,7 +483,7 @@ time_t atom(register char *p)
 #endif
 
   tm.tm_wday = tm.tm_yday;
-  tm.tm_isdst = -1;
+  tm.tm_isdst = UNKNOWN;
 
   return(mktime(&tm));
 } /* atom */
@@ -487,7 +509,7 @@ char *num2nam(char *num, int si)
     } /* for */
   } /* if */
 
-  cnf = -1;
+  cnf = UNKNOWN;
   return("");
 } /* num2nam */
 
@@ -517,7 +539,7 @@ char *double2str(double n, int l, int d, int flags)
   p = retstr[retnum] + l + 1;
   *p = 0;
 
-  dec = d ? d : -1;
+  dec = d ? d : UNKNOWN;
   dp = l - dec;
 
   *buf = '0';
@@ -700,16 +722,36 @@ char *vnum(int chan, int who)
   *call[chan].rufnummer[who] =
   *call[chan].alias[who] =
   *call[chan].area[who] = 0;
-  call[chan].confentry[who] = -1;
+  call[chan].confentry[who] = UNKNOWN;
 
   if (!l) {       /* keine Meldung von der Vst (Calling party number fehlt) */
     sprintf(retstr[retnum], "%c", C_UNKNOWN);
     return(retstr[retnum]);
   } /* if */
 
+  if (!memcmp(call[chan].num[who], "#*", 2)) { /* Eurocom Befehl ... */
+    auto char arg1[BUFSIZ], arg2[BUFSIZ], arg3[BUFSIZ];
+
+    if (!memcmp(call[chan].num[who] + 2, "421", 3)) {
+      strncpy(arg1, call[chan].num[who] + 5, 4);
+      strncpy(arg2, call[chan].num[who] + 9, 2);
+
+      strcpy(arg3, num2nam(arg2, 1));
+
+      sprintf(retstr[retnum], "[Morgen Terminruf um %c%c:%c%c Uhr an %s]",
+        arg1[0], arg1[1], arg1[2], arg1[3], (cnf != UNKNOWN) ? arg3 : arg2);
+
+      return(retstr[retnum]);
+    }
+    else if (!memcmp(call[chan].num[who] + 2, "9999", 4)) {
+      sprintf(retstr[retnum], "[Reset]");
+      return(retstr[retnum]);
+    } /* else */
+  } /* if */
+
   strcpy(call[chan].alias[who], num2nam(call[chan].num[who], call[chan].si1));
 
-  if (cnf > -1) {                    /* Alias gefunden! */
+  if (cnf > UNKNOWN) {                    /* Alias gefunden! */
     call[chan].confentry[who] = cnf;
     strcpy(retstr[retnum], call[chan].alias[who]);
   } /* if */
@@ -717,7 +759,7 @@ char *vnum(int chan, int who)
   if ((call[chan].sondernummer[who] != UNKNOWN) || call[chan].intern[who]) {
     strcpy(call[chan].rufnummer[who], call[chan].num[who]);
 
-    if (cnf > -1)
+    if (cnf > UNKNOWN)
       strcpy(retstr[retnum], call[chan].alias[who]);
     else if (call[chan].sondernummer[who] != UNKNOWN) {
       if ((l1 = call[chan].sondernummer[who]) < l) {
@@ -754,7 +796,7 @@ char *vnum(int chan, int who)
       strcpy(s, formatNumber("%F", &number));
     } /* if */
 
-    if (cnf > -1)
+    if (cnf > UNKNOWN)
       strcpy(retstr[retnum], call[chan].alias[who]);
     else
       strcpy(retstr[retnum], s);
@@ -782,7 +824,7 @@ char *vnum(int chan, int who)
     strcpy(call[chan].rufnummer[who], call[chan].num[who] + l);
   } /* if */
 
-  if (cnf > -1)
+  if (cnf > UNKNOWN)
     strcpy(retstr[retnum], call[chan].alias[who]);
   else if (l > 1)
     sprintf(retstr[retnum], "%s %s/%s, %s",
@@ -1101,7 +1143,7 @@ go:   	         if (!ndigit)
 		 break;
 
       case 'p' : s = sx;
-      	         if (call[chan].provider != -1) {
+      	         if (call[chan].provider != UNKNOWN) {
 
       		   if (call[chan].provider < 100)
       	       	     sprintf(sx, "%s%02d", vbn, call[chan].provider);
@@ -1114,7 +1156,7 @@ go:   	         if (!ndigit)
                  break;
 
       case 'P' : s = sx;
-      	         if (call[chan].provider != -1)
+      	         if (call[chan].provider != UNKNOWN)
       	       	   sprintf(sx, " via %s", getProvider(call[chan].provider));
       		 else
                    *sx = 0;

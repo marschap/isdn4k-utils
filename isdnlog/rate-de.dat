@@ -1,4 +1,4 @@
-V:1.10-Germany [19-Dec-1999 00:35:55]
+V:1.10-Germany [24-Dec-1999 11:58:50]
 
 # Währungsformat
 U:%.3f DM
@@ -8,7 +8,7 @@ U:%.3f DM
 #
 # (C) Copyright 1999 by Andreas Kool (akool@isdn4linux.de)
 #
-# $Id: rate-de.dat,v 1.70 1999/12/19 20:24:44 akool Exp $
+# $Id: rate-de.dat,v 1.71 1999/12/24 14:17:02 akool Exp $
 #
 #
 # Das "A:" Tag muß folgendermaßen gefüllt werden:
@@ -12938,10 +12938,10 @@ A:RO
 T:*/*=0.63/60
 Z:234 Schweden
 A:SE
-T:*/*=0.17/60
+T:*/*=0.15/60
 Z:235 Schweiz (Festnetz)
 A:CH
-T:*/*=0.17/60
+T:*/*=0.15/60
 Z:236 Singapore
 A:SG
 T:*/*=0.37/60
@@ -13008,7 +13008,13 @@ T:*/*=0.75/60
 Z:257 Ukraine
 A:UA
 T:*/*=0.75/60
-Z:258 impossible
+Z:258 Estland (Festnetz)
+A:EE
+T:*/*=0.52/60
+Z:259 Indonesien (Festnetz)
+A:ID
+T:*/*=0.75/60
+Z:260 impossible
 A:_ARMF
 A:_AUMF
 A:_BEMF
@@ -13046,6 +13052,8 @@ A:_VEMF
 A:_PHMF
 # A:Thailand Mobilfunk
 # A:Ukraine Mobilfunk
+A:_EEMF
+# A:Indonesien Mobilfunk
 T:*/*=99.99/60
 #####################################################################
 #
@@ -13592,12 +13600,12 @@ T:W/17-08=0.48(60)/1
 T:E,H/*=0.48(60)/1
 Z:200 International Top A Mobilfunk
 A:_DKMF,_UKMF,_SEMF
-T:W/08-17=0.32(60)/1 # dieser "Millenium-Preis" gilt *nur* vom 16Dec1999 bis 15Jan2000
-T:W/08-17=0.38(60)/1 # danach gilt wieder */*=0.38(60)/1
+T:[16.12.1999-16.01.2000]W/08-17=0.32(60)/1 Millenium-Tarif
+T:*/*=0.38(60)/1
 Z:201 International Top A
 A:DK,UK,CA,SE,US
-T:W/08-17=0.12(60)/1 # dieser "Millenium-Preis" gilt *nur* vom 16Dec1999 bis 15Jan2000
-T:W/08-17=0.18(60)/1 # danach gilt wieder */*=0.18(60)/1
+T:[16.12.1999-16.01.2000]W/08-17=0.12(60)/1 Millenium-Tarif
+T:*/*=0.18(60)/1
 Z:202 International A Mobilfunk
 A:_AUMF,_BEMF,_FIMF
 A:_FRMF,_HKMF,_IEMF

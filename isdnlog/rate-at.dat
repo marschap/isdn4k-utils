@@ -11,7 +11,7 @@
 # for collecting and preparing most of the call charges.
 
 
-V:1.90-Austria [06-Nov-1999]
+V:1.91-Austria [21-Dec-1999]
 
 U:%.3f öS
 
@@ -70,10 +70,9 @@ N:02290*	# Wildcard after special
 
 
 ###########################
-P:01,1                             Telekom Austria Alt
+P: [-01.09.1999] 01,1              Telekom Austria Alt
 B:1001
-C:NR:1001
-G:-01.09.1999                      #Valid til 00:00
+# G:-01.09.1999                    #Valid til 00:00
 C:Maintainer:                      Michael Reinelt <reinelt@eunet.at>
 C:Zone:                            Die Regionalzone geht bis zu einer Entfernung von 50 Km,
 C:Zone:                            Fernzone 1 bis 200 Km, Fernzone 2 darüber.
@@ -309,10 +308,9 @@ T:E,H/*=1.116/15                   Sparzeit
 A:+43717
 
 ###########################
-P:01,2                             Telekom Austria Alt
+P: [-01.09.1999] 01,2              Telekom Austria Alt
 B:1001
-C:NR:1001
-G:-01.09.1999                      #Valid til 00:00
+# G:-01.09.1999                    #Valid til 00:00
 C:Maintainer:                      Michael Reinelt <reinelt@eunet.at>
 C:Zone:                            Die Regionalzone geht bis zu einer Entfernung von 50 Km,
 C:Zone:                            Fernzone 1 bis 200 Km, Fernzone 2 darüber.
@@ -548,10 +546,9 @@ T:E,H/*=1.056/15                   Sparzeit
 A:+43717
 
 ###########################
-P:01,3                             Telekom Austria Alt
+P: [-01.09.1999] 01,3              Telekom Austria Alt
 B:1001
-C:NR:1001
-G:-01.09.1999                      #Valid til 00:00
+# G:-01.09.1999                    #Valid til 00:00
 C:Maintainer:                      Michael Reinelt <reinelt@eunet.at>
 C:Zone:                            Die Regionalzone geht bis zu einer Entfernung von 50 Km,
 C:Zone:                            Fernzone 1 bis 200 Km, Fernzone 2 darüber.
@@ -787,10 +784,9 @@ T:E,H/*=0.996/15                   Sparzeit
 A:+43717
 
 ###########################
-P:01,4                             Telekom Austria Alt
+P: [-01.09.1999] 01,4              Telekom Austria Alt
 B:1001
-C:NR:1001
-G:-01.09.1999                      #Valid til 00:00
+# G:-01.09.1999                    #Valid til 00:00
 C:Maintainer:                      Michael Reinelt <reinelt@eunet.at>
 C:Zone:                            Die Regionalzone geht bis zu einer Entfernung von 50 Km,
 C:Zone:                            Fernzone 1 bis 200 Km, Fernzone 2 darüber.
@@ -1026,10 +1022,9 @@ T:E,H/*=0.936/15                   Sparzeit
 A:+43717
 
 ###########################
-P:01,1                             Telekom Austria Minimumtarif
+P: [01.09.1999] 01,1               Telekom Austria Minimumtarif
 B:1001
-C:NR:1001
-G:01.09.1999                       #Valid from
+# G:01.09.1999                     #Valid from
 C:Maintainer:                      Michael Reinelt <reinelt@eunet.at>
 C:TarifChanged:                    01.09.1999
 C:Zone:                            Die Regionalzone geht bis zu einer Entfernung von 50 Km, alles andere ist Österreichzone.
@@ -1238,10 +1233,9 @@ T:*/*=1.116/15                     0-24h
 A:+437118,+437119,+437110
 
 ###########################
-P:01,2                             Telekom Austria Standardtarif
+P: [01.09.1999] 01,2               Telekom Austria Standardtarif
 B:1001
-C:NR:1001
-G:01.09.1999                       #Valid from
+# G:01.09.1999                     #Valid from
 C:Maintainer:                      Michael Reinelt <reinelt@eunet.at>
 C:TarifChanged:                    01.09.1999
 C:Zone:                            Die Regionalzone geht bis zu einer Entfernung von 50 Km, alles andere ist Österreichzone.
@@ -1450,10 +1444,9 @@ T:*/*=1.056/15                     0-24h
 A:+437118,+437119,+437110
 
 ###########################
-P:01,3                             Telekom Austria Geschäftstarif 1
+P: [01.09.1999] 01,3               Telekom Austria Geschäftstarif 1
 B:1001
-C:NR:1001
-G:01.09.1999                       #Valid from
+# G:01.09.1999                     #Valid from
 C:Maintainer:                      Michael Reinelt <reinelt@eunet.at>
 C:TarifChanged:                    01.09.1999
 C:Zone:                            Die Regionalzone geht bis zu einer Entfernung von 50 Km, alles andere ist Österreichzone.
@@ -1662,10 +1655,9 @@ T:*/*=0.996/15                     0-24h
 A:+437118,+437119,+437110
 
 ###########################
-P:01,4                             Telekom Austria Geschäftstarif 2
+P: [01.09.1999] 01,4               Telekom Austria Geschäftstarif 2
 B:1001
-C:NR:1001
-G:01.09.1999                       #Valid from
+# G:01.09.1999                     #Valid from
 C:Maintainer:                      Michael Reinelt <reinelt@eunet.at>
 C:TarifChanged:                    01.09.1999
 C:Zone:                            Die Regionalzone geht bis zu einer Entfernung von 50 Km, alles andere ist Österreichzone.
@@ -1874,10 +1866,9 @@ T:*/*=0.936/15                     0-24h
 A:+437118,+437119,+437110
 
 ###########################
-P:01,5                             Telekom Austria Geschäftstarif 3
+P: [01.09.1999] 01,5               Telekom Austria Geschäftstarif 3
 B:1001
-C:NR:1001
-G:01.09.1999                       #Valid from
+# G:01.09.1999                     #Valid from
 C:Maintainer:                      Michael Reinelt <reinelt@eunet.at>
 C:TarifChanged:                    01.09.1999
 C:Zone:                            Die Regionalzone geht bis zu einer Entfernung von 50 Km, alles andere ist Österreichzone.
@@ -2088,7 +2079,6 @@ A:+437118,+437119,+437110
 ###########################
 P:02                               UTA
 B:1002
-C:NR:1002
 C:Maintainer:                      Leopold Toetsch <lt@toetsch.at>
 C:TarifChanged:                    07.09.1999
 C:Homepage:                        http://www.utanet.at
@@ -2218,7 +2208,6 @@ A:WF,ZR
 ###########################
 P:03                               Multikom
 B:1003
-C:NR:1003
 C:Name:                            1003 Multikom Austria Telekom
 C:Address:
 C:Homepage:                        http://www.multikom.at
@@ -2333,7 +2322,6 @@ A:PN,TV,UY,VN,_WAKE
 ###########################
 P:04,1                             Globalone
 B:1004
-C:NR:1004
 C:Name:                            Globalone
 C:Address:                         Print Eugen-Str. 8-10, A-1040
 C:Homepage:                        http://www.globalone.at
@@ -2365,7 +2353,6 @@ A:+43663,+43664,+43676,+43699
 ###########################
 P:04,2                             Globalone Bus.
 B:1004
-C:NR:1004
 C:Name:                            Globalone
 C:Address:
 C:TarifChanged:                    01.09.1999
@@ -2398,7 +2385,6 @@ A:+43663,+43664,+43676,+43699
 ###########################
 P:05                               tele2
 B:1005
-C:NR:1005
 C:Name:                            Tele2 Telecommunications Services GmbH
 C:TarifChanged:                    27.10.1999
 C:Homepage:                        http://www.tele2.at
@@ -2447,7 +2433,6 @@ A:+
 ###########################
 P:07                               European Telecom Fairtel
 B:1007
-C:NR:1007
 C:TarifChanged:                    14.09.1999
 C:Name:                            European Telecom
 C:Zone:                            Vorwahlen 1XXX und 2XXX, bzw. mit gleicher Anfangsziffer liegen in der
@@ -2490,7 +2475,6 @@ A:+
 ###########################
 P:08                               TELEforum
 B:1008
-C:NR:1008
 C:GT:                              Freischaltgebühren ATS 480
 C:TarifChanged:                    15.09.1999
 C:GF:                              Cost = 480/12
@@ -2531,7 +2515,7 @@ A:MC,NO,SE
 
 Z:7                                Deutschland Mobilfunk ...
 T:*/*=4.78(60)/1                   0-24h
-A:_DEME2,_CHMF
+A:_DEMF,_CHMF
 
 Z:8                                Israel ...
 T:*/*=5.62(60)/1                   0-24h
@@ -2619,7 +2603,6 @@ A:_WAKE,WF
 ###########################
 P:09                               Vocalis
 B:1009
-C:NR:1009
 D:pta                              # Verzonung
 # Verzonung nicht verifiziert
 C:TarifChanged:                    01.09.1999
@@ -2825,9 +2808,8 @@ A:SR,TG,TO,TD,TV,UG,VU
 A:VG,_WAKE,ZR,CF
 
 ###########################
-P:11                               RSL COM
+P:11,0                             RSL COM
 B:1011
-C:NR:1011
 D:1012                             # Verzonung
 C:Name:                            RSL COM Austria AG
 C:Address:                         Marktstr. 3, A-7000 Eisenstadt
@@ -2958,7 +2940,6 @@ A:WF,ZR
 ###########################
 P:11,1                             TNC 10elf
 B:1011
-C:NR:1011
 C:Name:                            Transnet Communications
 C:Homepage:                        http://www.10elf.at
 C:TarifURL:                        http://www.10elf.at/deutsch/festnetzi.htm
@@ -2981,7 +2962,7 @@ A:DE,IT,CH
 
 Z:4                                TransEuro1
 T:*/*=3.50(60)/1                   0-24h
-A:AD,BE,DK,_DEME2,FO,FI
+A:AD,BE,DK,_DEMF,FO,FI
 A:FR,GI,UK,IE,IS,LI
 A:LU,MC,NL,NO,PL,SM,SE
 A:SK,SI,ES
@@ -3009,14 +2990,15 @@ A:+
 ###########################
 P:12                               1012
 B:1012
-C:NR:1012
-C:TarifChanged:                    14.09.1999
+C:TarifChanged:                    21.12.1999
 C:Name:                            1012 privat
 C:Address:                         Linzer Str. 221, A-1140 Wien
 C:Homepage:                        http://www.1012privat.at
 C:Telefon:                         0800 1012 1012
 
 Z:1                                Österreich
+T: [15.11.1999-01.02.2000] */17-19=0.79(60)/60/1 Happy Hour
+T: [15.11.1999-01.02.2000] */19-17=0.90(60)/60/1 0-24h o.HH
 T:*/*=0.90(60)/60/1                0-24h
 A:AT
 
@@ -3067,7 +3049,6 @@ A:+
 ###########################
 P:13                               NETnet
 B:1013
-C:NR:1013
 C:Name:                            NETnet Telekommunikation GmbH
 C:Special:                         Nur Businesskunden
 C:Address:                         Inkustr. 2-7, A-3400 Klosterneuburg
@@ -3077,7 +3058,6 @@ C:EMail:                           customercare@netnet.co.at
 ###########################
 P:14                               MCN
 B:1014
-C:NR:1014
 D:pta                              # Verzonung
 C:Name:                            Millenium Communication Network GmbH
 C:Address:                         Handelskai 94 - 96, A-1200 Wien
@@ -3103,7 +3083,6 @@ A:AT
 ###########################
 P:24                               Telepassport
 B:1024
-C:NR:1024
 C:Maintainer:                      Leopold Toetsch <lt@toetsch.at>
 C:Name:                            TelePassport Telekommunikationsdiensleitungen GmbH
 C:Address:                         Prinz-Eugen-Str. 10, A 1040 Wien
@@ -3189,7 +3168,6 @@ A:+
 ###########################
 P:29,1                             CyberTron easy.Talk privat
 B:1029
-C:NR:1029
 C:Name:                            Cybertron EDV- NetzwerkbetriebsgmbH
 C:Address:                         Davidstr. 79, A-1100 Wien
 C:Homepage:                        http://www.cybertron.at
@@ -3314,7 +3292,6 @@ A:+
 ###########################
 P:29,2                             CyberTron easy.Talk business
 B:1029
-C:NR:1029
 C:TarifChanged:                    10.09.1999
 C:Name:                            Cybertron - austrian digital telecom
 C:Address:
@@ -3644,7 +3621,6 @@ A:PW,AS
 ###########################
 P:29,6                             TNS
 B:1029
-C:NR:1029
 C:TarifChanged:                    10.09.1999
 C:Name:                            Telephone Network Service Ges.m.b.H Telekommunikationsdienstleistungen
 C:Address:                         1100 Wien Davidgasse 79
@@ -4064,7 +4040,6 @@ A:AF
 ###########################
 P:29,5                             LibroTel
 B:1029
-C:NR:1029
 C:TarifChanged:                    10.09.1999
 C:Homepage:                        http://www.librotel.at
 C:Telefon:                         0800 400 808
@@ -4169,7 +4144,6 @@ A:_WAKE,WF
 ###########################
 P:44                               Citykom
 B:1044
-C:NR:1044
 C:TarifChanged:                    15.09.1999
 C:Name:                            Citykom Austria Telekommunikations GmbH
 C:Address:                         Alserbachstr. 144-16, A-1090 Wien
@@ -4229,7 +4203,6 @@ A:+
 ###########################
 P:49                               Pegasus Telekom
 B:1049
-C:NR:1049
 C:TarifChanged:                    01.09.1999
 D:1001                             # Verzonung
 C:Name:                            Pegasus Telekom Netzwerkdienste AG
@@ -4501,7 +4474,6 @@ A:_WAKE
 ###########################
 P:66                               MIT 1066
 B:1066
-C:NR:1066
 C:Name:                            M.I.T Multi Media Informations Technologies GesmbH
 C:Address:                         Modecenterstrr. 14/5, A-1030 Wien
 C:Homepage:                        http://www.mit.co.at
@@ -4598,7 +4570,6 @@ A:ZR,CF
 ###########################
 P:67                               max.plus
 B:1067
-C:NR:1067
 C:Maintainer:                      Michael Reinelt <reinelt@eunet.at>
 C:Name:                            max.mobil Telekommunikation Service GmbH
 C:Address:                         Postfach 333, A-1031 Wien
@@ -4678,7 +4649,6 @@ A:_IR17
 ###########################
 P:69                               ONE
 B:1069
-C:NR:1069
 C:Name:                            Connect Austria Gesellschaft für Telekommunikation GmbH
 C:Address:                         Brünner Straße 52, A-1210 Wien
 C:Homepage:                        http://www.one.at

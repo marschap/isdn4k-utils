@@ -1,4 +1,4 @@
-/* $Id: isdnrate.c,v 1.29 1999/12/17 22:51:55 akool Exp $
+/* $Id: isdnrate.c,v 1.30 1999/12/24 14:17:05 akool Exp $
 
  * ISDN accounting for isdn4linux. (rate evaluation)
  *
@@ -19,6 +19,28 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnrate.c,v $
+ * Revision 1.30  1999/12/24 14:17:05  akool
+ * isdnlog-3.81
+ *  - isdnlog/tools/NEWS
+ *  - isdnlog/tools/telrate/info.html.in  ... bugfix
+ *  - isdnlog/tools/telrate/telrate.cgi.in ... new Service query
+ *  - isdnlog/tools/telrate/Makefile.in ... moved tmp below telrate
+ *  - isdnlog/samples/rate.conf.at ... fixed
+ *  - isdnlog/tools/rate-at.c ... some changes
+ *  - isdnlog/rate-at.dat ... ditto
+ *  - isdnlog/tools/Makefile ... added path to pp_rate
+ *  - isdnlog/tools/rate.{c,h}  ... getServiceNames, Date-Range in T:-Tag
+ *  - isdnlog/tools/isdnrate.c ... fixed sorting of services, -X52 rets service names
+ *  - isdnlog/tools/rate-files.man ... Date-Range in T:-Tag, moved from doc
+ *  - isdnlog/tools/isdnrate.man ... moved from doc
+ *  - doc/Makefile.in ... moved man's from doc to tools
+ *  - isdnlog/Makefile.in ... man's, install isdn.conf.5
+ *  - isdnlog/configure{,.in} ... sed, awk for man's
+ *  - isdnlog/tools/zone/Makefile.in ... dataclean
+ *  - isdnlog/tools/dest/Makefile.in ... dataclean
+ *  - isdnlog/isdnlog/isdnlog.8.in ... upd
+ *  - isdnlog/isdnlog/isdn.conf.5.in ... upd
+ *
  * Revision 1.29  1999/12/17 22:51:55  akool
  * isdnlog-3.79
  *  - isdnlog/isdnrep/isdnrep.{c,h} ... error -handling, print_msg
@@ -65,14 +87,14 @@
  *
  *   Telrate
  *   - isdnlog/tools/telrate/README-telrate
- *   - isdnlog/tools/telrate/config.in 	NEW
- *   - isdnlog/tools/telrate/configure 	NEW
- *   - isdnlog/tools/telrate/Makefile.in 	NEW
- *   - isdnlog/tools/telrate/index.html.in 	was index.html
- *   - isdnlog/tools/telrate/info.html.in 	was info.html
- *   - isdnlog/tools/telrate/telrate.cgi.in 	was telrate.cgi
- *   - isdnlog/tools/telrate/leo.sample 	NEW sample config
- *   - isdnlog/tools/telrate/alex.sample 	NEW sample config
+ *   - isdnlog/tools/telrate/config.in  NEW
+ *   - isdnlog/tools/telrate/configure  NEW
+ *   - isdnlog/tools/telrate/Makefile.in        NEW
+ *   - isdnlog/tools/telrate/index.html.in      was index.html
+ *   - isdnlog/tools/telrate/info.html.in       was info.html
+ *   - isdnlog/tools/telrate/telrate.cgi.in     was telrate.cgi
+ *   - isdnlog/tools/telrate/leo.sample         NEW sample config
+ *   - isdnlog/tools/telrate/alex.sample        NEW sample config
  *
  * Revision 1.25  1999/11/08 21:09:41  akool
  * isdnlog-3.65
@@ -219,7 +241,7 @@ static int lcr = 0;
 static TELNUM srcnum, destnum;
 static char *pid_dir = 0;
 static char *pid_file = 0;
-static char * socket_file = 0;
+static char *socket_file = 0;
 
 typedef struct {
   int     prefix;
@@ -532,7 +554,7 @@ static int opts(int argc, char *argv[])
 	explain++;
 	if (optarg && isdigit(*optarg) && (x = atoi(optarg))) {
 	  explain = x;
-	  if (x == 50 || x == 51)
+	  if (x == 50 || x == 51 || x == 52)
 	    need_dest = 0;
 	}
 	else if (optarg) {
@@ -570,12 +592,12 @@ static int opts(int argc, char *argv[])
     best = MAXPROVIDER;
     print_msg(PRT_V, "Illegal options, -b ignored\n");
   }
-  if ((explain == 50 || explain == 51) && header) {
+  if ((explain == 50 || explain == 51 || explain == 52) && header) {
     print_msg(PRT_V, "Conflicting options, -H ignored\n");
   }
   if (explain >= 10 && service) {
     print_msg(PRT_V, "Conflicting options, -s ignored\n");
-    service=0;
+    service = 0;
   }
   if (argc > optind)
     return (optind);
@@ -767,182 +789,196 @@ static int compute(char *num)
       start += (60 * 60 * 24);
     }
   }
-  for (i = low; i <= high; i++) {
-    int     found, p;
-    char   *t;
+  if (service) {
+    num = getServiceNum(num);
+    if (!num || !*num) {
+      return 0;
+    }
+  }
+  do {
+    for (i = low; i <= high; i++) {
+      int     found, p;
+      char   *t;
 
-    if (ignore[i])		/* Fixme: */
-      continue;
-    if (booked && !isProviderBooked(i))
-      continue;
-    if (!all && !isProviderValid(i, start))
-      continue;
-    t = getProvider(i);
-    if (!t || t[strlen(t) - 1] == '?')	/* UNKNOWN Provider */
-      continue;
-
-    t = getComment(i, "GT");	/* get Geb. Text comment */
-    if (business) {		/* only business wanted */
-      if (t == 0)
+      if (ignore[i])		/* Fixme: */
 	continue;
-      else if (strstr(t, BUSINESS) == 0)
+      if (booked && !isProviderBooked(i))
 	continue;
-    }
-    if (xbusiness) {		/* no business wanted */
-      if (t && strstr(t, BUSINESS) > 0)
+      if (!all && !isProviderValid(i, start))
 	continue;
-    }
-    found = 0;
-    if (n_providers) {
-      for (p = 0; p < n_providers; p++)
-	if (pnum2prefix_variant(providers[p], start) == i) {
-	  found = 1;
-	  break;
-	}
-      if (!found)
+      t = getProvider(i);
+      if (!t || t[strlen(t) - 1] == '?')	/* UNKNOWN Provider */
 	continue;
-    }
-    if (nx_providers) {
-      for (p = 0; p < nx_providers; p++)
-	if (pnum2prefix_variant(xproviders[p], start) == i) {
-	  found = 1;
-	  break;
-	}
-      if (found)
-	continue;
-    }
-    clearRate(&Rate);
-    Rate.src[0] = srcnum.country;
-    Rate.src[1] = srcnum.area;
-    Rate.src[2] = "";
 
-    destnum.nprovider = i;
-    Strncpy(destnum.provider, getProvider(i), TN_MAX_PROVIDER_LEN);
-    if (normalizeNumber(num, &destnum, TN_NO_PROVIDER) == UNKNOWN) {
-      continue;
-    }
-
-    Rate.dst[0] = destnum.country;
-    Rate.dst[1] = destnum.area;
-    Rate.dst[2] = destnum.msn;
-    print_msg(PRT_V, "Rate dst0='%s' dst1='%s' dst2='%s'\n", Rate.dst[0], Rate.dst[1], Rate.dst[2]);
-    /* Rate.Service = "Internet by call"; */
-
-    Rate.prefix = i;
-
-    Rate.start = start;
-    Rate.now = start + duration - 1;
-    if (explain == 99) {
-      int     j;
-      double  oldCharge = -1.0;
-
-      if (first && header)
-	print_header();
-      first = 0;
-      printf("@ %s\n", prefix2provider_variant(Rate.prefix, prov));
-      Rate.now = start + 1;
-      for (j = 1; j < duration; j++) {
-	if (!getRate(&Rate, NULL) && (Rate.Price != 99.99)) {
-	  if (Rate.Charge != oldCharge || j == duration - 1) {
-	    printf("%d %.4f\n", j, Rate.Charge);
-	    oldCharge = Rate.Charge;
-	  }
-	}
-	else
-	  break;
-	Rate.now++;
-      }
-      if (Rate.Duration <= takt)
-	printf("@----- %s %s\n", currency, Rate.Provider);
-    }
-    if (explain == 98 || explain == 97) {	/* Minutenpreis fuer
-						   diese Woche/Tag */
-      int     j;
-
-      if (first && header)
-	print_header();
-      first = 0;
-      printf("@ %s\n", prefix2provider_variant(Rate.prefix, prov));
-      for (j = 0; j < (explain == 98 ? 7 * 24 : 24); j++) {
-	if (!getRate(&Rate, NULL) && (Rate.Price != 99.99)) {
-	  printf("%d %.4f\n", j, Rate.Charge);
-	}
-	else
-	  break;
-	Rate.now += 3600;
-	Rate.start += 3600;
-      }
-      if (Rate.Duration <= takt)
-	printf("@----- %s %s\n", currency, Rate.Provider);
-    }
-    else if (explain == 50 || explain == 51) {
-      int     fi = 1;
-
-      while (getZoneRate(&Rate, explain - 50, fi) == 0) {
-	double  cpm = Rate.Duration > 0 ? 60 * Rate.Price / Rate.Duration : 99.99;
-	if (Rate.Price==0)
-	  cpm=Rate.Basic;
-
-	fi = 0;
-	if (Rate.Price != 99.99)
-	  printf("%s%c%s%c%s%c%.2f%c%.2f%c%s\n", prefix2provider(Rate.prefix, prov), DEL,
-		 Rate.Provider, DEL, currency, DEL, Rate.Charge, DEL, cpm, DEL,
-		 P_EMPTY(Rate.Country));
-	free(Rate.Country);
-      }
-    }
-    else {
-      /* kludge to suppress "impossible" Rates */
-      if (!getRate(&Rate, NULL) && (Rate.Price != 99.99)) {
-	if (!(Rate.Duration <= takt))
+      t = getComment(i, "GT");	/* get Geb. Text comment */
+      if (business) {		/* only business wanted */
+	if (t == 0)
 	  continue;
-	sort[n].prefix = Rate.prefix;
-	sort[n].rate = Rate.Charge;
-	sort[n].name = Rate.Provider;
-	switch (explain) {
-	case 1:
-	  if (service)
-	    sprintf(s, " (%s, %s)", P_EMPTY(Rate.dst[1]), Rate.Zone);
-	  else
-	    sprintf(s, " (%s)", Rate.Zone);
-	  sort[n].explain = strdup(s);
-	  break;
-	case 2:
-	  sprintf(s, " (%s)", printrate(&Rate));
-	  sort[n].explain = strdup(s);
-	  break;
-	case 8:
-	  sort[n].explain = strdup(P_EMPTY(getComment(i, comment)));
-	  break;
-	case 9:		/* used by list */
-	  {
-	    double  cpm = Rate.Duration > 0 ? 60 * Rate.Price / Rate.Duration : 99.99;
-	if (Rate.Price==0)
-	  cpm=Rate.Basic;
-
-	    sprintf(s, "%s%c"
-		    "%s%c%s%c%s%c%s%c"
-		    "%s%c"
-		    "%.3f%c%.4f%c%.4f%c%.2f%c%.3f%c"
-		    "%s%c%.2f",
-		    prefix2provider_variant(Rate.prefix, prov), DEL,
-		    Rate.Provider, DEL, P_EMPTY(Rate.Zone), DEL, P_EMPTY(Rate.Day), DEL, P_EMPTY(Rate.Hour), DEL,
-		    currency, DEL,	/* Fixme: global or per
-					   Provider?? wg. EURO */
-		    Rate.Charge, DEL, Rate.Basic, DEL, Rate.Price, DEL, Rate.Duration, DEL, cpm, DEL,
-		    takt_str(&Rate), DEL, Rate.Sales);
-	    sort[n].explain = strdup(s);
+	else if (strstr(t, BUSINESS) == 0)
+	  continue;
+      }
+      if (xbusiness) {		/* no business wanted */
+	if (t && strstr(t, BUSINESS) > 0)
+	  continue;
+      }
+      found = 0;
+      if (n_providers) {
+	for (p = 0; p < n_providers; p++)
+	  if (pnum2prefix_variant(providers[p], start) == i) {
+	    found = 1;
+	    break;
 	  }
-	  break;
-	default:
-	  sort[n].explain = strdup("");
-	  break;
-	}
+	if (!found)
+	  continue;
+      }
+      if (nx_providers) {
+	for (p = 0; p < nx_providers; p++)
+	  if (pnum2prefix_variant(xproviders[p], start) == i) {
+	    found = 1;
+	    break;
+	  }
+	if (found)
+	  continue;
+      }
+      clearRate(&Rate);
+      Rate.src[0] = srcnum.country;
+      Rate.src[1] = srcnum.area;
+      Rate.src[2] = "";
 
-	n++;
-      }				/* if */
-    }				/* else 99 */
-  }				/* for i */
+      destnum.nprovider = i;
+      Strncpy(destnum.provider, getProvider(i), TN_MAX_PROVIDER_LEN);
+      if (normalizeNumber(num, &destnum, TN_NO_PROVIDER) == UNKNOWN) {
+	continue;
+      }
+
+      Rate.dst[0] = destnum.country;
+      Rate.dst[1] = destnum.area;
+      Rate.dst[2] = destnum.msn;
+      print_msg(PRT_V, "Rate dst0='%s' dst1='%s' dst2='%s'\n", Rate.dst[0], Rate.dst[1], Rate.dst[2]);
+      /* Rate.Service = "Internet by call"; */
+
+      Rate.prefix = i;
+
+      Rate.start = start;
+      Rate.now = start + duration - 1;
+      if (explain == 99) {
+	int     j;
+	double  oldCharge = -1.0;
+
+	if (first && header)
+	  print_header();
+	first = 0;
+	printf("@ %s\n", prefix2provider_variant(Rate.prefix, prov));
+	Rate.now = start + 1;
+	for (j = 1; j < duration; j++) {
+	  if (!getRate(&Rate, NULL) && (Rate.Price != 99.99)) {
+	    if (Rate.Charge != oldCharge || j == duration - 1) {
+	      printf("%d %.4f\n", j, Rate.Charge);
+	      oldCharge = Rate.Charge;
+	    }
+	  }
+	  else
+	    break;
+	  Rate.now++;
+	}
+	if (Rate.Duration <= takt)
+	  printf("@----- %s %s\n", currency, Rate.Provider);
+      }
+      if (explain == 98 || explain == 97) {	/* Minutenpreis fuer
+						   diese Woche/Tag */
+	int     j;
+
+	if (first && header)
+	  print_header();
+	first = 0;
+	printf("@ %s\n", prefix2provider_variant(Rate.prefix, prov));
+	for (j = 0; j < (explain == 98 ? 7 * 24 : 24); j++) {
+	  if (!getRate(&Rate, NULL) && (Rate.Price != 99.99)) {
+	    printf("%d %.4f\n", j, Rate.Charge);
+	  }
+	  else
+	    break;
+	  Rate.now += 3600;
+	  Rate.start += 3600;
+	}
+	if (Rate.Duration <= takt)
+	  printf("@----- %s %s\n", currency, Rate.Provider);
+      }
+      else if (explain == 50 || explain == 51) {
+	int     fi = 1;
+
+	while (getZoneRate(&Rate, explain - 50, fi) == 0) {
+	  double  cpm = Rate.Duration > 0 ? 60 * Rate.Price / Rate.Duration : 99.99;
+
+	  if (Rate.Price == 0)
+	    cpm = Rate.Basic;
+
+	  fi = 0;
+	  if (Rate.Price != 99.99)
+	    printf("%s%c%s%c%s%c%.2f%c%.2f%c%s\n", prefix2provider(Rate.prefix, prov), DEL,
+		   Rate.Provider, DEL, currency, DEL, Rate.Charge, DEL, cpm, DEL,
+		   P_EMPTY(Rate.Country));
+	  free(Rate.Country);
+	}
+      }
+      else {
+	/* kludge to suppress "impossible" Rates */
+	if (!getRate(&Rate, NULL) && (Rate.Price != 99.99)) {
+	  if (!(Rate.Duration <= takt))
+	    continue;
+	  sort[n].prefix = Rate.prefix;
+	  sort[n].rate = Rate.Charge;
+	  sort[n].name = Rate.Provider;
+	  switch (explain) {
+	  case 1:
+	    if (service)
+	      sprintf(s, " (%s, %s)", P_EMPTY(Rate.dst[1]), Rate.Zone);
+	    else
+	      sprintf(s, " (%s)", Rate.Zone);
+	    sort[n].explain = strdup(s);
+	    break;
+	  case 2:
+	    sprintf(s, " (%s)", printrate(&Rate));
+	    sort[n].explain = strdup(s);
+	    break;
+	  case 8:
+	    sort[n].explain = strdup(P_EMPTY(getComment(i, comment)));
+	    break;
+	  case 9:		/* used by list */
+	    {
+	      double  cpm = Rate.Duration > 0 ? 60 * Rate.Price / Rate.Duration : 99.99;
+
+	      if (Rate.Price == 0)
+		cpm = Rate.Basic;
+
+	      sprintf(s, "%s%c"
+		      "%s%c%s%c%s%c%s%c"
+		      "%s%c"
+		      "%.3f%c%.4f%c%.4f%c%.2f%c%.3f%c"
+		      "%s%c%.2f",
+		      prefix2provider_variant(Rate.prefix, prov), DEL,
+		      Rate.Provider, DEL, P_EMPTY(Rate.Zone), DEL, P_EMPTY(Rate.Day), DEL, P_EMPTY(Rate.Hour), DEL,
+		      currency, DEL,	/* Fixme: global or per
+					   Provider?? wg. EURO */
+		      Rate.Charge, DEL, Rate.Basic, DEL, Rate.Price, DEL, Rate.Duration, DEL, cpm, DEL,
+		      takt_str(&Rate), DEL, Rate.Sales);
+	      sort[n].explain = strdup(s);
+	    }
+	    break;
+	  default:
+	    sort[n].explain = strdup("");
+	    break;
+	  }
+
+	  n++;
+	}			/* if */
+      }				/* else 99 */
+    }				/* for i */
+    if (service)
+      num = getServiceNum(0);	/* get next service num */
+    else
+      num = 0;
+  } while (num && *num);
   if (explain < 10) {
     qsort((void *) sort, n, sizeof(SORT), compare_func);
     if (lcr) {
@@ -1238,6 +1274,14 @@ static void clean_up()
   need_dest = 1;
 }
 
+static char * sub_sp(char *p)
+{
+  char *o = p;
+  for (; *p; p++)
+    if(*p == '_')
+      *p = ' ';
+  return o;
+}
 static void doit(int i, int argc, char *argv[])
 {
   int     n;
@@ -1252,7 +1296,7 @@ static void doit(int i, int argc, char *argv[])
     argv[0] = "2345";
   }
   while (i < argc) {
-    num = argv[i];
+    num = sub_sp(argv[i]);
     if (explain == 55) {
       if (n_providers) {
 	destnum.nprovider = pnum2prefix_variant(providers[0], 0);
@@ -1265,33 +1309,34 @@ static void doit(int i, int argc, char *argv[])
       i++;
       continue;
     }
-    if (service) {
-      num = getServiceNum(num);
-      if (!num || !*num) {
-	i++;
-	continue;
+    else if (explain == 52) {	// enum Servce names
+
+      int     first = 1;
+      char   *p;
+
+      do {
+	p = getServiceNames(first);
+	if (p)
+	  printf("%s\n", p);
+	first = 0;
       }
+      while (p);
+      return;
     }
-    do {
-      destnum.nprovider = UNKNOWN;
-      if (provider2prefix(num, &prefix))	/* set provider if it
-						   is in number */
-	normalizeNumber(num, &destnum, TN_PROVIDER);
-      if (table)
-	printTable(num);
-      else {
-	n = compute(num);
-	if (list)
-	  printList(n);
-	else if (explain < 10)
-	  result(n);
-	purge(n);
-      }
-      if (service)
-	num = getServiceNum(0);
-      else
-	num = 0;
-    } while (num && *num);
+    destnum.nprovider = UNKNOWN;
+    if (provider2prefix(num, &prefix))	/* set provider if it is in
+					   number */
+      normalizeNumber(num, &destnum, TN_PROVIDER);
+    if (table)
+      printTable(num);
+    else {
+      n = compute(num);
+      if (list)
+	printList(n);
+      else if (explain < 10)
+	result(n);
+      purge(n);
+    }
     i++;
   }				/* while */
   clean_up();
@@ -1352,7 +1397,7 @@ void    catch_sig(int sig)
 {
   print_msg(PRT_A, "Signal %d\n", sig);
   unlink(socket_file);
-  if(pid_dir)
+  if (pid_dir)
     unlink(pid_file);
   err("Sig");
 }
@@ -1361,7 +1406,7 @@ static void del_sock(void)
 {
   if (getppid() > 0) {
     unlink(socket_file);
-    if(pid_dir)
+    if (pid_dir)
       unlink(pid_file);
   }
 }
@@ -1401,13 +1446,13 @@ static void setup_daemon()
   struct sockaddr_un sa;
   struct sockaddr_in client;
   fd_set  active_fd_set, read_fd_set;
-  char    *sock_name = socket_file;
+  char   *sock_name = socket_file;
   size_t  size;
   struct stat stat_buf;
   int     i;
   pid_t   pid;
-  char pidname[] = "isdnrate.pid";
-  FILE *fp;
+  char    pidname[] = "isdnrate.pid";
+  FILE   *fp;
 
   if (verbose)
     fprintf(stderr, "Setup sockets\n");
@@ -1442,15 +1487,15 @@ static void setup_daemon()
   if (listen(sock, SOMAXCONN) < 0)
     err("Can't listen");
   if (pid_dir) {
-    pid_file = malloc(strlen(pid_dir)+strlen(pidname)+2);
+    pid_file = malloc(strlen(pid_dir) + strlen(pidname) + 2);
     strcpy(pid_file, pid_dir);
-    if(pid_file[strlen(pid_file)-1] != '/')
-      strcat(pid_file,"/");
-    strcat(pid_file,pidname);
-    if((fp=fopen(pidname,"w"))==0)
-      fprintf(stderr,"Can't write %s\n" , pid_file);
+    if (pid_file[strlen(pid_file) - 1] != '/')
+      strcat(pid_file, "/");
+    strcat(pid_file, pidname);
+    if ((fp = fopen(pidname, "w")) == 0)
+      fprintf(stderr, "Can't write %s\n", pid_file);
     else {
-      fprintf(fp,"%d\n",getpid());
+      fprintf(fp, "%d\n", getpid());
       fclose(fp);
     }
   }
@@ -1505,7 +1550,7 @@ static int connect_2_daemon(int argc, char *argv[])
 {
   int     sock;
   struct sockaddr_un sa;
-  char    *sock_name = socket_file;
+  char   *sock_name = socket_file;
   size_t  size;
   int     i, c, len;
   char   *p, *q, buffer[BUFSIZ];

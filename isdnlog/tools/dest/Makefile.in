@@ -6,8 +6,8 @@
 -include ../../../.config
 BZIP2			= @BZIP2@
 SHELL			= /bin/sh
-CFLAGS			= -Wall -g 
-INCLUDES		= 
+CFLAGS			= -Wall -g
+INCLUDES		=
 LDFLAGS			= @DBMLIB@
 DBEXT			= @DBEXT@
 RDBEXT			= @RDBEXT@
@@ -60,26 +60,29 @@ dest: ../dest.c $(HEADERS) Makefile
 
 install: data
 #	$(INSTALL_DATA) dest.gdbm $(DESTDIR)$(DATADIR)
-	
+
 uninstall:
 	rm -f $(DESTDIR)$(DATADIR)/dest$(DBEXT)
 
 clean:
-	rm -f *.o *~ $(PROGRAM) *.{gdbm,db}
+	rm -f *.o *~ $(PROGRAM)
+
+dataclean:
+	rm -f *.{gdbm,db}
 
 distclean: clean
 	rm -f config.status config.cache config.log *.man Makefile
 
 #
-#	
+#
 ifeq ($(CONFIG_ISDN_LOG_CC_EN),y)
 LANG= -en
 endif
 
 data:
 	@if [ ! -e dest$(DBEXT) ] ; then \
-	./makedest $(LANG) -v ; \
-	./makedest $(LANG) -v -a -gcities.dat ; \
+	./makedest -v $(LANG) ; \
+	./makedest -v -gcities.dat -a $(LANG) ; \
 	if [ x$(CONFIG_ISDN_LOG_DEST_AT) == xy ] ; then \
 		./makedest -v -a at ; \
 	fi ; \
@@ -92,14 +95,14 @@ data:
 	if [ x$(CONFIG_ISDN_LOG_DEST_CH) == xy ] ; then \
 		./makedest -v -a ch || true; \
 	fi ; \
-	fi	
+	fi
 
 alldata:
-	./makedest $(LANG) -v
-	./makedest $(LANG) -v -a -gcities.dat
+	./makedest -v $(LANG)
+	./makedest -v -gcities.dat -a $(LANG)
 	@cd ../zone ; all=`ls -d ??` ; cd ../dest ; \
 	for cc in $$all ; do \
 	  	if [ -e ../zone/$$cc/code ] ; then \
 			./makedest -v -a $$cc ; \
 		fi ; \
-	done		
+	done

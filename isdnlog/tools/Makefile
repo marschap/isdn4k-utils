@@ -1,24 +1,24 @@
 CC=gcc -m486 -O2 -Wall -DSTANDALONE -I. -I.. -I../isdnlog -I../connect -I../../lib
 #CC=gcc -m486 -O2 -g -pg -Wall -DSTANDALONE -I. -I.. -I../isdnlog
 
-all: rate-at 
+all: rate-at
 
 rate: rate.u zone.u country.u holiday.u dest.u telnum.u
 	${CC} -lgdbm -o rate rate.u zone.u dest.u holiday.u telnum.u
-	
+
 telnum: rate.u zone.u country.u holiday.u dest.u telnum.o1
 	${CC} -lgdbm -o rate rate.u zone.u dest.u holiday.u telnum.o1
-	
+
 AT:	rate-at
 	./rate-at > rate-at.dat
-	(cd dest;pp_rate ../rate-at.dat  ../../rate-at.dat)
+	(cd dest;./pp_rate ../rate-at.dat  ../../rate-at.dat)
 	rm rate-at.dat
 AT-leo:	rate-at
 	./rate-at -leo > rate-at.dat
-	(cd dest;pp_rate ../rate-at.dat  ../../rate-at.dat)
+	(cd dest;./pp_rate ../rate-at.dat  ../../rate-at.dat)
 	cp ../rate-at.dat /usr/lib/isdn/rate-at.dat
 	rm rate-at.dat
-	
+
 #zone.exe: zone.c zone.h
 #	${CC} -DZONETEST -lgdbm -o zone.exe zone.c
 # this is built in tools/zone

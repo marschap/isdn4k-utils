@@ -1,5 +1,14 @@
 NEWS for tools: (rate, isdnrate, isdnrep)
 
+1999.12.21
+  rate.c:
+    date-range for T:Tag s. man rate-files
+    date-range for P:Tag replaces G:
+
+  doc: moved isdnrate.man, rate-files.man to tools, fixes & updates
+  telrate.cgi: tmp below telrate, workaround for NN bug with grafic
+  zone, dest : new target dataclean in Makefile, clean doesn't del data anymore
+
 1999.12.17
   all:
   renabled warnings to get clearer messages/responses from users

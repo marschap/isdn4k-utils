@@ -1,4 +1,4 @@
-/* $Id: isdnbill.c,v 1.11 1999/12/19 20:24:46 akool Exp $
+/* $Id: isdnbill.c,v 1.12 1999/12/24 14:17:04 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Billing-module)
  *
@@ -719,7 +719,7 @@ static void justify(char *fromnum, char *tonum, TELNUM number)
 
   *s = 0;
 
-  if (getSpecial(tonum))
+  if (*tonum && getSpecial(tonum))
     sprintf(s, "%s", getSpecialName(tonum));
   else {
     if (*number.country && strcmp(number.country, mycountry))
@@ -739,7 +739,7 @@ static void justify(char *fromnum, char *tonum, TELNUM number)
       } /* if */
     } /* if */
 
-    if (!*s)
+    if (!*s && *tonum)
       sprintf(s, "???");
   } /* else */
 
@@ -1033,8 +1033,7 @@ int main(int argc, char *argv[], char *envp[])
           } /* if */
         } /* if */
 
-        if (*c.num[CALLING] && *c.num[CALLED] &&
-            ((c.dialout && showoutgoing) || (!c.dialout && showincoming)) &&
+        if (((c.dialout && showoutgoing) || (!c.dialout && showincoming)) &&
             (c.duration || showerrors) &&
             (!onlythis || strstr(c.num[CALLING], onlythis) || strstr(c.num[CALLED], onlythis)) &&
             (!onlytoday || (c.connect >= now))) {
@@ -1057,8 +1056,19 @@ int main(int argc, char *argv[], char *envp[])
 
           printf("%s%s ", s, timestr(c.duration));
 
-          normalizeNumber(c.num[CALLING], &number[CALLING], TN_ALL);
-          normalizeNumber(c.num[CALLED], &number[CALLED], TN_ALL);
+	  if (*c.num[CALLING])
+            normalizeNumber(c.num[CALLING], &number[CALLING], TN_ALL);
+          else {
+	    memset(&number[CALLING], 0, sizeof(TELNUM));
+            strcpy(number[CALLING].msn, "UNKNOWN");
+          } /* else */
+
+	  if (*c.num[CALLED])
+            normalizeNumber(c.num[CALLED], &number[CALLED], TN_ALL);
+          else {
+	    memset(&number[CALLED], 0, sizeof(TELNUM));
+            strcpy(number[CALLED].msn, "UNKNOWN");
+          } /* else */
 
           findme();
 
