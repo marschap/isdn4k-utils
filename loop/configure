@@ -1451,6 +1451,10 @@ fi
 
 
 
+
+
+
+
 trap '' 1 2 15
 cat > confcache <<\EOF
 # This file is a shell script that caches the results of configure
@@ -1604,6 +1608,9 @@ s%@DEBUGVAR@%$DEBUGVAR%g
 s%@MANDATE@%$MANDATE%g
 s%@I4LCONFDIR@%$I4LCONFDIR%g
 s%@I4LVERSION@%$I4LVERSION%g
+s%@CONFIG_KERNELDIR@%$CONFIG_KERNELDIR%g
+s%@CONFIG_SBINDIR@%$CONFIG_SBINDIR%g
+s%@CONFIG_MANDIR@%$CONFIG_MANDIR%g
 
 CEOF
 EOF

@@ -1,6 +1,6 @@
 #
 # ipppd makefile for Linux
-# $Id: Makefile.in,v 1.9 1998/05/05 08:51:16 hipp Exp $
+# $Id: Makefile.in,v 1.10 1998/06/27 00:36:08 fritz Exp $
 #
 
 HAVE_LIBDES   := @HAVE_LIBDES@
@@ -42,7 +42,7 @@ PPPDOBJS = main.o magic.o fsm.o lcp.o ipcp.o upap.o chap.o md5.o ccp.o \
 
 all: ipppd
 
-%.man: %.8
+%.8: %.man
 	cp $< $@
 
 install-man: $(MANPAGES)

@@ -191,18 +191,19 @@ CONFIG_PCBITCTL
 
 CONFIG_AVMCAPICTRL
   This program is used to configure the avm-b1 driver. With this tool
-  you can download protocol firmware int cards.
+  you can download protocol firmware into cards.
   This program is documented in avmcapictrl (8).
+
+CONFIG_DIEHLCTRL
+  This program is used to configure the diehl driver. With this tool
+  you can download protocol firmware into cards.
+  This program is documented in diehlctrl (8).
 
 CONFIG_LOOPCTRL
   This program is used to configure the loop driver. This tool is
   marked experimental, since the driver is NOT included in standard
   kernel. It is mainly for testing purposes.
   This program is documented in loopctrl (8).
-
-CONFIG_LOOPCTRL_LOOPDIR
-  Since loopctrl uses header files from the source of the ISDN loop
-  driver, you have to define the directory where those can be found.
 
 Build imon
 CONFIG_IMON

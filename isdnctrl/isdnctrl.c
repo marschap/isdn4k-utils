@@ -1,4 +1,4 @@
-/* $Id: isdnctrl.c,v 1.23 1998/06/12 12:09:53 detabc Exp $
+/* $Id: isdnctrl.c,v 1.24 1998/06/27 00:36:19 fritz Exp $
  * ISDN driver for Linux. (Control-Utility)
  *
  * Copyright 1994,95 by Fritz Elfert (fritz@wuemaus.franken.de)
@@ -21,6 +21,11 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnctrl.c,v $
+ * Revision 1.24  1998/06/27 00:36:19  fritz
+ * Misc. Fixes.
+ * Added fallback to libdb for isdnctrl.
+ * Added -V version check in isdnctrl.
+ *
  * Revision 1.23  1998/06/12 12:09:53  detabc
  * cleanup abc
  *
@@ -1397,9 +1402,13 @@ char	*defs_basic(char *id) {
 	return(r);
 }
 
-void check_version() {
+void check_version(int report) {
 	int fd;
 
+	if (report) {
+		printf("isdnctrl's view of API-Versions:\n");
+		printf("ttyI: %d, net: %d, info: %d\n", TTY_DV, NET_DV, INF_DV);
+	}
 	fd = open("/dev/isdninfo", O_RDWR);
 	if (fd < 0) {
 		perror("/dev/isdninfo");
@@ -1413,6 +1422,14 @@ void check_version() {
 		exit(-1);
 	}
 	close(fd);
+	if (report) {
+		printf("Kernel's view of API-Versions:\n");
+		printf("ttyI: %d, net: %d, info: %d\n",
+			data_version & 0xff,
+			(data_version >> 8) & 0xff,
+			(data_version >> 16) & 0xff);
+		return;
+	}
 	data_version = (data_version >> 8) & 0xff;
 	if (data_version != NET_DV) {
 		fprintf(stderr, "Version of kernel ioctl structs (%d) does NOT match\n",
@@ -1456,7 +1473,11 @@ int main(int argc, char **argv)
 		usage();
 		exit(-1);
 	}
-	check_version();
+	if ((argc == 2) && (!strcmp(argv[1], "-V"))) {
+		check_version(1);
+		exit(0);
+	}
+	check_version(0);
 
 	fd = open("/dev/isdnctrl", O_RDWR);
 	if (fd < 0) {

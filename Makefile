@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.21 1998/05/19 18:10:11 cal Exp $
+# $Id: Makefile,v 1.22 1998/06/27 00:35:57 fritz Exp $
 #
 # Toplevel Makefile for isdn4k-utils
 #
@@ -62,6 +62,9 @@ ifeq ($(CONFIG_ACTCTRL),y)
 endif
 ifeq ($(CONFIG_LOOPCTRL),y)
 	SUBDIRS := $(SUBDIRS) loop
+endif
+ifeq ($(CONFIG_DIEHLCTRL),y)
+	SUBDIRS := $(SUBDIRS) diehl
 endif
 ifeq ($(CONFIG_IMON),y)
 	SUBDIRS := $(SUBDIRS) imon

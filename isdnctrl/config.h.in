@@ -12,6 +12,9 @@
 /* Define this if your system has the GNU dbm library. */
 #undef HAVE_LIBGDBM
 
+/* Define this if your system has the db library. */
+#undef HAVE_LIBDB
+
 /* Define this if triggercps is defined in struct isdn_net_ioctl_cfg. */
 #undef HAVE_TRIGGERCPS
 
