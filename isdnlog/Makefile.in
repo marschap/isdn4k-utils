@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.97 1999/08/04 23:11:15 akool Exp $
+## $Id: Makefile.in,v 1.98 1999/08/20 19:27:18 akool Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,13 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.98  1999/08/20 19:27:18  akool
+## isdnlog-3.45
+##  - removed about 1 Mb of (now unused) data files
+##  - replaced areacodes and "vorwahl.dat" support by zone databases
+##  - fixed "Sonderrufnummern"
+##  - rate-de.dat :: V:1.10-Germany [20-Aug-1999 21:23:27]
+##
 ## Revision 1.97  1999/08/04 23:11:15  akool
 ## isdnlog-3.44
 ##
@@ -670,7 +677,6 @@ CONFFILE		:= @CONFFILE@
 CALLERIDFILE		:= @CALLERIDFILE@
 OLDCONFDIR		:= @OLDCONFDIR@
 OLDCONFFILE		:= @OLDCONFFILE@
-LIBAREA			:= @LIBAREA@
 RUNDIR			:= @RUNDIR@
 DBMLIB			:= @DBMLIB@
 POSTGRES		:= @POSTGRES@
@@ -687,9 +693,7 @@ NATION			:= @NATION@
 export LOGFILE		:= @LOGFILE@
 export COUNTRYCODE	:= @COUNTRYCODE@
 export COUNTRYPREFIX	:= @COUNTRYPREFIX@
-export AREACODE		:= @AREACODE@
 export AREAPREFIX	:= @AREAPREFIX@
-export AREADIFF		:= @DATADIR@/vorwahl.dat
 
 export ILABEL        := %b %e %T %ICall to tei %t from %N2 on %n2
 export OLABEL        := %b %e %T %Itei %t calling %N2 with %n2
@@ -731,7 +735,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 3.44
+VERSION     = 3.45
 
 MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 \
 	      isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 \
@@ -767,7 +771,7 @@ ISDNLOG_OBJS =  isdnlog/isdnlog.o isdnlog/processor.o isdnlog/functions.o \
                 isdnlog/server.o isdnlog/start_prog.o isdnlog/messages.o  \
                 connect/connect.o connect/socket.o tools/tools.o      	  \
                 connect/conv_address.o isdnlog/user_access.o 		  \
-                tools/isdnconf.o 					  \
+                tools/isdnconf.o tools/telnum.o				  \
 		tools/rate.o tools/zone.o tools/country.o tools/holiday.o \
 		isdnlog/asn1.o isdnlog/asn1_generic.o isdnlog/asn1_aoc.o  \
 		isdnlog/asn1_address.o isdnlog/asn1_diversion.o           \
@@ -790,10 +794,12 @@ endif
 ISDNREP_OBJS =  isdnrep/rep_main.o tools/tools.o tools/isdnconf.o         \
                 isdnlog/messages.o isdnrep/isdnrep.o     		  \
 		tools/rate.o tools/zone.o tools/country.o tools/holiday.o \
+		tools/telnum.o						  \
                 $(LIBISDNDIR)/libisdn.a
 
 ISDNCONF_OBJS=  isdnconf/isdnconf.o tools/tools.o tools/isdnconf.o        \
 		tools/rate.o tools/zone.o tools/country.o tools/holiday.o \
+		tools/telnum.o						  \
                 $(LIBISDNDIR)/libisdn.a
 
 ISDNRATE_OBJS=  tools/isdnrate.o tools/isdnconf.o tools/tools.o           \
@@ -875,8 +881,8 @@ install: all rootperm installdirs
 		else \
 			$(GENCONF) $(DESTDIR)$(I4LCONFDIR)/$(CONFFILE) $(DESTDIR)$(I4LCONFDIR)/$(CALLERIDFILE) ; \
 		fi
-		@echo "Generate config files. Wait a moment..."
-		-@$(ISDNCONF) -c 040 1>/dev/null 2>&1 || echo "Can not read areacode/avon lib."
+		@echo "Generating config files. Wait a moment..."
+		-@$(ISDNCONF) -c 040 1>/dev/null 2>&1 || echo "** failed! **"
 		$(INSTALL_BIN) $(ISDNLOG)  $(DESTDIR)$(SBINDIR)
 		$(INSTALL_BIN) $(ISDNREP)  $(DESTDIR)$(BINDIR)
 		$(INSTALL_BIN) $(ISDNCONF) $(DESTDIR)$(BINDIR)

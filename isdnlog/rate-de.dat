@@ -1,4 +1,4 @@
-V:1.02-Germany [13-Aug-1999 19:51:43]
+V:1.10-Germany [20-Aug-1999 21:23:27]
 
 # Währungsformat
 U:%.3f DM
@@ -8,7 +8,7 @@ U:%.3f DM
 #
 # (C) Copyright 1999 by Andreas Kool (akool@isdn4linux.de)
 #
-# $Id: rate-de.dat,v 1.37 1999/08/13 17:51:16 akool Exp $
+# $Id: rate-de.dat,v 1.38 1999/08/20 19:27:23 akool Exp $
 #
 # Zonenzuordnung für Deutschland
 #
@@ -296,67 +296,67 @@ A:+491656
 T:*/*=2.1599896/0
 # FIXME: 01801 ????
 Z:81 Service 01801
-A:+491801
+A:01801
 T:W/08-18=0.090016/60 Geschaeftszeit
 T:W/18-08=0.049996/60
 T:E,H/*=0.049996/60
 Z:82 Service 01802
-A:+491802
+A:01802
 T:*/*=0.119712/0
 Z:83 Service 01803
 # FIXME: 01803 ???? Telekom: 18/60, o.tel.o 18/40 ?
-A:+491803
+A:01803
 T:*/*=0.180032/60
 Z:84 Servie 01804
-A:+491804
+A:01804
 T:*/*=0.4799964
 Z:85 Service 01805
-A:+491805
+A:01805
 # FIXME: 01805 ???? Telekom: 24/60, o.tel.o 24/30 ?
 T:*/*=0.240004/60
 Z:91 Service 01901 3 5
-A:+491901,+491903,+491905
+A:01901,01903,01905
 T:*/*=0.120988/6
 Z:92 Service 01904
-A:+491904
+A:01904
 T:*/*=0.120988/9
 Z:100 T-Online
-A:+491910
+A:01910
 T:W/08-18=0.090016/60 Geschaeftszeit
 T:W/18-08=0.049996/60
 T:E,H/*=0.049996/60 Wochenende
 Z:101 AOL-Online
-A:+491914
+A:01914
 T:W/08-18=0.090016/60 Geschaeftszeit
 T:W/18-08=0.049996/60
 T:E,H/*=0.049996/60 Wochenende
 Z:102 o.tel.o online 01011
-A:+49191501 # Proxy: proxy.otelo-online.de:8080; DNS: 195.50.149.33 und 195.50.140.6; Mail: mail.otelo-online.de; User: otelo; Passwort: online
+A:0191501 # Proxy: proxy.otelo-online.de:8080; DNS: 195.50.149.33 und 195.50.140.6; Mail: mail.otelo-online.de; User: otelo; Passwort: online
 S:Internet by call
 T:W/09-21=0.059044/60 Geschaeftszeit
 T:W/21-09=0.059044/60
 T:E,H/*=0.059044/60
 Z:160 Televotum
-A:+491370,+491373,+491374,+491375,+491376,+491377,+491378,+491379
+A:01370,01373,01374,01375,01376,01377,01378,01379
 T:*/*=0.119712/0,0.359948/60
 Z:161 Teledialog
-A:+49138
+A:0138
 T:*/*=0.119712/0,0.359948/60
 Z:162 T-VoteCall 1
-A:+491371
+A:01371
 T:*/*=0.2399924/0
 Z:163 T-VoteCall 2
-A:+491372
+A:01372
 T:*/*=0.119712/0,0.359948/60
 Z:164 Ansagedienste
 T:W/08-18=0.090016/60 Geschaeftszeit
 T:W/18-08=0.049996/60
 T:E,H/*=0.049996/60 Wochenende
 Z:171 Expo 2000
-A:+492000
+A:02000
 T:*/*=0.5999984/0,0.
 Z:172 Informationsverband Berlin-Bonn
-A:+491888
+A:01888
 T:W/08-18=0.230028/60 Geschaeftszeit
 T:W/18-08=0.140012/60
 T:E,H/*=0.140012/60 Wochenende
@@ -547,67 +547,67 @@ A:+491656
 T:*/*=0.05/0,2.1599896/0
 # FIXME: 01801 ????
 Z:81 Service 01801
-A:+491801
+A:01801
 T:W/08-18=0.05/0,0.090016(60)/1 Geschaeftszeit
 T:W/18-08=0.05/0,0.049996(60)/1
 T:E,H/*=0.05/0,0.049996(60)/1
 Z:82 Service 01802
-A:+491802
+A:01802
 T:*/*=0.05/0,0.119712/0
 Z:83 Service 01803
 # FIXME: 01803 ???? Telekom: 18(60)/1, o.tel.o 18/40 ?
-A:+491803
+A:01803
 T:*/*=0.05/0,0.180032(60)/1
 Z:84 Servie 01804
-A:+491804
+A:01804
 T:*/*=0.05/0,0.4799964
 Z:85 Service 01805
-A:+491805
+A:01805
 # FIXME: 01805 ???? Telekom: 24/60, o.tel.o 24/30 ?
 T:*/*=0.05/0,0.240004(60)/1
 Z:91 Service 01901 3 5
-A:+491901,+491903,+491905
+A:01901,01903,01905
 T:*/*=0.05/0,0.120988/6
 Z:92 Service 01904
-A:+491904
+A:01904
 T:*/*=0.05/0,0.120988/9
 Z:100 T-Online
-A:+491910
+A:01910
 T:W/08-18=0.05/0,0.090016(60)/1 Geschaeftszeit
 T:W/18-08=0.05/0,0.049996(60)/1
 T:E,H/*=0.05/0,0.049996(60)/1 Wochenende
 Z:101 AOL-Online
-A:+491914
+A:01914
 T:W/08-18=0.05/0,0.090016(60)/1 Geschaeftszeit
 T:W/18-08=0.05/0,0.049996(60)/1
 T:E,H/*=0.05/0,0.049996(60)/1 Wochenende
 Z:102 o.tel.o online 01011
-A:+49191501 # (Benutzername: otelo; Passwort: online)
+A:0191501 # (Benutzername: otelo; Passwort: online)
 S:Internet by call
 T:W/09-21=0.05/0,0.059044(60)/1 Geschaeftszeit
 T:W/21-09=0.05/0,0.059044(60)/1
 T:E,H/*=0.05/0,0.059044(60)/1
 Z:160 Televotum
-A:+491370,+491373,+491374,+491375,+491376,+491377,+491378,+491379
+A:01370,01373,01374,01375,01376,01377,01378,01379
 T:*/*=0.05/0,0.119712/0,0.359948(60)/1
 Z:161 Teledialog
-A:+49138
+A:+0138
 T:*/*=0.05/0,0.119712/0,0.359948(60)/1
 Z:162 T-VoteCall 1
-A:+491371
+A:01371
 T:*/*=0.05/0,0.2399924/0
 Z:163 T-VoteCall 2
-A:+491372
+A:01372
 T:*/*=0.05/0,0.119712/0,0.359948(60)/1
 Z:164 Ansagedienste
 T:W/08-18=0.05/0,0.090016(60)/1 Geschaeftszeit
 T:W/18-08=0.05/0,0.049996(60)/1
 T:E,H/*=0.05/0,0.049996(60)/1 Wochenende
 Z:171 Expo 2000
-A:+492000
+A:02000
 T:*/*=0.05/0,0.5999984/0,0.
 Z:172 Informationsverband Berlin-Bonn
-A:+491888
+A:01888
 T:W/08-18=0.05/0,0.230028(60)/1 Geschaeftszeit
 T:W/18-08=0.05/0,0.140012(60)/1
 T:E,H/*=0.05/0,0.140012(60)/1 Wochenende
@@ -979,16 +979,16 @@ C:160, 164	DTAG Service Nummern
 C:170		Persönliche Rufnummer
 C:171		Info Expo 2000
 C:200	-	Ausland
-G:01.04.1999
+G:15-Aug-1999
 D:dtag
 Z:0 Freecall
 A:+491171, +491172, +491174	# DTAG Störungsannahme
 A:+49130, +49800, International Freephone
 Z:1-4 National
 A:+49
-T:W/08-21=0.18/60
-T:E,H/08-21=0.14/60
-T:*/21-08=0.07/60
+T:W/08-21=0.12/60
+T:E,H/08-21=0.12/60
+T:*/21-08=0.06/60
 Z:10 Mobilnetze
 A:+491618		# T-C-Tel Voice Mail
 A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
@@ -1059,31 +1059,31 @@ Z:75 Quix Operator 2
 A:+491656
 T:*/*=2.90/0
 Z:81 Service 0180-1
-A:+491801
+A:01801
 T:*/*=0.09/60
 Z:82 Service 0180-2
-A:+491802
+A:01802
 T:*/*=0.0.09/60
 Z:83 Service 0180-3
-A:+491803
+A:01803
 T:*/*=0.12/60
 Z:84 Service 0180-4
-A:+491804
+A:01804
 T:*/*=0.20/60
 Z:85 Service 0180-5
-A:+491805
+A:01805
 T:*/*=0.24/60
 Z:91 Service 0190-1, -2, -3, -5
-A:+491901, +491902, +491903, +491905
+A:01901,01902,01903,01905
 T:*/*=1.20/60
 Z:92 Service 0190-4, -6
-A:+491904, +491906
+A:01904,01906
 T:*/*=0.84/60
 Z:93 Service 0190-7, -9
-A:+491907, +491909
+A:01907,01909
 T:*/*=2.42/60
 Z:94 Service 0190-8
-A:+491908
+A:01908
 T:*/*=3.63/60
 Z:100 DTAG online
 T:*/08-21=0.121/60
@@ -1925,31 +1925,31 @@ Z:75 Quix Operator 2
 A:+491656
 T:*/*=2.90/0
 Z:81 Service 0180-1
-A:+491801
+A:01801
 T:*/*=0.09(60)/1
 Z:82 Service 0180-2
-A:+491802
+A:01802
 T:*/*=0.0.09(60)/1
 Z:83 Service 0180-3
-A:+491803
+A:01803
 T:*/*=0.12(60)/1
 Z:84 Service 0180-4
-A:+491804
+A:01804
 T:*/*=0.20(60)/1
 Z:85 Service 0180-5
-A:+491805
+A:01805
 T:*/*=0.24(60)/1
 Z:91 Service 0190-1, -2, -3, -5
-A:+491901, +491902, +491903, +491905
+A:01901,01902,01903,01905
 T:*/*=1.20(60)/1
 Z:92 Service 0190-4, -6
-A:+491904, +491906
+A:01904,01906
 T:*/*=0.84(60)/1
 Z:93 Service 0190-7, -9
-A:+491907, +491909
+A:01907,01909
 T:*/*=2.42(60)/1
 Z:94 Service 0190-8
-A:+491908
+A:01908
 T:*/*=3.63(60)/1
 Z:100 DTAG online
 T:*/08-21=0.12(60)/1
@@ -2791,31 +2791,31 @@ Z:75 Quix Operator 2
 A:+491656
 T:*/*=2.90/0
 Z:81 Service 0180-1
-A:+491801
+A:01801
 T:*/*=0.09(60)/1
 Z:82 Service 0180-2
-A:+491802
+A:01802
 T:*/*=0.0.09(60)/1
 Z:83 Service 0180-3
-A:+491803
+A:01803
 T:*/*=0.12(60)/1
 Z:84 Service 0180-4
-A:+491804
+A:01804
 T:*/*=0.20(60)/1
 Z:85 Service 0180-5
-A:+491805
+A:01805
 T:*/*=0.24(60)/1
 Z:91 Service 0190-1, -2, -3, -5
-A:+491901, +491902, +491903, +491905
+A:01901,01902,01903,01905
 T:*/*=1.20(60)/1
 Z:92 Service 0190-4, -6
-A:+491904, +491906
+A:01904,01906
 T:*/*=0.84(60)/1
 Z:93 Service 0190-7, -9
-A:+491907, +491909
+A:01907,01909
 T:*/*=2.42(60)/1
 Z:94 Service 0190-8
-A:+491908
+A:01908
 T:*/*=3.63(60)/1
 Z:100 DTAG online
 T:*/08-21=0.12(60)/1
@@ -3832,10 +3832,10 @@ A:+49177,+49178		# Eplus
 A:+49176,+49179		# E2
 T:*/*=0.49/60
 Z:102 01019freenet
-A:+491929 # DNS: 62.104.197.193 und 212.81.191.16; POP3: pop3.01019freenet.de; SMTP: mx.01019freenet.de; User: mobilcom; Passwort: mobilcom
+A:01929 # DNS: 62.104.197.193 und 212.81.191.16; POP3: pop3.01019freenet.de; SMTP: mx.01019freenet.de; User: mobilcom; Passwort: mobilcom
 S:Internet by call
 # eXpress Net: http://www.express-net.de
-A:+491928120 # eXpress Net # Zugang wie bei Mobilcom
+A:01928120 # eXpress Net # Zugang wie bei Mobilcom
 T:*/*=0.05/60 FreeNet
 Z:200 Gruppe A
 A:Vereinigte Staaten (USA), Griechenland, Niederlande, Belgien, Frankreich
@@ -3870,7 +3870,7 @@ A:+49177,+49178		# Eplus
 A:+49176,+49179		# E2
 T:*/*=0.49(60)/1
 Z:102 01019freenet
-A:+491929 # (Benutzername und Passwort: egal, min. 1 Buchstabe)
+A:01929 # (Benutzername und Passwort: egal, min. 1 Buchstabe)
 S:Internet by call
 T:*/*=0.05(60)/1 FreeNet
 Z:200 Gruppe A
@@ -3924,7 +3924,7 @@ A:+49177,+49178		# Eplus
 A:+49176,+49179		# E2
 T:*/*=0.49(60)/1
 Z:102 01019freenet
-A:+491929 # (Benutzername und Passwort: egal, min. 1 Buchstabe)
+A:01929 # (Benutzername und Passwort: egal, min. 1 Buchstabe)
 S:Internet by call
 T:*/*=0.05(60)/1 FreeNet
 Z:200 Gruppe A
@@ -4061,37 +4061,37 @@ T:W/09-18=1.20/0 Hauptzeit
 T:W/18-09=0.96/0 Nebenzeit
 T:E,H/*=0.96/0 Wochenende
 Z:81 Service 0180-1
-A:+491801
+A:01801
 T:W/09-18=0.12/90 Hauptzeit
 T:W/05-09,18-21=0.12/150 Nebenzeit
 T:W/21-05=0.12/240 Nebenzeit
 T:E,H/*=0.12/240 Wochenende
 Z:82 Service 0180-2
-A:+491802
+A:01802
 T:*/*=0.12/0
 Z:83 Service 0180-3
-A:+491803
+A:01803
 T:*/*=0.12/40
 Z:84 Service 0180-4
-A:+491804
+A:01804
 T:*/*=0.48/0
 Z:85 Service 0180-5
-A:+491805
+A:01805
 T:*/*=0.12/30
 Z:91 Service 0190-1, -2, -3, -5
-A:+491901, +491902, +491903, +491905
+A:01901,01902,01903,01905
 T:*/*=0.12/6
 Z:92 Service 0190-4, -6
-A:+491904, +491906
+A:01904,01906
 T:*/*=0.12/9
 Z:93 Service 0190-7, -9
-A:+491907, +491909
+A:01907,01909
 T:*/*=0.12/3
 Z:94 Service 0190-8
-A:+491908
+A:01908
 T:*/*=0.12/2
 Z:100 T-Online (Pur) Zugang
-A:+49191011
+A:0191011
 T:*/*=0.06/0,0.03/60
 Z:102 isiFONLINE
 T:W/09-18=0.1044/300
@@ -4234,37 +4234,37 @@ T:W/09-18=1.20/0 Hauptzeit
 T:W/18-09=0.96/0 Nebenzeit
 T:E,H/*=0.96/0 Wochenende
 Z:81 Service 0180-1
-A:+491801
+A:01801
 T:W/09-18=0.12/90 Hauptzeit
 T:W/05-09,18-21=0.12/150 Nebenzeit
 T:W/21-05=0.12/240 Nebenzeit
 T:E,H/*=0.12/240 Wochenende
 Z:82 Service 0180-2
-A:+491802
+A:01802
 T:*/*=0.12/0
 Z:83 Service 0180-3
-A:+491803
+A:01803
 T:*/*=0.12/40
 Z:84 Service 0180-4
-A:+491804
+A:01804
 T:*/*=0.48/0
 Z:85 Service 0180-5
-A:+491805
+A:01805
 T:*/*=0.12/30
 Z:91 Service 0190-1, -2, -3, -5
-A:+491901, +491902, +491903, +491905
+A:01901,01902,01903,01905
 T:*/*=0.12/6
 Z:92 Service 0190-4, -6
-A:+491904, +491906
+A:01904,01906
 T:*/*=0.12/9
 Z:93 Service 0190-7, -9
-A:+491907, +491909
+A:01907,01909
 T:*/*=0.12/3
 Z:94 Service 0190-8
-A:+491908
+A:01908
 T:*/*=0.12/2
 Z:100 T-Online (Pur) Zugang
-A:+49191011
+A:0191011
 T:*/*=0.06/0,0.03/60
 Z:102 isiFONLINE
 T:W/09-18=0.1044/300
@@ -4400,37 +4400,37 @@ T:W/09-18=1.20/0 Hauptzeit
 T:W/18-09=0.96/0 Nebenzeit
 T:E,H/*=0.96/0 Wochenende
 Z:81 Service 0180-1
-A:+491801
+A:01801
 T:W/09-18=0.12/90 Hauptzeit
 T:W/05-09,18-21=0.12/150 Nebenzeit
 T:W/21-05=0.12/240 Nebenzeit
 T:E,H/*=0.12/240 Wochenende
 Z:82 Service 0180-2
-A:+491802
+A:01802
 T:*/*=0.12/0
 Z:83 Service 0180-3
-A:+491803
+A:01803
 T:*/*=0.12/40
 Z:84 Service 0180-4
-A:+491804
+A:01804
 T:*/*=0.48/0
 Z:85 Service 0180-5
-A:+491805
+A:01805
 T:*/*=0.12/30
 Z:91 Service 0190-1, -2, -3, -5
-A:+491901, +491902, +491903, +491905
+A:01901,01902,01903,01905
 T:*/*=0.12/6
 Z:92 Service 0190-4, -6
-A:+491904, +491906
+A:01904,01906
 T:*/*=0.12/9
 Z:93 Service 0190-7, -9
-A:+491907, +491909
+A:01907,01909
 T:*/*=0.12/3
 Z:94 Service 0190-8
-A:+491908
+A:01908
 T:*/*=0.12/2
 Z:100 T-Online (Pur) Zugang
-A:+49191011
+A:0191011
 T:*/*=0.06/0,0.03/60
 Z:102 isiFONLINE
 T:W/09-18=0.1044/300
@@ -4796,7 +4796,7 @@ T:W/08-18=0.56/60 Geschäftszeit
 T:W/18-08=0.46/60 Freizeit
 T:E,H/*=0.46/60 Wochenende
 Z:102 TelePassport-Online
-A:+491924924 # Proxy: proxy.telepassport.de; DNS: 212.41.64.33 und 212.41.68.33; User: tele; Passwort: tele
+A:01924924 # Proxy: proxy.telepassport.de; DNS: 212.41.64.33 und 212.41.68.33; User: tele; Passwort: tele
 S:Internet by call
 T:*/*=0.06/60
 Z:200 Euro 1
@@ -4850,7 +4850,7 @@ A:+49177,+49178		# Eplus
 A:+49176,+49179		# E2
 T:*/*=0.56/60
 Z:102 TelePassport-Online
-A:+491924924 # (Benutzername: beliebig; Passwort: beliebig)
+A:01924924 # (Benutzername: beliebig; Passwort: beliebig)
 S:Internet by call
 T:W/08-18=0.08/60 Geschäftszeit
 T:W/18-08=0.06/60 Freizeit
@@ -4904,7 +4904,7 @@ A:+49177,+49178		# Eplus
 A:+49176,+49179		# E2
 T:*/*=0.56/60
 Z:102 TelePassport-Online
-A:+491924924 # (Benutzername: beliebig; Passwort: beliebig)
+A:01924924 # (Benutzername: beliebig; Passwort: beliebig)
 S:Internet by call
 T:W/08-18=0.08/60 Geschäftszeit
 T:W/18-08=0.06/60 Freizeit
@@ -4963,7 +4963,7 @@ A:+49177,+49178		# Eplus
 A:+49176,+49179		# E2
 T:*/*=0.56/60
 Z:102 TelePassport-Online
-A:+491924924 # (Benutzername: beliebig; Passwort: beliebig)
+A:01924924 # (Benutzername: beliebig; Passwort: beliebig)
 S:Internet by call
 T:*/*=0.06/60
 Z:200 International 1
@@ -5020,7 +5020,7 @@ T:W/08-18=0.58/60 Geschäftszeit
 T:W/18-08=0.48/60 Freizeit
 T:E,H/*=0.48/60 Wochenende
 Z:102 TelePassport-Online
-A:+491924924 # (Benutzername: beliebig; Passwort: beliebig)
+A:01924924 # (Benutzername: beliebig; Passwort: beliebig)
 S:Internet by call
 T:W/08-18=0.08/60 Geschäftszeit
 T:W/18-08=0.06/60 Freizeit
@@ -5070,7 +5070,7 @@ A:+49177,+49178		# Eplus
 A:+49176,+49179		# E2
 T:*/*=0.56/60
 Z:102 TelePassport-Online
-A:+491924924 # (Benutzername: beliebig; Passwort: beliebig)
+A:01924924 # (Benutzername: beliebig; Passwort: beliebig)
 S:Internet by call
 T:*/*=0.08/60
 Z:200 Global 1
@@ -5126,7 +5126,7 @@ T:W/08-18=0.58/60 Geschäftszeit
 T:W/18-08=0.48/60 Freizeit
 T:E,H/*=0.48/60 Wochenende
 Z:102 TelePassport-Online
-A:+491924924 # (Benutzername: beliebig; Passwort: beliebig)
+A:01924924 # (Benutzername: beliebig; Passwort: beliebig)
 S:Internet by call
 T:W/08-18=0.08/60 Geschäftszeit
 T:W/18-08=0.06/60 Freizeit
@@ -6547,28 +6547,28 @@ T:W/09-18=0.12/20
 T:W/18-09=0.12/30
 T:E,H/*=0.12/30
 Z:82 Shared Cost Service 01802
-A:+491802
+A:01802
 T:*/*=0.12/0
 Z:83 Shared Cost Service 01803
-A:+491803
+A:01803
 T:*/*=0.12/30
 Z:84 Shared Cost Service 01804
-A:+491804
+A:01804
 T:*/*=0.48/0
 Z:85 Shared Cost Service 01805
-A:+491805
+A:01805
 T:*/*=0.12/30
 Z:91 Service 0190
-A:+491901,+491902,+491903,+491905
+A:01901,01902,01903,01905
 T:*/*=0.12/6
 Z:92 Service 0190
-A:+491904,+491906
+A:01904,01906
 T:*/*=0.12/9
 Z:93 Service 190
-A:+491907,+491909
+A:01907,01909
 T:*/*=0.12/3
 Z:94 Service 190
-A:+491908
+A:01908
 T:*/*=0.12/2
 Z:200 Sonderpreis 1
 A:Schweiz, Nordirland, Großbritannien, Schweden, London
@@ -6729,28 +6729,28 @@ T:W/09-18=0.12/20
 T:W/18-09=0.12/30
 T:E,H/*=0.12/30
 Z:82 Shared Cost Service 01802
-A:+491802
+A:01802
 T:*/*=0.12/0
 Z:83 Shared Cost Service 01803
-A:+491803
+A:01803
 T:*/*=0.12/30
 Z:84 Shared Cost Service 01804
-A:+491804
+A:01804
 T:*/*=0.48/0
 Z:85 Shared Cost Service 01805
-A:+491805
+A:01805
 T:*/*=0.12/30
 Z:91 Service 0190
-A:+491901,+491902,+491903,+491905
+A:01901,01902,01903,01905
 T:*/*=0.12/6
 Z:92 Service 0190
-A:+491904,+491906
+A:01904,01906
 T:*/*=0.12/9
 Z:93 Service 190
-A:+491907,+491909
+A:01907,01909
 T:*/*=0.12/3
 Z:94 Service 190
-A:+491908
+A:01908
 T:*/*=0.12/2
 Z:200 Sonderpreis 1
 A:Schweiz, Nordirland, Großbritannien, Schweden, London
@@ -8373,7 +8373,7 @@ A:+49170,+49171		# D1
 A:+49172,+49173		# D2
 A:+49177,+49178		# Eplus
 A:+49176,+49179		# E2
-T:*/*=0.12/15
+T:*/*=0.48/60
 Z:102 TelDa.net
 T:*/*=0.06/60
 Z:200 Europa 1
@@ -8458,21 +8458,21 @@ C:171		Info Expo 2000
 C:172		Sonderrufnummern zum Citytarif
 C:200	-	Ausland
 Z:0 FreeCall
-A:+498003301113 # Telekom Direkt
-A:+498003301000 # Telekom Privatkundenvertrieb
-A:+498003301115 # Telekom Geschaftskundenvertrieb
-A:+498003301136 # Telegrammaufnahme per Telefax
-A:+498003302000 # Störungsannahme PK
-A:+498003301172 # Störungsannahme GK
-A:+498003301174 # Störungsannahme Kabelfernsehen
-A:+498003302050 # Beratung Telefonkarten
-A:+491300190    # Hotline Online-Dienste
-A:+491136       # Telegrammaufnahme per Telefax
+A:08003301113 # Telekom Direkt
+A:08003301000 # Telekom Privatkundenvertrieb
+A:08003301115 # Telekom Geschaftskundenvertrieb
+A:08003301136 # Telegrammaufnahme per Telefax
+A:08003302000 # Störungsannahme PK
+A:08003301172 # Störungsannahme GK
+A:08003301174 # Störungsannahme Kabelfernsehen
+A:08003302050 # Beratung Telefonkarten
+A:01300190    # Hotline Online-Dienste
+A:01136       # Telegrammaufnahme per Telefax
 A:110         # Polizei / Notruf
 A:112         # Feuerwehr / Rettungsleitstelle
-A:+10        # Operator Service
-A:+49130        # freecall 0130
-A:+49800        # freecall 0800
+A:+10         # Operator Service
+A:0130        # freecall 0130
+A:0800        # freecall 0800
 A:Plus Freephone Service (Niederl.), Plus Freephone Service (Schweiz)
 A:International Freephone
 Z:1 Ortszone
@@ -8587,37 +8587,37 @@ T:W/09-18=0.12/20 Standard
 T:W/18-09=0.12/30 Nacht
 T:E,H/*=0.12/30 Wochenende
 Z:81 Shared Cost Service 0180-1
-A:+491801
+A:01801
 T:W/09-18=0.12/90 Standard
 T:W/05-09,18-21=0.12/150 Spar
 T:E,H/05-21=0.12/150 Spar
 T:*/21-05=0.12/240 Nacht
 Z:82 Shared Cost Service 0180-2
-A:+491802
+A:01802
 T:*/*=0.12/0
 Z:83 Shared Cost Service 0180-3
-A:+491803
+A:01803
 T:*/*=0.12/40
 Z:84 Shared Cost Service 0180-4
-A:+491804
+A:01804
 T:*/*=0.48/0
 Z:85 Shared Cost Service 0180-5
-A:+491805
+A:01805
 T:*/*=0.12/30
 Z:91 Premium Rate Service 0190-1, -2, -3, -5
-A:+491901,+491902,+491903,+491905
+A:01901,01902,01903,01905
 T:*/*=0.12/6
 Z:92 Premium Rate Service 0190-4, -6
-A:+491904,+491906
+A:01904,01906
 T:*/*=0.12/9
 Z:93 Premium Rate Service 0190-7, -9
-A:+491907,+491909
+A:01907,01909
 T:*/*=0.12/3
 Z:94 Premium Rate Service 0190-8
-A:+491908
+A:01908
 T:*/*=0.12/2
 Z:100 T-Online
-A:+49191011
+A:0191011
 C:Dies ist *kein* All-in-One Zugang, es werden zusätzliche Gebühren erhoben!
 T:*/*=0.06/0,0.06/60 T-Online eco
 Z:162 T-VoteCall
@@ -8635,10 +8635,10 @@ A:+491141		# Auftrags-und Ansagedienst
 A:+49115		# Ansagen (regional)
 A:+49116		# Ansagen (bundesweit)
 A:+491191		# Zeitansage
-A:+491910		# Online-Dienste Zugang SLIP
-A:+491914		# Online-Dienste AOL Zugang
-A:+4919161	# Online-Dienste AOL Zugang
-A:+4919102345	# Online-Dienste 1&1 Zugang
+A:01910		# Online-Dienste Zugang SLIP
+A:01914		# Online-Dienste AOL Zugang
+A:019161	# Online-Dienste AOL Zugang
+A:019102345	# Online-Dienste 1&1 Zugang
 C:Dies sind *keine* All-in-One Zugänge, es werden zusätzliche Gebühren erhoben!
 T:W/09-18=0.12/90 Standard
 T:W/05-09,18-21=0.12/150 Spar
@@ -8700,21 +8700,21 @@ C:200	-	Ausland
 G:01.04.1999
 D:dtag
 Z:0 FreeCall
-A:+498003301113 # Telekom Direkt
-A:+498003301000 # Telekom Privatkundenvertrieb
-A:+498003301115 # Telekom Geschaftskundenvertrieb
-A:+498003301136 # Telegrammaufnahme per Telefax
-A:+498003302000 # Störungsannahme PK
-A:+498003301172 # Störungsannahme GK
-A:+498003301174 # Störungsannahme Kabelfernsehen
-A:+498003302050 # Beratung Telefonkarten
-A:+491300190    # Hotline Online-Dienste
-A:+491136       # Telegrammaufnahme per Telefax
+A:08003301113 # Telekom Direkt
+A:08003301000 # Telekom Privatkundenvertrieb
+A:08003301115 # Telekom Geschaftskundenvertrieb
+A:08003301136 # Telegrammaufnahme per Telefax
+A:08003302000 # Störungsannahme PK
+A:08003301172 # Störungsannahme GK
+A:08003301174 # Störungsannahme Kabelfernsehen
+A:08003302050 # Beratung Telefonkarten
+A:01300190    # Hotline Online-Dienste
+A:01136       # Telegrammaufnahme per Telefax
 A:110         # Polizei / Notruf
 A:112         # Feuerwehr / Rettungsleitstelle
-A:+10        # Operator Service
-A:+49130        # freecall 0130
-A:+49800        # freecall 0800
+A:+10         # Operator Service
+A:0130        # freecall 0130
+A:0800        # freecall 0800
 A:Plus Freephone Service (Niederl.), Plus Freephone Service (Schweiz)
 A:International Freephone
 Z:1-2 CityPlus
@@ -8822,37 +8822,37 @@ T:W/09-18=0.12/20 Standard
 T:W/18-09=0.12/30 Nacht
 T:E,H/*=0.12/30 Wochenende
 Z:81 Shared Cost Service 0180-1
-A:+491801
+A:01801
 T:W/09-18=0.12/90 Standard
 T:W/05-09,18-21=0.12/150 Spar
 T:E,H/05-21=0.12/150 Spar
 T:*/21-05=0.12/240 Nacht
 Z:82 Shared Cost Service 0180-2
-A:+491802
+A:01802
 T:*/*=0.12/0
 Z:83 Shared Cost Service 0180-3
-A:+491803
+A:01803
 T:*/*=0.12/30
 Z:84 Shared Cost Service 0180-4
-A:+491804
+A:01804
 T:*/*=0.48/0
 Z:85 Shared Cost Service 0180-5
-A:+491805
+A:01805
 T:*/*=0.12/30
 Z:91 Premium Rate Service 0190-1, -2, -3, -5
-A:+491901,+491902,+491903,+491905
+A:01901,01902,01903,01905
 T:*/*=0.12/6
 Z:92 Premium Rate Service 0190-4, -6
-A:+491904,+491906
+A:01904,01906
 T:*/*=0.12/9
 Z:93 Premium Rate Service 0190-7, -9
-A:+491907,+491909
+A:01907,01909
 T:*/*=0.12/3
 Z:94 Premium Rate Service 0190-8
-A:+491908
+A:01908
 T:*/*=0.12/2
 Z:100 T-Online
-A:+49191011
+A:0191011
 T:*/*=0.06/0,0.06/60 T-Online eco
 Z:162 T-VoteCall
 A:+491371
@@ -8869,10 +8869,10 @@ A:+491141   # Auftrags-und Ansagedienst
 A:+49115    # Ansagen (regional)
 A:+49116    # Ansagen (bundesweit)
 A:+491191   # Zeitansage
-A:+491910   # Online-Dienste Zugang SLIP
-A:+491914   # Online-Dienste AOL Zugang
-A:+4919161  # Online-Dienste AOL Zugang
-A:+4919102345 # Online-Dienste 1&1 Zugang
+A:01910   # Online-Dienste Zugang SLIP
+A:01914   # Online-Dienste AOL Zugang
+A:019161  # Online-Dienste AOL Zugang
+A:019102345 # Online-Dienste 1&1 Zugang
 T:*/05-21=0.06/90 CityPlus
 T:*/21-05=0.12/240 Nacht
 Z:200 Euro 1
@@ -8926,21 +8926,21 @@ C:200	-	Ausland
 G:01.04.1999
 D:dtag
 Z:0 FreeCall
-A:+498003301113 # Telekom Direkt
-A:+498003301000 # Telekom Privatkundenvertrieb
-A:+498003301115 # Telekom Geschaftskundenvertrieb
-A:+498003301136 # Telegrammaufnahme per Telefax
-A:+498003302000 # Störungsannahme PK
-A:+498003301172 # Störungsannahme GK
-A:+498003301174 # Störungsannahme Kabelfernsehen
-A:+498003302050 # Beratung Telefonkarten
-A:+491300190    # Hotline Online-Dienste
-A:+491136       # Telegrammaufnahme per Telefax
+A:08003301113 # Telekom Direkt
+A:08003301000 # Telekom Privatkundenvertrieb
+A:08003301115 # Telekom Geschaftskundenvertrieb
+A:08003301136 # Telegrammaufnahme per Telefax
+A:08003302000 # Störungsannahme PK
+A:08003301172 # Störungsannahme GK
+A:08003301174 # Störungsannahme Kabelfernsehen
+A:08003302050 # Beratung Telefonkarten
+A:01300190    # Hotline Online-Dienste
+A:01136       # Telegrammaufnahme per Telefax
 A:110         # Polizei / Notruf
 A:112         # Feuerwehr / Rettungsleitstelle
-A:+10        # Operator Service
-A:+49130        # freecall 0130
-A:+49800        # freecall 0800
+A:+10         # Operator Service
+A:0130        # freecall 0130
+A:0800        # freecall 0800
 A:Plus Freephone Service (Niederl.), Plus Freephone Service (Schweiz)
 A:International Freephone
 Z:1-2 CityWeekend
@@ -9050,37 +9050,37 @@ T:W/09-18=0.12/20 Standard
 T:W/18-09=0.12/30 Nacht
 T:E,H/*=0.12/30 Wochenende
 Z:81 Shared Cost Service 0180-1
-A:+491801
+A:01801
 T:W/09-18=0.12/90 Standard
 T:W/05-09,18-21=0.12/150 Spar
 T:E,H/05-21=0.12/150 Spar
 T:*/21-05=0.12/240 Nacht
 Z:82 Shared Cost Service 0180-2
-A:+491802
+A:01802
 T:*/*=0.12/0
 Z:83 Shared Cost Service 0180-3
-A:+491803
+A:01803
 T:*/*=0.12/30
 Z:84 Shared Cost Service 0180-4
-A:+491804
+A:01804
 T:*/*=0.48/0
 Z:85 Shared Cost Service 0180-5
-A:+491805
+A:01805
 T:*/*=0.12/30
 Z:91 Premium Rate Service 0190-1, -2, -3, -5
-A:+491901,+491902,+491903,+491905
+A:01901,01902,01903,01905
 T:*/*=0.12/6
 Z:92 Premium Rate Service 0190-4, -6
-A:+491904,+491906
+A:01904,01906
 T:*/*=0.12/9
 Z:93 Premium Rate Service 0190-7, -9
-A:+491907,+491909
+A:01907,01909
 T:*/*=0.12/3
 Z:94 Premium Rate Service 0190-8
-A:+491908
+A:01908
 T:*/*=0.12/2
 Z:100 T-Online
-A:+49191011
+A:0191011
 T:*/*=0.06/0,0.06/60 T-Online eco
 Z:162 T-VoteCall
 A:+491371
@@ -9097,10 +9097,10 @@ A:+491141		# Auftrags-und Ansagedienst
 A:+49115		# Ansagen (regional)
 A:+49116		# Ansagen (bundesweit)
 A:+491191		# Zeitansage
-A:+491910		# Online-Dienste Zugang SLIP
-A:+491914		# Online-Dienste AOL Zugang
-A:+4919161	# Online-Dienste AOL Zugang
-A:+4919102345	# Online-Dienste 1&1 Zugang
+A:01910		# Online-Dienste Zugang SLIP
+A:01914		# Online-Dienste AOL Zugang
+A:019161	# Online-Dienste AOL Zugang
+A:019102345	# Online-Dienste 1&1 Zugang
 T:W/09-18=0.12/90 Standard
 T:W/05-09,18-21=0.12/150 Spar
 T:E,H/05-21=0.12/240 CityWeekend
@@ -9161,21 +9161,21 @@ C:200	-	Ausland
 G:01.04.1999
 D:dtag
 Z:0 FreeCall
-A:+498003301113 # Telekom Direkt
-A:+498003301000 # Telekom Privatkundenvertrieb
-A:+498003301115 # Telekom Geschaftskundenvertrieb
-A:+498003301136 # Telegrammaufnahme per Telefax
-A:+498003302000 # Störungsannahme PK
-A:+498003301172 # Störungsannahme GK
-A:+498003301174 # Störungsannahme Kabelfernsehen
-A:+498003302050 # Beratung Telefonkarten
-A:+491300190    # Hotline Online-Dienste
-A:+491136       # Telegrammaufnahme per Telefax
+A:08003301113 # Telekom Direkt
+A:08003301000 # Telekom Privatkundenvertrieb
+A:08003301115 # Telekom Geschaftskundenvertrieb
+A:08003301136 # Telegrammaufnahme per Telefax
+A:08003302000 # Störungsannahme PK
+A:08003301172 # Störungsannahme GK
+A:08003301174 # Störungsannahme Kabelfernsehen
+A:08003302050 # Beratung Telefonkarten
+A:01300190    # Hotline Online-Dienste
+A:01136       # Telegrammaufnahme per Telefax
 A:110         # Polizei / Notruf
 A:112         # Feuerwehr / Rettungsleitstelle
-A:+10        # Operator Service
-A:+49130        # freecall 0130
-A:+49800        # freecall 0800
+A:+10         # Operator Service
+A:0130        # freecall 0130
+A:0800        # freecall 0800
 A:Plus Freephone Service (Niederl.), Plus Freephone Service (Schweiz)
 A:International Freephone
 Z:1-2 CityPlus & CityWeekend
@@ -9284,37 +9284,37 @@ T:W/09-18=0.12/20 Standard
 T:W/18-09=0.12/30 Nacht
 T:E,H/*=0.12/30 Wochenende
 Z:81 Shared Cost Service 0180-1
-A:+491801
+A:01801
 T:W/09-18=0.12/90 Standard
 T:W/05-09,18-21=0.12/150 Spar
 T:E,H/05-21=0.12/150 Spar
 T:*/21-05=0.12/240 Nacht
 Z:82 Shared Cost Service 0180-2
-A:+491802
+A:01802
 T:*/*=0.12/0
 Z:83 Shared Cost Service 0180-3
-A:+491803
+A:01803
 T:*/*=0.12/30
 Z:84 Shared Cost Service 0180-4
-A:+491804
+A:01804
 T:*/*=0.48/0
 Z:85 Shared Cost Service 0180-5
-A:+491805
+A:01805
 T:*/*=0.12/30
 Z:91 Premium Rate Service 0190-1, -2, -3, -5
-A:+491901,+491902,+491903,+491905
+A:01901,01902,01903,01905
 T:*/*=0.12/6
 Z:92 Premium Rate Service 0190-4, -6
-A:+491904,+491906
+A:01904,01906
 T:*/*=0.12/9
 Z:93 Premium Rate Service 0190-7, -9
-A:+491907,+491909
+A:01907,01909
 T:*/*=0.12/3
 Z:94 Premium Rate Service 0190-8
-A:+491908
+A:01908
 T:*/*=0.12/2
 Z:100 T-Online
-A:+49191011
+A:0191011
 T:*/*=0.06/0,0.06/60 T-Online eco
 Z:162 T-VoteCall
 A:+491371
@@ -9331,10 +9331,10 @@ A:+491141		# Auftrags-und Ansagedienst
 A:+49115		# Ansagen (regional)
 A:+49116		# Ansagen (bundesweit)
 A:+491191		# Zeitansage
-A:+491910		# Online-Dienste Zugang SLIP
-A:+491914		# Online-Dienste AOL Zugang
-A:+4919161	# Online-Dienste AOL Zugang
-A:+4919102345	# Online-Dienste 1&1 Zugang
+A:01910		# Online-Dienste Zugang SLIP
+A:01914		# Online-Dienste AOL Zugang
+A:019161	# Online-Dienste AOL Zugang
+A:019102345	# Online-Dienste 1&1 Zugang
 T:W/05-21=0.06/90 CityPlus
 T:E,H/05-21=0.12/240 CityWeekend
 T:*/21-05=0.12/240 Nacht
@@ -9389,21 +9389,21 @@ C:171		Info Expo 2000
 C:172		Sonderrufnummern zum Citytarif
 C:200	-	Ausland
 Z:0 FreeCall
-A:+498003301113 # Telekom Direkt
-A:+498003301000 # Telekom Privatkundenvertrieb
-A:+498003301115 # Telekom Geschaftskundenvertrieb
-A:+498003301136 # Telegrammaufnahme per Telefax
-A:+498003302000 # Störungsannahme PK
-A:+498003301172 # Störungsannahme GK
-A:+498003301174 # Störungsannahme Kabelfernsehen
-A:+498003302050 # Beratung Telefonkarten
-A:+491300190    # Hotline Online-Dienste
-A:+491136       # Telegrammaufnahme per Telefax
+A:08003301113 # Telekom Direkt
+A:08003301000 # Telekom Privatkundenvertrieb
+A:08003301115 # Telekom Geschaftskundenvertrieb
+A:08003301136 # Telegrammaufnahme per Telefax
+A:08003302000 # Störungsannahme PK
+A:08003301172 # Störungsannahme GK
+A:08003301174 # Störungsannahme Kabelfernsehen
+A:08003302050 # Beratung Telefonkarten
+A:01300190    # Hotline Online-Dienste
+A:01136       # Telegrammaufnahme per Telefax
 A:110         # Polizei / Notruf
 A:112         # Feuerwehr / Rettungsleitstelle
-A:+10        # Operator Service
-A:+49130        # freecall 0130
-A:+49800        # freecall 0800
+A:+10         # Operator Service
+A:0130        # freecall 0130
+A:0800        # freecall 0800
 A:Plus Freephone Service (Niederl.), Plus Freephone Service (Schweiz)
 A:International Freephone
 Z:1-2 Orts-/Cityzone
@@ -9506,37 +9506,37 @@ T:W/09-18=0.12/20 Standard
 T:W/18-09=0.12/30 Nacht
 T:E,H/*=0.12/30 Wochenende
 Z:81 Shared Cost Service 0180-1
-A:+491801
+A:01801
 T:W/09-18=0.12/90 Standard
 T:W/05-09,18-21=0.12/150 Spar
 T:E,H/05-21=0.12/150 Spar
 T:*/21-05=0.12/240 Nacht
 Z:82 Shared Cost Service 0180-2
-A:+491802
+A:01802
 T:*/*=0.12/0
 Z:83 Shared Cost Service 0180-3
-A:+491803
+A:01803
 T:*/*=0.12/40
 Z:84 Shared Cost Service 0180-4
-A:+491804
+A:01804
 T:*/*=0.48/0
 Z:85 Shared Cost Service 0180-5
-A:+491805
+A:01805
 T:*/*=0.12/30
 Z:91 Premium Rate Service 0190-1, -2, -3, -5
-A:+491901,+491902,+491903,+491905
+A:01901,01902,01903,01905
 T:*/*=0.12/6
 Z:92 Premium Rate Service 0190-4, -6
-A:+491904,+491906
+A:01904,01906
 T:*/*=0.12/9
 Z:93 Premium Rate Service 0190-7, -9
-A:+491907,+491909
+A:01907,01909
 T:*/*=0.12/3
 Z:94 Premium Rate Service 0190-8
-A:+491908
+A:01908
 T:*/*=0.12/2
 Z:100 T-Online
-A:+49191011
+A:0191011
 C:Dies ist *kein* All-in-One Zugang, es werden zusätzliche Gebühren erhoben!
 T:*/*=0.06/0,0.06/60 T-Online eco
 Z:162 T-VoteCall
@@ -9554,10 +9554,10 @@ A:+491141		# Auftrags-und Ansagedienst
 A:+49115		# Ansagen (regional)
 A:+49116		# Ansagen (bundesweit)
 A:+491191		# Zeitansage
-A:+491910		# Online-Dienste Zugang SLIP
-A:+491914		# Online-Dienste AOL Zugang
-A:+4919161	# Online-Dienste AOL Zugang
-A:+4919102345	# Online-Dienste 1&1 Zugang
+A:01910		# Online-Dienste Zugang SLIP
+A:01914		# Online-Dienste AOL Zugang
+A:019161	# Online-Dienste AOL Zugang
+A:019102345	# Online-Dienste 1&1 Zugang
 C:Dies sind *keine* All-in-One Zugänge, es werden zusätzliche Gebühren erhoben!
 T:W/09-18=0.12/90 Standard
 T:W/05-09,18-21=0.12/150 Spar
@@ -9871,7 +9871,7 @@ C:GmbH, An der Autobahn, 33311 Gütersloh 01038
 #
 #
 P:39 First Telecom CbC
-G:01-Jun-1999
+G:16-Aug-1999
 D:dtag
 C:GmbH, Lyoner Straße 51, 60528 Frankfurt/Main 01039
 C:Erfasste Zonen:
@@ -9939,7 +9939,7 @@ A:+49177,+49178		# Eplus
 A:+49176,+49179		# E2
 T:*/*=0.48/60
 Z:102 net@home
-A:+49192340 # DNS: 195.222.195.222 und 195.222.195.223; User: esprit; Passwort: telecom
+A:0192340 # DNS: 195.222.195.222 und 195.222.195.223; User: esprit; Passwort: telecom
 S:Internet by call
 T:*/*=0.058/60 Internet
 Z:103 CALL POP
@@ -9947,7 +9947,7 @@ Z:103 CALL POP
 #     01.04.99: 03/04/050/051/053/055/058
 #     01.05.99: 06/07/08/09
 #     01.06.99: 02/052/054/056/057/059
-A:+49192343 # (Benutzername: Call, Passwort: POP)
+A:0192343 # (Benutzername: Call, Passwort: POP)
 S:Internet by call
 T:*/*=0.058/60
 Z:200 Euro 1/Welt 1
@@ -10120,8 +10120,8 @@ C:60	-  75	Pieper
 C:102		TeleBeL Internet
 C:200	-	Ausland
 Z:0 Freecall
-A:110, 112
-A:+49800, +49130, International Freephone
+A:110,112
+A:0800,0130,International Freephone
 Z:1-2 Bergisch City
 T:W/08-18=0.06(60)/1 Hauptzeit
 T:W/18-08=0.04(60)/1 Nebenzeit
@@ -10230,7 +10230,7 @@ Z:102 Internet
 A:+49202931080
 T:*/*=0.05(60)/1
 Z:103 NGI
-A:+4919102384
+A:019102384
 T:*/*=0.055(60)/1
 Z:200 Euro 1
 A:Andorra, Belgien, Dänemark, Färöer, Finnland, Frankreich, Griechenland
@@ -10279,7 +10279,7 @@ C:171		Info Expo 2000
 C:172		IVBB
 C:200	-	Ausland
 Z:0 FreeCall
-A:+49800, +49130, International Freephone
+A:0800,0130, International Freephone
 A:+49231438110	# TELNET Support Nummern
 Z:1-3 TELNET NRW
 T:W/08-18=0.12/60 Tag
@@ -10367,41 +10367,41 @@ Z:75 Quix Operator 2
 A:+491656
 T:*/*=2.40/0
 Z:81 Service 0180-1
-A:+491801
+A:01801
 T:W/08-18=0.08/60 Tag
 T:W/18-08=0.05/60 Sonst
 T:E,H/*=0.05/60 Wochenende
 Z:82 Service 0180-2
-A:+491802
+A:01802
 T:*/*=0.12/0
 Z:83 Service 0180-3
-A:+491803
+A:01803
 T:*/*=0.18/60
 Z:84 Service 0180-4
-A:+491804
+A:01804
 T:*/*=0.48/0
 Z:85 Service 0180-5
-A:+491805
+A:01805
 T:*/*=0.24/60
 Z:91 Service 0190-1, -2, -3, -5
-A:+491901, +491902, +491903, +491905
+A:01901,01902,01903,01905
 T:*/*=1.20/60
 Z:92 Service 0190-4, -6
-A:+491904, +491906
+A:01904,01906
 T:*/*=0.80/60
 Z:93 Service 0190-7, -9
-A:+491907, +491909
+A:01907,01909
 T:*/*=2.40/60
 Z:94 Service 0190-8
-A:+491908
+A:01908
 T:*/*=3.60/60
 Z:100 T-Online
-A:+491910
+A:01910
 T:W/08-18=0.08/60 Tag
 T:W/18-08=0.05/60 Nacht
 T:E,H/*=0.05/60 Wochenende
 Z:101 AOL
-A:+491914, +4919161
+A:01914,019161
 T:W/08-18=0.08/60 Tag
 T:W/18-08=0.05/60 Nacht
 T:E,H/*=0.05/60 Wochenende
@@ -10474,8 +10474,8 @@ C:171		Info Expo 2000
 C:172		IVBB
 C:200	-	Ausland
 Z:0 Freephone
-A:+49800, +49130		# FreeCall
-A:+491113, +491114, +491115	# DTAG-Service
+A:0800,0130		# FreeCall
+A:01113,01114,01115	# DTAG-Service
 A:110, 112		# Polizei, Feuerwehr
 Z:1-4 HalloDeutschland
 A:+49
@@ -10574,42 +10574,42 @@ Z:75 Quix Operator 2
 A:+491656
 T:*/*=2.40/0
 Z:81 Service 0180-1
-A:+491801
+A:01801
 T:W/09-18=0.08(60)/1 Tag
 T:W/05-09,18-21=0.05(60)/1 Freizeit
 T:E,H/05-21=0.05(60)/1 Wochenende
 T:*/21-05=0.03(60)/1 Nacht
 Z:82 Shared Cost Service 0180-2
-A:+491802
+A:01802
 T:*/*=0.12/0
 Z:83 Shared Cost Service 0180-3
-A:+491803
+A:01803
 T:*/*=0.24(60)/1
 Z:84 Shared Cost Service 0180-4
-A:+491804
+A:01804
 T:*/*=0.48/0
 Z:85 Shared Cost Service 0180-5
-A:+491805
+A:01805
 T:*/*=0.24(60)/1
 Z:91 Premium Rate Service 0190-1, -2, -3, -5
-A:+491901,+491902,+491903,+491905
+A:01901,01902,01903,01905
 T:*/*=1.21(60)/1
 Z:92 Premium Rate Service 0190-4, -6
-A:+491904,+491906
+A:01904,01906
 T:*/*=0.81(60)/1
 Z:93 Premium Rate Service 0190-7, -9
-A:+491907,+491909
+A:01907,01909
 T:*/*=2.42(60)/1
 Z:94 Premium Rate Service 0190-8
-A:+491908
+A:01908
 T:*/*=3.63(60)/1
 Z:100 T-online
-A:+491910
+A:01910
 T:W/08-20=0.10(60)/1 Tag
 T:W/20-08=0.06(60)/1 Nacht
 T:E,H/*=0.06(60)/1 Wochenende
 Z:101 AOL Onlinedienst
-A:+491914
+A:01914
 T:W/08-20=0.10(60)/1 Tag
 T:W/20-08=0.06(60)/1 Nacht
 T:E,H/*=0.06(60)/1 Wochenende
@@ -10641,7 +10641,7 @@ Z:171 Info Expo 2000
 A:+492000
 T:*/*=0.60(60)/1
 Z:172 IVBB
-A:+491888
+A:01888
 T:*/*=0.30(60)/1
 Z:202 Welt 1
 A:Alaska, Großbritanien, Kanada, Vereinigte Staaten von Amerika
@@ -10779,8 +10779,8 @@ C:171		Info Expo 2000
 C:172		IVBB
 C:200	-	Ausland
 Z:0 Freephone
-A:+49800, +49130		# FreeCall
-A:+491113, +491114, +491115	# DTAG-Service
+A:0800,0130		# FreeCall
+A:01113,01114,01115	# DTAG-Service
 A:110, 112		# Polizei, Feuerwehr
 Z:1 MoinNachbar
 T:W/08-20=0.06(60)/1 Tag
@@ -10890,42 +10890,42 @@ Z:75 Quix Operator 2
 A:+491656
 T:*/*=2.40/0
 Z:81 Service 0180-1
-A:+491801
+A:01801
 T:W/09-18=0.08(60)/1 Tag
 T:W/05-09,18-21=0.05(60)/1 Freizeit
 T:E,H/05-21=0.05(60)/1 Wochenende
 T:*/21-05=0.03(60)/1 Nacht
 Z:82 Shared Cost Service 0180-2
-A:+491802
+A:01802
 T:*/*=0.12/0
 Z:83 Shared Cost Service 0180-3
-A:+491803
+A:01803
 T:*/*=0.24(60)/1
 Z:84 Shared Cost Service 0180-4
-A:+491804
+A:01804
 T:*/*=0.48/0
 Z:85 Shared Cost Service 0180-5
-A:+491805
+A:01805
 T:*/*=0.24(60)/1
 Z:91 Premium Rate Service 0190-1, -2, -3, -5
-A:+491901,+491902,+491903,+491905
+A:01901,01902,01903,01905
 T:*/*=1.21(60)/1
 Z:92 Premium Rate Service 0190-4, -6
-A:+491904,+491906
+A:01904,01906
 T:*/*=0.81(60)/1
 Z:93 Premium Rate Service 0190-7, -9
-A:+491907,+491909
+A:01907,01909
 T:*/*=2.42(60)/1
 Z:94 Premium Rate Service 0190-8
-A:+491908
+A:01908
 T:*/*=3.63(60)/1
 Z:100 T-online
-A:+491910
+A:01910
 T:W/08-20=0.10(60)/1 Tag
 T:W/20-08=0.06(60)/1 Nacht
 T:E,H/*=0.06(60)/1 Wochenende
 Z:101 AOL Onlinedienst
-A:+491914
+A:01914
 T:W/08-20=0.10(60)/1 Tag
 T:W/20-08=0.06(60)/1 Nacht
 T:E,H/*=0.06(60)/1 Wochenende
@@ -10957,7 +10957,7 @@ Z:171 Info Expo 2000
 A:+492000
 T:*/*=0.60(60)/1
 Z:172 IVBB
-A:+491888
+A:01888
 T:*/*=0.30(60)/1
 Z:200 MoinSonderjylland
 A:Sonderjylland # +4573, +4574
@@ -11527,7 +11527,7 @@ T:*/*=2.35(60)/1
 #
 #
 P:50 Talkline
-G:19-Jul-1999
+G:12-Aug-1999
 C:PS PhoneServices GmbH, Adenauer Damm 1, 25337 Elmshorn 01050
 C:Homepage: http://www.null1050.de
 C:Hotline:  01802/2002
@@ -11550,7 +11550,7 @@ A:+49177,+49178		# Eplus
 A:+49176,+49179		# E2
 T:*/*=0.69/60
 Z:100 Talknet by call
-A:+4919251 # Proxy: proxy.tli.de:8080; DNS: 195.252.128.53 und 195.252.128.54; User: talknet; Passwort: talknet
+A:019251 # Proxy: proxy.tli.de:8080; DNS: 195.252.128.53 und 195.252.128.54; User: talknet; Passwort: talknet
 S:Internet by call
 T:W/07-19=0.09(60)/180
 T:W/19-22=0.07(60)/180
@@ -11614,12 +11614,12 @@ A:+49176,+49179		# E2
 #
 P:51 01051
 C:ID-Switch GmbH, Graf-Adolf-Straße, 40210 Düsseldorf 01051
-G:14-Jul-1999
+G:17-Aug-1999
 C:Homepage: http://www.01051.com
 C:Adresse:  Koenigsallee 60f
 C:	    40210 Duesseldorf
 D:dtag
-Z:1-4 Ferngespräche
+Z:2-4 Ferngespräche
 A:+49
 T:*/*=0.09/60
 Z:40 Telefonauskunft Inland (Austria, dial 01051004366211811)
@@ -11630,37 +11630,37 @@ A:+4366211812
 T:*/*=0.25/60
 Z:200 Australien
 A:Australien
-T:*/*=0.25/60
+T:*/*=0.19/60
 Z:201
 A:Belgien
-T:*/*=0.23/60
+T:*/*=0.18/60
 Z:202
 A:Dänemark
-T:*/*=0.23/60
+T:*/*=0.18/60
 Z:203
 A:Finnland
-T:*/*=0.23/60
+T:*/*=0.18/60
 Z:204
 A:Frankreich
-T:*/*=0.19/60
+T:*/*=0.18/60
 Z:205
 A:Großbritannien
-T:*/*=0.16/60
+T:*/*=0.15/60
 Z:206
 A:Hongkong
-T:*/*=0.29/60
+T:*/*=0.21/60
 Z:207
 A:Italien
-T:*/*=0.32/60
+T:*/*=0.25/60
 Z:208
 A:Irland
-T:*/*=0.29/60
+T:*/*=0.21/60
 Z:209
 A:Japan
 T:*/*=0.29/60
 Z:210
 A:Kanada
-T:*/*=0.22/60
+T:*/*=0.18/60
 Z:211
 A:Liechtenstein
 T:*/*=0.31/60
@@ -11672,34 +11672,31 @@ A:Monaco
 T:*/*=0.36/60
 Z:214
 A:Neuseeland
-T:*/*=0.29/60
+T:*/*=0.21/60
 Z:215
 A:Niederlande
-T:*/*=0.16/60
+T:*/*=0.14/60
 Z:216
 A:Niederlande Mobilfunk
 T:*/*=0.40/60
 Z:217
 A:Norwegen
-T:*/*=0.23/60
+T:*/*=0.18/60
 Z:218
 A:Österreich
-T:*/*=0.25/60
-Z:219
-A:Österreich Mobilfunk
-T:*/*=0.75/60
+T:*/*=0.21/60
 Z:220
 A:Schweden
-T:*/*=0.21/60
+T:*/*=0.18/60
 Z:221
 A:Schweiz
-T:*/*=0.23/60
+T:*/*=0.21/60
 Z:222
 A:Spanien
-T:*/*=0.32/60
+T:*/*=0.27/60
 Z:223
 A:USA
-T:*/*=0.16/60
+T:*/*=0.15/60
 Z:224
 A:Alaska
 T:*/*=0.22/60
@@ -11724,6 +11721,7 @@ A:Luxemburg Mobilfunk
 A:Monaco Mobilfunk
 A:Neuseeland Mobilfunk
 A:Norwegen Mobilfunk
+A:Österreich Mobilfunk
 A:Schweden Mobilfunk
 A:Schweiz Mobilfunk
 A:Spanien Mobilfunk
@@ -11785,12 +11783,12 @@ T:W/18-8=0.06/180 Freizeit
 T:E,H/*=0.06/180 Wochenende
 # Internet-Anbieter
 Z:31 T-Online
-A:+491910
+A:01910
 T:W/8-18=0.06/60
 T:W/18-8=0.06/90
 T:E,H/*=0.06/90
 Z:32 AOL
-A:+491914
+A:01914
 T:W/8-18=0.06/60
 T:W/18-8=0.06/90
 T:E,H/*=0.06/90
@@ -11902,30 +11900,30 @@ A:+4916953
 T:*/*=2.40/0
 # Sonderrufnummern
 Z:81 Shared cost
-A:+491801
+A:01801
 T:W/8-18=0.06/45
 T:W/18-8=0.06/72
 T:E,H/*=0.06/72
 Z:82 T1802
-A:+491802
+A:01802
 T:*/*=0.24/0
 Z:83 T1803
-A:+491803
+A:01803
 T:*/*=0.06/20
 Z:84 T1804
-A:+491804
+A:01804
 T:*/*=0.48/0
 Z:91 T1901
-A:+491901, +491902, +491903, +491905
+A:01901,01902,01903,01905
 T:*/*=0.06/3
 Z:92 T1904
-A:+491904, +491906
+A:01904,01906
 T:*/*=0.06/4.5
 Z:93 T1907
-A:+491907, +491909
+A:01907,01909
 T:*/*=0.06/1.5
 Z:94 T1908
-A:+491908
+A:01908
 T:*/*=0.06/1.0
 Z:160 TeleVotum
 A:+491370, +491373
@@ -12434,16 +12432,16 @@ A:Usbekistan
 T:*/*=2.72/60
 Z:100 Internet
 C:Arcor Online
-A:+49192070 # Proxy: proxy.arcor-ip.de:80; DNS: 145.253.2.11 und 145.253.2.75; Mail: mail.arcor-ip.de; User: arcor; Passwort: internet
+A:0192070 # Proxy: proxy.arcor-ip.de:80; DNS: 145.253.2.11 und 145.253.2.75; Mail: mail.arcor-ip.de; User: arcor; Passwort: internet
 C:Yahoo! Online
-A:+49192020 # Proxy: proxy.arcor-ip.de:80; DNS: 145.253.2.11 und 145.253.2.75; Mail: mail.arcor-ip.de; User: arcor; Passwort: internet
+A:0192020 # Proxy: proxy.arcor-ip.de:80; DNS: 145.253.2.11 und 145.253.2.75; Mail: mail.arcor-ip.de; User: arcor; Passwort: internet
 S:Internet by call
 T:*/*=0.06/60
 Z:40 Telefonauskunft
 A:11870
 T:*/*=0.968/30
 Z:81 Serviceruf 01801
-A:+491801
+A:01801
 T:W/09-18=0.12/90 Standard
 T:W/18-21=0.12/150 Spar
 T:W/21-05=0.12/240 Nacht
@@ -12451,16 +12449,16 @@ T:W/05-09=0.12/150 Spar
 T:E,H/05-21=0.12/150 Spar
 T:E,H/21-05=0.12/240 Nacht
 Z:82 Serviceruf 01802
-A:+491802
+A:01802
 T:*/*=0.12/0
 Z:83 Serviceruf 01803
-A:+491803
+A:01803
 T:*/*=0.09/30
 Z:84 Serviceruf 01804
-A:+491804
+A:01804
 T:*/*=0.48/0
 Z:85 Serviceruf 01805
-A:+491805
+A:01805
 T:*/*=0.12/30
 #####################################################################
 P:70,2 Arcor Town to Town
@@ -13969,8 +13967,7 @@ A:+49170,+49171		# D1
 A:+49172,+49173		# D2
 A:+49177,+49178		# Eplus
 A:+49176,+49179		# E2
-T:W/8-18=0.74(60)/1
-T:W/18-8=0.60(60)/1
+T:*/*=9.99/1
 Z:200 Euro 1
 T:*/*=0.63(60)/1
 A:Andorra, Belgien, Dänemark, Färöer, Finnland, Frankreich, Griechenland
@@ -14022,8 +14019,8 @@ C:Vielmehr handelt es sich hier nur um die Tarife fuer den
 C:UUnet Ortstarif-Zugang!
 C:Dies ist *kein* All-in-One Zugang, es werden zusätzliche Gebühren erhoben!
 Z:100 Internet
-A:+49191999 # UUnet
-A:+49192333 # NDH
+A:0191999 # UUnet
+A:0192333 # NDH
 T:W/05-09=0.048(60)/1 UUnet
 T:W/09-18=0.08(60)/1 UUnet
 T:W/18-21=0.048(60)/1 UUnet
@@ -14248,7 +14245,7 @@ A:+49177,+49178		# Eplus
 A:+49176,+49179		# E2
 T:*/*=0.46(60)/1
 Z:100 Internet
-A:+49193434
+A:0193434
 T:*/*=0.05(60)/1
 #####################################################################
 #
@@ -14603,7 +14600,7 @@ C:AG, Militärstraße 36, CH-8004 Zürich 010044
 #
 #
 P:150 Drillisch
-G:01-Jul-1999
+G:05-Aug-1999
 D:dtag
 C:AG, Horbeller Straße 33, 50858 Köln 010050
 Z:1-4 Deutschland

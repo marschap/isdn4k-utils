@@ -1,4 +1,4 @@
-/* $Id: tools.c,v 1.32 1999/07/24 08:45:26 akool Exp $
+/* $Id: tools.c,v 1.33 1999/08/20 19:29:12 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -19,6 +19,13 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools.c,v $
+ * Revision 1.33  1999/08/20 19:29:12  akool
+ * isdnlog-3.45
+ *  - removed about 1 Mb of (now unused) data files
+ *  - replaced areacodes and "vorwahl.dat" support by zone databases
+ *  - fixed "Sonderrufnummern"
+ *  - rate-de.dat :: V:1.10-Germany [20-Aug-1999 21:23:27]
+ *
  * Revision 1.32  1999/07/24 08:45:26  akool
  * isdnlog-3.42
  *   rate-de.dat 1.02-Germany [18-Jul-1999 10:44:21]
@@ -338,6 +345,7 @@
 /****************************************************************************/
 
 #include "tools.h"
+#include "telnum.h"
 
 /****************************************************************************/
 
@@ -636,12 +644,21 @@ char *double2clock(double n)
 
 char *vnum(int chan, int who)
 {
-  register int    l = strlen(call[chan].num[who]), got = 0;
+  register int    l = strlen(call[chan].num[who]);
+  register char  *p1, *p2;
+#if 0 /* DELETE_ME AK:18-Aug-99 */
+  register int	  got = 0;
+#endif
   register int    flag = C_NO_WARN | C_NO_EXPAND;
+#if 0 /* DELETE_ME AK:18-Aug-99 */
   auto     char  *ptr;
-  auto	   int    ll, lx, l1;
+  auto	   int    ll;
+#endif
+  auto	   int	  lx, l1, mobil = 0;
   auto	   int 	  prefix = strlen(countryprefix);
   auto	   int 	  cc_len = 2;   /* country code length defaults to 2 */
+  auto	   TELNUM number;
+  auto	   char	  s[BUFSIZ];
 
 
   if (++retnum == MAXRET)
@@ -680,9 +697,14 @@ char *vnum(int chan, int who)
         register char *p = call[chan].num[who] + l1;
         register char  c = *p;
 
+
+        *call[chan].areacode[who] = *call[chan].area[who] = 0;
+
         *p = 0;
 
         sprintf(retstr[retnum], "%s - %c%s", call[chan].num[who], c, p + 1);
+	strcpy(call[chan].vorwahl[who], call[chan].num[who]);
+	strcpy(call[chan].rufnummer[who], p + 1);
 
         *p = c;
       }
@@ -716,11 +738,91 @@ char *vnum(int chan, int who)
       } /* if */
     } /* if */
 
+#if 0 /* DELETE_ME AK:18-Aug-99 */
     if ((ptr = get_areacode(call[chan].num[who], &ll, flag)) != 0) {
       strcpy(call[chan].area[who], ptr);
       l = ll;
       got++;
     } /* if */
+#else
+#if 1
+    if (!memcmp(call[chan].num[who], "+49170", 6))
+      mobil = 1;
+    else if (!memcmp(call[chan].num[who], "+49171", 6))
+      mobil = 1;
+    else if (!memcmp(call[chan].num[who], "+49172", 6))
+      mobil = 2;
+    else if (!memcmp(call[chan].num[who], "+49173", 6))
+      mobil = 2;
+    else if (!memcmp(call[chan].num[who], "+49177", 6))
+      mobil = 3;
+    else if (!memcmp(call[chan].num[who], "+49178", 6))
+      mobil = 3;
+    else if (!memcmp(call[chan].num[who], "+49176", 6))
+      mobil = 4;
+    else if (!memcmp(call[chan].num[who], "+49179", 6))
+      mobil = 4;
+    else if (!memcmp(call[chan].num[who], "+491", 4))
+      mobil = 5;
+
+    if (mobil) {
+      Strncpy(call[chan].areacode[who], call[chan].num[who], 4);
+      Strncpy(call[chan].vorwahl[who], call[chan].num[who] + 3, 4);
+      strcpy(call[chan].rufnummer[who], call[chan].num[who] + 6);
+
+      switch (mobil) {
+        case 1 : strcpy(call[chan].area[who], "Mobilfunknetz D1");    break;
+        case 2 : strcpy(call[chan].area[who], "Mobilfunknetz D2");    break;
+        case 3 : strcpy(call[chan].area[who], "Mobilfunknetz Eplus"); break;
+        case 4 : strcpy(call[chan].area[who], "Mobilfunknetz E2");    break;
+        case 5 : strcpy(call[chan].area[who], "Sonderrufnummer");     break;
+      } /* switch */
+
+      if (cnf > -1)
+        strcpy(retstr[retnum], call[chan].alias[who]);
+      else
+        sprintf(retstr[retnum], "%s %s/%s, %s",
+      	  call[chan].areacode[who],
+      	  call[chan].vorwahl[who],
+      	  call[chan].rufnummer[who],
+      	  call[chan].area[who]);
+
+      return(retstr[retnum]);
+    } /* if */
+
+    normalizeNumber(call[chan].num[who], &number, TN_ALL);
+    strcpy(s, formatNumber("%F", &number));
+
+    /* +49 6441/443431, Wetzlar */
+
+    if ((p1 = strchr(s, ' '))) {
+      *p1 = 0;
+      strcpy(call[chan].areacode[who], s);
+      *p1 = ' ';
+
+      if ((p2 = strchr(p1 + 1, '/'))) {
+        *p2 = 0;
+      	strcpy(call[chan].vorwahl[who], p1 + 1);
+        *p2 = '/';
+
+        if ((p1 = strchr(p2 + 1, ','))) {
+          *p1 = 0;
+      	  strcpy(call[chan].rufnummer[who], p2 + 1);
+          *p1 = ',';
+
+      	  strcpy(call[chan].area[who], p1 + 2);
+        } /* if */
+      } /* if */
+    } /* if */
+
+    if (cnf > -1)
+      strcpy(retstr[retnum], call[chan].alias[who]);
+    else
+      strcpy(retstr[retnum], s);
+
+    return(retstr[retnum]);
+#endif
+#endif
   } /* else */
 
   if (l > 1) {
@@ -992,6 +1094,7 @@ int iprintf(char *obuf, int chan, register char *fmt, ...)
                  p = s + strlen(s);
                  break;
 
+#if 0 /* DELETE_ME AK:18-Aug-99 */
       case 'z' : p = itoa(area_diff(NULL, call[chan].num[OTHER]), p, 10, 0);
       	       	 break;
 
@@ -1002,6 +1105,12 @@ int iprintf(char *obuf, int chan, register char *fmt, ...)
                    *sx = 0;
                  p = s + strlen(s);
                  break;
+#else
+      case 'z' :
+      case 'Z' : s = "";
+      	         p = s + strlen(s);
+                 break;
+#endif
 
       case 'n' : who = ME;    goto go;
       case 'c' : who = CLIP;  goto go;

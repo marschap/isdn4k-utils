@@ -1,4 +1,4 @@
-/* $Id: isdnlog.c,v 1.47 1999/06/28 19:16:03 akool Exp $
+/* $Id: isdnlog.c,v 1.48 1999/08/20 19:28:12 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,13 @@
  * along with this program; if not, write to the Free Software
  *
  * $Log: isdnlog.c,v $
+ * Revision 1.48  1999/08/20 19:28:12  akool
+ * isdnlog-3.45
+ *  - removed about 1 Mb of (now unused) data files
+ *  - replaced areacodes and "vorwahl.dat" support by zone databases
+ *  - fixed "Sonderrufnummern"
+ *  - rate-de.dat :: V:1.10-Germany [20-Aug-1999 21:23:27]
+ *
  * Revision 1.47  1999/06/28 19:16:03  akool
  * isdnlog Version 3.38
  *   - new utility "isdnrate" started
@@ -335,6 +342,7 @@
 #include <termios.h>
 
 #include "isdnlog.h"
+#include "telnum.h"
 #ifdef POSTGRES
 #include "postgres.h"
 #endif
@@ -1365,6 +1373,7 @@ int main(int argc, char *argv[], char *envp[])
 	    if (!Q931dmp && *version)
 	      print_msg(PRT_NORMAL, "%s\n", version);
 
+            initTelNum();
             loop();
 
             if (sockets[ISDNINFO].descriptor >= 0)

@@ -1,4 +1,4 @@
-/* $Id: processor.c,v 1.79 1999/07/25 15:57:21 akool Exp $
+/* $Id: processor.c,v 1.80 1999/08/20 19:28:18 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,13 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.80  1999/08/20 19:28:18  akool
+ * isdnlog-3.45
+ *  - removed about 1 Mb of (now unused) data files
+ *  - replaced areacodes and "vorwahl.dat" support by zone databases
+ *  - fixed "Sonderrufnummern"
+ *  - rate-de.dat :: V:1.10-Germany [20-Aug-1999 21:23:27]
+ *
  * Revision 1.79  1999/07/25 15:57:21  akool
  * isdnlog-3.43
  *   added "telnum" module
@@ -854,7 +861,7 @@ void buildnumber(char *num, int oc3, int oc3a, char *result, int version,
   auto int  partner = ((dir && (who == CALLING)) || (!dir && (who == CALLED)));
 
 
-  *sondernummer = UNKNOWN;
+//  *sondernummer = UNKNOWN;
   *intern = 0;
   *local = 0;
 
@@ -1005,7 +1012,7 @@ void buildnumber(char *num, int oc3, int oc3a, char *result, int version,
     if (*provider == UNKNOWN)
       *provider = preselect;
 
-    if (*num && !dir && (who == CALLED) && getArea(*provider, num))
+    if (*num && !dir && (who == CALLED) && getArea(*provider, num) && (*sondernummer == UNKNOWN))
       *sondernummer = strlen(num);
   } /* if */
 
@@ -3515,9 +3522,9 @@ void processRate(int chan)
   call[chan].Rate.start  = call[chan].connect;
   call[chan].Rate.now    = call[chan].disconnect = cur_time;
 
-  if (getRate(&call[chan].Rate, NULL) == UNKNOWN) {
+  if (getRate(&call[chan].Rate, NULL) == UNKNOWN)
     call[chan].tarifknown = 0;
-  } else {
+  else {
     call[chan].tarifknown = 1;
     call[chan].pay = call[chan].Rate.Charge;
   } /* else */
@@ -3634,11 +3641,13 @@ static void prepareRate(int chan, char **msg, char **tip, int viarep)
     call[chan].Rate.src[0] = "";
     call[chan].Rate.src[1] = "";
     call[chan].Rate.src[2] = mynum;
-  } else {
+  }
+  else {
     call[chan].Rate.src[0] = call[chan].areacode[CALLING];
     call[chan].Rate.src[1] = call[chan].vorwahl[CALLING];
     call[chan].Rate.src[2] = call[chan].rufnummer[CALLING];
-  }
+  } /* else */
+
   call[chan].Rate.dst[0] = call[chan].areacode[CALLED];
   call[chan].Rate.dst[1] = call[chan].vorwahl[CALLED];
   call[chan].Rate.dst[2] = call[chan].rufnummer[CALLED];
@@ -3685,6 +3694,7 @@ static void prepareRate(int chan, char **msg, char **tip, int viarep)
 } /* prepareRate */
 
 
+#if 0
 static void LCR(int chan, char *s)
 {
   auto char      *why, *hint;
@@ -3727,6 +3737,7 @@ static void LCR(int chan, char *s)
   else
     print_msg(PRT_NORMAL, ">> LCR: NO ACTION: Internal call\n");
 } /* LCR */
+#endif
 
 
 static void processctrl(int card, char *s)

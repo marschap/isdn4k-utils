@@ -1,5 +1,3 @@
-#define TESTat
-
 /* telnum.c
  * (c) 1999 by Leopold Toetsch <lt@toetsch.at>
  *
@@ -57,6 +55,7 @@
  *	%NA .. areaname
  *	%Nm .. msn
  *  %f .. full +49 89 12356 (Deutschland, Berlin)
+ *	%F .. full +49 89/12345, Berlin
  *	%s .. short +48 89 123456
  * 	%n .. number 004889123456
  *
@@ -88,6 +87,8 @@
 #include "telnum.h"
 
 #define DEFAULT (UNKNOWN-1)
+
+#undef DEBUG
 
 static TELNUM defnum;
 
@@ -145,14 +146,20 @@ static inline int Isspace(c) {
 static int split_vbn(char **p, TELNUM *num) {
   int l;
 
+#if DEBUG
   print_msg(PRT_V, "vbn: p(%d) '%s' ", num->nprovider,*p);
+#endif
   if ((l = provider2prefix(*p, &num->nprovider, num))) {
 	Strncpy(num->provider, *p, l+1);
 	*p += l;
+#if DEBUG
     print_msg(PRT_V, "Provider \"%s\" %d\n", num->provider, num->nprovider);
+#endif
 	return l;
   }
+#if DEBUG
   print_msg(PRT_V, "No Provider\n");
+#endif
   return 0;	  
 }
 static inline void clearCountry(TELNUM *num, int c) {
@@ -177,7 +184,9 @@ static int _getCountrycode(char *country, char ** t) {
   while(l>1) {	
 	if ((res = getCountrycode(c, t)) != UNKNOWN) 
 	  last=res;
+#if DEBUG
   	print_msg(PRT_V, "_getCountrycode(%s)=%d  ", c,res);
+#endif
 	c[--l] = '\0'; /* try shorter */
   }
   return last;	
@@ -186,7 +195,9 @@ static int split_country(char **p, TELNUM *num) {
   int res=0;
   int len=0;
   char *country=0;
+#if DEBUG
   print_msg(PRT_V, "cou: '%s' ", *p);
+#endif
   
   if (!memcmp(*p,"00", 2) || !isdigit(**p)) {
 	res = 0; /* len of country known ? */
@@ -209,9 +220,13 @@ static int split_country(char **p, TELNUM *num) {
 	}	  
 	if (res == 0) {
 	  if((res = _getCountrycode(country, 0)) != UNKNOWN) {
+#if DEBUG
     	print_msg(PRT_V, "getCountrycode(%s)= ", country);
+#endif
 		country[res]='\0';
+#if DEBUG
     	print_msg(PRT_V, "\"%s\"  ", country);
+#endif
 		*p += res;
 	  }
 	  else {
@@ -221,7 +236,9 @@ static int split_country(char **p, TELNUM *num) {
 	  }	
 	}  	
     if (getCountry(country, &num->country) != UNKNOWN) {
+#if DEBUG
 	  print_msg(PRT_V, "Country \"%s\"\n", num->country->Code[0]);
+#endif
 	  num->ncountry=atoi(num->country->Code[0]+1);
 	}  
   	else {
@@ -233,14 +250,20 @@ static int split_country(char **p, TELNUM *num) {
   }
   else {
 	int ga;
+#if DEBUG
     print_msg(PRT_V, "getArea(%d,%s) => " ,num->nprovider, *p);
+#endif
 	if((ga=getArea(num->nprovider, *p))) /* sondernummer */
   	  clearCountry(num, 0); 
 	else  
   	  clearCountry(num, DEFAULT); 
+#if DEBUG
 	print_msg(PRT_V, "%d  ", ga);
+#endif
   }  
+#if DEBUG
   print_msg(PRT_V, "Country %d\n", num->ncountry);
+#endif
   return res+len;
 }  
 
@@ -254,7 +277,9 @@ static int split_area(char **p, TELNUM *num, int first) {
   int res=0;
   int len=0;
   char *s;
+#if DEBUG
   print_msg(PRT_V, "are: '%s' ", *p);
+#endif
   if (num->ncountry == 0) {	/* sondernummer */
 	clearArea(num, 0);
 	return 0; 
@@ -269,11 +294,15 @@ static int split_area(char **p, TELNUM *num, int first) {
   	  Strncpy(num->area, *p, min(res+1, TN_MAX_AREA_LEN));	 
 	  (*p) += res;
 	  num->narea=atoi(num->area);
+#if DEBUG
 	  print_msg(PRT_V,"getAreacode(%d, %s)= '%s'\n",num->ncountry,num->area,num->sarea);
+#endif
 	}	
 	else {
 	  clearArea(num, UNKNOWN);
+#if DEBUG
 	  print_msg(PRT_V,"getAreacode(%d, %s)= 'UNKNOWN'\n",num->ncountry,*p);
+#endif
 	  return -1;
 	}
   }		
@@ -331,7 +360,9 @@ int provider2prefix(char *p, int *prefix, TELNUM *num) {
 	l1=strlen(vbns);
 	if (!memcmp(p, q, l1)) {
 	  Strncpy(num->vbn, q, TN_MAX_VBN_LEN);
+#if DEBUG
       print_msg(PRT_V, "VBN \"%s\"\n", q);
+#endif
   	  if (p[l1] == '0' && VBN_GERMANY) /* dreistellige Verbindungsnetzbetreiberkennzahl? */
     	l2 = l1 + 3;	/* 1002 is provider UTA in AT */
   	  else
@@ -458,6 +489,13 @@ again:
 			SKIP;
 		  break;
 		case 'f': q=stpcpy(q,formatNumber("%1c %1a %1m (%2C, %A)", num)); break;
+
+                case 'F': if (num->ncountry == defnum.ncountry)
+                     	    q = stpcpy(q, formatNumber("%1c %1a/%1m, %A", num));
+                	  else
+                     	    q = stpcpy(q, formatNumber("%1c %1a/%1m, %2C, %A", num));
+                          break;
+
 		case 's': q=stpcpy(q,formatNumber("%1c %1a %m", num)); break;
 		case 'n': 
 		  if(num->ncountry>0 && num->country) {

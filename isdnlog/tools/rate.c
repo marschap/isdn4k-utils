@@ -1,4 +1,4 @@
-/* $Id: rate.c,v 1.38 1999/07/31 09:25:45 akool Exp $
+/* $Id: rate.c,v 1.39 1999/08/20 19:29:02 akool Exp $
  *
  * Tarifdatenbank
  *
@@ -19,6 +19,13 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rate.c,v $
+ * Revision 1.39  1999/08/20 19:29:02  akool
+ * isdnlog-3.45
+ *  - removed about 1 Mb of (now unused) data files
+ *  - replaced areacodes and "vorwahl.dat" support by zone databases
+ *  - fixed "Sonderrufnummern"
+ *  - rate-de.dat :: V:1.10-Germany [20-Aug-1999 21:23:27]
+ *
  * Revision 1.38  1999/07/31 09:25:45  akool
  * getRate() speedup
  *
@@ -816,13 +823,13 @@ int initRate(char *conf, char *dat, char *dom, char **msg)
       s+=2;
       while(1) {
 	if (*(c=strip(str2list(&s)))) {
-
+#if 0
 	  if (*c == '0' && (*(c + 1) != '0')) {
 	    sprintf(sx, "%s%s", mycountry, c + 1);
 	    warning(dat, "Replacing %s by %s\n", c, sx);
 	    c = sx;
 	  } /* if */
-
+#endif
 	  if (!isdigit(*c) && (d=getCountry(c, &Country)) != UNKNOWN) {
 	    if (*c=='+') {
 	      Areas += appendArea (prefix, c, Country->Name, zone, &domestic, dat);

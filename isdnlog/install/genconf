@@ -1,5 +1,5 @@
 #!/bin/sh
-## $Id: genconf,v 1.8 1999/03/20 14:32:49 akool Exp $
+## $Id: genconf,v 1.9 1999/08/20 19:27:54 akool Exp $
 ##
 ## installation script for the config file of isdnlog
 ##
@@ -20,6 +20,13 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: genconf,v $
+## Revision 1.9  1999/08/20 19:27:54  akool
+## isdnlog-3.45
+##  - removed about 1 Mb of (now unused) data files
+##  - replaced areacodes and "vorwahl.dat" support by zone databases
+##  - fixed "Sonderrufnummern"
+##  - rate-de.dat :: V:1.10-Germany [20-Aug-1999 21:23:27]
+##
 ## Revision 1.8  1999/03/20 14:32:49  akool
 ## - isdnlog Version 3.08
 ## - more tesion)) Tarife from Michael Graw <Michael.Graw@bartlmae.de>
@@ -113,7 +120,6 @@ else
 	echo -n "Adding some entries to the config file \"$CONFFILE\"..."
 fi
 
-setentry "[GLOBAL]"  "AREADIFF"      "$AREADIFF"
 setentry "[GLOBAL]"  "AREACODE"      "$AREACODE"
 setentry "[GLOBAL]"  "AREAPREFIX"    "$AREAPREFIX"
 setentry "[GLOBAL]"  "COUNTRYCODE"   "$COUNTRYCODE"
