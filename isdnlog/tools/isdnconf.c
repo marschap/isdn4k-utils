@@ -1,4 +1,4 @@
-/* $Id: isdnconf.c,v 1.8 1997/05/04 20:20:01 luethje Exp $
+/* $Id: isdnconf.c,v 1.9 1997/05/10 22:41:17 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -20,6 +20,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnconf.c,v $
+ * Revision 1.9  1997/05/10 22:41:17  luethje
+ * bug in format string fixed
+ *
  * Revision 1.8  1997/05/04 20:20:01  luethje
  * README completed
  * isdnrep finished
@@ -963,11 +966,11 @@ static char *Get_FmtStr(char *Ptr, char *name)
 	static char *RetCode = NULL;
 	char *ptr2;
 
-	if (*Ptr++ != '\"')
+	if (*Ptr != '\"')
 		return Ptr;
 
 	free(RetCode);
-	ptr2 = RetCode = strdup(Ptr);
+	ptr2 = RetCode = strdup(++Ptr);
 
 	while(*Ptr != '\"')
 	{
