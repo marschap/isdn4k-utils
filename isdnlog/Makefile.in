@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.23 1997/05/11 22:59:14 luethje Exp $
+## $Id: Makefile.in,v 1.24 1997/05/15 22:32:41 luethje Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,9 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.24  1997/05/15 22:32:41  luethje
+## new version
+##
 ## Revision 1.23  1997/05/11 22:59:14  luethje
 ## new version
 ##
@@ -211,7 +214,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 2.99.17
+VERSION     = 2.99.18
 
 ifeq ($(POSTGRES),1)
 DEFS       += -DPOSTGRES
