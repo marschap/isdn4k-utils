@@ -1,7 +1,10 @@
 /*
- * $Id: capiinit.c,v 1.8 2001/04/18 10:21:42 calle Exp $
+ * $Id: capiinit.c,v 1.9 2002/05/23 12:52:36 calle Exp $
  *
  * $Log: capiinit.c,v $
+ * Revision 1.9  2002/05/23 12:52:36  calle
+ * - Uaah. Bugfix for c2 patchvalues.
+ *
  * Revision 1.8  2001/04/18 10:21:42  calle
  * support for "AVM ISDN Controller C2" added.
  *
@@ -953,6 +956,16 @@ static struct capicard *load_firmware(int contr, struct capicard *card)
 			addpatchbyte("CtlrNr", i);
 			addpatchvalues(&cp->patchinfo);
 			if (cp->next && strcmp(cp->next->driver, "c4") == 0)
+				cp = cp->next;
+		}
+		next = cp->next;
+	} else if (strcmp(card->driver, "c2") == 0) {
+		struct capicard *cp;
+		int i;
+		for (i=0,cp=card; i < 2; i++) {
+			addpatchbyte("CtlrNr", i);
+			addpatchvalues(&cp->patchinfo);
+			if (cp->next && strcmp(cp->next->driver, "c2") == 0)
 				cp = cp->next;
 		}
 		next = cp->next;
