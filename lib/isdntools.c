@@ -1,4 +1,4 @@
-/* $Id: isdntools.c,v 1.13 1997/05/19 22:58:28 luethje Exp $
+/* $Id: isdntools.c,v 1.14 1997/05/19 23:37:05 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdntools.c,v $
+ * Revision 1.14  1997/05/19 23:37:05  luethje
+ * bugfix for isdnconf
+ *
  * Revision 1.13  1997/05/19 22:58:28  luethje
  * - bugfix: it is possible to install isdnlog now
  * - improved performance for read files for vbox files and mgetty files.
@@ -271,6 +274,9 @@ char *expand_number(char *s)
 
 		Ptr++;
 	}
+
+	if (Help[0] == '\0')
+		return s;
 
 	if (Help[0] == '*' || !strncmp(Help,countryprefix,strlen(countryprefix)))
 	{
