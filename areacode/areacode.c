@@ -1,3 +1,10 @@
+/* $Id: areacode.c,v 1.2 1997/04/17 19:41:41 luethje Exp $
+ * $Log: areacode.c,v $
+ * Revision 1.2  1997/04/17 19:41:41  luethje
+ * patch of Ullrich von Bassewitz
+ *
+ */
+
 /*****************************************************************************/
 /*                                                                           */
 /*                                AREACODE.C                                 */
@@ -288,7 +295,7 @@ static unsigned LoadFileHeader (AreaCodeDesc* Desc)
     } else if (feof (Desc->F) || Desc->Count == 0) {
         /* This should not happen on a valid file */
         return acInvalidFile;
-    } else if (Desc->Version != acVersion) {
+    } else if ((Desc->Version & 0xFF00) != acVersion) {
         return acWrongVersion;
     } else {
         /* Data is sane */
