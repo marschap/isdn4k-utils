@@ -4,7 +4,7 @@
 
 <title>FAQ for isdn4linux
 <author>Matthias Hessler (<tt><htmlurl url="mailto:hessler@isdn4linux.de" name="hessler@isdn4linux.de"></tt>)
-<date>v2.0.38, 9. April 2000
+<date>v2.0.39, 23. April 2000
 <abstract>
 If you are reading this FAQ online, you may consider downloading the whole
 thing, and reading it offline (much cheaper). To download the latest
@@ -708,7 +708,8 @@ than 50 card versions)
 <item>Dr. Neuhaus Niccy PnP/PCI
 <item>Siemens I-Surf 1.0
 <item>Siemens I-Surf 2.x (with IPAC =&gt; try type 12 asuscom)
-<item>Trust PCI
+<item>Trust PCI (only the old one with Siemens chip;
+the one called 'Wisecom' in NL does not work)
 <item>ACER P10
 <item>HSR Saphir
 <item>Berkom Telekom A4T
@@ -2221,8 +2222,9 @@ To compile the kernel with syncPPP included in ISDN4Linux, you have to answer
 the appropriate questions with &dquot;yes&dquot;. Don't forget to load the
 module slhc.o before isdn.o, if VJ compression is not compiled into the kernel
 e.g. if you have no PPP and no CSLIP in the kernel. (Note that the use of VJ
-is problematic and does not work reliably - however, the support should still
-be included in the kernel, since there can otherwise be side effects.)
+is problematic for elder kernels and does not work reliably - however, the
+support should still be included in the kernel, since there can otherwise
+be side effects.)
 
 <sect1> syncppp_netinterface: How should I name my network interface?  
 <label id="syncppp_netinterface">
@@ -2272,6 +2274,12 @@ help.
 
 You can find an example configuration in the file <tt>etc/rc.isdn.syncppp</tt>
 in the isdn4kernel-util package.
+
+You can also run several ipppds to allow for different configurations,
+in such a case use the <tt>&dquot;isdnctrl pppbind&quot;</tt>
+functionality. However, normally one ipppd is meant to handle all traffic,
+so it is highly recommended to only set up several ipppds if their
+configuration has to be different.
 
 <sect1> syncppp_busy: How can I tell if a connection is unsuccessful (busy)?  
 <label id="syncppp_busy">
@@ -2378,13 +2386,22 @@ is to use compression, see question
 <sect1> syncppp_compression: Which compressions can I use with ipppd?  
 <label id="syncppp_compression">
 <p>
-<em>Van Jacobson compression</em> (header compression) is in experimental
-state. It works for some remote devices, but not for others. Check it out on
-your own risk, to be sure disable it. <em>Lzs compression</em> (sometimes also
-called <em>Stac compression</em>) works quite well. To enable it, some manual
-work has to be done to add the code to the ipppd (see the isdn4k-util
-package). <em>Bsd compression</em> also seems to work, but is in experimental
-stage. You find it in the CVS tree.
+Several compressions can now be used with ipppd. However, if in doubt and
+it does not work: disable it.
+<itemize>
+<item><em>Van Jacobson compression</em> (header compression).
+Should work fine now for current kernels (later than 2.2.14). To use it you
+have to compile it into the kernel. To get around some problems with
+automatic loading of the VJ module try to also compile SLIP and CSLIP
+into the kernel. Disable with options <tt>&dquot;-vj -vjccomp&dquot;</tt>.
+<item><em>BSD compression</em>.
+Seems to work quite well if your peer supports it. It is independent
+of Van Jacobson compression, so you can use them both together.
+<item><em>LZS compression</em> (sometimes also
+called <em>Stac compression</em>).
+Also works quite well. To enable it, some manual work has to be done to add
+the code to the ipppd (see the isdn4k-util package).
+</itemize>
 
 
 <!-- Trouble ipppd
@@ -3376,6 +3393,8 @@ and close them with the command:
 isdnctrl removelink ippp0
 </code>
 This is different to other encapsulations of isdn4linux!
+If addlink gives you error -2, then this means that there are no slave devices
+configured. Error -5 means that ippp0 is not connected.
 
 Please also note, that the slave device has to be in dialmode <tt/auto/ for
 this to work. For manual control, use
@@ -3993,9 +4012,10 @@ passed, which causes a short blackout of the screen.
 <sect> audio: Handling Voice with ISDN  
 <label id="audio">
 <p>
-(Most of the answers you will find here are taken from the vbox manual by
-Matthias Hessler <tt><htmlurl url="mailto:hessler@wi-inf.uni-essen.de"
-name="hessler@wi-inf.uni-essen.de"></tt> and
+(Most of the answers you will find here are taken from the - now
+unfortunately outdated - vbox manual by
+Matthias Hessler <tt><htmlurl url="mailto:hessler@isdn4linux.de"
+name="hessler@isdn4linux.de"></tt> and
 Bernhard Hailer <tt><htmlurl url="mailto:dl4mhk@lrz.uni-muenchen.de"
 name="dl4mhk@lrz.uni-muenchen.de"></tt>; you can get the manual at:
 
@@ -4003,6 +4023,16 @@ name="dl4mhk@lrz.uni-muenchen.de"></tt>; you can get the manual at:
 
 - click on &dquot;Audio!&dquot; (still in German we're afraid - sorry...)
 They are currently very outdated, but may give you a few hints?
+
+<sect1> audio_links: Where can I find helpful links regarding vbox?  
+<label id="audio_links">
+<p>
+There are several scripts available to be used in connection to vbox,
+but the author is not up to date. Here is the latest one I received
+information about:
+<tt><url url="http://members.myworld.at/mren/vbox4php.html"></tt>
+Please send me information if you know more helpful links, or howtos,
+or whatever useful...
 
 <sect1> audio_format: What is the format of the audio messages (.msg) vbox  
 plays when it answers a call?  
