@@ -1,4 +1,4 @@
-/* $Id: isdnconf.c,v 1.2 1997/03/23 20:58:31 luethje Exp $
+/* $Id: isdnconf.c,v 1.3 1997/04/03 22:36:23 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnconf.c,v $
+ * Revision 1.3  1997/04/03 22:36:23  luethje
+ * splitt the file isdn.conf into callerid.conf and ~/.isdn (for editing).
+ *
  * Revision 1.2  1997/03/23 20:58:31  luethje
  * some bugfixes
  *
@@ -55,6 +58,7 @@ static char si[SHORT_STRING_SIZE];
 static char number[BUFSIZ] = "";
 static char alias[BUFSIZ] = "";
 static char conffile[BUFSIZ];
+static char callerfile[BUFSIZ];
 
 /*****************************************************************************/
 
@@ -438,9 +442,10 @@ int main(int argc, char *argv[], char *envp[])
 	int Cnt = 0;
 	section *conf_dat = NULL;
 	char *myname = basename(argv[0]);
+	FILE *fp;
 
 	static char usage[]   = "%s: usage: %s [ -%s ]\n";
-	static char options[] = "ADdn:a:t:f:c:wslimqV";
+	static char options[] = "ADdn:a:t:f:c:wslimqgV";
 
 
 	set_print_fct_for_tools(print_in_modules);
@@ -448,6 +453,7 @@ int main(int argc, char *argv[], char *envp[])
 	alias[0] = '\0';
 	number[0] = '\0';
 	sprintf(conffile,"%s%c%s",confdir(),C_SLASH,CONFFILE);
+	strcpy(callerfile,USERCONFFILE);
 
 	while ((c = getopt(argc, argv, options)) != EOF)
 		switch (c) {
@@ -455,6 +461,7 @@ int main(int argc, char *argv[], char *envp[])
 			           break;
 
 			case 'D' : del++;
+			           match_flags &= ~F_NO_HOLE_WORD;
 			           break;
 
  			case 'V' : print_version(myname);
@@ -490,10 +497,13 @@ int main(int argc, char *argv[], char *envp[])
 			case 'q' : quiet++;
 			           break;
 
-			case 'f' : strcpy(conffile, optarg);
+			case 'f' : strcpy(callerfile, optarg);
 			           break;
 
 			case 'c' : strcpy(areacode, optarg);
+			           break;
+
+			case 'g' : sprintf(callerfile,"%s%c%s",confdir(),C_SLASH,CALLERIDFILE);
 			           break;
 
 			case '?' : print_msg(PRT_ERR, usage, myname, myname, options);
@@ -504,12 +514,37 @@ int main(int argc, char *argv[], char *envp[])
 	{
 		if ((conf_dat = read_file(NULL, conffile, C_NOT_UNIQUE)) == NULL)
 			exit(2);
-		
+
 		if (Set_Codes(conf_dat) != 0)
 		{
 			print_msg(PRT_ERR,"Error: Variables `%s' and `%s' are not set!\n",CONF_ENT_AREA,CONF_ENT_COUNTRY);
 			exit(5);
 		}
+
+		free_section(conf_dat);
+		conf_dat = NULL;
+
+		if (access(expand_file(callerfile),W_OK))
+		{
+			if (errno != ENOENT)
+			{
+				print_msg(PRT_ERR,"Error: Can not open file `%s' (%s)!\n",expand_file(callerfile),strerror(errno));
+				exit(6);
+			}
+			else
+			{
+				if ((fp = fopen(expand_file(callerfile),"w")) == NULL)
+				{
+					print_msg(PRT_ERR,"Error: Can not open file `%s' (%s)!\n",expand_file(callerfile),strerror(errno));
+					exit(6);
+				}
+
+				fclose(fp);
+			}
+		}
+		else
+			if ((conf_dat = read_file(NULL, expand_file(callerfile), C_NOT_UNIQUE)) == NULL)
+				exit(2);
 	}
 	else
 	{
@@ -579,8 +614,11 @@ int main(int argc, char *argv[], char *envp[])
 		Cnt = look_data(&conf_dat);
 
 	if ((add || del) && Cnt > 0)
-		if (write_file(conf_dat,conffile,myname,VERSION) == NULL)
+		if (write_file(conf_dat,expand_file(callerfile),myname,VERSION) == NULL)
 			exit(5);
+
+	if (del && !Cnt)
+		print_msg(PRT_ERR, "No entry deleted!\n");
 
 	free_section(conf_dat);
 
