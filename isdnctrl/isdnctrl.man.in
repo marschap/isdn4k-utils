@@ -1,6 +1,6 @@
-.\" $Id: isdnctrl.man.in,v 1.19 2000/01/27 15:07:31 paul Exp $
+.\" $Id: isdnctrl.man.in,v 1.20 2000/05/28 00:21:47 paul Exp $
 .\"
-.\" CHECKIN $Date: 2000/01/27 15:07:31 $
+.\" CHECKIN $Date: 2000/05/28 00:21:47 $
 .\"
 .\" Process this file with
 .\" groff -man -Tascii isdnctrl.8 for ASCII output, or
@@ -437,7 +437,7 @@ The
 identifies a specific S0-Port. The channels of a port start
 counting with zero. If 
 .B exclusive
-is given, other interfaces cannot use that interface anymore.
+is given, other interfaces cannot use that channel anymore.
 Otherwise, the channel may be used by other interfaces.
 .TP
 .BI unbind " name"
