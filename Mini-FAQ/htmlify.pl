@@ -26,11 +26,11 @@ while($line= (($part eq "all") ? <INFILE> : <INFILE2>))
   $line =~ s/>/&gt;/g;
   if($line =~ /http:/)
   {
-    $line =~ s/(http:[^ \n]+)/<a href="\1">\1<\/a>/;
+    $line =~ s/(http:[^ \n]+)/<a href="\1">\1<\/a>/g;
   }
   elsif($line =~ /ftp:/)
   {
-    $line =~ s/(ftp:[^ \n]+)/<a href="\1">\1<\/a>/;
+    $line =~ s/(ftp:[^ \n]+)/<a href="\1">\1<\/a>/g;
   }
   elsif($line =~ /www./)
   {

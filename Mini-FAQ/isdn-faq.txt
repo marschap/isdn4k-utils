@@ -35,19 +35,31 @@ germantoc
 
 5.   Wo gibt es die "geheime FAQ"?
 
-     www.deja.com   Suche mit Stichwort isdn4linux (wer hätt's gedacht).
-     Nicht vergessen, auch in der Datenbank mit den alten Artikeln zu suchen,
-     wenn du erstmal nichts findest.
+     http://www.deja.com/=dnc/ bzw. http://www.deja.com/=dnc/home_ps.shtml
+     Suche mit Stichwort isdn4linux (wer hätt's gedacht).  Nicht vergessen,
+     auch in der Datenbank mit den alten Artikeln zu suchen, wenn du erstmal
+     nichts findest.
 
-6.   Die erste Verbindung geht immer kaputt wegen dynamischen IP-Adressen.
+6.   Die erste (Netscape-)Verbindung geht immer kaputt wegen dynamischen
+     IP-Adressen.
 
      Hast du SuSE 5.2, 3. Auflage oder neuer schreibst du in /etc/rc.config
        IP_DYNIP="yes"
      Sonst (oder wenn du nicht neu booten willst) machst du
        echo 5 > /proc/sys/net/ipv4/ip_dynaddr
-     Das kannst du z.B. auch in /etc/rc.d/rc.local schreiben.  Siehe
-     /usr/src/Linux/Documentation/networking/ip_dynaddr.txt und
+     Das kannst du z.B. auch in /etc/rc.d/rc.local schreiben.
+     Die Nummer 5 ist immer unproblematisch, aber die genauen Nummern, die
+     verstanden werden, sind von Kernel zu Kernel unterschiedlich.  Siehe
+     /usr/doc/kernel-doc-deineversion/networking/ip_dynaddr.txt oder
+     /usr/src/linux/Documentation/networking/ip_dynaddr.txt und
      http://sdb.suse.de/sdb/de/html/dynippatch.html
+
+     Wenn die Verbindung von einer Windows-Maschine stammt (und die
+     ISDN4Linux-Maschine Masquerading/NAT macht), kann es sein, daß
+     die Windows-Maschine einfach zu schnell aufgibt.  Die Default-Wert von
+     Hkey_Local_Machine\System\CurrentControlSet\Services\VxD\MSTCP\MaxConnectRetries
+     ist 3 (6 Sekunden), sollte aber mindestens 5 (24 Sekunden) sein.
+     Das kann man mit dem Registry Editor ändern.
 
 7.   Es wird immer wieder gewählt, besonders wenn ich hart auflege (ohne auf
      Timeout zu warten).
@@ -80,8 +92,7 @@ germantoc
      Modulen lade?
 
      Schau in den README-Dateien in /usr/src/linux/Documentation/isdn und frag
-     Deja News mit den Stichwörtern "isdn4linux" und
-     "wiedeinekartegenauheisst".
+     Deja News mit den Stichwörtern "isdn4linux" und "wiedeinekartegenauheisst".
 
 10.  Wo gibt es die neusten ISDN4Linux Software?
 
@@ -94,33 +105,10 @@ germantoc
      Siehe auch den Web-Server deines Distributions, und deine lokale
      RPM-Repository, z.B.  http://SunSITE.auc.dk/linux/RPM/
 
-11.  Seitdem ich Kernel-2.0.36 verwende geht ISDN4Linux nicht mehr.
-
-     Du brauchst die neusten isdn4k-utils, 3.0beta1 oder neuer.  Siehe oben.
-     Siehe insbesondere den neuen 'dialmode'-Befehl in isdnctrl.  Bemerke:
-     die Utils müssen mit der verwendeten Kernel-Version übersetzt werden,
-     d.h. wenn du dein Kernel updatest, musst du u.U. die Utils auch neu
-     übersetzen.
-
-     Achtung!  Die '2.0.36'-er Kernel in Red Hat 5.2 ist keine richtige
-     2.0.36er, sondern eine Prerelease ohne die neuen ISDN-Änderungen.
-     Du brauchst also entweder die richtige 2.0.36 von www.kernel.org oder
-     den neusten Kernel-Treiber, siehe Frage 10.
-
-12.  Seitdem ich Kernel-2.2.x verwende geht ISDN4Linux nicht mehr.
-
-     Die Version von ISDN4Linux in frühen 2.2.x-Kernels war leider ziemlich
-     fehlerhaft.  Jetzt (seit 2.2.11 und 2.3.16) sind die ISDN-Treiber im
-     normalen Kernel wieder auf dem aktuellsten Stand.  Du brauchst immer noch
-     ziemlich aktuellen isdn4kutils, siehe Frage 10.
-
-     Wenn den Sprung auf 2.2.13 machst, musst du deine isdn4kutils neu
-     übersetzen, oder ein neues, für 2.2.13 geeignetes, Package installieren.
-
-13.  Es wird gewählt, aber die Verbindung klappt nicht.
+11.  Es wird gewählt, aber die Verbindung klappt nicht.
 
      Du musst in ipppd debug einschalten, und dann in /var/log/messages
-     nachschauen (siehe auch Frage 16).  Dabei heisst:
+     nachschauen (siehe auch Frage 14).  Dabei heisst:
 
      sent ConfReq ... Dein Rechner wollte etwas
      sent ConfRej ... Dein Recher weigerte sich etwas zu tun
@@ -128,18 +116,18 @@ germantoc
      sent ConfAck ... Dein Rechner stimmte etwas zu
      rcvd ...         Was die Gegenseite dazu gesagt hat
 
-14.  Was bedeuten diese komischen 'Cause'-Nummern?
+12.  Was bedeuten diese komischen 'Cause'-Nummern?
 
      Siehe 'man isdn_cause'
 
-15.  Kann ich meinen externen Terminal-Adapter mit ISDN4Linux verwenden?
+13.  Kann ich meinen externen Terminal-Adapter mit ISDN4Linux verwenden?
 
      Nein, nicht mit ISDN4Linux aber schon mit Linux,  Sie werden wie Modems
      behandelt.  Du brauchst also pppd und vielleicht diald.  Fragen 6, 7, 8
-     und 13 sind auch für dich relevant.  Bedingung: AT-Befehlssatz zur
+     und 11 sind auch für dich relevant.  Bedingung: AT-Befehlssatz zur
      Steuerung: Fritz!X-PC und Eumex 404 werden nicht unterstützt.
 
-16.  Ich habe diverse Debug-Options in ipppd und isdnctrl eingeschaltet, aber
+14.  Ich habe diverse Debug-Options in ipppd und isdnctrl eingeschaltet, aber
      es erscheint nichts in der Datei /var/log/messages.
 
      Es kann sein, daß du dein Syslog anders konfigurieren musst.  Siehe z.B.
@@ -155,7 +143,7 @@ germantoc
        mv -f /etc/syslog.conf.new /etc/syslog.conf
        killall -HUP syslogd
 
-17.  Welche Pakete installiere ich, oder Man-Seiten lese ich, oder
+15.  Welche Pakete installiere ich, oder Man-Seiten lese ich, oder
      Such-Stichwörter in Deja News verwende ich für:
 
      Alles:                          ISDN4Linux Kernel-Modul und isdn4kutils
@@ -171,30 +159,30 @@ germantoc
                                      squid/sendmail.  Siehe auch Frage 2.
      Plug-n-Play ISA-Karten:         isapnptools.
 
-18.  Die ISDN-Verbindung läuft, und ich kann numerischen Adressen pingen, z.B.
+16.  Die ISDN-Verbindung läuft, und ich kann numerischen Adressen pingen, z.B.
      mit 'ping -c 20 198.41.0.4' aber Netscape etc. funktioniert nicht.
 
      Du hast Probleme mit Nameserver-Einstellungen.  Siehe Frage 2.
 
-19.  Die ISDN-Verbindung läuft, aber ich kann nicht mal numerischen Adressen
+17.  Die ISDN-Verbindung läuft, aber ich kann nicht mal numerischen Adressen
      pingen, z.B.  mit 'ping -c 20 198.41.0.4' und Netscape etc. funktioniert
      nicht.
 
      Du hast Probleme mit Routing.  Siehe Fragen 8 und 2.
 
-20.  Manchmal wird meine Internetverbindung sehr sehr langsam.  Ping zeiten
-     verzögern sich tausende von millisekunden.
+18.  Ich verstehe die verschiedenen Formen von Rufnummerübermittlung (CLIP -
+     CLIR - COLP - COLR) nicht.
 
-     Entweder Kernel 2.2.13 oder neuer verwenden, oder den Patch aus
-     http://x45.deja.com/=dnc/getdoc.xp?AN=529129151 installieren.  Siehe auch
-     Frage 12.
+     Siehe CLIP-CLIR-COLP-COLR-Mini-FAQ unter
+     http://home.t-online.de/home/rbschmitt/cccc.htm
 
-21.  Es will einfach nicht klappen!
+19.  Es will einfach nicht klappen!
 
      Frag mal hier in der Newsgruppe/Mailingliste.  Wir versuchen hilfreich zu
      sein, aber es geht leichter, wenn wir ein Paar Infos haben:
 
-     Versionsnummern vom Kernel, ISDN Treiber, Distribution, isdn4kutils.
+     Versionsnummern vom Kernel, ISDN Treiber Version (wenn der ISDN Treiber
+     nicht aus dem Kernel stammt), Distribution (z.B. Red Hat 7.6), isdn4kutils.
      Kurze Auszüge aus /var/log/messages wenn da was steht.  Das Output von
      'route -n', 'ifconfig', 'lsmod' und 'isdnctrl list ippp0'
 
@@ -240,19 +228,30 @@ englishtoc
 
 5.   Where is the "secret FAQ"?
 
-     www.deja.com   Search with the keyword isdn4linux (surprise, surprise).
+     http://www.deja.com/=dnc/ or http://www.deja.com/=dnc/home_ps.shtml
+     Search with the keyword isdn4linux (surprise, surprise).
      Many articles, but not all, are in German.  Don't forget to look in the
      'past' article database if you don't find anything in the 'current' one.
 
-6.   The first connection never works because of dynamic IP addresses.
+6.   The first (Netscape-)connection never works because of dynamic IP addresses.
 
      If you have SuSE 5.2, 3rd edition or newer you can put
        IP_DYNIP="yes"
      in /etc/rc.config.  Otherwise (or if you don't want to reboot) you do an:
        echo 5 > /proc/sys/net/ipv4/ip_dynaddr
-     You can put that in /etc/rc.d/rc.local See
-     /usr/src/Linux/Documentation/networking/ip_dynaddr.txt and
+     You can put that in /etc/rc.d/rc.local  The value 5 is always safe but
+     the exact numbers understood vary from kernel to kernel.  The
+     documentation for your kernel can be found in
+     /usr/doc/kernel-doc-yourversion/networking/ip_dynaddr.txt or
+     /usr/src/linux/Documentation/networking/ip_dynaddr.txt and
      http://sdb.suse.de/sdb/en/html/dynippatch.html
+
+     If the problematic connection comes from a Windows machine (and goes through
+     the ISDN4Linux machine because of masquerading/NAT) it could be that the
+     Windows machine is simply giving up too quickly.  The default value of
+     Hkey_Local_Machine\System\CurrentControlSet\Services\VxD\MSTCP\MaxConnectRetries
+     is 3 (6 seconds).  It should be at least 5 (24 seconds).  You can change it
+     with the registry editor.
 
 7.   ISDN4Linux keeps redialling, especially if I do a hard hangup (without
      waiting for timeout).
@@ -261,7 +260,7 @@ englishtoc
      6 and see also http://sdb.suse.de/sdb/en/html/katlist.ISDN.html  If you
      use kernel 2.2 see also
      http://www-users.rwth-aachen.de/Michael.Mueller4/dynip.html  For newer
-     2.2 kernels (2.2.14) that patch will not go in cleanly, use instead this:
+     2.2 kernels (2.2.14) that patch will not go in cleanly, use this instead:
      http://www.grueneberg.de/linux/linux-2.2.14-rst.patch  The patch has not
      yet been ported to the 2.3 kernels.
 
@@ -297,32 +296,10 @@ englishtoc
      See also the web/ftp server of your distribution and your local RPM
      repository, eg.  http://SunSITE.auc.dk/linux/RPM/
 
-11.  ISDN4Linux doesn't work any more since I updated to kernel 2.0.36.
-
-     You need the newest isdn4k-utils, 3.0beta1 or newer.  See above.  In
-     particular you need the new 'dialmode' command isdnctrl.  Note: the
-     utils must be compiled with the version of the kernel you are using, so
-     when you upgrade your kernel, you may need to recompile the utils.
-
-     Warning!  The '2.0.36' kernel in Red Hat 5.2 is not the real 2.0.36, but
-     rather a pre-release without the new ISDN code.  So you either need the
-     real 2.0.36 kernel from www.kernel.org or an update for the kernel
-     driver, see question 10.
-
-12.  ISDN4Linux doesn't work any more since I updated to kernel 2.2.x.
-
-     Unfortunately, the version of ISDN4Linux in early releases of kernel 2.2
-     was quite buggy.  Since 2.2.11 and 2.3.16, the ISDN-Driver in the official
-     kernels has been up to date.  You still need a fairly new version of the
-     isdn4kutils, see question 10.
-
-     If you upgrade to 2.2.13 you will need to recompile your isdn4kutils or
-     download a new package that is suitable for 2.2.13.
-
-13.  ISDN4Linux dials, but the connection isn't set up.
+11.  ISDN4Linux dials, but the connection isn't set up.
 
      You have to switch on debug in ipppd, and then take a look at
-     /var/log/messages (see also question 16).  Here are some explantions
+     /var/log/messages (see also question 14).  Here are some explantions
      to help you see what is going on:
 
      sent ConfReq ... What your machine wanted
@@ -331,19 +308,19 @@ englishtoc
      sent ConfAck ... Your machine agreed to something
      rcvd ...         What the remote server said
 
-14.  What do these funny 'cause' codes mean?
+12.  What do these funny 'cause' codes mean?
 
      See 'man isdn_cause'
 
-15.  Can I use ISDN4Linux with my external ISDN Terminal Adapter?
+13.  Can I use ISDN4Linux with my external ISDN Terminal Adapter?
 
      No, they don't work with ISDN4Linux, but they do work with Linux.  You
      treat these like a modem, so you need pppd and perhaps diald.  Questions
-     6, 7, 8 and 13 still apply, using pppd instead of ipppd.  Note:  AT-
+     6, 7, 8 and 11 still apply, using pppd instead of ipppd.  Note:  AT-
      commands must be understood by the device.  External 'winmodems' like
      Fritz!X-PC and Eumex 404 are not supported.
 
-16.  I activated various debug options in ipppd and isdnctrl, but I don't see
+14.  I activated various debug options in ipppd and isdnctrl, but I don't see
      anything in /var/log/messages.
 
      You may need to reconfigure syslog.  See eg. 'man syslogd' and 'man
@@ -358,7 +335,7 @@ englishtoc
        mv -f /etc/syslog.conf.new /etc/syslog.conf
        killall -HUP syslogd
 
-17.  Which packages should I install, or man pages/HOWTOs should I read, or
+15.  Which packages should I install, or man pages/HOWTOs should I read, or
      keywords should I use in Deja News for:
 
      Everything:                     ISDN4Linux kernel module and isdn4kutils
@@ -374,31 +351,31 @@ englishtoc
                                      with squid/sendmail.  See also question 2
      Plug-n-Play ISA cards:          isapnptools.
 
-18.  The ISDN connection is working, and I can ping numeric addresses eg with
+16.  The ISDN connection is working, and I can ping numeric addresses eg with
      'ping -c 20 198.41.0.4' but Netscape etc. don't work.
 
      You have a problem with your nameserver.  See question 2.
 
-19.  The ISDN connection is working, but I can't even ping numeric addresses
+17.  The ISDN connection is working, but I can't even ping numeric addresses
      eg. with 'ping -c 20 198.41.0.4' and Netscape etc. don't work.
 
      You have a problem with your routing.  See questions 8 and 2.
 
-20.  Sometimes my ISDN connection becomes very slow.  I get ping times of
-     several thousand milliseconds.
+18.  I don't understand the various forms of calling line identification
+     (CLIP - CLIR - COLP - COLR).
 
-     Apply the patch from http://x45.deja.com/=dnc/getdoc.xp?AN=529129151 or
-     upgrade to 2.2.13.  See also question 12.
+     There's a Mini-FAQ about this on http://home.t-online.de/home/rbschmitt/cccc.htm
+     Unfortunately it's not available in English.
 
-21.  It just doesn't work!
+19.  It just doesn't work!
 
      Ask us in the news group/mailing list.  We try to be helpful, but it is
      simpler if we have a few facts:
 
-     Version numbers for the kernel, ISDN driver, distribution and
-     isdn4kutils.  Short extracts from /var/log/messages if it contains
-     anything interesting.  The output from 'route -n', 'ifconfig', 'lsmod'
-     and 'isdnctrl list ippp0'
+     Version numbers for the kernel, the ISDN driver version number (if it didn't
+     come with the kernel), distribution name (eg. Red Hat 7.6) and isdn4kutils.
+     Short extracts from /var/log/messages if it contains anything interesting.  The
+     output from 'route -n', 'ifconfig', 'lsmod' and 'isdnctrl list ippp0'
 
 Corrections and suggestions welcome, please send them directly to me,
 Erik Corry, <erik@arbat.com>.
