@@ -4,7 +4,7 @@
 
 <title>FAQ for isdn4linux
 <author>Matthias Hessler (<tt><htmlurl url="mailto:hessler@isdn4linux.de" name="hessler@isdn4linux.de"></tt>)
-<date>v2.0.28, 18. December 1999
+<date>v2.0.29, 29. December 1999
 <abstract>
 If you are reading this FAQ online, you may consider downloading the whole
 thing, and reading it offline (much cheaper). To download the latest
@@ -677,7 +677,7 @@ than 50 card versions)
 <item>Traverse Technologie NETjet PCI S0 card
 <item>Dr. Neuhaus Niccy PnP/PCI
 <item>Siemens I-Surf 1.0
-<item>Siemens I-Surf 2.0 (with IPAC, try type 12 asuscom)
+<item>Siemens I-Surf 2.0 (with IPAC =&gt; try type 12 asuscom)
 <item>ACER P10
 <item>HSR Saphir
 <item>Berkom Telekom A4T
@@ -757,7 +757,7 @@ is necessary (which usually greatly simplifies the configuration).
 <p>
 For any details in this direction have a look at the excellent cable FAQ,
 which can be found at least in a German version at:
-<url url="http://www.rvs.uni-bielefeld.de/~mek/tk/tae/kabelfaq.html">.
+<url url="http://www.in-berlin.de/User/scorpio/faqkabel.html">.
 
 <sect1> hardware_irq: Why should I avoid IRQ 12 and 15 for my ISDN card?  
 <label id="hardware_irq">
@@ -1218,7 +1218,7 @@ isdn4linux:
 <item>German: <url url="http://www.franken.de/users/klaus/">
 <item>French: <url url="http://www.perso.wanadoo.fr/philippe.latu/">
 <item>Suse Support database:
-<url url="http://www.suse.de/Support/sdb_e/index.html">; there is also an ISDN
+<url url="http://sdb.suse.de/sdb/en/html/index.html">; there is also an ISDN
 howto (isdn.html) and a ISDN quick-install guide (isdnquick.html).
 <item>Tips to configure Red Hat:
 <url url="http://www.webideal.de/rh-isdn/">
@@ -3942,6 +3942,7 @@ We are aware of at least the following countries:
 <item>Ireland
 <item>Israel
 <item>Italy (see question <ref id="country_italy" name="country_italy">)
+<item>Japan
 <item>Norway
 <item>Peru
 <item>Portugal (see question <ref id="country_portugal" name="country_portugal">)
