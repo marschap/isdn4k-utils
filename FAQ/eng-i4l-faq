@@ -12,7 +12,7 @@ Posting-frequency: monthly
 Last-modified: 18-Mar-97
 URL: http://www.lrz-muenchen.de/~ui161ab/www/isdn/
 
-!1FAQ for isdn4linux - Version 1.3.2!br (translation 3-Oct-97)
+!1FAQ for isdn4linux - Version 1.3.3!br (translation 3-Oct-97)
 
 [Translator's notes]!br
 --5-May-97: Translation complete for 1.3.2 (except for the proofreading)! !br
@@ -270,42 +270,24 @@ Q: Is isdn4linux approved for use by the telecommunications authorities?
 A: Germany:!br
      That depends on the driver used. For active cards, the approval 
      covers the entire card including its firmware. Thus the approval 
-     also covers the use of these cards with isdn4linux. The Teles driver 
-     is not approved in Germany, even though it works superbly. Therefore, 
-     its use is only allowed when connected to the S0 bus of an approved
-     PBX.!br
+     also covers the use of these cards with isdn4linux. The Teles 16.3
+     and the Elsa QS1000 drivers are currently certified in Germany (and
+     hence in most european countries). This applies to the 2.0.36
+     kernel version.!br
    Other countries:!br 
-     We don't have any information... does anyone know more?
+     Besides those countries that accept a german certification,
+     we don't have any information... does anyone know more?
 
 !old
 Q: What is the most recent version?
-A: Currently isdn4k-utils-2.0 is required in addition to the drivers
-   included with the kernel. For use with kernel 2.0.0 (and only it),
-   two patches (isdn4kernel-2.0-patch1+2) are required. Kernel 2.0.2
-   is unusable because of a bug. Kernels between 2.0.15 and 2.0.24
-   don't seem to work correctly with syncPPP. 2.0.26 contained many
-   i4l bug fixes, but an include file (proto.h) was forgotten. A new
-   'jumbo patch' was included in version 2.0.30. Kernels 2.0.27+ are
-   very stable.!br
-   There are many changes in kernels 2.1.0 and higher; for now they
-   can only be recommended for developers. Together with HiSax 1.4,
-   they only work up to 2.1.14. Kernels 2.1.15 and higher require
-   HiSax 2.0 along with a necessary kernel patch.!br It's recommended
-   to use i4l versions 2.0 or higher together with a 2.0.3 or higher
-   kernel (no longer requires any patches!). Kernel >2.0.27 is the
-   current standard.
-
-[Translator's note: Unfortunately the HiSax driver did not get
-included in kernel 2.0.30, and the Teles driver no longer works with
-this kernel. To use HiSax with 2.0.30, you need the patch 
-
-!link ftp://ftp.franken.de/pub/isdn4linux/v2.0/isdn4kernel-2.0.30A.gz; 
-
-(or from one of the many isdn4linux mirrors). This patch is also
-included in the kernel pre-patch-2.0.31 (which I've been using without
-problems). The kernels provided with some distributions have the patch
-already applied (for example Debian 1.3.x and Suse 5.0).]
-
+A: Kernel 2.0.36 contains a very up to date version of the ISDN drivers.
+   We recommend that you use that kernel version.!br
+   Together with the 2.0.36 kernel, a new utilities package has been
+   released, which is a MUST (old versions of the utilities will not
+   work with the new kernel). The utilities are available at
+   !link ftp://ftp.franken.de/pub/isdn4linux/v2.0/;
+   and the current filename is isdn4k-utils-3.0beta1.tar.gz (also
+   available as .bz2). Check first if there is a newer version.
 
 Q: What hardware is !u1NOT!u0 supported?
 A: For not (with the exception of ICN) no active ISDN cards are supported,
@@ -322,7 +304,7 @@ Q: Which internal cards are supported?
 A: Right now there is a driver for all card with a certain Siemens
    chip set (HiSax driver), that also supports Plug&Play cards.  See
    the next question for details.!br
-   The HiSax driver has superseded has the old Teles driver, which is
+   The HiSax driver has superseded the old Teles driver, which is
    therefore is not being further developed. For this reason, the
    Teles driver has many more bugs and should not be used any
    longer.!br 
@@ -345,21 +327,50 @@ Q: What is the new HiSax driver all about?
 A: It is a new driver that should support all passive cards that are based on a
    certain Siemens chip set. Currently it supports:
 !verbon
-        * Teles S0-8
-        * Teles S0-16 and S0-16.2
-          (identical to: Dr. Neuhaus Niccy 1016, Creatix 16/S0)
-        * Teles S0-16.3
-        * Teles S0-16.3 PNP
-        * Teles PCMCIA
-        * Creatix S0 PNP
-        * AVM A1 (Fritz!) 
-        * ELSA Microlink PCC-16
-        * ELSA Microlink PCF
-        * ELSA Microlink PCF/pro (only ISDN, not the V34 Modem Chip)
-        * ITK ix1-micro Rev.2  
+	* Teles 8.0/16.0/16.3 and compatible ones
+	* Teles 16.3c
+	* Teles S0/PCMCIA
+	* Teles PCI
+	* Teles S0Box
+	* Creatix S0Box
+	* Creatix PnP S0
+	* Compaq ISDN S0 ISA card
+	* AVM A1 (Fritz, Teledat 150)
+	* AVM Fritz PCMCIA
+	* AVM Fritz PnP
+	* AVM Fritz PCI
+	* ELSA Microlink PCC-16, PCF, PCF-Pro, PCC-8
+	* ELSA Quickstep 1000
+	* ELSA Quickstep 1000PCI
+	* ELSA Quickstep 3000 (same settings as QS1000)
+	* ELSA Quickstep 3000PCI
+	* ELSA PCMCIA
+	* ITK ix1-micro Rev.2
+	* Eicon.Diehl Diva 2.0 ISA and PCI
+	  (S0 and U interface, no PRO version)
+	* Eicon.Diehl Diva Piccola
+	* ASUSCOM NETWORK INC. ISDNLink 128K PC adapter
+	  (order code I-IN100-ST-D)
+	* Dynalink IS64PH
+	  (OEM version of ASUSCOM NETWORK INC. ISDNLink 128K adapter)
+	* PCBIT-DP (OEM version of ASUSCOM NETWORK INC. ISDNLink)
+	* HFC-2BS0 based cards (TeleInt SA1)
+	* Sedlbauer Speed Card (Speed Win, Teledat 100, PCI, Fax+)
+	* Sedlbauer Speed Star/Speed Star2 (PCMCIA)
+	* Sedlbauer ISDN-Controller PC/104
+	* USR Sportster internal TA (compatible Stollmann tina-pp V3)
+	* ith Kommunikationstechnik GmbH MIC 16 ISA card
+	* Traverse Technologie NETjet PCI S0 card
+	* Dr. Neuhaus Niccy PnP/PCI
+
+	Note: PCF, PCF-Pro: up to now, only the ISDN part is supported
+	      PCC-8: not tested yet
+	      Teles PCMCIA is EXPERIMENTAL
+	      Teles 16.3c is EXPERIMENTAL
+	      Teles PCI is EXPERIMENTAL
+	      Teles S0Box is EXPERIMENTAL
+	      Eicon.Diehl Diva U interface not tested
 !verboff
-   The ELSA PCC-8 should really also be supported, but without the chance
-   to debug there remains a bug that prevents this.
    Karsten Keil <keil@temic-ech.spacenet.de> wrote on 14 Oct 1996:
 !verbon
      The first goal of the HiSax driver was to add support for more ISDN
@@ -378,12 +389,7 @@ A: It is a new driver that should support all passive cards that are based on a
      work has nothing to do with ISDN... I learned everything on my own
      time), and anyone who wants to help can contact me.
 !verboff
-     If you're interested in HiSax, you can find it at
-        !link ftp://ftp.franken.de/pub/isdn4linux/HiSax/;
-     (and hopefully soon at all isdn4linux mirrors!)
-   Since HiSax 1.5/2.0 D64 connections are supported. HiSax 2.0 will become
-   part of kernel 2.0.30 , and then will no longer need special patches.
-   
+
 Q: What about the active AVM B1?
 A: Andreas Schultz <aschultz@hppool.cs.Uni-Magdeburg.de> has written a driver,
    that can be found (as an alpha version at:
@@ -600,7 +606,11 @@ A: Thomas Bogendoerfer <tsbogend@alpha.franken.de> wrote on 17 Dec 1996:!br
    are problems with the timers (HZ is 1024 on the Alpha). Even the
    ICN driver has the "wrong" Timer, which causes a little too much poling of 
    the card (but leads to better ping times:-)). I suspect that this can be
-   fixed in time.
+   fixed in time.!br
+A: Paul Slootman <paul@wurtel.demon.nl> wrote:!br
+   The current HiSax driver should work with most cards. I myself use
+   a Fritz! Classic (AVM-A1) card in my XLT-300 all the time without
+   any problems whatsoever.!br
 
 Q: Can isdn4linux run in parallel to UISDN?
 A: Nils Rennebarth <nils@nus.de> wrote on 10 Dec 1996:
@@ -735,8 +745,44 @@ A: Yes. If a network interface (e.g. "isdn0") is set up, the driver will dial
    the number. If in addition a hangup timeout (Idle Timeout) has been given,
    isdnctrl huptime <interfaceY> time, then the driver will automatically hang
    up when no data was been transferred over the interface for "time" seconds.
-   However, with syncPPP there are problems (see the syncPPP section),
+   However, with syncPPP there are problems (see the syncPPP section).!br
+   Also look at the dialmode description (next question).
 
+Q: When an IP packet should go over the link (which usually triggers a
+   dialout), all I see in the log is:
+!verbon
+	dial rejected: interface not in dialmode `auto'
+!verboff
+A: The new ISDN drivers in 2.0.36 defaults to manual dialmode, not
+   autodial. This is done to prevent unexpected (and unnoticed)
+   dialouts.!br
+   To enable autodial for a given interface e.g. ippp0, use
+!verbon
+	isdnctrl dialmode ippp0 auto
+!verboff
+   You can also use the name "all" for the interface to change the setting
+   for all interfaces.!br
+   The meaning of the values for dialmode are:!br
+   "off"!br
+        means that you (or the system) cannot make any connection
+        (neither incoming or outgoing connections are possible). Use
+        this if you want to be sure that no connections will be made.!br
+   "auto"!br
+        means that the interface is in auto-dial mode, and will
+        attempt to make a connection whenever a network data packet needs
+        the interface's link. Note that this can cause unexpected dialouts,
+        and lead to a high phone bill! Some daemons or other pc's that use
+        this interface can cause this.
+        Incoming connections are also possible.!br
+   "manual"
+        is a dial mode created to prevent the unexpected dialouts.
+        In this mode, the interface will never make any connections on its
+        own. You must explicitly initiate a connection with "isdnctrl dial
+        isdn0". You _must_ also hangup the line explicitly as well! There
+        is NO timeout in this mode. Use "isdnctrl hangup isdn0" to end the
+        connection.!br
+        "manual" is the default.!br
+   
 Q: Does isdn4linux support PNP (Plug and Play)?
 A: Yes, but only with the HiSax driver. With "Plug" alone
    it's unfortunately not yet ready, more work is necessary: (from
@@ -3434,11 +3480,14 @@ A: <tpo@spin.ch> wrote on  8 Oct 1996:
      I had the same error until using the correct netmask.
 !verboff
 
-Q: Where can I find a summary of all causes?
-A: Klaus Kämpf <kkaempf@progis.de> wrote:
-   Check out the ISPA documentation. Take a look at:
-   !link ftp://ftp.biochem.mpg.de//pc/isdn;.
-
+Q: I regularly see meesages such as:!br
+   isdn: line0,ch1 cause: E0010!br
+   What does this mean? Where can I find out the meaning of these
+   causes?
+A: Recent isdn4k-utils packages contain a isdn_cause manpage. So, type
+   man isdn_cause and search the list. The first two digits are the
+   location, the second two digits are the cause itself.
+   
 Q: On my ELSA card, the LED for the loss of the TEI often blinks. My 
    connections are also often disrupted...
 A: Jens Ey <jens@jeyhh.shnet.org> wrote on 29 Dec 1996:!br
@@ -4934,7 +4983,23 @@ works in Israel as well (with Teles PnP)."!br!br
 		ex: 01 41 33 67 87   (phone number), 02 (sub-address),
 	then the local phone will be 6787.02 with the HiSax driver."!br!br
 
--I'm not sure how to set up an EAZ/MSN in the UK, but Paul 
+-Niall  O Broin <nobroin@esoc.esa.de> reports that in Ireland he's
+had success during some limited testing on a Telecom Eireann line
+(the only provider of end-user ISDN lines in Ireland). He wrote:
+
+"Not what you'd call comprehensively tested, but a machine with
+an AVM Fritz ISA card
+
+1) Call itself using TTY emulation
+2) Call the test numbers mentioned in the FAQ using TTY emulation
+3) Initiate a synchronous PPP connection
+4) Receive a synchronous PPP connection
+
+Apart from the above, no other testing was carried out but the above
+functions all worked just fine."!br!br
+
+
+-I'm not sure how to set up an EAZ/MSN in the UK, but Paul
 Slootman <paul@wau.mis.ah.nl> wrote:
 
 "I have information that in the UK, there are no "normal" MSNs. Each
