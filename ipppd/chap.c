@@ -18,9 +18,7 @@
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-#ifndef lint
-static char rcsid[] = "$Id: chap.c,v 1.2 1997/04/26 17:17:22 hipp Exp $";
-#endif
+char chap_rcsid[] = "$Id: chap.c,v 1.3 1997/05/19 10:15:38 hipp Exp $";
 
 /*
  * TODO:
@@ -456,19 +454,14 @@ ChapReceiveChallenge(cstate, inp, id, len)
 /*
  * ChapReceiveResponse - Receive and process response.
  */
-static void
-ChapReceiveResponse(cstate, inp, id, len)
-    chap_state *cstate;
-    u_char *inp;
-    int id;
-    int len;
+static void ChapReceiveResponse(chap_state *cstate,u_char *inp,int id,int len)
 {
-    u_char *remmd, remmd_len;
-    int secret_len, old_state;
-    int code;
-    char rhostname[256];
-    MD5_CTX mdContext;
-    char secret[MAXSECRETLEN];
+	u_char *remmd, remmd_len;
+	int secret_len, old_state;
+	int code;
+	char rhostname[256];
+	MD5_CTX mdContext;
+	char secret[MAXSECRETLEN];
 
     CHAPDEBUG((LOG_INFO, "ChapReceiveResponse: Rcvd id %d.", id));
 
@@ -551,24 +544,24 @@ ChapReceiveResponse(cstate, inp, id, len)
 	default:
 	    CHAPDEBUG((LOG_INFO, "unknown digest type %d", cstate->chal_type));
 	}
-    }
-
-    ChapSendStatus(cstate, code);
-
-    if (code == CHAP_SUCCESS) {
-	old_state = cstate->serverstate;
-	cstate->serverstate = CHAPSS_OPEN;
-	if (old_state == CHAPSS_INITIAL_CHAL) {
-	    auth_peer_success(cstate->unit, PPP_CHAP);
 	}
-	if (cstate->chal_interval != 0)
-	    TIMEOUT(ChapRechallenge, (caddr_t) cstate, cstate->chal_interval);
 
-    } else {
-	syslog(LOG_ERR, "CHAP peer authentication failed");
-	cstate->serverstate = CHAPSS_BADAUTH;
-	auth_peer_fail(cstate->unit, PPP_CHAP);
-    }
+	ChapSendStatus(cstate, code);
+
+	if (code == CHAP_SUCCESS) {
+		set_userip(rhostname, 0);
+		old_state = cstate->serverstate;
+		cstate->serverstate = CHAPSS_OPEN;
+		if (old_state == CHAPSS_INITIAL_CHAL) {
+			auth_peer_success(cstate->unit, PPP_CHAP);
+		}
+		if (cstate->chal_interval != 0)
+			TIMEOUT(ChapRechallenge, (caddr_t) cstate, cstate->chal_interval);
+	} else {
+		syslog(LOG_ERR, "CHAP peer authentication failed");
+		cstate->serverstate = CHAPSS_BADAUTH;
+		auth_peer_fail(cstate->unit, PPP_CHAP);
+	}
 }
 
 /*

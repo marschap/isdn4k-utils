@@ -17,9 +17,7 @@
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-#ifndef lint
-static char rcsid[] = "$Id: options.c,v 1.3 1997/05/06 13:04:06 hipp Exp $";
-#endif
+char options_rcsid[] = "$Id: options.c,v 1.4 1997/05/19 10:16:18 hipp Exp $";
 
 #include <stdio.h>
 #include <errno.h>
@@ -168,6 +166,7 @@ static int setremote __P((int,char **));
 static int setauth __P((int));
 static int setnoauth __P((int));
 static int readfile __P((int,char **));
+static int pidfile __P((int,char **));
 static int callfile __P((int,char **));
 static int setdefaultroute __P((int));
 static int setnodefaultroute __P((int));
@@ -306,6 +305,7 @@ static struct cmd {
     {"auth", 0, setauth},	/* Require authentication from peer */
     {"noauth", 0, setnoauth},  /* Don't require peer to authenticate */
     {"file", 1, readfile},	/* Take options from a file */
+	{"pidfile",1,pidfile},
     {"call", 1, callfile},     /* Take options from a privileged file */
     {"defaultroute", 0, setdefaultroute}, /* Add default route */
     {"nodefaultroute", 0, setnodefaultroute}, /* disable defaultroute option */
@@ -989,6 +989,13 @@ int_option(str, valp)
 /*
  * The following procedures execute commands.
  */
+
+static int pidfile(int slot,char **argv)
+{
+	strncpy(pidfilename,argv[0],MAXPATHLEN-1);
+    pidfilename[MAXPATHLEN-1] = 0;
+	return 1;
+}
 
 /*
  * readfile - take commands from a file.
@@ -2081,9 +2088,27 @@ static int setwinsaddr(int ipcp_slot,char **argv)
 
 static int setipxrouter (int slot,char **argv)
 {
+	char *val,arg[1024],*endp;
+	int num = 0;
+
     ipxcp_wantoptions[slot].neg_router  = 1;
     ipxcp_allowoptions[slot].neg_router = 1;
-    return int_option(*argv, &ipxcp_wantoptions[slot].router); 
+	ipxcp_allowoptions[slot].num_router = 0;
+	ipxcp_wantoptions[slot].num_router = 0;
+
+	strncpy(arg,argv[0],1023);
+	val = strtok(arg,",");
+	while(val) {
+		ipxcp_wantoptions[slot].router[num] = strtol(val,&endp,10);
+		if(*endp) 
+			return 0;
+		num++;
+		if(num == 32)
+			break;
+	}
+
+	ipxcp_wantoptions[slot].num_router = num;
+	return 1;
 }
 
 static int setipxname (int slot,char **argv)

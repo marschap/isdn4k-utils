@@ -17,9 +17,7 @@
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-#ifndef lint
-static char rcsid[] = "$Id: fsm.c,v 1.2 1997/04/26 17:17:25 hipp Exp $";
-#endif
+char fsm_rcsid[] = "$Id: fsm.c,v 1.3 1997/05/19 10:15:43 hipp Exp $";
 
 /*
  * TODO:

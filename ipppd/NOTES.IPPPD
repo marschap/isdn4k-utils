@@ -49,6 +49,9 @@ I added a few new options:
  - IPX and MS_DNS are now compiled into the binary without additional option
    Applied Hartwig Felgers MS-DNS (re)patch for this
  - added Markus Hofmann's <markus@tower.de> maxconnect patches
+ - added 'pidfile <own pidfilename>' option .. 
+ - added 'set_userip'  .. you may define valid IPs in /etc/ppp/useriptab
+   (it's a patch from: Meno Abels <Meno.Abels@Technical.Adviser.com>)
 
 The ipppd can handle multiple devices. This is necessary to
 link several connections together to one bundle.

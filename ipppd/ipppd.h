@@ -1,5 +1,5 @@
 /*
- * pppd.h - PPP daemon global declarations.
+ * ipppd.h - PPP daemon global declarations.
  *
  * Copyright (c) 1989 Carnegie Mellon University.
  * All rights reserved.
@@ -16,7 +16,7 @@
  * IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Id: ipppd.h,v 1.5 1997/05/07 14:51:35 hipp Exp $
+ * $Id: ipppd.h,v 1.6 1997/05/19 10:15:55 hipp Exp $
  */
 
 /*
@@ -25,8 +25,8 @@
 
 #define ISDN4LINUX_PATCH
 
-#ifndef __PPPD_H__
-#define __PPPD_H__
+#ifndef __IPPPD_H__
+#define __IPPPD_H__
 
 #include <stdarg.h>
 #include <sys/param.h>		/* for MAXPATHLEN and BSD4_4, if defined */
@@ -94,6 +94,26 @@ extern char	hostname[];	/* Our hostname */
 extern u_char	outpacket_buf[]; /* Buffer for outgoing packets */
 extern int	baud_rate;	/* Current link speed in bits/sec */
 extern char	*progname;	/* Name of this program */
+extern char pidfilename[MAXPATHLEN];
+
+extern void set_userip(char *ruser,int ruserlen);
+
+extern char options_rcsid[];
+extern char auth_rcsid[];
+extern char lcp_rcsid[];
+extern char ipcp_rcsid[];
+extern char ipxcp_rcsid[];
+extern char cbcp_rcsid[];
+extern char main_rcsid[];
+extern char chap_rcsid[];
+#ifdef USE_MSCHAP
+extern char chap_ms_rcsid[];
+#endif
+extern char upap_rcsid[];
+extern char ccp_rcsid[];
+extern char fsm_rcsid[];
+extern char magic_rcsid[];
+extern char sys_rcsid[];
 
 /*
  * Variables set by command-line options.
@@ -439,4 +459,5 @@ extern struct option_info devnam_info;
 #define MAX(a, b)	((a) > (b)? (a): (b))
 #endif
 
-#endif /* __PPP_H__ */
+#endif /* __IPPP_H__ */
+

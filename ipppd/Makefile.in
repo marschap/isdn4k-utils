@@ -1,6 +1,6 @@
 #
 # ipppd makefile for Linux
-# $Id: Makefile.in,v 1.2 1997/03/24 03:12:12 fritz Exp $
+# $Id: Makefile.in,v 1.3 1997/05/19 10:15:24 hipp Exp $
 #
 
 HAVE_LIBBSD   := @HAVE_LIBBSD@
@@ -18,7 +18,7 @@ ifeq (../.config,$(wildcard ../.config))
 	include ../.config
 	SBINDIR                 = $(CONFIG_SBINDIR)
 	MANDIR                  = $(CONFIG_MANDIR)
-	ifeq ($(CONFIG_IPPD_MSCHAP),y)
+	ifeq ($(CONFIG_IPPPD_MSCHAP),y)
 		USE_MSCHAP = 1
 	endif
 else
@@ -63,7 +63,7 @@ HEADERS := $(HEADERS) .depend
 endif
 
 DEBUG_FLAGS   = -DDEBUGALL
-COMPILE_FLAGS = -Dlint
+COMPILE_FLAGS = 
 COPTS         =
 CFLAGS        = -O2 -fomit-frame-pointer -m486 -Wall
 VER           = 2.2.0

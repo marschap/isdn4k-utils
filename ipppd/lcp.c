@@ -21,9 +21,7 @@
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-#ifndef lint
-static char rcsid[] = "$Id: lcp.c,v 1.2 1997/04/26 17:17:34 hipp Exp $";
-#endif
+char lcp_rcsid[] = "$Id: lcp.c,v 1.3 1997/05/19 10:16:04 hipp Exp $";
 
 /*
  * TODO:
@@ -171,7 +169,7 @@ int lcp_loopbackfail = DEFLOOPBACKFAIL;
 /*
  * lcp_init - Initialize LCP.
  */
-void lcp_init(int unit)
+static void lcp_init(int unit)
 {
   static int first_call=1;
 
@@ -185,6 +183,8 @@ void lcp_init(int unit)
       *(long *) (&our_discr_addr[4]) = magic();
       first_call = 0;
     }
+
+	memset(f,0,sizeof(fsm));
 
     f->unit = -1;
     f->protocol = PPP_LCP;
@@ -324,7 +324,7 @@ static void RestartIdleTimer(fsm *f)
  */
     if (ioctl (tlns->fd, PPPIOCGIDLE, &ddinfo) < 0) {
         syslog (LOG_ERR, "ioctl(PPPIOCGIDLE): %m");
-        die (1);
+		return;
     }
 /*
  * Compute the time since the last packet was received. If the timer
@@ -2005,7 +2005,7 @@ static void LcpEchoCheck (fsm *f)
  */
     if (ioctl (lns[f->unit].fd, PPPIOCGIDLE, &ddinfo) < 0) {
         syslog (LOG_ERR, "ioctl(PPPIOCGIDLE): %m");
-        die (1);
+		return;
     }
 /*
  * Compute the time since the last packet was received. If the timer

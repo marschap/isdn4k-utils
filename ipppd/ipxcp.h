@@ -16,7 +16,7 @@
  * IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Id: ipxcp.h,v 1.1 1997/03/07 16:01:22 hipp Exp $
+ * $Id: ipxcp.h,v 1.2 1997/05/19 10:16:01 hipp Exp $
  */
 
 /*
@@ -52,7 +52,8 @@ typedef struct ipxcp_options {
     u_char his_node[6];		/* peer's node number */
     u_char our_node[6];		/* our node number */
     u_char name [48];		/* name of the router */
-    int    router;		/* routing protocol */
+    int    router[32];		/* routing protocol */
+	int    num_router;
 } ipxcp_options;
 
 extern fsm ipxcp_fsm[];
@@ -65,4 +66,5 @@ extern struct protent ipxcp_protent;
 
 int ipxcp_getunit __P((int));
 void ipxcp_freeunit __P((int));
+
 

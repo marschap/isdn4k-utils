@@ -22,6 +22,8 @@
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  */
 
+char sys_rcsid[] = "$Id: sys-linux.c,v 1.3 1997/05/19 10:16:26 hipp Exp $";
+
 #define _LINUX_STRING_H_
 
 #include <sys/types.h>
@@ -120,36 +122,38 @@ void enable_mp(int linkunit,int flags)
  * Functions to read and set the flags value in the device driver
  */
 
-static int get_flags (int tu)
-  {    
-    int flags;
+static int get_flags (int tu,int *error)
+{    
+	int flags;
 
-    if(lns[tu].fd < 0)
-      return 0;
+	*error = 0;
 
-    if (ioctl(lns[tu].fd, PPPIOCGFLAGS, (caddr_t) &flags) < 0)
-      {
-	syslog(LOG_ERR, "ioctl(PPPIOCGFLAGS): %m");
-	quit();
-      }
+	if(lns[tu].fd < 0) {
+		*error = 1;
+		return 0;
+	}
 
-    MAINDEBUG ((LOG_DEBUG, "get flags = %x\n", flags));
-    return flags;
-  }
+	if (ioctl(lns[tu].fd, PPPIOCGFLAGS, (caddr_t) &flags) < 0) {
+		syslog(LOG_ERR, "ioctl(PPPIOCGFLAGS): %m");
+		*error = 1;
+		return 0;
+	}
+
+	MAINDEBUG ((LOG_DEBUG, "get flags = %x\n", flags));
+	return flags;
+}
 
 static void set_flags (int flags,int tu)
-  {    
-    MAINDEBUG ((LOG_DEBUG, "set flags = %x\n", flags));
+{    
+	MAINDEBUG ((LOG_DEBUG, "set flags = %x\n", flags));
 
-    if(lns[tu].fd < 0)
-       return;
+	if(lns[tu].fd < 0)
+		return;
 
-    if (ioctl(lns[tu].fd, PPPIOCSFLAGS, (caddr_t) &flags) < 0)
-      {
-	syslog(LOG_ERR, "ioctl(PPPIOCSFLAGS, %x): %m", flags);
-	quit();
-      }
-  }
+	if (ioctl(lns[tu].fd, PPPIOCSFLAGS, (caddr_t) &flags) < 0) {
+		syslog(LOG_ERR, "ioctl(PPPIOCSFLAGS, %x): %m", flags);
+	}
+}
 
 /*
  * sys_init - System-dependent initialization.
@@ -276,6 +280,7 @@ void ppp_send_config (int unit,int mtu,u_int32_t asyncmap,int pcomp,int accomp)
 {
 	u_int x;
 	struct ifreq ifr;
+	int err;
 
 	MAINDEBUG ((LOG_DEBUG, "send_config: mtu = %d\n", mtu));
 
@@ -294,7 +299,9 @@ void ppp_send_config (int unit,int mtu,u_int32_t asyncmap,int pcomp,int accomp)
 			syslog(LOG_ERR, "ioctl(SIOCSIFMTU): %m, %d %s %d.",sockfd,ifr.ifr_name,ifr.ifr_mtu);
 		}
 	
-		x = get_flags(unit);
+		x = get_flags(unit,&err);
+		if(err)
+			return;
 		x = pcomp  ? x | SC_COMP_PROT : x & ~SC_COMP_PROT;
 		x = accomp ? x | SC_COMP_AC   : x & ~SC_COMP_AC;
 		set_flags(x,unit);
@@ -339,6 +346,7 @@ void ppp_set_xaccm (int unit, ext_accm accm)
 void ppp_recv_config (int unit,int mru,u_int32_t asyncmap,int pcomp,int accomp)
 {
 	u_int x;
+	int err;
 
 	/*
 	 * If we were called because the link has gone down then there is nothing
@@ -353,16 +361,9 @@ void ppp_recv_config (int unit,int mru,u_int32_t asyncmap,int pcomp,int accomp)
 	if (ioctl(lns[unit].fd, PPPIOCSMRU, (caddr_t) &mru) < 0)
 		syslog(LOG_ERR, "ioctl(PPPIOCSMRU): %m");
 
-#if 0
-    MAINDEBUG ((LOG_DEBUG, "recv_config: asyncmap = %lx\n", asyncmap));
-    if (ioctl(lns[unit].fd, PPPIOCSRASYNCMAP, (caddr_t) &asyncmap) < 0)
-      {
-        syslog(LOG_ERR, "ioctl(PPPIOCSRASYNCMAP): %m");
-	quit();
-      }
-#endif
-
-	x = get_flags(unit);
+	x = get_flags(unit,&err);
+	if(err)
+		return;
 	x = accomp ? x & ~SC_REJ_COMP_AC : x | SC_REJ_COMP_AC;
 	set_flags (x,unit);
 }
@@ -393,9 +394,12 @@ int ccp_test (int ccp_unit, u_char *opt_ptr, int opt_len, int for_transmit)
 void ccp_flags_set (int ccp_unit, int isopen, int isup)
 {
 	int linkunit = ccp_fsm[ccp_unit].unit;
+	int err;
 
     if (still_ppp(linkunit)) {
-		int x = get_flags(linkunit);
+		int x = get_flags(linkunit,&err);
+		if(err)
+			return;
 		x = isopen? x | SC_CCP_OPEN : x &~ SC_CCP_OPEN;
 		x = isup?   x | SC_CCP_UP   : x &~ SC_CCP_UP;
 		set_flags (x,linkunit);
@@ -410,7 +414,11 @@ void ccp_flags_set (int ccp_unit, int isopen, int isup)
 int ccp_fatal_error (int ccp_unit)
 {
 	int linkunit = ccp_fsm[ccp_unit].unit;
-	int x = get_flags(linkunit);
+	int err;
+	int x = get_flags(linkunit,&err);
+	
+	if(err)
+		return 0;
 
 	return x & SC_DC_FERROR;
 }
@@ -420,7 +428,11 @@ int ccp_fatal_error (int ccp_unit)
  */
 int sifvjcomp (int unit, int vjcomp, int cidcomp, int maxcid)
 {
-	u_int x = get_flags(unit);
+	int err;
+	u_int x = get_flags(unit,&err);
+
+	if(err)
+		return 0;
 
 	if (vjcomp) {
 		if (ioctl (lns[unit].fd, PPPIOCSMAXCID, (caddr_t) &maxcid) < 0) {

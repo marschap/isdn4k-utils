@@ -17,9 +17,7 @@
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-#ifndef lint
-static char rcsid[] = "$Id: upap.c,v 1.2 1997/04/26 17:17:47 hipp Exp $";
-#endif
+char upap_rcsid[] = "$Id: upap.c,v 1.3 1997/05/19 10:16:30 hipp Exp $";
 
 /*
  * TODO:
@@ -31,9 +29,15 @@ static char rcsid[] = "$Id: upap.c,v 1.2 1997/04/26 17:17:47 hipp Exp $";
 #include <sys/time.h>
 #include <syslog.h>
 
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+
 #include "fsm.h"
 #include "ipppd.h"
+#include "ipcp.h"
 #include "upap.h"
+#include "pathnames.h"
 
 extern int log_raw_password;
 /*
@@ -77,13 +81,54 @@ static void upap_rauthnak __P((upap_state *, u_char *, int, int));
 static void upap_sauthreq __P((upap_state *));
 static void upap_sresp __P((upap_state *, int, int, char *, int));
 
+void set_userip(char *ruser,int ruserlen)
+{
+	char line[1024];
+	char name[64];
+	FILE *fd;
+	int base;
+	int ofs;
+	char *lname;
+	char *lip;
+	ipcp_options *wo = &ipcp_wantoptions[0];
+
+	if (ruserlen) {
+		memcpy(name,ruser, ruserlen);
+		name[ruserlen]='\0';
+	}
+	else
+		strncpy(name, ruser, sizeof(name)-1);
+	fd = fopen(_PATH_USERIPTAB, "r");
+	if (fd) {
+		while (fgets(line, sizeof(line)-1, fd)) {
+			base = strspn(line, " \t\n\r");
+			if (line[base] == '#')
+				continue;
+			lname = &(line[base]);
+			ofs = strcspn(lname, " \n\t\r\n");
+			lname[ofs] = '\0';
+			lip = &(lname[ofs+1]);
+			base = strspn(lip, " \t\n\r");
+			lip = &(lip[base]);
+			ofs = strcspn(lip, " \n\t\r\n");
+			lip[ofs] = '\0';
+			if (!strcmp(name, lname)) {
+				unsigned long int ip;
+				if (inet_aton(lip, (struct in_addr *)&ip)) {
+					wo->hisaddr = ip;
+					UPAPDEBUG((LOG_INFO, "set_userip: found users(%s) ip(%s).",lname, lip)); 
+				}
+				break;
+			}
+		}
+		fclose(fd);
+	}
+}
 
 /*
  * upap_init - Initialize a UPAP unit.
  */
-void
-upap_init(unit)
-    int unit;
+void upap_init(int unit)
 {
     upap_state *u = &upap[unit];
 
@@ -317,82 +362,82 @@ void upap_input(int linkunit,u_char *inpacket,int l)
 /*
  * upap_rauth - Receive Authenticate.
  */
-static void
-upap_rauthreq(upap_state *u,u_char *inp,int id,int len)
+static void upap_rauthreq(upap_state *u,u_char *inp,int id,int len)
 {
-    u_char ruserlen, rpasswdlen;
-    char *ruser, *rpasswd;
-    int retcode;
-    char *msg;
-    int msglen;
+	u_char ruserlen, rpasswdlen;
+	char *ruser, *rpasswd;
+	int retcode;
+	char *msg;
+	int msglen;
 
-    UPAPDEBUG((LOG_INFO, "upap_rauth: Rcvd id %d.", id));
+	UPAPDEBUG((LOG_INFO, "upap_rauth: Rcvd id %d.", id));
 
-    if (u->us_serverstate < UPAPSS_LISTEN)
-	return;
+	if (u->us_serverstate < UPAPSS_LISTEN)
+		return;
 
-    /*
-     * If we receive a duplicate authenticate-request, we are
-     * supposed to return the same status as for the first request.
-     */
-    if (u->us_serverstate == UPAPSS_OPEN) {
-	upap_sresp(u, UPAP_AUTHACK, id, "", 0);	/* return auth-ack */
-	return;
-    }
-    if (u->us_serverstate == UPAPSS_BADAUTH) {
-	upap_sresp(u, UPAP_AUTHNAK, id, "", 0);	/* return auth-nak */
-	return;
-    }
+	/*
+	 * If we receive a duplicate authenticate-request, we are
+	 * supposed to return the same status as for the first request.
+	 */
+	if (u->us_serverstate == UPAPSS_OPEN) {
+		upap_sresp(u, UPAP_AUTHACK, id, "", 0);	/* return auth-ack */
+		return;
+	}
+	if (u->us_serverstate == UPAPSS_BADAUTH) {
+		upap_sresp(u, UPAP_AUTHNAK, id, "", 0);	/* return auth-nak */
+		return;
+	}
 
-    /*
-     * Parse user/passwd.
-     */
-    if (len < sizeof (u_char)) {
-	UPAPDEBUG((LOG_INFO, "upap_rauth: rcvd short packet."));
-	return;
-    }
-    GETCHAR(ruserlen, inp);
-    len -= sizeof (u_char) + ruserlen + sizeof (u_char);
-    if (len < 0) {
-	UPAPDEBUG((LOG_INFO, "upap_rauth: rcvd short packet."));
-	return;
-    }
-    ruser = (char *) inp;
-    INCPTR(ruserlen, inp);
-    GETCHAR(rpasswdlen, inp);
-    if (len < rpasswdlen) {
-	UPAPDEBUG((LOG_INFO, "upap_rauth: rcvd short packet."));
-	return;
-    }
-    rpasswd = (char *) inp;
+	/*
+	 * Parse user/passwd.
+	 */
+	if (len < sizeof (u_char)) {
+		UPAPDEBUG((LOG_INFO, "upap_rauth: rcvd short packet."));
+		return;
+	}
+	GETCHAR(ruserlen, inp);
+	len -= sizeof (u_char) + ruserlen + sizeof (u_char);
+	if (len < 0) {
+		UPAPDEBUG((LOG_INFO, "upap_rauth: rcvd short packet."));
+		return;
+	}
+	ruser = (char *) inp;
+	INCPTR(ruserlen, inp);
+	GETCHAR(rpasswdlen, inp);
+	if (len < rpasswdlen) {
+		UPAPDEBUG((LOG_INFO, "upap_rauth: rcvd short packet."));
+		return;
+	}
+	rpasswd = (char *) inp;
 
-    /*
-     * Check the username and password given.
-     */
-    if(ruserlen > 64)
-      ruserlen = 64;
-    if(rpasswdlen > 64)
-      rpasswdlen = 64;
-    strncpy(u->us_ruser,ruser,(int)ruserlen);
-    strncpy(u->us_rpasswd,rpasswd,(int)rpasswdlen);
-    u->us_rpasswdlen = rpasswdlen;
-    u->us_ruserlen = ruserlen;
+	/*
+	 * Check the username and password given.
+	 */
+	if(ruserlen > 64)
+		ruserlen = 64;
+	if(rpasswdlen > 64)
+		rpasswdlen = 64;
+	strncpy(u->us_ruser,ruser,(int)ruserlen);
+	strncpy(u->us_rpasswd,rpasswd,(int)rpasswdlen);
+	u->us_rpasswdlen = rpasswdlen;
+	u->us_ruserlen = ruserlen;
 
-    retcode = check_passwd(u->us_unit, ruser, ruserlen, rpasswd,
-			   rpasswdlen, &msg, &msglen);
+	retcode = check_passwd(u->us_unit, ruser, ruserlen, rpasswd,
+		rpasswdlen, &msg, &msglen);
 
-    upap_sresp(u, retcode, id, msg, msglen);
+	upap_sresp(u, retcode, id, msg, msglen);
 
-    if (retcode == UPAP_AUTHACK) {
-	u->us_serverstate = UPAPSS_OPEN;
-	auth_peer_success(u->us_unit, PPP_PAP);
-    } else {
-	u->us_serverstate = UPAPSS_BADAUTH;
-	auth_peer_fail(u->us_unit, PPP_PAP);
-    }
+	if (retcode == UPAP_AUTHACK) {
+		set_userip(ruser, ruserlen);
+		u->us_serverstate = UPAPSS_OPEN;
+		auth_peer_success(u->us_unit, PPP_PAP);
+	} else {
+		u->us_serverstate = UPAPSS_BADAUTH;
+		auth_peer_fail(u->us_unit, PPP_PAP);
+	}
 
-    if (u->us_reqtimeout > 0)
-	UNTIMEOUT(upap_reqtimeout, (caddr_t) u);
+	if (u->us_reqtimeout > 0)
+		UNTIMEOUT(upap_reqtimeout, (caddr_t) u);
 }
 
 

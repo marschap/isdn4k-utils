@@ -17,9 +17,7 @@
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-#ifndef lint
-static char rcsid[] = "$Id: ipxcp.c,v 1.2 1997/04/26 17:17:31 hipp Exp $";
-#endif
+char ipxcp_rcsid[] = "$Id: ipxcp.c,v 1.3 1997/05/19 10:15:57 hipp Exp $";
 
 /*
  * TODO:
@@ -114,6 +112,22 @@ struct protent ipxcp_protent = {
  * Lengths of configuration options.
  */
 
+/*
+IPX-ROUTING-PROTOCOL OPTIONS
+
+     Value           Protocol                          Reference
+     -----           --------                          ---------
+        0             No routing protocol required     [RFC1552]
+        1             RESERVED                         [RFC1552]
+        2             Novell RIP/SAP required          [RFC1552]
+        4             Novell NLSP required             [RFC1552]
+        5             Novell Demand RIP required       [RFC1582]
+        6             Novell Demand SAP required       [RFC1582]
+        7             Novell Triggered RIP required [Edmonstone]
+        8             Novell Triggered SAP required [Edmonstone]
+*/
+
+
 #define CILEN_VOID	2
 #define CILEN_COMPLETE	2	/* length of complete option */
 #define CILEN_NETN	6	/* network number length option */
@@ -155,11 +169,13 @@ static void ipxcp_init(int unit)
     ipxcp_options *wo = &ipxcp_wantoptions[unit];
     ipxcp_options *ao = &ipxcp_allowoptions[unit];
 
+	memset(f,0,sizeof(fsm));
+
     f->unit	 = -1;
     f->protocol	 = PPP_IPXCP;
     f->callbacks = &ipxcp_callbacks;
     f->inuse = 0;
-    fsm_init(&ipxcp_fsm[unit]);
+    fsm_init(f);
 
     memset (wo->name,	  0, sizeof (wo->name));
     memset (wo->our_node, 0, sizeof (wo->our_node));
@@ -341,33 +357,16 @@ static void ipxcp_resetci(fsm *f)
 	inc_node (wo->his_node);
 	ao->accept_remote = 1;
     }
-/*
- * Unless router protocol is suppressed then assume that we can do RIP.
- */
-#if 0
-    if (! (wo->router & BIT(0)))
-#else
-    if (wo->router == 0)
-#endif
-	wo->router = 2;
-/*
- * Router protocol is only negotiated if requested. Others force the
- * negotiation.
- */
-    if (wo->router & 6 )
-	wo->neg_router = 1;
-/*
- * Start with these default values
- */
+
+	if (wo->num_router)
+		wo->neg_router = 1;
     *go = *wo;
 }
 
 /*
  * ipxcp_cilen - Return length of our CI.
  */
-static int
-ipxcp_cilen(f)
-    fsm *f;
+static int ipxcp_cilen(fsm *f)
 {
     int linkunit = f->unit;
     int unit = lns[linkunit].ipxcp_unit;
@@ -378,18 +377,25 @@ ipxcp_cilen(f)
     len += go->neg_node	    ? CILEN_NODEN    : 0;
     len += go->neg_name	    ? CILEN_NAME + strlen (go->name) - 1 : 0;
     len += go->neg_complete ? CILEN_COMPLETE : 0;
+
 /*
  * Router protocol 0 is mutually exclusive with the others.
  */
-    if (go->neg_router) {
-	if (go->router == 0)
-	    len += CILEN_PROTOCOL;
-	else {
-	    if (go->router & 2 )
-		len += CILEN_PROTOCOL;
-	    if (go->router & 4 )
-		len += CILEN_PROTOCOL;
-	}
+	if (go->neg_router) {
+		int i,nonnull=0;
+		for(i=0;i<go->num_router;i++) {
+			if (go->router[i] == 0) {
+				if(nonnull || go->num_router > 1) {
+					IPXCPDEBUG((LOG_INFO, "ipxcp_cilen ignored router proto 0"));
+					continue;
+				}
+				len += CILEN_PROTOCOL;
+			}
+			else {
+				nonnull = 1;
+				len += CILEN_PROTOCOL;
+			}
+		}
     }
 
     return (len);
@@ -404,46 +410,57 @@ static void ipxcp_addci(fsm *f,u_char *ucp,int *lenp)
     int linkunit = f->unit;
     int unit = lns[linkunit].ipxcp_unit;
     ipxcp_options *go = &ipxcp_gotoptions[unit];
-/*    int len = *lenp; */
+	u_char *ucp1 = ucp;
+
 /*
  * Add the options to the record.
  */
-    if (go->neg_nn) {
-	PUTCHAR (IPX_NETWORK_NUMBER, ucp);
-	PUTCHAR (CILEN_NETN, ucp);
-	PUTLONG (go->our_network, ucp);
+
+	if (go->neg_nn) {
+		PUTCHAR (IPX_NETWORK_NUMBER, ucp);
+		PUTCHAR (CILEN_NETN, ucp);
+		PUTLONG (go->our_network, ucp);
+	}
+
+	if (go->neg_node) {
+		int indx;
+		PUTCHAR (IPX_NODE_NUMBER, ucp);
+		PUTCHAR (CILEN_NODEN, ucp);
+		for (indx = 0; indx < sizeof (go->our_node); ++indx)
+			PUTCHAR (go->our_node[indx], ucp);
+	}
+
+	if (go->neg_name) {
+		int cilen = strlen (go->name);
+		int indx;
+		PUTCHAR (IPX_ROUTER_NAME, ucp);
+		PUTCHAR (CILEN_NAME + cilen - 1, ucp);
+		for (indx = 0; indx < cilen; ++indx)
+			PUTCHAR (go->name [indx], ucp);
+	}
+
+	if (go->neg_router) {
+		int i,nonnull=0;
+		for(i=0;i<go->num_router;i++) {
+			if(go->router[i] == 0) {
+				if(nonnull || go->num_router > 1)
+					continue;
+			}
+			else
+				nonnull = 1;
+			PUTCHAR  (IPX_ROUTER_PROTOCOL, ucp);
+			PUTCHAR  (CILEN_PROTOCOL,      ucp);
+			PUTSHORT (go->router[i],       ucp);
+		}
     }
 
-    if (go->neg_node) {
-	int indx;
-	PUTCHAR (IPX_NODE_NUMBER, ucp);
-	PUTCHAR (CILEN_NODEN, ucp);
-	for (indx = 0; indx < sizeof (go->our_node); ++indx)
-	    PUTCHAR (go->our_node[indx], ucp);
-    }
+	if (go->neg_complete) {
+		PUTCHAR (IPX_COMPLETE,	 ucp);
+		PUTCHAR (CILEN_COMPLETE, ucp);
+	}
 
-    if (go->neg_name) {
-	int cilen = strlen (go->name);
-	int indx;
-	PUTCHAR (IPX_ROUTER_NAME, ucp);
-	PUTCHAR (CILEN_NAME + cilen - 1, ucp);
-	for (indx = 0; indx < cilen; ++indx)
-	    PUTCHAR (go->name [indx], ucp);
-    }
-
-#if 0
-    if (go->neg_router && (go->router & (BIT(0) | BIT(2) | BIT(4)))) {
-#else
-    if (go->neg_router) {
-#endif
-		PUTCHAR  (IPX_ROUTER_PROTOCOL, ucp);
-		PUTCHAR  (CILEN_PROTOCOL,      ucp);
-		PUTSHORT (go->router,          ucp);
-    }
-
-    if (go->neg_complete) {
-	PUTCHAR (IPX_COMPLETE,	 ucp);
-	PUTCHAR (CILEN_COMPLETE, ucp);
+    if (ucp - ucp1 != *lenp) {
+        syslog(LOG_ERR, "Bug in ipxcp_addci: wrong length");
     }
 }
 
@@ -517,30 +534,33 @@ ipxcp_ackci(f, p, len)
 	    break; \
     }
 
-#define ACKCIPROTO(opt, neg, val) \
-	if (neg && p[1] == CILEN_PROTOCOL && len >= p[1] && p[0] == opt) \
-      { \
-		INCPTR(2, p); \
-		len -= CILEN_PROTOCOL; \
-		GETSHORT(cishort, p); \
-		if (cishort != (val)) \
-	    break; \
-      }
 /*
  * Process the ACK frame in the order in which the frame was assembled
  */
-    do {
-	ACKCINETWORK  (IPX_NETWORK_NUMBER,  go->neg_nn,	    go->our_network);
-	ACKCINODE     (IPX_NODE_NUMBER,	    go->neg_node,   go->our_node);
-	ACKCINAME     (IPX_ROUTER_NAME,	    go->neg_name,   go->name);
-	ACKCIPROTO    (IPX_ROUTER_PROTOCOL, go->neg_router, go->router);
-	ACKCICOMPLETE (IPX_COMPLETE,	    go->neg_complete);
-/*
- * This is the end of the record.
- */
-	if (len == 0)
-	    return (1);
-    } while (0);
+	do {
+		ACKCINETWORK  (IPX_NETWORK_NUMBER,  go->neg_nn,	    go->our_network);
+		ACKCINODE     (IPX_NODE_NUMBER,	    go->neg_node,   go->our_node);
+		ACKCINAME     (IPX_ROUTER_NAME,	    go->neg_name,   go->name);
+		if(p[0] == IPX_ROUTER_PROTOCOL && go->neg_router && p[1] == CILEN_PROTOCOL && len >= p[1]) {
+			int i;
+			INCPTR(2, p);
+			len -= CILEN_PROTOCOL;
+			GETSHORT(cishort, p);
+			for(i=0;i<go->num_router;i++) {
+				if(cishort == go->router[i]) {
+					go->router[0] = go->router[i];
+					go->num_router = 1;
+					i = 0;
+					break;
+				}
+			}
+			if(i == go->num_router)
+				break;
+		}
+		ACKCICOMPLETE (IPX_COMPLETE,	    go->neg_complete);
+		if (len == 0)
+			return (1);
+	} while (0);
 /*
  * The frame is invalid
  */
@@ -566,6 +586,7 @@ ipxcp_nakci(f, p, len)
 {
     int linkunit = f->unit;
     int unit = lns[linkunit].ipxcp_unit;
+	int i;
     ipxcp_options *go = &ipxcp_gotoptions[unit];
     ipxcp_options *ao = &ipxcp_allowoptions[unit];
     ipxcp_options *ho = &ipxcp_hisoptions[unit];
@@ -618,24 +639,24 @@ ipxcp_nakci(f, p, len)
 	    goto bad;
 
 	case IPX_ROUTER_PROTOCOL:
-	    if (!go->neg_router || (cilen < CILEN_PROTOCOL))
-		goto bad;
-
-	    GETSHORT (s, p);
-	    if ((s != 0) && (s != 2) && (s != 4))
-		goto bad;
-
-	    if (no.router & s)
-		goto bad;
-
-	    if (no.router == 0) /* Reset on first NAK only */
-		try.router = 0;
-	    no.router      |= s;
-	    try.router     |= s;
-	    try.neg_router  = 1;
-
-	    IPXCPDEBUG((LOG_INFO, "Router protocol number %d", s));
-	    break;
+		if (!go->neg_router || (cilen < CILEN_PROTOCOL))
+			goto bad;
+		GETSHORT (s, p);
+		for(i=0;i<go->num_router;i++) {
+			if(go->router[i] == s) {
+				go->router[0] = s;
+				go->num_router = 1;
+				i = 0;
+				IPXCPDEBUG((LOG_INFO, "Router protocol number %d", s));
+				break;
+			}
+		}
+		if(i == go->num_router) {
+			go->router[0] = 0;
+			go->num_router = 1;
+			IPXCPDEBUG((LOG_INFO, "try Router protocol number %d", s));
+		}
+		break;
 
 	    /* These, according to the RFC, must never be NAKed. */
 	case IPX_ROUTER_NAME:
@@ -651,19 +672,8 @@ ipxcp_nakci(f, p, len)
 
     /* If there is still anything left, this packet is bad. */
     if (len != 0)
-	goto bad;
+		goto bad;
 
-    /*
-     * Do not permit the peer to force a router protocol which we do not
-     * support.
-     */
-    try.router &= go->router;
-    if (try.router == 0 && go->router != 0) {
-        try.neg_router = 1;
-		/* try.router     = BIT(0); */ 
-/* grrr: who has done the whole BIT(blabla) stuff? this will never work! */
-    }
-    
     /*
      * OK, the Nak is good.  Now we can update state.
      */
@@ -729,20 +739,6 @@ static int ipxcp_rejci(fsm *f,u_char *p,int len)
 		IPXCPDEBUG((LOG_INFO, "ipxcp_rejci rejected void opt %d", opt)); \
 	}
 
-#define REJCIPROTO(opt, neg, val) \
-	if (neg && p[1] == CILEN_PROTOCOL && len >= p[1] && p[0] == opt) \
-	{ \
-		INCPTR(2, p); \
-		len -= CILEN_PROTOCOL; \
-		GETSHORT(cishort, p); \
-		IPXCPDEBUG((LOG_INFO, "ipxcp_rejci rejected router proto 0x%04x", cishort)); \
-		if ((cishort & val) == 0) \
-			break; \
-		val &= ~cishort; \
-		if (val == 0) \
-			neg = 0; \
-	}
-
 /*
  * Any Rejected CIs must be in exactly the same order that we sent.
  * Check packet length and CI length at each step.
@@ -750,20 +746,32 @@ static int ipxcp_rejci(fsm *f,u_char *p,int len)
  */
     try = *go;
 
-    do {
-	REJCINETWORK (IPX_NETWORK_NUMBER,  try.neg_nn,	   try.our_network);
-	REJCINODE    (IPX_NODE_NUMBER,	   try.neg_node,   try.our_node);
-	REJCIPROTO   (IPX_ROUTER_PROTOCOL, try.neg_router, try.router);
-	REJCINAME    (IPX_ROUTER_NAME,	   try.neg_name,   try.name);
-	REJCIVOID    (IPX_COMPLETE,	   try.neg_complete);
-/*
- * This is the end of the record.
- */
-	if (len == 0) {
-	    if (f->state != OPENED)
-		*go = try;
-	    return (1);
-	}
+	do {
+		REJCINETWORK (IPX_NETWORK_NUMBER,  try.neg_nn,	   try.our_network);
+		REJCINODE    (IPX_NODE_NUMBER,	   try.neg_node,   try.our_node);
+		if(p[0] == IPX_ROUTER_PROTOCOL && try.neg_router &&  p[1] == CILEN_PROTOCOL && len >= p[1]) {
+			int i;
+			INCPTR(2, p);
+			len -= CILEN_PROTOCOL;
+			GETSHORT(cishort, p);
+			IPXCPDEBUG((LOG_INFO, "ipxcp_rejci rejected router proto 0x%04x", cishort));
+			for(i=0;i<try.num_router;i++) {
+				if(try.router[i] == cishort)
+					break;
+			}
+			if(i == try.num_router)
+				break;
+			try.num_router--;
+			try.router[i] = try.router[try.num_router];
+		}
+		REJCINAME    (IPX_ROUTER_NAME,	   try.neg_name,   try.name);
+		REJCIVOID    (IPX_COMPLETE,	   try.neg_complete);
+
+		if (len == 0) {
+		    if (f->state != OPENED)
+			*go = try;
+		    return (1);
+		}
     } while (0);
 /*
  * The frame is invalid at this point.
@@ -944,79 +952,56 @@ ipxcp_reqci(f, inp, len, reject_if_disagree)
 	    IPXCPDEBUG((LOG_INFO, "ipxcp: received Compression Protocol request "));
 	    orc = CONFREJ;
 	    break;
-/*
- * The routing protocol is a bitmask of various types. Any combination
- * of the values 2 and 4 are permissible. '0' for no routing protocol must
- * be specified only once.
- */
 	case IPX_ROUTER_PROTOCOL:
-	    if ( !ao->neg_router || cilen < CILEN_PROTOCOL ) {
-		orc = CONFREJ;
-		break;		
-	    }
-
+		if ( !ao->neg_router || cilen < CILEN_PROTOCOL ) {
+			orc = CONFREJ;
+			break;		
+		}
 	    GETSHORT (cishort, p);
-	    IPXCPDEBUG((LOG_INFO,
-			"Remote router protocol number %d",
-			cishort));
+		IPXCPDEBUG((LOG_INFO, "Remote router protocol number %d", cishort));
 
-#if 0
-	    if ((cishort == 0 && ho->router != 0) || (ho->router & BIT(0))) {
-		orc = CONFREJ;
-		break;		
-	    }
-#endif
+		if (cishort != 0 && cishort != 2 && cishort != 4) {
+			orc = CONFREJ;
+			break;
+		}
 
-	    if (cishort != 0 && cishort != 2 && cishort != 4) {
-		orc = CONFREJ;
+		ho->router[ho->num_router] = cishort;
+		ho->num_router++;
+		if(ho->num_router > 31)
+			ho->num_router = 31;
+		ho->neg_router = 1;
 		break;
-	    }
 
-	    if (ho->router & cishort) {
-		orc = CONFREJ;
-		break;
-	    }
-
-	    ho->router	  |= cishort;
-	    ho->neg_router = 1;
-	    break;
-/*
- * The router name is advisorary. Just accept it if it is not too large.
- */
 	case IPX_ROUTER_NAME:
-	    IPXCPDEBUG((LOG_INFO, "ipxcp: received Router Name request"));
-	    if (cilen >= CILEN_NAME) {
-		int name_size = cilen - CILEN_NAME;
-		if (name_size > sizeof (ho->name))
-		    name_size = sizeof (ho->name) - 1;
-		memset (ho->name, 0, sizeof (ho->name));
-		memcpy (ho->name, p, name_size);
-		ho->name [name_size] = '\0';
-		ho->neg_name = 1;
-		orc = CONFACK;
-		break;
-	    }
-	    orc = CONFREJ;
-	    break;
-/*
- * This is advisorary.
- */
-	case IPX_COMPLETE:
-	    IPXCPDEBUG((LOG_INFO, "ipxcp: received Complete request"));
-	    if (cilen != CILEN_COMPLETE)
+		IPXCPDEBUG((LOG_INFO, "ipxcp: received Router Name request"));
+		if (cilen >= CILEN_NAME) {
+			int name_size = cilen - CILEN_NAME;
+			if (name_size > sizeof (ho->name))
+				name_size = sizeof (ho->name) - 1;
+			memset (ho->name, 0, sizeof (ho->name));
+			memcpy (ho->name, p, name_size);
+			ho->name [name_size] = '\0';
+			ho->neg_name = 1;
+			orc = CONFACK;
+			break;
+		}
 		orc = CONFREJ;
-	    else {
-		ho->neg_complete = 1;
-		orc = CONFACK;
-	    }
-	    break;
-/*
- * All other entries are not known at this time.
- */
+		break;
+
+	case IPX_COMPLETE:
+		IPXCPDEBUG((LOG_INFO, "ipxcp: received Complete request"));
+		if (cilen != CILEN_COMPLETE)
+			orc = CONFREJ;
+		else {
+			ho->neg_complete = 1;
+			orc = CONFACK;
+		}
+		break;
+
 	default:
-	    IPXCPDEBUG((LOG_INFO, "ipxcp: received Complete request"));
-	    orc = CONFREJ;
-	    break;
+		IPXCPDEBUG((LOG_INFO, "ipxcp: received Complete request"));
+		orc = CONFREJ;
+		break;
 	}
 
 endswitch:
@@ -1174,69 +1159,65 @@ static void ipxcp_down(fsm *f)
  */
 static void ipxcp_script(fsm *f,char *script)
 {
-    int	 linkunit = f->unit;
-    int unit = lns[linkunit].ipxcp_unit;
-    ipxcp_options *ho = &ipxcp_hisoptions[unit];
-    ipxcp_options *go = &ipxcp_gotoptions[unit];
+	int	 linkunit = f->unit;
+	int unit = lns[linkunit].ipxcp_unit;
+	ipxcp_options *ho = &ipxcp_hisoptions[unit];
+	ipxcp_options *go = &ipxcp_gotoptions[unit];
 
-    char strspeed[32],	 strlocal[32],	   strremote[32];
-    char strnetwork[32], strpid[32];
-    char *argv[14],	 strproto_lcl[32], strproto_rmt[32];
+	char strspeed[32],	 strlocal[32],	   strremote[32];
+	char strnetwork[32], strpid[32];
+	char *argv[14];
+	char strproto_lcl[32], strproto_rmt[32];
 
-    sprintf (strpid,   "%d", getpid());
-    sprintf (strspeed, "%d", baud_rate);
+	sprintf (strpid,   "%d", getpid());
+	sprintf (strspeed, "%d", baud_rate);
 
-    strproto_lcl[0] = '\0';
-    if (go->neg_router) {
-	if (go->router & 2 )
-	    strcpy (strproto_lcl, "RIP ");
-	if (go->router & 4 )
-	    strcpy (strproto_lcl, "NLSP ");
+	strproto_lcl[0] = '\0';
+	if (go->neg_router) {
+		if (go->router[0] == 2 )
+			strcpy (strproto_lcl, "RIP ");
+		if (go->router[0] == 4 )
+			strcpy (strproto_lcl, "NLSP ");
     }
 
-    if (strproto_lcl[0] == '\0')
-	strcpy (strproto_lcl, "NONE ");
+	if (strproto_lcl[0] == '\0')
+		strcpy (strproto_lcl, "NONE ");
 
-    strproto_lcl[strlen (strproto_lcl)-1] = '\0';
+	strproto_lcl[strlen (strproto_lcl)-1] = '\0';
 
-    strproto_rmt[0] = '\0';
-    if (ho->neg_router) {
-	if (ho->router & 2 )
-	    strcpy (strproto_rmt, "RIP ");
-	if (ho->router & 4 )
-	    strcpy (strproto_rmt, "NLSP ");
-    }
+	strproto_rmt[0] = '\0';
+	if (ho->neg_router) {
+		if (ho->router[0] == 2 )
+			strcpy (strproto_rmt, "RIP ");
+		if (ho->router[0] == 4 )
+			strcpy (strproto_rmt, "NLSP ");
+	}
 
-    if (strproto_rmt[0] == '\0')
-	strcpy (strproto_rmt, "NONE ");
+	if (strproto_rmt[0] == '\0')
+		strcpy (strproto_rmt, "NONE ");
 
-    strproto_rmt[strlen (strproto_rmt)-1] = '\0';
+	strproto_rmt[strlen (strproto_rmt)-1] = '\0';
 
-    strcpy (strnetwork, ipx_ntoa (go->network));
+	strcpy (strnetwork, ipx_ntoa (go->network));
 
-    sprintf (strlocal,
-	     "%02X%02X%02X%02X%02X%02X",
-	     NODE(go->our_node));
+	sprintf (strlocal, "%02X%02X%02X%02X%02X%02X", NODE(go->our_node));
+	sprintf (strremote, "%02X%02X%02X%02X%02X%02X", NODE(ho->his_node));
 
-    sprintf (strremote,
-	     "%02X%02X%02X%02X%02X%02X",
-	     NODE(ho->his_node));
-
-    argv[0]  = script;
-    argv[1]  = lns[linkunit].ifname;
-    argv[2]  = lns[linkunit].devnam;
-    argv[3]  = strspeed;
-    argv[4]  = strnetwork;
-    argv[5]  = strlocal;
-    argv[6]  = strremote;
-    argv[7]  = strproto_lcl;
-    argv[8]  = strproto_rmt;
-    argv[9]  = go->name;
-    argv[10] = ho->name;
-    argv[11] = ipparam;
-    argv[12] = strpid;
-    argv[13] = NULL;
-    run_program(script, argv, 0 , linkunit);
+	argv[0]  = script;
+	argv[1]  = lns[linkunit].ifname;
+	argv[2]  = lns[linkunit].devnam;
+	argv[3]  = strspeed;
+	argv[4]  = strnetwork;
+	argv[5]  = strlocal;
+	argv[6]  = strremote;
+	argv[7]  = strproto_lcl;
+	argv[8]  = strproto_rmt;
+	argv[9]  = go->name;
+	argv[10] = ho->name;
+	argv[11] = ipparam;
+	argv[12] = strpid;
+	argv[13] = NULL;
+	run_program(script, argv, 0 , linkunit);
 }
 
 /*
@@ -1249,122 +1230,135 @@ static char *ipxcp_codenames[] = {
 
 static int ipxcp_printpkt(u_char *p,int plen,void (*printer) __P((void *, char *, ...)),void *arg)
 {
-    int code, id, len, olen;
-    u_char *pstart, *optend;
-    u_short cishort;
-    u_int32_t cilong;
+	int code, id, len, olen;
+	u_char *pstart, *optend;
+	u_short cishort;
+	u_int32_t cilong;
 
-    if (plen < HEADERLEN)
-	return 0;
-    pstart = p;
-    GETCHAR(code, p);
-    GETCHAR(id, p);
-    GETSHORT(len, p);
-    if (len < HEADERLEN || len > plen)
-	return 0;
+	if (plen < HEADERLEN)
+		return 0;
+	pstart = p;
+	GETCHAR(code, p);
+	GETCHAR(id, p);
+	GETSHORT(len, p);
+	if (len < HEADERLEN || len > plen)
+		return 0;
 
-    if (code >= 1 && code <= sizeof(ipxcp_codenames) / sizeof(char *))
-	printer(arg, " %s", ipxcp_codenames[code-1]);
-    else
-	printer(arg, " code=0x%x", code);
-    printer(arg, " id=0x%x", id);
-    len -= HEADERLEN;
-    switch (code) {
-    case CONFREQ:
-    case CONFACK:
-    case CONFNAK:
-    case CONFREJ:
+	if (code >= 1 && code <= sizeof(ipxcp_codenames) / sizeof(char *))
+		printer(arg, " %s", ipxcp_codenames[code-1]);
+	else
+		printer(arg, " code=0x%x", code);
+	printer(arg, " id=0x%x", id);
+	len -= HEADERLEN;
+	switch (code) {
+		case CONFREQ:
+		case CONFACK:
+		case CONFNAK:
+		case CONFREJ:
 	/* print option list */
-	while (len >= 2) {
-	    GETCHAR(code, p);
-	    GETCHAR(olen, p);
-	    p -= 2;
-	    if (olen < CILEN_VOID || olen > len) {
-		break;
-	    }
-	    printer(arg, " <");
-	    len -= olen;
-	    optend = p + olen;
-	    switch (code) {
-	    case IPX_NETWORK_NUMBER:
-		if (olen == CILEN_NETN) {
-		    p += CILEN_VOID;
-		    GETLONG(cilong, p);
-		    printer (arg, "network %s", ipx_ntoa (cilong));
-		}
-		break;
-	    case IPX_NODE_NUMBER:
-		if (olen == CILEN_NODEN) {
-		    p += CILEN_VOID;
-		    printer (arg, "node ");
-		    while (p < optend) {
+		while (len >= 2) {
 			GETCHAR(code, p);
-			printer(arg, "%.2x", code);
-		    }
-		}
-		break;
-	    case IPX_COMPRESSION_PROTOCOL:
-		if (olen == CILEN_COMPRESS) {
-		    p += CILEN_VOID;
-		    GETSHORT (cishort, p);
-		    printer (arg, "compression %d", cishort);
-		}
-		break;
-	    case IPX_ROUTER_PROTOCOL:
-		if (olen == CILEN_PROTOCOL) {
-		    p += CILEN_VOID;
-		    GETSHORT (cishort, p);
-		    printer (arg, "router proto %d", cishort);
-		}
-		break;
-	    case IPX_ROUTER_NAME:
-		if (olen >= CILEN_NAME) {
-		    p += CILEN_VOID;
-		    printer (arg, "router name \"");
-		    while (p < optend) {
-			GETCHAR(code, p);
-			if (code >= 0x20 && code < 0x7E)
-			    printer (arg, "%c", code);
-			else
-			    printer (arg, " \\%.2x", code);
-		    }
-		    printer (arg, "\"");
-		}
-		break;
-	    case IPX_COMPLETE:
-		if (olen == CILEN_COMPLETE) {
-		    p += CILEN_VOID;
-		    printer (arg, "complete");
-		}
-		break;
-	    default:
-		break;
-	    }
+			GETCHAR(olen, p);
+			p -= 2;
+			if (olen < CILEN_VOID || olen > len)
+				break;
+			printer(arg, " <");
+			len -= olen;
+			optend = p + olen;
+			switch (code) {
+				case IPX_NETWORK_NUMBER:
+					if (olen == CILEN_NETN) {
+						p += CILEN_VOID;
+						GETLONG(cilong, p);
+						printer (arg, "network %s", ipx_ntoa (cilong));
+					}
+					break;
+				case IPX_NODE_NUMBER:
+					if (olen == CILEN_NODEN) {
+						p += CILEN_VOID;
+						printer (arg, "node ");
+						while (p < optend) {
+							GETCHAR(code, p);
+							printer(arg, "%.2x", code);
+						}
+					}
+					break;
+				case IPX_COMPRESSION_PROTOCOL:
+					if (olen >= CILEN_COMPRESS) {
+						int i;
+						p += CILEN_VOID;
+						GETSHORT (cishort, p);
+						printer (arg, "compression %d", cishort);
+						for(i=0;i<(olen-CILEN_COMPRESS);i++) {
+							unsigned char ccode;
+							GETCHAR(ccode, p);
+							printer (arg, "%#02x ",(int)ccode);
+						}
+					}
+					break;
+				case IPX_ROUTER_PROTOCOL:
+					if (olen >= CILEN_PROTOCOL) {
+						int i;
+						p += CILEN_VOID;
+						GETSHORT (cishort, p);
+						printer (arg, "router proto %d", cishort);
+						for(i=0;i<(olen-CILEN_PROTOCOL);i++) {
+							unsigned char ccode;
+							GETCHAR(ccode, p);
+							printer (arg, "%#02x ",(int)ccode);
+						}
+					}
+					break;
+				case IPX_ROUTER_NAME:
+					if (olen >= CILEN_NAME) {
+						p += CILEN_VOID;
+						printer (arg, "router name \"");
+						while (p < optend) {
+							GETCHAR(code, p);
+							if (code >= 0x20 && code < 0x7E)
+								printer (arg, "%c", code);
+							else
+								printer (arg, " \\%.2x", code);
+						}
+						printer (arg, "\"");
+					}
+					break;
+				case IPX_COMPLETE:
+					if (olen == CILEN_COMPLETE) {
+						p += CILEN_VOID;
+						printer (arg, "complete");
+					}
+					break;
+				default:
+					break;
+			}
 
-	    while (p < optend) {
+			while (p < optend) {
+				GETCHAR(code, p);
+				printer(arg, " %.2x", code);
+			}
+			printer(arg, ">");
+		}
+		break;
+
+		case TERMACK:
+		case TERMREQ:
+			if (len > 0 && *p >= ' ' && *p < 0x7f) {
+				printer(arg, " ");
+				print_string(p, len, printer, arg);
+				p += len;
+				len = 0;
+			}
+			break;
+	}
+
+	/*
+	 * print the rest of the bytes in the packet 
+	 */
+	for (; len > 0; --len) {
 		GETCHAR(code, p);
 		printer(arg, " %.2x", code);
-	    }
-	    printer(arg, ">");
-       }
-       break;
-
-    case TERMACK:
-    case TERMREQ:
-       if (len > 0 && *p >= ' ' && *p < 0x7f) {
-           printer(arg, " ");
-           print_string(p, len, printer, arg);
-           p += len;
-           len = 0;
 	}
-	break;
-    }
-
-    /* print the rest of the bytes in the packet */
-    for (; len > 0; --len) {
-	GETCHAR(code, p);
-	printer(arg, " %.2x", code);
-    }
 
     return p - pstart;
 }

@@ -21,9 +21,7 @@
  */
 
 #ifdef USE_MSCHAP
-#ifndef lint
-static char rcsid[] = "$Id: chap_ms.c,v 1.2 1997/04/26 17:17:24 hipp Exp $";
-#endif
+char chap_ms_rcsid[] = "$Id: chap_ms.c,v 1.3 1997/05/19 10:15:41 hipp Exp $";
 
 #include <stdio.h>
 #include <string.h>

@@ -25,9 +25,7 @@
  * PATCHLEVEL 9
  */
 
-#ifndef lint
-static char rcsid[] = "$Id: main.c,v 1.4 1997/05/07 14:51:36 hipp Exp $";
-#endif
+char main_rcsid[] = "$Id: main.c,v 1.5 1997/05/19 10:16:13 hipp Exp $";
 
 #include <stdio.h>
 #include <stdarg.h>
@@ -77,7 +75,7 @@ static char rcsid[] = "$Id: main.c,v 1.4 1997/05/07 14:51:36 hipp Exp $";
 /* interface vars */
 
 extern void make_options_global(int slot);
-static char pidfilename[MAXPATHLEN];	/* name of pid file */
+char pidfilename[MAXPATHLEN];	/* name of pid file */
 char *progname;			/* Name of this program */
 char hostname[MAXNAMELEN];	/* Our hostname */
 static pid_t	pid;		/* Our pid */
@@ -148,6 +146,17 @@ void main(int argc,char **argv)
 	sigset_t mask;
 	struct protent *protp;
 
+	if(argc > 1 && !strcmp(argv[1],"-version")) {
+		fprintf(stderr,"ipppd %s.%d (isdn4linux version of pppd by MH) started\n", VERSION, PATCHLEVEL);
+		fprintf(stderr,"%s\n%s\n%s\n%s\n%s\n",lcp_rcsid,ipcp_rcsid,ipxcp_rcsid,ccp_rcsid,magic_rcsid);
+		fprintf(stderr,"%s\n%s\n%s\n%s\n",chap_rcsid,upap_rcsid,main_rcsid,options_rcsid);
+		fprintf(stderr,"%s\n%s\n%s\n",fsm_rcsid,cbcp_rcsid,sys_rcsid);
+#ifdef USE_MSCHAP
+		fprintf(stderr,"%s\n",chap_ms_rcsid);
+#endif
+		exit(1);
+	}
+
 	for(i=0;i<NUM_PPP;i++) {
 		lns[i].openfails = 0;
 		lns[i].initfdflags = -1;
@@ -174,6 +183,7 @@ void main(int argc,char **argv)
 	}
 	hostname[MAXNAMELEN-1] = 0;
 
+    pidfilename[0] = 0;
 	uid = getuid();
 
     /*
@@ -183,16 +193,12 @@ void main(int argc,char **argv)
      */
 	progname = *argv;
 
-	for (i = 0; (protp = protocols[i]) != NULL; ++i)
+	for (i = 0; (protp = protocols[i]) != NULL; i++)
 		for(j=0;j<NUM_PPP;j++)
 			(*protp->init)(j); /* modifies our options .. !!!! */
 
 	if (!options_from_file(_PATH_SYSOPTIONS, REQ_SYSOPTIONS, 0 , 0) ||
-#if 0
-		!options_from_user() ||
-#endif
-		!parse_args(argc-1, argv+1) ||
-		!options_for_tty() )
+			!parse_args(argc-1, argv+1) || !options_for_tty() )
 		die(1);
 
     /*
@@ -245,13 +251,15 @@ void main(int argc,char **argv)
 	pid = getpid();
 
 	/* write pid to file */
-	sprintf(pidfilename, "%s%s.pid", _PATH_VARRUN, "ipppd" );
-	if ((pidfile = fopen(pidfilename, "w")) != NULL) {
-		fprintf(pidfile, "%d\n", pid);
-		fclose(pidfile);
-	} else {
-		syslog(LOG_ERR, "Failed to create pid file %s: %m", pidfilename);
-		pidfilename[0] = 0;
+	if(!strlen(pidfilename)) {
+		sprintf(pidfilename, "%s%s.pid", _PATH_VARRUN, "ipppd" );
+		if ((pidfile = fopen(pidfilename, "w")) != NULL) {
+			fprintf(pidfile, "%d\n", pid);
+			fclose(pidfile);
+		} else {
+			syslog(LOG_ERR, "Failed to create pid file %s: %m", pidfilename);
+			pidfilename[0] = 0;
+		}
 	}
 
 	syslog(LOG_NOTICE, "ipppd %s.%d (isdn4linux version of pppd by MH) started", VERSION, PATCHLEVEL);
@@ -628,20 +636,9 @@ void demuxprotrej(int linkunit,u_short protocol)
 /*
  * bad_signal - We've caught a fatal signal.  Clean up state and exit.
  */
-static void
-bad_signal(sig)
-    int sig;
+static void bad_signal(int sig) 
 {
     syslog(LOG_ERR, "Fatal signal %d", sig);
-    die(1);
-}
-
-/*
- * quit - Clean up state and exit (with an error indication).
- */
-void 
-quit()
-{
     die(1);
 }
 
@@ -716,62 +713,55 @@ void timeout(void (*func)(),caddr_t arg,int time)
     /*
      * Allocate timeout.
      */
-    if ((newp = (struct callout *) malloc(sizeof(struct callout))) == NULL) {
-	syslog(LOG_ERR, "Out of memory in timeout()!");
-	die(1);
-    }
-    newp->c_arg = arg;
-    newp->c_func = func;
-    gettimeofday(&timenow, NULL);
-    newp->c_time.tv_sec = timenow.tv_sec + time;
-    newp->c_time.tv_usec = timenow.tv_usec;
+	if ((newp = (struct callout *) malloc(sizeof(struct callout))) == NULL) {
+		syslog(LOG_ERR, "Out of memory in timeout()!");
+		die(1);
+	}
+	newp->c_arg = arg;
+	newp->c_func = func;
+	gettimeofday(&timenow, NULL);
+	newp->c_time.tv_sec = timenow.tv_sec + time;
+	newp->c_time.tv_usec = timenow.tv_usec;
   
     /*
      * Find correct place and link it in.
      */
-    for (pp = &callout; (p = *pp); pp = &p->c_next)
-	if (newp->c_time.tv_sec < p->c_time.tv_sec
-	    || (newp->c_time.tv_sec == p->c_time.tv_sec
-		&& newp->c_time.tv_usec < p->c_time.tv_sec))
-	    break;
-    newp->c_next = p;
-    *pp = newp;
+	for (pp = &callout; (p = *pp); pp = &p->c_next) {
+		if (newp->c_time.tv_sec < p->c_time.tv_sec
+				|| (newp->c_time.tv_sec == p->c_time.tv_sec
+				&& newp->c_time.tv_usec < p->c_time.tv_sec))
+			break;
+	}
+	newp->c_next = p;
+	*pp = newp;
 }
 
 
 /*
  * untimeout - Unschedule a timeout.
  */
-void
-untimeout(func, arg)
-    void (*func)();
-    caddr_t arg;
+void untimeout(void (*func)(),caddr_t arg)
 {
-#if 0
-    struct itimerval itv;
-    int reschedule = 0;
-#endif
-    struct callout **copp, *freep;
+	struct callout **copp, *freep;
   
-    MAINDEBUG((LOG_DEBUG, "Untimeout %lx:%lx.", (long) func, (long) arg));
+	MAINDEBUG((LOG_DEBUG, "Untimeout %lx:%lx.", (long) func, (long) arg));
   
-    /*
-     * Find first matching timeout and remove it from the list.
-     */
-    for (copp = &callout; (freep = *copp); copp = &freep->c_next)
-	if (freep->c_func == func && freep->c_arg == arg) {
-	    *copp = freep->c_next;
-	    (void) free((char *) freep);
-	    break;
-	}
+	/*
+	 * Find first matching timeout and remove it from the list.
+	 */
+	for (copp = &callout; (freep = *copp); copp = &freep->c_next)
+		if (freep->c_func == func && freep->c_arg == arg) {
+			*copp = freep->c_next;
+			free((char *) freep);
+			break;
+		}
 }
 
 
 /*
  * calltimeout - Call any timeout routines which are now due.
  */
-void
-calltimeout()
+void calltimeout()
 {
     struct callout *p;
 
@@ -938,56 +928,44 @@ int run_program(char *prog,char **args,int must_exist,int unit)
     int pid;
     char *nullenv[1];
 
-    pid = fork();
-    if (pid == -1) {
-	syslog(LOG_ERR, "Failed to create child process for %s: %m", prog);
-	return -1;
+	pid = fork();
+	if (pid == -1) {
+		syslog(LOG_ERR, "Failed to create child process for %s: %m", prog);
+		return -1;
     }
-    if (pid == 0) {
-	int new_fd;
+	if (pid == 0) {
+		int new_fd;
 
-	/* Leave the current location */
-	(void) setsid();    /* No controlling tty. */
-	(void) umask (S_IRWXG|S_IRWXO);
-	(void) chdir ("/"); /* no current directory. */
-	setuid(geteuid());
-	setgid(getegid());
+		setsid();
+		umask (S_IRWXG|S_IRWXO);
+		chdir ("/");
+		setuid(geteuid());
+		setgid(getegid());
 
-	/* Ensure that nothing of our device environment is inherited. */
-	close (0);
-	close (1);
-	close (2);
-	close (lns[unit].fd);  /* tty interface to the ppp device */
-	/* XXX should call sysdep cleanup procedure here */
+		close (0);
+		close (1);
+		close (2);
+		close (lns[unit].fd); 
 
-        /* Don't pass handles to the PPP device, even by accident. */
-	new_fd = open (_PATH_DEVNULL, O_RDWR);
-	if (new_fd >= 0) {
-	    if (new_fd != 0) {
-	        dup2  (new_fd, 0); /* stdin <- /dev/null */
-		close (new_fd);
-	    }
-	    dup2 (0, 1); /* stdout -> /dev/null */
-	    dup2 (0, 2); /* stderr -> /dev/null */
+		new_fd = open (_PATH_DEVNULL, O_RDWR);
+		if (new_fd >= 0) {
+			if (new_fd != 0) {
+				dup2  (new_fd, 0); /* stdin <- /dev/null */
+				close (new_fd);
+			}
+			dup2 (0, 1); /* stdout -> /dev/null */
+			dup2 (0, 2); /* stderr -> /dev/null */
+		}
+
+		nullenv[0] = NULL;
+		execve(prog, args, nullenv);
+		if (must_exist || errno != ENOENT)
+			syslog(LOG_WARNING, "Can't execute %s: %m", prog);
+			return -1;
 	}
+	MAINDEBUG((LOG_DEBUG, "Script %s started; pid = %d", prog, pid));
+	++n_children;
 
-#ifdef BSD
-	/* Force the priority back to zero if pppd is running higher. */
-	if (setpriority (PRIO_PROCESS, 0, 0) < 0)
-	    syslog (LOG_WARNING, "can't reset priority to 0: %m"); 
-#endif
-
-	/* SysV recommends a second fork at this point. */
-
-	/* run the program; give it a null environment */
-	nullenv[0] = NULL;
-	execve(prog, args, nullenv);
-	if (must_exist || errno != ENOENT)
-	    syslog(LOG_WARNING, "Can't execute %s: %m", prog);
-	_exit(-1);
-    }
-    MAINDEBUG((LOG_DEBUG, "Script %s started; pid = %d", prog, pid));
-    ++n_children;
     return 0;
 }
 
@@ -996,25 +974,24 @@ int run_program(char *prog,char **args,int must_exist,int unit)
  * reap_kids - get status from any dead child processes,
  * and log a message for abnormal terminations.
  */
-void
-reap_kids()
+void reap_kids()
 {
-    int pid, status;
+	int pid, status;
 
-    if (n_children == 0)
-	return;
-    if ((pid = waitpid(-1, &status, WNOHANG)) == -1) {
-	if (errno != ECHILD)
-	    syslog(LOG_ERR, "Error waiting for child process: %m");
-	return;
-    }
-    if (pid > 0) {
-	--n_children;
-	if (WIFSIGNALED(status)) {
-	    syslog(LOG_WARNING, "Child process %d terminated with signal %d",
-		   pid, WTERMSIG(status));
+	if (n_children == 0)
+		return;
+	if ((pid = waitpid(-1, &status, WNOHANG)) == -1) {
+		if (errno != ECHILD)
+			syslog(LOG_ERR, "Error waiting for child process: %m");
+		return;
 	}
-    }
+	if (pid > 0) {
+		--n_children;
+		if (WIFSIGNALED(status)) {
+			syslog(LOG_WARNING, "Child process %d terminated with signal %d",
+				pid, WTERMSIG(status));
+		}
+	}
 }
 
 
@@ -1025,59 +1002,57 @@ reap_kids()
 char line[256];			/* line to be logged accumulated here */
 char *linep;
 
-void
-log_packet(u_char *p,int len,char *prefix,int linkunit)
+void log_packet(u_char *p,int len,char *prefix,int linkunit)
 {
-    strcpy(line, prefix);
-    linep = line + strlen(line);
-    format_packet(p, len, pr_log, NULL,linkunit);
+	strcpy(line, prefix);
+	linep = line + strlen(line);
+	format_packet(p, len, pr_log, NULL,linkunit);
     if (linep != line)
-	syslog(LOG_DEBUG, "%s", line);
+		syslog(LOG_DEBUG, "%s", line);
 }
 
 /*
  * format_packet - make a readable representation of a packet,
  * calling `printer(arg, format, ...)' to output it.
  */
-void
-format_packet(u_char *p,int len,void (*printer)(void*,char*,...),void *arg,int linkunit)
+void format_packet(u_char *p,int len,void (*printer)(void*,char*,...),void *arg,int linkunit)
 {
-    int i, n;
-    u_short proto;
-    u_char x;
+	int i, n;
+	u_short proto;
+	u_char x;
 	struct protent *protp;
 
-    if (len >= PPP_HDRLEN && p[0] == PPP_ALLSTATIONS && p[1] == PPP_UI) {
-	p += 2;
-	GETSHORT(proto, p);
-	len -= PPP_HDRLEN;
-	for (i = 0; (protp = protocols[i]) != NULL; ++i) {
-		if (proto == protp->protocol)
-			break;
-	}
-        printer(arg,"[%d]",linkunit);
-	if (protp) {
-	    printer(arg, "[%s", protp->name);
-	    n = (*protp->printpkt)(p, len, printer, arg);
-	    printer(arg, "]");
-	    p += n;
-	    len -= n;
-	} else {
-	    printer(arg, "[proto=0x%x]", proto);
-	}
-    }
+	if (len >= PPP_HDRLEN && p[0] == PPP_ALLSTATIONS && p[1] == PPP_UI) {
+		p += 2;
+		GETSHORT(proto, p);
+		len -= PPP_HDRLEN;
+		for (i = 0; (protp = protocols[i]) != NULL; ++i) {
+			if (proto == protp->protocol)
+				break;
+		}
 
-    for (; len > 0; --len) {
-	GETCHAR(x, p);
-	printer(arg, " %.2x", x);
-    }
+        printer(arg,"[%d]",linkunit);
+		if (protp) {
+		    printer(arg, "[%s", protp->name);
+			n = (*protp->printpkt)(p, len, printer, arg);
+			printer(arg, "]");
+			p += n;
+			len -= n;
+		} else {
+			printer(arg, "[proto=0x%x]", proto);
+		}
+	}
+
+	for (; len > 0; --len) {
+		GETCHAR(x, p);
+		printer(arg, " %.2x", x);
+	}
 }
 
 #ifdef __STDC__
 #include <stdarg.h>
 
-void
-pr_log(void *arg, char *fmt, ...)
+void pr_log(void *arg, char *fmt, ...)
 {
     int n;
     va_list pvar;
@@ -1099,8 +1074,7 @@ pr_log(void *arg, char *fmt, ...)
 #else /* __STDC__ */
 #include <varargs.h>
 
-void
-pr_log(arg, fmt, va_alist)
+void pr_log(arg, fmt, va_alist)
 void *arg;
 char *fmt;
 va_dcl
@@ -1127,12 +1101,7 @@ va_dcl
  * print_string - print a readable representation of a string using
  * printer.
  */
-void
-print_string(p, len, printer, arg)
-    char *p;
-    int len;
-    void (*printer) __P((void *, char *, ...));
-    void *arg;
+void print_string(char *p,int len,void (*printer) __P((void *, char *, ...)),void *arg)
 {
     int c;
 
@@ -1150,9 +1119,7 @@ print_string(p, len, printer, arg)
 /*
  * novm - log an error message saying we ran out of memory, and die.
  */
-void
-novm(msg)
-    char *msg;
+void novm(char *msg)
 {
     syslog(LOG_ERR, "Virtual memory exhausted allocating %s\n", msg);
     die(1);

@@ -25,15 +25,15 @@
  * OR MODIFICATIONS.
  */
 
-#ifndef lint
-static char rcsid[] = "$Id: ccp.c,v 1.2 1997/04/26 17:17:21 hipp Exp $";
-#endif
+char ccp_rcsid[] = "$Id: ccp.c,v 1.3 1997/05/19 10:15:34 hipp Exp $";
 
 #include <string.h>
 #include <syslog.h>
 #include <sys/ioctl.h>
 #include <sys/types.h>
+#if 0
 #include <net/ppp_defs.h>
+#endif
 #include <linux/ppp-comp.h>
 
 #include "fsm.h"
@@ -137,6 +137,8 @@ static int all_rejected[NUM_PPP];
 static void ccp_init(int unit)
 {
     fsm *f = &ccp_fsm[unit];
+
+	memset(f,0,sizeof(fsm));
 
     f->unit = -1;
     f->protocol = PPP_CCP;
