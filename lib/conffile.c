@@ -1,4 +1,4 @@
-/* $Id: conffile.c,v 1.16 1997/05/25 19:41:23 luethje Exp $
+/* $Id: conffile.c,v 1.17 1998/05/20 09:25:01 paul Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -19,6 +19,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: conffile.c,v $
+ * Revision 1.17  1998/05/20 09:25:01  paul
+ * function Find_Section returned pointer to local automatic variable. Local
+ * variable removed, as it was not necessary; now return parameter.
+ *
  * Revision 1.16  1997/05/25 19:41:23  luethje
  * isdnlog:  close all files and open again after kill -HUP
  * isdnrep:  support vbox version 2.0
@@ -304,11 +308,8 @@ static section *Read_Lines(section *Section, FILE *fp, const char *FileName, int
 static char *Find_Section(char* String)
 {
 	char *Ptr = NULL;
-	char Help[SHORT_STRING_SIZE];
 
-
-	strcpy(Help,String);
-	String = Kill_Blanks(Help);
+	Kill_Blanks(String);
 
 	if (*String == '\0' || *String != C_BEGIN_SECTION)
 		return NULL;
