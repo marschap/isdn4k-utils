@@ -9,7 +9,6 @@ devel:
 	touch stamp-h.in
 
 dist:
-	cat acinclude.m4.in libtool.m4.in > acinclude.m4
 	aclocal
 	autoheader
 	automake --foreign --include-deps
