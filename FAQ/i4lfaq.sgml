@@ -4,7 +4,7 @@
 
 <title>FAQ for isdn4linux
 <author>Matthias Hessler (<tt><htmlurl url="mailto:hessler@isdn4linux.de" name="hessler@isdn4linux.de"></tt>)
-<date>v2.0.80, 31. August 2003
+<date>v2.0.81, 26. October 2003
 <abstract>
 If you are reading this FAQ online, you may consider downloading the whole
 thing, and reading it offline (much cheaper). To download the latest
@@ -1743,7 +1743,8 @@ to disconnect the RX leads (pin 3 and 6 on western plug), so that the NTBA
 will not see the ISDN card. In this case configure HiSax normally, NOT in
 point-to-point mode.
 
-<sect1> config_links: What helpful links are there about isdn4linux?  
+<sect1> config_links: What helpful links are there about and around  
+isdn4linux?  
 <label id="config_links">
 <p>
 These are helpful links that are currently available on how to configure
@@ -1764,6 +1765,8 @@ howto (isdn.html) and a ISDN quick-install guide (isdnquick.html).
 <url url="http://www.mandrakeuser.org/connect/cisdn.html">
 <item>fli4l, a prepackaged Linux version to use an old PC as ISDN router:
 <url url="http://www.fli4l.de"> (great!)
+<item>LR101 (a project which tries to create a hardware router based on Linux):
+<url url="http://lr101.linux-it-solutions.de">
 <item>Scripts and installation tips from several people:
 <tt><url url="http://www.rosat.mpe-garching.mpg.de/&tilde;web/ISDN.html"></tt>
 <item>Documentation on abc extensions:
