@@ -1,5 +1,5 @@
-.\" $Id: isdn.conf.5.in,v 1.3 1999/12/24 14:17:04 akool Exp $
-.\" CHECKIN $Date: 1999/12/24 14:17:04 $
+.\" $Id: isdn.conf.5.in,v 1.4 2000/08/22 14:33:03 paul Exp $
+.\" CHECKIN $Date: 2000/08/22 14:33:03 $
 .TH isdn.conf 5 "@MANDATE_ISDN_CONF@" "ISDN 4 Linux @I4LVERSION@" "Linux System Administration"
 .PD 0
 
@@ -48,8 +48,9 @@ Settings for isdnlog.
 
 .TP
 .B VBN
-The initial numbers of the dial prefix. If there are more possible prefixes,
-sparate them by semicolons.
+The initial numbers of the dial prefix.
+If there is more than one possible prefix,
+separate them by semicolons.
 
 .TP
 .B VBNLEN
@@ -59,13 +60,13 @@ prefix.
 
 .TP
 .B PRESELECTED
-The default telefon provider, if no dial prefix is dialed.
+The default telephone provider (carrier), if no dial prefix is dialed.
 
 .TP
 .B COUNTRYFILE
 Location and name of
 .IR country-de.dat .
-This file contains country-names, -aliases, -codes and prefixes.
+This file contains country names, aliases, codes and prefixes.
 
 .TP
 .B RATECONF
@@ -91,7 +92,7 @@ Name and location of
 .TP
 .B ZONEFILE
 Name and location of
-.IR zone-CC-PPP.gdbm .
+.IR zone-CC-PPP.cdb .
 The provider
 .I PPP
 is taken from the D:-tag in rate-CC.dat and is substituted for '%s' in
@@ -101,7 +102,7 @@ areas of a country.
 .TP
 .B DESTFILE
 Name and location of the destination database
-.IR dest.gdbm .
+.IR dest.cdb .
 
 .TP
 .B LOGFILE
@@ -304,8 +305,8 @@ COUNTRYFILE = /usr/lib/isdn/country-de.dat
 RATECONF= /etc/isdn/rate.conf
 RATEFILE= /usr/lib/isdn/rate-de.dat
 HOLIDAYS= /usr/lib/isdn/holiday-de.dat
-ZONEFILE= /usr/lib/isdn/zone-de-%s.gdbm
-DESTFILE= /usr/lib/isdn/dest.gdbm
+ZONEFILE= /usr/lib/isdn/zone-de-%s.cdb
+DESTFILE= /usr/lib/isdn/dest.cdb
 
 .fi
 
