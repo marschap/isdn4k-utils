@@ -1,4 +1,4 @@
-/* $Id: tools.h,v 1.54 2000/03/09 18:50:03 akool Exp $
+/* $Id: tools.h,v 1.55 2000/06/29 17:38:28 akool Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools.h,v $
+ * Revision 1.55  2000/06/29 17:38:28  akool
+ *  - Ported "imontty", "isdnctrl", "isdnlog", "xmonisdn" and "hisaxctrl" to
+ *    Linux-2.4 "devfs" ("/dev/isdnctrl" -> "/dev/isdn/isdnctrl")
+ *
  * Revision 1.54  2000/03/09 18:50:03  akool
  * isdnlog-4.16
  *  - isdnlog/samples/isdn.conf.no ... changed VBN
@@ -722,7 +726,6 @@
 #if 0 /* Fixme: remove */
 #define	AVON	             "avon"
 #endif
-#define INFO	    "/dev/isdninfo"
 
 #define	BIGBUFSIZ              2048
 

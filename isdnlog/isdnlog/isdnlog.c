@@ -1,4 +1,4 @@
-/* $Id: isdnlog.c,v 1.62 2000/06/20 17:09:59 akool Exp $
+/* $Id: isdnlog.c,v 1.63 2000/06/29 17:38:27 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,10 @@
  * along with this program; if not, write to the Free Software
  *
  * $Log: isdnlog.c,v $
+ * Revision 1.63  2000/06/29 17:38:27  akool
+ *  - Ported "imontty", "isdnctrl", "isdnlog", "xmonisdn" and "hisaxctrl" to
+ *    Linux-2.4 "devfs" ("/dev/isdnctrl" -> "/dev/isdn/isdnctrl")
+ *
  * Revision 1.62  2000/06/20 17:09:59  akool
  * isdnlog-4.29
  *  - better ASN.1 display
@@ -1497,7 +1501,14 @@ int main(int argc, char *argv[], char *envp[])
             } /* switch */
           } /* if */
 
-          if (replay || ((sockets[ISDNINFO].descriptor = open(INFO, O_RDONLY | O_NONBLOCK)) >= 0)) {
+
+	  if (!replay) {
+	    sockets[ISDNINFO].descriptor = open("/dev/isdn/isdninfo", O_RDONLY | O_NONBLOCK);
+	    if (sockets[ISDNINFO].descriptor<0)
+	      sockets[ISDNINFO].descriptor = open("/dev/isdninfo", O_RDONLY | O_NONBLOCK);
+	  }
+	  
+          if (replay || (sockets[ISDNINFO].descriptor >= 0)) {
 
             if (readkeyboard) {
 	      raw_mode(1);
@@ -1555,7 +1566,7 @@ int main(int argc, char *argv[], char *envp[])
 
       	        for (i = 0; i < knowns; i++) {
                   p1 = known[i]->num;
-                  while (p2 = strchr(p1, ',')) {
+                  while ((p2 = strchr(p1, ','))) {
                     *p2 = 0;
               	    fprintf(fo, "INSERT INTO conf VALUES('%s',%d,'%s');\n",
   		      p1, known[i]->si, known[i]->who);
@@ -1579,7 +1590,7 @@ int main(int argc, char *argv[], char *envp[])
               close(sockets[ISDNINFO].descriptor);
 	  }
           else {
-            print_msg(PRT_ERR, msg1, myshortname, INFO, strerror(errno));
+            print_msg(PRT_ERR, msg1, myshortname, "/dev/isdninfo", strerror(errno));
             res = 7;
           } /* else */
 

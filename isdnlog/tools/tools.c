@@ -1,4 +1,4 @@
-/* $Id: tools.c,v 1.48 2000/04/02 17:35:07 akool Exp $
+/* $Id: tools.c,v 1.49 2000/06/29 17:38:28 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -19,6 +19,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools.c,v $
+ * Revision 1.49  2000/06/29 17:38:28  akool
+ *  - Ported "imontty", "isdnctrl", "isdnlog", "xmonisdn" and "hisaxctrl" to
+ *    Linux-2.4 "devfs" ("/dev/isdnctrl" -> "/dev/isdn/isdnctrl")
+ *
  * Revision 1.48  2000/04/02 17:35:07  akool
  * isdnlog-4.18
  *  - isdnlog/isdnlog/isdnlog.8.in  ... documented hup3
@@ -1043,10 +1047,22 @@ int iprintf(char *obuf, int chan, register char *fmt, ...)
     } /* if */
 
     if (c != '%') {
-      *op++ = c;
+      if (c == '\\') {
+	c = *fmt++;
+	switch (c) {
+	case 't':
+	  *op++ = '\t';
+	  break;
+	default:
+	  *op++ = '\\';
+	  *op++ = c;
+	}
+      } else {
+	*op++ = c;
+      }
       continue;
     } /* if */
-
+    
     p = s = buf;
 
     ljust = 0;

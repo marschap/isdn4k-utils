@@ -1,4 +1,4 @@
-/* $Id: hisaxctrl.c,v 1.1 2000/06/20 10:16:16 keil Exp $
+/* $Id: hisaxctrl.c,v 1.2 2000/06/29 17:38:26 akool Exp $
  *
  * Configuration tool for HiSax ISDN cards
  *
@@ -92,7 +92,9 @@ main(int argc, char *argv[])
 		ioctl_s.arg = 0;
 		cmd = 0;
 	}
-	fd = open("/dev/isdnctrl", O_RDWR);
+	fd = open("/dev/isdn/isdnctrl", O_RDWR);
+	if (fd < 0)
+        	fd = open("/dev/isdnctrl", O_RDWR);
 	if (fd < 0) {
 		perror("/dev/isdnctrl");
 		exit(-1);

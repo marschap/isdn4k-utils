@@ -1,4 +1,4 @@
-/* $Id: isdnctrl.c,v 1.42 2000/04/27 06:32:28 calle Exp $
+/* $Id: isdnctrl.c,v 1.43 2000/06/29 17:38:26 akool Exp $
  * ISDN driver for Linux. (Control-Utility)
  *
  * Copyright 1994,95 by Fritz Elfert (fritz@isdn4linux.de)
@@ -21,6 +21,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnctrl.c,v $
+ * Revision 1.43  2000/06/29 17:38:26  akool
+ *  - Ported "imontty", "isdnctrl", "isdnlog", "xmonisdn" and "hisaxctrl" to
+ *    Linux-2.4 "devfs" ("/dev/isdnctrl" -> "/dev/isdn/isdnctrl")
+ *
  * Revision 1.42  2000/04/27 06:32:28  calle
  * DriverId can be longer than 8 for "mapping" and "busreject".
  *
@@ -613,7 +617,9 @@ static void statusif(int isdnctrl, char *name, int errexit)
 	static int isdninfo = -1;
 
 	if (isdninfo < 0) {
-		isdninfo = open("/dev/isdninfo", O_RDONLY);
+	        isdninfo = open("/dev/isdn/isdninfo", O_RDONLY);
+		if (isdninfo < 0)
+		        isdninfo = open("/dev/isdninfo", O_RDONLY);
 		if (isdninfo < 0) {
 			perror("Can't open /dev/isdninfo");
 			exit(-1);
@@ -1745,7 +1751,9 @@ void check_version(int report) {
 		printf("isdnctrl's view of API-Versions:\n");
 		printf("ttyI: %d, net: %d, info: %d\n", TTY_DV, NET_DV, INF_DV);
 	}
-	fd = open("/dev/isdninfo", O_RDWR);
+	fd = open("/dev/isdn/isdninfo", O_RDWR);
+	if (fd < 0)
+	        fd = open("/dev/isdninfo", O_RDONLY);
 	if (fd < 0) {
 		perror("/dev/isdninfo");
 		exit(-1);
@@ -1913,7 +1921,9 @@ int main(int argc, char **argv)
 #endif
 	check_version(0);
 
-	fd = open("/dev/isdnctrl", O_RDWR);
+	fd = open("/dev/isdn/isdnctrl", O_RDWR);
+	if (fd < 0)
+	        fd = open("/dev/isdnctrl", O_RDWR);
 	if (fd < 0) {
 		perror("/dev/isdnctrl");
 		exit(-1);

@@ -625,8 +625,15 @@ static int parse_info()
 static void GetNetinfoFile (w)
     NetstatWidget w;
 {
-    w->netstat.filename = (String) XtMalloc (strlen (NETINFO_FILE) + 1);
-    strcpy (w->netstat.filename, NETINFO_FILE);
+    char *netinfo_file;
+    struct stat stbuf;
+    
+    netinfo_file="/dev/isdn/isdninfo";  
+    if (stat(netinfo_file, &stbuf)<0)
+      netinfo_file="/dev/isdninfo";  
+    
+    w->netstat.filename = (String) XtMalloc (strlen (netinfo_file) + 1);
+    strcpy (w->netstat.filename, netinfo_file);
     return;
 }
 

@@ -4,7 +4,6 @@
 #include "Net.h"
 #include <X11/Xaw/SimpleP.h>
 
-#define NETINFO_FILE "/dev/isdninfo"
 #ifndef NETUP_COMMAND
 #define NETUP_COMMAND "/sbin/isdnnet start &"
 #endif
