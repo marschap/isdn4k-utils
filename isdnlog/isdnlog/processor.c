@@ -1,4 +1,4 @@
-/* $Id: processor.c,v 1.73 1999/06/29 20:11:10 akool Exp $
+/* $Id: processor.c,v 1.74 1999/06/30 17:17:19 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.74  1999/06/30 17:17:19  akool
+ * isdnlog Version 3.39
+ *
  * Revision 1.73  1999/06/29 20:11:10  akool
  * now compiles with ndbm
  * (many thanks to Nima <nima_ghasseminejad@public.uni-hamburg.de>)
@@ -3503,62 +3506,77 @@ void processRate(int chan)
 
 static void processLCR(int chan, char *hint)
 {
-  auto   RATE   bestRate, pselRate, hintRate;
-  auto   char   sx[BUFSIZ], sy[BUFSIZ], sz[BUFSIZ];
-  auto	 double prepreis = -1.0, hintpreis = -1.0;
+  auto   RATE   bestRate, bookRate, pselRate, hintRate;
+  auto   char   buffer[BUFSIZ], *p;
+  auto	 double pselpreis = -1.0, hintpreis = -1.0;
 
+  *(p=buffer)='\0';
+  
+  clearRate (&pselRate);
+  pselRate.prefix=preselect;
+  memcpy (pselRate.src, call[chan].Rate->src, sizeof (pselRate.src));
+  memcpy (pselRate.dst, call[chan].Rate->dst, sizeof (pselRate.dst));
+  pselRate.start = call[chan].Rate->start;
+  pselRate.now   = call[chan].Rate->now;
+  
+  hintRate = pselRate;
+  hintrate.prefix=call[chan].hint;
 
-  *hint = 0;
-
-  bestRate = pselRate = hintRate = call[chan].Rate;
-
-  bestRate.prefix = getLeastCost(&bestRate, -1);
+  getLeastCost(&call[chan].Rate, &bestRate, 1, -1);
+  getLeastCost(&call[chan].Rate, &bookRate, 0, -1);
 
   if (getRate(&pselRate, NULL) != UNKNOWN)
-    prepreis = pselRate.Charge;
+    pselpreis = pselRate.Charge;
 
   if (getRate(&hintRate, NULL) != UNKNOWN)
     hintpreis = hintRate.Charge;
 
-  *sx = *sy = *sz = 0;
-
-  if ((bestRate.prefix != UNKNOWN) && (bestRate.prefix != call[chan].provider) && (call[chan].pay - bestRate.Charge))
-    sprintf(sx, "Cheapest %s%02d:%s %s, more payed %s",
+  if ((bestRate.prefix != UNKNOWN) && (bestRate.prefix != call[chan].provider))
+    p+=sprintf(p, "\nHINT: Cheapest %s%02d:%s %s (saving %s)",
       vbn, bestRate.prefix, bestRate.Provider,
       printRate (bestRate.Charge),
       printRate(call[chan].pay - bestRate.Charge));
 
-  if ((call[chan].provider != preselect) && (prepreis != -1.00) && (prepreis != call[chan].pay))
-    sprintf(sy, " saving vs. preselect (%s%02d:%s) %s",
+  if ((bookRate.prefix != UNKNOWN) && (bookRate.prefix != bestRate.prefix))
+    p+=sprintf(p, "\nHINT: Book %s%02d:%s %s (saving %s)",
+      vbn, bookRate.prefix, bookRate.Provider,
+      printRate (bookRate.Charge),
+      printRate(call[chan].pay - bookRate.Charge));
+
+  if ((call[chan].provider != preselect) && (pselpreis != -1.00) && (pselpreis != call[chan].pay))
+    p+=sprintf(p, "\nHINT: Preselect %s%02d:%s %s (saving %s)",
       vbn, preselect, getProvider(preselect),
-      printRate(prepreis - call[chan].pay));
+      printRate (pselpreis),
+      printRate(pselpreis - call[chan].pay));
 
   if ((call[chan].hint != UNKNOWN) && (call[chan].hint != bestRate.prefix))
-    sprintf(sz, " saving vs. hint (%s%02d:%s) %s",
+    p+=sprintf(p, "\nHINT:  Hint %s%02d:%s %s (saving %s)",
       vbn, call[chan].hint, getProvider(call[chan].hint),
+      printRate (hintpreis),
       printRate(hintpreis - call[chan].pay));
 
-  if (*sx || *sy || *sz)
-    sprintf(hint, "HINT: %s%s%s LCR:%s", sx, sy, sz, ((bestRate.prefix == call[chan].provider) ? "OK" : "FAILED"));
+  if (*buffer)
+    p+=sprintf(p, "HINT: LCR:%s", (bestRate.prefix == call[chan].provider) ? "OK" : "FAILED");
+  
 } /* processLCR */
 
 
-static void showRates(char *message)
+static void showRates(RATE *Rate, char *message)
 {
-  if (call[chan].Rate.Basic > 0)
+  if (Rate->Basic > 0)
     sprintf(message, "CHARGE: %s + %s/%ds = %s + %s/Min (%s)",
-      printRate(call[chan].Rate.Basic),
-      printRate(call[chan].Rate.Price),
-      (int)(call[chan].Rate.Duration + 0.5),
-      printRate(call[chan].Rate.Basic),
-      printRate(60 * call[chan].Rate.Price / call[chan].Rate.Duration),
-      explainRate(&call[chan].Rate));
+      printRate(Rate->Basic),
+      printRate(Rate->Price),
+      (int)(Rate->Duration + 0.5),
+      printRate(Rate->Basic),
+      printRate(60 * Rate->Price / Rate->Duration),
+      explainRate(Rate));
   else
     sprintf(message, "CHARGE: %s/%ds = %s/Min (%s)",
-      printRate(call[chan].Rate.Price),
-      (int)(call[chan].Rate.Duration + 0.5),
-      printRate(60 * call[chan].Rate.Price / call[chan].Rate.Duration),
-      explainRate(&call[chan].Rate));
+      printRate(Rate->Price),
+      (int)(Rate->Duration + 0.5),
+      printRate(60 * Rate->Price / Rate->Duration),
+      explainRate(Rate));
 } /* showRates */
 
 
@@ -3664,17 +3682,15 @@ static void prepareRate(int chan, char **msg, char **tip, int viarep)
     return;
 
   if (msg && call[chan].tarifknown)
-    showRates(message);
+    showRates(&call[chan].Rate, message);
 
-  lcRate = call[chan].Rate;
-
-  if ((call[chan].hint = getLeastCost(&lcRate, UNKNOWN)) != UNKNOWN) {
+  if ((call[chan].hint = getLeastCost(&call[chan].Rate, &lcRate, 1, -1)) != UNKNOWN) {
     if (tip) {
 
       /* compute charge for LCR_DURATION seconds for used provider */
       ckRate = call[chan].Rate;
       ckRate.now = ckRate.start + LCR_DURATION;
-      (void)getRate(&ckRate, NULL);
+      getRate(&ckRate, NULL);
 
       sprintf(lcrhint, "HINT: Better use %s%02d:%s, %s/%ds = %s/Min, saving %s/Min",
 	vbn, lcRate.prefix, lcRate.Provider,
@@ -4575,12 +4591,13 @@ doppelt:break;
 	      ((call[chan].loc == 2) ||       /* Public network serving local user */
                (call[chan].loc == 3))) {      /* Transit network */
  	    auto char s[BUFSIZ], s1[BUFSIZ];
+	    RATE Other;
 
  	    prepareRate(chan, NULL, NULL, 0);
 
- 	    if (getLeastCost(&call[chan].Rate, call[chan].provider) != UNKNOWN) {
-      	      showRates(s1);
- 	      sprintf(s, "OVERLOAD? Try %s%02d:%s (%s)", vbn, call[chan].Rate.prefix, call[chan].Rate.Provider, s1);
+ 	    if (getLeastCost(&call[chan].Rate, &Other, 1, call[chan].provider) != UNKNOWN) {
+      	      showRates(&Other, s1);
+ 	      sprintf(s, "OVERLOAD? Try %s%02d:%s (%s)", vbn, Other.prefix, Other.Provider, s1);
 
               info(chan, PRT_SHOWHANGUP, STATE_HANGUP, s);
  	    } /* if */

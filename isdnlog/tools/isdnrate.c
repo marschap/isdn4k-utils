@@ -1,4 +1,4 @@
-/* $Id: isdnrate.c,v 1.2 1999/06/29 20:11:25 akool Exp $
+/* $Id: isdnrate.c,v 1.3 1999/06/30 17:17:37 akool Exp $
  *
  * ISDN accounting for isdn4linux. (rate evaluation)
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnrate.c,v $
+ * Revision 1.3  1999/06/30 17:17:37  akool
+ * isdnlog Version 3.39
+ *
  * Revision 1.2  1999/06/29 20:11:25  akool
  * now compiles with ndbm
  * (many thanks to Nima <nima_ghasseminejad@public.uni-hamburg.de>)
@@ -71,8 +74,6 @@ int print_msg(int Level, const char *fmt, ...)
 
 static void pre_init()
 {
-  myshortname = basename(myname);
-
   preselect = DTAG;      /* Telekomik */
   vbn = strdup("010"); 	 /* Germany */
 } /* pre_init */
@@ -167,7 +168,10 @@ static int opts(int argc, char *argv[])
     } /* switch */
   } /* while */
 
+  if (argc > optind)
   return(optind);
+  else
+    return(0);
 } /* opts */
 
 
@@ -380,7 +384,19 @@ static void purge(int n)
 static void table()
 {
   register int n;
+  auto 	   struct tm *tm;
 
+
+  buildtime();
+  tm = localtime(&start);
+
+  while (tm->tm_wday) { /* find next sunday */
+    start += (60 * 60 * 24);
+    tm = localtime(&start);
+  } /* while */
+
+  splittime();
+  buildtime();
 
   hour = 7;
   min = 0;
@@ -408,6 +424,7 @@ int main(int argc, char *argv[], char *envp[])
 
 
   myname = argv[0];
+  myshortname = basename(myname);
 
   time(&start);
   splittime();

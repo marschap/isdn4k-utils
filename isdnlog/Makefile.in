@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.91 1999/06/28 19:14:59 akool Exp $
+## $Id: Makefile.in,v 1.92 1999/06/30 17:17:10 akool Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,9 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.92  1999/06/30 17:17:10  akool
+## isdnlog Version 3.39
+##
 ## Revision 1.91  1999/06/28 19:14:59  akool
 ## isdnlog Version 3.38
 ##   - new utility "isdnrate" started
@@ -705,7 +708,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 3.38
+VERSION     = 3.39
 
 MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 \
 	      isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 \
@@ -912,7 +915,7 @@ $(ISDNCONF):    $(ISDNCONF_OBJS)
 		$(CC) -o $(ISDNCONF) $(LFLAGS) $(ISDNCONF_OBJS) $(LIB)
 
 $(ISDNRATE):    $(ISDNRATE_OBJS)
-		$(CC) -o $(ISDNRATE) $(LFLAGS) $(ISDNCONF_OBJS) $(LIB)
+		$(CC) -o $(ISDNRATE) $(LFLAGS) $(ISDNRATE_OBJS) $(LIB)
 
 tools/tools.h: $(LIBISDNDIR)/libisdn.h $(PREFIXDIR)/policy.h
 		touch tools/tools.h
