@@ -5,7 +5,7 @@
 <title>ISDN4LINUX - FAQ (deutsche Version)
 <author>&Uuml;bersetzer: Wolfgang Bornath (<tt><htmlurl
 url="mailto:i4lfaq-de@isdn4linux.de" name="i4lfaq-de@isdn4linux.de"></tt>)
-<date>&Uuml;bersetzung: v 2.0.63-1, 28. Juni 2001
+<date>&Uuml;bersetzung: v 2.0.65-1, 02. M&auml;rz 2002
 <abstract>
 </abstract>
 <!-- Table of Content
@@ -427,7 +427,7 @@ der Frage <ref id="config_h323" name="config_h323">.
 NEIN</bf>. Es gibt allerdings ein Projekt, das sich mit diesem doch
 komplizierten Problem besch&auml;ftigt.  Weitere Informationen
 dar&uuml;ber erh&auml;ltst Du unter <tt><url
-url="http://home.enitel.no/Morten.Rolland/linux/i4lfax/index.html"></tt>
+url="http://home.enitel.no/mortenro/linux/i4lfax/index.html"></tt>
 <item><bf>F&uuml;r passive Karten von AVM: Ja</bf>. AVM brachte
 k&uuml;rzlich einen bin&auml;ren CAPI 2.0 Treiber heraus, der das
 Faxen unterst&uuml;tzt. Die Konfiguration ist jedoch recht
@@ -507,10 +507,13 @@ AT&amp;FS14=10S15=0S18=1&amp;E&lt;your_msn&gt;
 <label id="feature_divert">
 <p>
 Anrufweiterschaltung wurde erst vor kurzem in I4L eingearbeitet (das
-neue Programm <tt/divertctrl/). Es gibt dazu noch kein HOWTO und nur
-sehr sparsame Dokumentation. Deshalb ist es nur etwas f&uuml;r den
-erfahreneren Benutzer. In Holland kann als Alternative das "keypad
-protocol" benutzt werden.
+neue Programm <tt/divertctrl/). F&uuml;r die Benutzung von capi4linux
+finden Sie ein &auml;hnliches Programm namens <tt/capidivert/ unter:
+<url url=" http://www.tp1.ruhr-uni-bochum.de/&tilde;kai/i4l/">.Es gibt
+dazu noch kein HOWTO und nur sehr sparsame Dokumentation. Deshalb ist es
+nur etwas f&uuml;r den erfahreneren Benutzer.
+
+In Holland kann als Alternative das "keypad protocol" benutzt werden.
 
 <sect1> feature_ipx: Kann ich IPX/SPX &uuml;ber ISDN mit Linux routen?  
 <label id="feature_ipx">
@@ -1026,16 +1029,13 @@ Niederlanden genannte 'Wisecom' funktioniert nicht)
 <item>Gazel ISDN Karten
 <item>HFC-PCI basierende Karten
 <item>PCI/Winbond W6692 basierende Karten
+<item>USB ISDN Adapter mit dem ST5481, z.B. BeWan Gazel 128 USB
 </itemize>
 Hinweis:
 <itemize>
 <item>AVM A1+ wird nicht unterst&uuml;tzt
 <item>PCF, PCF-Pro: bis jetzt wird nur der ISDN-Teil unterst&uuml;tzt
 <item>PCC-8: noch nicht getestet 
-<item>Teles PCMCIA ist EXPERIMENTAL
-<item>Teles 16.3c ist EXPERIMENTAL 
-<item>Teles PCI ist EXPERIMENTAL
-<item>Teles S0Box ist EXPERIMENTAL 
 <item>Eicon.Diva U Interface nicht getestet 
 <item>Einige Karten funktionieren nur als Module, nicht fest in den
 Kernel eingebunden 
@@ -1353,7 +1353,16 @@ ISDN4LINUX unterst&uuml;tzt.
 <sect1> hardware_sedlbauer: Was ist bei der Sedlbauer-Karte zu beachten?
 <label id="hardware_sedlbauer">
 <p>
-Die semiaktive Karte besitzt einen ISAR Chipsatz, der das Senden und
+Die Sedlbauer-Karte gibt es in mehreren Versionen:
+<itemize>
+<item> Sedlbauer Speedwin
+<item> Sedlbauer Speedfax
+<item> Sedlbauer Speedfax PCI
+</itemize>
+Die Speedwin ist eine normale passive Karte mit keinerlei Besonderheiten.
+
+Die Speedfax besitzt eine sehr spezielle Hardwareausstattung:
+Es ist eine semiaktive Karte mit einem ISAR Chipsatz, der das Senden und
 Empfangen von Faxen und den Betrieb als 14.4-Modem
 erm&ouml;glicht. Das Besondere an der Karte ist, da&szlig; sie mit
 HiSax benutzt wird, der normalerweise nur mit passiven Karten
@@ -1365,6 +1374,17 @@ Hinweis: Kompressionsverfahren (V42bis, MNP) sind nicht in die
 Firmware implementiert und werden daher beim Modem-Betrieb nicht
 unterst&uuml;tzt. Der ideale Initstring zur Modem-Einwahl ist
 <tt>AT&percnt;C0&bsol;N0</tt>.
+
+Falls bei einigen Faxsendern der Empfang durch Hylafax nicht
+funktioniert, versuchen Sie die folgenden Parameter f&uuml;r Hylafax
+einzustellen:
+<code>
+Class1SwitchingDelay:  75
+</code>
+
+Die Sedlbauer Speedfax PCI ist eine Besonderheit, da sie speziell
+f&uuml;r Linux produziert wurde - es gibt f&uuml;r sie keinen
+Windows-Treiber.
 
 <sect1> hardware_teles: Was sollte ich vor dem Kauf einer ISDN Karte von Teles wissen?
 <label id="hardware_teles">
@@ -1448,7 +1468,9 @@ Angabe einer IO-Adresse eine ISA/PNP-Karte und bei keiner Angabe einer
 IO-Adresse eine PCI-Karte annehmen. Beachte also genau, was Du
 angibst.
 
-Leider hat die aktuelle Version der Fritz!PCI-Karte (v2.0) einen anderen Chipset, der von ISDN4LINUX noch nicht unterst&uuml;tzt wird. Du erkennst diese Karte mittles lspci, das eine Karten-ID von 0e00 ausgibt. Da AVM sich weigert, die zum Schreiben eines Treibers erforderlichen Informationen heraus zu geben, wird diese Karte von ISDN4LINUX nicht so bald unterst&uuml;tzt werden.
+Die aktuelle Fritz! PCI Karte (v2.0) wird jetzt von einem neuen Treiber
+unterst&uuml;tzt. Dieser wurde jedoch noch nicht ernsthaft getestet. Die
+Karte kann mittels lspci identifiziert werden: Die Karten-ID ist 0e00.
 
 Wenn der Interrupt der Karte mit anderen Karten geteilt wird und die
 ISDN-Karte nicht funktioniert kann das am Motherboard liegen. Dazu
@@ -1463,16 +1485,18 @@ url="http://www.avm.de/ftp/cardware/fritzcrd/linux/index.htm">.
 <sect1> hardware_avmb1: Was ist Besonderes an der AVM B1 Karte?  
 <label id="hardware_avmb1">
 <p>
+
 Diese Karte beinhaltet viele spezielle Eigenschaften in ihrer Firmware
 und wird von ihrem Linuxtreiber sehr gut unterst&uuml;tzt. Sie ist zur
 Zeit eine der wenigen ISDN Karten mit denen Du unter ISDN4LINUX Faxe
-versenden kannst oder die das CAPI 2.0 Interface unterst&uuml;tzen.
-Die neuesten Treiber bekommst Du auf <url
-url="ftp://calle.in-berlin.de/pub/linux/avmb1"> oder <url
-url="ftp://ftp.avm.de/cardware/b1/linux/">.  Die Firmware liegt auf:
-<url url="ftp://ftp.avm.de/cardware/b1/linux/firmware">.  Die neueste
-Firmware erlaubt auch das Verfolgen des D-Kanals mit isdnlog ohne den
-Einsatz einer "umgekehrten" Karte.
+versenden kannst oder die das CAPI 2.0 Interface unterst&uuml;tzen. Die
+neuesten Treiber bekommst Du auf <url
+url="ftp://calle.in-berlin.de/pub/capi4linux/">.<BR>
+
+Zum Downloaden der Firmware ben&ouml;tigen Sie die beiden Perl-Scripts von:
+<url url="ftp://calle.in-berlin.de/pub/capi4linux/firmware/">.
+Diese Scripts bewirken den Download und das Auspacken der Firmware vom AVM
+FTP-Server: <url url="ftp://ftp.avm.de/cardware/b1/linux/">.
 
 Zum Gebrauch der AVM an einem Anlagenanschluss musst Du 'DSS1 P2P' zum
 Ladebefehl der Firmware hinzuf&uuml;gen:
@@ -1919,6 +1943,11 @@ hisaxctrl &lt;treiber_id&gt; 7 1
 Zus&auml;tzlich kannst Du mit dem Befehl ' AT&amp;Lxxx' den Bereich
 der Telephonnummern angeben auf die ISDN4LINUX an den ttyI* Devices
 lauschen soll.
+Wenn Sie Ihre ISDN-Karte absolut nur zum Auslesen parallel zu Ihrer
+Telefonanlage mit einer Point-to-Point-Verbindung betreiben wollen
+m&uuml;ssen Sie die RX-Kontakte (Pin 3 und Pin 6 im Western-Stecker)
+l&ouml;sen, soda&szlig; der NTBA die ISDN-Karte nicht erkennt. Dann
+konfigurieren Sie den HiSax normal, nicht im Point-to-Point-Modus.
 
 <sect1> config_links: Welche hilfreichen Links gibt es zu ISDN4LINUX?  
 <label id="config_links">
@@ -1936,7 +1965,7 @@ url="http://sdb.suse.de/sdb/de/html/index.html">; da gibt es auch ein
 ISDN HOWTO (isdn.html) sowie eine Kurzanleitung zur Installation von
 ISDN (isdnquick.html).
 <item>Tips zur Konfiguration unter SuSE (und zum Offline-Lesen):
-<url url="http://www.schlenn.de/linux.html">
+<url url="http://www.schlenn.de/isdn4linux/">
 <item>Tips zur Konfiguration unter Red Hat Linux:
 <url url="http://www.webideal.de/rh-isdn/">
 <item>Tips zur Konfiguration unter Linux-Mandrake:
@@ -3754,7 +3783,7 @@ auf das gleiche Device zuzugreifen).
 <sect1> ttyI_hdlc: Wie stelle ich die Modememulation von X.75 um auf HDLC?  
 <label id="ttyI_hdlc">
 <p>
-Mit der Option S14=3; z.B. 'ATS14=3'..
+Mit der Option S14=3; z.B. 'ATS14=3'.
 
 <sect1> ttyI_uucp: Wie kann ich mit Taylor-UUCP unter Verwendung von ISDN4LINUX Nachrichten holen?  
 <label id="ttyI_uucp">
@@ -4020,6 +4049,8 @@ name="dod_win95b">.
 id="dod_samba" name="dod_samba">.
 <item>Netscape l&ouml;st beim Start einen W&auml;hlvorgang aus: siehe
 Frage <ref id="dod_netscape" name="dod_netscape">.
+<item>dhcpd l&ouml;st Ausw&auml;hlvorg&auml;nge aus: Deaktivieren Sie
+den dhcpd und pr&uuml;fen Sie Ihre Einstellungen...
 <item>Schlie&szlig;e manuell noch offene IP-Verbindungen wenn die
 Leitung unterbrochen wird: siehe Frage <ref id="dod_closeipconnect"
 name="dod_closeipconnect">.
@@ -4143,6 +4174,14 @@ Als Workaround kannst Du die Wartezeit zwischen den Sendeversuchen
 verk&uuml;rzen, wie es bei der Frage <ref id="dialout_bind"
 name="dialout_bind"> beschrieben wird.
 
+Alternativ kannst Du die Option &dquot;dialup yes;&dquot; in der
+named.conf setzen. Dadurch wird named beim Start nur eine Interaktion
+mit dem Verteiler durchf&uuml;hren (und dabei ein Ausw&auml;hlen
+ausl&ouml;sen). Danach wird named ein sehr langes Intervall (24h?)
+abwarten ehe er eine erneute Abfrage startet.
+named wird nur bei direkten Anfragen mit dem Verteiler in Kontakt treten
+und das passiert im Normalfall wenn Du sowieso verbunden bist.
+
 <sect1> dod_sendmail: Wie kann ich erreichen, da&szlig; sendmail zwar keine Verbindungen aufbaut aber trotzdem die lokale Mail ausliefert?  
 <label id="dod_sendmail">
 <p>
@@ -4195,6 +4234,11 @@ nmdb -S -B 192.168.99.255 -I 192.168.99.99
 </code>
 Schau Dir auch die vorherige Frage an: benutze -broadcast und
 vielleicht -arp bei der Definition des Interfaces!
+
+Durchsuche die Hilfeseiten der Samba-Konfigurationsdatei nach weiteren
+M&ouml;glichkeiten des Vermeidens von Ausw&auml;hlvorg&auml;ngen (mir
+wurde gesagt, da&szlig es einige spezielle Parameter daf&uuml;r geben
+soll).
 
 <sect1> dod_netscape: Wie kann ich Netscape abgew&ouml;hnen, beim Start eine Verbindung aufzubauen?  
 <label id="dod_netscape">
@@ -4761,6 +4805,16 @@ k&ouml;nnen (solange freie B-Kan&auml;le vorhanden sind). Es kann
 jedoch nur ein getty jeweils einem einzelnen ttyI* Device zugeordnet
 sein.
 
+<sect1> dialin_analogditalsamettyi: Kann ich ein ttyI*-Device so einrichten, da&szlig; es sowohl digitale als auch analoge Einwahlversuche annimmt?  
+<label id="dialin_analogditalsamettyi">
+<p>
+Dies ist nicht m&ouml;glich, da der Digitalmodus andere Registereinstellungen erfordert als der analoge Modus. Daher musst Du f&uuml;r diesen Zweck zwei dazu bestimmte Devices einrichten. Beachte dabei, da&szlig; Einwahlversuche von analogen Modems nur bei den wenigen Karten m&ouml;glich sind, bei denen sowohl die Karte als auch der isdn4linux-Treiber das unterst&uuml;tzen.
+
+<sect1> dialin_fixedip: Wie kann ich bei Einwahlen via ipppd jedem User eine feste IP zuordnen?  
+<label id="dialin_fixedip">
+<p>
+Spezifiziere die feste IP-Adresse in der Datei pap/chap-secrets zusammen mit dem Usernamen und Passwort (siehe man ipppd).
+
 <sect1> dialin_hdlc: Jemand m&ouml;chte sich mit HDLC durch mein mgetty einw&auml;hlen. Ist ttyI1 korrekt oder muss ich mit ttyI0 beginnen?  
 <label id="dialin_hdlc">
 <p>
@@ -5056,7 +5110,7 @@ dabei ein spezieller Bug/Feature dieses Chips genutzt wird. Alle
 anderen Karten, wie IPAC-Karten (z.B. ELSA QS1000pro), funktionieren
 nicht in der Rolle der umgepolten Karte. 
 
-<item> HFC-Karten: HFC-PCI-Karten verf&uuml;gen &uuml;ber ein
+<item> HFC-Karten: Einige HFC-PCI-Karten verf&uuml;gen &uuml;ber ein
 spezielles Feature. Bei ihnen kann man einen B-Kanal opfern und
 daf&uuml;r das gesamte D-Kanal-Protokoll auslesen - alles mit einer
 Karte. Dies wird auch von ISDN4LINUX unterst&uuml;tzt. Die HFC-Karte
@@ -5068,6 +5122,9 @@ hisaxctrl &lt;driver_id&gt; 12 1
 </code>
 Dem isdnlog muss die Kommandozeilenoption '-1' &uuml;bergeben werden,
 da&szlig;er die HFC-Option nutzt.
+Beachte bitte, da&szlig; ein einfacher HFC-S aus hardwaretechnischen
+Gr&uuml;nden nicht gen&uuml;gt, es muss ein neuerer sein. Wenn Deine
+Karte mit dem HiSax-Typ 35 oder 37 l&auml;ft sollte es funktionieren.
 
 <item> TK-Anlage: Eine dritte (theoretische) M&ouml;glichkeit besteht
 f&uuml;r die Besitzer einer eigenen TK-Anlage, an die die anderen
@@ -5365,6 +5422,7 @@ inklusive der Firmware. Daher gilt die Zulassung auch f&uuml;r den
 Betrieb dieser Karten mit ISDN4LINUX.
 <item>Karten der Serie Elsa Quickstep (neuer Name: Microlink PCI)
 <item>Eicon Diva 2.01 PCI
+<item>Passive Karten: alle Karten mit dem HFC-S Chipset.
 </itemize>
 
 <sect> 1tr6: Deutsche Eigenheiten bei 1TR6 
@@ -5468,14 +5526,14 @@ Telefonnummer 01 41 33 67 87 lautet und Du die Subaddresse 02 nutzen
 willst, tr&auml;gst Du als lokale Nummer des HiSax-Treibers die
 6787.02 ein.
 
-<sect1> country_italy: Italen: Wie sieht unsere MSN aus?
+<sect1> country_italy: Italien: Wie sieht unsere MSN aus?
 <label id="country_italy">
 <p>
 ISDN4LINUX funktioniert auch in Italien (ICN Karte). Die MSN ist die
-Telefonnummer mit der italienischen Ortsvorwahl, jedoch ohne die
-vorangestellte 0. Wenn z.B. meine Telefonnummer 72004681 und meine
-Ortsvorwahl 045 lauten, so ist meine MSN 4572004681. Nun wird
-ISDN4LINUX mit der Einstellung <tt>AT&amp;E4572004681</tt> gut
+Telefonnummer mit der italienischen Ortsvorwahl und seit Mitte 2001
+inklusive der vorangestellten 0. Wenn z.B. meine Telefonnummer 72004681
+und meine Ortsvorwahl 045 lauten, so ist meine MSN 04572004681. Nun wird
+ISDN4LINUX mit der Einstellung <tt>AT&amp;E04572004681</tt> gut
 funktionieren.
 
 <sect1> country_netherlands: Niederlande: Wie sieht unsere MSN aus? 
