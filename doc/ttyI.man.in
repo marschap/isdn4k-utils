@@ -1,6 +1,6 @@
-.\" $Id: ttyI.man.in,v 1.7 1999/03/03 08:55:59 armin Exp $
+.\" $Id: ttyI.man.in,v 1.8 1999/07/11 17:21:41 armin Exp $
 .\"
-.\" CHECKIN $Date: 1999/03/03 08:55:59 $
+.\" CHECKIN $Date: 1999/07/11 17:21:41 $
 .\"
 .\" Process this file with
 .\" groff -man -Tascii ttyI.4 for ASCII output, or
@@ -319,9 +319,9 @@ Bit	Description
 .br
 	1 = RUNG on cancelled incoming call.
 .br
-7	0 = Disable CPN extended RING.
+7	0 = Disable display messages from net.
 .br
-	1 = Enable CPN extended RING.
+	1 = Enable disable messages from net.
 .TP
 .BR 14 " (default 0)
 Layer-2 protocol.
@@ -337,11 +337,17 @@ Layer-2 protocol.
  4 = TRANSPARENT.
 .br
 10 = Analog Modem. (only if hardware supports this)
+.br
+11 = Fax G3. (only if hardware supports this)
 .TP
 .BR 15 " (default 0)"
 Layer-3 protocol.
 .br
 0 = transparent
+.br
+1 = transparent with audio features (e.g. DSP)
+.br
+2 = Fax G3
 .TP
 .BR 16 " (default 250)"
 Outgoing packet size / 16.
@@ -402,6 +408,16 @@ Bit-mapped register. Set on incoming call (during RING) to the
 value of octet 3a of calling party number Information Element (Screening info).
 See section
 .BR 4.5.10 " of " "ITU Q.931" .
+.TP
+.BR 23 " (default 0)"
+Bit-mapped register.
+.br
+Bit	Description
+.br
+0	0 = Disable CPN extended RING.
+.br
+	1 = Enable CPN extended RING.
+.TP
 .SH AUTHOR
 Fritz Elfert <fritz@wuemaus.franken.de>
 .SH SEE ALSO
