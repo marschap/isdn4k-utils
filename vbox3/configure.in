@@ -1,0 +1,15 @@
+AC_INIT(vboxgetty/vboxgetty.c)
+
+AM_INIT_AUTOMAKE(vbox, 2.1.1)
+
+AC_PROG_CC
+
+AM_CONFIG_HEADER(config.h)
+
+
+AM_WITH_REGEX
+AC_PROG_RANLIB
+AM_PROG_INSTALL
+
+
+AC_OUTPUT(Makefile vboxgetty/Makefile)
