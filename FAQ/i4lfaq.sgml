@@ -4,7 +4,7 @@
 
 <title>FAQ for isdn4linux
 <author>Matthias Hessler (<tt><htmlurl url="mailto:hessler@isdn4linux.de" name="hessler@isdn4linux.de"></tt>)
-<date>v2.0.37, 3. April 2000
+<date>v2.0.38, 9. April 2000
 <abstract>
 If you are reading this FAQ online, you may consider downloading the whole
 thing, and reading it offline (much cheaper). To download the latest
@@ -359,8 +359,12 @@ It is useful only if you really need the extra bandwidth.
 <sect1> feature_diald: Can I combine isdn4linux with diald?  
 <label id="feature_diald">
 <p>
-Yes, see the &dquot;Diald&dquot; part of the &dquot;Configuration&dquot;
-section.
+Yes, you can. You have to configure it to use the ttyI* devices to dial
+out. E.g. like this:
+<code>
+/usr/sbin/diald /dev/ttyI4 -m ppp [...]
+</code>
+where [...] stands for further dialout parameters.
 
 <sect1> feature_dod: Does the driver support &dquot;dial on demand&dquot;?  
 <label id="feature_dod">
@@ -1253,7 +1257,6 @@ for more than two cards, to pass all arguments.
 <ref id="dialout_manycards" name="dialout_manycards">.
 </itemize>
 
-
 <sect1> config_manychannels: How can I increase i4l's maximum number of  
 channels?  
 <label id="config_manychannels">
@@ -1474,6 +1477,15 @@ Taken together means that the driver either can't get a layer 1 connect
 <ref id="hardware" name="hardware">), or it can't get a layer 2 connect (wrong
 configuration: no Euro ISDN, no automatic TEI supported, point-to-point
 BRI instead of multi-device - see section <ref id="config" name="config">).
+
+<sect1> trouble_noprotocol: upon startup of HiSax I get the message  
+&dquot;Warning - no protocol specified&dquot;?  
+<label id="trouble_noprotocol">
+<p>
+This means that you did not specify which D-channel protocol you want to
+use with HiSax. In most cases this is wrong, and you have to specify that
+you want to use the Euro Protocol ISDN DSS1. Only if you have a leased
+line you don't need to specify any D-channel protocol.
 
 <sect1> trouble_euronotsupported: upon startup of HiSax I get the error  
 "kernel hisax: protocol euro not supported"?  
@@ -1800,6 +1812,12 @@ If your telephone number were 56789, then it would be configured as follows:
 </itemize>
 You may find national differences here (check section <ref id="countries"
 							   name="countries">). 
+
+An additional thing is that you could use a '*' as a wildcard at the end of the
+number for incoming calls (e.g. <tt>isdnctrl msn interface 123*&dquot;</tt>).
+However, this will create problems for outgoing calls. To handle such
+a situation properly, please use the isdnctrl mapping feature
+(see question <ref id="dialout_manycards" name="dialout_manycards">).
 
 <sect1> msn_mindialin: How can I minimize usage of MSNs for digital data dialin?  
 <label id="msn_mindialin">
@@ -4268,6 +4286,11 @@ E-mail:  <tt><htmlurl url="mailto:ipj@spellcast.com"
 name="ipj@spellcast.com"></tt> or <tt><htmlurl url="mailto:sales@spellcast.com"
 name="sales@spellcast.com"></tt>
 <tt><url url="http://www.spellcast.com"></tt>
+
+Unfortunately, the latest news is that production of this cards has now been
+discontinued. We will keep you informed if we find another source of ISDN
+cards for North America.
+
 
 <sect1> country_pakistan: Pakistan: What should we use as MSN?  
 <label id="country_pakistan">
