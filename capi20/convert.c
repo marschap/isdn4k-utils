@@ -1,7 +1,12 @@
 /*
- * $Id: convert.c,v 1.12 2004/06/14 11:23:48 calle Exp $
+ * $Id: convert.c,v 1.13 2004/10/06 15:24:43 calle Exp $
  *
  * $Log: convert.c,v $
+ * Revision 1.13  2004/10/06 15:24:43  calle
+ * - "SendingComplete"-Patch reverted => 2.0.8 was not binaer compartible
+ * - Bugfix: capi20_register() with MaxB3Connection == 0 results in a
+ *   core dump. Now at least one buffer is allocated.
+ *
  * Revision 1.12  2004/06/14 11:23:48  calle
  * Erweiterungen fuer ALERT_REQ.
  *
@@ -336,12 +341,11 @@ static _cdef cdef[] = {
     /*2f*/{_CWORD,      offsetof(_cmsg, Reject)},
     /*30*/{_CSTRUCT,    offsetof(_cmsg, Useruserdata)},
     /*31*/{_CQWORD,     offsetof(_cmsg, Data64)},
-    /*32*/{_CSTRUCT,    offsetof(_cmsg, SendingComplete)},
 };
 
 static unsigned char *cpars[] = {
     /*00*/ 0,
-    /*01 ALERT_REQ*/            (unsigned char*)"\x03\x04\x0c\x28\x30\x1c\x32\x01\x01",
+    /*01 ALERT_REQ*/            (unsigned char*)"\x03\x04\x0c\x28\x30\x1c\x01\x01",
     /*02 CONNECT_REQ*/          (unsigned char*)"\x03\x14\x0e\x10\x0f\x11\x0d\x06\x08\x0a\x05\x07\x09\x01\x0b\x29\x23\x04\x0c\x28\x30\x1c\x01\x01",
     /*03*/ 0,
     /*04 DISCONNECT_REQ*/       (unsigned char*)"\x03\x04\x0c\x28\x30\x1c\x01\x01",

@@ -1,7 +1,12 @@
 /*
- * $Id: capi20.c,v 1.22 2004/06/14 11:23:48 calle Exp $
+ * $Id: capi20.c,v 1.23 2004/10/06 15:24:42 calle Exp $
  * 
  * $Log: capi20.c,v $
+ * Revision 1.23  2004/10/06 15:24:42  calle
+ * - "SendingComplete"-Patch reverted => 2.0.8 was not binaer compartible
+ * - Bugfix: capi20_register() with MaxB3Connection == 0 results in a
+ *   core dump. Now at least one buffer is allocated.
+ *
  * Revision 1.22  2004/06/14 11:23:48  calle
  * Erweiterungen fuer ALERT_REQ.
  *
@@ -204,7 +209,7 @@ static struct applinfo *alloc_buffers(unsigned MaxB3Connection,
 		                      unsigned MaxSizeB3)
 {
    struct applinfo *ap;
-   unsigned nbufs = MaxB3Connection * (MaxB3Blks + 1);
+   unsigned nbufs = 1 + MaxB3Connection * (MaxB3Blks + 1);
    size_t recvbuffersize = 128 + MaxSizeB3;
    unsigned i;
    size_t size;

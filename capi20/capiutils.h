@@ -218,7 +218,6 @@ typedef struct {
 	_cword Reason_B3;
 	_cword Reject;
 	_cstruct Useruserdata;
-	_cstruct SendingComplete;
 	unsigned char *Data;
 
 	/* intern */
@@ -919,8 +918,7 @@ unsigned ALERT_REQ (_cmsg *cmsg, _cword ApplId, _cword Messagenumber
 		,_cstruct BChannelinformation
 		,_cstruct Keypadfacility
 		,_cstruct Useruserdata
-                ,_cstruct Facilitydataarray
-		,_cstruct SendingComplete);
+                ,_cstruct Facilitydataarra);
 unsigned CONNECT_REQ (_cmsg *cmsg, _cword ApplId, _cword Messagenumber
 		,_cdword adr
 		,_cword CIPValue
@@ -1099,15 +1097,13 @@ static inline void capi_fill_ALERT_REQ(_cmsg * cmsg, _cword ApplId, _cword Messa
 				       _cstruct BChannelinformation,
 				       _cstruct Keypadfacility,
 				       _cstruct Useruserdata,
-				       _cstruct Facilitydataarray,
-				       _cstruct SendingComplete)
+				       _cstruct Facilitydataarray)
 {
 	capi_cmsg_header(cmsg, ApplId, 0x01, 0x80, Messagenumber, adr);
 	cmsg->BChannelinformation = BChannelinformation;
 	cmsg->Keypadfacility = Keypadfacility;
 	cmsg->Useruserdata = Useruserdata;
 	cmsg->Facilitydataarray = Facilitydataarray;
-	cmsg->SendingComplete = SendingComplete;
 }
 
 static inline void capi_fill_CONNECT_REQ(_cmsg * cmsg, _cword ApplId, _cword Messagenumber,

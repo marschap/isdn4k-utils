@@ -1,7 +1,12 @@
 /*
- * $Id: capifunc.c,v 1.5 2004/06/14 11:23:48 calle Exp $
+ * $Id: capifunc.c,v 1.6 2004/10/06 15:24:43 calle Exp $
  *
  * $Log: capifunc.c,v $
+ * Revision 1.6  2004/10/06 15:24:43  calle
+ * - "SendingComplete"-Patch reverted => 2.0.8 was not binaer compartible
+ * - Bugfix: capi20_register() with MaxB3Connection == 0 results in a
+ *   core dump. Now at least one buffer is allocated.
+ *
  * Revision 1.5  2004/06/14 11:23:48  calle
  * Erweiterungen fuer ALERT_REQ.
  *
@@ -25,14 +30,12 @@ unsigned ALERT_REQ (_cmsg *cmsg, _cword ApplId, _cword Messagenumber,
                     _cstruct BChannelinformation,
                     _cstruct Keypadfacility,
                     _cstruct Useruserdata,
-                    _cstruct Facilitydataarray,
-		    _cstruct SendingComplete) {
+                    _cstruct Facilitydataarray) {
     capi_cmsg_header (cmsg,ApplId,0x01,0x80,Messagenumber,adr);
     cmsg->BChannelinformation = BChannelinformation;
     cmsg->Keypadfacility = Keypadfacility;
     cmsg->Useruserdata = Useruserdata;
     cmsg->Facilitydataarray = Facilitydataarray;
-    cmsg->SendingComplete = SendingComplete;
     return capi_put_cmsg (cmsg);
 }
 
