@@ -242,11 +242,22 @@ InitLoadPoint()
 
   fd_isdninfo = open("/dev/isdninfo", O_RDONLY | O_NDELAY);
   if (fd_isdninfo < 0) {
-    perror("/dev/isdninfo");
+    perror("can't open /dev/isdninfo");
     exit(1);
   }
 
+  /*
+   * Read the current iobytes values and count the bytes as the count at
+   * "last time"; starting xisdnload when there has been a connection for some
+   * time otherwise leads to a huge initial spike, and the rest is scaled doen
+   * to effectively zero until the spike scrolls off. This should prevent that.
+   */
+  if (ioctl(fd_isdninfo, IIOCGETCPS, &iobytes))
+    perror("Can't get bytes transferred:");
+
+  bytes_last = 0;
   for (i = 0; i < ISDN_MAX_CHANNELS; i++) {
+    bytes_last += iobytes[i].ibytes + iobytes[i].obytes;
     iobytes[i].ibytes = 0;
     iobytes[i].obytes = 0;
     strcpy(phone[i], "???");
@@ -260,7 +271,6 @@ InitLoadPoint()
   gettimeofday(&tv_last, NULL);
   tv_last.tv_sec--; /* avoid devision by zero */
   tv_start = tv_last;
-  bytes_last = 0;
   bytes_total = 0;
   bytes_now = 0;
   secs_running = 0;
@@ -327,7 +337,7 @@ XtPointer call_data;	/* pointer to (double) return value */
 	  online_now++;
 	  if (get_iobytes) {
             if (ioctl(fd_isdninfo, IIOCGETCPS, &iobytes))
-              perror("IIOCGETCPS");
+              perror("Can't get bytes transferred:");
 	    get_iobytes = 0;
 	  }
 	  bytes_now += iobytes[idx].ibytes + iobytes[idx].obytes;
