@@ -1,6 +1,7 @@
 #ifndef __CAPI20_H
 #define __CAPI20_H
 
+#include <sys/time.h>
 #include <time.h>
 
 #ifdef __cplusplus
@@ -104,6 +105,10 @@ MESSAGE_EXCHANGE_ERROR capi20_get_profile (unsigned Controller, CAPI_MESSAGE LpB
 #define CAPI20_GET_VERSION       capi20_get_version
 #define CAPI20_GET_SERIAL_NUMBER capi20_get_serial_number
 #define CAPI20_GET_PROFILE       capi20_get_profile
+#define CAPI20_ISINSTALLED       capi20_isinstalled
+#define CAPI_CMSG_HEADER         capi_cmsg_header
+#define CAPI_GET_CMSG            capi_get_cmsg
+#define CAPI_PUT_CMSG            capi_put_cmsg
 
 /* extra functions */
 #define CAPI20_WaitforMessage	capi20_waitformessage
