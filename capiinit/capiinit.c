@@ -1,7 +1,11 @@
 /*
- * $Id: capiinit.c,v 1.9 2002/05/23 12:52:36 calle Exp $
+ * $Id: capiinit.c,v 1.10 2002/10/25 13:50:44 calle Exp $
  *
  * $Log: capiinit.c,v $
+ * Revision 1.10  2002/10/25 13:50:44  calle
+ * The protocol value was not tranfered to the patchinfo. Because of
+ * this for example NI1 did not work ...
+ *
  * Revision 1.9  2002/05/23 12:52:36  calle
  * - Uaah. Bugfix for c2 patchvalues.
  *
@@ -588,6 +592,7 @@ struct capicard *load_config(char *fn)
 		p->protoname = strdup(t);
 		if (!p->protoname) goto nomem;
 		p->proto = dchan_protocol(t);
+		p->patchinfo.protocol = p->proto;
 		s = skip_whitespace(s);
 
 		/* ioaddr */
