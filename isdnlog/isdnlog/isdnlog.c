@@ -1,4 +1,4 @@
-/* $Id: isdnlog.c,v 1.25 1998/10/22 14:10:52 paul Exp $
+/* $Id: isdnlog.c,v 1.26 1998/10/26 20:21:14 paul Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,9 @@
  * along with this program; if not, write to the Free Software
  *
  * $Log: isdnlog.c,v $
+ * Revision 1.26  1998/10/26 20:21:14  paul
+ * thinko in check for symlink in /tmp
+ *
  * Revision 1.25  1998/10/22 14:10:52  paul
  * Check that /tmp/isdnctrl0 is not a symbolic link, which is a potential
  * security threat (it can point to /etc/passwd or so!)
@@ -1014,7 +1017,7 @@ int main(int argc, char *argv[], char *envp[])
            * If tmpout is a symlink, refuse to write to it (security hole).
            * E.g. someone can create a link /tmp/isdnctrl0 -> /etc/passwd.
            */
-          if (!lstat(tmpout, &st) && S_ISLNK(st.st_rdev)) {
+          if (!lstat(tmpout, &st) && S_ISLNK(st.st_mode)) {
             print_msg(PRT_ERR, "File \"%s\" is a symlink, not writing to it!\n", tmpout);
             verbose = 0;
           }
