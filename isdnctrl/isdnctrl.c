@@ -1,4 +1,4 @@
-/* $Id: isdnctrl.c,v 1.20 1998/04/28 08:34:28 paul Exp $
+/* $Id: isdnctrl.c,v 1.21 1998/06/02 12:17:15 detabc Exp $
  * ISDN driver for Linux. (Control-Utility)
  *
  * Copyright 1994,95 by Fritz Elfert (fritz@wuemaus.franken.de)
@@ -21,6 +21,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnctrl.c,v $
+ * Revision 1.21  1998/06/02 12:17:15  detabc
+ * wegen einer einstweiliger verfuegung gegen DW ist zur zeit
+ * die abc-extension bis zur klaerung der rechtslage nicht verfuegbar
+ *
  * Revision 1.20  1998/04/28 08:34:28  paul
  * Fixed compiler warnings from egcs.
  *
@@ -158,6 +162,13 @@
 #include "config.h"
 #define _ISDNCTRL_C_
 #include "isdnctrl.h"
+
+#undef HAVE_ABCEXT
+/*
+** wegen einstweiliger verfuegung gegen DW ist zur zeit
+** die abc-extension bis zur klaerung der rechtslage nicht
+** im internet verfuegbar
+*/
 
 #ifdef I4L_CTRL_CONF
 #	include "../lib/libisdn.h"
