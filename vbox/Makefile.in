@@ -1,5 +1,5 @@
 #
-# $Id: Makefile.in,v 1.17 1998/11/09 12:40:19 paul Exp $
+# $Id: Makefile.in,v 1.18 1998/11/17 18:22:39 paul Exp $
 
 #----------------------------------------------------------------------------#
 # Things you can change to personalize the Makefile for your own site. Some  #
@@ -78,13 +78,13 @@ RANLIB		= @VBOX_RANLIB@
 
 prefix		= @prefix@
 exec_prefix	= @exec_prefix@
-bindir		= @bindir@
-sbindir		= @sbindir@
-sysconfdir	= @sysconfdir@
+bindir		= @CONFIG_BINDIR@
+sbindir		= @CONFIG_SBINDIR@
+sysconfdir	= @CONFIG_I4LCONFDIR@
 
 LOGFILEDIR	= @VBOX_LOGDIR@
 PIDFILEDIR	= @VBOX_PIDDIR@
-LCKFILEDIR	= @VBOX_LCKDIR@
+LCKFILEDIR	= @VBOX_LOCKDIR@
 SPOOLDIR	= @VBOX_SPOOLDIR@
 
 TOPDIR		= @srcdir@
@@ -232,15 +232,10 @@ MANUALS_D	= $(MANUALS_B)
 MANUALS_V       = $(MANUALS_B)
 
 manuals-b:	  ignore
-		  @set -e; for i in `echo $(MANUALS_B)`; do \
-			$(TOPDIR)/utils/mksed <$(TOPDIR)/doc/$$i/vbox.sgml.in >$(TOPDIR)/doc/$$i/vbox.sgml; \
-			$(TOPDIR)/utils/mksed <$(TOPDIR)/doc/$$i/vbox.txt.in >$(TOPDIR)/doc/$$i/vbox.txt; \
-		  done
+		  @cd doc && $(MAKE)
 
 manuals-d:	  ignore
-		  @set -e; for i in `echo $(MANUALS_D)`; do \
-			$(RM) -f $(TOPDIR)/doc/$$i/vbox.sgml $(TOPDIR)/doc/$$i/vbox.txt; \
-		  done
+		  @cd doc && $(MAKE) distclean
 
 manuals-i:	  ignore
 

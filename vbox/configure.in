@@ -3,21 +3,19 @@ dnl     generate the file "configure", which is run during vbox installation
 dnl     to configure the system for the local environment.
 
 AC_INIT(src/vboxgetty.h)
-AC_CONFIG_HEADER(src/config.h)
+AM_CONFIG_HEADER(src/config.h)
+
+dnl #------------------------------------------------------------------------#
+dnl # Version of the vbox package. Theres no need to change this ;-)         #
+dnl #------------------------------------------------------------------------#
+AM_INIT_AUTOMAKE(vbox,'2.0.0BETA5')
+VERDATE="17-NOV-98"
 
 dnl #------------------------------------------------------------------------#
 dnl # Some defaults:                                                         #
 dnl #------------------------------------------------------------------------#
 
-AC_PREFIX_DEFAULT(/usr/local/vbox)
-
-dnl #------------------------------------------------------------------------#
-dnl # Version of the vbox package. Theres no need to change this ;-)         #
-dnl #------------------------------------------------------------------------#
-
-PACKAGE="vbox"
-VERSION="2.0.0 BETA 5"
-VERDATE="31-MAR-98"
+AC_PREFIX_DEFAULT()
 
 AC_DEFINE_UNQUOTED(PACKAGE, "${PACKAGE}")
 AC_DEFINE_UNQUOTED(VERSION, "${VERSION}")
@@ -73,26 +71,6 @@ dnl #------------------------------------------------------------------------#
 GND_PACKAGE_NCURSES
 GND_PACKAGE_TCL
 
-dnl #------------------------------------------------------------------------#
-dnl # Checks for the configure options (--prefix, --with-*, etc.):           #
-dnl #------------------------------------------------------------------------#
-
-   dnl #==========#
-   dnl # --prefix #
-   dnl #==========#
-
-AC_MSG_CHECKING(for prefix)
-
-if (test "${prefix}" = "NONE")
-then
-   VBOX_PREFIX="${ac_default_prefix}"
-else
-   VBOX_PREFIX="${prefix}"
-fi
-
-AC_MSG_RESULT(${VBOX_PREFIX})
-
-AC_SUBST(VBOX_PREFIX)
 
    dnl #=================#
    dnl # --with-spooldir #
@@ -223,4 +201,11 @@ dnl #------------------------------------------------------------------------#
 dnl # Creates output files:                                                  #
 dnl #------------------------------------------------------------------------#
 
-AC_OUTPUT(Makefile src/Makefile)
+AC_SUBST(ISDN_GLOBAL_CONFIG)
+AC_SUBST(VERDATE)
+AC_SUBST(CONFIG_BINDIR)
+AC_SUBST(CONFIG_SBINDIR)
+AC_SUBST(CONFIG_I4LCONFDIR)
+AC_SUBST(VBOX_LOCKDIR)
+
+AC_OUTPUT(Makefile src/Makefile doc/Makefile doc/de/Makefile utils/Makefile)

@@ -1,0 +1,36 @@
+.\" $Id: rmdtovbox.man,v 1.1 1998/11/17 18:22:51 paul Exp $
+.\" CHECKIN $Date: 1998/11/17 18:22:51 $
+.TH rmdtovbox 1 "ISDN 4 Linux" @MANDATE@
+.SH NAME
+rmdtovbox \- isdn voice box (sound converter)
+.SH SYNOPSIS
+.B autovbox
+.I "[OPTION] [OPTION] [...] < INFILE > OUTFILE"
+.SH "DESCRIPTION"
+Convert rmd files (vbox 1.x voice files) to new vbox format.
+.SH OPTIONS
+Autovbox reads from stdin and writes to stdout.
+.TP
+.B \-n, \-\-name NAME
+set the caller name of the new file
+.TP
+.B \-c, \-\-callerid CALLERID
+set the callerid of the new file.
+.TP
+.B \-p, \-\-phone PHONE
+set the phone number of the new file.
+.TP
+.B \-l, \-\-location LOCATION
+set the location of the new file.
+.TP
+.TP
+.B \-h, \-\-help
+Show summary of options.
+.TP
+.B \-v, \-\-version
+Show version of program.
+.SH SEE ALSO
+.B vboxtoau(1), vboxmode(1), vboxcnvt(1), vbox(5)
+.SH AUTHOR
+This manual page was written by Andreas Jellinghaus <aj@debian.org>,
+for Debian GNU/Linux and isdn4linux.
