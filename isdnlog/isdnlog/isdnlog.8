@@ -1,5 +1,5 @@
-.\" $Id: isdnlog.8,v 1.3 1998/10/18 20:13:30 luethje Exp $
-.\" CHECKIN $Date: 1998/10/18 20:13:30 $
+.\" $Id: isdnlog.8,v 1.4 1998/11/12 08:44:43 paul Exp $
+.\" CHECKIN $Date: 1998/11/12 08:44:43 $
 .TH isdnlog 8 "@MANDATE@" "ISDN 4 Linux @I4LVERSION@" "Linux System Administration"
 .PD 0
 .SH NAME
@@ -310,7 +310,7 @@ disabled unless you activate it with:
 
 .TP
 .B \-S	start={yes|no}
-active "START" feature. Please read isdnlog.options(5) for more
+active "START" feature. Please read callerid.conf(5) for more
 information.
 
 .SH "CONNECTION LOG MODULE"
@@ -386,7 +386,7 @@ time=2          # set time: 0 = never; 1 = once; 2 = every time
 start=yes       # enable starting programs   
 
 .SH SEE ALSO
-.B isdnconf(5) isdnlog.options(5) isdn.conf(5) callerid.conf(5)
+.B isdnconf(8) isdn.conf(5) callerid.conf(5)
 .B isdn.log(5) isdnrep(8)
 
 .SH AUTHOR
