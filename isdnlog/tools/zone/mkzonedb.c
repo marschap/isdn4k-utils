@@ -22,10 +22,12 @@
  *
  */
 
-static char progversion[] = "1.24";
+static char progversion[] = "1.25";
 
 /*
  * Changes:
+ *
+ * 1.25 2001.06.06 lt fixed sparc
  *
  * 1.23 1999.10.12 lt moved /CC/code handling to destination
  *
@@ -59,6 +61,7 @@ extern const char *basename (const char *name);
 
 #include "config.h"
 #include "common.h"
+#include "upack.h"
 
 
 void usage(char *argv[]) {
@@ -204,7 +207,7 @@ static void write_db(char * df) {
 	key.dptr = "vErSiO";
 	key.dsize = 7;
 	/* version of zone.c must be not smaller than dataversion */
-	sprintf(version,"V1.21 K%c C%c N%d T%d O%d L%d",
+	sprintf(version,"V1.25 K%c C%c N%d T%d O%d L%d",
 		keylen==2?'S':'L',tablelen==1?'C':tablelen==2?'S':'L',
 		nn,n, ortszone, numlen?numlen:keydigs);
 	value.dptr = version;
@@ -218,15 +221,21 @@ static void write_db(char * df) {
 		fprintf(stderr, "Out of mem\n");
 		exit(EXIT_FAILURE);
 	}
-	key.dptr = "_tAbLe";
+	key.dptr = "_tAbLe\0";
 	key.dsize = 7;
 	for (i=0; i<nn; i++)
 		if(tablelen==1)
 			*p++ = (UC)table[i];
-		else if(tablelen == 2)
-			*((US*)p)++ = (US)table[i];
-		else
-			*((UL*)p)++ = (UL)table[i];
+		else if(tablelen == 2) {
+		  	// *((US*)p)++ = (US)table[i];
+			tools_pack16(p, (US)table[i]);
+		  	p += 2;
+		}
+		else {
+			// *((UL*)p)++ = (UL)table[i];
+			tools_pack32(p, (UL)table[i]);
+		  	p += 4;
+		}
 	value.dptr = val;
 	value.dsize = nn*tablelen;
 	if(STORE(db, key, value)) {
@@ -243,13 +252,15 @@ static void write_db(char * df) {
 	for (i=0; i<n; i++) {
 		bool found = false;
 		UC uc;
+		unsigned char buf[4];
 
 		if (verbose && (i % 1000) == 0) {
 			printf("%d\r", i);
 			fflush(stdout);
 		}
 		if (ofrom != -1 && ofrom != zones[i][0]) {
-		    *((US*)val) = count;
+			// *((US*)val) = count;
+			tools_pack16(val, count);
 			value.dptr = val;
 			value.dsize = vlen;
 			if(STORE(db, key, value)) {
@@ -266,11 +277,13 @@ static void write_db(char * df) {
 			ofrom = zones[i][0];
 			if (keylen == 4) {
 				kul = (UL)ofrom;
-				key.dptr = (char*)&kul;
+				tools_pack32(buf, kul);
+				key.dptr = buf;
 			}
 			else {
 				kus = (US)ofrom;
-				key.dptr = (char*)&kus;
+				tools_pack16(buf, kus);
+				key.dptr = buf;
 			}
 			key.dsize = keylen;
 		}
@@ -292,11 +305,13 @@ static void write_db(char * df) {
 			val[vlen++] = uc;
 			if(keylen == 2) {
 				us = (US)zones[i][1];
-				*((US*)(&val[vlen])) = us;
+				// *((US*)(&val[vlen])) = us;
+				tools_pack16(&val[vlen], us);
 			}
 			else {
 				ul = (UL)zones[i][1];
-				*((UL*)(&val[vlen])) = ul;
+				// *((UL*)(&val[vlen])) = ul;
+				tools_pack32(&val[vlen], ul);
 			}
 			vlen+=keylen;
 		}
@@ -304,7 +319,9 @@ static void write_db(char * df) {
 	if(verbose)
 		printf("%d\n", i);
 	/* write last */
-    *((US*)val) = count;
+    	// *((US*)val) = count;
+	tools_pack16(val, count);
+
 	value.dptr = val;
 	value.dsize = vlen;
 	STORE(db, key, value);

@@ -13,9 +13,9 @@ DBEXT			= @DBEXT@
 RDBEXT			= @RDBEXT@
 BIGENDIAN		= @WORDS_BIGENDIAN@
 PROGRAM			= mkzonedb
-MODULES			= $(PROGRAM).o
+MODULES			= $(PROGRAM).o upack.o
 MANPAGE			= $(PROGRAM).8
-HEADERS			= config.h common.h
+HEADERS			= config.h common.h upack.h
 MANDIR			= @CONFIG_MANDIR@
 SBINDIR			= @CONFIG_SBINDIR@
 MAN8DIR			= $(MANDIR)/man8
@@ -74,8 +74,8 @@ $(MODULES): $(HEADERS)
 $(PROGRAM):	$(MODULES) $(CDBEXTRALIBS)
 	$(CC) $(CFLAGS) $(MODULES) $(CDBEXTRALIBS) $(LDFLAGS) -o $@
 
-zone: ../zone.c $(HEADERS) Makefile $(CDBEXTRALIBS)
-	$(CC) -DSTANDALONE -DZONETEST $(CFLAGS) ../zone.c $(CDBEXTRALIBS) $(LDFLAGS) -o $@
+zone: ../zone.c $(HEADERS) Makefile $(CDBEXTRALIBS) upack.o
+	$(CC) -DSTANDALONE -DZONETEST $(CFLAGS) ../zone.c $(CDBEXTRALIBS) upack.o $(LDFLAGS) -o $@
 
 install-man: $(PROGRAM).man
 	mkdir -p $(DESTDIR)$(MAN8DIR)
