@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.171 2000/07/18 22:26:02 akool Exp $
+## $Id: Makefile.in,v 1.172 2000/07/19 19:41:32 akool Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,13 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.172  2000/07/19 19:41:32  akool
+## isdnlog-4.34
+##   - since around Linux-2.2.16 signals are *not* reset to their default
+##     behavior when raised :-( (bug or feature?).
+##   - isdnlog/rate-pl.dat ... changes from Karsten Voss <vossdoku@gmx.net>
+##   - populated "samples/isdn.conf.de" with all german Internet-by-Call numbers
+##
 ## Revision 1.171  2000/07/18 22:26:02  akool
 ## isdnlog-4.33
 ##   - isdnlog/tools/rate.c ... Bug fixed
@@ -1276,7 +1283,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 4.33
+VERSION     = 4.34
 
 MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 \
 	      isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 \

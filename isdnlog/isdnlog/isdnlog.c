@@ -1,4 +1,4 @@
-/* $Id: isdnlog.c,v 1.64 2000/07/18 22:26:05 akool Exp $
+/* $Id: isdnlog.c,v 1.65 2000/07/19 19:41:32 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,13 @@
  * along with this program; if not, write to the Free Software
  *
  * $Log: isdnlog.c,v $
+ * Revision 1.65  2000/07/19 19:41:32  akool
+ * isdnlog-4.34
+ *   - since around Linux-2.2.16 signals are *not* reset to their default
+ *     behavior when raised :-( (bug or feature?).
+ *   - isdnlog/rate-pl.dat ... changes from Karsten Voss <vossdoku@gmx.net>
+ *   - populated "samples/isdn.conf.de" with all german Internet-by-Call numbers
+ *
  * Revision 1.64  2000/07/18 22:26:05  akool
  * isdnlog-4.33
  *   - isdnlog/tools/rate.c ... Bug fixed
@@ -500,6 +507,8 @@ static int      sqldump = 0;
 
 static void exit_on_signal(int Sign)
 {
+  signal(Sign, SIG_DFL);
+
   print_msg(PRT_NORMAL, "Got signal %d\n", Sign);
 
   Exit(7);

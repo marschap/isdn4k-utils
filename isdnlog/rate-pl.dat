@@ -1,31 +1,32 @@
-V:0.2-Poland 2000-07-10
+V:0.3-Poland [2000-07-14]
 
-# Währungsformat
+# Karsten Voss 2000 (vossdoku@gmx.net)
+
+# format waluty
 U:%.2f PLN
 
 #####################################################################
 #
 #####################################################################
-P:[01.07.2000-] 10 tpsa
-# Erfasste Zone:
-# 1		Ortsgespräch
+P:10 tpsa
+# zarejestrowane strefy:
+# 1		strefowe
+# 101           teleinformatyczne
 # D:tpsa
 B:01010
-Z:1 Ort
-A:+48202422
+Z:1 strefowe
+# Nastepna linia dotyczy Warszawe. Ewentualnie zmienic,
+# dopoki nie ma pliku ze strefami (zone-pl-tpsa.gdbm).
 A:+4822
-T:1-5/08-22=0.35/180 Tag
-T:6-7/08-22=0.35/360 WE
-T:*/22-08=0.35/360 Nacht
-
-P:[-01.07.2000] 10 tpsa
-# Erfasste Zone:
-# 1		Ortsgespräch
-# D:tpsa
-B:01010
-Z:1 Ort
+T:[-31.08.2000]1-5/08-18=0.35/180 szczyt
+T:[-31.08.2000]6-7/08-18=0.35/360 weekend
+T:[-31.08.2000]*/18-08=0.35/360 pozaszczytem
+T:[01.09.2000]*/08-22=0.35/180 szczyt
+T:[01.09.2000]*/22-08=0.35/360 pozaszczytem
+Z:101 teleinformatyczne
 A:+48202422
-A:+4822
-T:W/08-22=0.33/180 Tag
-T:W/22-08=0.33/360 Nacht
-T:E,H/*=0.33/360 Wochenende
+T:[-31.08.2000]1-5/08-18=0.35/180 szczyt
+T:[-31.08.2000]6-7/08-18=0.35/360 weekend
+T:[-31.08.2000]*/18-08=0.35/360 pozaszczytem
+T:[01.09.2000]*/08-22=0.35/180 szczyt
+T:[01.09.2000]*/22-08=0.35/360 pozaszczytem
