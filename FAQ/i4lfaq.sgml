@@ -4,7 +4,7 @@
 
 <title>FAQ for isdn4linux
 <author>Matthias Hessler (<tt><htmlurl url="mailto:hessler@isdn4linux.de" name="hessler@isdn4linux.de"></tt>)
-<date>v2.0.68, 11. August 2002
+<date>v2.0.69, 18. August 2002
 <abstract>
 If you are reading this FAQ online, you may consider downloading the whole
 thing, and reading it offline (much cheaper). To download the latest
@@ -5006,8 +5006,14 @@ firmware. Thus the approval also covers the use of these cards with
 isdn4linux.
 <item>Elsa Quickstep series cards (new name Microlink PCI)
 <item>Eicon Diva 2.01 PCI
+<item>Teles 16.3 ISA (with Siemens chipset)
+<item>Sedlbauer Speedfax+ PCI
 <item>Passive cards: all cards based on the HFC-S chipset.
 </itemize>
+Actually, since April 2000 the rules for certification have changed. Now
+the producer of an ISDN card has to do only hardware tests, the driver is
+not part of the certification anymore. This applies to the whole European
+Community.
 
 <sect> 1tr6: German Pecularities for 1TR6 
 <label id="1tr6">
