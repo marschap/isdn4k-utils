@@ -4,7 +4,7 @@
 
 <title>FAQ for isdn4linux
 <author>Matthias Hessler (<tt><htmlurl url="mailto:hessler@isdn4linux.de" name="hessler@isdn4linux.de"></tt>)
-<date>v2.0.77, 19. March 2003
+<date>v2.0.78, 14. July 2003
 <abstract>
 If you are reading this FAQ online, you may consider downloading the whole
 thing, and reading it offline (much cheaper). To download the latest
@@ -4195,6 +4195,37 @@ message &dquot;modprobe: Can't locate module ippp1&dquot; and
 This is a pecularity of ipppd. It tries to set MTU even for slave devices,
 and the kernel can not find a corresponding network device. You can safely
 ignore this information message, MPPP should work nevertheless.
+
+<sect1> 2channel_multiplenumbers: How can I set up multiple number when  
+using MPPP?  
+<label id="2channel_multiplenumbers">
+<p>
+Master and slave device are fully independent of each other, except for using
+the same network device to deliver packets. Setting up multiple number for
+master and slave devices will result in synchronized dialout (to the same
+number). Therefore it is best to give the slave device no number by default
+and set up the slave with the same number as the master in some ip-up script.
+
+<sect1> 2channel_freebchannel: How could I set up isdn4linux to free the  
+second B-channel if a phone call comes in?  
+<label id="2channel_freebchannel">
+<p>
+Well, this is a tough one, due to technical limits. Even if isdn4linux freed
+a B-channel, the exchange would not repeat the setup call. Therefore, the
+phone would not ring. The phone only signals a second incoming phone call if
+you are on the phone with another call that could be suspended.
+
+One option would be that isdn4linux frees one B-channel, then takes the call,
+and transfers it to the phone via ECT (explicit call transfer); however, this
+feature requires proprietary (unknown) protocol extensions, and is usually
+only available behind large private exchanges - therefore not implemented
+in isdn4linux.
+Another option is that isdn4linux frees one B-channel, takes the call, then
+suspends it. However, the user would have to know to resume it without any
+phone ringing.
+The most sensible option is that you handle it will a phone application
+making use of isdn4linux. Possibly ant-phone could be used for such a purpose:
+<tt><url url="http://www.antcom.de/"></tt>
 
 
 <!-- Pecularities of your counterpart (remote device)
