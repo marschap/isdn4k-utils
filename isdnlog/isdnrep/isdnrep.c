@@ -1,4 +1,4 @@
-/* $Id: isdnrep.c,v 1.49 1998/11/01 08:50:11 akool Exp $
+/* $Id: isdnrep.c,v 1.50 1998/11/17 00:37:48 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -24,6 +24,12 @@
  *
  *
  * $Log: isdnrep.c,v $
+ * Revision 1.50  1998/11/17 00:37:48  akool
+ *  - fix new Option "-i" (Internal-S0-Bus)
+ *  - more Providers (Nikoma, First Telecom, Mox)
+ *  - isdnrep-Bugfix from reinhard.karcher@dpk.berlin.fido.de (Reinhard Karcher)
+ *  - Configure.help completed
+ *
  * Revision 1.49  1998/11/01 08:50:11  akool
  *  - fixed "configure.in" problem with NATION_*
  *  - DESTDIR fixes (many thanks to Michael Reinelt <reinelt@eunet.at>)
@@ -365,6 +371,7 @@
 
 #include "isdnrep.h"
 #include "../../vbox/src/libvbox.h"
+#include "libisdn.h"
 
 /*****************************************************************************/
 
@@ -1058,12 +1065,13 @@ static int print_bottom(double unit, char *start, char *stop)
 		strich(1);
 
 		/* Andreas: zones[i] ist manchmal immer NULL, warum ? */
-		for (i = 1; i < MAXZONES; i++)
+		for (i = 0; i < MAXZONES; i++)
 			if (zones[i]) {
 
 				p = "";
 
 				switch (i) {
+                                        case 0 : p = S_UNKNOWN;    break;
 					case 1 : p = "CityCall";   break;
 					case 2 : p = "RegioCall";  break;
 					case 3 :
@@ -2211,6 +2219,9 @@ static int print_entries(one_call *cur_call, double unit, int *nx, char *myname)
 #if 1 /* AK:07-Oct-98 */
 		if ((cur_call->dir == DIALOUT) && (nx[CALLED] == -1)) {
       		  zone = area_diff(NULL, cur_call->num[CALLED]);
+
+                  if (zone == AREA_ERROR)
+                    zone = AREA_UNKNOWN;
 
 		  zones[zone] += cur_call->eh;
 		  zones_dm[zone] += cur_call->dm;

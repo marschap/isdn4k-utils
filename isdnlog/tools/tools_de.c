@@ -1,4 +1,4 @@
-/* $Id: tools_de.c,v 1.3 1998/11/05 19:10:27 akool Exp $
+/* $Id: tools_de.c,v 1.4 1998/11/17 00:37:57 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -21,6 +21,12 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools_de.c,v $
+ * Revision 1.4  1998/11/17 00:37:57  akool
+ *  - fix new Option "-i" (Internal-S0-Bus)
+ *  - more Providers (Nikoma, First Telecom, Mox)
+ *  - isdnrep-Bugfix from reinhard.karcher@dpk.berlin.fido.de (Reinhard Karcher)
+ *  - Configure.help completed
+ *
  * Revision 1.3  1998/11/05 19:10:27  akool
  *  - Support for all the new L2 frames from HiSax 3.0d (RR, UA, SABME and
  *    tei management)
@@ -83,11 +89,11 @@ char *Providername(int number)
     case 23 : return("tesion ))");
     case 24 : return("TelePassport");
     case 25 : return("Citykom Muenster");
-    case 28 : return("COLT/Telebridge/Global Comm.");
+    case 28 : return("COLT/Telebridge/Global Comm./Nikoma");
     case 30 : return("TelDaFax");
     case 33 : return("Telekom");
     case 36 : return("Hutchison Telekom");
-    case 39 : return("F.T.");
+    case 39 : return("First Telecom");
     case 40 : return("Plusnet");
     case 41 : return("HanseNet");
     case 43 : return("KielNet");
@@ -106,7 +112,7 @@ char *Providername(int number)
     case 87 : return("HamCom");
     case 88 : return("WorldCom");
     case 90 : return("VIAG Interkom");
-    case 98 : return("STAR Telecom/C@llas");
+    case 98 : return("STAR Telecom/C@llas/Mox");
     case 99 : return("ECONOphone/Telco");
     default : return("UNKNOWN Provider");
   } /* switch */

@@ -344,58 +344,68 @@ CONFIG_OPTIONS_TTY_FIRST
 
 Server listen at port
 CONFIG_ISDNLOG_SERV_PORT
-  Maintainer: edit CONFIG_ISDNLOG_SERV_PORT
+  Enter the portnumber where isdnlog should answer requests from
+  clients like xisdn or kisdnlog.
 
 User file
 CONFIG_ISDNLOG_USERFILE
-  Maintainer: edit CONFIG_ISDNLOG_USERFILE
+  Enter the full path of the authentication file for client-access
+  to isdnlog.
 
 Charge file
 CONFIG_ISDNLOG_CHARGEFILE
-  Maintainer: edit CONFIG_ISDNLOG_CHARGEFILE
+  Enter the full path of the file where isdnlog remembers charging
+  infos during reboots.
 
 Log file
 CONFIG_ISDNLOG_LOGFILE
-  Maintainer: edit CONFIG_ISDNLOG_LOGFILE
+  Enter the full path of the file where isdnlog should store the
+  connection informations.
 
 Reload command
 CONFIG_ISDNLOG_RELOADCMD
-  Maintainer: edit CONFIG_ISDNLOG_RELOADCMD
+  Enter the full path of a shell-sript which reloads the whole
+  I4L-system in case of a failure.
 
 Stop command
-CONFIG_ISDNLOG_RELOADCMD
-  Maintainer: edit CONFIG_ISDNLOG_RELOADCMD
+CONFIG_ISDNLOG_STOPCMD
+  Enter the full path of a shell-script which stops the whole
+  I4L-system in case of a failure.
 
 Reboot command
 CONFIG_ISDNLOG_REBOOTCMD
-  Maintainer: edit CONFIG_ISDNLOG_REBOOTCMD
+  Enter the full path of a shell-script which reboots Linux
+  in case of a failure.
 
 Old config directory
 CONFIG_ISDNLOG_OLDI4LCONFDIR
-  Maintainer: edit CONFIG_ISDNLOG_OLDI4LCONFDIR
+  Enter the directory of your old (pre 3.0) isdnlog config-stuff.
 
 Old config file
 CONFIG_ISDNLOG_OLDI4LCONFFILE
-  Maintainer: edit CONFIG_ISDNLOG_OLDI4LCONFFILE
+  Enter the filename of your old (pre 3.0) isdnlog config-file.
 
 Support postgres95 SQL-Database
 CONFIG_ISDNLOG_POSTGRES
-  Maintainer: edit CONFIG_ISDNLOG_POSTGRES
+  Check this box if you plan to let isdnlog insert any connection-
+  information into a postgres95 database.
 
 directory of postgres95
 CONFIG_ISDNLOG_POSTGRESDIR
-  Maintainer: edit CONFIG_ISDNLOG_POSTGRESDIR
+  Enter the full path of your postgres95 installation.
 
 Support mysql SQL-Database
 CONFIG_ISDNLOG_MYSQLDB
-  Maintainer: edit CONFIG_ISDNLOG_MYSQLDB
+  Check this box if you plan to let isdnlog insert any connection-
+  information into a mysql database.
 
 directory of mysql
 CONFIG_ISDNLOG_MYSQLDIR
-  Maintainer: edit CONFIG_ISDNLOG_MYSQLDIR
+  Enter the full path of your mysql installation.
 
 Country specific chargeinfo support
 CONFIG_ISDN_LOG_DE
-  Maintainer: edit CONFIG_ISDN_LOG_DE (Text for all country-versions)
+  Check exactly one box to integrate country specific support into
+  isdnlog. 
 
 # need an empty line after last entry, for sed script in Configure.
