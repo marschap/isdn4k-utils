@@ -1,4 +1,4 @@
-/* $Id: isdnctrl.c,v 1.15 1998/03/08 01:04:19 fritz Exp $
+/* $Id: isdnctrl.c,v 1.16 1998/03/12 15:10:11 hipp Exp $
  * ISDN driver for Linux. (Control-Utility)
  *
  * Copyright 1994,95 by Fritz Elfert (fritz@wuemaus.franken.de)
@@ -21,6 +21,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnctrl.c,v $
+ * Revision 1.16  1998/03/12 15:10:11  hipp
+ * Cosmetic. Changed 'addlink' error message.
+ *
  * Revision 1.15  1998/03/08 01:04:19  fritz
  * Fix: Did not compile without TIMRU in kernel.
  *
@@ -1082,7 +1085,7 @@ int exec_args(int fd, int argc, char **argv)
 			        	return -1;
 			        }
 			        if (result)
-			        	printf("Can't increase number of links: %d\n", result);
+			        	printf("Can't increase the number of links. Error %d\n",-result);
 			        else
 			        	printf("Ok, added a new link. (dialing)\n");
 			        break;
