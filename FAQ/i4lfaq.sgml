@@ -4,7 +4,7 @@
 
 <title>FAQ for isdn4linux
 <author>Matthias Hessler (<tt><htmlurl url="mailto:hessler@isdn4linux.de" name="hessler@isdn4linux.de"></tt>)
-<date>v2.0.55, 20. March 2001
+<date>v2.0.56, 1. April 2001
 <abstract>
 If you are reading this FAQ online, you may consider downloading the whole
 thing, and reading it offline (much cheaper). To download the latest
@@ -657,11 +657,14 @@ For a Debian distribution the following information might be helpful:
 <tt>/usr/share/doc/isdnutils/HOWTO.gz</tt>
 
 If you are reader of the German computer magazine <tt/ct/, they had very
-helpful articles at least in these issues:
+helpful articles at least on these issues:
 <itemize>
-<item>ct 05/98, page 224: <tt>Der erste Kontakt/Linux: Mit PPP ans Internet</tt>
-<item>ct 21/98, page 288: <tt>Reiseleiter/Internet-Anbindung f&uuml;r das LAN</tt>
-<item>ct 25/98, page 218: <tt>Bei Anruf Netz/Linux: Dial-In Server</tt>
+<item>ct 5/1998, page 224: <tt>Der erste Kontakt/Linux: Mit PPP ans Internet</tt>
+<item>ct 21/1998, page 288: <tt>Reiseleiter/Internet-Anbindung f&uuml;r das LAN</tt>
+<item>ct 25/1998, page 218: <tt>Bei Anruf Netz/Linux: Dial-In Server</tt>
+<item>ct 7/2001, page 228: <tt>Des Surfers Bastelstunde: Mobilfunktechnik
+HSCSD aussch&ouml;pfen</tt>
+(also contains information on dial-in configuration without HSCSD).
 </itemize>
 
 Also have a look at question <ref id="config_links" name="config_links"> for
@@ -1395,6 +1398,10 @@ you cannot connect your card directly to the S0 bus in parallel to the PBX
 (otherwise nothing will work). You have to connect to an internal ISDN bus.
 Your MSN is usually the extension at the end of your telefon number.
 
+If your PBX is the <tt/Ackermann Euracom/, then you may also check out
+this German site for the configuration software maKs:
+<url url="http://www.ganzfix.de"> 
+
 <sect1> hardware_telestrouble: The PNP tools done work with my Teles 16.3 PNP 
 card!  
 <label id="hardware_telestrouble">
@@ -1573,26 +1580,52 @@ or by hand.
 to my computer?  
 <label id="config_gsmv110">
 <p>
-Set up async PPP with a normal pppd on a ttyI* device (sync ppp will not work).
-Additionally to setting the msn, you have to set the transmission rate to
-9600 with <tt/AT&amp;R9600/. Switch off autoanswer with <tt/ATS0=0/ if
-you use mgetty. pppd needs to be called with <tt/noccp/ and <tt/require-pap/.
-If the call is indicated with service indicator byte 2 = 0 and not accepted
-(happens with some wrongly configured PBX), then adjust with <tt/ATS19=0/.
-See <tt>/usr/src/linux/Documentation/isdn/README</tt> from line 130 for
-details on the V.110 bitrate adaption.
+A connection via GSM will first go to the GSM provider via a special air
+transmission protocol. To forwarding the data on to an analog or ISDN
+line, an adapter called IWF (interworking function) has to translate this
+into the analog or ISDN specific transmission protocol. Which analog or
+ISDN transmission protocol is being used depends on how the mobile phone
+requests its GSM connection.
+An analog connection is not very attractive due to the lengthy modem
+handshaking on dialin. For ISDN, HDLC and X.75 are currently not supported
+by the IWF, so the choices are down to V.110 and V.120.
+V.120 has better flow control and error correction, but currently isdn4linux
+only supports V.110.
 
-For a mini-howto see:
-<url url="http://www.oltom.com/Linux/Docs/GSM%20over%20V.110%20Mini-HOWTO.txt">
+On the dialup server set up async PPP with a normal pppd on a ttyI* device
+(sync ppp will not work). Additionally to setting the msn, you have to set
+V.110 and the transmission rate to 9600 with <tt/AT&amp;R9600/
+(<tt>/usr/src/linux/Documentation/isdn/README</tt> gives more details on
+the V.110 bitrate adaption for this command).
+Switch off autoanswer with <tt/ATS0=0/ if you use mgetty.
+pppd needs to be called with <tt/noccp/ and <tt/require-pap/.
 
-You also have to set up your GSM accordingly. As an example, to switch the
-Nokia 7110 into V.110 mode, use the undocumented command
+On the GSM mobile phone side, request an ISDN V.110 connection with the
+command
 <code>
-at+cbst=75,0,1
+AT+CBST=71,0,1+CHSN=1,0,0,0
 </code>
+For a Nokia 7110, you may have to use the undocumented command
+<code>
+AT+CBST=75,0,1
+</code>
+
 If the bearer capability is reported as &dquot;88 90 21 48 06 bb&dquot; by
 isdn4linux, then you have set it correctly (88 90 21 means V.110, 48 means
 ASYNC 9.6kbit, 06 means flowcontrol RX/TX, bb means 8 bit 1 stop none parity).
+
+If the call is indicated with service indicator byte 2 = 0 and not accepted
+(happens with some wrongly configured PBX), then adjust with <tt/ATS19=0/.
+
+A higher bandwidth of 19.2kbit (HSCSD) could be requested with the command
+<code>
+AT+CBST=81,0,1+CHSN=3,0,0,0
+</code>
+but you can not be sure that your GSM provider will really use this rate.
+Configure your dialin server accordingly. 
+
+For a mini-howto see:
+<url url="http://www.oltom.com/Linux/Docs/GSM%20over%20V.110%20Mini-HOWTO.txt">
 
 
 <sect1> config_h323: How do I configure isdn4linux to act as a voice-over-ip  
@@ -1651,6 +1684,8 @@ howto (isdn.html) and a ISDN quick-install guide (isdnquick.html).
 <tt><url url="http://www.millenniumx.de/kisdn.html"></tt>
 <item>Configuration not only for UK (follow link to Linux Setup):
 <tt><url url="http://www.oakhaven-consultants.co.uk"></tt>
+<item>Configuration software maKs for Ackermann Euracom (not isdn4linux related):
+<tt><url url="http://www.ganzfix.de"></tt>
 </itemize>
 
 
