@@ -1,5 +1,5 @@
 ##
-## $Id: Makefile.am,v 1.3 1999/10/20 16:43:18 calle Exp $
+## $Id: Makefile.am,v 1.4 2000/10/20 17:14:20 calle Exp $
 ##
 
 AUTOMAKE_OPTIONS	= foreign
@@ -15,3 +15,7 @@ LDADD = -lcapi20
 bin_PROGRAMS = capiinfo
 
 capiinfo_SOURCES = capiinfo.c
+
+man_MANS = capiinfo.8
+EXTRA_DIST = $(man_MANS)
+
