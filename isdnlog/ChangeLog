@@ -1,4 +1,11 @@
+2005-02-27  Tobias Becker  <tobiasb@isdn4linux.de>
+
+	* Makefile.in (VERSION): Increased from 4.69 to 4.70.
+	4.69 was used to collect changes.  4.71 will be used either for the
+	next series of changes or for a severe bug fix.
+
 2005-02-23  Tobias Becker  <tobiasb@isdn4linux.de>
+
 	* Makefile.in: Added file tools/rate_skip.o to object file lists.
 	Added install instruction for new manual page rate.conf(5).
 
@@ -10,6 +17,7 @@
 	patched autconf 2.53, which had been used for former revisions. 
 
 2004-12-10  Tobias Becker  <tobiasb@isdn4linux.de>
+
 	* Makefile.in (NATION): Export this variable to child processes, like
 	make in subdirectories.
 

@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.218 2005/02/23 14:33:38 tobiasb Exp $
+## $Id: Makefile.in,v 1.219 2005/02/27 22:37:41 tobiasb Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,18 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.219  2005/02/27 22:37:41  tobiasb
+## Set version to 4.70.
+## A brief and incomplete list of changes between versions 4.68 and 4.70:
+## - new entries for parameter file: areacode, skipProv, ignoreUPD
+## - new rate-file configuration option: provider skipping
+## - several improvements in connection logging
+## - new entry for isdn.conf: REPOTIONS
+## - new command line options for isdnrep: -c -m -L -U -x
+## - new manual pages: rate.conf(5) isdnbill(1)
+## - improved table mode (-T) of isdnrate
+## For a list of all changes: cvs diff -u -r isdnlog-4.68 -r isdnlog-4.70
+##
 ## Revision 1.218  2005/02/23 14:33:38  tobiasb
 ## New feature: provider skipping.
 ## Certain providers can be completely ignored (skipped) when loading the
@@ -1705,7 +1717,7 @@ SERVICEFILE = /etc/services
 
 # next line must match basic regexp "^VERSION \+= \+" and contain only
 # the isdnlog version number after it. 
-VERSION     = 4.69
+VERSION     = 4.70
 
 # fallback to I4L-Version as set at configure time
 ifndef (I4LVERSION)
