@@ -1,4 +1,4 @@
-/* $Id: isdnbill.c,v 1.15 2000/02/11 10:41:53 akool Exp $
+/* $Id: isdnbill.c,v 1.16 2001/04/03 19:15:29 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Billing-module)
  *
@@ -1045,7 +1045,8 @@ int main(int argc, char *argv[], char *envp[])
 
           *p = x;
 
-          memmove(c.num[CALLED] + 3, c.num[CALLED] + 8, strlen(c.num[CALLED]) - 7);
+          if (strlen(c.num[CALLED]) > 7)
+            memmove(c.num[CALLED] + 3, c.num[CALLED] + 8, strlen(c.num[CALLED]) - 7);
 
           if (verbose)
             fprintf(stderr, "REPAIR: Provider=%d\n", c.provider);

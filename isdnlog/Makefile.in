@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.193 2001/03/13 14:39:30 leo Exp $
+## $Id: Makefile.in,v 1.194 2001/04/03 19:15:28 akool Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,10 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.194  2001/04/03 19:15:28  akool
+## isdnlog-4.52
+##  - small bugfix within "isdnbill" (segfault ...)
+##
 ## Revision 1.193  2001/03/13 14:39:30  leo
 ## added IIOCNETGPN support for 2.0 kernels
 ## s. isdnlog/kernel_2_0/README for more information (isdnlog 4.51)
@@ -1446,7 +1450,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 4.51
+VERSION     = 4.52
 
 MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 \
 	      isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 \

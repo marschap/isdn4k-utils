@@ -1,4 +1,4 @@
-V:1.30 Int [20-Jul-2000 19:32:00]
+V:1.30 Int [05-Feb-2001 18:22:00]
 # ISO 3166 Countrycodes ( ftp://sunsite.unc.edu/pub/Linux/apps/misc/
 #	countrycodes.1.0.2.tar.gz
 # Airportcodes: http://www.TravelDesk.com/airports.html
@@ -1019,7 +1019,7 @@ E:Germany cellphone
 C:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
 C:+491618		# T-C-Tel Voice Mail (outdated since 31-Dec-2000)
 C:+49151,+49160,+49170,+49171,+49175	# D1
-C:+49152,+49162,+49172,+49173,+49174	# D2
+C:+491520,+49162,+49172,+49173,+49174	# D2
 C:+49163,+49177,+49178		# Eplus
 C:+49176,+49179		# E2
 R:DE
@@ -1049,7 +1049,7 @@ T:_DEMD1
 N:Deutschland Mobilfunk D2
 E:Germany cellphone D2
 A:D2
-C:+49152,+49162,+49172,+49173,+49174
+C:+491520,+49162,+49172,+49173,+49174
 R:_DEMF
 T:_DEMD2
 

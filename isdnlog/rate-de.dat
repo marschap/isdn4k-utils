@@ -1,4 +1,4 @@
-V:1.10-Germany [14-Jan-2001 13:06:42]
+V:1.10-Germany [26-Feb-2001 20:12:21]
 
 # Währungsformat
 U:%.3f DM
@@ -8,7 +8,7 @@ U:%.3f DM
 #
 # (C) Copyright 1999, 2000 by Andreas Kool (akool@isdn4linux.de)
 #
-# $Id: rate-de.dat,v 1.109 2001/01/14 12:13:49 akool Exp $
+# $Id: rate-de.dat,v 1.110 2001/04/03 19:15:28 akool Exp $
 #
 #
 # Das "A:" Tag muß folgendermaßen gefüllt werden:
@@ -3372,7 +3372,7 @@ T:*/*=0.10/60
 Z:201 Euro 2
 A:AD,FO,IE,IS,LI,MC
 A:PL,SM,CZ,TR
-T:*/*=0.68/60
+T:*/*=0.34/60
 Z:202 Welt 1
 A:EH,DZ,TN,LY,GR,GI,PT
 A:AL,MT,CY,BG,HU,LT,LV,EE
@@ -3457,7 +3457,7 @@ T:*/*=0.10(60)/1
 Z:201 Euro 2
 A:AD,FO,IE,IS,LI,MC
 A:PL,SM,CZ,TR
-T:*/*=0.68/60
+T:*/*=0.34/60
 Z:202 Welt 1
 A:EH,DZ,TN,LY,GR,GI,PT
 A:AL,MT,CY,BG,HU,LT,LV,EE
@@ -6427,7 +6427,7 @@ A:112
 T:*/*=0
 Z:1-4 National
 A:+49
-T:W/09-18=0.054/60
+T:W/09-18=0.062/60
 T:W/18-09=0.041/60
 T:E,H/09-18=0.054/60
 T:E,H/18-09=0.041/60
@@ -21542,7 +21542,8 @@ A:112
 T:*/*=0
 Z:2-4 Ferngespräche
 A:DE
-T:[01.10.2000-07.10.2000]*/*=0.05/60 Oktoberfest
+# T:[01.10.2000-07.10.2000]*/*=0.05/60 Oktoberfest
+T:[01.02.2001-07.02.2001]*/*=0.05/60 Oktoberfest
 T:*/*=0.07/60
 Z:10 Mobilfunk
 A:_DEMF
@@ -24745,13 +24746,7 @@ A:112
 T:*/*=0
 Z:1-4 National
 A:+49
-T:[12.09.2000-11.10.2000]W/18-20=0.033/60 Sonderangebot
-T:*/06-12=0.066/60
-T:*/12-20=0.063/60
-T:*/20-22=0.036/60
-T:*/22-06=0.033/60
-T:E,H/06-20=0.063/60
-T:E,H/20-06=0.033/60
+T:*/*=0.09/60
 Z:10 Mobilfunknetz
 A:_DEMF
 T:*/*=0.60/60
