@@ -4,7 +4,7 @@
 
 <title>FAQ for isdn4linux
 <author>Matthias Hessler (<tt><htmlurl url="mailto:hessler@isdn4linux.de" name="hessler@isdn4linux.de"></tt>)
-<date>v2.0.85, 24. June 2004
+<date>v2.0.86, 4. July 2004
 <abstract>
 If you are reading this FAQ online, you may consider downloading the whole
 thing, and reading it offline (much cheaper). To download the latest
@@ -442,7 +442,15 @@ you have additional information on this.
 A useful sample config for yaps you might find on:
 <url url="http://www.tnt-computer.de/linux/yaps-suite1-1.tgz">
 
-Another program to send SMS is <tt/smsclient/. You can find it on:
+Another program to send SMS is <tt>asterix</tt>. Have a look at:
+<url url="http://www.asterisk.org"> and
+<url url="http://www.voip-info.org/wiki-Asterisk+cmd+Sms">.
+One advantage over yaps is that it can also receive SMS, for Germany
+(you have to register for this first by sending a specific SMS -
+otherwise the SMS will be communicated to you by an automated voice
+call).
+
+Yet another program to send SMS is <tt/smsclient/. You can find it on:
 <url url="http://www.styx.demon.co.uk">.
 
 <sect1> feature_btx: Is the German videotex/Btx/Datex-J possible with  
@@ -510,8 +518,11 @@ Here is a German website which has some nice installation instructions:
 This interface follows the official CAPI 2.0 standard that was established
 recently for Linux by the CAPI Association (see
 <url url="http://www.capi.org">).
-There are activities to make this a general interface, also for
-other cards. However, there are no plans to implement a CAPI 1.1 interface.
+Since kernel 2.6.0 the CAPI interface has been used as the general
+interface, also for other cards. For passive cards, the new driver
+mISDN will replace the old hisax driver once it is fully functional.
+
+There are no plans to implement a CAPI 1.1 interface.
 
 <sect1> feature_uus: Is UUS (user to user signaling) supported?  
 <label id="feature_uus">
@@ -554,6 +565,10 @@ ISDN bus (dual mode/reversed card/COLP/...)?
 <p>
 Yes, isdn4linux offers several possibilities to do this. Have a look at
 question <ref id="isdnlog_reversedcard" name="isdnlog_reversedcard">.
+
+Please note that you may also use the software ISDN Sniffer for this,
+see the German web site
+<url url="http://krypt.cs.uni-sb.de/~osk/isdnosk.html">.
 
 <sect1> feature_chargeint: Can isdn4linux hang up just before the ISDN  
 provider would charge me for another unit?  
@@ -638,9 +653,15 @@ check for the correct telephone number, then trigger the dialin.
 To access your computer then over the internet, you can then access it via
 its ip address. In case of dynamic ip address assignment, you probably want
 to store the new ip somehow. Storage in a html page or via dynamic DNS
-may be good possibilities. If you understand German, there was an article
-about exactly this setup in ct 18/2002, page 204 (Bei Anruf Internet - Handy-
-Anruf l&ouml;st Internet-Einwahl aus).
+may be good possibilities.
+
+If you understand German, there was an article about exactly this setup in
+ct 18/2002, page 204 (Bei Anruf Internet - Handy-Anruf l&ouml;st
+Internet-Einwahl aus). Also, the following German web site explains
+how to set up such a configuration:
+<tt><url url="http://www.staschke.de/linux/anwahl.html"></tt>
+
+
 
 <sect1> feature_future: Which features are planned for the future?  
 <label id="feature_future">
@@ -696,6 +717,11 @@ HSCSD aussch&ouml;pfen</tt>
 (also contains information on dial-in configuration without HSCSD).
 <item>ct 15/2002, page 204: <tt>Bei Anruf Internet: Handy-Anruf l&ouml;st
 Internet-Einwahl aus</tt>
+<item>ct 3/2004, page 182: <tt>Heimserver im Eigenbau - Teil 4: ISDN-Grundlagen
+f&uuml;r Linux</tt>
+(also contains information about the new mISDN driver)
+<item>ct 9/2004, page 100: <tt>Tux vermittelt - Linux als Telefonanlage mit
+VoIP</tt>(refers to software PBX4Linux)
 </itemize>
 
 Also have a look at question <ref id="config_links" name="config_links"> for
@@ -849,7 +875,7 @@ Here the status from 1st February 2002 (constantly improving):
 <item>ELSA PCMCIA
 <item>ITK ix1-micro Rev.2 (also: ITK colombus card)
 <item>Eicon DIVA 2.0 ISA and PCI (S0 and U interface, no PRO version)
-<item>Eicon.Diehl Diva 2.01 ISA and PCI
+<item>Eicon.Diehl Diva 2.01 ISA and PCI, and Diva 2.02
 <item>Eicon DIVA Piccola
 <item>ASUSCOM NETWORK INC. ISDNLink 128K PC adapter (order code I-IN100-ST-D)
 <item>Dynalink IS64PH (OEM version of ASUSCOM NETWORK INC. ISDNLink 128K
@@ -1128,9 +1154,14 @@ the specialities for the configuration of more than one card.
 Cards with an HFC-PCI chip allow some specialities that are not possible with
 other ISDN cards. So it is possible to run the card in NT mode (requires
 crossing the ISDN connection and change by software) - this means you can
-simulate to another ISDN card that your card is an NTBA (however, since
-isdn4linux does not implement the level 3 protocol used by the exchange,
-you can only use this mode like a leased line).
+simulate to another ISDN card that your card is an NTBA. Since isdn4linux does
+not implement the level 3 protocol used by the exchange, you can only use this
+mode like a leased line.
+
+However, some special software named PBX4Linux has been written for this.
+You may want to have a look at the German article in ct 9/2004 on how to use
+PBX4Linux.
+
 Also, it is possible to give up one B-channel in exchange for reading the
 complete D-channel protocol, which is great for isdnlog. The later can
 also be done with a reversed card (see question
@@ -1442,15 +1473,20 @@ plug off, and new plug (in the right direction) on.
 <sect1> hardware_pbx: i4l is connected to the internal bus of a PBX. Any problem?  
 <label id="hardware_pbx">
 <p>
-Many PBX run non-standard ISDN protocolls on their internal bus. This may cause
-i4l to print warnings like "Unexpected discriminator 0xZZ" (where ZZ is a
-hexadecimal number) when it encounters unexpected frames (some old versions
-even crash). This can increase your message file by as much as 1 MB in 3 days.
-The PBX <tt/Ackermann Euracom 181/ (discriminator 0xaa) as well as
-<tt/Ascom/ (discriminator 0x44/0x47) seem to be notorious for this.
-You can avoid the warning by adjusting the switch/case code for isdnlog in
-function <tt>processctrl(...)</tt> in <tt>processor.c</tt> and recompiling
-isdnlog. Please note that isdnlog will not be able to log any incoming
+Many PBX run non-standard ISDN protocolls on their internal bus.
+
+In old versions (before end of August 2003) this could cause i4l to print
+warnings like "Unexpected discriminator 0xZZ" (where ZZ is a hexadecimal
+number) when it encounters unexpected frames (some old versions even
+crash). This can increase your message file by as much as 1 MB in 3 days. The
+PBX <tt>Ackermann Euracom 181</tt> (discriminator 0xaa) as well as
+<tt>Ascom</tt> (discriminator 0x44/0x47) seem to be notorious for this. You can
+avoid the warning by adjusting the switch/case code for isdnlog in function
+<tt>processctrl(...)</tt> in <tt>processor.c</tt> and recompiling isdnlog.
+Since August 2003 ignoring these unknown packages has become the default,
+therefore the recompile is not necessary any more.
+
+Please note that isdnlog will not be able to log any incoming
 data packages, since the PBX has to forward the packages. To see everything,
 you have to bypass the PBX.
 
@@ -1462,8 +1498,8 @@ than Euro ISDN. You have to configure i4l (or the PBX) accordingly, best
 is you try to configure both on the same or similar protocolls.
 
 Also the MSN may be different than you expect. Check several versions, no
-digit (then use <tt/0/, which i4l will require in such a case), one digit, or
-two digits, or the whole MSN. Best is you call some device (e.g. ISDN
+digit (then use <tt>0</tt>, which i4l will require in such a case), one digit,
+or two digits, or the whole MSN. Best is you call some device (e.g. ISDN
 telephone) on the internal bus and check what i4l writes into the log file.
 
 When you can not dial out, the most common problem is that you have not
@@ -1482,7 +1518,7 @@ you cannot connect your card directly to the S0 bus in parallel to the PBX
 (otherwise nothing will work). You have to connect to an internal ISDN bus.
 Your MSN is usually the extension at the end of your telefon number.
 
-If your PBX is the <tt/Ackermann Euracom/, then you may also check out
+If your PBX is the <tt/Ackermann Euracom</tt>, then you may also check out
 this German site for the configuration software maKs:
 <url url="http://www.ganzfix.de"> 
 
@@ -1762,6 +1798,8 @@ howto (isdn.html) and a ISDN quick-install guide (isdnquick.html).
 <url url="http://www.webideal.de/rh-isdn/">
 <item>Tips to configure Mandrake:
 <url url="http://www.mandrakeuser.org/connect/cisdn.html">
+<item>Tips to configure Gentoo:
+<url url="http://forums.gentoo.org/viewtopic.php?t=29991">
 <item>fli4l, a prepackaged Linux version to use an old PC as ISDN router:
 <url url="http://www.fli4l.de"> (great!)
 <item>LR101 (a project which tries to create a hardware router based on Linux):
@@ -1782,9 +1820,49 @@ howto (isdn.html) and a ISDN quick-install guide (isdnquick.html).
 <tt><url url="http://www.auf-der-er.de/chargeint.html"></tt>
 <item>Homepage of kisdn (only works with Qt/KDE):
 <tt><url url="http://www.millenniumx.de/kisdn.html"></tt>
+<item>Homepage of linecontrol (manage isdn dialing similar to kisdn):
+<tt><url url="http://linecontrol.sourceforge.net"></tt>
+<item>(German) Homepage of ISDN Sniffer (read ISDN bus, e.g. via reversed
+card): <tt><url url="http://krypt.cs.uni-sb.de/~osk/isdnosk.html"></tt>
 <item>Configuration software maKs for Ackermann Euracom (not isdn4linux related):
 <tt><url url="http://www.ganzfix.de"></tt>
 </itemize>
+
+<sect1> config_misdn: How should I configure the new mISDN driver, and what  
+is so special about it?  
+<label id="config_misdn">
+<p>
+The mISDN driver stands for modular ISDN. It is a complete rewrite of the old
+isdn drivers and now communicates via CAPI messages. The mISDN driver is
+retire the historical drivers once it is fully functional within the 2.6.x
+kernels. As a temporary work around the historical drivers have been
+ported into the early 2.6.x kernels to get isdn working, however, this will
+be fixed in later versions.
+
+To start mISDN, you have to load all the following modules:
+<itemize>
+<item>capi
+<item>mISDN_core
+<item>mISDN_l1
+<item>mISDN_l2
+<item>l3udss1
+<item>mISDN_capi
+<item>mISDN_isac (for isa card)
+<item>Hardware specific driver (e.g. hfcpci, or avmfritz)
+</itemize>
+
+Not all features are available. It is currently not planned to port
+1TR6 (the ancient ISDN protocoll in Germany) to the new driver.
+
+For more information on how to configure it have a look at the following
+website: <tt><url url="http://rcum.uni-mb.si/~uvp00845b/"></tt>
+
+For a more general description on the mISDN driver and the future of isdn4linux
+you may also read the German article published in ct 3/2004.
+
+Please note that the current FAQ applies to old isdn drivers.
+mISDN may work differently than described in this FAQ.
+Please let me know about any amendmends for this FAQ.
 
 
 <!-- Troubleshooting
@@ -3534,6 +3612,14 @@ call.
 Probably you did not tell the modem emulation with <tt>AT&amp;E</tt> which
 MSN to use. For example, use <tt>AT&amp;E123456</tt>; if your MSN is 123456.
 
+Please also note that only one application using the ttyI* devices will
+receive a ring for a particular MSN. Which will ring is selected by a loop
+over all ttyI* devices. A device is selected based on whether its
+parameters match (protocol, MSN) and whether it is currently not involved
+with another call. Therefore it does not make sense for multiple applications
+to register for the same MSN via the ttyI* devices, unless you want to
+have load sharing between the applications.
+
 <sect1> ttyI_callphone: Why can't I dial my telephone or fax from the ttyI*  
 devices?  
 <label id="ttyI_callphone">
@@ -4060,6 +4146,14 @@ updates can only be switched off on the Cisco. You can configure
 &dquot;snapshot server&dquot; on the BRI interface. That means it will
 send out routing updates only when they are received through this interface.
 
+However, nowadays the most likely cause for open connection is that
+connection requests looking for a backdoor or a file sharing application
+cause issues like this. You can use the <tt>active-filter</tt> option
+of ipppd to indicate which packets should be regarded as link activity.
+See the man page for more details. A configuration could be like this:
+<code>
+active-filter 'outbound and not icmp[0] == 3 and not tcp[13] & 4 != 0'
+</code>
 
 <!-- 2 and more channels: MPPP, raw bundling
 -->
