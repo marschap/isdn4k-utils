@@ -4,7 +4,7 @@
 
 <title>FAQ for isdn4linux
 <author>Matthias Hessler (<tt><htmlurl url="mailto:hessler@isdn4linux.de" name="hessler@isdn4linux.de"></tt>)
-<date>v2.0.42, 13. June 2000
+<date>v2.0.43, 25. June 2000
 <abstract>
 If you are reading this FAQ online, you may consider downloading the whole
 thing, and reading it offline (much cheaper). To download the latest
@@ -413,8 +413,13 @@ not very accurate - depending on the ISDN equipment of your
 telephone company there may be a deviation of several minutes (!).
 It's better to get a PC clock that is set by radio signals and
 check it with, for example, xntp. You can also use a time server in
-the Internet with &dquot;netdate&dquot; or &dquot;rdate&dquot;. One time server
-can be found in Cologne: time.rrz.uni-koeln.de, but there are many more.
+the Internet with &dquot;netdate&dquot; or &dquot;rdate&dquot;.
+Check out the following urls on information about using time servers:
+<itemize>
+<item> <url url="http://www.eecis.udel.edu/~mills/ntp/servers.htm">
+<item> In German: <url url="http://www.ptb.de/deutsch/org/4/43/433/verb.htm">
+<item> In German: <url url="http://www.ptb.de/deutsch/aktuell/pi/pi00/pi0100.htm">
+</itemize>
 
 <sect1> feature_dosemu: Can I use isdn4linux under dosemu?  
 <label id="feature_dosemu">
@@ -1020,15 +1025,17 @@ you buy any hardware from them! The author of the FAQ refuses to use any
 hotline that charges 216,- DM per hour. Reports about quality and waiting time
 have not always been favorable.
 
-And this company doesn't even give away drivers for other operating
-systems, like Windows, for free.  You have to dial up a very expensive
-number (0190) where you have to pay about DM 1,20 per minute in Germany
-to download the driver. Not that it's advisable to use Windows anyway,
-but just to let you know...
+And this company did not even give away drivers for other operating
+systems, like Windows, for free for many years (I know about 1995-2000).
+Only since about April 2000 you can download the drivers over the Internet.
+Before you had to dial up a very expensive number (0190) where you had to pay
+about DM 1,20 per minute in Germany to download the driver. Not that it's
+advisable to use Windows anyway, but just to let you know...
 
 Warning: Teles has often changed their cards without notice, while still
 using the same name. When you buy a Teles card, you may find out that your
-brand-new card can not be supported by i4l! (As is currently the case...)
+brand-new card can not be supported by i4l! (As has happened many
+times in the past...)
 
 The developers will try to support new Teles cards when information about how
 to access it becomes available, and when they have no other priorities. Of
@@ -1375,7 +1382,7 @@ howto (isdn.html) and a ISDN quick-install guide (isdnquick.html).
 <item>Michael Hipp's page (general informations):
 <tt><url url="http://www-ti.informatik.uni-tuebingen.de/~hippm/isdn.html"></tt>
 <item>Chargeint tips:
-<tt><url url="http://www.provi.de/&tilde;gvz/chargeint.html"></tt>
+<tt><url url="http://www.auf-der-er.de/chargeint.html"></tt>
 <item>Homepage of kisdn (only works with Qt/KDE):
 <tt><url url="http://www.millenniumx.de/kisdn.html"></tt>
 <item>Configuration not only for UK (follow link to Linux Setup):
