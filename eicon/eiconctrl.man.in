@@ -1,6 +1,6 @@
-.\" $Id: eiconctrl.man.in,v 1.5 2000/01/26 18:35:05 armin Exp $
+.\" $Id: eiconctrl.man.in,v 1.6 2000/03/25 12:56:40 armin Exp $
 .\"
-.\" CHECKIN $Date: 2000/01/26 18:35:05 $
+.\" CHECKIN $Date: 2000/03/25 12:56:40 $
 .\"
 .\" Process this file with
 .\" groff -man -Tascii eiconctrl.1 for ASCII output, or
@@ -8,9 +8,9 @@
 .\"
 .TH EICONCTRL 8 "@MANDATE@" eiconctrl-V1.1 "Linux System Administration"
 .SH NAME
-eiconctrl \- configure Eicon active ISDN adaptor
+eiconctrl \- configure Eicon active ISDN card 
 .SH SYNOPSIS
-.B eiconctrl [-v] [-d
+.B eiconctrl [-d
 .IB Driver-Id ]
 .I action options
 .B ...
@@ -27,9 +27,6 @@ The use of
 makes sense, if you are using an active Eicon ISDN card only.
 .LP
 .SH OPTIONS
-.TP
-.BI -v
-verbose during downloading the firmware.
 .TP
 .BI "-d " Driver-Id
 selects the S0/S2M interface named by
@@ -69,7 +66,7 @@ may be given to
 sets the irq number to use (only ISA).
 If the interrupt value is omitted, the current setting will be printed.
 .TP
-.BI "load " protocol " " [options]
+.BI "load " -f " protocol " " [options]
 Downloads the protocol- and dsp-code into the card and starts operation.
 .LP
 .RS
@@ -86,23 +83,12 @@ Downloads the protocol- and dsp-code into the card and starts operation.
 .RS
 .BR options
 .br
-.BR -l[channel#] " channel allocation policy"
-.br
-.BR -c[1|2]      " CRC4 Multiframe usage [off|on]"
-.br
-.BR -tTEI        " use the fixed TEI"
-.br
-.BR -h           " no HSCX 30 mode (PRI only)"
-.br
-.BR -n           " NT2 mode"
-.br
-.BR -p           " leased line D channel"
-.br
-.BR -s[1|2]      " LAPD layer 2 session strategy"
-.br
-.BR -o           " allow disordered info elements"
-.br
-.BR -z           " switch to loopback mode"
+For options see
+.I eiconctrl
+without any parameters for ISA cards
+and
+.I eiconctrl divaload -h
+for PCI cards.
 .br
 .RE
 .LP
@@ -123,10 +109,10 @@ Switch trace-information for isdnlog on/off.
 .LP
 .SH EXAMPLE 
 .TP
-.BI eiconctrl " load etsi"
+.BI eiconctrl " load -f etsi"
 loads and starts S0 type adapter with protocol E-DSS1.
 .TP
-.BI eiconctrl " load etsi -s2 -n"
+.BI eiconctrl " load -f etsi -s2 -n"
 loads and starts S2M type adapter with protocol E-DSS1.
 .LP
 .SH BUGS

@@ -48,6 +48,7 @@ AC_DEFUN(AC_CHECK_NPCI, [
         OLD_CPPFLAGS="$CPPFLAGS"
         CPPFLAGS="-nostdinc -I${CONFIG_KERNELDIR} -I/usr/include"
         have_npci="no"
+	HAVE_NATIVE="n"
         AC_MSG_CHECKING([for pci code in ${CONFIG_KERNELDIR}/drivers/isdn/eicon/eicon.h])
         AC_TRY_COMPILE([#include <linux/types.h>
 			#include <drivers/isdn/eicon/eicon.h>],eicon_pci_codebuf *p = NULL;,have_npci="yes",)
@@ -55,7 +56,9 @@ AC_DEFUN(AC_CHECK_NPCI, [
         CPPFLAGS="$OLD_CPPFLAGS"
         if test "$have_npci" != "no" ; then
                 AC_DEFINE(HAVE_NPCI)
+		HAVE_NATIVE="y"
         fi
         AC_SUBST(HAVE_NPCI)
+        AC_SUBST(HAVE_NATIVE)
 ])
 
