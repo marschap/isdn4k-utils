@@ -1071,7 +1071,7 @@ Z:5                                Online
 T:W/08-18=1.116/120                Geschäftszeit
 T:W/18-08=1.116/360                Freizeit
 T:E,H/*=1.116/360                  Freizeit
-A:07189*,19411,19430,19440
+A:07189,194
 
 Z:6                                AON Complete
 T:*/*=0/60                         0-24h
@@ -1282,7 +1282,7 @@ Z:5                                Online
 T:W/08-18=1.056/120                Geschäftszeit
 T:W/18-08=1.056/360                Freizeit
 T:E,H/*=1.056/360                  Freizeit
-A:07189*,19411,19430,19440
+A:07189,194
 
 Z:6                                AON Complete
 T:*/*=0/60                         0-24h
@@ -1493,7 +1493,7 @@ Z:5                                Online
 T:W/08-18=0.996/120                Geschäftszeit
 T:W/18-08=0.996/360                Freizeit
 T:E,H/*=0.996/360                  Freizeit
-A:07189*,19411,19430,19440
+A:07189,194
 
 Z:6                                AON Complete
 T:*/*=0/60                         0-24h
@@ -1704,7 +1704,7 @@ Z:5                                Online
 T:W/08-18=0.936/120                Geschäftszeit
 T:W/18-08=0.936/360                Freizeit
 T:E,H/*=0.936/360                  Freizeit
-A:07189*,19411,19430,19440
+A:07189,194
 
 Z:6                                AON Complete
 T:*/*=0/60                         0-24h
@@ -1915,7 +1915,7 @@ Z:5                                Online
 T:W/08-18=0.816/120                Geschäftszeit
 T:W/18-08=0.816/360                Freizeit
 T:E,H/*=0.816/360                  Freizeit
-A:07189*,19411,19430,19440
+A:07189,194
 
 Z:6                                AON Complete
 T:*/*=0/60                         0-24h
@@ -2212,112 +2212,131 @@ C:Name:                            1003 Multikom Austria Telekom
 C:Address:
 C:Homepage:                        http://www.multikom.at
 C:EMail:                           multikom@multikom.at
-C:Zone:                            Die Regionalzone geht bis zu einer Entfernung von 50 Km, die Fernzone 1 bis
-C:Zone:                            200 Km alles andere ist Fernzone 2.
-# Fixme:                           Verzonung nicht verifiziert
-D:pta                              # Verzonung
 
-Z:1                                Regionalzone
+Z:1                                Österreich
 T:*/*=1.00(60)/60/1                0-24h
-
-Z:2                                Fernzone 1
-T:*/*=1.00(60)/60/1                0-24h
-
-Z:3                                Fernzone 2
-T:*/*=2.00(60)/60/1                0-24h
 A:AT
 
-Z:4                                5 Freunde
-T:*/*=1.00(60)/60/1                0-24h
+Z:2                                5 Freunde
+T:*/*=0.77(60)/60/1                0-24h
 
-Z:5                                Mobilfunk
+Z:3                                Mobilfunk
+T:*/*=2.00(60)/60/1                0-24h
+A:+43664,+43676,+43699
+
+Z:4                                Mobilfunk D
+T:*/*=4.50(60)/60/1                0-24h
+A:+43663
+
+Z:5                                Belgien ...
+T:*/*=2.00(60)/60/1                0-24h
+A:BE,DE,UK,CA,_MIDW,NL
+A:SE,CH,VI,US,_ALAS,_HAWA
+A:_WAKE
+
+Z:6                                Dänemark ...
 T:*/*=3.00(60)/60/1                0-24h
-A:+43663,+43664,+43676,+43699
+A:DK,FI,FR,IE,IT,PLP
+A:LI,LU,NO,ES,HU
 
-Z:6                                Deutschland spezial
-T:*/*=3.00(60)/60/1                0-24h
-A:DE
-
-Z:7                                Europa spezial
+Z:7                                Deutschland - Mobilfunk ...
 T:*/*=4.00(60)/60/1                0-24h
-A:BE,FR,UK
+A:_DEMF,_UKMF,HR,MC
+A:_NLMF,PL,_SEMF,SK
+A:SI,CZ,VA
 
-Z:8                                Ausland Zone 1
-T:*/8-18=3.90(60)/60/1             Tag
-T:*/18-8=3.50(60)/60/1             Nacht
-A:CZ,HU,IT,SK,SI,CH
+Z:8                                Azoren ...
+T:*/*=5.00(60)/60/1                0-24h
+A:_AZOR,_BEMF,BA,_DKMF
+A:_FIMF,_FRMF,GR
+A:_IEMF,_ITMF,YU,_MADE
+A:_NOMF,PT,_CHMF,_ESMF
 
-Z:9                                Ausland Zone 2
-T:*/8-18=4.60(60)/60/1             Tag
-T:*/18-8=4.30(60)/60/1             Nacht
-A:BA,CA,HR,DK,FI,LU
-A:MC,NL,NO,PL,PR,ES,SE
-A:US,VI,VA,YU
+Z:9                                Albanien ...
+T:*/*=6.00(60)/60/1                0-24h
+A:AL,DZ,AD,BG,EE,FO,GI
+A:IS,IL,LV,LT,MT,EH,MK,RO
+A:SU,SM,TR,BY,EH,CY
 
-Z:10                               Ausland Zone 3
-T:*/8-18=6.10(60)/60/1             Tag
-T:*/18-8=5.80(60)/60/1             Nacht
-A:AD,BY,BG,GR,IE,MT,MK,RO
-A:SM,TN
+Z:10                               Australien ...
+T:*/*=7.00(60)/60/1                0-24h
+A:AU,_GRMF,HK,_PTMF
+A:UA
 
-Z:11                               Ausland Zone 4
-T:*/8-18=8.30(60)/60/1             Tag
-T:*/18-8=6.90(60)/60/1             Nacht
-A:AL,CY,IL,PT,TR,UA
+Z:11                               Israel - Mobilfunk ...
+T:*/*=8.00(60)/60/1                0-24h
+A:_ILMF,JP,KR,MY,MD,NZ
+A:PN,ZA,TK
 
-Z:12                               Ausland Zone 5
-T:*/8-18=10.90(60)/60/1            Tag
-T:*/18-8=10.60(60)/60/1            Nacht
-A:DZ,AQ,AU,CX,CC,EE
-A:FO,GI,JP,KR,LV,MD,EH
-A:SU,ZA,TJ
+Z:12                               Türkei - Mobilfunk
+T:*/*=9.00(60)/60/1                0-24h
+A:_TKMF
 
-Z:13                               Ausland Zone 6
-T:*/8-18=14.60(60)/60/1            Tag
-T:*/18-8=14.30(60)/60/1            Nacht
-A:AZ,CL,GF,GE,GL,GP,HK
-A:IS,LY,LT,MQ,YT,MX,PH
-A:RE,PM,SG,TH,TM,UG
-A:AE
+Z:13                               Argentinien ...
+T:*/*=13.00(60)/60/1               0-24h
+A:AR,_AUMF,BS,BM,BO,BR
+A:CL,_CLMF,CN,CR,DM
+A:DO,_DOMF,EC
+A:SV,GP,GT,_GTMF,HT,HN
+A:_HKMF,IN,ID,JM,_JPMF
+A:CO,_KRMF,MX,_NZMF,NI
+A:CL,PA,PY,PE,PH,PR,SG
+A:TW,_TWMF,TH,TN,UY,VE
 
-Z:14                               Ausland Zone 7
-T:*/8-18=22.90(60)/60/1            Tag
-T:*/18-8=22.60(60)/60/1            Nacht
-A:AO,AR,BH,BT,BW,BR,BI,KM
-A:DO,EC,EG,GA,GM,IN,ID,IR
-A:JO,KW,KG,MO,MW,MY,NA
-A:AN,NZ,NG,OM,MP,SA
-A:LK,SZ,TW,VE,ZM,ZW
+Z:14                               Afghanistan ...
+T:*/*=18.00(60)/60/1               0-24h
+A:AF,AO,AI,AQ,AG
+A:_ARMF,AM,AW,ASI,AZ
+A:BH,BD,_BDMF,BB,BZ,BJ
+A:BT,BW,_BRMF,VG,BN
+A:BF,BI,KY,_CNMF,CX
+A:CC,CK,_CRMF,NKW,DJ
+A:_ECMF,_SVMF,ER,FK
+A:FJ,GF,PF,MQ
+A:GA,GM,GE,GH,GD,GL,GU,_GUAN,GN
+A:GW,GY,_INMF,IQ,IR
+A:CI,YE,JO,_JOMF
+A:KH,CM,CV,KZ,QA,KE,KG
+A:_KGMF,KI,_COMF,KM
+A:ZR,KP,CU,KW,_KWMF,LA,LS
+A:LB,_LBMF,LR,LY,MO,MG,MW
+A:MV,ML,MH,MQ,MR,MU
+A:YT,FM,MN,MS,MZ,MM
+A:NA,NR,NP,NC,KN,_NIMF
+A:AN,NGR,NG,NU,OM,PK,PW
+A:_PAMF,PG,_PEMF
+A:_PHMF,RE,RW,MP,SB,AS
+A:WS,ST,SA,SN,SC
+A:SL,SO,LK,SH,KN,LC
+A:PM,VC,SD,SR,SZ,SY
+A:TJ,TZ,TG,TO,TT,TD
+A:TM,TC,TV,UG,UZ,VU
+A:_VEMF,AE,VN
+A:WF,ZR,_ZRMF,ZM
+A:CF,ZW,EG,_EGMF
+A:GQ,ET
 
-Z:15                               Ausland Zone 8
-T:*/8-18=27.10(60)/60/1            Tag
-T:*/18-8=25.60(60)/60/1            Nacht
-A:AM,AW,BS,BB,BZ,BM,BN
-A:CF,CN,CO,CR,CU,DJ
-A:GQ,GH,GW,GY,KZ,LS
-A:LR,MN,NP,PA,SH,ST
-A:SD,SY,TZ,TT,TC
+Z:15                               INMARSAT-Mm AE ...
+T:*/*=40.00(60)/60/1               0-24h
+A:_INMMAE,_INMMAW,_INMMIO,_INMMPO
+A:_INMMWW
 
-Z:16                               Ausland Zone 9
-T:*/8-18=34.10(60)/60/1            Tag
-T:*/18-8=33.90(60)/60/1            Nacht
-A:ASI,BJ,BO,BF,CM,CV,TD
-A:CI,SV,ET,FJ,PF,GT
-A:HT,HN,IQ,JM,KE,KI,LA,LB,MV
-A:ML,MR,MU,MZ,MM,NR,NC
-A:NI,NU,NF,PK,PG,PE,QA
-A:RW,LC,VC,WS,SN
-A:SC,SL,SO,SR,TG,TO
-A:UZ,VU,YE,ZR
+Z:16                               INMARSAT-B AE ...
+T:*/*=60.00(60)/60/1               0-24h
+A:_INBAE,_INBAW,_INBIO,_INBPO,_INMAE
+A:_INMAW,_INMIO,_INMPO
 
-Z:17                               Ausland Zone 10
-T:*/8-18=53.50(60)/60/1            Tag
-T:*/18-8=49.20(60)/60/1            Nacht
-A:AF,AS,AI,AG,BD
-A:VG,KH,KY,CG,CK
-A:DM,ER,FK,GD,GU,_GUAN,KP
-A:MG,MH,MS,NGR,PW,PY
-A:PN,TV,UY,VN,_WAKE
+Z:17                               IRIDIUM 8817
+T:*/*=70.00(60)/60/1               0-24h
+A:_IR17
+
+Z:18                               INMARSAT-A AE ...
+T:*/*=80.00(60)/60/1               0-24h
+A:_INAAE,_INAAW,_INAIO,_INAPO
+
+Z:19                               IRIDIUM 8816
+T:*/*=130.00(60)/60/1              0-24h
+A:_IR16
 
 ###########################
 P:04,1                             Globalone
@@ -4519,8 +4538,7 @@ Z:6                                Euro City
 T:W/8-18=0.30|3.76(60)/1           Tag
 T:W/18-8=0.30|3.46(60)/1           Nacht
 T:E,H/*=0.30|3.46(60)/1            Weekend
-A:_AMS,BRU,_FRA,LON,_LUXE,MIL,PAR
-A:ZRH
+A:_AMS,BRU,_FRA,LON,MIL,PAR,ZRH
 
 Z:7                                Welt 1
 T:*/*=0.30|6.66(60)/1              0-24h

@@ -227,19 +227,73 @@ T:_INDF
 
 N:Inmarsat Mini-M
 A:Inmarsat Phone (Mini-M)
-C:+87476 Inmarsat Mini-M (W. Atlantic)
-C:+87376 Inmarsat Mini-M (Indien)
-C:+87276 Inmarsat Mini-M (Pacific)
-C:+87176 Inmarsat Mini-M (E. Atlantic)
-C:+87076 Inmarsat Mini-M (Worldwide)
+C:+87176	#Inmarsat Mini-M (E. Atlantic)
+C:+87476	#Inmarsat Mini-M (W. Atlantic)
+C:+87376	#Inmarsat Mini-M (Indien)
+C:+87276	#Inmarsat Mini-M (Pacific)
+C:+87076	#Inmarsat Mini-M (Worldwide)
 T:_INMM
 
+N:INMARSAT-Mm AE
+A:Inmarsat Mini-M (E. Atlantic)
+C:+87176
+R:_INMM
+T:_INMMAE
+
+N:INMARSAT-Mm AW
+C:+87476
+A:Inmarsat Mini-M (W. Atlantic)
+R:_INMM
+T:_INMMAW
+
+N:INMARSAT-Mm IO
+C:+87376
+A:Inmarsat Mini-M (Indien)
+R:_INMM
+T:_INMMIO
+
+N:INMARSAT-Mm PO
+C:+87276
+A:Inmarsat Mini-M (Pacific)
+R:_INMM
+T:_INMMPO
+
+N:INMARSAT-Mm WW
+C:+87076
+A:Inmarsat Mini-M (Worldwide)
+R:_INMM
+T:_INMMWW
+
 N:Inmarsat M
-C:+8746 Inmarsat M (W. Atlantic)
-C:+8736 Inmarsat M (Indien)
-C:+8726 Inmarsat M (Pacific)
-C:+8716 Inmarsat M (E. Atlantic)
+C:+8746 	#Inmarsat M (W. Atlantic)
+C:+8736 	#Inmarsat M (Indien)
+C:+8726 	#Inmarsat M (Pacific)
+C:+8716		#Inmarsat M (E. Atlantic)
 T:_INM_
+
+N:INMARSAT-M AE
+C:+8716
+A:Inmarsat M (E. Atlantic)
+R:_INM
+T:_INMAE
+
+N:INMARSAT-M AW
+C:+8746
+A:Inmarsat M (W. Atlantic)
+R:_INM
+T:_INMAW
+
+N:INMARSAT-M IO
+C:+8736
+A:Inmarsat M (Indien)
+R:_INM
+T:_INMIO
+
+N:INMARSAT-M PO
+C:+8726
+A:Inmarsat M (Pacific)
+R:_INM
+T:_INMPO
 
 N:Inmarsat Aero
 C:+8745, +8735, +8725, +8715
@@ -251,18 +305,66 @@ T:_INBH
 
 N:Inmarsat B
 A:AOR, IOR, POR
-C:+8743 Inmarsat B (W. Atlantic)
-C:+8733 Inmarsat B (Indien)
-C:+8723 Inmarsat B (Pacific)
-C:+8713 Inmarsat B (E. Atlantic)
+C:+8743 	#Inmarsat B (W. Atlantic)
+C:+8733 	#Inmarsat B (Indien)
+C:+8723 	#Inmarsat B (Pacific)
+C:+8713 	#Inmarsat B (E. Atlantic)
 T:_INB_
 
+N:INMARSAT-B AE
+C:+8713
+A:Inmarsat B (E. Atlantic)
+R:_INB_
+T:_INBAE
+
+N:INMARSAT-B AW
+C:+8743
+A:Inmarsat B (W. Atlantic)
+R:_INB_
+T:_INBAW
+
+N:INMARSAT-B IO
+C:+8733
+A:Inmarsat B (Indien)
+R:_INB_
+T:_INBIO
+
+N:INMARSAT-B PO
+C:+8723
+A:Inmarsat B (Pacific)
+R:_INB_
+T:_INBPO
+
 N:Inmarsat A
-C:+8741 Inmarsat A (W. Atlantic)
-C:+8731 Inmarsat A (Indien)
-C:+8721 Inmarsat A (Pacific)
-C:+8711 Inmarsat A (E. Atlantic)
+C:+8741 	#Inmarsat A (W. Atlantic)
+C:+8731		#Inmarsat A (Indien)
+C:+8721 	#Inmarsat A (Pacific)
+C:+8711 	#Inmarsat A (E. Atlantic)
 T:_INA_
+
+N:INMARSAT-A AE
+C:+8711
+A:Inmarsat A (E. Atlantic)
+R:_INA_
+T:_INAAE
+
+N:INMARSAT-A AW
+C:+8741
+A:Inmarsat A (W. Atlantic)
+R:_INA_
+T:_INAAW
+
+N:INMARSAT-A IO
+C:+8731
+A:Inmarsat A (Indien)
+R:_INA_
+T:_INAIO
+
+N:INMARSAT-A PO
+C:+8721
+A:Inmarsat A (Pacific)
+R:_INA_
+T:_INAPO
 
 N:Atlantischer Ozean (West)
 A:Atlantic Ocean (west)

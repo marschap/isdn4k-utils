@@ -311,7 +311,7 @@ void rate_1001(void)
 		     { "Österreichzone", "Österreich" },
 		     { "Mobilfunk 1", "+43663,+43664,+43676" },
 		     { "Mobilfunk 2", "+43699" },
-		     { "Online", "07189*,19411,19430,19440" },
+		     { "Online", "07189,194" },
 		     { "AON Complete", "194040" },
 		     { "Ausland Zone 1", "Deutschland, Italien, Liechtenstein, Schweiz, Slowakei, Slowenien, Tschechien, Ungarn" },
 		     { "Ausland Zone 2", "Albanien, Andorra, Belarus, Belgien, Bosnien-Herzegowina, Bulgarien, Dänemark,Finnland, Frankreich, Großbritannien, Nordirland, Irland, Jugoslawien, Kroatien, Luxemburg, Malta, Mazedonien, Monaco, Niederlande, Norwegen, Rumänien, San Marino, Schweden, Spanien, Ukraine, Vatikanstadt, Zypern" },
@@ -483,42 +483,49 @@ void rate_1002(void) {
 
 void rate_1003(void) {
 
-  char *Zone[][2] = {{ "Regionalzone", "" },
-		     { "Fernzone 1", "" },
-		     { "Fernzone 2", "Österreich" },
+  char *Zone[][2] = {
+		     { "Österreich", "Österreich" },
 		     { "5 Freunde", "" },
-		     { "Mobilfunk", "+43663,+43664,+43676,+43699" },
-		     { "Deutschland spezial", "Deutschland" },
-		     { "Europa spezial", "Belgien, Frankreich, Großbritannien" },
-		     { "Ausland Zone 1", "Czech Republic, Hungary, Italy, Slovakia, Slovenia, Switzerland" },
-		     { "Ausland Zone 2", "Bosnia and Hercegovina, Canada, Croatia, Denmark, Finland, Luxembourg, Monaco, Netherlands, Norway, Poland, Puerto Rico, Spain, Sweden, United States of America, American Virgin Isles, Vatican City, Montenegro" },
-		     { "Ausland Zone 3", "Andorra, Belarus, Bulgaria, Greece, Ireland, Malta, Macedonia, Romania, San Marino, Tunesia" },
-		     { "Ausland Zone 4", "Albania, Cyprus, Israel, Portugal, Turkey, Ukraine" },
-		     { "Ausland Zone 5", "Algeria, Antarctica, Australia, Weihnachtsinseln, Cocos Island, Estonia, Färöer, Gibraltar, Japan, South Korea, Latvia, Moldova, Marocco, Russian Federation, South Africa, Tajikistan" },
-		     { "Ausland Zone 6", "Azerbaijan, Chile, French Guyana, Georgia, Greenland, Guadaloupe, Hongkong, Iceland, Libya, Lithuania, Martinique, Mayotte, Mexico, Phillipines, Reunion, St. Pierre and Miquelon, Singapore, Thailand, Turkmenistan, Uganda, United Arab Emirates" },
-		     { "Ausland Zone 7", "Angola, Argentina, Bahrain, Bhutan, Botswana, Brazil, Burundi, Comoros, Dominican Republic, Ecuador, Egypt, Gabon, Gambia, India, Indonesia, Iran, Jordan, Kuwait, Kyrgyzstan, Macau, Malawi, Malaysia, Namibia, Netherlands Antilles, New Zealand, Nigeria, Oman, Saipan, Saudi Arabia, Sri Lanka, Swaziland, Taiwan, Venezuela, Zambia, Zimbabwe" },
-		     { "Ausland Zone 8", "Armenia, Aruba, Bahamas, Barbados, Belize, Bermuda, Brunei, Central African Republic, China, Colombia, Costa Rica, Cuba, Djibouti, Equatorial Guinea, Ghana, Guinea-Bissau, Guyana, Kazakhstan, Lesotho, Liberia, Mongolia, Nepal, Panama, Saint Helena, Sao Tome and Principa, Sudan, Syria, Tanzania, Trinidad & Tobago, Turks & Caicos Islands" },
-		     { "Ausland Zone 9", "Ascension, Benin, Bolivia, Burkina Faso, Cameroon, Cape Verde, Chad, Elfenbeinküste, El Salvador, Ethiopia, Fiji, French Polynesia, Guatemala, Haiti, Honduras, Iraq, Jamaica, Kenya, Kiribati, Laos, Lebanon, Maldives, Mali, Mauritania, Mauritius, Mozambique, Myanmar, Nauru, New Caledonia, Nicaragua, Niue, Norfolk Island, Pakistan, Papua New Guinea, Peru, Quatar, Rwanda, Saint Lucia, St. Vincent and the Grenadines, Samoa (West), Senegal, Seychelles Islands, Sierra Leone, Somalia, Suriname, Togo, Tonga, Uzbekistan, Vanuatu, Jemen, Zaire" },
-		     { "Ausland Zone 10", "Afghanistan, American Samoa, Anguilla, Antigua & Barbuda, Bangladesh, British Virgin Isles, Cambodia, Cayman Islands, Congo, Cook Islands, Dominica, Eritrea, Falkland Islands, Grenada, Guam, Guantanamo, Nordkorea, Madagascar, Marshall Islands, Montserrat, Niger, Palau, Paraguay, Pitcairn Islands, Tuvalu, Uruguay, Vietnam, Wake Island" }};
+		     { "Mobilfunk", "+43664,+43676,+43699" },
+		     { "Mobilfunk D", "+43663" },
+/* 2 */	{"Belgien ...", "Belgien, Deutschland, Großbritannien, Kanada, Midway Inseln, Niederlande, Schweden, Schweiz, US Jungferninseln, USA, USA - Alaska, USA - Hawaii, Wake Inseln"},
+/* 3 */	{"Dänemark ...", "Dänemark, Finnland, Frankreich, Irland, Italien, Kanarische Inseln, Liechtenstein, Luxemburg, Norwegen, Spanien, Ungarn"},
+/* 4 */	{"Deutschland - Mobilfunk ...", "Deutschland - Mobilfunk, Großbritannien - Mobilfunk, Kroatien, Monaco, Niederlande - Mobilfunk, Polen, Schweden - Mobilfunk, Slowakische Republik, Slowenien, Tschechische Republik, Vatikan"},
+/* 5 */	{"Azoren ...", "Azoren, Belgien - Mobilfunk, Bosnien & Herzegovina, Dänemark - Mobilfunk, Finnland - Mobilfunk, Frankreich - Mobilfunk, Griechenland, Irland - Mobilfunk, Italien - Mobilfunk, Jugoslawien, Madeira, Norwegen - Mobilfunk, Portugal, Schweiz - Mobilfunk, Spanien - Mobilfunk"},
+/* 6 */	{"Albanien ...", "Albanien, Algerien, Andorra, Bulgarien, Estland, Färöer Insel, Gibraltar, Island, Israel, Lettland, Litauen, Malta, Marokko, Mazedonien, Rumänien, Russische Föderation, San Marino, Türkei, Weißrußland, West Sahara, Zypern"},
+/* 7 */	{"Australien ...", "Australien, Griechenland - Mobilfunk, Hong Kong, Portugal - Mobilfunk, Ukraine"},
+/* 8 */	{"Israel - Mobilfunk ...", "Israel - Mobilfunk, Japan, Korea Süd, Malaysien, Moldau, Neuseeland, Pitcairn Inseln, Südafrika, Tokelau"},
+/* 9 */	{"Türkei - Mobilfunk", "Türkei - Mobilfunk"},
+/* 13 */	{"Argentinien ...", "Argentinien, Australien - Mobilfunk, Bahamas, Bermuda, Bolivien, Brazilien, Chile, Chile - Mobilfunk, China, Costa Rica, Dominica, Dominikanische Republik, Dominikanische Republik - Mobilfunk, Ecuador, El Salvador, Guadeloupe, Guatemala, Guatemala - Mobilfunk, Haiti, Honduras, Hong Kong - Mobilfunk, Indien, Indonesien, Jamaika, Japan - Mobilfunk, Kolumbien, Korea Süd - Mobilfunk, Mexiko, Neuseeland - Mobilfunk, Nicaragua, Oster Inseln, Panama, Paraguay, Peru, Philippinen, Puerto Rico, Singapure, Taiwan, Taiwan - Mobilfunk, Thailand, Tunesien, Uruguay, Venezuela"},
+/* 18 */	{"Afghanistan ...", "Afghanistan, Angola, Anguilla, Antarktis, Antiqua & Barbuda, Argentinien - Mobilfunk, Armenien, Aruba, Ascension Insel, Aserbaidschan, Bahrain, Bangladesh, Bangladesh - Mobilfunk, Barbados, Belize, Benin, Bhutan, Botswana, Brazilien - Mobilfunk, Britische Jungferninseln, Brunei, Burkina Faso, Burundi, Cayman Inseln, China - Mobilfunk, Christmas Inseln, Cocos Inseln, Cook Inseln, Costa Rica - Mobilfunk, Diego Garcia, Dschibuti, Ecuador-Cellular, El Salvador - Mobilfunk, Eritrea, Falkland Inseln, Fidschi, Französisch Guyana, Französisch Polynesien, Französische Antillen, Gabun, Gambia, Georgien, Ghana, Grenada, Grönland, Guam, Guantanamo, Guinea, Guinea - Bissau, Guyana, Indien - Mobilfunk, Irak, Iran, Ivory Cost (Elfenbeinküste), Jemen, Jordanien, Jordanien - Mobilfunk, Kambodscha, Kamerun, Kap Verde, Kasachstan, Katar, Kenia, Kirgisistan, Kirgisistan - Mobilfunk, Kiribati, Kolumbien - Mobilfunk, Komoren, Kongo Republik, Korea Nord, Kuba, Kuwait, Kuwait - Mobilfunk, Laos, Lesotho, Libanon, Libanon - Mobilfunk, Liberia, Libyen, Macao, Madagaskar, Malawi, Malediven, Mali, Marshall Inseln, Martinique, Mauritanien, Mauritius, Mayotte, Mikronesien, Mongolei, Montserrat, Mosambik, Myanmar (Burma), Namibia, Nauru, Nepal, Neukaledonien, Nevis, Nicaragua - Mobilfunk, Niederländische Antillen, Niger, Nigeria, Niue, Oman, Pakistan, Palau, Panama - Mobilfunk, Papua Neu Guinea, Peru - Mobilfunk, Philippinen - Mobilfunk, Reunion, Ruanda, Saipan, Salomon Inseln, Samoa US, Samoa West, Sao Tome und Principe, Saudi Arabien, Senegal, Seychellen, Sierra Leone, Somalia, Sri Lanka, St. Helena, St. Kitts, St. Lucia, St. Pierre und Miquellon, St. Vincent, Sudan, Suriname, Swaziland, Syrien, Tadschikistan, Tansania, Togo, Tonga, Trinidad und Tobago, Tschad, Turkmenistan, Turks und Caicos, Tuvalu, Uganda, Usbekistan, Vanuatu, Venezuela - Mobilfunk, Vereinigte Arababische Emirate, Vietnam, Wallis and Futuna, Zaire, Zaire - Mobilfunk, Zambia, Zentralafrikanische Republik, Zimbabwe, Ägypten, Ägypten - Mobilfunk, Äquatorial-Guinea, Äthiopien"},
+/* 40 */	{"INMARSAT-Mm AE ...", "INMARSAT-Mm AE, INMARSAT-Mm AW, INMARSAT-Mm IO, INMARSAT-Mm PO, INMARSAT-Mm WW"},
+/* 60 */	{"INMARSAT-B AE ...", "INMARSAT-B AE, INMARSAT-B AW, INMARSAT-B IO, INMARSAT-B PO, INMARSAT-M AE, INMARSAT-M AW, INMARSAT-M IO, INMARSAT-M PO"},
+/* 70 */	{"IRIDIUM 8817", "IRIDIUM 8817"},
+/* 80 */	{"INMARSAT-A AE ...", "INMARSAT-A AE, INMARSAT-A AW, INMARSAT-A IO, INMARSAT-A PO"},
+/* 130 */	{"IRIDIUM 8816", "IRIDIUM 8816"}
+};
 
-  double Tarif[][2] = {{ 1.0,  1.0},
-		       { 1.0,  1.0},
-		       { 2.0,  2.0},
-		       { 1.0,  1.0},
-		       { 3.0,  3.0},
-		       { 3.0,  3.0},
-		       { 4.0,  4.0},
-		       { 3.9,  3.5},
-		       { 4.6,  4.3},
-		       { 6.1,  5.8},
-		       { 8.3,  6.9},
-		       {10.9, 10.6},
-		       {14.6, 14.3},
-		       {22.9, 22.6},
-		       {27.1, 25.6},
-		       {34.1, 33.9},
-		       {53.5, 49.2}};
-
+  double Tarif[] = {
+  1.0,
+  0.77,
+  2.0,
+  4.5,
+2,  /* Belgien ... */
+3,  /* Dänemark ... */
+4,  /* Deutschland - Mobilfunk ... */
+5,  /* Azoren ... */
+6,  /* Albanien ... */
+7,  /* Australien ... */
+8,  /* Israel - Mobilfunk ... */
+9,  /* Türkei - Mobilfunk ... */
+13,  /* Argentinien ... */
+18,  /* Afghanistan ... */
+40,  /* INMARSAT-Mm AE ... */
+60,  /* INMARSAT-B AE ... */
+70,  /* IRIDIUM 8817 ... */
+80,  /* INMARSAT-A AE ... */
+130  /* IRIDIUM 8816 ... */
+};
   int z;
 
   rprintf ("P:03", "Multikom" );
@@ -526,18 +533,9 @@ void rate_1003(void) {
   rprintf ("C:Address:", "" );
   rprintf ("C:Homepage:", "http://www.multikom.at" );
   rprintf ("C:EMail:", "multikom@multikom.at" );
-  rprintf ("C:Zone:", "Die Regionalzone geht bis zu einer Entfernung von 50 Km, die Fernzone 1 bis " );
-  rprintf ("C:Zone:", "200 Km alles andere ist Fernzone 2." );
-  rprintf ("# Fixme:", "Verzonung nicht verifiziert" );
-  rprintf ("D:pta", "# Verzonung" );
   for (z=0; z<COUNT(Zone); z++) {
     rprintf ("Z:%d", Zone[z][0] , z+1);
-    if (Tarif[z][0]==Tarif[z][1])
-      rprintf ("T:*/*=%.2f(60)/60/1", "0-24h" , Tarif[z][0]);
-    else {
-      rprintf ("T:*/8-18=%.2f(60)/60/1", "Tag" , Tarif[z][0]);
-      rprintf ("T:*/18-8=%.2f(60)/60/1", "Nacht" , Tarif[z][1]);
-    }
+    rprintf ("T:*/*=%.2f(60)/60/1", "0-24h" , Tarif[z]);
     print_area(Zone[z][1]);
   }
 }
@@ -1764,7 +1762,7 @@ void rate_1066(void) {
 		     { "Mobilfunk", "+43663,+43664,+43676,+43699" },
 		     { "Euro 1", "Deutschland, Frankreich, Großbritannien, Nordirland, Italien, Liechtenstein, Schweiz, Slowakei, Slowenien, Tschechien, Ungarn" },
 		     { "Euro 2", "Andorra, Belarus, Belgien, Bosnien-Herzegowina, Bulgarien, Dänemark, Estland, Finnland, Griechenland, Irland, Jugoslawien, Kroatien, Luxemburg, Monaco, Niederlande, Norwegen, Polen, Portugal, Rumänien, San Marino, Schweden, Spanien, Tunesien, Türkei, Ukraine, Vatikanstadt, Zypern" },
-		     { "Euro City", "Amsterdam, Brüssel, Frankfurt, London, Luxemburg City, Mailand, Paris, Zürich" },
+		     { "Euro City", "Amsterdam, Brüssel, Frankfurt, London, Mailand, Paris, Zürich" },
 		     { "Welt 1", "Hawaii, Amerikanische Jungferninseln, Puerto Rico, Vereinigte Staaten (USA), Kanada" },
 		     { "Welt 2", "Albanien, Antarktis, Armenien, Aserbaidschan, Australien, Bahamas, Chile, Weihnachtsinseln, Kokosinseln, Dominikanische Republik, Georgien, Gibraltar, Guadeloupe, Französisch-Guayana, Hongkong, Island, Israel, Japan, Lettland, Libyen, Litauen, Mazedonien, Malaysia, Malta, Marokko, Martinique, Mayotte, Moldau, Neuseeland, Niederländische Antillen, Philippinen, Russische Föderation, Reunion, St. Pierre und Miquelon, Singapur, Südafrika, Südkorea, Saipan" },
 		     { "Welt 3", "Ägypten, Angola, Argentinien, Aruba, Ascension, Bahrain, Barbados, Belize, Benin, Bermuda, Bhutan, Bolivien, Botsuana, Brasilien, Brunei, Burkina Faso, Burundi, Caymaninseln, China, Costa Rica, Dschibuti, Dominica, Ecuador, El Salvador, Färöer-Inseln, Falklandinseln, Fidschi, Französisch-Polynesien, Gabun, Gambia, Ghana, Grenada, Grönland, Guatemala, Haiti, Honduras, Indien, Indonesien, Iran, Jamaika, Jordanien, Katar, Kenia, Kirgisistan, Kolumbien, Nordkorea, Kongo, Kuba, Kuwait, Laos, Lesotho, Libanon, Liberia, Macau, Malawi, Malediven, Marshallinseln, Mauretanien, Mauritius, Mexiko, Montserrat, Nepal, Neukaledonien, Nicaragua, Nigeria, Norfolk-Inseln, Panama, Paraguay, Peru, Ruanda, Sambia, Saudi-Arabien, Salomonen, Simbabwe, Somalia, St. Helena, Saint Kitts und Nevis, St. Lucia, Saint Vincent und die Grenadinen, Sudan, Syrien, Tadschikistan, Tansania, Taiwan, Thailand, Trinidad und Tobago, Turkmenistan, Uruguay, Usbekistan, Vanuatu, Venezuela, Vereinigte Arabische Emirate" },
@@ -2423,6 +2421,7 @@ int main (int argc, char *argv[])
   /*  rate_1044_old(); */
   rate_1012(1044);
   rate_1049();
+/* rate_1056();  // Fixme: Netway ab 1.5.00 */
   rate_1066();
   rate_1067();
   rate_1069_old();

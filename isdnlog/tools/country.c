@@ -1,4 +1,4 @@
-/* $Id: country.c,v 1.7 1999/12/31 13:57:19 akool Exp $
+/* $Id: country.c,v 1.8 2000/02/22 20:04:11 akool Exp $
  *
  * Länderdatenbank
  *
@@ -19,6 +19,20 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: country.c,v $
+ * Revision 1.8  2000/02/22 20:04:11  akool
+ * isdnlog-4.13
+ *  - isdnlog/tools/rate-at.c ... chg. 1003
+ *  - isdnlog/tools/country.c ... no dupl. area warning
+ *  - isdnlog/rate-at.dat ... chg. 1003
+ *  - isdnlog/tools/dest/pp_rate ... added 'q'
+ *  - isdnlog/country-de.dat ... splitted _INM*
+ *
+ *  - isdnlog/tools/rate.c ... getSpecial, vbn2prefix fixed, include
+ *  - isdnlog/tools/dest/pp_rate ... include
+ *  - isdnlog/tools/rate-files.man ... include
+ *
+ *  - new rates, Services (S:, N:) reenabled
+ *
  * Revision 1.7  1999/12/31 13:57:19  akool
  * isdnlog-4.00 (Millenium-Edition)
  *  - Oracle support added by Jan Bolt (Jan.Bolt@t-online.de)
@@ -106,7 +120,7 @@ extern const char *basename (const char *name);
 static COUNTRY *Country = NULL;
 static int      nCountry = 0;
 static int      line=0;
-
+static int 	verbose=0;
 
 static void warning (char *file, char *fmt, ...)
 {
@@ -117,7 +131,8 @@ static void warning (char *file, char *fmt, ...)
   vsnprintf (msg, BUFSIZ, fmt, ap);
   va_end (ap);
 #ifdef STANDALONE
-  fprintf(stderr, "WARNING: %s line %3d: %s\n", basename(file), line, msg);
+  if(verbose)
+    fprintf(stderr, "WARNING: %s line %3d: %s\n", basename(file), line, msg);
 #else
   print_msg(PRT_NORMAL, "WARNING: %s line %3d: %s\n", basename(file), line, msg);
 #endif
@@ -380,10 +395,10 @@ int initCountry(char *path, char **msg)
       s+=2; while(isblank(*s)) s++;
       strcpy(version, s);
       break;
-      
+
     case 'R':
     case 'T':
-      break;  
+      break;
 
     default:
       warning(path, "Unknown tag '%c'", *s);

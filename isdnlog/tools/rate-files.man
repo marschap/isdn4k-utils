@@ -1,6 +1,6 @@
 '\" t
 '\" ** above should format a table **
-.\" CHECKIN $Date: 1999/12/24 14:17:06 $
+.\" CHECKIN $Date: 2000/02/22 20:04:11 $
 .TH rate-files 5 "@MANDATE@" -lt-
 .SH NAME
 rate-files \- Format of rate-files
@@ -19,7 +19,30 @@ Comments starting with a hash-sign '#'
 and empty lines are ignored. The first letter (tag) followed by a colon
 discerns the entries. Additional white space may be used after the tags
 to group content more readably.
+.SS Special entries
+.P
+.B I:includefile
+.P
+.B i:includefile
+.br
+.IP
+.I includefile
+get's substituted at the current position. There are two possibilities. In
+the rate source file (which get prepared by
+.IR pp_rate )
+a small
+.I 'i'
+puts the contents of the include file in the outputfile.
+An
+.IR 'I' -Tag
+means, for the preprozessor, write a new output file (the includefile) and
+leave the tag in the rate-files. This is for real include files.
+.br
+Includes may be nested twice. The filename should not contain any paths
+(except for 'i' of course), they are taken relative to their parent file.
+.IP
 .SS Header entries
+.P
 .B V:versionsstring
 .IP
 e.g.

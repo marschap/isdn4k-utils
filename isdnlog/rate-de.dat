@@ -1,4 +1,4 @@
-V:1.10-Germany [20-Feb-2000 19:45:01]
+V:1.10-Germany [22-Feb-2000 20:38:03]
 
 # Währungsformat
 U:%.3f DM
@@ -8,7 +8,7 @@ U:%.3f DM
 #
 # (C) Copyright 1999, 2000 by Andreas Kool (akool@isdn4linux.de)
 #
-# $Id: rate-de.dat,v 1.81 2000/02/20 19:03:07 akool Exp $
+# $Id: rate-de.dat,v 1.82 2000/02/22 20:04:10 akool Exp $
 #
 #
 # Das "A:" Tag muß folgendermaßen gefüllt werden:
@@ -173,32 +173,32 @@ U:%.3f DM
 #
 #
 # Sonderrufnummern:
-# S:Auftrags- und Ansagedienst
-# N:01141
+S:Auftrags- und Ansagedienst
+N:01141
 #
-# # Internetzugänge zzgl. Grundgebühr
-# S:UUnet classic
-# N:0191999
-# S:T-Online SLIP
-# N:01910
-# S:T-Online
-# N:0191011
-# S:AOL
-# N:01914, 019161
+# Internetzugaenge zzgl. Grundgebuehr
+S:UUnet classic
+N:0191999
+S:T-Online SLIP
+N:01910
+S:T-Online
+N:0191011
+S:AOL
+N:01914, 019161
 #
-# S:Internet by call
-# N:0191501  # o.tel.o Online
-# N:01929    # Freenet (Mobilcom)
-# N:01928120 # eXpress Net (Mobilcom)
-# N:01924924 # Telepassport Online
-# N:0192340  # net@home (GTS Esprit)
-# N:0192343  # Call.POP/Imagecom (GTS Esprit)
-# N:019251   # Talknet (Talkline)
-# N:0192070  # Arcor Online
-# N:0192020  # Arcor Online
-# N:0192300  # Call.Callino
-# N:0191955  # knuut (Worldcom/UUnet)
-# N:0192658  # MSN Easysurfer (Worldcom/UUnet)
+S:Internet by call
+N:0191501  # o.tel.o Online
+N:01929    # Freenet (Mobilcom)
+N:01928120 # eXpress Net (Mobilcom)
+N:01924924 # Telepassport Online
+N:0192340  # net@home (GTS Esprit)
+N:0192343  # Call.POP/Imagecom (GTS Esprit)
+N:019251   # Talknet (Talkline)
+N:0192070  # Arcor Online
+N:0192020  # Arcor Online
+N:0192300  # Call.Callino
+N:0191955  # knuut (Worldcom/UUnet)
+N:0192658  # MSN Easysurfer (Worldcom/UUnet)
 #
 # S:T-VoteCall
 # N:01371, 01372, 01373, 01374, 0138
@@ -296,20 +296,20 @@ U:%.3f DM
 # S:Feuerwehr / Rettungsleitstelle
 # N:112
 #
-# S:Auskunft
-# N:11811 # DTV
-# N:11818 # Debitel
-# N:11822 # GTS
-# N:11833 # DTAG Inland
-# N:11834 # DTAG Ausland
-# N:11850 # Talkline
-# N:11870 # Mannesmann Arcor
-# N:11871 # Mannesmann Arcor
-# N:11880 # Telegate
-# N:11890 # Telegate
+S:Auskunft
+N:11811 # DTV
+N:11818 # Debitel
+N:11822 # GTS
+N:11833 # DTAG Inland
+N:11834 # DTAG Ausland
+N:11850 # Talkline
+N:11870 # Mannesmann Arcor
+N:11871 # Mannesmann Arcor
+N:11880 # Telegate
+N:11890 # Telegate
 #
-# S:Weckruf
-# N:0190600000 # Virtual Interactive Phone GmbH, VIP Wecker (0,81 Pf/min)
+S:Weckruf
+N:0190600000 # Virtual Interactive Phone GmbH, VIP Wecker (0,81 Pf/min)
 #########################################################################
 # Der Nummernraum für das öffentliche Telefonnetz/ISDN in Deutschland
 # Stand: 30.08.1999
@@ -338,7 +338,7 @@ U:%.3f DM
 # S:optional der Verkehrsausscheidungsziffer voranzustellende Ziffernfolge zur Verbindungsnetzbetreiberauswahl Call-by-Call (010xy, 0100yy mit x = 1 ... 9 und y = 0 ... 9)
 # N:010*, 0100*
 
-S:Mehrwertdienste # (auslaufend) Verlagerung wird gegenwärtig vorbereitet; danach: Reserve
+S:Mehrwertdienste # (auslaufend) Verlagerung wird gegenwaertig vorbereitet; danach: Reserve
 N:011*
 
 S:Innovative Dienste
@@ -12279,7 +12279,7 @@ Z:235 Burundi
 A:BI
 T:*/*=1.609/60
 Z:236 Chatham Island
-A:_CHAT
+A:_DEMD1
 T:*/*=1.379/60
 Z:237 Chile
 A:CL
@@ -13031,7 +13031,7 @@ Z:235 Burundi
 A:BI
 T:*/*=1.609(60)/1
 Z:236 Chatham Island
-A:_CHAT
+A:_DEMD1
 T:*/*=1.379(60)/1
 Z:237 Chile
 A:CL
@@ -13779,7 +13779,7 @@ Z:235 Burundi
 A:BI
 T:*/*=1.609/60
 Z:236 Chatham Island
-A:_CHAT
+A:_DEMD1
 T:*/*=1.379/60
 Z:237 Chile
 A:CL
@@ -14528,7 +14528,7 @@ Z:235 Burundi
 A:BI
 T:*/*=1.609(60)/1
 Z:236 Chatham Island
-A:_CHAT
+A:_DEMD1
 T:*/*=1.379(60)/1
 Z:237 Chile
 A:CL
@@ -15273,7 +15273,7 @@ Z:235 Burundi
 A:BI
 T:*/*=1.609/60
 Z:236 Chatham Island
-A:_CHAT
+A:_DEMD1
 T:*/*=1.379/60
 Z:237 Chile
 A:CL
@@ -16020,7 +16020,7 @@ Z:235 Burundi
 A:BI
 T:*/*=1.609(60)/1
 Z:236 Chatham Island
-A:_CHAT
+A:_DEMD1
 T:*/*=1.379(60)/1
 Z:237 Chile
 A:CL
@@ -16767,7 +16767,7 @@ Z:235 Burundi
 A:BI
 T:*/*=1.609/60
 Z:236 Chatham Island
-A:_CHAT
+A:_DEMD1
 T:*/*=1.379/60
 Z:237 Chile
 A:CL
@@ -17515,7 +17515,7 @@ Z:235 Burundi
 A:BI
 T:*/*=1.609(60)/1
 Z:236 Chatham Island
-A:_CHAT
+A:_DEMD1
 T:*/*=1.379(60)/1
 Z:237 Chile
 A:CL
@@ -22683,8 +22683,11 @@ A:110
 A:112
 T:*/*=0
 Z:1-4 Fern
-T:*/08-21=0.089(60)/1
-T:*/21-08=0.059(60)/1
+T:[-29.02.2000]*/08-21=0.089(60)/1
+T:[-29.02.2000]*/21-08=0.059(60)/1
+T:[01.03.2000-]W/08-18=0.089(60)/1
+T:[01.03.2000-]W/18-08=0.059(60)/1
+T:[01.03.2000-]E/*=0.059(60)/1
 A:+49
 Z:10-15
 A:01610,01617,01619,01618

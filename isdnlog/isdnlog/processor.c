@@ -1,4 +1,4 @@
-/* $Id: processor.c,v 1.102 2000/02/20 19:03:07 akool Exp $
+/* $Id: processor.c,v 1.103 2000/02/22 20:04:10 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,20 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.103  2000/02/22 20:04:10  akool
+ * isdnlog-4.13
+ *  - isdnlog/tools/rate-at.c ... chg. 1003
+ *  - isdnlog/tools/country.c ... no dupl. area warning
+ *  - isdnlog/rate-at.dat ... chg. 1003
+ *  - isdnlog/tools/dest/pp_rate ... added 'q'
+ *  - isdnlog/country-de.dat ... splitted _INM*
+ *
+ *  - isdnlog/tools/rate.c ... getSpecial, vbn2prefix fixed, include
+ *  - isdnlog/tools/dest/pp_rate ... include
+ *  - isdnlog/tools/rate-files.man ... include
+ *
+ *  - new rates, Services (S:, N:) reenabled
+ *
  * Revision 1.102  2000/02/20 19:03:07  akool
  * isdnlog-4.12
  *  - ABC_LCR enhanced
@@ -4948,7 +4962,7 @@ static void processlcr(char *p)
   info(chan, PRT_SHOWNUMBERS, STATE_RING, s);
 
   if (!*destnum.msn /* && ((abclcr & 1) == 1) */) { /* Future expansion, Sonderrufnummer? */
-    sprintf(s, "ABC_LCR: \"%s\" is a Sonderrufnummer -- no action --", destnum.area);
+    sprintf(s, "ABC_LCR: \"%s\" is a special number, no action", destnum.area);
     abort = 1;
     goto action;
   } /* if */
@@ -4984,7 +4998,7 @@ static void processlcr(char *p)
     } /* else */
 
     if ((strcmp(myarea, destnum.area) == 0) && own_country && ((abclcr & 2) == 2)) {
-      sprintf(s, "ABC_LCR: \"%s\" is a local number -- no action", destnum.msn);
+      sprintf(s, "ABC_LCR: \"%s\" is a local number, no action", destnum.msn);
       abort = 1;
       goto action;
     } /* if */
