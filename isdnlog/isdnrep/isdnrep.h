@@ -1,4 +1,4 @@
-/* $Id: isdnrep.h,v 1.7 1997/05/15 22:21:40 luethje Exp $
+/* $Id: isdnrep.h,v 1.8 1997/05/15 23:24:56 luethje Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnrep.h,v $
+ * Revision 1.8  1997/05/15 23:24:56  luethje
+ * added new links on HTML
+ *
  * Revision 1.7  1997/05/15 22:21:40  luethje
  * New feature: isdnrep can transmit via HTTP fax files and vbox files.
  *
@@ -114,8 +117,8 @@ _EXTERN int     seeunknowns  		_SET_0;
 _EXTERN int     header          _SET_1;
 _EXTERN char	  timestring[256] _SET_EMPTY;
 _EXTERN char	  *lineformat     _SET_NULL;
-_EXTERN time_t  begintime;
-_EXTERN time_t  endtime;
+_EXTERN time_t  begintime       _SET_0;
+_EXTERN time_t  endtime         _SET_0;
 
 #undef _SET_NULL
 #undef _SET_0
