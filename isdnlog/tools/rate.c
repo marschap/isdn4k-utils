@@ -1,4 +1,4 @@
-/* $Id: rate.c,v 1.32 1999/07/02 19:18:11 akool Exp $
+/* $Id: rate.c,v 1.33 1999/07/03 10:24:18 akool Exp $
  *
  * Tarifdatenbank
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rate.c,v $
+ * Revision 1.33  1999/07/03 10:24:18  akool
+ * fixed Makefile
+ *
  * Revision 1.32  1999/07/02 19:18:11  akool
  * rate-de.dat V:1.02-Germany [02-Jul-1999 21:27:20]
  *
@@ -1352,7 +1355,7 @@ char *explainRate (RATE *Rate)
     p+=sprintf (p, ", Zone %d", Rate->zone);
 
   if (!Rate->domestic && Rate->Country && *Rate->Country)
-    p+=snprintf (p, " (%s)", Rate->Country);
+    p+=sprintf (p, " (%s)", Rate->Country);
 
   if (Rate->Day && *Rate->Day)
     p+=sprintf (p, ", %s", Rate->Day);

@@ -1,6 +1,9 @@
 # Dont use EWE Tel
 P:14=99
 
+# Use Debitel Direct Call (uses RSL-COM)
+P:15=3
+
 # dont use ISIS isiFON classic
 P:20=99
 
@@ -66,9 +69,6 @@ P:98=5
 
 # Dont use ECONOPHONE
 P:99=99
-
-# Dont use Drillisch
-P:150=99
 
 # my LCR
 #P:11=99
