@@ -5,9 +5,9 @@
 #
 SHELL			= /bin/sh
 CFLAGS			= -O2
-INCLUDES		= -I. -I@CONFIG_C20LIBDIR@/source -I@CONFIG_KERNELDIR@/drivers/isdn/avmb1
+INCLUDES		= -I. -I../capi20 -I@CONFIG_KERNELDIR@/drivers/isdn/avmb1
 DEFS			= -DTARGET_32BIT
-LDFLAGS			= -L@CONFIG_C20LIBDIR@/linux -lc20 @LIBS@
+LDFLAGS			= -L../capi20 -lcapi20 @LIBS@
 PROGRAM			= rcapid
 MODULES			= rcapid.o
 MANPAGE			= 

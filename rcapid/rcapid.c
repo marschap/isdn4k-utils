@@ -385,7 +385,7 @@ hdl_RCAPI_REGISTER_REQ(struct capi_message *msg) {
 		else {
 			local_ApplID = capi_fd;
 			log(5, "registration successful: appl_id = %d\n", capi_fd);
-			capi_fd = applid2fd(capi_fd);
+			capi_fd = capi20_fileno(capi_fd);
 			log(5, "                         capi_fd = %d\n", capi_fd);
 		}
 	} else
