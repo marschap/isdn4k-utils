@@ -1,5 +1,5 @@
 /*
-** $Id: vboxbeep.c,v 1.5 1997/05/10 10:58:53 michael Exp $
+** $Id: vboxbeep.c,v 1.6 2000/06/22 15:56:55 keil Exp $
 **
 ** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
 */
@@ -622,7 +622,7 @@ static void log(int level, char *fmt, ...)
 
    va_start(arg, fmt);
    vsyslog(level, fmt, arg);
-   va_end(Arg);
+   va_end(arg);
 	
 	closelog();
 }
