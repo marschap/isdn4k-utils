@@ -76,7 +76,7 @@ install-man: $(PROGRAM).man
 	mkdir -p $(DESTDIR)$(MAN8DIR)
 	$(INSTALL_MAN) $< $(DESTDIR)$(MAN8DIR)/$(MANPAGE)
 
-install: $(PROGRAM) install-man
+install: $(PROGRAM) # install-man
 	$(INSTALL_PROGRAM) $(PROGRAM) $(DESTDIR)$(SBINDIR)/$(PROGRAM)
 
 install-strip: $(PROGRAM)

@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.113 1999/10/28 18:36:43 akool Exp $
+## $Id: Makefile.in,v 1.114 1999/10/29 12:43:02 akool Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,9 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.114  1999/10/29 12:43:02  akool
+## fixed "make install"
+##
 ## Revision 1.113  1999/10/28 18:36:43  akool
 ## isdnlog-3.59
 ##  - problems with gcc-2.7.2.3 fixed
@@ -958,10 +961,10 @@ installdirs: rootperm
 		$(INSTALL_DIR) $(DESTDIR)$(DATADIR)
 
 install: all rootperm installdirs
-	install-progs
-	install-data
-
-install-progs:	
+#	install-progs
+#	install-data
+#
+# install-progs:	
 		@echo "Killing running isdnlog!"
 		-@if ps x | fgrep $(ISDNLOG) >/dev/null; then kill `cat $(RUNDIR)/isdnlog.isdnctrl0.pid 2>/dev/null`; fi
 		-@test ! -d $(DESTDIR)$(OLDCONFDIR) || cp -auv $(DESTDIR)$(OLDCONFDIR)/$(USERFILE) $(DESTDIR)$(I4LCONFDIR)
@@ -979,8 +982,8 @@ install-progs:
 		$(INSTALL_BIN) $(ISDNREP)  $(DESTDIR)$(BINDIR)
 		$(INSTALL_BIN) $(ISDNCONF) $(DESTDIR)$(BINDIR)
 		$(INSTALL_BIN) $(ISDNRATE) $(DESTDIR)$(BINDIR)
-
-install-data:		
+#
+# install-data:		
 		$(INSTALL_DATA) isdnlog/isdnlog.8       $(DESTDIR)$(MAN8DIR)/isdnlog$(MAN8EXT)
 		$(INSTALL_DATA) isdnrep/isdnrep.1       $(DESTDIR)$(MAN1DIR)/isdnrep$(MAN1EXT)
 		$(INSTALL_DATA) isdnconf/isdnconf.1     $(DESTDIR)$(MAN1DIR)/isdnconf$(MAN1EXT)
