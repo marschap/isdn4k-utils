@@ -15,7 +15,8 @@ dnl Checks for libraries.
 
 dnl Checks for header files.
 AC_HEADER_STDC
-AC_CHECK_HEADERS(sys/ioctl.h unistd.h capi20.h)
+dnl capi20.h not used AC_CHECK_HEADERS(sys/ioctl.h unistd.h capi20.h)
+AC_CHECK_HEADERS(sys/ioctl.h unistd.h)
 
 dnl Checks for typedefs, structures, and compiler characteristics.
 
