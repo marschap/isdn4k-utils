@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.159 2000/04/30 17:31:24 akool Exp $
+## $Id: Makefile.in,v 1.160 2000/05/07 11:29:31 akool Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,15 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.160  2000/05/07 11:29:31  akool
+## isdnlog-4.21
+##  - isdnlog/tools/rate.{c,h} ...     new X:tag for exclusions
+##  - isdnlog/tools/telnum.c ... 	    new X:tag for exclusions
+##  - isdnlog/tools/rate-files.man ... -"-
+##  - isdnlog/tools/NEWS ... 	    -"-
+##  - isdnlog/README ... 		    -"-
+##  - new rates
+##
 ## Revision 1.159  2000/04/30 17:31:24  akool
 ## isdnlog-4.20
 ##  - isdnlog/tools/rate-at.c ... patch for max (new rates)
@@ -1190,7 +1199,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 4.20
+VERSION     = 4.21
 
 MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 \
 	      isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 \

@@ -1,5 +1,18 @@
 NEWS for tools: (rate, isdnrate, isdnrep)
 
+2000.05.06
+  all tools and rate-files
+
+  New syntax X:Numregexp=Provider['z'Zone] , ... Defines exceptions for
+  numbers, which alwyas get serviced by a certain provider or for special
+  charging models like "5 friends", where you pay less when dialing predefined
+  numbers. For details on syntax please consult man rate-files, or
+  rate-files.man befor installation.
+
+  This feature requires, fnmatch.h and the function fnmatch. If your
+  clib doesnt't have it, let me know.
+  -lt
+
 2000.04.27
   all tools:
     If you use the English country names or the NL cities you should

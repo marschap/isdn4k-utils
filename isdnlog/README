@@ -3980,6 +3980,23 @@ Damit wird das Waehrungsformat und die Anzahl der Dezimalstellen
 angegeben, z.B.
 U:%.3 DM
 
+-> X:
+
+Mit diesem Eintrag werden Ausnahmen fuer die Proivder/Zonenbestimmung fuer
+gewisse Nummern definiert.
+Der Syntax lautet:
+X:Numregexp=Providernr['z'Zone] ,...
+'Numregep' ist ein regulaere Ausdruch á la glob(7), der die gesamte Nummer
+definiert, 'Providernr' ist die externe Provider-Nummer (s. P:) und Zone ist
+die Zone gefolgt von einem 'z'-Literal, dieser EIntrag ist optional.
+Es können mehrere X:Eintäge vorhanden sein, und der X:-Tag kann auch in
+raate.conf verwendet werden, um spezielle Tarifmodelle wie "5 Freunde" zu
+konfigurieren.
+
+z.b
+[^0]*=33  # alle lokalen Gespraeche -> DTAG
+01234567=1z5 # diese Nummer ist immer Provider 1 Zone 5
+
 -> B:
 
 Verbindungsbetreibernummer

@@ -1,4 +1,4 @@
-/* $Id: rate.h,v 1.20 2000/01/16 12:36:59 akool Exp $
+/* $Id: rate.h,v 1.21 2000/05/07 11:29:32 akool Exp $
  *
  * Tarifdatenbank
  *
@@ -19,6 +19,15 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rate.h,v $
+ * Revision 1.21  2000/05/07 11:29:32  akool
+ * isdnlog-4.21
+ *  - isdnlog/tools/rate.{c,h} ...     new X:tag for exclusions
+ *  - isdnlog/tools/telnum.c ... 	    new X:tag for exclusions
+ *  - isdnlog/tools/rate-files.man ... -"-
+ *  - isdnlog/tools/NEWS ... 	    -"-
+ *  - isdnlog/README ... 		    -"-
+ *  - new rates
+ *
  * Revision 1.20  2000/01/16 12:36:59  akool
  * isdnlog-4.03
  *  - Patch from Gerrit Pape <pape@innominate.de>
@@ -267,4 +276,7 @@ inline int getNProvider( void );
 char   *prefix2provider_variant(int prefix, char *s);
 int isProviderValid(int prefix, time_t when);
 inline int isProviderBooked( int i);
+int getPrsel(char *telnum, int *provider, int *zone, int *area);
+
+
 #endif

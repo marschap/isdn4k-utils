@@ -1,4 +1,4 @@
-/* $Id: rate.c,v 1.75 2000/02/28 19:53:56 akool Exp $
+/* $Id: rate.c,v 1.76 2000/05/07 11:29:32 akool Exp $
  *
  * Tarifdatenbank
  *
@@ -19,6 +19,15 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rate.c,v $
+ * Revision 1.76  2000/05/07 11:29:32  akool
+ * isdnlog-4.21
+ *  - isdnlog/tools/rate.{c,h} ...     new X:tag for exclusions
+ *  - isdnlog/tools/telnum.c ... 	    new X:tag for exclusions
+ *  - isdnlog/tools/rate-files.man ... -"-
+ *  - isdnlog/tools/NEWS ... 	    -"-
+ *  - isdnlog/README ... 		    -"-
+ *  - new rates
+ *
  * Revision 1.75  2000/02/28 19:53:56  akool
  * isdnlog-4.14
  *   - Patch from Roland Rosenfeld <roland@spinnaker.de> fix for isdnrep
@@ -582,6 +591,10 @@
  * inline int isProviderBooked( int prefix)
  *   returns true if Provider is booked (i.e. listed int rate.conf)
  *
+ * int getPrsel(char *telnum, int *provider, int *zone, int *area)
+ *   returns TRUE if telnum matches X:ceptions, also sets provider, zone
+ *   and area, zone and area may be NULL
+ *
  */
 
 #define _RATE_C_
@@ -596,6 +609,7 @@
 #include <time.h>
 #include <unistd.h>
 #include <errno.h>
+
 #ifndef __GLIBC__
 extern const char *basename (const char *name);
 #endif
@@ -603,6 +617,8 @@ extern const char *basename (const char *name);
 #include "isdnlog.h"
 #include "tools.h"
 #endif
+
+#include <fnmatch.h>
 
 #include "holiday.h"
 #include "zone.h"
@@ -692,11 +708,20 @@ typedef struct {
   COMMENT *Comment;
 } PROVIDER;
 
-
+typedef struct {
+  char *numre;	/* regepx of number */
+  int provider; /* provider for it */
+  int zone;	/* optionally the zone for it */
+  int _prefix;	/* internal provider */
+  int _area;	/* internal area */
+  int _zone;	/* internal zone */
+} PRSEL;
 
 static char      Format[STRINGL]="";
 static PROVIDER *Provider=NULL;
 static int      nProvider=0;
+static PRSEL    *Prsel=NULL;
+static int      nPrsel=0;
 static BOOKED *Booked=NULL;
 static int      nBooked=0;
 static int      line=0;
@@ -975,6 +1000,45 @@ inline int prefix2pnum(int prefix) {
   return Provider[prefix]._provider._prefix;
 }
 
+int getPrsel(char *telnum, int *provider, int *zone, int *area) {
+  int i;
+  for (i=0; i < nPrsel; i++) {
+    if(fnmatch(Prsel[i].numre, telnum, 0) == 0) {
+      *provider = Prsel[i]._prefix;
+      if(zone)
+        *zone = Prsel[i]._zone;
+      if(area)
+        *area = Prsel[i]._area;
+      return 1;
+    }
+  }
+  return 0;
+}
+
+static void prsel_find_zone_area(void) {
+  int i,j, zone, k, prefix;
+  for (k=0; k < nPrsel; k++) {
+    zone = Prsel[k].zone;
+    prefix = Prsel[k]._prefix = pnum2prefix(Prsel[k].provider, 0);
+    /* find _area and _zone for provider prefix and external zone */
+    for (i=0; i<Provider[prefix].nZone; i++) {
+	for (j=0; j<Provider[prefix].Zone[i].nNumber; j++) {
+	  if (Provider[prefix].Zone[i].Number[j]==zone) {
+	    Prsel[k]._zone=i;
+	    goto found_zone;
+	  }
+	}
+     }
+found_zone:
+  /* now find the area for it */
+  for (i = 0; Prsel[k]._zone >= 0 && i < Provider[prefix].nArea ; i++)
+    if (Prsel[k]._zone==Provider[prefix].Area[i].Zone) {
+      Prsel[k]._area = i;
+      break;
+    }
+  }
+}
+
 int pnum2prefix_variant(char * pnum, time_t when) {
   int p,v;
   char *s;
@@ -1076,6 +1140,49 @@ static char * epnum(int prefix) {
   return s;
 }
 
+
+void parse_X(char *s, char *dat)
+{
+   char *c;
+   s+=2;  while(isblank(*s)) s++;
+   while(1)
+     {
+	if (*(c=strip(str2list(&s))))
+	  {
+	     char *n = c;
+	     int p,z;
+	     while (*n && *n != '=')	/* get number-re */
+	       n++;
+	     if(!*n)
+	       {
+		  warning (dat, "Ignoring invalid exception");
+		  break;
+	       }
+	     *n = '\0';	/* = */
+	     p = strtoul(n+1, &n, 10);
+	     z = UNKNOWN;
+	     if (*n == 'z') 	/* Zone follows */
+	       z = strtoul(n+1, NULL, 10);
+	     Prsel = realloc(Prsel, sizeof(PRSEL)*(nPrsel+1));
+	     Prsel[nPrsel].numre = strdup(c);
+	     Prsel[nPrsel].provider = p;
+	     Prsel[nPrsel].zone = z;
+	     nPrsel++;
+	  }
+	else
+	  {
+	     warning (dat, "Ignoring empty exception");
+	  }
+	if (*s==',')
+	  {
+	     s++;
+	     continue;
+	  }
+	break;
+     }
+   /* while 1 */
+}
+
 int initRate(char *conf, char *dat, char *dom, char **msg)
 {
   static char message[LENGTH];
@@ -1163,6 +1270,10 @@ int initRate(char *conf, char *dat, char *dom, char **msg)
 	}
 	break;
 
+      case 'X':	/* Numregexp = provider ['z'Zone ] ... */
+	 parse_X(s, conf);
+        break;
+
       default:
 	warning(conf, "Unknown tag '%c'", *s);
       }
@@ -1240,6 +1351,10 @@ again:
 	warning (dat, "Redefinition of currency format");
       }
       strcpy (Format, strip(s+2));
+      break;
+
+    case 'X':	/* Numregexp = provider ['z'Zone ] ... */
+      parse_X(s, dat);
       break;
 
     case 'P': /* P:\[daterange\]nn[,v] Bezeichnung */
@@ -1801,9 +1916,11 @@ again:
     strncpy (Format, DEFAULT_FORMAT, STRINGL);
   }
 
+  prsel_find_zone_area();
+
   if (msg) snprintf (message, LENGTH,
-		     "Rates   Version %s loaded [%d Providers, %d Zones, %d Areas, %d Specials, %d Services, %d Comments, %d Rates from %s]",
-		     Version, nProvider, Zones, Areas, Specials, nService, Comments, Hours, dat);
+		     "Rates   Version %s loaded [%d Providers, %d Zones, %d Areas, %d Specials, %d Services, %d Comments, %d eXceptions, %d Rates from %s]",
+		     Version, nProvider, Zones, Areas, Specials, nService, Comments, nPrsel, Hours, dat);
   free(files[0]);
 
   return 0;
@@ -1911,6 +2028,7 @@ static int leo (int a, int b, double c, double d)
   return x < 1 ? 1 : x;
 }
 
+
 int getRate(RATE *Rate, char **msg)
 {
   static char message[LENGTH];
@@ -1937,6 +2055,22 @@ int getRate(RATE *Rate, char **msg)
     return UNKNOWN;
 
   prefix=Rate->prefix;
+
+  if(strcmp(Rate->dst[0],mycountry) == 0) {	/* -> 0 ... */
+    if (strcmp(Rate->dst[1],myarea) == 0)
+      number = Rate->dst[2];
+    else {
+      char *num[3];
+      num[0] = "0";
+      num[1] = Rate->dst[1];
+      num[2] = Rate->dst[2];
+      number=strcat3(num);
+    }
+  }
+  else
+    number=strcat3(Rate->dst);
+
+  getPrsel(number, &prefix, &Rate->_zone, &Rate->_area);	/* X:ception */
 #if 0
   print_msg(PRT_V, "P:%s Rate dst0='%s' dst1='%s' dst2='%s'\n",
   	epnum(prefix),Rate->dst[0], Rate->dst[1], Rate->dst[2]);

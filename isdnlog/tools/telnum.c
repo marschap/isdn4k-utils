@@ -168,11 +168,12 @@ int     normalizeNumber(char *target, TELNUM * num, int flag)
 #if DEBUG
   print_msg(PRT_V, "NN %s (Prov %d)=> ", target, num->nprovider);
 #endif
-  if (flag & TN_PROVIDER)
+  if (flag & TN_PROVIDER) {
     if (!split_vbn(&p, num)) {
       num->nprovider = pnum2prefix(preselect,0);
-      Strncpy(num->provider, getProvider(num->nprovider), TN_MAX_PROVIDER_LEN);
     }
+    Strncpy(num->provider, getProvider(num->nprovider), TN_MAX_PROVIDER_LEN);
+  }
   if (flag & TN_COUNTRY) {
     /* subst '00' => '+' */
     if (p[0] == '0' && p[1] == '0')
@@ -256,6 +257,8 @@ int     provider2prefix(char *p, int *prefix)
     q = strtok(0, ":");
   }
   free(vbns);
+  /* now check if resulting num matches any exceptions */
+  getPrsel(p+l2, prefix, 0, 0); /* check for exceptions */
   return l2;
 }
 

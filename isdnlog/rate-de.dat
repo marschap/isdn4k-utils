@@ -1,4 +1,4 @@
-V:1.10-Germany [03-May-2000 21:42:28]
+V:1.10-Germany [05-May-2000 18:49:26]
 
 # Währungsformat
 U:%.3f DM
@@ -8,7 +8,7 @@ U:%.3f DM
 #
 # (C) Copyright 1999, 2000 by Andreas Kool (akool@isdn4linux.de)
 #
-# $Id: rate-de.dat,v 1.89 2000/05/03 19:50:01 akool Exp $
+# $Id: rate-de.dat,v 1.90 2000/05/07 11:29:31 akool Exp $
 #
 #
 # Das "A:" Tag muß folgendermaßen gefüllt werden:
@@ -3294,7 +3294,7 @@ C:Erfasste Zonen:
 C:2	-   4	Deutschland
 C:10		Mobilfunk
 C:200	-	Ausland
-# G:20-Sep-1999
+# G:08-May-2000
 D:dtag
 Z:0 FreeCall
 A:011*
@@ -3305,9 +3305,8 @@ A:112
 T:*/*=0
 Z:1-4 National
 A:+49
-T:*/07-19=0.10/60
-T:*/19-22=0.07/60
-T:*/22-07=0.05/60
+T:*/07-19=0.07/60
+T:*/19-07=0.04/60
 Z:10 Mobilfunknetz
 A:01618
 A:01610,01611,01612,01613,01614,01615,01616,01617,01619
@@ -3316,11 +3315,11 @@ A:0172,0173,0174
 A:0177,0178
 A:0176,0179
 T:*/*=0.59/60
-Z:200 Euro 1 / USA, Kanada
+Z:200 Euro 1 / USA, Kanada # gilt *NICHT* für Mobilfunknetze in diese Länder!
 A:US,CA,NL,BE,FR,ES
 A:LU,FI,IT,CH,AT,VA
 A:UK,DK,SE,NO
-T:*/*=0.35/60
+T:*/*=0.10/60
 Z:201 Euro 2
 A:AD,FO,IE,IS,LI,MC
 A:PL,SM,CZ,TR
