@@ -1,4 +1,4 @@
-/* $Id: functions.c,v 1.11 1998/06/07 21:08:26 akool Exp $
+/* $Id: functions.c,v 1.12 1998/06/14 15:33:48 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,12 @@
  * along with this program; if not, write to the Free Software
  *
  * $Log: functions.c,v $
+ * Revision 1.12  1998/06/14 15:33:48  akool
+ * AVM B1 support (Layer 3)
+ * Telekom's new currency DEM 0,121 supported
+ * Disable holiday rates #ifdef ISDN_NL
+ * memory leak in "isdnrep" repaired
+ *
  * Revision 1.11  1998/06/07 21:08:26  akool
  * - Accounting for the following new providers implemented:
  *     o.tel.o, Tele2, EWE TEL, Debitel, Mobilcom, Isis, NetCologne,
@@ -250,7 +256,7 @@ void logger(int chan)
 			print_msg(PRT_ERR, "Can not open file `%s': %s!\n", logfile, strerror(errno));
 		else
 		{
-			fprintf(flog, "%s|%-16s|%-16s|%5d|%10d|%10d|%5d|%c|%3d|%10ld|%10ld|%s|%d|%d|%g|%s|%8.2f|%02d|\n",
+			fprintf(flog, "%s|%-16s|%-16s|%5d|%10d|%10d|%5d|%c|%3d|%10ld|%10ld|%s|%d|%d|%g|%s|%g|%02d|\n",
 			              s + 4, call[chan].num[CALLING], call[chan].num[CALLED],
 			              (int)(call[chan].disconnect - call[chan].connect),
 			              (int)call[chan].duration, (int)call[chan].connect,

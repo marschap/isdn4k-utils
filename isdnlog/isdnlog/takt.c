@@ -1,4 +1,4 @@
-/* $Id: takt.c,v 1.1 1998/06/07 21:08:54 akool Exp $
+/* $Id: takt.c,v 1.2 1998/06/14 15:33:58 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -75,23 +75,23 @@ static char tab_tage[2][12] = {{ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 
 
 static struct w_ftag t_ftag[A_FEI] = {
 #ifdef ISDN_NL
-  {  1,  1, 1, "Neujahr" },
+  {  1,  1, 0, "Neujahr" },
   {  6,  1, 0, "Erscheinungsfest" },          /* nur Baden-Wuerttemberg und Bayern */
   {  1,  5, 0, "Maifeiertag" },
   {  0,  0, 0, "Muttertag" },
   {  0,  0, 0, "Karfreitag" },
-  {  0,  0, 1, "Ostersonntag" },
-  {  0,  0, 1, "Ostermontag" },
+  {  0,  0, 0, "Ostersonntag" },
+  {  0,  0, 0, "Ostermontag" },
   {  0,  0, 0, "Christi Himmelfahrt" },
-  {  0,  0, 1, "Pfingstsonntag" },
-  {  0,  0, 1, "Pfingstmontag" },
+  {  0,  0, 0, "Pfingstsonntag" },
+  {  0,  0, 0, "Pfingstmontag" },
   {  0,  0, 0, "Fronleichnam" },              /* nur in Baden-Wuerttemberg, Bayern, Hessen, Nordrhein-Westfalen, Rheinland-Pfalz und im Saarland */
   {  3, 10, 0, "Tag der deutschen Einheit" }, /* vor 1990 am 17.6. */
   { 15,  8, 0, "Maria Himmelfahrt" }, 	      /* nur Saarland und ueberwiegend katholischen Gemeinden Bayerns */
   {  1, 11, 0, "Allerheiligen" },  	      /* nur Baden-Wuerttemberg, Bayern, Nordrhein-Westfalen, Rheinland-Pfalz und im Saarland */
   {  0,  0, 0, "Buss- und Bettag" }, 	      /* nur bis incl. 1994 (wg. Pflegeversicherung abgeschafft) */
-  { 25, 12, 1, "1. Weihnachtsfeiertag" },
-  { 26, 12, 1, "2. Weihnachtsfeiertag" }};
+  { 25, 12, 0, "1. Weihnachtsfeiertag" },
+  { 26, 12, 0, "2. Weihnachtsfeiertag" }};
 #else
   {  1,  1, 1, "Neujahr" },
   {  6,  1, 0, "Erscheinungsfest" },   	      /* nur Baden-Wuerttemberg und Bayern */

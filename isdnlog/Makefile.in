@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.39 1998/06/07 21:07:50 akool Exp $
+## $Id: Makefile.in,v 1.40 1998/06/14 15:33:42 akool Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,12 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.40  1998/06/14 15:33:42  akool
+## AVM B1 support (Layer 3)
+## Telekom's new currency DEM 0,121 supported
+## Disable holiday rates #ifdef ISDN_NL
+## memory leak in "isdnrep" repaired
+##
 ## Revision 1.39  1998/06/07 21:07:50  akool
 ## - Accounting for the following new providers implemented:
 ##     o.tel.o, Tele2, EWE TEL, Debitel, Mobilcom, Isis, NetCologne,
@@ -305,7 +311,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 2.99.29
+VERSION     = 2.99.30
 
 ifeq ($(POSTGRES),1)
 DEFS       += -DPOSTGRES

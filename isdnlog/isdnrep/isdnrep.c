@@ -1,4 +1,4 @@
-/* $Id: isdnrep.c,v 1.39 1998/06/07 21:09:43 akool Exp $
+/* $Id: isdnrep.c,v 1.40 1998/06/14 15:34:23 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -24,6 +24,12 @@
  *
  *
  * $Log: isdnrep.c,v $
+ * Revision 1.40  1998/06/14 15:34:23  akool
+ * AVM B1 support (Layer 3)
+ * Telekom's new currency DEM 0,121 supported
+ * Disable holiday rates #ifdef ISDN_NL
+ * memory leak in "isdnrep" repaired
+ *
  * Revision 1.39  1998/06/07 21:09:43  akool
  * - Accounting for the following new providers implemented:
  *     o.tel.o, Tele2, EWE TEL, Debitel, Mobilcom, Isis, NetCologne,
@@ -502,9 +508,9 @@ static sum_calls all_com_sum;
   
 /*****************************************************************************/
 
-static double msn_sum[11];
-static int    usage_sum[11];
-static double dur_sum[11];
+static double *msn_sum;
+static int    *usage_sum;
+static double *dur_sum;
 
 static int    usage_provider[100];
 static double duration_provider[100];
@@ -640,6 +646,10 @@ int read_logfile(char *myname)
   auto     char       string[BUFSIZ], s[BUFSIZ];
   one_call            cur_call;
 
+
+  msn_sum = calloc(mymsns + 1, sizeof(double));
+  usage_sum = calloc(mymsns + 1, sizeof(int));
+  dur_sum = calloc(mymsns + 1, sizeof(double));
 
 	_myname = myname;
 	_begintime = begintime;
@@ -790,7 +800,7 @@ int read_logfile(char *myname)
 #elif defined(ISDN_CH)
 			einheit = 0.01;
 #else
-			einheit = Tarif96 ? 0.12 : 0.23;
+			einheit = Tarif96 ? 0.121 : 0.23;
 #endif
 			else
 				einheit = currency_factor;
@@ -1099,7 +1109,7 @@ static int print_bottom(double unit, char *start, char *stop)
         } /* for */
 
         if (s) {
-          print_msg(PRT_NORMAL, "--------------------\n");
+          print_msg(PRT_NORMAL, "-----------------------------------------------------\n");
           print_msg(PRT_NORMAL, "%s\t\t%s %6d call(s)  %s\n",
             "TOTAL", print_currency(s, 0), s1, double2clock(s2));
         } /* if */
@@ -2156,9 +2166,9 @@ static int print_entries(one_call *cur_call, double unit, int *nx, char *myname)
                                   } /* for */
 
                                   if (i == mymsns) {
-                                    msn_sum[10] += cur_call->dm;
-                                    usage_sum[10]++;
-                                    dur_sum[10] += cur_call->duration;
+                                    msn_sum[i] += cur_call->dm;
+                                    usage_sum[i]++;
+                                    dur_sum[i] += cur_call->duration;
                                   } /* if */
 
       	 	      		} /* if */
