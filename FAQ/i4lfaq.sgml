@@ -4,7 +4,7 @@
 
 <title>FAQ for isdn4linux
 <author>Matthias Hessler (<tt><htmlurl url="mailto:hessler@isdn4linux.de" name="hessler@isdn4linux.de"></tt>)
-<date>v2.0.63, 19. June 2001
+<date>v2.0.64, 1. September 2001
 <abstract>
 If you are reading this FAQ online, you may consider downloading the whole
 thing, and reading it offline (much cheaper). To download the latest
@@ -294,7 +294,7 @@ the other way around. For configuration see question
 <item><bf>For all passive cards (except from AVM): NO</bf>. However, there
 is a project working on this rather complicated problem. For more info on
 its status have a look at:
-<tt><url url="http://home.enitel.no/Morten.Rolland/linux/i4lfax/index.html"></tt>
+<tt><url url="http://home.enitel.no/mortenro/linux/i4lfax/index.html"></tt>
 <item><bf>For passive cards from AVM: Yes</bf>. AVM recently released a
 binary CAPI 2.0 driver which supports faxing. However, the setup is rather
 complicated. Get a start on:
@@ -359,10 +359,13 @@ AT&amp;FS14=10S15=0S18=1&amp;E&lt;your_msn&gt;
 <label id="feature_divert">
 <p>
 Call diversion features have been implemented recently. Use the new
-program <tt/divertctrl/. So far there is no howto and only little
-documentation, so for now this is something only for the more 
-experienced user. In the Netherlands, the keypad protocol can be used 
-as an alternative.
+program <tt/divertctrl/. If you make use of capi4linux, then you find a
+similar program named <tt/capidivert/ at:
+<url url=" http://www.tp1.ruhr-uni-bochum.de/&tilde;kai/i4l/">. 
+So far there is no howto and only little documentation, so for now this is
+something only for the more experienced user.
+
+In the Netherlands, the keypad protocol can be used as an alternative.
 
 <sect1> feature_ipx: Can I route ipx/spx over ISDN with Linux?  
 <label id="feature_ipx">
@@ -851,18 +854,16 @@ the one called 'Wisecom' in NL does not work)
 <item>Gazel ISDN cards
 <item>HFC-PCI based cards
 <item>PCI/Winbond W6692 based cards
+<item>ST5481 based USB ISDN adapters, e.g. BeWan Gazel 128 USB
 </itemize>
 Note:
 <itemize>
 <item>AVM A1+ is not supported
 <item>PCF, PCF-Pro: up to now, only the ISDN part is supported
 <item>PCC-8: not tested yet
-<item>Teles PCMCIA is EXPERIMENTAL
-<item>Teles 16.3c is EXPERIMENTAL
-<item>Teles PCI is EXPERIMENTAL
-<item>Teles S0Box is EXPERIMENTAL
 <item>Eicon Diva U interface not tested
 <item>Some cards do not work when compiled into the kernel, only when
+loaded as modules.
 <item>Asuscom card: please note that the ISA version is a different type
 (12) then the PCI version (35 for HFC chip or 36 for Winbond chip)!
 <item>To distinguish between HFC-PCI and PCI/Winbond, have a look at the
@@ -1141,16 +1142,35 @@ class driver. Currently, it is not supported by isdn4linux.
 <sect1> hardware_sedlbauer: What is special about the Sedlbauer card?  
 <label id="hardware_sedlbauer">
 <p>
-It is a semiactive card based on the ISAR chipset which supports
-sending/receiving faxes and an analog modem up to 14400. It is special in
-that you use it with HiSax which normally works only for passive cards.
-However, as all active card you have to load its firmware (in this case
+The Sedlbauer card comes in several versions:
+<itemize>
+<item> Sedlbauer Speedwin
+<item> Sedlbauer Speedfax
+<item> Sedlbauer Speedfax PCI
+</itemize>
+
+The Speedwin is a normal passive card with no specialities.
+
+The Speedfax has a very special hardware: it is a semiactive card based
+on the ISAR chipset which supports sending/receiving faxes and an analog
+modem up to 14400. It is special in that you use it with HiSax which
+normally works only for passive cards.
+As all active card you have to load its firmware (in this case
 after loading HiSax) from the file ISAR.BIN, which is part of the
 isdn4k-utils.
 
 Please note that compression (V42bis, MNP) are not implemented in firmware,
 and therefore not supported when using the analog modem. The ideal init
 string for the card to allow modem dialin is <tt>AT&percnt;C0&bsol;N0</tt>.
+
+If for some fax senders receiving by Hylafax does not work, then try to
+set the following configuration parameter for Hylafax:
+<code>
+Class1SwitchingDelay:  75
+</code>
+
+The Sedlbauer Speedfax PCI is special in that it was produced just for
+Linux - there is no driver for it under Windows.
 
 <sect1> hardware_teles: What should I know about before buying an ISDN card 
 from Teles?  
@@ -1222,11 +1242,9 @@ ISA/PNP card have the same type (27), hisax will assume an ISA/PNP card
 if you pass an io address, and a PCI card if you do NOT pass an io address.
 Make sure to give the parameters properly.
 
-Unfortunately, the newest Fritz! PCI card (v2.0) has a different hardware
-chipset, which is not yet supported by isdn4linux. This card can be
-identified by lspci returning 0e00 as the card id. Since AVM does not want
-to publish the information to write a driver, this card will not be
-supported by isdn4linux any time soon.
+The newest Fritz! PCI card (v2.0) is now supported by a new driver, however
+it has not yet been tested thoroughly. The card can be identified by lspci
+returning 0e00 as the card id.
 
 If the interrupt for the card is shared with other devices and your card does
 not work, then there could be an issue with the motherboard. See question
@@ -1245,13 +1263,11 @@ This card supports many special features in its firmware and is very well
 supported by its Linux driver. It's currently one of the only ISDN cards
 that you can use to fax under ISDN4LINUX, or which supports the
 CAPI 2.0 interface. You can get the newest driver from:
-<url url="ftp://calle.in-berlin.de/pub/linux/avmb1">
-or
-<url url="ftp://ftp.avm.de/cardware/b1/linux/">.
-The firmware is available on:
-<url url="ftp://ftp.avm.de/cardware/b1/linux/firmware">.
-The latest firmware will also allow D channel traces with isdnlog without
-usage of a reversed card.
+<url url="ftp://calle.in-berlin.de/pub/capi4linux/">.
+To get the firmware download the two perl scripts from:
+<url url="ftp://calle.in-berlin.de/pub/capi4linux/firmware/">
+They will download and extract the firmware from tar files on the avm
+ftp server on: <url url="ftp://ftp.avm.de/cardware/b1/linux/">.
 
 To use the AVM on a point-to-point connection (&dquot;Anlagenanschluss&dquot;)
 add &dquot;DSS1 P2P&dquot; to the load command for the firmware, like:
@@ -1665,6 +1681,12 @@ hisaxctrl &lt;driver_id&gt; 7 1
 Additionally, you can use the &dquot;AT&amp;Lxxx$dquot; command to
 configure the range of telephone numbers isdn4linux should be listening
 to on the ttyI* devices.
+
+If you really absolutely want to run your ISDN card for read-only purposes
+in parallel to your pbx on a point-to-point connection, then you have
+to disconnect the RX leads (pin 3 and 6 on western plug), so that the NTBA
+will not see the ISDN card. In this case configure HiSax normally, NOT in
+point-to-point mode.
 
 <sect1> config_links: What helpful links are there about isdn4linux?  
 <label id="config_links">
@@ -3370,7 +3392,7 @@ the same device).
 <sect1> ttyI_hdlc: How to I switch the modem emulation from X.75 to HDLC?  
 <label id="ttyI_hdlc">
 <p>
-With the option S14=3; for example &dquot;ATS13=3&dquot;.
+With the option S14=3; for example &dquot;ATS14=3&dquot;.
 
 <sect1> ttyI_uucp: How can I poll with Taylor-UUCP using isdn4linux?  
 <label id="ttyI_uucp">
@@ -3596,6 +3618,7 @@ and <ref id="dod_winclient" name="dod_win95b">.
 <item>Samba triggers the dialout: see question <ref id="dod_samba" name="dod_samba">.
 <item>Netscape triggers a dialout when started: see question
 <ref id="dod_netscape" name="dod_netscape">.
+<item>dhcpd triggers dialouts: switch it off, and verify your configuration...
 <item>Manually close IP connections which are still open when the line
 goes down: see question <ref id="dod_closeipconnect" name="dod_closeipconnect">.
 <item>Your computer is crashed, but still processes interrupts: see
@@ -3709,6 +3732,13 @@ will trigger a new dialout, resulting in a different ip address, and so on...
 For a workaround to this problem you can shorten the retransmission time
 as described in question <ref id="dialout_bind" name="dialout_bind">.
 
+Alternatively, you can set the option &dquot;dialup yes;&dquot; in the
+options block of named.conf. This will cause named to do only one
+interaction with a forwarder (triggering a dod) at startup. After that it
+will wait for some very long interval (24h?) before another query with
+the forwarder. Only during actual lookup it will do negotiations with the
+forwarder (this is usually when you have already dialed out anyway).
+
 <sect1> dod_sendmail: How can I get sendmail to not initiate any connections  
 without local mail being left undelivered?  
 <label id="dod_sendmail">
@@ -3759,8 +3789,12 @@ On the Linux computer I started samba with:
 <code>
 nmdb -S -B 192.168.99.255 -I 192.168.99.99
 </code>
-See also the above question:  se -broadcast and possibly -arp 
+See also the above question:  set -broadcast and possibly -arp 
 when defining the interfaces!
+
+Check out the help pages for the Samba configuration file for further
+possibilities on preventing dialout (I was told there should be some
+explicit dialup parameter which prevents it to cause many dialouts).
 
 <sect1> dod_netscape: How can I get Netscape to quit initiating dialouts when  
 starting?  
@@ -4283,6 +4317,23 @@ interfaces can be set to the same MSN, since several people can be
 connected to a MSN at the same time (as long as there are B channels free).
 However, not more than one getty can be assigned to a single ttyI* device. 
 
+<sect1> dialin_analogditalsamettyi: Can I configure a ttyI* device to  
+accept both digital and analog modem dialins?  
+<label id="dialin_analogditalsamettyi">
+<p>
+Since the digital mode requires different register settings than the analog
+mode, this is not possible. Therefore you have to set up a two dedicated
+devices for this purpose. Please note that analog modem dialins are only
+possible if card and isdn4linux driver support it, which is only the case
+for a few cards.
+
+<sect1> dialin_fixedip: How can I assign fixed ip addresses per user who  
+dials in via ipppd?  
+<label id="dialin_fixedip">
+<p>
+Just specify the fixed ip address with the user name and password in the
+pap/chap-secrets file (see man ipppd).
+
 <sect1> dialin_hdlc: Someone would like to dial in to my mgetty with HDLC. Is  
 ttyI1 correct, or do I have to start with ttyI0?  
 <label id="dialin_hdlc">
@@ -4573,7 +4624,7 @@ Please note that this only works when the second card is an ISAC based cards
 bug/feature of that chip. All other cards, like IPAC based cards (e.g. ELSA
 QS1000pro) will not work in the role of a re-poled card.
 
-<item> HFC cards: HFC-PCI based cards allow a special feature where one
+<item> HFC cards: some HFC-PCI based cards allow a special feature where one
 of the B channels can be sacrificed in exchange for reading the complete
 D channel protocol - with just one single card. This is also supported
 by isdn4linux. Set the HFC card in the following way:
@@ -4584,6 +4635,10 @@ hisaxctrl &lt;driver_id&gt; 12 1
 </code>
 You have to give isdnlog the command line option '-1' so that it
 makes use of the HFC option.
+
+Please note that a plain HFC-S does not work for hardware reasons, it has
+to be a newer one. If your card works with Hisax type 35 or 37, then it
+should work.
 
 <item> PBX: A third (theoretical) possibility exists for those who have
 their own PBX to which the other devices are connected. If the PBX can
@@ -4867,6 +4922,7 @@ firmware. Thus the approval also covers the use of these cards with
 isdn4linux.
 <item>Elsa Quickstep series cards (new name Microlink PCI)
 <item>Eicon Diva 2.01 PCI
+<item>Passive cards: all cards based on the HFC-S chipset.
 </itemize>
 
 <sect> 1tr6: German Pecularities for 1TR6 
