@@ -733,6 +733,9 @@ else
   echo "$ac_t""no" 1>&6
 fi
 
+if test "$C_SGML2HTML" == "sgml2html-not-found-or-installed"  ; then
+	{ echo "configure: error: sgml2html not found please install it." 1>&2; exit 1; }
+fi
 
 # Check whether --with-dest or --without-dest was given.
 if test "${with_dest+set}" = set; then

@@ -15,6 +15,9 @@ AC_PATH_PROG(C_ZIP, zip,,$PATH:/usr/sbin:/sbin:/usr/local/bin)
 AC_PATH_PROG(C_GZIP, gzip,,$PATH:/usr/sbin:/sbin:/usr/local/bin)
 AC_PATH_PROG(C_SGML2HTML, sgml2html,sgml2html-not-found-or-installed,$PATH:/usr/sbin:/sbin:/usr/local/bin)
 AC_PATH_PROG(C_SGML2TXT, sgml2txt,sgml2txt-not-found-or-installed,$PATH:/usr/sbin:/sbin:/usr/local/bin)
+if test "$C_SGML2HTML" == "sgml2html-not-found-or-installed"  ; then
+	AC_MSG_ERROR(sgml2html not found please install it.)
+fi
 
 dnl Check where to install.
 AC_ARG_WITH(dest,[  --with-dest=DIR         set installation directory], \
