@@ -1,4 +1,4 @@
-/* $Id: processor.c,v 1.116 2000/09/05 10:53:20 paul Exp $
+/* $Id: processor.c,v 1.117 2000/12/07 12:48:00 paul Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.117  2000/12/07 12:48:00  paul
+ * Add support for both 2.2 and 2.4 kernels so that recompile is not necessary
+ * (seems to work in debian version already).
+ *
  * Revision 1.116  2000/09/05 10:53:20  paul
  * 1.15 was 1.12 with my patches! So changes from 1.13 and 1.14 were lost.
  * Now put back.
@@ -91,7 +95,7 @@
  *  - added 01013:Tele2 totally Freecall on 12. and 13. August 2000
  *  - resolved *any* warning's from "rate-de.dat" (once more ...)
  *  - Patch from oliver@escape.de (Oliver Wellnitz) against
- *  	 "Ziffernwahl verschluckt Nummern"
+ *	 "Ziffernwahl verschluckt Nummern"
  *
  *    **Please "make clean" before using this version of isdnlog!!**
  *
@@ -554,7 +558,7 @@
  * isdnlog Version 3.13
  *
  * WARNING: This is pre-ALPHA-dont-ever-use-Code!
- * 	 "tarif.dat" (aka "rate-xx.dat"): the next generation!
+ *	 "tarif.dat" (aka "rate-xx.dat"): the next generation!
  *
  * You have to do the following to test this version:
  *   cp /usr/src/isdn4k-utils/isdnlog/holiday-de.dat /etc/isdn
@@ -784,7 +788,7 @@
  *  - ATTENTION:
  *      1. "isdnrep" dies with an seg-fault, if not HTML-Mode (Stefan?)
  *      2. "isdnlog/Makefile.in" now has hardcoded "ISDN_DE" in "DEFS"
- *      	should be fixed soon
+ *		should be fixed soon
  *
  * Revision 1.24  1998/09/22 20:59:15  luethje
  * isdnrep:  -fixed wrong provider report
@@ -1210,7 +1214,7 @@ static char *location(int loc)
     case 0x05 : return("Private network serving remote user"); break;
     case 0x07 : return("International network");               break;
     case 0x0a : return("Network beyond inter-working point");  break;
-      default : return("");             	       	       break;
+      default : return("");				       break;
   } /* switch */
 } /* location */
 
@@ -1437,7 +1441,7 @@ void buildnumber(char *num, int oc3, int oc3a, char *result, int version,
 
                     while (*num == '0')
                       num++;
-    		  } /* if */
+		  } /* if */
                   break;
 
       case 0x30 : break;                       /* 011 Network specific number */
@@ -1445,7 +1449,7 @@ void buildnumber(char *num, int oc3, int oc3a, char *result, int version,
       case 0x40 : if (*num != '0') {           /* 100 Subscriber number */
                     strcpy(result, mynum);
                     *local = 1;
-    		  }
+		  }
                   else {
                     strcpy(result, mycountry);
 
@@ -1537,43 +1541,43 @@ static int facility(int l, char* p)
   switch (c) {                                 /* Remote Operation Protocol */
     case 0x91 : aoc_debug(c, "Remote Operation Protocol");
 
-    	      	if (parseRemoteOperationProtocol(&asnp, &aoc)) {
-      		  switch (aoc.type) {
-      		    case 33 : // AOCD Currency
+		if (parseRemoteOperationProtocol(&asnp, &aoc)) {
+		  switch (aoc.type) {
+		    case 33 : // AOCD Currency
                               if (aoc.multiplier)
-		    	        currency_factor = aoc.multiplier;
+				currency_factor = aoc.multiplier;
 
                               if (*aoc.currency)
 			        currency = aoc.currency;
 
-        		      if (aoc.type_of_charging_info != 1) // if type_of_charging_info = 1 (total), treat AOCD as AOCE
-          		        aoc.amount *= -1;
-        		      // fall trough
+			      if (aoc.type_of_charging_info != 1) // if type_of_charging_info = 1 (total), treat AOCD as AOCE
+				aoc.amount *= -1;
+			      // fall trough
 
-      		    case 35 : // AOCE Currency
+		    case 35 : // AOCE Currency
                               if (aoc.multiplier)
-		    	        currency_factor = aoc.multiplier;
+				currency_factor = aoc.multiplier;
 
                               if (*aoc.currency)
 			        currency = aoc.currency;
 
 			      return(aoc.amount);
 
-      		    case 34 : // AOCD ChargingUnits
-      		    	      aoc.amount *= -1;
-        	    	      // fall through
+		    case 34 : // AOCD ChargingUnits
+			      aoc.amount *= -1;
+			      // fall through
 
-      		    case 36 : // AOCE ChargingUnits
-		    	      return(aoc.amount);
+		    case 36 : // AOCE ChargingUnits
+			      return(aoc.amount);
 
-      		    default : asnm = aoc.msg;
-      		    	      return(AOC_OTHER);
-      		  } /* switch */
-    	      	}
-    	      	else {
+		    default : asnm = aoc.msg;
+			      return(AOC_OTHER);
+		  } /* switch */
+		}
+		else {
                   asnm = aoc.msg;
-      		  return(AOC_OTHER);
-    	      	} /* else */
+		  return(AOC_OTHER);
+		} /* else */
                 break;
 
     case 0x92 : aoc_debug(c, "CMIP Protocol");
@@ -1583,7 +1587,7 @@ static int facility(int l, char* p)
                 break;
 
       default : aoc_debug(c, "UNKNOWN Protocol");
-    	      	return(AOC_OTHER);
+		return(AOC_OTHER);
   } /* switch */
 
   return(AOC_OTHER);
@@ -1773,9 +1777,9 @@ static void emergencyStop(int chan, int strength)
 
     case 2 : (void)detach();
 
-    	     cc = replay ? 0 : system(cmd);
+	     cc = replay ? 0 : system(cmd);
 
-    	     (void)attach();
+	     (void)attach();
 
              sprintf(msg, "EMERGENCY-STOP#%d: no traffic since %d EH: reload = %d\007\007",
                strength, call[chan].aoce - call[chan].traffic, cc);
@@ -1854,7 +1858,7 @@ static void decode(int chan, register char *p, int type, int version, int tei)
       } /* if */
 
       if ((l > 50) || (l < 0)) {
-      	sprintf(s, "Invalid length %d -- complete frame ignored!", l);
+	sprintf(s, "Invalid length %d -- complete frame ignored!", l);
         info(chan, PRT_SHOWNUMBERS, STATE_RING, s);
         return;
       } /* if */
@@ -1962,14 +1966,14 @@ static void decode(int chan, register char *p, int type, int version, int tei)
                           Q931dump(TYPE_CAUSE, c, NULL, version);
 
                           sprintf(s, "IGNORING CAUSE: tei=%d, call.tei=%d, chan=%d", tei, call[chan].tei, chan);
-          		  Q931dump(TYPE_STRING, -2, s, version);
+			  Q931dump(TYPE_STRING, -2, s, version);
                         }
                         p += (l * 3);
                         break;
 		      } /* if */
 
                       /* Remember only the _first_ cause
-                      	 except this was "Normal call clearing", "No user responding"
+			 except this was "Normal call clearing", "No user responding"
                          or "non-selected user clearing"
                       */
 
@@ -2102,8 +2106,8 @@ static void decode(int chan, register char *p, int type, int version, int tei)
                         if (n < 0) {
                           tx = cur_time - call[chan].connect;
 
-            		  if (!ehInterval || !call[chan].lasteh ||
-	    	 	      (cur_time - call[chan].lasteh) >= ehInterval) {
+			  if (!ehInterval || !call[chan].lasteh ||
+			      (cur_time - call[chan].lasteh) >= ehInterval) {
 			    call[chan].lasteh=cur_time;
                             if (tx)
                               sprintf(s, "%d.EH %s %s (%s)",
@@ -2131,7 +2135,7 @@ static void decode(int chan, register char *p, int type, int version, int tei)
                         aoc_debug(-1, s);
 
                         if (!n) {
- 			  /* Fixme: DTAG is specific to Germany */
+			  /* Fixme: DTAG is specific to Germany */
 			  /* Only DTAG sends AOCD */
                           if (mycountrynum == CCODE_DE &&
 			      call[chan].provider == DTAG)
@@ -2232,7 +2236,7 @@ static void decode(int chan, register char *p, int type, int version, int tei)
         case 0x29 : /* Date/Time E-DSS1 */
                     if ((element == 0x03) && (version == VERSION_1TR6)) {
 			if (l != 17)	/* 1TR6 date/time is always 17? */
-  				/* "Unknown Codeset 7 attribute 3 size 5" */
+				/* "Unknown Codeset 7 attribute 3 size 5" */
 				goto UNKNOWN_ELEMENT;
 			tm.tm_mday  = (strtol(p+=3,NIL,16)-'0') * 10;
 			tm.tm_mday +=  strtol(p+=3,NIL,16)-'0';
@@ -2268,7 +2272,7 @@ static void decode(int chan, register char *p, int type, int version, int tei)
 			  tm.tm_sec = 0;
 		    }
 		    else {
-		    	goto UNKNOWN_ELEMENT; /* no choice... */
+			goto UNKNOWN_ELEMENT; /* no choice... */
 		    }
                     tm.tm_wday  = tm.tm_yday = 0;
                     tm.tm_isdst = -1;
@@ -2280,11 +2284,11 @@ static void decode(int chan, register char *p, int type, int version, int tei)
 
                       if (settime) {
                         auto time_t     tn;
-                      	auto struct tms tms;
+			auto struct tms tms;
 
-                      	time(&tn);
+			time(&tn);
 
-                      	if (labs(tn - call[chan].time) > 61) {
+			if (labs(tn - call[chan].time) > 61) {
                           (void)stime(&call[chan].time);
 
                           /* Nicht gerade sauber, sollte aber all zu
@@ -2313,10 +2317,10 @@ static void decode(int chan, register char *p, int type, int version, int tei)
                     if (Q931dmp) {
                       sprintf(s1, "Y=%02d M=%02d D=%02d H=%02d M=%02d",
                         tm.tm_year,
-                    	tm.tm_mon + 1,
-                    	tm.tm_mday,
-                    	tm.tm_hour,
-                    	tm.tm_min);
+			tm.tm_mon + 1,
+			tm.tm_mday,
+			tm.tm_hour,
+			tm.tm_min);
                       Q931dump(TYPE_STRING, -2, s1, version);
                       Q931dump(TYPE_STRING, -2, s + 5, version);
                     } /* if */
@@ -2517,13 +2521,13 @@ static void decode(int chan, register char *p, int type, int version, int tei)
 
                       buildnumber(call[chan].digits, oc3, -1, call[chan].num[CALLED], version, &call[chan].provider, &call[chan].sondernummer[CALLED], &call[chan].intern[CALLED], &call[chan].local[CALLED], call[chan].dialin, CALLED);
 
-                      	strcpy(call[chan].vnum[CALLED], vnum(chan, CALLED));
+		      strcpy(call[chan].vnum[CALLED], vnum(chan, CALLED));
 
                       if (dual > 1) {
                         auto char sx[BUFSIZ];
 
                         if (*call[chan].vorwahl[CALLED])
-                      	  sprintf(sx, "DIALING %s [%s] %s %s/%s, %s",
+			  sprintf(sx, "DIALING %s [%s] %s %s/%s, %s",
                             s, call[chan].digits,
                             call[chan].areacode[CALLED],
                             call[chan].vorwahl[CALLED],
@@ -2532,7 +2536,7 @@ static void decode(int chan, register char *p, int type, int version, int tei)
                         else
                           sprintf(sx, "DIALING %s [%s]", s, call[chan].digits);
 
-                      	info(chan, PRT_SHOWNUMBERS, STATE_RING, sx);
+			info(chan, PRT_SHOWNUMBERS, STATE_RING, sx);
                       } /* if */
 		    }
                     else {
@@ -2544,7 +2548,7 @@ static void decode(int chan, register char *p, int type, int version, int tei)
 			  && oc3 && ((oc3 & 0x70) != 0x40)) {
                         auto char s[BUFSIZ];
 
-                      	sprintf(s, "%s %s/%s, %s",
+			sprintf(s, "%s %s/%s, %s",
                           call[chan].areacode[CALLED],
                           call[chan].vorwahl[CALLED],
                           call[chan].rufnummer[CALLED],
@@ -2558,26 +2562,26 @@ static void decode(int chan, register char *p, int type, int version, int tei)
 
                       if (version != VERSION_1TR6) {
                         if (call[chan].knock)
-                      	  info(chan, PRT_SHOWNUMBERS, STATE_RING, "********************");
+			  info(chan, PRT_SHOWNUMBERS, STATE_RING, "********************");
 
                         sprintf(s, "RING (%s)", call[chan].service);
-                      	info(chan, PRT_SHOWNUMBERS, STATE_RING, s);
+			info(chan, PRT_SHOWNUMBERS, STATE_RING, s);
 
                         if (call[chan].knock) {
-                      	  info(chan, PRT_SHOWNUMBERS, STATE_RING, "NO FREE B-CHANNEL !!");
-                      	  info(chan, PRT_SHOWNUMBERS, STATE_RING, "********************");
+			  info(chan, PRT_SHOWNUMBERS, STATE_RING, "NO FREE B-CHANNEL !!");
+			  info(chan, PRT_SHOWNUMBERS, STATE_RING, "********************");
 #ifdef Q931
-       			  if (!q931dmp) {
+			  if (!q931dmp) {
 #endif
-      			    call[chan].connect = call[chan].disconnect = cur_time;
+			    call[chan].connect = call[chan].disconnect = cur_time;
                             call[chan].cause = -2;
-          		    logger(chan);
+			    logger(chan);
 #ifdef Q931
 			  } /* if */
 #endif
                         } /* if */
 
-                      	if (sound)
+			if (sound)
                           ringer(chan, RING_RING);
                       } /* if */
                     } /* else */
@@ -2952,10 +2956,9 @@ escape:             for (c = 0; c <= sxp; c++)
                     c = strtol(p + 3, NIL, 16);
                     sn[sxp] = c;
 
-                    if (Q931dmp)
-                      px += sprintf(px, "%s", location(c & 0x0f));
-        	    else
-                      px += sprintf(px, "PROGRESS: %s", location(c & 0x0f));
+		    if (!Q931dmp)
+		      px += sprintf(px, "PROGRESS: ");
+		    px += sprintf(px, "%s", location(c & 0x0f));
 
                     if (l > 1) {
                       px = sx[++sxp];
@@ -3053,7 +3056,7 @@ escape:             for (c = 0; c <= sxp; c++)
 
                       if (Q931dmp) {
                         px = sx[++sxp];
-                      	*px = 0;
+			*px = 0;
                       } /* if */
 
                       c = strtol(p + 6, NIL, 16);
@@ -3309,7 +3312,7 @@ static void huptime(int chan, int setup)
       if (!oldhuptimeout && !replay) {
         sprintf(sx, "HUPTIMEOUT %s is *disabled* - unchanged", INTERFACE);
         info(chan, PRT_SHOWNUMBERS, STATE_HUPTIMEOUT, sx);
-      	return;
+	return;
       } /* if */
 
       if (call[chan].tarifknown)
@@ -3409,66 +3412,105 @@ static void oops(int where)
 } /* oops */
 
 
-static int findinterface()
+static int findinterface(void)
 {
 #ifdef IIOCNETGPN
   register char *p;
-  auto 	   FILE *iflst;
-  auto 	   char  s[255], name[10], sx[BUFSIZ];
-  auto	   isdn_net_ioctl_phone phone;
-  auto	   int rc, chan, l, l1, l2, lmin, lmax, ldiv, match;
-
+  auto	   FILE *iflst;
+  auto	   char  s[255], name[10], sx[BUFSIZ];
+  union {
+     struct {
+	char name[10];
+	char phone[20];
+	int  outgoing;
+     }	   netdv5_phone;
+     struct {
+	char name[10];
+	char phone[32];
+	int  outgoing;
+     }	   netdv6_phone;
+#if NET_DV != 0x05 && NET_DEV != 0x06
+     isdn_net_ioctl_phone netdvX_phone;
+#endif
+  }	   phone;
+  auto	   int rc, chan, l1, l2, lmin, lmax, ldiv, match;
 
   if ((iflst = fopen("/proc/net/dev", "r")) == NULL)
     return(-1);
 
   while (fgets(s, sizeof(s), iflst)) {
-    if ((p = strchr(s, ':'))) {
-      *p = 0;
-      sscanf(s, "%s", name);
+    if ((p = strchr(s, ':')) == NULL)
+      continue;
 
-      memset(&phone, 0, sizeof(phone));
-      strncpy(phone.name, name, sizeof(phone.name));
-      rc = ioctl(sockets[ISDNINFO].descriptor, IIOCNETGPN, &phone);
+    *p = 0;
+    sscanf(s, "%9s", name);
 
-      if (!rc) { /* 'name' connected from/to 'phone.phone' */
-        l1 = strlen(phone.phone);
-
-        for (chan = 0; chan < MAXCHAN; chan++) {
-          l2 = strlen(call[chan].onum[OTHER]);
-
-          if (l2) {
-            lmin = min(l1, l2);
-	    lmax = max(l1, l2);
-	    ldiv = lmax - lmin;
-
-            if (lmin == lmax)
-              match = !strcmp(phone.phone, call[chan].onum[OTHER]);
-            else if (l1 > l2)
-              match = !strcmp(phone.phone + ldiv, call[chan].onum[OTHER]);
-            else
-              match = !strcmp(phone.phone, call[chan].onum[OTHER] + ldiv);
-
-            if (match) {
-              strcpy(call[chan].interface, name);
-              strcpy(call[chan].fnum, phone.phone); /* "fnum" -> Fritz-Num. Rufnummer, wie Fritz (Elfert) alias Link-Level sie intern haelt (also z.b. evtl. mit vorlaufendem "R") */
-
-              sprintf(sx, "INTERFACE %s %s %s", call[chan].interface,
-                (call[chan].dialin ? "called by" : "calling"),
-      	        call[chan].fnum);
-              info(chan, PRT_SHOWNUMBERS, STATE_HUPTIMEOUT, sx);
-
-              break;
-            } /* if */
-          } /* if */
-        } /* for */
+    memset(&phone, 0, sizeof(phone));
+    if (net_dv == 0x05 || net_dv == 0x06)
+      /* don't need strncpy, name is null term'ed and same size as phone.name */
+      strcpy(phone.netdv5_phone.name, name);
+    else /* assume version when compiled */
+#if NET_DV != 0x05 && NET_DEV != 0x06
+      strncpy(phone.netdvX_phone.name, name, sizeof(phone.netdvX_phone.name)-1);
+#else
+      {
+      fclose(iflst);
+      return -1; /* can't happen? Versions should have been checked */
       }
-      else if (errno == EINVAL) {
-        info(chan, PRT_SHOWNUMBERS, STATE_HUPTIMEOUT, "Sorry, IIOCNETGPN not available in your kernel (2.2.12 or higher is required)");
-        return(0);
-      } /* else */
+#endif
+    rc = ioctl(sockets[ISDNINFO].descriptor, IIOCNETGPN, &phone);
 
-    } /* if */
+    if (rc) {
+      if (errno == EINVAL) {
+	info(chan, PRT_SHOWNUMBERS, STATE_HUPTIMEOUT, "Sorry, IIOCNETGPN not available in your kernel (2.2.12 or higher is required)");
+	fclose(iflst);
+	return(0);
+      }
+      continue;	/* check next interface in /proc/net/dev */
+    }
+
+    /* 'name' connected from/to 'phone.phone' */
+
+    /* .phone *will* be NULL-terminated, barring any bugs in kernel code */
+    if (net_dv == 0x05 || net_dv == 0x06)
+      p = phone.netdv5_phone.phone;	/* same offset in 0x05 and 0x06 */
+#if NET_DV != 0x05 && NET_DEV != 0x06
+    else
+      p = phone.netdvX_phone.phone;	/* unknown offset */
+#endif
+    l1 = strlen(p);
+
+    for (chan = 0; chan < MAXCHAN; chan++) {
+      l2 = strlen(call[chan].onum[OTHER]);
+      if (!l2)
+	continue;	/* check next channel */
+
+      lmin = min(l1, l2);
+      lmax = max(l1, l2);
+      ldiv = lmax - lmin;
+
+      if (lmin == lmax)
+	match = !strcmp(p, call[chan].onum[OTHER]);
+      else if (l1 > l2)
+	match = !strcmp(p + ldiv, call[chan].onum[OTHER]);
+      else
+	match = !strcmp(p, call[chan].onum[OTHER] + ldiv);
+
+      if (match) {
+	strcpy(call[chan].interface, name);
+	/* "fnum" -> Fritz-Num: phonenumber that Fritz (Elfert) */
+	/* alias Link-Level maintains internally (that is, for  */
+	/* example possibly with leading "R")                   */
+	strcpy(call[chan].fnum, p);
+
+	sprintf(sx, "INTERFACE %s %s %s", call[chan].interface,
+	  (call[chan].dialin ? "called by" : "calling"),
+	  call[chan].fnum);
+	info(chan, PRT_SHOWNUMBERS, STATE_HUPTIMEOUT, sx);
+
+	break;
+      } /* if */
+    } /* for */
   } /* while */
 
   fclose(iflst);
@@ -3686,10 +3728,13 @@ static void processinfo(char *s)
 
           if (/* Abort if kernel version is greater, since struct has probably
                * become larger and would overwrite our stack */
-              net_dv > my_net_dv ||
+              (net_dv > my_net_dv && net_dv != 6 && my_net_dv != 5) ||
+	      /* don't know what net_dv > 0x06 will do... */
+	      /* findinterface() will probably have to be re-engineered */
+	      (net_dv != my_net_dv && net_dv > 0x06) ||
               /* version 0x03 is special, because it changed a field in the
                * middle of the struct and thus is compatible only to itself */
-              ((my_net_dv == 0x03 || net_dv == 0x03) && my_net_dv != net_dv)) {
+	      (net_dv != my_net_dv && (net_dv == 0x03 || my_net_dv == 0x03))) {
             print_msg(PRT_ERR, "FATAL: isdn_net_ioctl_cfg version mismatch "
                       "(kernel 0x%02x, isdnlog 0x%02x). Please upgrade your Linux-Kernel and/or your I4L-utils.\n",
                       net_dv, my_net_dv);
@@ -3901,7 +3946,7 @@ static void addlist(int chan, int type, int mode) /* mode :: 0 = Add new entry, 
   register    int   i;
   register    char *p;
   auto struct tm   *tm;
-  auto 	      char  s[BUFSIZ], s1[BUFSIZ];
+  auto	      char  s[BUFSIZ], s1[BUFSIZ];
 
 
   if (((chan == -1) || call[chan].dialin)) {
@@ -3922,12 +3967,12 @@ static void addlist(int chan, int type, int mode) /* mode :: 0 = Add new entry, 
         if (call[chan].uid == list[i].uid) {
           switch (mode) {
             case 1 : list[i].state = CONNECT;
-            	     break;
+		     break;
 
             case 2 : list[i].cause = call[chan].cause;
                      list[i].state = RELEASE;
-          	     list[i].disconnect = call[chan].disconnect;
-          	     break;
+		     list[i].disconnect = call[chan].disconnect;
+		     break;
           } /* switch */
 
           break;
@@ -3937,7 +3982,7 @@ static void addlist(int chan, int type, int mode) /* mode :: 0 = Add new entry, 
     else if (mode == 3) {
       for (i = 0; i <= lp; i++) {
         tm = localtime(&list[i].connect);
-      	strftime(s1, 64, "%a %b %d %X", tm);
+	strftime(s1, 64, "%a %b %d %X", tm);
 
         if (!list[i].disconnect)
           list[i].disconnect = cur_time;
@@ -3951,7 +3996,7 @@ static void addlist(int chan, int type, int mode) /* mode :: 0 = Add new entry, 
           default : p = "";       break;
         } /* switch */
 
-      	sprintf(s, "%s %s(%s) -> %s %ds %s",
+	sprintf(s, "%s %s(%s) -> %s %ds %s",
           s1,
           list[i].vnum[0],
           p,
@@ -4194,18 +4239,18 @@ static void LCR(int chan, char *s)
       if (call[chan].sondernummer[CALLED] == UNKNOWN) { /* keine Sonderrufnummern */
 
         call[chan].disconnect = call[chan].connect = cur_time;
-    	prepareRate(chan, &why, &hint, 0);
+	prepareRate(chan, &why, &hint, 0);
 
-    	if (call[chan].hint == UNKNOWN)
-      	  print_msg(PRT_NORMAL, ">> LCR: NO ACTION: Better provider unknown :-(\n", why);
-    	else if (call[chan].hint == call[chan].provider)
-      	  print_msg(PRT_NORMAL, ">> LCR: Best provider already used!", why);
-    	else {
-      	  print_msg(PRT_NORMAL, ">> LCR: %s\n", why);
-      	  print_msg(PRT_NORMAL, ">> LCR: %s\n", hint);
-      	  tr2 = times(&t2);
-      	  print_msg(PRT_NORMAL, ">> LCR: FAKE! TRYING(%s%d0%s) - Time required: %8.6g s\n", vbn, call[chan].hint, call[chan].num[CALLED] + 3, (double)(tr2 - tr1) / (double)CLK_TCK);
-    	} /* else */
+	if (call[chan].hint == UNKNOWN)
+	  print_msg(PRT_NORMAL, ">> LCR: NO ACTION: Better provider unknown :-(\n", why);
+	else if (call[chan].hint == call[chan].provider)
+	  print_msg(PRT_NORMAL, ">> LCR: Best provider already used!", why);
+	else {
+	  print_msg(PRT_NORMAL, ">> LCR: %s\n", why);
+	  print_msg(PRT_NORMAL, ">> LCR: %s\n", hint);
+	  tr2 = times(&t2);
+	  print_msg(PRT_NORMAL, ">> LCR: FAKE! TRYING(%s%d0%s) - Time required: %8.6g s\n", vbn, call[chan].hint, call[chan].num[CALLED] + 3, (double)(tr2 - tr1) / (double)CLK_TCK);
+	} /* else */
       }
       else
         print_msg(PRT_NORMAL, ">> LCR: NO ACTION: Sonderrufnummer\n");
@@ -4344,7 +4389,7 @@ static void processctrl(int card, char *s)
         if (k == 3)
           fprintf(stdout, "%02x  UI\n", k);
 
-      	switch (l = strtol(ps + 14, NIL, 16)) {
+	switch (l = strtol(ps + 14, NIL, 16)) {
           case 0x0f : fprintf(stdout, "%02x  Management Entity Identifier\n", l); break;
         } /* switch */
 
@@ -4354,11 +4399,11 @@ static void processctrl(int card, char *s)
         l = strtol(ps + 20, NIL, 16);
         fprintf(stdout, "  %02x  Referenz Indikator\n", l);
 
-      	switch (l = strtol(ps + 23, NIL, 16)) {
+	switch (l = strtol(ps + 23, NIL, 16)) {
           case 1 : fprintf(stdout, "  %02x  TEI ANFORDERUNG\n", l);   break;
           case 2 : fprintf(stdout, "  %02x  TEI ZUWEISUNG\n", l);     break;
           case 4 : fprintf(stdout, "  %02x  TEI BITTE PRUEFEN\n", l); break;
-      	} /* switch */
+	} /* switch */
 
         k = strtol(ps + 26, NIL, 16);
 
@@ -4479,17 +4524,17 @@ static void processctrl(int card, char *s)
     switch (i) {
       case 0x40 :
       case 0x41 : version = VERSION_1TR6;
-      	   	  break;
+		  break;
 
       case 0x08 : version = VERSION_EDSS1;
-      	   	  break;
+		  break;
 
       case 0xaa : version = VERSION_UNKNOWN; /* Euracom Frames */
 		  return;
 
       default   : version = VERSION_UNKNOWN;
-      		  sprintf(sx, "Unexpected discriminator 0x%02x -- ignored!", i);
-          	  info(chan, PRT_SHOWNUMBERS, STATE_RING, sx);
+		  sprintf(sx, "Unexpected discriminator 0x%02x -- ignored!", i);
+		  info(chan, PRT_SHOWNUMBERS, STATE_RING, sx);
 		  return;
     } /* switch */
 
@@ -4639,7 +4684,7 @@ static void processctrl(int card, char *s)
         call[chan].dialin = dialin;
         call[chan].tei = tei;
         call[chan].cref = cref;
-      	call[chan].card = card;
+	call[chan].card = card;
       } /* if */
 
       decode(chan, ps, type, version, tei);
@@ -4726,13 +4771,13 @@ static void processctrl(int card, char *s)
 
       case ALERTING            :
       case CALL_PROCEEDING     :
-       	   		         if (!Q931dmp)
-      	   		         if (dual && *call[chan].digits) {
-                      	       	   strcpy(call[chan].onum[CALLED], call[chan].digits);
+				 if (!Q931dmp)
+				 if (dual && *call[chan].digits) {
+				   strcpy(call[chan].onum[CALLED], call[chan].digits);
                                    buildnumber(call[chan].digits, call[chan].oc3, -1, call[chan].num[CALLED], version, &call[chan].provider, &call[chan].sondernummer[CALLED], &call[chan].intern[CALLED], &call[chan].local[CALLED], call[chan].dialin, CALLED);
 
-                      		   strcpy(call[chan].vnum[CALLED], vnum(chan, CALLED));
-      	   		       	 } /* if */
+				   strcpy(call[chan].vnum[CALLED], vnum(chan, CALLED));
+				 } /* if */
                                  break;
 
       case CONNECT             :
@@ -4747,7 +4792,7 @@ static void processctrl(int card, char *s)
         call[chan].dialog++; /* es hat connect gegeben */
         call[chan].connect = cur_time;
         call[chan].duration = tt;
-      	call[chan].card = card;
+	call[chan].card = card;
 
         if (*call[chan].service) {
           sprintf(sx, "CONNECT (%s)", call[chan].service);
@@ -4761,26 +4806,26 @@ static void processctrl(int card, char *s)
 
         if (OUTGOING && *call[chan].num[CALLED]) {
 
- 	  prepareRate(chan, &why, &hint, 0);
+	  prepareRate(chan, &why, &hint, 0);
 #ifndef CONFIG_ISDN_WITH_ABC_LCR_SUPPORT
 	  processlcr(call[chan].num[CALLED]); /* fake input for testing */
 #endif
- 	  if (*why)
+	  if (*why)
 	    info(chan, PRT_SHOWCONNECT, STATE_CONNECT, why);
 
-          if (*hint)
+	  if (*hint)
 	    info(chan, PRT_SHOWCONNECT, STATE_CONNECT, hint);
 
- 	  if (call[chan].tarifknown) {
- 	    call[chan].ctakt = call[chan].Rate.Units;
+	  if (call[chan].tarifknown) {
+	    call[chan].ctakt = call[chan].Rate.Units;
 
- 	    sprintf(sx, "%d.CI %s (now)", call[chan].ctakt, printRate(call[chan].pay));
-            info(chan, PRT_SHOWCONNECT, STATE_CONNECT, sx);
+	    sprintf(sx, "%d.CI %s (now)", call[chan].ctakt, printRate(call[chan].pay));
+	    info(chan, PRT_SHOWCONNECT, STATE_CONNECT, sx);
 
- 	    call[chan].cint = call[chan].Rate.Duration;
-            call[chan].lastcint = cur_time;
- 	    snprintf(sx, BUFSIZ, "NEXT CI AFTER %s (%s)",
- 		     double2clock(call[chan].cint) + 3,
+	    call[chan].cint = call[chan].Rate.Duration;
+	    call[chan].lastcint = cur_time;
+	    snprintf(sx, BUFSIZ, "NEXT CI AFTER %s (%s)",
+		     double2clock(call[chan].cint) + 3,
 		     explainRate(&call[chan].Rate));
             info(chan, PRT_SHOWCONNECT, STATE_CONNECT, sx);
 
@@ -4910,7 +4955,7 @@ doppelt:break;
           chan = 4;
 	  addlist(chan, type, 1);
           call[chan].tei = tei;
-      	  call[chan].card = card;
+	  call[chan].card = card;
         } /* if */
 
         if (!call[chan].disconnect) {
@@ -4955,28 +5000,28 @@ doppelt:break;
         if (OUTGOING && call[chan].duration) {
 	  processRate(chan);
 
-      	  if (call[chan].tarifknown) {
+	  if (call[chan].tarifknown) {
 	    char *h = hints;
 
 	    processLCR(chan, h);
 
-            while (h && *h)
-              info(chan, PRT_SHOWHANGUP, STATE_HANGUP, strsep(&h, "\n"));
-      	  } /* if */
-        } /* if */
+	    while (h && *h)
+	      info(chan, PRT_SHOWHANGUP, STATE_HANGUP, strsep(&h, "\n"));
+	  } /* if */
+	} /* if */
 
-       	if (!Q931dmp)
-          logger(chan);
+	if (!Q931dmp)
+	  logger(chan);
 
-        chanused[chan] = 0;
+	chanused[chan] = 0;
 	addlist(chan, type, 2);
 
-        if (call[chan].dialog || any) {
+	if (call[chan].dialog || any) {
 
-          if (call[chan].ibytes + call[chan].obytes) {
-            sprintf(s2, " I=%s O=%s",
-              double2byte((double)call[chan].ibytes),
-              double2byte((double)call[chan].obytes));
+	  if (call[chan].ibytes + call[chan].obytes) {
+	    sprintf(s2, " I=%s O=%s",
+	      double2byte((double)call[chan].ibytes),
+	      double2byte((double)call[chan].obytes));
           }
           else
             *s2 = 0;
@@ -5080,27 +5125,27 @@ doppelt:break;
                (call[chan].cause == 0x2a)) && /* Switching equipment congestion */
 	      ((call[chan].loc == 2) ||       /* Public network serving local user */
                (call[chan].loc == 3))) {      /* Transit network */
- 	    auto char s[BUFSIZ], s1[BUFSIZ];
+	    auto char s[BUFSIZ], s1[BUFSIZ];
 	    RATE Other;
 
- 	    prepareRate(chan, NULL, NULL, 0);
+	    prepareRate(chan, NULL, NULL, 0);
 
- 	    if (getLeastCost(&call[chan].Rate, &Other, 1, call[chan].provider) != UNKNOWN) {
+	    if (getLeastCost(&call[chan].Rate, &Other, 1, call[chan].provider) != UNKNOWN) {
 	      char prov[TN_MAX_PROVIDER_LEN];
 	      prefix2provider(Other.prefix, prov);
-      	      showRates(&Other, s1);
- 	      sprintf(s, "OVERLOAD? Try %s:%s (%s)", prov, Other.Provider, s1);
+	      showRates(&Other, s1);
+	      sprintf(s, "OVERLOAD? Try %s:%s (%s)", prov, Other.Provider, s1);
 
-              info(chan, PRT_SHOWHANGUP, STATE_HANGUP, s);
- 	    } /* if */
-          } /* if */
+	      info(chan, PRT_SHOWHANGUP, STATE_HANGUP, s);
+	    } /* if */
+	  } /* if */
 
-          if (OUTGOING && ((c = call[chan].confentry[OTHER]) > -1)) {
+	  if (OUTGOING && ((c = call[chan].confentry[OTHER]) > -1)) {
 	    if (chargemax != 0.0) {
-            known[c]->charge += call[chan].pay;
-            sprintf(sx, "CHARGEMAX total=%s today=%s remaining=%s",
-              printRate(known[c]->scharge + known[c]->charge),
-              printRate(known[c]->charge),
+	    known[c]->charge += call[chan].pay;
+	    sprintf(sx, "CHARGEMAX total=%s today=%s remaining=%s",
+	      printRate(known[c]->scharge + known[c]->charge),
+	      printRate(known[c]->charge),
               printRate((chargemax - known[c]->charge)));
             info(chan, PRT_SHOWCHARGEMAX, STATE_HANGUP, sx);
 	    } /* if */
@@ -5218,21 +5263,21 @@ void processflow()
 static void processlcr(char *p)
 {
   auto char                        res[BUFSIZ], s[BUFSIZ];
-  register char 		  *pres = res;
-  auto TELNUM  	 		   destnum;
-  auto RATE    	 		   Rate, Cheap;
-  auto int     	 		   prefix, own_country = 0;
+  register char			  *pres = res;
+  auto TELNUM			   destnum;
+  auto RATE			   Rate, Cheap;
+  auto int			   prefix, own_country = 0;
 #ifdef CONFIG_ISDN_WITH_ABC_LCR_SUPPORT
   auto struct ISDN_DWABC_LCR_IOCTL i;
-  auto int     	 		   cc;
-  auto char    	 		   ji[20];
-  auto char    	 		   kenn[40];
-  auto char    	 		   cid[40];
-  auto char    	 		   eaz[40];
+  auto int			   cc;
+  auto char			   ji[20];
+  auto char			   kenn[40];
+  auto char			   cid[40];
+  auto char			   eaz[40];
 #endif
-  auto char    	 		   dst[40];
-  auto char    	 		   prov[TN_MAX_PROVIDER_LEN];
-  auto char    	 		   lcr_amtsholung[BUFSIZ];
+  auto char			   dst[40];
+  auto char			   prov[TN_MAX_PROVIDER_LEN];
+  auto char			   lcr_amtsholung[BUFSIZ];
   auto int			   abort = 0;
 
   if(!abclcr)
@@ -5308,7 +5353,7 @@ static void processlcr(char *p)
         if(!paranoia_check(providerchange)) {
 	  int nok;
           sprintf(arg, "%s %d %s '%s'", providerchange, prefix2pnum(prefix),
-	  	res, getSpecialName(Cheap.dst[1]));
+		res, getSpecialName(Cheap.dst[1]));
           nok=system(arg);
 	  if(nok) {
 	    sprintf(s, "ABC_LCR: '%s' returned %d, no action", providerchange, nok);
@@ -5419,7 +5464,7 @@ retry:
 
         } /* if */
 
-      	processcint();
+	processcint();
 
         if (!memcmp(p3, "idmap:", 6) ||
             !memcmp(p3, "chmap:", 6) ||
@@ -5456,7 +5501,7 @@ retry:
                 ;
               else {
 	        memcpy(p1 + 1, "HEX", 3);
-              	processctrl(card + 1, p1 + 1);
+		processctrl(card + 1, p1 + 1);
               } /* else */
             }
             else {
@@ -5542,46 +5587,46 @@ void morekbd()
 
     switch (*s) {
       case 'l' : print_msg(PRT_SHOWNUMBERS, "Recent caller's:\n");
-      	       	 addlist(-1, SETUP, 3);
-                 break;
+		 addlist(-1, SETUP, 3);
+		 break;
 
       case 'h' : print_msg(PRT_SHOWNUMBERS, "\n\t*** s)tatus, l)ist, u)p, d)own ***\n");
-      	       	 break;
+		 break;
 
       case 'u' : /* huptime(0, 0); */
-      	       	 break;
+		 break;
 
       case 'd' : /* huptime(0, 0); */
-      	       	 break;
+		 break;
 
       case 's' : now();
 
-      	         print_msg(PRT_SHOWNUMBERS, "\n\t*** %s\n", stl);
+		 print_msg(PRT_SHOWNUMBERS, "\n\t*** %s\n", stl);
 
-      	         for (chan = 0; chan < MAXCHAN; chan++) {
-      	       	   if (call[chan].bchan == -1)
-                     sprintf(s, "\t*** BCHAN#%d : FREE ***\n", chan + 1);
-      	       	   else {
-                     sprintf(s, "\t*** BCHAN#%d : %d %s %s %s ***\n",
+		 for (chan = 0; chan < MAXCHAN; chan++) {
+		   if (call[chan].bchan == -1)
+		     sprintf(s, "\t*** BCHAN#%d : FREE ***\n", chan + 1);
+		   else {
+		     sprintf(s, "\t*** BCHAN#%d : %d %s %s %s ***\n",
                        chan + 1,
                        call[chan].bchan,
                        call[chan].vnum[0],
                        call[chan].dialin ? "<-" : "->",
                        call[chan].vnum[1]);
-      	       	   } /* else */
+		   } /* else */
 
-      	       	   print_msg(PRT_SHOWNUMBERS, "%s", s);
-      	       	 } /* for */
-                 break;
+		   print_msg(PRT_SHOWNUMBERS, "%s", s);
+		 } /* for */
+		 break;
     } /* switch */
 
   } /* if */
-} /* morekbd */
+  } /* morekbd */
 
-/*****************************************************************************/
+  /*****************************************************************************/
 
-static void teardown(int chan)
-{
+  static void teardown(int chan)
+  {
   auto char sx[BUFSIZ];
 
 
@@ -5625,15 +5670,15 @@ void processcint()
       processRate(chan);
 
       if (call[chan].ctakt != call[chan].Rate.Units) { /* naechste Einheit */
- 	call[chan].ctakt = call[chan].Rate.Units;
+	call[chan].ctakt = call[chan].Rate.Units;
 	if (!ciInterval || !call[chan].lastcint ||
 	    (cur_time - call[chan].lastcint) >= ciInterval) {
-          call[chan].lastcint = cur_time;
-          sprintf(sx, "%d.CI %s (after %s) ",
- 	    call[chan].ctakt,
-            printRate(call[chan].pay),
- 	    double2clock(call[chan].Rate.Time));
-          info(chan, PRT_SHOWCONNECT, (call[chan].Rate.Duration < 30) ? STATE_BYTE : STATE_CONNECT, sx);
+	  call[chan].lastcint = cur_time;
+	  sprintf(sx, "%d.CI %s (after %s) ",
+	    call[chan].ctakt,
+	    printRate(call[chan].pay),
+	    double2clock(call[chan].Rate.Time));
+	  info(chan, PRT_SHOWCONNECT, (call[chan].Rate.Duration < 30) ? STATE_BYTE : STATE_CONNECT, sx);
 	}
 
         if ((c = call[chan].confentry[OTHER]) > -1) {
@@ -5654,19 +5699,19 @@ void processcint()
 
       if (call[chan].cint != call[chan].Rate.Duration) { /* Taktwechsel */
 	char *h=hints;
- 	call[chan].cint = call[chan].Rate.Duration;
+	call[chan].cint = call[chan].Rate.Duration;
 
- 	snprintf(sx, BUFSIZ, "NEXT CI AFTER %s (%s)",
+	snprintf(sx, BUFSIZ, "NEXT CI AFTER %s (%s)",
 		 double2clock(call[chan].cint) + 3,
 		 explainRate(&call[chan].Rate));
 
- 	info(chan, PRT_SHOWCONNECT, STATE_CONNECT, sx);
+	info(chan, PRT_SHOWCONNECT, STATE_CONNECT, sx);
 
 	processLCR(chan, h);
 	while (h && *h)
 	  info(chan, PRT_SHOWHANGUP, STATE_HANGUP, strsep(&h,"\n"));
 
- 	huptime(chan, 0);
+	huptime(chan, 0);
       } /* if */
 
     } /* if */
@@ -5700,3 +5745,4 @@ void lcd4linux(void)
 
   /* Fixme: do something useful here... */
 } /* lcd4linux */
+/* vim:set sw=2: */
