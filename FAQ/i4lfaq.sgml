@@ -4,7 +4,7 @@
 
 <title>FAQ for isdn4linux
 <author>Matthias Hessler (<tt><htmlurl url="mailto:hessler@isdn4linux.de" name="hessler@isdn4linux.de"></tt>)
-<date>v2.0.30, 31. December 1999
+<date>v2.0.31, 16. January 2000
 <abstract>
 If you are reading this FAQ online, you may consider downloading the whole
 thing, and reading it offline (much cheaper). To download the latest
@@ -262,6 +262,10 @@ These encapsulations are possible:
 <item>plus a few specialities: have a look at the man pages.
 </itemize>
 
+Please note that X.31a is supported as X.25 on top of ISDN, while X.31b
+is not supported (neither in the B channel, nor in the D channel
+variation).
+
 <sect1> feature_voice: Can I use isdn4linux as an answering machine?  
 <label id="feature_voice">
 <p>
@@ -287,7 +291,7 @@ Yes</bf>. Have a look at README.fax and README.eicon in the
 <tt>isdn/Documentation/isdn</tt> directory, as well as:
 <tt><url url="http://www.melware.de/"></tt>. The Eicon Diva Server cards
 allow faxing with class 2 commands.
-<item><bf>For semiactive cards Sedlbauer Speedfax+ and Siemens ISURF 1.0: Yes</bf>
+<item><bf>For semiactive cards Sedlbauer Speedfax+ and Siemens I-SURF 1.0: Yes</bf>
 But currently this requires some manual work. Check the mailing list on how
 to do it (special patch needed). Only class 1 fax commands are supported.
 You can obtain the patch from:
@@ -637,7 +641,8 @@ assume you have a passive card. More about the difference: see question
 
 Right now there is a driver for all passive card with certain Siemens
 chipsets (HiSax driver). Have a look at the <tt/README.HiSax/ that comes with
-the driver for the most up to date information on supported cards.
+the driver for the most up to date information on supported cards and which
+parameter to pass to Hisax.
 Here the status from 4th September 1999 (constantly improving):
 <itemize>
 <item>Teles 8.0/16.0/16.3 and compatible ones (like: Dr. Neuhaus Niccy
@@ -677,7 +682,7 @@ than 50 card versions)
 <item>Traverse Technologie NETjet PCI S0 card
 <item>Dr. Neuhaus Niccy PnP/PCI
 <item>Siemens I-Surf 1.0
-<item>Siemens I-Surf 2.0 (with IPAC =&gt; try type 12 asuscom)
+<item>Siemens I-Surf 2.x (with IPAC =&gt; try type 12 asuscom)
 <item>ACER P10
 <item>HSR Saphir
 <item>Berkom Telekom A4T
@@ -813,6 +818,18 @@ handle the same IRQ, try to boot with <tt/noapic/.
 Yes, most cards should run with isdn4linux on a DEC Alpha. Many cards have been
 reported to work with the HiSax driver. Also the active ICN card has been
 reported to work.
+
+<sect1> hardware_sun: Can I run isdn4linux on a Sun workstation?  
+<label id="hardware_sun">
+<p>
+In principle, hisax works with the built-in ISDN adapter of a
+Sparc-Station-LX and a Sparc-Station-10, at least with development
+kernels version 2.3.x. Audio works, but not well; ISDN works, but randomly
+crashes the machine. The author of dbri.c has stopped active work on it,
+but made a copy of the DBRI data sheet available at:
+<url url="http://www.freesoft.org/Linux/DBRI">
+for anyone who wants to fix the remaining glitches (status as of Jan 10,
+2000).
 
 <sect1> hardware_ppc: Can I run isdn4linux on a PowerPC with Linux?  
 <label id="hardware_ppc">
@@ -1254,12 +1271,17 @@ I get the error messages "init_module: Device or resource busy" and
 "isdn: Could not allocate device-struct.".  
 <label id="trouble_22memory">
 <p>
-This seems to be a memory problem. While 2.0.x kernels may work on low
-memory/slow hardware (the author's answering machine is a 386 and used to
-run with 4MB of RAM), at least 16MB, if not more, seem to be required to run
-2.2.x kernels. You can try to reduce the memory requirements (see question
-<ref id="trouble_littlememory" name="trouble_littlememory">), compile ISDN4LINUX into the kernel, or
-start and then exit a large program to ease those problems.
+This is a memory problem and means you don't have enough <bf>unfragmented</bf>
+memory. While 2.0.x kernels may work on low memory/slow hardware (the author's
+answering machine is a 386 and used to run with 4MB of RAM), you can run into
+the memory fragmentation problem even if you have as much as 32MB of RAM when
+running 2.2.x kernels. The problem has been eased since 2.2.14, when
+ISDN4LINUX's memory allocation has been changed to use vmalloc.
+
+You can try to reduce the memory requirements (see question
+<ref id="trouble_littlememory" name="trouble_littlememory">), compile
+ISDN4LINUX into the kernel, or start and then exit a large program to ease
+the memory fragmentation problems.
 
 <sect1> trouble_littlememory: How can I reduce isdn4linux's memory  
 requirements?  
@@ -1793,11 +1815,17 @@ select((select(STDIN), &dollar;| = 1)(&dollar;());
 exec &dquot;cu&dquot;,&dquot;-E&dquot;,&dquot;''&dquot;, &dquot;-l&dquot;, &dquot;&dollar;ARGV(0)&dquot;;
 die &dquot;&dollar;0: Cannot exec cu: &dollar;!\n&dquot;;
 </code>
-It has to be started in inetd:
+It has to be started by inetd, therefore this has to be added to
+<tt>/etc/services</tt>:
 <code>
 modem           20006/tcp       modemd  &num; Modem service via TCP
 isdn            20007/tcp       modemd  &num; ISDN  service via TCP
 </code>
+And this has to be added to <tt>/etc/inet.conf</tt>:
+<code>
+modemd stream tcp nowait root /usr/sbin/tcpd /usr/sbin/modemd ttyI5
+</code>
+
 Additionally, you need some software on your non-ISDN computer which emulates a
 serial port, but redirects it via telnet to the Linux ISDN computer.
 Some telnet clients allow this functionality (e.g. some uucicos).
@@ -1806,8 +1834,9 @@ port&dquot;, then there is COMT for Windows (95), and
 &dquot;telser.device&dquot; for Amigas. Disadvantage of COMT: it is only visible
 to 16bit applications.
 
-COMT may be found on Simtel or one of its mirror:
-<tt><url url="ftp://ftp.funet.fi/pub/simtelnet/win3/inet/comt200.zip"></tt>
+COMT may be found on Simtel:
+<tt><url url="http://educom.sce.fct.unl.pt/ftp/pub/shareware/win-utils/comt2.zip"></tt>
+
 
 
 <!-- Dialout
@@ -2482,6 +2511,10 @@ echo 7 > /proc/sys/net/ipv4/ip_dynaddr
 </code>
 If you have a SuSE distribution, this workaround can also be configured by
 setting <tt/IP_DYNIP=&dquot;yes&dquot;/ in <tt>/etc/rc.config</tt>.
+<item>Increase the number of retries on your Windows machine for setting
+up the connection. Change the registry entry
+<tt>Hkey_Local_Machine\System\CurrentControlSet\Services\VxD\MSTCP\MaxConnectRetries</tt>
+from 3 to a larger value (e.g. 5 or 7).
 </itemize>
 
 <sect1> syncppp_droppacket: What does the message &dquot;No phone number, 
@@ -3225,7 +3258,14 @@ isdnctrl removelink ippp0
 This is different to other encapsulations of isdn4linux!
 
 Please also note, that the slave device has to be in dialmode <tt/auto/ for
-this to work.
+this to work. For manual control, use
+<code>
+isdnctrl dial slave
+</code>
+and
+<code>
+isdnctrl hangup slave
+</code>
 
 With syncPPP, there is no automatic activation of slave devices, they have to
 be added and removed. However, there is the program <tt>ibod</tt> available,
@@ -3810,8 +3850,8 @@ executable (chmod +x):
 <sect1> isdnlog_blankscreen: When dialing out, the screen goes momentarily black?  
 <label id="isdnlog_blankscreen">
 <p>
-This may happen when you start isdnlog with the options <tt>-t
-1</tt> or <tt>-t 2</tt>, then the time is synchronized with the digital
+This may happen when you start isdnlog with the options <tt>-t1</tt>
+or <tt>-t2</tt>, then the time is synchronized with the digital
 switching station. The screen saver thinks that more than x minutes have
 passed, which causes a short blackout of the screen.
 
@@ -3951,6 +3991,7 @@ We are aware of at least the following countries:
 <item>Israel
 <item>Italy (see question <ref id="country_italy" name="country_italy">)
 <item>Japan
+<item>Luxemburg
 <item>Norway
 <item>Peru
 <item>Portugal (see question <ref id="country_portugal" name="country_portugal">)
@@ -4278,7 +4319,7 @@ station (thereby avoiding the charges from your telephone company).
 
 <tag/PRI/
 PRI means primary rate interface and is the used when a single or multiple
-BRI are not sufficient in bandwidth. In Europe, a PRI includes 32 B-channels
+BRI are not sufficient in bandwidth. In Europe, a PRI includes 30 B-channels
 for data communication, and 1 D-channel for administration of the data
 communication.
 
