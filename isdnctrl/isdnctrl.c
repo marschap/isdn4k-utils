@@ -1,4 +1,4 @@
-/* $Id: isdnctrl.c,v 1.50 2002/01/31 19:53:41 paul Exp $
+/* $Id: isdnctrl.c,v 1.51 2003/02/24 17:22:22 keil Exp $
  * ISDN driver for Linux. (Control-Utility)
  *
  * Copyright 1994,95 by Fritz Elfert (fritz@isdn4linux.de)
@@ -21,6 +21,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnctrl.c,v $
+ * Revision 1.51  2003/02/24 17:22:22  keil
+ * - don't allow users to change setup
+ *
  * Revision 1.50  2002/01/31 19:53:41  paul
  * Fixed error messages when opening /dev/isdnctrl - /dev/isdn/isdnctrl etc.,
  * only /dev/isdnctrl was mentioned and people assumed that isdnctrl wasn't
@@ -446,7 +449,8 @@ int reset_interfaces(int fd, char *option)
 	}
 
 	while (!feof(iflst)) {
-		fgets(s, sizeof(s), iflst);
+		if (fgets(s, sizeof(s), iflst)==NULL)
+			break;
 		if ((p = strchr(s, ':'))) {
 			*p = 0;
 
@@ -1650,6 +1654,25 @@ int main(int argc, char **argv)
 {
 	int fd;
 	int rc;
+
+	/* 
+	 * Security check. Mere mortals mustn't do anything except
+	 * isdnctrl dial <devicename>. --okir
+	 * hangup addlink removelink and status are also needed --kkeil
+	 */
+	if (getuid()) {
+		if (argc != 3 ||
+		  (strcmp(argv[1], "dial")
+		  && strcmp(argv[1], "hangup")
+		  && strcmp(argv[1], "addlink")
+		  && strcmp(argv[1], "removelink")
+		  && strcmp(argv[1], "status"))) {  
+		 	fprintf(stderr, 
+				"Only the dial,hangup,addlink,removelink and status\n"
+				"commands are allowed for none root users\n");
+			return 1;
+		}
+	}
 
 	if ((cmd = strrchr(argv[0], '/')) != NULL)
 		*cmd++ = '\0';
