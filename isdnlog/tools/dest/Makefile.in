@@ -70,7 +70,7 @@ clean:
 	rm -f *.o *~ $(PROGRAM)
 
 dataclean:
-	rm -f *.{gdbm,db,cdb}
+	rm -f *.gdbm *.db *.cdb
 
 distclean: clean dataclean
 	rm -f config.status config.cache config.log *.man Makefile
