@@ -1,4 +1,4 @@
-/* $Id: zone.c,v 1.22 2001/10/15 11:35:46 leo Exp $
+/* $Id: zone.c,v 1.23 2003/09/11 10:58:56 tobiasb Exp $
  *
  * Zonenberechnung
  *
@@ -19,6 +19,12 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: zone.c,v $
+ * Revision 1.23  2003/09/11 10:58:56  tobiasb
+ * Do not compute the zone with empty strings as input.
+ * Empty areacodes will occur if the national areacodes are not included in
+ * the destination database.  Discovered by Markus Latzel, see article
+ * <3f61378e.550970@n.avalon.psi.talypso.de> in de.comp.os.unix.linux.isdn.
+ *
  * Revision 1.22  2001/10/15 11:35:46  leo
  * fixed cdb zonefiles
  *
@@ -506,6 +512,9 @@ static int _getZ(struct sth *sthp, char *from, char *sto) {
 	bool found = false;
 	char *temp;
 	int res;
+
+	if (!*from || !*sto) /* empty areacodes cannot be interpreted */
+		return UNKNOWN;
 
 	if ((res=strcmp(from, sto)) == 0)
 		return sthp->oz;
