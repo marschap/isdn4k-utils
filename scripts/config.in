@@ -1,5 +1,5 @@
 #
-# $Id: config.in,v 1.16 1997/04/03 08:57:07 fritz Exp $
+# $Id: config.in,v 1.17 1997/04/08 00:02:28 luethje Exp $
 #
 # The whole configuration stuff is borrowed from the kernel
 # configuration.
@@ -28,11 +28,15 @@ string 'Directory to install admin binaries' CONFIG_SBINDIR
 string 'Directory to install man pages' CONFIG_MANDIR
 comment 'Runtime defaults'
 string 'Write .pid files here' CONFIG_RUNDIR
+string 'Write lock files here' CONFIG_LOCKDIR
+string 'Prefix for the lock file' CONFIG_LOCKFILE
 string 'General configuration directory' CONFIG_I4LCONFDIR
 string 'Global configuration file' CONFIG_CONFFILE
 string 'Global phone number file file' CONFIG_CALLERIDFILE
 string 'User configuration file' CONFIG_USERCONFFILE
 comment 'Configuration library options'
+string 'Your country code' CONFIG_COUNTRYCODE
+string 'Your area code' CONFIG_AREACODE
 string 'Default country prefix' CONFIG_COUNTRY_PREFIX
 string 'Default area prefix' CONFIG_AREA_PREFIX
 choice 'Database for area codes' \

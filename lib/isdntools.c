@@ -1,4 +1,4 @@
-/* $Id: isdntools.c,v 1.8 1997/04/03 22:39:13 luethje Exp $
+/* $Id: isdntools.c,v 1.9 1997/04/08 00:02:24 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -19,6 +19,13 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdntools.c,v $
+ * Revision 1.9  1997/04/08 00:02:24  luethje
+ * Bugfix: isdnlog is running again ;-)
+ * isdnlog creates now a file like /var/lock/LCK..isdnctrl0
+ * README completed
+ * Added some values (countrycode, areacode, lock dir and lock file) to
+ * the global menu
+ *
  * Revision 1.8  1997/04/03 22:39:13  luethje
  * bug fixes: environ variables are working again, no seg. 11 :-)
  * improved performance for reading the config files.
@@ -112,6 +119,7 @@
 
 static int (*print_msg)(const char *, ...) = printf;
 static char *_get_areacode(char *code, int *Len, int flag);
+static int create_runfile(const char *file, const char *format);
 
 /****************************************************************************/
 
@@ -327,44 +335,99 @@ char *confdir(void)
 
 /****************************************************************************/
 
-int delete_runfile(const char *progname)
+int handle_runfiles(const char *_progname, char **_devices, int flag)
 {
-  char *Ptr = NULL;
-  char runfile[PATH_MAX];
+	static char   progname[SHORT_STRING_SIZE] = "";
+  static char **devices = NULL;
+  auto   char   string[PATH_MAX];
+  auto   char  *Ptr = NULL;
+  auto   int    RetCode = -1;
 
-	if (progname != NULL)
-		return -1;
 
-	Ptr = strrchr(progname,C_SLASH);
-	sprintf(runfile,"%s%c%s.pid",RUNDIR,C_SLASH,Ptr?Ptr+1:progname);
+	if (progname[0] == '\0' || devices == NULL)
+	{
+		if (_progname == NULL || _devices == NULL)
+			return -1;
 
-	return unlink(runfile);
-} /* delete_runfile */
+		Ptr = strrchr(progname,C_SLASH);
+		strcpy(progname,Ptr?Ptr+1:_progname);
+
+		while (*_devices != NULL)
+		{
+			append_element(&devices,*_devices);
+			_devices++;
+		}
+	}
+
+	if (flag == START_PROG)
+	{
+		sprintf(string,"%s%c%s.pid",RUNDIR,C_SLASH,progname);
+
+		if ((RetCode = create_runfile(string,"%d\n")) != 0)
+		{
+			if (RetCode > 0)
+				print_msg("Another %s is running with pid %d!\n", progname, RetCode);
+
+			return RetCode;
+		}
+
+		while (*devices != NULL)
+		{
+			sprintf(string,"%s%c%s%s",LOCKDIR,C_SLASH,LOCKFILE,*devices);
+
+			if ((RetCode = create_runfile(string,"%10d\n")) != 0)
+			{
+				if (RetCode > 0)
+					print_msg("Another process (pid=%d) is running on device %s!\n", RetCode, *devices);
+
+				return RetCode;
+			}
+
+			devices++;
+		}
+
+		RetCode = 0;
+	}
+
+	if (flag == STOP_PROG)
+	{
+		sprintf(string,"%s%c%s.pid",RUNDIR,C_SLASH,progname);
+		unlink(string);
+
+		while (*devices != NULL)
+		{
+			sprintf(string,"%s%c%s%s",LOCKDIR,C_SLASH,LOCKFILE,*devices);
+			if (unlink(string))
+					print_msg("Can not remove file %s (%s)!\n", *devices, strerror(errno));
+
+			devices++;
+		}
+
+		RetCode = 0;
+	}
+
+	return RetCode;
+}
 
 /****************************************************************************/
 
-int create_runfile(const char *progname)
+static int create_runfile(const char *file, const char *format)
 {
-  char *Ptr = NULL;
-  char runfile[PATH_MAX];
-  char string[SHORT_STRING_SIZE];
-  int RetCode = -1;
-  int fd      = -1;
-  FILE *fp;
+	auto char  string[SHORT_STRING_SIZE];
+	auto int   RetCode = -1;
+	auto int   fd      = -1;
+	auto FILE *fp;
 
-	if (progname == NULL)
+	if (file == NULL)
 		return -1;
 
-	Ptr = strrchr(progname,C_SLASH);
-	sprintf(runfile,"%s%c%s.pid",RUNDIR,C_SLASH,Ptr?Ptr+1:progname);
-
-	if ((fd = open(runfile, O_WRONLY|O_CREAT|O_EXCL|O_TRUNC, 0644)) >= 0)
+	if ((fd = open(file, O_WRONLY|O_CREAT|O_EXCL|O_TRUNC, 0644)) >= 0)
 	{
-		sprintf(string, "%10d\n", (int)getpid());
+		sprintf(string, format, (int)getpid());
 
 		if (write(fd, string, strlen(string)) != strlen(string) )
 		{
-			print_msg("Can not write to PID file `%s'!\n", runfile);
+			print_msg("Can not write to PID file `%s'!\n", file);
   		RetCode = -1;
 		}
   	else
@@ -374,7 +437,7 @@ int create_runfile(const char *progname)
 	}
 	else
 	{
-		if ((fp = fopen(runfile, "r")) == NULL)
+		if ((fp = fopen(file, "r")) == NULL)
 			return -1;
 
 		if (fgets(string,SHORT_STRING_SIZE,fp) != NULL)
@@ -389,10 +452,10 @@ int create_runfile(const char *progname)
 		{
 
 			fclose(fp);
-			if (unlink(runfile))
+			if (unlink(file))
 				return -1;
 
-			return create_runfile(progname);
+			return create_runfile(file,format);
 		}
 		
 		fclose(fp);

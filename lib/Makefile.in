@@ -37,6 +37,8 @@ config:
 	@echo '#define CALLERIDFILE CONFIG_CALLERIDFILE' >> policy.h
 	@echo '#define USERCONFFILE CONFIG_USERCONFFILE' >> policy.h
 	@echo '#define RUNDIR CONFIG_RUNDIR' >> policy.h
+	@echo '#define LOCKDIR CONFIG_LOCKDIR' >> policy.h
+	@echo '#define LOCKFILE CONFIG_LOCKFILE' >> policy.h
 	@echo '#define S_COUNTRY_PREFIX CONFIG_COUNTRY_PREFIX' >> policy.h
 	@echo '#define S_AREA_PREFIX CONFIG_AREA_PREFIX' >> policy.h
 	@echo '#endif' >> policy.h

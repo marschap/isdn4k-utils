@@ -1,4 +1,4 @@
-/* $Id: isdnlog.h,v 1.4 1997/04/03 22:34:50 luethje Exp $
+/* $Id: isdnlog.h,v 1.5 1997/04/08 00:02:17 luethje Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,13 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnlog.h,v $
+ * Revision 1.5  1997/04/08 00:02:17  luethje
+ * Bugfix: isdnlog is running again ;-)
+ * isdnlog creates now a file like /var/lock/LCK..isdnctrl0
+ * README completed
+ * Added some values (countrycode, areacode, lock dir and lock file) to
+ * the global menu
+ *
  * Revision 1.4  1997/04/03 22:34:50  luethje
  * splitt the files callerid.conf and ~/.isdn.
  *
@@ -223,7 +230,6 @@ _EXTERN int	width;
 _EXTERN	int	watchdog;
 _EXTERN char   *isdnctrl;
 _EXTERN	char    isdnctrl2[FNSIZE];
-_EXTERN char    pidfile[SHORT_STRING_SIZE];
 
 _EXTERN IFO     ifo[ISDN_MAX_CHANNELS];
 _EXTERN IO      io[ISDN_MAX_CHANNELS];

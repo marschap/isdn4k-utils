@@ -196,7 +196,9 @@ Ein Bitte noch:
 
 Alle Anfragen zum isdnlog nicht an meine Email-Adresse senden, sondern an
 
-     isdnlog@Kool.f.EUnet.de
+     i4l-isdnlog@franken.de
+
+Bitte auch nicht mehr die alte Adresse isdnlog@Kool.f.EUnet.de verwenden.
 
 So bekommen alle Entwickler die Anfragen direkt mit, und muessen nicht
 von mir extra weitergeleitet werden. Dadurch wird die Anfrage mit
@@ -214,7 +216,6 @@ gesendet werden. Im Body (_nicht_ im Subject) sollte
 subscribe "emailadresse"
 
 stehen.
-
 
 
 1. Was kann/ist/macht isdnlog?
@@ -474,7 +475,9 @@ relevanten Steuerungsparameter.
 
 Diese Datei muss dem User root gehoeren (auch die Gruppe). Auch nur dieser
 darf Schreibrechte an dieser Datei haben. Diese Datei wird auch vom isdnlog
-gelesen.
+gelesen. Andernfalls beendet sich der isdnlog sofort wieder. Dieses ist ein
+Schutz, um Trojanische Pferde zu verhindern und kann auch nicht ausgeschaltet
+werden.
 
 Wenn man dem compilierten den Pfad aendern will, muss man die
 Umgebungsvariable "ISDN_CONF_PATH" setzen.
@@ -550,6 +553,20 @@ Beispiel:
 [VARIABLES]
 MYPATH = /home/fred
 
+Es duerfen als Variablennamen nur noch gross geschriebene Woerter verwendet
+werden. Ein Eintrag der Form
+
+myPath = /home/fred
+
+oder
+
+mypath = /home/fred
+
+werden z.B. unter der /bin/sh mit "MYPATH=/home/fred" gesetzt.
+Hier gibt auch keine andere Möglichkeit das zu aendern. Wenn Kleinbuschstaben
+verwendet werden sollen, muessen diese vor dem Start von isdnlog mit
+export (sh, bash) oder setenv (csh) unter der Shell gesetzt werden.
+
 ACHTUNG: "MYPATH  =  /home/fred" wird als Variable zu "MYPATH=/home/fred".
          Es fallen also alle Blanks und Tabulatoren vor und nach dem "="
 				 heraus.
@@ -571,7 +588,7 @@ Diese Datei wird seit der Version 3.0 vom isdnlog nicht mehr staendig offen
 gehalten, sondern nur noch nach Beendigung eines Gespraeches wird die Datei
 geoeffnet, der Eintrag ergaenzt und anschliessend wieder geschlossen.
 Dadurch ist es jetzt moeglich diese Datei zu verschieben, wenn der isdnlog
-laeuft.
+laeuft und gerade kein Gespraech beendet wird.
 
 RELOADCMD = reload
 
@@ -730,7 +747,9 @@ Partner-Telefonnummern koennen eingeben werden.
 
 Die Datei "callerid.conf" liegt im Verzeichnis /etc/isdn und muss dem User
 root gehoeren (auch die Gruppe). Auch nur dieser darf Schreibrechte an dieser
-Datei haben. Diese Datei wird auch vom isdnlog gelesen.
+Datei haben. Diese Datei wird auch vom isdnlog gelesen. Es ist die globale
+Datei fuer die Telefonnummern. Hier muessen auch die [MSN]-Eintraege
+untergebracht werden.
 
 Die Datei "~/.isdn" kann jeder Benutzer haben, der den isdnrep und den isdnconf
 verwendet. Hier sind die Rechte der Datei voellig egal. Diese Datei ist
@@ -1365,6 +1384,36 @@ Der wird solange in einer Schleife gespielt (L), bis eine Verbindung zu stande
 kommt. So wie "/usr/bin/auplay" beendet ist, wird es wieder neu gestartet.
 Die Flags "OR" haben allerdings keine Bedeutung fuer andere Geraete am S0-Bus,
 da die ISDN-Karte die Ring-Phase von anderen Geraeten am Bus nicht mitbekommt.
+
+Kommentare in der in der Telefonnummerndateien:
+
+Es koennen koennen Kommentare an beliebiger Stelle beginnend mit de Zeichen
+'#' eingefuegt werden (siehe lib/README.Syntax.conffile).
+Diese Kommentare haben den Nachteil, dass sie verschwinden, wenn die Datei
+z.B. vom isdnconf (oder auch vom isdnlog selber) neu geschrieben werden.
+Als Alternative gibt es dort die Moeglichkeit in den Sektionen einfach
+Dummy-Eintraege zu setzen. Diese sind Eintraege, die von isdnlog nicht
+ausgewertet werden, aber trotzdem eingelesen werden und auch wieder geschrieben
+werden.
+
+Beispiel
+
+[isdnlog]
+comment1  = Pro Tag duerfen max. 100 DM fuer Datenverbindungen ausgegeben \
+            werden.
+CHARGEMAX = 100.00
+comment2  = Das Logfile liegt unter /var/log/isdn.log
+logfile   = /var/log/isdn.log
+
+
+Die beiden Eintraege "comment1" und "comment2" bleiben erhalten. auch die
+Reihenfolge bleibt bestehen. Es ist nur darauf zu achten, dass kein
+Eintrag den selben Namen hat. Also zweimal die Zeile "comment" geht nicht.
+Dann wird die erste Zeile durch die zweite ersetzt. Es ist auch darauf zu
+achten, dass der Name des Eintrages nicht schon von isdnlog verwendet wird.
+Also ein Kommentar mit "SI" zu benennen schlaegt fehlt, da dieser Name
+schon reserviert ist.
+
 
 
 5. Die Konfigurationsdatei "isdnlog.users"

@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.8 1997/04/06 21:07:25 luethje Exp $
+## $Id: Makefile.in,v 1.9 1997/04/08 00:02:05 luethje Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,13 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.9  1997/04/08 00:02:05  luethje
+## Bugfix: isdnlog is running again ;-)
+## isdnlog creates now a file like /var/lock/LCK..isdnctrl0
+## README completed
+## Added some values (countrycode, areacode, lock dir and lock file) to
+## the global menu
+##
 ## Revision 1.8  1997/04/06 21:07:25  luethje
 ## renamed file isdnrep.c to rep_main.c and function.c to isdnrep.c
 ##
@@ -135,7 +142,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 2.99.4
+VERSION     = 2.99.5
 
 ifeq ($(POSTGRES),1)
 DEFS       += -DPOSTGRES

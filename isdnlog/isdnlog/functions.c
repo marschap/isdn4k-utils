@@ -1,4 +1,4 @@
-/* $Id: functions.c,v 1.5 1997/04/06 22:04:20 luethje Exp $
+/* $Id: functions.c,v 1.6 1997/04/08 00:02:12 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -17,6 +17,15 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
+ *
+ * $Log: functions.c,v $
+ * Revision 1.6  1997/04/08 00:02:12  luethje
+ * Bugfix: isdnlog is running again ;-)
+ * isdnlog creates now a file like /var/lock/LCK..isdnctrl0
+ * README completed
+ * Added some values (countrycode, areacode, lock dir and lock file) to
+ * the global menu
+ *
  */
 
 #define _FUNCTIONS_C_
@@ -82,7 +91,7 @@ void _Exit(char *File, int Line, int RetCode) /* WARNING: RetCode==-9 does _not_
 
   if (!replay) {
     saveCharge();
-    delete_runfile(pidfile);
+    handle_runfiles(NULL,NULL,STOP_PROG);
   } /* if */
 
   if (RetCode != -9)
@@ -162,34 +171,38 @@ void logger(int chan)
     call[chan].pay = 0.0;
   } /* if */
 
+	tries = 0;
+
 	if (access(logfile,W_OK) && errno == ENOENT)
 	{
 		if ((flog = fopen(logfile, "w")) == NULL)
 		{
+			tries = -1;
 			print_msg(PRT_ERR,"Can not write file `%s' (%s)!\n", logfile, strerror(errno));
 		}
 		else
-		{
 			fclose(flog);
-			tries = 0;
+	}
 
-			while (((fd = open(logfile, O_WRONLY | O_APPEND | O_EXCL)) == -1) && (tries < 1000))
-				tries++;
+	if (tries != -1)
+	{
+		while (((fd = open(logfile, O_WRONLY | O_APPEND | O_EXCL)) == -1) && (tries < 1000))
+			tries++;
 
-			if ((tries < 1000) && ((flog = fdopen(fd, "a")) == (FILE *)NULL))
-				print_msg(PRT_ERR, "Can not open file `%s': %s!\n", logfile, strerror(errno));
-			else {
-				fprintf(flog, "%s|%-16s|%-16s|%5d|%10d|%10d|%5d|%c|%3d|%10ld|%10ld|%s|%d|%d|%g|%s|%8.2f|\n",
-				              s + 4, call[chan].num[CALLING], call[chan].num[CALLED],
-				              (int)(call[chan].disconnect - call[chan].connect),
-				              (int)call[chan].duration, (int)call[chan].connect,
-				              call[chan].aoce, call[chan].dialin ? 'I' : 'O',
-				              call[chan].cause, call[chan].ibytes, call[chan].obytes,
-				              LOG_VERSION, call[chan].si1, call[chan].si11,
-				              currency_factor, currency, call[chan].pay);
+		if ((tries >= 1000) || ((flog = fdopen(fd, "a")) == (FILE *)NULL))
+			print_msg(PRT_ERR, "Can not open file `%s': %s!\n", logfile, strerror(errno));
+		else
+		{
+			fprintf(flog, "%s|%-16s|%-16s|%5d|%10d|%10d|%5d|%c|%3d|%10ld|%10ld|%s|%d|%d|%g|%s|%8.2f|\n",
+			              s + 4, call[chan].num[CALLING], call[chan].num[CALLED],
+			              (int)(call[chan].disconnect - call[chan].connect),
+			              (int)call[chan].duration, (int)call[chan].connect,
+			              call[chan].aoce, call[chan].dialin ? 'I' : 'O',
+			              call[chan].cause, call[chan].ibytes, call[chan].obytes,
+			              LOG_VERSION, call[chan].si1, call[chan].si11,
+			              currency_factor, currency, call[chan].pay);
 
-				fclose(flog);
-			} /* else */
+			fclose(flog);
 		}
 	}
 

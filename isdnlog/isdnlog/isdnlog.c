@@ -1,4 +1,4 @@
-/* $Id: isdnlog.c,v 1.5 1997/04/06 22:04:22 luethje Exp $
+/* $Id: isdnlog.c,v 1.6 1997/04/08 00:02:14 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -17,9 +17,20 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
+ *
+ * $Log: isdnlog.c,v $
+ * Revision 1.6  1997/04/08 00:02:14  luethje
+ * Bugfix: isdnlog is running again ;-)
+ * isdnlog creates now a file like /var/lock/LCK..isdnctrl0
+ * README completed
+ * Added some values (countrycode, areacode, lock dir and lock file) to
+ * the global menu
+ *
  */
 
 #define _ISDNLOG_C_
+
+#include <linux/limits.h>
 
 #include "isdnlog.h"
 #ifdef POSTGRES
@@ -296,6 +307,7 @@ static void traceoptions()
 } /* traceoptions */
 #endif
 
+/*****************************************************************************/
 
 int set_options(int argc, char* argv[])
 {
@@ -678,12 +690,14 @@ static void restoreCharge()
 
 int main(int argc, char *argv[], char *envp[])
 {
-  register char *p;
-  register int	 i, res = 0;
-  auto 	   int   lastarg;
-  auto 	   char  fn[BUFSIZ];
+  register char  *p;
+  register int 	  i, res = 0;
+  auto 	   int    lastarg;
+  auto 	   char   fn[BUFSIZ];
+	auto     char   rlogfile[PATH_MAX];
+	auto     char **devices = NULL;
 #ifdef TESTCENTER
-  extern   void  test_center(void);
+  extern   void   test_center(void);
 #endif
 
 
@@ -706,7 +720,6 @@ int main(int argc, char *argv[], char *envp[])
   }
   else {
     p = strrchr(isdnctrl, C_SLASH);
-    sprintf(pidfile, "%s.%s", myshortname, p ? p + 1 : isdnctrl);
 
     if (add_socket(&sockets, -1) ||  /* reserviert fuer isdnctrl */
         add_socket(&sockets, -1) ||  /* reserviert fuer isdnctrl2 */
@@ -740,8 +753,6 @@ int main(int argc, char *argv[], char *envp[])
 
     } /* else */
 
-    if (replay)
-      strcat((char *)logfile, ".rep");
 
     openlog(myshortname, LOG_NDELAY, LOG_DAEMON);
 
@@ -791,9 +802,9 @@ int main(int argc, char *argv[], char *envp[])
           if (q931dmp) {
   	    mymsns         = 3;
   	    mycountry      = "+49";
-  	    myarea   	   = "6408";
-            currency   	   = NULL;
-            dual	   = 1;
+  	    myarea   	     = "6408";
+        currency   	   = NULL;
+        dual	         = 1;
   	    chargemax  	   = 0.0;
   	    connectmax 	   = 0.0;
   	    bytemax        = 0.0;
@@ -815,15 +826,22 @@ int main(int argc, char *argv[], char *envp[])
             restoreCharge();
           } /* if */
 
-          if (!replay) {
-            switch (i = create_runfile(pidfile)) {
+    			if (replay)
+					{
+						sprintf(rlogfile, "%s.rep", logfile);
+			      logfile = rlogfile;
+					}
+					else
+          {
+          	append_element(&devices,isdnctrl);
+
+            switch (i = handle_runfiles(myshortname,devices,START_PROG)) {
               case  0 : break;
 
-              case -1 : print_msg(PRT_ERR,"Can not open pid file: %s!\n", strerror(errno));
-            		Exit(36);
+              case -1 : print_msg(PRT_ERR,"Can not open pid/lock file: %s!\n", strerror(errno));
+            	          Exit(36);
 
-              default : print_msg(PRT_ERR,"Another %s is running with pid %d!\n", myshortname, i);
-            		Exit(37);
+              default : Exit(37);
             } /* switch */
           } /* if */
 

@@ -69,9 +69,11 @@ ENTRY1=blabla1
 entry2 = blabla2
 #     ^^^-------- Es duerfen vor und nach dem Gleichheitszeichen beliebig
 #                 Spaces und Tabulatoren verwendet werden.
-#                 Das erste erkannte Zeichen nach dem
-#                 Gleichheitszeichen darf weder ein space noch ein Tabublator
-#                 sein.
+#                 Diese werden vom Interpreter ignoriert.
+#                 Das erste Zeichen des Wertes der Variablen 
+#                 (nach Gleichheitszeichen) darf weder ein Leerzeichen noch ein
+#                 Tabublator sein.
+#                 Auch ein quoten mit '\' ist nicht moeglich.
   Entry3 = {
 #          ^----- Dieses Zeichen besagt, das dieser Eintrag ein oder mehrere
 #                 Untersektionen beinhaltet. Es MUSS in der gleichen Zeile
