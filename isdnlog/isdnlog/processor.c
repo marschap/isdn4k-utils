@@ -1,4 +1,4 @@
-/* $Id: processor.c,v 1.120 2000/12/21 09:56:47 leo Exp $
+/* $Id: processor.c,v 1.121 2001/03/13 14:39:30 leo Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.121  2001/03/13 14:39:30  leo
+ * added IIOCNETGPN support for 2.0 kernels
+ * s. isdnlog/kernel_2_0/README for more information (isdnlog 4.51)
+ *
  * Revision 1.120  2000/12/21 09:56:47  leo
  * modilp, ilp - show duration, bugfix
  * s. isdnlog/ilp/README for more information isdnlog 4.48
@@ -3399,6 +3403,10 @@ static void huptime(int chan, int setup)
       } /* else */
     } /* if */
   } /* if */
+  else if (hupctrl) {
+    sprintf(sx, "No HUP: HUP = %d c = %d *INTERFACE=%c", hupctrl, c, *INTERFACE);
+    info(chan, PRT_ERR, STATE_HUPTIMEOUT, sx);
+  }    
 } /* huptime */
 
 
@@ -3431,6 +3439,9 @@ static void oops(int where)
 
 } /* oops */
 
+#if IIOCNETGPN == -1
+extern int iiocnetgpn();
+#endif
 
 static int findinterface(void)
 {
@@ -3464,6 +3475,8 @@ static int findinterface(void)
 
     *p = 0;
     sscanf(s, "%9s", name);
+    if (*name != 'i') /* only ipppX is this ok?  -lt */
+      continue;
 
     memset(&phone, 0, sizeof(phone));
     if (net_dv == 0x05 || net_dv == 0x06)
@@ -3478,8 +3491,13 @@ static int findinterface(void)
       return -1; /* can't happen? Versions should have been checked */
       }
 #endif
+/* call emulation for 2.0 kernels */
+#if IIOCNETGPN == -1
+     /* IIOCDBGVAR works on isdnctrl */
+    rc = iiocnetgpn(sockets[ISDNCTRL].descriptor, &phone);
+#else    
     rc = ioctl(sockets[ISDNINFO].descriptor, IIOCNETGPN, &phone);
-
+#endif
     if (rc) {
       if (errno == EINVAL) {
 	info(chan, PRT_SHOWNUMBERS, STATE_HUPTIMEOUT, "Sorry, IIOCNETGPN not available in your kernel (2.2.12 or higher is required)");

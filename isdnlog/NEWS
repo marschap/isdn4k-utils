@@ -5,6 +5,10 @@ This file contains summaries for main changes and for new config options.
 For details please always consult Makefile.in in this directory.
 ========================================================================
 
+lt 2001.03.13
+  added IIOCNETGPN support for kernel 2.0
+  s. isdnlog/kernel_2_0/README
+
 
 lt 2000.06.27
 
