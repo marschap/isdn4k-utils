@@ -2364,6 +2364,11 @@ Dies wird in 4 Stufen versucht:
 
  4. Stufe: Der Rechner wird rebootet ("/sbin/reboot")
 
+In der Parameterdatei wird dieses Feature mit
+
+watchdog="value"
+
+aufgerufen.
 
 14.2 CHARGEMAX
 --------------

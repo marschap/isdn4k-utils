@@ -1,4 +1,4 @@
-## $Id: Makefile,v 1.1 1997/03/03 04:37:33 fritz Exp $
+## $Id: Makefile,v 1.2 1997/03/16 20:58:07 luethje Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,11 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile,v $
+## Revision 1.2  1997/03/16 20:58:07  luethje
+## Added the source code isdnlog. isdnlog is not working yet.
+## A workaround for that problem:
+## copy lib/policy.h into the root directory of isdn4k-utils.
+##
 ## Revision 1.1  1997/03/03 04:37:33  fritz
 ## Added files in isdnlog
 ##
@@ -31,6 +36,9 @@ MAKELIB  =1
 else
 PREFIXDIR=$(ROOTDIR)
 endif
+
+PREFIXDIR=..
+LIBAREA=1
 
 LIBISDNDIR  = $(PREFIXDIR)/lib
 ifdef MAKELIB
@@ -83,7 +91,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-#I4LVERSION     = 2.60
+VERSION     = 2.99.1
 
 ifdef POSTGRES
 CFLAGS     += -DPOSTGRES
@@ -109,7 +117,7 @@ CFLAGS       += -DOLDCONFFILE=\"$(OLDCONFFILE)\" \
                 -DLOGFILE=\"$(LOGFILE)\"         \
                 -DRELOADCMD=\"$(RELOADCMD)\"     \
                 -DSTOPCMD=\"$(STOPCMD)\"         \
-                -DI4LVERSION=\"$(I4LVERSION)\"   \
+                -DVERSION=\"$(VERSION)\"   \
                 -DCHARGEFILE=\"$(CHARGEFILE)\"   \
                 -DSERV_PORT=$(SERV_PORT) 	 \
                 -DREBOOTCMD=\"$(REBOOTCMD)\"     \
@@ -215,7 +223,7 @@ xinstall:       xall install
 #               @echo ""
 
 distrib:        xdistclean
-		cd .. && tar cf /tmp/isdnlog-$(I4LVERSION).tar    \
+		cd .. && tar cf /tmp/isdnlog-$(VERSION).tar    \
 		  isdnlog-$(I4LVERSION)/Makefile       \
 		  isdnlog-$(I4LVERSION)/Isdn           \
 		  isdnlog-$(I4LVERSION)/README         \

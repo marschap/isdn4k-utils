@@ -1,0 +1,25 @@
+.TH ISDNREP 1 "ISDN Utilities" "AKsoftware" \" -*- nroff -*-
+.SH NAME
+isdnrep \- Gebuehrenabrechnung
+.SH SYNOPSIS
+.B isdnrep
+[\-anvioN] [\-c Zone] [\-t Zeitabschnitt] [\-f logfile] [\-d Zeit] [\-p MSN]
+
+.SH DESCRIPTION
+.BR isdnrep
+wertet die von isdnlog(8) gesammelten Informationen aus, und erstellt
+ueber einen frei waehlbaren Zeitraum eine Gebuehrenabrechnung.
+
+Fuer weitere Informationen siehe README
+.SS OPTIONS
+.TP
+.I "\-V"
+.B isdnrep
+Print version information on standard output then exit successfully.
+.SH FILES
+.BR isdnrep
+wertet ohne die Option "-f" die Datei
+.BR "/var/log/isdn.log"
+aus.
+.SH BUGS
+Z.Zt. keine bekannt ;-)

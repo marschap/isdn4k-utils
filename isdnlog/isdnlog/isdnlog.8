@@ -1,0 +1,75 @@
+.TH ISDNLOG 8 "ISDN Utilities" "AKsoftware" \" -*- nroff -*-
+.SH NAME
+isdnlog \- Auswertung des ISDN D-Kanal Protokolls
+.SH SYNOPSIS
+.B isdnlog
+[\-asrSVTDPMnNbF2] [\-v verbose-level] [\-p Port] [\-x X-Meldungen]
+[\-m stderr-Meldungen] [\-l syslog-Meldungen] [\-t Clock stellen]
+[\-c X-Buffer-Size] [\-C Device] [\-w Poll-Rate] [\-h Chargeint-Offset]
+[\-W Columns] [\-H Einheiten] [\-f Conffile] [\-L X-Buffer-Size]
+[\-A Amtsholung]
+/dev/isdnctrlX | -
+.SH DESCRIPTION
+.BR isdnlog
+ermoeglicht in Zusammenhang mit isdn4linux eine vollstaendige
+Dekodierung des D-Kanal-Protokolls eines ISDN-Anschlusses.
+
+Neben einem Protokoll aller Verbindungen kann
+.B isdnlog
+bei beliebigen Events (Verbindung entstanden, Verbindung beendet usw.)
+Aktionen starten.
+
+Fuer weitere Informationen siehe README
+.SS OPTIONS
+.TP
+.I "\-V"
+.B isdnlog
+Print version information on standard output then exit successfully.
+.SS MELDUNGEN
+Bei den Optionen
+.I "\-m",
+.I "\-l"
+oder
+.I "\-x"
+kann jeweils eine beliebige Kombination aus folgenden Meldungstypen
+angegeben werden:
+.RE
+.sp
+.RS +.2i
+.ta 1.0i
+.nf
+	   1 PRT_ERR
+	   2 PRT_WARN
+	   4 PRT_INFO
+	   4 PRT_PROG_OUT
+	   4 PRT_NORMAL
+	   8 PRT_LOG
+	0x10 PRT_SHOWNUMBERS
+	0x20 PRT_SHOWAOCD
+	0x40 PRT_SHOWCONNECT
+	0x80 PRT_SHOWHANGUP
+       0x100 PRT_SHOWCAUSE
+       0x200 PRT_SHOWTIME
+       0x400 PRT_SHOWBYTE
+       0x800 PRT_SHOWIMON
+      0x1000 PRT_SHOWBEARER
+      0x2000 PRT_SHOWTICKS
+      0x4000 PRT_DEBUG_GENERAL
+      0x8000 PRT_DEBUG_DIAG
+     0x10000 PRT_DEBUG_INFO
+     0x20000 PRT_DEBUG_EXEC
+     0x40000 PRT_DEBUG_BUGS
+     0x80000 PRT_DEBUG_DECODE
+    0x100000 PRT_DEBUG_RING
+    0x200000 PRT_DEBUG_CS
+    0x400000 PRT_DEBUG_PROT
+    0x800000 PRT_NOTHING
+.fi
+.RE
+.sp
+.SH FILES
+.BR isdnlog
+benoetigt zwingend die Konfigurationsdatei
+.BR /etc/isdnlog/isdn.conf
+.SH BUGS
+Z.Zt. keine bekannt ;-)

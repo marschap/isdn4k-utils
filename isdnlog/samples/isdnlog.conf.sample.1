@@ -1,0 +1,22 @@
+# Konkretes Beispiel fuer eine "isdnlog.conf"
+#
+# Eine genaue Beschreibung dazu siehe "README", Kapitel 4.2.6
+#
+MYPREFIX = 0815
+PLAYER   = /usr/bin/auplay
+SOUNDS   = /usr/sounds
+
+START    = O R  L = $PLAYER ${SOUNDS}/unknown_ring.au,,8-14,16-22;\
+           IOA    = $PLAYER ${SOUNDS}/pay.au,,8-14,16-22;\
+           IOC  U = /usr/bin/who_is_it $2 $3;\
+           IOH    = $PLAYER ${SOUNDS}/hangup.au,,8-14,16-22;\
+           IORAH  = $PLAYER ${SOUNDS}/silent.au,,14-16,22-8;
+
+4711      MSN\#1        1 -     I RK = $PLAYER ${SOUNDS}/msn1_ring.au,5,8-14,16-22;\
+                          -     IOA  = $PLAYER ${SOUNDS}/msn1_pay.au,,8-14,16-22;
+4712      MSN\#2        1 -     I RK = $PLAYER ${SOUNDS}/msn2_ring.au,5,8-14,16-22;
+4713      MSN\#3        1 -     I RK = $PLAYER ${SOUNDS}/msn3_ring.au,5,8-14,16-22;
+
+*40441777 My_Provider   4 isdn0 OIR  = $PLAYER ${SOUNDS}/provider_ring.au;\
+                          	OICU = /usr/bin/get.mails.from.provider,300;\
+                          	OICU = /usr/bin/get.news.from.provider,1800;
