@@ -4,7 +4,7 @@
 
 <title>FAQ for isdn4linux
 <author>Matthias Hessler (<tt><htmlurl url="mailto:hessler@isdn4linux.de" name="hessler@isdn4linux.de"></tt>)
-<date>v2.0.93, 31. January 2005
+<date>v2.0.94, 20 February 2005
 <abstract>
 If you are reading this FAQ online, you may consider downloading the whole
 thing, and reading it offline (much cheaper). To download the latest
@@ -580,7 +580,7 @@ question <ref id="isdnlog_reversedcard" name="isdnlog_reversedcard">.
 
 Please note that you may also use the software ISDN Sniffer for this,
 see the German web site
-<url url="http://krypt.cs.uni-sb.de/~osk/isdnosk.html">.
+<url url="http://krypt.cs.uni-sb.de/projects/isdnsniffer/">.
 
 <sect1> feature_chargeint: Can isdn4linux hang up just before the ISDN  
 provider would charge me for another unit?  
@@ -1865,7 +1865,7 @@ howto (isdn.html) and a ISDN quick-install guide (isdnquick.html).
 <item>Homepage of linecontrol (manage isdn dialing similar to kisdn):
 <tt><url url="http://linecontrol.sourceforge.net"></tt>
 <item>(German) Homepage of ISDN Sniffer (read ISDN bus, e.g. via reversed
-card): <tt><url url="http://krypt.cs.uni-sb.de/~osk/isdnosk.html"></tt>
+card): <tt><url url="http://krypt.cs.uni-sb.de/projects/isdnsniffer/"></tt>
 <item>Homepage of Asterisk (Open Source Linux PBX):
 <tt><url url="http://www.asterisk.org"></tt>
 <item>Homepage of ivcall (send and receive fax/voice calls):
