@@ -1,11 +1,14 @@
 #!/bin/sh
-# $Id: isdnctrl.man.in,v 1.5 1997/07/23 20:39:17 luethje Exp $
+# $Id: isdnctrl.man.in,v 1.6 1997/07/30 20:09:27 luethje Exp $
 #
 # Generator for isdnctrl manpage
 # (C) 1997 Stefan Luethje
 #
 #
 # $Log: isdnctrl.man.in,v $
+# Revision 1.6  1997/07/30 20:09:27  luethje
+# the call "isdnctrl pppbind ipppX" will be bound the interface to X
+#
 # Revision 1.5  1997/07/23 20:39:17  luethje
 # added the option "force" for the commands delif and reset
 #
@@ -257,7 +260,11 @@ Unbinds a the previously bound interface "name".
 Binds the current interface to a ippp device (/dev/ipppX).
 This works only for syncronous ppp.
 The value must be a number.
-If no number is omitted, it shows the current binding.
+If no number is omitted and the interface name is called "ipppX", then
+it binds it to the same ippp interface.
+.TP 5
+.B pppunbind name
+Unbinds a the previously bound interface "name" to a ippp device.
 .TP 5
 .B busreject driverId [on|off]
 If switched on, isdn4linux replies a REJECT to incoming calls, it

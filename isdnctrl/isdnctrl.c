@@ -1,4 +1,4 @@
-/* $Id: isdnctrl.c,v 1.7 1997/07/23 20:39:15 luethje Exp $
+/* $Id: isdnctrl.c,v 1.8 1997/07/30 20:09:24 luethje Exp $
  * ISDN driver for Linux. (Control-Utility)
  *
  * Copyright 1994,95 by Fritz Elfert (fritz@wuemaus.franken.de)
@@ -21,6 +21,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnctrl.c,v $
+ * Revision 1.8  1997/07/30 20:09:24  luethje
+ * the call "isdnctrl pppbind ipppX" will be bound the interface to X
+ *
  * Revision 1.7  1997/07/23 20:39:15  luethje
  * added the option "force" for the commands delif and reset
  *
@@ -319,59 +322,6 @@ static void listif(int isdnctrl, char *name, int errexit)
                 nextlistif[0] = '\0';
 }
 
-static void get_setup(int isdnctrl, char *name)
-{
-        isdn_net_ioctl_cfg cfg;
-        char buffer[0x1000];
-        char *p;
-        FILE *f;
-
-        if (ioctl(isdnctrl, IIOCGETSET, &buffer) < 0) {
-                perror("ioctl GET_SETUP");
-                exit(-1);
-        }
-		if (strcmp(name,"-"))
-        	f = fopen(name, "w");
-		else
-			f = stdout;
-        if (!f) {
-                perror(name);
-                exit(-1);
-        }
-        p = buffer;
-		    fprintf(f,"[isdnctrl]\n");
-        while (strlen(p)) {
-          if (strlen(cfg.master)) {
-			      		fprintf(f, "  netslave=\"%s\"\n", p);
-					      fprintf(f, "    master=\"%s\"\n", p);
-				} else
-               	fprintf(f, "  netif=\"%s\"\n", p);
-                p += 10;
-                memcpy((char *) &cfg, p, sizeof(cfg));
-                fprintf(f, "    eazmsn=\"%s\"\n", cfg.eaz);
-                fprintf(f, "    secure=%d\n", cfg.secure);
-                fprintf(f, "    callback=%d\n", cfg.callback);
-                fprintf(f, "    huptimeout=%d\n", cfg.onhtime);
-                fprintf(f, "    ihup=%d\n", cfg.ihup);
-                fprintf(f, "    chargehup=%d\n", cfg.chargehup);
-                fprintf(f, "    l2prot=%d\n", cfg.l2_proto);
-                fprintf(f, "    l3prot=%d\n", cfg.l3_proto);
-                fprintf(f, "    encap=%d\n", cfg.p_encap);
-                fprintf(f, "    chargeint=%d\n", cfg.chargeint);
-                fprintf(f, "    slavedelay=%d\n", cfg.slavedelay);
-                fprintf(f, "    triggercps=%d\n", cfg.triggercps);
-                fprintf(f, "    exclusive=%d\n", cfg.exclusive);
-                fprintf(f, "    binddev=\"%s\"\n", cfg.drvid);
-                p += sizeof(cfg);
-                fprintf(f, "    outphones=\"%s\"\n", p);
-                p += (strlen(p) + 1);
-                fprintf(f, "    inphones=\"%s\"\n", p);
-                p += (strlen(p) + 1);
-        }
-		if (f != stdout)
-        	fclose(f);
-}
-
 int findcmd(char *str)
 {
 	int i;
@@ -392,7 +342,7 @@ int exec_args(int fd, int argc, char **argv)
 	int result;
 	FILE *iflst;
 	char *p;
-	char s[255];
+	char s[255], dummy[255];
 	isdn_net_ioctl_phone phone;
 	isdn_net_ioctl_cfg cfg;
 	isdn_ioctl_struct iocts;
@@ -423,9 +373,9 @@ int exec_args(int fd, int argc, char **argv)
 		}
 
 #ifdef I4L_CTRL_CONF
-		if (id != NULL && i != RESET && i != GETCONF && i != WRITECONF && i != READCONF) {
+		if (id != NULL && i != RESET && i != WRITECONF && i != READCONF) {
 #else
-		if (id != NULL && i != RESET && i != GETCONF) {
+		if (id != NULL && i != RESET) {
 #endif /* I4L_CTRL_CONF */
 			if (strlen(id) > 8) {
 				fprintf(stderr, "Interface name must not exceed 8 characters!\n");
@@ -546,14 +496,21 @@ int exec_args(int fd, int argc, char **argv)
                                 perror(id);
                                 return -1;
 			        }
-			        if (args > 1) {
-			        	sscanf(arg1, "%d", &cfg.pppbind);
-			        	if ((result = ioctl(fd, IIOCNETSCF, &cfg)) < 0) {
+			        if ((args == 2 && sscanf(arg1, "%d%s", &cfg.pppbind,dummy) == 1) ||
+			            (args == 1 && sscanf(id, "ippp%d%s", &cfg.pppbind,dummy) == 1)) {
+			       	 	if ((result = ioctl(fd, IIOCNETSCF, &cfg)) < 0) {
 			        		sprintf(s, "%s or %s", id, arg1);
 			        		perror(s);
 			        		return -1;
               	}
-			        }
+             	} else {
+             		if (args == 1)
+			       			fprintf(stderr,"Unknown interface `%s', use ipppX\n", id);
+			       		else
+			       			fprintf(stderr,"Unknown argument `%s'\n", arg1);
+			       		return -1;
+             	}
+
 			        printf("%s bound to ", id);
 			        if (cfg.pppbind >= 0)
 			        	printf("%d\n", cfg.pppbind);
@@ -722,13 +679,6 @@ int exec_args(int fd, int argc, char **argv)
 			        	return -1;
 			        }
 			        printf("Verbose-level set to %d.\n", i);
-			        break;
-
-			case GETCONF:
-			        if (args == 0)
-			        	id = "-";
-			        get_setup(fd, id);
-			        printf("Configuration written to %s.\n", id);
 			        break;
 
 			case HUPTIMEOUT:

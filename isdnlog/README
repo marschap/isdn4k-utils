@@ -427,7 +427,7 @@ Folgende Programme und Dateien werden durch den "make install" erstellt:
   /sbin/isdnlog
   /usr/sbin/isdnrep
   /etc/isdn/avon (wenn LIBAREA nicht definiert ist!)
-  /usr/lib/areacodes (wenn LIBAREA definiert ist!)
+  /usr/lib/areacode.dat (wenn LIBAREA definiert ist!)
 
 
 ACHTUNG: Durch die Syntaxaenderung und den Erweiterungen muessen folgende
@@ -532,11 +532,11 @@ CODELIB:
     CODELIB=avon
 
 AREALIB:
-  Enthaelt den vollen Pfad zu der Datei "areacodes". Diese Angabe ist
+  Enthaelt den vollen Pfad zu der Datei "areacode.dat". Diese Angabe ist
   optional und nur notwendig, wenn sich der Pfad nach der Compilation
   geaendert hat.
   Beispiel:
-    AREALIB=/usr/share/lib/areacodes
+    AREALIB=/usr/share/lib/areacode.dat
 
 AVONLIB:
   Enthaelt den vollen Pfad zu der Datei "avon". Diese Angabe ist

@@ -1,4 +1,4 @@
-/* $Id: isdnctrl.h,v 1.4 1997/07/23 20:39:16 luethje Exp $
+/* $Id: isdnctrl.h,v 1.5 1997/07/30 20:09:26 luethje Exp $
  * ISDN driver for Linux. (Control-Utility)
  *
  * Copyright 1994,95 by Fritz Elfert (fritz@wuemaus.franken.de)
@@ -21,6 +21,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnctrl.h,v $
+ * Revision 1.5  1997/07/30 20:09:26  luethje
+ * the call "isdnctrl pppbind ipppX" will be bound the interface to X
+ *
  * Revision 1.4  1997/07/23 20:39:16  luethje
  * added the option "force" for the commands delif and reset
  *
@@ -48,7 +51,7 @@ enum {
         BIND, UNBIND, PPPBIND, PPPUNBIND,
         BUSREJECT, MAPPING, SYSTEM, HANGUP,
         ADDPHONE, DELPHONE, LIST, EAZ,
-        VERBOSE, GETCONF, HUPTIMEOUT, CBDELAY,
+        VERBOSE, HUPTIMEOUT, CBDELAY,
         CHARGEINT, DIALMAX, SDELAY, CHARGEHUP,
         CBHUP, IHUP, SECURE, CALLBACK,
         L2_PROT, L3_PROT, ADDLINK, REMOVELINK,
@@ -87,7 +90,6 @@ cmd_struct cmds[] =
         {"list", "1"},
         {"eaz", "12"},
         {"verbose", "1"},
-        {"getconf", "01"},
         {"huptimeout", "12"},
         {"cbdelay", "12"},
         {"chargeint", "12"},
