@@ -1,5 +1,5 @@
-.\" $Id: isdn.conf.5.in,v 1.7 2002/02/03 14:37:53 paul Exp $
-.\" CHECKIN $Date: 2002/02/03 14:37:53 $
+.\" $Id: isdn.conf.5.in,v 1.8 2002/03/11 16:13:38 paul Exp $
+.\" CHECKIN $Date: 2002/03/11 16:13:38 $
 .TH isdn.conf 5 "@MANDATE_ISDN_CONF@" "ISDN 4 Linux @I4LVERSION@" "Linux System Administration"
 .PD 0
 
@@ -277,7 +277,8 @@ Number of isdn card.
 
 .TP
 %( %/ %)
-if the number of the remote side is known: this char; a blank otherwise.
+If the number of the remote side is known: this char, i.e. the (, /, or ) that comes after the %.
+If the number if not known, a blank is substituted.
 
 .SH EXAMPLE
 .nf

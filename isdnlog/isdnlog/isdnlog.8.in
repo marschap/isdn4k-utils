@@ -1,5 +1,5 @@
-.\" $Id: isdnlog.8.in,v 1.9 2000/09/15 09:10:10 paul Exp $
-.\" CHECKIN $Date: 2000/09/15 09:10:10 $
+.\" $Id: isdnlog.8.in,v 1.10 2002/03/11 16:13:38 paul Exp $
+.\" CHECKIN $Date: 2002/03/11 16:13:38 $
 .TH isdnlog 8 "@MANDATE_ISDNLOG8@" "ISDN 4 Linux @I4LVERSION@" "Linux System Administration"
 .PD 0
 .SH NAME
@@ -56,7 +56,7 @@ give several codes padded with a ":" (e.g. -A0:80:81:82).
 
 .TP
 .B \-B\fIvbn\fB	vbn="value"
-Set the provider preselectio to the given value. More prefixes may be separated
+Set the provider preselection to the given value. More prefixes may be separated
 by a ":".
 .br
 Values are e.g. "010" for DE, "10" for AT, "16:17" for NL, "9" for FR.
