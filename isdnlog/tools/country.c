@@ -1,4 +1,4 @@
-/* $Id: country.c,v 1.2 1999/06/03 18:51:11 akool Exp $
+/* $Id: country.c,v 1.3 1999/06/15 20:04:58 akool Exp $
  *
  * Länderdatenbank
  *
@@ -19,6 +19,12 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: country.c,v $
+ * Revision 1.3  1999/06/15 20:04:58  akool
+ * isdnlog Version 3.33
+ *   - big step in using the new zone files
+ *   - *This*is*not*a*production*ready*isdnlog*!!
+ *   - Maybe the last release before the I4L meeting in Nuernberg
+ *
  * Revision 1.2  1999/06/03 18:51:11  akool
  * isdnlog Version 3.30
  *  - rate-de.dat V:1.02-Germany [03-Jun-1999 19:49:22]
@@ -38,6 +44,17 @@
  * void initCountry(char *path, char **msg)
  *   initialisiert die Länderdatenbank
  *
+ * int getCountry (char *name, COUTRY **country)
+ *   sucht das Land oder die Vorwahl *name und
+ *   stellt den Eintrag in **country zur Verfügung.
+ *   Rückgabewert ist der phonetische Abstand
+ *   (0 = exakte Übereinsatimmung)
+ *
+ * int getCountrycode (char *number, char **name)
+ *   sucht die passende Auslandsvorwahl zu *number
+ *   liefert den Namen des Landes in *name
+ *   Rückgabewert ist die Länge der Vorwahl
+ *
  */
 
 #define _COUNTRY_C_
@@ -51,7 +68,7 @@
 #include <time.h>
 #include <unistd.h>
 #include <errno.h>
-#if 0
+#if 1
 extern const char *basename (const char *name);
 #endif
 #else
@@ -372,7 +389,7 @@ int getCountry (char *name, COUNTRY **country)
     }
     return UNKNOWN;
   }
-
+  
   xname=xlat(name);
 
   for (i=0; i<nCountry; i++) {
@@ -396,6 +413,27 @@ int getCountry (char *name, COUNTRY **country)
   return m;
 }
 
+int getCountrycode(char *number, char **name)
+{
+  int i, j, l, m;
+
+  if (name)
+    *name="";
+    
+  m=UNKNOWN;
+  for (i=0; i<nCountry; i++) {
+    for (j=0; j<Country[i].nCode; j++) {
+      l=strlen(Country[i].Code[j]);
+      if (l>m && strncmp (number, Country[i].Code[j], l)==0) {
+	m=l;
+	if (name) *name=Country[i].Name;
+      }
+    }
+  }
+  return m;
+}
+
+
 #ifdef COUNTRYTEST
 void main (int argc, char *argv[])
 {
@@ -407,11 +445,16 @@ void main (int argc, char *argv[])
   printf ("%s\n", msg);
 
   for (i=1; i<argc; i++) {
+#if 0
     d=getCountry(argv[i], &country);
     if (country==NULL)
       printf ("<%s> unknown country!\n", argv[i]);
     else
       printf ("<%s>=<%s> d=%d\n", argv[i], country->Name, d);
+#else
+    d=getCountrycode (argv[i], &msg);
+    printf ("<%s>=<%s> d=%d\n", argv[i], msg, d);  
+#endif
   }
 }
 #endif

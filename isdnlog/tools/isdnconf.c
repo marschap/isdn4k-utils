@@ -1,4 +1,4 @@
-/* $Id: isdnconf.c,v 1.28 1999/05/13 11:39:47 akool Exp $
+/* $Id: isdnconf.c,v 1.29 1999/06/15 20:05:08 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -20,6 +20,12 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnconf.c,v $
+ * Revision 1.29  1999/06/15 20:05:08  akool
+ * isdnlog Version 3.33
+ *   - big step in using the new zone files
+ *   - *This*is*not*a*production*ready*isdnlog*!!
+ *   - Maybe the last release before the I4L meeting in Nuernberg
+ *
  * Revision 1.28  1999/05/13 11:39:47  akool
  * isdnlog Version 3.28
  *
@@ -1071,8 +1077,8 @@ static int _readconfig(char *_myname)
   callfile       = NULL;
   callfmt        = NULL;
   holifile       = NULL;
-  rateconf       = NULL;
   countryfile	 = NULL;
+  rateconf       = NULL;
   ratefile       = NULL;
   lcdfile        = NULL;
   start_procs.infoargs = NULL;
@@ -1214,11 +1220,14 @@ static int Set_Globals(section *SPtr)
 		if ((CEPtr = Get_Entry(Ptr->entries,CONF_ENT_CALLFMT)) != NULL)
 			callfmt = CEPtr->value;
 
+		if ((CEPtr = Get_Entry(Ptr->entries,CONF_ENT_HOLIFILE)) != NULL)
+			holifile = CEPtr->value;
+
 		if ((CEPtr = Get_Entry(Ptr->entries,CONF_ENT_COUNTRYFILE)) != NULL)
 			countryfile = CEPtr->value;
 
-		if ((CEPtr = Get_Entry(Ptr->entries,CONF_ENT_HOLIFILE)) != NULL)
-			holifile = CEPtr->value;
+		if ((CEPtr = Get_Entry(Ptr->entries,CONF_ENT_ZONEFILE)) != NULL)
+			zonefile = CEPtr->value;
 
 		if ((CEPtr = Get_Entry(Ptr->entries,CONF_ENT_RATECONF)) != NULL)
 			rateconf = CEPtr->value;

@@ -1,4 +1,4 @@
-/* $Id: rate.h,v 1.8 1999/05/22 10:19:30 akool Exp $
+/* $Id: rate.h,v 1.9 1999/06/15 20:05:16 akool Exp $
  *
  * Tarifdatenbank
  *
@@ -19,6 +19,12 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rate.h,v $
+ * Revision 1.9  1999/06/15 20:05:16  akool
+ * isdnlog Version 3.33
+ *   - big step in using the new zone files
+ *   - *This*is*not*a*production*ready*isdnlog*!!
+ *   - Maybe the last release before the I4L meeting in Nuernberg
+ *
  * Revision 1.8  1999/05/22 10:19:30  akool
  * isdnlog Version 3.29
  *
@@ -115,12 +121,20 @@
 #define _RATE_H_
 
 typedef struct {
-  int        prefix;
-  int        zone;
-  time_t     start;
-  time_t     now;
+  int        prefix;   /* Providerkennung */
+  int        zone;     /* Zonennummer */
+  char      *src;      /* eigene Telefonnummer */
+  char      *dst;      /* gerufene Nummer */
+  time_t     start;    /* Verbindungsaufbau */
+  time_t     now;      /* momentane Zeit */
+  int        domestic; /* Inlandsverbindung */
+  int        _area;    /* interner(!) Länderindex */
+  int        _zone;    /* interner(!) Zonenindex */
   char      *Provider; /* Name des Providers */
+  char      *Country;  /* Landesname (Ausland) */
   char      *Zone;     /* Name der Zone */
+  char      *Service;  /* Name des Dienstes (S:-Tag) */
+  char      *Flags;    /* Inhalt des F:-Tags */
   char      *Day;      /* Wochen- oder Feiertag */
   char      *Hour;     /* Bezeichnung des Tarifs */
   double     Basic;    /* Grundpreis einer Verbindung */
@@ -132,15 +146,17 @@ typedef struct {
   time_t     Rest;     /* bezahlte, aber noch nicht verbrauchte Zeit */
 } RATE;
 
-int   is_sonderrufnummer(char *num);
-int   abroad(char *key, char *result);
+#define UNZONE -2
+
 void  exitRate(void);
-int   initRate(char *conf, char *dat, char *countries, char **msg, char **cmsg);
-char *getProvidername(int prefix);
-int   getZone(int prefix, char *num);
+int   initRate(char *conf, char *dat, char *dom, char **msg);
+char *getProvider(int prefix);
+int   getArea(int prefix, char *number);
+void  clearRate (RATE *Rate);
 int   getRate(RATE *Rate, char **msg);
 int   getLeastCost(RATE *Rate, int skip);
-int   guessZone (RATE *Rate, int units);
+int   guessZone (RATE *Rate, int aoc_units);
 char *explainRate (RATE *Rate);
+char *printRate (double value);
 
 #endif

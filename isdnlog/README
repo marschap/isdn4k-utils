@@ -3979,6 +3979,12 @@ Nun die Eintraege im einzelnen:
 Hiermit wird die Version der Tarifdatenbank angegeben.
 V:Versionsstring (Vorschlag: 1.0-Germany [18-Mar-1999])
 
+-> U:
+
+Damit wird das Währungsformat und die Anzahl der Dezimalstellen
+angegeben, z.B.
+U:%.3 DM
+
 -> P:
 
 Hiermit beginnt die Definition des (naechsten) Providers.
@@ -4023,6 +4029,15 @@ von isdnlog noch gesondert verwendet werden, und sollten daher zumindest
 genug Informationen enthalten, um eine Kontaktaufnahme mit der jeweiligen
 Telefongesellschaft zu ermoeglichen.
 
+-> D:
+
+Damit wird die Art der Inlandsverzonung (D steht für Domestic) angegeben. 
+Der Name wird mit dem Eintrag in der isdn.conf
+
+ZONEFILE=/usr/lib/isdn/zone-de-%s.dat 
+
+zum Pfad zur Verzonungstabelle zusammengebaut. Mehrere Provider können 
+dieselbe Verzonungstabelle nutzen.
 
 Nun folgen die eigentlichen Tarifinformationen. Es wird zuerst die
 Tarifzone, und danach die Kosten innerhalb dieser Zone angegeben. Es koennen

@@ -1,4 +1,4 @@
-/* $Id: isdnrep.c,v 1.67 1999/06/09 19:58:44 akool Exp $
+/* $Id: isdnrep.c,v 1.68 1999/06/15 20:04:31 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -24,6 +24,12 @@
  *
  *
  * $Log: isdnrep.c,v $
+ * Revision 1.68  1999/06/15 20:04:31  akool
+ * isdnlog Version 3.33
+ *   - big step in using the new zone files
+ *   - *This*is*not*a*production*ready*isdnlog*!!
+ *   - Maybe the last release before the I4L meeting in Nuernberg
+ *
  * Revision 1.67  1999/06/09 19:58:44  akool
  * isdnlog Version 3.31
  *  - Release 0.91 of zone-Database (aka "Verzonungstabelle")
@@ -910,7 +916,7 @@ int read_logfile(char *myname)
 
   /* FIXME: */
   initHoliday(holifile, NULL);
-  initRate("/etc/isdn/rate.conf", "/usr/lib/isdn/rate-de.dat", "/usr/lib/isdn/countries-de.dat", NULL, NULL);
+  initRate("/etc/isdn/rate.conf", "/usr/lib/isdn/rate-de.dat", "/usr/lib/isdn/rate-de-%s.gdbm", NULL);
   currency = strdup("DM");
   vbn = strdup("010");
   interns0 = 3;
@@ -1288,7 +1294,7 @@ static int print_bottom(double unit, char *start, char *stop)
                     else
                       *sx = 0;
 
-		    print_line3(NULL, "Provider", string, getProvidername(i),
+		    print_line3(NULL, "Provider", string, getProvider(i),
 		      usage_provider[i],
 		      double2clock(duration_provider[i]),
                       print_currency(pay_provider[i], 0), sx);
@@ -1745,7 +1751,7 @@ static int print_line(int status, one_call *cur_call, int computed, char *overla
 				          	{
                                                         register char *p;
 
-                                                        p = (cur_call->provider > 0) ? getProvidername(cur_call->provider) : "";
+                                                        p = (cur_call->provider > 0) ? getProvider(cur_call->provider) : "";
 
                                                         if (cur_call->dir == DIALIN)
                                                           p = "";

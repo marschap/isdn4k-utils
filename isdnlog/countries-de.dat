@@ -1,800 +1,1130 @@
-V:1.02-Germany [01-Jun-1999 20:52:35]
+V:1.02-German [03-Jun-1999 19:46:35]
 
-# $Id: countries-de.dat,v 1.10 1999/06/13 14:07:02 akool Exp $
-#
-+999:DUMMY
-+998:Usbekistan:Uzbekistan
-+996:Kirgisien
-+995:Georgien
-+994:Aserbaidschan
-+993:Turkmenistan
-+992:Tadschikistan:Tajikistan
-+98:Iran:Iran (Islamische Republik)
-+977:Nepal
-+976:Mongolei:Mongolische VR
-+975:Bhutan
-+974:Katar
-+973:Bahrain
-+97255:Israel Mobilfunk
-+97254:Israel Mobilfunk
-+97253:Israel Mobilfunk
-+97252:Israel Mobilfunk
-+97251:Israel Mobilfunk
-+97250:Israel Mobilfunk
-+972:Israel
-+971:Ver. Arabische Emirate:Vereinigte Arabische Emirate:Ver.Arab. Emirate:Vereinigte Arab. Emirate
-+969:Jemen, (Arab. Republik):Jemen (Arabische Republik):Jemen:Jemen Arab. Rep.
-+968:Oman:Oman (Sultanat)
-+967:Jemen, (Arab. Republik):Jemen (Arabische Republik):Jemen Arab. Rep.:Jemen
-+966:Saudi Arabien:Saudi-Arabien
-+965:Kuwait:Kuweit
-+964:Irak
-+963:Syrien:Syrien (Arabische Republik)
-+962:Jordanien
-+9613:Libanon Mobilfunk
-+961:Libanon
-+960:Malediven
-+95:Myanmar, Burma:Myanmar (Birma):Burma:Birma:Myanmar:Birma (Myanmar)
-+94:Sri Lanka
-+93:Afghanistan
-+92:Pakistan
-+91:Indien
-+905:Türkei Mobilfunk
-+90:Türkei:Türkei, Nordzypern:Zypern (türk.):Zypern (Nordzypern):Zypern (Türkisch)
-+8869:Taiwan Mobilfunk
-+886:China, (Taiwan):Taiwan:China (Taiwan)
-+8817:Iridium 008817:Iridium B:Iridium Iridium-Homed
-+8816:Iridium 008816:Iridium A:Iridium GSM-Homed
-+880:Bangladesch:Bangladesh
-+8748:Inmarsat A Daten/Fax
-+87476:Inmarsat Mini-M:Inmarsat Phone (Mini-M)
-+8746:Inmarsat M
-+8745:Inmarsat Aero
-+87439:Inmarsat B HSD
-+8743:Inmarsat B
-+8741:Inmarsat A
-+874:Atlantischer Ozean (West)
-+8738:Inmarsat A Daten/Fax
-+87376:Inmarsat Mini-M:Inmarsat Phone (Mini-M)
-+8736:Inmarsat M
-+8735:Inmarsat Aero
-+87339:Inmarsat B HSD
-+8733:Inmarsat B
-+8731:Inmarsat A
-+873:Indischer Ozean
-+8728:Inmarsat A Daten/Fax
-+87276:Inmarsat Mini-M:Inmarsat Phone (Mini-M)
-+8726:Inmarsat M
-+8725:Inmarsat Aero
-+87239:Inmarsat B HSD
-+8723:Inmarsat B
-+8721:Inmarsat A
-+872:Pazifischer Ozean
-+8718:Inmarsat A Daten/Fax
-+87176:Inmarsat Mini-M:Inmarsat Phone (Mini-M)
-+8716:Inmarsat M
-+8715:Inmarsat Aero
-+87139:Inmarsat B HSD
-+8713:Inmarsat B
-+8711:Inmarsat A
-+871:Atlantischer Ozean (Ost)
-+87076:Inmarsat Mini-M (Worldwide):Inmarsat Mini-M:Inmarsat Phone (Mini-M)
-+86886:China Mobilfunk
-+8613:China Mobilfunk
-+86:China, (Volksrepublik):China (Volksrepublik):China:V.R. China
-+856:Laos
-+855:Kambodscha
-+853:Macao:Macau
-+8529:Hong Kong Mobilfunk
-+8522:Hong Kong Mobilfunk
-+852:Hongkong:Hong Kong:Honkong
-+850:Korea (Dem. Republik), Nordkorea:Korea (Demokratische Republik):Korea (North):Korea (DVR):Nordkorea:Nordkorea (DVR):Korea (Nord):V.R. Korea
-+84:Vietnam
-+8227:Korea Rep. (South) Mobilfunk
-+821:Korea Rep. (South) Mobilfunk
-+82:Korea (Republik), Südkorea:Korea (Süd):Korea Rep. (South):Korea (Reublik):Südkorea:Südkorea (Republik):V.R. Korea:Republik Korea
-+8190:Japan Mobilfunk
-+8170:Japan Mobilfunk
-+813:Tokyo
-+81:Japan
-+800:international freephone:International Freephone
-+7902:Russische Föderat. (westl.):Rußland (westl.):GUS (Russische Föderation)
-+7901:Russische Föderat. (westl.):Rußland (westl.):GUS (Russische Föderation)
-+7863:Russische Föderat. (westl.):Rußland (westl.):GUS (Russische Föderation)
-+7862:Russische Föderat. (westl.):Rußland (westl.):GUS (Russische Föderation)
-+7861:Russische Föderat. (westl.):Rußland (westl.):GUS (Russische Föderation)
-+7820:Russische Föderat. (westl.):Rußland (westl.):GUS (Russische Föderation)
-+7817:Russische Föderat. (westl.):Rußland (westl.):GUS (Russische Föderation)
-+7816:Russische Föderat. (westl.):Rußland (westl.):GUS (Russische Föderation)
-+7815:Russische Föderat. (westl.):Rußland (westl.):GUS (Russische Föderation)
-+7814:Russische Föderat. (westl.):Rußland (westl.):GUS (Russische Föderation)
-+7812:St. Petersburg:Rußland St. Petersburg:Russische Föderat. (westl.):Rußland (westl.):GUS (Russische Föderation)
-+7811:Russische Föderat. (westl.):Rußland (westl.):GUS (Russische Föderation)
-+7590:Usbekistan:Uzbekistan
-+7543:Russische Föderat. (westl.):Rußland (westl.):GUS (Russische Föderation)
-+7517:Russische Föderat. (westl.):Rußland (westl.):GUS (Russische Föderation)
-+751285:St. Petersburg:Russische Föderat. (westl.):Rußland (westl.):GUS (Russische Föderation)
-+75112:Russische Föderat. (westl.):Rußland (westl.):GUS (Russische Föderation)
-+75110:Russische Föderat. (westl.):Rußland (westl.):GUS (Russische Föderation)
-+7510:Russische Föderat. (westl.):Rußland (westl.):GUS (Russische Föderation)
-+7505:Russische Föderat. (westl.):Rußland (westl.):GUS (Russische Föderation)
-+7503:Russische Föderat. (westl.):Rußland (westl.):GUS (Russische Föderation)
-+7502:Russische Föderat. (westl.):Rußland (westl.):GUS (Russische Föderation):Rußland Moskau Overlay:Russische Föderation / Moskau
-+7501:Russische Föderat. (westl.):Rußland (westl.):GUS (Russische Föderation):Rußland Moskau Overlay:Russische Föderation / Moskau
-+7436:Usbekistan:Uzbekistan
-+7433:Tadschikistan:Tajikistan
-+7431:Tadschikistan:Tajikistan
-+743:Usbekistan:Uzbekistan
-+74:Tadschikistan:Tajikistan
-+7379:Tadschikistan:Tajikistan
-+7377:Tadschikistan:Tajikistan
-+7376:Tadschikistan:Tajikistan
-+7375:Usbekistan:Uzbekistan
-+7374:Usbekistan:Uzbekistan
-+7373:Usbekistan:Uzbekistan
-+7372:Usbekistan:Uzbekistan
-+7371:Usbekistan:Uzbekistan
-+737:Usbekistan:Uzbekistan
-+7369:Usbekistan:Uzbekistan
-+7367:Usbekistan:Uzbekistan
-+7366:Usbekistan:Uzbekistan
-+7365:Usbekistan:Uzbekistan
-+7364:Tadschikistan:Tajikistan
-+7362:Usbekistan:Uzbekistan
-+7361:Usbekistan:Uzbekistan
-+7339:Kirgistan:Kirgisistan
-+7336:Kasachstan
-+7335:Kirgistan:Kirgisistan
-+7334:Kirgistan:Kirgisistan
-+7333:Kirgistan:Kirgisistan
-+7332:Kirgistan:Kirgisistan
-+7331:Kirgistan:Kirgisistan
-+7330:Kasachstan
-+733:Kirgistan:Kirgisistan
-+7329:Kasachstan
-+7328:Kasachstan
-+7327:Kasachstan
-+7326:Kasachstan
-+7325:Kasachstan
-+7324:Kasachstan
-+7323:Kasachstan
-+7322:Kasachstan
-+7321:Kasachstan
-+7319:Kirgistan:Kirgisistan
-+7318:Kasachstan
-+7317:Kasachstan
-+7316:Kasachstan
-+7315:Kasachstan
-+7314:Kasachstan
-+7313:Kasachstan
-+7312:Kasachstan
-+7311:Kasachstan
-+7310:Kasachstan
-+73:Kasachstan
-+7096:Russische Föderat. (westl.):Rußland (westl.):GUS (Russische Föderation)
-+7096:Moskau:Russische Föderat. (westl.):Rußland (westl.):GUS (Russische Föderation):Russische Föderation / Moskau
-+7095:Moskau:Rußland Moskau:Russische Föderat. (westl.):Rußland (westl.):GUS (Russische Föderation):Russische Föderation / Moskau
-+709246:Russische Föderat. (westl.):Rußland (westl.):GUS (Russische Föderation)
-+709245:Russische Föderat. (westl.):Rußland (westl.):GUS (Russische Föderation)
-+709244:Russische Föderat. (westl.):Rußland (westl.):GUS (Russische Föderation)
-+709243:Russische Föderat. (westl.):Rußland (westl.):GUS (Russische Föderation)
-+709237:Russische Föderat. (westl.):Rußland (westl.):GUS (Russische Föderation)
-+7091:Russische Föderat. (westl.):Rußland (westl.):GUS (Russische Föderation)
-+7087:Russische Föderat. (westl.):Rußland (westl.):GUS (Russische Föderation)
-+7086:Russische Föderat. (westl.):Rußland (westl.):GUS (Russische Föderation)
-+7085:Russische Föderat. (westl.):Rußland (westl.):GUS (Russische Föderation)
-+7084:Russische Föderat. (westl.):Rußland (westl.):GUS (Russische Föderation)
-+7083:Russische Föderat. (westl.):Rußland (westl.):GUS (Russische Föderation)
-+7082:Russische Föderat. (westl.):Rußland (westl.):GUS (Russische Föderation)
-+7081:Russische Föderat. (westl.):Rußland (westl.):GUS (Russische Föderation)
-+7074:Russische Föderat. (westl.):Rußland (westl.):GUS (Russische Föderation)
-+7073:Russische Föderat. (westl.):Rußland (westl.):GUS (Russische Föderation)
-+7072:Russische Föderat. (westl.):Rußland (westl.):GUS (Russische Föderation)
-+7071:Russische Föderat. (westl.):Rußland (westl.):GUS (Russische Föderation)
-+7011:Russische Föderat. (westl.):Rußland (westl.):GUS (Russische Föderation)
-+7:Russische Förderation (östl.):GUS (Russische Föderation):Rußland:Rußland (östl.):Russische Föderation
-+6998:Midway-Inseln:Midway Inseln
-+6996:Chatham-Inseln
-+6993:Wake Inseln
-+692:Marshallinseln:Marshall-Inseln:Marshall Inseln
-+691:Mikronesien
-+690:Tokelan:Tokelau:Tokelauinseln
-+689:Französisch-Polynesien:Franz. Polynesien:Französisch Polynesien
-+688:Tuvalu
-+687:Neukaledonien
-+686:Kiribati
-+685:Samoa (West):Western Samoa:Samoa (Western)
-+684:Amerikanisch-Samoa:Samoa (US)
-+683:Niue-Inseln:Niue Islands:Niue
-+682:Cookinseln:Cook Islands
-+681:Wallis und Futuna:Wallis und Futuna Inseln
-+680:Palau /Belau:Palau (=Belau):Palau:Belau:Palau Inseln:Palau-Inseln
-+679:Fidschi:Fidschi Inseln:Fidschi-Inseln
-+678:Vanuatu
-+677:Salomonen:Solomon Inseln:Solomonen:Salomoninseln
-+676:Tonga
-+675:Papua-Neuguinea:Papua Neu Guinea
-+674:Nauru
-+673:Brunei:Brunei Darussalam:Brunei-Darussalam
-+6724:Weihnachtsinsel (Australien):Weihnachtsinseln
-+6723:Norfolkinseln (Australien):Norfolk Islands:Norfolk:Norfolk-Inseln
-+6722:Kokosinseln (Australien)
-+6721:Antarktis:Davis (Antarktis):Mawson (Antarktis):Casey (Antarktis):Macquarrie Island (Antarktis)
-+672:Antarktis
-+671:Guam
-+670:Marianen:Saipan
-+66:Thailand
-+65:Singapur
-+649:Pitcairn Inseln
-+64:Neuseeland
-+63:Philippinen
-+62:Indonesien
-+6189162:Kokos-Inseln
-+61500:Australien Mobilfunk
-+6142:Australien Mobilfunk
-+6141:Australien Mobilfunk
-+6140:Australien Mobilfunk
-+6119:Australien Mobilfunk
-+6118:Australien Mobilfunk
-+6117:Australien Mobilfunk
-+6116:Australien Mobilfunk
-+6115:Australien Mobilfunk
-+6114:Australien Mobilfunk
-+6113:Australien Mobilfunk
-+6112:Australien Mobilfunk
-+61071:Australien Mobilfunk
-+61:Australien
-+60:Malaysia
-+599:Niederl. Antillen:Niederländische Antillen:Antillen (Niederlande)
-+598:Uruguay
-+597:Suriname
-+596:Martinique / Franz. Antillen:Martinique:Französische Antillen
-+595:Paraguay
-+594:Französisch-Guayana:Französisch Guyana:Franz. Guyana
-+5939:Ecuador Mobilfunk
-+593:Ecuador:Equador
-+592:Guyana:Guayana
-+591:Bolivien
-+590:Guadeloupe
-+5816:Venezuela Mobilfunk
-+5814:Venezuela Mobilfunk
-+58:Venezuela
-+573:Kolumbien Mobilfunk
-+57:Kolumbien
-+56:Chile
-+55664:Brasilien Mobilfunk
-+55663:Brasilien Mobilfunk
-+55:Brasilien
-+54414:Argentinien Mobilfunk
-+5440:Argentinien Mobilfunk
-+5430:Argentinien Mobilfunk
-+5428:Argentinien Mobilfunk
-+5426:Argentinien Mobilfunk
-+5422:Argentinien Mobilfunk
-+5421:Argentinien Mobilfunk
-+5420:Argentinien Mobilfunk
-+54197:Argentinien Mobilfunk
-+54193:Argentinien Mobilfunk
-+54167:Argentinien Mobilfunk
-+54156:Argentinien Mobilfunk
-+54153:Argentinien Mobilfunk
-+5414:Argentinien Mobilfunk
-+54:Argentinien
-+5399:Guantanamo Bay:Guatanamo Bay
-+5321:Guantanamo:Guatanamo Bay
-+53:Kuba
-+52:Mexiko:Mexico
-+51946:Peru Mobilfunk
-+51846:Peru Mobilfunk
-+51746:Peru Mobilfunk
-+51646:Peru Mobilfunk
-+51546:Peru Mobilfunk
-+51446:Peru Mobilfunk
-+51346:Peru Mobilfunk
-+51246:Peru Mobilfunk
-+5119:Peru Mobilfunk
-+5116:Peru Mobilfunk
-+5115:Peru Mobilfunk
-+5114:Peru Mobilfunk
-+51:Peru
-+509:Haiti
-+508:St. Pierre und Miquelon:Saint Pierre und Miquelon:St. Pierre and Miquelon:Saint Pierre et Miquelon
-+5076:Panama Mobilfunk
-+507:Panama
-+506:Costa Rica
-+505:Nicaragua
-+504:Honduras
-+5038:El Salvador Mobilfunk
-+503:El Salvador
-+502:Guatemala
-+501:Belize
-+500:Falklandinseln:Falkland-Inseln:Falkland Inseln
-+48:Polen
-+479:Norwegen Mobilfunk
-+47:Norwegen
-+468:Stockholm
-+4673:Schweden Mobilfunk
-+46709:Schweden Mobilfunk
-+46708:Schweden Mobilfunk
-+46707:Schweden Mobilfunk
-+46706:Schweden Mobilfunk
-+46705:Schweden Mobilfunk
-+46704:Schweden Mobilfunk
-+46703:Schweden Mobilfunk
-+46702:Schweden Mobilfunk
-+4610:Schweden Mobilfunk
-+46:Schweden
-+4574:Sønderjylland
-+4573:Sønderjylland
-+45503:Dänemark Mobilfunk
-+45502:Dänemark Mobilfunk
-+45501:Dänemark Mobilfunk
-+45409:Dänemark Mobilfunk
-+45408:Dänemark Mobilfunk
-+45407:Dänemark Mobilfunk
-+45406:Dänemark Mobilfunk
-+45405:Dänemark Mobilfunk
-+45404:Dänemark Mobilfunk
-+45403:Dänemark Mobilfunk
-+45402:Dänemark Mobilfunk
-+45401:Dänemark Mobilfunk
-+4530:Dänemark Mobilfunk
-+4528:Dänemark Mobilfunk
-+4526:Dänemark Mobilfunk
-+4523:Dänemark Mobilfunk
-+4522:Dänemark Mobilfunk
-+4521:Dänemark Mobilfunk
-+45209:Dänemark Mobilfunk
-+45208:Dänemark Mobilfunk
-+45207:Dänemark Mobilfunk
-+45206:Dänemark Mobilfunk
-+45205:Dänemark Mobilfunk
-+45204:Dänemark Mobilfunk
-+45203:Dänemark Mobilfunk
-+45202:Dänemark Mobilfunk
-+45201:Dänemark Mobilfunk
-+45:Dänemark
-+44991:Großbritannien Mobilfunk
-+44979:Großbritannien Mobilfunk
-+44976:Großbritannien Mobilfunk
-+44973:Großbritannien Mobilfunk
-+44966:Großbritannien Mobilfunk
-+44961:Großbritannien Mobilfunk
-+449589:Großbritannien Mobilfunk
-+449587:Großbritannien Mobilfunk
-+449586:Großbritannien Mobilfunk
-+449585:Großbritannien Mobilfunk
-+449584:Großbritannien Mobilfunk
-+449583:Großbritannien Mobilfunk
-+449582:Großbritannien Mobilfunk
-+44941:Großbritannien Mobilfunk
-+44930:Großbritannien Mobilfunk
-+44918:Großbritannien Mobilfunk
-+44910:Großbritannien Mobilfunk
-+4489:Großbritannien Mobilfunk
-+44881:Großbritannien Mobilfunk
-+44860:Großbritannien Mobilfunk
-+44853:Großbritannien Mobilfunk
-+44850:Großbritannien Mobilfunk
-+44839:Großbritannien Mobilfunk
-+44836:Großbritannien Mobilfunk
-+44831:Großbritannien Mobilfunk
-+44802:Großbritannien Mobilfunk
-+447:Großbritannien Mobilfunk
-+44696:Großbritannien Mobilfunk
-+4466:Großbritannien Mobilfunk
-+44640:Großbritannien Mobilfunk
-+44632:Großbritannien Mobilfunk
-+44589:Großbritannien Mobilfunk
-+44585:Großbritannien Mobilfunk
-+44469:Großbritannien Mobilfunk
-+44468:Großbritannien Mobilfunk
-+44467:Großbritannien Mobilfunk
-+444624:Großbritannien Mobilfunk
-+44448:Großbritannien Mobilfunk
-+44441:Großbritannien Mobilfunk
-+444325:Großbritannien Mobilfunk
-+44421:Großbritannien Mobilfunk
-+44411:Großbritannien Mobilfunk
-+44410:Großbritannien Mobilfunk
-+44403:Großbritannien Mobilfunk
-+44402:Großbritannien Mobilfunk
-+44401:Großbritannien Mobilfunk
-+44378:Großbritannien Mobilfunk
-+443749:Großbritannien Mobilfunk
-+443748:Großbritannien Mobilfunk
-+443747:Großbritannien Mobilfunk
-+443746:Großbritannien Mobilfunk
-+443744:Großbritannien Mobilfunk
-+443743:Großbritannien Mobilfunk
-+443742:Großbritannien Mobilfunk
-+443741:Großbritannien Mobilfunk
-+443740:Großbritannien Mobilfunk
-+44338:Großbritannien Mobilfunk
-+44336:Großbritannien Mobilfunk
-+44331:Großbritannien Mobilfunk
-+44181:London (Außenbezirk)
-+44171:London (Innenbezirk)
-+441693:Großbritannien Mobilfunk
-+441523:Großbritannien Mobilfunk
-+441459:Großbritannien Mobilfunk
-+441426:Großbritannien Mobilfunk
-+44139:Großbritannien Mobilfunk
-+44131:Edinburgh
-+44:Großbritannien, Insel Man, Kanalinseln:Großbritanien:Großbritannien und Nordirland:Insel Man (Großbritannien):Kanalinseln (Großbritannien):Großbritannien:Nordirland:Grossbritannien:Insel Man:Kanalinseln
-+43699:Österreich Mobilfunk
-+43676:Österreich Mobilfunk
-+43664:Österreich Mobilfunk
-+43663:Österreich Mobilfunk
-+4366211811:Österreich Auskunft:Auskunft Austria
-+431:Wien
-+43:Österreich
-+423:Liechtenstein:Lichtenstein
-+421:Slowakei, Slowakische Republik:Slowakische Rep.:Slowakei:Slowak. Rep.:Slowakische Republik
-+420:Tschechien, Tschechische Republik:Tschechische Rep.:Tschechische Republik:Tschechien:Tschech. Rep.
-+41800:Freephone Schweiz:Plus Freephone Service (Schweiz)
-+4179:Schweiz Mobilfunk
-+4178:Schweiz Mobilfunk
-+4176:Schweiz Mobilfunk
-+4175:Liechtenstein:Lichtenstein
-+4122:Genf
-+411:Zürich
-+41:Schweiz
-+40:Rumänien
-+39368:Italien Mobilfunk
-+39360:Italien Mobilfunk
-+39349:Italien Mobilfunk
-+39348:Italien Mobilfunk
-+39347:Italien Mobilfunk
-+39339:Italien Mobilfunk
-+39338:Italien Mobilfunk
-+39337:Italien Mobilfunk
-+39336:Italien Mobilfunk
-+39335:Italien Mobilfunk
-+39330:Italien Mobilfunk
-+39329:Italien Mobilfunk
-+39328:Italien Mobilfunk
-+3906:Vatikanstadt / Rom:Vatikanstadt
-+3902:Mailand
-+39:Italien
-+389:Mazedonien
-+387:Bosnien-Herzegowina
-+386:Slowenien
-+385:Kroatien
-+381:Jugoslawien(Serbien/Montenegro):Jugoslawien Montenegro:Jugoslawien:Serbien:Montenegro:Jugoslawien Serbien und Montenegro
-+380:Ukraine
-+379:Vatican City:Vatikanstadt
-+378:San Marino
-+377:Monaco
-+376:Andorra
-+375:Weissrussland, Belarus:Belarus (Weißrußland):Weißrußland (Belarus):Weißrußland/Belarus:Belarus:Weißrußland:Weißrussland
-+374:Armenien
-+373:Moldavien, Moldau (Republik):Moldau Republik:Moldavien:Moldawien:Moldau (Republik):Moldau
-+372:Estland
-+371:Lettland
-+370:Litauen
-+36:Ungarn
-+359:Bulgarien
-+358:Finnland:Finland
-+357:Zypern:Zypern (griech.):Zypern (Griechisch):Zypern (griechisch)
-+356:Malta
-+355:Albanien
-+354:Island
-+35389:Irland Mobilfunk
-+35388:Irland Mobilfunk
-+35387:Irland Mobilfunk
-+35386:Irland Mobilfunk
-+353:Irland
-+352:Luxemburg:Luxembourg
-+35196:Azoren
-+35195:Azoren
-+35192:Azoren
-+35191:Madeira
-+351:Portugal
-+350:Gibraltar
-+34977:Tarragona
-+34972:Gerona
-+34971:Mallorca
-+3496:Valencia
-+3494:Bilbao
-+3493:Barcelona
-+34928:Kanarische Inseln
-+34922:Teneriffa
-+3491:Madrid
-+34689:Spanien Mobilfunk
-+34670:Spanien Mobilfunk
-+34649:Spanien Mobilfunk
-+34639:Spanien Mobilfunk
-+34630:Spanien Mobilfunk
-+34629:Spanien Mobilfunk
-+34619:Spanien Mobilfunk
-+34617:Spanien Mobilfunk
-+34616:Spanien Mobilfunk
-+34610:Spanien Mobilfunk
-+34609:Spanien Mobilfunk
-+34608:Spanien Mobilfunk
-+34607:Spanien Mobilfunk
-+34606:Spanien Mobilfunk
-+34:Spanien
-+336:Frankreich Mobilfunk
-+331:Paris
-+33:Frankreich
-+3275:Belgien Mobilfunk
-+32496:Belgien Mobilfunk
-+32495:Belgien Mobilfunk
-+32486:Belgien Mobilfunk
-+32477:Belgien Mobilfunk
-+32476:Belgien Mobilfunk
-+32475:Belgien Mobilfunk
-+323:Antwerpen
-+322:Brüssel
-+3218:Belgien Mobilfunk
-+3217:Belgien Mobilfunk
-+3216:Leuven
-+32:Belgien
-+31800:Freephone Niederlande:Freephone NL:Freephone (Niederl.):Plus Freephone Service (Niederl.)
-+3170:Den Haag
-+3165:Niederlande Mobilfunk
-+3162:Niederlande Mobilfunk
-+3120:Amsterdam
-+3110:Rotterdam
-+31:Niederlande
-+30:Griechenland
-+299:Grönland
-+298:Färöer, Faeröer:Färöer:Faeroeer:Faeröer:Färöer Inseln:Faeroer:Faröer Inseln:Färöer
-+297:Aruba
-+291:Eritrea
-+290:St. Helena:Saint Helena
-+2897:Tristan da Cunha
-+27:Südafrika
-+2697:Komoren
-+269:Mayotte:Komoren
-+268:Swasiland
-+267:Botsuana, Botswana:Botswana Republic:Botsuana
-+266:Lesotho
-+265:Malawi
-+264:Namibia
-+263:Simbabwe
-+262:Reunion:Réunion
-+261:Madagaskar
-+260:Sambia
-+258:Mosambik:Mozambik
-+257:Burundi
-+256:Uganda
-+255:Tansania, Sansiba:Tansania:Sansibar
-+254:Kenia
-+253:Dschibuti
-+252:Somalia
-+251:Äthiopien
-+250:Ruanda
-+249:Sudan
-+248:Seyschellen, Seychellen:Seyschellen:Seychellen
-+247:Ascension:Ascension Inseln
-+246:Diego Garcia
-+245:Guinea-Bissau
-+244:Angola
-+243:Zaire:Kongo (Demokratische Republik):Kongo (DR)
-+242:Kongo:Kongo (Republik):Kongo (R)
-+241:Gabun
-+240:Äquatorial-Guinea:Äquatorialguinea
-+239:Sao Tome und Principe:Sao Tome et Principe
-+238:Cape Verde, Kap Verde:Kap Verde:Cape Verde
-+237:Kamerun
-+236:Zentralafrikanische Republik:Zentral Afrika (Rep.)
-+235:Tschad
-+234:Nigeria
-+233:Ghana
-+232:Sierra Leone
-+231:Liberia
-+230:Mauritius
-+229:Benin
-+228:Togo
-+227:Niger
-+226:Burkina Faso, Obervolta:Obervolta:Burkina Faso:Burkina-Faso
-+225:Elfenbeinküste, Cote de Ivoire:Cote d'Ivoire (Elfenbeinküste):Cote d'Ivoire:Elfenbeinküste
-+224:Guinea
-+223:Mali
-+222:Mauretanien
-+221:Senegal
-+220:Gambia
-+218:Libyen, Libysch-Arabische Dschamahirija:Libyen:Libysch-Arabische Dschamahirija:Lybien:Libysch-Arabische-Republik
-+216:Tunesien
-+213:Algerien
-+212:Marokko
-+20:Ägypten
-+1907:Alaska
-+1905:Kanada
-+1902:Kanada
-+1876:Jamaika:Jamaica
-+1869:St. Kitts und Nevis:St. Kitts & Nevis:Saint Kitts and Nevis:St Kitts:Nevis Islands:St. Kitts
-+1868:Trinidad und Tobago:Trinidad & Tobago:Trinidad and Tobago
-+1867:Kanada
-+184:Dominikanische Republik
-+1819:Kanada
-+1809971:Dominikanische Republik
-+1809970:Dominikanische Republik
-+1809946:Turks- und Caicosinseln:Turks and Caicos Islands
-+1809941:Turks- und Caicosinseln:Turks and Caicos Islands
-+1809908:Dominikanische Republik
-+1809818:Dominikanische Republik
-+1809814:Dominikanische Republik
-+1809813:Dominikanische Republik
-+1809810:Dominikanische Republik
-+1809808:Dominikanische Republik
-+1809807:Dominikanische Republik
-+1809806:Dominikanische Republik
-+180977:Amerikanische Jungferninseln:Jungferninseln (USA):Amerikan. Jungferninseln
-+1809719:Amerikanische Jungferninseln:Jungferninseln (USA):Amerikan. Jungferninseln
-+1809715:Amerikanische Jungferninseln:Jungferninseln (USA):Amerikan. Jungferninseln
-+1809714:Amerikanische Jungferninseln:Jungferninseln (USA):Amerikan. Jungferninseln
-+1809713:Amerikanische Jungferninseln:Jungferninseln (USA):Amerikan. Jungferninseln
-+1809712:Amerikanische Jungferninseln:Jungferninseln (USA):Amerikan. Jungferninseln
-+1809710:Dominikanische Republik
-+1809707:Dominikanische Republik
-+1809701:Dominikanische Republik
-+1809699:Dominikanische Republik
-+1809698:Dominikanische Republik
-+1809697:Dominikanische Republik
-+1809696:Dominikanische Republik
-+1809695:Dominikanische Republik
-+1809694:Dominikanische Republik
-+1809693:Amerikanische Jungferninseln:Jungferninseln (USA):Amerikan. Jungferninseln
-+1809692:Amerikanische Jungferninseln:Jungferninseln (USA):Amerikan. Jungferninseln
-+1809690:Amerikanische Jungferninseln:Jungferninseln (USA):Amerikan. Jungferninseln
-+1809689:Dominikanische Republik
-+1809688:Dominikanische Republik
-+1809687:Dominikanische Republik
-+1809686:Dominikanische Republik
-+1809685:Dominikanische Republik
-+1809684:Dominikanische Republik
-+1809683:Dominikanische Republik
-+1809682:Dominikanische Republik
-+1809681:Dominikanische Republik
-+1809680:Trinidad und Tobago:Trinidad & Tobago
-+180967:Trinidad und Tobago:Trinidad & Tobago
-+180966:Trinidad und Tobago:Trinidad & Tobago
-+180965:Trinidad und Tobago:Trinidad & Tobago
-+180964:Trinidad und Tobago:Trinidad & Tobago
-+180963:Trinidad und Tobago:Trinidad & Tobago
-+180962:Trinidad und Tobago:Trinidad & Tobago
-+1809619:Trinidad und Tobago:Trinidad & Tobago
-+1809616:Dominikanische Republik
-+1809615:Dominikanische Republik
-+1809612:Dominikanische Republik
-+1809611:Amerikanische Jungferninseln:Jungferninseln (USA):Amerikan. Jungferninseln
-+1809606:Dominikanische Republik
-+1809604:Dominikanische Republik
-+180959:Dominikanische Republik
-+180958:Dominikanische Republik
-+180957:Dominikanische Republik
-+180956:Dominikanische Republik
-+1809559:Dominikanische Republik
-+1809558:Dominikanische Republik
-+1809557:Dominikanische Republik
-+1809556:Dominikanische Republik
-+1809554:Dominikanische Republik
-+1809553:Dominikanische Republik
-+1809552:Dominikanische Republik
-+1809551:Dominikanische Republik
-+1809550:Dominikanische Republik
-+180954:Dominikanische Republik
-+180953:Dominikanische Republik
-+180952:Dominikanische Republik
-+1809519:Dominikanische Republik
-+1809518:Dominikanische Republik
-+1809513:Amerikanische Jungferninseln:Jungferninseln (USA):Amerikan. Jungferninseln
-+1809512:Dominikanische Republik
-+1809508:Dominikanische Republik
-+1809506:Dominikanische Republik
-+1809504:Dominikanische Republik
-+1809499:Britische Jungferninseln:Jungferninseln (GB):Jungferninseln (britisch)
-+1809496:Britische Jungferninseln:Jungferninseln (GB):Jungferninseln (britisch)
-+1809495:Britische Jungferninseln:Jungferninseln (GB):Jungferninseln (britisch)
-+1809494:Britische Jungferninseln:Jungferninseln (GB):Jungferninseln (britisch)
-+1809493:St. Vincent und Grenadinen:St. Vincent and the Grenadines:Saint Vincent und die Grenadinen:St. Vincent and Grenadines:St. Vincent und die Grenadien:St. Vincent Und Die Grenadinen
-+1809490:St. Vincent und Grenadinen:St. Vincent and the Grenadines:Saint Vincent und die Grenadinen:St. Vincent and Grenadines:St. Vincent und die Grenadien:St. Vincent Und Die Grenadinen
-+1809485:St. Vincent und Grenadinen:St. Vincent and the Grenadines:Saint Vincent und die Grenadinen:St. Vincent and Grenadines:St. Vincent und die Grenadien:St. Vincent Und Die Grenadinen
-+1809481:Dominikanische Republik
-+180947:Dominikanische Republik
-+1809458:St. Vincent und Grenadinen:St. Vincent and the Grenadines:Saint Vincent und die Grenadinen:St. Vincent and Grenadines:St. Vincent und die Grenadien:St. Vincent Und Die Grenadinen
-+1809457:St. Vincent und Grenadinen:St. Vincent and the Grenadines:Saint Vincent und die Grenadinen:St. Vincent and Grenadines:St. Vincent und die Grenadien:St. Vincent Und Die Grenadinen
-+1809456:St. Vincent und Grenadinen:St. Vincent and the Grenadines:Saint Vincent und die Grenadinen:St. Vincent and Grenadines:St. Vincent und die Grenadien:St. Vincent Und Die Grenadinen
-+1809449:Dominica:Domenica
-+1809448:Dominica:Domenica
-+1809447:Dominica:Domenica
-+1809446:Dominica:Domenica
-+1809445:Dominica:Domenica
-+1809444:Grenada
-+1809443:Grenada
-+1809442:Grenada
-+1809441:Grenada
-+1809440:Grenada
-+1809414:Dominikanische Republik
-+1809412:Dominikanische Republik
-+1809408:Grenada
-+1809407:Grenada
-+1809350:Dominikanische Republik
-+1809343:Dominikanische Republik
-+1809320:Dominikanische Republik
-+1809310:Dominikanische Republik
-+1809301:Dominikanische Republik
-+1809299:Dominikanische Republik
-+1809295:Dominikanische Republik
-+1809293:Dominikanische Republik
-+1809292:Dominikanische Republik
-+1809291:Dominikanische Republik
-+1809290:Dominikanische Republik
-+1809282:Dominikanische Republik
-+1809281:Dominikanische Republik
-+1809280:Dominikanische Republik
-+1809279:Dominikanische Republik
-+1809278:Dominikanische Republik
-+1809277:Dominikanische Republik
-+1809276:Dominikanische Republik
-+1809275:Dominikanische Republik
-+1809274:Dominikanische Republik
-+1809273:Dominikanische Republik
-+1809248:Dominikanische Republik
-+1809247:Dominikanische Republik
-+1809246:Dominikanische Republik
-+1809245:Dominikanische Republik
-+1809244:Dominikanische Republik
-+1809243:Dominikanische Republik
-+1809242:Dominikanische Republik
-+1809241:Dominikanische Republik
-+1809240:Dominikanische Republik
-+1809239:Dominikanische Republik
-+1809238:Dominikanische Republik
-+1809237:Dominikanische Republik
-+1809236:Dominikanische Republik
-+1809235:Dominica:Domenica
-+1809234:Dominikanische Republik
-+1809233:Dominikanische Republik
-+1809231:Dominikanische Republik
-+1809227:Dominikanische Republik
-+1809226:Dominikanische Republik
-+1809225:Dominikanische Republik
-+1809224:Dominikanische Republik
-+1809223:Dominikanische Republik
-+1809222:Dominikanische Republik
-+1809221:Dominikanische Republik
-+1809220:Dominikanische Republik
-+1809209:Dominikanische Republik
-+1809208:Dominikanische Republik
-+1809204:Dominikanische Republik
-+1809188:Dominikanische Republik
-+1809:Britische Jungferninseln:Jungferninseln (GB):Dominikanische Rep.:Jungferninseln (britisch)
-+1808:Hawaii:Hawai
-+1807:Kanada
-+1787:Puerto Rico
-+1784:St. Vincent und Grenadinen:St. Vincent and the Grenadines:Saint Vincent und die Grenadinen:St. Vincent and Grenadines:St. Vincent und die Grenadien:St. Vincent Und Die Grenadinen:St. Vincent & Grenadinen
-+1767:Dominica:Domenica
-+1758:St. Lucia:Saint Lucia
-+1709:Kanada
-+1705:Kanada
-+1671:Marianen (Guam):Guam
-+1670:Marianen (Saipan,Nord-):Nördliche Marianen:Marianen:Marianen (Saipan)
-+1664:Montserrat
-+1649:Turks- und Caicosinseln:Turks and Caicos Islands
-+1613:Kanada
-+1604:Kanada
-+1600:Kanada
-+1519:Kanada
-+1514:Kanada
-+1506:Kanada
-+1473:Grenada
-+1441:Bermuda
-+1418:Kanada
-+1416:Kanada
-+1403:Kanada
-+1345:Kaimaninseln:Cayman-Inseln:Kaiman Inseln
-+1340:Amerikanische Jungferninseln:Jungferninseln (USA):Amerikan. Jungferninseln
-+1306:Kanada
-+1284:Britische Jungferninseln:Jungferninseln (GB):Brit. Jungferninseln:Jungferninseln (britisch)
-+1268:Antigua und Barbuda:Antigua & Barbuda:Antigua & Barbadu:Antigua Und Barbadu
-+1264:Anguilla
-+1250:Kanada
-+1246:Barbados
-+1242:Bahamas
-+1204:Kanada
-+1:USA:Vereinigte Staaten (USA):Kanada:Vereinigte Staaten von Amerika
+N:Usbekistan
+A:Uzbekistan
+C:+998, +7590, +7436, +743, +7375, +7374, +7373, +7372, +7371, +737, +7369, +7367, +7366, +7365, +7362, +7361
+
+N:Kirgisien
+A:Kirgizia
+C:+996
+
+N:Georgien
+A:Georgia
+C:+995
+
+N:Aserbaidschan
+A:Azerbaijan
+C:+994
+
+N:Turkmenistan
+C:+993
+
+N:Tadschikistan
+A:Tajikistan
+C:+992, +7433, +7431, +74, +7379, +7377, +7376, +7364
+
+N:Iran
+C:+98
+
+N:Nepal
+C:+977
+
+N:Mongolei
+A:Mongolische VR, Mongolia
+C:+976
+
+N:Bhutan
+C:+975
+
+N:Katar
+A:Quatar
+C:+974
+
+N:Bahrain
+C:+973
+
+N:Israel Mobilfunk
+C:+97255, +97254, +97253, +97252, +97251, +97250
+
+N:Israel
+C:+972
+
+N:Ver. Arabische Emirate
+A:Vereinigte Arabische Emirate, Ver.Arab. Emirate, Vereinigte Arab. Emirate, United Arab Emirates
+C:+971
+
+N:Jemen (Arab. Republik)
+A:Jemen (Arabische Republik), Jemen, Jemen Arab. Rep.
+C:+969, +967
+
+N:Oman
+C:+968
+
+N:Saudi Arabien
+A:Saudi Arabia
+C:+966
+
+N:Kuwait
+A:Kuweit
+C:+965
+
+N:Irak
+A:Iraq
+C:+964
+
+N:Syrien
+A:Syria
+C:+963
+
+N:Jordanien
+A:Jordan
+C:+962
+
+N:Libanon Mobilfunk
+C:+9613
+
+N:Libanon
+A:Lebanon
+C:+961
+
+N:Malediven
+A:Maldives
+C:+960
+
+N:Myanmar Burma
+A:Myanmar (Birma), Burma, Birma, Myanmar, Birma (Myanmar)
+C:+95
+
+N:Sri Lanka
+C:+94
+
+N:Afghanistan
+C:+93
+
+N:Pakistan
+C:+92
+
+N:Indien
+A:India
+C:+91
+
+N:Türkei Mobilfunk
+C:+905
+
+N:Türkei
+A:Turkey
+C:+90
+
+N:Taiwan Mobilfunk
+C:+8869
+
+N:Taiwan
+A:China (Taiwan)
+C:+886
+
+N:Iridium 008817
+C:+8817
+
+N:Iridium 008816
+C:+8816
+
+N:Bangladesch
+A:Bangladesh
+C:+880
+
+N:Inmarsat A Daten/Fax
+C:+8748, +8738, +8728, +8718
+
+N:Inmarsat Mini-M
+A:Inmarsat Phone (Mini-M)
+# FIXME: +87076 ist eigentlich "Inmarsat Mini-M (Worldwide)"
+C:+87476, +87376, +87276, +87176, +87076
+
+N:Inmarsat M
+C:+8746, +8736, +8726, +8716
+
+N:Inmarsat Aero
+C:+8745, +8735, +8725, +8715
+
+N:Inmarsat B HSD
+C:+87439, +87339, +87239, +87139
+
+N:Inmarsat B
+C:+8743, +8733, +8723, +8713
+
+N:Inmarsat A
+C:+8741, +8731, +8721, +8711
+
+N:Atlantischer Ozean (West)
+A:Atlantic Ocean (west)
+C:+874
+
+N:Indischer Ozean
+A:Indian Ocean
+C:+873
+
+N:Pazifischer Ozean
+A:Pacific Ocean
+C:+872
+
+N:Atlantischer Ozean (Ost)
+A:Atlantic Ocean (east)
+C:+871
+
+N:China Mobilfunk
+C:+86886, +8613
+
+N:China
+A:China (Volksrepublik), China (People's Republic)
+C:+86
+
+N:Laos
+A:Lao
+C:+856
+
+N:Kambodscha
+A:Cambodia
+C:+855
+
+N:Macao
+A:Macau
+C:+853
+
+N:Hong Kong Mobilfunk
+C:+8529, +8522
+
+N:Hongkong
+C:+852
+
+N:Nordkorea
+A:Korea (Dem. Republik), Korea (Demokratische Republik), Korea (North), Korea (DVR), Nordkorea (DVR), Korea (Nord), V.R. Korea, Korea Democratic Republic (north)
+C:+850
+
+N:Vietnam
+C:+84
+
+N:Korea Rep. (South) Mobilfunk
+C:+8227, +821
+
+N:Südkorea
+A:Korea (Süd), Korea Rep. (South), Korea (Reublik), Südkorea (Republik), Republik Korea, Korea Republic (south), South Korea
+C:+82
+
+N:Japan Mobilfunk
+C:+8190, +8170
+
+N:Tokyo
+C:+813
+
+N:Japan
+C:+81
+
+N:international freephone
+C:+800
+
+N:Russische Föderat. (westl.)
+A:Rußland (westl.), GUS (Russische Föderation)
+C:+7902, +7901, +7863, +7862, +7861, +7820, +7817, +7816, +7815, +7814, +7811, +7543, +7517, +75112, +75110, +7510, +7505, +7503, +7502, +7501, +709246, +709245, +709244, +709243, +709237, +7091, +7087, +7086, +7085, +7084, +7083, +7082, +7081, +7074, +7073, +7072, +7071, +7011
+
+N:St. Petersburg
+C:+7812, +751285
+
+N:Kirgistan
+A:Kirgisistan
+C:+7339, +7335, +7334, +7333, +7332, +7331, +733, +7319
+
+N:Kasachstan
+C:+7336, +7330, +7329, +7328, +7327, +7326, +7325, +7324, +7323, +7322, +7321, +7318, +7317, +7316, +7315, +7314, +7313, +7312, +7311, +7310, +73
+
+N:Moskau
+C:+7096, +7095
+
+N:Russische Förderation (östl.)
+A:Rußland, Rußland (östl.), Russische Föderation, Russian Federation, Kazakhstan, Kyrgyzstan
+C:+7
+
+N:Midway-Inseln
+C:+6998
+
+N:Chatham-Inseln
+C:+6996
+
+N:Wake Inseln
+A:Wake Island
+C:+6993
+
+N:Marshallinseln
+A:Marshall Islands
+C:+692
+
+N:Mikronesien
+A:Micronesia
+C:+691
+
+N:Tokelan
+A:Tokelau, Tokelauinseln
+C:+690
+
+N:Französisch-Polynesien
+A:French Polynesia
+C:+689
+
+N:Tuvalu
+C:+688
+
+N:Neukaledonien
+A:New Caledonia
+C:+687
+
+N:Kiribati
+A:Kirlbati
+C:+686
+
+N:West-Samoa
+A:Samoa (West), Western Samoa
+C:+685
+
+N:Amerikanisch-Samoa
+A:Samoa, Samoa (US), American Samoa
+C:+684
+
+N:Niue-Inseln
+A:Niue Islands, Niue
+C:+683
+
+N:Cookinseln
+A:Cook Islands
+C:+682
+
+N:Wallis und Futuna
+A:Wallis- und Futuna-Inseln, Wallis & Fortuna Islands
+C:+681
+
+N:Palau /Belau
+A:Palau
+C:+680
+
+N:Fidschi
+A:Fiji
+C:+679
+
+N:Vanuatu
+C:+678
+
+N:Salomonen
+A:Solomon Inseln, Solomonen, Salomoninseln, Solomon Islands
+C:+677
+
+N:Tonga
+C:+676
+
+N:Papua-Neuguinea
+A:Papua New Guinea
+C:+675
+
+N:Nauru
+C:+674
+
+N:Brunei
+C:+673
+
+N:Weihnachtsinseln
+A:Weihnachtsinsel (Australien), Christmas Island, Christmas Island (Antarctica)
+C:+6724
+
+N:Norfolkinseln
+A:Norfolkinseln (Australien), Norfolk Islands, Norfolk, Norfolk Island, Norfolk Island (Antarctica)
+C:+6723
+
+N:Kokosinseln 
+A:Kokosinseln (Australien), Cocos Island, Cocos Island (Antarctica)
+C:+6722, +6189162
+
+N:Antarktis
+A:Antarctica
+C:+6721, +672
+
+N:Guam
+C:+671
+
+N:Thailand
+C:+66
+
+N:Singapur
+A:Singapore
+C:+65
+
+N:Pitcairn Inseln
+N:Pitcairn Islands
+C:+649
+
+N:Neuseeland
+A:New Zealand, New Zealand & Chatham Island
+C:+64
+
+N:Philippinen
+A:Phillipines
+C:+63
+
+N:Indonesien
+A:Indonesia
+C:+62
+
+N:Australien Mobilfunk
+C:+61500, +6142, +6141, +6140, +6119, +6118, +6117, +6116, +6115, +6114, +6113, +6112, +61071
+
+N:Australien
+A:Australia
+C:+61
+
+N:Malaysia
+C:+60
+
+N:Niederl. Antillen
+A:Niederländische Antillen, Antillen (Niederlande), Netherlands Antilles
+C:+599
+
+N:Uruguay
+C:+598
+
+N:Suriname
+A:Surinam
+C:+597
+
+N:Martinique / Franz. Antillen
+A:Martinique, Französische Antillen, Martinique (French Antilles)
+C:+596
+
+N:Paraguay
+C:+595
+
+N:Französisch-Guayana
+A:Französisch Guyana, Franz. Guyana, French Guyana
+C:+594
+
+N:Ecuador Mobilfunk
+C:+5939
+
+N:Ecuador
+A:Equador
+C:+593
+
+N:Guyana
+A:Guayana
+C:+592
+
+N:Bolivien
+A:Bolivia
+C:+591
+
+N:Guadeloupe
+A:Guadaloupe
+C:+590
+
+N:Venezuela Mobilfunk
+C:+5816, +5814
+
+N:Venezuela
+C:+58
+
+N:Kolumbien Mobilfunk
+C:+573
+
+N:Kolumbien
+A:Colombia
+C:+57
+
+N:Chile
+A:Chile & Easter Island
+C:+56
+
+N:Brasilien Mobilfunk
+C:+55664, +55663
+
+N:Brasilien
+A:Brazil
+C:+55
+
+N:Argentinien Mobilfunk
+C:+54414, +5440, +5430, +5428, +5426, +5422, +5421, +5420, +54197, +54193, +54167, +54156, +54153, +5414
+
+N:Argentinien
+A:Argentina
+C:+54
+
+N:Guantanamo Bay
+A:Guatanamo Bay, Guantanamo Bay (Cuba)
+C:+5399
+
+N:Guantanamo
+C:+5321
+
+N:Kuba
+A:Cuba
+C:+53
+
+N:Mexiko
+A:Mexico
+C:+52
+
+N:Peru Mobilfunk
+C:+51946, +51846, +51746, +51646, +51546, +51446, +51346, +51246, +5119, +5116, +5115, +5114
+
+N:Peru
+C:+51
+
+N:Haiti
+C:+509
+
+N:St. Pierre und Miquelon
+A:Saint Pierre und Miquelon, St. Pierre and Miquelon, Saint Pierre et Miquelon
+C:+508
+
+N:Panama Mobilfunk
+C:+5076
+
+N:Panama
+C:+507
+
+N:Costa Rica
+C:+506
+
+N:Nicaragua
+C:+505
+
+N:Honduras
+C:+504
+
+N:El Salvador Mobilfunk
+C:+5038
+
+N:El Salvador
+C:+503
+
+N:Guatemala
+C:+502
+
+N:Belize
+C:+501
+
+N:Falklandinseln
+A:Falkland Islands
+C:+500
+
+N:Deutschland
+A:Germany
+C:+49
+
+N:Frankfurt
+C:+496102
+
+N:Polen
+A:Poland
+C:+48
+
+N:Norwegen Mobilfunk
+C:+479
+
+N:Norwegen
+A:Norway
+C:+47
+
+N:Stockholm
+C:+468
+
+N:Schweden Mobilfunk
+C:+4673, +46709, +46708, +46707, +46706, +46705, +46704, +46703, +46702, +4610
+
+N:Schweden
+A:Sweden
+C:+46
+
+N:Sønderjylland
+C:+4574, +4573
+
+N:Dänemark Mobilfunk
+C:+45503, +45502, +45501, +45409, +45408, +45407, +45406, +45405, +45404, +45403, +45402, +45401, +4530, +4528, +4526, +4523, +4522, +4521, +45209, +45208, +45207, +45206, +45205, +45204, +45203, +45202, +45201
+
+N:Dänemark
+A:Denmark
+C:+45
+
+N:Großbritannien Mobilfunk
+C:+44991, +44979, +44976, +44973, +44966, +44961, +449589, +449587, +449586, +449585, +449584, +449583, +449582, +44941, +44930, +44918, +44910, +4489, +44881, +44860, +44853, +44850, +44839, +44836, +44831, +44802, +447, +44696, +4466, +44640, +44632, +44589, +44585, +44469, +44468, +44467, +444624, +44448, +44441, +444325, +44421, +44411, +44410, +44403, +44402, +44401, +44378, +443749, +443748, +443747, +443746, +443744, +443743, +443742, +443741, +443740, +44338, +44336, +44331, +441693, +441523, +441459, +441426, +44139
+
+N:London
+C:+44171,+44181
+
+N:Edinburgh
+C:+44131
+
+N:Großbritannien
+A:Großbritannien Insel Man Kanalinseln, Great Britain
+C:+44
+
+N:Nordirland
+C:+44 /* Fixme */
+
+N:Österreich
+A:Austria
+C:+43
+
+N:Wien
+A:Vienna
+C:+431,+43222
+
+N:Österreich Mobilfunk
+C:+43663, +43664, +43676, +43699
+
+N:Österreich Auskunft
+A:Auskunft Austria
+C:+4366211811
+
+N:Liechtenstein
+A:Lichtenstein
+C:+423, +4175
+
+N:Slowakische Republik
+A:Slowakei, Slowakische Rep., Slowak. Rep., Slovakia
+C:+421
+
+N:Tschechische Republik
+A:Tschechien, Tschechische Rep., Tschech. Rep., Czech Republic
+C:+420
+
+N:Freephone Schweiz
+A:Plus Freephone Service (Schweiz)
+C:+41800
+
+N:Schweiz Mobilfunk
+C:+4179, +4178, +4176
+
+N:Genf
+C:+4122
+
+N:Zürich
+C:+411
+
+N:Schweiz
+A:Switzerland
+C:+41
+
+N:Rumänien
+A:Romania
+C:+40
+
+N:Italien Mobilfunk
+C:+39368, +39360, +39349, +39348, +39347, +39339, +39338, +39337, +39336, +39335, +39330, +39329, +39328
+
+N:Vatikan
+A:Vatikanstadt / Rom, Vatikanstadt, Vatican City
+C:+379, +3906
+
+N:Mailand
+C:+3902
+
+N:Italien
+A:Italy
+C:+39
+
+N:Mazedonien
+A:Macedonia
+C:+389
+
+N:Bosnien-Herzegowina
+A:Bosnia and Hercegovina
+C:+387
+
+N:Slowenien
+A:Slovenia
+C:+386
+
+N:Kroatien
+A:Croatia
+C:+385
+
+N:Jugoslawien
+A:Jugoslawien (Serbien/Montenegro), Serbien, Montenegro, Yugoslavia (Servia & Montenegro)
+C:+381
+
+N:Ukraine
+C:+380
+
+N:San Marino
+C:+378
+
+N:Monaco
+C:+377
+
+N:Andorra
+C:+376
+
+N:Weissrussland
+A:Weissrussland Belarus, Belarus
+C:+375
+
+N:Armenien
+A:Armenia
+C:+374
+
+N:Moldavien Moldau (Republik)
+A:Moldau Republik, Moldavien, Moldawien, Moldau, Moldova
+C:+373
+
+N:Estland
+A:Estonia
+C:+372
+
+N:Lettland
+A:Latvia
+C:+371
+
+N:Litauen
+A:Lithuania
+C:+370
+
+N:Ungarn
+A:Hungary
+C:+36
+
+N:Bulgarien
+A:Bulgaria
+C:+359
+
+N:Finnland
+A:Finland
+C:+358
+
+N:Zypern
+A:Cyprus
+C:+357
+
+N:Malta
+C:+356
+
+N:Albanien
+A:Albania
+C:+355
+
+N:Island
+A:Iceland
+C:+354
+
+N:Irland Mobilfunk
+C:+35389, +35388, +35387, +35386
+
+N:Irland
+A:Ireland
+C:+353
+
+N:Luxemburg
+A:Luxembourg
+C:+352
+
+N:Luxemburg City
+C:+3521
+
+N:Azoren
+C:+35196, +35195, +35192
+
+N:Madeira
+C:+35191
+
+N:Portugal
+C:+351
+
+N:Gibraltar
+C:+350
+
+N:Tarragona
+C:+34977
+
+N:Gerona
+C:+34972
+
+N:Mallorca
+C:+34971
+
+N:Valencia
+C:+3496
+
+N:Bilbao
+C:+3494
+
+N:Barcelona
+C:+3493
+
+N:Kanarische Inseln
+C:+34928
+
+N:Teneriffa
+C:+34922
+
+N:Madrid
+C:+3491
+
+N:Spanien Mobilfunk
+C:+34689, +34670, +34649, +34639, +34630, +34629, +34619, +34617, +34616, +34610, +34609, +34608, +34607, +34606
+
+N:Spanien
+A:Spain
+C:+34
+
+N:Frankreich Mobilfunk
+C:+336
+
+N:Paris
+C:+331
+
+N:Frankreich
+A:France
+C:+33
+
+N:Belgien Mobilfunk
+C:+3275, +32496, +32495, +32486, +32477, +32476, +32475, +3218, +3217
+
+N:Antwerpen
+C:+323
+
+N:Brüssel
+C:+322
+
+N:Leuven
+C:+3216
+
+N:Belgien
+A:Belgium
+C:+32
+
+N:Freephone Niederlande
+A:Freephone NL, Freephone (Niederl.), Plus Freephone Service (Niederl.)
+C:+31800
+
+N:Den Haag
+C:+3170
+
+N:Niederlande Mobilfunk
+C:+3165, +3162
+
+N:Amsterdam
+C:+3120
+
+N:Rotterdam
+C:+3110
+
+N:Niederlande
+A:Netherlands
+C:+31
+
+N:Griechenland
+A:Greece
+C:+30
+
+N:Grönland
+A:Greenland
+C:+299
+
+N:Färöer-Inseln
+A:Färöer, Faroe Islands
+C:+298
+
+N:Aruba
+C:+297
+
+N:Eritrea
+C:+291
+
+N:St. Helena
+A:Saint Helena
+C:+290
+
+N:Tristan da Cunha
+C:+2897
+
+N:Südafrika
+A:South Africa
+C:+27
+
+N:Mayotte
+A:Komoren, Comoros
+C:+269
+
+N:Swasiland
+A:Swaziland
+C:+268
+
+N:Botsuana Botswana
+A:Botswana Republic, Botsuana, Botswana
+C:+267
+
+N:Lesotho
+C:+266
+
+N:Malawi
+C:+265
+
+N:Namibia
+C:+264
+
+N:Simbabwe
+A:Zimbabwe
+C:+263
+
+N:Reunion
+A:Réunion, Reunion Island
+C:+262
+
+N:Madagaskar
+A:Madagascar
+C:+261
+
+N:Sambia
+A:Zambia
+C:+260
+
+N:Mosambik
+A:Mozambik, Mozambique
+C:+258
+
+N:Burundi
+C:+257
+
+N:Uganda
+C:+256
+
+N:Tansania
+A:Sansiba, Tanzania
+C:+255
+
+N:Kenia
+A:Kenya
+C:+254
+
+N:Dschibuti
+A:Djibouti
+C:+253
+
+N:Somalia
+C:+252
+
+N:Äthiopien
+A:Ethiopia
+C:+251
+
+N:Ruanda
+A:Rwanda
+C:+250
+
+N:Sudan
+C:+249
+
+N:Seyschellen
+A:Seychellen, Seychelles Islands
+C:+248
+
+N:Ascension
+A:Ascension Isle
+C:+247
+
+N:Diego Garcia
+C:+246
+
+N:Guinea-Bissau
+C:+245
+
+N:Angola
+C:+244
+
+N:Zaire
+A:Kongo (Demokratische Republik), Kongo (DR)
+C:+243
+
+N:Kongo
+A:Congo
+C:+242
+
+N:Gabun
+A:Gabon
+C:+241
+
+N:Äquatorial-Guinea
+A:Equatorial Guinea
+C:+240
+
+N:Sao Tome und Principe
+A:Sao Tome et Principe, Sao Tome and Principa
+C:+239
+
+N:Cape Verde
+A:Kap Verde
+C:+238
+
+N:Kamerun
+A:Cameroon
+C:+237
+
+N:Zentralafrikanische Republik
+A:Zentral Afrika (Rep.), Central African Republic
+C:+236
+
+N:Tschad
+A:Chad, Chad Republic
+C:+235
+
+N:Nigeria
+C:+234
+
+N:Ghana
+C:+233
+
+N:Sierra Leone
+C:+232
+
+N:Liberia
+C:+231
+
+N:Mauritius
+C:+230
+
+N:Benin
+C:+229
+
+N:Togo
+C:+228
+
+N:Niger
+A:Niger Republic
+C:+227
+
+N:Burkina Faso Obervolta
+A:Obervolta, Burkina Faso
+C:+226
+
+N:Elfenbeinküste Cote de Ivoire
+A:Cote d'Ivoire (Elfenbeinküste), Cote d'Ivoire, Elfenbeinküste, Ivory Coast
+C:+225
+
+N:Guinea
+C:+224
+
+N:Mali
+C:+223
+
+N:Mauretanien
+A:Mauritania
+C:+222
+
+N:Senegal
+A:Senegal Republic
+C:+221
+
+N:Gambia
+C:+220
+
+N:Libyen
+A:Libysch-Arabische Dschamahirija, Libya
+C:+218
+
+N:Tunesien
+A:Tunesia
+C:+216
+
+N:Algerien
+A:Algeria
+C:+213
+
+N:Marokko
+A:Marocco
+C:+212
+
+N:Ägypten
+A:Egypt
+C:+20
+
+N:Alaska
+C:+1907
+
+N:Kanada
+A:Canada
+C:+1905, +1902, +1867, +1819, +1807, +1709, +1705, +1613, +1604, +1600, +1519, +1514, +1506, +1418, +1416, +1403, +1306, +1250, +1204
+
+N:Jamaika
+A:Jamaica
+C:+1876
+
+N:St. Kitts und Nevis
+A:St. Kitts & Nevis, Saint Kitts und Nevis, Saint Kitts and Nevis, St Kitts, Nevis Islands
+C:+1869
+
+N:Trinidad und Tobago
+A:Trinidad & Tobago, Trinidad and Tobago
+C:+1868, +1809680, +180967, +180966, +180965, +180964, +180963, +180962, +1809619
+
+N:Dominikanische Republik
+A:Dominican Republic
+C:+184, +1809971, +1809970, +1809908, +1809818, +1809814, +1809813, +1809810, +1809808, +1809807, +1809806, +1809710, +1809707, +1809701, +1809699, +1809698, +1809697, +1809696, +1809695, +1809694, +1809689, +1809688, +1809687, +1809686, +1809685, +1809684, +1809683, +1809682, +1809681, +1809616, +1809615, +1809612, +1809606, +1809604, +180959, +180958, +180957, +180956, +1809559, +1809558, +1809557, +1809556, +1809554, +1809553, +1809552, +1809551, +1809550, +180954, +180953, +180952, +1809519, +1809518, +1809512, +1809508, +1809506, +1809504, +1809481, +180947, +1809414, +1809412, +1809350, +1809343, +1809320, +1809310, +1809301, +1809299, +1809295, +1809293, +1809292, +1809291, +1809290, +1809282, +1809281, +1809280, +1809279, +1809278, +1809277, +1809276, +1809275, +1809274, +1809273, +1809248, +1809247, +1809246, +1809245, +1809244, +1809243, +1809242, +1809241, +1809240, +1809239, +1809238, +1809237, +1809236, +1809234, +1809233, +1809231, +1809227, +1809226, +1809225, +1809224, +1809223, +1809222, +1809221, +1809220, +1809209, +1809208, +1809204, +1809188
+
+N:Turks- und Caicosinseln
+A:Turks and Caicos Islands, Turks & Caicos Islands
+C:+1809946, +1809941, +1649
+
+N:Amerikanische Jungferninseln
+A:Jungferninseln (USA), Amerikan. Jungferninseln, American Virgin Isles
+C:+180977, +1809719, +1809715, +1809714, +1809713, +1809712, +1809693, +1809692, +1809690, +1809611, +1809513, +1340
+
+N:Britische Jungferninseln
+A:Jungferninseln (GB), Jungferninseln (britisch), British Virgin Isles
+C:+1809499, +1809496, +1809495, +1809494, +1809, +1284
+
+N:St. Vincent und Grenadinen
+A:St. Vincent and the Grenadines, Saint Vincent und die Grenadinen, St. Vincent and Grenadines, St. Vincent und die Grenadien, St. Vincent Und Die Grenadinen
+C:+1809493, +1809490, +1809485, +1809458, +1809457, +1809456, +1784
+
+N:Dominica
+A:Domenica
+C:+1809449, +1809448, +1809447, +1809446, +1809445, +1809235, +1767
+
+N:Grenada
+C:+1809444, +1809443, +1809442, +1809441, +1809440, +1809408, +1809407, +1473
+
+N:Hawaii
+A:Hawai
+C:+1808
+
+N:Puerto Rico
+C:+1787
+
+N:St. Lucia
+A:Saint Lucia
+C:+1758
+
+N:Marianen (SaipanNord-)
+A:Nördliche Marianen, Marianen, Marianen (Saipan), Saipan, Salpan
+C:+1670, +1671
+
+N:Montserrat
+C:+1664
+
+N:Bermuda
+C:+1441
+
+N:Kaimaninseln
+A:Cayman-Inseln, Cayman Islands
+C:+1345
+
+N:Antigua und Barbuda
+A:Antigua & Barbuda, Antigua & Barbadu, Antigua und Barbadu
+C:+1268
+
+N:Anguilla
+C:+1264
+
+N:Barbados
+C:+1246
+
+N:Bahamas
+C:+1242
+
+N:USA
+A:Vereinigte Staaten (USA), United States of America, United States of America & Canada
+C:+1

@@ -1,4 +1,4 @@
-/* $Id: tools.h,v 1.44 1999/06/13 14:08:28 akool Exp $
+/* $Id: tools.h,v 1.45 1999/06/15 20:05:22 akool Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,12 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools.h,v $
+ * Revision 1.45  1999/06/15 20:05:22  akool
+ * isdnlog Version 3.33
+ *   - big step in using the new zone files
+ *   - *This*is*not*a*production*ready*isdnlog*!!
+ *   - Maybe the last release before the I4L meeting in Nuernberg
+ *
  * Revision 1.44  1999/06/13 14:08:28  akool
  * isdnlog Version 3.32
  *
@@ -465,6 +471,7 @@
 #include "policy.h"
 #include "libisdn.h"
 #include "holiday.h"
+#include "country.h"
 #include "rate.h"
 
 /****************************************************************************/
@@ -746,9 +753,10 @@
 #define CONF_ENT_CALLFMT  "CALLFMT"
 
 #define CONF_ENT_HOLIFILE    "HOLIDAYS"
+#define CONF_ENT_COUNTRYFILE "COUNTRYFILE"
+#define CONF_ENT_ZONEFILE    "ZONEFILE"
 #define CONF_ENT_RATECONF    "RATECONF"
 #define CONF_ENT_RATEFILE    "RATEFILE"
-#define CONF_ENT_COUNTRYFILE "COUNTRYFILE"
 #define CONF_ENT_LCDFILE     "LCDFILE"
 
 #define CONF_ENT_VBOXVER  "VBOXVERSION"
@@ -1025,6 +1033,7 @@ _EXTERN char* callfile  = NULL;
 _EXTERN char* callfmt   = NULL;
 _EXTERN char* holifile  = NULL;
 _EXTERN char* countryfile = NULL;
+_EXTERN char* zonefile  = NULL;
 _EXTERN char* rateconf  = NULL;
 _EXTERN char* ratefile  = NULL;
 _EXTERN char* lcdfile   = NULL;
@@ -1046,8 +1055,9 @@ _EXTERN char* rebootcmd;
 _EXTERN char* logfile;
 _EXTERN char* callfile;
 _EXTERN char* callfmt;
-_EXTERN char* countryfile;
 _EXTERN char* holifile;
+_EXTERN char* countryfile;
+_EXTERN char* zonefile;
 _EXTERN char* rateconf;
 _EXTERN char* ratefile;
 _EXTERN char* lcdfile;

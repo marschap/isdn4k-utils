@@ -127,7 +127,7 @@ void rate_1001(void) {
 
   double Tarif[] = { 1.116, 1.056, 0.996, 0.936, 0.816 };
 
-  char *Zone[][2] = {{"FreePhone", "+43800" },
+  char *Zone[][2] = {{ "FreePhone", "122,133,144,+43800" },
 		     { "Regionalzone", "+43660" }, 
 		     { "Fernzone 1", "" },
 		     { "Fernzone 2", "Österreich" },
@@ -202,6 +202,7 @@ void rate_1001(void) {
     rprintf ("Telekom Austria", "P:01,%d", t+1);
     sprintf (s, "%s (ATS %.3f / Impuls)", Name[t], Tarif[t]);
     rprintf (s, "C:Tarif:");
+    rprintf ("# Verzonung", "D:pta");
     for (z=0; z<COUNT(Zone); z++) {
       printf ("\n");
       rprintf (Zone[z][0], "Z:%d", z);
@@ -273,6 +274,7 @@ void rate_1002(void) {
   
   printf ("\n");
   rprintf ("UTA", "P:02");
+  rprintf ("Bundesland-Verzonung nicht implementiert", "C:Fixme:");
   for (z=0; z<COUNT(Zone); z++) {
     rprintf (Zone[z][0], "Z:%d", z+1);
     rprintf ("Geschäftszeit", "T:*/*=%.2f(60)/1", Tarif[z][0]);
@@ -548,6 +550,7 @@ void rate_1012(void) {
   
   printf ("\n");
   rprintf ("1012", "P:12");
+  rprintf ("# Verzonung", "D:1012");
   for (z=0; z<COUNT(Zone); z++) {
     rprintf (Zone[z][0], "Z:%d", z+1);
     if (z<3) {
@@ -776,8 +779,7 @@ void rate_1066(void) {
 		     { "Mobilfunk", "+43663,+43664,+43676,+43699" },
 		     { "Euro 1", "Deutschland, Frankreich, Großbritannien, Nordirland, Italien, Liechtenstein, Schweiz, Slowakei, Slowenien, Tschechien, Ungarn" },
 		     { "Euro 2", "Andorra, Belarus, Belgien, Bosnien-Herzegowina, Bulgarien, Dänemark, Estland, Finnland, Griechenland, Irland, Jugoslawien, Kroatien, Luxemburg, Monaco, Niederlande, Norwegen, Polen, Portugal, Rumänien, San Marino, Schweden, Spanien, Tunesien, Türkei, Ukraine, Vatikanstadt, Zypern" },
-		     /* Fixme: nur Stadt Luxemburg! (wie nennen wir's?) */
-		     { "Euro City", "Amsterdam, Brüssel, Frankfurt, London, Luxemburg, Mailand, Paris, Zürich" },
+		     { "Euro City", "Amsterdam, Brüssel, Frankfurt, London, Luxemburg City, Mailand, Paris, Zürich" },
 		     { "Welt 1", "Hawaii, Amerikanische Jungferninseln, Puerto Rico, Vereinigte Staaten (USA), Kanada" },
 		     { "Welt 2", "Albanien, Antarktis, Armenien, Aserbaidschan, Australien, Bahamas, Chile, Weihnachtsinseln, Kokosinseln, Dominikanische Republik, Georgien, Gibraltar, Guadeloupe, Französisch-Guayana, Hongkong, Island, Israel, Japan, Lettland, Libyen, Litauen, Mazedonien, Malaysia, Malta, Marokko, Martinique, Mayotte, Moldau, Neuseeland, Niederländische Antillen, Philippinen, Russische Föderation, Reunion, St. Pierre und Miquelon, Singapur, Südafrika, Südkorea, Saipan" },
 		     { "Welt 3", "Ägypten, Angola, Argentinien, Aruba, Ascension, Bahrain, Barbados, Belize, Benin, Bermuda, Bhutan, Bolivien, Botsuana, Brasilien, Brunei, Burkina Faso, Burundi, Caymaninseln, China, Costa Rica, Dschibuti, Dominica, Ecuador, El Salvador, Färöer-Inseln, Falklandinseln, Fidschi, Französisch-Polynesien, Gabun, Gambia, Ghana, Grenada, Grönland, Guatemala, Haiti, Honduras, Indien, Indonesien, Iran, Jamaika, Jordanien, Katar, Kenia, Kirgisistan, Kolumbien, Nordkorea, Kongo, Kuba, Kuwait, Laos, Lesotho, Libanon, Liberia, Macau, Malawi, Malediven, Marshallinseln, Mauretanien, Mauritius, Mexiko, Montserrat, Nepal, Neukaledonien, Nicaragua, Nigeria, Norfolk-Inseln, Panama, Paraguay, Peru, Ruanda, Sambia, Saudi-Arabien, Salomonen, Simbabwe, Somalia, St. Helena, Saint Kitts und Nevis, St. Lucia, Saint Vincent und die Grenadinen, Sudan, Syrien, Tadschikistan, Tansania, Taiwan, Thailand, Trinidad und Tobago, Turkmenistan, Uruguay, Usbekistan, Vanuatu, Venezuela, Vereinigte Arabische Emirate" },
@@ -853,8 +855,8 @@ void main (int argc, char *argv[])
   printf ("# Many thanks to Daniela Bruder <dbruder@sime.com>\n");
   printf ("# for collecting and preparing most of the call charges.\n\n\n");
 
-  printf ("V:1.40-Austria [01-Jun-1999]\n\n");
-  printf ("F:%%.3f öS\n");
+  printf ("V:1.56-Austria [11-Jun-1999]\n\n");
+  printf ("U:%%.3f öS\n");
 
 #if 0
   rate_1066();

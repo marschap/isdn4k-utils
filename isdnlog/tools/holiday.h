@@ -1,4 +1,4 @@
-/* $Id: holiday.h,v 1.5 1999/04/19 19:25:33 akool Exp $
+/* $Id: holiday.h,v 1.6 1999/06/15 20:05:05 akool Exp $
  *
  * Feiertagsberechnung
  *
@@ -19,6 +19,12 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: holiday.h,v $
+ * Revision 1.6  1999/06/15 20:05:05  akool
+ * isdnlog Version 3.33
+ *   - big step in using the new zone files
+ *   - *This*is*not*a*production*ready*isdnlog*!!
+ *   - Maybe the last release before the I4L meeting in Nuernberg
+ *
  * Revision 1.5  1999/04/19 19:25:33  akool
  * isdnlog Version 3.18
  *
@@ -83,17 +89,17 @@
 #ifndef _HOLIDAY_H_
 #define _HOLIDAY_H_
 
-#define MONDAY    1
-#define TUESDAY   2
-#define WEDNESDAY 3
-#define THURSDAY  4
-#define FRIDAY    5
-#define SATURDAY  6
-#define SUNDAY    7
-#define WORKDAY   8
-#define WEEKEND   9
-#define HOLIDAY  10
-#define EVERYDAY 11
+#define EVERYDAY  1
+#define WORKDAY   2
+#define WEEKEND   3
+#define MONDAY    4
+#define TUESDAY   5
+#define WEDNESDAY 6
+#define THURSDAY  7
+#define FRIDAY    8
+#define SATURDAY  9
+#define SUNDAY   10
+#define HOLIDAY  11
 
 typedef unsigned long bitfield;
 

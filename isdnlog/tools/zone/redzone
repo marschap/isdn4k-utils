@@ -20,7 +20,7 @@ use Getopt::Std;
 my ($inf, $outf, $rc,$verbose, $normalize, $newinf, $oldinf, $keep_files, $LEN);
 my ($opt_only);
 # statistics
-my (@red, $redt, $tot);
+my (@red, $redt, $tot, $rem);
 
 my $LINK = 127; # maxzone
 
@@ -189,7 +189,7 @@ sub reduce {
 }
 sub reduce_2 {
 	my ($pass) = $_[0];
-	my($from, $to, $z, $i, $old, $olda, $red1, $j, $red, $k, $rem);
+	my($from, $to, $z, $i, $old, $olda, $red1, $j, $red, $k);
 	my (@from, @to, @z, %zc, $redc, $eof, $line, $oldto);
 	my ($which) = $LEN-$pass;
 	print "Starting Pass b-$pass ...\n" if ($verbose);
@@ -317,11 +317,12 @@ sub sort_opt {
     $newinf = "$inf.a-${pass}q";
     rename($outf, $newinf);
     system(qq(sort < $newinf |uniq | sed -e"s/X\\+//g"  > $outf));
-	my ($red, $rem, $wc);
+	my ($red, $wc, $orem);
 	$wc = `wc --lines $outf`;
 	$wc =~ /(\d+)\s/;
+	$orem = $rem;
 	$rem = $1;
-	$red = $tot - $rem;
+	$red = $orem - $rem;
 	$redt += $red;
     print "Pass o-$pass: $red data killed $rem remaining\n" if ($verbose);
     $red[$pass + 10] = $red;

@@ -1,4 +1,4 @@
-/* $Id: tools.c,v 1.28 1999/06/03 18:51:22 akool Exp $
+/* $Id: tools.c,v 1.29 1999/06/15 20:05:20 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -19,6 +19,12 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools.c,v $
+ * Revision 1.29  1999/06/15 20:05:20  akool
+ * isdnlog Version 3.33
+ *   - big step in using the new zone files
+ *   - *This*is*not*a*production*ready*isdnlog*!!
+ *   - Maybe the last release before the I4L meeting in Nuernberg
+ *
  * Revision 1.28  1999/06/03 18:51:22  akool
  * isdnlog Version 3.30
  *  - rate-de.dat V:1.02-Germany [03-Jun-1999 19:49:22]
@@ -675,12 +681,13 @@ char *vnum(int chan, int who)
     return(retstr[retnum]);
   }
   else {
-    if (!memcmp(call[chan].num[who], countryprefix, strlen(countryprefix))) { /* Ausland */
-      register int  i;
-      auto     char s[BUFSIZ];
+    if (!memcmp(call[chan].num[who], countryprefix, strlen(countryprefix)) &&
+         memcmp(call[chan].num[who], mycountry, strlen(mycountry))) { /* Ausland */
+      register int   i;
+      auto     char *s;
 
 
-      i = abroad(call[chan].num[who], s);
+      i = getCountrycode(call[chan].num[who], &s);
 
       if (i) {
         Strncpy(call[chan].areacode[who], call[chan].num[who], i + 1);
@@ -697,6 +704,7 @@ char *vnum(int chan, int who)
       } /* if */
     } /* if */
 
+    /* Fixme: raus damit */
     if (!memcmp(call[chan].num[who], "+49173", 5)) {
       strcpy(call[chan].area[who], "D2 Mobilfunknetz");
       l = 6;
@@ -1053,7 +1061,7 @@ go:   	         if (!ndigit)
 
       case 'P' : s = sx;
       	         if (call[chan].provider != -1)
-      	       	   sprintf(sx, " via %s", getProvidername(call[chan].provider));
+      	       	   sprintf(sx, " via %s", getProvider(call[chan].provider));
       		 else
                    *sx = 0;
                  p = s + strlen(s);

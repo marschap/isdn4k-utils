@@ -8,7 +8,7 @@ U:%.3f DM
 #
 # (C) Copyright 1999 by Andreas Kool (akool@isdn4linux.de)
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 # Zonenzuordnung für Deutschland
 #
@@ -159,13 +159,13 @@ U:%.3f DM
 # werden z.Zt. nicht unterstützt
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:10 Teleglobe
 C:GmbH, Gutleutstraße 85, 60329 Frankfurt 01010
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:11 o.tel.o CbC
 C:o.tel.o communications GmbH, Am Bonneshof 35, 40474 Düsseldorf 01011
@@ -654,13 +654,13 @@ A:+	# Alle anderen Auslandsverbindungen
 T:*/*=0.05/0,2.790032(60)/1
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:12 Tele Danmark
 C:Internetz GmbH, Süderstraße 75, 20097 Hamburg 01012
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:13 Tele 2
 C:Tele 2 Kinnevik Telecommunciations International S.A., 75, route de Longwy, L-8080 Bertrange, Luxembourg 01013
@@ -735,7 +735,7 @@ A:Georgien, Kirgisistan, Usbekistan
 T:*/*=2.44/60
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:14 EWE TEL Call By Call national
 C:GmbH, Donnerschweer Straße 22-26, 26123 Oldenburg 01014
@@ -962,7 +962,7 @@ A:+
 T:*/*=2.99(60)/1
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:15 RSL clever call
 ##
@@ -3579,19 +3579,19 @@ A:0176,0179		# E2
 T:*/*=0.69/60
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:16 LausitzNet
 C:Telekommunikationsgesellschaft mbH, Lausitzer Straße 1-7, 03046 Cottbus 01016
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:17 SEC
 C:Service AG, Dieskaustraße 246, 04249 Leipzig 01017
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:18 debitel DirectLine Privat-Tarif Minuten
 C:Kommunikationstechnik GmbH & Co KG, Schelmenwasenstr. 37 - 39, 70567 Stuttgart 01018
@@ -3802,7 +3802,7 @@ A:+
 T:*/*=0.05/0,2.49/30
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:19 Mobilcom CbC
 C:CityLine Telefondienste GmbH, Schwarzer Weg 13, 24837 Schleswig 01019
@@ -3946,7 +3946,7 @@ A:China (Volksrepublik), Amerikanische Jungeferninseln
 T:*/*=1.49(60)/1
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:20 ISIS isiFON classic
 C:ISIS Multimedia Net GmbH, Kaistraße 6, 40221 Düsseldorf 01020
@@ -4458,13 +4458,13 @@ A:+
 T:*/*=0.1044/2.4
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:21 QS
 C:Communication Service GmbH, Oberländer Ufer 180-182, 50968 Köln 01021
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:22 NetCologne
 C:GmbH, Maarweg 163, 50825 Köln 01022
@@ -4568,7 +4568,7 @@ A:Somalia, Tonga, Zentralafrikanische Republik
 T:*/*=3.10(60)/1
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:23 tesion connectClassic
 C:Communikationsnetze Süd-West GmbH & Co. KG, Kriegsbergstr. 11, 70174 Stuttgart 01023
@@ -4746,7 +4746,7 @@ A:San Marino, Schweden, Spanien
 T:*/*=0.06/0,0.46(60)/1
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:24 Telepassport 99 Plus
 C:GmbH, Schwindstraße 3, 60325 Frankfurt 01024
@@ -5173,7 +5173,7 @@ A:+
 T:*/*=1.85/60
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:25 CityKom
 C:Münster, Haferlandweg 8, 48155 Münster 01025
@@ -6215,13 +6215,13 @@ A:+
 T:*/*=0.07/1.8
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:26 ECN
 C:Telekommunikation GmbH, Schmickstraße 38-40, 60314 Frankfurt 01026
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:27 Nordcom Butensurf
 C:Communications Netzmanagement Bremen GmbH
@@ -6434,7 +6434,7 @@ A:+
 T:*/*=2.99(60)/1
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:28 Colt
 C:Telecom GmbH, Gervinusstraße 18-22, 60323 Frankfurt 01028
@@ -8311,13 +8311,13 @@ A:China
 T:*/*=2.57520(60)/1
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:29 Unisource
 C:Carrier Services, Industriestraße 21, CH-8304 Wallisellen/Schweiz 01029
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:30 TelDaFax
 G:19.04.1999
@@ -8391,19 +8391,19 @@ A:Vereinigte Arabische Emirate, Vietnam
 T:*/*=1.49(60)/1
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:31 HEAG
 C:MediaNet GmbH, Luisenplatz 6, 64283 Darmstadt 01031
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:32 KDD
 C:Deutschland GmbH, Immermannstraße 45, 40210 Düsseldorf 01032
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:33 DTAG
 C:Deutsche Telekom AG, Friedrich-Ebert-Allee 140, 53113 Bonn 01033
@@ -9329,19 +9329,19 @@ A:Vereinigte Arabische Emirate
 T:*/*=0.12/2.61
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:34 NEFkom
 C:Telekommunikation GmbH & Co. KG, Bärenschanzstraße 4, 90429 Nürnberg 01034
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:35 interCOM
 C:GmbH, Hauptstraße 52a, 28876 Oyten 01035
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:36 Hutchison fairfon
 C:Münsterstraße 109, 48155 Münster 01036
@@ -9608,19 +9608,19 @@ A:+
 T:*/*=2.42(60)/1
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:37 ETS
 C:Verwaltung für Sprach- und Datennetze GmbH, Brunnenstraße 4, 61191 Rosbach 01037
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:38 MediaWays
 C:GmbH, An der Autobahn, 33311 Gütersloh 01038
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:39 First Telecom
 C:GmbH, Lyoner Straße 51, 60528 Frankfurt/Main 01039
@@ -9647,7 +9647,7 @@ A:Kanada, USA
 T:*/*=0.02/0,0.17/60
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:40 Esprit Call by Night
 C:beim RegTP eingetragen als:
@@ -9726,7 +9726,7 @@ A:+
 T:*/*=2.79/60
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:41 HanseNet 01041
 C:Telekommunikation GmbH, Hammerbrookstraße 63, 20097 Hamburg 01041
@@ -9844,7 +9844,7 @@ A:+
 T:*/*=2.80/60
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:42 TeleBeL
 C:Telekommunikation Bergisches Land GmbH, Johannisberg 7, 42103 Wuppertal 01042
@@ -9998,13 +9998,13 @@ A:+
 T:*/*=2.75(60)/1
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:43 KielNet
 C:GmbH, Postfach 41 60, 24100 Kiel 01043
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:44 VEW TELNET
 C:Gesellschaft für Telekommunikation und Netzdienste mbH, Unterste-Wilms-Straße 29, 44143 Dortmund 01044
@@ -10188,13 +10188,13 @@ T:*/08-22=2.75/60 Tag
 T:*/22-08=2.75/120 Nacht
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:45 Global Network
 C:Telephone Deutschland, Grosser Plan 8, 29221 Celle 01045
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:46 KomTel Deutschland-Tarif
 C:Gesellschaft für Kommunikation und Informationsdienste GmbH, Batteriestraße 48, 24937 Flensburg 01046
@@ -10827,13 +10827,13 @@ A:Äquatorialguinea, Cookinseln, Eritrea, Sao Tome und Principe
 T:*/*=1.99(60)/1
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:47 PrimeTec
 C:International Europe Ltd. 01047
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:48 DOKOM
 C:GmbH, Im Defdahl 5, 44141 Dortmund 01048
@@ -10909,7 +10909,7 @@ A:China, Indien
 T:*/*=0.1044/2.31
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:49,1 ACC ACCess Direkt Pre-Selection Einheitentarif
 C:Telekommunikation GmbH, Heinrich-Heine-Allee 53, 40213 Düsseldorf 01049
@@ -10996,7 +10996,7 @@ A:+
 T:*/*=0.09/2.3
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:49,2 ACC ACCess Direkt Pre-Selection Minutentarif
 C:Telekommunikation GmbH, Heinrich-Heine-Allee 53, 40213 Düsseldorf 01049
@@ -11081,7 +11081,7 @@ A:+
 T:*/*=2.35(60)/1
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:49,3 ACC ACCess 01049 Einheitentarif Call-By-Call
 C:Telekommunikation GmbH, Heinrich-Heine-Allee 53, 40213 Düsseldorf 01049
@@ -11184,7 +11184,7 @@ A:+
 T:*/*=0.09/2.3
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:49,4 ACC ACCess 01049 Minutentarif Call-By-Call
 C:Telekommunikation GmbH, Heinrich-Heine-Allee 53, 40213 Düsseldorf 01049
@@ -11273,7 +11273,7 @@ A:+
 T:*/*=2.35(60)/1
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:50 Talkline
 ##
@@ -11308,7 +11308,7 @@ A:Österreich,Schweden,Schweiz,Spanien,USA
 T:*/*=0.45/60
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:51 01051
 C:ID-Switch GmbH, Graf-Adolf-Straße, 40210 Düsseldorf 01051
@@ -11390,13 +11390,13 @@ A:Monaco Mobilfunk
 T:*/*=99.99/60
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:52 Long Distance
 C:International Ltd., 5 Duke's Gate Acton, London W 4 5 DX, GB 01052
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:53 WOBCOM
 G:01.04.1999
@@ -11629,79 +11629,79 @@ A:+
 T:*/*=0.06/1.29
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:54 USFI
 C:Global Network Services Germany GmbH, Kindsbacherstraße 41, 66877 Ramstein 01054
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:55 ESPRIT Telecom Deutschland GmbH, August-Thyssen-Str. 1
 C:40211 Düsseldorf
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:56 BITel
 C:Gesellschaft für kommunale Telekommunikation mbh, Schildescher Straße 16, 33611 Bielefeld 01056
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:57 Mox
 C:Telecom GmbH, Industriestraße 3a, 40878 Ratingen 01057
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:58 KaTel
 C:Gesellschaft für Telekommunikation mbH, Mathias-Brüggen-Straße 87-89, 50829 Köln 01058
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:59 Pacific Gateway Exchange
 C:Inc., 533 Airport Boulevard, Suite 505, Burlingame, CA 94010, USA 01059
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:60 Telecom-InfoService
 C:GmbH, Postfach 174, A-1000 Wien (A) 01060
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:61 TelSA
 C:Telekommunikationsgesellschaft mbH, Magdeburger Str. 51, 06112 Halle 01061
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:62 DENTEL
 C:GmbH i.G. Grimmstraße 4 80336 München 01062
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:63 Conos
 C:Corporate Network & Services Aktiengesellschaft Lievelingsweg 125 52119 Bonn 01063
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:64 Hannoversche
 C:Telekommunikations- und Netzgesellschaft mbH, Glockseestraße 33, 30161 Hannover 01064
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:65 Rapid Link
 C:Telecommunications GmbH, Donaustraße 68, 68199 Mannheim 01065
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:66 Interoute
 C:Telecom Deutschland GmbH, Lyoner Str. 15, 60528 Frankfurt 01066
@@ -11789,25 +11789,25 @@ A:+
 T:*/*=2.48(60)/1
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:67 RegioCom
 C:GmbH, Steinfeldstraße 3, 39179 Barleben 01067
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:68 Tele Media
 C:International, Wilhelm-Leuschner-Strasse 23-25, 60329 Frankfurt/Main 01068
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:69 Primus
 C:Telecommunications Ltd. 01069
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:70,1 Arcor CbC
 G:01.04.99
@@ -12178,49 +12178,49 @@ T:E,H/06-21=0.058/0,0.095(60)/1 Freizeit
 T:E,H/21-06=0.058/0,0.06(60)/1 Nebenzeit
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:71 DeTeMobil
 C:Deutsche Telekom MobilNet GmbH, Landgrabenweg 151, 53227 Bonn 01071
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:72 Mannesmann
 C:Mobilfunk GmbH, Am Seestern 1, 40547 Düsseldorf 01072
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:73 AXXON
 C:Telecom GmbH, Am Seestern 24, 40547 Düsseldorf 01073
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:74 Alpha
 C:Telecom GmbH, Beethovenstraße 1-3, 60325 Frankfurt/Main 01074
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:75 ARCIS
 C:Media Com Management GmbH, Maximilianstr. 14, 80539 München 01075
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:76 QuickNet
 C:Telenetworks & Service AG, Else-Lasker-Schüler-Straße 47, 42107 Wuppertal 01076
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:77 E-Plus
 C:Mobilfunk GmbH, E-Plus-Platz 1, 40468 Düsseldorf 01077
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:78 3U
 G:01.04.1999
@@ -13387,7 +13387,7 @@ T:*/08-20=0.289(60)/1
 T:*/20-08=0.269(60)/1
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:79 Viatel
 ##
@@ -13416,7 +13416,7 @@ T:W/18-09=0.18/30,0.36(60)/1 Spar
 T:E/*=0.18/30,0.36(60)/1 Spar
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:80 Telegate
 C:Aktiengesellschaft für telefonische Informationsdienste, Bahnhofstraße 26, 82211 Herrsching 01080
@@ -13428,31 +13428,31 @@ A:11890
 T:*/*=3.51/60
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:81 Infotel
 C:bV, Onderlangs 120, 6812 CJ Arnhem, Niederlande 01081
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:82 AugustaKom
 C:Telekommunikation GmbH & Co.KG Hoher Weg 1 86152 Augsburg 01082
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:83 Wuerzburger
 C:Telekommunikationsgesellschaft mbH, Bahnhofstraße 12-18, 97070 Würzburg 01083
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:84 Telegroup
 C:Network Services GmbH, Grossenbaumer Weg 6, 40472 Düsseldorf 01084
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:85 GTS-WESTCom
 G:01.02.1999
@@ -13502,19 +13502,19 @@ T:*/*=2.22(60)/1
 A:+
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:86 ONE.TEL
 C:Limited (UK), Clements House, 14-18 Gresham Street, London, EC2V 7JE, England 01086
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:87 HAMCOM
 C:GmbH Telekommunikation, Südring 1-3, 59065 Hamm 01087
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:88 WorldCom
 C:Telecommunication Services GmbH, Brönnerstr. 15, 60313 Frankfurt 01088
@@ -13534,13 +13534,13 @@ T:E,H/05-21=0.048(60)/1 UUnet
 T:E,H/21-05=0.03(60)/1 UUnet
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:89 M'net
 C:Telekommunikations GmbH, Corneliusstraße 10, 80469 München 01089
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:90 Viag Interkom
 G:01.04.1999
@@ -13587,49 +13587,49 @@ T:*/*=1.49/60
 #T:*/*=1.99/60
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:91 IDT
 C:Global Limited, London, United Kingdom 01091
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:92 Hallo Telefon Service
 C:GmbH Dinkelbergstraße 6 76684 Östringen 01092
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:93 Kray
 C:Informationssysteme, Brüder-Grimm-Allee 73 A, 37085 Göttingen 01093
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:94 Global Communications
 C:GmbH, Eupener Straße 57 - 59, 50933 Köln 01094
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:95 Teleos
 C:GmbH, Bielefelder Straße 3, 32051 Herford 01095
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:96 GELSEN-NET
 C:Kommunikationsgesellschaft mbH, Munscheidstraße 14, 45886 Gelsenkirchen 01096
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:97 AT & T-Unisource
 C:Communication Services (Deutschland) GmbH, Lyoner Str. 15, 60528 Frankfurt 01097
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:98 STAR
 C:Telecommunications Deutschland GmbH, Voltastraße 1a, 60486 Frankfurt 01098
@@ -13747,122 +13747,122 @@ A:+49193434
 T:*/*=0.05(60)/1
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:99 ECONOPHONE
 C:GmbH, Flughafenstraße 54b, 22335 Hamburg 01099
 C:Reseller von ECONOPHONE : Telco
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:100 TELELEV
 C:Telekommunikation GmbH, Dönhoffstraße 39, 51373 Leverkusen 010000
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:101 Netnet
 C:International AB, P.O. Box 6708, S-11385 Stockholm 010001
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:102 EncoTel
 C:GmbH & Co.KG, Leibnitzstraße 73, 07548 Gera 010002
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:103 mevacom
 C:Telekommunikationsdienstleistungen GmbH, Posthofstraße 16, 14467 Potsdam 010003
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:107 KPN
 C:Telecom BV, Prinses Beatrixlaan 23, 2595 AK's Gravenhage, Niederlande 010007
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:108 USA Global Link
 C:Deutschland GmbH, Theaterstraße 90, 52062 Aachen 010008
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:110 Bertelsmann mediaSystems
 C:GmbH, An der Autobahn, 33311 Gütersloh 010010
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:111 RED LINE
 C:Telekommunikationsgesellschaft mbH, Brückenstraße 17, 63897 Miltenberg 010011
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:114 NordKom
 C:Weser-Elbe Telekommunikation GmbH, Stresemannstraße 48, 28207 Bremen 010014
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:115 Delta Three
 C:Inc., 430 Park Ave, New York 010015
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:119 E.T.H.
 C:Telefondienste GmbH, Bettinastraße 25a, 60325 Frankfurt 010019
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:120 Komm Consult
 C:Oberweg 15, 82024 Taufkirchen bei München 010020
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:122 Motorola
 C:Electronic GmbH, Hagenauer Straße 47, 65203 Wiesbaden 010022
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:130 tnp telenet
 C:potsdam, kommunikationsgesellschaft mbH, Erich-Weinert-Straße 100, 14478 Potsdam 010030
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:131 accom
 C:Gesellschaft für Telekommunikationsnetze und -dienstleistungen GmbH & Co.KG, Borngasse 34, 52064 Aachen 010031
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:133 Level 3
 C:Communications GmbH, Oberlindau 54 - 56, 60323 Frankfurt/Main 010033
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:142 connection 42
 C:Ernst-Abbe-Straße 10, 25451 Quickborn 010042
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:144 Carrier 1
 C:AG, Militärstraße 36, CH-8004 Zürich 010044
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:150 Drillisch
 C:AG, Horbeller Straße 33, 50858 Köln 010050
@@ -13876,85 +13876,85 @@ T:W/21-08=0.07/60,0.07(60)/1
 T:E/*=0.07/60,0.07(60)/1
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:155 Telia
 C:Telekommunikation GmbH, Herrengraben 3, 20459 Hamburg 010055
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:156 NETCOM
 C:Kassel GmbH, Königstor 3 - 13, 34117 Kassel 010056
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:160 JelloCom
 C:GmbH & Co.KG, Prüssingstraße 41, 07745 Jena 010060
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:166 InterCard
 C:GmbH, POS-Service, Mehlbeerenstraße 4, 82024 Taufkirchen bei München 010066
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:170 Deutsche Telefon- und Marketing Services
 C:GmbH, Isaac-Fulda-Allee 16, 55124 Mainz 010070
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:173 TFN COM SA
 C:World Of Communication, Via Greina 2 CP 2950, CH-6901 Lugano 010073
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:177 WorldxChange
 C:Communications GmbH, Am Seedamm 44, 60489 Frankfurt 010077
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:180 FaciliCom
 C:Telekommunikation GmbH; Windmühlstraße 1, 60329 Frankfurt/Main 010080
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:184 Startec
 C:Global Communications (Germany) GmbH, Broßstraße 6, 60487 Frankfurt 010084
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:188 jk-tel
 C:GmbH i.G., Hopfenplatz 5, 39120 Magdeburg 010088
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:190 CNE
 C:Corporate Network Essen Gesellschaft für Telekommunikation mbH, Kruppstraße 82 - 100, 45145 Essen 010090
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:195 TeleNec
 C:Telekommunikation Neustadt GmbH & Co.KG, Postfach 14 40, 96459 Neustadt 010095
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:199 ESTel
 C:Energieversorgung Südsachsen Telekommunikationsgesellschaft mbH, Postfach 2 38, 09002 Chemnitz 010099
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 P:201 Frag Fred
 Z:21 Telefonauskunft
@@ -13962,7 +13962,7 @@ A:11811
 T:*/*=0.847/0,0.121/6.7
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.20 1999/06/13 14:07:07 akool Exp $
+# $Id: rate-de.dat,v 1.21 1999/06/15 20:03:13 akool Exp $
 #
 # Erfasste Provider:
 # 1. Echtes Call-by-call (per 1-Mai-99):

@@ -1,4 +1,4 @@
-/* $Id: functions.c,v 1.23 1999/06/03 18:50:27 akool Exp $
+/* $Id: functions.c,v 1.24 1999/06/15 20:04:01 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,12 @@
  * along with this program; if not, write to the Free Software
  *
  * $Log: functions.c,v $
+ * Revision 1.24  1999/06/15 20:04:01  akool
+ * isdnlog Version 3.33
+ *   - big step in using the new zone files
+ *   - *This*is*not*a*production*ready*isdnlog*!!
+ *   - Maybe the last release before the I4L meeting in Nuernberg
+ *
  * Revision 1.23  1999/06/03 18:50:27  akool
  * isdnlog Version 3.30
  *  - rate-de.dat V:1.02-Germany [03-Jun-1999 19:49:22]
@@ -112,7 +118,7 @@
  *    (first dialed digit comes with SETUP-Frame)
  *
  * Revision 1.14  1998/09/09 12:49:31  paul
- * fixed crash when using mysql (call to Providername() was omitted)
+ * fixed crash when using mysql (call to Provider() was omitted)
  *
  * Revision 1.13  1998/06/21 11:52:43  akool
  * First step to let isdnlog generate his own AOCD messages
@@ -417,8 +423,8 @@ void logger(int chan)
   mysql_db_set.currency_factor = currency_factor;
   strcpy(mysql_db_set.currency, currency);
   mysql_db_set.pay = call[chan].pay;
-  /* Fixme: getProvidername() should be changed to call[chan].Rate.Provider */
-  strcpy(mysql_db_set.provider, getProvidername(call[chan].provider));
+  /* Fixme: getProvider() should be changed to call[chan].Rate.Provider */
+  strcpy(mysql_db_set.provider, getProvider(call[chan].provider));
   mysql_dbAdd(&mysql_db_set);
 #endif
 } /* logger */

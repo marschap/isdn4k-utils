@@ -1,4 +1,4 @@
-/* $Id: isdnlog.c,v 1.44 1999/06/13 14:07:44 akool Exp $
+/* $Id: isdnlog.c,v 1.45 1999/06/15 20:04:03 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,12 @@
  * along with this program; if not, write to the Free Software
  *
  * $Log: isdnlog.c,v $
+ * Revision 1.45  1999/06/15 20:04:03  akool
+ * isdnlog Version 3.33
+ *   - big step in using the new zone files
+ *   - *This*is*not*a*production*ready*isdnlog*!!
+ *   - Maybe the last release before the I4L meeting in Nuernberg
+ *
  * Revision 1.44  1999/06/13 14:07:44  akool
  * isdnlog Version 3.32
  *
@@ -1117,7 +1123,7 @@ int main(int argc, char *argv[], char *envp[])
   register int    i, res = 0;
   auto     int    lastarg;
   auto     char   rlogfile[PATH_MAX];
-  auto	   char	  *version, *cversion;
+  auto	   char	  *version;
   auto     char **devices = NULL;
   sigset_t        unblock_set;
 #ifdef TESTCENTER
@@ -1337,11 +1343,11 @@ int main(int argc, char *argv[], char *envp[])
 	    if (!Q931dmp && *version)
 	      print_msg(PRT_NORMAL, "%s\n", version);
 
-	    initRate(rateconf, ratefile, countryfile, &version, &cversion);
+	    initCountry(countryfile, &version);
+	    if (!Q931dmp && *version)
+	      print_msg(PRT_NORMAL, "%s\n", version);
 
-	    if (!Q931dmp && *cversion)
-	      print_msg(PRT_NORMAL, "%s\n", cversion);
-
+	    initRate(rateconf, ratefile, zonefile, &version);
 	    if (!Q931dmp && *version)
 	      print_msg(PRT_NORMAL, "%s\n", version);
 

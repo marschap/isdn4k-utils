@@ -1,4 +1,4 @@
-/* $Id: processor.c,v 1.66 1999/06/13 14:07:50 akool Exp $
+/* $Id: processor.c,v 1.67 1999/06/15 20:04:09 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,12 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.67  1999/06/15 20:04:09  akool
+ * isdnlog Version 3.33
+ *   - big step in using the new zone files
+ *   - *This*is*not*a*production*ready*isdnlog*!!
+ *   - Maybe the last release before the I4L meeting in Nuernberg
+ *
  * Revision 1.66  1999/06/13 14:07:50  akool
  * isdnlog Version 3.32
  *
@@ -938,9 +944,9 @@ void buildnumber(char *num, int oc3, int oc3a, char *result, int version,
       auto char s[BUFSIZ];
 
       if (*provider < 100)
-        sprintf(s, "Via provider \"%s%02d\", %s", vbn, *provider, getProvidername(*provider));
+        sprintf(s, "Via provider \"%s%02d\", %s", vbn, *provider, getProvider(*provider));
       else
-	sprintf(s, "Via provider \"%s%03d\", %s", vbn, *provider - 100, getProvidername(*provider));
+	sprintf(s, "Via provider \"%s%03d\", %s", vbn, *provider - 100, getProvider(*provider));
 
       Q931dump(TYPE_STRING, -1, s, version);
     } /* if */
@@ -950,8 +956,8 @@ void buildnumber(char *num, int oc3, int oc3a, char *result, int version,
     if (*provider == UNKNOWN)
       *provider = preselect;
 
-    if (!dir && (who == CALLED))
-      *sondernummer = is_sonderrufnummer(num);
+    if (*num && !dir && (who == CALLED) && getArea(*provider, num))
+      *sondernummer = strlen(num);
   } /* if */
 
   if (Q931dmp) {
@@ -3458,19 +3464,15 @@ static void addlist(int chan, int type, int mode) /* mode :: 0 = Add new entry, 
 
 void processRate(int chan)
 {
-  if (call[chan].zone != UNKNOWN) {
-    call[chan].Rate.prefix = call[chan].provider;
-    call[chan].Rate.zone   = call[chan].zone;
-    call[chan].Rate.start  = call[chan].connect;
-    call[chan].Rate.now    = call[chan].disconnect = cur_time;
+  call[chan].Rate.start  = call[chan].connect;
+  call[chan].Rate.now    = call[chan].disconnect = cur_time;
 
-    if (getRate(&call[chan].Rate, NULL) == UNKNOWN)
-      call[chan].tarifknown = 0;
-    else {
-      call[chan].tarifknown = 1;
-      call[chan].pay = call[chan].Rate.Charge;
-    } /* else */
-  } /* if */
+  if (getRate(&call[chan].Rate, NULL) == UNKNOWN) {
+    call[chan].tarifknown = 0;
+  } else {
+    call[chan].tarifknown = 1;
+    call[chan].pay = call[chan].Rate.Charge;
+  } /* else */
 } /* processRate */
 
 
@@ -3504,13 +3506,13 @@ static void processLCR(int chan, char *hint)
 
   if ((call[chan].provider != preselect) && (prepreis != -1.00) && (prepreis != call[chan].pay))
     sprintf(sy, " saving vs. preselect (%s%02d:%s) %s %s",
-      vbn, preselect, getProvidername(preselect),
+      vbn, preselect, getProvider(preselect),
       currency,
       double2str(prepreis - call[chan].pay, 6, 3, DEB));
 
   if ((call[chan].hint != UNKNOWN) && (call[chan].hint != bestRate.prefix))
     sprintf(sz, " saving vs. hint (%s%02d:%s) %s %s",
-      vbn, call[chan].hint, getProvidername(call[chan].hint),
+      vbn, call[chan].hint, getProvider(call[chan].hint),
       currency,
       double2str(hintpreis - call[chan].pay, 6, 3, DEB));
 
@@ -3540,12 +3542,9 @@ static void showRates(char *message)
 
 static void prepareRate(int chan, char **msg, char **tip, int viarep)
 {
-  auto   int  zone = UNKNOWN;
   auto   RATE lcRate, ckRate;
-  auto	 char pro[BUFSIZ];
   static char message[BUFSIZ];
   static char lcrhint[BUFSIZ];
-
 
   if (msg)
     *(*msg = message) = '\0';
@@ -3553,18 +3552,10 @@ static void prepareRate(int chan, char **msg, char **tip, int viarep)
   if (tip)
     *(*tip = lcrhint) = '\0';
 
-  call[chan].Rate.Provider = "";
-  call[chan].Rate.Zone = "";
-  call[chan].Rate.Day = "";
-  call[chan].Rate.Hour = "";
-  call[chan].Rate.Duration = 0;
-  call[chan].Rate.Price = 0;
-  call[chan].Rate.Units = 0;
-  call[chan].Rate.Charge = 0;
-  call[chan].Rate.Time = 0;
-  call[chan].Rate.Rest = 0;
+  clearRate (&call[chan].Rate);
 
   if (call[chan].intern[CALLED]) {
+    call[chan].Rate.zone = UNZONE;
     call[chan].zone = INTERN;
     call[chan].tarifknown = 0;
 
@@ -3574,10 +3565,17 @@ static void prepareRate(int chan, char **msg, char **tip, int viarep)
     return;
   } /* if */
 
-  zone = getZone(call[chan].provider, call[chan].num[CALLED]);
+  call[chan].Rate.prefix = call[chan].provider;
+  call[chan].Rate.src    = call[chan].num[CALLING];
+  call[chan].Rate.dst    = call[chan].num[CALLED];
 
-  if (!zone) { /* FreeCall */
-    call[chan].zone = FREECALL;
+  if (getRate(&call[chan].Rate, msg)==UNKNOWN)
+    return;
+
+  if (msg)
+    *(*msg = message) = '\0';
+
+  if (call[chan].Rate.zone == FREECALL) { /* FreeCall */
     call[chan].tarifknown = 0;
 
     if (msg)
@@ -3586,26 +3584,7 @@ static void prepareRate(int chan, char **msg, char **tip, int viarep)
     return;
   } /* if */
 
-  if (zone == UNKNOWN) {
-    if (call[chan].local[CALLED])
-      zone = LOCALCALL;
-    else {
-      zone = area_diff(NULL, call[chan].num[CALLED]);
-
-      switch (zone) {
-        case AREA_ERROR    :
-	case AREA_UNKNOWN  : zone = UNKNOWN;    break;
-	case AREA_LOCAL    : zone = CITYCALL;   break;
-	case AREA_R50      : zone = REGIOCALL;  break;
-	case AREA_FAR      : zone = GERMANCALL; break;
-	case AREA_ABROAD   : zone = UNKNOWN;	break;
-      } /* switch */
-    } /* else */
-  } /* if */
-
-  call[chan].zone = zone;
-
-  if (zone == UNKNOWN)
+  if (call[chan].Rate.zone == UNKNOWN)
     call[chan].tarifknown = 0;
   else
     processRate(chan);
@@ -3613,24 +3592,8 @@ static void prepareRate(int chan, char **msg, char **tip, int viarep)
   if (viarep)
     return;
 
-  if (msg) {
-    if (call[chan].tarifknown)
-      showRates(message);
-    else {
-
-      if (call[chan].provider < 100)
-        sprintf(pro, "%s%02d", vbn, call[chan].provider);
-      else
-        sprintf(pro, "%s%03d", vbn, call[chan].provider - 100);
-
-      if (call[chan].zone == UNKNOWN)
-	sprintf(message, "CHARGE: Uh-oh: No zone info for provider %s, number %s",
-		pro, call[chan].num[CALLED]);
-      else
-	sprintf(message, "CHARGE: Uh-oh: No charge info for provider %s, zone %d, number %s",
-		pro, call[chan].zone, call[chan].num[CALLED]);
-    } /* else */
-  } /* if */
+  if (msg && call[chan].tarifknown)
+    showRates(message);
 
   lcRate = call[chan].Rate;
 
@@ -3667,7 +3630,7 @@ static void LCR(int chan, char *s)
   print_msg(PRT_NORMAL, ">> LCR: OUTGOING SETUP(%s)\n", s + 5);
 
   print_msg(PRT_NORMAL, ">> LCR: from TEI %d, to number \"%s\", Provider=%s%d:%s, Sonderrufnummer=%d, InternalCall=%d, LocalCall=%d\n",
-    call[chan].tei, call[chan].num[CALLED], vbn, call[chan].provider, getProvidername(call[chan].provider),
+    call[chan].tei, call[chan].num[CALLED], vbn, call[chan].provider, getProvider(call[chan].provider),
     call[chan].sondernummer[CALLED], call[chan].intern[CALLED], call[chan].local[CALLED]);
 
   if (!call[chan].intern[CALLED]) {                     /* keine Hausinternen Gespr„che */

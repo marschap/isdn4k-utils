@@ -1,4 +1,4 @@
-/* $Id: country.h,v 1.2 1999/06/03 18:51:19 akool Exp $
+/* $Id: country.h,v 1.3 1999/06/15 20:05:02 akool Exp $
  *
  * Länderdatenbank
  *
@@ -19,6 +19,12 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: country.h,v $
+ * Revision 1.3  1999/06/15 20:05:02  akool
+ * isdnlog Version 3.33
+ *   - big step in using the new zone files
+ *   - *This*is*not*a*production*ready*isdnlog*!!
+ *   - Maybe the last release before the I4L meeting in Nuernberg
+ *
  * Revision 1.2  1999/06/03 18:51:19  akool
  * isdnlog Version 3.30
  *  - rate-de.dat V:1.02-Germany [03-Jun-1999 19:49:22]
@@ -41,8 +47,9 @@ typedef struct {
   int   nCode;
 } COUNTRY;
 
-int  initCountry(char *path, char **msg);
-void exitCountry(void);
-int  getCountry(char *name, COUNTRY **country);
+int  initCountry (char *path, char **msg);
+void exitCountry (void);
+int  getCountry (char *name, COUNTRY **country);
+int  getCountrycode (char *number, char **name);
 
 #endif

@@ -118,6 +118,7 @@ sub read_compact {
 		print "$i:\n@nums\n" if($verbose>=3);
 		$n=0;
 		while ( ($key, $value) = each(%db) ) {
+		    next if ($key eq "_tAbLe\x0" || $key eq "vErSiO\x0");
 		    my($temp) = unpack($pack_key, $key);
 		    next if( $temp !~ /\d/);
 		    my($count) = unpack('S', $value);
