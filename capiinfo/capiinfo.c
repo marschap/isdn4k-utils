@@ -1,4 +1,4 @@
-/* $Id: capiinfo.c,v 1.2 1999/09/10 17:20:33 calle Exp $
+/* $Id: capiinfo.c,v 1.3 2000/06/12 08:51:04 kai Exp $
  *
  * A CAPI application to get infomation about installed controllers
  *
@@ -14,6 +14,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: capiinfo.c,v $
+ * Revision 1.3  2000/06/12 08:51:04  kai
+ * show supported supplementary services
+ *
  * Revision 1.2  1999/09/10 17:20:33  calle
  * Last changes for proposed standards (CAPI 2.0):
  * - AK1-148 "Linux Extention"
@@ -86,6 +89,18 @@ struct bittext b3support[] = {
  { 0, 0 }
 };
 
+struct bittext SupportedServices[] = {
+/*  0 */ { 0x0001, "Hold / Retrieve" },
+/*  1 */ { 0x0002, "Terminal Portability" },
+/*  2 */ { 0x0004, "ECT" },
+/*  3 */ { 0x0008, "3PTY" },
+/*  4 */ { 0x0010, "Call Forwarding" },
+/*  5 */ { 0x0020, "Call Deflection" },
+/*  6 */ { 0x0040, "MCID" },
+/*  7 */ { 0x0080, "CCBS" },
+ { 0, 0 }
+};
+
 static void showbitvalues(struct bittext *p, __u32 value)
 {
    while (p->text) {
@@ -103,6 +118,8 @@ int main(int argc, char **argv)
    int ncontr, i;
    unsigned j;
    int isAVM;
+   unsigned err, ApplId, MsgId = 1, SSInfo, SuppServices;
+   _cmsg cmsg;
 
    if (CAPI20_ISINSTALLED() != CapiNoError) {
       fprintf(stderr, "capi not installed - %s (%d)\n", strerror(errno), errno);
@@ -111,6 +128,12 @@ int main(int argc, char **argv)
 
    CAPI20_GET_PROFILE(0, (CAPI_MESSAGE)&cprofile);
    ncontr = cprofile.ncontroller;
+
+   err = CAPI20_REGISTER(0, 0, 2048, &ApplId);
+   if (err != CapiNoError) {
+       fprintf(stderr, "could not register - (%#x)\n", err);
+       return 1;
+   }
 
    for (i = 1; i <= ncontr; i++) {
        isAVM = 0;
@@ -157,7 +180,47 @@ int main(int argc, char **argv)
 	   }
            printf("%02x", s[j]);
        }
+
        printf("\n");
+
+       FACILITY_REQ_HEADER(&cmsg, ApplId, MsgId++, i);
+       cmsg.FacilitySelector = 0x0003;
+       cmsg.FacilityRequestParameter = "\x03""\x00\x00""\x00"; // GetSupportedServices
+
+       err = CAPI_PUT_CMSG(&cmsg);
+       if (err != CapiNoError) {
+	   fprintf(stderr, "FAC REQ - (%#x)\n", err);
+	   continue;
+       }
+	
+       err = capi20_waitformessage(ApplId, 0);
+       if (err != CapiNoError) {
+	   fprintf(stderr, "FAC WAIT - (%#x)\n", err);
+	   continue;
+       }
+       err = CAPI_GET_CMSG(&cmsg, ApplId);
+       if (err != CapiNoError) {
+	   fprintf(stderr, "FAC GET - (%#x)\n", err);
+	   continue;
+       }
+       if (cmsg.Info != 0x0000) {
+	   fprintf(stderr, "FAC GET - (Info)\n");
+	   continue;
+       }
+       if (cmsg.FacilityConfirmationParameter[0] != 0x09) {
+	   fprintf(stderr, "FAC GET - (len)\n");
+	   continue;
+       }
+       SSInfo = cmsg.FacilityConfirmationParameter[4];
+       SSInfo |= cmsg.FacilityConfirmationParameter[5] << 8;
+
+       SuppServices = cmsg.FacilityConfirmationParameter[6];
+       SuppServices |= cmsg.FacilityConfirmationParameter[7] << 8;
+       SuppServices |= cmsg.FacilityConfirmationParameter[8] << 16;
+       SuppServices |= cmsg.FacilityConfirmationParameter[9] << 24;
+       
+       printf("\nSupplementary services support: 0x%08x\n", SuppServices);
+       showbitvalues(SupportedServices, SuppServices);
    }
    return 0;
 }
