@@ -1,4 +1,4 @@
- /* $Id: holiday.c,v 1.7 1999/04/19 19:25:07 akool Exp $
+ /* $Id: holiday.c,v 1.8 1999/04/20 20:31:58 akool Exp $
  *
  * Feiertagsberechnung
  *
@@ -19,6 +19,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: holiday.c,v $
+ * Revision 1.8  1999/04/20 20:31:58  akool
+ * isdnlog Version 3.19
+ *   patches from Michael Reinelt
+ *
  * Revision 1.7  1999/04/19 19:25:07  akool
  * isdnlog Version 3.18
  *
@@ -412,9 +416,9 @@ int isDay(struct tm *tm, bitfield mask, char **name)
 
   if (mask & (1<<day)) {
     sprintf (buffer, "%s", Weekday[day]);
-  return day;
-}
-
+    return day;
+  }
+  
   return 0;
 }
 
