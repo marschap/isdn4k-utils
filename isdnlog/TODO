@@ -10,3 +10,22 @@ Vorschlaege von ak realisieren
  - Bedingt durch den neuen logger()-Modus muss die "/var/log/isdn.log" 
    (sowie die "/var/log/isdn.log.rep") nun existieren,
    da isdnlog diese nicht mehr automatisch anlegt :-(
+
+ - seit dem processcint() Aufruf in morectrl() h„ngt sich die Replay-
+   Funktion gerne auf!
+
+ - bekannte Probleme mit der Tarif-Datenbank:
+
+  - die erste Minute kostenlos, wenn Gespraechsdauer < 1 Minute
+  - die ersten 5 Sekunden kostenlos
+  - 10plus, CityPlus, usw. der DTAG
+  - Preise fuer die Sondernnummern (112 ..., 0191011 ...)
+  - Talkline's Internet-Zugang wird im 3 Minuten-Takt abgerechnet
+  - Viatel berechnet an Feiertagen nicht wie Wochenende, sondern wie normale Tage
+  - Rabatte
+  - feinere Unterscheidung nach Laendern (Euro 1, Welt 1 ...)
+  - einige Provider "vergessen", bei laufenden Gespaechen einen evtl.
+    Tarifwechsel abzurechnen
+  - Unterscheidung zwischen Wochenend- sowie Feiertagstarifen
+  - Sonderbehandlung von 24. Dezember bis 31. Dezember (Telekom)
+

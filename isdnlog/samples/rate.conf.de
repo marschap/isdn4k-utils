@@ -1,8 +1,8 @@
 # Dont use EWE Tel
 P:14=99
 
-# Use Mobilcom call-by-call
-P:19=0
+# Use Mobilcom CbC
+P:19=1
 
 # Dont use NetCologne
 P:22=99
@@ -14,13 +14,14 @@ P:28=99
 P:49=99
 
 # Use Arcor CbC
-P:70=0
+P:70=1
 
 # Kennzahl 98, moegliche Varianten:
-#   0=Nikoma Minutentakt
-#   1=Nikoma Sekundentakt
-#   2=Nikocity Minutentakt
-#   3=Nikocity Sekundentakt
-#   4=Mox Telecom AG
-#   5=C@llas Clever Communications
-P:98=4
+#   1=Star
+#   2=Mox Telecom AG
+#   3=Nikoma Minutentakt
+#   4=Nikoma Sekundentakt
+#   5=Nikocity Minutentakt
+#   6=Nikocity Sekundentakt
+#   7=C@llas Clever Communications
+P:98=2

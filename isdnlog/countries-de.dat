@@ -1,0 +1,230 @@
+001     Vereinigte Staaten (USA) # Kanada USA/Hawaii
+001242  Bahamas
+001246  Barbados
+001264  Anguilla
+001268  Antigua und Barbuda
+001284  Britische Jungferninseln     # Jungferninseln (Brit.)
+001340  Amerikanische Jungferninseln # Jungferninseln (Am.)
+001345  Caymaninseln # Kaimaninseln
+001441  Bermuda
+001473  Grenada
+001649  Turks- und Caicos-Inseln
+001664  Montserrat
+001758  Saint Lucia
+001767  Dominica
+001784  Saint Vincent und die Grenadinen
+001787  Puerto Rico
+001809  Dominikanische Republik # Turks und Caicos  Turks- und Caicos-Inseln
+001868  Trinidad und Tobago
+001869  Saint Kitts and Nevis
+001876  Jamaika
+0020    Ägypten
+00212   Marokko
+00213   Algerien
+00216   Tunesien
+00218   Libyen
+00220   Gambia
+00221   Senegal
+00222   Mauretanien
+00223   Mali
+00224   Guinea
+00225   Cote d'Ivoire (Elfenbeinküste) # Elfenbeinküste (Cote d'Ivoire)
+00226   Burkina Faso (Obervolta)
+00227   Niger
+00228   Togo
+00229   Benin
+00230   Mauritius
+00231   Liberia
+00232   Sierra Leone
+00233   Ghana
+00234   Nigeria
+00235   Tschad
+00236   Zentralafrikanische Republik
+00237   Kamerun
+00238   Kap Verde
+00239   Sao Tome und Principe
+00240   Äquatorial-Guinea
+00241   Gabun
+00242   Kongo
+00243   Zaire
+00244   Angola
+00245   Guinea-Bissau
+00247   Ascension
+00248   Seyschellen
+00249   Sudan
+00250   Ruanda
+00251   Äthiopien
+00252   Somalia
+00253   Dschibuti
+00254   Kenia
+00255   Tansania
+00256   Uganda
+00257   Burundi
+00258   Mosambik
+00260   Sambia
+00261   Madagaskar
+00262   Reunion
+00263   Simbabwe
+00263   Zimbabwe
+00264   Namibia
+00265   Malawi
+00266   Lesotho
+00267   Botsuana (Botswana)
+00268   Swasiland
+00269   Komoren # Mayotte
+0027    Südafrika
+00290   Saint Helena
+00291   Eritrea
+00297   Aruba
+00298   Färöer # Färöer Inseln
+00299   Grönland
+0030    Griechenland
+0031    Niederlande
+0032    Belgien
+0033    Frankreich
+0034    Spanien
+00350   Gibraltar
+00351   Portugal
+00352   Luxemburg
+00353   Irland
+00354   Island
+00355   Albanien
+00356   Malta
+00357   Zypern
+00358   Finnland
+00359   Bulgarien
+0036    Ungarn
+00370   Litauen
+00371   Lettland
+00372   Estland
+00373   Moldau Republik # Moldawien
+00374   Armenien
+00375   Weißrußland (Belarus) # Weissrussland Belarus (Weißrußland)
+00376   Andorra
+00377   Monaco
+00378   San Marino
+00380   Ukraine
+00381   Jugoslawien Montenegro # Jugoslawien (Serbien und Montenegro) Jugoslawien Serbien
+00385   Kroatien
+00386   Slowenien
+00387   Bosnien-Herzegowina
+00389   Mazedonien # Mazedonien (ehem. jugoslawische Republik) Makedonien
+0039    Italien
+00396   Vatikanstadt
+0040    Rumänien
+0041    Schweiz
+004175  Liechtenstein
+00420   Tschechien # Tschechische Republik
+00421   Slowakei # Slowakische Republik
+0043    Österreich
+0044    Großbritannien und Nordirland # Grossbritannien Guernsey (Großbritannien) Insel Man (Großbritannien) Jersey (Großbritannien) Kanalinseln (Großbritannien) Man (Großbritannien) Nordirland
+0045    Dänemark
+0046    Schweden
+0047    Norwegen
+0048    Polen
+0049    Deutschland
+00500   Falklandinseln
+00501   Belize
+00502   Guatemala
+00503   El Salvador
+00504   Honduras
+00505   Nicaragua
+00506   Costa Rica
+00507   Panama
+00508   Saint Pierre und Miquelon
+00509   Haiti
+0051    Peru
+0052    Mexiko
+0053    Kuba
+0054    Argentinien
+0055    Brasilien
+0056    Chile
+0057    Kolumbien
+0058    Venezuela
+00590   Guadeloupe
+00591   Bolivien
+00592   Guyana
+00593   Ecuador
+00594   Französisch-Guayana
+00595   Paraguay
+00596   Martinique
+00597   Suriname
+00598   Uruguay
+00599   Niederländische Antillen
+0060    Malaysia
+0061    Australien
+0062    Indonesien
+0063    Philippinen
+0064    Neuseeland
+0065    Singapur
+0066    Thailand
+00670   Marianen
+00671   Guam
+0067210 Davis (Antarktis)
+0067211 Mawson (Antarktis)
+0067212 Casey (Antarktis)
+0067213 Macquarrie Island (Antarktis)
+006722  Kokosinseln (Australien)
+006723  Norfolkinseln (Australien) # Norfolk Inseln
+006724  Weihnachtsinsel (Australien)
+00673   Brunei Darussalam
+00674   Nauru
+00675   Papua-Neuguinea
+00676   Tonga
+00677   Salomonen
+00678   Vanuatu
+00679   Fidschi
+00680   Palau
+00682   Cook-Inseln
+00684   Amerikanisch-Samoa
+00685   Samoa
+00686   Kiribati
+00687   Neukaledonien
+00688   Tuvalu
+00689   Französisch-Polynesien  # Frz. Polynesien
+00691   Mikronesien
+00692   Marshallinseln
+007     GUS (Russische Föderation) # Russland Kasachstan Tadschikistan
+0081    Japan
+0082    Korea (Republik)
+0084    Vietnam
+00850   Korea (Demokratische Republik) # Korea (Nord)
+00852   Hongkong
+00853   Macao
+00855   Kambodscha
+00856   Laos
+0086    China (Volksrepublik)
+00871   Atlantischer Ozean (Ost)
+00872   Pazifischer Ozean
+00873   Indischer Ozean
+00874   Atlantischer Ozean (West)
+00880   Bangladesch
+00886   China (Taiwan) # Taiwan
+0090    Türkei # Zypern (Nordzypern)
+0091    Indien
+0092    Pakistan
+0093    Afghanistan
+0094    Sri Lanka
+0095    Myanmar (Birma)
+00960   Malediven
+00961   Libanon
+00962   Jordanien
+00963   Syrien
+00964   Irak
+00965   Kuwait
+00966   Saudi-Arabien
+00967   Jemen (Arabische Republik)
+00968   Oman
+00971   Vereinigte Arabische Emirate
+00972   Israel
+00973   Bahrain
+00974   Katar
+00975   Bhutan
+00976   Mongolei
+00977   Nepal
+0098    Iran
+00993   Turkmenistan
+00994   Aserbaidschan
+00995   Georgien
+00996   Kirgisistan
+00998   Usbekistan

@@ -1,4 +1,4 @@
-/* $Id: rate.c,v 1.5 1999/04/14 13:17:24 akool Exp $
+/* $Id: rate.c,v 1.6 1999/04/15 19:15:17 akool Exp $
  *
  * Tarifdatenbank
  *
@@ -19,6 +19,16 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rate.c,v $
+ * Revision 1.6  1999/04/15 19:15:17  akool
+ * isdnlog Version 3.15
+ *
+ * - reenable the least-cost-router functions of "isdnconf"
+ *   try "isdnconf -c <areacode>" or even "isdnconf -c ."
+ * - README: "rate-xx.dat" documented
+ * - small fixes in processor.c and rate.c
+ * - "rate-de.dat" optimized
+ * - splitted countries.dat into countries-de.dat and countries-us.dat
+ *
  * Revision 1.5  1999/04/14 13:17:24  akool
  * isdnlog Version 3.14
  *
@@ -480,7 +490,7 @@ int initRate(char *conf, char *dat, char **msg)
 	    empty(&zones);
 	    break;
 	  }
-	  zone2=strtol(++s,&s,10);
+	  zone2=strtol(s,&s,10);
 	  if (zone2<zone1) {
 	    i=zone2; zone2=zone1; zone1=i;
 	  }

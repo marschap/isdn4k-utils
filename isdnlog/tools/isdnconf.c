@@ -1,4 +1,4 @@
-/* $Id: isdnconf.c,v 1.25 1999/04/10 16:36:36 akool Exp $
+/* $Id: isdnconf.c,v 1.26 1999/04/15 19:14:58 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -20,6 +20,16 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnconf.c,v $
+ * Revision 1.26  1999/04/15 19:14:58  akool
+ * isdnlog Version 3.15
+ *
+ * - reenable the least-cost-router functions of "isdnconf"
+ *   try "isdnconf -c <areacode>" or even "isdnconf -c ."
+ * - README: "rate-xx.dat" documented
+ * - small fixes in processor.c and rate.c
+ * - "rate-de.dat" optimized
+ * - splitted countries.dat into countries-de.dat and countries-us.dat
+ *
  * Revision 1.25  1999/04/10 16:36:36  akool
  * isdnlog Version 3.13
  *
@@ -909,7 +919,7 @@ static section* writeentry(section *SPtr, int Index)
 void setDefaults()
 {
   if (currency == NULL)
-    currency="EUR";
+    currency="DEM";
 
   if (currency_factor == 0.0)
     currency_factor = 0.12;

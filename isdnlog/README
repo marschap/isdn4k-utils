@@ -1,10 +1,10 @@
-ISDNLOG - Version 3.12 -  				30-Mar-99  20:48
+ISDNLOG - Version 3.15 -  				15-Apr-99  20:06
 
 
 isdnlog ist ein Utility zur Auswertung des D-Kanals eines
 ISDN-BRI Anschlusses.
 
-isdnlog-3.12 wurde ausgiebig mit Linux-2.0.36 getestet.
+isdnlog-3.15 wurde ausgiebig mit Linux-2.0.36 getestet.
 
 
 Fuer alle, die es nun ueberhaupt nicht mehr abwarten koennen, hier das
@@ -3767,50 +3767,121 @@ CREATE TABLE isdnlog (
 ------------------
 
 Die Tarifdatenbank fuer isdnlog wird bei jedem Neustart von isdnlog aus
-der ASCII-Datei "/usr/lib/isdn/tarif.dat" neu generiert.
+der ASCII-Datei "/usr/lib/isdn/rate-xx.dat" neu generiert.
+
+Anstelle von "xx" tritt das jeweilige Laenderkuerzel, also z.b. "de" fuer
+Deutschland oder "at" fuer Oesterreich.
+
+Welche Tarifdatei gilt, wird ueber den Eintrag
+
+RATEFILE = /usr/lib/isdn/rate-de.dat
+
+im Kapitel
+
+[ISDNLOG]
+
+der Konfigurationsdatei angegeben.
 
 Benutzerbezogene Einstellungen an der Tarifdatenbank (wie Auswahl
 eines bestimmten Tarifes eines Providers (z.b. Sekundentakt oder Minutentakt),
 oder auch der konkrete Provider bei Kennzahlen, die von mehreren Providern
 vergeben werden (z.b. 01098 wird von Star, Nikoma, Mox sowie C@llas verwendet)
-werden in der Datei "/etc/isdn/tarif.conf" vorgenommen.
+werden in der Datei "/etc/isdn/rate.conf" vorgenommen.
 
-Die Datei "tarif.dat" wird in einem Durchgang von oben nach unten eingelesen,
+Diese Datei muá ueber den Eintrag
+
+RATECONF       = /etc/isdn/rate.conf
+
+im Kapitel
+
+[ISDNLOG]
+
+der Konfigurationsdatei angegeben werden.
+
+Die Datei "rate-xx.dat" wird in einem Durchgang von oben nach unten eingelesen,
 und muss folgenden Aufbau (als Beispiel hier nun Mobilcom) haben:
 
-P:19,0=MobilCom
-G:01.01.1999
+#######################################################################
+P:19 Mobilcom CbC
+C:CityLine Telefondienste GmbH, Schwarzer Weg 13, 24837 Schleswig 01019
+G:06.04.1999
 C:MobilCom AG
 C:Homepage: http://www.mobilcom.de
 C:Hotline:  01805/191919
-C:Adresse:  Postfach 1249, 24822 Schleswig
-A:60/60
-I:0101901929 # (Benutzername: mobilcom; Passwort: mobilcom)
-Z:1-2
-T:*=0.19
-Z:3-8
-T:*=0.99
-Z:G
-T:*=0.19
+C:Adresse:  Postfach 1249
+C:	    24822 Schleswig
+Z:2-4 Ferngespraeche bundesweit
+T:*/07-19=0.12/60 Standard
+T:*/19-22=0.08/60 Spar
+T:*/22-07=0.04/60 Nacht
+Z:5-10 Mobilfunk
+A:01610,01617,01619,01618 # C
+A:0170,0171  		  # D1
+A:0172,0173		  # D2
+A:0177,0178		  # Eplus
+A:0176,0179  		  # E2
+T:*/*=0.49/60
+Z:14 Gruppe A
+A:+1     # Vereinigte Staaten (USA)
+A:+30    # Griechenland
+A:+31    # Niederlande
+A:+32    # Belgien
+A:+33    # Frankreich
+A:+34    # Spanien
+A:+350   # Gibraltar
+A:+351   # Portugal
+A:+352   # Luxemburg
+A:+353   # Irland
+A:+356   # Malta
+A:+358   # Finnland
+A:+376   # Andorra
+A:+377   # Monaco
+A:+39    # Italien
+A:+41    # Schweiz
+A:+43    # Oesterreich
+A:+44    # Grossbritannien und Nordirland
+A:+45    # Daenemark
+A:+46    # Schweden
+A:+47    # Norwegen
+T:*/*=0.49/60
+Z:20 Internet
+A:01929 # (Benutzername: mobilcom; Passwort: mobilcom)
+T:*/*=0.05/60 FreeNet
+#######################################################################
 
-Leerzeilen, sowie Kommentare mittels "#" sind zulaessig.
+Leerzeilen, sowie Kommentare mittels "#" sind an jeder beliebigen
+Stelle zulaessig.
 
 Die Reihenfolge der Eintraege muss zwingend so wie angegeben sein.
 Es ist auch nicht erlaubt, irgend welche Leerzeichen, Tabs o.ae.
-einzufuegen, als Dezimalkomma muss der "." (Punkt) verwendet werden,
-Uhrzeiten sind stets 5-stellig (05:15) anzugeben.
+einzufuegen, als Dezimalkomma muss der "." (Punkt) verwendet werden.
 
 
 Nun die Eintraege im einzelnen:
 
+-> V:
+
+Hiermit wird die Version der Tarifdatenbank angegeben.
+V:Versionsstring (Vorschlag: 1.0-Germany [18-Mar-1999])
+
 -> P:
 
-Hiermit beginnt die Definition des naechsten Providers.
+Hiermit beginnt die Definition des (naechsten) Providers.
 Es wird die Kennzahl, evtl. eine laufende Nummer sowie die
-Bezeichnung des Providers definiert.
+Bezeichnung des Providers definiert. Diese Bezeichnung ist moeglichst
+kurz zu halten, da isdnlog diese staendig anzeigt.
+Unter Kennzahl versteht isdnlog hier die Vorwahl vor der eigentlichen
+Telefonnummer, ueber die der jeweilige Anbieter verwendet werden kann.
+In Deutschland sowie Oesterreich muá z.b.
+
+  01019 040 4711
+
+gewaehlt werden, um die Telefonnummer 4711 in Hamburg (040) ueber den
+Telefondienstanbieter (=Provider) 19 (Mobilcom) zu erreichen.
+
 Beispiel:
 
-P:19,0=MobilCom AG
+P:19,0 MobilCom
 
 Gibt es fuer eine Kennzahl mehrere Alternativen (wie verschiedene Provider
 oder verschiedene Tarife), werden diese hierueber auseinander gehalten.
@@ -3837,84 +3908,176 @@ von isdnlog noch gesondert verwendet werden, und sollten daher zumindest
 genug Informationen enthalten, um eine Kontaktaufnahme mit der jeweiligen
 Telefongesellschaft zu ermoeglichen.
 
--> A:
-
-Hiermit wird angegeben, nach welchem Takt abgerechnet wird. Z.Zt. werden
-zwei grundsaetzlich verschiedene Modelle unterstuetzt:
-  1. Abrechnung nach Takten (soweit mir bekannt, nur noch bei der
-     Deutschen Telekom ueblich)
-     In diesem Fall wird unter A: angegeben, was ein Takt kostet, also
-       A:0.12
-     und weiter unten (im Kapitel T:) die Laenge eines Taktes in Sekunden
-
-  2. Abrechnung in Minutenpreisen. Dies ist heutzutage die uebliche Notation
-     in den einschlägigen Preislisten der Provider.
-     In diesem Fall kommt die Notation "A:30/1" zum Zuge. Dies
-     bedeutet: Mindestdauer einer Verbindung 30 Sekunden, Abrechnung
-     Sekundengenau. Anderes Beispiel: A:60/60 bedeutet: Mindestdauer
-     60 Sekunden, Abrechnung Minutengenau.
-     In diesem Fall wird im folgenden Kapitel T: der Preis pro
-     Minute angegeben.
-
--> I:
-
-Bietet dieser Provider einen eigenen Internet-Zugang an (wie z.b. o.tel.o,
-Mobilcom, Arcor, VIAG), wird hier die komplette Zugangsnummer hinterlegt.
-Beispiel:
-
-I:0101901929 # (Benutzername: mobilcom; Passwort: mobilcom)
 
 Nun folgen die eigentlichen Tarifinformationen. Es wird zuerst die
-Zone, und danach die Kosten innerhalb dieser Zone angegeben. Es koennen
+Tarifzone, und danach die Kosten innerhalb dieser Zone angegeben. Es koennen
 beliebig viele Zonen, jeweils gefolgt von beliebig vielen Kosten
 angegeben werden.
 
 -> Z:
 
-Gibt die Zone an. isdnlog kennt per heute folgende Zonen:
+Gibt die Zone an. Grundsaetzlich koennen die Zonen vollkommen willkuerlich
+vergeben werden. Dies haengt vom jeweiligen Land und/oder
+Telefondienstprovider ab.
 
-   0=City           8=E2-Netz      G=Internet
-   1=Region 50      9=Euro City
-   2=Fern           A=Euro 1
-   3=C-Netz         B=Euro 2
-   4=C-Mobilbox     C=Welt 1
-   5=D1-Netz        D=Welt 2
-   6=D2-Netz        E=Welt 3
-   7=E-plus-Netz    F=Welt 4
+Fuer Deutschland habe ich folgende Zonenzuordnung getroffen:
+
+  0 : Verbindungen an der eigenen Tk-Anlage (zwangslaeufig kostenlos)
+      sowie alle "FreeCall" (kostenlos) Nummern des jeweiligen Providers
+  1 : Ortszone (alle Nummern, die ohne Vorwahl erreichbar sind.
+      Z.Zt. nur ueber den preselected Provider erreichbar)
+  2 : Cityzone (Nummern im Umkreis von max. 20 km)
+  3 : Region 50 (Nummern im Umkreis von max. 50 km)
+  4 : Fernzone (Deutschlandweit)
+  5 : C-Mobilbox
+  6 : C-Netz
+  7 : D1-Netz
+  8 : D2-Netz
+  9 : E-plus-Netz
+ 10 : E2-Netz
+ 11 : Euro City
+ 12 : Euro 1
+ 13 : Euro 2
+ 14 : Welt 1
+ 15 : Welt 2
+ 16 : Welt 3
+ 17 : Welt 4
+
+ 20 : Internet
+
+Diese Zuordnung muá erhalten bleiben, da isdnlog fuer Deutschland bereits
+eine Verzonungstabelle (der DTAG) enthaelt. In dieser Verzonungstabelle
+kann isdnlog nachschlagen, welche der obigen Zonen zwischen zwei
+gegebenen Telefonnummern liegt.
+Weiterhin kann ueber den Eintrag "ZONE = x" in der "callerid.conf" fuer
+jede Nummer wieder explizit die errechnete Zone uebersteuert werden.
+
 
 Falls ein Provider in mehreren Zonen denselben Tarif anbietet, kann das
-durch die Notation Z:1-2 (bedeutet: Gilt sowohl für die Regional- als die
-Fernzone) oder auch Z:3-8 (bedeutet: Gilt fuer alle Funknetze) angegeben
-werden. Beispiel:
+durch die Notation Z:1-2 (bedeutet: Gilt sowohl fuer die Orts- als die
+Regionalzone) oder auch Z:5-10 (bedeutet: Gilt fuer alle Funknetze) angegeben
+werden. Moeglich ist auch: Z:5,7,9-10
+Die Nummer der Zone kann durch eine textuelle Bezeichnung fuer diese
+Zone gefolgt werden, also z.b.
 
-Z:1-2
+  Z:4 GermanCall
+
+
+-> A:
+
+Telefonnummer(n), an der isdnlog die Zone erkennen kann.
+Die Zonen
+  0 : Verbindungen an der eigenen Tk-Anlage
+  1 : Ortszone
+  2 : Cityzone
+  3 : Region 50
+  4 : Fernzone
+kann isdnlog automatisch (mittels der Verzonungstabelle) erkennen. Daher
+muessen fuer diese Zonne in Deutschland keine "A:" Eintraege vorgenommen
+werden (das waere auch eine lange Liste ;-)
+Von allen anderen Zonen weiss isdnlog intern nichts.
+
+Durch einen Eintrag
+
+Z:8 D2-Netz
+A:0172,0173
+
+wird isdnlog bekannt gemacht, das alle Telefonnummern, die mit "0172" oder
+"0173" beginnen, in die Zone 8 gehoeren.
+
+Ein Eintrag
+
+Z:12 USA
+A:+1 # Vereinigte Staaten (USA)
+
+gibt an, das alle Nummern, die mit "+1" beginnen, in der Zone 12 liegen.
+Es muss hier stets die Normalform einer Telefonnummer angegeben werden,
+d.h. obwohl man in die USA "001" vorw„hlt, verarbeitet isdnlog dies intern
+mit "+1". Die Normalform einer Telefonnummer lautet:
+
+ <Landesvorwahl><Vorwahl><Rufnummer>
+
+D.h. eine evtl. Provider-Vorwahl, oder vorlaufende Nullen fuer die
+Amtsholung an einer Tk-Anlage haben hier nichts zu suchen!
+
+Ueber diesen "A:" Tag werden isdnlog auch alle "Sonderrufnummern" bekannt
+gemacht. Durch den Eintrag
+
+Z:0 FreeCall
+A:110   # Polizei / Notruf
+A:112   # Feuerwehr / Rettungsleitstelle
+A:0010  # Operator Service
+A:0130  # freecall 0130
+A:0800  # freecall 0800
+
+weiss isdnlog, das alle Nummern, die mit "110", "112", "0010", "0130" oder
+"0800" beginnen, kostenlos sind.
 
 -> T:
 
 Hiermit wird letztendlich der eigentliche Tarif angegeben.
-Es sind folgende Notationen zulaessig:
 
-T:W09-18=0.29
+T:Tag/Zeit=Kosten[,Kosten] Name
 
-Meint: Werktags, 09:00 Uhr bis 18:00 Uhr (genaugenommen bis 17:59 Uhr, isdnlog
-beruecksichtigt dies automatisch) kostet 1 Minute DM 0,29
+wobei Tag in der Form 1-5 oder 1,2,3,4,5 stehen kann, 1=Montag, es gibt
+noch * fuer alle Tage und H fuer Holiday=Feiertag sowie
+E=Weekend (entspricht 6-7)
+Welcher Tag ein Holiday (Tag mit verguenstigen Tarifen) ist, entnimmt
+isdnlog der Datei "holiday-xx.dat" (Mit "xx" fuer das Land, in dem sich
+isdnlog befindet). Auch diese Datei muss ueber den Eintrag
 
-T:E08-21=0.13
+HOLIDAYS = /usr/lib/isdn/holiday-de.dat
 
-Meint: Wochenende sowie Feiertags, 08:00 Uhr bis 21:00 Uhr kostet eine
-Minute DM 0,13
+im Kapitel
 
-Also: "W" = Werktag, "E" = Wochenende/Feiertag, oder auch "*" = alle Tage
+[ISDNLOG]
 
-Danach die Uhrzeit von/bis dieser Tarif gilt, gefolgt von einem "="
-Zeichen, danach der Minutenpreis in DM
+der Konfigurationsdatei angegeben werden.
 
-Wird keine Uhrzeit angegeben, also z.b. "E=0.10" bedeutet dies: Den ganzen
-Tag ueber, 24 Stunden (sog. "flat rate")
 
+die Zeit sieht aehnlich aus, 8-12 oder 8,9,10,11 oder 8-12,13-17
+ACHTUNG: 8-12 bedeutet 8:00 bis 11:59 !!!
+
+Kosten: Kosten einer Einheit/Dauer der Einheit z.B. 0.56/30; Kosten und
+Dauer sind doubles; bei mehreren Kosten kann/soll die Verzoegerung, nach
+der auf den naechsten Kostenwert gewechselt werden soll, mit ':'getrennt
+angegeben werden
+z.B. 0.56/30:600,0.56/60 heisst: zuerst alle 30 Sekunden, nach 10 min
+alle 60 Sekunden
+Wenn das Delay nicht angegeben wird, wird die Taktdauer als Delay
+verwendet (d.h. die Kosten gelten nur fuer eine Einheit)
+Der letzte Kosteneintrag darf kein Delay haben!
+
+Sonderfaelle:
+Grundkosten pro Gespraech:
+1.0/0,0.40/30: 1 DM pro Verbindung, danach alle 30 Sekunden eine Einheit
+zu 40 Pfennig
+
+Freie Gespraechszeit:
+0/10,0.50/30: 10 Sekunden mit 0 DM, dann alle 30 Sekunden 50 Pf
+
+Abgeschlossen wird der Tarif durch eine textuelle Bezeichnung, wie z.b.
+
+T:1-5/09-18=0.96/60 Hauptzeit
+
+Da in den meisten Preislisten die Tarife in DM/Minute angegeben werden,
+gibt es die Spezialnotation:
+
+T:1-5/07-09=0.09(60)/1
+
+Dies bedeutet: Der Minutenpreis betraegt DM 0.09 - abgerechnet wird
+jedoch im Sekundentakt.
+Um nun nicht alle Minutenpreise in Sekundenpreise umrechnen zu muessen,
+und auch, um nicht arge Rundungsprobleme zu provozieren
+(ohne die (60) Funktionalitaet wuerde hier stehen: ...0.0015/1),
+sollte stets diese Form gewaehlt werden.
+
+Um die korrekte Funktion vor allem von CHARGEINT zu gewaehrleisten, ist
+es von extremer Wichtigkeit, die richtigen Taktlaengen anzugeben, und
+hier nicht "kuenstlich" umzurechnen!
 
 Es folgen in beliebig vielen weiteren "T:" Zeilen alle weiteren Tarife
-für die darueber definierte Zone.
+fuer die darueber definierte Zone.
 
 Danach wird mittels "Z:" die naechste Zone begonnen, wiederum gefolgt von
 beliebig vielen "T:" Tarifen.
@@ -3925,7 +4088,7 @@ der naechste Provider usw.
 
 
 
-In der Datei "/etc/isdn/tarif.conf" werden die Benutzerabhaengigen
+In der Datei "/etc/isdn/rate.conf" werden die Benutzerabhaengigen
 Einstellungen an der Tarifdatenbank vorgenommen.
 Beispiel:
 
@@ -3940,59 +4103,6 @@ P:98=4
 
 Hier wird definiert, das der konkrete Anwender bei einer Verbindung ueber
 die Kennzahl "98" den Tarif der Fa. Mox Telecom AG meint.
-
-: Folgende Dinge sind mir bereits als hiermit noch nicht machbar bekannt:
-:
-:  - die erste Minute kostenlos, wenn Gespraechsdauer < 1 Minute
-:  - die ersten 5 Sekunden kostenlos
-:  - 10plus, CityPlus, usw. der DTAG
-:  - Preise fuer die Sondernnummern (112 ..., 0191011 ...)
-:  - Talkline's Internet-Zugang wird im 3 Minuten-Takt abgerechnet
-:  - Viatel berechnet an Feiertagen nicht wie Wochenende, sondern wie normale Tage
-:  - Rabatte
-:  - feinere Unterscheidung nach Laendern (Euro 1, Welt 1 ...)
-:  - einige Provider "vergessen", bei laufenden Gespaechen einen evtl.
-:    Tarifwechsel abzurechnen
-:  - Unterscheidung zwischen Wochenend- sowie Feiertagstarifen
-:  - Sonderbehandlung von 24. Dezember bis 31. Dezember (Telekom)
-
-
-Z.Zt. ist eine neue, verbesserte/erweiterte Version der "tarif.dat" Names
-"rate-xx.dat" (xx == Laenderkennung: de, at usw.) in Arbeit.
-
-Im folgenden eine vorlaeufige Syntaxbeschreibung:
-
-V:Versionsstring (Vorschlag: 1.0-Germany [18-Mar-1999])
-P:Nummer[,variante] Name (zwischen Nummer und Name kann auch ein '='
-stehen, aber mir gefaellts mit Blanks und Tabs besser)
-Z:Nummer Name (ebenfalls wahlweise '=', die Reihenfolge ist egal, es
-muessen auch nicht alle Zonen vorkommen, es gibt auch ein Zone.used)
-T:Tag/Zeit=Kosten[,Kosten] Name
-wobei Tag in der Form 1-5 oder 1,2,3,4,5 stehen kann, 1=Montag, es gibt
-noch * fuer alle Tage und H für Holiday=Feiertag (die anderen
-Bezeichnungen E=Weekend (5-7 oder 6-7?) und F fuer Feiertag (Freitag?)
-sind mißverständlich und wuerde ich nicht verwenden)
-die Zeit sieht aehnlich aus, 8-12 oder 8,9,10,11 oder 8-12,13-17 ACHTUNG:
-8-12 bedeutet 8:00 bis 11:59!!! Ich hatte das vorher anders, aber das
-sieht komisch aus: einmal 8-11, naechste Zeile 12-12 usw.
-Kosten: Kosten einer Einheit/Dauer der Einheit z.B. 0.56/30; Kosten und
-Dauer sind doubles; bei mehreren Kosten kann/soll die Verzoegerung, nach
-der auf den naechsten Kostenwert gewechselt werden soll, mit ':'getrennt
-angegeben werden
-z.B. 0.56/30:600,0.56/60 heisst: zuerst alle 30 sekunden, nach 10 min
-alle 60 sekunden
-Wenn das delay nicht angegeben wird, wird die Taktdauer als delay
-verwendet (d.h. die Kosten gelten nur fuer eine Einheit)
-Der letzte Kosteneintrag darf kein delay haben!
-Sonderfaelle:
-Grundkosten pro Gespraech:
-1.0/0,0.40/30: 1 DM pro Verbindung, danach alle 30 Sekunden eine Einheit
-zu 40 Pfennig
-Freie Gespraechszeit:
-0/10,0.50/30: 10 Sekunden mit 0 DM, dann alle 30 sekunden 50 Pf
-Vergiss nicht den Namen des Tarifs!
-z.B.
-1-5/6-8=0.10/600 Morgenstund hat Kopfweh
 
 
 18. LCR (Least cost router)

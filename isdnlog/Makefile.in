@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.67 1999/04/14 13:16:01 akool Exp $
+## $Id: Makefile.in,v 1.68 1999/04/15 19:14:09 akool Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,16 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.68  1999/04/15 19:14:09  akool
+## isdnlog Version 3.15
+##
+## - reenable the least-cost-router functions of "isdnconf"
+##   try "isdnconf -c <areacode>" or even "isdnconf -c ."
+## - README: "rate-xx.dat" documented
+## - small fixes in processor.c and rate.c
+## - "rate-de.dat" optimized
+## - splitted countries.dat into countries-de.dat and countries-us.dat
+##
 ## Revision 1.67  1999/04/14 13:16:01  akool
 ## isdnlog Version 3.14
 ##
@@ -542,7 +552,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 3.14
+VERSION     = 3.15
 
 MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 \
 	      isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 \

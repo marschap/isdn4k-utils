@@ -1,4 +1,4 @@
-/* $Id: isdnconf.c,v 1.19 1999/04/14 13:16:18 akool Exp $
+/* $Id: isdnconf.c,v 1.20 1999/04/15 19:14:29 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -20,6 +20,16 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnconf.c,v $
+ * Revision 1.20  1999/04/15 19:14:29  akool
+ * isdnlog Version 3.15
+ *
+ * - reenable the least-cost-router functions of "isdnconf"
+ *   try "isdnconf -c <areacode>" or even "isdnconf -c ."
+ * - README: "rate-xx.dat" documented
+ * - small fixes in processor.c and rate.c
+ * - "rate-de.dat" optimized
+ * - splitted countries.dat into countries-de.dat and countries-us.dat
+ *
  * Revision 1.19  1999/04/14 13:16:18  akool
  * isdnlog Version 3.14
  *
@@ -580,28 +590,74 @@ int print_in_modules(const char *fmt, ...)
 
 /*****************************************************************************/
 
-static char *zonen[MAXZONES] = { "Intern", "CityCall", "RegioCall", "GermanCall",
-       	    	      	       	 "C-Netz", "C-Mobilbox", "D1-Netz", "D2-Netz",
-       	    	  	  	 "E-plus-Netz", "E2-Netz", "Euro City", "Euro 1",
-       	    	  	  	 "Euro 2", "Welt 1", "Welt 2", "Welt 3", "Welt 4",
-       	    	  	  	 "Internet", "GlobalCall" };
+static char *printrate(RATE Rate)
+{
+  static char message[BUFSIZ];
+
+
+  if (Rate.Basic > 0)
+    sprintf(message, "%s %s + %s/%ds = %s %s + %s/Min (%s)",
+      currency, double2str(Rate.Basic, 5, 3, DEB),
+      double2str(Rate.Price - Rate.Basic, 5, 3, DEB),
+      (int)(Rate.Duration + 0.5),
+      currency, double2str(Rate.Basic, 5, 3, DEB),
+      double2str(60 * Rate.Price / Rate.Duration, 5, 3, DEB),
+      explainRate(&Rate));
+  else
+    sprintf(message, "%s %s/%ds = %s %s/Min (%s)",
+      currency, double2str(Rate.Price, 5, 3, DEB),
+      (int)(Rate.Duration + 0.5),
+      currency, double2str(60 * Rate.Price / Rate.Duration, 5, 3, DEB),
+      explainRate(&Rate));
+
+  return(message);
+} /* printrate */
+
+
+#define MAXPROVIDER 1000
+
+typedef struct {
+  int    prefix;
+  double rate;
+  char  *explain;
+} SORT;
+
+static SORT sort[MAXPROVIDER];
+
+
+static int compare(const SORT *s1, const SORT *s2)
+{
+  return(s1->rate > s2->rate);
+} /* compare */
 
 
 static void showLCR()
 {
-  auto int   tz, hour, provider, lastprovider = -1, lasthour = -1, *p;
+  auto int   tz, hour, provider, lastprovider = UNKNOWN, lasthour = UNKNOWN, *p;
   auto int   useds = 0, maxhour, leastprovider = UNKNOWN;
-  auto char  ignoreprovider[BUFSIZ], *p1;
-#if 0 /* FIXME */
-  auto char  info[BUFSIZ];
-#endif
+  auto char  ignoreprovider[BUFSIZ];
+  auto RATE  Rate;
+  auto int   duration = 181;
   int  probe[] = { REGIOCALL, GERMANCALL, D2_NETZ, 0 };
   int  used[100];
   int  hours[100];
+  auto struct tm *tm;
+  auto time_t werktag, wochenende;
 
 
   print_msg(PRT_NORMAL, "Least-Cost-Routing-Table:\n\n");
   *ignoreprovider = 0;
+
+  time(&werktag);
+  tm = localtime(&werktag);
+
+  if ((tm->tm_wday == 6) || (tm->tm_wday == 0)) {
+    wochenende = werktag;
+    werktag += (2 * 24 * 60 * 60);
+  }
+  else
+    wochenende = werktag + ((6 - tm->tm_wday) * 24 * 60 * 60);
+
 
 retry:
   memset(used, 0, sizeof(used));
@@ -610,8 +666,13 @@ retry:
   for (tz = 0; tz < 2; tz++) { /* Werktag .. Wochendende */
 
     switch (tz) {
-      case 0 : print_msg(PRT_NORMAL, "Werktag:\n");             break;
-      case 1 : print_msg(PRT_NORMAL, "Wochenende/Feiertag:\n"); break;
+      case 0 : print_msg(PRT_NORMAL, "Werktag:\n");
+      	       tm = localtime(&werktag);
+      	       break;
+
+      case 1 : print_msg(PRT_NORMAL, "Wochenende/Feiertag:\n");
+      	       tm = localtime(&wochenende);
+      	       break;
     } /* switch */
 
     p = probe;
@@ -624,25 +685,29 @@ retry:
         case D2_NETZ    : print_msg(PRT_NORMAL, "\tD2Call:\n");     break;
       } /* switch */
 
-      lastprovider = -1;
-      lasthour = -1;
+      lastprovider = UNKNOWN;
+      lasthour = UNKNOWN;
 
       hour = 7;
 
       while (1) {
 
-#if 0 /* Fixme: use RATE */
-        provider = showcheapest(*p, 181, ignoreprovider, info, tz, hour, 0);
-#endif
+        tm->tm_hour = hour;
+      	memset(&Rate, 0, sizeof(Rate));
+      	Rate.zone = *p;
+      	Rate.start = mktime(tm);
+      	Rate.now  = Rate.start + duration;
+
+        provider = getLeastCost(&Rate, UNKNOWN);
 
 #if 0
         print_msg(PRT_NORMAL, "DEBUG::tz=%d, zone=%d, Hour=%02d, P=%d, %s  lasthour=%d, lastprovider=%d\n", tz, *p, hour, provider, getProvidername(provider), lasthour, lastprovider);
 #endif
 
-        if (lastprovider == -1)
+        if (lastprovider == UNKNOWN)
           lastprovider = provider;
 
-        if (lasthour == -1)
+        if (lasthour == UNKNOWN)
           lasthour = hour;
 
         if (provider != lastprovider) {
@@ -696,6 +761,7 @@ retry:
       } /* if */
     } /* if */
 
+#if 0
   if (useds > 5) {
     print_msg(PRT_NORMAL, "OOOPS: More than 5 providers used. Retry with 010%02d:%s ignored\n",
       leastprovider, getProvidername(leastprovider));
@@ -705,17 +771,20 @@ retry:
     *++p1 = 0;
     goto retry;
   } /* if */
-
+#endif
 } /* showLCR */
 
 
 int main(int argc, char *argv[], char *envp[])
 {
-	int c;
+	int c, n = 0;
 	int Cnt = 0;
 	section *conf_dat = NULL;
 	char *myname = basename(argv[0]);
 	FILE *fp;
+  	RATE Rate;
+	char *msg;
+
 
 	static char usage[]   = "%s: usage: %s [ -%s ]\n";
 	static char options[] = "ADdn:a:t:f:c:wslimqgV1M:";
@@ -869,87 +938,79 @@ int main(int argc, char *argv[], char *envp[])
 
 	if (areacode[0] != '\0')
 	{
-		char *ptr, snfile[BUFSIZ];
-#if 0 /* FIXME */
-		char msg[BUFSIZ];
-#endif
-		int len, i, zone;
+		char *ptr;
+		int len, i, zone = UNKNOWN, duration = 181;
 
 
-		strcpy(snfile, "/usr/lib/isdn/sonderrufnummern.dat"); /* FIXME */
-	    	initSondernummern(snfile, &ptr);
  		initHoliday(holifile, NULL);
- 		initRate(rateconf, ratefile, NULL);
+ 		initRate("/etc/isdn/rate.conf", "/usr/lib/isdn/rate-de.dat", NULL);
+		currency = strdup("DEM");
 
-		if ((strlen(areacode) == 1) || (ptr = get_areacode(areacode,&len,quiet?C_NO_ERROR|C_NO_WARN:0)) != NULL)
+		if ((strlen(areacode) < 3) || (ptr = get_areacode(areacode,&len,quiet?C_NO_ERROR|C_NO_WARN:0)) != NULL)
 		{
 			if (!isdnmon)
 			{
-				const char *area;
-#if 0 /* FIXME */
-                                auto  char  info[BUFSIZ];
-#endif
+                                register char *p;
 
-				if ((i = is_sondernummer(areacode, DTAG)) > -1) { /* Fixme: DTAG is specific to Germany */
-				  print_msg(PRT_NORMAL, "%s\n", sondernummername(i));
 
-  				  if (!memcmp(areacode, "01610", 5) ||
-           			      !memcmp(areacode, "01617", 5) ||
-           			      !memcmp(areacode, "01619", 5))
-  				    zone = C_NETZ;
-  				  else if (!memcmp(areacode, "01618", 5))
-  				    zone = C_MOBILBOX;
-  				  else if (!memcmp(areacode, "0170", 4) ||
-           			           !memcmp(areacode, "0171", 4))
-  				    zone = D1_NETZ;
-  				  else if (!memcmp(areacode, "0172", 4) ||
-           			           !memcmp(areacode, "0173", 4))
-  				    zone = D2_NETZ;
-  				  else if (!memcmp(areacode, "0177", 4) ||
-           			           !memcmp(areacode, "0178", 4))
-  				    zone = E_PLUS_NETZ;
-  				  else if (!memcmp(areacode, "0176", 4) ||
-           			           !memcmp(areacode, "0179", 4))
-  				    zone = E2_NETZ;
-  				  else
-                                    zone = WELT_4;
+                                if ((p = strchr(areacode, ','))) {
+                                  duration = atoi(p + 1);
+                                  *p = 0;
+                                } /* if */
+
+                                if (*areacode == '.') {
+                                  if (strlen(areacode) > 1) {
+                                    zone = atoi(areacode + 1);
+                                    ptr = "";
 				}
-                                else if (strlen(areacode) == 1) {
-  				  switch (toupper(*areacode)) {
-    				    case '1' : zone = CITYCALL;    break;
-    				    case '2' : zone = REGIOCALL;   break;
-    				    case '3' : zone = GERMANCALL;  break;
-    				    case '4' : zone = C_NETZ;      break;
-    				    case '5' : zone = C_MOBILBOX;  break;
-    				    case '6' : zone = D1_NETZ;     break;
-    				    case '7' : zone = D2_NETZ;     break;
-    				    case '8' : zone = E_PLUS_NETZ; break;
-    				    case '9' : zone = E2_NETZ;     break;
-    				    case 'A' : zone = EURO_CITY;   break;
-    				    case 'B' : zone = EURO_1;      break;
-    				    case 'C' : zone = EURO_2;      break;
-    				    case 'D' : zone = WELT_1;      break;
-    				    case 'E' : zone = WELT_2;      break;
-    				    case 'F' : zone = WELT_3;      break;
-    				    case 'G' : zone = WELT_4;      break;
-                                    case '.' : showLCR();      	   exit(0);
-     				     default : print_msg(PRT_NORMAL, "Unknown zone \"%c\", please use 1 .. H\n", *areacode);
+                                  else {
+                                    showLCR();
                				       exit(0);
-  				  } /* switch */
+                                  } /* else */
                                 }
 				else {
-				  area = area_diff_string(NULL,areacode);
     				  zone = area_diff(NULL, areacode);
 
-				  print_msg(PRT_NORMAL,"%s%s%s\n",ptr,area[0] != '\0'?" / ":"", area[0] != '\0'?area:"");
+      				  switch (zone) {
+      				    case AREA_ERROR    :
+				    case AREA_UNKNOWN  : zone = UNKNOWN;    break;
+				    case AREA_LOCAL    : zone = CITYCALL;   break;
+				    case AREA_R50      : zone = REGIOCALL;  break;
+				    case AREA_FAR      : zone = GERMANCALL; break;
+				    case AREA_ABROAD   : zone = UNKNOWN;    break;
+      				  } /* switch */
                                 } /* else */
 
+                                memset(&Rate, 0, sizeof(Rate));
 
-				print_msg(PRT_NORMAL,"Zone: %s\n", zonen[zone]);
-#if 0 /* Fixme: use RATE */
-                                (void)showcheapest(zone, 181, "\0", info, -1, -1, 1);
+  				time(&Rate.start);
+      				Rate.now    = Rate.start + duration;
+
+                                print_msg(PRT_NORMAL, "Ein %d Sekunden langes Gespraech in Zone %d kostet am %s", duration, zone, ctime(&Rate.start));
+
+                                for (Rate.prefix = 0; Rate.prefix < MAXPROVIDER; Rate.prefix++) {
+                                  if (zone != UNKNOWN)
+                                    Rate.zone = zone;
+                                  else
+				    Rate.zone = getZone(Rate.prefix, areacode);
+
+                                  if (Rate.zone != UNKNOWN) {
+                                    if (getRate(&Rate, &msg) != UNKNOWN) {
+      				      sort[n].prefix = Rate.prefix;
+      				      sort[n].rate = Rate.Charge;
+				      sort[n].explain = strdup(printrate(Rate));
+      				      n++;
+                                    } /* if */
+                                  } /* if */
+                                } /* for */
+
+                                qsort(sort, n, sizeof(SORT), compare);
+
+                                for (i = 0; i < n; i++)
+                                  print_msg(PRT_NORMAL, "010%02d %s %8.3f (%s)\n", sort[i].prefix, currency, sort[i].rate, sort[i].explain);
+#if 0
+                                print_msg(PRT_NORMAL, "getLeastCost=%d\n", getLeastCost(&Rate, UNKNOWN));
 #endif
-
 				exit(0);
 			}
 
