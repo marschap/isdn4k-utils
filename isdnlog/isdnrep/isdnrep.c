@@ -1,4 +1,4 @@
-/* $Id: isdnrep.c,v 1.91 2000/05/27 14:55:30 akool Exp $
+/* $Id: isdnrep.c,v 1.92 2000/06/22 16:08:24 keil Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -24,6 +24,10 @@
  *
  *
  * $Log: isdnrep.c,v $
+ * Revision 1.92  2000/06/22 16:08:24  keil
+ * parameter in (...) are allways converted into int
+ * newer gcc give an error using char here
+ *
  * Revision 1.91  2000/05/27 14:55:30  akool
  * isdnlog-4.25
  *  - isdnlog/isdnrep/isdnrep.c ... bugfix for wrong providers and duration
@@ -941,7 +945,7 @@ static int print_line3(const char *fmt, ...)
 			{
 				case 's' : append_string(&string,*fmtstring,va_arg(ap,char*));
 				           break;
-				case 'c' : sprintf(tmpstr,"%c",va_arg(ap,char));
+				case 'c' : sprintf(tmpstr,"%c",va_arg(ap,int));
 				           append_string(&string,*fmtstring,tmpstr);
 				           break;
 				case 'd' : sprintf(tmpstr,"%d",va_arg(ap,int));
