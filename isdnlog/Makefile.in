@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.191 2001/01/14 12:13:49 akool Exp $
+## $Id: Makefile.in,v 1.192 2001/01/31 11:58:00 leo Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,9 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.192  2001/01/31 11:58:00  leo
+## Fixed length of Alias in ilp.c
+##
 ## Revision 1.191  2001/01/14 12:13:49  akool
 ## isdnlog-4.49
 ##  - added more Euracom decodings
@@ -1439,7 +1442,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 4.49
+VERSION     = 4.50
 
 MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 \
 	      isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 \

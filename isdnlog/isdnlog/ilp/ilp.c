@@ -20,6 +20,8 @@
  *
  * 0.10 15.12.2000 lt Initial Version
  * 0.11 21.12.2000 lt STANDALONE test mode, bug fixes
+ * 0.12 31.01.2001 lt fixed too long aliases (thx Reinhard Karcher)
+ *
  */
 
 #ifdef STANDALONE
@@ -125,7 +127,7 @@ void procinfo(int chan, CALL *call, int state)
 	    st = "UNKNOWN";    
 	    break;
     }    
-    p += sprintf(p, " %7s %-3s %c %-25s %-18s %-8s",
+    p += sprintf(p, " %7s %-3s %c %-25s %-18.18s %-8s",
 	st,
 	NE(msn),
 	call->dialin ? '<' : '>',
