@@ -1,37 +1,43 @@
-V:1.02-Germany [25-May-1999 08:27:45]
+V:1.02-German [01-Jun-1999 21:31:35]
+
 N:Usbekistan
+A:Uzbekistan
 C:+998, +7590, +7436, +743, +7375, +7374, +7373, +7372, +7371, +737, +7369, +7367, +7366, +7365, +7362, +7361
 
 N:Kirgisien
+A:Kirgizia
 C:+996
 
 N:Georgien
+A:Georgia
 C:+995
 
 N:Aserbaidschan
+A:Azerbaijan
 C:+994
 
 N:Turkmenistan
 C:+993
 
 N:Tadschikistan
+A:Tajikistan
 C:+992, +7433, +7431, +74, +7379, +7377, +7376, +7364
 
 N:Iran
-A:Iran (Islamische Republik)
 C:+98
 
 N:Nepal
 C:+977
 
 N:Mongolei
-A:Mongolische VR
+A:Mongolische VR, Mongolia
 C:+976
 
 N:Bhutan
 C:+975
 
 N:Katar
+A:Quatar
 C:+974
 
 N:Bahrain
@@ -44,10 +50,10 @@ N:Israel
 C:+972
 
 N:Ver. Arabische Emirate
-A:Vereinigte Arabische Emirate, Ver.Arab. Emirate
+A:Vereinigte Arabische Emirate, Ver.Arab. Emirate, Vereinigte Arab. Emirate, United Arab Emirates
 C:+971
 
-N:Jemen, (Arab. Republik)
+N:Jemen (Arab. Republik)
 A:Jemen (Arabische Republik), Jemen, Jemen Arab. Rep.
 C:+969, +967
 
@@ -55,7 +61,7 @@ N:Oman
 C:+968
 
 N:Saudi Arabien
-A:Saudi-Arabien
+A:Saudi Arabia
 C:+966
 
 N:Kuwait
@@ -63,26 +69,30 @@ A:Kuweit
 C:+965
 
 N:Irak
+A:Iraq
 C:+964
 
 N:Syrien
-A:Syrien (Arabische Republik)
+A:Syria
 C:+963
 
 N:Jordanien
+A:Jordan
 C:+962
 
 N:Libanon Mobilfunk
 C:+9613
 
 N:Libanon
+A:Lebanon
 C:+961
 
 N:Malediven
+A:Maldives
 C:+960
 
-N:Myanmar, Burma
-A:Myanmar (Birma), Burma, Birma, Myanmar
+N:Myanmar Burma
+A:Myanmar (Birma), Burma, Birma, Myanmar, Birma (Myanmar)
 C:+95
 
 N:Sri Lanka
@@ -95,28 +105,26 @@ N:Pakistan
 C:+92
 
 N:Indien
+A:India
 C:+91
 
 N:Türkei Mobilfunk
 C:+905
 
 N:Türkei
-A:Türkei\, Nordzypern, Zypern (türk.), Zypern (Nordzypern), Zypern (Türkisch)
+A:Turkey
 C:+90
 
 N:Taiwan Mobilfunk
 C:+8869
 
-N:China, (Taiwan)
-A:Taiwan, China (Taiwan)
+N:China (Taiwan)
 C:+886
 
 N:Iridium 008817
-A:Iridium B, Iridium Iridium-Homed
 C:+8817
 
 N:Iridium 008816
-A:Iridium A, Iridium GSM-Homed
 C:+8816
 
 N:Bangladesch
@@ -128,7 +136,8 @@ C:+8748, +8738, +8728, +8718
 
 N:Inmarsat Mini-M
 A:Inmarsat Phone (Mini-M)
-C:+87476, +87376, +87276, +87176
+# FIXME: +87076 ist eigentlich "Inmarsat Mini-M (Worldwide)"
+C:+87476, +87376, +87276, +87176, +87076
 
 N:Inmarsat M
 C:+8746, +8736, +8726, +8716
@@ -146,32 +155,34 @@ N:Inmarsat A
 C:+8741, +8731, +8721, +8711
 
 N:Atlantischer Ozean (West)
+A:Atlantic Ocean (west)
 C:+874
 
 N:Indischer Ozean
+A:Indian Ocean
 C:+873
 
 N:Pazifischer Ozean
+A:Pacific Ocean
 C:+872
 
 N:Atlantischer Ozean (Ost)
+A:Atlantic Ocean (east)
 C:+871
-
-N:Inmarsat Mini-M (Worldwide)
-A:Inmarsat Mini-M, Inmarsat Phone (Mini-M)
-C:+87076
 
 N:China Mobilfunk
 C:+86886, +8613
 
-N:China, (Volksrepublik)
-A:China (Volksrepublik), China
+N:China (Volksrepublik)
+A:China (People's Republic)
 C:+86
 
 N:Laos
+A:Lao
 C:+856
 
 N:Kambodscha
+A:Cambodia
 C:+855
 
 N:Macao
@@ -182,11 +193,10 @@ N:Hong Kong Mobilfunk
 C:+8529, +8522
 
 N:Hongkong
-A:Hong Kong
 C:+852
 
-N:Korea (Dem. Republik), Nordkorea
-A:Korea (Demokratische Republik), Korea (North), Korea (DVR), Nordkorea, Nordkorea (DVR)
+N:Korea (Dem. Republik) Nordkorea
+A:Korea (Demokratische Republik), Korea (North), Korea (DVR), Nordkorea, Nordkorea (DVR), Korea (Nord), V.R. Korea, Korea Democratic Republic (north)
 C:+850
 
 N:Vietnam
@@ -195,8 +205,8 @@ C:+84
 N:Korea Rep. (South) Mobilfunk
 C:+8227, +821
 
-N:Korea (Republik), Südkorea
-A:Korea (Süd), Korea Rep. (South), Korea (Reublik), Südkorea, Südkorea (Republik)
+N:Korea (Republik) Südkorea
+A:Korea (Süd), Korea Rep. (South), Korea (Reublik), Südkorea, Südkorea (Republik), Republik Korea, Korea Republic (south)
 C:+82
 
 N:Japan Mobilfunk
@@ -213,10 +223,9 @@ C:+800
 
 N:Russische Föderat. (westl.)
 A:Rußland (westl.), GUS (Russische Föderation)
-C:+7902, +7901, +7863, +7862, +7861, +7820, +7817, +7816, +7815, +7814, +7811, +7543, +7517, +75112, +75110, +7510, +7505, +7503, +7502, +7501, +7096, +709246, +709245, +709244, +709243, +709237, +7091, +7087, +7086, +7085, +7084, +7083, +7082, +7081, +7074, +7073, +7072, +7071, +7011
+C:+7902, +7901, +7863, +7862, +7861, +7820, +7817, +7816, +7815, +7814, +7811, +7543, +7517, +75112, +75110, +7510, +7505, +7503, +7502, +7501, +709246, +709245, +709244, +709243, +709237, +7091, +7087, +7086, +7085, +7084, +7083, +7082, +7081, +7074, +7073, +7072, +7071, +7011
 
 N:St. Petersburg
-A:Rußland St. Petersburg, Russische Föderat. (westl.), Rußland (westl.), GUS (Russische Föderation)
 C:+7812, +751285
 
 N:Kirgistan
@@ -227,15 +236,13 @@ N:Kasachstan
 C:+7336, +7330, +7329, +7328, +7327, +7326, +7325, +7324, +7323, +7322, +7321, +7318, +7317, +7316, +7315, +7314, +7313, +7312, +7311, +7310, +73
 
 N:Moskau
-A:Russische Föderat. (westl.), Rußland (westl.), GUS (Russische Föderation)
 C:+7096, +7095
 
 N:Russische Förderation (östl.)
-A:GUS (Russische Föderation), Rußland
+A:Rußland, Rußland (östl.), Russische Föderation, Russian Federation, Kazakhstan, Kyrgyzstan
 C:+7
 
 N:Midway-Inseln
-A:Midway Inseln
 C:+6998
 
 N:Chatham-Inseln
@@ -245,9 +252,11 @@ N:Wake Inseln
 C:+6993
 
 N:Marshallinseln
+A:Marshall Islands
 C:+692
 
 N:Mikronesien
+A:Micronesia
 C:+691
 
 N:Tokelan
@@ -255,15 +264,18 @@ A:Tokelau, Tokelauinseln
 C:+690
 
 N:Französisch-Polynesien
+A:French Polynesia
 C:+689
 
 N:Tuvalu
 C:+688
 
 N:Neukaledonien
+A:New Caledonia
 C:+687
 
 N:Kiribati
+A:Kirlbati
 C:+686
 
 N:Samoa (West)
@@ -271,7 +283,7 @@ A:Western Samoa
 C:+685
 
 N:Amerikanisch-Samoa
-A:Samoa (US)
+A:Samoa (US), American Samoa
 C:+684
 
 N:Niue-Inseln
@@ -283,75 +295,75 @@ A:Cook Islands
 C:+682
 
 N:Wallis und Futuna
-A:Wallis und Futuna Inseln
+A:Wallis & Fortuna Islands
 C:+681
 
 N:Palau /Belau
-A:Palau (=Belau), Palau, Belau
+A:Palau
 C:+680
 
 N:Fidschi
+A:Fiji
 C:+679
 
 N:Vanuatu
 C:+678
 
 N:Salomonen
-A:Solomon Inseln, Solomonen, Salomoninseln
+A:Solomon Inseln, Solomonen, Salomoninseln, Solomon Islands
 C:+677
 
 N:Tonga
 C:+676
 
 N:Papua-Neuguinea
-A:Papua Neu Guinea
+A:Papua New Guinea
 C:+675
 
 N:Nauru
 C:+674
 
 N:Brunei
-A:Brunei Darussalam, Brunei-Darussalam
 C:+673
 
 N:Weihnachtsinsel (Australien)
-A:Weihnachtsinseln
+A:Weihnachtsinseln, Christmas Island (Antarctica)
 C:+6724
 
 N:Norfolkinseln (Australien)
-A:Norfolk Islands, Norfolk
+A:Norfolk Islands, Norfolk, Norfolk-Inseln, Norfolk Island (Antarctica)
 C:+6723
 
 N:Kokosinseln (Australien)
+A:Cocos Island (Antarctica)
 C:+6722
 
 N:Antarktis
-A:Davis (Antarktis), Mawson (Antarktis), Casey (Antarktis), Macquarrie Island (Antarktis)
 C:+6721, +672
 
 N:Guam
 C:+671
 
-N:Marianen
-A:Saipan
-C:+670
-
 N:Thailand
 C:+66
 
 N:Singapur
+A:Singapore
 C:+65
 
 N:Pitcairn Inseln
 C:+649
 
 N:Neuseeland
+A:New Zealand & Chatham Island
 C:+64
 
 N:Philippinen
+A:Phillipines
 C:+63
 
 N:Indonesien
+A:Indonesia
 C:+62
 
 N:Kokos-Inseln
@@ -361,45 +373,51 @@ N:Australien Mobilfunk
 C:+61500, +6142, +6141, +6140, +6119, +6118, +6117, +6116, +6115, +6114, +6113, +6112, +61071
 
 N:Australien
+A:Australia
 C:+61
 
 N:Malaysia
 C:+60
 
 N:Niederl. Antillen
-A:Niederländische Antillen
+A:Niederländische Antillen, Antillen (Niederlande), Netherlands Antilles
 C:+599
 
 N:Uruguay
 C:+598
 
 N:Suriname
+A:Surinam
 C:+597
 
 N:Martinique / Franz. Antillen
-A:Martinique, Französische Antillen
+A:Martinique, Französische Antillen, Martinique (French Antilles)
 C:+596
 
 N:Paraguay
 C:+595
 
 N:Französisch-Guayana
-A:Französisch Guyana
+A:Französisch Guyana, Franz. Guyana, French Guyana
 C:+594
 
 N:Ecuador Mobilfunk
 C:+5939
 
 N:Ecuador
+A:Equador
 C:+593
 
 N:Guyana
+A:Guayana
 C:+592
 
 N:Bolivien
+A:Bolivia
 C:+591
 
 N:Guadeloupe
+A:Guadaloupe
 C:+590
 
 N:Venezuela Mobilfunk
@@ -412,30 +430,36 @@ N:Kolumbien Mobilfunk
 C:+573
 
 N:Kolumbien
+A:Colombia
 C:+57
 
 N:Chile
+A:Chile & Easter Island
 C:+56
 
 N:Brasilien Mobilfunk
 C:+55664, +55663
 
 N:Brasilien
+A:Brazil
 C:+55
 
 N:Argentinien Mobilfunk
 C:+54414, +5440, +5430, +5428, +5426, +5422, +5421, +5420, +54197, +54193, +54167, +54156, +54153, +5414
 
 N:Argentinien
+A:Argentina
 C:+54
 
 N:Guantanamo Bay
+A:Guatanamo Bay, Guantanamo Bay (Cuba)
 C:+5399
 
 N:Guantanamo
 C:+5321
 
 N:Kuba
+A:Cuba
 C:+53
 
 N:Mexiko
@@ -452,7 +476,7 @@ N:Haiti
 C:+509
 
 N:St. Pierre und Miquelon
-A:Saint Pierre und Miquelon, St. Pierre and Miquelon
+A:Saint Pierre und Miquelon, St. Pierre and Miquelon, Saint Pierre et Miquelon
 C:+508
 
 N:Panama Mobilfunk
@@ -483,15 +507,22 @@ N:Belize
 C:+501
 
 N:Falklandinseln
+A:Falkland Islands
 C:+500
 
+N:Deutschland
+A:Germany
+C:+49
+
 N:Polen
+A:Poland
 C:+48
 
 N:Norwegen Mobilfunk
 C:+479
 
 N:Norwegen
+A:Norway
 C:+47
 
 N:Stockholm
@@ -501,6 +532,7 @@ N:Schweden Mobilfunk
 C:+4673, +46709, +46708, +46707, +46706, +46705, +46704, +46703, +46702, +4610
 
 N:Schweden
+A:Sweden
 C:+46
 
 N:Sønderjylland
@@ -510,6 +542,7 @@ N:Dänemark Mobilfunk
 C:+45503, +45502, +45501, +45409, +45408, +45407, +45406, +45405, +45404, +45403, +45402, +45401, +4530, +4528, +4526, +4523, +4522, +4521, +45209, +45208, +45207, +45206, +45205, +45204, +45203, +45202, +45201
 
 N:Dänemark
+A:Denmark
 C:+45
 
 N:Großbritannien Mobilfunk
@@ -524,30 +557,39 @@ C:+44171
 N:Edinburgh
 C:+44131
 
-N:Großbritannien, Insel Man, Kanalinseln
-A:Großbritannien und Nordirland, Insel Man (Großbritannien), Kanalinseln (Großbritannien), Großbritannien, Nordirland, Grossbritannien
+N:Großbritannien Insel Man Kanalinseln
+A:Great Britain
 C:+44
 
 N:Österreich Mobilfunk
 C:+43699, +43676, +43664, +43663
 
+N:Österreich Auskunft
+A:Auskunft Austria
+C:+4366211811
+
 N:Wien
 C:+431
 
 N:Österreich
+A:Austria
 C:+43
 
 N:Liechtenstein
 A:Lichtenstein
 C:+423, +4175
 
-N:Slowakei, Slowakische Republik
+N:Slowakei Slowakische Republik
 A:Slowakische Rep., Slowakei, Slowak. Rep., Slowakische Republik
 C:+421
 
-N:Tschechien, Tschechische Republik
-A:Tschechische Rep., Tschechische Republik, Tschechien, Tschech. Rep.
+N:Tschechien Tschechische Republik
+A:Tschechische Rep., Tschechische Republik, Tschechien, Tschech. Rep., Czech Republic
 C:+420
+
+N:Freephone Schweiz
+A:Plus Freephone Service (Schweiz)
+C:+41800
 
 N:Schweiz Mobilfunk
 C:+4179, +4178, +4176
@@ -559,46 +601,49 @@ N:Zürich
 C:+411
 
 N:Schweiz
+A:Switzerland
 C:+41
 
 N:Rumänien
+A:Romania
 C:+40
 
 N:Italien Mobilfunk
 C:+39368, +39360, +39349, +39348, +39347, +39339, +39338, +39337, +39336, +39335, +39330, +39329, +39328
 
 N:Vatikanstadt / Rom
-A:Vatikanstadt
-C:+3906
+A:Vatikanstadt, Vatican City
+C:+379, +3906
 
 N:Mailand
 C:+3902
 
 N:Italien
+A:Italy
 C:+39
 
 N:Mazedonien
+A:Macedonia
 C:+389
 
 N:Bosnien-Herzegowina
+A:Bosnia and Hercegovina
 C:+387
 
 N:Slowenien
+A:Slovenia
 C:+386
 
 N:Kroatien
+A:Croatia
 C:+385
 
 N:Jugoslawien(Serbien/Montenegro)
-A:Jugoslawien Montenegro, Jugoslawien, Serbien, Montenegro, Jugoslawien Serbien und Montenegro
+A:Yugoslavia (Servia & Montenegro)
 C:+381
 
 N:Ukraine
 C:+380
-
-N:Vatican City
-A:Vatikanstadt
-C:+379
 
 N:San Marino
 C:+378
@@ -609,30 +654,36 @@ C:+377
 N:Andorra
 C:+376
 
-N:Weissrussland, Belarus
-A:Belarus (Weißrußland), Weißrußland (Belarus), Weißrußland/Belarus, Belarus, Weißrußland
+N:Weissrussland Belarus
+A:Belarus
 C:+375
 
 N:Armenien
+A:Armenia
 C:+374
 
-N:Moldavien, Moldau (Republik)
-A:Moldau Republik, Moldavien, Moldawien, Moldau (Republik)
+N:Moldavien Moldau (Republik)
+A:Moldau Republik, Moldavien, Moldawien, Moldau (Republik), Moldau, Moldova
 C:+373
 
 N:Estland
+A:Estonia
 C:+372
 
 N:Lettland
+A:Latvia
 C:+371
 
 N:Litauen
+A:Lithuania
 C:+370
 
 N:Ungarn
+A:Hungary
 C:+36
 
 N:Bulgarien
+A:Bulgaria
 C:+359
 
 N:Finnland
@@ -640,22 +691,25 @@ A:Finland
 C:+358
 
 N:Zypern
-A:Zypern (griech.), Zypern (Griechisch)
+A:Cyprus
 C:+357
 
 N:Malta
 C:+356
 
 N:Albanien
+A:Albania
 C:+355
 
 N:Island
+A:Iceland
 C:+354
 
 N:Irland Mobilfunk
 C:+35389, +35388, +35387, +35386
 
 N:Irland
+A:Ireland
 C:+353
 
 N:Luxemburg
@@ -705,6 +759,7 @@ N:Spanien Mobilfunk
 C:+34689, +34670, +34649, +34639, +34630, +34629, +34619, +34617, +34616, +34610, +34609, +34608, +34607, +34606
 
 N:Spanien
+A:Spain
 C:+34
 
 N:Frankreich Mobilfunk
@@ -714,6 +769,7 @@ N:Paris
 C:+331
 
 N:Frankreich
+A:France
 C:+33
 
 N:Belgien Mobilfunk
@@ -729,7 +785,12 @@ N:Leuven
 C:+3216
 
 N:Belgien
+A:Belgium
 C:+32
+
+N:Freephone Niederlande
+A:Freephone NL, Freephone (Niederl.), Plus Freephone Service (Niederl.)
+C:+31800
 
 N:Den Haag
 C:+3170
@@ -744,15 +805,19 @@ N:Rotterdam
 C:+3110
 
 N:Niederlande
+A:Netherlands
 C:+31
 
 N:Griechenland
+A:Greece
 C:+30
 
 N:Grönland
+A:Greenland
 C:+299
 
-N:Färöer, Faeröer
+N:Färöer Faeröer
+A:Faroe Islands
 C:+298
 
 N:Aruba
@@ -769,20 +834,19 @@ N:Tristan da Cunha
 C:+2897
 
 N:Südafrika
+A:South Africa
 C:+27
 
-N:Komoren
-C:+2697
-
 N:Mayotte
-A:Komoren
+A:Komoren, Comoros
 C:+269
 
 N:Swasiland
+A:Swaziland
 C:+268
 
-N:Botsuana, Botswana
-A:Botswana Republic, Botsuana
+N:Botsuana Botswana
+A:Botswana Republic, Botsuana, Botswana
 C:+267
 
 N:Lesotho
@@ -795,19 +859,23 @@ N:Namibia
 C:+264
 
 N:Simbabwe
+A:Zimbabwe
 C:+263
 
 N:Reunion
+A:Réunion, Reunion Island
 C:+262
 
 N:Madagaskar
+A:Madagascar
 C:+261
 
 N:Sambia
+A:Zambia
 C:+260
 
 N:Mosambik
-A:Mozambik
+A:Mozambik, Mozambique
 C:+258
 
 N:Burundi
@@ -816,32 +884,38 @@ C:+257
 N:Uganda
 C:+256
 
-N:Tansania, Sansiba
+N:Tansania Sansiba
+A:Tanzania
 C:+255
 
 N:Kenia
+A:Kenya
 C:+254
 
 N:Dschibuti
+A:Djibouti
 C:+253
 
 N:Somalia
 C:+252
 
 N:Äthiopien
+A:Ethiopia
 C:+251
 
 N:Ruanda
+A:Rwanda
 C:+250
 
 N:Sudan
 C:+249
 
-N:Seyschellen, Seychellen
+N:Seyschellen Seychellen
+A:Seychelles Islands
 C:+248
 
 N:Ascension
-A:Ascension Inseln
+A:Ascension Isle
 C:+247
 
 N:Diego Garcia
@@ -858,31 +932,35 @@ A:Kongo (Demokratische Republik), Kongo (DR)
 C:+243
 
 N:Kongo
-A:Kongo (Republik), Kongo (R)
+A:Congo
 C:+242
 
 N:Gabun
+A:Gabon
 C:+241
 
 N:Äquatorial-Guinea
-A:Äquatorialguinea
+A:Equatorial Guinea
 C:+240
 
 N:Sao Tome und Principe
+A:Sao Tome et Principe, Sao Tome and Principa
 C:+239
 
-N:Cape Verde, Kap Verde
-A:Kap Verde, Cape Verde
+N:Cape Verde
+A:Kap Verde
 C:+238
 
 N:Kamerun
+A:Cameroon
 C:+237
 
 N:Zentralafrikanische Republik
-A:Zentral Afrika (Rep.)
+A:Zentral Afrika (Rep.), Central African Republic
 C:+236
 
 N:Tschad
+A:Chad Republic
 C:+235
 
 N:Nigeria
@@ -907,14 +985,15 @@ N:Togo
 C:+228
 
 N:Niger
+A:Niger Republic
 C:+227
 
-N:Burkina Faso, Obervolta
+N:Burkina Faso Obervolta
 A:Obervolta, Burkina Faso, Burkina-Faso
 C:+226
 
-N:Elfenbeinküste, Cote de Ivoire
-A:Cote d'Ivoire (Elfenbeinküste), Cote d'Ivoire, Elfenbeinküste
+N:Elfenbeinküste Cote de Ivoire
+A:Cote d'Ivoire (Elfenbeinküste), Cote d'Ivoire, Elfenbeinküste, Ivory Coast
 C:+225
 
 N:Guinea
@@ -924,28 +1003,34 @@ N:Mali
 C:+223
 
 N:Mauretanien
+A:Mauritania
 C:+222
 
 N:Senegal
+A:Senegal Republic
 C:+221
 
 N:Gambia
 C:+220
 
-N:Libyen, Libysch-Arabische Dschamahirija
-A:Libyen, Libysch-Arabische Dschamahirija, Lybien
+N:Libyen Libysch-Arabische Dschamahirija
+A:Libya
 C:+218
 
 N:Tunesien
+A:Tunesia
 C:+216
 
 N:Algerien
+A:Algeria
 C:+213
 
 N:Marokko
+A:Marocco
 C:+212
 
 N:Ägypten
+A:Egypt
 C:+20
 
 N:Alaska
@@ -959,7 +1044,7 @@ A:Jamaica
 C:+1876
 
 N:St. Kitts und Nevis
-A:St. Kitts & Nevis, Saint Kitts and Nevis, St Kitts, Nevis Islands
+A:St. Kitts & Nevis, Saint Kitts and Nevis, St Kitts, Nevis Islands, St. Kitts
 C:+1869
 
 N:Trinidad und Tobago
@@ -970,14 +1055,15 @@ N:Dominikanische Republik
 C:+184, +1809971, +1809970, +1809908, +1809818, +1809814, +1809813, +1809810, +1809808, +1809807, +1809806, +1809710, +1809707, +1809701, +1809699, +1809698, +1809697, +1809696, +1809695, +1809694, +1809689, +1809688, +1809687, +1809686, +1809685, +1809684, +1809683, +1809682, +1809681, +1809616, +1809615, +1809612, +1809606, +1809604, +180959, +180958, +180957, +180956, +1809559, +1809558, +1809557, +1809556, +1809554, +1809553, +1809552, +1809551, +1809550, +180954, +180953, +180952, +1809519, +1809518, +1809512, +1809508, +1809506, +1809504, +1809481, +180947, +1809414, +1809412, +1809350, +1809343, +1809320, +1809310, +1809301, +1809299, +1809295, +1809293, +1809292, +1809291, +1809290, +1809282, +1809281, +1809280, +1809279, +1809278, +1809277, +1809276, +1809275, +1809274, +1809273, +1809248, +1809247, +1809246, +1809245, +1809244, +1809243, +1809242, +1809241, +1809240, +1809239, +1809238, +1809237, +1809236, +1809234, +1809233, +1809231, +1809227, +1809226, +1809225, +1809224, +1809223, +1809222, +1809221, +1809220, +1809209, +1809208, +1809204, +1809188
 
 N:Turks- und Caicosinseln
+A:Turks and Caicos Islands
 C:+1809946, +1809941, +1649
 
 N:Amerikanische Jungferninseln
-A:Jungferninseln (USA)
+A:Jungferninseln (USA), Amerikan. Jungferninseln
 C:+180977, +1809719, +1809715, +1809714, +1809713, +1809712, +1809693, +1809692, +1809690, +1809611, +1809513, +1340
 
 N:Britische Jungferninseln
-A:Jungferninseln (GB)
+A:Jungferninseln (GB), Jungferninseln (britisch)
 C:+1809499, +1809496, +1809495, +1809494, +1809, +1284
 
 N:St. Vincent und Grenadinen
@@ -985,12 +1071,14 @@ A:St. Vincent and the Grenadines, Saint Vincent und die Grenadinen, St. Vincent 
 C:+1809493, +1809490, +1809485, +1809458, +1809457, +1809456, +1784
 
 N:Dominica
+A:Domenica
 C:+1809449, +1809448, +1809447, +1809446, +1809445, +1809235, +1767
 
 N:Grenada
 C:+1809444, +1809443, +1809442, +1809441, +1809440, +1809408, +1809407, +1473
 
 N:Hawaii
+A:Hawai
 C:+1808
 
 N:Puerto Rico
@@ -1000,13 +1088,9 @@ N:St. Lucia
 A:Saint Lucia
 C:+1758
 
-N:Marianen (Guam)
-A:Guam
-C:+1671
-
-N:Marianen (Saipan,Nord-)
-A:Nördliche Marianen, Marianen
-C:+1670
+N:Marianen (SaipanNord-)
+A:Nördliche Marianen, Marianen, Marianen (Saipan), Saipan, Salpan
+C:+1670, +1671
 
 N:Montserrat
 C:+1664
@@ -1015,7 +1099,7 @@ N:Bermuda
 C:+1441
 
 N:Kaimaninseln
-A:Cayman-Inseln, Kaiman Inseln
+A:Cayman Islands
 C:+1345
 
 N:Antigua und Barbuda
@@ -1032,6 +1116,5 @@ N:Bahamas
 C:+1242
 
 N:USA
-A:Vereinigte Staaten (USA), Kanada
+A:United States of America & Canada
 C:+1
-
