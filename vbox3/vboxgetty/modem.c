@@ -1,9 +1,12 @@
 /*
-** $Id: modem.c,v 1.3 1998/07/06 09:05:26 michael Exp $
+** $Id: modem.c,v 1.4 1998/08/31 10:43:07 michael Exp $
 **
 ** Copyright 1996-1998 Michael 'Ghandi' Herold <michael@abadonna.mayn.de>
 **
 ** $Log: modem.c,v $
+** Revision 1.4  1998/08/31 10:43:07  michael
+** - Changed "char" to "unsigned char".
+**
 ** Revision 1.3  1998/07/06 09:05:26  michael
 ** - New control file code added. The controls are not longer only empty
 **   files - they can contain additional informations.
@@ -19,7 +22,9 @@
 **
 */
 
-#include "../config.h"
+#ifdef HAVE_CONFIG_H
+#  include "../config.h"
+#endif
 
 #if TIME_WITH_SYS_TIME
 #   include <sys/time.h>
@@ -67,10 +72,10 @@ struct modemsetup modemsetup =
 /** Prototypes ***********************************************************/
 
 static void	 modem_timeout_function(int);
-static int	 modem_write(struct vboxmodem *, char *);
-static int	 modem_get_echo(struct vboxmodem *, char *);
-static int	 modem_get_rawsequence(struct vboxmodem *, char *, int);
-static int	 modem_check_result(char *, char *);
+static int	 modem_write(struct vboxmodem *, unsigned char *);
+static int	 modem_get_echo(struct vboxmodem *, unsigned char *);
+static int	 modem_get_rawsequence(struct vboxmodem *, unsigned char *, int);
+static int	 modem_check_result(unsigned char *, unsigned char *);
 
 /*************************************************************************/
 /** modem_set_timeout():	Setzt den Timeout für die Modemfunctionen.	**/
@@ -117,7 +122,7 @@ int modem_get_timeout(void)
 /**								-1 wenn nicht.											**/
 /*************************************************************************/
 
-int modem_get_sequence(struct vboxmodem *vbm, char *seq)
+int modem_get_sequence(struct vboxmodem *vbm, unsigned char *seq)
 {
 	return(modem_get_rawsequence(vbm, seq, 0));
 }
@@ -217,10 +222,10 @@ int modem_hangup(struct vboxmodem *vbm)
 /**						en gefunden wurde oder die Nummer der Rückantwort.	**/
 /*************************************************************************/
 
-int modem_command(struct vboxmodem *vbm, char *command, char *result)
+int modem_command(struct vboxmodem *vbm, unsigned char *command, unsigned char *result)
 {
-	char line[VBOXMODEM_BUFFER_SIZE + 1];
-	int  back;
+	unsigned char line[VBOXMODEM_BUFFER_SIZE + 1];
+	int           back;
 
 	lastmodemresult[0] = '\0';
 
@@ -309,15 +314,18 @@ int modem_command(struct vboxmodem *vbm, char *command, char *result)
 /**						wenn nicht.														**/
 /*************************************************************************/
 
-int modem_read(struct vboxmodem *vbm, char *line, int readtimeout)
+int modem_read(struct vboxmodem *vbm, unsigned char *line, int readtimeout)
 {
-	char	c;
-	int	r;
-	int	timeout;
-	int	linelen = 0;
-	int	havetxt = 0;
+	unsigned char	c;
+	int	         r;
+	int	         timeout;
+	int	         linelen;
+	int	         havetxt;
 
 	log_line(LOG_D, "Reading modem answer (%ds timeout)...\n", readtimeout);
+
+	linelen = 0;
+	havetxt = 0;
 
 	modem_set_timeout(readtimeout);
 
@@ -369,9 +377,8 @@ int modem_wait(struct vboxmodem *vbm)
 {
 	struct timeval  timeout;
 	struct timeval *usetimeout;
-	      
-	fd_set	fd;
-	int		back;
+	fd_set	       fd;
+	int		       back;
 
 	log_line(LOG_A, "Waiting...\n");
 	            
@@ -438,7 +445,7 @@ static void modem_timeout_function(int s)
 	alarm(0);
 	signal(SIGALRM, SIG_IGN);
 
-	log_line(LOG_D, "Modem timeout function called...\n");
+	log_line(LOG_D, "*** Timeout function called (%d) ***\n", s);
 
 	timeoutstatus = 1;
 }
@@ -453,7 +460,7 @@ static void modem_timeout_function(int s)
 /**						bei einem Fehler.												**/
 /*************************************************************************/
 
-static int modem_write(struct vboxmodem *vbm, char *s)
+static int modem_write(struct vboxmodem *vbm, unsigned char *s)
 {
 	if (vboxmodem_raw_write(vbm, s, strlen(s)) == strlen(s)) return(0);
 
@@ -470,7 +477,7 @@ static int modem_write(struct vboxmodem *vbm, char *s)
 /**							oder -1 bei einem Fehler.								**/
 /*************************************************************************/
 
-static int modem_get_echo(struct vboxmodem *vbm, char *echo)
+static int modem_get_echo(struct vboxmodem *vbm, unsigned char *echo)
 {
 	return(modem_get_rawsequence(vbm, echo, 1));
 }
@@ -479,11 +486,11 @@ static int modem_get_echo(struct vboxmodem *vbm, char *echo)
 /** modem_get_rawsequence():															**/
 /*************************************************************************/
 
-static int modem_get_rawsequence(struct vboxmodem *vbm, char *line, int echo)
+static int modem_get_rawsequence(struct vboxmodem *vbm, unsigned char *line, int echo)
 {
-	char	c;
-	int	i;
-	int	timeout;
+	unsigned char	c;
+	int	         i;
+	int	         timeout;
 	
 	timeout = (echo ? modemsetup.echotimeout : modemsetup.commandtimeout);
 
@@ -532,12 +539,12 @@ static int modem_get_rawsequence(struct vboxmodem *vbm, char *line, int echo)
 /** modem_check_result():																**/
 /*************************************************************************/
 
-static int modem_check_result(char *have, char *need)
+static int modem_check_result(unsigned char *have, unsigned char *need)
 {
-	char	line[VBOXMODEM_BUFFER_SIZE + 1];
-	char *word;
-	char *more;
-	int	nr;
+	unsigned char	line[VBOXMODEM_BUFFER_SIZE + 1];
+	unsigned char *word;
+	unsigned char *more;
+	int	         nr;
 
 	log_line(LOG_D, "Waiting for \"");
 	log_code(LOG_D, need);

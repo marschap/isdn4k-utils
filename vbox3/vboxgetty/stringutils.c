@@ -1,9 +1,12 @@
 /*
-** $Id: stringutils.c,v 1.3 1998/07/06 09:05:30 michael Exp $
+** $Id: stringutils.c,v 1.4 1998/08/31 10:43:11 michael Exp $
 **
 ** Copyright 1996-1998 Michael 'Ghandi' Herold <michael@abadonna.mayn.de>
 **
 ** $Log: stringutils.c,v $
+** Revision 1.4  1998/08/31 10:43:11  michael
+** - Changed "char" to "unsigned char".
+**
 ** Revision 1.3  1998/07/06 09:05:30  michael
 ** - New control file code added. The controls are not longer only empty
 **   files - they can contain additional informations.
@@ -19,7 +22,9 @@
 **
 */
 
-#include "../config.h"
+#ifdef HAVE_CONFIG_H
+#  include "../config.h"
+#endif
 
 #include <string.h>
 
@@ -29,7 +34,7 @@
 /** xstrncpy():																			**/
 /*************************************************************************/
 
-void xstrncpy(char *dest, char *source, int max)
+void xstrncpy(unsigned char *dest, unsigned char *source, int max)
 {
 	strncpy(dest, source, max);
    
@@ -40,10 +45,10 @@ void xstrncpy(char *dest, char *source, int max)
 /** xstrtol():																				**/
 /*************************************************************************/
       
-long xstrtol(char *string, long number)
+long xstrtol(unsigned char *string, long number)
 {
-	long  back;
-	char *stop;
+	long           back;
+	unsigned char *stop;
 
 	if (string)
 	{
@@ -59,10 +64,10 @@ long xstrtol(char *string, long number)
 /** xstrtoo():																				**/
 /*************************************************************************/
 
-long xstrtoo(char *string, long number)
+long xstrtoo(unsigned char *string, long number)
 {
-	long  back;
-	char *stop;
+	long           back;
+	unsigned char *stop;
 
 	if (string)
 	{

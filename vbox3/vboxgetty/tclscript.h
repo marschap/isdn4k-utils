@@ -1,5 +1,5 @@
 /*
-** $Id: tclscript.h,v 1.2 1998/07/06 09:05:32 michael Exp $
+** $Id: tclscript.h,v 1.3 1998/08/31 10:43:13 michael Exp $
 **
 ** Copyright 1996-1998 Michael 'Ghandi' Herold <michael@abadonna.mayn.de>
 */
@@ -14,14 +14,14 @@
 
 struct vbox_tcl_function
 {
-	char				*name;
+	unsigned char	*name;
 	Tcl_ObjCmdProc	*proc;
 };
 
 struct vbox_tcl_variable
 {
-	char *name;
-	char *args;
+	unsigned char *name;
+	unsigned char *args;
 };
 
 /** Defines **************************************************************/
@@ -31,10 +31,10 @@ struct vbox_tcl_variable
 
 /** Prototypes ***********************************************************/
 
-extern int	 scr_create_interpreter(void);
-extern void  scr_remove_interpreter(void);
-extern int	 scr_execute(char *, struct vboxuser *);
-extern int	 scr_init_variables(struct vbox_tcl_variable *);
-extern char *scr_tcl_version(void);
+extern int				 scr_create_interpreter(void);
+extern void				 scr_remove_interpreter(void);
+extern int				 scr_execute(unsigned char *, struct vboxuser *);
+extern int				 scr_init_variables(struct vbox_tcl_variable *);
+extern unsigned char *scr_tcl_version(void);
 
 #endif /* _VBOX_TCLSCRIPT_H */

@@ -1,9 +1,12 @@
 /*
-** $Id: audio.c,v 1.1 1998/08/30 17:32:05 michael Exp $
+** $Id: audio.c,v 1.2 1998/08/31 10:43:00 michael Exp $
 **
 ** Copyright 1996-1998 Michael 'Ghandi' Herold <michael@abadonna.mayn.de>
 **
 ** $Log: audio.c,v $
+** Revision 1.2  1998/08/31 10:43:00  michael
+** - Changed "char" to "unsigned char".
+**
 ** Revision 1.1  1998/08/30 17:32:05  michael
 ** - Total new audio setup - now it works correct and don't crash the
 **   machine.
@@ -32,7 +35,7 @@
  ** => name					Name des Devices.											**
  *************************************************************************/
 
-int audio_open_dev(char *name)
+int audio_open_dev(unsigned char *name)
 {
 	int desc;
 	int mask;

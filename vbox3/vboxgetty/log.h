@@ -1,5 +1,5 @@
 /*
-** $Id: log.h,v 1.3 1998/08/28 13:06:14 michael Exp $
+** $Id: log.h,v 1.4 1998/08/31 10:43:06 michael Exp $
 **
 ** Copyright 1996-1998 Michael 'Ghandi' Herold <michael@abadonna.mayn.de>
 */
@@ -22,18 +22,18 @@
 
 struct logsequence
 {
-	char  code;
-	char *text;
+	unsigned char  code;
+	unsigned char *text;
 };
 
 /** Prototypes ***********************************************************/
 
-extern int	log_open(char *);
+extern int	log_open(unsigned char *);
 extern void	log_set_debuglevel(int);
 extern void log_close(void);
-extern void log_line(int, char *, ...);
-extern void log_char(int, char);
-extern void log_text(int, char *, ...);
-extern void log_code(int, char *);
+extern void log_line(int, unsigned char *, ...);
+extern void log_char(int, unsigned char);
+extern void log_text(int, unsigned char *, ...);
+extern void log_code(int, unsigned char *);
 
 #endif /* _VBOX_LOG_H */

@@ -1,5 +1,5 @@
 /*
-** $Id: vboxgetty.h,v 1.3 1998/08/28 13:06:17 michael Exp $
+** $Id: vboxgetty.h,v 1.4 1998/08/31 10:43:17 michael Exp $
 **
 ** Copyright 1996-1998 Michael 'Ghandi' Herold <michael@abadonna.mayn.de>
 */
@@ -18,8 +18,8 @@
 
 /** Variables ************************************************************/
 
-extern char temppathname[PATH_MAX + 1];
-extern char savettydname[NAME_MAX + 1];
+extern unsigned char temppathname[PATH_MAX + 1];
+extern unsigned char savettydname[NAME_MAX + 1];
 
 /** Structures ***********************************************************/
 

@@ -1,9 +1,12 @@
 /*
-** $Id: voice.c,v 1.7 1998/08/30 17:32:08 michael Exp $
+** $Id: voice.c,v 1.8 1998/08/31 10:43:21 michael Exp $
 **
 ** Copyright 1996-1998 Michael 'Ghandi' Herold <michael@abadonna.mayn.de>
 **
 ** $Log: voice.c,v $
+** Revision 1.8  1998/08/31 10:43:21  michael
+** - Changed "char" to "unsigned char".
+**
 ** Revision 1.7  1998/08/30 17:32:08  michael
 ** - Total new audio setup - now it works correct and don't crash the
 **   machine.
@@ -95,16 +98,19 @@ static int voicevbox =  0;
 static int voicestat =  VBOXVOICE_STAT_OK;
 static int audiodesc = -1;
 
-static char voicename_ulaw[PATH_MAX + 1];
-static char voicename_vbox[PATH_MAX + 1];
-static char voicename_call[PATH_MAX + 1];
+static unsigned char voicename_ulaw[PATH_MAX + 1];
+static unsigned char voicename_vbox[PATH_MAX + 1];
+static unsigned char voicename_call[PATH_MAX + 1];
+
+static unsigned char voice_touchtone_sequence[VBOXVOICE_SEQUENCE + 1];
 
 /** Prototypes ***********************************************************/
 
 static void voice_stop_vtxrtx(void);
 static void voice_create_vboxcall(void);
 static void voice_remove_vboxcall(void);
-static void voice_mkdir(char *);
+static void voice_mkdir(unsigned char *);
+static int voice_check_touchtone(int);
 
 /************************************************************************* 
  ** voice_init():	Beantwortet den Anruf und startet das Tcl-Skript.		**
@@ -115,13 +121,13 @@ static void voice_mkdir(char *);
 
 int voice_init(struct vboxuser *vboxuser, struct vboxcall *vboxcall)
 {
-	char		connect[12];
-	char		msgsavetime[32];
-	char		voicestoppl[2];
-	char		voicestoprc[2];
-	time_t	currenttime;
-	char	  *stop;
-	int		rc;
+	unsigned char	tempconnect[12];
+	unsigned char	msgsavetime[32];
+	unsigned char	voicestoppl[2];
+	unsigned char	voicestoprc[2];
+	time_t	      currenttime;
+	char	        *stop;
+	int		      rc;
 
 	struct vbox_tcl_variable vars[] = 
 	{
@@ -159,17 +165,24 @@ int voice_init(struct vboxuser *vboxuser, struct vboxcall *vboxcall)
 
 	printstring(voicename_call, "%s/vboxcall-%s", vboxuser->home, savettydname);
 
-		/* Variablen für Tcl erzeugen, Kompression setzen, Full Duplex	*/
-		/* Audio Modus starten und das Skript aufrufen.						*/
-
-	voicevbox = 0;
+		/* Userspool Verzeichnisstruktur erzeugen. Wenn eines der	*/
+		/* Verzeichnisse bereits existiert, bleibt es unverändert.	*/
 
 	voice_mkdir(NULL );
 	voice_mkdir("new");
 	voice_mkdir("msg");
 	voice_mkdir("tcl");
 
+		/* Variablen für Tcl erzeugen, Kompression setzen, Full Duplex	*/
+		/* Audio Modus starten und das Skript aufrufen.						*/
+
 	log_line(LOG_A, "Answering call...\n");
+
+	voicevbox =  0;
+	voicedesc = -1;
+	audiodesc = -1;
+
+	*voice_touchtone_sequence = '\0';
 
 	if (scr_init_variables(vars) == 0)
 	{
@@ -186,8 +199,6 @@ int voice_init(struct vboxuser *vboxuser, struct vboxcall *vboxcall)
 					voice_hear(0);
 					voice_save(0);
 
-					voice_create_vboxcall();
-
 						/* Bevor das Skript gestartet wird, werden die	*/
 						/* ersten 11 Byte vom Modem eingelesen. Damit	*/
 						/* wird ein Fehler in i4l umgangen, der die		*/
@@ -195,15 +206,17 @@ int voice_init(struct vboxuser *vboxuser, struct vboxcall *vboxcall)
 						/* dembuffer schreibt.									*/
 
 					modem_set_timeout(2);
-					vboxmodem_raw_read(&vboxmodem, connect, 11);
+					vboxmodem_raw_read(&vboxmodem, tempconnect, 11);
 					modem_set_timeout(0);
+
+					voice_create_vboxcall();
 
 					rc = scr_execute(vboxcall->script, vboxuser);
 
+					voice_remove_vboxcall();
+
 					voice_hear(0);
 					voice_save(0);
-
-					voice_remove_vboxcall();
 
 					voice_stop_vtxrtx();
 
@@ -253,12 +266,12 @@ int voice_wait(int timeout)
 	int	         total_byte_o;
 	int            modem_byte_i;
 	int            modem_byte_o;
+	int            last_was_dle;
 	int            result;
-	int            gotdle;
 	char          *stop;
 
-	voicestat	= VBOXVOICE_STAT_OK;
-	gotdle		= 0;
+	last_was_dle = 0;
+	voicestat	 = VBOXVOICE_STAT_OK;
 
 	log(LOG_D, "Reading voice datas (%ds timeout)...\n", timeout);
 
@@ -276,7 +289,7 @@ int voice_wait(int timeout)
 			{
 				modem_byte_i++;
 
-				if (gotdle)
+				if (last_was_dle)
 				{
 					switch (*modem_line_i)
 					{
@@ -285,20 +298,15 @@ int voice_wait(int timeout)
 							break;
 							
 						default:
-							/*if (voice_check_touchtone(*modem_line_i) == 0) voicestat |= VBOXVOICE_STAT_TOUCHTONE;*/
+							if (voice_check_touchtone(*modem_line_i) == 0) voicestat |= VBOXVOICE_STAT_TOUCHTONE;
 							break;
 					}
 					
-					gotdle = 0;
+					last_was_dle = 0;
 				}
 				else
 				{
-					if (*modem_line_i == DLE)
-					{
-						modem_line_o[modem_byte_o++] = DLE;
-
-						gotdle = 1;
-					}
+					if (*modem_line_i == DLE) last_was_dle = 1;
 
 					modem_line_o[modem_byte_o++] = *modem_line_i;
 				}
@@ -393,7 +401,7 @@ int voice_wait(int timeout)
  **					-1 bei einem Fehler oder Remote hangup						**
  *************************************************************************/
 
-int voice_play(char *name)
+int voice_play(unsigned char *name)
 {
 	unsigned char  modem_line_i[1];
 	unsigned char  modem_line_o[VBOXVOICE_BUFSIZE + 1];
@@ -401,8 +409,8 @@ int voice_play(char *name)
 	int				total_byte_o;
 	int            modem_byte_i;
 	int            modem_byte_o;
+	int            last_was_dle;
 	int            result;
-	int            gotdle;
 	int	         desc;
 	char          *stop;
 	int	         i;
@@ -438,10 +446,10 @@ int voice_play(char *name)
 		return(0);
 	}
 
-	voicestat		= VBOXVOICE_STAT_OK;
-	gotdle			= 0;
+	last_was_dle	= 0;
 	total_byte_i	= 0;
 	total_byte_o	= 0;
+	voicestat		= VBOXVOICE_STAT_OK;
 
 	while (voicestat == VBOXVOICE_STAT_OK)
 	{
@@ -465,7 +473,7 @@ int voice_play(char *name)
 			{
 				modem_byte_i++;
 
-				if (gotdle)
+				if (last_was_dle)
 				{
 					switch (*modem_line_i)
 					{
@@ -474,19 +482,15 @@ int voice_play(char *name)
 							break;
 							
 						default:
+							if (voice_check_touchtone(*modem_line_i) == 0) voicestat |= VBOXVOICE_STAT_TOUCHTONE;
 							break;
 					}
 					
-					gotdle = 0;
+					last_was_dle = 0;
 				}
 				else
 				{
-					if (*modem_line_i == DLE)
-					{
-						modem_line_o[modem_byte_o++] = DLE;
-
-						gotdle = 1;
-					}
+					if (*modem_line_i == DLE) last_was_dle = 1;
 
 					modem_line_o[modem_byte_o++] = *modem_line_i;
 				}
@@ -686,8 +690,8 @@ int voice_hear(int mode)
 
 static void voice_stop_vtxrtx(void)
 {
-	char line[4];
-	int  have;
+	unsigned char line[4];
+	int           have;
 
 	if (!vboxmodem.nocarrier)
 	{
@@ -799,7 +803,7 @@ static void voice_remove_vboxcall(void)
  ** voice_mkdir():	Erzeugt die Verzeichnisse im Userspool.				**
  *************************************************************************/
 
-static void voice_mkdir(char *name)
+static void voice_mkdir(unsigned char *name)
 {
 	if (name)
 		printstring(temppathname, "%s/%s", voicevboxuser->home, name);
@@ -817,4 +821,39 @@ static void voice_mkdir(char *name)
 			log(LOG_E, "Can't create \"%s\" (%s).\n", temppathname, strerror(errno));
 		}
 	}
+}
+
+/************************************************************************* 
+ ** voice_check_touchtone():	Prüft ob es sich bei einem Zeichen um		**
+ **									einen Touchtone handelt.						**
+ *************************************************************************
+ ** => c								Zeichen												**
+ **																							**
+ ** Rückgabe ist 0 wenn es ein Touchtone war oder -1 wenn nicht.			**
+ *************************************************************************/
+
+static int voice_check_touchtone(int c)
+{
+	switch (c)
+	{
+		case '0':
+		case '1':
+		case '2':
+		case '3':
+		case '4':
+		case '5':
+		case '6':
+		case '7':
+		case '8':
+		case '9':
+		case 'A':
+		case 'B':
+		case 'C':
+		case 'D':
+		case '#':
+		case '*':
+			break;
+	}
+
+	return(-1);
 }

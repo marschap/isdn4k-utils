@@ -1,5 +1,5 @@
 /*
-** $Id: rc.h,v 1.2 1998/07/06 09:05:29 michael Exp $
+** $Id: rc.h,v 1.3 1998/08/31 10:43:10 michael Exp $
 **
 ** Copyright 1996-1998 Michael 'Ghandi' Herold <michael@abadonna.mayn.de>
 */
@@ -21,10 +21,10 @@ struct vboxrc
 
 /** Prototypes ***********************************************************/
 
-extern int				 rc_read(struct vboxrc *, char *, char *);
+extern int				 rc_read(struct vboxrc *, unsigned char *, unsigned char *);
 extern void				 rc_free(struct vboxrc *);
-extern unsigned char *rc_get_entry(struct vboxrc *, char *);
-extern unsigned char *rc_set_entry(struct vboxrc *, char *, char *);
-extern unsigned char *rc_set_empty(struct vboxrc *, char *, char *);
+extern unsigned char *rc_get_entry(struct vboxrc *, unsigned char *);
+extern unsigned char *rc_set_entry(struct vboxrc *, unsigned char *, unsigned char *);
+extern unsigned char *rc_set_empty(struct vboxrc *, unsigned char *, unsigned char *);
 
 #endif /* _VBOX_RC_H */

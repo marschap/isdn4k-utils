@@ -1,5 +1,5 @@
 /*
-** $Id: modem.h,v 1.2 1998/07/06 09:05:27 michael Exp $
+** $Id: modem.h,v 1.3 1998/08/31 10:43:09 michael Exp $
 **
 ** Copyright 1996-1998 Michael 'Ghandi' Herold <michael@abadonna.mayn.de>
 */
@@ -34,13 +34,13 @@ extern struct modemsetup modemsetup;
 
 extern void modem_set_timeout(int);
 extern int	modem_get_timeout(void);
-extern int	modem_get_sequence(struct vboxmodem *, char *);
+extern int	modem_get_sequence(struct vboxmodem *, unsigned char *);
 extern void modem_flush(struct vboxmodem *, int);
-extern int	modem_command(struct vboxmodem *, char *, char *);
+extern int	modem_command(struct vboxmodem *, unsigned char *, unsigned char *);
 extern int	modem_hangup(struct vboxmodem *);
 extern int	modem_wait(struct vboxmodem *);
 extern void modem_set_nocarrier(struct vboxmodem *, int);
 extern int	modem_get_nocarrier(struct vboxmodem *);
-extern int	modem_read(struct vboxmodem *, char *, int);
+extern int	modem_read(struct vboxmodem *, unsigned char *, int);
 
 #endif /* _VBOX_MODEM_H */

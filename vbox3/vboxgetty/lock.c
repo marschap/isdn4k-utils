@@ -1,9 +1,12 @@
 /*
-** $Id: lock.c,v 1.1 1998/07/06 09:05:23 michael Exp $
+** $Id: lock.c,v 1.2 1998/08/31 10:43:04 michael Exp $
 **
 ** Copyright 1996-1998 Michael 'Ghandi' Herold <michael@abadonna.mayn.de>
 **
 ** $Log: lock.c,v $
+** Revision 1.2  1998/08/31 10:43:04  michael
+** - Changed "char" to "unsigned char".
+**
 ** Revision 1.1  1998/07/06 09:05:23  michael
 ** - New control file code added. The controls are not longer only empty
 **   files - they can contain additional informations.
@@ -15,7 +18,9 @@
 **
 */
 
-#include "../config.h"
+#ifdef HAVE_CONFIG_H
+#  include "../config.h"
+#endif
 
 #include <stdio.h>
 #include <unistd.h>
@@ -35,12 +40,12 @@
 /**						nicht.															**/
 /*************************************************************************/
 
-int lock_create(char *name)
+int lock_create(unsigned char *name)
 {
-	char  line[32];
-	FILE *lptr;
-	long	lock;
-	int	loop;
+	unsigned char  line[32];
+	FILE          *lptr;
+	long	         lock;
+	int	         loop;
 
 	log_line(LOG_D, "Creating lock \"%s\"...\n", name);
 
@@ -117,7 +122,7 @@ int lock_create(char *name)
 /**						wenn nicht.														**/
 /*************************************************************************/
 
-int lock_remove(char *name)
+int lock_remove(unsigned char *name)
 {
 	int loop = 5;
 

@@ -1,9 +1,12 @@
 /*
-** $Id: tclscript.c,v 1.7 1998/08/30 17:32:07 michael Exp $
+** $Id: tclscript.c,v 1.8 1998/08/31 10:43:12 michael Exp $
 **
 ** Copyright 1996-1998 Michael 'Ghandi' Herold <michael@abadonna.mayn.de>
 **
 ** $Log: tclscript.c,v $
+** Revision 1.8  1998/08/31 10:43:12  michael
+** - Changed "char" to "unsigned char".
+**
 ** Revision 1.7  1998/08/30 17:32:07  michael
 ** - Total new audio setup - now it works correct and don't crash the
 **   machine.
@@ -52,7 +55,9 @@
 **
 */
 
-#include "../config.h"
+#ifdef HAVE_CONFIG_H
+#  include "../config.h"
+#endif
 
 #include <tcl.h>
 #include <string.h>
@@ -135,7 +140,7 @@ void scr_remove_interpreter(void)
 /** <=					0 on success or -1 on error								**/
 /*************************************************************************/
 
-int scr_execute(char *name, struct vboxuser *user)
+int scr_execute(unsigned char *name, struct vboxuser *user)
 {
 	int canrun = 0;
 
@@ -176,7 +181,7 @@ int scr_execute(char *name, struct vboxuser *user)
 /** <=						Tcl version string										**/
 /*************************************************************************/
 
-char *scr_tcl_version(void)
+unsigned char *scr_tcl_version(void)
 {
 	return(TCL_VERSION);
 }
@@ -265,8 +270,8 @@ int vbox_block(VBOX_TCLFUNC)
 
 int vbox_log(VBOX_TCLFUNC)
 {
-	char *levelv;
-	int	levelc;
+	unsigned char *levelv;
+	int	         levelc;
 
 	if (objc == 3)
 	{
@@ -324,8 +329,8 @@ int vbox_modem_command(VBOX_TCLFUNC)
 
 int vbox_voice(VBOX_TCLFUNC)
 {
-	char *cmd;
-	char *arg;
+	unsigned char *cmd;
+	unsigned char *arg;
 	int	rc;
 	int	i;
 

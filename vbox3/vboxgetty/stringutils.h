@@ -1,5 +1,5 @@
 /*
-** $Id: stringutils.h,v 1.2 1998/07/06 09:05:30 michael Exp $
+** $Id: stringutils.h,v 1.3 1998/08/31 10:43:11 michael Exp $
 **
 ** Copyright 1996-1998 Michael 'Ghandi' Herold <michael@abadonna.mayn.de>
 */
@@ -13,8 +13,8 @@
 
 /** Prototypes ***********************************************************/
 
-extern void xstrncpy(char *, char *, int);
-extern long xstrtol(char *, long);
-extern long xstrtoo(char *, long);
+extern void xstrncpy(unsigned char *, unsigned char *, int);
+extern long xstrtol(unsigned char *, long);
+extern long xstrtoo(unsigned char *, long);
 
 #endif /* _VBOX_STRINGUTILS_H */

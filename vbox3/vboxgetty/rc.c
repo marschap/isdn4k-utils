@@ -1,9 +1,12 @@
 /*
-** $Id: rc.c,v 1.3 1998/07/06 09:05:28 michael Exp $
+** $Id: rc.c,v 1.4 1998/08/31 10:43:09 michael Exp $
 **
 ** Copyright 1996-1998 Michael 'Ghandi' Herold <michael@abadonna.mayn.de>
 **
 ** $Log: rc.c,v $
+** Revision 1.4  1998/08/31 10:43:09  michael
+** - Changed "char" to "unsigned char".
+**
 ** Revision 1.3  1998/07/06 09:05:28  michael
 ** - New control file code added. The controls are not longer only empty
 **   files - they can contain additional informations.
@@ -19,7 +22,9 @@
 **
 */
 
-#include "../config.h"
+#ifdef HAVE_CONFIG_H
+#  include "../config.h"
+#endif
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -42,15 +47,15 @@
 /**					wurde.																**/
 /*************************************************************************/
 
-int rc_read(struct vboxrc *rc, char *rcname, char *section)
+int rc_read(struct vboxrc *rc, unsigned char *rcname, unsigned char *section)
 {
-	char	rctmpln[VBOX_MAX_RCLINE_SIZE + 1];
-	FILE *rctxtio;
-	int	rcerror;
-	int	rcsjump;
-	char *stop;
-	char *name;
-	char *args;
+	unsigned char	rctmpln[VBOX_MAX_RCLINE_SIZE + 1];
+	FILE          *rctxtio;
+	int	         rcerror;
+	int	         rcsjump;
+	unsigned char *stop;
+	unsigned char *name;
+	unsigned char *args;
 
 	log_line(LOG_D, "Parsing \"%s\"...\n", rcname);
 
@@ -122,7 +127,7 @@ void rc_free(struct vboxrc *rc)
 /** <=					Wert des Eintrages oder NULL.								**/
 /*************************************************************************/
 
-unsigned char *rc_get_entry(struct vboxrc *rc, char *name)
+unsigned char *rc_get_entry(struct vboxrc *rc, unsigned char *name)
 {
 	int i = 0;
 
@@ -146,12 +151,12 @@ unsigned char *rc_get_entry(struct vboxrc *rc, char *name)
 /** <=					Wert des Eintrags oder NULL.								**/
 /*************************************************************************/
 
-unsigned char *rc_set_entry(struct vboxrc *rc, char *name, char *value)
+unsigned char *rc_set_entry(struct vboxrc *rc, unsigned char *name, unsigned char *value)
 {
 	int				i = 0;
 	unsigned char *v = NULL;
 
-	log_line(LOG_D, "Setting \"%s\" to \"%s\"...\n", (name ? name : "???"), (value ? value : "???"));
+	log(LOG_D, "Setting \"%s\" to \"%s\"...\n", ((char *)name ? (char *)name : "???"), ((char *)value ? (char *)value : "???"));
 
 	if ((!name) || (!value))
 	{
@@ -193,7 +198,7 @@ unsigned char *rc_set_entry(struct vboxrc *rc, char *name, char *value)
 /** Siehe rc_set_entry().																**/
 /*************************************************************************/
 
-unsigned char *rc_set_empty(struct vboxrc *rc, char *name, char *value)
+unsigned char *rc_set_empty(struct vboxrc *rc, unsigned char *name, unsigned char *value)
 {
 	int i = 0;
 

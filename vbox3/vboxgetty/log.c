@@ -1,9 +1,12 @@
 /*
-** $Id: log.c,v 1.5 1998/07/29 11:02:37 michael Exp $
+** $Id: log.c,v 1.6 1998/08/31 10:43:05 michael Exp $
 **
 ** Copyright 1996-1998 Michael 'Ghandi' Herold <michael@abadonna.mayn.de>
 **
 ** $Log: log.c,v $
+** Revision 1.6  1998/08/31 10:43:05  michael
+** - Changed "char" to "unsigned char".
+**
 ** Revision 1.5  1998/07/29 11:02:37  michael
 ** - Added missing ATA to answer call (oh god, im so stupid).
 ** - Some junk removed.
@@ -74,7 +77,7 @@ static struct logsequence logsequence[] =
 /**					einem Fehler.														**/
 /*************************************************************************/
 
-int log_open(char *name)
+int log_open(unsigned char *name)
 {
 	if ((logtxtio = fopen(name, "a"))) return(0);
 
@@ -111,7 +114,7 @@ void log_set_debuglevel(int level)
 /** => ...			Argumente für den Formatstring.								**/
 /*************************************************************************/
 
-void log_line(int level, char *fmt, ...)
+void log_line(int level, unsigned char *fmt, ...)
 {
 	struct tm   *timel;
 	time_t       timec;
@@ -180,7 +183,7 @@ void log_line(int level, char *fmt, ...)
 /** => c				Zeichen das ausgegeben werden soll.							**/
 /*************************************************************************/
 
-void log_char(int level, char c)
+void log_char(int level, unsigned char c)
 {
 	int i;
 
@@ -217,7 +220,7 @@ void log_char(int level, char c)
 /** => ...			Argumente für den Formatstring.								**/
 /*************************************************************************/
 
-void log_text(int level, char *fmt, ...)
+void log_text(int level, unsigned char *fmt, ...)
 {
 	FILE *useio;
 	va_list arg;
@@ -242,7 +245,7 @@ void log_text(int level, char *fmt, ...)
 /** => sequence	String der ausgegeben werden soll.							**/
 /*************************************************************************/
 
-void log_code(int level, char *sequence)
+void log_code(int level, unsigned char *sequence)
 {
 	int i;
 

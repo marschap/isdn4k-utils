@@ -1,5 +1,5 @@
 /*
-** $Id: voice.h,v 1.5 1998/08/30 17:32:10 michael Exp $
+** $Id: voice.h,v 1.6 1998/08/31 10:43:22 michael Exp $
 **
 ** Copyright 1996-1998 Michael 'Ghandi' Herold <michael@abadonna.mayn.de>
 */
@@ -27,8 +27,9 @@
 
 /** Defines **************************************************************/
 
-#define VBOXVOICE_BUFSIZE  		32
-#define VBOXVOICE_SAMPLERATE		8000
+#define VBOXVOICE_BUFSIZE  		32			  /* Voice/Audio Buffer Größe	*/
+#define VBOXVOICE_SAMPLERATE		8000		/* Samplerate (nur zum Check)	*/
+#define VBOXVOICE_SEQUENCE			64				 /* Touchtone Buffer Größe	*/
 
 #define VBOXVOICE_STAT_OK			0
 #define VBOXVOICE_STAT_TIMEOUT	1
@@ -50,22 +51,12 @@
 #define VBOXSAVE_CAID				64
 #define VBOXSAVE_VBOX				 6
 
-/** Structures ***********************************************************/
-
-struct vboxsave
-{
-	char		vbox[VBOXSAVE_VBOX + 1];
-	char		name[VBOXSAVE_NAME + 1];
-	char		caid[VBOXSAVE_CAID + 1];
-	time_t	time;
-};
-
 /** Prototypes ***********************************************************/
 
 extern int voice_init(struct vboxuser *, struct vboxcall *);
 extern int voice_save(int);
 extern int voice_hear(int);
 extern int voice_wait(int);
-extern int voice_play(char *);
+extern int voice_play(unsigned char *);
 
 #endif /* _VBOX_VOICE_H */

@@ -1,9 +1,12 @@
 /*
-** $Id: control.c,v 1.2 1998/08/28 13:06:12 michael Exp $
+** $Id: control.c,v 1.3 1998/08/31 10:43:01 michael Exp $
 **
 ** Copyright 1996-1998 Michael 'Ghandi' Herold <michael@abadonna.mayn.de>
 **
 ** $Log: control.c,v $
+** Revision 1.3  1998/08/31 10:43:01  michael
+** - Changed "char" to "unsigned char".
+**
 ** Revision 1.2  1998/08/28 13:06:12  michael
 ** - Removed audio full duplex mode. Sorry, my soundcard doesn't support
 **   this :-)
@@ -30,7 +33,9 @@
 **
 */
 
-#include "../config.h"
+#ifdef HAVE_CONFIG_H
+#  include "../config.h"
+#endif
 
 #include <stdio.h>
 #include <string.h>
@@ -44,8 +49,8 @@
 
 /** Variablen ************************************************************/
 
-static char ctrlpathname[PATH_MAX + 1];
-static char ctrllastline[VBOX_CTRL_MAX_RCLINE + 1];
+static unsigned char ctrlpathname[PATH_MAX + 1];
+static unsigned char ctrllastline[VBOX_CTRL_MAX_RCLINE + 1];
 
 /*************************************************************************/
 /** ctrl_exists():	Untersucht ob eine Kontrolldatei existiert und		**/
@@ -58,7 +63,7 @@ static char ctrllastline[VBOX_CTRL_MAX_RCLINE + 1];
 /**						oder ein Zeiger auf deren Initstring.					**/
 /*************************************************************************/
 
-char *ctrl_exists(char *home, char *name, char *ttyd)
+char *ctrl_exists(unsigned char *home, unsigned char *name, unsigned char *ttyd)
 {
 	FILE *cptr;
 	char *stop;
@@ -98,7 +103,7 @@ char *ctrl_exists(char *home, char *name, char *ttyd)
 /**						einem Fehler.													**/
 /*************************************************************************/
 
-int ctrl_create(char *home, char *name, char *ttyd, char *init)
+int ctrl_create(unsigned char *home, unsigned char *name, unsigned char *ttyd, unsigned char *init)
 {
 	FILE *cptr = NULL;
 	int	loop = 5;
@@ -110,7 +115,7 @@ int ctrl_create(char *home, char *name, char *ttyd, char *init)
 
 	while (loop > 0)
 	{
-		log_line(LOG_D, "Creating control \"vboxctrl-%s:%s\" (%s)...\n", name, init, ttyd ? ttyd : "global");
+		log_line(LOG_D, "Creating control \"vboxctrl-%s:%s\" (%s)...\n", name, init, (char *)ttyd ? (char *)ttyd : "global");
 
 		if ((cptr = fopen(ctrlpathname, "w")))
 		{
@@ -139,7 +144,7 @@ int ctrl_create(char *home, char *name, char *ttyd, char *init)
 /**						bei einem Fehler.												**/
 /*************************************************************************/
 
-int ctrl_remove(char *home, char *name, char *ttyd)
+int ctrl_remove(unsigned char *home, unsigned char *name, unsigned char *ttyd)
 {
 	int loop = 5;
 
@@ -150,7 +155,7 @@ int ctrl_remove(char *home, char *name, char *ttyd)
 
 	while (loop > 0)
 	{
-		log_line(LOG_D, "Removing control \"vboxctrl-%s\" (%s)...\n", name, ttyd ? ttyd : "global");
+		log_line(LOG_D, "Removing control \"vboxctrl-%s\" (%s)...\n", name, (char *)ttyd ? (char *)ttyd : "global");
 
 		if (remove(ctrlpathname) == 0) return(0);
 

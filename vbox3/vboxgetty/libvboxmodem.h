@@ -1,5 +1,5 @@
 /*
-** $Id: libvboxmodem.h,v 1.2 1998/07/06 09:05:22 michael Exp $
+** $Id: libvboxmodem.h,v 1.3 1998/08/31 10:43:04 michael Exp $
 **
 ** Copyright 1996-1998 Michael 'Ghandi' Herold <michael@abadonna.mayn.de>
 */
@@ -21,13 +21,13 @@ typedef struct termios TIO;
 struct vboxmodem
 {
 	int				fd;
-	char			  *devicename;
+	unsigned char *devicename;
 	unsigned char *input;
 	int				inputpos;
 	int				inputlen;
 	int				nocarrier;
 	int				nocarrierpos;
-	char			  *nocarriertxt;
+	unsigned char *nocarriertxt;
 };
 
 /** Internal junk ********************************************************/
