@@ -5,10 +5,11 @@ most recent on top.
 	eiconctrl - XLOG retrieve function for all supported active cards added.
 
 1999/08/03 paul (Paul Slootman <paul@isdn4linux.de>)
-	xmonisdn - possible security problems
-		   See manpage 'SECURITY ISSUES' section for details. In short,
-		   xmonisdn now refuses to run setuid root to prevent shell
-		   scripts being run with root permissions.
+        ipppd     - It's not fatal if a route exists when adding it.
+	xmonisdn  - possible security problems
+		    See manpage 'SECURITY ISSUES' section for details. In short,
+		    xmonisdn now refuses to run setuid root to prevent shell
+		    scripts being run with root permissions.
 
 1999/06/23 paul (Paul Slootman <paul@isdn4linux.de>)
 	xisdnload - fixed problem when more than one channel is in use.
@@ -19,6 +20,6 @@ most recent on top.
 1999/06/07 paul (Paul Slootman <paul@isdn4linux.de>)
 	This file started!
 	isdnctrl - added `status' command, which shows the connection status of
-		interfaces (connected yes/no, to what number).
-	ipppd	- now should work on kernel 2.3.x (allocation failed in
-		SIOCGIFCONF ioctl)
+		   interfaces (connected yes/no, to what number).
+	ipppd	 - now should work on kernel 2.3.x (allocation failed in
+		   SIOCGIFCONF ioctl)
