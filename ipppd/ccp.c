@@ -25,7 +25,7 @@
  * OR MODIFICATIONS.
  */
 
-char ccp_rcsid[] = "$Id: ccp.c,v 1.14 1999/11/03 16:06:35 paul Exp $";
+char ccp_rcsid[] = "$Id: ccp.c,v 1.15 2000/11/12 16:06:42 kai Exp $";
 
 #include <string.h>
 #include <syslog.h>
@@ -215,6 +215,7 @@ static void ccp_init(int unit)
 int ccp_getunit(int linkunit,int protocol)
 {
   int i;
+  char proto[64];
 
   if(protocol != PPP_CCP && protocol != PPP_LINK_CCP)
     return -1;
@@ -227,7 +228,12 @@ int ccp_getunit(int linkunit,int protocol)
       ccp_fsm[i].id = 0;
       ccp_fsm[i].unit = linkunit;
       ccp_fsm[i].protocol = protocol;
-      syslog(LOG_NOTICE,"CCP: got ccp-unit %d for link %d (protocol: %#x)",i,linkunit,protocol);
+      switch (protocol) {
+      case 0x80FD: strcpy(proto, "Compression Control Protocol"); break;
+      case 0x80FB: strcpy(proto, "Link Compression Control Protocol"); break;
+      default: sprintf(proto, "protocol: %#x", protocol);
+      }
+      syslog(LOG_NOTICE,"CCP: got ccp-unit %d for link %d (%s)",i,linkunit,proto);
       return i;
     }
   }

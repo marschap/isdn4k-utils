@@ -23,7 +23,7 @@
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-char lcp_rcsid[] = "$Id: lcp.c,v 1.11 2000/07/25 20:23:51 kai Exp $";
+char lcp_rcsid[] = "$Id: lcp.c,v 1.12 2000/11/12 16:06:42 kai Exp $";
 
 /*
  * TODO:
@@ -2048,7 +2048,7 @@ int lcp_printpkt(u_char *p,int plen,void (*printer)(void*,char*,...),void *arg)
 		case CI_MPMRRU:
               p+=2;
               GETSHORT(cishort,p);
-              printer(arg,"MPmrru 0x%x",cishort);
+              printer(arg,"MPmrru %d",cishort);
               break;
             case CI_MPSHORTSEQ:
               p+=2;

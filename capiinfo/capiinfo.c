@@ -1,4 +1,4 @@
-/* $Id: capiinfo.c,v 1.3 2000/06/12 08:51:04 kai Exp $
+/* $Id: capiinfo.c,v 1.4 2000/11/12 16:06:42 kai Exp $
  *
  * A CAPI application to get infomation about installed controllers
  *
@@ -14,6 +14,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: capiinfo.c,v $
+ * Revision 1.4  2000/11/12 16:06:42  kai
+ * fix backwards compatibility in capi20 library, small other changes
+ *
  * Revision 1.3  2000/06/12 08:51:04  kai
  * show supported supplementary services
  *
@@ -204,7 +207,7 @@ int main(int argc, char **argv)
 	   continue;
        }
        if (cmsg.Info != 0x0000) {
-	   fprintf(stderr, "FAC GET - (Info)\n");
+	   fprintf(stderr, "FAC GET - (Info %#x)\n", cmsg.Info);
 	   continue;
        }
        if (cmsg.FacilityConfirmationParameter[0] != 0x09) {
@@ -221,6 +224,7 @@ int main(int argc, char **argv)
        
        printf("\nSupplementary services support: 0x%08x\n", SuppServices);
        showbitvalues(SupportedServices, SuppServices);
+       printf("\n");
    }
    return 0;
 }

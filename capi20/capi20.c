@@ -1,7 +1,10 @@
 /*
- * $Id: capi20.c,v 1.17 2000/06/26 15:00:43 calle Exp $
+ * $Id: capi20.c,v 1.18 2000/11/12 16:06:41 kai Exp $
  * 
  * $Log: capi20.c,v $
+ * Revision 1.18  2000/11/12 16:06:41  kai
+ * fix backwards compatibility in capi20 library, small other changes
+ *
  * Revision 1.17  2000/06/26 15:00:43  calle
  * - Will also compile with 2.0 Kernelheaders.
  *
@@ -180,8 +183,9 @@ capi20_register (unsigned MaxB3Connection,
 
     if ((fd = open(capidevname, O_RDWR|O_NONBLOCK, 0666)) < 0 && errno == ENOENT)
          fd = open(capidevnamenew, O_RDWR|O_NONBLOCK, 0666);
+
     if (fd < 0)
-       return CapiRegOSResourceErr;
+	return CapiRegOSResourceErr;
 
     ioctl_data.rparams.level3cnt = MaxB3Connection;
     ioctl_data.rparams.datablkcnt = MaxB3Blks;
@@ -189,14 +193,50 @@ capi20_register (unsigned MaxB3Connection,
 
     if ((applid = ioctl(fd, CAPI_REGISTER, &ioctl_data)) < 0) {
         if (errno == EIO) {
-            if (ioctl(fd, CAPI_GET_ERRCODE, &ioctl_data) < 0)
+            if (ioctl(fd, CAPI_GET_ERRCODE, &ioctl_data) < 0) {
+		close (fd);
                 return CapiRegOSResourceErr;
+	    }
+	    close (fd);
             return (unsigned)ioctl_data.errcode;
-        }
-        return CapiRegOSResourceErr;
+
+        } else if (errno == EINVAL) { // old kernel driver
+	    close (fd);
+	    fd = -1;
+	    for (i=0; fd < 0; i++) {
+		/*----- open pseudo-clone device -----*/
+		sprintf(buf, "/dev/capi20.%02d", i);
+		if ((fd = open(buf, O_RDWR|O_NONBLOCK, 0666)) < 0) {
+		    switch (errno) {
+		    case EEXIST:
+			break;
+		    default:
+			return CapiRegOSResourceErr;
+		    }
+		}
+	    }
+	    if (fd < 0)
+		return CapiRegOSResourceErr;
+
+	    ioctl_data.rparams.level3cnt = MaxB3Connection;
+	    ioctl_data.rparams.datablkcnt = MaxB3Blks;
+	    ioctl_data.rparams.datablklen = MaxSizeB3;
+
+	    if ((applid = ioctl(fd, CAPI_REGISTER, &ioctl_data)) < 0) {
+		if (errno == EIO) {
+		    if (ioctl(fd, CAPI_GET_ERRCODE, &ioctl_data) < 0) {
+			close(fd);
+			return CapiRegOSResourceErr;
+		    }
+		    close(fd);
+		    return (unsigned)ioctl_data.errcode;
+		}
+		close(fd);
+		return CapiRegOSResourceErr;
+	    }
+	    applid = alloc_applid(fd);
+	} // end old driver compatibility
     }
-    if (applid == 0) /* old driver */
-       applid = alloc_applid(fd);
     if (remember_applid(applid, fd) < 0) {
        close(fd);
        return CapiRegOSResourceErr;
@@ -301,6 +341,7 @@ capi20_get_message (unsigned ApplID, unsigned char **Buf)
 
     *Buf = rcvbuf;
     if ((rc = read(fd, rcvbuf, sizeof(rcvbuf))) > 0) {
+	CAPIMSG_SETAPPID(rcvbuf, ApplID); // workaround for old driver
         if (   CAPIMSG_COMMAND(rcvbuf) == CAPI_DATA_B3
 	    && CAPIMSG_SUBCOMMAND(rcvbuf) == CAPI_IND) {
            if (sizeof(void *) == 4) {
