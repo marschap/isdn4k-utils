@@ -1,5 +1,5 @@
 /*
-** $Id: voice.h,v 1.3 1998/08/28 13:06:19 michael Exp $
+** $Id: voice.h,v 1.4 1998/08/29 15:35:12 michael Exp $
 **
 ** Copyright 1996-1998 Michael 'Ghandi' Herold <michael@abadonna.mayn.de>
 */
@@ -30,13 +30,16 @@
 #define VBOXVOICE_BUFEXP   5
 #define VBOXVOICE_NUMFRAGS 4
 #define VBOXVOICE_FRAGFACT 5
-#define VBOXVOICE_BUFSIZE  ((1 << VBOXVOICE_BUFEXP) * VBOXVOICE_FRAGFACT)
+#define VBOXVOICE_BUFSIZE  32
+
+	/*  ((1 << VBOXVOICE_BUFEXP) * VBOXVOICE_FRAGFACT)*/
 
 #define VBOXVOICE_STAT_OK			0
 #define VBOXVOICE_STAT_TIMEOUT	1
 #define VBOXVOICE_STAT_HANGUP		2
 #define VBOXVOICE_STAT_TOUCHTONE	4
 #define VBOXVOICE_STAT_SUSPEND	8
+#define VBOXVOICE_STAT_DONE		16
 
 #define ETX  (0x03)
 #define NL   (0x0A)
@@ -65,5 +68,6 @@ extern int voice_init(struct vboxuser *, struct vboxcall *);
 extern int voice_save(int);
 extern int voice_hear(int);
 extern int voice_wait(int);
+extern int voice_play(char *);
 
 #endif /* _VBOX_VOICE_H */
