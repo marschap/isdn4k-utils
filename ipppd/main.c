@@ -25,7 +25,7 @@
  * PATCHLEVEL 9
  */
 
-char main_rcsid[] = "$Id: main.c,v 1.6 1997/05/28 10:07:34 hipp Exp $";
+char main_rcsid[] = "$Id: main.c,v 1.7 1997/05/30 14:05:54 hipp Exp $";
 
 #include <stdio.h>
 #include <stdarg.h>
@@ -246,8 +246,8 @@ void main(int argc,char **argv)
 	if (!nodetach) {
 		int a,f;
 
-        f = fork();
-        if(f < 0) {
+		f = fork();
+		if(f < 0) {
 			perror("Couldn't detach from controlling terminal");
 			exit(1);
 		}
@@ -920,7 +920,7 @@ int device_script(char *program,int in,int out)
 	setgid(getgid());
 	execl("/bin/sh", "sh", "-c", program, (char *)0);
 	syslog(LOG_ERR, "could not exec /bin/sh: %m");
-	_exit(99);
+	exit(99);
 	/* NOTREACHED */
     }
 

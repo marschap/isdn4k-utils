@@ -22,7 +22,7 @@
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-char sys_rcsid[] = "$Id: sys-linux.c,v 1.4 1997/05/28 10:07:40 hipp Exp $";
+char sys_rcsid[] = "$Id: sys-linux.c,v 1.5 1997/05/30 14:05:57 hipp Exp $";
 
 #define _LINUX_STRING_H_
 
@@ -273,7 +273,9 @@ void output (int linkunit, unsigned char *p, int len)
     
 	if (write(lns[linkunit].fd, p, len) < 0) {
 		syslog(LOG_ERR, "write, unit: %d fd: %d: %m",linkunit,lns[linkunit].fd);
+#if 0
 		die(1);
+#endif
 	}
 }
 
@@ -289,7 +291,9 @@ int read_packet (unsigned char *buf,int linkunit)
 		if (errno == EWOULDBLOCK)
 			return -1;
 		syslog(LOG_ERR, "read(fd): %m");
+#if 0
 		die(1);
+#endif
 	}
 	return len;
 }
