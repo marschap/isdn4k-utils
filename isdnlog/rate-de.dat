@@ -1,4 +1,4 @@
-V:1.02-Germany [02-Jul-1999 21:27:20]
+V:1.02-Germany [04-Jul-1999 22:56:37]
 
 # Währungsformat
 U:%.3f DM
@@ -8,7 +8,7 @@ U:%.3f DM
 #
 # (C) Copyright 1999 by Andreas Kool (akool@isdn4linux.de)
 #
-# $Id: rate-de.dat,v 1.27 1999/07/02 19:17:10 akool Exp $
+# $Id: rate-de.dat,v 1.28 1999/07/04 20:46:44 akool Exp $
 #
 # Zonenzuordnung für Deutschland
 #
@@ -337,6 +337,7 @@ T:W/18-08=0.049996/60
 T:E,H/*=0.049996/60 Wochenende
 Z:102 o.tel.o online 01011
 A:0191501 # Proxy: proxy.otelo-online.de:8080; DNS: 195.50.149.33 und 195.50.140.6; Mail: mail.otelo-online.de; User: otelo; Passwort: online
+S:Internet by call
 T:W/09-21=0.059044/60 Geschaeftszeit
 T:W/21-09=0.059044/60
 T:E,H/*=0.059044/60
@@ -587,6 +588,7 @@ T:W/18-08=0.05/0,0.049996(60)/1
 T:E,H/*=0.05/0,0.049996(60)/1 Wochenende
 Z:102 o.tel.o online 01011
 A:0191501 # (Benutzername: otelo; Passwort: online)
+S:Internet by call
 T:W/09-21=0.05/0,0.059044(60)/1 Geschaeftszeit
 T:W/21-09=0.05/0,0.059044(60)/1
 T:E,H/*=0.05/0,0.059044(60)/1
@@ -3833,6 +3835,7 @@ A:+49176,+49179		# E2
 T:*/*=0.49/60
 Z:102 01019freenet
 A:01929 # DNS: 62.104.197.193 und 212.81.191.16; POP3: pop3.01019freenet.de; SMTP: mx.01019freenet.de; User: mobilcom; Passwort: mobilcom
+S:Internet by call
 # eXpress Net: http://www.express-net.de
 A:01928120 # eXpress Net # Zugang wie bei Mobilcom
 T:*/*=0.05/60 FreeNet
@@ -3870,6 +3873,7 @@ A:+49176,+49179		# E2
 T:*/*=0.49(60)/1
 Z:102 01019freenet
 A:01929 # (Benutzername und Passwort: egal, min. 1 Buchstabe)
+S:Internet by call
 T:*/*=0.05(60)/1 FreeNet
 Z:200 Gruppe A
 A:Andorra, Belgien, Dänemark, Finnland, Frankreich, Gibraltar
@@ -3923,6 +3927,7 @@ A:+49176,+49179		# E2
 T:*/*=0.49(60)/1
 Z:102 01019freenet
 A:01929 # (Benutzername und Passwort: egal, min. 1 Buchstabe)
+S:Internet by call
 T:*/*=0.05(60)/1 FreeNet
 Z:200 Gruppe A
 A:Andorra, Belgien, Dänemark, Finnland, Frankreich, Gibraltar
@@ -4788,6 +4793,7 @@ T:W/18-08=0.46/60 Freizeit
 T:E,H/*=0.46/60 Wochenende
 Z:102 TelePassport-Online
 A:01924924 # Proxy: proxy.telepassport.de; DNS: 212.41.64.33 und 212.41.68.33; User: tele; Passwort: tele
+S:Internet by call
 T:*/*=0.06/60
 Z:200 Euro 1
 A:Andorra, Belgien, Dänemark, Färöer, Finnland, Frankreich, Griechenland
@@ -4841,6 +4847,7 @@ A:+49176,+49179		# E2
 T:*/*=0.56/60
 Z:102 TelePassport-Online
 A:01924924 # (Benutzername: beliebig; Passwort: beliebig)
+S:Internet by call
 T:W/08-18=0.08/60 Geschäftszeit
 T:W/18-08=0.06/60 Freizeit
 T:E,H/*=0.08/60 Wochenende
@@ -4895,6 +4902,7 @@ A:+49176,+49179		# E2
 T:*/*=0.56/60
 Z:102 TelePassport-Online
 A:01924924 # (Benutzername: beliebig; Passwort: beliebig)
+S:Internet by call
 T:W/08-18=0.08/60 Geschäftszeit
 T:W/18-08=0.06/60 Freizeit
 T:E,H/*=0.08/60 Wochenende
@@ -4953,6 +4961,7 @@ A:+49176,+49179		# E2
 T:*/*=0.56/60
 Z:102 TelePassport-Online
 A:01924924 # (Benutzername: beliebig; Passwort: beliebig)
+S:Internet by call
 T:*/*=0.06/60
 Z:200 International 1
 A:Andorra, Belgien, Dänemark, Färöer, Finnland, Frankreich, Griechenland
@@ -5009,6 +5018,7 @@ T:W/18-08=0.48/60 Freizeit
 T:E,H/*=0.48/60 Wochenende
 Z:102 TelePassport-Online
 A:01924924 # (Benutzername: beliebig; Passwort: beliebig)
+S:Internet by call
 T:W/08-18=0.08/60 Geschäftszeit
 T:W/18-08=0.06/60 Freizeit
 T:E,H/*=0.08/60 Wochenende
@@ -5058,6 +5068,7 @@ A:+49176,+49179		# E2
 T:*/*=0.56/60
 Z:102 TelePassport-Online
 A:01924924 # (Benutzername: beliebig; Passwort: beliebig)
+S:Internet by call
 T:*/*=0.08/60
 Z:200 Global 1
 A:Belgien, Dänemark, Finnland, Frankreich, Griechenland, Großbritannien
@@ -5113,6 +5124,7 @@ T:W/18-08=0.48/60 Freizeit
 T:E,H/*=0.48/60 Wochenende
 Z:102 TelePassport-Online
 A:01924924 # (Benutzername: beliebig; Passwort: beliebig)
+S:Internet by call
 T:W/08-18=0.08/60 Geschäftszeit
 T:W/18-08=0.06/60 Freizeit
 T:E,H/*=0.06/60 Wochenende
@@ -9918,6 +9930,7 @@ A:+49176,+49179		# E2
 T:*/*=0.48/60
 Z:102 net@home
 A:0192340 # DNS: 195.222.195.222 und 195.222.195.223; User: esprit; Passwort: telecom
+S:Internet by call
 T:*/*=0.058/60 Internet
 Z:103 CALL POP
 # Verfügbarkeit nach Vorwahlbereichen:
@@ -9925,6 +9938,7 @@ Z:103 CALL POP
 #     01.05.99: 06/07/08/09
 #     01.06.99: 02/052/054/056/057/059
 A:0192343 # (Benutzername: Call, Passwort: POP)
+S:Internet by call
 T:*/*=0.058/60
 Z:200 Euro 1/Welt 1
 A:Belgien, Dänemark, Finnland, Frankreich
@@ -11523,6 +11537,7 @@ A:+49176,+49179		# E2
 T:*/*=0.69/60
 Z:100 Talknet by call
 A:019251 # Proxy: proxy.tli.de:8080; DNS: 195.252.128.53 und 195.252.128.54; User: talknet; Passwort: talknet
+S:Internet by call
 T:W/07-19=0.09(60)/180
 T:W/19-22=0.07(60)/180
 T:W/22-07=0.05(60)/180
@@ -11586,50 +11601,37 @@ A:+4366211811
 T:*/*=0.25/60
 Z:41 Telefonauskunft Ausland (Austria, dial 01051004366211812)
 A:+4366211812
-T:*/*=0.25/60
-Z:200
-A:Großbritannien
-A:USA
 T:*/*=0.16/60
-Z:201
-A:Niederlande
-A:Schweden
-T:*/*=0.21/60
-Z:202
-A:Kanada
-A:Frankreich
-A:Alaska
-A:Hawaii
-T:*/*=0.22/60
-Z:203
-A:Dänemark
-A:Norwegen
-A:Finnland
-A:Belgien
-A:Schweiz
-T:*/*=0.23/60
-Z:204
-A:Österreich
-A:Australien
-T:*/*=0.25/60
-Z:207
-A:Neuseeland
-A:Hongkong
-A:Japan
-T:*/*=0.29/60
-Z:208
-A:Liechtenstein
-T:*/*=0.31/60
-Z:209
-A:Spanien
-A:Italien
-T:*/*=0.32/60
-Z:210
-A:Luxemburg
-T:*/*=0.34/60
-Z:212
-A:Monaco
 T:*/*=0.36/60
+Z:200
+T:*/*=0.25/60
+A:Australien, Österreich
+Z:201
+T:*/*=0.23/60
+A:Belgien, Dänemark, Finnland, Norwegen, Schweiz
+Z:202
+T:*/*=0.22/60
+A:Frankreich, Kanada, Alaska, Hawaii
+Z:203
+T:*/*=0.21/60
+A:Niederlande, Schweden
+Z:204
+T:*/*=0.16/60
+A:Großbritannien, USA
+Z:205
+T:*/*=0.29/60
+A:Neuseeland, Hongkong, Japan
+Z:206
+T:*/*=.32/60
+A:Italien, Sapnien
+Z:207
+T:*/*=0.34/60
+A:Luxembourg
+Z:208
+T:*/*=0.36/60
+A:Monaco
+Z:209
+T:*/*=0.39/60
 Z:213
 A:Österreich Mobilfunk
 T:*/*=0.75/60
@@ -11637,19 +11639,23 @@ Z:214 impossible
 # Mobilfunk in den folgenden Ländern ist über 01051 nicht möglich!
 # Daher wird hier erst mal ein viel zu hoher Preis dafür
 # definiert.
-A:Großbritannien Mobilfunk
+A:Australien Mobilfunk
 A:Belgien Mobilfunk
-A:Niederlande Mobilfunk
-A:Schweiz Mobilfunk
-A:Italien Mobilfunk
 A:Dänemark Mobilfunk
-A:Schweden Mobilfunk
-A:Norwegen Mobilfunk
 A:Finnland Mobilfunk
-A:Spanien Mobilfunk
+A:Großbritannien Mobilfunk
+A:Italien Mobilfunk
+A:Japan Mobilfunk
 A:Liechtenstein Mobilfunk
 A:Luxemburg Mobilfunk
 A:Monaco Mobilfunk
+A:Neuseeland Mobilfunk
+A:Niederlande Mobilfunk
+A:Norwegen Mobilfunk
+A:Österreich Mobilfunk
+A:Schweden Mobilfunk
+A:Schweiz Mobilfunk
+A:Spanien Mobilfunk
 A:+491618	# T-C-Tel Voice Mail
 A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
 A:+49170,+49171		# D1
@@ -12363,6 +12369,7 @@ C:Arcor Online
 A:0192070 # Proxy: proxy.arcor-ip.de:80; DNS: 145.253.2.11 und 145.253.2.75; Mail: mail.arcor-ip.de; User: arcor; Passwort: internet
 C:Yahoo! Online
 A:0192020 # Proxy: proxy.arcor-ip.de:80; DNS: 145.253.2.11 und 145.253.2.75; Mail: mail.arcor-ip.de; User: arcor; Passwort: internet
+S:Internet by call
 T:*/*=0.06/60
 Z:40 Telefonauskunft
 A:11870
@@ -13893,8 +13900,8 @@ C:Tarif: Westcom privat
 D:dtag
 Z:2-4 National
 T:W/08-18=0.16(60)/1 Standard
-T:W/18-08=0.09(60)/1 Spar
-T:E/*=0.09(60)/1 Spar
+T:W/18-08=0.08(60)/1 Spar
+T:E,H/*=0.08(60)/1 Spar
 A:+49
 Z:10-15 Mobil
 A:+491618	# T-C-Tel Voice Mail
@@ -13981,9 +13988,9 @@ T:W/06-08=0.10/60 Sparzeit
 T:W/08-18=0.15/60 Hauptzeit
 T:W/18-21=0.10/60 Freizeit
 T:W/21-06=0.05/60 Traumzeit
-A:+49
 T:E,H/06-21=0.10/60 Freizeit
 T:E,H/21-06=0.05/60 Nacht
+A:+49
 Z:10-15 Mobil
 A:+491618	# T-C-Tel Voice Mail
 A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
@@ -14612,12 +14619,13 @@ T:*/*=0.847/0,0.121/6.7
 #    39:First Telecom		28.05.1999 as
 #    40:Esprit			01.05.1999 ak
 #    50:Talkline		01.05.1999 ak
-#    51:01051 Telecom		04.06.1999 je
+#    51:01051 Telecom		02.07.1999 je
+#    66:Interroute		02.07.1999 je
 #    70:Arcor			01.05.1999 ak
 #    78:3U			01.05.1999 ak
 #    79:Viatel			20.06.1999 je
-#    85:GTS-WESTCom		01.05.1999 ak
-#    90:Viag Interkom		29.05.1999 je
+#    85:GTS-WESTCom		02.07.1999 je
+#    90:Viag Interkom		02.07.1999 je
 #
 # 2. Angemeldet:
 #    13:Tele 2			27.05.1999 as
