@@ -1,4 +1,4 @@
-/* $Id: eiconctrl.c,v 1.16 2000/06/07 21:08:35 armin Exp $
+/* $Id: eiconctrl.c,v 1.17 2000/06/08 08:31:03 armin Exp $
  *
  * Eicon-ISDN driver for Linux. (Control-Utility)
  *
@@ -21,6 +21,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA. 
  *
  * $Log: eiconctrl.c,v $
+ * Revision 1.17  2000/06/08 08:31:03  armin
+ * corrected tei parameter option
+ *
  * Revision 1.16  2000/06/07 21:08:35  armin
  * Fixed OAD, OSA and SPID parameter setting.
  *
@@ -1703,13 +1706,9 @@ int main(int argc, char **argv) {
                         if (!strncmp(argv[arg_ofs], "-t", 2)) {
 				if (isabus) {
                                 	cb->isa.tei = atoi(argv[arg_ofs] + 2);
-	                                cb->isa.tei <<= 1;
-        	                        cb->isa.tei |= 0x01;
 				} else {
 #ifdef HAVE_NPCI
                                 	cb->pci.tei = atoi(argv[arg_ofs] + 2);
-	                                cb->pci.tei <<= 1;
-        	                        cb->pci.tei |= 0x01;
 #endif
 				}
                                 continue;

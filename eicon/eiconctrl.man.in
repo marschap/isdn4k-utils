@@ -1,6 +1,6 @@
-.\" $Id: eiconctrl.man.in,v 1.9 2000/06/07 21:08:36 armin Exp $
+.\" $Id: eiconctrl.man.in,v 1.10 2000/06/08 08:31:03 armin Exp $
 .\"
-.\" CHECKIN $Date: 2000/06/07 21:08:36 $
+.\" CHECKIN $Date: 2000/06/08 08:31:03 $
 .\"
 .\" Process this file with
 .\" groff -man -Tascii eiconctrl.1 for ASCII output, or
@@ -154,7 +154,7 @@ When using PRI-PtP set -n -S2
 .BI eiconctrl " load etsi"
 loads and starts S0 type adapter with protocol E-DSS1.
 .TP
-.BI eiconctrl " load etsi -t0 -s1 -n"
+.BI eiconctrl " load etsi -t1 -s1 -n"
 loads and starts S0 type adapter with protocol E-DSS1 PtP.
 .TP
 .BI eiconctrl " load etsi -s2 -n"
