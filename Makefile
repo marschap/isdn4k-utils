@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.2 1997/02/22 14:17:55 fritz Exp $
+# $Id: Makefile,v 1.3 1997/02/22 14:58:02 fritz Exp $
 #
 # Toplevel Makefile for isdn4k-utils
 #
@@ -35,8 +35,9 @@ clean:
 	for i in */Makefile ; do \
 		$(MAKE) -C `dirname $$i` clean ;\
 	done
+	@ rm -f *~
 
-distclean:
+distclean: clean
 	@set -e; allow_null_glob_expansion=1; \
 	for i in */Makefile ; do \
 		$(MAKE) -C `dirname $$i` distclean ;\
@@ -51,7 +52,7 @@ config:
 mrproper: distclean
 
 archive: distclean
-	(cd .. ;\
+	@(cd .. ;\
 	mv isdn4k-utils isdn4k-utils-$(I4LVERSION) ;\
 	tar cvzf distisdn/isdn4k-utils-$(I4LVERSION).tar.gz isdn4k-utils-$(I4LVERSION) ;\
 	mv isdn4k-utils-$(I4LVERSION) isdn4k-utils )
