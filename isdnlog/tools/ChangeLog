@@ -1,4 +1,26 @@
+2004-09-07  Tobias Becker  <tobiasb@isdn4linux.de>
+
+	* isdnrate.c (Provider): Rewrote function, returned string has
+	now always the length WIDTH.  The providername is truncated if
+	necessary. 
+
+	* isdnrate.c (printTable): Allow the first provider in ratefile
+	(prefix=0) to appear in first hour range of day without producing
+	wrong output.
+
+	* isdnrate.c (printTable): Compare all providers, not only the best
+	one when computing hour ranges in table mode (-T).
+
+	* isdnrate.c (printTable): Display hour range ending at midnight
+	as ".. 23:59" instead of ".. -1:59".
+
+	* isdnrate.c (printTable): Replaced double2str by printRate, so
+	U: tag from ratefile is also used in table mode.
+
+	* isdnrate.c (print_header): Do not print date in table mode.
+
 2004-09-05  Tobias Becker  <tobiasb@isdn4linux.de>
+
 	* tools.h (CONF_ENT_IGNOREUPD): New entry "IGNOREUPD" in parameter
 	file of isdnlog, entry name defined here.
 

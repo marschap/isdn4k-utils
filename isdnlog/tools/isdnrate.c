@@ -1,4 +1,4 @@
-/* $Id: isdnrate.c,v 1.41 2004/01/10 16:43:24 tobiasb Exp $
+/* $Id: isdnrate.c,v 1.42 2004/09/07 23:48:48 tobiasb Exp $
 
  * ISDN accounting for isdn4linux. (rate evaluation)
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnrate.c,v $
+ * Revision 1.42  2004/09/07 23:48:48  tobiasb
+ * Improved isdnrate -T ..., see ChangeLog for details.
+ *
  * Revision 1.41  2004/01/10 16:43:24  tobiasb
  * New options -c and -i for overriding the RATECONF and RATEFILE setting
  * in isdn.conf.  May be useful for rate-file testing.
@@ -311,7 +314,7 @@
 #include <unistd.h>
 #include "dest.h"
 
-#define WIDTH   19
+#define WIDTH    28		/* length of string vbn_var:providername */
 #define _MAXLAST 20		/* the real max */
 #define MAXLAST	 ((best>=_MAXLAST||best<=2)?5:best)
 
@@ -840,25 +843,38 @@ static void splittime()
   year = tm->tm_year + 1900;
 }				/* splittime */
 
+/* Generate string <vbn>_<var>:<providername><space to WIDTH characters> */
 static char *Provider(int prefix)
 {
   register char *p, *p1;
   register int l;
-  static char s[BUFSIZ];
-  char    prov[TN_MAX_PROVIDER_LEN];
+  static char s[WIDTH+1];
+  char    prov[TN_MAX_PROVIDER_LEN+1+10+1];
 
-  if (prefix == UNKNOWN)
-    return ("?");
+  sprintf(s, "%*s", WIDTH, "");
+
+  if (prefix == UNKNOWN) {
+    s[0] = '?';
+    return (s);
+  }
 
   p = getProvider(prefix);
-
-  l = max(WIDTH, strlen(p)) - strlen(p);
-
   p1 = prefix2provider_variant(prefix, prov);
 
-  l += (8 - strlen(p1));
+  l = min(WIDTH - 4, strlen(p1));
+  memcpy(s, p1, l);
+  s[l++] = ':';
 
-  sprintf(s, "%s:%s%*s", p1, p, l, "");
+  memcpy(&s[l], p, min(WIDTH - l, strlen(p)));
+
+  if (WIDTH - l < strlen(p)) {
+    if (WIDTH - l >= 12) {	/* truncate providername in the middle */
+      memcpy(&s[WIDTH-6], "...", 3);
+      memcpy(&s[WIDTH-3], p + strlen(p) - 3, 3);
+    }
+    else			/* or at the end */
+      memcpy(&s[WIDTH-3], "...", 3);
+  }
 
   return (s);
 }				/* Provider */
@@ -1147,9 +1163,11 @@ static int compute(char *num)
 
 static void print_header(void)
 {
-  printf("Eine %d Sekunden lange Verbindung von %s nach %s kostet am %s\n",
-  duration, formatNumber("%F", &srcnum), formatNumber("%F", &destnum),
-	 ctime(&start));
+  printf("Eine %d Sekunden lange Verbindung von %s nach %s kostet",
+         duration, formatNumber("%F", &srcnum), formatNumber("%F", &destnum));
+  if (!table)
+    printf(" am %s", ctime(&start));
+  printf("\n");
 }
 
 static void printList(int n)
@@ -1216,6 +1234,7 @@ static void printTable(char *num)
   static int firsttime = 1;
   int     first;
   int     prefix;
+  int     print_last;
 
   memset(used, 0, sizeof(used));
   memset(hours, 0, sizeof(hours));
@@ -1245,6 +1264,7 @@ static void printTable(char *num)
 
     first = 1;
 
+    /* loop over all hours beginning at STARTHOUR */
     while (1) {
       destnum.nprovider = UNKNOWN;
       if (provider2prefix(num, &prefix))	/* set provider if it is in number */
@@ -1264,33 +1284,45 @@ static void printTable(char *num)
         first = 0;
       } /* if */
 
+      /* store result of STARTHOUR for comparision */
       if (last[0].prefix == UNKNOWN) {
 	for (i = 0; i < min(n, MAXLAST); i++) {
-	  if (sort[i].prefix) {
+	  if (sort[i].prefix >= 0) {	/* 0 is the first provider and valid */
 	    last[i].prefix = sort[i].prefix;
 	    last[i].rate = sort[i].rate;
 	    last[i].explain = strdup(sort[i].explain);
 	  } /* if */
+#if 0
+	  else
+	    printf("!sort[i].prefix   d=%d hour=%d lasthour=%d i=%d n=%d\n",
+	           d, hour, lasthour, i, n); 
+#endif
 	} /* for */
       } /* if */
 
       if (lasthour == UNKNOWN)
 	lasthour = hour;
 
-      if (sort[0].prefix != last[0].prefix) {
+      /* compare current result against stored */
+      print_last = 0;
+      for (i = 0; i < min(n, MAXLAST); i++)
+	if (sort[i].prefix != last[i].prefix) {
+	  print_last = 1;
+	  break;
+	} /* if */
+
+      if (print_last) {
 	for (i = 0; i < min(n, MAXLAST); i++) {
 
 	  if (!i)
-	    printf("    %02d:00 .. %02d:59 %s = %s %s%s\n",
-		   lasthour, hour - 1, Provider(last[i].prefix),
-		   currency,
-		   double2str(last[i].rate, 5, 3, DEB),
+	    printf("    %02d:00 .. %02d:59 %s = %s%s\n",
+		   lasthour, hour ? hour - 1 : 23, Provider(last[i].prefix),
+		   printRate(last[i].rate),
 		   last[i].explain);
 	  else
-	    printf("                   %s = %s %s%s\n",
+	    printf("                   %s = %s%s\n",
 		   Provider(last[i].prefix),
-		   currency,
-		   double2str(last[i].rate, 5, 3, DEB),
+		   printRate(last[i].rate),
 		   last[i].explain);
 	} /* for */
 
@@ -1315,7 +1347,7 @@ static void printTable(char *num)
 	} /* for */
 
 	lasthour = hour;
-      }	/* if */
+      }	/* if   different result for current hour */
 
       purge(n);
 
@@ -1325,29 +1357,27 @@ static void printTable(char *num)
 	hour = 0;
       else if (hour == STARTHOUR)
 	break;
-    } /* while */
+    } /* while   each hour of current day */
 
+    /* print last hour range of day, may be the only */
     for (i = 0; i < min(n, MAXLAST); i++) {
 
       if (!i) {
 	if ((lasthour == STARTHOUR) && (hour == STARTHOUR))
-	  printf("    immer          %s = %s %s%s\n",
+	  printf("    immer          %s = %s%s\n",
 		 Provider(last[i].prefix),
-		 currency,
-		 double2str(last[i].rate, 5, 3, DEB),
+		 printRate(last[i].rate),
 		 last[i].explain);
 	else
-	  printf("    %02d:00 .. %02d:59 %s = %s %s%s\n",
-		 lasthour, hour - 1, Provider(last[i].prefix),
-		 currency,
-		 double2str(last[i].rate, 5, 3, DEB),
+	  printf("    %02d:00 .. %02d:59 %s = %s%s\n",
+		 lasthour, hour ? hour - 1 : 23, Provider(last[i].prefix),
+		 printRate(last[i].rate),
 		 last[i].explain);
       }
       else
-	printf("                   %s = %s %s%s\n",
+	printf("                   %s = %s%s\n",
 	       Provider(last[i].prefix),
-	       currency,
-	       double2str(last[i].rate, 5, 3, DEB),
+	       printRate(last[i].rate),
 	       last[i].explain);
     } /* for */
 
@@ -1365,7 +1395,7 @@ static void printTable(char *num)
 
     weight[last[0].prefix] += h * (d ? 1 : 5);
 
-  } /* for */
+  } /* for   (friday|saturday|sunday) */
 
   if (usestat) {
     printf("\nProvider(s) used:\n");
