@@ -1,4 +1,4 @@
-/* $Id: eft_i4l.c,v 1.3 1999/07/26 22:04:51 he Exp $ */
+/* $Id: eft_i4l.c,v 1.4 2000/06/08 10:04:24 keil Exp $ */
 /*
  * isdn4linux implementation dependent functions
  */
@@ -162,6 +162,17 @@ int eft_get_x25route(struct sockaddr_x25 * x25addr,
 		fprintf(stderr,
 			"eft_get_x25route: could not determine own msn\n");
 		return 1;
+	} else {
+		char *m = msn;
+		while(*m) {
+			if ((*m < '0') || (*m >'9')) {
+				*m = 0;
+				break;
+			}
+			m++;
+		}
+		if (!strlen(msn))
+			strcpy(msn, "0");
 	}
 
 	/*
