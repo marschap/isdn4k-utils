@@ -549,8 +549,8 @@ A: CVS - Concurent Version System!br
               #!/bin/sh
               exec rsh -l guest $*
         3.) Man setze CVS_RSH auf dieses Script (z.B. CVS_RSH=~/.cvsrsh)
-        4.) Man setze CVS_ROOT auf oldhades.think.de:/i4ldev
-            (z.B. export CVS_ROOT=oldhades.think.de:/i4ldev)
+        4.) Man setze CVSROOT auf oldhades.think.de:/i4ldev
+            (z.B. export CVSROOT=oldhades.think.de:/i4ldev)
         5.) Man führe aus: "cvs -z9 checkout isdn"
             -> Dies läßt einen Verzeichnisbaum im aktuellen Verzeichnis
                entstehen. Unterhalb von isdn/ findet man die gleiche 

@@ -530,8 +530,8 @@ A: CVS - Concurrent Version System!br
        exec rsh -l guest $*
 !verboff
    3. Set CVS_RSH to this script (e.g.: export CVS_RSH=~/.cvsrsh)!br
-   4. Set CVS_ROOT to oldhades.think.de:/i4ldev!br
-   (e.g.: export CVS_ROOT=oldhades.think.de:/i4ldev)!br
+   4. Set CVSROOT to oldhades.think.de:/i4ldev!br
+   (e.g.: export CVSROOT=oldhades.think.de:/i4ldev)!br
    5. Execute "cvs -z9 checkout isdn"!br
    -> This will create a directory tree isdn/ in your current directory.!br
    Below isdn/ you will find the same hierarchy like in the linux
