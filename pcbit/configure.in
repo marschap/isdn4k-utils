@@ -35,8 +35,17 @@ AC_ARG_WITH(sbin,
 	AC_DEFINE(CONFIG_SBINDIR,"${withval}"),
 )
 
+dnl Optional man directory
+AC_ARG_WITH(man,
+	[  --with-man=DIR          Set manpage dir. [/usr/man]],
+	CONFIG_MANDIR="${withval}"
+	AC_DEFINE(CONFIG_MANDIR,"${withval}"),
+)
+
 AC_SUBST(INSTALL)
 AC_SUBST(CONFIG_MANDIR)
 AC_SUBST(CONFIG_KERNELDIR)
 AC_SUBST(CONFIG_SBINDIR)
-AC_OUTPUT(Makefile)
+AC_SUBST(MANDATE)
+AC_SUBST(CONFIG_MANDIR)
+AC_OUTPUT(Makefile pcbitctl.man)

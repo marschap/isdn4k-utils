@@ -1,4 +1,4 @@
-# $Id: Makefile.in,v 1.8 1998/09/26 18:30:48 akool Exp $
+# $Id: Makefile.in,v 1.9 1998/10/13 22:36:53 keil Exp $
 #
 # Makefile for pcbitctl
 # (C) 1997 Fritz Elfert
@@ -54,7 +54,7 @@ uninstall:
 	rm -f $(DESTDIR)$(SBINDIR)/$(PROGRAM) $(DESTDIR)$(MAN8DIR)/$(MANPAGE)
 
 clean:
-	rm -f *.o *~ $(PROGRAM)
+	rm -f *.o *~ $(PROGRAM) *.man
 
 distclean: clean
 	rm -f config.status config.cache config.log Makefile
