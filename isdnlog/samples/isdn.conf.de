@@ -123,11 +123,6 @@ ALIAS = knuut-by-call
 COMMENT1 = 010880191955   (User:knuut; pw:knuut) (Worldcom/UUnet)
 
 [NUMBER]
-NUMBER = 0192020
-ALIAS = Yahoo! Online
-COMMENT1 = 010700192020   (User:yahoo; pw:yahoo) (Arcor)
-
-[NUMBER]
 NUMBER = 0192070
 ALIAS = Arcor Internet-by-Call
 COMMENT1 = 010700192070   (User:arcor; pw:internet)
