@@ -1,0 +1,193 @@
+This file contains any messages produced by compilers while
+running configure, to aid debugging if configure makes a mistake.
+
+configure:581: checking host system type
+configure:602: checking target system type
+configure:620: checking build system type
+configure:673: checking for a BSD compatible install
+configure:742: checking whether build environment is sane
+configure:789: checking for working aclocal
+configure:802: checking for working autoconf
+configure:815: checking for working automake
+configure:828: checking for working autoheader
+configure:841: checking for working makeinfo
+configure:854: checking whether make sets ${MAKE}
+configure:941: checking for gcc
+configure:1018: checking whether the C compiler (gcc -g -Wall -DDEBUG ) works
+configure:1032: gcc -o conftest -g -Wall -DDEBUG   conftest.c  1>&5
+configure:1029: warning: return-type defaults to `int'
+configure:1052: checking whether the C compiler (gcc -g -Wall -DDEBUG ) is a cross-compiler
+configure:1057: checking whether we are using GNU C
+configure:1066: gcc -E conftest.c
+configure:1081: checking whether gcc accepts -g
+configure:1109: checking how to run the C preprocessor
+configure:1130: gcc -E  conftest.c >/dev/null 2>conftest.out
+configure:1174: checking for c++
+configure:1205: checking whether the C++ compiler (c++ -g -Wall -DDEBUG ) works
+configure:1219: c++ -o conftest -g -Wall -DDEBUG   conftest.C  1>&5
+configure:1245: checking whether the C++ compiler (c++ -g -Wall -DDEBUG ) is a cross-compiler
+configure:1250: checking whether we are using GNU C++
+configure:1259: c++ -E conftest.C
+configure:1274: checking whether c++ accepts -g
+configure:1302: checking whether ln -s works
+configure:1324: checking for AIX
+configure:1349: checking for minix/config.h
+configure:1359: gcc -E  conftest.c >/dev/null 2>conftest.out
+configure:1355: minix/config.h: No such file or directory
+configure: failed program was:
+#line 1354 "configure"
+#include "confdefs.h"
+#include <minix/config.h>
+configure:1404: checking whether NLS is requested
+configure:1425: checking for msgfmt
+configure:1459: checking for gmsgfmt
+configure:1491: checking for xgettext
+configure:1547: checking for dirent.h that defines DIR
+configure:1560: c++ -c -g -Wall -DDEBUG  conftest.C 1>&5
+configure: In function `int main()':
+configure:1556: warning: unused variable `struct DIR * dirp'
+configure:1585: checking for opendir in -ldir
+configure:1607: c++ -o conftest -g -Wall -DDEBUG   conftest.C -ldir   1>&5
+/usr/i486-linux/bin/ld: cannot open -ldir: No such file or directory
+configure: failed program was:
+#line 1593 "configure"
+#include "confdefs.h"
+/* Override any gcc2 internal prototype to avoid an error.  */
+#ifdef __cplusplus
+extern "C"
+#endif
+/* We use char because int might match the return type of a gcc2
+    builtin and then its argument prototype would still apply.  */
+char opendir();
+
+int main() {
+opendir()
+; return 0; }
+configure:1673: checking how to run the C++ preprocessor
+configure:1691: c++ -E  conftest.C >/dev/null 2>conftest.out
+configure:1710: checking for ANSI C header files
+configure:1723: c++ -E  conftest.C >/dev/null 2>conftest.out
+configure:1793: c++ -o conftest -g -Wall -DDEBUG   conftest.C  1>&5
+configure:1819: checking for fcntl.h
+configure:1829: c++ -E  conftest.C >/dev/null 2>conftest.out
+configure:1819: checking for sys/time.h
+configure:1829: c++ -E  conftest.C >/dev/null 2>conftest.out
+configure:1819: checking for unistd.h
+configure:1829: c++ -E  conftest.C >/dev/null 2>conftest.out
+configure:1819: checking for sys/cdefs.h
+configure:1829: c++ -E  conftest.C >/dev/null 2>conftest.out
+configure:1859: checking for fnmatch.h
+configure:1869: c++ -E  conftest.C >/dev/null 2>conftest.out
+configure:1859: checking for sysent.h
+configure:1869: c++ -E  conftest.C >/dev/null 2>conftest.out
+configure:1859: checking for strings.h
+configure:1869: c++ -E  conftest.C >/dev/null 2>conftest.out
+configure:1859: checking for sys/stat.h
+configure:1869: c++ -E  conftest.C >/dev/null 2>conftest.out
+configure:1897: checking for socket in -lsocket
+configure:1919: c++ -o conftest -g -Wall -DDEBUG   conftest.C -lsocket   1>&5
+/usr/i486-linux/bin/ld: cannot open -lsocket: No such file or directory
+configure: failed program was:
+#line 1905 "configure"
+#include "confdefs.h"
+/* Override any gcc2 internal prototype to avoid an error.  */
+#ifdef __cplusplus
+extern "C"
+#endif
+/* We use char because int might match the return type of a gcc2
+    builtin and then its argument prototype would still apply.  */
+char socket();
+
+int main() {
+socket()
+; return 0; }
+configure:1941: checking for X
+configure:1958: c++ -E  conftest.C >/dev/null 2>conftest.out
+configure:2034: c++ -o conftest -g -Wall -DDEBUG   conftest.C -lXt  1>&5
+configure: In function `int main()':
+configure:2030: warning: implicit declaration of function `int XtMalloc(...)'
+configure:2174: checking for QT-1.30
+configure:2216: c++ -E  conftest.C >/dev/null 2>conftest.out
+configure:2212: qtstream.h: No such file or directory
+configure: failed program was:
+#line 2211 "configure"
+#include "confdefs.h"
+#include <qtstream.h>
+configure:2294: c++ -o conftest -g -Wall -DDEBUG -I/usr/lib/qt/include  -L/usr/lib -L/usr/X11R6/lib conftest.C -lqt -lXext -lX11  1>&5
+configure:2369: checking for moc
+configure:2403: checking for KDE
+configure:2530: checking for main in -lcompat
+configure:2545: c++ -o conftest -g -Wall -DDEBUG   conftest.C -lcompat   1>&5
+/usr/i486-linux/bin/ld: cannot open -lcompat: No such file or directory
+configure: failed program was:
+#line 2538 "configure"
+#include "confdefs.h"
+
+int main() {
+main()
+; return 0; }
+configure:2566: checking for giflib
+configure:2590: c++ -o conftest -g -Wall -DDEBUG   conftest.C -L/opt/kde/lib ../../connect/*.o  ../../../lib/libisdn.a -L/usr/lib -L/usr/X11R6/lib -lgif -lX11  1>&5
+gcc: ../../connect/*.o: No such file or directory
+gcc: ../../../lib/libisdn.a: No such file or directory
+configure: failed program was:
+#line 2573 "configure"
+#include "confdefs.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+int GifLastError(void);
+#ifdef __cplusplus
+}
+#endif
+/* We use char because int might match the return type of a gcc2
+    builtin and then its argument prototype would still apply.  */
+
+int main() {
+return GifLastError();
+; return 0; }
+configure:2613: checking for jpeglib
+configure:2641: c++ -o conftest -g -Wall -DDEBUG   conftest.C -L/opt/kde/lib ../../connect/*.o  ../../../lib/libisdn.a -L/usr/lib -L/usr/X11R6/lib -ljpeg -lm 1>&5
+gcc: ../../connect/*.o: No such file or directory
+gcc: ../../../lib/libisdn.a: No such file or directory
+configure: failed program was:
+#line 2620 "configure"
+#include "confdefs.h"
+/* Override any gcc2 internal prototype to avoid an error.  */
+struct jpeg_decompress_struct;
+typedef struct jpeg_decompress_struct * j_decompress_ptr;
+typedef int size_t;
+#ifdef __cplusplus
+extern "C" {
+#endif
+    void jpeg_CreateDecompress(j_decompress_ptr cinfo,
+                                    int version, size_t structsize);
+#ifdef __cplusplus
+}
+#endif
+/* We use char because int might match the return type of a gcc2
+    builtin and then its argument prototype would still apply.  */
+
+int main() {
+jpeg_CreateDecompress(0L, 0, 0);
+; return 0; }
+configure:2687: checking whether time.h and sys/time.h may both be included
+configure:2701: c++ -c -g -Wall -DDEBUG  conftest.C 1>&5
+configure: In function `int main()':
+configure:2697: warning: unused variable `struct tm * tp'
+configure:2724: checking for bool
+configure:2744: c++ -c -g -Wall -DDEBUG  conftest.C 1>&5
+configure: In function `int main()':
+configure:2740: warning: unused variable `bool aBool'
+configure:2766: checking if you need GNU extensions
+configure:2791: checking for socket
+configure:2822: c++ -o conftest -g -Wall -DDEBUG   conftest.C  1>&5
+configure:2791: checking for vsnprintf
+configure:2822: c++ -o conftest -g -Wall -DDEBUG   conftest.C  1>&5
+configure:2847: checking for setenv
+configure:2879: gcc -o conftest -g -Wall -DDEBUG   conftest.c  1>&5
+configure:2912: checking for getdomainname
+configure:2943: c++ -o conftest -g -Wall -DDEBUG   conftest.C  1>&5
+configure:2968: checking for the third argument of getsockname
+configure:2981: c++ -c -g -Wall -DDEBUG  conftest.C 1>&5
