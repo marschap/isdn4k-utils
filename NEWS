@@ -1,0 +1,10 @@
+Recent changes made to the isdn4k-utils archive are listed here,
+most recent on top.
+------------------
+
+1999/06/07 paul (Paul Slootman <paul@isdn4linux.de>)
+	This file started!
+	isdnctrl - added `status' command, which shows the connection status of
+		interfaces (connected yes/no, to what number).
+	ipppd	- now should work on kernel 2.3.x (allocation failed in
+		SIOCGIFCONF ioctl)
