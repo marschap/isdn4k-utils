@@ -6,4 +6,5 @@
 
 #undef SIZEOF_CHAR
 #undef SIZEOF_SHORT
+#undef SIZEOF_INT
 #undef SIZEOF_LONG
