@@ -4,7 +4,7 @@
 
 <title>FAQ for isdn4linux
 <author>Matthias Hessler (<tt><htmlurl url="mailto:hessler@isdn4linux.de" name="hessler@isdn4linux.de"></tt>)
-<date>v2.0.33, 26. January 2000
+<date>v2.0.34, 7. February 2000
 <abstract>
 If you are reading this FAQ online, you may consider downloading the whole
 thing, and reading it offline (much cheaper). To download the latest
@@ -273,8 +273,8 @@ Yes, voice support is included in the current version of isdn4linux.
 You can either use &dquot;vgetty&dquot; from Gert Doerings
 &dquot;mgetty+sendfax&dquot;, or &dquot;vboxgetty&dquot; from Michael Herold,
 which is made especially for isdn4linux.
-The latter can be found at:
-<tt><url url="ftp://ftp.franken.de/pub/isdn4linux/contributions/"></tt>
+The latter is part of the isdn4k-utils package, which can be found on:
+<tt><url url="ftp://ftp.isdn4linux.de/pub/"></tt>
 
 Full duplex voice was supported at some point in time, but at some point
 in time the implementation got broken since not too many people used it.
@@ -755,7 +755,8 @@ excellent driver. Also, their cards are certified for usage in Germany, see
 question <ref id="country_certified" name="country_certified">.
 
 If you want to buy an active card, then the developers would recommend
-the PCI Server from Eicon. The reason is that it can fax on both channels.
+the PCI Server from Eicon. The reason is that it can fax on both channels
+with AT class 2 commands, and includes a V.90 modem.
 The AVM B1 works also very well, but can only fax on one channel.
 
 If faxing is important for you, but you don't want to spent the money for an
@@ -828,8 +829,12 @@ reported to work.
 <label id="hardware_sun">
 <p>
 In principle, hisax works with the built-in ISDN adapter of a
-Sparc-Station-LX and a Sparc-Station-10, at least with development
-kernels version 2.3.x. Audio works, but not well; ISDN works, but randomly
+Sparc-Station-LX and a Sparc-Station-10, with development
+kernels version 2.3.x. The code for Sun is only available there.
+Please be aware that the code of the latest developments can not be
+compiled for 32 bit machines like all sun-4m machines.
+
+Audio works, but not well; ISDN works, but randomly
 crashes the machine. The author of dbri.c has stopped active work on it,
 but made a copy of the DBRI data sheet available at:
 <url url="http://www.freesoft.org/Linux/DBRI">
@@ -2586,8 +2591,11 @@ lzs failed</tt>?
 <label id="syncppp_lzsproblem">
 <p>
 This means that ipppd tries to use lzs compression, but can't find a
-compiled module which contains the code. Either disable lzs compression by
-using a command line option for ipppd, or compile and load the lzs module.
+compiled module which contains the code. The error message is only cosmetic,
+since the system will still work fine. Either disable lzs compression by
+providing <tt>noccp</tt> as an option for ipppd, or compile and load the
+lzs module.
+
 
 <!-- Config Async PPP
 -->
@@ -3716,8 +3724,19 @@ isdnctrl cbdelay isdn0 1
 <sect1> isdnlog_rates: Where do I get the latest rate information?  
 <label id="isdnlog_rates">
 <p>
-You get the latest rate files (which change very frequently) on
-<tt><url url="http://www.digitalprojects.com/rates"></tt>.
+This is the homepage of the rate data crew:
+<tt><url url="http://rates4linux.sourceforge.net/"></tt>. There you
+can download the latest rate files (which change very frequently),
+or have a look at the latest rate news.
+
+There is also a mailing list available for this kind of stuff. Subscribe
+by sending an email with subject "subscribe" to:
+<tt><htmlurl url="mailto:rates4linux-users-request@lists.sourceforge.net"
+name="rates4linux-users-request@lists.sourceforge.net"></tt>
+(send "help" in your subject to get instructions).
+To write to the mailing list, send an email to:
+<tt><htmlurl url="mailto:rates4linux-users@lists.sourceforge.net"
+name="rates4linux-users@lists.sourceforge.net"></tt>.
 
 <sect1> isdnlog_servicetype: Can I see the service type from an incoming call  
 in the output from isdnrep?  
