@@ -380,7 +380,7 @@ hdl_RCAPI_REGISTER_REQ(struct capi_message *msg) {
 	
 	p = retstr;
 	if(capiVersion == 2) {
-		if((capi_fd = CAPI20_REGISTER(maxLogicalConnections, maxBDataBlocks, maxBDataLen, &err)) < 0) {
+		if((err = CAPI20_REGISTER(maxLogicalConnections, maxBDataBlocks, maxBDataLen, &capi_fd)) < 0) {
 			capierr = err;
 			log(5, "registration not successful\n");
 		} else {
