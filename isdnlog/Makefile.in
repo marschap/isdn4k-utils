@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.122 1999/11/16 18:09:36 akool Exp $
+## $Id: Makefile.in,v 1.123 1999/11/25 22:58:38 akool Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,13 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.123  1999/11/25 22:58:38  akool
+## isdnlog-3.68
+##  - new utility "isdnbill" added
+##  - patch from Jochen Erwied (j.erwied@gmx.de)
+##  - new rates
+##  - small fixes
+##
 ## Revision 1.122  1999/11/16 18:09:36  akool
 ## isdnlog-3.67
 ##   isdnlog-3.66 writes wrong provider number into it's logfile isdn.log
@@ -850,7 +857,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 3.67
+VERSION     = 3.68
 
 MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 \
 	      isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 \
@@ -914,6 +921,12 @@ ISDNREP_OBJS =  isdnrep/rep_main.o tools/tools.o tools/isdnconf.o         \
 		tools/telnum.o						  \
                 $(LIBISDNDIR)/libisdn.a
 
+ISDNBILL_OBJS = isdnrep/isdnbill.o tools/tools.o tools/isdnconf.o         \
+                isdnlog/messages.o					  \
+		tools/rate.o tools/zone.o tools/holiday.o tools/dest.o	  \
+		tools/telnum.o						  \
+                $(LIBISDNDIR)/libisdn.a
+
 ISDNCONF_OBJS=  isdnconf/isdnconf.o tools/tools.o tools/isdnconf.o        \
 		tools/rate.o tools/zone.o tools/holiday.o \
 		tools/telnum.o	tools/dest.o				  \
@@ -929,11 +942,12 @@ ISDNRATE_OBJS=  tools/isdnrate.o tools/isdnconf.o tools/tools.o           \
 ISDNLOG      =  bin/isdnlog
 ISDNCONF     =  bin/isdnconf
 ISDNREP      =  bin/isdnrep
+ISDNBILL     =  bin/isdnbill
 ISDNRATE     =  bin/isdnrate
 
 MODS         =  *.o */*.o
 
-PROGS        =  $(ISDNLOG) $(ISDNREP) $(ISDNCONF) $(ISDNRATE)
+PROGS        =  $(ISDNLOG) $(ISDNREP) $(ISDNBILL) $(ISDNCONF) $(ISDNRATE)
 
 all:            depend libs mybin progs $(MANPAGES)
 
@@ -1075,6 +1089,9 @@ $(ISDNLOG):     $(ISDNLOG_OBJS)
 
 $(ISDNREP):     $(ISDNREP_OBJS)
 		$(CC) -o $(ISDNREP) $(LFLAGS) $(ISDNREP_OBJS) $(LIB)
+
+$(ISDNBILL):    $(ISDNBILL_OBJS)
+		$(CC) -o $(ISDNBILL) $(LFLAGS) $(ISDNBILL_OBJS) $(LIB)
 
 $(ISDNCONF):    $(ISDNCONF_OBJS)
 		$(CC) -o $(ISDNCONF) $(LFLAGS) $(ISDNCONF_OBJS) $(LIB)

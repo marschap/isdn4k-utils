@@ -73,7 +73,7 @@ static _DB db;		/* our dest.db */
 static int init_ok=0;
 
 typedef struct {
-  char number[TN_MAX_NUM_LEN];	
+  char number[TN_MAX_NUM_LEN];
   TELNUM num;
   int lru;
 } num_cache_t;
@@ -96,11 +96,11 @@ static void add_cache(char *number, TELNUM *num) {
       mlru=num_cache[i].lru;
     }
   }
-  if(i==CACHE_SIZE) {    
+  if(i==CACHE_SIZE) {
     Strncpy(num_cache[m].number, number, TN_MAX_NUM_LEN);
     memcpy(&num_cache[m].num, num, sizeof(TELNUM));
     num_cache[m].lru=1;
-  }   
+  }
 }
 
 static int get_cache(char *number, TELNUM *num) {
@@ -113,13 +113,13 @@ static int get_cache(char *number, TELNUM *num) {
       num_cache[i].lru++;
       memcpy((char*)num+offsetof(TELNUM,scountry),
         (char*)&num_cache[i].num+offsetof(TELNUM,scountry),
-	sizeof(TELNUM)-offsetof(TELNUM,scountry)); 
+	sizeof(TELNUM)-offsetof(TELNUM,scountry));
       return true;
     }
-  }    	
+  }
   return false;
-}  
-  
+}
+
 static void warning(char *fmt,...)
 {
   va_list ap;
@@ -152,7 +152,7 @@ int     initDest(char *path, char **msg)
   if (init_ok == 1)
     return 0;
   else if(init_ok == -1)
-    return -1;    
+    return -1;
   if (!path || !*path) {
     if (msg)
       snprintf(message, LENGTH,
@@ -183,7 +183,7 @@ int     initDest(char *path, char **msg)
 
   if (*dbv == 'G')
     free(value.dptr);
-  init_ok = 1;  
+  init_ok = 1;
   return 0;
 }
 
@@ -195,7 +195,7 @@ static void append(char *dest, char *what)
     if(*dest)
       Strncat(dest, "/", TN_MAX_SAREA_LEN);
     Strncat(dest, what, TN_MAX_SAREA_LEN);
-  }  
+  }
 }
 
 static bool isKey(const char *p)
@@ -222,7 +222,7 @@ int     getDest(char *onumber, TELNUM * num)
   char    dummy[100]; /* V2.7.2.3 kills stack */
   char    tld[4];
   char    dummy2[100]; /* V2.7.2.3 kills stack */
-  
+
 #ifdef DEBUG
   printf("getD. %s\n", number);
 #endif
@@ -233,7 +233,7 @@ int     getDest(char *onumber, TELNUM * num)
     printf("getD (cache). %s %s\n", number, formatNumber("%f",num));
 #endif
     free(number);
-    return 0;  	
+    return 0;
   }
   len = strlen(number);
   if (len==2 && isalpha(*number) && isupper(*number))
@@ -241,9 +241,9 @@ int     getDest(char *onumber, TELNUM * num)
 
   if (isdigit(*number)) {
     warning("getDest called with local number '%s'", number);
-    add_cache(number, num);  
+    add_cache(number, num);
     return UNKNOWN;
-  }  
+  }
   countrylen = arealen = prefixlen = 0;
   num->ncountry = 0;
   num->narea = 0;
@@ -261,13 +261,13 @@ again:
   value = FETCH(db, key);
 again2:
   if (value.dptr != 0) {
-/* we have a value: 
- * it could be 
- *   :RKEY ... pointer to a KEY 
+/* we have a value:
+ * it could be
+ *   :RKEY ... pointer to a KEY
  *   :city ... pointer to a city
- *   name;code ... top level entry i.e country 
- *   name;codes[;:KEY]  ... region 
- *   [#len];code;:KEY ... city 
+ *   name;code ... top level entry i.e country
+ *   name;codes[;:KEY]  ... region
+ *   [#len];code;:KEY ... city
  */
     while (value.dptr && *value.dptr == ':') {
       /* check for city, i.e. lowercase chars */
@@ -280,7 +280,7 @@ again2:
       else {
 	append(num->keys, value.dptr + 1);
         Strncpy(tld,value.dptr+1,3);
-      }	
+      }
       key.dptr = value.dptr + 1;
       key.dsize = value.dsize - 2;	/* w/o : and \x0 */
       nvalue = FETCH(db, key);
@@ -327,12 +327,12 @@ again2:
 	  Strncpy(num->area, q, TN_MAX_AREA_LEN);
         }
       }
-      else {	  
+      else {
         if (arealen == 0) {	/* we take the orig number */
 	  arealen = strlen(number);
 	  Strncpy(num->area, number, TN_MAX_AREA_LEN);
         }
-      }	
+      }
       if (strstr(num->area, q))	/* only if new number has same prefix */
         countrylen = strlen(q);	/* last one must be country */
     }
@@ -357,7 +357,7 @@ again2:
 	num->narea = atoi(num->area);
 	if (*onumber == '+' && strlen(onumber) > arealen + countrylen)
 	  Strncpy(num->msn, onumber + arealen + countrylen, TN_MAX_MSN_LEN);
-	add_cache(onumber, num);  
+	add_cache(onumber, num);
       }
     }
     else if (p && *p == ':') {
@@ -384,8 +384,8 @@ again2:
     number[--len] = '\0';
     goto again;			/* I like it */
   }
-  free(number);
-  free(tld);		
+  if (number)
+    free(number);
   if (city)
     free(city);
   return UNKNOWN;
@@ -432,7 +432,7 @@ int     main(int argc, char *argv[])
   while (--argc) {
     res = getDest(argv[i++], &num);
     printf("%s %s(%d)=%s %s(%s) %s - %s\n",
-	   res == 0 ? "Ok." : "Err", num.country, num.ncountry, num.scountry, 
+	   res == 0 ? "Ok." : "Err", num.country, num.ncountry, num.scountry,
 	   num.sarea, num.area,
 	   num.msn, num.keys);
   }

@@ -1,4 +1,4 @@
-/* $Id: functions.c,v 1.27 1999/11/16 18:09:39 akool Exp $
+/* $Id: functions.c,v 1.28 1999/11/25 22:58:39 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,13 @@
  * along with this program; if not, write to the Free Software
  *
  * $Log: functions.c,v $
+ * Revision 1.28  1999/11/25 22:58:39  akool
+ * isdnlog-3.68
+ *  - new utility "isdnbill" added
+ *  - patch from Jochen Erwied (j.erwied@gmx.de)
+ *  - new rates
+ *  - small fixes
+ *
  * Revision 1.27  1999/11/16 18:09:39  akool
  * isdnlog-3.67
  *   isdnlog-3.66 writes wrong provider number into it's logfile isdn.log
@@ -493,17 +500,20 @@ int print_msg(int Level, const char *fmt, ...)
 
   if (Level & message)
   {
-    if (!fout && (fcons == NULL)) {
+    /* no console, no outfile -> log to stderr */
+    if ((fout==NULL) && (fcons == NULL)) {
       fputs(width ? s : String, stderr);
       fflush(stderr);
     }
-    else
-    if (fcons){
+
+    /* log to console */
+    if (fcons != NULL) {
       fputs(width ? s : String, fcons);
       fflush(fcons);
     } /* else */
 
-    if (fout)
+    /* log to file */
+    if (fout != NULL)
     {
       fputs(width ? s : String, fout);
       fflush(fout);

@@ -1,4 +1,4 @@
-/* $Id: rate.c,v 1.61 1999/11/16 18:09:39 akool Exp $
+/* $Id: rate.c,v 1.62 1999/11/25 22:58:40 akool Exp $
  *
  * Tarifdatenbank
  *
@@ -19,6 +19,13 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rate.c,v $
+ * Revision 1.62  1999/11/25 22:58:40  akool
+ * isdnlog-3.68
+ *  - new utility "isdnbill" added
+ *  - patch from Jochen Erwied (j.erwied@gmx.de)
+ *  - new rates
+ *  - small fixes
+ *
  * Revision 1.61  1999/11/16 18:09:39  akool
  * isdnlog-3.67
  *   isdnlog-3.66 writes wrong provider number into it's logfile isdn.log
@@ -1671,6 +1678,7 @@ int getRate(RATE *Rate, char **msg)
     Rate->_zone=Provider[prefix].Area[Rate->_area].Zone;
     if (Rate->domestic && *(Rate->dst[0])) {
       int z=getZone(prefix, Rate->src[1], Rate->dst[1]);
+      Rate->z = z;
       if (z!=UNKNOWN) {
 	for (i=0; i<Provider[prefix].nZone; i++) {
 	  for (j=0; j<Provider[prefix].Zone[i].nNumber; j++) {

@@ -1,4 +1,4 @@
-V:1.10-Germany [15-Nov-1999 20:29:56]
+V:1.10-Germany [25-Nov-1999 23:50:28]
 
 # Währungsformat
 U:%.3f DM
@@ -8,7 +8,7 @@ U:%.3f DM
 #
 # (C) Copyright 1999 by Andreas Kool (akool@isdn4linux.de)
 #
-# $Id: rate-de.dat.src,v 1.12 1999/11/16 18:09:37 akool Exp $
+# $Id: rate-de.dat.src,v 1.13 1999/11/25 22:58:38 akool Exp $
 #
 #
 # Das "A:" Tag muß folgendermaßen gefüllt werden:
@@ -173,16 +173,22 @@ U:%.3f DM
 #
 #
 # Sonderrufnummern:
-S:Internet zzgl. Grundgebuehr
-N:0191999 # UUnet classic
-N:01910	  # T-Online SLIP
-N:0191011 # T-Online PPP
-N:01914   # AOL
-N:019161  # AOL
+S:Auftrags- und Ansagedienst
+N:01141
+
+# Internetzugaenge zzgl. Grundgebuehr
+S:UUnet classic
+N:0191999
+S:T-Online SLIP
+N:01910
+S:T-Online
+N:0191011
+S:AOL
+N:01914, 019161
 
 S:Internet by call
 N:0191501, 01929, 01924924, 0192340, 0192343, 0192070, 0192340, 0191501, 01924924
-N:019251
+N:019251, 01928120
 
 S:T-VoteCall
 N:01371, 01372, 01373, 01374, 0138
@@ -205,56 +211,74 @@ N:01680, 01681, 01696, 01699
 S:Skyper
 N:01692, 01693, 016953
 
+S:C-Netz
+N:01610*, 01611*, 01612*, 01613*, 01614*, 01615*, 01616*, 01617*, 01619*
+
+S:T-C-Tel Voice Mail
+N:01618*
+
+S:D1
+N:0170*, 0171*, 0175*
+
+S:D2
+N:0172*, 0173*, 0174*
+
+S:Eplus
+N:0177*, 0178*
+
+S:E2
+N:0176*, 0179*
+
 S:Shared Cost Service 01801
-N:01801
+N:01801*
 
 S:Shared Cost Service 01802
-N:01802
+N:01802*
 
 S:Shared Cost Service 01803
-N:01803
+N:01803*
 
 S:Shared Cost Service 01804
-N:01804
+N:01804*
 
 S:Shared Cost Service 01805
-N:01805
+N:01805*
 
 S:Service 01901
-N:01901
+N:01901*
 
 S:Service 01902
-N:01902
+N:01902*
 
 S:Service 01903
-N:01903
+N:01903*
 
 S:Service 01904
-N:01904
+N:01904*
 
 S:Service 01905
-N:01905
+N:01905*
 
 S:Service 01906
-N:01906
+N:01906*
 
 S:Service 01907
-N:01907
+N:01907*
 
 S:Service 01908
-N:01908
+N:01908*
 
 S:Service 01909
-N:01909
+N:01909*
 
 S:Expo 2000 Hotline
 N:02000
 
 S:Persönliche Rufnummer
-N:0700
+N:0700*
 
 S:freecall
-N:0130, 0800
+N:0130*, 0800*
 
 S:Polizei / Notruf
 N:110
@@ -273,6 +297,8 @@ N:11871 # Mannesmann Arcor
 N:11880 # Telegate
 N:11890 # Telegate
 
+S:Weckruf
+N:0190600000 # Virtual Interactive Phone GmbH, VIP Wecker (0,81 Pf/min)
 #####################################################################
 #
 #
@@ -285,6 +311,7 @@ C:GmbH, Gutleutstraße 85, 60329 Frankfurt 01010
 P:11 o.tel.o CbC
 B:01011
 # G:01-Aug-1999
+D:dtag
 C:Mannesmann Zwölfte Verwaltungsgesellschaft mbH, Mannesmannufer 2, 40213 Düsseldorf
 C:Homepage: http://www.o-tel-o.de
 C:Hotline:  01803/1998 oder 0800/7370 (Geschaeftskunden)
@@ -1504,7 +1531,7 @@ C:Internetz GmbH, Süderstraße 75, 20097 Hamburg 01012
 #####################################################################
 #
 #
-P:13,1 Tele 2 Privatkunden
+P:13 Tele 2 Privatkunden
 B:01013
 C:Telecommunications Services GmbH, Düsseldorf
 C:Homepage: http://www.tele2.de
@@ -1579,7 +1606,7 @@ A:Katar, Bhutan, Mongolei, Nepal, Iran, Turkmenistan, Aserbaidschan
 A:Georgien, Kirgisistan, Usbekistan
 T:*/*=2.44/60
 #####################################################################
-P:13,2 Tele 2 Geschaeftskunden
+P:13,1 Tele 2 Geschaeftskunden
 B:01013
 C:Telecommunications Services GmbH, Düsseldorf
 C:Homepage: http://www.tele2.de
@@ -12440,7 +12467,7 @@ T:*/*=2.3084(60)/1
 P:51 01051
 B:01051
 C:ID-Switch GmbH, Graf-Adolf-Straße, 40210 Düsseldorf 01051
-# G:14-Oct-1999
+# G:18-Nov-1999
 C:Homepage: http://www.01051.com
 C:Adresse:  Koenigsallee 60f
 C:	    40210 Duesseldorf
@@ -12449,7 +12476,13 @@ Z:2-4 Ferngespräche
 A:Deutschland
 T:*/*=0.09/60
 Z:10 Mobilfunk
-A:C-Tel Voice Mail, C-Netz, D1, D2, E1, E2
+# A:C-Tel Voice Mail, C-Netz, D1, D2, E1, E2
+A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
+A:+491618		# T-C-Tel Voice Mail
+A:+49170,+49171,+49175	# D1
+A:+49172,+49173,+49174	# D2
+A:+49177,+49178		# Eplus
+A:+49176,+49179		# E2
 T:*/*=0.40/60
 Z:40 Telefonauskunft Inland (Austria, dial 01051004366211811)
 A:+4366211811
@@ -12459,7 +12492,7 @@ A:+4366211812
 T:*/*=0.18/60
 Z:200 Albanien
 A:Albanien
-T:*/*=0.55/60
+T:*/*=0.53/60
 Z:201 Argentinien
 A:Argentinien
 T:*/*=0.67/60
@@ -12471,7 +12504,7 @@ A:Belgien
 T:*/*=0.16/60
 Z:204 Bosnien
 A:Bosnien
-T:*/*=0.62/60
+T:*/*=0.58/60
 Z:205 Brasilien
 A:Brasilien
 T:*/*=0.47/60
@@ -12498,10 +12531,10 @@ A:Hongkong
 T:*/*=0.19/60
 Z:213 Italien
 A:Italien
-T:*/*=0.23/60
+T:*/*=0.21/60
 Z:214 Irland
 A:Irland
-T:*/*=0.21/60
+T:*/*=0.19/60
 Z:215 Island
 A:Island
 T:*/*=0.27/60
@@ -12513,13 +12546,13 @@ A:Japan
 T:*/*=0.24/60
 Z:218 Jugoslawien
 A:Jugoslawien
-T:*/*=0.62/60
+T:*/*=0.57/60
 Z:219 Kanada
 A:Kanada
 T:*/*=0.15/60
 Z:220 Kroatien
 A:Kroatien
-T:*/*=0.57/60
+T:*/*=0.55/60
 Z:222 Liechtenstein
 A:Liechtenstein
 T:*/*=0.28/60
@@ -12555,7 +12588,7 @@ A:Portugal
 T:*/*=0.37/60
 Z:233 Rumänien
 A:Rumänien
-T:*/*=0.65/60
+T:*/*=0.63/60
 Z:234 Schweden
 A:Schweden
 T:*/*=0.17/60
@@ -12592,7 +12625,10 @@ T:*/*=0.66/60
 Z:245 St. Petersburg
 A:St. Petersburg
 T:*/*=0.35/60
-Z:246 impossible
+Z:246 Polen
+A:Polen
+T:*/*=0.38/60
+Z:247 impossible
 A:Argentinien Mobilfunk
 A:Australien Mobilfunk
 A:Belgien Mobilfunk
@@ -13204,7 +13240,7 @@ C:Telecommunications Ltd. 01069
 #
 P:70,1 Arcor CbC
 B:01070
-# G:01-Oct-1999
+# G:01-Dec-1999
 C:Mannesmann Arcor
 C:Mannesmann AG & Co., Kölner Str. 12, 65760 Eschborn 01070
 D:dtag
@@ -13605,7 +13641,7 @@ C:Telecom GmbH, Beethovenstraße 1-3, 60325 Frankfurt/Main 01074
 #
 P:75 Callino
 B:01075
-# G:18-Oct-99
+# G:15-Nov-99
 C:ARCIS Media Com Management GmbH, Maximilianstr. 14, 80539 München 01075
 D:dtag
 Z:1-4 Fern
@@ -14913,9 +14949,8 @@ B:01080
 # G:01-Aug-1999
 D:dtag
 C:Aktiengesellschaft für telefonische Informationsdienste, Bahnhofstraße 26, 82211 Herrsching 01080
-# Bislang kann dieses Angebot nur in den folgenden Städten genutzt werden:
-# Hamburg, Berlin, Hannover, Düsseldorf, Frankfurt/Main, Nürnberg,
-# Stuttgart, München
+# Bislang kann dieses Angebot nicht im Vorwahlgebiet 02 (NRW)
+# genutzt werden.
 Z:1-4 Inlandsverbindungen
 A:+49
 T:W/09-17=0.089/60
@@ -15905,9 +15940,12 @@ C:AG, Militärstraße 36, CH-8004 Zürich 010044
 #####################################################################
 #
 #
-P:150 Drillisch
+P:150 Drillisch Superregionen
+# Dieser Tarif gilt nur in den City-Zonen der Städte
+# Essen, Frankfurt/Main, Hamburg, Hannover, Köln, Leipzig, Mannheim,
+# Nürnberg, Stuttgart!
 B:010050
-# G:01-Oct-1999
+# G:05-Nov-1999
 D:dtag
 C:AG, Horbeller Straße 33, 50858 Köln 010050
 Z:1-4 Deutschland
@@ -15918,6 +15956,29 @@ T:W/22-06=0.1185/180,0.0595/60
 T:W/06-08=0.0695/60
 T:E/06-22=0.0695/60
 T:E/22-06=0.1185/180,0.0595/60
+Z:10 Mobilfunk
+A:+491618	# T-C-Tel Voice Mail
+A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
+A:+49170,+49171,+49175	# D1
+A:+49172,+49173,+49174	# D2
+A:+49177,+49178		# Eplus
+A:+49176,+49179		# E2
+T:W/08-21=0.69/60
+T:W/21-08=0.59/60
+#####################################################################
+P:150,1 Drillisch
+B:010050
+# G:05-Nov-1999
+D:dtag
+C:AG, Horbeller Straße 33, 50858 Köln 010050
+Z:1-4 Deutschland
+A:+49
+T:W/08-21=0.119/60
+T:W/21-22=0.0695/60
+T:W/22-06=0.0595/60
+T:W/06-08=0.0695/60
+T:E/06-22=0.119/60
+T:E/22-06=0.0595/60
 Z:10 Mobilfunk
 A:+491618	# T-C-Tel Voice Mail
 A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C

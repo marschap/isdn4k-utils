@@ -1,4 +1,4 @@
-/* $Id: rate.h,v 1.15 1999/11/08 21:09:41 akool Exp $
+/* $Id: rate.h,v 1.16 1999/11/25 22:58:40 akool Exp $
  *
  * Tarifdatenbank
  *
@@ -19,6 +19,13 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rate.h,v $
+ * Revision 1.16  1999/11/25 22:58:40  akool
+ * isdnlog-3.68
+ *  - new utility "isdnbill" added
+ *  - patch from Jochen Erwied (j.erwied@gmx.de)
+ *  - new rates
+ *  - small fixes
+ *
  * Revision 1.15  1999/11/08 21:09:41  akool
  * isdnlog-3.65
  *   - added "B:" Tag to "rate-xx.dat"
@@ -170,6 +177,7 @@ typedef struct {
   double     Rhythm[2]; /* Taktung */
   time_t     Time;      /* gesamte Verbindungszeit */
   time_t     Rest;      /* bezahlte, aber noch nicht verbrauchte Zeit */
+  int        z;		/* Zone lt. Verzonungstabelle (nur 1:Ortszone; 2:City/Regio 20; 3=Regio 50; 4=Fern sinnvoll!) */
 } RATE;
 
 #define UNZONE -2
