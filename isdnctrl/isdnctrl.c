@@ -1,4 +1,4 @@
-/* $Id: isdnctrl.c,v 1.51 2003/02/24 17:22:22 keil Exp $
+/* $Id: isdnctrl.c,v 1.52 2003/03/11 13:46:56 paul Exp $
  * ISDN driver for Linux. (Control-Utility)
  *
  * Copyright 1994,95 by Fritz Elfert (fritz@isdn4linux.de)
@@ -21,6 +21,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnctrl.c,v $
+ * Revision 1.52  2003/03/11 13:46:56  paul
+ * "status all" would show also non-ISDN interfaces, this is now fixed.
+ * "status active" added, this shows only those interfaces that are connected.
+ *
  * Revision 1.51  2003/02/24 17:22:22  keil
  * - don't allow users to change setup
  *
@@ -584,7 +588,11 @@ static void listif(int isdnctrl, char *name, int errexit)
 }
 
 
-static void statusif(int isdnctrl, char *name, int errexit)
+/* mode = 0: nothing special                       */
+/* mode = 1: exit 0 if connected, exit 1 otherwise */
+/* mode = 2: show only active connections          */
+
+static void statusif(int isdnctrl, char *name, int mode)
 {
         isdn_net_ioctl_phone phone;
 	int rc;
@@ -605,16 +613,19 @@ static void statusif(int isdnctrl, char *name, int errexit)
 	rc = ioctl(isdninfo, IIOCNETGPN, &phone);
 	if (rc < 0) {
 		if (errno == ENOTCONN) {
-			printf("%s is not connected\n", name);
-			if (errexit) {
+			if (mode != 2) {
+                            printf("%s is not connected\n", name);
+                            if (mode == 1) {
 				exit(1); /* exit 1 if interface specified & not conn. */
+                            }
+                        }
+                        return;
 		}
-			return;
-		}
-		if (errexit) {
+		if (mode == 1) {
 			perror(name);
 			exit(-1);
 		}
+                return;
 	}
 	switch (data_version) {
 	case 0x04:
@@ -748,10 +759,11 @@ int exec_args(int fd, int argc, char **argv)
 		}
 
 #ifdef I4L_CTRL_CONF
-		if (id != NULL && i != RESET && i != WRITECONF && i != READCONF) {
+		if (id != NULL && i != RESET && i != WRITECONF && i != READCONF)
 #else
-		if (id != NULL && i != RESET) {
+		if (id != NULL && i != RESET)
 #endif /* I4L_CTRL_CONF */
+                {
 			if (i == BUSREJECT || i == MAPPING) {
 			   if (strlen(id) > sizeof(iocts.drvid)-1) {
 				fprintf(stderr, "DriverId must not exceed %u characters!\n", (unsigned int)sizeof(iocts.drvid)-1);
@@ -950,6 +962,7 @@ int exec_args(int fd, int argc, char **argv)
 			        } else {
 			        	char buf[400];
 			        	strncpy(buf, arg1, sizeof(buf) - 1);
+                                        buf[399] = 0;
 			        	iocts.arg = (unsigned long) buf;
 			        	if ((result = ioctl(fd, IIOCSETMAP, &iocts)) < 0) {
 			        		perror(id);
@@ -1032,20 +1045,22 @@ int exec_args(int fd, int argc, char **argv)
 			        break;
 
 			case STATUS:
-			        if (!strcmp(id, "all")) {
+			        if (!strcmp(id, "all") || !strcmp(id, "active")) {
 			        	char name[10];
+                                        int  show_only_active;
 			        	if ((iflst = fopen(FILE_PROC, "r")) == NULL) {
 			        		perror(FILE_PROC);
 			        		return -1;
 			        	}
+                                        show_only_active = (strcmp(id, "active") ? 0 : 2);
 			        	while (!feof(iflst)) {
 			        		fgets(s, sizeof(s), iflst);
 			        		if ((p = strchr(s, ':'))) {
 			        			*p = 0;
 			        			sscanf(s, "%s", name);
-			        			statusif(fd, name, 0);
+			        			statusif(fd, name, show_only_active);
 			        			while (*nextslaveif)
-			        				statusif(fd, nextslaveif, 0);
+			        				statusif(fd, nextslaveif, show_only_active);
 			        		}
 			        	}
 			        	fclose(iflst);
@@ -1507,6 +1522,8 @@ int exec_args(int fd, int argc, char **argv)
 			        if (writeconfig(fd, id))
 			        	return -1;
 
+                                if (!strcmp(id, "-"))
+                                    id = "stdout";
 			        printf("ISDN Configuration written to %s.\n", id);
 			        break;
 
@@ -1519,6 +1536,8 @@ int exec_args(int fd, int argc, char **argv)
 			        if (readconfig(fd, id))
 			        	return -1;
 
+                                if (!strcmp(id, "-"))
+                                    id = "stdin";
 			        printf("ISDN Configuration read from %s.\n", id);
 			        break;
 #endif /* I4L_CTRL_CONF */
