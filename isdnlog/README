@@ -2793,6 +2793,11 @@ Es muss also der Pfad zu den Fax-Dateien dem isdnrep mitgeteilt werden:
 MGETTYPATH = /var/spool/fax/incoming
 ...
 
+ACHTUNG: Wenn der isdnrep keine Berechtigung zum Lesen der Datei(en) hat,
+werden diese auch nicht angezeigt. Es wird auch keine Fehlermeldung erscheinen.
+Wenn also keine Dateien vom isdnrep angezeigt werden, sind haeufig die Rechte
+an der Datei falsch.
+
 Wenn isdnrep diese Dateien an den Browser uebertraegt (oder besser der HTTPD),
 dann haben diese das G3-Format. Der isdnrep uebertraegt daher das Header-Type
 folgende Zeile:
@@ -2828,6 +2833,11 @@ eintragen:
 [ISDNLOG]
 VBOXCMD = /usr/bin/g3tojpeg # Beispielpfad
 ...
+
+ACHTUNG: Wenn der isdnrep keine Berechtigung zum Lesen der Datei(en) hat,
+werden diese auch nicht angezeigt. Es wird auch keine Fehlermeldung erscheinen.
+Wenn also keine Dateien vom isdnrep angezeigt werden, sind haeufig die Rechte
+an der Datei falsch.
 
 Dann sollte die Datei /usr/bin/g3tojpeg wie folgt aussehen:
 
