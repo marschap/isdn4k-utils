@@ -8,13 +8,28 @@ Installation
 
  $ ./configure
  # make install
+(Sorry n/y) 
  
-- Manual
+
+- Manually
+
+extract index.html,info.html,pics to /usr/local/httpd/htdocs/somedir
+(default is telrate, that's easiest)
+# cd /usr/local/httpd/htdocs
+# tar -xzf telrate.tgz
+
+make it readable for your webserver
  
+
 edit isdnrate:
- location of code file
- location of isdnrate
- location if mktemp
+--------------
+ location of code file ( .../tools/zone/CC/code )
+ location of isdnrate (only if pipe's are used not sockets)
+ location of mktemp (should be ok)
+ @prob_zones should be areacodes of villages in zone 1-3
+     qw (from to to .. ) with leading '0'
+ 
+ location of index.html, info.html, pic, (default /telrate/ under htdocs)
  
  if your /tmp ist not writable by all users, turn of $use_sockets
  or change the location of the unix socket in both isdnrate's.
@@ -24,18 +39,61 @@ edit isdnrate:
  # chmod 700 /usr/local/httpd/htdocs/tmp
  # chown wwwrun.nogrup tmp
   (or whatever uid.gid your webserver runs with)
+
+in /etc/httpd/srm.conf  or httpd.conf you may enable mod_perl for
+perl script invocation:
+
+Apache config:
+------------------
+
+ScriptAlias /cgi-bin/ "/usr/local/httpd/cgi-bin/"
+ScriptAlias /perl/ "/usr/local/httpd/cgi-bin/"
+# enable mod_perl for /perl/
+#
+
+<Location /perl>
+AddHandler  perl-script .pl
+PerlHandler Apache::Registry
+PerlModule = CGI;
+PerlSendHeader On
+Options +ExecCGI
+</Location>
+
+# enable mod_perl for /cgi-perl/ via PerlRun
+#
+
+<Location /cgi-bin>
+AddHandler  perl-script .pl
+PerlHandler Apache::PerlRun
+PerlSendHeader On
+Options +ExecCGI
+</Location>
+
+-----------------
+End Apache config
+
   
+ # cp isdnrate /usr/local/httpd/cgi-bin
+or 
  # cp isdnrate /usr/local/httpd/cgi-bin
  # chmod 755 /usr/local/httpd/cgi-bin/isdnrate
  # chmod 644 /etc/isdn/isdn.conf  
  
- edit isdnrate.c
-  first line defines LEO (AT) else DE is assumed
+ edit telnum.c (if not compiled with proper -D ISDN_CC )
+  first line defines TESTat or TEDTnl
 
-NB: isdnrate uses the following pel modules:
+NB: isdnrate uses the following perl modules:
  CGI, GD, IO::Handle
  if you don't have these, point your browser to www.perl.org, 
  and look for CPAN mirrors near your location.
+ 
+ 
+ index.html, info.html
+ ---------------------
+ 
+If your script-url ist not /perl/ change it to /cgi-bin in both files. 
+If you expanded to a different dirr then /telrate/ you have to adjust 
+IMG tags too.
 
 
 Running the Program
@@ -44,7 +102,7 @@ Running the Program
 if $use_sockets is on, start the server instance of isdnlog/bin/isdnrate with
 options -D [-v]
 as soon as you see "Setup sockets" you can point your browser to 
-/cgi-bin/isdnrate and fill the form with the desired destination.
-Click on table or grafik
+
+/telrate/index.html
 
 Enjoy
