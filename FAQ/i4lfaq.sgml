@@ -4,7 +4,7 @@
 
 <title>FAQ for isdn4linux
 <author>Matthias Hessler (<tt><htmlurl url="mailto:hessler@isdn4linux.de" name="hessler@isdn4linux.de"></tt>)
-<date>v2.0.53, 10. February 2001
+<date>v2.0.54, 14. March 2001
 <abstract>
 If you are reading this FAQ online, you may consider downloading the whole
 thing, and reading it offline (much cheaper). To download the latest
@@ -1110,7 +1110,7 @@ for more information on certification).
 
 Regarding the Elsa Microlink ISDN USB: it works like a serial terminal
 adapter with the USB communication class driver. Therefore, no special
-driver is required (see question <ref id="hardware_external").
+driver is required (see question <ref id="hardware_external" name="hardware_external">).
 
 However, there is a speciality with some non-PCI-conformal mainboards and
 the ELSA Quickstep 1000pro-PCI. These mainboards set the IO address to
@@ -2078,6 +2078,17 @@ ln -s /dev/isdnctrl0 /dev/isdnctrl
 </code>
 If the device is not there, run the script <tt>scripts/makedev.sh</tt>,
 which is part of the isdn4k-utils.
+
+
+<sect1> trouble_noisdnctrl2: When attempting to use isdnctrl, I get the  
+error &dquot;/dev/isdnctrl: No such device&dquot;?  
+<label id="trouble_noisdnctrl2">
+<p>
+In contrast to &dquot;/dev/isdnctrl: No such file or directory&dquot; the
+message &dquot;/dev/isdnctrl: No such device&dquot; indicates that the
+device /dev/isdnctrl exists, but no ISDN device driver is available.
+To fix, load the ISDN modules (verify with &dquot;cat /proc/modules&dquot;
+that they are loaded) or compile the ISDN drivers into the kernel.
 
 
 <sect1> trouble_xosview: xosview doesn't show any network activity since  
