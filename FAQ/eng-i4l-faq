@@ -607,7 +607,7 @@ A: Thomas Bogendoerfer <tsbogend@alpha.franken.de> wrote on 17 Dec 1996:!br
    ICN driver has the "wrong" Timer, which causes a little too much poling of 
    the card (but leads to better ping times:-)). I suspect that this can be
    fixed in time.!br
-A: Paul Slootman <paul@wurtel.demon.nl> wrote:!br
+   Paul Slootman <paul@wurtel.demon.nl> wrote:!br
    The current HiSax driver should work with most cards. I myself use
    a Fritz! Classic (AVM-A1) card in my XLT-300 all the time without
    any problems whatsoever.!br
