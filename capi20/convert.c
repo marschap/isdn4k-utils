@@ -1,7 +1,13 @@
 /*
- * $Id: convert.c,v 1.8 1999/10/20 16:43:17 calle Exp $
+ * $Id: convert.c,v 1.9 1999/12/06 17:08:30 calle Exp $
  *
  * $Log: convert.c,v $
+ * Revision 1.9  1999/12/06 17:08:30  calle
+ * - Splitted capi20.h into capi20.h and capiutils.h.
+ *   - capi20.h: the functions from the CAPI-2.0 Spec
+ *   - capiutils.h: the "CAPI-ADK" functions
+ * - bug in 64Bit-Support fixed.
+ *
  * Revision 1.8  1999/10/20 16:43:17  calle
  * - The CAPI20 library is now a shared library.
  * - Arguments of function capi20_put_message swapped, to match capi spec.
@@ -102,7 +108,7 @@ static _cdef cdef[] = {
     /*2e*/{_CWORD,      offsetof(_cmsg,Reason_B3)	},
     /*2f*/{_CWORD,      offsetof(_cmsg,Reject)	},
     /*30*/{_CSTRUCT,    offsetof(_cmsg,Useruserdata)	},
-    /*31*/{_CDWORD,     offsetof(_cmsg,Data64)	},
+    /*31*/{_CQWORD,     offsetof(_cmsg,Data64)	},
 };
 
 static unsigned char *cpars[] = {
@@ -298,7 +304,7 @@ static void PARS_2_MESSAGE (_cmsg *cmsg) {
 		break;
 	    case _CQWORD:
 		qwordTLcpy (cmsg->m+cmsg->l, OFF);
-		cmsg->l+=4;
+		cmsg->l+=8;
 		break;
 	    case _CSTRUCT:
 		if (*(CAPI_MESSAGE *) OFF == 0) {

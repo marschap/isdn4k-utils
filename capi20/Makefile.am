@@ -5,7 +5,7 @@ CLEANFILES              = *~ comperr
 MAINTAINERCLEANFILES    = configure aclocal.m4 Makefile.in config.h.in
 			  stamp-h.in
 
-include_HEADERS = capi20.h
+include_HEADERS = capi20.h capiutils.h
 lib_LTLIBRARIES = libcapi20.la
 
 libcapi20_la_SOURCES = capi20.c capifunc.c convert.c
