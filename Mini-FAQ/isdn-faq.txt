@@ -1,7 +1,7 @@
                  English-German mini-FAQ for ISDN4Linux
                Englisch-Deutsche mini-FAQ für ISDN4Linux
 
-    Mini-FAQ online: http://home.worldonline.dk/~ehcorry/linux/mini-faq.html
+    Mini-FAQ online: http://home.worldonline.dk/~ehcorry/linux/isdn-faq.html
 
 See below for English!
 
@@ -418,8 +418,9 @@ englishtoc
 Corrections and suggestions welcome, please send them directly to me,
 Erik Corry, <erik@arbat.com>.
 
-Thanks to Andreas Barth, Klaus Franken, Florian Groß, Jürgen Lennefer,
-Eyal Lotem, Christian Otto-Lange, Wolfgang Schetter and Gerhard Sittig.
+Thanks to Andreas Barth, Klaus Franken, Florian Groß, Andre Grueneberg,
+Jürgen Lennefer, Eyal Lotem, Christian Otto-Lange, Wolfgang Schetter and
+Gerhard Sittig.
 
 -- 
 Erik Corry
