@@ -1,4 +1,4 @@
-V:1.72 -Netherlands [19 Aug 2001] paul@isdn4linux.org
+V:1.73 -Netherlands [13 Oct 2001] paul@isdn4linux.org
 
 # display format
 U:%.2f NLG
@@ -47,6 +47,7 @@ U:%.2f NLG
 # de tarieven zijn.
 # 
 # Verbeteringen, aanvullingen, opmerkingen sturen aan G.A.deVree@ITS.TUDelft.NL
+# en/of paul@isdn4linux.org
 #
 #####################################################################
 S:Alarmnummer
@@ -562,7 +563,7 @@ P:55,0 KPN BelBasis
 B:1655
 D:kpn
 C:Name:KPN-Telecom N.V.
-C:TarifChanged:15-08-2001
+C:TarifChanged:2001-10-01
 C:Homepage:http://www.kpn.com
 
 Z:0 Gratis
@@ -605,7 +606,7 @@ T:1-5/20-08=0.10/0,0.4659(60)/1 dal
 T:6-7/*=0.10/0,0.4659(60)/1 weekend
 
 Z:3 Lokaal
-T:1-5/08-19=0.0771/0,0.0625(60)/1 piek
+T:1-5/08-19=0.0771/0,0.0616(60)/1 piek
 T:1-5/19-24=0.0771/0,0.0331(60)/1 dal
 T:1-5/00-08=0.0771/0,0.022(60)/1 nacht
 T:6/*=0.0771/0,0.022(60)/1 zaterdag
@@ -613,16 +614,16 @@ T:7/*=0.0771/0,0.022(60)/1 zondag
 
 Z:4 Interlokaal
 A:+31
-T:1-5/08-19=0.10/0,0.0956(60)/1 piek
-T:1-5/19-08=0.10/0,0.0444(60)/1 dal
-T:6-7/*=0.10/0,0.0444(60)/1 weekend
+T:1-5/08-19=0.10/0,0.0937(60)/1 piek
+T:1-5/19-08=0.10/0,0.0402(60)/1 dal
+T:6-7/*=0.10/0,0.0402(60)/1 weekend
 
 ###########################################
 P:55,1 KPN BelPlus
 B:1655
 D:kpn
 C:Name:KPN-Telecom N.V.
-C:TarifChanged:10-04-2000
+C:TarifChanged:2001-10-01
 C:Homepage:http://www.kpn.com
 
 Z:0 Gratis
@@ -665,16 +666,16 @@ T:1-5/20-08=0.10/0,0.4659(60)/1 dal
 T:6-7/*=0.10/0,0.4659(60)/1 weekend
 
 Z:3 Lokaal
-T:1-5/08-19=0.0771/0,0.0625(60)/1 piek
+T:1-5/08-19=0.0771/0,0.0616(60)/1 piek
 T:1-5/19-24=0.0771/0,0.0276(60)/1 dal
 T:1-5/00-08=0.0771/0,0.022(60)/1 nacht
 T:6-7/*=0.0771/0,0.022(60)/1 weekend
 
 Z:4 Interlokaal
 A:+31
-T:1-5/08-19=0.10/0,0.0956(60)/1 piek
-T:1-5/19-08=0.10/0,0.0333(60)/1 dal
-T:6-7/*=0.10/0,0.0,0.0333(60)/1 weekend
+T:1-5/08-19=0.10/0,0.0937(60)/1 piek
+T:1-5/19-08=0.10/0,0.0302(60)/1 dal
+T:6-7/*=0.10/0,0.0,0.0302(60)/1 weekend
 
 ###########################################
 P:56,0 NetSource
