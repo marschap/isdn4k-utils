@@ -1,10 +1,10 @@
-ISDNLOG - Version 2.60 -  				22-Feb-97  13:44
+ISDNLOG - Version 3.0 -  				22-Feb-97  13:44
 
 
 isdnlog ist ein Tool zur Auswertung der Info's vom ISDN-S0-Bus sowie
 isdn4linux. isdn4linux ist seit Version 1.3.69 im Linux-Kernel enthalten.
 
-isdnlog-2.60 wurde ausgiebig mit Linux-2.0.29 / isdn4kernel-2.0.29.2
+isdnlog-3.0 wurde ausgiebig mit Linux-2.0.29 / isdn4kernel-2.0.29.2
 getestet.
 
 
@@ -17,43 +17,47 @@ Quick-Installation-Guide
      CONFIG_ISDN=m
      CONFIG_ISDN_DRV_TELES=m
 
-2. isdnlog-2.60.tar.gz auspacken, erstellen und installieren:
+2. isdn4k-utils.2.1.tar.gz auspacken, erstellen und installieren:
      cd /usr/src
-     tar xzf isdnlog-2.60.tar.gz
-     cd isdnlog-2.60
+     tar xzf isdn4k-utils.2.1.tar.gz
+     cd isdn4k-utils
      make install
 
 3. Konfigurationsdatei fuer isdnlog fuellen:
-     vi | emacs | vim | e | nedit | ... | /etc/isdnlog/isdn.conf
+     vi | emacs | vim | e | nedit | ... | /etc/isdn/isdn.conf
 
    -----------------------------------------------------
+   [GLOBAL]
+   AREACODE    =069
+   COUNTRYCODE =+49
+
    [ISDNLOG]
-   MYMSNS=3
-   MYPREFIX=069
-   MYAREA=0049
+   ILABEL    = %b %e %T %ICall to tei %t from %N2 on %n2
+   OLABEL    = %b %e %T %Itei %t calling %N2 with %n2
+   CHARGEMAX = 1000.00
 
-   [MSN1]
+   [MSN]
    NUMBER = 4711
-   SI = 1
-   ALIAS = Phone
-   ZONE = 1
+   SI     = 1
+   ALIAS  = My Phone
+   ZONE   = 1
 
-   [MSN2]
+   [MSN]
    NUMBER = 4712
-   SI = 1
-   ALIAS = FAX
-   ZONE = 1
+   SI     = 1
+   ALIAS  = FAX
+   ZONE   = 1
 
-   [MSN3]
+   [MSN]
    NUMBER = 4713
-   SI = 1
-   ALIAS = X.75
-   ZONE = 1
+   SI     = 1
+   ALIAS  = X.75
+   ZONE   = 1
 
    -----------------------------------------------------
    mit:
-     MYMSNS=<Anzahl_eigener_Telefonnummern>
-     MYPREFIX=<Eigene_Vorwahl>
+     AREACODE=<Eigene_Vorwahl>
+     COUNTRYCODE=<Landesvorwahl>
 
      NUMBER = <eigene_Telefonnumer_ohne_Vorwahl>
      SI = <Dienstkennung>
@@ -90,7 +94,7 @@ Inhalt:
  1.     Was kann/ist/macht isdnlog?
  2.     Was kann isdnlog nicht?
  3.     Installation
- 4.     Die Konfigurationsdatei "isdnlog.conf"
+ 4.     Die Konfigurationsdatei "isdn.conf"
  4.1    Grundeinstellungen
  4.2    Telefonnummern
  4.2.1  1. Spalte: Telefonnummer
@@ -171,7 +175,7 @@ Aenderungen seit Version 2.30:
 Aenderungen seit Version 2.01:
 
     - Die "isdnlog.conf" gehoert nun in das Verzeichnis
-      "/etc/isdnlog" ... anstelle von "/etc"
+      "/etc/isdn" ... anstelle von "/etc"
 
     - Die "isdnlog.conf" hat neue Spalten erhalten, die _unbedingt_
       in bestehende Dateien einzutragen sind
@@ -369,12 +373,12 @@ Gegebenheiten angepasst werden:
       -DISDN_NL     - Gebuehrenauswertung Niederlande (anstelle Deutschland)
       -DISDN_CH     - Gebuehrenauswertung Schweiz (anstelle Deutschland)
 
-  I4LCONFDIR  (/etc/isdnlog)
-    Wo liegen die "isdn.conf" sowie die "avon"
+  I4LCONFDIR  (/etc/isdn)
+    Wo liegen die "isdn.conf" sowie die "avon" (falls verwendet!)
 
-    Mit der Environment-Variablen "ISDNLOG" kann auch zur Laufzeit das
+    Mit der Environment-Variablen "ISDN_CONF_PATH" kann auch zur Laufzeit das
     Verzeichnis festgelegt werden.
-    Beispiel "export ISDNLOG=/etc/isdnlog"
+    Beispiel "export ISDN_CONF_PATH=/etc/isdn"
 
   USERCONFFILE (~/.isdn)
     Wie soll die Konfigurations-Datei der einzelnen Benutzer heissen
@@ -411,7 +415,8 @@ Folgende Programme und Dateien werden durch den "make install" erstellt:
 
   /sbin/isdnlog
   /usr/sbin/isdnrep
-  /etc/isdnlog/avon
+  /etc/isdn/avon (wenn LIBAREA nicht definiert ist!)
+  /usr/lib/areacodes (wenn LIBAREA definiert ist!)
 
 
 ACHTUNG: Durch die Syntaxandaerung und den Erweiterungen, muessen folgende
@@ -434,7 +439,7 @@ dazu nicht vor Software im Alpha-Stadium zurueckschreckt, kann sich mit
 
 den X11-Client "xisdn" erstellen.
 
-In der Datei "/etc/services" wird automatisch der folgende Eintrag gemacht,
+In der Datei "/etc/services" sollte der folgende Eintrag eingefuegt werden,
 falls noch nicht vorhanden:
 
 isdnlog		20011/tcp	isdnlog
@@ -460,103 +465,100 @@ erstellt werden.
 4. Die Konfigurationsdatei "isdn.conf"
 -----------------------------------------
 
-ACHTUNG: Das Zeichen '#' muss gequotet werden, wenn es als Zeichen verwendet
-         werden soll. Andernfalls wird es als Kommentarzeichen gewertet.
-         D. h. alles danach wird als Kommentar registriert.
-         Zum quoten wird das Zeichen '\' verwedet. Beispiel
-         "Provider \#1"
-
-Die Konfigurationsdatei wird im Verzeichnis "/etc/isdnlog" erwartet (wenn die
+Die Konfigurationsdatei wird im Verzeichnis "/etc/isdn" erwartet (wenn die
 Variable I4LCONFDIR im Makefile so gesetzt ist), und enthaelt alle fuer isdnlog
 relevanten Steuerungsparameter.
 
-Leere Zeilen werden ignoriert. Wenn in einer Zeile ein "#" enthalten ist,
-wird der Rest der Zeile als Kommentar gewertet.
+Wenn man dem compilierten den Pfad aendern will, muss man die
+Umgebungsvariable "ISDN_CONF_PATH" setzen.
 
-Steht am Ende einer Nicht-Kommentarzeile ein "\", so wird die Zeile mit der
-naechste Zeile zu einer "verschmolzen". ACHTUNG: Das Zeichen "\" muss als
-letztes Zeichen stehen, und darf nicht von Tab's oder Leerzeichen gefolgt
-werden.
+Die Syntax der Konfigurationsdateien ist ausfuehrlich in der Datei
 
-Die Datei hat eine aehnliche Syntax wie die smb.conf, win.ini usw.
-Es gibt dort Sektionen und darunter Eintraege.
-Die Syntax wurde allerdings um  Untersektionen erweitert. Ein Eintrag kann
-wieder eine Sektion darstellen.
+../lib/README.Syntax.conffile
 
-Es wird die Gross/Kleinschreibung bei den Entrags- und Sektionsnamen
-ignoriert. Also vor dem Gleichheitszeichen. Danach wird sehr wohl in
-Gross und Kleinschreibung unterschieden.
-
-In dem folgenden Beispiel sind Kommentare enthalten, die weitere Regeln
-beschreiben, die unbedingt beachtet werden muessen.
-
-Beispiel:
-
-BEGIN-OF-FILE
-
-[SECTION1]
-ENTRY1=blabla1
-entry2 = blabla2
-#     ^^^-------- Es duerfen vor und nach dem Gleichheitszeichen beliebig
-#                 Spaces und Tabulatoren verwendet werden.
-#                 werden. Das erste erkannte Zeichen nach dem
-#                 Gleichheitszeichen darf weder ein space noch ein Tabublator
-#                 sein.
-  Entry3 = {
-#          ^----- Dieses Zeichen besagt, das dieser Eintrag ein oder mehrere
-#                 Untersectionen beinhaltet.
-# ^^^^^^--------- "Entry3", "entry3" und "ENTRY3" sind equivalent!
-  [SUBSECTION1]
-  entry1 = bla1
-  ...
-
-  [ subsection2 ]
-#  ^-----------^- Hier koennen wieder beliebige Spaces und Tabulatoren stehen.
-#   ^^^^^^^^^^--- "subsection2" und "SUBSECTION2" sind equivalent!
-  ...
-  }
-# ^-------------- Hier wird das Ende von Eintrag "ENTRY3" eingeleitet.
-
-[SECTION2]
-...
-
-END-OF-FILE
-
-Anders als bei Windows und Samba wird hier das Zeichen ";" NICHT
-als Kommentarzeichen erkannt, sondern nur "#".
+beschrieben.
 
 4.1 Grundeinstellungen
 ----------------------
-MYAREA
+
+Es gibt hier drei Sektionen, die vom isdnlog ausgewertet werden:
+[GLOBAL]
+[VARIABLES]
+[ISDNLOG]
+Diese Sektionen koennen in einer beliebigen Reihenfolge in der Datei
+vorkommen.
+
+Die Sektion GLOBAL beinhaltet Eintraege, die fuer alle ISDN-Programme
+von Bedeutung sind. Hier sind folgende Eintrage zu finden:
+
+AREACODE:
+  Beinhaltet die eigene Ortsvorwahl (mit oder ohne vorlaufender "0". Der
+	Prefix "0" wird in der Datei config.h durch das Macro S_AREA_PREFIX
+	representiert).  Dieser Eintrag ist zwingend.
+	Wird isdnlog im 1TR6 eingesetzt, muss hier die _gesamte_ Telefonnummer
+	exclusive der EAZ eingetragen werden. Diese Variable ist absolute Pflicht!
+	Beispiel fuer Hamburg (Euro-ISDN !!!):
+	AREACODE = 040 # oder
+	AREACODE = 40
+
+	Wenn S_AREA_PREFIX den String "0815" enthaelt, dann ist auch folgende
+	Zeile erlaubt:
+	AREACODE = 081540
+
+COUNTRYCODE:
+	Hier wird die eigene Laenderkennung gesetzt (mit oder ohne vorlaufendem "+". 
+	Der Prefix "+" wird in der Datei config.h durch das Macro S_COUNTRY_PREFIX
+	representiert). Dieser Eintrag ist ebenfalls zwingend.
+	Beispiel fuer Deutschland:
+	COUNTRYCODE = +49 # oder
+	COUNTRYCODE = 49
+
+	Wenn S_COUNTRY_PREFIX den String "0815" enthaelt, dann ist auch folgende
+	Zeile erlaubt:
+	COUNTRYCODE = 081549
+
+AREALIB:
+  Enthaelt den vollen Pfad zu der Datei "areacodes". Diese Angabe ist
+	optional und nur notwendig, wenn sich der Pfad nach der Compilation
+	geaendert hat.
+	Beispiel:
+	AREALIB=/usr/share/lib/areacodes
+
+AVONLIB:
+  Enthaelt den vollen Pfad zu der Datei "avon". Diese Angabe ist
+	optional und nur notwendig, wenn sich der Pfad nach der Compilation
+	geaendert hat.
+	Beispiel:
+	AREALIB=/usr/share/lib/avon
+
+	Da aber defaultmaessig die Arealib verwendet wird, ist die Datei
+	avon obsolet.
+
+
+Die ISDN-Tools erlaubt es, Umbebungsvariablen zu setzen und zu verwenden.
+Es gibt Variablen, die sollten in der isdn.conf (oder vorher) gesetzt
+sein. Diese werden in der Sektion [VARIABLES] zu setzen.
+Beispiel:
+
+[VARIABLES]
+MYPATH = /home/fred
+
+ACHTUNG: "MYPATH  =  /home/fred" wird als Variable zu "MYPATH=/home/fred".
+         Es fallen also alle Blanks und Tabulatoren vor und nach dem "="
+				 heraus.
+
+
+Die dritte Sektion beschreibt spezifische Angaben fuer den isdnlog. Diese
+Sektion wird durch [ISDNLOG] eingeleitet:
+
+Andreas, die folgenden Zeilen muss du noch dokumentieren:
 RELOADCMD
 STOPCMD
 RELOADCMD
-isdnlog erlaubt es, Umbebungsvariablen zu setzen und zu verwenden.
-Es gibt Variablen, die sollten in der insdlog.conf (oder vorher) gesetzt
-sein.
-
-"MYPREFIX  =  040" wird als Variable zu "MYPREFIX=040". Es fallen also
-alle Blanks und Tabulatoren vor und nach dem "=" heraus.
-
-MYMSNS=n
-
-Die Anzahl eigener MSN's (Telefonnummern)
-Falls dieser Eintrag fehlt, werden 3 angenommen.
-Werden die eigenen MSN's mit verschiedenen Dienstkennungen definiert,
-muss hier die Gesamtzahl aller eigenen MSN's angegeben werden!
-Besitzt man z.b. 3 MSN's, und traegt jede sowohl mit DATA- als auch
-mit Voice-Dienstkennung ein, ist MYMSNS auf 6 zu setzen!
-
-MYPREFIX=sssss
-
-Die eigene Vorwahl (mit vorlaufender "0"). Dieser Eintrag ist zwingend.
-Wird isdnlog im 1TR6 eingesetzt, muss hier die _gesamte_ Telefonnummer
-exclusive der EAZ eingetragen werden. Diese Variable ist absolute Pflicht!
-
 
 CURRENCY=factor,currency
 
-Wenn die Variablen im isdnlog.conf gesetzt werden, dann kann man folgende
+Wenn die Variablen in der isdn.conf gesetzt werden, dann kann man folgende
 Syntax verwenden:
 
 Angabe der Waehrungsbezeichnung sowie eines Multiplikationsfaktors.
@@ -610,7 +612,7 @@ koennen folgende Platzhalter angegeben werden:
     %N1  - Telefonnummer, von isdnlog um Vorwahl, vorlaufende "0" etc.
     	   ergaenzt
     %N2  - Von isdnlog optimal "verschoenerte" Nummer, also Alias
-    	   aus "isdnlog.conf", mit Ortsnetz etc.
+    	   aus "isdn.conf", mit Ortsnetz etc.
 
 *2 Dieser Platzhalter wird von isdnlog folgendermassen aufgeloest:
 
@@ -624,40 +626,39 @@ koennen folgende Platzhalter angegeben werden:
 
 Folgende Optionen werden nur fuer den Schalter -S optional benoetigt:
 
-START=xxx
+START={
+...
+}
 
 Es kann ein zu startender Befehl angegeben werden. Wenn eine Verbindung
 aufgebaut wird, besteht oder beendet wird und unter den entsprechenden
 Nummern kein Befehl steht, dann wird der passende Befehl unter "START"
-ausgefuehrt. Das heisst isdnlog schaut zuerst unter der entsprechenden
-Telefonnumer nach, ob dort ein Befehl ist.
+in der Sektion [ISDNLOG] ausgefuehrt. Das heisst isdnlog schaut zuerst
+unter der entsprechenden Telefonnumer nach, ob dort ein Befehl ist.
+
 Wenn "START" verwendet wird bei Verbindungen, die raus gehen und nicht von
 der ISDN-Karte kommen (also Nummern unbekannt), dann geht "OR" (Outgoing
 Ring) nicht (siehe Info von Gernot Zander), ist also kein Bug vom isdnlog.
 
 Wenn ja, wird dieser ausgefuehrt und der Eintrag "START" ignoriert.
 
-Wenn die Nummer in der Datei "isdnlog.conf" keinen Eintrag hat, oder unter
+Wenn die Nummer in der Datei "isdn.conf" keinen Eintrag hat, oder unter
 der Nummer in der Spalte Flags nichts eingetragen ist, dann schaut isdnlog
 unter "START" nach.
 
-Diese Zeile kann verwendet werden, wenn man fuer alle Verbindungen
+Diese Zeilen koennen verwendet werden, wenn man fuer alle Verbindungen
 die gleichen Programme starten will, oder fuer alle unbekannten Nummern.
-Die Syntax ist unter "Spalte: Info-Args" zu finden.
+Die Syntax ist unter "Info-Args" der Dateien "callerid.conf" und"~/.isdn" 
+zu finden.
 
 
-4.2 Telefonnummern
-------------------
+4.2 Die Dateien "callerid.conf" und "~/.isdn"
+---------------------------------------------
 
 Hier koennen eine beliebige Anzahl von Telefonnummer nebst einigen
 zusaetzlichen Parametern angegeben werden.
 Die Angabe _aller_ eigenen Telefonnummern ist zwingend, alle weiteren
 Partner-Telefonnummern koennen eingeben werden.
-
-Die eigenen MSN's muessen zuerst eingegeben werden!
-
-Jeder Eintrag (== Zeile) besteht aus 4 oder 5, durch mindestens 1 Blank oder
-Tab getrennte Spalten.
 
 Jede MSN kann - durch ein Komma getrennt - um die Dienstkennung erweitert
 werden:
@@ -674,7 +675,7 @@ Z.Zt. kennt isdnlog folgende Dienstkennungen:
   4 = Video
   7 = Unrestricted digital information (HDLC, X.75 etc.)
 
-Bei jedem Verbindungsaufbau sucht isdnlog aus der "isdnlog.conf" den
+Bei jedem Verbindungsaufbau sucht isdnlog aus der "isdn.conf" den
 Eintrag, bei dem sowohl die MSN, als auch der SI uebereinstimmen.
 
 Wird solch ein Eintrag nicht gefunden, nimmt isdnlog den _ersten_ Eintrag
@@ -685,22 +686,42 @@ Beispiel:
 Auf der MSN 4711 lauscht sowohl die Teles-Karte auf X.75 Anrufe, als auch
 ein Analoges Telefon ueber eine Telefonanlage.
 
-Hier wuerden folgende Eintraege in der "isdnlog.conf" passen:
+Hier wuerden folgende Eintraege in der "isdn.conf" passen:
 
-4711,1 Phone 1 - IORA=auplay ring.au
-4711,7 X.75  1 - IORA=auplay computer.au
+[MSN]
+NUMBER    = 4711
+SI        = 1
+ALIAS     = Phone
+START     = {
+	[FLAG]
+	FLAGS   = I|O|R|A            # alternativ geht auch FLAGS=IORA
+	PROGRAM = auplay ring.au
+}
+
+[MSN]
+NUMBER    = 4711
+SI        = 7
+ALIAS     = X.75
+START     = {
+	[FLAG]
+	FLAGS   = I|O|R|A            # alternativ geht auch FLAGS=IORA
+	PROGRAM = auplay computer.au
+}
+
+Die genaue Syntax wird weiter unten beschrieben.
 
 Ruft nun jemand die 4711 mit einem Telefon an, wird das als Anruf auf
-"Phone" angezeigt, und das Soundfile "ring.au" abgespielt.
+"Phone" angezeigt, und mit "auplay" das Soundfile "ring.au" abgespielt.
 
 Waehlt jemand hingehen die 4711 mit einer Teles-Karte an, wird das als
-"X.75" angezeigt, und das Soundfile "computer.au" abgespielt.
+"X.75" angezeigt, und mit "auplay" das Soundfile "computer.au" abgespielt.
 
 Startet hingegen jemand eine Video-Uebertragung auf die 4711, wird auch
 dies als "Phone" angezeigt, da in obigem Beispiel die Dienstkennung "4"
 nicht gesondert definiert wurde.
 
 
+*************** Bis hier ist sl gekommen, die Doku zu ueberarbeiten ***********
 MSN    Alias Zone Interface Info-Args
 -----------------------------------------------------------
 4711,1 Phone 1    -	    IORA=auplay dingdong.au,,18-21;
@@ -710,10 +731,11 @@ MSN    Alias Zone Interface Info-Args
 ------------------------------
 
 Die eigenen MSN's muessen _ohne_ Vorwahl eingegeben werden (diese wurde
-ja bereits via MYPREFIX definiert), alle anderen Telefonnummern immer
-mit kompletter Vorwahl. Inlaendische Telefonnummern muessen mit einer
-vorlaufenden "0", auslaendische mit zwei vorlaufenden "0" angegeben werden.
-(Also genau so, wie man die Telefonnummern waehlen wuerde)
+ja bereits via AREACODE und COUNTRYCODE definiert), alle anderen
+Telefonnummern immer mit kompletter Vorwahl.
+
+Inlaendische Telefonnummern muessen mit einer vorlaufenden "0",
+auslaendische mit zwei vorlaufenden "0" angegeben werden (Also genau so, wie man die Telefonnummern waehlen wuerde).
 
 Alle Telefonnummern koennen die ueblichen Wildcard-Symbole enthalten,
 also "?" matched genau ein Zeichen, "*" matched beliebig viele
@@ -949,7 +971,7 @@ Info-Arg
 Hier wird das Info-Argument angegeben. Es steht dort der gesamte zu
 startende Befehl
 
-Es koennen hier Variablen verwendet werden, die entweder in der isdnlog.conf
+Es koennen hier Variablen verwendet werden, die entweder in der isdn.conf
 gesetzt wurden oder vorher (z.b. auf Shellebene).
 
 Es gibt aber drei zusaetzliche Variablen, die verwendet werden duerfen:
@@ -1122,7 +1144,7 @@ Wird isdnlog mit -xX gestartet, ohne dass diese Datei existiert, wird eine
 Defaultdatei angelegt, die _unbedingt_ editiert werden sollte. Es erscheint
 dann auch eine entsprechende Warnung.
 
-Die Konfigurationsdatei wird im Verzeichnis "/etc/isdnlog" erwartet, und
+Die Konfigurationsdatei wird im Verzeichnis "/etc/isdn" erwartet, und
 enthaelt fuer isdnlog die Informationen ueber Zugriffsberechtigungen von
 Benutzern via Client.
 
@@ -1161,7 +1183,7 @@ beziehen kann, oder welche Einstellungen er am isdn4linux vornehmen kann:
   	sowie auf die Protokoll-Daten.
 
    	Es koennen beliebig viele MSN's angegeben werden. Auch die Verwendung
-   	von Wildcards, wie bei den Nummern von der Datei "isdnlog.conf", ist
+   	von Wildcards, wie bei den Nummern von der Datei "isdn.conf", ist
    	erlaubt. Mit "MSN=*" werden alle MSN's abgedeckt.
 
    	Das Flag MSN funktionert nur bei reinkommenden (von ISDN-Anschluessen)
@@ -1247,7 +1269,7 @@ den isdnlog neu zu starten.
 6. Das AVON-Verzeichnis
 -----------------------
 
-Ein "make install" installiert im isdnlog-Verzeichnis "/etc/isdnlog"
+Ein "make install" installiert im isdnlog-Verzeichnis "/etc/isdn"
 eine ASCII-Datei "avon". Diese enthaelt ein Verzeichnis aller
 Vorwahlnummern fuer Deutschland in der Form <Vorwahl> : <Ortsnetzbezeichnung>
 
@@ -1255,12 +1277,12 @@ Beim ersten Start liest isdnlog diese ASCII-Datei ein, und erstellt
 daraus eine ISAM-Datei ("avon.dir" / "avon.pag").
 
 Sobald die VSt isdnlog eine Telefonnummer meldet, die noch unbekannt ist
-(d.h. nicht in der "isdnlog.conf" angegeben ist), sucht isdnlog diese
+(d.h. nicht in der "isdn.conf" angegeben ist), sucht isdnlog diese
 Telefonnummer im AVON-Verzeichnis, und zeigt die Telefonnummer in der
 Form: "<Vorwahl> / Rufnummer, Ortsnetz" an.
 
 Falls das AVON-Verzeichnis korrigiert oder erweitert wird, muessen danach
-die Dateien "/etc/isdnlog/avon.dir" sowie "/etc/isdnlog/avon.pag"
+die Dateien "/etc/isdn/avon.dir" sowie "/etc/isdn/avon.pag"
 von Hand geloescht, und isdnlog neu gestartet werden, damit das
 neue Verzeichnis aufgebaut werden kann.
 
@@ -1286,14 +1308,14 @@ isdnlog kennt folgende grundsaetzliche Betriebsmodi:
   - isdnlog -S
 
    isdnlog startet bei diversen Event's die gesamte 5. Spalte der
-   "isdnlog.conf" als externes Programm.
+   "isdn.conf" als externes Programm.
 
    Jedoch wird das angegebene Programm nur dann gestartet, wenn folgende
    Bedingungen erfuellt sind:
 
-     1. Die Telefonnummer entspricht dem Eintrag in der "isdnlog.conf"
+     1. Die Telefonnummer entspricht dem Eintrag in der "isdn.conf"
 
-     2. Der Service-Indicator entspricht dem Eintrag in der "isdnlog.conf"
+     2. Der Service-Indicator entspricht dem Eintrag in der "isdn.conf"
 
      3. Man selbst ruft diese Nummer an, und das Flag ist
      	"O" fuer OUTGOING gesetzt.
@@ -1376,7 +1398,7 @@ Muessen mehrere isdnlog's gleichzeitig gestartet werden, muessen diese mit
 Hilfe von Links gestartet werden. Z. B. ln -s isdnlog isdnlog1
 
 isdnlog kann mittels "kill -HUP `cat /var/run/isdnlog.'device'.pid`" dazu
-aufgefordert werden, die Konfigurationsdatei "/etc/isdnlog/isdnlog.conf"
+aufgefordert werden, die Konfigurationsdatei "/etc/isdn/isdn.conf"
 neu einzulesen (z.b., nachdem daran Erweiterungen vorgenommen wurden)
 Dies darf jedoch _nicht_ waehrend einer laufenden Verbindung gemacht werden!
 Dieses fuehrt mit Sicherheit zum Programmabsturz!
@@ -1399,7 +1421,7 @@ angegeben werden.
                    # beachtet.
      ...
 
-     Die Syntax ist also die gleiche wie bei isdnlog.conf.
+     Die Syntax ist also die gleiche wie bei isdn.conf.
      Der Aufbau der einzelnen Optionen stehen in Klammern am Ende der einzelnen
      Optionen. Optionen, die nur fuer Debugging-Zwecke Bedeutung haben wie -T,
      koennen nicht ueber diese Datei "X" voreingestellt werden.
@@ -1461,7 +1483,7 @@ angegeben werden.
      OBACHT: Zwischen "-C" und dem Device _muss_ ein Leerzeichen stehen!!
      (console="path")
 
- -S  isdnlog soll bei diversen Event's die in der 5. Spalte der isdnlog.conf
+ -S  isdnlog soll bei diversen Event's die in der 5. Spalte der isdn.conf
      angegebenen externen Programme starten
      (start={yes|no})
 
@@ -1505,7 +1527,7 @@ angegeben werden.
      die neue Dauer in das entsprechende IP-Interface.
 
      Beispiel:
-       Mein Internet-Provider steht folgendermassen in der "isdnlog.conf" :
+       Mein Internet-Provider steht folgendermassen in der "isdn.conf" :
          4711 EUnet 3 isdn0 OC=$CMD ${SOUNDS}/dial.au
 
        Konfiguriert wurde dessen IP-Interface "isdn0" in der "rc.isdn" so:
@@ -1844,7 +1866,7 @@ Die Optionen von isdnrep haben im einzelnen folgende Funktion:
                      Hiermit koennen nur ausgewaehlte Telefonnummer angezeigt
                      werden.
                      'Nummer' ist eine Zahl im Format der Konfigurationsdatei
-                     mit Wildcards (siehe "/etc/isdnlog/isdnlog.conf").
+                     mit Wildcards (siehe "/etc/isdn/isdn.conf").
                      Wenn ein 'm' vor der Nummer steht, beschreibt es die
                      entsprechende MSN. Z.b. 'm2' (entspricht MSN#2).
                      Wenn 'MSN' == 0 ("m0") ist, dann bedeutet das, alle uebrigen
@@ -1923,7 +1945,7 @@ Daher steht dann hier die von isdnrep errechnete Anzahl Einheiten.
 11. Das Konfigurations-Tool isdnconf
 ------------------------------------
 
-Dieses Programm bearbeitet oder interpretiert die Datei /etc/isdnlog/isdn.conf.
+Dieses Programm bearbeitet oder interpretiert die Datei /etc/isdn/isdn.conf.
 Es koennen hiermit Eintraege in dieser Datei angelegt oder geloescht werden.
 Des weiteren koennen wie mit einem Grep Eintraege gesucht und angezeigt werden.
 Unter einen Eintrag ist eine eigene MSN ([MSN]) oder eine Telefonnummer
@@ -2001,14 +2023,14 @@ Kommentare werden geloescht.
                         die dem Muster entsprechen und zeigt sie anschliessend
                         an. 'Nummer' ist eine Zahl im Format der
                         Konfigurationsdatei mit Wildcards (siehe
-                        "/etc/isdnlog/isdn.conf"). Gilt nicht fuer den
+                        "/etc/isdn/isdn.conf"). Gilt nicht fuer den
                         Befehl -A.
 
   -a 'Alias'  "alias"   Sucht nach dem Alias unter allen Eintraegen,
                         die dem Muster entsprechen und zeigt sie anschliessend
                         an. 'Alias' ist eine Zahl im Format der
                         Konfigurationsdatei mit Wildcards (siehe
-                        "/etc/isdnlog/isdn.conf"). Gilt nicht fuer den
+                        "/etc/isdn/isdn.conf"). Gilt nicht fuer den
                         Befehl -A.
                         BUG: Statt dem Zeichen '-' muss ein '?' verwendet
                              werden!
@@ -2073,7 +2095,7 @@ Kommentare werden geloescht.
                         Programme ([START]) angezeigt.
 
   -f 'Datei'  "file"    isdnconf verwendet normalerweise die Konfigurationsdatei
-                        "/etc/isdnlog/isdn.conf" sowie "~/.isdn". Wenn eine
+                        "/etc/isdn/isdn.conf" sowie "~/.isdn". Wenn eine
                         andere benutzt werden soll, dann muss sie mit dieser
                         Option angegeben werden. Gilt nur fuer die
                         Optionen -A und -D
@@ -2137,7 +2159,7 @@ Dialog ausgegeben werden.
 
 Die Informationen die beim isdnlog mit -xX eingestellt wurden, erscheinen dann
 im Protokollfenster. Aber dafuer muss der Benutzer, der xisdn startet auch die
-Rechte in der Datei /etc/isdnlog/isdnlog.users haben.
+Rechte in der Datei /etc/isdn/isdnlog.users haben.
 
 Der xisdn beinhaltet Teile von Xmt-2.1.2
 Copyright (c) 1992, 1993, 1994 by Dovetail Systems.
@@ -2301,7 +2323,7 @@ Telekom vorgegeben wird und diese setzt. Otto Normaluserin muss sich also
 nur noch darum kuemmern, dass
  - die Systemuhr halbwegs richtig geht
  - die Tarif-Zonen fuer die einzelnen Leitungen in der
-   /etc/isdnlog/isdnlog.conf korrekt angegeben sind.
+   /etc/isdn/isdn.conf korrekt angegeben sind.
 
 
 Flexible Syntax fuer isdnctrl
@@ -2337,7 +2359,7 @@ die maximal pro Zeiteinheit zu entrichtenden Gebuehren an die Telekom
 sowie den Internet-Provider wirkungsvoll zu begrenzen.
 
 Wird isdnlog terminiert, merkt es sich die bislang aufgelaufenen
-Geld-, Zeit-, sowie Durchsatz-Betraege in der Datei "/etc/isdnlog/charge.dat"
+Geld-, Zeit-, sowie Durchsatz-Betraege in der Datei "/etc/isdn/charge.dat"
 und liest diese beim naechsten Start wieder ein.
 
 
@@ -2356,7 +2378,7 @@ Dies wird in 4 Stufen versucht:
 
  1. Stufe: Es wird ein "isdnctrl hangup isdnX" ausgefuehrt
 
- 2. Stufe: Es wird der Shell-Script "/etc/isdnlog/reload" ausgefuehrt
+ 2. Stufe: Es wird der Shell-Script "/etc/isdn/reload" ausgefuehrt
     	   Dieser sollte das Teles-/HiSax-Modul ent- und wieder laden.
            (Siehe "samples/reload")
 
@@ -2370,15 +2392,16 @@ watchdog="value"
 
 aufgerufen.
 
+
 14.2 CHARGEMAX
 --------------
 
 Mit dem Eintrag
  CHARGEMAX = x
-in der "/etc/isdnlog/isdn.conf" kann angegeben werden, das man gewillt
+in der "/etc/isdn/isdn.conf" kann angegeben werden, das man gewillt
 ist, maximal DM x pro Tag an Telefongebuehren auszugeben.
 Sobald dieses Limit ueberschritten wird, fuehrt isdnlog den Shell-Script
-"/etc/isdnlog/stop" aus (siehe "samples/stop"), der das isdn4linux
+"/etc/isdn/stop" aus (siehe "samples/stop"), der das isdn4linux
 abschalten sollte.
 
 
@@ -2387,14 +2410,14 @@ abschalten sollte.
 
 Mit dem Eintrag
  CONNECTMAX = x,y
-in der "/etc/isdnlog/isdn.conf" kann angegeben werden, das man gewillt
+in der "/etc/isdn/isdn.conf" kann angegeben werden, das man gewillt
 ist, maximal x Sekunden pro Monat Online zu sein.
 
 (Ich persoenlich habe dort die 5 Freistunden (5 * 60 * 60 = 18000 Sekunden)
  meines Providers eingetragen)
 
 Sobald dieses Limit ueberschritten wird, fuehrt isdnlog den Shell-Script
-"/etc/isdnlog/stop" aus (siehe "samples/stop"), der das isdn4linux
+"/etc/isdn/stop" aus (siehe "samples/stop"), der das isdn4linux
 abschalten sollte.
 
 Getrennt durch ein Komma (",") muss hinter der Anzahl Sekunden angegeben
@@ -2409,13 +2432,13 @@ werden, in welcher Form der Provider Online-Zeit abrechnet:
 
 Mit dem Eintrag
  BYTEMAX = x,y
-in der "/etc/isdnlog/isdn.conf" kann angegeben werden, das man gewillt
+in der "/etc/isdn/isdn.conf" kann angegeben werden, das man gewillt
 ist, maximal x Byte pro Monat vom Provider zu saugen.
 
 (Dies ist relevant bei Providern, die nach Volumen abrechnen)
 
 Sobald dieses Limit ueberschritten wird, fuehrt isdnlog den Shell-Script
-"/etc/isdnlog/stop" aus (siehe "samples/stop"), der das isdn4linux
+"/etc/isdn/stop" aus (siehe "samples/stop"), der das isdn4linux
 abschalten sollte.
 
 Getrennt durch ein Komma (",") muss hinter der Anzahl Byte angegeben
@@ -2601,7 +2624,7 @@ Der xisdn meldet:
 
   - "Nicht autorisierter Zugriff auf Server"
       Der Benutzer, der xisdn gestartet hat, ist nicht in der
-      Datei /etc/isdnlog/isdnlog.users eingetragen, oder
+      Datei /etc/isdn/isdnlog.users eingetragen, oder
       er darf xisdn von dem Host nicht starten.
 
   - "Server und Client haben unterschiedliche Protkollversionen"
@@ -2616,7 +2639,7 @@ Der xisdn meldet:
 
 Wenn keine Gespreache und keine Verbindungen angezeigt werden, oder nur
 bestimmte MSN's, dann liegt der Fehler mit Sicherheit bei den Rechten des
-entsprechenden Benutzers in der Datei /etc/isdnlog/isdnlog.users.
+entsprechenden Benutzers in der Datei /etc/isdn/isdnlog.users.
 
 Wenn der isdnlog mit einem Segmentation-fault oder mit der Meldung
 "Got signal 11" abbricht, dann sollten folgende Schritte durchgefuehrt
@@ -2651,22 +2674,22 @@ Folgende Files werden von diesem System verwendet:
   /sbin/isdnlog              - Das Protokoll-Programm
   /usr/sbin/isdnrep          - Das Report-Programm
   /usr/sbin/isdnconf         - Das Konfigurationstool
-  /etc/isdnlog/isdnlog.conf  - Die alte Config-Datei
-  /etc/isdnlog/isdn.conf     - Die neue Config-Datei
+  /etc/isdn/isdnlog.conf     - Die alte Config-Datei
+  /etc/isdn/isdn.conf        - Die neue Config-Datei
   ~/.isdn                    - Die Config-Datei des Benutzers
-  /etc/isdnlog/isdnlog.users - Die User-Access-Datei
-  /etc/isdnlog/avon 	     - altes Vorwahl-Verzeichnis (ASCII)
-  /etc/isdnlog/avon.pag	     - altes Vorwahl-Verzeichnis (ISAM-Version)
-  /etc/isdnlog/avon.dir	     - altes Vorwahl-Verzeichnis (Index)
-  /etc/isdnlog/charge.dat    - Zwischenspeicher fuer die ChargeMax-Funktion
-  /etc/isdnlog/reload        - Script zum Wiederanfahren eines verklemmten i4l
-  /etc/isdnlog/stop    	     - Script zum Stoppen bei erreichen von CHARGEMAX
+  /etc/isdn/isdnlog.users    - Die User-Access-Datei
+  /etc/isdn/avon 	           - altes Vorwahl-Verzeichnis (ASCII)
+  /etc/isdn/avon.pag	       - altes Vorwahl-Verzeichnis (ISAM-Version)
+  /etc/isdn/avon.dir	       - altes Vorwahl-Verzeichnis (Index)
+  /etc/isdn/charge.dat       - Zwischenspeicher fuer die ChargeMax-Funktion
+  /etc/isdn/reload           - Script zum Wiederanfahren eines verklemmten i4l
+  /etc/isdn/stop    	       - Script zum Stoppen bei erreichen von CHARGEMAX
   /usr/lib/areacode          - Neues Vorwahl-Verzeichnis
-  /var/log/isdn.log	     - Das Logbuch
+  /var/log/isdn.log	         - Das Logbuch
   /var/run/isdnlog.pid	     - Enthaelt die PID des laufenden isdnlog
-  /dev/isdnctrl0	     - Gibt das Q.931 Protokoll des Teles-Treibers aus
-  /dev/isdninfo		     - Interne Meldungen von isdn4linux
-  /tmp/isdnctrl0	     - Protokoll obiger Devices als ASCII-Datei
+  /dev/isdnctrl0	           - Gibt das Q.931 Protokoll des Teles-Treibers aus
+  /dev/isdninfo		           - Interne Meldungen von isdn4linux
+  /tmp/isdnctrl0	           - Protokoll obiger Devices als ASCII-Datei
   /usr/X11R6/lib/X11/app-defaults/Isdn - Resourcefile fuer xisdn
 
 
@@ -2676,7 +2699,7 @@ Folgende Files werden von diesem System verwendet:
 Folgende Environment-Variablen werden von diesem System verwendet:
 
   $ISDNLOG = Verzeichnis, in dem sich die Konfigurations-Dateien
-  	     befinden (z.b. "export ISDNLOG=/etc/isdnlog")
+  	     befinden (z.b. "export ISDN_CONF_PATH=/etc/isdn")
 
   $XENVIRONMENT = Vollstaendiger Pfad der Resourcen-Datei fuer den
   		  X-Client "xisdn"

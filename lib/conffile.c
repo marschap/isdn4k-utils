@@ -624,15 +624,16 @@ static section *Insert_Section(section **main_sec, section **ins_sec, char ***va
 {
 	section *Ptr = NULL;
 	
-	if ((*ins_sec)->next != NULL)
+
+	if (main_sec == NULL || ins_sec == NULL || *ins_sec == NULL)
 	{
-		print_msg("%s","Can only insert one entry at time!\n");
+		print_msg("%s","One of the sections is emtpy!\n");
 		return NULL;
 	}
 
-	if (main_sec == NULL)
+	if ((*ins_sec)->next != NULL)
 	{
-		print_msg("%s","Main section is emtpy!\n");
+		print_msg("%s","Can only insert one entry at time!\n");
 		return NULL;
 	}
 
@@ -666,6 +667,7 @@ static section *Insert_Section(section **main_sec, section **ins_sec, char ***va
 
 /****************************************************************************/
 
+#if 1
 static int Compare_Sections(section* sec1, section *sec2, char ***variables)
 {
 	int i;
@@ -700,12 +702,19 @@ static int Compare_Sections(section* sec1, section *sec2, char ***variables)
 
 /****************************************************************************/
 
-#if 0
+#else
 /* IN PROGRESS!!!!!! */
+static char** Compare_Section_Get_Path(char **array, int *retsize);
+
 static int Compare_Sections(section* sec1, section *sec2, char **variables)
 {
 	int i;
-	char **array;
+	int found1, found2;
+	char   **array;
+	char   **array2;
+	section *RetSection   = NULL;
+	entry   *RetEntry1    = NULL;
+	entry   *RetEntry2    = NULL;
 
 
 	if (sec1 == NULL || sec2 == NULL)
@@ -720,16 +729,26 @@ static int Compare_Sections(section* sec1, section *sec2, char **variables)
 	{
 		for (i=0; variables[i] != NULL; i++)
 		{
-			if ((array = String_to_Array(Path,C_SLASH)) == NULL)
-				return NULL;
+			if ((array = String_to_Array(variables[i],C_SLASH)) == NULL)
+				return -1;
 
-			if (Compare_Section_From_Path(sec1,sec2,array) == 0)
+			found2 = 0;
+
+			while ((array2 = Compare_Section_Get_Path(array,&found1)) != NULL)
 			{
-				del_Array(array);
-				return 0;
+				while (_Get_Section_From_Path(array2,sec1,&RetSection,&RetEntry1,0) == sec1)
+					while (_Get_Section_From_Path(array2,sec2,&RetSection,&RetEntry2,0) == sec2)
+						if (RetEntry1 != NULL && RetEntry2 != NULL                      &&
+						    !strcmp(RetEntry1->name, RetEntry2->name)                   &&
+						    ((RetEntry1->value == NULL && RetEntry2->value == NULL) ||
+						      !strcmp(RetEntry1->value,RetEntry2->value)              )   )
+						 	found2++;
 			}
 
 			del_Array(array);
+
+			if (found1 == found2)
+				return 0;
 		}
 	}
 
@@ -738,10 +757,94 @@ static int Compare_Sections(section* sec1, section *sec2, char **variables)
 
 /****************************************************************************/
 
-static int Compare_Section_From_Path(section* sec1, section *sec2, char **array)
+static char** Compare_Section_Get_Path(char **array, int *retsize)
 {
-	if (!strcmp(sec1->name,array[0])   &&
-	    !strcmp(sec1->name,sec2->name)   )
+	int i;
+	static int     lsize;
+	static int     index;
+	static char ***arrayptr = NULL;
+	static char  **retptr   = NULL;
+	static int    *indexptr = NULL;
+
+
+	if (array != NULL)
+	{
+		for (index=0; array[index] != NULL; index++);
+
+		if ((indexptr = (int*) calloc(index,sizeof(int))) == NULL)
+		{
+			print_msg("%s","Can not allocate memory!\n");
+			return NULL;
+		}
+
+		if ((retptr = (char**) calloc(index+1,sizeof(char*))) == NULL)
+		{
+			print_msg("%s","Can not allocate memory!\n");
+			return NULL;
+		}
+
+		if ((arrayptr = (char***) calloc(index,sizeof(char**))) == NULL)
+		{
+			print_msg("%s","Can not allocate memory!\n");
+			return NULL;
+		}
+
+		for (i=0; array[i] != NULL; i++)
+			if ((arrayptr[i] = String_to_Array(array[i],C_OR)) == NULL)
+			{
+				print_msg("%s","Can not allocate memory!\n");
+				return NULL;
+			}
+
+		for (lsize=0; arrayptr[index-1][lsize] != NULL; lsize++);
+	}
+
+	*retsize = lsize;
+
+	if (arrayptr == NULL)
+		return NULL;
+
+	i = index-1;
+	retptr[0] = NULL;
+
+	while(i > 0)
+	{
+		if (arrayptr[i][indexptr[i]] == NULL)
+		{
+			indexptr[i] = 0;
+			i--;
+		}
+		else
+		{
+			for (i = index-1; i >= 0; i++)
+			{
+				retptr[i] = arrayptr[i][indexptr[i]];
+printf("%s/",retptr[i]);
+				indexptr[i]++;
+printf("\n");
+			}
+
+			break;
+		}
+	}
+
+	if (retptr[0] == NULL)
+	{
+		for (i=0; i < index; i++)
+			del_Array(arrayptr[i]);
+
+		free(arrayptr);
+		free(retptr);
+		free(indexptr);
+
+		arrayptr = NULL;
+		retptr   = NULL;
+		indexptr = NULL;
+
+		return NULL;
+	}
+
+	return retptr;
 }
 
 #endif

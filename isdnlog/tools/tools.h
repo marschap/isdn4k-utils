@@ -1,4 +1,4 @@
-/* $Id: tools.h,v 1.1 1997/03/16 20:59:25 luethje Exp $
+/* $Id: tools.h,v 1.2 1997/03/17 23:21:08 luethje Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -19,6 +19,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools.h,v $
+ * Revision 1.2  1997/03/17 23:21:08  luethje
+ * README completed, new funktion Compare_Sections() written, "GNU_SOURCE 1"
+ * added to tools.h and a sample file added.
+ *
  * Revision 1.1  1997/03/16 20:59:25  luethje
  * Added the source code isdnlog. isdnlog is not working yet.
  * A workaround for that problem:
@@ -76,6 +80,8 @@
 #define _TOOLS_H_
 
 /****************************************************************************/
+
+#define GNU_SOURCE 1
 
 #include <stdio.h>
 #include <string.h>
