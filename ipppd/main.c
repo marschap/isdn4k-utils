@@ -25,7 +25,7 @@
  * PATCHLEVEL 9
  */
 
-char main_rcsid[] = "$Id: main.c,v 1.7 1997/05/30 14:05:54 hipp Exp $";
+char main_rcsid[] = "$Id: main.c,v 1.8 1997/06/10 14:39:23 hipp Exp $";
 
 #include <stdio.h>
 #include <stdarg.h>
@@ -246,8 +246,8 @@ void main(int argc,char **argv)
 	if (!nodetach) {
 		int a,f;
 
-		f = fork();
-		if(f < 0) {
+        f = fork();
+        if(f < 0) {
 			perror("Couldn't detach from controlling terminal");
 			exit(1);
 		}
@@ -269,15 +269,15 @@ void main(int argc,char **argv)
 	pid = getpid();
 
 	/* write pid to file */
-	if(!strlen(pidfilename)) {
+	if(!strlen(pidfilename))
 		sprintf(pidfilename, "%s%s.pid", _PATH_VARRUN, "ipppd" );
-		if ((pidfile = fopen(pidfilename, "w")) != NULL) {
-			fprintf(pidfile, "%d\n", pid);
-			fclose(pidfile);
-		} else {
-			syslog(LOG_ERR, "Failed to create pid file %s: %m", pidfilename);
-			pidfilename[0] = 0;
-		}
+	
+	if ((pidfile = fopen(pidfilename, "w")) != NULL) {
+		fprintf(pidfile, "%d\n", pid);
+		fclose(pidfile);
+	} else {
+		syslog(LOG_ERR, "Failed to create pid file %s: %m", pidfilename);
+		pidfilename[0] = 0;
 	}
 
 	syslog(LOG_NOTICE, "ipppd %s.%d (isdn4linux version of pppd by MH) started", VERSION, PATCHLEVEL);
@@ -836,7 +836,7 @@ timeleft(tvp)
  */
 static void hup(int sig)
 {
-    syslog(LOG_INFO, "Hangup (SIGHUP)");
+	syslog(LOG_INFO, "Hangup (SIGHUP)");
 /*    kill_link = 1; */
 }
 
@@ -846,11 +846,10 @@ static void hup(int sig)
  *
  * Indicates that we should initiate a graceful disconnect and exit.
  */
-/*ARGSUSED*/
 static void term(int sig)
 {
-    syslog(LOG_INFO, "Terminating on signal %d.", sig);
-    kill_link = 1;
+	syslog(LOG_INFO, "Terminating on signal %d.", sig);
+	kill_link = 1;
 }
 
 
@@ -858,24 +857,20 @@ static void term(int sig)
  * chld - Catch SIGCHLD signal.
  * Calls reap_kids to get status for any dead kids.
  */
-static void
-chld(sig)
-    int sig;
+static void chld(int sig)
 {
-    reap_kids();
+	reap_kids();
 }
-
 
 /*
  * toggle_debug - Catch SIGUSR1 signal.
  *
  * Toggle debug flag.
  */
-/*ARGSUSED*/
 static void toggle_debug(int sig)
 {
-    debug = !debug;
-    note_debug_level();
+	debug = !debug;
+	note_debug_level();
 }
 
 
@@ -887,51 +882,9 @@ static void toggle_debug(int sig)
 /*ARGSUSED*/
 static void open_ccp(int sig)
 {
-  int i;
-  for(i=0;i<NUM_PPP;i++)
-    lns[i].open_ccp_flag = 1;
-}
-
-
-/*
- * device_script - run a program to connect or disconnect the
- * serial device.
- */
-int device_script(char *program,int in,int out)
-{
-    int pid;
-    int status;
-    int errfd;
-
-    pid = fork();
-
-    if (pid < 0) {
-	syslog(LOG_ERR, "Failed to create child process: %m");
-	die(1);
-    }
-
-    if (pid == 0) {
-	dup2(in, 0);
-	dup2(out, 1);
-	errfd = open(_PATH_CONNERRS, O_WRONLY | O_APPEND | O_CREAT, 0644);
-	if (errfd >= 0)
-	    dup2(errfd, 2);
-	setuid(getuid());
-	setgid(getgid());
-	execl("/bin/sh", "sh", "-c", program, (char *)0);
-	syslog(LOG_ERR, "could not exec /bin/sh: %m");
-	exit(99);
-	/* NOTREACHED */
-    }
-
-    while (waitpid(pid, &status, 0) < 0) {
-	if (errno == EINTR)
-	    continue;
-	syslog(LOG_ERR, "error waiting for (dis)connection process: %m");
-	die(1);
-    }
-
-    return (status == 0 ? 0 : -1);
+	int i;
+	for(i=0;i<NUM_PPP;i++)
+		lns[i].open_ccp_flag = 1;
 }
 
 
@@ -943,16 +896,17 @@ int device_script(char *program,int in,int out)
  */
 int run_program(char *prog,char **args,int must_exist,int unit)
 {
-    int pid;
-    char *nullenv[1];
+	int pid;
+	char *nullenv[1];
 
 	pid = fork();
-	if (pid == -1) {
+	if (pid < 0) {
 		syslog(LOG_ERR, "Failed to create child process for %s: %m", prog);
 		return -1;
     }
+
 	if (pid == 0) {
-		int new_fd;
+		int i,new_fd;
 
 		setsid();
 		umask (S_IRWXG|S_IRWXO);
@@ -963,7 +917,9 @@ int run_program(char *prog,char **args,int must_exist,int unit)
 		close (0);
 		close (1);
 		close (2);
-		close (lns[unit].fd); 
+		for(i=0;i<NUM_PPP;i++)
+			if(lns[i].fd >= 0)
+				close(lns[i].fd); 
 
 		new_fd = open (_PATH_DEVNULL, O_RDWR);
 		if (new_fd >= 0) {
@@ -979,12 +935,12 @@ int run_program(char *prog,char **args,int must_exist,int unit)
 		execve(prog, args, nullenv);
 		if (must_exist || errno != ENOENT)
 			syslog(LOG_WARNING, "Can't execute %s: %m", prog);
-			return -1;
+		exit(99); /* CHILD exit */
 	}
 	MAINDEBUG((LOG_DEBUG, "Script %s started; pid = %d", prog, pid));
 	++n_children;
 
-    return 0;
+	return 0;
 }
 
 
@@ -1017,28 +973,20 @@ void reap_kids()
  * log_packet - format a packet and log it.
  */
 
-char line[256];			/* line to be logged accumulated here */
-char *linep;
+static char line[256];			/* line to be logged accumulated here */
+static char *linep;
 
 void log_packet(u_char *p,int len,char *prefix,int linkunit)
 {
+	static void pr_log __P((void *, char *, ...));
+
+    int i, n;
+    u_short proto;
+    u_char x;
+    struct protent *protp;
+
 	strcpy(line, prefix);
 	linep = line + strlen(line);
-	format_packet(p, len, pr_log, NULL,linkunit);
-    if (linep != line)
-		syslog(LOG_DEBUG, "%s", line);
-}
-
-/*
- * format_packet - make a readable representation of a packet,
- * calling `printer(arg, format, ...)' to output it.
- */
-void format_packet(u_char *p,int len,void (*printer)(void*,char*,...),void *arg,int linkunit)
-{
-	int i, n;
-	u_short proto;
-	u_char x;
-	struct protent *protp;
 
 	if (len >= PPP_HDRLEN && p[0] == PPP_ALLSTATIONS && p[1] == PPP_UI) {
 		p += 2;
@@ -1049,50 +997,54 @@ void format_packet(u_char *p,int len,void (*printer)(void*,char*,...),void *arg,
 				break;
 		}
 
-        printer(arg,"[%d]",linkunit);
+        pr_log(NULL,"[%d]",linkunit);
 		if (protp) {
-		    printer(arg, "[%s", protp->name);
-			n = (*protp->printpkt)(p, len, printer, arg);
-			printer(arg, "]");
+		    pr_log(NULL, "[%s", protp->name);
+			n = (*protp->printpkt)(p, len, pr_log, NULL);
+			pr_log(NULL, "]");
 			p += n;
 			len -= n;
 		} else {
-			printer(arg, "[proto=0x%x]", proto);
+			pr_log(NULL, "[proto=0x%x]", proto);
 		}
 	}
 
 	for (; len > 0; --len) {
 		GETCHAR(x, p);
-		printer(arg, " %.2x", x);
+		pr_log(NULL, " %.2x", x);
 	}
+
+    if (linep != line)
+        syslog(LOG_DEBUG, "%s", line);
 }
+
 
 #ifdef __STDC__
 #include <stdarg.h>
 
-void pr_log(void *arg, char *fmt, ...)
+static void pr_log(void *arg, char *fmt, ...)
 {
-    int n;
-    va_list pvar;
-    char buf[256];
+	int n;
+	va_list pvar;
+	char buf[256];
 
-    va_start(pvar, fmt);
-    vsprintf(buf, fmt, pvar);
-    va_end(pvar);
+	va_start(pvar, fmt);
+	vsprintf(buf, fmt, pvar);
+	va_end(pvar);
 
-    n = strlen(buf);
-    if (linep + n + 1 > line + sizeof(line)) {
-	syslog(LOG_DEBUG, "%s", line);
-	linep = line;
-    }
-    strcpy(linep, buf);
-    linep += n;
+	n = strlen(buf);
+	if (linep + n + 1 > line + sizeof(line)) {
+		syslog(LOG_DEBUG, "%s", line);
+		linep = line;
+	}
+	strcpy(linep, buf);
+	linep += n;
 }
 
 #else /* __STDC__ */
 #include <varargs.h>
 
-void pr_log(arg, fmt, va_alist)
+static void pr_log(arg, fmt, va_alist)
 void *arg;
 char *fmt;
 va_dcl

@@ -29,8 +29,8 @@ CHANGELOG:
  - 'useifmtu': a not so important option .. better use
    the 'mtu' option .. 
  - from the ppp-2.3 package I took the 'noccp' option.
-   (-ccp is the same). Necessary for a few 
-   netblazers on the remote side.
+   (-ccp is the same). Necessary for a few netblazers on the 
+   remote side.
  - 'usefirstip' gets the remote address from the first entry in
    the auth file (if there is an IP address entry). This address 
    should be a full IP address not an address from a masked area.
@@ -54,6 +54,13 @@ CHANGELOG:
    (it's a patch from: Meno Abels <Meno.Abels@Technical.Adviser.com>)
  - added glibc-2 patches from: Andreas Jaeger <aj@arthur.rhein-neckar.de>
  - added 2.1.X patches by Miquel van Smoorenburg <miquels@cistron.nl>
+10.06.97:
+ - added remote number as parameter for auth script
+ - found (hopefully) the 'bad filenumber ..' problem
+ - fixed pidfile problem
+
+
+-----------------------------------------------------------------
 
 The ipppd can handle multiple devices. This is necessary to
 link several connections together to one bundle.

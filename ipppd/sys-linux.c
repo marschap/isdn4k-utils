@@ -22,7 +22,7 @@
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-char sys_rcsid[] = "$Id: sys-linux.c,v 1.5 1997/05/30 14:05:57 hipp Exp $";
+char sys_rcsid[] = "$Id: sys-linux.c,v 1.6 1997/06/10 14:39:26 hipp Exp $";
 
 #define _LINUX_STRING_H_
 
@@ -273,9 +273,7 @@ void output (int linkunit, unsigned char *p, int len)
     
 	if (write(lns[linkunit].fd, p, len) < 0) {
 		syslog(LOG_ERR, "write, unit: %d fd: %d: %m",linkunit,lns[linkunit].fd);
-#if 0
 		die(1);
-#endif
 	}
 }
 
@@ -291,9 +289,7 @@ int read_packet (unsigned char *buf,int linkunit)
 		if (errno == EWOULDBLOCK)
 			return -1;
 		syslog(LOG_ERR, "read(fd): %m");
-#if 0
 		die(1);
-#endif
 	}
 	return len;
 }
@@ -1261,87 +1257,86 @@ int ppp_available(void)
  * Update the wtmp file with the appropriate user name and tty device.
  */
 int logwtmputmp (int unit,char *line, char *name, char *host)
-  {
-    int    wtmp;
-    struct utmp ut, *utp;
-    pid_t  mypid = getpid();
+{
+	struct utmp ut, *utp;
+	pid_t  mypid = getpid();
 
-/*
- * Update the signon database for users.
- * Christoph Lameter: Copied from poeigl-1.36 Jan 3, 1996
- */
-    utmpname(_PATH_UTMP);
-    setutent();
-    while ((utp = getutent()) && (utp->ut_pid != mypid))
-        /* nothing */;
+	/*
+	 * Update the signon database for users.
+	 * Christoph Lameter: Copied from poeigl-1.36 Jan 3, 1996
+	 */
+	utmpname(_PATH_UTMP);
+	setutent();
+	while( (utp = getutent()) && (utp->ut_pid != mypid) )
+		;
 
-    /* Is this call really necessary? There is another one after the 'put' */
-    endutent();
+	/*
+	 * Is this call really necessary? There is another one after the 'put' 
+	 */
+	endutent();
 
     if (utp)
-      {
-       memcpy(&ut, utp, sizeof(ut));
-      }
-    else
-      {
-       /* some gettys/telnetds don't initialize utmp... */
-       memset(&ut, 0, sizeof(ut));
-      }
+		memcpy(&ut, utp, sizeof(ut));
+    else {
+		/* some gettys/telnetds don't initialize utmp... */
+		memset(&ut, 0, sizeof(ut));
+	}
 
-    if (ut.ut_id[0] == 0)
-      {
-       strncpy(ut.ut_id, line + 3, sizeof(ut.ut_id));
-      }
+	if (ut.ut_id[0] == 0)
+		strncpy(ut.ut_id, line + 3, sizeof(ut.ut_id));
 
-    strncpy(ut.ut_user, name, sizeof(ut.ut_user));
-    strncpy(ut.ut_line, line, sizeof(ut.ut_line));
+	strncpy(ut.ut_user, name, sizeof(ut.ut_user));
+	strncpy(ut.ut_line, line, sizeof(ut.ut_line));
 
-    time(&ut.ut_time);
+	time(&ut.ut_time);
 
-    ut.ut_type = USER_PROCESS;
-    ut.ut_pid  = mypid;
+	ut.ut_type = USER_PROCESS;
+	ut.ut_pid  = mypid;
 
-    /* Insert the host name if one is supplied */
-    if (*host)
-      {
-       strncpy (ut.ut_host, host, sizeof(ut.ut_host));
-      }
+	/*
+	 * Insert the host name if one is supplied 
+	 */
+	if (*host)
+		strncpy (ut.ut_host, host, sizeof(ut.ut_host));
 
-    /* Insert the IP address of the remote system if IP is enabled */
-    if (ipcp_hisoptions[unit].neg_addr)
-      {
+	/*
+	 * Insert the IP address of the remote system if IP is enabled 
+	 */
+	if (ipcp_hisoptions[unit].neg_addr)
        memcpy  (&ut.ut_addr, (char *) &ipcp_hisoptions[unit].hisaddr,
                 sizeof(ut.ut_addr));
-      }
 
-    /* CL: Makes sure that the logout works */
-    if (*host == 0 && *name==0)
-      {
-       ut.ut_host[0]=0;
-      }
+	/* 
+	 * CL: Makes sure that the logout works 
+	 */
+	if (*host == 0 && *name==0)
+		ut.ut_host[0]=0;
 
-    pututline(&ut);
-    endutent();
-/*
- * Update the wtmp file.
- */
+	pututline(&ut);
+	endutent();
+
+	/*
+	 * Update the wtmp file.
+	 */
 #if (defined __GLIBC__ && __GLIBC__ >= 2)
-    updwtmp (_PATH_WTMP, &ut);
-#else    
-    wtmp = open(_PATH_WTMP, O_APPEND|O_WRONLY);
-    if (wtmp >= 0)
-      {
-       flock(wtmp, LOCK_EX);
-
-       /* we really should check for error on the write for a full disk! */
-       write (wtmp, (char *)&ut, sizeof(ut));
-       close (wtmp);
-
-       flock(wtmp, LOCK_UN);
-      }
+	updwtmp (_PATH_WTMP, &ut);
+#else
+	{
+		int wtmp = open(_PATH_WTMP, O_APPEND|O_WRONLY);
+		if (wtmp >= 0) {
+			flock(wtmp, LOCK_EX);
+			/*
+			 * we really should check for error on 
+			 * the write for a full disk! 
+			 */
+			write (wtmp, (char *)&ut, sizeof(ut));
+			close (wtmp);
+			flock(wtmp, LOCK_UN);
+		}
+	}
 #endif    
-    return 0;
-  }
+	return 0;
+}
 
 /*
  * Code for locking/unlocking the serial device.

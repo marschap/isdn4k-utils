@@ -16,7 +16,7 @@
  * IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Id: ipppd.h,v 1.7 1997/05/28 10:07:29 hipp Exp $
+ * $Id: ipppd.h,v 1.8 1997/06/10 14:39:22 hipp Exp $
  */
 
 /*
@@ -267,8 +267,6 @@ void close_fd __P((int));
 void die __P((int));
 void novm __P((char *));
 void log_packet __P((u_char *, int, char *,int));
-void format_packet __P((u_char *,int,void (*) (void *, char *, ...), void *,int));
-void pr_log __P((void *, char *, ...));
 void sys_init(void);
 void note_debug_level (void);
 void output (int unit, unsigned char *p, int len);
