@@ -7,11 +7,11 @@
 EDEF=$(CFLAGS)
 ifeq (../.config,$(wildcard ../.config))
 	include ../.config
-	MAN1DIROPT = MANDIR=$(CONFIG_MANDIR)/man1
-	MAN3DIROPT = LIBMANDIR=$(CONFIG_MANDIR)/man3
-	MAN5DIROPT = FILEMANDIR=$(CONFIG_MANDIR)/man5
+	MAN1DIROPT = MANDIR=$(DESTDIR)$(CONFIG_MANDIR)/man1
+	MAN3DIROPT = LIBMANDIR=$(DESTDIR)$(CONFIG_MANDIR)/man3
+	MAN5DIROPT = FILEMANDIR=$(DESTDIR)$(CONFIG_MANDIR)/man5
 	MANDIROPTS = $(MAN1DIROPT) $(MAN3DIROPT) $(MAN5DIROPT)
-	BINDIROPT = BINDIR=$(CONFIG_BINDIR)
+	BINDIROPT = BINDIR=$(DESTDIR)$(CONFIG_BINDIR)
 endif
 
 all: xisdnload
@@ -36,5 +36,5 @@ install: xisdnload install-man
 	$(MAKE) -f Makefile $(BINDIROPT) install
 
 uninstall:
-	rm -f $(CONFIG_BINDIR)/xisdnload
-	find $(CONFIG_MANDIR) -name "xisdnload.*" -exec rm -f {} \;
+	rm -f $(DESTDIR)$(CONFIG_BINDIR)/xisdnload
+	find $(DESTDIR)$(CONFIG_MANDIR) -name "xisdnload.*" -exec rm -f {} \;

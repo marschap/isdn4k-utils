@@ -1,4 +1,4 @@
-/* $Id: isdntools.c,v 1.21 1998/06/07 21:03:26 akool Exp $
+/* $Id: isdntools.c,v 1.22 1998/09/26 18:30:30 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -19,6 +19,29 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdntools.c,v $
+ * Revision 1.22  1998/09/26 18:30:30  akool
+ *  - quick and dirty Call-History in "-m" Mode (press "h" for more info) added
+ *    - eat's one more socket, Stefan: sockets[3] now is STDIN, FIRST_DESCR=4 !!
+ *  - Support for tesion)) Baden-Wuerttemberg Tarif
+ *  - more Providers
+ *  - Patches from Wilfried Teiken <wteiken@terminus.cl-ki.uni-osnabrueck.de>
+ *    - better zone-info support in "tools/isdnconf.c"
+ *    - buffer-overrun in "isdntools.c" fixed
+ *  - big Austrian Patch from Michael Reinelt <reinelt@eunet.at>
+ *    - added $(DESTDIR) in any "Makefile.in"
+ *    - new Configure-Switches "ISDN_AT" and "ISDN_DE"
+ *      - splitted "takt.c" and "tools.c" into
+ *          "takt_at.c" / "takt_de.c" ...
+ *          "tools_at.c" / "takt_de.c" ...
+ *    - new feature
+ *        CALLFILE = /var/log/caller.log
+ *        CALLFMT  = %b %e %T %N7 %N3 %N4 %N5 %N6
+ *      in "isdn.conf"
+ *  - ATTENTION:
+ *      1. "isdnrep" dies with an seg-fault, if not HTML-Mode (Stefan?)
+ *      2. "isdnlog/Makefile.in" now has hardcoded "ISDN_DE" in "DEFS"
+ *      	should be fixed soon
+ *
  * Revision 1.21  1998/06/07 21:03:26  akool
  * Renamed old to new zone-names (CityCall, RegioCall, GermanCall, GlobalCall)
  *
@@ -1038,8 +1061,8 @@ const char* area_diff_string(char* number1, char* number2)
 int area_diff(char* _code, char *_diffcode)
 {
 	FILE *fp = NULL;
-	char code[15];
-	char diffcode[15];
+       char code[40];
+       char diffcode[40];
 	char value[15];
 	int index;
 	int number;

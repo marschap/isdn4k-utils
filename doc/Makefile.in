@@ -1,4 +1,4 @@
-# $Id: Makefile.in,v 1.7 1997/10/26 22:58:46 fritz Exp $
+# $Id: Makefile.in,v 1.8 1998/09/26 18:27:50 akool Exp $
 #
 # Makefile for ISDN manpages
 # (C) 1997 Fritz Elfert
@@ -38,7 +38,7 @@ config.status: configure
 install: $(MANPAGES) Makefile
 	@for i in $(MANPAGES) ; do \
 		MANSECT=`echo $$i | cut -d. -f2` ;\
-		DEST=$(MANDIR)/man$$MANSECT ;\
+		DEST=$(DESTDIR)$(MANDIR)/man$$MANSECT ;\
 		mkdir -p $$DEST ;\
 		$(INSTALL_MAN) $$i $$DEST/$$i ;\
 	done
@@ -46,7 +46,7 @@ install: $(MANPAGES) Makefile
 uninstall: Makefile
 	for i in $(MANPAGES) ; do \
 		MANSECT=`echo $$i | cut -d. -f2` ;\
-		DEST=$(MANDIR)/man$$MANSECT ;\
+		DEST=$(DESTDIR)$(MANDIR)/man$$MANSECT ;\
 		rm -f $$DEST/$$i ;\
 	done
 

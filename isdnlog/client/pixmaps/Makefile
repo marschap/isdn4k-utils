@@ -134,21 +134,21 @@ Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status $(BUILT_SOURCES)
 
 install-dataDATA: $(data_DATA)
 	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(datadir)
+	$(mkinstalldirs) $(DESTDIR)$(datadir)
 	@list='$(data_DATA)'; for p in $$list; do \
 	  if test -f $(srcdir)/$$p; then \
-	    echo " $(INSTALL_DATA) $(srcdir)/$$p $(datadir)/$$p"; \
-	    $(INSTALL_DATA) $(srcdir)/$$p $(datadir)/$$p; \
+	    echo " $(INSTALL_DATA) $(srcdir)/$$p $(DESTDIR)$(datadir)/$$p"; \
+	    $(INSTALL_DATA) $(srcdir)/$$p $(DESTDIR)$(datadir)/$$p; \
 	  else if test -f $$p; then \
-	    echo " $(INSTALL_DATA) $$p $(datadir)/$$p"; \
-	    $(INSTALL_DATA) $$p $(datadir)/$$p; \
+	    echo " $(INSTALL_DATA) $$p $(DESTDIR)$(datadir)/$$p"; \
+	    $(INSTALL_DATA) $$p $(DESTDIR)$(datadir)/$$p; \
 	  fi; fi; \
 	done
 
 uninstall-dataDATA:
 	$(NORMAL_UNINSTALL)
 	list='$(data_DATA)'; for p in $$list; do \
-	  rm -f $(datadir)/$$p; \
+	  rm -f $(DESTDIR)$(datadir)/$$p; \
 	done
 tags: TAGS
 TAGS:
@@ -225,13 +225,13 @@ maintainer-clean-generic clean mostlyclean distclean maintainer-clean
 
 
 install-data-local:
-	$(mkinstalldirs) $(appsdir)
-	$(INSTALL_DATA) kisdnlog.xpm $(kde_icondir)/kisdnlog.xpm
-	$(INSTALL_DATA) isdnlog.xpm $(kde_datadir)/kisdnlog/isdnlog.xpm
+	$(mkinstalldirs) $(DESTDIR)$(appsdir)
+	$(INSTALL_DATA) kisdnlog.xpm $(DESTDIR)$(kde_icondir)/kisdnlog.xpm
+	$(INSTALL_DATA) isdnlog.xpm $(DESTDIR)$(kde_datadir)/kisdnlog/isdnlog.xpm
 
 uninstall-local:
-	rm -f $(kde_icondir)/kisdnlog.xpm
-	rm -f $(kde_datadir)/kisdnlog/isdnlog.xpm
+	rm -f $(DESTDIR)$(kde_icondir)/kisdnlog.xpm
+	rm -f $(DESTDIR)$(kde_datadir)/kisdnlog/isdnlog.xpm
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

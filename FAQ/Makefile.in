@@ -175,15 +175,15 @@ enew:
 # Install output files
 install: all
 	if [ $(TARGET_DIR) != $(GEN_DIR) ]; then \
-		$(INSTALL) -m 0755 -d $(TARGET_DIR); \
-		$(INSTALL) -m 0644 `find $(GEN_DIR) -maxdepth 1 -type f` $(TARGET_DIR); \
+		$(INSTALL) -m 0755 -d $(DESTDIR)$(TARGET_DIR); \
+		$(INSTALL) -m 0644 `find $(GEN_DIR) -maxdepth 1 -type f` $(DESTDIR)$(TARGET_DIR); \
 	fi
 
 # Un-install output files
 uninstall:
 	set -e; \
 	if [ $(TARGET_DIR) != $(GEN_DIR) ]; then \
-		cd $(TARGET_DIR); \
+		cd $(DESTDIR)$(TARGET_DIR); \
 		for i in $(OUT_7BIT) $(OUT_HTML) $(OUT_ENG_7BIT) $(OUT_ENG_HTML) ; do \
 			rm -f $$i $$i.zip $$i.gz ; \
 		done; \

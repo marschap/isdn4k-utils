@@ -3,10 +3,10 @@ data_DATA = isdnlog.xpm
 datadir = $(prefix)/share/apps/@PACKAGE@/pics
 
 install-data-local:
-	$(mkinstalldirs) $(appsdir)
-	$(INSTALL_DATA) @PACKAGE@.xpm $(kde_icondir)/@PACKAGE@.xpm
-	$(INSTALL_DATA) isdnlog.xpm $(kde_datadir)/@PACKAGE@/isdnlog.xpm
+	$(mkinstalldirs) $(DESTDIR)$(appsdir)
+	$(INSTALL_DATA) @PACKAGE@.xpm $(DESTDIR)$(kde_icondir)/@PACKAGE@.xpm
+	$(INSTALL_DATA) isdnlog.xpm $(DESTDIR)$(kde_datadir)/@PACKAGE@/isdnlog.xpm
 
 uninstall-local:
-	rm -f $(kde_icondir)/@PACKAGE@.xpm
-	rm -f $(kde_datadir)/@PACKAGE@/isdnlog.xpm
+	rm -f $(DESTDIR)$(kde_icondir)/@PACKAGE@.xpm
+	rm -f $(DESTDIR)$(kde_datadir)/@PACKAGE@/isdnlog.xpm

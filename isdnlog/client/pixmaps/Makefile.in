@@ -134,21 +134,21 @@ Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status $(BUILT_SOURCES)
 
 install-dataDATA: $(data_DATA)
 	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(datadir)
+	$(mkinstalldirs) $(DESTDIR)$(datadir)
 	@list='$(data_DATA)'; for p in $$list; do \
 	  if test -f $(srcdir)/$$p; then \
-	    echo " $(INSTALL_DATA) $(srcdir)/$$p $(datadir)/$$p"; \
-	    $(INSTALL_DATA) $(srcdir)/$$p $(datadir)/$$p; \
+	    echo " $(INSTALL_DATA) $(srcdir)/$$p $(DESTDIR)$(datadir)/$$p"; \
+	    $(INSTALL_DATA) $(srcdir)/$$p $(DESTDIR)$(datadir)/$$p; \
 	  else if test -f $$p; then \
-	    echo " $(INSTALL_DATA) $$p $(datadir)/$$p"; \
-	    $(INSTALL_DATA) $$p $(datadir)/$$p; \
+	    echo " $(INSTALL_DATA) $$p $(DESTDIR)$(datadir)/$$p"; \
+	    $(INSTALL_DATA) $$p $(DESTDIR)$(datadir)/$$p; \
 	  fi; fi; \
 	done
 
 uninstall-dataDATA:
 	$(NORMAL_UNINSTALL)
 	list='$(data_DATA)'; for p in $$list; do \
-	  rm -f $(datadir)/$$p; \
+	  rm -f $(DESTDIR)$(datadir)/$$p; \
 	done
 tags: TAGS
 TAGS:
@@ -190,7 +190,7 @@ all: Makefile $(DATA)
 install-strip:
 	$(MAKE) INSTALL_PROGRAM='$(INSTALL_PROGRAM) -s' INSTALL_SCRIPT='$(INSTALL_PROGRAM)' install
 installdirs:
-	$(mkinstalldirs)  $(datadir)
+	$(mkinstalldirs)  $(DESTDIR)$(datadir)
 
 
 mostlyclean-generic:

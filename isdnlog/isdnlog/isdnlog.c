@@ -1,4 +1,4 @@
-/* $Id: isdnlog.c,v 1.21 1998/06/21 11:52:46 akool Exp $
+/* $Id: isdnlog.c,v 1.22 1998/09/26 18:29:07 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,29 @@
  * along with this program; if not, write to the Free Software
  *
  * $Log: isdnlog.c,v $
+ * Revision 1.22  1998/09/26 18:29:07  akool
+ *  - quick and dirty Call-History in "-m" Mode (press "h" for more info) added
+ *    - eat's one more socket, Stefan: sockets[3] now is STDIN, FIRST_DESCR=4 !!
+ *  - Support for tesion)) Baden-Wuerttemberg Tarif
+ *  - more Providers
+ *  - Patches from Wilfried Teiken <wteiken@terminus.cl-ki.uni-osnabrueck.de>
+ *    - better zone-info support in "tools/isdnconf.c"
+ *    - buffer-overrun in "isdntools.c" fixed
+ *  - big Austrian Patch from Michael Reinelt <reinelt@eunet.at>
+ *    - added $(DESTDIR) in any "Makefile.in"
+ *    - new Configure-Switches "ISDN_AT" and "ISDN_DE"
+ *      - splitted "takt.c" and "tools.c" into
+ *          "takt_at.c" / "takt_de.c" ...
+ *          "tools_at.c" / "takt_de.c" ...
+ *    - new feature
+ *        CALLFILE = /var/log/caller.log
+ *        CALLFMT  = %b %e %T %N7 %N3 %N4 %N5 %N6
+ *      in "isdn.conf"
+ *  - ATTENTION:
+ *      1. "isdnrep" dies with an seg-fault, if not HTML-Mode (Stefan?)
+ *      2. "isdnlog/Makefile.in" now has hardcoded "ISDN_DE" in "DEFS"
+ *      	should be fixed soon
+ *
  * Revision 1.21  1998/06/21 11:52:46  akool
  * First step to let isdnlog generate his own AOCD messages
  *
@@ -121,6 +144,7 @@
 #define _ISDNLOG_C_
 
 #include <linux/limits.h>
+#include <termio.h>
 
 #include "isdnlog.h"
 #ifdef POSTGRES
@@ -317,6 +341,9 @@ static void loop(void)
         (void)morectrl(0);
       else if (X_FD_ISSET(sockets[ISDNCTRL2].descriptor, &readmask))
         (void)morectrl(1);
+      else if (X_FD_ISSET(sockets[STDIN].descriptor, &readmask))
+        (void)morekbd();
+
     } /* else */
   } /* while */
 } /* loop */
@@ -796,6 +823,28 @@ static void restoreCharge()
 
 /*****************************************************************************/
 
+void raw_mode(int state)
+{
+  static struct termio newterminfo, oldterminfo;
+
+
+  if (state) {
+    ioctl(fileno(stdin), TCGETA, &oldterminfo);
+    newterminfo = oldterminfo;
+
+    newterminfo.c_iflag &= ~(INLCR | ICRNL | IUCLC | ISTRIP);
+    newterminfo.c_lflag &= ~(ICANON | ECHO);
+    newterminfo.c_cc[VMIN] = 1;
+    newterminfo.c_cc[VTIME] = 1;
+
+    ioctl(fileno(stdin), TCSETAF, &newterminfo);
+  }
+  else
+    ioctl(fileno(stdin), TCSETA, &oldterminfo);
+} /* raw_mode */
+
+/*****************************************************************************/
+
 int main(int argc, char *argv[], char *envp[])
 {
   register char  *p;
@@ -862,7 +911,8 @@ int main(int argc, char *argv[], char *envp[])
 
     if (add_socket(&sockets, -1) ||  /* reserviert fuer isdnctrl */
         add_socket(&sockets, -1) ||  /* reserviert fuer isdnctrl2 */
-        add_socket(&sockets, -1)   ) /* reserviert fuer isdninfo */
+        add_socket(&sockets, -1) ||  /* reserviert fuer isdninfo */
+        add_socket(&sockets, -1) )   /* reserviert fuer stdin */
       Exit(19);
 
     if (replay) {
@@ -982,6 +1032,11 @@ int main(int argc, char *argv[], char *envp[])
 
           if (replay || ((sockets[ISDNINFO].descriptor = open(INFO, O_RDONLY | O_NONBLOCK)) >= 0)) {
 
+            if (!isdaemon) {
+              raw_mode(1);
+	      sockets[STDIN].descriptor = dup(fileno(stdin));
+            } /* if */
+
             now();
 
 #ifdef Q931
@@ -1028,6 +1083,11 @@ int main(int argc, char *argv[], char *envp[])
         close(sockets[ISDNCTRL].descriptor);
       if (*isdnctrl2)
         close(sockets[ISDNCTRL2].descriptor);
+
+      if (!isdaemon) {
+        raw_mode(0);
+      	close(sockets[STDIN].descriptor);
+      } /* if */
     }
     else {
       print_msg(PRT_ERR, msg1, myshortname, isdnctrl, strerror(errno));

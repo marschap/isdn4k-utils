@@ -380,6 +380,7 @@ und die ueber das Menue konfiguriert werden:
 
       -DISDN_NL     - Gebuehrenauswertung Niederlande (anstelle Deutschland)
       -DISDN_CH     - Gebuehrenauswertung Schweiz (anstelle Deutschland)
+      -DISDN_AT     - Gebuehrenauswertung Oesterreich (anstelle Deutschland)
 
   I4LCONFDIR  (/etc/isdn)
     Wo liegen die "isdn.conf" sowie die "avon" (falls verwendet!)

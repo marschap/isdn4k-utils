@@ -1,5 +1,5 @@
 #
-# $Id: Makefile.in,v 1.15 1997/10/26 23:42:00 fritz Exp $
+# $Id: Makefile.in,v 1.16 1998/09/26 18:31:03 akool Exp $
 
 #----------------------------------------------------------------------------#
 # Things you can change to personalize the Makefile for your own site. Some  #
@@ -163,35 +163,35 @@ programs-d:	  ignore
 		  done
 
 programs-i:	  ignore
-		  @echo "Installing '$(sbindir)/vboxgetty'..."
-		  @$(INSTALL_SBIN) $(TOPDIR)/src/vboxgetty $(sbindir)/vboxgetty
-		  @echo "Installing '$(sbindir)/vboxd'..."
-		  @$(INSTALL_SBIN) $(TOPDIR)/src/vboxd $(sbindir)/vboxd
-		  @echo "Installing '$(bindir)/vboxcnvt'..."
-		  @$(INSTALL_BIN) $(TOPDIR)/src/vboxconvert $(bindir)/vboxcnvt
-		  @cd $(bindir); \
+		  @echo "Installing '$(DESTDIR)$(sbindir)/vboxgetty'..."
+		  @$(INSTALL_SBIN) $(TOPDIR)/src/vboxgetty $(DESTDIR)$(sbindir)/vboxgetty
+		  @echo "Installing '$(DESTDIR)$(sbindir)/vboxd'..."
+		  @$(INSTALL_SBIN) $(TOPDIR)/src/vboxd $(DESTDIR)$(sbindir)/vboxd
+		  @echo "Installing '$(DESTDIR)$(bindir)/vboxcnvt'..."
+		  @$(INSTALL_BIN) $(TOPDIR)/src/vboxconvert $(DESTDIR)$(bindir)/vboxcnvt
+		  @cd $(DESTDIR)$(bindir); \
 		  $(LN) -f vboxcnvt vboxtoau; \
 		  $(LN) -f vboxcnvt autovbox; \
 		  $(LN) -f vboxcnvt vboxmode
-		  @echo "Installing '$(bindir)/vboxctrl'..."
-		  @$(INSTALL_BIN) $(TOPDIR)/src/vboxctrl $(bindir)/vboxctrl
-		  @echo "Installing '$(bindir)/vboxbeep'..."
-		  @$(INSTALL_UBIN) $(TOPDIR)/src/vboxbeep $(bindir)/vboxbeep
-		  @echo "Installing '$(bindir)/vbox'..."
-		  @$(INSTALL_BIN) $(TOPDIR)/src/vbox $(bindir)/vbox
-		  @set -e; if [ -f $(sysconfdir)/vboxgetty.conf ]; then \
-			  echo "Installing '$(sysconfdir)/vboxgetty.conf.new'..."; \
-			  $(INSTALL_SYSCONF) $(TOPDIR)/examples/vboxgetty.conf.example $(sysconfdir)/vboxgetty.conf.new; \
+		  @echo "Installing '$(DESTDIR)$(bindir)/vboxctrl'..."
+		  @$(INSTALL_BIN) $(TOPDIR)/src/vboxctrl $(DESTDIR)$(bindir)/vboxctrl
+		  @echo "Installing '$(DESTDIR)$(bindir)/vboxbeep'..."
+		  @$(INSTALL_UBIN) $(TOPDIR)/src/vboxbeep $(DESTDIR)$(bindir)/vboxbeep
+		  @echo "Installing '$(DESTDIR)$(bindir)/vbox'..."
+		  @$(INSTALL_BIN) $(TOPDIR)/src/vbox $(DESTDIR)$(bindir)/vbox
+		  @set -e; if [ -n "$(DESTDIR)" -o -f $(DESTDIR)$(sysconfdir)/vboxgetty.conf ]; then \
+			  echo "Installing '$(DESTDIR)$(sysconfdir)/vboxgetty.conf.new'..."; \
+			  $(INSTALL_SYSCONF) $(TOPDIR)/examples/vboxgetty.conf.example $(DESTDIR)$(sysconfdir)/vboxgetty.conf.new; \
 		  else \
-			  echo "Installing '$(sysconfdir)/vboxgetty.conf'..."; \
-			  $(INSTALL_SYSCONF) $(TOPDIR)/examples/vboxgetty.conf.example $(sysconfdir)/vboxgetty.conf; \
+			  echo "Installing '$(DESTDIR)$(sysconfdir)/vboxgetty.conf'..."; \
+			  $(INSTALL_SYSCONF) $(TOPDIR)/examples/vboxgetty.conf.example $(DESTDIR)$(sysconfdir)/vboxgetty.conf; \
 		  fi
-		  @set -e; if [ -f $(sysconfdir)/vboxd.conf ]; then \
-			  echo "Installing '$(sysconfdir)/vboxd.conf.new'..."; \
-			  $(INSTALL_SYSCONF) $(TOPDIR)/examples/vboxd.conf.example $(sysconfdir)/vboxd.conf.new; \
+		  @set -e; if [ -n "$(DESTDIR)" -o -f $(DESTDIR)$(sysconfdir)/vboxd.conf ]; then \
+			  echo "Installing '$(DESTDIR)$(sysconfdir)/vboxd.conf.new'..."; \
+			  $(INSTALL_SYSCONF) $(TOPDIR)/examples/vboxd.conf.example $(DESTDIR)$(sysconfdir)/vboxd.conf.new; \
 		  else \
-			  echo "Installing '$(sysconfdir)/vboxd.conf'..."; \
-			  $(INSTALL_SYSCONF) $(TOPDIR)/examples/vboxd.conf.example $(sysconfdir)/vboxd.conf; \
+			  echo "Installing '$(DESTDIR)$(sysconfdir)/vboxd.conf'..."; \
+			  $(INSTALL_SYSCONF) $(TOPDIR)/examples/vboxd.conf.example $(DESTDIR)$(sysconfdir)/vboxd.conf; \
 		  fi
 
 #----------------------------------------------------------------------------#
@@ -213,7 +213,7 @@ DIRECTORIES_I	= $(prefix) \
 directories-i:	  ignore
 		  @set -e; for i in `echo $(DIRECTORIES_I)`; do \
 			if [ ! -d $$i ]; then \
-				$(INSTALL_DIRS) $$i; \
+				$(INSTALL_DIRS) $(DESTDIR)$$i; \
 			fi; \
 		  done
 
@@ -270,10 +270,10 @@ scripts-d:	  ignore
 		  done
 
 scripts-i:	  ignore
-		  @echo "Installing '$(bindir)/vboxmail'..."
-		  @$(INSTALL_SHBIN) $(TOPDIR)/utils/vboxmail $(bindir)/vboxmail
-		  @echo "Installing '$(bindir)/vboxplay'..."
-		  @$(INSTALL_SHBIN) $(TOPDIR)/utils/vboxplay $(bindir)/vboxplay
+		  @echo "Installing '$(DESTDIR)$(bindir)/vboxmail'..."
+		  @$(INSTALL_SHBIN) $(TOPDIR)/utils/vboxmail $(DESTDIR)$(bindir)/vboxmail
+		  @echo "Installing '$(DESTDIR)$(bindir)/vboxplay'..."
+		  @$(INSTALL_SHBIN) $(TOPDIR)/utils/vboxplay $(DESTDIR)$(bindir)/vboxplay
 
 #----------------------------------------------------------------------------#
 #                                                                            #

@@ -1,4 +1,4 @@
-/* $Id: isdnconf.c,v 1.18 1998/06/14 15:34:35 akool Exp $
+/* $Id: isdnconf.c,v 1.19 1998/09/26 18:30:08 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -20,6 +20,29 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnconf.c,v $
+ * Revision 1.19  1998/09/26 18:30:08  akool
+ *  - quick and dirty Call-History in "-m" Mode (press "h" for more info) added
+ *    - eat's one more socket, Stefan: sockets[3] now is STDIN, FIRST_DESCR=4 !!
+ *  - Support for tesion)) Baden-Wuerttemberg Tarif
+ *  - more Providers
+ *  - Patches from Wilfried Teiken <wteiken@terminus.cl-ki.uni-osnabrueck.de>
+ *    - better zone-info support in "tools/isdnconf.c"
+ *    - buffer-overrun in "isdntools.c" fixed
+ *  - big Austrian Patch from Michael Reinelt <reinelt@eunet.at>
+ *    - added $(DESTDIR) in any "Makefile.in"
+ *    - new Configure-Switches "ISDN_AT" and "ISDN_DE"
+ *      - splitted "takt.c" and "tools.c" into
+ *          "takt_at.c" / "takt_de.c" ...
+ *          "tools_at.c" / "takt_de.c" ...
+ *    - new feature
+ *        CALLFILE = /var/log/caller.log
+ *        CALLFMT  = %b %e %T %N7 %N3 %N4 %N5 %N6
+ *      in "isdn.conf"
+ *  - ATTENTION:
+ *      1. "isdnrep" dies with an seg-fault, if not HTML-Mode (Stefan?)
+ *      2. "isdnlog/Makefile.in" now has hardcoded "ISDN_DE" in "DEFS"
+ *      	should be fixed soon
+ *
  * Revision 1.18  1998/06/14 15:34:35  akool
  * AVM B1 support (Layer 3)
  * Telekom's new currency DEM 0,121 supported
@@ -826,6 +849,8 @@ void setDefaults()
     currency = "NLG";
 #elif defined(ISDN_CH)
     currency = "SFR";
+#elif defined(ISDN_AT)
+    currency = "ATS";
 #else
     currency = "DM";
 #endif
@@ -838,6 +863,8 @@ void setDefaults()
     currency_factor = 0.15;
 #elif defined(ISDN_CH)
     currency_factor = 0.01;
+#elif defined(ISDN_AT)
+    currency_factor = 1.056;
 #else
     currency_factor = 0.121;
 #endif
@@ -969,6 +996,8 @@ static int _readconfig(char *_myname)
   stopcmd        = STOPCMD;
   rebootcmd      = REBOOTCMD;
   logfile        = LOGFILE;
+  callfile       = NULL;
+  callfmt        = NULL;
   start_procs.infoargs = NULL;
   start_procs.flags    = 0;
   conf_dat       = NULL;
@@ -1102,6 +1131,12 @@ static int Set_Globals(section *SPtr)
 		if ((CEPtr = Get_Entry(Ptr->entries,CONF_ENT_LOGFILE)) != NULL)
 			logfile = CEPtr->value;
 
+		if ((CEPtr = Get_Entry(Ptr->entries,CONF_ENT_CALLFILE)) != NULL)
+			callfile = CEPtr->value;
+
+		if ((CEPtr = Get_Entry(Ptr->entries,CONF_ENT_CALLFMT)) != NULL)
+			callfmt = CEPtr->value;
+
 		if ((CEPtr = Get_Entry(Ptr->entries,CONF_ENT_CW)) != NULL)
 			CityWeekend = toupper(*(CEPtr->value)) == 'Y'?1:0;
 
@@ -1195,12 +1230,12 @@ static int Set_Globals(section *SPtr)
 		_print_msg("%s: WARNING: Variable `%s' is not set!\n", Myname, CONF_ENT_AREA);
 		myarea = "";
 	}
-
+#if 0
   if (chargemax == 0)
   {
   	_print_msg("%s: WARNING: Variable `%s' is not set, \nperforming no action when chargemax-overflow\n", Myname, CONF_ENT_CHARGE);
   }
-
+#endif
 	return 0;
 }
 
@@ -1373,8 +1408,11 @@ static int Set_Numbers(section *SPtr, char *Section, int msn)
 			{
 				if (msn < 0)
 				{
+                                       if((known[Index]->zone=area_diff(NULL, num))<1)
+                                       {
 					_print_msg("%s: WARNING: There is no variable `%s' for number `%s'!\n", Myname, CONF_ENT_ZONE, num);
 					known[Index]->zone = 4;
+                                       }
 				}
 				else
 					known[Index]->zone = 1;

@@ -1,4 +1,4 @@
-# $Id: Makefile.in,v 1.1 1998/06/12 11:11:42 fritz Exp $
+# $Id: Makefile.in,v 1.2 1998/09/26 18:27:45 akool Exp $
 #
 # Makefile for diehlctrl
 # (C) 1997 Fritz Elfert
@@ -48,23 +48,23 @@ $(PROGRAM):	$(MODULES)
 	$(CC) $(CFLAGS) $(INCLUDES) $(DEFS) $? $(LDFLAGS) -o $@
 
 install-data:
-	mkdir -p $(DATADIR)
-	#$(INSTALL_DATA) firmware/loadpg.bin $(DATADIR)/loadpg.bin
-	#$(INSTALL_DATA) firmware/pc_eu_ca.bin $(DATADIR)/pc_eu_ca.bin
-	#$(INSTALL_DATA) firmware/pc_1t_ca.bin $(DATADIR)/pc_1t_ca.bin
+	mkdir -p $(DESTDIR)$(DATADIR)
+	#$(INSTALL_DATA) firmware/loadpg.bin $(DESTDIR)$(DATADIR)/loadpg.bin
+	#$(INSTALL_DATA) firmware/pc_eu_ca.bin $(DESTDIR)$(DATADIR)/pc_eu_ca.bin
+	#$(INSTALL_DATA) firmware/pc_1t_ca.bin $(DESTDIR)$(DATADIR)/pc_1t_ca.bin
 
 install-man: $(PROGRAM).man
-	mkdir -p $(MAN8DIR)
-	$(INSTALL_MAN) $< $(MAN8DIR)/$(MANPAGE)
+	mkdir -p $(DESTDIR)$(MAN8DIR)
+	$(INSTALL_MAN) $< $(DESTDIR)$(MAN8DIR)/$(MANPAGE)
 
 install: $(PROGRAM) install-man install-data
-	$(INSTALL_PROGRAM) $(PROGRAM) $(SBINDIR)/$(PROGRAM)
+	$(INSTALL_PROGRAM) $(PROGRAM) $(DESTDIR)$(SBINDIR)/$(PROGRAM)
 
 install-strip: $(PROGRAM)
-	$(INSTALL_PROGRAM) -s $(PROGRAM) $(SBINDIR)/$(PROGRAM)
+	$(INSTALL_PROGRAM) -s $(PROGRAM) $(DESTDIR)$(SBINDIR)/$(PROGRAM)
 
 uninstall:
-	rm -f $(SBINDIR)/$(PROGRAM) $(MAN8DIR)/$(MANPAGE)
+	rm -f $(DESTDIR)$(SBINDIR)/$(PROGRAM) $(DESTDIR)$(MAN8DIR)/$(MANPAGE)
 
 clean:
 	rm -f *.o *~ $(PROGRAM)

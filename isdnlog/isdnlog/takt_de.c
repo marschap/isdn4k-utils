@@ -1,4 +1,4 @@
-/* $Id: takt.c,v 1.4 1998/09/22 20:59:42 luethje Exp $
+/* $Id: takt_de.c,v 1.1 1998/09/26 18:29:42 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -276,7 +276,7 @@ static int tarifzeit(struct tm *tm, char *why)
         |         |       |      +----- 1=CityCall, 2=RegioCall,  3=GermanCall
         |         |       +------------ 1=Werktag,  2=Wochenende, 3=27.12. - 30.12., 4=Feiertag
         |         +-------------------- 1=05:00 .. 09:00, 2=09:00 .. 12:00, 3=12:00 .. 18:00, 4=18:00 .. 21:00, 5=21:00 .. 02:00, 6=02:00 .. 05:00
-        +------------------------------ 1=DTAG, 2=Mobilcom
+        +------------------------------ 1=DTAG, 2=Mobilcom, 3=Tele2
 */
 
 static int   zeit[24] = { 4, 4, 5, 5, 5, 0, 0, 0, 0, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 3, 4, 4, 4 };

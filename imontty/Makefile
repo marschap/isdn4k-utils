@@ -2,7 +2,7 @@
 #
 # (c) 1995-97 Volker Götz
 #
-# $Id: Makefile,v 1.2 1997/04/03 08:56:54 fritz Exp $
+# $Id: Makefile,v 1.3 1998/09/26 18:28:06 akool Exp $
 
 ifeq (../.config,$(wildcard ../.config))
 	#
@@ -38,10 +38,10 @@ rootperm:
 	fi
 
 install: $(PROGS) rootperm
-	install -s -o 0 -g 0 -m 0755 $(PROGS) $(CONFIG_SBINDIR)
+	install -s -o 0 -g 0 -m 0755 $(PROGS) $(DESTDIR)$(CONFIG_SBINDIR)
 
 uninstall: rootperm
-	for i in $(PROGS) ; do rm -f $(CONFIG_SBINDIR)/$$i; done
+	for i in $(PROGS) ; do rm -f $(DESTDIR)$(CONFIG_SBINDIR)/$$i; done
 
 clean:
 	rm -f *.o $(PROGS) *~

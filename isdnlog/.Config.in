@@ -19,6 +19,7 @@ if [ "$CONFIG_ISDNLOG_MYSQLDB" = "y" ]; then
 fi
 choice 'Country specific chargeinfo support' \
 	"DE CONFIG_ISDN_LOG_DE \
+	 AT CONFIG_ISDN_LOG_AT \
 	 NL CONFIG_ISDN_LOG_NL \
 	 CH CONFIG_ISDN_LOG_CH" DE
 endmenu

@@ -1,4 +1,4 @@
-/* $Id: isdnrep.c,v 1.42 1998/09/22 21:06:50 luethje Exp $
+/* $Id: isdnrep.c,v 1.43 1998/09/26 18:29:55 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -24,6 +24,29 @@
  *
  *
  * $Log: isdnrep.c,v $
+ * Revision 1.43  1998/09/26 18:29:55  akool
+ *  - quick and dirty Call-History in "-m" Mode (press "h" for more info) added
+ *    - eat's one more socket, Stefan: sockets[3] now is STDIN, FIRST_DESCR=4 !!
+ *  - Support for tesion)) Baden-Wuerttemberg Tarif
+ *  - more Providers
+ *  - Patches from Wilfried Teiken <wteiken@terminus.cl-ki.uni-osnabrueck.de>
+ *    - better zone-info support in "tools/isdnconf.c"
+ *    - buffer-overrun in "isdntools.c" fixed
+ *  - big Austrian Patch from Michael Reinelt <reinelt@eunet.at>
+ *    - added $(DESTDIR) in any "Makefile.in"
+ *    - new Configure-Switches "ISDN_AT" and "ISDN_DE"
+ *      - splitted "takt.c" and "tools.c" into
+ *          "takt_at.c" / "takt_de.c" ...
+ *          "tools_at.c" / "takt_de.c" ...
+ *    - new feature
+ *        CALLFILE = /var/log/caller.log
+ *        CALLFMT  = %b %e %T %N7 %N3 %N4 %N5 %N6
+ *      in "isdn.conf"
+ *  - ATTENTION:
+ *      1. "isdnrep" dies with an seg-fault, if not HTML-Mode (Stefan?)
+ *      2. "isdnlog/Makefile.in" now has hardcoded "ISDN_DE" in "DEFS"
+ *      	should be fixed soon
+ *
  * Revision 1.42  1998/09/22 21:06:50  luethje
  * isdnrep: simple fix
  *
@@ -812,6 +835,8 @@ int read_logfile(char *myname)
 			einheit = 0.0011; /* cost of one second local tariff during office hours */
 #elif defined(ISDN_CH)
 			einheit = 0.01;
+#elif defined(ISDN_AT)
+			einheit = 1.056;
 #else
 			einheit = Tarif96 ? 0.121 : 0.23;
 #endif

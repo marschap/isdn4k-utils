@@ -1,4 +1,4 @@
-# $Id: Makefile.in,v 1.5 1997/10/26 22:55:25 fritz Exp $
+# $Id: Makefile.in,v 1.6 1998/09/26 18:27:40 akool Exp $
 #
 # Makefile for avmcapictrl
 # (C) 1997 Carsten Paeth
@@ -42,23 +42,23 @@ avmcapictrl: $(MODULES)
 	$(CC) $(CFLAGS) $? $(LDFLAGS) -o $@
 
 install: $(PROGRAMS) $(MANPAGES)
-	mkdir -p $(SBINDIR)
-	$(INSTALL_PROGRAM) $(PROGRAMS) $(SBINDIR)
-	mkdir -p $(MAN8DIR)
-	$(INSTALL_MAN) $(MANPAGES) $(MAN8DIR)
+	mkdir -p $(DESTDIR)$(SBINDIR)
+	$(INSTALL_PROGRAM) $(PROGRAMS) $(DESTDIR)$(SBINDIR)
+	mkdir -p $(DESTDIR)$(MAN8DIR)
+	$(INSTALL_MAN) $(MANPAGES) $(DESTDIR)$(MAN8DIR)
 
 install-strip: $(PROGRAMS) $(MANPAGES)
-	mkdir -p $(SBINDIR)
-	$(INSTALL_PROGRAM) -s $(PROGRAMS) $(SBINDIR)
-	mkdir -p $(MAN8DIR)
-	$(INSTALL_MAN) $(MANPAGES) $(MAN8DIR)
+	mkdir -p $(DESTDIR)$(SBINDIR)
+	$(INSTALL_PROGRAM) -s $(PROGRAMS) $(DESTDIR)$(SBINDIR)
+	mkdir -p $(DESTDIR)$(MAN8DIR)
+	$(INSTALL_MAN) $(MANPAGES) $(DESTDIR)$(MAN8DIR)
 
 uninstall:
 	@for i in `echo $(PROGRAMS)` ; do \
-		rm -f $(SBINDIR)/$$i ; \
+		rm -f $(DESTDIR)$(SBINDIR)/$$i ; \
 	done
 	@for i in `echo $(MANPAGES)` ; do \
-		rm -f $(MAN8DIR)/$$i ; \
+		rm -f $(DESTDIR)$(MAN8DIR)/$$i ; \
 	done
 
 clean:

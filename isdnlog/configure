@@ -633,13 +633,29 @@ cat >> confdefs.h <<EOF
 #define REBOOTCMD "$REBOOTCMD"
 EOF
 
+if test "$CONFIG_ISDN_LOG_DE" = "y" ; then
+	NATION="de"
+	cat >> confdefs.h <<\EOF
+#define ISDN_DE 1
+EOF
+
+fi
+if test "$CONFIG_ISDN_LOG_AT" = "y" ; then
+	NATION="at"
+	cat >> confdefs.h <<\EOF
+#define ISDN_AT 1
+EOF
+
+fi
 if test "$CONFIG_ISDN_LOG_CH" = "y" ; then
+	NATION="ch"
 	cat >> confdefs.h <<\EOF
 #define ISDN_CH 1
 EOF
 
 fi
 if test "$CONFIG_ISDN_LOG_NL" = "y" ; then
+	NATION="nl"
 	cat >> confdefs.h <<\EOF
 #define ISDN_NL 1
 EOF
@@ -2415,6 +2431,7 @@ s%@COUNTRYCODE@%$COUNTRYCODE%g
 s%@COUNTRYPREFIX@%$COUNTRYPREFIX%g
 s%@AREACODE@%$AREACODE%g
 s%@AREAPREFIX@%$AREAPREFIX%g
+s%@NATION@%$NATION%g
 
 CEOF
 EOF

@@ -40,7 +40,7 @@ CC         = $(_CC)
 
 INSTALL =install
 INSTALL_DIR     := $(INSTALL) -m 0755 -o 0 -g 0 -d
-INSTALL_AVON    := $(INSTALL) -m 0644 $(AVON) $(I4LCONFDIR)
+INSTALL_AVON    := $(INSTALL) -m 0644 $(AVON) $(DESTDIR)$(I4LCONFDIR)
 
 #CFLAGS   = -I$(PREFIXDIR)
 
@@ -59,13 +59,13 @@ distclean: clean
 
 install: depend all
   ifneq ($(CONFIG_LIB_AREACODE),y)
-		-$(INSTALL_DIR) $(I4LCONFDIR)
-		-test $(AVON) -ot $(I4LCONFDIR)/$(AVON) || ( $(INSTALL_AVON) )
-		-@rm -f $(I4LCONFDIR)/$(AVON).pag $(I4LCONFDIR)/$(AVON).dir
+		-$(INSTALL_DIR) $(DESTDIR)$(I4LCONFDIR)
+		-test $(AVON) -ot $(DESTDIR)$(I4LCONFDIR)/$(AVON) || ( $(INSTALL_AVON) )
+		-@rm -f $(DESTDIR)$(I4LCONFDIR)/$(AVON).pag $(DESTDIR)$(I4LCONFDIR)/$(AVON).dir
   endif
 	        
 deinstall: distclean
-		-rm -f $(I4LCONFDIR)/$(AVON)*
+		-rm -f $(DESTDIR)$(I4LCONFDIR)/$(AVON)*
 
 createDB.o:   createDB.c createDB.h
 

@@ -1,4 +1,4 @@
-/* $Id: isdnlog.h,v 1.9 1998/06/21 11:52:47 akool Exp $
+/* $Id: isdnlog.h,v 1.10 1998/09/26 18:29:10 akool Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,29 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnlog.h,v $
+ * Revision 1.10  1998/09/26 18:29:10  akool
+ *  - quick and dirty Call-History in "-m" Mode (press "h" for more info) added
+ *    - eat's one more socket, Stefan: sockets[3] now is STDIN, FIRST_DESCR=4 !!
+ *  - Support for tesion)) Baden-Wuerttemberg Tarif
+ *  - more Providers
+ *  - Patches from Wilfried Teiken <wteiken@terminus.cl-ki.uni-osnabrueck.de>
+ *    - better zone-info support in "tools/isdnconf.c"
+ *    - buffer-overrun in "isdntools.c" fixed
+ *  - big Austrian Patch from Michael Reinelt <reinelt@eunet.at>
+ *    - added $(DESTDIR) in any "Makefile.in"
+ *    - new Configure-Switches "ISDN_AT" and "ISDN_DE"
+ *      - splitted "takt.c" and "tools.c" into
+ *          "takt_at.c" / "takt_de.c" ...
+ *          "tools_at.c" / "takt_de.c" ...
+ *    - new feature
+ *        CALLFILE = /var/log/caller.log
+ *        CALLFMT  = %b %e %T %N7 %N3 %N4 %N5 %N6
+ *      in "isdn.conf"
+ *  - ATTENTION:
+ *      1. "isdnrep" dies with an seg-fault, if not HTML-Mode (Stefan?)
+ *      2. "isdnlog/Makefile.in" now has hardcoded "ISDN_DE" in "DEFS"
+ *      	should be fixed soon
+ *
  * Revision 1.9  1998/06/21 11:52:47  akool
  * First step to let isdnlog generate his own AOCD messages
  *
@@ -151,9 +174,10 @@
 #define ISDNCTRL    0
 #define ISDNCTRL2   1
 #define ISDNINFO    2
-#define IN_PORT     3
+#define	STDIN	    3
+#define IN_PORT     4
 
-#define FIRST_DESCR 3
+#define FIRST_DESCR 4
 
 /****************************************************************************/
 
@@ -300,6 +324,7 @@ _EXTERN IO      io[ISDN_MAX_CHANNELS];
 _EXTERN void dotrace(void);
 _EXTERN int  morectrl(int card);
 _EXTERN void moreinfo(void);
+_EXTERN void morekbd(void);
 _EXTERN void processcint(void);
 _EXTERN void processrate(void);
 _EXTERN void clearchan(int chan, int total);

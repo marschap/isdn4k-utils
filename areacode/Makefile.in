@@ -37,9 +37,9 @@ install-man:
 
 install: all
 ifeq ($(CONFIG_LIB_AREACODE),y)
-		mkdir -p $(CONFIG_DATADIR)
+		mkdir -p $(DESTDIR)$(CONFIG_DATADIR)
 		$(MAKE) -f make/linux.mak $(INSTALLOPTS) install
 endif
 
 uninstall:
-	rm -f $(shell echo $(CONFIG_DATADIR))/areacodes
+	rm -f $(shell echo $(DESTDIR)$(CONFIG_DATADIR))/areacodes

@@ -87,6 +87,9 @@
 /* Define if you have Swiss charge info */
 #undef ISDN_CH
 
+/* Define if you have Austrian charge info */
+#undef ISDN_AT
+
 /* Define if you have Netherlands charge info */
 #undef ISDN_NL
 

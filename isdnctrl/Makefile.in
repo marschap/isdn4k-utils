@@ -1,4 +1,4 @@
-# $Id: Makefile.in,v 1.10 1998/03/16 09:40:51 cal Exp $
+# $Id: Makefile.in,v 1.11 1998/09/26 18:28:25 akool Exp $
 #
 # Makefile for isdnctrl
 # (C) 1997 Fritz Elfert
@@ -64,20 +64,20 @@ $(PROGRAM):	$(MODULES)
 	$(CC) $(CFLAGS) $(MODULES) $(LDFLAGS) -o $@
 
 install-man: $(MANPAGES)
-	$(INSTALL) -d $(MAN8DIR)
-	$(INSTALL_MAN) $^ $(MAN8DIR)
+	$(INSTALL) -d $(DESTDIR)$(MAN8DIR)
+	$(INSTALL_MAN) $^ $(DESTDIR)$(MAN8DIR)
 
 install: $(PROGRAM) install-man
-	$(INSTALL) -d $(SBINDIR)
-	$(INSTALL_PROGRAM) $(PROGRAM) $(SBINDIR)/$(PROGRAM)
+	$(INSTALL) -d $(DESTDIR)$(SBINDIR)
+	$(INSTALL_PROGRAM) $(PROGRAM) $(DESTDIR)$(SBINDIR)/$(PROGRAM)
 
 install-strip: $(PROGRAM)
-	$(INSTALL) -d $(SBINDIR)
-	$(INSTALL_PROGRAM) -s $(PROGRAM) $(SBINDIR)/$(PROGRAM)
+	$(INSTALL) -d $(DESTDIR)$(SBINDIR)
+	$(INSTALL_PROGRAM) -s $(PROGRAM) $(DESTDIR)$(SBINDIR)/$(PROGRAM)
 
 uninstall:
-	rm -f $(SBINDIR)/$(PROGRAM)
-	for i in $(MANPAGES) ; do rm $(MAN8DIR)/$$i ; done
+	rm -f $(DESTDIR)$(SBINDIR)/$(PROGRAM)
+	for i in $(MANPAGES) ; do rm $(DESTDIR)$(MAN8DIR)/$$i ; done
 
 clean:
 	rm -f *.o *~ $(PROGRAM) *.man *.8 .*.man .*.8
