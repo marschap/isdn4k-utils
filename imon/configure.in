@@ -29,7 +29,7 @@ AC_CHECK_HEADERS(ncurses.h,,
 
 dnl Check for linux/isdn.h, give up if not found.
 AC_FIND_KERNEL
-AC_CHECK_HEADER($CONFIG_KERNELDIR/include/linux/isdn.h,,
+AC_CHECK_FILE($CONFIG_KERNELDIR/include/linux/isdn.h,,
 	AC_MSG_ERROR("Missing $CONFIG_KERNELDIR/include/linux/isdn.h. Kernel source installed?")
 )
 
