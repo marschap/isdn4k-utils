@@ -1,5 +1,5 @@
 #
-# $Id: README,v 1.12 1999/10/26 18:17:11 akool Exp $
+# $Id: README,v 1.13 2000/01/30 17:30:32 kai Exp $
 #
 This is the README file for the "isdn4k-utils" package from "The i4l-crew".
 
@@ -41,6 +41,27 @@ This package contains the following stuff:
   ipppstats.8, iprofd.8, isdnctrl.8, isdnlog.8, isdnrep.1, telesctrl.8,
   isdnrate.1, rate-files.5, xisdnload.1x and xmonisdn.1x
 
+IMPORTANT:
+  This will be the last release of isdn4k-utils as is. From now (February 2000) on,
+  the package will be splitted into the following packages:
+
+  base: common configuration tools and Documentation
+  isdnlog: D-Channel logging, charge calculation etc.
+  audio: the answering machine vbox
+  additional: ipppcomp ipppstats iprofd xisdnload xmonisdn
+
+  hardware-dependent packages:
+  hisax:   tools for passive isdn cards
+  avmb1:   tools for the AVM B1/T1/M1/M2 *active* cards
+           (not for Fritz!classic, Fritz!pnp, Fritz!PCI, these are in hisax)
+  act2000: tools for IBM Active 2000
+  eicon:   tools for Eicon.Diehl *active* cards
+  icn:     tools for ICN 2B and 4B 
+  pcbit:   tools for PCBIT-D
+  loop:    tools for the loopback isdn device
+
+  These packages will appear on ftp.isdn4linux.de when they are ready.
+
 COPYRIGHT/COPYING:
 
   Until explicitely stated, all programs in this package can be freely
@@ -61,16 +82,10 @@ COPYRIGHT/COPYING:
 System prerequisites:
 
   To use this package, you need a kernel with an ISDN-subsystem configured.
-  To get a such a kernel, take a clean standard-kernel (Version 2.0.31 or
-  > 2.1.57 resp.) enable the isdn-related features you want and build the
-  kernel as usual. If applicable some patches may be needed
-
-  isdn-patches are available at
-
-     ftp.franken.de:/pub/isdn4linux
-
-  For using modularized parts of the ISDN-subsystem, newest modutils
-  are strongly recommended.
+  To get a such a kernel, take a clean standard-kernel (Version > 2.0.37 or
+  > 2.2.14 resp.) enable the isdn-related features you want and build the
+  kernel as usual. Older kernels may work as well, but bugs have been found 
+  and fixed, so better use the recommended versions (or above)
 
 3. Configuration, Compilation.
 
