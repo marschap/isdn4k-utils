@@ -13,10 +13,11 @@
 #include <iptables.h>
 #include <linux/config.h>
 
+static const char *MY_NETFILTER_VERSION = NETFILTER_VERSION;
+
 #if ((CONFIG_ISDN || CONFIG_ISDN_MODULE) &&  			\
 		CONFIG_ISDN_WITH_ABC_IPTABLES_NETFILTER)
 
-static const char *MY_NETFILTER_VERSION = NETFILTER_VERSION;
 
 #define IPT_ISDN_DWISDN_H_NEED_OPTS 1
 #include <linux/isdn_dwabc.h>
@@ -73,6 +74,17 @@ static void help(void)
 	"[!] --dialmode   auto | manual | off\n"
 	"\ttrue if the interface configured with this dialmode\n"
 	"\t! is only the negation\n"
+
+	"[!] --addr_ok    no values possible\n"
+	"\tonly for dynip-interfaces.\n"
+	"\ttrue if the interface is online and the ip-addr is set.\n"
+	"\talways true for all other interfaces.\n"
+
+	"[!] --f_eq_iadr  no values possible\n"
+	"\tonly for dynip-interfaces.\n"
+	"\ttrue if the interface is online, ip-addr is set and\n"
+	"\tthe frame source-addr and interface-addr are equal.\n"
+	"\talways true for all other interfaces.\n"
 	"\n",
 #ifdef DWISDN_INSTALLED
 	IPTDWISDN_REVISION,
@@ -132,13 +144,6 @@ static int parse( 	int c,
 	switch ((enum iptdwisdn)c) {
 	default: return 0;
 
-	case IPT_DWISDN_CBOUT:
-
-		if(check_inverse(optarg, &invert))
-			optind++;
-
-		break;
-
 	case IPT_DWISDN_DIALMODE:
 
 		if(check_inverse(optarg, &invert))
@@ -158,14 +163,11 @@ static int parse( 	int c,
 
 		break;
 		
+	case IPT_DWISDN_CBOUT:
 	case IPT_DWISDN_IDEV:
-
-		if(check_inverse(optarg, &invert))
-			optind++;
-
-		break;
-
+	case IPT_DWISDN_ADDROK:
 	case IPT_DWISDN_OUTGOING:
+	case IPT_DWISDN_FEQIADR:
 
 		if(check_inverse(optarg, &invert))
 			optind++;
@@ -193,9 +195,6 @@ static int parse( 	int c,
 
 		if(check_inverse(optarg, &invert))
 			optind++;
-
-		if(invert)
-			dw->inst[idx] = IPT_DWISDN_NOT;
 
 		for(p = (char *)optarg; *p; p++) {
 
@@ -233,7 +232,9 @@ static int parse( 	int c,
 	*flags = 1;
 
 	if(invert)
-		dw->inst[idx] = IPT_DWISDN_NOT;
+		dw->inst[idx] |= IPT_DWISDN_NOT;
+
+	dw->parcount++;
 
 	return(1);
 }

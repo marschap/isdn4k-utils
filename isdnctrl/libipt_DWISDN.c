@@ -172,7 +172,7 @@ static int parse( 	int c,
 	*flags = 1;
 
 	if(invert)
-		dw->inst[idx] = IPT_DWISDN_NOT;
+		dw->inst[idx] |= TIPT_DWISDN_NOT;
 
 	dw->parcount++;
 
@@ -204,7 +204,7 @@ static void myprint(IPTDWISDN_INFO *p)
 		if(inst & TIPT_DWISDN_NOT) 
 			printf("! ");
 
-		inst &= ~IPT_DWISDN_NOT;
+		inst &= ~TIPT_DWISDN_NOT;
 
 		printf("--%s ",TIPT_dwisdn_opts[inst-1].name);
 
