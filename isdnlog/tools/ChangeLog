@@ -1,3 +1,8 @@
+2004-08-25  Tobias Becker  <tobiasb@isdn4linux.de>
+
+	* rate.c (initRate, get_area1): Put a minimal statement after label
+	at end of block.
+
 2004-07-24  Tobias Becker  <tobiasb@isdn4linux.de>
 
 	* isdnconf.c (Set_Globals): Store `REPOTIONS' config file entry to

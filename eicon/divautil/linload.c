@@ -197,7 +197,7 @@ int DivaALoad (char *dsp_name,
 			case 6:
 				filename[strlen(filename)-1]='6';
 				break;
-			default:
+			default: ;
 		}
 	}
 

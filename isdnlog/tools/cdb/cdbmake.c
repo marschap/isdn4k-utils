@@ -3,8 +3,6 @@
 #include "freecdbmake.h"
 #include <unistd.h>
 
-extern char *malloc();
-
 void diesys(why) char *why; { perror(why); exit(111); }
 
 void writeerror() { diesys("cdbmake: fatal: unable to write"); }

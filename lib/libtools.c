@@ -1,4 +1,4 @@
-/* $Id: libtools.c,v 1.10 1999/11/03 16:13:36 paul Exp $
+/* $Id: libtools.c,v 1.11 2004/08/25 21:22:14 tobiasb Exp $
  * ISDN accounting for isdn4linux.
  *
  * Copyright 1996 by Stefan Luethje (luethje@sl-gw.lake.de)
@@ -18,6 +18,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: libtools.c,v $
+ * Revision 1.11  2004/08/25 21:22:14  tobiasb
+ * Minor fixes, required by gcc-3.4: Label at end of block, double function
+ * declaration.  Revealed by Andreas Jochens as Debian bug #266523.
+ *
  * Revision 1.10  1999/11/03 16:13:36  paul
  * Added { } to suppress egcs warnings.
  *
@@ -710,7 +714,7 @@ const char *Pathfind(const char *path, const char *name, char *mode)
 				          break;
 				case 'r': _mode |= R_OK;
 				          break;
-				default :
+				default : ;
 			}
 		}
 

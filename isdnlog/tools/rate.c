@@ -1,6 +1,6 @@
 /* #define DEBUG_REDIRZ */
 
-/* $Id: rate.c,v 1.87 2004/01/11 15:16:11 tobiasb Exp $
+/* $Id: rate.c,v 1.88 2004/08/25 21:22:07 tobiasb Exp $
  *
  * Tarifdatenbank
  *
@@ -21,6 +21,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rate.c,v $
+ * Revision 1.88  2004/08/25 21:22:07  tobiasb
+ * Minor fixes, required by gcc-3.4: Label at end of block, double function
+ * declaration.  Revealed by Andreas Jochens as Debian bug #266523.
+ *
  * Revision 1.87  2004/01/11 15:16:11  tobiasb
  * Do not ignore last provider in ratefile if it contains only redirs (R:)
  * and no real zones (Z:).
@@ -1817,7 +1821,7 @@ again:
 	  numbers++;
 	  number=realloc(number, numbers*sizeof(int));
 	  number[numbers-1]=i;
-	skip:
+	skip: ;
 	}
 
 	while (isblank(*s)) s++;
@@ -2390,7 +2394,7 @@ static int get_area1(int prefix, RATE *Rate, char *number, TELNUM *num,
 	  }
 	}
 	return UNKNOWN;
-      done:
+      done: ;
       }
     }
   }

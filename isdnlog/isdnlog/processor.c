@@ -1,4 +1,4 @@
-/* $Id: processor.c,v 1.127 2003/10/29 17:41:34 tobiasb Exp $
+/* $Id: processor.c,v 1.128 2004/08/25 21:22:06 tobiasb Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.128  2004/08/25 21:22:06  tobiasb
+ * Minor fixes, required by gcc-3.4: Label at end of block, double function
+ * declaration.  Revealed by Andreas Jochens as Debian bug #266523.
+ *
  * Revision 1.127  2003/10/29 17:41:34  tobiasb
  * isdnlog-4.67:
  *  - Enhancements for isdnrep:
@@ -5564,7 +5568,6 @@ endhex:
     tei = BROADCAST; /* Wenn nach einer tei-Zeile keine hex:-Zeile kommt, tei ungueltig machen! */
 
     if ((type == SETUP) && !replay) { /* fetch additional info from "/dev/isdninfo" */
-      static void moreinfo(); /* soviel zu Objektorientiertem Denken ;-) */
       moreinfo();
     } /* if */
 

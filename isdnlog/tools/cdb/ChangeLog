@@ -1,0 +1,5 @@
+2004-08-25  Tobias Becker  <tobiasb@isdn4linux.de>
+
+	* cdbmake.c: Removed declaration of malloc, declared in stdlib.h.
+
+	* ChangeLog: Started this file.

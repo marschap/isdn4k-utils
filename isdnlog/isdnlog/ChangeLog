@@ -1,3 +1,8 @@
+2004-08-25  Tobias Becker  <tobiasb@isdn4linux.de>
+
+	* processor.c (processctrl): Removed declaration of moreinfo, it is
+	declared in isdnlog.h.
+
 2004-07-24  Tobias Becker  <tobiasb@isdn4linux.de>
 
 	* start_prog.c (Get_Opts): The call duration \$5 is now 0 until
