@@ -1,4 +1,4 @@
-/* $Id: isdnconf.c,v 1.27 1999/05/22 10:18:18 akool Exp $
+/* $Id: isdnconf.c,v 1.28 1999/06/01 19:33:27 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -20,6 +20,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnconf.c,v $
+ * Revision 1.28  1999/06/01 19:33:27  akool
+ * rate-de.dat V:1.02-Germany [01-Jun-1999 20:52:32]
+ *
  * Revision 1.27  1999/05/22 10:18:18  akool
  * isdnlog Version 3.29
  *
@@ -1058,8 +1061,8 @@ int main(int argc, char *argv[], char *envp[])
 
 
  		initHoliday(holifile, NULL);
- 		/* initRate("/etc/isdn/rate.conf", "/usr/lib/isdn/rate-de.dat", "/usr/lib/isdn/countries-de.dat", NULL, NULL); */
- 		initRate(NULL, "/usr/lib/isdn/rate-de.dat", "/usr/lib/isdn/countries-de.dat", NULL, NULL);
+ 		initRate("/etc/isdn/rate.conf", "/usr/lib/isdn/rate-de.dat", "/usr/lib/isdn/countries-de.dat", NULL, NULL);
+ 		/* initRate(NULL, "/usr/lib/isdn/rate-de.dat", "/usr/lib/isdn/countries-de.dat", NULL, NULL); */
 		currency = strdup("DM");
 		vbn = strdup("010");
 

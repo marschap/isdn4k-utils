@@ -1,4 +1,4 @@
-/* $Id: rate.c,v 1.18 1999/05/22 10:19:28 akool Exp $
+/* $Id: rate.c,v 1.19 1999/06/01 19:33:43 akool Exp $
  *
  * Tarifdatenbank
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rate.c,v $
+ * Revision 1.19  1999/06/01 19:33:43  akool
+ * rate-de.dat V:1.02-Germany [01-Jun-1999 20:52:32]
+ *
  * Revision 1.18  1999/05/22 10:19:28  akool
  * isdnlog Version 3.29
  *
@@ -945,7 +948,7 @@ int initRate(char *conf, char *dat, char *countries, char **msg, char **cmsg)
 	      warning(dat, "Unknown country \"%s\"", c);
             else if ((*c != '+') &&
                      (!zones->data ||
-                     ((zones->data > 19) && (zones->data < 100)))) {
+                     ((zones->data > 39) && (zones->data < 200)))) {
 /* ^MICHI:
     Anstelle dieser wuesten Abfrage auf die Zonen [0,5..10,20..99]
     benoetige ich das besprochene neue Flag in der "rate-xx.dat"!
