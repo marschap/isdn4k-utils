@@ -1,4 +1,4 @@
-/* $Id: processor.c,v 1.131 2004/12/16 22:40:30 tobiasb Exp $
+/* $Id: processor.c,v 1.132 2005/01/02 16:37:27 tobiasb Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.132  2005/01/02 16:37:27  tobiasb
+ * Improved utilization of special number information from ratefile.
+ *
  * Revision 1.131  2004/12/16 22:40:30  tobiasb
  * Fix for rate computation of outgoing calls from other devices and for logging
  * of calls from and to the observed card (simultaneous SETUP messages).
@@ -1548,11 +1551,16 @@ void buildnumber(char *num, int oc3, int oc3a, char *result, int version,
 #endif
 
   if (!*intern) {
+    int l;
     if (*provider == UNKNOWN)
       *provider = preselect;
 
-    if (*num && !dir && (who == CALLED) && getSpecial(num) && (*sondernummer == UNKNOWN))
-      *sondernummer = strlen(num);
+    if ( *num && !dir && (who == CALLED) && (l=getSpecialLen(num)) ) {
+      if (*sondernummer == UNKNOWN)
+        *sondernummer = l; 	/* before: strlen(num); */
+      else if (*sondernummer < l)
+        *sondernummer = l;	/* longer match */
+    } /* /if special number */
   } /* if */
 
   if (Q931dmp) {

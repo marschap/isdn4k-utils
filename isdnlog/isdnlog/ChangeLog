@@ -1,3 +1,11 @@
+2005-01-02  Tobias Becker  <tobiasb@isdn4linux.de>
+
+	* processor.c (buildnumber): Repeat test for special number and
+	store only count of matching special number code digits to
+	*sonderrufnummer.  This makes a better display when dialing
+	special number ABCDEF digit by digit and the ratefile has separate
+	entries for special numbers ABCD* and AB* (in this order). 
+
 2004-12-16  Tobias Becker  <tobiasb@isdn4linux.de>
 
 	* isdnlog.c (read_param_file, main): An area code entry in the

@@ -1,4 +1,4 @@
-/* $Id: rate.h,v 1.21 2000/05/07 11:29:32 akool Exp $
+/* $Id: rate.h,v 1.22 2005/01/02 16:37:21 tobiasb Exp $
  *
  * Tarifdatenbank
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rate.h,v $
+ * Revision 1.22  2005/01/02 16:37:21  tobiasb
+ * Improved utilization of special number information from ratefile.
+ *
  * Revision 1.21  2000/05/07 11:29:32  akool
  * isdnlog-4.21
  *  - isdnlog/tools/rate.{c,h} ...     new X:tag for exclusions
@@ -257,6 +260,7 @@ int   initRate(char *conf, char *dat, char *dom, char **msg);
 char *getProvider(int prefix);
 char *getProviderVBN(int prefix);
 int   getSpecial(char *number);
+int   getSpecialLen(char *number);
 char* getSpecialName(char *number);
 char *getServiceNum(char *name);
 char *getServiceNames(int first);

@@ -1,3 +1,19 @@
+2005-01-02  Tobias Becker  <tobiasb@isdn4linux.de>
+
+	* rate.h (getSpecialLen): New rate data query function like getSpecial.
+	* rate.c (getSpecialLen, findSpecial): New functions, getSpecialLen is
+	public and returns count of matching digits.  findSpecial is non public
+	and sets matching indices for the Service array.  Both find the same
+	special number as getSpecial does.
+
+	* tools.c (vnum): Improved result for special numbers.  The service
+	name from the S: tag in the ratefile is appended to the special number
+	if no alias is defined.  Special numbers are now structered 012-34
+	instead of the former 012 - 34.
+
+	* tools.c (vnum): Fixed special number splitting to .vorwahl and
+	.rufnummer.  The first digit for rufnummer is no longer discarded.
+
 2004-12-18  TObias Becker  <tobiasb@isdn4linux.de>
 
 	* isdnrate.c (printTable): If verbose (-v) is specified, show used

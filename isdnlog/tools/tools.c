@@ -1,4 +1,4 @@
-/* $Id: tools.c,v 1.52 2003/07/25 22:18:03 tobiasb Exp $
+/* $Id: tools.c,v 1.53 2005/01/02 16:37:21 tobiasb Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools.c,v $
+ * Revision 1.53  2005/01/02 16:37:21  tobiasb
+ * Improved utilization of special number information from ratefile.
+ *
  * Revision 1.52  2003/07/25 22:18:03  tobiasb
  * isdnlog-4.65:
  *  - New values for isdnlog option -2x / dual=x with enable certain
@@ -890,6 +893,10 @@ char *vnum(int chan, int who)
     if (cnf > UNKNOWN)
       strcpy(retstr[retnum], call[chan].alias[who]);
     else if (call[chan].sondernummer[who] != UNKNOWN) {
+      /* get service name for special number */
+      char *SpName = getSpecialName(call[chan].num[who]);
+      if (!SpName)
+        SpName = "";
       if ((l1 = call[chan].sondernummer[who]) < l) {
         register char *p = call[chan].num[who] + l1;
         register char  c = *p;
@@ -899,14 +906,16 @@ char *vnum(int chan, int who)
 
         *p = 0;
 
-        sprintf(retstr[retnum], "%s - %c%s", call[chan].num[who], c, p + 1);
-	strcpy(call[chan].vorwahl[who], call[chan].num[who]);
-	strcpy(call[chan].rufnummer[who], p + 1);
+        snprintf(retstr[retnum], RETSIZE, "%s-%c%s%s%s", call[chan].num[who],
+                 c, p + 1, (*SpName) ? " " : "" , SpName);
 
+	strcpy(call[chan].vorwahl[who], call[chan].num[who]);
         *p = c;
+	strcpy(call[chan].rufnummer[who], p);
       }
       else
-        sprintf(retstr[retnum], "%s", call[chan].num[who]);
+        snprintf(retstr[retnum], RETSIZE, "%s%s%s", call[chan].num[who],
+                (*SpName) ? " " : "" , SpName);
     }
     else
       sprintf(retstr[retnum], "TN %s", call[chan].num[who]);

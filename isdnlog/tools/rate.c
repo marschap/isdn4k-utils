@@ -1,6 +1,6 @@
 /* #define DEBUG_REDIRZ */
 
-/* $Id: rate.c,v 1.88 2004/08/25 21:22:07 tobiasb Exp $
+/* $Id: rate.c,v 1.89 2005/01/02 16:37:21 tobiasb Exp $
  *
  * Tarifdatenbank
  *
@@ -21,6 +21,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rate.c,v $
+ * Revision 1.89  2005/01/02 16:37:21  tobiasb
+ * Improved utilization of special number information from ratefile.
+ *
  * Revision 1.88  2004/08/25 21:22:07  tobiasb
  * Minor fixes, required by gcc-3.4: Label at end of block, double function
  * declaration.  Revealed by Andreas Jochens as Debian bug #266523.
@@ -667,6 +670,10 @@
  * int getSpecial (char *number)
  *   überprüft, ob die Nummer einem N:-Tag = Service entspricht
  *   wird für die Sondernummern benötigt, retouniert (service# + 1) oder 0
+ *
+ * int getSpecialLen (char* number)
+ *   returns the number of leadings digits in number that match a
+ *   special number or zero if number is not a special number.
  *
  * char *getSpecialName(char *number)
  *   get the Service Name of a special number
@@ -2246,6 +2253,21 @@ char *getComment (int prefix, char *key)
   return NULL;
 }
 
+static int findSpecial (char *number, int *s, int *c)
+{
+  int i,j,l;
+  l=strlen(number);
+  for (i=0; i<nService; i++)
+    for(j=0; j<Service[i].nCode; j++)
+      if(strmatch(Service[i].Codes[j], number)>=l)
+      {
+        *s = i;
+        *c = j;
+        return i+1; /* must be > 0 for 1. Service */
+      }
+  return 0;
+}
+
 int getSpecial (char *number) {
   int i,j,l;
   l=strlen(number);
@@ -2254,6 +2276,18 @@ int getSpecial (char *number) {
       if(strmatch(Service[i].Codes[j], number)>=l)
         return i+1; /* must be > 0 for 1. Service */
   return 0;
+}
+
+int getSpecialLen (char* number)
+{
+  int s, c, l=0;
+  char *p;
+  if (!findSpecial(number, &s, &c))
+    return 0;
+  p = Service[s].Codes[c];
+  while (isdigit(*p) && *p == *(number + l))
+    ++p, ++l;
+  return l;
 }
 
 char *getSpecialName(char *number) {
