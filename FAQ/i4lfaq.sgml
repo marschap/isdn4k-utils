@@ -4,7 +4,7 @@
 
 <title>FAQ for isdn4linux
 <author>Matthias Hessler (<tt><htmlurl url="mailto:hessler@isdn4linux.de" name="hessler@isdn4linux.de"></tt>)
-<date>v2.0.51, 3. December 2000
+<date>v2.0.52, 30. December 2000
 <abstract>
 If you are reading this FAQ online, you may consider downloading the whole
 thing, and reading it offline (much cheaper). To download the latest
@@ -575,8 +575,8 @@ difference: <ref id="glossary_pointtopointmode" name="glossary_pointtopointmode"
 <label id="feature_ntmode">
 <p>
 Yes, isdn4linux does support it, but only for a few special cards.
-See question <ref id="feature_crossedcable" name="feature_crossedcable"> for details. In the
-glossary there is more information on what the NT mode is:
+See question <ref id="feature_crossedcable" name="feature_crossedcable">
+for details. In the glossary there is more information on what the NT mode is:
 <ref id="glossary_ntmode" name="glossary_ntmode">.
 
 <sect1> feature_crossedcable: Can isdn4linux directly connect two  
@@ -591,8 +591,13 @@ Use the following command to start the ISDN card in NT mode:
 <code>
 hisaxctrl &lt;id&gt; 98 1
 </code>
-However, make sure that the crossed cable is terminated even if it is
-very short. Some HFC card already have jumpers for termination.
+Make sure that the crossed cable is terminated even if it is very short.
+Some HFC card already have jumpers for termination.
+
+However, this will only give you the physical connection. Up to now
+isdn4linux does not (yet?) implement the higher level ISDN protocol DSS1
+(this means that isdn4linux can not pretend to an ISDN device that it is
+an ISDN exchange, and give it the proper ISDN commands).
 
 <sect1> feature_lcr: Can isdn4linux do least cost routing (LCR)?  
 <label id="feature_lcr">
@@ -852,8 +857,7 @@ Note:
 <item>Eicon Diva U interface not tested
 <item>Some cards do not work when compiled into the kernel, only when
 <item>Asuscom card: please note that the ISA version is a different type
-(12) then the PCI version (35 or 36)!
-started as modules
+(12) then the PCI version (35 for HFC chip or 36 for Winbond chip)!
 <item>To distinguish between HFC-PCI and PCI/Winbond, have a look at the
 output of <tt>cat /proc/pci</tt>. You have HFC-PCI if you have a line
 saying "Master capable" for your card.
@@ -948,6 +952,16 @@ you have no PS/2 port. Interrupt 15 is also often used by the second IDE bus
 Even though one thinks that some IRQs are available they are still somehow
 reserved by the BIOS. Good IRQs to try are always IRQ 5 and IRQ 9. Without mice
 or modems you could also try 4 and 3, which works even on very exotic boards.
+
+<sect1> hardware_irqsharing: Can the isdn4linux driver work with shared  
+interrupts?  
+<label id="hardware_irqsharing">
+<p>
+Yes, the drivers have been written to work with shared interrupts. However,
+at least for the AVM Fritz!PCI card occasional problems have been reported
+for motherboards with a BIOS bug (DFI motherboards K6BV3+, P5BV3+ K6XV3).
+Try to disable the BIOS option <tt>CPU to PCI WRITE Buffer</tt> in those
+cases as a workaround.
 
 <sect1> hardware_s2m: Which S2M cards are supported?  
 <label id="hardware_s2m">
@@ -1116,14 +1130,15 @@ Cable     abcd       --abcd--
 <label id="hardware_sedlbauer">
 <p>
 It is a semiactive card based on the ISAR chipset which supports
-sending/receiving faxes. It is special in that you use it with HiSax which
-normally works only for passive cards. However, as all active card you have
-to load its firmware (in this case after loading HiSax) from the file
-ISAR.BIN, which is part of the isdn4k-utils.
+sending/receiving faxes and an analog modem up to 14400. It is special in
+that you use it with HiSax which normally works only for passive cards.
+However, as all active card you have to load its firmware (in this case
+after loading HiSax) from the file ISAR.BIN, which is part of the
+isdn4k-utils.
 
 Please note that compression (V42bis, MNP) are not implemented in firmware,
-and therefore not supported. The ideal init string for the card to allow
-modem dialin is <tt>AT&percnt;C0&bsol;N0</tt>.
+and therefore not supported when using the analog modem. The ideal init
+string for the card to allow modem dialin is <tt>AT&percnt;C0&bsol;N0</tt>.
 
 <sect1> hardware_teles: What should I know about before buying an ISDN card 
 from Teles?  
@@ -1187,6 +1202,10 @@ The Fritz! card comes in different variations. Since the PCI card and the
 ISA/PNP card have the same type (27), hisax will assume an ISA/PNP card
 if you pass an io address, and a PCI card if you do NOT pass an io address.
 Make sure to give the parameters properly.
+
+If the interrupt for the card is shared with other devices and your card does
+not work, then there could be an issue with the motherboard. See question
+<ref id="hardware_irqsharing" name="hardware_irqsharing"> for this.
 
 One very interesting thing: the Fritz! card is currently the only passive card
 for which a capi driver exists. As a result, it can be configured to fax.
@@ -1694,9 +1713,18 @@ The old Teles driver, on the other hand, will appear to start even if
 it is not working. See the questions under Troubleshooting Teles.
 <item>Make sure you configured the ISDN driver either as modules, or you
 compiled them into the kernel - never both.
-<item>Try calling with a telephone. The number should be shown in
-/var/log/messages. Otherwise, perhaps the driver was incorrectly 
-started?!
+<item>Try calling your dialin number with a telephone. The number should be
+shown in <tt>/var/log/messages</tt>. Check for a line like this:
+<code>
+Call from 0,1,2345 -> 6789
+</code>
+This means that on channel 0 a call from 2345 with service indicator (SI) 1
+(1 = voice; data would be 7) to MSN 6789 was received. Now at least you know
+that you have to configure your MSN to 6789 (or whatever other number you
+find there), and that your isdn4linux kernel driver understand ISDN
+commands coming from your ISDN card properly. If instead of the number 2345
+you find a 0, then your ISDN provider does not pass you the caller id.
+If you don't find such a line: perhaps the driver was incorrectly started?!
 <item>As a next step we'll try to get the telephone or fax to ring by dialing
 ourself using a ttyI device with minicom. First we have to change the service
 recognition with the <tt>ATS18=1</tt> command to audio. Now you can get the
@@ -2410,6 +2438,8 @@ Check out these special dialout features:
 see section <ref id="chargeint" name="chargeint">.
 <item> Dialout on more than 1 channel at the same time:
 see section <ref id="2channel" name="2channel">.
+<item> Dialout on one specific channel:
+see question <ref id="dialout_fixedchannel" name="dialout_fixedchannel">.
 <item> Callback:
 see section <ref id="callback" name="callback">.
 </itemize>
@@ -2504,6 +2534,19 @@ that the "-" means dialing is disallowed. Dialout on telephone number 2 will
 now only dial out with MSN 333 on &lt;carddriver1&gt;, while dialout on 3 will
 now only dial out with MSN 777 on &lt;carddriver2&gt;.
 </itemize>
+
+<sect1> dialout_fixedchannel: How can I force HiSax to always dial out on  
+a specific B channel?  
+<label id="dialout_fixedchannel">
+<p>
+HiSax has an undocumented feature for this. Add 'P1' in front of the dialout
+phone number for the first B channel, or 'P2' for the second B channel, like
+this:
+<code>
+isdnctrl addphone &lt;device&gt; out P1&lt;your_out_number&gt;
+</code>
+Please note that then a dialout will fail when another device already uses
+the second B channel.
 
 <sect1> dialout_bind: A dns query causes bind to dial out. Why does it take  
 about a minute before it is answered? How do I work around it?  
@@ -3576,7 +3619,7 @@ From time to time, the name server will query its forwarder, which will
 trigger a dialout. Since your ISP uses dynamic ip addresses, the request
 is sent out with the wrong ip address at startup of the dial-in connection.
 Therefore, no answer will be received. Bind waits for one minute
-before resubmitting. Since your line has come down in the mean time, this
+before resubmitting. If your line has come down in the mean time, this
 will trigger a new dialout, resulting in a different ip address, and so on...
 
 For a workaround to this problem you can shorten the retransmission time
@@ -3645,28 +3688,43 @@ Only a home page that Netscape is able to load immediately (e.g.
 dialout. Alternatively you can also set up a cache daemon that saves pages that
 are often needed.
 
-A proxy should not cause a dial out, even when the complete name is 
-entered. Only when a new proxy is given does Netscape do a DNS
-lookup (and in this special case cause a dialout.
-However, on 17 Mar 97 Steffan Henke
-<tt><htmlurl url="mailto:henker@informatik.uni-bremen.de" name="henker@informatik.uni-bremen.de"></tt>
-wrote:
-<quote>
-Unfortunately reality has caught up with us. I've heard that
-Netscape now in version.4.02 really does establish a
-connection...
-</quote>
+Second check your proxy settings. When giving a complete name instead of an
+ip address, Netscape may try to do a DNS lookup to resolve the name to an
+ip address on startup. In this case provide Netscape with an ip address.
+
+Another thing is that Netscape tries to contact its news server. If you don't
+want to use this feature then you can enter the name Netscape uses for lookup
+(probably 'news') in your local DNS or in your /etc/hosts, and let it point
+to localhost.
 
 <sect1> dod_closeipconnect: After closing the line, I discover with 
 <tt>netstat -nt</tt> that IP connections are still open. How can I close 
 these manually?  
 <label id="dod_closeipconnect">
 <p>
-You can bring the interface &dquot;down&dquot; then back &dquot;up&dquot;. When
-you do this, it will try to dial out. But if you have removed the outgoing
-telephone number, then &dquot;no outgoing number...&dquot; appears in the
-syslog, and as soon as the interface is &dquot;up&dquot;, all connections will
-be closed.
+This may only work with the RST-Revoking patch (mentioned in question
+<ref id="dod_causes" name="dod_causes">): You can bring the interface
+&dquot;down&dquot; then back &dquot;up&dquot;. When you do this, it will
+try to dial out. But if you have removed the outgoing telephone number,
+then &dquot;no outgoing number...&dquot; appears in the syslog, and as
+soon as the interface is &dquot;up&dquot;, all connections will be closed.
+
+You can prevent those open IP connections to trigger new dialouts if you
+add a special firewall rule in <tt>/etc/ppp/ip-down</tt>, and remove it
+in <tt>/etc/ppp/ip-up</tt>. This firewall rule drops all tcp packets
+which are not in SYNSENT state. Add this in <tt>/etc/ppp/ip-down</tt> for
+a 2.2.x kernel:
+<code>
+ipchains -A output -j DENY -p tcp -i &lt;interface&gt; ! -y
+</code>
+Add this in <tt>/etc/ppp/ip-up</tt>:
+<code>
+ipchains -A output -j DENY -p tcp -i &lt;interface&gt; ! -y
+</code>
+(As is the case for all firewall rules: it is best to put this into a
+separate script which is called with either a start or a stop parameter.)
+Please note that this firewall rule only matches whole packets, no fragments.
+A fragment will always bypass the firewall and trigger a dialout.
 
 <sect1> dod_onlineoncrash: Is it possible that even with a crashed computer  
 a ISDN connection remains open (and the charge units accumulate)?  
@@ -4050,7 +4108,11 @@ This will simulate a call for MSN1 on the configured channel (0 or 1)
 and the other as a dialup line?  
 <label id="leased_splitline">
 <p>
-Yes, you can. But you have to make sure that you use the correct channel.
+Yes and no. You can configure HiSax for both at the same time, however you can
+only use one of them at any point in time (you have to switch off the leased
+line before dialing out). It may work occasionally simultaneously, however
+the driver has not been written for it so the results are not deterministic.
+Also make sure that you use the correct channel.
 
 
 <!-- Dialin
@@ -4594,13 +4656,13 @@ be able to hear something.
 <sect1> audio_dtmf: How can I improve the recognition of (DTMF) dial tones?  
 <label id="audio_dtmf">
 <p>
-You can adjust the parameters DTMF_THRESH and H2_THRESH in file
+You can adjust the parameters DTMF_TRESH, SILENCE_TRESH, and H2_TRESH in file
 <tt>linux/drivers/isdn/isdn_audio.c</tt>. A DTMF tone is recognized
-if the amplitude of the correct frequency is larger than DTMF_THRESH
+if the amplitude of the correct frequency is larger than DTMF_TRESH
 and the amplitude of the second harmonian frequency is smaller than
-H2_THRESH.
+H2_TRESH.
 If a dial tone is recognized when no dialing took place, try to increase
-DTMF_THRESH and/or decrease H2_THRESH. However, test with many
+DTMF_TRESH and/or decrease H2_TRESH. However, test with many
 telephones - the current parameters were already set after some tuning.
 
 
