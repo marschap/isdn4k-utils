@@ -1,4 +1,4 @@
-/* $Id: isdnrep.h,v 1.4 1997/04/03 22:30:03 luethje Exp $
+/* $Id: isdnrep.h,v 1.5 1997/04/16 22:23:00 luethje Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnrep.h,v $
+ * Revision 1.5  1997/04/16 22:23:00  luethje
+ * some bugfixes, README completed
+ *
  * Revision 1.4  1997/04/03 22:30:03  luethje
  * improved performance
  *
@@ -92,6 +95,7 @@ _EXTERN int     delentries      _SET_0;
 _EXTERN int     numbers         _SET_0;
 _EXTERN int     header          _SET_1;
 _EXTERN char	  timestring[256] _SET_EMPTY;
+_EXTERN char	  *lineformat     _SET_NULL;
 _EXTERN time_t  begintime;
 _EXTERN time_t  endtime;
 

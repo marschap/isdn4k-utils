@@ -44,7 +44,7 @@ Gross und Kleinschreibung unterschieden.
 
 In den Sektions- und Eintragnamen duerfen folgende Zeichen nicht verwendet
 werden: "*?|&/"
-Wenn diese Zeichen werden beim Einlesen ignoriert.
+Wenn diese Zeichen erscheinen, werden sie beim Einlesen ignoriert.
 
 Am Anfang einer Zeile (sowohl Sektionsname als auch einem Eintrag) koennen
 beliebig viele Leerzeichen als auch Tabulatoren stehen:
@@ -67,7 +67,7 @@ BEGIN-OF-FILE
 [SECTION1]
 ENTRY1=blabla1
 entry2 = blabla2
-#     ^^^-------- Es duerfen vor und nach dem Gleichheitszeichen beliebig
+#     ^-^-------- Es duerfen vor und nach dem Gleichheitszeichen beliebig
 #                 Spaces und Tabulatoren verwendet werden.
 #                 Diese werden vom Interpreter ignoriert.
 #                 Das erste Zeichen des Wertes der Variablen 
@@ -120,8 +120,8 @@ Dann wird nach der Datei /etc/myinclude gesucht. Es ist voellig
 unabhaengig davon, in welchem Verzeichnis das Programm gestartet wurde,
 das die Konfigurationsdatei lesen soll.
 
-In der Include Datei muessen immer genau so viele gescheifte Klammern
-zugehen, wie aufgemacht worden sind. Eine Datei darf nich folgenden Inhalt
+In der Include Datei muessen immer genau so viele geschweifte Klammern
+zugehen, wie aufgemacht worden sind. Eine Datei darf nicht folgenden Inhalt
 haben:
 
 [TEST1]

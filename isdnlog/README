@@ -1370,15 +1370,26 @@ Es gibt aber drei zusaetzliche Variablen, die verwendet werden duerfen:
 \$2   : Gibt als String die Telefonnummer (mit Vorwahl) des Anrufenden an.
 \$3   : Gibt als String die Telefonnummer (mit Vorwahl) des Angerufenden an.
 
-
 Es ist zu beachten, dass hier das Zeichen "$" gequotet werden muss,
 da dieses sonst zu einem Warning fuehrt!
 
 Wenn bei "\$2" und "\$3" die Telefonnummer nicht bekannt ist, dann wird dort
 ein "?" eingesetzt.
 
-Es fallen also alle Blanks und Tabulatoren vor und nach dem "=" heraus.
-"IORK = /bin/auplay..." wird also zu "IORK=/bin/auplay...".
+Folgende Punkte sind zu beachten:
+
+- Diese Variablen koennen auch innerhalb eines Argumentes stehen.
+- Wenn diese Variablen innerhalb eines Strings verwendet werden, muss der
+  Name (hier z.B. "1", "2") in geschweiften Klammern gesetzt werden.
+- Es koennen wie auf der Shell die Hochkommata verwendet werden, um Argumente
+  zu kapseln (allderings nur die Hochkommata!). Wenn das Hochkomma im
+  Argument erscheinen soll, muss es gequotet werden.
+
+Beispiele:
+
+PROGRAM=/bin/auplay "Arg 1" "Arg 2" Arg3 "Arg\"4"
+PROGRAM=/bin/auplay "Hier kommt der Anrufer:\${2}test" 
+PROGRAM=/bin/auplay "Der folgende Ausdruck wird nicht ausgewertet: \\$3" 
 
 Eine (zwei) Section [NUMBER] (oder [MSN]) kann also wie folgt aussehen:
 

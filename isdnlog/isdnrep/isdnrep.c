@@ -1,4 +1,4 @@
-/* $Id: isdnrep.c,v 1.9 1997/04/08 21:56:53 luethje Exp $
+/* $Id: isdnrep.c,v 1.10 1997/04/16 22:22:57 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -20,6 +20,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnrep.c,v $
+ * Revision 1.10  1997/04/16 22:22:57  luethje
+ * some bugfixes, README completed
+ *
  * Revision 1.9  1997/04/08 21:56:53  luethje
  * Create the file isdn.conf
  * some bug fixes for pid and lock file
@@ -145,6 +148,22 @@
 
 /*****************************************************************************/
 
+#define C_BEGIN_FMT '%'
+
+#define FMT_FMT 1
+#define FMT_STR 2
+
+/*****************************************************************************/
+
+typedef struct {
+	int   type;
+	char *string;
+	char  s_type;
+	char *range;
+} prt_fmt;
+
+/*****************************************************************************/
+
 static time_t get_month(char *String, int TimeStatus);
 static time_t get_time(char *String, int TimeStatus);
 static int show_msn(one_call *cur_call);
@@ -162,6 +181,7 @@ static int print_entries(one_call *cur_call, double unit, int *nx, char *myname)
 static int print_bottom(double unit, char *start, char *stop);
 static char *get_time_value(time_t t, int *day, int flag);
 static char **string_to_array(char *string);
+static prt_fmt** get_format(char *format);
 
 /*****************************************************************************/
 
@@ -219,6 +239,11 @@ int read_logfile(char *myname)
   auto     char       string[BUFSIZ], s[BUFSIZ];
   one_call            cur_call;
 
+
+/*
+get_format(lineformat);
+exit(0);
+*/
 
   clear_sum(&day_sum);
   clear_sum(&day_com_sum);
@@ -534,6 +559,118 @@ static int print_bottom(double unit, char *start, char *stop)
 
 /*****************************************************************************/
 
+static int print_line(int flags, char *format)
+{
+	return 0;
+}
+
+/*****************************************************************************/
+
+static prt_fmt** get_format(char *format)
+{
+	static prt_fmt **RetCode = NULL;
+	prt_fmt *fmt = NULL;
+	char    *Ptr = NULL;
+	char    *string = NULL;
+	char    *start = NULL;
+	char    *End = NULL;
+	char     Range[20] = "";
+	int      num;
+	char     Type;
+
+
+	if (format == NULL)
+		return RetCode;
+
+	if ((End    = (char*) alloca(sizeof(char)*(strlen(format)+1))) == NULL ||
+	    (string = (char*) alloca(sizeof(char)*(strlen(format)+1))) == NULL   )
+	{
+		print_msg(PRT_ERR, nomemory);
+		return NULL;
+	}
+
+	Ptr = start = strcpy(string,format);
+
+	do
+	{
+		if (*Ptr == C_BEGIN_FMT)
+		{
+			if (Ptr[1] != C_BEGIN_FMT)
+			{
+				if (Ptr != start)
+				{
+					if ((fmt = (prt_fmt*) calloc(1,sizeof(prt_fmt))) == NULL)
+					{
+						print_msg(PRT_ERR, nomemory);
+						delete_element(&RetCode,0);
+						return NULL;
+					}
+
+					*Ptr = '\0';
+					fmt->string= strdup(start);
+					fmt->type  = FMT_STR;
+					append_element(&RetCode,fmt);
+				}
+
+				*End = '\0';
+				if ((num = sscanf(Ptr+1,"%[^a-zA-Z]%c%[^\n]",Range,&Type,End)) > 1 ||
+				    (num = sscanf(Ptr+1,"%c%[^\n]",&Type,End))                 > 0   )
+				{
+					if ((fmt = (prt_fmt*) calloc(1,sizeof(prt_fmt))) == NULL)
+					{
+						print_msg(PRT_ERR, nomemory);
+						delete_element(&RetCode,0);
+						return NULL;
+					}
+
+					fmt->s_type= Type;
+					fmt->range = strdup(Range);
+					fmt->type  = FMT_FMT;
+
+					append_element(&RetCode,fmt);
+					*Range = '\0';
+
+					if (*End != '\0')
+						Ptr = start = strcpy(string,End);
+					else
+						Ptr = start = "";
+				}
+				else
+				{
+    			print_msg(PRT_ERR, "Error: Invalid token in format string `%s'!\n",format);
+    			return NULL;
+    		}
+			}
+			else
+			{
+				memmove(Ptr,Ptr+1,strlen(Ptr));
+				Ptr++;
+			}
+		}
+		else
+			Ptr++;
+	}
+	while(*Ptr != '\0');
+
+	if (Ptr != start)
+	{
+		if ((fmt = (prt_fmt*) calloc(1,sizeof(prt_fmt))) == NULL)
+		{
+			print_msg(PRT_ERR, nomemory);
+			delete_element(&RetCode,0);
+			return NULL;
+		}
+
+		fmt->string= strdup(start);
+		fmt->type  = FMT_STR;
+		append_element(&RetCode,fmt);
+	}
+
+	return RetCode;
+}
+
+/*****************************************************************************/
+
 static int print_entries(one_call *cur_call, double unit, int *nx, char *myname)
 {
 	auto time_t  t1, t2;
@@ -551,8 +688,8 @@ static int print_entries(one_call *cur_call, double unit, int *nx, char *myname)
 	if (cur_call->pay && !cur_call->eh)
 	/* Falls Betrag vorhanden und Einheiten nicht, Einheiten berechnen */
 		cur_call->eh = cur_call->pay/unit;
-	else if (cur_call->currency_factor                               &&
-		         cur_call->currency_factor != unit && cur_call->eh>0  )
+	else if (cur_call->currency_factor                          &&
+		       cur_call->currency_factor != unit && cur_call->eh>0  )
 		/* Falls Einheiten sich auf anderen Einheiten-Faktor beziehen, Einheiten korrigieren */
 		cur_call->eh /= unit / cur_call->currency_factor;
 
@@ -817,8 +954,7 @@ static int set_alias(one_call *cur_call, int *nx, char *myname)
 
 					if (cc) {
 
-						if (!numbers)
-							strcpy(cur_call->num[n], known[i]->who);
+						strcpy(cur_call->who[n], known[i]->who);
 
  						nx[n] = i;
 
@@ -895,6 +1031,8 @@ static int set_caller_infos(one_call *cur_call, char *string, time_t from)
 	cur_call->pay = 0.0;
 	cur_call->si = cur_call->si1 = 0;
 	cur_call->dir = DIALOUT;
+	cur_call->who[0][0] = '\0';
+	cur_call->who[1][0] = '\0';
 
 	for (i = 1; array[i] != NULL; i++)
 	{

@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.13 1997/04/15 22:36:58 luethje Exp $
+## $Id: Makefile.in,v 1.14 1997/04/16 22:22:43 luethje Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,9 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.14  1997/04/16 22:22:43  luethje
+## some bugfixes, README completed
+##
 ## Revision 1.13  1997/04/15 22:36:58  luethje
 ## allows the character `"' in the program argument like the shell.
 ## some bugfixes.
@@ -173,7 +176,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 2.99.9
+VERSION     = 2.99.10
 
 ifeq ($(POSTGRES),1)
 DEFS       += -DPOSTGRES
