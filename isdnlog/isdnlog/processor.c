@@ -1,4 +1,4 @@
-/* $Id: processor.c,v 1.110 2000/08/01 20:31:30 akool Exp $
+/* $Id: processor.c,v 1.111 2000/08/06 13:06:53 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,21 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.111  2000/08/06 13:06:53  akool
+ * isdnlog-4.38
+ *  - isdnlog now uses ioctl(IIOCNETGPN) to associate phone numbers, interfaces
+ *    and slots in "/dev/isdninfo".
+ *    This requires a Linux-Kernel 2.2.12 or better.
+ *    Support for older Kernel's are implemented.
+ *    If IIOCNETGPN is available, the entries "INTERFACE = xxx" in
+ *    "/etc/isdn/isdn.conf" are obsolete.
+ *  - added 01013:Tele2 totally Freecall on 12. and 13. August 2000
+ *  - resolved *any* warning's from "rate-de.dat" (once more ...)
+ *  - Patch from oliver@escape.de (Oliver Wellnitz) against
+ *  	 "Ziffernwahl verschluckt Nummern"
+ *
+ *    **Please "make clean" before using this version of isdnlog!!**
+ *
  * Revision 1.110  2000/08/01 20:31:30  akool
  * isdnlog-4.37
  * - removed "09978 Schoenthal Oberpfalz" from "zone-de.dtag.cdb". Entry was
@@ -1056,12 +1071,16 @@ static void processlcr(char *p);
 static int    HiSax = 0, hexSeen = 0, uid = UNKNOWN, lfd = 0;
 static char  *asnp, *asnm = NULL;
 static int    chanused[2] = { 0, 0 };
+static int    IIOCNETGPNavailable = -1; /* -1 = unknown, 0 = no, 1 = yes */
 
 #ifdef Q931
 #define Q931dmp q931dmp
 #else
 #define Q931dmp 0
 #endif
+
+
+#define INTERFACE ((IIOCNETGPNavailable == 1) ? call[chan].interface : known[call[chan].confentry[OTHER]]->interface)
 
 
 static void Q931dump(int mode, int val, char *msg, int version)
@@ -1663,7 +1682,7 @@ static void emergencyStop(int chan, int strength)
   if (strength == 1) {
     if (c == -1)
       strength++;
-    else if (*known[c]->interface < '@')
+    else if (*INTERFACE < '@')
       strength++;
   } /* if */
 
@@ -1674,7 +1693,7 @@ static void emergencyStop(int chan, int strength)
       strength++;
 
   switch (strength) {
-    case 1 : cc = replay ? 0 : ioctl(sockets[ISDNCTRL].descriptor, IIOCNETHUP, known[c]->interface);
+    case 1 : cc = replay ? 0 : ioctl(sockets[ISDNCTRL].descriptor, IIOCNETHUP, INTERFACE);
 
              if (cc < 0)
                p = "failed";
@@ -1684,7 +1703,7 @@ static void emergencyStop(int chan, int strength)
                p = "hung up";
 
              sprintf(msg, "EMERGENCY-STOP#%d: no traffic since %d EH: hangup %s = %s\007\007",
-               strength, call[chan].aoce - call[chan].traffic, known[c]->interface, p);
+               strength, call[chan].aoce - call[chan].traffic, INTERFACE, p);
              break;
 
     case 2 : (void)detach();
@@ -1896,7 +1915,7 @@ static void decode(int chan, register char *p, int type, int version, int tei)
                         sprintf(s, "%s (%s)", qmsg(TYPE_CAUSE, version, call[chan].cause), py);
 
                         if (tei == call[chan].tei)
-                        info(chan, PRT_SHOWCAUSE, STATE_CAUSE, s);
+                          info(chan, PRT_SHOWCAUSE, STATE_CAUSE, s);
                         else if (other) {
                           auto char sx[256];
 
@@ -2119,7 +2138,7 @@ static void decode(int chan, register char *p, int type, int version, int tei)
                           /* seit 2 Gebuehrentakten kein Traffic mehr! */
 
                           if (!replay && watchdog && ((c = call[chan].confentry[OTHER]) > -1)) {
-                            if ((type == FACILITY) && (version == VERSION_EDSS1) && expensive(call[chan].bchan) && (*known[c]->interface > '@')) {
+                            if ((type == FACILITY) && (version == VERSION_EDSS1) && expensive(call[chan].bchan) && (*INTERFACE > '@')) {
                               if (call[chan].aoce > call[chan].traffic + watchdog + 2)
                                 emergencyStop(chan, 4);
                               else if (call[chan].aoce > call[chan].traffic + watchdog + 1)
@@ -3203,10 +3222,10 @@ static void huptime(int chan, int setup)
   if (replay)
     net_dv = 4;
 
-  if (hupctrl && (c != UNKNOWN) && (*known[c]->interface > '@') /* && expensive(call[chan].bchan) */) {
+  if (hupctrl && (c != UNKNOWN) && (*INTERFACE > '@') /* && expensive(call[chan].bchan) */) {
     memset(&cfg, 0, sizeof(cfg)); /* clear in case of older kernel */
 
-    strcpy(cfg.name, known[c]->interface);
+    strcpy(cfg.name, INTERFACE);
 
     if (replay || (ioctl(sockets[ISDNCTRL].descriptor, IIOCNETGCF, &cfg) >= 0)) {
 #if NET_DV >= NETDV_CHARGEINT
@@ -3216,7 +3235,7 @@ static void huptime(int chan, int setup)
       call[chan].huptimeout = oldhuptimeout = cfg.onhtime;
 
       if (!oldhuptimeout && !replay) {
-        sprintf(sx, "HUPTIMEOUT %s is *disabled* - unchanged", known[c]->interface);
+        sprintf(sx, "HUPTIMEOUT %s is *disabled* - unchanged", INTERFACE);
         info(chan, PRT_SHOWNUMBERS, STATE_HUPTIMEOUT, sx);
       	return;
       } /* if */
@@ -3265,22 +3284,22 @@ static void huptime(int chan, int setup)
 
         if (replay || (ioctl(sockets[ISDNCTRL].descriptor, IIOCNETSCF, &cfg) >= 0)) {
           sprintf(sx, "CHARGEINT %s %d (was %d)%s%s",
-            known[c]->interface, newchargeint, oldchargeint, (*why ? " - " : ""), why);
+            INTERFACE, newchargeint, oldchargeint, (*why ? " - " : ""), why);
 
           info(chan, PRT_INFO, STATE_HUPTIMEOUT, sx);
 
             sprintf(sx, "HUPTIMEOUT %s %d (was %d)",
-              known[c]->interface, newhuptimeout, oldhuptimeout);
+              INTERFACE, newhuptimeout, oldhuptimeout);
 
             info(chan, PRT_INFO, STATE_HUPTIMEOUT, sx);
           } /* if */
       }
       else {
-        sprintf(sx, "CHARGEINT %s still %d%s%s", known[c]->interface,
+        sprintf(sx, "CHARGEINT %s still %d%s%s", INTERFACE,
           oldchargeint, (*why ? " - " : ""), why);
         info(chan, PRT_SHOWNUMBERS, STATE_HUPTIMEOUT, sx);
 
-        sprintf(sx, "HUPTIMEOUT %s still %d", known[c]->interface, oldhuptimeout);
+        sprintf(sx, "HUPTIMEOUT %s still %d", INTERFACE, oldhuptimeout);
         info(chan, PRT_SHOWNUMBERS, STATE_HUPTIMEOUT, sx);
       } /* else */
     } /* if */
@@ -3315,7 +3334,78 @@ static void oops(int where)
   sprintf(s, "WARNING \"hisaxctrl %s 1 4\" called! (#%d)", ifo[0].id, where);
   info(0, PRT_ERR, STATE_AOCD, s);
 
-} /* if */
+} /* oops */
+
+
+static int findinterface()
+{
+#ifdef IIOCNETGPN
+  register char *p;
+  auto 	   FILE *iflst;
+  auto 	   char  s[255], name[10], sx[BUFSIZ];
+  auto	   isdn_net_ioctl_phone phone;
+  auto	   int rc, chan, l, l1, l2, lmin, lmax, ldiv, match;
+
+
+  if ((iflst = fopen("/proc/net/dev", "r")) == NULL)
+    return(-1);
+
+  while (fgets(s, sizeof(s), iflst)) {
+    if ((p = strchr(s, ':'))) {
+      *p = 0;
+      sscanf(s, "%s", name);
+
+      memset(&phone, 0, sizeof(phone));
+      strncpy(phone.name, name, sizeof(phone.name));
+      rc = ioctl(sockets[ISDNINFO].descriptor, IIOCNETGPN, &phone);
+
+      if (!rc) { /* 'name' connected from/to 'phone.phone' */
+        l1 = strlen(phone.phone);
+
+        for (chan = 0; chan < MAXCHAN; chan++) {
+          l2 = strlen(call[chan].onum[OTHER]);
+
+          if (l2) {
+            lmin = min(l1, l2);
+	    lmax = max(l1, l2);
+	    ldiv = lmax - lmin;
+
+            if (lmin == lmax)
+              match = !strcmp(phone.phone, call[chan].onum[OTHER]);
+            else if (l1 > l2)
+              match = !strcmp(phone.phone + ldiv, call[chan].onum[OTHER]);
+            else
+              match = !strcmp(phone.phone, call[chan].onum[OTHER] + ldiv);
+
+            if (match) {
+              strcpy(call[chan].interface, name);
+              strcpy(call[chan].fnum, phone.phone); /* "fnum" -> Fritz-Num. Rufnummer, wie Fritz (Elfert) alias Link-Level sie intern haelt (also z.b. evtl. mit vorlaufendem "R") */
+
+              sprintf(sx, "INTERFACE %s %s %s", call[chan].interface,
+                (call[chan].dialin ? "called by" : "calling"),
+      	        call[chan].fnum);
+              info(chan, PRT_SHOWNUMBERS, STATE_HUPTIMEOUT, sx);
+
+              break;
+            } /* if */
+          } /* if */
+        } /* for */
+      }
+      else if (errno == EINVAL) {
+        info(chan, PRT_SHOWNUMBERS, STATE_HUPTIMEOUT, "Sorry, IIOCNETGPN not available in your kernel (2.2.12 or higher is required)");
+        return(0);
+      } /* else */
+
+    } /* if */
+  } /* while */
+
+  fclose(iflst);
+
+  return(1);
+#else
+  return(0);
+#endif
+} /* findinterface */
 
 
 static void processbytes()
@@ -3488,13 +3578,21 @@ static void processinfo(char *s)
           break;
 
       if (!Q931dmp) {
-        print_msg(PRT_NORMAL, "(ISDN subsystem with ISDN_MAX_CHANNELS > 16 detected - %d active channels, %d MSN/SI entries)\n", chans, mymsns);
+        print_msg(PRT_NORMAL, "(ISDN subsystem with ISDN_MAX_CHANNELS > 16 detected, ioctl(IIOCNETGPN) is %savailable)\n",
+          IIOCNETGPNavailable = findinterface() ? "" : "un");
+        print_msg(PRT_NORMAL, "isdn.conf:%d active channels, %d MSN/SI entries\n", chans, mymsns);
+
         if (dual) {
           if (hfcdual)
             print_msg(PRT_NORMAL, "(watching \"%s\" as HFC/echo mode)\n", isdnctrl);
           else
             print_msg(PRT_NORMAL, "(watching \"%s\" and \"%s\")\n", isdnctrl, isdnctrl2);
         } /* if */
+
+        if (IIOCNETGPNavailable)
+          print_msg(PRT_NORMAL, "Everything is fine, isdnlog-%s is running in full featured mode.\n", VERSION);
+        else
+          print_msg(PRT_NORMAL, "HINT: Please upgrade to Linux-2.2.12 or higher for all features of isdnlog-%s\n", VERSION);
       } /* if */
 
       /*
@@ -3575,7 +3673,7 @@ static void processinfo(char *s)
 #endif
 
         for (chan = 0; chan < MAXCHAN; chan++)
-          if (memcmp(ifo[j].n, "???", 3) && !strcmp(ifo[j].n, call[chan].onum[OTHER])) {
+          if (memcmp(ifo[j].n, "???", 3) && !strcmp(ifo[j].n, (IIOCNETGPNavailable == 1) ? call[chan].fnum : call[chan].onum[OTHER])) {
             call[chan].bchan = j;
 
             strcpy(call[chan].id, ifo[j].id);
@@ -3686,7 +3784,8 @@ void clearchan(int chan, int total)
   else
     for (i = 0; i < MAXMSNS; i++)
       *call[chan].onum[i] =
-      *call[chan].num[i] = 0;
+      *call[chan].num[i] =
+      *call[chan].interface = 0;
 
   call[chan].bchan = -1;
 
@@ -4082,7 +4181,7 @@ static void processctrl(int card, char *s)
   if (!memcmp(ps, "D2", 2)) { /* AVMB1 */
     if (firsttime) {
       firsttime = 0;
-      print_msg (PRT_NORMAL, "(AVM B1 driver detected (D2))\n");
+      print_msg (PRT_NORMAL, "(AVM B1 driver detected (D2))");
     } /* if */
     memcpy(ps, "HEX: ", 5);
   } /* if */
@@ -4090,7 +4189,7 @@ static void processctrl(int card, char *s)
   if (!memcmp(ps, "DTRC:", 5)) { /* Eicon Driver */
     if (firsttime) {
       firsttime = 0;
-      print_msg (PRT_NORMAL, "(Eicon active driver detected)\n");
+      print_msg (PRT_NORMAL, "(Eicon active driver detected)");
     } /* if */
     memcpy(ps, "HEX: ", 5);
   } /* if */
@@ -4104,7 +4203,7 @@ static void processctrl(int card, char *s)
       firsttime = 0;
 
       if (!Q931dmp)
-        print_msg(PRT_NORMAL, "(HiSax driver detected)\n");
+        print_msg(PRT_NORMAL, "(HiSax driver detected)");
 
       HiSax = 1;
       strcpy(last, s);
@@ -4259,7 +4358,7 @@ static void processctrl(int card, char *s)
 
     if (firsttime) {
       firsttime = 0;
-      print_msg(PRT_NORMAL, "(AVM B1 driver detected (D3))\n");
+      print_msg(PRT_NORMAL, "(AVM B1 driver detected (D3))");
     } /* if */
 
     if (*(ps + 2) == '<')  /* this is our "direction flag" */
@@ -4470,11 +4569,13 @@ static void processctrl(int card, char *s)
 
         chan = call[chan].channel - 1;
 
-        /* nicht --channel, channel muss unveraendert bleiben! */
-        memcpy((char *)&call[chan], (char *)&call[5], sizeof(CALL));
-        Change_Channel(5, chan);
-	addlist(chan, type, 1);
-        clearchan(5, 1);
+        if (!chanused[chan]) {
+          /* nicht --channel, channel muss unveraendert bleiben! */
+          memcpy((char *)&call[chan], (char *)&call[5], sizeof(CALL));
+          Change_Channel(5, chan);
+	  addlist(chan, type, 1);
+          clearchan(5, 1);
+        } /* if */
       }
       else
         print_msg(PRT_DEBUG_BUGS, " DEBUG> %s: OOPS, C_PROC/S_ACK ohne channel? tei %d\n",
@@ -4625,7 +4726,7 @@ static void processctrl(int card, char *s)
 
                 info(chan, PRT_SHOWCHARGEMAX, STATE_AOCD, s1);
 
-                if (((known[c]->charge + call[chan].pay) >= chargemax) && (*known[c]->interface > '@'))
+                if (((known[c]->charge + call[chan].pay) >= chargemax) && (*INTERFACE > '@'))
                   chargemaxAction(chan, (known[c]->charge + call[chan].pay - chargemax));
               } /* if */
 
@@ -4647,6 +4748,9 @@ static void processctrl(int card, char *s)
             } /* if */
           } /* if */
         } /* if */
+
+        if (IIOCNETGPNavailable)
+	  IIOCNETGPNavailable = findinterface();
 
         if (sound)
           ringer(chan, RING_CONNECT);
@@ -5463,7 +5567,7 @@ void processcint()
 
             info(chan, PRT_SHOWCHARGEMAX, STATE_AOCD, s1);
 
-            if (((known[c]->charge + call[chan].pay) >= chargemax) && (*known[c]->interface > '@'))
+            if (((known[c]->charge + call[chan].pay) >= chargemax) && (*INTERFACE > '@'))
               chargemaxAction(chan, (known[c]->charge + call[chan].pay - chargemax));
           } /* if */
         } /* if */

@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.176 2000/08/04 11:08:26 paul Exp $
+## $Id: Makefile.in,v 1.177 2000/08/06 13:06:52 akool Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,21 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.177  2000/08/06 13:06:52  akool
+## isdnlog-4.38
+##  - isdnlog now uses ioctl(IIOCNETGPN) to associate phone numbers, interfaces
+##    and slots in "/dev/isdninfo".
+##    This requires a Linux-Kernel 2.2.12 or better.
+##    Support for older Kernel's are implemented.
+##    If IIOCNETGPN is available, the entries "INTERFACE = xxx" in
+##    "/etc/isdn/isdn.conf" are obsolete.
+##  - added 01013:Tele2 totally Freecall on 12. and 13. August 2000
+##  - resolved *any* warning's from "rate-de.dat" (once more ...)
+##  - Patch from oliver@escape.de (Oliver Wellnitz) against
+##  	 "Ziffernwahl verschluckt Nummern"
+##
+##    **Please "make clean" before using this version of isdnlog!!**
+##
 ## Revision 1.176  2000/08/04 11:08:26  paul
 ## Also remove *.gdbm in distclean target
 ##
@@ -1337,7 +1352,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 4.37
+VERSION     = 4.38
 
 MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 \
 	      isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 \

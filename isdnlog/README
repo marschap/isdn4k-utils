@@ -1,10 +1,10 @@
-ISDNLOG - Version 4.37 -  				27-July-2000
+ISDNLOG - Version 4.38 -  				04-Aug-2000
 
 
 isdnlog ist ein Utility zur Auswertung des D-Kanals eines
 ISDN-BRI Anschlusses.
 
-isdnlog-4.25 wurde ausgiebig mit Linux-2.0.38, Linux-2.2.14 sowie
+isdnlog-4.25 wurde ausgiebig mit Linux-2.0.38, Linux-2.2.16-SMP sowie
 Linux-2.3.35 getestet.
 
 
@@ -1183,9 +1183,14 @@ Lage ist, die Zone des Gegners zu ermitteln.
 ------------------------------
 
 Dieser Eintrag repraesentiert das IP-Interface, welches auf dieser
-Nummer konfiguriert wurde, oder ein "-", falls dieser Nummer kein
+Rufnummer konfiguriert wurde, oder ein "-", falls dieser Nummer kein
 IP-Interface zugeordnet wurde.
-Diese Information wird fuer die "-hx" huptimeout Option benoetigt.
+Diese Information wird fuer die "-hx" huptimeout Option sowie
+fuer die Anzeige des Durchsatzes (ibytes/obytes) benoetigt.
+
+Ab Linux-2.2.12 sowie isdnlog-4.38 ist dieser Eintrag obsolete,
+und kann daher ersatzlos entfallen, da isdnlog ab diesen Versionen das
+Interface selbstst„ndig detektieren kann.
 
 Beispiel:
 

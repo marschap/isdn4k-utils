@@ -1,4 +1,4 @@
-V:1.10-Germany [01-Aug-2000 21:46:58]
+V:1.10-Germany [06-Aug-2000 15:01:56]
 
 # Währungsformat
 U:%.3f DM
@@ -8,7 +8,7 @@ U:%.3f DM
 #
 # (C) Copyright 1999, 2000 by Andreas Kool (akool@isdn4linux.de)
 #
-# $Id: rate-de.dat,v 1.103 2000/08/01 20:31:29 akool Exp $
+# $Id: rate-de.dat,v 1.104 2000/08/06 13:06:52 akool Exp $
 #
 #
 # Das "A:" Tag muß folgendermaßen gefüllt werden:
@@ -205,6 +205,7 @@ N:0192361   # Lübecker Nachrichten LN-Online           # 010880192361   (User:LN
 N:01924924  # Internet Private CbC Telepassport        # 0102401924924  (User:beliebig: pw:beliebig)
 N:019251    # Talknet (Talkline)                       # 01050019251    (User:talknet: pw:talknet)
 N:0192658   # MSN Easysurfer (Worldcom/UUnet)	       # 0192658   	(User:beliebig; pw:beliebig)
+N:0192666120# MDS-Online                               # 010750192666120(User:mds; pw:online)
 N:01928111  # comsign AG surfsolution                  # 0101901928111  (User:beliebig; pw:beliebig)
 N:01928120  # eXpress-Net eXpress-Dial                 # 0101901928120  (User:beliebig; pw:beliebig)
 N:01928121  # netweaver netweaver                      # 0101901928121  (User:beliebig; pw:beliebig)
@@ -3404,16 +3405,15 @@ A:+49
 T:[11.06.2000-12.06.2000]*/*=0 Pfingstangebot
 T:[02.07.2000-03.07.2000]*/*=0 Sonderangebot
 T:[16.07.2000-17.07.2000]*/*=0 Sonderangebot
-T:W/06-18=0.06/60
-T:W/18-06=0.04/60
-T:E,H/*=0.04/60
+T:[12.08.2000-14.08.2000]*/*=0 Sonderangebot
+T:[-11.08.2000]W/06-18=0.06/60
+T:[-11.08.2000]W/18-06=0.04/60
+T:[-11.08.2000]E,H/*=0.04/60
+T:[14.08.2000-]W/06-18=0.06/60
+T:[14.08.2000-]W/18-06=0.04/60
+T:[14.08.2000-]E,H/*=0.04/60
 Z:10 Mobilfunknetz
-A:_DEMCM
-A:_DEMC
-A:_DEMD1
-A:_DEMD2
-A:_DEME1
-A:_DEME2
+A:_DEMF
 T:*/*=0.38/60
 Z:200 Euro 1 / USA, Kanada # gilt *NICHT* für Mobilfunknetze in diese Länder!
 A:US,CA,NL,BE,FR,ES
@@ -3487,16 +3487,18 @@ A:112
 T:*/*=0
 Z:1-4 National
 A:+49
-T:W/06-18=0.06(60)/1
-T:W/18-06=0.04(60)/1
-T:E,H/*=0.04(60)/1
+T:[11.06.2000-12.06.2000]*/*=0 Pfingstangebot
+T:[02.07.2000-03.07.2000]*/*=0 Sonderangebot
+T:[16.07.2000-17.07.2000]*/*=0 Sonderangebot
+T:[12.08.2000-14.08.2000]*/*=0 Sonderangebot
+T:[-11.08.2000]W/06-18=0.06(60)/1
+T:[-11.08.2000]W/18-06=0.04(60)/1
+T:[-11.08.2000]E,H/*=0.04(60)/1
+T:[14.08.2000-]W/06-18=0.06(60)/1
+T:[14.08.2000-]W/18-06=0.04(60)/1
+T:[14.08.2000-]E,H/*=0.04(60)/1
 Z:10 Mobilfunknetz
-A:_DEMCM
-A:_DEMC
-A:_DEMD1
-A:_DEMD2
-A:_DEME1
-A:_DEME2
+A:_DEMF
 T:*/*=0.38(60)/1
 Z:200 Euro 1 / USA, Kanada
 A:US,CA,NL,BE,FR,ES
@@ -11071,7 +11073,7 @@ A:BB,BO,PY
 T:*/*=1.19(60)/1
 Z:238 International 39
 A:GQ,BZ,BJ,BF,HN,JO,CM
-A:CV,CG,QA,_LBMF
+A:CV,QA,_LBMF
 A:MG,MV,ML,FM,MN,OM,_PAMF
 A:_PEMF,LK,SH,SY,TT
 T:*/*=1.29(60)/1
@@ -13774,9 +13776,10 @@ T:*/*=0.319/60
 Z:382 Senegal
 A:SN
 T:*/*=1.989/60
-Z:383 Serbien
-A:YU
-T:*/*=1.049/60
+# FIXME: Bug in "country-de.dat", Dublette
+# Z:383 Serbien
+# A:Serbien
+# T:*/*=1.049/60
 Z:384 Seychellen
 A:SC
 T:*/*=2.279/60
@@ -15275,9 +15278,10 @@ T:*/*=0.319/60
 Z:382 Senegal
 A:SN
 T:*/*=1.989/60
-Z:383 Serbien
-A:YU
-T:*/*=1.049/60
+# FIXME: Bug in "country-de.dat", Dublette
+# Z:383 Serbien
+# A:Serbien
+# T:*/*=1.049/60
 Z:384 Seychellen
 A:SC
 T:*/*=2.279/60
@@ -16024,9 +16028,10 @@ T:*/*=0.319(60)/1
 Z:382 Senegal
 A:SN
 T:*/*=1.989(60)/1
-Z:383 Serbien
-A:YU
-T:*/*=1.049(60)/1
+# FIXME: Bug in "country-de.dat", Dublette
+# Z:383 Serbien
+# A:Serbien
+# T:*/*=1.049(60)/1
 Z:384 Seychellen
 A:SC
 T:*/*=2.279(60)/1
@@ -16769,9 +16774,10 @@ T:*/*=0.319/60
 Z:382 Senegal
 A:SN
 T:*/*=1.989/60
-Z:383 Serbien
-A:YU
-T:*/*=1.049/60
+# FIXME: Bug in "country-de.dat", Dublette
+# Z:383 Serbien
+# A:Serbien
+# T:*/*=1.049/60
 Z:384 Seychellen
 A:SC
 T:*/*=2.279/60
@@ -17516,9 +17522,10 @@ T:*/*=0.319(60)/1
 Z:382 Senegal
 A:SN
 T:*/*=1.989(60)/1
-Z:383 Serbien
-A:YU
-T:*/*=1.049(60)/1
+# FIXME: Bug in "country-de.dat", Dublette
+# Z:383 Serbien
+# A:Serbien
+# T:*/*=1.049(60)/1
 Z:384 Seychellen
 A:SC
 T:*/*=2.279(60)/1
@@ -18263,9 +18270,10 @@ T:*/*=0.319/60
 Z:382 Senegal
 A:SN
 T:*/*=1.989/60
-Z:383 Serbien
-A:YU
-T:*/*=1.049/60
+# FIXME: Bug in "country-de.dat", Dublette
+# Z:383 Serbien
+# A:Serbien
+# T:*/*=1.049/60
 Z:384 Seychellen
 A:SC
 T:*/*=2.279/60
@@ -19011,9 +19019,10 @@ T:*/*=0.319(60)/1
 Z:382 Senegal
 A:SN
 T:*/*=1.989(60)/1
-Z:383 Serbien
-A:YU
-T:*/*=1.049(60)/1
+# FIXME: Bug in "country-de.dat", Dublette
+# Z:383 Serbien
+# A:Serbien
+# T:*/*=1.049(60)/1
 Z:384 Seychellen
 A:SC
 T:*/*=2.279(60)/1
@@ -21890,7 +21899,7 @@ Z:2-4 Inland
 A:DE
 T:W/08-18=0.099(60)/1 Hauptzeit
 T:W/18-08=0.079(60)/1 Nebenzeit
-T:E,H/*=0.0079(60)/1 Wochenende
+T:E,H/*=0.079(60)/1 Wochenende
 Z:5 Mobile Talkline
 T:*/*=0.42(60)/1
 Z:6 Data (national)
@@ -23705,6 +23714,11 @@ T:E/*=0.045/60
 #T:W/8-18=0.045/60
 #T:W/18-8=0.035/60
 #T:E/*=0.035/60
+Z:104 MDS-Online
+A:0192666120
+C:Homepage: http://www.mds-online.net/
+S:Internet by Call
+T:*/*=0.025/60
 Z:200 Europa
 A:AT,CH
 T:*/*=0.36/60

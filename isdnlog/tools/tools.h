@@ -1,4 +1,4 @@
-/* $Id: tools.h,v 1.55 2000/06/29 17:38:28 akool Exp $
+/* $Id: tools.h,v 1.56 2000/08/06 13:06:53 akool Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,21 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools.h,v $
+ * Revision 1.56  2000/08/06 13:06:53  akool
+ * isdnlog-4.38
+ *  - isdnlog now uses ioctl(IIOCNETGPN) to associate phone numbers, interfaces
+ *    and slots in "/dev/isdninfo".
+ *    This requires a Linux-Kernel 2.2.12 or better.
+ *    Support for older Kernel's are implemented.
+ *    If IIOCNETGPN is available, the entries "INTERFACE = xxx" in
+ *    "/etc/isdn/isdn.conf" are obsolete.
+ *  - added 01013:Tele2 totally Freecall on 12. and 13. August 2000
+ *  - resolved *any* warning's from "rate-de.dat" (once more ...)
+ *  - Patch from oliver@escape.de (Oliver Wellnitz) against
+ *  	 "Ziffernwahl verschluckt Nummern"
+ *
+ *    **Please "make clean" before using this version of isdnlog!!**
+ *
  * Revision 1.55  2000/06/29 17:38:28  akool
  *  - Ported "imontty", "isdnctrl", "isdnlog", "xmonisdn" and "hisaxctrl" to
  *    Linux-2.4 "devfs" ("/dev/isdnctrl" -> "/dev/isdn/isdnctrl")
@@ -959,6 +974,8 @@ typedef struct {
   int	  tz;
   int	  tarifknown;
   RATE    Rate;
+  char	  interface[10];
+  char    fnum[NUMSIZE];
 } CALL;
 
 /****************************************************************************/
