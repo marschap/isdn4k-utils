@@ -1,4 +1,4 @@
-/* $Id: isdnrep.c,v 1.19 1997/05/10 01:21:06 luethje Exp $
+/* $Id: isdnrep.c,v 1.20 1997/05/10 12:57:00 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -20,6 +20,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnrep.c,v $
+ * Revision 1.20  1997/05/10 12:57:00  luethje
+ * some changes
+ *
  * Revision 1.19  1997/05/10 01:21:06  luethje
  * some primitive changes
  *
@@ -277,6 +280,7 @@ static char* fill_spaces(char *string);
 static void free_format(prt_fmt** ptr);
 static int html_bottom(char *progname, char *start, char *stop);
 static int html_header(void);
+static char *print_diff_date(char *start, char *stop);
 
 /*****************************************************************************/
 
@@ -581,8 +585,8 @@ static int print_bottom(double unit, char *start, char *stop)
 	{
 		if ((j == DIALOUT && !incomingonly) || (!outgoingonly && j == DIALIN))
 		{
-			sprintf(string,"\n%s Summary for %s%s%s",j==DIALOUT?"DIALOUT":"DIALIN",
-			              start,timearea?" .. ":"",timearea?stop:"");
+			sprintf(string,"\n%s Summary for %s",j==DIALOUT?"DIALOUT":"DIALIN",
+			              print_diff_date(start,stop));
 
 			h_percent = 80.0;
 			h_table_color = H_TABLE_COLOR2;
@@ -2278,15 +2282,26 @@ static int html_bottom(char *_progname, char *start, char *stop)
 		*ptr = '\0';
 
 	print_msg(PRT_NORMAL,"</BODY>\n");
-	if (strcmp(start,stop))
-		print_msg(PRT_NORMAL,"<HEAD><TITLE>%s %s .. %s\n",progname,start,stop);
-	else
-		print_msg(PRT_NORMAL,"<HEAD><TITLE>%s %s\n",progname,start);
+	print_msg(PRT_NORMAL,"<HEAD><TITLE>%s %s\n",progname,print_diff_date(start,stop));
 	print_msg(PRT_NORMAL,"</TITLE>\n");
 	print_msg(PRT_NORMAL,"</HTML>\n");
 
 	free(progname);
 	return 0;
+}
+
+/*****************************************************************************/
+
+static char *print_diff_date(char *start, char *stop)
+{
+	static char RetCode[64];
+
+	if (strcmp(start,stop))
+		sprintf(RetCode,"%s .. %s",start,stop);
+	else
+		sprintf(RetCode,"%s",start);
+
+	return RetCode;
 }
 
 /*****************************************************************************/
