@@ -310,6 +310,10 @@ VBOX_LOCKDIR
   Lockfiles to ensure mutually exclusive access to devices will be
   created in this directory. /var/lock is recommended.
 
+Vbox documentation directory
+VBOX_DOCDIR
+  Where the (currently only German) documentation is installed.
+
 Version of Tcl library to use
 VBOX_TCL
   There are different versions of tcl available.. tcl8.0 is the
