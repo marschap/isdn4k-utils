@@ -218,8 +218,18 @@ otherwise the addslave command will be rejected.
 .TP 5
 .B sdelay name <num>
 Set delay for slave-dialing.
-An interface has to have a load of more than 7000 cps for at least this time
+A master interface has to have a load of more than
+.B trigger
+cps for at least this time
 (in seconds), before it's slave is started.
+.TP 5
+.B trigger name <num>
+Set trigger level for slave-dialing.
+A master interface has to have a load of more than
+.B trigger
+cps for at least
+.B sdelay
+seconds, before it's slave is started.
 .TP 5
 .B dial name
 Force dialing of interface "name".

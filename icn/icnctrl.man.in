@@ -1,6 +1,6 @@
-.\" $Id: icnctrl.man.in,v 1.5 1997/06/21 14:38:25 fritz Exp $
+.\" $Id: icnctrl.man.in,v 1.6 1997/06/22 11:58:17 fritz Exp $
 .\"
-.\" CHECKIN $Date: 1997/06/21 14:38:25 $
+.\" CHECKIN $Date: 1997/06/22 11:58:17 $
 .\"
 .\" Process this file with
 .\" groff -man -Tascii icnctrl.1 for ASCII output, or
@@ -193,4 +193,4 @@ No bugs so far.
 \(co 1997 by Fritz Elfert <fritz@wuemaus.franken.de>
 .LP
 .SH SEE ALSO
-.BR isdnctrl "(8), " icn "(4), " isdnctrl "(4), " isdnctrl "(4), " ttyI (4).
+.BR isdnctrl "(8), " icn "(4), " isdnctrl "(4), " ttyI (4).
