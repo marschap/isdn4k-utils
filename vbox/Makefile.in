@@ -1,5 +1,5 @@
 #
-# $Id: Makefile.in,v 1.14 1997/10/22 20:46:39 fritz Exp $
+# $Id: Makefile.in,v 1.15 1997/10/26 23:42:00 fritz Exp $
 
 #----------------------------------------------------------------------------#
 # Things you can change to personalize the Makefile for your own site. Some  #
@@ -292,6 +292,7 @@ DISTCLEANOBJS	= $(TOPDIR)/Makefile \
 clean:		  ignore
 		  @find $(TOPDIR)/ -name '*~' -exec $(RM) {} ';'
 		  @find $(TOPDIR)/ -name '*.o' -exec $(RM) -f {} ';'
+		  @find $(TOPDIR)/ -name '*.a' -exec $(RM) -f {} ';'
 
 distclean:	  clean programs-d scripts-d manuals-d
 		  @set -e; for i in `echo $(DISTCLEANOBJS)`; do \
