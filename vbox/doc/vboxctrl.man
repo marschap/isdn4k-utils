@@ -1,5 +1,5 @@
-.\" $Id: vboxctrl.man,v 1.2 1998/12/02 16:54:25 paul Exp $
-.\" CHECKIN $Date: 1998/12/02 16:54:25 $
+.\" $Id: vboxctrl.man,v 1.3 2002/10/15 14:46:42 paul Exp $
+.\" CHECKIN $Date: 2002/10/15 14:46:42 $
 .TH vboxctrl 1 "@MANDATE@" "ISDN 4 Linux @I4LVERSION@" "Linux System Administration"
 
 .SH NAME
@@ -44,8 +44,7 @@ Displays package version.
 .TP
 .I "\-h, \-\-help"
 Displays a usage message.
-.TE
-.br
+.PP
 The spool directory is taken from one of the following:
 .TP
 .I 1
@@ -53,9 +52,9 @@ the default builtin value
 .TP
 .I 2
 The value of the environment variable VBOXSPOOL, if set.
+.TP
 .I 3
 The directory of the command line option "--spooldir".
-.TE
 
 .SH SEE ALSO
 .B vbox(1), vboxd(8)
