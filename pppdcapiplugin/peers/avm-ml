@@ -4,11 +4,11 @@
 debug
 sync
 noauth
-plugin /etc/ppp/plugins/userpass.so
-username netways
+user netways
+plugin userpass.so
 password netways
 defaultroute
-plugin /etc/ppp/plugins/capiplugin.so
+plugin capiplugin.so
 number 03039984330
 protocol hdlc
 ipcp-accept-local

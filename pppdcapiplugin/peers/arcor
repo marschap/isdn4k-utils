@@ -1,11 +1,12 @@
 debug
 sync
 noauth
-plugin /etc/ppp/plugins/userpass.so
-username arcor
+-chap
+user arcor
+plugin userpass.so
 password internet
 defaultroute
-plugin /etc/ppp/plugins/capiplugin.so
+plugin capiplugin.so
 #controller 1
 #numberprefix 0
 number 010700192070

@@ -9,7 +9,7 @@ lcp-max-terminate 2
 noccp
 noipx
 persist
-plugin /etc/ppp/plugins/capiplugin.so
+plugin capiplugin.so
 channels 1
 protocol hdlc
 ipcp-accept-local

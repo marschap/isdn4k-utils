@@ -4,11 +4,12 @@
 debug
 sync
 noauth
-plugin /etc/ppp/plugins/userpass.so
-username netways
+-chap
+user netways
+plugin userpass.so
 password netways
 defaultroute
-plugin /etc/ppp/plugins/capiplugin.so
+plugin capiplugin.so
 #controller 1
 #numberprefix 0
 number 03039984330
