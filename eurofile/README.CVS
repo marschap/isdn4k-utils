@@ -1,0 +1,23 @@
+$Id: README.CVS,v 1.1 1999/06/29 16:22:38 he Exp $
+
+From version 0.0.11, eftp4linux is added to the isdn4linux cvs
+repository. This will allow bug fixes to be faster distributed. It
+will also increase availability because the isdn4linux repository
+are available from several sources.
+
+As long as it is considered alpha, it will only appear in the isdn4k-utils
+configuration menu if the "CONFIG_EXPERIMENTAL" option is set.
+You can still cd to the eurofile subdirectory (as described in the
+INSTALL file) and compile eftp4linux stand-alone, but you will not
+inherit the isdn4k-utils main menu config options then.
+
+As long as it is alpha, it also might not be included with the beta-releases
+of the isdn4k-utils package. But in turn, stand-alone snapshots from
+the eftp4linux package will contiune to be distributed from the
+ftp://ftp.hamburg.pop.de/pub/local/linux/i4l-eft/.
+However, not every change commited to cvs will be distrinuted on the
+ftp server. Only when important changes (important new features or
+imporatnt bug fixes) are present or when sufficiently
+many less important changes have accumulated, a new stand-alone release
+will be made.
+

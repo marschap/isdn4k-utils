@@ -1,0 +1,204 @@
+Installation instructions for eftp4linux
+
+First, you need to compile 2.2.x kernel with x25 support enabled.
+You also need a recent version of the isdn4k-utils compiled against
+2.2.x kernel header files and the x25 utility programmes.
+
+
+Kernel
+======
+
+You need a recent kernel 2.2.x kernel that supports some special
+features.  2.0.x kernels won't work. When configuring the kernel for
+compilation, (i.e. by `make menuconfig') enable the following:
+
+
+Code maturity level options  --->
+	Enable	"Prompt for development and/or incomplete
+		code/drivers" (CONFIG_EXPERIMENTAL)  [select "y"]
+
+Networking options  --->  
+	Enable  "CCITT X.25 Packet Layer" [select "m" or "y"]
+
+	(if this menu entry is missing, you probably havn't
+	enabled the experimental features above).
+
+ISDN subsystem  ---> 
+	configure this as usual and additionally enable
+
+		"X.25 PLP on top of ISDN"      [select "y"]
+
+	(if this menu entry is missing, you probably havn't
+	enabled the X25 PLP support from the networking options).
+
+Set all other options as usual and then compile your kernel, i.e.
+
+make dep
+make zImage modules
+make modules_install
+
+"make modules_install" is recommended after compilation.
+
+You can additionally do a `make install', but be aware that this might
+possibly overwrite your old 2.0.36+ kernel. Without `make install' you will
+need to add an additional entry to your /etc/lilo.conf file for
+booting your 2.2.x kernel as an alternative to 2.0.x. 
+
+It is possible (but not necessary) to apply additional
+patches to the kernel before compilation:
+
+ix25-2.1.128.patch	fixes a bug in the Linus X.25 PLP layer. This is
+			only necessary to communicate with certain
+			buggy eft clients (CSD isdn toolbox,
+			maybe also some RVS clients). If you want to
+			communicate with buggy clients, also
+			enable the "#define X25_PEER_IS_BUGGY"
+			at the very end of include/net/x25.h
+			before compiling the kernel.
+
+isdn4linux CVS snapshot has been reported to work more reliably with
+			2.2.x-kernels. It also provides for a
+			feature useful for eftd to reliably determine
+			the peer's isdn No.
+			
+			Kernels 2.3.4 and newer now contain the new
+			isdn4linux-code. You can try this (but be
+			aware that 2.3.x are the non-stable kernels).
+	
+
+isdn4k-utils
+============
+
+  You need a recent isdnctrl utility (and maybe the loopctrl binary if
+  you want to test locally with the isdnloop driver).
+  You need isdn4k-utils-3.0beta2.tar.gz or newer.
+
+  The utilities must be compiled against the (patched) 2.2.x
+  kernel headers. The location of that kernel can be set from the
+  isdn4k-utils configuration menu.
+ 
+  The 3.0beta2 package is availabe from ftp.franken.de
+
+
+x25-utils
+=========
+
+If you want to use the eftp programme (Eurofile client), you need the
+x25_route utility from the x25_utils package. The eurofile server
+can also be used without that package.
+
+The package should be available from the same site as this eftp4linux
+packages or from ftp.hes.iki.fi:/pub/ham/linux/ax25/    (don't confuse
+the x25-utils with the ax25-utils, you only need the x25-utils).
+
+Make sure that the compiler/preprocessor finds the include/linux/x25.h
+file. Either add some flags to the makefile or make /usr/src/linux a
+symbolic link pointing to your pre2.2 kernel's include/linux directory.
+
+		
+
+This eftp4linux package
+=======================
+
+Just untar the package and type 'make' in the top level makefile.
+
+This should automatically run a configure script. If your new isdnctrl
+is installed at an unsusual location, you might want to edit the
+./configure script before. The locations searched for are
+/usr/local/sbin:/usr/local/bin:/usr/sbin:/sbin:/usr/bin:/bin.
+If you have multiple isdnctrl versions installed, make sure that the 
+utility found first is the one just compiled as above (against the
+(patched) 2.2pre kernel header files).
+
+The directory where the isdn configuration files are located is
+assumed to be /etc/isdn. If this is not true for your installation,
+either create that directory or set the environment variable
+I4LCONFDIR to an alternative directory.
+
+As I could not test with all compiler/libc/distribution combinations,
+maybe I missed something. If configuration should fail or some files
+are not found during compilation, please tell me.
+
+As of eftp4linux-0.0.7, command line editing in eftp by means of
+the GNU readline library is enabled on default. For command
+line editing in eftp to work, you need a sufficiently recent
+GNU readline library that supports the "alternative interface".
+You also need the ncurses library. If the approriate libraries are
+not found, readline support will be automatically disabled.
+
+After successful compilation, you should be able to start
+the eurofile client or server.
+
+If you need to fix something that might influence the configuration
+process, do a 'make distclean' before recompiling.
+
+
+
+Starting the the Eurofile applications
+======================================
+
+General preparation
+===================
+
+If you have omitted the "make modules_install" after your kernel
+compilation, the default eft scripts (and probably the init scripts
+of your linux distribution as well) won't be able to load the modules
+corresponding to your (patched) kernel version. In that case, either
+modify all scripts to load the proper modules by absolute pathname
+or set the enviromnemnt variable MODPATH to the "modules" directory
+of your developer kernel's source tree.
+
+Boot your linux 2.2.x kernel. The isdn subsystem should be
+set up to a state where a HL driver capable of l2_prot x75i is
+working. If your boot sequence ends up in a state where you can set up
+connections on the /dev/ttyI devices, then you are already done with this.
+After that, you need to insmod the x25 module with
+
+insmod x25
+or
+modprobe x25
+
+Copy the file eft.msn present in the sample directory to the
+I4LCONFDIR (probably /etc/isdn) and edit it in order to configure
+the MSNs to be used by the EUROFILE client and server.
+
+
+Starting the Eurofile server
+============================
+
+Start the daemon as root by the script eftd.sh as present in the
+"scripts"-directory by typing
+
+eftd.sh start
+
+After that, you should be able to connect with an eft client to your
+linux server via isdn. If your client can only access upper or only
+lower case file names (or has other interworking problems), try
+prepending a '+' to the user name when logging in. 
+
+You can stop EUROFILE service again by
+
+eftd.sh stop
+
+
+Starting the Eurofile client
+============================
+
+
+To start the client, there is also a script "eftp.sh" (this currently
+also needs to be started from the root user, but the script
+does a 'cd /tmp' and changes the uid before the client is executed)
+
+eftp.sh ISDN_NUMBER [USER/PASSWD]
+
+in order to start an EUROFILE client and connect to a remote eft server.
+(root privileges are currently needed for setting up the network
+interfaces -- this will be worked around in a future release).
+Note that typing the password on the command line is not safe if
+your system is shared with other users who might spoof your password
+with the ps command. It also leaves traces in your command history file.
+
+You can also connect to your own server on top of the isdnloop driver
+(no paying isdn connection involved) by
+
+eftp.sh localhost [USER/PASSWD]

@@ -1,6 +1,8 @@
 Recent changes made to the isdn4k-utils archive are listed here,
 most recent on top.
 ------------------
+1999-06-29 he   (Henner Eisen <eis@baty.hanse.de)
+	eurofile - eftp4linux EUROFILE implementation initially checked in
 
 1999/06/07 paul (Paul Slootman <paul@isdn4linux.de>)
 	This file started!
