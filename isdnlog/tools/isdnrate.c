@@ -1,4 +1,4 @@
-/* $Id: isdnrate.c,v 1.38 2001/03/01 14:59:16 paul Exp $
+/* $Id: isdnrate.c,v 1.39 2002/08/15 17:22:43 akool Exp $
 
  * ISDN accounting for isdn4linux. (rate evaluation)
  *
@@ -19,6 +19,11 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnrate.c,v $
+ * Revision 1.39  2002/08/15 17:22:43  akool
+ * isdnlog-4.63
+ *  - new rates/provider ...
+ *  - isdnrate now display EuroCent as the default
+ *
  * Revision 1.38  2001/03/01 14:59:16  paul
  * Various patches to fix errors when using the newest glibc,
  * replaced use of insecure tempnam() function
@@ -1139,9 +1144,9 @@ static void result(int n)
   if (n > best)
     n = best;
   for (i = 0; i < n; i++)
-    printf("%s  %s %8.3f  %s\n",
-    Provider(sort[i].prefix), currency, sort[i].rate, sort[i].explain);
-}				/* result */
+    printf("%s  %s  %s\n",
+    Provider(sort[i].prefix), printRate(sort[i].rate), sort[i].explain);
+} /* result */
 
 
 static void purge(int n)

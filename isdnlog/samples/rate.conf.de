@@ -207,6 +207,7 @@ P:254=0		#E Calladin	  # -> 01058
 P:271=0		#E RapidCall	  # -> 01058
 P:273=0		#A Tele2 Ortstarif
 P:276=0		#E Telestunt	  # -> 01051
+P:279=0		#E smart79	  # -> Ventelo
 P:282=0		#E lightTalk	  # -> 01058
 P:284=0		#E maxbell	  # -> 01058
 P:287=0		#E Phonecraft	  # -> 01058

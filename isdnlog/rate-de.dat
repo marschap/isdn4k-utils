@@ -1,15 +1,20 @@
-V:2.02 [10-Aug-2002 14:44:59]
+V:3.00  [15-Aug-2002 19:14:10]
 
 # Währungsformat
+#
+# ACHTUNG! Falls weiterhin in EURO angezeigt werden soll, bitte die folgende
+# 				 Zeile aktivieren:
 # U:%.3f EUR
-U:^%.3f c
+#
+# Neu: Anzeige in Cent. Hierzu ist isdnlog-4.61 oder besser erforderlich!
+U:^%.3f ¢
 
 # Diese Tariftabelle ist ein Service der I4L-Tarifdatenbank-Crew.
 # Alle Angaben erfolgen ohne Gewähr
 #
-# (C) Copyright 1999, 2001 by Andreas Kool (akool@isdn4linux.de)
+# (C) Copyright 1999, 2000, 2001, 2002 by Andreas Kool (akool@isdn4linux.de)
 #
-# $Id: rate-de.dat,v 1.123 2002/08/10 16:32:03 akool Exp $
+# $Id: rate-de.dat,v 1.124 2002/08/15 17:22:42 akool Exp $
 #
 #
 # Das "A:" Tag muß folgendermaßen gefüllt werden:
@@ -2496,7 +2501,7 @@ T:*/*=0
 Z:2-4 Deutschland
 A:+49
 T:W/08-18=0.04/60
-T:W/18-21=0.028/60
+T:W/18-21=0.028/60   
 T:W/21-08=0.025/60
 T:E,H/*=0.025/60
 Z:10 Mobilfunk D1/D2
@@ -2702,7 +2707,7 @@ C:Telefax:01805-908060
 C:TarifChanged:2002-07-25
 C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
-# G:25-Jul-2002
+# G:16-Aug-2002
 C:Euro
 Z:0 FreeCall
 A:011*
@@ -2713,13 +2718,13 @@ A:112
 T:*/*=0
 Z:1-4 GermanCall
 A:+49
-T:*/*=0.015/60
+T:*/*=0.023/60
 Z:10 Mobilfunk
 A:_DEMD1
 A:_DEMD2
 A:_DEME1
 A:_DEME2
-T:*/*=0.17/60
+T:*/*=0.15/60
 #
 Z:200 Afghanistan
 A:AF
@@ -3506,7 +3511,7 @@ A:TV
 T:*/*=0.76/60
 Z:467 USA
 A:US
-T:*/*=0.01/60
+T:*/*=0.03/60
 Z:461 Uganda
 A:UG
 T:*/*=0.285/60
@@ -3730,7 +3735,7 @@ A:_DEMD1
 A:_DEMD2
 T:*/*=0.22/60
 
-Z:11 Mobilfunk E-plus/Quam
+Z:11 Mobilfunk E-plus/Quam 
 A:_DEME1
 A:_DEMQ
 T:*/*=0.3017/60
@@ -4078,13 +4083,13 @@ A:112
 T:*/*=0
 Z:1-4 GermanCall
 A:+49
-T:*/*=0.014/60
+T:*/*=0.035/0,0.014/60
 Z:10 Mobilfunk
 A:_DEMD1
 A:_DEMD2
 A:_DEME1
 A:_DEME2
-T:*/*=0.169/60
+T:*/*=0.035/0,0.169/60
 #####################################################################
 #
 #
@@ -4249,7 +4254,7 @@ A:112
 T:*/*=0
 Z:1-4 GermanCall
 A:+49
-T:*/*=0.027/60
+T:*/*=0.014/60
 Z:10 Mobilfunk
 A:_DEMF
 T:*/*=0.155/60
@@ -4371,6 +4376,31 @@ Z:10 Mobilfunk
 A:_DEMF
 T:*/09-18=0.185/60
 T:*/18-09=0.14/60
+#####################################################################
+#
+#
+P:279,0 Ventelo smart79
+B:0190079
+C:Address:
+C:Name:Ventelo smart79
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
+# G:14-Aug-2002
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+Z:1-4 GermanCall
+A:+49
+T:W/08-18=0.0304/60
+T:W/18-08=0.0214/60
+T:E,H/*=0.0214/60
+Z:10 Mobilfunk
+A:_DEMF
+T:*/*=0.239/60
 #####################################################################
 #
 #

@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.206 2002/08/10 16:32:03 akool Exp $
+## $Id: Makefile.in,v 1.207 2002/08/15 17:22:42 akool Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,11 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.207  2002/08/15 17:22:42  akool
+## isdnlog-4.63
+##  - new rates/provider ...
+##  - isdnrate now display EuroCent as the default
+##
 ## Revision 1.206  2002/08/10 16:32:03  akool
 ## isdnlog-4.62
 ##  - new rates/provider (0190028, Tele2 Ortstarif)
@@ -1553,7 +1558,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 4.62
+VERSION     = 4.63
 
 MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 \
 	      isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 \
