@@ -3,10 +3,9 @@
 <article>
 
 <title>ISDN4LINUX - FAQ (deutsche Version)
-
 <author>&Uuml;bersetzer: Wolfgang Bornath (<tt><htmlurl
 url="mailto:i4lfaq-de@isdn4linux.de" name="i4lfaq-de@isdn4linux.de"></tt>)
-<date>&Uuml;bersetzung: v 2.0.54-1, 15. M&auml;rz 2001
+<date>&Uuml;bersetzung: v 2.0.63-1, 28. Juni 2001
 <abstract>
 </abstract>
 <!-- Table of Content
@@ -749,12 +748,14 @@ hisaxctrl &lt;id&gt; 98 1
 </code>
 
 Das gekreuzte Kabel muss - egal wie kurz es ist - terminiert
-werden. Manche HFC-Karten besitzen Jumper zur Terminierung.
+werden. Ohne Terminierung l&auml;ft garnichts, nicht einmal bei einem
+1m-Kabel. Manche HFC-Karten besitzen Jumper zur Terminierung.
 
 Dies stellt jedoch nur die physikalische Verbindung her. Bisher
 implementiert ISDN4LINUX (noch?) nicht das h&ouml;here ISDN-Protokoll
 DSS1 (d.h., ISDN4LINUX kann dem ISDN-Ger&auml;t keinen ISDN-Knoten
-vorspielen und die richtigen ISDN-Befehle erteilen).
+vorspielen und die richtigen ISDN-Befehle erteilen). Daher kannst Du
+zwar eine Standleitung simulieren aber keine Telefonanlage.
  
 <sect1> feature_lcr: Ist mit ISDN4LINUX "least cost routing" (LCR) m&ouml;glich?
 <label id="feature_lcr">
@@ -822,12 +823,15 @@ hilfreich: <tt>/usr/share/doc/isdnutils/HOWTO.gz</tt>
 Als Leser des deutschen Computermagazins <tt/ct/ findest Du sehr
 hilfreiche Artikel in diesen Ausgaben (unter anderen):
 <itemize>
-<item>ct 05/98, Seite 224: <tt>Der erste Kontakt/Linux: Mit PPP ans
+<item>ct 05/1998, Seite 224: <tt>Der erste Kontakt/Linux: Mit PPP ans
 Internet</tt>
-<item>ct 21/98, Seite 288: <tt>Reiseleiter/Internet-Anbindung f&uuml;r
+<item>ct 21/1998, Seite 288: <tt>Reiseleiter/Internet-Anbindung f&uuml;r
 das LAN</tt>
-<item>ct 25/98, Seite 218: <tt>Bei Anruf Netz/Linux: Dial-In
+<item>ct 25/1998, Seite 218: <tt>Bei Anruf Netz/Linux: Dial-In
 Server</tt>
+<item>ct 7/2001, Seite 228: <tt>Des Surfers Bastelstunde:
+Mobilfunktechnik HSCSD aussch&ouml;pfen</tt>
+(beinhaltet auch Informationen zur Dial-in Konfiguration ohne HSCSD).
 </itemize>
 
 Bei der Frage <ref id="config_links" name="config_links"> findest Du
@@ -1025,6 +1029,7 @@ Niederlanden genannte 'Wisecom' funktioniert nicht)
 </itemize>
 Hinweis:
 <itemize>
+<item>AVM A1+ wird nicht unterst&uuml;tzt
 <item>PCF, PCF-Pro: bis jetzt wird nur der ISDN-Teil unterst&uuml;tzt
 <item>PCC-8: noch nicht getestet 
 <item>Teles PCMCIA ist EXPERIMENTAL
@@ -1039,6 +1044,7 @@ Typ ist (12) als die PCI-Version (35 mit HFC oder 36 mit Winbond chip)!
 <item>Zur Unterscheidung zwischen HFC-PCI und PCI/Winbond dient der
  Output des Befehls <tt>cat /proc/pci</tt>. Bei HFC-PCI bekommst Du
  bei Deiner Karte eine Zeile mit dem Text "Master capable".
+<item>DataFire Micro V PCI = Karte mit HFC-Chip (Typ 35)
 </itemize>
 
 F&uuml; deutsche Leser: Jede Karte, die die Deutsche Telekom in der
@@ -1320,11 +1326,6 @@ mit offizieller Zulassung in Deutschland und daher auch in der EU
 (siehe Frage <ref id="country_certified" name="country_certified"> zu
 mehr Informationen &uuml;ber die Zulassung).
 
-Was die ELSA Microlink ISDN USB betrifft: sie arbeitet wie ein
-serieller Terminal-Adapter mit dem USB-Kommunikationstreiber. Daher
-wird kein spezieller Treiber ben&ouml;tigt (siehe <ref
-id="hardware_external" name="hardware_external">).
-
 Es gibt jedoch eine Eigenheit beim Gebrauch der ELSA Quickstep
 1000pro-PCI und einigen nicht PCI-konformen Mainboards. Diese setzen
 die IO-Addresse auf unzul&auml;ssige Werte (sie liegen im h&ouml;heren
@@ -1343,6 +1344,11 @@ Die Verbindung von ELSA's RJ11 Stecker zu einem RJ45 Kabel sieht so aus:
 Pins      1234       12345678
 Kabel     abcd       --abcd--
 </verb>
+
+Was die ELSA Microlink ISDN USB betrifft: Sie arbeitet - entgegen den
+bisherigen Aussagen - NICHT wie ein serieller Adapter mit dem USB
+Communication Class Treiber. Zur Zeit wird dieser Adapter nicht von
+ISDN4LINUX unterst&uuml;tzt.
 
 <sect1> hardware_sedlbauer: Was ist bei der Sedlbauer-Karte zu beachten?
 <label id="hardware_sedlbauer">
@@ -1441,6 +1447,8 @@ die ISA/PNP-Karte den gleichen Typ angeben (27), wird hisax bei der
 Angabe einer IO-Adresse eine ISA/PNP-Karte und bei keiner Angabe einer
 IO-Adresse eine PCI-Karte annehmen. Beachte also genau, was Du
 angibst.
+
+Leider hat die aktuelle Version der Fritz!PCI-Karte (v2.0) einen anderen Chipset, der von ISDN4LINUX noch nicht unterst&uuml;tzt wird. Du erkennst diese Karte mittles lspci, das eine Karten-ID von 0e00 ausgibt. Da AVM sich weigert, die zum Schreiben eines Treibers erforderlichen Informationen heraus zu geben, wird diese Karte von ISDN4LINUX nicht so bald unterst&uuml;tzt werden.
 
 Wenn der Interrupt der Karte mit anderen Karten geteilt wird und die
 ISDN-Karte nicht funktioniert kann das am Motherboard liegen. Dazu
@@ -1629,6 +1637,11 @@ eine Hinauswahl misslingt liegt es meist daran, da&szlig; Du die MSN
 f&uuml; die Hinauswahl nicht korrekt angegeben hast. Dann lehnt die
 PBX das W&auml;hlverlangen ab.
 
+Bei ankommenden Gespr&auml;chen solltest Du beachten, da&szlig; manche
+Telefonanlagen eine 0 vor die Nummer jedes hereinw&auml;hlenden
+Ger&auml;tes setzen. Also musst Du die Einstellungen der
+Secure-Optionen dementsprechend &auml;ndern.
+
 Zuletzt solltest Du daran denken, da&szlig; Du Deine PBX so einstellen
 musst, da&szlig; sie ankommende Gespr&auml;che auf den internen ISDN
 Bus 'routen' muss.
@@ -1638,6 +1651,10 @@ Deine Karte nicht - parallel zur PBX - direkt an den S0 Bus
 anschlie&szlig;en (dann geht gar nichts mehr). Du musst sie mit dem
 internen ISDN Bus verbinden. Deine MSN ist dann normalerweise die
 Durchwahl am Ende der Telefonnummer.
+
+Besitzer der <tt>Ackermann Euracom</tt> finden Hinweise zur
+Konfigurations-Software auf der deutschen Seite: <url
+url="http://www.ganzfix.de">
 
 <sect1> hardware_telestrouble: Die PNP-Tools funktionieren nicht mit meiner Teles 16.3 PNP Karte!
 <label id="hardware_telestrouble">
@@ -1824,33 +1841,61 @@ makedev.sh (in isdn4k-utils) oder "von Hand" anzulegen.
 <sect1> config_gsmv110: Wie verbinde ich meinen PalmPilot via GSM per V.110 mit meinem  Computer?  
 <label id="config_gsmv110">
 <p>
+Eine GSM-Verbindung geht zuerst &uuml;ber ein spezielles
+Sendeprotokoll zum GSM Provider. Dieses hat ein Adapter mit der
+Bezeichnung IWF (interworking function) dann in das entsprechende
+Sendeprotokoll f&uuml;r Analog- oder ISDN-Verbindungen
+umzusetzen. Welches analoge oder digitale Sendeprotokoll da benutzt
+wird h&auml;ngt davon ab, auf welche Art das mobile Telefon die
+GSM-Verbindung anfordert.
 
-Richte asyncPPP mit dem normalen pppd f&uuml;r ein ttyI* Device ein
-(syncPPP wird nicht funktionieren). Neben dem Setzen der MSN musst Du
-die &Uuml;bertragungsrate mit <tt/AT&amp;R9600/ auf 9600
-setzen. Schalte beim Gebrauch von <tt/mgetty/ die automatische
-Rufannahme ab mit <tt/ATS0=0/; pppd wird mit den Optionen <tt/noccp/
-und <tt/require-pap/ aufgerufen. Wenn der Anruf mit dem
-Service-Indikator-Byte 2=0 angezeigt und nicht angenommen wird (was
-bei einigen falsch eingerichteten Telefonanlagen geschieht) kannst Du
-mit <tt/ATS19=0/ Abhilfe schaffen. Einzelheiten zur V.110 Einstellung
-findest Du in <tt>/usr/src/linux/Documentation/isdn/README</tt> ab
-Zeile 130.
+Eine analoge Verbindung ist wegen der langen Modemangleichung nicht
+sehr attraktiv. Da ISDN, HDLC und X.75 von den IWF-Adaptern noch nicht
+unterst&uuml;tzt werden, bleiben nur V.110 und V.120 &uuml;brig. V.120
+hat zwar eine bessere Flow Control und Fehlerberichtigung aber zur
+Zeit wird nur V.110 von ISDN4LINUX unterst&uuml;tzt.
 
-Ein Mini-Howto findest Du auf: <url
-url="http://www.oltom.com/Linux/Docs/GSM%20over%20V.110%20Mini-HOWTO.txt">.
+Auf dem Dial-Up Server musst Du asyncPPP mit dem normalen pppd
+f&uuml;r ein ttyI* Device einrichten (syncPPP wird nicht
+funktionieren). Neben dem Eintragen der MSN musst Du die
+&Uuml;bertragungsrate mit <tt/AT&amp;R9600/ auf 9600 setzen
+(<tt>/usr/src/linux/Documentation/isdn/README</tt> gibt Dir
+Einzelheiten zu dem Thema). Schalte beim Gebrauch von <tt/mgetty/ die
+automatische Rufannahme ab mit <tt/ATS0=0/; pppd wird mit den Optionen
+<tt/noccp/ und <tt/require-pap/ aufgerufen.
 
-Du musst nat&uuml;rlich auch GSM entsprechend einrichten. Um z.B. ein
-Nokia 7110 in den V.110-Modus zu versetzen gibst Du folgendenden
-undokumentierten Befehl ein:
+Im Ger&auml;t, das an das Mobiltelefon angeschlossen ist, wird eine
+ISDN V.110 Verbindung wie folgt angefordert:
 <code>
-at+cbst=75,0,1
+AT+CBST=71,0,1+CHSN=1,0,0,0
 </code>
+
+Bei einem Nokia 7110 musst Du eventuell den folgenden undokumentierten
+Befehl benutzen:
+<code>
+AT+CBST=75,0,1
+</code>
+
 Wenn die Tr&auml;ger-Eigenschaft von ISDN4LINUX mit '88 90 21 48 06
 bb' angegeben wird, ist die Einstellung korrekt (88 90 21 bedeutet
 V.110, 48 bedeutet ASYNC 9,6kbit, 06 bedeutet Flowcontrol RX/TX und bb
 bedeutet 8 Bit 1 Stopbit No Parity).
 
+Wird ein ankommender Ruf mit dem Service-Indicator-Byte 2 = 0
+angezeigt und dadurch nicht angenommen (bei manchen falsch
+eingestelleten Telefonanlagen), so l&auml;sst sich das mit dem Befehl
+<tt/ATS19=0/ abstellen.
+
+Eine h&ouml;here Bandbreite von 19.2kbit (HSCSD) kann mit folgendem
+Befehl angefordert werden:
+<code>
+AT+CBST=81,0,1+CHSN=3,0,0,0
+</code>
+Es ist jedoch abh&auml;ngig von Deinem GSM Provider, ob er diese
+&Uuml;bertragungsrate anbietet. Wenn ja, sollte der Dialin Server
+entsprechend eingestellt werden.
+Ein Mini-Howto dazu findest Du auf:
+<url url="http://www.oltom.com/Linux/Docs/GSM%20over%20V.110%20Mini-HOWTO.txt">
 
 <sect1> config_h323: Wie konfiguriere ich ISDN4LINUX als Voice-over-IP-Gateway f&uuml;r H.323 Clients?  
 <label id="config_h323">
@@ -1896,6 +1941,9 @@ ISDN (isdnquick.html).
 <url url="http://www.webideal.de/rh-isdn/">
 <item>Tips zur Konfiguration unter Linux-Mandrake:
 <url url="http://www.mandrakeuser.org/connect/cisdn.html">
+<item>fli4l, eine vorbereitete Linux-Version zur Benutzung eines alten
+PCs als Router:
+<url url="http://www.fli4l.de"> (tolle Seite!)
 <item>Scripts und Installationstips von verschiedenen Leuten: <tt><url
 url="http://www.rosat.mpe-garching.mpg.de/&tilde;web/ISDN.html"></tt> 
 <item>Dokumentation zu ABC Erweiterungen:
@@ -1910,8 +1958,11 @@ url="http://www-ti.informatik.uni-tuebingen.de/~hippm/isdn.html"></tt>
 <item>Homepage von kISDN (l&auml;uft nur mit Qt/KDE):
 <tt><url url="http://www.millenniumx.de/kisdn.html"></tt>
 <item>Konfiguration nicht nur f&uuml;r England (folge dem Link zum
-Linux-Setup): <tt><url
-url="http://www.oakhaven-consultants.co.uk"></tt>
+Linux-Setup): 
+<tt><url url="http://www.oakhaven-consultants.co.uk"></tt>
+<item>SOftwaremakros zur Einstellung der Ackermann Euracom (nicht
+f&uuml;r ISDN4LINUX):
+<tt><url url="http://www.ganzfix.de"></tt>
 </itemize>
 
 
@@ -2905,6 +2956,14 @@ isdnctrl addphone &lt;device&gt; out P1&lt;your_out_number&gt;
 Bedenke, da&szlig; in diesem Fall ein Hinausw&auml;hlen
 mi&szlig;lingt, wenn ein anderes Ger&auml;t (Telefon, Fax) bereits den
 entsprechenden Kanal belegt.
+
+<sect1> dialout_dynip: Wie finde ich bei dynamischer IP-Vergabe heraus, welche IP zur Hinauswahl benutzt wird?  
+<label id="dialout_dynip">
+<p>
+Erstelle ein Script mit Namen <tt>ip-up</tt>. Das wird (mit den
+entsprechenden Parametern) bei jedem Verbindungsaufbau vom ipppd
+aufgerufen. Die IP-Adresse steht dort als vierter Parameter
+(<tt>$4</tt>).
 
 <sect1> dialout_bind: Wegen einer DNS-Anfrage w&auml;hlt bind hinaus. Warum ben&ouml;tigt die Antwort bis zu einer Minute? Gibt es daf&uuml;r ein Workaround?
 <label id="dialout_bind">
@@ -4283,10 +4342,12 @@ Chargeint legt nur auf, wenn es keine Aktivit&auml;t auf der Leitung
 gab. Vielleicht benutzt Dein ISP einen Router (z.B. Cisco), der alle
 zehn Sekunden ein 'keep alive' Paket sendet. Wenn die Cisco auf ihre
 "keep alive" Pakete keine Antwort bekommt, wird sie das Routing
-einstellen. Das geschieht normalerweise nach dem 4. oder 5. Paket. Die
-beste L&ouml;sung besteht darin, den Provider zu bitten, keine 'keep
-alive' Pakete in der Cisco-Konfiguration einzustellen (<tt>'no
-keepalive'</tt>).
+einstellen. Das geschieht normalerweise nach dem 4. oder
+5.'keep-alive'-Paket. Erst k&uuml;rzlich (Anfang 2001) wurde die
+Unterst&uuml;tzung der 'keep-alive'-Pakete der Cisco
+verbessert/Korrigiert. Du kannst dieses Feature also ohne Probleme
+benutzen oder Deinen Provider bitten, es eben nicht zu benutzen
+(mittels <tt>'no keepalive'</tt> in der Cisco-Konfiguration).
 
 M&ouml;glicherweise sind es auch nicht die 'keep alive' Pakete, die
 die Verbindung offen halten, sondern eher OSPF Routing Updates. Das
@@ -4372,18 +4433,30 @@ k&ouml;nnen Modemverbindungen mit ISDN-Kan&auml;len vermischt
 werden. Hier jedoch besch&auml;ftigen wir uns nur mit
 ISDN-Kan&auml;len.
 
+<sect1> 2channel_mpppgoodbad: Was sind die Vor- und Nachteile von MPPP?  
+<label id="2channel_mpppgoodbad">
+<p>
+Ein Nachteil besteht darin, da&szlig; der 2.Kanal 'manuell' aktiviert
+werden muss. Der ipppd kann den 2.Kanal nicht nach Bedarf an- oder
+abschalten. Die normalen automatischen Funktionen des ipppd sind
+entweder unzuverl&auml;ssig (automatisches Auflegen) oder
+funktionieren &uuml;berhaupt nicht (automatische Anwahl). Das gilt
+nicht f&uuml;r die anderen Encapsulations. Die &Uuml;bertragungsraten
+sind allerdings sehr gut (ca. 30 KB/s mit 4 Kan&auml;en).
+
 <sect1> 2channel_mpppconfig: Wie richte ich MPPP ein?  
 <label id="2channel_mpppconfig">
 <p>
-Zuerst definierst Du ein (normales) Interface f&uuml;r ipppd
-(i.a. 'isdnctrl addif ippp0', usw.). Dieses Interface wird als Master
-Interface benutzt. Anschlie&szlig;end musst Du f&uuml;r jeden
-zus&auml;tzlichen Kanal ein Slave Device einrichten (z.B.: 'isdnctrl
-addslave ippp0 &lt;slave_interface&gt;', mehr Details im I4L
-Manual). Die Aktivierung der Kanalb&uuml;ndelung erfolgt durch die
-Option '+mp' beim Aufruf des ipppd un durch die Bindung beider Devices
-an ipppd. Achte darauf, da&szlig; die Namen beider Devices mit "ippp"
-beginnen m&uuml;ssen.
+Zuerst muss die Unterst&uuml;tzung f&uuml;r MPPP bei der Kompilation
+der ISDN-Module aktiviert werden. Dann definierst Du ein (normales)
+Interface f&uuml;r ipppd (i.a. 'isdnctrl addif ippp0', usw.). Dieses
+Interface wird als Master Interface benutzt. Anschlie&szlig;end musst
+Du f&uuml;r jeden zus&auml;tzlichen Kanal ein Slave Device einrichten
+(z.B.: 'isdnctrl addslave ippp0 &lt;slave_interface&gt;', mehr Details
+im I4L Manual). Die Aktivierung der Kanalb&uuml;ndelung erfolgt durch
+die Option '+mp' beim Aufruf des ipppd un durch die Bindung beider
+Devices an ipppd. Achte darauf, da&szlig; die Namen beider Devices mit
+"ippp" beginnen m&uuml;ssen.
 
 Zum Gebrauch der Kanalb&uuml;ndlung musst Du zuerst das 'Master
 Device' aktivieren. Anschlie&szlig;end werden die Slave Channels
@@ -4411,8 +4484,11 @@ isdnctrl hangup slave
 
 Bei syncPPP gibt es keine automatische Aktivierung der Slave
 Devices. Sie m&uuml;ssen manuell hinzugef&uuml;gt und wieder entfernt
-werden. Es gibt daf&uuml;r jedoch das Programm <tt>ibod</tt> (<url
-url="http://www.compound.se/ibod.html">).
+werden. Es gibt daf&uuml;r jedoch das Programm <tt>ibod</tt>, das das
+automatisch erledigt. Du findest es auf:
+(<url url="http://www.compound.se/ibod.html">)
+oder in einer von Karsten Keil erweiterten Version auf:
+<url url="http://www.suse.de/~kkeil/xibod/">.
 
 Ein Beispielscript findest Du in der Datei
 <tt>etc/rc.isdn.syncppp.MPPP</tt> im isdn4k-utils Paket (leider nicht
@@ -4424,24 +4500,20 @@ gleichzeitig ge&ouml;ffneten Kan&auml;le limitiert ist und bei
 &Uuml;berschreitung dieses Limits alle Verbindungen abgebrochen
 werden.
 
-<sect1> 2channel_mpppgoodbad: Was sind die Vor- und Nachteile von MPPP?  
-<label id="2channel_mpppgoodbad">
-<p>
-Ein Nachteil ist es, da&szlig; der Slave Channel 'manuell' aktiviert
-werden muss. ipppd kann den Slave Channel nicht nach Bedarf an- und
-abschalten. Die normalen automatischen Funktionen des ipppd sind
-entweder unzuverl&auml;ssig (automatisches Auflegen) oder
-funktionieren &uuml;berhaupt nicht (automatisches
-Hinausw&auml;hlen). Das gilt jedoch nicht f&uuml;r die anderen
-encapsulations.  Die Transferraten sind sehr gut (ca. 30 KB/s mit 4
-Kan&auml;len).
-
 <sect1> 2channel_mpppcompile: Ich habe MPPP ausprobiert aber es funktioniert nicht. Der ipppd schreibt im debug log so etwas wie das: ' ...  rcvd (0)(proto=0x3d) c0 00 00 00 80 fd 01 01 00 0a ... sent (0)(LCP ProtRej id=0x2 00 3d c0 00 00 00 80 fd 01 ...'  
 <label id="2channel_mpppcompile">
 <p>
 Du hast vergessen, die Unterst&uuml;tzung f&uuml;r MPPP/RFC1717 in das
 ISDN Subsystem zu kompilieren. Kompiliere den Kernel mit dieser
 aktivierten Option neu.
+
+<sect1> 2channel_cantlocateippp1: Beim Versuch mit MPPP bekomme ich die Fehlermeldung 'modprobe: Can't locate module ippp1' und 'ipppd: ioctl(SIOCSIFMTU): No such device...'?  
+<label id="2channel_cantlocateippp1">
+<p>
+Das ist eine Eigenheit des ipppd. Er versucht, beiden Kan&auml;len die
+gleiche MTU zuzuordnen und der Kernel kann kein entsprechendes
+Netzwerk-Device finden. Du kannst diese Meldung ohne Probleme
+ignorieren, MPPP sollte trotzdem funktionieren.
 
 
 <!-- Pecularities of your counterpart (remote device)
@@ -4857,6 +4929,12 @@ isdnctrl cbdelay isdn0 1
 </code>
 </quote>
 
+<sect1> callback_microsoft: Unterst&uuml;tzt ISDN4LINUX Microsoft Callback (CBCP)?  
+<label id="callback_microsoft">
+<p>
+Nein, das geht mit ISDN4LINUX nicht. Da es nicht so trivial zu
+implementieren ist, gibt es z.Zt. keinen Plan daf&uuml;r.
+
 <!-- Isdnlog
 -->
 
@@ -5103,8 +5181,8 @@ url="http://innominate.org/projects/vbox/index.php3"></tt>
 <p>
 Es gibt mehrere Skripts zur Verwendung mit vbox. Der Autor der FAQ ist
 allerdings nicht auf dem Laufenden. Das letzte Skript, &uuml;ber das
-ich Informationen habe, liegt auf <tt><url
-url="http://members.myworld.at/mren/vbox4php.html"></tt>.
+ich Informationen habe, liegt auf:
+<tt><url url="http://innominate.org/projects/vbox/index.php3"></tt>.
 Schickt mir bitte Informationen &uuml;ber hilfreiche Links, HowTos
 oder anderes...  Es gibt eine Dokumentation in den Kernel-Sources:
 <tt>/usr/src/linux/Documentation/isdn/README.audio</tt>
@@ -5371,9 +5449,14 @@ Telefondienste-Anbieter durch die richtige MSN ersetzt wird.
 <label id="country_brazil">
 <p>
 Bei Telemar ist die MSN Deine Telefonnummer ohne Ortsvorwahl.
+
 Brasilien nutzt EuroISDN. Der ISDN-Dienst DVI (von Telemar) basiert
 auf einer Hardware-L&ouml;sung von Teles (BRI PCI-Karte), die als
-NETjet-Karte konfiguriert werden muss.
+NETjet-Karte konfiguriert werden muss. Da jedoch diese Karte nicht zu
+den in Brasilien gehandelten Motherboards kompatibel ist, bietet
+Telemar auch eine Teles 16.3c ISA an. Daf&uuml;r findest Du eine Hilfe
+zur Konfiguration auf:
+<url url="http://www.olinux.com.br">.
 
 <sect1> country_france: Frankreich: Wie sieht unsere MSN aus? 
 <label id="country_france">
@@ -5404,43 +5487,33 @@ In den Niederlanden enth&auml;lt die MSN (anders als in Deutschland)
 <sect1> country_northamerica: Nordamerika: K&ouml;nnen wir ISDN4LINUX bei uns nutzen? 
 <label id="country_northamerica">
 <p>
-Leider k&ouml;nnen europ&auml;ische ISDN-Karten in Nordamerika nicht
-benutzt werden. In Europa stellt normalerweise die Telefongesellschaft
-den Netzwerk-Abschlu&szlig; (NTBA) zur Verf&uuml;gung. In Nordamerika
-muss <em>der Kunde</em> dieses Ger&auml;t (NT-1) selbst besorgen!
-Daher besitzen dort die meisten ISDN-Karten einen integrierten NT-1.
+Ja. Es gilt jedoch, einige Eigenheiten zu beachten.
 
-Es gibt da noch andere Unterschiede. So hat z.B. ein PRI (Primary Rate
-Interface) in Europa 30 B-Kan&auml;le, in Nordamerika nur 23. Es
-werden dort auch die Kanal-Protokolle NI-1 und 5Ess benutzt. NI-1 ist
-mit DSS1 verwandt (beide sind Q.931-Protokolle), jedoch haben beide
-ganz verschiedene Funktionsgruppen und sind daher nicht kompatibel
-zueinander.
+In Nordamerika liefern die Telefongesellschaften nur einen U- anstelle
+eines S-Anschlusses. Das bedeutet, da&szlig; sich der Kunde den
+Netzwerk-Abschluss (NT-1) selbst besorgen muss. Die einfachste
+L&ouml;sung besteht darin, eine Karte mit einem integrierten NT-1 zu
+kaufen, die zu dem U-Interface passt. Als Alternative kannst Du auch
+einen externen NT erwerben, der zwischen U- und S-Interface sitzt, und
+Deine ISDN-Karte mit dem S-Interface (ohne NT-1) daran
+anschlie&szlig;en.
 
-Leider wurden bisher weder das NT-1 noch das 5ESS-Protokoll zur Benutzung mit passiven Karten in ISDN4LINUX implementiert.
+In Nordamerika wird das Kanal-Protokoll NI-1 benutzt. NI-1 ist zwar
+mit DSS1 verwandt (beide sind Q.931-Protokolle), besitzt jedoch ganz
+verschiedene Funktionsgruppen. Mit Hilfe von Traverse Technologies
+(<tt><url url="http://www.ttcomms.com"></tt>) wurde die
+Unterst&uuml;tzung von NI-1 vor kurzem in HiSax, den Treiber f&uuml;r
+passive Karten implementiert.
+Da Traverse Technologies bei der Implementierung und Erprobung half,
+empfehlen wir den Kauf ihrer NETspider-U-Karte (mit integriertem NT-1)
+als Dank f&uuml;r ihre Mitwirkung bei der Open Source Entwicklung von
+ISDN4LINUX.
+Details zur Konfiguration Deines Systems mit HiSax findest Du in
+/usr/src/linux/Documentation/isdn/README.HiSax (Protokolltyp 4, SPID
+muss mit Deiner eigenen Nummer angegeben werden).
 
-Allerdings hat die Firma 'Spellcaster' einen ISDN4LINUX-Treiber
-f&uuml;r ihre eigenen (aktiven) Karten (sowohl BRI- als auch
-PRI-Karten) geschrieben. Weitere Informationen erh&auml;ltst Du bei:
-<verb>
-Ian James
-Customer Service Manager
-SpellCaster Telecommunications Inc.
-73 Laird Drive, Suite 206
-Toronto, Ontario
-Canada M4G 3T4
-Phone: 1 (800) 238-0547
-Fax: (416) 425-0854
-</verb>
-E-mail:  <tt><htmlurl url="mailto:ipj@spellcast.com"
-name="ipj@spellcast.com"></tt> oder <tt><htmlurl
-url="mailto:sales@spellcast.com" name="sales@spellcast.com"></tt> 
-Website: <tt><url url="http://www.spellcast.com"></tt>
-
-Leider lautet die letzte Nachricht, da&szlig; die Produktion dieser
-Karten eingestellt wurde. Wir werden Dich informieren, wenn wir einen
-anderen Hersteller f&uuml;r ISDN-Karten f&uuml;r Nordamerika gefunden
-haben.
+Vor geraumer Zeit hat die Firma 'Spellcaster' einen eigenen ISDN4LINUX-Treiber f&uuml;r ihre (aktiven) Karten geschrieben. Es gibt sowohl BRI- als auch PRI-Karten. Weitere Informationen gibt es unter:
+ <tt><url url="http://www.spellcast.com"></tt>
 
 Die aktiven Eicon DIVA Karten funktionieren ebenfalls gut in USA. Es
 gibt 5ESS und NI Treiber, die z.Zt. auf UltraSparc portiert werden.
