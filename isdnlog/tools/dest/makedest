@@ -1,7 +1,7 @@
 #! /usr/bin/perl
 
 # make dest.gdbm
-# necessary parts: /usr/lib/isdn/country.dat
+# necessary parts: /usr/lib/isdn/country-de.dat
 # optional parts: zone/CC/code
 #
 # usage:
@@ -34,7 +34,7 @@ use AnyDBM_File;
 use POSIX;
 use strict;
 $|=1;
-my $co_dat = '/usr/lib/isdn/country.dat';
+my $co_dat = '/usr/lib/isdn/country-de.dat';
 my $dest_gdbm = './dest.gdbm';
 if (@AnyDBM_File::ISA eq @CDB_File_Dump::ISA) {
   $dest_gdbm = './dest.cdb.dump';
@@ -104,7 +104,7 @@ sub write_global   {
     print "Adding global $co_dat...\n" if($verbose);
     open(IN, '../../country-de.dat') || 
 	open(IN, $co_dat) ||
-		die("Cant find country.dat");
+		die("Cant find country-de.dat");
     $i=0;
     while (<IN>) {
 	print "$i\r" if (++$i % 10==0 && $verbose && $outistty);

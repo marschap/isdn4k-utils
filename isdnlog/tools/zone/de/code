@@ -1,5 +1,4 @@
-130	FreeCall
-151	Mobilfunknetz D1
+1511	Mobilfunknetz D1
 160	Mobilfunknetz D1
 170	Mobilfunknetz D1
 171	Mobilfunknetz D1
@@ -14,26 +13,39 @@
 178	Mobilfunknetz Eplus
 176	Mobilfunknetz E2
 179	Mobilfunknetz E2
-150	Mobilfunknetz Quam
+1505	Mobilfunknetz Quam
 1801	Shared Cost 0180-1	3
-1802	Shared Cost 0180-2      3
-1803	Shared Cost 0180-3      3
-1804	Shared Cost 0180-4      3
-1805	Shared Cost 0180-5      3
-1901	Premium Rate 0190-1     3
-1902	Premium Rate 0190-2     3
-1903	Premium Rate 0190-3     3
-1904	Premium Rate 0190-4     3
-1905	Premium Rate 0190-5     3
-1906	Premium Rate 0190-6     3
-1907	Premium Rate 0190-7     3
-1908	Premium Rate 0190-8     3
-1909	Premium Rate 0190-9     3
+1802	Shared Cost 0180-2	3
+1803	Shared Cost 0180-3	3
+1804	Shared Cost 0180-4	3
+1805	Shared Cost 0180-5	3
+1901	Premium Rate 0190-1	3
+1902	Premium Rate 0190-2	3
+1903	Premium Rate 0190-3	3
+1904	Premium Rate 0190-4	3
+1905	Premium Rate 0190-5	3
+1906	Premium Rate 0190-6	3
+1907	Premium Rate 0190-7	3
+1908	Premium Rate 0190-8	3
+1909	Premium Rate 0190-9	3
+190024	Pennyphone
+190028	maxTEL
 190029	Telebillig
 190031	Teledump
+190032	Phonedump
 190035	TeleDiscount
 190037	Fonfux
+190049	Germanphone
+190051	Junior Telecom
+190054	Calladin
+190071	RapidCall
+190073	Tele2 Ortstarif
+190076	Telestunt
+190079	smart79
+190082	lightTalk
+190084	maxbell
 190087	Phonecraft
+190095	superdump
 201	Essen
 202	Wuppertal
 203	Duisburg
@@ -2456,7 +2468,7 @@
 4791	Osterholz-Scharmbeck
 4792	Worpswede
 4793	Hambergen
-4794	Worpswede-Osterode
+4794	Worpswede-Ostersode
 4795	Garlstedt
 4796	Teufelsmoor
 4802	Wrohm
