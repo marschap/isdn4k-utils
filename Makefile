@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.32 1999/01/01 17:48:24 armin Exp $
+# $Id: Makefile,v 1.33 1999/04/16 15:40:38 calle Exp $
 #
 # Toplevel Makefile for isdn4k-utils
 #
@@ -56,10 +56,10 @@ else
 endif
 
 ifeq ($(CONFIG_RCAPID),y)
-	SUBDIRS := $(SUBDIRS) capi20
+	SUBDIRS := $(SUBDIRS) capi20 capiinfo
 else
 	ifeq ($(CONFIG_AVMCAPICTRL),y)
-		SUBDIRS := $(SUBDIRS) capi20
+		SUBDIRS := $(SUBDIRS) capi20 capiinfo
 	endif
 endif
 

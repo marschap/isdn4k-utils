@@ -1,0 +1,15 @@
+/* config.h.in.  Generated automatically from configure.in by autoheader.  */
+
+/* Define if you have the ANSI C header files.  */
+#undef STDC_HEADERS
+
+#undef VERSION
+#undef PACKAGE
+#undef CONFIG_SBINDIR
+#undef CONFIG_MANDIR
+
+/* Define if you have the </include/linux/capi.h> header file.  */
+#undef HAVE__INCLUDE_LINUX_CAPI_H
+
+/* Define if you have the <capi20.h> header file.  */
+#undef HAVE_CAPI20_H

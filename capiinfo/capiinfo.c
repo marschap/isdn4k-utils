@@ -1,0 +1,157 @@
+/* $Id: capiinfo.c,v 1.1 1999/04/16 15:40:48 calle Exp $
+ *
+ * A CAPI application to get infomation about installed controllers
+ *
+ * This program is free software; you can redistribute it and/or modify          * it under the terms of the GNU General Public License as published by          * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *                                                                               * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ *
+ * $Log: capiinfo.c,v $
+ * Revision 1.1  1999/04/16 15:40:48  calle
+ * Added first version of capiinfo.
+ *
+ *
+ */
+#include <stdio.h>
+#include <string.h>
+#include <errno.h>
+#include <capi20.h>
+#include <linux/capi.h>
+
+struct bittext {
+   __u32 bit;
+   char *text;
+};
+
+struct bittext goptions[] = {
+/*  0 */ { 0x0001, "internal controller supported" },
+/*  1 */ { 0x0002, "external equipment supported"},
+/*  2 */ { 0x0004, "handset supported" },
+/*  3 */ { 0x0008, "DTMF supported" },
+/*  4 */ { 0x0010, "Supplementary Services supported" },
+/*  5 */ { 0x0020, "channel allocation supported (leased lines)" },
+ { 0, 0 }
+};
+
+struct bittext b1support[] = {
+/*  0 */ { 0x0001, "64 kbit/s with HDLC framing" },
+/*  1 */ { 0x0002, "64 kbit/s bit-transparent operation" },
+/*  2 */ { 0x0004, "V.110 asynconous operation with start/stop byte framing" },
+/*  3 */ { 0x0008, "V.110 synconous operation with HDLC framing" },
+/*  4 */ { 0x0010, "T.30 modem for fax group 3" },
+/*  5 */ { 0x0020, "64 kbit/s inverted with HDLC framing" },
+/*  6 */ { 0x0040, "56 kbit/s bit-transparent operation" },
+/*  7 */ { 0x0080, "Modem with all negotiations" },
+/*  8 */ { 0x0100, "Modem asyncronous operation with start/stop byte framing" },
+/*  9 */ { 0x0200, "Modem syncronous operation with HDLC framing" },
+ { 0, 0 }
+};
+struct bittext b2support[] = {
+/*  0 */ { 0x0001, "ISO 7776 (X.75 SLP)" },
+/*  1 */ { 0x0002, "Transparent" },
+/*  2 */ { 0x0004, "SDLC" },
+/*  3 */ { 0x0008, "LAPD with Q.921 for D channel X.25 (SAPI 16)" },
+/*  4 */ { 0x0010, "T.30 fro fax group 3" },
+/*  5 */ { 0x0020, "Point-to-Point Protocol (PPP)" },
+/*  6 */ { 0x0040, "Tranparent (ignoring framing errors of B1 protocol)" },
+/*  7 */ { 0x0080, "Modem error correction and compression (V.42bis or MNP5)" },
+/*  8 */ { 0x0100, "ISO 7776 (X.75 SLP) with V.42bis compression" },
+/*  9 */ { 0x0200, "V.120 asyncronous mode" },
+/* 10 */ { 0x0400, "V.120 asyncronous mode with V.42bis compression" },
+/* 11 */ { 0x0800, "V.120 bit-transparent mode" },
+/* 12 */ { 0x1000, "LAPD with Q.921 including free SAPI selection" },
+ { 0, 0 }
+};
+struct bittext b3support[] = {
+/*  0 */ { 0x0001, "Transparent" },
+/*  1 */ { 0x0002, "T.90NL, T.70NL, T.90" },
+/*  2 */ { 0x0004, "ISO 8208 (X.25 DTE-DTE)" },
+/*  3 */ { 0x0010, "X.25 DCE" },
+/*  4 */ { 0x0020, "T.30 for fax group 3" },
+/*  5 */ { 0x0040, "T.30 for fax group 3 with extensions" },
+/*  6 */ { 0x0080, "reserved" },
+/*  7 */ { 0x0100, "Modem" },
+ { 0, 0 }
+};
+
+static void showbitvalues(struct bittext *p, __u32 value)
+{
+   while (p->text) {
+      if (value & p->bit) printf("   %s\n", p->text);
+      p++;
+   }
+}
+
+int main(int argc, char **argv)
+{
+   struct capi_profile cprofile;
+   unsigned char buf[64];
+   unsigned long *vbuf;
+   unsigned char *s;
+   int ncontr, i, j;
+   int isAVM;
+
+   if (!CAPI20_ISINSTALLED()) {
+      fprintf(stderr, "capi not installed - %s (%d)\n", strerror(errno), errno);
+      return 2;
+   }
+
+   CAPI20_GET_PROFILE(0, (CAPI_MESSAGE)&cprofile);
+   ncontr = cprofile.ncontroller;
+
+   for (i = 1; i <= ncontr; i++) {
+       isAVM = 0;
+       printf("Controller %d:\n", i);
+       CAPI20_GET_MANUFACTURER (i, buf);
+       printf("Manufacturer: %s\n", buf);
+       if (strstr((char *)buf, "AVM") != 0) isAVM = 1;
+       CAPI20_GET_VERSION (i, buf);
+       vbuf = (unsigned long *)buf;
+       printf("CAPI Version: %lu.%lu\n",vbuf[0], vbuf[1]);
+       if (isAVM) {
+          printf("Manufacturer Version: %lu.%02lu-%02lu  (%lu.%lu)\n",
+                  (vbuf[2]>>4) & 0x0f,
+                  (((vbuf[2]<<4) & 0xf0) | ((vbuf[3]>>4) & 0x0f)),
+                  vbuf[3] & 0x0f,
+                  vbuf[2], vbuf[3] );
+       } else {
+          printf("Manufacturer Version: %lu.%lu\n",vbuf[2], vbuf[3]);
+       }
+       CAPI20_GET_SERIAL_NUMBER (i, buf);
+       printf("Serial Number: %s\n", (char *)buf);
+       CAPI20_GET_PROFILE(i, (CAPI_MESSAGE)&cprofile);
+       printf("BChannels: %u\n", cprofile.nbchannel);
+       printf("Global Options: 0x%08x\n", cprofile.goptions);
+       showbitvalues(goptions, cprofile.goptions);
+       printf("B1 protocols support: 0x%08x\n", cprofile.support1);
+       showbitvalues(b1support, cprofile.support1);
+       printf("B2 protocols support: 0x%08x\n", cprofile.support2);
+       showbitvalues(b2support, cprofile.support2);
+       printf("B3 protocols support: 0x%08x\n", cprofile.support3);
+       showbitvalues(b3support, cprofile.support3);
+       for (j=0, s = (unsigned char *)&cprofile; j < sizeof(cprofile); j++) {
+           switch (j) {
+	      case 0: printf("\n  "); break;
+	      case 2: printf("\n  "); break;
+	      case 4: printf("\n  "); break;
+	      case 8: printf("\n  "); break;
+	      case 12: printf("\n  "); break;
+	      case 16: printf("\n  "); break;
+	      case 20: printf("\n  "); break;
+	      case 44: printf("\n  "); break;
+	      case 64: printf("\n  "); break;
+              default: if ((j % 4) == 0) printf(" ");
+	   }
+           printf("%02x", s[j]);
+       }
+       printf("\n");
+   }
+   return 0;
+}
