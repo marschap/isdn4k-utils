@@ -1,4 +1,4 @@
-/* $Id: isdnctrl.h,v 1.15 1999/09/06 08:03:26 fritz Exp $
+/* $Id: isdnctrl.h,v 1.16 1999/11/02 20:41:21 keil Exp $
  * ISDN driver for Linux. (Control-Utility)
  *
  * Copyright 1994,95 by Fritz Elfert (fritz@isdn4linux.de)
@@ -21,6 +21,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnctrl.h,v $
+ * Revision 1.16  1999/11/02 20:41:21  keil
+ * make phonenumber ioctl compatible for ctrlconf too
+ *
  * Revision 1.15  1999/09/06 08:03:26  fritz
  * Changed my mail-address.
  *
@@ -290,6 +293,28 @@ _EXTERN char * num2key(int num, char **keytable, int *numtable);
 _EXTERN int exec_args(int fd, int argc, char **argv);
 
 _EXTERN char * defs_basic(char *id);
+
+_EXTERN int MSNLEN_COMPATIBILITY;
+
+/*
+ * do_phonenumber handle back/forward compatibility between
+ * version 5 and version 6 of isdn_net_ioctl_phone
+ *
+ */
+ 
+typedef struct {
+  char name[10];
+  char phone[20];
+  int  outgoing;
+} isdn_net_ioctl_phone_old;
+
+typedef struct {
+  char name[10];
+  char phone[32];
+  int  outgoing;
+} isdn_net_ioctl_phone_new;
+
+_EXTERN int do_phonenumber(void *p, char *number, int outflag);
 
 #undef _EXTERN
 

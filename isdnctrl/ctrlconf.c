@@ -1,4 +1,4 @@
-/* $Id: ctrlconf.c,v 1.9 1998/11/21 14:03:31 luethje Exp $
+/* $Id: ctrlconf.c,v 1.10 1999/11/02 20:41:21 keil Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: ctrlconf.c,v $
+ * Revision 1.10  1999/11/02 20:41:21  keil
+ * make phonenumber ioctl compatible for ctrlconf too
+ *
  * Revision 1.9  1998/11/21 14:03:31  luethje
  * isdnctrl: added dialmode into the config file
  *
@@ -57,6 +60,13 @@
 #include <sys/ioctl.h>
 #include <errno.h>
 #include <linux/isdn.h>
+
+ /* fix version skew between 2.0 and 2.1 kernels (structs are identical) */
+#if (NET_DV == 0x04)
+# undef NET_DV
+# define NET_DV 0x05
+#endif
+#include <linux/isdnif.h>
 
 #include "isdnctrl.h"
 #include "ctrlconf.h"
@@ -161,13 +171,13 @@ static char* readoptions(int fd, char *name, int is_master, section *CSec, secti
 		return NULL;
 
 	strcpy(PHONE(inphone)->name, name);
-	PHONE(inphone)->outgoing = 0;
+	do_phonenumber(inphone, "", 0);
 
 	if (ioctl(fd, IIOCNETGNM, PHONE(inphone)) < 0)
 		return NULL;
 
 	strcpy(PHONE(outphone)->name, name);
-	PHONE(outphone)->outgoing = 1;
+	do_phonenumber(outphone, "", 1);
 
 	if (ioctl(fd, IIOCNETGNM, PHONE(outphone)) < 0)
 		return NULL;
@@ -637,7 +647,11 @@ static int create_interface(int fd, char *name)
 
 static int set_all_numbers(int fd, char *name, int direction, char *numbers)
 {
+#if (NET_DV == 5)
+	isdn_net_ioctl_phone_new phone;
+#else
 	isdn_net_ioctl_phone phone;
+#endif
 	char phonestr[BUFSIZ];
 	char *ptr = phonestr;
 	char *ptr2;
@@ -648,7 +662,6 @@ static int set_all_numbers(int fd, char *name, int direction, char *numbers)
 	if (*phonestr != '\0')
 	{
 		strcpy(phone.name, name);
-		phone.outgoing = direction;
 
 		do
 		{
@@ -660,7 +673,7 @@ static int set_all_numbers(int fd, char *name, int direction, char *numbers)
 				while (isspace(*ptr2) && ptr2 != phonestr) *ptr2-- = '\0';
 			}
 
-			strcpy(phone.phone, ptr);
+			do_phonenumber(&phone, ptr, direction);
 
 			if (*ptr != '\0')
 			{
@@ -681,7 +694,11 @@ static int set_all_numbers(int fd, char *name, int direction, char *numbers)
 
 static int del_all_numbers(int fd, char *name, int direction)
 {
+#if (NET_DV == 5)
+	isdn_net_ioctl_phone_new phone;
+#else
 	isdn_net_ioctl_phone phone;
+#endif
 	char phonestr[BUFSIZ];
 	char *ptr = phonestr;
 	char *ptr2;
@@ -691,7 +708,7 @@ static int del_all_numbers(int fd, char *name, int direction)
 		return -1;
 
 	strcpy(PHONE(phonestr)->name, name);
-	PHONE(phonestr)->outgoing = direction;
+	do_phonenumber(phonestr, "", direction);
 
 	if (ioctl(fd, IIOCNETGNM, PHONE(phonestr)) < 0)
 	{
@@ -702,8 +719,6 @@ static int del_all_numbers(int fd, char *name, int direction)
 	if (*phonestr != '\0')
 	{
 		strcpy(phone.name, name);
-		phone.outgoing = direction;
-
 		do
 		{
 			if ((ptr = strrchr(phonestr,' ')) == NULL)
@@ -716,8 +731,7 @@ static int del_all_numbers(int fd, char *name, int direction)
 
 			if (*ptr != '\0')
 			{
-				strcpy(phone.phone, ptr);
-
+				do_phonenumber(&phone, ptr, direction);
 				if (ioctl(fd, IIOCNETDNM, &phone) < 0)
 				{
 					perror(name);

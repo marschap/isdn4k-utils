@@ -1,4 +1,4 @@
-/* $Id: isdnctrl.c,v 1.35 1999/10/27 14:36:19 keil Exp $
+/* $Id: isdnctrl.c,v 1.36 1999/11/02 20:41:21 keil Exp $
  * ISDN driver for Linux. (Control-Utility)
  *
  * Copyright 1994,95 by Fritz Elfert (fritz@isdn4linux.de)
@@ -21,6 +21,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnctrl.c,v $
+ * Revision 1.36  1999/11/02 20:41:21  keil
+ * make phonenumber ioctl compatible for ctrlconf too
+ *
  * Revision 1.35  1999/10/27 14:36:19  keil
  * make the phone number struct compatible between NET_DV 5 and 6
  *
@@ -276,18 +279,6 @@ char nextslaveif[10];
  *
  */
  
-typedef struct {
-  char name[10];
-  char phone[20];
-  int  outgoing;
-} isdn_net_ioctl_phone_old;
-
-typedef struct {
-  char name[10];
-  char phone[32];
-  int  outgoing;
-} isdn_net_ioctl_phone_new;
-
 int do_phonenumber(void *p, char *number, int outflag) {
 	isdn_net_ioctl_phone_old *phone_old = (isdn_net_ioctl_phone_old *) p;
 	isdn_net_ioctl_phone_new *phone_new = (isdn_net_ioctl_phone_new *) p;
