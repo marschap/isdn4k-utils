@@ -2,6 +2,12 @@ dnl Process this file with autoconf to produce a configure script.
 AC_INIT(isdnctrl.c)
 AC_PREFIX_DEFAULT(/usr)
 
+I4LCONFDIR=`eval echo ${CONFIG_I4LCONFDIR:-"/etc/isdn"}`
+I4LCONFFILE=`eval echo ${CONFIG_CONFFILE:-"/etc/isdn"}`
+I4LVERSION=${I4LVERSION:-"?.?"}
+KINCLUDE=${CONFIG_KERNELDIR:-"/usr"}/include
+MANDATE=`grep CHECKIN isdnctrl.man.in | awk '{print $4}'`
+
 dnl Checks for programs.
 AC_PROG_INSTALL
 AC_PROG_CC
@@ -25,5 +31,10 @@ AC_CHECK_CISCOK
 
 AC_SUBST(INSTALL)
 AC_SUBST(DBMLIB)
+AC_SUBST(MANDATE)
+AC_SUBST(I4LCONFDIR)
+AC_SUBST(I4LCONFFILE)
+AC_SUBST(I4LVERSION)
+AC_SUBST(KINCLUDE)
 AC_CONFIG_HEADER(config.h)
-AC_OUTPUT(Makefile)
+AC_OUTPUT(Makefile isdnctrl.man .isdnctrl_conf.man)
