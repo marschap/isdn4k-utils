@@ -20,7 +20,7 @@
 #include <string.h>
 #include <dlfcn.h>
 
-static char *revision = "$Revision: 1.7 $";
+static char *revision = "$Revision: 1.8 $";
 
 static capiconn_context *ctx;
 static capi_connection *conn = 0;
@@ -900,8 +900,11 @@ static void connected(capi_connection *cp, _cstruct NCPI)
 	char buf[PATH_MAX];
 	char *tty;
 
+        info("capiplugin: connected: %s", conninfo(cp));
 	tty = capi20ext_get_tty_devname(p->appid, p->ncci, buf, sizeof(buf));
-	info("capiplugin: connected(%s): %s", conninfo(cp), tty);
+	if (tty == 0)
+	   fatal("capiplugin: failed to get tty devname");
+	info("capiplugin: using %s: %s", tty, conninfo(cp));
 	strcpy(devnam, tty);
 	if (opt_connectdelay)
 		sleep(opt_connectdelay);
