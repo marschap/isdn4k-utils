@@ -1,4 +1,4 @@
-/* $Id: rate.c,v 1.29 1999/06/30 17:18:13 akool Exp $
+/* $Id: rate.c,v 1.30 1999/07/01 20:40:24 akool Exp $
  *
  * Tarifdatenbank
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rate.c,v $
+ * Revision 1.30  1999/07/01 20:40:24  akool
+ * isdnrate optimized
+ *
  * Revision 1.29  1999/06/30 17:18:13  akool
  * isdnlog Version 3.39
  *
@@ -1146,7 +1149,7 @@ int getRate(RATE *Rate, char **msg)
   char  *day;
   time_t time;
   struct tm tm;
-
+  
   if (msg)
     *(*msg=message)='\0';
 
@@ -1328,30 +1331,29 @@ int guessZone (RATE *Rate, int aoc_units)
 
 char *explainRate (RATE *Rate)
 {
-  char        p[BUFSIZ], z[BUFSIZ], c[BUFSIZ]="", d[BUFSIZ]="", h[BUFSIZ]="";
-  static char r[BUFSIZ];
+  static char buffer[BUFSIZ];
+  char       *p=buffer;
 
   if (Rate->Provider && *Rate->Provider)
-    strncpy (p, Rate->Provider, BUFSIZ);
+    p+=sprintf (p, "%s", Rate->Provider);
   else
-    snprintf (p, BUFSIZ, "%s%02d", vbn, Rate->prefix);
+    p+=sprintf (p, "%s%02d", vbn, Rate->prefix);
 
   if (Rate->Zone && *Rate->Zone)
-    snprintf (z, BUFSIZ, ", %s", Rate->Zone);
+    p+=sprintf (p, ", %s", Rate->Zone);
   else
-    snprintf (z, BUFSIZ, ", Zone %d", Rate->zone);
+    p+=sprintf (p, ", Zone %d", Rate->zone);
 
   if (!Rate->domestic && Rate->Country && *Rate->Country)
-    snprintf (c, BUFSIZ, " (%s)", Rate->Country);
+    p+=snprintf (p, " (%s)", Rate->Country);
 
   if (Rate->Day && *Rate->Day)
-    snprintf (d, BUFSIZ, ", %s", Rate->Day);
+    p+=sprintf (p, ", %s", Rate->Day);
 
   if (Rate->Hour && *Rate->Hour)
-    snprintf (h, BUFSIZ, ", %s", Rate->Hour);
+    p+=sprintf (p, ", %s", Rate->Hour);
 
-  snprintf (r, BUFSIZ, "%s%s%s%s%s", p, z, c, d, h);
-  return r;
+  return buffer;
 }
 
 

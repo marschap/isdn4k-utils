@@ -1,4 +1,4 @@
-/* $Id: processor.c,v 1.74 1999/06/30 17:17:19 akool Exp $
+/* $Id: processor.c,v 1.75 1999/07/01 20:39:52 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.75  1999/07/01 20:39:52  akool
+ * isdnrate optimized
+ *
  * Revision 1.74  1999/06/30 17:17:19  akool
  * isdnlog Version 3.39
  *
@@ -3510,17 +3513,18 @@ static void processLCR(int chan, char *hint)
   auto   char   buffer[BUFSIZ], *p;
   auto	 double pselpreis = -1.0, hintpreis = -1.0;
 
+  *hint='\0';
   *(p=buffer)='\0';
   
   clearRate (&pselRate);
   pselRate.prefix=preselect;
-  memcpy (pselRate.src, call[chan].Rate->src, sizeof (pselRate.src));
-  memcpy (pselRate.dst, call[chan].Rate->dst, sizeof (pselRate.dst));
-  pselRate.start = call[chan].Rate->start;
-  pselRate.now   = call[chan].Rate->now;
+  memcpy (pselRate.src, call[chan].Rate.src, sizeof (pselRate.src));
+  memcpy (pselRate.dst, call[chan].Rate.dst, sizeof (pselRate.dst));
+  pselRate.start = call[chan].Rate.start;
+  pselRate.now   = call[chan].Rate.now;
   
   hintRate = pselRate;
-  hintrate.prefix=call[chan].hint;
+  hintRate.prefix=call[chan].hint;
 
   getLeastCost(&call[chan].Rate, &bestRate, 1, -1);
   getLeastCost(&call[chan].Rate, &bookRate, 0, -1);
@@ -3532,13 +3536,13 @@ static void processLCR(int chan, char *hint)
     hintpreis = hintRate.Charge;
 
   if ((bestRate.prefix != UNKNOWN) && (bestRate.prefix != call[chan].provider))
-    p+=sprintf(p, "\nHINT: Cheapest %s%02d:%s %s (saving %s)",
+    p+=sprintf(p, "\nHINT: Cheapest booked %s%02d:%s %s (saving %s)",
       vbn, bestRate.prefix, bestRate.Provider,
       printRate (bestRate.Charge),
       printRate(call[chan].pay - bestRate.Charge));
 
   if ((bookRate.prefix != UNKNOWN) && (bookRate.prefix != bestRate.prefix))
-    p+=sprintf(p, "\nHINT: Book %s%02d:%s %s (saving %s)",
+    p+=sprintf(p, "\nHINT: Overall cheapest %s%02d:%s %s (saving %s)",
       vbn, bookRate.prefix, bookRate.Provider,
       printRate (bookRate.Charge),
       printRate(call[chan].pay - bookRate.Charge));
@@ -3550,13 +3554,15 @@ static void processLCR(int chan, char *hint)
       printRate(pselpreis - call[chan].pay));
 
   if ((call[chan].hint != UNKNOWN) && (call[chan].hint != bestRate.prefix))
-    p+=sprintf(p, "\nHINT:  Hint %s%02d:%s %s (saving %s)",
+    p+=sprintf(p, "\nHINT:  Hinted %s%02d:%s %s (saving %s)",
       vbn, call[chan].hint, getProvider(call[chan].hint),
       printRate (hintpreis),
       printRate(hintpreis - call[chan].pay));
 
-  if (*buffer)
-    p+=sprintf(p, "HINT: LCR:%s", (bestRate.prefix == call[chan].provider) ? "OK" : "FAILED");
+  if (*buffer) {
+    p+=sprintf(p, "\nHINT: LCR:%s", (bestRate.prefix == call[chan].provider) ? "OK" : "FAILED");
+    sprintf (hint, "%s", buffer+1);
+  }
   
 } /* processLCR */
 
@@ -4468,10 +4474,10 @@ doppelt:break;
 	  processRate(chan);
 
       	  if (call[chan].tarifknown) {
-	    processLCR(chan, hints);
-
-            if (*hints)
-              info(chan, PRT_SHOWHANGUP, STATE_HANGUP, hints);
+	    char *h=hints;
+	    processLCR(chan, h);
+            while (*h)
+              info(chan, PRT_SHOWHANGUP, STATE_HANGUP, strsep(&h, "\n"));
       	  } /* if */
         } /* if */
 
@@ -4970,6 +4976,7 @@ void processcint()
       } /* if */
 
       if (call[chan].cint != call[chan].Rate.Duration) { /* Taktwechsel */
+	char *h=hints;
  	call[chan].cint = call[chan].Rate.Duration;
 
  	snprintf(sx, BUFSIZ, "NEXT CI AFTER %s (%s)",
@@ -4978,10 +4985,9 @@ void processcint()
 
  	info(chan, PRT_SHOWCONNECT, STATE_CONNECT, sx);
 
- 	processLCR(chan, hints);
-
-        if (*hints)
-          info(chan, PRT_SHOWHANGUP, STATE_HANGUP, hints);
+	processLCR(chan, h);
+	while (*h)
+	  info(chan, PRT_SHOWHANGUP, STATE_HANGUP, strsep(&h,"\n"));
 
  	huptime(chan, 0);
       } /* if */
