@@ -1,4 +1,8 @@
-.TH XMONISDN 1 "9 December 1996" "X Version 11" "X Tools"   
+.\" $Id: xmonisdn.man.in,v 1.1 1998/12/02 11:36:37 paul Exp $
+.\"
+.\" CHECKIN $Date: 1998/12/02 11:36:37 $
+.\"
+.TH XMONISDN 1 "@MANDATE@" isdn4k-utils-@I4LVERSION@ "X Tools"   
 .SH NAME
 xmonisdn \- monitor for ISDN network
 .SH SYNOPSIS
@@ -22,12 +26,19 @@ the state change (this can be changed using the
 option).
 .PP
 Pressing button 2 on the window executes the command
-.I /sbin/isdnnet start
+.I @CONFIG_XMONISDN_UPCMD@ start
 and pressing button 3 executes
-.I /sbin/isdnnet stop.
-/sbin/isdnnet 
-should be a shell script that starts and stops the ISDN subsystem and
-xmonisdn must be run as setuid root for this to work.
+.I @CONFIG_XMONISDN_DOWNCMD@ stop.
+@CONFIG_XMONISDN_UPCMD@
+should be a shell script that starts and stops the ISDN subsystem;
+if the
+.ul
+route
+command is used, xmonisdn must be run as setuid root for this to work.
+Alternatively, the script can manipulate the
+.ul
+isdnctrl dialmode
+setting, in which case only permission to access /dev/isdnctrl is needed.
 .SH OPTIONS
 .I xmonisdn
 accepts all of the standard X Toolkit command line options along with the
@@ -176,10 +187,10 @@ translations:
 This action causes the widget to check the isdninfo file and display the appropriate icon.
 .TP 8
 .B netdown()
-This action causes the widget to execute /sbin/isdnnet stop.
+This action causes the widget to execute @CONFIG_XMONISDN_DOWNCMD@ stop.
 .TP 8
 .B netup()
-This action causes the widget to execute /sbin/isdnnet start.
+This action causes the widget to execute @CONFIG_XMONISDN_UPCMD@ start.
 .PP
 The default translation is 
 .sp
@@ -199,6 +210,5 @@ to get the name of a resource file that overrides the global resources
 stored in the RESOURCE_MANAGER property.
 .SH AUTHOR
 Bernhard Nebel
-
-
-
+.SH SEE ALSO
+.BR xmonisdn(1x)
