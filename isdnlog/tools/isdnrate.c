@@ -1,4 +1,4 @@
-/* $Id: isdnrate.c,v 1.18 1999/09/13 09:09:44 akool Exp $
+/* $Id: isdnrate.c,v 1.19 1999/09/16 20:27:21 akool Exp $
 
  * ISDN accounting for isdn4linux. (rate evaluation)
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnrate.c,v $
+ * Revision 1.19  1999/09/16 20:27:21  akool
+ * isdnlog-3.52
+ *
  * Revision 1.18  1999/09/13 09:09:44  akool
  * isdnlog-3.51
  *   - changed getProvider() to not return NULL on unknown providers
@@ -89,6 +92,8 @@
 #include "isdnlog.h"
 #include "tools/zone.h"
 #include <unistd.h>
+#include <ctype.h>
+#include <string.h>
 #include "telnum.h"
 
 #define WIDTH   19
@@ -1004,6 +1009,46 @@ static void clean_up()
   sortby = 0;
 }
 
+
+#if 0
+static void viacode(char *target, TELNUM *destnum)
+{
+  register char *p, *p1;
+  auto 	   FILE *fi = fopen("/usr/lib/isdn/code-de.dat", "r");
+  auto 	   char  s[BUFSIZ];
+
+
+  if (fi != (FILE *)NULL) {
+    while (fgets(s, BUFSIZ, fi)) {
+      if ((p = strchr(s, '\n'))) {
+
+        *p-- = 0;
+
+        while ((p > s) && !isblank(*p))
+          p--;
+
+        if (p > s) {
+          if (!strcasecmp(p + 1, target)) {
+            p1 = s;
+
+            while (!isblank(*p1))
+              p1++;
+
+            *p1 = 0;
+
+            sprintf(destnum->msn, "0%s", s);
+            break;
+          }
+        } /* if */
+      } /* if */
+    } /* while */
+
+    fclose(fi);
+  } /* if */
+} /* viacode */
+#endif
+
+
 static void doit(int i, int argc, char *argv[])
 {
   int     n;
@@ -1014,6 +1059,10 @@ static void doit(int i, int argc, char *argv[])
   while (i < argc) {
     destnum.nprovider = UNKNOWN;
     normalizeNumber(argv[i], &destnum, TN_PROVIDER);
+#if 0
+    if (isalpha(*destnum.msn))
+      viacode(argv[i], &destnum);
+#endif
     if (table)
       printTable(argv[i]);
     else {

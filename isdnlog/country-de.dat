@@ -1,4 +1,4 @@
-V:1.02-Germany [21-Jul-1999 19:19:37]
+V:1.03-Germany [16-Sep-1999 10:10:00]
 
 
 N:Usbekistan
@@ -6,8 +6,12 @@ A:Uzbekistan
 C:+998, +7590, +7436, +743, +7375, +7374, +7373, +7372, +7371, +737, +7369, +7367, +7366, +7365, +7362, +7361
 
 N:Kirgisien
-A:Kirgizia
+A:Kirgizia,Kirgisistan, Kyrgyzstan, Kirgistan
 C:+996
+
+#N:Kirgistan
+#A:Kirgisistan, Kyrgyzstan
+#C:+7339, +7335, +7334, +7333, +7332, +7331, +733, +7319
 
 N:Georgien
 A:Georgia
@@ -49,6 +53,10 @@ C:+97255, +97254, +97253, +97252, +97251, +97250
 
 N:Israel
 C:+972
+
+N:Palestina
+A:Palästina, Palestinensisches Autonomiegebiet
+C:+972777 # Fix me
 
 N:Ver. Arabische Emirate
 A:Vereinigte Arabische Emirate, Ver.Arab. Emirate, Vereinigte Arab. Emirate, United Arab Emirates
@@ -253,11 +261,12 @@ N:St. Petersburg
 A:Rußland St. Petersburg
 C:+7812, +751285
 
-N:Kirgistan
-A:Kirgisistan
-C:+7339, +7335, +7334, +7333, +7332, +7331, +733, +7319
+#N:Kirgistan
+#A:Kirgisistan
+#C:+7339, +7335, +7334, +7333, +7332, +7331, +733, +7319
 
 N:Kasachstan
+A:Kazakhstan
 C:+7336, +7330, +7329, +7328, +7327, +7326, +7325, +7324, +7323, +7322, +7321, +7318, +7317, +7316, +7315, +7314, +7313, +7312, +7311, +7310, +73
 
 N:Moskau
@@ -265,7 +274,7 @@ A:Rußland Moskau,Russische Föderation / Moskau
 C:+7096, +7095
 
 N:Russische Förderation (östl.)
-A:Rußland, Rußland (östl.), Russische Föderation, Russian Federation, Kazakhstan, Kyrgyzstan
+A:Rußland, Rußland (östl.), Russische Föderation, Russian Federation
 C:+7
 
 N:Midway-Inseln
@@ -307,11 +316,11 @@ A:Kirlbati
 C:+686
 
 N:West-Samoa
-A:Samoa (West), Western Samoa, Westl. Samoa
+A:Samoa (West), Western Samoa, Samoa W., Samoa
 C:+685
 
 N:Amerikanisch-Samoa
-A:Samoa, Samoa (US), American Samoa
+A:Samoa (Ost), Samoa (US), American Samoa, Samoa O.
 C:+684
 
 N:Niue-Inseln
@@ -553,6 +562,14 @@ N:Deutschland
 A:Germany
 C:+49
 
+N:Deutschland Mobilfunk
+C:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
+A:+491618		# T-C-Tel Voice Mail
+C:+49170,+49171		# D1
+C:+49172,+49173		# D2
+C:+49177,+49178		# Eplus
+C:+49176,+49179		# E2
+
 N:Frankfurt
 C:+4969
 
@@ -769,7 +786,7 @@ A:Zypern (Griechisch),Zypern (griech.)
 C:+357
 
 N:Zypern (Türkisch)
-A:Zypern (Nord), Zypern (Nordzypern)
+A:Zypern (Nord), Zypern (Nordzypern), Cyprus (north), Cyprus (turk)
 C:+90392
 
 N:Malta
@@ -944,10 +961,13 @@ N:Südafrika
 A:South Africa
 C:+27
 
-N:Mayotte
-A:Komoren, Comoros
-A:Mayotte Inseln
+N:Komoren
+A:Comoros
 C:+269
+
+N:Mayotte
+A:Mayotte Inseln
+C:+26960,+26961,+26962 # Fixme, but I found these (M. has 450 telefons ! :-)
 
 N:Swasiland
 A:Swaziland

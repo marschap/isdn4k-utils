@@ -1,4 +1,4 @@
-/* $Id: rate.c,v 1.43 1999/09/13 09:09:44 akool Exp $
+/* $Id: rate.c,v 1.44 1999/09/16 20:27:22 akool Exp $
  *
  * Tarifdatenbank
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rate.c,v $
+ * Revision 1.44  1999/09/16 20:27:22  akool
+ * isdnlog-3.52
+ *
  * Revision 1.43  1999/09/13 09:09:44  akool
  * isdnlog-3.51
  *   - changed getProvider() to not return NULL on unknown providers
@@ -387,6 +390,7 @@ typedef struct {
 typedef struct {
   char  *Name;
   char  *Flag;
+  int    Domestic;
   int    nNumber;
   int   *Number;
   int    nHour;
@@ -449,6 +453,16 @@ static void warning (char *file, char *fmt, ...)
   notice ("WARNING: %s line %3d: %s", basename(file), line, msg);
 }
 
+static void whimper (char *file, char *fmt, ...)
+{
+  va_list ap;
+  char msg[BUFSIZ];
+
+  va_start (ap, fmt);
+  vsnprintf (msg, BUFSIZ, fmt, ap);
+  va_end (ap);
+  notice ("WHIMPER: %s line %3d: %s", basename(file), line, msg);
+}           
 
 static char *strip (char *s)
 {
@@ -517,20 +531,25 @@ static char* strcat3 (char **s)
   return buffer;
 }
 
-static int appendArea (int prefix, char *code, char *name, int zone, int *domestic, char *msg)
+static int appendArea (int prefix, char *code, char *name, int zone, int *domestic, int *abroad, char *msg)
 {
   int i;
 
   for (i=0; i<Provider[prefix].nArea; i++) {
     if (strcmp (Provider[prefix].Area[i].Code,code)==0) {
       if (msg)
-	warning (msg, "Duplicate area %s", code);
+	if (name && *name)
+	  whimper (msg, "Duplicate area %s (%s)", code, name);
+	else
+	  whimper (msg, "Duplicate area %s", code);
       return 0;
     }
   }
 
   if (strcmp(code, mycountry)==0)
     *domestic=1;
+  else if (*code=='+' && strncmp(code,mycountry,strlen(mycountry))==0)
+    *abroad=1;
 
   Provider[prefix].Area=realloc(Provider[prefix].Area, (Provider[prefix].nArea+1)*sizeof(AREA));
   Provider[prefix].Area[Provider[prefix].nArea].Code=strdup(code);
@@ -583,11 +602,11 @@ int initRate(char *conf, char *dat, char *dom, char **msg)
   COUNTRY *Country;
   bitfield day, hour;
   double   price, divider, duration;
-  char     buffer[LENGTH], path[LENGTH], Version[LENGTH]="<unknown>";
+  char     buffer[LENGTH], path[LENGTH], Version[LENGTH]="";
   char     *c, *s;
   int      booked[MAXPROVIDER], variant[MAXPROVIDER];
   int      Providers=0, Comments=0, Services=0, Areas=0, Specials=0, Zones=0, Hours=0;
-  int      ignore=0, domestic=0, prefix=UNKNOWN;
+  int      ignore=0, domestic=0, abroad=0, prefix=UNKNOWN;
   int      zone, zone1, zone2, day1, day2, hour1, hour2, freeze, delay;
   int     *number, numbers;
   int      d, i, n, t, u, v, z;
@@ -682,21 +701,39 @@ int initRate(char *conf, char *dat, char *dom, char **msg)
     }
 
     switch (*s) {
+      
+    case 'V': /* V:xxx Version der Datenbank */
+      s+=2; while(isblank(*s)) s++;
+      if (*Version) {
+	warning (dat, "Redefinition of database version");
+      }
+      strcpy(Version, s);
+      break;
 
     case 'U': /* U:Format für printRate() */
       if (*Format) {
-	warning (dat, "redefinition of currency format");
+	warning (dat, "Redefinition of currency format");
       }
       strcpy (Format, strip(s+2));
       break;
 
     case 'P': /* P:nn[,v] Bezeichnung */
-      if (zone!=UNKNOWN && !ignore && !domestic)
-	warning (dat, "Provider %d has no default domestic zone (missing 'A:%s')", prefix, mycountry);
+      if (zone!=UNKNOWN && !ignore) {
+	if (Provider[prefix].Zone[zone].nHour==0) {
+	  line--;
+	  whimper (dat, "Zone has no 'T:' Entries", zone);
+	  line++;
+	}
+	if (!domestic)
+	  whimper (dat, "Provider %d has no default domestic zone (missing 'A:%s')", prefix, mycountry);
+	if (!abroad)
+	  Provider[prefix].Zone[zone].Domestic=1;
+      }
       v = UNKNOWN;
       zone = UNKNOWN;
       ignore = 1;
       domestic = 0;
+      abroad = 0;
 
       s+=2; while (isblank(*s)) s++;
       if (!isdigit(*s)) {
@@ -750,9 +787,8 @@ int initRate(char *conf, char *dat, char *dom, char **msg)
       Providers++;
       break;
 
-    case 'G':
+    case 'B':  /* B: VBN */
       if (ignore) continue;
-      warning (dat, "Legacy tag '%s'", s);
       break;
 
     case 'C':  /* C:Comment */
@@ -802,9 +838,18 @@ int initRate(char *conf, char *dat, char *dom, char **msg)
 	warning (dat, "Unexpected tag '%c'", *s);
 	break;
       }
+      if (zone != UNKNOWN) {
+	Provider[prefix].Zone[zone].Domestic=!abroad;
+	if (Provider[prefix].Zone[zone].nHour==0) {
+	  line--;
+	  whimper (dat, "Zone has no 'T:' Entries", zone);
+	  line++;
+	}
+      }
       s+=2;
       number=NULL;
       numbers=0;
+      abroad=0;
       while (1) {
 	while (isblank(*s)) s++;
 	if (*s=='*') {
@@ -865,6 +910,7 @@ int initRate(char *conf, char *dat, char *dom, char **msg)
       Provider[prefix].Zone=realloc(Provider[prefix].Zone, Provider[prefix].nZone*sizeof(ZONE));
       Provider[prefix].Zone[zone].Name=*s?strdup(s):NULL;
       Provider[prefix].Zone[zone].Flag=NULL;
+      Provider[prefix].Zone[zone].Domestic=0;
       Provider[prefix].Zone[zone].nNumber=numbers;
       Provider[prefix].Zone[zone].Number=number;
       Provider[prefix].Zone[zone].nHour=0;
@@ -883,17 +929,17 @@ int initRate(char *conf, char *dat, char *dom, char **msg)
 	if (*(c=strip(str2list(&s)))) {
 	  if (!isdigit(*c) && (d=getCountry(c, &Country)) != UNKNOWN) {
 	    if (*c=='+') {
-	      Areas += appendArea (prefix, c, Country->Name, zone, &domestic, dat);
+	      Areas += appendArea (prefix, c, Country->Name, zone, &domestic, &abroad, dat);
 	    } else if (d>2) {
-	      warning (dat, "Unknown country '%s' (%s?), ignoring", c, Country->Name);
+	      whimper (dat, "Unknown country '%s' (%s?), ignoring", c, Country->Name);
 	    } else {
 	      if (d>0)
-		warning (dat, "Unknown country '%s', using '%s'", c, Country->Name);
+		whimper (dat, "Unknown country '%s', using '%s'", c, Country->Name);
 	      for (i=0; i<Country->nCode; i++)
-		Areas += appendArea (prefix, Country->Code[i], Country->Name, zone, &domestic, NULL);
+		Areas += appendArea (prefix, Country->Code[i], Country->Name, zone, &domestic, &abroad, dat);
 	    }
 	  } else { /* unknown country or Sondernummer */
-	    Areas += appendArea (prefix, c, NULL, zone, &domestic, dat);
+	    Areas += appendArea (prefix, c, NULL, zone, &domestic, &abroad, dat);
 	    Specials++;
 	  }
 	} else {
@@ -906,7 +952,11 @@ int initRate(char *conf, char *dat, char *dom, char **msg)
 	break;
       }
       break;
-
+      
+    case 'N': /* N:Nirvana[,Nirvana...] */
+      if (ignore) continue;
+      break;
+      
     case 'S': /* S:service[,service...] */
       if (ignore) continue;
       if (zone==UNKNOWN) {
@@ -1143,15 +1193,21 @@ int initRate(char *conf, char *dat, char *dom, char **msg)
 	  }
 	  if ((*s==',' || *s=='/') && delay==UNKNOWN)
 	    delay=duration;
-	  if (*s!=',' && *s!='/' && delay!=UNKNOWN) {
-	    warning(dat, "last rate must not have a delay, will be ignored!");
-	    delay=UNKNOWN;
+	  if (*s!=',' && *s!='/') {
+	    if (duration==0.0) {
+	      warning(dat, "last rate must have a duration, set to 1!");
+	      duration=1.0;
+	    }
+	    if (delay!=UNKNOWN) {
+	      warning(dat, "last rate must not have a delay, will be ignored!");
+	      delay=UNKNOWN;
+	    }
 	  }
 	  if (duration==0.0 && delay!=0 && delay != UNKNOWN) {
 	    warning(dat, "zero duration must not have a delay, duration set to %d!", delay);
 	    duration=delay;
 	  }
-
+	  
 	  u=Provider[prefix].Zone[zone].Hour[t].nUnit++;
 	  Provider[prefix].Zone[zone].Hour[t].Unit=realloc(Provider[prefix].Zone[zone].Hour[t].Unit, (u+1)*sizeof(UNIT));
 	  Provider[prefix].Zone[zone].Hour[t].Unit[u].Duration=duration;
@@ -1177,9 +1233,9 @@ int initRate(char *conf, char *dat, char *dom, char **msg)
       Hours++;
       break;
 
-    case 'V': /* V:xxx Version der Datenbank */
-      s+=2; while(isblank(*s)) s++;
-      strcpy(Version, s);
+    case 'G':
+      if (ignore) continue;
+      whimper (dat, "Obsolete tag '%s'", s);
       break;
 
     default:
@@ -1189,8 +1245,22 @@ int initRate(char *conf, char *dat, char *dom, char **msg)
   }
   fclose(stream);
 
-  if (zone!=UNKNOWN && !domestic)
-    warning (dat, "Provider %d has no default domestic zone (missing 'A:%s')", prefix, mycountry);
+  if (zone!=UNKNOWN && !ignore) {
+    if (Provider[prefix].Zone[zone].nHour==0) {
+      line--;
+      warning (dat, "Zone has no 'T:' Entries", zone);
+      line++;
+    }
+    if (!domestic)
+      whimper (dat, "Provider %d has no default domestic zone (missing 'A:%s')", prefix, mycountry);
+    if (!abroad)
+      Provider[prefix].Zone[zone].Domestic=1;
+  }
+
+  if (!*Version) {
+    warning (dat, "Database version could not be identified");
+    strcpy (Version, "<unknown>");
+  }
 
   if (!*Format) {
     warning (dat, "No currency format specified, using defaults");
@@ -1458,6 +1528,79 @@ int getLeastCost (RATE *Current, RATE *Cheapest, int booked, int skip)
     }
   }
   return (Cheapest->prefix==Current->prefix ? UNKNOWN : cheapest);
+}
+
+int getZoneRate(RATE* Rate, int domestic, int first) 
+{
+  static int z;
+  static int lasta;
+  int prefix,i,a,isdom;
+  char * countries = 0;
+  char *area, *olda;
+  int zone, found;
+  
+  if (first)  
+    lasta=z=0;
+  prefix=Rate->prefix;    
+  while (1) {
+    found=0;
+    if (z >= Provider[prefix].nZone)
+      return -2;
+    if (Provider[prefix].Zone[z].Domestic != domestic) {
+      z++;
+      continue;  
+    }  
+    for (a=lasta; a<Provider[prefix].nArea; a++)  {
+      if (Provider[prefix].Area[a].Zone == z) {
+        isdom = strncmp(Provider[prefix].Area[a].Code, mycountry, strlen(mycountry))==0 || 
+	  *(Provider[prefix].Area[a].Code)!='+';
+        if (isdom != domestic)
+          continue;
+        found++;
+        break;	
+      }  
+    }    
+    if(found)
+      break;
+    if(!found && domestic) {
+      a=0;
+      break;
+    }      
+    z++;
+  }    
+  Rate->_area=a;
+  Rate->_zone=z;
+  if (getRate(Rate, 0) == UNKNOWN)
+    return UNKNOWN;
+  Rate->Country=0;
+  olda="#";
+  if (domestic) {
+    if (Provider[prefix].Zone[z].Name)
+      countries = strdup(Provider[prefix].Zone[z].Name);
+    else  
+      countries=strdup("");
+  }
+  else {    
+    countries=strdup("");
+    for (i=a; i<Provider[prefix].nArea; i++) {
+      zone=Provider[prefix].Area[i].Zone;
+      area=Provider[prefix].Area[i].Name;
+      if (zone==z && area && *area && strcmp(area, olda)) {
+	countries = realloc(countries,strlen(countries)+strlen(area)+2);
+	if(*countries)
+          strcat(countries, ",");
+        strcat(countries, area);
+	olda=area;
+      }  
+      else if(zone > z)
+        break;
+    }  
+    lasta=a;
+  }
+  if (countries && *countries)  
+    Rate->Country=countries;
+  z++;
+  return 0;	
 }
 
 int guessZone (RATE *Rate, int aoc_units)

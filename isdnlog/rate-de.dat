@@ -1,4 +1,4 @@
-V:1.10-Germany [12-Sep-1999 00:21:57]
+V:1.10-Germany [16-Sep-1999 22:20:06]
 
 # Währungsformat
 U:%.3f DM
@@ -8,7 +8,7 @@ U:%.3f DM
 #
 # (C) Copyright 1999 by Andreas Kool (akool@isdn4linux.de)
 #
-# $Id: rate-de.dat,v 1.44 1999/09/11 22:28:23 akool Exp $
+# $Id: rate-de.dat,v 1.45 1999/09/16 20:27:21 akool Exp $
 #
 #
 # Das "A:" Tag muß folgendermaßen gefüllt werden:
@@ -201,10 +201,10 @@ Z:0 Freephone
 A:0130,0800,International Freephone
 Z:1-4 Inlandsverbindungen
 A:+49
-T:W/07-19=0.15/60 Geschaeftszeit
+T:W/0,0/17-19=0.15/60 Geschaeftszeit
 T:W/19-21=0.08/60 Freizeit
 T:*/21-07=0.04/60 Happy Hour
-T:E,H/07-21=0.08/60 Wochenende
+T:E,H/0,0/17-21=0.08/60 Wochenende
 T:E,H/21-07=0.04/60 Wochenende
 Z:10 Mobilfunk
 A:+491618	# T-C-Tel Voice Mail
@@ -213,7 +213,7 @@ A:+49170,+49171		# D1
 A:+49172,+49173		# D2
 A:+49177,+49178		# Eplus
 A:+49176,+49179		# E2
-T:W/08-18=0.94/60 Geschaeftszeit
+T:W/0,0/18-18=0.94/60 Geschaeftszeit
 T:W/18-08=0.47/60 Freizeit
 T:E,H/*=0.47/60 Freizeit
 Z:31 Iridium A GSM-homed
@@ -245,28 +245,28 @@ A:11888
 T:*/*=1.5899888/0,0.489984(60)/1
 Z:60 Cityruf automatic
 A:+49164,+491682,+491683,+491684,+491685,+491686,+491687,+491688,+491689
-T:W/08-18=0.359948/60 Geschaeftszeit
-T:W/00-08=0.240004/60 Freizeit
+T:W/0,0/18-18=0.359948/60 Geschaeftszeit
+T:W/0,0/10-08=0.240004/60 Freizeit
 T:W/18-21=0.240004/60 Freizeit
 T:*/21-00=0.240004/60 Happy Hour
-T:E,H/00-21=0.240004/60 Wochenende
+T:E,H/0,0/10-21=0.240004/60 Wochenende
 Z:61 Cityruf Operator
 A:+4916951,+4916952
 T:*/*=1.440024/60
 Z:62 Scall IVR
 A:+491680
-T:*/*=0.5999984/0
+T:*/*=0.5999984/0,0/1
 Z:63 Scall DTMF
 A:+491681
-T:W/08-18=1.4399892/0 Geschaeftszeit
-T:W/18-08=0.9599928/0 Freizeit und Wochenende
-T:E,H/*=0.9599928/0 Freizeit und Wochenende
+T:W/08-18=1.4399892/0,0/1 Geschaeftszeit
+T:W/18-08=0.9599928/0,0/1 Freizeit und Wochenende
+T:E,H/*=0.9599928/0,0/1 Freizeit und Wochenende
 Z:64 Scall Operator
 A:+491699
-T:*/*=2.3999936/0
+T:*/*=2.3999936/0,0/1
 Z:65 Scall Modem
 A:+491696
-T:*/*=0.9599928/0
+T:*/*=0.9599928/0,0/1
 Z:66 TeLMI automatic
 A:+491660,+491665,+491669
 T:*/*=1.380052/60
@@ -275,45 +275,45 @@ A:+491661
 T:*/*=5.529952/60
 Z:68 Skyper Operator
 A:+4916953
-T:*/*=2.3999936/0
+T:*/*=2.3999936/0,0/1
 Z:69 Skyper
 A:+491692,+491693
-T:*/*=0.9599928/0
+T:*/*=0.9599928/0,0/1
 Z:70 Quix Service
 A:+4916500,+4916501,+4916502,+4916503,+4916504,+4916505,+4916506,+4916507,+4916508,+491655
-T:W/08-18=0.539980/60 Geschaeftszeit
+T:W/0,0/18-18=0.539980/60 Geschaeftszeit
 T:W/18-08=0.270048/60
 T:E,H/*=0.270048/60
 Z:71 Quix DTMF
 A:+491651
-T:*/*=0.219994/0
+T:*/*=0.219994/0,0/1
 Z:72 Quix Modem
 A:+4916591,+4916592,+4916593
-T:W/08-18=1.0799948/0 Geschaeftszeit
-T:W/18-08=0.8599892/0
-T:E,H/*=0.8599892/0
+T:W/08-18=1.0799948/0,0/1 Geschaeftszeit
+T:W/18-08=0.8599892/0,0/1
+T:E,H/*=0.8599892/0,0/1
 Z:73 Quix Operator 1
 A:+491653
-T:W/08-18=1.0799948/0 Geschaeftszeit
-T:W/18-08=0.8599892/0
-T:E,H/*=0.8599892/0
+T:W/08-18=1.0799948/0,0/1 Geschaeftszeit
+T:W/18-08=0.8599892/0,0/1
+T:E,H/*=0.8599892/0,0/1
 Z:74 Quix IVR
 A:+491654
-T:W/08-18=1.0799948/0 Geschaeftszeit
-T:W/18-08=0.8599892/0
-T:E,H/*=0.8599892/0
+T:W/08-18=1.0799948/0,0/1 Geschaeftszeit
+T:W/18-08=0.8599892/0,0/1
+T:E,H/*=0.8599892/0,0/1
 Z:75 Quix Operator 2
 A:+491656
-T:*/*=2.1599896/0
+T:*/*=2.1599896/0,0/1
 # FIXME: 01801 ????
 Z:81 Service 01801
 A:01801
-T:W/08-18=0.090016/60 Geschaeftszeit
+T:W/0,0/18-18=0.090016/60 Geschaeftszeit
 T:W/18-08=0.049996/60
 T:E,H/*=0.049996/60
 Z:82 Service 01802
 A:01802
-T:*/*=0.119712/0
+T:*/*=0.119712/0,0/1
 Z:83 Service 01803
 # FIXME: 01803 ???? Telekom: 18/60, o.tel.o 18/40 ?
 A:01803
@@ -333,18 +333,18 @@ A:01904
 T:*/*=0.120988/9
 Z:100 T-Online
 A:01910
-T:W/08-18=0.090016/60 Geschaeftszeit
+T:W/0,0/18-18=0.090016/60 Geschaeftszeit
 T:W/18-08=0.049996/60
 T:E,H/*=0.049996/60 Wochenende
 Z:101 AOL-Online
 A:01914
-T:W/08-18=0.090016/60 Geschaeftszeit
+T:W/0,0/18-18=0.090016/60 Geschaeftszeit
 T:W/18-08=0.049996/60
 T:E,H/*=0.049996/60 Wochenende
 Z:102 o.tel.o online 01011
 A:0191501 # Proxy: proxy.otelo-online.de:8080; DNS: 195.50.149.33 und 195.50.140.6; Mail: mail.otelo-online.de; User: otelo; Passwort: online
 S:Internet by call
-T:W/09-21=0.059044/60 Geschaeftszeit
+T:W/0,0/19-21=0.059044/60 Geschaeftszeit
 T:W/21-09=0.059044/60
 T:E,H/*=0.059044/60
 Z:160 Televotum
@@ -355,12 +355,12 @@ A:0138
 T:*/*=0.119712/0,0.359948/60
 Z:162 T-VoteCall 1
 A:01371
-T:*/*=0.2399924/0
+T:*/*=0.2399924/0,0/1
 Z:163 T-VoteCall 2
 A:01372
 T:*/*=0.119712/0,0.359948/60
 Z:164 Ansagedienste
-T:W/08-18=0.090016/60 Geschaeftszeit
+T:W/0,0/18-18=0.090016/60 Geschaeftszeit
 T:W/18-08=0.049996/60
 T:E,H/*=0.049996/60 Wochenende
 Z:171 Expo 2000
@@ -368,7 +368,7 @@ A:02000
 T:*/*=0.5999984/0,0.
 Z:172 Informationsverband Berlin-Bonn
 A:01888
-T:W/08-18=0.230028/60 Geschaeftszeit
+T:W/0,0/18-18=0.230028/60 Geschaeftszeit
 T:W/18-08=0.140012/60
 T:E,H/*=0.140012/60 Wochenende
 Z:200 Eurolaender
@@ -440,31 +440,31 @@ D:dtag
 Z:0 Freephone
 A:0130,0800,International Freephone
 Z:1-2 Regional
-T:W/08-18=0.05/0,0.09(60)/1 Geschaeftszeit
-T:W/00-08,18-21=0.05/0,0.05(60)/1 Freizeit
+T:W/0,0/18-18=0.05/0,0.09(60)/1 Geschaeftszeit
+T:W/0,0/10-08,18-21=0.05/0,0.05(60)/1 Freizeit
 T:*/21-00=0.05/0,0.04(60)/1 Happy Hour
-T:E,H/00-21=0.05/0,0.095(60)/1 Wochenende
+T:E,H/0,0/10-21=0.05/0,0.095(60)/1 Wochenende
 Z:3-4 National
-T:W/08-18=0.05/0,0.20(60)/1 Geschaeftszeit
+T:W/0,0/18-18=0.05/0,0.20(60)/1 Geschaeftszeit
 T:W/18-21=0.05/0,0.10(60)/1 Freizeit
-T:W/00-08=0.05/0,0.06(60)/1 Nacht
-T:E,H/08-21=0.05/0,0.095(60)/1 Wochenende Tagsüber
-T:E,H/00-08=0.05/0,0.095(60)/1 Wochenende Nacht
+T:W/0,0/10-08=0.05/0,0.06(60)/1 Nacht
+T:E,H/0,0/18-21=0.05/0,0.095(60)/1 Wochenende Tagsüber
+T:E,H/0,0/10-08=0.05/0,0.095(60)/1 Wochenende Nacht
 T:*/21-00=0.05/0,0.04(60)/1 Happy Hour
 Z:10 Mobilfunk C Mobilbox
 A:+491618	# T-C-Tel Voice Mail
-T:W/08-18=0.05/0,0.629996(60)/1 Geschaeftszeit
-T:W/08-18=0.05/0,0.430012(60)/1 Freizeit
+T:W/0,0/18-18=0.05/0,0.629996(60)/1 Geschaeftszeit
+T:W/0,0/18-18=0.05/0,0.430012(60)/1 Freizeit
 T:W/18-21=0.05/0,0.430012(60)/1 Freizeit
 T:*/21-00=0.05/0,0.430012(60)/1 Happy Hour
-T:E,H/00-21=0.05/0,0.430012(60)/1 Wochenende
+T:E,H/0,0/10-21=0.05/0,0.430012(60)/1 Wochenende
 Z:11 Mobilfunk
 A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
 A:+49170,+49171		# D1
 A:+49172,+49173		# D2
 A:+49177,+49178		# Eplus
 A:+49176,+49179		# E2
-T:W/08-18=0.05/0,0.94(60)/1 Geschaeftszeit
+T:W/0,0/18-18=0.05/0,0.94(60)/1 Geschaeftszeit
 T:W/18-08=0.05/0,0.47(60)/1 Freizeit
 T:E,H/*=0.05/0,0.47(60)/1 Freizeit
 Z:31 Iridium A GSM-homed
@@ -496,28 +496,28 @@ A:11888
 T:*/*=0.05/0,1.5899888/0,0.489984(60)/1
 Z:60 Cityruf automatic
 A:+49164,+491682,+491683,+491684,+491685,+491686,+491687,+491688,+491689
-T:W/08-18=0.05/0,0.359948(60)/1 Geschaeftszeit
-T:W/00-08=0.05/0,0.240004(60)/1 Freizeit
+T:W/0,0/18-18=0.05/0,0.359948(60)/1 Geschaeftszeit
+T:W/0,0/10-08=0.05/0,0.240004(60)/1 Freizeit
 T:W/18-21=0.05/0,0.240004(60)/1 Freizeit
 T:*/21-00=0.05/0,0.240004(60)/1 Happy Hour
-T:E,H/00-21=0.05/0,0.240004(60)/1 Wochenende
+T:E,H/0,0/10-21=0.05/0,0.240004(60)/1 Wochenende
 Z:61 Cityruf Operator
 A:+4916951,+4916952
 T:*/*=0.05/0,1.440024(60)/1
 Z:62 Scall IVR
 A:+491680
-T:*/*=0.05/0,0.5999984/0
+T:*/*=0.05/0,0.5999984/0,0/1
 Z:63 Scall DTMF
 A:+491681
-T:W/08-18=0.05/0,1.4399892/0 Geschaeftszeit
-T:W/18-08=0.05/0,0.9599928/0 Freizeit und Wochenende
-T:E,H/*=0.05/0,0.9599928/0 Freizeit und Wochenende
+T:W/08-18=0.05/0,1.4399892/0,0/1 Geschaeftszeit
+T:W/18-08=0.05/0,0.9599928/0,0/1 Freizeit und Wochenende
+T:E,H/*=0.05/0,0.9599928/0,0/1 Freizeit und Wochenende
 Z:64 Scall Operator
 A:+491699
-T:*/*=0.05/0,2.3999936/0
+T:*/*=0.05/0,2.3999936/0,0/1
 Z:65 Scall Modem
 A:+491696
-T:*/*=0.05/0,0.9599928/0
+T:*/*=0.05/0,0.9599928/0,0/1
 Z:66 TeLMI automatic
 A:+491660,+491665,+491669
 T:*/*=0.05/0,1.380052(60)/1
@@ -526,45 +526,45 @@ A:+491661
 T:*/*=0.05/0,5.529952(60)/1
 Z:68 Skyper Operator
 A:+4916953
-T:*/*=0.05/0,2.3999936/0
+T:*/*=0.05/0,2.3999936/0,0/1
 Z:69 Skyper
 A:+491692,+491693
-T:*/*=0.05/0,0.9599928/0
+T:*/*=0.05/0,0.9599928/0,0/1
 Z:70 Quix Service
 A:+4916500,+4916501,+4916502,+4916503,+4916504,+4916504,+4916505,+4916506,+4916507,+4916508,+491655
-T:W/08-18=0.05/0,0.539980(60)/1 Geschaeftszeit
+T:W/0,0/18-18=0.05/0,0.539980(60)/1 Geschaeftszeit
 T:W/18-08=0.05/0,0.270048(60)/1
 T:E,H/*=0.05/0,0.270048(60)/1
 Z:71 Quix DTMF
 A:+491651
-T:*/*=0.05/0,0.219994/0
+T:*/*=0.05/0,0.219994/0,0/1
 Z:72 Quix Modem
 A:+4916591,+4916592,+4916593
-T:W/08-18=0.05/0,1.0799948/0 Geschaeftszeit
-T:W/18-08=0.05/0,0.8599892/0
-T:E,H/*=0.05/0,0.8599892/0
+T:W/08-18=0.05/0,1.0799948/0,0/1 Geschaeftszeit
+T:W/18-08=0.05/0,0.8599892/0,0/1
+T:E,H/*=0.05/0,0.8599892/0,0/1
 Z:73 Quix Operator 1
 A:+491653
-T:W/08-18=0.05/0,1.0799948/0 Geschaeftszeit
-T:W/18-08=0.05/0,0.8599892/0
-T:E,H/*=0.05/0,0.8599892/0
+T:W/08-18=0.05/0,1.0799948/0,0/1 Geschaeftszeit
+T:W/18-08=0.05/0,0.8599892/0,0/1
+T:E,H/*=0.05/0,0.8599892/0,0/1
 Z:74 Quix IVR
 A:+491654
-T:W/08-18=0.05/0,1.0799948/0 Geschaeftszeit
-T:W/18-08=0.05/0,0.8599892/0
-T:E,H/*=0.05/0,0.8599892/0
+T:W/08-18=0.05/0,1.0799948/0,0/1 Geschaeftszeit
+T:W/18-08=0.05/0,0.8599892/0,0/1
+T:E,H/*=0.05/0,0.8599892/0,0/1
 Z:75 Quix Operator 2
 A:+491656
-T:*/*=0.05/0,2.1599896/0
+T:*/*=0.05/0,2.1599896/0,0/1
 # FIXME: 01801 ????
 Z:81 Service 01801
 A:01801
-T:W/08-18=0.05/0,0.090016(60)/1 Geschaeftszeit
+T:W/0,0/18-18=0.05/0,0.090016(60)/1 Geschaeftszeit
 T:W/18-08=0.05/0,0.049996(60)/1
 T:E,H/*=0.05/0,0.049996(60)/1
 Z:82 Service 01802
 A:01802
-T:*/*=0.05/0,0.119712/0
+T:*/*=0.05/0,0.119712/0,0/1
 Z:83 Service 01803
 # FIXME: 01803 ???? Telekom: 18(60)/1, o.tel.o 18/40 ?
 A:01803
@@ -584,18 +584,18 @@ A:01904
 T:*/*=0.05/0,0.120988/9
 Z:100 T-Online
 A:01910
-T:W/08-18=0.05/0,0.090016(60)/1 Geschaeftszeit
+T:W/0,0/18-18=0.05/0,0.090016(60)/1 Geschaeftszeit
 T:W/18-08=0.05/0,0.049996(60)/1
 T:E,H/*=0.05/0,0.049996(60)/1 Wochenende
 Z:101 AOL-Online
 A:01914
-T:W/08-18=0.05/0,0.090016(60)/1 Geschaeftszeit
+T:W/0,0/18-18=0.05/0,0.090016(60)/1 Geschaeftszeit
 T:W/18-08=0.05/0,0.049996(60)/1
 T:E,H/*=0.05/0,0.049996(60)/1 Wochenende
 Z:102 o.tel.o online 01011
 A:0191501 # (Benutzername: otelo; Passwort: online)
 S:Internet by call
-T:W/09-21=0.05/0,0.059044(60)/1 Geschaeftszeit
+T:W/0,0/19-21=0.05/0,0.059044(60)/1 Geschaeftszeit
 T:W/21-09=0.05/0,0.059044(60)/1
 T:E,H/*=0.05/0,0.059044(60)/1
 Z:160 Televotum
@@ -606,12 +606,12 @@ A:+0138
 T:*/*=0.05/0,0.119712/0,0.359948(60)/1
 Z:162 T-VoteCall 1
 A:01371
-T:*/*=0.05/0,0.2399924/0
+T:*/*=0.05/0,0.2399924/0,0/1
 Z:163 T-VoteCall 2
 A:01372
 T:*/*=0.05/0,0.119712/0,0.359948(60)/1
 Z:164 Ansagedienste
-T:W/08-18=0.05/0,0.090016(60)/1 Geschaeftszeit
+T:W/0,0/18-18=0.05/0,0.090016(60)/1 Geschaeftszeit
 T:W/18-08=0.05/0,0.049996(60)/1
 T:E,H/*=0.05/0,0.049996(60)/1 Wochenende
 Z:171 Expo 2000
@@ -619,7 +619,7 @@ A:02000
 T:*/*=0.05/0,0.5999984/0,0.
 Z:172 Informationsverband Berlin-Bonn
 A:01888
-T:W/08-18=0.05/0,0.230028(60)/1 Geschaeftszeit
+T:W/0,0/18-18=0.05/0,0.230028(60)/1 Geschaeftszeit
 T:W/18-08=0.05/0,0.140012(60)/1
 T:E,H/*=0.05/0,0.140012(60)/1 Wochenende
 Z:201 Europa 1
@@ -682,7 +682,7 @@ C:200	-	Ausland
 D:dtag
 Z:1-4 National
 A:+49
-T:*/07-19=0.10/60
+T:*/0,0/17-19=0.10/60
 T:*/19-22=0.07/60
 T:*/22-07=0.05/60
 Z:10 Mobilfunknetz
@@ -755,31 +755,31 @@ C:10,12,14,15	Mobilfunk
 C:33	-  39	Satelitenfunk
 C:200	-	Ausland
 Z:1-4 Inland
-T:W/06-18=0.18(60)/1 Tagestarif
+T:W/0,0/16-18=0.18(60)/1 Tagestarif
 T:W/18-21=0.12(60)/1 Abendtarif
-T:E,H/06-21=0.12(60)/1 Tagestarif
+T:E,H/0,0/16-21=0.12(60)/1 Tagestarif
 T:*/21-06=0.08(60)/1 Nachttarif
 A:+49
 Z:10 C-Netz
 A:+491618		# T-C-Tel Voice Mail
 A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
-T:W/09-18=0.88(60)/1 Tagestarif
+T:W/0,0/19-18=0.88(60)/1 Tagestarif
 T:W/18-09=0.48(60)/1 Nachttarif
 T:E,H/*=0.48(60)/1 Wochenende
 Z:12 D-Netze
 A:+49170,+49171		# D1
 A:+49172,+49173		# D2
-T:W/09-18=0.88(60)/1 Tagestarif
+T:W/0,0/19-18=0.88(60)/1 Tagestarif
 T:W/18-09=0.48(60)/1 Nachttarif
 T:E,H/*=0.48(60)/1 Wochenende
 Z:14 E-Plus
 A:+49177,+49178		# Eplus
-T:W/09-18=1.29(60)/1 Tagestarif
+T:W/0,0/19-18=1.29(60)/1 Tagestarif
 T:W/18-09=0.55(60)/1 Nachttarif
 T:E,H/*=0.55(60)/1 Wochenende
 Z:15 City-Partner
 A:+49176,+49179		# E2
-T:W/09-18=0.96(60)/1 Tagestarif
+T:W/0,0/19-18=0.96(60)/1 Tagestarif
 T:W/18-09=0.48(60)/1 Nachttarif
 T:E,H/*=0.48(60)/1 Wochenende
 Z:200 Euro Spezial
@@ -824,41 +824,41 @@ C:10,12,14,15	Mobilfunk
 C:33	-  39	Satelitenfunk
 C:200	-	Ausland
 Z:1-2 City
-T:W/06-18=0.075(60)/1 Tagestarif
+T:W/0,0/16-18=0.075(60)/1 Tagestarif
 T:W/18-21=0.05(60)/1 Abendtarif
-T:E,H/06-21=0.05(60)/1 Tagestarif
+T:E,H/0,0/16-21=0.05(60)/1 Tagestarif
 T:*/21-06=0.03(60)/1 Nachttarif
 Z:3 Regio 50
-T:W/06-18=0.16(60)/1 Tagestarif
+T:W/0,0/16-18=0.16(60)/1 Tagestarif
 T:W/18-21=0.12(60)/1 Abendtarif
-T:E,H/06-21=0.10(60)/1 Tagestarif
+T:E,H/0,0/16-21=0.10(60)/1 Tagestarif
 T:*/21-06=0.07(60)/1 Nachttarif
 Z:4 Fern
-T:W/06-18=0.18(60)/1 Tagestarif
+T:W/0,0/16-18=0.18(60)/1 Tagestarif
 T:W/18-21=0.12(60)/1 Abendtarif
-T:E,H/06-21=0.12(60)/1 Tagestarif
+T:E,H/0,0/16-21=0.12(60)/1 Tagestarif
 T:*/21-06=0.07(60)/1 Nachttarif
 A:+49
 Z:10 C-Netz
 A:+491618		# T-C-Tel Voice Mail
 A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
-T:W/09-18=0.88(60)/1 Tagestarif
+T:W/0,0/19-18=0.88(60)/1 Tagestarif
 T:W/18-09=0.48(60)/1 Nachttarif
 T:E,H/*=0.48(60)/1 Wochenende
 Z:12 D-Netze
 A:+49170,+49171		# D1
 A:+49172,+49173		# D2
-T:W/09-18=0.88(60)/1 Tagestarif
+T:W/0,0/19-18=0.88(60)/1 Tagestarif
 T:W/18-09=0.48(60)/1 Nachttarif
 T:E,H/*=0.48(60)/1 Wochenende
 Z:14 E-Plus
 A:+49177,+49178		# Eplus
-T:W/09-18=1.29(60)/1 Tagestarif
+T:W/0,0/19-18=1.29(60)/1 Tagestarif
 T:W/18-09=0.55(60)/1 Nachttarif
 T:E,H/*=0.55(60)/1 Wochenende
 Z:15 City-Partner
 A:+49176,+49179		# E2
-T:W/09-18=0.96(60)/1 Tagestarif
+T:W/0,0/19-18=0.96(60)/1 Tagestarif
 T:W/18-09=0.48(60)/1 Nachttarif
 T:E,H/*=0.48(60)/1 Wochenende
 Z:200 Euro Spezial
@@ -903,41 +903,41 @@ C:10,12,14,15	Mobilfunk
 C:33	-  39	Satelitenfunk
 C:200	-	Ausland
 Z:1-2 City
-T:W/06-18=0.065(60)/1 Tagestarif
-T:E,H/06-18=0.05(60)/1 Tagestarif
+T:W/0,0/16-18=0.065(60)/1 Tagestarif
+T:E,H/0,0/16-18=0.05(60)/1 Tagestarif
 T:*/18-21=0.04(60)/1 Abendtarif
 T:*/21-06=0.03(60)/1 Nachttarif
 Z:3 Regio 50
-T:W/06-18=0.16(60)/1 Tagestarif
+T:W/0,0/16-18=0.16(60)/1 Tagestarif
 T:W/18-21=0.12(60)/1 Abendtarif
-T:E,H/06-21=0.10(60)/1 Tagestarif
+T:E,H/0,0/16-21=0.10(60)/1 Tagestarif
 T:*/21-06=0.06(60)/1 Nachttarif
 Z:4 Fern
-T:W/06-18=0.18(60)/1 Tagestarif
+T:W/0,0/16-18=0.18(60)/1 Tagestarif
 T:W/18-21=0.12(60)/1 Abendtarif
-T:E,H/06-21=0.12(60)/1 Tagestarif
+T:E,H/0,0/16-21=0.12(60)/1 Tagestarif
 T:*/21-06=0.06(60)/1 Nachttarif
 A:+49
 Z:10 C-Netz
 A:+491618		# T-C-Tel Voice Mail
 A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
-T:W/09-18=0.88(60)/1 Tagestarif
+T:W/0,0/19-18=0.88(60)/1 Tagestarif
 T:W/18-09=0.48(60)/1 Nachttarif
 T:E,H/*=0.48(60)/1 Wochenende
 Z:12 D-Netze
 A:+49170,+49171		# D1
 A:+49172,+49173		# D2
-T:W/09-18=0.88(60)/1 Tagestarif
+T:W/0,0/19-18=0.88(60)/1 Tagestarif
 T:W/18-09=0.48(60)/1 Nachttarif
 T:E,H/*=0.48(60)/1 Wochenende
 Z:14 E-Plus
 A:+49177,+49178		# Eplus
-T:W/09-18=1.29(60)/1 Tagestarif
+T:W/0,0/19-18=1.29(60)/1 Tagestarif
 T:W/18-09=0.55(60)/1 Nachttarif
 T:E,H/*=0.55(60)/1 Wochenende
 Z:15 City-Partner
 A:+49176,+49179		# E2
-T:W/09-18=0.96(60)/1 Tagestarif
+T:W/0,0/19-18=0.96(60)/1 Tagestarif
 T:W/18-09=0.48(60)/1 Nachttarif
 T:E,H/*=0.48(60)/1 Wochenende
 Z:200 Euro Spezial
@@ -997,8 +997,8 @@ A:01171,01172,01174	# DTAG Störungsannahme
 A:0130,0800,International Freephone
 Z:1-4 National
 A:+49
-T:W/08-21=0.12/60
-T:E,H/08-21=0.12/60
+T:W/0,0/18-21=0.12/60
+T:E,H/0,0/18-21=0.12/60
 T:*/21-08=0.06/60
 Z:10 Mobilnetze
 A:+491618		# T-C-Tel Voice Mail
@@ -1007,7 +1007,7 @@ A:+49170,+49171		# D1
 A:+49172,+49173		# D2
 A:+49177,+49178		# Eplus
 A:+49176,+49179		# E2
-T:W/08-21=0.69/60
+T:W/0,0/18-21=0.69/60
 T:W/21-08=0.49/60
 T:E,H/*=0.49/60
 Z:33 Inmarsat A
@@ -1033,16 +1033,16 @@ A:+4916951, +4916952
 T:*/*=1.85/60
 Z:62 Scall IVR
 A:+491680
-T:*/*=0.74/0
+T:*/*=0.74/0,0/1
 Z:63 Scall DTMF
 A:+491681
-T:*/*=1.77/0
+T:*/*=1.77/0,0/1
 Z:64 Scall Operator
 A:+491699
-T:*/*=2.90/0
+T:*/*=2.90/0,0/1
 Z:65 Scall Modem
 A:+491696
-T:*/*=1.20/0
+T:*/*=1.20/0,0/1
 Z:66 TeLMI automatic
 A:+491660, +491665, +491669
 T:*/*=1.74/60
@@ -1051,24 +1051,24 @@ A:+491661
 T:*/*=6.14/60
 Z:68 Skyper
 A:+491692, +491693
-T:*/*=1.21/0
+T:*/*=1.21/0,0/1
 Z:69 Skyper Operator
 A:+4916953
-T:*/*=2.90/0
+T:*/*=2.90/0,0/1
 Z:70 Quix Service
 A:+491650, +491655
 T:*/*=0.73/60
 Z:71 Quix DTMF
 A:+491651
-T:*/*=0.34/0
+T:*/*=0.34/0,0/1
 Z:72 Quix Modem, Operator 1, IVR
 A:+4916591, +4916592, +4916593	# Modem
 A:+491653				# Operator 1
 A:+491654				# IVR
-T:*/*=1.50/0
+T:*/*=1.50/0,0/1
 Z:75 Quix Operator 2
 A:+491656
-T:*/*=2.90/0
+T:*/*=2.90/0,0/1
 Z:81 Service 0180-1
 A:01801
 T:*/*=0.09/60
@@ -1097,14 +1097,14 @@ Z:94 Service 0190-8
 A:01908
 T:*/*=3.63/60
 Z:100 DTAG online
-T:*/08-21=0.121/60
+T:*/0,0/18-21=0.121/60
 T:*/21-08=0.08/60
 Z:160 Televotum
 A:0137,0138
-T:*/*=0.30/0
+T:*/*=0.30/0,0/1
 Z:164 DTAG Ansagedienst
 A:0114,0115,0116,0119
-T:*/08-21=0.15/60
+T:*/0,0/18-21=0.15/60
 T:*/21-08=0.09/60
 Z:171 Expo 2000 Call Center
 A:02000
@@ -1855,17 +1855,17 @@ Z:0 Freecall
 A:01171,01172,01174	# DTAG Störungsannahme
 A:0130,0800,International Freephone
 Z:1-2 RSL COM - city
-T:W/08-21=0.10(60)/1
-T:E,H/08-21=0.10(60)/1
+T:W/0,0/18-21=0.10(60)/1
+T:E,H/0,0/18-21=0.10(60)/1
 T:*/21-08=0.07(60)/1
 Z:3 RSL COM - nah
-T:W/08-21=0.14(60)/1
-T:E,H/08-21=0.14(60)/1
+T:W/0,0/18-21=0.14(60)/1
+T:E,H/0,0/18-21=0.14(60)/1
 T:*/21-08=0.07(60)/1
 Z:4 RSL COM - fern
 A:+49
-T:W/08-21=0.18(60)/1
-T:E,H/08-21=0.14(60)/1
+T:W/0,0/18-21=0.18(60)/1
+T:E,H/0,0/18-21=0.14(60)/1
 T:*/21-08=0.07(60)/1
 Z:10 RSL COM - mobil
 A:+491618		# T-C-Tel Voice Mail
@@ -1874,8 +1874,8 @@ A:+49170,+49171		# D1
 A:+49172,+49173		# D2
 A:+49177,+49178		# Eplus
 A:+49176,+49179		# E2
-T:W/08-21=0.69(60)/1
-T:E,H/08-21=0.49(60)/1
+T:W/0,0/18-21=0.69(60)/1
+T:E,H/0,0/18-21=0.49(60)/1
 T:*/21-08=0.49(60)/1
 Z:33 Inmarsat A
 A:Inmarsat A
@@ -1900,16 +1900,16 @@ A:+4916951, +4916952
 T:*/*=1.85(60)/1
 Z:62 Scall IVR
 A:+491680
-T:*/*=0.74/0
+T:*/*=0.74/0,0/1
 Z:63 Scall DTMF
 A:+491681
-T:*/*=1.77/0
+T:*/*=1.77/0,0/1
 Z:64 Scall Operator
 A:+491699
-T:*/*=2.90/0
+T:*/*=2.90/0,0/1
 Z:65 Scall Modem
 A:+491696
-T:*/*=1.20/0
+T:*/*=1.20/0,0/1
 Z:66 TeLMI automatic
 A:+491660, +491665, +491669
 T:*/*=1.74(60)/1
@@ -1918,24 +1918,24 @@ A:+491661
 T:*/*=6.14(60)/1
 Z:68 Skyper
 A:+491692, +491693
-T:*/*=1.21/0
+T:*/*=1.21/0,0/1
 Z:69 Skyper Operator
 A:+4916953
-T:*/*=2.90/0
+T:*/*=2.90/0,0/1
 Z:70 Quix Service
 A:+491650, +491655
 T:*/*=0.73(60)/1
 Z:71 Quix DTMF
 A:+491651
-T:*/*=0.34/0
+T:*/*=0.34/0,0/1
 Z:72 Quix Modem, Operator 1, IVR
 A:+4916591, +4916592, +4916593	# Modem
 A:+491653				# Operator 1
 A:+491654				# IVR
-T:*/*=1.50/0
+T:*/*=1.50/0,0/1
 Z:75 Quix Operator 2
 A:+491656
-T:*/*=2.90/0
+T:*/*=2.90/0,0/1
 Z:81 Service 0180-1
 A:01801
 T:*/*=0.09(60)/1
@@ -1964,14 +1964,14 @@ Z:94 Service 0190-8
 A:01908
 T:*/*=3.63(60)/1
 Z:100 DTAG online
-T:*/08-21=0.12(60)/1
+T:*/0,0/18-21=0.12(60)/1
 T:*/21-08=0.08(60)/1
 Z:160 Televotum
 A:0137,0138
-T:*/*=0.30/0
+T:*/*=0.30/0,0/1
 Z:164 DTAG Ansagedienst
 A:0114,0115,0116,0119
-T:*/08-21=0.15(60)/1
+T:*/0,0/18-21=0.15(60)/1
 T:*/21-08=0.09(60)/1
 Z:171 Expo 2000 Call Center
 A:02000
@@ -2722,17 +2722,17 @@ Z:0 Freecall
 A:01171,01172,01174	# DTAG Störungsannahme
 A:0130,0800,International Freephone
 Z:1-2 RSL COM - city
-T:W/08-21=0.09(60)/1
-T:E,H/08-21=0.09(60)/1
+T:W/0,0/18-21=0.09(60)/1
+T:E,H/0,0/18-21=0.09(60)/1
 T:*/21-08=0.05(60)/1
 Z:3 RSL COM - nah
-T:W/08-21=0.14(60)/1
-T:E,H/08-21=0.14(60)/1
+T:W/0,0/18-21=0.14(60)/1
+T:E,H/0,0/18-21=0.14(60)/1
 T:*/21-08=0.07(60)/1
 Z:4 RSL COM - fern
 A:+49
-T:W/08-21=0.18(60)/1
-T:E,H/08-21=0.14(60)/1
+T:W/0,0/18-21=0.18(60)/1
+T:E,H/0,0/18-21=0.14(60)/1
 T:*/21-08=0.07(60)/1
 Z:10 RSL COM - mobil
 A:+491618		# T-C-Tel Voice Mail
@@ -2741,8 +2741,8 @@ A:+49170,+49171		# D1
 A:+49172,+49173		# D2
 A:+49177,+49178		# Eplus
 A:+49176,+49179		# E2
-T:W/08-21=0.69(60)/1
-T:E,H/08-21=0.49(60)/1
+T:W/0,0/18-21=0.69(60)/1
+T:E,H/0,0/18-21=0.49(60)/1
 T:*/21-08=0.49(60)/1
 Z:33 Inmarsat A
 A:Inmarsat A
@@ -2767,16 +2767,16 @@ A:+4916951, +4916952
 T:*/*=1.85(60)/1
 Z:62 Scall IVR
 A:+491680
-T:*/*=0.74/0
+T:*/*=0.74/0,0/1
 Z:63 Scall DTMF
 A:+491681
-T:*/*=1.77/0
+T:*/*=1.77/0,0/1
 Z:64 Scall Operator
 A:+491699
-T:*/*=2.90/0
+T:*/*=2.90/0,0/1
 Z:65 Scall Modem
 A:+491696
-T:*/*=1.20/0
+T:*/*=1.20/0,0/1
 Z:66 TeLMI automatic
 A:+491660, +491665, +491669
 T:*/*=1.74(60)/1
@@ -2785,24 +2785,24 @@ A:+491661
 T:*/*=6.14(60)/1
 Z:68 Skyper
 A:+491692, +491693
-T:*/*=1.21/0
+T:*/*=1.21/0,0/1
 Z:69 Skyper Operator
 A:+4916953
-T:*/*=2.90/0
+T:*/*=2.90/0,0/1
 Z:70 Quix Service
 A:+491650, +491655
 T:*/*=0.73(60)/1
 Z:71 Quix DTMF
 A:+491651
-T:*/*=0.34/0
+T:*/*=0.34/0,0/1
 Z:72 Quix Modem, Operator 1, IVR
 A:+4916591, +4916592, +4916593	# Modem
 A:+491653				# Operator 1
 A:+491654				# IVR
-T:*/*=1.50/0
+T:*/*=1.50/0,0/1
 Z:75 Quix Operator 2
 A:+491656
-T:*/*=2.90/0
+T:*/*=2.90/0,0/1
 Z:81 Service 0180-1
 A:01801
 T:*/*=0.09(60)/1
@@ -2831,14 +2831,14 @@ Z:94 Service 0190-8
 A:01908
 T:*/*=3.63(60)/1
 Z:100 DTAG online
-T:*/08-21=0.12(60)/1
+T:*/0,0/18-21=0.12(60)/1
 T:*/21-08=0.08(60)/1
 Z:160 Televotum
 A:0137,0138
-T:*/*=0.30/0
+T:*/*=0.30/0,0/1
 Z:164 DTAG Ansagedienst
 A:0114,0115,0116,0119
-T:*/08-21=0.15(60)/1
+T:*/0,0/18-21=0.15(60)/1
 T:*/21-08=0.09(60)/1
 Z:171 Expo 2000 Call Center
 A:02000
@@ -3594,8 +3594,8 @@ C:200	-	Ausland
 D:dtag
 Z:1-4 Fern
 A:+49
-T:W/09-18=0.17/60 Hauptzeit
-T:*/06-09,18-21=0.10/60 Nebenzeit
+T:W/0,0/19-18=0.17/60 Hauptzeit
+T:*/0,0/16-09,18-21=0.10/60 Nebenzeit
 T:*/21-06=0.05/60 Private Time
 Z:10 Mobilfunknetze
 A:+491618		# T-C-Tel Voice Mail
@@ -3604,7 +3604,7 @@ A:+49170,+49171		# D1
 A:+49172,+49173		# D2
 A:+49177,+49178		# Eplus
 A:+49176,+49179		# E2
-T:W/09-18=0.69/60 Hauptzeit
+T:W/0,0/19-18=0.69/60 Hauptzeit
 T:W/18-09=0.48/60
 T:E,H/*=0.48/60
 Z:43 Telefonauskunft
@@ -3655,7 +3655,7 @@ A:+49170,+49171		# D1
 A:+49172,+49173		# D2
 A:+49177,+49178		# Eplus
 A:+49176,+49179		# E2
-T:W/09-18=0.69/30 Hauptzeit
+T:W/0,0/19-18=0.69/30 Hauptzeit
 T:W/18-09=0.48/30
 T:E,H/*=0.48/30
 Z:43 Telefonauskunft
@@ -3698,8 +3698,8 @@ C:43		Auskunft debitel
 C:200	-	Ausland
 # G:01.06.1999
 Z:1-4 Fern
-T:W/09-18=0.05/0,0.17/60 Hauptzeit
-T:*/06-09,18-21=0.05/0,0.10/60 Nebenzeit
+T:W/0,0/19-18=0.05/0,0.17/60 Hauptzeit
+T:*/0,0/16-09,18-21=0.05/0,0.10/60 Nebenzeit
 T:*/21-06=0.05/0,0.05/60 Private Time
 Z:10 Mobilfunknetze
 A:+491618		# T-C-Tel Voice Mail
@@ -3708,7 +3708,7 @@ A:+49170,+49171		# D1
 A:+49172,+49173		# D2
 A:+49177,+49178		# Eplus
 A:+49176,+49179		# E2
-T:W/09-18=0.05/0,0.69/60 Hauptzeit
+T:W/0,0/19-18=0.05/0,0.69/60 Hauptzeit
 T:W/18-09=0.05/0,0.48/60
 T:E,H/*=0.05/0,0.48/60
 Z:43 Telefonauskunft
@@ -3759,7 +3759,7 @@ A:+49170,+49171		# D1
 A:+49172,+49173		# D2
 A:+49177,+49178		# Eplus
 A:+49176,+49179		# E2
-T:W/09-18=0.05/0,0.69/30 Hauptzeit
+T:W/0,0/19-18=0.05/0,0.69/30 Hauptzeit
 T:W/18-09=0.05/0,0.48/30
 T:E,H/*=0.05/0,0.48/30
 Z:43 Telefonauskunft
@@ -3811,7 +3811,7 @@ C:200		Ausland Gruppe A
 D:dtag
 Z:1-4 Ferngespräche bundesweit
 A:+49
-T:*/07-19=0.12/60 Standard
+T:*/0,0/17-19=0.12/60 Standard
 T:*/19-22=0.08/60 Spar
 T:*/22-07=0.04/60 Nacht
 Z:10 Mobilfunk
@@ -3903,7 +3903,7 @@ C:102		01019freenet
 C:200	-	Ausland
 # G:13.05.1999
 Z:1-4 Ferngespräche bundesweit
-T:*/07-19=0.12(60)/1 Standard
+T:*/0,0/17-19=0.12(60)/1 Standard
 T:*/19-22=0.08(60)/1 Spar
 T:*/22-07=0.04(60)/1 Nacht
 Z:10 Mobilfunk
@@ -3970,20 +3970,20 @@ C:200	-	Ausland
 Z:0 0800 Nulltarif
 A:0130,0800
 Z:1-2 lokal
-T:W/09-18=0.1044/120 Hauptzeit
+T:W/0,0/19-18=0.1044/120 Hauptzeit
 T:W/18-09=0.1044/240 Nebenzeit
 T:E,H/*=0.1044/240 Wochenende
 Z:3 Regio
-T:W/09-18=0.1044/30 Hauptzeit
+T:W/0,0/19-18=0.1044/30 Hauptzeit
 T:W/18-09=0.1044/60 Nebenzeit
 T:E,H/*=0.1044/60 Wochenende
 Z:4 Distanz
-T:W/09-18=0.1044/15 Hauptzeit
+T:W/0,0/19-18=0.1044/15 Hauptzeit
 T:W/18-09=0.1044/30 Nebenzeit
 T:E,H/*=0.1044/30 Wochenende
 A:+49
 Z:5 isiFON-zu-isiFON
-T:W/09-18=0.1044/300 Hauptzeit
+T:W/0,0/19-18=0.1044/300 Hauptzeit
 T:W/18-09=0.1044/600 Nebenzeit
 T:E,H/*=0.1044/600 Wochenende
 Z:10 Mobilfunk
@@ -3993,7 +3993,7 @@ A:+49170,+49171		# D1
 A:+49172,+49173		# D2
 A:+49177,+49178		# Eplus
 A:+49176,+49179		# E2
-T:W/09-18=0.1044/8 Hauptzeit
+T:W/0,0/19-18=0.1044/8 Hauptzeit
 T:W/18-09=0.1044/12 Nebenzeit
 T:E,H/*=0.1044/12 Wochenende
 Z:40 DTAG Inlandsauskunft
@@ -4007,7 +4007,7 @@ A:11880
 T:*/*=0.96/0,0.12/7.5
 Z:60 Cityruf
 A:+49164, +491690, +491691, +491682, +491683, +491684, +491685, +491686, +491687, +491688, +491689
-T:W/09-18=0.12/20 Hauptzeit
+T:W/0,0/19-18=0.12/20 Hauptzeit
 T:W/18-09=0.12/30 Nebenzeit
 T:E,H/*=0.12/30 Wochenende
 Z:61 Cityruf Auftragsdienst
@@ -4015,17 +4015,17 @@ A:+4916951, +4916952
 T:*/*=0.12/5
 Z:62 Scall IVR
 A:+491680
-T:*/*=0.60/0
+T:*/*=0.60/0,0/1
 Z:63 Scall DTMF
 A:+491681
-T:W/09-18=1.44/0 Hauptzeit
-T:W/18-09=0.96/0 Nebenzeit
-T:E,H/*=0.96/0 Wochenende
+T:W/09-18=1.44/0,0/1 Hauptzeit
+T:W/18-09=0.96/0,0/1 Nebenzeit
+T:E,H/*=0.96/0,0/1 Wochenende
 Z:64 Scall Operator
 A:+491699
-T:*/*=2.40/0
+T:*/*=2.40/0,0/1
 Z:65 Scall Modem
-T:*/*=0.96/0
+T:*/*=0.96/0,0/1
 Z:66 TeLMI automatic
 A:+491660, +491665, +491669
 T:*/*=0.12/5.2
@@ -4034,38 +4034,38 @@ A:+491661
 T:*/*=0.12/1.3
 Z:68 Skyper
 A:+491692, +491693
-T:*/*=0.96/0
+T:*/*=0.96/0,0/1
 Z:69 Skyper Operator
 A:+4916953
-T:*/*=2.40/0
+T:*/*=2.40/0,0/1
 Z:70 Quix Service
 A:+491650, +491655
-T:W/09-18=0.12/12 Hauptzeit
+T:W/0,0/19-18=0.12/12 Hauptzeit
 T:W/18-09=0.12/24 Nebenzeit
 T:E,H/*=0.12/24 Wochenende
 Z:71 Quix DTMF
 A:+491651
-T:*/*=0.24/0
+T:*/*=0.24/0,0/1
 Z:72 Quix
 A:+4916591, +4916593, +4916592
-T:W/09-18=1.20/0 Hauptzeit
-T:W/18-09=0.96/0 Nebenzeit
-T:E,H/*=0.96/0 Wochenende
+T:W/09-18=1.20/0,0/1 Hauptzeit
+T:W/18-09=0.96/0,0/1 Nebenzeit
+T:E,H/*=0.96/0,0/1 Wochenende
 Z:81 Service 0180-1
 A:01801
-T:W/09-18=0.12/90 Hauptzeit
-T:W/05-09,18-21=0.12/150 Nebenzeit
+T:W/0,0/19-18=0.12/90 Hauptzeit
+T:W/0,0/15-09,18-21=0.12/150 Nebenzeit
 T:W/21-05=0.12/240 Nebenzeit
 T:E,H/*=0.12/240 Wochenende
 Z:82 Service 0180-2
 A:01802
-T:*/*=0.12/0
+T:*/*=0.12/0,0/1
 Z:83 Service 0180-3
 A:01803
 T:*/*=0.12/40
 Z:84 Service 0180-4
 A:01804
-T:*/*=0.48/0
+T:*/*=0.48/0,0/1
 Z:85 Service 0180-5
 A:01805
 T:*/*=0.12/30
@@ -4085,7 +4085,7 @@ Z:100 T-Online (Pur) Zugang
 A:0191011
 T:*/*=0.06/0,0.03/60
 Z:102 isiFONLINE
-T:W/09-18=0.1044/300
+T:W/0,0/19-18=0.1044/300
 T:W/18-09=0.1044/600
 T:E,H/*=0.1044/600
 Z:200 EuroPlus
@@ -4143,20 +4143,20 @@ C:wenn beide Teilnehmer einen ISIS-Telefonanschluß haben.
 Z:0 0800 Nulltarif
 A:0130,0800
 Z:1-2 lokal
-T:W/09-18=0.1044/120 Hauptzeit
+T:W/0,0/19-18=0.1044/120 Hauptzeit
 T:W/18-09=0.1044/240 Nebenzeit
 T:E,H/*=0.1044/240 Wochenende
 Z:3 Regio
-T:W/09-18=0.1044/33 Hauptzeit
+T:W/0,0/19-18=0.1044/33 Hauptzeit
 T:W/18-09=0.1044/69 Nebenzeit
 T:E,H/*=0.1044/69 Wochenende
 Z:4 Distanz
-T:W/09-18=0.1044/33 Hauptzeit
+T:W/0,0/19-18=0.1044/33 Hauptzeit
 T:W/18-09=0.1044/69 Nebenzeit
 T:E,H/*=0.1044/33 Wochenende
 A:+49
 Z:5 isiFON-zu-isiFON
-T:W/09-18=0.1044/300 Hauptzeit
+T:W/0,0/19-18=0.1044/300 Hauptzeit
 T:W/18-09=0.1044/600 Nebenzeit
 T:E,H/*=0.1044/600 Wochenende
 Z:10 Mobilfunk
@@ -4166,7 +4166,7 @@ A:+49170,+49171		# D1
 A:+49172,+49173		# D2
 A:+49177,+49178		# Eplus
 A:+49176,+49179		# E2
-T:W/09-18=0.1044/8 Hauptzeit
+T:W/0,0/19-18=0.1044/8 Hauptzeit
 T:W/18-09=0.1044/12 Nebenzeit
 T:E,H/*=0.1044/12 Wochenende
 Z:40 DTAG Inlandsauskunft
@@ -4180,7 +4180,7 @@ A:11880
 T:*/*=0.96/0,0.12/7.5
 Z:60 Cityruf
 A:+49164, +491690, +491691, +491682, +491683, +491684, +491685, +491686, +491687, +491688, +491689
-T:W/09-18=0.12/20 Hauptzeit
+T:W/0,0/19-18=0.12/20 Hauptzeit
 T:W/18-09=0.12/30 Nebenzeit
 T:E,H/*=0.12/30 Wochenende
 Z:61 Cityruf Auftragsdienst
@@ -4188,17 +4188,17 @@ A:+4916951, +4916952
 T:*/*=0.12/5
 Z:62 Scall IVR
 A:+491680
-T:*/*=0.60/0
+T:*/*=0.60/0,0/1
 Z:63 Scall DTMF
 A:+491681
-T:W/09-18=1.44/0 Hauptzeit
-T:W/18-09=0.96/0 Nebenzeit
-T:E,H/*=0.96/0 Wochenende
+T:W/09-18=1.44/0,0/1 Hauptzeit
+T:W/18-09=0.96/0,0/1 Nebenzeit
+T:E,H/*=0.96/0,0/1 Wochenende
 Z:64 Scall Operator
 A:+491699
-T:*/*=2.40/0
+T:*/*=2.40/0,0/1
 Z:65 Scall Modem
-T:*/*=0.96/0
+T:*/*=0.96/0,0/1
 Z:66 TeLMI automatic
 A:+491660, +491665, +491669
 T:*/*=0.12/5.2
@@ -4207,38 +4207,38 @@ A:+491661
 T:*/*=0.12/1.3
 Z:68 Skyper
 A:+491692, +491693
-T:*/*=0.96/0
+T:*/*=0.96/0,0/1
 Z:69 Skyper Operator
 A:+4916953
-T:*/*=2.40/0
+T:*/*=2.40/0,0/1
 Z:70 Quix Service
 A:+491650, +491655
-T:W/09-18=0.12/12 Hauptzeit
+T:W/0,0/19-18=0.12/12 Hauptzeit
 T:W/18-09=0.12/24 Nebenzeit
 T:E,H/*=0.12/24 Wochenende
 Z:71 Quix DTMF
 A:+491651
-T:*/*=0.24/0
+T:*/*=0.24/0,0/1
 Z:72 Quix
 A:+4916591, +4916593, +4916592
-T:W/09-18=1.20/0 Hauptzeit
-T:W/18-09=0.96/0 Nebenzeit
-T:E,H/*=0.96/0 Wochenende
+T:W/09-18=1.20/0,0/1 Hauptzeit
+T:W/18-09=0.96/0,0/1 Nebenzeit
+T:E,H/*=0.96/0,0/1 Wochenende
 Z:81 Service 0180-1
 A:01801
-T:W/09-18=0.12/90 Hauptzeit
-T:W/05-09,18-21=0.12/150 Nebenzeit
+T:W/0,0/19-18=0.12/90 Hauptzeit
+T:W/0,0/15-09,18-21=0.12/150 Nebenzeit
 T:W/21-05=0.12/240 Nebenzeit
 T:E,H/*=0.12/240 Wochenende
 Z:82 Service 0180-2
 A:01802
-T:*/*=0.12/0
+T:*/*=0.12/0,0/1
 Z:83 Service 0180-3
 A:01803
 T:*/*=0.12/40
 Z:84 Service 0180-4
 A:01804
-T:*/*=0.48/0
+T:*/*=0.48/0,0/1
 Z:85 Service 0180-5
 A:01805
 T:*/*=0.12/30
@@ -4258,7 +4258,7 @@ Z:100 T-Online (Pur) Zugang
 A:0191011
 T:*/*=0.06/0,0.03/60
 Z:102 isiFONLINE
-T:W/09-18=0.1044/300
+T:W/0,0/19-18=0.1044/300
 T:W/18-09=0.1044/600
 T:E,H/*=0.1044/600
 Z:200 EuroPlus
@@ -4313,15 +4313,15 @@ C:Faxabruf: 0800/809 0111
 Z:0 0800 Nulltarif
 A:0130,0800
 Z:1-2 lokal
-T:W/09-18=0.1044/90 Hauptzeit
+T:W/0,0/19-18=0.1044/90 Hauptzeit
 T:W/18-09=0.1044/150 Nebenzeit
 T:E,H/*=0.1044/150 Wochenende
 Z:3 Regio
-T:W/09-18=0.1044/33 Hauptzeit
+T:W/0,0/19-18=0.1044/33 Hauptzeit
 T:W/18-09=0.1044/69 Nebenzeit
 T:E,H/*=0.1044/69 Wochenende
 Z:4 Distanz
-T:W/09-18=0.1044/33 Hauptzeit
+T:W/0,0/19-18=0.1044/33 Hauptzeit
 T:W/18-09=0.1044/69 Nebenzeit
 T:E,H/*=0.1044/69 Wochenende
 A:+49
@@ -4332,7 +4332,7 @@ A:+49170,+49171		# D1
 A:+49172,+49173		# D2
 A:+49177,+49178		# Eplus
 A:+49176,+49179		# E2
-T:W/09-18=0.1044/8 Hauptzeit
+T:W/0,0/19-18=0.1044/8 Hauptzeit
 T:W/18-09=0.1044/12 Nebenzeit
 T:E,H/*=0.1044/12 Wochenende
 Z:40 DTAG Inlandsauskunft
@@ -4346,7 +4346,7 @@ A:11880
 T:*/*=0.96/0,0.12/7.5
 Z:60 Cityruf
 A:+49164, +491690, +491691, +491682, +491683, +491684, +491685, +491686, +491687, +491688, +491689
-T:W/09-18=0.12/20 Hauptzeit
+T:W/0,0/19-18=0.12/20 Hauptzeit
 T:W/18-09=0.12/30 Nebenzeit
 T:E,H/*=0.12/30 Wochenende
 Z:61 Cityruf Auftragsdienst
@@ -4354,17 +4354,17 @@ A:+4916951, +4916952
 T:*/*=0.12/5
 Z:62 Scall IVR
 A:+491680
-T:*/*=0.60/0
+T:*/*=0.60/0,0/1
 Z:63 Scall DTMF
 A:+491681
-T:W/09-18=1.44/0 Hauptzeit
-T:W/18-09=0.96/0 Nebenzeit
-T:E,H/*=0.96/0 Wochenende
+T:W/09-18=1.44/0,0/1 Hauptzeit
+T:W/18-09=0.96/0,0/1 Nebenzeit
+T:E,H/*=0.96/0,0/1 Wochenende
 Z:64 Scall Operator
 A:+491699
-T:*/*=2.40/0
+T:*/*=2.40/0,0/1
 Z:65 Scall Modem
-T:*/*=0.96/0
+T:*/*=0.96/0,0/1
 Z:66 TeLMI automatic
 A:+491660, +491665, +491669
 T:*/*=0.12/5.2
@@ -4373,38 +4373,38 @@ A:+491661
 T:*/*=0.12/1.3
 Z:68 Skyper
 A:+491692, +491693
-T:*/*=0.96/0
+T:*/*=0.96/0,0/1
 Z:69 Skyper Operator
 A:+4916953
-T:*/*=2.40/0
+T:*/*=2.40/0,0/1
 Z:70 Quix Service
 A:+491650, +491655
-T:W/09-18=0.12/12 Hauptzeit
+T:W/0,0/19-18=0.12/12 Hauptzeit
 T:W/18-09=0.12/24 Nebenzeit
 T:E,H/*=0.12/24 Wochenende
 Z:71 Quix DTMF
 A:+491651
-T:*/*=0.24/0
+T:*/*=0.24/0,0/1
 Z:72 Quix
 A:+4916591, +4916593, +4916592
-T:W/09-18=1.20/0 Hauptzeit
-T:W/18-09=0.96/0 Nebenzeit
-T:E,H/*=0.96/0 Wochenende
+T:W/09-18=1.20/0,0/1 Hauptzeit
+T:W/18-09=0.96/0,0/1 Nebenzeit
+T:E,H/*=0.96/0,0/1 Wochenende
 Z:81 Service 0180-1
 A:01801
-T:W/09-18=0.12/90 Hauptzeit
-T:W/05-09,18-21=0.12/150 Nebenzeit
+T:W/0,0/19-18=0.12/90 Hauptzeit
+T:W/0,0/15-09,18-21=0.12/150 Nebenzeit
 T:W/21-05=0.12/240 Nebenzeit
 T:E,H/*=0.12/240 Wochenende
 Z:82 Service 0180-2
 A:01802
-T:*/*=0.12/0
+T:*/*=0.12/0,0/1
 Z:83 Service 0180-3
 A:01803
 T:*/*=0.12/40
 Z:84 Service 0180-4
 A:01804
-T:*/*=0.48/0
+T:*/*=0.48/0,0/1
 Z:85 Service 0180-5
 A:01805
 T:*/*=0.12/30
@@ -4424,7 +4424,7 @@ Z:100 T-Online (Pur) Zugang
 A:0191011
 T:*/*=0.06/0,0.03/60
 Z:102 isiFONLINE
-T:W/09-18=0.1044/300
+T:W/0,0/19-18=0.1044/300
 T:W/18-09=0.1044/600
 T:E,H/*=0.1044/600
 Z:200 EuroPlus
@@ -4473,12 +4473,12 @@ C:1	-   4	Deutschland
 C:10		Mobilfunk
 C:200	-	Ausland
 Z:1-2 City Tarif
-T:W/08-18=0.06(60)/1 Hauptzeit
-T:E,H/08-18=0.035(60)/1 Wochenende
+T:W/0,0/18-18=0.06(60)/1 Hauptzeit
+T:E,H/0,0/18-18=0.035(60)/1 Wochenende
 T:*/18-08=0.035(60)/1 Nebenzeit
 Z:3-4 City Tarif
-T:W/08-18=0.16(60)/1 Hauptzeit
-T:E,H/08-18=0.09(60)/1 Wochenende
+T:W/0,0/18-18=0.16(60)/1 Hauptzeit
+T:E,H/0,0/18-18=0.09(60)/1 Wochenende
 T:*/18-22=0.09(60)/1 Nebenzeit
 T:*/22-08=0.06(60)/1 Nachttarif
 Z:10 Mobilfunk
@@ -4488,8 +4488,8 @@ A:+49170,+49171		# D1
 A:+49172,+49173		# D2
 A:+49177,+49178		# Eplus
 A:+49176,+49179		# E2
-T:W/08-18=0.94(60)/1 Hauptzeit
-T:E,H/08-18=0.49(60)/1 Wochenende
+T:W/0,0/18-18=0.94(60)/1 Hauptzeit
+T:E,H/0,0/18-18=0.49(60)/1 Wochenende
 T:*/18-08=0.49(60)/1 Nebenzeit
 Z:200 Euro 1
 A:Andorra, Belgien, Dänemark, Finnland, Frankreich
@@ -4576,19 +4576,19 @@ C:10		Mobilfunk
 C:200	-	Ausland
 # G:01.06.1999
 Z:1-2 Nah
-T:W/09-19=0.10(60)/1
-T:W/06-09,19-21=0.08(60)/1
-T:E,H/06-21=0.08(60)/1
+T:W/0,0/19-19=0.10(60)/1
+T:W/0,0/16-09,19-21=0.08(60)/1
+T:E,H/0,0/16-21=0.08(60)/1
 T:*/21-06=0.06(60)/1
 Z:3 Baden-Württemberg
-T:W/09-19=0.12(60)/1
-T:W/06-09,19-21=0.08(60)/1
-T:E,H/06-21=0.08(60)/1
+T:W/0,0/19-19=0.12(60)/1
+T:W/0,0/16-09,19-21=0.08(60)/1
+T:E,H/0,0/16-21=0.08(60)/1
 T:*/21-06=0.06(60)/1
 Z:4 Deutschland
-T:W/09-19=0.19(60)/1
-T:W/06-09,19-21=0.10(60)/1
-T:E,H/06-21=0.10(60)/1
+T:W/0,0/19-19=0.19(60)/1
+T:W/0,0/16-09,19-21=0.10(60)/1
+T:E,H/0,0/16-21=0.10(60)/1
 T:*/21-06=0.06(60)/1
 A:+49
 Z:10 Mobilfunk
@@ -4598,13 +4598,13 @@ A:+49170,+49171		# D1
 A:+49172,+49173		# D2
 A:+49177,+49178		# Eplus
 A:+49176,+49179		# E2
-T:W/09-19=0.81(60)/1
-T:E,H/09-19=0.48(60)/1
+T:W/0,0/19-19=0.81(60)/1
+T:E,H/0,0/19-19=0.48(60)/1
 T:*/19-09=0.48(60)/1
 Z:200 Schweiz, ...
 A:Schweiz, Frankreich, Österreich, Italien
-T:W/09-19=0.37(60)/1
-T:E,H/09-19=0.29(60)/1
+T:W/0,0/19-19=0.37(60)/1
+T:E,H/0,0/19-19=0.29(60)/1
 T:*/19-09=0.29(60)/1
 Z:201 EU
 A:Andorra, Belgien, Dänemark, Finnland, Griechenland, Großbritannien, Irland
@@ -4644,15 +4644,15 @@ C:10		Mobilfunk
 C:200	-	Ausland
 # G:01.06.1999
 Z:1-2 Nah
-T:W/09-19=0.09(60)/1
+T:W/0,0/19-19=0.09(60)/1
 T:W/19-09=0.08(60)/1
 T:E,H/*=0.08(60)/1
 Z:3 Baden-Württemberg
-T:W/09-19=0.11(60)/1
+T:W/0,0/19-19=0.11(60)/1
 T:W/19-09=0.08(60)/1
 T:E,H/*=0.08(60)/1
 Z:4 Deutschland
-T:W/09-19=0.18(60)/1
+T:W/0,0/19-19=0.18(60)/1
 T:W/19-09=0.10(60)/1
 T:E,H/*=0.10(60)/1
 A:+49
@@ -4663,13 +4663,13 @@ A:+49170,+49171		# D1
 A:+49172,+49173		# D2
 A:+49177,+49178		# Eplus
 A:+49176,+49179		# E2
-T:W/09-19=0.81(60)/1
-T:E,H/09-19=0.48(60)/1
+T:W/0,0/19-19=0.81(60)/1
+T:E,H/0,0/19-19=0.48(60)/1
 T:*/19-09=0.48(60)/1
 Z:200 Schweiz, ...
 A:Schweiz, Frankreich, Österreich, Italien
-T:W/09-19=0.37(60)/1
-T:E,H/09-19=0.29(60)/1
+T:W/0,0/19-19=0.37(60)/1
+T:E,H/0,0/19-19=0.29(60)/1
 T:*/19-09=0.29(60)/1
 Z:201 EU
 A:Andorra, Belgien, Dänemark, Finnland, Griechenland, Großbritannien, Irland
@@ -4709,19 +4709,19 @@ C:10		Mobilfunk
 C:200	-	Ausland
 # G:01.06.1999
 Z:1-2 Nah
-T:W/09-19=0.06/0,0.10(60)/1
-T:W/06-09,19-21=0.06/0,0.08(60)/1
-T:E,H/06-21=0.06/0,0.08(60)/1
+T:W/0,0/19-19=0.06/0,0.10(60)/1
+T:W/0,0/16-09,19-21=0.06/0,0.08(60)/1
+T:E,H/0,0/16-21=0.06/0,0.08(60)/1
 T:*/21-06=0.06/0,0.06(60)/1
 Z:3 Baden-Württemberg
-T:W/09-19=0.06/0,0.12(60)/1
-T:W/06-09,19-21=0.06/0,0.08(60)/1
-T:E,H/06-21=0.06/0,0.08(60)/1
+T:W/0,0/19-19=0.06/0,0.12(60)/1
+T:W/0,0/16-09,19-21=0.06/0,0.08(60)/1
+T:E,H/0,0/16-21=0.06/0,0.08(60)/1
 T:*/21-06=0.06/0,0.06(60)/1
 Z:4 Deutschland
-T:W/09-19=0.06/0,0.19(60)/1
-T:W/06-09,19-21=0.06/0,0.10(60)/1
-T:E,H/06-21=0.06/0,0.10(60)/1
+T:W/0,0/19-19=0.06/0,0.19(60)/1
+T:W/0,0/16-09,19-21=0.06/0,0.10(60)/1
+T:E,H/0,0/16-21=0.06/0,0.10(60)/1
 T:*/21-06=0.06/0,0.06(60)/1
 A:+49
 Z:10 Mobilfunk
@@ -4731,13 +4731,13 @@ A:+49170,+49171		# D1
 A:+49172,+49173		# D2
 A:+49177,+49178		# Eplus
 A:+49176,+49179		# E2
-T:W/09-19=0.06/0,0.81(60)/1
-T:E,H/09-19=0.06/0,0.48(60)/1
+T:W/0,0/19-19=0.06/0,0.81(60)/1
+T:E,H/0,0/19-19=0.06/0,0.48(60)/1
 T:*/19-09=0.06/0,0.48(60)/1
 Z:200 Schweiz, ...
 A:Schweiz, Frankreich, Österreich, Italien
-T:W/09-19=0.06/0,0.37(60)/1
-T:E,H/09-19=0.06/0,0.29(60)/1
+T:W/0,0/19-19=0.06/0,0.37(60)/1
+T:E,H/0,0/19-19=0.06/0,0.29(60)/1
 T:*/19-09=0.06/0,0.29(60)/1
 Z:201 EU
 A:Andorra, Belgien, Dänemark, Finnland, Griechenland, Großbritannien, Irland
@@ -4764,16 +4764,16 @@ C:200	-	Ausland
 # G:15-Jul-1999
 D:dtag
 Z:1-2 Lokal
-T:W/08-18=0.12/60 Geschäftszeit
+T:W/0,0/18-18=0.12/60 Geschäftszeit
 T:W/18-08=0.08/60 Freizeit
 T:E,H/*=0.08/60 Wochenende
 Z:3 Nah
-T:W/08-18=0.14/60 Geschäftszeit
+T:W/0,0/18-18=0.14/60 Geschäftszeit
 T:W/18-08=0.10/60 Freizeit
 T:E,H/*=0.10/60 Wochenende
 Z:4 Fern
 A:+49
-T:W/08-18=0.16/60 Geschäftszeit
+T:W/0,0/18-18=0.16/60 Geschäftszeit
 T:W/18-08=0.12/60 Freizeit
 T:E,H/*=0.12/60 Wochenende
 Z:10 Mobilfunk
@@ -4783,7 +4783,7 @@ A:+49170,+49171		# D1
 A:+49172,+49173		# D2
 A:+49177,+49178		# Eplus
 A:+49176,+49179		# E2
-T:W/08-18=0.56/60 Geschäftszeit
+T:W/0,0/18-18=0.56/60 Geschäftszeit
 T:W/18-08=0.46/60 Freizeit
 T:E,H/*=0.46/60 Wochenende
 Z:102 TelePassport-Online
@@ -4829,7 +4829,7 @@ C:102		TelePassport-Online
 C:200	-	Ausland
 Z:1-4 Inland
 A:+49
-T:W/08-18=0.16/60 Geschäftszeit
+T:W/0,0/18-18=0.16/60 Geschäftszeit
 T:W/18-08=0.12/60 Freizeit
 T:E,H/*=0.12/60 Wochenende
 Z:10 Mobilfunk
@@ -4843,7 +4843,7 @@ T:*/*=0.56/60
 Z:102 TelePassport-Online
 A:01924924 # (Benutzername: beliebig; Passwort: beliebig)
 S:Internet by call
-T:W/08-18=0.08/60 Geschäftszeit
+T:W/0,0/18-18=0.08/60 Geschäftszeit
 T:W/18-08=0.06/60 Freizeit
 T:E,H/*=0.08/60 Wochenende
 Z:200 Euro 1
@@ -4885,7 +4885,7 @@ C:102		TelePassport-Online
 C:200	-	Ausland
 Z:1-4 Inland
 A:+49
-T:*/07-21=0.14/60 Geschäftszeit
+T:*/0,0/17-21=0.14/60 Geschäftszeit
 T:*/21-07=0.10/60 Freizeit
 Z:10 Mobilfunk
 A:+491618		# T-C-Tel Voice Mail
@@ -4898,7 +4898,7 @@ T:*/*=0.56/60
 Z:102 TelePassport-Online
 A:01924924 # (Benutzername: beliebig; Passwort: beliebig)
 S:Internet by call
-T:W/08-18=0.08/60 Geschäftszeit
+T:W/0,0/18-18=0.08/60 Geschäftszeit
 T:W/18-08=0.06/60 Freizeit
 T:E,H/*=0.08/60 Wochenende
 Z:200 Euro 1
@@ -4995,12 +4995,12 @@ C:200	-	Ausland
 Z:1-2 Lokal
 T:*/*=0.12/60
 Z:3 Nah
-T:W/08-18=0.16/60 Geschäftszeit
+T:W/0,0/18-18=0.16/60 Geschäftszeit
 T:W/18-08=0.12/60 Freizeit
 T:E,H/*=0.12/60 Wochenende
 Z:4 Fern
 A:+49
-T:W/08-18=0.18/60 Geschäftszeit
+T:W/0,0/18-18=0.18/60 Geschäftszeit
 T:W/18-08=0.12/60 Freizeit
 T:E,H/*=0.12/60 Wochenende
 Z:10 Mobilfunk
@@ -5010,13 +5010,13 @@ A:+49170,+49171		# D1
 A:+49172,+49173		# D2
 A:+49177,+49178		# Eplus
 A:+49176,+49179		# E2
-T:W/08-18=0.58/60 Geschäftszeit
+T:W/0,0/18-18=0.58/60 Geschäftszeit
 T:W/18-08=0.48/60 Freizeit
 T:E,H/*=0.48/60 Wochenende
 Z:102 TelePassport-Online
 A:01924924 # (Benutzername: beliebig; Passwort: beliebig)
 S:Internet by call
-T:W/08-18=0.08/60 Geschäftszeit
+T:W/0,0/18-18=0.08/60 Geschäftszeit
 T:W/18-08=0.06/60 Freizeit
 T:E,H/*=0.08/60 Wochenende
 Z:200 Global 1
@@ -5053,7 +5053,7 @@ C:Adresse:  Juri-Gagarin-Ring 88, 99084
 C:	    Erfurt
 Z:1-4 Inland
 A:+49
-T:W/08-18=0.18/60 Geschäftszeit
+T:W/0,0/18-18=0.18/60 Geschäftszeit
 T:W/18-08=0.12/60 Freizeit
 T:E,H/*=0.12/60 Wochenende
 Z:10 Mobilfunk
@@ -5103,12 +5103,12 @@ C:	    Erfurt
 Z:1-2 Lokal
 T:*/*=0.10/60
 Z:3 Nah
-T:W/08-18=0.12/60 Geschäftszeit
+T:W/0,0/18-18=0.12/60 Geschäftszeit
 T:W/18-08=0.10/60 Freizeit
 T:E,H/*=0.10/60 Wochenende
 Z:4 Fern
 A:+49
-T:W/08-18=0.14/60 Geschäftszeit
+T:W/0,0/18-18=0.14/60 Geschäftszeit
 T:W/18-08=0.10/60 Freizeit
 T:E,H/*=0.10/60 Wochenende
 Z:10 Mobilfunk
@@ -5118,13 +5118,13 @@ A:+49170,+49171		# D1
 A:+49172,+49173		# D2
 A:+49177,+49178		# Eplus
 A:+49176,+49179		# E2
-T:W/08-18=0.58/60 Geschäftszeit
+T:W/0,0/18-18=0.58/60 Geschäftszeit
 T:W/18-08=0.48/60 Freizeit
 T:E,H/*=0.48/60 Wochenende
 Z:102 TelePassport-Online
 A:01924924 # (Benutzername: beliebig; Passwort: beliebig)
 S:Internet by call
-T:W/08-18=0.08/60 Geschäftszeit
+T:W/0,0/18-18=0.08/60 Geschäftszeit
 T:W/18-08=0.06/60 Freizeit
 T:E,H/*=0.06/60 Wochenende
 Z:200 Ausland Spezial
@@ -5208,10 +5208,10 @@ C:102		CITYMS-Internet
 C:200	-	Ausland
 # G:01.02.1999
 Z:1-2 CITYMS-Münsterland
-T:W/09-18=0.07/60 Hauptzeit
+T:W/0,0/19-18=0.07/60 Hauptzeit
 T:*/18-21=0.07/106 Nebenzeit
-T:*/05-09=0.07/106 Nebenzeit
-T:E,H/09-18=0.07/106 Nebenzeit
+T:*/0,0/15-09=0.07/106 Nebenzeit
+T:E,H/0,0/19-18=0.07/106 Nebenzeit
 T:*/21-05=0.07/145 Nachtzeit
 Z:1-2 CITYMS-Münsterland
 A:+492382	# Ahlen/Westfalen
@@ -5263,10 +5263,10 @@ A:+495426	# Glandorf
 A:+495481	# Lengerich/Westfalen
 A:+495484	# Lienen-Kattenvenne
 A:+495485	# Ladbergen
-T:W/09-18=0.07/60 Hauptzeit
+T:W/0,0/19-18=0.07/60 Hauptzeit
 T:*/18-21=0.07/106 Nebenzeit
-T:*/05-09=0.07/106 Nebenzeit
-T:E,H/09-18=0.07/106 Nebenzeit
+T:*/0,0/15-09=0.07/106 Nebenzeit
+T:E,H/0,0/19-18=0.07/106 Nebenzeit
 T:*/21-05=0.07/145 Nachtzeit
 Z:3 CITYMS-Interregio
 A:+49201	# Essen
@@ -5652,19 +5652,19 @@ A:+495975	# Rheine-Mesum
 A:+495976	# Salzbergen
 A:+495977	# Spelle
 A:+495978	# Hörstel-Dreierwalde
-T:W/09-18=0.07/60 Hauptzeit
+T:W/0,0/19-18=0.07/60 Hauptzeit
 T:W/18-09=0.07/40 Nebenzeit
 T:E,H/*=0.07/40 Nebenzeit
 Z:4 CITYMS-100 plus
-T:W/09-18=0.07/60 Hauptzeit
+T:W/0,0/19-18=0.07/60 Hauptzeit
 T:W/18-09=0.07/60 Nebenzeit
 T:E,H/*=0.07/60 Nebenzeit
 A:+49
 Z:5 CITYMS-Jovel
-T:W/09-18=0.056/60 Hauptzeit
+T:W/0,0/19-18=0.056/60 Hauptzeit
 T:*/18-21=0.056/106 Nebenzeit
-T:*/05-09=0.056/106 Nebenzeit
-T:E,H/09-18=0.056/106 Nebenzeit
+T:*/0,0/15-09=0.056/106 Nebenzeit
+T:E,H/0,0/19-18=0.056/106 Nebenzeit
 T:*/21-05=0.056/145 Nachtzeit
 Z:10 CITYMS-Mobilfunk
 A:+491618		# T-C-Tel Voice Mail
@@ -5673,14 +5673,14 @@ A:+49170,+49171		# D1
 A:+49172,+49173		# D2
 A:+49177,+49178		# Eplus
 A:+49176,+49179		# E2
-T:W/08-18=0.07/60 Hauptzeit
+T:W/0,0/18-18=0.07/60 Hauptzeit
 T:W/18-08=0.07/60 Nebenzeit
 T:E,H/*=0.07/60 Nebenzeit
 Z:102 CITYMS-Internet
-T:W/09-18=0.0455/60 Hauptzeit
+T:W/0,0/19-18=0.0455/60 Hauptzeit
 T:*/18-21=0.0455/106 Nebenzeit
-T:*/05-09=0.0455/106 Nebenzeit
-T:E,H/09-18=0.0455/106 Nebenzeit
+T:*/0,0/15-09=0.0455/106 Nebenzeit
+T:E,H/0,0/19-18=0.0455/106 Nebenzeit
 T:*/21-05=0.0455/145 Nachtzeit
 Z:200 Sonderpreis Niederlande und Großbritannien
 # FIXME: Großbritannien OHNE Nordirlan, Isle of Man & Kanalinseln!
@@ -5730,10 +5730,10 @@ C:102		CITYMS-Internet
 C:200	-	Ausland
 # G:01.02.1999
 Z:1-2 CITYMS-Münsterland
-T:W/09-18=0.07/60 Hauptzeit
+T:W/0,0/19-18=0.07/60 Hauptzeit
 T:*/18-21=0.07/106 Nebenzeit
-T:*/05-09=0.07/106 Nebenzeit
-T:E,H/09-18=0.07/106 Nebenzeit
+T:*/0,0/15-09=0.07/106 Nebenzeit
+T:E,H/0,0/19-18=0.07/106 Nebenzeit
 T:*/21-05=0.07/145 Nachtzeit
 Z:1-2 CITYMS-Münsterland
 A:+492382	# Ahlen/Westfalen
@@ -5785,7 +5785,7 @@ A:+495426	# Glandorf
 A:+495481	# Lengerich/Westfalen
 A:+495484	# Lienen-Kattenvenne
 A:+495485	# Ladbergen
-T:W/09-18=0.07/60 Hauptzeit
+T:W/0,0/19-18=0.07/60 Hauptzeit
 T:*/18-09=0.07/106 Nebenzeit
 Z:3 CITYMS-Interregio
 A:+49201	# Essen
@@ -6171,11 +6171,11 @@ A:+495975	# Rheine-Mesum
 A:+495976	# Salzbergen
 A:+495977	# Spelle
 A:+495978	# Hörstel-Dreierwalde
-T:W/09-18=0.07/60 Hauptzeit
+T:W/0,0/19-18=0.07/60 Hauptzeit
 T:W/18-09=0.07/40 Nebenzeit
 T:E,H/*=0.07/40 Nebenzeit
 Z:4 CITYMS-100 plus
-T:W/09-18=0.07/60 Hauptzeit
+T:W/0,0/19-18=0.07/60 Hauptzeit
 T:W/18-09=0.07/60 Nebenzeit
 T:E,H/*=0.07/60 Nebenzeit
 Z:10 CITYMS-Mobilfunk
@@ -6185,14 +6185,14 @@ A:+49170,+49171		# D1
 A:+49172,+49173		# D2
 A:+49177,+49178		# Eplus
 A:+49176,+49179		# E2
-T:W/08-18=0.07/60 Hauptzeit
+T:W/0,0/18-18=0.07/60 Hauptzeit
 T:W/18-08=0.07/60 Nebenzeit
 T:E,H/*=0.07/60 Nebenzeit
 Z:102 CITYMS-Internet
-T:W/09-18=0.0455/60 Hauptzeit
+T:W/0,0/19-18=0.0455/60 Hauptzeit
 T:*/18-21=0.0455/106 Nebenzeit
-T:*/05-09=0.0455/106 Nebenzeit
-T:E,H/09-18=0.0455/106 Nebenzeit
+T:*/0,0/15-09=0.0455/106 Nebenzeit
+T:E,H/0,0/19-18=0.0455/106 Nebenzeit
 T:*/21-05=0.0455/145 Nachtzeit
 Z:200 Sonderpreis Niederlande und Großbritannien
 # FIXME: Großbritannien OHNE Nordirlan, Isle of Man & Kanalinseln!
@@ -6247,16 +6247,16 @@ C:10		Mobilfunk
 C:102		Butensurf
 C:200	-	Ausland
 Z:1-3 Binnen
-T:W/06-18=0.06(60)/1 Tag
+T:W/0,0/16-18=0.06(60)/1 Tag
 T:W/18-06=0.05(60)/1 Freizeit
 T:E,H/*=0.05(60)/1 Wochenende
 Z:4 Buten
-T:W/06-18=0.17(60)/1 Tag
+T:W/0,0/16-18=0.17(60)/1 Tag
 T:W/18-06=0.07(60)/1 Freizeit
 T:E,H/*=0.07(60)/1 Wochenende
 A:+49
 Z:5 Nordcom-Nordcom
-T:W/06-18=0.04(60)/1 Tag
+T:W/0,0/16-18=0.04(60)/1 Tag
 T:W/18-06=0.03(60)/1 Freizeit
 T:E,H/*=0.03(60)/1 Wochenende
 Z:10 Mobil
@@ -6266,11 +6266,11 @@ A:+49170,+49171		# D1
 A:+49172,+49173		# D2
 A:+49177,+49178		# Eplus
 A:+49176,+49179		# E2
-T:W/06-18=0.79(60)/1 Tag
+T:W/0,0/16-18=0.79(60)/1 Tag
 T:W/18-06=0.49(60)/1 Freizeit
 T:E,H/*=0.49(60)/1 Wochenende
 Z:102 Butensurf
-T:W/06-18=0.09(60)/1 Tag
+T:W/0,0/16-18=0.09(60)/1 Tag
 T:W/18-06=0.08(60)/1 Freizeit
 T:E,H/*=0.08(60)/1 Wochenende
 Z:200 Tarifgruppe 1
@@ -6353,16 +6353,16 @@ C:10		Mobilfunk
 C:102		Butensurf Plus
 C:200	-	Ausland
 Z:1-3 Binnen
-T:W/06-18=0.06(60)/1 Tag
+T:W/0,0/16-18=0.06(60)/1 Tag
 T:W/18-06=0.05(60)/1 Freizeit
 T:E,H/*=0.05(60)/1 Wochenende
 Z:4 Buten
-T:W/06-18=0.17(60)/1 Tag
+T:W/0,0/16-18=0.17(60)/1 Tag
 T:W/18-06=0.07(60)/1 Freizeit
 T:E,H/*=0.07(60)/1 Wochenende
 A:+49
 Z:5 Nordcom-Nordcom
-T:W/06-18=0.04(60)/1 Tag
+T:W/0,0/16-18=0.04(60)/1 Tag
 T:W/18-06=0.03(60)/1 Freizeit
 T:E,H/*=0.03(60)/1 Wochenende
 Z:10 Mobil
@@ -6372,11 +6372,11 @@ A:+49170,+49171		# D1
 A:+49172,+49173		# D2
 A:+49177,+49178		# Eplus
 A:+49176,+49179		# E2
-T:W/06-18=0.79(60)/1 Tag
+T:W/0,0/16-18=0.79(60)/1 Tag
 T:W/18-06=0.49(60)/1 Freizeit
 T:E,H/*=0.49(60)/1 Wochenende
 Z:102 Butensurf Plus
-T:W/06-18=0.04(60)/1 Tag
+T:W/0,0/16-18=0.04(60)/1 Tag
 T:W/18-06=0.03(60)/1 Freizeit
 T:E,H/*=0.03(60)/1 Wochenende
 Z:200 Tarifgruppe 1
@@ -6540,18 +6540,18 @@ Z:60 Cityruf
 A:+491640 # Cityruf Voicebox
 A:+491641,+491642,+491643,+491644,+491645
 A:+491646,+491647,+491648,+491649
-T:W/09-18=0.12/20
+T:W/0,0/19-18=0.12/20
 T:W/18-09=0.12/30
 T:E,H/*=0.12/30
 Z:82 Shared Cost Service 01802
 A:01802
-T:*/*=0.12/0
+T:*/*=0.12/0,0/1
 Z:83 Shared Cost Service 01803
 A:01803
 T:*/*=0.12/30
 Z:84 Shared Cost Service 01804
 A:01804
-T:*/*=0.48/0
+T:*/*=0.48/0,0/1
 Z:85 Shared Cost Service 01805
 A:01805
 T:*/*=0.12/30
@@ -6655,8 +6655,8 @@ C:82	-  85	Service 0180-x
 C:91	-  94	Service 0190-x
 C:200	-	Ausland
 Z:1-4 Inland
-T:W/08-21=0/5,0.11/60 Hauptzeit
-T:E,H/08-21=0/5,0.055/60 Nebenzeit
+T:W/0,0/18-21=0/5,0.11/60 Hauptzeit
+T:E,H/0,0/18-21=0/5,0.055/60 Nebenzeit
 T:*/21-08=0/5,0.055/60 Nebenzeit
 Z:10 Mobilfunk
 A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
@@ -6722,18 +6722,18 @@ Z:60 Cityruf
 A:+491640 # Cityruf Voicebox
 A:+491641,+491642,+491643,+491644,+491645
 A:+491646,+491647,+491648,+491649
-T:W/09-18=0.12/20
+T:W/0,0/19-18=0.12/20
 T:W/18-09=0.12/30
 T:E,H/*=0.12/30
 Z:82 Shared Cost Service 01802
 A:01802
-T:*/*=0.12/0
+T:*/*=0.12/0,0/1
 Z:83 Shared Cost Service 01803
 A:01803
 T:*/*=0.12/30
 Z:84 Shared Cost Service 01804
 A:01804
-T:*/*=0.48/0
+T:*/*=0.48/0,0/1
 Z:85 Shared Cost Service 01805
 A:01805
 T:*/*=0.12/30
@@ -6822,7 +6822,7 @@ C:2	-   4	Deutschland
 C:10		Mobilfunk
 C:200	-	Ausland
 Z:1-4 Deutschland
-T:*/08-18=0.136(60)/1 Haupt
+T:*/0,0/18-18=0.136(60)/1 Haupt
 T:*/18-21=0.113(60)/1 Neben
 T:*/21-08=0.082(60)/1 Nacht
 Z:10 Mobilfunk
@@ -7576,7 +7576,7 @@ C:2	-   4	Deutschland
 C:10		Mobilfunk
 C:200	-	Ausland
 Z:1-4 Deutschland
-T:*/08-18=0.110(60)/1 Haupt
+T:*/0,0/18-18=0.110(60)/1 Haupt
 T:*/18-21=0.097(60)/1 Neben
 T:*/21-08=0.067(60)/1 Nacht
 Z:10 Mobilfunk
@@ -8352,13 +8352,13 @@ C:91	-  94	Service 0190-x
 C:102		TelDa.net
 C:200	-	Ausland
 Z:1-2 Regio 20
-T:W/07-21=0.07(60)/1
+T:W/0,0/17-21=0.07(60)/1
 T:W/21-07=0.04(60)/1
 T:E/*=0.04(60)/1
 Z:3-4 Deutschland
 A:+49
-T:W/07-09=0.09(60)/1
-T:W/09-18=0.12(60)/1
+T:W/0,0/17-09=0.09(60)/1
+T:W/0,0/19-18=0.12(60)/1
 T:W/18-21=0.09(60)/1
 T:W/21-07=0.06(60)/1
 T:E,H/*=0.09(60)/1
@@ -8473,54 +8473,54 @@ A:0800        # freecall 0800
 A:Plus Freephone Service (Niederl.), Plus Freephone Service (Schweiz)
 A:International Freephone
 Z:1 Ortszone
-T:W/09-18=0.12/90 Standard
-T:W/05-09,18-21=0.12/150 Spar
-T:E,H/05-21=0.12/150 Spar
+T:W/0,0/19-18=0.12/90 Standard
+T:W/0,0/15-09,18-21=0.12/150 Spar
+T:E,H/0,0/15-21=0.12/150 Spar
 T:*/21-05=0.12/240 Nacht
 Z:2 CityCall
-T:W/09-18=0.12/90 Standard
-T:W/05-09,18-21=0.12/150 Spar
-T:E,H/05-21=0.12/150 Spar
+T:W/0,0/19-18=0.12/90 Standard
+T:W/0,0/15-09,18-21=0.12/150 Spar
+T:E,H/0,0/15-21=0.12/150 Spar
 T:*/21-05=0.12/240 Nacht
 Z:3 RegioCall
-T:W/09-18=0.12/30:600,0.1084/30 Standard
-T:W/06-09,18-21=0.12/60:600,0.1084/60 Spar
-T:E,H/06-21=0.12/60:600,0.1084/60 Spar
+T:W/0,0/19-18=0.12/30:600,0.1084/30 Standard
+T:W/0,0/16-09,18-21=0.12/60:600,0.1084/60 Spar
+T:E,H/0,0/16-21=0.12/60:600,0.1084/60 Spar
 T:*/21-06=0.06/60 Nacht
 Z:4 GermanCall
-T:W/09-18=0.12/30:600,0.1084/30 Standard
-T:W/06-09,18-21=0.12/60:600,0.1084/60 Spar
-T:E,H/06-21=0.12/60:600,0.1084/60 Spar
+T:W/0,0/19-18=0.12/30:600,0.1084/30 Standard
+T:W/0,0/16-09,18-21=0.12/60:600,0.1084/60 Spar
+T:E,H/0,0/16-21=0.12/60:600,0.1084/60 Spar
 T:*/21-06=0.06/60 Nacht
 A:+49
 Z:10 C-Mobilboxen
 A:+491618
-T:W/09-18=0.12/11.4 Standard
+T:W/0,0/19-18=0.12/11.4 Standard
 T:W/18-09=0.12/16.7 Nacht
 T:E,H/*=0.12/16.7 Wochenende
 Z:11 Mobilfunk C
 A:+491610,+491617,+491619
-T:W/09-18=0.12/7.5 Standard
+T:W/0,0/19-18=0.12/7.5 Standard
 T:W/18-09=0.12/15 Nacht
 T:E,H/*=0.12/15 Wochenende
 Z:12 Mobilfunknetz D1
 A:+49170,+49171
-T:W/09-18=0.12/7.5 Standard
+T:W/0,0/19-18=0.12/7.5 Standard
 T:W/18-09=0.12/15 Nacht
 T:E,H/*=0.12/15 Wochenende
 Z:13 Mobilfunknetz D2
 A:+49172,+49173
-T:W/09-18=0.12/7.5 Standard
+T:W/0,0/19-18=0.12/7.5 Standard
 T:W/18-09=0.12/15 Nacht
 T:E,H/*=0.12/15 Wochenende
 Z:14 Mobilfunknetz E-Plus
 A:+49177,+49178
-T:W/09-18=0.12/5.3 Standard
+T:W/0,0/19-18=0.12/5.3 Standard
 T:W/18-09=0.12/12.8 Nacht
 T:E,H/*=0.12/12.8 Wochenende
 Z:15 Mobilfunknetz Viag Interkom
 A:+49176,+49179
-T:W/09-18=0.12/7.5 Standard
+T:W/0,0/19-18=0.12/7.5 Standard
 T:W/18-09=0.12/15 Nacht
 T:E,H/*=0.12/15 Wochenende
 Z:31 Iridium GSM
@@ -8580,24 +8580,24 @@ Z:60 Cityruf
 A:+491640 # Cityruf Voicebox
 A:+491641,+491642,+491643,+491644,+491645
 A:+491646,+491647,+491648,+491649
-T:W/09-18=0.12/20 Standard
+T:W/0,0/19-18=0.12/20 Standard
 T:W/18-09=0.12/30 Nacht
 T:E,H/*=0.12/30 Wochenende
 Z:81 Shared Cost Service 0180-1
 A:01801
-T:W/09-18=0.12/90 Standard
-T:W/05-09,18-21=0.12/150 Spar
-T:E,H/05-21=0.12/150 Spar
+T:W/0,0/19-18=0.12/90 Standard
+T:W/0,0/15-09,18-21=0.12/150 Spar
+T:E,H/0,0/15-21=0.12/150 Spar
 T:*/21-05=0.12/240 Nacht
 Z:82 Shared Cost Service 0180-2
 A:01802
-T:*/*=0.12/0
+T:*/*=0.12/0,0/1
 Z:83 Shared Cost Service 0180-3
 A:01803
 T:*/*=0.12/40
 Z:84 Shared Cost Service 0180-4
 A:01804
-T:*/*=0.48/0
+T:*/*=0.48/0,0/1
 Z:85 Shared Cost Service 0180-5
 A:01805
 T:*/*=0.12/30
@@ -8619,13 +8619,13 @@ C:Dies ist *kein* All-in-One Zugang, es werden zusätzliche Gebühren erhoben!
 T:*/*=0.06/0,0.06/60 T-Online eco
 Z:162 T-VoteCall
 A:01371
-T:*/*=0.24/0
+T:*/*=0.24/0,0/1
 Z:163 T-VoteCall
 A:01372,01373,01374,0138
 T:*/*=0.12/20
 Z:170 Persönliche Rufnummer
 A:0700
-T:*/09-18=0.12/15
+T:*/0,0/19-18=0.12/15
 T:*/18-09=0.12/30
 Z:172 Sonderrufnummern zum Citytarif
 A:01141		# Auftrags-und Ansagedienst
@@ -8637,16 +8637,16 @@ A:01914		# Online-Dienste AOL Zugang
 A:019161	# Online-Dienste AOL Zugang
 A:019102345	# Online-Dienste 1&1 Zugang
 C:Dies sind *keine* All-in-One Zugänge, es werden zusätzliche Gebühren erhoben!
-T:W/09-18=0.12/90 Standard
-T:W/05-09,18-21=0.12/150 Spar
-T:E,H/05-21=0.12/150 Spar
+T:W/0,0/19-18=0.12/90 Standard
+T:W/0,0/15-09,18-21=0.12/150 Spar
+T:E,H/0,0/15-21=0.12/150 Spar
 T:*/21-05=0.12/240 Nacht
 Z:200 Euro 1
 A:Dänemark
 T:*/*=0.12/10
 Z:201 Euro 2
 A:Großbritannien, Irland, USA
-T:W/08-18=0.12/8.6
+T:W/0,0/18-18=0.12/8.6
 T:W/18-08=0.12/10
 T:E,H/*=0.12/10
 Z:202 Welt 1
@@ -8716,47 +8716,47 @@ A:0800        # freecall 0800
 A:Plus Freephone Service (Niederl.), Plus Freephone Service (Schweiz)
 A:International Freephone
 Z:1-2 CityPlus
-T:*/05-21=0.06/90 Standard
+T:*/0,0/15-21=0.06/90 Standard
 T:*/21-05=0.12/240 Nacht
 Z:3 RegioCall
-T:W/09-18=0.12/30:600,0.1084/30 Standard
-T:W/06-09,18-21=0.12/60:600,0.1084/60 Spar
-T:E,H/06-21=0.12/60:600,0.1084/60 Spar
+T:W/0,0/19-18=0.12/30:600,0.1084/30 Standard
+T:W/0,0/16-09,18-21=0.12/60:600,0.1084/60 Spar
+T:E,H/0,0/16-21=0.12/60:600,0.1084/60 Spar
 T:*/21-06=0.06/60 Nacht
 Z:4 GermanCall
-T:W/09-18=0.12/30:600,0.1084/30 Standard
-T:W/06-09,18-21=0.12/60:600,0.1084/60 Spar
-T:E,H/06-21=0.12/60:600,0.1084/60 Spar
+T:W/0,0/19-18=0.12/30:600,0.1084/30 Standard
+T:W/0,0/16-09,18-21=0.12/60:600,0.1084/60 Spar
+T:E,H/0,0/16-21=0.12/60:600,0.1084/60 Spar
 T:*/21-06=0.06/60 Nacht
 A:+49
 Z:10 C-Mobilboxen
 A:+491618
-T:W/09-18=0.12/11.4 Standard
+T:W/0,0/19-18=0.12/11.4 Standard
 T:W/18-09=0.12/16.7 Nacht
 T:E,H/*=0.12/16.7 Wochenende
 Z:11 Mobilfunk C
 A:+491610,+491617,+491619
-T:W/09-18=0.12/7.5 Standard
+T:W/0,0/19-18=0.12/7.5 Standard
 T:W/18-09=0.12/15 Nacht
 T:E,H/*=0.12/15 Wochenende
 Z:12 Mobilfunknetz D1
 A:+49170,+49171
-T:W/09-18=0.12/7.5 Standard
+T:W/0,0/19-18=0.12/7.5 Standard
 T:W/18-09=0.12/15 Nacht
 T:E,H/*=0.12/15 Wochenende
 Z:13 Mobilfunknetz D2
 A:+49172,+49173
-T:W/09-18=0.12/7.5 Standard
+T:W/0,0/19-18=0.12/7.5 Standard
 T:W/18-09=0.12/15 Nacht
 T:E,H/*=0.12/15 Wochenende
 Z:14 Mobilfunknetz E-Plus
 A:+49177,+49178
-T:W/09-18=0.12/5.3 Standard
+T:W/0,0/19-18=0.12/5.3 Standard
 T:W/18-09=0.12/12.8 Nacht
 T:E,H/*=0.12/12.8 Wochenende
 Z:15 Mobilfunknetz Viag Interkom
 A:+49176,+49179
-T:W/09-18=0.12/7.5 Standard
+T:W/0,0/19-18=0.12/7.5 Standard
 T:W/18-09=0.12/15 Nacht
 T:E,H/*=0.12/15 Wochenende
 Z:31 Iridium GSM
@@ -8816,24 +8816,24 @@ Z:60 Cityruf
 A:+491640 # Cityruf Voicebox
 A:+491641,+491642,+491643,+491644,+491645
 A:+491646,+491647,+491648,+491649
-T:W/09-18=0.12/20 Standard
+T:W/0,0/19-18=0.12/20 Standard
 T:W/18-09=0.12/30 Nacht
 T:E,H/*=0.12/30 Wochenende
 Z:81 Shared Cost Service 0180-1
 A:01801
-T:W/09-18=0.12/90 Standard
-T:W/05-09,18-21=0.12/150 Spar
-T:E,H/05-21=0.12/150 Spar
+T:W/0,0/19-18=0.12/90 Standard
+T:W/0,0/15-09,18-21=0.12/150 Spar
+T:E,H/0,0/15-21=0.12/150 Spar
 T:*/21-05=0.12/240 Nacht
 Z:82 Shared Cost Service 0180-2
 A:01802
-T:*/*=0.12/0
+T:*/*=0.12/0,0/1
 Z:83 Shared Cost Service 0180-3
 A:01803
 T:*/*=0.12/30
 Z:84 Shared Cost Service 0180-4
 A:01804
-T:*/*=0.48/0
+T:*/*=0.48/0,0/1
 Z:85 Shared Cost Service 0180-5
 A:01805
 T:*/*=0.12/30
@@ -8854,13 +8854,13 @@ A:0191011
 T:*/*=0.06/0,0.06/60 T-Online eco
 Z:162 T-VoteCall
 A:01371
-T:*/*=0.24/0
+T:*/*=0.24/0,0/1
 Z:163 T-VoteCall
 A:01372,01373,01374,0138
 T:*/*=0.12/20
 Z:170 Persönliche Rufnummer
 A:0700
-T:*/09-18=0.12/15
+T:*/0,0/19-18=0.12/15
 T:*/18-09=0.12/30
 Z:172 Sonderrufnummern zum Citytarif
 A:01141   # Auftrags-und Ansagedienst
@@ -8871,14 +8871,14 @@ A:01910   # Online-Dienste Zugang SLIP
 A:01914   # Online-Dienste AOL Zugang
 A:019161  # Online-Dienste AOL Zugang
 A:019102345 # Online-Dienste 1&1 Zugang
-T:*/05-21=0.06/90 CityPlus
+T:*/0,0/15-21=0.06/90 CityPlus
 T:*/21-05=0.12/240 Nacht
 Z:200 Euro 1
 A:Dänemark
 T:*/*=0.12/10
 Z:201 Euro 2
 A:Großbritannien, Irland, USA
-T:W/08-18=0.12/8.6
+T:W/0,0/18-18=0.12/8.6
 T:W/18-08=0.12/10
 T:E,H/*=0.12/10
 Z:202 Welt 1
@@ -8943,49 +8943,49 @@ A:0800        # freecall 0800
 A:Plus Freephone Service (Niederl.), Plus Freephone Service (Schweiz)
 A:International Freephone
 Z:1-2 CityWeekend
-T:W/09-18=0.12/90 Standard
-T:W/05-09,18-21=0.12/150 Spar
-T:E,H/05-21=0.12/240 CityWeekend
+T:W/0,0/19-18=0.12/90 Standard
+T:W/0,0/15-09,18-21=0.12/150 Spar
+T:E,H/0,0/15-21=0.12/240 CityWeekend
 T:*/21-05=0.12/240 Nacht
 Z:3 RegioCall
-T:W/09-18=0.12/30:600,0.1084/30 Standard
-T:W/06-09,18-21=0.12/60:600,0.1084/60 Spar
-T:E,H/06-21=0.12/60:600,0.1084/60 Spar
+T:W/0,0/19-18=0.12/30:600,0.1084/30 Standard
+T:W/0,0/16-09,18-21=0.12/60:600,0.1084/60 Spar
+T:E,H/0,0/16-21=0.12/60:600,0.1084/60 Spar
 T:*/21-06=0.06/60 Nacht
 Z:4 GermanCall
-T:W/09-18=0.12/30:600,0.1084/30 Standard
-T:W/06-09,18-21=0.12/60:600,0.1084/60 Spar
-T:E,H/06-21=0.12/60:600,0.1084/60 Spar
+T:W/0,0/19-18=0.12/30:600,0.1084/30 Standard
+T:W/0,0/16-09,18-21=0.12/60:600,0.1084/60 Spar
+T:E,H/0,0/16-21=0.12/60:600,0.1084/60 Spar
 T:*/21-06=0.06/60 Nacht
 A:+49
 Z:10 C-Mobilboxen
 A:+491618
-T:W/09-18=0.12/11.4 Standard
+T:W/0,0/19-18=0.12/11.4 Standard
 T:W/18-09=0.12/16.7 Nacht
 T:E,H/*=0.12/16.7 Wochenende
 Z:11 Mobilfunk C
 A:+491610,+491617,+491619
-T:W/09-18=0.12/7.5 Standard
+T:W/0,0/19-18=0.12/7.5 Standard
 T:W/18-09=0.12/15 Nacht
 T:E,H/*=0.12/15 Wochenende
 Z:12 Mobilfunknetz D1
 A:+49170,+49171
-T:W/09-18=0.12/7.5 Standard
+T:W/0,0/19-18=0.12/7.5 Standard
 T:W/18-09=0.12/15 Nacht
 T:E,H/*=0.12/15 Wochenende
 Z:13 Mobilfunknetz D2
 A:+49172,+49173
-T:W/09-18=0.12/7.5 Standard
+T:W/0,0/19-18=0.12/7.5 Standard
 T:W/18-09=0.12/15 Nacht
 T:E,H/*=0.12/15 Wochenende
 Z:14 Mobilfunknetz E-Plus
 A:+49177,+49178
-T:W/09-18=0.12/5.3 Standard
+T:W/0,0/19-18=0.12/5.3 Standard
 T:W/18-09=0.12/12.8 Nacht
 T:E,H/*=0.12/12.8 Wochenende
 Z:15 Mobilfunknetz Viag Interkom
 A:+49176,+49179
-T:W/09-18=0.12/7.5 Standard
+T:W/0,0/19-18=0.12/7.5 Standard
 T:W/18-09=0.12/15 Nacht
 T:E,H/*=0.12/15 Wochenende
 Z:31 Iridium GSM
@@ -9045,24 +9045,24 @@ Z:60 Cityruf
 A:+491640 # Cityruf Voicebox
 A:+491641,+491642,+491643,+491644,+491645
 A:+491646,+491647,+491648,+491649
-T:W/09-18=0.12/20 Standard
+T:W/0,0/19-18=0.12/20 Standard
 T:W/18-09=0.12/30 Nacht
 T:E,H/*=0.12/30 Wochenende
 Z:81 Shared Cost Service 0180-1
 A:01801
-T:W/09-18=0.12/90 Standard
-T:W/05-09,18-21=0.12/150 Spar
-T:E,H/05-21=0.12/150 Spar
+T:W/0,0/19-18=0.12/90 Standard
+T:W/0,0/15-09,18-21=0.12/150 Spar
+T:E,H/0,0/15-21=0.12/150 Spar
 T:*/21-05=0.12/240 Nacht
 Z:82 Shared Cost Service 0180-2
 A:01802
-T:*/*=0.12/0
+T:*/*=0.12/0,0/1
 Z:83 Shared Cost Service 0180-3
 A:01803
 T:*/*=0.12/30
 Z:84 Shared Cost Service 0180-4
 A:01804
-T:*/*=0.48/0
+T:*/*=0.48/0,0/1
 Z:85 Shared Cost Service 0180-5
 A:01805
 T:*/*=0.12/30
@@ -9083,13 +9083,13 @@ A:0191011
 T:*/*=0.06/0,0.06/60 T-Online eco
 Z:162 T-VoteCall
 A:01371
-T:*/*=0.24/0
+T:*/*=0.24/0,0/1
 Z:163 T-VoteCall
 A:01372,01373,01374,0138
 T:*/*=0.12/20
 Z:170 Persönliche Rufnummer
 A:0700
-T:*/09-18=0.12/15
+T:*/0,0/19-18=0.12/15
 T:*/18-09=0.12/30
 Z:172 Sonderrufnummern zum Citytarif
 A:01141		# Auftrags-und Ansagedienst
@@ -9100,16 +9100,16 @@ A:01910		# Online-Dienste Zugang SLIP
 A:01914		# Online-Dienste AOL Zugang
 A:019161	# Online-Dienste AOL Zugang
 A:019102345	# Online-Dienste 1&1 Zugang
-T:W/09-18=0.12/90 Standard
-T:W/05-09,18-21=0.12/150 Spar
-T:E,H/05-21=0.12/240 CityWeekend
+T:W/0,0/19-18=0.12/90 Standard
+T:W/0,0/15-09,18-21=0.12/150 Spar
+T:E,H/0,0/15-21=0.12/240 CityWeekend
 T:*/21-05=0.12/240 Nacht
 Z:200 Euro 1
 A:Dänemark
 T:*/*=0.12/10
 Z:201 Euro 2
 A:Großbritannien, Irland, USA
-T:W/08-18=0.12/8.6
+T:W/0,0/18-18=0.12/8.6
 T:W/18-08=0.12/10
 T:E,H/*=0.12/10
 Z:202 Welt 1
@@ -9179,48 +9179,48 @@ A:0800        # freecall 0800
 A:Plus Freephone Service (Niederl.), Plus Freephone Service (Schweiz)
 A:International Freephone
 Z:1-2 CityPlus & CityWeekend
-T:W/05-21=0.06/90 CityPlus
-T:E,H/05-21=0.12/240 CityWeekend
+T:W/0,0/15-21=0.06/90 CityPlus
+T:E,H/0,0/15-21=0.12/240 CityWeekend
 T:*/21-05=0.12/240 Nacht
 Z:3 RegioCall
-T:W/09-18=0.12/30:600,0.1084/30 Standard
-T:W/06-09,18-21=0.12/60:600,0.1084/60 Spar
-T:E,H/06-21=0.12/60:600,0.1084/60 Spar
+T:W/0,0/19-18=0.12/30:600,0.1084/30 Standard
+T:W/0,0/16-09,18-21=0.12/60:600,0.1084/60 Spar
+T:E,H/0,0/16-21=0.12/60:600,0.1084/60 Spar
 T:*/21-06=0.06/60 Nacht
 Z:4 GermanCall
-T:W/09-18=0.12/30:600,0.1084/30 Standard
-T:W/06-09,18-21=0.12/60:600,0.1084/60 Spar
-T:E,H/06-21=0.12/60:600,0.1084/60 Spar
+T:W/0,0/19-18=0.12/30:600,0.1084/30 Standard
+T:W/0,0/16-09,18-21=0.12/60:600,0.1084/60 Spar
+T:E,H/0,0/16-21=0.12/60:600,0.1084/60 Spar
 T:*/21-06=0.06/60 Nacht
 A:+49
 Z:10 C-Mobilboxen
 A:+491618
-T:W/09-18=0.12/11.4 Standard
+T:W/0,0/19-18=0.12/11.4 Standard
 T:W/18-09=0.12/16.7 Nacht
 T:E,H/*=0.12/16.7 Wochenende
 Z:11 Mobilfunk C
 A:+491610,+491617,+491619
-T:W/09-18=0.12/7.5 Standard
+T:W/0,0/19-18=0.12/7.5 Standard
 T:W/18-09=0.12/15 Nacht
 T:E,H/*=0.12/15 Wochenende
 Z:12 Mobilfunknetz D1
 A:+49170,+49171
-T:W/09-18=0.12/7.5 Standard
+T:W/0,0/19-18=0.12/7.5 Standard
 T:W/18-09=0.12/15 Nacht
 T:E,H/*=0.12/15 Wochenende
 Z:13 Mobilfunknetz D2
 A:+49172,+49173
-T:W/09-18=0.12/7.5 Standard
+T:W/0,0/19-18=0.12/7.5 Standard
 T:W/18-09=0.12/15 Nacht
 T:E,H/*=0.12/15 Wochenende
 Z:14 Mobilfunknetz E-Plus
 A:+49177,+49178
-T:W/09-18=0.12/5.3 Standard
+T:W/0,0/19-18=0.12/5.3 Standard
 T:W/18-09=0.12/12.8 Nacht
 T:E,H/*=0.12/12.8 Wochenende
 Z:15 Mobilfunknetz Viag Interkom
 A:+49176,+49179
-T:W/09-18=0.12/7.5 Standard
+T:W/0,0/19-18=0.12/7.5 Standard
 T:W/18-09=0.12/15 Nacht
 T:E,H/*=0.12/15 Wochenende
 Z:31 Iridium GSM
@@ -9280,24 +9280,24 @@ Z:60 Cityruf
 A:+491640 # Cityruf Voicebox
 A:+491641,+491642,+491643,+491644,+491645
 A:+491646,+491647,+491648,+491649
-T:W/09-18=0.12/20 Standard
+T:W/0,0/19-18=0.12/20 Standard
 T:W/18-09=0.12/30 Nacht
 T:E,H/*=0.12/30 Wochenende
 Z:81 Shared Cost Service 0180-1
 A:01801
-T:W/09-18=0.12/90 Standard
-T:W/05-09,18-21=0.12/150 Spar
-T:E,H/05-21=0.12/150 Spar
+T:W/0,0/19-18=0.12/90 Standard
+T:W/0,0/15-09,18-21=0.12/150 Spar
+T:E,H/0,0/15-21=0.12/150 Spar
 T:*/21-05=0.12/240 Nacht
 Z:82 Shared Cost Service 0180-2
 A:01802
-T:*/*=0.12/0
+T:*/*=0.12/0,0/1
 Z:83 Shared Cost Service 0180-3
 A:01803
 T:*/*=0.12/30
 Z:84 Shared Cost Service 0180-4
 A:01804
-T:*/*=0.48/0
+T:*/*=0.48/0,0/1
 Z:85 Shared Cost Service 0180-5
 A:01805
 T:*/*=0.12/30
@@ -9318,13 +9318,13 @@ A:0191011
 T:*/*=0.06/0,0.06/60 T-Online eco
 Z:162 T-VoteCall
 A:01371
-T:*/*=0.24/0
+T:*/*=0.24/0,0/1
 Z:163 T-VoteCall
 A:01372,01373,01374,0138
 T:*/*=0.12/20
 Z:170 Persönliche Rufnummer
 A:0700
-T:*/09-18=0.12/15
+T:*/0,0/19-18=0.12/15
 T:*/18-09=0.12/30
 Z:172 Sonderrufnummern zum Citytarif
 A:01141		# Auftrags-und Ansagedienst
@@ -9335,15 +9335,15 @@ A:01910		# Online-Dienste Zugang SLIP
 A:01914		# Online-Dienste AOL Zugang
 A:019161	# Online-Dienste AOL Zugang
 A:019102345	# Online-Dienste 1&1 Zugang
-T:W/05-21=0.06/90 CityPlus
-T:E,H/05-21=0.12/240 CityWeekend
+T:W/0,0/15-21=0.06/90 CityPlus
+T:E,H/0,0/15-21=0.12/240 CityWeekend
 T:*/21-05=0.12/240 Nacht
 Z:200 Euro 1
 A:Dänemark
 T:*/*=0.12/10
 Z:201 Euro 2
 A:Großbritannien, Irland, USA
-T:W/08-18=0.12/8.6
+T:W/0,0/18-18=0.12/8.6
 T:W/18-08=0.12/10
 T:E,H/*=0.12/10
 Z:202 Welt 1
@@ -9408,42 +9408,42 @@ A:0800        # freecall 0800
 A:Plus Freephone Service (Niederl.), Plus Freephone Service (Schweiz)
 A:International Freephone
 Z:1-2 Orts-/Cityzone
-T:W/09-18=0.06/60 Standard
+T:W/0,0/19-18=0.06/60 Standard
 T:W/18-09=0.03/60 Spar
 T:E,H/*=0.03/60 Spar
 Z:3-4 Regio-/Fernzone
 A:+49
-T:W/09-18=0.12/60 Standard
+T:W/0,0/19-18=0.12/60 Standard
 T:W/18-09=0.06/60 Spar
 T:E,H/*=0.06/60 Spar
 Z:10 C-Mobilboxen
 A:+491618
-T:W/09-18=0.12/11.4 Standard
+T:W/0,0/19-18=0.12/11.4 Standard
 T:W/18-09=0.12/16.7 Nacht
 T:E,H/*=0.12/16.7 Wochenende
 Z:11 Mobilfunk C
 A:+491610,+491617,+491619
-T:W/09-18=0.12/7.5 Standard
+T:W/0,0/19-18=0.12/7.5 Standard
 T:W/18-09=0.12/15 Nacht
 T:E,H/*=0.12/15 Wochenende
 Z:12 Mobilfunknetz D1
 A:+49170,+49171
-T:W/09-18=0.12/7.5 Standard
+T:W/0,0/19-18=0.12/7.5 Standard
 T:W/18-09=0.12/15 Nacht
 T:E,H/*=0.12/15 Wochenende
 Z:13 Mobilfunknetz D2
 A:+49172,+49173
-T:W/09-18=0.12/7.5 Standard
+T:W/0,0/19-18=0.12/7.5 Standard
 T:W/18-09=0.12/15 Nacht
 T:E,H/*=0.12/15 Wochenende
 Z:14 Mobilfunknetz E-Plus
 A:+49177,+49178
-T:W/09-18=0.12/5.3 Standard
+T:W/0,0/19-18=0.12/5.3 Standard
 T:W/18-09=0.12/12.8 Nacht
 T:E,H/*=0.12/12.8 Wochenende
 Z:15 Mobilfunknetz Viag Interkom
 A:+49176,+49179
-T:W/09-18=0.12/7.5 Standard
+T:W/0,0/19-18=0.12/7.5 Standard
 T:W/18-09=0.12/15 Nacht
 T:E,H/*=0.12/15 Wochenende
 Z:31 Iridium GSM
@@ -9503,24 +9503,24 @@ Z:60 Cityruf
 A:+491640 # Cityruf Voicebox
 A:+491641,+491642,+491643,+491644,+491645
 A:+491646,+491647,+491648,+491649
-T:W/09-18=0.12/20 Standard
+T:W/0,0/19-18=0.12/20 Standard
 T:W/18-09=0.12/30 Nacht
 T:E,H/*=0.12/30 Wochenende
 Z:81 Shared Cost Service 0180-1
 A:01801
-T:W/09-18=0.12/90 Standard
-T:W/05-09,18-21=0.12/150 Spar
-T:E,H/05-21=0.12/150 Spar
+T:W/0,0/19-18=0.12/90 Standard
+T:W/0,0/15-09,18-21=0.12/150 Spar
+T:E,H/0,0/15-21=0.12/150 Spar
 T:*/21-05=0.12/240 Nacht
 Z:82 Shared Cost Service 0180-2
 A:01802
-T:*/*=0.12/0
+T:*/*=0.12/0,0/1
 Z:83 Shared Cost Service 0180-3
 A:01803
 T:*/*=0.12/40
 Z:84 Shared Cost Service 0180-4
 A:01804
-T:*/*=0.48/0
+T:*/*=0.48/0,0/1
 Z:85 Shared Cost Service 0180-5
 A:01805
 T:*/*=0.12/30
@@ -9542,13 +9542,13 @@ C:Dies ist *kein* All-in-One Zugang, es werden zusätzliche Gebühren erhoben!
 T:*/*=0.06/0,0.06/60 T-Online eco
 Z:162 T-VoteCall
 A:01371
-T:*/*=0.24/0
+T:*/*=0.24/0,0/1
 Z:163 T-VoteCall
 A:01372,01373,01374,0138
 T:*/*=0.12/20
 Z:170 Persönliche Rufnummer
 A:0700
-T:*/09-18=0.12/15
+T:*/0,0/19-18=0.12/15
 T:*/18-09=0.12/30
 Z:172 Sonderrufnummern zum Citytarif
 A:01141		# Auftrags-und Ansagedienst
@@ -9560,16 +9560,16 @@ A:01914		# Online-Dienste AOL Zugang
 A:019161	# Online-Dienste AOL Zugang
 A:019102345	# Online-Dienste 1&1 Zugang
 C:Dies sind *keine* All-in-One Zugänge, es werden zusätzliche Gebühren erhoben!
-T:W/09-18=0.12/90 Standard
-T:W/05-09,18-21=0.12/150 Spar
-T:E,H/05-21=0.12/150 Spar
+T:W/0,0/19-18=0.12/90 Standard
+T:W/0,0/15-09,18-21=0.12/150 Spar
+T:E,H/0,0/15-21=0.12/150 Spar
 T:*/21-05=0.12/240 Nacht
 Z:200 Euro 1
 A:Dänemark
 T:*/*=0.12/10
 Z:201 Euro 2
 A:Großbritannien, Irland, USA
-T:W/08-18=0.12/8.6
+T:W/0,0/18-18=0.12/8.6
 T:W/18-08=0.12/10
 T:E,H/*=0.12/10
 Z:202 Welt 1
@@ -9603,13 +9603,13 @@ C:10		Mobilfunk
 C:11		Sondertarif
 C:200	-	Ausland
 Z:1-3 regional
-T:W/08-18=0.14(60)/15 Geschäftszeit
-T:E,H/08-18=0.12(60)/15 Wochenende
+T:W/0,0/18-18=0.14(60)/15 Geschäftszeit
+T:E,H/0,0/18-18=0.12(60)/15 Wochenende
 T:*/18-08=0.12(60)/15 Freizeit
 Z:4 national
 A:+49
-T:W/08-18=0.22(60)/15 Geschäftszeit
-T:E,H/08-18=0.12(60)/15 Wochenende
+T:W/0,0/18-18=0.22(60)/15 Geschäftszeit
+T:E,H/0,0/18-18=0.12(60)/15 Wochenende
 T:*/18-08=0.12(60)/15 Freizeit
 Z:10 Mobilfunk
 A:+491610,+491617,+491619,+491618 # C
@@ -9617,8 +9617,8 @@ A:+49170,+49171  		  # D1
 A:+49172,+49173		  # D2
 A:+49177,+49178		  # Eplus
 A:+49176,+49179  		  # E2
-T:W/08-18=0.77(60)/15 Geschäftszeit
-T:E,H/08-18=0.65(60)/15 Wochenende
+T:W/0,0/18-18=0.77(60)/15 Geschäftszeit
+T:E,H/0,0/18-18=0.65(60)/15 Wochenende
 T:*/18-08=0.65(60)/15 Freizeit
 Z:11 Hutchison Mobilfunk-Kunde
 T:*/*=0.59(60)/15
@@ -9704,13 +9704,13 @@ C:10		Mobilfunk
 C:11		Sondertarif
 C:200	-	Ausland
 Z:1-3 Regional
-T:W/08-18=0.05/0,0.09(60)/1 Geschäftszeit
-T:E,H/08-18=0.05/0,0.05(60)/1 Wochenende
+T:W/0,0/18-18=0.05/0,0.09(60)/1 Geschäftszeit
+T:E,H/0,0/18-18=0.05/0,0.05(60)/1 Wochenende
 T:*/18-08=0.05/0,0.05(60)/1 Freizeit
 Z:4 National
-T:W/08-18=0.05/0,0.20(60)/1 Geschäftszeit
+T:W/0,0/18-18=0.05/0,0.20(60)/1 Geschäftszeit
 T:W/18-21=0.05/0,0.10(60)/1 Freizeit
-T:E,H/08-21=0.05/0,0.095(60)/1 Wochenende
+T:E,H/0,0/18-21=0.05/0,0.095(60)/1 Wochenende
 T:*/21-08=0.05/0,0.06(60)/1 Nacht
 Z:10 Mobilfunk
 A:+491618		# T-C-Tel Voice Mail
@@ -9719,8 +9719,8 @@ A:+49170,+49171		# D1
 A:+49172,+49173		# D2
 A:+49177,+49178		# Eplus
 A:+49176,+49179		# E2
-T:W/08-18=0.05/0,0.94(60)/1 Geschäftszeit
-T:E,H/08-18=0.05/0,0.47(60)/1 Wochenende
+T:W/0,0/18-18=0.05/0,0.94(60)/1 Geschäftszeit
+T:E,H/0,0/18-18=0.05/0,0.47(60)/1 Wochenende
 T:*/18-08=0.05/0,0.47(60)/1 Freizeit
 Z:200 Europa 1
 A:Andorra, Belgien, Dänemark, Färöer Inseln, Finnland
@@ -9764,12 +9764,12 @@ C:10		Mobilfunk
 C:11		Sondertarif
 C:200	-	Ausland
 Z:1-3 regional
-T:W/08-18=0.14(60)/1 Geschäftszeit
-T:E,H/08-18=0.12(60)/1 Wochenende
+T:W/0,0/18-18=0.14(60)/1 Geschäftszeit
+T:E,H/0,0/18-18=0.12(60)/1 Wochenende
 T:*/18-08=0.12(60)/1 Freizeit
 Z:4 national
-T:W/08-18=0.22(60)/1 Geschäftszeit
-T:E,H/08-18=0.12(60)/1 Wochenende
+T:W/0,0/18-18=0.22(60)/1 Geschäftszeit
+T:E,H/0,0/18-18=0.12(60)/1 Wochenende
 T:*/18-08=0.12(60)/1 Freizeit
 Z:10 Mobilfunk
 A:+491618		# T-C-Tel Voice Mail
@@ -9778,8 +9778,8 @@ A:+49170,+49171		# D1
 A:+49172,+49173		# D2
 A:+49177,+49178		# Eplus
 A:+49176,+49179		# E2
-T:W/08-18=0.77(60)/1 Geschäftszeit
-T:E,H/08-18=0.65(60)/1 Wochenende
+T:W/0,0/18-18=0.77(60)/1 Geschäftszeit
+T:E,H/0,0/18-18=0.65(60)/1 Wochenende
 T:*/18-08=0.65(60)/1 Freizeit
 Z:11 Hutchison Mobilfunk-Kunde
 T:*/*=0.59(60)/1
@@ -9880,10 +9880,10 @@ C:10		Mobilfunk
 C:203		Ausland (Kanada & USA)
 Z:1-4 Inland
 A:+49
-T:W/08-18=0.02/0,0.15/60 Standard
+T:W/0,0/18-18=0.02/0,0.15/60 Standard
 T:W/18-21=0.02/0,0.10/60 Abend
 T:W/21-08=0.02/0,0.07/60 Nacht
-T:E,H/08-21=0.02/0,0.10/60 Wochenende
+T:E,H/0,0/18-21=0.02/0,0.10/60 Wochenende
 T:*/21-08=0.02/0,0.07/60 Nacht
 Z:10 Mobilfunk
 A:+491618		# T-C-Tel Voice Mail
@@ -9925,10 +9925,10 @@ C:172		IVBB
 C:200	-	Ausland
 Z:1-4 Deutschland
 A:+49
-T:W/08-18=0.15/60 Standard
+T:W/0,0/18-18=0.15/60 Standard
 T:W/18-21=0.09/60 Abend
 T:W/21-08=0.05/60 Nacht
-T:E,H/08-21=0.09/60 Abend
+T:E,H/0,0/18-21=0.09/60 Abend
 T:E,H/21-08=0.05/60 Nacht
 Z:10 Mobilfunk
 A:+491618		# T-C-Tel Voice Mail
@@ -9990,13 +9990,13 @@ C:2	-   4	Deutschland
 C:10		Mobilfunk
 C:200	-	Ausland
 Z:1-2 Hamburg-plus-20
-T:W/08-18=0.07/60
-T:E,H/08-18=0.05/60
+T:W/0,0/18-18=0.07/60
+T:E,H/0,0/18-18=0.05/60
 T:*/18-21=0.05/60
 T:*/21-08=0.035/60
 Z:3-4 Deutschland
-T:W/08-18=0.18/60
-T:E,H/08-18=0.09/60
+T:W/0,0/18-18=0.18/60
+T:E,H/0,0/18-18=0.09/60
 T:*/18-21=0.09/60
 T:*/21-08=0.065/60
 A:+49
@@ -10007,8 +10007,8 @@ A:+49170,+49171		# D1
 A:+49172,+49173		# D2
 A:+49177,+49178		# Eplus
 A:+49176,+49179		# E2
-T:W/08-18=0.80/60
-T:E,H/08-18=0.50/60
+T:W/0,0/18-18=0.80/60
+T:E,H/0,0/18-18=0.50/60
 T:*/18-08=0.50/60
 Z:200 Europa / Nordamerika
 A:Andorra
@@ -10042,12 +10042,12 @@ C:2	-   4	Deutschland
 C:10		Mobilfunk
 C:200	-	Ausland
 Z:1-2 Hamburg-plus-20
-T:W/08-18=0.07/60
-T:E,H/08-18=0.05/60
+T:W/0,0/18-18=0.07/60
+T:E,H/0,0/18-18=0.05/60
 T:*/18-08=0.035/60
 Z:3-4 Deutschland
-T:W/08-18=0.16/60
-T:E,H/08-18=0.09/60
+T:W/0,0/18-18=0.16/60
+T:E,H/0,0/18-18=0.09/60
 T:*/18-21=0.09/60
 T:*/21-08=0.06/60
 A:+49
@@ -10058,8 +10058,8 @@ A:+49170,+49171		# D1
 A:+49172,+49173		# D2
 A:+49177,+49178		# Eplus
 A:+49176,+49179		# E2
-T:W/08-18=0.80/60
-T:E,H/08-18=0.50/60
+T:W/0,0/18-18=0.80/60
+T:E,H/0,0/18-18=0.50/60
 T:*/18-08=0.50/60
 Z:200 Europa 1
 A:Belgien, Italien, Österreich, Dänemark
@@ -10123,15 +10123,15 @@ Z:0 Freecall
 A:110,112
 A:0800,0130,International Freephone
 Z:1-2 Bergisch City
-T:W/08-18=0.06(60)/1 Hauptzeit
+T:W/0,0/18-18=0.06(60)/1 Hauptzeit
 T:W/18-08=0.04(60)/1 Nebenzeit
 T:E,H/*=0.04(60)/1 Nebenzeit
 Z:3 Bergisch 50
-T:W/08-18=0.22(60)/1 Hauptzeit
+T:W/0,0/18-18=0.22(60)/1 Hauptzeit
 T:W/18-08=0.11(60)/1 Nebenzeit
 T:E,H/*=0.11(60)/1 Nebenzeit
 Z:4 Deutschland
-T:W/08-18=0.22(60)/1 Hauptzeit
+T:W/0,0/18-18=0.22(60)/1 Hauptzeit
 T:W/18-08=0.11(60)/1 Nebenzeit
 T:E,H/*=0.11(60)/1 Nebenzeit
 A:+49
@@ -10144,7 +10144,7 @@ A:+49170,+49171		# D1
 A:+49172,+49173		# D2
 A:+49177,+49178		# Eplus
 A:+49176,+49179		# E2
-T:W/08-18=0.90(60)/1 Hauptzeit
+T:W/0,0/18-18=0.90(60)/1 Hauptzeit
 T:W/18-08=0.48(60)/1 Nebenzeit
 T:E,H/*=0.48(60)/1 Nebenzeit
 Z:31 Iridium GSM
@@ -10174,7 +10174,7 @@ Z:60 Cityruf automatic
 A:+49164,+491682
 A:+491683,+491684,+491685,+491686,+491687,+491688,+491689
 A:+491690,+491691
-T:W/09-18=0.363(60)/1 Geschaeftszeit
+T:W/0,0/19-18=0.363(60)/1 Geschaeftszeit
 T:W/18-09=0.242(60)/1 Freizeit
 T:E,H/*=0.242(60)/1 Wochenende
 Z:61 Cityruf Operator
@@ -10182,18 +10182,18 @@ A:+4916951,+4916952
 T:*/*=0.0242/1
 Z:62 Scall IVR
 A:+491680
-T:*/*=0.605/0
+T:*/*=0.605/0,0/1
 Z:63 Scall DTMF
 A:+491681
-T:W/08-18=1.452/0 Geschaeftszeit
-T:W/18-09=0.968/0 Freizeit
-T:E,H/*=0.968/0 Wochenende
+T:W/08-18=1.452/0,0/1 Geschaeftszeit
+T:W/18-09=0.968/0,0/1 Freizeit
+T:E,H/*=0.968/0,0/1 Wochenende
 Z:64 Scall Operator
 A:+491699
-T:*/*=2.42/0
+T:*/*=2.42/0,0/1
 Z:65 Scall Modem
 A:+491696
-T:*/*=0.968/0
+T:*/*=0.968/0,0/1
 Z:66 TeLMI automatic
 A:+491660,+491665,+491669
 T:*/*=0.02326922833/1
@@ -10202,27 +10202,27 @@ A:+491661
 T:*/*=0.09307692167/1
 Z:68 Skyper Operator
 A:+4916953
-T:*/*=2.42/0
+T:*/*=2.42/0,0/1
 Z:69 Skyper
 A:+491692,+491693
-T:*/*=0.968/0
+T:*/*=0.968/0,0/1
 Z:70 Quix Service
 A:+4916500,+4916501,+4916502,+4916503,+4916504,+4916505,+4916506,+4916507,+4916508,+491655
-T:W/09-18=0.605(60)/1 Geschaeftszeit
+T:W/0,0/19-18=0.605(60)/1 Geschaeftszeit
 T:W/18-09=0.3025(60)/1 Freizeit
 T:E,H/*=0.3025(60)/1 Wochenende
 Z:71 Quix DTMF
 A:+491651
-T:*/*=0.242/0
+T:*/*=0.242/0,0/1
 Z:72 Quix Modem
 A:+491653,+491654
 A:+4916591,+4916592,+4916593
-T:W/09-18=1.21/0 Geschaeftszeit
-T:W/18-09=0.968/0 Freizeit
-T:E,H/*=0.968/0 Wochenende
+T:W/09-18=1.21/0,0/1 Geschaeftszeit
+T:W/18-09=0.968/0,0/1 Freizeit
+T:E,H/*=0.968/0,0/1 Wochenende
 Z:75 Quix Operator 2
 A:+491656
-T:*/*=2.42/0
+T:*/*=2.42/0,0/1
 # FIXME: Shared Cost, Premium Rate, T-Vote etc. einfügen
 # FIXME: identisch mit VEW-Telnet ?
 # http://www1.vew-telnet.de/extern/vewtelnet99/wwwablag.nsf/internetindex/Tarife-Sonderrufnummer-Teil2?opendocument
@@ -10282,13 +10282,13 @@ Z:0 FreeCall
 A:0800,0130, International Freephone
 A:+49231438110	# TELNET Support Nummern
 Z:1-3 TELNET NRW
-T:W/08-18=0.12/60 Tag
-T:E,H/08-18=0.08/60 Freizeit
+T:W/0,0/18-18=0.12/60 Tag
+T:E,H/0,0/18-18=0.08/60 Freizeit
 T:*/18-22=0.08/60 Freizeit
 T:*/22-08=0.04/120 Nacht
 Z:4 TELNET Deutschland
-T:W/08-18=0.15/60 Tag
-T:E,H/08-18=0.10/60 Freizeit
+T:W/0,0/18-18=0.15/60 Tag
+T:E,H/0,0/18-18=0.10/60 Freizeit
 T:*/18-22=0.10/60 Freizeit
 T:*/22-08=0.06/120 Nacht
 A:+49
@@ -10299,8 +10299,8 @@ A:+49170,+49171		# D1
 A:+49172,+49173		# D2
 A:+49177,+49178		# Eplus
 A:+49176,+49179		# E2
-T:W/08-18=0.80/60 Tag
-T:E,H/08-18=0.45/60 Freizeit
+T:W/0,0/18-18=0.80/60 Tag
+T:E,H/0,0/18-18=0.45/60 Freizeit
 T:*/18-22=0.45/60 Freizeit
 T:*/22-08=0.45/120 Nacht
 Z:33 Inmarsat A, A Daten/Fax, Aero, B, M, Mini-M
@@ -10315,8 +10315,8 @@ Z:60 Cityruf automatic
 A:+49164,+491682
 A:+491683,+491684,+491685,+491686,+491687,+491688,+491689
 A:+491690,+491691
-T:W/08-18=0.36/60 Tag
-T:E,H/08-18=0.36/60 Freizeit
+T:W/0,0/18-18=0.36/60 Tag
+T:E,H/0,0/18-18=0.36/60 Freizeit
 T:*/18-22=0.36/60 Freizeit
 T:*/22-08=0.36/120 Nacht
 Z:61 Cityruf Operator
@@ -10324,19 +10324,19 @@ A:+4916951,+4916952
 T:*/*=1.44/60
 Z:62 Scall IVR
 A:+491680
-T:*/*=0.60/0
+T:*/*=0.60/0,0/1
 Z:63 Scall DTMF
 A:+491681
-T:W/08-18=1.44/0 Tag
-T:E,H/08-18=0.96/0 Freizeit
-T:*/18-22=0.96/0 Freizeit
-T:*/22-08=0.96/0 Nacht
+T:W/08-18=1.44/0,0/1 Tag
+T:E,H/08-18=0.96/0,0/1 Freizeit
+T:*/18-22=0.96/0,0/1 Freizeit
+T:*/22-08=0.96/0,0/1 Nacht
 Z:64 Scall Operator
 A:+491699
-T:*/*=2.90/0
+T:*/*=2.90/0,0/1
 Z:65 Scall Modem
 A:+491696
-T:*/*=0.968/0
+T:*/*=0.968/0,0/1
 Z:66 TeLMI automatic
 A:+491660,+491665,+491669
 T:*/*=1.39/60
@@ -10345,41 +10345,41 @@ A:+491661
 T:*/*=5.54/60
 Z:68 Skyper Operator
 A:+4916953
-T:*/*=2.90/0
+T:*/*=2.90/0,0/1
 Z:69 Skyper
 A:+491692,+491693
-T:*/*=1.20/0
+T:*/*=1.20/0,0/1
 Z:70 Quix Service
 A:+4916500,+4916501,+4916502,+4916503,+4916504,+4916505,+4916506,+4916507,+4916508,+491655
-T:W/08-18=0.60/60 Tag
-T:E,H/08-18=0.30/60 Freizeit
+T:W/0,0/18-18=0.60/60 Tag
+T:E,H/0,0/18-18=0.30/60 Freizeit
 T:*/18-08=0.30/60 Freizeit
 Z:71 Quix DTMF
 A:+491651
-T:*/*=0.24/0
+T:*/*=0.24/0,0/1
 Z:72 Quix Modem
 A:+491653,+491654
 A:+4916591,+4916592,+4916593
-T:W/08-18=1.20/0 Tag
-T:E,H/08-18=0.96/0 Freizeit
-T:*/18-08=0.96/0 Freizeit
+T:W/08-18=1.20/0,0/1 Tag
+T:E,H/08-18=0.96/0,0/1 Freizeit
+T:*/18-08=0.96/0,0/1 Freizeit
 Z:75 Quix Operator 2
 A:+491656
-T:*/*=2.40/0
+T:*/*=2.40/0,0/1
 Z:81 Service 0180-1
 A:01801
-T:W/08-18=0.08/60 Tag
+T:W/0,0/18-18=0.08/60 Tag
 T:W/18-08=0.05/60 Sonst
 T:E,H/*=0.05/60 Wochenende
 Z:82 Service 0180-2
 A:01802
-T:*/*=0.12/0
+T:*/*=0.12/0,0/1
 Z:83 Service 0180-3
 A:01803
 T:*/*=0.18/60
 Z:84 Service 0180-4
 A:01804
-T:*/*=0.48/0
+T:*/*=0.48/0,0/1
 Z:85 Service 0180-5
 A:01805
 T:*/*=0.24/60
@@ -10397,12 +10397,12 @@ A:01908
 T:*/*=3.60/60
 Z:100 T-Online
 A:01910
-T:W/08-18=0.08/60 Tag
+T:W/0,0/18-18=0.08/60 Tag
 T:W/18-08=0.05/60 Nacht
 T:E,H/*=0.05/60 Wochenende
 Z:101 AOL
 A:01914,019161
-T:W/08-18=0.08/60 Tag
+T:W/0,0/18-18=0.08/60 Tag
 T:W/18-08=0.05/60 Nacht
 T:E,H/*=0.05/60 Wochenende
 Z:160 Televotum
@@ -10410,7 +10410,7 @@ A:01370,01373,01374,01375,01376,01377,01378,01379
 T:*/*=0.12/0,0.36/60
 Z:162 TeleVoteCall 1
 A:01371
-T:*/*=0.24/0
+T:*/*=0.24/0,0/1
 Z:163 TeleVoteCall 2
 A:01372
 T:*/*=0.12/0,0.36/60
@@ -10421,26 +10421,26 @@ A:Liechtenstein, Luxemburg, Malta, Monaco, Niederlande
 A:Norwegen, Österreich, Polen, Portugal, San Marino
 A:Schweden, Schweiz, Slowakische Republik, Spanien
 A:Tschechische Republik, Türkei, Ungarn, Vatikanstadt
-T:*/08-22=0.48/60 Tag
+T:*/0,0/18-22=0.48/60 Tag
 T:*/22-08=0.48/120 Nacht
 Z:201 TELNET International Übriges Europa
 A:Albanien, Bosnien-Herzegowina, Bulgarien, Estland
 A:Gibraltar, Israel, Jugoslawien, Kroatien, Lettland
 A:Litauen, Mazedonien, Moldawien, Rumänien, Slowenien
 A:Ukraine, Rußland (westl.), Weißrußland, Zypern
-T:*/08-22=0.95/60 Tag
+T:*/0,0/18-22=0.95/60 Tag
 T:*/22-08=0.95/120 Nacht
 Z:202 TELNET International Nordamerika
 A:Kanada, USA
-T:*/08-22=0.48/60 Tag
+T:*/0,0/18-22=0.48/60 Tag
 T:*/22-08=0.48/120 Nacht
 Z:203 TELNET International Asien/Pazifik
 A:Australien, Hongkong, Japan, Korea (Republik), Neuseeland, Singapur
-T:*/08-22=1.75/60 Tag
+T:*/0,0/18-22=1.75/60 Tag
 T:*/22-08=1.75/120 Nacht
 Z:204 TELNET International Übrige Welt
 A:+
-T:*/08-22=2.75/60 Tag
+T:*/0,0/18-22=2.75/60 Tag
 T:*/22-08=2.75/120 Nacht
 #####################################################################
 #
@@ -10478,12 +10478,12 @@ A:01113,01114,01115	# DTAG-Service
 A:110, 112		# Polizei, Feuerwehr
 Z:1-4 HalloDeutschland
 A:+49
-T:W/08-20=0.25(60)/1 Tag
+T:W/0,0/18-20=0.25(60)/1 Tag
 T:W/20-08=0.15(60)/1 Nacht
 T:E,H/*=0.15(60)/1 Wochenende
 Z:5 Nord-Ostsee
 # FIXME: Zonen einfügen
-T:W/08-20=0.15(60)/1 Tag
+T:W/0,0/18-20=0.15(60)/1 Tag
 T:W/20-08=0.10(60)/1 Nacht
 T:E,H/*=0.10(60)/1 Wochenende
 Z:10 Mobilfunk
@@ -10493,7 +10493,7 @@ A:+49170,+49171		# D1
 A:+49172,+49173		# D2
 A:+49177,+49178		# Eplus
 A:+49176,+49179		# E2
-T:W/08-20=0.90(60)/1 Tag
+T:W/0,0/18-20=0.90(60)/1 Tag
 T:W/20-08=0.70(60)/1 Nacht
 T:E,H/*=0.70(60)/1 Wochenende
 Z:33 Inmarsat A
@@ -10523,7 +10523,7 @@ Z:60 Cityruf automatic
 A:+49164
 A:+491682,+491683,+491684,+491685,+491686,+491687,+491688,+491689
 A:+491690,+491691
-T:W/09-18=0.36(60)/1 Geschaeftszeit
+T:W/0,0/19-18=0.36(60)/1 Geschaeftszeit
 T:W/18-09=0.24(60)/1 Freizeit
 T:E,H/*=0.24(60)/1 Wochenende
 Z:61 Cityruf Operator
@@ -10531,18 +10531,18 @@ A:+4916951,+4916952
 T:*/*=1.44(60)/1
 Z:62 Scall IVR
 A:+491680
-T:*/*=0.60/0
+T:*/*=0.60/0,0/1
 Z:63 Scall DTMF
 A:+491681
-T:W/08-18=1.44/0 Geschaeftszeit
-T:W/18-09=0.96/0 Freizeit
-T:E,H/*=0.96/0 Wochenende
+T:W/08-18=1.44/0,0/1 Geschaeftszeit
+T:W/18-09=0.96/0,0/1 Freizeit
+T:E,H/*=0.96/0,0/1 Wochenende
 Z:64 Scall Operator
 A:+491699
-T:*/*=2.40/0
+T:*/*=2.40/0,0/1
 Z:65 Scall Modem
 A:+491696
-T:*/*=0.96/0
+T:*/*=0.96/0,0/1
 Z:66 TeLMI automatic
 A:+491660,+491665,+491669
 T:*/*=1.40(60)/1
@@ -10551,42 +10551,42 @@ A:+491661
 T:*/*=5.64(60)/1
 Z:68 Skyper Operator
 A:+4916953
-T:*/*=2.40/0
+T:*/*=2.40/0,0/1
 Z:69 Skyper
 A:+491692,+491693
-T:*/*=0.96/0
+T:*/*=0.96/0,0/1
 Z:70 Quix Service
 A:+4916500,+4916501,+4916502,+4916503,+4916504,+4916505,+4916506,+4916507,+4916508,+491655
-T:W/09-18=0.60(60)/1 Geschaeftszeit
+T:W/0,0/19-18=0.60(60)/1 Geschaeftszeit
 T:W/18-09=0.30(60)/1 Freizeit
 T:E,H/*=0.30(60)/1 Wochenende
 Z:71 Quix DTMF
 A:+491651
-T:*/*=0.24/0
+T:*/*=0.24/0,0/1
 Z:72 Quix Modem
 A:+491653,+491654
 A:+4916591,+4916592,+4916593
-T:W/09-18=1.20/0 Geschaeftszeit
-T:W/18-09=0.96/0 Freizeit
-T:E,H/*=0.96/0 Wochenende
+T:W/09-18=1.20/0,0/1 Geschaeftszeit
+T:W/18-09=0.96/0,0/1 Freizeit
+T:E,H/*=0.96/0,0/1 Wochenende
 Z:75 Quix Operator 2
 A:+491656
-T:*/*=2.40/0
+T:*/*=2.40/0,0/1
 Z:81 Service 0180-1
 A:01801
-T:W/09-18=0.08(60)/1 Tag
-T:W/05-09,18-21=0.05(60)/1 Freizeit
-T:E,H/05-21=0.05(60)/1 Wochenende
+T:W/0,0/19-18=0.08(60)/1 Tag
+T:W/0,0/15-09,18-21=0.05(60)/1 Freizeit
+T:E,H/0,0/15-21=0.05(60)/1 Wochenende
 T:*/21-05=0.03(60)/1 Nacht
 Z:82 Shared Cost Service 0180-2
 A:01802
-T:*/*=0.12/0
+T:*/*=0.12/0,0/1
 Z:83 Shared Cost Service 0180-3
 A:01803
 T:*/*=0.24(60)/1
 Z:84 Shared Cost Service 0180-4
 A:01804
-T:*/*=0.48/0
+T:*/*=0.48/0,0/1
 Z:85 Shared Cost Service 0180-5
 A:01805
 T:*/*=0.24(60)/1
@@ -10604,12 +10604,12 @@ A:01908
 T:*/*=3.63(60)/1
 Z:100 T-online
 A:01910
-T:W/08-20=0.10(60)/1 Tag
+T:W/0,0/18-20=0.10(60)/1 Tag
 T:W/20-08=0.06(60)/1 Nacht
 T:E,H/*=0.06(60)/1 Wochenende
 Z:101 AOL Onlinedienst
 A:01914
-T:W/08-20=0.10(60)/1 Tag
+T:W/0,0/18-20=0.10(60)/1 Tag
 T:W/20-08=0.06(60)/1 Nacht
 T:E,H/*=0.06(60)/1 Wochenende
 Z:161 Teledialog
@@ -10617,23 +10617,23 @@ A:0138
 T:*/*=0.24(60)/1
 Z:162 T-VoteCall 1
 A:01370,01373,01379
-T:*/*=0.24/0
+T:*/*=0.24/0,0/1
 Z:163 T-VoteCall 2
 A:01371,01372,01374
-T:*/*=0.36/0
+T:*/*=0.36/0,0/1
 Z:164 DTAG Ansagedienste
 A:0115,0116
-T:W/08-20=0.10(60)/1 Tag
+T:W/0,0/18-20=0.10(60)/1 Tag
 T:W/20-08=0.06(60)/1 Nacht
 T:E,H/*=0.06(60)/1 Wochenende
 Z:166 DTAG Zeitansage
 A:01191
-T:W/08-20=0.10(60)/1 Tag
+T:W/0,0/18-20=0.10(60)/1 Tag
 T:W/20-08=0.06(60)/1 Nacht
 T:E,H/*=0.06(60)/1 Wochenende
 Z:170 Persönliche Rufnummer 0700
 A:0700
-T:W/08-20=0.48(60)/1 Tag
+T:W/0,0/18-20=0.48(60)/1 Tag
 T:W/20-08=0.24(60)/1 Nacht
 T:E,H/*=0.24(60)/1 Wochenende
 Z:171 Info Expo 2000
@@ -10782,24 +10782,24 @@ A:0800,0130		# FreeCall
 A:01113,01114,01115	# DTAG-Service
 A:110, 112		# Polizei, Feuerwehr
 Z:1 MoinNachbar
-T:W/08-20=0.06(60)/1 Tag
+T:W/0,0/18-20=0.06(60)/1 Tag
 T:W/20-08=0.03(60)/1 Nacht
 T:E,H/*=0.03(60)/1 Wochenende
 Z:2 MonMoinRegional
-T:W/08-20=0.08(60)/1 Tag
+T:W/0,0/18-20=0.08(60)/1 Tag
 T:W/20-08=0.05(60)/1 Nacht
 T:E,H/*=0.05(60)/1 Wochenende
 Z:3 MonMoin
-T:W/08-20=0.10(60)/1 Tag
+T:W/0,0/18-20=0.10(60)/1 Tag
 T:W/20-08=0.06(60)/1 Nacht
 T:E,H/*=0.06(60)/1 Wochenende
 Z:4 HalloDeutschland
-T:W/08-20=0.20(60)/1 Tag
+T:W/0,0/18-20=0.20(60)/1 Tag
 T:W/20-08=0.10(60)/1 Nacht
 T:E,H/*=0.10(60)/1 Wochenende
 Z:5 Nord-Ostsee
 # FIXME: Zonen einfügen
-T:W/08-20=0.15(60)/1 Tag
+T:W/0,0/18-20=0.15(60)/1 Tag
 T:W/20-08=0.10(60)/1 Nacht
 T:E,H/*=0.10(60)/1 Wochenende
 Z:10 Mobilfunk
@@ -10809,7 +10809,7 @@ A:+49170,+49171		# D1
 A:+49172,+49173		# D2
 A:+49177,+49178		# Eplus
 A:+49176,+49179		# E2
-T:W/08-20=0.90(60)/1 Tag
+T:W/0,0/18-20=0.90(60)/1 Tag
 T:W/20-08=0.70(60)/1 Nacht
 T:E,H/*=0.70(60)/1 Wochenende
 Z:33 Inmarsat A
@@ -10839,7 +10839,7 @@ Z:60 Cityruf automatic
 A:+49164
 A:+491682, +491683,+491684,+491685,+491686,+491687,+491688,+491689
 A:+491690,+491691
-T:W/09-18=0.36(60)/1 Geschaeftszeit
+T:W/0,0/19-18=0.36(60)/1 Geschaeftszeit
 T:W/18-09=0.24(60)/1 Freizeit
 T:E,H/*=0.24(60)/1 Wochenende
 Z:61 Cityruf Operator
@@ -10847,18 +10847,18 @@ A:+4916951,+4916952
 T:*/*=1.44(60)/1
 Z:62 Scall IVR
 A:+491680
-T:*/*=0.60/0
+T:*/*=0.60/0,0/1
 Z:63 Scall DTMF
 A:+491681
-T:W/08-18=1.44/0 Geschaeftszeit
-T:W/18-09=0.96/0 Freizeit
-T:E,H/*=0.96/0 Wochenende
+T:W/08-18=1.44/0,0/1 Geschaeftszeit
+T:W/18-09=0.96/0,0/1 Freizeit
+T:E,H/*=0.96/0,0/1 Wochenende
 Z:64 Scall Operator
 A:+491699
-T:*/*=2.40/0
+T:*/*=2.40/0,0/1
 Z:65 Scall Modem
 A:+491696
-T:*/*=0.96/0
+T:*/*=0.96/0,0/1
 Z:66 TeLMI automatic
 A:+491660,+491665,+491669
 T:*/*=1.40(60)/1
@@ -10867,42 +10867,42 @@ A:+491661
 T:*/*=5.64(60)/1
 Z:68 Skyper Operator
 A:+4916953
-T:*/*=2.40/0
+T:*/*=2.40/0,0/1
 Z:69 Skyper
 A:+491692,+491693
-T:*/*=0.96/0
+T:*/*=0.96/0,0/1
 Z:70 Quix Service
 A:+4916500,+4916501,+4916502,+4916503,+4916504,+4916505,+4916506,+4916507,+4916508,+491655
-T:W/09-18=0.60(60)/1 Geschaeftszeit
+T:W/0,0/19-18=0.60(60)/1 Geschaeftszeit
 T:W/18-09=0.30(60)/1 Freizeit
 T:E,H/*=0.30(60)/1 Wochenende
 Z:71 Quix DTMF
 A:+491651
-T:*/*=0.24/0
+T:*/*=0.24/0,0/1
 Z:72 Quix Modem
 A:+491653,+491654
 A:+4916591,+4916592,+4916593
-T:W/09-18=1.20/0 Geschaeftszeit
-T:W/18-09=0.96/0 Freizeit
-T:E,H/*=0.96/0 Wochenende
+T:W/09-18=1.20/0,0/1 Geschaeftszeit
+T:W/18-09=0.96/0,0/1 Freizeit
+T:E,H/*=0.96/0,0/1 Wochenende
 Z:75 Quix Operator 2
 A:+491656
-T:*/*=2.40/0
+T:*/*=2.40/0,0/1
 Z:81 Service 0180-1
 A:01801
-T:W/09-18=0.08(60)/1 Tag
-T:W/05-09,18-21=0.05(60)/1 Freizeit
-T:E,H/05-21=0.05(60)/1 Wochenende
+T:W/0,0/19-18=0.08(60)/1 Tag
+T:W/0,0/15-09,18-21=0.05(60)/1 Freizeit
+T:E,H/0,0/15-21=0.05(60)/1 Wochenende
 T:*/21-05=0.03(60)/1 Nacht
 Z:82 Shared Cost Service 0180-2
 A:01802
-T:*/*=0.12/0
+T:*/*=0.12/0,0/1
 Z:83 Shared Cost Service 0180-3
 A:01803
 T:*/*=0.24(60)/1
 Z:84 Shared Cost Service 0180-4
 A:01804
-T:*/*=0.48/0
+T:*/*=0.48/0,0/1
 Z:85 Shared Cost Service 0180-5
 A:01805
 T:*/*=0.24(60)/1
@@ -10920,12 +10920,12 @@ A:01908
 T:*/*=3.63(60)/1
 Z:100 T-online
 A:01910
-T:W/08-20=0.10(60)/1 Tag
+T:W/0,0/18-20=0.10(60)/1 Tag
 T:W/20-08=0.06(60)/1 Nacht
 T:E,H/*=0.06(60)/1 Wochenende
 Z:101 AOL Onlinedienst
 A:01914
-T:W/08-20=0.10(60)/1 Tag
+T:W/0,0/18-20=0.10(60)/1 Tag
 T:W/20-08=0.06(60)/1 Nacht
 T:E,H/*=0.06(60)/1 Wochenende
 Z:161 Teledialog
@@ -10933,23 +10933,23 @@ A:0138
 T:*/*=0.24(60)/1
 Z:162 T-VoteCall 1
 A:01370,01373,01379
-T:*/*=0.24/0
+T:*/*=0.24/0,0/1
 Z:163 T-VoteCall 2
 A:01371,01372,01374
-T:*/*=0.36/0
+T:*/*=0.36/0,0/1
 Z:164 DTAG Ansagedienste
 A:0115,0116
-T:W/08-20=0.10(60)/1 Tag
+T:W/0,0/18-20=0.10(60)/1 Tag
 T:W/20-08=0.06(60)/1 Nacht
 T:E,H/*=0.06(60)/1 Wochenende
 Z:166 DTAG Zeitansage
 A:01191
-T:W/08-20=0.10(60)/1 Tag
+T:W/0,0/18-20=0.10(60)/1 Tag
 T:W/20-08=0.06(60)/1 Nacht
 T:E,H/*=0.06(60)/1 Wochenende
 Z:170 Persönliche Rufnummer 0700
 A:700
-T:W/08-20=0.48(60)/1 Tag
+T:W/0,0/18-20=0.48(60)/1 Tag
 T:W/20-08=0.24(60)/1 Nacht
 T:E,H/*=0.24(60)/1 Wochenende
 Z:171 Info Expo 2000
@@ -10960,12 +10960,12 @@ A:01888
 T:*/*=0.30(60)/1
 Z:200 MoinSonderjylland
 A:Sonderjylland # +4573, +4574
-T:W/08-20=0.20(60)/1 Tag
+T:W/0,0/18-20=0.20(60)/1 Tag
 T:W/20-08=0.15(60)/1 Nacht
 T:E,H/*=0.15(60)/1 Wochenende
 Z:201 MoinDanmark
 A:Dänemark
-T:W/08-20=0.30(60)/1 Tag
+T:W/0,0/18-20=0.30(60)/1 Tag
 T:W/20-08=0.20(60)/1 Nacht
 T:E,H/*=0.20(60)/1 Wochenende
 Z:202 Welt 1
@@ -11100,22 +11100,22 @@ C:5		Sondertarif
 C:10		Mobilfunk
 C:200	- 206	Ausland
 Z:1-2 City
-T:W/09-18=0.1044/90 Tag
+T:W/0,0/19-18=0.1044/90 Tag
 T:W/18-21=0.1044/150 Freizeit
-T:E,H/05-21=0.1044/150 Freizeit
+T:E,H/0,0/15-21=0.1044/150 Freizeit
 T:W/21-09=0.1044/240 Nacht
 T:E,H/21-05=0.1044/240 Nacht
 Z:3-4 Regional/National
-T:W/09-18=0.1044/30 Tag
+T:W/0,0/19-18=0.1044/30 Tag
 T:W/18-21=0.1044/60 Freizeit
-T:E,H/05-21=0.1044/60 Freizeit
+T:E,H/0,0/15-21=0.1044/60 Freizeit
 T:W/21-09=0.0522/60 Nacht
 T:E,H/21-05=0.0522/60 Nacht
 A:+49
 Z:5 Surf-Tarif
-T:W/09-18=0.0696/90 Tag
+T:W/0,0/19-18=0.0696/90 Tag
 T:W/18-21=0.0696/150 Freizeit
-T:E,H/05-21=0.0696/150 Freizeit
+T:E,H/0,0/15-21=0.0696/150 Freizeit
 T:W/21-09=0.0696/240 Nacht
 T:E,H/21-05=0.0696/240 Nacht
 Z:10 Mobilfunk C- & D-Netze
@@ -11123,36 +11123,36 @@ A:+491618		# T-C-Tel Voice Mail
 A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
 A:+49170,+49171		# D1
 A:+49172,+49173		# D2
-T:W/09-18=0.1044/7.5 Tag
+T:W/0,0/19-18=0.1044/7.5 Tag
 T:W/18-08=0.1044/15 Freizeit
 T:E,H/*=0.1044/15 Wochenende
 Z:14-15 Mobilfunk E-Netze
 A:+49177,+49178		# Eplus
 A:+49176,+49179		# E2
-T:W/09-18=0.1044/5.3 Tag
+T:W/0,0/19-18=0.1044/5.3 Tag
 T:W/18-08=0.1044/12.8 Freizeit
 T:E,H/*=0.1044/12.8 Wochenende
 Z:200 Europa 1
 A:Niederlande, Belgien, Luxemburg
 A:Frankreich, Griechenland, Großbritannien
-T:W/09-18=0.1044/8.6 Tag
+T:W/0,0/19-18=0.1044/8.6 Tag
 T:W/18-09=0.1044/10 Freizeit
 T:E,H/*=0.1044/10 Wochenende
 Z:201 Europa 2
 A:Kroatien, Türkei, Ungarn
-T:W/09-18=0.1044/6.67 Tag
-T:E,H/08-20=0.1044/6.67 Tag
+T:W/0,0/19-18=0.1044/6.67 Tag
+T:E,H/0,0/18-20=0.1044/6.67 Tag
 T:W/18-09=0.1044/7.5 Freizeit
 T:E,H/20-08=0.1044/7.5 Freizeit
 Z:202 Europa 3
 A:Polen, Tschechische Republik, Finnland, Portugal
-T:W/09-18=0.1044/7.5 Tag
+T:W/0,0/19-18=0.1044/7.5 Tag
 T:W/18-09=0.1044/10 Freizeit
 T:E,H/*=0.1044/10 Wochenende
 Z:203 Welt 1
 A:USA, Kanada
 T:*/14-03=0.1044/8.6 Tag
-T:*/03-14=0.1044/10 Freizeit
+T:*/0,0/13-14=0.1044/10 Freizeit
 Z:204 Welt 2
 A:Australien, Japan
 T:*/*=0.1044/3.34
@@ -11173,15 +11173,15 @@ C:2	-   4	Deutschland
 C:10		Mobilfunk
 C:200	- 211	Ausland
 Z:1-2 Nah
-T:W/08-18=0.08/60
+T:W/0,0/18-18=0.08/60
 T:W/18-08=0.08/90
 T:E,H/*=0.08/90
 Z:3 Fern
-T:W/08-18=0.08/30
+T:W/0,0/18-18=0.08/30
 T:W/18-08=0.08/60
 T:E,H/*=0.08/60
 Z:4 Fern
-T:W/08-18=0.08/30
+T:W/0,0/18-18=0.08/30
 T:W/18-08=0.08/60
 T:E,H/*=0.08/60
 Z:10 Mobilfunk
@@ -11191,7 +11191,7 @@ A:+49170,+49171		# D1
 A:+49172,+49173		# D2
 A:+49177,+49178		# Eplus
 A:+49176,+49179		# E2
-T:W/08-18=0.09/7.5
+T:W/0,0/18-18=0.09/7.5
 T:W/18-08=0.09/15
 T:E,H/*=0.09/7.5
 Z:200 EuroCity
@@ -11204,17 +11204,17 @@ A:Großbritannien und Nordirland, Irland, Italien, Liechtenstein, Monaco
 A:Niederlande, Österreich, San Marino, Schweiz, Spanien, Vatikanstadt
 A:Luxemburg
 # FIXME: Luxemburg (Land), !OHNE! Stadt
-T:W/08-18=0.09/8.6
+T:W/0,0/18-18=0.09/8.6
 T:W/18-08=0.09/10
 T:E,H/*=0.09/10
 Z:202 Euro2
 A:Finnland, Island, Norwegen, Polen, Portugal, Schweden, Slowakei, Tschechien
-T:W/08-18=0.09/7.5
+T:W/0,0/18-18=0.09/7.5
 T:W/18-08=0.09/10
 T:E,H/*=0.09/10
 Z:203 Euro3
 A:Kroatien, Türkei, Ungarn, Zypern
-T:W/08-18=0.09/6.7
+T:W/0,0/18-18=0.09/6.7
 T:W/18-08=0.09/7.5
 T:E,H/*=0.09/7.5
 Z:204 Euro4
@@ -11225,7 +11225,7 @@ A:Rußland (westl.), Slowenien, Syrien, Tunesien, Ukraine, Belarus
 T:*/*=0.09/6
 Z:205 Welt1
 A:Kanada, USA
-T:W/08-18=0.09/8.6
+T:W/0,0/18-18=0.09/8.6
 T:W/18-08=0.09/10
 T:E,H/*=0.09/10
 Z:206 Welt2
@@ -11260,11 +11260,11 @@ C:10		Mobilfunk
 C:200	- 211	Ausland
 # G:01.06.1999
 Z:1-2 Nah
-T:W/08-18=0.12(60)/1
+T:W/0,0/18-18=0.12(60)/1
 T:W/18-08=0.09(60)/1
 T:E,H/*=0.09(60)/1
 Z:3-4 Fern
-T:W/08-18=0.15(60)/1
+T:W/0,0/18-18=0.15(60)/1
 T:W/18-08=0.09(60)/1
 T:E,H/*=0.09(60)/1
 Z:10 Mobilfunk
@@ -11274,7 +11274,7 @@ A:+49170,+49171		# D1
 A:+49172,+49173		# D2
 A:+49177,+49178		# Eplus
 A:+49176,+49179		# E2
-T:W/08-18=0.49(60)/1
+T:W/0,0/18-18=0.49(60)/1
 T:W/18-08=0.36(60)/1
 T:E,H/*=0.36(60)/1
 Z:200 EuroCity
@@ -11287,18 +11287,18 @@ A:Großbritannien und Nordirland, Irland, Italien, Liechtenstein, Monaco
 A:Niederlande, Österreich, San Marino, Schweiz, Spanien, Vatikanstadt
 A:Luxemburg
 # FIXME: Luxemburg (Land), !OHNE! Stadt
-T:W/08-18=0.64(60)/1
+T:W/0,0/18-18=0.64(60)/1
 T:W/18-08=0.55(60)/1
 T:E,H/*=0.55(60)/1
 Z:202 Euro2
 A:Finnland, Island, Norwegen, Polen, Portugal, Schweden, Slowakei
 A:Tschechien
-T:W/08-18=0.73(60)/1
+T:W/0,0/18-18=0.73(60)/1
 T:W/18-08=0.55(60)/1
 T:E,H/*=0.55(60)/1
 Z:203 Euro3
 A:Kroatien, Türkei, Ungarn, Zypern
-T:W/08-18=0.81(60)/1
+T:W/0,0/18-18=0.81(60)/1
 T:W/18-08=0.73(60)/1
 T:E,H/*=0.73(60)/1
 Z:204 Euro4
@@ -11309,7 +11309,7 @@ A:Rußland (westl.), Slowenien, Syrien, Tunesien, Ukraine, Belarus
 T:*/*=0.90(60)/1
 Z:205 Welt1
 A:Kanada, USA
-T:W/08-18=0.64(60)/1
+T:W/0,0/18-18=0.64(60)/1
 T:W/18-08=0.55(60)/1
 T:E,H/*=0.55(60)/1
 Z:206 Welt2
@@ -11343,41 +11343,41 @@ C:2	-   4	Deutschland
 C:10		Mobilfunk
 C:200	- 211	Ausland
 Z:1-2 Nah
-T:W/09-18=0.12/90
+T:W/0,0/19-18=0.12/90
 T:W/18-09=0.12/150
 T:E,H/*=0.12/90
 Z:3-4 Fern
-T:W/09-18=0.09/30
+T:W/0,0/19-18=0.09/30
 T:W/18-09=0.09/60
 T:E,H/*=0.09/60
 Z:10 C-Mobilboxen
 A:+491618
-T:W/09-18=0.09/11.4
+T:W/0,0/19-18=0.09/11.4
 T:W/18-09=0.09/16.7
 T:E,H/*=0.09/16.7
 Z:11 Mobilfunk C
 A:+491610,+491617,+491619
-T:W/09-18=0.09/7.5
+T:W/0,0/19-18=0.09/7.5
 T:W/18-09=0.09/15
 T:E,H/*=0.09/15
 Z:12 Mobilfunknetz D1
 A:+49170,+49171
-T:W/09-18=0.09/7.5
+T:W/0,0/19-18=0.09/7.5
 T:W/18-09=0.09/15
 T:E,H/*=0.09/15
 Z:13 Mobilfunknetz D2
 A:+49172,+49173
-T:W/09-18=0.09/7.5
+T:W/0,0/19-18=0.09/7.5
 T:W/18-09=0.09/15
 T:E,H/*=0.09/15
 Z:14 Mobilfunknetz E-Plus
 A:+49177,+49178
-T:W/09-18=0.09/5.3
+T:W/0,0/19-18=0.09/5.3
 T:W/18-09=0.09/12.8
 T:E,H/*=0.09/12.8
 Z:15 Mobilfunknetz Viag Interkom
 A:+49176,+49179
-T:W/09-18=0.09/7.5
+T:W/0,0/19-18=0.09/7.5
 T:W/18-09=0.09/15
 T:E,H/*=0.09/15
 Z:200 EuroCity
@@ -11390,17 +11390,17 @@ A:Großbritannien und Nordirland, Irland, Italien, Liechtenstein, Monaco
 A:Niederlande, Österreich, San Marino, Schweiz, Spanien, Vatikanstadt
 A:Luxemburg
 # FIXME: Luxemburg (Land), !OHNE! Stadt
-T:W/08-18=0.09/8.6
+T:W/0,0/18-18=0.09/8.6
 T:W/18-08=0.09/10
 T:E,H/*=0.09/10
 Z:202 Euro2
 A:Finnland, Island, Norwegen, Polen, Portugal, Schweden, Slowakei, Tschechien
-T:W/08-18=0.09/7.5
+T:W/0,0/18-18=0.09/7.5
 T:W/18-08=0.09/10
 T:E,H/*=0.09/10
 Z:203 Euro3
 A:Kroatien, Türkei, Ungarn, Zypern
-T:W/08-18=0.09/6.7
+T:W/0,0/18-18=0.09/6.7
 T:W/18-08=0.09/7.5
 T:E,H/*=0.09/7.5
 Z:204 Euro4
@@ -11411,7 +11411,7 @@ A:Rußland (westl.), Slowenien, Syrien, Tunesien, Ukraine, Belarus
 T:*/*=0.09/6
 Z:205 Welt1
 A:Kanada, USA
-T:W/08-18=0.09/8.6
+T:W/0,0/18-18=0.09/8.6
 T:W/18-08=0.09/10
 T:E,H/*=0.09/10
 Z:206 Welt2
@@ -11446,26 +11446,26 @@ C:2	-   4	Deutschland
 C:10		Mobilfunk
 C:200	- 211	Ausland
 Z:1-3 Nah
-T:W/08-18=0.12(60)/1
+T:W/0,0/18-18=0.12(60)/1
 T:W/18-08=0.09(60)/1
 T:E,H/*=0.09(60)/1
 Z:4 Fern
-T:W/08-18=0.18(60)/1
+T:W/0,0/18-18=0.18(60)/1
 T:W/18-08=0.09(60)/1
 T:E,H/*=0.09(60)/1
 Z:10 Mobilfunk D-Netze
 A:+49170,+49171,+49172,+49173
-T:W/08-18=0.49(60)/1
+T:W/0,0/18-18=0.49(60)/1
 T:W/18-08=0.36(60)/1
 T:E,H/*=0.36(60)/1
 Z:11 Mobilfunk E-Plus
 A:+49177,+49178
-T:W/08-18=0.49(60)/1
+T:W/0,0/18-18=0.49(60)/1
 T:W/18-08=0.45(60)/1
 T:E,H/*=0.45(60)/1
 Z:12 Mobilfunk Viag Interkom E2
 A:+49176,+49179
-T:W/08-18=0.49(60)/1
+T:W/0,0/18-18=0.49(60)/1
 T:W/18-08=0.36(60)/1
 T:E,H/*=0.36(60)/1
 Z:200 EuroCity
@@ -11478,17 +11478,17 @@ A:Großbritannien und Nordirland, Irland, Italien, Liechtenstein, Monaco
 A:Niederlande, Österreich, San Marino, Schweiz, Spanien, Vatikanstadt
 A:Luxemburg
 # FIXME: Luxemburg (Land), !OHNE! Stadt
-T:W/08-18=0.64(60)/1
+T:W/0,0/18-18=0.64(60)/1
 T:W/18-08=0.55(60)/1
 T:E,H/*=0.55(60)/1
 Z:202 Euro2
 A:Finnland, Island, Norwegen, Polen, Portugal, Schweden, Slowakei, Tschechien
-T:W/08-18=0.73(60)/1
+T:W/0,0/18-18=0.73(60)/1
 T:W/18-08=0.55(60)/1
 T:E,H/*=0.55(60)/1
 Z:203 Euro3
 A:Kroatien, Türkei, Ungarn, Zypern
-T:W/08-18=0.81(60)/1
+T:W/0,0/18-18=0.81(60)/1
 T:W/18-08=0.73(60)/1
 T:E,H/*=0.73(60)/1
 Z:204 Euro4
@@ -11499,7 +11499,7 @@ A:Rußland (westl.), Slowenien, Syrien, Tunesien, Ukraine, Belarus
 T:*/*=0.90(60)/1
 Z:205 Welt1
 A:Kanada, USA
-T:W/08-18=0.64(60)/1
+T:W/0,0/18-18=0.64(60)/1
 T:W/18-08=0.55(60)/1
 T:E,H/*=0.55(60)/1
 Z:206 Welt2
@@ -11535,10 +11535,10 @@ P:50,1 Talkline CbC
 D:dtag
 Z:1-4 Fern
 A:+49
-T:W/07-19=0.15/60
+T:W/0,0/17-19=0.15/60
 T:W/19-22=0.08/60
 T:W/22-07=0.039/60
-T:E,H/07-22=0.11/60
+T:E,H/0,0/17-22=0.11/60
 T:E,H/22-07=0.039/60
 Z:10-15 Mobil
 A:+491618		# T-C-Tel Voice Mail
@@ -11551,7 +11551,7 @@ T:*/*=0.69/60
 Z:100 Talknet by call
 A:019251 # Proxy: proxy.tli.de:8080; DNS: 195.252.128.53 und 195.252.128.54; User: talknet; Passwort: talknet
 S:Internet by call
-T:W/07-19=0.09(60)/180
+T:W/0,0/17-19=0.09(60)/180
 T:W/19-22=0.07(60)/180
 T:W/22-07=0.05(60)/180
 T:E,H/*=0.06(60)/180
@@ -11631,110 +11631,110 @@ A:+49176,+49179		# E2
 T:*/*=0.40/60
 Z:40 Telefonauskunft Inland (Austria, dial 01051004366211811)
 A:+4366211811
-T:*/*=0.25/60
+T:*/*=0.19/60
 Z:41 Telefonauskunft Ausland (Austria, dial 01051004366211812)
 A:+4366211812
-T:*/*=0.25/60
+T:*/*=0.19/60
 Z:200 Australien
 A:Australien
 T:*/*=0.19/60
-Z:201
+Z:201 Belgien
 A:Belgien
-T:*/*=0.18/60
-Z:202
+T:*/*=0.16/60
+Z:202 Dänemark
 A:Dänemark
 T:*/*=0.18/60
-Z:203
+Z:203 Finnland
 A:Finnland
 T:*/*=0.18/60
-Z:204
+Z:204 Frankreich
 A:Frankreich
-T:*/*=0.18/60
-Z:205
+T:*/*=0.16/60
+Z:205 Großbritannien
 A:Großbritannien
-T:*/*=0.15/60
-Z:206
+T:*/*=0.14/60
+Z:206 Hongkong
 A:Hongkong
 T:*/*=0.21/60
-Z:207
+Z:207 Italien
 A:Italien
 T:*/*=0.25/60
-Z:208
+Z:208 Irland
 A:Irland
 T:*/*=0.21/60
-Z:209
+Z:209 Japan
 A:Japan
 T:*/*=0.29/60
-Z:210
+Z:210 Kanada
 A:Kanada
 T:*/*=0.15/60
-Z:211
+Z:211 Liechtenstein
 A:Liechtenstein
 T:*/*=0.31/60
-Z:212
+Z:212 Luxemburg
 A:Luxemburg
-T:*/*=0.34/60
-Z:213
+T:*/*=0.28/60
+Z:213 Monaco
 A:Monaco
-T:*/*=0.36/60
-Z:214
+T:*/*=0.29/60
+Z:214 Neuseeland
 A:Neuseeland
 T:*/*=0.21/60
-Z:215
+Z:215 Niederlande
 A:Niederlande
-T:*/*=0.14/60
-Z:216
+T:*/*=0.13/60
+Z:216 Niederlande Mobilfunk
 A:Niederlande Mobilfunk
 T:*/*=0.40/60
-Z:217
+Z:217 Norwegen
 A:Norwegen
 T:*/*=0.18/60
-Z:218
+Z:218 Österreich
 A:Österreich
-T:*/*=0.21/60
-Z:220
+T:*/*=0.19/60
+Z:220 Schweden
 A:Schweden
-T:*/*=0.18/60
-Z:221
+T:*/*=0.17/60
+Z:221 Schweiz
 A:Schweiz
-T:*/*=0.21/60
-Z:222
+T:*/*=0.18/60
+Z:222 Spanien
 A:Spanien
 T:*/*=0.27/60
-Z:223
+Z:223 USA
 A:USA
-T:*/*=0.15/60
-Z:224
+T:*/*=0.14/60
+Z:224 Alaska
 A:Alaska
 T:*/*=0.15/60
-Z:225
+Z:225 Hawaii
 A:Hawaii
 T:*/*=0.15/60
-Z:226
+Z:226 Argentinien
 A:Argentinien
 T:*/*=0.69/60
-Z:227
+Z:227 China
 A:China
 T:*/*=0.69/60
-Z:228
+Z:228 Israel
 A:Israel
 T:*/*=0.31/60
-Z:229
+Z:229 Island
 A:Island
 T:*/*=0.27/60
-Z:230
+Z:230 Singapore
 A:Singapore
 T:*/*=0.39/60
-Z:231
+Z:231 Taiwan
 A:Taiwan
 T:*/*=0.36/60
-Z:232
+Z:232 Südkorea
 A:Südkorea
 T:*/*=0.35/60
-Z:233
+Z:233 Moskau
 A:+7095 # Moskau
 T:*/*=0.35/60
-Z:234
+Z:234 USA toll free
 A:+1800, +1877, +1880, +1881, +1882, +1888 # USA toll free
 T:*/*=0.15/60
 Z:235 impossible
@@ -11779,7 +11779,7 @@ C:Quelle http://www.wobkom.de/telefonie/tarife.htm
 D:53
 # Sondernummern
 Z:0 Freecall
-T:*/*=0/0
+T:*/*=0/0,0/1
 # Inlandstarife
 Z:1 Ortsbereich
 T:W/8-18=0.06/60 Normal
@@ -11854,7 +11854,7 @@ A:Inmarsat A
 T:*/*=0.06/0.3
 Z:35 Inmarsat-Aero
 A:Inmarsat Aero
-T:*/*=0.06)/0.3
+T:*/*=0.06/0.3
 Z:36 Inmarsat-B
 A:Inmarsat B
 T:*/*=0.06/0.3
@@ -11893,15 +11893,15 @@ T:W/18-8=0.06/10 Freizeit
 T:E,H/*=0.06/10 Wochenende
 Z:71 Quix 2
 A:+491651
-T:*/*=0.60/0
+T:*/*=0.60/0,0/1
 Z:72-73 Quix 3
 A:+491653, +49165491, +49165492, +49165493
-T:W/8-18=1.20/0
-T:W/18-8=0.96/0
-T:E,H/*=0.96/0 Wochenende
+T:W/8-18=1.20/0,0/1
+T:W/18-8=0.96/0,0/1
+T:E,H/*=0.96/0,0/1 Wochenende
 Z:75 Quix 4
 A:+491656
-T:*/*=2.40/0
+T:*/*=2.40/0,0/1
 Z:66 Telmi 1
 A:+491660, +491665, +491669
 T:*/*=0.06/2.5
@@ -11910,24 +11910,24 @@ A:+491661
 T:*/*=0.06/0.64
 Z:62 Scall 1
 A:+491680
-T:*/*=0.60/0
+T:*/*=0.60/0,0/1
 Z:63 Scall 2
 A:+491681
-T:W/8-18=1.44/0
-T:W/18-8=0.96/0
-T:E,H/*=0.96/0 Wochenende
+T:W/8-18=1.44/0,0/1
+T:W/18-8=0.96/0,0/1
+T:E,H/*=0.96/0,0/1 Wochenende
 Z:65 Scall 3
 A:+491696
-T:*/*=0.96/0
+T:*/*=0.96/0,0/1
 Z:64 Scall 4
 A:+491699
-T:*/*=2.40/0
+T:*/*=2.40/0,0/1
 Z:72 Skyper 1
 A:+491692, +491693
-T:*/*=0.96/0
+T:*/*=0.96/0,0/1
 Z:73 Skyper 2
 A:+4916953
-T:*/*=2.40/0
+T:*/*=2.40/0,0/1
 # Sonderrufnummern
 Z:81 Shared cost
 A:01801
@@ -11936,13 +11936,13 @@ T:W/18-8=0.06/72
 T:E,H/*=0.06/72
 Z:82 T1802
 A:01802
-T:*/*=0.24/0
+T:*/*=0.24/0,0/1
 Z:83 T1803
 A:01803
 T:*/*=0.06/20
 Z:84 T1804
 A:01804
-T:*/*=0.48/0
+T:*/*=0.48/0,0/1
 Z:91 T1901
 A:01901,01902,01903,01905
 T:*/*=0.06/3
@@ -11960,7 +11960,7 @@ A:01370,01373
 T:*/*=0.24/20,0.06/7.5
 Z:162 TVoteCall1
 A:01371
-T:*/*=0.24/0
+T:*/*=0.24/0,0/1
 Z:161,163 TVoteCall2
 A:01372,0138
 T:*/*=0.24/0,0.06/7.5
@@ -12071,9 +12071,9 @@ C:Bei Preselection sekundengenaue Taktung
 D:dtag
 # G:01-Jun-1999
 Z:1-4 National
-T:W/08-17=0.14/60
+T:W/0,0/18-17=0.14/60
 T:W/17-08=0.08/60
-T:E,H/08-17=0.10/60
+T:E,H/0,0/18-17=0.10/60
 T:E,H/17-08=0.08/60
 A:+49
 Z:10-15 Mobil
@@ -12083,7 +12083,7 @@ A:+49170,+49171		# D1
 A:+49172,+49173		# D2
 A:+49177,+49178		# Eplus
 A:+49176,+49179		# E2
-T:W/08-17=0.58(60)/1
+T:W/0,0/18-17=0.58(60)/1
 T:W/17-08=0.48(60)/1
 T:E,H/*=0.48(60)/1
 Z:200 International (Top 12)
@@ -12093,7 +12093,7 @@ A:Großbritannien, Niederlande
 A:Norwegen, Österreich
 A:Schweden, Schweiz
 A:USA, Kanada
-T:W/08-17=0.38(60)/1
+T:W/0,0/18-17=0.38(60)/1
 # bei Preselection:
 # T:W/08-17=0.29(60)/1
 T:W/17-08=0.29(60)/1
@@ -12102,7 +12102,7 @@ Z:201 International B
 A:Hong Kong, Irland, Israel
 A:Italien, Japan, Liechtenstein
 A:Luxemburg, Monaco, Spanien
-T:W/08-17=0.48(60)/1
+T:W/0,0/18-17=0.48(60)/1
 T:W/17-08=0.38(60)/1
 T:E,H/*=0.38(60)/1
 Z:202 International C
@@ -12181,35 +12181,35 @@ C:Mannesmann Arcor
 C:Mannesmann AG & Co., Kölner Str. 12, 65760 Eschborn 01070
 D:dtag
 Z:1-3 Regio Plus
-T:W/06-09=0.07/60
-T:W/09-18=0.14/60
+T:W/0,0/16-09=0.07/60
+T:W/0,0/19-18=0.14/60
 T:W/18-21=0.07/60
 T:W/21-06=0.04/60
-T:E,H/06-21=0.07/60
+T:E,H/0,0/16-21=0.07/60
 T:E,H/21-06=0.04/60
 Z:4 Fern
-T:W/06-09=0.08/60
-T:W/09-18=0.18/60
+T:W/0,0/16-09=0.08/60
+T:W/0,0/19-18=0.18/60
 T:W/18-21=0.08/60
 T:W/21-06=0.06/60
-T:E,H/06-21=0.08/60
+T:E,H/0,0/16-21=0.08/60
 T:E,H/21-06=0.06/60
 A:+49
 Z:10-12,15 D1,C,E2-Netz
 A:+49170,+49171               # D1
 A:+491610,+491617,+491619,+491618 # C
 A:+49176,+49179		  # E2
-T:W/09-18=0.96/60 Hauptzeit
+T:W/0,0/19-18=0.96/60 Hauptzeit
 T:W/18-09=0.48/60 Nebenzeit
 T:E,H/*=0.48/60 Freizeit
 Z:13 D2
 A:+49172,+49173
-T:W/09-18=0.94/60 Hauptzeit
+T:W/0,0/19-18=0.94/60 Hauptzeit
 T:W/18-09=0.46/60 Nebenzeit
 T:E,H/*=0.46/60 Freizeit
 Z:14 E-Plus
 A:+49177,+49178
-T:W/09-18=1.25/60 Hauptzeit
+T:W/0,0/19-18=1.25/60 Hauptzeit
 T:W/18-09=0.56/60 Nebenzeit
 T:E,H/*=0.56/60 Freizeit
 Z:200 Euro
@@ -12472,21 +12472,21 @@ A:11870
 T:*/*=0.968/30
 Z:81 Serviceruf 01801
 A:01801
-T:W/09-18=0.12/90 Standard
+T:W/0,0/19-18=0.12/90 Standard
 T:W/18-21=0.12/150 Spar
 T:W/21-05=0.12/240 Nacht
-T:W/05-09=0.12/150 Spar
-T:E,H/05-21=0.12/150 Spar
+T:W/0,0/15-09=0.12/150 Spar
+T:E,H/0,0/15-21=0.12/150 Spar
 T:E,H/21-05=0.12/240 Nacht
 Z:82 Serviceruf 01802
 A:01802
-T:*/*=0.12/0
+T:*/*=0.12/0,0/1
 Z:83 Serviceruf 01803
 A:01803
 T:*/*=0.09/30
 Z:84 Serviceruf 01804
 A:01804
-T:*/*=0.48/0
+T:*/*=0.48/0,0/1
 Z:85 Serviceruf 01805
 A:01805
 T:*/*=0.12/30
@@ -12497,25 +12497,25 @@ C:Mannesmann Arcor
 C:Mannesmann AG & Co., Kölner Str. 12, 65760 Eschborn 01070
 D:dtag
 Z:1-2 Nah
-T:W/06-09=0.05(60)/30 Freizeit
-T:W/09-18=0.09(60)/30 Hauptzeit
+T:W/0,0/16-09=0.05(60)/30 Freizeit
+T:W/0,0/19-18=0.09(60)/30 Hauptzeit
 T:W/18-21=0.05(60)/30 Freizeit
 T:W/21-06=0.04(60)/30 Nebenzeit
-T:E,H/06-21=0.05(60)/30 Freizeit
+T:E,H/0,0/16-21=0.05(60)/30 Freizeit
 T:E,H/21-06=0.04(60)/30 Nebenzeit
 Z:3 Regional
-T:W/06-09=0.075(60)/30 Freizeit
-T:W/09-18=0.14(60)/30 Hauptzeit
+T:W/0,0/16-09=0.075(60)/30 Freizeit
+T:W/0,0/19-18=0.14(60)/30 Hauptzeit
 T:W/18-21=0.075(60)/30 Freizeit
 T:W/21-06=0.04(60)/30 Nebenzeit
-T:E,H/06-21=0.075(60)/30 Freizeit
+T:E,H/0,0/16-21=0.075(60)/30 Freizeit
 T:E,H/21-06=0.04(60)/30 Nebenzeit
 Z:4 Fern
-T:W/06-09=0.095(60)/30 Freizeit
-T:W/09-18=0.18(60)/30 Hauptzeit
+T:W/0,0/16-09=0.095(60)/30 Freizeit
+T:W/0,0/19-18=0.18(60)/30 Hauptzeit
 T:W/18-21=0.095(60)/30 Freizeit
 T:W/21-06=0.06(60)/30 Nebenzeit
-T:E,H/06-21=0.095(60)/30 Freizeit
+T:E,H/0,0/16-21=0.095(60)/30 Freizeit
 T:E,H/21-06=0.06(60)/30 Nebenzeit
 A:+49
 #####################################################################
@@ -12525,25 +12525,25 @@ C:Mannesmann Arcor
 C:Mannesmann AG & Co., Kölner Str. 12, 65760 Eschborn 01070
 D:dtag
 Z:1-2 Nah
-T:W/06-09=0.058/0,0.05(60)/1 Freizeit
-T:W/09-18=0.058/0,0.09(60)/1 Hauptzeit
+T:W/0,0/16-09=0.058/0,0.05(60)/1 Freizeit
+T:W/0,0/19-18=0.058/0,0.09(60)/1 Hauptzeit
 T:W/18-21=0.058/0,0.05(60)/1 Freizeit
 T:W/21-06=0.058/0,0.04(60)/1 Nebenzeit
-T:E,H/06-21=0.058/0,0.05(60)/1 Freizeit
+T:E,H/0,0/16-21=0.058/0,0.05(60)/1 Freizeit
 T:E,H/21-06=0.058/0,0.04(60)/1 Nebenzeit
 Z:3 Regional
-T:W/06-09=0.058/0,0.075(60)/1 Freizeit
-T:W/09-18=0.058/0,0.14(60)/1 Hauptzeit
+T:W/0,0/16-09=0.058/0,0.075(60)/1 Freizeit
+T:W/0,0/19-18=0.058/0,0.14(60)/1 Hauptzeit
 T:W/18-21=0.058/0,0.075(60)/1 Freizeit
 T:W/21-06=0.058/0,0.04(60)/1 Nebenzeit
-T:E,H/06-21=0.058/0,0.075(60)/1 Freizeit
+T:E,H/0,0/16-21=0.058/0,0.075(60)/1 Freizeit
 T:E,H/21-06=0.058/0,0.04(60)/1 Nebenzeit
 Z:4 Fern
-T:W/06-09=0.058/0,0.095(60)/1 Freizeit
-T:W/09-18=0.058/0,0.18(60)/1 Hauptzeit
+T:W/0,0/16-09=0.058/0,0.095(60)/1 Freizeit
+T:W/0,0/19-18=0.058/0,0.18(60)/1 Hauptzeit
 T:W/18-21=0.058/0,0.095(60)/1 Freizeit
 T:W/21-06=0.058/0,0.06(60)/1 Nebenzeit
-T:E,H/06-21=0.058/0,0.095(60)/1 Freizeit
+T:E,H/0,0/16-21=0.058/0,0.095(60)/1 Freizeit
 T:E,H/21-06=0.058/0,0.06(60)/1 Nebenzeit
 A:+49
 #####################################################################
@@ -12575,7 +12575,7 @@ C:ARCIS Media Com Management GmbH, Maximilianstr. 14, 80539 München 01075
 D:dtag
 Z:1-4 Fern
 A:+49
-T:W/08-20=0.14/60
+T:W/0,0/18-20=0.14/60
 T:W/20-08=0.08/60
 T:E,H/*=0.08/60
 Z:10-12,15 D1,D2,C,E2-Netz
@@ -12610,9 +12610,9 @@ C:Adresse:  Mergenthalerallee 79-81
 C:	    65760 Eschborn
 D:dtag
 Z:1-4 Fern
-T:W/08-20=0.139(60)/1
+T:W/0,0/18-20=0.139(60)/1
 T:W/20-08=0.059(60)/1
-T:E,H/08-20=0.139(60)/1
+T:E,H/0,0/18-20=0.139(60)/1
 T:E,H/20-08=0.059(60)/1
 A:+49
 Z:10-15
@@ -12624,1091 +12624,1091 @@ A:+49176,+49179  		  # E2
 T:*/*=0.499(60)/1
 Z:40 Telefonauskunft Inland (Austria, dial 01078004366211811)
 A:+4366211811
-T:*/08-20=0.319(60)/1
+T:*/0,0/18-20=0.319(60)/1
 T:*/20-08=0.299(60)/1
 Z:41 Telefonauskunft Ausland (Austria, dial 01078004366211812)
 A:+4366211812
-T:*/08-20=0.319(60)/1
+T:*/0,0/18-20=0.319(60)/1
 T:*/20-08=0.299(60)/1
 Z:200 Usbekistan
 A:Usbekistan # +998
-T:*/08-20=1.159(60)/1
+T:*/0,0/18-20=1.159(60)/1
 T:*/20-08=1.139(60)/1
 Z:201 Kirgisien
 A:Kirgisien # +996
-T:*/08-20=1.149(60)/1
+T:*/0,0/18-20=1.149(60)/1
 T:*/20-08=1.139(60)/1
 Z:202 Georgien
 A:Georgien # +995
-T:*/08-20=1.279(60)/1
+T:*/0,0/18-20=1.279(60)/1
 T:*/20-08=1.259(60)/1
 Z:203 Aserbaidschan
 A:Aserbaidschan # +994
-T:*/08-20=0.869(60)/1
+T:*/0,0/18-20=0.869(60)/1
 T:*/20-08=0.849(60)/1
 Z:204 Turkmenistan
 A:Turkmenistan # +993
-T:*/08-20=1.139(60)/1
+T:*/0,0/18-20=1.139(60)/1
 T:*/20-08=1.119(60)/1
 Z:205 Tadschikistan
 A:Tadschikistan # +992
-T:*/08-20=1.039(60)/1
+T:*/0,0/18-20=1.039(60)/1
 T:*/20-08=1.029(60)/1
 Z:206 Iran
 A:Iran # +98
-T:*/08-20=1.339(60)/1
+T:*/0,0/18-20=1.339(60)/1
 T:*/20-08=1.319(60)/1
 Z:207 Nepal
 A:Nepal # +977
-T:*/08-20=1.409(60)/1
+T:*/0,0/18-20=1.409(60)/1
 T:*/20-08=1.389(60)/1
 Z:208 Mongolische VR
 A:Mongolische VR # +976
-T:*/08-20=1.799(60)/1
+T:*/0,0/18-20=1.799(60)/1
 T:*/20-08=1.779(60)/1
 Z:209 Bhutan
 A:Bhutan # +975
-T:*/08-20=0.939(60)/1
+T:*/0,0/18-20=0.939(60)/1
 T:*/20-08=0.919(60)/1
 Z:210 Katar
 A:Katar # +974
-T:*/08-20=1.309(60)/1
+T:*/0,0/18-20=1.309(60)/1
 T:*/20-08=1.289(60)/1
 Z:211 Bahrain
 A:Bahrain # +973
-T:*/08-20=1.279(60)/1
+T:*/0,0/18-20=1.279(60)/1
 T:*/20-08=1.259(60)/1
 Z:212 Israel Mobilfunk
 A:Israel Mobilfunk # +97255
-T:*/08-20=0.649(60)/1
+T:*/0,0/18-20=0.649(60)/1
 T:*/20-08=0.629(60)/1
 Z:213 Israel
 A:Israel # +972
-T:*/08-20=0.399(60)/1
+T:*/0,0/18-20=0.399(60)/1
 T:*/20-08=0.379(60)/1
 Z:214 Ver.Arab. Emirate
 A:Ver.Arab. Emirate # +971
-T:*/08-20=1.049(60)/1
+T:*/0,0/18-20=1.049(60)/1
 T:*/20-08=1.029(60)/1
 Z:215 Oman
 A:Oman # +968
-T:*/08-20=1.529(60)/1
+T:*/0,0/18-20=1.529(60)/1
 T:*/20-08=1.509(60)/1
 Z:216 Jemen Arab. Rep.
 A:Jemen Arab. Rep. # +967
-T:*/08-20=1.549(60)/1
+T:*/0,0/18-20=1.549(60)/1
 T:*/20-08=1.529(60)/1
 Z:217 Saudi Arabien
 A:Saudi Arabien # +966
-T:*/08-20=1.319(60)/1
+T:*/0,0/18-20=1.319(60)/1
 T:*/20-08=1.299(60)/1
 Z:218 Kuwait
 A:Kuwait # +965
-T:*/08-20=1.389(60)/1
+T:*/0,0/18-20=1.389(60)/1
 T:*/20-08=1.369(60)/1
 Z:219 Irak
 A:Irak # +964
-T:*/08-20=1.719(60)/1
+T:*/0,0/18-20=1.719(60)/1
 T:*/20-08=1.699(60)/1
 Z:220 Syrien
 A:Syrien # +963
-T:*/08-20=1.259(60)/1
+T:*/0,0/18-20=1.259(60)/1
 T:*/20-08=1.239(60)/1
 Z:221 Jordanien
 A:Jordanien # +962
-T:*/08-20=1.299(60)/1
+T:*/0,0/18-20=1.299(60)/1
 T:*/20-08=1.279(60)/1
 Z:222 Libanon Mobilfunk
 A:Libanon Mobilfunk # +9613
-T:*/08-20=1.969(60)/1
+T:*/0,0/18-20=1.969(60)/1
 T:*/20-08=1.959(60)/1
 Z:223 Libanon
 A:Libanon # +961
-T:*/08-20=1.169(60)/1
+T:*/0,0/18-20=1.169(60)/1
 T:*/20-08=1.149(60)/1
 Z:224 Malediven
 A:Malediven # +960
-T:*/08-20=1.369(60)/1
+T:*/0,0/18-20=1.369(60)/1
 T:*/20-08=1.349(60)/1
 Z:225 Myanmar (Burma)
 A:Myanmar (Burma) # +95
-T:*/08-20=1.749(60)/1
+T:*/0,0/18-20=1.749(60)/1
 T:*/20-08=1.729(60)/1
 Z:226 Sri Lanka
 A:Sri Lanka # +94
-T:*/08-20=1.379(60)/1
+T:*/0,0/18-20=1.379(60)/1
 T:*/20-08=1.359(60)/1
 Z:227 Afghanistan
 A:Afghanistan # +93
-T:*/08-20=1.659(60)/1
+T:*/0,0/18-20=1.659(60)/1
 T:*/20-08=1.649(60)/1
 Z:228 Pakistan
 A:Pakistan # +92
-T:*/08-20=1.449(60)/1
+T:*/0,0/18-20=1.449(60)/1
 T:*/20-08=1.429(60)/1
 Z:229 Indien
 A:Indien # +91
-T:*/08-20=1.239(60)/1
+T:*/0,0/18-20=1.239(60)/1
 T:*/20-08=1.219(60)/1
 Z:230 Türkei Mobilfunk
 A:Türkei Mobilfunk # +905
-T:*/08-20=0.809(60)/1
+T:*/0,0/18-20=0.809(60)/1
 T:*/20-08=0.789(60)/1
 Z:231 Türkei
 A:Türkei # +90
-T:*/08-20=0.709(60)/1
+T:*/0,0/18-20=0.709(60)/1
 T:*/20-08=0.689(60)/1
 Z:232 Taiwan Mobilfunk
 A:Taiwan Mobilfunk # +8869
-T:*/08-20=0.859(60)/1
+T:*/0,0/18-20=0.859(60)/1
 T:*/20-08=0.839(60)/1
 Z:233 Taiwan
 A:Taiwan # +886
-T:*/08-20=0.489(60)/1
+T:*/0,0/18-20=0.489(60)/1
 T:*/20-08=0.469(60)/1
 Z:234 Bangladesh
 A:Bangladesh # +880
-T:*/08-20=1.489(60)/1
+T:*/0,0/18-20=1.489(60)/1
 T:*/20-08=1.469(60)/1
 Z:235 Inmarsat A
 A:Inmarsat A
-T:*/08-20=9.969(60)/1
+T:*/0,0/18-20=9.969(60)/1
 T:*/20-08=9.949(60)/1
 Z:236 Inmarsat B
 A:Inmarsat B
-T:*/08-20=6.219(60)/1
+T:*/0,0/18-20=6.219(60)/1
 T:*/20-08=6.199(60)/1
 Z:237 Inmarsat M
 A:Inmarsat M
-T:*/08-20=6.219(60)/1
+T:*/0,0/18-20=6.219(60)/1
 T:*/20-08=6.199(60)/1
 Z:238 Inmarsat Mini-M
 A:Inmarsat Mini-M
-T:*/08-20=4.219(60)/1
+T:*/0,0/18-20=4.219(60)/1
 T:*/20-08=4.199(60)/1
 Z:252
 A:China Mobilfunk # +86886
-T:*/08-20=1.329(60)/1
+T:*/0,0/18-20=1.329(60)/1
 T:*/20-08=1.309(60)/1
 Z:253 China
 A:China # +86
-T:*/08-20=0.869(60)/1
+T:*/0,0/18-20=0.869(60)/1
 T:*/20-08=0.849(60)/1
 Z:254 Laos
 A:Laos # +856
-T:*/08-20=1.529(60)/1
+T:*/0,0/18-20=1.529(60)/1
 T:*/20-08=1.509(60)/1
 Z:255 Kambodscha
 A:Kambodscha # +855
-T:*/08-20=1.749(60)/1
+T:*/0,0/18-20=1.749(60)/1
 T:*/20-08=1.729(60)/1
 Z:256 Macao
 A:Macao # +853
-T:*/08-20=0.849(60)/1
+T:*/0,0/18-20=0.849(60)/1
 T:*/20-08=0.829(60)/1
 Z:257 Hong Kong Mobilfunk
 A:Hong Kong Mobilfunk # +8529
-T:*/08-20=0.559(60)/1
+T:*/0,0/18-20=0.559(60)/1
 T:*/20-08=0.539(60)/1
 Z:258 Hong Kong
 A:Hong Kong # +852
-T:*/08-20=0.409(60)/1
+T:*/0,0/18-20=0.409(60)/1
 T:*/20-08=0.389(60)/1
 Z:259 Korea (North)
 A:Korea (North) # +850
-T:*/08-20=1.349(60)/1
+T:*/0,0/18-20=1.349(60)/1
 T:*/20-08=1.329(60)/1
 Z:260 Vietnam
 A:Vietnam # +84
-T:*/08-20=1.609(60)/1
+T:*/0,0/18-20=1.609(60)/1
 T:*/20-08=1.589(60)/1
 Z:261 Korea Rep. (South) Mobilfunk
 A:Korea Rep. (South) Mobilfunk # +8227
-T:*/08-20=0.659(60)/1
+T:*/0,0/18-20=0.659(60)/1
 T:*/20-08=0.639(60)/1
 Z:262 Korea Rep. (South)
 A:Korea Rep. (South) # +82
-T:*/08-20=0.499(60)/1
+T:*/0,0/18-20=0.499(60)/1
 T:*/20-08=0.479(60)/1
 Z:263 Japan Mobilfunk
 A:Japan Mobilfunk # +8190
-T:*/08-20=0.669(60)/1
+T:*/0,0/18-20=0.669(60)/1
 T:*/20-08=0.649(60)/1
 Z:264 Japan
 A:Japan # +81
-T:*/08-20=0.379(60)/1
+T:*/0,0/18-20=0.379(60)/1
 T:*/20-08=0.359(60)/1
 Z:265 Rußland St. Petersburg
 A:Rußland St. Petersburg # +7812
-T:*/08-20=0.429(60)/1
+T:*/0,0/18-20=0.429(60)/1
 T:*/20-08=0.409(60)/1
 Z:266 Rußland Moskau Overlay
 A:+7502 Rußland Moskau Overlay
-T:*/08-20=0.859(60)/1
+T:*/0,0/18-20=0.859(60)/1
 T:*/20-08=0.839(60)/1
 Z:267 Kasachstan
 A:Kasachstan # +733
-T:*/08-20=1.089(60)/1
+T:*/0,0/18-20=1.089(60)/1
 T:*/20-08=1.069(60)/1
 Z:268 Rußland Moskau
 A:Rußland Moskau # +7095
-T:*/08-20=0.429(60)/1
+T:*/0,0/18-20=0.429(60)/1
 T:*/20-08=0.409(60)/1
 Z:269 Rußland
 A:Rußland # +7
-T:*/08-20=0.699(60)/1
+T:*/0,0/18-20=0.699(60)/1
 T:*/20-08=0.679(60)/1
 Z:270 Marshallinseln
 A:Marshallinseln # +692
-T:*/08-20=0.829(60)/1
+T:*/0,0/18-20=0.829(60)/1
 T:*/20-08=0.809(60)/1
 Z:271 Mikronesien
 A:Mikronesien # +691
-T:*/08-20=1.399(60)/1
+T:*/0,0/18-20=1.399(60)/1
 T:*/20-08=1.379(60)/1
 Z:272 Tokelau
 A:Tokelau # +690
-T:*/08-20=1.399(60)/1
+T:*/0,0/18-20=1.399(60)/1
 T:*/20-08=1.379(60)/1
 Z:273 Französisch Polynesien
 A:Französisch Polynesien # +689
-T:*/08-20=1.229(60)/1
+T:*/0,0/18-20=1.229(60)/1
 T:*/20-08=1.209(60)/1
 Z:274 Tuvalu
 A:Tuvalu # +688
-T:*/08-20=1.729(60)/1
+T:*/0,0/18-20=1.729(60)/1
 T:*/20-08=1.709(60)/1
 Z:275 Neukaledonien
 A:Neukaledonien # +687
-T:*/08-20=1.309(60)/1
+T:*/0,0/18-20=1.309(60)/1
 T:*/20-08=1.289(60)/1
 Z:276 Kiribati
 A:Kiribati # +686
-T:*/08-20=1.589(60)/1
+T:*/0,0/18-20=1.589(60)/1
 T:*/20-08=1.569(60)/1
 Z:277 Western Samoa
 A:Western Samoa # +685
-T:*/08-20=1.279(60)/1
+T:*/0,0/18-20=1.279(60)/1
 T:*/20-08=1.259(60)/1
 Z:278 Amerikanisch Samoa
 A:Amerikanisch Samoa # +684
-T:*/08-20=0.739(60)/1
+T:*/0,0/18-20=0.739(60)/1
 T:*/20-08=0.719(60)/1
 Z:279 Niue Islands
 A:Niue Islands # +683
-T:*/08-20=1.929(60)/1
+T:*/0,0/18-20=1.929(60)/1
 T:*/20-08=1.909(60)/1
 Z:280 Cook Islands
 A:Cook Islands # +682
-T:*/08-20=2.049(60)/1
+T:*/0,0/18-20=2.049(60)/1
 T:*/20-08=2.029(60)/1
 Z:281 Wallis und Futuna
 A:Wallis und Futuna # +681
-T:*/08-20=0.839(60)/1
+T:*/0,0/18-20=0.839(60)/1
 T:*/20-08=0.819(60)/1
 Z:282 Palau (=Belau)
 A:Palau (=Belau) # +680
-T:*/08-20=1.499(60)/1
+T:*/0,0/18-20=1.499(60)/1
 T:*/20-08=1.489(60)/1
 Z:283 Fidschi
 A:Fidschi # +679
-T:*/08-20=1.439(60)/1
+T:*/0,0/18-20=1.439(60)/1
 T:*/20-08=1.419(60)/1
 Z:284 Vanuatu
 A:Vanuatu # +678
-T:*/08-20=1.519(60)/1
+T:*/0,0/18-20=1.519(60)/1
 T:*/20-08=1.499(60)/1
 Z:285 Solomonen
 A:Solomonen # +677
-T:*/08-20=1.279(60)/1
+T:*/0,0/18-20=1.279(60)/1
 T:*/20-08=1.259(60)/1
 Z:286 Tonga Kingdom
 A:Tonga Kingdom # +676
-T:*/08-20=1.659(60)/1
+T:*/0,0/18-20=1.659(60)/1
 T:*/20-08=1.639(60)/1
 Z:287 Papua Neu Guinea
 A:Papua Neu Guinea # +675
-T:*/08-20=0.819(60)/1
+T:*/0,0/18-20=0.819(60)/1
 T:*/20-08=0.809(60)/1
 Z:288 Nauru
 A:Nauru # +674
-T:*/08-20=1.479(60)/1
+T:*/0,0/18-20=1.479(60)/1
 T:*/20-08=1.459(60)/1
 Z:289 Brunei
 A:Brunei # +673
-T:*/08-20=0.819(60)/1
+T:*/0,0/18-20=0.819(60)/1
 T:*/20-08=0.809(60)/1
 Z:290 Weihnachtsinseln
 A:Weihnachtsinseln # +6724
-T:*/08-20=0.709(60)/1
+T:*/0,0/18-20=0.709(60)/1
 T:*/20-08=0.689(60)/1
 Z:291 Norfolk Islands
 A:Norfolk Islands # +6723
-T:*/08-20=1.149(60)/1
+T:*/0,0/18-20=1.149(60)/1
 T:*/20-08=1.129(60)/1
 Z:292 Antarktis
 A:Antarktis # +672
-T:*/08-20=0.629(60)/1
+T:*/0,0/18-20=0.629(60)/1
 T:*/20-08=0.619(60)/1
 Z:293 Saipan
 A:Saipan # +670
-T:*/08-20=0.659(60)/1
+T:*/0,0/18-20=0.659(60)/1
 T:*/20-08=0.639(60)/1
 Z:294 Marianen
 A:Marianen # +670
-T:*/08-20=0.659(60)/1
+T:*/0,0/18-20=0.659(60)/1
 T:*/20-08=0.639(60)/1
 Z:295 Thailand
 A:Thailand # +66
-T:*/08-20=0.859(60)/1
+T:*/0,0/18-20=0.859(60)/1
 T:*/20-08=0.839(60)/1
 Z:296 Singapur
 A:Singapur # +65
-T:*/08-20=0.489(60)/1
+T:*/0,0/18-20=0.489(60)/1
 T:*/20-08=0.469(60)/1
 Z:297 Neuseeland
 A:Neuseeland # +64
-T:*/08-20=0.339(60)/1
+T:*/0,0/18-20=0.339(60)/1
 T:*/20-08=0.319(60)/1
 Z:298 Philippinen
 A:Philippinen # +63
-T:*/08-20=0.699(60)/1
+T:*/0,0/18-20=0.699(60)/1
 T:*/20-08=0.679(60)/1
 Z:299 Indonesien
 A:Indonesien # +62
-T:*/08-20=0.819(60)/1
+T:*/0,0/18-20=0.819(60)/1
 T:*/20-08=0.799(60)/1
 Z:300 Kokos-Inseln
 A:Kokos-Inseln # +6189162
-T:*/08-20=0.549(60)/1
+T:*/0,0/18-20=0.549(60)/1
 T:*/20-08=0.529(60)/1
 Z:301 Australien Mobilfunk
 A:Australien Mobilfunk # +61500
-T:*/08-20=0.459(60)/1
+T:*/0,0/18-20=0.459(60)/1
 T:*/20-08=0.439(60)/1
 Z:302 Australien
 A:Australien # +61
-T:*/08-20=0.309(60)/1
+T:*/0,0/18-20=0.309(60)/1
 T:*/20-08=0.289(60)/1
 Z:303 Malaysia
 A:Malaysia # +60
-T:*/08-20=0.519(60)/1
+T:*/0,0/18-20=0.519(60)/1
 T:*/20-08=0.499(60)/1
 Z:304 Niederländische Antillen
 A:Niederländische Antillen # +599
-T:*/08-20=0.649(60)/1
+T:*/0,0/18-20=0.649(60)/1
 T:*/20-08=0.629(60)/1
 Z:305 Uruguay
 A:Uruguay # +598
-T:*/08-20=1.139(60)/1
+T:*/0,0/18-20=1.139(60)/1
 T:*/20-08=1.119(60)/1
 Z:306 Surinam
 A:Surinam # +597
-T:*/08-20=1.819(60)/1
+T:*/0,0/18-20=1.819(60)/1
 T:*/20-08=1.809(60)/1
 Z:307 Martinique
 A:Martinique # +596
-T:*/08-20=0.789(60)/1
+T:*/0,0/18-20=0.789(60)/1
 T:*/20-08=0.769(60)/1
 Z:308 Paraguay
 A:Paraguay # +595
-T:*/08-20=1.239(60)/1
+T:*/0,0/18-20=1.239(60)/1
 T:*/20-08=1.219(60)/1
 Z:309 Französisch Guyana
 A:Französisch Guyana # +594
-T:*/08-20=0.869(60)/1
+T:*/0,0/18-20=0.869(60)/1
 T:*/20-08=0.849(60)/1
 Z:310 Ecuador Mobilfunk
 A:Ecuador Mobilfunk # +5939
-T:*/08-20=1.019(60)/1
+T:*/0,0/18-20=1.019(60)/1
 T:*/20-08=0.999(60)/1
 Z:311 Ecuador
 A:Ecuador # +593
-T:*/08-20=0.669(60)/1
+T:*/0,0/18-20=0.669(60)/1
 T:*/20-08=0.649(60)/1
 Z:312 Guyana
 A:Guyana # +592
-T:*/08-20=1.309(60)/1
+T:*/0,0/18-20=1.309(60)/1
 T:*/20-08=1.289(60)/1
 Z:313 Bolivien
 A:Bolivien # +591
-T:*/08-20=1.119(60)/1
+T:*/0,0/18-20=1.119(60)/1
 T:*/20-08=1.099(60)/1
 Z:314 Guadeloupe
 A:Guadeloupe # +590
-T:*/08-20=0.849(60)/1
+T:*/0,0/18-20=0.849(60)/1
 T:*/20-08=0.829(60)/1
 Z:315 Venezuela Mobilfunk
 A:Venezuela Mobilfunk # +5816
-T:*/08-20=1.369(60)/1
+T:*/0,0/18-20=1.369(60)/1
 T:*/20-08=1.349(60)/1
 Z:316 Venezuela
 A:Venezuela # +58
-T:*/08-20=0.769(60)/1
+T:*/0,0/18-20=0.769(60)/1
 T:*/20-08=0.749(60)/1
 Z:317 Kolumbien Mobilfunk
 A:Kolumbien Mobilfunk # +573
-T:*/08-20=1.189(60)/1
+T:*/0,0/18-20=1.189(60)/1
 T:*/20-08=1.169(60)/1
 Z:318 Kolumbien
 A:Kolumbien # +57
-T:*/08-20=0.729(60)/1
+T:*/0,0/18-20=0.729(60)/1
 T:*/20-08=0.709(60)/1
 Z:319 Chile
 A:Chile # +56
-T:*/08-20=0.429(60)/1
+T:*/0,0/18-20=0.429(60)/1
 T:*/20-08=0.409(60)/1
 Z:320 Brasilien Mobilfunk
 A:Brasilien Mobilfunk # +55664
-T:*/08-20=1.169(60)/1
+T:*/0,0/18-20=1.169(60)/1
 T:*/20-08=1.149(60)/1
 Z:321 Brasilien
 A:Brasilien # +55
-T:*/08-20=0.709(60)/1
+T:*/0,0/18-20=0.709(60)/1
 T:*/20-08=0.689(60)/1
 Z:322 Argentinien Mobilfunk
 A:Argentinien Mobilfunk # +54414
-T:*/08-20=1.169(60)/1
+T:*/0,0/18-20=1.169(60)/1
 T:*/20-08=1.149(60)/1
 Z:323 Argentinien
 A:Argentinien # +54
-T:*/08-20=0.839(60)/1
+T:*/0,0/18-20=0.839(60)/1
 T:*/20-08=0.819(60)/1
 Z:324 Guantanamo Bay
 A:Guantanamo Bay # +5399
-T:*/08-20=0.899(60)/1
+T:*/0,0/18-20=0.899(60)/1
 T:*/20-08=0.889(60)/1
 Z:325 Kuba
 A:Kuba # +53
-T:*/08-20=1.279(60)/1
+T:*/0,0/18-20=1.279(60)/1
 T:*/20-08=1.259(60)/1
 Z:326 Mexico
 A:Mexico # +52
-T:*/08-20=0.589(60)/1
+T:*/0,0/18-20=0.589(60)/1
 T:*/20-08=0.569(60)/1
 Z:327 Peru Mobilfunk
 A:Peru Mobilfunk # +51946
-T:*/08-20=1.369(60)/1
+T:*/0,0/18-20=1.369(60)/1
 T:*/20-08=1.349(60)/1
 Z:328 Peru
 A:Peru # +51
-T:*/08-20=0.849(60)/1
+T:*/0,0/18-20=0.849(60)/1
 T:*/20-08=0.829(60)/1
 Z:329 Haiti
 A:Haiti # +509
-T:*/08-20=1.009(60)/1
+T:*/0,0/18-20=1.009(60)/1
 T:*/20-08=0.999(60)/1
 Z:330 St. Pierre and Miquelon
 A:St. Pierre and Miquelon # +508
-T:*/08-20=0.659(60)/1
+T:*/0,0/18-20=0.659(60)/1
 T:*/20-08=0.649(60)/1
 Z:331 Panama Mobilfunk
 A:Panama Mobilfunk # +5076
-T:*/08-20=1.369(60)/1
+T:*/0,0/18-20=1.369(60)/1
 T:*/20-08=1.349(60)/1
 Z:332 Panama
 A:Panama # +507
-T:*/08-20=1.029(60)/1
+T:*/0,0/18-20=1.029(60)/1
 T:*/20-08=1.009(60)/1
 Z:333 Costa Rica
 A:Costa Rica # +506
-T:*/08-20=0.579(60)/1
+T:*/0,0/18-20=0.579(60)/1
 T:*/20-08=0.559(60)/1
 Z:334 Nicaragua
 A:Nicaragua # +505
-T:*/08-20=0.879(60)/1
+T:*/0,0/18-20=0.879(60)/1
 T:*/20-08=0.859(60)/1
 Z:335 Honduras
 A:Honduras # +504
-T:*/08-20=1.029(60)/1
+T:*/0,0/18-20=1.029(60)/1
 T:*/20-08=1.009(60)/1
 Z:336 El Salvador Mobilfunk
 A:El Salvador Mobilfunk # +5038
-T:*/08-20=1.369(60)/1
+T:*/0,0/18-20=1.369(60)/1
 T:*/20-08=1.349(60)/1
 Z:337 El Salvador
 A:El Salvador # +503
-T:*/08-20=0.809(60)/1
+T:*/0,0/18-20=0.809(60)/1
 T:*/20-08=0.789(60)/1
 Z:338 Guatemala
 A:Guatemala # +502
-T:*/08-20=0.599(60)/1
+T:*/0,0/18-20=0.599(60)/1
 T:*/20-08=0.579(60)/1
 Z:339 Belize
 A:Belize # +501
-T:*/08-20=1.149(60)/1
+T:*/0,0/18-20=1.149(60)/1
 T:*/20-08=1.129(60)/1
 Z:340 Falklandinseln
 A:Falklandinseln # +500
-T:*/08-20=0.769(60)/1
+T:*/0,0/18-20=0.769(60)/1
 T:*/20-08=0.749(60)/1
 Z:341 Polen
 A:Polen # +48
-T:*/08-20=0.619(60)/1
+T:*/0,0/18-20=0.619(60)/1
 T:*/20-08=0.599(60)/1
 Z:342 Norwegen Mobilfunk
 A:Norwegen Mobilfunk # +479
-T:*/08-20=0.469(60)/1
+T:*/0,0/18-20=0.469(60)/1
 T:*/20-08=0.449(60)/1
 Z:343 Norwegen
 A:Norwegen # +47
-T:*/08-20=0.289(60)/1
+T:*/0,0/18-20=0.289(60)/1
 T:*/20-08=0.269(60)/1
 Z:344 Schweden Mobilfunk
 A:Schweden Mobilfunk # +4673
-T:*/08-20=0.409(60)/1
+T:*/0,0/18-20=0.409(60)/1
 T:*/20-08=0.389(60)/1
 Z:345 Schweden
 A:Schweden # +46
-T:*/08-20=0.239(60)/1
+T:*/0,0/18-20=0.239(60)/1
 T:*/20-08=0.219(60)/1
 Z:346 Dänemark Mobilfunk
 A:Dänemark Mobilfunk # +45503
-T:*/08-20=0.349(60)/1
+T:*/0,0/18-20=0.349(60)/1
 T:*/20-08=0.329(60)/1
 Z:347 Dänemark
 A:Dänemark # +45
-T:*/08-20=0.279(60)/1
+T:*/0,0/18-20=0.279(60)/1
 T:*/20-08=0.259(60)/1
 Z:348 Großbritannien Mobilfunk
 A:Großbritannien Mobilfunk # +44991
-T:*/08-20=0.389(60)/1
+T:*/0,0/18-20=0.389(60)/1
 T:*/20-08=0.369(60)/1
 Z:349 Großbritannien
 A:Großbritannien # +44
-T:*/08-20=0.239(60)/1
+T:*/0,0/18-20=0.239(60)/1
 T:*/20-08=0.219(60)/1
 Z:350 Österreich Mobilfunk
 A:Österreich Mobilfunk # +43699
-T:*/08-20=0.399(60)/1
+T:*/0,0/18-20=0.399(60)/1
 T:*/20-08=0.379(60)/1
 Z:351 Österreich
 A:Österreich # +43
-T:*/08-20=0.319(60)/1
+T:*/0,0/18-20=0.319(60)/1
 T:*/20-08=0.299(60)/1
 Z:352 Liechtenstein
 A:Liechtenstein # +423
-T:*/08-20=0.419(60)/1
+T:*/0,0/18-20=0.419(60)/1
 T:*/20-08=0.399(60)/1
 Z:353 Slowakische Rep.
 A:Slowakische Rep. # +421
-T:*/08-20=0.629(60)/1
+T:*/0,0/18-20=0.629(60)/1
 T:*/20-08=0.609(60)/1
 Z:354 Tschechische Rep.
 A:Tschechische Rep. # +420
-T:*/08-20=0.569(60)/1
+T:*/0,0/18-20=0.569(60)/1
 T:*/20-08=0.549(60)/1
 Z:355 Schweiz Mobilfunk
 A:Schweiz Mobilfunk # +4179
-T:*/08-20=0.369(60)/1
+T:*/0,0/18-20=0.369(60)/1
 T:*/20-08=0.359(60)/1
 Z:356 Schweiz
 A:Schweiz # +41
-T:*/08-20=0.279(60)/1
+T:*/0,0/18-20=0.279(60)/1
 T:*/20-08=0.259(60)/1
 Z:357 Rumänien
 A:Rumänien # +40
-T:*/08-20=0.779(60)/1
+T:*/0,0/18-20=0.779(60)/1
 T:*/20-08=0.759(60)/1
 Z:358 Italien Mobilfunk
 A:Italien Mobilfunk # +39368
-T:*/08-20=0.499(60)/1
+T:*/0,0/18-20=0.499(60)/1
 T:*/20-08=0.479(60)/1
 Z:359 Italien
 A:Italien # +39
-T:*/08-20=0.379(60)/1
+T:*/0,0/18-20=0.379(60)/1
 T:*/20-08=0.359(60)/1
 Z:360 Mazedonien
 A:Mazedonien # +389
-T:*/08-20=0.769(60)/1
+T:*/0,0/18-20=0.769(60)/1
 T:*/20-08=0.749(60)/1
 Z:361 Bosnien-Herzegowina
 A:Bosnien-Herzegowina # +387
-T:*/08-20=0.689(60)/1
+T:*/0,0/18-20=0.689(60)/1
 T:*/20-08=0.669(60)/1
 Z:362 Slowenien
 A:Slowenien # +386
-T:*/08-20=0.509(60)/1
+T:*/0,0/18-20=0.509(60)/1
 T:*/20-08=0.489(60)/1
 Z:363 Kroatien
 A:Kroatien # +385
-T:*/08-20=0.679(60)/1
+T:*/0,0/18-20=0.679(60)/1
 T:*/20-08=0.659(60)/1
 Z:364 Jugoslawien
 A:Jugoslawien # +381
-T:*/08-20=0.759(60)/1
+T:*/0,0/18-20=0.759(60)/1
 T:*/20-08=0.739(60)/1
 Z:365 Ukraine
 A:Ukraine # +380
-T:*/08-20=0.829(60)/1
+T:*/0,0/18-20=0.829(60)/1
 T:*/20-08=0.809(60)/1
 Z:366 Vatican City
 A:Vatican City # +379
-T:*/08-20=0.489(60)/1
+T:*/0,0/18-20=0.489(60)/1
 T:*/20-08=0.469(60)/1
 Z:367 San Marino
 A:San Marino # +378
-T:*/08-20=0.719(60)/1
+T:*/0,0/18-20=0.719(60)/1
 T:*/20-08=0.699(60)/1
 Z:368 Monaco
 A:Monaco # +377
-T:*/08-20=0.409(60)/1
+T:*/0,0/18-20=0.409(60)/1
 T:*/20-08=0.389(60)/1
 Z:369 Andorra
 A:Andorra # +376
-T:*/08-20=0.599(60)/1
+T:*/0,0/18-20=0.599(60)/1
 T:*/20-08=0.579(60)/1
 Z:370 Weißrußland/Belarus
 A:Weißrußland/Belarus # +375
-T:*/08-20=0.809(60)/1
+T:*/0,0/18-20=0.809(60)/1
 T:*/20-08=0.789(60)/1
 Z:371 Armenien
 A:Armenien # +374
-T:*/08-20=1.219(60)/1
+T:*/0,0/18-20=1.219(60)/1
 T:*/20-08=1.199(60)/1
 Z:372 Moldavien
 A:Moldavien # +373
-T:*/08-20=0.879(60)/1
+T:*/0,0/18-20=0.879(60)/1
 T:*/20-08=0.859(60)/1
 Z:373 Estland
 A:Estland # +372
-T:*/08-20=0.599(60)/1
+T:*/0,0/18-20=0.599(60)/1
 T:*/20-08=0.579(60)/1
 Z:374 Lettland (Latvia)
 A:Lettland (Latvia) # +371
-T:*/08-20=0.709(60)/1
+T:*/0,0/18-20=0.709(60)/1
 T:*/20-08=0.689(60)/1
 Z:375 Litauen
 A:Litauen # +370
-T:*/08-20=0.789(60)/1
+T:*/0,0/18-20=0.789(60)/1
 T:*/20-08=0.769(60)/1
 Z:376 Ungarn
 A:Ungarn # +36
-T:*/08-20=0.519(60)/1
+T:*/0,0/18-20=0.519(60)/1
 T:*/20-08=0.499(60)/1
 Z:377 Bulgarien
 A:Bulgarien # +359
-T:*/08-20=0.689(60)/1
+T:*/0,0/18-20=0.689(60)/1
 T:*/20-08=0.669(60)/1
 Z:378 Finland
 A:Finland # +358
-T:*/08-20=0.279(60)/1
+T:*/0,0/18-20=0.279(60)/1
 T:*/20-08=0.259(60)/1
 Z:379 Zypern(griech)
 A:Zypern(griech) # +357
-T:*/08-20=0.679(60)/1
+T:*/0,0/18-20=0.679(60)/1
 T:*/20-08=0.659(60)/1
 Z:380 Malta
 A:Malta # +356
-T:*/08-20=0.569(60)/1
+T:*/0,0/18-20=0.569(60)/1
 T:*/20-08=0.549(60)/1
 Z:381 Albanien
 A:Albanien # +355
-T:*/08-20=0.649(60)/1
+T:*/0,0/18-20=0.649(60)/1
 T:*/20-08=0.629(60)/1
 Z:382 Island
 A:Island # +354
-T:*/08-20=0.549(60)/1
+T:*/0,0/18-20=0.549(60)/1
 T:*/20-08=0.529(60)/1
 Z:383 Irland Mobilfunk
 A:Irland Mobilfunk # +35389
-T:*/08-20=0.499(60)/1
+T:*/0,0/18-20=0.499(60)/1
 T:*/20-08=0.479(60)/1
 Z:384 Irland
 A:Irland # +353
-T:*/08-20=0.329(60)/1
+T:*/0,0/18-20=0.329(60)/1
 T:*/20-08=0.309(60)/1
 Z:385 Luxemburg
 A:Luxemburg # +352
-T:*/08-20=0.399(60)/1
+T:*/0,0/18-20=0.399(60)/1
 T:*/20-08=0.379(60)/1
 Z:386 Portugal
 A:Portugal # +351
-T:*/08-20=0.529(60)/1
+T:*/0,0/18-20=0.529(60)/1
 T:*/20-08=0.519(60)/1
 Z:387 Gibraltar
 A:Gibraltar # +350
-T:*/08-20=0.759(60)/1
+T:*/0,0/18-20=0.759(60)/1
 T:*/20-08=0.739(60)/1
 Z:388 Spanien Mobilfunk
 A:Spanien Mobilfunk # +34689
-T:*/08-20=0.529(60)/1
+T:*/0,0/18-20=0.529(60)/1
 T:*/20-08=0.509(60)/1
 Z:389 Spanien
 A:Spanien # +34
-T:*/08-20=0.419(60)/1
+T:*/0,0/18-20=0.419(60)/1
 T:*/20-08=0.399(60)/1
 Z:390 Frankreich Mobilfunk
 A:Frankreich Mobilfunk # +336
-T:*/08-20=0.369(60)/1
+T:*/0,0/18-20=0.369(60)/1
 T:*/20-08=0.359(60)/1
 Z:391 Frankreich
 A:Frankreich # +33
-T:*/08-20=0.279(60)/1
+T:*/0,0/18-20=0.279(60)/1
 T:*/20-08=0.259(60)/1
 Z:392 Belgien Mobilfunk
 A:Belgien Mobilfunk # +3275
-T:*/08-20=0.389(60)/1
+T:*/0,0/18-20=0.389(60)/1
 T:*/20-08=0.369(60)/1
 Z:393 Belgien
 A:Belgien # +32
-T:*/08-20=0.299(60)/1
+T:*/0,0/18-20=0.299(60)/1
 T:*/20-08=0.279(60)/1
 Z:394 Niederlande Mobilfunk
 A:Niederlande Mobilfunk # +3165
-T:*/08-20=0.369(60)/1
+T:*/0,0/18-20=0.369(60)/1
 T:*/20-08=0.349(60)/1
 Z:395 Niederlande
 A:Niederlande # +31
-T:*/08-20=0.249(60)/1
+T:*/0,0/18-20=0.249(60)/1
 T:*/20-08=0.229(60)/1
 Z:396 Griechenland
 A:Griechenland # +30
-T:*/08-20=0.589(60)/1
+T:*/0,0/18-20=0.589(60)/1
 T:*/20-08=0.569(60)/1
 Z:397 Grönland
 A:Grönland # +299
-T:*/08-20=0.689(60)/1
+T:*/0,0/18-20=0.689(60)/1
 T:*/20-08=0.669(60)/1
 Z:398 Färöer
 A:Färöer # +298
-T:*/08-20=0.659(60)/1
+T:*/0,0/18-20=0.659(60)/1
 T:*/20-08=0.639(60)/1
 Z:399 Aruba
 A:Aruba # +297
-T:*/08-20=0.719(60)/1
+T:*/0,0/18-20=0.719(60)/1
 T:*/20-08=0.699(60)/1
 Z:400 Eritrea
 A:Eritrea # +291
-T:*/08-20=1.919(60)/1
+T:*/0,0/18-20=1.919(60)/1
 T:*/20-08=1.899(60)/1
 Z:401 St. Helena
 A:St. Helena # +290
-T:*/08-20=1.179(60)/1
+T:*/0,0/18-20=1.179(60)/1
 T:*/20-08=1.159(60)/1
 Z:402 Südafrika
 A:Südafrika # +27
-T:*/08-20=0.779(60)/1
+T:*/0,0/18-20=0.779(60)/1
 T:*/20-08=0.759(60)/1
 Z:403 Mayotte
 A:Mayotte # +2696
-T:*/08-20=0.949(60)/1
+T:*/0,0/18-20=0.949(60)/1
 T:*/20-08=0.929(60)/1
 Z:404 Komoren
 A:Komoren # +269
-T:*/08-20=1.409(60)/1
+T:*/0,0/18-20=1.409(60)/1
 T:*/20-08=1.389(60)/1
 Z:405 Swasiland
 A:Swasiland # +268
-T:*/08-20=0.559(60)/1
+T:*/0,0/18-20=0.559(60)/1
 T:*/20-08=0.539(60)/1
 Z:406 Botswana Republic
 A:Botswana Republic # +267
-T:*/08-20=0.799(60)/1
+T:*/0,0/18-20=0.799(60)/1
 T:*/20-08=0.779(60)/1
 Z:407 Lesotho
 A:Lesotho # +266
-T:*/08-20=0.949(60)/1
+T:*/0,0/18-20=0.949(60)/1
 T:*/20-08=0.929(60)/1
 Z:408 Malawi
 A:Malawi # +265
-T:*/08-20=0.999(60)/1
+T:*/0,0/18-20=0.999(60)/1
 T:*/20-08=0.979(60)/1
 Z:409 Namibia
 A:Namibia # +264
-T:*/08-20=0.789(60)/1
+T:*/0,0/18-20=0.789(60)/1
 T:*/20-08=0.769(60)/1
 Z:410 Simbabwe
 A:Simbabwe # +263
-T:*/08-20=0.769(60)/1
+T:*/0,0/18-20=0.769(60)/1
 T:*/20-08=0.749(60)/1
 Z:411 Reunion Islands
 A:Reunion Islands # +262
-T:*/08-20=1.039(60)/1
+T:*/0,0/18-20=1.039(60)/1
 T:*/20-08=1.019(60)/1
 Z:412 Madagaskar
 A:Madagaskar # +261
-T:*/08-20=1.559(60)/1
+T:*/0,0/18-20=1.559(60)/1
 T:*/20-08=1.539(60)/1
 Z:413 Sambia
 A:Sambia # +260
-T:*/08-20=1.319(60)/1
+T:*/0,0/18-20=1.319(60)/1
 T:*/20-08=1.299(60)/1
 Z:414 Mozambik
 A:Mozambik # +258
-T:*/08-20=0.979(60)/1
+T:*/0,0/18-20=0.979(60)/1
 T:*/20-08=0.959(60)/1
 Z:415 Burundi
 A:Burundi # +257
-T:*/08-20=1.159(60)/1
+T:*/0,0/18-20=1.159(60)/1
 T:*/20-08=1.139(60)/1
 Z:416 Uganda
 A:Uganda # +256
-T:*/08-20=0.879(60)/1
+T:*/0,0/18-20=0.879(60)/1
 T:*/20-08=0.859(60)/1
 Z:417 Tansania
 A:Tansania # +255
-T:*/08-20=1.039(60)/1
+T:*/0,0/18-20=1.039(60)/1
 T:*/20-08=1.019(60)/1
 Z:418 Kenia
 A:Kenia # +254
-T:*/08-20=1.279(60)/1
+T:*/0,0/18-20=1.279(60)/1
 T:*/20-08=1.259(60)/1
 Z:419 Dschibuti
 A:Dschibuti # +253
-T:*/08-20=1.579(60)/1
+T:*/0,0/18-20=1.579(60)/1
 T:*/20-08=1.559(60)/1
 Z:420 Somalia
 A:Somalia # +252
-T:*/08-20=1.599(60)/1
+T:*/0,0/18-20=1.599(60)/1
 T:*/20-08=1.579(60)/1
 Z:421 Äthiopien
 A:Äthiopien # +251
-T:*/08-20=1.799(60)/1
+T:*/0,0/18-20=1.799(60)/1
 T:*/20-08=1.779(60)/1
 Z:422 Ruanda
 A:Ruanda # +250
-T:*/08-20=1.499(60)/1
+T:*/0,0/18-20=1.499(60)/1
 T:*/20-08=1.489(60)/1
 Z:423 Sudan
 A:Sudan # +249
-T:*/08-20=0.879(60)/1
+T:*/0,0/18-20=0.879(60)/1
 T:*/20-08=0.859(60)/1
 Z:424 Seychellen
 A:Seychellen # +248
-T:*/08-20=1.639(60)/1
+T:*/0,0/18-20=1.639(60)/1
 T:*/20-08=1.619(60)/1
 Z:425 Ascension Island
 A:Ascension Island # +247
-T:*/08-20=1.409(60)/1
+T:*/0,0/18-20=1.409(60)/1
 T:*/20-08=1.389(60)/1
 Z:426 Diego Garcia
 A:Diego Garcia # +246
-T:*/08-20=1.279(60)/1
+T:*/0,0/18-20=1.279(60)/1
 T:*/20-08=1.259(60)/1
 Z:427 Guinea Bissau
 A:Guinea Bissau # +245
-T:*/08-20=1.549(60)/1
+T:*/0,0/18-20=1.549(60)/1
 T:*/20-08=1.529(60)/1
 Z:428 Angola
 A:Angola # +244
-T:*/08-20=0.929(60)/1
+T:*/0,0/18-20=0.929(60)/1
 T:*/20-08=0.909(60)/1
 Z:429 Zaire
 A:Zaire # +243
-T:*/08-20=1.239(60)/1
+T:*/0,0/18-20=1.239(60)/1
 T:*/20-08=1.219(60)/1
 Z:430 Kongo
 A:Kongo # +242
-T:*/08-20=1.219(60)/1
+T:*/0,0/18-20=1.219(60)/1
 T:*/20-08=1.199(60)/1
 Z:431 Gabun
 A:Gabun # +241
-T:*/08-20=1.279(60)/1
+T:*/0,0/18-20=1.279(60)/1
 T:*/20-08=1.259(60)/1
 Z:432 Äquatorial Guinea
 A:Äquatorial Guinea # +240
-T:*/08-20=1.699(60)/1
+T:*/0,0/18-20=1.699(60)/1
 T:*/20-08=1.679(60)/1
 Z:433 Sao Tome
 A:Sao Tome # +239
-T:*/08-20=1.779(60)/1
+T:*/0,0/18-20=1.779(60)/1
 T:*/20-08=1.759(60)/1
 Z:434 Kap Verde
 A:Kap Verde # +238
-T:*/08-20=1.139(60)/1
+T:*/0,0/18-20=1.139(60)/1
 T:*/20-08=1.119(60)/1
 Z:435 Kamerun
 A:Kamerun # +237
-T:*/08-20=1.429(60)/1
+T:*/0,0/18-20=1.429(60)/1
 T:*/20-08=1.409(60)/1
 Z:436 Zentral Afrika (Rep.)
 A:Zentral Afrika (Rep.) # +236
-T:*/08-20=1.849(60)/1
+T:*/0,0/18-20=1.849(60)/1
 T:*/20-08=1.829(60)/1
 Z:437 Tschad
 A:Tschad # +235
-T:*/08-20=1.969(60)/1
+T:*/0,0/18-20=1.969(60)/1
 T:*/20-08=1.949(60)/1
 Z:438 Nigeria
 A:Nigeria # +234
-T:*/08-20=1.479(60)/1
+T:*/0,0/18-20=1.479(60)/1
 T:*/20-08=1.459(60)/1
 Z:439 Ghana
 A:Ghana # +233
-T:*/08-20=0.819(60)/1
+T:*/0,0/18-20=0.819(60)/1
 T:*/20-08=0.799(60)/1
 Z:440 Sierra Leone
 A:Sierra Leone # +232
-T:*/08-20=1.539(60)/1
+T:*/0,0/18-20=1.539(60)/1
 T:*/20-08=1.519(60)/1
 Z:441 Liberia
 A:Liberia # +231
-T:*/08-20=0.949(60)/1
+T:*/0,0/18-20=0.949(60)/1
 T:*/20-08=0.929(60)/1
 Z:442 Mauritius
 A:Mauritius # +230
-T:*/08-20=1.409(60)/1
+T:*/0,0/18-20=1.409(60)/1
 T:*/20-08=1.389(60)/1
 Z:443 Benin
 A:Benin # +229
-T:*/08-20=1.059(60)/1
+T:*/0,0/18-20=1.059(60)/1
 T:*/20-08=1.039(60)/1
 Z:444 Togo
 A:Togo # +228
-T:*/08-20=1.519(60)/1
+T:*/0,0/18-20=1.519(60)/1
 T:*/20-08=1.499(60)/1
 Z:445 Niger
 A:Niger # +227
-T:*/08-20=1.229(60)/1
+T:*/0,0/18-20=1.229(60)/1
 T:*/20-08=1.209(60)/1
 Z:446 Burkina Faso
 A:Burkina Faso # +226
-T:*/08-20=1.219(60)/1
+T:*/0,0/18-20=1.219(60)/1
 T:*/20-08=1.199(60)/1
 Z:447 Elfenbeinküste
 A:Elfenbeinküste # +225
-T:*/08-20=1.529(60)/1
+T:*/0,0/18-20=1.529(60)/1
 T:*/20-08=1.509(60)/1
 Z:448 Guinea Republic
 A:Guinea Republic # +224
-T:*/08-20=0.849(60)/1
+T:*/0,0/18-20=0.849(60)/1
 T:*/20-08=0.829(60)/1
 Z:449 Mali Rep.
 A:Mali Rep. # +223
-T:*/08-20=1.499(60)/1
+T:*/0,0/18-20=1.499(60)/1
 T:*/20-08=1.489(60)/1
 Z:450 Mauretanien
 A:Mauretanien # +222
-T:*/08-20=1.259(60)/1
+T:*/0,0/18-20=1.259(60)/1
 T:*/20-08=1.239(60)/1
 Z:451 Senegal Republic
 A:Senegal Republic # +221
-T:*/08-20=1.799(60)/1
+T:*/0,0/18-20=1.799(60)/1
 T:*/20-08=1.779(60)/1
 Z:452 Gambia
 A:Gambia # +220
-T:*/08-20=1.079(60)/1
+T:*/0,0/18-20=1.079(60)/1
 T:*/20-08=1.059(60)/1
 Z:453 Libyen
 A:Libyen # +218
-T:*/08-20=0.729(60)/1
+T:*/0,0/18-20=0.729(60)/1
 T:*/20-08=0.709(60)/1
 Z:454 Tunesien
 A:Tunesien # +216
-T:*/08-20=0.779(60)/1
+T:*/0,0/18-20=0.779(60)/1
 T:*/20-08=0.759(60)/1
 Z:455 Algerien
 A:Algerien # +213
-T:*/08-20=0.699(60)/1
+T:*/0,0/18-20=0.699(60)/1
 T:*/20-08=0.679(60)/1
 Z:456 Marokko
 A:Marokko # +212
-T:*/08-20=0.839(60)/1
+T:*/0,0/18-20=0.839(60)/1
 T:*/20-08=0.819(60)/1
 Z:457 Ägypten
 A:Ägypten # +20
-T:*/08-20=1.199(60)/1
+T:*/0,0/18-20=1.199(60)/1
 T:*/20-08=1.179(60)/1
 Z:458 Alaska
 A:Alaska # +1907
-T:*/08-20=0.319(60)/1
+T:*/0,0/18-20=0.319(60)/1
 T:*/20-08=0.299(60)/1
 Z:459 Jamaica
 A:Jamaica # +1876
-T:*/08-20=1.009(60)/1
+T:*/0,0/18-20=1.009(60)/1
 T:*/20-08=0.989(60)/1
 Z:460 St Kitts
 A:St Kitts # +1869
-T:*/08-20=0.959(60)/1
+T:*/0,0/18-20=0.959(60)/1
 T:*/20-08=0.939(60)/1
 Z:461 Nevis Islands
 A:Nevis Islands # +1869
-T:*/08-20=0.959(60)/1
+T:*/0,0/18-20=0.959(60)/1
 T:*/20-08=0.939(60)/1
 Z:462 Trinidad and Tobago
 A:Trinidad and Tobago # +1868
-T:*/08-20=1.089(60)/1
+T:*/0,0/18-20=1.089(60)/1
 T:*/20-08=1.069(60)/1
 Z:463 Dominikanische Rep.
 A:Dominikanische Rep. # +1809
-T:*/08-20=0.489(60)/1
+T:*/0,0/18-20=0.489(60)/1
 T:*/20-08=0.469(60)/1
 Z:464 Hawaii
 A:Hawaii # +1808
-T:*/08-20=0.319(60)/1
+T:*/0,0/18-20=0.319(60)/1
 T:*/20-08=0.299(60)/1
 Z:465 Puerto Rico
 A:Puerto Rico # +1787
-T:*/08-20=0.309(60)/1
+T:*/0,0/18-20=0.309(60)/1
 T:*/20-08=0.289(60)/1
 Z:466 St. Vincent and Grenadines
 A:St. Vincent and Grenadines # +1784
-T:*/08-20=1.179(60)/1
+T:*/0,0/18-20=1.179(60)/1
 T:*/20-08=1.159(60)/1
 Z:467 Dominica
 A:Dominica # +1767
-T:*/08-20=1.019(60)/1
+T:*/0,0/18-20=1.019(60)/1
 T:*/20-08=0.999(60)/1
 Z:468 St. Lucia
 A:St. Lucia # +1758
-T:*/08-20=1.069(60)/1
+T:*/0,0/18-20=1.069(60)/1
 T:*/20-08=1.049(60)/1
 Z:469 Guam
 A:Guam # +1671
-T:*/08-20=0.389(60)/1
+T:*/0,0/18-20=0.389(60)/1
 T:*/20-08=0.369(60)/1
 Z:470 Montserrat
 A:Montserrat # +1664
-T:*/08-20=1.209(60)/1
+T:*/0,0/18-20=1.209(60)/1
 T:*/20-08=1.189(60)/1
 Z:471 Turks and Caicos Islands
 A:Turks and Caicos Islands # +1649
-T:*/08-20=0.929(60)/1
+T:*/0,0/18-20=0.929(60)/1
 T:*/20-08=0.909(60)/1
 Z:472 Grenada
 A:Grenada # +1473
-T:*/08-20=1.059(60)/1
+T:*/0,0/18-20=1.059(60)/1
 T:*/20-08=1.039(60)/1
 Z:473 Bermuda
 A:Bermuda # +1441
-T:*/08-20=0.539(60)/1
+T:*/0,0/18-20=0.539(60)/1
 T:*/20-08=0.519(60)/1
 Z:474 Kaiman Inseln
 A:Kaiman Inseln # +1345
-T:*/08-20=0.629(60)/1
+T:*/0,0/18-20=0.629(60)/1
 T:*/20-08=0.609(60)/1
 Z:475 Amerikanische Jungferninseln
 A:Amerikanische Jungferninseln # +1340
-T:*/08-20=0.309(60)/1
+T:*/0,0/18-20=0.309(60)/1
 T:*/20-08=0.289(60)/1
 Z:476 Brit. Jungferninseln
 A:Brit. Jungferninseln # +1284
-T:*/08-20=0.759(60)/1
+T:*/0,0/18-20=0.759(60)/1
 T:*/20-08=0.739(60)/1
 Z:477 Antigua & Barbuda
 A:Antigua & Barbuda # +1268
-T:*/08-20=0.949(60)/1
+T:*/0,0/18-20=0.949(60)/1
 T:*/20-08=0.929(60)/1
 Z:478 Anguilla
 A:Anguilla # +1264
-T:*/08-20=0.889(60)/1
+T:*/0,0/18-20=0.889(60)/1
 T:*/20-08=0.869(60)/1
 Z:479 Barbados
 A:Barbados # +1246
-T:*/08-20=1.019(60)/1
+T:*/0,0/18-20=1.019(60)/1
 T:*/20-08=0.999(60)/1
 Z:480 Bahamas
 A:Bahamas # +1242
-T:*/08-20=0.429(60)/1
+T:*/0,0/18-20=0.429(60)/1
 T:*/20-08=0.409(60)/1
 Z:481 USA
 A:USA # +1
-T:*/08-20=0.269(60)/1
+T:*/0,0/18-20=0.269(60)/1
 T:*/20-08=0.249(60)/1
 Z:482 Kanada
 A:Kanada # +1
-T:*/08-20=0.289(60)/1
+T:*/0,0/18-20=0.289(60)/1
 T:*/20-08=0.269(60)/1
 #####################################################################
 #
@@ -13727,7 +13727,7 @@ C:Adresse:  Hanauer Landstrasse 187-189
 C:	    60314 Frankfurt am Main
 D:dtag
 Z:1-4 National
-T:W/09-18=0.102/60 Hauptzeit
+T:W/0,0/19-18=0.102/60 Hauptzeit
 T:W/18-21=0.085(60)/60 Nebenzeit
 T:W/21-9=0.05(60)/60 Nacht
 T:E/9-21=0.085(60)/60 Hauptzeit
@@ -13740,7 +13740,7 @@ A:+49170,+49171		# D1
 A:+49172,+49173		# D2
 A:+49177,+49178		# Eplus
 A:+49176,+49179		# E2
-T:W/09-18=0.57/60 Hauptzeit
+T:W/0,0/19-18=0.57/60 Hauptzeit
 T:W/18-09=0.365/60 Nebenzeit
 T:E/*=0.365/60
 # Auslandstarife
@@ -13817,10 +13817,10 @@ A:Belgien,Frankreich,Niederlande,Schweiz,Großbritannien,Schweiz Mobilfunk
 T:1-5/9-18=0.185/30,0.37(60)/1
 T:2-5/18-9=0.165/30,0.33(60)/1
 T:1/18-0=0.165/30,0.33(60)/1
-T:6/0-9=0.165/30,0.33(60)/1
+T:6/0,0/1-9=0.165/30,0.33(60)/1
 T:6/9-0=0.241/60 Weekend Special
 T:7/*=0.241/60 Weekend Special
-T:1/0-9=0.241/60 Weekend Special
+T:1/0,0/1-9=0.241/60 Weekend Special
 Z:210
 A:Osterreich
 T:W/9-18=0.185/30,0.37(60)/1
@@ -13926,19 +13926,19 @@ C:Aktiengesellschaft für telefonische Informationsdienste, Bahnhofstraße 26, 822
 # Stuttgart, München
 Z:1-4 Inlandsverbindungen
 A:+49
-T:W/09-17=0.089/60
+T:W/0,0/19-17=0.089/60
 T:W/17-20=0.079/60
 T:W/20-21=0.058/60
 T:W/21-22=0.039/60
 T:W/22-07=0.038/60
-T:W/07-08=0.049/60
-T:W/08-09=0.054/60
-T:E,H/09-20=0.069/60
+T:W/0,0/17-08=0.049/60
+T:W/0,0/18-09=0.054/60
+T:E,H/0,0/19-20=0.069/60
 T:E,H/20-21=0.058/60
 T:E,H/21-22=0.039/60
 T:E,H/22-07=0.038/60
-T:E,H/07-08=0.049/60
-T:E,H/08-09=0.054/60
+T:E,H/0,0/17-08=0.049/60
+T:E,H/0,0/18-09=0.054/60
 Z:11 Mobilfunk
 A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
 A:+49170,+49171		# D1
@@ -13986,7 +13986,7 @@ C:
 C:Tarif: Westcom privat
 D:dtag
 Z:1-4 National
-T:W/08-18=0.16(60)/1 Standard
+T:W/0,0/18-18=0.16(60)/1 Standard
 T:W/18-08=0.09(60)/1 Spar
 T:E,H/*=0.09(60)/1 Spar
 A:+49
@@ -14052,15 +14052,15 @@ C:Dies ist *kein* All-in-One Zugang, es werden zusätzliche Gebühren erhoben!
 Z:100 Internet
 A:0191999 # UUnet
 A:0192333 # NDH
-T:W/05-09=0.048(60)/1 UUnet
-T:W/09-18=0.08(60)/1 UUnet
+T:W/0,0/15-09=0.048(60)/1 UUnet
+T:W/0,0/19-18=0.08(60)/1 UUnet
 T:W/18-21=0.048(60)/1 UUnet
 T:W/21-05=0.03(60)/1 UUnet
-T:E,H/05-21=0.048(60)/1 UUnet
+T:E,H/0,0/15-21=0.048(60)/1 UUnet
 T:E,H/21-05=0.03(60)/1 UUnet
 Z:101 knUUT
 A:0191955
-T:*/09-21=0.055/60
+T:*/0,0/19-21=0.055/60
 T:*/21-09=0.049/60
 #####################################################################
 #
@@ -14075,11 +14075,11 @@ P:90 Viag Interkom
 C:GmbH & Co. KG, Elsenheimer Straße 11, 81927 München 01090
 D:dtag
 Z:1-4 Fern
-T:W/06-08=0.10/60 Sparzeit
-T:W/08-18=0.15/60 Hauptzeit
+T:W/0,0/16-08=0.10/60 Sparzeit
+T:W/0,0/18-18=0.15/60 Hauptzeit
 T:W/18-21=0.10/60 Freizeit
 T:W/21-06=0.05/60 Traumzeit
-T:E,H/06-21=0.10/60 Freizeit
+T:E,H/0,0/16-21=0.10/60 Freizeit
 T:E,H/21-06=0.05/60 Nacht
 A:+49
 Z:10-15 Mobil
@@ -14089,7 +14089,7 @@ A:+49170,+49171		# D1
 A:+49172,+49173		# D2
 A:+49177,+49178		# Eplus
 A:+49176,+49179		# E2
-T:W/08-18=0.89/60
+T:W/0,0/18-18=0.89/60
 T:W/18-08=0.49/60 Freizeit
 T:E,H/*=0.49/60 Traumzeit
 Z:21 Telefonauskunft
@@ -14168,7 +14168,7 @@ C:Mox Telecom AG
 C:Reseller von Star Telecom
 D:dtag
 Z:1-4 Deutschlandweit
-T:*/08-21=0.139(60)/1
+T:*/0,0/18-21=0.139(60)/1
 T:*/21-08=0.079(60)/1
 A:+49
 Z:10-15 Fest-zu-Mobil
@@ -14177,11 +14177,11 @@ A:+49170,+49171  		  # D1
 A:+49172,+49173		  # D2
 A:+49177,+49178		  # Eplus
 A:+49176,+49179  		  # E2
-T:*/08-21=0.459(60)/1
+T:*/0,0/18-21=0.459(60)/1
 T:*/21-08=0.399(60)/1
 Z:200 Großbritannien, USA
 A:Großbritannien, USA
-T:*/08-21=0.259(60)/1
+T:*/0,0/18-21=0.259(60)/1
 T:*/21-08=0.199(60)/1
 Z:201
 A:Australien
@@ -14199,14 +14199,14 @@ A:Österreich
 A:Schweden
 A:Schweiz
 A:Spanien
-T:*/08-21=0.359(60)/1
+T:*/0,0/18-21=0.359(60)/1
 T:*/21-08=0.259(60)/1
 Z:202
 A:Hongkong
 A:Israel
 A:Japan
 A:Korea (Republik), Südkorea
-T:*/08-21=0.459(60)/1
+T:*/0,0/18-21=0.459(60)/1
 T:*/21-08=0.359(60)/1
 Z:203
 A:Griechenland
@@ -14674,11 +14674,11 @@ D:dtag
 C:AG, Horbeller Straße 33, 50858 Köln 010050
 Z:1-4 Deutschland
 A:+49
-T:W/08-21=0.11/60,0.11(60)/15
+T:W/0,0/18-21=0.11/60,0.11(60)/15
 T:W/21-22=0.07/60,0.07(60)/15
 T:W/22-06=0.1185/180,0.06/60
-T:W/06-08=0.07/60,0.07(60)/15
-T:E/06-22=0.07/60,0.07(60)/15
+T:W/0,0/16-08=0.07/60,0.07(60)/15
+T:E/0,0/16-22=0.07/60,0.07(60)/15
 T:E/22-06=0.1185/180,0.06/60
 Z:10 Mobilfunk
 A:+491618	# T-C-Tel Voice Mail
@@ -14687,7 +14687,7 @@ A:+49170,+49171		# D1
 A:+49172,+49173		# D2
 A:+49177,+49178		# Eplus
 A:+49176,+49179		# E2
-T:W/08-21=0.69/60,0.69(60)/15
+T:W/0,0/18-21=0.69/60,0.69(60)/15
 T:W/21-08=0.59/60,0.59(60)/15
 #####################################################################
 P:154 Osnatel
