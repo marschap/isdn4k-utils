@@ -4,7 +4,7 @@
 
 <title>FAQ for isdn4linux
 <author>Matthias Hessler (<tt><htmlurl url="mailto:hessler@isdn4linux.de" name="hessler@isdn4linux.de"></tt>)
-<date>v2.0.69, 18. August 2002
+<date>v2.0.70, 14. September 2002
 <abstract>
 If you are reading this FAQ online, you may consider downloading the whole
 thing, and reading it offline (much cheaper). To download the latest
@@ -627,6 +627,20 @@ installed. Also, isdnlog should always be running (otherwise your dialout
 will be delayed by 3 seconds). If the ABC-extensions are not installed,
 isdnlog prints hints to the log file, which provider would have been chosen.
 
+<sect1> feature_internetdialin: Can isdn4linux be setup such that it  
+dials into the Internet, whenever I call it via telephone?  
+<label id="feature_internetdialin">
+<p>
+Yes, this is possible with isdnlog. You have to configure isdnlog such that
+it can execute a script whenever someone dials in. In the script you can
+check for the correct telephone number, then trigger the dialin.
+To access your computer then over the internet, you can then access it via
+its ip address. In case of dynamic ip address assignment, you probably want
+to store the new ip somehow. Storage in a html page or via dynamic DNS
+may be good possibilities. If you understand German, there was an article
+about exactly this setup in ct 18/2002, page 204 (Bei Anruf Internet - Handy-
+Anruf l&ouml;st Internet-Einwahl aus).
+
 <sect1> feature_future: Which features are planned for the future?  
 <label id="feature_future">
 <p>
@@ -679,6 +693,8 @@ helpful articles at least on these issues:
 <item>ct 7/2001, page 228: <tt>Des Surfers Bastelstunde: Mobilfunktechnik
 HSCSD aussch&ouml;pfen</tt>
 (also contains information on dial-in configuration without HSCSD).
+<item>ct 15/2002, page 204: <tt>Bei Anruf Internet: Handy-Anruf l&ouml;st
+Internet-Einwahl aus</tt>
 </itemize>
 
 Also have a look at question <ref id="config_links" name="config_links"> for
