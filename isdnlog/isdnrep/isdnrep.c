@@ -1,4 +1,4 @@
-/* $Id: isdnrep.c,v 1.74 1999/08/20 19:28:37 akool Exp $
+/* $Id: isdnrep.c,v 1.75 1999/08/21 13:00:10 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -24,6 +24,9 @@
  *
  *
  * $Log: isdnrep.c,v $
+ * Revision 1.75  1999/08/21 13:00:10  akool
+ * small fixes
+ *
  * Revision 1.74  1999/08/20 19:28:37  akool
  * isdnlog-3.45
  *  - removed about 1 Mb of (now unused) data files
@@ -1896,7 +1899,8 @@ static int print_line(int status, one_call *cur_call, int computed, char *overla
 
 static void bprint(one_call *call)
 {
-  register char *p = call->num[CALLED];
+  register char  *p = call->num[CALLED];
+  register int	  mobil = 0;
   auto	   char	  target[BUFSIZ], s[BUFSIZ];
   auto	   TELNUM number;
 
@@ -1930,8 +1934,38 @@ static void bprint(one_call *call)
       print_msg(PRT_NORMAL, "\nREPAIR: %s -> %s\n", call->num[CALLED], s);
     } /* if */
 
-    normalizeNumber(s, &number, TN_ALL);
-    print_msg(PRT_NORMAL, "%s\n", formatNumber("%A", &number));
+    if (!memcmp(s, "+49170", 6))
+      mobil = 1;
+    else if (!memcmp(s, "+49171", 6))
+      mobil = 1;
+    else if (!memcmp(s, "+49172", 6))
+      mobil = 2;
+    else if (!memcmp(s, "+49173", 6))
+      mobil = 2;
+    else if (!memcmp(s, "+49177", 6))
+      mobil = 3;
+    else if (!memcmp(s, "+49178", 6))
+      mobil = 3;
+    else if (!memcmp(s, "+49176", 6))
+      mobil = 4;
+    else if (!memcmp(s, "+49179", 6))
+      mobil = 4;
+    else if (*s != '+')
+      mobil = 5;
+
+    if (mobil) {
+      switch (mobil) {
+        case 1 : print_msg(PRT_NORMAL, "Mobilfunknetz D1\n");    break;
+        case 2 : print_msg(PRT_NORMAL, "Mobilfunknetz D2\n");    break;
+        case 3 : print_msg(PRT_NORMAL, "Mobilfunknetz Eplus\n"); break;
+        case 4 : print_msg(PRT_NORMAL, "Mobilfunknetz E2\n");    break;
+        case 5 : print_msg(PRT_NORMAL, "Sonderrufnummer\n");     break;
+      } /* switch */
+    }
+    else {
+      normalizeNumber(s, &number, TN_ALL);
+      print_msg(PRT_NORMAL, "%s\n", formatNumber("%A", &number));
+    } /* else */
   }
   else
     print_msg(PRT_NORMAL, "%*s** %s\n", 30, "", qmsg(TYPE_CAUSE, VERSION_EDSS1, call->cause));
