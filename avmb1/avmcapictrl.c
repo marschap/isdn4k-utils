@@ -1,11 +1,14 @@
 /*
- * $Id: avmcapictrl.c,v 1.6 1998/02/07 20:09:00 calle Exp $
+ * $Id: avmcapictrl.c,v 1.7 1998/02/07 20:32:00 calle Exp $
  * 
  * AVM-B1-ISDN driver for Linux. (Control-Utility)
  * 
  * Copyright 1996 by Carsten Paeth (calle@calle.in-berlin.de)
  * 
  * $Log: avmcapictrl.c,v $
+ * Revision 1.7  1998/02/07 20:32:00  calle
+ * update man page, remove old cardtype M1, add is done via avm_cs.o
+ *
  * Revision 1.6  1998/02/07 20:09:00  calle
  * - added support for DN1/SPID1 DN2/SPID2 for 5ESS und NI1 protocols.
  * - allow debuging of patchvalues.
@@ -56,7 +59,7 @@ int debugpatch = 0;
 
 void usage(void)
 {
-	fprintf(stderr, "usage: %s add <portbase> <irq> [B1|M1|T1] (Add a new card)\n", cmd);
+	fprintf(stderr, "usage: %s add <portbase> <irq> [B1|T1] (Add a new card)\n", cmd);
 	fprintf(stderr, "   or: %s load <bootcode> [contrnr [protocol [P2P | DN1:SPID1 [DN2:SPID2]]]] (load firmware)\n", cmd);
 	fprintf(stderr, "   or: %s reset [contrnr] (reset controller)\n", cmd);
 	exit(1);
@@ -306,13 +309,11 @@ int main(int argc, char **argv)
 			if (argv[arg_ofs + 3]) {
 			   if (strcasecmp(argv[arg_ofs + 3],"B1") == 0) {
 	                      cardtype = AVM_CARDTYPE_B1;
-			   } else if (strcasecmp(argv[arg_ofs + 3],"M1") == 0) {
-	                      cardtype = AVM_CARDTYPE_M1;
 			   } else if (strcasecmp(argv[arg_ofs + 3],"T1") == 0) {
 	                      cardtype = AVM_CARDTYPE_T1;
 			   } else {
 				fprintf(stderr, "%s: illegal cardtype \"%s\"\n", cmd, argv[arg_ofs + 3]);
-				fprintf(stderr, "%s: try one of B1,M1,T1", cmd);
+				fprintf(stderr, "%s: try one of B1,T1", cmd);
 				exit(-1);
 			   }
 			} else {

@@ -1,15 +1,17 @@
-.\" $Id: avmcapictrl.man.in,v 1.1 1997/03/23 11:52:54 fritz Exp $
+.\" $Id: avmcapictrl.man.in,v 1.2 1998/02/07 20:32:02 calle Exp $
 .\"
-.\" CHECKIN $Date: 1997/03/23 11:52:54 $
+.\" CHECKIN $Date: 1998/02/07 20:32:02 $
 .\"
 .TH AVMCAPICTRL 8 "@MANDATE@" isdn4k-utils-@I4LVERSION@ "Linux System Administration"
 .UC 4
 .SH NAME
 avmcapictrl \- Add AVM-B1 cards and load firmware
 .SH SYNOPSIS
-avmcapictrl add <portbase> <irq>
+avmcapictrl add <portbase> <irq> <type>
 .br
-avmcapictrl load <bootcode> [contrnr]
+avmcapictrl load <bootcode> [<contrnr> [<protocol>
+.br
+    [P2P | <dn1>:<spid1> [<dn2>:<spid2>]]]]
 .br
 avmcapictrl reset [contrnr]
 .SH DESCRIPTION
@@ -24,7 +26,7 @@ makes sense, if you are using an AVM-B1-card only.
 .LP
 .SH COMMANDS
 .TP 5
-.B add <portbase> <irq>
+.B add <portbase> <irq> <type>
 is used to add a card to the kernel-capi2.0 system.
 The
 .I portbase
@@ -34,15 +36,30 @@ The
 .I irq
 can be selected from the following values:
 3, 4, 5, 6, 7, 9, 10, 11, 12 and 15.
+.I type
+can be B1 or T1.
 .LP
 .TP 5
-.B load <bootcode> [contrnr]
+.B load <bootcode> [<contrnr> [<protocol>
+.B      [P2P | <dn1>:<spid1> [<dn2>:<spid2>]]]]
 is used to load the firmware to a card
 .I bootcode
 is a t4-file. The actual versions of the t4-files for the different
-D-Channel protocols can be found at ftp://ftp.avm.de/cardware/b1.
+d-channel protocols can be found at
+ftp://calle.in-berlin.de/pub/linux/avmb1/firmware.
+you need different t4-files for different d channel protocols:
+b1-1tr6.t4 for 1TR6, b1.t4 for DSS1, D64S, D64S2, D64SD, DS01, DS02, CT1,
+VN3 or AUSTEL and b1-usa.t4 for 5ESS and NI1 (DSS1 is also supported).
+For M1/M2 PCMCIA cards you need m1-s10.t4 or m1-s4.t4 depending on the
+handy type used.
 .I contrnr
 is the number of the controller (card) starting from 1.
+.I protocol
+can be DSS1, D64S, D64S2, D64SD, DS01, DS02, CT1, VN3, AUSTEL, 5ESS or NI1.
+.I P2P
+point to point
+.I DN1:SPID1 DN2:SPID2
+is for the american protocols 5ESS and NI1.
 .LP
 .TP 5
 .B reset [contrnr]
