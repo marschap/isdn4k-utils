@@ -85,7 +85,7 @@ CONFIG_XMONISDN_DOWNCMD='/sbin/netdown'
 #
 # Applications
 #
-CONFIG_VBOX=n
+CONFIG_VBOX=y
 
 #
 # Options for vbox package

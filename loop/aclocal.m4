@@ -4,6 +4,7 @@ dnl
 
 AC_DEFUN(AC_FIND_KERNEL, [
 	KERNELDIR=""
+	OLD_CPPFLAGS="$CPPFLAGS"
 	lxdir="no"
 	tst_kerneldir="$CONFIG_KERNELDIR"
 
@@ -35,6 +36,7 @@ AC_DEFUN(AC_FIND_KERNEL, [
 		AC_MSG_ERROR("Kernel source not found. You MUST specify a correct path to the linux source in the configuration.")
 	fi
 	KERNELDIR="$lxdir"
+	CPPFLAGS="$OLD_CPPFLAGS"
 	AC_DEFINE_UNQUOTED(KERNELDIR,"$lxdir")
 	AC_SUBST(KERNELDIR)
 ])

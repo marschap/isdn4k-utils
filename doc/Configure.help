@@ -21,12 +21,15 @@ CONFIG_EXPERIMENTAL
   you say Y here, you will be offered the choice of using features or
   that are currently considered to be in the alpha-test phase.
 
-General configuration directory
-CONFIG_I4LCONFDIR
-  Some of the programs in this package need global configuration
-  files. This option tells them where to expect these files.
-  During installation, some sample files may be installed there
-  also.
+CONFIG_BUILDX11
+  With this option you can disable the installation of all programs
+  which require X11. If xmkmf is missing, this option will be
+  automatically disabled for you.
+
+CONFIG_KERNELDIR
+  Some programs need special include files from non-standard locations
+  within the kernel source. The default is /usr/src/linux. Change this
+  setting to fit your local environment.
 
 Directory to install binaries
 CONFIG_BINDIR
@@ -47,6 +50,67 @@ CONFIG_MANDIR
   man pages. This is usually /usr/man or /usr/local/man. The
   man pages go into some subdirectory below this directory
   depending on the section they belong to.
+
+CONFIG_RUNDIR
+  Some applications create special files for managing their
+  process IDs. This option selects the directory where to create
+  these ".pid" files. Usually this is /var/run.
+
+CONFIG_LOCKDIR
+  Some applications create special files for resource locking.
+  This option selects the directory where to create these files.
+  Usually this is /var/lock.
+
+CONFIG_LOCKFILE
+  Some applications create special files for resource locking.
+  This option selects the fixed part of name for these files.
+  The variable part depends on the application. Usually you
+  can accept the "LCK.." default here.
+
+General configuration directory
+CONFIG_I4LCONFDIR
+  Some of the programs in this package need global configuration
+  files. This option tells them where to expect these files.
+  During installation, some sample files may be installed there
+  also.
+
+CONFIG_CONFFILE
+  This is the name of the global configuration file.
+
+CONFIG_CALLERIDFILE
+  This option defines the name for the global callerid file.
+  In this file, well-known names can be assigned to phone numbers.
+  Some of the applications then display the names instead of
+  phone numbers.
+
+CONFIG_USERCONFFILE
+  In addition to the global config file, some applications allow
+  user-specific settings. This option tells, which filename to
+  use for these settings.
+
+CONFIG_COUNTRY_PREFIX
+  This option defines the prefix to be dialed before the country code
+  on international calls.
+
+CONFIG_AREA_PREFIX
+  This option defines the prefix to be dialed before the area code
+  on national calls.
+
+CONFIG_COUNTRYCODE
+  Put your local country code WITHOUT prefix here.
+
+CONFIG_AREACODE
+  Put your local area code WITHOUT prefix here.
+
+CONFIG_LIB_AREACODE
+  For resolving areacodes to city names, a database library is used.
+  With this option, you can select between two database librarys.
+  The recommended library is "Areacode", however those who want to reuse
+  their old datafiles, can select the old "Avon" library here.
+
+CONFIG_AREACODE_DATA
+  With this option, the directory for the areacode database can be
+  selected.
 
 Build isdnctrl tool
 CONFIG_ISDNCTRL
@@ -106,11 +170,35 @@ CONFIG_PCBITCTL
   can download protocol firmware into cards.
   This program is documented in pcbitctl (8).
 
+CONFIG_AVMCAPICTRL
+  This program is used to configure the avm-b1 driver. With this tool
+  you can download protocol firmware int cards.
+  This program is documented in avmcapictrl (8).
+
+CONFIG_LOOPCTRL
+  This program is used to configure the loop driver. This tool is
+  marked experimental, since the driver is NOT included in standard
+  kernel. It is mainly for testing purposes.
+  This program is documented in loopctrl (8).
+
+CONFIG_LOOPCTRL_LOOPDIR
+  Since loopctrl uses header files from the source of the ISDN loop
+  driver, you have to define the directory where those can be found.
+
 Build imon
 CONFIG_IMON
   This is a userlevel program to monitor the activity of isdn4linux.
   It is tty based and uses ncurses to produce a nice screen.
   This program is documented in imon (1).
+
+CONFIG_IMONTTY
+  This is a userlevel program to monitor the activity of isdn4linux.
+  It is tty based does NOT use (n)curses.
+  This program is documented in imontty (1).
+
+CONFIG_ISDNLOG
+  This program is mainly for monitoring activity. It has been extended
+  to do a lot of more however. See isdnlog/README for more information.
 
 Install generic man pages
 CONFIG_GENMAN

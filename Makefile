@@ -1,9 +1,9 @@
-# $Id: Makefile,v 1.15 1997/05/19 22:57:52 luethje Exp $
+# $Id: Makefile,v 1.16 1997/05/25 23:36:23 fritz Exp $
 #
 # Toplevel Makefile for isdn4k-utils
 #
 
-export I4LVERSION = 2.1
+export I4LVERSION = 2.1b1
 
 all:	do-it-all
 

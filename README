@@ -1,5 +1,5 @@
 #
-# $Id: README,v 1.5 1997/05/17 12:23:24 fritz Exp $
+# $Id: README,v 1.6 1997/05/25 23:36:24 fritz Exp $
 #
 This is the README file for the "isdn4k-utils" package from "The i4l-crew".
 
@@ -78,17 +78,13 @@ System prerequisites:
    
    Run "make"
 
-   This builds all utilities except the Tcl/Tk-script "isdnmon"
+   This builds all previously selected utilities.
 
 4. Installation
 
    For the following steps, root permissions are necessary
 
-   a) Create the device-inodes:
-
-     make devices
-
-   b) Install the utilities, the man pages and config-files:
+   Install the utilities, the man pages and config-files:
 
      make install
 
