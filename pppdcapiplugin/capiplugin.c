@@ -176,6 +176,7 @@ static void init_capiconn(void)
 
 static int capi_new_phase_hook(int phase)
 {
+	int fd;
 	switch (phase) {
 		case PHASE_DEAD:
 			info("capiplugin: phase dead");
@@ -209,7 +210,8 @@ static int capi_new_phase_hook(int phase)
 			break;
 		case PHASE_TERMINATE:
 			info("capiplugin: phase terminate");
-			remove_fd(capi20_fileno(applid));
+			if ((fd = capi20_fileno(applid)) >= 0)
+			   remove_fd(fd);
 			unsetup_timeout();
 			(void)capiconn_freecontext(ctx);
 			(void)capi20_release(applid);
