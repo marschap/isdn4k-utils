@@ -1,13 +1,13 @@
 ipppd, based on pppd 2.2.0g with a few changes from 2.3
 ============================================================
 copyright (c) 1995,1996,1997 of all changes by Michael Hipp
+(report bugs, problems etc. to ippp@franken.de)
 
 
 ATTENTION .. NEW NEW NEW NEW NEW
 ********************************
 
-You need at least the 2.0.29 base patch because of a
-new ioctl!! 
+You NEED at least the 2.0.29 base patch because of a new ioctl!! 
 
 changed default pathname for options to:
   /etc/ppp/ioptions
@@ -39,7 +39,7 @@ I added a few new options:
  - 'callback type[,message]' enables the callback feature
    also UNTESTED!
    e.g: 'callback 0'        -> simple callback (info via auth. etc.)
-        'callback 3,12346' -> us E.164 (tel) number 123456 for callback
+        'callback 3,12346' -> use E.164 (tel) number 123456 for callback
  - IPX and MS_DNS are now compiled into the binary without additional option
    Applied Hartwig Felgers MS-DNS (re)patch for this
 

@@ -18,7 +18,7 @@
  */
 
 #ifndef lint
-static char rcsid[] = "$Id: ipxcp.c,v 1.1 1997/03/07 16:01:21 hipp Exp $";
+static char rcsid[] = "$Id: ipxcp.c,v 1.2 1997/04/26 17:17:31 hipp Exp $";
 #endif
 
 /*
@@ -33,7 +33,7 @@ static char rcsid[] = "$Id: ipxcp.c,v 1.1 1997/03/07 16:01:21 hipp Exp $";
 #include <unistd.h>
 #include <netinet/in.h>
 
-#include "pppd.h"
+#include "ipppd.h"
 #include "fsm.h"
 #include "ipxcp.h"
 #include "pathnames.h"

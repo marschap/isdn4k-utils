@@ -50,7 +50,7 @@
 #include <stdio.h>
 #include <netinet/in.h>
 #include "md4.h"
-#include "pppd.h"
+#include "ipppd.h"
 
 /* Compile-time declarations of MD4 "magic constants".
 */

@@ -55,7 +55,7 @@
 #include <linux/if_ether.h>
 
 #include "fsm.h"
-#include "pppd.h"
+#include "ipppd.h"
 #include "ipcp.h"
 #include "ipxcp.h"
 #include "ccp.h"
@@ -63,7 +63,6 @@
 
 static int prev_kdebugflag     = 0;
 static int has_default_route   = 0;
-static int has_proxy_arp       = 0;
 static int driver_version      = 0;
 static int driver_modification = 0;
 static int driver_patch        = 0;
@@ -794,216 +793,182 @@ static int defaultroute_exists (void)
  */
 
 int sifdefaultroute (int unit, int gateway)
-  {
-    struct rtentry rt;
+{
+	struct rtentry rt;
 
-    if (has_default_route == 0)
-      {
-	if (defaultroute_exists())
-	  {
-	    return 0;
-	  }
+	if (has_default_route == 0) {
+		if (defaultroute_exists())
+			return 0;
 
-	memset (&rt, '\0', sizeof (rt));
-	SET_SA_FAMILY (rt.rt_dst,     AF_INET);
-	SET_SA_FAMILY (rt.rt_gateway, AF_INET);
-	((struct sockaddr_in *) &rt.rt_gateway)->sin_addr.s_addr = gateway;
+		memset (&rt, '\0', sizeof (rt));
+		SET_SA_FAMILY (rt.rt_dst,     AF_INET);
+		SET_SA_FAMILY (rt.rt_gateway, AF_INET);
+		((struct sockaddr_in *) &rt.rt_gateway)->sin_addr.s_addr = gateway;
     
-	rt.rt_flags = RTF_UP | RTF_GATEWAY;
-	if (ioctl(sockfd, SIOCADDRT, &rt) < 0)
-	  {
-	    syslog (LOG_ERR, "default route ioctl(SIOCADDRT): %m");
-	    return 0;
-	  }
-      }
-    has_default_route = 1;
-    return 1;
-  }
+		rt.rt_flags = RTF_UP | RTF_GATEWAY;
+		if (ioctl(sockfd, SIOCADDRT, &rt) < 0) {
+			syslog (LOG_ERR, "default route ioctl(SIOCADDRT): %m");
+			return 0;
+		}
+	}
+	has_default_route = 1;
+	return 1;
+}
 
 /*
  * cifdefaultroute - delete a default route through the address given.
  */
-
 int cifdefaultroute (int unit, int gateway)
-  {
-    struct rtentry rt;
+{
+	struct rtentry rt;
 
-    if (has_default_route)
-      {
-	memset (&rt, '\0', sizeof (rt));
-	SET_SA_FAMILY (rt.rt_dst,     AF_INET);
-	SET_SA_FAMILY (rt.rt_gateway, AF_INET);
-	((struct sockaddr_in *) &rt.rt_gateway)->sin_addr.s_addr = gateway;
+	if (has_default_route) {
+		memset (&rt, '\0', sizeof (rt));
+		SET_SA_FAMILY (rt.rt_dst,     AF_INET);
+		SET_SA_FAMILY (rt.rt_gateway, AF_INET);
+		((struct sockaddr_in *) &rt.rt_gateway)->sin_addr.s_addr = gateway;
     
-	rt.rt_flags = RTF_UP | RTF_GATEWAY;
-	if (ioctl(sockfd, SIOCDELRT, &rt) < 0 && errno != ESRCH)
-	  {
-	    if (still_ppp(unit))
-	      {
-		syslog (LOG_ERR, "default route ioctl(SIOCDELRT): %m");
-		return 0;
-	      }
-	  }
-      }
-    has_default_route = 0;
-    return 1;
-  }
+		rt.rt_flags = RTF_UP | RTF_GATEWAY;
+		if (ioctl(sockfd, SIOCDELRT, &rt) < 0 && errno != ESRCH) {
+			if (still_ppp(unit)) {
+				syslog (LOG_ERR, "default route ioctl(SIOCDELRT): %m");
+				return 0;
+			}
+		}
+	}
+	has_default_route = 0;
+	return 1;
+}
 
 /*
  * sifproxyarp - Make a proxy ARP entry for the peer.
  */
+int sifproxyarp (int linkunit, u_int32_t his_adr)
+{
+	struct arpreq arpreq;
 
-int sifproxyarp (int unit, u_int32_t his_adr)
-  {
-    struct arpreq arpreq;
-
-    if (has_proxy_arp == 0)
-      {
-	memset (&arpreq, '\0', sizeof(arpreq));
+	if (lns[linkunit].has_proxy_arp == 0) {
+		memset (&arpreq, '\0', sizeof(arpreq));
 /*
  * Get the hardware address of an interface on the same subnet
  * as our local address.
  */
-       if (!get_ether_addr(his_adr, &arpreq.arp_ha, arpreq.arp_dev))
-	  {
-	    syslog(LOG_ERR, "Cannot determine ethernet address for proxy ARP");
-	    return 0;
-	  }
+		if (!get_ether_addr(his_adr, &arpreq.arp_ha, arpreq.arp_dev)) {
+			syslog(LOG_ERR, "Cannot determine ethernet address for proxy ARP");
+			return 0;
+		}
     
-	SET_SA_FAMILY(arpreq.arp_pa, AF_INET);
-	((struct sockaddr_in *) &arpreq.arp_pa)->sin_addr.s_addr = his_adr;
-	arpreq.arp_flags = ATF_PERM | ATF_PUBL;
+		SET_SA_FAMILY(arpreq.arp_pa, AF_INET);
+		((struct sockaddr_in *) &arpreq.arp_pa)->sin_addr.s_addr = his_adr;
+		arpreq.arp_flags = ATF_PERM | ATF_PUBL;
 	
-	if (ioctl(sockfd, SIOCSARP, (caddr_t)&arpreq) < 0)
-	  {
-	    syslog(LOG_ERR, "ioctl(SIOCSARP): %m");
-	    return 0;
-	  }
-      }
-
-    has_proxy_arp = 1;
-    return 1;
-  }
+		if (ioctl(sockfd, SIOCSARP, (caddr_t)&arpreq) < 0) {
+			syslog(LOG_ERR, "ioctl(SIOCSARP): %m");
+			return 0;
+		}
+	}
+	lns[linkunit].has_proxy_arp = 1;
+	return 1;
+}
 
 /*
  * cifproxyarp - Delete the proxy ARP entry for the peer.
  */
+int cifproxyarp (int linkunit, u_int32_t his_adr)
+{
+	struct arpreq arpreq;
 
-int cifproxyarp (int unit, u_int32_t his_adr)
-  {
-    struct arpreq arpreq;
-
-    if (has_proxy_arp == 1)
-      {
-	memset (&arpreq, '\0', sizeof(arpreq));
-	SET_SA_FAMILY(arpreq.arp_pa, AF_INET);
-	arpreq.arp_flags = ATF_PERM | ATF_PUBL;
+	if (lns[linkunit].has_proxy_arp == 1) {
+		memset (&arpreq, '\0', sizeof(arpreq));
+		SET_SA_FAMILY(arpreq.arp_pa, AF_INET);
+		arpreq.arp_flags = ATF_PERM | ATF_PUBL;
     
-	((struct sockaddr_in *) &arpreq.arp_pa)->sin_addr.s_addr = his_adr;
-	if (ioctl(sockfd, SIOCDARP, (caddr_t)&arpreq) < 0)
-	  {
-	    syslog(LOG_WARNING, "ioctl(SIOCDARP): %m");
-	    return 0;
-	  }
-      }
-    has_proxy_arp = 0;
-    return 1;
-  }
+		((struct sockaddr_in *) &arpreq.arp_pa)->sin_addr.s_addr = his_adr;
+		if (ioctl(sockfd, SIOCDARP, (caddr_t)&arpreq) < 0) {
+			syslog(LOG_WARNING, "ioctl(SIOCDARP): %m");
+			return 0;
+		}
+	}
+	lns[linkunit].has_proxy_arp = 0;
+	return 1;
+}
      
 /*
  * get_ether_addr - get the hardware address of an interface on the
  * the same subnet as ipaddr.
  */
-
 static int local_get_ether_addr (u_int32_t ipaddr, struct sockaddr *hwaddr,
-                                char *name, struct ifreq *ifs, int ifs_len)
-  {
-    struct ifreq *ifr, *ifend;
-    u_int32_t ina, mask;
-    struct ifreq ifreq;
-    struct ifconf ifc;
+   char *name, struct ifreq *ifs, int ifs_len)
+{
+	struct ifreq *ifr, *ifend;
+	u_int32_t ina, mask;
+	struct ifreq ifreq;
+	struct ifconf ifc;
 /*
  * Request the total list of all devices configured on your system.
  */
-    ifc.ifc_len = ifs_len;
-    ifc.ifc_req = ifs;
-    if (ioctl(sockfd, SIOCGIFCONF, &ifc) < 0)
-      {
-	syslog(LOG_ERR, "ioctl(SIOCGIFCONF): %m");
-	return 0;
-      }
+	ifc.ifc_len = ifs_len;
+	ifc.ifc_req = ifs;
+	if (ioctl(sockfd, SIOCGIFCONF, &ifc) < 0) {
+		syslog(LOG_ERR, "ioctl(SIOCGIFCONF): %m");
+		return 0;
+	}
 
-    MAINDEBUG ((LOG_DEBUG, "proxy arp: scanning %d interfaces for IP %s",
+	MAINDEBUG ((LOG_DEBUG, "proxy arp: scanning %d interfaces for IP %s",
 		ifc.ifc_len / sizeof(struct ifreq), ip_ntoa(ipaddr)));
 /*
  * Scan through looking for an interface with an Internet
  * address on the same subnet as `ipaddr'.
  */
-    ifend = ifs + (ifc.ifc_len / sizeof(struct ifreq));
-    for (ifr = ifc.ifc_req; ifr < ifend; ifr++)
-      {
-	if (ifr->ifr_addr.sa_family == AF_INET)
-	  {
-	    ina = ((struct sockaddr_in *) &ifr->ifr_addr)->sin_addr.s_addr;
-	    strncpy(ifreq.ifr_name, ifr->ifr_name, sizeof(ifreq.ifr_name));
-            MAINDEBUG ((LOG_DEBUG, "proxy arp: examining interface %s",
-			ifreq.ifr_name));
+	ifend = ifs + (ifc.ifc_len / sizeof(struct ifreq));
+	for (ifr = ifc.ifc_req; ifr < ifend; ifr++) {
+		if (ifr->ifr_addr.sa_family == AF_INET) {
+			ina = ((struct sockaddr_in *) &ifr->ifr_addr)->sin_addr.s_addr;
+			strncpy(ifreq.ifr_name, ifr->ifr_name, sizeof(ifreq.ifr_name));
+			MAINDEBUG ((LOG_DEBUG, "proxy arp: examining interface %s",
+				ifreq.ifr_name));
 /*
  * Check that the interface is up, and not point-to-point
  * nor loopback.
  */
-	    if (ioctl(sockfd, SIOCGIFFLAGS, &ifreq) < 0)
-	      {
-		continue;
-	      }
-
-	    if (((ifreq.ifr_flags ^ FLAGS_GOOD) & FLAGS_MASK) != 0)
-	      {
-		continue;
-	      }
+			if (ioctl(sockfd, SIOCGIFFLAGS, &ifreq) < 0)
+				continue;
+			if (((ifreq.ifr_flags ^ FLAGS_GOOD) & FLAGS_MASK) != 0)
+				continue;
 /*
  * Get its netmask and check that it's on the right subnet.
  */
-	    if (ioctl(sockfd, SIOCGIFNETMASK, &ifreq) < 0)
-	      {
-	        continue;
-	      }
+			if (ioctl(sockfd, SIOCGIFNETMASK, &ifreq) < 0)
+				continue;
 
-	    mask = ((struct sockaddr_in *) &ifreq.ifr_addr)->sin_addr.s_addr;
-	    MAINDEBUG ((LOG_DEBUG, "proxy arp: interface addr %s mask %lx",
-			ip_ntoa(ina), ntohl(mask)));
+			mask = ((struct sockaddr_in *) &ifreq.ifr_addr)->sin_addr.s_addr;
+			MAINDEBUG ((LOG_DEBUG, "proxy arp: interface addr %s mask %lx",
+				ip_ntoa(ina), ntohl(mask)));
 
-	    if (((ipaddr ^ ina) & mask) != 0)
-	      {
-	        continue;
-	      }
-	    break;
-	  }
-      }
+			if (((ipaddr ^ ina) & mask) != 0)
+				continue;
+			break;
+		}
+	}
     
-    if (ifr >= ifend)
-      {
-        return 0;
-      }
+	if(ifr >= ifend)
+		return 0;
 
-    memcpy (name, ifreq.ifr_name, sizeof(ifreq.ifr_name));
-    syslog(LOG_INFO, "found interface %s for proxy arp", name);
+	memcpy (name, ifreq.ifr_name, sizeof(ifreq.ifr_name));
+	syslog(LOG_INFO, "found interface %s for proxy arp", name);
 /*
  * Now get the hardware address.
  */
-    memset (&ifreq.ifr_hwaddr, 0, sizeof (struct sockaddr));
-    if (ioctl (sockfd, SIOCGIFHWADDR, &ifreq) < 0)
-      {
-        syslog(LOG_ERR, "SIOCGIFHWADDR(%s): %m", ifreq.ifr_name);
-        return 0;
-      }
+	memset (&ifreq.ifr_hwaddr, 0, sizeof (struct sockaddr));
+	if (ioctl (sockfd, SIOCGIFHWADDR, &ifreq) < 0) {
+		syslog(LOG_ERR, "SIOCGIFHWADDR(%s): %m", ifreq.ifr_name);
+		return 0;
+	}
 
-    memcpy (hwaddr,
-	    &ifreq.ifr_hwaddr,
-	    sizeof (struct sockaddr));
+	memcpy (hwaddr, &ifreq.ifr_hwaddr, sizeof (struct sockaddr));
 
-    MAINDEBUG ((LOG_DEBUG,
-	   "proxy arp: found hwaddr %02x:%02x:%02x:%02x:%02x:%02x:%02x:%02x",
+	MAINDEBUG ((LOG_DEBUG,
+		"proxy arp: found hwaddr %02x:%02x:%02x:%02x:%02x:%02x:%02x:%02x",
 		(int) ((unsigned char *) &hwaddr->sa_data)[0],
 		(int) ((unsigned char *) &hwaddr->sa_data)[1],
 		(int) ((unsigned char *) &hwaddr->sa_data)[2],
@@ -1012,33 +977,32 @@ static int local_get_ether_addr (u_int32_t ipaddr, struct sockaddr *hwaddr,
 		(int) ((unsigned char *) &hwaddr->sa_data)[5],
 		(int) ((unsigned char *) &hwaddr->sa_data)[6],
 		(int) ((unsigned char *) &hwaddr->sa_data)[7]));
-    return 1;
-  }
+	return 1;
+}
 
 int get_ether_addr (u_int32_t ipaddr, struct sockaddr *hwaddr, char *name)
-  {
-    int ifs_len;
-    int answer;
-    void *base_addr;
+{
+	int ifs_len;
+	int answer;
+	void *base_addr;
 /*
  * Allocate memory to hold the request.
  */
-    ifs_len = MAX_IFS * sizeof (struct ifreq);
-    base_addr = (void *) malloc (ifs_len);
-    if (base_addr == (void *) 0)
-      {
-       syslog(LOG_ERR, "malloc(%d) failed to return memory", ifs_len);
-       return 0;
-      }
+	ifs_len = MAX_IFS * sizeof (struct ifreq);
+	base_addr = (void *) malloc (ifs_len);
+	if (!base_addr) {
+		syslog(LOG_ERR, "malloc(%d) failed to return memory", ifs_len);
+		return 0;
+	}
 /*
  * Find the hardware address associated with the controller
  */
-    answer = local_get_ether_addr (ipaddr, hwaddr, name,
-                                  (struct ifreq *) base_addr, ifs_len);
+	answer = local_get_ether_addr (ipaddr, hwaddr, name,
+			(struct ifreq *) base_addr, ifs_len);
 
-    free (base_addr);
-    return answer;
-  }
+	free (base_addr);
+	return answer;
+}
 
 /*
  * Return user specified netmask, modified by any mask we might determine
@@ -1050,7 +1014,7 @@ int get_ether_addr (u_int32_t ipaddr, struct sockaddr *hwaddr, char *name)
  */
 
 static u_int32_t local_GetMask (u_int32_t addr, struct ifreq *ifs, int ifs_len)
-  {
+{
     u_int32_t mask, nmask, ina;
     struct ifreq *ifr, *ifend, ifreq;
     struct ifconf ifc;
@@ -1130,7 +1094,7 @@ static u_int32_t local_GetMask (u_int32_t addr, struct ifreq *ifs, int ifs_len)
 	break;
       }
     return mask;
-  }
+}
 
 u_int32_t GetMask (u_int32_t addr)
   {

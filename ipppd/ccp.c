@@ -26,7 +26,7 @@
  */
 
 #ifndef lint
-static char rcsid[] = "$Id: ccp.c,v 1.1 1997/03/07 16:01:10 hipp Exp $";
+static char rcsid[] = "$Id: ccp.c,v 1.2 1997/04/26 17:17:21 hipp Exp $";
 #endif
 
 #include <string.h>
@@ -37,7 +37,7 @@ static char rcsid[] = "$Id: ccp.c,v 1.1 1997/03/07 16:01:10 hipp Exp $";
 #include <linux/ppp-comp.h>
 
 #include "fsm.h"
-#include "pppd.h"
+#include "ipppd.h"
 #include "ccp.h"
 
 /*

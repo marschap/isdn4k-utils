@@ -16,7 +16,7 @@
  * IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Id: pppd.h,v 1.1 1997/03/07 16:01:39 hipp Exp $
+ * $Id: ipppd.h,v 1.1 1997/04/26 17:17:30 hipp Exp $
  */
 
 /*
@@ -71,6 +71,7 @@ struct link_struct {
   int initfdflags;
   int hungup;
   struct pppcallinfo pci;
+  int has_proxy_arp;
 };
 
 extern struct link_struct lns[NUM_PPP];

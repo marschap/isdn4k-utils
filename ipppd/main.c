@@ -22,12 +22,12 @@
  */
 
 /*
- * PATCHLEVEL 8
+ * PATCHLEVEL 9
  */
 
 #if 0
 #ifndef lint
-static char rcsid[] = "$Id: main.c,v 1.1 1997/03/07 16:01:29 hipp Exp $";
+static char rcsid[] = "$Id: main.c,v 1.2 1997/04/26 17:17:38 hipp Exp $";
 #endif
 #endif
 
@@ -54,7 +54,7 @@ static char rcsid[] = "$Id: main.c,v 1.1 1997/03/07 16:01:29 hipp Exp $";
 #include <net/if.h>
 
 #include "fsm.h"
-#include "pppd.h"
+#include "ipppd.h"
 #include "magic.h"
 #include "lcp.h"
 #include "ipcp.h"
@@ -139,84 +139,71 @@ struct protent *protocols[] = {
 
 void main(int argc,char **argv)
 {
-    int i,j;
-    struct sigaction sa;
+	int i,j;
+	struct sigaction sa;
 #if 0
-    struct cmd *cmdp;
+	struct cmd *cmdp;
 #endif
-    FILE *pidfile;
-    struct timeval timo;
-    sigset_t mask;
+	FILE *pidfile;
+	struct timeval timo;
+	sigset_t mask;
 	struct protent *protp;
 
-    for(i=0;i<NUM_PPP;i++)
-    {
-      lns[i].openfails = 0;
-      lns[i].initfdflags = -1;
-      lns[i].hungup = 1;
-      lns[i].bundle_next = &lns[i];
-      lns[i].ifname[0] = 0;
-      lns[i].ifunit = -1;
-      lns[i].open_ccp_flag = 0;
-      lns[i].phase = PHASE_WAIT;
-      lns[i].fd = -1;
-      lns[i].logged_in = 0;
-      lns[i].lcp_unit = lns[i].ipcp_unit = lns[i].ccp_unit = -1;
-      lns[i].cbcp_unit = -1;
-      lns[i].ipxcp_unit = -1;
-      lns[i].unit = i;
-      lns[i].chap_unit = lns[i].upap_unit = -1;
-      lns[i].auth_up_script = 0;
-    }
+	for(i=0;i<NUM_PPP;i++) {
+		lns[i].openfails = 0;
+		lns[i].initfdflags = -1;
+		lns[i].hungup = 1;
+		lns[i].bundle_next = &lns[i];
+		lns[i].ifname[0] = 0;
+		lns[i].ifunit = -1;
+		lns[i].open_ccp_flag = 0;
+		lns[i].phase = PHASE_WAIT;
+		lns[i].fd = -1;
+		lns[i].logged_in = 0;
+		lns[i].lcp_unit = lns[i].ipcp_unit = lns[i].ccp_unit = -1;
+		lns[i].cbcp_unit = -1;
+		lns[i].ipxcp_unit = -1;
+		lns[i].unit = i;
+		lns[i].chap_unit = lns[i].upap_unit = -1;
+		lns[i].auth_up_script = 0;
+	}
 
-    pid = getpid();
+	if (gethostname(hostname, MAXNAMELEN) < 0 ) {
+		perror("couldn't get hostname");
+		die(1);
+	}
+	hostname[MAXNAMELEN-1] = 0;
 
-    /* write pid to file */
-    (void) sprintf(pidfilename, "%s%s.pid", _PATH_VARRUN, "ipppd" );
-    if ((pidfile = fopen(pidfilename, "w")) != NULL) {
-	fprintf(pidfile, "%d\n", pid);
-	(void) fclose(pidfile);
-     } else {
-	syslog(LOG_ERR, "Failed to create pid file %s: %m", pidfilename);
-	pidfilename[0] = 0;
-    }
-
-    if (gethostname(hostname, MAXNAMELEN) < 0 ) {
-	perror("couldn't get hostname");
-	die(1);
-    }
-    hostname[MAXNAMELEN-1] = 0;
-
-    uid = getuid();
+	uid = getuid();
 
     /*
      * Initialize to the standard option set, then parse, in order,
      * the system options file, the user's options file, and the command
      * line arguments.
      */
-    progname = *argv;
+	progname = *argv;
 
 	for (i = 0; (protp = protocols[i]) != NULL; ++i)
 		for(j=0;j<NUM_PPP;j++)
 			(*protp->init)(j); /* modifies our options .. !!!! */
 
-    if (!options_from_file(_PATH_SYSOPTIONS, REQ_SYSOPTIONS, 0 , 0) ||
+	if (!options_from_file(_PATH_SYSOPTIONS, REQ_SYSOPTIONS, 0 , 0) ||
 #if 0
-	!options_from_user() ||
+		!options_from_user() ||
 #endif
-	!parse_args(argc-1, argv+1) ||
-	!options_for_tty() )
-	die(1);
+		!parse_args(argc-1, argv+1) ||
+		!options_for_tty() )
+		die(1);
 
     /*
      * copy protocol options for unit 0 to all option fields
      */
-    make_options_global(0);
+	make_options_global(0);
 
-    if (!ppp_available()) {
-	fprintf(stderr, no_ppp_msg);
-	exit(1);
-    }
+	if (!ppp_available()) {
+		fprintf(stderr, no_ppp_msg);
+		exit(1);
+	}
 
     remove_sys_options();
     check_auth_options();
@@ -250,23 +237,35 @@ void main(int argc,char **argv)
      * Detach ourselves from the terminal, if required,
      * and identify who is running us.
      */
-    if (!nodetach && daemon(0, 0) < 0) {
-	perror("Couldn't detach from controlling terminal");
-	exit(1);
-    }
+	if (!nodetach && daemon(0, 0) < 0) {
+		perror("Couldn't detach from controlling terminal");
+		exit(1);
+	}
 
-    syslog(LOG_NOTICE, "ipppd %s.%d (isdn4linux version of pppd by MH) started", VERSION, PATCHLEVEL);
+	pid = getpid();
+
+	/* write pid to file */
+	sprintf(pidfilename, "%s%s.pid", _PATH_VARRUN, "ipppd" );
+	if ((pidfile = fopen(pidfilename, "w")) != NULL) {
+		fprintf(pidfile, "%d\n", pid);
+		fclose(pidfile);
+	} else {
+		syslog(LOG_ERR, "Failed to create pid file %s: %m", pidfilename);
+		pidfilename[0] = 0;
+	}
+
+	syslog(LOG_NOTICE, "ipppd %s.%d (isdn4linux version of pppd by MH) started", VERSION, PATCHLEVEL);
   
-    /*
-     * Compute mask of all interesting signals and install signal handlers
-     * for each.  Only one signal handler may be active at a time.  Therefore,
-     * all other signals should be masked when any handler is executing.
-     */
-    sigemptyset(&mask);
-    sigaddset(&mask, SIGHUP);
-    sigaddset(&mask, SIGINT);
-    sigaddset(&mask, SIGTERM);
-    sigaddset(&mask, SIGCHLD);
+	/*
+	 * Compute mask of all interesting signals and install signal handlers
+	 * for each.  Only one signal handler may be active at a time.  Therefore,
+	 * all other signals should be masked when any handler is executing.
+	 */
+	sigemptyset(&mask);
+	sigaddset(&mask, SIGHUP);
+	sigaddset(&mask, SIGINT);
+	sigaddset(&mask, SIGTERM);
+	sigaddset(&mask, SIGCHLD);
 
 #define SIGNAL(s, handler)	{ \
 	sa.sa_handler = handler; \

@@ -22,7 +22,7 @@
  */
 
 #ifndef lint
-static char rcsid[] = "$Id: lcp.c,v 1.1 1997/03/07 16:01:24 hipp Exp $";
+static char rcsid[] = "$Id: lcp.c,v 1.2 1997/04/26 17:17:34 hipp Exp $";
 #endif
 
 /*
@@ -40,7 +40,7 @@ static char rcsid[] = "$Id: lcp.c,v 1.1 1997/03/07 16:01:24 hipp Exp $";
 #include <sys/time.h>
 #include <netinet/in.h>
 
-#include "pppd.h"
+#include "ipppd.h"
 #include "fsm.h"
 #include "lcp.h"
 #include "magic.h"

@@ -19,7 +19,7 @@
 
 #if 0
 #ifndef lint
-static char rcsid[] = "$Id: magic.c,v 1.1 1997/03/07 16:01:27 hipp Exp $";
+static char rcsid[] = "$Id: magic.c,v 1.2 1997/04/26 17:17:37 hipp Exp $";
 #endif
 #endif
 
@@ -32,7 +32,7 @@ static char rcsid[] = "$Id: magic.c,v 1.1 1997/03/07 16:01:27 hipp Exp $";
 #include <sys/utsname.h>
 
 #include "fsm.h"
-#include "pppd.h"
+#include "ipppd.h"
 #include "magic.h"
 
 #if 0

@@ -18,7 +18,7 @@
  */
 
 #ifndef lint
-static char rcsid[] = "$Id: fsm.c,v 1.1 1997/03/07 16:01:15 hipp Exp $";
+static char rcsid[] = "$Id: fsm.c,v 1.2 1997/04/26 17:17:25 hipp Exp $";
 #endif
 
 /*
@@ -33,7 +33,7 @@ static char rcsid[] = "$Id: fsm.c,v 1.1 1997/03/07 16:01:15 hipp Exp $";
 #include <syslog.h>
 
 #include "fsm.h"
-#include "pppd.h"
+#include "ipppd.h"
 #include "lcp.h"
 
 extern char *proto_name();

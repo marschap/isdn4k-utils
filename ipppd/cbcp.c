@@ -21,7 +21,7 @@
 #define PPP_CBCP        0xc029  /* Callback Control Protocol */
 
 #ifndef lint
-static char rcsid[] = "$Id: cbcp.c,v 1.1 1997/03/07 16:01:09 hipp Exp $";
+static char rcsid[] = "$Id: cbcp.c,v 1.2 1997/04/26 17:17:20 hipp Exp $";
 #endif
 
 #include <stdio.h>
@@ -30,7 +30,7 @@ static char rcsid[] = "$Id: cbcp.c,v 1.1 1997/03/07 16:01:09 hipp Exp $";
 #include <sys/time.h>
 #include <syslog.h>
 
-#include "pppd.h"
+#include "ipppd.h"
 #include "cbcp.h"
 #include "fsm.h"
 #include "lcp.h"

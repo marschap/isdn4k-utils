@@ -18,7 +18,7 @@
  */
 
 #ifndef lint
-static char rcsid[] = "$Id: ipcp.c,v 1.1 1997/03/07 16:01:17 hipp Exp $";
+static char rcsid[] = "$Id: ipcp.c,v 1.2 1997/04/26 17:17:26 hipp Exp $";
 #endif
 
 /*
@@ -33,7 +33,7 @@ static char rcsid[] = "$Id: ipcp.c,v 1.1 1997/03/07 16:01:17 hipp Exp $";
 #include <netinet/in.h>
 
 #include "fsm.h"
-#include "pppd.h"
+#include "ipppd.h"
 #include "ipcp.h"
 #include "pathnames.h"
 
@@ -1062,81 +1062,88 @@ endswitch:
  */
 static void ipcp_up(fsm *f)
 {
-    u_int32_t mask;
-    struct link_struct *tlns = &lns[f->unit];
-    ipcp_options *ho = &ipcp_hisoptions[tlns->ipcp_unit];
-    ipcp_options *go = &ipcp_gotoptions[tlns->ipcp_unit];
+	u_int32_t mask;
+	struct link_struct *tlns = &lns[f->unit];
+	ipcp_options *ho = &ipcp_hisoptions[tlns->ipcp_unit];
+	ipcp_options *go = &ipcp_gotoptions[tlns->ipcp_unit];
 
-    IPCPDEBUG((LOG_INFO, "ipcp: up"));
-    go->default_route = 0;
-    go->proxy_arp = 0;
+	IPCPDEBUG((LOG_INFO, "ipcp: up"));
+	go->default_route = 0;
+	go->proxy_arp = 0;
 
-    /*
-     * We must have a non-zero IP address for both ends of the link.
-     */
-    if (!ho->neg_addr)
-	ho->hisaddr = ipcp_wantoptions[tlns->ipcp_unit].hisaddr;
+	/*
+	 * We must have a non-zero IP address for both ends of the link.
+	 */
+	if (!ho->neg_addr)
+		ho->hisaddr = ipcp_wantoptions[tlns->ipcp_unit].hisaddr;
 
-    if (ho->hisaddr == 0) {
-	syslog(LOG_ERR, "Could not determine remote IP address");
-	ipcp_close(tlns->ipcp_unit,"Could not determine remote IP address");
-	return;
-    }
-    if (go->ouraddr == 0) {
-	syslog(LOG_ERR, "Could not determine local IP address");
-	ipcp_close(tlns->ipcp_unit,"Could not determine local IP address");
-	return;
-    }
+	if (ho->hisaddr == 0) {
+		syslog(LOG_ERR, "Could not determine remote IP address");
+		ipcp_close(tlns->ipcp_unit,"Could not determine remote IP address");
+		return;
+	}
+	if (go->ouraddr == 0) {
+		syslog(LOG_ERR, "Could not determine local IP address");
+		ipcp_close(tlns->ipcp_unit,"Could not determine local IP address");
+		return;
+	}
 
     /*
      * Check that the peer is allowed to use the IP address it wants.
      */
-    if (!auth_ip_addr(f->unit, ho->hisaddr)) {
-	syslog(LOG_ERR, "Peer is not authorized to use remote address %s",
-	       ip_ntoa(ho->hisaddr));
-	ipcp_close(tlns->ipcp_unit,"Peer is not authorized to use remote address");
-	return;
-    }
+	if (!auth_ip_addr(f->unit, ho->hisaddr)) {
+		syslog(LOG_ERR, "Peer is not authorized to use remote address %s",
+		ip_ntoa(ho->hisaddr));
+		ipcp_close(tlns->ipcp_unit,"Peer is not authorized to use remote address");
+		return;
+	}
 
-    syslog(LOG_NOTICE, "local  IP address %s", ip_ntoa(go->ouraddr));
-    syslog(LOG_NOTICE, "remote IP address %s", ip_ntoa(ho->hisaddr));
+	syslog(LOG_NOTICE, "local  IP address %s", ip_ntoa(go->ouraddr));
+	syslog(LOG_NOTICE, "remote IP address %s", ip_ntoa(ho->hisaddr));
+
+	/*
+	 * Set IP addresses and (if specified) netmask.
+	 */
+	mask = GetMask(go->ouraddr);
+	if (!sifaddr(f->unit, go->ouraddr, ho->hisaddr, mask)) {
+		IPCPDEBUG((LOG_WARNING, "sifaddr failed"));
+		ipcp_close(tlns->ipcp_unit,"sifaddr failed");
+		return;
+	}
+
+	/*
+	 * set tcp compression 
+	 */
+	sifvjcomp(f->unit, ho->neg_vj, ho->cflag, ho->maxslotindex);
+
+	/*
+	 * bring the interface up for IP
+	 */
+	if (!sifup(f->unit)) {
+		IPCPDEBUG((LOG_WARNING, "sifup failed"));
+		ipcp_close(tlns->ipcp_unit,"sifup failed");
+		return;
+	}
+
+	/*
+	 * assign a default route through the interface if required 
+	 */
+	if (ipcp_wantoptions[tlns->ipcp_unit].default_route) 
+		if (sifdefaultroute(f->unit, ho->hisaddr))
+			go->default_route = 1;
 
     /*
-     * Set IP addresses and (if specified) netmask.
-     */
-    mask = GetMask(go->ouraddr);
-    if (!sifaddr(f->unit, go->ouraddr, ho->hisaddr, mask)) {
-	IPCPDEBUG((LOG_WARNING, "sifaddr failed"));
-	ipcp_close(tlns->ipcp_unit,"sifaddr failed");
-	return;
-    }
+	 * Make a proxy ARP entry if requested.
+	 */
+	if (ipcp_wantoptions[tlns->ipcp_unit].proxy_arp)
+		if (sifproxyarp(f->unit, ho->hisaddr))
+			go->proxy_arp = 1;
 
-    /* set tcp compression */
-    sifvjcomp(f->unit, ho->neg_vj, ho->cflag, ho->maxslotindex);
-
-    /* bring the interface up for IP */
-    if (!sifup(f->unit)) {
-	IPCPDEBUG((LOG_WARNING, "sifup failed"));
-	ipcp_close(tlns->ipcp_unit,"sifup failed");
-	return;
-    }
-
-    /* assign a default route through the interface if required */
-    if (ipcp_wantoptions[tlns->ipcp_unit].default_route) 
-	if (sifdefaultroute(f->unit, ho->hisaddr))
-	    go->default_route = 1;
-
-    /* Make a proxy ARP entry if requested. */
-    if (ipcp_wantoptions[tlns->ipcp_unit].proxy_arp)
-	if (sifproxyarp(f->unit, ho->hisaddr))
-	    go->proxy_arp = 1;
-
-    /*
-     * Execute the ip-up script, like this:
-     *	/etc/ppp/ip-up interface tty speed local-IP remote-IP
-     */
-    ipcp_script(f, _PATH_IPUP);
-
+	/*
+	 * Execute the ip-up script, like this:
+	 * /etc/ppp/ip-up interface tty speed local-IP remote-IP
+	 */
+	ipcp_script(f, _PATH_IPUP);
 }
 
 

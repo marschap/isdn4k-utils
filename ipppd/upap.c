@@ -18,7 +18,7 @@
  */
 
 #ifndef lint
-static char rcsid[] = "$Id: upap.c,v 1.1 1997/03/07 16:01:41 hipp Exp $";
+static char rcsid[] = "$Id: upap.c,v 1.2 1997/04/26 17:17:47 hipp Exp $";
 #endif
 
 /*
@@ -32,7 +32,7 @@ static char rcsid[] = "$Id: upap.c,v 1.1 1997/03/07 16:01:41 hipp Exp $";
 #include <syslog.h>
 
 #include "fsm.h"
-#include "pppd.h"
+#include "ipppd.h"
 #include "upap.h"
 
 extern int log_raw_password;

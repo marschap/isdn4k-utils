@@ -1,5 +1,5 @@
-#define	PATCHLEVEL	8
+#define	PATCHLEVEL	9
 
 #define VERSION		"i2.2"
 #define IMPLEMENTATION	"anubis"
-#define DATE		"31. January 97"
+#define DATE		"26. April 97"
