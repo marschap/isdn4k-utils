@@ -1,10 +1,9 @@
-.\" $Id: isdn.conf.5.in,v 1.1 1999/03/10 08:33:14 paul Exp $
-.\" CHECKIN $Date: 1999/03/10 08:33:14 $
+.\" $Id: isdn.conf.5.in,v 1.2 1999/03/11 09:22:08 paul Exp $
+.\" CHECKIN $Date: 1999/03/11 09:22:08 $
 .TH isdn.conf 5 "@MANDATE_ISDN_CONF@" "ISDN 4 Linux @I4LVERSION@" "Linux System Administration"
 .PD 0
 
 .SH NAME
-/etc/isdn/isdn.conf \- config file for isdnlog
 @I4LCONFDIR@/@CONFFILE@ \- config file for isdnlog
 
 .SH FORMAT
@@ -48,12 +47,12 @@ Default is arealib. Optional.
 
 .TP
 .B AREALIB
-Full path to the arealib data file. Default is /etc/isdn/areacodes.
+Full path to the arealib data file. Default is @DATADIR@/areacodes.
 
 .TP
 .B AVON
 Full path to the avon data file. Default is to use arealib, so you must
-set this, if you want to use avon (e.g. /etc/isdn/avon).
+set this, if you want to use avon (e.g. @DATADIR@/avon).
 
 .SH VARIABLES
 The ISDN tools allow to set variables and use them later. All variables
@@ -66,22 +65,22 @@ Settings for isdnlog.
 .B LOGFILE
 Isdnlog will store a list of all calls in this file, and isdnrep will
 read this file to calculate isdn telephone costs. Default value is
-"/var/lib/isdn/calls". Optional.
+"@LOGFILE@". Optional.
 
 .TP
 .B RELOADCMD
 Isdnlog can use this command to reactivate the isdn subsystem.
-Default value is "reload". Optional.
+Default value is "@RELOADCMD@". Optional.
 
 .TP
 .B STOPCMD
 Isdnlog can use this command to stop the isdn subsystem.
-Default value is "stop". Optional.
+Default value is "@STOPCMD@". Optional.
 
 .TP
 .B REBOOTCMD
 Isdnlog can use this command to reboot linux (when all else fails).
-Default value is "/sbin/reboot". Optional.
+Default value is "@REBOOTCMD@". Optional.
 
 .TP
 .B CURRENCY
@@ -245,7 +244,7 @@ COUNTRYCODE=49  # Germany
 AREACODE=721    # Karlsruhe
 
 CODELIB=areacode
-AREALIB=/etc/isdn/areacodes # This is where to find the arealib
+AREALIB=@DATADIR@/areacodes # This is where to find the arealib
 
 [VARIABLES]
 

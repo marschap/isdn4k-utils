@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.55 1999/03/10 08:35:48 paul Exp $
+## $Id: Makefile.in,v 1.56 1999/03/11 09:21:58 paul Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,9 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.56  1999/03/11 09:21:58  paul
+## fixed problems with yesterday's commit
+##
 ## Revision 1.55  1999/03/10 08:35:48  paul
 ## use DATADIR from "make config" phase instead of hardcoded /usr/lib/isdn
 ##
@@ -459,7 +462,6 @@ DEFS       += \
                -DI4LVERSION=\"$(I4LVERSION)\"   \
 	       -D@NATION_MACRO@=1		\
                -DDATADIR=\"$(DATADIR)\"		\
-               -DI4LCONFDIR=\"$(I4LCONFDIR)\"	\
                 $(INCLUDE)
 
 %.o: %.c
