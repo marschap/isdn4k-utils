@@ -1,0 +1,7 @@
+2004-07-24  Tobias Becker  <tobiasb@isdn4linux.de>
+
+	* isdnconf.c (Set_Globals): Store `REPOTIONS' config file entry to
+	global variable isdnrep_defopts.
+	* tools.h: Added definitions for `REPOTIONS' and isdnrep_defopts.
+
+	* ChangeLog: Started this file.

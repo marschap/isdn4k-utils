@@ -1,5 +1,5 @@
-.\" $Id: isdn.conf.5.in,v 1.8 2002/03/11 16:13:38 paul Exp $
-.\" CHECKIN $Date: 2002/03/11 16:13:38 $
+.\" $Id: isdn.conf.5.in,v 1.9 2004/07/24 16:16:57 tobiasb Exp $
+.\" CHECKIN $Date: 2004/07/24 16:16:57 $
 .TH isdn.conf 5 "@MANDATE_ISDN_CONF@" "ISDN 4 Linux @I4LVERSION@" "Linux System Administration"
 .PD 0
 
@@ -152,6 +152,18 @@ month. Optional.
 Isdnlog can also limit your transfer in bytes.
 Example: "BYTEMAX=67108864" will limit your transfer to 64 MB per
 month. Optional.
+
+.TP
+.B REPOPTIONS
+General commandline options for isdnrep. The options noted here have
+the same effect as appended to each isdnrep commandline. Options are
+seperated by
+.B ;
+instead of the usual space.
+.br
+Example: "REPOPTIONS=-LP;-E"
+will turn off the provider summary and
+show failed calls. Optional.
 
 .TP
 .B VBOXPATH

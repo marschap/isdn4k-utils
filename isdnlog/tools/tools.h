@@ -1,4 +1,4 @@
-/* $Id: tools.h,v 1.60 2004/01/28 14:27:47 tobiasb Exp $
+/* $Id: tools.h,v 1.61 2004/07/24 16:16:56 tobiasb Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools.h,v $
+ * Revision 1.61  2004/07/24 16:16:56  tobiasb
+ * New entry `REPOPTIONS' in section [ISDNLOG] of the isdn configuration
+ * file.  This will be used for commandline options defaults of isdnrep.
+ *
  * Revision 1.60  2004/01/28 14:27:47  tobiasb
  * Second step in restricting fds at isdnlog restart and script starting.
  * The fd limit is now taken from getrlimit() instead of NR_OPEN.
@@ -918,6 +922,7 @@
 #define CONF_ENT_TIME     "TIME"
 
 #define CONF_ENT_REPFMT   "REPFMT"
+#define CONF_ENT_REPOPTS  "REPOPTIONS"
 
 #define CONF_ENT_CALLFILE "CALLFILE"
 #define CONF_ENT_CALLFMT  "CALLFMT"
@@ -1210,6 +1215,7 @@ _EXTERN char *vboxcommand1  = NULL;
 _EXTERN char *vboxcommand2  = NULL;
 _EXTERN char *mgettypath    = NULL;
 _EXTERN char *mgettycommand = NULL;
+_EXTERN char *isdnrep_defopts = NULL;
 
 #else
 #define _EXTERN extern
@@ -1235,6 +1241,7 @@ _EXTERN char *vboxcommand1;
 _EXTERN char *vboxcommand2;
 _EXTERN char *mgettypath;
 _EXTERN char *mgettycommand;
+_EXTERN char *isdnrep_defopts;
 
 #endif
 
