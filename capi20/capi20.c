@@ -1,7 +1,12 @@
 /*
- * $Id: capi20.c,v 1.20 2004/01/16 15:27:11 calle Exp $
+ * $Id: capi20.c,v 1.21 2004/03/31 18:12:40 calle Exp $
  * 
  * $Log: capi20.c,v $
+ * Revision 1.21  2004/03/31 18:12:40  calle
+ * - add receive buffer managment according to CAPI2.0 spec.
+ * - send buffer is now on stack.
+ * - new library version 2.0.7
+ *
  * Revision 1.20  2004/01/16 15:27:11  calle
  * remove several warnings.
  *
@@ -81,6 +86,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <stdio.h>
+#include <assert.h>
 #define _LINUX_LIST_H
 #include <linux/capi.h>
 #include "capi20.h"
@@ -106,8 +112,6 @@ static char capidevnamenew[] = "/dev/isdn/capi20";
 
 static int                  capi_fd = -1;
 static capi_ioctl_struct    ioctl_data;
-static unsigned char        rcvbuf[128+2048];   /* message + data */
-static unsigned char        sndbuf[128+2048];   /* message + data */
 
 unsigned capi20_isinstalled (void)
 {
@@ -169,6 +173,117 @@ static inline int applid2fd(unsigned applid)
     if (applid < MAX_APPL)
 	    return applidmap[applid];
     return -1;
+}
+
+/*
+ * buffer management
+ */
+
+struct recvbuffer {
+   struct recvbuffer *next;
+   unsigned int       datahandle;
+   unsigned int       used;
+   unsigned char     *buf; /* 128 + MaxSizeB3 */
+};
+
+struct applinfo {
+   unsigned  maxbufs;
+   unsigned  nbufs;
+   size_t    recvbuffersize;
+   struct recvbuffer *buffers;
+   struct recvbuffer *firstfree;
+   struct recvbuffer *lastfree;
+   unsigned char *bufferstart;
+};
+
+static struct applinfo *alloc_buffers(unsigned MaxB3Connection,
+		                      unsigned MaxB3Blks,
+		                      unsigned MaxSizeB3)
+{
+   struct applinfo *ap;
+   unsigned nbufs = MaxB3Connection * (MaxB3Blks + 1);
+   size_t recvbuffersize = 128 + MaxSizeB3;
+   unsigned i;
+   size_t size;
+
+   size = sizeof(struct applinfo);
+   size += sizeof(struct recvbuffer) * nbufs;
+   size += recvbuffersize * nbufs;
+
+   ap = (struct applinfo *)malloc(size);
+   if (ap == 0) return 0;
+
+   memset(ap, 0, size);
+   ap->maxbufs = nbufs;
+   ap->recvbuffersize = recvbuffersize;
+   ap->buffers = (struct recvbuffer *)(ap+1);
+   ap->firstfree = ap->buffers;
+   ap->bufferstart = (unsigned char *)(ap->buffers+nbufs);
+   for (i=0; i < ap->maxbufs; i++) {
+      ap->buffers[i].next = &ap->buffers[i+1];
+      ap->buffers[i].used = 0;
+      ap->buffers[i].buf = ap->bufferstart+(recvbuffersize*i);
+   }
+   ap->lastfree = &ap->buffers[ap->maxbufs-1];
+   ap->lastfree->next = 0;
+   return ap;
+}
+
+static void free_buffers(struct applinfo *ap)
+{
+   free(ap);
+}
+
+static struct applinfo *applinfo[MAX_APPL];
+
+static unsigned char *get_buffer(unsigned applid, size_t *sizep, unsigned *handle)
+{
+   struct applinfo *ap;
+   struct recvbuffer *buf;
+
+   assert(validapplid(applid));
+   ap = applinfo[applid];
+   buf = ap->firstfree;
+   ap->firstfree = buf->next;
+   buf->next = 0;
+   buf->used = 1;
+   ap->nbufs++;
+   *sizep = ap->recvbuffersize;
+   *handle  = (buf->buf-ap->bufferstart)/ap->recvbuffersize;
+   return buf->buf;
+}
+
+static void save_datahandle(unsigned char applid, unsigned offset, unsigned datahandle)
+{
+   struct applinfo *ap;
+   struct recvbuffer *buf;
+
+   assert(validapplid(applid));
+   ap = applinfo[applid];
+   assert(offset < ap->maxbufs);
+   buf = ap->buffers+offset;
+   buf->datahandle = datahandle;
+}
+
+static unsigned return_buffer(unsigned char applid, unsigned offset)
+{
+   struct applinfo *ap;
+   struct recvbuffer *buf;
+
+   assert(validapplid(applid));
+   ap = applinfo[applid];
+   assert(offset < ap->maxbufs);
+   buf = ap->buffers+offset;
+   assert(buf->used == 1);
+   assert(buf->next == 0);
+   if (ap->lastfree) {
+      ap->lastfree->next = buf;
+      ap->lastfree = buf;
+   } else {
+      ap->firstfree = ap->lastfree = buf;
+   }
+   assert(ap->nbufs-- > 0);
+   return buf->datahandle;
 }
 
 /* 
@@ -250,6 +365,11 @@ capi20_register (unsigned MaxB3Connection,
        close(fd);
        return CapiRegOSResourceErr;
     }
+    applinfo[applid] = alloc_buffers(MaxB3Connection, MaxB3Blks, MaxSizeB3);
+    if (applinfo[applid] == 0) {
+       close(fd);
+       return CapiRegOSResourceErr;
+    }
     *ApplID = applid;
     return CapiNoError;
 }
@@ -263,12 +383,15 @@ capi20_release (unsigned ApplID)
         return CapiIllAppNr;
     (void)close(applid2fd(ApplID));
     freeapplid(ApplID);
+    free_buffers(applinfo[ApplID]);
+    applinfo[ApplID] = 0;
     return CapiNoError;
 }
 
 unsigned
 capi20_put_message (unsigned ApplID, unsigned char *Msg)
 {
+    unsigned char sndbuf[128+2048];
     unsigned ret;
     int len = (Msg[0] | (Msg[1] << 8));
     int cmd = Msg[4];
@@ -286,28 +409,32 @@ capi20_put_message (unsigned ApplID, unsigned char *Msg)
 
     memcpy(sndbuf, Msg, len);
 
-    if (cmd == CAPI_DATA_B3 && subcmd == CAPI_REQ) {
-        int datalen = (Msg[16] | (Msg[17] << 8));
-        void *dataptr;
-        if (sizeof(void *) != 4) {
-	    if (len >= 30) { /* 64Bit CAPI-extention */
-	       u_int64_t data64;
-	       memcpy(&data64,Msg+22, sizeof(u_int64_t));
-	       if (data64 != 0) dataptr = (void *)(unsigned long)data64;
-	       else dataptr = Msg + len; /* Assume data after message */
-	    } else {
-               dataptr = Msg + len; /* Assume data after message */
-	    }
-        } else {
-            u_int32_t data;
-            memcpy(&data,Msg+12, sizeof(u_int32_t));
-            if (data != 0) dataptr = (void *)(unsigned long)data;
-            else dataptr = Msg + len; /* Assume data after message */
-	}
-        memcpy(sndbuf+len, dataptr, datalen);
-        len += datalen;
-    }
-
+    if (cmd == CAPI_DATA_B3) {
+       if (subcmd == CAPI_REQ) {
+          int datalen = (Msg[16] | (Msg[17] << 8));
+          void *dataptr;
+          if (sizeof(void *) != 4) {
+	      if (len >= 30) { /* 64Bit CAPI-extention */
+	         u_int64_t data64;
+	         memcpy(&data64,Msg+22, sizeof(u_int64_t));
+	         if (data64 != 0) dataptr = (void *)(unsigned long)data64;
+	         else dataptr = Msg + len; /* Assume data after message */
+	      } else {
+                 dataptr = Msg + len; /* Assume data after message */
+	      }
+          } else {
+              u_int32_t data;
+              memcpy(&data,Msg+12, sizeof(u_int32_t));
+              if (data != 0) dataptr = (void *)(unsigned long)data;
+              else dataptr = Msg + len; /* Assume data after message */
+	  }
+          memcpy(sndbuf+len, dataptr, datalen);
+          len += datalen;
+      } else if (subcmd == CAPI_RESP) {
+          capimsg_setu16(sndbuf, 12,
+			 return_buffer(ApplID, CAPIMSG_U16(sndbuf, 12)));
+      }
+   }
     ret = CapiNoError;
     errno = 0;
 
@@ -337,7 +464,10 @@ capi20_put_message (unsigned ApplID, unsigned char *Msg)
 unsigned
 capi20_get_message (unsigned ApplID, unsigned char **Buf)
 {
+    unsigned char *rcvbuf;
+    unsigned offset;
     unsigned ret;
+    size_t bufsiz;
     int rc, fd;
 
     if (capi20_isinstalled() != CapiNoError)
@@ -348,11 +478,14 @@ capi20_get_message (unsigned ApplID, unsigned char **Buf)
 
     fd = applid2fd(ApplID);
 
-    *Buf = rcvbuf;
-    if ((rc = read(fd, rcvbuf, sizeof(rcvbuf))) > 0) {
+    *Buf = rcvbuf = get_buffer(ApplID, &bufsiz, &offset);
+
+    if ((rc = read(fd, rcvbuf, bufsiz)) > 0) {
 	CAPIMSG_SETAPPID(rcvbuf, ApplID); // workaround for old driver
         if (   CAPIMSG_COMMAND(rcvbuf) == CAPI_DATA_B3
 	    && CAPIMSG_SUBCOMMAND(rcvbuf) == CAPI_IND) {
+           save_datahandle(ApplID, offset, CAPIMSG_U16(rcvbuf, 18));
+           capimsg_setu16(rcvbuf, 18, offset); /* patch datahandle */
            if (sizeof(void *) == 4) {
 	       u_int32_t data = (u_int32_t)rcvbuf + CAPIMSG_LEN(rcvbuf);
 	       rcvbuf[12] = data & 0xff;
@@ -382,9 +515,14 @@ capi20_get_message (unsigned ApplID, unsigned char **Buf)
 	       rcvbuf[28] = (data >> 48) & 0xff;
 	       rcvbuf[29] = (data >> 56) & 0xff;
 	   }
+	   /* keep buffer */
+           return CapiNoError;
 	}
+        return_buffer(ApplID, offset);
         return CapiNoError;
     }
+
+    return_buffer(ApplID, offset);
 
     if (rc == 0)
         return CapiReceiveQueueEmpty;

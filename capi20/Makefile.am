@@ -9,7 +9,7 @@ lib_LTLIBRARIES = libcapi20.la
 lib_LIBRARIES   = libcapi20dyn.a
 
 libcapi20_la_SOURCES = capi20.c capifunc.c convert.c
-libcapi20_la_LDFLAGS = -version-info 2:6:0
+libcapi20_la_LDFLAGS = -version-info 2:7:0
 libcapi20_la_CFLAGS = -fno-strict-aliasing
 
 libcapi20dyn_a_SOURCES = capidyn.c
