@@ -1,5 +1,5 @@
 
-/* $Id: libisdn.h,v 1.3 1997/03/06 20:36:35 luethje Exp $
+/* $Id: libisdn.h,v 1.4 1997/03/20 00:28:02 luethje Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -18,6 +18,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ *
+ * $Log: libisdn.h,v $
+ * Revision 1.4  1997/03/20 00:28:02  luethje
+ * Inserted lines into the files for the revision tool.
  *
  */
 

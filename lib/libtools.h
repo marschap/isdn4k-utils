@@ -1,5 +1,4 @@
-
-/* $Id: libtools.h,v 1.2 1997/03/03 22:05:42 luethje Exp $
+/* $Id: libtools.h,v 1.3 1997/03/20 00:28:03 luethje Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -18,6 +17,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ *
+ * $Log: libtools.h,v $
+ * Revision 1.3  1997/03/20 00:28:03  luethje
+ * Inserted lines into the files for the revision tool.
  *
  */
 
