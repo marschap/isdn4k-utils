@@ -4,7 +4,7 @@
 
 <title>FAQ for isdn4linux
 <author>Matthias Hessler (<tt><htmlurl url="mailto:hessler@isdn4linux.de" name="hessler@isdn4linux.de"></tt>)
-<date>v2.0.20, 30. October 1999
+<date>v2.0.21, 1. November 1999
 <abstract>
 If you are reading this FAQ online, you may consider downloading the whole
 thing, and reading it offline (much cheaper). To download the latest
@@ -1115,7 +1115,9 @@ called with <tt/noccp/ and <tt/require-pap/. For a mini-howto see:
 These are helpful links that are currently available on how to configure
 isdn4linux:
 <itemize>
-<item><url url="http://www.wurtel.demon.nl/i4l-howto-uk.html">
+<item>English: <url url="http://www.wurtel.demon.nl/i4l-howto-uk.html">
+<item>German: <url url="http://www.franken.de/users/klaus/">
+<item>French: <url url="http://www.perso.wanadoo.fr/philippe.latu/">
 <item>Suse Support database:
 <url url="http://www.suse.de/Support/sdb_e/index.html">; there is also an ISDN
 howto (isdn.html) and a ISDN quick-install guide (isdnquick.html).
