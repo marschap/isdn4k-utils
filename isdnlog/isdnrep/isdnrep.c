@@ -1,4 +1,4 @@
-/* $Id: isdnrep.c,v 1.41 1998/09/22 20:59:53 luethje Exp $
+/* $Id: isdnrep.c,v 1.42 1998/09/22 21:06:50 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -24,6 +24,9 @@
  *
  *
  * $Log: isdnrep.c,v $
+ * Revision 1.42  1998/09/22 21:06:50  luethje
+ * isdnrep: simple fix
+ *
  * Revision 1.41  1998/09/22 20:59:53  luethje
  * isdnrep:  -fixed wrong provider report
  *           -fixed wrong html output for provider report
@@ -3765,6 +3768,12 @@ static int find_format_length(char *string)
 	{
 		if (*string++ == '%')
 		{
+			if (*string == '%')
+			{
+				string++;
+				continue;
+			}
+
 			while(index("0123456789-",*string)) string++;
 
 			if (*string == '\0')
