@@ -16,7 +16,7 @@
  * IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Id: ipppd.h,v 1.12 1998/03/25 13:13:37 hipp Exp $
+ * $Id: ipppd.h,v 1.13 1998/03/29 13:19:22 hipp Exp $
  */
 
 /*
@@ -55,6 +55,10 @@ struct isdn_ppp_comp_data {
         int optlen;
         int flags;
 };
+#endif
+
+#ifndef PPP_LINK_CCP
+#define PPP_LINK_CCP 0x80fb
 #endif
 
 #define NUM_PPP	64		/* 64 PPP interface supported (per process) */
