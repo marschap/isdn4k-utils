@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.162 2000/05/15 19:00:19 akool Exp $
+## $Id: Makefile.in,v 1.163 2000/05/16 16:24:02 akool Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,10 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.163  2000/05/16 16:24:02  akool
+## isdnlog-4.24
+## - isdnlog/tools/rate.c ... bugfix for eXceptions w/o z-entry
+##
 ## Revision 1.162  2000/05/15 19:00:19  akool
 ## - isdnlog/tools/rate-at.c ... 1001, 1012
 ##
@@ -1210,7 +1214,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 4.23
+VERSION     = 4.24
 
 MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 \
 	      isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 \
