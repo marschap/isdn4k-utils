@@ -2734,7 +2734,7 @@ int main (int argc, char *argv[])
   printf ("# Many thanks to Daniela Bruder <dbruder@sime.com>\n");
   printf ("# for collecting and preparing most of the call charges.\n\n\n");
 
-  printf ("V:1.95-Austria [04-Jul-2000]\n\n");
+  printf ("V:1.96-Austria [07-Dec-2000]\n\n");
   printf ("U:%%.3f öS\n");
   write_services();
 
