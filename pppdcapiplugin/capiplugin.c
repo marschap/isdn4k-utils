@@ -26,7 +26,7 @@
 #include <linux/if.h>
 #include <linux/in.h>
 
-static char *revision = "$Revision: 1.17 $";
+static char *revision = "$Revision: 1.18 $";
 
 /* -------------------------------------------------------------------- */
 
@@ -59,13 +59,18 @@ typedef struct stringlist {
 
 /* -------------------------------------------------------------------- */
 
-static void handlemessages(void) ;
+static int curphase = -1;
+static int wakeupnow = 0;
 
+/* -------------------------------------------------------------------- */
+
+static void handlemessages(void) ;
 static void stringlist_free(STRINGLIST **pp);
 static int stringlist_append_string(STRINGLIST **pp, char *s);
 static STRINGLIST *stringlist_split(char *tosplit, char *seps);
-
 static void makecallback(void);
+static char *phase2str(int phase);
+static void wakeupdemand(void);
 
 /* -------------------------------------------------------------------- */
 
@@ -241,7 +246,7 @@ static int decodechannels(char *teln, unsigned long *bmaskp, int *activep)
 	s = teln;
 	while (*s && *s == ' ') s++;
 	if (!*s)
-		fatal("capiplugin; option channels: list empty");
+		fatal("capiplugin: option channels: list empty");
 	if (*s == 'p' || *s == 'P') {
 		active = 0;
 		s++;
@@ -681,26 +686,6 @@ static int conn_isconnected(capi_connection *cp)
 /* -------------------------------------------------------------------- */
 /* -------------------------------------------------------------------- */
 
-static void disconnectall(void)
-{
-	time_t t;
-	CONN *p;
-
-        (void) capiconn_listen(ctx, controller, 0, 0);
-	for (p = connections; p; p = p->next) {
-	      if (p->inprogress || p->isconnected) {
-		 p->isconnected = p->inprogress = 0;
-        	 capiconn_disconnect(p->conn, 0);
-	      }
-	}
-	t = time(0)+10;
-	do {
-	    handlemessages();
-        } while (connections && time(0) < t);
-
-	if (connections)
-        	fatal("capiplugin: disconnectall failed");
-}
 
 /* -------------------------------------------------------------------- */
 /* -------- Handle CAPI messages every second ------------------------- */
@@ -715,6 +700,8 @@ static void timeoutfunc(void *arg)
 	/* info("capiplugin: checking for capi messages"); */
 	while (capi20_get_message (applid, &msg) == 0)
 		capiconn_inject(applid, msg);
+        if (wakeupnow && curphase == PHASE_DORMANT)
+           wakeupdemand();
 	if (timeoutshouldrun)
 		_timeout (timeoutfunc, 0, 1);
 }
@@ -740,7 +727,6 @@ static void unsetup_timeout(void)
 
 static u_int32_t ouripaddr;
 static u_int32_t gwipaddr;
-static int wakeupneeded = 0;
 static int nwakeuppackets = 0;
 
 static void setupincoming_for_demand(void)
@@ -787,9 +773,17 @@ static void setupincoming_for_demand(void)
 static void wakeupdemand(void)
 {
     char data[] = "Ignore, is for demand wakeup";
-    struct sockaddr_in addr;
+    struct sockaddr_in laddr, raddr;
+    size_t addrlen;
     int sock_fd;
     int serrno;
+
+    if (curphase != PHASE_DORMANT) {
+       info("capiplugin: wakeup not possible in phase %s, delayed",
+		phase2str(curphase));
+       wakeupnow++;
+       return;
+    }
 
     if ((sock_fd = socket(AF_INET, SOCK_DGRAM, 0)) < 0) {
        serrno = errno;
@@ -797,34 +791,38 @@ static void wakeupdemand(void)
 			      strerror(serrno), serrno);
        return;
     }
-    memset (&addr, '\0', sizeof(addr));
-    addr.sin_family = AF_INET;
-    addr.sin_addr.s_addr = ouripaddr;
-    addr.sin_port = 0;
-    if (bind(sock_fd, (struct sockaddr *)&addr, sizeof(addr)) != 0) {
+    memset (&laddr, '\0', sizeof(laddr));
+    laddr.sin_family = AF_INET;
+    laddr.sin_addr.s_addr = ouripaddr;
+    laddr.sin_port = 0;
+    if (bind(sock_fd, (struct sockaddr *)&laddr, sizeof(laddr)) != 0) {
        serrno = errno;
        close(sock_fd);
        fatal("capiplugin: bind(%I): failed - %s (%d)",
 			      ouripaddr, strerror(serrno), serrno);
        return;
     }
-    memset (&addr, '\0', sizeof(addr));
-    addr.sin_family = AF_INET;
-    addr.sin_addr.s_addr = gwipaddr;
-    addr.sin_port = htons(9); /* discard */
-    if (connect(sock_fd, (struct sockaddr *)&addr, sizeof(addr)) != 0) {
+    addrlen = sizeof(laddr);
+    getsockname(sock_fd, (struct sockaddr *)&laddr, &addrlen);
+    memset (&raddr, '\0', sizeof(raddr));
+    raddr.sin_family = AF_INET;
+    raddr.sin_addr.s_addr = gwipaddr;
+    raddr.sin_port = htons(9); /* discard */
+    if (connect(sock_fd, (struct sockaddr *)&raddr, sizeof(raddr)) != 0) {
        serrno = errno;
        close(sock_fd);
-       fatal("capiplugin: connect(%I): failed - %s (%d)",
-			      gwipaddr, strerror(serrno), serrno);
+       fatal("capiplugin: connect(%I:%d): failed - %s (%d)",
+	      gwipaddr, ntohs(raddr.sin_port), strerror(serrno), serrno);
        return;
     }
-    notice("capiplugin: sending wakup packet (%I -> %I)", ouripaddr, gwipaddr);
+    notice("capiplugin: sending wakeup packet (UDP %I:%d -> %I:%d)",
+		    ouripaddr, ntohs(laddr.sin_port),
+		    gwipaddr, ntohs(raddr.sin_port));
     if (send(sock_fd, data, sizeof(data), 0) < 0) {
        serrno = errno;
        close(sock_fd);
        fatal("capiplugin: send wakup packet failed - %s (%d)",
-			      gwipaddr, strerror(serrno), serrno);
+			      strerror(serrno), serrno);
        return;
     }
     close(sock_fd);
@@ -896,6 +894,26 @@ static void dodisconnect(capi_connection *cp)
 		fatal("capiplugin: timeout while waiting for disconnect");
 }
 
+static void disconnectall(void)
+{
+	time_t t;
+	CONN *p;
+
+        (void) capiconn_listen(ctx, controller, 0, 0);
+	for (p = connections; p; p = p->next) {
+	      if (p->inprogress || p->isconnected) {
+		 p->isconnected = p->inprogress = 0;
+        	 capiconn_disconnect(p->conn, 0);
+	      }
+	}
+	t = time(0)+10;
+	do {
+	    handlemessages();
+        } while (connections && time(0) < t);
+
+	if (connections)
+        	fatal("capiplugin: disconnectall failed");
+}
 
 /* -------------------------------------------------------------------- */
 /* -------------------------------------------------------------------- */
@@ -1206,7 +1224,7 @@ static void connected(capi_connection *cp, _cstruct NCPI)
 	sprintf(buf, "%d", p->b3proto); _script_setenv("B3PROTOCOL", buf);
 
 	conn_connected(cp);
-	if (wakeupneeded)
+	if (curphase == PHASE_DORMANT)
            wakeupdemand();
 }
 
@@ -1454,7 +1472,7 @@ again:
 
 		if (conn_isconnected(cp)) {
 			dodisconnect(cp);
-			fatal("capiplugin: callback failed - other side answers the call (no reject)");
+			fatal("capiplugin: callback failed - other party answers the call (no reject)");
 	        } else if (was_no_reject()) {
 	        	goto again;
 		} else {
@@ -1544,33 +1562,82 @@ static void waitforcall(void)
 /* -------- PPPD state change hook ------------------------------------ */
 /* -------------------------------------------------------------------- */
 
+static char *phase2str(int phase)
+{
+	static struct tmpbuf {
+		struct tmpbuf *next;
+		char           buf[32];
+	} buffer[] = {
+		{ &buffer[1] },
+		{ &buffer[2] },
+		{ &buffer[0] },
+	};
+	static struct tmpbuf *p = &buffer[0];
+
+	switch (phase) {
+		case PHASE_DEAD: return "dead";
+		case PHASE_INITIALIZE: return "initialize";
+		case PHASE_SERIALCONN: return "serialconn";
+		case PHASE_DORMANT: return "dormant";
+		case PHASE_ESTABLISH: return "establish";
+		case PHASE_AUTHENTICATE: return "authenticate";
+		case PHASE_CALLBACK: return "callback";
+		case PHASE_NETWORK: return "network";
+		case PHASE_RUNNING: return "running";
+		case PHASE_TERMINATE: return "terminate";
+		case PHASE_DISCONNECT: return "disconnect";
+		case PHASE_HOLDOFF: return "holdoff";
+	}
+	p = p->next;
+	sprintf(p->buf,"unknown-%d", phase);
+	return p->buf;
+}
+
+/* -------------------------------------------------------------------- */
+
 static int capi_new_phase_hook(int phase)
 {
-	int fd;
-	wakeupneeded = 0;
+	if (phase == curphase) {
+	   info("capiplugin: phase %s, again.", phase2str(phase));
+	   return 0;
+	}
+        if (curphase != -1) {
+           info("capiplugin: phase %s (was %s).",
+		phase2str(phase), phase2str(curphase));
+	} else {
+	   info("capiplugin: phase %s.", phase2str(phase));
+	}
+	curphase = phase;
 	switch (phase) {
-		case PHASE_DEAD:
-			info("capiplugin: phase dead");
-			if ((fd = capi20_fileno(applid)) >= 0)
-			   remove_fd(fd);
-			unsetup_timeout();
-			disconnectall();
-			break;
 		case PHASE_INITIALIZE:
-			info("capiplugin: phase initialize");
+		case PHASE_ESTABLISH:
+		case PHASE_AUTHENTICATE:
+		case PHASE_CALLBACK:
+		case PHASE_NETWORK:
+		case PHASE_RUNNING:
+		case PHASE_TERMINATE:
+		case PHASE_DISCONNECT:
+		case PHASE_HOLDOFF:
 			break;
+
+		case PHASE_DEAD:
+                        disconnectall();
+			break;
+
 		case PHASE_DORMANT:
 			status = EXIT_OK;
-			wakeupneeded = 1;
 			plugin_check_options();
 			init_capiconn();
-			info("capiplugin: phase dormant");
-			if (opt_inmsn || opt_cli)
-			   setupincoming_for_demand();
+			if (opt_inmsn || opt_cli) {
+			   if (wakeupnow)
+                              wakeupdemand();
+		           setupincoming_for_demand();
+			}
 			break;
+
 		case PHASE_SERIALCONN:
 			status = EXIT_OK;
-		        info("capiplugin: phase serialconn");
+		        wakeupnow = 0;
 	                if (conn_isconnected(0))
 			   break;
 			plugin_check_options();
@@ -1587,37 +1654,36 @@ static int capi_new_phase_hook(int phase)
 			     waitforcall();
 			}
 			break;
-		case PHASE_ESTABLISH:
-			info("capiplugin: phase establish");
-			break;
-		case PHASE_AUTHENTICATE:
-			info("capiplugin: phase authenticate");
-			break;
-		case PHASE_CALLBACK:
-			info("capiplugin: phase callback");
-			break;
-		case PHASE_NETWORK:
-			info("capiplugin: phase network");
-			break;
-		case PHASE_RUNNING:
-			info("capiplugin: phase running");
-			break;
-		case PHASE_TERMINATE:
-			info("capiplugin: phase terminate");
-			break;
-		case PHASE_DISCONNECT:
-			info("capiplugin: phase disconnect");
-			break;
-		case PHASE_HOLDOFF:
-			info("capiplugin: phase holdoff");
-			break;
 	}
 	return 0;
 }
 
 /* -------------------------------------------------------------------- */
-/* -------- init function --------------------------------------------- */
+/* -------- init/exit function ---------------------------------------- */
 /* -------------------------------------------------------------------- */
+
+#if PPPVER >= PPPVersion(2,4,0,0)
+
+static void plugin_exit(void)
+{
+	int fd;
+	if ((fd = capi20_fileno(applid)) >= 0)
+		remove_fd(fd);
+	unsetup_timeout();
+	disconnectall();
+	info("capiplugin: exit");
+}
+
+static void phase_notify_func(void *p, int phase)
+{
+	(void)capi_new_phase_hook(phase);
+}
+
+static void exit_notify_func(void *p, int phase)
+{
+	plugin_exit();
+}
+#endif
 
 void plugin_init(void)
 {
@@ -1650,5 +1716,10 @@ void plugin_init(void)
 		return;
 	}
 
+#if PPPVER >= PPPVersion(2,4,0,0)
+        add_notifier(&phasechange, phase_notify_func, 0);
+        add_notifier(&exitnotify, exit_notify_func, 0);
+#else
         new_phase_hook = capi_new_phase_hook;
+#endif
 }
