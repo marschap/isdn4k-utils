@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.1 1999/06/30 17:18:06 he Exp $
+# $Id: Makefile,v 1.2 1999/06/30 22:56:46 he Exp $
 
 TDU_M_OBJ = master.o
 TDU_S_OBJ = slave.o echo_pos.o
@@ -27,7 +27,7 @@ tdu_log.o tdu_stream.o fileheader.o eft.o eft_client.o eft_server.o eft_dir.o: f
 
 eft_i4l.o: ../config.h
 
-tdu.c eft.c: extra_version_.h
+tdu.o eft.o: extra_version_.h
 
 extra_version_.h: make_extra_version.sh $(E4L_EXTRA_VERSION_DEP)
 	./make_extra_version.sh $(E4L_EXTRA_VERSION_DEP) > extra_version_.h
