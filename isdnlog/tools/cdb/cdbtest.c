@@ -32,11 +32,11 @@ int numfound = 0;
 int main()
 {
   int i;
-  uint32_t eod;
-  uint32_t klen;
-  uint32_t pos;
-  uint32_t dlen;
-  uint32_t dlen2;
+  uint32 eod;
+  uint32 klen;
+  uint32 pos;
+  uint32 dlen;
+  uint32 dlen2;
   char buf[8];
 
   if (cdb_bread(0,buf,4) == -1) readerror();

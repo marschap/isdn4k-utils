@@ -5,7 +5,7 @@ int main(argc,argv)
 int argc;
 char **argv;
 {
-  uint32_t len;
+  uint32 len;
   int c;
 
   if (!argv[1]) {

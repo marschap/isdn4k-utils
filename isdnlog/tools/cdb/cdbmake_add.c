@@ -11,8 +11,8 @@ struct cdbmake *cdbm;
 
 int cdbmake_add(cdbm,h,p,alloc)
 struct cdbmake *cdbm;
-uint32_t h;
-uint32_t p;
+uint32 h;
+uint32 p;
 char *(*alloc)();
 {
   struct cdbmake_hplist *head;
@@ -37,8 +37,8 @@ struct cdbmake *cdbm;
 char *(*alloc)();
 {
   int i;
-  uint32_t u;
-  uint32_t memsize;
+  uint32 u;
+  uint32 memsize;
   struct cdbmake_hplist *x;
 
   for (i = 0;i < 256;++i)
@@ -58,7 +58,7 @@ char *(*alloc)();
   }
 
   memsize += cdbm->numentries; /* no overflow possible up to now */
-  u = (uint32_t) 0 - (uint32_t) 1;
+  u = (uint32) 0 - (uint32) 1;
   u /= sizeof(struct cdbmake_hp);
   if (memsize > u) return 0;
 
@@ -82,16 +82,16 @@ char *(*alloc)();
   return 1;
 }
 
-uint32_t cdbmake_throw(cdbm,pos,b)
+uint32 cdbmake_throw(cdbm,pos,b)
 struct cdbmake *cdbm;
-uint32_t pos;
+uint32 pos;
 int b;
 {
-  uint32_t len;
-  uint32_t j;
-  uint32_t count;
+  uint32 len;
+  uint32 j;
+  uint32 count;
   struct cdbmake_hp *hp;
-  uint32_t where;
+  uint32 where;
 
   count = cdbm->count[b];
 

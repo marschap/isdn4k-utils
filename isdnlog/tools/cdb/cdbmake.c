@@ -30,7 +30,7 @@ int get()
   return c;
 }
 
-uint32_t safeadd(u,v) uint32_t u; uint32_t v;
+uint32 safeadd(u,v) uint32 u; uint32 v;
 {
   u += v;
   if (u < v) overflow();
@@ -38,7 +38,7 @@ uint32_t safeadd(u,v) uint32_t u; uint32_t v;
 }
 
 struct cdbmake cdbm;
-uint32_t pos;
+uint32 pos;
 char packbuf[8];
 
 int main(argc,argv)
@@ -48,9 +48,9 @@ char **argv;
   char *fntemp;
   char *fn;
   FILE *fi;
-  uint32_t len;
-  uint32_t u;
-  uint32_t h;
+  uint32 len;
+  uint32 u;
+  uint32 h;
   int i;
   int c;
   unsigned long keylen;
@@ -77,8 +77,8 @@ char **argv;
     while ((c = get()) != ',') keylen = keylen * 10 + (c - '0');
     datalen = 0;
     while ((c = get()) != ':') datalen = datalen * 10 + (c - '0');
-    cdbmake_pack(packbuf,(uint32_t) keylen);
-    cdbmake_pack(packbuf + 4,(uint32_t) datalen);
+    cdbmake_pack(packbuf,(uint32) keylen);
+    cdbmake_pack(packbuf + 4,(uint32) datalen);
 
     if (fwrite(packbuf,1,8,fi) < 8) writeerror();
 
@@ -97,9 +97,9 @@ char **argv;
     if (get() != '\n') format();
 
     if (!cdbmake_add(&cdbm,h,pos,malloc)) nomem();
-    pos = safeadd(pos,(uint32_t) 8);
-    pos = safeadd(pos,(uint32_t) keylen);
-    pos = safeadd(pos,(uint32_t) datalen);
+    pos = safeadd(pos,(uint32) 8);
+    pos = safeadd(pos,(uint32) keylen);
+    pos = safeadd(pos,(uint32) datalen);
   }
 
   if (!cdbmake_split(&cdbm,malloc)) nomem();
@@ -110,7 +110,7 @@ char **argv;
       cdbmake_pack(packbuf,cdbm.hash[u].h);
       cdbmake_pack(packbuf + 4,cdbm.hash[u].p);
       if (fwrite(packbuf,1,8,fi) < 8) writeerror();
-      pos = safeadd(pos,(uint32_t) 8);
+      pos = safeadd(pos,(uint32) 8);
     }
   }
 

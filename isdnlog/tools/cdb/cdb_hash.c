@@ -1,16 +1,16 @@
 #include "freecdb.h"
 
-uint32_t cdb_hash(buf,len)
+uint32 cdb_hash(buf,len)
 unsigned char *buf;
 unsigned int len;
 {
-  uint32_t h;
+  uint32 h;
 
   h = 5381;
   while (len) {
     --len;
     h += (h << 5);
-    h ^= (uint32_t) *buf++;
+    h ^= (uint32) *buf++;
   }
   return h;
 }

@@ -22,25 +22,25 @@ char buf[8];
 
 int main()
 {
-  uint32_t pos;
+  uint32 pos;
   int i;
-  uint32_t len;
-  uint32_t slot;
-  uint32_t records;
-  uint32_t slots;
-  uint32_t d0;
-  uint32_t d1;
-  uint32_t d2;
-  uint32_t d3;
-  uint32_t d4;
-  uint32_t d5;
-  uint32_t d6;
-  uint32_t d7;
-  uint32_t d8;
-  uint32_t d9;
-  uint32_t dfar;
-  uint32_t h;
-  uint32_t where;
+  uint32 len;
+  uint32 slot;
+  uint32 records;
+  uint32 slots;
+  uint32 d0;
+  uint32 d1;
+  uint32 d2;
+  uint32 d3;
+  uint32 d4;
+  uint32 d5;
+  uint32 d6;
+  uint32 d7;
+  uint32 d8;
+  uint32 d9;
+  uint32 dfar;
+  uint32 h;
+  uint32 where;
 
   if (fread(pointers,1,2048,stdin) < 2048) readerror();
   pos = cdb_unpack(pointers);

@@ -44,7 +44,7 @@ void cdb_free(struct cdb *cdb) {
 void cdb_findstart(struct cdb *cdb) {
 }
 
-int cdb_read(struct cdb *cdb, char *buf,unsigned int len, uint32_t pos) {
+int cdb_read(struct cdb *cdb, char *buf,unsigned int len, uint32 pos) {
     /* actually we don't need pos, because the previous findnext
        postioned us correctly 
        if you want to have a real read - you know what to do */
@@ -53,7 +53,7 @@ int cdb_read(struct cdb *cdb, char *buf,unsigned int len, uint32_t pos) {
 }
 
 int cdb_findnext(struct cdb *cdb ,char *key, unsigned int len) {
-    uint32_t dlen;
+    uint32 dlen;
     int ret = cdb_seek(cdb->fd, key, len, &dlen);
     if (ret == 1) {	/* found */
 	cdb->dlen = dlen;
@@ -78,7 +78,7 @@ int cdb_make_start(struct cdb_make *c,int fd) {
     return 0;
 }
 
-static inline uint32_t safeadd(u,v) uint32_t u; uint32_t v;
+static inline uint32 safeadd(u,v) uint32 u; uint32 v;
 {
   u += v;
 //  if (u < v) overflow(); we don't ;-)
@@ -90,12 +90,12 @@ static inline uint32_t safeadd(u,v) uint32_t u; uint32_t v;
    so no problem.
 */   
 int cdb_make_add(struct cdb_make *c,char *key,unsigned int keylen,char *data,unsigned int datalen) {
-    uint32_t h, pos;
+    uint32 h, pos;
     int i , ch;
     
     pos = c->pos;
-    cdbmake_pack(packbuf,(uint32_t) keylen);
-    cdbmake_pack(packbuf + 4,(uint32_t) datalen);
+    cdbmake_pack(packbuf,(uint32) keylen);
+    cdbmake_pack(packbuf + 4,(uint32) datalen);
     if (write(c->fd,packbuf,8) != 8) 
 	return -1;
     h = CDBMAKE_HASHSTART;
@@ -112,16 +112,16 @@ int cdb_make_add(struct cdb_make *c,char *key,unsigned int keylen,char *data,uns
     }
     if (!cdbmake_add(&c->cdbm,h,pos,malloc))
 	return -1;
-    pos = safeadd(pos,(uint32_t) 8);
-    pos = safeadd(pos,(uint32_t) keylen);
-    pos = safeadd(pos,(uint32_t) datalen);
+    pos = safeadd(pos,(uint32) 8);
+    pos = safeadd(pos,(uint32) keylen);
+    pos = safeadd(pos,(uint32) datalen);
     c->pos = pos;
     return 0;
 }
 
 int cdb_make_finish(struct cdb_make *c) {
     int i, u;
-    uint32_t len, pos;
+    uint32 len, pos;
     
     pos = c->pos;
     if (!cdbmake_split(&c->cdbm,malloc)) 
@@ -134,7 +134,7 @@ int cdb_make_finish(struct cdb_make *c) {
 	    cdbmake_pack(packbuf + 4,c->cdbm.hash[u].p);
 	    if (write(c->fd,packbuf,8) != 8) 
 		return -1;
-	    pos = safeadd(pos,(uint32_t) 8);
+	    pos = safeadd(pos,(uint32) 8);
 	}
     }
     lseek(c->fd, 0, SEEK_SET);	

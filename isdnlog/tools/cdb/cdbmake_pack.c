@@ -2,7 +2,7 @@
 
 void cdbmake_pack(buf,num)
 unsigned char *buf;
-uint32_t num;
+uint32 num;
 {
 #ifdef WORDS_BIGENDIAN
   buf[3] = num; num >>= 8;

@@ -15,10 +15,10 @@ void readerror()
 
 int main()
 {
-  uint32_t eod;
-  uint32_t pos;
-  uint32_t klen;
-  uint32_t dlen;
+  uint32 eod;
+  uint32 pos;
+  uint32 klen;
+  uint32 dlen;
   char buf[8];
   int i;
   int c;

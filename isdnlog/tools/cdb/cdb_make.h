@@ -7,7 +7,7 @@
  struct  cdb_make{
     int fd;
     struct cdbmake cdbm;
-    uint32_t pos;
+    uint32 pos;
     };
     
 #define cdb_datapos(c) ((c)->dpos)

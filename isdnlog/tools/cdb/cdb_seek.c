@@ -51,15 +51,15 @@ int cdb_seek(fd,key,len,dlen)
 int fd;
 char *key;
 unsigned int len;
-uint32_t *dlen;
+uint32 *dlen;
 {
   char packbuf[8];
-  uint32_t pos;
-  uint32_t h;
-  uint32_t lenhash;
-  uint32_t h2;
-  uint32_t loop;
-  uint32_t poskd;
+  uint32 pos;
+  uint32 h;
+  uint32 lenhash;
+  uint32 h2;
+  uint32 loop;
+  uint32 poskd;
 
   h = cdb_hash(key,len);
 

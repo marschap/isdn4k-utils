@@ -1,9 +1,9 @@
 #include "freecdb.h"
 
-uint32_t cdb_unpack(buf)
+uint32 cdb_unpack(buf)
 unsigned char *buf;
 {
-  uint32_t num;
+  uint32 num;
 #ifdef WORDS_BIGENDIAN
   num = buf[0]; num <<= 8;
   num += buf[1]; num <<= 8;
