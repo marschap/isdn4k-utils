@@ -66,7 +66,7 @@ PACKAGE = @PACKAGE@
 VERSION = @VERSION@
 
 AUTOMAKE_OPTIONS = foreign
-CLEANFILES = *~ comperr
+CLEANFILES = *~ comperr config.cache config.status config.log
 MAINTAINERCLEANFILES = configure aclocal.m4 Makefile.in config.h.in 			  stamp-h.in
 
 
@@ -290,7 +290,7 @@ distdir: $(DISTFILES)
 	@for file in $(DISTFILES); do \
 	  d=$(srcdir); \
 	  if test -d $$d/$$file; then \
-	    cp -pr $$/$$file $(distdir)/$$file; \
+	    cp -pr $$d/$$file $(distdir)/$$file; \
 	  else \
 	    test -f $(distdir)/$$file \
 	    || ln $$d/$$file $(distdir)/$$file 2> /dev/null \

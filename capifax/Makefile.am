@@ -1,9 +1,9 @@
 ##
-## $Id: Makefile.am,v 1.2 1999/10/20 16:43:18 calle Exp $
+## $Id: Makefile.am,v 1.3 2000/03/03 15:54:12 calle Exp $
 ##
 
 AUTOMAKE_OPTIONS	= foreign
-CLEANFILES              = *~ comperr
+CLEANFILES              = *~ comperr config.cache config.status config.log
 MAINTAINERCLEANFILES    = configure aclocal.m4 Makefile.in config.h.in \
 			  stamp-h.in
 
