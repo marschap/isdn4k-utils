@@ -1,14 +1,25 @@
 /*
-** $Id: rc.c,v 1.2 1998/06/17 17:01:22 michael Exp $
+** $Id: rc.c,v 1.3 1998/07/06 09:05:28 michael Exp $
 **
-** Copyright 1997-1998 by Michael Herold <michael@abadonna.mayn.de>
+** Copyright 1996-1998 Michael 'Ghandi' Herold <michael@abadonna.mayn.de>
 **
 ** $Log: rc.c,v $
+** Revision 1.3  1998/07/06 09:05:28  michael
+** - New control file code added. The controls are not longer only empty
+**   files - they can contain additional informations.
+** - Control "vboxctrl-answer" added.
+** - Control "vboxctrl-suspend" added.
+** - Locking mechanism added.
+** - Configuration parsing added.
+** - Some code cleanups.
+**
 ** Revision 1.2  1998/06/17 17:01:22  michael
 ** - First part of the automake/autoconf implementation. Currently vbox will
 **   *not* compile!
 **
 */
+
+#include "../config.h"
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -19,14 +30,16 @@
 #include "rc.h"
 
 /*************************************************************************/
-/** rc_read():		Reads a configuration into the structure.					**/
+/** rc_read():		Liest eine Konfiguration vom Typ <name>=<value> ein.	**/
 /*************************************************************************/
-/** => rc			Configuration structure											**/
-/** => rcname		Name of the configuration to read							**/
-/** => section		Name of the section to jump to								**/
-/** <=				 0 success															**/
-/** <=				-1 unable to open													**/
-/** <=				-2 section not found												**/
+/** => rc			Zeiger auf die Konfigurations-Struktur.					**/
+/** => rcname		Name der Konfiguration die eingelesen werden soll.		**/
+/** => section		Sektion zu der gesprungen werden soll (im Moment		**/
+/**					nicht unterstützt).												**/
+/**																							**/
+/** <=				0 wenn die Konfiguration eingelesen wurde, -1 bei		**/
+/**					einem Fehler und -2 wenn die Sektion nicht gefunden	**/
+/**					wurde.																**/
 /*************************************************************************/
 
 int rc_read(struct vboxrc *rc, char *rcname, char *section)
@@ -56,7 +69,6 @@ int rc_read(struct vboxrc *rc, char *rcname, char *section)
 
 			if ((section) && (rcsjump == 0))
 			{
-
 				continue;
 			}
 
@@ -81,7 +93,9 @@ int rc_read(struct vboxrc *rc, char *rcname, char *section)
 }
 
 /*************************************************************************/
-/** **/
+/** rc_free():	Gibt den Speicher einer Konfigurations-Struktur frei.		**/
+/*************************************************************************/
+/** => rc		Zeiger auf die Konfigurations-Struktur.						**/
 /*************************************************************************/
 
 void rc_free(struct vboxrc *rc)
@@ -98,6 +112,16 @@ void rc_free(struct vboxrc *rc)
 	}
 }
 
+/*************************************************************************/
+/** rc_get_entry():	Gibt den Wert eines Konfigurations-Eintrags zu-		**/
+/**						rück.																**/
+/*************************************************************************/
+/** => rc				Zeiger auf die Konfigurations-Struktur.				**/
+/** => name				Name des Eintrags dessen Wert man haben möchte.		**/
+/**																							**/
+/** <=					Wert des Eintrages oder NULL.								**/
+/*************************************************************************/
+
 unsigned char *rc_get_entry(struct vboxrc *rc, char *name)
 {
 	int i = 0;
@@ -113,7 +137,13 @@ unsigned char *rc_get_entry(struct vboxrc *rc, char *name)
 }
 
 /*************************************************************************/
-/** **/
+/** rc_set_entry():	Setzt den Wert eines Konfigurations-Eintrags.		**/
+/*************************************************************************/
+/** => rc				Zeiger auf die Konfigurations-Struktur.				**/
+/** => name				Name des Eintrags dessen Wert gesetzt werden soll.	**/
+/** => value			Wert der gesetzt werden soll.								**/
+/**																							**/
+/** <=					Wert des Eintrags oder NULL.								**/
 /*************************************************************************/
 
 unsigned char *rc_set_entry(struct vboxrc *rc, char *name, char *value)
@@ -156,6 +186,13 @@ unsigned char *rc_set_entry(struct vboxrc *rc, char *name, char *value)
 	return(NULL);
 }
 
+/*************************************************************************/
+/** rc_set_empty():	Setzt den Wert eines Konfigurations-Eintrags wenn	**/
+/**						dieser noch keinen Wert enthält.							**/
+/*************************************************************************/
+/** Siehe rc_set_entry().																**/
+/*************************************************************************/
+
 unsigned char *rc_set_empty(struct vboxrc *rc, char *name, char *value)
 {
 	int i = 0;
@@ -174,4 +211,3 @@ unsigned char *rc_set_empty(struct vboxrc *rc, char *name, char *value)
 
 	return(NULL);
 }
-

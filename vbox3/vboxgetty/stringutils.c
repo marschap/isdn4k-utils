@@ -1,25 +1,32 @@
 /*
-** $Id: stringutils.c,v 1.2 1998/06/17 17:01:23 michael Exp $
+** $Id: stringutils.c,v 1.3 1998/07/06 09:05:30 michael Exp $
 **
-** Copyright 1997-1998 by Michael Herold <michael@abadonna.mayn.de>
+** Copyright 1996-1998 Michael 'Ghandi' Herold <michael@abadonna.mayn.de>
 **
 ** $Log: stringutils.c,v $
+** Revision 1.3  1998/07/06 09:05:30  michael
+** - New control file code added. The controls are not longer only empty
+**   files - they can contain additional informations.
+** - Control "vboxctrl-answer" added.
+** - Control "vboxctrl-suspend" added.
+** - Locking mechanism added.
+** - Configuration parsing added.
+** - Some code cleanups.
+**
 ** Revision 1.2  1998/06/17 17:01:23  michael
 ** - First part of the automake/autoconf implementation. Currently vbox will
 **   *not* compile!
 **
 */
 
+#include "../config.h"
+
 #include <string.h>
 
 #include "stringutils.h"
 
 /*************************************************************************/
-/** xstrncpy():	Copy one string to another (length limited).				**/
-/*************************************************************************/
-/** => dest			Destination															**/
-/** => source		Source																**/
-/** => max			Destination buffer length										**/
+/** xstrncpy():																			**/
 /*************************************************************************/
 
 void xstrncpy(char *dest, char *source, int max)
@@ -30,11 +37,7 @@ void xstrncpy(char *dest, char *source, int max)
 }
 
 /*************************************************************************/
-/** xstrtol():	Converts a string to a number.									**/
-/*************************************************************************/
-/** => string	String to convert														**/
-/** => number	Default number if string can not converted					**/
-/** <=			Number																	**/
+/** xstrtol():																				**/
 /*************************************************************************/
       
 long xstrtol(char *string, long number)
@@ -45,6 +48,25 @@ long xstrtol(char *string, long number)
 	if (string)
 	{
 		back = strtol(string, &stop, 10);
+		
+		if (*stop == '\0') return(back);
+	}
+
+	return(number);
+}
+
+/*************************************************************************/
+/** xstrtoo():																				**/
+/*************************************************************************/
+
+long xstrtoo(char *string, long number)
+{
+	long  back;
+	char *stop;
+
+	if (string)
+	{
+		back = strtol(string, &stop, 8);
 		
 		if (*stop == '\0') return(back);
 	}

@@ -1,5 +1,5 @@
 ##
-## vboxgetty/Makefile.am - (C) 1997-1998 Michael Herold
+## $Id: Makefile.am,v 1.3 1998/07/06 09:05:17 michael Exp $
 ##
 
 ## system admin executables to install ####################################
@@ -15,7 +15,7 @@ packagepiddir		= @packagepiddir@
 tclpackagelibs		= @LINK_TCL_LIBS@
 tclpackageinclude	= @LINK_TCL_INCL@
 
-DEFS		       += -DSYSCONFDIR='"$(sysconfdir)"' -DDATADIR='"$(datadir)"' -DLOGDIR='"$(packagelogdir)"' -DLOCKDIR='"$(packagelockdir)"' -DPIDDIR='"$(packagepiddir)"'
+DEFS		       += -DSYSCONFDIR='"$(sysconfdir)"' -DPKGDATADIR='"$(pkgdatadir)"' -DLOGDIR='"$(packagelogdir)"' -DLOCKDIR='"$(packagelockdir)"' -DPIDDIR='"$(packagepiddir)"'
 INCLUDES		= $(all_includes) $(tclpackageinclude)
 
 ## vbox low level modem library ###########################################
@@ -31,10 +31,14 @@ vboxgetty_LDADD		= $(tclpackagelibs) -L. -lvboxmodem
 vboxgetty_SOURCES	= log.c log.h \
 			  modem.c modem.h \
 			  rc.c rc.h \
+			  vboxrc.c vboxrc.h \
+			  userrc.c userrc.h \
 			  stringutils.c stringutils.h \
 			  tclscript.c tclscript.h \
 			  vboxgetty.c vboxgetty.h \
-			  voice.c voice.h
+			  voice.c voice.h \
+			  control.c control.h \
+			  lock.c lock.h
 
 ## other directories to process ###########################################
 

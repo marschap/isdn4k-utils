@@ -1,7 +1,7 @@
 /*
-** $Id: log.h,v 1.1 1998/06/17 16:38:47 michael Exp $
+** $Id: log.h,v 1.2 1998/07/06 09:05:26 michael Exp $
 **
-** Copyright 1997-1998 by Michael 'Ghandi' Herold
+** Copyright 1996-1998 Michael 'Ghandi' Herold <michael@abadonna.mayn.de>
 */
 
 #ifndef _VBOX_LOG_H

@@ -1,7 +1,7 @@
 /*
-** $Id: modem.h,v 1.1 1998/06/17 16:38:49 michael Exp $
+** $Id: modem.h,v 1.2 1998/07/06 09:05:27 michael Exp $
 **
-** Copyright 1997-1998 by Michael 'Ghandi' Herold
+** Copyright 1996-1998 Michael 'Ghandi' Herold <michael@abadonna.mayn.de>
 */
 
 #ifndef _VBOX_MODEM_H
@@ -9,15 +9,15 @@
 
 #include "libvboxmodem.h"
 
+/** Defines **************************************************************/
+
 #define VBOXMODEM_STAT_INIT		0
 #define VBOXMODEM_STAT_WAIT		1
 #define VBOXMODEM_STAT_RING		2
 #define VBOXMODEM_STAT_TEST		3
 #define VBOXMODEM_STAT_EXIT		255
 
-
-
-
+/** Structures ***********************************************************/
 
 struct modemsetup
 {
@@ -26,15 +26,11 @@ struct modemsetup
 	int ringtimeout;
 	int alivetimeout;
 	int toggle_dtr_time;
-
-
-
-
 };
 
+extern struct modemsetup modemsetup;
 
-
-
+/** Prototypes ***********************************************************/
 
 extern void modem_set_timeout(int);
 extern int	modem_get_timeout(void);

@@ -1,9 +1,18 @@
 /*
-** $Id: vboxgetty.c,v 1.3 1998/06/18 12:38:18 michael Exp $
+** $Id: vboxgetty.c,v 1.4 1998/07/06 09:05:35 michael Exp $
 **
-** Copyright 1997-1998 by Michael Herold <michael@abadonna.mayn.de>
+** Copyright 1996-1998 Michael 'Ghandi' Herold <michael@abadonna.mayn.de>
 **
 ** $Log: vboxgetty.c,v $
+** Revision 1.4  1998/07/06 09:05:35  michael
+** - New control file code added. The controls are not longer only empty
+**   files - they can contain additional informations.
+** - Control "vboxctrl-answer" added.
+** - Control "vboxctrl-suspend" added.
+** - Locking mechanism added.
+** - Configuration parsing added.
+** - Some code cleanups.
+**
 ** Revision 1.3  1998/06/18 12:38:18  michael
 ** - 2nd part of the automake/autoconf implementation (now compiles again).
 **
@@ -13,6 +22,8 @@
 **
 */
 
+#include "../config.h"
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <getopt.h>
@@ -20,21 +31,26 @@
 #include <unistd.h>
 #include <signal.h>
 #include <limits.h>
-
-#include "../config.h"
+#include <errno.h>
+#include <fnmatch.h>
 
 #include "log.h"
 #include "tcl.h"
 #include "modem.h"
 #include "rc.h"
+#include "vboxrc.h"
+#include "userrc.h"
 #include "voice.h"
 #include "stringutils.h"
 #include "tclscript.h"
 #include "vboxgetty.h"
+#include "control.h"
+#include "lock.h"
 
 /** Variables ************************************************************/
 
 static char *progbasename;
+static char *isdnttyname;
 
 char temppathname[PATH_MAX + 1];
 
@@ -50,6 +66,8 @@ static struct vboxrc rc_getty_c[] =
 	{ "echotimeout"	, NULL },
 	{ "ringtimeout"	, NULL },
 	{ "alivetimeout"	, NULL },
+	{ "spooldir"		, NULL },
+	{ "toggledtrtime"	, NULL },
 	{ NULL				, NULL }
 };
 
@@ -66,12 +84,12 @@ struct vboxmodem vboxmodem;
 
 /** Prototypes ***********************************************************/
 
-static int	parse_getty_rc(unsigned char *);
-static void show_usage(int, int);
-static int	process_incoming_call(void);
-static int  run_modem_init(void);
-static int	parse_user_rc(struct vboxuser *);
-
+static int	 vboxgettyrc_parse(unsigned char *);
+static int	 process_incoming_call(void);
+static int 	 run_modem_init(void);
+static void	 pid_create(char *);
+static void	 pid_remove(char *);
+static void	 show_usage(int, int);
 
 /*************************************************************************/
 /** The magic main...																	**/
@@ -79,7 +97,6 @@ static int	parse_user_rc(struct vboxuser *);
 
 void main(int argc, char **argv)
 {
-	char *isdnttyname;
 	char *stop;
 	int	opts;
 	char *debugstr;
@@ -92,8 +109,8 @@ void main(int argc, char **argv)
 
 	if ((stop = rindex(argv[0], '/'))) progbasename = ++stop;
 
-		/* Parse command line arguments and set the selected (or default)	*/
-		/* debuglevel.																		*/
+		/* Die Argumente des Programms einlesen und den Debuglevel	*/
+		/* setzen.																	*/
 
 	debugstr		= NULL;
 	isdnttyname	= NULL;
@@ -155,9 +172,12 @@ void main(int argc, char **argv)
 		log_set_debuglevel(debuglvl);
 	}
 
-		/* Remove all before the last '/' from the tty name. And check if	*/
-		/* the device is accessable (not really needed since we need root	*/
-		/* privilegs to start).															*/
+	umask(xstrtoo(VBOX_ROOT_UMASK, 0));
+
+		/* Pfadangaben vom Devicenamen abschneiden und überprüfen ob	*/
+		/* das Device vom Benutzer gelesen und beschrieben werden		*/
+		/* kann (eigentlich nicht nötig, da nur unter Rootrechten ge-	*/
+		/* startet werden kann.														*/
 
 	if (isdnttyname)
 	{
@@ -179,9 +199,9 @@ void main(int argc, char **argv)
 		show_usage(100, 1);
 	}
 
-		/* Check if we start with root privilegs. The permissions will be	*/
-		/* dropped later, but we need root privilegs to open tty's, logs	*/
-		/* etc.																				*/
+		/* Prüfen ob das Programm unter Rootrechten gestartet wurde. Die	*/
+		/* Rechte werden später auf die des jeweiligen Benutzers geän-		*/
+		/* dert, zum Start sind aber Rootrechte nötig.							*/
 
 	if (getuid() != 0)
 	{
@@ -190,15 +210,15 @@ void main(int argc, char **argv)
 		quit_program(100);
 	}
 
-		/* Now its time to open the log. The name of the current tty will	*/
-		/* be appended to the name.													*/
+		/* Jetzt wird der Log geöffnet. Der Name des aktuellen Devices	*/
+		/* wird an das Ende angehängt.											*/
 
 	printstring(temppathname, "%s/vboxgetty-%s.log", LOGDIR, isdnttyname);
 
 	log_open(temppathname);
 
-		/* Start and initialize the tcl-interpreter (version 8.0 or	*/
-		/* higher is required).													*/
+		/* Tcl-Interpreter starten. Für die momentanen Funktionen wird	*/
+		/* Version 8 oder höher benötigt.										*/
 
 	if (scr_create_interpreter() == -1)
 	{
@@ -209,22 +229,22 @@ void main(int argc, char **argv)
 
 	log_line(LOG_I, "Running vbox version %s (with tcl version %s).\n", VERSION, scr_tcl_version());
 
-		/* Read the vboxgetty runtime configuration. 1st the global	*/
-		/* and 2nd the tty.														*/
+		/* Konfiguration des getty's abarbeiten. Zuerst wird die globale,	*/
+		/* dann die des jeweiligen tty's eingelesen.								*/
 
-	if (parse_getty_rc(isdnttyname) == -1)
+	if (vboxgettyrc_parse(isdnttyname) == -1)
 	{
 		log_line(LOG_E, "Unable to read/parse configuration!\n");
 	
 		quit_program(100);
 	}
 
-		/* Open modem device and do the main loop (initialize, wait,	*/
-		/* answer and alive check).												*/
+		/* Modem Device öffnen und die interne Initialisierung	*/
+		/* ausführen (nicht der normale Modeminit).					*/
 
 	printstring(temppathname, "/dev/%s", isdnttyname);
 
-	log_line(LOG_D, "Opening modem device \"%s\" (57600, CTS/RTS)...\n", temppathname);
+	log_line(LOG_D, "Opening modem device \"%s\" (38400, CTS/RTS)...\n", temppathname);
 
 	if (vboxmodem_open(&vboxmodem, temppathname) == -1)
 	{
@@ -233,8 +253,26 @@ void main(int argc, char **argv)
 		quit_program(100);
 	}
 
-signal(SIGINT , quit_program);
-signal(SIGTERM, quit_program);
+		/* Lock- und PID-Datei für den getty und das entsprechende	*/
+		/* Device erzeugen.														*/
+
+	printstring(temppathname, "%s/LCK..%s", LOCKDIR, isdnttyname);
+	
+	if (lock_create(temppathname) == -1) quit_program(100);
+
+	printstring(temppathname, "%s/vboxgetty-%s.pid", PIDDIR, isdnttyname);
+
+	pid_create(temppathname);
+
+		/* Signalhändler installieren. Alle möglichen Signale werden	*/
+		/* auf quit_program() umgelenkt.											*/
+
+	signal(SIGINT , quit_program);
+	signal(SIGTERM, quit_program);
+
+		/* Hauptloop: Der Loop wird nur verlassen, wenn während der	*/
+		/* Abarbeitung ein Fehler aufgetreten ist. Das Programm be-	*/
+		/* endet sich danach!													*/
 	
 	modemstate = VBOXMODEM_STAT_INIT;
 	modeminits = 0;
@@ -299,8 +337,11 @@ signal(SIGTERM, quit_program);
 				modem_set_nocarrier(&vboxmodem, 0);
 				process_incoming_call();
 				modem_hangup(&vboxmodem);
-				
-				modemstate = VBOXMODEM_STAT_INIT;
+
+				if (set_process_permissions(0, 0, xstrtoo(VBOX_ROOT_UMASK, 0)) != 0)
+					modemstate = VBOXMODEM_STAT_EXIT;
+				else
+ 					modemstate = VBOXMODEM_STAT_INIT;
 				
 				break;
 
@@ -318,15 +359,33 @@ signal(SIGTERM, quit_program);
 }
 
 /*************************************************************************/
-/** quit_program():	Frees all used resources and exist.						**/
+/** quit_program():	Gibt alle belegten Resourcen frei und beendet das	**/
+/**						Programm.														**/
 /*************************************************************************/
-/** => rc				Exit return code (1-99 reserved for signals)			**/
+/** => rc				Rückgabewert des Programms (1-99 ist reserviert).	**/
 /*************************************************************************/
 
 void quit_program(int rc)
 {
 	modem_hangup(&vboxmodem);
-	vboxmodem_close(&vboxmodem);
+
+	log_line(LOG_D, "Closing modem device (%d)...\n", vboxmodem.fd);
+
+	if (vboxmodem_close(&vboxmodem) != 0)
+	{
+		log_line(LOG_E, "%s (%s)\n", vboxmodem_error(), strerror(errno));
+	}
+
+	if (isdnttyname)
+	{
+		printstring(temppathname, "%s/LCK..%s", LOCKDIR, isdnttyname);
+
+		lock_remove(temppathname);
+
+		printstring(temppathname, "%s/vboxgetty-%s.pid", PIDDIR, isdnttyname);
+
+		pid_remove(temppathname);
+	}
 
 	scr_remove_interpreter();
 
@@ -338,10 +397,12 @@ void quit_program(int rc)
 }
 
 /*************************************************************************/
-/** show_usage():	Shows usage/version message.									**/
+/** show_usage():	Zeigt Benutzermeldung/Version an und beendet dann das	**/
+/**					Programm.															**/
 /*************************************************************************/
-/** => rc			Exit return level (1-99 reserved for signals)			**/
-/** => help			1 shows help message, 0 version string						**/
+/** => rc			Rückgabewert des Programms (1-99 ist reserviert).		**/
+/** => help			1 wenn die Benutzermeldung oder 0 wenn die Version 	**/
+/**					angezeigt werden soll.											**/
 /*************************************************************************/
 
 static void show_usage(int rc, int help)
@@ -366,9 +427,11 @@ static void show_usage(int rc, int help)
 }
 
 /*************************************************************************/
-/** run_modem_init():	Starts the tcl script to initialize the modem.	**/
+/** run_modem_init():	Startet das Tcl-Skript zum initislisieren des	**/
+/**							Modems.														**/
 /*************************************************************************/
-/** <=						0 on success or -1 on error							**/
+/** <=						0 wenn die Initialisierung geklappt hat, -1 bei	**/
+/**							einem Fehler.												**/
 /*************************************************************************/
 
 static int run_modem_init(void)
@@ -380,53 +443,50 @@ static int run_modem_init(void)
 		{ NULL					, NULL											  }
 	};
 
-	log_line(LOG_A, "Initializing modem...\n");
+	log_line(LOG_D, "Initializing modem...\n");
 
 	if (scr_init_variables(vars) == 0)
 	{
 		if (scr_execute("initmodem.tcl", NULL) == 0) return(0);
 	}
 
-	log_line(LOG_E, "Can't initialize modem!\n");
+	log_line(LOG_E, "Can't initialize modem device!\n");
 
 	return(-1);
 }
 
+/*************************************************************************/
+/** vboxgettyrc_parse():	Liest die Konfiguration des gettys ein. Zu-	**/
+/**								erst wird die globale und dann die des je-	**/
+/**								weiligen tty's eingelesen.							**/
+/*************************************************************************/
+/** => tty						Name des benutzten tty's.							**/
+/**																							**/
+/** <=							0 wenn alles eingelesen werden konnte oder	**/
+/**								-1 bei einem Fehler.									**/
+/*************************************************************************/
 
-
-
-
-
-
-
-
-
-
-static int parse_getty_rc(unsigned char *tty)
+static int vboxgettyrc_parse(unsigned char *tty)
 {
-	char *name;
+	printstring(temppathname, "%s/vboxgetty.conf", SYSCONFDIR);
 
-	log_line(LOG_A, "Reading configuration...\n");
-
-	name = "/usr/local/etc/vboxgetty.conf";
-
-	if (rc_read(rc_getty_c, name, NULL) < 0)
+	if (rc_read(rc_getty_c, temppathname, NULL) < 0)
 	{
 		if (errno != ENOENT)
 		{
-			log_line(LOG_E, "Can't open \"%s\" (%s)!\n", name, strerror(errno));
+			log_line(LOG_E, "Can't open \"%s\" (%s)!\n", temppathname, strerror(errno));
 		
 			return(-1);
 		}
 	}
 
-	name = "/usr/local/etc/vboxgetty.conf.ttyI0";
+	printstring(temppathname, "%s/vboxgetty.conf.%s", SYSCONFDIR, tty);
 
-	if (rc_read(rc_getty_c, name, NULL) < 0)
+	if (rc_read(rc_getty_c, temppathname, NULL) < 0)
 	{
 		if (errno != ENOENT)
 		{
-			log_line(LOG_E, "Can't open \"%s\" (%s)!\n", name, strerror(errno));
+			log_line(LOG_E, "Can't open \"%s\" (%s)!\n", temppathname, strerror(errno));
 		
 			return(-1);
 		}
@@ -434,13 +494,21 @@ static int parse_getty_rc(unsigned char *tty)
 
 	log_line(LOG_D, "Filling unset configuration variables with defaults...\n");
 
-	if (!rc_set_empty(rc_getty_c, "init"				, "ATZ&B512")) return(-1);
-	if (!rc_set_empty(rc_getty_c, "badinitsexit"		, "10"		)) return(-1);
-	if (!rc_set_empty(rc_getty_c, "initpause"			, "2500"		)) return(-1);
-	if (!rc_set_empty(rc_getty_c, "commandtimeout"	, "4"			)) return(-1);
-	if (!rc_set_empty(rc_getty_c, "echotimeout"		, "4"			)) return(-1);
-	if (!rc_set_empty(rc_getty_c, "ringtimeout"		, "6"			)) return(-1);
-	if (!rc_set_empty(rc_getty_c, "alivetimeout"		, "1800"		)) return(-1);
+	if (!rc_set_empty(rc_getty_c, "init"				, "ATZ&B512"		 )) return(-1);
+	if (!rc_set_empty(rc_getty_c, "badinitsexit"		, "10"				 )) return(-1);
+	if (!rc_set_empty(rc_getty_c, "initpause"			, "2500"				 )) return(-1);
+	if (!rc_set_empty(rc_getty_c, "commandtimeout"	, "4"					 )) return(-1);
+	if (!rc_set_empty(rc_getty_c, "echotimeout"		, "4"					 )) return(-1);
+	if (!rc_set_empty(rc_getty_c, "ringtimeout"		, "6"					 )) return(-1);
+	if (!rc_set_empty(rc_getty_c, "alivetimeout"		, "1800"				 )) return(-1);
+	if (!rc_set_empty(rc_getty_c, "toggledtrtime"	, "400"				 )) return(-1);
+	if (!rc_set_empty(rc_getty_c, "spooldir"			, "/var/spool/vbox")) return(-1);
+
+	modemsetup.echotimeout		= xstrtol(rc_get_entry(rc_getty_c, "echotimeout"	), 4		);
+	modemsetup.commandtimeout	= xstrtol(rc_get_entry(rc_getty_c, "commandtimeout"), 4		);
+	modemsetup.ringtimeout		= xstrtol(rc_get_entry(rc_getty_c, "ringtimeout"	), 6		);
+	modemsetup.alivetimeout		= xstrtol(rc_get_entry(rc_getty_c, "alivetimeout"	), 1800	);
+	modemsetup.toggle_dtr_time	= xstrtol(rc_get_entry(rc_getty_c, "toggledtrtime"	), 400	);
 
 	if (!rc_get_entry(rc_getty_c, "initnumber"))
 	{
@@ -452,164 +520,215 @@ static int parse_getty_rc(unsigned char *tty)
 	return(0);
 }
 
-
 /*************************************************************************/
-/** **/
+/** process_incoming_call():	Bearbeitet einen eingehenden Anruf.			**/
 /*************************************************************************/
 
 static int process_incoming_call(void)
 {
-	struct vboxuser vboxuser;
+	struct vboxuser	 vboxuser;
+	struct vboxcall	 vboxcall;
+	char					 line[VBOXMODEM_BUFFER_SIZE + 1];
+	int					 haverings;
+	int					 waitrings;
+	int					 usersetup;
+	int					 ringsetup;
+	int					 inputisok;
+	char					*stop;
 
-	char	line[VBOXMODEM_BUFFER_SIZE + 1];
-	int	haverings;
-	int	waitrings;
-	int	havesetup;
+	memset(&vboxuser, 0, sizeof(vboxuser));
+	memset(&vboxcall, 0, sizeof(vboxcall));
 
-	haverings = 0;
-	waitrings = 0;
-	havesetup = 0;
+	haverings =  0;
+	waitrings = -1;
+	usersetup =  0;
+	ringsetup =  0;
 
-	while (modem_read(&vboxmodem, line, (int)xstrtol(rc_get_entry(rc_getty_c, "ringtimeout"), 6)) == 0)
+	while (modem_read(&vboxmodem, line, modemsetup.ringtimeout) == 0)
 	{
-		if ((strncmp(line, "CALLER NUMBER: ", 15) == 0) && (!havesetup))
+		inputisok = 0;
+
+			/* Wenn der Benutzer der angerufenen Nummer ermittelt ist und	*/
+			/* dessen Konfigurations abgearbeitet wurde, wird überprüft ob	*/
+			/* der Anruf angenommen werden soll.									*/
+
+		if ((usersetup) && (ringsetup))
 		{
-			xstrncpy(vboxuser.incomingid, &line[15]   , VBOXUSER_CALLID);
-			xstrncpy(vboxuser.localphone, "9317840513", VBOXUSER_NUMBER);
-
-			if (parse_user_rc(&vboxuser) == 0)
+			if (waitrings >= 0)
 			{
-				if ((vboxuser.uid == 0) || (vboxuser.gid == 0))
+				if ((stop = ctrl_exists(vboxuser.home, "answer")))
 				{
-					log_line(LOG_W, "No user for ID %s found - call will be ignored!\n", vboxuser.incomingid);
+					log_line(LOG_D, "Control \"vboxctrl-answer:%s\" found...\n", stop);
 
+					if ((strcasecmp(stop, "no") == 0) || (strcasecmp(stop, "hangup") == 0) || (strcasecmp(stop, "reject") == 0))
+					{
+						log_line(LOG_D, "Incoming call will be rejected...\n");
+						
+						return(0);
+					}
 
+					if (strcasecmp(stop, "now") != 0)
+					{
+						vboxuser.space	= 0;
+						waitrings		= xstrtol(stop, waitrings);
+					}
+					else
+					{
+						vboxuser.space = 0;
+						waitrings		= 1;
+					}
 
-
-
-
-
-
+					log_line(LOG_D, "Call will be answered after %d ring(s).\n", waitrings);
 				}
-
-				havesetup = 1;
 			}
 
-			continue;
+			if (waitrings > 0)
+			{
+				if (haverings >= waitrings)
+				{
+					return(voice_init(&vboxuser, &vboxcall));
+				}
+			}
 		}
 
-		if (strcmp(line, "RING") == 0)
+			/* Ring abarbeiten: Beim ersten Ring wird die angerufene	*/
+			/* Nummer gesichert, die durch ATS13.7=1 mit einem Slash	*/
+			/* an den Ringstring angehängt ist.								*/
+
+		if (strncmp(line, "RING/", 5) == 0)
 		{
+			inputisok++;
 			haverings++;
 			
-			if (havesetup)
-				log_line(LOG_A, "RING #%03d (%s)...\n", haverings, vboxuser.incomingid);
-			else
-				log_line(LOG_A, "RING #%03d...\n", haverings);
+			if (!ringsetup)
+			{
+	         xstrncpy(vboxuser.localphone, &line[5], VBOXUSER_NUMBER);
+
+				ringsetup = 1;
+			}				          
+
+			log_line(LOG_A, "%s #%03d (%s)...\n", line, haverings, (usersetup ? vboxcall.name : "not known"));
 		}
-		else
+
+			/* CallerID aus dem Modeminput kopieren. Wenn bereits die	*/
+			/* angerufene Nummer ermittelt wurde, wird einmalig die		*/
+			/* Konfigurationsdatei des Benutzers abgearbeitet.				*/
+
+		if (strncmp(line, "CALLER NUMBER: ", 15) == 0)
+		{
+			inputisok++;
+
+			if ((ringsetup) && (!usersetup))
+			{
+				xstrncpy(vboxuser.incomingid, &line[15], VBOXUSER_CALLID);
+
+				if (userrc_parse(&vboxuser, rc_get_entry(rc_getty_c, "spooldir"), vboxuser.localphone) == 0)
+				{
+					if ((vboxuser.uid != 0) && (vboxuser.gid != 0))
+					{
+							/* Nachdem "vboxgetty.user" abgearbeitet ist und	*/
+							/* ein Benutzer gefunden wurde, werden einige der	*/
+							/* Kontrolldateien gelöscht.								*/
+
+						ctrl_remove(vboxuser.home, "suspend");
+
+						if ((stop = ctrl_exists(vboxuser.home, "answer")))
+						{
+							if ((strcasecmp(stop, "no") == 0) || (strcasecmp(stop, "hangup") == 0) || (strcasecmp(stop, "reject") == 0))
+							{
+								ctrl_remove(vboxuser.home, "answer");
+							}
+						}
+
+							/* Die "effective Permissions" des Prozesses auf	*/
+							/* die des Benutzers setzen und dessen Konfigurat-	*/
+							/* ionsdatei abarbeiten.									*/
+
+						if (set_process_permissions(vboxuser.uid, vboxuser.gid, vboxuser.umask) == 0)
+						{
+							usersetup = 1;
+							waitrings = vboxrc_parse(&vboxcall, vboxuser.home, vboxuser.incomingid);
+
+							if (waitrings <= 0)
+							{
+								if (waitrings < 0)
+									log_line(LOG_W, "Incoming call will be ignored!\n");
+								else
+									log_line(LOG_D, "Incoming call will be ignored (user setup)!\n");
+							}
+							else log_line(LOG_D, "Call will be answered after %d ring(s).\n", waitrings);
+						}
+					}
+					else log_line(LOG_W, "Useing uid/gid 0 is not allowed - call will be ignored!\n", vboxuser.incomingid);
+				}
+				else log_line(LOG_W, "Number \"%s\" not bound to a local user - call will be ignored!\n", vboxuser.localphone);
+			}
+		}
+
+		if (!inputisok)
 		{
 			log_line(LOG_D, "Got junk line \"");
 			log_code(LOG_D, line);
 			log_text(LOG_D, "\"...\n");
+
+			continue;
 		}
 	}
 
 	return(-1);
 }
-
 /*************************************************************************/
-/** **/
+/** set_process_permissions():	Setzt die effektive uid/gid des Pro-	**/
+/**										zesses und die umask.						**/
 /*************************************************************************/
 
-static int parse_user_rc(struct vboxuser *vboxuser)
+int set_process_permissions(uid_t uid, gid_t gid, int mask)
 {
-	char  line[VBOX_RCLINE_SIZE + 1];
-	FILE *rc;
-	char *stop;
-	char *pattern;
-	char *group;
-	char *name;
-	char *space;
-	char *mask;
-	int	linenr;
+	log_line(LOG_D, "Setting effective permissions to %d.%d [%04o]...\n", uid, gid, mask);
 
-	log_line(LOG_D, "Searching local user for ID %s...\n", vboxuser->incomingid);
-
-	vboxuser->uid		= 0;
-	vboxuser->gid		= 0;
-	vboxuser->home[0]	= 0;
-	vboxuser->umask	= -1;
-	vboxuser->space	= -1;
-
-	printstring(temppathname, "%s/vboxgetty.user", SYSCONFDIR);
-
-	if ((rc = fopen(temppathname, "r")))
+	if (setegid(gid) == 0)
 	{
-		linenr = 0;
-
-		while (fgets(line, VBOX_RCLINE_SIZE, rc))
+		if (seteuid(uid) == 0)
 		{
-			linenr++;
-
-			line[strlen(line) - 1] = '\0';
+			if (mask != 0) umask(mask);
 			
-			if ((stop = rindex(line, '#'))) *stop = '\0';
-
-			while (strlen(line) > 0)
-			{
-				if ((line[strlen(line) - 1] != ' ') && (line[strlen(line) - 1] != '\t')) break;
-				
-				line[strlen(line) - 1] = '\0';
-			}
-			
-			if (*line == '\0') continue;
-
-			pattern	= strtok(line, ":");
-			name		= strtok(NULL, ":");
-			group		= strtok(NULL, ":");
-			mask		= strtok(NULL, ":");
-			space		= strtok(NULL, ":");
-
-			if ((!pattern) || (!name) || (!group) || (!mask) || (!space))
-			{
-				log_line(LOG_E, "Error in \"%s\" line %d.\n", temppathname, linenr);
-
-				fclose(rc);
-				return(-1);
-			}
-
-
-
-
-
-
-
-
+			return(0);
 		}
-
-		fclose(rc);
+		else log_line(LOG_E, "Can't set effective uid to %d!\n", uid);
 	}
-	else
-	{
-		log_line(LOG_W, "Can't open \"%s\".\n", temppathname);
-		
-		return(-1);
-	}
+	else log_line(LOG_E, "Can't set effective gid to %d!\n", gid);
 
-	return(0);
+	return(-1);
 }
 
+/*************************************************************************/
+/** pid_create():	Erzeugt die PID Datei für den getty.						**/
+/*************************************************************************/
+/** => name			Name der Datei.													**/
+/*************************************************************************/
 
+static void pid_create(char *name)
+{
+	FILE *pptr;
 
+	log_line(LOG_D, "Creating \"%s\"...\n", name);
+	
+	if ((pptr = fopen(name, "w")))
+	{
+		fprintf(pptr, "%ld\n", getpid());
+		fclose(pptr);
+	}
+}
 
+/*************************************************************************/
+/** pid_remove():	Löscht die PID Datei des getty.								**/
+/*************************************************************************/
+/** => name			Name der Datei.													**/
+/*************************************************************************/
 
+static void pid_remove(char *name)
+{
+	log_line(LOG_D, "Removing \"%s\"...\n", name);
 
-
-
-
-
-
-
-
-
+	remove(name);
+}

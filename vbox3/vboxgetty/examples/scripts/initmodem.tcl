@@ -1,4 +1,4 @@
-# $Id: initmodem.tcl,v 1.1 1998/06/17 16:47:34 michael Exp $
+# $Id: initmodem.tcl,v 1.2 1998/07/06 09:05:56 michael Exp $
 #----------------------------------------------------------------------#
 # This script is called every time the modem should be initialized. If #
 # the script produce errors (syntax error or the command "error"), the #
@@ -15,7 +15,7 @@
 if { [vbox_modem_command "$vbxv_init" "OK"] > 0 } {
 	if { [vbox_modem_command "$vbxv_initnumber" "OK"] > 0 } {
 		if { [vbox_modem_command "AT+FCLASS=8" "OK"] > 0 } {
-			if { [vbox_modem_command "ATS13.2=1S13.4=1" "OK"] > 0 } {
+			if { [vbox_modem_command "ATS13.2=1S13.4=1S13.6=0S13.7=1" "OK"] > 0 } {
 				return
 			}
 		}

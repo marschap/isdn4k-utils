@@ -1,14 +1,25 @@
 /*
-** $Id: libvboxmodem.c,v 1.2 1998/06/17 17:01:19 michael Exp $
+** $Id: libvboxmodem.c,v 1.3 1998/07/06 09:05:21 michael Exp $
 **
-** Copyright 1997-1998 by Michael Herold <michael@abadonna.mayn.de>
+** Copyright 1996-1998 Michael 'Ghandi' Herold <michael@abadonna.mayn.de>
 **
 ** $Log: libvboxmodem.c,v $
+** Revision 1.3  1998/07/06 09:05:21  michael
+** - New control file code added. The controls are not longer only empty
+**   files - they can contain additional informations.
+** - Control "vboxctrl-answer" added.
+** - Control "vboxctrl-suspend" added.
+** - Locking mechanism added.
+** - Configuration parsing added.
+** - Some code cleanups.
+**
 ** Revision 1.2  1998/06/17 17:01:19  michael
 ** - First part of the automake/autoconf implementation. Currently vbox will
 **   *not* compile!
 **
 */
+
+#include "../config.h"
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -105,18 +116,28 @@ int vboxmodem_open(struct vboxmodem *vbm, unsigned char *devicename)
 /** => vbm					Pointer to the initialized modem structure		**/
 /*************************************************************************/
 
-void vboxmodem_close(struct vboxmodem *vbm)
+int vboxmodem_close(struct vboxmodem *vbm)
 {
-	if (vbm->fd != -1) close(vbm->fd);
-
 	if (vbm->devicename	) free(vbm->devicename);
 	if (vbm->input			) free(vbm->input);
 	if (vbm->nocarriertxt) free(vbm->nocarriertxt);
 
-	vbm->fd				= -1;
 	vbm->devicename	= NULL;
 	vbm->input			= NULL;
 	vbm->nocarriertxt	= NULL;
+
+	if (vbm->fd != -1)
+	{
+		if (close(vbm->fd) == -1)
+		{
+			set_modem_error("Can't close modem device!");
+			
+			return(-1);
+		}
+		else vbm->fd = -1;
+	}
+
+	return(0);
 }
 
 /*************************************************************************/
@@ -262,15 +283,15 @@ static void vboxmodem_raw_mode(TIO *modemtio)
 }
 
 /*************************************************************************/
-/** vboxmodem_speed():	Sets speed to 57600.										**/
+/** vboxmodem_speed():	Sets speed to 38400.										**/
 /*************************************************************************/
 /** => modemtio			Pointer to a terminal io structure					**/
 /*************************************************************************/
 
 static void vboxmodem_speed(TIO *modemtio)
 {
-	cfsetospeed(modemtio, B57600);
-	cfsetispeed(modemtio, B57600);
+	cfsetospeed(modemtio, B38400);
+	cfsetispeed(modemtio, B38400);
 }
 
 /*************************************************************************/
@@ -285,7 +306,6 @@ static void vboxmodem_flowcontrol(TIO *modemtio)
 	modemtio->c_iflag &= ~(IXON|IXOFF|IXANY);
 	modemtio->c_cflag |=  (CRTSCTS);
 }
-
 
 /*************************************************************************/
 /** vboxmodem_check_nocarrier(): Checks for carrier lost.					**/

@@ -1,21 +1,42 @@
 /*
-** $Id: log.c,v 1.2 1998/06/17 17:01:20 michael Exp $
+** $Id: log.c,v 1.3 1998/07/06 09:05:25 michael Exp $
 **
-** Copyright 1997-1998 by Michael Herold <michael@abadonna.mayn.de>
+** Copyright 1996-1998 Michael 'Ghandi' Herold <michael@abadonna.mayn.de>
 **
 ** $Log: log.c,v $
+** Revision 1.3  1998/07/06 09:05:25  michael
+** - New control file code added. The controls are not longer only empty
+**   files - they can contain additional informations.
+** - Control "vboxctrl-answer" added.
+** - Control "vboxctrl-suspend" added.
+** - Locking mechanism added.
+** - Configuration parsing added.
+** - Some code cleanups.
+**
 ** Revision 1.2  1998/06/17 17:01:20  michael
 ** - First part of the automake/autoconf implementation. Currently vbox will
 **   *not* compile!
 **
 */
 
+#include "../config.h"
+
+#if TIME_WITH_SYS_TIME
+#   include <sys/time.h>
+#   include <time.h>
+#else
+#   if HAVE_SYS_TIME_H
+#      include <sys/time.h>
+#   else
+#      include <time.h>
+#   endif
+#endif
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
 #include <string.h>
 #include <ctype.h>
-#include <time.h>
 
 #include "voice.h"
 #include "log.h"
@@ -35,10 +56,12 @@ static struct logsequence logsequence[] =
 };
 
 /*************************************************************************/
-/** log_open():	Opens the log.														**/
+/** log_open():	Öffnet die Logdatei im append mode.							**/
 /*************************************************************************/
-/** => name			Name of the ttyI (appended to real logname)				**/
-/** <=				0 on success or -1 on error									**/
+/** => name			Name der Logdatei.												**/
+/**																							**/
+/** <=				0 wenn die Datei geöffnet werden konnte oder -1 bei	**/
+/**					einem Fehler.														**/
 /*************************************************************************/
 
 int log_open(char *name)
@@ -49,7 +72,7 @@ int log_open(char *name)
 }
 
 /*************************************************************************/
-/** log_close():	Close the log.														**/
+/** log_close():	Schließt eine mit log_open() geöffnete Logdatei.		**/
 /*************************************************************************/
 
 void log_close(void)
@@ -60,7 +83,9 @@ void log_close(void)
 }
 
 /*************************************************************************/
-/** **/
+/** log_set_debuglevel():	Setzt den Logdebuglevel.							**/
+/*************************************************************************/
+/** => level					Debuglevel der gesetzt werden soll.				**/
 /*************************************************************************/
 
 void log_set_debuglevel(int level)
@@ -69,12 +94,11 @@ void log_set_debuglevel(int level)
 }
 
 /*************************************************************************/
-/** log_line():	Writes a line to the log including the current date &	**/
-/**					time and the log level.											**/
+/** log_line():	Schreibt Text mit vorangestelltem Datum in den Log.	**/
 /*************************************************************************/
-/** => level		Debuglevel															**/
-/** => fmt			Formatstring														**/
-/** => ...			Args																	**/
+/** => level		Debuglevel unter dem der Text ausgegeben werden soll.	**/
+/** => fmt			Formatstring.														**/
+/** => ...			Argumente für den Formatstring.								**/
 /*************************************************************************/
 
 void log_line(int level, char *fmt, ...)
@@ -138,10 +162,12 @@ void log_line(int level, char *fmt, ...)
 }
 
 /*************************************************************************/
-/** log_char():	Writes a char to the log.										**/
+/** log_char():	Schreibt ein einzelnes Zeichen in den Log. Einige		**/
+/**					nicht darstellbare Zeichen werden dabei ersetzt.		**/
 /*************************************************************************/
-/** => level		Debuglevel															**/
-/** => c				Char to log															**/
+/** => level		Debuglevel unter dem das Zeichen ausgegeben werden		**/
+/**					soll.																	**/
+/** => c				Zeichen das ausgegeben werden soll.							**/
 /*************************************************************************/
 
 void log_char(int level, char c)
@@ -173,11 +199,12 @@ void log_char(int level, char c)
 }
 
 /*************************************************************************/
-/** log_text():	Writes a line to the log.										**/
+/** log_text():	Schreibt Text in den Log. Die Funktion verhält sich	**/
+/**					wie log_line(); es wird kein Datum vorangestellt.		**/
 /*************************************************************************/
-/** => level		Debuglevel															**/
-/** => fmt			Formatstring														**/
-/** => ...			Args																	**/
+/** => level		Debuglevel unter dem der Text ausgegeben werden soll.	**/
+/** => fmt			Formatstring.														**/
+/** => ...			Argumente für den Formatstring.								**/
 /*************************************************************************/
 
 void log_text(int level, char *fmt, ...)
@@ -198,10 +225,11 @@ void log_text(int level, char *fmt, ...)
 }
 
 /*************************************************************************/
-/** log_code():	Writes a line with log_char() to the log.					**/
+/** log_code():	Schreibt einen String mittels log_char() in den Log.	**/
 /*************************************************************************/
-/** => level		Debuglevel															**/
-/** => sequence	Sequence of chars to log										**/
+/** => level		Debuglevel unter dem der String ausgegeben werden		**/
+/**					soll.																	**/
+/** => sequence	String der ausgegeben werden soll.							**/
 /*************************************************************************/
 
 void log_code(int level, char *sequence)

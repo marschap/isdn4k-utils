@@ -1,7 +1,7 @@
 /*
-** $Id: vboxgetty.h,v 1.1 1998/06/17 16:38:54 michael Exp $
+** $Id: vboxgetty.h,v 1.2 1998/07/06 09:05:36 michael Exp $
 **
-** Copyright 1997-1998 by Michael 'Ghandi' Herold
+** Copyright 1996-1998 Michael 'Ghandi' Herold <michael@abadonna.mayn.de>
 */
 
 #ifndef _VBOXGETTY_H
@@ -12,40 +12,21 @@
 #include <limits.h>
 #include <unistd.h>
 
-#define VBOX_DEFAULT_SPOOLDIR		"/var/spool/vbox"
+/** Defines **************************************************************/
 
-#define VBOX_RCLINE_SIZE			255
+#define VBOX_ROOT_UMASK "0022"
 
-#define VBOXUSER_CALLID				64
-#define VBOXUSER_NUMBER				64
+/** Variables ************************************************************/
 
 extern char temppathname[PATH_MAX + 1];
 
+/** Structures ***********************************************************/
+
 extern struct vboxmodem vboxmodem;
 
-struct vboxuser
-{
-	uid_t	uid;
-	gid_t	gid;
-	int	umask;
-	long	space;
-	char	incomingid[VBOXUSER_CALLID + 1];
-	char	localphone[VBOXUSER_NUMBER + 1];
-	char	home[PATH_MAX + 1];
-};
+/** Prototypes ***********************************************************/
 
-
-
-
-
-
-
-
-
-
-extern void quit_program(int);
-
-#define printstring sprintf
-
+extern void	 quit_program(int);
+extern int	 set_process_permissions(uid_t, gid_t, int);
 
 #endif /* _VBOXGETTY_H */

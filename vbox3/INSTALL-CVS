@@ -5,10 +5,13 @@ complete the package.
 
 Before you compile do the following steps from the main directory:
 
-% autoheader
 % aclocal
+% autoheader
 % autoconf
 % automake
 
 This will create all needed files not included with the copy of the CVS
 tree.
+
+Note: aclocal must be call before autoheader or some define's will not be
+      created!

@@ -1,14 +1,25 @@
 /*
-** $Id: modem.c,v 1.2 1998/06/17 17:01:21 michael Exp $
+** $Id: modem.c,v 1.3 1998/07/06 09:05:26 michael Exp $
 **
-** Copyright 1997-1998 by Michael Herold <michael@abadonna.mayn.de>
+** Copyright 1996-1998 Michael 'Ghandi' Herold <michael@abadonna.mayn.de>
 **
 ** $Log: modem.c,v $
+** Revision 1.3  1998/07/06 09:05:26  michael
+** - New control file code added. The controls are not longer only empty
+**   files - they can contain additional informations.
+** - Control "vboxctrl-answer" added.
+** - Control "vboxctrl-suspend" added.
+** - Locking mechanism added.
+** - Configuration parsing added.
+** - Some code cleanups.
+**
 ** Revision 1.2  1998/06/17 17:01:21  michael
 ** - First part of the automake/autoconf implementation. Currently vbox will
 **   *not* compile!
 **
 */
+
+#include "../config.h"
 
 #if TIME_WITH_SYS_TIME
 #   include <sys/time.h>
@@ -34,30 +45,38 @@
 #include "log.h"
 #include "modem.h"
 #include "libvboxmodem.h"
+#include "stringutils.h"
 
-static struct modemsetup modemsetup =
-{
-	4,						/* Echo timeout (sec)	*/
-	4,						/* Command timeout (sec)	*/
-	6,						/* Ring timeout (sec)	*/
-	1800,					/* Alive timeout (sec)	*/
-	400					/* Toggle DTR (ms)	*/
-};
+/** Variables ************************************************************/
 
 static unsigned char lastmodemresult[VBOXMODEM_BUFFER_SIZE + 1];
 
 static int timeoutstatus = 0;
 
-static void modem_timeout_function(int);
-static int modem_write(struct vboxmodem *, char *);
-static int modem_get_echo(struct vboxmodem *, char *);
-static int modem_get_rawsequence(struct vboxmodem *, char *, int);
-static int modem_check_result(char *, char *);
+/** Structures ***********************************************************/
+
+struct modemsetup modemsetup =
+{
+	4,															  /* Echo timeout (sec)	*/
+	4,														  /* Command timeout (sec)	*/
+	6,															  /* Ring timeout (sec)	*/
+	1800,														 /* Alive timeout (sec)	*/
+	400															  /* Toggle DTR (ms)	*/
+};
+
+/** Prototypes ***********************************************************/
+
+static void	 modem_timeout_function(int);
+static int	 modem_write(struct vboxmodem *, char *);
+static int	 modem_get_echo(struct vboxmodem *, char *);
+static int	 modem_get_rawsequence(struct vboxmodem *, char *, int);
+static int	 modem_check_result(char *, char *);
 
 /*************************************************************************/
-/** modem_set_timeout():	Sets modem function timeout.						**/
+/** modem_set_timeout():	Setzt den Timeout für die Modemfunctionen.	**/
 /*************************************************************************/
-/** => timeout					Timeout in seconds									**/
+/** => timeout					Timeout in Sekunden. Bei Angabe von 0 wird	**/
+/**								ein bestehender Timeout gelöscht.				**/
 /*************************************************************************/
 
 void modem_set_timeout(int timeout)
@@ -78,9 +97,10 @@ void modem_set_timeout(int timeout)
 }
 
 /*************************************************************************/
-/** modem_get_timeout():	Returns the timeout status.						**/
+/** modem_get_timeout():	Gibt zurück ob ein Timeout aufgetreten ist.	**/
 /*************************************************************************/
-/** <=							1 if timeout or 0 if not							**/
+/** <=							1 wenn ein Timeout aufgetreten ist oder 0 	**/
+/**								wenn nicht.												**/
 /*************************************************************************/
 
 int modem_get_timeout(void)
@@ -89,10 +109,12 @@ int modem_get_timeout(void)
 }
 
 /*************************************************************************/
-/** modem_get_sequence():	Reads a specified sequence from the modem.	**/
+/** modem_get_sequence():	Liest einen Text vom Modem.						**/
 /*************************************************************************/
-/** => seq						Sequence to read										**/
-/** <=							0 sequence read or -1 not read					**/
+/** => seq						Text der gelesen werden soll.						**/
+/**																							**/
+/** <=							0 wenn der Text gelesen werden konnte oder	**/
+/**								-1 wenn nicht.											**/
 /*************************************************************************/
 
 int modem_get_sequence(struct vboxmodem *vbm, char *seq)
@@ -101,10 +123,10 @@ int modem_get_sequence(struct vboxmodem *vbm, char *seq)
 }
 
 /*************************************************************************/
-/** modem_flush():	Flushs modem input/output.									**/
+/** modem_flush():	Leert die Modem-Eingabe/Ausgabe.							**/
 /*************************************************************************/
-/** =>					Pointer to modem structure									**/
-/** =>					Flush timeout in seconds									**/
+/** => vbm				Zeiger auf die Modem-Struktur.							**/
+/** => timeout			Timeout in Sekunden.											**/
 /*************************************************************************/
 
 void modem_flush(struct vboxmodem *vbm, int timeout)
@@ -150,11 +172,12 @@ void modem_flush(struct vboxmodem *vbm, int timeout)
 }
 
 /*************************************************************************/
-/** modem_hangup(): Toggles the data terminal ready line to hangup the	**/
-/**					  modem.															   **/
+/** modem_hangup():	Wechselt die DTR Leitung um das Modem aufzulegen.	**/
 /*************************************************************************/
-/** => vbm				Pointer to modem structure									**/
-/** <=					0 on success or -1 on error								**/
+/** => vbm				Zeiger auf die Modem-Struktur.							**/
+/**																							**/
+/** <=					0 wenn das Modem aufgelegt werden konnte oder -1	**/
+/**						wenn nicht.														**/
 /*************************************************************************/
 
 int modem_hangup(struct vboxmodem *vbm)
@@ -181,14 +204,17 @@ int modem_hangup(struct vboxmodem *vbm)
 }
 
 /*************************************************************************/
-/** modem_command():	Sends a command to the modem and waits for one or	**/
-/**						more results.													**/
+/** modem_command():	Sendet ein Kommando zum Modem und wartet auf eine	**/
+/**						Rückantwort.													**/
 /*************************************************************************/
-/** => vbm				Pointer to modem structure									**/
-/** => command			Command to send												**/
-/** => result			Needed answer(s) (seperater with '|')					**/
-/** <=					Number of the found answer, 0 nothing found, -1 on	**/
-/**						error																**/
+/** => vbm				Zeiger auf die Modem-Struktur.							**/
+/** => command			Kommando das gesendet werden soll.						**/
+/** => result			Rückantwort auf die gewartet werden soll. Mehrere	**/
+/**						Rückantworten können mit '|' getrennt angegeben		**/
+/**						werden.															**/
+/**																							**/
+/** <=					-1 bei einem Fehler, 0 wenn keine der Rückantwort-	**/
+/**						en gefunden wurde oder die Nummer der Rückantwort.	**/
 /*************************************************************************/
 
 int modem_command(struct vboxmodem *vbm, char *command, char *result)
@@ -272,11 +298,15 @@ int modem_command(struct vboxmodem *vbm, char *command, char *result)
 }
 
 /*************************************************************************/
-/** modem_read():		Reads a terminated string from the modem.				**/
+/** modem_read():		Liest einen terminierten String vom Modem.			**/
 /*************************************************************************/
-/** => vbm				Pointer to modem structure									**/
-/** => line				Pointer to write buffer										**/
-/** => readtimeout	Timeout in seconds											**/
+/** => vbm				Zeiger auf die Modem-Struktur.							**/
+/** => line				Speicherbereich in den der String gelesen werden 	**/
+/**						soll.																**/
+/** => readtimeout	Timeout in Sekunden.											**/
+/**																							**/
+/** <=					0 wenn der String gelesen werden konnte oder -1		**/
+/**						wenn nicht.														**/
 /*************************************************************************/
 
 int modem_read(struct vboxmodem *vbm, char *line, int readtimeout)
@@ -326,9 +356,13 @@ int modem_read(struct vboxmodem *vbm, char *line, int readtimeout)
 	return(0);
 }
 
-
 /*************************************************************************/
-/** **/
+/** modem_wait():	Wartet auf einen eingehenden Anruf.							**/
+/*************************************************************************/
+/** => vbm			Zeiger auf die Modem-Struktur.								**/
+/**																							**/
+/** <=				0 wenn ein eingehender Anruf anliegt oder -1 bei		**/
+/**					Timeout/Fehler.													**/
 /*************************************************************************/
 
 int modem_wait(struct vboxmodem *vbm)
@@ -339,7 +373,7 @@ int modem_wait(struct vboxmodem *vbm)
 	fd_set	fd;
 	int		back;
 
-	log_line(LOG_D, "Waiting...\n");
+	log_line(LOG_A, "Waiting...\n");
 	            
 	FD_ZERO(&fd);
 	FD_SET(vbm->fd, &fd);
@@ -369,34 +403,34 @@ int modem_wait(struct vboxmodem *vbm)
 	return(0);
 }
 
+/*************************************************************************/
+/** modem_set_nocarrier():	Setzt den NO CARRIER Status.						**/
+/*************************************************************************/
+/** => vbm						Zeiger auf die Modem-Struktur.					**/
+/** => carrier					1 wenn ein Carrier anliegt oder 0.				**/
+/*************************************************************************/
+
 void modem_set_nocarrier(struct vboxmodem *vbm, int carrier)
 {
 	vbm->nocarrier = carrier;
 }
+
+/*************************************************************************/
+/** modem_get_nocarrier():	Gibt den NO CARRIER Status zurück.				**/
+/*************************************************************************/
+/** <=							1 wenn ein Carrier anliegt oder 0.				**/
+/*************************************************************************/
 
 int modem_get_nocarrier(struct vboxmodem *vbm)
 {
 	return(vbm->nocarrier);
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 /*************************************************************************/
-/** modem_timeout_function():	Function called from timeout signal hand-	**/
-/**									ler.													**/
+/** modem_timeout_function():	Funktion die bei einem Modem-Timeout ge-	**/
+/**									startet wird.										**/
 /*************************************************************************/
-/** => s								Signal number										**/
+/** => s								Signalnummer.										**/
 /*************************************************************************/
 
 static void modem_timeout_function(int s)
@@ -410,10 +444,13 @@ static void modem_timeout_function(int s)
 }
 
 /*************************************************************************/
-/** modem_write():	Sends a null terminated string to the modem.			**/
+/** modem_write():	Sendet einen 0-terminierten String zum Modem.		**/
 /*************************************************************************/
-/** => vbm				Pointer to modem structure									**/
-/** => s					Terminated string to write									**/
+/** => vbm				Zeiger auf die Modem-Struktur.							**/
+/** => s					String der gesendet werden soll.							**/
+/**																							**/
+/** <=					0 wenn der String gesendet werden konnte oder -1	**/
+/**						bei einem Fehler.												**/
 /*************************************************************************/
 
 static int modem_write(struct vboxmodem *vbm, char *s)
@@ -423,12 +460,14 @@ static int modem_write(struct vboxmodem *vbm, char *s)
 	return(-1);
 }
 
-
 /*************************************************************************/
-/** modem_get_echo():	Reads modem echo.											**/
+/** modem_get_echo():	Liest das Echo eines Modem-Kommandos.				**/
 /*************************************************************************/
-/** => vbm					Pointer to modem structure								**/
-/** => echo					Command to get echo from								**/
+/** => vbm					Zeiger auf die Modem-Struktur.						**/
+/** => echo					Modem-Echo das erwartet wird.							**/
+/**																							**/
+/** <=						0 wenn das Modem-Echo gelesen werden konnte		**/
+/**							oder -1 bei einem Fehler.								**/
 /*************************************************************************/
 
 static int modem_get_echo(struct vboxmodem *vbm, char *echo)
@@ -437,9 +476,7 @@ static int modem_get_echo(struct vboxmodem *vbm, char *echo)
 }
 
 /*************************************************************************/
-/** modem_get_rawsequence():	Reads a raw sequence from modem. This is	**/
-/**									a subroutine for modem_get_sequence() &	**/
-/**									modem_get_echo().									**/
+/** modem_get_rawsequence():															**/
 /*************************************************************************/
 
 static int modem_get_rawsequence(struct vboxmodem *vbm, char *line, int echo)
@@ -492,7 +529,7 @@ static int modem_get_rawsequence(struct vboxmodem *vbm, char *line, int echo)
 }
 
 /*************************************************************************/
-/** modem_check_result():	Checks for a string in the modem result.		**/
+/** modem_check_result():																**/
 /*************************************************************************/
 
 static int modem_check_result(char *have, char *need)
@@ -506,8 +543,7 @@ static int modem_check_result(char *have, char *need)
 	log_code(LOG_D, need);
 	log_text(LOG_D, "\"... ");
 
-	strncpy(line, need, VBOXMODEM_BUFFER_SIZE);
-	line[VBOXMODEM_BUFFER_SIZE] = '\0';
+	xstrncpy(line, need, VBOXMODEM_BUFFER_SIZE);
 
 	more	= strchr(line, '|');
 	word	= strtok(line, "|");
@@ -537,12 +573,3 @@ static int modem_check_result(char *have, char *need)
 
 	return(0);
 }
-
-
-
-
-
-
-
-
-
