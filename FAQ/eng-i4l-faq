@@ -20,7 +20,7 @@ URL: http://www.lrz-muenchen.de/~ui161ab/www/isdn/
 but many questions are missing or are still in German!!br
 --14-Apr-97: Questions complete in all sections (but not all updated or 
 translated)!br
---16-Apr-97: Translated through Section 2.8, as well as Sections 4 and 5.!br
+--19-Apr-97: Translated through Section 2.11, as well as Sections 4 and 5.!br
 !br
 
 This FAQ is protected by the GNU General Public License (GPL) Version 2;
@@ -649,7 +649,7 @@ A: Here is a small glossary:!br
 !verbon
         The local switching office, or with an internal S0 the PBX, automatically 
         or permanently assigns each end device a TEI. This simply allows 
-        thre addessing of the D channels. TEIs have the following values:
+        the addessing of the D channels. TEIs have the following values:
          0- 63   permanent TEIs (e.g. 0 is used for PBX connections)
         64-126   automatically assigned
            127   call for all (e.g. an incoming call)
@@ -908,7 +908,7 @@ A: One!!!!br
    even daisy-chain these if you run out of analogue ports.!br
    [Despite this, you will find life simpler if you can give the
    telephone and modem separate MSNs (the ideal solution if you have
-   at least 2 MSNs - Ed.]
+   at least 2 MSNs) - Ed.]
 
 Q: What is my MSN?
 A: Your telephone company will tell you your MSN. It is your own telephone
@@ -1731,22 +1731,21 @@ A: Fritz Elfert <fritz@wuemaus.franken.de> wrote on 1 Dec 1996:!br
 !3Async PPP
 
 !commenton
-(Die folgenden Fragen entstammen zumeist der syncPPP-FAQ von Michael Hipp.)
+(The following questions are mostly from the syncPPP FAQ by Michael Hipp.)
 !commentoff
 
 !old
-Q: pppd, ipppd, asyncPPP, syncPPP - was ist das? Was soll ich einsetzen?
-A: !b1asyncPPP!b0 ist ein zeichenbasiertes Protokoll und wird gewöhnlich über
-   analoge serielle Leitungen geschickt. Es ist natürlich möglich, asyncPPP
-   über ISDN zu routen (obwohl ISDN eine Synchronverbindung bietet). Man 
-   kann es tun, indem man ein ISDN-Modem an den Computer anschließt. Dieses
-   Gerät besitzt eine RS-232-Schnittstelle zum eigenen Rechner sowie eine
-   ISDN-Schnittstelle in Richtung Telefongesellschaft. Nehmen wir nun an, man
-   benutzt PPP an der seriellen Schnittstelle, dann laufen diese asynchronen
-   PPP-Pakete über die synchron laufende ISDN-Leitung. Damit diese Pakete
-   von der eigenen Linux-Maschine akzeptiert und bearbeitet werden, darf man
-   !u1nicht!u0 HDLC/syncPPP einsetzen, denn das würde nicht funktionieren. 
-   Stattdessen muß man /etc/inittab editieren:
+Q: pppd, ipppd, async PPP, sync PPP - what are they? Which should I use?
+A: !b1async PPP!b0 is a character-basedzeichenbasiertes protocol which is
+   usually used over analog serial lines geschickt. It is of course possible
+   to route async PPP over ISDN (even though ISDN offers a synchronous 
+   connection. You can do this by attaching an ISDN modem to your computer. An
+   ISDN modem has an RS-232 interface to the computer along with an ISDN
+   interface to the telephone company. Assuming that you use PPP on a serial
+   interface, then the asynchronous PPP packets are transmitted over the 
+   synchronous ISDN line. You can !u1not!u0 use HDLC/syncPPP, otherwise 
+   your Linux machine will not accept and process these packets. Instead, 
+   you have to edit /etc/inittab:
 !verbon
         #
         # inittab       This file describes how the INIT process should set up
@@ -1755,62 +1754,55 @@ A: !b1asyncPPP!b0 ist ein zeichenbasiertes Protokoll und wird gewöhnlich über
         # PPPD for asyncPPP over ISDN
         i1:45:respawn:/usr/sbin/pppd -detach silent noipdefault /dev/ttyI0
 !verboff
-   Dies teilt init mit, daß der asynchrone pppd direkt auf dem benannten 
-   Device gestartet werden soll. Man beachte, daß mit dieser Konfiguration 
-   ausschließlich PPP über diese Leitung gefahren werden kann.
-   Es gibt auch andere Wege: man startet einen getty an diesem tty, richtet
-   einen User ein, der den pppd startet, und so weiter. Wer mehr darüber 
-   wissen will, sollte sich die FAQ ansehen, die mit dem Standard-pppd
-   geliefert wird.!br
-   Im Gegensatz ist !b1SyncPPP!b0 ein bitorientiertes Protokoll. Dazu kann der
-   originale pppd nicht verwendet werden. Michael Hipp hat eine entsprechend
-   angepaßte Version geschrieben, die sich ipppd nennt.!br
-   Der ipppd kann PPP-Pakete verarbeiten, die als HDLC-Frames ankommen.
-   Der PPP-Treiber in ISDN4Linux reicht alle IP-Pakete direkt an den
-   network layer weiter, während alle PPP-Protokollframes an das /dev/ippp*-
-   Device durchgestellt werden. So gesehen ist der ipppd ein einfaches
-   externes Netzwerkprotokoll-Programm. Wenn Sie sich mithilfe der /dev/ttyI*-
-   Devices in einen fremden Rechner einloggen und *dort* erst das PPP starten,
-   dann nehmen Sie den "alten" pppd. Wenn die Gegenstelle unmittelbar beginnt,
-   Frames zu senden, haben Sie vermutlich Kontakt zu einer syncPPP-Maschine 
-   aufgenommen - nehmen Sie das Network Device aus ISDN4Linux mit der 
-   'syncppp encapsulation' und versichern Sie sich, daß der ipppd läuft und
-   Kontakt zu mindestens einem /dev/ippp* hat. Bitte lesen Sie in der
-   Anleitung zu ISDN4Linux nach, wie man ein Network Device konfiguriert.
+   This tells init that the asynchronous PPP should be started directly from 
+   this device. Notice that with the configuration, PPP and only PPP is using
+   this line. There are other ways as well; you can start a getty on this
+   tty, set up user that starts pppd, etc. If you want to learn more, you 
+   can read the FAQ that comes with the standard pppd.!	br
+   On the other hand, !b1Sync PPP!b0 is a bit-oriented protocol, for which
+   the original pppd cannot be used. Michael Hipp has written an adapted 
+   version called ipppd.!br
+   ipppd can process PPP packets that arrive as HDLC frames. The PPP 
+   driver in isdn4linus sends all IP packets direclty to the network 
+   layer, while all PPP protocol frames are send to the /dev/ippp* 
+   device. Thus ipppd can be viewed as a simple external network
+   protocol program. If you with the help of the /dev/ttyI* devices
+   log in to an external computer and from there start PPP, then you
+   should use the "old" pppd. If the other side immediately begins the
+   send frames, then you've probably reached a sync PPP machine - use the
+   network device from isdn4linus with 'syncppp encapsulation' and make
+   sure that ippd is running and can contact at least one /dev/ippd*. Make 
+   sure you read the directions for isdn4linux on how to configure a
+   network device.
 
 !old
-Q: Ich möchte asynchrones PPP fahren. Kann ich dazu die Netzwerkinterface von
-   isdn4linux einsetzen?
-A: Nein, das ist nicht möglich. Asynchrone PPP-Encapsulation ist nur mit
-   dem Standard-PPP-Paket (pppd) über die /dev/ttyI*-Devices möglich (siehe
-   letzte Frage). Das Netzwerkinterface kann einzig und allein vom ipppd für
-   synchrone PPP-Encapsulation benutzt werden.
+Q: I would like to use asynchonous PPP. Can I use the network interface from 
+   isdn4linux?
+A: No, that's not possible. Asynchronous PPP encapsulation is only possible 
+   with the standard PPP package (pppd) through the dev/ttyI* devices möglich 
+   (see the previous question). The network interface can only be used by 
+   ippd for synchronous PPP encapsulation.
 
 !old
-Q: Wie kann ich die Login-Zeit reduzieren?
-A: Siehe dazu die entsprechenden Hinweise bei Sync-PPP, die ebenfalls für den
-   pppd angewandt werden können.
+Q: How can I reduce the login time?
+A: See the answer for sync PPP, it also applies to asynch PPP.
 
-Q: Wie kann ich meinen Durchsatz mit PPP erhöhen?
-A: Mit MPPP weitere Kanäle aufbauen (siehe den entsprechenden Abschnitt dazu).
-   Für alle, denen das zu teuer ist, und die !u1asyncPPP!u0 verwenden gibt es
-   noch einen kleinen Trick. Mit der Option "asyncmap 0" gibt man an, daß man
-   darauf verzichten möchte, alle Steuerzeichen (ASCII<32) zu "escapen" (das
-   ist der Defaultwert ist). Wenn die Gegenstelle mitspielt, kann das etwa 12%
-   mehr Durchsatz bringen.
-
+Q: How can I increase my tranfers rates with PPP?
+A: You can add more channels with MPPP (see the appropriate section).
+   For everyone for whom that's to expensive and who use !u1async PPP!u0,
+   there's a little trick. With the option "asyncmap 0" you can avoid
+   escaping all control characters (ASCII<32). If the other side goes 
+   along with this, you can increase the transfer rathe by about 12%.
 
 
 !3Sync PPP
-
 
 !commenton
 (The following questions are mostly from the syncPPP FAQ by Michael Hipp.)
 !commentoff
 
 !old
-Q: pppd, ipppd, syncPPP, asyncPPP .. what is that ?
-   What should I use?
+Q: pppd, ipppd, syncPPP, asyncPPP .. what is they? What should I use?
 A: See this question in the "Asnyc PPP" section.
    
 !old
@@ -1835,10 +1827,10 @@ A: Synchronous PPP is simply another encapsulation for ISDN4Linux.
    this device. For now, all devices have to have the name ippp*, where "*" is
    a decimal digit.
 
-Q: Wie soll ich mein Netzinterface benennen?
-A: Der Name des Netzinterfaces sollte !u1immer!u0 mit "ippp" anfangen,
-   !u1nicht!u0 mit "syncppp" oder "isdn", da sonst die Kommunikation mit
-   dem ipppd nicht recht funktioniert.
+Q: How should I name my network interface?
+A: The name of the network interface should !u1always!u0 begin with "ippp",
+   !u1not!u0 with "syncppp" or "isdn"; othersie the communication with 
+   ipppd will not work correctly.
 
 !old
 Q: How do I configure a PPP connection with ipppd?
@@ -1854,27 +1846,25 @@ A: You have to start ipppd once after the modules are installed. ipppd
    In the file etc/rc.isdn.syncppp in the isdn4kernel-util package,
    you can find an example configuration.
 
-Q: Wie bringt man den ipppd dazu, eine PPP-Verbindung aufzubauen?
-A: Mit dem Befehl "isdnctrl dial <interface>".
+Q: How do I get ipppd to open a PPP connection?
+A: With the command "isdnctrl dial <interface>".
 
-Q: Wie stelle ich fest, ob die Verbindung nicht zustande kam (Besetzt)?
-A: Andreas Berg <berg@studm.hrz.uni-siegen.de> schrieb dazu am 24. Nov 1996:!br
-   Ich gucke einfach nach ein paar Sekunden nach, ob die defaultroute da ist,
-   wenn ja, dann steht auch die Verbindung.
+Q: How can I tell if a connection is unsuccessful (busy)?
+A: Andreas Berg <berg@studm.hrz.uni-siegen.de> wrote on 24 Nov 1996:!br
+   I simply wait a couple of seconds, then check whether the default route 
+   exists, if so, then the connection is there as well.
 
-Q: Wo gibt es jeweils die neueste Version des ipppd?
-A: Die gibt es auf Michael Hipp's Homepage:!br
+Q: Where can I find the latest version of ipppd?
+A: It is on Michael Hipp's home page:!br
      !link http://www.sfs.nphil.uni-tuebingen.de/~hipp/isdn/linux/;
 
 !old
-Q: Wie kann ich mehr als ein ippp*-Device verwenden?
-A: Alle verwendeten ippp*-Devices müssen per "isdnctrl addif" etc. separat
-   konfiguriert werden. Jedes ippp*-Device sollte dabei eine andere IP-Adresse
-   verwenden (Routing!).!br
-   Es können durchaus mehrere ippp*-Devices auf dieselbe (eigene) MSN
-   konfiguriert werden. Dann können mehrere Anrufer parallel auf dieser MSN
-   anrufen und bedient werden.
-
+Q: How can I use more than one ippp* device?
+A: All ippp* devices in use must be configured separaley with 
+   "isdnctrl addif" etc. Each ippp* device should be assignd to
+   its own IP address (routing!).!br
+   Several ippp* devices can be assinged to a single MSN.
+   Several callers can then simultaneously use this  MSN. 
 
 !old
 Q: I want to talk to remote machines which needs different configurations. The 
@@ -1888,32 +1878,28 @@ A: You must bind a network interface explicitly to an ippp device, where you
    release the link with "pppunbind". 
    
 
-Q: Wie funktioniert der (kaum dokumentierte) "pppbind"-Befehl von isdnctrl?
-A: Dazu muß man zunächst wissen, wie der ipppd seine Daten bekommt. Alle
-   Daten, die über die ISDN-Leitung hereinkommen, werden von den Netzinterfaces
-   empfangen (diese werden mit isdnctrl eingerichtet). Anschließend werden die
-   Daten auf eines der /dev/ippp*-Devices ausgegeben - und zwar auf eines, an
-   dem ein ipppd-Daemon auf Daten wartet.!br
-   Den Netzinterfaces erscheinen alle ipppd's gleich geeignet für die gerade
-   empfangenen Daten - man kann deshalb normalerweise nicht vorhersagen,
-   welcher ipppd nun von welchem Netzinterface seine Daten bekommt.!br
-   In der Praxis installiert man jedoch gerne mehrere ipppd's mit
-   unterschiedlicher Konfiguration. Diese sollen ihre Daten jeweils
-   !u1exklusiv!u0 von einem bestimmten Netzinterface bekommen (das auch
-   speziell konfiguriert wurde). Genau dazu dient nun der "pppbind"-Befehl.
-   Mit:
+Q: How does the (little-documented) "pppbind" command in isdnctrl work?
+A: You have to first know how ipppd gets its data. All data that come in
+   over the ISDN line is received by the network devices (these are 
+   set up with isdnctrl). Then the data given to one of the /dev/ippd*
+   devices - to one where a ipppd daemon is waiting for data.!br
+   To the network interfaces, all ipppd's appear to be able to handle the
+   just-received data - therefore it is normally impossible to predict
+   which ipppd will receive data from which network interface.!br
+   In practice, you usually install several ipppd's with differing 
+   configurations. Each of these should receive data !u1exclusively!u0 
+   from a certain network interface (that has also be specially configured).
+   The "pppdbind" command serves just this purpose. With:
 !verbon
-        "isdnctrl pppbind <interface> <Nummer>"
+        "isdnctrl pppbind <interface> <number>"
 !verboff
-   wird das Interface <interface> fest mit dem Device /dev/ippp<Nummer>
-   verknüpft.!br
-   Beispiel: Um das Interface "ippp5" mit /dev/ippp2 zu verknüpfen, muß
-   folgende Konfiguration vorgenommen werden:
+   attaches the interface <interface> to the device /dev/ippp<number>.!br
+   Example: To attach the interface "ippp5" to /dev/ippp2, the following
+   configuration should be used:
 !verbon
         "isdnctrl pppbind ippp5 2"
 !verboff
-   Analog kann man mit dem "pppunbind"-Befehl diese Verknüpfung wieder
-   aufheben.!br
+   Similary, with the command dem "pppunbind" will undo this attachment.!br
 
 !old
 Q: I want to use dynamic IP address assignment. How must I configure the 
@@ -1942,107 +1928,104 @@ A: At least you must have a route, which forwards a packet to the ippp
    where REMOTE must be the address of the remote machine (the machine giving 
    your address to you) 
    
-Q: Laut Man-Page bietet der ipppd die Option "dns-addr". Leider lehnt mein
-   ipppd diese Option strikt ab!
-A: Andreas Kool <akool@Kool.f.EUnet.de> schrieb hierzu am 31. Dez 1996:!br
-   Du musst im Makefile des ipppd "USE_MS_DNS" einschalten!
+Q: Accrding to the manpage, ipppd offers the option "dns-addr". But my ipppd 
+   refuses to take this option!
+A: Andreas Kool <akool@Kool.f.EUnet.de> wrote on 31 Dec 1996:!br
+   In the Makefile for ipppd you have to activate the option "USE_MS_DNS"!
 
-Q: Wie kann ich IPX über den ipppd machen?
-A: Michael Hipp <Michael.Hipp@student.uni-tuebingen.de> schrieb dazu am
-   4. Feb 1997:!br
-   So... die Frage kommt ja in letzter Zeit häufiger auf. Ich empfehle
-   auf alle Faelle mal den ipppd 2.2.6g (ftp.gwdg.de pub/linux/isdn/ippp/)
-   Dann im Makefile: 'IPX_CHANGE = 1' "einkommentieren"...!br
-   Das reicht aber noch nicht aus. Man muß beim Aufruf des ipppd auf
-   alle Faelle "+ipx" angeben, sonst wird IPX (im ipppd) nicht aktiviert.
-   Ansonsten muß man natürlich noch "richtige" IPX Optionen mitübergeben.
-   K.A. welche das im Einzelfall sind. IPX habe ich noch nie gemacht. ;)
-   Wenn man dann mehrere IPXCP Debug-Meldungen im Log sieht und nichts
-   geht würde mich selbiger Debug-Log interessieren. (Sofern man den
-   Fehler nicht selber analysieren kann). Erfolgsmeldungen sind natürlich
-   auch willkommen. (bei ungetesteter Software aber höchst unwahrscheinlich) ;)
+Q: How can I do IPX over ipppd?
+A: Michael Hipp <Michael.Hipp@student.uni-tuebingen.de> wrote on 
+   4 Feb 1997:!br
+   So... this question has come up a lot recently. I recommend in any case
+   ipppd 2.2.6g (ftp.gwdg.de pub/linux/isdn/ippp/). Then in the Makefile
+   comment out 'IPX_CHANGE = 1' ...!br
+   But that's not yet enough. When calling ipppd, you have to add "+ipx",
+   otherwise IPX (in ipppd) will not be activated. Of course, you also
+   have to the the "correct" IPX options... I don't know what they are
+   for each individual case. I've never done IPX. ;) If you then get 
+   several IPXCP debug messages in the log and nothing works, I'd be 
+   interested in this log (unless you can analyze the problem yourself).
+   Success stories are also welcom, of course (but with untested software,
+   this is highly improbably) ;)
 
 !old
 Q: How can I reduce login delay?
-A: Man schreibe eine Login-Session mit ("Debug-Log"), und sehe nach, welche
-   Optionen der Fremdrechner zurückweist. Beim nächsten Mal ist der ipppd
-   so zu konfigurieren, daß die Optionen nicht mehr verhandelt werden. 
-   Ein weiterer "Seiteneffekt" ist, daß solche unnützen Optionen die
-   Redundanz erhöhen (z.B. wenn der Fremdrechner Bugs aufweist und die
-   Optionen auf falsche Weise zurückweist).
-   Zur Erstellung eines Log-Files siehe "Wie stelle ich mir für ipppd ein 
-   Log her".!br
-   Einen zusätzlicher Tip kam von G.Richter <richter@ecos.de> am 12. Dez 1996:!br
-   Die Aushandlungphase mit einem CISCO, wie auch mit einem AVM MPR habe ich
-   drastisch beschleunigt durch die Option
+A: You can write out a login session with ("Debug-Log"), and see which
+   options the other computer is refusing. Next time, configure ipppd
+   without these unused options. A further side effect is that such
+   unused options increase the redundance (e.g. when the other computer
+   has bugs and refuses the options incorrectly). To create a log file, 
+   see "How to I create a log for ipppd".!br
+   Another tip came from G.Richter <richter@ecos.de> on 12 Dec 1996:!br
+   The negotiation phase with a CISCO, as well as with an AVM MPR, was
+   drastically accelerated by the option 
 !verbon
         lcp-restart 1
 !verboff
-   Der ipppd sendet anscheined das erste LCP Paket bevor es die Gegenstelle
-   erreichen kann und wartet dann 3 sec bis er es noch mal versucht, mit der
-   Option wartet er nur eine Sekunde. Danach sankt der Verbindungsaufbau bei
-   mir von 5 auf 2 Sekunden.
-
-Q: Wie kann ich meinen Durchsatz mit PPP erhöhen?
-A: Mit MPPP weitere Kanäle aufbauen (siehe den entsprechenden Abschnitt dazu).
-   Für alle, denen das zu teuer ist, und die !u1asyncPPP!u0 verwenden gibt es
-   noch einen kleinen Trick. Mit der Option "asyncmap 0" gibt man an, daß man
-   darauf verzichten möchte, alle Steuerzeichen (ASCII<32) zu "escapen" (das
-   ist der Defaultwert ist). Wenn die Gegenstelle mitspielt, kann das etwa 12%
-   mehr Durchsatz bringen.
+   The ipppd seems to send the first LCP packet before it can reach the
+   other side, and then waits 3 seconds before trying again, but with this
+   option it waits only 1 second. For me the time to establish the connection
+   sank from 5 to 2 seconds.
+   
+Q: How can I increase my PPP data transfer rates?
+A: You can establish more channels with MPPP (see the MPPP section).
+   For everyone for whom this is too expensive, and who use !u1asyncPPP!u0
+   there is another little trick. With the option "asyncmap 0", you can
+   chose to not "escape" control characters (ASCII<32) (the default is to
+   escape these characters). If the other side goes along, the transfer 
+   rate will be about 12% faster.
 
 
 !3ISDN4Linux in a network
 
 
-Q: Ich möchte mit meinem Linux-System via ISDN4Linux ins Internet. Das klappt
-   auch. Nun möchte ich noch zusätzlich meine Rechner am Ethernetstrang mit
-   vom Internet profitieren lassen, aber wie?
-A: Thomas Pfeiffer <pfeiffer@pds.de> schrieb dazu folgendes am 5. Nov 1996:!br
-   Es gibt verschiedene Möglichkeiten, je nachdem, was du denn so alles aus
-   deinem LAN heraus im Internet machen möchtest. Grundsätzlich gibt es drei
-   Möglichkeiten:
+Q: I've successfully used the Internet with my Linux system using isdn4linux. 
+   Now I'd like to have another computer on my Ethernet profit from the 
+   Internet as well. But how?
+A: Thomas Pfeiffer <pfeiffer@pds.de> wrote on 5 Nov 1996:!br
+   There are several choices, depending on what all you would like to
+   do on the Internet from your LAN. Basically, there are 3 possibilities:
 !verbon
-        1. dein LAN ist ein offizielles Class C Netz mit im Internet gültigen
-           IP adressen.
-             Der Fall ist am einfachsten zu konfigurieren, du gibst jeder
-             Netzwerkkarte in dem Netz eine dieser IP adressen und legst eine
-             Default Route auf deine ISDN Karte, die ins Internet zu deinem
-             Provider führt.
-        2. Du möchtest aus deinem LAN heraus nur http ins Internet machen.
-             In dem fall kannst du dir für dein LAN IP adressen ausdenken,
-             die einzige offizielle IP Adresse ist die, die der ISDN Karte
-             zugewiesen wird. auf deinem linux isdn router mußt du einen
-             Proxy Server installieren, der bei deinen Browsern auch
-             eingetragen wird. Du brauchst in dem Fall keine Default Routen.
-        3. Du möchtest dich immer nur aus dem LAN auf deinem Linux ISDN
-           Router einloggen und VON DORT deine Arbeit im Internet verrichten. 
-             Das ist noch einfacher, denn dann mußt du nicht einmal einen
-             Proxy Server.
+        1. Your LAN is an official Class C net with IP addresses valid on 
+           the Internet.
+             This case is the easiest of configure. You give each network
+             card on your network one of these addresses and set a 
+             default route on the ISDN card that goes to your    
+             provider.
+        2. You'd only like to do http in Internet from your LAN.
+             In this case you can make up IP addresses for your LAN;
+             the only official IP address is that for your ISDN card.
+             Then install a proxy server on your Linux router, and
+             enter it in all of your browsers. In this case you do
+             not need a default route.
+        3. From your LAN you only want to log in to your Linux ISDn
+           router and FROM THERE do your work on the Internet.
+             THis is even simpler, then you don't even need a proxy 
+             server.
 !verboff
-   Eike Stepper <isdn@esc-net.de> ergänzt am 6. Nov 1996:
+   Eike Stepper <isdn@esc-net.de> added on 6 Nov 1996:
 !verbon
-        Den drei Möglichkeiten würde ich noch eine vierte hinzufügen. Selber
-        hab ich es zwar noch nicht ausprobiert (da ich die erwähnte 1.
-        Möglichkeit bevorzuge und ein Class-C-Subnetz habe, hehe ;) aber ich
-        weiß von einem Freund, daß er nach einigem Tüfteln am Linux-Kernel
-        dann tatsächlich das IP-Masquerading hinbekommen hat.!br
-        Das funzt irgendwie soähnlich wie ein proxy (wenn man den
-        ip-versteck-effekt betrachtet). Bietet natürlich kein Caching,
-        maskeriert aber nach aussen hin alle internen Klau-IPs ;) mit der
-        einen offiziellen des ISDN-Interface. Frag mich nicht, wie da
-        irgendein Routing hinhaut, aber es geht...!br
-        Wenn ich mich nicht irre, hat mein Freund sogar mit einer dynamischen
-        IP maskeriert ?!
+        There is a fourth possibility I'd like to add, although I've
+        never tried it out (since I prefer the 1st choice and have a
+        a Class C Subnet, hehe ;), but I have a friend who after
+        some playing with the Linux kernel has actually gotten IP
+        masqerading to work.!br
+        It works somewhat like a proxy (when looking at the effect of 
+        hiding the IP). It doesn't offer any caching, of course, but 
+        masks to the outside all internal IPs with that of the ISDN
+        interface. Don't ask me how the routing functions, but it 
+        works...!br
+        If I'm not completely mistaken, my friend does this with a
+        dynamically assigned IP ?!
 !verboff
 
-Q: Wie funktioniert denn nun die vierte Möglichkeit, Linux + Masquerading?
-A: Rainer May <r_may@khavi.desaster.heide.de> hat hierzu eine tolle Anleitung
-   zusammengestellt (siehe nachfolgende Frage).
+Q: How does this fourth possibility work, Linux + Masquerading?
+A: Rainer May <r_may@khavi.desaster.heide.de> has put together a 
+   good set of instructions (see the next question).
 
 !commenton
-Die nachfolgende Anleitung wurde von Rainer May
-<r_may@khavi.desaster.heide.de> zusammengestellt.
+The following instructions were assembled by Rainer May
+<r_may@khavi.desaster.heide.de>.
 !commentoff
 !old
 Q: I have a local area network, (LAN) with computers based on several
@@ -2183,52 +2166,49 @@ A: Most work has to be done on the Linux box. First you need a kernel with
     !u1then!u0 also all other machines in the LAN should be able to access the
     Internet.
 
-Q: Wie kann ich den Teilnehmern meines lokalen Netzes mit Linux-Host
-   ermöglichen, die ISDN Karte(n) im Linux PC mitzunutzen?
-A: Rainer May <r_may@khavi.desaster.heide.de> schrieb dazu am 10. Dez 1996:!br
-   öh ... "modemd" auf Linux-Seite, zusammen mit der entsprechenden
-   Software z.B. fuer W95 (emuliert halt auf einer telnet-Verbindung
-   einen Comport) macht sowas doch recht schön...
-
-Q: Wo gibt's den "modemd", und für welche Plattformen gibt es "Clients"?
-A: Rainer May <r_may@khavi.desaster.heide.de> schrieb dazu am 10. Dez 1996:!br
-   Theoretisch (und praktisch auch) tut es jeder etwas komfortablere
-   telnet-Client, den man dann wie ein Terminalprogramm benutzen kann.
-   Auch uucicos sollte es dafür geben (unter DOS fxuucico in Verbindung
-   mit fxwtcp, zum Bleistift).!br
-   Will man generell für beliebige Anwendungen eine Art "remote COMport"
-   haben, gibt es (wie erwähnt) COMT für Windows (95), für Amigas
-   das "telser.device". Für Mac soll es auch Entsprechendes geben
-   (die Systemarchitektur des MacIntosh lädt ja auch dazu ein), Namen
-   kenne ich allerdings nicht.!br
-   modemd (eigentlich nur ein PERL-Einzeiler, wenn ich mich recht entsinne)
-   arbeitet hier jedenfalls problemlos mit COMt und telser.device
-   zusammen.
-
-Q: Wo finde ich COMt?
-A: Oliver Hahn <oliver@bbtt.de> schrieb dazu am 15. Dez 1996:!br
-   Versuch's mal auf einem Simtel-Mirror (z.B. ftp.funet.fi) im Verzeichnis
-   pub/simtelnet/win3/inet. Das Ding heißt comt200.zip.
+Q: How can I allow the users in my local network to use the ISDN card(s)
+   im my Linux PC?
+A: Rainer May <r_may@khavi.desaster.heide.de> wrote on 10 Dec 1996:!br
+   Um ... "modemd" on the Linux side, along with appropriate software
+   e.g. fpr W95 (emulates a comport over a telnet connection) makes
+   that rather nice....
+   
+Q: Where can I find "modemd", and for which platforms are there "clients"?
+A: Rainer May <r_may@khavi.desaster.heide.de> wrote on 10 Dec 1996:!br
+   In theory (and in practice too) this can be done by any comfortable
+   telnet client. There should be some uucicos for this as well (under 
+   DOS fxuucico together with fxwtcp, for example).!br
+   If you generally want to offer all appliations a kind of "remote
+   COM port", then there is COMT for Windows (95), "telser.device" for
+   Amigas. There is supposed to be something like this for the Mac as
+   well (it's system architecture is very inviting for this), but I
+   don't know any names.!br
+   modemd (which is really just a one-liner in PERL, if I remember
+   correctly) works here with COMt and telser.sevice with no problems.
+   
+Q: Where can I find COMt?
+A: Oliver Hahn <oliver@bbtt.de> wrote on 15 Dec 1996:!br
+   Try a Simtel mirror (e.g. ftp.funet.fi) in the directory
+   pub/simtelnet/win3/inet. The thing is called comt200.zip.
      !link ftp://ftp.funet.fi/pub/simtelnet/win3/inet/comt200.zip;
 
-Q: Wie sieht der "PERL-Einzeiler" "modemd" nun genau aus?
-A: Marc Neitzner <marc@zeus.han.de> schrieb dazu am 15. Dez 1996:
+Q: How exactly does this "PERL one-liner" "modemd" look?
+A: Marc Neitzner <marc@zeus.han.de> wrote on 15 Dez 1996:
 !verbon
         #!/usr/bin/perl
         select((select(STDOUT), $| = 1)[$[]);
         select((select(STDIN), $| = 1)[$[]);
         exec "cu","-E","''", "-l", "$ARGV[0]";
-       die "$0: Cant exec cu: $!\n";
+       die "$0: Cannot exec cu: $!\n";
 !verboff
-   Und dann muss das Ding per inetd gestartet werden:
+   And then it has to be started in inetd:
 !verbon
         modem           20006/tcp       modemd  # Modem service via TCP
         isdn            20007/tcp       modemd  # ISDN  service via TCP
 !verboff
-   Nachteil: comt-2.0 ist nur für 16Bit Anwendungen "sichtbar". Der
-   Einsatz unter win95 und Windows NT bleibt also auch dort auf 16Bit Kram
-   beschränkt!
-
+   Disadvantage: comt-2.0 is only "visible" to 16-bit applications. The
+   use under win95 and Windows NT therefore is restricted to 16-bit 
+   stuff.
 
 
 !3Isdnlog
