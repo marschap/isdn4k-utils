@@ -1,4 +1,4 @@
-/* $Id: isdnlog.c,v 1.18 1998/05/19 15:47:03 paul Exp $
+/* $Id: isdnlog.c,v 1.19 1998/05/19 15:55:51 paul Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,10 @@
  * along with this program; if not, write to the Free Software
  *
  * $Log: isdnlog.c,v $
+ * Revision 1.19  1998/05/19 15:55:51  paul
+ * Moved config stuff for City Weekend from isdnlog.c to tools/isdnconf.c, so
+ * that isdnrep also understands a "cityweekend=y" line in isdn.conf.
+ *
  * Revision 1.18  1998/05/19 15:47:03  paul
  * If logfile name is specified with leading '+', the logfile is not truncated
  * when isdnlog starts; instead, new messages are appended.
@@ -643,9 +647,6 @@ static int read_param_file(char *FileName)
 				else
 				if (!strcmp(Ptr->name,CONF_ENT_WIDTH))
 					width = (int)strtol(Ptr->value, NIL, 0);
-				else
-				if (!strcmp(Ptr->name,CONF_ENT_CW))
-					CityWeekend = toupper(*(Ptr->value)) == 'Y'?1:0;
 				else
 				if (!strcmp(Ptr->name,CONF_ENT_DUAL))
 					dual = (int)strtol(Ptr->value, NIL, 0);
