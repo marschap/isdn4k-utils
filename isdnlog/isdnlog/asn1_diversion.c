@@ -1,4 +1,4 @@
-/* $Id: asn1_diversion.c,v 1.2 1999/04/26 22:11:56 akool Exp $
+/* $Id: asn1_diversion.c,v 1.3 1999/05/04 19:32:33 akool Exp $
  *
  * ISDN accounting for isdn4linux. (ASN.1 parser)
  *
@@ -21,6 +21,14 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: asn1_diversion.c,v $
+ * Revision 1.3  1999/05/04 19:32:33  akool
+ * isdnlog Version 3.24
+ *
+ *  - fully removed "sondernummern.c"
+ *  - removed "gcc -Wall" warnings in ASN.1 Parser
+ *  - many new entries for "rate-de.dat"
+ *  - better "isdnconf" utility
+ *
  * Revision 1.2  1999/04/26 22:11:56  akool
  * isdnlog Version 3.21
  *
@@ -241,6 +249,26 @@ ELEMENT_1(ParseRESInterrogationDiversion, char, res)
   return 1;
 }
 
+ELEMENT_1(ParseServedUserNumberList, char, res)
+{
+  int i;
+  char num[BUF_SIZE];
+
+  CHECK_TAG(ASN1_TAG_SET);
+  MY_DEBUG("ParseServedUserNumberList");
+
+  for (i = 0; i < el.length; i++) {
+    if (!ParsePartyNumber(el.content.elements[i], -1, num)) return 0;
+    if (i == 0) {
+      sprintf(res, "%s", num);
+    } else {
+      sprintf(res, "%s %s", res, num);
+    }
+  }
+
+  return 1;
+}
+
 ELEMENT_1(ParseRESInterrogateServedUserNumbers, char, res)
 {
   char s[BUF_SIZE];
@@ -329,26 +357,6 @@ ELEMENT_1(ParseIntResultList, char, s)
       sprintf(s, "%s", res);
     } else {
       sprintf(s, "%s; %s", s, res);
-    }
-  }
-
-  return 1;
-}
-
-ELEMENT_1(ParseServedUserNumberList, char, res)
-{
-  int i;
-  char num[BUF_SIZE];
-
-  CHECK_TAG(ASN1_TAG_SET);
-  MY_DEBUG("ParseServedUserNumberList");
-
-  for (i = 0; i < el.length; i++) {
-    if (!ParsePartyNumber(el.content.elements[i], -1, num)) return 0;
-    if (i == 0) {
-      sprintf(res, "%s", num);
-    } else {
-      sprintf(res, "%s %s", res, num);
     }
   }
 

@@ -1,4 +1,4 @@
-/* $Id: processor.c,v 1.59 1999/04/30 19:07:56 akool Exp $
+/* $Id: processor.c,v 1.60 1999/05/04 19:32:45 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,14 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.60  1999/05/04 19:32:45  akool
+ * isdnlog Version 3.24
+ *
+ *  - fully removed "sondernummern.c"
+ *  - removed "gcc -Wall" warnings in ASN.1 Parser
+ *  - many new entries for "rate-de.dat"
+ *  - better "isdnconf" utility
+ *
  * Revision 1.59  1999/04/30 19:07:56  akool
  * isdnlog Version 3.23
  *
@@ -892,11 +900,14 @@ void buildnumber(char *num, int oc3, int oc3a, char *result, int version,
     *provider = preselect;
 
   if (!dir && (who == CALLED) && !*intern) {
-    *sondernummer = is_sondernummer(num, *provider);
+    register int i;
 
-    if (*sondernummer == UNKNOWN)
       /* Fixme: DTAG is specific to Germany */
-      *sondernummer = is_sondernummer(num, DTAG); /* try with DTAG, these provider must support them all (i think) */
+    i = getZone(DTAG, num);
+
+    if (((i >  4) && (i < 11)) ||
+        ((i > 19) && (i < 100)))
+      *sondernummer = 1;
   } /* if */
 
   if (Q931dmp) {
@@ -904,7 +915,7 @@ void buildnumber(char *num, int oc3, int oc3a, char *result, int version,
 
 
     if (*sondernummer != UNKNOWN) {
-      sprintf(s, "(Sonderrufnummer %s : %s)", num, sondernummername(*sondernummer));
+      sprintf(s, "(Sonderrufnummer %s)", num);
       Q931dump(TYPE_STRING, -1, s, version);
     } /* if */
 

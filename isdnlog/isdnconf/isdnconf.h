@@ -1,4 +1,4 @@
-/* $Id: isdnconf.h,v 1.4 1999/04/10 16:35:18 akool Exp $
+/* $Id: isdnconf.h,v 1.5 1999/05/04 19:32:27 akool Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -19,6 +19,14 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnconf.h,v $
+ * Revision 1.5  1999/05/04 19:32:27  akool
+ * isdnlog Version 3.24
+ *
+ *  - fully removed "sondernummern.c"
+ *  - removed "gcc -Wall" warnings in ASN.1 Parser
+ *  - many new entries for "rate-de.dat"
+ *  - better "isdnconf" utility
+ *
  * Revision 1.4  1999/04/10 16:35:18  akool
  * isdnlog Version 3.13
  *
@@ -65,7 +73,6 @@
 #define PUBLIC extern
 
 #include <tools.h>
-#include <sondernummern.h>
 #include <holiday.h>
 #include <rate.h>
 

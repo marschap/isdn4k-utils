@@ -1,4 +1,4 @@
-/* $Id: isdnconf.c,v 1.26 1999/04/15 19:14:58 akool Exp $
+/* $Id: isdnconf.c,v 1.27 1999/05/04 19:33:37 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -20,6 +20,14 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnconf.c,v $
+ * Revision 1.27  1999/05/04 19:33:37  akool
+ * isdnlog Version 3.24
+ *
+ *  - fully removed "sondernummern.c"
+ *  - removed "gcc -Wall" warnings in ASN.1 Parser
+ *  - many new entries for "rate-de.dat"
+ *  - better "isdnconf" utility
+ *
  * Revision 1.26  1999/04/15 19:14:58  akool
  * isdnlog Version 3.15
  *
@@ -180,7 +188,6 @@
 /****************************************************************************/
 
 #include "tools.h"
-#include "sondernummern.h"
 
 /****************************************************************************/
 
@@ -1051,7 +1058,6 @@ static int _readconfig(char *_myname)
   logfile        = LOGFILE;
   callfile       = NULL;
   callfmt        = NULL;
-  snfile         = NULL;
   holifile       = NULL;
   rateconf       = NULL;
   ratefile       = NULL;
@@ -1194,9 +1200,6 @@ static int Set_Globals(section *SPtr)
 
 		if ((CEPtr = Get_Entry(Ptr->entries,CONF_ENT_CALLFMT)) != NULL)
 			callfmt = CEPtr->value;
-
-		if ((CEPtr = Get_Entry(Ptr->entries,CONF_ENT_SNFILE)) != NULL)
-			snfile = CEPtr->value;
 
 		if ((CEPtr = Get_Entry(Ptr->entries,CONF_ENT_HOLIFILE)) != NULL)
 			holifile = CEPtr->value;
@@ -1477,6 +1480,7 @@ static int Set_Numbers(section *SPtr, char *Section, int msn)
 
 			if ((CEPtr = Get_Entry(SPtr->entries,CONF_ENT_ZONE)) != NULL)
 				known[Index]->zone = atoi(CEPtr->value);
+#if 0 /* FIXME - or REMOVEME */
 			else {
 			  if (msn < 0) {
                             if ((known[Index]->zone = area_diff(NULL, num)) < 1) {
@@ -1491,7 +1495,7 @@ static int Set_Numbers(section *SPtr, char *Section, int msn)
 				else
 			    known[Index]->zone = CITYCALL; /* sich selbst anrufen kostet CityCall */
 			}
-
+#endif
 			if ((CEPtr = Get_Entry(SPtr->entries,CONF_ENT_INTFAC)) != NULL)
 				known[Index]->interface = CEPtr->value;
 			else

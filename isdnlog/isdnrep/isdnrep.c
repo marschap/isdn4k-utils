@@ -1,4 +1,4 @@
-/* $Id: isdnrep.c,v 1.63 1999/04/16 14:39:31 akool Exp $
+/* $Id: isdnrep.c,v 1.64 1999/05/04 19:33:01 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -24,6 +24,14 @@
  *
  *
  * $Log: isdnrep.c,v $
+ * Revision 1.64  1999/05/04 19:33:01  akool
+ * isdnlog Version 3.24
+ *
+ *  - fully removed "sondernummern.c"
+ *  - removed "gcc -Wall" warnings in ASN.1 Parser
+ *  - many new entries for "rate-de.dat"
+ *  - better "isdnconf" utility
+ *
  * Revision 1.63  1999/04/16 14:39:31  akool
  * isdnlog Version 3.16
  *
@@ -879,7 +887,6 @@ int read_logfile(char *myname)
   one_call            cur_call;
 
 
-  /* initSondernummern(snfile, NULL); FIXME */
   /* initHoliday(holifile, NULL); FIXME */
   /* initRate(rateconf, ratefile, NULL); FIXME */
   interns0 = 3; /* FIXME */
@@ -1317,9 +1324,11 @@ static int print_bottom(double unit, char *start, char *stop)
 
                        print_msg(PRT_NORMAL,"%s ", unknown[i].called ? "Called by" : "  Calling");
 
+#if 0 /* FIXME */
                        if (is_sondernummer(unknown[i].num, DTAG) > 0) /* Fixme: DTAG is specific to Germany */
                          ;
 		       else
+#endif
                        if ((p = get_areacode(unknown[i].num, &l, flag)) != 0) {
                          if (l > 1) {
                            /* Sehr gefaehrlich, was ist mit Laendern, die einen dreistelligen Code haben??? */

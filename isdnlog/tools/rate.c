@@ -1,4 +1,4 @@
-/* $Id: rate.c,v 1.12 1999/04/30 19:08:08 akool Exp $
+/* $Id: rate.c,v 1.13 1999/05/04 19:33:41 akool Exp $
  *
  * Tarifdatenbank
  *
@@ -19,6 +19,14 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rate.c,v $
+ * Revision 1.13  1999/05/04 19:33:41  akool
+ * isdnlog Version 3.24
+ *
+ *  - fully removed "sondernummern.c"
+ *  - removed "gcc -Wall" warnings in ASN.1 Parser
+ *  - many new entries for "rate-de.dat"
+ *  - better "isdnconf" utility
+ *
  * Revision 1.12  1999/04/30 19:08:08  akool
  * isdnlog Version 3.23
  *
@@ -195,8 +203,8 @@ typedef struct _STACK {
 } STACK;
 
 typedef struct {
-  int Duration;
-  int Delay;
+  double Duration;
+  int 	 Delay;
   double Price;
 } UNIT;
 

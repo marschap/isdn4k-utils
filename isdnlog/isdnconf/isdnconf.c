@@ -1,4 +1,4 @@
-/* $Id: isdnconf.c,v 1.23 1999/04/30 19:07:46 akool Exp $
+/* $Id: isdnconf.c,v 1.24 1999/05/04 19:32:23 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -20,6 +20,14 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnconf.c,v $
+ * Revision 1.24  1999/05/04 19:32:23  akool
+ * isdnlog Version 3.24
+ *
+ *  - fully removed "sondernummern.c"
+ *  - removed "gcc -Wall" warnings in ASN.1 Parser
+ *  - many new entries for "rate-de.dat"
+ *  - better "isdnconf" utility
+ *
  * Revision 1.23  1999/04/30 19:07:46  akool
  * isdnlog Version 3.23
  *
@@ -178,6 +186,8 @@
 
 #include "isdnconf.h"
 
+/*****************************************************************************/
+#define ZAUNPFAHL  1 /* FIXME: Michi: Offset */
 /*****************************************************************************/
 
 int print_in_modules(const char *fmt, ...);
@@ -618,17 +628,17 @@ static char *printrate(RATE Rate)
 
 
   if (Rate.Basic > 0)
-    sprintf(message, "%s %s + %s/%ds = %s %s + %s/Min (%s)",
+    sprintf(message, "%s %s + %s/%3.1fs = %s %s + %s/Min (%s)",
       currency, double2str(Rate.Basic, 5, 3, DEB),
-      double2str(Rate.Price - Rate.Basic, 5, 3, DEB),
-      (int)(Rate.Duration + 0.5),
+      double2str(Rate.Price, 5, 3, DEB),
+      Rate.Duration,
       currency, double2str(Rate.Basic, 5, 3, DEB),
       double2str(60 * Rate.Price / Rate.Duration, 5, 3, DEB),
       explainRate(&Rate));
   else
-    sprintf(message, "%s %s/%ds = %s %s/Min (%s)",
+    sprintf(message, "%s %s/%3.1fs = %s %s/Min (%s)",
       currency, double2str(Rate.Price, 5, 3, DEB),
-      (int)(Rate.Duration + 0.5),
+      Rate.Duration,
       currency, double2str(60 * Rate.Price / Rate.Duration, 5, 3, DEB),
       explainRate(&Rate));
 
@@ -642,15 +652,35 @@ typedef struct {
   int    prefix;
   double rate;
   char  *explain;
+  char  *msg;
 } SORT;
 
 static SORT sort[MAXPROVIDER];
 
 
-static int compare(const SORT *s1, const SORT *s2)
+static int compare(SORT *s1, SORT *s2)
 {
   return(s1->rate > s2->rate);
 } /* compare */
+
+
+static void showRates(RATE Rate, char *message)
+{
+  if (Rate.Basic > 0)
+    sprintf(message, "%s %s + %s/%3.1fs = %s %s + %s/Min (%s)",
+      currency, double2str(Rate.Basic, 5, 3, DEB),
+      double2str(Rate.Price, 5, 3, DEB),
+      Rate.Duration,
+      currency, double2str(Rate.Basic, 5, 3, DEB),
+      double2str(60 * Rate.Price / Rate.Duration, 5, 3, DEB),
+      explainRate(&Rate));
+  else
+    sprintf(message, "%s %s/%3.1fs = %s %s/Min (%s)",
+      currency, double2str(Rate.Price, 5, 3, DEB),
+      Rate.Duration,
+      currency, double2str(60 * Rate.Price / Rate.Duration, 5, 3, DEB),
+      explainRate(&Rate));
+} /* showRates */
 
 
 static void showLCR(int duration)
@@ -662,6 +692,7 @@ static void showLCR(int duration)
   auto int   probe[] = { REGIOCALL, GERMANCALL, D2_NETZ, 0 };
   auto int   used[MAXPROVIDER];
   auto int   hours[MAXPROVIDER];
+  auto char  lastmessage[BUFSIZ], message[BUFSIZ], *px;
   auto struct tm *tm;
   auto time_t werktag, wochenende;
 
@@ -717,23 +748,28 @@ retry:
       	memset(&Rate, 0, sizeof(Rate));
       	Rate.zone = *p;
       	Rate.start = mktime(tm);
-      	Rate.now  = Rate.start + duration;
+      	Rate.now  = Rate.start + duration - ZAUNPFAHL;
 
         provider = getLeastCost(&Rate, ignoreprovider);
+	showRates(Rate, message);
 
 #if 0
         print_msg(PRT_NORMAL, "DEBUG::tz=%d, zone=%d, Hour=%02d, P=%d, %s  lasthour=%d, lastprovider=%d, now=%s", tz, *p, hour, provider, getProvidername(provider), lasthour, lastprovider, ctime(&Rate.start));
 #endif
 
-        if (lastprovider == UNKNOWN)
+        if (lastprovider == UNKNOWN) {
           lastprovider = provider;
+	  strcpy(lastmessage, message);
+        } /* if */
 
         if (lasthour == UNKNOWN)
           lasthour = hour;
 
         if (provider != lastprovider) {
-          print_msg(PRT_NORMAL, "\t\t%02d:00 .. %02d:59 010%02d:%s\n",
-            lasthour, hour - 1, lastprovider, getProvidername(lastprovider));
+          px = getProvidername(lastprovider);
+
+          print_msg(PRT_NORMAL, "\t\t%02d:00 .. %02d:59 010%02d:%s%*s(%s)\n",
+            lasthour, hour - 1, lastprovider, px, 14 - strlen(px), "", lastmessage);
 
           used[lastprovider] = 1;
 
@@ -744,6 +780,7 @@ retry:
 
           lastprovider = provider;
           lasthour = hour;
+	  strcpy(lastmessage, message);
         } /* if */
 
 	hour++;
@@ -753,8 +790,10 @@ retry:
           break;
       } /* for */
 
-      print_msg(PRT_NORMAL, "\t\t%02d:00 .. %02d:59 010%02d:%s\n",
-        lasthour, hour - 1, lastprovider, getProvidername(lastprovider));
+      px = getProvidername(lastprovider);
+
+      print_msg(PRT_NORMAL, "\t\t%02d:00 .. %02d:59 010%02d:%s%*s(%s)\n",
+        lasthour, hour - 1, lastprovider, px, 14 - strlen(px), "", lastmessage);
       used[lastprovider] = 1;
 
       if (lasthour >= hour)
@@ -806,6 +845,7 @@ int main(int argc, char *argv[], char *envp[])
 	FILE *fp;
   	RATE Rate;
 	char *msg;
+	char  country[BUFSIZ];
 
 
 	static char usage[]   = "%s: usage: %s [ -%s ]\n";
@@ -961,14 +1001,14 @@ int main(int argc, char *argv[], char *envp[])
 	if (areacode[0] != '\0')
 	{
 		char *ptr;
-		int len, i, zone = UNKNOWN, duration = TESTDURATION;
+		int len, i, zone = UNKNOWN, zone2, duration = TESTDURATION;
 
 
  		initHoliday(holifile, NULL);
  		initRate("/etc/isdn/rate.conf", "/usr/lib/isdn/rate-de.dat", NULL);
 		currency = strdup("DEM");
 
-		if ((*areacode == '.') || (ptr = get_areacode(areacode,&len,quiet?C_NO_ERROR|C_NO_WARN:0)) != NULL)
+		if (1 /* FIXME: (*areacode == '.') || (ptr = get_areacode(areacode,&len,quiet?C_NO_ERROR|C_NO_WARN:0)) != NULL */ )
 		{
 			if (!isdnmon)
 			{
@@ -1006,9 +1046,22 @@ int main(int argc, char *argv[], char *envp[])
                                 memset(&Rate, 0, sizeof(Rate));
 
   				time(&Rate.start);
-      				Rate.now    = Rate.start + duration;
+      				Rate.now    = Rate.start + duration - ZAUNPFAHL;
 
-                                print_msg(PRT_NORMAL, "Ein %d Sekunden langes Gespraech in Zone %d kostet am %s", duration, zone, ctime(&Rate.start));
+                                if (zone != UNKNOWN)
+                                  zone2 = zone;
+                                else
+                                  zone2 = getZone(DTAG, areacode);
+
+                                if (zone2 == UNKNOWN) {
+				  abroad(areacode, country);
+                                  if (*country)
+                                    print_msg(PRT_NORMAL, "Ein %d Sekunden langes Gespraech nach %s (%s) kostet am %s", duration, country, areacode, ctime(&Rate.start));
+                                  else
+                                    print_msg(PRT_NORMAL, "Ein %d Sekunden langes Gespraech in Zone Welt (%s) kostet am %s", duration, areacode, ctime(&Rate.start));
+                                }
+                                else
+                                  print_msg(PRT_NORMAL, "Ein %d Sekunden langes Gespraech in Zone %d kostet am %s", duration, zone2, ctime(&Rate.start));
 
                                 for (Rate.prefix = 0; Rate.prefix < MAXPROVIDER; Rate.prefix++) {
                                   if (zone != UNKNOWN)
@@ -1017,16 +1070,21 @@ int main(int argc, char *argv[], char *envp[])
 				    Rate.zone = getZone(Rate.prefix, areacode);
 
                                   if (Rate.zone != UNKNOWN) {
+
+  				    time(&Rate.start);
+      				    Rate.now    = Rate.start + duration - ZAUNPFAHL;
+
                                     if (getRate(&Rate, &msg) != UNKNOWN) {
       				      sort[n].prefix = Rate.prefix;
       				      sort[n].rate = Rate.Charge;
+                                      sort[n].msg = strdup(msg);
 				      sort[n].explain = strdup(printrate(Rate));
       				      n++;
                                     } /* if */
                                   } /* if */
                                 } /* for */
 
-                                qsort(sort, n, sizeof(SORT), compare);
+                                qsort((void *)sort, n, sizeof(SORT), compare);
 
                                 for (i = 0; i < n; i++)
                                   print_msg(PRT_NORMAL, "010%02d %s %8.3f (%s)\n", sort[i].prefix, currency, sort[i].rate, sort[i].explain);

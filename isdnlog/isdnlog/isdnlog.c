@@ -1,4 +1,4 @@
-/* $Id: isdnlog.c,v 1.40 1999/04/10 16:35:27 akool Exp $
+/* $Id: isdnlog.c,v 1.41 1999/05/04 19:32:37 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,14 @@
  * along with this program; if not, write to the Free Software
  *
  * $Log: isdnlog.c,v $
+ * Revision 1.41  1999/05/04 19:32:37  akool
+ * isdnlog Version 3.24
+ *
+ *  - fully removed "sondernummern.c"
+ *  - removed "gcc -Wall" warnings in ASN.1 Parser
+ *  - many new entries for "rate-de.dat"
+ *  - better "isdnconf" utility
+ *
  * Revision 1.40  1999/04/10 16:35:27  akool
  * isdnlog Version 3.13
  *
@@ -1273,10 +1281,6 @@ int main(int argc, char *argv[], char *envp[])
 	    mysql_dbOpen();
 #endif
 
-	    initSondernummern(snfile, &version);
-	    if (!Q931dmp && *version)
-	      print_msg(PRT_NORMAL, "%s\n", version);
-
 	    initHoliday(holifile, &version);
 	    if (!Q931dmp && *version)
 	      print_msg(PRT_NORMAL, "%s\n", version);
@@ -1284,11 +1288,6 @@ int main(int argc, char *argv[], char *envp[])
 	    initRate(rateconf, ratefile, &version);
 	    if (!Q931dmp && *version)
 	      print_msg(PRT_NORMAL, "%s\n", version);
-
-#if 0
-            initTarife(msg);
-      	    if (!Q931dmp && *msg) print_msg(PRT_NORMAL, "%s\n", msg);
-#endif
 
             loop();
 

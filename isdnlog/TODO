@@ -18,18 +18,23 @@ Vorschlaege von ak realisieren
    Am Anfang von decode() ist nach einer "Calling party number"
    p bereits auf dem n„chsten Byte, nicht auf dem letzten!
 
+ - "-uX" Option prfen - Unterdrckung der RR Frames, damit die
+   /tmp/isdnctrl0" nicht mehr so stark anw„chst!
+
+ - in tools/isdnconf.c Set_Globals() alle neueren conf-Entr„ge
+   (AMT, INTERNS0, usw.) parsen!
+
+ - SPECIALNUMBERS Eintrag und alles rund um sondernummern entfernen
+
+ - FIXME's
+
  - bekannte Probleme mit der Tarif-Datenbank:
 
   - die erste Minute kostenlos, wenn Gespraechsdauer < 1 Minute
   - die ersten 5 Sekunden kostenlos
-  - 10plus, CityPlus, usw. der DTAG
-  - Preise fuer die Sondernnummern (112 ..., 0191011 ...)
-  - Talkline's Internet-Zugang wird im 3 Minuten-Takt abgerechnet
+  - CityPlus, usw. der DTAG
   - Viatel berechnet an Feiertagen nicht wie Wochenende, sondern wie normale Tage
   - Rabatte
-  - feinere Unterscheidung nach Laendern (Euro 1, Welt 1 ...)
   - einige Provider "vergessen", bei laufenden Gespaechen einen evtl.
     Tarifwechsel abzurechnen
-  - Unterscheidung zwischen Wochenend- sowie Feiertagstarifen
   - Sonderbehandlung von 24. Dezember bis 31. Dezember (Telekom)
-

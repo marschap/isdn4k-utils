@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.76 1999/04/30 19:07:28 akool Exp $
+## $Id: Makefile.in,v 1.77 1999/05/04 19:32:02 akool Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,14 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.77  1999/05/04 19:32:02  akool
+## isdnlog Version 3.24
+##
+##  - fully removed "sondernummern.c"
+##  - removed "gcc -Wall" warnings in ASN.1 Parser
+##  - many new entries for "rate-de.dat"
+##  - better "isdnconf" utility
+##
 ## Revision 1.76  1999/04/30 19:07:28  akool
 ## isdnlog Version 3.23
 ##
@@ -607,7 +615,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 3.23
+VERSION     = 3.24
 
 MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 \
 	      isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 \
@@ -643,8 +651,7 @@ ISDNLOG_OBJS =  isdnlog/isdnlog.o isdnlog/processor.o isdnlog/functions.o \
                 isdnlog/server.o isdnlog/start_prog.o isdnlog/messages.o  \
                 connect/connect.o connect/socket.o tools/tools.o      	  \
                 connect/conv_address.o isdnlog/user_access.o 		  \
-                tools/isdnconf.o tools/sondernummern.o tools/rate.o	  \
-		tools/holiday.o						  \
+                tools/isdnconf.o tools/rate.o tools/holiday.o		  \
 		isdnlog/asn1.o isdnlog/asn1_generic.o isdnlog/asn1_aoc.o  \
 		isdnlog/asn1_address.o isdnlog/asn1_diversion.o           \
 		isdnlog/asn1_basic_service.o isdnlog/asn1_comp.o          \
@@ -665,11 +672,11 @@ endif
 
 ISDNREP_OBJS =  isdnrep/rep_main.o tools/tools.o tools/isdnconf.o         \
                 isdnlog/messages.o isdnrep/isdnrep.o     		  \
-		tools/sondernummern.o tools/rate.o tools/holiday.o	  \
+		tools/rate.o tools/holiday.o	  			  \
                 $(LIBISDNDIR)/libisdn.a
 
 ISDNCONF_OBJS=  isdnconf/isdnconf.o tools/tools.o tools/isdnconf.o        \
-		tools/sondernummern.o tools/rate.o tools/holiday.o	  \
+		tools/rate.o tools/holiday.o				  \
                 $(LIBISDNDIR)/libisdn.a
 
 ISDNLOG      =  bin/isdnlog
@@ -720,7 +727,6 @@ uninstall: rootperm
 			$(DESTDIR)$(MAN5DIR)/callerid.conf$(MAN5EXT)	\
 			$(DESTDIR)$(MAN5DIR)/isdnlog$(MAN5EXT)		\
 			$(DESTDIR)$(MAN5DIR)/isdnlog.users$(MAN5EXT)    \
-			$(DESTDIR)$(DATADIR)/sonderrufnummern.dat       \
 			$(DESTDIR)$(DATADIR)/ausland.dat		\
 			$(DESTDIR)$(DATADIR)/rate-$(NATION).dat         \
 			$(DESTDIR)$(DATADIR)/vorwahl.dat                \
@@ -757,7 +763,6 @@ install: all rootperm installdirs
 		$(INSTALL_DATA) isdnlog/callerid.conf.5 $(DESTDIR)$(MAN5DIR)/callerid.conf$(MAN5EXT)
 		$(INSTALL_DATA) isdnlog/isdnlog.5       $(DESTDIR)$(MAN5DIR)/isdnlog$(MAN5EXT)
 		$(INSTALL_DATA) isdnlog/isdnlog.users.5 $(DESTDIR)$(MAN5DIR)/isdnlog.users$(MAN5EXT)
-		$(INSTALL_DATA) sonderrufnummern.dat    $(DESTDIR)$(DATADIR)
 		$(INSTALL_DATA) ausland.dat		$(DESTDIR)$(DATADIR)
 		$(INSTALL_DATA) rate-$(NATION).dat      $(DESTDIR)$(DATADIR)
 		$(INSTALL_DATA) holiday-$(NATION).dat   $(DESTDIR)$(DATADIR)

@@ -1,4 +1,4 @@
-/* $Id: asn1.h,v 1.2 1999/04/26 22:11:50 akool Exp $
+/* $Id: asn1.h,v 1.3 1999/05/04 19:32:32 akool Exp $
  *
  * ISDN accounting for isdn4linux. (ASN.1 parser)
  *
@@ -21,6 +21,14 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: asn1.h,v $
+ * Revision 1.3  1999/05/04 19:32:32  akool
+ * isdnlog Version 3.24
+ *
+ *  - fully removed "sondernummern.c"
+ *  - removed "gcc -Wall" warnings in ASN.1 Parser
+ *  - many new entries for "rate-de.dat"
+ *  - better "isdnconf" utility
+ *
  * Revision 1.2  1999/04/26 22:11:50  akool
  * isdnlog Version 3.21
  *
@@ -140,6 +148,7 @@ ELEMENT_1(ParsePresentedAddressScreened, char, );
 ELEMENT_1(ParsePresentedAddressUnscreened, char, );
 ELEMENT_1(ParsePresentedNumberScreened, char, );
 ELEMENT_1(ParsePresentedNumberUnscreened, char, );
+ELEMENT_1(ParseAddress, char, );
 ELEMENT_1(ParsePartyNumber, char, );
 ELEMENT_1(ParsePartySubaddress, char, );
 

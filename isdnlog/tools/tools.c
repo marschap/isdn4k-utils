@@ -1,4 +1,4 @@
-/* $Id: tools.c,v 1.24 1999/04/14 13:17:28 akool Exp $
+/* $Id: tools.c,v 1.25 1999/05/04 19:33:47 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -19,6 +19,14 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools.c,v $
+ * Revision 1.25  1999/05/04 19:33:47  akool
+ * isdnlog Version 3.24
+ *
+ *  - fully removed "sondernummern.c"
+ *  - removed "gcc -Wall" warnings in ASN.1 Parser
+ *  - many new entries for "rate-de.dat"
+ *  - better "isdnconf" utility
+ *
  * Revision 1.24  1999/04/14 13:17:28  akool
  * isdnlog Version 3.14
  *
@@ -580,9 +588,43 @@ char *double2clock(double n)
 
 /****************************************************************************/
 
+void abroad(char *num, char *area)
+{
+  *area = 0;
+
+  if (!memcmp(num, countryprefix, strlen(countryprefix))) { /* Ausland */
+    auto     FILE *f = fopen("/usr/lib/isdn/ausland.dat", "r");
+    register char *p, *p1;
+    auto     char  s[BUFSIZ];
+
+
+    if (f != (FILE *)NULL) {
+      while (fgets(s, BUFSIZ, f)) {
+        if ((p = strchr(s, ':'))) {
+          *p = 0;
+
+          if (!memcmp(num, s, strlen(s))) {
+            if ((p1 = strchr(p + 1, '\n')))
+              *p1 = 0;
+
+            strcpy(area, p + 1);
+
+            fclose(f);
+            return;
+          } /* if */
+        } /* if */
+      } /* while */
+
+      fclose(f);
+    } /* if */
+  } /* if */
+} /* abroad */
+
+/****************************************************************************/
+
 char *vnum(int chan, int who)
 {
-  register int    l = strlen(call[chan].num[who]), got = 0, l1;
+  register int    l = strlen(call[chan].num[who]), got = 0;
   register int    flag = C_NO_WARN | C_NO_EXPAND;
   auto     char  *ptr;
   auto	   int    ll, lx;
@@ -622,10 +664,14 @@ char *vnum(int chan, int who)
     if (cnf > -1)
       strcpy(retstr[retnum], call[chan].alias[who]);
     else if (call[chan].sondernummer[who] != UNKNOWN) {
+#if 0 /* FIXME */
       if ((l1 = strlen(sondernum(call[chan].sondernummer[who]))) < l)
         sprintf(retstr[retnum], "%s - %s", sondernummername(call[chan].sondernummer[who]), call[chan].num[who] + l1);
       else
         strcpy(retstr[retnum], sondernummername(call[chan].sondernummer[who]));
+#else
+      sprintf(retstr[retnum], "%s", call[chan].num[who]);
+#endif
     }
     else
       sprintf(retstr[retnum], "TN %s", call[chan].num[who]);

@@ -13,7 +13,7 @@ P:28=99
 # Dont use ACC
 P:49=99
 
-# Kennzahl 70, mogliche Varianten:
+# Kennzahl 70, moegliche Varianten:
 #   1=Arcor CbC
 #   2=Arcor Town to Town
 #   3=Arcor Town to Town Sekunde
@@ -30,3 +30,6 @@ P:70=1
 #   6=C@llas Clever Communications
 # use Mox
 P:98=1
+
+# Dont use Drillisch
+P:150=99

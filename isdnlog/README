@@ -1,10 +1,10 @@
-ISDNLOG - Version 3.23 -  				30-Apr-99  20:12
+ISDNLOG - Version 3.24 -  				03-May-99  14:12
 
 
 isdnlog ist ein Utility zur Auswertung des D-Kanals eines
 ISDN-BRI Anschlusses.
 
-isdnlog-3.23 wurde ausgiebig mit Linux-2.0.36 getestet.
+isdnlog-3.24 wurde ausgiebig mit Linux-2.0.36 getestet.
 
 
 Fuer alle, die es nun ueberhaupt nicht mehr abwarten koennen, hier das
@@ -4296,9 +4296,7 @@ Was kann nun isdnlog (ab der Version 3.x) mit dieser neuen Situation anstellen?
    Telefonauskunften 118xx
    Dummerweise kosten diese Sondernummern bei jedem Provider etwas anderes,
    oder werden Fallweise von dem einen oder anderen Provider gar nicht
-   unterstuetzt. Daher besitzt isdnlog die Datei
-   "/usr/lib/isdn/sonderrufnummern.dat", die diese Besonderheiten - so
-   weit bekannt, enthaelt.
+   unterstuetzt.
 
 
 19. Probleme?
