@@ -1,7 +1,10 @@
 /*
- * $Id: capiinit.c,v 1.6 2000/07/24 14:15:10 calle Exp $
+ * $Id: capiinit.c,v 1.7 2000/08/31 08:23:35 calle Exp $
  *
  * $Log: capiinit.c,v $
+ * Revision 1.7  2000/08/31 08:23:35  calle
+ * - produce an error message, if a driver could not be loaded.
+ *
  * Revision 1.6  2000/07/24 14:15:10  calle
  * Bugfix: pci controllers were always by initialized first in multi
  *         controller environment.
@@ -273,6 +276,9 @@ static int driver_loaded(char *driver)
 	static char *fn = "/proc/capi/driver";
 	char buf[4096];
 	FILE *fp;
+
+	if (strcmp(driver, "b1pciv4") == 0)
+		driver = "b1pci";
 
 	if ((fp = fopen_with_errmsg(fn, "r")) == NULL)
 		return 0;
@@ -1158,8 +1164,13 @@ int main_start(void)
 	for (card = cards; card; card = card->next) {
 		if (!driver_loaded(card->driver))
 			load_driver(card->driver);
-		if (card->ioaddr)
-			add_card(card);
+		if (!driver_loaded(card->driver)) {
+			fprintf(stderr,"ERROR: failed to load driver %s\n",
+					card->driver);
+		} else {
+			if (card->ioaddr)
+				add_card(card);
+		}
 	}
 
 	card = cards;
