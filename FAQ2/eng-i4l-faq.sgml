@@ -3,10 +3,14 @@
 <article>
 
 <title>FAQ for isdn4linux
-<author>Matthias Hessler,
-<tt><htmlurl url="mailto:hessler@isdn4linux.de" name="hessler@isdn4linux.de"></tt>
-<date>v2.0.8, 1. September 1999
+<author>Matthias Hessler (<tt><htmlurl url="mailto:hessler@isdn4linux.de" name="hessler@isdn4linux.de"></tt>)
+<date>v2.0.10, 5. September 1999
 <abstract>
+If you are reading this FAQ online, you may consider downloading the whole
+thing, and reading it offline (much cheaper). To download the latest
+version of this FAQ in TXT/HTML/SGML format, go to the homepage of this FAQ:
+<url url="http://www.mhessler.de/i4lfaq.html">.
+
 This FAQ answers questions that were frequently asked in the newsgroup
 de.alt.comm.isdn4linux. It contains questions any user should
 know about ISDN under Linux using isdn4linux, as well as hints on how to
@@ -26,13 +30,13 @@ apply). The FAQ is now maintained in English since German-speaking people can
 easily follow the mailing list/newsgroup (or search in the archives). Whoever
 wants to translate back to German is welcome to do so!
 
-The countless links in this documents are not always complete and I´m sure many
+The countless links in this documents are not always complete and I'm sure many
 are no longer correct. I do not have the time to check them all. If you
-discover a bad link, please let me know (I´ll try to install some automatic
+discover a bad link, please let me know (I'll try to install some automatic
 checking when I have the time).
 
 Additions, improvements and other suggestions are always welcome (also
-correction of typographical errors!), preferably send "diffs" from the ASCII
+correction of typographical errors!), preferably send "diffs" from the SGML
 version. Thank you very much in advance!
 
 Send feedback about this FAQ to:
@@ -40,12 +44,12 @@ Send feedback about this FAQ to:
 	     name="i4lfaq@isdn4linux.de"></tt>
 or:
 <tt><htmlurl url="mailto:hessler@isdn4linux.de"
-	     name="hessler@isdn4linux.de"></tt>
+	     name="hessler@isdn4linux.de"></tt>.
 
 The newest version of this FAQ can be found at:
 <tt><url url="http://www.mhessler.de/i4lfaq.html"></tt>
 or:
-<tt><url url="http://www.isdn4linux.de/faq/"></tt>
+<tt><url url="http://www.isdn4linux.de/faq/"></tt>.
 
 This FAQ is protected by the GNU General Public License (GPL) Version 2;
 (C) 1999 Matthias Hessler (for version 2.0)
@@ -90,11 +94,11 @@ cards are supported see section <ref id="hardware" name="hardware">.
 <label id="general_features">
 <p>
 Basically, isdn4linux can receive and transmit data via ISDN in many ways
-(X.75, HDLC, raw ip, synchronous ppp, asynchronous ppp). Some of its utilities
-offer additional features. Two examples are <tt/isdnlog/, which allows to log
-and react upon ISDN events (including calculating any charges); and <tt/vbox/
-which provides voice answering machine capabilities. For more details see the
-section <ref id="feature" name="feature">.
+(X.75, HDLC, raw ip, synchronous ppp, asynchronous ppp, V.110). Some of its
+utilities offer additional features. Two examples are <tt/isdnlog/, which
+allows to log and react upon ISDN events (including calculating any charges);
+and <tt/vbox/ which provides voice answering machine capabilities. For more
+details see the section <ref id="feature" name="feature">.
 
 <sect1> general_countries: Which countries are supported by isdn4linux?  
 <label id="general_countries">
@@ -224,6 +228,7 @@ These level2 formats are possible:
 <item>HDLC
 <item>X.75
 <item>transparent
+<item>V.110
 </itemize>
 These encapsulations are possible:
 <itemize>
@@ -253,7 +258,12 @@ The latter can be found at:
 on this rather complicated problem. For more info on its status have a look at:
 <tt><url url="http://home.telia.no/Morten.Rolland/linux/i4lfax/index.html"></tt>
 <item><bf>For the active card AVM B1: Yes</bf> (its firmware has implemented
-fax as one of its features).
+fax as one of its features). Get the newest stuff from:
+<tt><url url="ftp://ftp.aeccom.com/pub/fax4i4l/howto/current/"></tt>
+<item><bf>For some active Eicon cards: Yes</bf>
+<item><bf>For semiactive cards Sedlbauer Speedfax+ and Siemens ISURF 1.0: Yes</bf>
+But currently this requires some manual work. Check the mailing list on how
+to do it (special patch needed).
 </itemize>
 If you do want to fax now, your best choice is to install an analog fax modem
 along with your ISDN card.
@@ -261,11 +271,10 @@ along with your ISDN card.
 <sect1> feature_divert: Is it possible to initiate call forwarding with i4l?  
 <label id="feature_divert">
 <p>
-Call diversion features are implemented in the latest cvs tree version for
-kernel 2.0.x (but not 2.1/2.2/2.3). Use the new program <tt/divertctrl/. So far
-no howto and little documentation does exist for it, therefore currently this
-is something for the more experienced user. In the Netherlands, the keypad
-protocol can be used alternatively.
+Call diversion features are have been implemented recently. Use the new
+program <tt/divertctrl/. So far no howto and little documentation exists for
+it, therefore currently this is something for the more experienced user. In
+the Netherlands, the keypad protocol can be used alternatively.
 
 <sect1> feature_ipx: Can I route ipx/spx over ISDN with Linux?  
 <label id="feature_ipx">
@@ -273,6 +282,7 @@ protocol can be used alternatively.
 Yes, just set up an ISDN interface with encapsulation
 <tt/ethernet/. <em/mars_nwe/ can do the rest (e.g. routing). Also, you can
 route ipx with ipppd, see question <ref id="syncppp_ipx" name="syncppp_ipx">.
+To use pppd for ipx, you have to give it the compile option IPX_CHANGE.
 
 <sect1> feature_2channel: Does isdn4linux support channel bundling?  
 <label id="feature_2channel">
@@ -283,9 +293,8 @@ bundling:
 <item><bf>MPPP</bf> (based on sync PPP)
 <item><bf>Raw bundling</bf> (configured by so-called slave channels)
 </itemize>
-Both variants have their own advantages and disadvantages. See the question
-&dquot;How do I use channel bundling?&dquot; in the &dquot;Channel
-bundling&dquot; section below.
+Both variants have their own advantages and disadvantages. See section
+<ref id="2channel" name="2channel">.
 Warning: Channel bundling saves time, but not any telephone charges.
 Only if you really need the extra bandwidth is it useful.
 
@@ -378,9 +387,27 @@ to use raw IP.
 <sect1> feature_capi: Is there a CAPI interface available?  
 <label id="feature_capi">
 <p>
-Currently, there is a CAPI 2.0 interface for the active card AVM B1, but not
-for any other card. However, there are plans to make this a general interface,
-also for other cards. There are no plans to implement a CAPI 1.0 interface.
+Currently, there is a CAPI 2.0 interface only for the active card AVM B1.
+However, there are activities to make this a general interface, also for
+other cards. There are no plans to implement a CAPI 1.0 interface.
+
+<sect1> feature_uus: Is UUS (user to user signaling) supported?  
+<label id="feature_uus">
+<p>
+Yes, isdn4linux does support sending and receiving it. However, you should
+know that sending it is not a free service, at least in Germany you have to
+pay extra for it (also have a close look on the usage conditions).
+Additionally, please note that if you are connected through a PBX, it will
+most likely filter out all the subaddressing stuff.
+
+<sect1> feature_subaddressing: Is subaddressing supported?  
+<label id="feature_subaddressing">
+<p>
+Yes, isdn4linux does support subaddressing (available in France).
+To configure it, give HiSax the number in this format:
+<tt>&lt;number&gt;.&lt;subaddress&gt;</tt>.
+Additionally, please note that if you are connected through a PBX, it will
+most likely filter out all the subaddressing stuff.
 
 <!-- Feature reversed card -->
 
@@ -393,6 +420,17 @@ also for other cards. There are no plans to implement a CAPI 1.0 interface.
 <!-- Feature leased line -->
 
 <!-- Eurofile -->
+
+<sect1> feature_future: Which features are planned for the future?  
+<label id="feature_future">
+<p>
+Cards with an HFC-PCI chip allow specialities that may be supported in the
+future. So it is possible to run the card in NT mode (requires crossing
+the ISDN connection and change by software). Also, it is possible to give
+up one B-channel in exchange for reading the complete D-channel, which would
+be great for isdnlog.
+Another thing might be Least-Cost Routing, though that seems to be very
+tricky, as well as timing and hardware dependent. We'll see...
 
 
 <!-- Helpful docu, links, mailing list, config examples, howto's -->
@@ -421,15 +459,16 @@ Many of the utilities also have man pages!
 
 For a Suse distribution the following information might also be helpful:
 <itemize>
-<item>Synchronous PPP:       /usr/doc/faq/faq/PPP-FAQ
-<item>Email configuration:  /usr/doc/howto/mini/Mail-Queue.gz
+<item><tt>/usr/doc/packages/i4l*</tt> (for i4l in general)
+<item><tt>/usr/doc/faq/faq/PPP-FAQ</tt> (for synchronous PPP)
+<item><tt>/usr/doc/howto/mini/Mail-Queue.gz</tt> (for email configuration)
 </itemize>
 
 If you are reader of the German computer magazine <tt/ct/, they had very
 helpful articles at least in these issues:
 <itemize>
 <item>ct 05/98, page 224: <tt>Der erste Kontakt/Linux: Mit PPP ans Internet</tt>
-<item>ct 21/98, page 288: <tt>Reiseleiter/Internet-Anbindung für das LAN</tt>
+<item>ct 21/98, page 288: <tt>Reiseleiter/Internet-Anbindung f&uuml;r das LAN</tt>
 <item>ct 25/98, page 218: <tt>Bei Anruf Netz/Linux: Dial-In Server</tt>
 </itemize>
 
@@ -507,10 +546,16 @@ supported. ISA Plug&amp;Play cards are also supported, but need some additional
 manual configuration by means of the <tt/isapnptools/. For details on the
 configuration see question <ref id="config_pnp" name="config_pnp">.
 
+Internal cards may be <ref id="glossary_active" name="active">,
+<ref id="glossary_semiactive" name="semi-active">, or
+<ref id="glossary_passive" name="passive">. Unless you have paid big money,
+assume you have a passive card. More about the difference: see question
+<ref id="hardware_activepassive" name="hardware_activepassive">.
+
 Right now there is a driver for all passive card with certain Siemens
 chipsets (HiSax driver). Have a look at the <tt/README.HiSax/ that comes with
 the driver for the most up to date information on supported cards.
-Here the latest status (8th June 1999):
+Here the status from 4th September 1999 (constantly improving):
 <itemize>
 <item>Teles 8.0/16.0/16.3 and compatible ones (like: Dr. Neuhaus Niccy
 1016, Creatix 16/S0)
@@ -546,6 +591,15 @@ adapter)
 <item>ith Kommunikationstechnik GmbH MIC 16 ISA card
 <item>Traverse Technologie NETjet PCI S0 card
 <item>Dr. Neuhaus Niccy PnP/PCI
+<item>Siemens I-Surf 1.0
+<item>Siemens I-Surf 2.0 (with IPAC, try type 12 asuscom)
+<item>ACER P10
+<item>HSR Saphir
+<item>Berkom Telekom A4T
+<item>Scitel Quadro
+<item>Gazel ISDN cards
+<item>HFC-PCI based cards
+<item>Winbond W6692 based cards
 </itemize>
 Note:
 <itemize>
@@ -557,8 +611,6 @@ Note:
 <item>Teles S0Box is EXPERIMENTAL
 <item>Eicon.Diehl Diva U interface not tested
 </itemize>
-
-A few active cards that are also supported, see next question.
 
 <sect1> hardware_activepassive: What is the difference between an active and a 
 passive ISDN card?  
@@ -578,7 +630,10 @@ many passive cards can be supported once a driver supports this one chipset.
 These active cards are currently supported by an individual driver:
 <itemize>
 <item>AVM B1
+<item>Eicon.Diehl
+<item>IBM Active 2000 ISDN card
 <item>ICN
+<item>PCBIT-D
 </itemize>
 
 <sect1> hardware_recommend: Which card is recommended by the developers?  
@@ -608,6 +663,15 @@ Even though one thinks that some IRQs are available they are still somehow
 reserved by the BIOS. Good IRQs to try are always IRQ 5 and IRQ 9. Without mice
 or modems you could also try 4 and 3, which works even on very exotic boards.
 
+<sect1> hardware_s2m: Which S2M cards are supported?  
+<label id="hardware_s2m">
+<p>
+At least these S2M cards have been reported to work:
+<itemize>
+<item>Eicon.Diehl: S2M-ISA or DIVA Server PRI/PCI (see
+<url url="http://www.melware.de/">)
+</itemize>
+
 <sect1> hardware_alpha: Can I run isdn4linux on a DEC Alpha with Linux?  
 <label id="hardware_alpha">
 <p>
@@ -628,17 +692,37 @@ more flexible port configuration and the driver places the shared memory area
 of all ICN cards at the same address. The card memory is shown only as
 needed. Therefore, one can use as many cards are there are slots.
 
+If you really need a lot of ports, then eventuelly, a S2M card might be
+interesting for you, see question <ref id="hardware_s2m" name="hardware_s2m">.
+
+Note that by default, i4l treats all available cards as a pool, first using all 
+channels on the first card, then all on the second card, and so on. To change
+this, use the <tt/isdnctrl bind/ (not pppbind) command.
+
+Also note, that you'll have to use modules for more than two cards, to pass
+all arguments.
+
 <sect1> hardware_teles: What should I know about before buying an ISDN card 
 from Teles?  
 <label id="hardware_teles">
 <p>
-Teles´ business practices are very customer- and developer-unfriendly when
+First the latest news: The Teles card 16.3c has a crippled FIFO, therefore
+it is required to use <tt/AT&amp;B1024/ when using the ttyI* devices (if the
+remote side still send packets with more than 1024 bytes it will not work
+- unfortunately many CAPIs use 2048 bytes as default).
+The latest Teles PCI card needs the <tt/netjet/ driver, the teles driver
+will NOT work.
+
+Now some comments about Teles in general (these is the personal opinion of
+the author of this FAQ, please blame nobody else than me):
+
+Teles' business practices are very customer- and developer-unfriendly when
 compared to those of other companies. Naturally, the developers give
 priority to cards for which support is available, and where the specifications
 are freely available.
 
 So far, Teles has had a very unfriendly attitude towards the i4l
-developers. No support has ever been received from them, and they don´t publish
+developers. No support has ever been received from them, and they don't publish
 any information about how to access their card. The developers have invested a
 lot of private effort into getting this card to work from the beginning without
 receiving any support. The driver has been a complete private effort. Yet,
@@ -657,7 +741,7 @@ have not always been favorable.
 
 Warning: Teles has often changed their cards without notice, while still
 using the same name. When you buy a Teles card, you may find out that your
-brand-new card can not be supported by i4l!
+brand-new card can not be supported by i4l! (As is currently the case...)
 
 The developers will try to support new Teles cards when information about how
 to access it becomes available, and when they have no other priorities. Of
@@ -866,7 +950,7 @@ make him owner of the ISDN interface.
 <sect1> config_pnp: How do I configure a PNP (Plug and Play) card?  
 <label id="config_pnp">
 <p>
-For PCI cards Plug and Play works automatically, they don´t need any manual
+For PCI cards Plug and Play works automatically, they don't need any manual
 configuration if the correct card type is provided. ISA PNP cards will
 require some manual configuration:
 <enum>
@@ -897,13 +981,13 @@ hand. Set the following values:
 (Replace INT, IO0, and IO1 with the your values in isapnp.conf.)
 </enum>
 
-<sect1> config_kerneld: Why shouldn´t I use <em>kerneld</em> to load the ISDN  
+<sect1> config_kerneld: Why shouldn't I use <em>kerneld</em> to load the ISDN  
 modules in the kernel as needed?  
 <label id="config_kerneld">
 <p>
 <em>kerneld</em> does not work well with the ISDN modules, since the ISDN
 modules can not store their status, and could miss important messages on the
-D channel. Newer versions of i4l ensure that they won´t be unloaded by
+D channel. Newer versions of i4l ensure that they won't be unloaded by
 kerneld, but you should not try to use kerneld with any version of i4l.
 
 
@@ -915,12 +999,12 @@ Yes, you can define two different run level for this (under SysVInit) in
 <tt>/etc/inittab</tt>. One run level includes the ISDN processes, where the
 other one does not.
 
-<sect1> config_manychannels: How can I increase i4l´s maximum number of  
+<sect1> config_manychannels: How can I increase i4l's maximum number of  
 channels?  
 <label id="config_manychannels">
 <p>
 Increase the parameter ISDN_MAX_CHANNELS in
-<tt>/usr/src/linux/include/linux/isdn.h</tt> and rebuild the isdn stuff. Don´t
+<tt>/usr/src/linux/include/linux/isdn.h</tt> and rebuild the isdn stuff. Don't
 forget to create the additional devices with makedev.sh (part of isdn4k-utils)
 or by hand.
 
@@ -1035,12 +1119,12 @@ Then tcpdump will also recognize syncPPP. At least it does for me.
 <sect> msn: Configuration/MSNs  
 <label id="msn">
 
-<sect1> msn_my1: What is my MSN? What if I don´t have any?  
+<sect1> msn_my1: What is my MSN? What if I don't have any?  
 <label id="msn_my1">
 <p>
 Your telephone company will tell you your MSN. It is your own telephone
 number. Please note that you <bf/have/ to provide i4l with at least one MSN. If
-you don´t have any you can use `0', which is assumed if no MSN is transmitted
+you don't have any you can use `0', which is assumed if no MSN is transmitted
 from your telephone company. Check section <ref id="countries"
 						name="countries">, together
 with the following questions, on how to configure your MSN(s).
@@ -1120,7 +1204,7 @@ faxes and/or analog data calls.
 <p>
 Yes, but you need the cooperation of your telecommunication company. They
 can set up several BRIs in Point-to-point mode that have the same MSN. In
-Germany it is called a bundled line (`Bündelanschluß').
+Germany it is called a bundled line (`B&uuml;ndelanschlu&szlig;').
 
 <!-- Config for remote device
 -->
@@ -1150,7 +1234,6 @@ Currently, the Leonardo protocol is not supported by i4l. When you call the
 Mac, he should set the protocol to X.75 or HDLC. When he calls you, he must
 explicitly set the protocol (e.g. by inserting an &dquot;X&dquot; for X.75) in
 the called number.
-
 
 <sect1> remote_macpap: A Macintosh with a Leonardo card tries to call in,  
 and wants to negotiate chap md5. How can I switch it to CHAP/PAP?  
@@ -1211,7 +1294,7 @@ The parameter with the least problems is -h0.
 <sect> ttyI: Configuration of the ttyI* devices (`Modem emulation')  
 <label id="ttyI">
 
-<sect1> ttyI_nomodem: Don´t the ttyI* devices emulate an analog modem?  
+<sect1> ttyI_nomodem: Don't the ttyI* devices emulate an analog modem?  
 <label id="ttyI_nomodem">
 <p>
 No! The ttyI* devices just offer a similar communication interface, where
@@ -1360,9 +1443,9 @@ for which the original <tt/pppd/ cannot be used. Michael Hipp has written an
 adapted version called <tt/ipppd/ which will use ipppd* net devices.
 
 With i4l you can have both. It all depends on what your ISDN counterpart
-supports. If it immediately begins to send frames, then you´ve probably reached
+supports. If it immediately begins to send frames, then you've probably reached
 an sync PPP machine. If you can log in via same terminal screen, and then can
-start ´pppd´, this can be an indication of async PPP.
+start <tt/pppd/, this can be an indication of async PPP.
 
 Usually using <bf/sync PPP/ works fine, and it is slightly more efficient. To
 take advantage of newer features of the <tt/pppd/, use <bf/async PPP/.
@@ -1371,7 +1454,7 @@ take advantage of newer features of the <tt/pppd/, use <bf/async PPP/.
 <label id="asyncppp_config">
 <p>
 Just set up a normal pppd, but tell it to use one of the ttyI* devices,
-e.g. /dev/ttyI0. You can set up several pppd´s with different configuration on
+e.g. /dev/ttyI0. You can set up several pppd's with different configuration on
 different ttyI* devices.
 On problems also check out the section about the syncppp problems, since many
 configuration problems are common for pppd (async PPP) and ipppd (sync PPP).
@@ -1419,8 +1502,8 @@ ttyI* device with <tt/AT&amp;B512/ or even smaller block sizes.
 <sect> syncppp: Sync PPP  
 <label id="syncppp">
 
-<sect1> syncppp_whichppp: pppd, ipppd, syncPPP, asyncPPP .. what is they? Which  
-should I use?  
+<sect1> syncppp_whichppp: pppd, ipppd, syncPPP, asyncPPP .. what is they? 
+Which should I use?  
 <label id="syncppp_whichppp">
 <p>
 See this question in the <em/asnyc PPP/; section:
@@ -1483,7 +1566,7 @@ in the isdn4kernel-util package.
 <sect1> syncppp_busy: How can I tell if a connection is unsuccessful (busy)?  
 <label id="syncppp_busy">
 <p>
-When giving the option ´defaultroute´, then you can wait a few seconds, then
+When giving the option <tt/defaultroute/, then you can wait a few seconds, then
 check whether the default route exists. Another way, when giving option
 <tt>useifip</tt> is to check whether you find entries like <tt>&dquot;Local IP:
 x.y.z.a&dquot;</tt> and/or <tt>&dquot;Remote IP: x.y.z.a&dquot;</tt> in syslog.
@@ -1508,7 +1591,7 @@ You must bind a network interface explicitly to an ippp device, where you
 can connect a (for this interface) individually configured ipppd. With the 
 (unfortunately poorly documented) command
 <code>
-&dquot;isdnctrl pppbind interface Number&dquot;
+isdnctrl pppbind interface Number
 </code>
 you can link the interface interface to the device ipppNummer. You can 
 release the link with &dquot;pppunbind&dquot;. 
@@ -1651,7 +1734,7 @@ one has to define it:
 <code>
 isdnctrl addif ippp0
 isdnctrl encap ippp0 syncppp
-... (see i4l documentation for more information) ...
+(see i4l documentation for more information...)
 </code>
 Maybe you compiled ipppd with the source of another kernel that you are not
 using...
@@ -1868,7 +1951,7 @@ difficult to set up. The Linux computer acts as a gateway. The trick is that it
 hides the ip addresses of the LAN, by giving its own internet address as
 response address. When receiving the response, it will forward it to the
 correct computer on the LAN. You can also use masquerading with dynamic ip
-addresses. If you don´t want to start the ISDN connection from the Linux
+addresses. If you don't want to start the ISDN connection from the Linux
 computer to your internet provider manually, then you can set up dial on demand
 functionality (see section <ref id="dod" name="dod">).
 </enum>
@@ -1906,7 +1989,7 @@ COMT may be found on Simtel or one of its mirror:
 <sect> isdnlog: Isdnlog  
 <label id="isdnlog">
 
-<sect1> isdnlog_rates: Where do I get the latest rate information?
+<sect1> isdnlog_rates: Where do I get the latest rate information?  
 <label id="isdnlog_rates">
 <p>
 You get the latest rate files (which change very frequently) on
@@ -2015,7 +2098,7 @@ PBXs tested up to now have all been too slow (in particular the widely
 used ISTEC). The only possibility is to combine the data afterwards. But
 then there are problems with synchronizing the different times. Whoever
 want to attempt to do this is welcome (I'll make the logs from my
-Ackermann Euracom available - Matthias Heßler
+Ackermann Euracom available - Matthias Hessler
 <tt><htmlurl url="mailto:hessler@wi-inf.uni-essen.de"
 	     name="hessler@wi-inf.uni-essen.de"></tt>).
 
@@ -2230,10 +2313,13 @@ send out routing updates only when they are received through this interface.
 <sect1> dialin_config: How can I enable others to login via ISDN?  
 <label id="dialin_config">
 <p>
-There are several ways, depending on how you want others to dial in.
+Some configuration examples can be found at:
+<url url="http://www.rosat.mpe-garching.mpg.de/~web/ISDN.html">.
+In general, there are several ways, depending on how you want others to dial in.
 <itemize>
 <item>Set up networking devices for dialin via syncppp, or rawip. Set option
-``secure on'' to only allow dialin by isdn numbers you know.
+<tt/secure on/ to only allow dialin by isdn numbers you know, which you set
+up with <tt>isdnctrl addphone &lt;device&gt; in &lt;phonenumber&gt;</tt>.
 <item>Use the ttyI* devices for asyncppp or X.75.
 </itemize>
 Here some more details for setting up the ttyI* devices. The setup is like for
@@ -2268,7 +2354,7 @@ device and enter the necessary AT commander by hand.
 When finished, enter the command AT&amp;W0, then the kernel notifies iprofd 
 to write the current configuration to the file. From now on it is enough
 to start iprofd in you isdn init script, and to initialize the appropriate
-ISDN tty devices with ATZ
+ISDN tty devices with <tt>ATZ</tt>.
 
 <sect1> dialin_manyparallel: How can I allow several people to call in to me at  
 the same time?  
@@ -2336,7 +2422,7 @@ line?
 A later version of the new HiSax driver supports D64. Configuration is normal
 with the following specialities. HiSax has to be run in leased mode:
 <code>
-/sbin/telesctrl HiSax 5 0
+/sbin/hisaxctrl HiSax 5 0
 </code>
 in case HiSax was loaded with &dquot;id=HiSax&dquot;. Additionally to the normal
 configuration, the following commands are important:
@@ -2348,8 +2434,19 @@ configuration, the following commands are important:
 /sbin/isdnctrl addphone isdn0 in  3
 </code>
 if &dquot;isdn0&dquot; was used as interface name. The interface has to be set to
-&dquot;up&dquot; and a route associated with it. See the readme´s in the HiSax
+&dquot;up&dquot; and a route associated with it. See the Readme's in the HiSax
 package.
+
+<sect1> leased_x75: How do I configure X.75 on a D64 leased line?  
+<label id="leased_x75">
+<p>
+Use a later HiSax version. First initialize the ttyI* device you want to use
+with &dquot;AT&amp;E0&dquot; (set usage of first B-channel) and
+&dquot;ATS0=1&dquot; (autoanswer on first ring). Then set HiSax in leased mode:
+<code>
+/sbin/hisaxctrl HiSax 5 1
+</code>
+This will simulate a call on MSN1 (incoming = LEASED0).
 
 <sect1> leased_splitline: With ISDN, can I use one channel as a leased line and  
 other as a dialup line?  
@@ -2445,6 +2542,9 @@ isdnctrl removelink ippp0
 </code>
 This is different to other encapsulations of isdn4linux!
 
+Please also note, that the slave device has to be in dialmode <tt/auto/ for
+this to work.
+
 With syncPPP, there is no automatic activation of slave devices, they have to
 be added and removed. However, there is the program <tt>ibod</tt> available,
 which can do this automatically. Have a look at:
@@ -2487,6 +2587,7 @@ finding the problem?
 <p>
 The following steps are recommended:
 <enum>
+
 <item>Check everything is working when booting.
 Are there unusual error messages in /var/log/messages?
 Are all programs active that should be started at boot (check with
@@ -2496,7 +2597,7 @@ it is not working. See the questions under Troubleshooting Teles.
 <item>Try calling with a telephone. The number should be shown in
 /var/log/messages. Otherwise, perhaps the driver was incorrectly 
 started?!
-<item>As a next step we´ll try to get the telephone or fax to ring by dialing
+<item>As a next step we'll try to get the telephone or fax to ring by dialing
 ourself using a ttyI device with minicom. First we have to change the service
 recognition with the <tt>ATS18=1</tt> command to audio. Now you can get the
 telephone to ring by dialing <tt>ATDxxxxxx</tt>, where xxxxxx is your own MSN.
@@ -2788,7 +2889,7 @@ other side. In the log file I find a message that's something like: &dquot;sent
 (0) (LCP ConfReq id=0x1 mru 1500 auth pap magic 0xcd12e9c4&dquot;  
 <label id="pap_requestauth">
 <p>
-Like in the last question, an option was been set that requires the
+Like in the last question, an option has been set that requires the
 <em>other</em> side to be authorized. These options shouldn't be set.
 Possible candidates are: &dquot;+pap&dquot; as well as &dquot;+chap&dquot;.
 
@@ -2816,8 +2917,15 @@ Make sure to consult the README's, or check out:
 <tt><url url="http://www.lrz-muenchen.de/&tilde;ui161ab/www/isdn/"></tt>
 Also have a look at the next question: <ref id="pap_passwd" name="pap_passwd">.
 
-<sect1> pap_passwd: I have problems with PAP or CHAP authentication. It does not  
-work although I'm sure I entered passwords etc. correctly.  
+<sect1> pap_checkpwd: How can I check which password is actually sent to  
+the remote side?  
+<label id="pap_checkpwd">
+<p>
+Use the options <tt/debug/ and <tt/+pwlog/ for ipppd or pppd. Then you can
+see your password in the log file.
+
+<sect1> pap_passwd: I have problems with PAP or CHAP authentication. It does  
+not work although I'm sure I entered passwords etc. correctly.  
 <label id="pap_passwd">
 <p>
 Stefan A. Muehlenweg <tt><htmlurl url="mailto:Stefan.A.Muehlenweg@samhh.hanse.de"
@@ -2855,11 +2963,9 @@ name="akool@Kool.f.EUnet.de"></tt> wrote on 26 Jan 1997:
 
 In any case, you can only fool software/PBXs that do not evaluate
 the screening indicator - isdnlog with version 2.52 shows both the
-correct *and* the faked telephone number.
-
-...CLIP, no screening was actually designed for transmitting internal
-company numbers in the public network.
-
+correct *and* the faked telephone number. 'CLIP, no screening' was
+actually designed for transmitting internal company numbers in the
+public network.
 
 <sect1> isdnlog_soundbusy: I've set up a script to play sound per cat on  
 /dev/sound or some other device. When several events occur, then there is an  
@@ -2905,7 +3011,8 @@ After you habe set up a network interface, and defined a route to it, then all
 ip packages will be routed to this interface. If the <tt/autodial/ mode has
 been enabled (see question <ref id="config_dialmode" name="config_dialmode"> on
 the dialmodes) then the interface will automatically trigger a dialout when it
-receives ip packages.
+receives ip packages. (This means that <bf>any</bf> user can trigger a
+dialout.)
 
 Example: You open a browser with no or a local homepage. Nothing happens. You
 enter some url to connect to, this will send ip packages to the network
@@ -3529,6 +3636,17 @@ devices are also different.
 <label id="glossary">
 <p>
 <descrip>
+<tag/active card/
+<label id="glossary_active">
+Cards can come in different versions: passive, semi-active, active.
+Active cards handle the D-channel and B-channel protocol in their hardware.
+The extra hardware makes them more expensive, but better suited to use
+where a low CPU usage is needed (e.g. when having many ISDN cards in one
+computer). Because of their special hardware, a special driver is required.
+Depending on the hardware/driver, special tasks like sending/receiving analog
+G3 faxes may be very easy to implement - if you need these features, get one
+of them.
+
 <tag/AOC-D/
 &dquot;Advice Of Charge During the Call&dquot;.
 
@@ -3558,6 +3676,13 @@ members to easily make patches. The history of the project is also
 thereby documented, and it is also not difficult to reproduce older
 versions.
 
+<tag/EAZ/
+This is a German name for an MSN. In Germany, EAZ and MSN are used
+as synonyms, though in theory one ought to differentiate according
+to the protocol used. That which is called MSN in the Euro-ISDN
+protocol was called EAZ in the German 1TR6-ISDN protocol (a German
+predecessor to Euro-ISDN).
+
 <tag/HDLC/
 A widely used low-level protocol.
 
@@ -3574,14 +3699,20 @@ the line. It handles the D channel protocol and sends the
 S0 data to a special serial bus (IOM). When sending it does the
 opposite.
 
-<tag/TEI/
-TEI stands for Terminal End Identifier. The local switching station, or
-with an internal S0 the PBX, automatically or permanently assigns each
-end device a TEI. This simply allows the addressing of the D
-channels. TEIs have the following values:
-0- 63   permanent TEIs (e.g. 0 is used for point to point connections)
-64-126   automatically assigned
-127   broadcast to all devices (e.g. an incoming call)
+<tag/MSN/
+Unlike a normal telephone connection, an ISDN connection can have more
+than one telephone number - each of these is called an MSN (Multiple
+Subscriber Number).
+
+<tag/passive card/
+<label id="glossary_passive">
+Cards can come in different versions: passive, semi-active, active.
+Passive cards handle the D-channel and B-channel protocol in software.
+This makes them least expensive, but only suitable where the CPU is able
+to do the additional work (for normal data communication any computer
+starting from a 486 or even a 386 should be able to handle one or two cards).
+Since only a few hardware chips are in wide usage, a generic driver, HiSax,
+can handle almost all passive cards.
 
 <tag/PBX/
 A PBX (Private Branch eXchange) is used to connect different internal
@@ -3591,19 +3722,42 @@ an internal digital S0 bus available, on which ISDN devices can be
 connected. This allows for local calls without using the switching
 station (thereby avoiding the charges from your telephone company).
 
-<tag/MSN/
-Unlike a normal telephone connection, an ISDN connection can have more
-than one telephone number - each of these is called an MSN (Multiple
-Subscriber Number).
+<tag/semi-active card/
+<label id="glossary_semiactive">
+Cards can come in different versions: passive, semi-active, active.
+For semi-active cards there is no fixed definition, so here is what we think:
+semi-active cards handle the B-channel protocol in their hardware with
+special DSP (digital signal processor) support, but they leave the D-channel
+protocol to the software. This makes them better suitable to special tasks
+like sending/receiving analog G3 faxes. Because of their special hardware,
+a special driver is required. Be aware, that for marketing reasons some cards
+are called semi-active when in fact they are passive (e.g.: Teleint).
 
-<tag/EAZ/
-This is a German name for an MSN. In Germany, EAZ and MSN are used
-as synonyms, though in theory one ought to differentiate according
-to the protocol used. That which is called MSN in the Euro-ISDN
-protocol was called EAZ in the German 1TR6-ISDN protocol (a German
-predecessor to Euro-ISDN).
+<tag/subaddressing/
+When dialing, it is possible to provide an additional number, the subaddresss.
+The subaddress is transmitted to the remote side, and allows it to react on it.
+This feature may not be available, at least not for free (with the exception
+of France).
+
+<tag/TEI/
+TEI stands for Terminal End Identifier. The local switching station, or
+with an internal S0 the PBX, automatically or permanently assigns each
+end device a TEI. This simply allows the addressing of the D
+channels. TEIs have the following values:
+0-63 = permanent TEIs (e.g. 0 is used for point to point connections)
+64-126 = automatically assigned
+127 = broadcast to all devices (e.g. an incoming call)
+
+<tag/UUS/
+UUS is user to user signalling. It means, that when placing a call,
+a few bytes of user-specific data can be transmitted along with the call
+setup frame. This feature has been abused in the past in Germany, causing
+the local exchanges to run out of available channels (the call setup causes
+them to reserve a B-channel). Since then, this feature costs extra and there
+is a data limit on it. Have a look at the usage condition, in short it's only
+allowed to use this feature, if indeed you want to setup a call.
+
 </descrip>
-
 
 </article>
 
