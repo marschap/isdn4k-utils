@@ -7,7 +7,8 @@ isdnrate \- Print telefon rates and various info from rate\-files(5).
 .BI \-p provs
 .B \-s
 .BI "\-t" takt " \-v" verbose " \-x" exclude
-.BI " \-C \-D" det " -\G" data " \-H \-L \-N \-S" sort " \-T \-U \-V \-X" explain
+.BI " \-C \-D" det " -\G" data " \-H \-L \-N \-P" piddir
+.BI " \-S" sort " \-T \-U \-V \-X" explain
 .BI -Z
 .B NUMBER ...
 .P
@@ -117,7 +118,7 @@ Set \fIverbose\fP level.
 Exclude these \fIprovider\fP(s).
 .P
 .SS
-.B DISPLAY OPTIONS
+.B DISPLAY AND RUN OPTIONS
 .P
 .B \-C
 Connect to a running isdnrate daemon. This avoids long startup times.
@@ -148,6 +149,11 @@ duration ; charge/min ; takt ; minimum price
 .B \-N
 Show info about following numbers. If no provider is given, the preselected
 provider is used.
+.P
+.BI \-P piddir
+Write own PID to
+.I piddir/isdnrate.pid
+on start of daemon.
 .P
 .BI \-S sort
 Sort output by \fIsort\fP, which may be
