@@ -4,5 +4,4 @@ bool 'Support for MS chap secrets' CONFIG_IPPPD_MSCHAP
 bool 'Support for RADIUS protocol' CONFIG_IPPPD_RADIUS
 bool 'Support for RADIUS wtmp logging' CONFIG_RADIUS_WTMP_LOGGING
 string 'radiusclient config file path' RADIUS_CLIENT_CONFIG_FILE
-bool 'Support for parsing .TTY file first' CONFIG_OPTIONS_TTY_FIRST
 endmenu

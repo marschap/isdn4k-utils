@@ -345,10 +345,6 @@ radiusclient config file path
 RADIUS_CLIENT_CONFIG_FILE
   Enter the full path to your radiusclient config file.
 
-Support for parsing .TTY file first
-CONFIG_OPTIONS_TTY_FIRST
-  Maintainer: edit CONFIG_OPTIONS_TTY_FIRST
-
 Server listen at port
 CONFIG_ISDNLOG_SERV_PORT
   Enter the portnumber where isdnlog should answer requests from

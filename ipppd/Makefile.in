@@ -1,6 +1,6 @@
 #
 # ipppd makefile for Linux
-# $Id: Makefile.in,v 1.12 1998/10/16 12:37:43 keil Exp $
+# $Id: Makefile.in,v 1.13 1998/11/18 13:48:52 fritz Exp $
 #
 
 HAVE_LIBDES   := @HAVE_LIBDES@
@@ -27,10 +27,6 @@ endif
 
 ifeq (@CONFIG_RADIUS_WTMP_LOGGING@,y)
 RADIUS_WTMP_LOGGING := 1
-endif
-
-ifeq (@CONFIG_OPTIONS_TTY_FIRST@,y)
-OPTIONS_TTY_FIRST := 1
 endif
 
 PPPDSRCS = main.c magic.c fsm.c lcp.c ipcp.c upap.c chap.c md5.c ccp.c \
@@ -107,10 +103,6 @@ ifdef RADIUS
 	ifdef RADIUS_WTMP_LOGGING
         	COPTS    += -DRADIUS_WTMP_LOGGING
 	endif
-endif
-
-ifdef OPTIONS_TTY_FIRST
-       CFLAGS   += -DOPTIONS_TTY_FIRST
 endif
 
 ifeq ($(HAVE_SHADOW_H),1)
