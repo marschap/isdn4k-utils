@@ -416,8 +416,11 @@ to use raw IP.
 <label id="feature_capi">
 <p>
 Currently, there is a CAPI 2.0 interface only for the active card AVM B1.
-However, there are activities to make this a general interface, also for
-other cards. There are no plans to implement a CAPI 1.0 interface.
+This interface follows the official CAPI 2.0 standard that was established
+recently for Linux by the CAPI Association (see
+<url url="http://www.capi.org">).
+There are activities to make this a general interface, also for
+other cards. However, there are no plans to implement a CAPI 1.1 interface.
 
 <sect1> feature_uus: Is UUS (user to user signaling) supported?  
 <label id="feature_uus">
@@ -811,6 +814,22 @@ The developers will try to support new Teles cards when information about how
 to access it becomes available, and when they have no other priorities. Of
 course you can always send a patch.
 
+<sect1> hardware_avmb1: What is special about the AVM B1 card?  
+<label id="hardware_avmb1">
+<p>
+This card supports many special features in its firmware and is very well
+supported by its Linux driver. It's currently the only ISDN card that you
+can use to fax under ISDN4LINUX, as well as the only one which has a CAPI
+2.0 interface. You can get the newest driver from:
+<url url="ftp://calle.in-berlin.de/pub/linux/avmb1">
+or
+<url url="ftp://ftp.avm.de/cardware/b1/linux/">.
+The firmware is available on:
+<url url="ftp://ftp.avm.de/cardware/b1/linux/firmware">.
+There is also a mailing list for problems with the AVM B1 available on:
+linux-avmb1@calle.in-berlin.de (send an email to majordomo@calle.in-berlin.de
+with <tt>subscribe linux-avmb1 &lt;your email address&gt;</tt> in its body). 
+
 <sect1> hardware_icn: What is special about the ICN card?  
 <label id="hardware_icn">
 <p>
@@ -1158,64 +1177,6 @@ Usenet News, answering machine, and more:
 <item>Eurofile client + server software (alpha):
 <tt><url url="ftp://ftp.hamburg.pop.de/pap/LOCAL/linux/i4l-eft/"></tt>
 </itemize>
-
-<sect1> trouble_tcpdump: Why does my tcpdump not work for ip packets going over  
-ISDN? How can I get a tcpdump patched for ISDN?  
-<label id="trouble_tcpdump">
-<p>
-The reason is that tcpdump does not always understand the special
-encapsulations that are possible with isdn4linux, especially syncppp. To change
-this, you need to patch tcpdump.
-
-Michael Stiller <tt><htmlurl url="mailto:michael@toyland.ping.de"
-name="michael@toyland.ping.de"></tt> wrote on 23 Oct 1996:
-
-Tip for ftp:
-
-<tt><url url="ftp://ftp.gwdg.de/pub/misc/isdn/linux/isdn4linux-gwdg"></tt>
-
-There is the patch: &dquot;tcpdump-3.0.4-1-isdn.dif.gz&dquot;
-
-and the rest is at:
-
-/pub/linux/mirrors/funet/PEOPLE/Linus/net-source/tools/tcpdump-3.0.4-1.tar.gz
-
-You might need to hack some, depending on the name of your ISDN interface
-(mine is bri0). By default, it recognizes only isdn* and isdnY* as 
-interface names.
-
-Henning Schmiedehausen <tt><htmlurl url="mailto:henning@pong.iconsult.com"
-name="henning@pong.iconsult.com"></tt> further wrote on
-30 Oct 1996:
-<quote>
-After finding the patch from Eberhard Moenkeberg at ftp.gwdg.de cannot
-dump cisco HDLC, I made my own patch for tcpdump-3.0.4 that asks the
-interface which encapsulation it used and sets itself accordingly. The
-patch is against a tcpdump-3.0.4-1.tar.gz distribution, for example at
-</quote>
-<tt><url url="ftp://ftp.funet.fi/pub/Linux/PEOPLE/Linus/tools"></tt> 
-<quote>
-This patch recognizes rawIP, ISDN-IP and CISCO-HDLC and can
-dump these packets.
-</quote>
-(The patch was attached to the message  - it should be easy to find in the 
-mailing list archive - Ed.)
-
-Sascha Ottolski <tt><htmlurl url="mailto:sascha@alzhimer.isdn.cs.tu-berlin.de"
-name="sascha@alzhimer.isdn.cs.tu-berlin.de"></tt> gave the following
-tip on 5 Nov 1996:
-<quote>
-This is a isdn4k-utils-2.0/tcpdump-3.0.3-isdn.diff ! It work,
-if one makes some changes:
-In the file tcpdump-3.0.3-isdn/libpcap-0.0/pcap-linux.c after patching
-you find the following:
-else if (strncmp(&dquot;ppp&dquot;, device, 3) == 0)
-Either you name your ppp devices pppX instead of ipppX, or
-change this line, e.g.
-else if (strncmp(&dquot;ippp&dquot;, device, 4) == 0)
-^^^^          ^^
-Then tcpdump will also recognize syncPPP. At least it does for me.
-</quote>
 
 
 <!-- Config MSN
@@ -2429,21 +2390,28 @@ card?
 <p>
 There are several possibilities to configure dialout.
 <itemize>
-<item>Dialout anywhere (default: all available cards are a pool):
+<item>Dialout anywhere (default: all available cards are a pool, dialout
+on one MSN):
 just configure your cards in the order in which you want them to be dialed out.
 First all channels on the first card are used, then all on the second card,
-and so on.
+and so on. Please note that the net interface or ttyI device will try to 
+dial out using the MSN it was configured for - on all cards. Even on those
+that do not have this MSN! In such a case, the telco will replace that
+invalid MSN with the correct one. Use <tt/isdnctrl mapping/ to configure the
+correct MSNs (see item 'dialout on one specific card').
 <item>Dialout on one specific channel: Use the <tt/isdnctrl bind/
 (not pppbind) command to specify which channel should be used.
-<item>Dialout on one specific card: you can configure this by using the
-<tt/isdnctrl mappping/ functionality. Just map MSNs on the letters 0 to 9, like
-this:
+<item>Dialout on one specific card: after installing a patch that was posted
+by Karsten Keil on the mailing list against 2.2.12, you can configure this
+by using the <tt/isdnctrl mappping/ functionality. Just map MSNs on the
+letters 0 to 9, like this:
 <code>
 isdnctrl mapping &lt;carddriver1&gt; 111,222,333,,
 isdnctrl mapping &lt;carddriver2&gt; 999,888,,777
 </code>
-Now, just configure for telephone number 0 when you really want to use MSN
-111 on &lt;carddriver1&gt; or 999 on &lt;carddriver2&gt;. Configure to use
+Now, you could configure for telephone number 0 when you really want to use
+MSN 111 on &lt;carddriver1&gt; or 999 on &lt;carddriver2&gt; (however, since
+0 has a special meaning, try to avoid using number 0). Configure to use
 number 1 when you really want to use MSN 222 on &lt;carddriver1&gt; or 888
 on &lt;carddriver2&gt;. Configure to use telephone number 2 when you really
 want to use only MSN 333 on &lt;carddriver1&gt; (&lt;carddriver2&gt; will
@@ -2807,14 +2775,6 @@ doesn't work, you can log in via modem or modem emulation to find
 out what happened on the other side. Not all providers are so
 cooperative.... :-)
 
-<sect1> trouble_notelrings: Neither my telephone nor my fax machine ring when I  
-call them with isdn4linux?  
-<label id="trouble_notelrings">
-<p>
-Isdn4linux sets &dquot;digital data&dquot; as it's own service when it calls out.
-The switching station will not route such calls to analog devices like
-a telephone or a fax machine.
-
 
 <sect1> trouble_boot: How can I tell whether my ISDN card has been corrected  
 recognized?  
@@ -2849,6 +2809,20 @@ When you call yourself, the number of received interrupts should increase.
 cat /proc/ioports
 </code>
 </enum>
+
+<sect1> trouble_isdncause: I get an error message like "cause: E1234" (or  
+similar)?  
+<label id="trouble_isdncause">
+<p>
+Just have a look at <tt>man isdn_cause</tt> to find out what the problem is.
+
+<sect1> trouble_notelrings: Neither my telephone nor my fax machine ring 
+when I call them with isdn4linux?  
+<label id="trouble_notelrings">
+<p>
+Isdn4linux sets &dquot;digital data&dquot; as it's own service when it
+calls out. The switching station will not route such calls to analog
+devices like a telephone or a fax machine.
 
 <sect1> trouble_guestaccess: Are there sites that offer guest access where I  
 can test my isdn4linux setup?  
@@ -2915,6 +2889,66 @@ telesctrl id 3 1  --- dec module_count
 telesctrl id 4 1  --- inc module_count
 </code>
 Please use with appropriate caution and on your own risk!
+
+
+<sect1> trouble_tcpdump: Why does my tcpdump not work for ip packets going over  
+ISDN? How can I get a tcpdump patched for ISDN?  
+<label id="trouble_tcpdump">
+<p>
+The reason is that tcpdump does not always understand the special
+encapsulations that are possible with isdn4linux, especially syncppp. To change
+this, you need to patch tcpdump.
+
+Michael Stiller <tt><htmlurl url="mailto:michael@toyland.ping.de"
+name="michael@toyland.ping.de"></tt> wrote on 23 Oct 1996:
+
+Tip for ftp:
+
+<tt><url url="ftp://ftp.gwdg.de/pub/misc/isdn/linux/isdn4linux-gwdg"></tt>
+
+There is the patch: &dquot;tcpdump-3.0.4-1-isdn.dif.gz&dquot;
+
+and the rest is at:
+
+/pub/linux/mirrors/funet/PEOPLE/Linus/net-source/tools/tcpdump-3.0.4-1.tar.gz
+
+You might need to hack some, depending on the name of your ISDN interface
+(mine is bri0). By default, it recognizes only isdn* and isdnY* as 
+interface names.
+
+Henning Schmiedehausen <tt><htmlurl url="mailto:henning@pong.iconsult.com"
+name="henning@pong.iconsult.com"></tt> further wrote on
+30 Oct 1996:
+<quote>
+After finding the patch from Eberhard Moenkeberg at ftp.gwdg.de cannot
+dump cisco HDLC, I made my own patch for tcpdump-3.0.4 that asks the
+interface which encapsulation it used and sets itself accordingly. The
+patch is against a tcpdump-3.0.4-1.tar.gz distribution, for example at
+</quote>
+<tt><url url="ftp://ftp.funet.fi/pub/Linux/PEOPLE/Linus/tools"></tt> 
+<quote>
+This patch recognizes rawIP, ISDN-IP and CISCO-HDLC and can
+dump these packets.
+</quote>
+(The patch was attached to the message  - it should be easy to find in the 
+mailing list archive - Ed.)
+
+Sascha Ottolski <tt><htmlurl url="mailto:sascha@alzhimer.isdn.cs.tu-berlin.de"
+name="sascha@alzhimer.isdn.cs.tu-berlin.de"></tt> gave the following
+tip on 5 Nov 1996:
+<quote>
+This is a isdn4k-utils-2.0/tcpdump-3.0.3-isdn.diff ! It work,
+if one makes some changes:
+In the file tcpdump-3.0.3-isdn/libpcap-0.0/pcap-linux.c after patching
+you find the following:
+else if (strncmp(&dquot;ppp&dquot;, device, 3) == 0)
+Either you name your ppp devices pppX instead of ipppX, or
+change this line, e.g.
+else if (strncmp(&dquot;ippp&dquot;, device, 4) == 0)
+^^^^          ^^
+Then tcpdump will also recognize syncPPP. At least it does for me.
+</quote>
+
 
 
 <!-- Trouble locate crash
@@ -3199,18 +3233,18 @@ you are not only charged for time online, but also a minimum amount/charge unit
 for every dialin). The term 'large amount' is rather flexible. Anything is
 possible:
 <itemize>
-<item>'Cheap': any DNS request opens the line, causing several dialouts per
+<item>"Cheap": any DNS request opens the line, causing several dialouts per
 day (depending on your programs). If this happens 10 times a day, this makes
 up about 300 unneeded dialouts per month.
-<item>'Not so cheap': Some Windows 95 computer in your LAN triggers a dialout
+<item>"Not so cheap": Some Windows 95 computer in your LAN triggers a dialout
 every 15 minutes for one of its silly broadcasts (see question
 <ref id="dod_win95" name="dod_win95">). Makes up 96 dialouts per day, or 2880 per month.
-<item>'Medium': Your email client is configured to check every 5 minutes
+<item>"Medium": Your email client is configured to check every 5 minutes
 whether you have new emails at your Internet Service Provider. Makes up
 288 dialouts per day, 8640 per month.
-<item>'Expensive': Keep alive packets prevent that your line ever hangs up.
+<item>"Expensive": Keep alive packets prevent that your line ever hangs up.
 Your line is always on. Note: THIS IS NOT THE WORST CASE!
-<item>'More Expensive': Something goes wrong with dynamic addresses,
+<item>"More Expensive": Something goes wrong with dynamic addresses,
 leaving sockets open when hanging up. The sockets trigger another dialout
 when they try to resolve this, but since now you have a new ip address, the
 issue can't be resolved. The line will eventually hang up (when depends on
@@ -3219,13 +3253,13 @@ If you are unlucky, you never get the same ip address back, so this repeats
 continuously. Your line is almost always on, but on top of it you have to pay
 for many dialouts: if your timeout is 30 seconds, this makes up 2880 dialouts
 per day, 86400 per month.
-<item>'Most Expensive - Worst Case': You misconfigure dialout/callback, so
+<item>"Most Expensive - Worst Case": You misconfigure dialout/callback, so
 that when your (the initiating) computer dials out to your Internet Provider,
 who then hangs up on you (e.g. authorization failed - maybe he also has some
-misconfiguration or unhooks despite being down), and your computer
-immediately dials out again. This is only limited by the amount of time
-needed to dial out. If we assume 2 seconds for each attempt (conservative
-estimate), this makes up 43200 dialouts per day, or 1296000 per month!
+misconfiguration or unhooks despite being down), your computer immediately
+dials out again. This is only limited by the amount of time needed to dial
+out. If we assume 2 seconds for each attempt (conservative estimate), this
+makes up 43200 dialouts per day, or 1296000 per month!
 </itemize>
 
 This is no joke, and all these thing have actually happened, even to real
@@ -3357,23 +3391,16 @@ server (only Bill Gates knows why).
 unwanted dialouts? How can I find the cause?  
 <label id="dod_localdns">
 <p>
-Jens Ey <tt><htmlurl url="mailto:jens@jeyhh.shnet.org"
-name="jens@jeyhh.shnet.org"></tt> wrote on 29 Nov 1996:
-
-Turn on debug level 1 in named and look at the logfile
-in /var/tmp.
-
-In my case, I found regular DNS requests from Windows machines. The
-problem was that names like WORKGROUP.domain.de were requested,
-i.e. names that the DNS could not know. I'm assuming that the Windows
-machine was looking for its master browser or a domain controller.
-
-This was causing me so many problems for my Internet connection with
-Linux in a LAN that I installed an external terminal adapter, set up
-a proxy server, and set up diald that only DNS requests from the Linux
-machine were allowed to be carried out. Then the connections are 
-established only when they are actually needed. The (caching) local DNS
-is only used after the connection has been established. 
+Turn on debug level 1 in named and look at the logfile in <tt>/var/tmp</tt>.
+Often, you can find regular DNS requests from Windows machines.
+The problem is that names like "WORKGROUP.domain.de" are requested,
+i.e. names that the DNS could not know. Windows seems to be looking for
+its master browser or a domain controller (if you are fluent in German, see
+ct 12/99, page 224: "Schnitzeljagd - Netzwerkumgebung und Browserdienst
+im Windows-Netzwerk" for more details). To work around this problem, you can
+set up your domain name server with cname = "WORKGROUP.domain.de" (other
+domain names are also possible). Or set up a Primary Domain Controller
+within your LAN. You can also use diald to control dialouts for DNS request.
 
 <sect1> dod_win95b: How can I turn off the DNS requests for WORKGROUP.xxx from my  
 Win95 machine?  
