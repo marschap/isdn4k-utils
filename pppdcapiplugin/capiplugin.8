@@ -1,5 +1,5 @@
 .\" manual page [] for capiplugin 2.3
-.\" $Id: capiplugin.8,v 1.3 2000/10/25 10:01:47 calle Exp $
+.\" $Id: capiplugin.8,v 1.4 2000/11/01 10:04:24 calle Exp $
 .\" SH section heading
 .\" SS subsection heading
 .\" LP paragraph
@@ -7,7 +7,7 @@
 .\" TP hanging label
 .TH CAPIPLUGIN 8
 .SH NAME
-capiplugin \- Plugin for pppd (Point to Point Protocol daemon)
+capiplugin \- Plugin for pppd (Point-to-Point Protocol daemon)
 .SH SYNOPSIS
 .B pppd
 [\fIoptions\fR]
@@ -19,28 +19,28 @@ capiplugin \- Plugin for pppd (Point to Point Protocol daemon)
 The capiplugin provides a method to use PPP over ISDN with
 ISDN controllers that provide a CAPI2.0 interface.
 The plugin is responsible for the call setup with CAPI2.0.
-You can dial out, wait for incoming calls and setup communication over
-leased lines. It implements the feature to reject a incoming call
-and call back. When dialing out this feature can also be used.
-In this case the called party has to reject the call and call back soon.
-.SH HOW IS WORKS
+You can dial out, wait for incoming calls and set up communication over
+leased lines. It implements a feature to reject an incoming call
+and call back. This feature can also be used when dialing out.
+In this case, the party called has to reject the call and call back soon.
+.SH HOW IT WORKS
 .LP
 The capiplugin registers a new_phase_hook and its own options to the pppd
-when loaded. When the pppd goes into phase SERIALCONN the capiplugin
-will setup a connection and sets the global variable devnam.
+when loaded. When the pppd goes into phase SERIALCONN, the capiplugin
+set up a connection and sets the global variable devnam.
 The capiplugin will register a timer function that is
-called every second to handle the capi messages while pppd is running.
-To let pppd wakeup when capi messages arrive, the capi file desciptor
-is added to the list of file descriptors on which the pppd waits for input.
-After the connection is established the pppd will start PPP negotiation
-on device devnam. When the pppd goes into phase DEAD, the connection will
-be dropped (if not already dropped) and the timer function and the capi file
+called every second to handle the CAPI messages while pppd is running.
+To notify pppd when CAPI messages arrive, the CAPI file desciptor
+is added to the list of file descriptors which the pppd monitors for input.
+Once the connection is set up the pppd will start PPP negotiation
+on device devnam. When the pppd enters the DEAD phase, the connection will
+be dropped (if it is still active) and the timer function and the CAPI file
 desciptor will be unregistered.
 
 .SH MODES OF OPERATION
 .TP
 .B normal dial out
-Simply make a connection, for example to your internet provider.
+Simply make a connection, for example to your Internet provider.
 .br
 Required options: \fInumber\fR.
 Recommended options: \fImsn\fR.
@@ -52,8 +52,7 @@ Other possible options:
 \fIredialdelay\fR.
 .TP
 .B dial out with callback
-Call a given number, the called party call back after rejecting the call
-and then call back.
+Call a given number, the called party rejects the call and then calls back.
 .br
 Required options: \fInumber\fR and \fIclicb\fR.
 Recommended options: \fIcli\fR and \fImsn\fR or \fIinmsn\fR.
@@ -88,7 +87,7 @@ Other possible options:
 
 .TP
 .B leased line
-setup a leased line connection, with or without CAPI channel bundling
+set up a leased line connection, with or without CAPI channel bundling.
 .br
 Required options: \fIchannels\fR.
 Other possible options:
@@ -103,97 +102,98 @@ Other possible options:
 .TP
 .B cbdelay \fI<seconds>
 Number of seconds to wait before callback, when acting as
-dialin server with callback. Default is 2 seconds.
+dial-in server with callback. Default value is 2 seconds.
 
 .TP
 .B cbnumber \fI<phone numbers>
-Comma seperated list of phone numbers for call back, when acting as
-dialin server with callback.
+List of phone numbers for callback, separated by commas, when acting as
+dial-in server with callback.
 
 .TP
 .B cbwait \fI<seconds>
-Time to wait for a call back, before giving up. Default is 60 seconds.
+Time to wait for callback before giving up. Default value is 60 seconds.
 
 .TP
 .B channels \fI<channel specification>
-Comma seperated list of b-channels or ranges to activate leased line mode.
+List of b-channels or ranges to activate leased line mode, separated by commas.
 
 .TP
-.B cli \fI<telephon numbers>
-A comma seperated list of numbers from where incoming calls will be accepted.
+.B cli \fI<phone numbers>
+List of numbers from which incoming calls will be accepted, separated by commas.
 
 .TP
 .B clicb
-Enable callback mode. When option \fInumber\fR is present, call number
-and wait for callback. When option \fInumber\fR is not present,
+Enable callback mode. When option \fInumber\fR is set, call number
+and wait for callback. When option \fInumber\fR is not set,
 wait for incoming call, reject the call and call back.
-This option is is optional if option \fIcbnumber\fR is present.
+This option is optional if the \fIcbnumber\fR option is set.
 
 .TP
 .B connectdelay \fI<seconds>
-Number of seconds to wait after connecting is established,
-before PPP negotiation starts. Defaultvalue is 0 seconds.
-This option is use full, when connecting with protocol \fImodem\fR.
-Some internet access servers will hang up, if they get data immediatly
-after connection is established.
+Number of seconds to wait after a connection is set up,
+before PPP negotiation starts. Default value is 0 seconds.
+This option is useful when connecting with protocol \fImodem\fR.
+Some Internet access servers will hang up if they receive data
+immediatly after connection is established.
 
 .TP
 .B controller \fI<controller specification>
-For point to multipoint \fI<controller specification\fR is only the
-CAPI2.0 controller number , default is 1.
-For point-to-point specify \fI<controller number>\fR,\fI<ddi>\fR,\fI<length of internal numbers\>
+For point-to-multipoint \fI<controller specification>\fR is only the
+CAPI 2.0 controller number, default is 1.
+For point-to-point, specify \fI<controller number>\fR,\fI<ddi>\fR,\fI<length of internal numbers\>
 
 .TP
 .B dialmax \fI<times>
-Maximum number of times the list of phone numbers is tried before give up.
-Default is 4.
+Maximum number of times the list of phone numbers is tried before giving up.
+Default value is 4.
 
 .TP
 .B dialtimeout \fI<seconds>
-Time to wait until connection established or failed before giving up.
-Default is 60 seconds.
+Time to wait for the connection to be established or fail before giving up.
+Default value is 60 seconds.
 
 .TP
 .B inmsn \fI<msn>
-Phone umber to listen on for calls, when different from option \fImsn\fR.
+Phone number to monitor for calls, when different from option \fImsn\fR.
 
 .TP
 .B msn \fI<msn>
-Phone umber from where to call out. Also used for incoming calls
-if option \fIinmsn\fR is not present.
+Phone number used to make outgoing calls. Also used for incoming calls
+if option \fIinmsn\fR is not set.
 
 .TP
 .B number \fI<phone numbers>
-Comma seperated list of phone numbers to call.
+List of phone numbers to call, separated by commas.
 Every number in the list is called until a connection can be established.
 When the end of the list is reached, the first number is called again.
 See option \fIdialmax\fR.
 
 .TP
 .B numberprefix \fI<prefix>
-phone number to dial to get outline access. For example. \fInumberprefix 0\fR.
+phone number to dial to access an outside line. For example, \fInumberprefix 0\fR.
 
 .TP
 .B protocol \fIhdlc\fR | \fIx75\fR | \fIv42bis\fR | \fImodem\fR
-ISDN protocol to use. With \fIhdlc\fR you need to add option \fIsync\fR
-to the pppd. With \fIx75\fR,\fIv42bis\fR and \fImodem\fR option \fIsync\fR
-MUST NOT be present. Defaultvalue is \fIhdlc\fR.
+ISDN protocol to use. With \fIhdlc\fR, the \fIsync\fR option
+must be added to the pppd.
+With \fIx75\fR, \fIv42bis\fR and \fImodem\fR, the \fIsync\fR option
+MUST NOT be enabled. Default value is \fIhdlc\fR.
 Not all controllers support \fIv42bis\fR and \fImodem\fR.
-Use capiinfo(8) to see the features your controller support.
+Use capiinfo(8) to view which features your controller supports.
 
 .TP
 .B redialdelay \fI<seconds>
-Number of seconds to wait between redialing. Default is 5 seconds.
+Number of seconds to wait between redialing. Default value is 5 seconds.
 
 .SH EXAMPLE FOR NORMAL DIAL OUT
 .LP
 Probably the most common use of pppd is to dial out to an ISP.  This
-can be done with a command such as
+can be specified with a command like
 .IP
 pppd call isp
 .LP
 where the /etc/ppp/peers/isp file is set up by the system
-administrator to contain something like this:
+administrator to resemble the following:
 .IP
 sync
 .br
@@ -217,19 +217,19 @@ ipcp-accept-remote
 .br
 /dev/null
 .LP
-where the /etc/ppp/pap-secrets and /etc/ppp/chap-secrets file is set up by
-the system administrator to contain something like this:
+and where the files /etc/ppp/pap-secrets and /etc/ppp/chap-secrets are set up by
+the system administrator to resemble the following:
 .IP
 USERNAME * PASSWORD *
 
-.SH EXAMPLE FOR DIAL OUT WITH CALLBACK
+.SH EXAMPLE OF DIAL OUT WITH CALLBACK
 .LP
-Dial out with callback can be done with a command such as
+Dial out with callback can be specified with a command like
 .IP
 pppd call isp-callback
 .LP
 where the /etc/ppp/peers/isp-callback file is set up by the system
-administrator to contain something like this:
+administrator to resemble the following:
 .IP
 sync
 .br
@@ -257,31 +257,31 @@ ipcp-accept-remote
 .br
 /dev/null
 .LP
-where the /etc/ppp/pap-secrets and /etc/ppp/chap-secrets file is set up by
-the system administrator to contain something like this:
+and where the files /etc/ppp/pap-secrets and /etc/ppp/chap-secrets are set up by
+the system administrator to resemble the following:
 .br
 USERNAME * PASSWORD *
 
-.SH EXAMPLE FOR WAIT FOR DIAL IN WITHOUT CLI AUTHENTICATION
+.SH EXAMPLE OF WAIT FOR DIAL IN WITHOUT CLI AUTHENTICATION
 .LP
 Wait for incoming calls, accept them according to options \fImsn\fR,
 \fIinmsn\fR, and \fIprotocol\fI.
 .LP
 Do not provide option \fIcli\fR to the capiplugin.
 Start a pppd for every b channel.
-Authorisation is made with PAP or CHAP and the ip numbers are assigned
-according to file /etc/ppp/pap-secrets or file /etc/ppp/chap-secrets.
-Let's assume the server has ip number 192.168.0.1 and the clients should
-have the ip numbers starting at 192.168.0.2 and the hostname of the
-server is \"dialinserver\".
-Add this two lines to the file /etc/inittab:
+Authorization is checked using PAP or CHAP and the ip numbers are assigned
+according to the /etc/ppp/pap-secrets or /etc/ppp/chap-secrets file.
+Assume that the server has ip number 192.168.0.1, the clients are
+to be assigned the ip numbers starting from 192.168.0.2, and the hostname of the
+server is "dialinserver".
+Add these two lines to the /etc/inittab file:
 .IP
 p0:23:respawn:/usr/sbin/pppd call incoming-noncli
 .br
 p1:23:respawn:/usr/sbin/pppd call incoming-noncli
 .LP
 where the /etc/ppp/peers/incoming-noncli file is set up
-to contain something like this:
+to resemble the following:
 .IP
 sync
 .br
@@ -294,22 +294,22 @@ inmsn MSN
 protocol hdlc
 192.168.0.1:
 .LP
-with the file /etc/ppp/pap-secrets and file /etc/ppp/chap-secrets file is set up
-to contain something like this:
+with the files /etc/ppp/pap-secrets and /etc/ppp/chap-secrets set up
+to resemble the following:
 .IP
 user1 dialinserver PASSWORD1 192.168.0.2
 .br
 user2 dialinserver PASSWORD2 192.168.0.3
 
-.SH EXAMPLE FOR WAIT FOR DIAL IN WITH CLI AUTHENTICATION
+.SH EXAMPLE OF WAIT FOR DIAL IN WITH CLI AUTHENTICATION
 .LP
 Wait for incoming calls, accept them according to options \fImsn\fR,
 \fIinmsn\fR, \fIcli\fR and \fIprotocol\fI.
 .LP
 Start a pppd for every client.
-Let's assume the server has ip number 192.168.0.1 and the clients should
-have the ip numbers starting at 192.168.0.2.
-Add this three lines to file /etc/inittab:
+Assume that the server has ip number 192.168.0.1 and the clients are to be
+assigned the ip numbers starting from 192.168.0.2.
+Add these three lines to the /etc/inittab file:
 .IP
 p0:23:respawn:/usr/sbin/pppd call incoming-cli cli 04711 192.168.0.1:192.168.0.2
 .br
@@ -319,7 +319,7 @@ p2:23:respawn:/usr/sbin/pppd call incoming-cli cli 04713 192.168.0.1:192.168.0.4
 
 .LP
 where the /etc/ppp/peers/incoming-cli file is set up
-to contain something like this:
+to resemble the following:
 .IP
 sync
 .br
@@ -331,16 +331,16 @@ inmsn MSN
 .br
 protocol hdlc
 
-.SH EXAMPLE FOR WAIT FOR DIAL IN WITH CLI AUTHENTICATION AND CALLBACK
+.SH EXAMPLE OF WAIT FOR DIAL IN WITH CLI AUTHENTICATION AND CALLBACK
 .LP
 Wait for incoming calls, accept them according to options \fImsn\fR,
 \fIinmsn\fR, \fIcli\fR and \fIprotocol\fI, reject incoming calls
 and call back.
 .LP
-.B start a pppd for every client
-Let assume the server has ip numbers 192.168.0.1 and the clients should
-have the ip numbers starting at 192.168.0.2.
-Add this three lines to the file /etc/inittab.
+Start a pppd for every client.
+Assume that the server has ip number 192.168.0.1 and the clients are to be
+assigned the ip numbers starting from 192.168.0.2.
+Add these three lines to the /etc/inittab file.
 .IP
 p0:23:respawn:/usr/sbin/pppd call incoming-cli cli 04711 cbnumber 4711 192.168.0.1:192.168.0.2
 .br
@@ -349,7 +349,7 @@ p1:23:respawn:/usr/sbin/pppd call incoming-cli cli 04712 cbnumber 4712 192.168.0
 p2:23:respawn:/usr/sbin/pppd call incoming-cli cli 04713 cbnumber 4713 192.168.0.1:192.168.0.4
 .LP
 where the /etc/ppp/peers/incoming-cli file is set up
-to contain something like this:
+to resemble the following:
 .IP
 sync
 .br
@@ -361,16 +361,16 @@ inmsn MSN
 .br
 protocol hdlc
 
-.SH EXAMPLE FOR A LEASED LINE CONNECTION WITH HDLC
+.SH EXAMPLE OF A LEASED LINE CONNECTION WITH HDLC
 .LP
-Let assume the server has ip numbers 192.168.0.1 and the peer has
+Assume that the server has ip number 192.168.0.1 and the peer has
 the ip number 192.168.0.2.
-Add this line to the file /etc/inittab:
+Add this line to the /etc/inittab file:
 .IP
 p0:23:respawn:/usr/sbin/pppd call leased-hdlc controller 1 channels 1 192.168.0.1:192.168.0.2
 .LP
 where the /etc/ppp/peers/leased-hdlc file is set up
-to contain something like this:
+to resemble the following:
 .IP
 sync
 .br
@@ -394,20 +394,20 @@ plugin /etc/ppp/plugins/capiplugin.so
 .br
 protocol hdlc
 
-.SH EXAMPLE FOR A LEASED LINE CONNECTION WITH V42BIS
+.SH EXAMPLE OF A LEASED LINE CONNECTION WITH V42BIS
 .LP
-Let assume the server has ip numbers 192.168.0.1 and the peer has
+Assume that the server has ip number 192.168.0.1 and the peer has
 the ip number 192.168.0.2.
-Add this line to the file /etc/inittab for server 1 (192.168.0.1):
+Add this line to the /etc/inittab file for server 1 (192.168.0.1):
 .IP
 p0:23:respawn:/usr/sbin/pppd call leased-v42bis controller 1 channels 1 192.168.0.1:192.168.0.2
 .LP
-and this line to the file /etc/inittab for server 1 (192.168.0.2):
+and this line to the /etc/inittab file for server 1 (192.168.0.2):
 .IP
 p0:23:respawn:/usr/sbin/pppd call leased-v42bis controller 1 channels p1 192.168.0.2:192.168.0.1
 .LP
 where the /etc/ppp/peers/leased-v42bis file is set up
-to contain something like this:
+to resemble the following:
 .IP
 sync
 .br
@@ -433,21 +433,21 @@ protocol v42bis
 
 .SH CAVEATS
 .LP
-Every pppd waiting for incoming calls can get an incoming call first.
-So when you start two pppd listening on the same MSN, one with
-CLI Authentication and the other not, the following can happen:
+Every pppd awaiting incoming calls can receive an incoming call first.
+So when two pppds are started to monitor the same MSN, one with
+CLI Authentication and the other without, the following can happen:
 .IP
 The Client with the CLI specified to the first pppd calls, but the pppd
-without option \fIcli\fR will get the call first and accepts the call.
+without the \fIcli\fR option receives the call first and accepts it.
 .LP
-So if you want to mix CLI Authentication and PAP/CHAP Authentication
+To combine CLI Authentication and PAP/CHAP Authentication,
 use one MSN for CLI authenticated calls and another for the PAP/CHAP
 authenticated calls.
 
 .SH DIAGNOSTICS
 .LP
-Messages are sent to the syslog daemon like pppd did usually, see 
-pppd manual page.
+Messages are sent to the syslog daemon just as in normal pppd operation;
+see the pppd manual page.
 
 .SH SEE ALSO
 pppd(8), capiinfo(8), capiinit(8), capictrl(8)
