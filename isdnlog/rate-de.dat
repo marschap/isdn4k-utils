@@ -1,4 +1,4 @@
-V:1.0-Germany [19-Apr-1999]
+V:1.0-Germany [24-Apr-1999]
 
 # Diese Tariftabelle ist ein Service der I4L-Tarifdatenbank-Crew.
 # Alle Angaben erfolgen ohne Gewähr
@@ -559,6 +559,14 @@ A:112   # Feuerwehr / Rettungsleitstelle
 A:0010  # Operator Service
 A:0130  # freecall 0130
 A:0800  # freecall 0800
+Z:21 Shared Cost Service 01801
+A:01801
+T:W/09-18=0.12/90 Standard
+T:W/18-21=0.12/150 Spar
+T:W/21-05=0.12/240 Nacht
+T:W/05-09=0.12/150 Spar
+T:E,H/05-21=0.12/150 Spar
+T:E,H/21-05=0.12/240 Nacht
 #####################################################################
 P:34 NEFkom
 C:Telekommunikation GmbH & Co. KG, Bärenschanzstraße 4, 90429 Nürnberg 01034
@@ -964,6 +972,26 @@ T:*/*=2.72/60
 Z:20 Internet
 A:0192070 # (Benutzername: arcor; Passwort: internet; Proxy: proxy.arcor-ip.de:80; Startseite: http://www.call.arcor.net)
 T:*/*=0.06/60
+Z:21 Serviceruf 01801
+A:01801
+T:W/09-18=0.12/90 Standard
+T:W/18-21=0.12/150 Spar
+T:W/21-05=0.12/240 Nacht
+T:W/05-09=0.12/150 Spar
+T:E,H/05-21=0.12/150 Spar
+T:E,H/21-05=0.12/240 Nacht
+Z:22 Serviceruf 01802
+A:01802
+T:*/*=0.12/0
+Z:22 Serviceruf 01803
+A:01803
+T:*/*=0.09/30
+Z:22 Serviceruf 01804
+A:01804
+T:*/*=0.48/0
+Z:22 Serviceruf 01805
+A:01805
+T:*/*=0.12/30
 #####################################################################
 P:70,2 Arcor Town to Town
 G:01.04.99
@@ -1870,6 +1898,22 @@ C:Telecommunications Deutschland GmbH, Voltastraße 1a, 60486 Frankfurt 01098
 C:Reseller von STAR : C@llas, Mox, Nikoma
 #####################################################################
 P:98,1 Mox
+G:01.05.1999
+C:Mox Telecom AG
+C:Reseller von Star Telecom
+Z:2-4 Deutschlandweit
+T:*/08-21=0.139(60)/1
+T:*/21-08=0.079(60)/1
+Z:5-10 Fest-zu-Mobil
+A:01610,01617,01619,01618 # C
+A:0170,0171  		  # D1
+A:0172,0173		  # D2
+A:0177,0178		  # Eplus
+A:0176,0179  		  # E2
+T:*/08-21=0.449(60)/1
+T:*/21-08=0.399(60)/1
+#####################################################################
+P:98,2 Mox
 G:01.04.1999
 C:Mox Telecom AG
 C:Reseller von Star Telecom

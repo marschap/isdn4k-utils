@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.72 1999/04/19 21:25:06 akool Exp $
+## $Id: Makefile.in,v 1.73 1999/04/25 17:34:27 akool Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,14 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.73  1999/04/25 17:34:27  akool
+## isdnlog Version 3.20
+##
+##  - added ASN.1 Parser from Kai Germaschewski <kai@thphy.uni-duesseldorf.de>
+##    isdnlog now fully support all fac- and cf-messages!
+##
+##  - some additions to the "rate-de.dat"
+##
 ## Revision 1.72  1999/04/19 21:25:06  akool
 ## change permissions of "countries-at.dat"
 ##
@@ -577,7 +585,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 3.19
+VERSION     = 3.20
 
 MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 \
 	      isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 \
@@ -615,6 +623,9 @@ ISDNLOG_OBJS =  isdnlog/isdnlog.o isdnlog/processor.o isdnlog/functions.o \
                 connect/conv_address.o isdnlog/user_access.o 		  \
                 tools/isdnconf.o tools/sondernummern.o tools/rate.o	  \
 		tools/holiday.o						  \
+		isdnlog/asn1.o isdnlog/asn1_generic.o isdnlog/asn1_aoc.o  \
+		isdnlog/asn1_address.o isdnlog/asn1_diversion.o           \
+		isdnlog/asn1_basic_service.o isdnlog/asn1_comp.o          \
 		$(LIBISDNDIR)/libisdn.a
 
 

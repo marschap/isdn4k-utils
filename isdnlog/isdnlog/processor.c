@@ -1,4 +1,4 @@
-/* $Id: processor.c,v 1.55 1999/04/19 19:24:45 akool Exp $
+/* $Id: processor.c,v 1.56 1999/04/25 17:34:45 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,14 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.56  1999/04/25 17:34:45  akool
+ * isdnlog Version 3.20
+ *
+ *  - added ASN.1 Parser from Kai Germaschewski <kai@thphy.uni-duesseldorf.de>
+ *    isdnlog now fully support all fac- and cf-messages!
+ *
+ *  - some additions to the "rate-de.dat"
+ *
  * Revision 1.55  1999/04/19 19:24:45  akool
  * isdnlog Version 3.18
  *
@@ -621,6 +629,7 @@
 
 #define _PROCESSOR_C_
 #include "isdnlog.h"
+#include "asn1.h"
 
 static int    HiSax = 0, hexSeen = 0, uid = UNKNOWN, lfd = 0;
 static char  *asnp, *asnm;
@@ -703,7 +712,9 @@ static char *location(int loc)
 } /* location */
 
 
-static void buildnumber(char *num, int oc3, int oc3a, char *result, int version, int *provider, int *sondernummer, int *intern, int *local, int dir, int who)
+void buildnumber(char *num, int oc3, int oc3a, char *result, int version,
+		 int *provider, int *sondernummer, int *intern, int *local,
+		 int dir, int who)
 {
   auto char n[BUFSIZ];
   auto int  partner = ((dir && (who == CALLING)) || (!dir && (who == CALLED)));
@@ -940,7 +951,7 @@ static void buildnumber(char *num, int oc3, int oc3a, char *result, int version,
 } /* buildnumber */
 
 
-static void aoc_debug(int val, char *s)
+void aoc_debug(int val, char *s)
 {
   print_msg(PRT_DEBUG_DECODE, " DEBUG> %s: %s\n", st + 4, s);
 
@@ -955,732 +966,92 @@ static void aoc_debug(int val, char *s)
     currency        := " DM" | "SCHILLING" | "NLG" | "FR."
 */
 
-static int facility(int type, int l)
+
+static int parseRemoteOperationProtocol(char **asnp, Aoc *aoc)
 {
-  register int   ls, i, ServedUserNr;
-  register char *px, *px1, *px2, *px3;
-  auto     int   c, result = 0, a1, a2, a3, a4, oc3 = 0;
-  static   int   ID = 0, OP = 0, EH = 0, MP = 0;
-  static   char  curr[64];
-  auto     char  s[BUFSIZ], s1[BUFSIZ], dst[BUFSIZ], src[BUFSIZ];
-  auto	   char  vdst[BUFSIZ], vsrc[BUFSIZ];
+  auto Element el;
 
 
-  switch(type) {
-    case AOC_INITIAL          : ID = OP = EH = MP = 0;
+  splitASN1(asnp, 0, &el);
+  printASN1(el, 0);
 
-                                if (asnp == NULL)
-                                  return(AOC_OTHER);
+  if (!ParseComponent(el, ASN1_NOT_TAGGED, aoc))
+    return(0);
 
-                                c = strtol(asnp += 3, NIL, 16);              /* Ext/Spare/Profile */
+  return(1);
+} /* parseRemoteOperationProtocol */
 
-                                switch (c) {                                 /* Remote Operation Protocol */
-                                  case 0x91 : aoc_debug(c, "Remote Operation Protocol"); break;
-                                  case 0x92 : aoc_debug(c, "CMIP Protocol");             break;
-                                  case 0x93 : aoc_debug(c, "ACSE Protocol");             break;
-                                    default : aoc_debug(c, "UNKNOWN Protocol");
-                                              return(AOC_OTHER);
-                                } /* switch */
 
-                                c = strtol(asnp += 3, NIL, 16);              /* Invoke Comp type */
+static int facility(int l, char* p)
+{
+  auto   int  c;
+  static Aoc  aoc;
 
-                                switch (c) {
-                                  case 0xa1 : aoc_debug(c, "InvokeComponent");       break;
-                                  case 0xa2 : aoc_debug(c, "ReturnResultComponent"); break;
-                                  case 0xa3 : aoc_debug(c, "ReturnErrorComponent");  break;
-                                  case 0xa4 : aoc_debug(c, "RejectComponent");       break;
-                                    default : aoc_debug(c, "UNKNOWN Component");
-                                              return(AOC_OTHER);
-                                } /* switch */
 
-                                l = strtol(asnp += 3, NIL, 16);              /* Invoke Comp length */
+  asnp = p;
+  aoc.type = 0;
 
-                                sprintf(s, "length=%d", l);
-                                aoc_debug(l, s);
+  if (asnp == NULL)
+    return(AOC_OTHER);
 
-                                c = strtol(asnp += 3, NIL, 16);              /* Invoke ID type */
+  c = strtol(asnp += 3, NIL, 16);              /* Ext/Spare/Profile */
 
-                                sprintf(s, "InvokeIdentifier Type=%d", c);
-                                aoc_debug(c, s);
+  memset(&aoc, 0, sizeof(aoc));
 
-                                l = strtol(asnp += 3, NIL, 16);              /* Invoke ID length */
+  switch (c) {                                 /* Remote Operation Protocol */
+    case 0x91 : aoc_debug(c, "Remote Operation Protocol");
 
-                                sprintf(s, "length=%d", l);
-                                aoc_debug(l, s);
+    	      	if (parseRemoteOperationProtocol(&asnp, &aoc)) {
+      		  switch (aoc.type) {
+      		    case 33 : // AOCD Currency
+                              if (aoc.multiplier)
+		    	        currency_factor = aoc.multiplier;
 
-                                while (l--) {
-                                  ID = ID << 8;
-                                  c = strtol(asnp += 3, NIL, 16);          /* Invoke ID Contents */
+                              if (*aoc.currency)
+			        currency = aoc.currency;
 
-                                  sprintf(s, "InvokeIdentifier Contents=%d", c);
-                                  aoc_debug(c, s);
+        		      if (aoc.type_of_charging_info != 1) // if type_of_charging_info = 1 (total), treat AOCD as AOCE
+          		        aoc.amount *= -1;
+        		      // fall trough
 
-                                  ID += c;
-                                } /* while */
+      		    case 35 : // AOCE Currency
+                              if (aoc.multiplier)
+		    	        currency_factor = aoc.multiplier;
 
-                                c = strtol(asnp += 3, NIL, 16);              /* OPERATION type */
+                              if (*aoc.currency)
+			      	currency = aoc.currency;
 
-                                if (!c)
-                                  return(AOC_OTHER);
+			      return(aoc.amount);
 
-                                sprintf(s, "OperationType=%d", c);
-                                aoc_debug(c, s);
+      		    case 34 : // AOCD ChargingUnits
+      		    	      aoc.amount *= -1;
+        	    	      // fall through
 
-                                l = strtol(asnp += 3, NIL, 16);              /* OPERATION length */
+      		    case 36 : // AOCE ChargingUnits
+		    	      return(aoc.amount);
 
-                                sprintf(s, "length=%d", l);
-                                aoc_debug(l, s);
+      		    default : asnm = aoc.msg;
+      		    	      return(AOC_OTHER);
+      		  } /* switch */
+    	      	}
+    	      	else {
+                  asnm = aoc.msg;
+      		  return(AOC_OTHER);
+    	      	} /* else */
+                break;
 
-                                while (l--) {
-                                  OP = OP << 8;
-                                  OP += strtol(asnp += 3, NIL, 16);          /* OPERATION contents */
-                                } /* while */
+    case 0x92 : aoc_debug(c, "CMIP Protocol");
+                break;
 
-                                switch (OP) {
-                                  case 0x01 : asnm = "uUsa";                               break;
-                                  case 0x02 : asnm = "cUGCall";                            break;
-                                  case 0x03 : asnm = "mCIDRequest";                        break;
-                                  case 0x04 : asnm = "beginTPY";                           break;
-                                  case 0x05 : asnm = "endTPY";                             break;
-                                  case 0x07 : asnm = "activationDiversion";                break;
-                                  case 0x08 : asnm = "deactivationDiversion";              break;
-                                  case 0x09 : asnm = "activationStatusNotificationDiv";    break;
-                                  case 0x0a : asnm = "deactivationStatusNotificationDiv";  break;
-                                  case 0x0b : asnm = "interrogationDiversion";             break;
-                                  case 0x0c : asnm = "diversionInformation";               break;
-                                  case 0x0d : asnm = "callDeflection";                     break;
-                                  case 0x0e : asnm = "callRerouting";                      break;
-                                  case 0x0f : asnm = "divertingLegInformation2";           break;
-                                  case 0x10 : asnm = "invokeStatus";                       break;
-                                  case 0x11 : asnm = "interrogationDiversion1";            break;
-                                  case 0x12 : asnm = "divertingLegInformation1";           break;
-                                  case 0x13 : asnm = "divertingLegInformation3";           break;
-                                  case 0x14 : asnm = "explicitReservationCreationControl"; break;
-                                  case 0x15 : asnm = "explicitReservationManagement";      break;
-                                  case 0x16 : asnm = "explicitReservationCancel";          break;
-                                  case 0x18 : asnm = "mLPP lfb Query";                     break;
-                                  case 0x19 : asnm = "mLPP Call Request";                  break;
-                                  case 0x1a : asnm = "mLPP Call preemption";               break;
-                                  case 0x1e : asnm = "chargingRequest";                    break;
-                                  case 0x1f : asnm = "aOCSCurrency";                       break;
-                                  case 0x20 : asnm = "aOCSSpecialArrangement";             break;
-                                  case 0x21 : asnm = "aOCDCurrency";                       break;
-                                  case 0x22 : asnm = "aOCDChargingUnit";                   break;
-                                  case 0x23 : asnm = "aOCECurrency";                       break;
-                                  case 0x24 : asnm = "aOCEChargingUnit";                   break;
-                                  case 0x25 : asnm = "identificationOfChange";             break;
-                                  case 0x28 : asnm = "beginConf";                          break;
-                                  case 0x29 : asnm = "addConf";                            break;
-                                  case 0x2a : asnm = "splitConf";                          break;
-                                  case 0x2b : asnm = "dropConf";                           break;
-                                  case 0x2c : asnm = "IsolateConf";                        break;
-                                  case 0x2d : asnm = "reattachConf";                       break;
-                                  case 0x2e : asnm = "partyDISC";                          break;
-                                  case 0x2f : asnm = "floatConf";                          break;
-                                  case 0x30 : asnm = "endConf";                            break;
-                                  case 0x31 : asnm = "identifyConferee";                   break;
-                                  case 0x3c : asnm = "requestREV";                         break;
-                                } /* switch */
+    case 0x93 : aoc_debug(c, "ACSE Protocol");
+                break;
 
-                                px = s + sprintf(s, "OperationContents : %s", asnm);
-                                aoc_debug(OP, s);
-
-                                switch (OP) {
-                                  case 0x09 : /* activationStatusNotificationDiv (Rufumleitung an) */
-
-                                              c = strtol(asnp += 3, NIL, 16);
-                                       	      sprintf(s, "SEQUENCE=%d", c);
-                                	      aoc_debug(c, s);
-
-                                              l = strtol(asnp += 3, NIL, 16);
-                                              sprintf(s, "length=%d", l);
-                                              aoc_debug(l, s);
-
-                                              c = strtol(asnp += 3, NIL, 16);
-                                       	      sprintf(s, "Enumeration type procedure=%d", c);
-                                	      aoc_debug(c, s);
-
-                                              l = strtol(asnp += 3, NIL, 16);
-                                              sprintf(s, "length=%d", l);
-                                              aoc_debug(l, s);
-
-                                              switch (c = strtol(asnp += 3, NIL, 16)) {
-                                                case 0x00 : px1 = "CFU";  break; /* Rufumleitung unbedingt */
-                    				case 0x01 : px1 = "CFB";  break; /* Rufumleitung bei Besetzt */
-                    				case 0x02 : px1 = "CFNR"; break; /* Rufumleitung wenn niemand h”rt */
-                                                default   : px1 = "CF?";  break; /* UNKNOWN Rufumleitung */
-                                              } /* switch */
-
-                                	      aoc_debug(c, px1);
-
-                                              c = strtol(asnp += 3, NIL, 16);
-                                       	      sprintf(s, "Enumeration type BasicService=%d", c);
-                                	      aoc_debug(c, s);
-
-                                              l = strtol(asnp += 3, NIL, 16);
-                                              sprintf(s, "length=%d", l);
-                                              aoc_debug(l, s);
-
-                                              switch (c = strtol(asnp += 3, NIL, 16)) {
-                    			        case 0x00 : px2 = "all Services";                     break;
-                    				case 0x01 : px2 = "Speech";               	      break;
-                    				case 0x02 : px2 = "unrestricted Digital Information"; break;
-                    				case 0x03 : px2 = "3.1 kHz audio"; 		      break;
-                    				case 0x20 : px2 = "Telephony"; 			      break;
-                    				case 0x21 : px2 = "Teletex"; 			      break;
-                    				case 0x22 : px2 = "Telefax G4"; 	   	      break;
-                    				case 0x23 : px2 = "Videotex Syntax Based"; 	      break;
-                    				case 0x24 : px2 = "Videotelephony"; 		      break;
-                                                  default : px2 = "UNKNOWN BasicService"; 	      break;
-                                              } /* switch */
-
-                                	      aoc_debug(c, px2);
-
-                                              c = strtol(asnp += 3, NIL, 16);
-                                       	      sprintf(s, "SEQUENCE, Address (Zieladresse)=%d", c);
-                                	      aoc_debug(c, s);
-
-                                              l = strtol(asnp += 3, NIL, 16);
-                                              sprintf(s, "length=%d", l);
-                                              aoc_debug(l, s);
-
-                                              switch (c = strtol(asnp += 3, NIL, 16)) {
-                                                case 0x80 : l = strtol(asnp += 3, NIL, 16);
-                                              	       	    sprintf(s, "length=%d", l);
-                                              	       	    aoc_debug(l, s);
-                                                            px3 = "UNKNOWN PublicTypeOfNumber";
-                                                       	    break;
-
-                                              	case 0xa1 : l = strtol(asnp += 3, NIL, 16);
-                                              	       	    sprintf(s, "length=%d", l);
-                                              	       	    aoc_debug(l, s);
-
-                                              	       	    c = strtol(asnp += 3, NIL, 16);
-                                       	      	       	    sprintf(s, "Aufzaehlungstyp, PublicTypeOfNumber=%d", c);
-                                	      		    aoc_debug(c, s);
-
-                                              	       	    l = strtol(asnp += 3, NIL, 16);
-                                              	       	    sprintf(s, "length=%d", l);
-                                              	       	    aoc_debug(l, s);
-
-                                              	       	    switch (oc3 = strtol(asnp += 3, NIL, 16)) {
-						              case 0x00 : px3 = "Unknown Number";             break;
-                    					      case 0x01 : px3 = "International Number";       break;
-                    					      case 0x02 : px3 = "National Number"; 	      break;
-                    					      case 0x03 : px3 = "Network Spezific Number";    break;
-                    					      case 0x04 : px3 = "Subscriber Number";          break;
-                    					      case 0x05 : px3 = "abbreviated Number";         break;
-                                                                default : px3 = "UNKNOWN PublicTypeOfNumber"; break;
-                                                            } /* switch */
-
-                                	      		    aoc_debug(oc3, px3);
-                                                            break;
-
-                                                  default : px3 = "UNKNOWN PublicTypeOfNumber";
-                                                  	    break;
-                                              } /* switch */
-
-                                              l = strtol(asnp += 3, NIL, 16);
-                                              sprintf(s, "length=%d", l);
-                                              aoc_debug(l, s);
-
-                                              ls = strtol(asnp += 3, NIL, 16);
-                                              sprintf(s, "length=%d", ls);
-                                              aoc_debug(ls, s);
-                                              l--;
-
-                                              px = dst;
-                                              while (ls--) {
-                                                *px++ = strtol(asnp += 3, NIL, 16);
-                                                l--;
-                                              } /* while */
-
-                                              *px = 0;
-
-                                              sprintf(s1, "\"%s\"", dst);
-                                              aoc_debug(-2, s1);
-
-                                              px = s;
-                                              c = strtol(asnp += 3, NIL, 16);
-                                              sprintf(px, "%02x ", c);
-                                              aoc_debug(-4, s);
-
-                                              for (i = 0; i < 5; i++) {
-                                                c = strtol(asnp += 3, NIL, 16);
-                                              	sprintf(px, "%02x ", c);
-                                              	aoc_debug(-4, s);
-                                              } /* for */
-
-                                              ls = strtol(asnp += 3, NIL, 16);
-                                              sprintf(s, "length=%d", ls);
-                                              aoc_debug(l, s);
-                                              l--;
-
-                                              px = src;
-                                              while (ls--) {
-                                                *px++ = strtol(asnp += 3, NIL, 16);
-                                                l--;
-                                              } /* while */
-
-                                              *px = 0;
-
-                                              sprintf(s1, "\"%s\"", src);
-                                              aoc_debug(-2, s1);
-
-                    			      buildnumber(src, 0, 0, call[6].num[CLIP], VERSION_EDSS1, &a1, &a2, &a3, &a4, 0, 999);
-                          		      strcpy(vsrc, vnum(6, CLIP));
-                    			      buildnumber(dst, oc3 * 16, 0, call[6].num[CLIP], VERSION_EDSS1, &a1, &a2, &a3, &a4, 0, 999);
-                          		      strcpy(vdst, vnum(6, CLIP));
-
-                                              /* sprintf(s, "%s %s/%s -> %s (%s)", px1, src, px2, dst, px3); */
-                                              sprintf(s, "%s %s/%s -> %s", px1, vsrc, px2, vdst);
-                                              aoc_debug(-2, s);
-
-                                              (void)iprintf(s1, -1, mlabel, "", s, "\n");
-                                              print_msg(PRT_SHOWNUMBERS, "%s", s1);
-
-                                              return(AOC_OTHER);
-
-                                              break;
-
-                                  case 0x08 : /* deactivationDiversion */
-                                  case 0x0a : /* deactivationStatusNotificationDiv (Rufumleitung aus) */
-                                              c = strtol(asnp += 3, NIL, 16);
-                                       	      sprintf(s, "SEQUENCE=%d", c);
-                                	      aoc_debug(c, s);
-
-                                              l = strtol(asnp += 3, NIL, 16);
-                                              sprintf(s, "length=%d", l);
-                                              aoc_debug(l, s);
-
-                                              c = strtol(asnp += 3, NIL, 16);
-                                       	      sprintf(s, "Enumeration type procedure=%d", c);
-                                	      aoc_debug(c, s);
-
-                                              l = strtol(asnp += 3, NIL, 16);
-                                              sprintf(s, "length=%d", l);
-                                              aoc_debug(l, s);
-
-                                              switch (c = strtol(asnp += 3, NIL, 16)) {
-                                                case 0x00 : px1 = "CFU";  break; /* Rufumleitung unbedingt */
-                    				case 0x01 : px1 = "CFB";  break; /* Rufumleitung bei Besetzt */
-                    				case 0x02 : px1 = "CFNR"; break; /* Rufumleitung wenn niemand h”rt */
-                                                default   : px1 = "CF?";  break; /* UNKNOWN Rufumleitung */
-                                              } /* switch */
-
-                                	      aoc_debug(c, px1);
-
-                                              c = strtol(asnp += 3, NIL, 16);
-                                       	      sprintf(s, "Enumeration type BasicService=%d", c);
-                                	      aoc_debug(c, s);
-
-                                              l = strtol(asnp += 3, NIL, 16);
-                                              sprintf(s, "length=%d", l);
-                                              aoc_debug(l, s);
-
-                                              switch (c = strtol(asnp += 3, NIL, 16)) {
-                    			        case 0x00 : px2 = "all Services";                     break;
-                    				case 0x01 : px2 = "Speech";               	      break;
-                    				case 0x02 : px2 = "unrestricted Digital Information"; break;
-                    				case 0x03 : px2 = "3.1 kHz audio"; 		      break;
-                    				case 0x20 : px2 = "Telephony"; 			      break;
-                    				case 0x21 : px2 = "Teletex"; 			      break;
-                    				case 0x22 : px2 = "Telefax G4"; 	   	      break;
-                    				case 0x23 : px2 = "Videotex Syntax Based"; 	      break;
-                    				case 0x24 : px2 = "Videotelephony"; 		      break;
-                                                  default : px2 = "UNKNOWN BasicService"; 	      break;
-                                              } /* switch */
-
-                                	      aoc_debug(c, px2);
-
-                                              ServedUserNr = strtol(asnp += 3, NIL, 16);
-                                       	      sprintf(s, "ServedUserNr=%d", ServedUserNr);
-                                	      aoc_debug(c, s);
-
-                                              if (ServedUserNr == 161)
-                                                for (i = 0; i < 5; i++) {
-                                                  l = strtol(asnp += 3, NIL, 16);
-                                              	  sprintf(s, "%02x ", l);
-                                              	  aoc_debug(-4, s);
-                                                } /* for */
-
-                                              l = strtol(asnp += 3, NIL, 16);
-                                              sprintf(s, "length=%d", l);
-                                              aoc_debug(l, s);
-
-                                              px = dst;
-                                              while (l--)
-                                                *px++ = strtol(asnp += 3, NIL, 16);
-
-                                              *px = 0;
-
-                                              sprintf(s1, "\"%s\"", dst);
-                                              aoc_debug(-2, s1);
-
-                    			      buildnumber(dst, 0, 0, call[6].num[CLIP], VERSION_EDSS1, &a1, &a2, &a3, &a4, 0, 999);
-                          		      strcpy(vdst, vnum(6, CLIP));
-
-                                              sprintf(s, "deactivate %s %s/%s", px1, vdst, px2);
-
-                                              (void)iprintf(s1, -1, mlabel, "", s, "\n");
-                                              print_msg(PRT_SHOWNUMBERS, "%s", s1);
-
-                                              return(AOC_OTHER);
-                                              break;
-
-                                  case 0x21 : (void)facility(AOCDCurrency, l);
-                                              result = -EH;
-                                              break;
-
-                                  case 0x22 : (void)facility(AOCDChargingUnit, l);
-                                              result = -EH;
-                                              break;
-
-                                  case 0x23 : (void)facility(AOCECurrency, l);
-                                              result = EH;
-                                              break;
-
-                                  case 0x24 : (void)facility(AOCEChargingUnit, l);
-                                              result = EH;
-                                              break;
-
-                                    default : sprintf(s, "UNKNOWN OperationContents=%d", OP);
-                                              aoc_debug(OP, s);
-                                              return(AOC_OTHER);
-                                              break;
-                                } /* switch OP */
-                                break;
-
-    case AOCDCurrency         : (void)facility(AOCDCurrencyInfo, l);
-                                break;
-
-    case AOCDChargingUnit     : (void)facility(AOCDChargingUnitInfo, l);
-                                break;
-
-    case AOCECurrency         : (void)facility(AOCECurrencyInfo, l);
-                                break;
-
-    case AOCEChargingUnit     : (void)facility(AOCEChargingUnitInfo, l);
-                                break;
-
-    case AOCDChargingUnitInfo : c = strtol(asnp += 3, NIL, 16);  /* specificChargingUnits SEQUENCE type / NULL */
-
-                                sprintf(s, "Sequence, specificChargingUnits type=%d", c);
-                                aoc_debug(c, s);
-
-                                l = strtol(asnp += 3, NIL, 16);  /* specificChargingUnits SEQUENCE length / NULL */
-
-                                sprintf(s, "length=%d", l);
-                                aoc_debug(l, s);
-
-                                if (!l)                                 /* freeOfCharge */
-                                  break;
-
-                                (void)facility(RecordedUnitsList, l);
-
-                                (void)facility(TypeOfChargingInfo, l);
-
-                                /*
-                                (void)facility(AOCDBillingId, l);
-                                */
-                                break;
-
-    case AOCEChargingUnitInfo : c = strtol(asnp += 3, NIL, 16);            /* SEQUENCE type */
-                                aoc_debug(c, "AOCEChargingUnitInfo");
-
-                                sprintf(s, "SEQUENCE type=%d", c);
-                                aoc_debug(c, s);
-
-                                l = strtol(asnp += 3, NIL, 16);            /* SEQUENCE length */
-
-                                sprintf(s, "length=%d", l);
-                                aoc_debug(l, s);
-
-                                c = strtol(asnp += 3, NIL, 16);  /* specificChargingUnits SEQUENCE type / NULL */
-
-                                sprintf(s, "specificChargingUnits SEQUENCE type=%d", c);
-                                aoc_debug(c, s);
-
-                                l = strtol(asnp += 3, NIL, 16);  /* specificChargingUnits SEQUENCE length / NULL */
-
-                                sprintf(s, "length=%d", l);
-                                aoc_debug(l, s);
-
-                                if (!l)                                 /* freeOfCharge */
-                                  break;
-
-                                (void)facility(RecordedUnitsList, l);
-
-                                (void)facility(TypeOfChargingInfo, l);
-
-                                /*
-                                (void)facility(AOCDBillingId, l);
-                                */
-                                break;
-
-    case AOCDCurrencyInfo     : c = strtol(asnp += 3, NIL, 16);  /* specificCurrency SEQUENCE type / NULL */
-                                aoc_debug(c, "AOCDCurrencyInfo");
-
-                                sprintf(s, "specificCurrency SEQUENCE type=%d", c);
-                                aoc_debug(c, s);
-
-                                l = strtol(asnp += 3, NIL, 16);  /* specificCurrency SEQUENCE length / NULL */
-
-                                sprintf(s, "length=%d", l);
-                                aoc_debug(l, s);
-
-                                if (!l)                                 /* freeOfCharge */
-                                  break;
-
-                                c = strtol(asnp += 3, NIL, 16);            /* SEQUENCE type */
-
-                                sprintf(s, "SEQUENCE type=%d", c);
-                                aoc_debug(c, s);
-
-                                l = strtol(asnp += 3, NIL, 16);            /* SEQUENCE length */
-
-                                sprintf(s, "length=%d", l);
-                                aoc_debug(l, s);
-
-                                (void)facility(RecordedCurrency, l);
-
-                                (void)facility(TypeOfChargingInfo, l);
-
-                                /*
-                                (void)facility(AOCDBillingId, l);
-                                */
-                                break;
-
-    case AOCECurrencyInfo     : c = strtol(asnp += 3, NIL, 16);            /* SEQUENCE type */
-                                aoc_debug(c, "AOCECurrencyInfo");
-
-                                sprintf(s, "SEQUENCE type=%d", c);
-                                aoc_debug(c, s);
-
-                                l = strtol(asnp += 3, NIL, 16);            /* SEQUENCE length */
-
-                                sprintf(s, "length=%d", l);
-                                aoc_debug(l, s);
-
-                                c = strtol(asnp += 3, NIL, 16);  /* specificCurrency SEQUENCE type / NULL */
-
-                                sprintf(s, "specificCurrency SEQUENCE type=%d", c);
-                                aoc_debug(c, s);
-
-                                l = strtol(asnp += 3, NIL, 16);  /* specificCurrency SEQUENCE length / NULL */
-
-                                sprintf(s, "length=%d", l);
-                                aoc_debug(l, s);
-
-                                if (!l)                                 /* freeOfCharge */
-                                  break;
-
-                                c = strtol(asnp += 3, NIL, 16);            /* SEQUENCE type */
-
-                                sprintf(s, "SEQUENCE type=%d", c);
-                                aoc_debug(c, s);
-
-                                l = strtol(asnp += 3, NIL, 16);            /* SEQUENCE length */
-
-                                sprintf(s, "length=%d", l);
-                                aoc_debug(l, s);
-
-                                (void)facility(RecordedCurrency, l);
-
-                                /*
-                                (void)facility(AOCDBillingId, l);
-                                (void)facility(ChargingAssociation, l);
-                                */
-                                break;
-
-    case RecordedCurrency     : c = strtol(asnp += 3, NIL, 16);            /* IA5String type */
-                                aoc_debug(c, "RecordedCurrency");
-
-                                sprintf(s, "IA5String type=%d", c);
-                                aoc_debug(c, s);
-
-                                l = strtol(asnp += 3, NIL, 16);            /* IA5String length */
-
-                                sprintf(s, "length=%d", l);
-                                aoc_debug(l, s);
-
-                                (void)facility(Currency, l);
-
-                                c = strtol(asnp += 3, NIL, 16);            /* SEQUENCE type */
-
-                                sprintf(s, "SEQUENCE type=%d", c);
-                                aoc_debug(c, s);
-
-                                l = strtol(asnp += 3, NIL, 16);            /* SEQUENCE length */
-
-                                sprintf(s, "length=%d", l);
-                                aoc_debug(l, s);
-
-                                (void)facility(Amount, l);
-                                break;
-
-    case Currency             : aoc_debug(-1, "Currency");
-                                c = 0;
-
-                                while (l--)
-                                  curr[c++] = strtol(asnp += 3, NIL, 16);
-
-                                curr[c] = 0;
-                                currency = curr;
-
-                                sprintf(s, "\"%s\"", currency);
-                                aoc_debug(-2, s);
-                                break;
-
-    case Amount 	      : c = strtol(asnp += 3, NIL, 16);            /* INTEGER type */
-                                aoc_debug(c, "Amount");
-
-                                sprintf(s, "INTEGER type=%d", c);
-                                aoc_debug(c, s);
-
-                                l = strtol(asnp += 3, NIL, 16);            /* INTEGER length */
-
-                                sprintf(s, "length=%d", l);
-                                aoc_debug(l, s);
-
-                                (void)facility(CurrencyAmount, l);
-
-                                c = strtol(asnp += 3, NIL, 16);            /* ENUMERATED type */
-
-                                sprintf(s, "ENUMERATED type=%d", c);
-                                aoc_debug(c, s);
-
-                                l = strtol(asnp += 3, NIL, 16);            /* ENUMERATED length */
-
-                                sprintf(s, "length=%d", l);
-                                aoc_debug(l, s);
-
-                                (void)facility(Multiplier, l);
-                                break;
-
-    case CurrencyAmount       : aoc_debug(-1, "CurrencyAmount");
-                                while (l--) {
-                                  EH = EH << 8;
-                                  EH += strtol(asnp += 3, NIL, 16);        /* Amount */
-                                } /* while */
-
-                                currency_mode = AOC_AMOUNT;
-
-                                sprintf(s, "%d", EH);
-                                aoc_debug(-2, s);
-                                break;
-
-    case Multiplier           : aoc_debug(-1, "Multiplier");
-
-                                while (l--) {
-                                  MP = MP << 8;
-                                  MP += strtol(asnp += 3, NIL, 16);        /* Multiplier */
-                                } /* while */
-
-                                switch (MP) {
-                                  case 0 : currency_factor = 0.001;
-                                           break;
-
-                                  case 1 : currency_factor = 0.01;
-                                           break;
-
-                                  case 2 : currency_factor = 0.1;
-                                           break;
-
-                                  case 3 : currency_factor = 1.0;
-                                           break;
-
-                                  case 4 : currency_factor = 10.0;
-                                           break;
-
-                                  case 5 : currency_factor = 100.0;
-                                           break;
-
-                                  case 6 : currency_factor = 1000.0;
-                                           break;
-                                } /* switch */
-
-                                sprintf(s, "%g", currency_factor);
-                                aoc_debug(-2, s);
-                                break;
-
-    case RecordedUnitsList    : c = strtol(asnp += 3, NIL, 16);            /* SEQUENCE SIZE type */
-
-                                sprintf(s, "RecordedUnitsList=%d", c);
-                                aoc_debug(c, s);
-
-                                l = strtol(asnp += 3, NIL, 16);            /* SEQUENCE SIZE length */
-
-                                sprintf(s, "length=%d", l);
-                                aoc_debug(l, s);
-
-                                (void)facility(RecordedUnits, l);
-                                break;
-
-    case RecordedUnits        : c = strtol(asnp += 3, NIL, 16);            /* SEQUENCE type */
-
-                                sprintf(s, "Sequence Size(1..32) Of RecordedUnits=%d", c);
-                                aoc_debug(c, s);
-
-                                l = strtol(asnp += 3, NIL, 16);            /* SEQUENCE length */
-
-                                sprintf(s, "length=%d", l);
-                                aoc_debug(l, s);
-
-                                if (!l)                                 /* notAvailable */
-                                  break;
-
-                                (void)facility(NumberOfUnits, l);
-                                break;
-
-   case NumberOfUnits         : c = strtol(asnp += 3, NIL, 16);            /* INTEGER type */
-
-                                sprintf(s, "NumberOfUnits type=%d", c);
-                                aoc_debug(c, s);
-
-                                l = strtol(asnp += 3, NIL, 16);            /* INTEGER length */
-
-                                sprintf(s, "length=%d", l);
-                                aoc_debug(l, s);
-
-                                while (l--) {
-                                  EH = EH << 8;
-                                  EH += strtol(asnp += 3, NIL, 16);        /* NumberOfUnits */
-                                } /* while */
-
-                                currency_mode = AOC_UNITS;
-
-                                sprintf(s, "NumberOfUnits=%d", EH);
-                                aoc_debug(EH, s);
-                                break;
-
-    case TypeOfChargingInfo   : c = strtol(asnp += 3, NIL, 16);            /* typeOfChargingInfo type */
-
-                                sprintf(s, "typeOfChargingInfo=%d", c);
-                                aoc_debug(c, s);
-
-                                l = strtol(asnp += 3, NIL, 16);            /* typeOfChargingInfo length */
-
-                                sprintf(s, "length=%d", l);
-                                aoc_debug(l, s);
-
-                                c = strtol(asnp += 3, NIL, 16);            /* typeOfChargingInfo contents */
-
-                                sprintf(s, "typeOfChargingInfo contents=%d", c);
-                                aoc_debug(c, s);
-                                break;
+      default : aoc_debug(c, "UNKNOWN Protocol");
+    	      	return(AOC_OTHER);
   } /* switch */
 
-  return(result);
+  return(AOC_OTHER);
 } /* facility */
-
-
-/* gcc 2.7.2.1 Optimizer-Bug workaround from Stefan Gruendel <sgruendel@adulo.de> */
-static int facility_start(char *p, int type, int l)
-{
-  asnp = p;
-  return(facility(type, l));
-} /* facility_start */
 
 
 static int AOC_1TR6(int l, char *p)
@@ -1917,7 +1288,7 @@ static void decode(int chan, register char *p, int type, int version, int tei)
   auto     int       sn[10];
   auto     struct tm tm;
   auto	   time_t    t;
-  auto     double    tx, err, tack, pay = 0.0;
+  auto     double    tx, err, tack;
 
 
   while (1) {
@@ -2142,10 +1513,14 @@ static void decode(int chan, register char *p, int type, int version, int tei)
 #if defined(ISDN_NL) || defined(ISDN_CH) /* Fixme: never defined! */
                       n = AOC_1TR6(l, p);
 #else
-                      n = facility_start(p, AOC_INITIAL, 0);
+                      n = facility(l, p);
 #endif
-                      if (n == AOC_OTHER)
-                        ; /* info(chan, PRT_SHOWAOCD, STATE_AOCD, asnm); */
+                      if (n == AOC_OTHER) {
+                        if (*asnm) {
+                          (void)iprintf(s1, -1, mlabel, "", asnm, "\n");
+                          print_msg(PRT_SHOWNUMBERS, "%s", s1);
+                        } /* if */
+                      }
                       else {
 
                         /* Dirty-Hack: Falls auch AOC-E als AOC-D gemeldet wird:
@@ -2160,24 +1535,34 @@ static void decode(int chan, register char *p, int type, int version, int tei)
                           n = -n;
                         } /* if */
 
-                        if (n) {
-                          pay = abs(n) * currency_factor;
-
-                          sprintf(s, "%d * %g = %g%s", abs(n), currency_factor, pay, currency);
-                          aoc_debug(-2, s);
-                        } /* if */
-
-                        if (n < 0) {
-                          if (call[chan].aoce == -1) /* Firsttime */
+#if 1 /* AK:24-Apr-99 */
+                        if (n < 0) { /* AOC-D */
+                          if (call[chan].aoce == UNKNOWN) /* Firsttime */
                             call[chan].aoce = 1;
 			  else
                             call[chan].aoce++;
                         } /* if */
 
-                        call[chan].aocpay = pay;
+                        call[chan].aocpay = abs(n) * currency_factor;
 
-                        if (currency_mode == AOC_UNITS)
-                          call[chan].aoce = n;
+                        if (n < 0) {
+                          tx = cur_time - call[chan].connect;
+
+                          if (tx)
+                            sprintf(s, "%d.EH %s %s (%s)",
+                              abs(call[chan].aoce),
+                              currency,
+                              double2str(call[chan].aocpay, 6, 3, DEB),
+                              double2clock(tx));
+                          else
+                            sprintf(s, "%d.EH %s %s",
+                              abs(call[chan].aoce),
+                              currency,
+                              double2str(call[chan].aocpay, 6, 3, DEB));
+
+                          info(chan, PRT_SHOWAOCD, STATE_AOCD, s);
+                        } /* if */
+#endif
 
                         if (n < 0)
                           sprintf(s, "aOC-D=%d", -n);
@@ -2226,14 +1611,15 @@ static void decode(int chan, register char *p, int type, int version, int tei)
                             } /* else */
                           }
                           else if (-n > 1) { /* try to guess Gebuehrenzone */
-			    RATE Guess=call[chan].Rate;
+			    RATE Guess = call[chan].Rate;
                             err = 0;
                             px = "";
 			    if (guessZone(&Guess, -n) != UNKNOWN) {
-			      px=Guess.Zone;
+			      px = Guess.Zone;
 			      call[chan].tick += Guess.Duration;
                               err = call[chan].tick - tx;
 			    }
+
                             if (message & PRT_SHOWTICKS)
                               sprintf(s, "%d.EH %s %s (%s %d %s?) C=%s",
                                 abs(call[chan].aoce),
@@ -2262,7 +1648,9 @@ static void decode(int chan, register char *p, int type, int version, int tei)
                               double2str(call[chan].aocpay, 6, 2, DEB));
                           } /* else */
 
+#if 0
                           info(chan, PRT_SHOWAOCD, STATE_AOCD, s);
+#endif
 
                           if (sound)
                             ringer(chan, RING_AOCD);
@@ -3980,33 +3368,21 @@ static void addlist(int chan, int type, int mode) /* mode :: 0 = Add new entry, 
 } /* addlist */
 
 
-void processRate(int chan1)
+void processRate(int chan)
 {
-  auto int chan, chan2;
+  if ((call[chan].state == CONNECT) && (call[chan].zone != UNKNOWN)) {
+    call[chan].Rate.prefix = call[chan].provider;
+    call[chan].Rate.zone   = call[chan].zone;
+    call[chan].Rate.start  = call[chan].connect;
+    call[chan].Rate.now    = call[chan].disconnect = cur_time;
 
-
-  if (chan1 == -1) {
-    chan1 = 0;
-    chan2 = chans;
-  }
-  else
-    chan2 = chan1 + 1;
-
-  for (chan = chan1; chan < chan2; chan++) {
-    if ((call[chan].state == CONNECT) && call[chan].zone > 0) {
-      call[chan].Rate.prefix = call[chan].provider;
-      call[chan].Rate.zone   = call[chan].zone;
-      call[chan].Rate.start  = call[chan].connect;
-      call[chan].Rate.now    = call[chan].disconnect = cur_time;
-
-      if (getRate(&call[chan].Rate, NULL) == UNKNOWN)
-	call[chan].tarifknown = 0;
-      else {
-	call[chan].tarifknown = 1;
-	call[chan].pay = call[chan].Rate.Charge;
-      } /* else */
-    } /* if */
-  } /* for */
+    if (getRate(&call[chan].Rate, NULL) == UNKNOWN)
+      call[chan].tarifknown = 0;
+    else {
+      call[chan].tarifknown = 1;
+      call[chan].pay = call[chan].Rate.Charge;
+    } /* else */
+  } /* if */
 } /* processRate */
 
 
@@ -5301,12 +4677,10 @@ void processcint()
       teardown(chan);
 
     if (OUTGOING && call[chan].tarifknown) {
-
       processRate(chan);
 
       if (call[chan].ctakt != call[chan].Rate.Units) { /* naechste Einheit */
  	call[chan].ctakt = call[chan].Rate.Units;
-
         sprintf(sx, "%d.CI %s %s (after %s) ",
  	  call[chan].ctakt, currency,
           double2str(call[chan].pay, 6, 3, DEB),
