@@ -1,4 +1,4 @@
-/* $Id: tools.h,v 1.27 1999/02/28 19:33:52 akool Exp $
+/* $Id: tools.h,v 1.28 1999/03/07 18:20:11 akool Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,20 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools.h,v $
+ * Revision 1.28  1999/03/07 18:20:11  akool
+ * - new 01805 tarif of DTAG
+ * - new March 1999 tarife
+ * - added new provider "01051 Telecom"
+ * - fixed a buffer overrun from Michael Weber <Michael.Weber@Post.RWTH-Aachen.DE>
+ * - fixed a bug using "sondernnummern.c"
+ * - fixed chargeint change over the time
+ * - "make install" now install's "sonderrufnummern.dat", "tarif.dat",
+ *   "vorwahl.dat" and "tarif.conf"! Many thanks to
+ *   Mario Joussen <mario.joussen@post.rwth-aachen.de>
+ * - Euracom Frames would now be ignored
+ * - fixed warnings in "sondernnummern.c"
+ * - "10plus" messages no longer send to syslog
+ *
  * Revision 1.27  1999/02/28 19:33:52  akool
  * Fixed a typo in isdnconf.c from Andreas Jaeger <aj@arthur.rhein-neckar.de>
  * CHARGEMAX fix from Oliver Lauer <Oliver.Lauer@coburg.baynet.de>
@@ -390,6 +404,12 @@
 #define INTERNET     17
 #define	GLOBALCALL   18
 
+#define SO_FAIL      -3
+#define SO_UNKNOWN   -2
+#define SO_CITYCALL  -1
+#define SO_FREE       0
+#define SO_CALCULATE  1
+
 #define	DTAG	     33
 
 /****************************************************************************/
@@ -665,7 +685,7 @@ typedef struct {
   char	  area[MAXMSNS][128];
   char	  money[64];
   char	  currency[32];
-  char    msg[128];
+  char    msg[BUFSIZ];
   int     stat;
   int	  version;
   int	  bchan;

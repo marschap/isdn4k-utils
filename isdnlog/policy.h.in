@@ -102,6 +102,9 @@
 /* Define the name of the old config file */
 #undef OLDCONFFILE
 
+/* Define the data directory */
+#undef DATADIR
+
 /* Define if libarea should be used */
 #undef LIBAREA
 

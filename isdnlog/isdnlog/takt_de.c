@@ -1,4 +1,4 @@
-/* $Id: takt_de.c,v 1.9 1999/02/28 19:33:14 akool Exp $
+/* $Id: takt_de.c,v 1.10 1999/03/07 18:19:40 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,20 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: takt_de.c,v $
+ * Revision 1.10  1999/03/07 18:19:40  akool
+ * - new 01805 tarif of DTAG
+ * - new March 1999 tarife
+ * - added new provider "01051 Telecom"
+ * - fixed a buffer overrun from Michael Weber <Michael.Weber@Post.RWTH-Aachen.DE>
+ * - fixed a bug using "sondernnummern.c"
+ * - fixed chargeint change over the time
+ * - "make install" now install's "sonderrufnummern.dat", "tarif.dat",
+ *   "vorwahl.dat" and "tarif.conf"! Many thanks to
+ *   Mario Joussen <mario.joussen@post.rwth-aachen.de>
+ * - Euracom Frames would now be ignored
+ * - fixed warnings in "sondernnummern.c"
+ * - "10plus" messages no longer send to syslog
+ *
  * Revision 1.9  1999/02/28 19:33:14  akool
  * Fixed a typo in isdnconf.c from Andreas Jaeger <aj@arthur.rhein-neckar.de>
  * CHARGEMAX fix from Oliver Lauer <Oliver.Lauer@coburg.baynet.de>
@@ -71,12 +85,39 @@
 #include <string.h>
 #include <stdlib.h>
 #include <time.h>
+#define MAXZONES     19
+#define UNKNOWN         -1
+#define SONDERNUMMER -2 /* FIXME: set by readconfig(), but unused by now */
+#define INTERN        0
+#define CITYCALL      1
+#define REGIOCALL     2
+#define GERMANCALL    3
+#define C_NETZ        4
+#define C_MOBILBOX    5
+#define D1_NETZ       6
+#define D2_NETZ       7
+#define E_PLUS_NETZ   8
+#define E2_NETZ       9
+#define EURO_CITY    10
+#define EURO_1       11
+#define EURO_2       12
+#define WELT_1       13
+#define WELT_2       14
+#define WELT_3       15
+#define WELT_4       16
+#define INTERNET     17
+#define GLOBALCALL   18
+#define DTAG         33
+#define I4LCONFDIR "/etc/isdn"
 #else
 #include "isdnlog.h"
 #endif
 
 #define SPARBUCH  "/etc/isdn/sparbuch"
+
+#ifndef DATADIR
 #define DATADIR	  "/usr/lib/isdn"
+#endif
 
 #define TEST        181 /* Sekunden Verbindung kostet? */
 
@@ -486,7 +527,7 @@ int taktlaenge(int chan, char *why)
   if ((call[chan].sondernummer[CALLED] != UNKNOWN) &&
       (call[chan].provider == DTAG) &&
       ((call[chan].zone < C_NETZ) || (call[chan].zone > E2_NETZ)) &&
-       !SN[call[chan].sondernummer[CALLED]].tarif) {
+       SN[call[chan].sondernummer[CALLED]].tarif == SO_FREE) {
     strcpy(why, "FreeCall");
     return(60 * 60 * 24);              /* one day should be enough ;-) */
   } /* if */
@@ -498,7 +539,7 @@ int taktlaenge(int chan, char *why)
     return(UNKNOWN);
   } /* if */
 
-  tm = localtime(&call[chan].connect);
+  tm = localtime(&cur_time);
   tarif = t[call[chan].provider].tarif[call[chan].zone][call[chan].tz][tm->tm_hour];
 
   if (tarif == UNKNOWN) { /* Preis unbekannt oder nicht angeboten */
@@ -547,11 +588,11 @@ void preparecint(int chan, char *msg, char *hint, int viarep)
   provider = ((call[chan].provider == UNKNOWN) ? preselect : call[chan].provider);
 
   if ((call[chan].sondernummer[CALLED] != UNKNOWN) &&      /* Sonderrufnummer, Abrechnung zum CityCall-Tarif */
-      (SN[call[chan].sondernummer[CALLED]].tarif == -1) &&
+      (SN[call[chan].sondernummer[CALLED]].tarif == SO_CITYCALL) &&
       (provider == DTAG))
     zone = CITYCALL;
   else if ((call[chan].sondernummer[CALLED] != UNKNOWN) && /* Sonderrufnummer, kostenlos */
-      (SN[call[chan].sondernummer[CALLED]].tarif == 0) &&
+      (SN[call[chan].sondernummer[CALLED]].tarif == SO_FREE) &&
       (provider == DTAG)) {
     call[chan].zone = CITYCALL;
     call[chan].tarifknown = 0;
@@ -694,14 +735,18 @@ void price(int chan, char *hint, int viarep)
         (call[chan].provider == DTAG) &&
         ((call[chan].zone < C_NETZ) || (call[chan].zone > E2_NETZ))) {
       switch (SN[call[chan].sondernummer[CALLED]].tarif) {
-        case -1 : if (!strcmp(call[chan].num[CALLED] + 3, "11833")) /* Sonderbedingung Auskunft Inland */
+        case SO_UNKNOWN  : if (!strcmp(call[chan].num[CALLED] + 3, "11833")) { /* Sonderbedingung Auskunft Inland */
                     duration -= 30;
 
                   pay2 = SN[call[chan].sondernummer[CALLED]].grund * currency_factor;
                   pay2 += (duration / SN[call[chan].sondernummer[CALLED]].takt) * currency_factor;
+                           } /* if */
+                           break;
+
+        case SO_CITYCALL : call[chan].zone = CITYCALL;
                   break;
 
-        case  0 : pay2 = 0.0;
+        case SO_FREE     : pay2 = 0.0;
                   break;
       } /* switch */
     } /* if */
@@ -719,7 +764,7 @@ void price(int chan, char *hint, int viarep)
         onesec = call[chan].pay / duration;
         pay2 = (duration - 600) * onesec * 0.30;
 
-        sprintf(sx, "10plus %s %s - %s %s = %s %s",
+        sprintf(sx, "10plus %s %s - %s %s = %s %s\n",
           WAEHRUNG,
           double2str(call[chan].pay, 6, 2, DEB),
           WAEHRUNG,
@@ -730,7 +775,7 @@ void price(int chan, char *hint, int viarep)
         call[chan].pay -= pay2;
 
         if (!viarep)
-          print_msg(PRT_NORMAL, sx);
+      	  info(chan, PRT_SHOWNUMBERS, STATE_RING, sx);
       } /* if */
     }
     else

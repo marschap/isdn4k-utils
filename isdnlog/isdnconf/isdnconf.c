@@ -1,8 +1,9 @@
-/* $Id: isdnconf.c,v 1.12 1998/09/22 20:59:08 luethje Exp $
+/* $Id: isdnconf.c,v 1.13 1999/03/07 18:18:42 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
- * Copyright 1996, 1997 by Stefan Luethje (luethje@sl-gw.lake.de)
+ * Copyright 1996, 1999 by Stefan Luethje (luethje@sl-gw.lake.de)
+ *                     and Andreas Kool (akool@isdn4linux.de)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +20,20 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnconf.c,v $
+ * Revision 1.13  1999/03/07 18:18:42  akool
+ * - new 01805 tarif of DTAG
+ * - new March 1999 tarife
+ * - added new provider "01051 Telecom"
+ * - fixed a buffer overrun from Michael Weber <Michael.Weber@Post.RWTH-Aachen.DE>
+ * - fixed a bug using "sondernnummern.c"
+ * - fixed chargeint change over the time
+ * - "make install" now install's "sonderrufnummern.dat", "tarif.dat",
+ *   "vorwahl.dat" and "tarif.conf"! Many thanks to
+ *   Mario Joussen <mario.joussen@post.rwth-aachen.de>
+ * - Euracom Frames would now be ignored
+ * - fixed warnings in "sondernnummern.c"
+ * - "10plus" messages no longer send to syslog
+ *
  * Revision 1.12  1998/09/22 20:59:08  luethje
  * isdnrep:  -fixed wrong provider report
  *           -fixed wrong html output for provider report
@@ -91,6 +106,13 @@ static char number[BUFSIZ] = "";
 static char alias[BUFSIZ] = "";
 static char conffile[BUFSIZ];
 static char callerfile[BUFSIZ];
+
+/*****************************************************************************/
+
+void info(int chan, int reason, int state, char *msg)
+{
+  /* DUMMY - dont needed here! */
+} /* info */
 
 /*****************************************************************************/
 

@@ -1,10 +1,10 @@
-ISDNLOG - Version 3.02 -  				01-Feb-99  00:51
+ISDNLOG - Version 3.03 -  				07-Mar-99  17:57
 
 
 isdnlog ist ein Utility zur Auswertung des D-Kanals eines
 ISDN-BRI Anschlusses.
 
-isdnlog-3.02 wurde ausgiebig mit Linux-2.0.36 getestet.
+isdnlog-3.03 wurde ausgiebig mit Linux-2.0.36 getestet.
 
 
 Fuer alle, die es nun ueberhaupt nicht mehr abwarten koennen, hier das
@@ -23,15 +23,6 @@ Quick-Installation-Guide
      make config
      make
      make install
-
-2.1 manuelle Nacharbeiten durchfuehren:
-     cd /usr/src/isdn4k-utils/isdnlog
-     cp -p sonderrufnummern.dat /usr/lib/isdn
-     cp -p tarif.dat /usr/lib/isdn
-     bzip2 -d vorwahl.dat.bz2
-     cp -p vorwahl.dat /usr/lib/isdn
-     cp -p samples/tarif.conf /etc/isdn
-
 
 
 3. Konfigurationsdatei fuer isdnlog fuellen:

@@ -1,4 +1,4 @@
-/* $Id: isdnlog.h,v 1.16 1999/01/24 19:01:35 akool Exp $
+/* $Id: isdnlog.h,v 1.17 1999/03/07 18:18:51 akool Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,20 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnlog.h,v $
+ * Revision 1.17  1999/03/07 18:18:51  akool
+ * - new 01805 tarif of DTAG
+ * - new March 1999 tarife
+ * - added new provider "01051 Telecom"
+ * - fixed a buffer overrun from Michael Weber <Michael.Weber@Post.RWTH-Aachen.DE>
+ * - fixed a bug using "sondernnummern.c"
+ * - fixed chargeint change over the time
+ * - "make install" now install's "sonderrufnummern.dat", "tarif.dat",
+ *   "vorwahl.dat" and "tarif.conf"! Many thanks to
+ *   Mario Joussen <mario.joussen@post.rwth-aachen.de>
+ * - Euracom Frames would now be ignored
+ * - fixed warnings in "sondernnummern.c"
+ * - "10plus" messages no longer send to syslog
+ *
  * Revision 1.16  1999/01/24 19:01:35  akool
  *  - second version of the new chargeint database
  *  - isdnrep reanimated
@@ -399,6 +413,7 @@ _EXTERN void _Exit(char *File, int Line, int RetCode);
 #ifndef  _REP_FUNC_C_
 _EXTERN int  print_msg(int Level, const char *fmt, ...);
 #endif
+_EXTERN void info(int chan, int reason, int state, char *msg);
 _EXTERN int  Change_Channel(int old_channel, int new_channel);
 _EXTERN void set_time_str(void);
 _EXTERN void now(void);

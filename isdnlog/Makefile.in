@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.53 1999/02/28 19:32:17 akool Exp $
+## $Id: Makefile.in,v 1.54 1999/03/07 18:18:21 akool Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,20 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.54  1999/03/07 18:18:21  akool
+## - new 01805 tarif of DTAG
+## - new March 1999 tarife
+## - added new provider "01051 Telecom"
+## - fixed a buffer overrun from Michael Weber <Michael.Weber@Post.RWTH-Aachen.DE>
+## - fixed a bug using "sondernnummern.c"
+## - fixed chargeint change over the time
+## - "make install" now install's "sonderrufnummern.dat", "tarif.dat",
+##   "vorwahl.dat" and "tarif.conf"! Many thanks to
+##   Mario Joussen <mario.joussen@post.rwth-aachen.de>
+## - Euracom Frames would now be ignored
+## - fixed warnings in "sondernnummern.c"
+## - "10plus" messages no longer send to syslog
+##
 ## Revision 1.53  1999/02/28 19:32:17  akool
 ## Fixed a typo in isdnconf.c from Andreas Jaeger <aj@arthur.rhein-neckar.de>
 ## CHARGEMAX fix from Oliver Lauer <Oliver.Lauer@coburg.baynet.de>
@@ -347,6 +361,9 @@ INSTALL_SBIN		:= $(INSTALL) -m 0700 -o 0 -g 0
 INSTALL_BIN		:= $(INSTALL) -m 0755 -o 0 -g 0
 INSTALL_DATA		:= $(INSTALL) -m 0644 -o 0 -g 0
 
+BZIP2                   := @BZIP2@
+BUNZIP2                 := $(BZIP2) -d
+
 LIBISDNDIR		:= @LIBISDNDIR@
 I4LCONFDIR		:= @I4LCONFDIR@
 CONFFILE		:= @CONFFILE@
@@ -413,7 +430,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 3.02
+VERSION     = 3.03
 
 MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 isdnlog/isdnlog.users.5 isdnrep/isdnrep.1 isdnconf/isdnconf.1
 
@@ -522,7 +539,10 @@ uninstall: rootperm
 			$(DESTDIR)$(MAN1DIR)/isdnconf$(MAN1EXT)		\
 			$(DESTDIR)$(MAN5DIR)/callerid.conf$(MAN5EXT)	\
 			$(DESTDIR)$(MAN5DIR)/isdnlog$(MAN5EXT)		\
-			$(DESTDIR)$(MAN5DIR)/isdnlog.users$(MAN5EXT)
+			$(DESTDIR)$(MAN5DIR)/isdnlog.users$(MAN5EXT)    \
+			$(DESTDIR)$(DATADIR)/sonderrufnummern.dat       \
+			$(DESTDIR)$(DATADIR)/tarif.dat                  \
+			$(DESTDIR)$(DATADIR)/vorwahl.dat                \
 
 installdirs: rootperm
 		$(INSTALL_DIR) $(DESTDIR)$(I4LCONFDIR)
@@ -531,6 +551,7 @@ installdirs: rootperm
 		$(INSTALL_DIR) $(DESTDIR)$(MAN1DIR)
 		$(INSTALL_DIR) $(DESTDIR)$(MAN5DIR)
 		$(INSTALL_DIR) $(DESTDIR)$(MAN8DIR)
+		$(INSTALL_DIR) $(DESTDIR)$(DATADIR)
 
 install: all rootperm installdirs
 		@echo "Killing running isdnlog!"
@@ -555,6 +576,15 @@ install: all rootperm installdirs
 		$(INSTALL_DATA) isdnlog/callerid.conf.5 $(DESTDIR)$(MAN5DIR)/callerid.conf$(MAN5EXT)
 		$(INSTALL_DATA) isdnlog/isdnlog.5       $(DESTDIR)$(MAN5DIR)/isdnlog$(MAN5EXT)
 		$(INSTALL_DATA) isdnlog/isdnlog.users.5 $(DESTDIR)$(MAN5DIR)/isdnlog.users$(MAN5EXT)
+		$(INSTALL_DATA) sonderrufnummern.dat    $(DESTDIR)$(DATADIR)
+		$(INSTALL_DATA) tarif.dat               $(DESTDIR)$(DATADIR)
+		$(INSTALL_DATA) vorwahl.dat.bz2         $(DESTDIR)$(DATADIR)
+		$(BUNZIP2) $(DESTDIR)$(DATADIR)/vorwahl.dat.bz2
+		@if [ ! -f "$(DESTDIR)$(I4LCONFDIR)/tarif.conf" ]; then \
+			$(INSTALL_DATA) samples/tarif.conf      $(DESTDIR)$(I4LCONFDIR) ; \
+		else \
+			$(INSTALL_DATA) samples/tarif.conf      $(DESTDIR)$(I4LCONFDIR)/tarif.conf.new ; \
+		fi
 		@echo ""
 		@echo "Don't forget to create $(I4LCONFDIR)/$(USERFILE)"
 		@echo ""

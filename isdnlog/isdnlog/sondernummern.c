@@ -1,4 +1,4 @@
-/* $Id: sondernummern.c,v 1.1 1999/02/28 19:32:50 akool Exp $
+/* $Id: sondernummern.c,v 1.2 1999/03/07 18:19:02 akool Exp $
  *
  * Gebuehrenberechnung fuer Sonderrufnummern
  *
@@ -19,6 +19,20 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: sondernummern.c,v $
+ * Revision 1.2  1999/03/07 18:19:02  akool
+ * - new 01805 tarif of DTAG
+ * - new March 1999 tarife
+ * - added new provider "01051 Telecom"
+ * - fixed a buffer overrun from Michael Weber <Michael.Weber@Post.RWTH-Aachen.DE>
+ * - fixed a bug using "sondernnummern.c"
+ * - fixed chargeint change over the time
+ * - "make install" now install's "sonderrufnummern.dat", "tarif.dat",
+ *   "vorwahl.dat" and "tarif.conf"! Many thanks to
+ *   Mario Joussen <mario.joussen@post.rwth-aachen.de>
+ * - Euracom Frames would now be ignored
+ * - fixed warnings in "sondernnummern.c"
+ * - "10plus" messages no longer send to syslog
+ *
  * Revision 1.1  1999/02/28 19:32:50  akool
  * Fixed a typo in isdnconf.c from Andreas Jaeger <aj@arthur.rhein-neckar.de>
  * CHARGEMAX fix from Oliver Lauer <Oliver.Lauer@coburg.baynet.de>
@@ -81,15 +95,20 @@
 #include "isdnlog.h"
 #endif
 
-#if 0 /* def STANDALONE */
-#define SONDERNUMMERN "sonderrufnummern.dat"
-#else
-#define SONDERNUMMERN "/usr/lib/isdn/sonderrufnummern.dat"
+#ifndef DATADIR
+#define DATADIR	  "/usr/lib/isdn"
 #endif
 
-#define DATADIR	  "/usr/lib/isdn"
-
 #ifdef STANDALONE
+
+#define DATADIR   ".."
+
+#define SO_FAIL      -3
+#define SO_UNKNOWN   -2
+#define SO_CITYCALL  -1
+#define SO_FREE       0
+#define SO_CALCULATE  1
+
 typedef struct {
   int    provider; /* Provider */
   char  *number;   /* Telefonnummer */
@@ -106,12 +125,6 @@ SonderNummern *SN;
 int nSN;
 int interns0 = 0;
 #endif
-
-#define ERROR     -3
-#define SO_UNKNOWN   -2
-#define SO_CITYCALL  -1
-#define FREE       0
-#define CALCULATE  1
 
 #define WA         0
 #define WT         1
@@ -134,7 +147,7 @@ int initSondernummern()
 {
   char   *s, *t, *pos, *number, *info, fn[BUFSIZ];
   int     provider, tarif, tday, tbegin, tend;
-  FILE   *f = fopen(SONDERNUMMERN, "r");
+  FILE   *f;
   char    buf[BUFSIZ];
   double  grund, takt;
 
@@ -145,42 +158,42 @@ int initSondernummern()
   f = fopen(fn, "r");
 
   if (f != (FILE *)NULL) {
-    while (pos = fgets(buf, BUFSIZ, f))
+    while ((pos = fgets(buf, BUFSIZ, f)))
       if (*pos != '#') {
-        if (s = strsep(&pos, "|")) {
+        if ((s = strsep(&pos, "|"))) {
           provider = strtol(s, (char **)NULL, 10);
-          if (s = strsep(&pos, "|")) {
+          if ((s = strsep(&pos, "|"))) {
             number = strip(s);
-            if (s = strsep(&pos, "|")) {
+            if ((s = strsep(&pos, "|"))) {
               if (strstr(s, "free"))
-                tarif = FREE;
+                tarif = SO_FREE;
               else if (strstr(s, "City"))
                 tarif = SO_CITYCALL;
               else if (strstr(s, "?"))
                 tarif = SO_UNKNOWN;
               else
-                tarif = CALCULATE;
-              if (s = strsep(&pos, "|")) {
+                tarif = SO_CALCULATE;
+              if ((s = strsep(&pos, "|"))) {
                 if (strstr(s, "WE"))
                   tday = WE;
                 else if (strstr(s,"WT"))
                   tday = WT;
                 else
                   tday = WA;
-                if (s = strsep(&pos, "|")) {
+                if ((s = strsep(&pos, "|"))) {
                   tbegin = -1;
                   tend = -1;
                   if (strcmp(strip(s) ,"") != 0) {
-                    if (t = strsep(&s, "-")) {
+                    if ((t = strsep(&s, "-"))) {
                       tbegin = strtol(t, (char **)NULL, 10);
                       tend = strtol(s, (char **)NULL, 10);
                     }
                   }
-                  if (s = strsep(&pos, "|")) {
+                  if ((s = strsep(&pos, "|"))) {
                     grund = strtod(s, (char **)NULL);
-                    if (s = strsep(&pos, "|")) {
+                    if ((s = strsep(&pos, "|"))) {
                       takt = strtod(s, (char **)NULL);
-                      if (s = strsep(&pos, "\n")) {
+                      if ((s = strsep(&pos, "\n"))) {
                         info = s;
 
                         nSN++;
@@ -266,7 +279,7 @@ double sonderpreis(time_t connect, int duration, char *number, int provider)
   double    preis;
 
   if ((i = searchentry(connect, number, provider)) != -1)
-    if (SN[i].tarif == CALCULATE) {
+    if (SN[i].tarif == SO_CALCULATE) {
       if (SN[i].takt == 0)
         preis = SN[i].grund * 0.12;
       else
@@ -276,7 +289,7 @@ double sonderpreis(time_t connect, int duration, char *number, int provider)
     else
       return(SN[i].tarif);
   else
-    return(ERROR);
+    return(SO_FAIL);
 }
 
 double sondertaktlaenge(time_t connect, char *number, int provider, int *next)
@@ -285,14 +298,14 @@ double sondertaktlaenge(time_t connect, char *number, int provider, int *next)
   double     taktlen;
 
   if ((i = searchentry(connect, number, provider)) != -1)
-    if (SN[i].tarif == CALCULATE) {
+    if (SN[i].tarif == SO_CALCULATE) {
       taktlen = SN[i].takt;
       return(taktlen);
     }
     else
       return(SN[i].tarif);
   else
-    return(ERROR);
+    return(SO_FAIL);
 }
 
 
@@ -304,8 +317,8 @@ int main(int argc, char *argv[])
   double    preis;
 
   if (argc > 6) {
-    fprintf(stdout, "%d Einträge aus \"%s\" eingelesen.\n",
-            initSondernummern(),SONDERNUMMERN);
+    fprintf(stdout, "%d Einträge aus \"%s/sonderrufnummern.dat\" eingelesen.\n",
+            initSondernummern(), DATADIR);
     /*
       fprintf(stdout, "Testausgabe für Eintrag: %d\n", TEST);
       fprintf(stdout, "Provider:                %d\n", SN[TEST].provider);
@@ -333,7 +346,7 @@ int main(int argc, char *argv[])
                           argv[2], strtol(argv[1], (char **)NULL, 10));
       if (preis == SO_CITYCALL)
         fprintf(stdout, "Kosten         : CityCall\n");
-      else if (preis == FREE)
+      else if (preis == SO_FREE)
         fprintf(stdout, "Kosten         : freecall\n");
       else if (preis == SO_UNKNOWN)
         fprintf(stdout, "Kosten         : unbekannt\n");

@@ -1,4 +1,4 @@
-/* $Id: functions.c,v 1.18 1999/01/24 19:01:27 akool Exp $
+/* $Id: functions.c,v 1.19 1999/03/07 18:18:48 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,20 @@
  * along with this program; if not, write to the Free Software
  *
  * $Log: functions.c,v $
+ * Revision 1.19  1999/03/07 18:18:48  akool
+ * - new 01805 tarif of DTAG
+ * - new March 1999 tarife
+ * - added new provider "01051 Telecom"
+ * - fixed a buffer overrun from Michael Weber <Michael.Weber@Post.RWTH-Aachen.DE>
+ * - fixed a bug using "sondernnummern.c"
+ * - fixed chargeint change over the time
+ * - "make install" now install's "sonderrufnummern.dat", "tarif.dat",
+ *   "vorwahl.dat" and "tarif.conf"! Many thanks to
+ *   Mario Joussen <mario.joussen@post.rwth-aachen.de>
+ * - Euracom Frames would now be ignored
+ * - fixed warnings in "sondernnummern.c"
+ * - "10plus" messages no longer send to syslog
+ *
  * Revision 1.18  1999/01/24 19:01:27  akool
  *  - second version of the new chargeint database
  *  - isdnrep reanimated
@@ -432,6 +446,64 @@ int print_msg(int Level, const char *fmt, ...)
 
   return(0);
 } /* print_msg */
+
+/*****************************************************************************/
+
+void info(int chan, int reason, int state, char *msg)
+{
+  register int  i;
+  auto   char   s[BUFSIZ], *left = "", *right = "\n";
+  static int    lstate = 0, lchan = -1;
+
+
+  if (!newline) {
+
+    if (state == STATE_BYTE) {
+      right = "";
+
+      if (lstate == STATE_BYTE)
+        left = "\r";
+      else
+        left = "";
+    }
+    else {
+      right = "\n";
+
+      if (lstate == STATE_BYTE)
+        left = "\n";
+      else
+        left = "";
+    } /* else */
+
+    if ((lchan != chan) && (lstate == STATE_BYTE))
+      left = "\r\n";
+
+    lstate = state;
+    lchan = chan;
+  } /* if */
+
+  if (allflags & PRT_DEBUG_GENERAL)
+    if (allflags & PRT_DEBUG_INFO)
+      print_msg(PRT_DEBUG_INFO, "%d INFO> ", chan);
+
+  (void)iprintf(s, chan, call[chan].dialin ? ilabel : olabel, left, msg, right);
+
+  print_msg(PRT_DEBUG_INFO, "%s", s);
+
+  print_msg(reason, "%s", s);
+
+  if (xinfo) {
+    if ((i = (sizeof(call[chan].msg) -1)) < strlen(msg)) /* clipping ... */
+      msg[i] = 0;
+
+    strcpy(call[chan].msg, msg);
+    call[chan].stat = state;
+
+    message_from_server(&(call[chan]), chan);
+
+    print_msg(PRT_DEBUG_CS, "SOCKET> %s: MSG_CALL_INFO chan=%d\n", st + 4, chan);
+  } /* if */
+} /* info */
 
 /*****************************************************************************/
 
