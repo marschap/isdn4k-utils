@@ -1,4 +1,4 @@
-/* $Id: processor.c,v 1.122 2002/01/26 20:43:31 akool Exp $
+/* $Id: processor.c,v 1.123 2002/03/11 16:18:43 paul Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.123  2002/03/11 16:18:43  paul
+ * DM -> EUR; and only test for IIOCNETGPN on i386 systems
+ *
  * Revision 1.122  2002/01/26 20:43:31  akool
  * isdnlog-4.56:
  *  - dont set the Provider-field of the MySQL DB to "?*? ???" on incoming calls
@@ -1547,7 +1550,7 @@ void aoc_debug(int val, char *s)
 /*
     currency_mode   := AOC_UNITS | AOC_AMOUNT
     currency_factor :=
-    currency        := " DM" | "SCHILLING" | "NLG" | "FR."
+    currency        := " EUR" | "GBP" | "NOK" | "DKK" | ...
 */
 
 
@@ -3467,8 +3470,10 @@ static void oops(int where)
 
 } /* oops */
 
-#if IIOCNETGPN == -1
+#ifdef __i386__
+# if IIOCNETGPN == -1
 extern int iiocnetgpn();
+# endif
 #endif
 
 static int findinterface(void)
@@ -3520,9 +3525,13 @@ static int findinterface(void)
       }
 #endif
 /* call emulation for 2.0 kernels */
-#if IIOCNETGPN == -1
+#ifdef __i386__
+# if IIOCNETGPN == -1
      /* IIOCDBGVAR works on isdnctrl */
     rc = iiocnetgpn(sockets[ISDNCTRL].descriptor, &phone);
+# else
+    rc = ioctl(sockets[ISDNINFO].descriptor, IIOCNETGPN, &phone);
+# endif
 #else
     rc = ioctl(sockets[ISDNINFO].descriptor, IIOCNETGPN, &phone);
 #endif
