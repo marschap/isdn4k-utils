@@ -1,5 +1,5 @@
-.\" $Id: isdnlog.8.in,v 1.1 1998/12/01 16:48:26 paul Exp $
-.\" CHECKIN $Date: 1998/12/01 16:48:26 $
+.\" $Id: isdnlog.8.in,v 1.2 1998/12/29 15:53:50 paul Exp $
+.\" CHECKIN $Date: 1998/12/29 15:53:50 $
 .TH isdnlog 8 "@MANDATE_ISDNLOG8@" "ISDN 4 Linux @I4LVERSION@" "Linux System Administration"
 .PD 0
 .SH NAME
@@ -67,6 +67,37 @@ Limit all messages to X characters per line.
 Set digits necessary to get an outside line, when connected through a PABX.
 You can
 give several codes padded with a ":" (e.g. -A0:80:81:82).
+
+.TP
+.B \-0x:y  trim="value:value"
+Suppress leading zeroes. If isdnlog is connected through a PABX, it is
+sometimes not possible to let isdnlog distinguish between a national and an
+international call, even with help of the
+.B \-A
+option.
+.br
+This option requires two digits separated with ":" as an argument. These digits
+tell isdnlog how many leading zeroes to remove from incoming and outgoing calls
+respectively. If only one digit is given, it is used for both values.
+.br
+Don't use this in combination with the
+.B \-A
+option! This will confuse the system (and possibly you).
+
+Example: a PABX in Germany shows the number of an incoming call from Hamburg
+as "00040...".  When calling out to Hamburg, it shows the number as "0040...".
+This means that on incoming calls, three zeroes must be removed, and on
+outgoing calls two zeroes must be removed (the number must be normalized to
+be without any leading zeroes in the case of a national number; international
+numbers must have one leading zero). So, in this case, the option \fB-03:2\fR
+would be correct.
+
+.TP
+.B \-o other={yes|no}
+Normally "causes" (e.g. "non-selected user clearing") for other connected
+ISDN devices are not displayed, only those which are related to the connection
+will be shown. With this option the causes for the other devices are also
+displayed.
 
 .TP
 .B \-2x	dual="value"
