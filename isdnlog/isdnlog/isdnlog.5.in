@@ -1,5 +1,5 @@
-.\" $Id: isdnlog.5.in,v 1.3 2000/09/15 09:10:10 paul Exp $
-.\" CHECKIN $Date: 2000/09/15 09:10:10 $
+.\" $Id: isdnlog.5.in,v 1.4 2000/11/06 14:59:31 paul Exp $
+.\" CHECKIN $Date: 2000/11/06 14:59:31 $
 .TH isdnlog 5 "@MANDATE_ISDNLOG5@" "ISDN 4 Linux @I4LVERSION@" "Linux System Administration"
 .SH NAME
 @LOGFILE@ \- isdn log file
@@ -7,7 +7,7 @@
 The main purpose of isdnlog is to create a log file with information
 about all incoming and outgoing calls, namely: this file.
 
-The file has 17 fields, separated by pipe characters "|" with fixed
+The file has 19 fields, separated by pipe characters "|" with fixed
 length. The fields are:
 
 .PD 0
