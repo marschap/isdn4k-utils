@@ -1,0 +1,17 @@
+all:
+	@echo "Use make devel for development, make dist for distribution"
+
+devel:
+	aclocal
+	autoheader
+	automake
+	autoconf
+	touch stamp-h.in
+
+dist:
+	cat acinclude.m4.in libtool.m4.in > acinclude.m4
+	aclocal
+	autoheader
+	automake --foreign --include-deps
+	autoconf
+	touch stamp-h.in
