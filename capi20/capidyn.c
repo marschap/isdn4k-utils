@@ -1,7 +1,12 @@
 /*
- * $Id: capidyn.c,v 1.1 2000/05/18 15:21:37 calle Exp $
+ * $Id: capidyn.c,v 1.2 2001/03/01 14:59:11 paul Exp $
  * 
  * $Log: capidyn.c,v $
+ * Revision 1.2  2001/03/01 14:59:11  paul
+ * Various patches to fix errors when using the newest glibc,
+ * replaced use of insecure tempnam() function
+ * and to remove warnings etc.
+ *
  * Revision 1.1  2000/05/18 15:21:37  calle
  * static CAPI2.0 library that loads libcapi20.so dynamicly.
  *
@@ -9,6 +14,7 @@
 
 #include <sys/types.h>
 #include <linux/capi.h>
+#include <string.h>
 #include "capi20.h"
 #include <dlfcn.h>
 

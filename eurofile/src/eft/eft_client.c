@@ -1,4 +1,4 @@
-/* $Id: eft_client.c,v 1.2 1999/10/06 18:16:22 he Exp $ */
+/* $Id: eft_client.c,v 1.3 2001/03/01 14:59:12 paul Exp $ */
 /*
   Copyright 1998 by Henner Eisen
 
@@ -17,12 +17,13 @@
     Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 */ 
-#include <stdio.h>
+#include <sys/stat.h>
+#include <time.h>
+#include <unistd.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include <fcntl.h>
 #include <string.h>
-#include <unistd.h>
-#include <sys/stat.h>
 
 
 #include <tdu_user.h>

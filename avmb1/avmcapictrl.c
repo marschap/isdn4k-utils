@@ -1,11 +1,16 @@
 /*
- * $Id: avmcapictrl.c,v 1.15 2000/03/08 13:40:33 calle Exp $
+ * $Id: avmcapictrl.c,v 1.16 2001/03/01 14:59:11 paul Exp $
  * 
  * AVM-B1-ISDN driver for Linux. (Control-Utility)
  * 
  * Copyright 1996 by Carsten Paeth (calle@calle.in-berlin.de)
  * 
  * $Log: avmcapictrl.c,v $
+ * Revision 1.16  2001/03/01 14:59:11  paul
+ * Various patches to fix errors when using the newest glibc,
+ * replaced use of insecure tempnam() function
+ * and to remove warnings etc.
+ *
  * Revision 1.15  2000/03/08 13:40:33  calle
  * check for /dev/isdn/capi20 if /dev/capi20 doesn't exist.
  *
@@ -644,8 +649,8 @@ int main(int argc, char **argv)
 		if (ac >= 5) {
 			s = argv[arg_ofs + 1];
 			if (strlen(s) > sizeof(carddef.driver)) {
-				fprintf(stderr, "%s: driver name > %d\n",
-						cmd, sizeof(carddef.driver));
+				fprintf(stderr, "%s: driver name > %lu\n",
+						cmd, (unsigned long)sizeof(carddef.driver));
 				exit(1);
 			}
 			strncpy(carddef.driver, s, sizeof(carddef.driver));

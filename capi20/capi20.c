@@ -1,7 +1,12 @@
 /*
- * $Id: capi20.c,v 1.18 2000/11/12 16:06:41 kai Exp $
+ * $Id: capi20.c,v 1.19 2001/03/01 14:59:11 paul Exp $
  * 
  * $Log: capi20.c,v $
+ * Revision 1.19  2001/03/01 14:59:11  paul
+ * Various patches to fix errors when using the newest glibc,
+ * replaced use of insecure tempnam() function
+ * and to remove warnings etc.
+ *
  * Revision 1.18  2000/11/12 16:06:41  kai
  * fix backwards compatibility in capi20 library, small other changes
  *
@@ -284,7 +289,7 @@ capi20_put_message (unsigned ApplID, unsigned char *Msg)
 	    if (len >= 30) { /* 64Bit CAPI-extention */
 	       u_int64_t data64;
 	       memcpy(&data64,Msg+22, sizeof(u_int64_t));
-	       if (data64 != 0) dataptr = (void *)data64;
+	       if (data64 != 0) dataptr = (void *)(unsigned long)data64;
 	       else dataptr = Msg + len; /* Assume data after message */
 	    } else {
                dataptr = Msg + len; /* Assume data after message */
@@ -292,7 +297,7 @@ capi20_put_message (unsigned ApplID, unsigned char *Msg)
         } else {
             u_int32_t data;
             memcpy(&data,Msg+12, sizeof(u_int32_t));
-            if (data != 0) dataptr = (void *)data;
+            if (data != 0) dataptr = (void *)(unsigned long)data;
             else dataptr = Msg + len; /* Assume data after message */
 	}
         memcpy(sndbuf+len, dataptr, datalen);

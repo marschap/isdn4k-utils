@@ -1,4 +1,4 @@
-/* $Id: access.c,v 1.3 1999/10/06 18:16:22 he Exp $ */
+/* $Id: access.c,v 1.4 2001/03/01 14:59:12 paul Exp $ */
 /* Copyright 1997 by Henner Eisen
 
     This code is free software; you can redistribute it and/or
@@ -16,6 +16,7 @@
     Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 */ 
+#include <string.h>
 #include <tdu_user.h>
 #include "tdu.h"
 

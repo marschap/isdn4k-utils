@@ -1,4 +1,4 @@
-/* $Id: isdnctrl.c,v 1.44 2000/08/17 09:24:06 paul Exp $
+/* $Id: isdnctrl.c,v 1.45 2001/03/01 14:59:15 paul Exp $
  * ISDN driver for Linux. (Control-Utility)
  *
  * Copyright 1994,95 by Fritz Elfert (fritz@isdn4linux.de)
@@ -21,6 +21,11 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnctrl.c,v $
+ * Revision 1.45  2001/03/01 14:59:15  paul
+ * Various patches to fix errors when using the newest glibc,
+ * replaced use of insecure tempnam() function
+ * and to remove warnings etc.
+ *
  * Revision 1.44  2000/08/17 09:24:06  paul
  * Added --version option to display (isdn4k-utils) version,
  * and fixed a compile warning on alpha.
@@ -496,7 +501,7 @@ static void listbind(char *s, int e)
                 int ch;
                 sscanf(p + 1, "%d", &ch);
                 *p = '\0';
-                printf("%s, Channel %d%s\n", s, ch, (e > 0) ? ", exclusive" : "");
+                printf("%s, channel %d%s\n", s, ch, (e > 0) ? ", exclusive" : "");
         } else
                 printf("Nothing\n");
 }

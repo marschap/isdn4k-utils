@@ -1,4 +1,4 @@
-/* $Id: fileheader.c,v 1.3 2000/01/26 20:11:34 he Exp $ */
+/* $Id: fileheader.c,v 1.4 2001/03/01 14:59:12 paul Exp $ */
 /*
   Copyright 1998 by Henner Eisen
 
@@ -25,11 +25,12 @@
   This file containing stuff used for processing of file headers.
 */ 
 
-#include <stdio.h>
-#include <sys/stat.h>
-#include <pwd.h>
 #include <sys/types.h>
+#include <sys/stat.h>
 #include <unistd.h>
+#include <time.h>
+#include <stdio.h>
+#include <pwd.h>
 #include <string.h>
 
 

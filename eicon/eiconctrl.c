@@ -1,4 +1,4 @@
-/* $Id: eiconctrl.c,v 1.21 2000/12/02 21:39:42 armin Exp $
+/* $Id: eiconctrl.c,v 1.22 2001/03/01 14:59:12 paul Exp $
  *
  * Eicon-ISDN driver for Linux. (Control-Utility)
  *
@@ -21,6 +21,11 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA. 
  *
  * $Log: eiconctrl.c,v $
+ * Revision 1.22  2001/03/01 14:59:12  paul
+ * Various patches to fix errors when using the newest glibc,
+ * replaced use of insecure tempnam() function
+ * and to remove warnings etc.
+ *
  * Revision 1.21  2000/12/02 21:39:42  armin
  * Update of load and log utility.
  * New firmware and NT mode for PRI card.
@@ -284,12 +289,12 @@ t_dsp_combifile_directory_entry *display_combifile_details(char *details)
         download_count = file_header->download_count;
         directory_size = file_header->directory_size;
 
-        return_ptr = (t_dsp_combifile_directory_entry *) (unsigned int)file_header ;
+        return_ptr = (t_dsp_combifile_directory_entry *) (unsigned long)file_header ;
         offset  += (file_header->header_size);
         offset  += (file_header->combifile_description_size);
-        offset += (__u32)return_ptr;
+        offset += (__u32)(unsigned long)return_ptr;
 
-        return (t_dsp_combifile_directory_entry *)offset;
+        return (t_dsp_combifile_directory_entry *)(unsigned long)offset;
 
 }
 
@@ -439,7 +444,7 @@ __u32 get_download(char *download_block, char *download_area)
 #endif
                                         addr = store_download(data, p_download_desc->excess_header_size,
                                                                                         download_block);
-                                        p_download_desc->p_excess_header_data = (char *)addr;
+                                        p_download_desc->p_excess_header_data = (char *)(unsigned long)addr;
                                         data += ((p_download_desc->excess_header_size));
                                 }
                                 p_download_desc->p_download_description = NULL;
@@ -457,7 +462,7 @@ __u32 get_download(char *download_block, char *download_area)
 				printf("\t%s\n", Text);
 			}
 
-                                        p_download_desc->p_download_description = (char *)addr;
+                                        p_download_desc->p_download_description = (char *)(unsigned long)addr;
                                         data += ((file_header->download_description_size));
                                 }
                                 p_download_desc->p_memory_block_table = NULL;
@@ -468,7 +473,7 @@ __u32 get_download(char *download_block, char *download_area)
 #endif
                                         addr = store_download(data, file_header->memory_block_table_size,
                                                                                         download_block);
-                                        p_download_desc->p_memory_block_table = (t_dsp_memory_block_desc *)addr;
+                                        p_download_desc->p_memory_block_table = (t_dsp_memory_block_desc *)(unsigned long)addr;
                                         data += ((file_header->memory_block_table_size));
                                 }
                                 p_download_desc->p_segment_table = NULL;
@@ -479,7 +484,7 @@ __u32 get_download(char *download_block, char *download_area)
 #endif
                                         addr = store_download(data, file_header->segment_table_size,
                                                                                         download_block);
-                                        p_download_desc->p_segment_table = (t_dsp_segment_desc *)addr;
+                                        p_download_desc->p_segment_table = (t_dsp_segment_desc *)(unsigned long)addr;
                                         data += (file_header->segment_table_size);
                                 }
                                 p_download_desc->p_symbol_table = NULL;
@@ -490,7 +495,7 @@ __u32 get_download(char *download_block, char *download_area)
 #endif
                                         addr = store_download(data, file_header->symbol_table_size,
                                                                                         download_block);
-                                        p_download_desc->p_symbol_table = (t_dsp_symbol_desc *)addr;
+                                        p_download_desc->p_symbol_table = (t_dsp_symbol_desc *)(unsigned long)addr;
                                         data += (file_header->symbol_table_size);
                                 }
                                 p_download_desc->p_data_blocks_dm = NULL;
@@ -501,7 +506,7 @@ __u32 get_download(char *download_block, char *download_area)
 #endif
                                         addr = store_download(data, file_header->total_data_size_dm,
                                                                                         download_block);
-                                        p_download_desc->p_data_blocks_dm = (__u16 *)addr;
+                                        p_download_desc->p_data_blocks_dm = (__u16 *)(unsigned long)addr;
                                         data += (file_header->total_data_size_dm);
                                 }
                                 p_download_desc->p_data_blocks_pm = NULL;
@@ -512,7 +517,7 @@ __u32 get_download(char *download_block, char *download_area)
 #endif
                                         addr = store_download(data, file_header->total_data_size_pm,
                                                                                         download_block);
-                                        p_download_desc->p_data_blocks_pm = (__u16 *)addr;
+                                        p_download_desc->p_data_blocks_pm = (__u16 *)(unsigned long)addr;
                                         data += (file_header->total_data_size_pm);
                                 }
                         }

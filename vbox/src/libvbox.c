@@ -1,5 +1,5 @@
 /*
-** $Id: libvbox.c,v 1.11 1997/10/22 20:47:06 fritz Exp $
+** $Id: libvbox.c,v 1.12 2001/03/01 14:59:16 paul Exp $
 **
 ** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
 */
@@ -19,6 +19,7 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <sys/types.h>
+#include <sys/socket.h>
 #include <sys/stat.h>
 #include <sys/time.h>
               

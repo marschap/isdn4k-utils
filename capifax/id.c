@@ -1,4 +1,4 @@
-/* $Id: id.c,v 1.2 1998/10/23 12:50:55 fritz Exp $
+/* $Id: id.c,v 1.3 2001/03/01 14:59:11 paul Exp $
  *
  * Connection-ID management.
  * This stuff is based heavily on AVM's CAPI-adk for linux.
@@ -15,6 +15,11 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: id.c,v $
+ * Revision 1.3  2001/03/01 14:59:11  paul
+ * Various patches to fix errors when using the newest glibc,
+ * replaced use of insecure tempnam() function
+ * and to remove warnings etc.
+ *
  * Revision 1.2  1998/10/23 12:50:55  fritz
  * Added RCS keywords and GPL notice.
  *
@@ -52,7 +57,7 @@ typedef struct _ConnectionDesc {
 	unsigned char *CallingPartyNumberStruct; /* CAPI struct */
 } ConnectionDesc;
 
-static ConnectionDesc C[maxConnections] = {0};
+static ConnectionDesc C[maxConnections] = {{0}};
 static unsigned char *EmptyStruct = (unsigned char *)"\0";
 
 /*

@@ -1,4 +1,4 @@
-/* $Id: tdu_log.c,v 1.1 1999/06/30 17:18:44 he Exp $ */
+/* $Id: tdu_log.c,v 1.2 2001/03/01 14:59:12 paul Exp $ */
 /*
   Copyright 1997 by Henner Eisen
 
@@ -18,6 +18,7 @@
 
 */ 
 #include <unistd.h>
+#include <time.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdarg.h>

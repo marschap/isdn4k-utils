@@ -1,4 +1,4 @@
-/* $Id: isdn_dwabclib.c,v 1.1 1999/11/07 22:04:05 detabc Exp $
+/* $Id: isdn_dwabclib.c,v 1.2 2001/03/01 14:59:15 paul Exp $
  *
  *
  * This program is free software; you can redistribute it and/or modify
@@ -16,18 +16,24 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdn_dwabclib.c,v $
+ * Revision 1.2  2001/03/01 14:59:15  paul
+ * Various patches to fix errors when using the newest glibc,
+ * replaced use of insecure tempnam() function
+ * and to remove warnings etc.
+ *
  * Revision 1.1  1999/11/07 22:04:05  detabc
  * add dwabc-udpinfo-utilitys in isdnctrl
  *
  */
 
 
+#include <sys/types.h>
+#include <sys/socket.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <malloc.h>
 #include <errno.h>
-#include <sys/types.h>
 #include <unistd.h>
 #include <sys/time.h>
 #include <netinet/in.h>
@@ -91,7 +97,7 @@ err:;
 
 		ms->sin_port = htons(20000+po);
 
-		if(!bind(sock,ms,sizeof(*ms)))
+		if(!bind(sock, (struct sockaddr *)ms, sizeof(*ms)))
 			break;
 	}
 
@@ -106,7 +112,7 @@ err:;
 	ms->sin_port = htons(25001);
 	memcpy(&ms->sin_addr.s_addr,*(he->h_addr_list),he->h_length);
 
-	if(sendto(sock,buf,bytes,0,ms,sizeof(*ms)) != bytes) {
+	if(sendto(sock,buf,bytes,0,(struct sockaddr *)ms,sizeof(*ms)) != bytes) {
 
 		sprintf(em,"sendto <%s> failt errno %d",dest,errno);
 		goto err;

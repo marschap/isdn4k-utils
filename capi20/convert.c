@@ -1,7 +1,12 @@
 /*
- * $Id: convert.c,v 1.10 2000/05/18 15:02:26 calle Exp $
+ * $Id: convert.c,v 1.11 2001/03/01 14:59:11 paul Exp $
  *
  * $Log: convert.c,v $
+ * Revision 1.11  2001/03/01 14:59:11  paul
+ * Various patches to fix errors when using the newest glibc,
+ * replaced use of insecure tempnam() function
+ * and to remove warnings etc.
+ *
  * Revision 1.10  2000/05/18 15:02:26  calle
  * Updated _cmsg handling added new functions need by "capiconn".
  *
@@ -540,7 +545,7 @@ unsigned capi_cmsg2message(_cmsg * cmsg, _cbyte * msg)
 			cmsg->Data64 = 0;
 		} else {
 			cmsg->Data32 = 0;
-			cmsg->Data64 = (_cqword) cmsg->Data;
+			cmsg->Data64 = (_cqword)(unsigned long)cmsg->Data;
 		}
 	}
 
@@ -621,7 +626,7 @@ unsigned capi_message2cmsg(_cmsg * cmsg, _cbyte * msg)
 		if (sizeof(void *) == 4) {
 				cmsg->Data = (void *) cmsg->Data32;
 		} else {
-				cmsg->Data = (void *) cmsg->Data64;
+				cmsg->Data = (void *)(unsigned long)cmsg->Data64;
 		}
 	}
 

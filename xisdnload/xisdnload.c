@@ -34,13 +34,14 @@ from the X Consortium.
  *
  */
 
+#include <sys/types.h>
+#include <sys/ioctl.h>
+#include <sys/fcntl.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <stdio.h>
-#include <sys/ioctl.h>
-#include <sys/fcntl.h>
 #include <sys/time.h>
-#include <sys/types.h>
+#include <time.h>
 #include <linux/isdn.h>
 
 #include <X11/Intrinsic.h>

@@ -1,4 +1,4 @@
-/* $Id: data.c,v 1.2 1998/10/23 12:50:52 fritz Exp $
+/* $Id: data.c,v 1.3 2001/03/01 14:59:11 paul Exp $
  *
  * Functions for dealing user data.
  * This stuff is based heavily on AVM's CAPI-adk for linux.
@@ -15,6 +15,11 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: data.c,v $
+ * Revision 1.3  2001/03/01 14:59:11  paul
+ * Various patches to fix errors when using the newest glibc,
+ * replaced use of insecure tempnam() function
+ * and to remove warnings etc.
+ *
  * Revision 1.2  1998/10/23 12:50:52  fritz
  * Added RCS keywords and GPL notice.
  *
@@ -41,7 +46,7 @@ unsigned SendData(ConnectionID Connection, void *Data, unsigned short DataLength
 	assert (GetState(Connection) == Connected);
 
 	DATA_B3_REQ_HEADER(&CMSG, Appl_Id, 0, GetConnectionNCCI(Connection));
-	DATA_B3_REQ_DATA(&CMSG) = (unsigned long)Data;
+	DATA_B3_REQ_DATA(&CMSG) = Data;
 	DATA_B3_REQ_DATALENGTH(&CMSG) = DataLength;
 	DATA_B3_REQ_DATAHANDLE(&CMSG) = DataHandle;
 	return CAPI_PUT_CMSG(&CMSG);

@@ -1,4 +1,4 @@
-/* $Id: isdnrate.c,v 1.37 2000/07/17 16:34:23 akool Exp $
+/* $Id: isdnrate.c,v 1.38 2001/03/01 14:59:16 paul Exp $
 
  * ISDN accounting for isdn4linux. (rate evaluation)
  *
@@ -19,6 +19,11 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnrate.c,v $
+ * Revision 1.38  2001/03/01 14:59:16  paul
+ * Various patches to fix errors when using the newest glibc,
+ * replaced use of insecure tempnam() function
+ * and to remove warnings etc.
+ *
  * Revision 1.37  2000/07/17 16:34:23  akool
  * isdnlog-4.32
  *  - added new Prefixes 0160 (D1) and 0162 (D2) to "country-de.dat"
@@ -1573,7 +1578,7 @@ static void setup_daemon()
   struct sockaddr_in client;
   fd_set  active_fd_set, read_fd_set;
   char   *sock_name = socket_file;
-  size_t  size;
+  socklen_t  size;
   struct stat stat_buf;
   int     i;
   pid_t   pid;

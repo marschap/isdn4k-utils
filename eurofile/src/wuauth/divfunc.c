@@ -32,6 +32,7 @@
 
 #include <stdio.h>
 #include <errno.h>
+#include <malloc.h>
 #include <string.h>
 #ifdef SYSSYSLOG
 #include <sys/syslog.h>

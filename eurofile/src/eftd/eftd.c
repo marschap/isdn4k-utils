@@ -1,4 +1,4 @@
-/* $Id: eftd.c,v 1.5 1999/10/08 16:25:36 he Exp $ */
+/* $Id: eftd.c,v 1.6 2001/03/01 14:59:13 paul Exp $ */
 /*
   Copyright 1998 by Henner Eisen
 
@@ -25,8 +25,9 @@
 /* for strsignal() */
 #define _GNU_SOURCE       
 
+#include <sys/types.h>
 #include <sys/param.h>
-#include <sys/time.h>
+#include <time.h>
 #include <sys/wait.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -51,7 +52,6 @@
 #endif
 
 #include <pwd.h>
-#include <sys/types.h>
 
 #ifdef  __USE_GNU
 /* Return a string describing the meaning of the signal number in SIG.  */

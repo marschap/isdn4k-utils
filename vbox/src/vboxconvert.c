@@ -1,5 +1,5 @@
 /*
-** $Id: vboxconvert.c,v 1.9 2000/09/15 09:08:37 paul Exp $
+** $Id: vboxconvert.c,v 1.10 2001/03/01 14:59:16 paul Exp $
 **
 ** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
 **
@@ -116,7 +116,7 @@ static struct option args_autovbox[] =
 
 static char *vbasename = NULL;
 static FILE *vboxtmpfile   = NULL;
-static char *vboxtmpname   = NULL;
+static char perrormsg[256];
 
 /** Prototypes ***********************************************************/
 
@@ -347,7 +347,6 @@ static void start_vboxtoau(int samplemode, int samplerate)
 	int	      compression;
 	int 	      result;
 
-	vboxtmpname = NULL;
 	vboxtmpfile = NULL;
 	
 	signal(SIGINT , leave_vboxtoau);
@@ -356,24 +355,17 @@ static void start_vboxtoau(int samplemode, int samplerate)
 	signal(SIGHUP , leave_vboxtoau);
 	signal(SIGPIPE, leave_vboxtoau);
 	
-	if (!(vboxtmpname = tempnam("/tmp", "vbox")))
+	if (!(vboxtmpfile = tmpfile()))
 	{
-		fprintf(stderr, "%s: can't create a temporary file.\n", vbasename);
-		
-		leave_vboxtoau(255);
-	}
-
-	if (!(vboxtmpfile = fopen(vboxtmpname, "w+")))
-	{
-		fprintf(stderr, "%s: can't create \"%s\".\n", vbasename, vboxtmpname);
-		
+		sprintf(perrormsg, "%s: can't create tmpfile", vbasename);
+		perror(perrormsg);
 		leave_vboxtoau(255);
 	}
 
 	if (fread(&header, sizeof(vaheader_t), 1, stdin) != 1)
 	{
-		fprintf(stderr, "%s: can't read vbox audio header.\n", vbasename);
-
+		sprintf(perrormsg, "%s: can't read vbox audio header", vbasename);
+		perror(perrormsg);
 		leave_vboxtoau(255);
 	}
 
@@ -419,14 +411,8 @@ static void start_vboxtoau(int samplemode, int samplerate)
 
 static void leave_vboxtoau(int sig)
 {
-	if (vboxtmpfile) fclose(vboxtmpfile);
-	
-	if (vboxtmpname)
-	{
-		unlink(vboxtmpname);
-		free(vboxtmpname);
-	}
-
+	if (vboxtmpfile)
+		fclose(vboxtmpfile);
 	exit(sig);
 }
 
@@ -507,7 +493,6 @@ static void start_autovbox(int compression, char *name, char *id, char *phone, c
 	vaheader_t	header;
 	int	      result;
 
-	vboxtmpname = NULL;
 	vboxtmpfile = NULL;
 
 	signal(SIGINT , leave_autovbox);
@@ -516,17 +501,10 @@ static void start_autovbox(int compression, char *name, char *id, char *phone, c
 	signal(SIGHUP , leave_autovbox);
 	signal(SIGPIPE, leave_autovbox);
 	
-	if (!(vboxtmpname = tempnam("/tmp", "vbox")))
+	if (!(vboxtmpfile = tmpfile()))
 	{
-		fprintf(stderr, "%s: can't create a temporary file.\n", vbasename);
-		
-		leave_autovbox(255);
-	}
-
-	if (!(vboxtmpfile = fopen(vboxtmpname, "w+")))
-	{
-		fprintf(stderr, "%s: can't create \"%s\".\n", vbasename, vboxtmpname);
-		
+		sprintf(perrormsg, "%s: can't create tmpfile", vbasename);
+		perror(perrormsg);
 		leave_autovbox(255);
 	}
 
@@ -580,14 +558,8 @@ static void start_autovbox(int compression, char *name, char *id, char *phone, c
 
 static void leave_autovbox(int sig)
 {
-	if (vboxtmpfile) fclose(vboxtmpfile);
-	
-	if (vboxtmpname)
-	{
-		unlink(vboxtmpname);
-		free(vboxtmpname);
-	}
-
+	if (vboxtmpfile)
+		fclose(vboxtmpfile);
 	exit(sig);
 }
 
@@ -832,13 +804,13 @@ static int convert_pvf_to_au(int mode, int rate, FILE *in, FILE *out)
 	Snd.channelCount	= 1;
 	Snd.info[0]			= 0;
     
-	write_one_word((int)Snd.magic			, out);
+	write_one_word((int)Snd.magic,        out);
 	write_one_word((int)Snd.dataLocation, out);
-	write_one_word((int)Snd.dataSize		, out);
-	write_one_word((int)Snd.dataFormat	, out);
+	write_one_word((int)Snd.dataSize,     out);
+	write_one_word((int)Snd.dataFormat,   out);
 	write_one_word((int)Snd.samplingRate, out);
 	write_one_word((int)Snd.channelCount, out);
-	write_one_word((int)Snd.info			, out);
+	write_one_word(*((int *)Snd.info),    out);
 
 	while (1)
 	{

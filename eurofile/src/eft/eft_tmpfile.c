@@ -1,4 +1,4 @@
-/* $Id: eft_tmpfile.c,v 1.1 1999/06/30 17:18:24 he Exp $ */
+/* $Id: eft_tmpfile.c,v 1.2 2001/03/01 14:59:12 paul Exp $ */
 /*
   Copyright 1998 by Henner Eisen
 
@@ -17,31 +17,25 @@
     Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 */ 
-#include <stdio.h>
-#include <string.h>
-#include <fcntl.h>
-
 #include <sys/stat.h>
 #include <unistd.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
 
 #include <eft.h>
 #include "eft_private.h"
 #include <malloc.h>
 
-int eft_make_tmp()
+int eft_make_tmp(void)
 {
-	char * tmp;
+	char tmp[sizeof("/tmp/eftXXXXXX\0")];
 	int fd;
 	struct stat stat_ln, stat_fd;
 		
-	tmp = tempnam("/tmp", "eft"); 
-	if( ! tmp ){
-		perror("eft_make_tmp:tmpnam");
-		return -1;
-	}
-	if( (fd = open(tmp,O_RDWR|O_CREAT),0600) < 0 ){
-		perror("eft_make_tmp:open");
-		free(tmp);
+	strcpy(tmp, "/tmp/eftXXXXXX");
+	if( (fd = mkstemp(tmp)) < 0 ){
+		perror("eft_make_tmp:mkstemp");
 		return -1;
 	}
 	
@@ -55,13 +49,11 @@ int eft_make_tmp()
 	if( lstat(tmp, &stat_ln) || fstat(fd,&stat_fd) 
 	    || memcmp(&stat_ln, &stat_fd, sizeof(stat_ln) )){
 		fprintf(stderr,"eft_make_tmp(): symlink attack for \"%s\" defended\n",tmp);
-		free(tmp);
 		close(fd);
 		return -1;
 	}
 	
 	if( unlink(tmp) ) perror("unlink()");
-	free(tmp);
 	return fd;
 }
 
