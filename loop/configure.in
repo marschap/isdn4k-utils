@@ -16,14 +16,9 @@ dnl Checks for header files.
 AC_HEADER_STDC
 AC_CHECK_HEADERS(fcntl.h sys/ioctl.h unistd.h)
 
+AC_CHECK_HEADERS(linux/isdn.h)
 dnl Find current kernel source
-dnl done by dereferencing the symbolic link /usr/include/linux
-dnl and then stripping off include/linux from the result.
-
-AC_CHECK_HEADERS(linux/isdn.h,\
-	KERNELDIR="/usr/include/`find /usr/include/linux -maxdepth 0 -printf '%l\n' | sed -e s@include/linux@@`", \
-    AC_MSG_ERROR("Missing linux/isdn.h. Kernel source installed?"))
-
+AC_FIND_KERNEL
 
 dnl Checks for typedefs, structures, and compiler characteristics.
 
@@ -36,7 +31,6 @@ AC_ARG_ENABLE(dump,--enable-dump        Enable dump feature for debugging,\
 	DEBUGVAR=-D__DEBUGVAR__)
 
 AC_SUBST(INSTALL)
-AC_SUBST(KERNELDIR)
 AC_SUBST(DEBUGVAR)
 AC_SUBST(MANDATE)
 AC_SUBST(I4LCONFDIR)

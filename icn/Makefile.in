@@ -1,4 +1,4 @@
-# $Id: Makefile.in,v 1.4 1997/03/24 01:34:46 fritz Exp $
+# $Id: Makefile.in,v 1.5 1997/03/29 15:05:12 fritz Exp $
 #
 # Makefile for icnctrl
 # (C) 1997 Fritz Elfert
@@ -6,7 +6,7 @@
 #
 SHELL			= /bin/sh
 CFLAGS			= -Wall -O2
-INCLUDES		= -I. @DEBUGVAR@ -I@KERNELDIR@drivers/isdn/icn
+INCLUDES		= -I. @DEBUGVAR@ -I@KERNELDIR@/drivers/isdn/icn
 DEFS			=
 LDFLAGS			= -L../lib @LIBS@
 PROGRAM			= icnctrl

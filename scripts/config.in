@@ -1,5 +1,5 @@
 #
-# $Id: config.in,v 1.14 1997/03/25 02:35:11 fritz Exp $
+# $Id: config.in,v 1.15 1997/03/29 15:05:34 fritz Exp $
 #
 # The whole configuration stuff is borrowed from the kernel
 # configuration.
@@ -20,6 +20,7 @@ mainmenu_option next_comment
 comment 'General configuration'
 comment 'Build options'
 dep_bool 'Build programs which need X11 installed' CONFIG_BUILDX11 $CONFIG_HASX11
+string 'Kernel source directory' CONFIG_KERNELDIR
 comment 'Destination directories'
 string 'Directory to install binaries' CONFIG_BINDIR
 string 'Directory to install admin binaries' CONFIG_SBINDIR
