@@ -719,7 +719,7 @@ test -z "$INSTALL_DATA" && INSTALL_DATA='${INSTALL} -m 644'
 
 I4LCONFDIR=${I4LCONFDIR:-"/etc/isdn"}
 I4LVERSION=${I4LVERSION:-"?.?"}
-MANDATE=`grep CHECKIN icnctrl.man.in | awk '{print $4}'`
+MANDATE=`grep CHECKIN avmcapictrl.man.in | awk '{print $4}'`
 
 
 echo $ac_n "checking how to run the C preprocessor""... $ac_c" 1>&6
