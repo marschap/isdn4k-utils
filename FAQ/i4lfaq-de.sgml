@@ -647,6 +647,7 @@ mit den Patches von Karsten - Kernel 2.0.21, HiSax
 Z.Zt. unterst&uuml;tzen folgende Karten das CAPI 2.0 Interface:
 <itemize>
 <item> die aktive Karte AVM B1.  
+<item> die aktiven DIVA Server Karten von Eicon.  
 <item> die aktiven Karten von Hypercope (HYSDN Champ2, HYSDN Ergo2,
 HYSDN Metro4)
 <item> die passive FritzCard von AVM. Dazu musst Du jedoch die als

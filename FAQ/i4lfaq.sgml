@@ -507,6 +507,7 @@ dosemu) is started.  Tested with the following configurations:
 Currently, these cards support the CAPI 2.0 interface:
 <itemize>
 <item> the active card AVM B1.
+<item> the active DIVA Server cards from Eicon.
 <item> the active cards from Hypercope (HYSDN Champ2, HYSDN Ergo2,
 HYSDN Metro4)
 <item> the passive Fritz card from AVM. However, please note that you
