@@ -1149,32 +1149,6 @@ EOF
 		
 	fi
 
-	OLD_CPPFLAGS="$CPPFLAGS"
-	CPPFLAGS="-nostdinc -I${CONFIG_KERNELDIR}/include"
-	have_abcext="no"
-	echo $ac_n "checking for ABC-Extension in ${CONFIG_KERNELDIR}/include/linux/autoconf.h""... $ac_c" 1>&6
-	cat > conftest.$ac_ext <<EOF
-#line 1648 "configure"
-#include "confdefs.h"
-#include <linux/autoconf.h>
-int main() { return 0; }
-int t() { int x = CONFIG_ISDN_WITH_ABC;
-; return 0; }
-EOF
-if eval $ac_compile; then
-  rm -rf conftest*
-  have_abcext="yes"
-fi
-rm -f conftest*
-
-	echo "$ac_t"""${have_abcext}"" 1>&6
-	CPPFLAGS="$OLD_CPPFLAGS"
-	if test "$have_abcext" != "no" ; then
-		cat >> confdefs.h <<\EOF
-#define HAVE_ABCEXT 1
-EOF
-	fi
-
 
 echo $ac_n "checking for -ldbm""... $ac_c" 1>&6
 ac_lib_var=`echo dbm | tr '+./' 'p__'`
@@ -1468,7 +1442,6 @@ s%@CONFIG_KERNELDIR@%$CONFIG_KERNELDIR%g
 s%@HAVE_TRIGGERCPS@%$HAVE_TRIGGERCPS%g
 s%@HAVE_CISCOKEEPALIVE@%$HAVE_CISCOKEEPALIVE%g
 s%@HAVE_TIMRU@%$HAVE_TIMRU%g
-s%@HAVE_ABCEXT@%$HAVE_ABCEXT%g
 s%@INSTALL@%$INSTALL%g
 s%@DBMLIB@%$DBMLIB%g
 s%@MANDATE@%$MANDATE%g

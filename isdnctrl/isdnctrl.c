@@ -1,4 +1,4 @@
-/* $Id: isdnctrl.c,v 1.22 1998/06/09 18:11:31 cal Exp $
+/* $Id: isdnctrl.c,v 1.23 1998/06/12 12:09:53 detabc Exp $
  * ISDN driver for Linux. (Control-Utility)
  *
  * Copyright 1994,95 by Fritz Elfert (fritz@wuemaus.franken.de)
@@ -21,6 +21,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnctrl.c,v $
+ * Revision 1.23  1998/06/12 12:09:53  detabc
+ * cleanup abc
+ *
  * Revision 1.22  1998/06/09 18:11:31  cal
  * added the command "isdnctrl name ifdefaults": the named device is reset
  * to some reasonable defaults.
@@ -188,12 +191,6 @@
 #define _ISDNCTRL_C_
 #include "isdnctrl.h"
 
-#undef HAVE_ABCEXT
-/*
-** wegen einstweiliger verfuegung gegen DW ist zur zeit
-** die abc-extension bis zur klaerung der rechtslage nicht
-** im internet verfuegbar
-*/
 
 #ifdef I4L_CTRL_CONF
 #	include "../lib/libisdn.h"
@@ -249,17 +246,10 @@ void usage(void)
         fprintf(stderr, "    callback name [in|outon|off]\n");
         fprintf(stderr, "                               get/set active callback-feature for interface\n");
         fprintf(stderr, "    cbhup name [on|off]        get/set reject-before-callback for interface\n");
-#ifdef HAVE_ABCEXT
-        fprintf(stderr, "    cbdelay name [200 milli-seconds]     get/set delay before callback for interface\n");
-#endif
         fprintf(stderr, "    dialmax name [num]         get/set number of dial-atempts for interface\n");
         fprintf(stderr, "    dialtimeout name [seconds] get/set timeout for successful dial-attempt\n");
         fprintf(stderr, "    dialwait name [seconds]    get/set waittime after failed dial-attempt\n");
-#ifdef HAVE_ABCEXT
-        fprintf(stderr, "    encap name [-UTA][encapname]     (get/set packet-encapsulation for interface)\n");
-#else
         fprintf(stderr, "    encap name [encapname]     get/set packet-encapsulation for interface\n");
-#endif
         fprintf(stderr, "    l2_prot name [protocol]    get/set layer-2-protocol for interface\n");
         fprintf(stderr, "    l3_prot name [protocol]    get/set layer-3-protocol for interface\n");
         fprintf(stderr, "    bind name [drvId,channel [exclusive]]\n");
@@ -294,11 +284,6 @@ void usage(void)
         fprintf(stderr, "    writeconf [file]           write the settings to file\n");
         fprintf(stderr, "    readconf [file]            read the settings from file\n");
 #endif /* I4L_CTRL_CONF */
-#ifdef HAVE_ABCEXT
-		fprintf(stderr,"Note: ABC   Ctrl   Extension-Support enabled\n");
-#else
-		fprintf(stderr,"Note: ABC   Ctrl   Extension-Support disabled\n");
-#endif
 #ifdef I4L_CTRL_TIMRU
 		fprintf(stderr,"Note: TIMRU Ctrl   Extension-Support enabled\n");
 #else
@@ -437,11 +422,7 @@ static void listif(int isdnctrl, char *name, int errexit)
                 printf("Hangup after Dial       %s\n", cfg.cbdelay ? "on" : "off");
         else
                 printf("Reject before Callback: %s\n", cfg.cbhup ? "on" : "off");
-#ifdef HAVE_ABCEXT
-        printf("Callback-delay:         %.1f\n", cfg.cbdelay / 25.0);
-#else
         printf("Callback-delay:         %d\n",cfg.cbdelay / 5);
-#endif
         printf("Dialmax:                %d\n", cfg.dialmax);
 #ifdef HAVE_TIMRU
         printf("Dial-Timeout:           %d\n", cfg.dialtimeout);
@@ -457,38 +438,7 @@ static void listif(int isdnctrl, char *name, int errexit)
         	printf("Charge-Interval:        %d\n", cfg.chargeint);
         printf("Layer-2-Protocol:       %s\n", num2key(cfg.l2_proto, l2protostr, l2protoval));
         printf("Layer-3-Protocol:       %s\n", num2key(cfg.l3_proto, l3protostr, l3protoval));
-#ifdef HAVE_ABCEXT
-		{
-			int i = cfg.p_encap / 1000;
-			char buf[8];
-			char *xx = buf;
-
-			if(i) {
-
-				*(xx++) = '[';
-				*(xx++) = '-';
-			}
-
-			if(i & 1)
-				*(xx++) = 'A';
-
-			if(i & 2)
-				*(xx++) = 'U';
-
-			if(i & 4)
-				*(xx++) = 'T';
-
-			if(xx > buf)
-				*(xx++) = ']';
-
-			*xx = 0;
-
-			printf("Encapsulation:          %s%s\n", buf,
-				num2key(cfg.p_encap % 1000,pencapstr,pencapval));
-		}
-#else
         printf("Encapsulation:          %s\n", num2key(cfg.p_encap, pencapstr, pencapval));
-#endif
         printf("Slave Interface:        %s\n", strlen(cfg.slave) ? cfg.slave : "None");
         printf("Slave delay:            %d\n", cfg.slavedelay);
 		if (data_version < 3)
@@ -912,13 +862,7 @@ int exec_args(int fd, int argc, char **argv)
 			        		return -1;
 			        	}
 			        }
-#ifdef HAVE_ABCEXT
-			        printf("Callback delay for %s is %.1f sec.\n",
-						cfg.name,
-						cfg.cbdelay / 25.0);
-#else
 			        printf("Callback delay for %s is %d sec.\n", cfg.name, cfg.cbdelay / 5);
-#endif
 			        break;
 
 			case CHARGEINT:
@@ -1208,32 +1152,6 @@ int exec_args(int fd, int argc, char **argv)
 			        	return -1;
 			        }
 			        if (args == 2) {
-#ifdef HAVE_ABCEXT
-						int abc_encap = 0;
-						char *xx = arg1;
-						char *yy = arg1;
-
-						if(*xx == '-') {
-
-							for(xx++; *xx != 0 &&
-								(*xx == 'A' || *xx == 'T' || *xx == 'U');xx++) {
-
-								switch(*xx) {
-								case 'a':
-								case 'A':   abc_encap |= 1;     break;
-								case 'u':
-								case 'U':   abc_encap |= 2;     break;
-								case 't':
-								case 'T':   abc_encap |= 4;     break;
-								}
-							}
-
-							while(*xx)
-								*(yy++) = *(xx++);
-
-							*yy = 0;
-						}
-#endif
 			        	i = key2num(arg1, pencapstr, pencapval);
 			        	if (i < 0) {
 			        		fprintf(stderr, "Encapsulation must be one of the following:\n");
@@ -1242,56 +1160,14 @@ int exec_args(int fd, int argc, char **argv)
 			        			fprintf(stderr, "\t\"%s\"\n", pencapstr[i++]);
 			        		return -1;
 			        	}
-#ifdef HAVE_ABCEXT
-						if(i != ISDN_NET_ENCAP_RAWIP && !!(abc_encap)) {
-
-							fprintf(stderr,
- "ABC-Router (-A Option) works only with rawip Encaksulation (sorry) !\n");
-
-							return(-1);
-						}
-
-						i += abc_encap * 1000;
-#endif
 			        	cfg.p_encap = i;
 			        	if ((result = ioctl(fd, IIOCNETSCF, &cfg)) < 0) {
 			        		perror(id);
 			        		return -1;
 			        	}
 			        }
-#ifdef HAVE_ABCEXT
-					{
-						int i = cfg.p_encap / 1000;
-						char buf[8];
-						char *xx = buf;
-
-						if(i) {
-
-							*(xx++) = '[';
-							*(xx++) = '-';
-						}
-
-						if(i & 1)
-							*(xx++) = 'A';
-
-						if(i & 2)
-							*(xx++) = 'U';
-
-						if(i & 4)
-							*(xx++) = 'T';
-
-						if(xx > buf)
-							*(xx++) = ']';
-
-						*xx = 0;
-
-						printf("Encapsulation:          %s%s\n", buf,
-							num2key(cfg.p_encap % 1000,pencapstr,pencapval));
-					}
-#else
 			        printf("Encapsulation for %s is %s\n", cfg.name,
 			             num2key(cfg.p_encap, pencapstr, pencapval));
-#endif
 			        break;
 
 			case RESET:
