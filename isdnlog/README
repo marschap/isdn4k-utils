@@ -1,10 +1,10 @@
-ISDNLOG - Version 3.29 -  				15-May-99  14:31
+ISDNLOG - Version 3.31 -  				09-Jun-99  23:25
 
 
 isdnlog ist ein Utility zur Auswertung des D-Kanals eines
 ISDN-BRI Anschlusses.
 
-isdnlog-3.29 wurde ausgiebig mit Linux-2.0.36 getestet.
+isdnlog-3.31 wurde ausgiebig mit Linux-2.0.36 getestet.
 
 
 Fuer alle, die es nun ueberhaupt nicht mehr abwarten koennen, hier das
@@ -4128,7 +4128,7 @@ weiss isdnlog, das alle Nummern, die mit "110", "112", "0010", "0130" oder
 
 Hiermit wird letztendlich der eigentliche Tarif angegeben.
 
-T:Tag/Zeit=Kosten[,Kosten] Name
+T:Tag[-Spanne][,Tag]/Zeit[-Spanne][,Zeit]=Kosten[,Kosten] Name
 
 wobei Tag in der Form 1-5 oder 1,2,3,4,5 stehen kann, 1=Montag, es gibt
 noch * fuer alle Tage und H fuer Holiday=Feiertag sowie
