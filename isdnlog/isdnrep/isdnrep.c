@@ -1,4 +1,4 @@
-/* $Id: isdnrep.c,v 1.15 1997/05/04 22:23:15 luethje Exp $
+/* $Id: isdnrep.c,v 1.16 1997/05/05 21:04:21 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -20,6 +20,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnrep.c,v $
+ * Revision 1.16  1997/05/05 21:04:21  luethje
+ * README completed
+ * some changes for the isdnmon
+ *
  * Revision 1.15  1997/05/04 22:23:15  luethje
  * README completed
  * new features of the format string
@@ -564,7 +568,7 @@ static int print_bottom(double unit, char *start, char *stop)
 	{
 		if ((j == DIALOUT && !incomingonly) || (!outgoingonly && j == DIALIN))
 		{
-			sprintf(string,"\n%s Summary for %s%s%s\n",j==DIALOUT?"DIALOUT":"DIALIN",
+			sprintf(string,"\n%s Summary for %s%s%s",j==DIALOUT?"DIALOUT":"DIALIN",
 			              start,timearea?" .. ":"",timearea?stop:"");
 
 			h_percent = 80.0;

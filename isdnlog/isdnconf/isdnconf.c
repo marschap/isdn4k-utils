@@ -1,4 +1,4 @@
-/* $Id: isdnconf.c,v 1.6 1997/04/15 00:20:01 luethje Exp $
+/* $Id: isdnconf.c,v 1.7 1997/05/05 21:04:15 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -19,6 +19,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnconf.c,v $
+ * Revision 1.7  1997/05/05 21:04:15  luethje
+ * README completed
+ * some changes for the isdnmon
+ *
  * Revision 1.6  1997/04/15 00:20:01  luethje
  * replace variables: some bugfixes, README comleted
  *
@@ -59,6 +63,8 @@ static int msn    = 0;
 static int quiet  = 0;
 static int short_out= 0;
 static int long_out= 0;
+static int oneentry= 0;
+static int isdnmon = 0;
 
 static int match_flags = F_NO_HOLE_WORD;
 
@@ -378,6 +384,9 @@ int look_data(section **conf_dat)
 					find_data(_alias,_number,*conf_dat);
 					Cnt++;
 				}
+
+				if (oneentry)
+					break;
 			}
 		}
 
@@ -467,7 +476,7 @@ int main(int argc, char *argv[], char *envp[])
 	FILE *fp;
 
 	static char usage[]   = "%s: usage: %s [ -%s ]\n";
-	static char options[] = "ADdn:a:t:f:c:wslimqgV";
+	static char options[] = "ADdn:a:t:f:c:wslimqgV1M:";
 
 
 	set_print_fct_for_tools(print_in_modules);
@@ -516,6 +525,16 @@ int main(int argc, char *argv[], char *envp[])
 			case 'w' : match_flags &= ~F_NO_HOLE_WORD;
 			           break;
 
+			case 'M' : isdnmon++;
+			           oneentry++;
+			           quiet++;
+			           strcpy(areacode, optarg);
+			           strcpy(number, optarg);
+			           break;
+
+			case '1' : oneentry++;
+			           break;
+
 			case 'q' : quiet++;
 			           break;
 
@@ -531,6 +550,12 @@ int main(int argc, char *argv[], char *envp[])
 			case '?' : print_msg(PRT_ERR, usage, myname, myname, options);
 			           return(1);
     }
+
+	if (isdnmon && (add || del || short_out || long_out))
+	{
+		print_msg(PRT_ERR,"Error: Can not do isdnmon output and delete or add or short or long!\n",conffile);
+		exit(7);
+	}
 
 	if (add || del)
 	{
@@ -599,13 +624,16 @@ int main(int argc, char *argv[], char *envp[])
 	{
 		char *ptr;
 		
-		if ((ptr = get_areacode(areacode,NULL,0)) != NULL)
+		if ((ptr = get_areacode(areacode,NULL,quiet?C_NO_ERROR|C_NO_WARN:0)) != NULL)
 		{
-			print_msg(PRT_NORMAL,"%s\n",ptr);
-			exit(0);
+			print_msg(PRT_NORMAL,"%s%s",ptr,isdnmon?" ":"\n");
+
+			if (!isdnmon)
+				exit(0);
 		}
 		else
-			exit(3);
+			if (!isdnmon)
+				exit(3);
 	}
 
 	if (optind < argc && !add)

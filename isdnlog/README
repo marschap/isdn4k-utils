@@ -1,7 +1,4 @@
 # Lock und PID-Files
-# Beschreibung, was bei der Installation genau gemacht werden muss
-# und was gemacht wird.
-# (isdn.conf vorhanden oder neu)
 ISDNLOG - Version 3.0 -  				4-Mai-97  22:09
 
 
@@ -617,20 +614,32 @@ Gebuehrenimpuls wird mit 0.12 multipliziert, und mit der Bezeichnung
 In einigen europaeischen Laendern werden diese beiden Parameter bereits
 von der VSt uebertragen (z.b. Oesterreich), und brauchen daher nicht
 angegeben zu werden.
+
+**********Andreas, stimmt das noch??????????????????????????
   ACHTUNG: In der vorliegenden Version werden diese beiden Parameter
   noch nicht an isdnrep uebergeben, und muessen daher bei Einsatz des
   "isdnrep" trotz Uebermittlung von der VSt eingetragen werden!
   Defaultmaessig steht im isdnrep "0.12,DM". Daher entfaellt diese
   Angabe fuer Deutschland.
 
-  Wenn man zum Beispiel die Nettogebuehren (ohne MwSt.) sich anzeigen
-  lassen will, kann man hier z. B. folgenden Wert setzen:
+Wenn man zum Beispiel sich die Nettogebuehren (ohne MwSt.) anzeigen
+lassen will, kann man hier z.B. folgenden Wert setzen:
 
-  CURRENCY=0.1043,DM
+CURRENCY=0.1043,DM
 
 Fuer den isdnrep kann man einen oder mehrere Formatsstrings definieren,
 wie der isdnrep die einzelnen Gebuehren anzeigen soll. Die genaue Syntax
 wird unter dem Kapitel isdnrep beschrieben.
+
+Der Formatstring kann in Hochkommata eingeschlossen werden. Dieses ist
+sinnvoll, wenn das erste Zeichen ein Leerzeichen oder ein Tabulator
+sein sollte. Dabei ist zu beachten, falls ein Hochkomma im Formatstring
+selber vorkommen soll, dass dieses zu quoten ist.
+Dieses gilt fuer ILABEL, OLABEL und auch REPFMT.
+
+Beispiel:
+
+REPFMT = "%X\"%x"
 
 Alle Formateintraege sind optional. Bei der Installation werden diese
 allerdings erzeugt.
@@ -1010,8 +1019,8 @@ die Vorwahl enthalten.
 
 Im DSS1 ist dieses ziemlich egal. Man kann die Nummern so eintragen, wie man
 sie vom eigenen Telefon waehlen wuerde. Es muss die Voreinstellungen der
-Installation beruecksichtigt werden. Die Werte von S_PREFIX_AREA
-und S_PREFIX_COUNTRY, wie sie waehrend der Installation eingestellt wurden,
+Installation beruecksichtigt werden. Die Werte von AREACODE
+und COUNTRYCODE, wie sie waehrend der Installation eingestellt wurden,
 werden so ueberall uebernommen.
 
 Es ist aber empfehlenswert ueberall die Vorwahl mit anzugeben (ist auch bei
@@ -1034,7 +1043,7 @@ NUMBER = 4711, 4712, +49 815/4713
 Es werden alle NICHT-Zahlen dort herausgefiltert, bis auf die Wildcards '?',
 '*' und "[]"
 
-Ein Plus '+' am Anfang wird durch S_PREFIX_COUNTRY ersetzt.
+Ein Plus '+' am Anfang wird durch COUNTRYCODE ersetzt.
 
 Alle Telefonnummern koennen die ueblichen Wildcard-Symbole enthalten,
 also "?" matched genau ein Zeichen, "*" matched beliebig viele
@@ -1042,6 +1051,8 @@ also "?" matched genau ein Zeichen, "*" matched beliebig viele
 moegliche Zeichen angegeben werden (oder auch eine Range [4-7], oder auch
 die Verneinung, also [!6])
 
+Es ist auch moeglich, mehrere Telefonnummern unter einem Eintrag zu setzen.
+Die einzelnen Nummern werden dann durch ein Komma getrennt.
 
 4.2.2 2. Eintrag: Alias [ALIAS]
 -------------------------------
@@ -1116,7 +1127,10 @@ jedes Event. Hier folgt nun ein Beispiel. Die Erklaerung folgt anschliessend:
 NUMBER    = 4711
 SI        = 1                  # Das normale Telefon
 ALIAS     = Phone
+ZONE      = 1
 START     = {                  # Beginn der Untersektionen
+                               # Die geschweifte Klammer muss in der gleichen
+                               # Zeile stehen, wie "START =" !!!!
 	[FLAG]
 	FLAGS   = I|O|R              # alternativ geht auch FLAGS=IORA
 	PROGRAM = auplay ring.au
@@ -1136,7 +1150,7 @@ Unter dieser Sektion sind nun verschiedene Eintraege zu finden. Die folgende
 Reihenfolge muss allerdings innerhalb der Sektion nicht eingehalten werden:
 
 Eintrag Flags:
-------
+--------------
 
 Hier wird angegeben, bei welchem Event das Info-Programm gestartet werden
 soll. Es koennen eine beliebige Menge aus folgenden Flag-Gruppen angegeben
@@ -1948,6 +1962,10 @@ Wenn isdnlog ein zweites mal gestartet wird mit dem gleichen Device, beendet
 er sich sofort wieder, da nur ein isdnlog gleichzeitig auf einem
 device laufen kann.
 
+Ebenfalls wird unter dem Verzeichnis /var/lock (LOCKDIR) eine Datei namens
+LCK..'device' angelegt. Auch diese Datei wird bei der Beendigung wieder
+geloescht.
+
 Muessen mehrere isdnlog's gleichzeitig gestartet werden, muessen diese mit
 Hilfe von Links gestartet werden. Z. B. ln -s isdnlog isdnlog1
 
@@ -2604,7 +2622,6 @@ Einheiten gemeldet (Charging-Info fehlte)
 Daher steht dann hier die von isdnrep errechnete Anzahl Einheiten.
 
 
-*************** Bis hier ist sl gekommen, die Doku zu ueberarbeiten ***********
 11. Das Konfigurations-Tool isdnconf
 ------------------------------------
 
@@ -2772,6 +2789,11 @@ Kommentare werden geloescht.
   -g          "global"  Hat nur Auswrikungen bei den Befehlen -A und -D. Es
                         wird dann anstatt der ~/.isdn die Datei
                         /etc/isdn/callerid.conf genommen zum editieren.
+
+  -1          "first"   loescht nur den ersten Eintrag oder zeigt nur den
+                        ersten Eintrag an.
+
+  -M          "isdnmon" liefert den Output fuer den isdnmon.
 
 
 12. Der X-Client xisdn
