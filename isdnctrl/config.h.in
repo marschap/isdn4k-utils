@@ -23,3 +23,6 @@
 
 /* Define if you have the TIMRU facility.  */
 #undef HAVE_TIMRU
+
+/* Define if you have the ABC-Extension facility.  */
+#undef HAVE_ABCEXT
