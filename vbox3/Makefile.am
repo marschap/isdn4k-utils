@@ -1,5 +1,5 @@
 ##
-## Makefile.am - (C) 1998 Michael Herold
+## $Id: Makefile.am,v 1.4 1998/06/19 12:26:22 michael Exp $
 ##
 
 ## GNU automake options ##################################################
