@@ -1,21 +1,20 @@
-$Id: TODO,v 1.3 1999/07/25 21:55:28 he Exp $
+$Id: TODO,v 1.4 1999/07/26 22:04:27 he Exp $
 
 
 Important:
 
+   The server and client initially need to run with root priviliges.
+   Thus, those parts need careful review by experienced unix
+   programmers who should watch out for potential securirity hazards.
+
+   In particular buffer overflows triggered by cmd line options or
+   environment (eftp) or received protocol data units (eftd)
    The server authentication procedure is a port from wu-ftpd.
-   Review user authentication procedures for possible security
-   hazards. Check 0-Termination of received string parameters.
-
-   Make eftp usable by none-root users. Network interfaces and
-   X.25 routes are needed to be set up before the isdn connection
-   can be set up, which is currently done by the eftp.sh shell script
-   which needs to be run from root. The latter is not acceptable for a
-   general purpose release. (in progress)
-
+   Check 0-Termination of received string parameters.
 
 Not showstoppers, but should be done before a possible stable release:
 
+	- 'make install', with reasonable default config files.
 	- remove old execve()/script rleated stuff from setup/autoconf
 	- more casefix testing with new mangeling method
 	- selectivly and automatically (for filesystems not supporting
@@ -24,15 +23,14 @@ Not showstoppers, but should be done before a possible stable release:
 	- certain disconnect scenarios result in error/warning
           messages which are harmless, but might confuse novice users.
 	  (in particualar, release/wait for release seems to be buggy)
+	- make eftp command input working when stdin is a pipe.
+	- scan all source files for FIXME/XXX/#if 0 labels and
+	  try cleaning this up.
 	- improve autoconf readline support (support non-default 
           locations of libreadline and lib[n]curses).
-	- 'make install', with reasonable default config files.
-	- make eftp command input working when stdin is a pipe.
 	- autoconf is somewhat ugly as several configuration variable
 	  are passed to the source files by different channels
 	  (config.h, -D option) and name schemes are inconsistent.
-	- scan all source files for FIXME/XXX/#if 0 labels and
-	  try cleaning this up.
 	- improved event logging (with error indications and
 	  distinction of successful/failed requests).
 	- improved parameter logging within events (handle unset

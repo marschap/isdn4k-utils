@@ -1,4 +1,4 @@
-/* $Id: CHANGES,v 1.4 1999/07/25 21:55:25 he Exp $
+/* $Id: CHANGES,v 1.5 1999/07/26 22:04:24 he Exp $
 #  Change log for eftp4Linux
 #
 # [new] means 'new feature added'
@@ -18,6 +18,15 @@
 #
 
 $Log: CHANGES,v $
+Revision 1.5  1999/07/26 22:04:24  he
+eftp suid support
+
+
+- [imp] eftp.c, eft_i4l.c: suid support with isdn connect permission
+	check added.
+- [chg] eftd.sh, eft.conf and several other doc files modified to
+	reflect above changes
+
 Revision 1.4  1999/07/25 21:55:25  he
 Changes for eftp supervisor based call control
 

@@ -1,4 +1,4 @@
-/* $Id: eftp.c,v 1.2 1999/07/25 21:56:04 he Exp $ */
+/* $Id: eftp.c,v 1.3 1999/07/26 22:04:57 he Exp $ */
 /*
   Copyright 1997 by Henner Eisen
 
@@ -469,10 +469,15 @@ static void show_help(char *cmd)
 
 int main(int argc, char **argv)
 {
+/*
+ * CAUTION: The initial code part might execute suid root.
+ * See further remarks below if you change eftp.c
+ */
 	struct sockaddr_x25 x25bind, x25connect;
 	struct x25_route_struct x25_route;
 	int s, count, on=1, selval, prompt_for_pw = 1;
 	unsigned char called[TDU_PLEN_ADDR+1], udata[TDU_PLEN_UDATA+1];
+	uid_t ruid, euid;
 
 	fd_set rfds;
 
@@ -525,6 +530,8 @@ int main(int argc, char **argv)
 		}
 	}
 
+	ruid = getuid();
+	euid = geteuid();
 	if( isdn_no ){
 		/* 
 		 * If the destinatioin is given by means of an isdn number,
@@ -545,9 +552,24 @@ int main(int argc, char **argv)
 		 */  
 		pid_t pid;
 
+		/*
+		 * First we check if the user is allowed to open outgoing
+		 * isdn connections. We assume that the user is allowed to
+		 * do so if he has write permissions to /dev/ttyI0.
+		 * (In that case, the user could also open outgoing
+		 * connections by writing AT commands to /dev/ttyI0).
+		 */
+#define EFTP_PERMISSION_CHECK_FILE "/dev/ttyI0"
+		if( access(EFTP_PERMISSION_CHECK_FILE,W_OK) ){
+			perror("eftp: User is not allowed to open outgoing "
+			       "isdn connections: \n\t" 
+			       EFTP_PERMISSION_CHECK_FILE );
+			exit(1);
+		}
+
 		fprintf(stderr, "Setting up isdn x25 network interface\n");
 		if( eft_get_x25route(&x25connect,&x25_route,isdn_no) ){
-			perror("eftp: unable to get an X.25 route for isdn number");
+			fprintf(stderr,"eftp: unable to get an X.25 route for isdn number %s\n",isdn_no);
 			exit(1);
 		}
 		pid = fork();
@@ -563,7 +585,8 @@ int main(int argc, char **argv)
 			 * capability)
 			 */
 			int status, err=0;
-
+			
+			setreuid(euid,euid);
 			close(s);
 			eft_wait_release_route();
 			eft_release_route(&x25_route);
@@ -590,7 +613,7 @@ int main(int argc, char **argv)
 		} else {
 			/* Child process
 			 *
-			 * Just contiunue processing the protocol
+			 * Just contiunue processing the protocol.
 			 */
 			;
 		}
@@ -601,6 +624,20 @@ int main(int argc, char **argv)
 			" Assuming route to empty X.25 address\n");
 		strcpy(x25connect.sx25_addr.x25_addr, "");
 	}
+	/* 
+	 * Never remove this, otherwise a suid eftp might continue to
+	 * run with full root priviliges!
+	 */
+	setreuid(ruid,ruid);
+	/* 
+	 * Further, any code before the above statement must be carefully
+	 * written to resist any kind of suid attacks.
+	 *
+	 * Be aware of this if you change eftp.c! In particular, make shure
+	 * that new/modified code does not allow for buffer overflow attacks
+	 * by means of command line arguments or environment variables.
+	 * The same holds for code of any function called from above.
+	 */
 
 	/* build ident string [uid/password] from various input sources */
 	ident = NULL;

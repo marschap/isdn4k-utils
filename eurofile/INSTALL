@@ -31,6 +31,9 @@ ISDN subsystem  --->
 	(if this menu entry is missing, you probably havn't
 	enabled the X25 PLP support from the networking options).
 
+	Further, beside your standard isdn HL drivers, also enable
+	the isdnloop driver (preferably as a module). 
+
 Set all other options as usual and then compile your kernel, i.e.
 
 make dep
@@ -80,12 +83,16 @@ isdn4k-utils
   The 3.0beta2 package is availabe from ftp.franken.de
 
 
-x25-utils
+x25_utils
 =========
 
-If you want to use the eftp programme (Eurofile client), you need the
-x25_route utility from the x25_utils package. The eurofile server
-can also be used without that package.
+The x25_utils are no longer strictly necessary for basic operation of
+the eftp4linux packages. But some sections in the script (those
+releted to local testing with the isdnloop driver and debugging)
+might require the x25_route and the x25_trace utility. Thus, it
+is recommended to install the x25_utils package. Otherwise, the
+corresponding features (in particular local testing with the isdnloop
+driver) of the eftd.sh script cannot be used.
 
 The package should be available from the same site as this eftp4linux
 packages or from ftp.hes.iki.fi:/pub/ham/linux/ax25/    (don't confuse
@@ -95,7 +102,6 @@ Make sure that the compiler/preprocessor finds the include/linux/x25.h
 file. Either add some flags to the makefile or make /usr/src/linux a
 symbolic link pointing to your pre2.2 kernel's include/linux directory.
 
-		
 
 This eftp4linux package
 =======================
@@ -151,7 +157,7 @@ of your developer kernel's source tree.
 Boot your linux 2.2.x kernel. The isdn subsystem should be
 set up to a state where a HL driver capable of l2_prot x75i is
 working. If your boot sequence ends up in a state where you can set up
-connections on the /dev/ttyI devices, then you are already done with this.
+connections on the /dev/ttyI* devices, then you are already done with this.
 After that, you need to insmod the x25 module with
 
 insmod x25
@@ -160,7 +166,7 @@ modprobe x25
 
 Copy the file eft.conf present in the examples directory to the
 I4LCONFDIR (probably /etc/isdn) and edit it in order to configure
-the MSNs to be used by the EUROFILE client and server.
+the MSNs to be used by your EUROFILE client and server.
 
 
 Starting the Eurofile server
@@ -185,15 +191,38 @@ Starting the Eurofile client
 ============================
 
 
-To start the client, there is also a script "eftp.sh" (this currently
-also needs to be started from the root user, but the script
-does a 'cd /tmp' and changes the uid before the client is executed)
+To start the client, type
+
+eftp -i ISDN_NO -u USER
+
+where ISDN_NO specifies the isdn number of the remote server and USER
+is the login name on the remote server.
+
+root priviliges are needed for doing so. If this is undesireable,
+there is also support for running eftp suid root now. Refer to the
+eftp documentation in the doc directory for details before doing so.
+
+It is also possible to test eftp and eftd locally with the isdnloop
+driver module (no paying isdn connections involved, no root
+permissions for eftp necessary). To do so, uncomment the
+"EFTD_WITH_LOOP=y" in eftd.sh before you start it (or put such a
+line in your /etc/isdn/eft.conf file). Then, simply type
+
+eftp -x 1 -u USER
+
+where USER is your unix login name on your machine and enter your login
+password when prompted. For this to work, you need the x25_route
+programme from the x25_utils installed and you also must have compiled and
+installed the isdnloop driver kernel module.
+
+
+There is also an old script "eftp.sh" (this needs to be started from the
+root user, but the script does a 'cd /tmp' and changes the uid before
+the client is executed)
 
 eftp.sh ISDN_NUMBER [USER/PASSWD]
 
 in order to start an EUROFILE client and connect to a remote eft server.
-(root privileges are currently needed for setting up the network
-interfaces -- this will be worked around in a future release).
 Note that typing the password on the command line is not safe if
 your system is shared with other users who might spoof your password
 with the ps command. It also leaves traces in your command history file.
@@ -202,3 +231,7 @@ You can also connect to your own server on top of the isdnloop driver
 (no paying isdn connection involved) by
 
 eftp.sh localhost [USER/PASSWD]
+
+
+
+

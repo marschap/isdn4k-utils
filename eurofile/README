@@ -1,7 +1,7 @@
-$Id: README,v 1.2 1999/06/29 18:37:13 he Exp $
+$Id: README,v 1.3 1999/07/26 22:04:26 he Exp $
 
-README file for eftp4linux-0.0.10
-=================================
+README file for eftp4linux
+==========================
 
 eftp4linux is an Open Source (tm) implementation of the
 EUROFILE Transfer Protocol as standardised by a set of ETSI norms
@@ -25,12 +25,6 @@ Read the COPYING* files present in the distribution for further details.
 
 WHAT'S NEW
 ==========
-
-Main changes with respect to 0.0.8:
-
-- better script (MSN sharing) support for serving multiple connections
-- improved event logging
-- some bug fixes
 
 See the CHANGES file for details.
 

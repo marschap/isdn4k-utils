@@ -1,4 +1,4 @@
-$Id: eftp,v 1.2 1999/07/01 18:00:27 he Exp $
+$Id: eftp,v 1.3 1999/07/26 22:04:33 he Exp $
 
 Sorry, rather incomplete and not in man page format.
 
@@ -10,25 +10,25 @@ interface roughly resembling the ftp client.
 
 Synopsis:
 
-eftp should currently not be invoked directly be the user but by means of
-the eftp.sh shell script:
+	eftp [ -i ISDN_NO ] [ -x X25_ADDRESS ] [ -u USER[/PASSWORD] ]
+		[-p] [-h]
+ 
+Novice users are initially recommended to invoke eftp as
 
-	eftp.sh ISDN_NUMBER [ID]
+	eftp -i ISDN_NO -u USER
 
-where ISDN_NUMBER is the isdn number of the peer server to connect to.
-ID is usually entered as USER or USER/PASSWD, consisting of the
-userid and the password on the remote EUROFILE server.
+where ISDN_NO specifies the isdn number of the remote server and USER
+is the login name on the remote server
 
-Future versions of eftp will support the following command line
-options:
+eftp supports the following command line options:
 
 	-i ISDN_NO
 			specify the isdn no of the remote EUROFILE
 			server to connect to. The client will try to
 			set up an isdn connection to this number and
 			an X.25 DTE-DTE connection on top of this.
-
-	-x X.25_ADDRESS
+	
+	-x X25_ADDRESS
 			directly specify the X.25 address used for
 			setting up the X.25 connection. For eftp to
 			work, an X.25 route for that address must
@@ -36,7 +36,11 @@ options:
 			to an isdn4linux network interface that is
 			configured for outgoing connections to a
 			destination EUROFILE server. The encapsulation
-			of the interface must be "x25iface".
+			of the interface must be "x25iface", l2_prot
+			must be x75i.
+
+	If neither -i nor -x option is specified, the behavior is like
+	an empty string -x option ( as if called like  "eftp -x ''" ) 
 
 	-u USER[/PASSWORD]
 			The user identity used to login to the
@@ -49,10 +53,10 @@ options:
 CAUTION:
 
 	Entering the password on the command line allows other users
-	to spoof the password, i.e. by means of the ps command. The
-	password might also leave other traces, i.e. in your shell's
+	to spoof the password, e.g. by means of the ps command. The
+	password might also leave other traces, e.g. in your shell's
 	history file. Thus, DON'T include the passwd in the -u argument
-	on machines where this is a concern (i.e. when untrusted users
+	on machines where this is a concern (e.g. when untrusted users
 	have shell accounts on the machine).
 
 			If the -u option is missing, the client will
@@ -68,14 +72,75 @@ CAUTION:
 
 
 
-In order to set up isdn4linux network interfaces, the eftp.sh script
-needs to be called from the root user. Before the eftp program itself
-is executed, the userid is switched (configurable in the
-/etc/isdn/eft.conf file) and the working directory is changed to /tmp.
-(This is an interim measure and will be fixed in a future release).
-If ISDN_NUMBER is the string "localhost", the eftp.sh scripts tries
-to set up a connection to the own computer by means of the isdnloop
-driver, for the benefit of your phone bill.
+eftp can also be invoked by means of the eftp.sh shell script:
+
+	eftp.sh ISDN_NUMBER [ID]
+
+where ISDN_NUMBER is the isdn number of the peer server to connect to.
+ID is usually entered as USER or USER/PASSWD, consisting of the
+userid and the password on the remote EUROFILE server.
+The shell script is obsolete now because the eftp suid support offers
+better functionality.
+
+
+ISDN CONNECTIONS
+================
+
+If invoked with the -i option, eftp will try its best to create and
+set up all related isdn interfaces automatically and to remove them
+after the end of the session. In order to undo the setup after the
+end of the session reliably (i.e. even when the eftp process crashes),
+eftp forks a child process which is in charge of processing the
+eurofile session while taking care itself only for supervising the
+isdn connection setup and undoing all temporary isdn configurations
+after the child exits.
+	
+However, the control and configuration of isdn connections requires
+certain privileges (netadmin capability, write access to
+/dev/isdnctrl). Thus, this will currently only work if eftp is
+executed by the root user, which is undesirable.
+
+To overcome this problem, eftp now has special support to execute suid
+root. To take advantage of this, make root the owner of the eftp
+binary and set the suid bit.
+
+WARNING/DISCLAIMER: suid programmes are inherently dangerous because
+potential bugs in the programme, the kernel or standard libraries
+might be exploitable to gain root priviliges. If this is a concern,
+don't install eftp suid root. If installed suid root, also consider
+to clear the world executable bit of the eftp binary and to change
+its group to a group of trusted users who are allowed to execute
+the setuid eftp programme. 
+
+eftp will change the uid of the forked child process (which is in
+charge of the protocol procession) to the (less priviliged) real
+user id of the caller as soon as possible. Only the parent process,
+which does not interact with the user directly and needs more
+priviliges in order to clean up the isdn setup,
+continues to run suid root. The real userid of the parent
+will be switched to the effective userid (root). 
+
+A suid root eftp will not allow all users to set up eurofile isdn
+connections. eftp checks whether the user has write permissions for the
+/dev/ttyI0 special file. Only if this check is passed, the isdn
+connection will be set up. This algorithm ensures that only users, who
+are already permitted to set up isdn connections by other means
+(by writing AT commands to /dev/ttyI0), can set up isdn connections for
+eurofile.
+
+Similarily, in order to set up isdn4linux network interfaces, the
+eftp.sh script needs to be called from the root user. Before the
+eftp programme itself is executed, the userid is switched (configurable
+in the /etc/isdn/eft.conf file) and the working directory is changed
+to /tmp. This old method of invoking eftp is obsolete now and will
+cease to be supported because the above suid/access algorithm is
+superior. If ISDN_NUMBER is the string "localhost", the eftp.sh
+scripts tries to set up a connection to the own computer by means of
+the isdnloop driver, for the benefit of your phone bill.
+
+
+COMMAND INPUT
+=============
 
 When eftp has established the connection, it issues the "eftp>" prompt
 and waits for commands that will be read from standard input.
@@ -252,10 +317,11 @@ Readline Support
 
 When eftp is compiled with the CONFIG_EFTP_READLINE option set to "y"
 in the configure shell script, command line editing is performed by
-means of the readline library. (Thanks to Michael Mauch for adding
+means of the GNU readline library. (Thanks to Michael Mauch for adding
 this).
 
 When using the readline code, the terminal might be left in a strange
 mode if the program didn't exit properly. In such a case you can
 return to the normal terminal mode by running the program "reset",
 which is a link to "tset" (see tset(1)).
+

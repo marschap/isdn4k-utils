@@ -1,4 +1,4 @@
-/* $Id: eft_i4l.c,v 1.2 1999/07/25 21:55:48 he Exp $ */
+/* $Id: eft_i4l.c,v 1.3 1999/07/26 22:04:51 he Exp $ */
 /*
  * isdn4linux implementation dependent functions
  */
@@ -112,6 +112,35 @@ if( ! try_first_channel ) return 0;
 	return 0;
 }
 
+/*
+ * parse the eft conf file for client msn
+ */ 
+static char * eft_get_client_msn()
+{
+#define MY_LINESIZE 162
+	FILE * f;
+	char * s, cmsn[]="EFT_CLIENT_MSN=";
+	static char buf[MY_LINESIZE];
+	int l;
+
+	f = fopen(CONFIG_I4L_CONFDIR "/eft.conf","r");
+	if( ! f ){
+		perror("eft_get_client_msn:fopen "CONFIG_I4L_CONFDIR "/eft.conf");
+		return NULL;
+	}
+	
+	l = strlen(cmsn);
+	while( (s=fgets(buf,MY_LINESIZE,f)) ){
+		buf[MY_LINESIZE-1] = 0;
+		if( strncmp(s,cmsn,l) == 0 ) {
+			fclose(f);
+			return s+l;
+		}
+	}
+	fclose(f);
+	return NULL;
+}
+
 /* 
  * Configure isdn network devices for outgoing eft connection
  */
@@ -121,11 +150,19 @@ int eft_get_x25route(struct sockaddr_x25 * x25addr,
 		     struct x25_route_struct *x25_route, char * isdn_no)
 {
         int s=-1, ifd=-1, filedes[2], err;
-	char * addr = "", if_name[255]="eftpout0";
+	char * addr = "", if_name[255]="eftpout", *msn;
 
 	isdn_net_ioctl_phone phone;
         isdn_net_ioctl_cfg cfg;
 	struct ifreq ifr;
+
+	/* determine own msn to be used by eft client */
+	msn = eft_get_client_msn();
+	if(!msn){
+		fprintf(stderr,
+			"eft_get_x25route: could not determine own msn\n");
+		return 1;
+	}
 
 	/*
 	 * By convention, the symbolic isdn address "localhost" is
@@ -172,8 +209,7 @@ int eft_get_x25route(struct sockaddr_x25 * x25addr,
 			err = -1;
 			goto error_delif;
 		}
-		/* FIXME: hard coded MSN, should be read from config file */
-		strncpy(cfg.eaz, "3904300", sizeof(cfg.eaz));
+		strncpy(cfg.eaz, msn, sizeof(cfg.eaz));
 		cfg.eaz[sizeof(cfg.eaz)-1] = 0;
 		cfg.l2_proto = ISDN_PROTO_L2_X75I;
 		cfg.dialmax = 1;
