@@ -4,7 +4,7 @@
 
 <title>FAQ for isdn4linux
 <author>Matthias Hessler (<tt><htmlurl url="mailto:hessler@isdn4linux.de" name="hessler@isdn4linux.de"></tt>)
-<date>v2.0.46, 31. July 2000
+<date>v2.0.47, 14. August 2000
 <abstract>
 If you are reading this FAQ online, you may consider downloading the whole
 thing, and reading it offline (much cheaper). To download the latest
@@ -290,7 +290,7 @@ the other way around. For configuration see question
 <itemize>
 <item><bf>For all passive cards: NO</bf>. However, there is a project working
 on this rather complicated problem. For more info on its status have a look at:
-<tt><url url="http://home.telia.no/Morten.Rolland/linux/i4lfax/index.html"></tt>
+<tt><url url="http://home.enitel.no/Morten.Rolland/linux/i4lfax/index.html"></tt>
 <item><bf>For the active card AVM B1: Yes</bf> (its firmware has implemented
 fax as one of its features). Get the newest stuff from:
 <tt><url url="ftp://ftp.aeccom.com/pub/fax4i4l/howto/current/"></tt>
@@ -458,6 +458,9 @@ Currently, these cards support the CAPI 2.0 interface:
 <item> the active card AVM B1.
 <item> the active cards from Hypercope (HYSDN Champ2, HYSDN Ergo2,
 HYSDN Metro4)
+<item> the passive Fritz card from AVM. However, please note that you
+have to download and manually install the binary drivers for this from
+AVMs ftp server.
 </itemize>
 
 This interface follows the official CAPI 2.0 standard that was established
@@ -742,7 +745,7 @@ than 50 card versions)
 <item>ith Kommunikationstechnik GmbH MIC 16 ISA card
 <item>Traverse Technologie NETjet PCI S0 card
 <item>Dr. Neuhaus Niccy PnP/PCI
-<item>Siemens I-Surf 1.0
+<item>Siemens I-Surf 1.x (with ISAR =&lt; try type 29)
 <item>Siemens I-Surf 2.x (with IPAC =&gt; try type 12 asuscom)
 <item>Trust PCI (only the old one with Siemens chip;
 the one called 'Wisecom' in NL does not work)
@@ -837,6 +840,7 @@ No, but it doesn't need to. Terminal adapters are designed to behave
 either like a modem or like a network card. Linux already supports both
 modems and network cards without isdn4linux - so no special ISDN driver
 is necessary (which usually greatly simplifies the configuration).
+For example, have a look at the dialout program wvdial.
 
 <sect1> hardware_cabeling: How should I wire my ISDN cables?  
 <label id="hardware_cabeling">
@@ -1451,6 +1455,7 @@ requirements?
 <p>
 Try to do the following things:
 <itemize>
+<item> Stick with kernel 2.0.x if you have a 486 or lower.
 <item> In <tt>/usr/src/linux/include/linux/isdn.h</tt>, change the line
 <code>
 #ifdef CONFIG_COBALT_MICRO_SERVER
@@ -1597,7 +1602,10 @@ kernel to be able to use it.
 <p>
 This means that the link level protocols do not match (e.g. you tried to
 connect with X.75, whereas your provider answers with HDLC). Check and
-fix your connection parameters.
+fix your connection parameters with:
+<code>
+isdnctrl l2_prot &lt;interface&gt; &lt;protocol&gt;
+</code>
 
 <sect1> trouble_notelrings: Neither my telephone nor my fax machine ring 
 when I call them with isdn4linux?  
@@ -1931,11 +1939,33 @@ If your telephone number were 56789, then it would be configured as follows:
 You may find national differences here (check section <ref id="countries"
 							   name="countries">). 
 
-An additional thing is that you could use a '*' as a wildcard at the end of the
-number for incoming calls (e.g. <tt>isdnctrl msn interface 123*&dquot;</tt>).
+
+<sect1> msn_max: How many MSNs as a maximum can I use for an isdn card?  
+<label id="msn_max">
+<p>
+For outgoing calls, at maximum one MSN can be used. Only incoming calls
+may be configured to allow multiple MSNs.
+
+For ttyI* devices, at a maximum you can listen to EVERY incoming MSN by
+using the * as a wildcard:
+<code>
+at&amp;l*
+</code>
+
+When you have a point-to-point connection you should rather specify the
+length of your number area with as many times &dquot;?&dquot; as you
+have digits, otherwise your number may be accepted too early on overlapping
+receiving. I.e. for 3 digits use:
+<code>
+at&amp;l???
+</code>
+
+For network devices, you can also use a '*' as a wildcard at the end of the
+number for incoming calls (e.g. <tt>isdnctrl msn interface 123*</tt>).
 However, this will create problems for outgoing calls. To handle such
 a situation properly, please use the isdnctrl mapping feature
 (see question <ref id="dialout_manycards" name="dialout_manycards">).
+
 
 <sect1> msn_mindialin: How can I minimize usage of MSNs for digital data dialin?  
 <label id="msn_mindialin">
@@ -2159,7 +2189,7 @@ Check out these special dialout features:
 <itemize>
 <item> Save money by hanging up just before a charge unit:
 see section <ref id="chargeint" name="chargeint">.
-<item> Dialout on more than 1 channel:
+<item> Dialout on more than 1 channel at the same time:
 see section <ref id="2channel" name="2channel">.
 <item> Callback:
 see section <ref id="callback" name="callback">.
@@ -2975,6 +3005,12 @@ correct MSN or EAZ with &dquot;AT&amp;Emsn/eaz&dquot;.
 It doesn't matter. The driver internally always uses the full speed that
 ISDN offers. This is also given in the connect string.
 
+<sect1> ttyI_max: How many devices are the maximum supported number?  
+<label id="ttyI_max">
+<p>
+The maximum can be set by configuring ISDN_MAX at compile time.
+Currently, it is set to 64 by default, which means that up to 64
+ttyI devices are supported.
 
 <!-- Trouble ttyI* devices
 -->
@@ -3669,7 +3705,22 @@ The parameter with the least problems is -h0.
 <label id="leased">
 
 <!-- Config Leased line/D64S  
--->  
+--> 
+
+<sect1> leased_flatrate: What´s the difference between a leased line and  
+a flat rate?  
+<label id="leased_flatrate">
+<p>
+A leased line requires a special setup of your S0 interface. After that,
+you can not reach any other destination than the one the leased line is
+set up for. It´s also rather expensive.
+
+A flat rate is still a normal dialup, therefore the setup should be done
+like any dialup connection. The only difference from a normal dialup is
+the pricing. See section <ref id="dialout" name="dialout">. Also please
+note that the connection on a flat rate will usually be stopped by your
+internet provider if you stay on for too long - so you can not rely on
+being online all the time, if this is what you desire.
 
 <sect1> leased_nosignal: How does establishing and ending a connection work  
 with D64S without signaling?  
