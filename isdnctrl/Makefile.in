@@ -1,4 +1,4 @@
-# $Id: Makefile.in,v 1.17 2000/08/04 11:07:56 paul Exp $
+# $Id: Makefile.in,v 1.18 2001/05/23 14:59:23 kai Exp $
 #
 # Makefile for isdnctrl
 # (C) 1997 Fritz Elfert
@@ -26,12 +26,6 @@ COPTS		+= -DI4L_CTRL_CONF
 LDFLAGS		+= -L../lib -lisdn
 MODULES		+= ctrlconf.o
 MANPAGES    += .isdnctrl_conf.8
-endif
-
-ifeq (@CONFIG_ISDNCTRL_TIMRU@,y)
-COPTS		+= -DI4L_CTRL_TIMRU
-MODULES		+= ctrltimru.o
-MANPAGES    += .isdnctrl_timru.8
 endif
 
 ifeq (@CONFIG_ISDNCTRL_DWABC_UDP_INFO@,y)
@@ -77,13 +71,6 @@ ifeq (@CONFIG_ISDNCTRL_CONF@,y)
 else
 	sed -e 's%@MANINC_CONF@%.\\\"%' < $<.tmp > $@
 endif
-	cp $@ $<.tmp
-ifeq (@CONFIG_ISDNCTRL_TIMRU@,y)
-	sed -e 's%@MANINC_TIMRU@%.so%' < $<.tmp > $@
-else
-	sed -e 's%@MANINC_TIMRU@%.\\\"%' < $<.tmp > $@
-endif
-	rm -f $<.tmp
 
 $(PROGRAM):	$(MODULES)
 	$(CC) $(CFLAGS) $(MODULES) $(LDFLAGS) -o $@

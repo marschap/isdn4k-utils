@@ -1,6 +1,6 @@
-.\" $Id: isdnctrl.man.in,v 1.20 2000/05/28 00:21:47 paul Exp $
+.\" $Id: isdnctrl.man.in,v 1.21 2001/05/23 14:59:23 kai Exp $
 .\"
-.\" CHECKIN $Date: 2000/05/28 00:21:47 $
+.\" CHECKIN $Date: 2001/05/23 14:59:23 $
 .\"
 .\" Process this file with
 .\" groff -man -Tascii isdnctrl.8 for ASCII output, or
@@ -561,7 +561,6 @@ Force dialing of interface
 .BI mapping " driverId MSN0" [, MSN1 [, MSN2 "]] ... [," MSN9 ]
 Installs a mapping-table for MSN<->EAZ-mapping. See README for details.
 @MANINC_CONF@ @MAN8DIR@/.isdnctrl_conf.8
-@MANINC_TIMRU@ @MAN8DIR@/.isdnctrl_timru.8
 .SH WILDCARDS
 When using
 .BI "isdnctrl addphone " name " in " num

@@ -1,4 +1,4 @@
-/* $Id: isdnctrl.h,v 1.18 2001/05/23 14:48:23 kai Exp $
+/* $Id: isdnctrl.h,v 1.19 2001/05/23 14:59:23 kai Exp $
  * ISDN driver for Linux. (Control-Utility)
  *
  * Copyright 1994,95 by Fritz Elfert (fritz@isdn4linux.de)
@@ -21,6 +21,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnctrl.h,v $
+ * Revision 1.19  2001/05/23 14:59:23  kai
+ * removed traces of TIMRU. I hope it's been dead for a long enough time now.
+ *
  * Revision 1.18  2001/05/23 14:48:23  kai
  * make isdnctrl independent of the version of installed kernel headers,
  * we have our own copy now.
@@ -123,12 +126,6 @@ enum {
         L2_PROT, L3_PROT, ADDLINK, REMOVELINK,
         ENCAP, TRIGGER, RESET,
         DIALTIMEOUT, DIALWAIT, DIALMODE,
-#ifdef I4L_CTRL_TIMRU
-        ADDRULE, INSRULE, DELRULE, SHOWRULES,
-        FLUSHRULES, FLUSHALLRULES, DEFAULT,
-		BUDGET, SHOWBUDGETS,
-		SAVEBUDGETS, RESTOREBUDGETS,
-#endif
 #ifdef I4L_CTRL_CONF
         WRITECONF, READCONF,
 #endif /* I4L_CTRL_CONF */
@@ -188,19 +185,6 @@ cmd_struct cmds[] =
         {"dialtimeout", "12"},
         {"dialwait", "12"},
         {"dialmode", "12"},
-#ifdef I4L_CTRL_TIMRU
-        {"addrule", "12"},
-        {"insrule", "1"},
-        {"delrule", "1"},
-        {"showrules", "1"},
-        {"flushrules", "1"},
-        {"flushallrules", "1"},
-        {"default", "1"},
-        {"budget", "1"},
-        {"showbudgets", "1"},
-        {"savebudgets", "1"},
-        {"restorebudgets", "1"},
-#endif
 #ifdef I4L_CTRL_CONF
         {"writeconf", "01"},
         {"readconf", "01"},

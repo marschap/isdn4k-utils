@@ -1,4 +1,4 @@
-/* $Id: isdnctrl.c,v 1.47 2001/05/23 14:48:23 kai Exp $
+/* $Id: isdnctrl.c,v 1.48 2001/05/23 14:59:23 kai Exp $
  * ISDN driver for Linux. (Control-Utility)
  *
  * Copyright 1994,95 by Fritz Elfert (fritz@isdn4linux.de)
@@ -21,6 +21,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnctrl.c,v $
+ * Revision 1.48  2001/05/23 14:59:23  kai
+ * removed traces of TIMRU. I hope it's been dead for a long enough time now.
+ *
  * Revision 1.47  2001/05/23 14:48:23  kai
  * make isdnctrl independent of the version of installed kernel headers,
  * we have our own copy now.
@@ -279,10 +282,6 @@
 #	include "ctrlconf.h"
 #endif /* I4L_CTRL_CONF */
 
-#ifdef I4L_CTRL_TIMRU
-#	include "ctrltimru.h"
-#endif /* I4L_CTRL_TIMRU */
-
 #define CMD_IFCONFIG "ifconfig"
 #define CMD_OPT_IFCONFIG "down"
 
@@ -292,12 +291,6 @@ typedef	char *(*defs_fcn_t)();
 
 defs_fcn_t defs_fcns [] = {
 	defs_basic,
-
-#if defined(I4L_CTRL_TIMRU) && defined(HAVE_TIMRU)
-	defs_timru,
-	defs_budget,
-#endif
-
 	NULL
 };
 
@@ -394,16 +387,6 @@ void usage(void)
         fprintf(stderr, "    status name                show interface status (connected or not)\n");
 #ifdef I4L_DWABC_UDPINFO
         fprintf(stderr, "    abcclear  name             reset (clear) abc-secure-counter\n");
-#endif
-#ifdef I4L_CTRL_TIMRU
-		fprintf(stderr,"Note: TIMRU Ctrl   Extension-Support enabled\n");
-#else
-		fprintf(stderr,"Note: TIMRU Ctrl   Extension-Support disabled\n");
-#endif
-#ifdef HAVE_TIMRU
-		fprintf(stderr,"Note: TIMRU Kernel Support enabled\n");
-#else
-		fprintf(stderr,"Note: TIMRU Kernel Support disabled\n");
 #endif
 #ifdef I4L_DWABC_UDPINFO
 		fprintf(stderr,"    -udpisisdn   destination-host or ip-number\n");
@@ -545,10 +528,6 @@ static void listif(int isdnctrl, char *name, int errexit)
                 printf("Reject before Callback: %s\n", cfg.cbhup ? "on" : "off");
         printf("Callback-delay:         %d\n",cfg.cbdelay / 5);
         printf("Dialmax:                %d\n", cfg.dialmax);
-#ifdef HAVE_TIMRU
-        printf("Dial-Timeout:           %d\n", cfg.dialtimeout);
-        printf("Dial-Wait:              %d\n", cfg.dialwait);
-#endif
         printf("Hangup-Timeout:         %d\n", cfg.onhtime);
         printf("Incoming-Hangup:        %s\n", cfg.ihup ? "on" : "off");
         printf("ChargeHangup:           %s\n", cfg.chargehup ? "on" : "off");
@@ -1497,96 +1476,6 @@ int exec_args(int fd, int argc, char **argv)
 				}
 
                         	break;
-
-
-#ifdef I4L_CTRL_TIMRU
-			case DIALTIMEOUT:
-#ifdef HAVE_TIMRU
-			        strcpy(cfg.name, id);
-                		if((result = ioctl(fd, IIOCNETGCF, &cfg)) < 0) {
-                       			perror(id);
-                       			exit(-1);
-                		}
-                        	if (args) {
-                                	i = -1;
-                                	sscanf(arg1, "%d", &i);
-                                	if (i < 0) {
-                                        	fprintf(stderr, "Dial-Timeout must be >= 0\n");
-                                        	exit(-1);
-                                	}
-                                	cfg.dialtimeout = i;
-                                	if ((result = ioctl(fd, IIOCNETSCF, &cfg)) < 0) {
-                                        	perror(id);
-                                        	exit(-1);
-                                	}
-                        	}
-                        	printf("Dial-Timeout for %s is %d sec.\n", cfg.name, cfg.dialtimeout);
-#else
-					fprintf(stderr, "No TIMRU in Kernel\n");
-					exit(-1);
-#endif
-                        	break;
-
-                	case DIALWAIT:
-#ifdef HAVE_TIMRU
-                        	strcpy(cfg.name, id);
-                        	if ((result = ioctl(fd, IIOCNETGCF, &cfg)) < 0) {
-                                	perror(id);
-                                	exit(-1);
-                        	}
-                        	if (args) {
-                                	i = -1;
-                                	sscanf(arg1, "%d", &i);
-                                	if (i < 0) {
-                                        	fprintf(stderr, "Dial-Wait must be >= 0\n");
-                                        	exit(-1);
-                                	}
-                                	cfg.dialwait = i;
-                                	if ((result = ioctl(fd, IIOCNETSCF, &cfg)) < 0) {
-                                        	perror(id);
-                                        	exit(-1);
-                                	}
-                        	}
-                        	printf("Dial-Wait for %s is %d sec.\n", cfg.name, cfg.dialwait);
-#else
-					fprintf(stderr, "No TIMRU in Kernel\n");
-					exit(-1);
-#endif
-                        	break;
-
-                	case ADDRULE:
-                	case INSRULE:
-                	case DELRULE:
-                	case SHOWRULES:
-                	case FLUSHRULES:
-                	case FLUSHALLRULES:
-                	case DEFAULT:
-#ifdef HAVE_TIMRU
-                        	if((args = hdl_timeout_rule(fd, id, i, argc, argv)) < 0)
-					exit(-1);
-				argc -= args;
-				argv += args;
-#else
-					fprintf(stderr, "No TIMRU in Kernel\n");
-					exit(-1);
-#endif
-                        	break;
-
-			case BUDGET:
-			case SHOWBUDGETS:
-			case SAVEBUDGETS:
-			case RESTOREBUDGETS:
-#ifdef HAVE_TIMRU
-                        	if((args = hdl_budget(fd, id, i, argc, argv)) < 0)
-					exit(-1);
-				argc -= args;
-				argv += args;
-#else
-					fprintf(stderr, "No TIMRU in Kernel\n");
-					exit(-1);
-#endif
-                        	break;
-#endif
 
 #ifdef I4L_CTRL_CONF
 			case WRITECONF:
