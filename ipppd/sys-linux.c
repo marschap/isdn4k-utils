@@ -22,7 +22,7 @@
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-char sys_rcsid[] = "$Id: sys-linux.c,v 1.24 2000/04/29 08:57:24 kai Exp $";
+char sys_rcsid[] = "$Id: sys-linux.c,v 1.25 2000/07/25 20:23:51 kai Exp $";
 
 #define _LINUX_STRING_H_
 
@@ -1278,9 +1278,9 @@ static void decode_version (char *buf, int *version,
 
 /*
  * ppp_available - check whether the system has any ppp interfaces
- * (in fact we check whether we can do an ioctl on ppp0).
+ * (in fact we check whether we can do an ioctl on devname).
  */
-int ppp_available(void)
+int ppp_available(char *devname)
 {
 	int s;
 	struct ifreq ifr;
@@ -1293,7 +1293,7 @@ int ppp_available(void)
 	if( (s = socket(AF_INET, SOCK_DGRAM, 0)) < 0)
 		return 0;
     
-	strncpy (ifr.ifr_name, "ippp0", sizeof (ifr.ifr_name));
+	strncpy (ifr.ifr_name, devname, sizeof (ifr.ifr_name));
 	if(ioctl(s, SIOCGIFFLAGS, (caddr_t) &ifr) < 0)
 		return 0;
 
@@ -1322,8 +1322,8 @@ int ppp_available(void)
 
 		sprintf(no_ppp_msg,
 			"Sorry - isdnPPP driver version %d.%d.%d is out of date.\n"
-			"Maybe ippp0 has no 'syncppp' encapsulation?\n",
-			driver_version, driver_modification, driver_patch);
+			"Maybe %s has no 'syncppp' encapsulation?\n",
+			driver_version, driver_modification, driver_patch, devname);
 		return 0;
 	}
     return 1;

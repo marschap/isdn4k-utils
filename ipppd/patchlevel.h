@@ -1,4 +1,4 @@
-#define	PATCHLEVEL	11
+#define	PATCHLEVEL	12
 
 #define VERSION		"i2.2"
 #define IMPLEMENTATION	""

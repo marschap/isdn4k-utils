@@ -4,6 +4,8 @@
  * Copyright (c) 1995 Pedro Roque Marques
  * All rights reserved.
  *
+ * 2000-07-25 Callback improvements by richard.kunze@web.de 
+ *
  * Redistribution and use in source and binary forms are permitted
  * provided that the above copyright notice and this paragraph are
  * duplicated in all such forms and that any documentation,
@@ -42,7 +44,7 @@ in the developr/rfc directory.
 
 #define PPP_CBCP        0xc029  /* Callback Control Protocol */
 
-char cbcp_rcsid[] = "$Id: cbcp.c,v 1.6 2000/02/08 16:24:55 kai Exp $";
+char cbcp_rcsid[] = "$Id: cbcp.c,v 1.7 2000/07/25 20:23:51 kai Exp $";
 
 #include <stdio.h>
 #include <string.h>
@@ -107,11 +109,11 @@ static void cbcp_init(int cbcp_unit)
 
     us = &cbcp[cbcp_unit];
     memset(us, 0, sizeof(cbcp_state));
-    us->us_unit = -1;
+    us->us_unit = -1;    
     us->us_type |= (1 << CB_CONF_NO);
-	us->us_type |= (1 << CB_CONF_USER);
-	us->us_type |= (1 << CB_CONF_ADMIN);
-	us->us_type |= (1 << CB_CONF_LIST);
+    us->us_type |= (1 << CB_CONF_USER);
+    us->us_type |= (1 << CB_CONF_LIST);
+    us->us_type |= (1 << CB_CONF_ADMIN);
 }
 
 /* lower layer is up */
@@ -332,34 +334,51 @@ void cbcp_resp(cbcp_state *us)
 	u_char buf[256];
 	u_char *bufp = buf;
 	int len = 0;
-	struct cbcp *cbcp;
+	struct callback_opts *cbopt;
 
+	cbopt = &lcp_wantoptions[ lns[us->us_unit].lcp_unit ].cbopt;
+	
+	/* Always allow "no callback" and admin defined callback */
+	us->us_type |= (1 << CB_CONF_NO);
+	us->us_type |= (1 << CB_CONF_ADMIN);
+
+	/* Only go for user defined or choode from a list callback if
+	   we do have a phone number to be called back at */
+	if (cbopt->message && cbopt->mlen) {
+	  us->us_type |= (1 << CB_CONF_USER);
+	  us->us_type |= (1 << CB_CONF_LIST);
+	}
 	cb_type = us->us_allowed & us->us_type;
 	syslog(LOG_DEBUG, "cbcp_resp: cb_type=%d", cb_type);
-	cbcp = &lcp_wantoptions[ lns[us->us_unit].lcp_unit ].cbcp;
 
 	if (!cb_type) {
-		syslog(LOG_DEBUG, "Your remote side wanted a callback-type you don't allow -> doing no callback");
+		syslog(LOG_INFO, "Your remote side wanted a callback-type you don't allow -> doing no callback");
         cb_type = 1 << CB_CONF_NO;
 	}
 
 	if (cb_type & ( 1 << CB_CONF_USER ) ) {
 		syslog(LOG_DEBUG, "cbcp_resp CONF_USER");
 		PUTCHAR(CB_CONF_USER, bufp);
-		len = 3 + 1 + strlen(cbcp->message) + 1;
+		len = 3 + 1 + cbopt->mlen + 1;
 		PUTCHAR(len , bufp);
-		PUTCHAR(5, bufp); /* delay */
-		PUTCHAR(1, bufp);
-		BCOPY(cbcp->message, bufp, strlen(cbcp->message) + 1);
+		PUTCHAR(cbopt->delay, bufp); /* delay */
+		PUTCHAR(1, bufp); /* Message type. Always 1
+				     according to the protocol specs,
+				     but you never know with MS
+				     protocols ;-/ */
+		BCOPY(cbopt->message, bufp, cbopt->mlen + 1);
 		cbcp_send(us, CBCP_RESP, buf, len);
 		return;
 	}
+
+        /* XXX: Callback to one number from a server defined list not yet
+	   implemented */
 
 	if (cb_type & ( 1 << CB_CONF_ADMIN ) ) {
 		PUTCHAR(CB_CONF_ADMIN, bufp);
 		len = 3;
 		PUTCHAR(len , bufp);
-		PUTCHAR(0, bufp);
+		PUTCHAR(cbopt->delay, bufp);
 		cbcp_send(us, CBCP_RESP, buf, len);
 		return;
 	}
@@ -367,9 +386,8 @@ void cbcp_resp(cbcp_state *us)
 	if (cb_type & ( 1 << CB_CONF_NO ) ) {
 		syslog(LOG_DEBUG, "cbcp_resp CONF_NO");
 		PUTCHAR(CB_CONF_NO, bufp);
-		len = 3;
+		len = 2;
 		PUTCHAR(len , bufp);
-		PUTCHAR(0, bufp);
 		cbcp_send(us, CBCP_RESP, buf, len);
 #if 0
 /*

@@ -1,6 +1,6 @@
 .\" manual page [] for ipppd 2.0
-.\" $Id: ipppd.man.in,v 1.9 2000/04/29 08:57:23 kai Exp $
-.\" CHECKIN $Date: 2000/04/29 08:57:23 $
+.\" $Id: ipppd.man.in,v 1.10 2000/07/25 20:23:51 kai Exp $
+.\" CHECKIN $Date: 2000/07/25 20:23:51 $
 .\" SH section heading
 .\" SS subsection heading
 .\" LP paragraph
@@ -114,6 +114,57 @@ compression in the corresponding direction.
 .B \-bsdcomp
 Disables compression; \fIipppd\fR will not request or agree to compress
 packets using the BSD-Compress scheme.
+.TP
+.B callback \fI<string>
+Request the peer to call back at the location given in
+<string>. Ususally this is a phone number, but it may be interpreted
+differently (or ignored) depending on the \fBcallback-type\fR option.
+If <string> is the empty string, \fIipppd\fR automatically tries to
+negotiate a callback type that does not need a location to be specified.
+.TP
+.B callback-delay \fI<n>
+Callback delay for CBCP in seconds. If callback is negotiated using
+CBCP, request that the peer waits at least <n> seconds before calling
+back. Ignored if callback is negotiated as specified in RFC
+1570. Legal range is 0..255, default is 5.
+.TP
+.B callback-cbcp
+Enable callback negotiation via CBCB (default).
+.TP
+.B -callback-cbcp
+Disable callback negotiation via CBCB.
+.TP
+.B no-callback-cbcp
+Disable callback negotiation via CBCB.
+.TP
+.B callback-cbcp-preferred
+If both CBCP and RFC 1570 style callback negotiation is enabled, CBCP
+is preferred (default)
+.TP
+.B callback-rfc1570-preferred
+If both CBCP and RFC 1570 style callback negotiation is enabled, RFC
+1570 style is preferred.
+.TP
+.B callback-rfc1570
+Enable RFC 1570 style callback negotiation (default).
+.TP
+.B -callback-rfc1570
+Disable RFC 1570 style callback negotiation.
+.TP
+.B no-callback-rfc1570
+Disable RFC 1570 style callback negotiation (default).
+.TP
+.B callback-type \fI<n>
+Specifies how to interpret the location identifier given as
+parameter of the \fBcallback\fR option. Legal values are 0..4. A value 
+of 0 means that only callback types should be negotiated that need no 
+extra location id. No location id is sent to the peer in this case.
+For RFC 1570 style callback negotiation, the values 1..4
+indicate how the peer should interpret the location identifier:
+1 - id is a system specific dial string,  2 - id is used for database
+lookup by the peer, 3 - id is a phone number, and 4 id is a name. For
+CBCP callback negotiation, the location id is always interpreted as a
+phone number.
 .TP
 .B -ccp
 Necessary for a few netblazers on the remote side.

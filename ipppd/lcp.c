@@ -8,6 +8,8 @@
  * Copyright (c) 1989 Carnegie Mellon University.
  * All rights reserved.
  *
+ * 2000-07-25 Callback improvements by richard.kunze@web.de 
+ *
  * Redistribution and use in source and binary forms are permitted
  * provided that the above copyright notice and this paragraph are
  * duplicated in all such forms and that any documentation,
@@ -21,7 +23,7 @@
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-char lcp_rcsid[] = "$Id: lcp.c,v 1.10 2000/04/29 08:57:23 kai Exp $";
+char lcp_rcsid[] = "$Id: lcp.c,v 1.11 2000/07/25 20:23:51 kai Exp $";
 
 /*
  * TODO:
@@ -169,7 +171,7 @@ int lcp_loopbackfail = DEFLOOPBACKFAIL;
 #define CILEN_CHAP	5	/* CILEN_VOID + sizeof(short) + 1 */
 #define CILEN_LONG	6	/* CILEN_VOID + sizeof(long) */
 #define CILEN_LQR	8	/* CILEN_VOID + sizeof(short) + sizeof(long) */
-#define CILEN_CBCP	3
+#define CILEN_CB	3
 
 #define CODENAME(x)	((x) == CONFACK ? "ACK" : \
 			 (x) == CONFNAK ? "NAK" : "REJ")
@@ -218,7 +220,12 @@ static void lcp_init(int unit)
     wo->neg_pcompression = 1;
     wo->neg_accompression = 1;
     wo->neg_lqr = 0;			/* no LQR implementation yet */
-	wo->neg_cbcp = 0;
+    wo->neg_callback = 0;
+    wo->cbopt.neg_cbcp = 1;
+    wo->cbopt.neg_rfc  = 1;
+    wo->cbopt.rfc_preferred  = 0;
+    wo->cbopt.type = CB_CBCP;
+    wo->cbopt.delay = 5;             /* Default to 5 seconds callback delay */
     wo->neg_mp = 0;                     /* we set this later, if nec. */
     wo->neg_mpdiscr = 0;
     wo->neg_mpmrru = 0;
@@ -243,7 +250,7 @@ static void lcp_init(int unit)
     ao->neg_mpmrru = 0;
     ao->neg_mpdiscr = 1;
     ao->neg_mpshortseq = 0;
-	ao->neg_cbcp = 0;
+    ao->neg_callback = 0;               /* Always reject callback requests */
 
     memset(xmit_accm[unit], 0, sizeof(xmit_accm[0]));
     xmit_accm[unit][3] = 0x60000000;
@@ -606,7 +613,7 @@ static int lcp_cilen(fsm *f)
 #define LENCIMPDISCRI(neg,alen) (neg ? 3+alen : 0)
 #define LENCIMPMRRU(neg) (neg ? CILEN_SHORT : 0)
 #define LENCIMPSHORTSEQ(neg) (neg ? CILEN_VOID : 0)
-#define LENCICB(neg,mlen) (neg ? CILEN_CBCP + mlen : 0)
+#define LENCICB(neg,type,mlen) (neg ? CILEN_CB + (type!=CB_CBCP&&type!=CB_AUTH?mlen:0) : 0)
 
     /*
      * NB: we only ask for one of CHAP and UPAP, even if we will
@@ -620,10 +627,10 @@ static int lcp_cilen(fsm *f)
 	    LENCILONG(go->neg_magicnumber) +
 	    LENCIVOID(go->neg_pcompression) +
 	    LENCIVOID(go->neg_accompression) +
-		LENCICB(go->neg_cbcp,go->cbcp.mlen) +
-		LENCIMPDISCRI(go->neg_mpdiscr,go->mp_alen) +
-		LENCIMPMRRU(go->neg_mpmrru) +
-		LENCIMPSHORTSEQ(go->neg_mpshortseq) );
+	    LENCICB(go->neg_callback,go->cbopt.type,go->cbopt.mlen) +
+	    LENCIMPDISCRI(go->neg_mpdiscr,go->mp_alen) +
+	    LENCIMPMRRU(go->neg_mpmrru) +
+	    LENCIMPSHORTSEQ(go->neg_mpshortseq) );
 }
 
 
@@ -685,10 +692,11 @@ lcp_addci(fsm *f,u_char *ucp,int *lenp)
 #define ADDCICB(opt,neg,type,aval,alen) \
     if(neg) { \
        int i; \
+       int checklen = ((type)==CB_CBCP||(type==CB_AUTH)?0:(alen)); \
        PUTCHAR(opt,ucp); \
-       PUTCHAR((alen+3),ucp); \
+       PUTCHAR((checklen+3),ucp); \
        PUTCHAR(type,ucp); \
-       for(i=0;i<alen;i++) \
+       for(i=0;i<checklen;i++) \
          PUTCHAR(aval[i],ucp); \
     }
 
@@ -701,7 +709,8 @@ lcp_addci(fsm *f,u_char *ucp,int *lenp)
     ADDCILONG(CI_MAGICNUMBER, go->neg_magicnumber, go->magicnumber);
     ADDCIVOID(CI_PCOMPRESSION, go->neg_pcompression);
     ADDCIVOID(CI_ACCOMPRESSION, go->neg_accompression);
-	ADDCICB(CI_CALLBACK, go->neg_cbcp, go->cbcp.type, go->cbcp.message,go->cbcp.mlen );
+    ADDCICB(CI_CALLBACK, go->neg_callback, go->cbopt.type,
+	    go->cbopt.message, go->cbopt.mlen );
     ADDCISHORT(CI_MPMRRU,go->neg_mpmrru,go->mp_mrru);
     ADDCIVOID(CI_MPSHORTSEQ,go->neg_mpshortseq);
     ADDCIMPDISCR(CI_MPDISCRIMINATOR,go->neg_mpdiscr,go->mp_class,go->mp_addr,go->mp_alen );
@@ -833,18 +842,23 @@ static int lcp_ackci(fsm *f,u_char *p,int len)
 #define ACKCICB(opt,neg,type,aval,alen) \
    if(neg) { \
      int i; \
-     if((len -= 3+alen) < 0) \
+     int checklen; \
+     checklen = (type!=CB_CBCP&&opt!=CB_AUTH?alen:0); \
+     LCPDEBUG((LOG_DEBUG, "opt: %d, type: %d, checklen: %d, alen: %d, aval: %s", \
+	       opt, type, checklen, alen, aval)); \
+     if((len -= 3+checklen) < 0) \
        goto bad; \
      GETCHAR(citype,p); \
      GETCHAR(cilen,p); \
      GETCHAR(cichar,p); \
-     if(cilen != alen+3 || citype != opt || cichar != type) \
+     if(cilen != checklen+3 || citype != opt || cichar != type) \
        goto bad; \
-     for(i=0;i<alen;i++) { \
+     for(i=0;i<checklen;i++) { \
        GETCHAR(cichar,p); \
        if(cichar != aval[i]) \
          goto bad; \
      } \
+     LCPDEBUG((LOG_DEBUG, "ADDCICB OK!")); \
    }
 
     ACKCISHORT(CI_MRU, go->neg_mru, go->mru);
@@ -855,7 +869,8 @@ static int lcp_ackci(fsm *f,u_char *p,int len)
     ACKCILONG(CI_MAGICNUMBER, go->neg_magicnumber, go->magicnumber);
     ACKCIVOID(CI_PCOMPRESSION, go->neg_pcompression);
     ACKCIVOID(CI_ACCOMPRESSION, go->neg_accompression);
-	ACKCICB(CI_CALLBACK, go->neg_cbcp, go->cbcp.type , go->cbcp.message,go->cbcp.mlen );
+    ACKCICB(CI_CALLBACK, go->neg_callback, go->cbopt.type ,
+            go->cbopt.message,go->cbopt.mlen );
     ACKCISHORT(CI_MPMRRU,go->neg_mpmrru,go->mp_mrru);
     ACKCIVOID(CI_MPSHORTSEQ,go->neg_mpshortseq);
     ACKCIMPDISCRI(CI_MPDISCRIMINATOR,go->neg_mpdiscr,go->mp_class,go->mp_addr,go->mp_alen);
@@ -980,18 +995,6 @@ static int lcp_nakci(fsm *f,u_char *p,int len)
       no.neg = 1; \
       code \
     }
-#define NAKCICB(opt,neg,code,alen) \
-    if(go->neg && (len >= alen+3) && (p[1] == alen+3) && p[0] == opt) { \
-      int i; \
-      INCPTR(2,p); \
-      len -= alen+3; \
-      GETCHAR(cichar,p); \
-      for(i=0;i<alen;i++) \
-        GETCHAR(cichar,p); \
-      no.neg = 1; \
-      code \
-    }
-
 
 
     /*
@@ -1081,11 +1084,60 @@ static int lcp_nakci(fsm *f,u_char *p,int len)
 		 try.lqr_period = cilong;
 	     );
 
-	/*
-	 * Only implementing CBCP... not the rest of the callback options
-	 */
-	NAKCICB(CI_CALLBACK, neg_cbcp, try.neg_cbcp = 0;,go->cbcp.mlen);
-
+    /*
+     * If they've nak'd our callback request, see if we can fall
+     * back to a different method. If not, give up asking for callback.
+     */
+    if(go->neg_callback && len >= CILEN_CB
+	&& p[0] == CI_CALLBACK && p[1] >= CILEN_CB && p[1] <= len) {
+	 int i;
+	 int cb_type;
+	 int mlen = p[1] - CILEN_CB;
+	 INCPTR(2,p);
+	 len -= mlen+CILEN_CB;
+	 GETCHAR(cb_type,p); 
+	 for (i=0;i<mlen;i++) {
+	   GETCHAR(cichar,p);
+	 }
+	 no.neg_callback = 1;
+	 LCPDEBUG((LOG_DEBUG, "Got NAK for callback request. Peer suggested cb type %d", cb_type));
+	 /* See if the suggested callback type fits our wanted type */
+	 switch (cb_type) {
+	 case CB_AUTH:
+	   try.neg_callback = wo->cbopt.neg_rfc
+	     && (wo->cbopt.type == CB_AUTH
+		 || (wo->cbopt.type == CB_CBCP && wo->cbopt.mlen == 0));
+	   break;
+	 case CB_PHONENO:
+	   try.neg_callback = wo->cbopt.neg_rfc
+	     && (wo->cbopt.type == CB_PHONENO
+		 || (wo->cbopt.type == CB_CBCP && wo->cbopt.mlen != 0));
+	   break;
+	 case CB_CBCP:
+	   try.neg_callback = wo->cbopt.neg_cbcp;
+	   break;
+	 case CB_DIALSTRING:
+	 case CB_LOCATIONID:
+	 case CB_NAME:
+	   try.neg_callback = wo->cbopt.neg_rfc && wo->cbopt.mlen != 0
+	     && wo->cbopt.type == cb_type;
+	   break;
+	 default:
+	   try.neg_callback = 0;
+	   break;
+	 }
+	 if (try.neg_callback) {
+	   try.cbopt.type = cb_type;
+	   if (cb_type != CB_AUTH && cb_type != CB_CBCP) {
+	     try.cbopt.mlen = wo->cbopt.mlen;
+	     try.cbopt.message = wo->cbopt.message;
+	   }
+	   LCPDEBUG((LOG_DEBUG, "Trying callback type %d", try.cbopt.type));
+	 } else {
+	   syslog(LOG_INFO, "Requested callback type %d does not match our configuration -> doing no callback", cb_type);
+	 }
+    }
+    
     /*
      * Check for a looped-back line.
      */
@@ -1146,6 +1198,10 @@ static int lcp_nakci(fsm *f,u_char *p,int len)
 	    break;
 	case CI_AUTHTYPE:
 	    if (go->neg_chap || no.neg_chap || go->neg_upap || no.neg_upap)
+		goto bad;
+	    break;
+	case CI_CALLBACK:
+	    if (go->neg_callback || no.neg_callback)
 		goto bad;
 	    break;
 	case CI_MAGICNUMBER:
@@ -1213,7 +1269,7 @@ lcp_rejci(fsm *f,u_char *p,int len)
     u_char cichar;
     u_short cishort;
     u_int32_t cilong;
-#ifdef DEBUGALL
+#ifdef DEBUGLCP
     u_char *start = p;
     int plen = len;
 #endif
@@ -1312,16 +1368,18 @@ lcp_rejci(fsm *f,u_char *p,int len)
       } \
       try.neg = 0; \
     }
-#define REJCICB(opt,neg,type,aval,alen) \
-    if(go->neg && (len >= alen+3) && (p[1] == alen+3) && p[0] == opt) { \
+
+#define REJCICB(opt,neg,type,aval,alen) { \
+    int checklen = (type!=CB_CBCP&&type!=CB_AUTH?alen:0); \
+    if(go->neg && (len >= checklen+3) && (p[1] == checklen+3) && p[0] == opt) { \
       int i; \
-      len -= alen+3; \
+      len -= checklen+3; \
       INCPTR(2,p); \
       GETCHAR(cichar,p); \
       if(cichar != type) { \
         syslog(LOG_WARNING , "Lcp-ConfRej, Callback: bad type!\n"); \
         goto bad; } \
-      for(i=0;i<alen;i++) { \
+      for(i=0;i<checklen;i++) { \
         GETCHAR(cichar,p); \
         if(cichar != aval[i]) { \
           syslog(LOG_WARNING , "Lcp-ConfRej, Callback: bad type arg!\n"); \
@@ -1329,7 +1387,7 @@ lcp_rejci(fsm *f,u_char *p,int len)
       } \
       try.neg = 0; \
       LCPDEBUG((LOG_INFO,"lcp_rejci rejected Callback opt %d", opt)); \
-    }
+    }}
 
 
     REJCISHORT(CI_MRU, neg_mru, go->mru);
@@ -1342,7 +1400,7 @@ lcp_rejci(fsm *f,u_char *p,int len)
     REJCILONG(CI_MAGICNUMBER, neg_magicnumber, go->magicnumber);
     REJCIVOID(CI_PCOMPRESSION, neg_pcompression);
     REJCIVOID(CI_ACCOMPRESSION, neg_accompression);
-	REJCICB(CI_CALLBACK, neg_cbcp, go->cbcp.type, go->cbcp.message, go->cbcp.mlen );
+    REJCICB(CI_CALLBACK, neg_callback, go->cbopt.type, go->cbopt.message, go->cbopt.mlen );
     REJCISHORT(CI_MPMRRU,neg_mpmrru,go->mp_mrru);
     REJCIVOID(CI_MPSHORTSEQ,neg_mpshortseq);
     REJCIMPDISCRI(CI_MPDISCRIMINATOR,neg_mpdiscr,go->mp_class,go->mp_addr,go->mp_alen);

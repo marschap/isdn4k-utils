@@ -8,6 +8,8 @@
  * Copyright (c) 1993 The Australian National University.
  * All rights reserved.
  *
+ * 2000-07-25 Callback improvements by richard.kunze@web.de 
+ *
  * Redistribution and use in source and binary forms are permitted
  * provided that the above copyright notice and this paragraph are
  * duplicated in all such forms and that any documentation,
@@ -36,7 +38,7 @@
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-char auth_rcsid[] = "$Id: auth.c,v 1.16 2000/06/21 09:01:54 keil Exp $";
+char auth_rcsid[] = "$Id: auth.c,v 1.17 2000/07/25 20:23:51 kai Exp $";
 
 #include <stdio.h>
 #include <stddef.h>
@@ -444,18 +446,26 @@ static void network_phase(int linkunit)
  */
 static void callback_phase(int linkunit)
 {
-		lcp_options *wo = &lcp_wantoptions[ lns[linkunit].lcp_unit ];
-
-/* hack here: remote is always the server for callback */
-		if (wo->neg_cbcp && !(lns[linkunit].pci.calltype & CALLTYPE_INCOMING) ) {
-			lns[linkunit].phase = PHASE_CALLBACK;
-			lns[linkunit].cbcp_unit = linkunit;        /* cbcp always corresponds to a link */
-			cbcp[ lns[linkunit].cbcp_unit ].us_unit = linkunit;
-			(*cbcp_protent.lowerup)(lns[linkunit].cbcp_unit);
-			(*cbcp_protent.open)(lns[linkunit].cbcp_unit);
-		}
-		else 
-			network_phase(linkunit);
+  lcp_options *go = &lcp_gotoptions[ lns[linkunit].lcp_unit ];
+  
+  /* hack here: remote is always the server for callback */
+  if (go->neg_callback && !(lns[linkunit].pci.calltype & CALLTYPE_INCOMING)) {
+    /* Do CBCP if we did negotiate CBCP, take the lionk
+       down and wait for callback if we negotiated RFC
+       1570 style callback */
+    if (go->cbopt.type == CB_CBCP) {
+      lns[linkunit].phase = PHASE_CALLBACK;
+      /* cbcp always corresponds to a link */
+      lns[linkunit].cbcp_unit = linkunit; 
+      cbcp[ lns[linkunit].cbcp_unit ].us_unit = linkunit;
+      (*cbcp_protent.lowerup)(lns[linkunit].cbcp_unit);
+      (*cbcp_protent.open)(lns[linkunit].cbcp_unit);
+    } else {
+	lns[linkunit].phase = PHASE_TERMINATE;
+    }
+  } else {
+    network_phase(linkunit);
+  }
 }
 
 /*

@@ -16,7 +16,7 @@
  * IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Id: lcp.h,v 1.1 1997/03/07 16:01:27 hipp Exp $
+ * $Id: lcp.h,v 1.2 2000/07/25 20:23:51 kai Exp $
  */
 
 /*
@@ -42,12 +42,28 @@
 #define ECHOREQ		9	/* Echo Request */
 #define ECHOREP		10	/* Echo Reply */
 #define DISCREQ		11	/* Discard Request */
-#define CBCP_OPT	6
 
-struct cbcp {
-	int type;
-	unsigned char *message;
-	int mlen;
+
+/*
+ * Type constants for the CI_CALLBACK field. Types 0..4 are RFC 1570
+ * callback codes that tell the peer how to interpret the callback
+ * message. Type 6 requests callback negotiation by CBCP.
+ */
+#define CB_AUTH	        0 /* cb msg is not used */
+#define CB_DIALSTRING	1 /* cb msg is a system specific dial string */
+#define CB_LOCATIONID	2 /* cb msg is a location identifier */
+#define CB_PHONENO	3 /* cb msg is a E.164 (i.e. phone) number */
+#define CB_NAME         4 /* cb msg is a name */
+#define CB_CBCP         6 /* callback will be negotiated via cbcp */
+
+struct callback_opts {
+  int neg_cbcp : 1;       /* Enable CBCP callback negotiation */
+  int neg_rfc  : 1;       /* Enable RFC 1570 callback negotiation */
+  int rfc_preferred : 1;  /* Try RFC 1570 callback negotiation first */
+  int type;               /* callback type as defined above */
+  unsigned char *message; /* callback message (phone number in most cases) */
+  int mlen;               /* length of callback message */
+  int delay;              /* callback delay for cbcp */
 };
 
 /*
@@ -70,14 +86,14 @@ typedef struct lcp_options {
     int neg_mpdiscr : 1;        /* MP protocol ? */
     int neg_mpmrru : 1;
     int neg_mp : 1;
-	int neg_cbcp : 1;
+    int neg_callback : 1;       /* Negotiate callback */
     u_char mp_class;		/* MP discri. class */
     u_char mp_addr[20];		/* MP discri. addr */
     u_char mp_alen;
     u_short mp_mrru;		/* MP mrru */
-	u_char cb_type;
-	u_char cb_num[20];
-	u_char cb_numlen;
+    u_char cb_type;
+    u_char cb_num[20];
+    u_char cb_numlen;
 
     u_short mru;		/* Value of MRU */
     u_char chap_mdtype;		/* which MD type (hashing algorithm) */
@@ -85,7 +101,7 @@ typedef struct lcp_options {
     u_int32_t magicnumber;
     int numloops;		/* Number of loops during magic number neg. */
     u_int32_t lqr_period;	/* Reporting period for LQR 1/100ths second */
-	struct cbcp cbcp;
+    struct callback_opts cbopt; /* Callback options */
 } lcp_options;
 
 extern fsm lcp_fsm[];

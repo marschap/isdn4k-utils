@@ -17,7 +17,7 @@
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-char options_rcsid[] = "$Id: options.c,v 1.17 2000/04/29 08:57:24 kai Exp $";
+char options_rcsid[] = "$Id: options.c,v 1.18 2000/07/25 20:23:51 kai Exp $";
 
 #include <stdio.h>
 #include <errno.h>
@@ -163,7 +163,15 @@ static int noip __P((int));
 static int nomagicnumber __P((int));
 static int setmru __P((int,char **));
 static int setmtu __P((int,char **));
-static int setcbcp __P((int,char **));
+static int setcallbackdelay __P((int,char **));
+static int setcallbackcbcp __P((int));
+static int setcallbacknocbcp __P((int));
+static int setcallbackrfc __P((int));
+static int setcallbacknorfc __P((int));
+static int setcallbackcbcpfirst __P((int));
+static int setcallbackcbcplast __P((int));
+static int setcallbacktype __P((int,char **));
+static int setcallback __P((int,char **));
 static int setifmtu __P((int));
 static int nomru __P((int));
 static int nopcomp __P((int));
@@ -340,7 +348,17 @@ static struct cmd {
     {"domain", 1, setdomain},	/* Add given domain name to hostname*/
     {"mru", 1, setmru},		/* Set MRU value for negotiation */
     {"mtu", 1, setmtu},		/* Set our MTU */
-    {"callback", 1, setcbcp},  /* Ask for callback */
+    {"callback", 1, setcallback},  /* Ask for callback */
+    {"callback-delay", 1, setcallbackdelay},  /* Callback delay for CBCP */
+    {"callback-cbcp", 0, setcallbackcbcp},  /* Enable CBCP callback negotiation */
+    {"callback-rfc1570", 0, setcallbackrfc},  /* Enable RCFC 1570 style callback negotiation */
+    {"-callback-cbcp", 0, setcallbacknocbcp},  /* Disable CBCP callbacks */
+    {"-callback-rfc1570", 0, setcallbacknorfc},  /* Disable RCFC 1570 style callbacks */
+    {"no-callback-cbcp", 0, setcallbacknocbcp},  /* Disable CBCP callbacks */
+    {"no-callback-rfc1570", 0, setcallbacknorfc},  /* Disable RCFC 1570 style callbacks */
+    {"callback-type", 1, setcallbacktype},  /* Callback type for RFC 1570 style callbacks */
+    {"callback-cbcp-preferred", 0, setcallbackcbcpfirst},  /* Prefer CBCP callback negotiation */
+    {"callback-rfc1570-preferred", 0, setcallbackcbcplast},  /* Prefer RFC 1570 callback negotiation */
     {"useifmtu", 0, setifmtu},  /* get MTU value from attached network device */
     {"netmask", 1, setnetmask},	/* set netmask */
     {"passive", 0, setpassive},	/* Set passive mode */
@@ -556,7 +574,7 @@ void make_options_global(int slot)
       ccp_fsm[i] = ccp_fsm[slot];
       chap[i] = chap[slot];
       upap[i] = upap[slot];
-	  cbcp[i] = cbcp[slot];
+      cbcp[i] = cbcp[slot];
 
       memcpy(xmit_accm[i],xmit_accm[slot],sizeof(xmit_accm[0]));
     }
@@ -1212,30 +1230,101 @@ static int setmtu(int slot,char **argv)
     return (1);
 }
 
-static int setcbcp(int slot,char **argv)
+static int setcallbackdelay(int slot,char **argv)
 {
-	char *a;
-	int val;
+  int delay;
+  if(!int_option(*argv, &delay))
+    return 0;
+  if (delay > 255) {
+    option_error("callback delay of %d is too large", delay);
+    return 0;
+  }
+  lcp_wantoptions[slot].cbopt.delay = delay;
+  return 1;
+}
 
-    lcp_wantoptions[slot].neg_cbcp = 1;
+static int setcallbackcbcp(int slot)
+{
+  lcp_wantoptions[slot].cbopt.neg_cbcp = 1;
+  cbcp_protent.enabled_flag = 1;
+  return 1;
+}
+
+static int setcallbacknocbcp(int slot)
+{
+  lcp_wantoptions[slot].cbopt.neg_cbcp = 0;
+  cbcp_protent.enabled_flag = 0;
+  return 1;
+}
+
+static int setcallbackrfc(int slot)
+{
+  lcp_wantoptions[slot].cbopt.neg_rfc = 1;
+  return 1;
+}
+
+static int setcallbacknorfc(int slot)
+{
+  lcp_wantoptions[slot].cbopt.neg_rfc = 0;
+  return 1;
+}
+
+static int setcallbackcbcpfirst(int slot)
+{
+  lcp_wantoptions[slot].cbopt.rfc_preferred = 0;
+  return 1;
+}
+
+static int setcallbackcbcplast(int slot)
+{
+  lcp_wantoptions[slot].cbopt.rfc_preferred = 1;
+  return 1;
+}
+
+static int setcallbacktype(int slot,char **argv)
+{
+  int type;
+  if(!int_option(*argv, &type))
+    return 0;
+  switch (type) {
+  case CB_AUTH:
+    lcp_wantoptions[slot].cbopt.mlen = 0;
+    lcp_wantoptions[slot].cbopt.message = 0;
+    break;
+  case CB_DIALSTRING:
+  case CB_LOCATIONID:
+  case CB_PHONENO:
+  case CB_NAME:
+    break;
+  default:
+    option_error("unkown callback type: %d", type);
+    return 0;
+  }
+  lcp_wantoptions[slot].cbopt.type = type;
+  return 1;
+}
+
+static int setcallback(int slot,char **argv)
+{
+  lcp_wantoptions[slot].neg_callback = 1;
+  if (lcp_wantoptions[slot].cbopt.type != CB_AUTH) {
+    lcp_wantoptions[slot].cbopt.message = strdup(*argv);
+    if (lcp_wantoptions[slot].cbopt.message != 0) {
+      lcp_wantoptions[slot].cbopt.mlen =
+	strlen(lcp_wantoptions[slot].cbopt.message);
+      if (!lcp_wantoptions[slot].cbopt.mlen)
+	lcp_wantoptions[slot].cbopt.message = 0;
+    } else {
+      lcp_wantoptions[slot].cbopt.mlen = 0;
+    }
+  } else {
+      lcp_wantoptions[slot].cbopt.mlen = 0;
+      lcp_wantoptions[slot].cbopt.message = 0;
+  }
+
+  if (lcp_wantoptions[slot].cbopt.neg_cbcp)
     cbcp_protent.enabled_flag = 1;
-/* change this: CBCP slot != LCP slot !!*/
-	if( (a = strchr(*argv,',')) ) {
-		lcp_wantoptions[slot].cbcp.message = strdup(a+1);
-		lcp_wantoptions[slot].cbcp.mlen = strlen(a+1);
-	}
-	else {
-		lcp_wantoptions[slot].cbcp.message = "";
-		lcp_wantoptions[slot].cbcp.mlen = 0;
-	}
-	val = atoi(*argv);
-	if(val & ~0xff) {
-		fprintf(stderr,"illegal callback option %d\n",val);
-		lcp_wantoptions[slot].cbcp.type = 0;
-		return 0;
-	}
-	lcp_wantoptions[slot].cbcp.type = val & 0xff;
-	return 1;
+  return 1;
 }
 
 

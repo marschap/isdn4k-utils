@@ -4,6 +4,8 @@
  * Copyright (c) 1989 Carnegie Mellon University.
  * All rights reserved.
  *
+ * 2000-07-25 Callback improvements by richard.kunze@web.de 
+ *
  * Redistribution and use in source and binary forms are permitted
  * provided that the above copyright notice and this paragraph are
  * duplicated in all such forms and that any documentation,
@@ -16,7 +18,7 @@
  * IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Id: ipppd.h,v 1.19 2000/04/29 08:57:23 kai Exp $
+ * $Id: ipppd.h,v 1.20 2000/07/25 20:23:51 kai Exp $
  */
 
 /*
@@ -324,7 +326,7 @@ int sifproxyarp (int unit, u_int32_t his_adr);
 int cifproxyarp (int unit, u_int32_t his_adr);
 int sipxfaddr (int unit, u_int32_t network, unsigned char * node );
 int cipxfaddr (int linkunit);
-int ppp_available(void);
+int ppp_available(char *dev);
 int logwtmputmp (int unit,char *line, char *name, char *host);
 int lock (char *dev);
 void unlock(void);
