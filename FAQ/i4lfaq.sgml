@@ -4,7 +4,7 @@
 
 <title>FAQ for isdn4linux
 <author>Matthias Hessler (<tt><htmlurl url="mailto:hessler@isdn4linux.de" name="hessler@isdn4linux.de"></tt>)
-<date>v2.0.56, 1. April 2001
+<date>v2.0.57, 24. April 2001
 <abstract>
 If you are reading this FAQ online, you may consider downloading the whole
 thing, and reading it offline (much cheaper). To download the latest
@@ -591,13 +591,16 @@ Use the following command to start the ISDN card in NT mode:
 <code>
 hisaxctrl &lt;id&gt; 98 1
 </code>
-Make sure that the crossed cable is terminated even if it is very short.
+Make sure that the crossed cable is terminated even if it is very short!
+Nothing will work without termination, not even a 1m cable.
 Some HFC card already have jumpers for termination.
 
 However, this will only give you the physical connection. Up to now
 isdn4linux does not (yet?) implement the higher level ISDN protocol DSS1
 (this means that isdn4linux can not pretend to an ISDN device that it is
 an ISDN exchange, and give it the proper ISDN commands).
+As a result, you can simulate a leased line, but not pretend to be the
+PBX.
 
 <sect1> feature_lcr: Can isdn4linux do least cost routing (LCR)?  
 <label id="feature_lcr">
@@ -851,6 +854,7 @@ the one called 'Wisecom' in NL does not work)
 </itemize>
 Note:
 <itemize>
+<item>AVM A1+ is not supported
 <item>PCF, PCF-Pro: up to now, only the ISDN part is supported
 <item>PCC-8: not tested yet
 <item>Teles PCMCIA is EXPERIMENTAL
@@ -1389,6 +1393,10 @@ telephone) on the internal bus and check what i4l writes into the log file.
 When you can not dial out, the most common problem is that you have not
 set the MSN properly for outgoing calls, which causes the PBX to refuse
 your request.
+
+For dial in be aware that some PBX add a leading 0 to any incoming
+telephone number, so adjust your configuration for the secure option
+accordingly.
 
 Last, remember that you may have to configure your PBX to 'route' incoming
 calls onto the internal ISDN bus.
@@ -2605,6 +2613,14 @@ isdnctrl addphone &lt;device&gt; out P1&lt;your_out_number&gt;
 </code>
 Please note that then a dialout will fail when another device already uses
 the second B channel.
+
+<sect1> dialout_dynip: On dynamic ip assignment, how do I find out which ip  
+address is being used for dialout?  
+<label id="dialout_dynip">
+<p>
+Create a script called <tt>ip-up</tt>. It will be called by the ipppd
+whenever the connection is established with several parameters.
+The ip address is passed in as the fourth parameter (access it as <tt>$4</tt>).
 
 <sect1> dialout_bind: A dns query causes bind to dial out. Why does it take  
 about a minute before it is answered? How do I work around it?  
@@ -3864,9 +3880,10 @@ Chargeint will only hangup if there was no activity on the line. Possibly your
 service provider uses a router (e.g. Cisco) which sends a &dquot;keep
 alive&dquot; packets every ten seconds. If the Cisco doesn't get an answer for
 its keep alive packets then it will stop routing. This normally happens after
-the 4. or 5. keep alive packet. The best solution is to tell the provider not
-to use keep alive packets (<tt>&dquot;no keepalive&dquot;</tt> in the Cisco
-configuration).
+the 4. or 5. keep alive packet. Very recently (begin of 2001), support for
+Cisco's keep alive packages has been corrected, so you can either use it,
+or tell the provider not to use keep alive packets
+(<tt>&dquot;no keepalive&dquot;</tt> in the Cisco configuration).
 
 It could also be that it's not the keep alive packets that are keeping the 
 connection open, but rather OSPF routing updates. The sending of these
@@ -3949,8 +3966,10 @@ cover ISDN channels.
 <sect1> 2channel_mpppconfig: How do I configure MPPP?  
 <label id="2channel_mpppconfig">
 <p>
-First you define a (normal) interface for ipppd (e.g. &dquot;isdnctrl addif
-ippp0&dquot;, etc). This interface will be used as your master interface.
+First ensure that support for MPPP has been switched on for compilation
+of your ISDN modules. Then define a (normal) interface for ipppd (e.g.
+&dquot;isdnctrl addif ippp0&dquot;, etc). This interface will be used as
+your master interface.
 Then you must configure a slave device for every additional channel (e.g.
 &dquot;isdnctrl addslave ippp0 &lt;slave_interface&gt;&dquot;, configure
 slave_interface, etc - see the i4l manual for more).
@@ -4405,6 +4424,13 @@ On the i4l I've set the following:
 isdnctrl callback isdn0 in
 isdnctrl cbdelay isdn0 1
 </code>
+
+<sect1> callback_microsoft: Does isdn4linux support Microsoft Callback  
+(CBCP)?  
+<label id="callback_microsoft">
+<p>
+No, this is not implemented in isdn4linux. Since it is not trivial to
+implement, there are currently no plans to implement it.
 
 
 <!-- Isdnlog
@@ -4940,11 +4966,15 @@ channel protocols NI-1 and 5ESS are used. NI-1 is related to DSS1 (both
 are Q.931 Protocols), but both have totally different groups of functions
 and are therefore not compatible to one other.
 
-Unfortunately, neither the NI-1 nor the 5ESS protocol have so far been
-implemented for isdn4linux to work with passive cards.
+Support for NI-1 has recently been added to HiSax, the driver for passive
+cards. Unfortunately, it is unknown whether the existing isdn4linux driver can
+handle the 5ESS protocol properly (any feedback from users in North
+America would be highly appreciated). See Documentation/isdn/README.HiSax
+for details on how to set it up (protocol type is 4, give SPID together
+with your own number).
 
-However, the firm &dquot;Spellcaster&dquot; has written an isdn4linux driver
-for its own (active) cards. Both BRI and PRI cards are available. More
+Additionally, the firm &dquot;Spellcaster&dquot; has written an isdn4linux
+driver for its own (active) cards. Both BRI and PRI cards are available. More
 information is available from:
 <verb>
 Ian James
