@@ -763,7 +763,7 @@ done
 ac_given_srcdir=$srcdir
 ac_given_INSTALL="$INSTALL"
 
-trap 'rm -fr `echo "Makefile ttyI.man isdninfo.man" | sed "s/:[^ ]*//g"` conftest*; exit 1' 1 2 15
+trap 'rm -fr `echo "Makefile ttyI.man isdninfo.man isdn_cause.man" | sed "s/:[^ ]*//g"` conftest*; exit 1' 1 2 15
 EOF
 cat >> $CONFIG_STATUS <<EOF
 
@@ -805,7 +805,7 @@ CEOF
 EOF
 cat >> $CONFIG_STATUS <<EOF
 
-CONFIG_FILES=\${CONFIG_FILES-"Makefile ttyI.man isdninfo.man"}
+CONFIG_FILES=\${CONFIG_FILES-"Makefile ttyI.man isdninfo.man isdn_cause.man"}
 EOF
 cat >> $CONFIG_STATUS <<\EOF
 for ac_file in .. $CONFIG_FILES; do if test "x$ac_file" != x..; then

@@ -1,4 +1,4 @@
-# $Id: Makefile.in,v 1.2 1997/02/23 10:45:24 fritz Exp $
+# $Id: Makefile.in,v 1.3 1997/02/23 12:23:44 fritz Exp $
 #
 # Makefile for ISDN manpages
 # (C) 1997 Fritz Elfert
@@ -7,12 +7,16 @@
 SHELL			= /bin/sh
 AWK				= @AWK@
 SED				= @SED@
-MANPAGES		= ttyI.4 isdninfo.4
+MANPAGES		= ttyI.4 isdninfo.4 isdn_cause.7
 INSTALL_MAN		= @INSTALL@ -o 0 -g 0 -m 0644
 prefix			= @prefix@
 mandir			= @mandir@
 
 %.4: %.man
+	MANDATE=`grep CHECKIN $< | $(AWK) '{print $$4}'`; \
+	$(SED) -e s%@MANDATE@%$$MANDATE%g $< > $@
+
+%.7: %.man
 	MANDATE=`grep CHECKIN $< | $(AWK) '{print $$4}'`; \
 	$(SED) -e s%@MANDATE@%$$MANDATE%g $< > $@
 
