@@ -1,4 +1,4 @@
-/* $Id: isdnlog.c,v 1.15 1998/03/08 11:42:50 luethje Exp $
+/* $Id: isdnlog.c,v 1.16 1998/03/08 12:13:38 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,9 @@
  * along with this program; if not, write to the Free Software
  *
  * $Log: isdnlog.c,v $
+ * Revision 1.16  1998/03/08 12:13:38  luethje
+ * Patches by Paul Slootman
+ *
  * Revision 1.15  1998/03/08 11:42:50  luethje
  * I4L-Meeting Wuerzburg final Edition, golden code - Service Pack number One
  *
@@ -83,6 +86,8 @@
 
 /*****************************************************************************/
 
+#define X_FD_ISSET(fd, mask)    ((fd) >= 0 && FD_ISSET(fd,mask))
+
 static void loop(void);
 static void init_variables(int argc, char* argv[]);
 static int  set_options(int argc, char* argv[]);
@@ -102,6 +107,7 @@ static char     options[] = "av:sp:x:m:l:rt:c:C:w:SVTDPMh:nW:H:f:bL:NFA:2:O:";
 static char     msg1[]    = "%s: Can't open %s (%s)\n";
 static char    *ptty = NULL;
 static section *opt_dat = NULL;
+static char	**hup_argv;	/* args to restart with */
 
 /*****************************************************************************/
 
@@ -116,40 +122,13 @@ static void exit_on_signal(int Sign)
 
 static void hup_handler(int isig)
 {
-  print_msg(PRT_INFO, "re-reading %s\n", CONFFILE);
-
-  discardconfig();
-  if (readconfig(myname) != 0)
-  	Exit(41);
-
-	if (fprot != NULL && tmpout != NULL && *tmpout != '\0')
-	{
-		fclose(fprot);
-
-		if ((fprot = fopen(tmpout,"a")) == NULL)
- 	 	{
- 	 		print_msg(PRT_ERR,"Can not open file `%s': %s!\n",tmpout, strerror(errno));
-			Exit(46);
-		}
-	}
-
-	if (fout != NULL && outfile != NULL && *outfile != '\0')
-	{
-		fclose(fout);
-
-		if ((fout = fopen(outfile,"a")) == NULL)
- 	 	{
- 	 		print_msg(PRT_ERR,"Can not open file `%s': %s!\n",outfile, strerror(errno));
-			Exit(47);
-		}
-	}
-
-  signal(SIGHUP, hup_handler);
+  print_msg(PRT_INFO, "restarting %s\n", myname);
+  Exit(-9);
+  execv(myname, hup_argv);
+  print_msg(PRT_ERR,"Cannot restart %s: %s!\n", myname, strerror(errno));
 } /* hup_handler */
 
 /*****************************************************************************/
-
-#define X_FD_ISSET(fd, mask)	((fd) >= 0 && FD_ISSET(fd,mask))
 
 static void loop(void)
 {
@@ -230,7 +209,6 @@ static void loop(void)
         Start_Interval();
 
       now();
-
 
       for (Cnt = first_descr; Cnt < socket_size(sockets); Cnt++) {
         if (X_FD_ISSET(sockets[Cnt].descriptor, &exceptmask)) {
@@ -785,6 +763,7 @@ int main(int argc, char *argv[], char *envp[])
   } /* if */
 
   set_print_fct_for_lib(print_in_modules);
+  hup_argv = argv;
   init_variables(argc, argv);
 
   lastarg = set_options(argc,argv);
@@ -890,8 +869,8 @@ int main(int argc, char *argv[], char *envp[])
 
         if (!verbose || ((fprot = fopen(tmpout, "a")) != (FILE *)NULL)) {
 
-      for (i = 0; i < MAXCHAN; i++)
-				clearchan(i, 1);
+          for (i = 0; i < MAXCHAN; i++)
+	    clearchan(i, 1);
 
 #ifdef Q931
           if (q931dmp) {

@@ -1,4 +1,4 @@
-/* $Id: isdntools.c,v 1.16 1997/06/22 22:57:08 luethje Exp $
+/* $Id: isdntools.c,v 1.17 1998/03/08 12:13:49 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdntools.c,v $
+ * Revision 1.17  1998/03/08 12:13:49  luethje
+ * Patches by Paul Slootman
+ *
  * Revision 1.16  1997/06/22 22:57:08  luethje
  * bugfixes
  *
@@ -176,20 +179,20 @@ static char areacodes[][2][30] = {
 };
 
 static char countrycodes[][2][30] = {
-	{"+30", "Greek"},
-	{"+31", "Nethland"},
+	{"+30", "Greece"},
+	{"+31", "Netherlands"},
 	{"+32", "Belgium"},
 	{"+33", "France"},
 	{"+34", "Spain"},
 	{"+39", "Italy"},
-	{"+41", "Swiss"},
+	{"+41", "Switzerland"},
 	{"+43", "Austria"},
 	{"+44", "Great Britain"},
-	{"+45", "Danmark"},
+	{"+45", "Denmark"},
 	{"+46", "Sweden"},
 	{"+47", "Norway"},
 	{"+49", "Germany"},
-	{"+352", "Luxembourg"},
+	{"+352", "Luxemburg"},
 	{"+1", "United States"},
 	{"", ""},
 };
