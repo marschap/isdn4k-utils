@@ -1,0 +1,53 @@
+#
+# Makefile for rcapid
+# (C) 1998 Christian A. Lademann (cal@zls.de)
+#
+#
+SHELL			= /bin/sh
+CFLAGS			= -O2
+INCLUDES		= -I. -I@CONFIG_C20LIBDIR@/source -I@CONFIG_KERNELDIR@/driver/isdn/avmb1
+DEFS			= -DTARGET_32BIT
+LDFLAGS			= -L@CONFIG_C20LIBDIR@/linux -lc20 @LIBS@
+PROGRAM			= rcapid
+MODULES			= rcapid.o
+MANPAGE			= 
+INSTALL			= @INSTALL@
+SBINDIR			= @CONFIG_SBINDIR@
+INSTALL_PROGRAM	= $(INSTALL) -o 0 -g 0 -m 0750
+CC				= @CC@
+COPTS			=
+
+.SUFFIXES:
+.SUFFIXES: .c .o
+
+%.o: %.c Makefile
+	$(CC) $(CFLAGS) $(INCLUDES) $(DEFS) $(COPTS) -c -o $@ $<
+
+all: $(PROGRAM)
+
+config:
+	@./configure
+
+Makefile: Makefile.in config.status
+	./config.status
+
+config.status: configure
+	./config.status --recheck
+
+$(PROGRAM):	$(MODULES)
+	$(CC) $(CFLAGS) $(INCLUDES) $(DEFS) $? $(LDFLAGS) -o $@
+
+install: $(PROGRAM)
+	$(INSTALL_PROGRAM) $(PROGRAM) $(SBINDIR)/$(PROGRAM)
+
+install-strip: $(PROGRAM)
+	$(INSTALL_PROGRAM) -s $(PROGRAM) $(SBINDIR)/$(PROGRAM)
+
+uninstall:
+	rm -f $(SBINDIR)/$(PROGRAM)
+
+clean:
+	rm -f *.o *~ $(PROGRAM)
+
+distclean: clean
+	rm -f config.status config.cache config.log Makefile

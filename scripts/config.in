@@ -1,5 +1,5 @@
 #
-# $Id: config.in,v 1.22 1998/03/07 18:26:06 cal Exp $
+# $Id: config.in,v 1.23 1998/05/19 18:10:28 cal Exp $
 #
 # The whole configuration stuff is borrowed from the kernel
 # configuration.
@@ -107,6 +107,12 @@ fi
 bool 'ipppd' CONFIG_IPPPD
 if [ "$CONFIG_IPPPD" = "y" ]; then
 	source ipppd/.Config.in
+fi
+if [ "$CONFIG_EXPERIMENTAL" = "y" ]; then
+	bool 'rcapid' CONFIG_RCAPID
+	if [ "$CONFIG_RCAPID" = "y" ]; then
+		source rcapid/.Config.in
+	fi
 fi
 endmenu
 mainmenu_option nextcomment

@@ -106,6 +106,9 @@ CONFIG_IPPPD=y
 #
 CONFIG_IPPD_MSCHAP=y
 
+CONFIG_RCAPID=n
+# CONFIG_C20LIBDIR='/usr/src/capi-adk/c20lib'
+
 #
 # Documentation
 #

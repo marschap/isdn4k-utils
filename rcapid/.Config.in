@@ -1,0 +1,4 @@
+mainmenu_option next_comment
+comment 'Options for rcapid package'
+string 'CAPI-ADK directory' CONFIG_C20LIBDIR
+endmenu

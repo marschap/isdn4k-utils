@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.20 1998/03/31 20:11:33 keil Exp $
+# $Id: Makefile,v 1.21 1998/05/19 18:10:11 cal Exp $
 #
 # Toplevel Makefile for isdn4k-utils
 #
@@ -86,6 +86,9 @@ ifeq ($(CONFIG_IPPPD),y)
 endif
 ifeq ($(CONFIG_VBOX),y)
 	SUBDIRS := $(SUBDIRS) vbox
+endif
+ifeq ($(CONFIG_RCAPID),y)
+	SUBDIRS := $(SUBDIRS) rcapid
 endif
 ifeq ($(CONFIG_GENMAN),y)
 	SUBDIRS := $(SUBDIRS) doc
