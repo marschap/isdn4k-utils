@@ -1,7 +1,11 @@
 /*
- * $Id: capi20.c,v 1.14 2000/04/07 16:06:09 calle Exp $
+ * $Id: capi20.c,v 1.15 2000/04/10 09:08:06 calle Exp $
  * 
  * $Log: capi20.c,v $
+ * Revision 1.15  2000/04/10 09:08:06  calle
+ * capi20_wait_for_message will now return CapiReceiveQueueEmpty on
+ * timeout and error.
+ *
  * Revision 1.14  2000/04/07 16:06:09  calle
  * Bugfix: without devfs open where without NONBLOCK, ahhh.
  *
@@ -400,7 +404,6 @@ capi20_waitformessage(unsigned ApplID, struct timeval *TimeOut)
 {
   int fd;
   fd_set rfds;
-  int retval;
 
   FD_ZERO(&rfds);
 
@@ -414,7 +417,8 @@ capi20_waitformessage(unsigned ApplID, struct timeval *TimeOut)
 
   FD_SET(fd, &rfds);
   
-  retval = select(fd + 1, &rfds, NULL, NULL, TimeOut);
+  if (select(fd + 1, &rfds, NULL, NULL, TimeOut) < 1)
+	return CapiReceiveQueueEmpty;
   
   return CapiNoError;
 }
