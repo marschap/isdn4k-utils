@@ -18,7 +18,7 @@ dnl Checks for libraries.
 
 dnl Checks for header files.
 AC_HEADER_STDC
-AC_CHECK_HEADERS(${CONFIG_KERNELDIR}/include/linux/capi.h,,
+AC_CHECK_HEADERS(linux/capi.h,,
 	AC_MSG_ERROR("Missing $ac_hdr. Kernel source installed?"))
 AC_CHECK_HEADERS(capi20.h,,
 	AC_MSG_ERROR("Missing $ac_hdr. libcapi20 installed?"))

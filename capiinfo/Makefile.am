@@ -1,7 +1,8 @@
 ##
-## $Id: Makefile.am,v 1.1 1999/04/16 15:40:43 calle Exp $
+## $Id: Makefile.am,v 1.2 1999/06/29 10:41:30 calle Exp $
 ##
 
+CONFIG_KERNELDIR	= /usr/src/linux
 AUTOMAKE_OPTIONS	= foreign
 CLEANFILES              = *~
 MAINTAINERCLEANFILES    = configure aclocal.m4 Makefile.in config.h.in \

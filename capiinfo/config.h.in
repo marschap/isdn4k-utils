@@ -8,8 +8,8 @@
 #undef CONFIG_SBINDIR
 #undef CONFIG_MANDIR
 
-/* Define if you have the </include/linux/capi.h> header file.  */
-#undef HAVE__INCLUDE_LINUX_CAPI_H
-
 /* Define if you have the <capi20.h> header file.  */
 #undef HAVE_CAPI20_H
+
+/* Define if you have the <linux/capi.h> header file.  */
+#undef HAVE_LINUX_CAPI_H
