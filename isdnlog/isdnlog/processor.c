@@ -1,4 +1,4 @@
-/* $Id: processor.c,v 1.12 1997/10/08 05:37:10 calle Exp $
+/* $Id: processor.c,v 1.13 1998/02/05 08:23:24 calle Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.13  1998/02/05 08:23:24  calle
+ * decode also seconds in date_time if available, for the dutch.
+ *
  * Revision 1.12  1997/10/08 05:37:10  calle
  * Added AVM B1 support to isdnlog, patch is from i4l@tenere.saar.de.
  *
@@ -1909,7 +1912,13 @@ static void decode(int chan, register char *p, int type, int version)
                     tm.tm_hour  = strtol(p += 3, NIL, 16);
                     tm.tm_min   = strtol(p += 3, NIL, 16);
 
-                    tm.tm_sec   = 0;
+		    if (l > 5) {
+		       tm.tm_sec = strtol(p += 3, NIL, 16);
+		       if (l > 6)
+			  p += (l - 6) * 3;
+		    } else {
+                       tm.tm_sec   = 0;
+		    }
                     tm.tm_wday  = tm.tm_yday = 0;
                     tm.tm_isdst = -1;
 
