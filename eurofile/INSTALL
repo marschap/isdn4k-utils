@@ -65,7 +65,7 @@ make modules_install
 "make modules_install" is recommended after compilation.
 
 If your Linux-Distribution comes with a 2.2.x kernel pre-installed, you can
-additionally do a `make install'. If not, not, you still could do so,
+additionally do a `make install'. If not, you still could do so,
 but be aware that this might possibly overwrite your old 2.0.36+
 kernel which might cause some problems with other parts of your
 Linux distribution. Therefor, with an old linux distribution, it
@@ -98,13 +98,13 @@ isdn4k-utils
 
   You need a recent isdnctrl utility (and maybe the loopctrl binary if
   you want to test locally with the isdnloop driver).
-  You need isdn4k-utils-3.0beta2.tar.gz or newer.
+  You need at least isdn4k-utils-3.0beta2.tar.gz or newer.
 
   The utilities must be compiled against the 2.2.x
   kernel headers. The location of that kernel can be set from the
   isdn4k-utils configuration menu.
  
-  The 3.0beta2 package is availabe from ftp.isdn4linux.de
+  The recent isdn4k-utils package is availabe from ftp.isdn4linux.de.
 
 
 x25_utils
@@ -142,7 +142,7 @@ in the 'Code maturity level options' menu). People who install
 eftp4linux for the first time can safely say 'y' to all eurofile
 config options. After configuration, do a 'make';
 
-(Execptions: people needing to be paranoid about security might
+(Exceptions: people needing to be paranoid about security might
 say 'n' to 'install eftp suid root'. People who already installed
 a former version of eftp4linux and have installed modified versions
 of eftp4linux config files might choose to disable overwriting
@@ -159,20 +159,12 @@ non-standard default locations of certain files, you can edit
 the configure script and change the values of the CONFIG_* variables
 before.
 
-The eftd.sh script currently locates certain utilites (e.g. isdnctrl)
-by full path name. The full path name is figured out at configurataion
-time. The locations searched for are
-/usr/local/sbin:/usr/local/bin:/usr/sbin:/sbin:/usr/bin:/bin. If you have
-installed utilities at an unsusual location, you might want to edit the
-./configure script before.
-If you have multiple utility versions installed, make sure that the 
-utility found first is the one just compiled as above (against the
-(patched) 2.2 kernel header files).
-
 The directory where the isdn configuration files are located is
 assumed to be /etc/isdn. If this is not true for your installation,
 either create that directory or set the environment variable
 CONFIG_I4LCONFDIR to an alternative directory prior to compilation.
+(this is usually done automatically if you configure eftp4linuyx my
+means of the isdn4k-utils config menu).
 
 As I could not test with all compiler/libc/distribution combinations,
 maybe I missed something. If configuration should fail or some files
@@ -251,12 +243,22 @@ You can stop EUROFILE service again by
 
 eftd.sh stop
 
-The eftd.sh script locates the eftd binary from the
-installation directory. If you have not done a 'make install' yet
-and want to test eftd before, you can tell the script to load
-eftd diretcly from the eftp4linux compilation tree by setting the
-environment variable EFTD_SH_SRC to a non-empty value before executing
-the script
+
+The eftd.sh script locates the eftd binary (as well as all other
+utility programs) from the stardard PATH environment variable.
+Thus, make sure that eftd's installation directory (as configured
+in the isdn4k-utils config menu) is in your PATH environment variable.
+If you have not done a 'make install' yet and want to test eftd
+before, just prepend the source directory of eftd to the PATH
+environment variable.
+
+People who want to start eftd at boot time from sysvinit and have
+installed eftd at an unusual location also need to make sure that
+the PATH as seen by sysvinit contains the appropriate directory
+
+If you have multiple utility versions installed, make sure that the 
+utility found first is the one just compiled as above (against the
+[patched] 2.2 kernel header files). 
 
 
 
@@ -288,22 +290,3 @@ where USER is your unix login name on your machine and enter your login
 password when prompted. For this to work, you need the x25_route
 program from the x25_utils installed and you also must have compiled and
 installed the isdnloop driver kernel module and the loopctrl utility.
-
-
-There is also an old script "eftp.sh" (this needs to be started from the
-root user, but the script does a 'cd /tmp' and changes the uid before
-the client is executed)
-
-eftp.sh ISDN_NUMBER [USER/PASSWD]
-
-in order to start an EUROFILE client and connect to a remote eft server.
-
-Note that typing the password on the command line is not safe if
-your system is shared with other users who might spoof your password
-with the ps command. It also leaves traces in your command history file.
-
-The old script supports connecting to your own server on top of the
-isdnloop driver (no paying isdn connection involved) by
-
-eftp.sh localhost [USER/PASSWD]
-

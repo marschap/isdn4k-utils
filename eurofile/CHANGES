@@ -1,4 +1,4 @@
-/* $Id: CHANGES,v 1.8 1999/10/11 21:22:23 he Exp $
+/* $Id: CHANGES,v 1.9 2000/01/26 20:11:33 he Exp $
 #  Change log for eftp4Linux
 #
 # [new] means 'new feature added'
@@ -18,6 +18,15 @@
 #
 
 $Log: CHANGES,v $
+Revision 1.9  2000/01/26 20:11:33  he
+Fixed a y2k bug, several typos, and removes absolute pathnames for
+utilities execuded by eftd.sh
+
+- [fix] fileheader.c: fixed y2k bug (cosmetic, only
+	affected display output of eftp's xdir command).
+- [chg] eftd.sh.in: utility programs are now located using the
+	standard search PATH rather than by absolute path name.
+
 Revision 1.8  1999/10/11 21:22:23  he
 more isdn4k-utils install changes
 

@@ -1,7 +1,7 @@
 #!/bin/sh
 # @configure_input@
 #
-# generated from $Id: eftd.sh.in,v 1.6 1999/10/08 16:25:35 he Exp $
+# generated from $Id: eftd.sh.in,v 1.7 2000/01/26 20:11:34 he Exp $
 #
 #  Henner Eisen 1998
 #
@@ -15,10 +15,6 @@
 # This script can be called from sysvinit, but be sure that the common
 # isdn setup below is done before.
 #
-# By default, the script executes the eftd binary from the installation
-# directory @SBINDIR@/. However, if the environment variable $EFTD_SH_SRC
-# is set to a non-empty value, it loads the binary directly from the
-# eftp4linux source directory @EFT_TOPDIR@/src/eftd/ 
 #
 # READ and EDIT this script before using it!
 #
@@ -41,32 +37,21 @@
 
 # Location of a recent isdnctrl binary that supports the x25 features
 #
-ISDNCTRL=@ISDNCTRL@
+ISDNCTRL=isdnctrl
 
 # Location of the loopctrl binary from the isdn4k-util package
 #
-LOOPCTRL=@LOOPCTRL@
-INSMOD=@INSMOD@
-EFTD_BIN_SRC=@EFT_TOPDIR@/src/eftd/eftd
-EFTD_BIN_INSTALL=@SBINDIR@/eftd
-
-if [ -z "$EFTD_SH_SRC" ]; then
-    EFTD_BIN=$EFTD_BIN_INSTALL
-else
-    EFTD_BIN=$EFTD_BIN_SRC
-fi
-    
+LOOPCTRL=loopctrl
+INSMOD=insmod
+EFTD_BIN=eftd   
 
 # Where to put the eftd-pid-file? Default is /var/run/eftd.pid.
 EFTD_PIDFILE=@RUNDIR@/eftd.pid
 
 X25TRACE_PIDFILE=@RUNDIR@/x25trace.pid
 
-#KHOME=/home/kernel
-#X25UTIL=$KHOME/util/x25/x25-utils-2.1.20
-#X25TRACE=$X25UTIL/trace/x25trace
-X25TRACE=@X25TRACE@
-X25ROUTE=@X25ROUTE@
+X25TRACE=x25trace
+X25ROUTE=x25route
 
 
 # The MSN (without your local area code) where eftd shall listen for

@@ -1,4 +1,4 @@
-/* $Id: fileheader.c,v 1.2 1999/10/06 18:16:22 he Exp $ */
+/* $Id: fileheader.c,v 1.3 2000/01/26 20:11:34 he Exp $ */
 /*
   Copyright 1998 by Henner Eisen
 
@@ -214,17 +214,28 @@ oflow:
  * Parse an ETS 300-075 file header encoded time string and return
  * the equivalent unix epoche time_t type;
  *
- * FIXME: (or better fix ETS protocol :-) this is not y2k safe due to
- * limititations in ETSI protocol. 
  */
 static time_t fh2timet(unsigned char *ts, int len){
 	int tmp;
 	struct tm t={0,0,0,0,0,0,0,0,0,0};
+	/*
+	 * FIXME: (or better fix ETS protocol :-) this is not y2k safe due to
+	 * limititations in ETSI protocol.
+	 *
+	 * The window boundary is chosen arbitrarily because I
+	 * currently don't know of any official ETSI recommendation.
+	 *
+	 * This should be changed as soon as an official value
+	 * agreed among all EUROFILE implementors is recommended.
+	 */
+	int y2k_wrap=70;
 
 	if(len>1){
 		tmp = 10*(ts[0]-'0') + (ts[1]-'0');
 		ts +=2;
 		len-=2;
+		/* y2k compatibilty hack */
+		if( tmp < y2k_wrap ) tmp += 100;
 		t.tm_year = tmp;
 	}
 	

@@ -1,4 +1,4 @@
-$Id: README,v 1.6 1999/10/24 21:35:42 he Exp $
+$Id: README,v 1.7 2000/01/26 20:11:33 he Exp $
 
 README file for eftp4linux
 ==========================
@@ -119,8 +119,8 @@ In addition to the files contained in this distribution, you will need
   loopctrl, if you want to test locally by means of the isdnloop driver).
   The isdn4k-utils-3.0beta2.tar.gz. (or newer) are fine.
 
-  isdnctrl.c must be compiled against 2.1.x kernel header files.
-  The 3.0beta2 package is availabe from ftp.franken.de
+  isdnctrl.c must be compiled against 2.2.x kernel header files.
+  The most recent isdn4k-utils package is availabe from ftp.isdn4linux.de
 
   You can also use an even newer isdn4k-util snapshot from isdn4linux
   CVS server. See the isdn4linux FAQ for info about this.

@@ -1,4 +1,4 @@
-$Id: FAQ,v 1.3 1999/08/28 16:35:05 he Exp $
+$Id: FAQ,v 1.4 2000/01/26 20:11:33 he Exp $
 
 QUESTION: How can I control the amount of debugging output?
 =========
@@ -26,8 +26,8 @@ QUESTION: I don't want anonymous users to dial in without a MSN
 If a client without a MSN dials in, the ISDN number 0 is assumed.
 With the line "guestservers 1* 2* 3* 4* 5* 6* 7* 8* 9*" in 
 /etc/isdn/eftaccess connections with ISDN numbers beginning with 
-"0" are refused. Don't forget the option "-a" for eftd to make him
-the file /etc/isdn/eftaccess used.
+"0" are refused. Don't forget the option "-a" for eftd to let is use 
+the file /etc/isdn/eftaccess.
 (What's about international connections then? Do they begin with "0"?
 I dont'n know, never had one...)
 
@@ -67,9 +67,6 @@ x25trace) is activated, additional computation time is required.
 If certain protocol parameters (in particular X.25 or eurofile window
 sizes of one) are in effect, transfer speed might also decrease.
 Other additional delays, such as waiting for disk or NFS IO or
-waiting for beeing schedules on a heavy loaded system, might also
+waiting for beeing scheduled on a heavily loaded system, might also
 decrease the transfer speed.
-
-
-
 

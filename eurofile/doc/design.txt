@@ -1,4 +1,4 @@
-$Id: design.txt,v 1.1 1999/06/30 16:51:01 he Exp $
+$Id: design.txt,v 1.2 2000/01/26 20:11:33 he Exp $
 
 This document is to briefly intruduce the EUROFILE protocol stack
 and to document the design of the eftp4linux EUROFILE implementation.
@@ -37,8 +37,8 @@ This document serves two purposes:
   with EFT related protocols and (isdn4)linux internals you can goto 3.0
   right away and submit your comments.
 
-- It also givea an introduction on EFT, and ideas how it was 
-  implemented in linux. Since it took quite some time for me
+- It also gives an introduction on EFT, and ideas how it was 
+  implemented in Linux. Since it took quite some time for me
   to gather all the information related to EFT, I decided to write an
   introduction as the initial task of the linux EFT project. That
   introduction was also a good base for documentation.
