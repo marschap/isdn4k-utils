@@ -1,4 +1,4 @@
-/* $Id: isdnrep.h,v 1.20 2000/08/17 21:34:44 akool Exp $
+/* $Id: isdnrep.h,v 1.21 2000/10/15 12:53:04 leo Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnrep.h,v $
+ * Revision 1.21  2000/10/15 12:53:04  leo
+ * Changed iobytes to double
+ *
  * Revision 1.20  2000/08/17 21:34:44  akool
  * isdnlog-4.40
  *  - README: explain possibility to open the "outfile=" in Append-Mode with "+"
@@ -254,8 +257,8 @@ typedef struct {
   double din;
   double dout;
   double pay;
-  long	 ibytes;
-  long	 obytes;
+  double ibytes;
+  double obytes;
 } sum_calls;
 
 /****************************************************************************/
@@ -269,8 +272,8 @@ typedef struct {
   char   num[2][NUMSIZE];
   char   who[2][NUMSIZE];
   char	 sarea[2][TN_MAX_SAREA_LEN]; /* lt */
-  long	 ibytes;
-  long	 obytes;
+  double ibytes;
+  double obytes;
   char   version[10];
   int	 si;
   int	 si1;
