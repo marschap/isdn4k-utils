@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.42 2000/05/03 19:50:01 akool Exp $
+# $Id: Makefile,v 1.43 2000/05/18 15:22:09 calle Exp $
 #
 # Toplevel Makefile for isdn4k-utils
 #
@@ -106,6 +106,9 @@ ifeq ($(CONFIG_RCAPID),y)
 endif
 ifeq ($(CONFIG_CAPIFAX),y)
 	SUBDIRS := $(SUBDIRS) capifax
+endif
+ifeq ($(CONFIG_PPPDCAPIPLUGIN),y)
+	SUBDIRS := $(SUBDIRS) pppdcapiplugin
 endif
 ifeq ($(CONFIG_GENMAN),y)
 	SUBDIRS := $(SUBDIRS) doc

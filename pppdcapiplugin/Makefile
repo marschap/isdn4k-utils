@@ -32,3 +32,5 @@ install: $(ALL)
 		$(INSTALL) peers/$$i $(PEERDIR); \
 	done
 
+config:
+	@echo nothing to configure

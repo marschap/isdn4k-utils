@@ -1,5 +1,5 @@
 #
-# $Id: config.in,v 1.34 2000/04/03 14:42:37 calle Exp $
+# $Id: config.in,v 1.35 2000/05/18 15:22:09 calle Exp $
 #
 # The whole configuration stuff is borrowed from the kernel
 # configuration.
@@ -116,6 +116,7 @@ fi
 if [ "$CONFIG_EXPERIMENTAL" = "y" ]; then
 	bool 'capifax' CONFIG_CAPIFAX
 	bool 'rcapid' CONFIG_RCAPID
+	bool 'pppdcapiplugin' CONFIG_PPPDCAPIPLUGIN
 fi
 if [ "$CONFIG_EXPERIMENTAL" = "y" ]; then
 	bool 'eurofile' CONFIG_EUROFILE
