@@ -1,4 +1,4 @@
-/* $Id: isdnctrl.c,v 1.43 2000/06/29 17:38:26 akool Exp $
+/* $Id: isdnctrl.c,v 1.44 2000/08/17 09:24:06 paul Exp $
  * ISDN driver for Linux. (Control-Utility)
  *
  * Copyright 1994,95 by Fritz Elfert (fritz@isdn4linux.de)
@@ -21,6 +21,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnctrl.c,v $
+ * Revision 1.44  2000/08/17 09:24:06  paul
+ * Added --version option to display (isdn4k-utils) version,
+ * and fixed a compile warning on alpha.
+ *
  * Revision 1.43  2000/06/29 17:38:26  akool
  *  - Ported "imontty", "isdnctrl", "isdnlog", "xmonisdn" and "hisaxctrl" to
  *    Linux-2.4 "devfs" ("/dev/isdnctrl" -> "/dev/isdn/isdnctrl")
@@ -421,6 +425,8 @@ void usage(void)
 		fprintf(stderr,"    -udpdial     destination-host or ip-number\n");
 		fprintf(stderr,"    -udpclear    destination-host-or ip-number\n");
 #endif
+        fprintf(stderr, "    -V                         display API versions\n");
+        fprintf(stderr, "    --version                  display isdnctrl version\n");
         exit(-2);
 }
 
@@ -784,7 +790,7 @@ int exec_args(int fd, int argc, char **argv)
 #endif /* I4L_CTRL_CONF */
 			if (i == BUSREJECT || i == MAPPING) {
 			   if (strlen(id) > sizeof(iocts.drvid)-1) {
-				fprintf(stderr, "DriverId must not exceed %d characters!\n", sizeof(iocts.drvid)-1);
+				fprintf(stderr, "DriverId must not exceed %u characters!\n", (unsigned int)sizeof(iocts.drvid)-1);
 				close(fd);
 				return -1;
 			   }
@@ -1748,7 +1754,8 @@ void check_version(int report) {
 	int fd;
 
 	if (report) {
-		printf("isdnctrl's view of API-Versions:\n");
+		printf("isdnctrl version %s\n", VERSION);
+		printf("isdnctrl's view of API-versions:\n");
 		printf("ttyI: %d, net: %d, info: %d\n", TTY_DV, NET_DV, INF_DV);
 	}
 	fd = open("/dev/isdn/isdninfo", O_RDWR);
@@ -1761,13 +1768,13 @@ void check_version(int report) {
 	data_version = ioctl(fd, IIOCGETDVR, 0);
 	if (data_version < 0) {
 		fprintf(stderr, "Could not get version of kernel ioctl structs!\n");
-		fprintf(stderr, "Make sure, you are using the correct version.\n");
+		fprintf(stderr, "Make sure that you are using the correct version.\n");
 		fprintf(stderr, "(Try recompiling isdnctrl).\n");
 		exit(-1);
 	}
 	close(fd);
 	if (report) {
-		printf("Kernel's view of API-Versions:\n");
+		printf("Kernel's view of API-versions:\n");
 		printf("ttyI: %d, net: %d, info: %d\n",
 			data_version & 0xff,
 			(data_version >> 8) & 0xff,
@@ -1791,12 +1798,12 @@ void check_version(int report) {
 			data_version);
 		fprintf(stderr, "version of isdnctrl (%d)!\n", NET_DV);
 		if (data_version < 1) {
-			fprintf(stderr, "Kernel-Version too old, terminating.\n");
+			fprintf(stderr, "Kernel-version too old, terminating.\n");
 			fprintf(stderr, "UPDATE YOUR KERNEL.\n");
 			exit(-1);
 		}
 		if (data_version > NET_DV) {
-			fprintf(stderr, "Kernel-Version newer than isdnctrl-Version, terminating.\n");
+			fprintf(stderr, "Kernel-version newer than isdnctrl-version, terminating.\n");
 			fprintf(stderr, "GET A NEW VERSION OF isdn4k-utils.\n");
 			exit(-1);
 		}
@@ -1809,7 +1816,7 @@ void check_version(int report) {
 			fprintf(stderr, "- Option 'trigger' disabled.\n");
 		if (data_version < 2)
 			fprintf(stderr, "- Option 'chargeint' disabled.\n");
-		fprintf(stderr, "Make sure, you are using the correct version.\n");
+		fprintf(stderr, "Make sure that you are using the correct version.\n");
 		fprintf(stderr, "Recompiling of isdnctrl is STRONGLY RECOMMENDED.\n");
 	}
 }
@@ -1830,6 +1837,10 @@ int main(int argc, char **argv)
 	}
 	if ((argc == 2) && (!strcmp(argv[1], "-V"))) {
 		check_version(1);
+		exit(0);
+	}
+	if ((argc == 2) && (!strcmp(argv[1], "--version"))) {
+		printf("isdnctrl version %s\n", VERSION);
 		exit(0);
 	}
 #ifdef I4L_DWABC_UDPINFO
