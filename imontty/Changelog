@@ -1,0 +1,20 @@
+0.5 - 03.02.97
+______________
+
+rewrite from scratch: Use C instead of C++
+no more options supported
+
+
+0.4 - 01.12.95
+--------------
+
+adapt to new isdninfo format of isdn4linux 0.7
+
+
+0.3 - 25.08.95
+--------------
+
+Option -i to get alternative info device than /dev/isdninfo
+Add continuous output similar to top(1).
+Wrote manpage
+
