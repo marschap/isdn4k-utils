@@ -1,4 +1,4 @@
-/* $Id: isdnrep.c,v 1.98 2003/11/14 20:29:29 tobiasb Exp $
+/* $Id: isdnrep.c,v 1.99 2004/02/25 12:09:08 paul Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -24,6 +24,12 @@
  *
  *
  * $Log: isdnrep.c,v $
+ * Revision 1.99  2004/02/25 12:09:08  paul
+ * There was no bounds checking on unknownzones, which is only useds
+ * if DEBUG is defined. This caused a SIGSEGV with many unknown numbers
+ * (which were all the same, BTW...)  Now only do unknownzones if DEBUG
+ * is defined.
+ *
  * Revision 1.98  2003/11/14 20:29:29  tobiasb
  * Removed SIGSEGV in isdnrep that occurred while fetching zone names for outgoing calls
  * from the current ratefile if the matching zone did not contain a name after the zone
@@ -441,7 +447,10 @@ static int    usage_provider[MAXPROVIDER];
 static int    provider_failed[MAXPROVIDER];
 static double duration_provider[MAXPROVIDER];
 static double pay_provider[MAXPROVIDER];
+#if DEBUG
+#include <assert.h>
 static char   unknownzones[4096];
+#endif
 
 #undef MAXPROVIDER
 #define MAXPROVIDER getNProvider()
@@ -586,7 +595,9 @@ int read_logfile(char *myname)
   msn_sum = calloc(mymsns + 1, sizeof(double));
   usage_sum = calloc(mymsns + 1, sizeof(int));
   dur_sum = calloc(mymsns + 1, sizeof(double));
+#if DEBUG
   *unknownzones = 0;
+#endif
 
 	_myname = myname;
 	_begintime = begintime;
@@ -1980,12 +1991,16 @@ static int print_entries(one_call *cur_call, double unit, int *nx, char *myname)
 
     zones_usage[zone] += 1;
 
+#if DEBUG
     if (zone == UNKNOWNZONE) {
+      assert(strlen(unknownzones) + 4 < sizeof(unknownzones));
       if (*unknownzones)
         strcat(unknownzones, ", ");
 
+			assert(strlen(unknownzones) + strlen(cur_call->num[1]) < sizeof(unknownzones));
       strcat(unknownzones, cur_call->num[1]);
                 } /* if */
+#endif
 
     add_one_call(computed ? &day_com_sum : &day_sum, cur_call, unit);
 
