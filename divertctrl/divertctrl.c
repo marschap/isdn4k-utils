@@ -1,5 +1,5 @@
 /* 
- * $Id: divertctrl.c,v 1.2 1999/09/02 13:24:14 paul Exp $
+ * $Id: divertctrl.c,v 1.3 2001/01/09 19:27:55 werner Exp $
  *
  * Control program for the dss1 diversion supplementary services. (User side)
  *
@@ -20,6 +20,11 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA. 
  *
  * $Log: divertctrl.c,v $
+ * Revision 1.3  2001/01/09 19:27:55  werner
+ *
+ * Added Output for interrogate and description for services.
+ * Thanks for help from Wolfram Joost.
+ *
  * Revision 1.2  1999/09/02 13:24:14  paul
  * fixed some compile warnings
  *
@@ -32,10 +37,45 @@
 #include <stdio.h>
 #include <string.h>
 #include <sys/ioctl.h>
+#include <sys/time.h>
+#include <sys/types.h>
 #include <fcntl.h>
 #include <unistd.h>
 #include "isdn_divert.h"
 
+static char number_types[7] = {
+       'U',
+       'I',
+       'N',
+       'S',
+       'M',
+       '?',
+       'A' };
+
+static char cf_types[4][5] = {
+        "CFU", "CFB", "CFNR", "?" };
+
+static struct {
+       unsigned   type;
+       char       *name;
+} service_types[18] = {
+       {  0, "all services" },
+       {  1, "speech" },
+       {  2, "unrestricted digital information" },
+       {  3, "audio 3.1 kHz" },
+       {  4, "unrestricted digital information wtaa" },
+       {  5, "multirate" },
+       { 32, "telephony 3.1 kHz" },
+       { 33, "teletex" },
+       { 34, "telefax group 4 class 1" },
+       { 35, "videotex syntax based" },
+       { 36, "videotelephony" },
+       { 37, "telefax group 2/3" },
+       { 38, "telephony 7 kHz" },
+       { 39, "eurofiletransfer" },
+       { 40, "filetransfer and access management" },
+       { 41, "videoconference" },
+       { 42, "audio graphic conference" } };
 
 char *progname; /* name of program */ 
 ulong  drvid; /* ids of driver */
@@ -277,11 +317,27 @@ static void do_command(void)
   divert_ioctl ioc;
   int i;
   ulong u,cmd;
-  
+  fd_set rdfs;
+  struct timeval tv;
+  char read_buf[512];
+  ssize_t read_len;
+  char *read_ptr;
+  ulong read_procid;
+  ulong read_counter;
+  char read_driver[30];
+  u_long read_msn_type;
+  char read_msn[35];
+  u_long read_cfproc;
+  u_long read_service;
+  u_long read_tonr_type;
+  char read_tonr[35];
+  int read_char_count;
+  char read_end;
+  char read_found;
 
   if (!strcmp(*argp,"listrules"))
-    { dioctl.getsetrule.ruleidx = 0; /* get first rule */ 
-      getdrvid();
+    { getdrvid();
+      dioctl.getsetrule.ruleidx = 0; /* get first rule */ 
       while (1)
        { /* fetch all rules */
          if (ioctl(fd,IIOCGETRULE,&dioctl)) return; /* no more rules */
@@ -371,8 +427,8 @@ static void do_command(void)
     } /* appendrule */
   else
   if (!strcmp(*argp,"flushrules"))
-    { dioctl.getsetrule.ruleidx = 0; /* start of list */
-      getdrvid(); 
+    { getdrvid(); 
+      dioctl.getsetrule.ruleidx = 0; /* start of list */
       while (1)
        { /* fetch all rules */
          if (ioctl(fd,IIOCGETRULE,&dioctl)) return; /* no more rules */
@@ -418,6 +474,80 @@ static void do_command(void)
             else
              if ((exitcode < 0) && (drvid != DEFLECT_ALL_IDS))
                return;
+                        read_end = 0;
+            read_found = 0;
+            while ( !read_end && (cmd == IIOCDOCFINT) )
+             { FD_ZERO(&rdfs);
+               FD_SET(fd,&rdfs);
+               tv.tv_sec = 4;
+               tv.tv_usec = 0;
+               if (select(fd+1,&rdfs,NULL,NULL,&tv) != 1)
+                { break;
+                }
+               read_len = read(fd,read_buf,sizeof(read_buf)-1);
+               if (read_len)
+               { read_buf[read_len] = 0;
+                 read_ptr = read_buf;
+                 while (*read_ptr)
+                  { if ( ((*read_ptr != (DIVERT_REPORT | 0x30)) ||
+                        (read_ptr[1] != ' ')) && strncmp(read_ptr,"128 ",4) )
+                    { while (*read_ptr && (*read_ptr != '\r'))
+                        read_ptr++;
+                      if (*read_ptr)
+                        read_ptr++;
+                      continue;
+                    }
+                    if ( !strncmp(read_ptr,"128 ",4)) {
+                       sscanf(read_ptr + 4,"%lx",&read_procid);
+                       if (read_procid == dioctl.cf_ctrl.procid) {
+                          puts("Error. :-(");
+                          read_end = 1;
+                          break;
+                       }
+                    }
+                    else {
+                       read_ptr += 2;
+                       sscanf(read_ptr,"%lx %lu %s %lu %s %lx %lu %n",
+                              &read_procid,&read_counter,read_driver,
+                              &read_msn_type,read_msn,&read_service,&read_cfproc,
+                              &read_char_count);
+                       read_ptr += read_char_count;
+                       read_end = (read_procid == dioctl.cf_ctrl.procid) && !read_counter;
+                       if (read_end)
+                        { if (!read_found)
+                            puts("Nothing active.");
+                          break;
+                        }
+                       if ( read_procid == dioctl.cf_ctrl.procid )
+                        { sscanf(read_ptr,"%lu %s",&read_tonr_type,read_tonr);
+                          if (read_msn_type > 6)
+                             read_msn_type = 5;
+                          if (read_tonr_type > 6)
+                             read_tonr_type = 5;
+                          if (read_cfproc > 3)
+                             read_cfproc = 3;
+                          read_found = 1;
+                          printf("%-8s %c %-8s %-4s %c %-10s ",read_driver,
+                                 number_types[read_msn_type],read_msn,
+                                 cf_types[read_cfproc],
+                                 number_types[read_tonr_type],read_tonr);
+                          for (read_char_count = 0; read_char_count < 18; read_char_count++)
+                           { if (service_types[read_char_count].type == read_service)
+                              { puts(service_types[read_char_count].name);
+                                break;
+                              }
+                           }
+                          if (read_char_count == 18)
+                             puts("unkown");
+                        }
+                     }
+                     while (*read_ptr && (*read_ptr != '\r'))
+                        read_ptr++;
+                     if (*read_ptr)
+                        read_ptr++;
+                 }
+               }
+             }
             exitcode = 0;
           }
          u >>= 1; /* next driver */  
