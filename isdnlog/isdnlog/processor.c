@@ -1,4 +1,4 @@
-/* $Id: processor.c,v 1.56 1999/04/25 17:34:45 akool Exp $
+/* $Id: processor.c,v 1.57 1999/04/26 22:12:00 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,16 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.57  1999/04/26 22:12:00  akool
+ * isdnlog Version 3.21
+ *
+ *  - CVS headers added to the asn* files
+ *  - repaired the "4.CI" message directly on CONNECT
+ *  - HANGUP message extended (CI's and EH's shown)
+ *  - reactivated the OVERLOAD message
+ *  - rate-at.dat extended
+ *  - fixes from Michael Reinelt
+ *
  * Revision 1.56  1999/04/25 17:34:45  akool
  * isdnlog Version 3.20
  *
@@ -3370,7 +3380,7 @@ static void addlist(int chan, int type, int mode) /* mode :: 0 = Add new entry, 
 
 void processRate(int chan)
 {
-  if ((call[chan].state == CONNECT) && (call[chan].zone != UNKNOWN)) {
+  if (call[chan].zone != UNKNOWN) {
     call[chan].Rate.prefix = call[chan].provider;
     call[chan].Rate.zone   = call[chan].zone;
     call[chan].Rate.start  = call[chan].connect;
@@ -3431,10 +3441,29 @@ static void processLCR(int chan, char *hint)
 } /* processLCR */
 
 
+static void showRates(char *message)
+{
+  if (call[chan].Rate.Basic > 0)
+    sprintf(message, "CHARGE: %s %s + %s/%ds = %s %s + %s/Min (%s)",
+      currency, double2str(call[chan].Rate.Basic, 5, 3, DEB),
+      double2str(call[chan].Rate.Price - call[chan].Rate.Basic, 5, 3, DEB),
+      (int)(call[chan].Rate.Duration + 0.5),
+      currency, double2str(call[chan].Rate.Basic, 5, 3, DEB),
+      double2str(60 * call[chan].Rate.Price / call[chan].Rate.Duration, 5, 3, DEB),
+      explainRate(&call[chan].Rate));
+  else
+    sprintf(message, "CHARGE: %s %s/%ds = %s %s/Min (%s)",
+      currency, double2str(call[chan].Rate.Price, 5, 3, DEB),
+      (int)(call[chan].Rate.Duration + 0.5),
+      currency, double2str(60 * call[chan].Rate.Price / call[chan].Rate.Duration, 5, 3, DEB),
+      explainRate(&call[chan].Rate));
+} /* showRates */
+
+
 static void prepareRate(int chan, char **msg, char **tip, int viarep)
 {
   auto   int  zone = UNKNOWN;
-  auto   RATE lcRate;
+  auto   RATE lcRate, ckRate;
   static char message[BUFSIZ];
   static char lcrhint[BUFSIZ];
 
@@ -3505,45 +3534,35 @@ static void prepareRate(int chan, char **msg, char **tip, int viarep)
   if (viarep)
     return;
 
-  if (call[chan].tarifknown) {
-
-    if (msg)
-      if (call[chan].Rate.Basic > 0)
-        sprintf(message, "CHARGE: %s %s + %s/%ds = %s %s + %s/Min (%s)",
-	  currency, double2str(call[chan].Rate.Basic, 5, 3, DEB),
-	  double2str(call[chan].Rate.Price - call[chan].Rate.Basic, 5, 3, DEB),
-	  (int)(call[chan].Rate.Duration + 0.5),
-	  currency, double2str(call[chan].Rate.Basic, 5, 3, DEB),
-	  double2str(60 * call[chan].Rate.Price / call[chan].Rate.Duration, 5, 3, DEB),
-	  explainRate(&call[chan].Rate));
+  if (msg) {
+    if (call[chan].tarifknown)
+      showRates(message);
+    else {
+      if (call[chan].Rate.zone == UNKNOWN)
+	sprintf(message, "CHARGE: Uh-oh: No zone info for provider %d, number %s",
+		call[chan].provider, call[chan].num[CALLED]);
       else
-        sprintf(message, "CHARGE: %s %s/%ds = %s %s/Min (%s)",
-	  currency, double2str(call[chan].Rate.Price, 5, 3, DEB),
-	  (int)(call[chan].Rate.Duration + 0.5),
-	  currency, double2str(60 * call[chan].Rate.Price / call[chan].Rate.Duration, 5, 3, DEB),
-	  explainRate(&call[chan].Rate));
-  }
-  else {
-    if (msg)
-      sprintf(message, "CHARGE: Uh-oh: No charge info for provider %d, zone %d, number %s",
-	call[chan].provider, call[chan].zone, call[chan].num[CALLED]);
-  } /* else */
+	sprintf(message, "CHARGE: Uh-oh: No charge info for provider %d, zone %d, number %s",
+		call[chan].provider, call[chan].zone, call[chan].num[CALLED]);
+    } /* else */
+  } /* if */
 
   lcRate = call[chan].Rate;
 
-  if ((call[chan].hint = getLeastCost(&lcRate, -1)) != UNKNOWN) {
+  if ((call[chan].hint = getLeastCost(&lcRate, UNKNOWN)) != UNKNOWN) {
     if (tip) {
 
       /* compute charge for 181 seconds for used provider */
-      call[chan].Rate.now = call[chan].Rate.start + 181;
-      (void)getRate(&call[chan].Rate, NULL);
+      ckRate = call[chan].Rate;
+      ckRate.now = ckRate.start + 181;
+      (void)getRate(&ckRate, NULL);
 
       sprintf(lcrhint, "HINT: Better use 010%02d:%s, %s %s/%ds = %s %s/Min, saving %s %s/%lds",
 	lcRate.prefix, lcRate.Provider,
 	currency, double2str(lcRate.Price, 5, 3, DEB),
 	(int)(lcRate.Duration + 0.5),
 	currency, double2str(60 * lcRate.Price / lcRate.Duration, 5, 3, DEB),
-	currency, double2str(call[chan].Rate.Charge - lcRate.Charge, 5, 3, DEB),
+	currency, double2str(ckRate.Charge - lcRate.Charge, 5, 3, DEB),
 	lcRate.Time);
     } /* if */
   } /* if */
@@ -3557,7 +3576,7 @@ static void processctrl(int card, char *s)
   register int         wegchan; /* fuer gemakelte */
   auto     int         dialin, type = 0, cref = -1, creflen, version;
   static   int         tei = BROADCAST, sapi = 0, net = 1, firsttime = 1;
-  auto     char        sx[BUFSIZ], s1[BUFSIZ], s2[BUFSIZ], s3[BUFSIZ], s4[BUFSIZ];
+  auto     char        sx[BUFSIZ], s1[BUFSIZ], s2[BUFSIZ];
   auto	   char       *why, *hint;
   auto	   char	       hints[BUFSIZ];
   static   char        last[BUFSIZ];
@@ -4066,20 +4085,9 @@ static void processctrl(int card, char *s)
 
  	    call[chan].cint = call[chan].Rate.Duration;
 
-            if (call[chan].Rate.Day && *call[chan].Rate.Day)
-              sprintf(s3, ", %s", call[chan].Rate.Day);
-            else
-              *s3 = 0;
-
-            if (call[chan].Rate.Hour && *call[chan].Rate.Hour)
-              sprintf(s4, ", %s", call[chan].Rate.Hour);
-            else
-              *s4 = 0;
-
- 	    snprintf(sx, BUFSIZ, "NEXT CI AFTER %s (%s, %s%s%s)",
+ 	    snprintf(sx, BUFSIZ, "NEXT CI AFTER %s (%s)",
  		     double2clock(call[chan].cint) + 3,
- 		     call[chan].Rate.Provider, call[chan].Rate.Zone,
- 		     s3, s4);
+		     explainRate(&call[chan].Rate));
             info(chan, PRT_SHOWCONNECT, STATE_CONNECT, sx);
 
 	    huptime(chan, 1);
@@ -4269,6 +4277,7 @@ doppelt:break;
 	addlist(chan, type, 2);
 
         if (call[chan].dialog || any) {
+
           if (call[chan].ibytes + call[chan].obytes) {
             sprintf(s2, " I=%s O=%s",
               double2byte((double)call[chan].ibytes),
@@ -4281,7 +4290,62 @@ doppelt:break;
             sprintf(sx, "HANGUP (%s%s)",
               double2clock((double)(call[chan].disconnect - call[chan].connect)), s2);
           else {
-            if (call[chan].aoce > 0)
+            auto int  firsttime = 1;
+            register char *p = sx;
+
+            p += sprintf(p, "HANGUP");
+
+            if (call[chan].Rate.Units > 0) {
+              if (firsttime) {
+                p += sprintf(p, " (");
+                firsttime = 0;
+              } /* if */
+
+              p += sprintf(p, "%d CI %s %s",
+                call[chan].Rate.Units,
+                currency,
+                double2str(call[chan].pay, 6, 3, DEB));
+            } /* if */
+
+            if (call[chan].aocpay > 0) {
+              if (firsttime) {
+                p += sprintf(p, " (");
+                firsttime = 0;
+              }
+              else
+                p += sprintf(p, "; ");
+
+              p += sprintf(p, "%d EH %s %s",
+                call[chan].aoce,
+                currency,
+                double2str(call[chan].aocpay, 6, 3, DEB));
+            } /* if */
+
+            if (call[chan].disconnect - call[chan].connect) {
+              if (firsttime) {
+                p += sprintf(p, " (");
+                firsttime = 0;
+              }
+              else
+                p += sprintf(p, " ");
+
+              p += sprintf(p, "%s",
+                double2clock((double)(call[chan].disconnect - call[chan].connect)));
+            } /* if */
+
+            if (*s2) {
+              if (firsttime) {
+                p += sprintf(p, " (");
+                firsttime = 0;
+              } /* if */
+              p += sprintf(p, "%s", s2);
+            } /* if */
+
+            if (!firsttime)
+              p += sprintf(p, ")");
+
+#if 0
+            if (call[chan].Rate.Units > 0)
               sprintf(sx, "HANGUP (%d CI %s %s %s%s)",
                 call[chan].aoce,
                 currency,
@@ -4292,8 +4356,15 @@ doppelt:break;
                 currency,
                 ((call[chan].pay == -1.0) ? "UNKNOWN" : double2str(call[chan].pay, 6, 3, DEB)),
                 double2clock((double)(call[chan].disconnect - call[chan].connect)), s2);
+            else if (call[chan].aocpay)
+              sprintf(sx, "HANGUP (%d EH %s %s %s%s)",
+                call[chan].aoce,
+                currency,
+                double2str(call[chan].aocpay, 6, 3, DEB),
+                double2clock((double)(call[chan].disconnect - call[chan].connect)), s2);
             else
               sprintf(sx, "HANGUP (%s%s)", double2clock((double)(call[chan].disconnect - call[chan].connect)), s2);
+#endif
           } /* else */
 
           if (!memcmp(sx, "HANGUP (        )", 17))
@@ -4305,7 +4376,7 @@ doppelt:break;
 
             if (((p = location(call[chan].loc)) != "")) {
               strcat(sx, " (");
-              strcat(sx, location(call[chan].loc));
+              strcat(sx, p);
               strcat(sx, ")");
             } /* if */
 
@@ -4313,25 +4384,20 @@ doppelt:break;
 
           info(chan, PRT_SHOWHANGUP, STATE_HANGUP, sx);
 
-          if ((call[chan].cause == 0x22) && /* No circuit/channel available */
-	      ((call[chan].loc == 2) ||     /* Public network serving local user */
-               (call[chan].loc == 3))) {    /* Transit network */
- 	    auto RATE Rate;
- 	    auto char s[BUFSIZ];
+          if (((call[chan].cause == 0x22) ||  /* No circuit/channel available */
+               (call[chan].cause == 0x2a)) && /* Switching equipment congestion */
+	      ((call[chan].loc == 2) ||       /* Public network serving local user */
+               (call[chan].loc == 3))) {      /* Transit network */
+ 	    auto char s[BUFSIZ], s1[BUFSIZ];
 
+ 	    prepareRate(chan, NULL, NULL, 0);
 
-            memset(&Rate, 0, sizeof(Rate));
- 	    Rate.zone = call[chan].zone;
- 	    Rate.start = Rate.now = cur_time;
-            Rate.now = Rate.start + 181;
- 	    Rate.Charge = 1e9; /* should be enough */
+ 	    if (getLeastCost(&call[chan].Rate, call[chan].provider) != UNKNOWN) {
+      	      showRates(s1);
+ 	      sprintf(s, "OVERLOAD? Try 010%02d:%s (%s)", call[chan].Rate.prefix, call[chan].Rate.Provider, s1);
 
- 	    if (getLeastCost(&Rate, call[chan].provider) != UNKNOWN) {
- 	      sprintf(s, "OVERLOAD, try 010%02d:%s", Rate.prefix, Rate.Provider);
               info(chan, PRT_SHOWHANGUP, STATE_HANGUP, s);
  	    } /* if */
-
-            info(chan, PRT_SHOWHANGUP, STATE_HANGUP, s);
           } /* if */
 
           if (OUTGOING && ((c = call[chan].confentry[OTHER]) > -1)) {
@@ -4664,7 +4730,7 @@ static void teardown(int chan)
 void processcint()
 {
   auto int    chan, c;
-  auto char   sx[BUFSIZ], s1[BUFSIZ], s2[BUFSIZ], s3[BUFSIZ], hints[BUFSIZ];
+  auto char   sx[BUFSIZ], s1[BUFSIZ], hints[BUFSIZ];
   auto double dur;
 
 
@@ -4707,20 +4773,9 @@ void processcint()
       if (call[chan].cint != call[chan].Rate.Duration) { /* Taktwechsel */
  	call[chan].cint = call[chan].Rate.Duration;
 
- 	if (call[chan].Rate.Day && *call[chan].Rate.Day)
-          sprintf(s2, ", %s", call[chan].Rate.Day);
-        else
-          *s2 = 0;
-
-        if (call[chan].Rate.Hour && *call[chan].Rate.Hour)
-          sprintf(s3, ", %s", call[chan].Rate.Hour);
-        else
-          *s3 = 0;
-
- 	snprintf(sx, BUFSIZ, "NEXT CI AFTER %s (%s, %s%s%s)",
- 	  double2clock(call[chan].cint) + 3,
- 	  call[chan].Rate.Provider, call[chan].Rate.Zone,
- 	  s2, s3);
+ 	snprintf(sx, BUFSIZ, "NEXT CI AFTER %s (%s)",
+		 double2clock(call[chan].cint) + 3,
+		 explainRate(&call[chan].Rate));
 
  	info(chan, PRT_SHOWCONNECT, STATE_CONNECT, sx);
 

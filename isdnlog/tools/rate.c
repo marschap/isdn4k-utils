@@ -1,4 +1,4 @@
-/* $Id: rate.c,v 1.9 1999/04/20 20:32:03 akool Exp $
+/* $Id: rate.c,v 1.10 1999/04/26 22:12:34 akool Exp $
  *
  * Tarifdatenbank
  *
@@ -19,6 +19,16 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rate.c,v $
+ * Revision 1.10  1999/04/26 22:12:34  akool
+ * isdnlog Version 3.21
+ *
+ *  - CVS headers added to the asn* files
+ *  - repaired the "4.CI" message directly on CONNECT
+ *  - HANGUP message extended (CI's and EH's shown)
+ *  - reactivated the OVERLOAD message
+ *  - rate-at.dat extended
+ *  - fixes from Michael Reinelt
+ *
  * Revision 1.9  1999/04/20 20:32:03  akool
  * isdnlog Version 3.19
  *   patches from Michael Reinelt
@@ -231,13 +241,13 @@ static char *strip (char *s)
 {
   char *p;
 
-  while (*s==' ' || *s=='\t') s++;
+  while (isblank(*s)) s++;
   for (p=s; *p; p++)
     if (*p=='#' || *p=='\n') {
       *p='\0';
       break;
     }
-  for (p--; p>s && (*p==' '||*p=='\t'); p--)
+  for (p--; p>s && isblank(*s); p--)
     *p='\0';
   return s;
 }

@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.73 1999/04/25 17:34:27 akool Exp $
+## $Id: Makefile.in,v 1.74 1999/04/26 22:11:33 akool Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,16 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.74  1999/04/26 22:11:33  akool
+## isdnlog Version 3.21
+##
+##  - CVS headers added to the asn* files
+##  - repaired the "4.CI" message directly on CONNECT
+##  - HANGUP message extended (CI's and EH's shown)
+##  - reactivated the OVERLOAD message
+##  - rate-at.dat extended
+##  - fixes from Michael Reinelt
+##
 ## Revision 1.73  1999/04/25 17:34:27  akool
 ## isdnlog Version 3.20
 ##
@@ -585,7 +595,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 3.20
+VERSION     = 3.21
 
 MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 \
 	      isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 \

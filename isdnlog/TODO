@@ -14,8 +14,6 @@ Vorschlaege von ak realisieren
  - ACHTUNG: die glibc definiert BUFSIZ mit 8192 !! (an welchen Stellen
    	    bin ich unbewuát von 512 Byte ausgegangen?
 
- - OVERLOAD reaktivieren
-
  - bekannte Probleme mit der Tarif-Datenbank:
 
   - die erste Minute kostenlos, wenn Gespraechsdauer < 1 Minute
