@@ -22,7 +22,7 @@
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-char sys_rcsid[] = "$Id: sys-linux.c,v 1.19 1999/06/07 11:26:50 paul Exp $";
+char sys_rcsid[] = "$Id: sys-linux.c,v 1.20 1999/08/03 14:17:34 paul Exp $";
 
 #define _LINUX_STRING_H_
 
@@ -647,11 +647,23 @@ int sifaddr (int unit, int our_adr, int his_adr, int net_mask)
 			rt.rt_flags |= RTF_HOST;
 
 		if (ioctl(sockfd, SIOCADDRT, &rt) < 0) {
-			syslog (LOG_ERR, "ioctl(SIOCADDRT) device route (%s/%s/%08x): %m",
+			int severity;
+			/*
+			 * It's not fatal IMHO if the route already exists!
+			 * Give a notice, though...
+			 */
+			if (errno == EEXIST) {
+				severity = LOG_NOTICE;
+			}
+			else {
+				severity = LOG_ERR:
+			}
+			syslog (severity, "ioctl(SIOCADDRT) device route (%s/%s/%08x): %m",
 				rt.rt_dev,
 				inet_ntoa(((struct sockaddr_in *)&rt.rt_dst)->sin_addr),
 				ntohl(net_mask));
-            return (0);
+			if (severity == LOG_ERR)
+				return 0;
 		}
 
 	}
@@ -891,8 +903,20 @@ int sifdefaultroute (int unit, int gateway)
     
 		rt.rt_flags = RTF_UP | RTF_GATEWAY;
 		if (ioctl(sockfd, SIOCADDRT, &rt) < 0) {
-			syslog (LOG_ERR, "default route ioctl(SIOCADDRT): %m");
-			return 0;
+			int severity;
+			/*
+			 * It's not fatal IMHO if the route already exists!
+			 * Give a notice, though...
+			 */
+			if (errno == EEXIST) {
+				severity = LOG_NOTICE;
+			}
+			else {
+				severity = LOG_ERR:
+			}
+			syslog (severity, "default route ioctl(SIOCADDRT): %m");
+			if (severity == LOG_ERR)
+				return 0;
 		}
 	}
 	has_default_route = 1;
