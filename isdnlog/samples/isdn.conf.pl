@@ -24,7 +24,7 @@ REPFMT  = "  %X %D %15.15H %T %-15.15F %7u %U %I %O"
 CHARGEMAX       = 50.00
 CURRENCY = 0.33,PLN
 
-COUNTRYFILE = /usr/lib/isdn/country-de.dat
+COUNTRYFILE = /usr/lib/isdn/country.dat
 RATECONF= /etc/isdn/rate.conf
 RATEFILE= /usr/lib/isdn/rate-pl.dat
 HOLIDAYS= /usr/lib/isdn/holiday-de.dat

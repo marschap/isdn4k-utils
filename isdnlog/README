@@ -473,7 +473,7 @@ COUNTRYPREFIX:
 
 [ISDNLOG]
 
-COUNTRYFILE = /usr/lib/isdn/country-de.dat
+COUNTRYFILE = /usr/lib/isdn/country.dat
 
   Diese Datei beinhaltet Laenderbezeichnungen und Vorwahlen. Sie dient
   als Ausgangsbasis zum  Erzeugen der Destination-Datenbank dest.gdbm.

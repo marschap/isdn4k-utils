@@ -93,7 +93,7 @@
 
   3d) dest.gdbm
     The destination database is built from the following textfiles:
-    - country-de.dat ... International telephonnumbers mainly of countries
+    - country.dat ... International telephonnumbers mainly of countries
                          with german and english country names
     - cities.dat ... international cities
     - code-CC.dat or zone/CC/code ... domestic city names with telephon numbers

@@ -24,7 +24,7 @@ sub get_country {
 	    $names{lc $a}=$key;
 	}
     }
-    my $co_dat = '/usr/lib/isdn/country-de.dat';
+    my $co_dat = '/usr/lib/isdn/country.dat';
     open(IN,$co_dat) || die("Cant read $co_dat");
     while (<IN>) {
 	chomp;
@@ -181,7 +181,7 @@ again:
 			    goto again;
 			}
 			elsif ($x =~ /^\/(.*)/) {
-			    print `grep -3 -i $1 /usr/lib/isdn/country-de.dat`;
+			    print `grep -3 -i $1 /usr/lib/isdn/country.dat`;
 			    goto again;
 			}
 			if ($x eq 'j') {
@@ -197,7 +197,7 @@ again:
 			    print "+xx	=> xx an unbekannt anhaengen\n";
 			    print "= SO => SO uebernehmen\n";
 			    print "=	=> unbekannt uebernehmen\n";
-			    print "/xx	=> in country-de.dat nach xx greppen\n";
+			    print "/xx	=> in country.dat nach xx greppen\n";
 			    print "xx	=> xx ausprobieren\n";
 			    goto again;
 			}

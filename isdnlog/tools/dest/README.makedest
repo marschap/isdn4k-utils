@@ -16,7 +16,7 @@ makedest makes a destination database
    -c ... appends file or stdin to country CC (CC may be number or isocode)
 
   input files:
-    global (de/en) /usr/lib/isdn/country-de.dat
+    global (de/en) /usr/lib/isdn/country.dat
 
     code-files /usr/lib/isdn/code-CC.dat or ../zone/CC/code
       where CC is the given countrycode
@@ -51,7 +51,7 @@ makedest makes a destination database
    -c ... appends file or stdin to country CC (CC may be number or isocode)
    
   input files:
-    global (de/en) /usr/lib/isdn/country-de.dat  
+    global (de/en) /usr/lib/isdn/country.dat  
     
     code-files /usr/lib/isdn/code-CC.dat or ../zone/CC/code
       where CC is the given countrycode

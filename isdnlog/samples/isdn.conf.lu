@@ -26,7 +26,7 @@ CHARGEMAX       = 50.00
 
 CURRENCY = 1,LUF
 
-COUNTRYFILE = /usr/lib/isdn/country-de.dat
+COUNTRYFILE = /usr/lib/isdn/country.dat
 # RATECONF= /etc/isdn/rate.conf.lu
 RATEFILE= /usr/lib/isdn/rate-lu.dat
 HOLIDAYS= /usr/lib/isdn/holiday-lu.dat

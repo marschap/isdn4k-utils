@@ -1,4 +1,4 @@
-.\" CHECKIN $Date: 2000/08/01 20:31:31 $
+.\" CHECKIN $Date: 2000/09/01 12:35:44 $
 .TH ISDNRATE 1 "@MANDATE@" -lt-
 .SH NAME
 isdnrate \- Print telefon rates and various info from rate\-files(5).
@@ -43,7 +43,7 @@ a town
 .IP
 .B US
 a code as defined in
-.IR country-de.dat .
+.IR country.dat .
 .IP
 .B Internet
 a Service name (if option

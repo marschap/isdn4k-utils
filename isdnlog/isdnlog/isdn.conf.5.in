@@ -1,5 +1,5 @@
-.\" $Id: isdn.conf.5.in,v 1.4 2000/08/22 14:33:03 paul Exp $
-.\" CHECKIN $Date: 2000/08/22 14:33:03 $
+.\" $Id: isdn.conf.5.in,v 1.5 2000/09/01 12:35:43 paul Exp $
+.\" CHECKIN $Date: 2000/09/01 12:35:43 $
 .TH isdn.conf 5 "@MANDATE_ISDN_CONF@" "ISDN 4 Linux @I4LVERSION@" "Linux System Administration"
 .PD 0
 
@@ -65,7 +65,7 @@ The default telephone provider (carrier), if no dial prefix is dialed.
 .TP
 .B COUNTRYFILE
 Location and name of
-.IR country-de.dat .
+.IR country.dat .
 This file contains country names, aliases, codes and prefixes.
 
 .TP
@@ -301,7 +301,7 @@ REPFMT  = "  %X %D %15.15H %T %-15.15F %7u %U %I %O"
 CHARGEMAX       = 50.00
 CURRENCY = 0.12,DEM
 
-COUNTRYFILE = /usr/lib/isdn/country-de.dat
+COUNTRYFILE = /usr/lib/isdn/country.dat
 RATECONF= /etc/isdn/rate.conf
 RATEFILE= /usr/lib/isdn/rate-de.dat
 HOLIDAYS= /usr/lib/isdn/holiday-de.dat

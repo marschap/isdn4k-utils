@@ -32,6 +32,6 @@ CALLFILE = /var/log/caller.log
 LOGFILE	= /var/log/isdn.log
 HOLIDAYS = /usr/lib/isdn/holiday-no.dat
 RATEFILE = /usr/lib/isdn/rate-no.dat
-COUNTRYFILE=/usr/lib/isdn/country-de.dat
+COUNTRYFILE=/usr/lib/isdn/country.dat
 DESTFILE= /usr/lib/isdn/dest.gdbm
 
