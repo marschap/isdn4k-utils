@@ -303,7 +303,7 @@ void rate_1001(void)
 		   "Ges.tarif 2",
 		   "Ges.tarif 3" };
 
-  double Tarif[] = { 1.116, 1.056, 0.996, 0.936, 0.816 };
+  double Tarif[] = { 0.067 }; // FIXME, nur minimum-tarif
 
   char *Zone[][2] = {{ "FreePhone", "112,122,133,141,142,144,+43800,+43801,+43802,+43803,+43804" },
 		     { "Regionalzone", "111*,11820,15*,+437111,+437112,+437113,+437114,+43810,02290" },
@@ -341,7 +341,8 @@ void rate_1001(void)
 
 
   /* Einheiten in 72 sec */
-  /* Minutenpreis * 72 / 60 / 1.116 = Faktor-Minimum-Tarif */
+  /* Minutenpreis * 72 / 60 / 0.067  = Faktor-Minimum-Tarif */
+  /* FIXME: checke Ausland, usw., Telering fehlt */
 
   double Faktor [][2] = {{  0.00,  0.00 },  /* FreePhone */
 			 {  1.00,  0.45 },  /* Regionalzone */
@@ -349,7 +350,7 @@ void rate_1001(void)
 			 {  3.60,  3.00 },  /* Mobilfunk A1 */
 			 {  5.00,  3.75 },  /* Mobilfunk Max */
 			 {  4.80,  4.00 },  /* Mobilfunk One + Tele.Ring */
-			 {  0.60,  0.20 },  /* Online  - 1.7.2000 */
+			 {  0.40,  0.20 },  /* Online  - 1.7.2000 */
 			 {  0.00,  0.00 },  /* AON Complete */
 			 {  4.80,  4.00 },  /* Ausland Zone 1 */
 			 {  6.00,  5.00 },  /* Ausland Zone 2 */
@@ -377,16 +378,14 @@ void rate_1001(void)
 			 {  2.25,  2.25 },  /* 0711-5,6,7 */
 			 {  4.80,  4.80 }}; /* 0711-8,9,0 */
 
+
   int t, z;
   char s[BUFSIZ];
-  char *gf[] = {"","Cost=240-198","Cost=288-198","Cost=468-198","Cost=1788-198"};
-  char *gt[] = {"Grundgebühr ATS 198","Grundgebühr ATS 240","Grundgebühr ATS 288",
-		"Grundgebühr ATS 468","Grundgebühr ATS 1788, Businesskunden"};
-  for (t=0; t<5; t++) {
+  for (t=0; t<1; t++) {	// FIXME
     sprintf(s,"Telekom Austria %s",Name[t]);
-    rprintf ("P: [01.09.1999] 01,%d", s , t+1);
+    rprintf ("P:01,%d", s , t+1);
     rprintf ("C:Maintainer:", "Michael Reinelt <reinelt@eunet.at>" );
-    rprintf ("C:TarifChanged:", "04.07.2000" );
+    rprintf ("C:TarifChanged:", "23.06.2002" );
     rprintf ("C:Zone:", "Die Regionalzone geht bis zu einer Entfernung von 50 Km, alles andere ist Österreichzone." );
     rprintf ("C:Special:", "Variable Taktung, abhängig von Zone und Tageszeit." );
     rprintf ("C:Name:", "Telekom Austria" );
@@ -394,12 +393,10 @@ void rate_1001(void)
     rprintf ("C:Homepage:", "http://www.telekom.at" );
     rprintf ("C:TarifURL:", "http://www.telekom.at/tarife/" );
     rprintf ("C:Telefon:", "0800 100 100" );
-    if (*gt[t])
-      rprintf ("C:GT:", gt[t] );
-    rprintf ("C:GF:", gf[t] );
-    sprintf (s, "%s (ATS %.3f pro Einheit)", Name[t], Tarif[t]);
+    sprintf (s, "%s (EUR %.3f pro Einheit)", Name[t], Tarif[t]);
     rprintf ("# Tarif:", s );
     rprintf ("D:1001", "# Verzonung" );
+    rprintf ("# FIXME: nur Faktor angepasst, Tarife könnten flasch sein","");
     for (z=0; z<COUNT(Zone); z++) {
       rprintf ("Z:%d", Zone[z][0] , z);
       if (z==0) { /* Freephone */
@@ -408,21 +405,10 @@ void rate_1001(void)
 	if (Faktor[z][0]==Faktor[z][1]) {
 	  rprintf ("T:*/*=%.3f/%.5g", "0-24h" , Tarif[t], 72.0/Faktor[z][0]);
 	} else {
-	  if(z == 6) {
-	    rprintf ("T:[-01.07.2000] W/08-18=%.3f/%.5g", "Geschäftszeit" , Tarif[t], 72.0/Faktor[z][0]);
-	    rprintf ("T:[-01.07.2000] W/18-08=%.3f/%.5g", "Freizeit" , Tarif[t], 72.0/Faktor[z][1]);
-	    rprintf ("T:[-01.07.2000] E,H/*=%.3f/%.5g", "Freizeit" , Tarif[t], 72.0/Faktor[z][1]);
-	    Faktor[z][0]=0.4;
-	    rprintf ("T:[01.07.2000-] W/08-18=%.3f/%.5g", "Geschäftszeit" , Tarif[t], 72.0/Faktor[z][0]);
-	    rprintf ("T:[01.07.2000-] W/18-08=%.3f/%.5g", "Freizeit" , Tarif[t], 72.0/Faktor[z][1]);
-	    rprintf ("T:[01.07.2000-] E,H/*=%.3f/%.5g", "Freizeit" , Tarif[t], 72.0/Faktor[z][1]);
-	  }
-	  else {
 	    rprintf ("T:W/08-18=%.3f/%.5g", "Geschäftszeit" , Tarif[t], 72.0/Faktor[z][0]);
 	    rprintf ("T:W/18-08=%.3f/%.5g", "Freizeit" , Tarif[t], 72.0/Faktor[z][1]);
 	    rprintf ("T:E,H/*=%.3f/%.5g", "Freizeit" , Tarif[t], 72.0/Faktor[z][1]);
 	  }
-	}
       }
       else
         rprintf ("T:*/*=0/60","0-24h"); // AON Complete
@@ -1151,47 +1137,34 @@ void rate_10elf(void) {
   }
 }
 
-void rate_1012(what) { /* 1012 == 1044 (Citykom) */
+void rate_1012(what) { /* 1012 Preselected */
 
   char *Zone[][2] = {
-    { "Österreich", "Österreich" },
+    { "Nahzone", "" },
+    { "Fernzone", "Österreich" },
     { "A1/D", "+43663,+43664" },
-    { "Max", "+43676" },
-    { "One","+43699" },
-    /* FIXME Surfnet 1012 01933 1012 ~50g  / min 360/360 */
-/* 1.90 */	{"Deutschland", "Deutschland"},
-/* 2.30 */	{"Schweiz ...", "Schweiz, Italien, Frankreich, Liechtenstein"},
-/* 3.50 */	{"Belgien ...", "Belgien, Dänemark, Finnland, Irland, Kanada, Luxemburg, Niederlande, Norwegen, Puerto Rico, Schweden, Spanien, USA inkl. Alaska und Hawaii, Slowakei, Slowenien, Tschechien, Ungarn"},
-/* 4.90 */	{"Andorra ...", "Andorra, Bosnien-Herzegowina, Faröer Inseln, Jugoslawien, Kroatien, Malta, Monaco, Montenegro"},
-/* 5.90 */	{"Albanien ...", "Albanien, Bulgarien, Estland, Griechenland, Mazedonien, Polen, Portugal, Rumänien, San Marino, Tunesien, Ukraine, Zypern"},
-/* 7.90 */	{"Algerien ...", "Algerien, Australien, Gibraltar, Hongkong, Island, Israel, Japan, Lettland, Litauen, Marokko, Neuseeland, Russische Föderation, Singapur, Südkorea, Türkei"},
-/* 22.00 */	{"Alle übrigen Länder", "+"}
+    { "Max,ONE", "+43676,+43699" },
+    { "Telering","+43650" },
 };
 
 
-  double Tarif[][2] = { { 0.85 , 0.5 },
-            		{ 4.0 , 2.8 },
-			{ 3.9 , 3.7 },
-			{ 3.9 , 3.7 },	/* 60/1 */
-{1.90,1.90},  /* Deutschland ... */
-{2.30,2.30},  /* Schweiz ... */
-{3.50,3.50},  /* Belgien ... */
-{4.90,4.90},  /* Andorra ... */
-{5.90,5.90},  /* Albanien ... */
-{7.90,7.90},  /* Algerien ... */
-{22.00,22.0}  /* Alle übrigen Länder der Welt ... */
+  double Tarif[][2] = { { 0.027 , 0.019 },
+            		{ 0.040 , 0.019 },
+			{ 0.167 , 0.159 },
+			{ 0.218 , 0.218 },
+			{ 0.121 , 0.121 },
 };
 
 
   int z;
   if(what==1012) {
-    rprintf ("P:12", "1012" );
-    rprintf ("C:TarifChanged:", "12.05.2000" );
+    rprintf ("P:12", "Telering Preselected" );
+    rprintf ("C:TarifChanged:", "23.06.2002" );
     rprintf ("C:Name:", "Tele.Ring" );
     rprintf ("C:Address:", "Linzer Str. 221, A-1140 Wien" );
     rprintf ("C:Homepage:", "http://www.telering.at" );
-    rprintf ("C:TarifURL:", "http://www.telering.at/produkte/privat/fest/alles.php?path=prod-1-1-1-1-1-1" );
     rprintf ("C:Telefon:", "0800 1012 1012" );
+    rprintf ("D:1012", "# Verzonung" );
   }
   else {
     rprintf ("P:44", "Citykom" );
@@ -1206,11 +1179,11 @@ void rate_1012(what) { /* 1012 == 1044 (Citykom) */
   for (z=0; z<COUNT(Zone); z++) {
     rprintf ("Z:%d", Zone[z][0] , z+1);
     if (Tarif[z][0]==Tarif[z][1]) {
-      rprintf ("T:*/*=%.2f(60)/60/1", "0-24h" , Tarif[z][0]);
+      rprintf ("T:*/*=%.3f(60)/1", "0-24h" , Tarif[z][0]*1.2);
     } else {
-      rprintf ("T:W/8-18=%.2f(60)/60/1", "Tag" , Tarif[z][0]);
-      rprintf ("T:W/18-8=%.2f(60)/60/1", "Nacht" , Tarif[z][1]);
-      rprintf ("T:E,H/*=%.2f(60)/60/1", "Weekend" , Tarif[z][1]);
+      rprintf ("T:W/8-18=%.3f(60)/1", "Tag" , Tarif[z][0]*1.2);
+      rprintf ("T:W/18-8=%.3f(60)/1", "Nacht" , Tarif[z][1]*1.2);
+      rprintf ("T:E,H/*=%.3f(60)/1", "Weekend" , Tarif[z][1]*1.2);
     }
     print_area(Zone[z][1]);
   }
@@ -1401,7 +1374,7 @@ void rate_1022(void) {
 /* 12.95 */	{"Ascension ...", "Ascension, Bangladesh, Cook Inseln, Dschibuti, Elfenbeinküste, Eritrea, Fidschi, Guyana, Irak, Jemen, Kambodscha, Kiribati, Laos, Mongolei, Sao Tome und Principe, Togo, Tonga, Vanuatu, Vietnam"},
 /* 15.99 */	{"Afghanistan", "Afghanistan"},
 /* 99.99 */	{"Inmarsat A ...", "Inmarsat A, Inmarsat A Fax, Inmarsat Aero, Inmarsat B, Inmarsat M, Inmarsat Mini M, Inmarsat SNAC"},
-     
+
   };
   double Tarif[][3] = {
     { 0.649, 0.289, 0.279},
@@ -2730,48 +2703,47 @@ int main (int argc, char *argv[])
   printf ("# or Leo Tötsch <lt@toetsch.at> if you have any\n");
   printf ("# corrections or additions.\n\n");
   printf ("# New versions of rate-at.c are available on\n");
-  printf ("#\thttp://rates4linux.sourceforge.net\n");
-  printf ("# Many thanks to Daniela Bruder <dbruder@sime.com>\n");
-  printf ("# for collecting and preparing most of the call charges.\n\n\n");
+  printf ("#\thttp://www.isdn4linux.de in the CVS\n\n");
+  printf ("# MAINTAINERS Wanted\n\n");
 
-  printf ("V:1.96-Austria [07-Dec-2000]\n\n");
-  printf ("U:%%.3f öS\n");
+  printf ("V:2.00-Austria [24-Jun-2002]\n\n");
+  printf ("U:%%.3f EUR\n");
   write_services();
 
 #if 0
   rate_1066();
 #else
-  rate_1001_old();
+  // rate_1001_old();
   rate_1001();
-  rate_1002();
-  rate_1002_old();
-  rate_1003();
-  rate_1004_1();
-  rate_1004_2();
-  rate_1005();
-  rate_1007();
-  rate_1008();
-  rate_1009();
-  rate_1011();
-  rate_10elf();
+//   rate_1002();
+  // rate_1002_old();
+//   rate_1003();
+//   rate_1004_1();
+//   rate_1004_2();
+//   rate_1005();
+//   rate_1007();
+//   rate_1008();
+//   rate_1009();
+//   rate_1011();
+//   rate_10elf();
   rate_1012(1012);
-  rate_1013();
-  rate_1014();
-   rate_1022();
-  rate_1024();
-  rate_1029_privat();
-  rate_1029_business();
-  rate_tns();
-  rate_librotel();
+//   rate_1013();
+//   rate_1014();
+//    rate_1022();
+//   rate_1024();
+//   rate_1029_privat();
+//   rate_1029_business();
+//   rate_tns();
+//   rate_librotel();
   /*  rate_1044_old(); */
-  rate_1012(1044);
-  rate_1046();
-  rate_1049();
+//   rate_1012(1044);
+//   rate_1046();
+//   rate_1049();
 /* rate_1056();  // Fixme: Netway ab 1.5.00 */
-  rate_1066();
-  rate_1067();
-  rate_1069_old();
-  rate_1069();
+//   rate_1066();
+//   rate_1067();
+//   rate_1069_old();
+//   rate_1069();
   if(0) {
     rate_priority_class();
     rate_priority_stand();
