@@ -179,7 +179,7 @@ install: all
 
 # Un-install output files
 uninstall:
-	set -e; allow_null_glob_expansion=1; \
+	set -e; \
 	if [ $(TARGET_DIR) != $(GEN_DIR) ]; then \
 		cd $(TARGET_DIR); \
 		for i in $(OUT_7BIT) $(OUT_HTML) $(OUT_ENG_7BIT) $(OUT_ENG_HTML) ; do \
@@ -192,7 +192,7 @@ clean:
 	if [ -e *~ ]; then rm *~; fi
 	if [ -e \#* ]; then rm \#*; fi
 	if [ -e *.orig ]; then rm *.orig; fi
-	set -e; allow_null_glob_expansion=1; \
+	set -e; \
 	cd $(GEN_DIR); \
 	for i in $(OUT_7BIT) $(OUT_HTML) $(OUT_ENG_7BIT) $(OUT_ENG_HTML) ; do \
 		rm -f $$i $$i.zip $$i.gz ; \

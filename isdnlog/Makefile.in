@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.5 1997/03/24 22:52:00 luethje Exp $
+## $Id: Makefile.in,v 1.6 1997/04/03 08:56:58 fritz Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,12 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.6  1997/04/03 08:56:58  fritz
+## Bugfix: Changes for bash-2.00.0:
+##         workaround for empty list in for-loops.
+##         workaround for missing allow_null_glob_expansion
+## Bugfix: CONFIG_HASX11 was not reset on non-X11 systems.
+##
 ## Revision 1.5  1997/03/24 22:52:00  luethje
 ## isdnrep completed.
 ##
@@ -177,16 +183,16 @@ PROGS        =  $(ISDNLOG) $(ISDNREP) $(ISDNCONF)
 all:            libs $(PROGS)
 
 libs:
-		set -e; for i in $(SUBDIRS); do $(MAKE) -C $$i; done
+		set -e; for i in `echo $(SUBDIRS)`; do $(MAKE) -C $$i; done
 
 clean:
 		-rm -f $(MODS)
-		set -e; for i in $(SUBDIRS); do $(MAKE) -C $$i clean; done
+		set -e; for i in `echo $(SUBDIRS)`; do $(MAKE) -C $$i clean; done
 
 distclean:      clean
 		-rm -f $(PROGS) .depend config.h config.status config.cache \
 		config.log Makefile confdefs.h policy.h
-		set -e; for i in $(SUBDIRS); do $(MAKE) -C $$i distclean; done
+		set -e; for i in `echo $(SUBDIRS)`; do $(MAKE) -C $$i distclean; done
 
 ifeq (.depend,$(wildcard .depend))
 include .depend

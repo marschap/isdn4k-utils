@@ -1,5 +1,5 @@
 #
-# $Id: config.in,v 1.15 1997/03/29 15:05:34 fritz Exp $
+# $Id: config.in,v 1.16 1997/04/03 08:57:07 fritz Exp $
 #
 # The whole configuration stuff is borrowed from the kernel
 # configuration.
@@ -7,6 +7,7 @@
 # For a description of the syntax of this configuration file,
 # see the Menuconfig script.
 #
+CONFIG_HASX11=n
 if [ "`type -p xmkmf`" != "" ]; then
 CONFIG_HASX11=y
 fi

@@ -61,29 +61,29 @@ DEFS    += -I$(PREFIXDIR)
 all: libs libisdn.a
 
 libs:
-		set -e; for i in $(SUBDIRS); do $(MAKE) -C $$i; done
+		set -e; for i in `echo $(SUBDIRS)`; do $(MAKE) -C $$i; done
 
 depend dep: .depend
 
 .depend:
 		$(CPP) -M $(CFLAGS) $(DEFS) *.c >.depend
-		set -e; for i in $(SUBDIRS); do $(MAKE) -C $$i depend; done
+		set -e; for i in `echo $(SUBDIRS)`; do $(MAKE) -C $$i depend; done
 
 clean:
 		-rm -f *.o *.a
-		set -e; for i in $(SUBDIRS); do $(MAKE) -C $$i clean; done
+		set -e; for i in `echo $(SUBDIRS)`; do $(MAKE) -C $$i clean; done
 
 distclean: clean
 		-rm -f .depend policy.h
-		set -e; for i in $(SUBDIRS); do $(MAKE) -C $$i distclean; done
+		set -e; for i in `echo $(SUBDIRS)`; do $(MAKE) -C $$i distclean; done
 
 install: depend all
-		set -e; for i in $(SUBDIRS); do $(MAKE) -C $$i depend; done
-		set -e; for i in $(SUBDIRS); do $(MAKE) -C $$i all; done
-		set -e; for i in $(SUBDIRS); do $(MAKE) -C $$i install; done
+		set -e; for i in `echo $(SUBDIRS)`; do $(MAKE) -C $$i depend; done
+		set -e; for i in `echo $(SUBDIRS)`; do $(MAKE) -C $$i all; done
+		set -e; for i in `echo $(SUBDIRS)`; do $(MAKE) -C $$i install; done
 
 deinstall: distclean
-		set -e; for i in $(SUBDIRS); do $(MAKE) -C $$i deinstall; done
+		set -e; for i in `echo $(SUBDIRS)`; do $(MAKE) -C $$i deinstall; done
 
 
 libisdn.a: conffile.o isdntools.o libtools.o $(LIB_AREA)

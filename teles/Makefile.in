@@ -1,4 +1,4 @@
-# $Id: Makefile.in,v 1.3 1997/03/03 04:01:00 fritz Exp $
+# $Id: Makefile.in,v 1.4 1997/04/03 08:57:11 fritz Exp $
 #
 # Makefile for telesctrl
 # (C) 1997 Fritz Elfert
@@ -68,10 +68,10 @@ install-strip: $(PROGRAMS) $(MANPAGES)
 	$(INSTALL_MAN) $(MANPAGES) $(MAN8DIR)
 
 uninstall:
-	@for i in $(PROGRAMS) ; do \
+	@for i in `echo $(PROGRAMS)` ; do \
 		rm -f $(SBINDIR)/$$i ; \
 	done
-	@for i in $(MANPAGES) ; do \
+	@for i in `echo $(MANPAGES)` ; do \
 		rm -f $(MAN8DIR)/$$i ; \
 	done
 

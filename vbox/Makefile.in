@@ -1,5 +1,5 @@
 #
-# $Id: Makefile.in,v 1.9 1997/03/18 12:36:26 michael Exp $
+# $Id: Makefile.in,v 1.10 1997/04/03 08:57:15 fritz Exp $
 
 #----------------------------------------------------------------------------#
 # Things you can change to personalize the Makefile for your own site. Some  #
@@ -195,7 +195,7 @@ ifeq ($(ACTION_ON_VBOX),y)
 		  @$(INSTALL_BIN) $(TOPDIR)/src/vbox $(bindir)
 endif
 
-		  @set -e; for i in $(CATALOGS); do \
+		  @set -e; for i in `echo $(CATALOGS)`; do \
 		     $(ECHO) "Installing '$(LOCALEDIR)/$$i/LC_MESSAGES/$(PACKAGE).mo'..."; \
 		     $(INSTALL_LOCALE) $(TOPDIR)/messages/$$i.mo $(LOCALEDIR)/$$i/LC_MESSAGES/$(PACKAGE).mo; \
 		  done
@@ -215,7 +215,7 @@ MAKETHISDIRS	= $(prefix) $(exec_prefix) $(sbindir) $(bindir) \
 		  $(LCKFILEDIR)
 
 install-dirs:	  ignore
-		  @set -e; for i in $(MAKETHISDIRS); do \
+		  @set -e; for i in `echo $(MAKETHISDIRS)`; do \
 		     $(ECHO) -n "Checking '$$i'... "; \
 		     if [ -d $$i ]; then \
 		        $(ECHO) "it's here."; \
@@ -224,7 +224,7 @@ install-dirs:	  ignore
 		        $(INSTALL_DIRS) $$i; \
 		     fi; \
 		  done
-		  @set -e; for i in $(CATALOGS); do \
+		  @set -e; for i in `echo $(CATALOGS)`; do \
 		     $(ECHO) -n "Checking '$(LOCALEDIR)/$$i/LC_MESSAGES'... "; \
 		     if [ -d $(LOCALEDIR)/$$i/LC_MESSAGES ]; then \
 		        $(ECHO) "it's here."; \

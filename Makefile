@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.12 1997/03/24 23:38:37 fritz Exp $
+# $Id: Makefile,v 1.13 1997/04/03 08:56:40 fritz Exp $
 #
 # Toplevel Makefile for isdn4k-utils
 #
@@ -84,7 +84,7 @@ ifneq ($(SUBDIRS),)
 endif
 
 subtargets: $(CONFIGURATION)
-	set -e; for i in $(SUBDIRS); do $(MAKE) -C $$i all; done
+	set -e; for i in `echo $(SUBDIRS)`; do $(MAKE) -C $$i all; done
 
 rootperm:
 	@echo 'main(int argc,char**argv){unlink(argv[0]);return(getuid()==0);}'>g
@@ -94,28 +94,36 @@ rootperm:
 	fi
 
 install: rootperm
-	set -e; for i in $(SUBDIRS); do $(MAKE) -C $$i install; done
+	set -e; for i in `echo $(SUBDIRS)`; do $(MAKE) -C $$i install; done
 
 uninstall: rootperm
-	set -e; for i in $(SUBDIRS); do $(MAKE) -C $$i uninstall; done
+	set -e; for i in `echo $(SUBDIRS)`; do $(MAKE) -C $$i uninstall; done
 
 #
 # targets clean and distclean go through ALL directories
 # regardless of cofigured options.
 #
 clean:
-	-set -e; allow_null_glob_expansion=1; \
-	for i in */Makefile; do $(MAKE) -i -C `dirname $$i` clean; done; \
-	for i in */GNUmakefile; do $(MAKE) -i -C `dirname $$i` clean; done; \
+	-set -e; \
+	for i in `echo ${wildcard */Makefile}`; do \
+		$(MAKE) -i -C `dirname $$i` clean; \
+    done; \
+	for i in `echo ${wildcard */GNUmakefile}`; do \
+		$(MAKE) -i -C `dirname $$i` clean; \
+	done; \
 	rm -f *~ *.o
 
 distclean: clean
 	-$(MAKE) -C scripts/lxdialog clean
-	-set -e; allow_null_glob_expansion=1; \
-	for i in */Makefile; do $(MAKE) -i -C `dirname $$i` distclean; done; \
-	for i in */GNUmakefile; do $(MAKE) -i -C `dirname $$i` distclean; done; \
+	-set -e; \
+	for i in `echo ${wildcard */Makefile}`; do \
+		$(MAKE) -i -C `dirname $$i` distclean; \
+	done; \
+	for i in `echo ${wildcard */GNUmakefile}`; do \
+		$(MAKE) -i -C `dirname $$i` distclean; \
+	done; \
 	rm -f *~ .config .config.old scripts/autoconf.h .menuconfig \
-		Makefile.tmp .menuconfig.log scripts/defconfig.old
+		Makefile.tmp .menuconfig.log scripts/defconfig.old .#* scripts/.#*
 
 scripts/lxdialog/lxdialog:
 	@$(MAKE) -C scripts/lxdialog all
@@ -128,7 +136,7 @@ scripts/lxdialog/lxdialog:
 #
 subconfig:
 	@echo Selected subdirs: $(SUBDIRS)
-	@set -e; for i in $(SUBDIRS); do \
+	@set -e; for i in `echo $(SUBDIRS)`; do \
 		if [ -x $$i/configure ] ; then \
 			echo -e "\nRunning configure in $$i ...\n"; sleep 1; \
 			(cd $$i; ./configure); \
@@ -167,15 +175,15 @@ mrproper: distclean
 
 archive: distclean
 	@(cd .. ;\
-	mv isdn4k-utils isdn4k-utils-$(I4LVERSION) ;\
-	tar cvzf distisdn/isdn4k-utils-$(I4LVERSION).tar.gz isdn4k-utils-$(I4LVERSION) ;\
-	mv isdn4k-utils-$(I4LVERSION) isdn4k-utils )
+	ln -nfs isdn4k-utils isdn4k-utils-$(I4LVERSION) ;\
+	tar cvhzf distisdn/isdn4k-utils-$(I4LVERSION).tar.gz isdn4k-utils-$(I4LVERSION) ;\
+	rm isdn4k-utils-$(I4LVERSION) )
 
 distarch: distclean
-	@(cd .. ;\
-	mv isdn4k-utils isdn4k-utils-$(I4LVERSION) ;\
-	tar -cvzf --exclude=CVS distisdn/isdn4k-utils-$(I4LVERSION).tar.gz \
+	(cd .. ;\
+	ln -nfs isdn4k-utils isdn4k-utils-$(I4LVERSION) ;\
+	tar -cvhz --exclude=CVS -f distisdn/isdn4k-utils-$(I4LVERSION).tar.gz \
 	isdn4k-utils-$(I4LVERSION) ;\
-	mv isdn4k-utils-$(I4LVERSION) isdn4k-utils )
+	rm isdn4k-utils-$(I4LVERSION) )
 
 dist: distarch

@@ -2,7 +2,7 @@
 #
 # (c) 1995-97 Volker Götz
 #
-# $Id: Makefile,v 1.1 1997/03/03 04:10:10 fritz Exp $
+# $Id: Makefile,v 1.2 1997/04/03 08:56:54 fritz Exp $
 
 ifeq (../.config,$(wildcard ../.config))
 	#
@@ -31,7 +31,8 @@ imontty: imontty.c imontty.h
 	cc $(CCFLAGS) -o imontty imontty.c
 
 rootperm:
-	@if [ `id -u` != 0 ] ; then \
+	@echo 'main(int argc,char**argv){unlink(argv[0]);return(getuid()==0);}'>g
+	@if gcc -x c -o G g && rm -f g && ./G ; then \
 		echo -e "\n\n      Need root permission for (de)installation!\n\n"; \
 		exit 1; \
 	fi
