@@ -18,6 +18,7 @@ C:+998, +7590, +7436, +743, +7375, +7374, +7373, +7372, +7371, +737, +7369, +736
 T:UZ
 
 N:Kirgisien Mobilfunk
+E:Kyrgyzstan cellphone
 C:+99631, +99632, +99634, +99635, +99636, +99637, +99639
 T:_KGMF
 
@@ -75,6 +76,7 @@ C:+973
 T:BH
 
 N:Israel Mobilfunk
+E:Israel cellphone
 C:+97255, +97254, +97253, +97252, +97251, +97250
 R:IL
 T:_ILMF
@@ -111,6 +113,7 @@ C:+966
 T:SA
 
 N:Kuwait Mobilfunk
+N:Kuwait cellphone
 C:+9659
 T:_KWMF
 
@@ -131,6 +134,7 @@ C:+963
 T:SY
 
 N:Jordanien Mobilfunk
+E:Jordan cellphone
 C:+96279
 T:_JOMF
 
@@ -140,6 +144,7 @@ C:+962
 T:JO
 
 N:Libanon Mobilfunk
+E:Lebanon cellphone
 C:+9613
 R:LB
 T:_LBMF
@@ -174,6 +179,7 @@ C:+92
 T:PK
 
 N:Indien Mobilfunk
+E:India cellphone
 C:+9198
 T:_INMF
 
@@ -183,6 +189,7 @@ C:+91
 T:IN
 
 N:Türkei Mobilfunk
+N:Turkey cellphone
 C:+905
 R:TK
 T:_TKMF
@@ -213,6 +220,7 @@ C:+8816
 T:_IR16
 
 N:Bangladesh Mobilfunk
+E:Bangladesh cellphone
 C:+8801
 T:_BDMF
 
@@ -388,6 +396,7 @@ C:+871
 T:_ATLA
 
 N:China Mobilfunk
+E:China cellphone
 C:+86886, +8613
 R:CN
 T:_CNMF
@@ -413,11 +422,13 @@ C:+853
 T:MO
 
 N:Hong Kong Mobilfunk
+E:Hong Kong cellphone
 C:+8529
 R:HK
 T:_HKMF
 
 N:Hong Kong Sondernummern
+E:Hong Kong special numbers
 C:+85217, +85221, +852264, +8528
 T:_HKSO
 
@@ -438,6 +449,7 @@ T:VN
 
 N:Korea (Süd) Mobilfunk
 A:Korea Rep. (South) Mobilfunk
+E:South Korea cellphone
 C:+8227, +821
 R:KR
 T:_KRMF
@@ -449,6 +461,7 @@ C:+82
 T:KR
 
 N:Japan Mobilfunk
+E:Japan cellphone
 C:+8190, +8170
 R:JP
 T:_JPMF
@@ -467,6 +480,7 @@ C:+800
 T:_F800
 
 N:Rußland Mobilfunk
+E:Russia cellphone
 C:+7901, +7902
 T:_RUMF
 
@@ -501,16 +515,19 @@ T:MOW
 
 N:Russische Forderation (ostl.)
 A:Rußland, Rußland (östl.), Russische Föderation, Russian Federation, Russische Förderation Ost
+E:Russian Federation (east)
 C:+7
 T:SU
 
 N:Midway-Inseln
 A:Midway-Insel
+E:Midway Island
 C:+6998
 R:US
 T:_MIDW
 
 N:Chatham-Inseln
+E:Chatham Island
 C:+6996
 R:NZ
 T:_CHAT
@@ -557,6 +574,7 @@ C:+687
 T:NC
 
 N:Kiribati Mobilfunk
+E:Kiribati cellphone
 C:+6861, +6862, +6863, +6864, +6865, +6866, +6867, +6868, +6869
 R:KI
 T:_KIMF
@@ -669,6 +687,7 @@ C:+671
 T:GU
 
 N:Thailand Mobilfunk
+E:Thailand cellphone
 C:+661
 R:TH
 T:_THMF
@@ -678,6 +697,7 @@ C:+66
 T:TH
 
 N:Singapur Mobilfunk
+E:Singapore cellphone
 C:+656, +657, +658
 R:SG
 T:_SGMF
@@ -701,11 +721,13 @@ C:+64
 T:NZ
 
 N:Neuseeland Mobilfunk
+E:New Zealand cellphone
 C:+6421
 R:NZ
 T:_NZMF
 
 N:Philippinen Mobilfunk
+E:Phillipines cellphone
 C:+63241, +63242, +6327, +63275, +63291, +6385, +6390, +63912, +63915, +63917, +63918, +63973
 T:_PHMF
 
@@ -716,6 +738,7 @@ C:+63
 T:PH
 
 N:Indonesien Mobilfunk
+E:Indonesia cellphone
 C:+6281, +6282
 R:ID
 T:_IDMF
@@ -726,6 +749,7 @@ C:+62
 T:ID
 
 N:Australien Mobilfunk
+E:Australia cellphone
 C:+61500, +6142, +6141, +6140, +6119, +6118, +6117, +6116, +6115, +6114, +6113, +6112, +61071
 R:AU
 T:_AUMF
@@ -736,6 +760,7 @@ C:+61
 T:AU
 
 N:Malaysia-Mobilfunk
+N:Malaysia cellphone
 C:+601
 R:MY
 T:_MYMF
@@ -778,6 +803,7 @@ C:+594
 T:GF
 
 N:Ecuador Mobilfunk
+E:Ecuador cellphone
 C:+5939
 R:EC
 T:_ECMF
@@ -804,6 +830,7 @@ C:+590
 T:GP
 
 N:Venezuela Mobilfunk
+E:Venezuela cellphone
 C:+5816, +5814
 R:VE
 T:_VEMF
@@ -813,6 +840,7 @@ C:+58
 T:VE
 
 N:Kolumbien Mobilfunk
+E:Colombia cellphone
 C:+573
 R:CO
 T:_COMF
@@ -823,6 +851,7 @@ C:+57
 T:CO
 
 N:Chile Mobilfunk
+E:Chile cellphone
 C:+561, +56568, +56569, +56600, +569
 T:_CLMF
 
@@ -832,27 +861,32 @@ C:+56
 T:CL
 
 N:Brasilien Mobilfunk
+E:Brazil cellphone
 C:+55664, +55663
 R:BR
 T:_BRMF
 
 N:Brasilien
 A:Brazil
+E:Brazil
 C:+55
 T:BR
 
 N:Argentinien Mobilfunk
+E:Argentina cellphone
 C:+54414, +5440, +5430, +5428, +5426, +5422, +5421, +5420, +54197, +54193, +54167, +54156, +54153, +5414
 R:AR
 T:_ARMF
 
 N:Argentinien
 A:Argentina
+E:Argentina
 C:+54
 T:AR
 
 N:Guantanamo Bay
 A:Guatanamo Bay, Guantanamo Bay (Cuba)
+E:Guatanamo Bay
 C:+5399
 R:US # or CU?
 T:_GUAB
@@ -873,6 +907,7 @@ C:+52
 T:MX
 
 N:Peru Mobilfunk
+E:Peru cellphone
 C:+51946, +51846, +51746, +51646, +51546, +51446, +51346, +51246, +5119, +5116, +5115, +5114
 R:PE
 T:_PEMF
@@ -882,6 +917,7 @@ C:+51
 T:PE
 
 N:Haiti Mobilfunk
+E:Haiti cellphone
 C:+509251
 T:_HTMF
 
@@ -898,6 +934,7 @@ R:FR
 T:PM
 
 N:Panama Mobilfunk
+E:Panama cellphone
 C:+5076
 R:PA
 T:_PAMF
@@ -907,6 +944,7 @@ C:+507
 T:PA
 
 N:Costa Rica Mobilfunk
+E:Costa Rica cellphone
 C:+506238, +506283, +506284, +5063
 T:_CRMF
 
@@ -916,6 +954,7 @@ C:+506
 T:CR
 
 N:Nicaragua Mobilfunk
+E:Nicaragua cellphone
 C:+505800, +505830, +50583, +505832, +5059
 T:_NIMF
 
@@ -928,6 +967,7 @@ C:+504
 T:HN
 
 N:El Salvador Mobilfunk
+E:El Salvador cellphone
 C:+5038
 R:SV
 T:_SVMF
@@ -937,6 +977,7 @@ C:+503
 T:SV
 
 N:Guatemala Mobilfunk
+E:Guatemala cellphone
 C:+50220
 T:_GTMF
 
@@ -961,6 +1002,7 @@ C:+49
 T:DE
 
 N:Deutschland Mobilfunk
+E:Germany cellphone
 C:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
 C:+491618		# T-C-Tel Voice Mail
 C:+49170,+49171,+49175	# D1
@@ -971,36 +1013,42 @@ R:DE
 T:_DEMF
 
 N:Deutschland Mobilfunk C-Tel Voice Mail
+E:Germany cellphone C-Tel Voice Mail
 A:C-Tel Voice Mail
 C:+491618
 R:_DEMF
 T:_DEMCM
 
 N:Deutschland Mobilfunk C-Netz
+E:Germany cellphone C-Netz
 A:C-Netz
 C:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619
 R:_DEMF
 T:_DEMC
 
 N:Deutschland Mobilfunk D1
+E:Germany cellphone D1
 A:D1
 C:+49170,+49171,+49175
 R:_DEMF
 T:_DEMD1
 
 N:Deutschland Mobilfunk D2
+E:Germany cellphone D2
 A:D2
 C:+49172,+49173,+49174
 R:_DEMF
 T:_DEMD2
 
 N:Deutschland Mobilfunk E1
+E:Germany cellphone E1
 A:E1, Eplus
 C:+49177,+49178
 R:_DEMF
 T:_DEME1
 
 N:Deutschland Mobilfunk E2
+E:Germany cellphone E2
 A:E2
 C:+49176,+49179
 R:_DEMF
@@ -1054,6 +1102,7 @@ R:DE
 T:_FRA
 
 N:Polen-Mobilfunk
+E:Poland cellphone
 C:+48501, +48502, +48601, +48602
 R:PL
 T:_PLMF
@@ -1064,6 +1113,7 @@ C:+48
 T:PL
 
 N:Norwegen Mobilfunk
+E:Norway cellphone
 C:+479
 R:NO
 T:_NOMF
@@ -1079,6 +1129,7 @@ R:SE
 T:STO
 
 N:Schweden Mobilfunk
+E:Sweden cellphone
 C:+4673, +46709, +46708, +46707, +46706, +46705, +46704, +46703, +46702, +4610
 T:_SEMF
 
@@ -1093,6 +1144,7 @@ R:DK
 T:_SOEN
 
 N:Dänemark Mobilfunk
+E:Denmark cellphone
 A:Dänemark Mobile
 C:+45503, +45502, +45501, +45409, +45408, +45407, +45406, +45405, +45404, +45403, +45402, +45401, +4530, +4528, +4526, +4523, +4522, +4521, +45209, +45208, +45207, +45206, +45205, +45204, +45203, +45202, +45201
 R:DK
@@ -1104,12 +1156,14 @@ C:+45
 T:DK
 
 N:Großbritannien Mobilfunk
+E:United Kingdom cellphone
 A:Großbritannien Mobile
 C:+44991, +44979, +44976, +44973, +44966, +44961, +449589, +449587, +449586, +449585, +449584, +449583, +449582, +44941, +44930, +44918, +44910, +4489, +44881, +44860, +44853, +44850, +44839, +44836, +44831, +44802, +447, +44696, +4466, +44640, +44632, +44589, +44585, +44469, +44468, +44467, +444624, +44448, +44441, +444325, +44421, +44411, +44410, +44403, +44402, +44401, +44378, +443749, +443748, +443747, +443746, +443744, +443743, +443742, +443741, +443740, +44338, +44336, +44331, +441693, +441523, +441459, +441426, +44139
 R:UK
 T:_UKMF
 
 N:Großbritannien Sondernummern
+E:United Kingdom special numbers
 C:+44345, +44645, +44704, +44990
 T:_UKSO
 
@@ -1139,31 +1193,37 @@ T:_UKIM
 
 N:Kanalinseln (Großbritannien)
 A:Kanalinseln
+E:Channel Islands
 R:UK
 C:+44998 # Fixme
 T:_UKIK
 
 N:Nordirland
+N:Nothern Ireland
 C:+441232 # Fixme, this is Belfast only
 R:UK
 T:_UKIR
 
 N:Österreich Mobilfunk
+E:Austria cellphone
 C:+43699, +43676, +43664, +43663
 R:AT
 T:_ATMF
 
 N:Österreich Sondernummern
+E:Austria special numbers
 C:+4345, +43700, +4371, +4389
 T:_ATSO
 
 N:Österreich Auskunft
 A:Auskunft Austria
+E:Austria information
 C:+4366211811
 R:AT
 T:_ATAK
 
 N:Wien
+E:Vienna
 C:+431
 R:AT
 T:VIE
@@ -1187,6 +1247,7 @@ C:+421
 T:SK
 
 N:Tschechische Rep. Mobilfunk
+E:Czech Republic cellphone
 C:+420602, +420603, +420604, +420963
 T:_CZMF
 
@@ -1198,16 +1259,19 @@ T:CZ
 
 N:Freephone Schweiz
 A:Plus Freephone Service (Schweiz)
+E:Plus Freephone Service (Switzerland)
 C:+41800
 R:CH
 T:_CHFF
 
 N:Schweiz Mobilfunk
+E:Switzerland cellphone
 C:+4179, +4178, +4176
 R:CH
 T:_CHMF
 
 N:Genf
+E:Geneva
 C:+4122
 R:CH
 T:GVA
@@ -1223,6 +1287,7 @@ C:+41
 T:CH
 
 N:Rumänien Mobilfunk
+E:Romania cellphone
 C:+4092, +4094
 T:_ROMF
 
@@ -1232,6 +1297,7 @@ C:+40
 T:RO
 
 N:Italien Mobilfunk
+E:Italy cellphone
 C:+39368, +39360, +39349, +39348, +39347, +39339, +39338, +39337, +39336, +39335, +39330, +39329, +39328
 R:IT
 T:_ITMF
@@ -1243,7 +1309,7 @@ C:+39
 T:IT
 
 N:Mailand
-E:Milano
+E:Milan
 A:Italien - Mailand
 C:+392,+3902
 R:IT
@@ -1258,7 +1324,7 @@ T:ROM
 
 N:Vatikan
 A:Vatikanstadt / Rom, Vatikanstadt, Vatican City
-E:Vatican City State (Holy See)
+E:Vatican City State
 C:+379, +3906
 T:VA
 R:IT
@@ -1280,8 +1346,8 @@ C:+386
 T:SI
 
 N:Kroatien
-A:Croatia
-E:Croatia (Hrvatska),Hrvatska
+E:Croatia
+A:Croatia (Hrvatska),Hrvatska
 C:+385
 T:HR
 
@@ -1301,6 +1367,7 @@ C:+378
 T:SM
 
 N:Monaco Mobilfunk
+E:Monaco cellphone
 C:+3776
 R:MC
 T:_MCMF
@@ -1332,6 +1399,7 @@ C:+373
 T:MD
 
 N:Estland Mobilfunk
+E:Estonia cellphone
 C:+37250, +37251, +37252, +37253, +37254, +37255, +37256
 T:_EEMF
 
@@ -1352,6 +1420,7 @@ C:+370
 T:LT
 
 N:Ungarn Mobilfunk
+E:Hungary cellphone
 C:+3620, +3630, +3660
 T:_HUMF
 
@@ -1371,12 +1440,14 @@ C:+358
 T:FI
 
 N:Finnland Mobilfunk
+E:Finland cellphone
 C:+35840, +358400, +35841, +35842, +35843, +35849, +35850, +358500
 R:FI
 T:_FIMF
 
 N:Zypern(griech) Mobilfunk
 A:Zypern-Mobilfunk
+E:Cyprus cellphone
 C:+3579, +3576
 T:_CYMF
 
@@ -1413,6 +1484,7 @@ C:+354
 T:IS
 
 N:Irland Mobilfunk
+E:Ireland cellphone
 C:+35389, +35388, +35387, +35386
 R:IE
 T:_IEMF
@@ -1428,6 +1500,7 @@ C:+352
 T:LU
 
 N:Luxemburg Mobilfunk
+E:Luxembourg cellphone
 C:+352021
 R:LU
 T:_LUMF
@@ -1445,6 +1518,7 @@ R:PT
 T:_MADE
 
 N:Portugal Mobilfunk
+E:Portugal cellphone
 C:+35193
 T:_PTMF
 
@@ -1499,11 +1573,13 @@ R:ES
 T:BCN
 
 N:Kanarische Inseln
+E:Canary Islands
 C:+34928
 R:ES
 T:PLP
 
 N:Teneriffa
+E:Tenerife
 C:+34922
 R:ES
 T:TFN
@@ -1516,6 +1592,7 @@ R:ES
 T:MAD
 
 N:Spanien Mobilfunk
+E:Spain cellphone
 C:+34689, +34670, +34649, +34639, +34630, +34629, +34619, +34617, +34616, +34610, +34609, +34608, +34607, +34606
 R:ES
 T:_ESMF
@@ -1526,6 +1603,7 @@ C:+34
 T:ES
 
 N:Frankreich Mobilfunk
+E:France cellphone
 C:+336, +33171
 R:FR
 T:_FRMF
@@ -1541,6 +1619,7 @@ C:+33
 T:FR
 
 N:Belgien Mobilfunk
+E:Belgium cellphone
 C:+3275, +32496, +32495, +32486, +32477, +32476, +32475, +3218, +3217
 R:BE
 T:_BEMF
@@ -1551,6 +1630,7 @@ R:BE
 T:ANR
 
 N:Brüssel
+E:Brussels
 A:Brussel
 C:+322
 R:BE
@@ -1567,6 +1647,7 @@ C:+32
 T:BE
 
 N:Freephone Niederlande
+E:Freephone Netherlands
 A:Freephone NL, Freephone (Niederl.), Plus Freephone Service (Niederl.)
 C:+31800
 R:NL
@@ -1578,7 +1659,8 @@ R:NL
 T:HAG
 
 N:Niederlande Mobilfunk
-C:+3165, +3162
+N:Netherlands cellphone
+C:+3165, +3162, +3161
 R:NL
 T:_NLMF
 
@@ -1593,11 +1675,12 @@ R:NL
 T:RTM
 
 N:Niederlande
-E:Netherlands
+E:the Netherlands
 C:+31
 T:NL
 
 N:Griechenland Mobilfunk
+E:Greece cellphone
 C:+309
 T:_GRMF
 
@@ -1639,6 +1722,7 @@ R:SH
 T:_TRIS
 
 N:Südafrika Mobilfunk
+E:South Africa cellphone
 C:+2782, +2783
 T:_ZAMF
 
@@ -1738,7 +1822,7 @@ C:+252
 T:SO
 
 N:Äthiopien
-A:Ethiopia
+E:Ethiopia
 A:Äthopien,Athiopien
 C:+251
 T:ET
@@ -1777,6 +1861,7 @@ C:+244
 T:AO
 
 N:Zaire Mobilfunk
+E:Zaire cellphone
 C:+24388
 T:_ZRMF
 
@@ -1792,7 +1877,7 @@ C:+242
 T:CG
 
 N:Gabun
-A:Gabon
+E:Gabon
 C:+241
 T:GA
 
@@ -1826,7 +1911,7 @@ T:CF
 
 N:Tschad
 A:Chad
-A:Chad Republic
+E:Chad Republic
 C:+235
 T:TD
 
@@ -1859,7 +1944,7 @@ C:+228
 T:TG
 
 N:Niger
-A:Niger Republic
+E:Niger Republic
 C:+227
 T:NGR
 
@@ -1877,12 +1962,12 @@ C:+225
 T:CI
 
 N:Guinea
-A:Guinea Republic
+E:Guinea Republic
 C:+224
 T:GN
 
 N:Mali
-A:Mali Rep.
+E:Mali Republic
 C:+223
 T:ML
 
@@ -1892,7 +1977,7 @@ C:+222
 T:MR
 
 N:Senegal
-A:Senegal Republic
+E:Senegal Republic
 C:+221
 T:SN
 
@@ -1919,12 +2004,13 @@ C:+213
 T:DZ
 
 N:Marokko
-A:Marocco
+E:Marocco
 A:Western Sahara # fixme
 C:+212
 T:EH # fixme
 
 N:Ägypten Mobilfunk
+E:Egypt cellphone
 C:+2012
 T:_EGMF
 
@@ -1940,17 +2026,18 @@ R:US
 T:_ALAS
 
 N:Kanada Mobilfunk
+E:Canada cellphone
 C:+1204, +1250, +1306, +1403, +1416, +1418, +1450, +1506, +1514, +1519, +1600, +1604, +1613, +1705, +1709, +1780, +1807, +1819, +1867, +1902, +1905
 T:_CAMF
 
-# Quelle: http://www.teltronics.com/beyond.html
+# source: http://www.teltronics.com/beyond.html
 N:Kanada
 E:Canada
 C:+1647
 T:CA
 
 N:Jamaika
-A:Jamaica
+E:Jamaica
 C:+1876
 T:JM
 
@@ -1958,7 +2045,7 @@ N:St. Kitts und Nevis
 A:St. Kitts & Nevis, Saint Kitts and Nevis, St Kitts, Nevis Islands
 A:Nevis/St.Kitts
 A:Nevis,Nevis Is.
-E:Saint Kitts und Nevis
+E:St. Kitts and Nevis
 C:+1869
 T:KN
 
@@ -1970,6 +2057,7 @@ T:TT
 
 N:Dominikanische Rep. Mobilfunk
 A:Domin. Rep.-Mobilfunk
+E:Dominican Republic cellphone
 C:+18092, +1809227, +1809241, +1809474, +1809537, +1809540, +1809563, +1809683, +1809695
 T:_DOMF
 
@@ -2028,7 +2116,6 @@ C:+1787
 T:PR
 
 N:St. Lucia
-E:Saint Lucia
 C:+1758
 T:LC
 
@@ -2083,5 +2170,6 @@ N:USA
 A:Vereinigte Staaten (USA), United States of America, United States of America & Canada
 A:Vereinigte Staaten,Vereinigte Staaten von Amerika
 E:United States
+A:North America
 C:+1
 T:US
