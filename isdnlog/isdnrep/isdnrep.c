@@ -1,4 +1,4 @@
-/* $Id: isdnrep.c,v 1.3 1997/03/23 20:25:23 luethje Exp $
+/* $Id: isdnrep.c,v 1.4 1997/03/23 23:11:59 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnrep.c,v $
+ * Revision 1.4  1997/03/23 23:11:59  luethje
+ * improved performance
+ *
  * Revision 1.3  1997/03/23 20:25:23  luethje
  * tmporary (running) result of the new structure of isdnrep
  *
@@ -115,9 +118,9 @@
 
 /*****************************************************************************/
 
-#define LOG_VERSION_1 0
-#define LOG_VERSION_2 1
-#define LOG_VERSION_3 2
+#define LOG_VERSION_1 "1.0"
+#define LOG_VERSION_2 "2.0"
+#define LOG_VERSION_3 LOG_VERSION
 
 /*****************************************************************************/
 
@@ -142,7 +145,7 @@ static int add_one_call(sum_calls *s1, one_call *s2, double units);
 static int clear_sum(sum_calls *s1);
 static char *print_currency(int units, double money, int Format);
 static void strich(int type);
-static int n_match(char *Pattern, char* Number, int version);
+static int n_match(char *Pattern, char* Number, char* version);
 static int set_caller_infos(one_call *cur_call, char *string);
 static int set_alias(one_call *cur_call, int *nx, char *myname);
 static int print_header(int lday, char *time_string, sum_calls *day_sum, sum_calls *day_com_sum, sum_calls *all_sum, sum_calls *all_com_sum);
@@ -863,25 +866,28 @@ static int set_alias(one_call *cur_call, int *nx, char *myname)
 			for (j = 0; ((j < 2) && !cc); j++) {
 				for (i = 0; i < knowns; i++) {
 
-					if (*cur_call->num[n] != '0') {
-
-						/* Alte Syntax der "isdn.log" : Ohne vorlaufene "0" */
-						cc = ((known[i]->si == cur_call->si) || j) &&
-						     !match(known[i]->num+1, cur_call->num[n], LOG_VERSION_1);
-
-						if (!cc) {
-							/* Ganz alte Syntax der "isdn.log" : Ohne Vorwahl */
+					if (cur_call->version[0] != '\0')
+					{
+						if (!strcmp(cur_call->version,LOG_VERSION_2) ||
+						    !strcmp(cur_call->version,LOG_VERSION_3)   )
 							cc = ((known[i]->si == cur_call->si) || j) &&
-							     !n_match(known[i]->num, cur_call->num[n], LOG_VERSION_1);
-						} /* if */
-					}
-					else if (*(cur_call->num[n] + 1) != '0') { /* pre 2.6 Syntax : ohne int. Vorwahl */
-						cc = ((known[i]->si == cur_call->si) || j) &&
-						     !n_match(known[i]->num, cur_call->num[n], LOG_VERSION_2);
+							     !n_match(known[i]->num, cur_call->num[n], cur_call->version);
 					}
 					else
-						cc = ((known[i]->si == cur_call->si) || j) &&
-						     !n_match(known[i]->num, cur_call->num[n], LOG_VERSION_3);
+					{
+						if (*cur_call->num[n] != '0') {
+
+							/* Alte Syntax der "isdn.log" : Ohne vorlaufene "0" */
+							cc = ((known[i]->si == cur_call->si) || j) &&
+							     !match(known[i]->num+1, cur_call->num[n], 0);
+
+							if (!cc) {
+								/* Ganz alte Syntax der "isdn.log" : Ohne Vorwahl */
+								cc = ((known[i]->si == cur_call->si) || j) &&
+							     !n_match(known[i]->num, cur_call->num[n], LOG_VERSION_1);
+							} /* if */
+						}
+					}
 
 					if (cc) {
 
@@ -937,13 +943,13 @@ static int set_alias(one_call *cur_call, int *nx, char *myname)
 
 static int set_caller_infos(one_call *cur_call, char *string)
 {
-  register int    i;
+  register int    i = 0;
   auto     char **array;
-  auto     char  *Ptr;
+  auto     char  *ptr;
 
 
-	if ((Ptr = strrchr(string,C_DELIM)) != NULL)
-		*Ptr = '\0';
+	if ((ptr = strrchr(string,C_DELIM)) != NULL)
+		*ptr = '\0';
 
 	if ((array = String_to_Array(string,C_DELIM)) == NULL)
 	{
@@ -961,7 +967,8 @@ static int set_caller_infos(one_call *cur_call, char *string)
 	cur_call->dir = -1;
 	cur_call->cause = -1;
 	cur_call->ibytes = cur_call->obytes = 0L;
-	cur_call->version = cur_call->dm    = 0.0;
+	cur_call->dm    = 0.0;
+	cur_call->version[0] = '\0';
 	cur_call->pay = 0.0;
 	cur_call->si = cur_call->si1 = 0;
 	cur_call->dir = DIALOUT;
@@ -992,7 +999,7 @@ static int set_caller_infos(one_call *cur_call, char *string)
 			          break;
 			case  10: cur_call->obytes = atol(array[i]);
 			          break;
-			case  11: cur_call->version = atof(array[i]);
+			case  11: strcpy(cur_call->version,array[i]);
 			          break;
 			case  12: cur_call->si = atoi(array[i]);
 			          break;
@@ -1008,8 +1015,6 @@ static int set_caller_infos(one_call *cur_call, char *string)
 			          break;
 		}
 	}
-
-	del_Array(array);
 
 	if (i < 3)
 		return -1;
@@ -1386,28 +1391,33 @@ static void strich(int type)
 
 /*****************************************************************************/
 
-static int n_match(char *Pattern, char* Number, int version)
+static int n_match(char *Pattern, char* Number, char* version)
 {
 	int RetCode = -1;
 	char s[SHORT_STRING_SIZE];
 
-	switch(version)
+	if (!strcmp(version,LOG_VERSION_3))
 	{
-		case LOG_VERSION_1:	if ((RetCode = match(Pattern, Number,0)) != 0        &&
-		                        !strncmp(Pattern,S_AREA_PREFIX,strlen(S_AREA_PREFIX)))
-		                    {
-		                    	sprintf(s,"*%s%s",myarea/*+strlen(S_AREA_PREFIX)*/,Pattern);
-		                    	RetCode = match(s,Number,0);
-		                    }
-		                   	break;
-		case LOG_VERSION_2:	strcpy(s,expand_number(Number));
-		                   	RetCode = num_match(Pattern,s);
-		                   	break;
-		case LOG_VERSION_3:	RetCode = num_match(Pattern,Number);
-		                   	break;
-		default           :	print_msg(PRT_ERR,"Unknown Version of logfile entries!\n");
-		                   	break;
+		RetCode = num_match(Pattern,Number);
 	}
+	else
+	if (!strcmp(version,LOG_VERSION_2))
+	{
+		strcpy(s,expand_number(Number));
+		RetCode = num_match(Pattern,s);
+	}
+	else
+	if (!strcmp(version,LOG_VERSION_1))
+	{
+		if ((RetCode = match(Pattern, Number,0)) != 0            &&
+		    !strncmp(Pattern,S_AREA_PREFIX,strlen(S_AREA_PREFIX))  )
+		{
+			sprintf(s,"*%s%s",myarea/*+strlen(S_AREA_PREFIX)*/,Pattern);
+			RetCode = match(s,Number,0);
+		}
+	}
+	else
+		print_msg(PRT_ERR,"Unknown Version of logfile entries!\n");
 
 	return RetCode;
 }

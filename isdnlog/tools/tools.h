@@ -1,4 +1,4 @@
-/* $Id: tools.h,v 1.5 1997/03/23 21:04:10 luethje Exp $
+/* $Id: tools.h,v 1.6 1997/03/23 23:12:05 luethje Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools.h,v $
+ * Revision 1.6  1997/03/23 23:12:05  luethje
+ * improved performance
+ *
  * Revision 1.5  1997/03/23 21:04:10  luethje
  * some bugfixes
  *
@@ -150,6 +153,10 @@
 #ifndef REBOOTCMD
 #	define REBOOTCMD "/sbin/reboot"
 #endif
+
+/****************************************************************************/
+
+#define LOG_VERSION "3.0"
 
 /****************************************************************************/
 
@@ -510,7 +517,7 @@ typedef struct {
   char   num[2][NUMSIZE];
   long	 ibytes;
   long	 obytes;
-  double version;
+  char   version[10];
   int	 si;
   int	 si1;
   double currency_factor;

@@ -1,4 +1,4 @@
-/* $Id: functions.c,v 1.1 1997/03/16 20:58:39 luethje Exp $
+/* $Id: functions.c,v 1.2 1997/03/23 23:11:53 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -169,13 +169,13 @@ void logger(int chan)
   if ((tries < 1000) && ((flog = fdopen(fd, "a")) == (FILE *)NULL))
     print_msg(PRT_ERR, "Can not open file `%s': %s!\n", logname, strerror(errno));
   else {
-    fprintf(flog, "%s|%-16s|%-16s|%5d|%10d|%10d|%5d|%c|%3d|%10ld|%10ld|%d.%d|%d|%d|%g|%s|%8.2f|\n",
+    fprintf(flog, "%s|%-16s|%-16s|%5d|%10d|%10d|%5d|%c|%3d|%10ld|%10ld|%s|%d|%d|%g|%s|%8.2f|\n",
  	   s + 4, call[chan].num[CALLING], call[chan].num[CALLED],
  	   (int)(call[chan].disconnect - call[chan].connect),
  	   (int)call[chan].duration, (int)call[chan].connect,
  	   call[chan].aoce, call[chan].dialin ? 'I' : 'O',
  	   call[chan].cause, call[chan].ibytes, call[chan].obytes,
- 	   LOG_MAJOR_VERSION, LOG_MINOR_VERSION, call[chan].si1, call[chan].si11,
+ 	   LOG_VERSION, call[chan].si1, call[chan].si11,
  	   currency_factor, currency, call[chan].pay);
 
     fclose(flog);

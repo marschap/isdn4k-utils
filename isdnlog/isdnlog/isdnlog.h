@@ -1,4 +1,4 @@
-/* $Id: isdnlog.h,v 1.2 1997/03/23 20:55:41 luethje Exp $
+/* $Id: isdnlog.h,v 1.3 1997/03/23 23:11:54 luethje Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnlog.h,v $
+ * Revision 1.3  1997/03/23 23:11:54  luethje
+ * improved performance
+ *
  * Revision 1.2  1997/03/23 20:55:41  luethje
  * some bugfixes
  *
@@ -73,11 +76,6 @@
 
 #include <tools.h>
 #include "socket.h"
-
-/****************************************************************************/
-
-#define LOG_MAJOR_VERSION   3
-#define LOG_MINOR_VERSION   0
 
 /****************************************************************************/
 
