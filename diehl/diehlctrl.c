@@ -1,8 +1,9 @@
-/* $Id: diehlctrl.c,v 1.1 1998/06/12 11:11:45 fritz Exp $
+/* $Id: diehlctrl.c,v 1.2 1998/06/16 21:20:26 armin Exp $
  *
  * Diehl-ISDN driver for Linux. (Control-Utility)
  *
  * Copyright 1998 by Fritz Elfert (fritz@wuemaus.franken.de)
+ * Copyright 1998 by Armin Schindler (mac@gismo.telekom.de)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +20,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA. 
  *
  * $Log: diehlctrl.c,v $
+ * Revision 1.2  1998/06/16 21:20:26  armin
+ * Added part to load firmware on PRI/PCI.
+ *
  * Revision 1.1  1998/06/12 11:11:45  fritz
  * First checkin, not complete, for Armin only.
  *
@@ -37,10 +41,17 @@
 
 char *cmd;
 
+static char *dsp_fname[] =
+{
+ "","kernelpr","hscx","v110","modem","fax","hscx30"
+};
+
+
 void usage() {
   fprintf(stderr,"usage: %s shmem [shmem-addr]          (get/set memaddr)\n",cmd);
   fprintf(stderr,"   or: %s irq   [irq-nr]              (get/set irq)\n",cmd);
   fprintf(stderr,"   or: %s load  <bootcode> <protocol> (load firmware)\n",cmd);
+  fprintf(stderr,"   or: %s loadpri <protocol> -c1|2 -n -p -s1|2 -o (load firmware for PRI)\n",cmd);
   exit(-1);
 }
 
@@ -48,7 +59,7 @@ int main(int argc, char **argv) {
 	int fd;
 	int tmp;
 	int ac;
-	int arg_ofs;
+	int arg_ofs=0;
 	isdn_ioctl_struct ioctl_s;
 
 	cmd = argv[0];
@@ -184,5 +195,103 @@ int main(int argc, char **argv) {
 		}
 		usage();
 	}
+        if (!strcmp(argv[arg_ofs], "loadpri")) {
+                FILE *code;
+                int plen = 0;
+		int tmp[9];
+		int j;
+                char protoname[1024];
+                char filename[1024];
+                u_char protobuf[0x100000];
+                diehl_codebuf *cb;
+
+                        strcpy(protoname,argv[++arg_ofs]);
+                        if ((plen = ioctl(fd,DIEHL_IOCTL_GETTYPE + IIOCDRVCTL, &ioctl_s)) < 1) {
+                                perror("ioctl GETTYPE");
+                                exit(-1);
+                        }
+                        switch (plen) {
+                                case DIEHL_CTYPE_MAESTRAP:
+                                        printf("Adapter-type is Diva Server PRI/PCI\n");
+                                        break;
+                                default:
+                                        fprintf(stderr, "Adapter type %d not supported\n", plen);
+                                        exit(-1);
+                        }
+			plen = 0;
+	        	for (j=0; j<(sizeof(dsp_fname)/sizeof(char *));j++) {
+		  		if (j==0) sprintf(filename, "te_%s.pm", protoname);
+			     	 else sprintf(filename, "%s.bin", dsp_fname[j]);
+                        	if (!(code = fopen(filename,"r"))) {
+                                	perror(filename);
+                                	exit(-1);
+                        	}
+	                        if ((tmp[j] = fread(protobuf+plen, 1, (sizeof(protobuf)-plen), code))<1) {
+        	                        fprintf(stderr, "Read error on %s\n", filename);
+                	                exit(-1);
+                        	}
+                       		fclose(code);
+				plen += tmp[j];
+			}
+                        cb = malloc(sizeof(diehl_codebuf) + plen );
+                        memset(cb, 0, sizeof(diehl_codebuf));
+                        memcpy(&cb->pci.code, protobuf, plen);
+	        	for (j=0; j<(sizeof(dsp_fname)/sizeof(char *));j++) {
+				if (j==0) cb->pci.protocol_len = tmp[0];
+                        	 else cb->pci.dsp_code_len[j] = tmp[j];
+			}
+                        cb->pci.dsp_code_num = (sizeof(dsp_fname)/sizeof(char *)) - 1;
+			cb->pci.tei = 1;
+			cb->pci.nt2 = 0;
+			cb->pci.WatchDog = 0;
+			cb->pci.Permanent = 0;
+			cb->pci.XInterface = 0;
+			cb->pci.StableL2 = 0;
+			cb->pci.NoOrderCheck = 0;
+			cb->pci.HandsetType = 0;
+			cb->pci.LowChannel = 0;
+			cb->pci.ProtVersion = 0;
+			cb->pci.Crc4 = 0;
+                        /* parse extented PRI options */
+                        while(ac > (arg_ofs + 1)) {
+                                arg_ofs++;
+                                if (!strcmp(argv[arg_ofs], "-c1")) {
+                                        cb->pci.Crc4 = 1;
+                                        continue;
+                                }
+                                if (!strcmp(argv[arg_ofs], "-c2")) {
+                                        cb->pci.Crc4 = 2;
+                                        continue;
+                                }
+                                if (!strcmp(argv[arg_ofs], "-n")) {
+                                        cb->pci.nt2 = 1;
+                                        continue;
+                                }
+                                if (!strcmp(argv[arg_ofs], "-p")) {
+                                        cb->pci.Permanent = 1;
+                                        continue;
+                                }
+                                if (!strcmp(argv[arg_ofs], "-o")) {
+                                        cb->pci.NoOrderCheck = 1;
+                                        continue;
+                                }
+                                if (!strcmp(argv[arg_ofs], "-s1")) {
+                                        cb->pci.StableL2 = 1;
+                                        continue;
+                                }
+                                if (!strcmp(argv[arg_ofs], "-s2")) {
+                                        cb->pci.StableL2 = 2;
+                                        continue;
+                                }
+                        }
+                        printf("Loading Code ...\n");
+                        ioctl_s.arg = (ulong)cb;
+                        if (ioctl(fd, DIEHL_IOCTL_LOADPRI + IIOCDRVCTL, &ioctl_s) < 0) {
+                                perror("ioctl LOADPRI");
+                                exit(-1);
+                        }
+                        close(fd);
+                        return 0;
+        }
 	return 0;
 }
