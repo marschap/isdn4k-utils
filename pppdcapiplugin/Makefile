@@ -4,7 +4,7 @@ LDFLAGS	= -shared -L../capi20
 
 PLUGINDIR=${DESTDIR}/etc/ppp/plugins
 PEERDIR=${DESTDIR}/etc/ppp/peers/isdn
-PEERS= arcor otelo talkline avm avm-ml
+PEERS= arcor otelo talkline avm avm-ml leased
 INSTALL=./install-sh -c
 
 ALL = capiplugin.so userpass.so
@@ -32,6 +32,12 @@ install: $(ALL)
 	@for i in $(PEERS); do \
 		echo $(INSTALL) peers/$$i $(PEERDIR); \
 		$(INSTALL) peers/$$i $(PEERDIR); \
+	done
+	for i in /usr/share/man /usr/man; do \
+		if [ -d $$i/man8 ] ; then \
+			echo $(INSTALL) capiplugin.8 $$i/man8; \
+			$(INSTALL) capiplugin.8 $$i/man8; \
+		fi ; \
 	done
 
 config:
