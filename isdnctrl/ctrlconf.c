@@ -1,4 +1,4 @@
-/* $Id: ctrlconf.c,v 1.1 1997/06/24 23:35:25 luethje Exp $
+/* $Id: ctrlconf.c,v 1.2 1997/06/26 21:25:14 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: ctrlconf.c,v $
+ * Revision 1.2  1997/06/26 21:25:14  luethje
+ * Added the trigger function to the config file.
+ *
  * Revision 1.1  1997/06/24 23:35:25  luethje
  * isdnctrl can use a config file
  *
@@ -219,6 +222,10 @@ static char* readoptions(int fd, char *name, int is_master, section *CSec, secti
 
 		sprintf(string,"%d",cfg.slavedelay);
 		if (Set_Entry(SubSec,interface,CONF_ENT_SDELAY, string, C_OVERWRITE | C_WARN) == NULL)
+			return NULL;
+		
+		sprintf(string,"%d",cfg.triggercps);
+		if (Set_Entry(SubSec,interface,CONF_ENT_TRIGGERCPS, string, C_OVERWRITE | C_WARN) == NULL)
 			return NULL;
 		
 		RetCode = cfg.slave;
@@ -474,6 +481,15 @@ int readconfig(int fd, char *file)
 			if (!strcmp(Entry->name,CONF_ENT_SDELAY))
 			{
 				argv[0] = cmds[SDELAY].cmd;
+				argv[1] = name;
+				argv[2] = Entry->value;
+				argv[3] = NULL;
+				exec_args(fd,3,argv);
+			}
+			else
+			if (!strcmp(Entry->name,CONF_ENT_TRIGGERCPS))
+			{
+				argv[0] = cmds[TRIGGER].cmd;
 				argv[1] = name;
 				argv[2] = Entry->value;
 				argv[3] = NULL;
