@@ -39,6 +39,7 @@ CONFIG_HISAXCTRL=y
 CONFIG_ICNCTRL=y
 # CONFIG_ICNCTRL_DEBUG is not set
 CONFIG_PCBITCTL=y
+CONFIG_AVMCAPICTRL=y
 
 #
 # Tools for monitoring activity
@@ -46,6 +47,7 @@ CONFIG_PCBITCTL=y
 CONFIG_IMON=y
 CONFIG_IMONTTY=y
 # CONFIG_ISDNLOG is not set
+# CONFIG_IPPPSTATS is not set
 CONFIG_XISDNLOAD=y
 CONFIG_XMONISDN=y
 
@@ -59,6 +61,7 @@ CONFIG_XMONISDN_DOWNCMD='/sbin/netdown'
 # Applications
 #
 # CONFIG_VBOX is not set
+# CONFIG_IPPPD is not set
 
 #
 # Documentation
