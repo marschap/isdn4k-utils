@@ -1,8 +1,7 @@
-# $Id: Makefile,v 1.4 1997/03/02 19:41:56 fritz Exp $
+# $Id: Makefile,v 1.5 1997/03/03 04:00:33 fritz Exp $
 #
 # Toplevel Makefile for isdn4k-utils
 #
-#.EXPORT_ALL_VARIABLES:
 
 export I4LVERSION = 2.1
 
@@ -19,7 +18,10 @@ CONFIGURATION = config
 do-it-all:      config
 endif
 
-SUBDIRS = #lib
+SUBDIRS :=
+ifeq ($(CONFIG_LIB_AREACODE),y)
+	SUBDIRS := $(SUBDIRS) areacode lib
+endif
 ifeq ($(CONFIG_ISDNCTRL),y)
 	SUBDIRS := $(SUBDIRS) isdnctrl
 endif
@@ -42,8 +44,8 @@ endif
 ifeq ($(CONFIG_IMON),y)
 	SUBDIRS := $(SUBDIRS) imon
 endif
-ifeq ($(CONFIG_AREACODE),y)
-	SUBDIRS := $(SUBDIRS) areacode
+ifeq ($(CONFIG_IMONTTY),y)
+	SUBDIRS := $(SUBDIRS) imontty
 endif
 ifeq ($(CONFIG_ISDNLOG),y)
 	SUBDIRS := $(SUBDIRS) isdnlog
@@ -63,13 +65,18 @@ endif
 ifeq ($(CONFIG_FAQ),y)
 	SUBDIRS := $(SUBDIRS) FAQ
 endif
+ifneq ($(SUBDIRS),)
+	ifeq ($(filter lib,$(SUBDIRS)),)
+		SUBDIRS := lib $(SUBDIRS)
+	endif
+endif
 
 subtargets: $(CONFIGURATION)
 	set -e; for i in $(SUBDIRS); do $(MAKE) -C $$i all; done
 
 rootperm:
 	@if [ `id -u` != 0 ] ; then \
-		echo -e "\n\n      Need root permission for installation!\n\n"; \
+		echo -e "\n\n      Need root permission for (de)installation!\n\n"; \
 		exit 1; \
 	fi
 
@@ -84,16 +91,16 @@ uninstall: rootperm
 # regardless of cofigured options.
 #
 clean:
-	-$(MAKE) -C scripts/lxdialog clean
 	-set -e; allow_null_glob_expansion=1; \
 	for i in */Makefile; do $(MAKE) -i -C `dirname $$i` clean; done
 	rm -f *~ *.o
 
 distclean: clean
+	-$(MAKE) -C scripts/lxdialog clean
 	-set -e; allow_null_glob_expansion=1; \
 	for i in */Makefile; do $(MAKE) -i -C `dirname $$i` distclean; done
 	rm -f *~ .config .config.old scripts/autoconf.h .menuconfig \
-		Makefile.tmp .menuconfig.log
+		Makefile.tmp .menuconfig.log scripts/defconfig.old
 
 scripts/lxdialog/lxdialog:
 	@$(MAKE) -C scripts/lxdialog all
@@ -107,17 +114,17 @@ scripts/lxdialog/lxdialog:
 subconfig:
 	@echo Selected subdirs: $(SUBDIRS)
 	@set -e; for i in $(SUBDIRS); do \
-		if [ -f $$i/Makefile ] ; then \
-			echo -e "\nRunning make config in $$i ...\n"; sleep 1; \
-			$(MAKE) -C $$i config; \
+		if [ -x $$i/configure ] ; then \
+			echo -e "\nRunning configure in $$i ...\n"; sleep 1; \
+			(cd $$i; ./configure); \
 		else \
-			if [ -x $$i/configure ] ; then \
-				echo -e "\nRunning configure in $$i ...\n"; sleep 1; \
-				(cd $$i; ./configure); \
+			if [ -f $$i/Makefile.in ] ; then \
+				echo -e "\nRunning make -f Makefile.in config in $$i ...\n"; sleep 1; \
+				$(MAKE) -C $$i -f Makefile.in config; \
 			else \
-				if [ -f $$i/Makefile.in ] ; then \
-					echo -e "\nRunning make -f Makefile.in config in $$i ...\n"; sleep 1; \
-					$(MAKE) -C $$i -f Makefile.in config; \
+				if [ -f $$i/Makefile ] ; then \
+					echo -e "\nRunning make config in $$i ...\n"; sleep 1; \
+					$(MAKE) -C $$i config; \
 				fi; \
 			fi; \
 		fi; \
@@ -149,3 +156,5 @@ distarch: distclean
 	tar -cvzf --exclude=CVS distisdn/isdn4k-utils-$(I4LVERSION).tar.gz \
 	isdn4k-utils-$(I4LVERSION) ;\
 	mv isdn4k-utils-$(I4LVERSION) isdn4k-utils )
+
+dist: distarch

@@ -36,4 +36,4 @@ install: xisdnload install-man
 
 uninstall:
 	rm -f $(CONFIG_BINDIR)/xisdnload
-	find $(CONFIG_MANDIR)/xisdnload -name "xisdnload.*" -exec rm -f {} \;
+	find $(CONFIG_MANDIR) -name "xisdnload.*" -exec rm -f {} \;

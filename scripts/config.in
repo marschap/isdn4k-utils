@@ -14,15 +14,35 @@ mainmenu_option next_comment
 comment 'Code maturity level options'
 bool 'Prompt for development and/or incomplete code' CONFIG_EXPERIMENTAL
 endmenu
-string 'General configuration directory' CONFIG_I4LCONFDIR /etc/isdn
+mainmenu_option next_comment
+comment 'General configuration'
+comment 'Destination directories'
 string 'Directory to install binaries' CONFIG_BINDIR /usr/bin
 string 'Directory to install admin binaries' CONFIG_SBINDIR /sbin
 string 'Directory to install man pages' CONFIG_MANDIR /usr/man
+comment 'Runtime defaults'
+string 'Write .pid files here' CONFIG_RUNDIR /var/run
+string 'General configuration directory' CONFIG_I4LCONFDIR /etc/isdn
+string 'Global configuration file' CONFIG_CONFFILE isdn.conf
+string 'User configuration file' CONFIG_USERCONFFILE .isdn
+comment 'Configuration library options'
+string 'Default country prefix' CONFIG_COUNTRY_PREFIX +
+string 'Default area prefix' CONFIG_AREA_PREFIX 0
+choice 'Database for area codes' \
+        "Areacode CONFIG_LIB_AREACODE \
+        Avon CONFIG_LIB_AVON" Areacode
+if [ "$CONFIG_LIB_AREACODE" = "y" ]; then
+	string 'Directory to install areacodes' CONFIG_AREACODE_DATA /usr/lib/isdn
+fi
+if [ "$CONFIG_LIB_AVON" = "y" ]; then
+	string 'Directory to install avon database' CONFIG_AVON_DATA /usr/lib/isdn
+fi
+endmenu
 mainmenu_option nextcomment
-comment 'General configuration tools'
+comment 'Runtime configuration tools'
 bool 'isdnctrl' CONFIG_ISDNCTRL
 if [ "$CONFIG_ISDNCTRL" = "y" ]; then
-  bool 'Enable isdnctrl debug-option' CONFIG_ISDNCTRL_DEBUG
+	bool 'Enable isdnctrl debug-option' CONFIG_ISDNCTRL_DEBUG
 fi
 bool 'iprofd' CONFIG_IPROFD
 endmenu
@@ -32,36 +52,40 @@ bool 'telesctrl' CONFIG_TELESCTRL
 bool 'hisaxctrl' CONFIG_HISAXCTRL
 bool 'icnctrl' CONFIG_ICNCTRL
 if [ "$CONFIG_ICNCTRL" = "y" ]; then
-  bool 'Enable icnctl debug-option' CONFIG_ICNCTRL_DEBUG
+	bool 'Enable icnctl debug-option' CONFIG_ICNCTRL_DEBUG
 fi
 bool 'pcbitctl' CONFIG_PCBITCTL
 endmenu
 mainmenu_option nextcomment
 comment 'Tools for monitoring activity'
 bool 'imon' CONFIG_IMON
+bool 'imontty' CONFIG_IMONTTY
 bool 'isdnlog' CONFIG_ISDNLOG
-if [ "$CONFIG_ISDNLOG" = "y" ]; then
-  source isdnlog/.Config.in
-fi
-dep_bool 'xmonisdn' CONFIG_XMONISDN CONFIG_HASX11
-if [ "$CONFIG_XMONISDN" = "y" ] && [ "$CONFIG_HASX11" = "y" ]; then
-	string 'NetUP command for xmonisdn' CONFIG_XMONISDN_UPCMD '/sbin/netup'
-	string 'NetDOWN command for xmonisdn' CONFIG_XMONISDN_DOWNCMD '/sbin/netdown'
+if [ "$CONFIG_ISDNLOG" = "y" ] ; then
+	source isdnlog/.Config.in
 fi
 dep_bool 'xisdnload' CONFIG_XISDNLOAD CONFIG_HASX11
+dep_bool 'xmonisdn' CONFIG_XMONISDN CONFIG_HASX11
+if [ "$CONFIG_XMONISDN" = "y" ] ; then
+	mainmenu_option nextcomment
+	comment 'Options for xmonisdn'
+	string 'NetUP command' CONFIG_XMONISDN_UPCMD '/sbin/netup'
+	string 'NetDOWN command' CONFIG_XMONISDN_DOWNCMD '/sbin/netdown'
+	endmenu
+fi
 endmenu
 mainmenu_option nextcomment
 comment 'Applications'
 bool 'vbox' CONFIG_VBOX
 if [ "$CONFIG_VBOX" = "y" ]; then
-  source vbox/.Config.in
+	source vbox/.Config.in
 fi
 endmenu
 mainmenu_option nextcomment
-comment 'General documentation'
+comment 'Documentation'
 bool 'Install generic pages' CONFIG_GENMAN
 bool 'Generate FAQ' CONFIG_FAQ
 if [ "$CONFIG_FAQ" = "y" ]; then
-  string 'Directory to install FAQ' CONFIG_FAQDIR /usr/doc/faq/isdn4linux
+	string 'Directory to install FAQ' CONFIG_FAQDIR /usr/doc/faq/isdn4linux
 fi
 endmenu

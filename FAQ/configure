@@ -515,7 +515,12 @@ fi
 
 
 
-TARGET_DIR=./out
+if test -r ../.config ; then
+	source ../.config
+	TARGET_DIR=$CONFIG_FAQDIR
+else
+	TARGET_DIR=./out
+fi
 
 ac_aux_dir=
 for ac_dir in $srcdir $srcdir/.. $srcdir/../..; do

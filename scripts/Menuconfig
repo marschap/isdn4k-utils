@@ -851,7 +851,7 @@ save_configuration () {
 			fi
 		fi
 
-		#define_bool "$2" "$x"
+		define_bool "$2" "$x"
 	}
 
 	function int () {

@@ -58,4 +58,4 @@ install: xmonisdn install-man
 
 uninstall:
 	rm -f $(CONFIG_BINDIR)/xmonisdn
-	find $(CONFIG_MANDIR)/xmonisdn -name "xmonisdn.*" -exec rm -f {} \;
+	find $(CONFIG_MANDIR) -name "xmonisdn.*" -exec rm -f {} \;
