@@ -1,4 +1,4 @@
-/* $Id: processor.c,v 1.86 1999/10/30 13:42:36 akool Exp $
+/* $Id: processor.c,v 1.87 1999/10/30 14:38:47 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.87  1999/10/30 14:38:47  akool
+ * isdnlog-3.61
+ *
  * Revision 1.86  1999/10/30 13:42:36  akool
  * isdnlog-3.60
  *   - many new rates
@@ -3979,7 +3982,7 @@ static void processctrl(int card, char *s)
 
           fprintf(stdout, "%02x  %s\n", k, s1);
         } /* else */
-      }	
+      } /* if */
     } /* if */
 #if 0 /* wird so ins syslog eingetragen :-( */
     if (!replay)

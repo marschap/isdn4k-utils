@@ -50,7 +50,7 @@ static char progversion[] = "1.11";
 #include <limits.h>
 #ifdef STANDALONE
 #include <stdlib.h>
-#define __USE_GNU
+// #define __USE_GNU
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>

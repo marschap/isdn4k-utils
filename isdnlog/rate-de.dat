@@ -8,7 +8,7 @@ U:%.3f DM
 #
 # (C) Copyright 1999 by Andreas Kool (akool@isdn4linux.de)
 #
-# $Id: rate-de.dat,v 1.55 1999/10/30 13:42:35 akool Exp $
+# $Id: rate-de.dat,v 1.56 1999/10/30 14:38:46 akool Exp $
 #
 #
 # Das "A:" Tag muß folgendermaßen gefüllt werden:

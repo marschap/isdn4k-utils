@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.115 1999/10/29 19:45:59 akool Exp $
+## $Id: Makefile.in,v 1.116 1999/10/30 14:38:46 akool Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,9 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.116  1999/10/30 14:38:46  akool
+## isdnlog-3.61
+##
 ## Revision 1.115  1999/10/29 19:45:59  akool
 ## isdnlog-3.60
 ##  - sucessfully ported/tested to/with:
@@ -819,7 +822,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 3.60
+VERSION     = 3.61
 
 MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 \
 	      isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 \
