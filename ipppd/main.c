@@ -25,7 +25,7 @@
  * PATCHLEVEL 9
  */
 
-char main_rcsid[] = "$Id: main.c,v 1.23 2002/07/06 00:34:08 keil Exp $";
+char main_rcsid[] = "$Id: main.c,v 1.24 2002/07/18 00:06:21 keil Exp $";
 
 #include <stdio.h>
 #include <stdarg.h>
@@ -284,16 +284,27 @@ int main(int argc,char **argv)
       die(1);
     }
     else {
-      char devstr[128], devstr2[1024];
-      sprintf(devstr,"Found %d device%s: ",numdev, numdev==1?"":"s");
+      char devstr[1024], *p, *end;
+      end = devstr+sizeof(devstr)-1;	/* points to last byte in array */
+      /* p points to next empty byte always */
+      p = devstr + sprintf(devstr,"Found %d device%s: ",numdev, numdev==1?"":"s");
       for(i=0;i<numdev;i++)
       {
-        /* strcat(devstr,lns[i].ifname); */
-	snprintf(devstr2, sizeof(devstr2)-3, "%s%s", devstr, lns[i].ifname);
-        if (i < numdev - 1)
-          strcat(devstr2,", ");
+        int len = strlen(lns[i].ifname);
+        if (p+len+3 > end) {
+          /* not enough space left for interface name plus ... */
+          if (p+3 < end) /* enough space for ... */
+            strcpy(p, "..."); /* indicate truncation */
+          break;
+        }
+        strcpy(p, lns[i].ifname);
+        p += len;
+        if (i < numdev - 1) {
+          strcpy(p,", ");
+          p += 2;
+        }
       }
-      syslog(LOG_NOTICE,"%s", devstr2);
+      syslog(LOG_NOTICE,"%s", devstr);
     }
 
     /*
