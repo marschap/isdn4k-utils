@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.65 1999/04/03 12:46:39 akool Exp $
+## $Id: Makefile.in,v 1.66 1999/04/10 16:34:57 akool Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,30 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.66  1999/04/10 16:34:57  akool
+## isdnlog Version 3.13
+##
+## WARNING: This is pre-ALPHA-dont-ever-use-Code!
+## 	 "tarif.dat" (aka "rate-xx.dat"): the next generation!
+##
+## You have to do the following to test this version:
+##   cp /usr/src/isdn4k-utils/isdnlog/holiday-de.dat /etc/isdn
+##   cp /usr/src/isdn4k-utils/isdnlog/rate-de.dat /usr/lib/isdn
+##   cp /usr/src/isdn4k-utils/isdnlog/samples/rate.conf.de /etc/isdn/rate.conf
+##
+## After that, add the following entries to your "/etc/isdn/isdn.conf" or
+## "/etc/isdn/callerid.conf" file:
+##
+## [ISDNLOG]
+## SPECIALNUMBERS = /usr/lib/isdn/sonderrufnummern.dat
+## HOLIDAYS       = /usr/lib/isdn/holiday-de.dat
+## RATEFILE       = /usr/lib/isdn/rate-de.dat
+## RATECONF       = /etc/isdn/rate.conf
+##
+## Please replace any "de" with your country code ("at", "ch", "nl")
+##
+## Good luck (Andreas Kool and Michael Reinelt)
+##
 ## Revision 1.65  1999/04/03 12:46:39  akool
 ## - isdnlog Version 3.12
 ## - "%B" tag in ILABEL/OLABEL corrected
@@ -511,9 +535,11 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 3.12
+VERSION     = 3.13
 
-MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 isdnlog/isdnlog.users.5 isdnrep/isdnrep.1 isdnconf/isdnconf.1
+MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 \
+	      isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 \
+	      isdnlog/isdnlog.users.5 isdnrep/isdnrep.1 isdnconf/isdnconf.1
 
 ifeq ($(POSTGRES),1)
 DEFS       += -DPOSTGRES
@@ -545,9 +571,8 @@ ISDNLOG_OBJS =  isdnlog/isdnlog.o isdnlog/processor.o isdnlog/functions.o \
                 isdnlog/server.o isdnlog/start_prog.o isdnlog/messages.o  \
                 connect/connect.o connect/socket.o tools/tools.o      	  \
                 connect/conv_address.o isdnlog/user_access.o 		  \
-                tools/isdnconf.o tools/tools_$(NATION).o		  \
-		isdnlog/takt_$(NATION).o 				  \
-		tools/sondernummern.o tools/rate.o tools/holiday.o	  \
+                tools/isdnconf.o tools/sondernummern.o tools/rate.o	  \
+		tools/holiday.o						  \
 		$(LIBISDNDIR)/libisdn.a
 
 
@@ -565,12 +590,10 @@ endif
 
 ISDNREP_OBJS =  isdnrep/rep_main.o tools/tools.o tools/isdnconf.o         \
                 isdnlog/messages.o isdnrep/isdnrep.o     		  \
-		tools/tools_$(NATION).o isdnlog/takt_$(NATION).o          \
 		tools/sondernummern.o tools/rate.o tools/holiday.o	  \
                 $(LIBISDNDIR)/libisdn.a
 
 ISDNCONF_OBJS=  isdnconf/isdnconf.o tools/tools.o tools/isdnconf.o        \
-		tools/tools_$(NATION).o isdnlog/takt_$(NATION).o          \
 		tools/sondernummern.o tools/rate.o tools/holiday.o	  \
                 $(LIBISDNDIR)/libisdn.a
 

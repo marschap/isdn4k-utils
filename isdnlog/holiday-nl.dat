@@ -1,7 +1,6 @@
 V:0.9-Netherlands [15-Mar-1999]
 
-# Fixme:
-# these need to be translated
+# Fixme: these need to be translated
 
 W:1		Mondag
 W:2		Thuesdag
@@ -10,6 +9,8 @@ W:4		Thursdag
 W:5		Fridag
 W:6		Saturdag
 W:7		Sundag
+W:E		Weekend
+W:H		Holiday
 
 D:1.1		nieuwjaarsdag
 D:easter-2	Goede Vrijdag

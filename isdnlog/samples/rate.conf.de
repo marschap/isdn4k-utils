@@ -1,13 +1,8 @@
-# Tarifauswahl fuer PTA (Post & Telekom Austria)
-# 1: Minimumtarif      (ATS 1.116 je Impuls)
-# 2: Standardtarif     (ATS 1.056 je Impuls)
-# 3: Geschaeftstarif 1 (ATS 0.996 je Impuls)
-# 4: Geschaeftstarif 2 (ATS 0.936 je Impuls)
-# 5: Geschaeftstarif 3 (ATS 0.816 je Impuls)
-P:00=2
-
 # Dont use EWE Tel
 P:14=99
+
+# Use Mobilcom call-by-call
+P:19=0
 
 # Dont use NetCologne
 P:22=99

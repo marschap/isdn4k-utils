@@ -1,4 +1,4 @@
-/* $Id: rate.h,v 1.3 1999/03/24 19:39:03 akool Exp $
+/* $Id: rate.h,v 1.4 1999/04/10 16:36:42 akool Exp $
  *
  * Tarifdatenbank
  *
@@ -19,6 +19,30 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rate.h,v $
+ * Revision 1.4  1999/04/10 16:36:42  akool
+ * isdnlog Version 3.13
+ *
+ * WARNING: This is pre-ALPHA-dont-ever-use-Code!
+ * 	 "tarif.dat" (aka "rate-xx.dat"): the next generation!
+ *
+ * You have to do the following to test this version:
+ *   cp /usr/src/isdn4k-utils/isdnlog/holiday-de.dat /etc/isdn
+ *   cp /usr/src/isdn4k-utils/isdnlog/rate-de.dat /usr/lib/isdn
+ *   cp /usr/src/isdn4k-utils/isdnlog/samples/rate.conf.de /etc/isdn/rate.conf
+ *
+ * After that, add the following entries to your "/etc/isdn/isdn.conf" or
+ * "/etc/isdn/callerid.conf" file:
+ *
+ * [ISDNLOG]
+ * SPECIALNUMBERS = /usr/lib/isdn/sonderrufnummern.dat
+ * HOLIDAYS       = /usr/lib/isdn/holiday-de.dat
+ * RATEFILE       = /usr/lib/isdn/rate-de.dat
+ * RATECONF       = /etc/isdn/rate.conf
+ *
+ * Please replace any "de" with your country code ("at", "ch", "nl")
+ *
+ * Good luck (Andreas Kool and Michael Reinelt)
+ *
  * Revision 1.3  1999/03/24 19:39:03  akool
  * - isdnlog Version 3.10
  * - moved "sondernnummern.c" from isdnlog/ to tools/
@@ -53,8 +77,8 @@
 typedef struct {
   int        prefix;
   int        zone;
-  struct tm  start;
-  struct tm  now;
+  time_t     start;
+  time_t     now;
   char      *Provider; /* Name des Providers */
   char      *Zone;     /* Name der Zone */
   char      *Day;      /* Wochen- oder Feiertag */
@@ -69,7 +93,10 @@ typedef struct {
 
 void  exitRate(void);
 int   initRate(char *conf, char *dat, char **msg);
+char *getProvidername(int prefix);
+int   getZone(int prefix, char *num);
 int   getRate(RATE *Rate, char **msg);
-int   getLeastCost(RATE *Rate, RATE *LC);
+int   getLeastCost(RATE *Rate, int skip);
+int   guessZone (RATE *Rate, int units);
 
 #endif

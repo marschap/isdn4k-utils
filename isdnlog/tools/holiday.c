@@ -1,4 +1,4 @@
- /* $Id: holiday.c,v 1.3 1999/03/24 19:38:53 akool Exp $
+ /* $Id: holiday.c,v 1.4 1999/04/10 16:36:31 akool Exp $
  *
  * Feiertagsberechnung
  *
@@ -19,6 +19,30 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: holiday.c,v $
+ * Revision 1.4  1999/04/10 16:36:31  akool
+ * isdnlog Version 3.13
+ *
+ * WARNING: This is pre-ALPHA-dont-ever-use-Code!
+ * 	 "tarif.dat" (aka "rate-xx.dat"): the next generation!
+ *
+ * You have to do the following to test this version:
+ *   cp /usr/src/isdn4k-utils/isdnlog/holiday-de.dat /etc/isdn
+ *   cp /usr/src/isdn4k-utils/isdnlog/rate-de.dat /usr/lib/isdn
+ *   cp /usr/src/isdn4k-utils/isdnlog/samples/rate.conf.de /etc/isdn/rate.conf
+ *
+ * After that, add the following entries to your "/etc/isdn/isdn.conf" or
+ * "/etc/isdn/callerid.conf" file:
+ *
+ * [ISDNLOG]
+ * SPECIALNUMBERS = /usr/lib/isdn/sonderrufnummern.dat
+ * HOLIDAYS       = /usr/lib/isdn/holiday-de.dat
+ * RATEFILE       = /usr/lib/isdn/rate-de.dat
+ * RATECONF       = /etc/isdn/rate.conf
+ *
+ * Please replace any "de" with your country code ("at", "ch", "nl")
+ *
+ * Good luck (Andreas Kool and Michael Reinelt)
+ *
  * Revision 1.3  1999/03/24 19:38:53  akool
  * - isdnlog Version 3.10
  * - moved "sondernnummern.c" from isdnlog/ to tools/
@@ -74,12 +98,17 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <ctype.h>
 #include <stdarg.h>
 #include <time.h>
-#endif
+#else
 #include "isdnlog.h"
 #include "tools.h"
+#endif
+
 #include "holiday.h"
+
+#define COUNT(array) sizeof(array)/sizeof(array[0])
 
 #define LENGTH 120  /* max length of lines in data file */
 
@@ -91,18 +120,20 @@ typedef struct {
   char *name;
 } HOLIDATE;
 
-static int        line = 0;
-static char      *Weekday[7] = { NULL, };
-static int        nHoliday = 0;
-static HOLIDATE  *Holiday = NULL;
-
 static char *defaultWeekday[] = { "Monday",
 				  "Thuesday",
 				  "Wednesday",
 				  "Thursday",
 				  "Friday",
 				  "Saturday",
-				  "Sunday" };
+				  "Sunday",
+				  "Weekend",
+				  "Holiday" };
+
+static int        line = 0;
+static char      *Weekday[COUNT(defaultWeekday)] = { NULL, };
+static int        nHoliday = 0;
+static HOLIDATE  *Holiday = NULL;
 
 static void warning (char *fmt, ...)
 {
@@ -208,16 +239,24 @@ int initHoliday(char *path, char **msg)
   char  version[LENGTH]="";
   static char message[LENGTH];
 
+  if (msg)
+    *(*msg=message)='\0';
+
   exitHoliday();
 
-  for (i=1; i<7; i++)
+  for (i=0; i<COUNT(Weekday); i++)
     Weekday[i]=strdup(defaultWeekday[i]);
 
-  if ((path == NULL) || (*path=='\0'))
+  if (!path || !*path) {
+    if (msg) snprintf (*msg=message, LENGTH, "Warning: no holiday database specified!");
     return 0;
+  }
 
-  if ((stream=fopen(path,"r"))==NULL)
+  if ((stream=fopen(path,"r"))==NULL) {
+    if (msg) snprintf (*msg=message, LENGTH, "Error: could not load holidays from %s: %s",
+		       path, strerror(errno));
     return -1;
+  }
 
   line=0;
   while ((s=fgets(buffer,LENGTH,stream))!=NULL) {
@@ -230,9 +269,25 @@ int initHoliday(char *path, char **msg)
     }
     switch (*s) {
     case 'W':
-      d=strtol(s+2,&s,10);
+      s+=2; while (isblank(*s)) s++;
+      if (isdigit(*s)) {
+	d=strtol(s,&s,10);
       if (d<1 || d>7) {
 	warning("invalid weekday %d", d);
+	  continue;
+	}
+      } else if (*s=='E') {
+	d=WEEKEND;
+	s++;
+      } else if (*s=='H') {
+	d=HOLIDAY;
+	s++;
+      } else {
+	warning("invalid weekday %c", *s);
+	continue;
+      }
+      if (!isblank(*s)) {
+	warning ("expected whitespace, got '%s'!", s);;
 	continue;
       }
       if (*(name=strip(s))=='\0') {

@@ -1,0 +1,1838 @@
+V:1.0-Germany [10-Apr-1999]
+
+# Zonenvergabe:
+#
+#   0 : Verbindungen an der eigenen Tk-Anlage (zwangsläufig kostenlos)
+#   1 : Ortszone (alle Nummern, die ohne Vorwahl erreichbar sind.
+#     		  Z.Zt. nur über den preselected Provider erreichbar)
+#   2 : Cityzone (Nummern im Umkreis von max. 20 km)
+#   3 : Region 50 (Nummern im Umkreis von max. 50 km)
+#   4 : Fernzone (Deutschlandweit)
+#   5 : C-Mobilbox
+#   6 : C-Netz
+#   7 : D1-Netz
+#   8 : D2-Netz
+#   9 : E-plus-Netz
+#  10 : E2-Netz
+#  11 : Euro City
+#  12 : Euro 1    (Schweiz und Frankreich)
+#  13 : Euro 2
+#  14 : Welt 1
+#  15 : Welt 2
+#  16 : Welt 3
+#  17 : Welt 4
+#
+#  20 : Internet
+#
+# Die DTAG-Zonen
+#  Vis-a-vis 1
+#  Vis-a-vis 2
+#  Vis-a-vis 3
+#  Konferenzzuschlag
+#  T-Net-Box
+#  Interntarif Draht-Funk
+#  Interntarif Funk-Draht
+#  Interntarif Funk-Funk
+#  Interntarif Draht-Draht
+#  D1Ext
+#  Inmarsat
+# werden z.Zt. nicht unterstützt
+#####################################################################
+P:10,0 Teleglobe
+C:GmbH, Gutleutstraße 85, 60329 Frankfurt 01010
+#####################################################################
+P:11,0 o.tel.o CbC
+G:01.04.1999
+C:o.tel.o communications GmbH, Am Bonneshof 35, 40474 Düsseldorf 01011
+C:Homepage: http://www.o-tel-o.de
+C:Hotline:  01803/1998 oder 0800/7370 (Geschaeftskunden)
+C:Adresse:  96038 Bamberg
+Z:2-4 National
+T:1-5/08-18=0.15/60
+T:1-5/18-08=0.10/60
+T:6-7,H/*=0.095
+Z:5-10 Mobil
+A:01610
+A:01617
+A:01619
+A:01618 # C
+A:0170
+A:0171  # D1
+A:0172
+A:0173	# D2
+A:0177
+A:0178	# Eplus
+A:0176
+A:0179  # E2
+T:1-5/08-18=0.94/60
+T:1-5/18-08=0.47/60
+T:6-7,H/*=0.47/60
+Z:20 Internet
+A:0191501 # (Benutzername: otelo; Passwort: online)
+T:1-5/09-22=0.059/60
+T:1-5/22-09=0.059/60:1800,0.03/60
+T:6-7,H/*=0.059/60:1800,0.03/60
+#####################################################################
+P:12,0 Tele Danmark
+C:Internetz GmbH, Süderstraße 75, 20097 Hamburg 01012
+#####################################################################
+P:13,0 Tele 2
+G:08.02.1999
+C:Tele 2 Kinnevik Telecommunciations International S.A., 75, route de Longwy, L-8080 Bertrange, Luxembourg 01013
+C:Homepage: http://www.tele2.de
+C:Hotline:  0800/24-01013
+C:Adresse:  Postfach 130840, 40558
+C:	    Duesseldorf
+Z:2-4 National
+T:1-5/07-19=0.15/60
+T:1-5/19-22=0.07/60
+T:1-5/22-07=0.05/60
+T:6-7,H/07-19=0.10/60
+T:6-7,H/19-22=0.07/60
+T:6-7,H/22-07=0.05/60
+Z:5-10 Mobilfunknetz
+A:01610
+A:01617
+A:01619
+A:01618 # C
+A:0170
+A:0171  # D1
+A:0172
+A:0173	# D2
+A:0177
+A:0178	# Eplus
+A:0176
+A:0179  # E2
+T:*/*=0.79/60
+Z:12 Euro 1 / USA, Kanada
+A:+1     # Kanada
+A:+1     # Vereinigte Staaten (USA)
+A:+31    # Niederlande
+A:+32    # Belgien
+A:+33    # Frankreich
+A:+34    # Spanien
+A:+352   # Luxemburg
+A:+358   # Finnland
+A:+39    # Italien
+A:+41    # Schweiz
+A:+43    # Österreich
+A:+44    # Großbritannien und Nordirland
+A:+45    # Dänemark
+A:+46    # Schweden
+A:+47    # Norwegen
+T:*/*=0.47/60
+Z:13 Euro 2
+A:+298   # Färöer
+A:+353   # Irland
+A:+354   # Island
+A:+376   # Andorra
+A:+377   # Monaco
+A:+378   # San Marino
+A:+4175  # Liechtenstein
+A:+420   # Tschechien
+A:+48    # Polen
+A:+90    # Türkei
+T:*/*=0.68/60
+Z:14 Welt 1
+A:+212   # Marokko
+A:+213   # Algerien
+A:+216   # Tunesien
+A:+218   # Libyen
+A:+30    # Griechenland
+A:+350   # Gibraltar
+A:+351   # Portugal
+A:+355   # Albanien
+A:+356   # Malta
+A:+357   # Zypern
+A:+359   # Bulgarien
+A:+36    # Ungarn
+A:+370   # Litauen
+A:+371   # Lettland
+A:+372   # Estland
+A:+373   # Moldau Republik
+A:+375   # Weißrußland (Belarus)
+A:+380   # Ukraine
+A:+381   # Jugoslawien Montenegro
+A:+385   # Kroatien
+A:+386   # Slowenien
+A:+387   # Bosnien-Herzegowina
+A:+389   # Mazedonien
+A:+40    # Rumänien
+A:+421   # Slowakei
+A:+61    # Australien
+A:+64    # Neuseeland
+A:+65    # Singapur
+A:+81    # Japan
+A:+852   # Hongkong
+A:+972   # Israel
+T:*/*=0.97/60
+Z:15 Welt 2
+# UNKNOWN: Diego Garcia
+# UNKNOWN: Guantanamo
+# UNKNOWN: Solomon Inseln
+# UNKNOWN: Wallis und Futuna Inseln
+A:+1242  # Bahamas
+A:+1246  # Barbados
+A:+1264  # Anguilla
+A:+1268  # Antigua und Barbuda
+A:+1284  # Britische Jungferninseln
+A:+1340  # Amerikanische Jungferninseln
+A:+1345  # Caymaninseln (FUZZ 2:``Kayman Inseln'' ~ ``Caymaninseln'')
+A:+1441  # Bermuda
+A:+1473  # Grenada
+A:+1664  # Montserrat
+A:+1758  # Saint Lucia
+A:+1767  # Dominica
+A:+1784  # Saint Vincent und die Grenadinen
+A:+1787  # Puerto Rico
+A:+1809  # Dominikanische Republik
+A:+1868  # Trinidad und Tobago
+A:+1869  # Saint Kitts and Nevis (FUZZ 1:``Saint Kitts und Nevis'' ~ ``Saint Kitts and Nevis'')
+A:+1876  # Jamaika
+A:+20    # Ägypten
+A:+220   # Gambia
+A:+221   # Senegal
+A:+222   # Mauretanien
+A:+223   # Mali
+A:+224   # Guinea
+A:+225   # Cote d'Ivoire (Elfenbeinküste)
+A:+226   # Burkina Faso (Obervolta)
+A:+227   # Niger
+A:+227   # Niger (FUZZ 2:``Niue'' ~ ``Niger'')
+A:+228   # Togo
+A:+229   # Benin
+A:+230   # Mauritius
+A:+231   # Liberia
+A:+232   # Sierra Leone
+A:+233   # Ghana
+A:+234   # Nigeria
+A:+235   # Tschad
+A:+236   # Zentralafrikanische Republik
+A:+237   # Kamerun
+A:+238   # Kap Verde
+A:+239   # Sao Tome und Principe (FUZZ 2:``Sao Tomé und Pricipe'' ~ ``Sao Tome und Principe'')
+A:+240   # Äquatorial-Guinea (FUZZ 1:``Äquatorial Guinea'' ~ ``Äquatorial-Guinea'')
+A:+241   # Gabun
+A:+242   # Kongo
+A:+243   # Zaire
+A:+244   # Angola
+A:+245   # Guinea-Bissau
+A:+247   # Ascension
+A:+248   # Seyschellen (FUZZ 1:``Seychellen'' ~ ``Seyschellen'')
+A:+249   # Sudan
+A:+250   # Ruanda
+A:+251   # Äthiopien
+A:+252   # Somalia
+A:+253   # Dschibuti
+A:+254   # Kenia
+A:+255   # Tansania
+A:+256   # Uganda
+A:+257   # Burundi
+A:+258   # Mosambik
+A:+260   # Sambia
+A:+261   # Madagaskar
+A:+262   # Reunion
+A:+263   # Simbabwe
+A:+264   # Namibia
+A:+265   # Malawi
+A:+266   # Lesotho
+A:+267   # Botsuana (Botswana)
+A:+268   # Swasiland
+A:+269   # Mayotte
+A:+27    # Südafrika
+A:+290   # Saint Helena
+A:+291   # Eritrea
+A:+297   # Aruba
+A:+299   # Grönland
+A:+374   # Armenien
+A:+396   # Vatikanstadt
+A:+44    # Insel Man (Großbritannien)
+A:+44    # Kanalinseln (Großbritannien)
+A:+500   # Falklandinseln
+A:+501   # Belize
+A:+502   # Guatemala
+A:+503   # El Salvador
+A:+504   # Honduras
+A:+505   # Nicaragua
+A:+506   # Costa Rica
+A:+507   # Panama
+A:+508   # Saint Pierre und Miquelon
+A:+509   # Haiti
+A:+51    # Peru
+A:+52    # Mexiko
+A:+53    # Kuba
+A:+54    # Argentinien
+A:+55    # Brasilien
+A:+56    # Chile
+A:+57    # Kolumbien
+A:+58    # Venezuela
+A:+590   # Guadeloupe (FUZZ 1:``Guadelope'' ~ ``Guadeloupe'')
+A:+591   # Bolivien
+A:+592   # Guyana
+A:+593   # Ecuador
+A:+595   # Paraguay
+A:+596   # Martinique
+A:+597   # Suriname
+A:+598   # Uruguay
+A:+599   # Niederländische Antillen
+A:+60    # Malaysia
+A:+62    # Indonesien
+A:+63    # Philippinen
+A:+66    # Thailand
+A:+670   # Marianen
+A:+671   # Guam
+A:+67210 # Davis (Antarktis)
+A:+6723  # Norfolkinseln (Australien)
+A:+673   # Brunei Darussalam
+A:+674   # Nauru
+A:+675   # Papua-Neuguinea
+A:+676   # Tonga
+A:+677   # Salomonen
+A:+678   # Vanuatu
+A:+679   # Fidschi
+A:+680   # Palau
+A:+682   # Cook-Inseln (FUZZ 1:``Cookinseln'' ~ ``Cook-Inseln'')
+A:+684   # Amerikanisch-Samoa
+A:+686   # Kiribati
+A:+687   # Neukaledonien
+A:+688   # Tuvalu
+A:+689   # Französisch-Polynesien
+A:+691   # Mikronesien
+A:+692   # Marshallinseln
+A:+7     # Kasachstan
+A:+7     # Tadschikistan
+A:+84    # Vietnam
+A:+850   # Korea (Demokratische Republik)
+A:+853   # Macao
+A:+855   # Kambodscha
+A:+856   # Laos
+A:+86    # China (Volksrepublik)
+A:+880   # Bangladesch
+A:+886   # China (Taiwan)
+A:+91    # Indien
+A:+92    # Pakistan
+A:+93    # Afghanistan
+A:+94    # Sri Lanka
+A:+95    # Myanmar (Birma)
+A:+960   # Malediven
+A:+961   # Libanon
+A:+962   # Jordanien
+A:+963   # Syrien
+A:+964   # Irak
+A:+965   # Kuwait
+A:+966   # Saudi-Arabien
+A:+967   # Jemen (Arabische Republik)
+A:+968   # Oman
+A:+971   # Vereinigte Arabische Emirate
+A:+973   # Bahrain
+A:+974   # Katar
+A:+975   # Bhutan
+A:+976   # Mongolei
+A:+977   # Nepal
+A:+98    # Iran
+A:+993   # Turkmenistan
+A:+994   # Aserbaidschan
+A:+995   # Georgien
+A:+996   # Kirgisistan
+A:+998   # Usbekistan
+T:*/*=2.44/60
+#####################################################################
+P:14,0 EWE TEL
+C:GmbH, Donnerschweer Straße 22-26, 26123 Oldenburg 01014
+#####################################################################
+P:15,0 RSL COM
+C:Deutschland GmbH, Lyoner Straße 36, 60528 Frankfurt/Main 01015
+#####################################################################
+P:16,0 LausitzNet
+C:Telekommunikationsgesellschaft mbH, Lausitzer Straße 1-7, 03046 Cottbus 01016
+#####################################################################
+P:17,0 SEC
+C:Service AG, Dieskaustraße 246, 04249 Leipzig 01017
+#####################################################################
+P:18,0 debitel
+C:Kommunikationstechnik GmbH & Co KG, Schelmenwasenstr. 37 - 39, 70567 Stuttgart 01018
+#####################################################################
+P:19,0 Mobilcom CbC
+C:CityLine Telefondienste GmbH, Schwarzer Weg 13, 24837 Schleswig 01019
+G:06.04.1999
+C:MobilCom AG
+C:Homepage: http://www.mobilcom.de
+C:Hotline:  01805/191919
+C:Adresse:  Postfach 1249
+C:	    24822 Schleswig
+Z:2-4 Ferngespräche bundesweit
+T:*/07-19=0.12/60 Standard
+T:*/19-22=0.08/60 Spar
+T:*/22-07=0.04/60 Nacht
+Z:6-10 Mobilfunk
+T:*/*=0.49/60
+Z:20 Internet
+A:01929 # (Benutzername: mobilcom; Passwort: mobilcom)
+T:*/*=0.05/60 FreeNet
+#####################################################################
+P:20,0 ISIS
+C:Multimedia Net GmbH, Kaistraße 6, 40221 Düsseldorf 01020
+#####################################################################
+P:21,0 QS
+C:Communication Service GmbH, Oberländer Ufer 180-182, 50968 Köln 01021
+#####################################################################
+P:22,0 NetCologne
+C:GmbH, Maarweg 163, 50825 Köln 01022
+#####################################################################
+P:23,0 tesion
+C:Communikationsnetze Süd-West GmbH & Co. KG, Kriegsbergstr. 11, 70174 Stuttgart 01023
+#####################################################################
+P:24,0 Telepassport
+C:GmbH, Schwindstraße 3, 60325 Frankfurt 01024
+#####################################################################
+P:25,0 CityKom
+C:Münster, Haferlandweg 8, 48155 Münster 01025
+#####################################################################
+P:26,0 ECN
+C:Telekommunikation GmbH, Schmickstraße 38-40, 60314 Frankfurt 01026
+#####################################################################
+P:27,0 Communications Netzmanagement
+C:Bremen GmbH, Theodor-Heuss-Allee 20, 28215 Bremen 01027
+#####################################################################
+P:28,0 Colt
+C:Telecom GmbH, Gervinusstraße 18-22, 60323 Frankfurt 01028
+C:Reseller von COLT : Telebridge, Global Communications, Nikoma
+#####################################################################
+P:29,0 Unisource
+C:Carrier Services, Industriestraße 21, CH-8304 Wallisellen/Schweiz 01029
+#####################################################################
+P:30,0 TelDaFax
+G:31.03.1999
+C:Telefon-, Daten- und Fax-Transfer GmbH & Co. KG, Schuppertsgasse 30, 35083 Wetter (Hessen) 01030
+C:Name:	    TeDaFax Telefon-, Daten- und Faxtransfer AG
+C:Homepage: http://www.teldafax.de
+C:Hotline:  0800/01030-00
+C:Adresse:  Postfach 2206
+C:	    35010 Marburg
+Z:2-4 Deutschland
+T:1-5/07-09=0.09(60)/1
+T:1-5/09-18=0.15(60)/1
+T:1-5/18-21=0.09(60)/1
+T:1-5/21-07=0.06(60)/1
+T:6-7,H/*=0.09(60)/1
+Z:6-10 C/D/E-Netz
+T:*/*=0.48(60)/1
+#####################################################################
+P:31,0 HEAG
+C:MediaNet GmbH, Luisenplatz 6, 64283 Darmstadt 01031
+#####################################################################
+P:32,0 KDD
+C:Deutschland GmbH, Immermannstraße 45, 40210 Düsseldorf 01032
+#####################################################################
+P:33,0 DTAG
+G:01.04.1999
+C:Deutsche Telekom AG, Friedrich-Ebert-Allee 140, 53113 Bonn 01033
+C:Name:     Deutsche Telekom AG
+C:Homepage: http://www.dtag.de
+C:Hotline:  0800/33-01000, T-Online Tarifhotline: 0800/33-03333
+C:Internet-Zugang: monatliche Grundgebhr DM 8,00 enthalten 2 Freistunden
+C:		   dort ist nur das Verbindungsentgeld faellig
+C:ISDN-Tarif
+C:FORMEL: 7,2 / Minutenpreis => Taktlaenge
+C:Quelle: http://www.telekom.de/untern/tarife/mobil/index.htm
+Z:1-2 CityCall
+T:1-5/09-18=0.12/90 Standard
+T:1-5/18-21=0.12/150 Spar
+T:1-5/21-05=0.12/240 Nacht
+T:1-5/05-09=0.12/150 Spar
+T:6-7,H/05-21=0.12/150 Spar
+T:6-7,H/21-05=0.12/240 Nacht
+Z:3 RegioCall
+T:1-5/09-18=0.12/30:600,0.1084/30 Standard
+T:1-5/18-21=0.12/60:600,0.1084/60 Spar
+T:1-5/21-06=0.06/60 Nacht
+T:1-5/06-09=0.12/60:600,0.1084/60 Spar
+T:6-7,H/06-21=0.12/60:600,0.1084/60 Spar
+T:6-7,H/21-06=0.06/60 Nacht
+Z:4 GermanCall
+T:1-5/09-18=0.12/30:600,0.1084/30 Standard
+T:1-5/18-21=0.12/60:600,0.1084/60 Spar
+T:1-5/21-06=0.06/60 Nacht
+T:1-5/06-09=0.12/60:600,0.1084/60 Spar
+T:6-7,H/06-21=0.12/60:600,0.1084/60 Spar
+T:6-7,H/21-06=0.06/60 Nacht
+Z:8 Mobilfunknetz D2
+A:0172
+A:0173
+T:1-5/09-18=0.12/7.5
+T:1-5/18-09=0.12/15
+T:6-7,H/0-24=0.12/15
+Z:20 Internet
+A:0191011
+T:*/*=0.06/0,0.06/60 T-Online eco
+#####################################################################
+P:34,0 NEFkom
+C:Telekommunikation GmbH & Co. KG, Bärenschanzstraße 4, 90429 Nürnberg 01034
+#####################################################################
+P:35,0 interCOM
+C:GmbH, Hauptstraße 52a, 28876 Oyten 01035
+#####################################################################
+P:36,0 Hutchison
+C:Münsterstraße 109, 48155 Münster 01036
+#####################################################################
+P:37,0 ETS
+C:Verwaltung für Sprach- und Datennetze GmbH, Brunnenstraße 4, 61191 Rosbach 01037
+#####################################################################
+P:38,0 MediaWays
+C:GmbH, An der Autobahn, 33311 Gütersloh 01038
+#####################################################################
+P:39,0 First Telecom
+C:GmbH, Lyoner Straße 51, 60528 Frankfurt/Main 01039
+#####################################################################
+P:40,0 PLUSNET
+C:Gesellschaft für Netzwerk Services mbH, August-Thyssen-Straße 1, 40211 Düsseldorf 01040
+#####################################################################
+P:41,0 HanseNet
+C:Telekommunikation GmbH, Hammerbrookstraße 63, 20097 Hamburg 01041
+#####################################################################
+P:42,0 TeleBeL
+C:Telekommunikation Bergisches Land GmbH, Johannisberg 7, 42103 Wuppertal 01042
+#####################################################################
+P:43,0 KielNet
+C:GmbH, Postfach 41 60, 24100 Kiel 01043
+#####################################################################
+P:44,0 VEW TELNET
+C:Gesellschaft für Telekommunikation und Netzdienste mbH, Unterste-Wilms-Straße 29, 44143 Dortmund 01044
+#####################################################################
+P:45,0 Global Network
+C:Telephone Deutschland, Grosser Plan 8, 29221 Celle 01045
+#####################################################################
+P:46,0 KomTel
+C:Gesellschaft für Kommunikation und Informationsdienste GmbH, Batteriestraße 48, 24937 Flensburg 01046
+#####################################################################
+P:47,0 PrimeTec
+C:International Europe Ltd. 01047
+#####################################################################
+P:48,0 DOKOM
+C:GmbH, Im Defdahl 5, 44141 Dortmund 01048
+#####################################################################
+P:49,0 ACC
+C:Telekommunikation GmbH, Heinrich-Heine-Allee 53, 40213 Düsseldorf 01049
+#####################################################################
+P:50,0 TALKLINE
+C:PS PhoneServices GmbH, Adenauer Damm 1, 25337 Elmshorn 01050
+#####################################################################
+P:51,0 01051
+C:ID-Switch GmbH, Graf-Adolf-Straße, 40210 Düsseldorf 01051
+G:17.02.1999
+C:Homepage: http://www.01051.com
+C:Adresse:  Koenigsallee 60f
+C:	    40210 Duesseldorf
+Z:2-4 Ferngespräche
+T:*/*=0.09/60
+#####################################################################
+P:52,0 Long Distance
+C:International Ltd., 5 Duke's Gate Acton, London W 4 5 DX, GB 01052
+#####################################################################
+P:53,0 WOBCOM
+C:GmbH Wolfsburg, Heßlinger Str. 1-5, 38440 Wolfsburg 01053
+#####################################################################
+P:54,0 USFI
+C:Global Network Services Germany GmbH, Kindsbacherstraße 41, 66877 Ramstein 01054
+#####################################################################
+P:55,0 ESPRIT
+C:Telecom Deutschland GmbH, Kaistraße 16 A, 40221 Düsseldorf 01055
+#####################################################################
+P:56,0 BITel
+C:Gesellschaft für kommunale Telekommunikation mbh, Schildescher Straße 16, 33611 Bielefeld 01056
+#####################################################################
+P:57,0 Mox
+C:Telecom GmbH, Industriestraße 3a, 40878 Ratingen 01057
+#####################################################################
+P:58,0 KaTel
+C:Gesellschaft für Telekommunikation mbH, Mathias-Brüggen-Straße 87-89, 50829 Köln 01058
+#####################################################################
+P:59,0 Pacific Gateway Exchange
+C:Inc., 533 Airport Boulevard, Suite 505, Burlingame, CA 94010, USA 01059
+#####################################################################
+P:60,0 Telecom-InfoService
+C:GmbH, Postfach 174, A-1000 Wien (A) 01060
+#####################################################################
+P:61,0 TelSA
+C:Telekommunikationsgesellschaft mbH, Magdeburger Str. 51, 06112 Halle 01061
+#####################################################################
+P:62,0 DENTEL
+C:GmbH i.G. Grimmstraße 4 80336 München 01062
+#####################################################################
+P:63,0 Conos
+C:Corporate Network & Services Aktiengesellschaft Lievelingsweg 125 52119 Bonn 01063
+#####################################################################
+P:64,0 Hannoversche
+C:Telekommunikations- und Netzgesellschaft mbH, Glockseestraße 33, 30161 Hannover 01064
+#####################################################################
+P:65,0 Rapid Link
+C:Telecommunications GmbH, Donaustraße 68, 68199 Mannheim 01065
+#####################################################################
+P:66,0 Interoute
+C:Telecom Deutschland GmbH, Lyoner Str. 15, 60528 Frankfurt 01066
+#####################################################################
+P:67,0 RegioCom
+C:GmbH, Steinfeldstraße 3, 39179 Barleben 01067
+#####################################################################
+P:68,0 Tele Media
+C:International, Wilhelm-Leuschner-Strasse 23-25, 60329 Frankfurt/Main 01068
+#####################################################################
+P:69,0 Primus
+C:Telecommunications Ltd. 01069
+#####################################################################
+P:70,0 Arcor CbC
+G:01.04.99
+C:Mannesmann Arcor
+C:Mannesmann AG & Co., Kölner Str. 12, 65760 Eschborn 01070
+Z:3 Regio Plus
+T:1-5/06-09=0.075/60
+T:1-5/09-18=0.14/60
+T:1-5/18-21=0.075/60
+T:1-5/21-06=0.04/60
+T:6-7,H/06-21=0.075/60
+T:6-7,H/21-06=0.04/60
+Z:4 Fern
+T:1-5/06-09=0.095/60
+T:1-5/09-18=0.18/60
+T:1-5/18-21=0.095/60
+T:1-5/21-06=0.06/60
+T:6-7,H/06-21=0.095/60
+T:6-7,H/21-06=0.06/60
+Z:6-7,8 D1,C,E2-Netz
+A:0170
+A:0171
+A:01610
+A:01617
+A:01619
+A:01618
+A:0176
+A:0179
+T:1-5/09-18=0.96/60 Hauptzeit
+T:1-5/18-09=0.48/60 Nebenzeit
+T:6-7,H/*=0.48/60 Freizeit
+Z:8 D2
+A:0172
+A:0173
+T:1-5/09-18=0.94/60 Hauptzeit
+T:1-5/18-09=0.46/60 Nebenzeit
+T:6-7,H/*=0.46/60 Freizeit
+Z:9 E-Plus
+A:0177
+A:0178
+T:1-5/09-18=1.25/60 Hauptzeit
+T:1-5/18-09=0.56/60 Nebenzeit
+T:6-7,H/*=0.56/60 Freizeit
+Z:11 Euro
+A:+31    # Niederlande
+A:+32    # Belgien
+A:+33    # Frankreich
+A:+34    # Spanien
+A:+351   # Portugal
+A:+352   # Luxemburg
+A:+353   # Irland
+A:+358   # Finnland
+A:+39    # Italien
+A:+43    # Österreich
+T:*/*=0.46/60
+Z:12 Euro Plus
+A:+298   # Färöer
+A:+30    # Griechenland
+A:+353   # Irland
+A:+354   # Island
+A:+36    # Ungarn
+A:+376   # Andorra
+A:+377   # Monaco
+A:+378   # San Marino
+A:+396   # Vatikanstadt
+A:+41    # Schweiz
+A:+4175  # Liechtenstein
+A:+420   # Tschechien
+A:+421   # Slowakei
+A:+44    # Großbritannien und Nordirland
+A:+44    # Insel Man (Großbritannien)
+A:+44    # Kanalinseln (Großbritannien)
+A:+45    # Dänemark
+A:+46    # Schweden
+A:+47    # Norwegen
+A:+48    # Polen
+T:*/*=0.68/60
+Z:13 Übriges Europa
+A:+212   # Marokko
+A:+213   # Algerien
+A:+216   # Tunesien
+A:+218   # Libyen
+A:+350   # Gibraltar
+A:+355   # Albanien
+A:+356   # Malta
+A:+357   # Zypern
+A:+359   # Bulgarien
+A:+370   # Litauen
+A:+371   # Lettland
+A:+372   # Estland
+A:+373   # Moldau Republik (FUZZ 2:``Moldau (Republik)'' ~ ``Moldau Republik'')
+A:+375   # Belarus (Weißrußland)
+A:+380   # Ukraine
+A:+381   # Jugoslawien Montenegro
+A:+385   # Kroatien
+A:+386   # Slowenien
+A:+387   # Bosnien-Herzegowina
+A:+389   # Mazedonien
+A:+40    # Rumänien
+A:+7     # GUS (Russische Föderation)
+A:+90    # Türkei
+A:+972   # Israel
+T:*/*=0.96/60
+Z:14 Nordamerika
+A:+1     # Kanada
+A:+1     # Vereinigte Staaten (USA)
+T:*/*=0.48/60
+Z:15 Asien / Pazifik
+A:+61    # Australien
+A:+64    # Neuseeland
+A:+65    # Singapur
+A:+81    # Japan
+A:+82    # Korea (Republik)
+A:+852   # Hongkong
+T:*/*=1.69/60
+Z:16 Übrige Welt 1
+A:+1809  # Dominikanische Republik
+A:+20    # Ägypten
+A:+27    # Südafrika
+A:+54    # Argentinien
+A:+55    # Brasilien
+A:+56    # Chile
+A:+57    # Kolumbien
+A:+599   # Niederländische Antillen
+A:+63    # Philippinen
+A:+7     # Kasachstan
+A:+886   # China (Taiwan)
+A:+961   # Libanon
+A:+962   # Jordanien
+A:+963   # Syrien
+A:+966   # Saudi-Arabien (FUZZ 1:``Saudi Arabien'' ~ ``Saudi-Arabien'')
+A:+971   # Vereinigte Arabische Emirate
+A:+98    # Iran
+T:*/*=2.59/60
+Z:17 Übrige Welt 2
+A:+1242  # Bahamas
+A:+1246  # Barbados
+A:+1264  # Anguilla
+A:+1268  # Antigua und Barbuda
+A:+1284  # Britische Jungferninseln
+A:+1340  # Amerikanische Jungferninseln
+A:+1345  # Caymaninseln
+A:+1345  # Kaimaninseln
+A:+1441  # Bermuda
+A:+1473  # Grenada
+A:+1649  # Turks- und Caicos-Inseln
+A:+1664  # Montserrat
+A:+1758  # Saint Lucia
+A:+1767  # Dominica
+A:+1784  # Saint Vincent und die Grenadinen
+A:+1787  # Puerto Rico
+A:+1868  # Trinidad und Tobago
+A:+1869  # Saint Kitts and Nevis
+A:+1876  # Jamaika
+A:+220   # Gambia
+A:+221   # Senegal
+A:+222   # Mauretanien
+A:+223   # Mali
+A:+224   # Guinea
+A:+225   # Cote d'Ivoire (Elfenbeinküste)
+A:+225   # Elfenbeinküste (Cote d'Ivoire)
+A:+226   # Burkina Faso (Obervolta)
+A:+227   # Niger
+A:+228   # Togo
+A:+229   # Benin
+A:+230   # Mauritius
+A:+231   # Liberia
+A:+232   # Sierra Leone
+A:+233   # Ghana
+A:+234   # Nigeria
+A:+235   # Tschad
+A:+236   # Zentralafrikanische Republik
+A:+237   # Kamerun
+A:+238   # Kap Verde
+A:+239   # Sao Tome und Principe
+A:+240   # Äquatorial-Guinea
+A:+241   # Gabun
+A:+242   # Kongo
+A:+243   # Zaire
+A:+244   # Angola
+A:+245   # Guinea-Bissau
+A:+247   # Ascension
+A:+248   # Seyschellen
+A:+249   # Sudan
+A:+250   # Ruanda
+A:+251   # Äthiopien
+A:+252   # Somalia
+A:+253   # Dschibuti
+A:+254   # Kenia
+A:+255   # Tansania
+A:+256   # Uganda
+A:+257   # Burundi
+A:+258   # Mosambik
+A:+260   # Sambia
+A:+261   # Madagaskar
+A:+262   # Reunion
+A:+263   # Simbabwe
+A:+263   # Zimbabwe
+A:+264   # Namibia
+A:+265   # Malawi
+A:+266   # Lesotho
+A:+267   # Botsuana (Botswana)
+A:+268   # Swasiland
+A:+269   # Komoren
+A:+269   # Mayotte
+A:+290   # Saint Helena
+A:+291   # Eritrea
+A:+297   # Aruba
+A:+299   # Grönland
+A:+374   # Armenien
+A:+375   # Weißrußland (Belarus)
+A:+500   # Falklandinseln
+A:+501   # Belize
+A:+502   # Guatemala
+A:+503   # El Salvador
+A:+504   # Honduras
+A:+505   # Nicaragua
+A:+506   # Costa Rica
+A:+507   # Panama
+A:+508   # Saint Pierre und Miquelon
+A:+509   # Haiti
+A:+51    # Peru
+A:+52    # Mexiko
+A:+53    # Kuba
+A:+58    # Venezuela
+A:+590   # Guadeloupe
+A:+591   # Bolivien
+A:+592   # Guyana
+A:+593   # Ecuador
+A:+594   # Französisch-Guayana
+A:+595   # Paraguay
+A:+596   # Martinique
+A:+597   # Suriname
+A:+598   # Uruguay
+A:+60    # Malaysia
+A:+62    # Indonesien
+A:+66    # Thailand
+A:+670   # Marianen
+A:+671   # Guam
+A:+67210 # Davis (Antarktis)
+A:+67211 # Mawson (Antarktis)
+A:+67212 # Casey (Antarktis)
+A:+67213 # Macquarrie Island (Antarktis)
+A:+6722  # Kokosinseln (Australien)
+A:+6723  # Norfolkinseln (Australien)
+A:+6724  # Weihnachtsinsel (Australien)
+A:+673   # Brunei Darussalam
+A:+674   # Nauru
+A:+675   # Papua-Neuguinea
+A:+676   # Tonga
+A:+677   # Salomonen
+A:+678   # Vanuatu
+A:+679   # Fidschi
+A:+680   # Palau
+A:+682   # Cook-Inseln
+A:+684   # Amerikanisch-Samoa
+A:+685   # Samoa
+A:+686   # Kiribati
+A:+687   # Neukaledonien
+A:+688   # Tuvalu
+A:+689   # Französisch-Polynesien
+A:+691   # Mikronesien
+A:+692   # Marshallinseln
+A:+7     # Tadschikistan
+A:+84    # Vietnam
+A:+850   # Korea (Demokratische Republik)
+A:+853   # Macao
+A:+855   # Kambodscha
+A:+856   # Laos
+A:+86    # China (Volksrepublik)
+A:+871   # Atlantischer Ozean (Ost)
+A:+872   # Pazifischer Ozean
+A:+873   # Indischer Ozean
+A:+874   # Atlantischer Ozean (West)
+A:+880   # Bangladesch
+A:+886   # Taiwan
+A:+90    # Zypern (Nordzypern)
+A:+91    # Indien
+A:+92    # Pakistan
+A:+93    # Afghanistan
+A:+94    # Sri Lanka
+A:+95    # Myanmar (Birma)
+A:+960   # Malediven
+A:+964   # Irak
+A:+965   # Kuwait
+A:+967   # Jemen (Arabische Republik)
+A:+968   # Oman
+A:+973   # Bahrain
+A:+974   # Katar
+A:+975   # Bhutan
+A:+976   # Mongolei
+A:+977   # Nepal
+A:+993   # Turkmenistan
+A:+994   # Aserbaidschan
+A:+995   # Georgien
+A:+996   # Kirgisistan
+A:+998   # Usbekistan
+T:*/*=2.72/60
+Z:20 Internet
+A:0192070 # (Benutzername: arcor; Passwort: internet; Proxy: proxy.arcor-ip.de:80; Startseite: http://www.call.arcor.net)
+T:*/*=0.06/60
+#####################################################################
+P:71,0 DeTeMobil
+C:Deutsche Telekom MobilNet GmbH, Landgrabenweg 151, 53227 Bonn 01071
+#####################################################################
+P:72,0 Mannesmann
+C:Mobilfunk GmbH, Am Seestern 1, 40547 Düsseldorf 01072
+#####################################################################
+P:73,0 AXXON
+C:Telecom GmbH, Am Seestern 24, 40547 Düsseldorf 01073
+#####################################################################
+P:74,0 Alpha
+C:Telecom GmbH, Beethovenstraße 1-3, 60325 Frankfurt/Main 01074
+#####################################################################
+P:75,0 ARCIS
+C:Media Com Management GmbH, Maximilianstr. 14, 80539 München 01075
+#####################################################################
+P:76,0 QuickNet
+C:Telenetworks & Service AG, Else-Lasker-Schüler-Straße 47, 42107 Wuppertal 01076
+#####################################################################
+P:77,0 E-Plus
+C:Mobilfunk GmbH, E-Plus-Platz 1, 40468 Düsseldorf 01077
+#####################################################################
+P:78,0 3U
+G:01.04.1999
+C:Telekommunikation GmbH, Äußere Zittauer Straße 51, 02708 Löbau 01078
+C:3U Telekommunikation GmbH
+C:Homepage: http://www.uuu.de
+C:Hotline:  01805/01078-0
+C:Adresse:  Mergenthalerallee 79-81
+C:	    65760 Eschborn
+Z:2-4
+T:1-5/08-20=0.139(60)/1
+T:1-5/20-08=0.059(60)/1
+T:6-7,H/08-20=0.139(60)/1
+T:6-7,H/20-08=0.059(60)/1
+Z:5-10
+A:01610
+A:01617
+A:01619
+A:01618 # C
+A:0170
+A:0171  # D1
+A:0172
+A:0173	# D2
+A:0177
+A:0178	# Eplus
+A:0176
+A:0179  # E2
+T:1-5/08-20=0.419(60)/1
+T:1-5/20-08=0.399(60)/1
+T:6-7,H/08-20=0.419(60)/1
+T:6-7,H/20-08=0.399(60)/1
+Z:11
+A:+44    # Großbritannien
+A:+46    # Schweden
+T:*/08-20=0.239(60)/1
+T:*/20-08=0.219(60)/1
+Z:12
+A:+31    # Niederlande
+T:*/08-20=0.249(60)/1
+T:*/20-08=0.229(60)/1
+Z:13
+A:+1     # USA
+T:*/08-20=0.269(60)/1
+T:*/20-08=0.249(60)/1
+Z:14
+A:+45    # Dänemark
+A:+358   # Finland
+A:+33    # Frankreich
+A:+41    # Schweiz
+T:*/08-20=0.279(60)/1
+T:*/20-08=0.259(60)/1
+Z:15
+A:+1     # Kanada
+A:+47    # Norwegen
+T:*/08-20=0.289(60)/1
+T:*/20-08=0.269(60)/1
+Z:16
+A:+32    # Belgien
+T:*/08-20=0.299(60)/1
+T:*/20-08=0.279(60)/1
+Z:17
+A:+1340  # Amerikanische Jungferninseln
+A:+61    # Australien
+A:+1787  # Puerto Rico
+T:*/08-20=0.309(60)/1
+T:*/20-08=0.289(60)/1
+Z:18
+A:+1907  # Alaska
+A:+1808  # Hawaii
+A:+43    # Österreich
+T:*/08-20=0.319(60)/1
+T:*/20-08=0.299(60)/1
+Z:19
+A:+353   # Irland
+T:*/08-20=0.329(60)/1
+T:*/20-08=0.309(60)/1
+Z:20
+A:+64    # Neuseeland
+T:*/08-20=0.339(60)/1
+T:*/20-08=0.319(60)/1
+Z:21
+A:+39    # Italien
+A:+81    # Japan
+T:*/08-20=0.379(60)/1
+T:*/20-08=0.359(60)/1
+Z:22
+A:+1671  # Guam
+T:*/08-20=0.389(60)/1
+T:*/20-08=0.369(60)/1
+Z:23
+A:+972   # Israel
+A:+352   # Luxemburg
+T:*/08-20=0.399(60)/1
+T:*/20-08=0.379(60)/1
+Z:24
+A:+852   # Hong Kong
+A:+377   # Monaco
+T:*/08-20=0.409(60)/1
+T:*/20-08=0.399(60)/1
+Z:25
+A:+4175  # Liechtenstein
+A:+34    # Spanien
+T:*/08-20=0.419(60)/1
+T:*/20-08=0.399(60)/1
+Z:26
+A:+1242  # Bahamas
+A:+56    # Chile
+A:+7095  # Rußland Moskau
+A:+7812  # Rußland St. Petersburg
+T:*/08-20=0.429(60)/1
+T:*/20-08=0.409(60)/1
+Z:27
+A:+4520  # Dänemark Mobilfunk
+A:+4521  # Dänemark Mobilfunk
+A:+4522  # Dänemark Mobilfunk
+A:+4526  # Dänemark Mobilfunk
+A:+4528  # Dänemark Mobilfunk
+A:+4530  # Dänemark Mobilfunk
+A:+4540  # Dänemark Mobilfunk
+A:+442   # Großbritannien Mobilfunk
+A:+443   # Großbritannien Mobilfunk
+A:+444   # Großbritannien Mobilfunk
+A:+445   # Großbritannien Mobilfunk
+A:+446   # Großbritannien Mobilfunk
+A:+447   # Großbritannien Mobilfunk
+A:+448   # Großbritannien Mobilfunk
+A:+449   # Großbritannien Mobilfunk
+A:+4790  # Norwegen Mobilfunk
+A:+4792  # Norwegen Mobilfunk
+A:+4794  # Norwegen Mobilfunk
+A:+4610  # Schweden Mobilfunk
+A:+4670  # Schweden Mobilfunk
+A:+4673  # Schweden Mobilfunk
+T:*/08-20=0.469(60)/1
+T:*/20-08=0.449(60)/1
+Z:28
+A:+1809  # Dominikanische Rep.
+A:+65    # Singapur
+A:+886   # Taiwan
+A:+379   # Vatican City
+T:*/08-20=0.489(60)/1
+T:*/20-08=0.469(60)/1
+Z:29
+A:+82    # Korea Rep. (South)
+T:*/08-20=0.499(60)/1
+T:*/20-08=0.479(60)/1
+Z:30
+A:+336   # Frankreich Mobilfunk
+A:+386   # Slowenien
+T:*/08-20=0.509(60)/1
+T:*/20-08=0.489(60)/1
+Z:31
+A:+3217  # Belgien Mobilfunk
+A:+3218  # Belgien Mobilfunk
+A:+3245  # Belgien Mobilfunk
+A:+3247  # Belgien Mobilfunk
+A:+3249  # Belgien Mobilfunk
+A:+3270  # Belgien Mobilfunk
+A:+3272  # Belgien Mobilfunk
+A:+3273  # Belgien Mobilfunk
+A:+3275  # Belgien Mobilfunk
+A:+3277  # Belgien Mobilfunk
+A:+3290  # Belgien Mobilfunk
+A:+3295  # Belgien Mobilfunk
+A:+60    # Malaysia
+A:+36    # Ungarn
+T:*/08-20=0.519(60)/1
+T:*/20-08=0.499(60)/1
+Z:32
+A:+351   # Portugal
+T:*/08-20=0.529(60)/1
+T:*/20-08=0.519(60)/1
+Z:33
+A:+1441  # Bermuda
+T:*/08-20=0.539(60)/1
+T:*/20-08=0.519(60)/1
+Z:34
+A:+354   # Island
+A:+618   # Kokos-Inseln
+A:+3165  # Niederlande Mobilfunk
+T:*/08-20=0.549(60)/1
+T:*/20-08=0.529(60)/1
+Z:35
+A:+268   # Swasiland
+T:*/08-20=0.559(60)/1
+T:*/20-08=0.539(60)/1
+Z:36
+A:+356   # Malta
+A:+420   # Tschechische Rep.
+T:*/08-20=0.569(60)/1
+T:*/20-08=0.549(60)/1
+Z:37
+A:+506   # Costa Rica
+T:*/08-20=0.579(60)/1
+T:*/20-08=0.559(60)/1
+Z:38
+A:+30    # Griechenland
+A:+52    # Mexico
+T:*/08-20=0.589(60)/1
+T:*/20-08=0.569(60)/1
+Z:39
+A:+376   # Andorra
+A:+372   # Estland
+A:+502   # Guatemala
+T:*/08-20=0.599(60)/1
+T:*/20-08=0.579(60)/1
+Z:40
+A:+48    # Polen
+T:*/08-20=0.619(60)/1
+T:*/20-08=0.599(60)/1
+Z:41
+A:+672   # Antarktis
+T:*/08-20=0.629(60)/1
+T:*/20-08=0.619(60)/1
+Z:42
+A:+1345  # Kaiman Inseln
+A:+421   # Slowakische Rep.
+T:*/08-20=0.629(60)/1
+T:*/20-08=0.609(60)/1
+Z:43
+A:+355   # Albanien
+A:+39330 # Italien Mobilfunk
+A:+39335 # Italien Mobilfunk
+A:+39336 # Italien Mobilfunk
+A:+39337 # Italien Mobilfunk
+A:+39338 # Italien Mobilfunk
+A:+39347 # Italien Mobilfunk
+A:+39348 # Italien Mobilfunk
+A:+39360 # Italien Mobilfunk
+A:+39368 # Italien Mobilfunk
+A:+599   # Niederländische Antillen
+T:*/08-20=0.649(60)/1
+T:*/20-08=0.629(60)/1
+Z:44
+A:+298   # Färöer
+A:+670   # Marianen
+A:+670   # Saipan
+T:*/08-20=0.659(60)/1
+T:*/20-08=0.639(60)/1
+Z:45
+A:+508   # St. Pierre and Miquelon
+T:*/08-20=0.659(60)/1
+T:*/20-08=0.649(60)/1
+Z:46
+A:+593   # Ecuador
+T:*/08-20=0.669(60)/1
+T:*/20-08=0.649(60)/1
+Z:47
+A:+385   # Kroatien
+A:+357   # Zypern(griech)
+T:*/08-20=0.679(60)/1
+T:*/20-08=0.659(60)/1
+Z:48
+A:+387   # Bosnien-Herzegowina
+A:+359   # Bulgarien
+A:+299   # Grönland
+A:+8110  # Japan Mobilfunk
+A:+8120  # Japan Mobilfunk
+A:+8140  # Japan Mobilfunk
+A:+8150  # Japan Mobilfunk
+A:+8160  # Japan Mobilfunk
+A:+8170  # Japan Mobilfunk
+A:+8180  # Japan Mobilfunk
+A:+8190  # Japan Mobilfunk
+T:*/08-20=0.689(60)/1
+T:*/20-08=0.669(60)/1
+Z:49
+A:+213   # Algerien
+A:+63    # Philippinen
+A:+7     # Rußland
+T:*/08-20=0.699(60)/1
+T:*/20-08=0.679(60)/1
+Z:50
+A:+55    # Brasilien
+A:+371   # Lettland (Latvia)
+A:+90    # Türkei
+A:+6724  # Weihnachtsinseln
+T:*/08-20=0.709(60)/1
+T:*/20-08=0.689(60)/1
+Z:51
+A:+297   # Aruba
+A:+378   # San Marino
+T:*/08-20=0.719(60)/1
+T:*/20-08=0.699(60)/1
+Z:52
+A:+57    # Kolumbien
+A:+218   # Libyen
+T:*/08-20=0.729(60)/1
+T:*/20-08=0.709(60)/1
+Z:53
+A:+684   # Amerikanisch Samoa
+T:*/08-20=0.739(60)/1
+T:*/20-08=0.719(60)/1
+Z:54
+A:+1284  # Brit. Jungferninseln
+A:+350   # Gibraltar
+A:+381   # Jugoslawien
+T:*/08-20=0.759(60)/1
+T:*/20-08=0.739(60)/1
+Z:55
+A:+500   # Falklandinseln
+A:+389   # Mazedonien
+A:+263   # Simbabwe
+A:+58    # Venezuela
+T:*/08-20=0.769(60)/1
+T:*/20-08=0.749(60)/1
+Z:56
+A:+40    # Rumänien
+A:+27    # Südafrika
+A:+216   # Tunesien
+T:*/08-20=0.779(60)/1
+T:*/20-08=0.759(60)/1
+Z:57
+A:+370   # Litauen
+A:+596   # Martinique
+A:+264   # Namibia
+T:*/08-20=0.789(60)/1
+T:*/20-08=0.769(60)/1
+Z:58
+A:+267   # Botswana Republic
+A:+9725  # Israel Mobilfunk
+T:*/08-20=0.799(60)/1
+T:*/20-08=0.779(60)/1
+Z:59
+A:+503   # El Salvador
+A:+375   # Weißrußland/Belarus
+T:*/08-20=0.809(60)/1
+T:*/20-08=0.789(60)/1
+Z:60
+A:+673   # Brunei
+A:+675   # Papua Neu Guinea
+T:*/08-20=0.819(60)/1
+T:*/20-08=0.809(60)/1
+Z:61
+A:+233   # Ghana
+A:+62    # Indonesien
+T:*/08-20=0.819(60)/1
+T:*/20-08=0.799(60)/1
+Z:62
+A:+5939  # Ecuador Mobilfunk
+A:+692   # Marshallinseln
+A:+380   # Ukraine
+T:*/08-20=0.829(60)/1
+T:*/20-08=0.809(60)/1
+Z:63
+A:+54    # Argentinien
+A:+212   # Marokko
+A:+681   # Wallis und Futuna
+T:*/08-20=0.839(60)/1
+T:*/20-08=0.819(60)/1
+Z:64
+A:+590   # Guadeloupe
+A:+224   # Guinea Republic
+A:+853   # Macao
+A:+51    # Peru
+T:*/08-20=0.849(60)/1
+T:*/20-08=0.829(60)/1
+Z:65
+A:+7501  # Rußland Moskau Overlay
+A:+7502  # Rußland Moskau Overlay
+A:+66    # Thailand
+T:*/08-20=0.859(60)/1
+T:*/20-08=0.839(60)/1
+Z:66
+A:+994   # Aserbaidschan
+A:+86    # China
+A:+594   # Französisch Guyana
+T:*/08-20=0.869(60)/1
+T:*/20-08=0.849(60)/1
+Z:67
+A:+373   # Moldavien
+A:+505   # Nicaragua
+A:+249   # Sudan
+A:+256   # Uganda
+T:*/08-20=0.879(60)/1
+T:*/20-08=0.859(60)/1
+Z:68
+A:+1264  # Anguilla
+T:*/08-20=0.889(60)/1
+T:*/20-08=0.869(60)/1
+Z:69
+A:+5399  # Guantanamo Bay
+T:*/08-20=0.899(60)/1
+T:*/20-08=0.89(60)/1
+Z:70
+A:+244   # Angola
+A:+1649  # Turks and Caicos Islands
+T:*/08-20=0.929(60)/1
+T:*/20-08=0.909(60)/1
+Z:71
+A:+975   # Bhutan
+T:*/08-20=0.939(60)/1
+T:*/20-08=0.919(60)/1
+Z:72
+A:+1268  # Antigua & Barbuda
+A:+266   # Lesotho
+A:+231   # Liberia
+A:+2696  # Mayotte
+T:*/08-20=0.949(60)/1
+T:*/20-08=0.929(60)/1
+Z:73
+A:+1869  # Nevis Islands
+A:+1869  # St Kitts
+T:*/08-20=0.959(60)/1
+T:*/20-08=0.939(60)/1
+Z:74
+A:+258   # Mozambik
+T:*/08-20=0.979(60)/1
+T:*/20-08=0.959(60)/1
+Z:75
+A:+265   # Malawi
+T:*/08-20=0.999(60)/1
+T:*/20-08=0.979(60)/1
+Z:76
+A:+509   # Haiti
+T:*/08-20=1.009(60)/1
+T:*/20-08=0.999(60)/1
+Z:77
+A:+1876  # Jamaica
+T:*/08-20=1.009(60)/1
+T:*/20-08=0.989(60)/1
+Z:78
+A:+1246  # Barbados
+A:+1767  # Dominica
+T:*/08-20=1.019(60)/1
+T:*/20-08=0.999(60)/1
+Z:79
+A:+504   # Honduras
+A:+507   # Panama
+A:+4177  # Schweiz Mobilfunk
+A:+4179  # Schweiz Mobilfunk
+T:*/08-20=1.029(60)/1
+T:*/20-08=1.009(60)/1
+Z:80
+A:+262   # Reunion Islands
+A:+255   # Tansania
+T:*/08-20=1.039(60)/1
+T:*/20-08=1.019(60)/1
+Z:81
+A:+992   # Tadschikistan
+T:*/08-20=1.039(60)/1
+T:*/20-08=1.029(60)/1
+Z:82
+A:+971   # Ver.Arab. Emirate
+T:*/08-20=1.049(60)/1
+T:*/20-08=1.029(60)/1
+Z:83
+A:+229   # Benin
+A:+1473  # Grenada
+T:*/08-20=1.059(60)/1
+T:*/20-08=1.039(60)/1
+Z:84
+A:+1758  # St. Lucia
+T:*/08-20=1.069(60)/1
+T:*/20-08=1.049(60)/1
+Z:85
+A:+220   # Gambia
+T:*/08-20=1.079(60)/1
+T:*/20-08=1.059(60)/1
+Z:86
+A:+731   # Kasachstan
+A:+732   # Kasachstan
+A:+733   # Kasachstan
+A:+1668  # Trinidad and Tobago
+T:*/08-20=1.089(60)/1
+T:*/20-08=1.069(60)/1
+Z:87
+A:+591   # Bolivien
+T:*/08-20=1.119(60)/1
+T:*/20-08=1.099(60)/1
+Z:88
+A:+238   # Kap Verde
+A:+993   # Turkmenistan
+A:+598   # Uruguay
+T:*/08-20=1.139(60)/1
+T:*/20-08=1.119(60)/1
+Z:89
+A:+501   # Belize
+A:+6723  # Norfolk Islands
+T:*/08-20=1.149(60)/1
+T:*/20-08=1.129(60)/1
+Z:90
+A:+996   # Kirgisien
+T:*/08-20=1.149(60)/1
+T:*/20-08=1.139(60)/1
+Z:91
+A:+257   # Burundi
+A:+998   # Usbekistan
+T:*/08-20=1.159(60)/1
+T:*/20-08=1.139(60)/1
+Z:92
+A:+961   # Libanon
+T:*/08-20=1.169(60)/1
+T:*/20-08=1.149(60)/1
+Z:93
+A:+290   # St. Helena
+A:+1784  # St. Vincent and Grenadines
+T:*/08-20=1.179(60)/1
+T:*/20-08=1.159(60)/1
+Z:94
+A:+573   # Kolumbien Mobilfunk
+T:*/08-20=1.189(60)/1
+T:*/20-08=1.169(60)/1
+Z:94
+A:+20    # Ägypten
+T:*/08-20=1.199(60)/1
+T:*/20-08=1.179(60)/1
+Z:95
+A:+1664  # Montserrat
+T:*/08-20=1.209(60)/1
+T:*/20-08=1.189(60)/1
+Z:96
+A:+374   # Armenien
+A:+226   # Burkina Faso
+A:+242   # Kongo
+T:*/08-20=1.219(60)/1
+T:*/20-08=1.199(60)/1
+Z:97
+A:+689   # Französisch Polynesien
+A:+227   # Niger
+T:*/08-20=1.229(60)/1
+T:*/20-08=1.209(60)/1
+Z:98
+A:+91    # Indien
+A:+595   # Paraguay
+A:+243   # Zaire
+T:*/08-20=1.239(60)/1
+T:*/20-08=1.219(60)/1
+Z:99
+A:+222   # Mauretanien
+A:+963   # Syrien
+T:*/08-20=1.259(60)/1
+T:*/20-08=1.239(60)/1
+Z:100
+A:+973   # Bahrain
+A:+246   # Diego Garcia
+A:+241   # Gabun
+A:+995   # Georgien
+A:+254   # Kenia
+A:+53    # Kuba
+A:+677   # Solomonen
+A:+685   # Western Samoa (Independent State of)
+T:*/08-20=1.279(60)/1
+T:*/20-08=1.259(60)/1
+Z:101
+A:+962   # Jordanien
+T:*/08-20=1.299(60)/1
+T:*/20-08=1.279(60)/1
+Z:102
+A:+592   # Guyana
+A:+974   # Katar
+A:+687   # Neukaledonien
+T:*/08-20=1.309(60)/1
+T:*/20-08=1.289(60)/1
+Z:103
+A:+260   # Sambia
+A:+966   # Saudi Arabien
+T:*/08-20=1.319(60)/1
+T:*/20-08=1.299(60)/1
+Z:104
+A:+98    # Iran
+T:*/08-20=1.339(60)/1
+T:*/20-08=1.319(60)/1
+Z:105
+A:+8613  # China Mobilfunk
+A:+850   # Korea (North)
+T:*/08-20=1.349(60)/1
+T:*/20-08=1.329(60)/1
+Z:106
+A:+960   # Malediven
+T:*/08-20=1.369(60)/1
+T:*/20-08=1.349(60)/1
+Z:107
+A:+94    # Sri Lanka
+T:*/08-20=1.379(60)/1
+T:*/20-08=1.359(60)/1
+Z:108
+A:+965   # Kuwait
+T:*/08-20=1.389(60)/1
+T:*/20-08=1.369(60)/1
+Z:109
+A:+691   # Mikronesien
+A:+690   # Tokelau
+T:*/08-20=1.399(60)/1
+T:*/20-08=1.379(60)/1
+Z:110
+A:+247   # Ascension Island
+A:+269   # Komoren
+A:+230   # Mauritius
+A:+977   # Nepal
+T:*/08-20=1.409(60)/1
+T:*/20-08=1.389(60)/1
+Z:111
+A:+237   # Kamerun
+T:*/08-20=1.429(60)/1
+T:*/20-08=1.409(60)/1
+Z:112
+A:+679   # Fidschi
+T:*/08-20=1.439(60)/1
+T:*/20-08=1.419(60)/1
+Z:113
+A:+92    # Pakistan
+T:*/08-20=1.449(60)/1
+T:*/20-08=1.429(60)/1
+Z:114
+A:+674   # Nauru
+A:+234   # Nigeria
+T:*/08-20=1.479(60)/1
+T:*/20-08=1.459(60)/1
+Z:115
+A:+880   # Bangladesh
+T:*/08-20=1.489(60)/1
+T:*/20-08=1.469(60)/1
+Z:116
+A:+223   # Mali Rep.
+A:+680   # Palau (=Belau)
+A:+250   # Ruanda
+T:*/08-20=1.499(60)/1
+T:*/20-08=1.489(60)/1
+Z:117
+A:+228   # Togo
+A:+678   # Vanuatu
+T:*/08-20=1.519(60)/1
+T:*/20-08=1.499(60)/1
+Z:118
+A:+225   # Elfenbeinküste
+A:+856   # Laos
+A:+968   # Oman
+T:*/08-20=1.529(60)/1
+T:*/20-08=1.509(60)/1
+Z:119
+A:+232   # Sierra Leone
+T:*/08-20=1.539(60)/1
+T:*/20-08=1.519(60)/1
+Z:120
+A:+245   # Guinea Bissau
+A:+967   # Jemen Arab. Rep.
+T:*/08-20=1.549(60)/1
+T:*/20-08=1.529(60)/1
+Z:121
+A:+261   # Madagaskar
+T:*/08-20=1.559(60)/1
+T:*/20-08=1.539(60)/1
+Z:122
+A:+253   # Dschibuti
+T:*/08-20=1.579(60)/1
+T:*/20-08=1.559(60)/1
+Z:123
+A:+686   # Kiribati
+T:*/08-20=1.589(60)/1
+T:*/20-08=1.569(60)/1
+Z:124
+A:+252   # Somalia
+T:*/08-20=1.599(60)/1
+T:*/20-08=1.579(60)/1
+Z:125
+A:+84    # Vietnam
+T:*/08-20=1.609(60)/1
+T:*/20-08=1.589(60)/1
+Z:126
+A:+248   # Seychellen
+T:*/08-20=1.639(60)/1
+T:*/20-08=1.619(60)/1
+Z:127
+A:+93    # Afghanistan
+T:*/08-20=1.659(60)/1
+T:*/20-08=1.649(60)/1
+Z:128
+A:+676   # Tonga Kingdom
+T:*/08-20=1.659(60)/1
+T:*/20-08=1.639(60)/1
+A:+240   # Äquatorial Guinea
+T:*/08-20=1.699(60)/1
+T:*/20-08=1.679(60)/1
+Z:129
+A:+964   # Irak
+T:*/08-20=1.719(60)/1
+T:*/20-08=1.699(60)/1
+Z:130
+A:+688   # Tuvalu
+T:*/08-20=1.729(60)/1
+T:*/20-08=1.709(60)/1
+Z:131
+A:+855   # Kambodscha
+A:+95    # Myanmar (Burma)
+T:*/08-20=1.749(60)/1
+T:*/20-08=1.729(60)/1
+Z:132
+A:+239   # Sao Tome
+T:*/08-20=1.779(60)/1
+T:*/20-08=1.759(60)/1
+Z:133
+A:+976   # Mongolische VR
+A:+221   # Senegal Republic
+A:+251   # Äthiopien
+T:*/08-20=1.799(60)/1
+T:*/20-08=1.779(60)/1
+Z:134
+A:+597   # Surinam
+T:*/08-20=1.819(60)/1
+T:*/20-08=1.809(60)/1
+Z:135
+A:+236   # Zentral Afrika (Rep.)
+T:*/08-20=1.849(60)/1
+T:*/20-08=1.829(60)/1
+Z:136
+A:+291   # Eritrea
+T:*/08-20=1.919(60)/1
+T:*/20-08=1.899(60)/1
+Z:137
+A:+683   # Niue Islands
+T:*/08-20=1.929(60)/1
+T:*/20-08=1.909(60)/1
+Z:138
+A:+235   # Tschad
+T:*/08-20=1.969(60)/1
+T:*/20-08=1.949(60)/1
+Z:139
+A:+682   # Cook Islands
+T:*/08-20=2.049(60)/1
+T:*/20-08=2.029(60)/1
+Z:140
+A:+87176 # Inmarsat Mini-M (E.Atlantic)
+A:+87376 # Inmarsat Mini-M (Indien)
+A:+87276 # Inmarsat Mini-M (Pacific)
+A:+87476 # Inmarsat Mini-M (W.Atlantic)
+A:+87076 # Inmarsat Mini-M (Worldwide)
+T:*/08-20=4.219(60)/1
+T:*/20-08=4.199(60)/1
+Z:141
+A:+8713  # Inmarsat B (E.Atlantic)
+A:+8733  # Inmarsat B (Indien)
+A:+8723  # Inmarsat B (Pacific)
+A:+8743  # Inmarsat B (W.Atlantic)
+A:+8716  # Inmarsat M (E.Atlantic)
+A:+8736  # Inmarsat M (Indien)
+A:+8726  # Inmarsat M (Pacific)
+A:+8746  # Inmarsat M (W.Atlantic)
+T:*/08-20=6.219(60)/1
+T:*/20-08=6.199(60)/1
+Z:142
+A:+8711  # Inmarsat A (E.Atlantic)
+A:+8731  # Inmarsat A (Indien)
+A:+8721  # Inmarsat A (Pacific)
+A:+8741  # Inmarsat A (W.Atlantic)
+T:*/08-20=9.969(60)/1
+T:*/20-08=9.949(60)/1
+#####################################################################
+P:79,0 Viatel
+G:24.12.1998
+C:VIAPHONE GmbH, Hanauer Landstraße 187, 60314 Frankfurt 01079
+C:Homepage: http://www.viatel.de
+C:Hotline:  0800/79-01079
+C:Telefon:  069/94 994-0
+C:Telefax:  069/94 994-100
+C:Adresse:  Hanauer Landstrasse 187-189
+C:	    60314 Frankfurt am Main
+Z:2-4 Fern
+T:1-5/09-18=0.16(60)/30,0.16(60)/1 Standard
+T:1-5/18-09=0.09(60)/30,0.09(60)/1 Spar
+T:6-7/*=0.09(60)/30,0.09(60)/1 Nacht
+Z:6-10 Deutschland GSM
+T:1-5/09-18=0.73(60)/30,0.73(60)/1 Standard
+T:1-5/18-09=0.36(60)/30,0.36(60)/1 Spar
+T:6-7/*=0.36(60)/30,0.36(60)/1 Spar
+#####################################################################
+P:80,0 Telegate
+C:Aktiengesellschaft für telefonische Informationsdienste, Bahnhofstraße 26, 82211 Herrsching 01080
+#####################################################################
+P:81,0 Infotel
+C:bV, Onderlangs 120, 6812 CJ Arnhem, Niederlande 01081
+#####################################################################
+P:82,0 AugustaKom
+C:Telekommunikation GmbH & Co.KG Hoher Weg 1 86152 Augsburg 01082
+#####################################################################
+P:83,0 Wuerzburger
+C:Telekommunikationsgesellschaft mbH, Bahnhofstraße 12-18, 97070 Würzburg 01083
+#####################################################################
+P:84,0 Telegroup
+C:Network Services GmbH, Grossenbaumer Weg 6, 40472 Düsseldorf 01084
+#####################################################################
+P:85,0 WESTCom
+C:GmbH, Hebelstraße 22 c, 69115 Heidelberg 01085
+#####################################################################
+P:86,0 ONE.TEL
+C:Limited (UK), Clements House, 14-18 Gresham Street, London, EC2V 7JE, England 01086
+#####################################################################
+P:87,0 HAMCOM
+C:GmbH Telekommunikation, Südring 1-3, 59065 Hamm 01087
+#####################################################################
+P:88,0 WorldCom
+C:Telecommunication Services GmbH, Brönnerstr. 15, 60313 Frankfurt 01088
+C:Dies sind *nicht* die korrekten Tarife von WorldCom, da WorldCom
+C:keine Tarifdaten veroeffentlicht!
+C:Vielmehr handelt es sich hier nur um die Tarife fuer den
+C:UUnet Ortstarif-Zugang!
+Z:20 Internet
+A:0191999
+T:1-5/05-09=0.048(60)/1 UUnet
+T:1-5/09-18=0.08(60)/1 UUnet
+T:1-5/18-21=0.048(60)/1 UUnet
+T:1-5/21-05=0.03(60)/1 UUnet
+T:6-7,H/05-21=0.048(60)/1 UUnet
+T:6-7,H/21-05=0.03(60)/1 UUnet
+#####################################################################
+P:89,0 M'net
+C:Telekommunikations GmbH, Corneliusstraße 10, 80469 München 01089
+#####################################################################
+P:90,0 VIAG INTERKOM
+C:GmbH & Co. KG, Elsenheimer Straße 11, 81927 München 01090
+#####################################################################
+P:91,0 IDT
+C:Global Limited, London, United Kingdom 01091
+#####################################################################
+P:92,0 Hallo Telefon Service
+C:GmbH Dinkelbergstraße 6 76684 Östringen 01092
+#####################################################################
+P:93,0 Kray
+C:Informationssysteme, Brüder-Grimm-Allee 73 A, 37085 Göttingen 01093
+#####################################################################
+P:94,0 Global Communications
+C:GmbH, Eupener Straße 57 - 59, 50933 Köln 01094
+#####################################################################
+P:95,0 Teleos
+C:GmbH, Bielefelder Straße 3, 32051 Herford 01095
+#####################################################################
+P:96,0 GELSEN-NET
+C:Kommunikationsgesellschaft mbH, Munscheidstraße 14, 45886 Gelsenkirchen 01096
+#####################################################################
+P:97,0 AT & T-Unisource
+C:Communication Services (Deutschland) GmbH, Lyoner Str. 15, 60528 Frankfurt 01097
+#####################################################################
+P:98,0 STAR
+C:Telecommunications Deutschland GmbH, Voltastraße 1a, 60486 Frankfurt 01098
+C:Reseller von STAR : C@llas, Mox, Nikoma
+#####################################################################
+P:99,0 ECONOPHONE
+C:GmbH, Flughafenstraße 54b, 22335 Hamburg 01099
+C:Reseller von ECONOPHONE : Telco
+#####################################################################
+P:100,0 TELELEV
+C:Telekommunikation GmbH, Dönhoffstraße 39, 51373 Leverkusen 010000
+#####################################################################
+P:101,0 Netnet
+C:International AB, P.O. Box 6708, S-11385 Stockholm 010001
+#####################################################################
+P:102,0 EncoTel
+C:GmbH & Co.KG, Leibnitzstraße 73, 07548 Gera 010002
+#####################################################################
+P:103,0 mevacom
+C:Telekommunikationsdienstleistungen GmbH, Posthofstraße 16, 14467 Potsdam 010003
+#####################################################################
+P:107,0 KPN
+C:Telecom BV, Prinses Beatrixlaan 23, 2595 AK's Gravenhage, Niederlande 010007
+#####################################################################
+P:108,0 USA Global Link
+C:Deutschland GmbH, Theaterstraße 90, 52062 Aachen 010008
+#####################################################################
+P:110,0 Bertelsmann mediaSystems
+C:GmbH, An der Autobahn, 33311 Gütersloh 010010
+#####################################################################
+P:111,0 RED LINE
+C:Telekommunikationsgesellschaft mbH, Brückenstraße 17, 63897 Miltenberg 010011
+#####################################################################
+P:114,0 NordKom
+C:Weser-Elbe Telekommunikation GmbH, Stresemannstraße 48, 28207 Bremen 010014
+#####################################################################
+P:115,0 Delta Three
+C:Inc., 430 Park Ave, New York 010015
+#####################################################################
+P:119,0 E.T.H.
+C:Telefondienste GmbH, Bettinastraße 25a, 60325 Frankfurt 010019
+#####################################################################
+P:120,0 Komm Consult
+C:Oberweg 15, 82024 Taufkirchen bei München 010020
+#####################################################################
+P:122,0 Motorola
+C:Electronic GmbH, Hagenauer Straße 47, 65203 Wiesbaden 010022
+#####################################################################
+P:130,0 tnp telenet
+C:potsdam, kommunikationsgesellschaft mbH, Erich-Weinert-Straße 100, 14478 Potsdam 010030
+#####################################################################
+P:131,0 accom
+C:Gesellschaft für Telekommunikationsnetze und -dienstleistungen GmbH & Co.KG, Borngasse 34, 52064 Aachen 010031
+#####################################################################
+P:133,0 Level 3
+C:Communications GmbH, Oberlindau 54 - 56, 60323 Frankfurt/Main 010033
+#####################################################################
+P:142,0 connection 42
+C:Ernst-Abbe-Straße 10, 25451 Quickborn 010042
+#####################################################################
+P:144,0 Carrier 1
+C:AG, Militärstraße 36, CH-8004 Zürich 010044
+#####################################################################
+P:150,0 Drillisch
+C:AG, Horbeller Straße 33, 50858 Köln 010050
+#####################################################################
+P:155,0 Telia
+C:Telekommunikation GmbH, Herrengraben 3, 20459 Hamburg 010055
+#####################################################################
+P:156,0 NETCOM
+C:Kassel GmbH, Königstor 3 - 13, 34117 Kassel 010056
+#####################################################################
+P:160,0 JelloCom
+C:GmbH & Co.KG, Prüssingstraße 41, 07745 Jena 010060
+#####################################################################
+P:166,0 InterCard
+C:GmbH, POS-Service, Mehlbeerenstraße 4, 82024 Taufkirchen bei München 010066
+#####################################################################
+P:170,0 Deutsche Telefon- und Marketing Services
+C:GmbH, Isaac-Fulda-Allee 16, 55124 Mainz 010070
+#####################################################################
+P:173,0 TFN COM SA
+C:World Of Communication, Via Greina 2 CP 2950, CH-6901 Lugano 010073
+#####################################################################
+P:177,0 WorldxChange
+C:Communications GmbH, Am Seedamm 44, 60489 Frankfurt 010077
+#####################################################################
+P:180,0 FaciliCom
+C:Telekommunikation GmbH; Windmühlstraße 1, 60329 Frankfurt/Main 010080
+#####################################################################
+P:184,0 Startec
+C:Global Communications (Germany) GmbH, Broßstraße 6, 60487 Frankfurt 010084
+#####################################################################
+P:188,0 jk-tel
+C:GmbH i.G., Hopfenplatz 5, 39120 Magdeburg 010088
+#####################################################################
+P:190,0 CNE
+C:Corporate Network Essen Gesellschaft für Telekommunikation mbH, Kruppstraße 82 - 100, 45145 Essen 010090
+#####################################################################
+P:195,0 TeleNec
+C:Telekommunikation Neustadt GmbH & Co.KG, Postfach 14 40, 96459 Neustadt 010095
+#####################################################################
+P:199,0 ESTel
+C:Energieversorgung Südsachsen Telekommunikationsgesellschaft mbH, Postfach 2 38, 09002 Chemnitz 010099

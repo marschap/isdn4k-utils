@@ -1,4 +1,4 @@
-/* $Id: functions.c,v 1.20 1999/03/25 19:39:48 akool Exp $
+/* $Id: functions.c,v 1.21 1999/04/10 16:35:22 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,30 @@
  * along with this program; if not, write to the Free Software
  *
  * $Log: functions.c,v $
+ * Revision 1.21  1999/04/10 16:35:22  akool
+ * isdnlog Version 3.13
+ *
+ * WARNING: This is pre-ALPHA-dont-ever-use-Code!
+ * 	 "tarif.dat" (aka "rate-xx.dat"): the next generation!
+ *
+ * You have to do the following to test this version:
+ *   cp /usr/src/isdn4k-utils/isdnlog/holiday-de.dat /etc/isdn
+ *   cp /usr/src/isdn4k-utils/isdnlog/rate-de.dat /usr/lib/isdn
+ *   cp /usr/src/isdn4k-utils/isdnlog/samples/rate.conf.de /etc/isdn/rate.conf
+ *
+ * After that, add the following entries to your "/etc/isdn/isdn.conf" or
+ * "/etc/isdn/callerid.conf" file:
+ *
+ * [ISDNLOG]
+ * SPECIALNUMBERS = /usr/lib/isdn/sonderrufnummern.dat
+ * HOLIDAYS       = /usr/lib/isdn/holiday-de.dat
+ * RATEFILE       = /usr/lib/isdn/rate-de.dat
+ * RATECONF       = /etc/isdn/rate.conf
+ *
+ * Please replace any "de" with your country code ("at", "ch", "nl")
+ *
+ * Good luck (Andreas Kool and Michael Reinelt)
+ *
  * Revision 1.20  1999/03/25 19:39:48  akool
  * - isdnlog Version 3.11
  * - make isdnlog compile with egcs 1.1.7 (Bug report from Christophe Zwecker <doc@zwecker.com>)
@@ -375,7 +399,8 @@ void logger(int chan)
   mysql_db_set.currency_factor = currency_factor;
   strcpy(mysql_db_set.currency, currency);
   mysql_db_set.pay = call[chan].pay;
-  strcpy(mysql_db_set.provider, Providername(call[chan].provider));
+  /* Fixme: getProvidername() should be changed to call[chan].Rate.Provider */
+  strcpy(mysql_db_set.provider, getProvidername(call[chan].provider));
   mysql_dbAdd(&mysql_db_set);
 #endif
 } /* logger */

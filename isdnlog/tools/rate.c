@@ -1,4 +1,4 @@
-/* $Id: rate.c,v 1.3 1999/03/24 19:39:00 akool Exp $
+/* $Id: rate.c,v 1.4 1999/04/10 16:36:39 akool Exp $
  *
  * Tarifdatenbank
  *
@@ -19,6 +19,30 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rate.c,v $
+ * Revision 1.4  1999/04/10 16:36:39  akool
+ * isdnlog Version 3.13
+ *
+ * WARNING: This is pre-ALPHA-dont-ever-use-Code!
+ * 	 "tarif.dat" (aka "rate-xx.dat"): the next generation!
+ *
+ * You have to do the following to test this version:
+ *   cp /usr/src/isdn4k-utils/isdnlog/holiday-de.dat /etc/isdn
+ *   cp /usr/src/isdn4k-utils/isdnlog/rate-de.dat /usr/lib/isdn
+ *   cp /usr/src/isdn4k-utils/isdnlog/samples/rate.conf.de /etc/isdn/rate.conf
+ *
+ * After that, add the following entries to your "/etc/isdn/isdn.conf" or
+ * "/etc/isdn/callerid.conf" file:
+ *
+ * [ISDNLOG]
+ * SPECIALNUMBERS = /usr/lib/isdn/sonderrufnummern.dat
+ * HOLIDAYS       = /usr/lib/isdn/holiday-de.dat
+ * RATEFILE       = /usr/lib/isdn/rate-de.dat
+ * RATECONF       = /etc/isdn/rate.conf
+ *
+ * Please replace any "de" with your country code ("at", "ch", "nl")
+ *
+ * Good luck (Andreas Kool and Michael Reinelt)
+ *
  * Revision 1.3  1999/03/24 19:39:00  akool
  * - isdnlog Version 3.10
  * - moved "sondernnummern.c" from isdnlog/ to tools/
@@ -56,14 +80,26 @@
  * void initRate(char *conf, char *dat, char **msg)
  *   initialisiert die Tarifdatenbank
  *
+ * char* getProvidername (int prefix)
+ *   liefert den Namen des Providers oder NULL wenn unbekannt
+ *
+ * int getZone (int prefix, char *num)
+ *   liefert die Zone, mit der die Rufnummer beim Provider prefix
+ *   verrechnet wird, oder unknown
+ *
  * int getRate(RATE*Rate, char **msg)
  *   liefert die Tarifberechnung in *Rate, UNKNOWN im
  *   Fehlerfall, *msg enthält die Fehlerbeschreibung
  *
- * int getLeastCost (RATE *Rate, RATE *Cheapest)
+ * int getLeastCost (RATE *Rate, int skip)
  *   berechnet den billigsten Provider zu *Rate, Rückgabewert
  *   ist der Prefix des billigsten Providers oder UNKNOWN wenn
- *   *Rate bereits den billigsten Tarif enthält
+ *   *Rate bereits den billigsten Tarif enthält. Der Provider
+ *   'skip' wird übersprungen (falls überlastet).
+ *
+ * int guessZone (RATE *Rate, int units)
+ *   versucht die Zone zu erraten, wenn mit den Daten in Rate
+ *   units Einheiten gemeldet wurden
  *
  */
 
@@ -77,13 +113,14 @@
 #include <ctype.h>
 #include <time.h>
 #include <unistd.h>
-#endif
+#else
 #include "isdnlog.h"
 #include "tools.h"
+#endif
 #include "holiday.h"
 #include "rate.h"
 
-#define MAXPROVIDER 100
+#define MAXPROVIDER 1000
 #define LENGTH 250  /* max length of lines in data file */
 #define UNKNOWN -1
 
@@ -106,6 +143,8 @@ typedef struct {
 typedef struct {
   int    used;
   char  *Name;
+  int    nArea;
+  char **Area;
   int    nHour;
   HOUR  *Hour;
 } ZONE;
@@ -113,12 +152,12 @@ typedef struct {
 typedef struct {
   int    used;
   char  *Name;
-  char	*Internet;
   int    nZone;
   ZONE  *Zone;
 } PROVIDER;
 
-static PROVIDER Provider[MAXPROVIDER];
+static PROVIDER *Provider=NULL;
+static int      nProvider=0;
 static int      line=0;
 
 static void warning (char *fmt, ...)
@@ -151,25 +190,46 @@ static char *strip (char *s)
   return s;
 }
 
+static char* str2set (char **s)
+{
+  static char buffer[BUFSIZ];
+  char *p=buffer;
+
+
+  while (**s) {
+    if (**s==',') {
+      *p='\0';
+      break;
+    } else {
+      *p++=**s;
+      (*s)++;
+    }
+  }
+  *p = 0;
+  return buffer;
+}
+
 void exitRate(void)
 {
   int i, j, k;
 
-  for (i=0; i<MAXPROVIDER; i++) {
+  for (i=0; i<nProvider; i++) {
     if (Provider[i].used) {
-      for (j=0; j<Provider[i].nZone; i++)
+      for (j=0; j<Provider[i].nZone; j++)
 	if (Provider[i].Zone[j].used) {
 	  Provider[i].Zone[j].used=0;
+	  if (Provider[i].Zone[j].Name) free (Provider[i].Zone[j].Name);
+	  for (k=0; k<Provider[i].Zone[j].nArea; k++)
+	    if (Provider[i].Zone[j].Area[k]) free (Provider[i].Zone[j].Area[k]);
+	  if (Provider[i].Zone[j].Area) free (Provider[i].Zone[j].Area);
 	  for (k=0; k<Provider[i].Zone[j].nHour; k++) {
 	    if (Provider[i].Zone[j].Hour[k].Name) free (Provider[i].Zone[j].Hour[k].Name);
 	    if (Provider[i].Zone[j].Hour[k].Unit) free (Provider[i].Zone[j].Hour[k].Unit);
 	  }
-	  if (Provider[i].Zone[j].Name) free (Provider[i].Zone[j].Name);
 	  if (Provider[i].Zone[j].Hour) free (Provider[i].Zone[j].Hour);
 	}
       if(Provider[i].Zone) free (Provider[i].Zone);
       if (Provider[i].Name) free (Provider[i].Name);
-      if (Provider[i].Internet) free (Provider[i].Internet);
       Provider[i].used=0;
     }
   }
@@ -182,7 +242,7 @@ int initRate(char *conf, char *dat, char **msg)
   char     Version[LENGTH]="";
   static char message[LENGTH];
   int      use[MAXPROVIDER];
-  int      nProvider=0;
+  int      Providers=0;
   int      nZone=0;
   int      nHour=0;
   int      ignore=0;
@@ -191,18 +251,25 @@ int initRate(char *conf, char *dat, char **msg)
   int      zone=UNKNOWN;
   int      day1, day2, hour1, hour2;
   bitfield day, hour;
-  double   price, duration;
+  double   price, divider, duration;
   int      delay;
   int      i, t, u;
   char    *s;
 
+  if (msg)
+    *(*msg=message)='\0';
+
   for (i=0; i<MAXPROVIDER; i++) {
-    Provider[i].used=0;
     use[i]=UNKNOWN;
   }
 
-  if (conf && *conf && (stream=fopen(conf,"r"))) {
     line=0;
+  if (conf && *conf) {
+    if ((stream=fopen(conf,"r"))==NULL) {
+      if (msg) snprintf (*msg=message, LENGTH, "Error: could not load rate configuration from %s: %s",
+			 conf, strerror(errno));
+      return -1;
+    } else {
     while ((s=fgets(buffer,LENGTH,stream))!=NULL) {
       line++;
       if (*(s=strip(s))=='\0')
@@ -213,16 +280,33 @@ int initRate(char *conf, char *dat, char **msg)
       }
       switch (*s) {
       case 'P':
-	prefix = strtol(s+2, &s ,10);
+	  s+=2;
+	  while (isblank(*s)) s++;
+	  if (!isdigit(*s)) {
+	    warning ("Invalid provider-number %s", s);
+	    continue;
+	  }
+	  prefix = strtol(s, &s ,10);
+	  if (prefix >= MAXPROVIDER) {
+	    warning ("Invalid provider-number %d", prefix);
+	    continue;
+	  }
+	  while (isblank(*s)) s++;
 	if (*s != '=') {
 	  warning ("expected '=', got '%s'!", s);
 	  continue;
 	}
-	if ((prefix < 0) || (prefix >= MAXPROVIDER)) {
-	  warning ("Invalid provider-number %d", prefix);
+	  s++;
+	  while (isblank(*s)) s++;
+	  if (!isdigit(*s)) {
+	    warning ("Invalid variant %s", s);
 	  continue;
 	}
-	use[prefix] = atoi(s+1);
+	  use[prefix] = strtol(s, &s, 10);
+	  while (isblank(*s)) s++;
+	  if (*s) {
+	    warning ("trailing junk '%s' ignored.", s);
+	  }
 	break;
 
       default:
@@ -231,9 +315,19 @@ int initRate(char *conf, char *dat, char **msg)
     }
     fclose (stream);
   }
+  }
 
-  if (!dat || !*dat || (stream=fopen(dat,"r"))==NULL)
+  if (!dat || !*dat) {
+    if (msg) snprintf (*msg=message, LENGTH, "Warning: no rate database specified!",
+		       conf, strerror(errno));
+    return 0;
+  }
+
+  if ((stream=fopen(dat,"r"))==NULL) {
+    if (msg) snprintf (*msg=message, LENGTH, "Error: could not load rate database from %s: %s",
+		       dat, strerror(errno));
     return -1;
+  }
 
   line=0;
   prefix=UNKNOWN;
@@ -245,36 +339,52 @@ int initRate(char *conf, char *dat, char **msg)
       warning ("expected ':', got '%s'!", s+1);;
       continue;
     }
+
     switch (*s) {
-    case 'P': /* P:nn[,v]=Bezeichnung */
+
+    case 'P': /* P:nn[,v] Bezeichnung */
       ignore = 0;
       version = UNKNOWN;
       zone = UNKNOWN;
 
-      prefix = strtol(s+2, &s ,10);
-      if (*s == ',') {
-	version = strtol(s+1, &s ,10);
+      s+=2; while (isblank(*s)) s++;
+      if (!isdigit(*s)) {
+	warning ("Invalid provider-number '%c'", *s);
+	continue;
       }
-      if (*s == '=') s++;
-      if ((prefix < 0) || (prefix >= MAXPROVIDER)) {
+      prefix = strtol(s, &s ,10);
+      if (prefix >= MAXPROVIDER) {
 	warning ("Invalid provider-number %d", prefix);
 	continue;
+      }
+      while (isblank(*s)) s++;
+      if (*s == ',') {
+	s++; while (isblank(*s)) s++;
+	if (!isdigit(*s)) {
+	  warning ("Invalid variant '%c'", *s);
+	  continue;
+	}
+	version = strtol(s, &s ,10);
       }
       if ((use[prefix]!=UNKNOWN) && (version!=UNKNOWN) && (use[prefix]!=version)) {
 	version = UNKNOWN;
 	ignore = 1;
 	continue;
       }
+      if (prefix>=nProvider) {
+	Provider=realloc(Provider, (prefix+1)*sizeof(PROVIDER));
+	for (i=nProvider; i<=prefix; i++)
+	  Provider[i].used=0;
+	nProvider=prefix+1;
+      }
       if (Provider[prefix].used++) {
 	warning ("Duplicate entry for provider %d (%s)", prefix, Provider[prefix].Name);
 	if (Provider[prefix].Name) free(Provider[prefix].Name);
-	if (Provider[prefix].Internet) free(Provider[prefix].Internet);
       }
       Provider[prefix].Name=strdup(strip(s));
-      Provider[prefix].Internet=NULL;
       Provider[prefix].nZone=0;
       Provider[prefix].Zone=NULL;
-      nProvider++;
+      Providers++;
       break;
 
     case 'G': /* P:tt.mm.jjjj Hour gueltig ab */
@@ -286,22 +396,21 @@ int initRate(char *conf, char *dat, char **msg)
       break;
 
     case 'I': /* I:nnn Internet-Zugangsnummer */
-      if (ignore) continue;
-      if (prefix == UNKNOWN) {
-	warning ("Unexpected tag '%c'", *s);
-	break;
-      }
-      Provider[prefix].Internet = strdup(s+2);
+      warning ("Obsolete entry '%c'", *s);
       break;
 
-    case 'Z': /* Z:n[-n][=]Bezeichnung */
+    case 'Z': /* Z:n[-n] Bezeichnung */
       if (ignore) continue;
       if (prefix == UNKNOWN) {
 	warning ("Unexpected tag '%c'", *s);
 	break;
       }
-      zone=strtol(s+2,&s,10);
-      if (*s=='=')s++;
+      s+=2; while (isblank(*s)) s++;
+      if (!isdigit(*s)) {
+	warning ("Invalid zone '%c'", *s);
+	continue;
+      }
+      zone=strtol(s,&s,10);
       if (zone>=Provider[prefix].nZone) {
 	Provider[prefix].Zone=realloc(Provider[prefix].Zone, (zone+1)*sizeof(ZONE));
 	for (i=Provider[prefix].nZone; i<zone; i++)
@@ -310,9 +419,25 @@ int initRate(char *conf, char *dat, char **msg)
       }
       Provider[prefix].Zone[zone].used=1;
       Provider[prefix].Zone[zone].Name=strdup(strip(s));
+      Provider[prefix].Zone[zone].nArea=0;
+      Provider[prefix].Zone[zone].Area=NULL;
       Provider[prefix].Zone[zone].nHour=0;
       Provider[prefix].Zone[zone].Hour=NULL;
 	nZone++;
+      break;
+
+    case 'A': /* A:areacode[,areacode...] */
+      if (ignore) continue;
+      if (zone == UNKNOWN) {
+	warning ("Unexpected tag '%c'", *s);
+	break;
+      }
+      s+=2;
+      do {
+	Provider[prefix].Zone[zone].Area=realloc(Provider[prefix].Zone[zone].Area,
+						 (Provider[prefix].Zone[zone].nArea+1)*sizeof(char*));
+	Provider[prefix].Zone[zone].Area[Provider[prefix].Zone[zone].nArea++]=strdup(str2set(&s));
+      } while (*s==',');
       break;
 
     case 'T':  /* T:d-d/h-h=p/s:t[=]Bezeichnung */
@@ -323,66 +448,107 @@ int initRate(char *conf, char *dat, char **msg)
       }
       s+=2;
       day=0;
+      hour=0;
       while (1) {
+	while (isblank(*s)) s++;
 	if (*s=='*') {                 /* jeder Tag */
-	  day |= 0xff;                 /* 11111111 */
+	  day |= 0x1ff;                /* 111111111 */
 	  s++;
 	} else if (*s=='W') {          /* Wochentag 1-5 */
-	  day |= 0x1f;                 /* 00011111 */
+	  day |= 0x1f;                 /* 000011111 */
 	  s++;
-	} else if (*s=='E') {          /* Wochenende 6-7 */
-	  day |= 0x60;                 /* 01100000 */
+	} else if (*s=='E') {          /* weekEnd */
+	  day |= 0x80;                 /* 010000000 */
 	  s++;
-	} else if (*s=='F'||*s=='H') { /* Feiertag (Holiday) */
-	  day |= 0x80;                 /* 10000000 */
+	} else if (*s=='H') {          /* Holiday */
+	  day |= 0x100;                /* 100000000 */
 	  s++;
-	} else if (isdigit(*s)) {      /* 1,2,3 oder 1-5 oder 6,7,F */
+	} else if (isdigit(*s)) {      /* 1 oder 1-5 */
 	  day1=strtol(s,&s,10);
+	  while (isblank(*s)) s++;
 	  if (*s=='-') day2=strtol(++s,&s,10);
 	  else day2=day1;
-	  for (i=day1; i<=day2; i++) day|=(1<<(i-1));
-	} else if (*s==',') {
-	  s++;
-	} else if (*s=='/') {
-	  s++;
+	  if (day1<1 || day1>7) {
+	    warning ("invalid day %d", day1);
+	    day=0;
+	    break;
+	  }
+	  if (day2<1 || day2>7) {
+	    warning ("invalid day %d", day2);
+	    day=0;
 	  break;
+	  }
+	  for (i=day1; i<=day2; i++)
+	    day|=(1<<(i-1));
 	} else {
-	  warning ("invalid day format '%s'", s);
+	  warning ("invalid day '%c'", *s);
 	  day=0;
 	  break;
 	}
+	while (isblank(*s)) s++;
+	if (*s==',') {
+	  s++;
+	  continue;
+	}
+	break;
       }
 
-      hour=0;
+      if (*s!='/') {
+	warning ("expected '/', got '%s'!", s);
+	day=0;
+      }
+
+      if (!day)
+	break;
+
+      s++;
       while (1) {
+	while (isblank(*s)) s++;
 	if (*s=='*') {                 /* jede Stunde */
 	  hour |= 0xffffff;            /* alles 1er   */
 	  s++;
 	} else if (isdigit(*s)) {      /* 8-12 oder 1,5 */
 	  hour1=strtol(s,&s,10);
+	  while (isblank(*s)) s++;
 	  if (*s=='-') hour2=strtol(s+1,&s,10);
 	  else hour2=hour1+1;
+	  if (hour1<0 || hour1>24) {
+	    warning ("invalid hour %d", hour1);
+	    hour=0;
+	    break;
+	  }
+	  if (hour2<0 || hour2>24) {
+	    warning ("invalid hour %d", hour2);
+	    hour=0;
+	    break;
+	  }
 	  if (hour2>=hour1)
 	    for (i=hour1; i<hour2; i++) hour|=(1<<i);
 	  else {
 	    for (i=hour1; i<24; i++) hour|=(1<<i);
 	    for (i=0; i<hour2; i++)  hour|=(1<<i);
 	  }
-	} else if (*s==',') {
-	  s++;
-	} else if (*s=='=') {
-	  s++;
-	  break;
 	} else {
-	  warning ("invalid hour format '%s'", s);
+	  warning ("invalid hour '%c'", *s);
 	  hour=0;
 	  break;
 	}
-      }
-      if (day==0 || hour==0) {
-	warning ("I'm sorry, I don't understand this line...");
+	while (isblank(*s)) s++;
+	if (*s==',') {
+	  s++;
 	continue;
       }
+	break;
+      }
+
+      if (*s!='=') {
+	warning ("expected '=', got '%s'!", s);
+	hour=0;
+      }
+
+      if (!hour)
+	break;
+
       t=Provider[prefix].Zone[zone].nHour++;
       Provider[prefix].Zone[zone].Hour = realloc(Provider[prefix].Zone[zone].Hour, (t+1)*sizeof(HOUR));
       Provider[prefix].Zone[zone].Hour[t].Name=NULL;
@@ -390,17 +556,54 @@ int initRate(char *conf, char *dat, char **msg)
       Provider[prefix].Zone[zone].Hour[t].Hour=hour;
       Provider[prefix].Zone[zone].Hour[t].nUnit=0;
       Provider[prefix].Zone[zone].Hour[t].Unit=NULL;
+
+      s++;
       while (1) {
+	while (isblank(*s)) s++;
+	if (!isdigit(*s)) {
+	  warning ("invalid price '%c'", *s);
+	  break;
+	}
 	price=strtod(s,&s);
+	while (isblank(*s)) s++;
+	divider=1;
 	duration=1;
 	delay=UNKNOWN;
-	if (*s=='/')
-	  duration=strtod(s+1,&s);
-	if (*s==':')
-	  delay=strtol(s+1,&s,10);
+	if (*s=='(') {
+	  s++; while (isblank(*s)) s++;
+	  if (!isdigit(*s)) {
+	    warning ("invalid divider '%c'", *s);
+	    break;
+	  }
+	  divider=strtod(s,&s);
+	  while (isblank(*s)) s++;
+	  if (*s!=')') {
+	    warning ("expected ')', got '%s'!", s);
+	    break;
+	  }
+	  s++; while (isblank(*s)) s++;
+	}
+	if (*s=='/') {
+	  s++; while (isblank(*s)) s++;
+	  if (!isdigit(*s)) {
+	    warning ("invalid duration '%c'", *s);
+	    break;
+	  }
+	  duration=strtod(s,&s);
+	  while (isblank(*s)) s++;
+	}
+	if (*s==':') {
+	  s++; while (isblank(*s)) s++;
+	  if (!isdigit(*s)) {
+	    warning ("invalid delay '%c'", *s);
+	    break;
+	  }
+	  delay=strtol(s,&s,10);
+	  while (isblank(*s)) s++;
+	}
 	if (*s==',' && delay==UNKNOWN)
 	  delay=duration;
-	if (*s!=',' && delay!=UNKNOWN){
+	if (*s!=',' && delay!=UNKNOWN) {
 	  warning("last rate must not have a delay, will be ignored!");
 	  delay=UNKNOWN;
 	}
@@ -409,12 +612,14 @@ int initRate(char *conf, char *dat, char **msg)
 	Provider[prefix].Zone[zone].Hour[t].Unit=realloc(Provider[prefix].Zone[zone].Hour[t].Unit, (u+1)*sizeof(UNIT));
 	Provider[prefix].Zone[zone].Hour[t].Unit[u].Duration=duration;
 	Provider[prefix].Zone[zone].Hour[t].Unit[u].Delay=delay;
-	Provider[prefix].Zone[zone].Hour[t].Unit[u].Price=price;
+	Provider[prefix].Zone[zone].Hour[t].Unit[u].Price=price/divider;
 	nHour++;
-	if (*s!=',') break;
+	if (*s==',') {
 	s++;
+	  continue;
+	}
+	break;
       }
-      if (*s=='=') s++;
       t=Provider[prefix].Zone[zone].nHour-1;
       Provider[prefix].Zone[zone].Hour[t].Name=strdup(strip(s));
       break;
@@ -431,9 +636,36 @@ int initRate(char *conf, char *dat, char **msg)
   fclose(stream);
 
   if (msg) snprintf (*msg=message, LENGTH, "Rate Version %s loaded [%d Providers, %d Zones, %d Rates from %s]",
-		     Version, nProvider, nZone, nHour, dat);
+		     Version, Providers, nZone, nHour, dat);
 
   return 0;
+}
+
+char *getProvidername (int prefix)
+{
+  if (prefix<0 || prefix>nProvider || !Provider[prefix].used) {
+    return NULL;
+  }
+  return Provider[prefix].Name;
+}
+
+int getZone (int prefix, char *number)
+{
+  int a,z;
+
+  if (prefix<0 || prefix>nProvider || !Provider[prefix].used) {
+    return UNKNOWN;
+  }
+
+  for (z=0; z<Provider[prefix].nZone; z++) {
+    if (!Provider[prefix].Zone[z].used)
+      continue;
+    for (a=0; a<Provider[prefix].Zone[z].nArea; a++) {
+      if (strncmp(number, Provider[prefix].Zone[z].Area[a], strlen(Provider[prefix].Zone[z].Area[a]))==0)
+	return z;
+    }
+  }
+  return UNKNOWN;
 }
 
 int getRate(RATE *Rate, char **msg)
@@ -447,18 +679,21 @@ int getRate(RATE *Rate, char **msg)
   time_t now, run, end;
   struct tm tm;
 
+  if (msg)
+    *(*msg=message)='\0';
+
   if (!Rate)
     return UNKNOWN;
 
   prefix=Rate->prefix;
-  if (prefix<0 || prefix>MAXPROVIDER || !Provider[prefix].used) {
-    if (msg) snprintf(*msg=message, LENGTH, "unknown provider '%d'", prefix);
+  if (prefix<0 || prefix>nProvider || !Provider[prefix].used) {
+    if (msg) snprintf(*msg=message, LENGTH, "unknown provider %d", prefix);
     return UNKNOWN;
   }
 
   zone=Rate->zone;
   if (zone<1 || zone>=Provider[prefix].nZone || !Provider[prefix].Zone[zone].used) {
-    if (msg) snprintf(*msg=message, LENGTH, "unknown zone '%d'", zone);
+    if (msg) snprintf(*msg=message, LENGTH, "unknown zone %d", zone);
     return UNKNOWN;
   }
 
@@ -474,8 +709,8 @@ int getRate(RATE *Rate, char **msg)
   Hour=NULL;
   Unit=NULL;
   hour=UNKNOWN; /* Stundenwechsel erzwingen */
-  now=mktime(&Rate->start);
-  end=mktime(&Rate->now);
+  now=Rate->start;
+  end=Rate->now;
   Rate->Time=end-now;
   run=0;
   while (end>=now) {
@@ -511,66 +746,97 @@ int getRate(RATE *Rate, char **msg)
     if (Unit->Delay!=UNKNOWN && Unit->Delay<=run)
       Unit++;
 }
+
   Rate->Rest-=Rate->Time;
   return 0;
 }
 
-int getLeastCost (RATE *Rate, RATE *LC)
+int getLeastCost (RATE *Rate, int skip)
 {
   int i, min;
-  RATE Curr;
+  RATE Curr, Least;
 
+  Least=*Rate;
+  Least.Charge=1e9;
+  if (Least.start==Least.now)
+    Least.now+=181;
+  Curr=Least;
   min=UNKNOWN;
-  Curr=*LC=*Rate;
 
-  for (i=0; i<MAXPROVIDER; i++) {
+  for (i=0; i<nProvider; i++) {
+    if (i==skip)
+      continue;
     Curr.prefix=i;
-    if (getRate(&Curr, NULL)!=UNKNOWN && Curr.Charge<LC->Charge) {
+    if (getRate(&Curr, NULL)!=UNKNOWN && Curr.Charge<Least.Charge) {
       min=i;
-      *LC=*Rate;
+      Least=Curr;
   }
   }
+
+  if (Least.prefix==Rate->prefix)
+    return UNKNOWN;
+
+  *Rate=Least;
   return min;
+}
+
+int guessZone (RATE *Rate, int units)
+{
+#if 0
+  px="";
+  err=60*60*24*365; /* sehr gross */
+  for (c = 1; c < 31; c++) {
+    call[chan].zone=c;
+    tack = (-n -1) * (double)taktlaenge(chan, why);
+    if ((tack > 0) && (abs(tack - tx)<err)) {
+      call[chan].tick = tack;
+      err = abs(tack) - tx;
+      px = z2s(c);
+    }
+  }
+  call[chan].zone=-1;
+#else
+  return UNKNOWN;
+#endif
 }
 
 #ifdef STANDALONE
 void main (int argc, char *argv[])
 {
   char *msg;
-  time_t now;
+  struct tm now;
+
   RATE Rate, LCR;
 
   initHoliday ("../holiday-at.dat", &msg);
   printf ("%s\n", msg);
 
-  initRate ("../rate-at.conf", "../rate-at.dat", &msg);
+  initRate ("/etc/isdn/rate.conf", "../rate-at.dat", &msg);
   printf ("%s\n", msg);
 
   Rate.prefix = 1;
   Rate.zone = 1;
 
-  time(&now);
-  Rate.start = *localtime(&now);
-
+  time(&Rate.start);
   while (1) {
-
-    time(&now);
-    Rate.now = *localtime(&now);
+    time(&Rate.now);
     if (getRate(&Rate, &msg)==UNKNOWN)
-      printf ("Oops: %s\n", msg);
-    else
+      printf ("Ooops: %s\n", msg);
+    else {
+      now=*localtime(&Rate.now);
       printf ("%02d.%02d.%04d %02d:%02d:%02d  %-5s %-12s %-12s %-12s %6.2f %7.3f %3d %6.2f %3ld %3ld\n",
-	      Rate.now.tm_mday, Rate.now.tm_mon+1, Rate.now.tm_year+1900,
-	      Rate.now.tm_hour, Rate.now.tm_min, Rate.now.tm_sec,
+	      now.tm_mday, now.tm_mon+1, now.tm_year+1900,
+	      now.tm_hour, now.tm_min, now.tm_sec,
 	      Rate.Provider, Rate.Zone, Rate.Day, Rate.Hour,
 	      Rate.Duration, Rate.Price, Rate.Units, Rate.Charge, Rate.Time, Rate.Rest);
 
-    if (getLeastCost(&Rate,&LCR)!=UNKNOWN) {
+      LCR=Rate;
+      if (getLeastCost(&LCR,-1)!=UNKNOWN) {
       printf ("least cost would be: %-5s %-12s %-12s %-12s %6.2f %7.3f %3d %6.2f %3ld %3ld\n",
 	      LCR.Provider, LCR.Zone, LCR.Day, LCR.Hour,
 	      LCR.Duration, LCR.Price, LCR.Units, LCR.Charge, LCR.Time, LCR.Rest);
     }
-
+    }
     sleep(1);
   }
 }

@@ -1,4 +1,4 @@
-/* $Id: tools.h,v 1.34 1999/04/03 12:47:50 akool Exp $
+/* $Id: tools.h,v 1.35 1999/04/10 16:36:48 akool Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,30 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools.h,v $
+ * Revision 1.35  1999/04/10 16:36:48  akool
+ * isdnlog Version 3.13
+ *
+ * WARNING: This is pre-ALPHA-dont-ever-use-Code!
+ * 	 "tarif.dat" (aka "rate-xx.dat"): the next generation!
+ *
+ * You have to do the following to test this version:
+ *   cp /usr/src/isdn4k-utils/isdnlog/holiday-de.dat /etc/isdn
+ *   cp /usr/src/isdn4k-utils/isdnlog/rate-de.dat /usr/lib/isdn
+ *   cp /usr/src/isdn4k-utils/isdnlog/samples/rate.conf.de /etc/isdn/rate.conf
+ *
+ * After that, add the following entries to your "/etc/isdn/isdn.conf" or
+ * "/etc/isdn/callerid.conf" file:
+ *
+ * [ISDNLOG]
+ * SPECIALNUMBERS = /usr/lib/isdn/sonderrufnummern.dat
+ * HOLIDAYS       = /usr/lib/isdn/holiday-de.dat
+ * RATEFILE       = /usr/lib/isdn/rate-de.dat
+ * RATECONF       = /etc/isdn/rate.conf
+ *
+ * Please replace any "de" with your country code ("at", "ch", "nl")
+ *
+ * Good luck (Andreas Kool and Michael Reinelt)
+ *
  * Revision 1.34  1999/04/03 12:47:50  akool
  * - isdnlog Version 3.12
  * - "%B" tag in ILABEL/OLABEL corrected
@@ -370,6 +394,8 @@
 #include "policy.h"
 #include "libisdn.h"
 #include "sondernummern.h"
+#include "holiday.h"
+#include "rate.h"
 
 /****************************************************************************/
 
@@ -456,6 +482,7 @@
 #define INTERNET     17
 #define	GLOBALCALL   18
 
+/* Fixme: this is specific to Germany */
 #define	DTAG	     33
 
 /****************************************************************************/
@@ -749,6 +776,7 @@ typedef struct {
   int     huptimeout;
   char	  service[32];
   double  pay;
+  double  aocpay;
   char	  digits[NUMSIZE];
   int	  oc3;
   int	  takteChargeInt;
@@ -763,6 +791,7 @@ typedef struct {
   int	  hint;
   int	  tz;
   int	  tarifknown;
+  RATE    Rate;
 } CALL;
 
 /****************************************************************************/
@@ -970,18 +999,9 @@ _EXTERN char  *time2str(time_t sec);
 _EXTERN char  *double2clock(double n);
 _EXTERN char  *vnum(int chan, int who);
 _EXTERN char  *i2a(int n, int l, int base);
-_EXTERN char  *Providername(int number);
 _EXTERN int    iprintf(char *obuf, int chan, register char *fmt, ...);
 _EXTERN char  *qmsg(int type, int version, int val);
 _EXTERN char  *Myname;
-_EXTERN void   initTarife(char *msg);
-_EXTERN void   exitTarife(void);
-_EXTERN int    showcheapest(int zone, int duration, char *ignoreprovider, char *info, int tz, int hour, int verbose);
-_EXTERN void   price(int chan, char *hint, int viarep);
-_EXTERN char  *realProvidername(int prefix);
-_EXTERN void   preparecint(int chan, char *msg, char *hint, int viarep);
-_EXTERN	int    isInternetAccess(int provider, char *number);
-_EXTERN int    taktlaenge(int chan, char *why);
 _EXTERN	char  *zonen[MAXZONES];
 #undef _EXTERN
 

@@ -7,6 +7,8 @@ W:4		Donnerstag
 W:5		Freitag
 W:6		Samstag
 W:7		Sonntag
+W:E		Wochenende
+W:H		Feiertag
 
 D:1.1		Neujahr
 D:easter		Ostersonntag

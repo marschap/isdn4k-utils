@@ -4,4 +4,4 @@
 # 3: Geschäftstarif 1 (ATS 0.996 je Impuls)
 # 4: Geschäftstarif 2 (ATS 0.936 je Impuls)
 # 5: Geschäftstarif 3 (ATS 0.816 je Impuls)
-P:00=2
+P:01=2

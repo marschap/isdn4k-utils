@@ -1,4 +1,4 @@
-/* $Id: isdnconf.h,v 1.3 1998/11/24 20:51:17 akool Exp $
+/* $Id: isdnconf.h,v 1.4 1999/04/10 16:35:18 akool Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -19,6 +19,30 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnconf.h,v $
+ * Revision 1.4  1999/04/10 16:35:18  akool
+ * isdnlog Version 3.13
+ *
+ * WARNING: This is pre-ALPHA-dont-ever-use-Code!
+ * 	 "tarif.dat" (aka "rate-xx.dat"): the next generation!
+ *
+ * You have to do the following to test this version:
+ *   cp /usr/src/isdn4k-utils/isdnlog/holiday-de.dat /etc/isdn
+ *   cp /usr/src/isdn4k-utils/isdnlog/rate-de.dat /usr/lib/isdn
+ *   cp /usr/src/isdn4k-utils/isdnlog/samples/rate.conf.de /etc/isdn/rate.conf
+ *
+ * After that, add the following entries to your "/etc/isdn/isdn.conf" or
+ * "/etc/isdn/callerid.conf" file:
+ *
+ * [ISDNLOG]
+ * SPECIALNUMBERS = /usr/lib/isdn/sonderrufnummern.dat
+ * HOLIDAYS       = /usr/lib/isdn/holiday-de.dat
+ * RATEFILE       = /usr/lib/isdn/rate-de.dat
+ * RATECONF       = /etc/isdn/rate.conf
+ *
+ * Please replace any "de" with your country code ("at", "ch", "nl")
+ *
+ * Good luck (Andreas Kool and Michael Reinelt)
+ *
  * Revision 1.3  1998/11/24 20:51:17  akool
  *  - changed my email-adress
  *  - new Option "-R" to supply the preselected provider (-R24 -> Telepassport)
@@ -39,7 +63,11 @@
 #define _ISDN_CONF_H_
 
 #define PUBLIC extern
-#include "tools.h"
+
+#include <tools.h>
+#include <sondernummern.h>
+#include <holiday.h>
+#include <rate.h>
 
 #ifdef _ISDN_CONF_C_
 #define _EXTERN

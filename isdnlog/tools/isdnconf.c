@@ -1,4 +1,4 @@
-/* $Id: isdnconf.c,v 1.24 1999/03/24 19:38:57 akool Exp $
+/* $Id: isdnconf.c,v 1.25 1999/04/10 16:36:36 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -20,6 +20,30 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnconf.c,v $
+ * Revision 1.25  1999/04/10 16:36:36  akool
+ * isdnlog Version 3.13
+ *
+ * WARNING: This is pre-ALPHA-dont-ever-use-Code!
+ * 	 "tarif.dat" (aka "rate-xx.dat"): the next generation!
+ *
+ * You have to do the following to test this version:
+ *   cp /usr/src/isdn4k-utils/isdnlog/holiday-de.dat /etc/isdn
+ *   cp /usr/src/isdn4k-utils/isdnlog/rate-de.dat /usr/lib/isdn
+ *   cp /usr/src/isdn4k-utils/isdnlog/samples/rate.conf.de /etc/isdn/rate.conf
+ *
+ * After that, add the following entries to your "/etc/isdn/isdn.conf" or
+ * "/etc/isdn/callerid.conf" file:
+ *
+ * [ISDNLOG]
+ * SPECIALNUMBERS = /usr/lib/isdn/sonderrufnummern.dat
+ * HOLIDAYS       = /usr/lib/isdn/holiday-de.dat
+ * RATEFILE       = /usr/lib/isdn/rate-de.dat
+ * RATECONF       = /etc/isdn/rate.conf
+ *
+ * Please replace any "de" with your country code ("at", "ch", "nl")
+ *
+ * Good luck (Andreas Kool and Michael Reinelt)
+ *
  * Revision 1.24  1999/03/24 19:38:57  akool
  * - isdnlog Version 3.10
  * - moved "sondernnummern.c" from isdnlog/ to tools/
@@ -884,33 +908,11 @@ static section* writeentry(section *SPtr, int Index)
 
 void setDefaults()
 {
-  if (currency == NULL) {
+  if (currency == NULL)
+    currency="EUR";
 
-#if defined(ISDN_NL)
-    currency = "NLG";
-#elif defined(ISDN_CH)
-    currency = "SFR";
-#elif defined(ISDN_AT)
-    currency = "ATS";
-#else
-    currency = "DM";
-#endif
-
-  } /* if */
-
-  if (currency_factor == 0.0) {
-
-#if defined(ISDN_NL)
-    currency_factor = 0.15;
-#elif defined(ISDN_CH)
-    currency_factor = 0.01;
-#elif defined(ISDN_AT)
-    currency_factor = 1.056;
-#else
+  if (currency_factor == 0.0)
     currency_factor = 0.12;
-#endif
-
-  } /* if */
 
   currency_mode = AOC_UNITS;
 } /* setDefaults */
@@ -1468,7 +1470,7 @@ static int Set_Numbers(section *SPtr, char *Section, int msn)
 			else {
 			  if (msn < 0) {
                             if ((known[Index]->zone = area_diff(NULL, num)) < 1) {
-                              if (is_sondernummer(num, DTAG))
+                              if (is_sondernummer(num, DTAG)) /* Fixme: DTAG is specific to Germany */
 			        known[Index]->zone = SONDERNUMMER;
                               else {
 			        _print_msg("%s: WARNING: There is no variable `%s' for number `%s' -- assuming GermanCall!\n", Myname, CONF_ENT_ZONE, num);

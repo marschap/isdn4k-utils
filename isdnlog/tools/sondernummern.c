@@ -1,4 +1,4 @@
-/* $Id: sondernummern.c,v 1.1 1999/03/24 19:39:04 akool Exp $
+/* $Id: sondernummern.c,v 1.2 1999/04/10 16:36:43 akool Exp $
  *
  * Gebuehrenberechnung fuer Sonderrufnummern
  *
@@ -19,6 +19,30 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: sondernummern.c,v $
+ * Revision 1.2  1999/04/10 16:36:43  akool
+ * isdnlog Version 3.13
+ *
+ * WARNING: This is pre-ALPHA-dont-ever-use-Code!
+ * 	 "tarif.dat" (aka "rate-xx.dat"): the next generation!
+ *
+ * You have to do the following to test this version:
+ *   cp /usr/src/isdn4k-utils/isdnlog/holiday-de.dat /etc/isdn
+ *   cp /usr/src/isdn4k-utils/isdnlog/rate-de.dat /usr/lib/isdn
+ *   cp /usr/src/isdn4k-utils/isdnlog/samples/rate.conf.de /etc/isdn/rate.conf
+ *
+ * After that, add the following entries to your "/etc/isdn/isdn.conf" or
+ * "/etc/isdn/callerid.conf" file:
+ *
+ * [ISDNLOG]
+ * SPECIALNUMBERS = /usr/lib/isdn/sonderrufnummern.dat
+ * HOLIDAYS       = /usr/lib/isdn/holiday-de.dat
+ * RATEFILE       = /usr/lib/isdn/rate-de.dat
+ * RATECONF       = /etc/isdn/rate.conf
+ *
+ * Please replace any "de" with your country code ("at", "ch", "nl")
+ *
+ * Good luck (Andreas Kool and Michael Reinelt)
+ *
  * Revision 1.1  1999/03/24 19:39:04  akool
  * - isdnlog Version 3.10
  * - moved "sondernnummern.c" from isdnlog/ to tools/
@@ -179,6 +203,9 @@ int initSondernummern(char *fn, char **msg)
   double  grund, takt;
 
 
+  if (msg)
+    *(*msg=message)='\0';
+
   SN = NULL;
   nSN = 0;
   strcpy(version, "unknown");
@@ -257,7 +284,7 @@ int initSondernummern(char *fn, char **msg)
   else {
     if (msg) sprintf(*msg=message, "*** Cannot load Sonderrufnummern (%s : %s)", fn, strerror(errno));
     return -1;
-}
+  }
 }
 
 int is_sondernummer(char *number, int provider)

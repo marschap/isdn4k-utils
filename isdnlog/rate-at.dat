@@ -1,1071 +1,1285 @@
-# created by rate-pta.c
-
-V:1.0-Austria [11-Mar-1999]
-
-P:00,1				PTA
-C:Name:				Post & Telekom Austria
-C:Tarif:			Minimumtarif (ATS 1.116 / Impuls)
-
-Z:1				Regionalzone
-T:1-5/06-08,18-20=1.116/109.09	Sparzeit
-T:1-5/08-12=1.116/57.6		Tageszeit 1
-T:1-4/13-16=1.116/57.6		Tageszeit 1
-T:1-4/12-13,16-18=1.116/72	Tageszeit 2
-T:5/12-18=1.116/72		Tageszeit 2
-T:E,H/06-20=1.116/109.09		Sparzeit
-T:*/20-06=1.116/160		Supersparzeit
-
-Z:2				Fernzone 1
-T:1-5/06-08,18-20=1.116/50	Sparzeit
-T:1-5/08-12=1.116/20		Tageszeit 1
-T:1-4/13-16=1.116/20		Tageszeit 1
-T:1-4/12-13,16-18=1.116/25	Tageszeit 2
-T:5/12-18=1.116/25		Tageszeit 2
-T:E,H/06-20=1.116/50		Sparzeit
-T:*/20-06=1.116/72		Supersparzeit
-
-Z:3				Fernzone 2
-T:1-5/06-08,18-20=1.116/40	Sparzeit
-T:1-5/08-12=1.116/15		Tageszeit 1
-T:1-4/13-16=1.116/15		Tageszeit 1
-T:1-4/12-13,16-18=1.116/19.2	Tageszeit 2
-T:5/12-18=1.116/19.2		Tageszeit 2
-T:E,H/06-20=1.116/40		Sparzeit
-T:*/20-06=1.116/50		Supersparzeit
-
-Z:4				Online-Tarif
-T:1-5/06-08,18-20=1.116/360	Sparzeit
-T:1-5/08-12=1.116/120		Tageszeit 1
-T:1-4/13-16=1.116/120		Tageszeit 1
-T:1-4/12-13,16-18=1.116/120	Tageszeit 2
-T:5/12-18=1.116/120		Tageszeit 2
-T:E,H/06-20=1.116/360		Sparzeit
-T:*/20-06=1.116/360		Supersparzeit
-
-Z:5				Mobilfunk
-T:1-5/06-08,18-20=1.116/19.2	Sparzeit
-T:1-5/08-12=1.116/12		Tageszeit 1
-T:1-4/13-16=1.116/12		Tageszeit 1
-T:1-4/12-13,16-18=1.116/12	Tageszeit 2
-T:5/12-18=1.116/12		Tageszeit 2
-T:E,H/06-20=1.116/19.2		Sparzeit
-T:*/20-06=1.116/19.2		Supersparzeit
-
-Z:6				Ausland Zone 1
-T:1-5/06-08,18-20=1.116/14.4	Sparzeit
-T:1-5/08-12=1.116/12		Tageszeit 1
-T:1-4/13-16=1.116/12		Tageszeit 1
-T:1-4/12-13,16-18=1.116/12	Tageszeit 2
-T:5/12-18=1.116/12		Tageszeit 2
-T:E,H/06-20=1.116/14.4		Sparzeit
-T:*/20-06=1.116/14.4		Supersparzeit
-
-Z:7				Ausland Zone 2
-T:1-5/06-08,18-20=1.116/12	Sparzeit
-T:1-5/08-12=1.116/9		Tageszeit 1
-T:1-4/13-16=1.116/9		Tageszeit 1
-T:1-4/12-13,16-18=1.116/9	Tageszeit 2
-T:5/12-18=1.116/9		Tageszeit 2
-T:E,H/06-20=1.116/12		Sparzeit
-T:*/20-06=1.116/12		Supersparzeit
-
-Z:8				Ausland Zone 3
-T:1-5/06-08,18-20=1.116/8	Sparzeit
-T:1-5/08-12=1.116/6.5455		Tageszeit 1
-T:1-4/13-16=1.116/6.5455		Tageszeit 1
-T:1-4/12-13,16-18=1.116/6.5455	Tageszeit 2
-T:5/12-18=1.116/6.5455		Tageszeit 2
-T:E,H/06-20=1.116/8		Sparzeit
-T:*/20-06=1.116/8		Supersparzeit
-
-Z:9				Ausland Zone 4
-T:1-5/06-08,18-20=1.116/6	Sparzeit
-T:1-5/08-12=1.116/5.1429		Tageszeit 1
-T:1-4/13-16=1.116/5.1429		Tageszeit 1
-T:1-4/12-13,16-18=1.116/5.1429	Tageszeit 2
-T:5/12-18=1.116/5.1429		Tageszeit 2
-T:E,H/06-20=1.116/6		Sparzeit
-T:*/20-06=1.116/6		Supersparzeit
-
-Z:10				Ausland Zone 5
-T:1-5/06-08,18-20=1.116/4.8	Sparzeit
-T:1-5/08-12=1.116/4.2353		Tageszeit 1
-T:1-4/13-16=1.116/4.2353		Tageszeit 1
-T:1-4/12-13,16-18=1.116/4.2353	Tageszeit 2
-T:5/12-18=1.116/4.2353		Tageszeit 2
-T:E,H/06-20=1.116/4.8		Sparzeit
-T:*/20-06=1.116/4.8		Supersparzeit
-
-Z:11				Ausland Zone 6
-T:1-5/06-08,18-20=1.116/4.2353	Sparzeit
-T:1-5/08-12=1.116/3.6		Tageszeit 1
-T:1-4/13-16=1.116/3.6		Tageszeit 1
-T:1-4/12-13,16-18=1.116/3.6	Tageszeit 2
-T:5/12-18=1.116/3.6		Tageszeit 2
-T:E,H/06-20=1.116/4.2353		Sparzeit
-T:*/20-06=1.116/4.2353		Supersparzeit
-
-Z:12				Ausland Zone 7
-T:1-5/06-08,18-20=1.116/3.6	Sparzeit
-T:1-5/08-12=1.116/3.1304		Tageszeit 1
-T:1-4/13-16=1.116/3.1304		Tageszeit 1
-T:1-4/12-13,16-18=1.116/3.1304	Tageszeit 2
-T:5/12-18=1.116/3.1304		Tageszeit 2
-T:E,H/06-20=1.116/3.6		Sparzeit
-T:*/20-06=1.116/3.6		Supersparzeit
-
-Z:13				Ausland Zone 8
-T:1-5/06-08,18-20=1.116/3	Sparzeit
-T:1-5/08-12=1.116/2.7692		Tageszeit 1
-T:1-4/13-16=1.116/2.7692		Tageszeit 1
-T:1-4/12-13,16-18=1.116/2.7692	Tageszeit 2
-T:5/12-18=1.116/2.7692		Tageszeit 2
-T:E,H/06-20=1.116/3		Sparzeit
-T:*/20-06=1.116/3		Supersparzeit
-
-Z:14				Ausland Zone 9
-T:1-5/06-08,18-20=1.116/2.5714	Sparzeit
-T:1-5/08-12=1.116/2.4		Tageszeit 1
-T:1-4/13-16=1.116/2.4		Tageszeit 1
-T:1-4/12-13,16-18=1.116/2.4	Tageszeit 2
-T:5/12-18=1.116/2.4		Tageszeit 2
-T:E,H/06-20=1.116/2.5714		Sparzeit
-T:*/20-06=1.116/2.5714		Supersparzeit
-
-Z:15				Ausland Zone 10
-T:1-5/06-08,18-20=1.116/2.25	Sparzeit
-T:1-5/08-12=1.116/2.1176		Tageszeit 1
-T:1-4/13-16=1.116/2.1176		Tageszeit 1
-T:1-4/12-13,16-18=1.116/2.1176	Tageszeit 2
-T:5/12-18=1.116/2.1176		Tageszeit 2
-T:E,H/06-20=1.116/2.25		Sparzeit
-T:*/20-06=1.116/2.25		Supersparzeit
-
-Z:16				Ausland Zone 11
-T:1-5/06-08,18-20=1.116/2	Sparzeit
-T:1-5/08-12=1.116/1.8462		Tageszeit 1
-T:1-4/13-16=1.116/1.8462		Tageszeit 1
-T:1-4/12-13,16-18=1.116/1.8462	Tageszeit 2
-T:5/12-18=1.116/1.8462		Tageszeit 2
-T:E,H/06-20=1.116/2		Sparzeit
-T:*/20-06=1.116/2		Supersparzeit
-
-Z:17				Ausland Zone 12
-T:1-5/06-08,18-20=1.116/1.8	Sparzeit
-T:1-5/08-12=1.116/1.6364		Tageszeit 1
-T:1-4/13-16=1.116/1.6364		Tageszeit 1
-T:1-4/12-13,16-18=1.116/1.6364	Tageszeit 2
-T:5/12-18=1.116/1.6364		Tageszeit 2
-T:E,H/06-20=1.116/1.8		Sparzeit
-T:*/20-06=1.116/1.8		Supersparzeit
-
-Z:18				Ausland Zone 13
-T:1-5/06-08,18-20=1.116/1.3585	Sparzeit
-T:1-5/08-12=1.116/1.2203		Tageszeit 1
-T:1-4/13-16=1.116/1.2203		Tageszeit 1
-T:1-4/12-13,16-18=1.116/1.2203	Tageszeit 2
-T:5/12-18=1.116/1.2203		Tageszeit 2
-T:E,H/06-20=1.116/1.3585		Sparzeit
-T:*/20-06=1.116/1.3585		Supersparzeit
-
-Z:19				Ausland Zone 14
-T:1-5/06-08,18-20=1.116/9	Sparzeit
-T:1-5/08-12=1.116/8		Tageszeit 1
-T:1-4/13-16=1.116/8		Tageszeit 1
-T:1-4/12-13,16-18=1.116/8	Tageszeit 2
-T:5/12-18=1.116/8		Tageszeit 2
-T:E,H/06-20=1.116/9		Sparzeit
-T:*/20-06=1.116/9		Supersparzeit
-
-Z:20				Ausland Zone 15
-T:1-5/06-08,18-20=1.116/7.2	Sparzeit
-T:1-5/08-12=1.116/9		Tageszeit 1
-T:1-4/13-16=1.116/9		Tageszeit 1
-T:1-4/12-13,16-18=1.116/9	Tageszeit 2
-T:5/12-18=1.116/9		Tageszeit 2
-T:E,H/06-20=1.116/7.2		Sparzeit
-T:*/20-06=1.116/7.2		Supersparzeit
-
-Z:21				Handvermittelter Verkehr
-
-Z:22				Grenznahverkehr
-T:1-5/06-08,18-20=1.116/24	Sparzeit
-T:1-5/08-12=1.116/18		Tageszeit 1
-T:1-4/13-16=1.116/18		Tageszeit 1
-T:1-4/12-13,16-18=1.116/18	Tageszeit 2
-T:5/12-18=1.116/18		Tageszeit 2
-T:E,H/06-20=1.116/24		Sparzeit
-T:*/20-06=1.116/24		Supersparzeit
-
-Z:23				Teleinfo 04570
-T:1-5/06-08,18-20=1.116/10.795	Sparzeit
-T:1-5/08-12=1.116/10.795		Tageszeit 1
-T:1-4/13-16=1.116/10.795		Tageszeit 1
-T:1-4/12-13,16-18=1.116/10.795	Tageszeit 2
-T:5/12-18=1.116/10.795		Tageszeit 2
-T:E,H/06-20=1.116/10.795		Sparzeit
-T:*/20-06=1.116/10.795		Supersparzeit
-
-Z:24				Teleinfo 04500 
-T:1-5/06-08,18-20=1.116/7.2	Sparzeit
-T:1-5/08-12=1.116/7.2		Tageszeit 1
-T:1-4/13-16=1.116/7.2		Tageszeit 1
-T:1-4/12-13,16-18=1.116/7.2	Tageszeit 2
-T:5/12-18=1.116/7.2		Tageszeit 2
-T:E,H/06-20=1.116/7.2		Sparzeit
-T:*/20-06=1.116/7.2		Supersparzeit
-
-Z:25				Telebusiness 04590
-T:1-5/06-08,18-20=1.116/4.5	Sparzeit
-T:1-5/08-12=1.116/4.5		Tageszeit 1
-T:1-4/13-16=1.116/4.5		Tageszeit 1
-T:1-4/12-13,16-18=1.116/4.5	Tageszeit 2
-T:5/12-18=1.116/4.5		Tageszeit 2
-T:E,H/06-20=1.116/4.5		Sparzeit
-T:*/20-06=1.116/4.5		Supersparzeit
-
-Z:26				Teleinfo 04580
-T:1-5/06-08,18-20=1.116/2.6997	Sparzeit
-T:1-5/08-12=1.116/2.6997		Tageszeit 1
-T:1-4/13-16=1.116/2.6997		Tageszeit 1
-T:1-4/12-13,16-18=1.116/2.6997	Tageszeit 2
-T:5/12-18=1.116/2.6997		Tageszeit 2
-T:E,H/06-20=1.116/2.6997		Sparzeit
-T:*/20-06=1.116/2.6997		Supersparzeit
-
-Z:27				Businessline 0711x
-T:1-5/06-08,18-20=1.116/109.09	Sparzeit
-T:1-5/08-12=1.116/57.6		Tageszeit 1
-T:1-4/13-16=1.116/57.6		Tageszeit 1
-T:1-4/12-13,16-18=1.116/72	Tageszeit 2
-T:5/12-18=1.116/72		Tageszeit 2
-T:E,H/06-20=1.116/109.09		Sparzeit
-T:*/20-06=1.116/160		Supersparzeit
-
-Z:28				Businessline 0713x
-T:1-5/06-08,18-20=1.116/32	Sparzeit
-T:1-5/08-12=1.116/32		Tageszeit 1
-T:1-4/13-16=1.116/32		Tageszeit 1
-T:1-4/12-13,16-18=1.116/32	Tageszeit 2
-T:5/12-18=1.116/32		Tageszeit 2
-T:E,H/06-20=1.116/32		Sparzeit
-T:*/20-06=1.116/32		Supersparzeit
-
-Z:29				Businessline 0714x
-T:1-5/06-08,18-20=1.116/15	Sparzeit
-T:1-5/08-12=1.116/15		Tageszeit 1
-T:1-4/13-16=1.116/15		Tageszeit 1
-T:1-4/12-13,16-18=1.116/15	Tageszeit 2
-T:5/12-18=1.116/15		Tageszeit 2
-T:E,H/06-20=1.116/15		Sparzeit
-T:*/20-06=1.116/15		Supersparzeit
-
-Z:30				Votingline 0717x
-T:1-5/06-08,18-20=1.116/15	Sparzeit
-T:1-5/08-12=1.116/15		Tageszeit 1
-T:1-4/13-16=1.116/15		Tageszeit 1
-T:1-4/12-13,16-18=1.116/15	Tageszeit 2
-T:5/12-18=1.116/15		Tageszeit 2
-T:E,H/06-20=1.116/15		Sparzeit
-T:*/20-06=1.116/15		Supersparzeit
-
-P:00,2				PTA
-C:Name:				Post & Telekom Austria
-C:Tarif:			Standartarif (ATS 1.056 / Impuls)
-
-Z:1				Regionalzone
-T:1-5/06-08,18-20=1.056/109.09	Sparzeit
-T:1-5/08-12=1.056/57.6		Tageszeit 1
-T:1-4/13-16=1.056/57.6		Tageszeit 1
-T:1-4/12-13,16-18=1.056/72	Tageszeit 2
-T:5/12-18=1.056/72		Tageszeit 2
-T:E,H/06-20=1.056/109.09		Sparzeit
-T:*/20-06=1.056/160		Supersparzeit
-
-Z:2				Fernzone 1
-T:1-5/06-08,18-20=1.056/50	Sparzeit
-T:1-5/08-12=1.056/20		Tageszeit 1
-T:1-4/13-16=1.056/20		Tageszeit 1
-T:1-4/12-13,16-18=1.056/25	Tageszeit 2
-T:5/12-18=1.056/25		Tageszeit 2
-T:E,H/06-20=1.056/50		Sparzeit
-T:*/20-06=1.056/72		Supersparzeit
-
-Z:3				Fernzone 2
-T:1-5/06-08,18-20=1.056/40	Sparzeit
-T:1-5/08-12=1.056/15		Tageszeit 1
-T:1-4/13-16=1.056/15		Tageszeit 1
-T:1-4/12-13,16-18=1.056/19.2	Tageszeit 2
-T:5/12-18=1.056/19.2		Tageszeit 2
-T:E,H/06-20=1.056/40		Sparzeit
-T:*/20-06=1.056/50		Supersparzeit
-
-Z:4				Online-Tarif
-T:1-5/06-08,18-20=1.056/360	Sparzeit
-T:1-5/08-12=1.056/120		Tageszeit 1
-T:1-4/13-16=1.056/120		Tageszeit 1
-T:1-4/12-13,16-18=1.056/120	Tageszeit 2
-T:5/12-18=1.056/120		Tageszeit 2
-T:E,H/06-20=1.056/360		Sparzeit
-T:*/20-06=1.056/360		Supersparzeit
-
-Z:5				Mobilfunk
-T:1-5/06-08,18-20=1.056/19.2	Sparzeit
-T:1-5/08-12=1.056/12		Tageszeit 1
-T:1-4/13-16=1.056/12		Tageszeit 1
-T:1-4/12-13,16-18=1.056/12	Tageszeit 2
-T:5/12-18=1.056/12		Tageszeit 2
-T:E,H/06-20=1.056/19.2		Sparzeit
-T:*/20-06=1.056/19.2		Supersparzeit
-
-Z:6				Ausland Zone 1
-T:1-5/06-08,18-20=1.056/14.4	Sparzeit
-T:1-5/08-12=1.056/12		Tageszeit 1
-T:1-4/13-16=1.056/12		Tageszeit 1
-T:1-4/12-13,16-18=1.056/12	Tageszeit 2
-T:5/12-18=1.056/12		Tageszeit 2
-T:E,H/06-20=1.056/14.4		Sparzeit
-T:*/20-06=1.056/14.4		Supersparzeit
-
-Z:7				Ausland Zone 2
-T:1-5/06-08,18-20=1.056/12	Sparzeit
-T:1-5/08-12=1.056/9		Tageszeit 1
-T:1-4/13-16=1.056/9		Tageszeit 1
-T:1-4/12-13,16-18=1.056/9	Tageszeit 2
-T:5/12-18=1.056/9		Tageszeit 2
-T:E,H/06-20=1.056/12		Sparzeit
-T:*/20-06=1.056/12		Supersparzeit
-
-Z:8				Ausland Zone 3
-T:1-5/06-08,18-20=1.056/8	Sparzeit
-T:1-5/08-12=1.056/6.5455		Tageszeit 1
-T:1-4/13-16=1.056/6.5455		Tageszeit 1
-T:1-4/12-13,16-18=1.056/6.5455	Tageszeit 2
-T:5/12-18=1.056/6.5455		Tageszeit 2
-T:E,H/06-20=1.056/8		Sparzeit
-T:*/20-06=1.056/8		Supersparzeit
-
-Z:9				Ausland Zone 4
-T:1-5/06-08,18-20=1.056/6	Sparzeit
-T:1-5/08-12=1.056/5.1429		Tageszeit 1
-T:1-4/13-16=1.056/5.1429		Tageszeit 1
-T:1-4/12-13,16-18=1.056/5.1429	Tageszeit 2
-T:5/12-18=1.056/5.1429		Tageszeit 2
-T:E,H/06-20=1.056/6		Sparzeit
-T:*/20-06=1.056/6		Supersparzeit
-
-Z:10				Ausland Zone 5
-T:1-5/06-08,18-20=1.056/4.8	Sparzeit
-T:1-5/08-12=1.056/4.2353		Tageszeit 1
-T:1-4/13-16=1.056/4.2353		Tageszeit 1
-T:1-4/12-13,16-18=1.056/4.2353	Tageszeit 2
-T:5/12-18=1.056/4.2353		Tageszeit 2
-T:E,H/06-20=1.056/4.8		Sparzeit
-T:*/20-06=1.056/4.8		Supersparzeit
-
-Z:11				Ausland Zone 6
-T:1-5/06-08,18-20=1.056/4.2353	Sparzeit
-T:1-5/08-12=1.056/3.6		Tageszeit 1
-T:1-4/13-16=1.056/3.6		Tageszeit 1
-T:1-4/12-13,16-18=1.056/3.6	Tageszeit 2
-T:5/12-18=1.056/3.6		Tageszeit 2
-T:E,H/06-20=1.056/4.2353		Sparzeit
-T:*/20-06=1.056/4.2353		Supersparzeit
-
-Z:12				Ausland Zone 7
-T:1-5/06-08,18-20=1.056/3.6	Sparzeit
-T:1-5/08-12=1.056/3.1304		Tageszeit 1
-T:1-4/13-16=1.056/3.1304		Tageszeit 1
-T:1-4/12-13,16-18=1.056/3.1304	Tageszeit 2
-T:5/12-18=1.056/3.1304		Tageszeit 2
-T:E,H/06-20=1.056/3.6		Sparzeit
-T:*/20-06=1.056/3.6		Supersparzeit
-
-Z:13				Ausland Zone 8
-T:1-5/06-08,18-20=1.056/3	Sparzeit
-T:1-5/08-12=1.056/2.7692		Tageszeit 1
-T:1-4/13-16=1.056/2.7692		Tageszeit 1
-T:1-4/12-13,16-18=1.056/2.7692	Tageszeit 2
-T:5/12-18=1.056/2.7692		Tageszeit 2
-T:E,H/06-20=1.056/3		Sparzeit
-T:*/20-06=1.056/3		Supersparzeit
-
-Z:14				Ausland Zone 9
-T:1-5/06-08,18-20=1.056/2.5714	Sparzeit
-T:1-5/08-12=1.056/2.4		Tageszeit 1
-T:1-4/13-16=1.056/2.4		Tageszeit 1
-T:1-4/12-13,16-18=1.056/2.4	Tageszeit 2
-T:5/12-18=1.056/2.4		Tageszeit 2
-T:E,H/06-20=1.056/2.5714		Sparzeit
-T:*/20-06=1.056/2.5714		Supersparzeit
-
-Z:15				Ausland Zone 10
-T:1-5/06-08,18-20=1.056/2.25	Sparzeit
-T:1-5/08-12=1.056/2.1176		Tageszeit 1
-T:1-4/13-16=1.056/2.1176		Tageszeit 1
-T:1-4/12-13,16-18=1.056/2.1176	Tageszeit 2
-T:5/12-18=1.056/2.1176		Tageszeit 2
-T:E,H/06-20=1.056/2.25		Sparzeit
-T:*/20-06=1.056/2.25		Supersparzeit
-
-Z:16				Ausland Zone 11
-T:1-5/06-08,18-20=1.056/2	Sparzeit
-T:1-5/08-12=1.056/1.8462		Tageszeit 1
-T:1-4/13-16=1.056/1.8462		Tageszeit 1
-T:1-4/12-13,16-18=1.056/1.8462	Tageszeit 2
-T:5/12-18=1.056/1.8462		Tageszeit 2
-T:E,H/06-20=1.056/2		Sparzeit
-T:*/20-06=1.056/2		Supersparzeit
-
-Z:17				Ausland Zone 12
-T:1-5/06-08,18-20=1.056/1.8	Sparzeit
-T:1-5/08-12=1.056/1.6364		Tageszeit 1
-T:1-4/13-16=1.056/1.6364		Tageszeit 1
-T:1-4/12-13,16-18=1.056/1.6364	Tageszeit 2
-T:5/12-18=1.056/1.6364		Tageszeit 2
-T:E,H/06-20=1.056/1.8		Sparzeit
-T:*/20-06=1.056/1.8		Supersparzeit
-
-Z:18				Ausland Zone 13
-T:1-5/06-08,18-20=1.056/1.3585	Sparzeit
-T:1-5/08-12=1.056/1.2203		Tageszeit 1
-T:1-4/13-16=1.056/1.2203		Tageszeit 1
-T:1-4/12-13,16-18=1.056/1.2203	Tageszeit 2
-T:5/12-18=1.056/1.2203		Tageszeit 2
-T:E,H/06-20=1.056/1.3585		Sparzeit
-T:*/20-06=1.056/1.3585		Supersparzeit
-
-Z:19				Ausland Zone 14
-T:1-5/06-08,18-20=1.056/9	Sparzeit
-T:1-5/08-12=1.056/8		Tageszeit 1
-T:1-4/13-16=1.056/8		Tageszeit 1
-T:1-4/12-13,16-18=1.056/8	Tageszeit 2
-T:5/12-18=1.056/8		Tageszeit 2
-T:E,H/06-20=1.056/9		Sparzeit
-T:*/20-06=1.056/9		Supersparzeit
-
-Z:20				Ausland Zone 15
-T:1-5/06-08,18-20=1.056/7.2	Sparzeit
-T:1-5/08-12=1.056/9		Tageszeit 1
-T:1-4/13-16=1.056/9		Tageszeit 1
-T:1-4/12-13,16-18=1.056/9	Tageszeit 2
-T:5/12-18=1.056/9		Tageszeit 2
-T:E,H/06-20=1.056/7.2		Sparzeit
-T:*/20-06=1.056/7.2		Supersparzeit
-
-Z:21				Handvermittelter Verkehr
-
-Z:22				Grenznahverkehr
-T:1-5/06-08,18-20=1.056/24	Sparzeit
-T:1-5/08-12=1.056/18		Tageszeit 1
-T:1-4/13-16=1.056/18		Tageszeit 1
-T:1-4/12-13,16-18=1.056/18	Tageszeit 2
-T:5/12-18=1.056/18		Tageszeit 2
-T:E,H/06-20=1.056/24		Sparzeit
-T:*/20-06=1.056/24		Supersparzeit
-
-Z:23				Teleinfo 04570
-T:1-5/06-08,18-20=1.056/10.795	Sparzeit
-T:1-5/08-12=1.056/10.795		Tageszeit 1
-T:1-4/13-16=1.056/10.795		Tageszeit 1
-T:1-4/12-13,16-18=1.056/10.795	Tageszeit 2
-T:5/12-18=1.056/10.795		Tageszeit 2
-T:E,H/06-20=1.056/10.795		Sparzeit
-T:*/20-06=1.056/10.795		Supersparzeit
-
-Z:24				Teleinfo 04500 
-T:1-5/06-08,18-20=1.056/7.2	Sparzeit
-T:1-5/08-12=1.056/7.2		Tageszeit 1
-T:1-4/13-16=1.056/7.2		Tageszeit 1
-T:1-4/12-13,16-18=1.056/7.2	Tageszeit 2
-T:5/12-18=1.056/7.2		Tageszeit 2
-T:E,H/06-20=1.056/7.2		Sparzeit
-T:*/20-06=1.056/7.2		Supersparzeit
-
-Z:25				Telebusiness 04590
-T:1-5/06-08,18-20=1.056/4.5	Sparzeit
-T:1-5/08-12=1.056/4.5		Tageszeit 1
-T:1-4/13-16=1.056/4.5		Tageszeit 1
-T:1-4/12-13,16-18=1.056/4.5	Tageszeit 2
-T:5/12-18=1.056/4.5		Tageszeit 2
-T:E,H/06-20=1.056/4.5		Sparzeit
-T:*/20-06=1.056/4.5		Supersparzeit
-
-Z:26				Teleinfo 04580
-T:1-5/06-08,18-20=1.056/2.6997	Sparzeit
-T:1-5/08-12=1.056/2.6997		Tageszeit 1
-T:1-4/13-16=1.056/2.6997		Tageszeit 1
-T:1-4/12-13,16-18=1.056/2.6997	Tageszeit 2
-T:5/12-18=1.056/2.6997		Tageszeit 2
-T:E,H/06-20=1.056/2.6997		Sparzeit
-T:*/20-06=1.056/2.6997		Supersparzeit
-
-Z:27				Businessline 0711x
-T:1-5/06-08,18-20=1.056/109.09	Sparzeit
-T:1-5/08-12=1.056/57.6		Tageszeit 1
-T:1-4/13-16=1.056/57.6		Tageszeit 1
-T:1-4/12-13,16-18=1.056/72	Tageszeit 2
-T:5/12-18=1.056/72		Tageszeit 2
-T:E,H/06-20=1.056/109.09		Sparzeit
-T:*/20-06=1.056/160		Supersparzeit
-
-Z:28				Businessline 0713x
-T:1-5/06-08,18-20=1.056/32	Sparzeit
-T:1-5/08-12=1.056/32		Tageszeit 1
-T:1-4/13-16=1.056/32		Tageszeit 1
-T:1-4/12-13,16-18=1.056/32	Tageszeit 2
-T:5/12-18=1.056/32		Tageszeit 2
-T:E,H/06-20=1.056/32		Sparzeit
-T:*/20-06=1.056/32		Supersparzeit
-
-Z:29				Businessline 0714x
-T:1-5/06-08,18-20=1.056/15	Sparzeit
-T:1-5/08-12=1.056/15		Tageszeit 1
-T:1-4/13-16=1.056/15		Tageszeit 1
-T:1-4/12-13,16-18=1.056/15	Tageszeit 2
-T:5/12-18=1.056/15		Tageszeit 2
-T:E,H/06-20=1.056/15		Sparzeit
-T:*/20-06=1.056/15		Supersparzeit
-
-Z:30				Votingline 0717x
-T:1-5/06-08,18-20=1.056/15	Sparzeit
-T:1-5/08-12=1.056/15		Tageszeit 1
-T:1-4/13-16=1.056/15		Tageszeit 1
-T:1-4/12-13,16-18=1.056/15	Tageszeit 2
-T:5/12-18=1.056/15		Tageszeit 2
-T:E,H/06-20=1.056/15		Sparzeit
-T:*/20-06=1.056/15		Supersparzeit
-
-P:00,3				PTA
-C:Name:				Post & Telekom Austria
-C:Tarif:			Geschäftstarif 1 (ATS 0.996 / Impuls)
-
-Z:1				Regionalzone
-T:1-5/06-08,18-20=0.996/109.09	Sparzeit
-T:1-5/08-12=0.996/57.6		Tageszeit 1
-T:1-4/13-16=0.996/57.6		Tageszeit 1
-T:1-4/12-13,16-18=0.996/72	Tageszeit 2
-T:5/12-18=0.996/72		Tageszeit 2
-T:E,H/06-20=0.996/109.09		Sparzeit
-T:*/20-06=0.996/160		Supersparzeit
-
-Z:2				Fernzone 1
-T:1-5/06-08,18-20=0.996/50	Sparzeit
-T:1-5/08-12=0.996/20		Tageszeit 1
-T:1-4/13-16=0.996/20		Tageszeit 1
-T:1-4/12-13,16-18=0.996/25	Tageszeit 2
-T:5/12-18=0.996/25		Tageszeit 2
-T:E,H/06-20=0.996/50		Sparzeit
-T:*/20-06=0.996/72		Supersparzeit
-
-Z:3				Fernzone 2
-T:1-5/06-08,18-20=0.996/40	Sparzeit
-T:1-5/08-12=0.996/15		Tageszeit 1
-T:1-4/13-16=0.996/15		Tageszeit 1
-T:1-4/12-13,16-18=0.996/19.2	Tageszeit 2
-T:5/12-18=0.996/19.2		Tageszeit 2
-T:E,H/06-20=0.996/40		Sparzeit
-T:*/20-06=0.996/50		Supersparzeit
-
-Z:4				Online-Tarif
-T:1-5/06-08,18-20=0.996/360	Sparzeit
-T:1-5/08-12=0.996/120		Tageszeit 1
-T:1-4/13-16=0.996/120		Tageszeit 1
-T:1-4/12-13,16-18=0.996/120	Tageszeit 2
-T:5/12-18=0.996/120		Tageszeit 2
-T:E,H/06-20=0.996/360		Sparzeit
-T:*/20-06=0.996/360		Supersparzeit
-
-Z:5				Mobilfunk
-T:1-5/06-08,18-20=0.996/19.2	Sparzeit
-T:1-5/08-12=0.996/12		Tageszeit 1
-T:1-4/13-16=0.996/12		Tageszeit 1
-T:1-4/12-13,16-18=0.996/12	Tageszeit 2
-T:5/12-18=0.996/12		Tageszeit 2
-T:E,H/06-20=0.996/19.2		Sparzeit
-T:*/20-06=0.996/19.2		Supersparzeit
-
-Z:6				Ausland Zone 1
-T:1-5/06-08,18-20=0.996/14.4	Sparzeit
-T:1-5/08-12=0.996/12		Tageszeit 1
-T:1-4/13-16=0.996/12		Tageszeit 1
-T:1-4/12-13,16-18=0.996/12	Tageszeit 2
-T:5/12-18=0.996/12		Tageszeit 2
-T:E,H/06-20=0.996/14.4		Sparzeit
-T:*/20-06=0.996/14.4		Supersparzeit
-
-Z:7				Ausland Zone 2
-T:1-5/06-08,18-20=0.996/12	Sparzeit
-T:1-5/08-12=0.996/9		Tageszeit 1
-T:1-4/13-16=0.996/9		Tageszeit 1
-T:1-4/12-13,16-18=0.996/9	Tageszeit 2
-T:5/12-18=0.996/9		Tageszeit 2
-T:E,H/06-20=0.996/12		Sparzeit
-T:*/20-06=0.996/12		Supersparzeit
-
-Z:8				Ausland Zone 3
-T:1-5/06-08,18-20=0.996/8	Sparzeit
-T:1-5/08-12=0.996/6.5455		Tageszeit 1
-T:1-4/13-16=0.996/6.5455		Tageszeit 1
-T:1-4/12-13,16-18=0.996/6.5455	Tageszeit 2
-T:5/12-18=0.996/6.5455		Tageszeit 2
-T:E,H/06-20=0.996/8		Sparzeit
-T:*/20-06=0.996/8		Supersparzeit
-
-Z:9				Ausland Zone 4
-T:1-5/06-08,18-20=0.996/6	Sparzeit
-T:1-5/08-12=0.996/5.1429		Tageszeit 1
-T:1-4/13-16=0.996/5.1429		Tageszeit 1
-T:1-4/12-13,16-18=0.996/5.1429	Tageszeit 2
-T:5/12-18=0.996/5.1429		Tageszeit 2
-T:E,H/06-20=0.996/6		Sparzeit
-T:*/20-06=0.996/6		Supersparzeit
-
-Z:10				Ausland Zone 5
-T:1-5/06-08,18-20=0.996/4.8	Sparzeit
-T:1-5/08-12=0.996/4.2353		Tageszeit 1
-T:1-4/13-16=0.996/4.2353		Tageszeit 1
-T:1-4/12-13,16-18=0.996/4.2353	Tageszeit 2
-T:5/12-18=0.996/4.2353		Tageszeit 2
-T:E,H/06-20=0.996/4.8		Sparzeit
-T:*/20-06=0.996/4.8		Supersparzeit
-
-Z:11				Ausland Zone 6
-T:1-5/06-08,18-20=0.996/4.2353	Sparzeit
-T:1-5/08-12=0.996/3.6		Tageszeit 1
-T:1-4/13-16=0.996/3.6		Tageszeit 1
-T:1-4/12-13,16-18=0.996/3.6	Tageszeit 2
-T:5/12-18=0.996/3.6		Tageszeit 2
-T:E,H/06-20=0.996/4.2353		Sparzeit
-T:*/20-06=0.996/4.2353		Supersparzeit
-
-Z:12				Ausland Zone 7
-T:1-5/06-08,18-20=0.996/3.6	Sparzeit
-T:1-5/08-12=0.996/3.1304		Tageszeit 1
-T:1-4/13-16=0.996/3.1304		Tageszeit 1
-T:1-4/12-13,16-18=0.996/3.1304	Tageszeit 2
-T:5/12-18=0.996/3.1304		Tageszeit 2
-T:E,H/06-20=0.996/3.6		Sparzeit
-T:*/20-06=0.996/3.6		Supersparzeit
-
-Z:13				Ausland Zone 8
-T:1-5/06-08,18-20=0.996/3	Sparzeit
-T:1-5/08-12=0.996/2.7692		Tageszeit 1
-T:1-4/13-16=0.996/2.7692		Tageszeit 1
-T:1-4/12-13,16-18=0.996/2.7692	Tageszeit 2
-T:5/12-18=0.996/2.7692		Tageszeit 2
-T:E,H/06-20=0.996/3		Sparzeit
-T:*/20-06=0.996/3		Supersparzeit
-
-Z:14				Ausland Zone 9
-T:1-5/06-08,18-20=0.996/2.5714	Sparzeit
-T:1-5/08-12=0.996/2.4		Tageszeit 1
-T:1-4/13-16=0.996/2.4		Tageszeit 1
-T:1-4/12-13,16-18=0.996/2.4	Tageszeit 2
-T:5/12-18=0.996/2.4		Tageszeit 2
-T:E,H/06-20=0.996/2.5714		Sparzeit
-T:*/20-06=0.996/2.5714		Supersparzeit
-
-Z:15				Ausland Zone 10
-T:1-5/06-08,18-20=0.996/2.25	Sparzeit
-T:1-5/08-12=0.996/2.1176		Tageszeit 1
-T:1-4/13-16=0.996/2.1176		Tageszeit 1
-T:1-4/12-13,16-18=0.996/2.1176	Tageszeit 2
-T:5/12-18=0.996/2.1176		Tageszeit 2
-T:E,H/06-20=0.996/2.25		Sparzeit
-T:*/20-06=0.996/2.25		Supersparzeit
-
-Z:16				Ausland Zone 11
-T:1-5/06-08,18-20=0.996/2	Sparzeit
-T:1-5/08-12=0.996/1.8462		Tageszeit 1
-T:1-4/13-16=0.996/1.8462		Tageszeit 1
-T:1-4/12-13,16-18=0.996/1.8462	Tageszeit 2
-T:5/12-18=0.996/1.8462		Tageszeit 2
-T:E,H/06-20=0.996/2		Sparzeit
-T:*/20-06=0.996/2		Supersparzeit
-
-Z:17				Ausland Zone 12
-T:1-5/06-08,18-20=0.996/1.8	Sparzeit
-T:1-5/08-12=0.996/1.6364		Tageszeit 1
-T:1-4/13-16=0.996/1.6364		Tageszeit 1
-T:1-4/12-13,16-18=0.996/1.6364	Tageszeit 2
-T:5/12-18=0.996/1.6364		Tageszeit 2
-T:E,H/06-20=0.996/1.8		Sparzeit
-T:*/20-06=0.996/1.8		Supersparzeit
-
-Z:18				Ausland Zone 13
-T:1-5/06-08,18-20=0.996/1.3585	Sparzeit
-T:1-5/08-12=0.996/1.2203		Tageszeit 1
-T:1-4/13-16=0.996/1.2203		Tageszeit 1
-T:1-4/12-13,16-18=0.996/1.2203	Tageszeit 2
-T:5/12-18=0.996/1.2203		Tageszeit 2
-T:E,H/06-20=0.996/1.3585		Sparzeit
-T:*/20-06=0.996/1.3585		Supersparzeit
-
-Z:19				Ausland Zone 14
-T:1-5/06-08,18-20=0.996/9	Sparzeit
-T:1-5/08-12=0.996/8		Tageszeit 1
-T:1-4/13-16=0.996/8		Tageszeit 1
-T:1-4/12-13,16-18=0.996/8	Tageszeit 2
-T:5/12-18=0.996/8		Tageszeit 2
-T:E,H/06-20=0.996/9		Sparzeit
-T:*/20-06=0.996/9		Supersparzeit
-
-Z:20				Ausland Zone 15
-T:1-5/06-08,18-20=0.996/7.2	Sparzeit
-T:1-5/08-12=0.996/9		Tageszeit 1
-T:1-4/13-16=0.996/9		Tageszeit 1
-T:1-4/12-13,16-18=0.996/9	Tageszeit 2
-T:5/12-18=0.996/9		Tageszeit 2
-T:E,H/06-20=0.996/7.2		Sparzeit
-T:*/20-06=0.996/7.2		Supersparzeit
-
-Z:21				Handvermittelter Verkehr
-
-Z:22				Grenznahverkehr
-T:1-5/06-08,18-20=0.996/24	Sparzeit
-T:1-5/08-12=0.996/18		Tageszeit 1
-T:1-4/13-16=0.996/18		Tageszeit 1
-T:1-4/12-13,16-18=0.996/18	Tageszeit 2
-T:5/12-18=0.996/18		Tageszeit 2
-T:E,H/06-20=0.996/24		Sparzeit
-T:*/20-06=0.996/24		Supersparzeit
-
-Z:23				Teleinfo 04570
-T:1-5/06-08,18-20=0.996/10.795	Sparzeit
-T:1-5/08-12=0.996/10.795		Tageszeit 1
-T:1-4/13-16=0.996/10.795		Tageszeit 1
-T:1-4/12-13,16-18=0.996/10.795	Tageszeit 2
-T:5/12-18=0.996/10.795		Tageszeit 2
-T:E,H/06-20=0.996/10.795		Sparzeit
-T:*/20-06=0.996/10.795		Supersparzeit
-
-Z:24				Teleinfo 04500 
-T:1-5/06-08,18-20=0.996/7.2	Sparzeit
-T:1-5/08-12=0.996/7.2		Tageszeit 1
-T:1-4/13-16=0.996/7.2		Tageszeit 1
-T:1-4/12-13,16-18=0.996/7.2	Tageszeit 2
-T:5/12-18=0.996/7.2		Tageszeit 2
-T:E,H/06-20=0.996/7.2		Sparzeit
-T:*/20-06=0.996/7.2		Supersparzeit
-
-Z:25				Telebusiness 04590
-T:1-5/06-08,18-20=0.996/4.5	Sparzeit
-T:1-5/08-12=0.996/4.5		Tageszeit 1
-T:1-4/13-16=0.996/4.5		Tageszeit 1
-T:1-4/12-13,16-18=0.996/4.5	Tageszeit 2
-T:5/12-18=0.996/4.5		Tageszeit 2
-T:E,H/06-20=0.996/4.5		Sparzeit
-T:*/20-06=0.996/4.5		Supersparzeit
-
-Z:26				Teleinfo 04580
-T:1-5/06-08,18-20=0.996/2.6997	Sparzeit
-T:1-5/08-12=0.996/2.6997		Tageszeit 1
-T:1-4/13-16=0.996/2.6997		Tageszeit 1
-T:1-4/12-13,16-18=0.996/2.6997	Tageszeit 2
-T:5/12-18=0.996/2.6997		Tageszeit 2
-T:E,H/06-20=0.996/2.6997		Sparzeit
-T:*/20-06=0.996/2.6997		Supersparzeit
-
-Z:27				Businessline 0711x
-T:1-5/06-08,18-20=0.996/109.09	Sparzeit
-T:1-5/08-12=0.996/57.6		Tageszeit 1
-T:1-4/13-16=0.996/57.6		Tageszeit 1
-T:1-4/12-13,16-18=0.996/72	Tageszeit 2
-T:5/12-18=0.996/72		Tageszeit 2
-T:E,H/06-20=0.996/109.09		Sparzeit
-T:*/20-06=0.996/160		Supersparzeit
-
-Z:28				Businessline 0713x
-T:1-5/06-08,18-20=0.996/32	Sparzeit
-T:1-5/08-12=0.996/32		Tageszeit 1
-T:1-4/13-16=0.996/32		Tageszeit 1
-T:1-4/12-13,16-18=0.996/32	Tageszeit 2
-T:5/12-18=0.996/32		Tageszeit 2
-T:E,H/06-20=0.996/32		Sparzeit
-T:*/20-06=0.996/32		Supersparzeit
-
-Z:29				Businessline 0714x
-T:1-5/06-08,18-20=0.996/15	Sparzeit
-T:1-5/08-12=0.996/15		Tageszeit 1
-T:1-4/13-16=0.996/15		Tageszeit 1
-T:1-4/12-13,16-18=0.996/15	Tageszeit 2
-T:5/12-18=0.996/15		Tageszeit 2
-T:E,H/06-20=0.996/15		Sparzeit
-T:*/20-06=0.996/15		Supersparzeit
-
-Z:30				Votingline 0717x
-T:1-5/06-08,18-20=0.996/15	Sparzeit
-T:1-5/08-12=0.996/15		Tageszeit 1
-T:1-4/13-16=0.996/15		Tageszeit 1
-T:1-4/12-13,16-18=0.996/15	Tageszeit 2
-T:5/12-18=0.996/15		Tageszeit 2
-T:E,H/06-20=0.996/15		Sparzeit
-T:*/20-06=0.996/15		Supersparzeit
-
-P:00,4				PTA
-C:Name:				Post & Telekom Austria
-C:Tarif:			Geschäftstarif 2 (ATS 0.936 / Impuls)
-
-Z:1				Regionalzone
-T:1-5/06-08,18-20=0.936/109.09	Sparzeit
-T:1-5/08-12=0.936/57.6		Tageszeit 1
-T:1-4/13-16=0.936/57.6		Tageszeit 1
-T:1-4/12-13,16-18=0.936/72	Tageszeit 2
-T:5/12-18=0.936/72		Tageszeit 2
-T:E,H/06-20=0.936/109.09		Sparzeit
-T:*/20-06=0.936/160		Supersparzeit
-
-Z:2				Fernzone 1
-T:1-5/06-08,18-20=0.936/50	Sparzeit
-T:1-5/08-12=0.936/20		Tageszeit 1
-T:1-4/13-16=0.936/20		Tageszeit 1
-T:1-4/12-13,16-18=0.936/25	Tageszeit 2
-T:5/12-18=0.936/25		Tageszeit 2
-T:E,H/06-20=0.936/50		Sparzeit
-T:*/20-06=0.936/72		Supersparzeit
-
-Z:3				Fernzone 2
-T:1-5/06-08,18-20=0.936/40	Sparzeit
-T:1-5/08-12=0.936/15		Tageszeit 1
-T:1-4/13-16=0.936/15		Tageszeit 1
-T:1-4/12-13,16-18=0.936/19.2	Tageszeit 2
-T:5/12-18=0.936/19.2		Tageszeit 2
-T:E,H/06-20=0.936/40		Sparzeit
-T:*/20-06=0.936/50		Supersparzeit
-
-Z:4				Online-Tarif
-T:1-5/06-08,18-20=0.936/360	Sparzeit
-T:1-5/08-12=0.936/120		Tageszeit 1
-T:1-4/13-16=0.936/120		Tageszeit 1
-T:1-4/12-13,16-18=0.936/120	Tageszeit 2
-T:5/12-18=0.936/120		Tageszeit 2
-T:E,H/06-20=0.936/360		Sparzeit
-T:*/20-06=0.936/360		Supersparzeit
-
-Z:5				Mobilfunk
-T:1-5/06-08,18-20=0.936/19.2	Sparzeit
-T:1-5/08-12=0.936/12		Tageszeit 1
-T:1-4/13-16=0.936/12		Tageszeit 1
-T:1-4/12-13,16-18=0.936/12	Tageszeit 2
-T:5/12-18=0.936/12		Tageszeit 2
-T:E,H/06-20=0.936/19.2		Sparzeit
-T:*/20-06=0.936/19.2		Supersparzeit
-
-Z:6				Ausland Zone 1
-T:1-5/06-08,18-20=0.936/14.4	Sparzeit
-T:1-5/08-12=0.936/12		Tageszeit 1
-T:1-4/13-16=0.936/12		Tageszeit 1
-T:1-4/12-13,16-18=0.936/12	Tageszeit 2
-T:5/12-18=0.936/12		Tageszeit 2
-T:E,H/06-20=0.936/14.4		Sparzeit
-T:*/20-06=0.936/14.4		Supersparzeit
-
-Z:7				Ausland Zone 2
-T:1-5/06-08,18-20=0.936/12	Sparzeit
-T:1-5/08-12=0.936/9		Tageszeit 1
-T:1-4/13-16=0.936/9		Tageszeit 1
-T:1-4/12-13,16-18=0.936/9	Tageszeit 2
-T:5/12-18=0.936/9		Tageszeit 2
-T:E,H/06-20=0.936/12		Sparzeit
-T:*/20-06=0.936/12		Supersparzeit
-
-Z:8				Ausland Zone 3
-T:1-5/06-08,18-20=0.936/8	Sparzeit
-T:1-5/08-12=0.936/6.5455		Tageszeit 1
-T:1-4/13-16=0.936/6.5455		Tageszeit 1
-T:1-4/12-13,16-18=0.936/6.5455	Tageszeit 2
-T:5/12-18=0.936/6.5455		Tageszeit 2
-T:E,H/06-20=0.936/8		Sparzeit
-T:*/20-06=0.936/8		Supersparzeit
-
-Z:9				Ausland Zone 4
-T:1-5/06-08,18-20=0.936/6	Sparzeit
-T:1-5/08-12=0.936/5.1429		Tageszeit 1
-T:1-4/13-16=0.936/5.1429		Tageszeit 1
-T:1-4/12-13,16-18=0.936/5.1429	Tageszeit 2
-T:5/12-18=0.936/5.1429		Tageszeit 2
-T:E,H/06-20=0.936/6		Sparzeit
-T:*/20-06=0.936/6		Supersparzeit
-
-Z:10				Ausland Zone 5
-T:1-5/06-08,18-20=0.936/4.8	Sparzeit
-T:1-5/08-12=0.936/4.2353		Tageszeit 1
-T:1-4/13-16=0.936/4.2353		Tageszeit 1
-T:1-4/12-13,16-18=0.936/4.2353	Tageszeit 2
-T:5/12-18=0.936/4.2353		Tageszeit 2
-T:E,H/06-20=0.936/4.8		Sparzeit
-T:*/20-06=0.936/4.8		Supersparzeit
-
-Z:11				Ausland Zone 6
-T:1-5/06-08,18-20=0.936/4.2353	Sparzeit
-T:1-5/08-12=0.936/3.6		Tageszeit 1
-T:1-4/13-16=0.936/3.6		Tageszeit 1
-T:1-4/12-13,16-18=0.936/3.6	Tageszeit 2
-T:5/12-18=0.936/3.6		Tageszeit 2
-T:E,H/06-20=0.936/4.2353		Sparzeit
-T:*/20-06=0.936/4.2353		Supersparzeit
-
-Z:12				Ausland Zone 7
-T:1-5/06-08,18-20=0.936/3.6	Sparzeit
-T:1-5/08-12=0.936/3.1304		Tageszeit 1
-T:1-4/13-16=0.936/3.1304		Tageszeit 1
-T:1-4/12-13,16-18=0.936/3.1304	Tageszeit 2
-T:5/12-18=0.936/3.1304		Tageszeit 2
-T:E,H/06-20=0.936/3.6		Sparzeit
-T:*/20-06=0.936/3.6		Supersparzeit
-
-Z:13				Ausland Zone 8
-T:1-5/06-08,18-20=0.936/3	Sparzeit
-T:1-5/08-12=0.936/2.7692		Tageszeit 1
-T:1-4/13-16=0.936/2.7692		Tageszeit 1
-T:1-4/12-13,16-18=0.936/2.7692	Tageszeit 2
-T:5/12-18=0.936/2.7692		Tageszeit 2
-T:E,H/06-20=0.936/3		Sparzeit
-T:*/20-06=0.936/3		Supersparzeit
-
-Z:14				Ausland Zone 9
-T:1-5/06-08,18-20=0.936/2.5714	Sparzeit
-T:1-5/08-12=0.936/2.4		Tageszeit 1
-T:1-4/13-16=0.936/2.4		Tageszeit 1
-T:1-4/12-13,16-18=0.936/2.4	Tageszeit 2
-T:5/12-18=0.936/2.4		Tageszeit 2
-T:E,H/06-20=0.936/2.5714		Sparzeit
-T:*/20-06=0.936/2.5714		Supersparzeit
-
-Z:15				Ausland Zone 10
-T:1-5/06-08,18-20=0.936/2.25	Sparzeit
-T:1-5/08-12=0.936/2.1176		Tageszeit 1
-T:1-4/13-16=0.936/2.1176		Tageszeit 1
-T:1-4/12-13,16-18=0.936/2.1176	Tageszeit 2
-T:5/12-18=0.936/2.1176		Tageszeit 2
-T:E,H/06-20=0.936/2.25		Sparzeit
-T:*/20-06=0.936/2.25		Supersparzeit
-
-Z:16				Ausland Zone 11
-T:1-5/06-08,18-20=0.936/2	Sparzeit
-T:1-5/08-12=0.936/1.8462		Tageszeit 1
-T:1-4/13-16=0.936/1.8462		Tageszeit 1
-T:1-4/12-13,16-18=0.936/1.8462	Tageszeit 2
-T:5/12-18=0.936/1.8462		Tageszeit 2
-T:E,H/06-20=0.936/2		Sparzeit
-T:*/20-06=0.936/2		Supersparzeit
-
-Z:17				Ausland Zone 12
-T:1-5/06-08,18-20=0.936/1.8	Sparzeit
-T:1-5/08-12=0.936/1.6364		Tageszeit 1
-T:1-4/13-16=0.936/1.6364		Tageszeit 1
-T:1-4/12-13,16-18=0.936/1.6364	Tageszeit 2
-T:5/12-18=0.936/1.6364		Tageszeit 2
-T:E,H/06-20=0.936/1.8		Sparzeit
-T:*/20-06=0.936/1.8		Supersparzeit
-
-Z:18				Ausland Zone 13
-T:1-5/06-08,18-20=0.936/1.3585	Sparzeit
-T:1-5/08-12=0.936/1.2203		Tageszeit 1
-T:1-4/13-16=0.936/1.2203		Tageszeit 1
-T:1-4/12-13,16-18=0.936/1.2203	Tageszeit 2
-T:5/12-18=0.936/1.2203		Tageszeit 2
-T:E,H/06-20=0.936/1.3585		Sparzeit
-T:*/20-06=0.936/1.3585		Supersparzeit
-
-Z:19				Ausland Zone 14
-T:1-5/06-08,18-20=0.936/9	Sparzeit
-T:1-5/08-12=0.936/8		Tageszeit 1
-T:1-4/13-16=0.936/8		Tageszeit 1
-T:1-4/12-13,16-18=0.936/8	Tageszeit 2
-T:5/12-18=0.936/8		Tageszeit 2
-T:E,H/06-20=0.936/9		Sparzeit
-T:*/20-06=0.936/9		Supersparzeit
-
-Z:20				Ausland Zone 15
-T:1-5/06-08,18-20=0.936/7.2	Sparzeit
-T:1-5/08-12=0.936/9		Tageszeit 1
-T:1-4/13-16=0.936/9		Tageszeit 1
-T:1-4/12-13,16-18=0.936/9	Tageszeit 2
-T:5/12-18=0.936/9		Tageszeit 2
-T:E,H/06-20=0.936/7.2		Sparzeit
-T:*/20-06=0.936/7.2		Supersparzeit
-
-Z:21				Handvermittelter Verkehr
-
-Z:22				Grenznahverkehr
-T:1-5/06-08,18-20=0.936/24	Sparzeit
-T:1-5/08-12=0.936/18		Tageszeit 1
-T:1-4/13-16=0.936/18		Tageszeit 1
-T:1-4/12-13,16-18=0.936/18	Tageszeit 2
-T:5/12-18=0.936/18		Tageszeit 2
-T:E,H/06-20=0.936/24		Sparzeit
-T:*/20-06=0.936/24		Supersparzeit
-
-Z:23				Teleinfo 04570
-T:1-5/06-08,18-20=0.936/10.795	Sparzeit
-T:1-5/08-12=0.936/10.795		Tageszeit 1
-T:1-4/13-16=0.936/10.795		Tageszeit 1
-T:1-4/12-13,16-18=0.936/10.795	Tageszeit 2
-T:5/12-18=0.936/10.795		Tageszeit 2
-T:E,H/06-20=0.936/10.795		Sparzeit
-T:*/20-06=0.936/10.795		Supersparzeit
-
-Z:24				Teleinfo 04500 
-T:1-5/06-08,18-20=0.936/7.2	Sparzeit
-T:1-5/08-12=0.936/7.2		Tageszeit 1
-T:1-4/13-16=0.936/7.2		Tageszeit 1
-T:1-4/12-13,16-18=0.936/7.2	Tageszeit 2
-T:5/12-18=0.936/7.2		Tageszeit 2
-T:E,H/06-20=0.936/7.2		Sparzeit
-T:*/20-06=0.936/7.2		Supersparzeit
-
-Z:25				Telebusiness 04590
-T:1-5/06-08,18-20=0.936/4.5	Sparzeit
-T:1-5/08-12=0.936/4.5		Tageszeit 1
-T:1-4/13-16=0.936/4.5		Tageszeit 1
-T:1-4/12-13,16-18=0.936/4.5	Tageszeit 2
-T:5/12-18=0.936/4.5		Tageszeit 2
-T:E,H/06-20=0.936/4.5		Sparzeit
-T:*/20-06=0.936/4.5		Supersparzeit
-
-Z:26				Teleinfo 04580
-T:1-5/06-08,18-20=0.936/2.6997	Sparzeit
-T:1-5/08-12=0.936/2.6997		Tageszeit 1
-T:1-4/13-16=0.936/2.6997		Tageszeit 1
-T:1-4/12-13,16-18=0.936/2.6997	Tageszeit 2
-T:5/12-18=0.936/2.6997		Tageszeit 2
-T:E,H/06-20=0.936/2.6997		Sparzeit
-T:*/20-06=0.936/2.6997		Supersparzeit
-
-Z:27				Businessline 0711x
-T:1-5/06-08,18-20=0.936/109.09	Sparzeit
-T:1-5/08-12=0.936/57.6		Tageszeit 1
-T:1-4/13-16=0.936/57.6		Tageszeit 1
-T:1-4/12-13,16-18=0.936/72	Tageszeit 2
-T:5/12-18=0.936/72		Tageszeit 2
-T:E,H/06-20=0.936/109.09		Sparzeit
-T:*/20-06=0.936/160		Supersparzeit
-
-Z:28				Businessline 0713x
-T:1-5/06-08,18-20=0.936/32	Sparzeit
-T:1-5/08-12=0.936/32		Tageszeit 1
-T:1-4/13-16=0.936/32		Tageszeit 1
-T:1-4/12-13,16-18=0.936/32	Tageszeit 2
-T:5/12-18=0.936/32		Tageszeit 2
-T:E,H/06-20=0.936/32		Sparzeit
-T:*/20-06=0.936/32		Supersparzeit
-
-Z:29				Businessline 0714x
-T:1-5/06-08,18-20=0.936/15	Sparzeit
-T:1-5/08-12=0.936/15		Tageszeit 1
-T:1-4/13-16=0.936/15		Tageszeit 1
-T:1-4/12-13,16-18=0.936/15	Tageszeit 2
-T:5/12-18=0.936/15		Tageszeit 2
-T:E,H/06-20=0.936/15		Sparzeit
-T:*/20-06=0.936/15		Supersparzeit
-
-Z:30				Votingline 0717x
-T:1-5/06-08,18-20=0.936/15	Sparzeit
-T:1-5/08-12=0.936/15		Tageszeit 1
-T:1-4/13-16=0.936/15		Tageszeit 1
-T:1-4/12-13,16-18=0.936/15	Tageszeit 2
-T:5/12-18=0.936/15		Tageszeit 2
-T:E,H/06-20=0.936/15		Sparzeit
-T:*/20-06=0.936/15		Supersparzeit
+# created by rate-at.c
+
+# The information herein was machine-generated,
+# so do not contribute patches to this file.
+
+# Please contact Michael Reinelt <reinelt@eunet.at>
+# if you have any corrections or additions. Thanks!
+
+
+V:1.0-Austria [02-Apr-1999]
+
+P:05                                    tele2
+Z:1                                     National
+T:*/0-24=1.00(60)/60,1.00(60)/1         rund um die Uhr
+Z:2                                     Mobilfunknetz
+T:*/0-24=4.00(60)/60,4.00(60)/1         rund um die Uhr
+A:0663,0664,0676,0699
+Z:3                                     Europa 1 / USA
+T:*/0-24=3.50(60)/60,3.50(60)/1         rund um die Uhr
+A:+1,+30,+31,+32,+33,+34,+352,+353
+A:+358,+36,+377,+386,+39,+41,+4175
+A:+420,+421,+44,+45,+46,+47,+49
+Z:4                                     Europa 2
+T:*/0-24=6.00(60)/60,6.00(60)/1         rund um die Uhr
+A:+212,+213,+216,+298,+350,+351,+354
+A:+355,+356,+357,+359,+370,+371,+372
+A:+376,+378,+381,+385,+387,+389,+40
+A:+48,+7,+90,+972
+Z:5                                     Welt 1
+T:*/0-24=9.00(60)/60,9.00(60)/1         rund um die Uhr
+A:+61,+64,+65,+81 ,+82,+852
+Z:6                                     Welt 2
+T:*/0-24=19.00(60)/60,19.00(60)/1       rund um die Uhr
+A:+*
+
+P:12                                    1012
+Z:1                                     Nah
+T:1-5/8-18=1.00(60)/60,1.00(60)/1       Tag
+T:1-5/18-8=0.90(60)/60,0.90(60)/1       Nacht
+T:E,H/0-24=0.90(60)/60,0.90(60)/1       Nacht
+Z:2                                     Fern
+T:1-5/8-18=2.00(60)/60,2.00(60)/1       Tag
+T:1-5/18-8=0.90(60)/60,0.90(60)/1       Nacht
+T:E,H/0-24=0.90(60)/60,0.90(60)/1       Nacht
+Z:3                                     Mobilfunk
+T:1-5/8-18=4.00(60)/60,4.00(60)/1       Tag
+T:1-5/18-8=3.70(60)/60,3.70(60)/1       Nacht
+T:E,H/0-24=3.70(60)/60,3.70(60)/1       Nacht
+A:0663,0664,0676,0699
+Z:4                                     Deutschland spezial
+T:*/0-24=2.90(60)/60,2.90(60)/1         rund um die Uhr
+A:+49
+Z:5                                     Nachbarn
+T:*/0-24=3.70(60)/60,3.70(60)/1         rund um die Uhr
+A:+33,+36,+386,+39,+41,+4175,+420
+A:+421
+Z:6                                     Europa 1 + USA
+T:*/0-24=4.40(60)/60,4.40(60)/1         rund um die Uhr
+A:+1,+31,+32,+34,+352,+353,+358,+44
+A:+45,+46,+47
+Z:7                                     Europa 2
+T:*/0-24=5.60(60)/60,5.60(60)/1         rund um die Uhr
+A:+298,+356,+376,+377,+381,+385,+387
+Z:8                                     Europa 3
+T:*/0-24=6.10(60)/60,6.10(60)/1         rund um die Uhr
+A:+216,+30,+351,+355,+357,+359,+372
+A:+378,+380,+389,+40,+48,+7
+Z:9                                     Welt 1
+T:*/0-24=7.90(60)/60,7.90(60)/1         rund um die Uhr
+A:+212,+213,+350,+354,+370,+371,+61
+A:+64,+65,+7,+81,+82,+852,+90,+972
+Z:10                                    Welt 2
+T:*/0-24=24.90(60)/60,24.90(60)/1       rund um die Uhr
+A:+*
+
+P:69                                    ONE
+Z:1                                     Festnetz
+T:*/0-24=1.00(60)/30                    rund um die Uhr
+Z:2                                     ONE Mobilfunknetz
+T:*/0-24=2.00(60)/30                    rund um die Uhr
+A:0699
+Z:3                                     andere Mobilfunknetze
+T:*/0-24=4.00(60)/30                    rund um die Uhr
+A:0663,0664,0676,699
+Z:4                                     EU und Nachbarländer
+T:*/0-24=3.50(60)/30                    rund um die Uhr
+A:+31,+32,+33,+34,+352,+353,+358,+36
+A:+386,+39,+41,+4175,+420,+421,+44,+45
+A:+46,+47,+49
+Z:5                                     Internationale Zone 2
+T:*/0-24=5.50(60)/30                    rund um die Uhr
+A:+1,+1787,+30,+351,+354,+356,+376
+A:+377,+378,+379,+381,+385,+387,+389
+A:+48,+61,+64,+81
+Z:6                                     Internationale Zone 3
+T:*/0-24=8.00(60)/30                    rund um die Uhr
+A:+212,+213,+216,+350,+355,+357,+359
+A:+371,+372,+380,+40,+65,+7,+852,+90
+A:+972
+Z:7                                     Internationale Zone 4
+T:*/0-24=15.00(60)/30                   rund um die Uhr
+A:+1242,+1441,+1809,+1876,+218,+233
+A:+27,+299,+373,+374,+5,+52,+55,+56
+A:+58,+60,+673,+685,+7,+82,+853,+886
+A:+968,+971,+994,+995
+
+P:01,1                                  Telekom Austria
+C:Tarif:                                Minimumtarif (ATS 1.116 / Impuls)
+
+Z:1                                     Regionalzone
+T:1-5/06-08,18-20=1.116/109.09          Sparzeit
+T:1-5/08-12=1.116/57.6                  Tageszeit 1
+T:1-4/13-16=1.116/57.6                  Tageszeit 1
+T:1-4/12-13,16-18=1.116/72              Tageszeit 2
+T:5/12-18=1.116/72                      Tageszeit 2
+T:E,H/06-20=1.116/109.09                Sparzeit
+T:*/20-06=1.116/160                     Supersparzeit
+
+Z:2                                     Fernzone 1
+T:1-5/06-08,18-20=1.116/50              Sparzeit
+T:1-5/08-12=1.116/20                    Tageszeit 1
+T:1-4/13-16=1.116/20                    Tageszeit 1
+T:1-4/12-13,16-18=1.116/25              Tageszeit 2
+T:5/12-18=1.116/25                      Tageszeit 2
+T:E,H/06-20=1.116/50                    Sparzeit
+T:*/20-06=1.116/72                      Supersparzeit
+
+Z:3                                     Fernzone 2
+T:1-5/06-08,18-20=1.116/40              Sparzeit
+T:1-5/08-12=1.116/15                    Tageszeit 1
+T:1-4/13-16=1.116/15                    Tageszeit 1
+T:1-4/12-13,16-18=1.116/19.2            Tageszeit 2
+T:5/12-18=1.116/19.2                    Tageszeit 2
+T:E,H/06-20=1.116/40                    Sparzeit
+T:*/20-06=1.116/50                      Supersparzeit
+
+Z:4                                     Online-Tarif
+T:1-5/06-08,18-20=1.116/360             Sparzeit
+T:1-5/08-12=1.116/120                   Tageszeit 1
+T:1-4/13-16=1.116/120                   Tageszeit 1
+T:1-4/12-13,16-18=1.116/120             Tageszeit 2
+T:5/12-18=1.116/120                     Tageszeit 2
+T:E,H/06-20=1.116/360                   Sparzeit
+T:*/20-06=1.116/360                     Supersparzeit
+A:07189
+
+Z:5                                     Mobilfunk
+T:1-5/06-08,18-20=1.116/19.2            Sparzeit
+T:1-5/08-12=1.116/12                    Tageszeit 1
+T:1-4/13-16=1.116/12                    Tageszeit 1
+T:1-4/12-13,16-18=1.116/12              Tageszeit 2
+T:5/12-18=1.116/12                      Tageszeit 2
+T:E,H/06-20=1.116/19.2                  Sparzeit
+T:*/20-06=1.116/19.2                    Supersparzeit
+A:0663,0664,0676,0699
+
+Z:6                                     Ausland Zone 1
+T:1-5/06-08,18-20=1.116/14.4            Sparzeit
+T:1-5/08-12=1.116/12                    Tageszeit 1
+T:1-4/13-16=1.116/12                    Tageszeit 1
+T:1-4/12-13,16-18=1.116/12              Tageszeit 2
+T:5/12-18=1.116/12                      Tageszeit 2
+T:E,H/06-20=1.116/14.4                  Sparzeit
+T:*/20-06=1.116/14.4                    Supersparzeit
+A:+36,+386+389,+39,+41,+420,+49
+
+Z:7                                     Ausland Zone 2
+T:1-5/06-08,18-20=1.116/12              Sparzeit
+T:1-5/08-12=1.116/9                     Tageszeit 1
+T:1-4/13-16=1.116/9                     Tageszeit 1
+T:1-4/12-13,16-18=1.116/9               Tageszeit 2
+T:5/12-18=1.116/9                       Tageszeit 2
+T:E,H/06-20=1.116/12                    Sparzeit
+T:*/20-06=1.116/12                      Supersparzeit
+A:+212,+31,+32,+33,+34,+352,+353,+354
+A:+357,+358,+375,+380,+385,+44,+45,+46
+A:+47
+
+Z:8                                     Ausland Zone 3
+T:1-5/06-08,18-20=1.116/8               Sparzeit
+T:1-5/08-12=1.116/6.5455                Tageszeit 1
+T:1-4/13-16=1.116/6.5455                Tageszeit 1
+T:1-4/12-13,16-18=1.116/6.5455          Tageszeit 2
+T:5/12-18=1.116/6.5455                  Tageszeit 2
+T:E,H/06-20=1.116/8                     Sparzeit
+T:*/20-06=1.116/8                       Supersparzeit
+A:+298,+351,+7,+972
+
+Z:9                                     Ausland Zone 4
+T:1-5/06-08,18-20=1.116/6               Sparzeit
+T:1-5/08-12=1.116/5.1429                Tageszeit 1
+T:1-4/13-16=1.116/5.1429                Tageszeit 1
+T:1-4/12-13,16-18=1.116/5.1429          Tageszeit 2
+T:5/12-18=1.116/5.1429                  Tageszeit 2
+T:E,H/06-20=1.116/6                     Sparzeit
+T:*/20-06=1.116/6                       Supersparzeit
+A:+61,+886
+
+Z:10                                    Ausland Zone 5
+T:1-5/06-08,18-20=1.116/4.8             Sparzeit
+T:1-5/08-12=1.116/4.2353                Tageszeit 1
+T:1-4/13-16=1.116/4.2353                Tageszeit 1
+T:1-4/12-13,16-18=1.116/4.2353          Tageszeit 2
+T:5/12-18=1.116/4.2353                  Tageszeit 2
+T:E,H/06-20=1.116/4.8                   Sparzeit
+T:*/20-06=1.116/4.8                     Supersparzeit
+A:+27,+373,+64,+852,
+
+Z:11                                    Ausland Zone 6
+T:1-5/06-08,18-20=1.116/4.2353          Sparzeit
+T:1-5/08-12=1.116/3.6                   Tageszeit 1
+T:1-4/13-16=1.116/3.6                   Tageszeit 1
+T:1-4/12-13,16-18=1.116/3.6             Tageszeit 2
+T:5/12-18=1.116/3.6                     Tageszeit 2
+T:E,H/06-20=1.116/4.2353                Sparzeit
+T:*/20-06=1.116/4.2353                  Supersparzeit
+A:+60,+81
+
+Z:12                                    Ausland Zone 7
+T:1-5/06-08,18-20=1.116/3.6             Sparzeit
+T:1-5/08-12=1.116/3.1304                Tageszeit 1
+T:1-4/13-16=1.116/3.1304                Tageszeit 1
+T:1-4/12-13,16-18=1.116/3.1304          Tageszeit 2
+T:5/12-18=1.116/3.1304                  Tageszeit 2
+T:E,H/06-20=1.116/3.6                   Sparzeit
+T:*/20-06=1.116/3.6                     Supersparzeit
+A:+86
+
+Z:13                                    Ausland Zone 8
+T:1-5/06-08,18-20=1.116/3               Sparzeit
+T:1-5/08-12=1.116/2.7692                Tageszeit 1
+T:1-4/13-16=1.116/2.7692                Tageszeit 1
+T:1-4/12-13,16-18=1.116/2.7692          Tageszeit 2
+T:5/12-18=1.116/2.7692                  Tageszeit 2
+T:E,H/06-20=1.116/3                     Sparzeit
+T:*/20-06=1.116/3                       Supersparzeit
+A:+65,+971
+
+Z:14                                    Ausland Zone 9
+T:1-5/06-08,18-20=1.116/2.5714          Sparzeit
+T:1-5/08-12=1.116/2.4                   Tageszeit 1
+T:1-4/13-16=1.116/2.4                   Tageszeit 1
+T:1-4/12-13,16-18=1.116/2.4             Tageszeit 2
+T:5/12-18=1.116/2.4                     Tageszeit 2
+T:E,H/06-20=1.116/2.5714                Sparzeit
+T:*/20-06=1.116/2.5714                  Supersparzeit
+A:+973
+
+Z:15                                    Ausland Zone 10
+T:1-5/06-08,18-20=1.116/2.25            Sparzeit
+T:1-5/08-12=1.116/2.1176                Tageszeit 1
+T:1-4/13-16=1.116/2.1176                Tageszeit 1
+T:1-4/12-13,16-18=1.116/2.1176          Tageszeit 2
+T:5/12-18=1.116/2.1176                  Tageszeit 2
+T:E,H/06-20=1.116/2.25                  Sparzeit
+T:*/20-06=1.116/2.25                    Supersparzeit
+A:+54
+
+Z:16                                    Ausland Zone 11
+T:1-5/06-08,18-20=1.116/2               Sparzeit
+T:1-5/08-12=1.116/1.8462                Tageszeit 1
+T:1-4/13-16=1.116/1.8462                Tageszeit 1
+T:1-4/12-13,16-18=1.116/1.8462          Tageszeit 2
+T:5/12-18=1.116/1.8462                  Tageszeit 2
+T:E,H/06-20=1.116/2                     Sparzeit
+T:*/20-06=1.116/2                       Supersparzeit
+A:+62,+82,+91
+
+Z:17                                    Ausland Zone 12
+T:1-5/06-08,18-20=1.116/1.8             Sparzeit
+T:1-5/08-12=1.116/1.6364                Tageszeit 1
+T:1-4/13-16=1.116/1.6364                Tageszeit 1
+T:1-4/12-13,16-18=1.116/1.6364          Tageszeit 2
+T:5/12-18=1.116/1.6364                  Tageszeit 2
+T:E,H/06-20=1.116/1.8                   Sparzeit
+T:*/20-06=1.116/1.8                     Supersparzeit
+
+Z:18                                    Ausland Zone 13
+T:1-5/06-08,18-20=1.116/1.3585          Sparzeit
+T:1-5/08-12=1.116/1.2203                Tageszeit 1
+T:1-4/13-16=1.116/1.2203                Tageszeit 1
+T:1-4/12-13,16-18=1.116/1.2203          Tageszeit 2
+T:5/12-18=1.116/1.2203                  Tageszeit 2
+T:E,H/06-20=1.116/1.3585                Sparzeit
+T:*/20-06=1.116/1.3585                  Supersparzeit
+
+Z:19                                    Ausland Zone 14
+T:1-5/06-08,18-20=1.116/9               Sparzeit
+T:1-5/08-12=1.116/8                     Tageszeit 1
+T:1-4/13-16=1.116/8                     Tageszeit 1
+T:1-4/12-13,16-18=1.116/8               Tageszeit 2
+T:5/12-18=1.116/8                       Tageszeit 2
+T:E,H/06-20=1.116/9                     Sparzeit
+T:*/20-06=1.116/9                       Supersparzeit
+A:+1
+
+Z:20                                    Ausland Zone 15
+T:1-5/06-08,18-20=1.116/7.2             Sparzeit
+T:1-5/08-12=1.116/9                     Tageszeit 1
+T:1-4/13-16=1.116/9                     Tageszeit 1
+T:1-4/12-13,16-18=1.116/9               Tageszeit 2
+T:5/12-18=1.116/9                       Tageszeit 2
+T:E,H/06-20=1.116/7.2                   Sparzeit
+T:*/20-06=1.116/7.2                     Supersparzeit
+A:+30,+48
+
+Z:21                                    Handvermittelter Verkehr
+
+Z:22                                    Grenznahverkehr
+T:1-5/06-08,18-20=1.116/24              Sparzeit
+T:1-5/08-12=1.116/18                    Tageszeit 1
+T:1-4/13-16=1.116/18                    Tageszeit 1
+T:1-4/12-13,16-18=1.116/18              Tageszeit 2
+T:5/12-18=1.116/18                      Tageszeit 2
+T:E,H/06-20=1.116/24                    Sparzeit
+T:*/20-06=1.116/24                      Supersparzeit
+
+Z:23                                    Teleinfo 04570
+T:1-5/06-08,18-20=1.116/10.795          Sparzeit
+T:1-5/08-12=1.116/10.795                Tageszeit 1
+T:1-4/13-16=1.116/10.795                Tageszeit 1
+T:1-4/12-13,16-18=1.116/10.795          Tageszeit 2
+T:5/12-18=1.116/10.795                  Tageszeit 2
+T:E,H/06-20=1.116/10.795                Sparzeit
+T:*/20-06=1.116/10.795                  Supersparzeit
+A:04570
+
+Z:24                                    Teleinfo 04500 
+T:1-5/06-08,18-20=1.116/7.2             Sparzeit
+T:1-5/08-12=1.116/7.2                   Tageszeit 1
+T:1-4/13-16=1.116/7.2                   Tageszeit 1
+T:1-4/12-13,16-18=1.116/7.2             Tageszeit 2
+T:5/12-18=1.116/7.2                     Tageszeit 2
+T:E,H/06-20=1.116/7.2                   Sparzeit
+T:*/20-06=1.116/7.2                     Supersparzeit
+A:04500
+
+Z:25                                    Telebusiness 04590
+T:1-5/06-08,18-20=1.116/4.5             Sparzeit
+T:1-5/08-12=1.116/4.5                   Tageszeit 1
+T:1-4/13-16=1.116/4.5                   Tageszeit 1
+T:1-4/12-13,16-18=1.116/4.5             Tageszeit 2
+T:5/12-18=1.116/4.5                     Tageszeit 2
+T:E,H/06-20=1.116/4.5                   Sparzeit
+T:*/20-06=1.116/4.5                     Supersparzeit
+A:04590
+
+Z:26                                    Teleinfo 04580
+T:1-5/06-08,18-20=1.116/2.6997          Sparzeit
+T:1-5/08-12=1.116/2.6997                Tageszeit 1
+T:1-4/13-16=1.116/2.6997                Tageszeit 1
+T:1-4/12-13,16-18=1.116/2.6997          Tageszeit 2
+T:5/12-18=1.116/2.6997                  Tageszeit 2
+T:E,H/06-20=1.116/2.6997                Sparzeit
+T:*/20-06=1.116/2.6997                  Supersparzeit
+A:04580
+
+Z:27                                    Businessline 0711x
+T:1-5/06-08,18-20=1.116/109.09          Sparzeit
+T:1-5/08-12=1.116/57.6                  Tageszeit 1
+T:1-4/13-16=1.116/57.6                  Tageszeit 1
+T:1-4/12-13,16-18=1.116/72              Tageszeit 2
+T:5/12-18=1.116/72                      Tageszeit 2
+T:E,H/06-20=1.116/109.09                Sparzeit
+T:*/20-06=1.116/160                     Supersparzeit
+A:0711
+
+Z:28                                    Businessline 0713x
+T:1-5/06-08,18-20=1.116/32              Sparzeit
+T:1-5/08-12=1.116/32                    Tageszeit 1
+T:1-4/13-16=1.116/32                    Tageszeit 1
+T:1-4/12-13,16-18=1.116/32              Tageszeit 2
+T:5/12-18=1.116/32                      Tageszeit 2
+T:E,H/06-20=1.116/32                    Sparzeit
+T:*/20-06=1.116/32                      Supersparzeit
+A:0713
+
+Z:29                                    Businessline 0714x
+T:1-5/06-08,18-20=1.116/15              Sparzeit
+T:1-5/08-12=1.116/15                    Tageszeit 1
+T:1-4/13-16=1.116/15                    Tageszeit 1
+T:1-4/12-13,16-18=1.116/15              Tageszeit 2
+T:5/12-18=1.116/15                      Tageszeit 2
+T:E,H/06-20=1.116/15                    Sparzeit
+T:*/20-06=1.116/15                      Supersparzeit
+A:0714
+
+Z:30                                    Votingline 0717x
+T:1-5/06-08,18-20=1.116/15              Sparzeit
+T:1-5/08-12=1.116/15                    Tageszeit 1
+T:1-4/13-16=1.116/15                    Tageszeit 1
+T:1-4/12-13,16-18=1.116/15              Tageszeit 2
+T:5/12-18=1.116/15                      Tageszeit 2
+T:E,H/06-20=1.116/15                    Sparzeit
+T:*/20-06=1.116/15                      Supersparzeit
+A:0717
+
+Z:31                                    Freephone 0660
+T:*/0-24=0/72                           rund um die Uhr
+A:0660
+
+P:01,2                                  Telekom Austria
+C:Tarif:                                Standartarif (ATS 1.056 / Impuls)
+
+Z:1                                     Regionalzone
+T:1-5/06-08,18-20=1.056/109.09          Sparzeit
+T:1-5/08-12=1.056/57.6                  Tageszeit 1
+T:1-4/13-16=1.056/57.6                  Tageszeit 1
+T:1-4/12-13,16-18=1.056/72              Tageszeit 2
+T:5/12-18=1.056/72                      Tageszeit 2
+T:E,H/06-20=1.056/109.09                Sparzeit
+T:*/20-06=1.056/160                     Supersparzeit
+
+Z:2                                     Fernzone 1
+T:1-5/06-08,18-20=1.056/50              Sparzeit
+T:1-5/08-12=1.056/20                    Tageszeit 1
+T:1-4/13-16=1.056/20                    Tageszeit 1
+T:1-4/12-13,16-18=1.056/25              Tageszeit 2
+T:5/12-18=1.056/25                      Tageszeit 2
+T:E,H/06-20=1.056/50                    Sparzeit
+T:*/20-06=1.056/72                      Supersparzeit
+
+Z:3                                     Fernzone 2
+T:1-5/06-08,18-20=1.056/40              Sparzeit
+T:1-5/08-12=1.056/15                    Tageszeit 1
+T:1-4/13-16=1.056/15                    Tageszeit 1
+T:1-4/12-13,16-18=1.056/19.2            Tageszeit 2
+T:5/12-18=1.056/19.2                    Tageszeit 2
+T:E,H/06-20=1.056/40                    Sparzeit
+T:*/20-06=1.056/50                      Supersparzeit
+
+Z:4                                     Online-Tarif
+T:1-5/06-08,18-20=1.056/360             Sparzeit
+T:1-5/08-12=1.056/120                   Tageszeit 1
+T:1-4/13-16=1.056/120                   Tageszeit 1
+T:1-4/12-13,16-18=1.056/120             Tageszeit 2
+T:5/12-18=1.056/120                     Tageszeit 2
+T:E,H/06-20=1.056/360                   Sparzeit
+T:*/20-06=1.056/360                     Supersparzeit
+A:07189
+
+Z:5                                     Mobilfunk
+T:1-5/06-08,18-20=1.056/19.2            Sparzeit
+T:1-5/08-12=1.056/12                    Tageszeit 1
+T:1-4/13-16=1.056/12                    Tageszeit 1
+T:1-4/12-13,16-18=1.056/12              Tageszeit 2
+T:5/12-18=1.056/12                      Tageszeit 2
+T:E,H/06-20=1.056/19.2                  Sparzeit
+T:*/20-06=1.056/19.2                    Supersparzeit
+A:0663,0664,0676,0699
+
+Z:6                                     Ausland Zone 1
+T:1-5/06-08,18-20=1.056/14.4            Sparzeit
+T:1-5/08-12=1.056/12                    Tageszeit 1
+T:1-4/13-16=1.056/12                    Tageszeit 1
+T:1-4/12-13,16-18=1.056/12              Tageszeit 2
+T:5/12-18=1.056/12                      Tageszeit 2
+T:E,H/06-20=1.056/14.4                  Sparzeit
+T:*/20-06=1.056/14.4                    Supersparzeit
+A:+36,+386+389,+39,+41,+420,+49
+
+Z:7                                     Ausland Zone 2
+T:1-5/06-08,18-20=1.056/12              Sparzeit
+T:1-5/08-12=1.056/9                     Tageszeit 1
+T:1-4/13-16=1.056/9                     Tageszeit 1
+T:1-4/12-13,16-18=1.056/9               Tageszeit 2
+T:5/12-18=1.056/9                       Tageszeit 2
+T:E,H/06-20=1.056/12                    Sparzeit
+T:*/20-06=1.056/12                      Supersparzeit
+A:+212,+31,+32,+33,+34,+352,+353,+354
+A:+357,+358,+375,+380,+385,+44,+45,+46
+A:+47
+
+Z:8                                     Ausland Zone 3
+T:1-5/06-08,18-20=1.056/8               Sparzeit
+T:1-5/08-12=1.056/6.5455                Tageszeit 1
+T:1-4/13-16=1.056/6.5455                Tageszeit 1
+T:1-4/12-13,16-18=1.056/6.5455          Tageszeit 2
+T:5/12-18=1.056/6.5455                  Tageszeit 2
+T:E,H/06-20=1.056/8                     Sparzeit
+T:*/20-06=1.056/8                       Supersparzeit
+A:+298,+351,+7,+972
+
+Z:9                                     Ausland Zone 4
+T:1-5/06-08,18-20=1.056/6               Sparzeit
+T:1-5/08-12=1.056/5.1429                Tageszeit 1
+T:1-4/13-16=1.056/5.1429                Tageszeit 1
+T:1-4/12-13,16-18=1.056/5.1429          Tageszeit 2
+T:5/12-18=1.056/5.1429                  Tageszeit 2
+T:E,H/06-20=1.056/6                     Sparzeit
+T:*/20-06=1.056/6                       Supersparzeit
+A:+61,+886
+
+Z:10                                    Ausland Zone 5
+T:1-5/06-08,18-20=1.056/4.8             Sparzeit
+T:1-5/08-12=1.056/4.2353                Tageszeit 1
+T:1-4/13-16=1.056/4.2353                Tageszeit 1
+T:1-4/12-13,16-18=1.056/4.2353          Tageszeit 2
+T:5/12-18=1.056/4.2353                  Tageszeit 2
+T:E,H/06-20=1.056/4.8                   Sparzeit
+T:*/20-06=1.056/4.8                     Supersparzeit
+A:+27,+373,+64,+852,
+
+Z:11                                    Ausland Zone 6
+T:1-5/06-08,18-20=1.056/4.2353          Sparzeit
+T:1-5/08-12=1.056/3.6                   Tageszeit 1
+T:1-4/13-16=1.056/3.6                   Tageszeit 1
+T:1-4/12-13,16-18=1.056/3.6             Tageszeit 2
+T:5/12-18=1.056/3.6                     Tageszeit 2
+T:E,H/06-20=1.056/4.2353                Sparzeit
+T:*/20-06=1.056/4.2353                  Supersparzeit
+A:+60,+81
+
+Z:12                                    Ausland Zone 7
+T:1-5/06-08,18-20=1.056/3.6             Sparzeit
+T:1-5/08-12=1.056/3.1304                Tageszeit 1
+T:1-4/13-16=1.056/3.1304                Tageszeit 1
+T:1-4/12-13,16-18=1.056/3.1304          Tageszeit 2
+T:5/12-18=1.056/3.1304                  Tageszeit 2
+T:E,H/06-20=1.056/3.6                   Sparzeit
+T:*/20-06=1.056/3.6                     Supersparzeit
+A:+86
+
+Z:13                                    Ausland Zone 8
+T:1-5/06-08,18-20=1.056/3               Sparzeit
+T:1-5/08-12=1.056/2.7692                Tageszeit 1
+T:1-4/13-16=1.056/2.7692                Tageszeit 1
+T:1-4/12-13,16-18=1.056/2.7692          Tageszeit 2
+T:5/12-18=1.056/2.7692                  Tageszeit 2
+T:E,H/06-20=1.056/3                     Sparzeit
+T:*/20-06=1.056/3                       Supersparzeit
+A:+65,+971
+
+Z:14                                    Ausland Zone 9
+T:1-5/06-08,18-20=1.056/2.5714          Sparzeit
+T:1-5/08-12=1.056/2.4                   Tageszeit 1
+T:1-4/13-16=1.056/2.4                   Tageszeit 1
+T:1-4/12-13,16-18=1.056/2.4             Tageszeit 2
+T:5/12-18=1.056/2.4                     Tageszeit 2
+T:E,H/06-20=1.056/2.5714                Sparzeit
+T:*/20-06=1.056/2.5714                  Supersparzeit
+A:+973
+
+Z:15                                    Ausland Zone 10
+T:1-5/06-08,18-20=1.056/2.25            Sparzeit
+T:1-5/08-12=1.056/2.1176                Tageszeit 1
+T:1-4/13-16=1.056/2.1176                Tageszeit 1
+T:1-4/12-13,16-18=1.056/2.1176          Tageszeit 2
+T:5/12-18=1.056/2.1176                  Tageszeit 2
+T:E,H/06-20=1.056/2.25                  Sparzeit
+T:*/20-06=1.056/2.25                    Supersparzeit
+A:+54
+
+Z:16                                    Ausland Zone 11
+T:1-5/06-08,18-20=1.056/2               Sparzeit
+T:1-5/08-12=1.056/1.8462                Tageszeit 1
+T:1-4/13-16=1.056/1.8462                Tageszeit 1
+T:1-4/12-13,16-18=1.056/1.8462          Tageszeit 2
+T:5/12-18=1.056/1.8462                  Tageszeit 2
+T:E,H/06-20=1.056/2                     Sparzeit
+T:*/20-06=1.056/2                       Supersparzeit
+A:+62,+82,+91
+
+Z:17                                    Ausland Zone 12
+T:1-5/06-08,18-20=1.056/1.8             Sparzeit
+T:1-5/08-12=1.056/1.6364                Tageszeit 1
+T:1-4/13-16=1.056/1.6364                Tageszeit 1
+T:1-4/12-13,16-18=1.056/1.6364          Tageszeit 2
+T:5/12-18=1.056/1.6364                  Tageszeit 2
+T:E,H/06-20=1.056/1.8                   Sparzeit
+T:*/20-06=1.056/1.8                     Supersparzeit
+
+Z:18                                    Ausland Zone 13
+T:1-5/06-08,18-20=1.056/1.3585          Sparzeit
+T:1-5/08-12=1.056/1.2203                Tageszeit 1
+T:1-4/13-16=1.056/1.2203                Tageszeit 1
+T:1-4/12-13,16-18=1.056/1.2203          Tageszeit 2
+T:5/12-18=1.056/1.2203                  Tageszeit 2
+T:E,H/06-20=1.056/1.3585                Sparzeit
+T:*/20-06=1.056/1.3585                  Supersparzeit
+
+Z:19                                    Ausland Zone 14
+T:1-5/06-08,18-20=1.056/9               Sparzeit
+T:1-5/08-12=1.056/8                     Tageszeit 1
+T:1-4/13-16=1.056/8                     Tageszeit 1
+T:1-4/12-13,16-18=1.056/8               Tageszeit 2
+T:5/12-18=1.056/8                       Tageszeit 2
+T:E,H/06-20=1.056/9                     Sparzeit
+T:*/20-06=1.056/9                       Supersparzeit
+A:+1
+
+Z:20                                    Ausland Zone 15
+T:1-5/06-08,18-20=1.056/7.2             Sparzeit
+T:1-5/08-12=1.056/9                     Tageszeit 1
+T:1-4/13-16=1.056/9                     Tageszeit 1
+T:1-4/12-13,16-18=1.056/9               Tageszeit 2
+T:5/12-18=1.056/9                       Tageszeit 2
+T:E,H/06-20=1.056/7.2                   Sparzeit
+T:*/20-06=1.056/7.2                     Supersparzeit
+A:+30,+48
+
+Z:21                                    Handvermittelter Verkehr
+
+Z:22                                    Grenznahverkehr
+T:1-5/06-08,18-20=1.056/24              Sparzeit
+T:1-5/08-12=1.056/18                    Tageszeit 1
+T:1-4/13-16=1.056/18                    Tageszeit 1
+T:1-4/12-13,16-18=1.056/18              Tageszeit 2
+T:5/12-18=1.056/18                      Tageszeit 2
+T:E,H/06-20=1.056/24                    Sparzeit
+T:*/20-06=1.056/24                      Supersparzeit
+
+Z:23                                    Teleinfo 04570
+T:1-5/06-08,18-20=1.056/10.795          Sparzeit
+T:1-5/08-12=1.056/10.795                Tageszeit 1
+T:1-4/13-16=1.056/10.795                Tageszeit 1
+T:1-4/12-13,16-18=1.056/10.795          Tageszeit 2
+T:5/12-18=1.056/10.795                  Tageszeit 2
+T:E,H/06-20=1.056/10.795                Sparzeit
+T:*/20-06=1.056/10.795                  Supersparzeit
+A:04570
+
+Z:24                                    Teleinfo 04500 
+T:1-5/06-08,18-20=1.056/7.2             Sparzeit
+T:1-5/08-12=1.056/7.2                   Tageszeit 1
+T:1-4/13-16=1.056/7.2                   Tageszeit 1
+T:1-4/12-13,16-18=1.056/7.2             Tageszeit 2
+T:5/12-18=1.056/7.2                     Tageszeit 2
+T:E,H/06-20=1.056/7.2                   Sparzeit
+T:*/20-06=1.056/7.2                     Supersparzeit
+A:04500
+
+Z:25                                    Telebusiness 04590
+T:1-5/06-08,18-20=1.056/4.5             Sparzeit
+T:1-5/08-12=1.056/4.5                   Tageszeit 1
+T:1-4/13-16=1.056/4.5                   Tageszeit 1
+T:1-4/12-13,16-18=1.056/4.5             Tageszeit 2
+T:5/12-18=1.056/4.5                     Tageszeit 2
+T:E,H/06-20=1.056/4.5                   Sparzeit
+T:*/20-06=1.056/4.5                     Supersparzeit
+A:04590
+
+Z:26                                    Teleinfo 04580
+T:1-5/06-08,18-20=1.056/2.6997          Sparzeit
+T:1-5/08-12=1.056/2.6997                Tageszeit 1
+T:1-4/13-16=1.056/2.6997                Tageszeit 1
+T:1-4/12-13,16-18=1.056/2.6997          Tageszeit 2
+T:5/12-18=1.056/2.6997                  Tageszeit 2
+T:E,H/06-20=1.056/2.6997                Sparzeit
+T:*/20-06=1.056/2.6997                  Supersparzeit
+A:04580
+
+Z:27                                    Businessline 0711x
+T:1-5/06-08,18-20=1.056/109.09          Sparzeit
+T:1-5/08-12=1.056/57.6                  Tageszeit 1
+T:1-4/13-16=1.056/57.6                  Tageszeit 1
+T:1-4/12-13,16-18=1.056/72              Tageszeit 2
+T:5/12-18=1.056/72                      Tageszeit 2
+T:E,H/06-20=1.056/109.09                Sparzeit
+T:*/20-06=1.056/160                     Supersparzeit
+A:0711
+
+Z:28                                    Businessline 0713x
+T:1-5/06-08,18-20=1.056/32              Sparzeit
+T:1-5/08-12=1.056/32                    Tageszeit 1
+T:1-4/13-16=1.056/32                    Tageszeit 1
+T:1-4/12-13,16-18=1.056/32              Tageszeit 2
+T:5/12-18=1.056/32                      Tageszeit 2
+T:E,H/06-20=1.056/32                    Sparzeit
+T:*/20-06=1.056/32                      Supersparzeit
+A:0713
+
+Z:29                                    Businessline 0714x
+T:1-5/06-08,18-20=1.056/15              Sparzeit
+T:1-5/08-12=1.056/15                    Tageszeit 1
+T:1-4/13-16=1.056/15                    Tageszeit 1
+T:1-4/12-13,16-18=1.056/15              Tageszeit 2
+T:5/12-18=1.056/15                      Tageszeit 2
+T:E,H/06-20=1.056/15                    Sparzeit
+T:*/20-06=1.056/15                      Supersparzeit
+A:0714
+
+Z:30                                    Votingline 0717x
+T:1-5/06-08,18-20=1.056/15              Sparzeit
+T:1-5/08-12=1.056/15                    Tageszeit 1
+T:1-4/13-16=1.056/15                    Tageszeit 1
+T:1-4/12-13,16-18=1.056/15              Tageszeit 2
+T:5/12-18=1.056/15                      Tageszeit 2
+T:E,H/06-20=1.056/15                    Sparzeit
+T:*/20-06=1.056/15                      Supersparzeit
+A:0717
+
+Z:31                                    Freephone 0660
+T:*/0-24=0/72                           rund um die Uhr
+A:0660
+
+P:01,3                                  Telekom Austria
+C:Tarif:                                Geschäftstarif 1 (ATS 0.996 / Impuls)
+
+Z:1                                     Regionalzone
+T:1-5/06-08,18-20=0.996/109.09          Sparzeit
+T:1-5/08-12=0.996/57.6                  Tageszeit 1
+T:1-4/13-16=0.996/57.6                  Tageszeit 1
+T:1-4/12-13,16-18=0.996/72              Tageszeit 2
+T:5/12-18=0.996/72                      Tageszeit 2
+T:E,H/06-20=0.996/109.09                Sparzeit
+T:*/20-06=0.996/160                     Supersparzeit
+
+Z:2                                     Fernzone 1
+T:1-5/06-08,18-20=0.996/50              Sparzeit
+T:1-5/08-12=0.996/20                    Tageszeit 1
+T:1-4/13-16=0.996/20                    Tageszeit 1
+T:1-4/12-13,16-18=0.996/25              Tageszeit 2
+T:5/12-18=0.996/25                      Tageszeit 2
+T:E,H/06-20=0.996/50                    Sparzeit
+T:*/20-06=0.996/72                      Supersparzeit
+
+Z:3                                     Fernzone 2
+T:1-5/06-08,18-20=0.996/40              Sparzeit
+T:1-5/08-12=0.996/15                    Tageszeit 1
+T:1-4/13-16=0.996/15                    Tageszeit 1
+T:1-4/12-13,16-18=0.996/19.2            Tageszeit 2
+T:5/12-18=0.996/19.2                    Tageszeit 2
+T:E,H/06-20=0.996/40                    Sparzeit
+T:*/20-06=0.996/50                      Supersparzeit
+
+Z:4                                     Online-Tarif
+T:1-5/06-08,18-20=0.996/360             Sparzeit
+T:1-5/08-12=0.996/120                   Tageszeit 1
+T:1-4/13-16=0.996/120                   Tageszeit 1
+T:1-4/12-13,16-18=0.996/120             Tageszeit 2
+T:5/12-18=0.996/120                     Tageszeit 2
+T:E,H/06-20=0.996/360                   Sparzeit
+T:*/20-06=0.996/360                     Supersparzeit
+A:07189
+
+Z:5                                     Mobilfunk
+T:1-5/06-08,18-20=0.996/19.2            Sparzeit
+T:1-5/08-12=0.996/12                    Tageszeit 1
+T:1-4/13-16=0.996/12                    Tageszeit 1
+T:1-4/12-13,16-18=0.996/12              Tageszeit 2
+T:5/12-18=0.996/12                      Tageszeit 2
+T:E,H/06-20=0.996/19.2                  Sparzeit
+T:*/20-06=0.996/19.2                    Supersparzeit
+A:0663,0664,0676,0699
+
+Z:6                                     Ausland Zone 1
+T:1-5/06-08,18-20=0.996/14.4            Sparzeit
+T:1-5/08-12=0.996/12                    Tageszeit 1
+T:1-4/13-16=0.996/12                    Tageszeit 1
+T:1-4/12-13,16-18=0.996/12              Tageszeit 2
+T:5/12-18=0.996/12                      Tageszeit 2
+T:E,H/06-20=0.996/14.4                  Sparzeit
+T:*/20-06=0.996/14.4                    Supersparzeit
+A:+36,+386+389,+39,+41,+420,+49
+
+Z:7                                     Ausland Zone 2
+T:1-5/06-08,18-20=0.996/12              Sparzeit
+T:1-5/08-12=0.996/9                     Tageszeit 1
+T:1-4/13-16=0.996/9                     Tageszeit 1
+T:1-4/12-13,16-18=0.996/9               Tageszeit 2
+T:5/12-18=0.996/9                       Tageszeit 2
+T:E,H/06-20=0.996/12                    Sparzeit
+T:*/20-06=0.996/12                      Supersparzeit
+A:+212,+31,+32,+33,+34,+352,+353,+354
+A:+357,+358,+375,+380,+385,+44,+45,+46
+A:+47
+
+Z:8                                     Ausland Zone 3
+T:1-5/06-08,18-20=0.996/8               Sparzeit
+T:1-5/08-12=0.996/6.5455                Tageszeit 1
+T:1-4/13-16=0.996/6.5455                Tageszeit 1
+T:1-4/12-13,16-18=0.996/6.5455          Tageszeit 2
+T:5/12-18=0.996/6.5455                  Tageszeit 2
+T:E,H/06-20=0.996/8                     Sparzeit
+T:*/20-06=0.996/8                       Supersparzeit
+A:+298,+351,+7,+972
+
+Z:9                                     Ausland Zone 4
+T:1-5/06-08,18-20=0.996/6               Sparzeit
+T:1-5/08-12=0.996/5.1429                Tageszeit 1
+T:1-4/13-16=0.996/5.1429                Tageszeit 1
+T:1-4/12-13,16-18=0.996/5.1429          Tageszeit 2
+T:5/12-18=0.996/5.1429                  Tageszeit 2
+T:E,H/06-20=0.996/6                     Sparzeit
+T:*/20-06=0.996/6                       Supersparzeit
+A:+61,+886
+
+Z:10                                    Ausland Zone 5
+T:1-5/06-08,18-20=0.996/4.8             Sparzeit
+T:1-5/08-12=0.996/4.2353                Tageszeit 1
+T:1-4/13-16=0.996/4.2353                Tageszeit 1
+T:1-4/12-13,16-18=0.996/4.2353          Tageszeit 2
+T:5/12-18=0.996/4.2353                  Tageszeit 2
+T:E,H/06-20=0.996/4.8                   Sparzeit
+T:*/20-06=0.996/4.8                     Supersparzeit
+A:+27,+373,+64,+852,
+
+Z:11                                    Ausland Zone 6
+T:1-5/06-08,18-20=0.996/4.2353          Sparzeit
+T:1-5/08-12=0.996/3.6                   Tageszeit 1
+T:1-4/13-16=0.996/3.6                   Tageszeit 1
+T:1-4/12-13,16-18=0.996/3.6             Tageszeit 2
+T:5/12-18=0.996/3.6                     Tageszeit 2
+T:E,H/06-20=0.996/4.2353                Sparzeit
+T:*/20-06=0.996/4.2353                  Supersparzeit
+A:+60,+81
+
+Z:12                                    Ausland Zone 7
+T:1-5/06-08,18-20=0.996/3.6             Sparzeit
+T:1-5/08-12=0.996/3.1304                Tageszeit 1
+T:1-4/13-16=0.996/3.1304                Tageszeit 1
+T:1-4/12-13,16-18=0.996/3.1304          Tageszeit 2
+T:5/12-18=0.996/3.1304                  Tageszeit 2
+T:E,H/06-20=0.996/3.6                   Sparzeit
+T:*/20-06=0.996/3.6                     Supersparzeit
+A:+86
+
+Z:13                                    Ausland Zone 8
+T:1-5/06-08,18-20=0.996/3               Sparzeit
+T:1-5/08-12=0.996/2.7692                Tageszeit 1
+T:1-4/13-16=0.996/2.7692                Tageszeit 1
+T:1-4/12-13,16-18=0.996/2.7692          Tageszeit 2
+T:5/12-18=0.996/2.7692                  Tageszeit 2
+T:E,H/06-20=0.996/3                     Sparzeit
+T:*/20-06=0.996/3                       Supersparzeit
+A:+65,+971
+
+Z:14                                    Ausland Zone 9
+T:1-5/06-08,18-20=0.996/2.5714          Sparzeit
+T:1-5/08-12=0.996/2.4                   Tageszeit 1
+T:1-4/13-16=0.996/2.4                   Tageszeit 1
+T:1-4/12-13,16-18=0.996/2.4             Tageszeit 2
+T:5/12-18=0.996/2.4                     Tageszeit 2
+T:E,H/06-20=0.996/2.5714                Sparzeit
+T:*/20-06=0.996/2.5714                  Supersparzeit
+A:+973
+
+Z:15                                    Ausland Zone 10
+T:1-5/06-08,18-20=0.996/2.25            Sparzeit
+T:1-5/08-12=0.996/2.1176                Tageszeit 1
+T:1-4/13-16=0.996/2.1176                Tageszeit 1
+T:1-4/12-13,16-18=0.996/2.1176          Tageszeit 2
+T:5/12-18=0.996/2.1176                  Tageszeit 2
+T:E,H/06-20=0.996/2.25                  Sparzeit
+T:*/20-06=0.996/2.25                    Supersparzeit
+A:+54
+
+Z:16                                    Ausland Zone 11
+T:1-5/06-08,18-20=0.996/2               Sparzeit
+T:1-5/08-12=0.996/1.8462                Tageszeit 1
+T:1-4/13-16=0.996/1.8462                Tageszeit 1
+T:1-4/12-13,16-18=0.996/1.8462          Tageszeit 2
+T:5/12-18=0.996/1.8462                  Tageszeit 2
+T:E,H/06-20=0.996/2                     Sparzeit
+T:*/20-06=0.996/2                       Supersparzeit
+A:+62,+82,+91
+
+Z:17                                    Ausland Zone 12
+T:1-5/06-08,18-20=0.996/1.8             Sparzeit
+T:1-5/08-12=0.996/1.6364                Tageszeit 1
+T:1-4/13-16=0.996/1.6364                Tageszeit 1
+T:1-4/12-13,16-18=0.996/1.6364          Tageszeit 2
+T:5/12-18=0.996/1.6364                  Tageszeit 2
+T:E,H/06-20=0.996/1.8                   Sparzeit
+T:*/20-06=0.996/1.8                     Supersparzeit
+
+Z:18                                    Ausland Zone 13
+T:1-5/06-08,18-20=0.996/1.3585          Sparzeit
+T:1-5/08-12=0.996/1.2203                Tageszeit 1
+T:1-4/13-16=0.996/1.2203                Tageszeit 1
+T:1-4/12-13,16-18=0.996/1.2203          Tageszeit 2
+T:5/12-18=0.996/1.2203                  Tageszeit 2
+T:E,H/06-20=0.996/1.3585                Sparzeit
+T:*/20-06=0.996/1.3585                  Supersparzeit
+
+Z:19                                    Ausland Zone 14
+T:1-5/06-08,18-20=0.996/9               Sparzeit
+T:1-5/08-12=0.996/8                     Tageszeit 1
+T:1-4/13-16=0.996/8                     Tageszeit 1
+T:1-4/12-13,16-18=0.996/8               Tageszeit 2
+T:5/12-18=0.996/8                       Tageszeit 2
+T:E,H/06-20=0.996/9                     Sparzeit
+T:*/20-06=0.996/9                       Supersparzeit
+A:+1
+
+Z:20                                    Ausland Zone 15
+T:1-5/06-08,18-20=0.996/7.2             Sparzeit
+T:1-5/08-12=0.996/9                     Tageszeit 1
+T:1-4/13-16=0.996/9                     Tageszeit 1
+T:1-4/12-13,16-18=0.996/9               Tageszeit 2
+T:5/12-18=0.996/9                       Tageszeit 2
+T:E,H/06-20=0.996/7.2                   Sparzeit
+T:*/20-06=0.996/7.2                     Supersparzeit
+A:+30,+48
+
+Z:21                                    Handvermittelter Verkehr
+
+Z:22                                    Grenznahverkehr
+T:1-5/06-08,18-20=0.996/24              Sparzeit
+T:1-5/08-12=0.996/18                    Tageszeit 1
+T:1-4/13-16=0.996/18                    Tageszeit 1
+T:1-4/12-13,16-18=0.996/18              Tageszeit 2
+T:5/12-18=0.996/18                      Tageszeit 2
+T:E,H/06-20=0.996/24                    Sparzeit
+T:*/20-06=0.996/24                      Supersparzeit
+
+Z:23                                    Teleinfo 04570
+T:1-5/06-08,18-20=0.996/10.795          Sparzeit
+T:1-5/08-12=0.996/10.795                Tageszeit 1
+T:1-4/13-16=0.996/10.795                Tageszeit 1
+T:1-4/12-13,16-18=0.996/10.795          Tageszeit 2
+T:5/12-18=0.996/10.795                  Tageszeit 2
+T:E,H/06-20=0.996/10.795                Sparzeit
+T:*/20-06=0.996/10.795                  Supersparzeit
+A:04570
+
+Z:24                                    Teleinfo 04500 
+T:1-5/06-08,18-20=0.996/7.2             Sparzeit
+T:1-5/08-12=0.996/7.2                   Tageszeit 1
+T:1-4/13-16=0.996/7.2                   Tageszeit 1
+T:1-4/12-13,16-18=0.996/7.2             Tageszeit 2
+T:5/12-18=0.996/7.2                     Tageszeit 2
+T:E,H/06-20=0.996/7.2                   Sparzeit
+T:*/20-06=0.996/7.2                     Supersparzeit
+A:04500
+
+Z:25                                    Telebusiness 04590
+T:1-5/06-08,18-20=0.996/4.5             Sparzeit
+T:1-5/08-12=0.996/4.5                   Tageszeit 1
+T:1-4/13-16=0.996/4.5                   Tageszeit 1
+T:1-4/12-13,16-18=0.996/4.5             Tageszeit 2
+T:5/12-18=0.996/4.5                     Tageszeit 2
+T:E,H/06-20=0.996/4.5                   Sparzeit
+T:*/20-06=0.996/4.5                     Supersparzeit
+A:04590
+
+Z:26                                    Teleinfo 04580
+T:1-5/06-08,18-20=0.996/2.6997          Sparzeit
+T:1-5/08-12=0.996/2.6997                Tageszeit 1
+T:1-4/13-16=0.996/2.6997                Tageszeit 1
+T:1-4/12-13,16-18=0.996/2.6997          Tageszeit 2
+T:5/12-18=0.996/2.6997                  Tageszeit 2
+T:E,H/06-20=0.996/2.6997                Sparzeit
+T:*/20-06=0.996/2.6997                  Supersparzeit
+A:04580
+
+Z:27                                    Businessline 0711x
+T:1-5/06-08,18-20=0.996/109.09          Sparzeit
+T:1-5/08-12=0.996/57.6                  Tageszeit 1
+T:1-4/13-16=0.996/57.6                  Tageszeit 1
+T:1-4/12-13,16-18=0.996/72              Tageszeit 2
+T:5/12-18=0.996/72                      Tageszeit 2
+T:E,H/06-20=0.996/109.09                Sparzeit
+T:*/20-06=0.996/160                     Supersparzeit
+A:0711
+
+Z:28                                    Businessline 0713x
+T:1-5/06-08,18-20=0.996/32              Sparzeit
+T:1-5/08-12=0.996/32                    Tageszeit 1
+T:1-4/13-16=0.996/32                    Tageszeit 1
+T:1-4/12-13,16-18=0.996/32              Tageszeit 2
+T:5/12-18=0.996/32                      Tageszeit 2
+T:E,H/06-20=0.996/32                    Sparzeit
+T:*/20-06=0.996/32                      Supersparzeit
+A:0713
+
+Z:29                                    Businessline 0714x
+T:1-5/06-08,18-20=0.996/15              Sparzeit
+T:1-5/08-12=0.996/15                    Tageszeit 1
+T:1-4/13-16=0.996/15                    Tageszeit 1
+T:1-4/12-13,16-18=0.996/15              Tageszeit 2
+T:5/12-18=0.996/15                      Tageszeit 2
+T:E,H/06-20=0.996/15                    Sparzeit
+T:*/20-06=0.996/15                      Supersparzeit
+A:0714
+
+Z:30                                    Votingline 0717x
+T:1-5/06-08,18-20=0.996/15              Sparzeit
+T:1-5/08-12=0.996/15                    Tageszeit 1
+T:1-4/13-16=0.996/15                    Tageszeit 1
+T:1-4/12-13,16-18=0.996/15              Tageszeit 2
+T:5/12-18=0.996/15                      Tageszeit 2
+T:E,H/06-20=0.996/15                    Sparzeit
+T:*/20-06=0.996/15                      Supersparzeit
+A:0717
+
+Z:31                                    Freephone 0660
+T:*/0-24=0/72                           rund um die Uhr
+A:0660
+
+P:01,4                                  Telekom Austria
+C:Tarif:                                Geschäftstarif 2 (ATS 0.936 / Impuls)
+
+Z:1                                     Regionalzone
+T:1-5/06-08,18-20=0.936/109.09          Sparzeit
+T:1-5/08-12=0.936/57.6                  Tageszeit 1
+T:1-4/13-16=0.936/57.6                  Tageszeit 1
+T:1-4/12-13,16-18=0.936/72              Tageszeit 2
+T:5/12-18=0.936/72                      Tageszeit 2
+T:E,H/06-20=0.936/109.09                Sparzeit
+T:*/20-06=0.936/160                     Supersparzeit
+
+Z:2                                     Fernzone 1
+T:1-5/06-08,18-20=0.936/50              Sparzeit
+T:1-5/08-12=0.936/20                    Tageszeit 1
+T:1-4/13-16=0.936/20                    Tageszeit 1
+T:1-4/12-13,16-18=0.936/25              Tageszeit 2
+T:5/12-18=0.936/25                      Tageszeit 2
+T:E,H/06-20=0.936/50                    Sparzeit
+T:*/20-06=0.936/72                      Supersparzeit
+
+Z:3                                     Fernzone 2
+T:1-5/06-08,18-20=0.936/40              Sparzeit
+T:1-5/08-12=0.936/15                    Tageszeit 1
+T:1-4/13-16=0.936/15                    Tageszeit 1
+T:1-4/12-13,16-18=0.936/19.2            Tageszeit 2
+T:5/12-18=0.936/19.2                    Tageszeit 2
+T:E,H/06-20=0.936/40                    Sparzeit
+T:*/20-06=0.936/50                      Supersparzeit
+
+Z:4                                     Online-Tarif
+T:1-5/06-08,18-20=0.936/360             Sparzeit
+T:1-5/08-12=0.936/120                   Tageszeit 1
+T:1-4/13-16=0.936/120                   Tageszeit 1
+T:1-4/12-13,16-18=0.936/120             Tageszeit 2
+T:5/12-18=0.936/120                     Tageszeit 2
+T:E,H/06-20=0.936/360                   Sparzeit
+T:*/20-06=0.936/360                     Supersparzeit
+A:07189
+
+Z:5                                     Mobilfunk
+T:1-5/06-08,18-20=0.936/19.2            Sparzeit
+T:1-5/08-12=0.936/12                    Tageszeit 1
+T:1-4/13-16=0.936/12                    Tageszeit 1
+T:1-4/12-13,16-18=0.936/12              Tageszeit 2
+T:5/12-18=0.936/12                      Tageszeit 2
+T:E,H/06-20=0.936/19.2                  Sparzeit
+T:*/20-06=0.936/19.2                    Supersparzeit
+A:0663,0664,0676,0699
+
+Z:6                                     Ausland Zone 1
+T:1-5/06-08,18-20=0.936/14.4            Sparzeit
+T:1-5/08-12=0.936/12                    Tageszeit 1
+T:1-4/13-16=0.936/12                    Tageszeit 1
+T:1-4/12-13,16-18=0.936/12              Tageszeit 2
+T:5/12-18=0.936/12                      Tageszeit 2
+T:E,H/06-20=0.936/14.4                  Sparzeit
+T:*/20-06=0.936/14.4                    Supersparzeit
+A:+36,+386+389,+39,+41,+420,+49
+
+Z:7                                     Ausland Zone 2
+T:1-5/06-08,18-20=0.936/12              Sparzeit
+T:1-5/08-12=0.936/9                     Tageszeit 1
+T:1-4/13-16=0.936/9                     Tageszeit 1
+T:1-4/12-13,16-18=0.936/9               Tageszeit 2
+T:5/12-18=0.936/9                       Tageszeit 2
+T:E,H/06-20=0.936/12                    Sparzeit
+T:*/20-06=0.936/12                      Supersparzeit
+A:+212,+31,+32,+33,+34,+352,+353,+354
+A:+357,+358,+375,+380,+385,+44,+45,+46
+A:+47
+
+Z:8                                     Ausland Zone 3
+T:1-5/06-08,18-20=0.936/8               Sparzeit
+T:1-5/08-12=0.936/6.5455                Tageszeit 1
+T:1-4/13-16=0.936/6.5455                Tageszeit 1
+T:1-4/12-13,16-18=0.936/6.5455          Tageszeit 2
+T:5/12-18=0.936/6.5455                  Tageszeit 2
+T:E,H/06-20=0.936/8                     Sparzeit
+T:*/20-06=0.936/8                       Supersparzeit
+A:+298,+351,+7,+972
+
+Z:9                                     Ausland Zone 4
+T:1-5/06-08,18-20=0.936/6               Sparzeit
+T:1-5/08-12=0.936/5.1429                Tageszeit 1
+T:1-4/13-16=0.936/5.1429                Tageszeit 1
+T:1-4/12-13,16-18=0.936/5.1429          Tageszeit 2
+T:5/12-18=0.936/5.1429                  Tageszeit 2
+T:E,H/06-20=0.936/6                     Sparzeit
+T:*/20-06=0.936/6                       Supersparzeit
+A:+61,+886
+
+Z:10                                    Ausland Zone 5
+T:1-5/06-08,18-20=0.936/4.8             Sparzeit
+T:1-5/08-12=0.936/4.2353                Tageszeit 1
+T:1-4/13-16=0.936/4.2353                Tageszeit 1
+T:1-4/12-13,16-18=0.936/4.2353          Tageszeit 2
+T:5/12-18=0.936/4.2353                  Tageszeit 2
+T:E,H/06-20=0.936/4.8                   Sparzeit
+T:*/20-06=0.936/4.8                     Supersparzeit
+A:+27,+373,+64,+852,
+
+Z:11                                    Ausland Zone 6
+T:1-5/06-08,18-20=0.936/4.2353          Sparzeit
+T:1-5/08-12=0.936/3.6                   Tageszeit 1
+T:1-4/13-16=0.936/3.6                   Tageszeit 1
+T:1-4/12-13,16-18=0.936/3.6             Tageszeit 2
+T:5/12-18=0.936/3.6                     Tageszeit 2
+T:E,H/06-20=0.936/4.2353                Sparzeit
+T:*/20-06=0.936/4.2353                  Supersparzeit
+A:+60,+81
+
+Z:12                                    Ausland Zone 7
+T:1-5/06-08,18-20=0.936/3.6             Sparzeit
+T:1-5/08-12=0.936/3.1304                Tageszeit 1
+T:1-4/13-16=0.936/3.1304                Tageszeit 1
+T:1-4/12-13,16-18=0.936/3.1304          Tageszeit 2
+T:5/12-18=0.936/3.1304                  Tageszeit 2
+T:E,H/06-20=0.936/3.6                   Sparzeit
+T:*/20-06=0.936/3.6                     Supersparzeit
+A:+86
+
+Z:13                                    Ausland Zone 8
+T:1-5/06-08,18-20=0.936/3               Sparzeit
+T:1-5/08-12=0.936/2.7692                Tageszeit 1
+T:1-4/13-16=0.936/2.7692                Tageszeit 1
+T:1-4/12-13,16-18=0.936/2.7692          Tageszeit 2
+T:5/12-18=0.936/2.7692                  Tageszeit 2
+T:E,H/06-20=0.936/3                     Sparzeit
+T:*/20-06=0.936/3                       Supersparzeit
+A:+65,+971
+
+Z:14                                    Ausland Zone 9
+T:1-5/06-08,18-20=0.936/2.5714          Sparzeit
+T:1-5/08-12=0.936/2.4                   Tageszeit 1
+T:1-4/13-16=0.936/2.4                   Tageszeit 1
+T:1-4/12-13,16-18=0.936/2.4             Tageszeit 2
+T:5/12-18=0.936/2.4                     Tageszeit 2
+T:E,H/06-20=0.936/2.5714                Sparzeit
+T:*/20-06=0.936/2.5714                  Supersparzeit
+A:+973
+
+Z:15                                    Ausland Zone 10
+T:1-5/06-08,18-20=0.936/2.25            Sparzeit
+T:1-5/08-12=0.936/2.1176                Tageszeit 1
+T:1-4/13-16=0.936/2.1176                Tageszeit 1
+T:1-4/12-13,16-18=0.936/2.1176          Tageszeit 2
+T:5/12-18=0.936/2.1176                  Tageszeit 2
+T:E,H/06-20=0.936/2.25                  Sparzeit
+T:*/20-06=0.936/2.25                    Supersparzeit
+A:+54
+
+Z:16                                    Ausland Zone 11
+T:1-5/06-08,18-20=0.936/2               Sparzeit
+T:1-5/08-12=0.936/1.8462                Tageszeit 1
+T:1-4/13-16=0.936/1.8462                Tageszeit 1
+T:1-4/12-13,16-18=0.936/1.8462          Tageszeit 2
+T:5/12-18=0.936/1.8462                  Tageszeit 2
+T:E,H/06-20=0.936/2                     Sparzeit
+T:*/20-06=0.936/2                       Supersparzeit
+A:+62,+82,+91
+
+Z:17                                    Ausland Zone 12
+T:1-5/06-08,18-20=0.936/1.8             Sparzeit
+T:1-5/08-12=0.936/1.6364                Tageszeit 1
+T:1-4/13-16=0.936/1.6364                Tageszeit 1
+T:1-4/12-13,16-18=0.936/1.6364          Tageszeit 2
+T:5/12-18=0.936/1.6364                  Tageszeit 2
+T:E,H/06-20=0.936/1.8                   Sparzeit
+T:*/20-06=0.936/1.8                     Supersparzeit
+
+Z:18                                    Ausland Zone 13
+T:1-5/06-08,18-20=0.936/1.3585          Sparzeit
+T:1-5/08-12=0.936/1.2203                Tageszeit 1
+T:1-4/13-16=0.936/1.2203                Tageszeit 1
+T:1-4/12-13,16-18=0.936/1.2203          Tageszeit 2
+T:5/12-18=0.936/1.2203                  Tageszeit 2
+T:E,H/06-20=0.936/1.3585                Sparzeit
+T:*/20-06=0.936/1.3585                  Supersparzeit
+
+Z:19                                    Ausland Zone 14
+T:1-5/06-08,18-20=0.936/9               Sparzeit
+T:1-5/08-12=0.936/8                     Tageszeit 1
+T:1-4/13-16=0.936/8                     Tageszeit 1
+T:1-4/12-13,16-18=0.936/8               Tageszeit 2
+T:5/12-18=0.936/8                       Tageszeit 2
+T:E,H/06-20=0.936/9                     Sparzeit
+T:*/20-06=0.936/9                       Supersparzeit
+A:+1
+
+Z:20                                    Ausland Zone 15
+T:1-5/06-08,18-20=0.936/7.2             Sparzeit
+T:1-5/08-12=0.936/9                     Tageszeit 1
+T:1-4/13-16=0.936/9                     Tageszeit 1
+T:1-4/12-13,16-18=0.936/9               Tageszeit 2
+T:5/12-18=0.936/9                       Tageszeit 2
+T:E,H/06-20=0.936/7.2                   Sparzeit
+T:*/20-06=0.936/7.2                     Supersparzeit
+A:+30,+48
+
+Z:21                                    Handvermittelter Verkehr
+
+Z:22                                    Grenznahverkehr
+T:1-5/06-08,18-20=0.936/24              Sparzeit
+T:1-5/08-12=0.936/18                    Tageszeit 1
+T:1-4/13-16=0.936/18                    Tageszeit 1
+T:1-4/12-13,16-18=0.936/18              Tageszeit 2
+T:5/12-18=0.936/18                      Tageszeit 2
+T:E,H/06-20=0.936/24                    Sparzeit
+T:*/20-06=0.936/24                      Supersparzeit
+
+Z:23                                    Teleinfo 04570
+T:1-5/06-08,18-20=0.936/10.795          Sparzeit
+T:1-5/08-12=0.936/10.795                Tageszeit 1
+T:1-4/13-16=0.936/10.795                Tageszeit 1
+T:1-4/12-13,16-18=0.936/10.795          Tageszeit 2
+T:5/12-18=0.936/10.795                  Tageszeit 2
+T:E,H/06-20=0.936/10.795                Sparzeit
+T:*/20-06=0.936/10.795                  Supersparzeit
+A:04570
+
+Z:24                                    Teleinfo 04500 
+T:1-5/06-08,18-20=0.936/7.2             Sparzeit
+T:1-5/08-12=0.936/7.2                   Tageszeit 1
+T:1-4/13-16=0.936/7.2                   Tageszeit 1
+T:1-4/12-13,16-18=0.936/7.2             Tageszeit 2
+T:5/12-18=0.936/7.2                     Tageszeit 2
+T:E,H/06-20=0.936/7.2                   Sparzeit
+T:*/20-06=0.936/7.2                     Supersparzeit
+A:04500
+
+Z:25                                    Telebusiness 04590
+T:1-5/06-08,18-20=0.936/4.5             Sparzeit
+T:1-5/08-12=0.936/4.5                   Tageszeit 1
+T:1-4/13-16=0.936/4.5                   Tageszeit 1
+T:1-4/12-13,16-18=0.936/4.5             Tageszeit 2
+T:5/12-18=0.936/4.5                     Tageszeit 2
+T:E,H/06-20=0.936/4.5                   Sparzeit
+T:*/20-06=0.936/4.5                     Supersparzeit
+A:04590
+
+Z:26                                    Teleinfo 04580
+T:1-5/06-08,18-20=0.936/2.6997          Sparzeit
+T:1-5/08-12=0.936/2.6997                Tageszeit 1
+T:1-4/13-16=0.936/2.6997                Tageszeit 1
+T:1-4/12-13,16-18=0.936/2.6997          Tageszeit 2
+T:5/12-18=0.936/2.6997                  Tageszeit 2
+T:E,H/06-20=0.936/2.6997                Sparzeit
+T:*/20-06=0.936/2.6997                  Supersparzeit
+A:04580
+
+Z:27                                    Businessline 0711x
+T:1-5/06-08,18-20=0.936/109.09          Sparzeit
+T:1-5/08-12=0.936/57.6                  Tageszeit 1
+T:1-4/13-16=0.936/57.6                  Tageszeit 1
+T:1-4/12-13,16-18=0.936/72              Tageszeit 2
+T:5/12-18=0.936/72                      Tageszeit 2
+T:E,H/06-20=0.936/109.09                Sparzeit
+T:*/20-06=0.936/160                     Supersparzeit
+A:0711
+
+Z:28                                    Businessline 0713x
+T:1-5/06-08,18-20=0.936/32              Sparzeit
+T:1-5/08-12=0.936/32                    Tageszeit 1
+T:1-4/13-16=0.936/32                    Tageszeit 1
+T:1-4/12-13,16-18=0.936/32              Tageszeit 2
+T:5/12-18=0.936/32                      Tageszeit 2
+T:E,H/06-20=0.936/32                    Sparzeit
+T:*/20-06=0.936/32                      Supersparzeit
+A:0713
+
+Z:29                                    Businessline 0714x
+T:1-5/06-08,18-20=0.936/15              Sparzeit
+T:1-5/08-12=0.936/15                    Tageszeit 1
+T:1-4/13-16=0.936/15                    Tageszeit 1
+T:1-4/12-13,16-18=0.936/15              Tageszeit 2
+T:5/12-18=0.936/15                      Tageszeit 2
+T:E,H/06-20=0.936/15                    Sparzeit
+T:*/20-06=0.936/15                      Supersparzeit
+A:0714
+
+Z:30                                    Votingline 0717x
+T:1-5/06-08,18-20=0.936/15              Sparzeit
+T:1-5/08-12=0.936/15                    Tageszeit 1
+T:1-4/13-16=0.936/15                    Tageszeit 1
+T:1-4/12-13,16-18=0.936/15              Tageszeit 2
+T:5/12-18=0.936/15                      Tageszeit 2
+T:E,H/06-20=0.936/15                    Sparzeit
+T:*/20-06=0.936/15                      Supersparzeit
+A:0717
+
+Z:31                                    Freephone 0660
+T:*/0-24=0/72                           rund um die Uhr
+A:0660

@@ -7,19 +7,21 @@ W:4		Donnerstag
 W:5		Freitag
 W:6		Samstag
 W:7		Sonntag
+W:E		Wochenende
+W:H		Feiertag
 
 D:1.1		Neujahr
-D:6.1		Hl. Drei Könige
+D:6.1		Dreikönigstag
 D:easter	Ostersonntag
 D:easter+1	Ostermontag
-D:1.5		1. Mai
+D:1.5		Staatsfeiertag
 D:easter+39	Christi Himmelfahrt
 D:easter+49	Pfingstsonntag
 D:easter+50	Pfingstmontag
-#D:easter+60	Fronleichnam
-#D:15.8		Maria Himmelfahrt
+D:easter+60	Fronleichnam
+D:15.8		Maria Himmelfahrt
 D:26.10		Nationalfeiertag
 D:1.11		Allerheiligen
 D:8.12		Maria Empfängnis
-D:25.12		Christtag
-D:26.12		2. Weihnachtstag
+D:25.12		1. Weihnachtsfeiertag
+D:26.12		2. Weihnachtsfeiertag

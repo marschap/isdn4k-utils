@@ -1,4 +1,4 @@
-/* $Id: tools.c,v 1.22 1999/04/03 12:47:45 akool Exp $
+/* $Id: tools.c,v 1.23 1999/04/10 16:36:46 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -19,6 +19,30 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools.c,v $
+ * Revision 1.23  1999/04/10 16:36:46  akool
+ * isdnlog Version 3.13
+ *
+ * WARNING: This is pre-ALPHA-dont-ever-use-Code!
+ * 	 "tarif.dat" (aka "rate-xx.dat"): the next generation!
+ *
+ * You have to do the following to test this version:
+ *   cp /usr/src/isdn4k-utils/isdnlog/holiday-de.dat /etc/isdn
+ *   cp /usr/src/isdn4k-utils/isdnlog/rate-de.dat /usr/lib/isdn
+ *   cp /usr/src/isdn4k-utils/isdnlog/samples/rate.conf.de /etc/isdn/rate.conf
+ *
+ * After that, add the following entries to your "/etc/isdn/isdn.conf" or
+ * "/etc/isdn/callerid.conf" file:
+ *
+ * [ISDNLOG]
+ * SPECIALNUMBERS = /usr/lib/isdn/sonderrufnummern.dat
+ * HOLIDAYS       = /usr/lib/isdn/holiday-de.dat
+ * RATEFILE       = /usr/lib/isdn/rate-de.dat
+ * RATECONF       = /etc/isdn/rate.conf
+ *
+ * Please replace any "de" with your country code ("at", "ch", "nl")
+ *
+ * Good luck (Andreas Kool and Michael Reinelt)
+ *
  * Revision 1.22  1999/04/03 12:47:45  akool
  * - isdnlog Version 3.12
  * - "%B" tag in ILABEL/OLABEL corrected
@@ -956,7 +980,7 @@ go:   	         if (!ndigit)
 
       case 'P' : s = sx;
       	         if (call[chan].provider != -1)
-      	       	   sprintf(sx, " via %s", Providername(call[chan].provider));
+      	       	   sprintf(sx, " via %s", getProvidername(call[chan].provider));
       		 else
                    *sx = 0;
                  p = s + strlen(s);

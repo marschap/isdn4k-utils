@@ -1,4 +1,4 @@
-/* $Id: isdnconf.c,v 1.17 1999/04/03 12:46:54 akool Exp $
+/* $Id: isdnconf.c,v 1.18 1999/04/10 16:35:14 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -20,6 +20,30 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnconf.c,v $
+ * Revision 1.18  1999/04/10 16:35:14  akool
+ * isdnlog Version 3.13
+ *
+ * WARNING: This is pre-ALPHA-dont-ever-use-Code!
+ * 	 "tarif.dat" (aka "rate-xx.dat"): the next generation!
+ *
+ * You have to do the following to test this version:
+ *   cp /usr/src/isdn4k-utils/isdnlog/holiday-de.dat /etc/isdn
+ *   cp /usr/src/isdn4k-utils/isdnlog/rate-de.dat /usr/lib/isdn
+ *   cp /usr/src/isdn4k-utils/isdnlog/samples/rate.conf.de /etc/isdn/rate.conf
+ *
+ * After that, add the following entries to your "/etc/isdn/isdn.conf" or
+ * "/etc/isdn/callerid.conf" file:
+ *
+ * [ISDNLOG]
+ * SPECIALNUMBERS = /usr/lib/isdn/sonderrufnummern.dat
+ * HOLIDAYS       = /usr/lib/isdn/holiday-de.dat
+ * RATEFILE       = /usr/lib/isdn/rate-de.dat
+ * RATECONF       = /etc/isdn/rate.conf
+ *
+ * Please replace any "de" with your country code ("at", "ch", "nl")
+ *
+ * Good luck (Andreas Kool and Michael Reinelt)
+ *
  * Revision 1.17  1999/04/03 12:46:54  akool
  * - isdnlog Version 3.12
  * - "%B" tag in ILABEL/OLABEL corrected
@@ -560,7 +584,10 @@ static void showLCR()
 {
   auto int   tz, hour, provider, lastprovider = -1, lasthour = -1, *p;
   auto int   useds = 0, maxhour, leastprovider = UNKNOWN;
-  auto char  info[BUFSIZ], ignoreprovider[BUFSIZ], *p1;
+  auto char  ignoreprovider[BUFSIZ], *p1;
+#if 0 /* FIXME */
+  auto char  info[BUFSIZ];
+#endif
   int  probe[] = { REGIOCALL, GERMANCALL, D2_NETZ, 0 };
   int  used[100];
   int  hours[100];
@@ -593,14 +620,16 @@ retry:
       lastprovider = -1;
       lasthour = -1;
 
-      hour = 8;
+      hour = 7;
 
       while (1) {
 
+#if 0 /* Fixme: use RATE */
         provider = showcheapest(*p, 181, ignoreprovider, info, tz, hour, 0);
+#endif
 
 #if 0
-        print_msg(PRT_NORMAL, "DEBUG::tz=%d, zone=%d, Hour=%02d, P=%d, %s  lasthour=%d, lastprovider=%d\n", tz, *p, hour, provider, realProvidername(provider), lasthour, lastprovider);
+        print_msg(PRT_NORMAL, "DEBUG::tz=%d, zone=%d, Hour=%02d, P=%d, %s  lasthour=%d, lastprovider=%d\n", tz, *p, hour, provider, getProvidername(provider), lasthour, lastprovider);
 #endif
 
         if (lastprovider == -1)
@@ -611,7 +640,7 @@ retry:
 
         if (provider != lastprovider) {
           print_msg(PRT_NORMAL, "\t\t%02d:00 .. %02d:59 010%02d:%s\n",
-            lasthour, hour - 1, lastprovider, realProvidername(lastprovider));
+            lasthour, hour - 1, lastprovider, getProvidername(lastprovider));
 
           used[lastprovider] = 1;
 
@@ -627,12 +656,12 @@ retry:
 	hour++;
       	if (hour == 24)
           hour = 0;
-      	else if (hour == 8)
+      	else if (hour == 7)
           break;
       } /* for */
 
       print_msg(PRT_NORMAL, "\t\t%02d:00 .. %02d:59 010%02d:%s\n",
-        lasthour, hour - 1, lastprovider, realProvidername(lastprovider));
+        lasthour, hour - 1, lastprovider, getProvidername(lastprovider));
       used[lastprovider] = 1;
 
       if (lasthour >= hour)
@@ -651,7 +680,7 @@ retry:
 
   for (provider = 0; provider < 100; provider++)
     if (used[provider]) {
-      print_msg(PRT_NORMAL, "010%02d:%s\t(%d hours)\n", provider, realProvidername(provider), hours[provider]);
+      print_msg(PRT_NORMAL, "010%02d:%s\t(%d hours)\n", provider, getProvidername(provider), hours[provider]);
       useds++;
 
       if (hours[provider] < maxhour) {
@@ -662,7 +691,7 @@ retry:
 
   if (useds > 5) {
     print_msg(PRT_NORMAL, "OOOPS: More than 5 providers used. Retry with 010%02d:%s ignored\n",
-      leastprovider, realProvidername(leastprovider));
+      leastprovider, getProvidername(leastprovider));
 
     p1 = strchr(ignoreprovider, 0);
     *p1 = leastprovider;
@@ -833,27 +862,28 @@ int main(int argc, char *argv[], char *envp[])
 
 	if (areacode[0] != '\0')
 	{
-		char *ptr, msg[BUFSIZ], snfile[BUFSIZ];
+		char *ptr, snfile[BUFSIZ];
+#if 0 /* FIXME */
+		char msg[BUFSIZ];
+#endif
 		int len, i, zone;
 
 
 		strcpy(snfile, "/usr/lib/isdn/sonderrufnummern.dat"); /* FIXME */
 	    	initSondernummern(snfile, &ptr);
-            	initTarife(msg);
-#if 0
-	    	print_msg(PRT_NORMAL, "%s\n", ptr);
-	    	print_msg(PRT_NORMAL, "%s\n", msg);
-#endif
+ 		initHoliday(holifile, NULL);
+ 		initRate(rateconf, ratefile, NULL);
 
 		if ((strlen(areacode) == 1) || (ptr = get_areacode(areacode,&len,quiet?C_NO_ERROR|C_NO_WARN:0)) != NULL)
 		{
 			if (!isdnmon)
 			{
 				const char *area;
+#if 0 /* FIXME */
                                 auto  char  info[BUFSIZ];
+#endif
 
-
-				if ((i = is_sondernummer(areacode, DTAG)) > -1) {
+				if ((i = is_sondernummer(areacode, DTAG)) > -1) { /* Fixme: DTAG is specific to Germany */
 				  print_msg(PRT_NORMAL, "%s\n", sondernummername(i));
 
   				  if (!memcmp(areacode, "01610", 5) ||
@@ -910,7 +940,9 @@ int main(int argc, char *argv[], char *envp[])
 
 
 				print_msg(PRT_NORMAL,"Zone: %s\n", zonen[zone]);
+#if 0 /* Fixme: use RATE */
                                 (void)showcheapest(zone, 181, "\0", info, -1, -1, 1);
+#endif
 
 				exit(0);
 			}
