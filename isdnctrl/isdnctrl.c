@@ -1,4 +1,4 @@
-/* $Id: isdnctrl.c,v 1.38 1999/11/20 22:23:53 detabc Exp $
+/* $Id: isdnctrl.c,v 1.39 1999/11/23 10:17:27 paul Exp $
  * ISDN driver for Linux. (Control-Utility)
  *
  * Copyright 1994,95 by Fritz Elfert (fritz@isdn4linux.de)
@@ -21,6 +21,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnctrl.c,v $
+ * Revision 1.39  1999/11/23 10:17:27  paul
+ * Made error message for 'status' command clearer if IIOCNETGPN
+ * is not implemented in kernel (e.g. 2.0.x kernels).
+ *
  * Revision 1.38  1999/11/20 22:23:53  detabc
  * added netinterface abc-secure-counter reset (clear) support.
  *
@@ -622,7 +626,7 @@ static void statusif(int isdnctrl, char *name, int errexit)
 		return;
 	}
 	if (errno == EINVAL) {
-		puts("Sorry, not configured in your kernel");
+		puts("Sorry, not available in your kernel (2.2.12 or higher is required)");
 		exit(-1);
 	}
 	if (errexit) {
