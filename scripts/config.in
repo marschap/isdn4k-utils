@@ -1,5 +1,5 @@
 #
-# $Id: config.in,v 1.24 1998/10/23 12:57:29 fritz Exp $
+# $Id: config.in,v 1.25 1998/12/07 13:28:22 fritz Exp $
 #
 # The whole configuration stuff is borrowed from the kernel
 # configuration.
@@ -73,7 +73,7 @@ fi
 if [ "$CONFIG_EXPERIMENTAL" = "y" ]; then
 	bool 'loopctrl' CONFIG_LOOPCTRL
 	if [ "$CONFIG_LOOPCTRL" = "y" ]; then
-		string 'Sourcedir of isdnloop module' CONFIG_LOOPCTRL_LOOPDIR
+		# string 'Sourcedir of isdnloop module' CONFIG_LOOPCTRL_LOOPDIR
 		bool 'Enable loopctrl debug-option' CONFIG_LOOPCTRL_DEBUG
 	fi
 fi

@@ -57,7 +57,7 @@ clean:
 	$(MAKE) -f Makefile clean
 
 distclean: clean
-	rm -f Makefile GNUmakefile Makefile.bak
+	rm -f Makefile GNUmakefile Makefile.bak xmonisdn.man
 
 install-man: xmonisdn.man
 	$(MAKE) -f Makefile $(MANDIROPTS) install.man
