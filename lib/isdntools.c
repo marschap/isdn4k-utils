@@ -1,4 +1,4 @@
-/* $Id: isdntools.c,v 1.17 1998/03/08 12:13:49 luethje Exp $
+/* $Id: isdntools.c,v 1.18 1998/04/28 08:34:36 paul Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdntools.c,v $
+ * Revision 1.18  1998/04/28 08:34:36  paul
+ * Fixed compiler warnings from egcs.
+ *
  * Revision 1.17  1998/03/08 12:13:49  luethje
  * Patches by Paul Slootman
  *
@@ -129,6 +132,7 @@
 
 #define  PUBLIC /**/
 #define  _ISDNTOOLS_C_
+#define  _GNU_SOURCE
 
 /****************************************************************************/
 

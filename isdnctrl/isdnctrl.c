@@ -1,4 +1,4 @@
-/* $Id: isdnctrl.c,v 1.19 1998/04/18 17:36:13 detabc Exp $
+/* $Id: isdnctrl.c,v 1.20 1998/04/28 08:34:28 paul Exp $
  * ISDN driver for Linux. (Control-Utility)
  *
  * Copyright 1994,95 by Fritz Elfert (fritz@wuemaus.franken.de)
@@ -21,6 +21,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnctrl.c,v $
+ * Revision 1.20  1998/04/28 08:34:28  paul
+ * Fixed compiler warnings from egcs.
+ *
  * Revision 1.19  1998/04/18 17:36:13  detabc
  * modify display of callbackdelay (cbdelay) value to %.1f sec.
  * if abc-extension is enabled
@@ -1436,9 +1439,10 @@ void check_version() {
 	}
 }
 
-void main(int argc, char **argv)
+int main(int argc, char **argv)
 {
 	int fd;
+	int rc;
 
 	if ((cmd = strrchr(argv[0], '/')) != NULL)
 		*cmd++ = '\0';
@@ -1458,6 +1462,7 @@ void main(int argc, char **argv)
 	}
 
 
-	exec_args(fd,argc-1,argv+1);
+	rc = exec_args(fd,argc-1,argv+1);
 	close(fd);
+	return rc;
 }

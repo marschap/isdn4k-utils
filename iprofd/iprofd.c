@@ -1,4 +1,4 @@
-/* $Id: iprofd.c,v 1.3 1998/04/24 09:19:23 paul Exp $
+/* $Id: iprofd.c,v 1.4 1998/04/28 08:34:23 paul Exp $
 
  * Daemon for saving ttyIx-profiles to a file.
  *
@@ -22,6 +22,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: iprofd.c,v $
+ * Revision 1.4  1998/04/28 08:34:23  paul
+ * Fixed compiler warnings from egcs.
+ *
  * Revision 1.3  1998/04/24 09:19:23  paul
  * Ignore empty file when starting up instead of generating error message
  * about wrong signature, there is _no_ signature! iprofd writes new data
@@ -125,7 +128,7 @@ usage(void)
 	exit(-1);
 }
 
-void
+int
 main(int argc, char **argv)
 {
 
@@ -179,4 +182,5 @@ main(int argc, char **argv)
 		default:
 			break;
 	}
+	return 0;
 }

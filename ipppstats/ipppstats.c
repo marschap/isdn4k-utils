@@ -37,7 +37,7 @@
  */
 
 #if 0
-static char rcsid[] = "$Id: ipppstats.c,v 1.4 1997/10/26 23:08:41 fritz Exp $";
+static char rcsid[] = "$Id: ipppstats.c,v 1.5 1998/04/28 08:34:15 paul Exp $";
 #endif
 
 #include <ctype.h>
@@ -88,7 +88,7 @@ void intpr(void);
 void get_ppp_stats(struct ppp_stats *curp);
 void get_ppp_cstats(struct ppp_comp_stats *csp);
 
-void main(int argc,char **argv)
+int main(int argc,char **argv)
 {
     --argc; ++argv;
     while (argc > 0) {
@@ -137,7 +137,7 @@ void main(int argc,char **argv)
     }
 
     intpr();
-    exit(0);
+    return(0);
 }
 
 void usage(void)

@@ -17,7 +17,7 @@
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-char options_rcsid[] = "$Id: options.c,v 1.7 1998/03/22 18:52:33 hipp Exp $";
+char options_rcsid[] = "$Id: options.c,v 1.8 1998/04/28 08:34:00 paul Exp $";
 
 #include <stdio.h>
 #include <errno.h>
@@ -2157,7 +2157,7 @@ static int setipxname (int slot,char **argv)
 	    fprintf (stderr,
 		     "%s: IPX router name is limited to %d characters\n",
 		     progname,
-		     sizeof (ipxcp_wantoptions[slot].name) - 1);
+		     (int) sizeof (ipxcp_wantoptions[slot].name) - 1);
 	    return 0;
 	}
 

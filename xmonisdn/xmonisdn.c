@@ -47,7 +47,7 @@ NULL};
 }
 
 
-void main (argc, argv)
+int main (argc, argv)
     int argc;
     char **argv;
 {
@@ -76,6 +76,8 @@ void main (argc, argv)
     (void) XSetWMProtocols (XtDisplay(toplevel), XtWindow(toplevel),
                             &wm_delete_window, 1);
     XtAppMainLoop (xtcontext);
+
+    return 0;
 }
 
 static void quit (w, event, params, num_params)

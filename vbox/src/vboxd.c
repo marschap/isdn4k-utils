@@ -1,5 +1,5 @@
 /*
-** $Id: vboxd.c,v 1.4 1997/05/10 10:58:57 michael Exp $
+** $Id: vboxd.c,v 1.5 1998/04/28 08:34:52 paul Exp $
 **
 ** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
 */
@@ -120,7 +120,7 @@ static struct option arguments[] =
 /** The magic main...                                                    **/
 /**************************************************************************/
 
-void main(int argc, char **argv)
+int main(int argc, char **argv)
 {
 	int opts;
 
@@ -202,6 +202,7 @@ void main(int argc, char **argv)
 	handle_client_input();
 
 	leave_program(0);
+	return 0;
 }
 
 /**************************************************************************/

@@ -1,5 +1,5 @@
 /*
-** $Id: vboxgetty.c,v 1.7 1997/10/22 20:47:19 fritz Exp $
+** $Id: vboxgetty.c,v 1.8 1998/04/28 08:34:56 paul Exp $
 **
 ** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
 */
@@ -53,7 +53,7 @@ static struct option arguments[] =
 /** The magic main...																	**/
 /*************************************************************************/
 
-void main(int argc, char **argv)
+int main(int argc, char **argv)
 {
 	char *usevrc   = NULL;
 	char *device   = NULL;
@@ -127,6 +127,7 @@ void main(int argc, char **argv)
 
 	main_program();
 	exit_program(SIGTERM);
+	return 0; /*NOTREACHED*/
 }
 
 /*************************************************************************/

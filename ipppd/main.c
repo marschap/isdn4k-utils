@@ -25,7 +25,7 @@
  * PATCHLEVEL 9
  */
 
-char main_rcsid[] = "$Id: main.c,v 1.12 1998/03/25 13:13:38 hipp Exp $";
+char main_rcsid[] = "$Id: main.c,v 1.13 1998/04/28 08:33:57 paul Exp $";
 
 #include <stdio.h>
 #include <stdarg.h>
@@ -136,7 +136,7 @@ struct protent *protocols[] = {
     NULL
 };
 
-void main(int argc,char **argv)
+int main(int argc,char **argv)
 {
 	int i,j;
 	struct sigaction sa;
@@ -284,7 +284,12 @@ void main(int argc,char **argv)
 #if 1
 		sprintf(pidfilename, "%s%s.pid", _PATH_VARRUN, "ipppd" );
 #else
-		sprintf(pidfilename, "%s%s.%s.pid", _PATH_VARRUN, "ipppd", lns[0].devnam);
+		char *p;
+		if ((p = strrchr(lns[0].devnam, '/')))
+			p++;
+		else
+			p = lns[0].devnam;
+		sprintf(pidfilename, "%s%s.%s.pid", _PATH_VARRUN, "ipppd", p);
 #endif
 	
 	if ((pidfile = fopen(pidfilename, "w")) != NULL) {
@@ -442,6 +447,7 @@ void main(int argc,char **argv)
     syslog(LOG_WARNING, "unable to delete pid file: %m");
   pidfilename[0] = 0;
   die(0);
+  return 0; /*NOTREACHED*/
 }
 
 /*
@@ -521,7 +527,7 @@ static int exit_unit(int the_unit)
  */
 static void connect_time_expired(caddr_t arg)
 {
-    int linkunit = (int) arg;
+    int linkunit = (int)(long)arg;
     syslog(LOG_INFO, "Connect time expired");
     lcp_close(linkunit, "Connect time expired");       /* Close connection */
 }

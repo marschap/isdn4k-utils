@@ -2,7 +2,7 @@
  *
  * (c) 1995-97 Volker Götz
  *
- * $Id: imontty.c,v 1.2 1997/04/05 14:18:30 calle Exp $
+ * $Id: imontty.c,v 1.3 1998/04/28 08:33:52 paul Exp $
  */
 
 #include <stdlib.h>
@@ -157,7 +157,7 @@ void scan_int(char * buffer, int (*field)[], int max) {
     }
 }
 
-void main(int ac, char **argv) {
+int main(int ac, char **argv) {
 
     FILE * isdninfo;
     char buf[IM_BUFSIZE];
@@ -250,4 +250,5 @@ void main(int ac, char **argv) {
 	    if( !(++lines % 2) )
 		printf("\n");
 	}
+	return 0;
 }

@@ -1,5 +1,5 @@
 /*
-** $Id: rcvbox.c,v 1.5 1997/05/10 10:58:47 michael Exp $
+** $Id: rcvbox.c,v 1.6 1998/04/28 08:34:44 paul Exp $
 **
 ** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
 */
@@ -65,7 +65,7 @@ static time_t vboxrc_return_time(time_t timenow, char *timestr, int mode)
 	else *minsstr++ = '\0';
 
 	if (mode == 0) secsint =  0;
-	if (mode != 0) secsint = 59;
+	else           secsint = 59;
 
 	hourint = atoi(hourstr);
 	minsint = atoi(minsstr);

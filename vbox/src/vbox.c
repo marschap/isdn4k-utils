@@ -1,5 +1,5 @@
 /*
-** $Id: vbox.c,v 1.7 1998/03/26 13:10:37 keil Exp $
+** $Id: vbox.c,v 1.8 1998/04/28 08:34:50 paul Exp $
 **
 ** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
 */
@@ -161,7 +161,7 @@ static chtype color(int);
 /** The magic main...                                                    **/
 /**************************************************************************/
 
-void main(int argc, char **argv)
+int main(int argc, char **argv)
 {
 	struct servent *vboxdserv;
 	int             dimension;
@@ -347,6 +347,7 @@ void main(int argc, char **argv)
 	vboxd_disconnect();
 
 	if (messagesmp) free(messagesmp);
+	return 0;
 }
 
 /**************************************************************************/

@@ -22,7 +22,7 @@
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-char sys_rcsid[] = "$Id: sys-linux.c,v 1.11 1998/03/25 13:13:40 hipp Exp $";
+char sys_rcsid[] = "$Id: sys-linux.c,v 1.12 1998/04/28 08:34:05 paul Exp $";
 
 #define _LINUX_STRING_H_
 
@@ -1314,7 +1314,7 @@ int logwtmputmp (int unit,char *line, char *name, char *host)
 	strncpy(ut.ut_user, name, sizeof(ut.ut_user));
 	strncpy(ut.ut_line, line, sizeof(ut.ut_line));
 
-	time(&ut.ut_time);
+	ut.ut_time = time((void *)0);
 
 	ut.ut_type = USER_PROCESS;
 	ut.ut_pid  = mypid;

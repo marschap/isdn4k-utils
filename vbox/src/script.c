@@ -1,5 +1,5 @@
 /*
-** $Id: script.c,v 1.9 1997/10/22 20:47:13 fritz Exp $
+** $Id: script.c,v 1.10 1998/04/28 08:34:47 paul Exp $
 **
 ** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
 */
@@ -259,7 +259,7 @@ int vbox_message_info(ClientData cd, Tcl_Interp *ip, int argc, char *argv[])
 				switch (field)
 				{
 					case 1:
-						printstring(ip->result, "%ld", ntohl(header.time));
+						printstring(ip->result, "%ld", (long)ntohl(header.time));
 						break;
 
 					case 2:
