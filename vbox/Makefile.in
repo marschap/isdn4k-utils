@@ -1,5 +1,5 @@
 #
-# $Id: Makefile.in,v 1.18 1998/11/17 18:22:39 paul Exp $
+# $Id: Makefile.in,v 1.19 1998/11/18 16:33:57 paul Exp $
 
 #----------------------------------------------------------------------------#
 # Things you can change to personalize the Makefile for your own site. Some  #
@@ -238,6 +238,7 @@ manuals-d:	  ignore
 		  @cd doc && $(MAKE) distclean
 
 manuals-i:	  ignore
+		  @cd doc && $(MAKE) install
 
 manuals-v:	  ignore
 		  @set -e; for i in `echo $(MANUALS_V)`; do \
@@ -250,19 +251,11 @@ manuals-v:	  ignore
 #                                                                            #
 #----------------------------------------------------------------------------#
 
-SCRIPTS_B	= $(TOPDIR)/utils/vboxmail $(TOPDIR)/utils/vboxplay
-
-SCRIPTS_D	= $(SCRIPTS_B)
-
 scripts-b:	  ignore
-		  @set -e; for i in `echo $(SCRIPTS_B)`; do \
-			$(TOPDIR)/utils/mksed <$$i.in >$$i; \
-		  done
+		  @cd $(TOPDIR)/utils && $(MAKE)
 
 scripts-d:	  ignore
-		  @set -e; for i in `echo $(SCRIPTS_D)`; do \
-			$(RM) -f $$i; \
-		  done
+		  @cd $(TOPDIR)/utils && $(MAKE) distclean
 
 scripts-i:	  ignore
 		  @echo "Installing '$(DESTDIR)$(bindir)/vboxmail'..."
