@@ -1,4 +1,4 @@
-/* $Id: rate.c,v 1.39 1999/08/20 19:29:02 akool Exp $
+/* $Id: rate.c,v 1.40 1999/08/25 17:07:16 akool Exp $
  *
  * Tarifdatenbank
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rate.c,v $
+ * Revision 1.40  1999/08/25 17:07:16  akool
+ * isdnlog-3.46
+ *
  * Revision 1.39  1999/08/20 19:29:02  akool
  * isdnlog-3.45
  *  - removed about 1 Mb of (now unused) data files
@@ -275,6 +278,9 @@
  * char* getProvider (int prefix)
  *   liefert den Namen des Providers oder NULL wenn unbekannt
  *
+ * char* getComment(int prefix, char *key)
+ *   liefert einen C:-Eintrag
+ *
  * int getArea (int prefix, char *number)
  *   überprüft, ob die Nummer einem A:-Tag entspricht
  *   wird für die Sondernummern benötigt
@@ -326,6 +332,7 @@ extern const char *basename (const char *name);
 #include "isdnlog.h"
 #include "tools.h"
 #endif
+
 #include "holiday.h"
 #include "zone.h"
 #include "country.h"
@@ -364,11 +371,6 @@ typedef struct {
 } AREA;
 
 typedef struct {
-  char *Name;
-  int   Zone;
-} SERVICE;
-
-typedef struct {
   char  *Name;
   char  *Flag;
   int    nNumber;
@@ -376,6 +378,16 @@ typedef struct {
   int    nHour;
   HOUR  *Hour;
 } ZONE;
+
+typedef struct {
+  char *Name;
+  int   Zone;
+} SERVICE;
+
+typedef struct {
+  char *Key;
+  char *Value;
+} COMMENT;
 
 typedef struct {
   int      booked;
@@ -387,6 +399,8 @@ typedef struct {
   AREA    *Area;
   int      nService;
   SERVICE *Service;
+  int      nComment;
+  COMMENT *Comment;
 } PROVIDER;
 
 static char      Format[STRINGL]="";
@@ -536,6 +550,11 @@ void exitRate(void)
       for (j=0; j<Provider[i].nService; j++)
 	if (Provider[i].Service[j].Name) free (Provider[i].Service[j].Name);
       if(Provider[i].Service) free (Provider[i].Service);
+      for (j=0; j<Provider[i].nComment; j++) {
+	if (Provider[i].Comment[j].Key) free (Provider[i].Comment[j].Key);
+	if (Provider[i].Comment[j].Value) free (Provider[i].Comment[j].Value);
+      }
+      if(Provider[i].Comment) free (Provider[i].Comment);
       if (Provider[i].Name) free (Provider[i].Name);
       Provider[i].used=0;
     }
@@ -550,10 +569,9 @@ int initRate(char *conf, char *dat, char *dom, char **msg)
   bitfield day, hour;
   double   price, divider, duration;
   char     buffer[LENGTH], path[LENGTH], Version[LENGTH]="<unknown>";
-  char	   sx[BUFSIZ];
   char     *c, *s;
   int      booked[MAXPROVIDER], variant[MAXPROVIDER];
-  int      Providers=0, Areas=0, Services=0, Zones=0, Hours=0;
+  int      Providers=0, Comments=0, Services=0, Areas=0, Specials=0, Zones=0, Hours=0;
   int      ignore=0, domestic=0, prefix=UNKNOWN;
   int      zone, zone1, zone2, day1, day2, hour1, hour2, freeze, delay;
   int     *number, numbers;
@@ -712,15 +730,36 @@ int initRate(char *conf, char *dat, char *dom, char **msg)
       Provider[prefix].Area=NULL;
       Provider[prefix].nService=0;
       Provider[prefix].Service=NULL;
+      Provider[prefix].nComment=0;
+      Provider[prefix].Comment=NULL;
       Providers++;
       break;
 
-    case 'G': /* G:tt.mm.jjjj Hour gueltig ab */
+    case 'G':
       if (ignore) continue;
+      warning (dat, "Legacy tag '%s'", s);
       break;
 
     case 'C':  /* C:Comment */
       if (ignore) continue;
+      s+=2; while (isblank(*s)) s++;
+      if ((c=strchr(s,':'))!=NULL) {
+	*c++='\0';
+	for (i=0; i<Provider[prefix].nComment; i++) {
+	  if (strcmp (Provider[prefix].Comment[i].Key,s)==0) {
+	    warning (dat, "Duplicate Comment '%s'", s);
+	    s=NULL;
+	    break;
+	  }
+	}
+	if (s) {
+	  Provider[prefix].Comment=realloc(Provider[prefix].Comment, (Provider[prefix].nComment+1)*sizeof(COMMENT));
+	  Provider[prefix].Comment[Provider[prefix].nComment].Key=strdup(s);
+	  Provider[prefix].Comment[Provider[prefix].nComment].Value=strdup(strip(c));
+	  Provider[prefix].nComment++;
+	  Comments++;
+	}
+      }
       break;
 
     case 'D':  /* D:Verzonung */
@@ -823,13 +862,6 @@ int initRate(char *conf, char *dat, char *dom, char **msg)
       s+=2;
       while(1) {
 	if (*(c=strip(str2list(&s)))) {
-#if 0
-	  if (*c == '0' && (*(c + 1) != '0')) {
-	    sprintf(sx, "%s%s", mycountry, c + 1);
-	    warning(dat, "Replacing %s by %s\n", c, sx);
-	    c = sx;
-	  } /* if */
-#endif
 	  if (!isdigit(*c) && (d=getCountry(c, &Country)) != UNKNOWN) {
 	    if (*c=='+') {
 	      Areas += appendArea (prefix, c, Country->Name, zone, &domestic, dat);
@@ -843,6 +875,7 @@ int initRate(char *conf, char *dat, char *dom, char **msg)
 	    }
 	  } else { /* unknown country or Sondernummer */
 	    Areas += appendArea (prefix, c, NULL, zone, &domestic, dat);
+	    Specials++;
 	  }
 	} else {
 	  warning (dat, "Ignoring empty areacode");
@@ -1140,8 +1173,8 @@ int initRate(char *conf, char *dat, char *dom, char **msg)
   }
 
   if (msg) snprintf (message, LENGTH,
-		     "Rates   Version %s loaded [%d Providers, %d Zones, %d Areas, %d Services, %d Rates from %s]",
-		     Version, Providers, Zones, Areas, Services, Hours, dat);
+		     "Rates   Version %s loaded [%d Providers, %d Zones, %d Areas, %d Specials, %d Services, %d Comments, %d Rates from %s]",
+		     Version, Providers, Zones, Areas, Specials, Services, Comments, Hours, dat);
 
   return 0;
 }
@@ -1152,6 +1185,20 @@ char *getProvider (int prefix)
     return NULL;
   }
   return Provider[prefix].Name;
+}
+
+char *getComment (int prefix, char *key)
+{
+  int i;
+
+  if (prefix<0 || prefix>=nProvider || !Provider[prefix].used)
+    return NULL;
+
+  for (i=0; i<Provider[prefix].nComment; i++) {
+    if (strcmp(Provider[prefix].Comment[i].Key,key)==0)
+      return Provider[prefix].Comment[i].Value;
+  }
+  return NULL;
 }
 
 int getArea (int prefix, char *number)
@@ -1202,7 +1249,7 @@ int getRate(RATE *Rate, char **msg)
   char  *day;
   time_t time;
   struct tm tm;
-  
+
   if (msg)
     *(*msg=message)='\0';
 
@@ -1282,7 +1329,7 @@ int getRate(RATE *Rate, char **msg)
   end=Rate->now-Rate->start;
   Rate->Time=end;
   leap=UNKNOWN; /* Stundenwechsel erzwingen */
-  
+
   while (1) {
     if (!freeze && now>=leap) { /* Neuberechnung bei Stundenwechsel */
       time=Rate->start+now;
@@ -1309,6 +1356,10 @@ int getRate(RATE *Rate, char **msg)
       Unit=Hour->Unit;
       if (now==0.0 && Unit->Duration==0.0)
 	Rate->Basic=Unit->Price;
+      for (i=0; i<Hour->nUnit; i++)
+	if ((Rate->Rhythm[0]=Unit[i].Duration)!=0)
+	  break;
+      Rate->Rhythm[1]=Unit[Hour->nUnit-1].Duration;
       jmp=now;
       while (Unit->Delay!=UNKNOWN && Unit->Delay<=jmp && jmp>0) {
 	jmp-=Unit->Delay;
@@ -1317,14 +1368,14 @@ int getRate(RATE *Rate, char **msg)
       Rate->Price=Unit->Price;
       Rate->Duration=Unit->Duration;
     }
-    
+
     if (Unit->Duration==0.0) {
       Rate->Charge+=Unit->Price;
     } else {
       n=leo(end-now, leap-now, Unit->Delay, Unit->Duration);
       Rate->Units+=n;
       Rate->Charge+=n*Unit->Price;
-      now+=n*Unit->Duration; 
+      now+=n*Unit->Duration;
       if (now>end)
 	break;
     }
@@ -1334,10 +1385,10 @@ int getRate(RATE *Rate, char **msg)
       Rate->Duration=Unit->Duration;
     }
   }
-  
+
   if (now>0.0)
     Rate->Rest=now-Rate->Time;
-  
+
   return 0;
 }
 
@@ -1471,9 +1522,9 @@ void main (int argc, char *argv[])
   }
 
   time(&Rate.start);
-  Rate.now=Rate.start+153;
-  
-#if 1
+  Rate.now=Rate.start + LCR_DURATION;
+
+#if 0
   Rate.prefix = 2;
   for (i=0; i<10000; i++) {
     if (getRate(&Rate, &msg)==UNKNOWN) {
@@ -1495,14 +1546,14 @@ void main (int argc, char *argv[])
 	  now.tm_hour, now.tm_min, now.tm_sec,
 	  printRate (Rate.Charge), Rate.Basic, Rate.Price, Rate.Units, Rate.Duration, Rate.Time, Rate.Rest,
 	  explainRate(&Rate));
-  
+
   exit (0);
 #endif
 
-  
-#if 0
+
+#if 1
   time(&Rate.start);
-  Rate.now=Rate.start+153;
+  Rate.now=Rate.start + LCR_DURATION;
 
   if (getRate(&Rate, &msg)==UNKNOWN) {
     printf ("Ooops: %s\n", msg);
@@ -1527,24 +1578,28 @@ void main (int argc, char *argv[])
 	  LCR.Service, LCR.Flags, explainRate(&LCR));
 
 
-  printf ("---Date--- --Time--  --Charge-- ( Basic  Price)  Unit   Dur  Time  Rest\n");
+  printf ("---Date--- --Time--  --Charge-- ( Basic  Price)  Unit   Dur  Rhythm Time  Rest\n");
   for (i=0; i<nProvider; i++) {
     Rate.prefix=i;
     Rate._area=UNKNOWN;
     Rate._zone=UNKNOWN;
     if (getRate(&Rate, NULL)!=UNKNOWN) {
       now=*localtime(&Rate.now);
-      printf ("%02d.%02d.%04d %02d:%02d:%02d  %10s (%6.3f %6.3f)  %4d  %4.1f  %4ld  %4ld  %s\n",
+      printf ("%02d.%02d.%04d %02d:%02d:%02d  %10s (%6.3f %6.3f)  %4d  %4.1f  %2f/%2f %4ld  %4ld  %s\n",
 	      now.tm_mday, now.tm_mon+1, now.tm_year+1900,
 	      now.tm_hour, now.tm_min, now.tm_sec,
-	      printRate (Rate.Charge), Rate.Basic, Rate.Price, Rate.Units, Rate.Duration, Rate.Time, Rate.Rest,
+	      printRate (Rate.Charge),
+	      Rate.Basic, Rate.Price,
+	      Rate.Units, Rate.Duration,
+	      Rate.Rhythm[0], Rate.Rhythm[1],
+	      Rate.Time, Rate.Rest,
 	      explainRate(&Rate));
     }
   }
 
   exit (0);
 
-#else 
+#else
 
   printf ("---Date--- --Time--  --Charge-- ( Basic  Price)  Unit   Dur  Time  Rest\n");
 

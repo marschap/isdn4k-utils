@@ -16,7 +16,7 @@ V:1.83-Austria [25-Jul-1999]
 U:%.3f öS
 
 P:01,1                             Telekom Austria
-C:maintained by:                   Michael Reinelt <reinelt@eunet.at>
+C:Maintainer:                      Michael Reinelt <reinelt@eunet.at>
 # Tarif:                           Minimumtarif (ATS 1.116 pro Einheit)
 D:pta                              # Verzonung
 
@@ -1559,17 +1559,21 @@ T:*/*=24.90(60)/60/1               rund um die Uhr
 A:+                                alle übrigen Länder
 
 P:24                               Telepassport
-# Fixme:                           'International D': Zentral- und Südamerika nicht implementiert
+C:Maintainer:                      Leopold Toetsch <lt@toetsch.at>
+C:Name:                            TelePassport Telekommunikationsdiensleitungen GmbH
+C:Adresse:                         Prinz-Eugen-Str. 10, A 1040 Wien
+C:Homepage:                        http://www.telepassport.at
+C:Hotline:                         0800 80 1024
 D:1024                             # Verzonung
-Z:1                                Regionalzone
+Z:1                                RundUm-Wien
 T:1-5/8-18=0.98(60)/1              Tag
 T:1-5/18-8=0.88(60)/1              Nacht
 T:E,H/*=0.88(60)/1                 Weekend
-Z:2                                Bundesland
+Z:2                                RundUm-Regional
 T:1-5/8-18=1.28(60)/1              Tag
 T:1-5/18-8=1.18(60)/1              Nacht
 T:E,H/*=1.18(60)/1                 Weekend
-Z:3                                Österreich
+Z:3                                Ganzland
 T:1-5/8-18=1.98(60)/1              Tag
 T:1-5/18-8=1.18(60)/1              Nacht
 T:E,H/*=1.18(60)/1                 Weekend
@@ -1577,31 +1581,34 @@ A:Österreich
 Z:4                                Mobilfunk
 T:*/*=3.98(60)/1                   rund um die Uhr
 A:+43663, +43664, +43676, +43699
-Z:5                                Deutschland, Schweiz
-T:*/*=3.48(60)/1                   rund um die Uhr
+Z:5                                WeltWeit 1
+T:*/*=2.98(60)/1                   rund um die Uhr
 A:Deutschland, Schweiz
-Z:6                                International A
+Z:6                                WeltWeit 2
 T:*/*=3.98(60)/1                   rund um die Uhr
 A:Belgien, Dänemark, Finnland, Frankreich, Großbritannien, Irland, Italien
 A:Liechtenstein, Luxemburg, Monaco, Niederlande, Norwegen, Schweden
 A:Slowenien, Slowakei, Spanien, Tschechien, Ungarn, Vatikan
 A:Vereinigte Staaten (USA), Puerto Rico, Alaska, Hawaii, Kanada
-Z:7                                International B
+Z:7                                WeltWeit 3
 T:*/*=5.98(60)/1                   rund um die Uhr
 A:Andorra, Bosnien-Herzegowina, Bulgarien, Estland, Griechenland, Island
 A:Kroatien, Lettland, Litauen, Malta, Mazedonien, Polen, Portugal, Rumänien
 A:Serbien, Montenegro, Zypern, Australien, Färöer, Israel, Neuseeland
 A:Amerikanische Jungferninseln
-Z:8                                International C
+Z:8                                WeltWeit 4
 T:*/*=7.38(60)/1                   rund um die Uhr
 A:Albanien, Weihnachtsinseln, Gibraltar, Kokosinseln, Rußland, San Marino
 A:Türkei, Tunesien, Ukraine, Weißrußland, Algerien, Hongkong, Japan, Südkorea
 A:Marokko, Philippinen, Russische Föderation, Singapur
-Z:9                                International D
+Z:9                                WeltWeit 5
 T:*/*=12.98(60)/1                  rund um die Uhr
 A:Ägypten, Südafrika, Aserbaidschan, Armenien, China, Georgien, Libyen
 A:Malaysia, Moldau, Tadschikistan, Taiwan, Turkmenistan, Usbekistan
-Z:10                               International E
+A:Argentinien, Brasilien, Chile, Costa Rica, Dominikanische Republik, Ecuador
+A:El Salvador, Guatemala, Kolumbien, Mexiko, Nicaragua, Panama, Peru
+A:Venezuela
+Z:10                               WeltWeit 6
 T:*/*=14.98(60)/1                  rund um die Uhr
 A:Angola, Aruba, Bahamas, Bahrain, Barbados, Bermuda, Bhutan, Bolivien
 A:Botswana, Brunei, Burundi, Ghana, Grönland, Guadeloupe, Guam, Guinea
@@ -1612,11 +1619,12 @@ A:Nigeria, Paraguay, Reunion, Saipan, Saudi-Arabien, St. Lucia
 A:St. Pierre und Miquelon, Saint Vincent und die Grenadinen, Sudan, Syrien
 A:Swasiland, Tansania, Thailand, Trinidad und Tobago, Uruguay
 A:Vereinigte Arabische Emirate
-Z:11                               International F
+Z:11                               WeltWeit 7
 T:*/*=19.98(60)/1                  rund um die Uhr
 A:+                                alle übrigen Länder
 
 P:29,1                             CyberTron
+D:pta                              # Verzonung
 # Tarif:                           easy.Talk privat (ATS 1.116 pro Einheit)
 # Fixme:                           Internationale Zonen nicht implementiert!
 Z:1                                Regionalzone
@@ -1665,6 +1673,7 @@ Z:9                                International
 A:+                                alle übrigen Länder
 
 P:29,2                             CyberTron
+D:pta                              # Verzonung
 # Tarif:                           easy.Talk business (ATS 1.029 pro Einheit)
 # Fixme:                           Internationale Zonen nicht implementiert!
 Z:1                                Regionalzone
@@ -1792,7 +1801,7 @@ A:Turks- und Caicos-Inseln, Tuvalu, Uganda, Vietnam, Wake-Inseln, Zaire
 A:Zentralafrikanische Republik
 
 P:67                               max.plus
-C:maintained by:                   Michael Reinelt <reinelt@eunet.at>
+C:Maintainer:                      Michael Reinelt <reinelt@eunet.at>
 Z:1                                Festnetz
 T:*/*=1.00(60)/30                  rund um die Uhr
 A:Österreich

@@ -201,7 +201,7 @@ void rate_1001_old(void) {
     printf ("\n");
     rprintf ("Telekom Austria", "P:01,%d", t+1);
     if (t==0)
-      rprintf ("Michael Reinelt <reinelt@eunet.at>", "C:maintained by:");
+      rprintf ("Michael Reinelt <reinelt@eunet.at>", "C:Maintainer:");
     sprintf (s, "%s (ATS %.3f pro Einheit)", Name[t], Tarif[t]);
     rprintf (s, "# Tarif:");
     rprintf ("# Verzonung", "D:pta");
@@ -318,7 +318,7 @@ void rate_1001(void) {
     printf ("\n");
     rprintf ("Telekom Austria", "P:01,%d", t+1);
     if (t==0)
-      rprintf ("Michael Reinelt <reinelt@eunet.at>", "C:maintained by:");
+      rprintf ("Michael Reinelt <reinelt@eunet.at>", "C:Maintainer:");
     sprintf (s, "%s (ATS %.3f pro Einheit)", Name[t], Tarif[t]);
     rprintf (s, "# Tarif:");
     rprintf ("# Verzonung", "D:pta");
@@ -683,23 +683,23 @@ void rate_1012(void) {
 
 void rate_1024(void) {
 
-  char *Zone[][2] = {{ "Regionalzone", "" }, 
-		     { "Bundesland", "" },
-		     { "Österreich", "Österreich" },
+  char *Zone[][2] = {{ "RundUm-Wien", "" }, 
+		     { "RundUm-Regional", "" },
+		     { "Ganzland", "Österreich" },
 		     { "Mobilfunk", "+43663,+43664,+43676,+43699" },
-		     { "Deutschland, Schweiz", "Deutschland, Schweiz" },
-		     { "International A", "Belgien, Dänemark, Finnland, Frankreich, Großbritannien, Irland, Italien, Liechtenstein, Luxemburg, Monaco, Niederlande, Norwegen, Schweden, Slowenien, Slowakei, Spanien, Tschechien, Ungarn, Vatikan, Vereinigte Staaten (USA), Puerto Rico, Alaska, Hawaii, Kanada" },
-		     { "International B", "Andorra, Bosnien-Herzegowina, Bulgarien, Estland, Griechenland, Island, Kroatien, Lettland, Litauen, Malta, Mazedonien, Polen, Portugal, Rumänien, Serbien, Montenegro, Zypern, Australien, Färöer, Israel, Neuseeland, Amerikanische Jungferninseln" },
-		     { "International C", "Albanien, Weihnachtsinseln, Gibraltar, Kokosinseln, Rußland, San Marino, Türkei, Tunesien, Ukraine, Weißrußland, Algerien, Hongkong, Japan, Südkorea, Marokko, Philippinen, Russische Föderation, Singapur" },
-		     { "International D", "Ägypten, Südafrika, Aserbaidschan, Armenien, China, Georgien, Libyen, Malaysia, Moldau, Tadschikistan, Taiwan, Turkmenistan, Usbekistan" },
-		     { "International E", "Angola, Aruba, Bahamas, Bahrain, Barbados, Bermuda, Bhutan, Bolivien, Botswana, Brunei, Burundi, Ghana, Grönland, Guadeloupe, Guam, Guinea, Martinique, Französisch-Guayana, Honduras, Indien, Indonesien, Iran, Jordanien, Kasachstan, Kirgisistan, Kuba, Kuwait, Lesotho, Libanon, Liberia, Macao, Malawi, Martinique, Mayotte, Namibia, Niederländische Antillen, Nigeria, Paraguay, Reunion, Saipan, Saudi-Arabien, St. Lucia, St. Pierre und Miquelon, Saint Vincent und die Grenadinen, Sudan, Syrien, Swasiland, Tansania, Thailand, Trinidad und Tobago, Uruguay, Vereinigte Arabische Emirate" },
-		     { "International F", "+" }};
+		     { "WeltWeit 1", "Deutschland, Schweiz" },
+		     { "WeltWeit 2", "Belgien, Dänemark, Finnland, Frankreich, Großbritannien, Irland, Italien, Liechtenstein, Luxemburg, Monaco, Niederlande, Norwegen, Schweden, Slowenien, Slowakei, Spanien, Tschechien, Ungarn, Vatikan, Vereinigte Staaten (USA), Puerto Rico, Alaska, Hawaii, Kanada" },
+		     { "WeltWeit 3", "Andorra, Bosnien-Herzegowina, Bulgarien, Estland, Griechenland, Island, Kroatien, Lettland, Litauen, Malta, Mazedonien, Polen, Portugal, Rumänien, Serbien, Montenegro, Zypern, Australien, Färöer, Israel, Neuseeland, Amerikanische Jungferninseln" },
+		     { "WeltWeit 4", "Albanien, Weihnachtsinseln, Gibraltar, Kokosinseln, Rußland, San Marino, Türkei, Tunesien, Ukraine, Weißrußland, Algerien, Hongkong, Japan, Südkorea, Marokko, Philippinen, Russische Föderation, Singapur" },
+		     { "WeltWeit 5", "Ägypten, Südafrika, Aserbaidschan, Armenien, China, Georgien, Libyen, Malaysia, Moldau, Tadschikistan, Taiwan, Turkmenistan, Usbekistan, Argentinien, Brasilien, Chile, Costa Rica, Dominikanische Republik, Ecuador, El Salvador, Guatemala, Kolumbien, Mexiko, Nicaragua, Panama, Peru, Venezuela" },
+		     { "WeltWeit 6", "Angola, Aruba, Bahamas, Bahrain, Barbados, Bermuda, Bhutan, Bolivien, Botswana, Brunei, Burundi, Ghana, Grönland, Guadeloupe, Guam, Guinea, Martinique, Französisch-Guayana, Honduras, Indien, Indonesien, Iran, Jordanien, Kasachstan, Kirgisistan, Kuba, Kuwait, Lesotho, Libanon, Liberia, Macao, Malawi, Martinique, Mayotte, Namibia, Niederländische Antillen, Nigeria, Paraguay, Reunion, Saipan, Saudi-Arabien, St. Lucia, St. Pierre und Miquelon, Saint Vincent und die Grenadinen, Sudan, Syrien, Swasiland, Tansania, Thailand, Trinidad und Tobago, Uruguay, Vereinigte Arabische Emirate" },
+		     { "WeltWeit 7", "+" }};
   
   double Tarif[][2] = {{ 0.98, 0.88},
 		       { 1.28, 1.18},
 		       { 1.98, 1.18},
 		       { 3.98, 3.98},
-		       { 3.48, 3.48},
+		       { 2.98, 2.98}, /* W1 */
 		       { 3.98, 3.98},
 		       { 5.98, 5.98},
 		       { 7.38, 7.38},
@@ -711,7 +711,11 @@ void rate_1024(void) {
   
   printf ("\n");
   rprintf ("Telepassport", "P:24");
-  rprintf ("'International D': Zentral- und Südamerika nicht implementiert", "# Fixme:");
+  rprintf ("Leopold Toetsch <lt@toetsch.at>", "C:Maintainer:");
+  rprintf ("TelePassport Telekommunikationsdiensleitungen GmbH", "C:Name:");
+  rprintf ("Prinz-Eugen-Str. 10, A 1040 Wien", "C:Adresse:");
+  rprintf ("http://www.telepassport.at", "C:Homepage:");
+  rprintf ("0800 80 1024", "C:Hotline:");
   rprintf ("# Verzonung", "D:1024");
   for (z=0; z<COUNT(Zone); z++) {
     rprintf (Zone[z][0], "Z:%d", z+1);
@@ -769,6 +773,7 @@ void rate_1029(void) {
   for (t=0; t<2; t++) {
     printf ("\n");
     rprintf ("CyberTron", "P:29,%d", t+1);
+    rprintf ("# Verzonung", "D:pta");
     sprintf (s, "%s (ATS %.3f pro Einheit)", Name[t], Einheit[t]);
     rprintf (s, "# Tarif:");
     rprintf ("Internationale Zonen nicht implementiert!", "# Fixme:");
@@ -980,7 +985,7 @@ void rate_1067(void) {
   
   printf ("\n");
   rprintf ("max.plus","P:67");
-  rprintf ("Michael Reinelt <reinelt@eunet.at>", "C:maintained by:");
+  rprintf ("Michael Reinelt <reinelt@eunet.at>", "C:Maintainer:");
   for (z=0; z<COUNT(Zone); z++) {
     rprintf (Zone[z][0], "Z:%d", z+1);
     rprintf ("rund um die Uhr", "T:*/*=%.2f(60)/30", Tarif[z]);

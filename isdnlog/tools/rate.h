@@ -1,4 +1,4 @@
-/* $Id: rate.h,v 1.10 1999/06/28 19:16:51 akool Exp $
+/* $Id: rate.h,v 1.11 1999/08/25 17:07:18 akool Exp $
  *
  * Tarifdatenbank
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rate.h,v $
+ * Revision 1.11  1999/08/25 17:07:18  akool
+ * isdnlog-3.46
+ *
  * Revision 1.10  1999/06/28 19:16:51  akool
  * isdnlog Version 3.38
  *   - new utility "isdnrate" started
@@ -125,29 +128,30 @@
 #define _RATE_H_
 
 typedef struct {
-  int        prefix;   /* Providerkennung */
-  int        zone;     /* Zonennummer */
-  char      *src[3];   /* eigene Telefonnummer [Land, Vorwahl, Nummer]*/
-  char      *dst[3];   /* gerufene Nummer */
-  time_t     start;    /* Verbindungsaufbau */
-  time_t     now;      /* momentane Zeit */
-  int        domestic; /* Inlandsverbindung */
-  int        _area;    /* interner(!) Länderindex */
-  int        _zone;    /* interner(!) Zonenindex */
-  char      *Provider; /* Name des Providers */
-  char      *Country;  /* Landesname (Ausland) */
-  char      *Zone;     /* Name der Zone */
-  char      *Service;  /* Name des Dienstes (S:-Tag) */
-  char      *Flags;    /* Inhalt des F:-Tags */
-  char      *Day;      /* Wochen- oder Feiertag */
-  char      *Hour;     /* Bezeichnung des Tarifs */
-  double     Basic;    /* Grundpreis einer Verbindung */
-  double     Price;    /* Preis eines Tarifimpulses */
-  double     Duration; /* Länge eines Tarifimpulses */
-  int        Units;    /* verbrauchte Tarifimpulse */
-  double     Charge;   /* gesamte Verbindungskosten */
-  time_t     Time;     /* gesamte Verbindungszeit */
-  time_t     Rest;     /* bezahlte, aber noch nicht verbrauchte Zeit */
+  int        prefix;    /* Providerkennung */
+  int        zone;      /* Zonennummer */
+  char      *src[3];    /* eigene Telefonnummer [Land, Vorwahl, Nummer]*/
+  char      *dst[3];    /* gerufene Nummer */
+  time_t     start;     /* Verbindungsaufbau */
+  time_t     now;       /* momentane Zeit */
+  int        domestic;  /* Inlandsverbindung */
+  int        _area;     /* interner(!) Länderindex */
+  int        _zone;     /* interner(!) Zonenindex */
+  char      *Provider;  /* Name des Providers */
+  char      *Country;   /* Landesname (Ausland) */
+  char      *Zone;      /* Name der Zone */
+  char      *Service;   /* Name des Dienstes (S:-Tag) */
+  char      *Flags;     /* Inhalt des F:-Tags */
+  char      *Day;       /* Wochen- oder Feiertag */
+  char      *Hour;      /* Bezeichnung des Tarifs */
+  double     Basic;     /* Grundpreis einer Verbindung */
+  double     Price;     /* Preis eines Tarifimpulses */
+  double     Duration;  /* Länge eines Tarifimpulses */
+  int        Units;     /* verbrauchte Tarifimpulse */
+  double     Charge;    /* gesamte Verbindungskosten */
+  double     Rhythm[2]; /* Taktung */  
+  time_t     Time;      /* gesamte Verbindungszeit */
+  time_t     Rest;      /* bezahlte, aber noch nicht verbrauchte Zeit */
 } RATE;
 
 #define UNZONE -2
@@ -156,6 +160,7 @@ void  exitRate(void);
 int   initRate(char *conf, char *dat, char *dom, char **msg);
 char *getProvider(int prefix);
 int   getArea(int prefix, char *number);
+char *getComment(int prefix, char *key);
 void  clearRate (RATE *Rate);
 int   getRate(RATE *Rate, char **msg);
 int   getLeastCost(RATE *Current, RATE *Cheapest, int booked, int skip);
