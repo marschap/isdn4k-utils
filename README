@@ -1,17 +1,21 @@
 #
-# $Id: README,v 1.2 1997/02/22 14:46:09 fritz Exp $
+# $Id: README,v 1.3 1997/03/02 19:41:57 fritz Exp $
 #
 This is the README file for the "isdn4k-utils" package from "The i4l-crew".
 
-This package contains the following utilities:
+This package contains the following stuff:
 
-  isdnctrl, general link-level setup utility.
-  icnctrl, setup utility for the icn driver.
-  telesctrl, setup utility for the teles and HiSax driver.
-  pcbitctl, setup utility for the pcbit driver.
-  imon, a tty based utility for monitoring ISDN-activities.
-  isdnlog, a set of utilities for connection logging.
-  isdnmon, a Tcl/Tk based utility for monitoring ISDN-activities.
+  isdnctrl,  general link-level setup utility.
+  icnctrl,   setup utility for the icn driver.
+  telesctrl, setup utility for the teles driver.
+  hisaxctrl, setup utility for the HiSax driver.
+  pcbitctl,  setup utility for the pcbit driver.
+  imon,      a ncurses based utility for monitoring ISDN-activities.
+  imontty,   a tty based utility for monitoring ISDN-activities.
+  isdnlog,   a set of utilities for connection logging.
+  xmonisdn,  a utility for monitoring and controlling ISDN-activity.
+  xisdnload, an xload-like meter.
+  isdnmon,   a Tcl/Tk based utility for monitoring ISDN-activities.
   
 System prerequisites:
 
@@ -31,14 +35,11 @@ System prerequisites:
 
    Run "make config"
 
-   This will run various configuration-scripts for each sub-package.
+   This will run an interactive configuration tool and the various
+   configuration-scripts for each sub-package. (You may know that
+   tool from kernel menuconfig.)
    There is a global configuration directory, where most programs
-   expect their configuration files. The default is /etc/isdn. If
-   you prefer a different directory, run
-   
-   "make I4LCONFDIR=/what/ever/you/want config"
-
-   instead of the above.
+   expect their configuration files. The default is /etc/isdn.
    
    Run "make"
 

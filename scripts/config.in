@@ -1,0 +1,57 @@
+#
+# The whole configuration stuff is borrowed from the kernel
+# configuration.
+#
+# For a description of the syntax of this configuration file,
+# see the Menuconfig script.
+#
+if [ "`type -p xmkmf`" != "" ]; then
+CONFIG_HASX11=y
+fi
+mainmenu_name "isdn4k-utils Configuration"
+
+mainmenu_option next_comment
+comment 'Code maturity level options'
+bool 'Prompt for development and/or incomplete code' CONFIG_EXPERIMENTAL
+endmenu
+string 'General configuration directory' CONFIG_I4LCONFDIR /etc/isdn
+string 'Directory to install binaries' CONFIG_BINDIR /usr/bin
+string 'Directory to install admin binaries' CONFIG_SBINDIR /sbin
+string 'Directory to install man pages' CONFIG_MANDIR /usr/man
+comment 'General configuration tools'
+bool 'isdnctrl' CONFIG_ISDNCTRL
+if [ "$CONFIG_ISDNCTRL" = "y" ]; then
+  bool 'Enable isdnctrl debug-option' CONFIG_ISDNCTRL_DEBUG
+fi
+bool 'iprofd' CONFIG_IPROFD
+comment 'Card configuration tools'
+bool 'telesctrl' CONFIG_TELESCTRL
+bool 'hisaxctrl' CONFIG_HISAXCTRL
+bool 'icnctrl' CONFIG_ICNCTRL
+if [ "$CONFIG_ICNCTRL" = "y" ]; then
+  bool 'Enable icnctl debug-option' CONFIG_ICNCTRL_DEBUG
+fi
+bool 'pcbitctl' CONFIG_PCBITCTL
+comment 'Tools for monitoring activity'
+bool 'imon' CONFIG_IMON
+bool 'isdnlog' CONFIG_ISDNLOG
+if [ "$CONFIG_ISDNLOG" = "y" ]; then
+  source isdnlog/Config.in
+fi
+dep_bool 'xmonisdn' CONFIG_XMONISDN CONFIG_HASX11
+if [ "$CONFIG_XMONISDN" = "y" ]; then
+	string 'NetUP command for xmonisdn' CONFIG_XMONISDN_UPCMD '/sbin/netup'
+	string 'NetDOWN command for xmonisdn' CONFIG_XMONISDN_DOWNCMD '/sbin/netdown'
+fi
+dep_bool 'xisdnload' CONFIG_XISDNLOAD CONFIG_HASX11
+comment 'Applications'
+bool 'vbox' CONFIG_VBOX
+if [ "$CONFIG_VBOX" = "y" ]; then
+  source vbox/Config.in
+fi
+comment 'General documentation'
+bool 'Install generic pages' CONFIG_GENMAN
+bool 'Generate FAQ' CONFIG_FAQ
+if [ "$CONFIG_FAQ" = "y" ]; then
+  string 'Directory to install FAQ' CONFIG_FAQDIR /usr/doc/faq/isdn4linux
+fi

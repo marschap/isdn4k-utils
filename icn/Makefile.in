@@ -1,4 +1,4 @@
-# $Id: Makefile.in,v 1.2 1997/02/22 14:14:43 fritz Exp $
+# $Id: Makefile.in,v 1.3 1997/03/02 19:42:06 fritz Exp $
 #
 # Makefile for icnctrl
 # (C) 1997 Fritz Elfert
@@ -15,8 +15,17 @@ INSTALL_PROGRAM	= $(INSTALL) -o 0 -g 0 -m 0750
 INSTALL_MAN		= $(INSTALL) -o 0 -g 0 -m 0644
 prefix			= @prefix@
 exec_prefix		= @exec_prefix@
-SBINDIR			= /sbin
-mandir			= @mandir@
+ifeq (../.config,$(wildcard ../.config))
+	include ../.config
+	ifeq ($(CONFIG_ICNCTRL_DEBUG),y)
+		CFLAGS += -DDEBUGVAR
+	endif
+	SBINDIR			= $(CONFIG_SBINDIR)
+	mandir			= $(CONFIG_MANDIR)
+else
+	SBINDIR			= /sbin
+	mandir			= @mandir@
+endif
 MAN8DIR			= $(mandir)/man8
 CC				= @CC@
 

@@ -1,4 +1,4 @@
-# $Id: Makefile.in,v 1.1 1997/02/17 00:08:58 fritz Exp $
+# $Id: Makefile.in,v 1.2 1997/03/02 19:42:12 fritz Exp $
 #
 # Makefile for iMON
 #
@@ -18,8 +18,14 @@ INSTALL_PROGRAM	= $(INSTALL) -o 0 -g 0 -m 0750
 INSTALL_MAN		= $(INSTALL) -o 0 -g 0 -m 0644
 prefix			= @prefix@
 exec_prefix		= @exec_prefix@
-SBINDIR			= /sbin
-mandir			= @mandir@
+ifeq (../.config,$(wildcard ../.config))
+	include ../.config
+	SBINDIR			= $(CONFIG_SBINDIR)
+	mandir			= $(CONFIG_MANDIR)
+else
+	SBINDIR			= /sbin
+	mandir			= @mandir@
+endif
 MAN8DIR			= $(mandir)/man8
 CC				= @CC@
 

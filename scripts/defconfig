@@ -1,0 +1,45 @@
+#
+# Code maturity level options
+#
+# CONFIG_EXPERIMENTAL is not set
+CONFIG_I4LCONFDIR='/etc/isdn'
+CONFIG_BINDIR='/usr/bin'
+CONFIG_SBINDIR='/sbin'
+CONFIG_MANDIR='/usr/man'
+CONFIG_ISDNCTRL=y
+# CONFIG_ISDNCTRL_DEBUG is not set
+CONFIG_IPROFD=y
+# CONFIG_TELESCTRL is not set
+CONFIG_HISAXCTRL=y
+CONFIG_ICNCTRL=y
+# CONFIG_ICNCTRL_DEBUG is not set
+CONFIG_PCBITCTL=y
+CONFIG_IMON=y
+CONFIG_ISDNLOG=n
+
+#
+# Options for isdnlog package
+#
+CONFIG_ISDNLOG_OLDI4LCONFDIR='/etc/isdnlog'
+CONFIG_ISDNLOG_OLDI4LCONFFILE='isdnlog.conf'
+CONFIG_ISDNLOG_AREACODE=y
+# CONFIG_ISDNLOG_POSTGRES is not set
+# CONFIG_ISDNLOG_OLD_I4L is not set
+CONFIG_ISDNLOG_DE=y
+CONFIG_XMONISDN=y
+CONFIG_XMONISDN_UPCMD='/sbin/netup'
+CONFIG_XMONISDN_DOWNCMD='/sbin/netdown'
+CONFIG_XISDNLOAD=y
+CONFIG_VBOX=n
+
+#
+# Options for vbox package
+#
+VBOX_SPOOLDIR='/var/spool/vbox'
+VBOX_LOGDIR='/var/log/vbox'
+VBOX_PIDDIR='/var/run'
+VBOX_LOCKDIR='/var/lock'
+VBOX_TCL='tcl8.0'
+CONFIG_GENMAN=y
+CONFIG_FAQ=y
+CONFIG_FAQDIR='/usr/doc/faq/isdn4linux'

@@ -1,0 +1,8 @@
+mainmenu_option next_comment
+comment 'Options for vbox package'
+string 'Voice message spool directory' VBOX_SPOOLDIR '/var/spool/vbox'
+string 'Log directory' VBOX_LOGDIR '/var/log/vbox'
+string 'PID directory' VBOX_PIDDIR '/var/run'
+string 'Lock directory' VBOX_LOCKDIR '/var/lock'
+string 'Version of Tcl library to use' VBOX_TCL 'tcl8.0'
+endmenu

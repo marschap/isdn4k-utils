@@ -1,6 +1,6 @@
-.\" $Id: icnctrl.man.in,v 1.3 1997/02/22 14:14:00 fritz Exp $
+.\" $Id: icnctrl.man.in,v 1.4 1997/03/02 19:42:07 fritz Exp $
 .\"
-.\" CHECKIN $Date: 1997/02/22 14:14:00 $
+.\" CHECKIN $Date: 1997/03/02 19:42:07 $
 .\"
 .\" Process this file with
 .\" groff -man -Tascii icnctrl.1 for ASCII output, or
@@ -152,7 +152,7 @@ firmware parameters have to be supplied. The first firmware is used for the
 upper S0 connector, the second firmware is used for the lower S0 connector
 (towards the card's slot connector).
 .TP
-dump
+.B dump
 is available if the program is configured using the
 .B --enable-dump
 option only. The contents of internal driver variables is dumped on stdout.

@@ -1,0 +1,130 @@
+#
+# This file is boorwed from the kernel configuration.
+#
+# Format of this file: description<nl>variable<nl>helptext<nl><nl>. 
+# If the question being documented is of type "choice", we list
+# only the first occurring config variable. The help texts
+# must not contain empty lines. No variable should occur twice; if it
+# does, only the first occurrence will be used by Configure. The lines
+# in a help text should be indented two positions. Lines starting with
+# `#' are ignored. To be nice to menuconfig, limit your lines to 70
+# characters. Use emacs' kfill.el to edit this file or you lose.
+#
+Prompt for development and/or incomplete code
+CONFIG_EXPERIMENTAL
+  Some of the programs in this package may be incomplete or
+  instable.
+  Unless you intend to help test and develop a feature that
+  falls into this category, or you have a situation that requires
+  using these features you should probably say N here, which will
+  cause this configure script to present you with fewer choices. If
+  you say Y here, you will be offered the choice of using features or
+  that are currently considered to be in the alpha-test phase.
+
+General configuration directory
+CONFIG_I4LCONFDIR
+  Some of the programs in this package need global configuration
+  files. This option tells them where to expect these files.
+  During installation, some sample files may be installed there
+  also.
+
+Directory to install binaries
+CONFIG_BINDIR
+  This option tells the installation process, where to put those
+  programs which are usable for ordinary users. The administrative
+  programs (those, which are intended for configuration) are
+  installed in another directory, configurable in the next option.
+
+Directory to install administrative binaries
+CONFIG_SBINDIR
+  This option tess the installation process, where to put the
+  administrative programs. All other programs are installed in
+  another directory, configurable in the previous option.
+
+Directory to install man pages
+CONFIG_MANDIR
+  This option tells the installation process, where to put the
+  man pages. This is usually /usr/man or /usr/local/man. The
+  man pages go into some subdirectory below this directory
+  depending on the section they belong to.
+
+Build isdnctrl tool
+CONFIG_ISDNCTRL
+  This program is the main configuration utility for all linklevel
+  related configuration such as net-devices, mapping, encapsulation
+  etc. This program is documented in isdnctrl (8).
+
+Enable debugging features of isdnctrl
+CONFIG_ISDNCTRL_DEBUG
+  If enabled, a special feature 'debug' is available with isdnctrl.
+  With this feature, isdnctrl is able to dump internal data structures
+  of the linklevel part. This feature may be helpful when debugging
+  drivers or the linklevel itself.
+
+Build iprofd
+CONFIG_IPROFD
+  If enabled, iprofd, a special daemon will be built. This daemon is
+  used to permanently store profile data from the modem emulator
+  into a file whenever an AT&W0 command is given on any ttyI. It also
+  reads this file on startup and initializes the profile from its
+  contents.
+  This program is documented in iprofd (8).
+
+Build telesctrl
+CONFIG_TELESCTRL
+  This program is used to configure the teles driver (mainly debugging
+  options). For the HiSax driver, there is another tool, called
+  hisaxctrl. These are essentially the same binary, just with a
+  different name.
+  This program is documented in telesctrl (8).
+
+Build hisaxctrl
+CONFIG_HISAXCTRL
+  This program is used to configure the HiSax driver (mainly debugging
+  options). For the teles driver, there is another tool, called
+  telesctrl. These are essentially the same binary, just with a
+  different name.
+  This program is documented in hisaxctrl (8).
+
+Build icnctrl
+CONFIG_ICNCTRL
+  This program is used to configure the ICN driver. With tis tool, you
+  can add cards, download protocol firmware into cards and configure
+  ports, memory, leased-line mode etc. 
+  This program is documented in icnctrl (8).
+
+Enable debugging features of icnctrl
+CONFIG_ICNCTRL_DEBUG
+  If enabled, a special feature 'debug' is available with icnctrl.
+  With this feature, icnctrl is able to dump internal data structures
+  of the ICN driver. This feature may be helpful when debugging
+  the ICN driver.
+
+Build pcbitctl
+CONFIG_PCBITCTL
+  This program is used to configure the pcbit driver. With this tool, you
+  can download protocol firmware into cards.
+  This program is documented in pcbitctl (8).
+
+Build imon
+CONFIG_IMON
+  This is a userlevel program to monitor the activity of isdn4linux.
+  It is tty based and uses ncurses to produce a nice screen.
+  This program is documented in imon (1).
+
+Install generic man pages
+CONFIG_GENMAN
+  If enabled, in addition to the tool's man pages, the following generic
+  man pages are installed:
+  isdninfo.4 ttyI.4 cui.4 isdn_audio.4 isdn_cause.7
+
+Generate FAQ
+CONFIG_FAQ
+  If enabled, the FAQ, available as html both unpacked and packed with
+  zip and gzip are generated. The FAQ is available in English and German.
+
+Wher to install the FAQ
+CONFIG_FAQDIR
+  Here you can tell where to put the FAQ.
+
+# need an empty line after last entry, for sed script in Configure.

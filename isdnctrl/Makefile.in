@@ -1,4 +1,4 @@
-# $Id: Makefile.in,v 1.1 1997/02/17 00:09:17 fritz Exp $
+# $Id: Makefile.in,v 1.2 1997/03/02 19:42:21 fritz Exp $
 #
 # Makefile for iprofd
 # (C) 1997 Fritz Elfert
@@ -13,12 +13,18 @@ MANPAGE			= isdnctrl.8
 INSTALL			= @INSTALL@
 INSTALL_PROGRAM	= $(INSTALL) -o 0 -g 0 -m 0750
 INSTALL_MAN		= $(INSTALL) -o 0 -g 0 -m 0644
+CC				= @CC@
 prefix			= @prefix@
 exec_prefix		= @exec_prefix@
-SBINDIR			= /sbin
-mandir			= @mandir@
+ifeq (../.config,$(wildcard ../.config))
+	include ../.config
+	SBINDIR			= $(CONFIG_SBINDIR)
+	mandir			= $(CONFIG_MANDIR)
+else
+	SBINDIR			= /sbin
+	mandir			= @mandir@
+endif
 MAN8DIR			= $(mandir)/man8
-CC				= @CC@
 
 .SUFFIXES:
 .SUFFIXES: .c .o
@@ -32,13 +38,15 @@ $(PROGRAM):	$(MODULES)
 	$(CC) $(CFLAGS) $? $(LDFLAGS) -o $@
 
 install-man: isdnctrl.man
-	mkdir -p $(MAN8DIR)
+	$(INSTALL) -d $(MAN8DIR)
 	$(INSTALL_MAN) $< $(MAN8DIR)/$(MANPAGE)
 
 install: $(PROGRAM) install-man
+	$(INSTALL) -d $(SBINDIR)
 	$(INSTALL_PROGRAM) $(PROGRAM) $(SBINDIR)/$(PROGRAM)
 
 install-strip: $(PROGRAM)
+	$(INSTALL) -d $(SBINDIR)
 	$(INSTALL_PROGRAM) -s $(PROGRAM) $(SBINDIR)/$(PROGRAM)
 
 uninstall:

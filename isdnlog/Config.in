@@ -1,0 +1,12 @@
+mainmenu_option next_comment
+comment 'Options for isdnlog package'
+string 'Old config directory' CONFIG_ISDNLOG_OLDI4LCONFDIR '/etc/isdnlog'
+string 'Old config file' CONFIG_ISDNLOG_OLDI4LCONFFILE 'isdnlog.conf'
+bool 'Use AreaCode by uz@musoftware.com' CONFIG_ISDNLOG_AREACODE
+bool 'Support postgres95 SQL-Database' CONFIG_ISDNLOG_POSTGRES
+bool 'Support for old isdn4linux' CONFIG_ISDNLOG_OLD_I4L
+choice 'Country specific chargeinfo support' \
+	"DE CONFIG_ISDNLOG_DE \
+	NL CONFIG_ISDNLOG_NL \
+	CH CONFIG_ISDNLOG_CH" DE
+endmenu

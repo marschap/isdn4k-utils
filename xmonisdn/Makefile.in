@@ -1,0 +1,61 @@
+#
+# This Makefile is used for compatibility to the
+# isdn4k-utils package. In order to superseede
+# the original Makefile, it is called makefile.
+#
+
+#
+# Add security check:
+#  - executed commands must be owned by root
+#    and only writable by owner.
+#
+I4LU_DEFINES := -DPARANOIA_CHECK
+ifeq (../.config,$(wildcard ../.config))
+	include ../.config
+	ifneq ($(CONFIG_XMONISDN_UPCMD),"")
+		I4LU_DEFINES += -DNETUP_COMMAND=\\\"$(shell echo $(CONFIG_XMONISDN_UPCMD))\\\"
+	endif
+	ifneq ($(CONFIG_XMONISDN_DOWNCMD),"")
+		I4LU_DEFINES += -DNETDOWN_COMMAND=\\\"$(shell echo $(CONFIG_XMONISDN_DOWNCMD))\\\"
+	endif
+    MAN1DIROPT = MANDIR=$(CONFIG_MANDIR)/man1
+    MAN3DIROPT = LIBMANDIR=$(CONFIG_MANDIR)/man3
+    MAN5DIROPT = FILEMANDIR=$(CONFIG_MANDIR)/man5
+    MANDIROPTS = $(MAN1DIROPT) $(MAN3DIROPT) $(MAN5DIROPT)
+	BINDIROPT  = BINDIR=$(CONFIG_BINDIR)
+endif
+
+all: xmonisdn
+
+#
+# Bug in original Makefile:
+# Bitmaps are expected to be already installed.
+# We create a temporary X11 subdir and add -I.
+# instead.
+#
+xmonisdn:
+	mkdir -p X11/bitmaps
+	cp netinactive netwaiting netactive \
+		netactiveout netstart netstop X11/bitmaps
+	$(MAKE) -f Makefile EXTRA_DEFINES="$(I4LU_DEFINES) -I."
+	rm -rf X11
+
+config:
+	@cp Makefile.in GNUmakefile
+	@xmkmf
+
+clean:
+	$(MAKE) -f Makefile clean
+
+distclean: clean
+	rm -f Makefile GNUmakefile Makefile.bak
+
+install-man: xmonisdn.man
+	$(MAKE) -f Makefile $(MANDIROPTS) install.man
+
+install: xmonisdn install-man
+	$(MAKE) -f Makefile $(BINDIROPT) install
+
+uninstall:
+	rm -f $(CONFIG_BINDIR)/xmonisdn
+	find $(CONFIG_MANDIR)/xmonisdn -name "xmonisdn.*" -exec rm -f {} \;

@@ -1,0 +1,10 @@
+XISDNLoad.geometry:		250x100
+*Label*Justify:			left
+*Label*Label:			%7s %3d:%02d %4.0fcps %ldkB
+! *minScale:			8
+*minScale:			1
+*JumpScroll:			1
+*update:			1
+*internalBorderWidth:		0
+*showGrip:			FALSE
+*onlineColor:			red
