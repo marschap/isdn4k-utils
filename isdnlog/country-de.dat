@@ -359,7 +359,7 @@ C:+673
 
 N:Weihnachtsinseln
 A:Weihnachtsinsel (Australien), Christmas Island, Christmas Island (Antarctica)
-A:Christmas Islands, Christmas Inseln,Weihnachtsinsel
+A:Christmas Inseln,Weihnachtsinsel
 C:+6724
 
 N:Norfolkinseln
@@ -368,7 +368,7 @@ C:+6723
 
 N:Kokosinseln
 A:Kokosinseln (Australien), Cocos Island, Cocos Island (Antarctica)
-A:Cocos Islands, Cocos Inseln
+A:Cocos Inseln
 C:+6722, +6189162
 
 N:Antarktis
@@ -412,7 +412,6 @@ A:Australia
 C:+61
 
 N:Malaysia
-A:Malaysien
 C:+60
 
 N:Niederl. Antillen
@@ -1176,7 +1175,7 @@ C:+1809946, +1809941, +1649
 
 N:Amerikanische Jungferninseln
 A:Jungferninseln (USA), Amerikan. Jungferninseln, American Virgin Isles
-A:US Jungferninseln, Virgin Islands (US)
+A:US Jungferninseln
 C:+180977, +1809719, +1809715, +1809714, +1809713, +1809712, +1809693, +1809692, +1809690, +1809611, +1809513, +1340
 
 N:Britische Jungferninseln

@@ -1,4 +1,4 @@
-/* $Id: rate.c,v 1.37 1999/07/26 16:28:49 akool Exp $
+/* $Id: rate.c,v 1.38 1999/07/31 09:25:45 akool Exp $
  *
  * Tarifdatenbank
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rate.c,v $
+ * Revision 1.38  1999/07/31 09:25:45  akool
+ * getRate() speedup
+ *
  * Revision 1.37  1999/07/26 16:28:49  akool
  * getRate() speedup from Leo
  *
@@ -303,6 +306,7 @@
 #include <stdarg.h>
 #include <string.h>
 #include <ctype.h>
+#include <math.h>
 #include <time.h>
 #include <unistd.h>
 #include <errno.h>
@@ -1167,6 +1171,18 @@ void clearRate (RATE *Rate)
   Rate->_zone=UNKNOWN;
 }
 
+static int leo (int a, int b, double c, double d)
+{
+  int x;
+
+  if (a < b)
+    b = a;
+  if (b < c || c < 0)
+    c = b;
+  x = ceil(c/d);
+  return x < 1 ? 1 : x;
+}
+
 int getRate(RATE *Rate, char **msg)
 {
   static char message[LENGTH];
@@ -1174,7 +1190,7 @@ int getRate(RATE *Rate, char **msg)
   ZONE  *Zone;
   HOUR  *Hour;
   UNIT  *Unit;
-  int    prefix, freeze, cur, max, i, j;
+  int    prefix, freeze, cur, max, i, j, n;
   double now, end, jmp, leap;
   char  *day;
   time_t time;
@@ -1260,7 +1276,7 @@ int getRate(RATE *Rate, char **msg)
   Rate->Time=end;
   leap=UNKNOWN; /* Stundenwechsel erzwingen */
   
-  while (now<end) {
+  while (1) {
     if (!freeze && now>=leap) { /* Neuberechnung bei Stundenwechsel */
       time=Rate->start+now;
       leap=3600*(int)(time/3600+1)-Rate->start;
@@ -1284,35 +1300,37 @@ int getRate(RATE *Rate, char **msg)
       freeze=Hour->Freeze;
       Rate->Hour=Hour->Name;
       Unit=Hour->Unit;
+      if (now==0.0 && Unit->Duration==0.0)
+	Rate->Basic=Unit->Price;
       jmp=now;
-      while (Unit->Delay!=UNKNOWN && Unit->Delay<=jmp) {
+      while (Unit->Delay!=UNKNOWN && Unit->Delay<=jmp && jmp>0) {
 	jmp-=Unit->Delay;
 	Unit++;
       }
-      if (now==0.0 && Unit->Duration==0.0)
-	Rate->Basic=Unit->Price;
-      else
-	Rate->Price=Unit->Price;
+      Rate->Price=Unit->Price;
       Rate->Duration=Unit->Duration;
     }
-
-    now+=Unit->Duration; 
-    Rate->Charge+=Unit->Price;
-
-    if (Unit->Duration>0.0)
-      Rate->Units++;
-
+    
+    if (Unit->Duration==0.0) {
+      Rate->Charge+=Unit->Price;
+    } else {
+      n=leo(end-now, leap-now, Unit->Delay, Unit->Duration);
+      Rate->Units+=n;
+      Rate->Charge+=n*Unit->Price;
+      now+=n*Unit->Duration; 
+      if (now>end)
+	break;
+    }
     if (Unit->Delay!=UNKNOWN && Unit->Delay<=now) {
       Unit++;
       Rate->Price=Unit->Price;
       Rate->Duration=Unit->Duration;
-    } else if (Unit->Duration==0.0)
-      break;
+    }
   }
-
+  
   if (now>0.0)
     Rate->Rest=now-Rate->Time;
-
+  
   return 0;
 }
 
@@ -1432,7 +1450,7 @@ void main (int argc, char *argv[])
   printf ("%s\n", msg);
 
   clearRate(&Rate);
-  Rate.prefix = 2;
+  Rate.prefix = 1;
 
   if (argc==3) {
     getNumber (argv[1], Rate.src);
@@ -1446,15 +1464,18 @@ void main (int argc, char *argv[])
   }
 
   time(&Rate.start);
-  Rate.now=Rate.start;
+  Rate.now=Rate.start+153;
   
-  for (i=0; i<5000; i++) {
+#if 1
+  Rate.prefix = 2;
+  for (i=0; i<10000; i++) {
     if (getRate(&Rate, &msg)==UNKNOWN) {
       printf ("Ooops: %s\n", msg);
       exit (1);
     }
     Rate.now++;
   }
+
   printf ("domestic=%d _area=%d _zone=%d zone=%d Country=%s Zone=%s Service=%s Flags=%s\n"
 	  "current=%s\n\n",
 	  Rate.domestic, Rate._area, Rate._zone, Rate.zone, Rate.Country, Rate.Zone,
@@ -1469,9 +1490,10 @@ void main (int argc, char *argv[])
 	  explainRate(&Rate));
   
   exit (0);
+#endif
 
   
-#if 1
+#if 0
   time(&Rate.start);
   Rate.now=Rate.start+153;
 
@@ -1519,9 +1541,20 @@ void main (int argc, char *argv[])
 
   printf ("---Date--- --Time--  --Charge-- ( Basic  Price)  Unit   Dur  Time  Rest\n");
 
-  time(&Rate.start)
+  time(&Rate.start);
+  time(&Rate.now);
+  if (getRate(&Rate, &msg)==UNKNOWN) {
+    printf ("Ooops: %s\n", msg);
+    exit (1);
+  }
+  printf ("domestic=%d _area=%d _zone=%d zone=%d Country=%s Zone=%s Service=%s Flags=%s\n"
+	  "current=%s\n\n",
+	  Rate.domestic, Rate._area, Rate._zone, Rate.zone, Rate.Country, Rate.Zone,
+	  Rate.Service, Rate.Flags, explainRate(&Rate));
+
+
   while (1) {
-    time(&Rate.now)
+    time(&Rate.now);
     if (getRate(&Rate, &msg)==UNKNOWN) {
       printf ("Ooops: %s\n", msg);
       exit (1);

@@ -1,4 +1,4 @@
-V:1.02-Germany [23-Jul-1999 22:39:23]
+V:1.02-Germany [31-Jul-1999 11:30:28]
 
 # Währungsformat
 U:%.3f DM
@@ -8,7 +8,7 @@ U:%.3f DM
 #
 # (C) Copyright 1999 by Andreas Kool (akool@isdn4linux.de)
 #
-# $Id: rate-de.dat,v 1.33 1999/07/24 08:43:54 akool Exp $
+# $Id: rate-de.dat,v 1.34 1999/07/31 09:25:08 akool Exp $
 #
 # Zonenzuordnung für Deutschland
 #
@@ -167,7 +167,7 @@ C:GmbH, Gutleutstraße 85, 60329 Frankfurt 01010
 #
 P:11 o.tel.o CbC
 G:15-Jul-1999
-C:o.tel.o communications GmbH, Am Bonneshof 35, 40474 Düsseldorf 01011
+C:Mannesmann Zwölfte Verwaltungsgesellschaft mbH, Mannesmannufer 2, 40213 Düsseldorf
 C:Homepage: http://www.o-tel-o.de
 C:Hotline:  01803/1998 oder 0800/7370 (Geschaeftskunden)
 C:Adresse:  96038 Bamberg
@@ -405,7 +405,7 @@ A:+	# Alle anderen Auslandsverbindungen
 T:*/*=2.790032/60
 #####################################################################
 P:11,1 o.tel.o direct Preselection
-C:o.tel.o communications GmbH, Am Bonneshof 35, 40474 Düsseldorf 01011
+C:Mannesmann Zwölfte Verwaltungsgesellschaft mbH, Mannesmannufer 2, 40213 Düsseldorf
 C:Homepage: http://www.o-tel-o.de
 C:Hotline:  01803/1998 oder 0800/7370 (Geschaeftskunden)
 C:Adresse:  96038 Bamberg
@@ -658,7 +658,7 @@ C:Internetz GmbH, Süderstraße 75, 20097 Hamburg 01012
 #
 #
 P:13 Tele 2
-C:Tele 2 Kinnevik Telecommunciations International S.A., 75, route de Longwy, L-8080 Bertrange, Luxembourg 01013
+C:Telecommunications Services GmbH, Düsseldorf
 C:Homepage: http://www.tele2.de
 C:Hotline:  0800/24-01013
 C:Adresse:  Postfach 130840, 40558
@@ -733,8 +733,8 @@ T:*/*=2.44/60
 #####################################################################
 #
 #
-P:14 EWE TEL Call By Call national
-C:GmbH, Donnerschweer Straße 22-26, 26123 Oldenburg 01014
+P:14 EWE TEL CbC national
+C:Cloppenburger Str. 300, 26133 Oldenburg
 C:Homepage: http://www.ewetel.de
 C:Hotline: (07-22h) 01803/25 24 23
 C:Regionaltarif gilt nur in bestimmten Orten in der Nähe von Oldenburg
@@ -802,8 +802,8 @@ Z:206 Welt 4
 A:+
 T:*/*=2.99(60)/1
 #####################################################################
-P:14,1 EWE TEL Call By Call/pre-select regional
-C:GmbH, Donnerschweer Straße 22-26, 26123 Oldenburg 01014
+P:14,1 EWE TEL CbC/pre-select regional
+C:Cloppenburger Str. 300, 26133 Oldenburg
 C:Homepage: http://www.ewetel.de
 C:Hotline: (07-22h) 01803/25 24 23
 C:Regionaltarif gilt nur in bestimmten Orten in der Nähe von Oldenburg
@@ -976,7 +976,7 @@ C:81	-  85	Service 0180-x
 C:91	-  94	Service 0190-x
 C:100		T-Online
 C:160, 164	DTAG Service Nummern
-C:170		Persöhnliche Rufnummer
+C:170		Persönliche Rufnummer
 C:171		Info Expo 2000
 C:200	-	Ausland
 G:01.04.1999
@@ -1836,7 +1836,7 @@ C:81	-  85	Service 0180-x
 C:91	-  94	Service 0190-x
 C:100		T-Online
 C:160, 164	DTAG Service Nummern
-C:170		Persöhnliche Rufnummer
+C:170		Persönliche Rufnummer
 C:171		Info Expo 2000
 C:200	-	Ausland
 G:01.04.1999
@@ -2702,7 +2702,7 @@ C:81	-  85	Service 0180-x
 C:91	-  94	Service 0190-x
 C:100		T-Online
 C:160, 164	DTAG Service Nummern
-C:170		Persöhnliche Rufnummer
+C:170		Persönliche Rufnummer
 C:171		Info Expo 2000
 C:200	-	Ausland
 G:01.04.1999
@@ -3805,7 +3805,7 @@ T:*/*=0.05/0,2.49/30
 #
 #
 P:19 Mobilcom CbC
-C:CityLine Telefondienste GmbH, Schwarzer Weg 13, 24837 Schleswig 01019
+C:City LINE GmbH, Holler Str. 126, 24782 Büdelsdorf
 C:MobilCom AG
 C:Homepage: http://www.mobilcom.de
 C:Hotline:  01805/191919
@@ -3845,7 +3845,7 @@ A:Dänemark, Schweden, Norwegen
 T:*/*=0.49/60
 #####################################################################
 P:19,1 Mobilcom Preselection/Business
-C:CityLine Telefondienste GmbH, Schwarzer Weg 13, 24837 Schleswig 01019
+C:City LINE GmbH, Holler Str. 126, 24782 Büdelsdorf
 C:Erfasste Zonen:
 C:2	-   4	Deutschland
 C:10		Mobilfunk
@@ -3899,7 +3899,7 @@ A:China (Volksrepublik), Australien
 T:*/*=1.49(60)/1
 #####################################################################
 P:19,2 Mobilcom Preselection/Privat
-C:CityLine Telefondienste GmbH, Schwarzer Weg 13, 24837 Schleswig 01019
+C:City LINE GmbH, Holler Str. 126, 24782 Büdelsdorf
 C:MobilCom AG
 C:Homepage: http://www.mobilcom.de
 C:Hotline:  01805/191919
@@ -8334,7 +8334,7 @@ C:Carrier Services, Industriestraße 21, CH-8304 Wallisellen/Schweiz 01029
 #
 #
 P:30 TelDaFax
-G:19-Apr-1999
+G:01-Aug-1999
 D:dtag
 C:Telefon-, Daten- und Fax-Transfer GmbH & Co. KG, Schuppertsgasse 30, 35083 Wetter (Hessen) 01030
 C:Name:	    TeDaFax Telefon-, Daten- und Faxtransfer AG
@@ -8355,7 +8355,11 @@ C:81	-  85	Service 0180-x
 C:91	-  94	Service 0190-x
 C:102		TelDa.net
 C:200	-	Ausland
-Z:2-4 Deutschland
+Z:2 Regio 20
+T:W/07-21=0.07(60)/1
+T:W/21-07=0.04(60)/1
+T:E/*=0.04(60)/1
+Z:3-4 Deutschland
 A:+49
 T:W/07-09=0.09(60)/1
 T:W/09-18=0.12(60)/1
@@ -8449,7 +8453,7 @@ C:81	-  85	Service 0180-x
 C:91	-  94	Service 0190-x
 C:100		T-Online
 C:162	- 166	DTAG Service Nummern
-C:170		Persöhnliche Rufnummer
+C:170		Persönliche Rufnummer
 C:171		Info Expo 2000
 C:172		Sonderrufnummern zum Citytarif
 C:200	-	Ausland
@@ -8689,7 +8693,7 @@ C:81	-  85	Service 0180-x
 C:91	-  94	Service 0190-x
 C:100		T-Online
 C:162	- 166	DTAG Service Nummern
-C:170		Persöhnliche Rufnummer
+C:170		Persönliche Rufnummer
 C:171		Info Expo 2000
 C:172		Sonderrufnummern zum Citytarif
 C:200	-	Ausland
@@ -8915,7 +8919,7 @@ C:81	-  85	Service 0180-x
 C:91	-  94	Service 0190-x
 C:100		T-Online
 C:162	- 166	DTAG Service Nummern
-C:170		Persöhnliche Rufnummer
+C:170		Persönliche Rufnummer
 C:171		Info Expo 2000
 C:172		Sonderrufnummern zum Citytarif
 C:200	-	Ausland
@@ -9150,7 +9154,7 @@ C:81	-  85	Service 0180-x
 C:91	-  94	Service 0190-x
 C:100		T-Online
 C:162	- 166	DTAG Service Nummern
-C:170		Persöhnliche Rufnummer
+C:170		Persönliche Rufnummer
 C:171		Info Expo 2000
 C:172		Sonderrufnummern zum Citytarif
 C:200	-	Ausland
@@ -9380,7 +9384,7 @@ C:81	-  85	Service 0180-x
 C:91	-  94	Service 0190-x
 C:100		T-Online
 C:162	- 166	DTAG Service Nummern
-C:170		Persöhnliche Rufnummer
+C:170		Persönliche Rufnummer
 C:171		Info Expo 2000
 C:172		Sonderrufnummern zum Citytarif
 C:200	-	Ausland
@@ -9915,7 +9919,7 @@ C:10		Mobilfunk
 C:102		net@home
 C:103		Call POP
 C:161	- 166	DTAG Service Nummern
-C:170		Persöhnliche Rufnummer
+C:170		Persönliche Rufnummer
 C:171		Info Expo 2000
 C:172		IVBB
 C:200	-	Ausland
@@ -10270,7 +10274,7 @@ C:91	-  94	Service 0190-x
 C:100		T-Online
 C:101		AOL
 C:160	- 163	DTAG Service Nummern
-C:170		Persöhnliche Rufnummer
+C:170		Persönliche Rufnummer
 C:171		Info Expo 2000
 C:172		IVBB
 C:200	-	Ausland
@@ -10465,7 +10469,7 @@ C:91	-  94	Service 0190-x
 C:100		T-Online
 C:101		AOL
 C:161	- 166	DTAG Service Nummern
-C:170		Persöhnliche Rufnummer
+C:170		Persönliche Rufnummer
 C:171		Info Expo 2000
 C:172		IVBB
 C:200	-	Ausland
@@ -10628,7 +10632,7 @@ A:+491191
 T:W/08-20=0.10(60)/1 Tag
 T:W/20-08=0.06(60)/1 Nacht
 T:E,H/*=0.06(60)/1 Wochenende
-Z:170 Persöhnliche Rufnummer 0700
+Z:170 Persönliche Rufnummer 0700
 A:+49700
 T:W/08-20=0.48(60)/1 Tag
 T:W/20-08=0.24(60)/1 Nacht
@@ -10770,7 +10774,7 @@ C:91	-  94	Service 0190-x
 C:100		T-Online
 C:101		AOL
 C:161	- 166	DTAG Service Nummern
-C:170		Persöhnliche Rufnummer
+C:170		Persönliche Rufnummer
 C:171		Info Expo 2000
 C:172		IVBB
 C:200	-	Ausland
@@ -10944,7 +10948,7 @@ A:+491191
 T:W/08-20=0.10(60)/1 Tag
 T:W/20-08=0.06(60)/1 Nacht
 T:E,H/*=0.06(60)/1 Wochenende
-Z:170 Persöhnliche Rufnummer 0700
+Z:170 Persönliche Rufnummer 0700
 A:+49700
 T:W/08-20=0.48(60)/1 Tag
 T:W/20-08=0.24(60)/1 Nacht
@@ -11523,7 +11527,7 @@ T:*/*=2.35(60)/1
 #
 #
 P:50 Talkline
-G:11-May-1999
+G:19-Jul-1999
 C:PS PhoneServices GmbH, Adenauer Damm 1, 25337 Elmshorn 01050
 C:Homepage: http://www.null1050.de
 C:Hotline:  01802/2002
@@ -13685,7 +13689,7 @@ P:79 Viatel
 ##
 ## macht *keinen* Tarifwechsel in laufender Verbindung!
 ##
-G:15-Jun-1999
+G:01-Aug-1999
 C:VIAPHONE GmbH, Hanauer Landstraße 187, 60314 Frankfurt 01079
 C:Homepage: http://www.viatel.de
 C:Hotline:  0800/79-01079
@@ -13695,11 +13699,11 @@ C:Adresse:  Hanauer Landstrasse 187-189
 C:	    60314 Frankfurt am Main
 D:dtag
 Z:2-4 National
-T:W/09-18=0.064/30,0.128(60)/1 Hauptzeit
+T:W/09-18=0.102/60 Hauptzeit
 T:W/18-21=0.085(60)/60 Nebenzeit
-T:W/21-9=0.055(60)/60 Nacht
+T:W/21-9=0.05(60)/60 Nacht
 T:E/9-21=0.085(60)/60 Hauptzeit
-T:E/21-9=0.055(60)/60 Nacht
+T:E/21-9=0.05(60)/60 Nacht
 A:+49
 Z:10-15 Mobilfunk
 A:+491618	# T-C-Tel Voice Mail
@@ -14484,6 +14488,11 @@ C:Telecom BV, Prinses Beatrixlaan 23, 2595 AK's Gravenhage, Niederlande 010007
 P:108 USA Global Link
 C:Deutschland GmbH, Theaterstraße 90, 52062 Aachen 010008
 #####################################################################
+P:109 ChemTel
+C:Telekommunikations GmbH Chemnitz, Postfach 510, 09031 Chemnitz
+#####################################################################
+#
+#
 #
 #
 P:110 Bertelsmann mediaSystems
@@ -14494,16 +14503,21 @@ C:GmbH, An der Autobahn, 33311 Gütersloh 010010
 P:111 RED LINE
 C:Telekommunikationsgesellschaft mbH, Brückenstraße 17, 63897 Miltenberg 010011
 #####################################################################
-#
-#
-P:114 NordKom
-C:Weser-Elbe Telekommunikation GmbH, Stresemannstraße 48, 28207 Bremen 010014
+P:112 MEGASAT
+C:Friedrich-Krupp-Str. 16-18, 45164 Kaarst
 #####################################################################
+#
+#
 #
 #
 P:115 Delta Three
 C:Inc., 430 Park Ave, New York 010015
 #####################################################################
+P:118 MFS
+C:MFS Communications GmbH, Postfach 190409, 60091 Frankfurt am Main
+#####################################################################
+#
+#
 #
 #
 P:119 E.T.H.
@@ -14519,6 +14533,11 @@ C:Oberweg 15, 82024 Taufkirchen bei München 010020
 P:122 Motorola
 C:Electronic GmbH, Hagenauer Straße 47, 65203 Wiesbaden 010022
 #####################################################################
++P:125 Mediascape
++C:Mediascape Communications GmbH, Usedomstraße 19, 22047 Hamburg
++#####################################################################
++#
++#
 #
 #
 P:130 tnp telenet
@@ -14529,11 +14548,21 @@ C:potsdam, kommunikationsgesellschaft mbH, Erich-Weinert-Straße 100, 14478 Potsd
 P:131 accom
 C:Gesellschaft für Telekommunikationsnetze und -dienstleistungen GmbH & Co.KG, Borngasse 34, 52064 Aachen 010031
 #####################################################################
+P:132 SD
+C:SD Telecom Telekommunikations GmbH, Heinersdorfer Damm 55-57, 16303 Schwedt
+#####################################################################
+#
+#
 #
 #
 P:133 Level 3
 C:Communications GmbH, Oberlindau 54 - 56, 60323 Frankfurt/Main 010033
 #####################################################################
+P:140 VossNet
+C:VossNet Communications GmbH, 28199 Bremen
+#####################################################################
+#
+#
 #
 #
 P:142 connection 42
@@ -14565,6 +14594,11 @@ A:+49176,+49179		# E2
 T:W/08-21=0.69/60,0.69(60)/15
 T:W/21-08=0.59/60,0.59(60)/15
 #####################################################################
+P:154 Osnatel
+C:Osnatel GmbH, Luisenstraße 16, 49074 Osnabrück
+#####################################################################
+#
+#
 #
 #
 P:155 Telia
@@ -14580,11 +14614,11 @@ C:Kassel GmbH, Königstor 3 - 13, 34117 Kassel 010056
 P:160 JelloCom
 C:GmbH & Co.KG, Prüssingstraße 41, 07745 Jena 010060
 #####################################################################
-#
-#
-P:166 InterCard
-C:GmbH, POS-Service, Mehlbeerenstraße 4, 82024 Taufkirchen bei München 010066
+P:168 VSE
+C:VSE Net GmbH, Postfach, 103232, 66032 Saarbrücken
 #####################################################################
+#
+#
 #
 #
 P:170 Deutsche Telefon- und Marketing Services
@@ -14595,21 +14629,41 @@ C:GmbH, Isaac-Fulda-Allee 16, 55124 Mainz 010070
 P:173 TFN COM SA
 C:World Of Communication, Via Greina 2 CP 2950, CH-6901 Lugano 010073
 #####################################################################
+P:175 Gigabell
+C:Gigabell AG, 60325 Frankfurt am Main
+#####################################################################
+#
+#
 #
 #
 P:177 WorldxChange
 C:Communications GmbH, Am Seedamm 44, 60489 Frankfurt 010077
 #####################################################################
+P:178 Cybernet
+C:Cybernet Internet-Dienstleistungen AG, Stefan-George-Ring 19-23, 81929 München
+#####################################################################
+#
+#
 #
 #
 P:180 FaciliCom
 C:Telekommunikation GmbH; Windmühlstraße 1, 60329 Frankfurt/Main 010080
 #####################################################################
+P:181 Daten- und Telekommunikations-GmbH Dessau
+C:Daten- und Telekommunikations-GmbH Dessau, Willy-Lohmann-Straße 6a, 06844 Dessau
+#####################################################################
+#
+#
 #
 #
 P:184 Startec
 C:Global Communications (Germany) GmbH, Broßstraße 6, 60487 Frankfurt 010084
 #####################################################################
+P:185 FirstMark
+C:Communications Deutschland GmbH, Am Opernplatz 2, 60313 Frankfurt am Main
+#####################################################################
+#
+#
 #
 #
 P:188 jk-tel

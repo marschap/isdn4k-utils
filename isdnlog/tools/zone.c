@@ -1,4 +1,4 @@
-/* $Id: zone.c,v 1.15 1999/07/26 16:28:51 akool Exp $
+/* $Id: zone.c,v 1.16 1999/07/31 09:25:49 akool Exp $
  *
  * Zonenberechnung
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: zone.c,v $
+ * Revision 1.16  1999/07/31 09:25:49  akool
+ * getRate() speedup
+ *
  * Revision 1.15  1999/07/26 16:28:51  akool
  * getRate() speedup from Leo
  *
@@ -647,14 +650,18 @@ static int _getAreacode(struct sth *sthp, char *from, char **text) {
 			if ((p = strchr(value.dptr, '\t')) != 0) { /* NL */
 				*p = '\0';
 				len = p[1] - '0'; /* gcc2.7.2.3 segfaults here if strtoul ?? */
-				*text = strdup(value.dptr);
+				if (text)
+					*text = strdup(value.dptr);
 				if (*dbv == 'G')
 					free(value.dptr);
 			}
 			else {
 				if (*dbv == 'G')
-					*text = value.dptr;
-				else
+				  	if(text)
+						*text = value.dptr;
+				  	else	
+						free(value.dptr);
+				else if(text)
 					*text = strdup(value.dptr);
 			}		
 			return len;

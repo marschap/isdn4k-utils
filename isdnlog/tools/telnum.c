@@ -97,6 +97,10 @@ static void _init(void);
 #undef ISDN_AT
 #define ISDN_DE
 #endif
+#ifdef TESTnl
+#undef ISDN_AT
+#define ISDN_NL
+#endif
 
 /* --------------------- ADJUST here ----------------*/
 #ifdef ISDN_AT
@@ -122,7 +126,7 @@ void initTelNum(void)
 #endif
 
 #ifdef ISDN_NL
-static void initTelNum()
+void initTelNum()
 {
   vbn = strdup("16:17"); /* Fixme: VBN is defined in isdn.conf but not read yet */
   preselect=999;
@@ -296,7 +300,7 @@ int normalizeNumber(char *target, TELNUM *num, int flag) {
 	split_vbn(&p, num);
   if (flag & TN_COUNTRY) {	
 	res = split_country(&p, num);
-	if (res<0)
+	if (res<0) 
 	  return UNKNOWN;
 	else if(res==0)
 	  first=1;		
@@ -353,6 +357,8 @@ void initNum(TELNUM *num) {
     Strncpy(num->sarea, s, TN_MAX_SAREA_LEN); 
     free(s);
   }	
+  else 
+      clearArea(num, UNKNOWN);
   strcpy(num->vbn, defnum.vbn);
 }
 

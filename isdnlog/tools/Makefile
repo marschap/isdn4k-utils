@@ -1,9 +1,9 @@
-CC=gcc -m486 -O0 -g -pg -Wall -DSTANDALONE -I. -I.. -I../isdnlog
+CC=gcc -m486 -O0 -g -Wall -DSTANDALONE -I. -I.. -I../isdnlog
 
 all: rate zone.exe country holiday rate-at
 
 rate: rate.u zone.u country.u holiday.u
-	${CC} -lgdbm -o rate rate.u zone.u country.u holiday.u
+	${CC} -lgdbm -lm -o rate rate.u zone.u country.u holiday.u
 
 zone.exe: zone.c zone.h
 	${CC} -DZONETEST -lgdbm -o zone.exe zone.c
