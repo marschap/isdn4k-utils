@@ -1,6 +1,6 @@
-.\" $Id: xmonisdn.man.in,v 1.3 1999/08/03 14:00:22 paul Exp $
+.\" $Id: xmonisdn.man.in,v 1.4 2002/01/31 20:18:13 paul Exp $
 .\"
-.\" CHECKIN $Date: 1999/08/03 14:00:22 $
+.\" CHECKIN $Date: 2002/01/31 20:18:13 $
 .\"
 .TH XMONISDN 1 "@MANDATE@" isdn4k-utils-@I4LVERSION@ "X Tools"   
 .SH NAME
@@ -26,16 +26,19 @@ the state change (this can be changed using the
 option).
 .PP
 Pressing button 2 on the window executes the command
-.I @CONFIG_XMONISDN_UPCMD@ start
+.I @CONFIG_XMONISDN_UPCMD@
 and pressing button 3 executes
-.I @CONFIG_XMONISDN_DOWNCMD@ stop.
-@CONFIG_XMONISDN_UPCMD@
-should be a shell script that starts and stops the ISDN subsystem;
+.I @CONFIG_XMONISDN_DOWNCMD@
+.br
+.I @CONFIG_XMONISDN_UPCMD@
+and
+.I @CONFIG_XMONISDN_DOWNCMD@
+should start and stop the ISDN subsystem;
 if the
 .ul
 route
 command is used, xmonisdn must be run as setuid root for this to work.
-Alternatively, the script can manipulate the
+Alternatively, the scripts can manipulate the
 .ul
 isdnctrl dialmode
 setting, in which case only permission to access /dev/isdnctrl is needed.
