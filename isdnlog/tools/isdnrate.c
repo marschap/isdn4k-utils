@@ -1,5 +1,4 @@
-#undef LEOx
-/* $Id: isdnrate.c,v 1.12 1999/07/24 08:45:17 akool Exp $
+/* $Id: isdnrate.c,v 1.13 1999/07/25 15:57:46 akool Exp $
  *
  * ISDN accounting for isdn4linux. (rate evaluation)
  *
@@ -20,6 +19,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnrate.c,v $
+ * Revision 1.13  1999/07/25 15:57:46  akool
+ * isdnlog-3.43
+ *   added "telnum" module
+ *
  * Revision 1.12  1999/07/24 08:45:17  akool
  * isdnlog-3.42
  *   rate-de.dat 1.02-Germany [18-Jul-1999 10:44:21]
@@ -68,22 +71,24 @@
 #include "isdnlog.h"
 #include "tools/zone.h"
 #include <unistd.h>
+#include "telnum.h"
 
 #define WIDTH   19
-#define MAXLAST	 ((best>=20||best<=2)?5:best)
+#define _MAXLAST 20 /* the real max */
+#define MAXLAST	 ((best>=_MAXLAST||best<=2)?5:best)
 #define ZAUNPFAHL  1 /* FIXME: Michi: Offset */
+
+#define P_EMPTY(s) (s) ? (s) : ""
 
 static char *myname, *myshortname;
 static char  options[] = "b:d:f:h:l:p:vx:DG:HLTUVX::";
 static char  usage[]   = "%s: usage: %s [ -%s ] Destination ...\n";
 
 static int    verbose = 0, header = 0, best = MAXPROVIDER, table = 0, explain = 0;
-static int    usestat = 0, provider = UNKNOWN;
+static int    usestat = 0;
 static int    duration = LCR_DURATION;
 static time_t start;
 static int    day, month, year, hour, min, sec;
-static char   country[BUFSIZ], area[BUFSIZ], msn[BUFSIZ];
-static char   smyarea[BUFSIZ], sarea[BUFSIZ];
 static char   ignore[MAXPROVIDER];
 static char * fromarea = 0;
 static char   wanted_day;
@@ -93,6 +98,8 @@ static int 	n_providers=0;
 static int 	exclude=0;
 static int 	is_daemon=0;
 
+static TELNUM srcnum, destnum;
+  
 typedef struct {
   int    prefix;
   double rate;
@@ -106,8 +113,9 @@ typedef struct {
 
 static SORT sort[MAXPROVIDER];
 
-#define PRT_V 17 /* verbose */
-#define PRT_A 18 /* always on stderr */
+#undef BUFSIZ /* sorry but 8192 is too much for me */
+#define BUFSIZ 256
+
 int print_msg(int Level, const char *fmt, ...)
 {
   auto va_list ap;
@@ -125,21 +133,6 @@ int print_msg(int Level, const char *fmt, ...)
   return(0);
 } /* print_msg */
 
-#ifdef LEO
-#undef DTAG
-#define DTAG 1
-static void pre_init()
-{
-  preselect = DTAG;      /* Telekomik */
-  vbn = strdup("10"); 	 /* austria */
-} /* pre_init */
-#else
-static void pre_init()
-{
-  preselect = DTAG;      /* Telekomik */
-  vbn = strdup("010"); 	 /* Germany */
-} /* pre_init */
-#endif
 
 static void init()
 {
@@ -155,18 +148,20 @@ static void init()
 
   initHoliday(holifile, message);
 
-  if (*version && verbose)
+  if (verbose && *version)
     print_msg(PRT_V, "%s\n", version);
 
   initCountry(countryfile, message);
 
-  if (*version && verbose)
+  if (verbose && *version)
     print_msg(PRT_V, "%s\n", version);
 
   initRate(rateconf, ratefile, zonefile, message);
 
-  if (*version && verbose)
+  if (verbose && *version)
     print_msg(PRT_V, "%s\n", version);
+	
+  initTelNum();	
 } /* init */
 
 /* calc a day/time W | E | H */
@@ -202,18 +197,17 @@ static void get_day(char d) {
 
 static void post_init()
 {
-  auto char s[BUFSIZ];
 
+  clearNum(&srcnum);
   if (fromarea) {
-	free(myarea);
-	myarea = fromarea;
+	Strncpy(srcnum.area, fromarea, TN_MAX_AREA_LEN);
+	free(fromarea);
+	fromarea=0;	
   }
+  initNum(&srcnum);
+  
   if (wanted_day)
 	get_day(wanted_day);
-  *smyarea = 0;
-
-  sprintf(s, "%s%s", mycountry, myarea);
-  mynum = strdup(s);
 } /* post_init */
 
 static int opts(int argc, char *argv[])
@@ -415,7 +409,7 @@ static char *Provider(int prefix)
   register char *p;
   register int   l;
   static   char  s[BUFSIZ];
-
+  char prov[TN_MAX_PROVIDER_LEN];
 
   if (prefix == UNKNOWN)
     return("?");
@@ -424,160 +418,25 @@ static char *Provider(int prefix)
 
   l = max(WIDTH, strlen(p)) - strlen(p);
 
-  if (prefix < 100)
-    sprintf(s, "%s%02d:%s%*s", vbn, prefix, p, l, "");
-  else
-    sprintf(s, "%s%03d:%s%*s", vbn, prefix - 100, p, l - 1, "");
+  sprintf(s, "%s:%s%*s", prefix2provider(prefix, prov, &destnum), p, l, "");
 
   return(s);
 } /* Provider */
 
 
-static void numsplit(char *num)
-{
-  register int   l1, l3, zone;
-  auto	   int	 l2;
-  register char *p = 0;
-  auto	   char *s;
-
-
-  print_msg(PRT_V, "NUMSPLIT(%s)\n", num);
-
-  *country = *area = *msn = 0;
-  *sarea = 0;
-
-  if (verbose && (provider != UNKNOWN))
-    print_msg(PRT_V, " Provider %s\n", Provider(provider));
-
-  if ((l1 = getCountrycode(num, &s)) != UNKNOWN) {
-    Strncpy(country, num, l1 + 1);
-
-    if (verbose)
-      print_msg(PRT_V, " Country %s : %s\n", country, s);
-   strcpy(sarea, s);
-
-    if ((p = get_areacode(num, &l2, C_NO_WARN | C_NO_EXPAND | C_NO_ERROR))) {
-      Strncpy(area, num + l1, l2 + 1 - l1);
-
-      if (verbose)
-        print_msg(PRT_V, " Area %s : %s\n", area, p);
-
-      strcpy(msn, num + l2);
-
-      if (verbose && *msn)
-        print_msg(PRT_V, " Number %s\n", msn);
-    } /* if */
-
-    p = country;
-
-    while (*p && !isdigit(*p))
-      p++;
-
-    l3 = getAreacode(atoi(p), num + l1, &s);
-
-    if (1) {
-      print_msg(PRT_V, "getAreacode(%d, %s, %s)=%d\n", atoi(p), num + l1, s, l3);
-      zone = getZone(DTAG, myarea, num + l1);
-      print_msg(PRT_V, "getZone(%d,%s,%s)=%d\n", DTAG, myarea, num + l1, zone);
-
-      switch (zone) {
-         case 1 : print_msg(PRT_V, "Ortszone\n");     break;
-         case 2 : print_msg(PRT_V, "Cityzone\n");     break;
-         case 3 : print_msg(PRT_V, "Regionalzone\n"); break;
-         case 4 : print_msg(PRT_V, "Fernzone\n");    break;
-        default : print_msg(PRT_V, "*** BUG ***\n");  break;
-      } /* switch */
-    } /* if */
-    if (l3 != UNKNOWN) {
-       strcpy(sarea, s);
-  	   free(s);
-	}
-  }
-  else {
-    l3 = getAreacode(49, num, &s);
-
-    if (l3 != UNKNOWN) {
-      print_msg(PRT_V, "getAreacode(%d, %s, %s)=%d\n", atoi(p), num + l1, s, l3);
-      free(s);
-
-      zone = getZone(DTAG, mynum, num);
-      print_msg(PRT_V, "getZone=%d\n", zone);
-    } /* if */
-  } /* else */
-} /* numsplit */
-
-
-static int normalizeNumber(char *target)
-{
-  register int      l1, l2;
-  register char	    c;
-  auto 	   COUNTRY *Country;
-  auto 	   char     num[BUFSIZ];
-
-
-  if (isalpha(*target)) {
-    if (getCountry(target, &Country) != UNKNOWN)
-      strcpy(num, Country->Code[0]);
-    else {
-      print_msg(PRT_A, "Unknown country \"%s\"\n", target);
-      return(0);
-    } /* else */
-  }
-  else {
-    l1 = strlen(vbn);
-
-    if (!memcmp(target, vbn, l1)) {
-      if (target[l1] == '0') /* dreistellige Verbindungsnetzbetreiberkennzahl? */
-        l2 = l1 + 3;
-      else
-        l2 = l1 + 2;
-
-      c = target[l2];
-      target[l2] = 0;
-      provider = atoi(target + l1);
-
-      if (l2 == 6)
-        provider += 100;
-
-      target[l2] = c;
-      memmove(target, target + l2, strlen(target) - l2);
-    } /* if */
-
-    if (*target == '+')
-      strcpy(num, target);
-    else if (!memcmp(target, "00", 2))
-      sprintf(num, "+%s", target + 2);
-    else if (*target == '0') {
-#if 0
-      if (!strchr("18", target[1])) /* FIXME: "18" ist Deutsche-Sonderrufnummernerkennung! */
-#endif
-        sprintf(num, "%s%s", mycountry, target + 1);
-#if 0
-      else
-        sprintf(num, "%s%s", mycountry, target);
-#endif
-    }
-    else
-      sprintf(num, "%s%s%s", mycountry, myarea, target);
-  } /* else */
-
-  numsplit(num);
-  return(1);
-} /* normalizeNumber */
-
-#define P_EMPTY(s) s ? s : ""
 #define DEL ';'
-static int compute()
+static int compute(char *num)
 {
   register int  i, n = 0;
   register int	low = 0, high = MAXPROVIDER - 1;
   auto 	   RATE Rate;
   auto	   char s[BUFSIZ];
   struct tm *tm;
+  char prov[TN_MAX_PROVIDER_LEN];
+  int oldprov;
 
-
-  if (provider != UNKNOWN) {
-    low = high = provider;
+  if (destnum.nprovider != UNKNOWN) {
+    low = high = destnum.nprovider;
   } /* if */
 
   buildtime();
@@ -613,14 +472,23 @@ static int compute()
 		continue;
 	}
     clearRate(&Rate);
-    Rate.src[0] = mycountry;
-    Rate.src[1] = myarea;
+    Rate.src[0] = srcnum.country?srcnum.country->Code[0] : "";
+    Rate.src[1] = srcnum.area;
     Rate.src[2] = "";
 
-    Rate.dst[0] = country;
-    Rate.dst[1] = area;
-    Rate.dst[2] = msn;
+	oldprov = destnum.nprovider;
+	if (destnum.nprovider == UNKNOWN) 
+	  destnum.nprovider=i;
+	if (normalizeNumber(num, &destnum, TN_ALL) == UNKNOWN) {
+	  destnum.nprovider=oldprov;
+	  continue;
+	}  
+	destnum.nprovider=oldprov;
 
+	Rate.dst[0] = destnum.country?destnum.country->Code[0] : "";
+  	Rate.dst[1] = destnum.area;
+  	Rate.dst[2] = destnum.msn;
+	print_msg(PRT_V,"Rate dst0='%s' dst1='%s' dst2='%s'\n",Rate.dst[0],Rate.dst[1],Rate.dst[2]);
     /* Rate.Service = "Internet by call"; */
 
     Rate.prefix = i;
@@ -628,13 +496,11 @@ static int compute()
     Rate.start = start;
     Rate.now   = start + duration - ZAUNPFAHL;
     if(verbose==2)
-	  fprintf(stderr,"@ %s%0*d  ", vbn, Rate.prefix>100?3:2,
-		Rate.prefix>100?Rate.prefix-100:Rate.prefix);
+	  fprintf(stderr,"@ %s ", prefix2provider(Rate.prefix, prov, &destnum));
     if (explain == 99) {
 	  int j;
 	  double oldCharge = -1.0;
-	  printf("@ %s%0*d\n", vbn, Rate.prefix>100?3:2,
-		Rate.prefix>100?Rate.prefix-100:Rate.prefix);
+	  printf("@ %s\n", prefix2provider(Rate.prefix, prov, &destnum));
 	  Rate.now = start+1;
 	  for (j=1;j<duration; j++) {
 		if (!getRate(&Rate, NULL) && (Rate.Price != 99.99)) {
@@ -651,8 +517,7 @@ static int compute()
     }
     if (explain == 98||explain==97) { /* Minutenpreis fuer diese Woche/Tag */
 	  int j;
-	  printf("@ %s%0*d\n", vbn, Rate.prefix>100?3:2,
-		Rate.prefix>100?Rate.prefix-100:Rate.prefix);
+	  printf("@ %s\n", prefix2provider(Rate.prefix, prov, &destnum));
 	  for (j=0;j < (explain==98 ? 7*24 : 24); j++) {
 		if (!getRate(&Rate, NULL) && (Rate.Price != 99.99)) {
 			printf("%d %.4f\n",j, Rate.Charge);
@@ -671,11 +536,11 @@ static int compute()
       sort[n].rate = Rate.Charge;
 		if (explain == 9) { /* used by list */
 		  double cpm = Rate.Duration > 0 ? 60 * Rate.Price / Rate.Duration : 99.99;
-		  sprintf(s, "%s%0*d%c"
+		  sprintf(s, "%s%c"
 				   "%s%c%s%c%s%c%s%c"
 				   "%s%c"
 				   "%.3f%c%.4f%c%.2f%c%.3f",
-			vbn, Rate.prefix>100?3:2, Rate.prefix>100?Rate.prefix-100:Rate.prefix,DEL,
+			prefix2provider(Rate.prefix, prov, &destnum),	DEL,
 			Rate.Provider,DEL,P_EMPTY(Rate.Zone),DEL, P_EMPTY(Rate.Day),DEL, P_EMPTY(Rate.Hour),DEL,
 			currency,DEL, /* Fixme: global or per Provider?? wg. EURO */
 			Rate.Charge,DEL, Rate.Price,DEL, Rate.Duration,DEL, cpm);
@@ -699,24 +564,18 @@ static int compute()
   if (explain <10)
   qsort((void *)sort, n, sizeof(SORT), compare);
 
-  { char *p;
-  char *a;
-  for (p=mycountry; !isdigit(*p); p++)
-    ;
-  if (getAreacode(atoi(p), myarea, &a) != UNKNOWN) {
-	  strcpy(smyarea, a);
-	  free(a);
-  }}
-
   return(n);
 } /* compute */
-#undef P_EMPTY
 
+static void	print_header(void) {
+    print_msg(PRT_NORMAL, "Eine %d Sekunden lange Verbindung von %s nach %s kostet am %s\n",
+      duration, formatNumber("%f",&srcnum), formatNumber("%f",&destnum), 
+	  ctime(&start));
+}
 static void printList(char *target, int n) {
   int i;
   if (header)
-    print_msg(PRT_NORMAL, "Eine %d Sekunden lange Verbindung von %s %s (%s) nach %s %s %s (%s) kostet am %s\n",
-      duration, mycountry, myarea, smyarea, country, area, msn, sarea, ctime(&start));
+	print_header();
   if (n > best)
     n = best;
 
@@ -734,8 +593,7 @@ static void result(char *target, int n)
   *num = 0; /* FIXME */
 
   if (header)
-    print_msg(PRT_NORMAL, "Eine %d Sekunden lange Verbindung von %s %s (%s) nach %s %s %s (%s) kostet am %s\n",
-      duration, mycountry, myarea, smyarea, country, area, msn, sarea, ctime(&start));
+	print_header();
 
   if (n > best)
     n = best;
@@ -768,11 +626,11 @@ static void purge(int n)
         0..23 Uhr
 */
 
-static void printTable()
+static void printTable(char *num)
 {
   register int        n, d, i, h, lasthour;
   auto 	   struct tm *tm;
-  auto	   SORT	      last[MAXLAST];
+  auto	   SORT	      last[_MAXLAST];
   auto 	   int        used[MAXPROVIDER];
   auto 	   int        hours[MAXPROVIDER];
   auto 	   int        weight[MAXPROVIDER];
@@ -786,8 +644,7 @@ static void printTable()
   memset(weight, 0, sizeof(weight));
 
   if (header)
-    print_msg(PRT_NORMAL, "Eine %d Sekunden lange Verbindung von %s %s nach %s %s %s kostet\n",
-      duration, mycountry, myarea, country, area, msn);
+	print_header();
 
   for (d = 0; d < 2; d++) {
     last[0].prefix = UNKNOWN;
@@ -816,10 +673,10 @@ static void printTable()
 
     while (1) {
 
-      n = compute();
+      n = compute(num);
 
       if (last[0].prefix == UNKNOWN) {
-        for (i = 0; i < MAXLAST; i++) {
+        for (i = 0; i < min(n,MAXLAST); i++) {
           if (sort[i].prefix) {
             last[i].prefix = sort[i].prefix;
   	    last[i].rate = sort[i].rate;
@@ -832,7 +689,7 @@ static void printTable()
         lasthour = hour;
 
       if (sort[0].prefix != last[0].prefix) {
-        for (i = 0; i < MAXLAST; i++) {
+        for (i = 0; i < min(n,MAXLAST); i++) {
 
           if (!i)
             print_msg(PRT_NORMAL, "    %02d:00 .. %02d:59 %s = %s %s%s\n",
@@ -862,7 +719,7 @@ static void printTable()
 
 	weight[last[0].prefix] += h * (d ? 5 : 2);
 
-        for (i = 0; i < MAXLAST; i++) {
+        for (i = 0; i < min(n,MAXLAST); i++) {
           last[i].prefix = sort[i].prefix;
   	  last[i].rate = sort[i].rate;
   	  last[i].explain = strdup(sort[i].explain);
@@ -881,7 +738,7 @@ static void printTable()
         break;
     } /* while */
 
-    for (i = 0; i < MAXLAST; i++) {
+    for (i = 0; i < min(n,MAXLAST); i++) {
 
       if (!i) {
         if ((lasthour == 7) && (hour == 7))
@@ -958,7 +815,7 @@ static void printTable()
       } /* for */
 
       if (firsttime)
-        printTable();
+        printTable(num);
 
       firsttime = 0;
 
@@ -975,7 +832,6 @@ static void clean_up() {
   fromarea=0;
   is_daemon=table=list=header=explain=0;
   usestat = 0;
-  provider = UNKNOWN;
   duration = LCR_DURATION;
   wanted_day = '\0';
 }
@@ -986,18 +842,18 @@ static void	doit(int i, int argc, char *argv[]) {
     memset(ignore, 0, sizeof(ignore));
 
     while (i < argc) {
-      if (normalizeNumber(argv[i])) {
+	destnum.nprovider=UNKNOWN;
+    normalizeNumber(argv[i], &destnum, TN_PROVIDER);
         if (table)
-          printTable();
+      printTable(argv[i]);
         else {
-          n = compute();
+      n = compute(argv[i]);
 		  if(list)
 			printList(argv[i], n);
 		  else
 	  result(argv[i], n);
 	  purge(n);
-        } /* else */
-      } /* if */
+	}	
       i++;
     } /* while */
 	clean_up();
@@ -1030,6 +886,8 @@ static int handle_client(int fd) {
 	  if (argc >= 20)
 		break;
 	}
+    time(&start); /* set time of call */
+	splittime();  /* date time my be overridden by opts */
 	if ((i = opts(argc, argv))) {
 	  if (shutdown(fd, 0)<0)  /* no read any more */
 		err("shutdown");
@@ -1125,7 +983,6 @@ int main(int argc, char *argv[], char *envp[])
   splittime();
 
   if ((i = opts(argc, argv)) || is_daemon) {
-    pre_init();
     init();
 	if (is_daemon) {
 	  clean_up();

@@ -11,7 +11,7 @@
 # for collecting and preparing most of the call charges.
 
 
-V:1.81-Austria [22-Jul-1999]
+V:1.83-Austria [25-Jul-1999]
 
 U:%.3f öS
 
@@ -1793,27 +1793,55 @@ A:Zentralafrikanische Republik
 
 P:67                               max.plus
 C:maintained by:                   Michael Reinelt <reinelt@eunet.at>
-C:Fixme:                           Taktung unbekannt
 Z:1                                Festnetz
-T:*/*=1.00(60)/1                   rund um die Uhr
+T:*/*=1.00(60)/30                  rund um die Uhr
 A:Österreich
 Z:2                                max.box
-T:*/*=1.00(60)/1                   rund um die Uhr
+T:*/*=1.00(60)/30                  rund um die Uhr
 A:+4367622
 Z:3                                max.online
-T:*/*=1.00(60)/1                   rund um die Uhr
-A:+4367620
+T:*/*=1.00(60)/30                  rund um die Uhr
+A:+436762323
 Z:4                                max.mobil
-T:*/*=2.70(60)/1                   rund um die Uhr
+T:*/*=2.70(60)/30                  rund um die Uhr
 A:+43676
 Z:5                                andere Mobilfunknetze
-T:*/*=3.90(60)/1                   rund um die Uhr
+T:*/*=3.90(60)/30                  rund um die Uhr
 A:+43663, +43664, +43669
 Z:6                                Nachbarländer
-T:*/*=3.30(60)/1                   rund um die Uhr
-A:Deutschland, Italien
+T:*/*=3.30(60)/30                  rund um die Uhr
+A:Deutschland, Italien, Schweiz, Tschechische Republik, Ungarn
+A:Slowakische Republik, Slowenien, Liechtenstein
 Z:7                                EU
-T:*/*=3.50(60)/1                   rund um die Uhr
+T:*/*=3.50(60)/30                  rund um die Uhr
+A:Belgien, Dänemark, Finnland, Frankreich, Griechenland, Irland, Luxemburg
+A:Niederlande, Portugal, Spanien, Schweden, Großbritannien, Nordirland
+Z:8                                Weltzone 1
+T:*/*=5.50(60)/30                  rund um die Uhr
+A:Andorra, Australien, Bahamas, Bosnien-Herzegowina, Kanada, Kroatien, Faröer
+A:Gibraltar, Island, Japan, Lettland, Malta, Mazedonien, Monaco, Neuseeland
+A:Norwegen, Polen, Puerto Rico, San Marino, Singapur, USA, Vatikan
+A:Jugoslawien
+Z:9                                Weltzone 2
+T:*/*=9.70(60)/30                  rund um die Uhr
+A:Albanien, Algerien, Belarus, Bulgarien, Zypern, Estland, Hong Kong, Litauen
+A:Marokko, Oman, Rumänien, Rußland, Tunesien, Türkei, Ukraine
+A:Virgin Islands (US)
+Z:10                               Weltzone 3
+T:*/*=15.00(60)/30                 rund um die Uhr
+A:Bermuda, Brasilien, Brunei, Chile, Christmas Islands, Cocos Islands
+A:Dominikanische Republik, Georgien, Ghana, Grönland, Israel, Jamaica
+A:Kasachstan, Korea, Kirgisistan, Libyen, Macau, Malaysien, Mexiko, Südafrika
+A:Taiwan, Tadschikistan
+Z:11                               Weltzone 4
+T:*/*=22.00(60)/30                 rund um die Uhr
+A:+                                alle übrigen Länder
+Z:12                               Iridium 8816
+T:*/*=122.00(60)/30                rund um die Uhr
+A:Iridium 008816
+Z:13                               Iridium 8817
+T:*/*=62.00(60)/30                 rund um die Uhr
+A:Iridium 008817
 
 P:69                               ONE
 Z:1                                Festnetz

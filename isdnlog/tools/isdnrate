@@ -9,6 +9,7 @@
 # For commercial usage on public webservers contact the author.
 
 use CGI qw(:standard);
+use CGI::Carp 'fatalsToBrowser';
 use strict;
 use GD;
 use IO::Handle;
@@ -19,8 +20,9 @@ my $server='/tmp/isdnrate';
 # configure adjusts these n/y :-(
 my $MKTEMP= '/bin/mktemp';
 my $ISDNRATE='/home/lt/src/testi4l/isdnlog/bin/isdnrate';
-my $CODEF=   '/home/lt/src/testi4l/isdnlog/tools/zone/de/code';
+my $CODEF=   '/home/lt/src/testi4l/isdnlog/tools/zone/at/code';
 my $tempdir=$ENV{'DOCUMENT_ROOT'};
+my $DEFLEN=153;
 # end configurable
 
 my $debug=0;
@@ -94,6 +96,7 @@ my @countries=($LEER, "Afghanistan","Ägypten","Alaska","Albanien","Algerien",
 "West-Samoa","Zaire","Zentralafrikanische Republik","Zypern");
 
 my %towns = (0 => $LEER);
+my (%url, $len);
 # main
 
 &html_header;
@@ -102,11 +105,23 @@ if ($debug==2) {
     $q->print(hr, $q->dump());
     $q->print(hr);
 }    
-my ($weekly, $daily);
+my ($weekly, $daily, @names, $help);
 $weekly=param('graf') =~ /Wo/;
 $daily=param('graf') =~ /Tag/;
-&get_results if(param('tab') eq 'Tabelle');
-&make_graf if(param('graf'));
+@names=param();
+$help=0;
+push(@names, 'help_tel.x') if (@names && 
+    !param('tel') && !param('town') && !param('country'));
+foreach (@names) {
+    if (/help_(.*?)\.x/) {
+	show_help($1);
+	$help=1
+    }	
+}
+if (!$help) {    
+    &get_results if(param('tab') eq 'Tabelle');
+    &make_graf if(param('graf'));
+}    
 &print_form;
 &clean_up;
 $q->print(end_html);
@@ -144,6 +159,7 @@ sub html_header {
 <!--
 .t {font-face:Sans Serif;font-size:10pt}
 .sm {font-face:Sans Serif;font-size:9pt}
+i {color:#000080}
 --> 
 </STYLE>
 <SCRIPT> 
@@ -162,7 +178,60 @@ sub read_towns {
    }
    close(IN);
 }   
-
+sub help {
+  my $help = 'help_'. $_[0];
+  image_button(-name=>$help, -src=>'/pic/help.gif');
+}  
+sub show_help {
+    my $what = $_[0];
+    if ($what eq 'from') {
+	$q->print('Normalerweise weiß isdnrate, von wo Sie telefonieren. ');
+	$q->print('Sie können hier aber einen anderen Standort eingeben. ');
+	$q->print('Dann werden die Gebühren von dieser Vorwahl aus berechnet');
+	$q->print(br,'Z.b. ', tt('02345'));
+    }
+    elsif($what eq 'tel') {
+	$q->print('Geben Sie die Nummer ein, zu der Sie die Gebühren ');
+	$q->print('berechnet haben möchten.',br);
+	$q->print(ul(li(tt("1234\t"),'Ortsnetz'),
+	    li(tt("012345\t"),'Anderer Ort'),
+	    li(tt("00156789\t"),'Ausland'),
+	    li(tt("[0]1012012345\t"),'Provider+Nummer')),
+	    'oder wählen Sie aus der Liste der Städte oder Länder.',br,
+	    'Hinweis: eine ausgewählte Stadt hat Priorität vor einem Land, ',
+	    'dieses vor einer manuellen Eingabe.');
+    }	    
+    elsif($what eq 'len') {
+	$q->print('Wählen Sie hier Dauer und Zeitpunkt des Gesprächs. ');
+	$q->print('Mittels ',i('Start'),' können Sie aktuelle Gespräche mitstoppen ');
+	$q->print('und sich so die laufenden Gesprächsgebühen anzeigen lassen.',br);
+	$q->print('Wenn ',i('Jetzt'),' nicht angekreuzt ist, können Sie einen beliebigen ');
+	$q->print('Zeitpunkt eingeben.');
+    }	
+    elsif($what eq 'tab') {
+	$q->print('Mit der Schaltfläche ',i('Tabelle'),' erhalten Sie eine ');
+	$q->print('Aufstellung der Telefongebühen pro Provider.');
+    }	
+    elsif($what eq 'graf') {
+	$q->print('Mit der Schaltfläche ',i('Grafik'),' erhalten Sie eine ');
+	$q->print('grafische Darstellung des Verlaufs der Telefongebühen bis ');
+	$q->print('zur gewählten Dauer. Damit sehen Sie sehr übersichtlich, ');
+	$q->print('ob der Provider Sekundentakt oder einen anderen vewendet.');
+    }	
+    elsif($what eq 'tag') {
+	$q->print('Die Schaltflächen ',i('Tag'),' und ',i('Woche'),' zeigen die ');
+	$q->print('Gebühren für die gewählte Dauer und den gewählten Tag im Verlauf eines Tages bzw. einer Woche.');
+    }
+    elsif($what eq 'prov') {
+	$q->print('Wählen Sie hier welche und wie viele Provider angzeigt werden. ');
+	$q->print('Sind ',i('nur Provider'),' angegeben, werden nur diese angezeigt. ');
+	$q->print('Sind ',i('nicht Provider'),' angegeben, werden diese nicht angezeigt.');
+	$q->print(br,'Hinweis: wenn Sie mehrere Provider eingeben, trennen Sie diese ');
+	$q->print('mit einem Beistrich oder Leerzeichen.');    	
+	$q->print(br,i('Reset'),' stellt den vorhergehenden Zustand wieder her, ');	
+	$q->print(i('Löschen'),' löscht alle Eingabefelder, bzw. stellt Standardwerte ein.');
+    }
+}    	
 sub print_form {
     my($t, @cod);
     foreach $t (sort {$towns{$a} cmp $towns{$b}	} (keys(%towns))) {
@@ -174,6 +243,7 @@ sub print_form {
     else {
 	param('now','on');
 	param('best',20);
+	param('len',$DEFLEN);
     }	
     $q->print(
     	start_form(-name=>'form'),
@@ -181,55 +251,60 @@ sub print_form {
 	    Tr(td(table({-bgcolor=>'#ffffe0', -cellspacing=>0, -cellpadding=>0}, 
 	    Tr([
 	    td([ b("Ich wähle von: "),
-    		textfield(-name=>'from', -size=>20, -maxlength=>20),'&nbsp;','&nbsp;']),
-	    td({-colspan=>4},hr),
+    		textfield(-name=>'from', -size=>20, -maxlength=>20),'&nbsp;',
+			'&nbsp;',&help('from')
+			]),
+	    td({-colspan=>5},hr),
     	    td(["<b>nach</b> TelefonNummer: ",
-    	    textfield(-name=>'tel', -size=>20, -maxlength=>20),'&nbsp;','&nbsp;']),
+    	    textfield(-name=>'tel', -size=>20, -maxlength=>20),'&nbsp;',
+			'&nbsp;',&help('tel')]),
 	    td(["oder Stadt: ",
     		popup_menu(-name=>'town', -values=> \@cod, -labels=> \%towns),
     		"oder Ausland: ",
-    		popup_menu(-name=>'country', -values=> \@countries)]),
-	    td({-colspan=>4},hr),
+    		popup_menu(-name=>'country', -values=> \@countries),'&nbsp;']),
+	    td({-colspan=>5},hr),
 	    td(["<b>Dauer</b> (sec)",
-    		textfield(-name=>'len', -size=>4, -maxlength=>4, -value=>60),
+    		textfield(-name=>'len', -size=>4, -maxlength=>4),
 		"Stoppuhr",
-		button(-name=>'Start',-value=>'Start', -onClick=>'start()')]),
+		button(-name=>'Start',-value=>'Start', -onClick=>'start()'),
+		&help('len')]),
 	    td([checkbox(-name=>'now', -label=>'Jetzt  - oder am'),
     		popup_menu(-name=>'dday', -values=> ['W','N','E'],
 		    -labels=> {'W' =>'Wochentag-10 h','N'=>'Nacht','E'=>'Sonntag'}),
-		'&nbsp;','&nbsp;']),
+		'&nbsp;','&nbsp;','&nbsp;']),
 	    td(["oder um (hh[:mm[:ss]]) ",
     		textfield(-name=>'hour', -size=>8, -maxlength=>8),
     		"am (dd[.mm[.jj]]) ",
-    		textfield(-name=>'day', -size=>10, -maxlength=>10)]),
-	    td({-colspan=>4},hr),
+    		textfield(-name=>'day', -size=>10, -maxlength=>10),'&nbsp;']),
+	    td({-colspan=>5},hr),
 	    td({-bgcolor=>'#ffc080'},[b(" Ausgabe "),
     		submit('tab','Tabelle'), 
     		"mit",
     		popup_menu(-name=>'explain', -values=> [0,1,2],
-		-labels=> {0 =>'Nur Kosten',1=>'Zonen',2=>'Details'})]),
+		-labels=> {0 =>'Nur Kosten',1=>'Zonen',2=>'Details'}),&help('tab')]),
     	    td({-bgcolor=>'#00bfff'},["oder",
     		submit('graf',' Grafik '), 
 		"Größe",
     		popup_menu(-name=>'swidth', -values=> ['1024','800','640'],
-		    -labels=> {'1024' =>'groß','800'=>'mittel','640'=>'klein'})]),
+		    -labels=> {'1024' =>'groß','800'=>'mittel','640'=>'klein'}),
+		&help('graf')]),
     	    td({-bgcolor=>'#ffdead'},[
 		"oder Tagespreise",
     		submit('graf','  Tag   '),
 		"oder Wochenpreise",
-    		submit('graf','Woche ')
+    		submit('graf','Woche '),&help('tag')
 		]), 
-	    td({-colspan=>4},hr),
+	    td({-colspan=>5},hr),
     	    td([" der besten ",
     		textfield(-name=>'best', -size=>2, -maxlength=>2),
-		"Provider",'&nbsp;']),
+		"Provider",'&nbsp;',&help('prov')]),
 	    td(['oder nur Provider',	
     		textfield(-name=>'prov', -size=>20, -maxlength=>100),
 		'oder nicht Provider',
-    		textfield(-name=>'xprov', -size=>20, -maxlength=>100)]),
+    		textfield(-name=>'xprov', -size=>20, -maxlength=>100),'&nbsp;']),
 	    td(['&nbsp;','&nbsp;',	
 		reset('Reset'),
-		defaults('Löschen')])
+		defaults('Löschen'),'&nbsp;'])
 	]))))),
     	end_form,
 	p,
@@ -249,9 +324,20 @@ sub print_form {
 	);
 }	
 
+sub del_vbn {
+    my @p = split(/,/, $_[0]);
+    my (@np, $ret);
+    foreach (@p) {
+	s/^0?10//;
+	$_=100+$_ if (length($_) == 3);
+	push(@np, $_);
+    }
+    $ret=join(',',@np);
+    $ret;
+}    	
 sub call_isdnrate {	
     my ($hour, $day);
-    my ($len, $lines) = @_;
+    my ($lines) = @_;
     my ($now, $explain, $tel, $from, $best, $prov);
     if (param('town') != '0') {
 	param('country', $LEER);
@@ -262,11 +348,11 @@ sub call_isdnrate {
 	param('tel','');
 	param('town', $LEER);
 	$tel=param('country');
-	$tel =~s/ /_/g; # preserv spaces
     }
     else {	
-	$tel = param('tel') =~ /\d+/ ? $& : '';
+	$tel = param('tel');
     }	
+    $tel =~s/ /_/g; # preserv spaces
     return if($tel eq '');		
     my @args=($ISDNRATE,"-H", $tel);
     unless (param('now')) {
@@ -274,11 +360,13 @@ sub call_isdnrate {
     	push(@args, "-d$day") if ($day=param('day')||param('hour')?param('day'):param('dday'));
     }	
     if ($prov=param('xprov')) {
-	$prov =~ s/\s//g;
+	$prov =~ s/\s+/,/g;
+	$prov=&del_vbn($prov);
 	push(@args, "-x$prov");
     }	
     elsif ($prov=param('prov')) {
-	$prov =~ s/\s//g;
+	$prov =~ s/\s/,/g;
+	$prov=&del_vbn($prov);
 	push(@args, "-p$prov");
     }	
     push(@args, "-f$from") if ($from=param('from'));
@@ -288,6 +376,9 @@ sub call_isdnrate {
     else {  
 	push(@args, "-X$explain") if ($explain=param('explain'));
     }  
+    $len=sprintf("%d",param('len')) || $DEFLEN;
+    $len=min($len, 1200);
+    param('len', $len);
     push(@args, "-l$len");
     $best=param('best');
     param('best', $best>0 ? $best: 20); 
@@ -315,13 +406,11 @@ sub call_isdnrate {
 }
 
 sub get_results {
-    my (@lines, $len);
-    my($pnum, $prov, $cur, $charge, $bgcolor, $i, $rest);
-    $len=sprintf("%d",param('len')) || 60;
-    &call_isdnrate($len, \@lines);
-    param('len',$len);
+    my (@lines);
+    my($pnum, $prov, $cur, $charge, $bgcolor, $i, $rest, $url);
+    &call_isdnrate(\@lines);
     $lines[0] = &fmt_date($lines[0]);
-    $q->print(hr, $lines[0], p);
+    $q->print(p({-class=>'t'},$lines[0]));
     shift(@lines); # -H
     shift(@lines); # empty
     (undef, $cur) = split(/  +/, $lines[0]);
@@ -331,8 +420,10 @@ sub get_results {
     $i=0;
     foreach (@lines) {
     	($pnum, $prov, $cur, $charge, $rest) = &split_line($_);
+	$url{$pnum}="#$pnum"; # TODO
+	$url=a({-href=>$url{$pnum}}, $prov);
 	$bgcolor=++$i&1?' bgcolor="#e0e0e0"':'';
-	$q->print(qq(<tr$bgcolor><td>$pnum</td><td>$prov</td><td align="right">$charge</td>));
+	$q->print(qq(<tr$bgcolor><td>$pnum</td><td>$url</td><td align="right">$charge</td>));
 	$q->print(qq(<td><font size="-1">$rest</font></td>)) if(param('explain'));
 	$q->print("</tr>\n");
     }
@@ -385,19 +476,17 @@ sub max {
 sub make_graf {	
     my ($W, $H, $LEG, $LIN, $white, $black, $lgrey, $llgrey, $tempf, $i);
     my (@lines, $n, $xo, $yo, $dx, @rawcolors, @colors, %pstring, %unused);
-    my ($prov, $cur, $charge, $pnum, %pc, %pt, $r, $g, $bl, $len);
+    my ($prov, $cur, $charge, $pnum, %pc, %pt, $r, $g, $bl);
     my ($swidth, %dim);
     $swidth=param('swidth')||1024;
     # dimensions
-    %dim = (1024=>[700,350,240], 800=>[500,250,200],640=>[300,200,200]);
+    %dim = (1024=>[700,370,240], 800=>[500,250,200],640=>[300,200,200]);
     $W=$dim{$swidth}[0]; 
     $H=$dim{$swidth}[1]; 
     $LEG=$dim{$swidth}[2];
     $LIN=50;
     $dx = 10;
     $xo=25; $yo=20;
-    $len=min(param('len'), 600);
-    param('len', $len);
     # make some colors
     $n=0;
     foreach $g ('00','33','66','99') {
@@ -427,7 +516,7 @@ sub make_graf {
     $im->filledPolygon($poly, $lgrey);
     # get data
     my ($c,$text);
-    &call_isdnrate($len, \@lines);
+    &call_isdnrate(\@lines);
     foreach (@lines) {
 	if (/^\@--+ (\S+) (\S.*)/) { # end
 	    if ($pnum && $#{ $pc{$pnum} } == 0) { # any data
@@ -439,12 +528,19 @@ sub make_graf {
 	    }		
 	    $pstring{$pnum} = $2;
 	    $cur=$1;
+	    if ($daily || $weekly) {
+	        push( @{ $pt{$pnum} }, $daily?24:7*24); # time
+		push( @{ $pc{$pnum} }, $pc{$pnum}[0]); # charge
+	    }	
+	    $url{$pnum}="#$pnum"; # TODO
 	    $pnum = '';
 	}
         elsif (/^\@ (\d+)/) { # start
     	    $pnum=$1;
+	    if (!$daily && !$weekly) {
 	    push( @{ $pt{$pnum} }, 0); # time
 	    push( @{ $pc{$pnum} }, 0); # charge
+	}	
 	}	
 	elsif (/(\d+) (\d+\.\d+)/ && $pnum) {	
 	    push( @{ $pt{$pnum} }, $1==1?0.1:$1); # time
@@ -488,11 +584,11 @@ sub make_graf {
     $im->string($font, 4, $H-$yo-$my*$ys+3+$font->height, $cur, $black);
     # x-axis
     if ($weekly) {
-	$len=7*24;
+	$len=7*24+1;
 	$dx=1;
     }
     elsif ($daily) {
-	$len=24;
+	$len=25;
 	$dx=1;
     }	
     else {	
@@ -515,7 +611,7 @@ sub make_graf {
 	    $tx = $i;
 	}    
 	else {    
-	    $tx = $i == int($len/$dx)-2 ? $i ." s" : $i; # nn s
+	    $tx = $i == $dx*(int($len/$dx)-1) ? $i ." s" : $i; # nn s
 	}    
 	$im->string($font, $xo+$i*$xs+3, $H-$yo+2, $tx, $black); 
     }	
@@ -544,7 +640,7 @@ sub make_graf {
     $im->rectangle($xo,0,$W-1,$H-$yo,$black);
     # legend
     $im->filledRectangle($W+1,0,$W+$LEG-1,$H-1,$llgrey);
-    my ($ndy, $y, $sy);
+    my ($ndy, $y, $sy, $mapx, $mapy, @map);
     $y=2;
     $i=min($n,keys(%rcols));
     $n=0;
@@ -554,8 +650,9 @@ sub make_graf {
 	$y = max($y,min($ndy,$sy));
 	$im->dashedLine($W+2,$H-$yo-$sy, $W+$LIN,$H-$yo-$y, $rcols{$p});	
 	$im->dashedLine(1+$W+2,1+$H-$yo-$sy,1+$W+$LIN,1+$H-$yo-$y, $rcols{$p});
-	$im->string($font, $W+$LIN+5, $H-$yo-$y-$font->height/2, "$p ".$pstring{$p}, $rcols{$p});
+	$im->string($font, $mapx=$W+$LIN+5, $mapy=$H-$yo-$y-$font->height/2, "$p ".$pstring{$p}, $rcols{$p});
 	$y += $font->height+1;
+	&add_map($p, $mapx, $mapy, $font->height, $W,$LEG, \@map);
 	$i--;
 #	last if (++$n >= param('best'));
     }	
@@ -569,8 +666,23 @@ sub make_graf {
     close(TEMP);
     # ret img tag
     $tempf =~ s!^$tempdir/!!;
-    $q->print(img({-src=>"$tempdir_url/$tempf", -height=>$H, 
-    	-width=>$W+$LEG, -align=>'"CENTER"'}));
+    $q->print(qq(<MAP NAME="map">\n));
+    foreach (@map) {
+	$q->print("$_\n");
+    }	
+    $q->print(qq(</MAP>\n));
+    $q->print(img({-src=>"$tempdir_url/$tempf", -height=>$H, -border=>0,
+    	-width=>$W+$LEG, -align=>'"CENTER"', -usemap=>'#map'}));
+}
+sub add_map {
+  my ($p, $mapx, $mapy, $height, $W,$LEG, $mref) = @_;
+  my($xu,$yu, $url);
+  $mapx=int($mapx);
+  $mapy=int($mapy);
+  $xu=int($W+$LEG-2);
+  $yu=int($mapy+$height);
+  $url=$url{$p};
+  push(@$mref,qq(<AREA SHAPE="RECT" COORDS="$mapx,$mapy,$xu,$yu" href="$url">));
 }
 
 # del gifs older then 1 hour

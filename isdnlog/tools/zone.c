@@ -1,4 +1,4 @@
-/* $Id: zone.c,v 1.13 1999/07/10 21:38:54 akool Exp $
+/* $Id: zone.c,v 1.14 1999/07/25 15:58:13 akool Exp $
  *
  * Zonenberechnung
  *
@@ -19,6 +19,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: zone.c,v $
+ * Revision 1.14  1999/07/25 15:58:13  akool
+ * isdnlog-3.43
+ *   added "telnum" module
+ *
  * Revision 1.13  1999/07/10 21:38:54  akool
  * isdnlog-3.41
  *   rate-de.dat V:1.02-Germany [10-Jul-1999 23:32:27]
@@ -80,6 +84,9 @@
  *
  * Changes:
  *
+ * 1.21 1997.07.22 lt fixed bug, were T was overwritten, when an 'A'
+ *                    followed versio, occured w. DTAG 		
+ *
  * 1.20 1999.07.08 lt added support for NL
  *
  *      in NL areacode may be shorter than actual aeracodenumber
@@ -133,7 +140,7 @@ struct sth {
 
 static struct sth *sthp;
 static int count;
-static char version[] = "1.20";
+static char version[] = "1.21";
 static bool area_read = false;
 
 #define LINK 127
@@ -427,6 +434,7 @@ static int _initZone(int provider, char *path, char **msg, bool area_only)
 			case 'A' :	/* this provider has the areacodes for county A */
 				p++;
 				sthp[ocount].cc = strtol(p, &p, 10);
+				p--; /* get's incr after, so we miss 0x0*/
 				break;
 			}
 		} /* for */

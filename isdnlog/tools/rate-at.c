@@ -950,15 +950,17 @@ void rate_1067(void) {
   
   char *Zone[][2] = {{ "Festnetz", "Österreich" }, 
 		     { "max.box", "+4367622" },
-		     { "max.online", "+4367620" }, /* Fixme */ 
+		     { "max.online", "+436762323" },
 		     { "max.mobil", "+43676" },
 		     { "andere Mobilfunknetze", "+43663,+43664,+43669" },
-		     { "Nachbarländer", "Deutschland, Italien" },
-		     { "EU", "" },
-		     { "Weltzone 1", "Griechenland, Portugal" },
-		     { "Weltzone 2", "" },
-		     { "Weltzone 3", "" },
-		     { "Weltzone 4", "+" }};
+		     { "Nachbarländer", "Deutschland, Italien, Schweiz, Tschechische Republik, Ungarn, Slowakische Republik, Slowenien, Liechtenstein" },
+		     { "EU", "Belgien, Dänemark, Finnland, Frankreich, Griechenland, Irland, Luxemburg, Niederlande, Portugal, Spanien, Schweden, Großbritannien, Nordirland" },
+		     { "Weltzone 1", "Andorra, Australien, Bahamas, Bosnien-Herzegowina, Kanada, Kroatien, Faröer, Gibraltar, Island, Japan, Lettland, Malta, Mazedonien, Monaco, Neuseeland, Norwegen, Polen, Puerto Rico, San Marino, Singapur, USA, Vatikan, Jugoslawien" },
+		     { "Weltzone 2", "Albanien, Algerien, Belarus, Bulgarien, Zypern, Estland, Hong Kong, Litauen, Marokko, Oman, Rumänien, Rußland, Tunesien, Türkei, Ukraine, Virgin Islands (US)" },
+		     { "Weltzone 3", "Bermuda, Brasilien, Brunei, Chile, Christmas Islands, Cocos Islands, Dominikanische Republik, Georgien, Ghana, Grönland, Israel, Jamaica, Kasachstan, Korea, Kirgisistan, Libyen, Macau, Malaysien, Mexiko, Südafrika, Taiwan, Tadschikistan" },
+		     { "Weltzone 4", "+" },
+		     { "Iridium 8816", "Iridium 008816"},
+		     { "Iridium 8817", "Iridium 008817"}};
   
   double Tarif[] = { 01.00, 
 		     01.00, 
@@ -970,18 +972,18 @@ void rate_1067(void) {
 		     05.50, 
 		     09.70, 
 		     15.00, 
-		     22.00 }; 
+		     22.00, 
+		    122.00, 
+		     62.00 }; 
   
   int z;
   
   printf ("\n");
   rprintf ("max.plus","P:67");
   rprintf ("Michael Reinelt <reinelt@eunet.at>", "C:maintained by:");
-  rprintf ("Taktung unbekannt", "C:Fixme:");
-  for (z=0; z<7; z++) {
+  for (z=0; z<COUNT(Zone); z++) {
     rprintf (Zone[z][0], "Z:%d", z+1);
-    /* Fixme: Taktung? */
-    rprintf ("rund um die Uhr", "T:*/*=%.2f(60)/1", Tarif[z]);
+    rprintf ("rund um die Uhr", "T:*/*=%.2f(60)/30", Tarif[z]);
     print_area(Zone[z][1]);
   }
 }    
@@ -1030,7 +1032,7 @@ int main (int argc, char *argv[])
   printf ("# Many thanks to Daniela Bruder <dbruder@sime.com>\n");
   printf ("# for collecting and preparing most of the call charges.\n\n\n");
 
-  printf ("V:1.81-Austria [22-Jul-1999]\n\n");
+  printf ("V:1.83-Austria [25-Jul-1999]\n\n");
   printf ("U:%%.3f öS\n");
 
 #if 0

@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.95 1999/07/24 08:43:38 akool Exp $
+## $Id: Makefile.in,v 1.96 1999/07/25 15:57:01 akool Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,10 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.96  1999/07/25 15:57:01  akool
+## isdnlog-3.43
+##   added "telnum" module
+##
 ## Revision 1.95  1999/07/24 08:43:38  akool
 ## isdnlog-3.42
 ##   rate-de.dat 1.02-Germany [18-Jul-1999 10:44:21]
@@ -724,7 +728,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 3.42
+VERSION     = 3.43
 
 MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 \
 	      isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 \
@@ -791,6 +795,7 @@ ISDNCONF_OBJS=  isdnconf/isdnconf.o tools/tools.o tools/isdnconf.o        \
 
 ISDNRATE_OBJS=  tools/isdnrate.o tools/isdnconf.o tools/tools.o           \
 		tools/rate.o tools/zone.o tools/country.o tools/holiday.o \
+		tools/telnum.o						  \
                 $(LIBISDNDIR)/libisdn.a
 
 ISDNLOG      =  bin/isdnlog
