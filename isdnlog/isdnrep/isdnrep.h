@@ -1,4 +1,4 @@
-/* $Id: isdnrep.h,v 1.1 1997/03/16 20:59:08 luethje Exp $
+/* $Id: isdnrep.h,v 1.2 1997/03/23 20:25:25 luethje Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -23,9 +23,18 @@
 #ifndef _ISDNREP_H_
 #define _ISDNREP_H_
 
-
 #define PUBLIC extern
 #include <tools.h>
+
+#ifdef  MAXUNKNOWN
+#undef  MAXUNKNOWN
+#endif
+#define MAXUNKNOWN   500
+
+#ifdef  MAXCONNECTS
+#undef  MAXCONNECTS
+#endif
+#define MAXCONNECTS  500
 
 #ifdef _ISDNREP_C_
 #define _EXTERN
