@@ -1,0 +1,9 @@
+/*@EFT_AUTOCONF_WARNING@
+
+generated from $Id: config.h.in,v 1.1 1999/06/30 17:13:45 he Exp $
+*/
+#define CONFIG_EFT_TOPDIR "@EFT_TOPDIR@"
+#define CONFIG_I4L_CONFDIR "@I4LCONFDIR@"
+#define EFT_ISDNCTRL_PATH "@ISDNCTRL@"
+#define USE_I4L_CONFDIR /* for wuauth pathnames.h */
+#define @HAVE_GETDELIM@
