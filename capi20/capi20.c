@@ -1,7 +1,12 @@
 /*
- * $Id: capi20.c,v 1.10 1999/11/11 09:24:07 calle Exp $
+ * $Id: capi20.c,v 1.11 1999/12/22 17:46:21 calle Exp $
  * 
  * $Log: capi20.c,v $
+ * Revision 1.11  1999/12/22 17:46:21  calle
+ * - Last byte in serial number now always 0.
+ * - Last byte of manufacturer now always 0.
+ * - returncode in capi20_isinstalled corrected.
+ *
  * Revision 1.10  1999/11/11 09:24:07  calle
  * add shared lib destructor, to close "capi_fd" on unload with dlclose ..
  *
@@ -61,7 +66,7 @@ static unsigned char        sndbuf[128+2048];   /* message + data */
 unsigned capi20_isinstalled (void)
 {
     if (capi_fd >= 0)
-        return 1;
+        return CapiNoError;
 
     /*----- open managment link -----*/
     if ((capi_fd = open("/dev/capi20", O_RDWR, 0666)) < 0)
@@ -129,7 +134,7 @@ capi20_register (unsigned MaxB3Connection,
 
     *ApplID = applid;
 
-    if (!capi20_isinstalled())
+    if (capi20_isinstalled() != CapiNoError)
        return CapiRegNotInstalled;
 
     for (i=0; fd < 0; i++) {
@@ -167,8 +172,8 @@ capi20_register (unsigned MaxB3Connection,
 unsigned
 capi20_release (unsigned ApplID)
 {
-    if (!capi20_isinstalled())
-        return CapiRegNotInstalled;
+    if (capi20_isinstalled() != CapiNoError)
+       return CapiRegNotInstalled;
     if (!validapplid(ApplID))
         return CapiIllAppNr;
     (void)close(applid2fd(ApplID));
@@ -186,8 +191,8 @@ capi20_put_message (unsigned ApplID, unsigned char *Msg)
     int rc;
     int fd;
 
-    if (!capi20_isinstalled())
-        return CapiRegNotInstalled;
+    if (capi20_isinstalled() != CapiNoError)
+       return CapiRegNotInstalled;
 
     if (!validapplid(ApplID))
         return CapiIllAppNr;
@@ -250,8 +255,8 @@ capi20_get_message (unsigned ApplID, unsigned char **Buf)
     unsigned ret;
     int rc, fd;
 
-    if (!capi20_isinstalled())
-        return CapiRegNotInstalled;
+    if (capi20_isinstalled() != CapiNoError)
+       return CapiRegNotInstalled;
 
     if (!validapplid(ApplID))
         return CapiIllAppNr;
@@ -315,19 +320,20 @@ capi20_get_message (unsigned ApplID, unsigned char **Buf)
 unsigned char *
 capi20_get_manufacturer(unsigned Ctrl, unsigned char *Buf)
 {
-    if (!capi20_isinstalled())
+    if (capi20_isinstalled() != CapiNoError)
        return 0;
     ioctl_data.contr = Ctrl;
     if (ioctl(capi_fd, CAPI_GET_MANUFACTURER, &ioctl_data) < 0)
        return 0;
-    strncpy(Buf, ioctl_data.manufacturer, CAPI_MANUFACTURER_LEN);
+    memcpy(Buf, ioctl_data.manufacturer, CAPI_MANUFACTURER_LEN);
+    Buf[CAPI_MANUFACTURER_LEN-1] = 0;
     return Buf;
 }
 
 unsigned char *
 capi20_get_version(unsigned Ctrl, unsigned char *Buf)
 {
-    if (!capi20_isinstalled())
+    if (capi20_isinstalled() != CapiNoError)
         return 0;
     ioctl_data.contr = Ctrl;
     if (ioctl(capi_fd, CAPI_GET_VERSION, &ioctl_data) < 0)
@@ -339,19 +345,20 @@ capi20_get_version(unsigned Ctrl, unsigned char *Buf)
 unsigned char * 
 capi20_get_serial_number(unsigned Ctrl, unsigned char *Buf)
 {
-    if (!capi20_isinstalled())
+    if (capi20_isinstalled() != CapiNoError)
         return 0;
     ioctl_data.contr = Ctrl;
     if (ioctl(capi_fd, CAPI_GET_SERIAL, &ioctl_data) < 0)
         return 0;
     memcpy(Buf, &ioctl_data.serial, CAPI_SERIAL_LEN);
+    Buf[CAPI_SERIAL_LEN-1] = 0;
     return Buf;
 }
 
 unsigned
 capi20_get_profile(unsigned Ctrl, unsigned char *Buf)
 {
-    if (!capi20_isinstalled())
+    if (capi20_isinstalled() != CapiNoError)
         return CapiMsgNotInstalled;
 
     ioctl_data.contr = Ctrl;
@@ -382,7 +389,7 @@ capi20_waitformessage(unsigned ApplID, struct timeval *TimeOut)
 
   FD_ZERO(&rfds);
 
-  if(!capi20_isinstalled())
+  if (capi20_isinstalled() != CapiNoError)
     return CapiRegNotInstalled;
 
   if(!validapplid(ApplID))
