@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.10 1997/03/24 02:23:07 fritz Exp $
+# $Id: Makefile,v 1.11 1997/03/24 04:00:04 fritz Exp $
 #
 # Toplevel Makefile for isdn4k-utils
 #
@@ -52,6 +52,9 @@ ifeq ($(CONFIG_IMONTTY),y)
 endif
 ifeq ($(CONFIG_ISDNLOG),y)
 	SUBDIRS := $(SUBDIRS) isdnlog
+endif
+ifeq ($(CONFIG_IPPPSTATS),y)
+	SUBDIRS := $(SUBDIRS) ipppstats
 endif
 ifeq ($(CONFIG_XMONISDN),y)
 	SUBDIRS := $(SUBDIRS) xmonisdn
