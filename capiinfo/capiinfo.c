@@ -1,4 +1,4 @@
-/* $Id: capiinfo.c,v 1.4 2000/11/12 16:06:42 kai Exp $
+/* $Id: capiinfo.c,v 1.5 2001/01/15 10:22:50 calle Exp $
  *
  * A CAPI application to get infomation about installed controllers
  *
@@ -14,6 +14,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: capiinfo.c,v $
+ * Revision 1.5  2001/01/15 10:22:50  calle
+ * - error reasons now also as strings using function capi_info2str().
+ *
  * Revision 1.4  2000/11/12 16:06:42  kai
  * fix backwards compatibility in capi20 library, small other changes
  *
@@ -134,7 +137,7 @@ int main(int argc, char **argv)
 
    err = CAPI20_REGISTER(0, 0, 2048, &ApplId);
    if (err != CapiNoError) {
-       fprintf(stderr, "could not register - (%#x)\n", err);
+       fprintf(stderr, "could not register - %s (%#x)\n", capi_info2str(err), err);
        return 1;
    }
 
@@ -192,22 +195,22 @@ int main(int argc, char **argv)
 
        err = CAPI_PUT_CMSG(&cmsg);
        if (err != CapiNoError) {
-	   fprintf(stderr, "FAC REQ - (%#x)\n", err);
+	   fprintf(stderr, "FAC REQ - %s (%#x)\n", capi_info2str(err), err);
 	   continue;
        }
 	
        err = capi20_waitformessage(ApplId, 0);
        if (err != CapiNoError) {
-	   fprintf(stderr, "FAC WAIT - (%#x)\n", err);
+	   fprintf(stderr, "FAC WAIT - %s (%#x)\n", capi_info2str(err), err);
 	   continue;
        }
        err = CAPI_GET_CMSG(&cmsg, ApplId);
        if (err != CapiNoError) {
-	   fprintf(stderr, "FAC GET - (%#x)\n", err);
+	   fprintf(stderr, "FAC GET - %s (%#x)\n", capi_info2str(err), err);
 	   continue;
        }
        if (cmsg.Info != 0x0000) {
-	   fprintf(stderr, "FAC GET - (Info %#x)\n", cmsg.Info);
+	   fprintf(stderr, "FAC GET - Info: %s (%#x)\n", capi_info2str(cmsg.Info), cmsg.Info);
 	   continue;
        }
        if (cmsg.FacilityConfirmationParameter[0] != 0x09) {
