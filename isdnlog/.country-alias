@@ -11,6 +11,7 @@ ascension inseln (gb)	ascension
 aserbeidschan	aserbaidschan
 bahrein	bahrain
 bangla desh	bangladesch
+bangladesch mobilfunk	bangladesh mobilfunk
 belarus (weiﬂrussland)	weissrussland
 bosnien mobilfunk	bosnien-herzegowina mobilfunk
 bosnien und herzegowina	bosnien-herzegowina
@@ -109,7 +110,7 @@ jemen arab. rep. mobilfunk	jemen mobilfunk
 jemen arab. republik	jemen (arab. republik)
 jugoslawien (rest-)	serbien und montenegro
 jugoslawien (rest-) mobilfunk	serbien und montenegro mobilfunk
-jugoslawien (serbien und montenegro)	jugoslawien
+jugoslawien (serbien und montenegro)	serbien und montenegro
 jungfern inseln britisch	britische jungferninseln
 jungferninseln (us)	amerikanische jungferninseln
 kaiman inseln	kaimaninseln
@@ -150,6 +151,8 @@ midway inseln	midway-inseln
 midway island	midway-inseln
 midway islands	midway-inseln
 moldau-republik	moldau (republik)
+moldau-republik mobilfunk	moldau (republik) mobilfunk
+moldavien mobilfunk	moldawien mobilfunk
 myanmar (=burma)	myanmar burma
 myanmar (burma)	myanmar burma
 myanmar/burma	myanmar burma
@@ -242,11 +245,14 @@ turks- und caicos inseln	turks- und caicosinseln
 turks- und caicos-inseln	turks- und caicosinseln
 turmenistan	turkmenistan
 urugay	uruguay
+usa minor outlaying islands	us minor outlying islands
 v.r. korea.	nordkorea
 vanuat	vanuatu
 vatikanstaat	vatikan
 venezuele mobilfunk	venezuela mobilfunk
 venuzuela-mobilfunk	venezuela mobilfunk
+venzuela	venezuela
+venzuela mobilfunk	venezuela mobilfunk
 ver. arab. emirate	ver. arabische emirate
 ver. arab. emirate mobilfunk	vereinigte arabische emirate mobilfunk
 vereinigt arabische emirate	ver. arabische emirate
@@ -261,6 +267,7 @@ weiﬂruﬂland (belarus)	weissrussland
 weiﬂruﬂland/belarus	weissrussland
 west samoa	west-samoa
 western samoa (independent state of)	west-samoa
+westsamoa	west-samoa
 zaire/kongo dem. rep	kongo (demokratische republik)
 zaire/kongo dem. rep mobilfunk	zaire mobilfunk
 zentral. afrika. rep.	zentralafrikanische republik

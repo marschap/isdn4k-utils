@@ -1,7 +1,7 @@
-V:1.57 Int [01-Nov-2003 01:00:00]
+V:1.58 Int [24-Aug-2004 01:00:00]
 #
 # This version of country.dat originates from rates4linux:
-# $Id: country-de.dat,v 1.46 2004/02/12 23:52:28 tobiasb Exp $
+# $Id: country-de.dat,v 1.47 2004/08/24 23:40:59 tobiasb Exp $
 # The rates4linux homepage: http://www.sourceforge.net/projects/rates4linux/
 # It bases on Rev. 1.39 of isdn4k-utils/isdnlog/country-de.dat 
 # in the CVS at http://www.isdn4linux.de.
@@ -23,7 +23,7 @@ V:1.57 Int [01-Nov-2003 01:00:00]
 # Partial source for national numbering plans (2002-08-23):
 # http://www.itu.int/ITU-T/inr/nnp/index.html
 #
-# Offical German language country names (2003-07-23):
+# Offical German language country names (2004-08-20):
 # http://www.auswaertiges-amt.de/www/de/infoservice/download/pdf/publikationen/staatennamen.pdf
 #
 # Note: The information in this file gets included in the destination database
@@ -214,11 +214,20 @@ E:Iraq
 C:+964
 T:IQ
 
+# Source (2003-11-12):
+# http://www.itu.int/itudoc/itu-t/number/s/syr/75921.html
 N:Syrien
 E:Syria
 A:Syrien (Arabische Republik)
 C:+963
 T:SY
+
+N:Syrien Mobilfunk
+E:Syria cellphone
+A:Syrien (Arabische Republik) Mobilfunk
+C:+9639
+R:SY
+T:_SYMF
 
 N:Jordanien Mobilfunk
 E:Jordan cellphone
@@ -666,6 +675,27 @@ T:_F800
 
 # international numbering space +7... needs cleanup
 
+# Source (2004-03-12):
+# http://www.itu.int/itudoc/itu-t/number/k/kaz/75917.html
+N:Kasachstan
+E:Kazakhstan
+C:+7310, +7311, +7312, +7313, +7314, +7315, +7316, +7317, +7318
+C:+7321, +7322, +7323, +7324, +7325, +7326, +7327, +7328, +7329
+C:+7336 	# +733622 = Baykonur
+C:+7300, +7333, +7570, +7573, +7574, +7700	# mobile operators (exclusive)
+T:KZ
+
+N:Kasachstan Mobilfunk
+E:Kazakhstan cellphone
+C:+7300, +7333, +7570, +7573, +7574, +7700
+C:+731290, +731390, +731490, +731590, +731790, +731890
+C:+731291, +731391, +731491, +731591, +731791, +731891
+C:+732190, +732390, +732590, +732690, +732790
+C:+732191, +732391, +732591, +732691, +732791
+C:+732490, +732758, +732799
+R:KZ
+T:_KZMF
+
 N:Rußland Mobilfunk
 E:Russia cellphone
 A:Russische Föderation Mobilfunk
@@ -690,11 +720,6 @@ A:Rußland St. Petersburg, Leningrad
 C:+7812, +751285
 R:RU
 T:LED
-
-N:Kasachstan
-E:Kazakhstan
-C:+7336, +7330, +7329, +7328, +7327, +7326, +7325, +7324, +7323, +7322, +7321, +7318, +7317, +7316, +7315, +7314, +7313, +7312, +7311, +7310, +73
-T:KZ
 
 N:Moskau
 E:Moscow
@@ -1943,11 +1968,21 @@ C:+3747, +374940, +374941
 R:AM
 T:_AMMF
 
+# Source (2003-08-19):
+# http://www.itu.int/itudoc/itu-t/number/m/mda/84396.html
 N:Moldau (Republik)
 A:Moldau Republik, Moldavien, Moldawien, Moldau, Republik Moldau
 E:Moldova
 C:+373
 T:MD
+
+N:Moldau (Republik) Mobilfunk
+A:Moldau Mobilfunk, Republik Moldau Mobilfunk
+A:Moldawien Mobilfunk
+E:Moldova cellphone
+C:+37369, 37379
+R:MD
+T:_MDMF
 
 N:Estland Mobilfunk
 E:Estonia cellphone
@@ -2719,9 +2754,17 @@ N:Nigeria
 C:+234
 T:NG
 
+# Source (2003-12-16):
+# http://www.itu.int/itudoc/itu-t/number/g/gha/85550.html
 N:Ghana
 C:+233
 T:GH
+
+N:Ghana Mobilfunk
+E:Ghana cellphone
+C:+23320, +23324, +23327, +23328
+R:GH
+T:_GHMF
 
 # Source (2002-01-07):
 # http://www.itu.int/itudoc/itu-t/number/s/sle/77986.html
