@@ -24,10 +24,13 @@ I4LU_DEFINES := $(CFLAGS) -DPARANOIA_CHECK -I.
 ifeq (../.config,$(wildcard ../.config))
 	include ../.config
 	ifneq ($(CONFIG_XMONISDN_UPCMD),"")
-		I4LU_DEFINES += -DNETUP_COMMAND=\\\"$(shell echo $(CONFIG_XMONISDN_UPCMD))\\\"
+		I4LU_DEFINES += -DNETUP_COMMAND=\\\"'$(shell echo $(CONFIG_XMONISDN_UPCMD))'\\\"
 	endif
 	ifneq ($(CONFIG_XMONISDN_DOWNCMD),"")
-		I4LU_DEFINES += -DNETDOWN_COMMAND=\\\"$(shell echo $(CONFIG_XMONISDN_DOWNCMD))\\\"
+		I4LU_DEFINES += -DNETDOWN_COMMAND=\\\"'$(shell echo $(CONFIG_XMONISDN_DOWNCMD))'\\\"
+	endif
+	ifneq ($(CONFIG_KERNELDIR),"")
+		I4LU_DEFINES += -I'$(shell echo $(CONFIG_KERNELDIR))'/include
 	endif
     MAN1DIROPT = MANDIR=$(CONFIG_MANDIR)/man1
     MAN3DIROPT = LIBMANDIR=$(CONFIG_MANDIR)/man3
@@ -53,11 +56,13 @@ xmonisdn:
 
 xmonisdn.man: xmonisdn.man.in Makefile
 	MANDATE=`grep CHECKIN $< | awk '{print $$4}'`; \
+	XUP=`echo ${CONFIG_XMONISDN_UPCMD}|sed 's/&/\\\&/g'`; \
+	XDOWN=`echo ${CONFIG_XMONISDN_DOWNCMD}|sed 's/&/\\\&/g'`; \
 	sed \
 	   -e "s#\@MANDATE\@#$${MANDATE}#g" \
 	   -e "s#\@I4LVERSION\@#${I4LVERSION}#g" \
-           -e s,\@CONFIG_XMONISDN_UPCMD\@,${CONFIG_XMONISDN_UPCMD},g \
-           -e s,\@CONFIG_XMONISDN_DOWNCMD\@,${CONFIG_XMONISDN_DOWNCMD},g \
+           -e "s,\@CONFIG_XMONISDN_UPCMD\@,$${XUP},g" \
+           -e "s,\@CONFIG_XMONISDN_DOWNCMD\@,$${XDOWN},g" \
 	   < $< > $@
 
 config:
