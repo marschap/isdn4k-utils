@@ -1,15 +1,15 @@
 ##
-## $Id: Makefile.am,v 1.1 1998/10/23 12:27:39 fritz Exp $
+## $Id: Makefile.am,v 1.2 1999/10/20 16:43:18 calle Exp $
 ##
 
 AUTOMAKE_OPTIONS	= foreign
-CLEANFILES              = *~
+CLEANFILES              = *~ comperr
 MAINTAINERCLEANFILES    = configure aclocal.m4 Makefile.in config.h.in \
 			  stamp-h.in
 
 INCLUDES = -I../capi20 $(all_includes)
 CFLAGS = -Wall -O2
-LDFLAGS = -L../capi20 $(all_libraries)
+LDFLAGS = -L../capi20/.libs -L../capi20 $(all_libraries)
 LDADD = -lcapi20
 
 bin_PROGRAMS = capifax capifaxrcvd

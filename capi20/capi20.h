@@ -46,7 +46,7 @@ unsigned capi20_register (unsigned MaxLogicalConnection,
 
 unsigned capi20_release (unsigned ApplID);
 
-unsigned capi20_put_message (unsigned char *Msg, unsigned ApplID);
+unsigned capi20_put_message (unsigned ApplID, unsigned char *Msg);
 
 unsigned capi20_get_message (unsigned ApplID, unsigned char **Buf);
 

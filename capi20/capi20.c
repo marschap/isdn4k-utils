@@ -1,7 +1,13 @@
 /*
- * $Id: capi20.c,v 1.8 1999/09/15 08:10:44 calle Exp $
+ * $Id: capi20.c,v 1.9 1999/10/20 16:43:17 calle Exp $
  * 
  * $Log: capi20.c,v $
+ * Revision 1.9  1999/10/20 16:43:17  calle
+ * - The CAPI20 library is now a shared library.
+ * - Arguments of function capi20_put_message swapped, to match capi spec.
+ * - All capi20 related subdirs converted to use automake.
+ * - Removed dependency to CONFIG_KERNELDIR where not needed.
+ *
  * Revision 1.8  1999/09/15 08:10:44  calle
  * Bugfix: error in 64Bit extention.
  *
@@ -168,7 +174,7 @@ capi20_release (unsigned ApplID)
 }
 
 unsigned
-capi20_put_message (unsigned char *Msg, unsigned ApplID)
+capi20_put_message (unsigned ApplID, unsigned char *Msg)
 {
     unsigned ret;
     int len = (Msg[0] | (Msg[1] << 8));

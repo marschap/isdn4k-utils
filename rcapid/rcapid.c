@@ -24,8 +24,9 @@
 #include	<unistd.h>
 #include	<stdio.h>
 #include	<fcntl.h>
-#include	<linux/capi.h>
-#include	<capicmd.h>
+#include	<stdlib.h>
+#include	<ctype.h>
+#include	"capicmd.h"
 #include	"rcapicmd.h"
 #include	"capi20.h"
 
@@ -269,14 +270,14 @@ int
 rcv_message(struct capi_message *msg) {
 	static char	buf [MAX_CAPIMSGLEN],
 				*p;
-	int			len, rlen, i;
+	int			len, rlen;
 
 
 	if(read(0, buf, 2) == 2) {
 		p = buf;
 		len = (int)get_netword(&p);
 
-		log(5, "rcapi-message: len=%d (%02.2x%02.2x)\n", len, buf [0], buf [1]);
+		log(5, "rcapi-message: len=%d (%2x%2x)\n", len, buf [0], buf [1]);
 		len -= 2;
 		if((rlen = read(0, buf, len)) != len) {
 			log(5, "short message received! (received=%d, expected=%d)\n", rlen, len);
@@ -299,7 +300,7 @@ int
 snd_message(struct capi_message *orig, int cmd, structure *params, structure *data) {
 	static char	buf [MAX_CAPIMSGLEN],
 				*p;
-	int			len, rlen, slen, i;
+	int			len, rlen, slen;
 
 
 	len = 8;
@@ -406,13 +407,13 @@ hdl_RCAPI_GET_SERIAL_NUMBER_REQ(struct capi_message *msg) {
 
 	structure	retstruct;
 	char		retval [80];
-	char		serial_number [64], sn [16];
+	char		serial_number [64];
 
 
 	log(5, "RCAPI_GET_SERIAL_NUMBER_REQ\n");
 	
 	memset(serial_number, 0, sizeof(serial_number));
-	sprintf(serial_number, "%s\0", RCAPID_SERIAL_NUMBER);
+	sprintf(serial_number, "%s", RCAPID_SERIAL_NUMBER);
 	memset(serial_number + strlen(serial_number), 0, sizeof(serial_number) - strlen(serial_number));
 
 	p = retval;
@@ -437,8 +438,8 @@ hdl_RCAPI_GET_MANUFACTURER_REQ(struct capi_message *msg) {
 	log(5, "RCAPI_GET_MANUFACTURER_REQ\n");
 	
 	memset(manufacturer, 0, sizeof(manufacturer));
-	sprintf(manufacturer, "%s\0", RCAPID_MANUFACTURER);
-	memset(manufacturer + strlen(manufacturer), 0, sizeof(manufacturer)) + strlen(manufacturer);
+	sprintf(manufacturer, "%s", RCAPID_MANUFACTURER);
+	memset(manufacturer + strlen(manufacturer), 0, sizeof(manufacturer) - strlen(manufacturer));
 
 	p = retval;
 	put_struct(&p, /* strlen(manufacturer) + 1 */ 64, manufacturer);
@@ -462,7 +463,7 @@ hdl_RCAPI_GET_VERSION_REQ(struct capi_message *msg) {
 	log(5, "RCAPI_GET_VERSION_REQ\n");
 	
 	memset(info, 0, sizeof(info));
-	sprintf(info, "%s\0", RCAPID_VERSION_INFO);
+	sprintf(info, "%s", RCAPID_VERSION_INFO);
 	memset(info + strlen(info), 0, sizeof(info) - strlen(info));
 
 	p = retval;
@@ -583,13 +584,11 @@ hdl_message(struct capi_message *msg) {
 }
 
 
-main(int argc, char *argv []) {
+int main(int argc, char *argv []) {
 	struct capi_message	msg;
 	extern int	optind;
 	extern char	*optarg;
 	char		c;
-	int			i;
-
 
 	loglevel = 0;
 
@@ -603,7 +602,7 @@ main(int argc, char *argv []) {
 	log(5, "rcapid started (PID=%d)\n", getpid());
 
 	while(! feof(stdin)) {
-		fd_set	ifd, ofd, efd;
+		fd_set	ifd, efd;
 		int				max_fd, s;
 
 
@@ -666,4 +665,5 @@ main(int argc, char *argv []) {
 			exit(0);
 		}
 	}
+	return 0;
 }

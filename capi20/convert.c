@@ -1,7 +1,13 @@
 /*
- * $Id: convert.c,v 1.7 1999/09/15 08:10:44 calle Exp $
+ * $Id: convert.c,v 1.8 1999/10/20 16:43:17 calle Exp $
  *
  * $Log: convert.c,v $
+ * Revision 1.8  1999/10/20 16:43:17  calle
+ * - The CAPI20 library is now a shared library.
+ * - Arguments of function capi20_put_message swapped, to match capi spec.
+ * - All capi20 related subdirs converted to use automake.
+ * - Removed dependency to CONFIG_KERNELDIR where not needed.
+ *
  * Revision 1.7  1999/09/15 08:10:44  calle
  * Bugfix: error in 64Bit extention.
  *
@@ -472,7 +478,7 @@ unsigned capi20_put_cmsg (_cmsg *cmsg)
     static unsigned char msg[2048];
 
     capi_cmsg2message(cmsg, (CAPI_MESSAGE)msg);
-    return capi20_put_message((CAPI_MESSAGE)msg, cmsg->ApplId);
+    return capi20_put_message(cmsg->ApplId, (CAPI_MESSAGE)msg);
 }
 
 /*-------------------------------------------------------*/

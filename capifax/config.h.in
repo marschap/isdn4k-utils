@@ -8,6 +8,9 @@
 #undef CONFIG_SBINDIR
 #undef CONFIG_MANDIR
 
+/* Define if you have the <capi20.h> header file.  */
+#undef HAVE_CAPI20_H
+
 /* Define if you have the <sys/ioctl.h> header file.  */
 #undef HAVE_SYS_IOCTL_H
 
