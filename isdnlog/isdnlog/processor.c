@@ -1,4 +1,4 @@
-/* $Id: processor.c,v 1.22 1998/06/21 11:52:52 akool Exp $
+/* $Id: processor.c,v 1.23 1998/08/04 08:17:41 paul Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.23  1998/08/04 08:17:41  paul
+ * Translated "CHANNEL: B1 gefordet" messages into English
+ *
  * Revision 1.22  1998/06/21 11:52:52  akool
  * First step to let isdnlog generate his own AOCD messages
  *
@@ -2741,25 +2744,27 @@ escape:             for (c = 0; c <= sxp; c++)
                       px += sprintf(px, "CHANNEL: ");
 
                     switch (c) {
-                      case 0x80 : px += sprintf(px, "BRI, kein Kanal");
-                      	   	  call[chan].knock = 1;
-                      	   	  break;
-                      case 0x81 : px += sprintf(px, "BRI, B1 bevorzugt");                    break;
-                      case 0x82 : px += sprintf(px, "BRI, B2 bevorzugt");                    break;
-                      case 0x83 : px += sprintf(px, "BRI, beliebiger Kanal");                break;
-                      case 0x89 : px += sprintf(px, "BRI, B1 gefordert");                    break;
-                      case 0x8a : px += sprintf(px, "BRI, B2 gefordert");                    break;
-                      case 0x84 : px += sprintf(px, "BRI, D-Kanal gewuenscht");              break;
-                      case 0x8c : px += sprintf(px, "BRI, D-Kanal gefordert");               break;
-                      case 0xa0 : px += sprintf(px, "PRI, kein Kanal");                      break;
-                      case 0xa1 : px += sprintf(px, "PRI, Kanal nachstehend spezifiziert");  break;
-                      case 0xa3 : px += sprintf(px, "PRI, angegebener Kanal bevorzugt");     break;
-                      case 0xa9 : px += sprintf(px, "PRI, Nur der angeg. Kanal akzeptabel"); break;
-                      case 0xac : px += sprintf(px, "PRI, D-Kanal gefordert");               break;
-
-                      case 0xe0 : px += sprintf(px, "Kein Kanal");                           break;
-                      case 0xe1 : px += sprintf(px, "Kanal wie nachfolgend angegeben");      break;
-                      case 0xe3 : px += sprintf(px, "Kanal beliebig");                       break;
+                      case 0x80 : px += sprintf(px, "BRI, none requested");
+                                  call[chan].knock = 1;			  break;
+                      case 0x81 : px += sprintf(px, "BRI, B1 requested"); break;
+                      case 0x82 : px += sprintf(px, "BRI, B2 requested"); break;
+                      case 0x83 : px += sprintf(px, "BRI, any channel");  break;
+                      case 0x89 : px += sprintf(px, "BRI, B1 needed");    break;
+                      case 0x8a : px += sprintf(px, "BRI, B2 needed");    break;
+                      case 0x84 : px += sprintf(px, "BRI, D requested");  break;
+                      case 0x8c : px += sprintf(px, "BRI, D needed");     break;
+                      case 0xa0 : px += sprintf(px, "PRI, no channel");   break;
+                      case 0xa1 : px += sprintf(px, "PRI, channel to be indicated later");
+									  break;
+                      case 0xa3 : px += sprintf(px, "PRI, indicated channel requested");
+									  break;
+                      case 0xa9 : px += sprintf(px, "PRI, indicated channel needed");
+									  break;
+                      case 0xac : px += sprintf(px, "PRI, D needed");     break;
+                      case 0xe0 : px += sprintf(px, "no channel");        break;
+                      case 0xe1 : px += sprintf(px, "channel to be indicated later");
+									  break;
+                      case 0xe3 : px += sprintf(px, "any channel");       break;
                       case 0xe9 : px += sprintf(px, "Nur der nachst. angegeb. Kanal ist akzeptabel"); break;
                     } /* switch */
 
