@@ -4,7 +4,7 @@
 
 <title>FAQ for isdn4linux
 <author>Matthias Hessler (<tt><htmlurl url="mailto:hessler@isdn4linux.de" name="hessler@isdn4linux.de"></tt>)
-<date>v2.0.70, 14. September 2002
+<date>v2.0.71, 29. September 2002
 <abstract>
 If you are reading this FAQ online, you may consider downloading the whole
 thing, and reading it offline (much cheaper). To download the latest
@@ -4593,8 +4593,33 @@ isdnctrl cbdelay isdn0 1
 (CBCP)?  
 <label id="callback_microsoft">
 <p>
-No, this is not implemented in isdn4linux. Since it is not trivial to
-implement, there are currently no plans to implement it.
+Yes, this is implemented in ipppd. To enable it you have to set the
+parameter &dquot;callback 6&dquot; as an ipppd option. To start the callback
+trigger it from the client via:
+<code>
+isdnctrl cbdelay &lt;device&gt; 5
+isdnctrl callback &lt;device&gt; out
+</code>
+Please note that the man page may be confusing about the callback parameter for
+ipppd. Please note these hints from NOTES.IPPPD:
+<verb>
+- 'callback type[,message]' enables the callback feature
+  also UNTESTED!
+  ie: 'callback 0'       -> simple callback (info via auth. etc.)
+      'callback 3,12346' -> us E.164 (tel) number 123456 for callback
+      'callback 6' is different. This value means, that the whole negotiation
+  is done with a seperate protocol after the authentification phase. Currently
+  it's not possible to set any options in this case. The ipppd accepts
+  everything from the remote side.
+</verb>
+If you have a Red Hat distributions, setting the following parameters in
+ifcfg-ippp0 might do the trick:
+<code>
+CALLBACK=out
+CBDELAY=5
+CBCP=on
+</code>
+
 
 
 <!-- Isdnlog
@@ -5162,7 +5187,7 @@ for their contribution to isdn4linux open source development.
 
 See Documentation/isdn/README.HiSax for details on how to set up your
 system with HiSax (protocol type is 4, give SPID together with your own
-number).
+number in the form of &lt;OWNNUMBER&gt;:&lt;SPID&gt;).
 
 Quite some time ago, the firm &dquot;Spellcaster&dquot; has written their own
 isdn4linux driver for their (active) cards. Both BRI and PRI cards are
