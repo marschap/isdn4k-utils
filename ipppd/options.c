@@ -17,7 +17,7 @@
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-char options_rcsid[] = "$Id: options.c,v 1.18 2000/07/25 20:23:51 kai Exp $";
+char options_rcsid[] = "$Id: options.c,v 1.19 2000/12/07 07:53:19 paul Exp $";
 
 #include <stdio.h>
 #include <errno.h>
@@ -105,7 +105,7 @@ extern int called_radius_init ;
 extern int auth_order ;
 
 #endif
-int	lcp_echo_interval = 0; 	/* Interval between LCP echo-requests */
+int	lcp_echo_interval = 0;	/* Interval between LCP echo-requests */
 int	lcp_echo_fails = 0;	/* Tolerance to unanswered echo-requests */
 char our_name[MAXNAMELEN];	/* Our name for authentication purposes */
 char remote_name[MAXNAMELEN]; /* Peer's name for authentication */
@@ -281,7 +281,7 @@ static int number_option __P((char *, u_int32_t *, int));
 static int int_option __P((char *, int *));
 static int readable __P((int));
 static int setforcedriver(int dummy);
- 
+
 #ifdef RADIUS
 char *make_username_realm ( char * );
 int __P (radius_init ( void ));
@@ -422,7 +422,7 @@ static struct cmd {
     {"idle", 1, setidle},              /* idle time limit (seconds) */
 #ifdef RADIUS
     {"session-limit", 1, setsessionlimit}, /* seconds for disconnect sessions */
-#endif    
+#endif
     {"holdoff", 1, setholdoff},                /* set holdoff time (seconds) */
     {"ms-dns", 1, setdnsaddr},         /* DNS address for the peer's use */
     {"ms-wins", 1, setwinsaddr},         /* WINS address for the peer's use */
@@ -519,7 +519,7 @@ int parse_args(int argc,char **argv)
 			return 0;
 		}
 		current_option = arg;
- 	    if (!(*cmdp->cmd_func)(slot,argv))
+	    if (!(*cmdp->cmd_func)(slot,argv))
 			return 0;
 	    argc -= cmdp->num_args;
 	    argv += cmdp->num_args;
@@ -534,7 +534,7 @@ int parse_args(int argc,char **argv)
                 return 0;
               numdev++;
             }
-	    else if ( 
+	    else if (
 #ifdef INCLUDE_OBSOLETE_FEATURES
 (ret = setspeed(slot,arg)) == 0 &&
 #endif
@@ -670,7 +670,7 @@ int options_from_file(char *filename,int must_exist,int check_prot , int slot)
 	    /*
 	     * Maybe a tty name, speed or IP address?
 	     */
-            
+
 	    if((ret = setdevname(cmd,numdev)))
             {
               if(ret < 0)
@@ -716,12 +716,12 @@ int options_for_tty()
       dev = strrchr(lns[i].devnam, '/');
       if (dev == NULL) {
         syslog(LOG_NOTICE,"oops: strange device name %s",lns[i].devnam);
-  	continue;
+	continue;
       }
       ++dev;
       path = malloc(strlen(_PATH_TTYOPT) + strlen(dev) + 1);
       if (path == NULL)
-  	novm("tty init file name");
+	novm("tty init file name");
       strcpy(path, _PATH_TTYOPT);
       strcat(path, dev);
 
@@ -1521,7 +1521,7 @@ static int setvjslots(int slot,char **argv)
 }
 
 /*
- * setdomain - Set domain name to append to hostname 
+ * setdomain - Set domain name to append to hostname
  */
 static int setdomain(int slot,char **argv)
 {
@@ -1543,7 +1543,7 @@ static int setdevname(char *cp,int nd)
     struct stat statbuf;
     char *ttyname();
     char dev[MAXPATHLEN];
-  
+
     if (strncmp("/dev/", cp, 5) != 0) {
 	strcpy(dev, "/dev/");
 	strncat(dev, cp, MAXPATHLEN - 5);
@@ -1560,10 +1560,10 @@ static int setdevname(char *cp,int nd)
 	syslog(LOG_ERR, cp);
 	return -1;
     }
-  
+
     (void) strncpy(lns[nd].devnam, cp, MAXPATHLEN);
     lns[nd].devnam[MAXPATHLEN-1] = 0;
-  
+
     return 1;
 }
 
@@ -1576,10 +1576,10 @@ static int setipaddr(int slot,char *arg)
     char *colon;
     u_int32_t local, remote;
     ipcp_options *wo = &ipcp_wantoptions[slot];
-  
+
     local = 0 ;
     remote = 0 ;
-  
+
     /*
      * IP address pair separated by ":".
      */
@@ -1590,7 +1590,7 @@ static int setipaddr(int slot,char *arg)
     if(strlen(arg) == 1)
       fprintf(stderr,"OK .. getting address from interface\n");
 #endif
-  
+
     /*
      * If colon first character, then no local addr.
      */
@@ -1621,7 +1621,7 @@ static int setipaddr(int slot,char *arg)
 	}
 	*colon = ':';
     }
-  
+
     /*
      * If colon last character, then no remote addr.
      */
@@ -1705,7 +1705,7 @@ void setipdefault(void)
        */
       wo->accept_local = 1;	/* don't insist on this default value */
       if ((hp = gethostbyname(hostname)) == NULL)
- 	return;
+	return;
       local = *(u_int32_t *)hp->h_addr;
       if (local != 0 && !bad_ip_adrs(local))
 	wo->ouraddr = local;
@@ -1998,7 +1998,7 @@ static int setdoradius(slot)
 		{
 			syslog(LOG_WARNING, "can't init radiusclient in %s", func);
 			die (1) ;
-		} 
+		}
 		else
 		{
 			called_radius_init = 1 ;
@@ -2015,11 +2015,11 @@ static int setdoradacct(slot)
 	useradacct = 1;
 	if(!called_radius_init)
 	{
-		if ( (radius_init() < 0))  
+		if ( (radius_init() < 0))
 		{
 			syslog(LOG_WARNING, "can't init radiusclient in %s", func);
 			die (1) ;
-		} 
+		}
 		else
 		{
 			called_radius_init = 1 ;
@@ -2316,13 +2316,13 @@ static int setidle (int slot,char **argv)
     return int_option(*argv, &idle_time_limit);
 #ifdef RADIUS
     default_idle_time_limit = idle_time_limit ;
-#endif    
+#endif
 }
 
-#ifdef RADIUS 
+#ifdef RADIUS
 static int setsessionlimit (slot, argv)
-	int 	slot ;
-	char 	**argv;
+	int	slot ;
+	char	**argv;
 {
 	return int_option(*argv, &session_time_limit);
 	default_session_time_limit = session_time_limit ;
@@ -2434,7 +2434,7 @@ static int setipxrouter (int slot,char **argv)
 	val = strtok(arg,",");
 	while(val) {
 		ipxcp_wantoptions[slot].router[num] = strtol(val,&endp,10);
-		if(*endp) 
+		if(*endp)
 			return 0;
 		num++;
 		if(num == 32)
@@ -2503,7 +2503,7 @@ static int setipxcpfails (int slot,char **argv)
 static int setipxnetwork(int slot,char **argv)
 {
     ipxcp_wantoptions[slot].neg_nn = 1;
-    return int_option(*argv, &ipxcp_wantoptions[slot].our_network); 
+    return int_option(*argv, &ipxcp_wantoptions[slot].our_network);
 }
 
 static int setipxanet(int slot)
@@ -2535,7 +2535,7 @@ static u_char *setipxnodevalue(u_char *src,u_char *dst)
     for (;;) {
         if (!isxdigit (*src))
 	    break;
-	
+
 	for (indx = 0; indx < 5; ++indx) {
 	    dst[indx] <<= 4;
 	    dst[indx] |= (dst[indx + 1] >> 4) & 0x0F;
@@ -2567,28 +2567,24 @@ static int setipxnode(int slot, char **argv)
         return 1;
     }
 
-    fprintf(stderr, "%s: invalid argument for ipx-node option\n",
-	    progname);
+    fprintf(stderr, "%s: invalid argument for ipx-node option\n", progname);
     return 0;
 }
 
 static int setipxproto(int slot)
 {
-	ipxcp_protent.enabled_flag = 1;
+    ipxcp_protent.enabled_flag = 1;
     return 1;
 }
 
 static int resetipxproto(int slot)
 {
-	ipxcp_protent.enabled_flag = 1;
+    ipxcp_protent.enabled_flag = 0;
     return 1;
 }
 
 static int setforcedriver(int dummy)
 {
-  force_driver = 1;
-  return 1;
+    force_driver = 1;
+    return 1;
 }
-
-
-
