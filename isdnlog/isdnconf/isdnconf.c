@@ -1,4 +1,4 @@
-/* $Id: isdnconf.c,v 1.10 1998/05/10 22:11:52 luethje Exp $
+/* $Id: isdnconf.c,v 1.11 1998/05/11 19:43:43 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnconf.c,v $
+ * Revision 1.11  1998/05/11 19:43:43  luethje
+ * Some changes for "vorwahlen.dat"
+ *
  * Revision 1.10  1998/05/10 22:11:52  luethje
  * Added support for VORWAHLEN2.EXE
  *
@@ -61,7 +64,6 @@ int find_data(char *_alias, char *_number, section *conf_dat);
 const char* make_word(const char *in);
 char* tmp_dup(const char *in);
 int add_line(section **Ptr, const char *Name);
-char *get_area(char *number);
 
 /*****************************************************************************/
 
@@ -240,7 +242,7 @@ int find_data(char *_alias, char *_number, section *conf_dat)
 	auto char *ptr;
 	auto entry *CEPtr;
 	auto section *SPtr;
-	char *area;
+	const char *area;
 
 	if (quiet)
 	{
@@ -259,7 +261,7 @@ int find_data(char *_alias, char *_number, section *conf_dat)
 			ptr = (CEPtr = Get_Entry(conf_dat->entries,CONF_ENT_SI))?(CEPtr->value?CEPtr->value:"0"):"0";
 			print_msg(PRT_NORMAL,"%s:\t\t%s\n",CONF_ENT_SI,ptr);
 
-			area = get_area(_number);
+			area = area_diff_string(NULL,_number);
 			ptr = area[0] != '\0'?area:(CEPtr = Get_Entry(conf_dat->entries,CONF_ENT_ZONE))?(CEPtr->value?CEPtr->value:""):"";
 			print_msg(PRT_NORMAL,"%s:\t\t%s\n",make_word(CONF_ENT_ZONE),ptr);
 
@@ -478,17 +480,6 @@ int print_in_modules(const char *fmt, ...)
 
 /*****************************************************************************/
 
-char *get_area(char *number)
-{
-	int area;
-
-	area = area_diff(NULL,number);
-	return area == AREA_LOCAL?"Nahbereich":area == AREA_R50?"Region 50":area == AREA_FAR?"Fernzone":"";
-
-}
-
-/*****************************************************************************/
-
 int main(int argc, char *argv[], char *envp[])
 {
 	int c;
@@ -656,7 +647,7 @@ int main(int argc, char *argv[], char *envp[])
 		{
 			if (!isdnmon)
 			{
-				char *area = get_area(areacode);
+				const char *area = area_diff_string(NULL,areacode);
 
 				print_msg(PRT_NORMAL,"%s%s%s\n",ptr,area[0] != '\0'?" / ":"", area[0] != '\0'?area:"");
 				exit(0);

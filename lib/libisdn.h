@@ -1,5 +1,5 @@
 
-/* $Id: libisdn.h,v 1.8 1998/05/10 22:12:04 luethje Exp $
+/* $Id: libisdn.h,v 1.9 1998/05/11 19:43:51 luethje Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: libisdn.h,v $
+ * Revision 1.9  1998/05/11 19:43:51  luethje
+ * Some changes for "vorwahlen.dat"
+ *
  * Revision 1.8  1998/05/10 22:12:04  luethje
  * Added support for VORWAHLEN2.EXE
  *
@@ -161,6 +164,7 @@ extern char *basename __P((__const char *__name));
 #define AREA_LOCAL    1
 #define AREA_R50      2
 #define AREA_FAR      3
+#define AREA_ABROAD   4
 
 /****************************************************************************/
 

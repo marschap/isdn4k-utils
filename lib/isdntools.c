@@ -1,4 +1,4 @@
-/* $Id: isdntools.c,v 1.19 1998/05/10 22:12:01 luethje Exp $
+/* $Id: isdntools.c,v 1.20 1998/05/11 19:43:49 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdntools.c,v $
+ * Revision 1.20  1998/05/11 19:43:49  luethje
+ * Some changes for "vorwahlen.dat"
+ *
  * Revision 1.19  1998/05/10 22:12:01  luethje
  * Added support for VORWAHLEN2.EXE
  *
@@ -1015,8 +1018,16 @@ static long int area_read_value(FILE *fp, int size)
 
 const char* area_diff_string(char* number1, char* number2)
 {
-	int area = area_diff(number1,number2);
-	return area == AREA_LOCAL?"Nahbereich":area == AREA_R50?"Region 50":area == AREA_FAR?"Fernzone":"";
+	switch(area_diff(number1,number2))
+	{
+		case AREA_LOCAL :	return "Nahbereich"; break;
+		case AREA_R50   :	return "Region 50"; break;
+		case AREA_FAR   :	return "Fernzone"; break;
+		case AREA_ABROAD:	return "Ausland"; break;
+		default         :	break;
+	}
+
+	return "";
 }
 
 /****************************************************************************/
@@ -1044,6 +1055,9 @@ int area_diff(char* _code, char *_diffcode)
 	else
 		strcpy(code,expand_number(_code));
 
+	if (strncmp(mycountry,code,strlen(mycountry)))
+		return AREA_UNKNOWN;
+
 	if (_diffcode == NULL)
 		return AREA_ERROR;
 	else
@@ -1062,6 +1076,7 @@ int area_diff(char* _code, char *_diffcode)
 
 	number = area_read_value(fp,2);
 
+	i = 0;
 	while(i++<number)
 	{
 		sprintf(value,"%s%d%ld",countryprefix,GERMAN_CODE,(area_read_value(fp,2)+32768)%65536);
@@ -1074,6 +1089,7 @@ int area_diff(char* _code, char *_diffcode)
 
 	number = area_read_value(fp,2);
 	
+	i = 0;
 	while(i++<number)
 	{
 		sprintf(value,"%s%d%ld",countryprefix,GERMAN_CODE,(area_read_value(fp,2)+32768)%65536);
@@ -1087,7 +1103,25 @@ int area_diff(char* _code, char *_diffcode)
 	fclose(fp);
 
 	if (!strncmp(mycountry,diffcode,strlen(mycountry)))
+	{
+		i = 0;
+
+		do
+		{
+			if (areacodes[i][0][0] != '\0')
+			{
+				strcpy(value, expand_number((char*) areacodes[i][0]));
+
+				if (!strncmp(diffcode,value,strlen(value)))
+					return AREA_UNKNOWN;
+			}
+		}
+		while (areacodes[++i][0][0] != '\0');
+
 		return AREA_FAR;
+	}
+	else
+		return AREA_ABROAD;
 
 	return AREA_UNKNOWN;
 }
