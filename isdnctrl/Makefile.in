@@ -1,4 +1,4 @@
-# $Id: Makefile.in,v 1.4 1997/06/26 21:00:28 luethje Exp $
+# $Id: Makefile.in,v 1.5 1997/08/27 21:39:08 luethje Exp $
 #
 # Makefile for iprofd
 # (C) 1997 Fritz Elfert
@@ -46,8 +46,8 @@ config:
 $(PROGRAM):	$(MODULES)
 	$(CC) $(CFLAGS) $(MODULES) $(LDFLAGS) -o $@
 
-install-man: isdnctrl.man
-	isdnctrl.man.in
+install-man: isdnctrl.man.in
+	./isdnctrl.man.in
 	$(INSTALL) -d $(MAN8DIR)
 	$(INSTALL_MAN) $< $(MAN8DIR)/$(MANPAGE)
 
