@@ -1,7 +1,11 @@
 /*
- * $Id: capiinit.c,v 1.5 2000/07/24 08:38:04 calle Exp $
+ * $Id: capiinit.c,v 1.6 2000/07/24 14:15:10 calle Exp $
  *
  * $Log: capiinit.c,v $
+ * Revision 1.6  2000/07/24 14:15:10  calle
+ * Bugfix: pci controllers were always by initialized first in multi
+ *         controller environment.
+ *
  * Revision 1.5  2000/07/24 08:38:04  calle
  * - Bugfix: devfs mount was never detected, because an extra / in path.
  *
@@ -1154,8 +1158,6 @@ int main_start(void)
 	for (card = cards; card; card = card->next) {
 		if (!driver_loaded(card->driver))
 			load_driver(card->driver);
-	}
-	for (card = cards; card; card = card->next) {
 		if (card->ioaddr)
 			add_card(card);
 	}
