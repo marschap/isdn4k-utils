@@ -1,4 +1,4 @@
-.\" CHECKIN $Date: 2004/01/10 16:43:24 $
+.\" CHECKIN $Date: 2004/07/13 21:44:20 $
 .TH ISDNRATE 1 "@MANDATE@" -lt-
 .SH NAME
 isdnrate \- Print telefon rates and various info from rate\-files(5).
@@ -265,7 +265,7 @@ Start the isdnrate daemon.
 .br
 Start the isdnrate daemon, write
 .I isdnrate.pid
-to /var/run and create thew given socket.
+to /var/run and create the given socket.
 .P
 .I isdnrate -CH -b5 -f01 -l120 Attersee
 .br

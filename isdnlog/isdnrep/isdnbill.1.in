@@ -1,0 +1,90 @@
+.\" $Id: isdnbill.1.in,v 1.1 2004/07/13 21:44:18 tobiasb Exp $
+.\" CHECKIN $Date: 2004/07/13 21:44:18 $
+.\" .TH isdnbill 1 "@MANDATE_ISDNBILL@" "ISDN 4 Linux @I4LVERSION@" "Linux System Commands"
+.TH isdnbill 1 "2003-10-14" "ISDN 4 Linux @I4LVERSION@" "Linux System Commands"
+
+.PD 0
+.SH NAME
+isdnbill \- report isdn costs
+
+.SH DESCRIPTION
+isdnbill is a simple and imperfect utility to show the bill for ISDN calls.
+Note that it is only for indicative purposes! It works best in Germany,
+and even then there are no guarantees.
+Consider its use for educational purposes only...
+
+For better results, use isdnrep.
+
+.SH OPTIONS
+.TP
+.B \-V
+show version
+
+.TP
+.B \-a
+show all connections
+
+.TP
+.B \-e
+show incomplete calls
+
+.TP
+.B \-f
+recalculate costs _always_
+
+.TP
+.B \-i
+show incoming calls
+
+.TP
+.B \-m
+prices without VAT
+
+.TP
+.B \-n
+do _not_ replace numbers with aliases
+
+.TP
+.B \-o
+show outgoing calls
+
+.TP
+.B \-t
+show only current connections
+
+.TP
+.B \-vn
+verbose level n
+
+.TP
+.B \-Nnnn
+show only calls with the specified number
+
+.TP
+.B \-I
+show only calls on the internal S0 bus
+
+.TP
+.B \-E
+show only calls on the external S0 bus
+
+
+.SH "FILES"
+.TP
+\fB@LOGFILE@\fR or \fB/var/lib/isdn/calls\fR
+isdnlog log file with information about all calls.
+
+.TP
+\fB@I4LCONFDIR@/@CONFFILE@\fR
+general configuration
+
+.TP
+\fB@I4LCONFDIR@/@CALLERIDFILE@\fR
+aliases for telephone numbers
+
+.SH SEE ALSO
+.B isdnlog(5) isdnlog(8) isdnrep(1)
+
+.SH AUTHOR
+This manual page was written by
+Paul Slootman <paul@debian.org>, for Debian GNU/Linux.

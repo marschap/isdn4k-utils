@@ -1253,6 +1253,7 @@ MANDATE_ISDNLOG5=`grep CHECKIN isdnlog/isdnlog.5.in | awk '{print $4}'`
 MANDATE_ISDNLOG8=`grep CHECKIN isdnlog/isdnlog.8.in | awk '{print $4}'`
 MANDATE_ISDNLOG_USERS=`grep CHECKIN isdnlog/isdnlog.users.5.in | awk '{print $4}'`
 MANDATE_ISDNREP=`grep CHECKIN isdnrep/isdnrep.1.in | awk '{print $4}'`
+MANDATE_ISDNBILL=`grep CHECKIN isdnrep/isdnbill.1.in | awk '{print $4}'`
 MANDATE_ISDNCONF=`grep CHECKIN isdnconf/isdnconf.1.in | awk '{print $4}'`
 
 if test "$CONFIG_LIB_AREACODE" = "y" ; then
@@ -4333,7 +4334,7 @@ esac
 
 
 
-ac_config_files="$ac_config_files Makefile isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 isdnlog/isdnlog.users.5 isdnrep/isdnrep.1 isdnconf/isdnconf.1"
+ac_config_files="$ac_config_files Makefile isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 isdnlog/isdnlog.users.5 isdnrep/isdnrep.1 isdnrep/isdnbill.1 isdnconf/isdnconf.1"
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
 # tests run on this system so they can be shared between configure
@@ -4813,6 +4814,7 @@ do
   "isdnlog/isdnlog.8" ) CONFIG_FILES="$CONFIG_FILES isdnlog/isdnlog.8" ;;
   "isdnlog/isdnlog.users.5" ) CONFIG_FILES="$CONFIG_FILES isdnlog/isdnlog.users.5" ;;
   "isdnrep/isdnrep.1" ) CONFIG_FILES="$CONFIG_FILES isdnrep/isdnrep.1" ;;
+  "isdnrep/isdnbill.1" ) CONFIG_FILES="$CONFIG_FILES isdnrep/isdnbill.1" ;;
   "isdnconf/isdnconf.1" ) CONFIG_FILES="$CONFIG_FILES isdnconf/isdnconf.1" ;;
   "policy.h" ) CONFIG_HEADERS="$CONFIG_HEADERS policy.h" ;;
   *) { { echo "$as_me:$LINENO: error: invalid argument: $ac_config_target" >&5
@@ -4947,6 +4949,7 @@ s,@MANDATE_ISDNLOG5@,$MANDATE_ISDNLOG5,;t t
 s,@MANDATE_ISDNLOG8@,$MANDATE_ISDNLOG8,;t t
 s,@MANDATE_ISDNLOG_USERS@,$MANDATE_ISDNLOG_USERS,;t t
 s,@MANDATE_ISDNREP@,$MANDATE_ISDNREP,;t t
+s,@MANDATE_ISDNBILL@,$MANDATE_ISDNBILL,;t t
 s,@MANDATE_ISDNCONF@,$MANDATE_ISDNCONF,;t t
 s,@CDBEXTRALIBS@,$CDBEXTRALIBS,;t t
 CEOF

@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.212 2004/02/12 23:52:28 tobiasb Exp $
+## $Id: Makefile.in,v 1.213 2004/07/13 21:44:19 tobiasb Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,18 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.213  2004/07/13 21:44:19  tobiasb
+## Patch to isdnlog manpages by Matthias Klose <doko@cs.tu-berlin.de>,
+## a maintainer of Debian's isdnutils source package:
+## - add manpage for isdnbill *)
+## - fix typo in isdnrate.man
+## - isdnbill.c: add english help texts
+## --
+## *) Renamed the sourcefile isdnrep/isdnbill.man to isdnrep/isdnbill.1.in
+## because only @MANDATE@ is replaced in %.man files. Other @VARS@ have to
+## be processed by config.status and therefore noted in configure.in and
+## configure. The isdnrep manpage was used as template for those entries.
+##
 ## Revision 1.212  2004/02/12 23:52:28  tobiasb
 ## isdnlog-4.68:
 ##  - New German ratefile, rate-de.dat version 3.08 from rates4linux,
@@ -1676,7 +1688,8 @@ endif
 MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 \
 	      isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 \
 	      isdnlog/isdnlog.users.5 isdnrep/isdnrep.1 isdnconf/isdnconf.1 \
-	      tools/isdnrate.1 tools/rate-files.5
+	      tools/isdnrate.1 tools/rate-files.5 \
+	      isdnrep/isdnbill.1
 
 ifeq ($(POSTGRES),1)
 DEFS       += -DPOSTGRES
@@ -1978,6 +1991,7 @@ install-progs:
 install-data:
 		$(INSTALL_DATA) isdnlog/isdnlog.8       $(DESTDIR)$(MAN8DIR)/isdnlog$(MAN8EXT)
 		$(INSTALL_DATA) isdnrep/isdnrep.1       $(DESTDIR)$(MAN1DIR)/isdnrep$(MAN1EXT)
+		$(INSTALL_DATA) isdnrep/isdnbill.1      $(DESTDIR)$(MAN1DIR)/isdnbill$(MAN1EXT)
 		$(INSTALL_DATA) isdnconf/isdnconf.1     $(DESTDIR)$(MAN1DIR)/isdnconf$(MAN1EXT)
 		$(INSTALL_DATA) isdnlog/callerid.conf.5 $(DESTDIR)$(MAN5DIR)/callerid.conf$(MAN5EXT)
 		$(INSTALL_DATA) isdnlog/isdnlog.5       $(DESTDIR)$(MAN5DIR)/isdnlog$(MAN5EXT)

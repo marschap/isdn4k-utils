@@ -1,4 +1,4 @@
-/* $Id: isdnbill.c,v 1.19 2002/07/25 18:16:05 akool Exp $
+/* $Id: isdnbill.c,v 1.20 2004/07/13 21:44:18 tobiasb Exp $
  *
  * ISDN accounting for isdn4linux. (Billing-module)
  *
@@ -918,18 +918,30 @@ int main(int argc, char *argv[], char *envp[])
     if (!showincoming && !showoutgoing && !showerrors) {
       printf("This makes no sense! You must specify -i, -o or -e\n");
       printf("\t-a    -> alle Verbindungen anzeigen i.e. \"-ioe\"\n");
+      printf("\t      -> show all connections\n");
       printf("\t-e    -> nichtzustandegekommene Verbindungen anzeigen\n");
+      printf("\t      -> show incomplete calls\n");
       printf("\t-f    -> Verbindungsentgeld _immer_ neu berechnen\n");
+      printf("\t      -> recalculate costs _always_\n");
       printf("\t-i    -> reinkommende Verbindungen anzeigen\n");
+      printf("\t      -> show incoming calls\n");
       printf("\t-m    -> ohne MwSt anzeigen\n");
+      printf("\t      -> prices without VAT\n");
       printf("\t-n    -> _nicht_ anstelle Rufnummern Alias-Bezeichnungen anzeigen\n");
+      printf("\t      -> do _not_ replace numbers with aliases\n");
       printf("\t-o    -> rausgehende Verbindungen anzeigen\n");
+      printf("\t      -> show outgoing calls\n");
       printf("\t-t    -> nur die heutigen Verbindungen anzeigen\n");
+      printf("\t      -> show only current connections\n");
       printf("\t-vn   -> Verbose Level\n");
       printf("\t-Nnnn -> nur Verbindungen mit _dieser_ Rufnummer anzeigen\n");
+      printf("\t      -> show only calls with the specified number\n");
       printf("\t-I    -> nur Verbindungen am Internen S0-Bus anzeigen\n");
+      printf("\t      -> show only calls on the internal S0 bus\n");
       printf("\t-E    -> nur Verbindungen am Externen S0-Bus anzeigen\n");
+      printf("\t      -> show only calls on the external S0 bus\n");
       printf("\t-V    -> Version anzeigen\n");
+      printf("\t      -> show version\n");
 
       return(1);
     } /* if */
