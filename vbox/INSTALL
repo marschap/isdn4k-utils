@@ -8,7 +8,7 @@ Presettings for a successfull compilation/installation of vbox:
 
 - ncurses 1.9.9g (or higher),
 - tcl 7.6b1 (or higher),
-- kernel 2.0 with hisax 2.0p2 (or higher),
+- kernel 2.0.30 with hisax 2.1 (or higher),
 - isdn4linux with audio support enabled.
 
 The above specified version numbers are matching the development environment
@@ -60,6 +60,12 @@ default settings are specified in [] brackets):
 			it can't find your tcl library you can use this
 			option to specify the name of the library [tcl].
 
+--with-tcldir=DIR	Tcl base directory to use. If configure can't find
+			your tcl includes or the tcl library you can use this
+			option to specify the base directory to search. The
+			directory must contain the subdirectories 'include'
+			and 'libs' [].
+
 
 No other options than the above specified are used by the vbox package!
 
@@ -69,6 +75,9 @@ your own liking, but the default settings should be sufficient.
 
 You're able to start the compilation using 'make'. 'make install' will
 create the neccessary sub dirs and install the executables and config.
+No configuration file will be overwritten! If a old configuration file
+exists, the new one is copied with the suffix '.new'.
+
 
 Now you're ready to set up user specific configurations and voice messages.
 For precise information about this topic see the manual. Please note that
@@ -84,9 +93,13 @@ the .au format, and afterwards converted to the new vbox format using
 There's a mailing list available for support, discussions and suggestions
 about vbox. To suscribe to the vbox mailing list, send an e-mail to:
 
-   vbox@abadonna.franken.de
+majordomo@abadonna.mayn.de
 
-with the subject "subscribe" (without the quotes).
+with the line
+
+subscribe vbox <youraddress>
+
+in the message body (replace <youraddress> with your email address).
 
 Postings to this list are mainly German, although English letters are
 welcome and will be answered so good as I can ;-)

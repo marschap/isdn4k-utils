@@ -1,5 +1,5 @@
 /*
-** $Id: vboxgetty.c,v 1.6 1997/05/10 10:58:59 michael Exp $
+** $Id: vboxgetty.c,v 1.7 1997/10/22 20:47:19 fritz Exp $
 **
 ** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
 */
@@ -28,7 +28,7 @@
 static void version(void);
 static void usage(void);
 static void main_program(void);
-static void answer_call(void);
+static int  answer_call(void);
 static int	check_spool_space(unsigned long);
 
 /** Variables ************************************************************/
@@ -61,9 +61,10 @@ void main(int argc, char **argv)
 	int	opts;
 
 	if (!(vbasename = rindex(argv[0], '/')))
+	{
 		vbasename = argv[0];
-	else
-		vbasename++;
+	}
+	else vbasename++;
 
 	usevrc = GETTYRC;
 	device = "";
@@ -247,7 +248,8 @@ static void main_program(void)
 					{
 						if (!modem_get_nocarrier_state())
 						{
-							answer_call();
+							if (!answer_call()) modemstate = MODEM_STATE_EXIT;
+
 							modem_hangup();
 						}
 					}
@@ -262,18 +264,9 @@ static void main_program(void)
 /** answer_call(): Answers the call and starts the tcl script.			   **/
 /*************************************************************************/
 
-static void answer_call(void)
+static int answer_call(void)
 {
 	char run[PATH_MAX + 1];
-
-	log(L_INFO, "Answering call...\n");
-
-	if (modem_command("ATA", "VCON|CONNECT") <= 0)
-	{
-		log(L_ERROR, "Can't answer call -- hanging up...\n");
-		
-		return;
-	}
 
 	if (!index(setup.voice.tclscriptname, '/'))
 	{
@@ -283,7 +276,7 @@ static void answer_call(void)
 	}
 	else xstrncpy(run, setup.voice.tclscriptname, PATH_MAX);
 
-	script_run(run);
+	return(script_run(run));
 }
 
 /*************************************************************************/

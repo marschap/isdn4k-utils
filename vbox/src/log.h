@@ -1,5 +1,5 @@
 /*
-** $Id: log.h,v 1.3 1997/02/26 13:10:42 michael Exp $
+** $Id: log.h,v 1.4 1997/10/22 20:47:09 fritz Exp $
 **
 ** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
 */
@@ -21,7 +21,7 @@
 #define L_DEBUG			(8)
 #define L_JUNK				(16)
 #define L_STDERR			(32)
-#define L_DEFAULT			(L_FATAL|L_ERROR|L_WARN|L_INFO|L_DEBUG|L_JUNK|L_STDERR)
+#define L_DEFAULT			(L_FATAL|L_ERROR|L_WARN|L_INFO|L_STDERR)
 
 #define log					log_line
 

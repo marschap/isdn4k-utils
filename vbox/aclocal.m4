@@ -6,14 +6,32 @@ dnl #------------------------------------------------------------------------#
 AC_DEFUN(GND_PACKAGE_TCL,
    [
       HAVE_TCL_LIBS="n"
+      HAVE_TCL_INCL="n"
+      HAVE_TCL_PACK="n"
       LINK_TCL_LIBS=""
+      LINK_TCL_INCL=""
 
       gnd_use_tcl_lib=""
+      gnd_use_tcl_dir=""
 
       AC_ARG_WITH(tcllib,
          [  --with-tcllib=LIB       use tcl library LIB to link [tcl]],
          gnd_use_tcl_lib="${withval}"
       )
+
+      AC_ARG_WITH(tcldir,
+         [  --with-tcldir=DIR       tcl base directory []],
+         gnd_use_tcl_dir="${withval}"
+      )
+
+      gnd_tcl_inc_dir=""
+      gnd_tcl_lib_dir=""
+
+      if (test "${gnd_use_tcl_dir}" != "")
+      then
+         gnd_tcl_inc_dir="-I${gnd_use_tcl_dir}/include"
+         gnd_tcl_lib_dir="-L${gnd_use_tcl_dir}/lib"
+      fi
 
       if (test "${gnd_use_tcl_lib}" = "")
       then
@@ -32,37 +50,72 @@ AC_DEFUN(GND_PACKAGE_TCL,
             dlerror,
             AC_CHECK_LIB(${gnd_1st_tcl_lib_test},
                Tcl_CreateInterp,
-               LINK_TCL_LIBS="-l${gnd_1st_tcl_lib_test} -lm -ldl",
+               LINK_TCL_LIBS="${gnd_tcl_lib_dir} -l${gnd_1st_tcl_lib_test} -lm -ldl",
                AC_CHECK_LIB(${gnd_2nd_tcl_lib_test},
                   Tcl_CreateInterp,
-                  LINK_TCL_LIBS="-l${gnd_2nd_tcl_lib_test} -lm -ldl",
+                  LINK_TCL_LIBS="${gnd_tcl_lib_dir} -l${gnd_2nd_tcl_lib_test} -lm -ldl",
                   AC_CHECK_LIB(${gnd_3rd_tcl_lib_test},
                      Tcl_CreateInterp,
-                     LINK_TCL_LIBS="-l${gnd_3rd_tcl_lib_test} -lm -ldl",
+                     LINK_TCL_LIBS="${gnd_tcl_lib_dir} -l${gnd_3rd_tcl_lib_test} -lm -ldl",
                      ,
-                     -lm -ldl
+                     ${gnd_tcl_lib_dir} -lm -ldl
                   ),
-                  -lm -ldl
+                  ${gnd_tcl_lib_dir} -lm -ldl
                ),
-               -lm -ldl
+               ${gnd_tcl_lib_dir} -lm -ldl
             ),
          ),
       )
 
-      AC_CHECK_HEADER(tcl.h, , LINK_TCL_LIBS="")
-
-      if (test "${LINK_TCL_LIBS}" = "")
+      if (test "${LINK_TCL_LIBS}" != "")
       then
-         AC_MSG_WARN(tcl package or needed components not found! Some of the)
-         AC_MSG_WARN(utilities (eg vboxgetty) will not be build...)
-
-         HAVE_TCL_LIBS="n"
-      else
          HAVE_TCL_LIBS="y"
       fi
 
+         dnl #-------------------------------------------#
+         dnl # Check if the compiler find the tcl header #
+         dnl #-------------------------------------------#
+
+      AC_CHECK_HEADER(tcl.h, HAVE_TCL_INCL="y")
+
+      if (test "${HAVE_TCL_INCL}" = "n")
+      then
+         if (test "${gnd_use_tcl_dir}" != "")
+         then
+            AC_MSG_CHECKING("for tcl header in ${gnd_use_tcl_dir}/include")
+
+            if (test -e "${gnd_use_tcl_dir}/include/tcl.h")
+            then
+               AC_MSG_RESULT("yes")
+
+               HAVE_TCL_INCL="y"
+               LINK_TCL_INCL="${gnd_tcl_inc_dir}"
+      else
+               AC_MSG_RESULT("no")
+            fi
+         fi
+      fi
+
+      if (test "${HAVE_TCL_LIBS}" = "y")
+      then
+         if (test "${HAVE_TCL_INCL}" = "y")
+         then
+            HAVE_TCL_PACK="y"
+         fi
+      fi
+
+      if (test "${HAVE_TCL_PACK}" = "n")
+      then
+         AC_MSG_WARN("**")
+         AC_MSG_WARN("** Unable to find a installed tcl package!")
+         AC_MSG_WARN("**")
+
+         AC_MSG_ERROR("stop")
+      fi
+
+      AC_SUBST(HAVE_TCL_PACK)
       AC_SUBST(LINK_TCL_LIBS)
-      AC_SUBST(HAVE_TCL_LIBS)
+      AC_SUBST(LINK_TCL_INCL)
    ]
 )
 
@@ -72,139 +125,101 @@ dnl #------------------------------------------------------------------------#
 
 AC_DEFUN(GND_PACKAGE_NCURSES,
    [
-      HAVE_NCURSES_LIBS="n"
       LINK_NCURSES_LIBS=""
+      LINK_NCURSES_INCL=""
+      HAVE_NCURSES_LIBS="n"
+      HAVE_NCURSES_INCL="n"
+      HAVE_NCURSES_PACK="n"
 
-      AC_CHECK_HEADER(ncurses.h,
-         AC_CHECK_HEADER(panel.h,
-            AC_CHECK_LIB(ncurses, initscr,
-               AC_CHECK_LIB(panel, update_panels,
+         dnl #------------------------------------------------#
+         dnl # Check if the compiler find the ncurses library #
+         dnl #------------------------------------------------#
+
+      AC_CHECK_LIB(ncurses, initscr, HAVE_NCURSES_LIBS="y")
+
+      if (test "${HAVE_NCURSES_LIBS}" = "y")
+      then
+         AC_CHECK_LIB(panel,
+            update_panels,
                   HAVE_NCURSES_LIBS="y",
                   HAVE_NCURSES_LIBS="n",
                   -lncurses
                )
-            )
-         )
-      )
+      fi
 
       if (test "${HAVE_NCURSES_LIBS}" = "y")
       then
          LINK_NCURSES_LIBS="-lncurses -lpanel"
-      else
-         AC_MSG_WARN(ncurses package not found or not complete! Some of the)
-         AC_MSG_WARN(utilities (eg vbox) will not be build...)
+
+         AC_CHECK_LIB(ncurses,
+            resizeterm,
+            AC_DEFINE(HAVE_RESIZETERM)
+)
       fi
 
-      AC_SUBST(HAVE_NCURSES_LIBS)
-      AC_SUBST(LINK_NCURSES_LIBS)
-   ]
-)
+         dnl #------------------------------------------------#
+         dnl # Check if the compiler find the ncurses headers #
+         dnl #------------------------------------------------#
 
-dnl #------------------------------------------------------------------------#
-dnl # Checks if we have gettext installed or buildin:                        #
-dnl #------------------------------------------------------------------------#
+      AC_CHECK_HEADER(ncurses.h, HAVE_NCURSES_INCL="y")
 
-AC_DEFUN(GND_PACKAGE_GETTEXT,
-   [
-      HAVE_INTL_LIBS="n"
-      LINK_INTL_LIBS=""
-      CATALOGS_TO_INSTALL=""
-
-      AC_MSG_CHECKING([whether native language support is requested])
-
-      AC_ARG_ENABLE(nls,
-         [  --disable-nls           do not use native language support],
-         nls_cv_use_nls="${enableval}",
-         nls_cv_use_nls="yes"
-      )
-
-      AC_MSG_RESULT("${nls_cv_use_nls}")
-
-      AC_CHECK_HEADERS(libintl.h locale.h)
-
-      if (test "${nls_cv_use_nls}" = "yes")
+      if (test "${HAVE_NCURSES_INCL}" = "y")
       then
-         nls_cv_use_nls="no"
+         AC_CHECK_HEADER(panel.h,
+            HAVE_NCURSES_INCL="y",
+            HAVE_NCURSES_INCL="n"
+      )
+      fi
 
-         if (test "${ac_cv_header_locale_h}" = "yes")
+         dnl #--------------------------------------------------#
+         dnl # If headers not found, check in some other places #
+         dnl #--------------------------------------------------#
+
+      if (test "${HAVE_NCURSES_INCL}" = "n")
+      then
+         AC_MSG_CHECKING(for ncurses headers in some other places)
+
+         for I in /usr/local/include /usr/local/include/ncurses /usr/include /usr/include/ncurses
+         do
+            if (test -e "${I}/ncurses.h")
          then
-            AC_MSG_CHECKING([whether locale.h defines LC_MESSAGES])
-
-            AC_TRY_LINK([#include <locale.h>],
-               [return LC_MESSAGES],
-               gnd_cv_val_LC_MESSAGES="yes",
-               gnd_cv_val_LC_MESSAGES="no"
-            )
-
-            AC_MSG_RESULT("${gnd_cv_val_LC_MESSAGES}")
-
-            if (test "${gnd_cv_val_LC_MESSAGES}" = "yes")
-            then
-               AC_DEFINE(HAVE_LC_MESSAGES)
-            fi
-
-            if (test "${ac_cv_header_libintl_h}" = "yes")
-            then
-               AC_CHECK_FUNCS(gettext dcgettext)
-
-               if (test "${ac_cv_func_gettext}" = "yes")
+               if (test -e "${I}/panel.h")
                then
-                  nls_cv_use_nls="yes"
+                  AC_MSG_RESULT("${I}")
 
-                  HAVE_INTL_LIBS="buildin"
+                  LINK_NCURSES_INCL="-I${I}"
+                  HAVE_NCURSES_INCL="y"
+
+                  break;
+            fi
+            fi
+         done
+
+         if (test "${HAVE_NCURSES_INCL}" = "n")
+               then
+            AC_MSG_RESULT("not here");
+         fi
                fi
 
-               if (test "${nls_cv_use_nls}" = "no")
+      if (test "${HAVE_NCURSES_LIBS}" = "y")
                then
-                  AC_CHECK_LIB(intl, gettext, AC_DEFINE(HAVE_GETTEXT))
-                  AC_CHECK_LIB(intl, dcgettext, AC_DEFINE(HAVE_DCGETTEXT))
-
-                  if (test "${ac_cv_lib_intl_gettext}" = "yes")
+         if (test "${HAVE_NCURSES_INCL}" = "y")
                   then
-                     HAVE_INTL_LIBS="y"
-                     LINK_INTL_LIBS="-lintl"
-
-                     nls_cv_use_nls="yes"
-                  fi
-               fi
-            fi
+            HAVE_NCURSES_PACK="y"
          fi
       fi
 
-      if (test "${nls_cv_use_nls}" = "yes")
+      if (test "${HAVE_NCURSES_PACK}" = "n")
       then
-         AC_DEFINE(ENABLE_NLS)
+         AC_MSG_WARN("**")
+         AC_MSG_WARN("** Unable to find a installed ncurses package!")
+         AC_MSG_WARN("**")
 
-         AC_MSG_CHECKING(for catalogs to be installed)
-
-         NEW_LINGUAS=""
-
-         for lang in ${LINGUAS=$ALL_LINGUAS}
-         do
-            case "${ALL_LINGUAS}" in
-               *$lang*) CATALOGS_TO_INSTALL="${lang} ${CATALOGS_TO_INSTALL}";;
-            esac
-         done
-
-         AC_MSG_RESULT(${CATALOGS_TO_INSTALL})
+         AC_MSG_ERROR("stop")
       fi
 
-      AC_SUBST(HAVE_INTL_LIBS)
-      AC_SUBST(LINK_INTL_LIBS)
-      AC_SUBST(CATALOGS_TO_INSTALL)
+      AC_SUBST(HAVE_NCURSES_PACK)
+      AC_SUBST(LINK_NCURSES_LIBS)
+      AC_SUBST(LINK_NCURSES_INCL)
    ]
 )
-
-
-
-
-
-
-
-
-
-
-
-
-
-

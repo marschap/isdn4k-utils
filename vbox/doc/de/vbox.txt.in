@@ -1,5 +1,5 @@
   VBOX
-  Michael 'Ghandi' Herold <michael@abadonna.franken.de>
+  Michael 'Ghandi' Herold <michael@abadonna.mayn.de>
   Version @VERSION@ (@VERDATE@)
 
   Diese Dokumentation beschreibt die Konfiguration und Installation von
@@ -81,6 +81,12 @@
   Benutzung der Dokumentation oder den darin beschriebenen Programmen
   entstehen oder entstanden sind.
 
+  Die Funktionen zum Konvertieren von ADPCM-2, ADPCM-3, ADPCM-4 und ULAW
+  stammen aus dem Paket _m_g_e_t_t_y_-_0_._9_8_._t_a_r_._g_z und sind Copyright © von
+
+  Marc Eberhard <Marc.Eberhard@Uni-Duesseldorf.DE> und Gert Doering
+  <gert@greenie.muc.de>.
+
   22..  VVoorrwwoorrtt
 
   Das Paket _v_b_o_x ist ein Ansammlung von Programmen zum Betrieb eines
@@ -116,10 +122,14 @@
   Mailingliste. Um in diese Liste aufgenommen zu werden, muß eine Mail
   an
 
-  vbox@abadonna.franken.de
+  majordomo@abadonna.mayn.de
 
-  mit dem Subject "subscribe" (ohne die Anführungszeichen) geschrieben
-  werden.
+  mit der Zeile
+
+  subscribe vbox <youraddress>
+
+  im Body der Nachrichten geschrieben werden, wobei _<_y_o_u_r_a_d_d_r_e_s_s_> durch
+  die eigene eMail-Adresse ersetzt werden muß.
 
   Die Mailingliste ist hauptsächlich in deutsch, anderssprachige
   Anfragen werden aber nach besten Kräften beantwortet.
@@ -153,7 +163,6 @@
   ``Programme'' unter ``vboxgetty''). Es gibt an welches Modemdevice und
   welcher Teil von '@SYSCONFDIR@/vboxgetty.conf' für diesen _v_b_o_x_g_e_t_t_y
   verwendet werden soll.
-
   Für jeden Benutzer oder jede Benutzergruppe muß in '@SPOOLDIR@' ein
   Verzeichnis angelegt werden, in welches die Konfigurationsdatei
   'vbox.conf' kopiert werden muß.
@@ -166,6 +175,7 @@
 
   Für die weitere Einrichtung und Konfiguration von _v_b_o_x_g_e_t_t_y kann im
   Kapitel ``Konfiguration'' unter ``vboxgetty'' nachgeschlagen werden.
+
      BBeeiissppiieell::
         Dieses Beispiel zeigt die Einrichtung eines einzelnen Benutzers
         Namens _m_i_c_h_a_e_l.
@@ -266,6 +276,7 @@
 
         BBeeiissppiieell::
            user michael
+
      group <string>
         Name der Gruppe unter dessen Rechten _v_b_o_x_g_e_t_t_y laufen soll. Die
         Gruppe muß auf dem System existieren und in '/etc/group'
@@ -332,7 +343,9 @@
 
      alivetimeout <number>
         Anzahl Sekunden nach deren Ablauf geprüft wird ob das Modem noch
-        auf Kommandos antwortet. Voreinstellung ist 1800.
+        auf Kommandos antwortet. Zudem wird die Existens von einigen
+        Kontrolldateien überprüft. Bei Angabe von 0 wird die Überprüfung
+        umgangen. Voreinstellung ist 1800.
 
         BBeeiissppiieell::
            alivetimeout 300
@@ -374,11 +387,33 @@
 
      freespace <number>
         Anzahl der Bytes die auf der Partition mit dem Spoolverzeichnis
-        frei sein müssen, damit ein Anruf entgegengenommen wird.
-        Voreinstellung ist 0.
+        frei sein müssen, damit ein Anruf entgegengenommen wird. Bei
+        Angabe von 0 wird die Überprüfung umgangen. Voreinstellung ist
+        0.
 
         BBeeiissppiieell::
            freespace 2000000
+
+     debuglevel <string>
+        Debuglevel der benutzt werden soll. Der Level muß mit einzelen
+        Buchstaben angegeben werden. Voreinstellung ist FEW.
+
+        Folgende Buchstaben können angegeben werden:
+
+     ·  FF - Fehler die nicht behoben werden können
+
+     ·  EE - Fehler die evtl. behoben werden können
+
+     ·  WW - Warnungen
+
+     ·  II - Informationen
+
+     ·  DD - Debugging Ausgaben
+
+     ·  JJ - Noch mehr Debugging Ausgaben.
+
+        BBeeiissppiieell::
+           debuglevel FEWID
 
      BBeeiissppiieell ddeerr DDaatteeii ''@SYSCONFDIR@/vboxgetty.conf':
 
@@ -394,6 +429,7 @@
         ringtimeout             5
         alivetimeout            300
         freespace               2000000
+        debuglevel              FEWIDJ
 
         # Settings for port ttyI6
 
@@ -484,6 +520,7 @@
            ``Konfiguration'' unter ``Tagesangaben'' beschrieben. Die
            Tagesangaben dürfen keine Leerzeichen und keine Tabulatoren
            enthalten.
+
         RINGS
            Anzahl der RING's, nach denen der Anruf entgegengenommen
            werden soll.
@@ -689,14 +726,14 @@
 
         # Login access list
 
-        L:abadonna.franken.de:Y
+        L:abadonna.mayn.de:Y
         L:localhost:Y
         L:*:N
 
         # Full access list
 
-        A:abadonna.franken.de:RW:michael:123:/var/spool/vbox/michael:incoming
-        A:abadonna.franken.de:RW:nicole:456:/var/spool/vbox/nicole:incoming
+        A:abadonna.mayn.de:RW:michael:123:/var/spool/vbox/michael:incoming
+        A:abadonna.mayn.de:RW:nicole:456:/var/spool/vbox/nicole:incoming
         A:localhost:RW:michael:123:/var/spool/vbox/michael:incoming
         A:localhost:RW:nicole:456:/var/spool/vbox/nicole:incoming
 
@@ -757,6 +794,24 @@
 
      C_INFOTEXT
         Farbe für den Informationstext über der Nachrichtenliste.
+
+     C_HELP
+        Farbe für das Hilfsfenster.
+
+     C_HELP_BORDER
+        Farbe für den Rahmen des Hilfsfensters.
+
+     C_STATUS
+        Farbe für das Statusfenster.
+
+     C_STATUS_BORDER
+        Farbe für den Rahmen des Statusfensters.
+
+     C_INFO
+        Farbe für das Infofenster.
+
+     C_INFO_BORDER
+        Farbe für den Rahmen des Infofensters.
 
   Alle Farbangaben werden im Format TEXTFARBE:HINTERGRUNDFARBE
   angegeben. Es dürfen keine Leerzeichen oder Tabulatoren vorkommen.
@@ -836,6 +891,12 @@
         C_LIST                  GRAY:BLACK      # Message list
         C_LIST_SELECTED         GRAY:RED        # Message list (selected)
         C_INFOTEXT              GREEN:BLACK     # Information
+        C_HELP                  GRAY:BLUE       # Help
+        C_HELP_BORDER           YELLOW:BLUE     # Help (Border)
+        C_STATUS                GRAY:RED        # Status
+        C_STATUS_BORDER         YELLOW:RED      # Status (Border)
+        C_INFO                  GRAY:YELLOW     # Info
+        C_INFO_BORDER           YELLOW:YELLOW   # Info (Border)
 
   44..55..  ZZeeiittaannggaabbeenn
 
@@ -1010,6 +1071,7 @@
            Fügt die Touchtone-Sequenz(en) sequence zur Abbruchliste
            hinzu. Es können maximal 8 Sequenzen auf einmal angegeben
            werden.
+
         rem <sequence> [...]
            Entfernt die Touchtone-Sequenz(en) sequence aus der
            Abbruchliste. Wenn als sequence das Schlüsselwort all
@@ -1055,6 +1117,7 @@
         savename
            Vollständiger Name der Datei (inkl. Verzeichnis) unter der
            die Nachricht gespeichert werden soll.
+
         timelimit
            Maximale Anzahl Sekunden die Aufgezeichnet werden soll.
 
@@ -1152,6 +1215,36 @@
         BBeeiissppiieell::
 
            set RC [ vbox_get_nr_all_messages /var/spool/vbox/michael/incoming ]
+
+     vbox_message_info <message> <fieldnr>
+        Gibt ein Feld aus dem Header einer Nachricht zurück. Das
+        Ergebnis wird als Rückgabewert gesetzt. Bei einem Fehler enthält
+        der Rückgabewert keine Daten.
+
+        message
+           Vollständiger Pfad und Name der Nachricht, deren Header
+           abgefragt werden soll.
+
+        fieldnr
+           Nummer des Header-Feldes das abgefragt werden soll. Folgende
+           Nummern können angegeben werden:
+
+        ·  11 - Erzeugungsdatum der Nachricht in Sekunden seit dem
+           1.1.1970,
+
+        ·  22 - Kompression der Nachricht,
+
+        ·  33 - Die CALLERID des Anrufers,
+
+        ·  44 - Der Name des Anrufers,
+
+        ·  55 - Die vollständige Telefonnummer des Anrufers,
+
+        ·  66 - Der Wohnort des Anrufers.
+
+        BBeeiissppiieell::
+
+           set RC [ vbox_messages_info /var/spool/vbox/michael/incoming/00000865241883-00005143 1 ]
 
   66..  PPrrooggrraammmmee
 
@@ -1419,7 +1512,6 @@
      DELETE <MESSAGENAME>
         Löscht eine Nachricht. Dieses Kommando ist nur nach einem
         erfolgreichen Login möglich. Es wird Schreibzugriff benötigt.
-
         MESSAGENAME
            Name der Nachricht die gelöscht werden soll. Pfadangaben
            werden abgeschnitten - die Datei muß sich im Incoming-
@@ -1548,6 +1640,7 @@
      -k, --kill
         Beendet einen bereits laufenden _v_b_o_x_b_e_e_p. Die Option kann nur
         vom Benutzer _r_o_o_t angegeben werden.
+
      -v, --version
         Zeigt die Programmversion an.
 
@@ -1597,6 +1690,7 @@
   Mit _a_u_t_o_v_b_o_x können .au Dateien (sun audio format) in _v_b_o_x Dateien
   (vbox audio header) gewandelt werden. _a_u_t_o_v_b_o_x ist ein Link auf
   _v_b_o_x_c_n_v_t.
+
      BBeennuuttzzuunngg::
         autovbox [OPTION] [OPTION] [...] <INFILE >OUTFILE
 
@@ -1646,6 +1740,7 @@
      -q, --quiet
         Normalerweise werden noch Informationen über die Datei
         ausgegeben. Bei Angabe dieser Option werden diese unterdrückt.
+
      -v, --version
         Zeigt die Versionsnummer an.
 
@@ -1807,5 +1902,10 @@
 
   ·  _S_t_e_f_a_n _L_ü_t_h_j_e <luethje@sl-gw.lake.de>,
 
-  Andreas Kool Stefan Lüthje Autor: mam
+  ·  _M_a_r_c _E_b_e_r_h_a_r_d <Marc.Eberhard@Uni-Duesseldorf.DE>,
+
+  ·  _G_e_r_t _D_o_e_r_i_n_g <gert@greenie.muc.de>,
+
+  und an alle anderen die mich bei der Programmierung von _v_b_o_x
+  unterstützt habe!
 

@@ -1,8 +1,88 @@
-# $Id: CHANGES,v 1.12 1997/05/10 10:58:08 michael Exp $
+# $Id: CHANGES,v 1.13 1997/10/22 20:46:37 fritz Exp $
 #
 # [New] - Means news or changes
 # [Fix] - Means bug fix
 # [Rel] - Means new release
+
+
+**************************
+Changes since 2.0.0 Beta 3
+**************************
+
+03-Jun-97
+=========
+
+[Rel] 2.0.0 beta 4 released.
+
+[New] doc/de/vbox.sgml.in
+	Function vbox_message_info() documented.
+
+[Fix] Makefile.in
+	Configuration files now installed with mode 0640.
+
+
+02-Jun-97
+=========
+
+[New] aclocal.m4
+	Functions added to find ncurses/tcl better.
+
+[New] src/vbox.c
+	Own window clear function added. wclear() from ncurses looks a little
+	bit strange.
+
+[New] src/vbox.c
+	Message info ('I') implemented.
+
+[New] src/script.c
+	New tcl function vbox_message_info() added.
+
+
+01-Jun-97
+=========
+
+[Fix] src/streamio.c
+	Bug in streamio_open(). Memory block to store the filename need
+	one more byte (end of string) [Thomas Hepper <th@ant.han.de>].
+
+
+25-May-97
+=========
+
+[New] doc/de/vbox.sgml.in:
+	Description of the new variable "debuglevel" added.
+
+[New] src/rcgetty.c:
+	New variable "debuglevel" added. 
+
+[Fix] src/vboxlib.c:
+	Including <errno.h> for glibc2.
+
+[Fix] src/vbox.c:
+	Including <errno.h> for glibc2.
+
+
+19-May-97
+=========
+
+[New] src/script.c:
+	Better error report. Now the functions report if a function or a
+	variable can't be created.
+
+[New] src/script.c:
+	The function run_script() initialize the tcl interpreter, the new
+        tcl functions and the new variables. If all is correct done, they
+	answer the call and run the tcl script.
+
+[New] src/vboxgetty.c:
+	The program quits if answer_call() returns error. I hope this is a
+	good workaround for the "can't initialize tcl interpreter" problem.
+        I don't know where the error is and why the interpreter can't
+	initialized.
+
+[New] src/vboxgetty.c:
+	Function answer_call() not longer answer the call :-) They calls
+	only run_script() and return its error code.
 
 
 **************************

@@ -1,5 +1,5 @@
 #
-# $Id: Makefile.in,v 1.9 1997/05/10 10:58:37 michael Exp $
+# $Id: Makefile.in,v 1.10 1997/10/22 20:47:03 fritz Exp $
 
 #----------------------------------------------------------------------------#
 # The information below is modified by the configure script when Makefile is #
@@ -7,10 +7,11 @@
 # stuff by hand.                                                             #
 #----------------------------------------------------------------------------#
 
-HAVE_NCURSES	= @HAVE_NCURSES_LIBS@
-LIBS_NCURSES	= @LINK_NCURSES_LIBS@
-HAVE_TCL	= @HAVE_TCL_LIBS@
-LIBS_TCL	= @LINK_TCL_LIBS@
+NCURSES_LIBS	= @LINK_NCURSES_LIBS@
+NCURSES_HAVE    = @HAVE_NCURSES_PACK@
+
+TCL_LIBS	= @LINK_TCL_LIBS@
+TCL_HAVE	= @HAVE_TCL_PACK@
 
 #----------------------------------------------------------------------------#
 # Headers                                                                    #
@@ -99,21 +100,18 @@ vboxlib:	  $(VBOXLIBOBJS)
 VBOXGETTYOBJS	= vboxgetty.o init.o log.o perms.o lock.o streamio.o modem.o \
 		  script.o voice.o lists.o rcvbox.o rcgetty.o \
 
+
 vboxgetty:	  $(VBOXGETTYOBJS)
-		  $(CC) $(CFLAGS) $(VBOXGETTYOBJS) -o vboxgetty -L. $(LIBS_TCL) -lvbox
+		  $(CC) $(CFLAGS) $(VBOXGETTYOBJS) -o vboxgetty $(TCL_LIBS) -L. -lvbox
 
 #----------------------------------------------------------------------------#
 # Compiling vbox                                                             #
 #----------------------------------------------------------------------------#
 
-ifeq ($(HAVE_NCURSES),y)
-
 VBOXOBJS	= vbox.o streamio.o
 
 vbox:		  $(VBOXOBJS) libvbox.c libvbox.h
-		  $(CC) $(CFLAGS) $(VBOXOBJS) -o vbox -L. $(LIBS_NCURSES) -lvbox
-
-endif
+		  $(CC) $(CFLAGS) $(VBOXOBJS) -o vbox $(NCURSES_LIBS) -L. -lvbox
 
 #----------------------------------------------------------------------------#
 # Compiling vboxconvert                                                      #

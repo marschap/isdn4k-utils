@@ -1,17 +1,4 @@
 #! /bin/sh
-##
-## Script to compile with the new glibc or with my old libc5.
-
-    # If the argument '-5' is specified we will use the old libc.so.5 to
-    # compile the package, otherwise the current libc.so.6.
-
-if [ "$1" = "-5" ]
-then
-    export CFLAGS="-Wall -O2 -nostdinc -I/usr/i486-linuxlibc5/include -I/usr/lib/gcc-lib/i486-linuxlibc5/2.7.2.1/include -b i486-linuxlibc5 -L/usr/i486-linuxlibc5/lib"
-    export LDFLAGS="-b i486-linuxlibc5"
-fi
-
-    # My personal options for the new Filesystem Hierarchy Standard (FHS).
 
 ./configure --prefix=/opt/vbox \
 	    --exec-prefix=/opt/vbox \
@@ -19,10 +6,5 @@ fi
 	    --with-spooldir=/var/spool/vbox \
 	    --with-logdir=/var/log/vbox \
 	    --with-piddir=/var/run \
-	    --with-lockdir=/var/lock \
-	    
-
-
-
-
+	    --with-lockdir=/var/lock
 

@@ -13,10 +13,10 @@ dropdtrtime		400
 initpause		2500
 commandtimeout		4
 echotimeout		4
-ringtimeout		5
-alivetimeout		300
+ringtimeout		6
+alivetimeout		1800
 freespace		2000000
-
+debuglevel		FEWIDJ
 
 # Settings for port ttyI6
 

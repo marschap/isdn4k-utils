@@ -1,5 +1,5 @@
 #
-# $Id: Makefile.in,v 1.13 1997/05/10 10:58:11 michael Exp $
+# $Id: Makefile.in,v 1.14 1997/10/22 20:46:39 fritz Exp $
 
 #----------------------------------------------------------------------------#
 # Things you can change to personalize the Makefile for your own site. Some  #
@@ -40,13 +40,7 @@ INSTALL_UBIN	= @INSTALL@ -m 4755 -o root -g root -s
 #     (eg vboxgetty.conf):                                                   #
 #----------------------------------------------------------------------------#
 
-INSTALL_SYSCONF	= @INSTALL@ -m 644 -o root -g root
-
-#----------------------------------------------------------------------------#
-# [*] Program to install locales to the locale directory:                    #
-#----------------------------------------------------------------------------#
-
-INSTALL_LOCALE	= @INSTALL@ -m 644 -o root -g root
+INSTALL_SYSCONF	= @INSTALL@ -m 640 -o root -g root
 
 #----------------------------------------------------------------------------#
 # [*] Program to create missing directories:                                 #
@@ -59,7 +53,7 @@ INSTALL_DIRS	= @INSTALL@ -d
 #----------------------------------------------------------------------------#
 
 CC		= @CC@
-CFLAGS		= @CFLAGS@
+CFLAGS		= @CFLAGS@ @LINK_NCURSES_INCL@ @LINK_TCL_INCL@
 LDFLAGS		= @LDFLAGS@
 
 #----------------------------------------------------------------------------#
@@ -93,16 +87,11 @@ PIDFILEDIR	= @VBOX_PIDDIR@
 LCKFILEDIR	= @VBOX_LCKDIR@
 SPOOLDIR	= @VBOX_SPOOLDIR@
 
-#----------------------------------------------------------------------------#
-# The information below should be usable as is. The configure script won't   #
-# modify it and you shouldn't need to modify it either.                      #
-#----------------------------------------------------------------------------#
-
 TOPDIR		= @srcdir@
 VPATH		= @srcdir@
 
-HAVE_NCURSES	= @HAVE_NCURSES_LIBS@
-HAVE_TCL        = @HAVE_TCL_LIBS@
+NCURSES_HAVE	= @HAVE_NCURSES_PACK@
+TCL_HAVE        = @HAVE_TCL_PACK@
 
 VBOX_GETTYCONF	= $(sysconfdir)/vboxgetty.conf
 VBOX_VBOXDCONF	= $(sysconfdir)/vboxd.conf
@@ -188,10 +177,8 @@ programs-i:	  ignore
 		  @$(INSTALL_BIN) $(TOPDIR)/src/vboxctrl $(bindir)/vboxctrl
 		  @echo "Installing '$(bindir)/vboxbeep'..."
 		  @$(INSTALL_UBIN) $(TOPDIR)/src/vboxbeep $(bindir)/vboxbeep
-ifeq ($(HAVE_NCURSES),y)
 		  @echo "Installing '$(bindir)/vbox'..."
 		  @$(INSTALL_BIN) $(TOPDIR)/src/vbox $(bindir)/vbox
-endif
 		  @set -e; if [ -f $(sysconfdir)/vboxgetty.conf ]; then \
 			  echo "Installing '$(sysconfdir)/vboxgetty.conf.new'..."; \
 			  $(INSTALL_SYSCONF) $(TOPDIR)/examples/vboxgetty.conf.example $(sysconfdir)/vboxgetty.conf.new; \

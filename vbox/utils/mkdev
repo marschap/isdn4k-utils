@@ -1,12 +1,10 @@
 #! /bin/sh
 ##
-## $Id: mkdev,v 1.1 1997/04/28 16:55:00 michael Exp $
+## $Id: mkdev,v 1.2 1997/10/22 20:47:28 fritz Exp $
 
-CURRLANG="de"
+./utils/mksed <./doc/de/vbox.sgml.in >/home/www/local/tools/vbox/vbox.sgml
 
-./utils/mksed <./doc/$CURRLANG/vbox.sgml.in >/home/www/userspace/michael/vbox.sgml
+cd /home/www/local/tools/vbox
 
-cd /home/www/userspace/michael
-
-sgml2html -l vbox.sgml
+sgml2html -img -l vbox.sgml
 sgml2txt -l vbox.sgml

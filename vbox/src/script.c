@@ -1,5 +1,5 @@
 /*
-** $Id: script.c,v 1.8 1997/05/10 10:58:48 michael Exp $
+** $Id: script.c,v 1.9 1997/10/22 20:47:13 fritz Exp $
 **
 ** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
 */
@@ -22,13 +22,18 @@
 #include <tcl.h>
 #include <unistd.h>
 #include <string.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <netinet/in.h>
 
 #include "script.h"
 #include "log.h"
 #include "voice.h"
+#include "modem.h"
 #include "libvbox.h"
 
-/** Prototypes ***********************************************************/
+/** Tcl functions *********************************************************/
 
 int vbox_breaklist(ClientData, Tcl_Interp *, int, char *[]);
 int vbox_init_touchtones(ClientData, Tcl_Interp *, int, char *[]);
@@ -38,11 +43,33 @@ int vbox_wait(ClientData, Tcl_Interp *, int, char *[]);
 int vbox_pause(ClientData, Tcl_Interp *, int, char *[]);
 int vbox_get_nr_new_messages(ClientData, Tcl_Interp *, int, char *[]);
 int vbox_get_nr_all_messages(ClientData, Tcl_Interp *, int, char *[]);
+int vbox_message_info(ClientData, Tcl_Interp *, int, char *[]);
+
+static struct vbox_tcl_function vbox_tcl_functions[] =
+{
+	{ "vbox_breaklist"          , vbox_breaklist           },
+	{ "vbox_put_message"        , vbox_put_message         },
+	{ "vbox_play_message"       , vbox_put_message         },
+	{ "vbox_get_message"	       , vbox_get_message         },
+	{ "vbox_record_message"     , vbox_get_message         },
+	{ "vbox_init_touchtones"    , vbox_init_touchtones     },
+	{ "vbox_wait"               , vbox_wait                },
+	{ "vbox_pause"              , vbox_pause               },
+	{ "vbox_get_nr_new_messages", vbox_get_nr_new_messages },
+	{ "vbox_get_nr_all_messages", vbox_get_nr_all_messages },
+	{ "vbox_message_info"       , vbox_message_info        },
+	{ NULL                      , NULL                     }
+};
+
+/** Prototypes ************************************************************/
+
+static int init_tcl_functions(Tcl_Interp *);
+static int init_tcl_variables(Tcl_Interp *);
+static int make_tcl_variable(Tcl_Interp *, char *, char *);
 
 /** Defines **************************************************************/
 
-#define TCLCREATECMD(N, P, X, Y) { needcreated++; if (Tcl_CreateCommand(interpreter, N, P, X, Y)) havecreated++; }
-#define TCLCREATEVAR(C, A)			{ needcreated++; if (Tcl_VarEval(interpreter, "set ", C, " \"", A, "\"", NULL) == TCL_OK) havecreated++; }
+#define MYMKVAR(V, A) make_tcl_variable(interp, V, A)
 
 /*************************************************************************/
 /** script_run():	Starts a external tcl script.									**/
@@ -51,14 +78,10 @@ int vbox_get_nr_all_messages(ClientData, Tcl_Interp *, int, char *[]);
 int script_run(char *script)
 {
 	Tcl_Interp	*interpreter;
-
-	char		savename[32];
-	char		savetime[32];
-	int		needcreated;
-	int		havecreated;
 	int		result;
+	int         rcdelete;
 
-	log(L_INFO, "Running tcl script \"%s\"...\n", script);
+	log(L_DEBUG, "Initializing tcl script \"%s\"...\n", script);
 
 	breaklist_init();
 
@@ -68,53 +91,15 @@ int script_run(char *script)
 	{
 		if (Tcl_Init(interpreter) == TCL_OK)
 		{
-			needcreated = 0;
-			havecreated = 0;
-
-			TCLCREATECMD("vbox_breaklist"				, vbox_breaklist				, NULL, NULL);
-			TCLCREATECMD("vbox_put_message"			, vbox_put_message			, NULL, NULL);
-			TCLCREATECMD("vbox_play_message"			, vbox_put_message			, NULL, NULL);
-			TCLCREATECMD("vbox_get_message"			, vbox_get_message			, NULL, NULL);
-			TCLCREATECMD("vbox_record_message"		, vbox_get_message			, NULL, NULL);
-			TCLCREATECMD("vbox_init_touchtones"		, vbox_init_touchtones		, NULL, NULL);
-			TCLCREATECMD("vbox_wait"					, vbox_wait						, NULL, NULL);
-			TCLCREATECMD("vbox_pause"					, vbox_pause					, NULL, NULL);
-			TCLCREATECMD("vbox_get_nr_new_messages", vbox_get_nr_new_messages	, NULL, NULL);
-			TCLCREATECMD("vbox_get_nr_all_messages", vbox_get_nr_all_messages	, NULL, NULL);
-
-         if (havecreated == needcreated)
-         {
-				needcreated = 0;
-				havecreated = 0;
-
-				sprintf(savename, "%14.14lu-%8.8lu", (unsigned long)time(NULL), (unsigned long)getpid());
-				sprintf(savetime, "%d", setup.voice.recordtime);
-
-				TCLCREATEVAR("vbox_var_bindir"	, BINDIR);
-				TCLCREATEVAR("vbox_var_savename"	, savename);
-				TCLCREATEVAR("vbox_var_rectime"	, savetime);
-				TCLCREATEVAR("vbox_var_spooldir"	, setup.spool);
-				TCLCREATEVAR("vbox_var_checknew"	, setup.voice.checknewpath);
-
-				TCLCREATEVAR("vbox_msg_standard"	, setup.voice.standardmsg);
-				TCLCREATEVAR("vbox_msg_beep"		, setup.voice.beepmsg);
-				TCLCREATEVAR("vbox_msg_timeout"	, setup.voice.timeoutmsg);
-
-				TCLCREATEVAR("vbox_caller_id"		, setup.voice.callerid);
-				TCLCREATEVAR("vbox_caller_phone"	, setup.voice.phone);
-				TCLCREATEVAR("vbox_caller_name"	, setup.voice.name);
-
-				TCLCREATEVAR("vbox_user_name"		, setup.users.name);
-				TCLCREATEVAR("vbox_user_home"		, setup.users.home);
-
-				TCLCREATEVAR("vbox_flag_standard", setup.voice.domessage ? "TRUE" : "FALSE");
-				TCLCREATEVAR("vbox_flag_beep"    , setup.voice.dobeep    ? "TRUE" : "FALSE");
-				TCLCREATEVAR("vbox_flag_timeout" , setup.voice.dotimeout ? "TRUE" : "FALSE");
-				TCLCREATEVAR("vbox_flag_record"	, setup.voice.dorecord  ? "TRUE" : "FALSE");
-
-				if (havecreated == needcreated)
+			if (init_tcl_functions(interpreter))
+			{
+				if (init_tcl_variables(interpreter))
 				{
-					*touchtones = '\0';
+					log(L_DEBUG, "Answering call...\n");
+
+					if (modem_command("ATA", "VCON|CONNECT") > 0)
+				{
+						log(L_INFO, "Running tcl script \"%s\"...\n", script);
 
 					if (Tcl_EvalFile(interpreter, script) != TCL_OK)
 					{
@@ -127,13 +112,23 @@ int script_run(char *script)
 						result = TRUE;
 					}
 				}
+					else log(L_FATAL, "Can't answer call!\n");
+				}
 				else log(L_ERROR, "In \"%s\": %s (line %d).\n", script, interpreter->result, interpreter->errorLine);
 			}
 			else log(L_FATAL, "Can't create all new tcl commands.\n");
 
-			if (Tcl_InterpDeleted(interpreter) == 0)
+			if ((rcdelete = Tcl_InterpDeleted(interpreter)) == 0)
 			{
+				log(L_DEBUG, "Freeing tcl interpreter...\n");
+
 				Tcl_DeleteInterp(interpreter);
+			}
+			else
+			{
+				log(L_ERROR, "Can't free tcl interpreter - Tcl_InterpDeleted() returns %d!\n", rcdelete);
+
+				result = FALSE;
 			}
 		}
 		else log(L_FATAL, "Can't initialize tcl interpreter.\n");
@@ -142,7 +137,87 @@ int script_run(char *script)
 
 	breaklist_exit();
 
+	if (!result)
+	{
+		log(L_ERROR, "General tcl problem - setting flag to quit program...\n");
+	}
+
 	return(result);
+}
+
+/**************************************************************************/
+/** init_tcl_functions(): Inits all new tcl functions.                   **/
+/**************************************************************************/
+
+static int init_tcl_functions(Tcl_Interp *interp)
+{
+	int i;
+
+	i = 0;
+
+	while (vbox_tcl_functions[i].name)
+	{
+		if (!Tcl_CreateCommand(interp, vbox_tcl_functions[i].name, vbox_tcl_functions[i].proc, NULL, NULL))
+		{
+			log(L_FATAL, "Can't create tcl function '%s'.\n", vbox_tcl_functions[i].name);
+
+			returnerror();
+		}
+
+		i++;
+	}
+
+	returnok();
+}
+
+/**************************************************************************/
+/** init_tcl_variables(): Inits all new tcl variables.                   **/
+/**************************************************************************/
+
+static int init_tcl_variables(Tcl_Interp *interp)
+{
+	char savename[32];
+	char savetime[32];
+
+	printstring(savename, "%14.14lu-%8.8lu", (unsigned long)time(NULL), (unsigned long)getpid());
+	printstring(savetime, "%d", setup.voice.recordtime);
+
+	if (!MYMKVAR("vbox_var_bindir"   , BINDIR                 )) returnerror();
+	if (!MYMKVAR("vbox_var_savename"	, savename               )) returnerror();
+	if (!MYMKVAR("vbox_var_rectime"	, savetime               )) returnerror();
+	if (!MYMKVAR("vbox_var_spooldir"	, setup.spool            )) returnerror();
+	if (!MYMKVAR("vbox_var_checknew", setup.voice.checknewpath)) returnerror();
+	if (!MYMKVAR("vbox_msg_standard"	, setup.voice.standardmsg)) returnerror();
+	if (!MYMKVAR("vbox_msg_beep"		, setup.voice.beepmsg    )) returnerror();
+	if (!MYMKVAR("vbox_msg_timeout"	, setup.voice.timeoutmsg )) returnerror();
+	if (!MYMKVAR("vbox_caller_id"		, setup.voice.callerid   )) returnerror();
+	if (!MYMKVAR("vbox_caller_phone"	, setup.voice.phone      )) returnerror();
+	if (!MYMKVAR("vbox_caller_name"	, setup.voice.name       )) returnerror();
+	if (!MYMKVAR("vbox_user_name"		, setup.users.name       )) returnerror();
+	if (!MYMKVAR("vbox_user_home"		, setup.users.home       )) returnerror();
+
+	if (!MYMKVAR("vbox_flag_standard", setup.voice.domessage ? "TRUE" : "FALSE")) returnerror();
+	if (!MYMKVAR("vbox_flag_beep"    , setup.voice.dobeep    ? "TRUE" : "FALSE")) returnerror();
+	if (!MYMKVAR("vbox_flag_timeout" , setup.voice.dotimeout ? "TRUE" : "FALSE")) returnerror();
+	if (!MYMKVAR("vbox_flag_record"	, setup.voice.dorecord  ? "TRUE" : "FALSE")) returnerror();
+
+	returnok();
+}
+
+/**************************************************************************/
+/** make_tcl_variable(): Creates a new tcl variable.                     **/
+/**************************************************************************/
+
+static int make_tcl_variable(Tcl_Interp *interp, char *var, char *arg)
+{
+	if (Tcl_VarEval(interp, "set ", var, " \"", arg, "\"", NULL) != TCL_OK)
+	{
+		log(L_FATAL, "Can't initzalize tcl variable '%s'.\n", var);
+
+		returnerror();
+	}
+
+	returnok();
 }
 
 /*************************************************************************/
@@ -154,6 +229,73 @@ int script_check_interpreter(void)
 	log(L_INFO, "Tcl interpreter version %s...\n", TCL_VERSION);
 
 	returnok();
+}
+
+/*************************************************************************/
+/** vbox_message_info(): Returns message header fields.                 **/
+/*************************************************************************/
+
+int vbox_message_info(ClientData cd, Tcl_Interp *ip, int argc, char *argv[])
+{
+	vaheader_t  header;
+	int         fd;
+	char       *name;
+	char       *need;
+	int         field;
+
+	strcpy(ip->result, "");
+
+	if (argc == 3)
+	{
+		name = argv[1];
+		need = argv[2];
+
+		if ((fd = open(name, O_RDONLY)) != -1)
+		{
+			if (header_get(fd, &header))
+			{
+				field = (int)xstrtol(need, 0);
+
+				switch (field)
+				{
+					case 1:
+						printstring(ip->result, "%ld", ntohl(header.time));
+						break;
+
+					case 2:
+						printstring(ip->result, "%d", (int)ntohl(header.compression));
+						break;
+
+					case 3:
+						printstring(ip->result, "%s", header.callerid);
+						break;
+
+					case 4:
+						printstring(ip->result, "%s", header.name);
+						break;
+
+					case 5:
+						printstring(ip->result, "%s", header.phone);
+						break;
+
+					case 6:
+						printstring(ip->result, "%s", header.location);
+						break;
+
+					default:
+						log(L_ERROR, "[vbox_message_info] unknown field number %d.\n", field);
+						break;
+				}
+			}
+			else log(L_ERROR, "[vbox_message_info] can't get header from '%s'.\n", name);
+
+			close(fd);
+		}
+		else log(L_ERROR, "[vbox_message_info] can't open '%s'.\n", name);
+	}
+	else log(L_ERROR, "[vbox_message_info] usage: vbox_message_info <message> <fieldnr>\n");
+
+	return(TCL_OK);
 }
 
 /*************************************************************************/

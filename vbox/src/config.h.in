@@ -21,6 +21,12 @@
 #undef HAVE_VSNPRINTF
 
 /*
+ * Define if libncurses has a resizeterm() function:
+ */
+
+#undef HAVE_RESIZETERM
+
+/*
  * Define to empty if the keyword does not work:
  */
 

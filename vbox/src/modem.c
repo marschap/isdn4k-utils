@@ -1,5 +1,5 @@
 /*
-** $Id: modem.c,v 1.10 1997/05/10 10:58:44 michael Exp $
+** $Id: modem.c,v 1.11 1997/10/22 20:47:10 fritz Exp $
 **
 ** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
 */
@@ -697,7 +697,7 @@ static void modem_timeout_function(int s)
 	alarm(0);
 	signal(SIGALRM, SIG_IGN);
 
-	log(L_JUNK, "Timeout function called.\n");
+	log(L_JUNK, "Modem timeout function called...\n");
 
 	timeoutstatus = TRUE;
 }
@@ -850,8 +850,6 @@ int modem_wait(void)
 /*************************************************************************/
 /** modem_count_rings(): Counts incoming rings.                         **/
 /*************************************************************************/
-
-/* FIXME */
 
 int modem_count_rings(int needrings)
 {

@@ -1,5 +1,5 @@
 /*
-** $Id: libvbox.c,v 1.10 1997/08/22 12:25:38 fritz Exp $
+** $Id: libvbox.c,v 1.11 1997/10/22 20:47:06 fritz Exp $
 **
 ** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
 */
@@ -14,8 +14,8 @@
 #include <dirent.h>
 #include <ctype.h>
 #include <signal.h>
-#include <netdb.h>
 #include <errno.h>
+#include <netdb.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <sys/types.h>
@@ -26,7 +26,8 @@
 
 /** Variables ************************************************************/
 
-char *compressions[] = {
+char *compressions[] =
+{
    "?", "?", "ADPCM-2", "ADPCM-3", "ADPCM-4", "ALAW", "ULAW"
 };
 

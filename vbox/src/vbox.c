@@ -1,5 +1,5 @@
 /*
-** $Id: vbox.c,v 1.5 1997/05/10 10:58:50 michael Exp $
+** $Id: vbox.c,v 1.6 1997/10/22 20:47:16 fritz Exp $
 **
 ** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
 */
@@ -28,6 +28,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <pwd.h>
+#include <errno.h>
 #include <getopt.h>
 #include <sys/ioctl.h>
 #include <sys/types.h>
@@ -88,6 +89,8 @@ static struct colortable colortable[] =
    { "C_HELP_BORDER"  , 12, COLOR_YELLOW, COLOR_BLUE , A_BOLD  , A_REVERSE|A_BOLD },
 	{ "C_STATUS"       , 13, COLOR_WHITE , COLOR_RED  , A_NORMAL, A_REVERSE        },
 	{ "C_STATUS_BORDER", 14, COLOR_YELLOW, COLOR_RED  , A_BOLD  , A_REVERSE|A_BOLD },
+	{ "C_INFO"         , 15, COLOR_WHITE , COLOR_YELLOW, A_NORMAL, A_REVERSE        },
+   { "C_INFO_BORDER"  , 16, COLOR_YELLOW, COLOR_YELLOW, A_BOLD  , A_REVERSE|A_BOLD },
    { NULL             , -1, 0           , 0          , 0       , 0                }
 };
 
@@ -149,6 +152,8 @@ static void   version(void);
 static void   help(void);
 static void   status(void);
 static void   statuscontrol(int);
+static void   set_window_background(WINDOW *, chtype);
+static void   messageinfo(int);
 static chtype color(int);
 
 /**************************************************************************/
@@ -510,6 +515,11 @@ static void process_input(void)
 				status();
 				break;
 
+			case 'I':
+			case 'i':
+				messageinfo(messagenr);
+				break;
+
 			default:
 				beep();
 				break;
@@ -548,8 +558,7 @@ static void status(void)
 		{
 			if ((pan = new_panel(win)))
 			{
-				wbkgdset(win, color(13));
-				wclear(win);
+				set_window_background(win, color(13));
 				wattrset(win, color(14));
 				box(win, ACS_VLINE, ACS_HLINE);
 
@@ -697,8 +706,7 @@ static void help(void)
 	{
 		if ((pan = new_panel(win)))
 		{
-			wbkgdset(win, color(11));
-			wclear(win);
+			set_window_background(win, color(11));
 			wattrset(win, color(12));
 			box(win, ACS_VLINE, ACS_HLINE);
 
@@ -752,20 +760,6 @@ static void help(void)
 		delwin(win);
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /**************************************************************************/
 /** parse_vboxrc(): Reads and parse ~/.vboxrc.                           **/
@@ -1046,8 +1040,7 @@ static void draw_main_screen(void)
 
 static void clear_screen(void)
 {
-	bkgdset(COLTAB(1));
-	wclear(stdscr);
+	set_window_background(stdscr, COLTAB(1));
 }
 
 /**************************************************************************/
@@ -1103,6 +1096,8 @@ static void exit_screen(void)
 
 static void sig_handling_resize(int s)
 {
+#ifdef HAVE_RESIZETERM
+
 	struct winsize win;
 	int            newsizec;
 	int            newsizel;
@@ -1117,6 +1112,8 @@ static void sig_handling_resize(int s)
    }
 
 	if (resizeterm(newsizel, newsizec) == ERR) leavevbox = TRUE;
+
+#endif
 
 	leaveloop = TRUE;
 }
@@ -1793,4 +1790,104 @@ static int count_new_messages(void)
 	}
 
 	return(newmsgs);
+}
+
+/**************************************************************************/
+/** set_window_background(): Clears a windows.                           **/
+/**************************************************************************/
+
+static void set_window_background(WINDOW *win, chtype col)
+{
+	int y;
+
+	wattrset(win, col);
+
+	for (y = 0; y < (win->_maxy + 1); y++)
+	{
+		mvwhline(win, y, 0, ' ', (win->_maxx + 1));
+	}
+}
+
+static void messageinfo(int nr)
+{
+	struct messageline *msgline;
+	WINDOW             *win;
+	PANEL              *pan;
+	int                 h;
+   int                 w;
+	char               *t;
+	char               *b;
+	int                 n;
+	int                 done;
+
+	if ((!messagesmp) || (messagesnr < nr)) return;
+
+	msgline = (struct messageline *)(messagesmp + (sizeof(struct messageline) * nr));
+
+   w = 51;
+   h = 15;
+	n = 0;
+	t = " INFO ";
+   b = " Press 'Q' to quit ";
+
+	if ((win = newwin(h, w, ((LINES - h) / 2), ((COLS - w) / 2))))
+	{
+		if ((pan = new_panel(win)))
+		{
+			set_window_background(win, color(15));
+			wattrset(win, color(16));
+			box(win, ACS_VLINE, ACS_HLINE);
+
+			mvwprintw(win,       0, ((w - strlen(t)) / 2), "%s", t);
+			mvwprintw(win, (h - 1), ((w - strlen(b)) / 2), "%s", b);
+
+			wattrset(win, color(15));
+
+			mvwprintw(win,  2, 3, "Filename   : %-32.32s", msgline->messagename);
+			mvwprintw(win,  3, 3, "CTime      : %ld", msgline->ctime);
+			mvwprintw(win,  4, 3, "MTime      : %ld", msgline->mtime);
+			mvwprintw(win,  5, 3, "Compression: %d", msgline->compression);
+			mvwprintw(win,  6, 3, "Size       : %d", msgline->size);
+			mvwprintw(win,  7, 3, "Name       : %-32.32s", msgline->name);
+			mvwprintw(win,  8, 3, "CallerID   : %-32.32s", msgline->callerid);
+			mvwprintw(win,  9, 3, "Phone      : %-32.32s", msgline->phone);
+			mvwprintw(win, 10, 3, "Location   : %-32.32s", msgline->location);
+			mvwprintw(win, 11, 3, "Flag new   : %s", (msgline->new ? "Yes" : "No"));
+			mvwprintw(win, 12, 3, "Flag delete: %s", (msgline->delete ? "Yes" : "No"));
+
+			update_panels();
+			wrefresh(win);
+			wmove(win, (h - 2), (w - 2));
+
+			cbreak();
+			noecho();
+			wtimeout(win, 1000);
+
+			done = FALSE;
+
+			while (!done)
+			{
+				switch (wgetch(win))
+				{
+					case ERR:
+						if (++n > 30)
+						{
+							vboxd_put_message("NOOP");
+
+							n = 0;
+						}
+						break;
+
+					case 'Q':
+					case 'q':
+						done = TRUE;
+						break;
+				}
+			}
+
+			del_panel(pan);
+		}
+
+		delwin(win);
+	}
 }

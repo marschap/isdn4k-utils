@@ -9,7 +9,7 @@
      ********************************************************************* -->
 
 <title>VBOX
-<author>Michael 'Ghandi' Herold <tt>&lt;michael@abadonna.franken.de&gt;</tt>
+<author>Michael 'Ghandi' Herold <tt>&lt;michael@abadonna.mayn.de&gt;</tt>
 <date>Version @VERSION@ (@VERDATE@)
 <abstract>
 Diese Dokumentation beschreibt die Konfiguration und Installation von
@@ -47,6 +47,13 @@ Herold als auch die in Kapitel <ref id="id-thanx" name="Danksagungen">
 genannten Personen übernehmen keine Verantwortung oder sonstige Haftung für
 Schäden, die auf irgendeine Art aus der Benutzung der Dokumentation oder den
 darin beschriebenen Programmen entstehen oder entstanden sind.
+
+Die Funktionen zum Konvertieren von <tt>ADPCM-2</tt>, <tt>ADPCM-3</tt>,
+<tt>ADPCM-4</tt> und <tt>ULAW</tt> stammen aus dem Paket
+<em>mgetty-0.98.tar.gz</em> und sind Copyright &copy; von
+
+Marc Eberhard <tt>&lt;Marc.Eberhard@Uni-Duesseldorf.DE&gt;</tt> und
+Gert Doering <tt>&lt;gert@greenie.muc.de&gt;</tt>.
 
 <!-- *********************************************************************
      **									**
@@ -108,11 +115,17 @@ Für Anregungen, Diskussionen und Fehlermeldungen existiert eine eigene
 Mailingliste. Um in diese Liste aufgenommen zu werden, muß eine Mail an
 
 <verb>
-vbox@abadonna.franken.de
+majordomo@abadonna.mayn.de
 </verb>
 
-mit dem Subject &dquot;<tt>subscribe</tt>&dquot; (ohne die Anführungszeichen)
-geschrieben werden.
+mit der Zeile
+
+<verb>
+subscribe vbox &lt;youraddress&gt
+</verb>
+
+im Body der Nachrichten geschrieben werden, wobei <em>&lt;youraddress&gt;</em>
+durch die eigene eMail-Adresse ersetzt werden muß.
 
 Die Mailingliste ist hauptsächlich in deutsch, anderssprachige Anfragen werden
 aber nach besten Kräften beantwortet.
@@ -418,7 +431,9 @@ Voreinstellung ist <tt/4/.
 <tag/<tt>alivetimeout &lt;number&gt;</tt>/
 
 Anzahl Sekunden nach deren Ablauf geprüft wird ob das Modem noch auf Kommandos
-antwortet. Voreinstellung ist <tt/1800/.
+antwortet. Zudem wird die Existens von einigen Kontrolldateien überprüft. Bei
+Angabe von <tt>0</tt> wird die Überprüfung umgangen. Voreinstellung ist
+<tt/1800/.
 
 <descrip>
 <tag/Beispiel:/
@@ -470,11 +485,35 @@ Vollständiger Pfad zur Konfigurationsdatei von <em/vbox/. Voreinstellung ist
 <tag/<tt>freespace &lt;number&gt;</tt>/
 
 Anzahl der Bytes die auf der Partition mit dem Spoolverzeichnis frei sein
-müssen, damit ein Anruf entgegengenommen wird. Voreinstellung ist <tt/0/.
+müssen, damit ein Anruf entgegengenommen wird. Bei Angabe von <tt>0</tt> wird
+die Überprüfung umgangen. Voreinstellung ist <tt/0/.
 
 <descrip>
 <tag/Beispiel:/
 <tt/freespace 2000000/
+</descrip>
+
+<tag/<tt>debuglevel &lt;string&gt;</tt>/
+
+Debuglevel der benutzt werden soll. Der Level muß mit einzelen Buchstaben
+angegeben werden. Voreinstellung ist <tt>FEW</tt>.
+
+Folgende Buchstaben können angegeben werden:
+
+<itemize>
+
+<item><tt><bf>F</bf> - </tt>Fehler die nicht behoben werden können
+<item><tt><bf>E</bf> - </tt>Fehler die evtl. behoben werden können
+<item><tt><bf>W</bf> - </tt>Warnungen
+<item><tt><bf>I</bf> - </tt>Informationen
+<item><tt><bf>D</bf> - </tt>Debugging Ausgaben
+<item><tt><bf>J</bf> - </tt>Noch mehr Debugging Ausgaben.
+
+</itemize>
+
+<descrip>
+<tag/Beispiel:/
+<tt/debuglevel FEWID/
 </descrip>
 
 </descrip>
@@ -495,6 +534,7 @@ echotimeout		4
 ringtimeout		5
 alivetimeout		300
 freespace		2000000
+debuglevel		FEWIDJ
 
 # Settings for port ttyI6
 
@@ -877,14 +917,14 @@ A:localhost:RW:nicole:456:/var/spool/vbox/nicole:incoming
 <verb>
 # Login access list
 
-L:abadonna.franken.de:Y
+L:abadonna.mayn.de:Y
 L:localhost:Y
 L:*:N
 
 # Full access list
 
-A:abadonna.franken.de:RW:michael:123:/var/spool/vbox/michael:incoming
-A:abadonna.franken.de:RW:nicole:456:/var/spool/vbox/nicole:incoming
+A:abadonna.mayn.de:RW:michael:123:/var/spool/vbox/michael:incoming
+A:abadonna.mayn.de:RW:nicole:456:/var/spool/vbox/nicole:incoming
 A:localhost:RW:michael:123:/var/spool/vbox/michael:incoming
 A:localhost:RW:nicole:456:/var/spool/vbox/nicole:incoming
 
@@ -968,6 +1008,30 @@ Farbe für einen angewählten Eintrag in der Nachrichtenliste.
 
 Farbe für den Informationstext über der Nachrichtenliste.
 
+<tag><tt>C_HELP</tt></tag>
+
+Farbe für das Hilfsfenster.
+
+<tag><tt>C_HELP_BORDER</tt></tag>
+
+Farbe für den Rahmen des Hilfsfensters.
+
+<tag><tt>C_STATUS</tt></tag>
+
+Farbe für das Statusfenster.
+
+<tag><tt>C_STATUS_BORDER</tt></tag>
+
+Farbe für den Rahmen des Statusfensters.
+
+<tag><tt>C_INFO</tt></tag>
+
+Farbe für das Infofenster.
+
+<tag><tt>C_INFO_BORDER</tt></tag>
+
+Farbe für den Rahmen des Infofensters.
+
 </descrip>
 
 Alle Farbangaben werden im Format <tt>TEXTFARBE:HINTERGRUNDFARBE</tt>
@@ -1037,6 +1101,12 @@ C_STATUSLED_OFF		BLACK:BLUE	# Status led (off)
 C_LIST			GRAY:BLACK	# Message list
 C_LIST_SELECTED		GRAY:RED	# Message list (selected)
 C_INFOTEXT		GREEN:BLACK	# Information
+C_HELP			GRAY:BLUE	# Help
+C_HELP_BORDER		YELLOW:BLUE	# Help (Border)
+C_STATUS		GRAY:RED	# Status
+C_STATUS_BORDER		YELLOW:RED	# Status (Border)
+C_INFO			GRAY:YELLOW	# Info
+C_INFO_BORDER		YELLOW:YELLOW	# Info (Border)
 </verb>
 
 </descrip>
@@ -1499,6 +1569,67 @@ set RC &lsqb; vbox_get_nr_all_messages /var/spool/vbox/michael/incoming &rsqb;
 </verb>
 
 </descrip>
+
+
+
+
+
+<tag/<tt>vbox_message_info &lt;message&gt; &lt;fieldnr&gt;</tt>/
+
+Gibt ein Feld aus dem Header einer Nachricht zurück. Das Ergebnis wird als
+Rückgabewert gesetzt. Bei einem Fehler enthält der Rückgabewert keine Daten.
+
+<descrip>
+
+<tag/<tt>message</tt>/
+
+Vollständiger Pfad und Name der Nachricht, deren Header abgefragt werden soll.
+
+<tag/<tt>fieldnr</tt>/
+
+Nummer des Header-Feldes das abgefragt werden soll. Folgende Nummern können
+angegeben werden:
+
+<itemize>
+
+<item>
+<tt><bf>1</bf> - </tt>Erzeugungsdatum der Nachricht in Sekunden seit dem
+1.1.1970,
+
+<item>
+<tt><bf>2</bf> - </tt>Kompression der Nachricht,
+
+<item>
+<tt><bf>3</bf> - </tt>Die <tt>CALLERID</tt> des Anrufers,
+
+<item>
+<tt><bf>4</bf> - </tt>Der Name des Anrufers,
+
+<item>
+<tt><bf>5</bf> - </tt>Die vollständige Telefonnummer des Anrufers,
+
+<item>
+<tt><bf>6</bf> - </tt>Der Wohnort des Anrufers.
+
+</itemize>
+
+<tag/Beispiel:/
+
+<verb>
+set RC &lsqb; vbox_messages_info /var/spool/vbox/michael/incoming/00000865241883-00005143 1 &rsqb;
+</verb>
+
+</descrip>
+
+
+
+
+
+
+
+
+
+
 
 </descrip>
 
@@ -2415,17 +2546,12 @@ Ein Dankeschön geht an&hellip;
 <item><bf><em>Carsten Keil</em></bf> <tt>&lt;keil@temic-ech.spacenet.de&gt;</tt>,
 <item><bf><em>Andreas Kool</em></bf> <tt>&lt;akool@Kool.f.EUnet.de&gt;</tt>,
 <item><bf><em>Stefan Lüthje</em></bf> <tt>&lt;luethje@sl-gw.lake.de&gt;</tt>,
-
-
+<item><bf><em>Marc Eberhard</em></bf> <tt>&lt;Marc.Eberhard@Uni-Duesseldorf.DE&gt;</tt>,
+<item><bf><em>Gert Doering</em></bf> <tt>&lt;gert@greenie.muc.de&gt;</tt>,
 
 </itemize>
 
-
-
-Andreas Kool
-Stefan Lüthje
-Autor: mam
-
-...und bei allen anderen...
+und an alle anderen die mich bei der Programmierung von <em>vbox</em>
+unterstützt habe!
 
 </article>

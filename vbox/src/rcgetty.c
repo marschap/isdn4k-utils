@@ -1,5 +1,5 @@
 /*
-** $Id: rcgetty.c,v 1.8 1997/05/10 10:58:47 michael Exp $
+** $Id: rcgetty.c,v 1.9 1997/10/22 20:47:11 fritz Exp $
 **
 ** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
 */
@@ -30,6 +30,7 @@ static char *parse_gid(char *, char *, void *, int, int);
 static char *parse_int(char *, char *, void *, int, int);
 static char *parse_cmp(char *, char *, void *, int, int);
 static char *parse_msk(char *, char *, void *, int, int);
+static char *parse_log(char *, char *, void *, int, int);
 
 static int parse_line(streamio_t *, char *, int, char *, int);
 
@@ -43,6 +44,8 @@ struct rctable
 	int	 max;
 	char	*(*parsefunction)(char *, char *, void *, int, int);
 };   
+
+static long useloglevel = L_DEFAULT;
 
 static struct rctable rct[] =
 {
@@ -63,6 +66,7 @@ static struct rctable rct[] =
 	{ "vboxconfig"		,  setup.vboxrcname				, 0, SETUP_MAX_VBOXRC		, parse_str },
 	{ "spooldir"		,  setup.spool						, 0, SETUP_MAX_SPOOLNAME	, parse_str },
 	{ "freespace"		, &setup.freespace				, 0, 2000000000				, parse_int },
+	{ "debuglevel"    , &useloglevel                , 0, 60000                 , parse_log },
 
 	{ NULL, NULL, 0, 0, NULL}
 };
@@ -328,4 +332,55 @@ static char *parse_msk(char *cmd, char *arg, void *ptr, int min, int max)
 	}
 
 	return("unknown umask");
+}
+
+/*************************************************************************/
+/** parse_log(): Converts the loglevels.           						   **/
+/*************************************************************************/
+
+static char *parse_log(char *cmd, char *arg, void *ptr, int min, int max)
+{
+	int i;
+
+	useloglevel = L_STDERR;
+
+	for (i = 0; i < strlen(arg); i++)
+	{
+		switch (arg[i])
+		{
+			case 'F':
+			case 'f':
+				useloglevel |= L_FATAL;
+				break;
+
+			case 'E':
+			case 'e':
+				useloglevel |= L_ERROR;
+				break;
+
+			case 'W':
+			case 'w':
+				useloglevel |= L_WARN;
+				break;
+
+			case 'I':
+			case 'i':
+				useloglevel |= L_INFO;
+				break;
+
+			case 'D':
+			case 'd':
+				useloglevel |= L_DEBUG;
+				break;
+
+			case 'J':
+			case 'j':
+				useloglevel |= L_JUNK;
+				break;
+		}
+	}
+
+	log_debuglevel(useloglevel);
+
+	return(NULL);
 }
