@@ -2,7 +2,7 @@
 #
 # (c) 1995-97 Volker Götz
 #
-# $Id: Makefile,v 1.4 1998/12/28 16:36:03 paul Exp $
+# $Id: Makefile,v 1.5 1998/12/29 14:53:03 paul Exp $
 
 ifeq (../.config,$(wildcard ../.config))
 	#
@@ -42,10 +42,10 @@ rootperm:
 	fi
 
 imontty.8: imontty.8.in
-	MANDATE=`grep CHECKIN $< | awk '{print $4}'`
+	MANDATE=`grep CHECKIN $< | awk '{print $$4}'`; \
 	sed \
-	   -e "s#\@MANDATE\@#${MANDATE}#g" \
-	   -e "s#\@I4LVERSION\@#${I4LVERSION}#g" \
+	   -e "s#\@MANDATE\@#$${MANDATE}#g" \
+	   -e "s#\@I4LVERSION\@#$${I4LVERSION}#g" \
 	   < $< > $@
 
 install-man: $(MANPAGE)
