@@ -38,7 +38,7 @@ static char progversion[] = "1.11";
  *
  * 1.11 1999.07.08 lt added support for NL
  *
- *      in NL areacode may be shorter than actual aeracodenumber
+ *      in NL areacode may be shorter than actual areacodenumber
  *      in this case \tLEN is appended to text
  *
  */
@@ -50,8 +50,8 @@ static char progversion[] = "1.11";
 #include <limits.h>
 #ifdef STANDALONE
 #include <stdlib.h>
-// #define __USE_GNU
 #include <stdio.h>
+#define __USE_GNU   /* needed for declaration of basename() */
 #include <string.h>
 #include <ctype.h>
 #include <stdarg.h>
