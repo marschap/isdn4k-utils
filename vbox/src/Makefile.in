@@ -1,5 +1,5 @@
 #
-# $Id: Makefile.in,v 1.10 1997/10/22 20:47:03 fritz Exp $
+# $Id: Makefile.in,v 1.11 1999/10/15 15:43:27 keil Exp $
 
 #----------------------------------------------------------------------------#
 # The information below is modified by the configure script when Makefile is #
@@ -41,7 +41,7 @@ script.o:	$(HEADERS) script.c
 		$(CC) $(CFLAGS) -DBINDIR='"$(VBOX_BINDIR)"' -c script.c
 
 voice.o:	$(HEADERS) voice.c
-		$(CC) $(CFLAGS) -c voice.c
+		$(CC) $(CFLAGS) $(VBOX_SUSPEND_DEF) -c voice.c
 
 streamio.o:	$(HEADERS) streamio.c
 		$(CC) $(CFLAGS) -c streamio.c

@@ -1,5 +1,5 @@
 #
-# $Id: Makefile.in,v 1.20 1998/11/23 09:17:59 fritz Exp $
+# $Id: Makefile.in,v 1.21 1999/10/15 15:43:27 keil Exp $
 
 #----------------------------------------------------------------------------#
 # Things you can change to personalize the Makefile for your own site. Some  #
@@ -108,6 +108,11 @@ VBOX_PIDFILEDIR	= $(PIDFILEDIR)
 VBOX_LCKFILEDIR	= $(LCKFILEDIR)
 VBOX_SPOOLDIR	= $(SPOOLDIR)
 
+ifeq ($(VBOX_SUSPEND_ID),y)
+        VBOX_SUSPEND_DEF := -DVBOX_SUSPEND_VALUE=1
+endif
+
+
 #----------------------------------------------------------------------------#
 # Export variables needed by the other utilities...                          #
 #----------------------------------------------------------------------------#
@@ -131,6 +136,7 @@ export VBOX_PIDFILEDIR
 export VBOX_LCKFILEDIR
 export VBOX_SPOOLDIR
 export VBOX_SYSCONFDIR
+export VBOX_SUSPEND_DEF
 
 #----------------------------------------------------------------------------#
 #                                                                            #

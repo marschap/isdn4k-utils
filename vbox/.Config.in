@@ -6,4 +6,5 @@ string 'PID directory' VBOX_PIDDIR
 string 'Lock directory' VBOX_LOCKDIR
 string 'Documentation directory' VBOX_DOCDIR
 string 'Version of Tcl library to use' VBOX_TCL
+bool 'Use a callid in SUSPEND' VBOX_SUSPEND_ID
 endmenu

@@ -326,6 +326,12 @@ VBOX_TCL
   There are different versions of tcl available.. tcl8.0 is the
   current one.
 
+Use a callid in SUSPEND
+VBOX_SUSPEND_ID
+  If suspending ("park") a call it is possible to assign a id to the
+  suspended call (value is 1). Some ISDN phones don't allow to resume
+  calls with an id.
+
 PPP daemon for syncPPP support
 CONFIG_IPPPD
   Enabling this, builds a special PPP daemon called ipppd which
