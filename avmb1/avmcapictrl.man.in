@@ -1,4 +1,8 @@
-.TH AVMCAPICTRL 8 "5. March 1997"
+.\" $Id: avmcapictrl.man.in,v 1.1 1997/03/23 11:52:54 fritz Exp $
+.\"
+.\" CHECKIN $Date: 1997/03/23 11:52:54 $
+.\"
+.TH AVMCAPICTRL 8 "@MANDATE@" isdn4k-utils-@I4LVERSION@ "Linux System Administration"
 .UC 4
 .SH NAME
 avmcapictrl \- Add AVM-B1 cards and load firmware

@@ -6,6 +6,10 @@ dnl Checks for programs.
 AC_PROG_CC
 AC_PROG_INSTALL
 
+I4LCONFDIR=${I4LCONFDIR:-"/etc/isdn"}
+I4LVERSION=${I4LVERSION:-"?.?"}
+MANDATE=`grep CHECKIN icnctrl.man.in | awk '{print $4}'`
+
 dnl Checks for libraries.
 
 dnl Checks for header files.
@@ -22,4 +26,6 @@ AC_PROG_GCC_TRADITIONAL
 AC_CHECK_FUNCS(mmap)
 
 AC_SUBST(INSTALL)
-AC_OUTPUT(Makefile)
+AC_SUBST(MANDATE)
+AC_SUBST(I4LVERSION)
+AC_OUTPUT(Makefile avmcapictrl.man)
