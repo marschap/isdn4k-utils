@@ -16,7 +16,7 @@
  * IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Id: ipppd.h,v 1.3 1997/05/01 16:53:35 hipp Exp $
+ * $Id: ipppd.h,v 1.4 1997/05/06 13:04:03 hipp Exp $
  */
 
 /*
@@ -98,6 +98,7 @@ extern char	*progname;	/* Name of this program */
  * Variables set by command-line options.
  */
 
+extern int maxconnect;
 extern int      usefirstip,useifip,useifmtu;
 extern int      numdev;		/* number of handled devices */
 extern int	debug;		/* Debug flag */

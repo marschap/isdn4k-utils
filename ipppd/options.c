@@ -18,7 +18,7 @@
  */
 
 #ifndef lint
-static char rcsid[] = "$Id: options.c,v 1.2 1997/04/26 17:17:41 hipp Exp $";
+static char rcsid[] = "$Id: options.c,v 1.3 1997/05/06 13:04:06 hipp Exp $";
 #endif
 
 #include <stdio.h>
@@ -68,6 +68,7 @@ char *strdup __P((char *));
 
 int	debug = 0;		/* Debug flag */
 int	kdebugflag = 0;		/* Tell kernel to print debug messages */
+int maxconnect = 0;         /* Maximum connect time */
 
 #ifdef INCLUDE_OBSOLETE_FEATURES
 int	crtscts = 0;		/* Use hardware flow control */
@@ -77,7 +78,6 @@ char *connector = NULL;	/* Script to establish physical link */
 char *disconnector = NULL;	/* Script to disestablish physical link */
 struct option_info connector_info;
 struct option_info disconnector_info;
-int maxconnect = 0;         /* Maximum connect time */
 #endif
 
 u_int32_t netmask = 0;		/* IP netmask to set on interface */
@@ -145,13 +145,13 @@ static int setdevname __P((char *,int));
 static int setdomain __P((int,char **));
 static int setnetmask __P((int,char **));
 static int setnodetach __P((int));
+static int setmaxconnect __P((int,char **));
 
 #ifdef INCLUDE_OBSOLETE_FEATURES
 static int setspeed __P((int,char *));
 static int noasyncmap __P((int));
 static int setescape __P((int,char **));
 static int setasyncmap __P((int,char **));
-static int setmaxconnect __P((int,char **));
 static int setdisconnector __P((int,char **));
 static int setconnector __P((int,char **));
 static int setcrtscts __P((int));
@@ -272,13 +272,13 @@ static struct cmd {
 	{"novjccomp", 0, setnovjccomp}, /* disable VJ connection-ID compression */
     {"-vjccomp", 0, setnovjccomp}, /* disable VJ connection-ID compression */
     {"vj-max-slots", 1, setvjslots}, /* Set maximum VJ header slots */
+    {"maxconnect", 1, setmaxconnect},  /* specify a maximum connect time */
 #ifdef INCLUDE_OBSOLETE_FEATURES
     {"asyncmap", 1, setasyncmap}, /* set the desired async map */
     {"escape", 1, setescape},	/* set chars to escape on transmission */
     {"-am", 0, noasyncmap},	/* Disable asyncmap negotiation */
     {"-as", 1, setasyncmap},	/* set the desired async map */
 	{"default-asyncmap", 0, noasyncmap}, /* Disable asyncmap negoatiation */
-    {"maxconnect", 1, setmaxconnect},  /* specify a maximum connect time */
     {"disconnect", 1, setdisconnector},	/* program to disconnect serial dev. */
     {"connect", 1, setconnector}, /* A program to set up a connection */
     {"crtscts", 0, setcrtscts},        /* set h/w flow control */
@@ -1555,6 +1555,28 @@ static int setnetmask(int slot,char **argv)
     return (1);
 }
 
+/*
+ * setmaxconnect - Set the maximum connect time
+ */
+static int setmaxconnect(int slot,char **argv)
+{
+    int value;
+
+    if (!int_option(*argv, &value))
+       return 0;
+    if (value < 0) {
+       option_error("maxconnect time must be positive");
+       return 0;
+    }
+    if (maxconnect > 0 && (value == 0 || value > maxconnect)) {
+       option_error("maxconnect time cannot be increased");
+       return 0;
+    }
+    maxconnect = value;
+    return 1;
+}
+
+
 #ifdef INCLUDE_OBSOLETE_FEATURES
 /*
  * setspeed - Set the speed.
@@ -1621,27 +1643,6 @@ static int noasyncmap(int slot)
     lcp_wantoptions[slot].neg_asyncmap = 0;
     lcp_allowoptions[slot].neg_asyncmap = 0;
     return (1);
-}
-
-/*
- * setmaxconnect - Set the maximum connect time
- */
-static int setmaxconnect(int slot,char **argv)
-{
-    int value;
-
-    if (!int_option(*argv, &value))
-       return 0;
-    if (value < 0) {
-       option_error("maxconnect time must be positive");
-       return 0;
-    }
-    if (maxconnect > 0 && (value == 0 || value > maxconnect)) {
-       option_error("maxconnect time cannot be increased");
-       return 0;
-    }
-    maxconnect = value;
-    return 1;
 }
 
 /*

@@ -18,10 +18,32 @@
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  */
 
+/*
+              Microsoft Call Back Configuration Protocol.
+                        by Pedro Roque Marques
+
+The CBCP is a method by which the Microsoft Windows NT Server may
+implement additional security. It is possible to configure the server
+in such a manner so as to require that the client systems which
+connect with it are required that following a valid authentication to
+leave a method by which the number may be returned call.
+
+It is a requirement of servers so configured that the protocol be
+exchanged.
+
+So, this set of patches may be applied to the pppd process to enable
+the cbcp client *only* portion of the specification. It is primarily
+meant to permit connection with Windows NT Servers.
+
+The ietf-working specification may be obtained from ftp.microsoft.com
+in the developr/rfc directory.
+
+*/
+
 #define PPP_CBCP        0xc029  /* Callback Control Protocol */
 
 #ifndef lint
-static char rcsid[] = "$Id: cbcp.c,v 1.2 1997/04/26 17:17:20 hipp Exp $";
+static char rcsid[] = "$Id: cbcp.c,v 1.3 1997/05/06 13:04:02 hipp Exp $";
 #endif
 
 #include <stdio.h>
@@ -90,6 +112,8 @@ static void cbcp_init(int cbcp_unit)
     us->us_unit = -1;
     us->us_type |= (1 << CB_CONF_NO);
 	us->us_type |= (1 << CB_CONF_USER);
+	us->us_type |= (1 << CB_CONF_ADMIN);
+	us->us_type |= (1 << CB_CONF_LIST);
 }
 
 /* lower layer is up */
@@ -306,59 +330,59 @@ void cbcp_recvreq(cbcp_state *us, char *pckt, int pcktlen)
 
 void cbcp_resp(cbcp_state *us)
 {
-    u_char cb_type;
-    u_char buf[256];
-    u_char *bufp = buf;
-    int len = 0;
+	u_char cb_type;
+	u_char buf[256];
+	u_char *bufp = buf;
+	int len = 0;
 	struct cbcp *cbcp;
 
-    cb_type = us->us_allowed & us->us_type;
-    syslog(LOG_DEBUG, "cbcp_resp cb_type=%d", cb_type);
+	cb_type = us->us_allowed & us->us_type;
+	syslog(LOG_DEBUG, "cbcp_resp: cb_type=%d", cb_type);
 	cbcp = &lcp_wantoptions[ lns[us->us_unit].lcp_unit ].cbcp;
 
+	if (!cb_type) {
+		syslog(LOG_DEBUG, "Your remote side wanted a callback-type you don't allow -> doing no callback");
+        cb_type = 1 << CB_CONF_NO;
+	}
+
+	if (cb_type & ( 1 << CB_CONF_USER ) ) {
+		syslog(LOG_DEBUG, "cbcp_resp CONF_USER");
+		PUTCHAR(CB_CONF_USER, bufp);
+		len = 3 + 1 + strlen(cbcp->message) + 1;
+		PUTCHAR(len , bufp);
+		PUTCHAR(5, bufp); /* delay */
+		PUTCHAR(1, bufp);
 #if 0
-    if (!cb_type)
-        lcp_down( lns[us->us_unit].lcp_unit );
+		BCOPY(strlen(cbcp->message), bufp, strlen(cbcp->message) + 1);
 #endif
+		cbcp_send(us, CBCP_RESP, buf, len);
+		return;
+	}
 
-    if (cb_type & ( 1 << CB_CONF_USER ) ) {
-	syslog(LOG_DEBUG, "cbcp_resp CONF_USER");
-	PUTCHAR(CB_CONF_USER, bufp);
-	len = 3 + 1 + strlen(cbcp->message) + 1;
-	PUTCHAR(len , bufp);
-	PUTCHAR(5, bufp); /* delay */
-	PUTCHAR(1, bufp);
-#if 0
-	BCOPY(strlen(cbcp->message), bufp, strlen(cbcp->message) + 1);
-#endif
-	cbcp_send(us, CBCP_RESP, buf, len);
-	return;
-    }
+	if (cb_type & ( 1 << CB_CONF_ADMIN ) ) {
+		PUTCHAR(CB_CONF_ADMIN, bufp);
+		len = 3;
+		PUTCHAR(len , bufp);
+		PUTCHAR(0, bufp);
+		cbcp_send(us, CBCP_RESP, buf, len);
+		return;
+	}
 
-    if (cb_type & ( 1 << CB_CONF_ADMIN ) ) {
-        PUTCHAR(CB_CONF_ADMIN, bufp);
-	len = 3;
-	PUTCHAR(len , bufp);
-	PUTCHAR(0, bufp);
-	cbcp_send(us, CBCP_RESP, buf, len);
-	return;
-    }
-
-    if (cb_type & ( 1 << CB_CONF_NO ) ) {
-        syslog(LOG_DEBUG, "cbcp_resp CONF_NO");
-	PUTCHAR(CB_CONF_NO, bufp);
-	len = 3;
-	PUTCHAR(len , bufp);
-	PUTCHAR(0, bufp);
-	cbcp_send(us, CBCP_RESP, buf, len);
+	if (cb_type & ( 1 << CB_CONF_NO ) ) {
+		syslog(LOG_DEBUG, "cbcp_resp CONF_NO");
+		PUTCHAR(CB_CONF_NO, bufp);
+		len = 3;
+		PUTCHAR(len , bufp);
+		PUTCHAR(0, bufp);
+		cbcp_send(us, CBCP_RESP, buf, len);
 #if 0
 /*
  * what should we do here ... check this! */
  */
 	ipcp_open( lns[us->us_unit].ipcp_unit );
 #endif
-	return;
-    }
+		return;
+	}
 }
 
 void cbcp_send(cbcp_state *us, u_char code, u_char *buf, int len)

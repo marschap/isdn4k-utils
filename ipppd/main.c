@@ -27,7 +27,7 @@
 
 #if 0
 #ifndef lint
-static char rcsid[] = "$Id: main.c,v 1.2 1997/04/26 17:17:38 hipp Exp $";
+static char rcsid[] = "$Id: main.c,v 1.3 1997/05/06 13:04:04 hipp Exp $";
 #endif
 #endif
 
@@ -107,6 +107,7 @@ static void toggle_debug __P((int));
 static void open_ccp __P((int));
 static void bad_signal __P((int));
 static void get_input __P((int));
+static void connect_time_expired __P((caddr_t));
 static int init_unit(int);
 static int exit_unit(int);
 
@@ -374,6 +375,9 @@ void main(int argc,char **argv)
                 /* ok, now we (usually) have a unit */
                 lns[i].hungup = 0;
                 establish_ppp(i);
+                if(maxconnect > 0)
+                  timeout(connect_time_expired, (void *)i, maxconnect);
+               
                 syslog(LOG_NOTICE,"PHASE_WAIT -> PHASE_ESTABLISHED, ifunit: %d, linkunit: %d, fd: %d",lns[i].ifunit,i,lns[i].fd);
                 lcp_open(lns[i].lcp_unit);
                 lns[i].phase = PHASE_ESTABLISH;
@@ -396,6 +400,7 @@ void main(int argc,char **argv)
             {
 			  if(!kill_link)
                 syslog(LOG_NOTICE,"taking down PHASE_DEAD link %d, linkunit: %d",i,lns[i].unit);
+              untimeout(connect_time_expired,(void *) i);
               lcp_close(lns[i].lcp_unit,"link closed");
               lcp_lowerdown(lns[i].lcp_unit);
               lcp_freeunit(lns[i].lcp_unit);
@@ -493,6 +498,17 @@ static int exit_unit(int the_unit)
 	close_fd(the_unit);
 	return 0;
 }
+
+/*
+ * connect_time_expired - log a message and close the connection.
+ */
+static void connect_time_expired(caddr_t arg)
+{
+    int linkunit = (int) arg;
+    syslog(LOG_INFO, "Connect time expired");
+    lcp_close(linkunit, "Connect time expired");       /* Close connection */
+}
+
 
 char *protocol2name(int p)
 {
@@ -698,11 +714,7 @@ static struct timeval timenow;		/* Current time */
  * Note that this timeout takes the number of seconds, NOT hz (as in
  * the kernel).
  */
-void
-timeout(func, arg, time)
-    void (*func)();
-    caddr_t arg;
-    int time;
+void timeout(void (*func)(),caddr_t arg,int time)
 {
     struct callout *newp, *p, **pp;
   

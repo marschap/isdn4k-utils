@@ -37,7 +37,7 @@
  */
 
 #ifndef lint
-static char rcsid[] = "$Id: auth.c,v 1.3 1997/04/26 17:17:17 hipp Exp $";
+static char rcsid[] = "$Id: auth.c,v 1.4 1997/05/06 13:04:01 hipp Exp $";
 #endif
 
 #include <stdio.h>
@@ -387,14 +387,14 @@ static void callback_phase(int linkunit)
 
 /* hack here: remote is always the server for callback */
 		if (wo->neg_cbcp && !(lns[linkunit].pci.calltype & CALLTYPE_INCOMING) ) {
-				lns[linkunit].phase = PHASE_CALLBACK;
-		lns[linkunit].cbcp_unit = linkunit;        /* cbcp always corresponds to a link */
-				cbcp[ lns[linkunit].cbcp_unit ].us_unit = linkunit;
-		(*cbcp_protent.lowerup)(lns[linkunit].cbcp_unit);
-		(*cbcp_protent.open)(lns[linkunit].cbcp_unit);
+			lns[linkunit].phase = PHASE_CALLBACK;
+			lns[linkunit].cbcp_unit = linkunit;        /* cbcp always corresponds to a link */
+			cbcp[ lns[linkunit].cbcp_unit ].us_unit = linkunit;
+			(*cbcp_protent.lowerup)(lns[linkunit].cbcp_unit);
+			(*cbcp_protent.open)(lns[linkunit].cbcp_unit);
 		}
 		else 
-				network_phase(linkunit);
+			network_phase(linkunit);
 }
 
 /*

@@ -40,10 +40,15 @@ I added a few new options:
    'usefirstip' is UNTESTED!
  - 'callback type[,message]' enables the callback feature
    also UNTESTED!
-   e.g: 'callback 0'        -> simple callback (info via auth. etc.)
-        'callback 3,12346' -> use E.164 (tel) number 123456 for callback
+   ie: 'callback 0'       -> simple callback (info via auth. etc.)
+       'callback 3,12346' -> us E.164 (tel) number 123456 for callback
+       'callback 6' is different. This value means, that the whole negotiation
+   is done with a seperate protocol after the authentification phase. Currently
+   it's not possible to set any options in this case. The ipppd accepts
+   everything from the remote side.
  - IPX and MS_DNS are now compiled into the binary without additional option
    Applied Hartwig Felgers MS-DNS (re)patch for this
+ - added Markus Hofmann's <markus@tower.de> maxconnect patches
 
 The ipppd can handle multiple devices. This is necessary to
 link several connections together to one bundle.
