@@ -21,7 +21,7 @@ LOCAL_LIBRARIES = XawClientLibs
            OBJS = xisdnload.o
  OSMAJORVERSION = OSMajorVersion
  OSMINORVERSION = OSMinorVersion
-      DEFINES = -DOSMAJORVERSION=$(OSMAJORVERSION) -DOSMINORVERSION=$(OSMINORVERSION) 
+      DEFINES = -DOSMAJORVERSION=$(OSMAJORVERSION) -DOSMINORVERSION=$(OSMINORVERSION) -DREGEX_NUMBER
 
 AllTarget(xisdnload)
 NormalProgramTarget(xisdnload,$(OBJS),$(DEPLIBS),$(LOCAL_LIBRARIES),NullParameter)
@@ -31,3 +31,6 @@ InstallAppDefaults(XISDNLoad)
 InstallManPage(xisdnload,$(MANDIR))
 
 DependTarget()
+
+dist:
+	tar cvzCf .. ../`basename \`pwd\``.tar.gz `basename \`pwd\``

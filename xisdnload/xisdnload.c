@@ -51,6 +51,10 @@ from the X Consortium.
 #include <X11/Xaw/StripChart.h>
 #include <X11/Xmu/SysUtil.h>
 
+#ifdef REGEX_NUMBER
+#include <regex.h>
+#endif
+
 #include "xisdnload.bit"
 
 char *ProgramName;
@@ -64,6 +68,13 @@ static void quit();
 typedef struct _XISDNLoadResources {
   Boolean show_label;
   char *online_color;
+  char *active_color;
+  char *trying_color;
+  char *activate;
+  char *deactivate;
+#ifdef REGEX_NUMBER
+  char *number;
+#endif
 } XISDNLoadResources;
 
 /*
@@ -80,6 +91,13 @@ static XrmOptionDescRec options[] = {
  {"-nolabel",		"*showLabel",	        XrmoptionNoArg,       "False"},
  {"-jumpscroll",	"*load.jumpScroll",	XrmoptionSepArg,	NULL},
  {"-online",		"*onlineColor",         XrmoptionSepArg,	NULL},
+ {"-trying",		"*tryingColor",         XrmoptionSepArg,	NULL},
+ {"-active",		"*activeColor",         XrmoptionSepArg,	NULL},
+ {"-activate",		"*activate",		XrmoptionSepArg,	NULL},
+ {"-deactivate",	"*deactivate",		XrmoptionSepArg,	NULL},
+#ifdef REGEX_NUMBER
+ {"-number",		"*number",		XrmoptionSepArg,	NULL},
+#endif
 };
 
 /*
@@ -94,6 +112,18 @@ static XtResource my_resources[] = {
      Offset(show_label), XtRImmediate, (XtPointer) TRUE},
   {"onlineColor", "OnlineColor", XtRString, sizeof(char *),
      Offset(online_color), XtRString, NULL},
+  {"activeColor", "ActiveColor", XtRString, sizeof(char *),
+     Offset(active_color), XtRString, NULL},
+  {"tryingColor", "TryingColor", XtRString, sizeof(char *),
+     Offset(trying_color), XtRString, NULL},
+  {"activate", "Activate", XtRString, sizeof(char *),
+     Offset(activate), XtRString, NULL},
+  {"deactivate", "Deactivate", XtRString, sizeof(char *),
+     Offset(deactivate), XtRString, NULL},
+#ifdef REGEX_NUMBER
+  {"number", "Number", XtRString, sizeof(char *),
+     Offset(number), XtRString, NULL},
+#endif
 };
 
 #undef Offset
@@ -111,18 +141,23 @@ typedef struct {
 } Siobytes;
 
 static Siobytes iobytes[ISDN_MAX_CHANNELS];
-static Pixel onlinecolor, bgcolor;
+static Pixel onlinecolor, activecolor, tryingcolor, bgcolor;
 static long last[ISDN_MAX_CHANNELS];
 static int usageflags[ISDN_MAX_CHANNELS];
+static int flags[ISDN_MAX_CHANNELS];
 static char phone[ISDN_MAX_CHANNELS][20];
-static int fd;
+static int fd_isdninfo;
 static Widget label_wid;
 static char label_format[80];
 static int online_now, online_last;
+static int trying_now, trying_last;
 static struct timeval tv_start, tv_last;
 static long bytes_last, bytes_total, bytes_now;
 static int secs_running;
-static char num[20];
+static char num[100], history[160];
+#ifdef REGEX_NUMBER
+static regex_t preg;
+#endif
 
 /*
  * Exit with message describing command line format.
@@ -153,11 +188,45 @@ void usage()
     fprintf (stderr,
       "    -online color           background color when online\n");
     fprintf (stderr,
+      "    -active color           background color when active for demand dialing\n");
+    fprintf (stderr,
       "    -nolabel                removes the label from above the chart.\n");
     fprintf (stderr,
       "    -jumpscroll value       number of pixels to scroll on overflow\n");
+    fprintf (stderr,
+      "    -activate string        exec this to activate demand dialing\n");
+    fprintf (stderr,
+      "    -deactivate string      exec this to deactivate demand dialing\n");
+#ifdef REGEX_NUMBER
+    fprintf (stderr,
+      "    -number string          regexp to match against number to watch\n");
+#endif
     fprintf (stderr, "\n");
     exit(1);
+}
+
+
+
+int get_active()
+{
+  static char buf[8192];
+  int l;
+  int fd_route;
+  int res = 0;
+
+  fd_route = open("/proc/net/route", O_RDONLY | O_NDELAY);
+  if (fd_route < 0) {
+    perror("/proc/net/route");
+    exit(1);
+  }
+  if ((l = read(fd_route, buf, sizeof(buf))) > 0) {
+    buf[l] = 0;
+    if (strstr(buf, "isdn") || strstr(buf, "ippp"))
+      res = 1;
+  }
+  close(fd_route);
+
+  return res;
 }
 
 
@@ -167,21 +236,23 @@ InitLoadPoint()
 {
   int i;
 
-  fd = open("/dev/isdninfo", O_RDONLY | O_NDELAY);
-  if (fd < 0) {
+  fd_isdninfo = open("/dev/isdninfo", O_RDONLY | O_NDELAY);
+  if (fd_isdninfo < 0) {
     perror("/dev/isdninfo");
     exit(1);
   }
 
-  for (i=0; i < ISDN_MAX_CHANNELS; i++) {
+  for (i = 0; i < ISDN_MAX_CHANNELS; i++) {
     iobytes[i].ibytes = 0;
     iobytes[i].obytes = 0;
     strcpy(phone[i], "???");
     last[i] = 0;
     usageflags[i] = 0;
   }
-  online_last = -1;
+  online_last = 0;
   online_now = -1;
+  trying_last = -1;
+  trying_now = -1;
   gettimeofday(&tv_last, NULL);
   tv_last.tv_sec--; /* avoid devision by zero */
   tv_start = tv_last;
@@ -189,7 +260,7 @@ InitLoadPoint()
   bytes_total = 0;
   bytes_now = 0;
   secs_running = 0;
-  strcpy(num, "???");
+  strcpy(num, "");
 }
 
 
@@ -201,30 +272,39 @@ XtPointer closure;
 XtPointer call_data;	/* pointer to (double) return value */
 {
   double *loadavg = (double *)call_data;
-  double cps = 0.0;
+  double cps;
   int idx;
-  int get_iobytes;
+  int get_iobytes, l;
   char buf[4096];
   char s[120];
+  char f[80];
+  time_t t;
   struct timeval tv_now, tv;
+  struct tm *tm;
+  char now[20];
   long bytes_delta;
   fd_set fds;
   int secs_delta;
   Arg args[1];
-  int res;
 
   gettimeofday(&tv_now, NULL);
   secs_delta = (tv_now.tv_sec + tv_now.tv_usec / 1000000) -
     (tv_last.tv_sec + tv_last.tv_usec / 1000000);
   tv_last = tv_now;
 
-  if (read(fd, buf, sizeof(buf))> 0) {
+  if (read(fd_isdninfo, buf, sizeof(buf)) > 0) {
     sscanf(strstr(buf, "usage:"),
          "usage: %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d",
          &usageflags[0], &usageflags[1], &usageflags[2], &usageflags[3],
          &usageflags[4], &usageflags[5], &usageflags[6], &usageflags[7],
          &usageflags[8], &usageflags[9], &usageflags[10], &usageflags[11],
 	   &usageflags[12], &usageflags[13], &usageflags[14], &usageflags[15]);
+    sscanf(strstr(buf, "flags:"),
+         "flags: %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d",
+         &flags[0], &flags[1], &flags[2], &flags[3],
+         &flags[4], &flags[5], &flags[6], &flags[7],
+         &flags[8], &flags[8], &flags[10], &flags[11],
+         &flags[12], &flags[13], &flags[14], &flags[15]);
     sscanf(strstr(buf, "phone:"),
          "phone: %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s",
          phone[0], phone[1], phone[2], phone[3],
@@ -234,18 +314,46 @@ XtPointer call_data;	/* pointer to (double) return value */
 
   }
   get_iobytes = 1;
-  for (online_now = 0, bytes_now = 0, idx = 0; idx < 16; idx++) {
+  strcpy(num, "");
+  for (online_now = 0, trying_now = 0, bytes_now = 0, idx = 0; idx < 16; idx++) {
     if (usageflags[idx]) {
-      online_now = 1;
-      if (get_iobytes) {
-      if (ioctl(fd,IIOCGETCPS,&iobytes))
-        perror("IIOCGETCPS");
-      get_iobytes = 0;
+#ifdef REGEX_NUMBER
+      if (!regexec(&preg, phone[idx], 0, NULL, 0)) {  
+#endif
+        if (flags[idx]) {
+	  online_now++;
+	  if (get_iobytes) {
+            if (ioctl(fd_isdninfo, IIOCGETCPS, &iobytes))
+              perror("IIOCGETCPS");
+	    get_iobytes = 0;
+	  }
+	  bytes_now += iobytes[idx].ibytes + iobytes[idx].obytes;
+	  if (!strlen(num)) {
+            strcpy(num, phone[idx]);
+	  } else {
+	    strcat(num, " ");
+	    strcat(num, phone[idx]);
+          }
+        } else {
+          trying_now++;
+	  if (!strlen(num)) {
+	    strcpy(num, "(");
+	    strcat(num, phone[idx]);
+	    strcat(num, ")");
+	  } else {
+	    strcat(num, " (");
+	    strcat(num, phone[idx]);
+	    strcat(num, ")");
+          }
+        }
+#ifdef REGEX_NUMBER
       }
-      bytes_now += iobytes[idx].ibytes + iobytes[idx].obytes;
-      strcpy(num, phone[idx]);
+#endif
     }
   }
+
+  if (!online_now)
+    online_now = - get_active();
 
   bytes_delta = bytes_now - bytes_last;
   bytes_last = bytes_now;
@@ -255,47 +363,80 @@ XtPointer call_data;	/* pointer to (double) return value */
       (tv_start.tv_sec + tv_start.tv_usec / 1000000);
     cps = (double)bytes_delta / (double)secs_delta;
     if (cps < 0.0) cps = 0.0;
-    if (cps > 8000.0) cps = 8000.0;
+    /* if (cps > 8000.0) cps = 8000.0; */
     bytes_total = bytes_now;
-    if (online_last != 1) {
+    if (online_last < 1) {
+      t = time(NULL);
+      tm = localtime(&t);
+      sprintf(now, "%.2d:%.2d:%.2d", tm->tm_hour, tm->tm_min, tm->tm_sec);
+      strcpy(history, now);
+      strcat(history, "-");
       tv_start = tv_now;
-      online_last = 1;
-      XtSetArg(args[0], XtNbackground, onlinecolor);
+      XtSetArg(args[0], XtNbackground, trying_now ? tryingcolor : onlinecolor);
       XtSetValues(w, args, 1);
     }
     if (resources.show_label) {
-      sprintf(s, label_format, num,
-	      secs_running / 60, secs_running % 60, cps, bytes_total / 1024);
+      t = time(NULL);
+      tm = localtime(&t);
+      sprintf(now, "%.2d:%.2d:%.2d", tm->tm_hour, tm->tm_min, tm->tm_sec);
+      sprintf(f, "%s%%s", label_format);
+      sprintf(s, f, num,
+	      secs_running / 60, secs_running % 60, cps,
+	      bytes_total / 1024, history, now);
       XtSetArg (args[0], XtNlabel, s);
       XtSetValues (label_wid, args, ONE);
     }
-  } else {
-    if (online_last != 0) {
-      online_last = 0;
-      XtSetArg(args[0], XtNbackground, bgcolor);
-      XtSetValues(w, args, 1);
+  } else if ((online_now != online_last) || (trying_now != trying_last)) {
+    if (online_last >= 1) {
       if (resources.show_label) {
 	if (secs_running > 0) {
+	  t = time(NULL);
+	  tm = localtime(&t);
+	  sprintf(now, "%.2d:%.2d:%.2d", tm->tm_hour, tm->tm_min, tm->tm_sec);
+	  strcat(history, now);
+	  strcat(history, " ");
 	  sprintf(s, label_format, "offline",
 		  secs_running / 60, secs_running % 60,
 		  (double)bytes_total / (double)secs_running,
-		  bytes_total / 1024);
+		  bytes_total / 1024, history);
 	} else {
-	  sprintf(s, "uninitialized");
+	  sprintf(s, "uninitialized %s", history);
 	}
 	XtSetArg (args[0], XtNlabel, s);
 	XtSetValues (label_wid, args, ONE);
       }
     }
+    if (online_now == 0) {
+      XtSetArg(args[0], XtNbackground, trying_now ? tryingcolor : bgcolor);
+      XtSetValues(w, args, 1);
+    } else {
+      XtSetArg(args[0], XtNbackground, trying_now ? tryingcolor : activecolor);
+      XtSetValues(w, args, 1);
+    }
   }
 
+  online_last = online_now;
+  trying_last = trying_now;
   *loadavg = cps / 1000.0; /* unit: 1000Bytes/sec */
 
 }
 
 
 
-void main(argc, argv)
+void ToggleActive(Widget w, XtPointer p, XEvent *e, Boolean *c)
+{
+  if (e->type == ButtonPress) {
+    if (get_active()) {
+      system(resources.deactivate);
+    } else {
+      system(resources.activate);
+    }
+  }
+}
+
+
+
+int main(argc, argv)
     int argc;
     char **argv;
 {
@@ -305,7 +446,15 @@ void main(argc, argv)
     Pixmap icon_pixmap = None;
     char *label, host[256];
     XrmValue namein, pixelout;
+    time_t t;
+    struct tm *tm;
+    char now[20];
+    int a;
 
+    t = time(NULL);
+    tm = localtime(&t);
+    sprintf(now, "%.2d:%.2d:%.2d", tm->tm_hour, tm->tm_min, tm->tm_sec);
+    sprintf(history, "(%s) ", now);
 
     ProgramName = argv[0];
 
@@ -324,6 +473,18 @@ void main(argc, argv)
 			      my_resources, XtNumber(my_resources),
 			      NULL, (Cardinal) 0);
 
+#ifdef REGEX_NUMBER
+    if (resources.number) {
+      a = regcomp(&preg, resources.number, REG_EXTENDED);
+    } else {
+      a = regcomp(&preg, "", REG_EXTENDED);
+    }
+    if (a) {
+      fprintf(stderr, "illegal number regexp `%s'.\n", resources.number);
+      exit(1);
+    }
+#endif
+    
     /*
      * This is a hack so that f.delete will do something useful in this
      * single-window application.
@@ -355,7 +516,8 @@ void main(argc, argv)
 
       strcpy(label_format, label);
 
-      XtSetArg (args[0], XtNlabel, "uninitialized");
+      sprintf(now, "uninitialized %s", history);
+      XtSetArg (args[0], XtNlabel, now);
       XtSetValues (label_wid, args, ONE);
 
       load_parent = pane;
@@ -373,13 +535,49 @@ void main(argc, argv)
       namein.addr = resources.online_color;
       namein.size = strlen(resources.online_color) + 1;
       XtConvert(load, XtRString, &namein, XtRPixel, &pixelout);
+      if (!pixelout.addr) {
+	fprintf(stderr, "could not convert online color `%s'.\n",
+		resources.online_color);
+        exit(1);
+      }
       onlinecolor = *(Pixel*)(pixelout.addr);
     } else {
       onlinecolor = bgcolor;
     }
 
+    if (resources.trying_color) {
+      namein.addr = resources.trying_color;
+      namein.size = strlen(resources.trying_color) + 1;
+      XtConvert(load, XtRString, &namein, XtRPixel, &pixelout);
+      if (!pixelout.addr) {
+	fprintf(stderr, "could not convert trying color `%s'.\n",
+		resources.online_color);
+        exit(1);
+      }
+      tryingcolor = *(Pixel*)(pixelout.addr);
+    } else {
+      tryingcolor = bgcolor;
+    }
+
+    if (resources.active_color) {
+      namein.addr = resources.active_color;
+      namein.size = strlen(resources.active_color) + 1;
+      XtConvert(load, XtRString, &namein, XtRPixel, &pixelout);
+      if (!pixelout.addr) {
+	fprintf(stderr, "could not convert active color `%s'.\n",
+		resources.online_color);
+        exit(1);
+      }
+      activecolor = *(Pixel*)(pixelout.addr);
+    } else {
+      activecolor = bgcolor;
+    }
+
     XtAddCallback(load, XtNgetValue, GetLoadPoint, NULL);
 
+    XtAddEventHandler(toplevel, ButtonPressMask, ButtonPressMask,
+		      ToggleActive, NULL);
+    
     XtRealizeWidget (toplevel);
 
     wm_delete_window = XInternAtom (XtDisplay(toplevel), "WM_DELETE_WINDOW",
@@ -388,6 +586,8 @@ void main(argc, argv)
 			    &wm_delete_window, 1);
 
     XtAppMainLoop(app_con);
+
+    return 0;
 }
 
 static void quit (w, event, params, num_params)
