@@ -1,6 +1,10 @@
 Recent changes made to the isdn4k-utils archive are listed here,
 most recent on top.
 ------------------
+
+1999/10/12 lt   (Leopold Toetch <lt@toetsch.at>)
+	Destination database replaces country stuff and getAreacode
+	
 1999/10/08 he   (Henner Eisen <eis@baty.hanse.de)
 	eurofile  - further integration in isdn4k-utils config/built,
 		    removed entry from distexclude file. 

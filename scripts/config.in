@@ -1,5 +1,5 @@
 #
-# $Id: config.in,v 1.30 1999/10/08 16:25:37 he Exp $
+# $Id: config.in,v 1.31 1999/10/26 18:17:19 akool Exp $
 #
 # The whole configuration stuff is borrowed from the kernel
 # configuration.
@@ -40,12 +40,12 @@ string 'Your area code' CONFIG_AREACODE
 string 'Default country prefix' CONFIG_COUNTRY_PREFIX
 string 'Default area prefix' CONFIG_AREA_PREFIX
 string 'Directory to install fixed data' CONFIG_DATADIR
-choice 'Database for area codes' \
-        "Areacode CONFIG_LIB_AREACODE \
-        Avon CONFIG_LIB_AVON"
-if [ "$CONFIG_LIB_AVON" = "y" ]; then
-	string 'Directory to install avon database' CONFIG_AVON_DATA
-fi
+#choice 'Database for area codes' \
+#        "Areacode CONFIG_LIB_AREACODE \
+#        Avon CONFIG_LIB_AVON"
+#if [ "$CONFIG_LIB_AVON" = "y" ]; then
+#	string 'Directory to install avon database' CONFIG_AVON_DATA
+#fi
 endmenu
 mainmenu_option nextcomment
 comment 'Runtime configuration tools'

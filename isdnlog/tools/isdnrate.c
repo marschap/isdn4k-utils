@@ -1,4 +1,4 @@
-/* $Id: isdnrate.c,v 1.21 1999/10/25 18:30:03 akool Exp $
+/* $Id: isdnrate.c,v 1.22 1999/10/26 18:17:14 akool Exp $
 
  * ISDN accounting for isdn4linux. (rate evaluation)
  *
@@ -19,6 +19,12 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnrate.c,v $
+ * Revision 1.22  1999/10/26 18:17:14  akool
+ * isdnlog-3.58
+ *   - big cleanup ( > 1.3 Mb removed!)
+ *   - v0.02 of destination support - better, but not perfect
+ *     (does't work with gcc-2.7.2.3 yet - use egcs!)
+ *
  * Revision 1.21  1999/10/25 18:30:03  akool
  * isdnlog-3.57
  *   WARNING: Experimental version!
@@ -911,6 +917,7 @@ static void printTable(char *num)
   auto SORT2 wsort[MAXPROVIDER];
   static int firsttime = 1;
   int     first;
+  int prefix;
 
   memset(used, 0, sizeof(used));
   memset(hours, 0, sizeof(hours));
@@ -941,6 +948,9 @@ static void printTable(char *num)
 
     first = 1;
     while (1) {
+      destnum.nprovider = UNKNOWN;
+      if(provider2prefix(num, &prefix)) /* set provider if it is in number */
+        normalizeNumber(num, &destnum, TN_PROVIDER);
       n = compute(num);
 
       if (header && first && d == 0 && firsttime)

@@ -1737,8 +1737,9 @@ void rate_1067(void) {
 		     { "max.online", "+436762323" },
 		     { "max.mobil", "+43676" },
 		     { "andere Mobilfunknetze", "+43663,+43664,+43699" },
-		     { "Nachbarländer", "Deutschland, Italien, Schweiz, Tschechische Republik, Ungarn, Slowakische Republik, Slowenien, Liechtenstein" },
-		     { "EU", "Belgien, Dänemark, Finnland, Frankreich, Griechenland, Irland, Luxemburg, Niederlande, Portugal, Spanien, Schweden, Großbritannien, Nordirland" },
+		     { "Deutschland", "Deutschland" },
+		     { "Nachbarländer", "Italien, Liechtenstein, Schweiz, Slowakei, Slowenien, Tschechien, Ungarn" },
+		     { "EU", "Belgien, Dänemark, Finnland, Frankreich, Großbritannien, Griechenland, Irland, Luxemburg, Niederlande, Portugal, Spanien, Schweden, Nordirland" },
 		     { "Weltzone 1", "Andorra, Australien, Bahamas, Bosnien-Herzegowina, Kanada, Kroatien, Färöer-Inseln, Gibraltar, Island, Japan, Lettland, Malta, Mazedonien, Monaco, Neuseeland, Norwegen, Polen, Puerto Rico, San Marino, Singapur, USA, Vatikan, Jugoslawien" },
 		     { "Weltzone 2", "Albanien, Algerien, Belarus, Bulgarien, Zypern, Estland, Hong Kong, Litauen, Marokko, Oman, Rumänien, Rußland, Tunesien, Türkei, Ukraine, American Virgin Isles" },
 		     { "Weltzone 3", "Bermuda, Brasilien, Brunei, Chile, Christmas Island, Cocos Island, Dominikanische Republik, Georgien, Ghana, Grönland, Israel, Jamaica, Kasachstan, Südkorea, Kirgisistan, Libyen, Macau, Malaysia, Mexiko, Südafrika, Taiwan, Tadschikistan" },
@@ -1746,11 +1747,12 @@ void rate_1067(void) {
 		     { "Iridium 8816", "Iridium 008816"},
 		     { "Iridium 8817", "Iridium 008817"}};
   
-  double Tarif[] = { 01.00, 
+  double Tarif[] = { 00.88, 
 		     01.00, 
 		     01.00, 
 		     02.70, 
 		     03.90, 
+		     02.50, 
 		     03.30, 
 		     03.50, 
 		     05.50, 
@@ -1764,10 +1766,10 @@ void rate_1067(void) {
   
   rprintf ("P:67", "max.plus" );
   rprintf ("C:Maintainer:", "Michael Reinelt <reinelt@eunet.at>" );
-  rprintf ("C:Name:", "max.plus" );
-  /*  rprintf ("","C:Address:"); */
+  rprintf ("C:Name:", "max.mobil Telekommunikation Service GmbH" );
+  rprintf ("C:Address:", "Postfach 333, A-1031 Wien");
   rprintf ("C:Homepage:", "http://www.maxmobil.at" );
-  rprintf ("C:Telefon:", "0676 20 200" );
+  rprintf ("C:Telefon:", "0676 2010" );
   rprintf ("C:Special:", "Nur für max - Vertragskunden." );
   
   for (z=0; z<COUNT(Zone); z++) {
@@ -2277,7 +2279,7 @@ int main (int argc, char *argv[])
   printf ("# Many thanks to Daniela Bruder <dbruder@sime.com>\n");
   printf ("# for collecting and preparing most of the call charges.\n\n\n");
   
-  printf ("V:1.86-Austria [12-Oct-1999]\n\n");
+  printf ("V:1.87-Austria [26-Oct-1999]\n\n");
   printf ("U:%%.3f öS\n");
   
 #if 0

@@ -1,4 +1,4 @@
-/* $Id: processor.c,v 1.83 1999/09/13 09:09:43 akool Exp $
+/* $Id: processor.c,v 1.84 1999/10/26 18:17:13 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,12 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.84  1999/10/26 18:17:13  akool
+ * isdnlog-3.58
+ *   - big cleanup ( > 1.3 Mb removed!)
+ *   - v0.02 of destination support - better, but not perfect
+ *     (does't work with gcc-2.7.2.3 yet - use egcs!)
+ *
  * Revision 1.83  1999/09/13 09:09:43  akool
  * isdnlog-3.51
  *   - changed getProvider() to not return NULL on unknown providers
@@ -1214,7 +1220,7 @@ static int AOC_1TR6(int l, char *p)
   auto   int  digit = 0;
 
 
-#ifdef ISDN_NL /* Fixme: never defined! */
+#ifdef ISDN_NL /* Fixme: do this at runtime */
   /*
    *  NL ISDN: N40*<Einheiten>#, mit Einheiten ASCII kodiert.
    *  Beispiel 30 Einheiten: N40*30#
@@ -1225,7 +1231,7 @@ static int AOC_1TR6(int l, char *p)
   p += 9;
   l -= 3;
   aoc_debug(-1, "AOC_INITIAL_NL");
-#elif defined(ISDN_CH) /* Fixme: never defined! */
+#elif defined(ISDN_CH) /* Fixme: do this at runtime */
   /*
    * "FR. 0.10"
    *
@@ -1616,6 +1622,7 @@ static void decode(int chan, register char *p, int type, int version, int tei)
 
                     break;
 
+#if !defined(ISDN_NL) && !defined(ISDN_CH) /* -lt- else it will not compile */
         case 0x28 : /* DISPLAY ... z.b. Makelweg, AOC-E ... */
                     {
                       auto     char  s[BUFSIZ];
@@ -1633,6 +1640,7 @@ static void decode(int chan, register char *p, int type, int version, int tei)
                         info(chan, PRT_SHOWNUMBERS, STATE_RING, s);
                     }
                     break;
+#endif		    
 
         case 0x2d : /* SUSPEND ACKNOWLEDGE (Parkweg) */
                     p += (l * 3);
@@ -1650,7 +1658,7 @@ static void decode(int chan, register char *p, int type, int version, int tei)
 
         case 0x02 : /* Facility AOC-E on 1TR6 */
         case 0x1c : /* Facility AOC-D/AOC-E on E-DSS1 */
-#if defined(ISDN_NL) || defined(ISDN_CH) /* Fixme: never defined! */
+#if defined(ISDN_NL) || defined(ISDN_CH) /* Fixme: do this at runtime */
         case 0x28 : /* DISPLAY: Facility AOC-E on E-DSS1 in NL, CH */
 #endif
                     if ((element == 0x02) && (version == VERSION_1TR6)) {
@@ -1663,7 +1671,7 @@ static void decode(int chan, register char *p, int type, int version, int tei)
                       } /* if */
                     }
                     else {
-#if defined(ISDN_NL) || defined(ISDN_CH) /* Fixme: never defined! */
+#if defined(ISDN_NL) || defined(ISDN_CH) /* Fixme: do this at runtime */
                       n = AOC_1TR6(l, p);
 #else
                       n = facility(l, p);

@@ -1,5 +1,5 @@
 
-/* $Id: libisdn.h,v 1.11 1999/08/20 19:43:48 akool Exp $
+/* $Id: libisdn.h,v 1.12 1999/10/26 18:17:17 akool Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,12 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: libisdn.h,v $
+ * Revision 1.12  1999/10/26 18:17:17  akool
+ * isdnlog-3.58
+ *   - big cleanup ( > 1.3 Mb removed!)
+ *   - v0.02 of destination support - better, but not perfect
+ *     (does't work with gcc-2.7.2.3 yet - use egcs!)
+ *
  * Revision 1.11  1999/08/20 19:43:48  akool
  * removed avon-, vorwahl- and areacodes-support
  *
@@ -142,6 +148,12 @@ extern char *basename __P((__const char *__name));
 #define CONF_ENT_AREA_PREFIX    "AREAPREFIX"
 #define CONF_ENT_COUNTRY        "COUNTRYCODE"
 #define CONF_ENT_AREA           "AREACODE"
+#if 0 /* Fixme: tools.h defines these - should they be global ??? */
+#define CONF_ENT_VBN            "VBN"
+#define CONF_ENT_VBNLEN         "VBNLEN"
+#define CONF_ENT_PRESELECT      "PRESELECTED"
+#endif
+
 #if 0 /* DELETE_ME AK:18-Aug-99 */
 #define CONF_ENT_AREALIB        "AREALIB"
 #define CONF_ENT_AVONLIB        "AVON"

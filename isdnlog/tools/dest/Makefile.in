@@ -31,7 +31,7 @@ CC			= @CC@
 .SUFFIXES:
 .SUFFIXES: .c .o
 
-.PHONY: all config distclean dist install uninstall data
+.PHONY: all config distclean dist install uninstall data alldata
 
 %.o: %.c Makefile
 	$(CC) $(CFLAGS) $(DEFS) $(INCLUDES) -c -o $@ $<
@@ -88,3 +88,10 @@ endif
 ifeq ($(CONFIG_ISDN_LOG_DEST_NL),y)
 	./makedest -v -a nl
 endif	
+
+alldata:
+	./makedest $(LANG) -v
+	./makedest $(LANG) -v -a -gcities.dat
+	./makedest -v -a at
+	./makedest -v -a de
+	./makedest -v -a nl
