@@ -232,15 +232,6 @@ void print_area(char *area)
       } else if (strcmp(a,"19440")==0) {
 	Area[nArea].code=strdup("+43*19440");
 	Area[nArea].name=strdup("A-Online");
-      } else if (strcmp(a,"07189")==0) {
-	Area[nArea].code=strdup("+437189");
-	Area[nArea].name=strdup("Online-Zone");
-      } else if (strcmp(a,"19430")==0) {
-	Area[nArea].code=strdup("+43*19430");
-	Area[nArea].name=strdup("Magnet");
-      } else if (strcmp(a,"19440")==0) {
-	Area[nArea].code=strdup("+43*19440");
-	Area[nArea].name=strdup("A-Online");
       } else {
 	Area[nArea].code=strdup(findArea(a));
 	Area[nArea].name=strdup(a);
@@ -961,7 +952,7 @@ void rate_1066(void) {
 		     { "Mobilfunk", "0663,0664,0676,0699" },
 		     { "Euro 1", "Deutschland, Frankreich, Großbritannien, Nordirland, Italien, Liechtenstein, Schweiz, Slowakei, Slowenien, Tschechien, Ungarn" },
 		     { "Euro 2", "Andorra, Belarus, Belgien, Bosnien-Herzegowina, Bulgarien, Dänemark, Estland, Finnland, Griechenland, Irland, Jugoslawien, Kroatien, Luxemburg, Monaco, Niederlande, Norwegen, Polen, Portugal, Rumänien, San Marino, Schweden, Spanien, Tunesien, Türkei, Ukraine, Vatikanstadt, Zypern" },
-		     { "Euro City", "" }, /* Amsterdam, Brüssel, Frankfurt, London, Luxemburg, Mailand, Paris, Zürich */ 
+		     { "Euro City", "Amsterdam, Brüssel, Frankfurt, London, Luxemburg, Mailand, Paris, Zürich" },
 		     { "Welt 1", "Hawaii, Amerikanische Jungferninseln, Puerto Rico, Vereinigte Staaten (USA), Kanada" },
 		     { "Welt 2", "Albanien, Antarktis, Armenien, Aserbaidschan, Australien, Bahamas, Chile, Weihnachtsinseln, Kokosinseln, Dominikanische Republik, Georgien, Gibraltar, Guadeloupe, Französisch-Guayana, Hongkong, Island, Israel, Japan, Lettland, Libyen, Litauen, Mazedonien, Malaysia, Malta, Marokko, Martinique, Mayotte, Moldau, Neuseeland, Niederländische Antillen, Philippinen, Russische Föderation, Reunion, St. Pierre und Miquelon, Singapur, Südafrika, Südkorea, Saipan" },
 		     { "Welt 3", "Ägypten, Angola, Argentinien, Aruba, Ascension, Bahrain, Barbados, Belize, Benin, Bermuda, Bhutan, Bolivien, Botsuana, Brasilien, Brunei, Burkina Faso, Burundi, Caymaninseln, China, Costa Rica, Dschibuti, Dominica, Ecuador, El Salvador, Färöer-Inseln, Falklandinseln, Fidschi, Französisch-Polynesien, Gabun, Gambia, Ghana, Grenada, Grönland, Guatemala, Haiti, Honduras, Indien, Indonesien, Iran, Jamaika, Jordanien, Katar, Kenia, Kirgisistan, Kolumbien, Nordkorea, Kongo, Kuba, Kuwait, Laos, Lesotho, Libanon, Liberia, Macau, Malawi, Malediven, Marshallinseln, Mauretanien, Mauritius, Mexiko, Montserrat, Nepal, Neukaledonien, Nicaragua, Nigeria, Norfolk-Inseln, Panama, Paraguay, Peru, Ruanda, Sambia, Saudi-Arabien, Salomonen, Simbabwe, Somalia, St. Helena, Saint Kitts und Nevis, St. Lucia, Saint Vincent und die Grenadinen, Sudan, Syrien, Tadschikistan, Tansania, Taiwan, Thailand, Trinidad und Tobago, Turkmenistan, Uruguay, Usbekistan, Vanuatu, Venezuela, Vereinigte Arabische Emirate" },
@@ -982,7 +973,6 @@ void rate_1066(void) {
   
   printf ("\n");
   rprintf ("MIT 1066", "P:66");
-  rprintf ("Euro City nicht implementiert", "C:Fixme:");
   for (z=0; z<COUNT(Zone); z++) {
     rprintf (Zone[z][0], "Z:%d", z+1);
     if (Tarif[z][0]==Tarif[z][1]) {

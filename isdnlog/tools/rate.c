@@ -1,4 +1,4 @@
-/* $Id: rate.c,v 1.13 1999/05/04 19:33:41 akool Exp $
+/* $Id: rate.c,v 1.14 1999/05/09 18:24:24 akool Exp $
  *
  * Tarifdatenbank
  *
@@ -19,6 +19,13 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rate.c,v $
+ * Revision 1.14  1999/05/09 18:24:24  akool
+ * isdnlog Version 3.25
+ *
+ *  - README: isdnconf: new features explained
+ *  - rate-de.dat: many new rates from the I4L-Tarifdatenbank-Crew
+ *  - added the ability to directly enter a country-name into "rate-xx.dat"
+ *
  * Revision 1.13  1999/05/04 19:33:41  akool
  * isdnlog Version 3.24
  *
@@ -193,9 +200,16 @@ extern const char *basename (const char *name);
 
 #define LENGTH 250  /* max length of lines in data file */
 #ifdef STANDALONE
+#define TESTDURATION 153
 #define MAXPROVIDER 1000
 #define UNKNOWN -1
 #endif
+
+#define  WMAX    64
+#define  P        1
+#define  Q        1
+#define  R        1
+#define  DISTANCE 2
 
 typedef struct _STACK {
   int data;
@@ -204,7 +218,7 @@ typedef struct _STACK {
 
 typedef struct {
   double Duration;
-  int 	 Delay;
+  double Delay;
   double Price;
 } UNIT;
 
@@ -238,9 +252,17 @@ typedef struct {
   AREA  *Area;
 } PROVIDER;
 
+typedef struct {
+  char *prefix;
+  char *name;
+  char *match;
+} COUNTRY;
+
 static PROVIDER *Provider=NULL;
+static COUNTRY *Country = (COUNTRY *)NULL;
 static int      nProvider=0;
 static int      line=0;
+static int      nCountry = 0;
 
 static void warning (char *file, char *fmt, ...)
 {
@@ -256,6 +278,172 @@ static void warning (char *file, char *fmt, ...)
   print_msg(PRT_NORMAL, "WARNING: %s line %3d: %s\n", basename(file), line, msg);
 #endif
 }
+
+
+static void initCountry(char *fn)
+{
+  register char *p1, *p2;
+  auto     char  s[BUFSIZ];
+  auto     FILE *f;
+
+
+  if ((f = fopen(fn, "r")) != (FILE *)NULL) {
+    while (fgets(s, BUFSIZ, f)) {
+      if ((p1 = strchr(s, ':'))) {
+        *p1 = 0;
+
+        if ((p2 = strchr(p1 + 1, '\n')))
+          *p2 = 0;
+
+        Country = realloc(Country, (nCountry + 1) * sizeof(COUNTRY));
+        Country[nCountry].prefix = strdup(s);
+        Country[nCountry].name = strdup(p1 + 1);
+        p2 = Country[nCountry].match = strdup(p1 + 1);
+        nCountry++;
+
+        while (*p2) {
+          *p2 = tolower(*p2);
+
+    	  if ((*p2 < 'a') || (*p2 > 'z'))
+      	    *p2 = ' ';
+
+          p2++;
+        } /* while */
+      } /* if */
+    } /* while */
+
+    fclose(f);
+
+  } /* if */
+} /* initCountry */
+
+
+static int min3(register int x, register int y, register int z)
+{
+  if (x < y)
+    y = x;
+  if (y < z)
+    z = y;
+
+  return(z);
+} /* min */
+
+
+static int wld(register char *nadel, register char *heuhaufen) /* weighted Levenshtein distance */
+{
+  register int i, j;
+  auto     int l1 = strlen(nadel);
+  auto     int l2 = strlen(heuhaufen);
+  auto     int dw[WMAX + 1][WMAX + 1];
+
+
+  dw[0][0] = 0;
+
+  for (j = 1; j <= WMAX; j++)
+    dw[0][j] = dw[0][j - 1] + Q;
+
+  for (i = 1; i <= WMAX; i++)
+    dw[i][0] = dw[i - 1][0] + R;
+
+  for (i = 1; i <= l1; i++)
+    for (j = 1; j <= l2; j++)
+      dw[i][j] = min3(dw[i - 1][j - 1] + ((nadel[i - 1] == heuhaufen[j - 1]) ? 0 : P), dw[i][j - 1] + Q, dw[i - 1][j] + R);
+
+  return(dw[l1][l2]);
+} /* wld */
+
+
+static int countrymatch(char *name, char *num)
+{
+  register char *p;
+  register int 	 i, test = (num == NULL);
+  auto	   char	 k[BUFSIZ];
+
+
+  strcpy(k, name);
+  p = k;
+
+  while (*p) {
+    *p = tolower(*p);
+
+    if ((*p < 'a') || (*p > 'z'))
+      *p = ' ';
+
+    p++;
+  } /* while */
+
+  for (i = 0; i < nCountry; i++)
+    if (strstr(Country[i].match, k) && (test || !strncmp(Country[i].prefix, num, strlen(Country[i].prefix))))
+      return(nCountry);
+
+  for (i = 0; i < nCountry; i++)
+    if ((wld(k, Country[i].match) <= DISTANCE) && (test || !strncmp(Country[i].prefix, num, strlen(Country[i].prefix))))
+      return(nCountry);
+
+  return(0);
+} /* countymatch */
+
+
+/*  INPUT: "+372"
+   OUTPUT: "Estland"
+
+    INPUT: "Estland"
+   OUTPUT: "+372"
+*/
+
+int abroad(char *key, char *result)
+{
+  register char *p;
+  register int   i;
+  auto int mode, match = 0, res = 0;
+
+
+  *result = 0;
+
+  if (!memcmp(key, countryprefix, strlen(countryprefix)))  /* +xxx */
+    mode = 1;
+  else {   	   		  			   /* "Estland" */
+    mode = 2;
+
+    p = key;
+
+    while (*p) {
+      *p = tolower(*p);
+
+      if ((*p < 'a') || (*p > 'z'))
+        *p = ' ';
+
+      p++;
+    } /* while */
+
+  } /* else */
+
+  for (i = 0; i < nCountry; i++) {
+    if (mode == 1) {
+      res = strlen(Country[i].prefix);
+      match = !strncmp(Country[i].prefix, key, res);
+    }
+    else {
+      res = 1;
+      match = (strstr(Country[i].match, key) != NULL);
+
+      if (!match)
+        match = (wld(key, Country[i].match) <= DISTANCE);
+    } /* else */
+
+    if (match) {
+      if (mode == 1)
+        strcpy(result, Country[i].name);
+      else
+        strcpy(result, Country[i].prefix);
+
+      return(res);
+    } /* if */
+  } /* for */
+
+  return(0);
+} /* abroad */
+
 
 static char *strip (char *s)
 {
@@ -397,6 +585,8 @@ int initRate(char *conf, char *dat, char **msg)
     booked[i]=0;
     variant[i]=UNKNOWN;
   }
+
+  initCountry("/usr/lib/isdn/ausland.dat");
 
   if (conf && *conf) {
     if ((stream=fopen(conf,"r"))==NULL) {
@@ -619,6 +809,10 @@ int initRate(char *conf, char *dat, char **msg)
 	  }
 	  if (c) {
 	    Provider[prefix].Area=realloc(Provider[prefix].Area, (Provider[prefix].nArea+1)*sizeof(AREA));
+
+            if (isalpha(*c) && !countrymatch(c, NULL))
+	      warning(dat, "Unknown country \"%s\"", c);
+
 	    Provider[prefix].Area[Provider[prefix].nArea].Code=strdup(c);
 	    Provider[prefix].Area[Provider[prefix].nArea].Zone=zones->data; /* ugly: use first zone */
 	    Provider[prefix].nArea++;
@@ -776,8 +970,8 @@ int initRate(char *conf, char *dat, char **msg)
 	}
 	price=strtod(s,&s);
 	while (isblank(*s)) s++;
-	divider=0;
-	duration=1;
+	divider=0.0;
+	duration=1.0;
 	if (*s=='(') {
 	  s++; while (isblank(*s)) s++;
 	  if (!isdigit(*s)) {
@@ -819,7 +1013,10 @@ int initRate(char *conf, char *dat, char **msg)
 	    warning(dat, "last rate must not have a delay, will be ignored!");
 	    delay=UNKNOWN;
 	  }
-
+	  if (duration==0.0 && delay!=0 && delay != UNKNOWN) {
+	    warning(dat, "zero duration must not have a delay, duration set to %d!", delay);
+	    duration=delay;
+	  }
 	  zp=zones;
 	  while (zp) {
 	    z=pop(&zp);
@@ -899,14 +1096,21 @@ int getZone (int prefix, char *number)
   max=0;
   z=UNKNOWN;
   for (a=0; a<Provider[prefix].nArea; a++) {
+
+    if (isalpha(*Provider[prefix].Area[a].Code)) {
+      if (countrymatch(Provider[prefix].Area[a].Code, number))
+        return(Provider[prefix].Area[a].Zone);
+    }
+    else
+    {
     m=strmatch(Provider[prefix].Area[a].Code, number);
     if (m>max) {
       z=Provider[prefix].Area[a].Zone;
       max=m;
     }
     l=m;
+    } /* else */
   }
-
   return z;
 }
 
@@ -918,8 +1122,9 @@ int getRate(RATE *Rate, char **msg)
   HOUR  *Hour;
   UNIT  *Unit;
   int    prefix, zone, hour, i;
-  time_t now, run, end;
+  double now, run, end;
   struct tm tm;
+  time_t time;
 
   if (msg)
     *(*msg=message)='\0';
@@ -955,9 +1160,10 @@ int getRate(RATE *Rate, char **msg)
   now=Rate->start;
   end=Rate->now;
   Rate->Time=end-now;
-  run=0;
+  run=0.0;
   while (end>=now) {
-    tm=*localtime(&now);
+    time=now;
+    tm=*localtime(&time);
     if (hour!=tm.tm_hour) { /* Neuberechnung bei Stundenwechsel */
       hour=tm.tm_hour;
       hourBits=1<<tm.tm_hour;
@@ -981,11 +1187,11 @@ int getRate(RATE *Rate, char **msg)
     Rate->Rest+=Unit->Duration;
     now+=Unit->Duration;
     run+=Unit->Duration;
-    if (run==0 && Unit->Duration==0)
+    if (run==0.0 && Unit->Duration==0.0)
       Rate->Basic=Unit->Price;
     else
       Rate->Price=Unit->Price;
-    if (Unit->Duration>0)
+    if (Unit->Duration>0.0)
       Rate->Units++;
     if (Unit->Delay!=UNKNOWN && Unit->Delay<=run)
       Unit++;
@@ -1081,11 +1287,11 @@ void main (int argc, char *argv[])
   initHoliday ("../holiday-at.dat", &msg);
   printf ("%s\n", msg);
 
-  initRate ("/etc/isdn/rate.conf", "../rate-at.dat", &msg);
+  initRate ("/etc/isdn/rate.conf", "../auskunft.dat", &msg);
   printf ("%s\n", msg);
 
   Rate.prefix = 1;
-  Rate.zone = 4;
+  Rate.zone = 1;
 
   if (argc==2) {
     z=getZone(01, argv[1]);
@@ -1098,27 +1304,35 @@ void main (int argc, char *argv[])
   }
 
   time(&Rate.start);
+  time(&Rate.now);
+  if (getRate(&Rate, &msg)==UNKNOWN) {
+    printf ("Ooops: %s\n", msg);
+    exit (1);
+  }
+
+  printf ("%s\n\n", explainRate(&Rate));
+  printf ("---Date--- --Time--  --Charge-- ( Basic  Price)  Unit   Dur  Time  Rest\n");
+
   while (1) {
     time(&Rate.now);
-    if (getRate(&Rate, &msg)==UNKNOWN)
+    if (getRate(&Rate, &msg)==UNKNOWN) {
       printf ("Ooops: %s\n", msg);
-    else {
-      now=*localtime(&Rate.now);
-      printf ("%02d.%02d.%04d %02d:%02d:%02d  %s %6.2f sec  %7.3f + %7.3f öS  %3d EH  %6.2f öS  %3ld sec  %3ld sec\n",
-	      now.tm_mday, now.tm_mon+1, now.tm_year+1900,
-	      now.tm_hour, now.tm_min, now.tm_sec,
-	      explainRate(&Rate),
-	      Rate.Duration, Rate.Basic, Rate.Price, Rate.Units, Rate.Charge, Rate.Time, Rate.Rest);
-
-      LCR=Rate;
-#if 0
-      if (getLeastCost(&LCR,-1)!=UNKNOWN) {
-	printf ("least cost would be: %s %6.2f %7.3f %3d %6.2f %3ld %3ld\n",
-		explainRate(&LCR),
-		LCR.Duration, LCR.Price, LCR.Units, LCR.Charge, LCR.Time, LCR.Rest);
-      }
-#endif
+      exit (1);
     }
+    now=*localtime(&Rate.now);
+    printf ("%02d.%02d.%04d %02d:%02d:%02d  ATS %6.3f (%6.3f %6.3f)  %4d  %4.1f  %4ld  %4ld\n",
+	    now.tm_mday, now.tm_mon+1, now.tm_year+1900,
+	    now.tm_hour, now.tm_min, now.tm_sec,
+	    Rate.Charge, Rate.Basic, Rate.Price, Rate.Units, Rate.Duration, Rate.Time, Rate.Rest);
+
+    LCR=Rate;
+#if 0
+    if (getLeastCost(&LCR,-1)!=UNKNOWN) {
+      printf ("least cost would be: %s %6.2f %7.3f %3d %6.2f %3ld %3ld\n",
+	      explainRate(&LCR),
+	      LCR.Duration, LCR.Price, LCR.Units, LCR.Charge, LCR.Time, LCR.Rest);
+    }
+#endif
     sleep(1);
   }
 }

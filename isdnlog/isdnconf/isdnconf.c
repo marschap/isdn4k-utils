@@ -1,4 +1,4 @@
-/* $Id: isdnconf.c,v 1.24 1999/05/04 19:32:23 akool Exp $
+/* $Id: isdnconf.c,v 1.25 1999/05/09 18:24:10 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -20,6 +20,13 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnconf.c,v $
+ * Revision 1.25  1999/05/09 18:24:10  akool
+ * isdnlog Version 3.25
+ *
+ *  - README: isdnconf: new features explained
+ *  - rate-de.dat: many new rates from the I4L-Tarifdatenbank-Crew
+ *  - added the ability to directly enter a country-name into "rate-xx.dat"
+ *
  * Revision 1.24  1999/05/04 19:32:23  akool
  * isdnlog Version 3.24
  *
@@ -1001,11 +1008,12 @@ int main(int argc, char *argv[], char *envp[])
 	if (areacode[0] != '\0')
 	{
 		char *ptr;
-		int len, i, zone = UNKNOWN, zone2, duration = TESTDURATION;
+		int len, i, zone = UNKNOWN, zone2 = UNKNOWN, duration = TESTDURATION;
 
 
  		initHoliday(holifile, NULL);
  		initRate("/etc/isdn/rate.conf", "/usr/lib/isdn/rate-de.dat", NULL);
+ 		/* initRate(NULL, "/usr/lib/isdn/rate-de.dat", NULL); */
 		currency = strdup("DEM");
 
 		if (1 /* FIXME: (*areacode == '.') || (ptr = get_areacode(areacode,&len,quiet?C_NO_ERROR|C_NO_WARN:0)) != NULL */ )
@@ -1031,6 +1039,11 @@ int main(int argc, char *argv[], char *envp[])
                                   } /* else */
                                 }
 				else {
+                                  if (isalpha(*areacode)) {
+				    if (abroad(areacode, country))
+				      strcpy(areacode, country);
+                                  } /* if */
+
     				  zone = area_diff(NULL, areacode);
 
       				  switch (zone) {
@@ -1050,18 +1063,30 @@ int main(int argc, char *argv[], char *envp[])
 
                                 if (zone != UNKNOWN)
                                   zone2 = zone;
+#if 0
                                 else
                                   zone2 = getZone(DTAG, areacode);
+#endif
 
                                 if (zone2 == UNKNOWN) {
-				  abroad(areacode, country);
-                                  if (*country)
-                                    print_msg(PRT_NORMAL, "Ein %d Sekunden langes Gespraech nach %s (%s) kostet am %s", duration, country, areacode, ctime(&Rate.start));
+				  if (abroad(areacode, country))
+                                    print_msg(PRT_NORMAL, "Ein %d Sekunden langes Gespraech nach %s (%s) kostet am %s",
+                                      duration, country, areacode, ctime(&Rate.start));
                                   else
-                                    print_msg(PRT_NORMAL, "Ein %d Sekunden langes Gespraech in Zone Welt (%s) kostet am %s", duration, areacode, ctime(&Rate.start));
+                                    print_msg(PRT_NORMAL, "Ein %d Sekunden langes Gespraech in Zone Welt (%s) kostet am %s",
+                                      duration, areacode, ctime(&Rate.start));
                                 }
-                                else
-                                  print_msg(PRT_NORMAL, "Ein %d Sekunden langes Gespraech in Zone %d kostet am %s", duration, zone2, ctime(&Rate.start));
+                                else {
+                                  auto int   ll;
+                                  auto char *p;
+
+				  if ((p = get_areacode(areacode, &ll, C_NO_WARN | C_NO_EXPAND | C_NO_ERROR)) != 0)
+                                    print_msg(PRT_NORMAL, "Ein %d Sekunden langes Gespraech nach %s (Zone %d) kostet am %s",
+                                      duration, p, zone2, ctime(&Rate.start));
+                                  else
+                                    print_msg(PRT_NORMAL, "Ein %d Sekunden langes Gespraech in Zone %d kostet am %s",
+                                      duration, zone2, ctime(&Rate.start));
+                                } /* else */
 
                                 for (Rate.prefix = 0; Rate.prefix < MAXPROVIDER; Rate.prefix++) {
                                   if (zone != UNKNOWN)

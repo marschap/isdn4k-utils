@@ -1,4 +1,4 @@
-/* $Id: tools.h,v 1.39 1999/05/04 19:33:50 akool Exp $
+/* $Id: tools.h,v 1.40 1999/05/09 18:24:31 akool Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,13 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools.h,v $
+ * Revision 1.40  1999/05/09 18:24:31  akool
+ * isdnlog Version 3.25
+ *
+ *  - README: isdnconf: new features explained
+ *  - rate-de.dat: many new rates from the I4L-Tarifdatenbank-Crew
+ *  - added the ability to directly enter a country-name into "rate-xx.dat"
+ *
  * Revision 1.39  1999/05/04 19:33:50  akool
  * isdnlog Version 3.24
  *
@@ -1025,7 +1032,6 @@ _EXTERN char  *double2str(double n, int l, int d, int flags);
 _EXTERN char  *double2byte(double bytes);
 _EXTERN char  *time2str(time_t sec);
 _EXTERN char  *double2clock(double n);
-_EXTERN void   abroad(char *num, char *area);
 _EXTERN char  *vnum(int chan, int who);
 _EXTERN char  *i2a(int n, int l, int base);
 _EXTERN int    iprintf(char *obuf, int chan, register char *fmt, ...);

@@ -294,7 +294,7 @@ A:+595                                  # Paraguay
 A:+598                                  # Uruguay
 A:+62                                   # Indonesien
 A:+675                                  # Papua-Neuguinea
-A:+850                                  # Nordkorea
+A:+85                                   # Nordkorea
 A:+91                                   # Indien
 A:+94                                   # Sri Lanka
 
@@ -708,7 +708,7 @@ A:+595                                  # Paraguay
 A:+598                                  # Uruguay
 A:+62                                   # Indonesien
 A:+675                                  # Papua-Neuguinea
-A:+850                                  # Nordkorea
+A:+85                                   # Nordkorea
 A:+91                                   # Indien
 A:+94                                   # Sri Lanka
 
@@ -1122,7 +1122,7 @@ A:+595                                  # Paraguay
 A:+598                                  # Uruguay
 A:+62                                   # Indonesien
 A:+675                                  # Papua-Neuguinea
-A:+850                                  # Nordkorea
+A:+85                                   # Nordkorea
 A:+91                                   # Indien
 A:+94                                   # Sri Lanka
 
@@ -1536,7 +1536,7 @@ A:+595                                  # Paraguay
 A:+598                                  # Uruguay
 A:+62                                   # Indonesien
 A:+675                                  # Papua-Neuguinea
-A:+850                                  # Nordkorea
+A:+85                                   # Nordkorea
 A:+91                                   # Indien
 A:+94                                   # Sri Lanka
 
@@ -1904,7 +1904,7 @@ A:+679                                  # Fidschi
 A:+683                                  # Niue
 A:+686                                  # Kiribati
 A:+689                                  # Französisch-Polynesien
-A:+850                                  # Nordkorea
+A:+85                                   # Nordkorea
 A:+886                                  # Taiwan
 A:+91                                   # Indien
 A:+94                                   # Sri Lanka
@@ -2225,7 +2225,7 @@ A:+688                                  # Tuvalu
 A:+692                                  # Marshall Islands
 A:+808                                  # Wake Island
 A:+84                                   # Vietnam
-A:+850                                  # Nordkorea
+A:+85                                   # Nordkorea
 A:+855                                  # Cambodia
 A:+880                                  # Bangladesh
 A:+93                                   # Afghanistan
@@ -2549,7 +2549,7 @@ A:+595                                  # Paraguay
 A:+598                                  # Uruguay
 A:+62                                   # Indonesien
 A:+675                                  # Papua-Neuguinea
-A:+850                                  # Nordkorea
+A:+85                                   # Nordkorea
 A:+91                                   # Indien
 A:+94                                   # Sri Lanka
 Z:15                                    Ausland Zone 12
@@ -2859,7 +2859,7 @@ A:+595                                  # Paraguay
 A:+598                                  # Uruguay
 A:+62                                   # Indonesien
 A:+675                                  # Papua-Neuguinea
-A:+850                                  # Nordkorea
+A:+85                                   # Nordkorea
 A:+91                                   # Indien
 A:+94                                   # Sri Lanka
 Z:15                                    Ausland Zone 12
@@ -3337,6 +3337,14 @@ Z:6                                     Euro City
 T:1-5/8-18=3.76(60)/4.79/1              Tag
 T:1-5/18-8=3.46(60)/5.20/1              Nacht
 T:E,H/*=3.46(60)/5.20/1                 Weekend
+A:+3120                                 # Amsterdam
+A:+322                                  # Brüssel
+A:+331                                  # Paris
+A:+352                                  # Luxemburg
+A:+3902                                 # Mailand
+A:+411                                  # Zürich
+A:+44171                                # London
+A:+496102                               # Frankfurt
 Z:7                                     Welt 1
 T:*/*=6.66(60)/2.70/1                   rund um die Uhr
 A:+1                                    # Vereinigte Staaten (USA), Kanada
@@ -3455,7 +3463,7 @@ A:+687                                  # Neukaledonien
 A:+689                                  # Französisch-Polynesien
 A:+692                                  # Marshallinseln
 A:+74                                   # Tadschikistan
-A:+850                                  # Nordkorea
+A:+85                                   # Nordkorea
 A:+853                                  # Macau
 A:+856                                  # Laos
 A:+86                                   # China

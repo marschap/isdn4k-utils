@@ -1,10 +1,10 @@
-ISDNLOG - Version 3.24 -  				03-May-99  14:12
+ISDNLOG - Version 3.25 -  				06-May-99  21:59
 
 
 isdnlog ist ein Utility zur Auswertung des D-Kanals eines
 ISDN-BRI Anschlusses.
 
-isdnlog-3.24 wurde ausgiebig mit Linux-2.0.36 getestet.
+isdnlog-3.25 wurde ausgiebig mit Linux-2.0.36 getestet.
 
 
 Fuer alle, die es nun ueberhaupt nicht mehr abwarten koennen, hier das
@@ -3149,10 +3149,6 @@ Unter einen Eintrag ist eine eigene MSN ([MSN]) oder eine Telefonnummer
 Dieses Programm hat seine Staerken als ein Suchprogramm in einem persoenlichem
 Telefonbuch.
 
-Hier nun die Optionen des Programmes:
-
-Befehle:
-
 ACHTUNG:
 
 Dieses Programm besitzt zwar die Faehigkeit, die Nummerndateien zu veraendern.
@@ -3161,6 +3157,74 @@ Defaultmaessig wird die Datei ~/.isdn editiert. Es kann auch mit den Schaltern
 Es wird aber dringend davon abgeraten die Schalter -A und -D zu verwenden!!
 Hierbei wird die gesamte Struktur der Datei zerstoert (include), so wie alle
 Kommentare werden geloescht.
+
+Das Utility "isdnconf" kann weiterhin zur gezielten Befragung der
+Tarifdatenbank eingesetzt werden. Dazu gilt folgende Syntax:
+
+  isdnconf -c <Ziel>[,Dauer]
+
+Wird keine Dauer (L„nge der Verbindung) angegeben, nimmt isdnconf
+153 Sekunden an.
+
+"isdnconf" blickt immer von "hier", d.h. dem Ort, in dem man sich
+aktuell befindet (oder genauer, dem Ort, der durch die Eintraege
+COUNTRYCODE sowie AREACODE in der Config-Datei angegeben wurden).
+
+
+Als Ziel darf entweder ein ".", eine Telefonnummer oder eine
+Landesbezeichnung angegeben werden.
+
+Bei einem "." gibt isdnconf eine 7 Tage/24-Stunden LCR-Tabelle aus, die man
+sich z.b. neben das Telefon legen kann:
+
+$ isdnconf -c .
+Least-Cost-Routing-Table [Verbindungsdauer:153 Sekunden]:
+
+Werktag:
+        RegioCall:
+                07:00 .. 07:59 01055:Esprit        (DEM 0.050/60.0s = DEM 0.050/Min (Esprit, Region 50, Workday (Thursday), Late night))
+                08:00 .. 08:59 01070:Arcor CbC     (DEM 0.075/60.0s = DEM 0.075/Min (Arcor CbC, Regio Plus, Workday (Thursday)))
+                09:00 .. 17:59 01051:01051         (DEM 0.090/60.0s = DEM 0.090/Min (01051, Ferngespräche, Workday (Thursday)))
+                18:00 .. 18:59 01070:Arcor CbC     (DEM 0.075/60.0s = DEM 0.075/Min (Arcor CbC, Regio Plus, Workday (Thursday)))
+                19:00 .. 19:59 01013:Tele 2        (DEM 0.070/60.0s = DEM 0.070/Min (Tele 2, National, Workday (Thursday)))
+                20:00 .. 20:59 01078:3U            (DEM 0.001/1.0s = DEM 0.059/Min (3U, Fern, Workday (Thursday)))
+                21:00 .. 21:59 01070:Arcor CbC     (DEM 0.040/60.0s = DEM 0.040/Min (Arcor CbC, Regio Plus, Workday (Thursday)))
+                22:00 .. 06:59 01019:Mobilcom CbC  (DEM 0.040/60.0s = DEM 0.040/Min (Mobilcom CbC, Ferngespräche bundesweit, Workday (Thursday), Nacht))
+...
+
+D.h. es wird ausgegeben, ueber welchen Provider um welche Uhrzeit eine
+Verbindung am guestigsten ist.
+
+Daneben kann eine Telefonnummer angegeben werden, woraufhin isdnconf
+die Tarife der einzelnen Provider fuer eine Verbindung "jetzt gerade"
+ausgibt:
+
+$ isdnconf -c +4989
+Ein 153 Sekunden langes Gespraech nach Muenchen (Zone 4) kostet am Thu May  6 21:52:24 1999
+01055 DEM    0.150 (DEM 0.050/60.0s = DEM 0.050/Min (Esprit, Fern, Workday (Thursday), Late night))
+01078 DEM    0.150 (DEM 0.001/1.0s = DEM 0.059/Min (3U, Fern, Workday (Thursday)))
+01030 DEM    0.153 (DEM 0.001/1.0s = DEM 0.060/Min (TelDaFax, Deutschland, Workday (Thursday)))
+
+$ isdnconf -c +45
+Ein 153 Sekunden langes Gespraech nach Daenemark (+45) kostet am Thu May  6 21:54:21 1999
+01078 DEM    0.660 (DEM 0.004/1.0s = DEM 0.259/Min (3U, Daenemark,Finnland,Frankreich,Schweiz))
+01013 DEM    1.170 (DEM 0.390/60.0s = DEM 0.390/Min (Tele 2, Euro 1 / USA, Kanada))
+01019 DEM    1.470 (DEM 0.490/60.0s = DEM 0.490/Min (Mobilcom CbC, Gruppe A))
+01033 DEM    1.920 (DEM 0.120/10.0s = DEM 0.720/Min (DTAG, Euro 1))
+
+Last but not least kann anstelle einer Telefonnummer eine Landesbezeichnung
+angegeben werden:
+
+$ isdnconf -c Italien
+Ein 153 Sekunden langes Gespraech nach Italien (+39) kostet am Thu May  6 21:56:17 1999
+01078 DEM    0.915 (DEM 0.006/1.0s = DEM 0.359/Min (3U, Zone 110))
+01013 DEM    1.170 (DEM 0.390/60.0s = DEM 0.390/Min (Tele 2, Euro 1 / USA, Kanada))
+01019 DEM    1.470 (DEM 0.490/60.0s = DEM 0.490/Min (Mobilcom CbC, Gruppe A))
+
+
+Hier nun die Optionen des Programmes:
+
+Befehle:
 
   -A        "add"     Es wird ein neuer Eintrag hinzugefuegt. Dieser wird ueber
                       Standardinput eingelesen. Es werden folgende Angaben

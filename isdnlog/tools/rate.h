@@ -1,4 +1,4 @@
-/* $Id: rate.h,v 1.5 1999/04/14 13:17:26 akool Exp $
+/* $Id: rate.h,v 1.6 1999/05/09 18:24:26 akool Exp $
  *
  * Tarifdatenbank
  *
@@ -19,6 +19,13 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rate.h,v $
+ * Revision 1.6  1999/05/09 18:24:26  akool
+ * isdnlog Version 3.25
+ *
+ *  - README: isdnconf: new features explained
+ *  - rate-de.dat: many new rates from the I4L-Tarifdatenbank-Crew
+ *  - added the ability to directly enter a country-name into "rate-xx.dat"
+ *
  * Revision 1.5  1999/04/14 13:17:26  akool
  * isdnlog Version 3.14
  *
@@ -99,6 +106,7 @@ typedef struct {
   time_t     Rest;     /* bezahlte, aber noch nicht verbrauchte Zeit */
 } RATE;
 
+int   abroad(char *key, char *result);
 void  exitRate(void);
 int   initRate(char *conf, char *dat, char **msg);
 char *getProvidername(int prefix);

@@ -1,4 +1,4 @@
- /* $Id: holiday.c,v 1.10 1999/04/29 19:03:37 akool Exp $
+ /* $Id: holiday.c,v 1.11 1999/05/09 18:24:18 akool Exp $
  *
  * Feiertagsberechnung
  *
@@ -19,6 +19,13 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: holiday.c,v $
+ * Revision 1.11  1999/05/09 18:24:18  akool
+ * isdnlog Version 3.25
+ *
+ *  - README: isdnconf: new features explained
+ *  - rate-de.dat: many new rates from the I4L-Tarifdatenbank-Crew
+ *  - added the ability to directly enter a country-name into "rate-xx.dat"
+ *
  * Revision 1.10  1999/04/29 19:03:37  akool
  * isdnlog Version 3.22
  *
@@ -421,6 +428,7 @@ int isDay(struct tm *tm, bitfield mask, char **name)
   }
   
   if (mask & (1<<EVERYDAY)) {
+    if (name) *(*name=buffer)='\0';
     return day;
   }
 

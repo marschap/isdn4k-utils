@@ -1,4 +1,4 @@
-/* $Id: tools.c,v 1.25 1999/05/04 19:33:47 akool Exp $
+/* $Id: tools.c,v 1.26 1999/05/09 18:24:28 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -19,6 +19,13 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools.c,v $
+ * Revision 1.26  1999/05/09 18:24:28  akool
+ * isdnlog Version 3.25
+ *
+ *  - README: isdnconf: new features explained
+ *  - rate-de.dat: many new rates from the I4L-Tarifdatenbank-Crew
+ *  - added the ability to directly enter a country-name into "rate-xx.dat"
+ *
  * Revision 1.25  1999/05/04 19:33:47  akool
  * isdnlog Version 3.24
  *
@@ -588,40 +595,6 @@ char *double2clock(double n)
 
 /****************************************************************************/
 
-void abroad(char *num, char *area)
-{
-  *area = 0;
-
-  if (!memcmp(num, countryprefix, strlen(countryprefix))) { /* Ausland */
-    auto     FILE *f = fopen("/usr/lib/isdn/ausland.dat", "r");
-    register char *p, *p1;
-    auto     char  s[BUFSIZ];
-
-
-    if (f != (FILE *)NULL) {
-      while (fgets(s, BUFSIZ, f)) {
-        if ((p = strchr(s, ':'))) {
-          *p = 0;
-
-          if (!memcmp(num, s, strlen(s))) {
-            if ((p1 = strchr(p + 1, '\n')))
-              *p1 = 0;
-
-            strcpy(area, p + 1);
-
-            fclose(f);
-            return;
-          } /* if */
-        } /* if */
-      } /* while */
-
-      fclose(f);
-    } /* if */
-  } /* if */
-} /* abroad */
-
-/****************************************************************************/
-
 char *vnum(int chan, int who)
 {
   register int    l = strlen(call[chan].num[who]), got = 0;
@@ -680,37 +653,24 @@ char *vnum(int chan, int who)
   }
   else {
     if (!memcmp(call[chan].num[who], countryprefix, strlen(countryprefix))) { /* Ausland */
-      auto     FILE *f = fopen("/usr/lib/isdn/ausland.dat", "r");
-      register char *p, *p1;
-      auto     char  s[BUFSIZ];
+      register int  i;
+      auto     char s[BUFSIZ];
 
 
-      if (f != (FILE *)NULL) {
-        while (fgets(s, BUFSIZ, f)) {
-          if ((p = strchr(s, ':'))) {
-            *p = 0;
+      i = abroad(call[chan].num[who], s);
 
-            if (!memcmp(call[chan].num[who], s, strlen(s))) {
-              if ((p1 = strchr(p + 1, '\n')))
-                *p1 = 0;
+      if (i) {
+        Strncpy(call[chan].areacode[who], call[chan].num[who], i + 1);
+	strcpy(call[chan].rufnummer[who], call[chan].num[who] + i);
+	*call[chan].vorwahl[who] = 0;
+        strcpy(call[chan].area[who], s);
 
-      	      strcpy(call[chan].areacode[who], s);
-	      strcpy(call[chan].rufnummer[who], call[chan].num[who] + strlen(s));
-	      *call[chan].vorwahl[who] = 0;
-              strcpy(call[chan].area[who], p + 1);
+        sprintf(retstr[retnum], "%s %s, %s",
+      	  call[chan].areacode[who],
+      	  call[chan].rufnummer[who],
+      	  call[chan].area[who]);
 
-              sprintf(retstr[retnum], "%s %s, %s",
-      	        call[chan].areacode[who],
-      		call[chan].rufnummer[who],
-      		call[chan].area[who]);
-
-              fclose(f);
-  	      return(retstr[retnum]);
-            } /* if */
-          } /* if */
-        } /* while */
-
-        fclose(f);
+  	  return(retstr[retnum]);
       } /* if */
     } /* if */
 

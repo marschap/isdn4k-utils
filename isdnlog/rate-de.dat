@@ -1,4 +1,4 @@
-V:1.0-Germany [04-May-1999]
+V:1.02-Germany [09-May-1999]
 
 # Diese Tariftabelle ist ein Service der I4L-Tarifdatenbank-Crew.
 # Alle Angaben erfolgen ohne Gewähr
@@ -112,7 +112,7 @@ A:+39    # Italien
 A:+41    # Schweiz
 A:+43    # Österreich
 A:+44    # Großbritannien und Nordirland
-A:+45    # Dänemark
+A:Dänemark
 A:+46    # Schweden
 A:+47    # Norwegen
 T:*/*=0.39/60
@@ -143,7 +143,7 @@ A:+359   # Bulgarien
 A:+36    # Ungarn
 A:+370   # Litauen
 A:+371   # Lettland
-A:+372   # Estland
+A:Estland
 A:+373   # Moldau Republik
 A:+375   # Weißrußland (Belarus)
 A:+380   # Ukraine
@@ -329,7 +329,7 @@ A:+993   # Turkmenistan
 A:+994   # Aserbaidschan
 A:+995   # Georgien
 A:+996   # Kirgisistan
-A:+998   # Usbekistan
+A:Usbekistan
 T:*/*=2.44/60
 #####################################################################
 P:14 EWE TEL
@@ -352,6 +352,37 @@ A:0176,0179  		  # E2
 T:W/08-21=0.69/60
 T:W/21-08=0.49/60
 T:E,H/*=0.49/60
+Z:11 Europa 1
+A:Österreich, Belgien, Kanarische Inseln, Kroatien, Tschechische Republik
+A:Dänemark, Finnland, Frankreich, Ungarn, Irland, Italien, Liechtenstein
+A:Luxemburg, Monaco, Niederlande, Norwegen, Slowakei, Slowenien, Spanien
+A:Schweden, Schweiz, Großbritannien, Vatikanstadt
+T:*/*=0.61/60
+Z:12 Europa 2
+A:Albanien, Algerien, Andorra, Belarus (Weißrußland), Bosnien-Herzegowina
+A:Bulgarien, Zypern (griech.), Zypern (türk.), Estland, Gibraltar, Griechenland
+A:Island, Israel, Lettland, Libyen, Litauen, Mazedonien, Malta
+A:Niederländische Antillen, Polen, Portugal, Rumänien, Russland, San Marino, Serbien, Tunesien
+A:Türkei, Ukraine
+T:*/*=0.91/60
+Z:13 Welt 1
+A:Kanada, USA (inkl. Alaska, Hawaii), Jungferninseln (USA)
+T:*/*=0.40/60
+Z:14 Welt 2
+A:Australien, Hongkong, Japan, Korea (Süd), Neuseeland, Singapur
+T:*/*=0.99/60
+Z:15 Welt 3
+A:Angola, Anguilla, Antigua und Barbuda, Argentinien, Bahamas, Barbados, Bermuda
+A:Brasilien, Jungferninseln (GB), Cayman-Inseln, Chile, China, Kolumbien
+A:Dominica, Dominikanische Republik, Ägypten, Färöer, Grenada, Guam, Iran
+A:Jamaika, Jordanien, Kasachstan, Libanon, Moldavien, Montserrat, Marokko
+A:Marianen, Philippinen, Puerto Rico, St. Kitts & Nevis, St. Lucia
+A:St. Vincent and the Grenadines, Saudi-Arabien, Syrien, Taiwan, Trinidad & Tobago
+A:Turks- und Caicosinseln, Vereinigte Arabische Emirate
+T:*/*=1.91/60
+Z:16 Welt 4
+A:+
+T:*/*=2.51/60
 #####################################################################
 P:16 LausitzNet
 C:Telekommunikationsgesellschaft mbH, Lausitzer Straße 1-7, 03046 Cottbus 01016
@@ -406,7 +437,7 @@ A:+39    # Italien
 A:+41    # Schweiz
 A:+43    # Österreich
 A:+44    # Großbritannien und Nordirland
-A:+45    # Dänemark
+A:Dänemark
 A:+46    # Schweden
 A:+47    # Norwegen
 T:*/*=0.49/60
@@ -475,13 +506,587 @@ T:W/08-18=0.16/60 Standard
 T:W/18-08=0.12/60 Spar
 T:E/*=0.12/60 Spar
 Z:20 Internet
-A:01924924 (Benutzername: beliebig; Passwort: beliebig)
+A:01924924 # (Benutzername: beliebig; Passwort: beliebig)
 T:W/08-18=0.08/60 Standard
 T:W/18-08=0.06/60 Spar
 T:E/*=0.06/60 Spar
 #####################################################################
 P:25 CityKom
 C:Münster, Haferlandweg 8, 48155 Münster 01025
+C:homepage:	http://www.citykom.de
+C:nur Preselection oder Direct Access in der Gegend von Münster!
+C:Achtung!
+C:Ortsbereich ist erweitert von 20km auf 30km um Münster.  Orte siehe unten.
+C:Region 50 ist ebenfalls erweitert auf 100km um Münster.  Orte siehe unten.
+C:Grundgebühren:
+C:Analog: 24,40 DM
+C:ISDN: 45,00 DM
+C:CITYMS-ISDNet: 55,55 DM (ISDN + Internet)
+C:Sondertarif CITYMS-Jovel: Gespräche von CityKom Kunde zu CityKom Kunde
+G:01.02.1999
+Z:1 CITYMS-Münsterland
+T:W/09-18=0.07/60 Hauptzeit
+T:*/18-21=0.07/106 Nebenzeit
+T:*/05-09=0.07/106 Nebenzeit
+T:E,H/09-18=0.07/106 Nebenzeit
+T:*/21-05=0.07/145 Nachtzeit
+Z:2 CITYMS-Münsterland
+A:02382	# Ahlen/Westfalen
+A:02387	# Drensteinfurt-Walstedde
+A:02501	# Münster-Hiltrup
+A:02502	# Nottuln
+A:02504	# Telgte
+A:02505	# Altenberge
+A:02506	# Münster-Wolbeck
+A:02507	# Havixbeck
+A:02508	# Drensteinfurt
+A:02509	# Nottuln-Appelhülsen
+A:02526	# Sendenhorst
+A:02528	# Ennigerloh-Enniger
+A:02532	# Ostbevern
+A:02533	# Münster-Nienberge
+A:02534	# Münster-Roxel
+A:02535	# Sendenhorst-Albersloh
+A:02536	# Münster-Albachten
+A:02538	# Drensteinfurt-Rinkerode
+A:02543	# Billerbeck
+A:02545	# Rosendahl-Darfeld
+A:02547	# Rosendahl-Osterwick
+A:02548	# Dülmen-Rorup
+A:02551	# Steinfurt-Burgsteinfurt
+A:02552	# Steinfurt-Borghorst
+A:02554	# Laer/Kreis Steinfurt
+A:02558	# Horstmar
+A:02571	# Greven
+A:02572	# Emsdetten
+A:02573	# Nordwalde
+A:02574	# Saerbeck
+A:02575	# Greven-Reckenfeld
+A:02581	# Warendorf
+A:02582	# Everswinkel
+A:02583	# Sassenberg
+A:02584	# Warendorf-Milte
+A:02585	# Warendorf-Hoetmar
+A:02587	# Ennigerloh-Westkirchen
+A:02590	# Dülmen-Buldern
+A:02591	# Lüdinghausen
+A:02593	# Ascheberg
+A:02594	# Dülmen
+A:02596	# Nordkirchen
+A:02597	# Senden
+A:02598	# Ottmarsbocholt
+A:02599	# Ascheberg-Herbern
+A:05426	# Glandorf
+A:05481	# Lengerich/Westfalen
+A:05484	# Lienen-Kattenvenne
+A:05485	# Ladbergen
+T:W/09-18=0.07/60 Hauptzeit
+T:*/18-21=0.07/106 Nebenzeit
+T:*/05-09=0.07/106 Nebenzeit
+T:E,H/09-18=0.07/106 Nebenzeit
+T:*/21-05=0.07/145 Nachtzeit
+Z:3 CITYMS-Interregio
+A:0201	# Essen
+A:0202	# Wuppertal
+A:0203	# Duisburg
+A:02041	# Bottrop
+A:02043	# Gladbeck
+A:02045	# Bottrop-Kirchhellen
+A:02051	# Velbert
+A:02052	# Velbert-Langenberg
+A:02053	# Velbert-Neviges
+A:02054	# Essen-Kettwig
+A:02056	# Heiligenhaus
+A:02058	# Wülfrath
+A:02064	# Dinslaken
+A:02065	# Duisburg-Rheinhausen
+A:02066	# Duisburg-Homberg
+A:0208	# Oberhausen
+A:0209	# Gelsenkirchen
+A:02102	# Ratingen
+A:02104	# Mettmann
+A:0212	# Solingen
+A:02129	# Haan/Rhein
+A:02150	# Meerbusch-Lank
+A:02191	# Remscheid
+A:02192	# Hückeswagen
+A:02195	# Radevormwald
+A:02196	# Wermelskirchen
+A:02264	# Marienheide
+A:02267	# Wipperfürth
+A:02269	# Kierspe-Rönsahl
+A:02301	# Holzwickede
+A:02302	# Witten
+A:02303	# Unna
+A:02304	# Schwerte
+A:02305	# Castrop-Rauxel
+A:02306	# Lünen
+A:02307	# Kamen
+A:02308	# Unna-Hemmerde
+A:02309	# Waltrop
+A:0231	# Dortmund
+A:02323	# Herne
+A:02324	# Hattingen
+A:02325	# Wanne-Eickel
+A:02327	# Bochum-Wattenscheid
+A:02330	# Herdecke
+A:02331	# Hagen
+A:02332	# Gevelsberg
+A:02333	# Ennepetal
+A:02334	# Hagen-Hohenlimburg
+A:02335	# Wetter/Ruhr
+A:02336	# Schwelm
+A:02337	# Hagen-Dahl
+A:02338	# Breckerfeld
+A:02339	# Sprockhövel-Haßlinghausen
+A:0234	# Bochum
+A:02351	# Lüdenscheid
+A:02352	# Altena/Westfalen
+A:02353	# Halver
+A:02354	# Meinerzhagen
+A:02355	# Schalksmühle
+A:02357	# Herscheid
+A:02358	# Meinerzhagen-Valbert
+A:02359	# Kierspe
+A:02360	# Haltern-Lippramsdorf
+A:02361	# Recklinghausen
+A:02362	# Dorsten
+A:02363	# Datteln
+A:02364	# Haltern/Westfalen
+A:02365	# Marl
+A:02366	# Herten
+A:02367	# Henrichenburg
+A:02368	# Oer-Erkenschwick
+A:02369	# Dorsten-Wulfen
+A:02371	# Iserlohn
+A:02372	# Hemer
+A:02373	# Fröndenberg / Menden / Sauerland
+A:02374	# Iserlohn-Letmathe
+A:02375	# Balve
+A:02377	# Wickede/Ruhr
+A:02378	# Fröndenberg-Langschede
+A:02379	# Menden-Asbeck
+A:02381	# Hamm/Westfalen
+A:02383	# Bönen
+A:02384	# Welver
+A:02385	# Hamm-Rhynern
+A:02388	# Hamm-Uentrop
+A:02389	# Werne
+A:02391	# Plettenberg
+A:02392	# Werdohl
+A:02393	# Sundern-Allendorf
+A:02394	# Neuenrade-Affeln
+A:02395	# Finnentrop-Rönkhausen
+A:02520	# Wadersloh-Diestedde
+A:02521	# Beckum
+A:02522	# Oelde
+A:02523	# Wadersloh
+A:02524	# Ennigerloh
+A:02525	# Beckum-Neubeckum
+A:02527	# Lippetal-Lippborg
+A:02529	# Oelde-Stromberg
+A:02541	# Coesfeld
+A:02542	# Gescher
+A:02546	# Coesfeld-Lette
+A:02553	# Ochtrup
+A:02555	# Schöppingen
+A:02556	# Metelen
+A:02557	# Wettringen/Kreis Steinfurt
+A:02561	# Ahaus
+A:02562	# Gronau/Westfalen
+A:02563	# Stadtlohn
+A:02564	# Vreden
+A:02565	# Gronau-Epe
+A:02566	# Legden
+A:02567	# Ahaus-Alstätte
+A:02568	# Heek
+A:02586	# Beelen
+A:02588	# Harsewinkel-Greffen
+A:02592	# Selm
+A:02595	# Olfen
+A:02721	# Lennestadt
+A:02722	# Attendorn
+A:02724	# Finnentrop-Serkenrode
+A:02725	# Lennestadt-Oedingen
+A:02761	# Olpe
+A:02801	# Xanten
+A:02802	# Alpen
+A:02803	# Wesel-Büderich
+A:02804	# Xanten-Marienbaum
+A:0281	# Wesel
+A:02822	# Emmerich
+A:02824	# Kalkar
+A:02825	# Üedem
+A:02835	# Issum
+A:02838	# Sonsbeck
+A:02841	# Moers
+A:02842	# Kamp-Lintfort
+A:02843	# Rheinberg
+A:02844	# Rheinberg-Orsoy
+A:02845	# Neunkirchen-Vluyn
+A:02850	# Rees-Haldern
+A:02851	# Rees
+A:02852	# Hamminkeln
+A:02853	# Schermbeck
+A:02855	# Voerde/Niederrhein
+A:02856	# Hamminkeln-Brünen
+A:02857	# Rees-Mehr
+A:02858	# Hünxe
+A:02859	# Wesel-Bislich
+A:02861	# Borken/Westfalen
+A:02862	# Südlohn
+A:02863	# Velen
+A:02864	# Reken
+A:02865	# Raesfeld
+A:02866	# Dorsten-Rhade
+A:02867	# Heiden/Kreis Borken
+A:02871	# Bocholt
+A:02872	# Rhede/Westfalen
+A:02873	# Isselburg-Werth
+A:02874	# Isselburg
+A:02902	# Warstein
+A:02903	# Meschede-Freienohl
+A:02904	# Bestwig
+A:02905	# Bestwig-Ramsbeck
+A:0291	# Meschede
+A:02921	# Bad Sassendorf / Soest
+A:02922	# Werl
+A:02923	# Lippetal-Herzfeld
+A:02924	# Möhnesee
+A:02925	# Warstein-Allagen
+A:02928	# Soest-Ostönnen
+A:02931	# Arnsberg
+A:02932	# Neheim-Hüsten
+A:02933	# Sundern/Sauerland
+A:02934	# Sundern-Altenhellefeld
+A:02935	# Sundern-Hachen
+A:02937	# Arnsberg-Oeventrop
+A:02938	# Ense
+A:02941	# Lippstadt
+A:02942	# Geseke
+A:02943	# Erwitte
+A:02944	# Rietberg-Mastholte
+A:02945	# Lippstadt-Benninghausen
+A:02947	# Anröchte
+A:02948	# Lippstadt-Rebbeke
+A:02951	# Büren
+A:02952	# Rüthen
+A:02953	# Wünnenberg
+A:02954	# Rüthen-Oestereiden
+A:02955	# Büren-Wewelsburg
+A:02957	# Wünnenberg-Haaren
+A:02958	# Büren-Harth
+A:02961	# Brilon
+A:02962	# Olsberg
+A:02963	# Brilon-Messinghausen
+A:02964	# Brilon-Alme
+A:02971	# Schmallenberg-Dorlar
+A:02973	# Eslohe/Sauerland
+A:02974	# Schmallenberg-Fredeburg
+A:02977	# Schmallenberg-Bödefeld
+A:02983	# Winterberg-Siedlinghausen
+A:02985	# Winterberg-Niedersfeld
+A:02991	# Marsberg-Bredelar
+A:04441	# Vechta
+A:04442	# Lohne/Oldenburg
+A:04443	# Dinklage
+A:04446	# Bakum
+A:04472	# Lastrup
+A:04477	# Lastrup-Hemmelte
+A:04478	# Cappeln/Oldenburg
+A:05201	# Halle/Westfalen
+A:05202	# Oerlinghausen
+A:05203	# Werther/Westfalen
+A:05204	# Steinhagen/Westfalen
+A:05205	# Bielefeld-Sennestadt
+A:05206	# Bielefeld-Jöllenbeck
+A:05207	# Schloß Holte-Stukenbrock
+A:05208	# Leopoldshöhe
+A:05209	# Gütersloh-Friedrichsdorf
+A:0521	# Bielefeld
+A:05221	# Herford
+A:05222	# Bad Salzuflen
+A:05223	# Bünde
+A:05224	# Enger
+A:05225	# Spenge
+A:05226	# Bruchmühlen/Westfalen
+A:05228	# Vlotho-Exter
+A:05231	# Detmold
+A:05232	# Lage/Lippe
+A:05234	# Horn-Bad Meinberg
+A:05236	# Blomberg-Grosenmarpe
+A:05237	# Augustdorf
+A:05238	# Nieheim-Himmighausen
+A:05241	# Gütersloh
+A:05242	# Rheda-Wiedenbrück
+A:05244	# Rietberg
+A:05245	# Herzebrock-Clarholz
+A:05246	# Verl
+A:05247	# Harsewinkel
+A:05248	# Langenberg
+A:05250	# Delbrück/Westfalen
+A:05251	# Paderborn
+A:05252	# Bad Lippspringe
+A:05253	# Bad Driburg
+A:05254	# Paderborn-Schloß Neuhaus
+A:05255	# Altenbeken
+A:05257	# Hövelhof
+A:05258	# Salzkotten
+A:05259	# Bad Driburg-Neuenheerse
+A:05261	# Lemgo
+A:05264	# Kalletal
+A:05265	# Dörentrup
+A:05266	# Lemgo-Kirchheide
+A:05292	# Lichtenau-Atteln
+A:05293	# Paderborn-Dahl
+A:05294	# Hövelhof-Espeln
+A:05295	# Lichtenau/Westfalen
+A:05401	# Georgsmarienhütte
+A:05402	# Bissendorf/Kreis Osnabrück
+A:05403	# Bad Iburg
+A:05404	# Lotte / Kreis Osnabrück / Westerkappeln
+A:05405	# Hasbergen/Kreis Osnabrück
+A:05406	# Belm
+A:05407	# Wallenhorst
+A:05409	# Hilter am Teutobrger Wald
+A:0541	# Osnabrück
+A:05421	# Dissen am Teutoburger Wald
+A:05422	# Melle
+A:05423	# Versmold
+A:05424	# Bad Laer / Osnabrück / Bad Rothenfelde
+A:05425	# Borgholzhausen
+A:05427	# Melle-Buer
+A:05428	# Melle-Neuenkirchen
+A:05429	# Melle-Wellingholzhausen
+A:05431	# Quakenbrück
+A:05432	# Löningen
+A:05433	# Badbergen
+A:05434	# Essen/Oldenburg
+A:05435	# Berge b. Quakenbrück
+A:05436	# Nortrup
+A:05437	# Menslage
+A:05438	# Bakum-Lüsche
+A:05439	# Bersenbrück
+A:05441	# Diepholz
+A:05443	# Lemförde
+A:05444	# Wagenfeld
+A:05445	# Drebber
+A:05446	# Rehden
+A:05447	# Lembruch
+A:05448	# Barver
+A:05451	# Ibbenbüren
+A:05452	# Mettingen/Westfalen
+A:05453	# Recke
+A:05454	# Hörstel-Riesenbeck
+A:05455	# Tecklenburg-Brochterbeck
+A:05456	# Westerkappeln-Velpe
+A:05457	# Hopsten-Schale
+A:05458	# Hopsten
+A:05459	# Hörstel
+A:05461	# Bramsche/Hase
+A:05462	# Ankum
+A:05464	# Alfhausen
+A:05465	# Neuenkirchen/Bramsche
+A:05466	# Merzen
+A:05467	# Voltlage
+A:05468	# Bramsche-Engter
+A:05471	# Bohmte
+A:05472	# Bad Essen
+A:05473	# Ostercappeln
+A:05474	# Stemwede-Dielingen
+A:05475	# Bohmte-Hunteburg
+A:05476	# Ostercappeln-Venne
+A:05482	# Tecklenburg
+A:05483	# Lienen
+A:05491	# Damme
+A:05492	# Steinfeld/Oldenburg
+A:05493	# Neuenkirchen/Oldenburg
+A:05494	# Holdorf/Niedersachsen
+A:05495	# Vörden
+A:05703	# Hille
+A:05704	# Petershagen-Friedewalde
+A:05706	# Porta Westfalica
+A:0571	# Minden
+A:05731	# Bad Oeynhausen
+A:05732	# Löhne
+A:05733	# Vlotho
+A:05734	# Bergkirchen/Westfalen
+A:05741	# Lübbecke
+A:05742	# Preußisch Oldendorf
+A:05743	# Espelkamp-Gestringen
+A:05744	# Hüllhorst
+A:05745	# Stemwede-Levern
+A:05746	# Rödinghausen
+A:05755	# Kalletal-Varenholz
+A:05771	# Rahden
+A:05772	# Espelkamp
+A:05773	# Stemwede-Wehdem
+A:05774	# Wagenfeld-Ströhen
+A:05775	# Diepenau
+A:05776	# Preußisch Ströhen
+A:05777	# Diepenau-Essern
+A:05901	# Fürstenau (b. Bramsche)
+A:05902	# Freren
+A:05903	# Emsbüren
+A:05904	# Lengerich/Emsland
+A:05905	# Beesten
+A:05906	# Lünne
+A:05907	# Geeste
+A:05908	# Wietmarschen-Lohne
+A:05909	# Wettrup
+A:0591	# Lingen
+A:05921	# Nordhorn
+A:05922	# Bad Bentheim
+A:05923	# Schüttorf
+A:05924	# Bad Bentheim-Gildehaus
+A:05925	# Wietmarschen
+A:05926	# Engden
+A:05931	# Meppen
+A:05932	# Haren
+A:05935	# Twist-Schöninghsdorf
+A:05936	# Twist
+A:05937	# Geeste-Groß Hesepe
+A:05941	# Neuenhaus
+A:05942	# Üelsen
+A:05943	# Emlichheim
+A:05944	# Hoogstede
+A:05945	# Wilsum
+A:05946	# Georgsdorf
+A:05947	# Laar/Vechte
+A:05948	# Itterbeck
+A:05951	# Werlte
+A:05952	# Sögel
+A:05957	# Lindern/Oldenburg
+A:05961	# Haselünne
+A:05962	# Herzlake
+A:05963	# Bawinkel
+A:05964	# Lähden
+A:05965	# Klein Berßen
+A:05966	# Meppen-Apeldorn
+A:05971	# Rheine
+A:05973	# Neuenkirchen/Kreis Steinfurt
+A:05975	# Rheine-Mesum
+A:05976	# Salzbergen
+A:05977	# Spelle
+A:05978	# Hörstel-Dreierwalde
+T:W/09-18=0.07/60 Hauptzeit
+T:W/18-09=0.07/40 Nebenzeit
+T:E,H/*=0.07/40 Nebenzeit
+Z:4 CITYMS-100 plus
+T:W/09-18=0.07/60 Hauptzeit
+T:W/18-09=0.07/60 Nebenzeit
+T:E,H/*=0.07/60 Nebenzeit
+Z:5-10 CITYMS-Mobilfunk
+A:01610,01617,01618,01619,0170,0171,0172,0173,0176,0177,0178,0179
+T:W/08-18=0.07/60 Hauptzeit
+T:W/18-08=0.07/60 Nebenzeit
+T:E,H/*=0.07/60 Nebenzeit
+Z:11 Sonderpreis Niederlande und Großbritannien
+A:+31	# Niederlande
+A:+44	# Großbritannien OHNE! Nordirland
+T:*/*=0.07/12
+Z:12 CITYMS-Euro
+A:+376	# Andorra
+A:+32	# Belgien
+A:Dänemark
+A:+298	# Färöer
+A:+358	# Finnland
+A:+33	# Frankreich
+A:+30	# Griechenland
+# FIXME: A:+44	# Insel Man (Großbritannien)
+A:+353	# Irland
+A:+354	# Island
+A:+39	# Italien
+# FIXME: A:+44	# Kanalinseln (Großbritannien)
+A:+4175	# Liechtenstein
+A:+352	# Luxemburg
+A:+377	# Monaco
+# FIXME: A:+44	# Nordirland
+A:+47	# Norwegen
+A:+43	# Österreich
+A:+48	# Polen
+A:+351	# Portugal
+A:+378	# San Marino
+A:+46	# Schweden
+A:+41	# Schweiz
+A:+421	# Slowakei
+A:+34	# Spanien
+A:+420	# Tschechien
+A:+396	# Vatikanstadt
+T:*/*=0.07/6.7
+Z:13 CITYMS-Europa
+A:+20	# Ägypten
+A:+355	# Albanien
+A:+213	# Algerien
+A:+375	# Belarus (Weißrußland)
+A:+387	# Bosnien-Herzegowina
+A:+359	# Bulgarien
+A:Estland
+A:+350	# Gibraltar
+A:+972	# Israel
+A:+962	# Jordanien
+A:+381	# Jugoslawien Serbien und Montenegro
+A:+385	# Kroatien
+A:+371	# Lettland
+A:+961	# Libanon
+A:+218	# Libyen
+A:+370	# Litauen
+A:+356	# Malta
+A:+212	# Marokko
+A:+389	# Mazedonien
+# UNKNOWN: Moldawien (= Moldau Republik ?)
+A:+373	# Moldau Republik
+A:+40	# Rumänien
+A:+7	# GUS (Russische Föderation) (westlich des 40. Längengrades)
+A:+386	# Slowenien
+A:+963	# Syrien
+A:+90	# Türkei
+A:+216	# Tunesien
+A:+380	# Ukraine
+A:+36	# Ungarn
+A:+357	# Zypern
+T:*/*=0.07/4.7
+Z:14 CITYMS-Nordamerika
+A:+1	# Vereinigte Staaten (USA) und Kanada
+T:*/*=0.07/7.5
+Z:15 CITYMS-Welt 2
+A:+61	# Australien
+A:+852	# Hongkong
+A:+81	# Japan
+A:+82	# Korea (Republik)
+A:+64	# Neuseeland
+A:+65	# Singapur
+T:*/*=0.07/2.5
+Z:16 CITYMS-Welt 3
+A:+54	# Argentinien
+A:+55	# Brasilien
+A:+56	# Chile
+A:+886	# China (Taiwan)
+A:+1809	# Dominikanische Republik
+A:+98	# Iran
+# FIXME: A:+7	# Kasachstan
+A:+57	# Kolumbien
+A:+599	# Niederländische Antillen
+A:+63	# Philippinen
+A:+966	# Saudi-Arabien
+A:+27	# Südafrika
+A:+967	# Jemen (Arabische Republik)
+A:+971	# Vereinigte Arabische Emirate
+T:*/*=0.07/1.9
+Z:17 CITYMS-Welt 4
+T:*/*=0.07/1.8
+Z:20 CITYMS-Internet
+T:W/09-18=0.0455/60 Hauptzeit
+T:*/18-21=0.0455/106 Nebenzeit
+T:*/05-09=0.0455/106 Nebenzeit
+T:E,H/09-18=0.0455/106 Nebenzeit
+T:*/21-05=0.0455/145 Nachtzeit
+Z:21 CITYMS-Jovel
+T:W/09-18=0.056/60 Hauptzeit
+T:*/18-21=0.056/106 Nebenzeit
+T:*/05-09=0.056/106 Nebenzeit
+T:E,H/09-18=0.056/106 Nebenzeit
+T:*/21-05=0.056/145 Nachtzeit
 #####################################################################
 P:26 ECN
 C:Telekommunikation GmbH, Schmickstraße 38-40, 60314 Frankfurt 01026
@@ -530,7 +1135,7 @@ C:Deutsche Telekom AG, Friedrich-Ebert-Allee 140, 53113 Bonn 01033
 C:Name:     Deutsche Telekom AG
 C:Homepage: http://www.dtag.de
 C:Hotline:  0800/33-01000, T-Online Tarifhotline: 0800/33-03333
-C:Internet-Zugang: monatliche Grundgebhr DM 8,00 enthalten 2 Freistunden
+C:Internet-Zugang: monatliche Grundgebühr DM 8,00 enthalten 2 Freistunden
 C:		   dort ist nur das Verbindungsentgeld faellig
 C:ISDN-Tarif
 C:FORMEL: 7,2 / Minutenpreis => Taktlaenge
@@ -580,9 +1185,9 @@ T:W/18-09=0.12/15
 T:E,H/*=0.12/15
 Z:8 Mobilfunknetz D2
 A:0172,0173
-T:W/09-18=0.12/5.4
-T:W/18-09=0.12/13
-T:E,H/*=0.12/13
+T:W/09-18=0.12/7.5
+T:W/18-09=0.12/15
+T:E,H/*=0.12/15
 Z:9 Mobilfunknetz E-Plus
 A:0177,0178
 T:W/09-18=0.12/5.3
@@ -590,9 +1195,15 @@ T:W/18-09=0.12/12.8
 T:E,H/*=0.12/12.8
 Z:10 Mobilfunknetz Viag Interkom
 A:0176,0179
-T:W/09-18=0.12/5.4
-T:W/18-09=0.12/13
-T:E,H/*=0.12/13
+T:W/09-18=0.12/7.5
+T:W/18-09=0.12/15
+T:E,H/*=0.12/15
+Z:12 Euro 1
+A:Dänemark
+T:*/*=0.12/10
+Z:14 Welt 1
+A:Estland
+T:*/*=0.12/6
 Z:20 Internet
 A:0191011
 T:*/*=0.06/0,0.06/60 T-Online eco
@@ -705,6 +1316,45 @@ C:Telekommunikation GmbH, Hammerbrookstraße 63, 20097 Hamburg 01041
 #####################################################################
 P:42 TeleBeL
 C:Telekommunikation Bergisches Land GmbH, Johannisberg 7, 42103 Wuppertal 01042
+C:Hotline:	01802 / 244 544
+C:Homepage:	http://www.telebel.de
+C:nur Direct Access in der Region um Wuppertal
+C:Grundgebühr: ISDN 36,- DM, Analog 22,- DM
+C:Internetzugang: Grundgebühr im Anschluß enthalten
+C:Gespräche von TeleBeL Kunde zu TeleBeL Kunde ("Unter Uns") nur 0,02 DM / Min!
+G:01.05.1999
+Z:1-2 Bergisch City
+T:W/08-18=0.06(60)/1 Hauptzeit
+T:W/18-08=0.04(60)/1 Nebenzeit
+T:E,H/*=0.04(60)/1 Nebenzeit
+Z:3 Bergisch 50
+T:W/08-18=0.22(60)/1 Hauptzeit
+T:W/18-08=0.11(60)/1 Nebenzeit
+T:E,H/*=0.11(60)/1 Nebenzeit
+Z:4 Deutschland
+T:W/08-18=0.22(60)/1 Hauptzeit
+T:W/18-08=0.11(60)/1 Nebenzeit
+T:E,H/*=0.11(60)/1 Nebenzeit
+Z:5-10 Mobilfunk
+A:0170,0171,0172,0173,0176,0177,0178,0179
+T:W/08-18=0.90(60)/1 Hauptzeit
+T:W/18-08=0.48(60)/1 Nebenzeit
+T:E,H/*=0.48(60)/1 Nebenzeit
+Z:12 Euro 1
+T:*/*=0.70(60)/1
+Z:13 Euro 2
+T:*/*=0.95(60)/1
+Z:14 Nordamerika
+T:*/*=0.70(60)/1
+Z:15 Asien, Pazifik
+T:*/*=1.75(60)/1
+Z:16 Übrige Welt
+T:*/*=2.75(60)/1
+Z:20 Internet
+A:931080
+T:*/*=0.05(60)/1
+Z:21 Unter Uns
+T:*/*=0.02(60)/1
 #####################################################################
 P:43 KielNet
 C:GmbH, Postfach 41 60, 24100 Kiel 01043
@@ -724,8 +1374,598 @@ C:International Europe Ltd. 01047
 P:48 DOKOM
 C:GmbH, Im Defdahl 5, 44141 Dortmund 01048
 #####################################################################
-P:49 ACC
+P:49,1 ACC ACCess Direkt Pre-Selection Einheitentarif
 C:Telekommunikation GmbH, Heinrich-Heine-Allee 53, 40213 Düsseldorf 01049
+C:Homepage: http://www.acctelecom.de
+Z:2 Nah
+T:W/08-18=0.08/60
+T:W/18-08=0.08/90
+T:E,H/*=0.08/90
+Z:3-4 Fern
+T:W/08-18=0.08/30
+T:W/18-08=0.08/60
+T:E,H/*=0.08/60
+Z:5-10 Mobilfunk
+T:W/08-18=0.09/7.5
+T:W/18-08=0.09/15
+T:E,H/*=0.09/7.5
+Z:11 EuroCity
+A:+3120		# Amsterdam, Niederlande
+A:+322		# Brüssel, Belgien
+A:+331		# Paris, Frankreich
+A:+4420		# London, Großbritannien und Nordirland
+A:+3491		# Madrid, Spanien
+# FIXME: A:+352		# Luxemburg (Stadt), Luxemburg, nicht Luxemburg Land!
+A:+431		# Wien, Österreich
+A:+411		# Zürich, Schweiz
+T:*/*=0.09/10
+Z:12 Euro1
+A:+376   # Andorra
+A:+32    # Belgien
+A:Dänemark
+A:+298   # Färöer
+A:+33    # Frankreich
+A:+30    # Griechenland
+A:+44    # Großbritannien und Nordirland
+# FIXME A:+44    # Insel Man (Großbritannien)
+A:+353   # Irland
+A:+39    # Italien
+# FIXME A:+44    # Kanalinseln (Großbritannien)
+A:+4175  # Liechtenstein
+A:+352   # Luxemburg (Land), Luxemburg
+A:+377   # Monaco
+A:+31    # Niederlande
+A:+43    # Österreich
+A:+378   # San Marino
+A:+41    # Schweiz
+A:+34    # Spanien
+A:+396   # Vatikanstadt
+T:W/08-18=0.09/8.6
+T:W/18-08=0.09/10
+T:E,H/*=0.09/10
+Z:13 Euro2
+A:+358	# Finnland
+A:+354	# Island
+A:+47	# Norwegen
+A:+48	# Polen
+A:+351	# Portugal
+A:+46	# Schweden
+A:+421	# Slowakei
+A:+420	# Tschechien
+T:W/08-18=0.09/7.5
+T:W/18-08=0.09/10
+T:E,H/*=0.09/10
+Z:14 Euro3
+A:+385	# Kroatien
+A:+90	# Türkei
+A:+36	# Ungarn
+A:+357	# Zypern
+T:W/08-18=0.09/6.7
+T:W/18-08=0.09/7.5
+T:E,H/*=0.09/7.5
+Z:15 Euro4
+A:+20	# Ägypten
+A:+355	# Albanien
+A:+213	# Algerien
+A:+387	# Bosnien-Herzegowina
+A:+359	# Bulgarien
+A:Estland
+A:+350	# Gibraltar
+A:+972	# Israel
+A:+962	# Jordanien
+A:+381	# Jugoslawien
+A:+371	# Lettland
+A:+961	# Libanon
+A:+218	# Libyen
+A:+370	# Litauen
+A:+356	# Malta
+A:+212	# Marokko
+A:+389	# Mazedonien
+A:+373	# Moldau Republik
+A:+40	# Rumänien
+# FIXME: A:+7	# GUS (Russische Föderation) -> Orte westlich des 40. geogr. Längengrades ?
+A:+386	# Slowenien
+A:+963	# Syrien
+A:+216	# Tunesien
+A:+380	# Ukraine
+A:+375	# Belarus (Weißrußland)
+T:*/*=0.09/6
+Z:16 Welt1
+A:+1	# Kanada
+A:+1	# Vereinigte Staaten (USA)
+T:W/08-18=0.09/8.6
+T:W/18-08=0.09/10
+T:E,H/*=0.09/10
+Z:17 Welt2
+A:+61	# Australien
+A:+852	# Hongkong
+A:+81	# Japan
+A:+82	# Korea (Republik)
+A:+64	# Neuseeland
+A:+65	# Singapur
+T:*/*=0.09/3.3
+Z:18 Welt3
+A:+56	# Chile
+A:+886	# Taiwan
+T:*/*=0.09/3
+Z:19 Welt4
+A:+55	# Brasilien
+A:+27	# Südafrika
+T:*/*=0.09/2.7
+Z:21 Welt5
+A:+54	# Argentinien
+A:+1809	# Dominikanische Republik
+A:+98	# Iran
+# FIXME: A:+7	# Kasachstan
+A:+57	# Kolumbien
+A:+599	# Niederländische Antillen
+A:+63	# Philippinen
+A:+966	# Saudi-Arabien
+A:+971	# Vereinigte Arabische Emirate
+T:*/*=0.09/2.6
+Z:22 Welt6
+A:+60	# Malaysia
+A:+52	# Mexiko
+T:*/*=0.09/2.4
+Z:23 Welt7
+T:*/*=0.09/2.3
+#####################################################################
+P:49,2 ACC ACCess Direkt Pre-Selection Minutentarif
+C:Telekommunikation GmbH, Heinrich-Heine-Allee 53, 40213 Düsseldorf 01049
+C:Homepage: http://www.acctelecom.de
+Z:2 Nah
+T:W/08-18=0.12(60)/1
+T:W/18-08=0.09(60)/1
+T:E,H/*=0.09(60)/1
+Z:3-4 Fern
+T:W/08-18=0.15(60)/1
+T:W/18-08=0.09(60)/1
+T:E,H/*=0.09(60)/1
+Z:5-10 Mobilfunk
+T:W/08-18=0.73(60)/1
+T:W/18-08=0.36(60)/1
+T:E,H/*=0.36(60)/1
+Z:11 EuroCity
+A:+3120		# Amsterdam, Niederlande
+A:+322		# Brüssel, Belgien
+A:+331		# Paris, Frankreich
+A:+4420		# London, Großbritannien und Nordirland
+A:+3491		# Madrid, Spanien
+# FIXME: A:+352		# Luxemburg (Stadt), Luxemburg, nicht Luxemburg Land!
+A:+431		# Wien, Österreich
+A:+411		# Zürich, Schweiz
+T:*/*=0.55(60)/1
+Z:12 Euro1
+A:+376   # Andorra
+A:+32    # Belgien
+A:Dänemark
+A:+298   # Färöer
+A:+33    # Frankreich
+A:+30    # Griechenland
+A:+44    # Großbritannien und Nordirland
+# FIXME A:+44    # Insel Man (Großbritannien)
+A:+353   # Irland
+A:+39    # Italien
+# FIXME A:+44    # Kanalinseln (Großbritannien)
+A:+4175  # Liechtenstein
+A:+352   # Luxemburg (Land), Luxemburg
+A:+377   # Monaco
+A:+31    # Niederlande
+A:+43    # Österreich
+A:+378   # San Marino
+A:+41    # Schweiz
+A:+34    # Spanien
+A:+396   # Vatikanstadt
+T:W/08-18=0.64(60)/1
+T:W/18-08=0.55(60)/1
+T:E,H/*=0.55(60)/1
+Z:13 Euro2
+A:+358	# Finnland
+A:+354	# Island
+A:+47	# Norwegen
+A:+48	# Polen
+A:+351	# Portugal
+A:+46	# Schweden
+A:+421	# Slowakei
+A:+420	# Tschechien
+T:W/08-18=0.73(60)/1
+T:W/18-08=0.55(60)/1
+T:E,H/*=0.55(60)/1
+Z:14 Euro3
+A:+385	# Kroatien
+A:+90	# Türkei
+A:+36	# Ungarn
+A:+357	# Zypern
+T:W/08-18=0.81(60)/1
+T:W/18-08=0.73(60)/1
+T:E,H/*=0.73(60)/1
+Z:15 Euro4
+A:+20	# Ägypten
+A:+355	# Albanien
+A:+213	# Algerien
+A:+387	# Bosnien-Herzegowina
+A:+359	# Bulgarien
+A:Estland
+A:+350	# Gibraltar
+A:+972	# Israel
+A:+962	# Jordanien
+A:+381	# Jugoslawien
+A:+371	# Lettland
+A:+961	# Libanon
+A:+218	# Libyen
+A:+370	# Litauen
+A:+356	# Malta
+A:+212	# Marokko
+A:+389	# Mazedonien
+A:+373	# Moldau Republik
+A:+40	# Rumänien
+# FIXME: A:+7	# GUS (Russische Föderation) -> Orte westlich des 40. geogr. Längengrades ?
+A:+386	# Slowenien
+A:+963	# Syrien
+A:+216	# Tunesien
+A:+380	# Ukraine
+A:+375	# Belarus (Weißrußland)
+T:*/*=0.90(60)/1
+Z:16 Welt1
+A:+1	# Kanada
+A:+1	# Vereinigte Staaten (USA)
+T:W/08-18=0.64(60)/1
+T:W/18-08=0.55(60)/1
+T:E,H/*=0.55(60)/1
+Z:17 Welt2
+A:+61	# Australien
+A:+852	# Hongkong
+A:+81	# Japan
+A:+82	# Korea (Republik)
+A:+64	# Neuseeland
+A:+65	# Singapur
+T:*/*=1.64(60)/1
+Z:18 Welt3
+A:+56	# Chile
+A:+886	# Taiwan
+T:*/*=1.81(60)/1
+Z:19 Welt4
+A:+55	# Brasilien
+A:+27	# Südafrika
+T:*/*=2.00(60)/1
+Z:21 Welt5
+A:+54	# Argentinien
+A:+1809	# Dominikanische Republik
+A:+98	# Iran
+# FIXME: A:+7	# Kasachstan
+A:+57	# Kolumbien
+A:+599	# Niederländische Antillen
+A:+63	# Philippinen
+A:+966	# Saudi-Arabien
+A:+971	# Vereinigte Arabische Emirate
+T:*/*=2.09(60)/1
+Z:22 Welt6
+A:+60	# Malaysia
+A:+52	# Mexiko
+T:*/*=2.27(60)/1
+Z:23 Welt7
+T:*/*=2.35(60)/1
+#####################################################################
+P:49,3 ACC ACCess 01049 Einheitentarif Call-By-Call
+C:Telekommunikation GmbH, Heinrich-Heine-Allee 53, 40213 Düsseldorf 01049
+C:Homepage: http://www.acctelecom.de
+Z:2 Nah
+T:W/09-18=0.12/90
+T:W/18-09=0.12/150
+T:E,H/*=0.12/90
+Z:3-4 Fern
+T:W/09-18=0.09/30
+T:W/18-09=0.09/60
+T:E,H/*=0.09/60
+Z:5 C-Mobilboxen
+A:01618
+T:W/09-18=0.09/11.4
+T:W/18-09=0.09/16.7
+T:E,H/*=0.09/16.7
+Z:6 Mobilfunk C
+A:01610,01617,01619
+T:W/09-18=0.09/7.5
+T:W/18-09=0.09/15
+T:E,H/*=0.09/15
+Z:7 Mobilfunknetz D1
+A:0170,0171
+T:W/09-18=0.09/7.5
+T:W/18-09=0.09/15
+T:E,H/*=0.09/15
+Z:8 Mobilfunknetz D2
+A:0172,0173
+T:W/09-18=0.09/7.5
+T:W/18-09=0.09/15
+T:E,H/*=0.09/15
+Z:9 Mobilfunknetz E-Plus
+A:0177,0178
+T:W/09-18=0.09/5.3
+T:W/18-09=0.09/12.8
+T:E,H/*=0.09/12.8
+Z:10 Mobilfunknetz Viag Interkom
+A:0176,0179
+T:W/09-18=0.09/7.5
+T:W/18-09=0.09/15
+T:E,H/*=0.09/15
+Z:2-3 Nah
+T:W/08-18=0.08/60
+T:W/18-08=0.08/90
+T:E,H/*=0.08/90
+Z:4 Fern
+T:W/08-18=0.08/30
+T:W/18-08=0.08/60
+T:E,H/*=0.08/60
+Z:5-10 Mobilfunk
+T:W/08-18=0.09/7.5
+T:W/18-08=0.09/15
+T:E,H/*=0.09/7.5
+Z:11 EuroCity
+A:+3120		# Amsterdam, Niederlande
+A:+322		# Brüssel, Belgien
+A:+331		# Paris, Frankreich
+A:+4420		# London, Großbritannien und Nordirland
+A:+3491		# Madrid, Spanien
+# FIXME: A:+352		# Luxemburg (Stadt), Luxemburg, nicht Luxemburg Land!
+A:+431		# Wien, Österreich
+A:+411		# Zürich, Schweiz
+T:*/*=0.09/10
+Z:12 Euro1
+A:+376   # Andorra
+A:+32    # Belgien
+A:Dänemark
+A:+298   # Färöer
+A:+33    # Frankreich
+A:+30    # Griechenland
+A:+44    # Großbritannien und Nordirland
+# FIXME A:+44    # Insel Man (Großbritannien)
+A:+353   # Irland
+A:+39    # Italien
+# FIXME A:+44    # Kanalinseln (Großbritannien)
+A:+4175  # Liechtenstein
+A:+352   # Luxemburg (Land), Luxemburg
+A:+377   # Monaco
+A:+31    # Niederlande
+A:+43    # Österreich
+A:+378   # San Marino
+A:+41    # Schweiz
+A:+34    # Spanien
+A:+396   # Vatikanstadt
+T:W/08-18=0.09/8.6
+T:W/18-08=0.09/10
+T:E,H/*=0.09/10
+Z:13 Euro2
+A:+358	# Finnland
+A:+354	# Island
+A:+47	# Norwegen
+A:+48	# Polen
+A:+351	# Portugal
+A:+46	# Schweden
+A:+421	# Slowakei
+A:+420	# Tschechien
+T:W/08-18=0.09/7.5
+T:W/18-08=0.09/10
+T:E,H/*=0.09/10
+Z:14 Euro3
+A:+385	# Kroatien
+A:+90	# Türkei
+A:+36	# Ungarn
+A:+357	# Zypern
+T:W/08-18=0.09/6.7
+T:W/18-08=0.09/7.5
+T:E,H/*=0.09/7.5
+Z:15 Euro4
+A:+20	# Ägypten
+A:+355	# Albanien
+A:+213	# Algerien
+A:+387	# Bosnien-Herzegowina
+A:+359	# Bulgarien
+A:Estland
+A:+350	# Gibraltar
+A:+972	# Israel
+A:+962	# Jordanien
+A:+381	# Jugoslawien
+A:+371	# Lettland
+A:+961	# Libanon
+A:+218	# Libyen
+A:+370	# Litauen
+A:+356	# Malta
+A:+212	# Marokko
+A:+389	# Mazedonien
+A:+373	# Moldau Republik
+A:+40	# Rumänien
+# FIXME: A:+7	# GUS (Russische Föderation) -> Orte westlich des 40. geogr. Längengrades ?
+A:+386	# Slowenien
+A:+963	# Syrien
+A:+216	# Tunesien
+A:+380	# Ukraine
+A:+375	# Belarus (Weißrußland)
+T:*/*=0.09/6
+Z:16 Welt1
+A:+1	# Kanada
+A:+1	# Vereinigte Staaten (USA)
+T:W/08-18=0.09/8.6
+T:W/18-08=0.09/10
+T:E,H/*=0.09/10
+Z:17 Welt2
+A:+61	# Australien
+A:+852	# Hongkong
+A:+81	# Japan
+A:+82	# Korea (Republik)
+A:+64	# Neuseeland
+A:+65	# Singapur
+T:*/*=0.09/3.3
+Z:18 Welt3
+A:+56	# Chile
+A:+886	# Taiwan
+T:*/*=0.09/3
+Z:19 Welt4
+A:+55	# Brasilien
+A:+27	# Südafrika
+T:*/*=0.09/2.7
+Z:21 Welt5
+A:+54	# Argentinien
+A:+1809	# Dominikanische Republik
+A:+98	# Iran
+# FIXME: A:+7	# Kasachstan
+A:+57	# Kolumbien
+A:+599	# Niederländische Antillen
+A:+63	# Philippinen
+A:+966	# Saudi-Arabien
+A:+971	# Vereinigte Arabische Emirate
+T:*/*=0.09/2.6
+Z:22 Welt6
+A:+60	# Malaysia
+A:+52	# Mexiko
+T:*/*=0.09/2.4
+Z:23 Welt7
+T:*/*=0.09/2.3
+#####################################################################
+P:49,4 ACC ACCess 01049 Minutentarif Call-By-Call
+C:Telekommunikation GmbH, Heinrich-Heine-Allee 53, 40213 Düsseldorf 01049
+C:Homepage: http://www.acctelecom.de
+Z:2-3 Nah
+T:W/08-18=0.12(60)/1
+T:W/18-08=0.09(60)/1
+T:E,H/*=0.09(60)/1
+Z:4 Fern
+T:W/08-18=0.18(60)/1
+T:W/18-08=0.09(60)/1
+T:E,H/*=0.09(60)/1
+Z:5-8 Mobilfunk D-Netze
+A:0170,0171,0172,0173
+T:W/08-18=0.73(60)/1
+T:W/18-08=0.36(60)/1
+T:E,H/*=0.36(60)/1
+Z:9 Mobilfunk E-Plus
+A:0177,0178
+T:W/08-18=0.99(60)/1
+T:W/18-08=0.45(60)/1
+T:E,H/*=0.45(60)/1
+Z:10 Mobilfunk Viag Interkom E2
+A:0176,0179
+T:W/08-18=0.73(60)/1
+T:W/18-08=0.36(60)/1
+T:E,H/*=0.36(60)/1
+Z:11 EuroCity
+A:+3120		# Amsterdam, Niederlande
+A:+322		# Brüssel, Belgien
+A:+331		# Paris, Frankreich
+A:+4420		# London, Großbritannien und Nordirland
+A:+3491		# Madrid, Spanien
+# FIXME: A:+352		# Luxemburg (Stadt), Luxemburg, nicht Luxemburg Land!
+A:+431		# Wien, Österreich
+A:+411		# Zürich, Schweiz
+T:*/*=0.55(60)/1
+Z:12 Euro1
+A:+376   # Andorra
+A:+32    # Belgien
+A:Dänemark
+A:+298   # Färöer
+A:+33    # Frankreich
+A:+30    # Griechenland
+A:+44    # Großbritannien und Nordirland
+# FIXME A:+44    # Insel Man (Großbritannien)
+A:+353   # Irland
+A:+39    # Italien
+# FIXME A:+44    # Kanalinseln (Großbritannien)
+A:+4175  # Liechtenstein
+A:+352   # Luxemburg (Land), Luxemburg
+A:+377   # Monaco
+A:+31    # Niederlande
+A:+43    # Österreich
+A:+378   # San Marino
+A:+41    # Schweiz
+A:+34    # Spanien
+A:+396   # Vatikanstadt
+T:W/08-18=0.64(60)/1
+T:W/18-08=0.55(60)/1
+T:E,H/*=0.55(60)/1
+Z:13 Euro2
+A:+358	# Finnland
+A:+354	# Island
+A:+47	# Norwegen
+A:+48	# Polen
+A:+351	# Portugal
+A:+46	# Schweden
+A:+421	# Slowakei
+A:+420	# Tschechien
+T:W/08-18=0.73(60)/1
+T:W/18-08=0.55(60)/1
+T:E,H/*=0.55(60)/1
+Z:14 Euro3
+A:+385	# Kroatien
+A:+90	# Türkei
+A:+36	# Ungarn
+A:+357	# Zypern
+T:W/08-18=0.81(60)/1
+T:W/18-08=0.73(60)/1
+T:E,H/*=0.73(60)/1
+Z:15 Euro4
+A:+20	# Ägypten
+A:+355	# Albanien
+A:+213	# Algerien
+A:+387	# Bosnien-Herzegowina
+A:+359	# Bulgarien
+A:Estland
+A:+350	# Gibraltar
+A:+972	# Israel
+A:+962	# Jordanien
+A:+381	# Jugoslawien
+A:+371	# Lettland
+A:+961	# Libanon
+A:+218	# Libyen
+A:+370	# Litauen
+A:+356	# Malta
+A:+212	# Marokko
+A:+389	# Mazedonien
+A:+373	# Moldau Republik
+A:+40	# Rumänien
+# FIXME: A:+7	# GUS (Russische Föderation) -> Orte westlich des 40. geogr. Längengrades ?
+A:+386	# Slowenien
+A:+963	# Syrien
+A:+216	# Tunesien
+A:+380	# Ukraine
+A:+375	# Belarus (Weißrußland)
+T:*/*=0.90(60)/1
+Z:16 Welt1
+A:+1	# Kanada
+A:+1	# Vereinigte Staaten (USA)
+T:W/08-18=0.64(60)/1
+T:W/18-08=0.55(60)/1
+T:E,H/*=0.55(60)/1
+Z:17 Welt2
+A:+61	# Australien
+A:+852	# Hongkong
+A:+81	# Japan
+A:+82	# Korea (Republik)
+A:+64	# Neuseeland
+A:+65	# Singapur
+T:*/*=1.64(60)/1
+Z:18 Welt3
+A:+56	# Chile
+A:+886	# Taiwan
+T:*/*=1.81(60)/1
+Z:19 Welt4
+A:+55	# Brasilien
+A:+27	# Südafrika
+T:*/*=2.00(60)/1
+Z:21 Welt5
+A:+54	# Argentinien
+A:+1809	# Dominikanische Republik
+A:+98	# Iran
+# FIXME: A:+7	# Kasachstan
+A:+57	# Kolumbien
+A:+599	# Niederländische Antillen
+A:+63	# Philippinen
+A:+966	# Saudi-Arabien
+A:+971	# Vereinigte Arabische Emirate
+T:*/*=2.09(60)/1
+Z:22 Welt6
+A:+60	# Malaysia
+A:+52	# Mexiko
+T:*/*=2.27(60)/1
+Z:23 Welt7
+T:*/*=2.35(60)/1
 #####################################################################
 P:50 Talkline
 G:01.05.1999
@@ -741,7 +1981,7 @@ T:W/21-22=0.09/60
 T:W/22-07=0.09/60
 T:E/*=0.09/60
 Z:20 Talknet by call
-A:019251 (Benutzername: talknet; Passwort: talknet; DNS-Server: 195.252.128.53)
+A:019251 # (Benutzername: talknet; Passwort: talknet; DNS-Server: 195.252.128.53)
 T:W/07-08=0.09(60)/180
 T:W/08-19=0.09(60)/180
 T:W/19-21=0.08(60)/180
@@ -760,6 +2000,16 @@ C:Adresse:  Koenigsallee 60f
 C:	    40210 Duesseldorf
 Z:2-4 Ferngespräche
 T:*/*=0.09/60
+Z:12 Euro 1
+A:Österreich
+T:*/*=0.25/60
+# FIXME: Österreich Mobilfunk */*=0.75/60
+Z:21 Telefonauskunft Inland (Austria)
+A:+4366211811
+T:*/*=0.25/60
+Z:22 Telefonauskunft Ausland (Austria)
+A:+4366211812
+T:*/*=0.25/60
 #####################################################################
 P:52 Long Distance
 C:International Ltd., 5 Duke's Gate Acton, London W 4 5 DX, GB 01052
@@ -905,7 +2155,7 @@ A:+421   # Slowakei
 A:+44    # Großbritannien und Nordirland
 # FIXME A:+44    # Insel Man (Großbritannien)
 # FIXME A:+44    # Kanalinseln (Großbritannien)
-A:+45    # Dänemark
+A:Dänemark
 A:+46    # Schweden
 A:+47    # Norwegen
 A:+48    # Polen
@@ -922,7 +2172,7 @@ A:+357   # Zypern
 A:+359   # Bulgarien
 A:+370   # Litauen
 A:+371   # Lettland
-A:+372   # Estland
+A:Estland
 A:+373   # Moldau Republik (FUZZ 2:``Moldau (Republik)'' ~ ``Moldau Republik'')
 A:+375   # Belarus (Weißrußland)
 A:+380   # Ukraine
@@ -1126,7 +2376,7 @@ A:+993   # Turkmenistan
 A:+994   # Aserbaidschan
 A:+995   # Georgien
 A:+996   # Kirgisistan
-A:+998   # Usbekistan
+A:Usbekistan
 T:*/*=2.72/60
 Z:20 Internet
 A:0192070 # (Benutzername: arcor; Passwort: internet; Proxy: proxy.arcor-ip.de:80; Startseite: http://www.call.arcor.net)
@@ -1252,11 +2502,11 @@ T:W/20-08=0.399(60)/1
 T:E,H/08-20=0.419(60)/1
 T:E,H/20-08=0.399(60)/1
 Z:21 Telefonauskunft Inland (Austria)
-A:004366211811
+A:+4366211811
 T:*/08-20=0.319(60)/1
 T:*/20-08=0.299(60)/1
 Z:22 Telefonauskunft Ausland (Austria)
-A:004366211812
+A:+4366211812
 T:*/08-20=0.319(60)/1
 T:*/20-08=0.299(60)/1
 Z:100
@@ -1273,7 +2523,7 @@ A:+1     # USA
 T:*/08-20=0.269(60)/1
 T:*/20-08=0.249(60)/1
 Z:103 Dänemark,Finnland,Frankreich,Schweiz
-A:+45    # Dänemark
+A:Dänemark
 A:+358   # Finland
 A:+33    # Frankreich
 A:+41    # Schweiz
@@ -1430,7 +2680,7 @@ T:*/08-20=0.589(60)/1
 T:*/20-08=0.569(60)/1
 Z:128
 A:+376   # Andorra
-A:+372   # Estland
+A:Estland
 A:+502   # Guatemala
 T:*/08-20=0.599(60)/1
 T:*/20-08=0.579(60)/1
@@ -1713,7 +2963,7 @@ T:*/08-20=1.149(60)/1
 T:*/20-08=1.139(60)/1
 Z:180
 A:+257   # Burundi
-A:+998   # Usbekistan
+A:Usbekistan
 T:*/08-20=1.159(60)/1
 T:*/20-08=1.139(60)/1
 Z:181
@@ -2027,8 +3277,9 @@ C:Hotline:  0800/937-8266
 C:Adresse:  Hebelstrasse 22c
 C:	    69115 Heidelberg
 Z:2-4 Fern
-T:*/09-21=0.19(60)/1 Standard
-T:*/21-09=0.09(60)/1 Spar
+T:W/08-18=0.16(60)/1 Standard
+T:W/18-08=0.09(60)/1 Spar
+T:E/*=0.09(60)/1 Spar
 #####################################################################
 P:86 ONE.TEL
 C:Limited (UK), Clements House, 14-18 Gresham Street, London, EC2V 7JE, England 01086
@@ -2115,71 +3366,53 @@ A:+1  # USA
 T:*/08-21=0.259(60)/1
 T:*/21-08=0.199(60)/1
 Z:12
-A:+61 # Australien
-A:+45 # Dänemark
-A:+33 # Frankreich
-A:+1905 # Kanada
-A:+1902 # Kanada
-A:+1867 # Kanada
-A:+1819 # Kanada
-A:+1807 # Kanada
-A:+1709 # Kanada
-A:+1705 # Kanada
-A:+1613 # Kanada
-A:+1604 # Kanada
-A:+1600 # Kanada
-A:+1519 # Kanada
-A:+1514 # Kanada
-A:+1506 # Kanada
-A:+1418 # Kanada
-A:+1416 # Kanada
-A:+1403 # Kanada
-A:+1306 # Kanada
-A:+1250 # Kanada
-A:+1204 # Kanada
-A:+31 # Niederlande
-A:+47 # Norwegen
-A:+46 # Schweden
-A:+41 # Schweiz
-A:+34 # Spanien
+A:Australien
+A:Dänemark
+A:Frankreich
+A:Kanada
+A:Niederlande
+A:Norwegen
+A:Schweden
+A:Schweiz
+A:Spanien
 T:*/08-21=0.359(60)/1
 T:*/21-08=0.259(60)/1
 Z:13
-A:+852 # Hongkong
-A:+972 # Israel
-A:+81 # Japan
-A:+82 # Korea (Republik), Südkorea
+A:Hongkong
+A:Israel
+A:Japan
+A:Korea (Republik), Südkorea
 T:*/08-21=0.459(60)/1
 T:*/21-08=0.359(60)/1
 Z:14
-A:+30 # Griechenland
-A:+354 # Island
-A:+385 # Kroatien
-A:+48 # Polen
-A:+386 # Slowenien
-A:+36 # Ungarn
-A:+420 # Tschechien, Tschechische Republik
-A:+90 # Türkei, Nordzypern
-A:+7095 # Moskau
+A:Griechenland
+A:Island
+A:Kroatien
+A:Polen
+A:Slowenien
+A:Ungarn
+A:Tschechien, Tschechische Republik
+A:Türkei, Nordzypern
+A:Moskau
 T:*/*=0.559(60)/1
 Z:15
 # FIXME: Rußland
-A:+65 # Singapur
+A:Singapur
 # FIXME: Restliches Europa ist _NICHT_ korrekt (von Arcor übernommen!)
-A:+212   # Marokko
-A:+213   # Algerien
-A:+216   # Tunesien
-A:+218   # Libyen
-A:+350   # Gibraltar
-A:+355   # Albanien
-A:+356   # Malta
-A:+357   # Zypern
-A:+359   # Bulgarien
-A:+370   # Litauen
-A:+371   # Lettland
-A:+372   # Estland
-A:+373   # Moldau Republik (FUZZ 2:``Moldau (Republik)'' ~ ``Moldau Republik'')
-A:+375   # Belarus (Weißrußland)
+A:Marokko
+A:Algerien
+A:Tunesien
+A:Libyen
+A:Gibraltar
+A:Albanien
+A:Malta
+A:Zypern
+A:Bulgarien
+A:Litauen
+A:Lettland
+A:Estland
+A:Moldavien, Moldau (Republik)
+A:Weissrussland, Belarus
 A:+381   # Jugoslawien Montenegro
 A:+387   # Bosnien-Herzegowina
 A:+389   # Mazedonien
@@ -2188,45 +3421,11 @@ A:+7     # GUS (Russische Föderation)
 # FIXME: Restliches Europa
 T:*/*=0.859(60)/1
 Z:16
-A:+994 # Aserbaidschan
-A:+7336 # Kasachstan
-A:+7330 # Kasachstan
-A:+7329 # Kasachstan
-A:+7328 # Kasachstan
-A:+7327 # Kasachstan
-A:+7326 # Kasachstan
-A:+7325 # Kasachstan
-A:+7324 # Kasachstan
-A:+7323 # Kasachstan
-A:+7322 # Kasachstan
-A:+7321 # Kasachstan
-A:+7318 # Kasachstan
-A:+7317 # Kasachstan
-A:+7316 # Kasachstan
-A:+7315 # Kasachstan
-A:+7314 # Kasachstan
-A:+7313 # Kasachstan
-A:+7312 # Kasachstan
-A:+7311 # Kasachstan
-A:+7310 # Kasachstan
-A:+73 # Kasachstan
-A:+995 # Georgien
-A:+7590 # Usbekistan
-A:+7436 # Usbekistan
-A:+743 # Usbekistan
-A:+7375 # Usbekistan
-A:+7374 # Usbekistan
-A:+7373 # Usbekistan
-A:+7372 # Usbekistan
-A:+7371 # Usbekistan
-A:+737 # Usbekistan
-A:+7369 # Usbekistan
-A:+7367 # Usbekistan
-A:+7366 # Usbekistan
-A:+7365 # Usbekistan
-A:+7362 # Usbekistan
-A:+7361 # Usbekistan
-A:+380 # Ukraine
+A:Aserbaidschan
+A:Kasachstan
+A:Georgien
+A:Usbekistan
+A:Ukraine
 T:*/*=1.159(60)/1
 Z:17
 A:+
@@ -2365,8 +3564,12 @@ T:*/*=0.847/0,0.121/6.7
 # 2. Angemeldet:
 #    13:Tele 2              x
 #    15:RSL COM		    x
+#    25:CityKom		    y
+#    42:TeleBeL		    y
+#    49:ACC		    y
 #    88:UUnet		    x
 #    98:Mox                 x
 #
 # --------------------------^
 # x = Tarife zum 1.Mai 1999 geprüft: akool
+# y = Tarife zum 6.Mai 1999 geprüft: askwar
