@@ -1,9 +1,9 @@
-ISDNLOG - Version pre3.0 -  				07-Jun-98  21:40
+ISDNLOG - Version pre3.0 -  				04-Oct-98  12:33
 
 
 isdnlog ist ein Utility zur Auswertung des D-Kanal eines ISDN-BRI Anschlusses.
 
-isdnlog-3.0 wurde ausgiebig mit Linux-2.0.33 / isdn4kernel-2.0.30
+isdnlog-3.0 wurde ausgiebig mit Linux-2.0.35 / isdn4kernel-2.0.30
 getestet.
 
 
@@ -12,7 +12,7 @@ Fuer alle, die es nun ueberhaupt nicht mehr abwarten koennen, hier das
 Quick-Installation-Guide
 ------------------------
 
-1. Linux-2.0.33 + isdn4kernel-2.0.30 verwenden:
+1. Linux-2.0.35 + isdn4kernel-2.0.30 verwenden:
      CONFIG_ISDN=m
      CONFIG_ISDN_DRV_HISAX=m
 
@@ -822,6 +822,16 @@ Diese Zeilen koennen verwendet werden, wenn man fuer alle Verbindungen
 die gleichen Programme starten will, oder fuer alle unbekannten Nummern.
 Die Syntax ist unter "Info-Args" der Dateien "callerid.conf" und"~/.isdn"
 zu finden.
+
+
+Sobald die Calling party number ueber die Leitung kommt, wird diese in eine
+spezielle Datei geschrieben. Dieses Feature wird ueber zwei
+Konfigurationseinstellungen (CALLFILE und CALLFMT) in der isdn.conf aktiviert.
+Beispiel:
+
+CALLFILE = /var/log/caller.log
+CALLFMT  = %b %e %T  %N7 %N3 %N4 %N5 %N6
+
 
 
 4.2 Die Dateien "callerid.conf" und "~/.isdn"
@@ -3323,7 +3333,7 @@ Generell spricht nichts dagegen, ChargeInt einzukompilieren. Der Patch
 ist "abwaertskompatibel", d.h., wer nicht explizit per Hand oder Programm
 ein
 
-  isdnctrl device chargeint Takt
+  isdnctrl chargeint device Takt
 
 gibt, wird keinerlei Aenderungen feststellen. Zudem enthaelt der Patch
 fuer isdnctrl die nette Moeglichkeit, mit einem einzigen isdnctrl-Befehl

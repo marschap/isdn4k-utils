@@ -1,4 +1,4 @@
-/* $Id: processor.c,v 1.27 1998/10/03 18:05:55 akool Exp $
+/* $Id: processor.c,v 1.28 1998/10/04 12:04:05 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,22 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.28  1998/10/04 12:04:05  akool
+ *  - README
+ *      New entries "CALLFILE" and "CALLFMT" documented
+ *      Small Correction from Markus Werner <mw@empire.wolfsburg.de>
+ *      cosmetics
+ *
+ *  - isdnrep.c
+ *      Bugfix (Thanks to Arnd Bergmann <arnd@uni.de>)
+ *
+ *  - processor.c
+ *      Patch from Oliver Lauer <Oliver.Lauer@coburg.baynet.de>
+ *        Makes CHARGEMAX work without AOC-D
+ *
+ *      Patch from Stefan Gruendel <sgruendel@adulo.de>
+ *        gcc 2.7.2.1 Optimizer-Bug workaround
+ *
  * Revision 1.27  1998/10/03 18:05:55  akool
  *  - processor.c, takt_at.c : Patch from Michael Reinelt <reinelt@eunet.at>
  *    try to guess the zone of the calling/called party
@@ -1416,6 +1432,14 @@ static int facility(int type, int l)
 } /* facility */
 
 
+/* gcc 2.7.2.1 Optimizer-Bug workaround from Stefan Gruendel <sgruendel@adulo.de> */
+static int facility_start(char *p, int type, int l)
+{
+  asnp = p;
+  return(facility(type, l));
+} /* facility_start */
+
+
 static int AOC_1TR6(int l, char *p)
 {
   auto   int  EH = 0;
@@ -1909,8 +1933,7 @@ static void decode(int chan, register char *p, int type, int version)
 #if defined(ISDN_NL) || defined(ISDN_CH)
                       n = AOC_1TR6(l, p);
 #else
-                      asnp = p;
-                      n = facility(AOC_INITIAL, 0);
+                      n = facility_start(p, AOC_INITIAL, 0);
 #endif
 
                       if (n == AOC_OTHER)
@@ -2147,6 +2170,35 @@ static void decode(int chan, register char *p, int type, int version)
                           if ((c = call[chan].confentry[OTHER]) > -1) {
                             known[c]->charge -= known[c]->rcharge;
                             known[c]->charge += pay;
+
+                            if (chargemax != 0.0) { /* only used here if no AOC-D */
+                              if (day != known[c]->day) {
+                                sprintf(s, "CHARGEMAX resetting %s's charge (day %d->%d)",
+                                  known[c]->who, (known[c]->day == -1) ? 0 : known[c]->day, day);
+
+                                info(chan, PRT_SHOWCHARGEMAX, STATE_AOCD, s);
+
+                                known[c]->scharge += known[c]->charge;
+                                known[c]->charge = 0.0;
+                                known[c]->day = day;
+                              } /* if */
+                            } /* if */
+
+                            if (connectmax != 0.0) { /* only used here if no AOC-D */
+                              if (month != known[c]->month) {
+                                sprintf(s, "CONNECTMAX resetting %s's online (month %d->%d)",
+                                  known[c]->who, (known[c]->month == -1) ? 0 : known[c]->month, month);
+
+                                info(chan, PRT_SHOWCHARGEMAX, STATE_AOCD, s);
+
+                                known[c]->sonline += known[c]->online;
+                                known[c]->online = 0.0;
+                                known[c]->month = month;
+
+                                known[c]->sbytes += known[c]->bytes;
+                                known[c]->bytes = 0.0;
+                              } /* if */
+                            } /* if */
                           } /* if */
                         } /* else */
                       } /* if */

@@ -1,4 +1,4 @@
-/* $Id: isdnrep.c,v 1.45 1998/10/03 18:06:35 akool Exp $
+/* $Id: isdnrep.c,v 1.46 1998/10/04 12:04:21 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -24,6 +24,22 @@
  *
  *
  * $Log: isdnrep.c,v $
+ * Revision 1.46  1998/10/04 12:04:21  akool
+ *  - README
+ *      New entries "CALLFILE" and "CALLFMT" documented
+ *      Small Correction from Markus Werner <mw@empire.wolfsburg.de>
+ *      cosmetics
+ *
+ *  - isdnrep.c
+ *      Bugfix (Thanks to Arnd Bergmann <arnd@uni.de>)
+ *
+ *  - processor.c
+ *      Patch from Oliver Lauer <Oliver.Lauer@coburg.baynet.de>
+ *        Makes CHARGEMAX work without AOC-D
+ *
+ *      Patch from Stefan Gruendel <sgruendel@adulo.de>
+ *        gcc 2.7.2.1 Optimizer-Bug workaround
+ *
  * Revision 1.45  1998/10/03 18:06:35  akool
  *  - processor.c, takt_at.c : Patch from Michael Reinelt <reinelt@eunet.at>
  *    try to guess the zone of the calling/called party
@@ -839,7 +855,7 @@ int read_logfile(char *myname)
 				                       get_time_value(0,NULL,GET_YEAR));
 		} /* if */
 
-		if (!currency_factor)
+		if (!cur_call.currency_factor)
 #ifdef ISDN_NL
 			einheit = 0.0011; /* cost of one second local tariff during office hours */
 #elif defined(ISDN_CH)
@@ -850,7 +866,7 @@ int read_logfile(char *myname)
 			einheit = Tarif96 ? 0.121 : 0.23;
 #endif
 			else
-				einheit = currency_factor;
+				einheit = cur_call.currency_factor;
 
 		print_entries(&cur_call,einheit,nx,myname);
 
