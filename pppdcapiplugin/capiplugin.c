@@ -21,11 +21,12 @@
 #include <dlfcn.h>
 #include <errno.h>
 
-static char *revision = "$Revision: 1.12 $";
+static char *revision = "$Revision: 1.13 $";
 
 static capiconn_context *ctx;
 static capi_connection *conn = 0;
 static int isconnected = 0;
+static int connectinprogress = 0;
 static unsigned applid;
 #define CM(x)	(1<<(x))
 #define	CIPMASK_ALL	0x1FFF03FF
@@ -452,6 +453,7 @@ static void makecallback(void)
 
 static void waitforcall(void)
 {
+	int try = 0;
 	(void) capiconn_listen(ctx, controller, cipmask, 0);
 	info("capiplugin: waiting for incoming call ...");
 
@@ -460,6 +462,14 @@ static void waitforcall(void)
 		if (status != EXIT_OK) {
 		   (void) capiconn_listen(ctx, controller, 0, 0);
 		   die(status);
+		}
+	        if (connectinprogress) try=1;
+		if (try && !connectinprogress) {
+		   try = 0;
+		   if (!isconnected) {
+		      (void) capiconn_listen(ctx, controller, cipmask, 0);
+		      info("capiplugin: waiting for incoming call ...");
+		   }
 		}
 	} while (!isconnected);
 
@@ -787,6 +797,7 @@ static void disconnected(capi_connection *cp,
 			reason, reason_b3, capi_info2str(reason));
 	conn = 0;
 	isconnected = 0;
+	connectinprogress = 0;
 }
 
 static void incoming(capi_connection *cp,
@@ -905,6 +916,7 @@ static void incoming(capi_connection *cp,
 	}
 	return;
 accepted:
+	connectinprogress = 1;
 	(void) capiconn_listen(ctx, controller, 0, 0);
 	return;
 callback:
@@ -964,6 +976,7 @@ static void connected(capi_connection *cp, _cstruct NCPI)
 	sprintf(buf, "%d", p->b3proto); script_setenv("B3PROTOCOL", buf, 0);
 
 	isconnected = 1;
+	connectinprogress = 0;
 }
 
 void chargeinfo(capi_connection *cp, unsigned long charge, int inunits)
