@@ -27,7 +27,7 @@
 #include <linux/if.h>
 
 
-static char *revision = "$Revision: 1.34 $";
+static char *revision = "$Revision: 1.35 $";
 
 /* -------------------------------------------------------------------- */
 
@@ -122,6 +122,7 @@ static STRINGLIST *inmsns;
 #define PROTO_ADSLPPPOE		6
 #define PROTO_ADSLPPPOA		7
 #define PROTO_ADSLPPPOALLC	8
+#define PROTO_ANALOGMODEM	9
 static char *opt_proto = "hdlc";
 static int proto = PROTO_HDLC;
 static int opt_avmadsl = 0;
@@ -407,11 +408,14 @@ static void plugin_check_options(void)
 	} else if (strcasecmp(opt_proto, "adslpppoallc") == 0) {
 	   proto = PROTO_ADSLPPPOALLC;
 	   if (!opt_channels) opt_channels = "1";
+	} else if (strcasecmp(opt_proto, "analogmodem") == 0) {
+	   proto = PROTO_ANALOGMODEM;
 	} else {
 	   option_error("capiplugin: unknown protocol \"%s\"", opt_proto);
 	   die(1);
 	}
-        if (strcasecmp(opt_proto, "modem") == 0)
+        if (strcasecmp(opt_proto, "modem") == 0 || 
+	    strcasecmp(opt_proto, "analogmodem") == 0)
 		cipmask = CIPMASK_VOICE;
 	else cipmask = CIPMASK_DATA;
 
@@ -1277,7 +1281,7 @@ static void incoming(capi_connection *cp,
 		case 5:  /* 7 kHz audio */
 		case 16: /* Telephony */
 		case 26: /* 7 kHz telephony */
-	                if (proto == PROTO_MODEM) {
+	                if (proto == PROTO_MODEM || proto == PROTO_ANALOGMODEM) {
 			   if (demand) goto wakeupmatch;
 			   if (coso == COSO_LOCAL) goto callback;
 			   goto accept;
@@ -1373,6 +1377,9 @@ accept:
 	      break;
            case PROTO_V120_ASYNC:
 	      (void) capiconn_accept(cp, 0, 9, 0, 0, 0, 0, 0);
+	      break;
+           case PROTO_ANALOGMODEM:
+	      (void) capiconn_accept(cp, 7, 7, 7, 0, 0, 0, 0);
 	      break;
 	}
 	conn_remember(cp, CONNTYPE_INCOMING);
@@ -1578,6 +1585,16 @@ static capi_connection *setupconnection(char *num, int awaitingreject)
 				B1Config[0] ? B1Config : 0,
 				0, /* B2Config */
 				0, /* B3Config */
+				opt_channels ? AdditionalInfo : 0,
+				0);
+	} else if (proto == PROTO_ANALOGMODEM) {
+		cp = capiconn_connect(ctx,
+				controller, /* contr */
+				4, /* cipvalue */
+				opt_channels ? 0 : number, 
+				opt_channels ? 0 : opt_msn,
+				7, 7, 7,
+				0, 0, 0,
 				opt_channels ? AdditionalInfo : 0,
 				0);
 	} else {
