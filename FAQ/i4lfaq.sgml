@@ -4,7 +4,7 @@
 
 <title>FAQ for isdn4linux
 <author>Matthias Hessler (<tt><htmlurl url="mailto:hessler@isdn4linux.de" name="hessler@isdn4linux.de"></tt>)
-<date>v2.0.49, 6. November 2000
+<date>v2.0.50, 19. November 2000
 <abstract>
 If you are reading this FAQ online, you may consider downloading the whole
 thing, and reading it offline (much cheaper). To download the latest
@@ -303,6 +303,8 @@ and what the consequences/disadvantages are are.
 fax as one of its features). Get the newest stuff from:
 <tt><url url="ftp://ftp.aeccom.com/pub/fax4i4l/howto/current/"></tt>
 However, it has been reported that setting it up properly is very tricky.
+Another site which could be helpful is:
+<tt><url url="http://www.topf-sicret.de/help/capi20.html"></tt>
 <item><bf>For the active Hypercope PCI cards HYSDN Ergo2 and
 HYSDN Metro4: Yes, after upgrade with a special fax card</bf>.
 The setup is similar to that of an AVM B1, but may require extra patches.
@@ -341,6 +343,10 @@ modem?
 <p>
 Generally: <bf>NO</bf>. It may only work for cards with which you can fax: see
 question <ref id="feature_fax" name="feature_fax">.
+For the Sedlbauer card, you can give the following command on the ttyI*:
+<code>
+AT&amp;FS14=10S15=0S18=1&amp;E&lt;your_msn&gt;
+</code>
 
 <sect1> feature_divert: Is it possible to initiate call forwarding with i4l?  
 <label id="feature_divert">
@@ -411,6 +417,8 @@ Please note that mainly German providers support sending SMS via ISDN
 connection, in other countries this might not work. Dutch as well as UK
 SMS callcenters seem to not support this feature. Please let me know if
 you have additional information on this.
+A useful sample config for yaps you might find on:
+<url url="http://www.tnt-computer.de/linux/yaps-suite1-1.tgz">
 
 Another program to send SMS is <tt/smsclient/. You can find it on:
 <url url="http://www.styx.demon.co.uk">.
@@ -468,7 +476,9 @@ Currently, these cards support the CAPI 2.0 interface:
 HYSDN Metro4)
 <item> the passive Fritz card from AVM. However, please note that you
 have to download and manually install the binary drivers for this from
-AVMs ftp server.
+AVMs ftp server. See the following web site for a nice howto:
+<url url="http://www.topf-sicret.de/help/capi20.html">. There was also
+lots of stuff written in the mailing list on this.
 </itemize>
 
 This interface follows the official CAPI 2.0 standard that was established
@@ -783,6 +793,9 @@ output of <tt>cat /proc/pci</tt>. You have HFC-PCI if you have a line
 saying "Master capable" for your card.
 </itemize>
 
+In Germany: every ISDN card which German Telekom distributed in the past is
+supported (the same is NOT true for the PBX they distributed).
+
 The following cards are definitely not supported and will probably
 never be supported, since the manufacturers have not released the
 specifications for their very proprietary hardware/protocols:
@@ -791,9 +804,9 @@ specifications for their very proprietary hardware/protocols:
 <item>Eumex 404
 </itemize>
 
-As for the Eumex 404, there seems to be an unofficial binary driver for
-isdn4linux in Suse 6.3 floating around, which may or may not help you.
-Use it at your own risk.
+As for the Eumex 404, there is an unofficial binary driver for isdn4linux
+in Suse 6.3, which may or may not help you. Use it at your own risk: 
+<url url="http://home.t-online.de/home/MetalMilitia/eumex.htm">
 
 <sect1> hardware_activepassive: What is the difference between an active and a 
 passive ISDN card?  
@@ -1076,6 +1089,19 @@ times in the past...)
 The developers will try to support new Teles cards when information about how
 to access it becomes available, and when they have no other priorities. Of
 course you can always send a patch.
+
+<sect1> hardware_fritz: What should I know when configuring a Fritz! card  
+(also known as: AVM A1, Teledat 150, BT Speedway)?  
+<label id="hardware_fritz">
+<p>
+The Fritz! card comes in different variations. Since the PCI card and the
+ISA/PNP card have the same type (27), hisax will assume an ISA/PNP card
+if you pass an io address, and a PCI card if you do NOT pass an io address.
+Make sure to give the parameters properly.
+
+One very interesting thing: the Fritz! card is currently the only passive card
+for which a capi driver exists. See question <ref id="feature_capi" name="feature_capi"> for
+more information on this. As a result, it can be configured to fax.
 
 <sect1> hardware_avmb1: What is special about the AVM B1 card?  
 <label id="hardware_avmb1">
@@ -2299,7 +2325,27 @@ now only dial out with MSN 333 on &lt;carddriver1&gt;, while dialout on 3 will
 now only dial out with MSN 777 on &lt;carddriver2&gt;.
 </itemize>
 
+<sect1> dialout_bind: A dns query causes bind to dial out. Why does it take  
+about a minute before it is answered? How do I work around it?  
+<label id="dialout_bind">
+<p>
+You are probably using the name server in 'forward' mode, and your ISP works
+with dynamic ip addresses. The initial UDP query will be lost since it
+carries the wrong source address. Unfortunately, bind will wait a whole minute
+before retransmitting the query again if you have only one forwarder.
 
+As a workaround, you can enter 4 times the same forwarder in named.conf
+to adjust retransmission timing (in 'forward' mode, bind retransmits its
+queries after the following period of time: 60 seconds divided by the number
+of nameservers given in the section "forwarders" of named.conf).
+<code>
+forwarders { 10.0.0.40; 10.0.0.40; 10.0.0.40; 10.0.0.40; }
+</code>
+Bind will then retransmit the query every 15 seconds to your forwarder
+(here the forwarder is 10.0.0.40).
+The same principle applies to two or more forwarders.
+
+ 
 <!-- Authenticate properly
 -->
 <sect> pap: Authenticate properly (especially with PAP)  
@@ -3321,19 +3367,15 @@ within your LAN. You can also use diald to control dialouts for DNS request.
 with one forward address. Now it dials out about every minute?  
 <label id="dod_forwarddns">
 <p>
-From time to time, the name server will query its forwarderi, which will
+From time to time, the name server will query its forwarder, which will
 trigger a dialout. Since your ISP uses dynamic ip addresses, the request
 is sent out with the wrong ip address at startup of the dial-in connection.
 Therefore, no answer will be received. Bind waits for one minute
 before resubmitting. Since your line has come down in the mean time, this
 will trigger a new dialout, resulting in a different ip address, and so on...
-Workaround: enter 4 forwarders in the 'forwarders' section of named.conf
-(you can enter 4 times the same ip address).
-In 'forward' mode, BIND 8.2.2p5 retransmits its queries after the
-following period of time: 60 Seconds divided by the number of nameservers
-given in the section "forwarders" of named.conf. With 4 forwarders a
-retransmission will be attempted after 15 seconds, in time before the line
-would go down.
+
+For a workaround to this problem you can shorten the retransmission time
+as described in question <ref id="dialout_bind" name="dialout_bind">.
 
 <sect1> dod_sendmail: How can I get sendmail to not initiate any connections  
 without local mail being left undelivered?  
@@ -4617,7 +4659,7 @@ international calls. For international data calls you have to dial
 (two zeros) for international voice calls.
 
 By the way: for a BT Speedway card try to select AVM Fritz card (either
-ISA or PCI - depends on what you got).
+ISA or PCI - depends on what you got; see question <ref id="hardware_fritz" name="hardware_fritz">).
 
 Also, check out <url url="http://www.wurtel.demon.nl/i4l-howto-uk.html">.
 
