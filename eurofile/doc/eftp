@@ -1,4 +1,4 @@
-$Id: eftp,v 1.1 1999/06/30 16:51:06 he Exp $
+$Id: eftp,v 1.2 1999/07/01 18:00:27 he Exp $
 
 Sorry, rather incomplete and not in man page format.
 
@@ -24,7 +24,7 @@ options:
 
 	-i ISDN_NO
 			specify the isdn no of the remote EUROFILE
-			server to connect to. The server will try to
+			server to connect to. The client will try to
 			set up an isdn connection to this number and
 			an X.25 DTE-DTE connection on top of this.
 

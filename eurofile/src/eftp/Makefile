@@ -1,4 +1,4 @@
-#$Id: Makefile,v 1.1 1999/06/30 17:19:08 he Exp $
+#$Id: Makefile,v 1.2 1999/07/01 18:00:31 he Exp $
 # This Makefile uses GNU-make extensions
 
 default: eftp
@@ -25,13 +25,6 @@ endif
 
 ifeq ($(CONFIG_EFTP_READLINE),y)
 READLINE_CFLAGS=-DCONFIG_EFTP_READLINE
-# only needed for old implementation
-# READLINE_O=read_line.o
-# read_line.o: read_line.c read_line.h
-#	cc $(CFLAGS) -c $(READLINE_CFLAGS) read_line.c -o read_line.o
-#
-#
-#READLINE_LDFLAGS=$(READLINE_O) -L/usr/local/lib -lncurses -lreadline
 READLINE_LDFLAGS= -lncurses -lreadline
 endif
 
@@ -45,3 +38,4 @@ clean:
 	rm -f eftp *.o 
 
 .PHONY: clean default
+

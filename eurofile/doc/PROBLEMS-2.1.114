@@ -1,7 +1,7 @@
-$Id: PROBLEMS-2.1.114,v 1.1 1999/06/30 16:51:00 he Exp $
+$Id: PROBLEMS-2.1.114,v 1.2 1999/07/01 18:00:25 he Exp $
 
-Known problems observed when using X.25 on top of isdn with kernel 2.1.126
-==========================================================================
+Known problems observed when using X.25 on top of isdn with kernels
+===================================================================
 
 The X.25 PLP implementation was originally designed to be used on top
 of a synchronous line (accessed via an X.25 network device driver)
@@ -27,28 +27,18 @@ the syslog. This does not indicate any problem and can be ignored.
 When establishing the first X.25 connection on a link, there is a
 delay of some seconds until the link becomes established. This is only
 a performance problem and harmless. Furthermore, this is fixed with
-recent isdn4linux versions from the isdn4linux CVS tree.
+recent isdn4linux versions from the isdn4linux CVS tree. Kernel
+2.2.10 still contains this outdated isdn4linux version.
 
 Problems related to the X.25 PLP implementation:
 ================================================
 
 isdn B channels are not closed automatically when the X.25 PLP
-connection is closed. If you are lucky, your peer does it. Thus,
+connection is closed. If you are lucky, your peer does it. eftd
+and the eftp.sh shell script also try to close connection. But this
+might sometime fail due to bugs. Thus, 
 monitor your isdn connections while using X.25 on top of isdn4linux
 (i.e. by watching syslog messages or by an isdn monitor program).
-You need to close the B channel connection by hand (using the
+You can close the B channel connection by hand (using the
 "isdnctrl hangup" command) or rely on the isdn network interface's
-hangup timeout. The scripts provided with this this test distribution
-try to provide workourounds for this.
-
-Kernels prior to 2.1.125 have a bug in include/linux/x25.h which
-has been reported to cause compilation problems on glibc2 systems.
-
-2.1.127 introduced changes that broke current i4l CVS isdn subsystem.
-Until this is fixed, only use cvs isdn with 2.1.126 or older.
-
-
-
-
-
-
+hangup timeout.

@@ -1,12 +1,12 @@
-.\" $Id: efthosts.5,v 1.1 1999/06/30 16:51:06 he Exp $
+.\" $Id: efthosts.5,v 1.2 1999/07/01 18:00:26 he Exp $
 .\" SCCSID: @(#)$Original-Id: ftphosts.5,v 1.2 1997/01/10 06:27:02 sob Exp $
 .\" based on ftphosts.5 1.2 1/26/93
 .\" 
-.TH ftphosts 5 
+.TH efthosts 5 
 .SH Name
-ftphosts \- ftpd individual user host access file
+efthosts \- eftd individual user host access file
 .SH Description
-The ftphosts file is used to allow or deny access to certain
+The efthosts file is used to allow or deny access to certain
 accounts from various hosts.
 .SH Access Capabilities
 .TP 0.5i
@@ -16,10 +16,8 @@ Only allow host(s) matching <addrglob> to log in as <username>.
 .B deny <username> <addrglob> [<addrglob> ...]
 Always deny host(s) matching <addrglob> to log in as <username>.
 .SH Files
-FTPLIB/ftphosts
+/etc/isdn/efthosts
 .SH See Also
-.BR ftpd(8) ,
-.BR ftpaccess(5) ,
-.BR ftplog(5) ,
-.BR ftpconversions(5) ,
-.BR ftpshut(8)
+.BR eftd(8) ,
+.BR eftaccess(5) ,
+.BR eft_wuauth(5)

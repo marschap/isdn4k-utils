@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.34 1999/05/07 21:36:36 werner Exp $
+# $Id: Makefile,v 1.35 1999/07/01 18:00:07 he Exp $
 #
 # Toplevel Makefile for isdn4k-utils
 #
@@ -113,6 +113,9 @@ ifeq ($(CONFIG_GENMAN),y)
 endif
 ifeq ($(CONFIG_FAQ),y)
 	SUBDIRS := $(SUBDIRS) FAQ
+endif
+ifeq ($(CONFIG_EUROFILE),y)
+	SUBDIRS := $(SUBDIRS) eurofile
 endif
 ifneq ($(SUBDIRS),)
 	ifeq ($(filter lib,$(SUBDIRS)),)

@@ -1,11 +1,15 @@
-$Id: FAQ,v 1.1 1999/06/30 16:50:57 he Exp $
+$Id: FAQ,v 1.2 1999/07/01 18:00:20 he Exp $
 
 QUESTION: How can I control the amount of debugging output?
 =========
 
 ANSWER: 
 
-eftd.c and eftp.c contain set a global variable tdu_stderr_mask.
+The eftd server now also allows to
+control the amount of debugging output via command line arguments,
+refer to the eftd(8) man page for further info.
+
+eftd.c and eftp.c contain a global variable tdu_stderr_mask.
 Locate this and change the comment characters (/* .. */). For only
 logging Error events, the final active statement should be
 
@@ -14,9 +18,6 @@ logging Error events, the final active statement should be
 To remove isdnlog output to stderr, you can also comment out the
 'tdu_open_isdtlog()' statement.
 
-The eftd server now also allows to
-control the amount of debugging output via command line arguments,
-refer to the eftd(8) man page for further info.
 
 
 QUESTION: I don't want anonymous users to dial in without a MSN

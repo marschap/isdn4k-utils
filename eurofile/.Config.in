@@ -1,13 +1,14 @@
 mainmenu_option next_comment
-comment 'Options for EuroFile'
-bool 'EuroFile server daemon' CONFIG_EFTD
+comment 'Options for eurofile'
+comment 'eftp4linux, an implementation of the EUROFILE transfer protocol'
+bool 'eftd, an EUROFILE server / daemon' CONFIG_EFTD
 if [ "$CONFIG_EFTD" = "y" ]; then
 	CONFIG_EFTD_WUAUTH=${CONFIG_EFTD_WUAUTH:-"y"}
-	bool '  use wu-ftpd authentification' CONFIG_EFTD_WUAUTH
+	bool '      use wu-ftpd authentification for eftd' CONFIG_EFTD_WUAUTH
 fi	
-bool 'EuroFile client with command line user interface' CONFIG_EFTP
+bool 'eftp, an EUROFILE client with command line user interface' CONFIG_EFTP
 if [ "$CONFIG_EFTP" = "y" ]; then
 	CONFIG_EFTP_READLINE=${CONFIG_EFTP_READLINE:-"y"}
-	bool '  support command line editing with GNU readline' CONFIG_EFTP_READLINE
+	bool '      command line editing with GNU readline for eftp' CONFIG_EFTP_READLINE
 fi	
 endmenu

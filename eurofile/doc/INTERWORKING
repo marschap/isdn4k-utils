@@ -1,4 +1,4 @@
-$Id: INTERWORKING,v 1.1 1999/06/30 16:50:58 he Exp $
+$Id: INTERWORKING,v 1.2 1999/07/01 18:00:21 he Exp $
 
 The following classes of inter-working problems have been identified
 ====================================================================
@@ -112,7 +112,7 @@ BIANCA ISDN
 
 (As BIANCA supports unix, the developers might have been aware of the
 case sensitiveness problems. But unfortunately, I don't have any
-logs from BIANCA sessions where a long nameed file was tried to be
+logs from BIANCA sessions where a long name file was tried to be
 downloaded.
 
 
@@ -163,4 +163,3 @@ Should the .. directory be present in the file generated in response
 to an [S]LIST request? AVM/Fritz clients generate this entry locally
 which causes .. to be displayed twice if the server also included a ..
 entry in the SLIST response file.
-
