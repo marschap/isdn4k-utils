@@ -1,5 +1,5 @@
 /*
-** $Id: vbox.c,v 1.10 2001/03/01 14:59:16 paul Exp $
+** $Id: vbox.c,v 1.11 2002/01/31 20:10:20 paul Exp $
 **
 ** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
 */
@@ -1381,7 +1381,8 @@ static void draw_message_line(int y, int nr, int selected)
 		mvprintw(y, 1, "%s", msgline->mtime > 0 ? "+" : "");
 		mvprintw(y, 1, "%s", msgline->delete ? "-" : "");
 		
-		strcpy(strtime, "??-???-???? ??:??:??");
+                /* I hate trigraphs */
+		strcpy(strtime, "??""-??""?-""??""??"" ??"":??"":??");
 
 		if ((msgtime = localtime(&msgline->ctime)))
 		{
