@@ -21,7 +21,7 @@
 #include <dlfcn.h>
 #include <errno.h>
 
-static char *revision = "$Revision: 1.11 $";
+static char *revision = "$Revision: 1.12 $";
 
 static capiconn_context *ctx;
 static capi_connection *conn = 0;
@@ -64,6 +64,7 @@ static STRINGLIST *numbers;
 static STRINGLIST *callbacknumbers;
 static STRINGLIST *clis;
 static STRINGLIST *parsed_controller;
+static STRINGLIST *inmsns;
 
 static int optcb(void)
 {
@@ -643,6 +644,10 @@ static void check_options(void)
 		stringlist_free(&clis);
 		clis = stringlist_split(opt_cli, " \t,");
 	}
+	if (opt_inmsn) {
+		stringlist_free(&inmsns);
+		inmsns = stringlist_split(opt_inmsn, " \t,");
+	}
 	if (opt_controller) {
 		STRINGLIST *sl;
 		char *tmp;
@@ -796,10 +801,14 @@ static void incoming(capi_connection *cp,
 	info("capiplugin: incoming call: %s (0x%x)", conninfo(cp), cipvalue);
 	
 	if (opt_inmsn) {
-	   if (   (s = strstr(callednumber, opt_inmsn)) == 0
-               || strcmp(s, opt_inmsn) != 0) {
-	           info("capiplugin: ignoring call, msn mismatch (%s != %s)",
-				opt_inmsn, callednumber);
+	   for (p = inmsns; p; p = p->next) {
+	      if (   (s = strstr(callednumber, p->s)) != 0
+                  && strcmp(s, p->s) == 0)
+		 break;
+	   }
+	   if (!p) {
+	           info("capiplugin: ignoring call, msn %s not in \"%s\"",
+				callednumber, opt_inmsn);
 		   (void) capiconn_ignore(cp);
 		   return;
            }
@@ -815,8 +824,9 @@ static void incoming(capi_connection *cp,
 
 	if (opt_cli) {
 	   for (p = clis; p; p = p->next) {
-                if (strcmp(p->s, callingnumber) == 0)
-			break;
+	       if (   (s = strstr(callingnumber, p->s)) != 0
+                   && strcmp(s, p->s) == 0)
+		   break;
 	   }
 	   if (!p) {
 	           info("capiplugin: ignoring call, cli mismatch (%s != %s)",
@@ -827,7 +837,7 @@ static void incoming(capi_connection *cp,
         } else if (opt_number) {
 	   for (p = numbers; p; p = p->next) {
 	       if (   (s = strstr(callingnumber, p->s)) != 0
-                   || strcmp(s, p->s) == 0)
+                   && strcmp(s, p->s) == 0)
 		   break;
            }
 	   if (!p) {
@@ -908,6 +918,8 @@ callback:
 static void connected(capi_connection *cp, _cstruct NCPI)
 {
 	capi_conninfo *p = capiconn_getinfo(cp);
+	char *callingnumber = "";
+	char *callednumber = "";
 	char buf[PATH_MAX];
 	char *tty;
 	int retry = 0;
@@ -939,6 +951,18 @@ static void connected(capi_connection *cp, _cstruct NCPI)
 	strcpy(devnam, tty);
 	if (opt_connectdelay)
 		sleep(opt_connectdelay);
+
+	if (p->callingnumber && p->callingnumber[0] > 2)
+		callingnumber = p->callingnumber+3;
+	if (p->callednumber && p->callednumber[0] > 1)
+		callednumber = p->callednumber+2;
+        script_setenv("CALLEDNUMBER", callednumber, 0);
+        script_setenv("CALLINGNUMBER", callingnumber, 0);
+	sprintf(buf, "%d", p->cipvalue); script_setenv("CIPVALUE", buf, 0);
+	sprintf(buf, "%d", p->b1proto); script_setenv("B1PROTOCOL", buf, 0);
+	sprintf(buf, "%d", p->b2proto); script_setenv("B2PROTOCOL", buf, 0);
+	sprintf(buf, "%d", p->b3proto); script_setenv("B3PROTOCOL", buf, 0);
+
 	isconnected = 1;
 }
 

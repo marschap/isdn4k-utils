@@ -1,5 +1,5 @@
 .\" manual page [] for capiplugin 2.3
-.\" $Id: capiplugin.8,v 1.4 2000/11/01 10:04:24 calle Exp $
+.\" $Id: capiplugin.8,v 1.5 2001/03/12 10:14:54 calle Exp $
 .\" SH section heading
 .\" SS subsection heading
 .\" LP paragraph
@@ -154,7 +154,8 @@ Default value is 60 seconds.
 
 .TP
 .B inmsn \fI<msn>
-Phone number to monitor for calls, when different from option \fImsn\fR.
+List of phone numbers to monitor for calls, separated by commas.
+If this option is not set, the value of option \fImsn\fR is used.
 
 .TP
 .B msn \fI<msn>
