@@ -1,9 +1,17 @@
 /*
-** $Id: tclscript.c,v 1.6 1998/08/29 15:35:09 michael Exp $
+** $Id: tclscript.c,v 1.7 1998/08/30 17:32:07 michael Exp $
 **
 ** Copyright 1996-1998 Michael 'Ghandi' Herold <michael@abadonna.mayn.de>
 **
 ** $Log: tclscript.c,v $
+** Revision 1.7  1998/08/30 17:32:07  michael
+** - Total new audio setup - now it works correct and don't crash the
+**   machine.
+** - Example answercall.tcl added.
+** - Reduced in-/outgoing data logging. Now only around all 8000 bytes a
+**   line ist logged.
+** - Added control file check to play and record function.
+**
 ** Revision 1.6  1998/08/29 15:35:09  michael
 ** - Removed audio setup - it will crash my machine. Kernel mailing list says
 **   there are many bugs in the sound ioctl's :-( But audio will work correct
@@ -140,7 +148,7 @@ int scr_execute(char *name, struct vboxuser *user)
 
 	if (!canrun)
 	{
-		printstring(temppathname, "%s/%s", PKGDATADIR, name);
+		printstring(temppathname, "%s/tcl/%s", PKGDATADIR, name);
 
 		if (access(temppathname, F_OK|R_OK) == 0) canrun = 1;
 	}
@@ -425,8 +433,8 @@ int vbox_voice(VBOX_TCLFUNC)
 						/* Eingehende Audiodaten zum mithören an ein	*/
 						/* anderes Device schicken.						*/
 
-					if (strcasecmp(arg, "stop") == 0) rc = voice_hear(0);
-					if (strcasecmp(arg, "hear") == 0) rc = voice_hear(1);
+					if (strcasecmp(arg,  "stop") == 0) rc = voice_hear(0);
+					if (strcasecmp(arg, "start") == 0) rc = voice_hear(1);
 
 					switch (rc)
 					{

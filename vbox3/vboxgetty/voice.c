@@ -1,9 +1,17 @@
 /*
-** $Id: voice.c,v 1.6 1998/08/29 15:35:10 michael Exp $
+** $Id: voice.c,v 1.7 1998/08/30 17:32:08 michael Exp $
 **
 ** Copyright 1996-1998 Michael 'Ghandi' Herold <michael@abadonna.mayn.de>
 **
 ** $Log: voice.c,v $
+** Revision 1.7  1998/08/30 17:32:08  michael
+** - Total new audio setup - now it works correct and don't crash the
+**   machine.
+** - Example answercall.tcl added.
+** - Reduced in-/outgoing data logging. Now only around all 8000 bytes a
+**   line ist logged.
+** - Added control file check to play and record function.
+**
 ** Revision 1.6  1998/08/29 15:35:10  michael
 ** - Removed audio setup - it will crash my machine. Kernel mailing list says
 **   there are many bugs in the sound ioctl's :-( But audio will work correct
@@ -62,7 +70,6 @@
 
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <sys/soundcard.h>
 #include <fcntl.h>
 #include <string.h>
 #include <errno.h>
@@ -76,6 +83,7 @@
 #include "vboxgetty.h"
 #include "tclscript.h"
 #include "control.h"
+#include "audio.h"
 
 /** Variables ************************************************************/
 
@@ -96,6 +104,7 @@ static char voicename_call[PATH_MAX + 1];
 static void voice_stop_vtxrtx(void);
 static void voice_create_vboxcall(void);
 static void voice_remove_vboxcall(void);
+static void voice_mkdir(char *);
 
 /************************************************************************* 
  ** voice_init():	Beantwortet den Anruf und startet das Tcl-Skript.		**
@@ -106,6 +115,7 @@ static void voice_remove_vboxcall(void);
 
 int voice_init(struct vboxuser *vboxuser, struct vboxcall *vboxcall)
 {
+	char		connect[12];
 	char		msgsavetime[32];
 	char		voicestoppl[2];
 	char		voicestoprc[2];
@@ -141,8 +151,8 @@ int voice_init(struct vboxuser *vboxuser, struct vboxcall *vboxcall)
 
 	currenttime = time(NULL);
 
-	printstring(voicename_ulaw, "%s/incoming/%11.11lu-%8.8lu.ulaw", vboxuser->home, (unsigned long)currenttime, (unsigned long)getpid());
-	printstring(voicename_vbox, "%s/incoming/%11.11lu-%8.8lu.vbox", vboxuser->home, (unsigned long)currenttime, (unsigned long)getpid());
+	printstring(voicename_ulaw, "%s/new/%11.11lu-%8.8lu.ulaw", vboxuser->home, (unsigned long)currenttime, (unsigned long)getpid());
+	printstring(voicename_vbox, "%s/new/%11.11lu-%8.8lu.vbox", vboxuser->home, (unsigned long)currenttime, (unsigned long)getpid());
 
 		/* Den Namen der Call Datei erzeugen, in dem später Daten zum	*/
 		/* aktuellen Anruf gesichert werden.									*/
@@ -154,7 +164,12 @@ int voice_init(struct vboxuser *vboxuser, struct vboxcall *vboxcall)
 
 	voicevbox = 0;
 
-	log_line(LOG_D, "Answering call...\n");
+	voice_mkdir(NULL );
+	voice_mkdir("new");
+	voice_mkdir("msg");
+	voice_mkdir("tcl");
+
+	log_line(LOG_A, "Answering call...\n");
 
 	if (scr_init_variables(vars) == 0)
 	{
@@ -172,6 +187,16 @@ int voice_init(struct vboxuser *vboxuser, struct vboxcall *vboxcall)
 					voice_save(0);
 
 					voice_create_vboxcall();
+
+						/* Bevor das Skript gestartet wird, werden die	*/
+						/* ersten 11 Byte vom Modem eingelesen. Damit	*/
+						/* wird ein Fehler in i4l umgangen, der die		*/
+						/* Connectmessage bei Full Duplex 2x in den Mo-	*/
+						/* dembuffer schreibt.									*/
+
+					modem_set_timeout(2);
+					vboxmodem_raw_read(&vboxmodem, connect, 11);
+					modem_set_timeout(0);
 
 					rc = scr_execute(vboxcall->script, vboxuser);
 
@@ -209,26 +234,28 @@ int voice_init(struct vboxuser *vboxuser, struct vboxcall *vboxcall)
 	return(-1);
 }
 
-/*************************************************************************/
-/** voice_wait():	Liest eine angegebene Zeit lang Audiodaten vom Modem.	**/
-/*************************************************************************/
-/** => timeout		Timeout in Sekunden												**/
-/*************************************************************************/
-/** <=				 0 wenn der Timeout eingetreten ist.						**/
-/**					 1 wenn eine gültige Touchtonesequenz gefunden wurde.	**/
-/**					 2 wenn der Anruf suspended werden soll.					**/
-/**					-1 bei einem Fehler oder Remote hangup						**/
-/*************************************************************************/
+/*************************************************************************
+ ** voice_wait():	Liest eine angegebene Zeit lang Audiodaten vom Modem.	**
+ *************************************************************************
+ ** => timeout		Timeout in Sekunden												**
+ *************************************************************************
+ ** <=				 0 wenn der Timeout eingetreten ist.						**
+ **					 1 wenn eine gültige Touchtonesequenz gefunden wurde.	**
+ **					 2 wenn der Anruf suspended werden soll.					**
+ **					-1 bei einem Fehler oder Remote hangup						**
+ *************************************************************************/
 
 int voice_wait(int timeout)
 {
-	char  modem_line_i[1];
-	char  modem_line_o[VBOXVOICE_BUFSIZE + 1];
-	int   modem_byte_i;
-	int   modem_byte_o;
-	int   result;
-	int   gotdle;
-	char *stop;
+	unsigned char  modem_line_i[1];
+	unsigned char  modem_line_o[VBOXVOICE_BUFSIZE + 1];
+	int	         total_byte_i;
+	int	         total_byte_o;
+	int            modem_byte_i;
+	int            modem_byte_o;
+	int            result;
+	int            gotdle;
+	char          *stop;
 
 	voicestat	= VBOXVOICE_STAT_OK;
 	gotdle		= 0;
@@ -279,27 +306,39 @@ int voice_wait(int timeout)
 			else break;
 		}
 
+		total_byte_o += modem_byte_o;
+		total_byte_i += modem_byte_i;
+
 		if (modem_byte_o > 0)
 		{
-			log_line(LOG_D, "Wait: incoming %03d; outgoing %03d...\n", modem_byte_i, modem_byte_o);
-
 			if (voicedesc != -1) write(voicedesc, modem_line_o, modem_byte_o);
 			if (audiodesc != -1) write(audiodesc, modem_line_o, modem_byte_o);
-		}
 
-		if ((stop = ctrl_exists(voicevboxuser->home, "suspend", savettydname)))
-		{
-			log(LOG_D, "Control \"vboxctrl-suspend-%s\" detected: %s.\n", savettydname, stop);
+				/* Einmal in der Sekunde die Logmessage ausgeben und die	*/
+				/* Controls checken.                 							*/
 
-			voicestat |= VBOXVOICE_STAT_SUSPEND;
-		}
+			if ((total_byte_o >= VBOXVOICE_SAMPLERATE) || (voicestat != VBOXVOICE_STAT_OK))
+			{
+				log_line(LOG_D, "Wait: incoming %04d; outgoing %04d...\n", total_byte_i, total_byte_o);
 
-		if ((stop = ctrl_exists(voicevboxuser->home, "audio", savettydname)))
-		{
-			log(LOG_D, "Control \"vboxctrl-audio-%s\" detected: %s.\n", savettydname, stop);
+				total_byte_i = 0;
+				total_byte_o = 0;
 
-			if (strcasecmp(stop, "HEAR") == 0) voice_hear(1);
-			if (strcasecmp(stop, "STOP") == 0) voice_hear(0);
+				if ((stop = ctrl_exists(voicevboxuser->home, "suspend", savettydname)))
+				{
+					log(LOG_D, "Control \"vboxctrl-suspend-%s\" detected: %s.\n", savettydname, stop);
+
+					voicestat |= VBOXVOICE_STAT_SUSPEND;
+				}
+
+				if ((stop = ctrl_exists(voicevboxuser->home, "audio", savettydname)))
+				{
+					log(LOG_D, "Control \"vboxctrl-audio-%s\" detected: %s.\n", savettydname, stop);
+
+					if (strcasecmp(stop,  "stop") == 0) voice_hear(0);
+					if (strcasecmp(stop, "start") == 0) voice_hear(1);
+				}
+			}
 		}
 
 		if ((result != 1) || (modem_get_timeout()))
@@ -329,7 +368,7 @@ int voice_wait(int timeout)
 
 	if ((voicestat & VBOXVOICE_STAT_HANGUP) || (vboxmodem.nocarrier))
 	{
-		log_line(LOG_D, "Remote caller quit the call!\n");
+		log_line(LOG_D, "*** Remote hangup ***\n");
 
 		voice_save(0);
 		voice_hear(0);		
@@ -342,12 +381,16 @@ int voice_wait(int timeout)
 	return(result);
 }
 
-
-
-
-
 /************************************************************************* 
- **
+ ** voice_play():	Spielt eine Nachricht ab und liest dabei Voicedaten	**
+ **					vom Modem.															**
+ *************************************************************************
+ ** name				Name der Nachricht die gespielt werden soll.				**
+ *************************************************************************
+ ** <=				 0 wenn der Timeout eingetreten ist.						**
+ **					 1 wenn eine gültige Touchtonesequenz gefunden wurde.	**
+ **					 2 wenn der Anruf suspended werden soll.					**
+ **					-1 bei einem Fehler oder Remote hangup						**
  *************************************************************************/
 
 int voice_play(char *name)
@@ -375,7 +418,6 @@ int voice_play(char *name)
 
 	log(LOG_D, "Playing \"%s\"...\n", name);
 
-
 	printstring(temppathname, "%s/msg/%s", voicevboxuser->home, name);
 
    errno = 0;
@@ -395,7 +437,6 @@ int voice_play(char *name)
 
 		return(0);
 	}
-
 
 	voicestat		= VBOXVOICE_STAT_OK;
 	gotdle			= 0;
@@ -460,31 +501,34 @@ int voice_play(char *name)
 
 		if (modem_byte_o > 0)
 		{
-			if ((total_byte_o > 1024) || (voicestat != VBOXVOICE_STAT_OK))
+			if (voicedesc != -1) write(voicedesc, modem_line_o, modem_byte_o);
+			if (audiodesc != -1) write(audiodesc, modem_line_o, modem_byte_o);
+
+				/* Einmal in der Sekunde die Logmessage ausgeben und die	*/
+				/* Controls checken.                 							*/
+
+			if ((total_byte_o >= VBOXVOICE_SAMPLERATE) || (voicestat != VBOXVOICE_STAT_OK))
 			{
 				log_line(LOG_D, "Play: incoming %04d; outgoing %04d...\n", total_byte_i, total_byte_o);
 
 				total_byte_i = 0;
 				total_byte_o = 0;
+
+				if ((stop = ctrl_exists(voicevboxuser->home, "suspend", savettydname)))
+				{
+					log(LOG_D, "Control \"vboxctrl-suspend-%s\" detected: %s.\n", savettydname, stop);
+
+					voicestat |= VBOXVOICE_STAT_SUSPEND;
+				}
+
+				if ((stop = ctrl_exists(voicevboxuser->home, "audio", savettydname)))
+				{
+					log(LOG_D, "Control \"vboxctrl-audio-%s\" detected: %s.\n", savettydname, stop);
+
+					if (strcasecmp(stop,  "stop") == 0) voice_hear(0);
+					if (strcasecmp(stop, "start") == 0) voice_hear(1);
+				}
 			}
-
-			if (voicedesc != -1) write(voicedesc, modem_line_o, modem_byte_o);
-			if (audiodesc != -1) write(audiodesc, modem_line_o, modem_byte_o);
-		}
-
-		if ((stop = ctrl_exists(voicevboxuser->home, "suspend", savettydname)))
-		{
-			log(LOG_D, "Control \"vboxctrl-suspend-%s\" detected: %s.\n", savettydname, stop);
-
-			voicestat |= VBOXVOICE_STAT_SUSPEND;
-		}
-
-		if ((stop = ctrl_exists(voicevboxuser->home, "audio", savettydname)))
-		{
-			log(LOG_D, "Control \"vboxctrl-audio-%s\" detected: %s.\n", savettydname, stop);
-
-			if (strcasecmp(stop, "HEAR") == 0) voice_hear(1);
-			if (strcasecmp(stop, "STOP") == 0) voice_hear(0);
 		}
 
 		if ((result != 1) || (modem_get_timeout()))
@@ -516,7 +560,7 @@ int voice_play(char *name)
 
 	if ((voicestat & VBOXVOICE_STAT_HANGUP) || (vboxmodem.nocarrier))
 	{
-		log_line(LOG_D, "Remote caller quit the call!\n");
+		log_line(LOG_D, "*** Remote hangup ***\n");
 
 		voice_save(0);
 		voice_hear(0);		
@@ -529,29 +573,34 @@ int voice_play(char *name)
 	return(result);
 }
 
-
-
-
-
-/*************************************************************************/
-/** voice_save():	Schaltet das mitspeichern der eingehenden Audiodaten	**/
-/**					ein oder aus.														**/
-/*************************************************************************/
-/** => save			1 wenn die Daten gespeichert werden sollen oder 0		**/
-/**					wenn nicht.															**/
-/**																							**/
-/** <=				0 wenn die Aktion ausgeführt werden konnte oder -1		**/
-/**					einem Fehler.														**/
-/*************************************************************************/
+/************************************************************************* 
+ ** voice_save():	Schaltet das mitspeichern der eingehenden Voicedaten	**
+ **					ein oder aus.														**
+ *************************************************************************
+ ** => save			> 0 um das mitspeichern einzuschalten; alle anderen	**
+ **					Werte schaltes es aus.											**
+ *************************************************************************/
 
 int voice_save(int save)
 {
-	struct vboxsave vboxsave;
-	int				 desc;
+	FILE *vbox;
 
-	if (save)
+	if (save > 0)
 	{
-		log_line(LOG_D, "Starting audio recording...\n");
+		if (voicedesc == -1)
+		{
+			log(LOG_D, "Starting voice recording...\n");
+			log(LOG_D, "Opening \"%s\"...\n", voicename_ulaw);
+
+			errno = 0;
+
+			if ((voicedesc = open(voicename_ulaw, O_WRONLY|O_CREAT|O_APPEND, S_IRUSR|S_IWUSR|S_IRGRP|S_IWGRP|S_IROTH|S_IWOTH)) == -1)
+			{
+				log(LOG_E, "Can't open/append \"%s\" (%s).\n", voicename_ulaw, strerror(errno));
+
+				return(-1);
+			}
+		}
 
 		if (!voicevbox)
 		{
@@ -559,53 +608,37 @@ int voice_save(int save)
 				/* jetzt erzeugt. Die Datei enthält die Informationen		*/
 				/* wer wann wie die Nachricht gesprochen hat.				*/
 
-			log_line(LOG_D, "Opening \"%s\"...\n", voicename_vbox);
+			log(LOG_D, "Creating \"%s\"...\n", voicename_vbox);
 
-			if ((desc = open(voicename_vbox, O_WRONLY|O_CREAT, S_IRUSR|S_IWUSR|S_IRGRP|S_IWGRP|S_IROTH|S_IWOTH)) != -1)
+			errno = 0;
+
+			if ((vbox = fopen(voicename_vbox, "w")))
 			{
-				vboxsave.time = time(NULL);
+				fprintf(vbox, "Name: %s\n" , voicevboxcall->name      );
+				fprintf(vbox, "ID  : %s\n" , voicevboxuser->incomingid);
+				fprintf(vbox, "Time: %ld\n", time(NULL)               );
 
-				xstrncpy(vboxsave.name	, voicevboxcall->name		, VBOXSAVE_NAME);
-				xstrncpy(vboxsave.id		, voicevboxuser->incomingid, VBOXSAVE_ID	);
+				fclose(vbox);
 
-				if (write(desc, &vboxsave, sizeof(vboxsave)) == sizeof(vboxsave))
-				{
-					voicevbox = 1;
-				}
-
-				close(desc);
+				voicevbox = 1;
 			}
-			else log_line(LOG_E, "Can't create \"%s\".\n", voicename_vbox);
+			else log(LOG_E, "Can't create \"%s\" (%s).\n", voicename_vbox, strerror(errno));
 		}
-
-		if (voicedesc == -1)
-		{
-			log_line(LOG_D, "Opening \"%s\"...\n", voicename_ulaw);
-
-			voicedesc = open(voicename_ulaw, O_WRONLY|O_CREAT|O_APPEND, S_IRUSR|S_IWUSR|S_IRGRP|S_IWGRP|S_IROTH|S_IWOTH);
-		}
-
-		if (voicedesc != -1) return(0);
-
-		log_line(LOG_E, "Can't open/append \"%s\".\n", voicename_ulaw);
 	}
 	else
 	{
-		log_line(LOG_D, "Stopping audio recording...\n");
-
 		if (voicedesc != -1)
 		{
-			log_line(LOG_D, "Closing \"%s\"...\n", voicename_ulaw);
+			log(LOG_D, "Stopping voice recording...\n");
+			log(LOG_D, "Closing \"%s\"...\n", voicename_ulaw);
 
 			close(voicedesc);
 		}
 		
 		voicedesc = -1;
-
-		return(0);
 	}
 
-	return(-1);
+	return(0);
 }
 
 /************************************************************************* 
@@ -627,74 +660,29 @@ int voice_hear(int mode)
 	{
 		if (audiodesc == -1)
 		{
-			log(LOG_D, "Starting \"/dev/audio\" mode...\n");
+			log(LOG_D, "Starting audio playback...\n");
 
-			if ((audiodesc = open("/dev/audio", O_WRONLY)) == -1)
-			{
-				log(LOG_E, "Can't open \"/dev/audio\" (%s).\n", strerror(errno));
-
-				return(voice_hear(-1));
-			}
-/*
-			i = ((VBOXVOICE_NUMFRAGS * VBOXVOICE_FRAGFACT) << 16) | VBOXVOICE_BUFEXP;
-
-			if (ioctl(audiodesc, SNDCTL_DSP_SETFRAGMENT, &i) == -1)
-			{
-				log(LOG_E, "Error: SNDCTL_DSP_SETFRAGMENT (%s).\n", strerror(errno));
-
-				return(voice_hear(-1));
-			}
-
-			i = AFMT_MU_LAW;
-
-			if (ioctl(audiodesc, SNDCTL_DSP_SETFMT, &i) == -1)
-			{
-				log(LOG_E, "Error: SNDCTL_DSP_SETFMT (%s).\n", strerror(errno));
-
-				return(voice_hear(-1));
-			}
-
-			i = 0;
-
-			if (ioctl(audiodesc, SNDCTL_DSP_STEREO, &i) == -1)
-			{
-				log(LOG_E, "Error: SNDCTL_DSP_STEREO (%s).\n", strerror(errno));
-
-				return(voice_hear(-1));
-			}
-
-			i = 8000;
-
-			if (ioctl(audiodesc, SNDCTL_DSP_SPEED, &i) == -1)
-			{
-				log(LOG_E, "Error: SNDCTL_DSP_SPEED (%s).\n", strerror(errno));
-
-				return(voice_hear(-1));
-			}
-*/
+			if ((audiodesc = audio_open_dev("/dev/audio")) == -1) return(-1);
 		}
-
-		return(0);
 	}
 	else
 	{
 		if (audiodesc != -1)
 		{
-			log(LOG_D, "Stopping \"/dev/audio\" mode...\n");
+			log(LOG_D, "Stopping audio playback...\n");
 
-			close(audiodesc);
+			audio_close_dev(audiodesc);
 		}
 		
 		audiodesc = -1;
 	}
 
-	return(mode);
+	return(0);
 }
 
-
-
-
-
+/************************************************************************* 
+ ** FIXME
+ *************************************************************************/
 
 static void voice_stop_vtxrtx(void)
 {
@@ -703,83 +691,70 @@ static void voice_stop_vtxrtx(void)
 
 	if (!vboxmodem.nocarrier)
 	{
+			/* DLE/DC4 an den Modememluator schicken um den Record-Modus */
+			/* zu stoppen. Der Emulator sollte mit DLE/ETX antworten.	 */
 
+		log_line(LOG_D, "Sending \"<DLE><DC4>\" to stop record mode...\n");
 
+		printstring(line, "%c%c", DLE, DC4);
 
+		vboxmodem_raw_write(&vboxmodem, line, 2);
 
+		have = 0;
 
+		modem_set_timeout(modemsetup.commandtimeout);
 
-
-		/* DLE/DC4 an den Modememluator schicken um den Record-Modus */
-		/* zu stoppen. Der Emulator sollte mit DLE/ETX antworten.	 */
-
- 	log_line(LOG_D, "Sending \"<DLE><DC4>\" to stop record mode...\n");
-
-	printstring(line, "%c%c", DLE, DC4);
-
-	vboxmodem_raw_write(&vboxmodem, line, 2);
-
-	have = 0;
-
-	modem_set_timeout(modemsetup.commandtimeout);
-
-	while (vboxmodem_raw_read(&vboxmodem, line, 1) == 1)
-	{
-		log_char(LOG_D, *line);
-
-		if (*line != DLE)
+		while (vboxmodem_raw_read(&vboxmodem, line, 1) == 1)
 		{
-			if ((*line == ETX) && (have))
+			log_char(LOG_D, *line);
+
+			if (*line != DLE)
 			{
-				have++;
+				if ((*line == ETX) && (have))
+				{
+					have++;
 
-				break;
+					break;
+				}
+				else have = 0;
 			}
-			else have = 0;
+			else have = 1;
 		}
-		else have = 1;
-	}
 
-	modem_set_timeout(0);
+		modem_set_timeout(0);
 
-	if (have == 2) log_line(LOG_D, "Found <DLE><ETX>!\n");
+		if (have == 2) log_line(LOG_D, "Found <DLE><ETX>!\n");
 
+		log_line(LOG_D, "Sending \"<DLE><ETX>\" to stop playback mode...\n");
 
+		printstring(line, "%c%c", DLE, ETX);
 
+		vboxmodem_raw_write(&vboxmodem, line, 2);
 
- 	log_line(LOG_D, "Sending \"<DLE><ETX>\" to stop playback mode...\n");
+		have = 0;
 
-	printstring(line, "%c%c", DLE, ETX);
+		modem_set_timeout(modemsetup.commandtimeout);
 
-	vboxmodem_raw_write(&vboxmodem, line, 2);
-
-	have = 0;
-
-	modem_set_timeout(modemsetup.commandtimeout);
-
-	while (vboxmodem_raw_read(&vboxmodem, line, 1) == 1)
-	{
-		log_char(LOG_D, *line);
-
-		if (*line != DLE)
+		while (vboxmodem_raw_read(&vboxmodem, line, 1) == 1)
 		{
-			if ((*line == DC4) && (have))
+			log_char(LOG_D, *line);
+
+			if (*line != DLE)
 			{
-				have++;
+				if ((*line == DC4) && (have))
+				{
+					have++;
 
-				break;
+					break;
+				}
+				else have = 0;
 			}
-			else have = 0;
+			else have = 1;
 		}
-		else have = 1;
-	}
 
-	modem_set_timeout(0);
+		modem_set_timeout(0);
 
-	if (have == 2) log_line(LOG_D, "Found <DLE><DC4>!\n");
-
-
-
+		if (have == 2) log_line(LOG_D, "Found <DLE><DC4>!\n");
 	}
 }
 
@@ -791,30 +766,19 @@ static void voice_stop_vtxrtx(void)
 static void voice_create_vboxcall(void)
 {
 	FILE *call;
-	char  done;
 
 	log(LOG_D, "Creating \"%s\"...\n", voicename_call);
 
-	done = 0;
-
 	if ((call = fopen(voicename_call, "w")))
 	{
-		if (chmod(voicename_call, S_IRUSR|S_IWUSR|S_IRGRP|S_IWGRP|S_IROTH|S_IWOTH) == 0)
-		{
-				/* CallerID, Name, tty-Device und die aktuelle PID in der	*/
-				/* Datei speichern.														*/
+			/* CallerID, Name, tty-Device und die aktuelle PID in der	*/
+			/* Datei speichern.														*/
 
-			fprintf(call, "%s:%s:%s:ld\n", voicevboxuser->incomingid, voicevboxuser->name, savettydname, getpid());
-
-			done = 1;
-		}
-		else log(LOG_E, "Can't chmod \"%s\".\n", voicename_call, strerror(errno));
+		fprintf(call, "%s:%s:%s:ld\n", voicevboxuser->incomingid, voicevboxuser->name, savettydname, getpid());
 
 		fclose(call);
 	}
 	else log(LOG_E, "Can't create \"%s\" (%s)!\n", voicename_call, strerror(errno));
-
-	if (!done) voice_remove_vboxcall();
 }
 
 /************************************************************************* 
@@ -831,10 +795,26 @@ static void voice_remove_vboxcall(void)
 	}
 }
 
+/************************************************************************* 
+ ** voice_mkdir():	Erzeugt die Verzeichnisse im Userspool.				**
+ *************************************************************************/
 
+static void voice_mkdir(char *name)
+{
+	if (name)
+		printstring(temppathname, "%s/%s", voicevboxuser->home, name);
+	else
+		printstring(temppathname, "%s", voicevboxuser->home);
 
+	log(LOG_D, "Creating directory \"%s\"...\n", temppathname);
 
+	errno = 0;
 
-
-
-
+	if (mkdir(temppathname, S_IRUSR|S_IWUSR|S_IXUSR|S_IRGRP|S_IWGRP|S_IXGRP|S_IROTH|S_IWOTH|S_IXOTH) == -1)
+	{
+		if (errno != EEXIST)
+		{
+			log(LOG_E, "Can't create \"%s\" (%s).\n", temppathname, strerror(errno));
+		}
+	}
+}

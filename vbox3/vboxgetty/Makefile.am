@@ -1,5 +1,5 @@
 ##
-## $Id: Makefile.am,v 1.3 1998/07/06 09:05:17 michael Exp $
+## $Id: Makefile.am,v 1.4 1998/08/30 17:32:05 michael Exp $
 ##
 
 ## system admin executables to install ####################################
@@ -38,7 +38,8 @@ vboxgetty_SOURCES	= log.c log.h \
 			  vboxgetty.c vboxgetty.h \
 			  voice.c voice.h \
 			  control.c control.h \
-			  lock.c lock.h
+			  lock.c lock.h \
+			  audio.c audio.h
 
 ## other directories to process ###########################################
 
@@ -48,3 +49,9 @@ SUBDIRS			= examples
 
 CLEANFILES		= *~
 MAINTAINERCLEANFILES	= Makefile.in
+
+## Local install routines ################################################
+
+install-exec-local:
+			  $(mkinstalldirs) $(sbindir)
+			  $(INSTALL) -s -m 700 vboxgetty $(sbindir)/

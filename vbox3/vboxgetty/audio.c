@@ -1,0 +1,164 @@
+/*
+** $Id: audio.c,v 1.1 1998/08/30 17:32:05 michael Exp $
+**
+** Copyright 1996-1998 Michael 'Ghandi' Herold <michael@abadonna.mayn.de>
+**
+** $Log: audio.c,v $
+** Revision 1.1  1998/08/30 17:32:05  michael
+** - Total new audio setup - now it works correct and don't crash the
+**   machine.
+** - Example answercall.tcl added.
+** - Reduced in-/outgoing data logging. Now only around all 8000 bytes a
+**   line ist logged.
+** - Added control file check to play and record function.
+**
+*/
+
+#include <stdio.h>
+#include <stdlib.h>
+
+#include <errno.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <sys/soundcard.h>
+
+#include "audio.h"
+#include "log.h"
+#include "voice.h"
+
+/************************************************************************* 
+ ** audio_open_dev():	Öffnet das Audiodevice und stellt es ein.			**
+ *************************************************************************
+ ** => name					Name des Devices.											**
+ *************************************************************************/
+
+int audio_open_dev(char *name)
+{
+	int desc;
+	int mask;
+
+	errno = 0;
+
+	if ((desc = open(name, O_WRONLY)) == -1)
+	{
+		log(LOG_W, "Can't open \"%s\" (%s).\n", name, strerror(errno));
+
+		return(audio_close_dev(desc));
+	}
+
+		/* Fragmentgröße und Anzahl der Fragmente einstellen. Die	*/
+		/* höheren 16 Bit sind die Anzahl der Fragmente, die nied-	*/
+		/* eren die Fragmentgröße. Hier 5 Fragmente und 32 Byte		*/
+		/* Fragmentgröße (Bit 4). Es darf nur *ein* Bit für die		*/
+		/* Größe verwendet werden, sonst schmiert der Rechner eis-	*/
+		/* kalt ab!																	*/
+
+	mask = 0x00050004;
+
+	if (ioctl(desc, SNDCTL_DSP_SETFRAGMENT, &mask) == -1)
+	{
+		log(LOG_W, "Error: SNDCTL_DSP_SETFRAGMENT (%s).\n", strerror(errno));
+
+		return(audio_close_dev(desc));
+	}
+
+		/* OSS ab 3.6 gibt muLaw nur zurück, wenn die Audiohardware	*/
+		/* das Format unterstützt. Ansonsten wird muLaw durch eine	*/
+		/* Lookup-Table emuliert. Es wird hier nur geprüft ob U8		*/
+		/* unterstützt wird. Wenn ja wird muLaw eingestellt, aber	*/
+		/* keine weitere Überprüfung mehr gemacht!						*/
+
+	if (ioctl(desc, SNDCTL_DSP_GETFMTS, &mask) == -1)
+	{
+		log(LOG_W, "Error: SNDCTL_DSP_GETFMTS (%s).\n", strerror(errno));
+
+		return(audio_close_dev(desc));
+	}
+
+	if (!(mask & AFMT_U8))
+	{
+ 		log(LOG_E, "Audio device doesn't support U8 (disabled).\n");
+
+		return(audio_close_dev(desc));
+	}
+
+	mask = AFMT_MU_LAW;
+
+	if (ioctl(desc, SNDCTL_DSP_SETFMT, &mask) == -1)
+	{
+		log(LOG_W, "Error: SNDCTL_DSP_SETFMT (%s).\n", strerror(errno));
+
+		return(audio_close_dev(desc));
+	}
+
+	if (!(mask & AFMT_MU_LAW))
+	{
+ 		log(LOG_D, "Audio device doesn't support hardware muLaw.\n");
+	}
+
+		/* Stereo-Modus des Devices einstellen. 0 ist Mono und 1	*/
+		/* ist Stereo. Da nur in Mono aufgezeichnet wird, wird	*/
+		/* auch nur Mono eingestellt.										*/
+
+	mask = 0;
+
+	if (ioctl(desc, SNDCTL_DSP_STEREO, &mask) == -1)
+	{
+		log(LOG_W, "Error: SNDCTL_DSP_STEREO (%s).\n", strerror(errno));
+
+		return(audio_close_dev(desc));
+	}
+
+		/* Sampling Rate des Devices einstellen. i4l liefert die	*/
+		/* Daten in 8kHz, also werden sie auch damit wiedergege-	*/
+		/*	ben.																	*/
+
+	mask = 8000;
+
+	if (ioctl(desc, SNDCTL_DSP_SPEED, &mask) == -1)
+	{
+		log(LOG_W, "Error: SNDCTL_DSP_SPEED (%s).\n", strerror(errno));
+
+		return(audio_close_dev(desc));
+	}
+
+	if (mask != 8000)
+	{
+		log(LOG_E, "Audio device doesn't support 8kHz sampling rate (disabled).\n");
+
+		return(audio_close_dev(desc));
+	}
+
+		/* Nach allen Einstellungen zur Sicherheit nochmal die	*/
+		/* Größe der Fragmente überprüfen. Sie muß mit der Größe	*/
+		/* des Modembuffers übereinstimmen (32 Byte).				*/
+
+	if (ioctl(desc, SNDCTL_DSP_GETBLKSIZE, &mask) == -1)
+	{
+		log(LOG_W, "Error: SNDCTL_DSP_GETBLKSIZE (%s).\n", strerror(errno));
+
+		return(audio_close_dev(desc));
+	}
+
+	if (mask != VBOXVOICE_BUFSIZE)
+	{
+		log(LOG_E, "Audio fragment size is not %d (audio disabled).\n", VBOXVOICE_BUFSIZE);
+
+		return(audio_close_dev(desc));
+	}
+
+	return(desc);
+}
+
+/************************************************************************* 
+ ** audio_close_dev():	Schließt das Audiodevice.								**
+ *************************************************************************
+ ** => desc					File Descriptor des Devices.							**
+ *************************************************************************/
+
+int audio_close_dev(int desc)
+{
+	if (desc != -1) close(desc);
+
+	return(-1);
+}

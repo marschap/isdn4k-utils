@@ -1,15 +1,19 @@
 ##
-## $Id: Makefile.am,v 1.4 1998/07/06 09:05:55 michael Exp $
+## $Id: Makefile.am,v 1.5 1998/08/30 17:32:15 michael Exp $
 ##
 
 ## The tcl scripts to install ############################################
 
-pkgdata_DATA		= initmodem.tcl
-
-EXTRA_DIST		= $(pkgdata_DATA)
+EXTRA_DIST		= initmodem.tcl answercall.tcl
 
 ## Clean & Maintenance ###################################################
 
 CLEANFILES              = *~
 MAINTAINERCLEANFILES    = Makefile.in
 
+## Local install routines ################################################
+
+install-data-local:
+			  $(mkinstalldirs) $(pkgdatadir)/tcl
+			  $(INSTALL) -m 644 initmodem.tcl $(pkgdatadir)/tcl/
+			  $(INSTALL) -m 644 answercall.tcl $(pkgdatadir)/tcl/
