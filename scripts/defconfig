@@ -77,7 +77,12 @@ CONFIG_XMONISDN_DOWNCMD='/sbin/netdown'
 # Applications
 #
 # CONFIG_VBOX is not set
-# CONFIG_IPPPD is not set
+CONFIG_IPPPD=y
+
+#
+# Options for ipppd
+#
+# CONFIG_IPPD_MSCHAP is not set
 
 #
 # Documentation
