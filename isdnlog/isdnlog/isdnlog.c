@@ -1,4 +1,4 @@
-/* $Id: isdnlog.c,v 1.7 1997/04/08 21:56:48 luethje Exp $
+/* $Id: isdnlog.c,v 1.8 1997/04/17 20:09:32 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,9 @@
  * along with this program; if not, write to the Free Software
  *
  * $Log: isdnlog.c,v $
+ * Revision 1.8  1997/04/17 20:09:32  luethje
+ * patch of Ingo Schneider
+ *
  * Revision 1.7  1997/04/08 21:56:48  luethje
  * Create the file isdn.conf
  * some bug fixes for pid and lock file
@@ -41,6 +44,8 @@
 #ifdef POSTGRES
 #include "postgres.h"
 #endif
+
+#define FD_SET_MAX(desc, set, max) { if (desc > max) max=desc; FD_SET(desc,set); }
 
 /*****************************************************************************/
 
@@ -96,6 +101,7 @@ static void loop(void)
 {
   auto fd_set readmask;
   auto fd_set exceptmask;
+  auto int    maxdesc = 0;
   auto int    Cnt;
   auto int    len;
   auto int    queuenumber;
@@ -138,18 +144,18 @@ static void loop(void)
         /* Damit sich der neue Client anmelden kann, ohne
            das was anderes dazwischen funkt ... */
         if (sockets[NewClient].descriptor >= 0)
-	        FD_SET(sockets[NewClient].descriptor, &readmask);
+	        FD_SET_MAX(sockets[Cnt].descriptor, &readmask, maxdesc);
 
       	NewClient = 0;
       }
       else {
         for (Cnt = 0; Cnt < queuenumber; Cnt++)
           if (sockets[Cnt].descriptor >= 0)
-            FD_SET(sockets[Cnt].descriptor, &readmask);
+            FD_SET_MAX(sockets[Cnt].descriptor, &readmask, maxdesc);
 
         for (Cnt = first_descr; Cnt < queuenumber; Cnt++)
           if (sockets[Cnt].descriptor >= 0)
-            FD_SET(sockets[Cnt].descriptor, &exceptmask);
+            FD_SET_MAX(sockets[Cnt].descriptor, &exceptmask, maxdesc);
       } /* else */
 
       if (newcps && ((ifo[0].u & ISDN_USAGE_MASK) + (ifo[1].u & ISDN_USAGE_MASK)))
@@ -157,7 +163,7 @@ static void loop(void)
       else
       	Interval = 0;
 
-      while ((Cnt = select(FD_SETSIZE, &readmask, NULL, &exceptmask, Get_Interval(Interval))) < 0 && (errno == EINTR));
+      while ((Cnt = select(maxdesc+1, &readmask, NULL, &exceptmask, Get_Interval(Interval))) < 0 && (errno == EINTR));
 
       if ((Cnt < 0) && (errno != EINTR)) { /* kill -HUP ausgeschlossen */
         print_msg(PRT_DEBUG_CS, "Error select: %s\n", strerror(errno));
