@@ -775,7 +775,7 @@ koennen folgende Platzhalter angegeben werden:
     %N4  - Rufnummer (z.b. "89810530")
     %N5  - Alias
     %N6  - Ortsnetz (z.b. "Muenchen")
-    %N7  - Areacode (z.b. "+49")
+    %N7  - Countrycode (z.b. "+49")
 
 *2 Dieser Platzhalter wird von isdnlog folgendermassen aufgeloest:
 
