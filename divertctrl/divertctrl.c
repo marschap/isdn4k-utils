@@ -1,5 +1,5 @@
 /* 
- * $Id: divertctrl.c,v 1.3 2001/01/09 19:27:55 werner Exp $
+ * $Id: divertctrl.c,v 1.4 2001/06/10 17:38:25 werner Exp $
  *
  * Control program for the dss1 diversion supplementary services. (User side)
  *
@@ -20,6 +20,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA. 
  *
  * $Log: divertctrl.c,v $
+ * Revision 1.4  2001/06/10 17:38:25  werner
+ *
+ * Updated tool and manpage with new remote dial feature
+ *
  * Revision 1.3  2001/01/09 19:27:55  werner
  *
  * Added Output for interrogate and description for services.
@@ -105,10 +109,11 @@ void usage(void)
   fprintf(stderr,"   insertrule  <drivers> -> insert a rule at list start\n");
   fprintf(stderr,"   flushrules  [drivers] -> flush all rules for specified drivers\n");
   fprintf(stderr,"   append- and insertrule take the following arguments:\n");
-  fprintf(stderr,"   <drivers> <action> [msn] [si1] [si2] [caller] [screen] [delay] [callopt] [destnr]\n");
+  fprintf(stderr,"   <drivers> <action> [msn] [si1] [si2] [caller] [screen] [delay] [callopt] [destnr/if]\n");
   fprintf(stderr,"   drivers -> driver names for D-chans, %% separated, - = all D-chan\n"); 
   fprintf(stderr,"   action -> 0/ignore 1/report 2/proceed 3/alert 4/reject\n");
   fprintf(stderr,"   msn -> - = wildcard or explicit selected msn.subaddress\n");
+  fprintf(stderr,"   when action = 5 then if specifies a network interface to dial\n");
   fprintf(stderr,"   si1 -> 0 = all services, else bitmask for services 1..7\n");
   fprintf(stderr,"   si2 -> 0 = ignore, else specified value\n");
   fprintf(stderr,"   caller -> - = wildcard, 0 = unknown, else number.subaddress\n");
@@ -179,13 +184,13 @@ void setrulepar(void)
   if (!argrest) return; 
 
   /* action */
-  if ((sscanf(*(argp),"%u",&u) <= 0) || (u > 4))
+  if ((sscanf(*(argp),"%u",&u) <= 0) || (u > 5))
    { fprintf(stderr,"invalid action value %s\n",*argp);
      usage();
    }
   dr->action = u & 0xFF;
-  if ((dr->action == DEFLECT_ALERT) && (argrest != 9))
-   { fprintf(stderr,"alerting action must be supplied with all parms\n");
+  if (((dr->action == DEFLECT_ALERT) || (dr->action == NETWORK_DIAL)) && (argrest != 9))
+   { fprintf(stderr,"alerting/dialing action must be supplied with all parms\n");
      usage();
    }    
   if (!--argrest) return;
