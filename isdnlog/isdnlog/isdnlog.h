@@ -1,4 +1,4 @@
-/* $Id: isdnlog.h,v 1.26 2003/08/26 19:46:12 tobiasb Exp $
+/* $Id: isdnlog.h,v 1.27 2004/01/26 15:20:08 tobiasb Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,20 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnlog.h,v $
+ * Revision 1.27  2004/01/26 15:20:08  tobiasb
+ * First step to close all unnecessary open file descriptors before
+ * starting a start script as reaction to a call.  The same applies to the
+ * restart of isdnlog using SIGHUP.  Till now each restart increases the
+ * number of used fds.
+ * For now the modifications are inactive by default.  They can be enabled
+ * by adding the line "DEFS += -DFD_AT_EXEC_MODE=1" to ../Makefile.in.
+ * The next isdnlog (4.68) will have this enabled per default.
+ * The upper limit for fd numbers is taken from NR_OPEN in <linux/limits.h>.
+ * If there is a smarter way to access this limit, please let me know.
+ * Another approach would be to set the close-on-exec flag on each fd
+ * directly after it is opened.  This would require more extensive changes.
+ * I'd like to thank Jan Bernhardt for discovering this problem.
+ *
  * Revision 1.26  2003/08/26 19:46:12  tobiasb
  * isdnlog-4.66:
  *  - Added support for AVM B1 (with layer 2 d-channel trace) in point-to-
@@ -400,6 +414,14 @@
 
 /****************************************************************************/
 
+#ifndef FD_AT_EXEC_MODE
+#define FD_AT_EXEC_MODE    0
+#endif
+#define FD_AT_EXEC_CLOSE   (FD_AT_EXEC_MODE & 1)
+#define FD_AT_EXEC_FLAG    (FD_AT_EXEC_MODE & 2)  /* not implemented yet */
+
+/****************************************************************************/
+
 typedef struct {
 	int     current;
 	int     shift;
@@ -574,6 +596,12 @@ _EXTERN int Del_Interval(int chan, info_args *infoarg);
 _EXTERN struct timeval *Get_Interval(int Sec);
 _EXTERN int Change_Channel_Ring( int old_channel, int new_channel);
 _EXTERN int Start_Interval(void);
+
+#if FD_AT_EXEC_CLOSE
+_EXTERN void Close_Fds( const int first );
+#else
+#define Close_Fds(a) ; 
+#endif
 
 #undef _EXTERN
 

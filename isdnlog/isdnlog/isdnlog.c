@@ -1,4 +1,4 @@
-/* $Id: isdnlog.c,v 1.70 2004/01/04 02:22:53 tobiasb Exp $
+/* $Id: isdnlog.c,v 1.71 2004/01/26 15:20:08 tobiasb Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,20 @@
  * along with this program; if not, write to the Free Software
  *
  * $Log: isdnlog.c,v $
+ * Revision 1.71  2004/01/26 15:20:08  tobiasb
+ * First step to close all unnecessary open file descriptors before
+ * starting a start script as reaction to a call.  The same applies to the
+ * restart of isdnlog using SIGHUP.  Till now each restart increases the
+ * number of used fds.
+ * For now the modifications are inactive by default.  They can be enabled
+ * by adding the line "DEFS += -DFD_AT_EXEC_MODE=1" to ../Makefile.in.
+ * The next isdnlog (4.68) will have this enabled per default.
+ * The upper limit for fd numbers is taken from NR_OPEN in <linux/limits.h>.
+ * If there is a smarter way to access this limit, please let me know.
+ * Another approach would be to set the close-on-exec flag on each fd
+ * directly after it is opened.  This would require more extensive changes.
+ * I'd like to thank Jan Bernhardt for discovering this problem.
+ *
  * Revision 1.70  2004/01/04 02:22:53  tobiasb
  * Show supported database(s) at startup.
  *
@@ -568,6 +582,7 @@ static void hup_handler(int isig)
 {
   print_msg(PRT_INFO, "restarting %s\n", myname);
   Exit(-9);
+  Close_Fds(3); /* avoid duplicate fds after restart */
   execv(myname, hup_argv);
   print_msg(PRT_ERR,"Cannot restart %s: %s!\n", myname, strerror(errno));
 } /* hup_handler */
