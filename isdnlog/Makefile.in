@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.181 2000/09/01 06:30:20 paul Exp $
+## $Id: Makefile.in,v 1.182 2000/09/05 17:27:36 paul Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,9 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.182  2000/09/05 17:27:36  paul
+## runtime selection of country behaviour; version 4.42
+##
 ## Revision 1.181  2000/09/01 06:30:20  paul
 ## Now install country-de.dat as country.dat; renaming the source can be done by
 ## someone who is more experienced with CVS.
@@ -1391,7 +1394,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 4.41
+VERSION     = 4.42
 
 MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 \
 	      isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 \
