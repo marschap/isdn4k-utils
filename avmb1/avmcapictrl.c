@@ -1,11 +1,15 @@
 /*
- * $Id: avmcapictrl.c,v 1.10 1998/07/15 15:08:20 calle Exp $
+ * $Id: avmcapictrl.c,v 1.11 1999/06/21 15:30:45 calle Exp $
  * 
  * AVM-B1-ISDN driver for Linux. (Control-Utility)
  * 
  * Copyright 1996 by Carsten Paeth (calle@calle.in-berlin.de)
  * 
  * $Log: avmcapictrl.c,v $
+ * Revision 1.11  1999/06/21 15:30:45  calle
+ * extend error message if io port is out of range, now tell user that an
+ * AVM B1 PCI card must be added by loading module b1pci.
+ *
  * Revision 1.10  1998/07/15 15:08:20  calle
  * port and irq check changed.
  *
@@ -298,6 +302,7 @@ static int checkportandirq(int cardtype, int port, int irq)
 			for (i = 1; validports[i]; i++)
 				fprintf(stderr, ", 0x%x", validports[i]);
 			fprintf(stderr, "\n");
+			fprintf(stderr, "%s: to install a B1 PCI card load module b1pci.o\n", cmd);
 			return -1;
 		}
 		for (i = 0; validirqs[i] && irq != validirqs[i]; i++);
