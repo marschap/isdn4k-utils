@@ -26,7 +26,7 @@
 #include <linux/if.h>
 #include <linux/in.h>
 
-static char *revision = "$Revision: 1.30 $";
+static char *revision = "$Revision: 1.31 $";
 
 /* -------------------------------------------------------------------- */
 
@@ -1102,7 +1102,7 @@ static void disconnectall(void)
 	    handlemessages();
         } while (connections && time(0) < t);
 
-	if (connections)
+	if (connections && !exiting)
         	fatal("capiplugin: disconnectall failed");
 }
 
