@@ -1337,7 +1337,6 @@ EOF
  
 else
   echo "$ac_t""no" 1>&6
-{ echo "configure: error: "Missing $ac_hdr. libcapi20 installed?"" 1>&2; exit 1; }
 fi
 done
 
