@@ -4,9 +4,7 @@
 # Generate FAQ, support FAQ development
 
 # Directories
-# All output files are generated in GEN_DIR
-GEN_DIR = ./out
-# After generation, install files in TARGET_DIR (if different from GEN_DIR)
+# After generation, install files in TARGET_DIR (if non-empty)
 TARGET_DIR = @TARGET_DIR@
 
 # Program file names
@@ -28,66 +26,66 @@ OUT_TXT = $(OUT_NAME).txt
 # *** Generate FAQ ***
 
 # Generate all FAQ versions
-all: Makefile $(GEN_DIR) html txt
-
-$(GEN_DIR):
-	-mkdir -p $(GEN_DIR)
+all: Makefile html txt
 
 
 # Generate html version of FAQ
-html: $(GEN_DIR)/$(OUT_HTML)
+html: $(OUT_HTML)
 
-$(GEN_DIR)/$(OUT_HTML):
-	cp $(SRC) $(GEN_DIR); cd $(GEN_DIR); $(SGML2HTML) $(SRC); rm $(SRC)
+$(OUT_HTML):
+	$(SGML2HTML) $(SRC)
 
 
 # Generate text version of FAQ
-txt: $(GEN_DIR)/$(OUT_TXT)
+txt: $(OUT_TXT)
 
-$(GEN_DIR)/$(OUT_TXT):
-	cp $(SRC) $(GEN_DIR); cd $(GEN_DIR); $(SGML2TXT) $(SRC); rm $(SRC)
+$(OUT_TXT):
+	$(SGML2TXT) -f $(SRC)
 
 
 # Generate all zip versions
-zip: $(GEN_DIR)/$(OUT_NAME)-sgml.zip $(GEN_DIR)/$(OUT_NAME)-html.zip $(GEN_DIR)/$(OUT_NAME)-txt.zip 
-gz: $(GEN_DIR)/$(OUT_NAME)-sgml.gz $(GEN_DIR)/$(OUT_NAME)-html.gz $(GEN_DIR)/$(OUT_NAME)-txt.gz 
+zip: $(OUT_NAME)-sgml.zip $(OUT_NAME)-html.zip $(OUT_NAME)-txt.zip 
+gz: $(OUT_NAME)-sgml.gz $(OUT_NAME)-html.gz $(OUT_NAME)-txt.gz 
+# Please note, that the compressing of html files doesn't quite work as
+# you would expect...
 
 
 # Compress sgml
-$(GEN_DIR)/$(OUT_NAME)-sgml.zip: $(SRC)
-	$(ZIP) -l $(GEN_DIR)/$(OUT_NAME)-sgml.zip $(SRC)
-$(GEN_DIR)/$(OUT_NAME)-sgml.gz: $(SRC)
-	$(GZIP) -cf $(SRC) > $(GEN_DIR)/$(OUT_NAME)-sgml.gz
+$(OUT_NAME)-sgml.zip: $(SRC)
+	$(ZIP) -l $(OUT_NAME)-sgml.zip $(SRC)
+$(OUT_NAME)-sgml.gz: $(SRC)
+	$(GZIP) -Ncf $(SRC) > $(OUT_NAME)-sgml.gz
 
 # Compress html
-# Please note, that all html files will be compressed under $(GEN_DIR)
-$(GEN_DIR)/$(OUT_NAME)-html.zip: $(GEN_DIR)/$(OUT_NAME).html
-	$(ZIP) -l $(GEN_DIR)/$(OUT_NAME)-html.zip $(GEN_DIR)/$(OUT_NAME)*.html
-$(GEN_DIR)/$(OUT_NAME)-html.gz: $(GEN_DIR)/$(OUT_NAME).html
-	$(GZIP) -cf $(GEN_DIR)/$(OUT_NAME)*.html > $(GEN_DIR)/$(OUT_NAME)-html.gz
+$(OUT_NAME)-html.zip: $(OUT_NAME).html
+	$(ZIP) -l $(OUT_NAME)-html.zip $(OUT_NAME)*.html
+$(OUT_NAME)-html.gz: $(OUT_NAME).html
+	$(GZIP) -Ncf $(OUT_NAME)*.html > $(OUT_NAME)-html.gz
 
 # Compress txt
-# Please note, that txt file will be compressed under $(GEN_DIR)
-$(GEN_DIR)/$(OUT_NAME)-txt.zip: $(GEN_DIR)/$(OUT_TXT)
-	$(ZIP) -l $(GEN_DIR)/$(OUT_NAME)-txt.zip $(GEN_DIR)/$(OUT_TXT)
-$(GEN_DIR)/$(OUT_NAME)-txt.gz: $(GEN_DIR)/$(OUT_TXT)
-	$(GZIP) -cf $(GEN_DIR)/$(OUT_TXT) > $(GEN_DIR)/$(OUT_NAME)-txt.gz
+$(OUT_NAME)-txt.zip: $(OUT_TXT)
+	$(ZIP) -l $(OUT_NAME)-txt.zip $(OUT_TXT)
+$(OUT_NAME)-txt.gz: $(OUT_TXT)
+	$(GZIP) -Ncf $(OUT_TXT) > $(OUT_NAME)-txt.gz
 
 
 # *** General Stuff ***
 
 # Install output files
 install: all
-	if [ $(TARGET_DIR) != $(GEN_DIR) ]; then \
+	if [ -n "$(TARGET_DIR)" ]; then \
 		$(INSTALL) -m 0755 -d $(DESTDIR)$(TARGET_DIR); \
-		$(INSTALL) -m 0644 `find $(GEN_DIR) -maxdepth 1 -type f` $(DESTDIR)$(TARGET_DIR); \
+		$(INSTALL) -m 0644 $(SRC) $(DESTDIR)$(TARGET_DIR); \
+		$(INSTALL) -m 0644 $(OUT_NAME)*.html $(DESTDIR)$(TARGET_DIR); \
+		$(INSTALL) -m 0644 $(OUT_TXT) $(DESTDIR)$(TARGET_DIR); \
 	fi
 
 # Un-install output files
 uninstall:
 	set -e; \
-	if [ $(TARGET_DIR) != $(GEN_DIR) ]; then \
+	if [ -n "$(TARGET_DIR)" ]; then \
 		cd $(DESTDIR)$(TARGET_DIR); \
+		rm -f $(SRC) ; \
 		for i in $(OUT_NAME)*.html ; do \
 			rm -f $$i ; \
 		done ; \
@@ -100,7 +98,6 @@ clean:
 	if [ -e \#* ]; then rm \#*; fi
 	if [ -e *.orig ]; then rm *.orig; fi
 	set -e; \
-	cd $(GEN_DIR); \
 	if [ -e $(OUT_TXT) ]; then rm -f $(OUT_TXT); fi; \
 	if [ -e $(OUT_NAME)-sgml.zip ]; then rm -f $(OUT_NAME)-sgml.zip; fi; \
 	if [ -e $(OUT_NAME)-sgml.gz ]; then rm -f $(OUT_NAME)-sgml.gz; fi; \
