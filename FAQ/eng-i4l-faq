@@ -20,7 +20,8 @@ URL: http://www.lrz-muenchen.de/~ui161ab/www/isdn/
 but many questions are missing or are still in German!!br
 --14-Apr-97: Questions complete in all sections (but not all updated or 
 translated)!br
---26-Apr-97: Sections 1, 2, 4 and 5 complete (except 2.18.3)!br
+--26-Apr-97: Sections 1, 2, 4 and 5 complete!br
+--28-Apr-97: Section 3 done through 3.2!br
 !br
 
 This FAQ is protected by the GNU General Public License (GPL) Version 2;
@@ -2837,70 +2838,60 @@ A: A later version of the new HiSax driver will support
 
 Q: Can I connedt two computers with ICN cards over a D64s leased line?
    How? Where can I find documentation?
-A: [I'm saving the translation of this long answer for later... let me
-    know if you desparately need this in English. -  Scott ]
-   Torsten Hentschel <Torsten.Hentschel@DInet.de> schrieb dazu am 2. Jan 1997:
+A: Torsten Hentschel <Torsten.Hentschel@DInet.de> wrote on 2 Jan 1997:
 !verbon
-          Das geht sicher. Haben wir hier so im Einsatz. Funktioniert
-        auch stabil (Kernel >2.0.26 ist notwendig, da sonst ggf.
-        Routerkomplettstillstand). Nur, wenn Du den Stecker des Kabels
-        zum Terminaladapter rausziehst und wieder reinsteckst oder
-        Dir die Telekom da einen Aussetzer fabriziert, dann mußt
-        Du auf beiden Seiten einmal (oder zweimal) auflegen lassen,
-        damit die Leitung wieder steht. Das kann man notfalls mit einem
-        "ping" und einem "isdnctrl hangup" per cron machen lassen.
-        Weitere Doku außer der zum Sourcecode kenne ich nicht.
-        Werde aber gerne bei weiteren Fragen helfen, da man mir
-        schliesslich auch geholfen hat.
-          Es gibt dabei mehrere Dinge zu beachten: LEASEDx ist die
-        innumber auf dem Device; eine outgoing number ist nicht
-        notwendig, da der Kernel (oder die Firmware, genau weiss
-        ich das nicht) pseudomäßige, eingehende Rufe generiert,
-        solange niemand "abgehoben" hat. Bei LEASEDx ist das kleine
-        "x" durch die Nummer des S0-Interfaces zu ersetzen.
-          Wir haben in den betreffenden Routern jeweils vier
-        Interfaces (sie werden mit 0, 1, 2, 3, ... durchgezählt),
-        weshalb ich auf dem letzten Interface die LEASED-line
-        betreibe. Das macht Sinn. Denn die anderen drei Interfaces
-        dienen für 6 B-Kanaele mit dial-up-Leitungen und es wird
-        vom Kernel bei rausgehenden Rufen immer das erste freie
-        Interface gesucht und dort rausgewählt. Wenn man dann
-        die Leased Line auf das Interface 0 legen wuerde, wäre
-        der zweite B-Kanal der Standleitung ja scheinbar (und
-        nur scheinbar) noch frei. Der Kernel merkt aufgrund der
-        aktiven Karte noch nichtmal, daß kein D-Kanal zum Wählen
-        an dem Interface dran ist und wählt und wählt und wählt.
-          Zur Vorsicht habe ich aus dem Grunde auch ein weiteres
-        ISDN-Netzinterface kreiert und exklusiv auf dem scheinbaren
-        zweiten B-Kanal der Standleitung gebunden, damit bei 6 belegten
-        Dialout-Lines nicht auch noch auf der Standleitung ein
-        Waehlversuch gestartet wird.
-          Noch ein wichtiger Stolperstrick ist, daß bereits der erste
-        reingehende Ruf, der pseudomäßig generiert wird, vom
-        ISDN-Netzinterface abgenommen werden muss (sonst klappt
-        wieder erst der Dritte und dann erst wieder der Fuenfte;
-        genau weiss ich nicht warum, habe nur so eine Vermutung
-        daß das an den beiden B-Kanaelen liegt, fuer die abwechselnd
-        ein Ruf generiert wird; eine D64s hat aber nur einen B-Kanal).
-        Das sofortige Abnehmen erreicht man wie folgt:
-        * Modul für die ICN-Karte laden und konfigurieren (firmware
-          laden, bus-reject, ...) ABER NOCH KEIN "icnctrl -d XXX leased"
-        * Netzinterfaces des Kernel generieren mit innumber LEASEDx
-          und allem anderen Schnickschnack (IP-Adresse, ...).
-          Die Bindung zum entsprechenden S0-Interface nicht vergessen.
-        * JETZT: icnctrl -d XXX leased
-        Das Netzinterface muß also schon up sein, wenn "icnctrl -d XXX leased"
-        abgesetzt wird. Denn mit diesem Befehl wird sofort der erste Ruf
-        generiert und dann kann er gleich angenommen werden - und schwup
-        steht die Leitung.
+           That surely works. We have it working here. It's also stable
+        (kernel >2.0.26 is necessary, otherwise the router might come
+        to a halt). Only, if you pull out the plug to the terminal 
+        adapter and insert it again, or if the Telekom produces an error,
+        then you have to have both sides hang up once (or twice) to 
+        bring the connection backup. In emergency you have have a "ping"
+        and a "isdnctrl hangup" done with cron. I don't know of any
+        other docs or source code, but I'd be happy to help with any
+        further questions, since other helped me before
+           There are several things to watch out for. LEASEDx is the
+        incoming number on the device; an outgoing number is not
+        necessary, since the kernel (or the firmware, I'm not sure)
+        generates pseudo-incoming calls, as long as noone has "picked
+        up".  In LEASED x, the small "x" should be replaced by the
+        number of the SO interface.
+           In each of our routers we have four interfaces (numbered as
+        0, 1, 2, 3), and I used the last interface as the LEASED line.
+        That makes sense, since the other three interfaces are used for
+        6 B channels for dial-up lines, and the kernel always uses the
+        first free line for outgoing calls. If the leased line were on 
+        interface 0, then the second B channel of the leased line would
+        appear (but only appear) to be free. The kernel doesn't notice
+        (because of the active card) that there is no D channel for 
+        dialing there, and will dial, and dial, and dial.
+          For this reason, I've created an extra ISDN network interface
+        and have bound it exclusively to the apparent B channel of the
+        leased line, so that after 6 dial-out lines are in use the
+        kernel attempt to dial out on the leased line. 
+          Another important stumbling block is that the first pseudo-
+        incoming call must be answered (otherwise only the third, then
+        the fifth will work, I don't know exactly why, but I suspect
+        it's caused by the two B channels, for which calls are generated
+        in turn, while a D64 has only one B channel).
+        The immediate acceptance of the call is set-up as follows:
+        * Load the module for the ICN card and configure (load the firmware,
+          bus reject, ...) BUT NOT YET icnctrl -d XXX leased" 
+        * Generate the network interface for the kernel with innumber LEASEDx
+          and all the other stuff you need (IP Adcress, ...).
+          Don't forget to bind to the appropriate S0 interface.
+        * NOW: icnctrl -d XXX leased
+        The network interface has to already be up weh "icnctrl -d XXX leased"
+        is called. Then this command starts the first call and can then be 
+        immediately answered -  and pop, the connection is made.
+        
 !verboff
-   G. Richter <richter@ecos.de> schrieb noch zusätzlich am 3. Jan 1997:!br
-   Bei uns läuft das (mit einem CISCO Router als Gegenstelle) seid fast zwei
-   Monaten problemlos.!br
-   Zu beachten ist, daß die eaz auf 1 gestellt wird und mit icnctrl die
-   Leitung auf leased umgestellt wird, der Rest bleibt wie bei der Wahlleitung
-   (außer Telefonnumer und timeouts)!br
-   Ein Beispielscript findet sich unter
+   G. Richter <richter@ecos.de> added on  3 Jan 1997:!br
+   This has worked for use (with a CISCO router as partner) with no problems
+   for nearly two months.!br 
+   Make sure the the eaz is set to 1 and the the line is set to leased with
+   isdnctrl, the rest is just like a dial-up line (except telephone number
+   and timeouts)!br
+   An example script is under
      !link http://www.rosat.mpe-garching.mpg.de/~web/ISDN.html;
 
 !old
@@ -3188,11 +3179,11 @@ A: You need to set a link:
 !verboff
 
 
-Q: Warum klingeln weder mein Telefon, noch mein Fax, wenn ich sie mit
-   isdn4linux anwähle?
-A: Isdn4linux setzt "digitale Daten" als eigene Dienstekennung, wenn es
-   irgendwo anruft. Die Vermittlungsstelle wird solche Anrufe nicht auf analoge
-   Geräte wie Telefon oder Fax weiterleiten.
+Q: Why does niether my telephone nor my fax machine ring when I call 
+   them with isdn4linux?
+A: Isdn4linux sets "digital data" as it's own service when it calls out.
+   The switching office will not route such calls to analog devices like
+   a telephone or a fax machine.
 
 !old
 Q: If i4l uses one B-channel then the other one will be blocked (incoming as
@@ -3203,48 +3194,46 @@ A: This behavior is typical for a cable with confused a/b wiring. Some NT from
    of the NT. As soon as some device activates the bus the other one can no
    longer get through.
 
-Q: In der Anleitung zu meinem NTBA steht ein vertauschtes a/b-Kabeladernpärchen
-   hätte keinen Einfluß auf die Funktionsweise?
-A: Dazu schrieb Gernot Zander <hifi@scorpio.in-berlin.de> am 21. Jan 1997:
-   Aber nur, wenn bei allen Geräten a/b oder a2/b2 vertauscht sind.
-   Wenn die Geräte jeweils einzeln gehen, ist die Zuordnung von
-   Sende- und Empfangs-Pärchen schonmal richtig.
+Q: In in the instructions for my NTBA it says that a crossed 
+   a/b cable pair has no effect on the operation?
+A: Gernot Zander <hifi@scorpio.in-berlin.de> wrote on 21 Jan 1997:
+   But only if for all devices a/b or a2/b2 are incorrect. When the
+   devices work individually, then the order of the receiving/
+   sending pair is correct.
 
-Q: Wie kann ich austesten, ob bei mir ein a/b Kabeladernpärchen vertauscht ist?
-A: Dazu schrieb Karsten Keil <keil@temic-ech.spacenet.de> am 21. Jan 1997:!br
-   Ganz einfach ich gehe vom Westernstecker aus:
-   4 adern sind belegt:
+Q: How can I test whether a a/b cable pair has been crossed?
+A: Karsten Keil <keil@temic-ech.spacenet.de> wrote on 21 Jan 1997:!br
+   I simply start with the Western plug:
+   4 lines are used:
 !verbon
        | | | | 
        | | | |
        1 2 3 4
 !verboff
-   Dann kanst Du versuchen 1<>4 oder 2<>3  oder beides zu vertauschen..
-   Nie aeussere mit inneren vertauschen. [Dabei würden RX und TX Leitungen
-   vertauscht, und nichts ginge mehr - die Red.]!br
-   Gernot Zander <hifi@scorpio.in-berlin.de> schrieb zum gleichen Thema
-   am 21. Jan 1997:!br
-   Ich gehe mal davon aus, daß du die Teles nicht über die RJ45,
-   sondern über eine am NT angeklemmte Busleitung angeschlossen
-   hast. (?). Dann mach die Klappe auf, tausche a1 gegen b1.
-   Probieren. Geht's nicht, zurück, und a2 gegen b2 tauschen.
-   Geht auch das nicht, beide tauschen, wobei ich dann eher
-   den Verdacht hätte, daß das RJ45-Kabel vom Telefon verdreht
-   ist (das tauscht dann nämlich _beide_). Solange {a|b}1 und
-   {a|b}2 dabei erhalten bleibt, kann auch nichts kaputt gehen.
-   Willst du sichergehen, dann vor dem Anstecken der Geräte
-   zwischen Pin 4 und 5 bzw. 3 und 6 der Dose messen, dort
-   darf keine Spannung liegen, zwischen 3 und 4 bzw. 6 und 5
-   je 40 V, Plus an 6 bzw. 3.!br
-   Waren doch beide Geräte per RJ45 angestöpselt, dann ist eins
-   der Kabel verdreht. Das passiert in der Regel dann, wenn einer
-   der RJ45-Stecker verkehrtrum angequetscht wurde (a1/b1 liegen
-   innen, a2/b2 außen, die Zuordnung Sende-/Empfangspärchen bleibt
-   also erhalten), dann brauchst du nur einen neuen Stecker und
-   natürlich die Quetschzange für RJ45, alten ab, neuen andersrum
+   Then I can try to switch 1<>4 or 2<>3 or both.
+   Never switch the outer with the inner lines . [That would cross the  
+   RX and TX lines and nothing will work - Ed.]!br
+   Gernot Zander <hifi@scorpio.in-berlin.de> added on 21 Jan 1997:!br
+   I'm assuming that you have connected the Teles not with the 
+   RJ45, but rather with a bus line attached to the NT. (?)
+   Then open it up and switch a1 and b1. Try it out. If it doesn't
+   work, put them back and switch a2 and b2. If it still doesn't work,
+   try swichting them both, although then I'd suspect that the RJ45
+   cable from the Telekom is crossed (which would then switch _both_).
+   As long as {a|b}1 and {a|b}2 are kept, nothing can break. If you
+   want to be sure, before plugging it in measure between pins
+   4 and 5 and between Pins 2 and 6 on the socket; there should be no
+   current, but between 3 and 4 and between 6 and 5 should be 40 V,
+   6 and 3 positive!br
+   If both devices are attached via RJ45, then one of the cables
+   has been twisted. That usually happens if one of the RJ45 plugs
+   has been attached upside-down (a1/b1 are inside, a2/b2 are outside,
+   so the oder of the sending/receving pairs is maintained), then
+   you just need a new plug and of course pliers for the RJ45, old
+   plug off, and new plug (in the right direction) on.!br
    drauf.!br
-   Selbstverfreilich kannst du mit der Kabel-FAQ auch einfach
-   alles mit einem Multimeter durchprüfen.
+   Of course you can check the Cable  FAQ and simply test everythig with
+   a multimeter.
 
 !old
 Q: Even though I deactivated the signalling for incoming calls, an incoming
@@ -3305,15 +3294,14 @@ Q: I'm now certain I've closed all ISDN applications. I still sometimes
 A: Sporadic errors of this type can be fixed by inserting sleep commands
    between the unloading commands.
 
-Q: Es klappt immer noch nicht mit dem Entladen. Ich setzt Callbacks ein.
-A: Siehe dazu die Frage "Irgendwie kommt der Module-Count bei Callbacks
-   durcheinander. Wie kann ich jetzt meine ISDN-Modul entladen?" im Abschnitt
-   "Callback" im Kapitel "Troubleshooting".
+Q: I still can't unload the modules. I use callback.
+A: See the question "Irgendwie kommt der Module-Count bei Callbacks
+   durcheinander. Wie kann ich jetzt meine ISDN-Modul entladen?" under
+   "Callback" in the section "Troubleshooting".
 
 !old
 Q: My charge "impuls typ A" [German charge impuls at the end of a connection]
-   is not correctly transmitted, although the Telekom [German telephone company]
-   say they activated it.
+   is not correctly transmitted, although the Telekom says they activated it.
 A: Peter Gramlich <peter.gramlich@wiwi.uni-karlsruhe.de>: 
 !verbon
      In some cases the Telekom activated the charge impulses only for some
@@ -3321,9 +3309,9 @@ A: Peter Gramlich <peter.gramlich@wiwi.uni-karlsruhe.de>:
      (voice, data, G4-fax,...).
 !verboff
 
-Q: Meine TK-Anlage erzeugt etwa jede Stunde einen Bus-Reset des internen
-   S0-Busses, danach nimmt isdn4linux nicht mehr ab?
-A: Ab HiSax 1.5 übersteht auch isdn4linux den Bus-Reset.
+Q: My PBX produces a reset on the SO bus every hour, after which isdn4linux no long
+   accepts any calls?
+A: With HiSax 1.5 isdn4linux will survive the bus reset..
 
 !old
 Q: My Ascotel PBX crashes i4l (connected on my internal bus).
@@ -3346,16 +3334,16 @@ A: Herbert Rosmanith <herp@wildsau.idv.uni-linz.ac.at> wrote:
      Remark: the patch mentioned here has a bug: X.75 won't work anymore.
 !verboff
 
-Q: Meine Teles 16.3 funktioniert hinter einer Quante IS-2 (baugleich
-   zur Ackermann Euracom 181) nach einem Reset nur, wenn ich:
+Q: My Teles 16.3 works beind a Quante IS-2 (identical to the 
+   Ackermann Euracom 181) after a reset, only when I:
 !verbon
-        1. TK-Anlage ausstecken
-        2. PC abschalten
-        3. TK-Anlage einstecken
-        4. PC anschalten
+        1. unplug the PBX
+        2. turn off the PC 
+        3. plug in the PBX 
+        4. turn on the PC 
 !verboff
-A: Karsten Keil <keil@temic-ech.spacenet.de> schrieb dazu am 13. Jan 1997:!br
-   Das sollte ab HiSax 1.5 weg sein. (Tei remove Problem).
+A: Karsten Keil <keil@temic-ech.spacenet.de> wrote on 13 Jan 1997:!br
+   That should be taken care of with HiSax 1.5. (TEI remove problem).
 
 !old
 Q: I'm connected through an old PBX. Any attempt to dial out is refused with
@@ -3369,22 +3357,19 @@ A: Wolfgang Hamburg <wh@jumping.baltic.de> wrote on 8 Oct 1996:
      the protocols.
 !verboff
 
-Q: Ich bekomme meine TK-Anlage, eine proprietäre Siemens Hicom, nicht zum
-   Laufen?
-A: Sven Engelhardt <sven@sik.de> schrieb hierzu am 20. Jan 1997:!br
-   Die Techniker haben an digitalen Nebenstellen immer etwas länger zu
-   basteln. Tip: Es gibt eine Einstellung fuer die Nebenstelle, nennt sich
-   "DSS1 mit EAZ", die kann aber nur ein Techniker einstellen. Damit
-   funktioniert ISDN meistens mit geladenem DSS1-Treiber. Zumindest unter
-   WIN/DOS. Die Defaulteinstellung der Anlage ist meist "1TR6 mit MSN" (don't
-   flame me, it's real).!br
-   (Meine letzten Erfahrungen mit SIE* TA sind allerdings schon ein gutes Jahr
-   alt, seitdem mach' ich um die Dinger einen Bogen. Laß Dich trotzdem nicht
-   unterkriegen, es gibt ein paar tausend Software-Patches fuer die HiComs,
-   die Techniker müssen nur wollen. Manchmal hilft's, mit dem Techniker
-   zusammen ins Programmierhandbuch zu schauen und ihm die Seite mit den
-   Einstellungen für digitale Nebenstellen rauszusuchen.)
-
+Q: I can't get my PBX, a proprietary Siemens Hicom, to work?
+A: Sven Engelhardt <sven@sik.de> wrote on 20 Jan 1997:!br
+   The technicians have to always work a bit longer on the digital extensions.
+   Tip: there is a setting for the extension called "DSS1 with EAZ" that
+   can only be set by a technician. Then ISDN will usually work with the
+   loaded DSS1 driver, at least under WIN/DOS. The default setting is
+   usually  "1TR6 with MSN" (don't flame me, it's real).!br
+   (However, my last experience with SIE* PBXs are from over a year ago, 
+   since then I've kept away from them. If you still can't get it to work,
+   then there are a few thousand software patches for the HiComs, the
+   technicians have simply have to want to apply them. Sometimes it helps
+   to look at the programming handook together with the technician to find
+ 
 !old
 Q: isdnctrl returns a "bus error" when I do a "isdnctrl list"?
 A: Christian Kratzer <ck@toplink1.toplink.net> gave the patch:
@@ -3428,74 +3413,68 @@ A: Answer by Jan den Ouden <denouden@groovin.xs4all.nl>:
      limit, there is no buffer allocation when they are not needed.
 
 
-Q: Mein pppd bzw. ipppd hat Probleme mit der PAP bzw. der CHAP
-   authentification.
-A: Siehe dazu die entsprechenden Fragen im Abschnitt "Sync-PPP".
+Q: My pppd or ipppd has problems with PAP/CHAP authentification.
+A: See the appropriate question under "Sync PPP"?
 
 !old
-Q: Ich bekomme den Fehler "SIOCADDRT: Invalid argument", wenn ich route
-   mitteile, daß es auf isdn0 weiterrouten soll.
-A: <tpo@spin.ch> schrieb dazu am 8. Okt 1996:
+Q: I get the error "SIOCADDRT: Invalid argument" when telling route to route
+   to isdn0.
+A: <tpo@spin.ch> wrote on  8 Oct 1996:
 !verbon
-        Ich hatte den gleichen Fehler, bis ich die korrekte Netmask angab.
+     I had the same error until using the correct netmask.
 !verboff
 
-Q: Wo finde ich eine Übersicht aller causes?
-A: Klaus Kämpf <kkaempf@progis.de> schrieb hierzu:
-   Spontan fällt mir da die ISPA Dokumentation ein. Schau doch mal in
+Q: Where can I find a summary of all causes?
+A: Klaus Kämpf <kkaempf@progis.de> wrote:
+   Check out the ISPA dokumentation. Take a look at:
    !link ftp://ftp.biochem.mpg.de//pc/isdn;.
 
 Q: On my ELSA card, the LED for the loss of the TEI often blinks. My 
    connections are also often disrupted...
-A: Jens Ey <jens@jeyhh.shnet.org> schrieb am 29 Dec 1996:!br
-   Diese blinkende LED wird oft verursacht durch schlechte Kabel oder einen
-   zu langen oder unterminierten S0 Bus. Das hat mir ELSA mitgeteilt nachdem
-   ich mich bei denen über das gleiche Problem beschwert hatte. Ein neues
-   Kabel - und schon lief alles wunderbar.!br
-   Paul Slootman <paul@wau.mis.ah.nl> schrieb dazu am 2. Jan 1997:!br
-   Jan den Ouden vermutete (in einer niederländischen Newsgruppe), daß die
-   niederländische Telefongesellschaft manchmal nachts "ein TEI wegwirft".
+A: Jens Ey <jens@jeyhh.shnet.org> wrote on 29 Dec 1996:!br
+   These blinkingt LEDS are often caused by a bad cable or a too long or
+   unterminated SO bus. ELSO told me this after I complained to them 
+   about this probem. A new cable, and everythings works wonderfully.!br
+   Paul Slootman <paul@wau.mis.ah.nl> added on 2 Jan 1997:!br
+   Jan den Ouden suspects (in a Dutch news group), that the Dutch
+   telephone company sometims "throws away a TEI" at night.
 
-Q: Mein ISDN-Treiber stürzt mir ab! Da ich es als Modul konfiguriert habe,
-   ändern sich die Adressen bei jedem Laden. Wie finde ich heraus, wo der
-   Treiber abstürzt?
-A: Der Treiber wird dazu mit dem Befehl "insmod -m" geladen. Die Ausgabe wird
-   muß noch etwas bearbeitet werden, um ihn in eine Form analog zu System.map
-   umzuwandeln.!br
-   Fritz Elfert <fritz@wuemaus.franken.de> schrieb dazu am 17. Okt 1996:
+Q: My isdn driver crashes my machine! Since I've configured it as a module,
+   the addresses change each time it's loaded. How can I find out where the
+   driver is crashing?
+A: The driver should be loaded with the command "insmod -m". The output
+   has to be transformed somewhat to be a form similar to System.map.!br
+   Fritz Elfert <fritz@wuemaus.franken.de> wrote on 17 Oct 1996:
 !verbon
         insmod -m isdn.o | sort | sed -e 's/   / T /g' |
             egrep '.* T [a-z,A-Z,_]+' > /etc/isdn/isdn.map
         cat /System.map /etc/isdn/isdn.map > /iSystem.map
 !verboff
-   [Die Zeile, die mit "|" endet, muß mit der nachfolgenden zusammengefaßt
-   werden!]!br
-   iSystem.map sollte nun anstelle von System.map zur Fehlersuche verwendet
-   werden.
-
-Q: Meine Festplatte wird sehr aktiv, wenn isdn4linux läuft. Wie kann ich das
-   abschalten?
-A: Mit "isdnctrl verbose 0", sowie Entfernen der "debug"-Option für den ipppd.
+   [The lines ending with "|" have to have the follwing text on the same line!]!br
+   iSystem.map should then be used instead of System.map for finding the error.
+   
+Q: My hard disk becomes very active when isdn4linux run. How can I turn this
+   off?
+A: With "isdnctrl verbose 0", or by removing the "debug" option for ipppd.
 
 
 !3Teles driver
 
 
 !old
-Q: How can I know that my Teles card (or compatible) is used correctly?
+Q: How can I know that my Teles card (or compatible) is recognized correctly?
 A: On bootup there has to be a message like "kernel: HSCX version A:5 B:5" as
    well as "kernel: channels 2" in /var/log/messages. "A:4 B:4" is also o.k.
    All other values (especially "A:0 B:0" or "A:f B:f") show that the card
    is not used correctly.
 
-Q: Welches ist der Name meines Teles-Treibers (insbesondere wenn eincompiliert
-   im Kernel)?
-A: Der Name ist das, was (beim Laden als Modul) mit "teles_id" angegeben wurde.
-   Wurde lilo verwendet, dann ist der Name ebenfalls das, was mit "teles_id"
-   angegeben wurde. Wurde der Teles-Treiber in den Kernel fest eincompiliert,
-   dann ist der Name ein einfaches "" (zwei mal Anführungsstriche oben).
-   Der Name kann auch durch ein "cat /dev/isdninfo" herausgefunden werden,
-   er wird bei "idmap" angezeigt.
+Q: What is the name if my Teles driver (especially if compiled into the
+   kernel)?
+A: The name is what was given as "teles_id" when loading as a module. If lilo
+   is used, the name is also that what is given with "teles_id". If the Teles
+   driver is compiled into the kernel, the the name is simply "" (two double 
+   quotation marks). The name can be found out with "cat /dev/isdninfo"; it's
+   shown with "idmap".
 
 !old
 Q: On bootup I get "HSCX version A:5 B:5" but I still have the impression that
@@ -3623,9 +3602,8 @@ A: Christian Kratzer <ck@toplink.net> wrote about this on 6 Oct 1996:
      also try 4 and 3. That even works on very exotic boards.
 !verboff
 
-Q: Beim Kompilieren des Teles-Treibers gibt es einige undefinierte Symbole
-   (nur Kernel 2.0.26)?
-A: Beim Patch ging leider die Datei proto.h verloren. Das muß drin stehen:
+Q: When compiling the Teles driver I get some undefined symbols (only kernel 2.0.26)?
+A: The file proto.h was not included in the patch. It should read::
 !verbon
         #ifndef PROTO_H
         #define PROTO_H
