@@ -1,9 +1,15 @@
-
-# To describe the news & fixes better (my english is not the best :-)
-# the changelog is only available in german.
+# $Id: CHANGES,v 1.4 1997/02/26 20:33:41 michael Exp $
+#
+# To describe the news & fixes better (my english is not the best :-) the
+# changelog is only available in german.
 
 26-Feb-97
 =========
+
+o [neu] Abspielen von voice Samples funktioniert jetzt wieder.
+
+o [neu] Voreinstellung für das Log-Verzeichnis ist jetzt '/var/log/vbox' und
+	nicht mehr '/var/log'.
 
 o [neu] Programm vboxctrl hinzugefügt, mit dem Kontrolldateien erzeugt
 	und/oder gelöscht werden können.

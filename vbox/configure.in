@@ -74,10 +74,10 @@ AC_MSG_RESULT(${VBOX_SPOOLDIR})
 
 AC_MSG_CHECKING(where the logs are stored)
 
-VBOX_LOGDIR="/var/log"
+VBOX_LOGDIR="/var/log/vbox"
 
 AC_ARG_WITH(logdir,
-	[  --with-logdir=DIR       logs are stored in DIR [/var/log]],
+	[  --with-logdir=DIR       logs are stored in DIR [/var/log/vbox]],
 	VBOX_LOGDIR=${withval}
 )
 

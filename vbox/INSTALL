@@ -4,13 +4,12 @@
                  Copyright 1996,1997 Michael 'Ghandi' Herold
 
 
+You need the following things to compile or install vbox:
 
-Vor der Installation von vbox werden folgende Dinge benötigt:
-
-- ncurses 1.9.9g (oder höher),
-- tcl 7.6b1 (oder höher),
-- kernel 2.0 (oder höher),
-- isdn4linux.
+- ncurses 1.9.9g (or higher),
+- tcl 7.6b1 (or higher),
+- kernel 2.0 with hisax 2.0p2 (or higher),
+- isdn4linux with audio support enabled.
 
 Die hier angegebenen Versionsnummern beziehen sich auf die Versionen, mit
 denen vbox entwickelt wurde.
@@ -22,42 +21,62 @@ das erzeugte Verzeichnis gewechselt werden.
 
 Vor dem kompilieren muß vbox mit './configure' an das lokale System angepaßt
 werden. './configure --help' zeigt die Optionen an, die geändert werden
-können. Folgende sind für vbox relevant:
+können. Folgende sind für vbox relevant (Voreinstellungen sind in [] angege-
+ben):
 
---prefix=<verzeichnis>          Verzeichnis in dem der Verzeichnisbaum von
-                                vbox erzeugt werden soll. Die Voreinstellung
-                                ist '/usr/local'.
+--prefix=PREFIX		Verzeichnis in dem der Verzeichnisbaum von vbox
+--exec-prefix=EPREFIX	erzeugt werden soll [/usr/local/vbox].
 
---with-spooldir=<verzeichnis>   Verzeichnis in dem die Nachrichten und Ein-
-                                stellungen der einzelnen Benutzer abgelegt
-                                werden. Die Voreinstellung ist das Verzeich-
-                                nis '/var/spool/vbox'. In diesem Verzeichnis
-                                wird für jeden Benutzer ein eigenes
-                                Unterverzeichnis angelegt.
+--sbindir=DIR		Verzeichnis in welches die Programme installiert
+			werden sollen die nur von root gestartet werden dürfen
+			[EPREFIX/sbin].
 
---with-logdir=<verzeichnis>     Verzeichnis in dem die Log-Dateien abgelegt
-                                werden. Voreinstellung ist das Verzeichnis
-                                '/var/log'.
+--bindir=DIR		Verzeichnis in welches die Programme  installiert
+			werden sollen die von jedem gestartet werden dürfen
+			[EPREFIX/bin].
 
---with-piddir=<verzeichnis>     Verzeichnis in dem die PID's der einzelnen
-                                vboxgetty's vermerkt werden. Voreinstellung
-                                ist das Verzeichnis '/var/run'.
+--sysconfdir=DIR	Verzeichnis in welches die Konfigurationen installiert
+			werden sollen [PREFIX/etc].
 
---with-lockdir=<verzeichnis>    Verzeichnis in dem die Dateien zum locken
-                                der einzelnen vboxgetty's erzeugt werden.
-                                Voreinstellung ist hier '/var/lock'.
+
+--with-spooldir=DIR     Verzeichnis in dem die Nachrichten und Einstellungen
+			der einzelnen Benutzer abgelegt werden. In diesem
+			Verzeichnis wird für jeden Benutzer ein eigenes
+			Unterverzeichnis angelegt [/var/spool/vbox].
+
+--with-logdir=DIR       Verzeichnis in dem die Log-Dateien abgelegt werden
+			[/var/log/vbox].
+
+--with-piddir=DIR       Verzeichnis in dem die PID's der einzelnen vboxgetty's
+			vermerkt werden [/var/run].
+
+--with-lockdir=DIR      Verzeichnis in dem die Dateien zum locken der
+			einzelnen vboxgetty's erzeugt werden [/var/lock].
+
+--with-i4lconfdir=DIR	Verzeichnis in dem sich die Konfigurationen von i4l
+			Programmen befinden [/etc/isdn]. Die Konfigurationen
+			von vbox können ebenfalls in dieses Verzeichnis
+			installiert werden (siehe --sysconfdir).
+
+Andere Optionen als hier angegeben werden zum Installieren oder Konfigurieren
+von vbox nicht benutzt!
 
 Nach einem erfolgreichen './configure' kann evtl. noch das Makefile angepaßt
 werden. In den meisten Fällen werden die Voreinstellungen ausreichen.
 
 Mit 'make' können jetzt die Programme kompiliert werden. Mit 'make install'
 werden die Verzeichnisse erzeugt und die Programme sowie die Konfigurationen
-installiert. Bereits existierende Dateien werden umbenannt und mit der End-
-ung '.old' versehen.
+installiert.
 
 Jetzt kann mit der Konfiguration und dem Einrichten des Anrufbeantworters
 für die einzelnen Benutzer begonnen werden. Die genaue vorgehensweise kann
 in der Dokumentation nachgelesen werden!
+
+Bitte diese Dokumentation aufmerksam lesen! Ab Version 2.0 von vbox haben
+sich einige Dinge geändert. Alte Konfigurationen können *nicht* mehr ver-
+wendet werden! Alte Ansagen müssen vor der Benutzung mit vbox 2.0 nach au
+umgewandelt und mit dem beiliegenden Programm 'autovbox' in das neue Format
+von vbox konvertiert werden!
 
 
 Für Fragen, Probleme oder Anregungen zu *vbox* wurde eine eigene Mailing-
@@ -71,5 +90,6 @@ geschrieben werden. Der Nachrichtentext muß die Zeile
 
    subscribe vbox <your_email_address>
 
-enthalten.
+enthalten. Die Mailingliste ist in *Deutsch*, englische E-Mail's sind aber
+ebenso willkommen und werden nach bester Möglichkeit beantwortet ;-)
 

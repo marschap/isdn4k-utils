@@ -15,7 +15,7 @@ ac_default_prefix=/usr/local/vbox
 ac_help="$ac_help
   --with-spooldir=DIR     vbox's stores messages in DIR [/var/spool/vbox]"
 ac_help="$ac_help
-  --with-logdir=DIR       logs are stored in DIR [/var/log]"
+  --with-logdir=DIR       logs are stored in DIR [/var/log/vbox]"
 ac_help="$ac_help
   --with-piddir=DIR       pids are stored in DIR [/var/run]"
 ac_help="$ac_help
@@ -1080,7 +1080,7 @@ echo "$ac_t""${VBOX_SPOOLDIR}" 1>&6
 
 echo $ac_n "checking where the logs are stored""... $ac_c" 1>&6
 
-VBOX_LOGDIR="/var/log"
+VBOX_LOGDIR="/var/log/vbox"
 
 # Check whether --with-logdir or --without-logdir was given.
 if test "${with_logdir+set}" = set; then

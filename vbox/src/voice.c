@@ -85,11 +85,18 @@ static int voice_set_compression(short c)
 {
 	char command[64];
 
-	printstring(command, "AT+VSM=%d+VLS=2", c);
+	if ((c >= 2) && (c <= 6) && (c != 5))
+	{
+		printstring(command, "AT+VSM=%d+VLS=2", c);
 
-	log(L_DEBUG, "Setting voice compression \"%s\"...\n", compressions[c]);
+		log(L_DEBUG, "Setting voice compression \"%s\"...\n", compressions[c]);
 
-	return(modem_command(command, "OK|VCON"));
+		return(modem_command(command, "OK|VCON"));
+	}
+
+	log(L_FATAL, "Unknown compression %d - can't set.\n", c);
+	
+	returnerror();
 }
 
 /*************************************************************************
@@ -111,26 +118,19 @@ static void voice_close_or_unlink(int fd, char *name)
 
 int voice_put_message(char *message)
 {
-/*
 	vaheader_t header;
+
+	long int compression;
 
 	char	linein[MODEM_BUFFER_LEN + 1];
 	char	lineout[MODEM_BUFFER_LEN + MODEM_BUFFER_LEN + 1];
 	int	fd;
-	short	compression;
 	int	i;
 	int	bytesin;
 	int	bytesout;
 	int	written;
 
-	Log(L_INFO, "Playing \"%s\"...\n", message);
-
-	if (access(message, R_OK) != 0)
-	{
-		log(L_ERROR, "Message \"%s\" is not readable.\n", message);
-
-		return(VOICE_ACTION_ERROR);
-	}
+	log(L_INFO, "Playing \"%s\"...\n", message);
 
 	if ((fd = open(message, O_RDONLY)) == -1)
 	{
@@ -139,36 +139,16 @@ int voice_put_message(char *message)
 		return(VOICE_ACTION_ERROR);
 	}
 
-	if (read(fd, &header, sizeof(vaheader_t)) != sizeof(vaheader_t))
+	if (!header_get(fd, &header))
 	{
-		log(L_ERROR, "Can't read voice header from message.\n");
+		log(L_ERROR, "Can't read vbox audio header from message.\n");
 
 		close(fd);
 
 		return(VOICE_ACTION_ERROR);
 	}
 
-	if (strncmp(Header.Magic, "RMD1", 4) != 0)
-	{
-		Log(L_ERROR, "No raw modem data header found.\n");
-
-		Close(FD);
-		SetModemTermIO(&SaveIO);
-
-		Return(VOICE_ACTION_ERROR);
-	}	
-
-	if ((strcmp(Header.Modem, VOICE_MODEM) != 0) && (strcmp(Header.Modem, VOICE_LISDN) != 0))
-	{
-		Log(L_ERROR, "Wrong modem type found.\n");
-		
-		Close(FD);
-		SetModemTermIO(&SaveIO);
-
-		Return(VOICE_ACTION_ERROR);
-	}
-
-	compression = 4;
+	compression = ntohl(header.compression);
 
 	if (!voice_set_compression(compression))
 	{
@@ -181,15 +161,15 @@ int voice_put_message(char *message)
 
 	if (modem_get_nocarrier_state())
 	{
-		close(FD);
+		close(fd);
 
-		return(VOICE_ACTION_HANGUP);
+		return(VOICE_ACTION_REMOTEHANGUP);
 	}
-*/
+
 		/* Ansonsten Modem in den Voice-Play-Modus versetzen und die	*/
 		/* Nachricht spielen. AT+VTX liefert ein NO ANSWER wenn kein	*/
 		/* Carrier mehr anliegt (gibt es beim ZyXEL nicht)!				*/
-/*
+
 	if (modem_command("AT+VTX", "CONNECT") == 0)
 	{
 		log(L_ERROR, "Can't start voice play mode.\n");
@@ -199,131 +179,110 @@ int voice_put_message(char *message)
 		return(VOICE_ACTION_ERROR);
 	}
 
-	voicestatus	= VOICE_ACTION_OK;
+	voicestatus		= VOICE_ACTION_OK;
 	sequencestatus	= ST_NO_INPUT;
 
 	while (voicestatus == VOICE_ACTION_OK)
 	{
-*/
 			/* Daten vom Modem in den Buffer lesen. Wenn keine Daten mehr	*/
 			/* vorhanden sind, Schleife abbrechen.									*/
-/*
+
 		if ((bytesin = read(fd, linein, MODEM_BUFFER_LEN)) <= 0) break;
-*/
+
 			/* Eingelesene Daten durchlaufen und alle <DLE> in <DLE><DLE>	*/
 			/* umwandeln?!																	*/
-/*
+
 		bytesout = 0;
 
 		for (i = 0; i < bytesin; i++)
 		{
 			lineout[bytesout] = linein[i];
 
-			if (lineOot[bytesout++] == DLE) lineout[bytesout++] = DLE;
+			if (lineout[bytesout++] == DLE) lineout[bytesout++] = DLE;
 		}
-*/                         
+
 			/* Daten so lange schreiben, bis sie zu Ende sind oder ein	*/
 			/* Fehler aufgetreten ist.												*/
-/*
-		Log(L_JUNK, "Play: <DATA %d incoming; ", bytesin);
 
-		if (modem_get_nocarrier_state())
-		{
-			LogT(L_JUNK , "nothing outgoing>\n");
-			LogL(L_DEBUG, "Modem returns \"NO CARRIER\" - Stop playing...\n");
-               
-			voicestatus = VOICE_ACTION_HANGUP;
-		}
-		else
-		{
-			LogT(L_JUNK, "%d outgoing>\n", BytesOut);
+		log(L_JUNK, "Play: <DATA %d incoming; %d outgoing>\n", bytesin, bytesout);
 
-			Written	= 0;
+		if (!modem_get_nocarrier_state())
+		{
+			written	= 0;
 			errno		= 0;
 
-			while (((Written += RawWriteToModem(&LineOut[Written], BytesOut - Written)) != BytesOut) && (errno == 0));
+			while (((written += modem_raw_write(&lineout[written], bytesout - written)) != bytesout) && (errno == 0));
 
-			if ((Written != BytesOut) || (errno != 0))
+			if ((written != bytesout) || (errno != 0))
 			{
-				Log(L_ERROR, "Could only write %d of %d bytes (%s).\n", Written, BytesOut, strerror(errno));
+				log(L_ERROR, "Could only write %d of %d bytes (%s).\n", written, bytesout, strerror(errno));
 
-				VoiceStatus = VOICE_ACTION_ERROR;
+				voicestatus = VOICE_ACTION_ERROR;
 			}
 		}
-*/
-			/* Eingegende Daten vom Modem prüfen. Wenn ein <DLE><DC4> er-	*/
-			/* kannt wird, wird die Message nicht mehr weiter gespielt.		*/
+		else voicestatus = VOICE_ACTION_REMOTEHANGUP;
 
-/*
-		while ((TestModemInput()) && (VoiceStatus == VOICE_ACTION_OK))
+
+
+		while ((modem_check_input()) && (voicestatus == VOICE_ACTION_OK))
 		{
-			Log(L_DEBUG, "Searching for touchtone sequences...\n");
-
-			if ((BytesIn = RawReadFromModem(LineIn, MODEM_BUFFER_LEN)) > 0)
+			if ((bytesin = modem_raw_read(linein, 1)) > 0)
 			{
-				if (GetNoCarrierFlag())
-				{
-					Log(L_DEBUG, "Modem returns \"NO CARRIER\" - Stop playing...\n");
+				voice_handle_dle(linein[0]);
 
-					VoiceStatus = VOICE_ACTION_HANGUP;
-				}
-				else
+				if (voicestatus == VOICE_ACTION_OK)
 				{
-					for (i = 0; i < BytesIn; i++) HandleDLE(LineIn[i]);
-*/
-						/* Wenn eine gültige Touchtonesequenze eingegeben	*/
-						/* wurde und diese in der Breaklist steht, wird		*/
-						/* das Spielen abgebrochen.								*/
-/*
-					if ((index(Touchtones, '#')) && (index(Touchtones, '*')))
+					if ((index(touchtones, '#')) && (index(touchtones, '*')))
 					{
-						Log(L_DEBUG, "Touchtone sequence \"%s\" found.\n", Touchtones);
+						log(L_DEBUG, "Touchtone sequence \"%s\" found.\n", touchtones);
 
-						if (ListFindNode(&Breaklist, Touchtones))
+						if (list_find_node(&breaklist, touchtones))
 						{
-							Log(L_INFO, "Sequence \"%s\" found in breaklist...\n", Touchtones);
+							log(L_INFO, "Sequence \"%s\" found in breaklist...\n", touchtones);
 
-							VoiceStatus = VOICE_ACTION_TOUCHTONES;
+							voicestatus = VOICE_ACTION_TOUCHTONES;
+						}
+						else
+						{
+							log(L_DEBUG, "Sequence \"%s\" not in breaklist (ignored)...\n", touchtones);
+
+							*touchtones = '\0';
 						}
 					}
 				}
 			}
-			else Log(L_ERROR, "Can't read input from modem.\n");
+			else log(L_ERROR, "Can't read input from modem.\n");
 		}
 	}
 
-	Close(FD);
+	close(fd);
 
-	Pause(500);
-*/
-		/* Wenn der Carrier noch besteht, ein <DLE><ETX> ans Modem	*/
-		/* schicken. Der Emulator antwortet dann mit einem "VCON".	*/
-/*
-	if (GetNoCarrierFlag() == FALSE)
+
+	if ((voicestatus == VOICE_ACTION_LOCALHANGUP) || (voicestatus == VOICE_ACTION_REMOTEHANGUP) || (modem_get_nocarrier_state()))
 	{
-		SPrintF(LineOut, "%c%c%c%c", DLE, DC4, DLE, ETX);
+			/* Remote hangup: We have got the sequence <DLE><DC4> in the	*/
+			/* modem stream...															*/
 
-		Log(L_JUNK, "Play: <DLE><DC4>\n");
-		Log(L_JUNK, "Play: <DLE><ETX>\n");
+		printstring(linein, "%c%c", DLE, DC4);
+
+		modem_command("", "NO CARRIER");	/* NO CARRIER */
+
+		modem_get_echo(linein);				/* <DLE><DC4> */
+	}
+	else
+	{
+		log(L_JUNK, "Sending \"<DLE><ETX>\"...\n");
+
+		printstring(lineout, "%c%c", DLE, ETX);
                     
-		RawWriteToModem(LineOut, strlen(LineOut));
+		modem_raw_write(lineout, strlen(lineout));
 
-		SPrintF(LineOut, "VCON|%c%c", DLE, ETX);
-
-		ModemCommand("\r",  LineOut);
+		modem_command("",  linein);
 	}
 
-	SetModemTermIO(&SaveIO);
+	if (modem_get_nocarrier_state()) voicestatus = VOICE_ACTION_REMOTEHANGUP;
 
-	ModemCommand("AT", "OK|VCON");
-	ModemCommand("AT", "OK");
-
-	if (GetNoCarrierFlag()) VoiceStatus = VOICE_ACTION_HANGUP;
-
-	Return(VoiceStatus);
-*/
-
-	return(VOICE_ACTION_OK);
+	return(voicestatus);
 }
 
 /*************************************************************************
@@ -565,9 +524,11 @@ static void voice_set_header(vaheader_t *header)
 
 static void voice_handle_dle(char Byte)
 {
+/*
 	log_line(L_JUNK, "Sequence: Found \"");
 	log_char(L_JUNK, Byte);
 	log_text(L_JUNK, "\"%s.\n", ((sequencestatus == ST_NO_INPUT) ? "" : " (<DLE>)"));
+*/
 
 	switch (sequencestatus)
 	{
@@ -587,14 +548,10 @@ static void voice_handle_dle(char Byte)
 					log(L_WARN, "Sequence: Found \"<XOFF>\".\n");
 					break;
 
-				case NL:
-				case CR:
-					break;
-
 				default:
-					log_line(L_ERROR, "Sequence: Illegal \"");
+					log_line(L_ERROR, "Sequence: Found \"");
 					log_char(L_ERROR, Byte);
-					log_text(L_ERROR, "\".\n");
+					log_text(L_ERROR, "\" (illegal).\n");
 					break;
 			}
                                    
@@ -605,14 +562,14 @@ static void voice_handle_dle(char Byte)
 			switch (Byte)
 			{
 				case DC4:
-					log(L_DEBUG, "Sequence: Found \"<DLE><DC4>\" - Stop current action...\n");
+					log(L_DEBUG, "Sequence: Found \"<DLE><DC4>\" - stop current action...\n");
 
 					voicestatus = VOICE_ACTION_LOCALHANGUP;
 
 					break;
 
 				case ETX:
-					log(L_DEBUG, "Sequence: Found \"<DLE><ETX>\" - Cancel current action...\n");
+					log(L_DEBUG, "Sequence: Found \"<DLE><ETX>\" - stop current action...\n");
 
 					voicestatus = VOICE_ACTION_LOCALHANGUP;
 
@@ -639,19 +596,13 @@ static void voice_handle_dle(char Byte)
 					/* Besetztzeichen erkannt */
 
 				case 'b':
-					log(L_DEBUG, "Sequence: Found busytone - Hangup...\n");
-
-					voicestatus = VOICE_ACTION_LOCALHANGUP;
-
+					log(L_DEBUG, "Sequence: Found busytone...\n");
 					break;
 					
 					/* T.30 Faxrufton erkannt */
 
 				case 'c':
-					log(L_DEBUG, "Sequence: Found T.30 faxtone - Cancel current action...\n");
-
-					voicestatus = VOICE_ACTION_LOCALHANGUP;
-
+					log(L_DEBUG, "Sequence: Found T.30 faxtone...\n");
 					break;
 					
 					/* Datenträger eines Modems erkannt */
@@ -669,10 +620,7 @@ static void voice_handle_dle(char Byte)
 					/* folgte, die länger war als durch AT+VSD definiert.		*/
 
 				case 'q':
-					log(L_DEBUG, "Sequence: Found quiet - Cancel current action...\n");
-
-					voicestatus = VOICE_ACTION_LOCALHANGUP;
-
+					log(L_DEBUG, "Sequence: Found quiet...\n");
 					break;
 
 					/* Silence (Stille) erkannt. Das Modem hat bei Beginn	*/
@@ -681,10 +629,7 @@ static void voice_handle_dle(char Byte)
 					/* ch AT+VSD definiert.											*/
 
 				case 's':
-					log(L_DEBUG, "Sequence: Found silence - Cancel current action...\n");
-
-					voicestatus = VOICE_ACTION_LOCALHANGUP;
-
+					log(L_DEBUG, "Sequence: Found silence...\n");
 					break;
 
 				default:

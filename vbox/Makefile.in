@@ -1,3 +1,5 @@
+#
+# $Id: Makefile.in,v 1.4 1997/02/26 20:33:42 michael Exp $
 
 #----------------------------------------------------------------------------#
 # Things you can change to personalize the Makefile for your own site.       #
@@ -54,9 +56,10 @@ SPOOLDIR	= @VBOX_SPOOLDIR@
 # Name of the logfile each vboxgetty writes to. The placeholder '%s' is      #
 # replaced at runtime by the name of the used tty device. The directory      #
 # *MUST* be overridden at configure-time with the "--with-logdir" option to  #
-# the "configure" script [/var/log]:                                         #
+# the "configure" script [/var/log/vbox]:                                    #
 #----------------------------------------------------------------------------#
 
+LOGFDIR		= @VBOX_LOGDIR@
 LOGFILE		= @VBOX_LOGDIR@/vboxgetty-%s.log
 
 #----------------------------------------------------------------------------#
@@ -208,6 +211,9 @@ endif
 		  $(LN) -f vboxconvert autovbox; \
 		  $(LN) -f vboxconvert vboxmode;
 
+		  @$(ECHO) "Installing '$(bindir)/vboxctrl'..."
+		  @$(INSTALL_BIN) $(TOPDIR)/src/vboxctrl $(bindir)
+
 		  @$(ECHO) "Installing '$(bindir)/vboxmail'..."
 		  @$(INSTALL_SHBIN) $(TOPDIR)/utils/vboxmail $(bindir)
 
@@ -220,7 +226,7 @@ endif
 #----------------------------------------------------------------------------#
 
 MAKETHISDIRS	= $(prefix) $(exec_prefix) $(sbindir) $(bindir) \
-		  $(sysconfdir) $(SPOOLDIR)
+		  $(sysconfdir) $(SPOOLDIR) $(LOGFDIR)
 
 install-dirs:	  ignore
 
@@ -281,6 +287,7 @@ clear:		  clean
 		  @$(RM) -f $(TOPDIR)/src/vboxgetty
 		  @$(RM) -f $(TOPDIR)/src/vbox
 		  @$(RM) -f $(TOPDIR)/src/vboxconvert
+		  @$(RM) -f $(TOPDIR)/src/vboxctrl
 		  @$(RM) -f $(TOPDIR)/doc/*.html
 		  @$(RM) -f $(TOPDIR)/doc/*.sgml
 		  @$(RM) -f $(TOPDIR)/doc/*.txt

@@ -1,3 +1,5 @@
+#
+# $Id: Makefile.in,v 1.4 1997/02/26 20:33:49 michael Exp $
 
 #----------------------------------------------------------------------------#
 # The information below is modified by the configure script when Makefile is #
@@ -66,7 +68,7 @@ vboxctrl.o:	$(HEADERS) vboxctrl.c
 
 #----------------------------------------------------------------------------#
 
-all:		  vboxlib vboxgetty vboxconvert vboxctrl
+all:		  vboxlib vboxgetty vboxconvert vboxctrl vbox
 
 #----------------------------------------------------------------------------#
 # Compiling vboxlib                                                          #
@@ -94,16 +96,19 @@ vboxgetty:	  $(VBOXGETTYOBJS)
 # Compiling vbox                                                             #
 #----------------------------------------------------------------------------#
 
-ifeq ($(GOT_LIB_NCURSES),y)
+#ifeq ($(GOT_LIB_NCURSES),y)
+#
+#VBOXLIBS	= -lpanel -lncurses
+#
+#VBOXOBJS	= vbox.o parserc.o misc.o
+#
+#vbox:		  $(VBOXOBJS)
+#		  $(CC) $(VBOXOBJS) $(VBOXLIBS) -o vbox
+#
+#endif
 
-VBOXLIBS	= -lpanel -lncurses
-
-VBOXOBJS	= vbox.o parserc.o misc.o
-
-vbox:		  $(VBOXOBJS)
-		  $(CC) $(VBOXOBJS) $(VBOXLIBS) -o vbox
-
-endif
+vbox:
+		touch vbox
 
 #----------------------------------------------------------------------------#
 # Compiling vboxconvert                                                      #
@@ -123,3 +128,9 @@ VBOXCTRLOBJS	= vboxctrl.o
 vboxctrl:	  $(VBOXCTRLOBJS)
 		  $(CC) $(VBOXCTRLOBJS) -L. -lvbox -o vboxctrl
 
+#----------------------------------------------------------------------------#
+# Misc                                                                       #
+#----------------------------------------------------------------------------#
+
+clean:
+		  @rm -f *~

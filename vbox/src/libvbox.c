@@ -1,5 +1,5 @@
 /*
-** $Id: libvbox.c,v 1.3 1997/02/26 13:10:38 michael Exp $
+** $Id: libvbox.c,v 1.4 1997/02/26 20:33:51 michael Exp $
 **
 ** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
 */
@@ -23,20 +23,41 @@ char *compressions[] =
 };
 
 /*************************************************************************
- ** 
+ ** ctrl_create():	Creates a vbox control file. The file is created	**
+ **						with the permissions -rw-rw-rw-.							**
+ *************************************************************************
+ ** path					Path to the spool directory of the current user.	**
+ ** file					Name of the control file to create.						**
+ ** <return>			0 on error; 1 on success.									**
  *************************************************************************/
 
 int ctrl_create(char *path, char *file)
 {
-	char location[PATH_MAX + 1];
+	char	location[PATH_MAX + 1];
+	int	fd;
 	
 	xstrncpy(location, path, PATH_MAX);
 	xstrncat(location, "/" , PATH_MAX);
 	xstrncat(location, file, PATH_MAX);
+
+	if ((fd = open(location, O_CREAT|O_TRUNC, S_IRUSR|S_IWUSR|S_IRGRP|S_IWGRP|S_IROTH|S_IWOTH)) != -1)
+	{
+		chmod(location, S_IRUSR|S_IWUSR|S_IRGRP|S_IWGRP|S_IROTH|S_IWOTH);
+		chmod(location, S_IRUSR|S_IWUSR|S_IRGRP|S_IWGRP|S_IROTH|S_IWOTH);
+		close(fd);
+		
+		returnok();
+	}
+
+	returnerror();
 }
 
 /*************************************************************************
- ** 
+ ** ctrl_remove():	Removes a vbox control file.								**
+ *************************************************************************
+ ** path					Path to the spool directory of the current user.	**
+ ** file					Name of the control file to remove.						**
+ ** <return>			0 on error; 1 on success.									**
  *************************************************************************/
 
 int ctrl_remove(char *path, char *file)
@@ -67,6 +88,10 @@ int ctrl_remove(char *path, char *file)
 
 /*************************************************************************
  ** ctrl_ishere():	Checks if a control file exists.							**
+ *************************************************************************
+ ** path					Path to the spool directory of the current user.	**
+ ** file					Name of the control file to check.						**
+ ** <return>			0 don't exists; 1 exists.									**
  *************************************************************************/
 
 int ctrl_ishere(char *path, char *file)
@@ -84,6 +109,10 @@ int ctrl_ishere(char *path, char *file)
 
 /*************************************************************************
  ** xstrncpy():	Copys one string to another.									**
+ *************************************************************************
+ ** dest				Pointer to the destination.									**
+ ** source			Pointer to the source.											**
+ ** max				Max length of destination.										**
  *************************************************************************/
 
 void xstrncpy(char *dest, char *source, int max)
@@ -95,6 +124,10 @@ void xstrncpy(char *dest, char *source, int max)
 
 /*************************************************************************
  ** xstrncat():	Cats one string to another.									**
+ *************************************************************************
+ ** dest				Pointer to the destination.									**
+ ** source			Pointer to the source.											**
+ ** max				Max length of destination.										**
  *************************************************************************/
 
 void xstrncat(char *dest, char *source, int max)
@@ -106,6 +139,8 @@ void xstrncat(char *dest, char *source, int max)
 
 /*************************************************************************
  ** xpause():	Waits some miliseconds.												**
+ *************************************************************************
+ ** ms			Miliseconds to wait.													**
  *************************************************************************/
 
 void xpause(unsigned long ms)
@@ -116,6 +151,10 @@ void xpause(unsigned long ms)
 /*************************************************************************
  ** xstrtol():	Converts a string to a long number, using a default on	**
  **				error.																	**
+ *************************************************************************
+ ** str			String to convert to long.											**
+ ** use			Default value if string can't converted.						**
+ ** <return>	Converted string value on success; default on error.		**
  *************************************************************************/
 
 long xstrtol(char *str, long use)
@@ -132,6 +171,10 @@ long xstrtol(char *str, long use)
 
 /*************************************************************************
  ** header_put():	Writes the vbox audio header.									**
+ *************************************************************************
+ ** fd				File descriptor used to write.								**
+ ** header			Pointer to a filled vbox audio header.						**
+ ** <return>		0 on error; 1 on success.										**
  *************************************************************************/
 
 int header_put(int fd, vaheader_t *header)
@@ -146,6 +189,10 @@ int header_put(int fd, vaheader_t *header)
 
 /*************************************************************************
  ** header_get():	Reads a vbox audio header.										**
+ *************************************************************************
+ ** fd				File descriptor used to read.									**
+ ** header			Pointer to a vbox audio header.								**
+ ** <return>		0 on error; 1 on success.										**
  *************************************************************************/
 
 int header_get(int fd, vaheader_t *header)

@@ -1,5 +1,5 @@
 /*
-** $Id: script.c,v 1.3 1997/02/26 13:10:49 michael Exp $
+** $Id: script.c,v 1.4 1997/02/26 20:33:54 michael Exp $
 **
 ** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
 */
@@ -42,14 +42,12 @@ struct minlist breaklist;
 int script_run(char *script)
 {
 	Tcl_Interp	*interpreter;
-	struct tm	*timelocal;
 
-	char		savename[VOICE_MAX_CALLERID + 32];
+	char		savename[32];
 	char		savetime[32];
 	int		needcreated;
 	int		havecreated;
 	int		result;
-	time_t	timestamp;
 
 	log(L_INFO, "Running tcl script \"%s\"...\n", script);
 
@@ -78,59 +76,47 @@ int script_run(char *script)
 				needcreated = 0;
 				havecreated = 0;
 
-				timestamp = time(NULL);
-				timelocal = localtime(&timestamp);
+				sprintf(savename, "%16.16lu-%6.6lu", (unsigned long)time(NULL), (unsigned long)getpid());
+				sprintf(savetime, "%d", setup.voice.recordtime);
 
-				if (strftime(savename, 28, "%y%m%d%H%M%S-", timelocal) == 13)
+				TCLCREATEVAR("vbox_var_bindir"	, BINDIR);
+				TCLCREATEVAR("vbox_var_savename"	, savename);
+				TCLCREATEVAR("vbox_var_rectime"	, savetime);
+				TCLCREATEVAR("vbox_var_spooldir"	, setup.spool);
+				TCLCREATEVAR("vbox_var_checknew"	, setup.voice.checknewpath);
+
+				TCLCREATEVAR("vbox_msg_standard"	, setup.voice.standardmsg);
+				TCLCREATEVAR("vbox_msg_beep"		, setup.voice.beepmsg);
+				TCLCREATEVAR("vbox_msg_timeout"	, setup.voice.timeoutmsg);
+
+				TCLCREATEVAR("vbox_caller_id"		, setup.voice.callerid);
+				TCLCREATEVAR("vbox_caller_phone"	, setup.voice.phone);
+				TCLCREATEVAR("vbox_caller_name"	, setup.voice.name);
+
+				TCLCREATEVAR("vbox_user_name"		, setup.users.name);
+				TCLCREATEVAR("vbox_user_home"		, setup.users.home);
+
+				TCLCREATEVAR("vbox_flag_standard", setup.voice.domessage ? "TRUE" : "FALSE");
+				TCLCREATEVAR("vbox_flag_beep"    , setup.voice.dobeep    ? "TRUE" : "FALSE");
+				TCLCREATEVAR("vbox_flag_timeout" , setup.voice.dotimeout ? "TRUE" : "FALSE");
+				TCLCREATEVAR("vbox_flag_record"	, setup.voice.dorecord  ? "TRUE" : "FALSE");
+
+				if (havecreated == needcreated)
 				{
-					if (strcmp(setup.voice.callerid, "*** Unknown ***") != 0)
+					*touchtones = '\0';
+
+					if (Tcl_EvalFile(interpreter, script) != TCL_OK)
 					{
-						strcat(savename, setup.voice.callerid);
+						log(L_ERROR, "In \"%s\": %s (line %d).\n", script, interpreter->result, interpreter->errorLine);
 					}
-					else strcat(savename, "0");
-
-					sprintf(savetime, "%d", setup.voice.recordtime);
-
-					TCLCREATEVAR("vbox_var_bindir"	, BINDIR);
-					TCLCREATEVAR("vbox_var_savename"	, savename);
-					TCLCREATEVAR("vbox_var_rectime"	, savetime);
-					TCLCREATEVAR("vbox_var_spooldir"	, setup.spool);
-					TCLCREATEVAR("vbox_var_checknew"	, setup.voice.checknewpath);
-
-					TCLCREATEVAR("vbox_msg_standard"	, setup.voice.standardmsg);
-					TCLCREATEVAR("vbox_msg_beep"		, setup.voice.beepmsg);
-					TCLCREATEVAR("vbox_msg_timeout"	, setup.voice.timeoutmsg);
-
-					TCLCREATEVAR("vbox_caller_id"		, setup.voice.callerid);
-					TCLCREATEVAR("vbox_caller_phone"	, setup.voice.phone);
-					TCLCREATEVAR("vbox_caller_name"	, setup.voice.name);
-
-					TCLCREATEVAR("vbox_user_name"		, setup.users.name);
-					TCLCREATEVAR("vbox_user_home"		, setup.users.home);
-
-					TCLCREATEVAR("vbox_flag_standard", setup.voice.domessage ? "TRUE" : "FALSE");
-					TCLCREATEVAR("vbox_flag_beep"    , setup.voice.dobeep    ? "TRUE" : "FALSE");
-					TCLCREATEVAR("vbox_flag_timeout" , setup.voice.dotimeout ? "TRUE" : "FALSE");
-					TCLCREATEVAR("vbox_flag_record"	, setup.voice.dorecord  ? "TRUE" : "FALSE");
-
-					if (havecreated == needcreated)
+					else
 					{
-						*touchtones = '\0';
+						log(L_DEBUG, "Back from tcl script...\n");
 
-						if (Tcl_EvalFile(interpreter, script) != TCL_OK)
-						{
-							log(L_ERROR, "In \"%s\": %s (line %d).\n", script, interpreter->result, interpreter->errorLine);
-						}
-						else
-						{
-							log(L_DEBUG, "Back from tcl script...\n");
-
-							result = TRUE;
-						}
+						result = TRUE;
 					}
-					else log(L_ERROR, "In \"%s\": %s (line %d).\n", script, interpreter->result, interpreter->errorLine);
 				}
-				else log(L_FATAL, "Can't create record name (timestamp).\n");
+				else log(L_ERROR, "In \"%s\": %s (line %d).\n", script, interpreter->result, interpreter->errorLine);
 			}
 			else log(L_FATAL, "Can't create all new tcl commands.\n");
 

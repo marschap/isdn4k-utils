@@ -1,5 +1,5 @@
 /*
-** $Id: modem.c,v 1.3 1997/02/26 13:10:44 michael Exp $
+** $Id: modem.c,v 1.4 1997/02/26 20:33:53 michael Exp $
 **
 ** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
 */
@@ -35,11 +35,11 @@ static void		modem_set_sane_mode(TIO *, int);
 static void		modem_set_raw_mode(TIO *);
 static int		modem_write(char *);
 static int		modem_read(char *, int);
-static int		modem_get_echo(char *);
 static void		modem_timeout_function(int);
 static void		modem_check_nocarrier(char);
 static int		modem_check_result(char *, char *);
 static void		modem_set_flowcontrol(TIO *);
+static int		modem_get_echo(char *);
 
 /*************************************************************************
  ** modem_open_port():	Opens the modem port.									**
@@ -522,11 +522,10 @@ int modem_raw_read(char *line, int len)
 	{
 		for (i = 0; i < r; i++)
 		{
-/*
 			log_line(L_JUNK, "[rawread] ");
 			log_char(L_JUNK, line[i]);
 			log_text(L_JUNK, "\n");
-*/
+
 			modem_check_nocarrier(line[i]);
 		}
 	}
@@ -831,6 +830,8 @@ int modem_count_rings(int needrings)
 			log_code(L_JUNK, line);
 			log_text(L_JUNK, "\"...\n");
 		}
+
+		if ((haverings >= needrings) && (havesetup)) returnok();
 	}
 
 	returnerror();
