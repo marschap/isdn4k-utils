@@ -1,6 +1,6 @@
-.\" $Id: icnctrl.man.in,v 1.1 1997/02/22 13:09:15 fritz Exp $
+.\" $Id: icnctrl.man.in,v 1.2 1997/02/22 13:10:29 fritz Exp $
 .\"
-.\" CHECKIN $date$
+.\" CHECKIN $Date: 1997/02/22 13:10:29 $
 .\"
 .\" Process this file with
 .\" groff -man -Tascii icnctrl.1 for ascii output, or
