@@ -1,0 +1,52 @@
+# $Id: Makefile.in,v 1.1 1998/08/25 16:33:14 calle Exp $
+#
+# Makefile for libcapi20
+# (C) 1998 Carsten Paeth
+#
+# $Log: Makefile.in,v $
+# Revision 1.1  1998/08/25 16:33:14  calle
+# Added CAPI2.0 library. First Version.
+#
+#
+
+prefix			:= @prefix@
+exec_prefix		:= @exec_prefix@
+
+LIBDIR			:= @libdir@
+INCLUDEDIR		:= @includedir@
+INSTALL			:= @INSTALL@
+INSTALL_DATA		:= $(INSTALL) -m 0644 -o 0 -g 0
+
+all: libcapi20.a
+
+install: all
+	$(INSTALL_DATA) libcapi20.a $(LIBDIR)
+	$(INSTALL_DATA) capi20.h $(INCLUDEDIR)
+
+ifeq (.depend,$(wildcard .depend))
+include .depend
+endif
+
+.depend:
+	$(CPP) -M $(CFLAGS) $(DEFS) *.c >.depend
+
+depend: .depend
+
+config:
+	@./configure
+
+Makefile: Makefile.in config.status
+	./config.status
+
+config.status: configure
+	./config.status --recheck
+
+libcapi20.a: capi20.o capifunc.o convert.o
+	@rm -f $@
+	$(AR) cvq $@ $^
+
+clean:
+	rm -f *.o libcapi20.a libcapi20.so.* comperr
+
+distclean: clean
+	rm -f config.status config.cache config.log Makefile .depend

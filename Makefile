@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.23 1998/08/01 19:59:10 paul Exp $
+# $Id: Makefile,v 1.24 1998/08/25 16:33:09 calle Exp $
 #
 # Toplevel Makefile for isdn4k-utils
 #
@@ -54,6 +54,15 @@ else
 		SUBDIRS := $(SUBDIRS) teles
 	endif
 endif
+
+ifeq ($(CONFIG_RCAPID),y)
+	SUBDIRS := $(SUBDIRS) capi20
+else
+	ifeq ($(CONFIG_AVMCAPICTRL),y)
+		SUBDIRS := $(SUBDIRS) capi20
+	endif
+endif
+
 ifeq ($(CONFIG_AVMCAPICTRL),y)
 	SUBDIRS := $(SUBDIRS) avmb1
 endif
