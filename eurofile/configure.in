@@ -2,7 +2,7 @@ dnl
 dnl Process this file with autoconf to produce a configure script.
 dnl 
 
-AC_REVISION($Id: configure.in,v 1.8 2000/08/04 11:05:47 paul Exp $)dnl
+AC_REVISION($Id: configure.in,v 1.9 2000/09/08 08:46:08 paul Exp $)dnl
 
 AC_INIT(COPYING.authlib)
 
@@ -14,7 +14,7 @@ env | grep CONFIG_ |sort
 #
 if test -n "${CONFIG_EUROFILE}"; then
 echo
-echo execting $1 on behalf of isdn4k-utils make config
+echo execing $1 on behalf of isdn4k-utils make config
 echo 
 CONFIG_EFTD=${CONFIG_EFTD:-n}
 CONFIG_EFTD_WUAUTH=${CONFIG_EFTD_WUAUTH:-n}
@@ -65,13 +65,13 @@ AC_PROG_INSTALL
 AC_PROG_CC
 
 dnl AC_PATH_PROG(PERL, perl, /usr/bin/perl, /usr/local/sbin:/usr/local/bin:/usr/sbin:/sbin:/usr/bin:/bin)
-AC_PATH_PROG(ISDNCTRL, isdnctrl, /usr/local/sbin/isdnctrl, /usr/local/sbin:/usr/local/bin:/usr/sbin:/sbin:/usr/bin:/bin)
-AC_PATH_PROG(LOOPCTRL, loopctrl, /usr/local/sbin/loopctrl, /usr/local/sbin:/usr/local/bin:/usr/sbin:/sbin:/usr/bin:/bin)
+AC_PATH_PROG(ISDNCTRL, isdnctrl, $SBINDIR/isdnctrl, /usr/local/sbin:/usr/local/bin:/usr/sbin:/sbin:/usr/bin:/bin)
+AC_PATH_PROG(LOOPCTRL, loopctrl, $SBINDIR/loopctrl, /usr/local/sbin:/usr/local/bin:/usr/sbin:/sbin:/usr/bin:/bin)
 AC_PATH_PROG(INSMOD, insmod, /sbin/insmod, /usr/local/sbin:/usr/local/bin:/usr/sbin:/sbin:/usr/bin:/bin)
 AC_PATH_PROG(RMMOD, rmmod, /sbin/rmmod, /usr/local/sbin:/usr/local/bin:/usr/sbin:/sbin:/usr/bin:/bin)
 AC_PATH_PROG(IFCONFIG, ifconfig, /sbin/ifconfig, /usr/local/sbin:/usr/local/bin:/usr/sbin:/sbin:/usr/bin:/bin)
-AC_PATH_PROG(X25ROUTE, x25route, /usr/local/sbin/x25route, /usr/local/sbin:/usr/local/bin:/usr/sbin:/sbin:/usr/bin:/bin)
-AC_PATH_PROG(X25TRACE, x25trace, /usr/local/sbin/x25trace, /usr/local/sbin:/usr/local/bin:/usr/sbin:/sbin:/usr/bin:/bin)
+AC_PATH_PROG(X25ROUTE, x25route, $SBINDIR/x25route, /usr/local/sbin:/usr/local/bin:/usr/sbin:/sbin:/usr/bin:/bin)
+AC_PATH_PROG(X25TRACE, x25trace, $SBINDIR/x25trace, /usr/local/sbin:/usr/local/bin:/usr/sbin:/sbin:/usr/bin:/bin)
 
 
 

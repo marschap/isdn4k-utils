@@ -531,7 +531,7 @@ env | grep CONFIG_ |sort
 #
 if test -n "${CONFIG_EUROFILE}"; then
 echo
-echo execting $1 on behalf of isdn4k-utils make config
+echo execing $1 on behalf of isdn4k-utils make config
 echo 
 CONFIG_EFTD=${CONFIG_EFTD:-n}
 CONFIG_EFTD_WUAUTH=${CONFIG_EFTD_WUAUTH:-n}
@@ -1150,7 +1150,7 @@ else
     fi
   done
   IFS="$ac_save_ifs"
-  test -z "$ac_cv_path_ISDNCTRL" && ac_cv_path_ISDNCTRL="/usr/local/sbin/isdnctrl"
+  test -z "$ac_cv_path_ISDNCTRL" && ac_cv_path_ISDNCTRL="$SBINDIR/isdnctrl"
   ;;
 esac
 fi
@@ -1186,7 +1186,7 @@ else
     fi
   done
   IFS="$ac_save_ifs"
-  test -z "$ac_cv_path_LOOPCTRL" && ac_cv_path_LOOPCTRL="/usr/local/sbin/loopctrl"
+  test -z "$ac_cv_path_LOOPCTRL" && ac_cv_path_LOOPCTRL="$SBINDIR/loopctrl"
   ;;
 esac
 fi
@@ -1330,7 +1330,7 @@ else
     fi
   done
   IFS="$ac_save_ifs"
-  test -z "$ac_cv_path_X25ROUTE" && ac_cv_path_X25ROUTE="/usr/local/sbin/x25route"
+  test -z "$ac_cv_path_X25ROUTE" && ac_cv_path_X25ROUTE="$SBINDIR/x25route"
   ;;
 esac
 fi
@@ -1366,7 +1366,7 @@ else
     fi
   done
   IFS="$ac_save_ifs"
-  test -z "$ac_cv_path_X25TRACE" && ac_cv_path_X25TRACE="/usr/local/sbin/x25trace"
+  test -z "$ac_cv_path_X25TRACE" && ac_cv_path_X25TRACE="$SBINDIR/x25trace"
   ;;
 esac
 fi
