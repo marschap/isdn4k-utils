@@ -10,6 +10,7 @@ W:7		zondag
 W:W		werkdag
 W:E		weekend
 W:H		feestdag
+W:*		everyday
 
 D:1.1		nieuwjaarsdag
 D:easter-2	Goede Vrijdag
