@@ -1,8 +1,10 @@
-# $Id: Makefile,v 1.1 1997/02/17 00:08:37 fritz Exp $
+# $Id: Makefile,v 1.2 1997/02/22 14:17:55 fritz Exp $
 #
 # Toplevel Makefile for isdn4k-utils
 #
-I4LVERSION=2.1
+export I4LVERSION=2.1
+export I4LCONFDIR=/etc/isdn
+
 SUBDIRS=`find . -type d -maxdepth 1`
 
 all:
