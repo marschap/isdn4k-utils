@@ -1,4 +1,4 @@
-/* $Id: isdnrate.c,v 1.26 1999/12/01 21:47:25 akool Exp $
+/* $Id: isdnrate.c,v 1.27 1999/12/02 19:28:02 akool Exp $
 
  * ISDN accounting for isdn4linux. (rate evaluation)
  *
@@ -19,6 +19,16 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnrate.c,v $
+ * Revision 1.27  1999/12/02 19:28:02  akool
+ * isdnlog-3.73
+ *  - isdnlog/tools/telrate/telrate.cgi.in faster
+ *  - doc/isdnrate.man ... -P
+ *  - isdnlog/tools/isdnrate.c ... -P
+ *  - isdnlog/tools/NEWS ... -P
+ *  - isdnlog/tools/rate-at.c ... 194040
+ *  - isdnlog/rate-at.dat
+ *  - isdnlog/tools/rate.c ... SIGSEGV
+ *
  * Revision 1.26  1999/12/01 21:47:25  akool
  * isdnlog-3.72
  *   - new rates for 01051
@@ -153,7 +163,7 @@
 static void print_header(void);
 
 static char *myname, *myshortname;
-static char options[] = "ab:d:f:h:l:op:st:v::x:CD::G:HLNS:TUVX::Z";
+static char options[] = "ab:d:f:h:l:op:st:v::x:CD::G:HLNP:S:TUVX::Z";
 static char usage[] = "%s: usage: %s [ -%s ] Destination ...\n";
 
 static int header = 0, best = MAXPROVIDER, table = 0, explain = 0;
@@ -187,6 +197,8 @@ static int need_dest;
 static int h_param = 0;
 static int lcr = 0;
 static TELNUM srcnum, destnum;
+static char *pid_dir = 0;
+static char *pid_file = 0;
 
 typedef struct {
   int     prefix;
@@ -471,6 +483,9 @@ static int opts(int argc, char *argv[])
       break;
     case 'N':
       explain = 55;
+      break;
+    case 'P':
+      pid_dir = strdup(optarg);
       break;
     case 'S':
       sortby = *optarg;
@@ -840,6 +855,8 @@ static int compute(char *num)
 
       while (getZoneRate(&Rate, explain - 50, fi) == 0) {
 	double  cpm = Rate.Duration > 0 ? 60 * Rate.Price / Rate.Duration : 99.99;
+	if (Rate.Price==0)
+	  cpm=Rate.Basic;
 
 	fi = 0;
 	if (Rate.Price != 99.99)
@@ -875,6 +892,8 @@ static int compute(char *num)
 	case 9:		/* used by list */
 	  {
 	    double  cpm = Rate.Duration > 0 ? 60 * Rate.Price / Rate.Duration : 99.99;
+	if (Rate.Price==0)
+	  cpm=Rate.Basic;
 
 	    sprintf(s, "%s%c"
 		    "%s%c%s%c%s%c%s%c"
@@ -1308,13 +1327,18 @@ void    catch_sig(int sig)
 {
   print_msg(PRT_A, "Signal %d\n", sig);
   unlink(SOCKNAME);
+  if(pid_dir)
+    unlink(pid_file);
   err("Sig");
 }
 
 static void del_sock(void)
 {
-  if (getppid() > 0)
+  if (getppid() > 0) {
     unlink(SOCKNAME);
+    if(pid_dir)
+      unlink(pid_file);
+  }
 }
 static volatile sig_atomic_t stopped = 0, reinit = 0;
 
@@ -1356,6 +1380,9 @@ static void setup_daemon()
   size_t  size;
   struct stat stat_buf;
   int     i;
+  pid_t   pid;
+  char pidname[] = "isdnrate.pid";
+  FILE *fp;
 
   if (verbose)
     fprintf(stderr, "Setup sockets\n");
@@ -1364,15 +1391,15 @@ static void setup_daemon()
   signal(SIGHUP, catch_hup);
 
   if (is_daemon == 2) {		/* go background */
-    pid_t   pid;
 
     fprintf(stderr, "Going background\n");
     verbose = 0;
     pid = fork();
     if (pid < 0)
       err("Going bg failed");
-    else if (pid > 0)
+    else if (pid > 0) {
       exit(EXIT_SUCCESS);
+    }
   }
   if ((sock = socket(PF_UNIX, SOCK_STREAM, 0)) < 0)
     err("Can't open socket");
@@ -1389,6 +1416,17 @@ static void setup_daemon()
 
   if (listen(sock, SOMAXCONN) < 0)
     err("Can't listen");
+  pid_file = malloc(strlen(pid_dir)+strlen(pidname)+2);
+  strcpy(pid_file, pid_dir);
+  if(pid_file[strlen(pid_file)-1] != '/')
+    strcat(pid_file,"/");
+  strcat(pid_file,pidname);
+  if((fp=fopen(pidname,"w"))==0)
+    fprintf(stderr,"Can't write %s\n" , pid_file);
+  else {
+    fprintf(fp,"%d\n",getpid());
+    fclose(fp);
+  }
   atexit(del_sock);
   FD_ZERO(&active_fd_set);
   FD_SET(sock, &active_fd_set);
@@ -1540,6 +1578,7 @@ int     main(int argc, char *argv[], char *envp[])
     print_msg(PRT_A, "\t-G which\tshow raw data\n");
     print_msg(PRT_A, "\t-H\tshow a header\n");
     print_msg(PRT_A, "\t-L\tshow a detailed list\n");
+    print_msg(PRT_A, "\t-P pid-dir\twrite own PID to pid-dir/isdnrate.pid\n");
     print_msg(PRT_A, "\t-N\tparse the given telefon numbers\n");
     print_msg(PRT_A, "\t-S[v|n]\tsort by v=VBN, n=Name, default=Charge\n");
     print_msg(PRT_A, "\t-T\tshow a table of day/night week/weekend\n");

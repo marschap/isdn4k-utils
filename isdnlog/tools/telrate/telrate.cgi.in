@@ -2007,12 +2007,30 @@ sub det {
     my ($what, $pnum)=@_;
     my ($prov, $cur, $day, $pp, @ch, @co, @cpm, $i, @range, $anymp);
     $pp = provider2prefix($pnum);
-    @range = $what==0 ? ('W', 'N') : (0..23,'E');
+    # check diff hour-prices
+    if($what == 1) {
+	my(@lines, @args, $hour, $ch, $och, %range);
+	push(@args, $ISDNRATE,"-p$pp -dW -l60 -X97 2345 02345");
+	_call_isdnrate(\@lines, @args);
+	$och=0;
+	foreach (@lines) {
+	    if(/^(\d+)\s+(\d+.\d+)/) {
+	    	($hour,$ch)=($1,$2);
+		$range{$hour}=1 if($ch != $och);
+		$och = $ch;
+	    }
+	}
+	@range=sort {$a <=> $b} (keys(%range));
+	push(@range,'E');
+    }
+    else {
+	@range = ('W', 'N');
+    }
     $i = $anymp = 0;
     for $day (@range) {
         my(@lines, @args, $dat);
 	$dat = $day !~/\d/ ? "-d$day" : "-h$day:1 -dW";
-	push(@args, $ISDNRATE,"$dat -p$pp -l60");
+	push(@args, $ISDNRATE,"-p$pp", "$dat", "-l60");
 	my $w50=$what+50;
 	push(@args, "-X$w50");
 	_call_isdnrate(\@lines, @args);
@@ -2043,9 +2061,9 @@ sub det {
 	        my $found=0;
 		foreach my $r (keys (%ranges)) {
 		    ($f,$t)=split(/-/,$r);
-		    $found++,last if (defined $ranges{"$f-$i"});
+		    $found++,last if (defined $ranges{"$range[$f]-$range[$i]"});
 		}
-		$ranges{"$last-$i"}=1 unless($found);
+		$ranges{"$range[$last]-$range[$i]"}=1 unless($found);
 		$last=$i;
 	    }
 	}
@@ -2082,12 +2100,13 @@ sub det {
 	my $bgcolor=$j&1?'':' bgcolor="#fffff0"';
 	print (qq(<tr$bgcolor><td>$_</td>));
 	for ($i=0; $i <=$#headers; $i++) {
-	    ($f, undef) = split(/-/,$headers[$i]);
+#	    ($f, undef) = split(/-/,$headers[$i]);
+	    $f=$i;
 	    my $charge = $ch[$f][$j];
 	    my $mp = $cpm[$f][$j];
 	    my($k,$ff);
 	    for ($cs=0,$k=$i+1; $k <= $#headers; $k++) {
-		($ff, undef) = split(/-/,$headers[$k]);
+		$ff=$k;
 		last if ($ch[$f][$j] != $ch[$ff][$j]);
 		last if ($cpm[$f][$j] != $cpm[$ff][$j]);
 		$cs++;

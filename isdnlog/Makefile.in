@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.127 1999/12/01 21:47:23 akool Exp $
+## $Id: Makefile.in,v 1.128 1999/12/02 19:28:02 akool Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,16 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.128  1999/12/02 19:28:02  akool
+## isdnlog-3.73
+##  - isdnlog/tools/telrate/telrate.cgi.in faster
+##  - doc/isdnrate.man ... -P
+##  - isdnlog/tools/isdnrate.c ... -P
+##  - isdnlog/tools/NEWS ... -P
+##  - isdnlog/tools/rate-at.c ... 194040
+##  - isdnlog/rate-at.dat
+##  - isdnlog/tools/rate.c ... SIGSEGV
+##
 ## Revision 1.127  1999/12/01 21:47:23  akool
 ## isdnlog-3.72
 ##   - new rates for 01051
@@ -892,7 +902,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 3.72
+VERSION     = 3.73
 
 MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 \
 	      isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 \

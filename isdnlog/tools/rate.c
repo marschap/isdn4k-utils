@@ -1,4 +1,4 @@
-/* $Id: rate.c,v 1.65 1999/12/01 21:47:25 akool Exp $
+/* $Id: rate.c,v 1.66 1999/12/02 19:28:03 akool Exp $
  *
  * Tarifdatenbank
  *
@@ -19,6 +19,16 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rate.c,v $
+ * Revision 1.66  1999/12/02 19:28:03  akool
+ * isdnlog-3.73
+ *  - isdnlog/tools/telrate/telrate.cgi.in faster
+ *  - doc/isdnrate.man ... -P
+ *  - isdnlog/tools/isdnrate.c ... -P
+ *  - isdnlog/tools/NEWS ... -P
+ *  - isdnlog/tools/rate-at.c ... 194040
+ *  - isdnlog/rate-at.dat
+ *  - isdnlog/tools/rate.c ... SIGSEGV
+ *
  * Revision 1.65  1999/12/01 21:47:25  akool
  * isdnlog-3.72
  *   - new rates for 01051
@@ -1686,6 +1696,11 @@ int getRate(RATE *Rate, char **msg)
     *(*msg=message)='\0';
 
   if (!Rate || Rate->_zone==UNZONE)
+    return UNKNOWN;
+  if (!Rate->src || !Rate->dst)
+    return UNKNOWN;
+  if (!Rate->src[0] || !Rate->src[1] || !Rate->src[2] ||
+      !Rate->dst[0] || !Rate->dst[1] || !Rate->dst[2])
     return UNKNOWN;
 
   prefix=Rate->prefix;

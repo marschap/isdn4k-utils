@@ -1,5 +1,8 @@
 NEWS for tools: (rate, isdnrate, isdnrep)
 
+1999.12.01
+  isdnrate:
+    new option -P piddir
 
 1999.11.30
   isdnrate:

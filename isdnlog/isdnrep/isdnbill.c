@@ -1,4 +1,4 @@
-/* $Id: isdnbill.c,v 1.5 1999/12/01 21:47:25 akool Exp $
+/* $Id: isdnbill.c,v 1.6 1999/12/02 19:28:02 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Billing-module)
  *
@@ -34,7 +34,7 @@
 #include <string.h>
 #include <time.h>
 
-#undef  DEBUG
+#define DEBUG
 
 #define CALLING          0
 #define CALLED           1
@@ -90,7 +90,7 @@ typedef struct {
   char   error[BUFSIZ];
   int    zone;
   int    ihome;
-  int	 known[2];
+  int    known[2];
 } CALLER;
 
 typedef struct {
@@ -137,10 +137,12 @@ static MSNSUM   msnsum[2][MAXSI][MAXMYMSN];
 static PROVSUM  provsum[2][MAXPROVIDER];
 static ZONESUM  zonesum[2][MAXZONE];
 static PARTNER *partner[2];
+static PARTNER *unknown[2];
 static TELNUM   number[2];
 static char     rstr[BUFSIZ];
 static char     home[BUFSIZ];
 static int      nhome = 0;
+static int	nunknown[2] = { 0, 0 };
 
 int verbose = 0;
 
@@ -239,17 +241,28 @@ char *timestr(double n)
 } /* timestr */
 
 
+static void strich(char c, int len)
+{
+  auto char s[BUFSIZ];
+
+
+  memset(s, c, len);
+  s[len] = 0;
+
+  printf(s);
+  printf("\n");
+} /* strich */
+
+
 static void total(int w)
 {
   register int i, j;
-  auto	   int ncalls = 0;
-  auto 	   double duration = 0.0, pay = 0.0, compute = 0.0;
+  auto     int ncalls = 0, failed = 0;
+  auto     double duration = 0.0, pay = 0.0, compute = 0.0, aktiv = 0.0;
 
 
-  printf("------------------------------------------------------------------------------\n");
-
-  printf("\nMSN                   calls  Duration  Charge       Computed\n");
-  printf("---------------------------------------------------------------\n");
+  printf("\n\nMSN                   calls  Duration  Charge       Computed\n");
+  strich('-', 63);
 
   for (i = 0; i < nhome; i++) {
     for (j = 0; j < MAXSI; j++) {
@@ -265,7 +278,7 @@ static void total(int w)
 
         ncalls   += msnsum[w][j][i].ncalls;
         duration += msnsum[w][j][i].duration;
-	pay 	 += msnsum[w][j][i].pay;
+        pay      += msnsum[w][j][i].pay;
         compute  += msnsum[w][j][i].compute;
       } /* if */
 
@@ -285,7 +298,8 @@ static void total(int w)
     } /* for */
   } /* for */
 
-  printf("---------------------------------------------------------------\n");
+  strich('=', 63);
+
   printf("                      %5d %s  DM %8.3f  DM %8.3f\n",
     ncalls,
     timestr(duration),
@@ -293,8 +307,14 @@ static void total(int w)
     compute);
 
 
-  printf("\nProvider                       calls  Duration  Charge      Computed    failures  avail\n");
-  printf("---------------------------------------------------------------------------------------\n");
+  ncalls = 0;
+  failed = 0;
+  duration = 0.0;
+  pay = 0.0;
+  compute = 0.0;
+
+  printf("\n\nProvider                       calls  Duration  Charge      Computed    failures  avail\n");
+  strich('-', 87);
 
   for (i = 0; i < MAXPROVIDER; i++) {
     if (provsum[w][i].ncalls) {
@@ -313,6 +333,11 @@ static void total(int w)
         provsum[w][i].failed,
         100.0 * (provsum[w][i].ncalls - provsum[w][i].failed) / provsum[w][i].ncalls);
 
+      ncalls   += provsum[w][i].ncalls;
+      duration += provsum[w][i].duration;
+      pay      += provsum[w][i].pay;
+      compute  += provsum[w][i].compute;
+      failed   += provsum[w][i].failed;
 
       if (w == SUBTOTAL) {
         provsum[TOTAL][i].ncalls   += provsum[SUBTOTAL][i].ncalls;
@@ -330,9 +355,26 @@ static void total(int w)
     } /* if */
   } /* for */
 
+  strich('=', 87);
 
-  printf("\nZone           calls  Duration   Charge       Computed    Einsparung AktivPlus\n");
-  printf("------------------------------------------------------------------------------\n");
+  printf("%*s%5d %s  DM %8.3f DM %8.3f %8d %5.1f%%\n",
+    31, "",
+    ncalls,
+    timestr(duration),
+    pay,
+    compute,
+    failed,
+    100.0 * (ncalls - failed) / ncalls);
+
+
+  ncalls = 0;
+  duration = 0.0;
+  pay = 0.0;
+  compute = 0.0;
+  aktiv = 0;
+
+  printf("\n\nZone           calls  Duration   Charge       Computed    Einsparung AktivPlus\n");
+  strich('-', 78);
 
   for (i = 0; i < MAXZONE; i++) {
     if (zonesum[w][i].ncalls) {
@@ -353,6 +395,12 @@ static void total(int w)
         zonesum[w][i].pay,
         zonesum[w][i].compute,
         zonesum[w][i].aktiv);
+
+      ncalls   += zonesum[w][i].ncalls;
+      duration += zonesum[w][i].duration;
+      pay      += zonesum[w][i].pay;
+      compute  += zonesum[w][i].compute;
+      aktiv    += zonesum[w][i].aktiv;
     } /* if */
 
     if (w == SUBTOTAL) {
@@ -370,6 +418,16 @@ static void total(int w)
     } /* if */
   } /* for */
 
+  strich('=', 78);
+
+  printf("%*s%5d %s  DM %8.3f  DM %8.3f  DM %8.3f\n",
+    16, "",
+    ncalls,
+    timestr(duration),
+    pay,
+    compute,
+    aktiv);
+
   printf("\n\n");
 } /* total */
 
@@ -381,19 +439,31 @@ static void showpartner()
 
   for (k = 0; k < 2; k++) {
     switch (k) {
-      case 0 : printf("Angerufene Partner:\n"); break;
-      case 1 : printf("Anrufer:\n"); 		break;
+      case 0 : printf("\nAnrufer (DIALIN):\n");             break;
+      case 1 : printf("\nAngerufene Partner (DIALOUT):\n"); break;
     } /* switch */
 
     for (i = 0; i < knowns; i++)
       if (partner[k][i].ncalls)
-        printf("%-32s %-32s %5d %10.3f %s %10.3f\n",
+        printf("%-16s %-25s %5d %10.3f %s %10.3f\n",
           partner[k][i].msn,
           known[i]->who,
           partner[k][i].ncalls,
           partner[k][i].pay,
           timestr(partner[k][i].duration),
           partner[k][i].compute);
+
+    printf("\n");
+
+    for (i = 0; i < nunknown[k]; i++)
+      if (unknown[k][i].ncalls)
+        printf("%-16s %-25s %5d %10.3f %s %10.3f\n",
+          unknown[k][i].msn,
+          "",
+          unknown[k][i].ncalls,
+          unknown[k][i].pay,
+          timestr(unknown[k][i].duration),
+          unknown[k][i].compute);
   } /* for */
 } /* showpartner */
 
@@ -517,8 +587,8 @@ static void findme()
 
 static void findrate()
 {
-  auto     RATE     Rate;
-  auto     char    *version;
+  auto RATE  Rate;
+  auto char *version;
 
 
   clearRate(&Rate);
@@ -544,8 +614,6 @@ static void findrate()
     else if (c.zone == UNKNOWN)
       c.zone = ELSEWHERE;
 
-    zonesum[SUBTOTAL][c.zone].ncalls++;
-
     c.compute = Rate.Charge;
   }
   else {
@@ -553,6 +621,8 @@ static void findrate()
     c.compute = c.pay;
     sprintf(c.error, " ??? %s", version);
   } /* else */
+
+  zonesum[SUBTOTAL][c.zone].ncalls++;
 } /* findrate */
 
 
@@ -565,7 +635,7 @@ int main(int argc, char *argv[], char *envp[])
   auto     FILE    *f = fopen("/var/log/isdn.log", "r");
 #endif
   auto     char     s[BUFSIZ], sx[BUFSIZ];
-  auto     int      l, col, day, lday = -1, month, lmonth = -1;
+  auto     int      i, l, col, day, lday = -1, month, lmonth = -1;
   auto     double   dur;
   auto     char    *version;
   auto     char    *myname = basename(argv[0]);
@@ -687,7 +757,7 @@ int main(int argc, char *argv[], char *envp[])
 
           if (verbose)
             fprintf(stderr, "REPAIR: Provider=%d\n", c.provider);
-	} /* if */
+        } /* if */
 
         if (!c.provider || (c.provider == UNKNOWN)) {
           if (verbose)
@@ -838,23 +908,53 @@ int main(int argc, char *argv[], char *envp[])
             zonesum[SUBTOTAL][c.zone].pay += c.pay;
             zonesum[SUBTOTAL][c.zone].duration += c.duration;
             zonesum[SUBTOTAL][c.zone].compute += c.compute;
-
-            strcpy(partner[0][c.known[CALLING]].msn, c.num[OTHER]);
-            partner[0][c.known[CALLING]].ncalls++;
-            partner[0][c.known[CALLING]].pay += c.pay;
-            partner[0][c.known[CALLING]].duration += c.duration;
-            partner[0][c.known[CALLING]].compute += c.compute;
-
           }
           else { /* Dialin: */
             justify(number[CALLED].msn, c.num[CALLING], number[CALLING]);
             printf("           %s%s", c.country, c.sprovider);
-
-            strcpy(partner[1][c.known[CALLING]].msn, c.num[OTHER]);
-            partner[1][c.known[CALLING]].ncalls++;
-            partner[1][c.known[CALLING]].duration += c.duration;
           } /* else */
 
+
+	  if (c.known[OTHER] == UNKNOWN) {
+            l = UNKNOWN;
+
+            for (i = 0; i < nunknown[c.dialout]; i++) {
+              if (!strcmp(unknown[c.dialout][i].msn, c.num[OTHER])) {
+                l = i;
+                break;
+              } /* if */
+            } /* for */
+
+            if (l == UNKNOWN) {
+              l = nunknown[c.dialout];
+
+              nunknown[c.dialout]++;
+
+              if (!l)
+      	        unknown[c.dialout] = (PARTNER *)malloc(sizeof(PARTNER));
+              else
+      	        unknown[c.dialout] = (PARTNER *)realloc(unknown[c.dialout], sizeof(PARTNER) * nunknown[c.dialout]);
+
+              *unknown[c.dialout][l].msn = 0;
+	      unknown[c.dialout][l].ncalls = 0;
+	      unknown[c.dialout][l].pay = 0.0;
+	      unknown[c.dialout][l].duration = 0.0;
+	      unknown[c.dialout][l].compute = 0.0;
+            } /* if */
+
+            strcpy(unknown[c.dialout][l].msn, c.num[OTHER]);
+            unknown[c.dialout][l].ncalls++;
+            unknown[c.dialout][l].pay += c.pay;
+            unknown[c.dialout][l].duration += c.duration;
+            unknown[c.dialout][l].compute += c.compute;
+          }
+          else {
+            strcpy(partner[c.dialout][c.known[OTHER]].msn, c.num[OTHER]);
+            partner[c.dialout][c.known[OTHER]].ncalls++;
+            partner[c.dialout][c.known[OTHER]].pay += c.pay;
+            partner[c.dialout][c.known[OTHER]].duration += c.duration;
+            partner[c.dialout][c.known[OTHER]].compute += c.compute;
+          } /* else */
 
           printf("\n");
 
