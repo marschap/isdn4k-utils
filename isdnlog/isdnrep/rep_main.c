@@ -1,4 +1,4 @@
-/* $Id: rep_main.c,v 1.9 1999/07/12 11:37:38 calle Exp $
+/* $Id: rep_main.c,v 1.10 1999/07/18 08:40:57 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -20,6 +20,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rep_main.c,v $
+ * Revision 1.10  1999/07/18 08:40:57  akool
+ * fix from Michael
+ *
  * Revision 1.9  1999/07/12 11:37:38  calle
  * Bugfix: isdnrep defined print_msg as function pointer, the object files
  *         in tools directory, declare it as external function.
@@ -189,7 +192,7 @@ int main(int argc, char *argv[], char *envp[])
 	auto char  fnbuff[512] = "";
 	auto char  usage[]     = "%s: usage: %s [ -%s ]\n";
 	auto char  wrongdate[] = "unknown date: %s\n";
-	auto char  options[]   = "ac:d:f:hinop:s:t:uvw:NVF:M:R:";
+	auto char  options[]   = "ac:d:f:hinop:s:t:uvw:NVF:M:R:b";
 	auto char *myname      = basename(argv[0]);
 	auto char *ptr         = NULL;
 	auto char *linefmt     = "";
@@ -267,6 +270,9 @@ int main(int argc, char *argv[], char *envp[])
       case 'R' : preselect = (int)strtol(optarg, NIL, 0);
       	       	 break;
 
+      case 'b' : bill++;
+      	       	 break;
+
       case 'V' : print_version(myname);
                  exit(0);
 
@@ -331,6 +337,9 @@ int print_msg(int Level, const char *fmt, ...)
 	va_start(ap, fmt);
 	vsnprintf(String, LONG_STRING_SIZE, fmt, ap);
 	va_end(ap);
+
+  	if (Level == PRT_ERR)
+    	  return(1);
 
 	if (Level & PRT_ERR)
 		fprintf(stderr, "%s", String);

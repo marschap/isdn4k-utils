@@ -1,4 +1,4 @@
-/* $Id: isdnrep.c,v 1.70 1999/07/12 11:37:34 calle Exp $
+/* $Id: isdnrep.c,v 1.71 1999/07/18 08:40:17 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -24,6 +24,9 @@
  *
  *
  * $Log: isdnrep.c,v $
+ * Revision 1.71  1999/07/18 08:40:17  akool
+ * fix from Michael
+ *
  * Revision 1.70  1999/07/12 11:37:34  calle
  * Bugfix: isdnrep defined print_msg as function pointer, the object files
  *         in tools directory, declare it as external function.
@@ -922,7 +925,8 @@ int read_logfile(char *myname)
 
   /* FIXME: */
   initHoliday(holifile, NULL);
-  initRate("/etc/isdn/rate.conf", "/usr/lib/isdn/rate-de.dat", "/usr/lib/isdn/zone-de-%s.gdbm", NULL);
+  initCountry(countryfile, NULL);
+  initRate(rateconf, ratefile, zonefile, NULL);
   currency = strdup("DM");
   vbn = strdup("010");
   interns0 = 3;
@@ -1852,6 +1856,113 @@ static int print_line(int status, one_call *cur_call, int computed, char *overla
 
 /*****************************************************************************/
 
+static void numsplit(char *num)
+{
+  register int   l1, l3, zone;
+  auto	   int	 l2;
+  register char *p;
+  auto	   char *s;
+  char     country[BUFSIZ], area[BUFSIZ], msn[BUFSIZ];
+
+
+  if (!*num)
+    return;
+
+  if ((l1 = getCountrycode(num, &s)) != UNKNOWN) {
+    Strncpy(country, num, l1 + 1);
+
+    if (strcmp(mycountry, country))
+      print_msg(PRT_NORMAL, "%s, ", s);
+
+    if ((p = get_areacode(num, &l2, C_NO_WARN | C_NO_EXPAND | C_NO_ERROR)) && (l2 > 0)) {
+      Strncpy(area, num + l1, l2 + 1 - l1);
+
+      print_msg(PRT_NORMAL, "%s", p);
+
+      strcpy(msn, num + l2);
+
+    } /* if */
+#if 0
+    p = country;
+
+    while (*p && !isdigit(*p))
+      p++;
+
+    l3 = getAreacode(atoi(p), num + l1, &s);
+
+    if (1 /* l3 != UNKNOWN */) {
+      print_msg(PRT_NORMAL, "getAreacode(%d, %s, %s)=%d", atoi(p), num + l1, s, l3);
+      if (l3 != UNKNOWN)
+        free(s);
+      zone = getZone(DTAG, myarea, num + l1);
+      print_msg(PRT_NORMAL, "getZone(%d,%s,%s)=%d", DTAG, myarea, num + l1, zone);
+
+      switch (zone) {
+         case 1 : print_msg(PRT_NORMAL, "Ortszone\n");     break;
+         case 2 : print_msg(PRT_NORMAL, "Cityzone\n");     break;
+         case 3 : print_msg(PRT_NORMAL, "Regionalzone\n"); break;
+         case 4 : print_msg(PRT_NORMAL, "Fernzone\n");    break;
+        default : print_msg(PRT_NORMAL, "*** BUG ***\n");  break;
+      } /* switch */
+    } /* if */
+#endif
+  }
+#if 0
+  else {
+    l3 = getAreacode(49, num, &s);
+
+    if (l3 != UNKNOWN) {
+      print_msg(PRT_NORMAL, "getAreacode(%d, %s, %s)=%d\n", atoi(p), num + l1, s, l3);
+      free(s);
+
+      zone = getZone(DTAG, mynum, num);
+      print_msg(PRT_NORMAL, "getZone=%d\n", zone);
+    } /* if */
+  } /* else */
+#endif
+} /* numsplit */
+
+
+static void bprint(one_call *call)
+{
+  print_msg(PRT_NORMAL, "%s %s %-16s  ",
+    get_time_value(0,NULL,GET_TIME),
+    double2clock(call->duration),
+    call->num[CALLED]);
+
+  if (call->duration) {
+    print_msg(PRT_NORMAL, "%s %-15s",
+      print_currency(call->pay, 0),
+      getProvider(call->provider));
+    numsplit(call->num[CALLED]);
+    print_msg(PRT_NORMAL, "\n");
+  }
+  else
+    print_msg(PRT_NORMAL, "%*s** %s\n", 30, "", qmsg(TYPE_CAUSE, VERSION_EDSS1, call->cause));
+
+/*
+  int    eh;
+  int    cause;
+  time_t t;
+  int    dir;
+  double duration;
+  char   num[2][NUMSIZE];
+  char   who[2][NUMSIZE];
+  long	 ibytes;
+  long	 obytes;
+  char   version[10];
+  int	 si;
+  int	 si1;
+  double currency_factor;
+  char	 currency[32];
+  double pay;
+  int	 provider;
+  int	 zone;
+*/
+} /* bprint */
+
+/*****************************************************************************/
+
 static int append_string(char **string, prt_fmt *fmt_ptr, char* value)
 {
 	char  tmpstr[BUFSIZ*3];
@@ -2321,7 +2432,10 @@ static int print_entries(one_call *cur_call, double unit, int *nx, char *myname)
 
       	 	      		} /* if */
 
-	print_line(F_BODY_LINE,cur_call,computed,NULL);
+  if (bill)
+    bprint(cur_call);
+  else
+    print_line(F_BODY_LINE,cur_call,computed,NULL);
 
   return(0);
 } /* print_entries */
@@ -2336,7 +2450,11 @@ static int print_header(int lday)
 
         if (lday == UNKNOWN) {
 		time(&now);
-		print_line2(F_1ST_LINE,"I S D N  Connection Report  -  %s", ctime(&now));
+
+                if (bill)
+                  print_line2(F_1ST_LINE, "Ihre Verbindungen im einzelnen  -  %s", ctime(&now));
+                else
+		  print_line2(F_1ST_LINE,"I S D N  Connection Report  -  %s", ctime(&now));
 	}
 	else
 	{
@@ -2496,7 +2614,7 @@ static int set_alias(one_call *cur_call, int *nx, char *myname)
 
 			/* In der naechsten Schleife werden die unbekannten Nummern
 			   registriert */
-			if (!hit) {
+			if (!hit && seeunknowns) {
 				for (i = 0; i < unknowns; i++)
 					if (!strcmp(unknown[i].num, cur_call->num[n])) {
 					hit++;
@@ -3033,6 +3151,7 @@ static int print_sum_calls(sum_calls *s, int computed)
   static char String[256];
   one_call *tmp_call;
   int RetCode;
+
 
 	if ((tmp_call = (one_call*) calloc(1,sizeof(one_call))) == NULL)
 	{

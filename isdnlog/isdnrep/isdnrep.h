@@ -1,4 +1,4 @@
-/* $Id: isdnrep.h,v 1.15 1999/07/12 11:37:37 calle Exp $
+/* $Id: isdnrep.h,v 1.16 1999/07/18 08:40:37 akool Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnrep.h,v $
+ * Revision 1.16  1999/07/18 08:40:37  akool
+ * fix from Michael
+ *
  * Revision 1.15  1999/07/12 11:37:37  calle
  * Bugfix: isdnrep defined print_msg as function pointer, the object files
  *         in tools directory, declare it as external function.
@@ -143,6 +146,7 @@ _EXTERN int     print_msg(int Level, const char *, ...);
 _EXTERN int     incomingonly    _SET_0;
 _EXTERN int     outgoingonly    _SET_0;
 _EXTERN int     verbose         _SET_0;
+_EXTERN int	bill		_SET_0;
 _EXTERN int     timearea        _SET_0;
 _EXTERN int     phonenumberonly _SET_0;
 _EXTERN int     compute         _SET_0;
