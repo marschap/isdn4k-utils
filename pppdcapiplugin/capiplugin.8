@@ -1,5 +1,5 @@
 .\" manual page [] for capiplugin 2.3
-.\" $Id: capiplugin.8,v 1.11 2004/07/27 18:06:54 armin Exp $
+.\" $Id: capiplugin.8,v 1.12 2004/10/06 15:29:20 calle Exp $
 .\" SH section heading
 .\" SS subsection heading
 .\" LP paragraph
@@ -282,6 +282,11 @@ CAPI 2.0 controller number, default is 1.
 For point-to-point, specify \fI<controller number>\fR,\fI<ddi>\fR,\fI<length of internal numbers\>
 
 .TP
+.B controller[1-3] \fI<controller specification>
+Like option \fIcontroller\fR.
+Used to specify more than one controller
+
+.TP
 .B coso caller
 No callback is done, the costs are assigned to the caller.
 
@@ -311,9 +316,21 @@ List of phone numbers to monitor for calls, separated by commas.
 If this option is not set, the value of option \fImsn\fR is used.
 
 .TP
+.B inmsn[1-3] \fI<msn>
+List of phone numbers to monitor for calls on controller specified
+by option \fIcontroller[1-3]\fR, separated by commas.
+If this option is not set, the value of option \fImsn[1-3]\fR is used.
+
+.TP
 .B msn \fI<msn>
 Phone number used to make outgoing calls. Also used for incoming calls
 if option \fIinmsn\fR is not set.
+
+.TP
+.B msn[1-3] \fI<msn>
+Phone number used to make outgoing calls on controller specified
+by option \fIcontroller[1-3]\fR. Also used for incoming calls
+if option \fIinmsn[1-3]\fR is not set.
 
 .TP
 .B number \fI<phone numbers>
@@ -325,6 +342,11 @@ See option \fIdialmax\fR.
 .TP
 .B numberprefix \fI<prefix>
 phone number to dial to access an outside line. For example, \fInumberprefix 0\fR.
+
+.TP
+.B numberprefix[1-3] \fI<prefix>
+phone number to dial to access an outside line for controller
+specified by option \fIcontroller[1-3]\fR. For example, \fInumberprefix1 0\fR.
 
 .TP
 .B protocol \fIhdlc\fR | \fIx75\fR | \fIv42bis\fR | \fImodem\fR | \fIanalogmodem\fR | \fIv110async\fR | \fIv120async\fR
