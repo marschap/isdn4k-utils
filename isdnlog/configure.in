@@ -48,6 +48,7 @@ CHARGEFILE=charge.dat
 RELOADCMD=reload
 STOPCMD=stop
 REBOOTCMD=/sbin/reboot
+CONFIG_ISDNLOG_POSTGRESDIR=""
 
 fi
 
