@@ -1,4 +1,4 @@
-/* $Id: tools.c,v 1.50 2001/01/14 12:13:50 akool Exp $
+/* $Id: tools.c,v 1.51 2001/12/30 17:17:41 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -19,6 +19,20 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools.c,v $
+ * Revision 1.51  2001/12/30 17:17:41  akool
+ * isdnlog-4.55:
+ *   Tatahhh: isdnlog speaks Euro :-)
+ *
+ * 	Many thanks to Bernhard Schmidt (berni@birkenwald.de)!
+ *
+ * 	** At least, you have to install "/usr/lib/isdn/rate-de.dat"
+ *   ** and modify your "/etc/isdn/isdn.conf" or "/etc/isdn/callerid.conf"
+ *   ** to read:
+ *   **   [ISDNLOG]
+ * 	**	   CURRENCY = 0.062,EUR
+ *
+ * I wish all of you a happy new year!
+ *
  * Revision 1.50  2001/01/14 12:13:50  akool
  * isdnlog-4.49
  *  - added more Euracom decodings
@@ -1302,7 +1316,7 @@ go:   	         if (!ndigit)
 int print_version(char *myname)
 {
 	_print_msg("%s Version %s\n", myname, VERSION);
-	_print_msg("Copyright (C) 1995 .. 2000 by Andreas Kool (akool@isdn4linux.de)\n\n");
+	_print_msg("Copyright (C) 1995 .. 2002 by Andreas Kool (akool@isdn4linux.de)\n\n");
 	_print_msg("The isdnlog project is the work of many people;\n");
 	_print_msg("for at least a partial list see CREDITS.\n");
 	_print_msg("%s comes with ABSOLUTELY NO WARRANTY; for details see COPYING.\n", myname);

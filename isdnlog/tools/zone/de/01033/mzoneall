@@ -77,7 +77,7 @@ while(<IN>) {
 }
 close(IN);
 close(OZ);
-print "\Sorting...\n";
+print "\nSorting...\n";
 system("export TMPDIR=.;sort <$outz.temp|uniq>$outz");
 unlink("$outz.temp");
 

@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.197 2001/11/22 15:09:01 akool Exp $
+## $Id: Makefile.in,v 1.198 2001/12/30 17:17:40 akool Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,20 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.198  2001/12/30 17:17:40  akool
+## isdnlog-4.55:
+##   Tatahhh: isdnlog speaks Euro :-)
+##
+## 	Many thanks to Bernhard Schmidt (berni@birkenwald.de)!
+##
+## 	** At least, you have to install "/usr/lib/isdn/rate-de.dat"
+##   ** and modify your "/etc/isdn/isdn.conf" or "/etc/isdn/callerid.conf"
+##   ** to read:
+##   **   [ISDNLOG]
+## 	**	   CURRENCY = 0.062,EUR
+##
+## I wish all of you a happy new year!
+##
 ## Revision 1.197  2001/11/22 15:09:01  akool
 ## isdnlog-4.54
 ##   added new prefix 01505 Quam (new german cellphone company)
@@ -1467,7 +1481,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 4.54
+VERSION     = 4.55
 
 MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 \
 	      isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 \
