@@ -36,7 +36,7 @@
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-char auth_rcsid[] = "$Id: auth.c,v 1.10 1998/03/22 18:52:28 hipp Exp $";
+char auth_rcsid[] = "$Id: auth.c,v 1.11 1998/03/25 13:13:33 hipp Exp $";
 
 #include <stdio.h>
 #include <stddef.h>
@@ -163,8 +163,13 @@ void link_terminated(int linkunit)
  */
 void link_down(int unit)
 {
-	if(link_lastlink(unit))
-	{
+	if(lns[unit].ccp_l_unit >= 0) {
+		(*ccp_link_protent.lowerdown)(lns[unit].ccp_l_unit);
+		(*ccp_link_protent.close)(lns[unit].ccp_l_unit,"link went down");
+		ccp_freeunit(lns[unit].ccp_l_unit);
+		lns[unit].ccp_l_unit = -1;
+	}
+	if(link_lastlink(unit)) {
 		if(lns[unit].ccp_unit >= 0) {
 			(*ccp_protent.lowerdown)(lns[unit].ccp_unit);
 			(*ccp_protent.close)(lns[unit].ccp_unit,"link went down");
@@ -402,13 +407,26 @@ static void network_phase(int linkunit)
 				(*ipxcp_protent.lowerup)(lns[linkunit].ipxcp_unit);
 				(*ipxcp_protent.open)(lns[linkunit].ipxcp_unit);
 		}
+		if(ccp_link_protent.enabled_flag) {
+			syslog(LOG_NOTICE,"linkCCP enabled! Trying CCP.\n");
+			lns[linkunit].ccp_unit = ccp_getunit(linkunit,PPP_LINK_CCP);
+			(*ccp_link_protent.lowerup)(lns[linkunit].ccp_unit);
+			(*ccp_link_protent.open)(lns[linkunit].ccp_unit);
+		}
 		if(ccp_protent.enabled_flag) {
-				syslog(LOG_NOTICE,"CCP enabled! Trying CCP.\n");
-				lns[linkunit].ccp_unit = ccp_getunit(linkunit);
-				(*ccp_protent.lowerup)(lns[linkunit].ccp_unit);
-				(*ccp_protent.open)(lns[linkunit].ccp_unit);
+			syslog(LOG_NOTICE,"CCP enabled! Trying CCP.\n");
+			lns[linkunit].ccp_unit = ccp_getunit(linkunit,PPP_CCP);
+			(*ccp_protent.lowerup)(lns[linkunit].ccp_unit);
+			(*ccp_protent.open)(lns[linkunit].ccp_unit);
 		}
 	lns[linkunit].phase = PHASE_NETWORK;
+  }
+
+  if(ccp_link_protent.enabled_flag) {
+    syslog(LOG_NOTICE,"linkCCP enabled! Trying CCP.\n");
+    lns[linkunit].ccp_l_unit = ccp_getunit(linkunit,PPP_LINK_CCP);
+    (*ccp_link_protent.lowerup)(lns[linkunit].ccp_l_unit);
+    (*ccp_link_protent.open)(lns[linkunit].ccp_l_unit);
   }
 }
 

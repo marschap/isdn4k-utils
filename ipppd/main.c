@@ -25,7 +25,7 @@
  * PATCHLEVEL 9
  */
 
-char main_rcsid[] = "$Id: main.c,v 1.11 1998/03/22 18:52:32 hipp Exp $";
+char main_rcsid[] = "$Id: main.c,v 1.12 1998/03/25 13:13:38 hipp Exp $";
 
 #include <stdio.h>
 #include <stdarg.h>
@@ -96,14 +96,14 @@ char *no_ppp_msg = "Sorry - this system lacks PPP kernel support.\n"
 	"Check whether you configured at least the ippp0 device!\n";
 
 /* prototypes */
-static void hup __P((int));
-static void term __P((int));
-static void chld __P((int));
-static void toggle_debug __P((int));
-static void open_ccp __P((int));
-static void bad_signal __P((int));
-static void get_input __P((int));
-static void connect_time_expired __P((caddr_t));
+static void hup(int);
+static void term(int);
+static void chld(int);
+static void toggle_debug(int);
+static void reload_param(int);
+static void bad_signal(int);
+static void get_input(int);
+static void connect_time_expired(caddr_t);
 static int init_unit(int);
 static int exit_unit(int);
 
@@ -131,6 +131,7 @@ struct protent *protocols[] = {
     &cbcp_protent,
     &ipcp_protent,
     &ccp_protent,
+    &ccp_link_protent,
     &ipxcp_protent,
     NULL
 };
@@ -170,14 +171,11 @@ void main(int argc,char **argv)
 		lns[i].bundle_next = &lns[i];
 		lns[i].ifname[0] = 0;
 		lns[i].ifunit = -1;
-#if 0
-		lns[i].open_ccp_flag = 0;
-#endif
 		lns[i].phase = PHASE_WAIT;
 		lns[i].fd = -1;
 		lns[i].logged_in = 0;
 		lns[i].lcp_unit = lns[i].ipcp_unit = lns[i].ccp_unit = -1;
-		lns[i].cbcp_unit = -1;
+		lns[i].cbcp_unit = lns[i].ccp_l_unit = -1;
 		lns[i].ipxcp_unit = -1;
 		lns[i].unit = i;
 		lns[i].chap_unit = lns[i].upap_unit = -1;
@@ -326,7 +324,7 @@ void main(int argc,char **argv)
     SIGNAL(SIGCHLD, chld);
 
     SIGNAL(SIGUSR1, toggle_debug);	/* Toggle debug flag */
-    SIGNAL(SIGUSR2, open_ccp);		/* Reopen CCP */
+    SIGNAL(SIGUSR2, reload_param);		/* reload parameters */
 
     /*
      * Install a handler for other signals which would otherwise
@@ -412,15 +410,6 @@ void main(int argc,char **argv)
               }
               get_input(i);
             }
-#if 0
-            if (lns[i].open_ccp_flag) { /* ugly: set by SIGUSR2 signal for all units */
-              if (lns[i].phase == PHASE_NETWORK) {
-                ccp_fsm[lns[i].ccp_unit].flags = OPT_RESTART; /* clears OPT_SILENT */
-                (*ccp_protent.open)(lns[i].ccp_unit);
-              }
-	      lns[i].open_ccp_flag = 0;
-	    }
-#endif
           }
 	  reap_kids();	/* Don't leave dead kids lying around */
           for(i=0;i<numdev;i++)
@@ -885,12 +874,9 @@ static void toggle_debug(int sig)
 
 
 /*
- * open_ccp - Catch SIGUSR2 signal.
- *
- * Try to (re)negotiate compression on all links (ugly).
+ * reload param - Catch SIGUSR2 signal.
  */
-/*ARGSUSED*/
-static void open_ccp(int sig)
+static void reload_param(int sig)
 {
 	reload_config();
 }

@@ -25,7 +25,7 @@
  * OR MODIFICATIONS.
  */
 
-char ccp_rcsid[] = "$Id: ccp.c,v 1.5 1998/03/22 18:52:29 hipp Exp $";
+char ccp_rcsid[] = "$Id: ccp.c,v 1.6 1998/03/25 13:13:35 hipp Exp $";
 
 #include <string.h>
 #include <syslog.h>
@@ -51,11 +51,32 @@ static void ccp_close __P((int unit, char *));
 static void ccp_lowerup __P((int unit));
 static void ccp_lowerdown __P((int));
 static void ccp_input __P((int unit, u_char *pkt, int len));
+static void ccp_l_input __P((int unit, u_char *pkt, int len));
 static void ccp_protrej __P((int unit));
+static void ccp_l_protrej __P((int unit));
 static int  ccp_printpkt __P((u_char *pkt, int len,
                   void (*printer) __P((void *, char *, ...)),
                   void *arg));
 static void ccp_datainput __P((int unit, u_char *pkt, int len));
+static void ccp_l_datainput __P((int unit, u_char *pkt, int len));
+
+struct protent ccp_link_protent = {
+    PPP_LINK_CCP,
+    ccp_init,
+    ccp_l_input,
+    ccp_l_protrej,
+    ccp_lowerup,
+    ccp_lowerdown,
+    ccp_open,
+    ccp_close,
+    ccp_printpkt,
+    ccp_l_datainput,
+    0,	/* disabled */
+    "linkCCP",
+    NULL,
+    NULL,
+    NULL
+};
 
 struct protent ccp_protent = {
     PPP_CCP,
@@ -74,7 +95,6 @@ struct protent ccp_protent = {
     NULL,
     NULL
 };
-
 
 fsm ccp_fsm[NUM_PPP];
 ccp_options ccp_wantoptions[NUM_PPP];	/* what to request the peer to use */
@@ -140,10 +160,10 @@ static void ccp_init(int unit)
 {
     fsm *f = &ccp_fsm[unit];
 
-	memset(f,0,sizeof(fsm));
+    memset(f,0,sizeof(fsm));
 
     f->unit = -1;
-    f->protocol = PPP_CCP;
+    f->protocol = PPP_CCP; /* we change this for link-CCP */
     f->callbacks = &ccp_callbacks;
     fsm_init(f);
 
@@ -165,20 +185,25 @@ static void ccp_init(int unit)
     ccp_allowoptions[unit].predictor_1 = 1;
 }
 
-int ccp_getunit(int linkunit)
+int ccp_getunit(int linkunit,int protocol)
 {
   int i;
-  for(i=0;i<NUM_PPP;i++)
-    if(!ccp_fsm[i].inuse)
-    {
+
+  if(protocol != PPP_CCP && protocol != PPP_LINK_CCP)
+    return -1;
+
+  for(i=0;i<NUM_PPP;i++) {
+    if(!ccp_fsm[i].inuse) {
       ccp_fsm[i].inuse = 1;
       ccp_fsm[i].state = INITIAL;
       ccp_fsm[i].flags = 0;
       ccp_fsm[i].id = 0;
       ccp_fsm[i].unit = linkunit;
-      syslog(LOG_NOTICE,"CCP: got ccp-unit %d for link %d",i,linkunit);
+      ccp_fsm[i].protocol = protocol;
+      syslog(LOG_NOTICE,"CCP: got ccp-unit %d for link %d (protocol: %#x)",i,linkunit,protocol);
       return i;
     }
+  }
   syslog(LOG_ERR,"No more ccp_units available");
   return -1;
 }
@@ -197,8 +222,8 @@ static void ccp_open(int unit)
 {
     fsm *f = &ccp_fsm[unit];
 
-	if (f->state != OPENED)
-		ccp_flags_set(unit, 1, 0);
+    if (f->state != OPENED)
+      ccp_flags_set(unit, 1, 0);
 
     /*
      * Find out which compressors the kernel supports before
@@ -239,11 +264,10 @@ static void ccp_lowerdown(int unit)
 /*
  * ccp_input - process a received CCP packet.
  */
-static void ccp_input(int linkunit,u_char *p,int len)
+static void ccp_u_input(int unit,u_char *p,int len)
 {
-  int unit = lns[linkunit].ccp_unit;
+  fsm *f = &ccp_fsm[unit];
 
-    fsm *f = &ccp_fsm[unit];
     int oldstate;
 
     /*
@@ -262,11 +286,30 @@ static void ccp_input(int linkunit,u_char *p,int len)
 		ccp_close(unit,"No compression negotiated");
 }
 
+static void ccp_input(int linkunit,u_char *p,int len)
+{
+  int unit = lns[linkunit].ccp_unit;
+  ccp_u_input(unit,p,len);
+}
+
+static void ccp_l_input(int linkunit,u_char *p,int len)
+{
+  int unit = lns[linkunit].ccp_l_unit;
+  ccp_u_input(unit,p,len);
+}
+
 /*
  * Handle a CCP-specific code.
  */
 static int ccp_extcode(fsm *f,int code,int id,u_char *p,int len)
 {
+    int unit;
+
+    if(f->protocol == PPP_CCP)
+       unit = lns[f->unit].ccp_unit;
+    else
+       unit = lns[f->unit].ccp_l_unit;
+
     switch (code) {
     case CCP_RESETREQ:
 	if (f->state != OPENED)
@@ -277,8 +320,8 @@ static int ccp_extcode(fsm *f,int code,int id,u_char *p,int len)
 	break;
 
     case CCP_RESETACK:
-	if (ccp_localstate[lns[f->unit].ccp_unit] & RACK_PENDING && id == f->reqid) {
-	    ccp_localstate[lns[f->unit].ccp_unit] &= ~(RACK_PENDING | RREQ_REPEAT);
+	if (ccp_localstate[unit] & RACK_PENDING && id == f->reqid) {
+	    ccp_localstate[unit] &= ~(RACK_PENDING | RREQ_REPEAT);
 	    UNTIMEOUT(ccp_rack_timeout, (caddr_t) f);
 	}
 	break;
@@ -293,6 +336,13 @@ static int ccp_extcode(fsm *f,int code,int id,u_char *p,int len)
 /*
  * ccp_protrej - peer doesn't talk CCP.
  */
+static void ccp_l_protrej(int linkunit)
+{
+  int unit = lns[linkunit].ccp_l_unit;
+  ccp_flags_set(unit, 0, 0);
+  fsm_lowerdown(&ccp_fsm[unit]);
+}
+
 static void ccp_protrej(int linkunit)
 {
   int unit = lns[linkunit].ccp_unit;
@@ -305,12 +355,19 @@ static void ccp_protrej(int linkunit)
  */
 static void ccp_resetci(fsm *f)
 {
-    ccp_options *go = &ccp_gotoptions[lns[f->unit].ccp_unit];
+    ccp_options *go;
     u_char opt_buf[16];
     unsigned long protos[8] = {0,};
-    int i,j;
+    int i,j,unit;
 
-    ccp_get_compressors(lns[f->unit].ccp_unit,protos);
+    if(f->protocol == PPP_CCP)
+      unit = lns[f->unit].ccp_unit;
+    else
+      unit = lns[f->unit].ccp_l_unit;
+
+    go = &ccp_gotoptions[unit];
+
+    ccp_get_compressors(unit,protos);
     syslog(LOG_NOTICE,"ccp_resetci!\n");
     for(j=0;j<8;j++) 
       for(i=0;i<32;i++) {
@@ -320,9 +377,9 @@ static void ccp_resetci(fsm *f)
       }
 
 	/* copy config */
-    *go = ccp_wantoptions[lns[f->unit].ccp_unit];
+    *go = ccp_wantoptions[unit];
 
-    all_rejected[lns[f->unit].ccp_unit] = 0;
+    all_rejected[unit] = 0;
 
     /*
      * Check whether the kernel knows about the various
@@ -332,7 +389,7 @@ static void ccp_resetci(fsm *f)
 	opt_buf[0] = CI_BSD_COMPRESS;
 	opt_buf[1] = CILEN_BSD_COMPRESS;
 	opt_buf[2] = BSD_MAKE_OPT(BSD_CURRENT_VERSION, BSD_MIN_BITS);
-	if (ccp_test(lns[f->unit].ccp_unit, opt_buf, CILEN_BSD_COMPRESS, 0) <= 0)
+	if (ccp_test(unit, opt_buf, CILEN_BSD_COMPRESS, 0) <= 0)
 	    go->bsd_compress = 0;
     }
     if (go->deflate) {
@@ -340,19 +397,19 @@ static void ccp_resetci(fsm *f)
 	opt_buf[1] = CILEN_DEFLATE;
 	opt_buf[2] = DEFLATE_MAKE_OPT(DEFLATE_MIN_SIZE);
 	opt_buf[3] = DEFLATE_CHK_SEQUENCE;
-	if (ccp_test(lns[f->unit].ccp_unit, opt_buf, CILEN_DEFLATE, 0) <= 0)
+	if (ccp_test(unit, opt_buf, CILEN_DEFLATE, 0) <= 0)
 	    go->deflate = 0;
     }
     if (go->predictor_1) {
 	opt_buf[0] = CI_PREDICTOR_1;
 	opt_buf[1] = CILEN_PREDICTOR_1;
-	if (ccp_test(lns[f->unit].ccp_unit, opt_buf, CILEN_PREDICTOR_1, 0) <= 0)
+	if (ccp_test(unit, opt_buf, CILEN_PREDICTOR_1, 0) <= 0)
 	    go->predictor_1 = 0;
     }
     if (go->predictor_2) {
 	opt_buf[0] = CI_PREDICTOR_2;
 	opt_buf[1] = CILEN_PREDICTOR_2;
-	if (ccp_test(lns[f->unit].ccp_unit, opt_buf, CILEN_PREDICTOR_2, 0) <= 0)
+	if (ccp_test(unit, opt_buf, CILEN_PREDICTOR_2, 0) <= 0)
 	    go->predictor_2 = 0;
     }
 }
@@ -362,7 +419,12 @@ static void ccp_resetci(fsm *f)
  */
 static int ccp_cilen(fsm *f)
 {
-    ccp_options *go = &ccp_gotoptions[lns[f->unit].ccp_unit];
+    ccp_options *go;
+   
+    if(f->protocol == PPP_CCP)
+      go = &ccp_gotoptions[lns[f->unit].ccp_unit];
+    else
+      go = &ccp_gotoptions[lns[f->unit].ccp_l_unit];
 
     return (go->bsd_compress? CILEN_BSD_COMPRESS: 0)
 	+ (go->deflate? CILEN_DEFLATE: 0)
@@ -376,8 +438,16 @@ static int ccp_cilen(fsm *f)
 static void ccp_addci(fsm *f,u_char *p,int *lenp)
 {
     int res;
-    ccp_options *go = &ccp_gotoptions[lns[f->unit].ccp_unit];
+    ccp_options *go; 
     u_char *p0 = p;
+    int unit;
+
+    if(f->protocol == PPP_CCP) 
+      unit = lns[f->unit].ccp_unit;
+    else
+      unit = lns[f->unit].ccp_l_unit;
+
+    go = &ccp_gotoptions[unit];
 
     /*
      * Add the compression types that we can receive, in decreasing
@@ -390,7 +460,7 @@ static void ccp_addci(fsm *f,u_char *p,int *lenp)
 	p[2] = DEFLATE_MAKE_OPT(go->deflate_size);
 	p[3] = DEFLATE_CHK_SEQUENCE;
 	for (;;) {
-	    res = ccp_test(lns[f->unit].ccp_unit, p, CILEN_DEFLATE, 0);
+	    res = ccp_test(unit, p, CILEN_DEFLATE, 0);
 	    if (res > 0) {
 		p += CILEN_DEFLATE;
 		break;
@@ -411,7 +481,7 @@ static void ccp_addci(fsm *f,u_char *p,int *lenp)
 	    p += CILEN_BSD_COMPRESS;	/* not the first option */
 	} else {
 	    for (;;) {
-		res = ccp_test(lns[f->unit].ccp_unit, p, CILEN_BSD_COMPRESS, 0);
+		res = ccp_test(unit, p, CILEN_BSD_COMPRESS, 0);
 		if (res > 0) {
 		    p += CILEN_BSD_COMPRESS;
 		    break;
@@ -429,7 +499,7 @@ static void ccp_addci(fsm *f,u_char *p,int *lenp)
     if (go->predictor_1) {
 	p[0] = CI_PREDICTOR_1;
 	p[1] = CILEN_PREDICTOR_1;
-	if (p == p0 && ccp_test(lns[f->unit].ccp_unit, p, CILEN_PREDICTOR_1, 0) <= 0) {
+	if (p == p0 && ccp_test(unit, p, CILEN_PREDICTOR_1, 0) <= 0) {
 	    go->predictor_1 = 0;
 	} else {
 	    p += CILEN_PREDICTOR_1;
@@ -438,7 +508,7 @@ static void ccp_addci(fsm *f,u_char *p,int *lenp)
     if (go->predictor_2) {
 	p[0] = CI_PREDICTOR_2;
 	p[1] = CILEN_PREDICTOR_2;
-	if (p == p0 && ccp_test(lns[f->unit].ccp_unit, p, CILEN_PREDICTOR_2, 0) <= 0) {
+	if (p == p0 && ccp_test(unit, p, CILEN_PREDICTOR_2, 0) <= 0) {
 	    go->predictor_2 = 0;
 	} else {
 	    p += CILEN_PREDICTOR_2;
@@ -456,8 +526,14 @@ static void ccp_addci(fsm *f,u_char *p,int *lenp)
  */
 static int ccp_ackci(fsm *f,u_char *p,int len)
 {
-    ccp_options *go = &ccp_gotoptions[lns[f->unit].ccp_unit];
+    ccp_options *go;
     u_char *p0 = p;
+
+    if(f->protocol == PPP_CCP)
+      go = &ccp_gotoptions[lns[f->unit].ccp_unit];
+    else
+      go = &ccp_gotoptions[lns[f->unit].ccp_l_unit];
+
     if (go->deflate) {
 	if (len < CILEN_DEFLATE
 	    || p[0] != CI_DEFLATE || p[1] != CILEN_DEFLATE
@@ -512,9 +588,15 @@ static int ccp_ackci(fsm *f,u_char *p,int len)
  */
 static int ccp_nakci(fsm *f,u_char *p,int len)
 {
-    ccp_options *go = &ccp_gotoptions[lns[f->unit].ccp_unit];
+    ccp_options *go;
     ccp_options no;		/* options we've seen already */
     ccp_options try;		/* options to ask for next time */
+
+    if(f->protocol == PPP_CCP)
+      go = &ccp_gotoptions[lns[f->unit].ccp_unit];
+    else
+      go = &ccp_gotoptions[lns[f->unit].ccp_l_unit];
+
 
     memset(&no, 0, sizeof(no));
     try = *go;
@@ -570,8 +652,16 @@ static int ccp_nakci(fsm *f,u_char *p,int len)
  */
 static int ccp_rejci(fsm *f,u_char *p,int len)
 {
-    ccp_options *go = &ccp_gotoptions[lns[f->unit].ccp_unit];
+    ccp_options *go;
     ccp_options try;		/* options to request next time */
+    int unit;
+
+    if(f->protocol == PPP_CCP)
+      unit = lns[f->unit].ccp_unit;
+    else
+      unit = lns[f->unit].ccp_l_unit;
+
+    go = &ccp_gotoptions[unit];
 
     try = *go;
 
@@ -579,7 +669,7 @@ static int ccp_rejci(fsm *f,u_char *p,int len)
      * Cope with empty configure-rejects by ceasing to send
      * configure-requests.
      */
-    if (len == 0 && all_rejected[lns[f->unit].ccp_unit])
+    if (len == 0 && all_rejected[unit])
 	return -1;
 
     if (go->deflate && len >= CILEN_DEFLATE
@@ -631,8 +721,16 @@ static int ccp_reqci(fsm *f,u_char *p,int *lenp,int dont_nak)
     int ret, newret, res;
     u_char *p0, *retp;
     int len, clen, type, nb;
-    ccp_options *ho = &ccp_hisoptions[lns[f->unit].ccp_unit];
-    ccp_options *ao = &ccp_allowoptions[lns[f->unit].ccp_unit];
+    int unit;
+    ccp_options *ho,*ao;
+
+    if(f->protocol == PPP_CCP)
+      unit = lns[f->unit].ccp_unit;
+    else
+      unit = lns[f->unit].ccp_l_unit;
+
+    ho = &ccp_hisoptions[unit];
+    ao = &ccp_allowoptions[unit];
 
     ret = CONFACK;
     retp = p0 = p;
@@ -742,7 +840,7 @@ static int ccp_reqci(fsm *f,u_char *p,int *lenp,int dont_nak)
  		}
  
 		ho->predictor_1 = 1;
-		if (p == p0 && ccp_test(lns[f->unit].ccp_unit, p, CILEN_PREDICTOR_1, 1) <= 0) {
+		if (p == p0 && ccp_test(unit, p, CILEN_PREDICTOR_1, 1) <= 0) {
 		    newret = CONFREJ;
 		}
 		break;
@@ -754,7 +852,7 @@ static int ccp_reqci(fsm *f,u_char *p,int *lenp,int dont_nak)
 		}
 
 		ho->predictor_2 = 1;
-		if (p == p0 && ccp_test(lns[f->unit].ccp_unit, p, CILEN_PREDICTOR_2, 1) <= 0) {
+		if (p == p0 && ccp_test(unit, p, CILEN_PREDICTOR_2, 1) <= 0) {
 		    newret = CONFREJ;
 		}
 		break;
@@ -782,7 +880,7 @@ static int ccp_reqci(fsm *f,u_char *p,int *lenp,int dont_nak)
 
     if (ret != CONFACK) {
 	if (ret == CONFREJ && *lenp == retp - p0)
-	    all_rejected[lns[f->unit].ccp_unit] = 1;
+	    all_rejected[unit] = 1;
 	else
 	    *lenp = retp - p0;
     }
@@ -828,11 +926,20 @@ static char *method_name(ccp_options *opt,ccp_options *opt2)
  */
 static void ccp_up(fsm *f)
 {
-    ccp_options *go = &ccp_gotoptions[lns[f->unit].ccp_unit];
-    ccp_options *ho = &ccp_hisoptions[lns[f->unit].ccp_unit];
-	char method1[64];
+    int unit;
+    ccp_options *go;
+    ccp_options *ho;
+    char method1[64];
+   
+    if(f->protocol == PPP_CCP)
+       unit = lns[f->unit].ccp_unit;
+    else
+       unit = lns[f->unit].ccp_l_unit;
  
-    ccp_flags_set(lns[f->unit].ccp_unit, 1, 1);
+    go = &ccp_gotoptions[unit];
+    ho = &ccp_hisoptions[unit];
+
+    ccp_flags_set(unit, 1, 1);
     if (ANY_COMPRESS(*go)) {
        if (ANY_COMPRESS(*ho)) {
            if (go->method == ho->method) {
@@ -856,10 +963,17 @@ static void ccp_up(fsm *f)
  */
 static void ccp_down(fsm *f)
 {
-    if (ccp_localstate[lns[f->unit].ccp_unit] & RACK_PENDING)
+    int unit;
+
+    if(f->protocol == PPP_CCP)
+       unit = lns[f->unit].ccp_unit;
+    else
+       unit = lns[f->unit].ccp_l_unit;
+
+    if (ccp_localstate[unit] & RACK_PENDING)
 	UNTIMEOUT(ccp_rack_timeout, (caddr_t) f);
-    ccp_localstate[lns[f->unit].ccp_unit] = 0;
-    ccp_flags_set(lns[f->unit].ccp_unit, 1, 0);
+    ccp_localstate[unit] = 0;
+    ccp_flags_set(unit, 1, 0);
 }
 
 /*
@@ -965,23 +1079,11 @@ static int ccp_printpkt(u_char *p,int plen,void (*printer)(void*,char*,...),void
 }
 
 /*
- * We have received a packet that the decompressor failed to
- * decompress.  Here we would expect to issue a reset-request, but
- * Motorola has a patent on resetting the compressor as a result of
- * detecting an error in the decompressed data after decompression.
- * (See US patent 5,130,993; international patent publication number
- * WO 91/10289; Australian patent 73296/91.)
- *
- * So we ask the kernel whether the error was detected after
- * decompression; if it was, we take CCP down, thus disabling
- * compression :-(, otherwise we issue the reset-request.
  */
-static void ccp_datainput(int linkunit,u_char *pkt,int len)
+static void ccp_u_datainput(int unit,u_char *pkt,int len)
 {
-  int unit = lns[linkunit].ccp_unit;
-    fsm *f;
+    fsm *f = &ccp_fsm[unit];
 
-    f = &ccp_fsm[unit];
     if (f->state == OPENED) {
 	if (ccp_fatal_error(unit)) {
 	    /*
@@ -1005,18 +1107,36 @@ static void ccp_datainput(int linkunit,u_char *pkt,int len)
     }
 }
 
+static void ccp_l_datainput(int linkunit,u_char *pkt,int len)
+{
+  int unit = lns[linkunit].ccp_l_unit;
+  ccp_u_datainput(unit,pkt,len);
+}
+
+static void ccp_datainput(int linkunit,u_char *pkt,int len)
+{
+  int unit = lns[linkunit].ccp_unit;
+  ccp_u_datainput(unit,pkt,len);
+}
+
 /*
  * Timeout waiting for reset-ack.
  */
 static void ccp_rack_timeout(caddr_t arg)
 {
     fsm *f = (fsm *) arg;
+    int unit;
 
-    if (f->state == OPENED && ccp_localstate[lns[f->unit].ccp_unit] & RREQ_REPEAT) {
+    if(f->protocol == PPP_CCP)
+       unit = lns[f->unit].ccp_unit;
+    else
+       unit = lns[f->unit].ccp_l_unit;
+
+    if (f->state == OPENED && ccp_localstate[unit] & RREQ_REPEAT) {
 	fsm_sdata(f, CCP_RESETREQ, f->reqid, NULL, 0);
 	TIMEOUT(ccp_rack_timeout, (caddr_t) f, RACKTIMEOUT);
-	ccp_localstate[lns[f->unit].ccp_unit] &= ~RREQ_REPEAT;
+	ccp_localstate[unit] &= ~RREQ_REPEAT;
     } else
-	ccp_localstate[lns[f->unit].ccp_unit] &= ~RACK_PENDING;
+	ccp_localstate[unit] &= ~RACK_PENDING;
 }
 

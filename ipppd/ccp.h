@@ -24,7 +24,7 @@
  * OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS,
  * OR MODIFICATIONS.
  *
- * $Id: ccp.h,v 1.2 1998/03/22 18:52:30 hipp Exp $
+ * $Id: ccp.h,v 1.3 1998/03/25 13:13:36 hipp Exp $
  */
 
 typedef struct ccp_options {
@@ -45,4 +45,5 @@ extern ccp_options ccp_allowoptions[];
 extern ccp_options ccp_hisoptions[];
 
 extern struct protent ccp_protent;
+extern struct protent ccp_link_protent;
 

@@ -16,7 +16,7 @@
  * IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Id: ipppd.h,v 1.11 1998/03/22 18:52:31 hipp Exp $
+ * $Id: ipppd.h,v 1.12 1998/03/25 13:13:37 hipp Exp $
  */
 
 /*
@@ -53,7 +53,7 @@ struct isdn_ppp_comp_data {
         int num;
         unsigned char options[ISDN_PPP_COMP_MAX_OPTIONS];
         int optlen;
-        int xmit;
+        int flags;
 };
 #endif
 
@@ -79,6 +79,7 @@ struct link_struct {
   int lcp_unit;
   int ipcp_unit;
   int ccp_unit;
+  int ccp_l_unit;
   int chap_unit;
   int upap_unit;
   int cbcp_unit;
@@ -230,7 +231,7 @@ u_int32_t GetMask (u_int32_t);          /* get netmask for address */
 void die (int);
 void check_access (FILE *, char *);
 
-int ccp_getunit(int);
+int ccp_getunit(int,int);
 int ipcp_getunit(int);
 int lcp_getunit(int);
 void ccp_freeunit(int);
