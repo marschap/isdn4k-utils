@@ -28,8 +28,8 @@ COUNTRYFILE = /usr/lib/isdn/country.dat
 RATECONF= /etc/isdn/rate.conf
 RATEFILE= /usr/lib/isdn/rate-at.dat
 HOLIDAYS= /usr/lib/isdn/holiday-at.dat
-ZONEFILE= /usr/lib/isdn/zone-at-%s.gdbm
-DESTFILE= /usr/lib/isdn/dest.gdbm
+ZONEFILE= /usr/lib/isdn/zone-at-%s.cdb
+DESTFILE= /usr/lib/isdn/dest.cdb
 
 # providerselect
 VBN = 10

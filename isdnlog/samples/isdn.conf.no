@@ -33,5 +33,5 @@ LOGFILE	= /var/log/isdn.log
 HOLIDAYS = /usr/lib/isdn/holiday-no.dat
 RATEFILE = /usr/lib/isdn/rate-no.dat
 COUNTRYFILE=/usr/lib/isdn/country.dat
-DESTFILE= /usr/lib/isdn/dest.gdbm
+DESTFILE= /usr/lib/isdn/dest.cdb
 
