@@ -1,0 +1,9 @@
+/* configure sets these don't change */
+
+#undef HAVE_LIBGDBM
+#undef HAVE_LIBDBM
+#undef HAVE_LIBDB
+
+#undef SIZEOF_CHAR
+#undef SIZEOF_SHORT
+#undef SIZEOF_LONG

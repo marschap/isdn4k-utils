@@ -1,0 +1,81 @@
+#
+# Makefile for mkzonedb (borrowed from iMON)
+#
+# (C) 1999 l.toetsch <lt@toetsch.at>
+#
+SHELL			= /bin/sh
+CFLAGS			= -Wall -O2
+INCLUDES		= 
+LDFLAGS			= @DBMLIB@
+DBEXT			= @DBEXT@
+RDBEXT			= @RDBEXT@
+PROGRAM			= mkzonedb
+MODULES			= $(PROGRAM).o
+MANPAGE			= $(PROGRAM).8
+HEADERS			= config.h common.h
+MANDIR			= @CONFIG_MANDIR@
+SBINDIR			= @CONFIG_SBINDIR@
+MAN8DIR			= $(MANDIR)/man8
+INSTALL			= @INSTALL@
+INSTALL_PROGRAM	= $(INSTALL) -o 0 -g 0 -m 0750
+INSTALL_MAN		= $(INSTALL) -o 0 -g 0 -m 0644
+prefix			= @prefix@
+exec_prefix		= @exec_prefix@
+CC				= @CC@
+
+.SUFFIXES:
+.SUFFIXES: .c .o
+
+%.o: %.c Makefile
+	$(CC) $(CFLAGS) $(INCLUDES) -c -o $@ $<
+
+all: $(PROGRAM) zone
+
+config:
+	@./configure
+
+config.h: config.h.in
+	@./configure
+
+Makefile: Makefile.in config.status
+	./config.status
+
+config.status: configure
+	./config.status --recheck
+
+$(MODULES): $(HEADERS)
+
+$(PROGRAM):	$(MODULES)
+	$(CC) $(CFLAGS) $? $(LDFLAGS) -o $@
+
+zone: ../zone.c $(HEADERS) Makefile
+	$(CC) -DSTANDALONE -g ../zone.c $(LDFLAGS) -o $@
+
+install-man: $(PROGRAM).man
+	mkdir -p $(DESTDIR)$(MAN8DIR)
+	$(INSTALL_MAN) $< $(DESTDIR)$(MAN8DIR)/$(MANPAGE)
+
+install: $(PROGRAM) install-man
+	$(INSTALL_PROGRAM) $(PROGRAM) $(DESTDIR)$(SBINDIR)/$(PROGRAM)
+
+install-strip: $(PROGRAM)
+	$(INSTALL_PROGRAM) -s $(PROGRAM) $(DESTDIR)$(SBINDIR)/$(PROGRAM)
+
+uninstall:
+	rm -f $(DESTDIR)$(SBINDIR)/$(PROGRAM) $(DESTDIR)$(MAN8DIR)/$(MANPAGE)
+
+clean:
+	rm -f *.o *~ $(PROGRAM) *.db *.gdbm zone
+
+distclean: clean
+	rm -f config.h config.status config.cache config.log *.man Makefile
+
+test:
+	./$(PROGRAM) -d uta$(DBEXT) -r at/uta/zred.uta -c at/code -v
+	./zone -d uta$(RDBEXT)  -z at/uta/zoneall.uta -v
+	
+zonefiles:	
+	./$(PROGRAM) -d ../../zone-at-1012$(DBEXT) -r at/1012/zred-at-1012 -c at/code -v -l4
+	./$(PROGRAM) -d ../../zone-at-uta$(DBEXT) -r at/uta/zred.uta -c at/code -v
+	./$(PROGRAM) -d ../../zone-at-pta$(DBEXT) -r at/pta/zred.pta -c at/code -v
+	./$(PROGRAM) -d ../../zone-de-dtag$(DBEXT) -r de/01033/zred.dtag -c de/code -v

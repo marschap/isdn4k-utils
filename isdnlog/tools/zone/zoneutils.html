@@ -15,7 +15,7 @@
 <LI>zone.c, <A HREF="#zone">zone</A> - i4l-zonefuncs / Standalone zonefile verify</LI>
 </UL>
 <H2><A NAME="redzone">redzone</A></H2>
-<P><CITE>redzone</CITE> reduces a <A HREF="#zonef">Zonefile</A> by inserting wildcards. The reduction for AT is 99,6%,
+<P><CITE>redzone</CITE> reduces a <A HREF="#zonef">Zonefile</A> by inserting wildcards. The reduction for AT is 99,5%,
 for DE 99,3%. </P>
 <H3>Synopsis</H3>
 <PRE>redzone -z<CITE>Zonefile</CITE> -r<CITE>Reducedfile</CITE> [ -v<CITE>verboselevel</CITE> ] [ -n ] [ -llen ] [ -k ] [ -o ]</PRE>
@@ -56,19 +56,22 @@ compzone { -z<CITE>Zonefile</CITE> | -r<CITE>Reducedfile</CITE> } -c<CITE>Codefi
 <PRE>./compzone -zzoneall -rzoneall.red -a -m</PRE>
 
 <P>Verifys the reduced zonefile against the full file and stops on first error.</P>
-<H2>mkzonedb</H2>
-<P>Makes a zonedatabase (gdbm - GNU Database) from a reduced file.</P>
+<H2><A NAME="mkzonedb">mkzonedb</A></H2>
+<P>Makes a zonedatabase (gdbm - GNU Database or db - Berkeley DB) from a reduced file.</P>
 <H3>Synopsis</H3>
-<PRE>./mkzonedb -d<CITE>zone-CC-PP.gdbm</CITE> -r<CITE>ReducedFile</CITE> [ -f ] [ -v<CITE>Verboselevel</CITE> ]</PRE>
+<PRE>./mkzonedb -d <CITE>zone-CC-PP.gdbm</CITE> -r <CITE>ReducedFile</CITE> -c Codefile [ -v<CITE>Verboselevel</CITE> ] [ -o Localzone ] [ -l Len ]</PRE>
 
 <H3>Options</H3>
-<PRE>-r<CITE>ReducedFile</CITE> ... reduced zone file from <STRONG>redzone</STRONG>
--d<CITE>zone-CC-PP.gdbm</CITE> ...CC = Iso-Countrycode, PP = Providernumber<BR>-f force a new file, don't update an existing
--vVerboselevel ... default = 1</PRE>
+<PRE>-r <CITE>ReducedFile</CITE> ... reduced zone file from <STRONG>redzone</STRONG>
+-d <CITE>zone-CC-PP.gdbm</CITE> ...CC = Iso-Countrycode, PP = Providername/number<BR>-c <CITE>Codefile</CITE><BR>-v Verboselevel ... default = 1<BR>-o Localzone ... default = 1<BR>-l Len ... default = maxlen of data</PRE>
 
+<P>For examples look at the <TT>Makefile</TT> in target <TT>zonefiles</TT>.</P>
 <H2><A NAME="zone">zone</A></H2>
 <H3>Standalone-Synopsis</H3>
 <PRE>zone -d <CITE>Datafile</CITE> [ -v ] [ -V ] { -z <CITE>zonefile</CITE> | num1 num2 }</PRE>
+
+<P>or</P>
+<PRE>zone -d <CITE>Datafile</CITE> [ -v ] [ -V ] num1 </PRE>
 
 <H3>Options</H3>
 <PRE>-v ... verbose
@@ -78,7 +81,8 @@ compzone { -z<CITE>Zonefile</CITE> | -r<CITE>Reducedfile</CITE> } -c<CITE>Codefi
 <PRE>cc -DSTANDALONE -o zone zone.c -lgdbm</PRE>
 
 <H3>I4L-Interface:</H3>
-<PRE>int initZone(int provider, char *datapath, char **msg)<BR>	returns -1 on error, 0 if ok<BR>void exitZone(int provider)<BR>int getZone(int provider, char *from, char *to)<BR>	returns -2 on error, -1 on not found, zone if ok</PRE>
+<PRE>int initZone(int provider, char *datapath, char **msg)<BR>	returns -1 on error, 0 if ok<BR>void exitZone(int provider)<BR>int getZone(int provider, char *from, char *to)<BR>	returns -2 on error, UNKNOWN on not found, zone if ok<BR>int getAreacode(int provider, char *num, char **text)<BR>	returns UNKNOWN if not found, or len of areacode<BR>	text is a malloced string containing the name of the area
+	the caller should free this text.</PRE>
 
 <H2>Glossary</H2>
 <H4><A NAME="zonef">Zonefile</A></H4>

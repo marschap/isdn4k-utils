@@ -1,4 +1,4 @@
-/* $Id: zone.c,v 1.3 1999/06/15 20:05:25 akool Exp $
+/* $Id: zone.c,v 1.4 1999/06/18 12:41:57 akool Exp $
  *
  * Zonenberechnung
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: zone.c,v $
+ * Revision 1.4  1999/06/18 12:41:57  akool
+ * zone V1.0
+ *
  * Revision 1.3  1999/06/15 20:05:25  akool
  * isdnlog Version 3.33
  *   - big step in using the new zone files
@@ -38,7 +41,11 @@
  *   deinitialize
  *
  * int getZone(int provider, char *from, char *to)
- *	returns zone for provider, -1 on not found, -2 on error
+ *	returns zone for provider, UNKNOWN on not found, -2 on error
+ *
+ * int getAreacode(int provider, char *num, char **text)
+ *  returns len of areacode in num and in text a malloced string
+ *  UNKNOWN on not found
  *
  */
 
@@ -64,11 +71,14 @@ extern const char *basename (const char *name);
 #include "isdnlog.h"
 #include "tools.h"
 #endif
-#include <gdbm.h>
+
 #include "zone.h"
+/* this config (from config.in) could go in global policy */
+#include "zone/config.h"
+#include "zone/common.h"
 
 struct sth {
-	GDBM_FILE fh;
+	_DB fh;
 	char *path;
 	int provider;
 	int used;
@@ -76,20 +86,14 @@ struct sth {
 	int *table;
 	char pack_key, pack_table;
 	int table_size;
+	int oz;
+	int numlen;
 } ;
-typedef unsigned char  UC; /* len 1 */
-typedef unsigned short US; /* len 2 */
-typedef unsigned long  UL; /* len 4 */
-
-typedef enum {false,true} bool;
-
-#ifndef min
 #define min(a,b) (a) < (b) ? (a) : (b)
-#endif
 
 static struct sth *sthp;
 static int count;
-static char version[] = "0.92";
+static char version[] = "1.00";
 #define LINK 127
 #define INFO_LEN 80
 #define LENGTH 120
@@ -129,7 +133,7 @@ void exitZone(int provider)
 				sthp[i].path = 0;
 				free(sthp[i].table);
 				sthp[i].table = 0;
-				gdbm_close(sthp[i].fh);
+				CLOSE(sthp[i].fh);
 				sthp[i].fh = 0;
 				if (i == count-1) /* last released ? */
 					count--;
@@ -203,11 +207,15 @@ int initZone(int provider, char *path, char **msg)
 	sthp[ocount].used=0;
 	sthp[ocount].fh=0;
 	sthp[ocount].real = -1;
+	sthp[ocount].oz=1;
+	sthp[ocount].numlen=0;
 	/* now search for same path */
 	found = false;
 	for (i=0; i<count-1; i++) {
 		if (sthp[i].path && strcmp(sthp[i].path, path) == 0) {
 			sthp[ocount].fh = sthp[i].fh;
+			sthp[ocount].oz = sthp[i].oz;
+			sthp[ocount].numlen = sthp[i].numlen;
 			sthp[ocount].pack_key = sthp[i].pack_key;
 			sthp[ocount].pack_table = sthp[i].pack_table;
 			sthp[ocount].table = sthp[i].table;
@@ -231,17 +239,17 @@ int initZone(int provider, char *path, char **msg)
 					"Zone V%s: Error: Out of mem 2", version);
 			return -1;
 		}
-		if((sthp[ocount].fh = gdbm_open(path, 0, GDBM_READER, 0, 0))	== 0) {
+		if((sthp[ocount].fh = OPEN(path, READ)) == 0) {
 			if (msg)
 				snprintf (message, LENGTH,
 					"Zone V%s: Error: gdbm_open '%s': '%s'",
-					version, path, gdbm_strerror(gdbm_errno));
+					version, path, GET_ERR);
 			return -1;
 		}
 		/* read info */
 		key.dptr = vinfo;
 		key.dsize = 7;
-		value = gdbm_fetch(sthp[ocount].fh, key);
+		value = FETCH(sthp[ocount].fh, key);
 		if (value.dptr == 0) {
 			if (msg)
 				snprintf (message, LENGTH,
@@ -256,6 +264,14 @@ int initZone(int provider, char *path, char **msg)
 				for (p++,n=0,q=dversion; n<6 && *p != ' '; n++)
 					*q++ = *p++;
 				*q = '\0';
+				if (*dversion != *version) {
+					if (msg) 
+						snprintf (message, LENGTH,
+							"Zone V%s: Error: Provider %d File '%s': incompatible Dataversion %s",
+							version, provider, path, dversion);
+					exitZone(provider);
+					return -1;
+				}
 				break;
 			case 'K' :
 				sthp[ocount].pack_key = *(++p);
@@ -271,6 +287,14 @@ int initZone(int provider, char *path, char **msg)
 				p++;
 				tsize = strtol(p, &p, 10);
 				break;
+			case 'O' :	
+				p++;
+				sthp[ocount].oz = strtol(p, &p, 10);
+				break;
+			case 'L' :	
+				p++;
+				sthp[ocount].numlen = strtol(p, &p, 10);
+				break;
 			}
 		} /* for */
 		free (value.dptr);
@@ -280,12 +304,13 @@ int initZone(int provider, char *path, char **msg)
 			strchr("SL", sthp[ocount].pack_key) == 0 ||
 			sthp[ocount].pack_table == '\x0' ||
 			strchr("CSL", sthp[ocount].pack_table) == 0 ||
+			sthp[ocount].numlen == 0 ||
 			csize == 0 ||
 			tsize == 0) {
 				if (msg)
 					snprintf (message, LENGTH,
-						"Zone V%s: Error: Provider %d File '%s' seems to be corrupted",
-						version, provider, path);
+						"Zone V%s: Error: Provider %d File '%s' seems to be corrupted:\n%s",
+						version, provider, path, value.dptr);
 			exitZone(provider);
 			return -1;
 		}
@@ -303,7 +328,7 @@ int initZone(int provider, char *path, char **msg)
 		}
 		key.dptr = table;
 		key.dsize = 7;
-		value = gdbm_fetch(sthp[ocount].fh, key);
+		value = FETCH(sthp[ocount].fh, key);
 		if (value.dptr == 0) {
 			if (msg)
 				snprintf (message, LENGTH,
@@ -321,10 +346,10 @@ int initZone(int provider, char *path, char **msg)
 		if (msg) {
 			snprintf (message, LENGTH,
 				"Zone V%s: Provider %d File '%s' opened fine - "
-				"V%s K%d C%d N%d T%d",
+				"V%s K%d C%d N%d T%d O%d L%d",
 				version, provider, path,
 				dversion, sthp[ocount].pack_key, sthp[ocount].pack_table,
-				csize, tsize);
+				csize, tsize, sthp[ocount].oz, sthp[ocount].numlen);
 		}
 	}
 	else {
@@ -342,8 +367,11 @@ static int _getZ(struct sth *sthp, char *from, char *sto) {
 	static char newfrom[LENGTH];
 	bool found = false;
 	char *temp;
+	int res;
 
-	if (strcmp(from, sto) > 0) {
+	if ((res=strcmp(from, sto)) == 0) 
+		return sthp->oz;
+	else if (res > 0) {
 		temp=from;
 		from=sto;
 		sto=temp;
@@ -360,14 +388,16 @@ static int _getZ(struct sth *sthp, char *from, char *sto) {
 			key.dptr = (char *) &lifrom;
 			key.dsize = sizeof(UL);
 		}
-		value = gdbm_fetch(fh, key);
+		value = FETCH(fh, key);
 		if (value.dptr) {
 			char *p = value.dptr;
 			char to[10];
 			US count;
 			int ito;
 			unsigned char z=0;
-
+			/* here is since 1.00 a zero-terminated strring */
+			while (*p++);
+			/* skipped */
 			count = *((US*)p)++;
 			while (count--) {
 				bool ind = true;
@@ -401,7 +431,7 @@ static int _getZ(struct sth *sthp, char *from, char *sto) {
 		} /* if dptr */
 		newfrom[strlen(newfrom)-1] = '\0';
 	}
-	return -1;
+	return UNKNOWN;
 }
 
 int getZone(int provider, char *from, char *to)
@@ -418,8 +448,57 @@ int getZone(int provider, char *from, char *to)
 	return UNKNOWN;
 }
 
+static int _getAreacode(struct sth *sthp, char *from, char **text) {
+	_DB fh = sthp->fh;
+	datum key, value;
+	static char newfrom[LENGTH];
+	bool found = false;
+	int len;
+	strncpy(newfrom, from, sthp->numlen);
+	newfrom[sthp->numlen] = '\0';
+	while ((len=strlen(newfrom))) {
+		UL lifrom = (UL) atol(newfrom); /* keys could be long */
+		US ifrom = (US) lifrom;	
+		if (sthp->pack_key == 2) {
+			key.dptr = (char *) &ifrom;
+			key.dsize = sizeof(US);
+		}
+		else {
+			key.dptr = (char *) &lifrom;
+			key.dsize = sizeof(UL);
+		}
+		value = FETCH(fh, key);
+		if (value.dptr) {
+			if (!*value.dptr) {/* found shortcut */
+				if (*dbv == 'G') 	/* GDBM has a malloced string in dptr */
+					free(value.dptr);
+				return UNKNOWN;
+			}		
+			if (*dbv == 'G') 	/* GDBM has a malloced string in dptr */
+				*text = value.dptr;
+			else 
+				*text = strdup(value.dptr);
+			return len;
+		} /* if dptr */
+		newfrom[strlen(newfrom)-1] = '\0';
+	}
+	return UNKNOWN;
+}	
 
-#ifdef ZONETEST
+int getAreacode(int provider, char *from, char **text)
+{
+	int i;
+	char *path=NULL;
+	for (i=0; i<count; i++)
+		if (sthp[i].provider == provider) {
+			path = sthp[i].path ? sthp[i].path : sthp[sthp[i].real].path;
+			if (sthp[i].fh == 0)
+				return UNKNOWN;
+			return _getAreacode(&sthp[i], from, text);	
+		}		
+}
+
+#ifdef STANDALONE
 
 static int checkZone(char *zf, char* df,int num1,int num2, bool verbose)
 {
@@ -431,11 +510,12 @@ static int checkZone(char *zf, char* df,int num1,int num2, bool verbose)
 		fprintf(stderr,"%s\n", msg);
 		exit(1);
 	}
+	if(verbose)
+		printf("%s\n", msg);
 	if (num1 && num2) {
 		snprintf(from, 9, "%d",num1);
 		snprintf(to, 9, "%d",num2);
 		ret = getZone(1, from, to);
-		if (verbose)
 			printf("%s %s = %d\n", from, to, ret);
 	}
 	else {
@@ -482,8 +562,29 @@ static int checkZone(char *zf, char* df,int num1,int num2, bool verbose)
 		}
 		fclose(fp);
 		if (verbose)
-			printf("'%s' verified ok.\n", df);
+			printf("'%s' verified %s.\n", df, ret==0? "Ok": "NoNo");
 	}
+	exitZone(1);
+	return ret;
+}
+
+static int checkArea(char *df, char *from, int verbose) {
+	char *msg, *text;
+	int ret=0;
+
+	if (initZone(1, df, &msg)) {
+		fprintf(stderr,"%s\n", msg);
+		exit(1);
+	}
+	if(verbose)
+		printf("%s\n", msg);
+	ret = getAreacode(1, from, &text);
+	if(ret != UNKNOWN) {
+		printf("%s:%d '%s'\n", from, ret, text);	
+		free(text);
+	}
+	else
+		printf("%s - UNKNOWN\n", from);	
 	exitZone(1);
 	return ret;
 }
@@ -495,6 +596,7 @@ int main (int argc, char *argv[])
 	char *zf=0;
 	int c;
 	int num1=0, num2=0;
+	char snum1[LENGTH];
 	while ( (c=getopt(argc, argv, "vVd:z:")) != EOF) {
 		switch (c) {
 			case 'v' : verbose = true; break;
@@ -506,6 +608,7 @@ int main (int argc, char *argv[])
 	while (optind < argc) {
 		if (!num1 && isdigit(*argv[optind])) {
 			num1 = atoi(argv[optind]);
+			strncpy(snum1, argv[optind], LENGTH);
 			optind++;
 			continue;
 		}
@@ -518,7 +621,10 @@ int main (int argc, char *argv[])
 	}
 	if (df && (zf || (num1 && num2)))
 		return checkZone(zf, df, num1, num2, verbose);
+	if (df && num1)
+		return checkArea(df, snum1, verbose);	
 	fprintf(stderr, "Usage:\n%s -d DBfile -v -V { -z Zonefile | num1 num2 }\n", basename(argv[0]));
+	fprintf(stderr, "\t-d DBfile -v -V num1\n");
 	return 0;
 }
 #endif

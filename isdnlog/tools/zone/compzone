@@ -52,9 +52,12 @@ else {
 # verify codefile against orig or reduced zone file
 sub get_codes {
 	open(IN, $codef) || die("Can't read $codef");
-	my @codes = <IN>;
+	my (@codes, $num, $ort, $line);
+	while ($line = <IN>) {
+		($num, $ort) =split(/\t/, $line);
+		push(@codes, $num);
+	}	
 	close(IN);
-	chomp(@codes);
 	if($mem && $reducedf) {
     	    &read_compact;
 	}
@@ -121,6 +124,9 @@ sub read_compact {
 		    next if ($key eq "_tAbLe\x0" || $key eq "vErSiO\x0");
 		    my($temp) = unpack($pack_key, $key);
 		    next if( $temp !~ /\d/);
+			my($ind);
+			my($ort) = substr($value,0, $ind=index($value, "\x0"));
+			$value = substr($value, $ind+1);
 		    my($count) = unpack('S', $value);
 		    $value=substr($value, 2); # past count
 		    while ($count--) {
