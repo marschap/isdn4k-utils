@@ -1,4 +1,4 @@
-/* $Id: rate.c,v 1.59 1999/11/08 21:09:41 akool Exp $
+/* $Id: rate.c,v 1.60 1999/11/12 20:50:50 akool Exp $
  *
  * Tarifdatenbank
  *
@@ -19,6 +19,17 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rate.c,v $
+ * Revision 1.60  1999/11/12 20:50:50  akool
+ * isdnlog-3.66
+ *   - Patch from Jochen Erwied <mack@joker.e.ruhr.de>
+ *       makes the "-O" and "-C" options usable at the same time
+ *
+ *   - Workaround from Karsten Keil <kkeil@suse.de>
+ *       segfault in ASN.1 parser
+ *
+ *   - isdnlog/tools/rate.c ... ignores "empty" providers
+ *   - isdnlog/tools/telnum.h ... fixed TN_MAX_PROVIDER_LEN
+ *
  * Revision 1.59  1999/11/08 21:09:41  akool
  * isdnlog-3.65
  *   - added "B:" Tag to "rate-xx.dat"
@@ -962,6 +973,10 @@ int initRate(char *conf, char *dat, char *dom, char **msg)
 #endif
 	line++;
       }
+      else if(nProvider) { /* silently ignore empty providers */
+	free_provider(prefix);
+	nProvider--;
+      }  
       if(nProvider) {
 	if(!Provider[prefix].Vbn || !*Provider[prefix].Vbn) {
 	  error(dat, "Provider %s has no valid B:-Tag - ignored", getProvider(prefix));
@@ -1475,11 +1490,16 @@ int initRate(char *conf, char *dat, char *dom, char **msg)
 #endif
     line++;
   }
-  if(!Provider[prefix].Vbn || !*Provider[prefix].Vbn) {
-    error(dat, "Provider %s has no valid B:-Tag - ignored", getProvider(prefix));
+  else if(nProvider) { /* silently ignore empty providers */
     free_provider(prefix);
     nProvider--;
-  }  
+  } 
+  if(nProvider) 
+    if(!Provider[prefix].Vbn || !*Provider[prefix].Vbn) {
+      error(dat, "Provider %s has no valid B:-Tag - ignored", getProvider(prefix));
+      free_provider(prefix);
+      nProvider--;
+    }  
 
   if (!*Version) {
     warning (dat, "Database version could not be identified");

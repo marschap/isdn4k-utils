@@ -1,4 +1,4 @@
-/* $Id: functions.c,v 1.25 1999/09/13 09:09:43 akool Exp $
+/* $Id: functions.c,v 1.26 1999/11/12 20:50:49 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,17 @@
  * along with this program; if not, write to the Free Software
  *
  * $Log: functions.c,v $
+ * Revision 1.26  1999/11/12 20:50:49  akool
+ * isdnlog-3.66
+ *   - Patch from Jochen Erwied <mack@joker.e.ruhr.de>
+ *       makes the "-O" and "-C" options usable at the same time
+ *
+ *   - Workaround from Karsten Keil <kkeil@suse.de>
+ *       segfault in ASN.1 parser
+ *
+ *   - isdnlog/tools/rate.c ... ignores "empty" providers
+ *   - isdnlog/tools/telnum.h ... fixed TN_MAX_PROVIDER_LEN
+ *
  * Revision 1.25  1999/09/13 09:09:43  akool
  * isdnlog-3.51
  *   - changed getProvider() to not return NULL on unknown providers
@@ -480,7 +491,7 @@ int print_msg(int Level, const char *fmt, ...)
       fflush(stderr);
     }
     else
-    if (!fout){
+    if (fcons){
       fputs(width ? s : String, fcons);
       fflush(fcons);
     } /* else */

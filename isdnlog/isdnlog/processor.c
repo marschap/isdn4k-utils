@@ -1,4 +1,4 @@
-/* $Id: processor.c,v 1.90 1999/11/08 21:09:39 akool Exp $
+/* $Id: processor.c,v 1.91 1999/11/12 20:50:49 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,17 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.91  1999/11/12 20:50:49  akool
+ * isdnlog-3.66
+ *   - Patch from Jochen Erwied <mack@joker.e.ruhr.de>
+ *       makes the "-O" and "-C" options usable at the same time
+ *
+ *   - Workaround from Karsten Keil <kkeil@suse.de>
+ *       segfault in ASN.1 parser
+ *
+ *   - isdnlog/tools/rate.c ... ignores "empty" providers
+ *   - isdnlog/tools/telnum.h ... fixed TN_MAX_PROVIDER_LEN
+ *
  * Revision 1.90  1999/11/08 21:09:39  akool
  * isdnlog-3.65
  *   - added "B:" Tag to "rate-xx.dat"
@@ -832,7 +843,7 @@
 #define preselect pnum2prefix(preselect, cur_time)
 
 static int    HiSax = 0, hexSeen = 0, uid = UNKNOWN, lfd = 0;
-static char  *asnp, *asnm;
+static char  *asnp, *asnm = NULL;
 static int    chanused[2] = { 0, 0 };
 
 #ifdef Q931
@@ -1078,7 +1089,7 @@ void buildnumber(char *num, int oc3, int oc3a, char *result, int version,
       Q931dump(TYPE_STRING, -1, s, version);
     } /* if */
   } /* if */
-#endif    
+#endif
 
   if (!*intern) {
     if (*provider == UNKNOWN)
@@ -1728,7 +1739,7 @@ static void decode(int chan, register char *p, int type, int version, int tei)
                       n = facility(l, p);
 #endif
                       if (n == AOC_OTHER) {
-                        if (*asnm) {
+                        if (asnm && *asnm) {
                           (void)iprintf(s1, -1, mlabel, "", asnm, "\n");
                           print_msg(PRT_SHOWNUMBERS, "%s", s1);
                         } /* if */
@@ -3609,6 +3620,8 @@ static void processLCR(int chan, char *hint)
   auto   char   buffer[BUFSIZ], *p;
   auto	 double pselpreis = -1.0, hintpreis = -1.0, diff;
   char   prov[TN_MAX_PROVIDER_LEN];
+  auto	 int    lcr = 0;
+
 
   *hint='\0';
   *(p=buffer)='\0';
@@ -3655,6 +3668,7 @@ static void processLCR(int chan, char *hint)
       prov, getProvider(preselect),
       printRate (pselpreis),
       printRate(diff));
+      lcr++;
   }
   diff = hintpreis - call[chan].pay;
   if (diff > 0 && (call[chan].hint != UNKNOWN) && (call[chan].hint != bestRate.prefix)) {
@@ -3665,7 +3679,8 @@ static void processLCR(int chan, char *hint)
       printRate(diff));
   }
   if (*buffer) {
-    p+=sprintf(p, "\nHINT: LCR:%s", (bestRate.prefix == call[chan].provider) ? "OK" : "FAILED");
+    /* p+=sprintf(p, "\nHINT: LCR:%s", (bestRate.prefix == call[chan].provider) ? "OK" : "FAILED"); */
+    p+=sprintf(p, "\nHINT: LCR:%s", lcr ? "OK" : "FAILED");
     sprintf (hint, "%s", buffer+1);
   }
 
@@ -3771,7 +3786,7 @@ static void prepareRate(int chan, char **msg, char **tip, int viarep)
       ckRate = call[chan].Rate;
       ckRate.now = ckRate.start + LCR_DURATION;
       getRate(&ckRate, NULL);
-      
+
       diff = ckRate.Charge - lcRate.Charge;
       if(diff > 0) {
         prefix2provider(lcRate.prefix, prov);
@@ -3781,7 +3796,7 @@ static void prepareRate(int chan, char **msg, char **tip, int viarep)
 	  (int)(lcRate.Duration + 0.5),
 	  printRate(60 * lcRate.Price / lcRate.Duration),
 	  printRate(60*(diff)/lcRate.Time));
-      }	  
+      }
     } /* if */
   } /* if */
 } /* prepareRate */

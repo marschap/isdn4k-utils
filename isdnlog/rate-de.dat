@@ -1,4 +1,4 @@
-V:1.10-Germany [08-Nov-1999 22:03:06]
+V:1.10-Germany [12-Nov-1999 21:19:20]
 
 # Währungsformat
 U:%.3f DM
@@ -8,7 +8,7 @@ U:%.3f DM
 #
 # (C) Copyright 1999 by Andreas Kool (akool@isdn4linux.de)
 #
-# $Id: rate-de.dat,v 1.60 1999/11/08 21:09:36 akool Exp $
+# $Id: rate-de.dat,v 1.61 1999/11/12 20:50:48 akool Exp $
 #
 #
 # Das "A:" Tag muß folgendermaßen gefüllt werden:
@@ -308,7 +308,7 @@ Z:0 Freephone
 A:0130,0800,_F800
 T:*/*=0
 Z:1-4 Inlandsverbindungen
-A:+49
+A:DE
 T:W/07-19=0.15/60 Geschaeftszeit
 T:W/19-21=0.08/60 Freizeit
 T:*/21-07=0.04/60 Nacht
@@ -548,6 +548,7 @@ T:W/08-18=0.05/0,0.09(60)/1 Geschaeftszeit
 T:W/18-08=0.05/0,0.05(60)/1
 T:E,H/*=0.05/0,0.05(60)/1 Wochenende
 Z:3-4 National
+A:DE
 T:W/08-18=0.05/0,0.18(60)/1 Geschaeftszeit
 T:W/05-08,18-21=0.05/0,0.08(60)/1 Freizeit
 T:*/21-05=0.05/0,0.05(60)/1 Nacht
@@ -797,6 +798,7 @@ T:W/05-08,18-21=0.05/0,0.05(60)/1 Freizeit
 T:*/21-05=0.05/0,0.04(60)/1 Nacht
 T:E,H/05-21=0.05/0,0.04(60)/1 Wochenende
 Z:3-4 National
+A:DE
 T:W/08-18=0.05/0,0.12(60)/1 Geschaeftszeit
 T:W/05-08,18-21=0.05/0,0.05(60)/1 Freizeit
 T:*/21-05=0.05/0,0.04(60)/1 Nacht
@@ -1045,6 +1047,7 @@ T:W/08-19=0.05/0,0.06(60)/1 Geschaeftszeit
 T:W/19-08=0.05/0,0.04(60)/1 Freizeit
 T:E,H/*=0.05/0,0.04(60)/1 Wochenende
 Z:3-4 National
+A:DE
 T:W/08-19=0.05/0,0.10(60)/1 Geschaeftszeit
 T:W/19-08=0.05/0,0.08(60)/1 Freizeit
 T:E,H/*=0.05/0,0.08(60)/1 Wochenende
@@ -1286,6 +1289,7 @@ D:dtag
 Z:0 Freephone
 A:0130,0800,_F800
 Z:1-4 Inland
+A:DE
 T:*/*=0.12(60)/1
 Z:11 Mobilfunk
 A:+491618
@@ -4511,17 +4515,12 @@ C:200	-	Ausland
 # G:01.06.1999
 D:dtag
 Z:1-4 Fern
-A:+49
+A:DE
 T:W/09-18=0.17/60 Hauptzeit
 T:*/06-09,18-21=0.10/60 Nebenzeit
 T:*/21-06=0.05/60 Private Time
 Z:10 Mobilfunknetze
-A:+491618
-A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619
-A:+49170,+49171
-A:+49172,+49173
-A:+49177,+49178
-A:+49176,+49179
+A:_DEMCM,_DEMC,_DEMD1,_DEMD2,_DEME1,_DEME2
 T:W/09-18=0.69/60 Hauptzeit
 T:W/18-09=0.48/60
 T:E,H/*=0.48/60
@@ -4566,14 +4565,10 @@ C:43		Auskunft debitel
 C:200	-	Ausland
 # G:01.06.1999
 Z:1-4 Fern
+A:DE
 T:*/*=0.15/30
 Z:10 Mobilfunknetze
-A:+491618
-A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619
-A:+49170,+49171
-A:+49172,+49173
-A:+49177,+49178
-A:+49176,+49179
+A:_DEMCM,_DEMC,_DEMD1,_DEMD2,_DEME1,_DEME2
 T:W/09-18=0.69/30 Hauptzeit
 T:W/18-09=0.48/30
 T:E,H/*=0.48/30
@@ -4618,16 +4613,12 @@ C:43		Auskunft debitel
 C:200	-	Ausland
 # G:01.06.1999
 Z:1-4 Fern
+A:DE
 T:W/09-18=0.05/0,0.17/60 Hauptzeit
 T:*/06-09,18-21=0.05/0,0.10/60 Nebenzeit
 T:*/21-06=0.05/0,0.05/60 Private Time
 Z:10 Mobilfunknetze
-A:+491618
-A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619
-A:+49170,+49171
-A:+49172,+49173
-A:+49177,+49178
-A:+49176,+49179
+A:_DEMCM,_DEMC,_DEMD1,_DEMD2,_DEME1,_DEME2
 T:W/09-18=0.05/0,0.69/60 Hauptzeit
 T:W/18-09=0.05/0,0.48/60
 T:E,H/*=0.05/0,0.48/60
@@ -4672,14 +4663,10 @@ C:10		Mobilfunk
 C:43		Auskunft debitel
 C:200	-	Ausland
 Z:1-4 Fern
+A:DE
 T:*/*=0.05/0,0.15/30
 Z:10 Mobilfunknetze
-A:+491618
-A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619
-A:+49170,+49171
-A:+49172,+49173
-A:+49177,+49178
-A:+49176,+49179
+A:_DEMCM,_DEMC,_DEMD1,_DEMD2,_DEME1,_DEME2
 T:W/09-18=0.05/0,0.69/30 Hauptzeit
 T:W/18-09=0.05/0,0.48/30
 T:E,H/*=0.05/0,0.48/30
@@ -4903,10 +4890,10 @@ T:W/09-18=0.21/60 Tag
 T:W/18-09=0.10/60 Freizeit
 T:E,H/*=0.10/60 Wochenende
 Z:4 Distanz
+A:DE
 T:W/09-18=0.42/60 Tag
 T:W/18-09=0.21/60 Freizeit
 T:E,H/*=0.21/60 Wochenende
-A:+49
 Z:5 isiFON-zu-isiFON
 T:*/*=0.02/60
 Z:10 Mobilfunk
@@ -5072,6 +5059,7 @@ T:W/09-18=0.05/60 Tag
 T:W/18-09=0.03/60 Freizeit
 T:E,H/*=0.03/60 Wochenende
 Z:3-4 Regio & Distanz
+A:DE
 T:W/09-18=0.14/60 Tag
 T:W/05-09,18-22=0.08/60 Freizeit plus
 T:E,H/05-22=0.08/60 Freizeit plus
@@ -5238,6 +5226,7 @@ T:W/09-18=0.07/60 Tag
 T:W/18-09=0.04/60 Freizeit
 T:E,H/*=0.04/60 Wochenende
 Z:3-4 Regio & Distanz
+A:DE
 T:W/09-18=0.14/60 Tag
 T:W/05-09,18-22=0.08/60 Freizeit preselection
 T:E,H/05-22=0.08/60 Freizeit preselection
@@ -6597,7 +6586,7 @@ T:W/05-09,18-21=0.07/44 Nebenzeit
 T:E,H/05-21=0.07/44 Nebenzeit
 T:*/21-05=0.07/70 Nachtzeit
 Z:4 CITYMS-100 plus
-A:+49
+A:DE
 T:W/09-18=0.07/26.4 Hauptzeit
 T:W/05-09,18-21=0.07/44 Nebenzeit
 T:E,H/05-21=0.07/44 Nebenzeit
@@ -7112,16 +7101,12 @@ T:W/09-18=0.07/60 Hauptzeit
 T:W/18-09=0.07/40 Nebenzeit
 T:E,H/*=0.07/40 Nebenzeit
 Z:4 CITYMS-100 plus
+A:DE
 T:W/09-18=0.07/60 Hauptzeit
 T:W/18-09=0.07/60 Nebenzeit
 T:E,H/*=0.07/60 Nebenzeit
 Z:10 CITYMS-Mobilfunk
-A:+491618
-A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619
-A:+49170,+49171
-A:+49172,+49173
-A:+49177,+49178
-A:+49176,+49179
+A:_DEMCM,_DEMC,_DEMD1,_DEMD2,_DEME1,_DEME2
 T:W/08-18=0.07/60 Hauptzeit
 T:W/18-08=0.07/60 Nebenzeit
 T:E,H/*=0.07/60 Nebenzeit
@@ -9842,16 +9827,12 @@ T:W/08-18=0.14(60)/15 Geschäftszeit
 T:E,H/08-18=0.12(60)/15 Wochenende
 T:*/18-08=0.12(60)/15 Freizeit
 Z:4 national
-A:+49
+A:DE
 T:W/08-18=0.22(60)/15 Geschäftszeit
 T:E,H/08-18=0.12(60)/15 Wochenende
 T:*/18-08=0.12(60)/15 Freizeit
 Z:10 Mobilfunk
-A:+491610,+491617,+491619,+491618
-A:+49170,+49171
-A:+49172,+49173
-A:+49177,+49178
-A:+49176,+49179
+A:_DEMCM,_DEMC,_DEMD1,_DEMD2,_DEME1,_DEME2
 T:W/08-18=0.77(60)/15 Geschäftszeit
 T:E,H/08-18=0.65(60)/15 Wochenende
 T:*/18-08=0.65(60)/15 Freizeit
@@ -9895,14 +9876,10 @@ C:10		Mobilfunk
 C:11		Sondertarif
 C:200	-	Ausland
 Z:1-4 Inland
+A:DE
 T:*/*=0.17(60)/15
 Z:10 Mobilfunk
-A:+491618
-A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619
-A:+49170,+49171
-A:+49172,+49173
-A:+49177,+49178
-A:+49176,+49179
+A:_DEMCM,_DEMC,_DEMD1,_DEMD2,_DEME1,_DEME2
 T:*/*=0.73(60)/15
 Z:11 Hutchison Mobilfunk-Kunde
 T:*/*=0.59(60)/15
@@ -9945,17 +9922,13 @@ T:W/08-18=0.05/0,0.09(60)/1 Geschäftszeit
 T:E,H/08-18=0.05/0,0.05(60)/1 Wochenende
 T:*/18-08=0.05/0,0.05(60)/1 Freizeit
 Z:4 National
+A:DE
 T:W/08-18=0.05/0,0.20(60)/1 Geschäftszeit
 T:W/18-21=0.05/0,0.10(60)/1 Freizeit
 T:E,H/08-21=0.05/0,0.095(60)/1 Wochenende
 T:*/21-08=0.05/0,0.06(60)/1 Nacht
 Z:10 Mobilfunk
-A:+491618
-A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619
-A:+49170,+49171
-A:+49172,+49173
-A:+49177,+49178
-A:+49176,+49179
+A:_DEMCM,_DEMC,_DEMD1,_DEMD2,_DEME1,_DEME2
 T:W/08-18=0.05/0,0.94(60)/1 Geschäftszeit
 T:E,H/08-18=0.05/0,0.47(60)/1 Wochenende
 T:*/18-08=0.05/0,0.47(60)/1 Freizeit
@@ -10006,16 +9979,12 @@ T:W/08-18=0.14(60)/1 Geschäftszeit
 T:E,H/08-18=0.12(60)/1 Wochenende
 T:*/18-08=0.12(60)/1 Freizeit
 Z:4 national
+A:DE
 T:W/08-18=0.22(60)/1 Geschäftszeit
 T:E,H/08-18=0.12(60)/1 Wochenende
 T:*/18-08=0.12(60)/1 Freizeit
 Z:10 Mobilfunk
-A:+491618
-A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619
-A:+49170,+49171
-A:+49172,+49173
-A:+49177,+49178
-A:+49176,+49179
+A:_DEMCM,_DEMC,_DEMD1,_DEMD2,_DEME1,_DEME2
 T:W/08-18=0.77(60)/1 Geschäftszeit
 T:E,H/08-18=0.65(60)/1 Wochenende
 T:*/18-08=0.65(60)/1 Freizeit
@@ -10060,14 +10029,10 @@ C:10		Mobilfunk
 C:11		Sondertarif
 C:200	-	Ausland
 Z:1-4 Inland
+A:DE
 T:*/*=0.17(60)/1
 Z:10 Mobilfunk
-A:+491618
-A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619
-A:+49170,+49171
-A:+49172,+49173
-A:+49177,+49178
-A:+49176,+49179
+A:_DEMCM,_DEMC,_DEMD1,_DEMD2,_DEME1,_DEME2
 T:*/*=0.73(60)/1
 Z:11 Hutchison Mobilfunk-Kunde
 T:*/*=0.59(60)/1
@@ -10379,10 +10344,10 @@ T:W/08-18=0.18(60)/1 Hauptzeit
 T:W/18-08=0.10(60)/1 Nebenzeit
 T:E,H/*=0.10(60)/1 Nebenzeit
 Z:4 Deutschland
+A:DE
 T:W/08-18=0.22(60)/1 Hauptzeit
 T:W/18-08=0.11(60)/1 Nebenzeit
 T:E,H/*=0.11(60)/1 Nebenzeit
-A:+49
 Z:5 Unter Uns
 T:*/*=0.02(60)/1
 Z:10 Mobilfunk
@@ -10530,10 +10495,10 @@ T:W/08-18=0.14(60)/1 Hauptzeit
 T:W/18-08=0.08(60)/1 Nebenzeit
 T:E,H/*=0.08(60)/1 Nebenzeit
 Z:4 Deutschland
+A:DE
 T:W/08-18=0.14(60)/1 Hauptzeit
 T:W/18-08=0.08(60)/1 Nebenzeit
 T:E,H/*=0.08(60)/1 Nebenzeit
-A:+49
 Z:5 Unter Uns
 T:*/*=0.02(60)/1
 Z:10 Mobilfunk
@@ -11774,16 +11739,12 @@ T:W/08-18=0.08/30
 T:W/18-08=0.08/60
 T:E,H/*=0.08/60
 Z:4 Fern
+A:DE
 T:W/08-18=0.08/30
 T:W/18-08=0.08/60
 T:E,H/*=0.08/60
 Z:10 Mobilfunk
-A:+491618
-A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619
-A:+49170,+49171
-A:+49172,+49173
-A:+49177,+49178
-A:+49176,+49179
+A:_DEMCM,_DEMC,_DEMD1,_DEMD2,_DEME1,_DEME2
 T:W/08-18=0.09/7.5
 T:W/18-08=0.09/15
 T:E,H/*=0.09/7.5
@@ -11858,16 +11819,12 @@ T:W/08-18=0.12(60)/1
 T:W/18-08=0.09(60)/1
 T:E,H/*=0.09(60)/1
 Z:3-4 Fern
+A:DE
 T:W/08-18=0.15(60)/1
 T:W/18-08=0.09(60)/1
 T:E,H/*=0.09(60)/1
 Z:10 Mobilfunk
-A:+491618
-A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619
-A:+49170,+49171
-A:+49172,+49173
-A:+49177,+49178
-A:+49176,+49179
+A:_DEMCM,_DEMC,_DEMD1,_DEMD2,_DEME1,_DEME2
 T:W/08-18=0.49(60)/1
 T:W/18-08=0.36(60)/1
 T:E,H/*=0.36(60)/1
@@ -11942,36 +11899,37 @@ T:W/09-18=0.12/90
 T:W/18-09=0.12/150
 T:E,H/*=0.12/90
 Z:3-4 Fern
+A:DE
 T:W/09-18=0.09/30
 T:W/18-09=0.09/60
 T:E,H/*=0.09/60
 Z:10 C-Mobilboxen
-A:+491618
+A:_DEMCM
 T:W/09-18=0.09/11.4
 T:W/18-09=0.09/16.7
 T:E,H/*=0.09/16.7
 Z:11 Mobilfunk C
-A:+491610,+491617,+491619
+A:_DEMC
 T:W/09-18=0.09/7.5
 T:W/18-09=0.09/15
 T:E,H/*=0.09/15
 Z:12 Mobilfunknetz D1
-A:+49170,+49171
+A:_DEMD1
 T:W/09-18=0.09/7.5
 T:W/18-09=0.09/15
 T:E,H/*=0.09/15
 Z:13 Mobilfunknetz D2
-A:+49172,+49173
+A:_DEMD2
 T:W/09-18=0.09/7.5
 T:W/18-09=0.09/15
 T:E,H/*=0.09/15
 Z:14 Mobilfunknetz E-Plus
-A:+49177,+49178
+A:_DEME1
 T:W/09-18=0.09/5.3
 T:W/18-09=0.09/12.8
 T:E,H/*=0.09/12.8
 Z:15 Mobilfunknetz Viag Interkom
-A:+49176,+49179
+A:_DEME2
 T:W/09-18=0.09/7.5
 T:W/18-09=0.09/15
 T:E,H/*=0.09/15
@@ -12046,21 +12004,22 @@ T:W/08-18=0.12(60)/1
 T:W/18-08=0.09(60)/1
 T:E,H/*=0.09(60)/1
 Z:4 Fern
+A:DE
 T:W/08-18=0.18(60)/1
 T:W/18-08=0.09(60)/1
 T:E,H/*=0.09(60)/1
 Z:10 Mobilfunk D-Netze
-A:+49170,+49171,+49172,+49173
+A:_DEMD1,_DEMD2
 T:W/08-18=0.49(60)/1
 T:W/18-08=0.36(60)/1
 T:E,H/*=0.36(60)/1
 Z:11 Mobilfunk E-Plus
-A:+49177,+49178
+A:_DEME1
 T:W/08-18=0.49(60)/1
 T:W/18-08=0.45(60)/1
 T:E,H/*=0.45(60)/1
 Z:12 Mobilfunk Viag Interkom E2
-A:+49176,+49179
+A:_DEME2
 T:W/08-18=0.49(60)/1
 T:W/18-08=0.36(60)/1
 T:E,H/*=0.36(60)/1
@@ -12978,16 +12937,18 @@ T:W/08-18=0.09/60
 T:W/18-08=0.06/60
 T:E,H/*=0.06/60
 Z:3-4 Deutschland
+A:DE
 T:W/08-18=0.14/60
 T:W/18-21=0.09/60
 T:W/21-08=0.06/60
 T:E,H/*=0.06/60
-# FIXME: Wie wollen wir KDD-Conos-Kunden erkennen?
-# Z:5 KDD-Conos Mobilfunk
-# A:C-Tel Voice Mail, C-Netz, D1, D2, E1, E2
-# T:W/08-18=0.44/60
-# T:W/18-08=0.35/60
-# T:E,H/*=0.35/60
+#FIXME: Wie wollen wir KDD-Conos-Kunden erkennen?
+#AS: Darum ohne A: Tag, so das der User in der Konfigurationsdatei einstellen kann, wer KDD Kunde ist.
+Z:5 KDD-Conos Mobilfunk
+#A:C-Tel Voice Mail, C-Netz, D1, D2, E1, E2
+T:W/08-18=0.44/60
+T:W/18-08=0.35/60
+T:E,H/*=0.35/60
 Z:10 Mobilfunk
 A:_DEMCM,_DEMC,_DEMD1,_DEMD2,_DEME1,_DEME2
 T:W/08-18=0.49/60
@@ -13054,16 +13015,18 @@ T:W/18-21=0.08(60)/1
 T:W/21-08=0.06(60)/1
 T:E,H/*=0.06(60)/1
 Z:3-4 Deutschland
+A:DE
 T:W/08-18=0.16(60)/1
 T:W/18-21=0.11(60)/1
 T:W/21-08=0.08(60)/1
 T:E,H/*=0.08(60)/1
 # FIXME: Wie wollen wir KDD-Conos-Kunden erkennen?
-# Z:5 KDD-Conos Mobilfunk
+# AS: Siehe oben.
+Z:5 KDD-Conos Mobilfunk
 # A:C-Tel Voice Mail, C-Netz, D1, D2, E1, E2
-# T:W/08-18=0.54(60)/1
-# T:W/18-08=0.39(60)/1
-# T:E,H/0.35(60)/1
+T:W/08-18=0.54(60)/1
+T:W/18-08=0.39(60)/1
+T:E,H/0.35(60)/1
 Z:10 Mobilfunk
 A:_DEMCM,_DEMC,_DEMD1,_DEMD2,_DEME1,_DEME2
 T:W/08-18=0.59(60)/1
@@ -15109,7 +15072,7 @@ C:2	-   4	Deutschland
 C:10		Mobilfunk
 C:200	-	Ausland
 Z:2-4 Inland
-A:+49
+A:DE
 T:W/08-18=0.179/60 Geschäftszeit
 T:W/18-21=0.109/60 Freizeit
 T:E,H/08-21=0.109/60 Freizeit

@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.120 1999/11/08 21:09:36 akool Exp $
+## $Id: Makefile.in,v 1.121 1999/11/12 20:50:48 akool Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,17 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.121  1999/11/12 20:50:48  akool
+## isdnlog-3.66
+##   - Patch from Jochen Erwied <mack@joker.e.ruhr.de>
+##       makes the "-O" and "-C" options usable at the same time
+##
+##   - Workaround from Karsten Keil <kkeil@suse.de>
+##       segfault in ASN.1 parser
+##
+##   - isdnlog/tools/rate.c ... ignores "empty" providers
+##   - isdnlog/tools/telnum.h ... fixed TN_MAX_PROVIDER_LEN
+##
 ## Revision 1.120  1999/11/08 21:09:36  akool
 ## isdnlog-3.65
 ##   - added "B:" Tag to "rate-xx.dat"
@@ -833,7 +844,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 3.65
+VERSION     = 3.66
 
 MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 \
 	      isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 \
