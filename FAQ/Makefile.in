@@ -41,7 +41,7 @@ OUT_ENG_HTML = $(SRC_ENG).html
 # *** Generate FAQ ***
 
 # Generate all FAQ versions
-all: $(GEN_DIR) 7bit html e7bit ehtml
+all: Makefile $(GEN_DIR) 7bit html e7bit ehtml
 
 $(GEN_DIR):
 	-mkdir -p $(GEN_DIR)
@@ -202,6 +202,12 @@ clean:
 
 config:
 	./configure
+
+Makefile: Makefile.in config.status
+	./config.status
+
+config.status: configure
+	./config.status --recheck
 
 distclean: clean
 	rm -f config.* Makefile
