@@ -1,6 +1,6 @@
-.\" $Id: isdnctrl.man.in,v 1.9 1998/05/14 17:32:20 paul Exp $
+.\" $Id: isdnctrl.man.in,v 1.10 1998/06/09 18:11:36 cal Exp $
 .\"
-.\" CHECKIN $Date: 1998/05/14 17:32:20 $
+.\" CHECKIN $Date: 1998/06/09 18:11:36 $
 .\"
 .\" Process this file with
 .\" groff -man -Tascii isdnctrl.8 for ASCII output, or
@@ -72,6 +72,11 @@ is appended,
 .BR isdnctrl " executes"
 .BI ifconfig " name " down
 before removing an interface.
+.TP
+.BI ifdefaults " name "
+resets the interface
+.IR name
+to some reasonable defaults.
 .TP
 .BI addphone " name " out " num"
 Adds the phone number

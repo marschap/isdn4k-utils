@@ -331,7 +331,6 @@ write_icmp_type(char *s, __u8 from, __u8 to) {
 	} else { \
 		++args_used; \
 	} \
-fprintf(stderr, "looking for <%s>: argp = %d/%d (%s)\n", msg, argp, argc, argv [argp]); \
 }
 
 
@@ -822,6 +821,17 @@ set_default_timeout(int fd, char *id, int firstarg, int argc, char *argv []) {
 }
 
 
+char *
+defs_timru(char *id) {
+	static char	r [1024];
+	char	*p = r;
+
+	p += sprintf(p, "addrule %s keepup in 0 ppp/lcp\n", id);
+
+	return(r);
+}
+
+
 /* Budget-Erweiterung */
 /*
 ??.07.97:cal:DAY: (60 * HOUR) --> (24 * HOUR)
@@ -842,10 +852,10 @@ char *output_time(time_t *);
 
 
 int
-hdl_budget(int fd, char *id, int cmd, int firstarg, int argc, char *argv []) {
+hdl_budget(int fd, char *id, int cmd, int argc, char *argv []) {
 	isdn_ioctl_budget	budget;
 	int			ioret, n,
-				argp = firstarg,
+				argp = 0,
 				args_used = 0;
 	time_t		t;
 
@@ -1123,5 +1133,18 @@ output_budgets(int fd, char *id, int cmd, int firstarg, int argc, char *argv [])
 	}
 
 	return(0);
+}
+
+
+char *
+defs_budget(char *id) {
+	static char	r [1024];
+	char	*p = r;
+
+	p += sprintf(p, "budget %s dial 10 1min\n", id);
+	p += sprintf(p, "budget %s charge 100 1day\n", id);
+	p += sprintf(p, "budget %s online 8hour 1day\n", id);
+
+	return(r);
 }
 #endif

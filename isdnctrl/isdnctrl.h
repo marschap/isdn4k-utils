@@ -1,4 +1,4 @@
-/* $Id: isdnctrl.h,v 1.10 1998/03/16 09:40:56 cal Exp $
+/* $Id: isdnctrl.h,v 1.11 1998/06/09 18:11:33 cal Exp $
  * ISDN driver for Linux. (Control-Utility)
  *
  * Copyright 1994,95 by Fritz Elfert (fritz@wuemaus.franken.de)
@@ -21,6 +21,31 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnctrl.h,v $
+ * Revision 1.11  1998/06/09 18:11:33  cal
+ * added the command "isdnctrl name ifdefaults": the named device is reset
+ * to some reasonable defaults.
+ *
+ * Internally, isdnctrl.c contains a list of functions (defs_fcns []), which
+ * are called one after the other with the interface-name as a patameter.
+ * Each function returns a char* to a string containing iscnctrl-commands
+ * to be executed. Example:
+ *
+ * char *
+ * defs_budget(char *id) {
+ * 	static char	r [1024];
+ * 	char	*p = r;
+ *
+ * 	p += sprintf(p, "budget %s dial 10 1min\n", id);
+ * 	p += sprintf(p, "budget %s charge 100 1day\n", id);
+ * 	p += sprintf(p, "budget %s online 8hour 1day\n", id);
+ *
+ * 	return(r);
+ * }
+ *
+ * The advantage of this approach is, that even complex commands can be executed.
+ *
+ * PS: The function defs_basic() in isdnctrl.c is not complete.
+ *
  * Revision 1.10  1998/03/16 09:40:56  cal
  * fixed a problem parsing TimRu-Commands
  * started with TimRu-man-page
@@ -80,8 +105,9 @@ enum {
 		SAVEBUDGETS, RESTOREBUDGETS,
 #endif
 #ifdef I4L_CTRL_CONF
-        WRITECONF, READCONF
+        WRITECONF, READCONF,
 #endif /* I4L_CTRL_CONF */
+		IFDEFAULTS
 };
 
 typedef struct {
@@ -150,6 +176,7 @@ cmd_struct cmds[] =
         {"writeconf", "01"},
         {"readconf", "01"},
 #endif /* I4L_CTRL_CONF */
+        {"ifdefaults", "01"},
         {NULL,}
 };
 
@@ -235,6 +262,8 @@ _EXTERN char *cmd;
 _EXTERN int key2num(char *key, char **keytable, int *numtable);
 _EXTERN char * num2key(int num, char **keytable, int *numtable);
 _EXTERN int exec_args(int fd, int argc, char **argv);
+
+_EXTERN char * defs_basic(char *id);
 
 #undef _EXTERN
 
