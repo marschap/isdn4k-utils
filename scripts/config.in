@@ -1,5 +1,5 @@
 #
-# $Id: config.in,v 1.13 1997/03/25 02:04:05 fritz Exp $
+# $Id: config.in,v 1.14 1997/03/25 02:35:11 fritz Exp $
 #
 # The whole configuration stuff is borrowed from the kernel
 # configuration.
@@ -21,26 +21,26 @@ comment 'General configuration'
 comment 'Build options'
 dep_bool 'Build programs which need X11 installed' CONFIG_BUILDX11 $CONFIG_HASX11
 comment 'Destination directories'
-string 'Directory to install binaries' CONFIG_BINDIR /usr/bin
-string 'Directory to install admin binaries' CONFIG_SBINDIR /sbin
-string 'Directory to install man pages' CONFIG_MANDIR /usr/man
+string 'Directory to install binaries' CONFIG_BINDIR
+string 'Directory to install admin binaries' CONFIG_SBINDIR
+string 'Directory to install man pages' CONFIG_MANDIR
 comment 'Runtime defaults'
-string 'Write .pid files here' CONFIG_RUNDIR /var/run
-string 'General configuration directory' CONFIG_I4LCONFDIR /etc/isdn
-string 'Global configuration file' CONFIG_CONFFILE isdn.conf
-string 'Global phone number file file' CONFIG_CALLERIDFILE callerid.conf
-string 'User configuration file' CONFIG_USERCONFFILE ~/.isdn
+string 'Write .pid files here' CONFIG_RUNDIR
+string 'General configuration directory' CONFIG_I4LCONFDIR
+string 'Global configuration file' CONFIG_CONFFILE
+string 'Global phone number file file' CONFIG_CALLERIDFILE
+string 'User configuration file' CONFIG_USERCONFFILE
 comment 'Configuration library options'
-string 'Default country prefix' CONFIG_COUNTRY_PREFIX +
-string 'Default area prefix' CONFIG_AREA_PREFIX 0
+string 'Default country prefix' CONFIG_COUNTRY_PREFIX
+string 'Default area prefix' CONFIG_AREA_PREFIX
 choice 'Database for area codes' \
         "Areacode CONFIG_LIB_AREACODE \
-        Avon CONFIG_LIB_AVON" Areacode
+        Avon CONFIG_LIB_AVON"
 if [ "$CONFIG_LIB_AREACODE" = "y" ]; then
-	string 'Directory to install areacodes' CONFIG_AREACODE_DATA /usr/lib/isdn
+	string 'Directory to install areacodes' CONFIG_AREACODE_DATA
 fi
 if [ "$CONFIG_LIB_AVON" = "y" ]; then
-	string 'Directory to install avon database' CONFIG_AVON_DATA /usr/lib/isdn
+	string 'Directory to install avon database' CONFIG_AVON_DATA
 fi
 endmenu
 mainmenu_option nextcomment
@@ -64,7 +64,7 @@ bool 'avmcapictrl' CONFIG_AVMCAPICTRL
 if [ "$CONFIG_EXPERIMENTAL" = "y" ]; then
 	bool 'loopctrl' CONFIG_LOOPCTRL
 	if [ "$CONFIG_LOOPCTRL" = "y" ]; then
-		string 'Sourcedir of isdnloop module' CONFIG_LOOPCTRL_LOOPDIR '\~/isdn/drivers/isdn/isdnloop'
+		string 'Sourcedir of isdnloop module' CONFIG_LOOPCTRL_LOOPDIR
 		bool 'Enable loopctrl debug-option' CONFIG_LOOPCTRL_DEBUG
 	fi
 fi
@@ -84,8 +84,8 @@ dep_bool 'xmonisdn' CONFIG_XMONISDN $CONFIG_BUILDX11
 if [ "$CONFIG_XMONISDN" = "y" ] ; then
 	mainmenu_option nextcomment
 	comment 'Options for xmonisdn'
-	string 'NetUP command' CONFIG_XMONISDN_UPCMD '/sbin/netup'
-	string 'NetDOWN command' CONFIG_XMONISDN_DOWNCMD '/sbin/netdown'
+	string 'NetUP command' CONFIG_XMONISDN_UPCMD
+	string 'NetDOWN command' CONFIG_XMONISDN_DOWNCMD
 	endmenu
 fi
 endmenu
@@ -105,6 +105,6 @@ comment 'Documentation'
 bool 'Install generic pages' CONFIG_GENMAN
 bool 'Generate FAQ' CONFIG_FAQ
 if [ "$CONFIG_FAQ" = "y" ]; then
-	string 'Directory to install FAQ' CONFIG_FAQDIR /usr/doc/faq/isdn4linux
+	string 'Directory to install FAQ' CONFIG_FAQDIR
 fi
 endmenu
