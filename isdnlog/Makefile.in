@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.29 1997/06/15 23:49:28 luethje Exp $
+## $Id: Makefile.in,v 1.30 1997/06/21 13:48:55 fritz Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,9 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.30  1997/06/21 13:48:55  fritz
+## Create ./bin if necessary
+##
 ## Revision 1.29  1997/06/15 23:49:28  luethje
 ## Some new variables for the isdnlog
 ## isdnlog starts programs noe with the file system rights
@@ -288,7 +291,10 @@ MODS         =  *.o */*.o
 
 PROGS        =  $(ISDNLOG) $(ISDNREP) $(ISDNCONF)
 
-all:            libs $(PROGS)
+all:            libs mybin $(PROGS)
+
+mybin:
+		-mkdir -p bin
 
 libs:
 		set -e; for i in `echo $(SUBDIRS)`; do $(MAKE) -C $$i; done
