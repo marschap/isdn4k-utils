@@ -4,7 +4,7 @@
 
 <title>FAQ for isdn4linux
 <author>Matthias Hessler (<tt><htmlurl url="mailto:hessler@isdn4linux.de" name="hessler@isdn4linux.de"></tt>)
-<date>v2.0.13, 27. September 1999
+<date>v2.0.15, 07. October 1999
 <abstract>
 If you are reading this FAQ online, you may consider downloading the whole
 thing, and reading it offline (much cheaper). To download the latest
@@ -142,7 +142,7 @@ website. Have a look at <url url="http://www.isdn4linux.de/contacts">.
 
 <!-- Who are the developers? -->  
 
-<sect1> distrib_getlatest: How can I get the latest isdn4linux?  
+<sect1> distrib_getlatest: How can I get the latest isdn4linux stuff?  
 <label id="distrib_getlatest">
 <p>
 There are different ways, depending on your kernel. Unless you are an
@@ -151,7 +151,7 @@ experienced user of Linux, you should use a recent kernel (=first option).
 <item>You have a recent kernel (at least 2.0.36/2.2.11/2.3.14):
 Great choice, you have already the current kernel ISDN stuff.
 Additionally, you just need to get the current isdn4k-utils package from
-<url url="ftp://ftp.isdn4linux.de/pub/isdn4linux/"> - unless it's already
+<url url="ftp://ftp.isdn4linux.de/pub/isdn4linux/utils/"> - unless it's already
 included in your distribution.
 
 <item>You have an older kernel (before 2.0.36/2.2.11/2.3.14):
@@ -335,8 +335,8 @@ up when no data was been transferred over the interface for &dquot;time&dquot;
 seconds. However, with syncPPP there are problems (see the syncPPP section).
 Also look at the dialmode description (see question
 <ref id="config_dialmode" name="config_dialmode">).
-You may also be very interested in the big part of this FAQ that handles
-unwanted dialouts... (<ref id="dod" name="dod">)
+You should definitely be very interested in the big part of this FAQ that
+talks about the dangers of unwanted dialouts: (<ref id="dod" name="dod">).
 
 <sect1> feature_sms: Can I send SMS (short messages) to my handy via ISDN?  
 <label id="feature_sms">
@@ -666,6 +666,9 @@ Note:
 <item>Eicon.Diehl Diva U interface not tested
 <item>No voice mode for all cards from CCD yet: HFC (Teleint) and HFC-S
 based cards (exception: HFC-S PCI works in voice mode)
+<item>To distinguish between HFC-PCI and PCI/Winbond, have a look at the
+output of <tt>cat /proc/pci</tt>. You have HFC-PCI if you have a line
+saying "Master capable" for your card.
 </itemize>
 
 The following cards are definitly not supported and will probably never,
@@ -769,6 +772,27 @@ interesting for you, see question <ref id="hardware_s2m" name="hardware_s2m">.
 See question <ref id="config_manycards" name="config_manycards"> about
 the specialities for the configuration of more than one card.
 
+<sect1> hardware_elsa: What should I know about ISDN cards from ELSA?  
+<label id="hardware_elsa">
+<p>
+Generally, ELSA supports the ISDN4LINUX developers quite well with
+documentation on how to access their cards. Thus, these cards are well
+supported and very recommendable for use under ISDN4LINUX. Also, the 
+ELSA Quickstep 1000 PCI (new name Microlink PCI) is one of the only cards
+that are officially certified for use in Germany, and therefore in EC
+(see question <ref id="country_certified" name="country_certified"> for
+more information on certification).
+
+However, there is a speciality with some non-PCI-conformal mainboards and
+the ELSA Quickstep 1000pro-PCI. These mainboards set the IO address to
+incorrect values (they need to be on 0x100 boundaries, and in a higher
+area). This may create an error message like
+"You may have the wrong PCI bios" and hang the system. The best fix
+is a Bios upgrade. If this is not feasible, you can get the module
+<tt/pcitest/ from Karsten Keil <tt><htmlurl url="mailto:keil@isdn4linux.de"
+name="keil@isdn4linux.de"></tt>. It will initialize the card correctly,
+then exit with an intentional error (thus not occupying any memory).
+
 <sect1> hardware_teles: What should I know about before buying an ISDN card 
 from Teles?  
 <label id="hardware_teles">
@@ -781,7 +805,7 @@ The latest Teles PCI card needs the <tt/netjet/ driver, the teles driver
 will NOT work (that card identifies itself as 'TigerJet Tiger300' when doing a 
 <tt>cat /proc/pci</tt>).
 
-Now some comments about Teles in general (these is the personal opinion of
+Now some comments about Teles in general (these are the personal opinion of
 the author of this FAQ, please blame nobody else than me):
 
 Teles' business practices are very customer- and developer-unfriendly when
@@ -970,7 +994,7 @@ interface not in dialmode <tt/auto/&dquot;?
 <p>
 The new ISDN drivers in 2.0.36 defaults to manual dialmode, not
 autodial. This is done to prevent unexpected (and unnoticed) dialouts.
-
+(See the big section about those and their dangers: <ref id="dod" name="dod">).
 To enable autodial for a given interface e.g. ippp0, use
 <code>isdnctrl dialmode ippp0 auto</code>
 
@@ -2719,6 +2743,17 @@ Recompile with this option enabled.
 <sect> trouble: Troubleshooting  
 <label id="trouble">
 
+<sect1> trouble_2_2_x: I can't start ISDN on my machine with kernel 2.2.x.  
+I get the error messages "init_module: Device or resource busy" and  
+"isdn: Could not allocate device-struct.".  
+<label id="trouble_2_2_x">
+<p>
+This seems to be a memory problem. While 2.0.x kernels may work on low
+memory/slow hardware (the author's answering machine is a 386 and used to
+run with 4MB of RAM), at least 16MB, if not more, seem to be required to run
+2.2.x kernels. You can try to reduce ISDN_MAX_DRIVERS, ISDN_MAX_CHANNELS
+in <tt>include/linux/isdn.h</tt>, compile ISDN4LINUX into the kernel, or
+start and then exit a large program to ease those problems.
 
 <sect1> trouble_strategy: My isdn4linux doesn't work! How do I best go about  
 finding the problem?  
@@ -3309,14 +3344,17 @@ question <ref id="dod_onlineoncrash" name="dod_onlineoncrash">.
 <label id="dod_off">
 <p>
 <enum>
+<item>To always dial out manually, set your dialmode to <tt/manual/ (see
+question <ref id="config_dialmode" name="config_dialmode">).
+Then use <tt>isdnctrl dial &lt;device&gt;</tt> to dial out, and
+<tt>isdnctrl hangup &lt;device&gt;</tt> to hangup.
 <item>Set your dialmode properly (see question
 <ref id="config_dialmode" name="config_dialmode">). For example, set
-dialmode to <tt/manual/ in <tt/ip-down/.
-Alternatively you can use the dialmode feature (see question
-<ref id="config_dialmode" name="config_dialmode">.
-<item>Delete the telephone number of the interface, or set an invalid one. Then you
-can see from the complaints in the syslog whether a process wants to send
-packets out to the world.
+dialmode to <tt/manual/ in <tt/ip-down/. Then dialouts will only be possible
+once after setting dialmode to <tt/auto/.
+<item>Delete the telephone number of the interface, or set an invalid one.
+Then you can see from the complaints in the syslog whether a process wants
+to send packets out to the world.
 <item>Switch the system off.
 <item>Delete your route to the ISDN device.
 For example, to disable any automatic dialouts:
@@ -3665,7 +3703,7 @@ These drivers are certified for use in Germany:
 <item>Active cards: the approval covers the entire card including its
 firmware. Thus the approval also covers the use of these cards with
 isdn4linux.
-<item>Elsa Quickstep 1000 PCI (new name Microlink PCI)
+<item>Elsa Quickstep series cards (new name Microlink PCI)
 <item>Eicon Diva 2.01 PCI
 </itemize>
 
@@ -3898,6 +3936,12 @@ of them.
 &dquot;Advice of Charge at the End of the Call&dquot;. In Germany, this
 service	is included in the &dquot;Komfort&dquot; connection.
 
+<tag/BRI/
+BRI means basic rate interface and is the most commonly used interface.
+In Europe, a BRI includes 2 B-channels for data communication, and 1
+D-channel for administration of the data communication. The alternative
+is a PRI interface.
+
 <tag/CLIR/
 CLIR (Calling Line Identification Restriction) can be offered by
 the ISDN provider: one can (from call to call) restrict the
@@ -3965,6 +4009,12 @@ cannot be directly connected to an ISDN network. The PBX can also make
 an internal digital S0 bus available, on which ISDN devices can be
 connected. This allows for local calls without using the switching
 station (thereby avoiding the charges from your telephone company).
+
+<tag/PRI/
+PRI means primary rate interface and is the used when a single or multiple
+BRI are not sufficient in bandwidth. In Europe, a PRI includes 32 B-channels
+for data communication, and 1 D-channel for administration of the data
+communication.
 
 <tag/semi-active card/
 <label id="glossary_semiactive">
