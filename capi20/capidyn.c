@@ -1,7 +1,10 @@
 /*
- * $Id: capidyn.c,v 1.2 2001/03/01 14:59:11 paul Exp $
+ * $Id: capidyn.c,v 1.3 2004/01/16 14:57:22 calle Exp $
  * 
  * $Log: capidyn.c,v $
+ * Revision 1.3  2004/01/16 14:57:22  calle
+ * gcc warning removed.
+ *
  * Revision 1.2  2001/03/01 14:59:11  paul
  * Various patches to fix errors when using the newest glibc,
  * replaced use of insecure tempnam() function
@@ -398,4 +401,4 @@ static int loadlib(void)
 	return 0;
 }
 
-#undef	resolv_sym(x)
+#undef	resolv_sym
