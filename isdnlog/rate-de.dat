@@ -1,4 +1,4 @@
-V:1.10-Germany [27-Aug-2000 17:03:11]
+V:1.10-Germany [23-Nov-2000 21:31:34]
 
 # W‰hrungsformat
 U:%.3f DM
@@ -8,7 +8,7 @@ U:%.3f DM
 #
 # (C) Copyright 1999, 2000 by Andreas Kool (akool@isdn4linux.de)
 #
-# $Id: rate-de.dat,v 1.106 2000/08/27 15:18:19 akool Exp $
+# $Id: rate-de.dat,v 1.107 2000/11/23 20:42:29 akool Exp $
 #
 #
 # Das "A:" Tag muﬂ folgendermaﬂen gef¸llt werden:
@@ -3408,12 +3408,13 @@ T:[11.06.2000-12.06.2000]*/*=0 Pfingstangebot
 T:[02.07.2000-03.07.2000]*/*=0 Sonderangebot
 T:[16.07.2000-17.07.2000]*/*=0 Sonderangebot
 T:[12.08.2000-14.08.2000]*/*=0 Sonderangebot
-T:[-11.08.2000]W/06-18=0.06/60
-T:[-11.08.2000]W/18-06=0.04/60
-T:[-11.08.2000]E,H/*=0.04/60
-T:[14.08.2000-]W/06-18=0.06/60
-T:[14.08.2000-]W/18-06=0.04/60
-T:[14.08.2000-]E,H/*=0.04/60
+T:[02.09.2000-04.09.2000]*/*=0 Sonderangebot
+T:[-01.09.2000]W/06-18=0.06/60
+T:[-01.09.2000]W/18-06=0.04/60
+T:[-01.09.2000]E,H/*=0.04/60
+T:[04.09.2000-]W/06-18=0.06/60
+T:[04.09.2000-]W/18-06=0.04/60
+T:[04.09.2000-]E,H/*=0.04/60
 Z:10 Mobilfunknetz
 A:_DEMF
 T:*/*=0.38/60
@@ -6463,6 +6464,7 @@ T:*/*=0
 #
 P:17,0 01017
 B:01017
+# G:17-Nov-2000
 C:Name:01017.com
 C:Address:
 C:Homepage:http://www.01017.com
@@ -6479,9 +6481,10 @@ A:112
 T:*/*=0
 Z:1-4 National
 A:+49
-T:W/09-18=0.09/60
-T:W/18-09=0.07/60
-T:E,H/*=0.07/60
+T:W/09-18=0.054/60
+T:W/18-09=0.041/60
+T:E,H/09-18=0.054/60
+T:E,H/18-09=0.041/60
 Z:10 Mobilfunk
 A:_DEMF
 T:*/*=99.99/1
@@ -8358,7 +8361,8 @@ T:*/*=0
 Z:1-4 SUPER24
 A:+49
 T:W/08-09=0.044/60
-T:W/09-18=0.066/60
+T:W/09-10=0.064/60
+T:W/10-18=0.066/60
 T:W/18-21=0.042/60
 T:W/21-08=0.033/60
 T:E,H/08-18=0.044/60
@@ -8366,8 +8370,7 @@ T:E,H/18-21=0.042/60
 T:E,H/21-08=0.033/60
 Z:10 Mobilfunk
 A:_DEMF
-T:[19.08.2000-30.09.2000]*/*=0.389/60 Sonderangebot
-T:*/*=0.399/60
+T:*/*=0.379/60
 Z:200 Australien
 A:AU
 T:*/*=0.149/60
@@ -13043,13 +13046,13 @@ Z:1-2 CityCall
 T:W/09-18=0.06/60 Sunshine
 T:W/18-09=0.03/60 Moonshine
 T:6/*=0.03/60 Spar
-T:7,H/*=0 xxl unentgeldlich
+T:7,H/*=0 xxl unentgeltlich
 Z:3-4 GermanCall
 A:+49
 T:W/09-18=0.12/60 Sunshine
 T:W/18-09=0.06/60 Moonshine
 T:6/*=0.06/60 Spar
-T:7,H/*=0 xxl unentgeldlich
+T:7,H/*=0 xxl unentgeltlich
 #####################################################################
 #
 #
@@ -19262,12 +19265,12 @@ T:*/*=0
 #####################################################################
 #
 #
-P:39,0 First Telecom First Choice CbC
+P:39,0 Atlantic Telecom Call-Mc-Call
 B:01039
-# G:08-Jan-2000
+# G:21-Nov-2000
 D:dtag
-C:Name:First Telecom
-C:Address:First Telecom GmbH, Lyoner Straﬂe 51, 60528 Frankfurt/Main
+C:Name:Atlantic Telecom
+C:Address:Atlantic Telecom GmbH, Lyoner Straﬂe 51, 60528 Frankfurt/Main
 C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Erfasste Zonen:
@@ -19283,11 +19286,11 @@ A:112
 T:*/*=0
 Z:1-4 Festnetz zu Festnetz
 A:+49
-T:W/08-18=0.02/0,0.15/60 Standard
-T:W/18-21=0.02/0,0.10/60 Abend
-T:W/21-08=0.02/0,0.07/60 Nacht
-T:E,H/08-21=0.02/0,0.10/60 Wochenende
-T:*/21-08=0.02/0,0.07/60 Nacht
+T:W/08-18=0.15/60 Standard
+T:W/18-21=0.10/60 Abend
+T:W/21-08=0.07/60 Nacht
+T:E,H/08-21=0.10/60 Wochenende
+T:*/21-08=0.07/60 Nacht
 Z:10 Festnetz zu Mobilfunk
 A:_DEMCM
 A:_DEMC
@@ -19295,134 +19298,134 @@ A:_DEMD1
 A:_DEMD2
 A:_DEME1
 A:_DEME2
-T:*/*=0.02/0,0.48/60
+T:*/*=0.48/60
 # FIXME: Ausland erfassen -> http://www.first-telecom.com/germany/firstchoice/auslandstarife/index.htm
 Z:201 Argentinien
 A:AR
-T:*/*=0.02/0,0.79/60
+T:*/*=0.79/60
 Z:202 AUstralien
 A:AU
-T:*/*=0.02/0,0.21/60
+T:*/*=0.21/60
 Z:203 Belgien
 A:BE
-T:*/*=0.02/0,0.18/60
+T:*/*=0.18/60
 Z:204 Bosnien-Herzegowina
 A:BA
-T:*/*=0.02/0,0.79/60
+T:*/*=0.79/60
 Z:205 Brasilien
 A:BR
-T:*/*=0.02/0,0.59/60
+T:*/*=0.59/60
 Z:206 Chile
 A:CL
-T:*/*=0.02/0,0.49/60
+T:*/*=0.49/60
 Z:207 China
 A:CN
-T:*/*=0.02/0,0.99/60
+T:*/*=0.99/60
 Z:208 D‰nemark
 A:DK
-T:*/*=0.02/0,0.21/60
+T:*/*=0.21/60
 Z:209 Dom. Rep.
 A:DO
-T:*/*=0.02/0,0.40/60
+T:*/*=0.40/60
 Z:210 UK
 A:UK
-T:*/*=0.02/0,0.13/60
+T:*/*=0.13/60
 Z:211 Frankreich
 A:FR
-T:*/*=0.02/0,0.18/60
+T:*/*=0.18/60
 Z:212 Griechenland
 A:GR
-T:*/*=0.02/0,0.41/60
+T:*/*=0.41/60
 Z:213 Hawaii
 A:_HAWA
-T:*/*=0.02/0,0.15/60
+T:*/*=0.15/60
 Z:214 Indien
 A:IN
-T:*/*=0.02/0,1.29/60
+T:*/*=1.29/60
 Z:215 Israel
 A:IL
-T:*/*=0.02/0,0.29/60
+T:*/*=0.29/60
 Z:216 Italien
 A:IT
-T:*/*=0.02/0,0.20/60
+T:*/*=0.20/60
 Z:217 Japan
 A:JP
-T:*/*=0.02/0,0.25/60
+T:*/*=0.25/60
 Z:218 Jugoslawien
 A:YU
-T:*/*=0.02/0,0.79/60
+T:*/*=0.79/60
 Z:219 Kanada
 A:CA
-T:*/*=0.02/0,0.15/60
+T:*/*=0.15/60
 Z:220 Kuba
 A:CU
-T:*/*=0.02/0,1.29/60
+T:*/*=1.29/60
 Z:221 Liechtenstein
 A:LI
-T:*/*=0.02/0,0.35/60
+T:*/*=0.35/60
 Z:222 Luxemburg
 A:LU
-T:*/*=0.02/0,0.35/60
+T:*/*=0.35/60
 Z:223 Malaysia
 A:MY
-T:*/*=0.02/0,0.49/60
+T:*/*=0.49/60
 Z:224 Mexiko
 A:MX
-T:*/*=0.02/0,0.55/60
+T:*/*=0.55/60
 Z:270 Monaco
 A:MC
-T:*/*=0.02/0,0.49/60
+T:*/*=0.49/60
 Z:225 Niederlande
 A:NL
-T:*/*=0.02/0,0.15/60
+T:*/*=0.15/60
 Z:226 ÷sterreich
 A:AT
-T:*/*=0.02/0,0.18/60
+T:*/*=0.18/60
 Z:227 Peru
 A:PE
-T:*/*=0.02/0,0.89/60
+T:*/*=0.89/60
 Z:228 Polen
 A:PL
-T:*/*=0.02/0,0.44/60
+T:*/*=0.44/60
 Z:229 Russland
 A:SU
-T:*/*=0.02/0,0.59/60
+T:*/*=0.59/60
 Z:230 Schweden
 A:SE
-T:*/*=0.02/0,0.19/60
+T:*/*=0.19/60
 Z:231 Schweiz
 A:CH
-T:*/*=0.02/0,0.21/60
+T:*/*=0.21/60
 Z:232 Slowenien
 A:SI
-T:*/*=0.02/0,0.59/60
+T:*/*=0.59/60
 Z:233 Spanien
 A:ES
-T:*/*=0.02/0,0.27/60
+T:*/*=0.27/60
 Z:234 S¸dafrika
 A:ZA
-T:*/*=0.02/0,0.79/60
+T:*/*=0.79/60
 Z:235 Thailand
 A:TH
-T:*/*=0.02/0,1.09/60
+T:*/*=1.09/60
 Z:236 Tschechische Republik
 A:CZ
-T:*/*=0.02/0,0.42/60
+T:*/*=0.42/60
 Z:237 T¸rkei
 A:TR
-T:*/*=0.02/0,0.49/60
+T:*/*=0.49/60
 Z:238 Ungarn
 A:HU
-T:*/*=0.02/0,0.49/60
+T:*/*=0.49/60
 Z:239 Venezuela
 A:VE
-T:*/*=0.02/0,0.79/60
+T:*/*=0.79/60
 Z:240 Zypern
 A:CY
-T:*/*=0.02/0,0.69/60
+T:*/*=0.69/60
 Z:241 USA
 A:US
-T:*/*=0.02/0,0.14/60
+T:*/*=0.14/60
 # Those are *NOT* all countries!
 #####################################################################
 #
@@ -22030,6 +22033,7 @@ A:112
 T:*/*=0
 Z:2-4 Ferngespr‰che
 A:DE
+T:[01.10.2000-07.10.2000]*/*=0.05/60 Oktoberfest
 T:*/*=0.07/60
 Z:10 Mobilfunk
 A:_DEMF
@@ -22979,7 +22983,7 @@ C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Bei Preselection sekundengenaue Taktung
 D:dtag
-# G:17-Aug-2000
+# G:01-Nov-2000
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -22991,7 +22995,8 @@ Z:1-4 National
 A:+49
 T:W/08-17=0.063/60
 T:W/17-18=0.058/60
-T:W/18-22=0.044/60
+T:W/18-21=0.044/60
+T:W/21-22=0.032/60
 T:W/22-08=0.038/60
 T:E,H/08-22=0.044/60
 T:E,H/22-08=0.038/60
@@ -23596,7 +23601,7 @@ T:*/*=0
 #
 P:75,0 Callino
 B:01075
-# G:01-Aug-2000
+# G:29-Aug-2000
 C:Address:ARCIS Media Com Management GmbH, Maximilianstr. 14, 80539 M¸nchen
 C:Name:Callino
 C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
@@ -23611,8 +23616,8 @@ A:112
 T:*/*=0
 Z:1-4 Fern
 A:+49
-T:W/08-16=0.099/60
-T:W/16-08=0.047/60
+T:W/08-18=0.099/60
+T:W/18-08=0.047/60
 T:E,H/*=0.047/60
 Z:10-12,15 Deutschland Mobilfunk
 A:_DEMF
@@ -25220,7 +25225,7 @@ C:Address:ONE.TEL Limited (UK), Clements House, 14-18 Gresham Street, London, EC
 C:Name:ONE.TEL
 C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
-# G:22-Jul-2000
+# G:21-Nov-2000
 D:dtag
 Z:0 FreeCall
 A:011*
@@ -25231,8 +25236,13 @@ A:112
 T:*/*=0
 Z:1-4 National
 A:+49
-T:*/06-20=0.063/60
-T:*/20-06=0.033/60
+T:[12.09.2000-11.10.2000]W/18-20=0.033/60 Sonderangebot
+T:*/06-12=0.066/60
+T:*/12-20=0.063/60
+T:*/20-22=0.036/60
+T:*/22-06=0.033/60
+T:E,H/06-20=0.063/60
+T:E,H/20-06=0.033/60
 Z:10 Mobilfunknetz
 A:_DEMF
 T:*/*=0.60/60
@@ -25420,7 +25430,7 @@ T:*/*=0
 #
 P:90,0 Viag Interkom
 B:01090
-# G:01-May-1999
+# G:01-Oct-2000
 C:Address:Viag Interkom GmbH & Co. KG, Elsenheimer Straﬂe 11, 81927 M¸nchen
 C:Name:Viag Interkom
 C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
@@ -25441,10 +25451,10 @@ T:W/06-08=0.08/60 Sparzeit
 T:W/08-18=0.12/60 Hauptzeit
 T:W/18-21=0.08/60 Freizeit
 # T:W/21-06=0.05/60 Traumzeit
-T:W/21-06=0.033/60 Sonderangebot # gÅltig vom 15.7.2000 bis 27.8.2000
+T:W/21-06=0.033/60 Sonderangebot # gÅltig bis 31.12.2000
 T:E,H/06-21=0.08/60 Freizeit
 # T:E,H/21-06=0.05/60 Nacht
-T:E,H/21-06=0.033/60 Sonderangebot # gÅltig vom 15.7.2000 bis 27.8.2000
+T:E,H/21-06=0.033/60 Sonderangebot # gÅltig bis 31.12.2000
 Z:10-15 Mobil
 A:_DEMF
 T:W/08-18=0.89/60
