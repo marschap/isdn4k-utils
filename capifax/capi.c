@@ -1,4 +1,4 @@
-/* $Id: capi.c,v 1.2 1998/10/23 12:50:46 fritz Exp $
+/* $Id: capi.c,v 1.3 2004/06/30 08:52:29 armin Exp $
  *
  * Implementation of CAPI state machine
  *
@@ -17,6 +17,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: capi.c,v $
+ * Revision 1.3  2004/06/30 08:52:29  armin
+ * fixed for new extended ALERT_REQ().
+ *
  * Revision 1.2  1998/10/23 12:50:46  fritz
  * Added RCS keywords and GPL notice.
  *
@@ -79,7 +82,7 @@ void Handle_Indication(void) {
 			 * of the application
 			 */
 			ALERT_REQ (CMSG, Appl_Id, 0, CONNECT_IND_PLCI(CMSG),
-				   NULL, NULL, NULL, NULL);
+				   NULL, NULL, NULL, NULL, NULL);
 			/* inform the user application */
 			SetState(Connection, D_ConnectPending);
 			IncomingCall(Connection, GetCallingPartyNumber (Connection));
