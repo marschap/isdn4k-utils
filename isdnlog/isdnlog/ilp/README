@@ -32,16 +32,47 @@ ISDN card or a second reversed card (s. FAQ).
 
 Installation
 
-  Adjust Makefile for your kernel-gcc
-  make
-  su -c "insmod modilp"
-  cat /proc/isdnlog
+  Kernel 2.4.x
+
+  - Modify drivers/isdn/Makefile:
+
+  obj-$(CONFIG_ISDN) 	+= isdn.o
+  obj-$(CONFIG_ISDN) 	+= modilp.o	#<<<<<<<<< INSERTED
+
+  
+  Kernel 2.0.x (2.2 ??)
+  
+  ifeq ($(CONFIG_ISDN),m)
+    M_OBJS += isdn.o
+    M_OBJS += modilp.o         #<<<<<<<<<< INSERTED
+
+  - copy modilp.c to drivers/isdn/
+  
+  - "make dep" after modifying the Makefile
+  - then build your kernel as usual  "make modules modules_install"
+  
+
+  or manually
+
+  Adjust Makefile for your kernel-gcc and options, then 
+  $ make
+
+  
+  $ su -c "insmod modilp.o"
+  $ cat /proc/isdnlog
+
+  $ make ilp
+  $ su -c "./ilp"
+  $ cat /proc/isdnlog
+
+  should show a dummy entry
+  
 
   Make isdnlog:
 
-  cd ../..
-  # make clean
-  make ILP=1
+  $ cd ../..
+  $ make clean
+  $ make ILP=1
   
   as root, copy bin/isdnlog to /sbin/isdnlog and restart em.
   
@@ -56,7 +87,6 @@ Installation
 
 TODO
 
-Check this with 2.2 and 2.4 kernels.
 After this integrate into build process.
 Remove PRT_INFO in modilp.c.
 
