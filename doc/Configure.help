@@ -291,23 +291,29 @@ CONFIG_VBOX
 
 Voice message spool directory
 VBOX_SPOOLDIR
-  Maintainer: edit VBOX_SPOOLDIR
+  This is the directory under which incoming messages are stored.
+  A subdirectory under this directory will be created for each user.
+  /var/spool/vbox is usual.
 
 Vbox log directory
 VBOX_LOGDIR
-  Maintainer: edit VBOX_LOGDIR
+  Logs of incoming messages etc. will be stored in this directory.
+  /var/log/vbox is usual.
 
 Vbox PID directory
 VBOX_PIDDIR
-  Maintainer: edit VBOX_PIDDIR
+  Files storing the process ID of running vboxgetty processes will be
+  written in this directory (traditionally /var/run).
 
 Vbox lock directory
 VBOX_LOCKDIR
-  Maintainer: edit VBOX_LOCKDIR
+  Lockfiles to ensure mutually exclusive access to devices will be
+  created in this directory. /var/lock is recommended.
 
 Version of Tcl library to use
 VBOX_TCL
-  Maintainer: edit VBOX_TCL
+  There are different versions of tcl available.. tcl8.0 is the
+  current one.
 
 PPP daemon for syncPPP support
 CONFIG_IPPPD
