@@ -4,9 +4,8 @@
 # (C) 1999 l.toetsch <lt@toetsch.at>
 #
 BZIP2			= @BZIP2@
-BZIP2			= @BZIP2@
 SHELL			= /bin/sh
-CFLAGS			= -Wall -O2
+CFLAGS			= -Wall -g
 INCLUDES		= 
 LDFLAGS			= @DBMLIB@
 DBEXT			= @DBEXT@
@@ -70,24 +69,37 @@ clean:
 	rm -f *.o *~ $(PROGRAM) *.db *.gdbm zone
 
 distclean: clean
-	rm -f config.h config.status config.cache config.log *.man Makefile
+	rm -f config.h config.status config.cache config.log *.man Makefile configure
 
 test:
-	./$(PROGRAM) -d zone-at-pta$(DBEXT) -r at/pta/zred.pta -c at/code -v
+	./$(PROGRAM) -d zone-at-pta$(DBEXT) -r at/pta/zred.pta -c at/code -a43 -v
 	$(BZIP2) -d at/pta/zred.pta.bz2
 	$(BZIP2) -d at/pta/zoneall.pta.bz2
 	./zone -d zone-at-pta$(RDBEXT)  -z at/pta/zoneall.pta -v
 	$(BZIP2) -9 at/pta/zred.pta
 	$(BZIP2) -9 at/pta/zoneall.pta
-	
-zonefiles:	
+
+#
+# ATTENTION:
+# zonedatabasefilenames must be zone-CC-*
+#	
+zonefiles:	AT DE NL
+
+AT:
 	./$(PROGRAM) -d ../../zone-at-1012$(DBEXT) -r at/1012/zred-at-1012 -c at/code -v -l4
 	$(BZIP2) -d at/uta/zred.uta.bz2
-	./$(PROGRAM) -d ../../zone-at-uta$(DBEXT) -r at/uta/zred.uta -c at/code -v
+	./$(PROGRAM) -d ../../zone-at-uta$(DBEXT) -r at/uta/zred.uta  -c at/code -v
 	$(BZIP2) -9 at/uta/zred.uta
 	$(BZIP2) -d at/pta/zred.pta.bz2
-	./$(PROGRAM) -d ../../zone-at-pta$(DBEXT) -r at/pta/zred.pta -c at/code -v
+	./$(PROGRAM) -d ../../zone-at-pta$(DBEXT) -r at/pta/zred.pta -c at/code -a43 -v
 	$(BZIP2) -9 at/pta/zred.pta
+
+DE:	
 	$(BZIP2) -d de/01033/zred.dtag.bz2
-	./$(PROGRAM) -d ../../zone-de-dtag$(DBEXT) -r de/01033/zred.dtag -c de/code -v
+	./$(PROGRAM) -d ../../zone-de-dtag$(DBEXT) -r de/01033/zred.dtag -c de/code -a49 -v
 	$(BZIP2) -9 de/01033/zred.dtag
+
+NL:
+	$(BZIP2) -d nl/kpn/zred.bz2
+	./$(PROGRAM) -d ../../zone-nl-kpn$(DBEXT) -r nl/kpn/zred -c nl/code -a31 -v -o3
+	$(BZIP2) -9 nl/kpn/zred

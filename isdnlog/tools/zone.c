@@ -1,4 +1,4 @@
-/* $Id: zone.c,v 1.5 1999/06/21 19:35:04 akool Exp $
+/* $Id: zone.c,v 1.6 1999/06/22 16:31:15 akool Exp $
  *
  * Zonenberechnung
  *
@@ -19,11 +19,8 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: zone.c,v $
- * Revision 1.5  1999/06/21 19:35:04  akool
- * isdnlog Version 3.35
- *   zone data for .nl (many thanks to Paul!)
- *
- *   WARNING: This version of isdnlog dont even compile! *EXPERIMENTAL*!!
+ * Revision 1.6  1999/06/22 16:31:15  akool
+ * zone-1.10
  *
  * Revision 1.4  1999/06/18 12:41:57  akool
  * zone V1.0
@@ -350,8 +347,8 @@ static int _initZone(int provider, char *path, char **msg, bool area_only)
 				for (p++,n=0,q=dversion; n<6 && *p != ' '; n++)
 					*q++ = *p++;
 				*q = '\0';
-				if (*dversion != *version) {
-					if (msg)
+				if (memcmp(dversion, version, 3)) {
+					if (msg) 
 						snprintf (message, LENGTH,
 							"Zone V%s: Error: Provider %d File '%s': incompatible Dataversion %s",
 							version, provider, path, dversion);
@@ -373,11 +370,11 @@ static int _initZone(int provider, char *path, char **msg, bool area_only)
 				p++;
 				tsize = strtol(p, &p, 10);
 				break;
-			case 'O' :
+			case 'O' :	
 				p++;
 				sthp[ocount].oz = strtol(p, &p, 10);
 				break;
-			case 'L' :
+			case 'L' :	
 				p++;
 				sthp[ocount].numlen = strtol(p, &p, 10);
 				break;
@@ -465,7 +462,7 @@ static int _getZ(struct sth *sthp, char *from, char *sto) {
 	char *temp;
 	int res;
 
-	if ((res=strcmp(from, sto)) == 0)
+	if ((res=strcmp(from, sto)) == 0) 
 		return sthp->oz;
 	else if (res > 0) {
 		temp=from;
@@ -475,10 +472,10 @@ static int _getZ(struct sth *sthp, char *from, char *sto) {
 	strncpy(newfrom, from, LENGTH-1);
 	while (strlen(newfrom)) {
 		UL lifrom = (UL) atol(newfrom); /* keys could be long */
-		US ifrom = (US) lifrom;
+		US ifrom = (US) lifrom;	
 		if (sthp->pack_key == 2) {
-		key.dptr = (char *) &ifrom;
-		key.dsize = sizeof(US);
+			key.dptr = (char *) &ifrom;
+			key.dsize = sizeof(US);
 		}
 		else {
 			key.dptr = (char *) &lifrom;
@@ -492,8 +489,8 @@ static int _getZ(struct sth *sthp, char *from, char *sto) {
 			int ito;
 			unsigned char z=0;
 			if (sthp->cc) /* if areacodes */
-			/* here is since 1.00 a zero-terminated strring */
-			while (*p++);
+				/* here is since 1.00 a zero-terminated strring */
+				while (*p++);
 			count = *((US*)p)++;
 			while (count--) {
 				bool ind = true;
@@ -552,16 +549,20 @@ static int _getAreacode(struct sth *sthp, char *from, char **text) {
 	newfrom[sthp->numlen] = '\0';
 	while ((len=strlen(newfrom))) {
 		UL lifrom = (UL) atol(newfrom); /* keys could be long */
-		US ifrom = (US) lifrom;
+		US ifrom = (US) lifrom;	
 		if (sthp->pack_key == 2) {
-                   	if (lifrom >= 0x10000) { /* can't be, so cut a digit */
-                           newfrom[strlen(newfrom) - 1] = '\0';
-                           continue;
-                   	} /* if */
+			if (lifrom >= 0x10000) { /* can't be, so cut a dig */
+				newfrom[strlen(newfrom)-1] = '\0';
+				continue;
+			}	
 			key.dptr = (char *) &ifrom;
 			key.dsize = sizeof(US);
 		}
 		else {
+			if (lifrom >= 0x10000000L) { /* can't be, so cut a dig */
+				newfrom[strlen(newfrom)-1] = '\0';
+				continue;
+			}	
 			key.dptr = (char *) &lifrom;
 			key.dsize = sizeof(UL);
 		}
@@ -571,29 +572,28 @@ static int _getAreacode(struct sth *sthp, char *from, char **text) {
 				if (*dbv == 'G') 	/* GDBM has a malloced string in dptr */
 					free(value.dptr);
 				return UNKNOWN;
-			}
+			}		
 			if (*dbv == 'G') 	/* GDBM has a malloced string in dptr */
 				*text = value.dptr;
-			else
+			else 
 				*text = strdup(value.dptr);
 			return len;
 		} /* if dptr */
 		newfrom[strlen(newfrom)-1] = '\0';
 	}
 	return UNKNOWN;
-}
+}	
 
-int getAreacode(int provider, char *from, char **text)
+int getAreacode(int country, char *from, char **text)
 {
 	int i;
-	char *path=NULL;
 	for (i=0; i<count; i++)
-		if (sthp[i].provider == provider) {
-			path = sthp[i].path ? sthp[i].path : sthp[sthp[i].real].path;
+		if (sthp[i].cc == country) {
 			if (sthp[i].fh == 0)
 				return UNKNOWN;
-			return _getAreacode(&sthp[i], from, text);
-		}
+			return _getAreacode(&sthp[i], from, text);	
+		}		
+	return UNKNOWN;	
 }
 
 #ifdef STANDALONE
@@ -678,11 +678,11 @@ static int checkArea(char *df, int cc, char *from, int verbose) {
 		printf("%s\n", msg);
 	ret = getAreacode(cc, from, &text);
 	if(ret != UNKNOWN) {
-		printf("%s:%d '%s'\n", from, ret, text);
+		printf("%s:%d '%s'\n", from, ret, text);	
 		free(text);
 	}
 	else
-		printf("%s - UNKNOWN\n", from);
+		printf("%s - UNKNOWN\n", from);	
 	exitZone(1);
 	return ret;
 }
@@ -721,9 +721,9 @@ int main (int argc, char *argv[])
 	}
 	if (df && (zf || (num1 && num2)))
 		return checkZone(zf, df, num1, num2, verbose);
-	if (df && num1)
-		return checkArea(df, snum1, verbose);
-	fprintf(stderr, "Usage:\n%s -d DBfile -v -V { -z Zonefile | num1 num2 }\n", basename(argv[0]));
+	if (df && num1 && cc)
+		return checkArea(df, cc, snum1, verbose);	
+	fprintf(stderr, "Usage:\n%s -d DBfile -v -V { -z Zonefile | num1 num2 | -a cc num}\n", basename(argv[0]));
 	fprintf(stderr, "\t-d DBfile -v -V num1\n");
 	return 0;
 }

@@ -64,10 +64,10 @@ sub read_compact {
 		    my($temp) = unpack($pack_key, $key);
 		    next if( $temp !~ /\d/);
 			if ($cc) {
-			my($ind);
-			my($ort) = substr($value,0, $ind=index($value, "\x0"));
-			print "$temp $ort\n";
-			$value = substr($value, $ind+1);
+				my($ind);
+				my($ort) = substr($value,0, $ind=index($value, "\x0"));
+				print "$temp $ort\n";
+				$value = substr($value, $ind+1);
 			}	
 		    my($count) = unpack('S', $value);
 		    $value=substr($value, 2); # past count

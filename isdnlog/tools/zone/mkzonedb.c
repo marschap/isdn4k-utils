@@ -22,9 +22,8 @@
  *
  */
 
-static char progversion[] = "1.01";
-/* first char must match dataversion */
-
+static char progversion[] = "1.10";
+/* first 3 chars must match dataversion */
 
 #define STANDALONE
 
@@ -53,7 +52,7 @@ extern const char *basename (const char *name);
 
 
 void usage(char *argv[]) {
-	fprintf(stderr, "%s: -r RedZonefile -c Code -d Database [ -v ] [ -V ] [ -o Localzone ] [ -l Len ]\n",
+	fprintf(stderr, "%s: -r RedZonefile -d Database -c Code [-a CC] [ -v ] [ -V ] [ -o Localzone ] [ -l Len ]\n",
 		basename(argv[0]));
 	exit(EXIT_FAILURE);
 }
@@ -72,11 +71,12 @@ static code_t *codes = 0;
 static int nc;
 static int ortszone=1;
 static int numlen;
+static int country=0;
 
 static void read_codefile(char *cf) {
 	FILE *fp;
 	char *p;
-        auto char line[BUFSIZ];
+	auto char line[BUFSIZ];
 
 	nc = 0;
 	if (verbose)
@@ -288,7 +288,8 @@ static void write_db(char * df) {
 	int i, j;
 	char version[80];
 
-	qsort(codes, nc, sizeof(code_t), comp_func);
+	if (country)
+		qsort(codes, nc, sizeof(code_t), comp_func);
 	if (verbose)
 		printf("Writing\n");
 	if((db=OPEN(df,WRITE)) == 0) {
@@ -303,9 +304,9 @@ static void write_db(char * df) {
 	/* write version & table */
 	key.dptr = "vErSiO";
 	key.dsize = 7;
-	sprintf(version,"V1.00 K%c C%c N%d T%d O%d L%d",
+	sprintf(version,"V1.10 K%c C%c N%d T%d O%d L%d A%d",
 		keylen==2?'S':'L',tablelen==1?'C':tablelen==2?'S':'L',
-		nn,n, ortszone, numlen?numlen:keydigs);
+		nn,n, ortszone, numlen?numlen:keydigs, country);
 	value.dptr = version;
 	value.dsize = strlen(version)+1;
 	if(STORE(db, key, value)) {
@@ -351,7 +352,8 @@ static void write_db(char * df) {
 		    *((US*)val) = count;
 			value.dptr = val;
 			value.dsize = vlen;
-			insert_code(&value, ofrom);
+			if (country)
+				insert_code(&value, ofrom);
 			if(STORE(db, key, value)) {
 				fprintf(stderr, "Error storing key '%d' - %s\n",ofrom,GET_ERR);
 				exit(EXIT_FAILURE);
@@ -407,10 +409,12 @@ static void write_db(char * df) {
     *((US*)val) = count;
 	value.dptr = val;
 	value.dsize = vlen;
-	insert_code(&value, ofrom);
+	if (country)
+		insert_code(&value, ofrom);
 	STORE(db, key, value);
 	free(value.dptr);
-	write_remaining_codes(db);
+	if (country)
+		write_remaining_codes(db);
 	CLOSE(db);
 	free(zones);
 	free(df);
@@ -428,7 +432,7 @@ int main (int argc, char *argv[])
 
 	if (argc < 2)
 		usage(argv);
-	while ( (c=getopt(argc, argv, "vVr:d:c:o:l:")) != EOF) {
+	while ( (c=getopt(argc, argv, "vVr:d:c:o:l:a:")) != EOF) {
 		switch (c) {
 			case 'v' : verbose = true; break;
 			case 'V' : printf("%s: V%s Db=%s\n",
@@ -438,6 +442,7 @@ int main (int argc, char *argv[])
 			case 'c' : cf = strdup(optarg); break;
 			case 'o' : ortszone = atoi(optarg); break;
 			case 'l' : numlen = atoi(optarg); break;
+			case 'a' : country = atoi(optarg); break;
 		}
 	}
 	read_codefile(cf);
