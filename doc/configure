@@ -515,6 +515,9 @@ fi
 
 
 
+I4LCONFDIR=${I4LCONFDIR:-"/etc/isdn"}
+I4LVERSION=${I4LVERSION:-"?.?"}
+
 ac_aux_dir=
 for ac_dir in $srcdir $srcdir/.. $srcdir/../..; do
   if test -f $ac_dir/install-sh; then
@@ -592,6 +595,72 @@ echo "$ac_t""$INSTALL" 1>&6
 test -z "$INSTALL_PROGRAM" && INSTALL_PROGRAM='${INSTALL}'
 
 test -z "$INSTALL_DATA" && INSTALL_DATA='${INSTALL} -m 644'
+
+for ac_prog in mawk gawk nawk awk
+do
+# Extract the first word of "$ac_prog", so it can be a program name with args.
+set dummy $ac_prog; ac_word=$2
+echo $ac_n "checking for $ac_word""... $ac_c" 1>&6
+if eval "test \"`echo '$''{'ac_cv_prog_AWK'+set}'`\" = set"; then
+  echo $ac_n "(cached) $ac_c" 1>&6
+else
+  if test -n "$AWK"; then
+  ac_cv_prog_AWK="$AWK" # Let the user override the test.
+else
+  IFS="${IFS= 	}"; ac_save_ifs="$IFS"; IFS="${IFS}:"
+  for ac_dir in $PATH; do
+    test -z "$ac_dir" && ac_dir=.
+    if test -f $ac_dir/$ac_word; then
+      ac_cv_prog_AWK="$ac_prog"
+      break
+    fi
+  done
+  IFS="$ac_save_ifs"
+fi
+fi
+AWK="$ac_cv_prog_AWK"
+if test -n "$AWK"; then
+  echo "$ac_t""$AWK" 1>&6
+else
+  echo "$ac_t""no" 1>&6
+fi
+
+test -n "$AWK" && break
+done
+
+# Extract the first word of "sed", so it can be a program name with args.
+set dummy sed; ac_word=$2
+echo $ac_n "checking for $ac_word""... $ac_c" 1>&6
+if eval "test \"`echo '$''{'ac_cv_path_SED'+set}'`\" = set"; then
+  echo $ac_n "(cached) $ac_c" 1>&6
+else
+  case "$SED" in
+  /*)
+  ac_cv_path_SED="$SED" # Let the user override the test with a path.
+  ;;
+  *)
+  IFS="${IFS= 	}"; ac_save_ifs="$IFS"; IFS="${IFS}:"
+  for ac_dir in $PATH; do
+    test -z "$ac_dir" && ac_dir=.
+    if test -f $ac_dir/$ac_word; then
+      ac_cv_path_SED="$ac_dir/$ac_word"
+      break
+    fi
+  done
+  IFS="$ac_save_ifs"
+  ;;
+esac
+fi
+SED="$ac_cv_path_SED"
+if test -n "$SED"; then
+  echo "$ac_t""$SED" 1>&6
+else
+  echo "$ac_t""no" 1>&6
+fi
+
+
+
+
 
 
 
@@ -694,7 +763,7 @@ done
 ac_given_srcdir=$srcdir
 ac_given_INSTALL="$INSTALL"
 
-trap 'rm -fr `echo "Makefile" | sed "s/:[^ ]*//g"` conftest*; exit 1' 1 2 15
+trap 'rm -fr `echo "Makefile ttyI.man isdninfo.man" | sed "s/:[^ ]*//g"` conftest*; exit 1' 1 2 15
 EOF
 cat >> $CONFIG_STATUS <<EOF
 
@@ -726,13 +795,17 @@ s%@infodir@%$infodir%g
 s%@mandir@%$mandir%g
 s%@INSTALL_PROGRAM@%$INSTALL_PROGRAM%g
 s%@INSTALL_DATA@%$INSTALL_DATA%g
+s%@AWK@%$AWK%g
+s%@SED@%$SED%g
 s%@INSTALL@%$INSTALL%g
+s%@I4LCONFDIR@%$I4LCONFDIR%g
+s%@I4LVERSION@%$I4LVERSION%g
 
 CEOF
 EOF
 cat >> $CONFIG_STATUS <<EOF
 
-CONFIG_FILES=\${CONFIG_FILES-"Makefile"}
+CONFIG_FILES=\${CONFIG_FILES-"Makefile ttyI.man isdninfo.man"}
 EOF
 cat >> $CONFIG_STATUS <<\EOF
 for ac_file in .. $CONFIG_FILES; do if test "x$ac_file" != x..; then

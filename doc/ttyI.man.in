@@ -1,6 +1,6 @@
-.\" $Id: ttyI.man.in,v 1.1 1997/02/22 23:06:46 fritz Exp $
+.\" $Id: ttyI.man.in,v 1.2 1997/02/23 10:45:27 fritz Exp $
 .\"
-.\" CHECKIN $Date: 1997/02/22 23:06:46 $
+.\" CHECKIN $Date: 1997/02/23 10:45:27 $
 .\"
 .\" Process this file with
 .\" groff -man -Tascii icnctrl.1 for ASCII output, or
@@ -268,7 +268,7 @@ Bit	Description
 .br
 	1 = Cisco-PPP-flag-hack on.
 .TP
-.BR 13 " (default 0)"
+.BR 13 " (default 4)"
 Bit-mapped register.
 .br
 Bit	Description
@@ -303,6 +303,8 @@ Layer-2 protocol.
 2 = X75/LAPB with BUI-frames.
 .br
 3 = HDLC.
+.br
+4 = TRANSPARENT.
 .TP
 .BR 15 " (default 0)"
 Layer-3 protocol.
@@ -331,12 +333,23 @@ Bit	Description
 .RS
 .HP
 Note:
-It is possible to set more than one bit. In this case, on incoming
-calls the selected services are accepted, and if the service is
-.IR audio ,
-the Layer-2-protocol is automatically changed to 4 regardless of the setting
-of register 14. On outgoing calls, the most significant 1-bit is chosen to
-select the outgoing service octet.
+It is possible to set more than one bit. In this case, on outgoing
+calls, the most significant 1-bit is chosen to select the outgoing
+service octet. On incoming calls the selected services are accepted,
+contentnts of register 14 is ignored and the Layer-2-protocol is
+automatcally set with the following values to match the service
+of the incoming call:
+.RS
+.TP
+.RI "Incoming service " audio " (Reg. 20.0 = 1)"
+L2-protocol is set to 4 (TRANSPARENT).
+.TP
+.RI "Incoming service " BTX " (Reg. 20.1 = 1)"
+L2-protocol is set to 0 (X75/LAPB with I-frames).
+.TP
+.RI "Incoming service " date " (Reg. 20.2 = 1)"
+L2-protocol is set to 0 (X75/LAPB with I-frames).
+.RE
 .RE
 .TP
 .BR 19 " (default 0)"
