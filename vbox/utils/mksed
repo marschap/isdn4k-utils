@@ -1,11 +1,21 @@
 #! /bin/sh
 ##
+## $Id: mksed,v 1.4 1997/04/04 09:32:53 michael Exp $
+##
 ## Please *only* call this script from top level makefile!
 
-$SED \
-	-e "s;@BINDIR@;${bindir};g" \
-	-e "s;@VERSION@;${VERSION};g" \
-	-e "s;@VERDATE@;${VERDATE};g" \
-        -e "s;@MAILCMD@;${MAILCMD};g" \
-	-e "s;@SPOOLDIR@;${SPOOLDIR};g"
+${SED} \
+	-e "s;{;\[;g" \
+	-e "s;};\];g" \
+	-e "s;@DOTS@;...;g" \
+	-e "s;@BINDIR@;${VBOX_BINDIR};g" \
+	-e "s;@SBINDIR@;${VBOX_SBINDIR};g" \
+	-e "s;@VERSION@;${VBOX_VERSION};g" \
+	-e "s;@VERDATE@;${VBOX_VERDATE};g" \
+	-e "s;@SPOOLDIR@;${VBOX_SPOOLDIR};g" \
+	-e "s;@SYSCONFDIR@;${VBOX_SYSCONFDIR};g" \
+	-e "s;@LOGFILEDIR@;${VBOX_LOGFILEDIR};g" \
+	-e "s;@PIDFILEDIR@;${VBOX_PIDFILEDIR};g" \
+	-e "s;@LCKFILEDIR@;${VBOX_LCKFILEDIR};g"
+
 

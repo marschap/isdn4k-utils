@@ -213,16 +213,44 @@ AC_MSG_RESULT(${VBOX_LOCALE_DIR})
 AC_SUBST(VBOX_LOCALE_DIR)
 
 dnl #------------------------------------------------------------------------#
-dnl # Creates output files:                                                  #
+dnl # Check and optimize compiler flags:                                     #
 dnl #------------------------------------------------------------------------#
 
 if (test "${ac_cv_prog_CC}" = "gcc")
 then
-   if (test "${CFLAGS}" = "")
+   if (test "${CFLAGS}" != "")
    then
-      CFLAGS="-Wall -O2"
+      FLAGOPMZ="no"
+      FLAGWARN="no"
+
+      for i in ${CFLAGS}
+      do
+         case "$i" in
+
+            -O*) FLAGOPMZ="yes"
+                 ;;
+            -W*) FLAGWARN="yes"
+                 ;;
+         esac
+      done
+
+      if (test "${FLAGOPMZ}" = "no")
+      then
+         CFLAGS="-O2 ${CFLAGS}"
+      fi
+
+      if (test "${FLAGWARN}" = "no")
+      then
+         CFLAGS="-Wall ${CFLAGS}"
+      fi
+   else
+      CFLAGS="-Wall -O2 ${CFLAGS}"
    fi
 fi
+
+dnl #------------------------------------------------------------------------#
+dnl # Creates output files:                                                  #
+dnl #------------------------------------------------------------------------#
 
 AC_OUTPUT(Makefile src/Makefile)
 

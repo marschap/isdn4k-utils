@@ -1,5 +1,5 @@
 /*
-** $Id: vboxbeep.c,v 1.2 1997/03/18 12:36:51 michael Exp $
+** $Id: vboxbeep.c,v 1.3 1997/04/04 09:32:42 michael Exp $
 **
 ** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
 */
@@ -48,6 +48,8 @@ static char	  *pidname		= NULL;
 static int	 	killmode		= 0;
 static time_t	starttime	= 0;
 static int     dodebug     = FALSE;
+static int     haveconnect = FALSE;
+static int     downconnect = FALSE;
 
 static struct option arguments[] =
 {
@@ -56,6 +58,8 @@ static struct option arguments[] =
 	{ "kill"			, no_argument			, NULL, 'k' },
 	{ "sound" 		, required_argument	, NULL, 's' },
 	{ "messagebox" , required_argument  , NULL, 'm' },
+	{ "machine"    , required_argument  , NULL, 'i' },
+	{ "port"       , required_argument  , NULL, 'o' },
 	{ "pause"      , required_argument  , NULL, 'p' },
 	{ "debug"      , no_argument        , NULL, 'x' },
 	{ NULL			, 0						, NULL, 0   }
@@ -86,18 +90,20 @@ static void   usage(void);
 
 int main(int argc, char **argv)
 {
-	char timestrings[32];
-	int  i;
-	int  b;
-	int  opts;
-	int  checkpause;
+	char  timestrings[32];
+	int   i;
+	int   b;
+	int   opts;
+	int   checkpause;
+	int   port;
+	char *machine;
 
 #if HAVE_LOCALE_H
 	setlocale(LC_ALL, "");
 #endif
 
 #if ENABLE_NLS
-	textdomain("vbox");
+	textdomain(PACKAGE);
 #endif
 
 	if (!(vbasename = rindex(argv[0], '/')))
@@ -125,10 +131,12 @@ int main(int argc, char **argv)
 	killmode		= 0;
 	starttime	= 0;
 	checkpause  = 5;
+	port        = VBOXD_DEF_PORT;
+	machine     = "localhost";
 	
 	b = 0;
 
-	while ((opts = getopt_long(argc, argv, "vhks:m:p:x", arguments, (int *)0)) != EOF)
+	while ((opts = getopt_long(argc, argv, "vhko:i:s:m:p:x", arguments, (int *)0)) != EOF)
 	{
 		switch (opts)
 		{
@@ -150,6 +158,14 @@ int main(int argc, char **argv)
 				
 			case 's':
 				parse_sound_times(strdup(optarg), 0, 23);
+				break;
+
+			case 'o':
+				port = (int)xstrtol(optarg, VBOXD_DEF_PORT);
+				break;
+
+			case 'i':
+				machine = optarg;
 				break;
 
 			case 'v':
@@ -239,20 +255,47 @@ int main(int argc, char **argv)
 		log(LOG_DEBUG, gettext("time range \"%s\"."), timestrings);
 	}
 
+	haveconnect = FALSE;
+
 	while (TRUE)
 	{
-		for (i = 0; i < MAX_MESSAGE_BOXES; i++)
+		downconnect = FALSE;
+
+		if (!haveconnect)
 		{
-			if (messageboxes[i].name)
+			if (vboxd_connect(machine, port) == VBOXC_ERR_OK)
 			{
-				messageboxes[i].time = get_newest_message_time(messageboxes[i].name);
-				
-				if (messageboxes[i].time > starttime)
+				if (dodebug) log(LOG_DEBUG, gettext("connected to vbox message server."));
+
+				haveconnect = TRUE;
+			}
+			else log(LOG_ERR, gettext("can't connect to vbox message server."));
+		}
+
+		if (haveconnect)
+		{
+			for (i = 0; i < MAX_MESSAGE_BOXES; i++)
+			{
+				if (messageboxes[i].name)
 				{
-					lets_hear_the_sound();
+					messageboxes[i].time = get_newest_message_time(messageboxes[i].name);
 					
-					break;
+					if (messageboxes[i].time > starttime)
+					{
+						lets_hear_the_sound();
+					
+						break;
+					}
 				}
+			}
+
+			if (downconnect)
+			{
+				vboxd_disconnect();
+
+				if (dodebug) log(LOG_DEBUG, gettext("server connection canceled."));
+
+				haveconnect = FALSE;
 			}
 		}
 
@@ -288,6 +331,8 @@ static void usage(void)
 	fprintf(stderr, gettext("-s, --sound HOURS      Hours to signal with sound (default: no time)\n"));
 	fprintf(stderr, gettext("-m, --messagebox DIR   Watch directory DIR for new messages.\n"));
 	fprintf(stderr, gettext("-p, --pause SECONDS    Pause in seconds to sleep between checks (default: 5).\n"));
+	fprintf(stderr, gettext("-i, --machine HOST     Connect to message server on HOST (default: localhost).\n"));
+	fprintf(stderr, gettext("-o, --port PORT        Connect to message server on PORT (default: %d).\n"), VBOXD_DEF_PORT);
 	fprintf(stderr, gettext("-h, --help             Displays this help text.\n"));
 	fprintf(stderr, gettext("-v, --version          Displays program version.\n"));
 	fprintf(stderr, gettext("\n"));
@@ -340,6 +385,13 @@ static void leave_program(int sig)
 
 	remove_pid_file();
 	free_resources();
+
+	if (haveconnect)
+	{
+		if (dodebug) log(LOG_DEBUG, gettext("disconnecting from server..."));
+
+		vboxd_disconnect();
+	}
 
 	if (dodebug) log(LOG_DEBUG, gettext("terminate..."));
 
@@ -431,11 +483,6 @@ static int add_dir_to_messagebox(int nr, char *box)
 		{
 			messageboxes[nr].name = name;
 			messageboxes[nr].time = time(NULL);
-
-			if (dodebug)
-			{
-				log(LOG_DEBUG, gettext("add directory \"%s\" to watchlist..."), name);
-			}
 			
 			returnok();
 		}
@@ -469,34 +516,47 @@ static void free_all_messageboxes(void)
 
 static time_t get_newest_message_time(char *box)
 {
-	struct dirent *entry;
-	struct stat		status;
+	time_t  newest;
+	char    response[128 + 1];
+	char   *msg;
+	char   *respcode;
+	char   *respmsgs;
+	char   *resptime;
 
-	DIR	  *dir		= NULL;
-	time_t	newest	= 0;
-
-	if (chdir(box) == 0)
+	if (haveconnect)
 	{
-		if ((dir = opendir(".")))
+		newest = 0;
+
+		vboxd_put_message("count %s", box);
+
+		if ((msg = vboxd_get_message()))
 		{
-			while ((entry = readdir(dir)))
+			if (!vboxd_test_response(VBOXD_VAL_SERVERQUIT))
 			{
-				if (strcmp(entry->d_name, "." ) == 0) continue;
-				if (strcmp(entry->d_name, "..") == 0) continue;
-
-				if (stat(entry->d_name, &status) == 0)
+				if (vboxd_test_response(VBOXD_VAL_COUNT))
 				{
-					if (status.st_mtime > newest) newest = status.st_mtime;
+					xstrncpy(response, msg, 128);
+
+					respcode = strtok(response, "\t ");
+					respmsgs = strtok(NULL    , "\t ");
+					resptime = strtok(NULL    , "\t ");
+
+					if ((respcode) && (respmsgs) && (resptime))
+					{
+						return(xstrtol(resptime, 0));
+					}
+					else log(LOG_ERR, gettext("bad server response \"%s\"."), msg);
 				}
+				else log(LOG_ERR, gettext("bad server response \"%s\"."), msg);
 			}
-
-			closedir(dir);
+			else log(LOG_ERR, gettext("server connection lost!"));
 		}
-		else log(LOG_ERR, gettext("can't open \"%s\" (%s)."), box, strerror(errno));
-	}
-	else log(LOG_ERR, gettext("can't change to \"%s\" (%s)."), box, strerror(errno));
+		else log(LOG_ERR, gettext("can't get server response."));
 
-	return(newest);
+		downconnect = TRUE;
+	}
+
+	return(0);
 }
 
 /**************************************************************************/

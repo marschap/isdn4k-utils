@@ -1,5 +1,5 @@
 /*
-** $Id: init.c,v 1.5 1997/03/18 12:36:42 michael Exp $
+** $Id: init.c,v 1.6 1997/04/04 09:32:37 michael Exp $
 **
 ** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
 */
@@ -96,18 +96,6 @@ int init_program(char *device, char *gettyrc)
 	xstrncpy(setup.users.name, passwd->pw_name, USER_MAX_NAME);
 	xstrncpy(setup.users.home, passwd->pw_dir , USER_MAX_HOME);
 
-	if (!*setup.vboxrcname)
-	{
-		xstrncpy(setup.vboxrcname, setup.users.home, SETUP_MAX_VBOXRC);
-		xstrncat(setup.vboxrcname, "/.vboxrc"		 , SETUP_MAX_VBOXRC);
-	}
-
-	if (!*setup.vboxctrl)
-	{
-		xstrncpy(setup.vboxctrl, setup.users.home, SETUP_MAX_VBOXCTRL);
-		xstrncat(setup.vboxctrl, "/.vboxctrl"	  , SETUP_MAX_VBOXCTRL);
-	}
-
 	if (!*setup.spool)
 	{
 		xstrncpy(setup.spool, SPOOLDIR		  , SETUP_MAX_SPOOLNAME);
@@ -115,11 +103,19 @@ int init_program(char *device, char *gettyrc)
 		xstrncat(setup.spool, setup.users.name, SETUP_MAX_SPOOLNAME);
 	}
 
-	log(L_INFO, gettext("User %s's messagebox is \"%s\"...\n"), setup.users.name, setup.spool);
-	log(L_INFO, gettext("User %s's vboxrc is \"%s\"...\n"), setup.users.name, setup.vboxrcname);
+	if (!*setup.vboxrcname)
+	{
+		xstrncpy(setup.vboxrcname, setup.spool , SETUP_MAX_VBOXRC);
+		xstrncat(setup.vboxrcname, "/vbox.conf", SETUP_MAX_VBOXRC);
+	}
 
-	/* Create the spool directory and set the permissions to the	*/
-	/* current user (with umask).												*/
+	log(L_INFO, gettext("User %s's messagebox is \"%s\"...\n"), setup.users.name, setup.spool);
+	log(L_INFO, gettext("User %s's vbox.conf is \"%s\"...\n"), setup.users.name, setup.vboxrcname);
+
+	/*
+	 * Create the spool directory and set the permissions to the current
+	 * user (with umask).
+	 */
 
 	if ((mkdir(setup.spool, S_IRWXU) == -1) && (errno != EEXIST))
 	{
@@ -128,7 +124,10 @@ int init_program(char *device, char *gettyrc)
 		returnerror();
 	}
 
-	if (!permissions_set(setup.spool, setup.users.uid, setup.users.gid, S_IRWXU|S_IRWXG|S_IRWXO, setup.users.umask)) returnerror();
+	if (!permissions_set(setup.spool, setup.users.uid, setup.users.gid, S_IRWXU|S_IRWXG|S_IRWXO, setup.users.umask))
+	{
+		returnerror();
+	}
 
 	/*
 	 * Now we check if 'vboxctrl-stop' exists. If true, loop and watch
@@ -186,13 +185,16 @@ int init_program(char *device, char *gettyrc)
 	 * umask.
 	 */
 
-	if (!permissions_drop(setup.users.uid, setup.users.gid, setup.users.name, setup.users.home)) returnerror();
+	if (!permissions_drop(setup.users.uid, setup.users.gid, setup.users.name, setup.users.home))
+	{
+		returnerror();
+	}
 
 	umask(setup.users.umask);
 
 	/*
-	 * Load vbox's runtime configuration into memory and initialize
-	 * the voice defaults.
+	 * Load vbox's configuration into memory and initialize the voice
+	 * defaults.
 	 */
 
 	if (!(setup.vboxrc = streamio_open(setup.vboxrcname)))

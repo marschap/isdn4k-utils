@@ -1,18 +1,25 @@
 /*
-** $Id: libvbox.c,v 1.6 1997/03/18 12:36:45 michael Exp $
+** $Id: libvbox.c,v 1.7 1997/04/04 09:32:40 michael Exp $
 **
 ** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
 */
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdarg.h>
 #include <string.h>
 #include <unistd.h>
 #include <limits.h>
-#include <sys/types.h>
-#include <sys/stat.h>
 #include <fcntl.h>
 #include <dirent.h>
+#include <ctype.h>
+#include <signal.h>
+#include <netdb.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <sys/time.h>
               
 #include "libvbox.h"                     
 
@@ -21,6 +28,254 @@
 char *compressions[] = {
    "?", "?", "ADPCM-2", "ADPCM-3", "ADPCM-4", "ALAW", "ULAW"
 };
+
+
+static char  vboxd_message[128 + 1];
+
+FILE *vboxd_r_stream = NULL;
+FILE *vboxd_w_stream = NULL;
+int   vboxd_r_fd     = -1;
+int   vboxd_w_fd     = -1;
+
+/**************************************************************************/
+/** vboxd_connect(): Connect to the vbox message server. After connect   **/
+/**                  the function reads the server startup message!      **/
+/**************************************************************************/
+/** machine          String with the hostname or the ip address.         **/
+/** port             Port number to connect.                             **/
+/** <return>         0 on success; < 0 on error.                         **/
+/**************************************************************************/
+
+int vboxd_connect(char *machine, int port)
+{
+	struct sockaddr_in   sockp;
+   struct hostent      *hostp;
+	struct hostent       defaulthost;
+	struct in_addr       defaultaddr;
+	char                 defaultname[256];
+	char                *defaultlist[1];
+	char               **p;
+	int                  c;
+	int                  s;
+
+	if (isdigit(*machine))
+	{
+		defaultlist[0] = NULL;
+
+		if (inet_aton(machine, &defaultaddr) != 0)
+		{
+			xstrncpy(defaultname, machine, 255);
+
+			defaulthost.h_name      = (char *)defaultname;
+			defaulthost.h_addr_list = defaultlist;
+			defaulthost.h_addr      = (char *)&defaultaddr;
+			defaulthost.h_length    = sizeof(struct in_addr);
+			defaulthost.h_addrtype  = AF_INET;
+			defaulthost.h_aliases   = 0;
+
+			hostp = &defaulthost;
+		}
+		else hostp = gethostbyname(machine);
+	}
+	else hostp = gethostbyname(machine);
+
+	if (!hostp) return(VBOXC_ERR_UNKNOWNHOST);
+
+	memset((char *)&sockp, '\0', sizeof(struct sockaddr_in));
+
+   sockp.sin_family = hostp->h_addrtype;
+   sockp.sin_port   = htons(port);
+
+	c = -1;
+	s = -1;
+
+   for (p = hostp->h_addr_list; ((p) && (*p)); p++)
+	{
+      s = socket(hostp->h_addrtype, SOCK_STREAM, 0);
+
+      if (s < 0) return(VBOXC_ERR_NOSOCKET);
+
+      memcpy((char *)&sockp.sin_addr, *p, hostp->h_length);
+
+		c = connect(s, (struct sockaddr *)&sockp, sizeof(struct sockaddr_in));
+
+		if (c == 0) break;
+
+		close(s);
+	}
+
+	if (c < 0) return(VBOXC_ERR_NOCONNECT);
+
+	vboxd_r_fd = s;
+	vboxd_w_fd = dup(vboxd_r_fd);
+
+	if ((vboxd_w_fd < 0) || (vboxd_r_fd < 0))
+	{
+		vboxd_disconnect();
+
+		return(VBOXC_ERR_NOFILEIO);
+	}
+
+	vboxd_r_stream = fdopen(vboxd_r_fd, "r");
+	vboxd_w_stream = fdopen(vboxd_w_fd, "w");
+
+	if ((!vboxd_r_stream) || (!vboxd_w_stream))
+	{
+		vboxd_disconnect();
+
+		return(VBOXC_ERR_NOFILEIO);
+	}
+
+	if (!vboxd_get_message())
+	{
+		vboxd_disconnect();
+
+		return(VBOXC_ERR_GETMESSAGE);
+	}
+
+	if (!vboxd_test_response(VBOXD_VAL_SERVEROK))
+	{
+		vboxd_disconnect();
+
+		return(VBOXC_ERR_GETMESSAGE);
+	}
+
+	return(VBOXC_ERR_OK);
+}
+
+/**************************************************************************/
+/** vboxd_disconnect(): Sends "quit" and disconnect from the server.     **/
+/**************************************************************************/
+
+void vboxd_disconnect(void)
+{
+	if (vboxd_w_stream) vboxd_put_message("quit");
+
+	if (vboxd_r_stream) close_and_null(vboxd_r_stream);
+	if (vboxd_w_stream) close_and_null(vboxd_w_stream);
+
+	if (vboxd_r_fd != -1) close_and_mone(vboxd_r_fd);
+	if (vboxd_w_fd != -1) close_and_mone(vboxd_w_fd);
+}
+
+/**************************************************************************/
+/** vboxd_put_message():  **/
+/**************************************************************************/
+
+void vboxd_put_message(char *fmt, ...)
+{
+   va_list arg;
+
+	if (vboxd_w_stream)
+	{
+		va_start(arg, fmt);
+
+		fprintf(stderr, "[put] ");
+		vfprintf(stderr        , fmt, arg);
+		fprintf(stderr, "\n");
+		vfprintf(vboxd_w_stream, fmt, arg);
+		fprintf(vboxd_w_stream, "\r\n");
+		fflush(vboxd_w_stream);
+
+		va_end(Arg);
+	}
+}
+
+/**************************************************************************/
+/** vboxd_get_message(): Try to get a message from the server. The func- **/
+/**                      tion us a timeout of 5 seconds to get the mess- **/
+/**                      age.                                            **/
+/**************************************************************************/
+/** <return>             Pointer to the message or NULL.                 **/
+/**************************************************************************/
+
+char *vboxd_get_message(void)
+{
+	struct timeval timeval;
+	fd_set         rmask;
+
+	*vboxd_message = '\0';
+
+	if (vboxd_r_stream)
+	{
+		FD_ZERO(&rmask);
+		FD_SET(vboxd_r_fd, &rmask);
+
+		timeval.tv_sec  = 5;
+		timeval.tv_usec = 0;
+
+		if (select((vboxd_r_fd + 1), &rmask, NULL, NULL, &timeval) > 0)
+		{
+			if (FD_ISSET(vboxd_r_fd, &rmask))
+			{
+				fprintf(stderr, "[get] select has data for me...\n");
+
+				if (fgets(vboxd_message, 128, vboxd_r_stream))
+				{
+					vboxd_message[strlen(vboxd_message) - 1] = '\0';
+					vboxd_message[strlen(vboxd_message) - 1] = '\0';
+
+					fprintf(stderr, "[get] %s\n", vboxd_message);
+
+					return(vboxd_message);
+				}
+			}
+		}
+	}
+
+	fprintf(stderr, "[get] FAILED!\n");
+
+	return(NULL);
+}
+
+/**************************************************************************/
+/** vboxd_test_response():  **/
+/**************************************************************************/
+
+int vboxd_test_response(char *response)
+{
+	if (strlen(vboxd_message) > (strlen(response) + 1))
+	{
+		if (strncmp(response, vboxd_message, strlen(response)) == 0)
+		{
+			if (vboxd_message[strlen(response)] == ' ') returnok();
+		}
+	}
+
+	returnerror();
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /*************************************************************************/
 /** get_message_ptime():	Returns the vbox message length in seconds.	**/

@@ -1,29 +1,31 @@
 #! /bin/sh
 ##
+## $Id: mkpos,v 1.2 1997/04/04 09:32:50 michael Exp $
+##
 ## Script to create the misc message catalogs. This is only for development!
 
     # Get all sources (*.c) to a variable #
 
 GETTEXT_SOURCE_FILES=""
 
-for i in ${TOPDIR}/src/*.c
+for i in ${VBOX_TOPDIR}/src/*.c
 do
     GETTEXT_SOURCE_FILES="${GETTEXT_SOURCE_FILES} ${i}"
 done
 
     # Process each existing catalog #
 
-for i in ${CATALOGS}
+for i in ${VBOX_CATALOGS}
 do
-    OLD_PO_FILE="${TOPDIR}/messages/tmp-o-${i}"
-    NEW_PO_FILE="${TOPDIR}/messages/tmp-n-${i}"
+    OLD_PO_FILE="${VBOX_TOPDIR}/messages/tmp-o-${i}"
+    NEW_PO_FILE="${VBOX_TOPDIR}/messages/tmp-n-${i}"
 
-    echo "Creating '${TOPDIR}/messages/${i}.po'..."
+    echo "Creating '${VBOX_TOPDIR}/messages/${i}.po'..."
 
-    if (test -f ${TOPDIR}/messages/${i}.po)
+    if (test -f ${VBOX_TOPDIR}/messages/${i}.po)
     then
-	cp ${TOPDIR}/messages/${i}.po ${TOPDIR}/messages/backup-${i}.po
-	mv ${TOPDIR}/messages/${i}.po ${OLD_PO_FILE}.po
+	cp ${VBOX_TOPDIR}/messages/${i}.po ${VBOX_TOPDIR}/messages/backup-${i}.po
+	mv ${VBOX_TOPDIR}/messages/${i}.po ${OLD_PO_FILE}.po
     fi
 
     xgettext --default-domain=${NEW_PO_FILE} \
@@ -32,14 +34,14 @@ do
 
     if (test -f ${OLD_PO_FILE}.po)
     then
-	tupdate ${NEW_PO_FILE}.po ${OLD_PO_FILE}.po >${TOPDIR}/messages/${i}.po 2>/dev/null
+	tupdate ${NEW_PO_FILE}.po ${OLD_PO_FILE}.po >${VBOX_TOPDIR}/messages/${i}.po 2>/dev/null
 
 	rm ${OLD_PO_FILE}.po ${NEW_PO_FILE}.po
     else
-	mv ${NEW_PO_FILE}.po ${TOPDIR}/messages/${i}.po
+	mv ${NEW_PO_FILE}.po ${VBOX_TOPDIR}/messages/${i}.po
     fi
 
-    echo "Creating '${TOPDIR}/messages/${i}.mo'..."
+    echo "Creating '${VBOX_TOPDIR}/messages/${i}.mo'..."
 
-    msgfmt --output-file=${TOPDIR}/messages/${i}.mo ${TOPDIR}/messages/${i}.po
+    msgfmt --output-file=${VBOX_TOPDIR}/messages/${i}.mo ${VBOX_TOPDIR}/messages/${i}.po
 done

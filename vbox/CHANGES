@@ -1,7 +1,72 @@
-# $Id: CHANGES,v 1.9 1997/03/18 12:36:25 michael Exp $
+# $Id: CHANGES,v 1.10 1997/04/04 09:31:49 michael Exp $
 #
 # To describe the news & fixes better (my english is not the best :-) the
 # changelog is only available in german.
+
+04-Apr-97
+=========
+
+o [Fix] Änderungen am Makefile.in.
+
+
+25-Mär-97
+=========
+
+o [Neu] Dokumentation geschrieben.
+
+
+24-Mär-97
+=========
+
+o [Neu] Neues Target 'create-de-sgml' im Makefile. Damit läßt sich ein
+	sgml-Source der Dokumentation für weitere Umwandlungen
+	erzeugen.
+
+o [Neu] Dokumentation geschrieben.
+
+
+23-Mär-97
+=========
+
+o [Neu] Programm vboxbeep so angepasst, das es vboxd benutzt.
+
+o [Neu] Funktion count in vboxd so umgeschrieben, das sie die Anzahl
+	der neuen Nachrichten *und* das Datum der neusten Nachricht
+	ausgibt.
+
+
+22-Mär-97
+=========
+
+o [Neu] Dateien im Verzeichnis examples/ auf den neusten Stand
+	gebracht.
+
+o [Neu] Konfigurationsskripts so umgeschrieben, das alle exportierten
+	Variablen mit VBOX_ beginnen.
+
+o [Neu] Die Datei in der sich die Konfigurationen des Users befinden
+	wurde in vbox.conf umbenannt. Sie befindet sich jetzt
+	standardmäßig im Spoolverzeichnis des jeweiligen Users. Die
+	Konfiguration wird nur noch von vboxgetty selbst
+	benötigt. Alle anderen Programme können die Daten aus dem
+	Header der Nachrichten oder von vboxd auslesen!
+
+
+21-Mär-97
+=========
+
+o [Neu] Server Kommandos count, message und header in vboxd
+	implementiert.
+
+
+20-Mär-97
+=========
+
+o [Neu] Neues Programm 'vboxd': Der Daemon funktioniert ähnlich dem
+	nntpd und kann vbox Nachrichten bearbeiten. Der Daemon wird
+	vom inetd gestartet und kann dann z.B. über telnet oder
+	Sockets angesprochen werden.
+
 
 15-Mär-97
 =========
@@ -46,6 +111,7 @@ o [Neu] Funktion lock_type_lock() belegt Speicher für den Namen jetzt
 	selbst.
 
 o [Neu]	Funktion log_init() belegt Speicher für den Namen jetzt selbst.
+
 
 12-Mär-97
 =========
@@ -106,6 +172,7 @@ o [Neu] Option '--with-tcllib' in 'configure.in' eingebaut, damit man
 
 o [Fix]	Einige Änderungen an den Sourcen gemacht, damit vbox mit der neuen
 	glibc 2.0.x compiliert (Andreas Jaeger <aj@arthur.pfalz.de>).
+
 
 26-Feb-97
 =========

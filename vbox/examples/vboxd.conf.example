@@ -1,0 +1,18 @@
+
+# Login access list
+#
+# All hosts in the login access list (begins with 'L') are checked at
+# login (server startup) time. If access is 'yes' the host can login
+# and count messages without special access.
+
+L:abadonna.franken.de:Y
+L:*:N
+
+# Full access list
+#
+# All hosts in the full access list (begins with 'A') are checked if the
+# server gets the 'login' command.
+
+A:abadonna.franken.de:RW:michael:123:/var/spool/vbox/michael/incoming
+A:abadonna.franken.de:RW:nicole:123:/var/spool/vbox/nicole/incoming
+A:*:-:-:-:-

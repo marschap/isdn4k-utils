@@ -1,0 +1,35 @@
+#! /bin/sh
+##
+## $Id#
+##
+## Create the documents from sgml source. Please *only* call this
+## script from top level makefile!
+
+SGML2TEXT="/usr/local/lib/linuxdoc-sgml/bin/sgml2txt"
+SGML2HTML="/usr/local/lib/linuxdoc-sgml/bin/sgml2html"
+
+DOCLANGS="de"
+
+for l in ${DOCLANGS}
+do
+   cd "${VBOX_TOPDIR}/doc/${l}"
+
+   ${SGML2TEXT} -l -f vbox
+
+   if [ "$l" = "de" ]
+   then
+      ${SGML2HTML} -l -L deutsch vbox
+   else
+      ${SGML2HTML} -l vbox
+   fi
+
+   for i in *.html
+   do
+     mv $i html/$i.in
+   done
+
+   for i in *.txt
+   do
+      mv $i txt/$i.in
+   done
+done

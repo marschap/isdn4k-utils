@@ -4,52 +4,34 @@
 # a complete description of the commands!
 #--------------------------------------------------------------------------
 
-# Global settings
+# Global settings for all ports
 
-compression	alaw
-user		michael
-group		users
-umask		077
-badinitsexit	5
+compression		adpcm-4
+umask			077
+badinitsexit		10
+dropdtrtime		400
+initpause		2500
+commandtimeout		2
+echotimeout		2
+ringtimeout		3
+alivetimeout		300
+freespace		2000000
 
-# Settings for port ttyI5
 
-port /dev/ttyI5
-  dropdtronhangup	no
-  dropdtrtime		1000
-  initpause		2500
-  modeminit		ATZ&B512&E0190332332
-  modemhangup		~~+++~~ATH
-  modemspeed		57600
-  user			peter
-  group			lustig
-  badinitsexit		999
-  commandtimeout	5
-  echotimeout		10
-  ringtimeout		15
-  alivetimeout		3000
-  compression		blub
+# Settings for port ttyI6
+
+port /dev/ttyI6
+  modeminit		ATZ&B512&E7830022
+  user			nicole
+  group			users
+  spooldir		/var/spool/vbox/nicole
+
 
 # Settings for port ttyI7
 
 port /dev/ttyI7
-  dropdtrtime		= 400
-  initpause		= 2500
-  modeminit=ATZ&B512&E7840514	# Test
-  user	= 	 michael
+  modeminit		ATZ&B512&E7850413
+  user			michael
   group			users
-  umask			077
-  badinitsexit		10
-  commandtimeout	4
-  echotimeout		4
-  ringtimeout		5
-  alivetimeout		300
-  compression		adpcm-4
-#  freespace		2000000000
-  interninitb		ATS13.2=1S13.4=1
   spooldir		/var/spool/vbox/michael
-  vboxrc		/var/spool/vbox/michael/vboxrc
-  vboxctrl		/var/spool/vbox/michael/vboxctrl
-
-
 

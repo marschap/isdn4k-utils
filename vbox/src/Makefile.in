@@ -1,5 +1,5 @@
 #
-# $Id: Makefile.in,v 1.6 1997/03/18 12:36:41 michael Exp $
+# $Id: Makefile.in,v 1.7 1997/04/04 09:32:36 michael Exp $
 
 #----------------------------------------------------------------------------#
 # The information below is modified by the configure script when Makefile is #
@@ -20,7 +20,7 @@ LIBS_INTL	= @LINK_INTL_LIBS@
 
 HEADERS		= init.h lists.h lock.h log.h modem.h streamio.h perms.h \
 		  rcgetty.h script.h voice.h vboxgetty.h rcvbox.h \
-		  vboxctrl.h
+		  vboxctrl.h vboxd.h config.h
 
 #----------------------------------------------------------------------------#
 # Object compile modes                                                       #
@@ -39,7 +39,7 @@ lists.o:	$(HEADERS) lists.c
 		$(CC) $(CFLAGS) -c lists.c
 
 script.o:	$(HEADERS) script.c
-		$(CC) $(CFLAGS) -DBINDIR='"$(VBINDIR)"' -c script.c
+		$(CC) $(CFLAGS) -DBINDIR='"$(VBOX_BINDIR)"' -c script.c
 
 voice.o:	$(HEADERS) voice.c
 		$(CC) $(CFLAGS) -c voice.c
@@ -60,7 +60,7 @@ rcvbox.o:	$(HEADERS) rcvbox.c
 		$(CC) $(CFLAGS) -c rcvbox.c
 
 vboxgetty.o:	$(HEADERS) vboxgetty.c
-		$(CC) $(CFLAGS) -DGETTYRC='"$(GETTYRC)"' -c vboxgetty.c
+		$(CC) $(CFLAGS) -DGETTYRC='"$(VBOX_GETTYCONF)"' -c vboxgetty.c
 
 vboxconvert.o:	$(HEADERS) vboxconvert.c
 		$(CC) $(CFLAGS) -c vboxconvert.c
@@ -74,9 +74,12 @@ vboxctrl.o:	$(HEADERS) vboxctrl.c
 vboxbeep.o:	$(HEADERS) vboxbeep.c
 		$(CC) $(CFLAGS) -c vboxbeep.c
 
+vboxd.o:	$(HEADERS) vboxd.c
+		$(CC) $(CFLAGS) -DVBOXDRC='"$(VBOX_VBOXDCONF)"' -c vboxd.c
+
 #----------------------------------------------------------------------------#
 
-all:		  vboxlib vboxgetty vboxconvert vboxctrl vboxbeep vbox
+all:		  vboxlib vboxd vboxgetty vboxconvert vboxctrl vboxbeep vbox
 
 #----------------------------------------------------------------------------#
 # Compiling vboxlib                                                          #
@@ -135,7 +138,7 @@ vboxctrl:	  $(VBOXCTRLOBJS)
 		  $(CC) $(CFLAGS) $(VBOXCTRLOBJS) -o vboxctrl -L. $(LIBS_INTL) -lvbox
 
 #----------------------------------------------------------------------------#
-# Compiling vboxleds                                                         #
+# Compiling vboxbeep                                                         #
 #----------------------------------------------------------------------------#
 
 VBOXBEEPOBJS	= vboxbeep.o
@@ -144,46 +147,11 @@ vboxbeep:	  $(VBOXBEEPOBJS)
 		  $(CC) $(CFLAGS) $(VBOXBEEPOBJS) -o vboxbeep -L. $(LIBS_INTL) -lvbox
 
 #----------------------------------------------------------------------------#
-# Misc                                                                       #
+# Compiling vboxd                                                            #
 #----------------------------------------------------------------------------#
 
-clean:
-		  @rm -f *~
+VBOXDOBJS	= vboxd.o streamio.o
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+vboxd:		  $(VBOXDOBJS)
+		  $(CC) $(CFLAGS) $(VBOXDOBJS) -o vboxd -L. -lvbox
 

@@ -1,5 +1,5 @@
 /*
-** $Id: voice.c,v 1.8 1997/03/18 12:36:56 michael Exp $
+** $Id: voice.c,v 1.9 1997/04/04 09:32:44 michael Exp $
 **
 ** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
 */
@@ -411,7 +411,7 @@ int voice_get_message(char *name, char *timestr, int save)
 
 		if (!header_put(fd, &header))
 		{
-	      log(L_ERROR, gettext("Can't write raw voice audio header.\n"));
+	      log(L_ERROR, gettext("Can't write vbox audio header.\n"));
       
 			voice_close_or_unlink(fd, name);
 

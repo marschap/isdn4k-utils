@@ -1,0 +1,1049 @@
+<!doctype linuxdoc system>
+
+<article>
+
+<!-- *********************************************************************
+     **									**
+     **	                          T I T E L				**
+     **									**
+     ********************************************************************* -->
+
+<title>V B O X
+<author>Michael 'Ghandi' Herold <tt>&lt;michael@abadonna.franken.de&gt;</tt>
+<date>Version @VERSION@ (@VERDATE@)
+<abstract>
+Diese Dokumentation beschreibt die Konfiguration und Installation von
+<em>vbox</em> Version @VERSION@, einem Softwarepaket zum Betrieb eines
+Anrufbeantworters mit <em>isdn4linux</em>.
+</abstract>
+
+<!-- *********************************************************************
+     **									**
+     **	            I N H A L T S V E R Z E I C H N I S			**
+     **									**
+     ********************************************************************* -->
+
+<toc>
+
+<!-- *********************************************************************
+     **									**
+     **	                       C O P Y R I G H T			**
+     **									**
+     ********************************************************************* -->
+
+<sect>Copyright<label id="id-copyright">
+<p>
+
+Copyright &copy; 1996, 1997 Michael 'Ghandi' Herold
+
+Das Paket <em>vbox</em> ist freie Software und kann unter den Bedingungen der
+<em>GNU General Public License</em> veröffentlicht oder verändert werden.
+
+Die Dokumentation sowie alle Programme von <em>vbox</em> wurden mit großer
+Sorgfalt erstellt. Dennoch sind Fehler nicht ganz auszuschließen. Aus diesem
+Grund sind die in der vorliegenden Dokumentation enthaltenen Angaben mit
+keiner Verpflichtung oder Garantie irgendeiner Art verbunden. Sowohl Michael
+Herold als auch die in Kapitel <ref id="id-danksagungen" name="Danksagungen">
+genannten Personen übernehmen keine Verantwortung oder sonstige Haftung für
+Schäden, die auf irgendeine Art aus der Benutzung der Dokumentation oder den
+darin beschriebenen Programmen entstehen oder entstanden sind.
+
+<!-- *********************************************************************
+     **									**
+     **	                         V O R W O R T                          **
+     **									**
+     ********************************************************************* -->
+
+<sect>Vorwort<label id="id-vorwort">
+<p>
+
+<!-- *********************************************************************
+     **									**
+     **	                   I N S T A L L A T I O N			**
+     **									**
+     ********************************************************************* -->
+
+<sect>Installation<label id="id-installation">
+<p>
+
+<!-- *********************************************************************
+     **                             VBOXD                               **
+     ********************************************************************* -->
+
+<sect1>vboxd<label id="id-installation-vboxd">
+<p>
+
+
+<!-- *********************************************************************
+     **									**
+     **	                    K O N F I G U R A T I O N			**
+     **									**
+     ********************************************************************* -->
+
+<sect>Konfiguration<label id="id-konfiguration">
+<p>
+
+<!-- *********************************************************************
+     **                           VBOXD.CONF                            **
+     ********************************************************************* -->
+
+<sect1>vboxd.conf<label id="id-konfiguration-vboxdconf">
+<p>
+
+<!-- *********************************************************************
+     **									**
+     **	                    S K R I P T S P R A C H E			**
+     **									**
+     ********************************************************************* -->
+
+<sect>Skriptsprache<label id="id-skriptsprache">
+<p>
+
+Ab Version 2.0.0 von <em>vbox</em> wird <em>tcl</em> als Skriptsprache
+benutzt, um eingegangene Anrufe zu bearbeiten. Eine genaue Beschreibung der
+allgemeinen Funktionen von <em>tcl</em> kann der <em>tcl</em> beiliegenden
+Dokumentation entnommen werden.
+
+Die Anrufe werden auch weiterhin von <em>vboxgetty</em> entgegengenommen. Die
+weitere Bearbeitung nach der Entgegennahme erfolgt dann über das <em>tcl</em>
+Skript.
+
+Zusätzlich zu den von <em>tcl</em> bereitgestellten Variablen stehen noch
+einige neue zur Verfügung, die von <em>vboxgetty</em> initialisiert werden
+(die Angaben in Klammern entsprechen der Voreinstellung):
+
+<descrip>
+
+<tag/<tt>vbox_var_bindir</tt>/
+<p>
+
+@DOTS@enthält das Verzeichnis, in welches die Programme installiert wurden,
+die von normalen Benutzern ausgeführt werden dürfen ('<tt>@BINDIR@</tt>').
+
+<tag/<tt>vbox_var_savename</tt>/
+<p>
+
+@DOTS@enthält den Dateinamen unter dem die Nachricht gespeichert werden
+sollte. Der Name errechnet sich aus dem aktuellen Datum und der Prozeß-ID.
+Der vorgegebene Name muß nicht benutzt werden!
+
+<tag/<tt>vbox_var_rectime</tt>/
+<p>
+
+@DOTS@enthält die Anzahl der Sekunden die maximal aufgezeichnet werden
+soll. Dieser Wert entspricht der Konfiguration des aktuellen Anrufers.
+
+<tag/<tt>vbox_var_spooldir</tt>/
+<p>
+
+@DOTS@enthält den Pfad zum Spoolverzeichnis des jeweiligen Benutzers
+('<tt>@SPOOLDIR@/&lt;username&gt;</tt>').
+
+<tag/<tt>vbox_var_checknew</tt>/
+<p>
+
+@DOTS@enthält den Pfad in dem nach neuen Nachrichten gesucht werden soll
+('<tt>@SPOOLDIR@/&lt;username&gt;/incoming</tt>').
+
+<tag/<tt>vbox_msg_standard</tt>/
+<p>
+
+@DOTS@enthält den Namen der Datei die als Ansage gespielt werden soll
+('<tt>@SPOOLDIR@/&lt;username&gt;/messages/standard.msg</tt>').
+
+<tag/<tt>vbox_msg_beep</tt>/
+<p>
+
+@DOTS@enthält den Namen der Datei die als Beep gespielt werden soll
+('<tt>@SPOOLDIR@/&lt;username&gt;/messages/beep.msg</tt>').
+
+<tag/<tt>vbox_msg_timeout</tt>/
+<p>
+
+@DOTS@enthält den Namen der Datei die bei einem Timeout gespielt werden soll
+('<tt>@SPOOLDIR@/&lt;username&gt;/messages/timeout.msg</tt>').
+
+<tag/<tt>vbox_caller_id</tt>/
+<p>
+
+@DOTS@enthält die <tt>CALLER ID</tt> des aktuellen Anrufers. Ist diese nicht
+bekannt, wird <tt>0</tt> eingetragen.
+
+<tag/<tt>vbox_caller_phone</tt>/
+<p>
+
+@DOTS@enthält die vollständige Telefonnummer des aktuellen Anrufers. Ist diese
+nicht bekannt, wird "<tt>*** Unknown ***</tt>" eingetragen.
+
+<tag/<tt>vbox_caller_name</tt>/
+<p>
+
+@DOTS@enthält den Namen des aktuellen Anrufers. Ist dieser nicht bekannt, wird
+"<tt>*** Unknown ***</tt>" eingetragen.
+
+<tag/<tt>vbox_user_name</tt>/
+<p>
+
+@DOTS@enthält den Namen des Benutzers, unter dessen Rechte der aktuelle
+<em>vboxgetty</em> läuft.
+
+<tag/<tt>vbox_user_home</tt>/
+<p>
+
+@DOTS@enthält das Heimatverzeichnis des Benutzers, unter dessen Rechte der
+aktuelle <em>vboxgetty</em> läuft.
+
+<tag/<tt>vbox_flag_standard</tt>/
+<p>
+
+@DOTS@enthält <tt>TRUE</tt> wenn der Ansagetext gespielt werden soll, oder
+<tt>FALSE</tt> wenn nicht. Der Wert entspricht der Konfiguration des aktuellen
+Anrufers.
+
+<tag/<tt>vbox_flag_beep</tt>/
+<p>
+
+@DOTS@enthält <tt>TRUE</tt> wenn der Beep gespielt werden soll, oder
+<tt>FALSE</tt> wenn nicht. Der Wert entspricht der Konfiguration des aktuellen
+Anrufers.
+
+<tag/<tt>vbox_flag_timeout</tt>/
+<p>
+
+@DOTS@enthält <tt>TRUE</tt> wenn die Timeout-Nachricht gespielt werden soll,
+oder <tt>FALSE</tt> wenn nicht. Der Wert entspricht der Konfiguration des
+aktuellen Benutzers.
+
+<tag/<tt>vbox_flag_record</tt>/
+<p>
+
+@DOTS@enthält <tt>TRUE</tt> wenn eine Nachricht aufgezeichnet werden soll,
+oder <tt>FALSE</tt> wenn nicht. Der Wert entspricht der Konfiguration des
+aktuellen Benutzers.
+
+</descrip>
+
+Zusätzlich zu den von <em>tcl</em> bereitgestellten Funktionen stehen noch
+einige neue zur Verfügung, mit denen <em>vboxgetty</em> gesteuert werden kann:
+
+<descrip>
+
+<tag/<tt>vbox_breaklist &lt;add&verbar;rem> &lt;sequence&verbar;all&gt;</tt>/
+<p>
+
+Mit diesem Befehl kann gesteuert werden, bei welchen Touchtone-Sequenzen
+<em>vboxgetty</em> das Abspielen, Aufzeichnen oder Warten abbricht.
+
+Touchtone-Sequenzen müssen immer in der Form <tt>*NUMMER&num</tt>
+angegeben werden, wobei <tt>NUMMER</tt> einer Folge von Zeichen der Form
+<tt>0-9</tt> und <tt>A-D</tt> enspricht.
+
+<descrip>
+
+<tag/<tt>add &lt;sequence&gt;</tt>/
+<p>
+
+Fügt die Touchtone-Sequenz <tt>sequence</tt> zur Abbruchliste hinzu.
+
+<tag/<tt>rem &lt;sequence&verbar;all&gt;</tt>/
+<p>
+
+Entfernt die Touchtone-Sequenz <tt>sequence</tt> aus der Abbruchliste. Wenn
+als <tt>sequence</tt> das Schlüsselwort <tt>all</tt> angegeben wird, wird die
+komplette Abbruchliste gelöscht.
+
+<tag/Beispiel:/
+<p>
+
+<verb>
+vbox_breaklist rem all
+vbox_breaklist add "*08154711#"
+</verb>
+
+</descrip>
+
+<tag/<tt>vbox_put_message &lt;message&gt;</tt>/
+<p>
+
+Mit dieser Funktion kann eine Nachricht abgespielt werden. Die Art des
+Abbruchs wird als Rückgabewert gesetzt.
+
+<descrip>
+
+<tag/<tt>message</tt>/
+<p>
+
+Vollständiger Name der Datei (inkl. Verzeichnis) die gespielt werden soll.
+
+</descrip>
+
+Folgende Rückgabewerte sind möglich:
+
+<descrip>
+
+<tag/<tt>ERROR</tt>/
+<p>
+
+Das Abspielen wurde wegen eines Fehlers abgebrochen.
+
+<tag/<tt>HANGUP</tt>/
+<p>
+
+Die Verbindung wurde beendet. Das Skript sollte sich bei dieser Rückgabe
+beenden.
+
+<tag/<tt>OK</tt>/
+<p>
+
+Die Datei wurde vollständig gespielt und durch kein Ereignis abgebrochen.
+
+</descrip>
+
+Enthält die Rückgabe einen anderen Wert, handelt es sich um eine
+Touchtone-Sequenz, die während des Abspielens erkannt wurde.
+
+<descrip>
+
+<tag/Beispiel:/
+<p>
+
+<verb>
+set RC { vbox_put_message /var/spool/vbox/michael/messages/standard.msg }
+</verb>
+
+</descrip>
+
+<tag/<tt>vbox_get_message &lt;savename&gt; &lt;timelimit&gt;</tt>/
+<p>
+
+Zeichnet eine Nachricht auf. Die Art des Abbruchs wird als Rückgabewert
+gesetzt.
+
+<descrip>
+
+<tag/<tt>savename</tt>/
+<p>
+
+Vollständiger Name der Datei (inkl. Verzeichnis) unter der die Nachricht
+gespeichert werden soll.
+
+<tag/<tt>timelimit</tt>/
+<p>
+
+Maximale Anzahl Sekunden die Aufgezeichnet werden soll.
+
+</descrip>
+
+Folgende Rückgabewerte sind möglich:
+
+<descrip>
+
+<tag/<tt>ERROR</tt>/
+<p>
+
+Das Aufzeichnen wurde wegen eines Fehlers abgebrochen.
+
+<tag/<tt>TIMEOUT</tt>/
+<p>
+
+Die maximale Aufzeichnungszeit wurde erreicht.
+
+<tag/<tt>HANGUP</tt>/
+<p>
+
+Die Verbindung wurde beendet. Das Skript sollte sich bei dieser Rückgabe
+beenden.
+
+<tag/<tt>OK</tt>/
+<p>
+
+Die Datei wurde vollständig aufgezeichnet und durch kein Ereignis abgebrochen.
+
+</descrip>
+
+Enthält die Rückgabe einen anderen Wert, handelt es sich um eine
+Touchtone-Sequenz, die während des Aufzeichnens erkannt wurde.
+
+<descrip>
+
+<tag/Beispiel:/
+<p>
+
+<verb>
+set RC { vbox_get_message /var/spool/vbox/michael/incoming/00000858611291-00022795 90 }
+</verb>
+
+</descrip>
+
+<tag/<tt>vbox_wait &lt;seconds&gt;</tt>/
+<p>
+
+Wartet eine bestimmte Anzahl von Sekunden auf Eingaben vom Anrufer. Die Art
+des Abbruchs wird als Rückgabewert gesetzt.
+
+<descrip>
+
+<tag/<tt>seconds</tt>/
+<p>
+
+Anzahl der Sekunden die gewartet werden sollen.
+
+</descrip>
+
+Folgende Rückgabewerte sind möglich:
+
+<descrip>
+
+<tag/<tt>ERROR</tt>/
+<p>
+
+Das Warten wurde wegen eines Fehlers abgebrochen.
+
+<tag/<tt>TIMEOUT</tt>/
+<p>
+
+Die angegebene Anzahl Sekunden ist abgelaufen.
+
+<tag/<tt>HANGUP</tt>/
+<p>
+
+Die Verbindung wurde beendet. Das Skript sollte sich bei dieser Rückgabe
+beenden.
+
+<tag/<tt>OK</tt>/
+<p>
+
+Die angegebene Anzahl Sekunden ist abgelaufen.
+
+</descrip>
+
+Enthält die Rückgabe einen anderen Wert, handelt es sich um eine
+Touchtone-Sequenz, die während des Aufzeichnens erkannt wurde.
+
+<descrip>
+
+<tag/Beispiel:/
+<p>
+
+<verb>
+set RC { vbox_wait 120 }
+</verb>
+
+</descrip>
+
+<tag/<tt>vbox_init_touchtones</tt>/
+<p>
+
+Dieses Kommando löscht die interne Touchtone-Sequenz.
+
+Normalerweise werden alle erkannten Touchtones an die interne
+Touchtone-Sequenz angehängt und auch bei einem Wechsel vom Abspiel- in den
+Aufnahmemodus nicht gelöscht. Gelöscht wird diese nur bei Eingabe
+von '<tt>*</tt>', da dieser Touchtone eine neue Sequenz einleitet.
+
+<descrip>
+
+<tag/Beispiel:/
+<p>
+
+<verb>
+vbox_init_touchtones
+</verb>
+
+</descrip>
+
+<tag/<tt>vbox_pause &lt;ms&gt;</tt>/
+<p>
+
+Wartet eine bestimmte Anzahl von Millisekunden.
+
+<descrip>
+
+<tag/<tt>ms</tt>/
+<p>
+
+Anzahl der Millisekunden die gewartet werden soll.
+
+<tag/Beispiel:/
+<p>
+
+<verb>
+vbox_pause 1500
+</verb>
+
+</descrip>
+
+<tag/<tt>vbox_get_nr_new_messages &lt;messagebox&gt;</tt>/
+<p>
+
+Ermittelt die Anzahl der neuen Nachrichten in einem Verzeichnis. Das Ergebnis
+wird als Rückgabewert gesetzt.
+
+<descrip>
+
+<tag/<tt>messagebox</tt>/
+<p>
+
+Verzeichnis welches untersucht werden soll.
+
+<tag/Beispiel:/
+<p>
+
+<verb>
+set RC { vbox_get_nr_new_messages /var/spool/vbox/michael/incoming }
+</verb>
+
+</descrip>
+
+<tag/<tt>vbox_get_nr_all_messages &lt;messagebox&gt;</tt>/
+<p>
+
+Ermittelt die Anzahl aller Nachrichten in einem Verzeichnis. Das Ergebnis wird
+als Rückgabewert gesetzt.
+
+<descrip>
+
+<tag/<tt>messagebox</tt>/
+<p>
+
+Verzeichnis welches untersucht werden soll.
+
+<tag/Beispiel:/
+<p>
+
+<verb>
+set RC { vbox_get_nr_all_messages /var/spool/vbox/michael/incoming }
+</verb>
+
+</descrip>
+
+</descrip>
+
+<!-- *********************************************************************
+     **									**
+     **	                        P R O G R A M M E			**
+     **									**
+     ********************************************************************* -->
+
+<sect>Programme<label id="id-programme">
+<p>
+
+<!-- *********************************************************************
+     **                            VBOXGETTY                            **
+     ********************************************************************* -->
+
+<sect1>vboxgetty<label id="id-programme-vboxgetty">
+<p>
+
+<!-- *********************************************************************
+     **                              VBOXD                              **
+     ********************************************************************* -->
+
+<sect1>vboxd<label id="id-programme-vboxd">
+<p>
+
+Der <em>vboxd</em> ist ein Daemon, der über Netzwerk (TCP/IP oder Sockets)
+angesprochen werden und die mit <em>vbox</em> aufgezeichneten Nachrichten
+abrufen oder ändern kann.
+
+Für Programmautoren existieren in der <ref id="id-verschiedenes-libvbox"
+name="libvbox.a"> bereits einige Funktionen um mit <em>vboxd</em> zu
+kommunizieren.
+
+Die genaue Installation von <em>vboxd</em> kann im Kapitel <ref
+id="id-installation" name="Installation"> unter <ref
+id="id-installation-vboxd" name="vboxd"> nachgelesen werden.
+
+Dem Daemon können beim Start folgende Argumente übergeben werden:
+
+<descrip>
+
+<tag/<tt>-f, --file FILE</tt>/
+<p>
+
+Konfigurationsdatei die benutzt werden soll. Voreingestellt liest <em>vboxd
+</em> die Einstellungen aus der Datei '<tt>@SYSCONFDIR@/vboxd.conf</tt>'.
+
+<tag/<tt>-t, --timeout SECS</tt>/
+<p>
+
+Anzahl der Sekunden die <em>vboxd</em> auf ein Kommando vom Client
+wartet. Wird in diesem Zeitraum kein Kommando empfangen, beendet sich das
+Programm.
+
+<tag/<tt>-v, --version</tt>/
+<p>
+
+Zeigt die Versionsnummer an.
+
+<tag/<tt>-h, --help</tt>/
+<p>
+
+Zeigt den Hilfstext an.
+
+</descrip>
+
+Nach dem Start steht der Timeout auf <bf>30 Sekunden</bf>. Dieser wird erst
+auf den mit <tt>--timeout</tt> eingestellten Wert geändert, nachdem das
+<bf>erste Kommando</bf> von einem Client empfangen wurde!
+
+Die nachfolgende Beschreibung befaßt sich mit den internen Kommandos des
+Daemons und ist eigentlich nur für Programmautoren von Interesse, die in ihren
+eigenen Programmen mit dem <em>vboxd</em> kommunizieren möchten.
+
+Der Daemon kann mit einer Reihe von Kommandos gesteuert werden, die alle
+mit einem Text der Form
+
+<tt>NUMMER BESCHREIBUNG</tt>
+
+beantwortet werden. Einige Kommandos liefern mehrere Antworten hintereinander,
+jede Antwort beginnt in einer neuen Zeile. Es werden nur Zeichen mit maximal 7
+Bit übermittelt.
+
+Der Client sollte die aktuelle Verbindung schließen (und evtl. neu aufbauen),
+sobald vom Server der Text "<tt><bf>281 .</bf></tt>" übermittelt wurde. Dieser
+gibt an, daß der Server die Verbindung beendet hat!
+
+Folgende Kommandos werden vom <em>vboxd</em> unterstützt:
+
+<descrip>
+
+<tag/<tt>LOGIN &lt;USERNAME&gt; {PASSWORD}</tt>/
+<p>
+
+Mit diesem Kommando können sich Clients als reguläre Benutzer beim Daemon
+anmelden. Einige Kommandos sind nur nach einem erfolgreichen Login möglich!
+
+<descrip>
+
+<tag/<tt>USERNAME</tt>/
+<p>
+
+Name des Benutzers der angemeldet werden soll.
+
+<tag/<tt>PASSWORD</tt>/
+<p>
+
+Passwort des Benutzers.
+
+</descrip>
+
+Bei erfolgreicher Anmeldung enthält die Anwort des Daemons den Rückgabewert
+<tt><bf>283</bf></tt>, gefolgt von einem kurzen Willkommenstext.
+
+<tag/<tt>LIST</tt>/
+<p>
+
+Zeigt eine Liste aller Nachrichten an, die sich im Spoolverzeichnis des
+Benutzers befinden. Dieses Kommando ist nur nach einem erfolgreichen Login
+möglich.
+
+Die Antwort des Daemons ist wie folgt aufgebaut:
+
+<verb>
+184 +
+184 F 00000858611291-00022795
+184 T 858611305
+184 M 858611305
+184 C 6
+184 S 84752
+184 N Michael Herold
+184 I 9317850413
+184 P *** Unknown ***
+184 L *** Unknown ***
+184 .
+</verb>
+
+<descrip>
+
+<tag/<tt>184 +</tt>/
+<p>
+
+Leitet den Beginn <bf>einer neuen</bf> Nachricht ein. Eine Liste kann mehrere
+Nachrichten enthalten - zu Beginn einer jeden Nachricht wird diese Zeile
+gesendet.
+
+<tag/<tt>184 F</tt>/
+<p>
+
+@DOTS@gefolgt vom Namen der Datei.
+
+<tag/<tt>184 T</tt>/
+<p>
+
+@DOTS@gefolgt vom Erzeugungsdatum der Datei. Das Datum wird als Anzahl der
+Sekunden seit dem 1.1.1970 angegeben.
+
+<tag/<tt>184 M</tt>/
+<p>
+
+@DOTS@gefolgt vom Datum der letzten Änderung. Das Datum wird als Anzahl der
+Sekunden seit dem 1.1.1970 angegeben. Ist dieses 0, wurde die Datei als
+gelesen markiert.
+
+<tag/<tt>184 C</tt>/
+<p>
+
+@DOTS@gefolgt von der Kompression. Die Kompression wird als Wert zwischen 2
+und 6 angegeben.
+
+<tag/<tt>184 S</tt>/
+<p>
+
+@DOTS@gefolgt von der größe der Datei in Bytes.
+
+<tag/<tt>184 N</tt>/
+<p>
+
+@DOTS@gefolgt vom Namen der Person, welche die Nachricht aufgesprochen
+hat. Konnte diese nicht ermittelt werden, wird "<tt>*** Unknown ***</tt>"
+angegeben.
+
+<tag/<tt>184 I</tt>/
+<p>
+
+@DOTS@gefolgt von der <tt>CALLER ID</tt> der Person, welche die Nachricht
+aufgesprochen hat. Konnte diese nicht ermittelt werden, wird <tt>0</tt>
+angegeben.
+
+<tag/<tt>184 P</tt>/
+<p>
+
+@DOTS@gefolgt von der Telefonnummer der Person, welche die Nachricht
+aufgesprochen hat. Konnte diese nicht ermittelt werden, wird "<tt>*** Unknown
+***</tt>" angegeben.
+
+<tag/<tt>184 F</tt>/
+<p>
+
+@DOTS@gefolgt vom Wohnort der Person, welche die Nachricht aufgesprochen hat.
+Konnte diese nicht ermittelt werden, wird "<tt>*** Unknown ***</tt>"
+angegeben.
+
+<tag/<tt>184 .</tt>/
+<p>
+
+Dieser Text wird am Ende <bf>aller</bf> Nachrichten gesendet. Er gibt an, daß
+die komplette Liste übermittelt wurde und kein weiterer Eintrag mehr folgt.
+
+</descrip>
+
+<tag/<tt>MESSAGE &lt;MESSAGENAME&gt;</tt>/
+<p>
+
+Übermittelt eine Nachricht als Hexdump. Dieses Kommando ist nur nach einem
+erfolgreichen Login möglich.
+
+<descrip>
+
+<tag/<tt>MESSAGENAME</tt>/
+<p>
+
+Name der Datei die übermittelt werden soll. Pfadangaben werden abgeschnitten -
+die Datei muß sich im Spoolverzeichnis des eingeloggten Benutzers befinden.
+
+</descrip>
+
+Die Antwort des Daemons schaut in etwa wie folgt aus:
+
+<verb>
+182 FE FE FE FE FE FE FE FE FE FE FE FE FE FE FE FE FE FE FE FE FE FE FE FE
+182 FE FE FE FE FE FE FE FE 7E 7E 7A 6D 61 59 53 51 56 65 E0 C9 BC B4 AF AE
+182 AE B2 BE 7E 3B 2C 22 1E
+182 .
+</verb>
+
+<descrip>
+
+<tag/<tt>182</tt>/
+<p>
+
+@DOTS@gefolgt von einer oder mehreren zweistelligen Hexzahlen. Diese Zahlen
+stellen den Inhalt der Datei dar.
+
+<tag/<tt>182 .</tt>/
+<p>
+
+Kennzeichnet das Ende der Übermittlung.
+
+</descrip>
+
+<tag/<tt>HEADER &lt;MESSAGENAME&gt;</tt>/
+<p>
+
+Übermittelt einen Nachrichtheader als Hexdump. Dieses Kommando ist nur nach
+einem erfolgreichen Login möglich.
+
+<descrip>
+
+<tag/<tt>MESSAGENAME</tt>/
+<p>
+
+Name der Datei die übermittelt werden soll. Pfadangaben werden abgeschnitten -
+die Datei muß sich im Spoolverzeichnis des eingeloggten Benutzers befinden.
+
+</descrip>
+
+Die Antwort des Daemons schaut in etwa wie folgt aus:
+
+<verb>
+183 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 3C 6E 6F 74 20 73 75 70 70
+183 6F 72 74 65 64 3E 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+183 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+183 .
+</verb>
+
+<descrip>
+
+<tag/<tt>183</tt>/
+<p>
+
+@DOTS@gefolgt von einer oder mehreren zweistelligen Hexzahlen. Diese Zahlen
+stellen den Inhalt der Datei dar.
+
+<tag/<tt>183 .</tt>/
+<p>
+
+Kennzeichnet das Ende der Übermittlung.
+
+</descrip>
+
+<tag/<tt>COUNT &lt;MESSAGEBOX&gt;</tt>/
+<p>
+
+Dieses Kommando gibt aus, wieviele neue Dateien sich in einem Verzeichnis
+befinden. Ein Login ist hierfür nicht nötig. Da ohne Login noch kein
+Spoolverzeichnis zugewiesen wurde, kann mit diesem Befehl <bf>jedes</bf>
+beliebige Verzeichnis untersucht werden - Die Funktion ermittelt <bf>nur</bf>
+die Anzahl der Dateien und das Datum der neusten Datei!
+
+<descrip>
+
+<tag/<tt>MESSAGEBOX</tt>/
+<p>
+
+Verzeichnis in dem nach Nachrichten gesucht werden soll. Es muß der komplette
+Pfad angegeben werden.
+
+</descrip>
+
+Die Ausgabe des Daemons ist in etwa wie folgt:
+
+<verb>
+181 100 859281096
+</verb>
+
+Nach der Nummer <tt><bf>181</bf></tt> wird die Anzahl der neuen Nachrichten
+gefolgt vom Datum der neusten Nachricht ausgegeben. Das Datum wird in Anzahl
+der Sekunden seit dem 1.1.1970 dargestellt.
+
+
+
+</descrip>
+
+<!-- *********************************************************************
+     **                              VBOX                               **
+     ********************************************************************* -->
+
+<sect1>vbox<label id="id-programme-vbox">
+<p>
+
+<!-- *********************************************************************
+     **                            VBOXBEEP                             **
+     ********************************************************************* -->
+
+<sect1>vboxbeep<label id="id-programme-vboxbeep">
+<p>
+
+<!-- *********************************************************************
+     **                            VBOXTOAU                             **
+     ********************************************************************* -->
+
+<sect1>vboxtoau<label id="id-programme-vboxtoau">
+<p>
+
+Mit <em>vboxtoau</em> können <em>vbox</em> Dateien (vbox audio header)
+in .au Dateien (sun audio format) gewandelt werden.
+
+
+
+
+
+
+
+<!-- *********************************************************************
+     **                            AUTOVBOX                             **
+     ********************************************************************* -->
+
+<sect1>autovbox<label id="id-programme-autovbox">
+<p>
+
+<!-- *********************************************************************
+     **                            VBOXMODE                             **
+     ********************************************************************* -->
+
+<sect1>vboxmode<label id="id-programme-vboxmode">
+<p>
+
+Das Programm <em>vboxmode</em> dient zum ermitteln des Formats einer
+Audio-Datei. Es werden Dateien von <em>vbox</em> (vbox audio header)
+und .au Dateien (sun audio format) erkannt.
+
+Der Aufruf von <em>vboxmode</em> ist wie folgt:
+
+<em>vboxmode</em> {<tt>OPTION</tt>} {<tt>OPTION</tt>} {<tt>@DOTS@</tt>}
+<tt>DATEINAME</tt>
+
+<descrip>
+
+<tag/<tt>DATEINAME</tt>/
+<p>
+
+Name der Datei deren Format ermittelt werden soll.
+
+<tag/<tt>OPTION</tt>/
+<p>
+
+Eine oder mehrere der folgenden Optionen:
+
+<descrip>
+
+<tag/<tt>-q, --quiet</tt>/
+<p>
+
+Normalerweise werden noch Informationen über die Datei ausgegeben. Bei
+Angabe dieser Option werden diese unterdrückt.
+
+<tag/<tt>-v, --version</tt>/
+<p>
+
+Zeigt die Versionsnummer an.
+
+<tag/<tt>-h, --help</tt>/
+<p>
+
+Zeigt den Hilfstext an.
+
+</descrip>
+</descrip>
+
+Das Format der Datei wird immer als Fehlernummer zurückgegeben:
+
+<itemize>
+<item>für .au Dateien ein Wert zwischen 128 und 150,
+<item>für <em>vbox</em> Dateien ein Wert zwischen 2 und 6,
+<item>für unbekannte Formate oder bei einem Fehler der Wert 255.
+</itemize>
+
+<!-- *********************************************************************
+     **									**
+     **	                   V E R S C H I E D E N E S			**
+     **									**
+     ********************************************************************* -->
+
+<sect>Verschiedenes<label id="id-verschiedenes">
+<p>
+
+<!-- *********************************************************************
+     **                     FORMAT DER VBOX DATEIEN                     **
+     ********************************************************************* -->
+
+<sect1>Format der vbox Dateien<label id="id-verschiedenes-vah">
+<p>
+
+Ab Version 2.0.0 von <em>vbox</em> enthalten die aufgezeichneten
+Dateien einen neuen Header, der außer der Kompression und den
+Verbindungsdaten auch noch Informationen über denjenigen enthält, der
+die Nachricht erzeugt - sprich gesprochen - hat.
+
+Zur Zeit enthält der Header folgende Informationen:
+
+<itemize>
+<item>die Aufzeichnungszeit,
+<item>die Kompression,
+<item>die <tt>CALLER ID</tt>,
+<item>den Namen,
+<item>die Telefonnummer,
+<item>den Wohnort.
+</itemize>
+
+Mit diesen Angaben ist es anderen Programmen (z.B. <em>mam</em>)
+möglich, <bf>ohne</bf> zusätzlichen Aufwand (in früheren Versionen
+mußte die Konfiguration von <em>vbox</em> nach der passenden
+Telefonnummer durchsucht werden) die Daten einer Nachricht zu
+ermitteln.
+
+Das genaue Format des Headers ist in der Datei '<tt>libvbox.h</tt>'
+als Struktur <tt>vaheader_t</tt> definiert.
+
+<!-- *********************************************************************
+     **                     DIE LIBRARY LIBVBOX.A                       **
+     ********************************************************************* -->
+
+<sect1>Die Library libvbox.a<label id="id-verschiedenes-libvbox">
+<p>
+
+Die Library '<tt>libvbox.a</tt>' und die dazugehörige
+Include-Datei '<tt>libvbox.h</tt>' enthalten kleinere Funktionen, um
+es anderen Programmen leichter zu machen, mit <em>vbox</em> zu
+kommunizieren.
+
+<!-- *********************************************************************
+     **                   NEUE DOKUMENTATION ERZEUGEN                   **
+     ********************************************************************* -->
+
+<sect1>Neue Dokumentation erzeugen<label id="id-verschiedenes-docs">
+<p>
+
+Wer auf seinem Rechner selbst <em>linuxdoc-sgml</em> installiert hat und die
+Dokumentation in andere Formate wandeln möchte, kann das mit einem der
+folgenden Kommandos tun:
+
+<verb>
+&dollar; make create-de-sgml
+</verb>
+
+Durch jeden dieser Befehle wird im Hauptverzeichnis ein konvertierter
+<em>sgml</em> Source abgelegt, der zum weiteren Umwandeln mit
+<em>linuxdoc-sgml</em> benutzt werden kann. Diese vorherige Konvertierung ist
+notwendig, da sich in der Dokumentation Steuerzeichen befinden, die erst durch
+ihre richtigen Werte ersetzt werden müssen.
+
+<!-- *********************************************************************
+     **									**
+     **	                   B E Z U G S Q U E L L E N			**
+     **									**
+     ********************************************************************* -->
+
+<sect>Bezugsquellen<label id="id-bezugsquellen">
+<p>
+
+mgetty 0.98 (mit pvftools)
+neuer mgetty
+linuxdoc-sgml
+isdn4linux
+hisax
+mam
+gettext
+tcl
+ld-so
+
+
+<!-- *********************************************************************
+     **									**
+     **	                    D A N K S A G U N G E N			**
+     **									**
+     ********************************************************************* -->
+
+<sect>Danksagungen<label id="id-danksagungen">
+<p>
+
+Fritz Elfert
+Carsten Keil
+Andreas Kool
+Stefan Lüthje
+Autor: mam
+
+...und bei allen anderen...
+
+</article>

@@ -1,5 +1,5 @@
 /*
-** $Id: rcgetty.c,v 1.5 1997/03/18 12:36:49 michael Exp $
+** $Id: rcgetty.c,v 1.6 1997/04/04 09:32:41 michael Exp $
 **
 ** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
 */
@@ -60,8 +60,7 @@ static struct rctable rct[] =
 	{ "commandtimeout", &setup.modem.timeout_cmd		, 0, 60000						, parse_int },
 	{ "alivetimeout"	, &setup.modem.timeout_alive	, 0, 60000						, parse_int },
 	{ "compression"	, &setup.modem.compression		, 2, 6							, parse_cmp },
-	{ "vboxrc"			,  setup.vboxrcname				, 0, SETUP_MAX_VBOXRC		, parse_str },
-	{ "vboxctrl"		,  setup.vboxctrl					, 0, SETUP_MAX_VBOXCTRL		, parse_str },
+	{ "vboxconfig"		,  setup.vboxrcname				, 0, SETUP_MAX_VBOXRC		, parse_str },
 	{ "spooldir"		,  setup.spool						, 0, SETUP_MAX_SPOOLNAME	, parse_str },
 	{ "freespace"		, &setup.freespace				, 0, 2000000000				, parse_int },
 
@@ -84,9 +83,9 @@ int getty_get_settings(char *rcname)
 
 	log(L_DEBUG, gettext("Parsing settings in \"%s\" for port \"%s\"...\n"), rcname, setup.modem.device);
 
-	xstrncpy(setup.modem.interninita	, "AT+FCLASS=8"				, MODEM_MAX_INITSTRING);
-	xstrncpy(setup.modem.interninitb	, "ATS18=1S13.2=1S13.4=1"	, MODEM_MAX_INITSTRING);
-	xstrncpy(setup.modem.init			, "ATZ"							, MODEM_MAX_INITSTRING);
+	xstrncpy(setup.modem.interninita	, "AT+FCLASS=8"	, MODEM_MAX_INITSTRING);
+	xstrncpy(setup.modem.interninitb	, "S13.2=1S13.4=1", MODEM_MAX_INITSTRING);
+	xstrncpy(setup.modem.init			, "ATZ"				, MODEM_MAX_INITSTRING);
 
 	setup.modem.toggle_dtr_time	= MODEM_TOGGLETIME;
 	setup.modem.timeout_ring		= MODEM_RINGTIMEOUT;
