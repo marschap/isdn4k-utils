@@ -398,7 +398,7 @@ again2:
       free(city);
     return 0;
   }				/* if value */
-  else if (first && len && *number == '+') {	/* try shorter nums */
+  else if (first && len > 1 && *number == '+') { /* try shorter nonempty nums */
     number[--len] = '\0';
     goto again;			/* I like it */
   }

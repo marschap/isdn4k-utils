@@ -1,3 +1,18 @@
+2005-01-12  Tobias Becker  <tobiasb@isdn4linux.de>
+
+	* dest.c (getDest): Do not shorten the given number to less than one
+	character while searching for destination database entries.  This
+	fixes wrong output like "+8 => +852 17 - Hong Kong Mobilfunk (HK) ..."
+	for "isdnrate -N +8".
+
+	* tools.c (vnum): The call of normalizeNumber may return UNKNOWN,
+	if there is no entry found in the destination database at all.  This
+	occurs for example for an incomplete countrycode like +8.  If this
+	happens, "+8" is not stored to the TELNUM number and as a result, the
+	string returned by vnum did not contain any information about +8.
+	Now the unformatted number from call[chan].num[who] is copied in this
+	case.  Revealed by "isdnlog -22 ..." and dialing digit per digit.
+
 2005-01-02  Tobias Becker  <tobiasb@isdn4linux.de>
 
 	* rate.h (getSpecialLen): New rate data query function like getSpecial.
