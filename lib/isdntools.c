@@ -1,4 +1,4 @@
-/* $Id: isdntools.c,v 1.4 1997/03/07 23:34:49 luethje Exp $
+/* $Id: isdntools.c,v 1.5 1997/03/18 23:01:50 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdntools.c,v $
+ * Revision 1.5  1997/03/18 23:01:50  luethje
+ * Function Compare_Sections() completed.
+ *
  * Revision 1.4  1997/03/07 23:34:49  luethje
  * README.conffile completed, paranoid_check() used by read_conffiles(),
  * policy.h will be removed by "make distclean".
@@ -645,9 +648,8 @@ int read_conffiles(section **Section, char *groupfile)
 {
 	static section *conf_dat = NULL;
 	static int read_again = 0;
-	auto char    s[4][BUFSIZ];
-	auto char ***vars = NULL;
-	auto char **svars = NULL;
+	auto char    s[6][BUFSIZ];
+	auto char **vars  = NULL;
 	auto char **files = NULL;
 	auto int      RetCode = -1;
 
@@ -677,21 +679,13 @@ int read_conffiles(section **Section, char *groupfile)
 		append_element(&files,s[3]);
 	}
 
-	append_element(&svars,CONF_SEC_MSN);
-	append_element(&svars,CONF_ENT_ALIAS);
-	append_element(&vars,svars);
-	svars = NULL;
-	append_element(&svars,CONF_SEC_NUM);
-	append_element(&svars,CONF_ENT_ALIAS);
-	append_element(&vars,svars);
-	svars = NULL;
-	append_element(&svars,CONF_SEC_MSN);
-	append_element(&svars,CONF_ENT_NUM);
-	append_element(&vars,svars);
-	svars = NULL;
-	append_element(&svars,CONF_SEC_NUM);
-	append_element(&svars,CONF_ENT_NUM);
-	append_element(&vars,svars);
+	sprintf(s[4],"%s|%s/%s|!%s",CONF_SEC_MSN,CONF_SEC_NUM,CONF_ENT_NUM,CONF_ENT_SI);
+	append_element(&vars,s[4]);
+
+/*
+	sprintf(s[5],"%s|%s/%s",CONF_SEC_MSN,CONF_SEC_NUM,CONF_ENT_ALIAS);
+	append_element(&vars,s[5]);
+*/
 
 	if ((RetCode = read_files(&conf_dat, files, vars, C_OVERWRITE|C_NOT_UNIQUE|C_NO_WARN_FILE)) > 0)
 	{

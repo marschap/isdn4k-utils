@@ -38,6 +38,8 @@
 #define F_TAG   1
 #define F_UNTAG 2
 
+#define C_EXIST '!'
+
 /****************************************************************************/
 
 static int (*print_msg)(const char *, ...) = printf;
@@ -52,9 +54,9 @@ static entry* Append_Entry(entry** Entry, char *Variable, char* Value, section *
 static void free_entry(entry *Ptr);
 static void free_cfile(cfile **cfiles);
 static const char *Pre_String(int Level);
-static int Compare_Sections(section* sec1, section *sec2, char ***variables);
-static section *Insert_Section(section **main_sec, section **ins_sec, char ***variables, int flags);
-static int Merge_Sections(section **main_sec, section **ins_sec, char ***variables, int flags);
+static int Compare_Sections(section* sec1, section *sec2, char **variables);
+static section *Insert_Section(section **main_sec, section **ins_sec, char **variables, int flags);
+static int Merge_Sections(section **main_sec, section **ins_sec, char **variables, int flags);
 static int Find_Include(section **Section, char* String, const char *FileName, int Flags);
 static section* _Get_Section_From_Path(char **array, section* Section, section **RetSection, entry **RetEntry, int flags);
 static entry* _Get_Entry_From_Path(char **array, entry* Entry, section **RetSection, entry **RetEntry, int flags);
@@ -62,6 +64,7 @@ static section* Get_Section_From_Path(section* NewSection, char *Path, entry **R
 static char* Delete_Chars(char *String, char *Quote);
 static int Set_Ret_Code(char *Value, int Type, void **Pointer);
 static int del_untagged_items(section **sec);
+static char** Compare_Section_Get_Path(char **array, int *retsize, int *retdepth);
 
 /****************************************************************************/
 
@@ -620,7 +623,7 @@ section *Del_Section(section **Section, char *Sectionname)
 
 /****************************************************************************/
 
-static section *Insert_Section(section **main_sec, section **ins_sec, char ***variables, int flags)
+static section *Insert_Section(section **main_sec, section **ins_sec, char **variables, int flags)
 {
 	section *Ptr = NULL;
 	
@@ -667,54 +670,17 @@ static section *Insert_Section(section **main_sec, section **ins_sec, char ***va
 
 /****************************************************************************/
 
-#if 1
-static int Compare_Sections(section* sec1, section *sec2, char ***variables)
-{
-	int i;
-	entry *Entry1 = NULL;
-	entry *Entry2 = NULL;
-
-
-	if (sec1 == NULL || sec2 == NULL)
-		return -1;
-
-	if (variables == NULL)
-	{
-		if (!strcmp(sec1->name,sec2->name))
-			return 0;
-	}
-	else
-	{
-		for (i=0; variables[i] != NULL && variables[i][0] != NULL && variables[i][1] != NULL; i++)
-		{
-			if (!strcmp(sec1->name,variables[i][0])                          &&
-			    !strcmp(sec1->name,sec2->name)                               &&
-			    (Entry1 = Get_Entry(sec1->entries,variables[i][1])) != NULL  &&
-			    Entry1->value != NULL                                        &&
-			    (Entry2 = Get_Entry(sec2->entries,variables[i][1])) != NULL  &&
-			    Entry2->value != NULL && !strcmp(Entry1->value,Entry2->value)  )
-				return 0;
-		}
-	}
-
-	return -1;
-}
-
-/****************************************************************************/
-
-#else
-/* IN PROGRESS!!!!!! */
-static char** Compare_Section_Get_Path(char **array, int *retsize);
-
 static int Compare_Sections(section* sec1, section *sec2, char **variables)
 {
 	int i;
-	int found1, found2;
+	int found1, found2, Cnt, depth, width, exist = 1;
 	char   **array;
 	char   **array2;
 	section *RetSection   = NULL;
 	entry   *RetEntry1    = NULL;
 	entry   *RetEntry2    = NULL;
+	section *Next1        = NULL;
+	section *Next2        = NULL;
 
 
 	if (sec1 == NULL || sec2 == NULL)
@@ -727,14 +693,23 @@ static int Compare_Sections(section* sec1, section *sec2, char **variables)
 	}
 	else
 	{
+		Next1 = sec1->next;
+		sec1->next = NULL;
+		Next2 = sec2->next;
+		sec2->next = NULL;
+
 		for (i=0; variables[i] != NULL; i++)
 		{
 			if ((array = String_to_Array(variables[i],C_SLASH)) == NULL)
+			{
+				sec1->next = Next1;
+				sec2->next = Next2;
 				return -1;
+			}
 
-			found2 = 0;
+			found1 = found2 = Cnt = 0;
 
-			while ((array2 = Compare_Section_Get_Path(array,&found1)) != NULL)
+			while ((array2 = Compare_Section_Get_Path(array,&width,&depth)) != NULL)
 			{
 				while (_Get_Section_From_Path(array2,sec1,&RetSection,&RetEntry1,0) == sec1)
 					while (_Get_Section_From_Path(array2,sec2,&RetSection,&RetEntry2,0) == sec2)
@@ -742,24 +717,46 @@ static int Compare_Sections(section* sec1, section *sec2, char **variables)
 						    !strcmp(RetEntry1->name, RetEntry2->name)                   &&
 						    ((RetEntry1->value == NULL && RetEntry2->value == NULL) ||
 						      !strcmp(RetEntry1->value,RetEntry2->value)              )   )
-						 	found2++;
+						 	found1++;
+
+				if (exist && array2[depth-1][0] == C_EXIST                               &&
+					  _Get_Section_From_Path(array2,sec1,&RetSection,&RetEntry1,0) == NULL &&
+					  _Get_Section_From_Path(array2,sec2,&RetSection,&RetEntry2,0) == NULL   )
+						found2++;
+
+				if ((++Cnt)%width == 0)
+					if(found1 == 0)
+						found2 = 0;
+					else
+						exist = 0;
+
+				if (array != NULL)
+				{
+					del_Array(array);
+					array = NULL;
+				}
 			}
 
-			del_Array(array);
 
-			if (found1 == found2)
+			if (width == found1 + found2)
+			{
+				sec1->next = Next1;
+				sec2->next = Next2;
 				return 0;
+			}
 		}
 	}
 
+	sec1->next = Next1;
+	sec2->next = Next2;
 	return -1;
 }
 
 /****************************************************************************/
 
-static char** Compare_Section_Get_Path(char **array, int *retsize)
+static char** Compare_Section_Get_Path(char **array, int *retsize, int *retdepth)
 {
-	int i;
+	int i,j;
 	static int     lsize;
 	static int     index;
 	static char ***arrayptr = NULL;
@@ -799,36 +796,47 @@ static char** Compare_Section_Get_Path(char **array, int *retsize)
 		for (lsize=0; arrayptr[index-1][lsize] != NULL; lsize++);
 	}
 
-	*retsize = lsize;
+	*retsize  = lsize;
+	*retdepth = index;
 
 	if (arrayptr == NULL)
 		return NULL;
 
-	i = index-1;
-	retptr[0] = NULL;
 
-	while(i > 0)
+	if (arrayptr[0][indexptr[0]] != NULL)
 	{
-		if (arrayptr[i][indexptr[i]] == NULL)
-		{
-			indexptr[i] = 0;
-			i--;
-		}
-		else
-		{
-			for (i = index-1; i >= 0; i++)
-			{
-				retptr[i] = arrayptr[i][indexptr[i]];
-printf("%s/",retptr[i]);
-				indexptr[i]++;
-printf("\n");
-			}
+		i = index-1;
 
-			break;
+		while(i >= 0)
+		{
+			if (i > 0 && arrayptr[i][indexptr[i]] == NULL)
+			{
+				indexptr[i] = 0;
+				i--;
+			}
+			else
+			{
+				for (j = index-1; j >= 0; j--)
+					retptr[j] = arrayptr[j][indexptr[j]];
+
+				indexptr[i]++;
+
+				while (i >= 0)
+				{
+					if (i > 0 && arrayptr[i][indexptr[i]] == NULL)
+					{
+						indexptr[i] = 0;
+						indexptr[i-1]++;
+					}
+
+					i--;
+				}
+
+				break;
+			}
 		}
 	}
-
-	if (retptr[0] == NULL)
+	else
 	{
 		for (i=0; i < index; i++)
 			del_Array(arrayptr[i]);
@@ -840,18 +848,14 @@ printf("\n");
 		arrayptr = NULL;
 		retptr   = NULL;
 		indexptr = NULL;
-
-		return NULL;
 	}
 
 	return retptr;
 }
 
-#endif
-
 /****************************************************************************/
 
-static int Merge_Sections(section **main_sec, section **ins_sec, char ***variables, int flags)
+static int Merge_Sections(section **main_sec, section **ins_sec, char **variables, int flags)
 {
 	if (main_sec == NULL)
 	{
@@ -929,7 +933,7 @@ static void free_cfile(cfile **cfiles)
    enthlten!!!!
 */
 
-int read_files(section **main_sec, char** files, char ***variables, int flags)
+int read_files(section **main_sec, char** files, char **variables, int flags)
 {
 	int newread = 0;
 	static cfile **cfiles = NULL;
@@ -1177,6 +1181,7 @@ static entry* _Get_Entry_From_Path(char **array, entry* Entry, section **RetSect
 	int found = 0;
 	int found_first = 0;
 	char **array2 = NULL;
+	char  *Ptr;
 
 
 	if (array != NULL && array[0] == NULL)
@@ -1193,7 +1198,9 @@ static entry* _Get_Entry_From_Path(char **array, entry* Entry, section **RetSect
 		{
 			while(array2[index] != NULL && found == 0)
 			{
-				if (match(array2[index],Entry->name,F_IGNORE_CASE) == 0)
+				Ptr = (array2[index][0] == C_EXIST?array2[index]+1:array2[index]);
+
+				if (match(Ptr,Entry->name,F_IGNORE_CASE) == 0)
 				{
 					if (array[1] == NULL)
 					{
@@ -1249,6 +1256,7 @@ static section* _Get_Section_From_Path(char **array, section* Section, section *
 	int found = 0;
 	int found_first = 0;
 	char **array2 = NULL;
+	char  *Ptr;
 
 
 	if (array != NULL && array[0] == NULL)
@@ -1265,7 +1273,9 @@ static section* _Get_Section_From_Path(char **array, section* Section, section *
 		{
 			while(array2[index] != NULL && found == 0)
 			{
-		    if (match(array2[index],Section->name,F_IGNORE_CASE) == 0)
+				Ptr = (array2[index][0] == C_EXIST?array2[index]+1:array2[index]);
+
+		    if (match(Ptr,Section->name,F_IGNORE_CASE) == 0)
 		  	{
 					if (array[1] == NULL)
 					{

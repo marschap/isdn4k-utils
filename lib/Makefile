@@ -29,7 +29,7 @@ endif
 ######################################################################
 
 ifndef _CC
-export _CC = gcc -Wall -pipe -O6
+export _CC = gcc -g #-Wall -pipe -O6
 endif
 CC         = $(_CC)
 

@@ -1,5 +1,5 @@
 
-/* $Id: conffile.h,v 1.2 1997/03/03 22:05:39 luethje Exp $
+/* $Id: conffile.h,v 1.3 1997/03/18 23:01:49 luethje Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -50,7 +50,7 @@
 
 /****************************************************************************/
 
-#define S_ALL_QUOTE "*?|&/"
+#define S_ALL_QUOTE "*?!|&/"
 
 /****************************************************************************/
 
@@ -118,7 +118,7 @@ _EXTERN section *Del_Section(section **Section, char *Sectionname);
 _EXTERN section *Set_SubSection(section *Section, char *Variable, section *SubSection, int Flag);
 _EXTERN void set_print_fct_for_conffile(int (*new_print_msg)(const char *, ...));
 _EXTERN void free_section(section *Ptr);
-_EXTERN int read_files(section **main_sec, char** files, char ***variables, int flags);
+_EXTERN int read_files(section **main_sec, char** files, char **variables, int flags);
 _EXTERN int Filter_Sections(section **sec, char** path);
 _EXTERN section* Get_Section_Match(section* Section, char *Path, char* Value, int  (*_match)(char*, char*), entry **RetEntry);
 _EXTERN char *Get_Value(section *Section, char *Path);
