@@ -1,5 +1,5 @@
 #
-# $Id: config.in,v 1.7 1997/03/03 22:05:47 luethje Exp $
+# $Id: config.in,v 1.8 1997/03/05 21:30:09 calle Exp $
 #
 # The whole configuration stuff is borrowed from the kernel
 # configuration.
@@ -60,6 +60,7 @@ if [ "$CONFIG_ICNCTRL" = "y" ]; then
 	bool 'Enable icnctl debug-option' CONFIG_ICNCTRL_DEBUG
 fi
 bool 'pcbitctl' CONFIG_PCBITCTL
+bool 'avmcapictrl' CONFIG_AVMCAPICTRL
 endmenu
 mainmenu_option nextcomment
 comment 'Tools for monitoring activity'
