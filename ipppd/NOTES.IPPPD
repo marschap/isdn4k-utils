@@ -1,0 +1,89 @@
+ipppd, based on pppd 2.2.0g with a few changes from 2.3
+============================================================
+copyright (c) 1995,1996,1997 of all changes by Michael Hipp
+
+
+ATTENTION .. NEW NEW NEW NEW NEW
+********************************
+
+You need at least the 2.0.29 base patch because of a
+new ioctl!! 
+
+changed default pathname for options to:
+  /etc/ppp/ioptions
+pidfilename changed to:
+  ipppd.pid
+removed checking of ~/.ppprc file ('options from user' feature)
+
+------------------------------------------------------------
+
+I added a few new options:
+ - 'useifip' will get (if not set to 0.0.0.0) the IP address
+   for the negotiation from the attached network-interface.
+   (also: ipppd will try to negotiate 'pointopoint' IP as remote IP)
+		interface address -> local IP
+		pointopoint address -> remote IP
+ - '+mp' enables MPPP negotiation
+ - 'useifmtu': a not so important option .. better use
+   the 'mtu' option .. 
+ - from the ppp-2.3 package I took the 'noccp' option.
+   (-ccp is the same). Necessary for a few 
+   netblazers on the remote side.
+ - 'usefirstip' gets the remote address from the first entry in
+   the auth file (if there is an IP address entry). This address 
+   should be a full IP address not an address from a masked area.
+   Ipppd calls 'gethostbyname()' and negotiates the result.
+   IP from auth file will overwrite the remote address gotten
+   from the interface.
+   'usefirstip' is UNTESTED!
+ - 'callback type[,message]' enables the callback feature
+   also UNTESTED!
+   e.g: 'callback 0'        -> simple callback (info via auth. etc.)
+        'callback 3,12346' -> us E.164 (tel) number 123456 for callback
+ - IPX and MS_DNS are now compiled into the binary without additional option
+   Applied Hartwig Felgers MS-DNS (re)patch for this
+
+The ipppd can handle multiple devices. This is necessary to
+link several connections together to one bundle.
+Also, you only start the ipppd once. It now opens the devices
+and waits for connections. 
+If you (or the remote side) closes the connection the ipppd
+reopens the device automatically. (the device .. not the link
+to the remote)
+So you shouldn't kill the ipppd to close a link. Instead, trigger
+a hangup on the netdevice layer.
+(with isdn4linux: isdnctrl hangup <device>')
+
+I applied the mschap80 patches (see README.mschap80), but this
+is untested.
+I also started to apply the CBCP patches .. not yet finished.
+May not work!
+
+I disabled the facility to configure the daemon via
+the /dev/ppp/ioptions.<devname> file. It's not necessary.
+Use the 'file' option or the command line for individual
+configuration.
+
+Better don't set the permissions of the programm to 
+'setuid to root on execution'. Call the daemon as root instead.
+No common user must call the daemon!
+
+---------------------------------------------------------------------
+
+1. Corrections for shadow support. This means that the isexpired routine
+   has been removed, the references to pw_crypt have been changed to use
+   crypt, etc.
+
+   You must, repeat, MUST, have the libcrypt library if you now wish to use
+   shadow passwords. The library is available with the crypt library.
+
+2. The corrections for the IPXCP routing code.
+
+3. The addition of a /etc/ppp/auth-up and /etc/ppp/auth-down program. This
+   is used to aid implementations which rely upon the in-band authentication
+   protocols.
+
+5. The corrections which broken implementations of authentication
+   protocol to cause pppd to loop. I am only aware of the Tumpet winsock
+   stack which caused this condition.
+
