@@ -9,7 +9,7 @@ CONFIG_SBINDIR=`eval echo ${CONFIG_SBINDIR:-"/sbin"}`
 dnl Checks for programs.
 AC_PROG_CC
 AC_PROG_INSTALL
-AC_CHECK_PROGS(BZIP2, bzip2)
+AC_CHECK_PROGS(BZIP2, bzip2, bzip2-not-found-or-installed)
 
 dnl Checks for libraries.
 dnl Berkeley DB appends RDBEXT
@@ -33,7 +33,7 @@ AC_CHECK_SIZEOF(int,4)
 AC_C_BIGENDIAN
 if test $ac_cv_c_bigendian = yes; then
 	WORDS_BIGENDIAN=yes
-fi	
+fi
 
 dnl Checks for library functions.
 AC_CHECK_FUNCS(strdup strtoul)
