@@ -1,6 +1,6 @@
-.\" $Id: icnctrl.man.in,v 1.6 1997/06/22 11:58:17 fritz Exp $
+.\" $Id: icnctrl.man.in,v 1.7 1997/10/23 22:46:08 fritz Exp $
 .\"
-.\" CHECKIN $Date: 1997/06/22 11:58:17 $
+.\" CHECKIN $Date: 1997/10/23 22:46:08 $
 .\"
 .\" Process this file with
 .\" groff -man -Tascii icnctrl.1 for ASCII output, or
@@ -142,7 +142,7 @@ access to the hardware is done. Therefore the
 action above, should be used before, if the hardware settings are different
 from the default settings.
 Usually the images are located in
-.IR @I4LCONFDIR@ .
+.IR @DATADIR@ .
 The boot-code is named
 .IR loadpg.bin .
 The firmware depends on the D-channel protocol of the
@@ -164,14 +164,14 @@ is available if the program is configured using the
 option only. The contents of internal driver variables is dumped on stdout.
 .SH FILES
 .TP
-.I @I4LCONFDIR@/loadpg.bin
+.I @DATADIR@/loadpg.bin
 This is the image of the bootstrap loader, which is loaded first, then
 loads the firmware into the card's memory and starts execution.
 .TP
-.I @I4LCONFDIR@/pc_1t_ca.bin
+.I @DATADIR@/pc_1t_ca.bin
 This is the image of the firmware designed for the German 1TR6 protocol.
 .TP
-.I @I4LCONFDIR@/pc_eu_ca.bin
+.I @DATADIR@/pc_eu_ca.bin
 This is the image of the firmware, designed for Euro ISDN.
 .LP
 .SH DIAGNOSTICS

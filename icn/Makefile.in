@@ -1,4 +1,4 @@
-# $Id: Makefile.in,v 1.5 1997/03/29 15:05:12 fritz Exp $
+# $Id: Makefile.in,v 1.6 1997/10/23 22:46:05 fritz Exp $
 #
 # Makefile for icnctrl
 # (C) 1997 Fritz Elfert
@@ -6,7 +6,7 @@
 #
 SHELL			= /bin/sh
 CFLAGS			= -Wall -O2
-INCLUDES		= -I. @DEBUGVAR@ -I@KERNELDIR@/drivers/isdn/icn
+INCLUDES		= -I. @DEBUGVAR@ -I@KERNELDIR@/include -I@KERNELDIR@/drivers/isdn/icn
 DEFS			=
 LDFLAGS			= -L../lib @LIBS@
 PROGRAM			= icnctrl
@@ -14,9 +14,11 @@ MODULES			= icnctrl.o
 MANPAGE			= icnctrl.8
 INSTALL			= @INSTALL@
 INSTALL_PROGRAM	= $(INSTALL) -o 0 -g 0 -m 0750
+INSTALL_DATA    = $(INSTALL) -o 0 -g 0 -m 0644
 INSTALL_MAN		= $(INSTALL) -o 0 -g 0 -m 0644
 prefix			= @prefix@
 exec_prefix		= @exec_prefix@
+DATADIR         = @DATADIR@
 ifeq (../.config,$(wildcard ../.config))
 	include ../.config
 	ifeq ($(CONFIG_ICNCTRL_DEBUG),y)
@@ -51,11 +53,17 @@ config.status: configure
 $(PROGRAM):	$(MODULES)
 	$(CC) $(CFLAGS) $(INCLUDES) $(DEFS) $? $(LDFLAGS) -o $@
 
+install-data:
+	mkdir -p $(DATADIR)
+	$(INSTALL_DATA) firmware/loadpg.bin $(DATADIR)/loadpg.bin
+	$(INSTALL_DATA) firmware/pc_eu_ca.bin $(DATADIR)/pc_eu_ca.bin
+	$(INSTALL_DATA) firmware/pc_1t_ca.bin $(DATADIR)/pc_1t_ca.bin
+
 install-man: $(PROGRAM).man
 	mkdir -p $(MAN8DIR)
 	$(INSTALL_MAN) $< $(MAN8DIR)/$(MANPAGE)
 
-install: $(PROGRAM) install-man
+install: $(PROGRAM) install-man install-data
 	$(INSTALL_PROGRAM) $(PROGRAM) $(SBINDIR)/$(PROGRAM)
 
 install-strip: $(PROGRAM)
