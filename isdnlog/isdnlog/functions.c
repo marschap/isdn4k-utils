@@ -1,8 +1,9 @@
-/* $Id: functions.c,v 1.3 1997/03/31 20:50:55 akool Exp $
+/* $Id: functions.c,v 1.4 1997/04/03 22:34:48 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
  * Copyright 1995, 1997 by Andreas Kool (akool@Kool.f.EUnet.de)
+ *                     and Stefan Luethje (luethje@sl-gw.lake.de)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -163,11 +164,11 @@ void logger(int chan)
 
   tries = 0;
 
-  while (((fd = open(logname, O_WRONLY | O_APPEND | O_EXCL)) == -1) && (tries < 1000))
+  while (((fd = open(logfile, O_WRONLY | O_APPEND | O_EXCL)) == -1) && (tries < 1000))
     tries++;
 
   if ((tries < 1000) && ((flog = fdopen(fd, "a")) == (FILE *)NULL))
-    print_msg(PRT_ERR, "Can not open file `%s': %s!\n", logname, strerror(errno));
+    print_msg(PRT_ERR, "Can not open file `%s': %s!\n", logfile, strerror(errno));
   else {
     fprintf(flog, "%s|%-16s|%-16s|%5d|%10d|%10d|%5d|%c|%3d|%10ld|%10ld|%s|%d|%d|%g|%s|%8.2f|\n",
  	   s + 4, call[chan].num[CALLING], call[chan].num[CALLED],

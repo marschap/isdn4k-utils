@@ -1,8 +1,9 @@
-/* $Id: isdnlog.h,v 1.3 1997/03/23 23:11:54 luethje Exp $
+/* $Id: isdnlog.h,v 1.4 1997/04/03 22:34:50 luethje Exp $
  *
  * ISDN accounting for isdn4linux.
  *
  * Copyright 1995, 1997 by Andreas Kool (akool@Kool.f.EUnet.de)
+ *                     and Stefan Luethje (luethje@sl-gw.lake.de)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +20,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnlog.h,v $
+ * Revision 1.4  1997/04/03 22:34:50  luethje
+ * splitt the files callerid.conf and ~/.isdn.
+ *
  * Revision 1.3  1997/03/23 23:11:54  luethje
  * improved performance
  *
@@ -219,7 +223,6 @@ _EXTERN int	width;
 _EXTERN	int	watchdog;
 _EXTERN char   *isdnctrl;
 _EXTERN	char    isdnctrl2[FNSIZE];
-_EXTERN char    logname[FNSIZE];
 _EXTERN char    pidfile[SHORT_STRING_SIZE];
 
 _EXTERN IFO     ifo[ISDN_MAX_CHANNELS];

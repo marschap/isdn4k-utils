@@ -1,4 +1,5 @@
-/*
+/* $Id: user_access.c,v 1.2 1997/04/03 22:34:52 luethje Exp $
+ *
  * ISDN accounting for isdn4linux.
  *
  * Copyright 1996 by Stefan Luethje (luethje@sl-gw.lake.de)
@@ -16,6 +17,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ *
+ * $Log: user_access.c,v $
+ * Revision 1.2  1997/04/03 22:34:52  luethje
+ * splitt the files callerid.conf and ~/.isdn.
  *
  */
 
