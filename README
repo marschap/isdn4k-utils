@@ -1,5 +1,5 @@
 #
-# $Id: README,v 1.14 2000/01/31 15:27:59 kai Exp $
+# $Id: README,v 1.15 2000/06/20 10:30:39 keil Exp $
 #
 This is the README file for the "isdn4k-utils" package from "The i4l-crew".
 
@@ -9,7 +9,6 @@ This package contains the following stuff:
   isdnctrl,   general link-level setup utility.
   iprofd,     daemon for realizing AT&W0 on ttyI's.
   icnctrl,    setup utility for the icn driver.
-  telesctrl,  setup utility for the teles driver.
   hisaxctrl,  setup utility for the HiSax driver.
   pcbitctl,   setup utility for the pcbit driver.
   avmcapictrl setup utility for the avmb1 driver.
@@ -38,7 +37,7 @@ This package contains the following stuff:
   isdn_audio.4 and isdn_cause.7.
   Manpages for the above utilities:
   actctrl.8 avmcapictrl.8, hisaxctrl.8 icnctrl.8, eiconctrl.8, imon.8, ipppd.8,
-  ipppstats.8, iprofd.8, isdnctrl.8, isdnlog.8, isdnrep.1, telesctrl.8,
+  ipppstats.8, iprofd.8, isdnctrl.8, isdnlog.8, isdnrep.1,
   isdnrate.1, rate-files.5, xisdnload.1x and xmonisdn.1x
 
 IMPORTANT:
