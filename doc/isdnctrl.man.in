@@ -1,6 +1,6 @@
-.\" $Id: isdnctrl.man.in,v 1.1 1998/10/23 13:11:17 fritz Exp $
+.\" $Id: isdnctrl.man.in,v 1.2 1998/11/16 22:45:42 fritz Exp $
 .\"
-.\" CHECKIN $Date: 1998/10/23 13:11:17 $
+.\" CHECKIN $Date: 1998/11/16 22:45:42 $
 .\"
 .\" Process this file with
 .\" groff -man -Tascii isdnctrl.4 for ASCII output, or
@@ -439,6 +439,30 @@ containing the necessary parameters.
 Return:
 On success, the current mapping table of the given driver is returned
 and the call returns 0.
+.RE
+.TP
+.B IIOCDRVCTL
+Lowlevel driver ioctl.
+.RS
+This call is used for controlling various lowlevel drivers. The
+ioctl-code for this command is assembled by adding IIOCDRVCTL (128)
+and the desired driver ioctl-code. Therefore, a lowlevel driver
+can understand a maximum of 127 different ioctls.
+.TP
+Argument:
+.I arg
+should point to a
+.I struct isdn_ioctl_struct
+containing the necessary parameters, especially the driver-Id must be
+filled correctly. The arg component inside isdn_ioctl_struct is
+handed down to the driver's ioctl function. Its meaning is not
+defined here and depends on the lowlevel driver. See documentation
+for the various lewlevel drivers for information about driver-
+specific ioctl.
+.TP
+Return:
+The return code depends on the driver's ioctl function. Usually,
+0 means no error.
 .RE
 
 .SH AUTHOR

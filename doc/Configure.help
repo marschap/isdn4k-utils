@@ -316,7 +316,7 @@ CONFIG_IPPPD
 
 Support for MS chap secrets
 CONFIG_IPPPD_MSCHAP
-  If enabled, adds support for Microsoft's implementation of CHAP
+  If enabled, adds support for Microsoft's extension of CHAP
   authentication. For compiling this, a DES-encryption library
   libdes.a and it's include file des.h needs to be installed on
   your system. If the configuration process fails to find these, this
@@ -325,15 +325,18 @@ CONFIG_IPPPD_MSCHAP
 Support for RADIUS protocol
 CONFIG_IPPPD_RADIUS
   Enabling this option, adds support for RADIUS authentication. You
-  need radiusclient installed on your system for enabling this.
+  need libradiusclient installed on your system for enabling this.
+  See ipppd/README.RADIUS for more information.
 
 Support for RADIUS wtmp logging
 CONFIG_RADIUS_WTMP_LOGGING
-  Maintainer: edit CONFIG_RADIUS_WTMP_LOGGING
+  With this option enabled, ipppd logs into wtmp database also. This
+  makes established connections visible with tools like w, last or
+  similar.
 
 radiusclient config file path
 RADIUS_CLIENT_CONFIG_FILE
-  Maintainer: edit RADIUS_CLIENT_CONFIG_FILE
+  Enter the full path to your radiusclient config file.
 
 Support for parsing .TTY file first
 CONFIG_OPTIONS_TTY_FIRST

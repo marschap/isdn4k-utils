@@ -1,11 +1,11 @@
-# $Id: Makefile,v 1.28 1998/11/11 23:54:09 fritz Exp $
+# $Id: Makefile,v 1.29 1998/11/16 22:45:36 fritz Exp $
 #
 # Toplevel Makefile for isdn4k-utils
 #
 
 .EXPORT_ALL_VARIABLES:
 
-export I4LVERSION = 2.3
+export I4LVERSION = 3.0beta1
 
 all:	do-it-all
 
@@ -224,7 +224,7 @@ archive: distclean
 distarch: distclean
 	(cd .. ;\
 	ln -nfs isdn4k-utils isdn4k-utils-$(I4LVERSION) ;\
-	tar -cvhz -X distexclude -f distisdn/isdn4k-utils-$(I4LVERSION).tar.gz \
+	tar -cvhz -X isdn4k-utils/distexclude -f distisdn/isdn4k-utils-$(I4LVERSION).tar.gz \
 	isdn4k-utils-$(I4LVERSION) ;\
 	rm isdn4k-utils-$(I4LVERSION) )
 
