@@ -1,4 +1,4 @@
-/* $Id: isdnrep.c,v 1.97 2003/10/29 17:41:35 tobiasb Exp $
+/* $Id: isdnrep.c,v 1.98 2003/11/14 20:29:29 tobiasb Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -24,6 +24,13 @@
  *
  *
  * $Log: isdnrep.c,v $
+ * Revision 1.98  2003/11/14 20:29:29  tobiasb
+ * Removed SIGSEGV in isdnrep that occurred while fetching zone names for outgoing calls
+ * from the current ratefile if the matching zone did not contain a name after the zone
+ * number.  This error was introduced with isdnrep-4.65 or rev. 1.96 of isdnrep.c.
+ * Uwe Furchheim discovered the error and provided sufficient details on the mailinglist
+ * rates4linux-users, see http://sourceforge.net/mailarchive/forum.php?forum_id=4262
+ *
  * Revision 1.97  2003/10/29 17:41:35  tobiasb
  * isdnlog-4.67:
  *  - Enhancements for isdnrep:
@@ -2465,9 +2472,9 @@ static void repair(one_call *cur_call)
 						zones_src[cur_call->zone].flags &= ~FZN_UNSURE;
 					}
 					else {
-						/* zone name not replaced */
+						/* zone name not replaced,  Rate.Zone could be NULL */
 						if ( (*zflags & (FZN_KNOWN|FZN_UNSURE|FZN_MNAME|FZN_MPROV)) == (FZN_KNOWN|FZN_MPROV)
-								 && strcmp(zones_names[cur_call->zone], Rate.Zone) )
+								 && (!Rate.Zone||strcmp(zones_names[cur_call->zone], Rate.Zone)) )
 							*zflags |= FZN_MNAME; /* diff. names at diff. providers */
 					} 
 				} /* if zone name first time */
