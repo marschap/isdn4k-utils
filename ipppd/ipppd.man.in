@@ -1,6 +1,6 @@
 .\" manual page [] for ipppd 2.0
-.\" $Id: ipppd.man.in,v 1.10 2000/07/25 20:23:51 kai Exp $
-.\" CHECKIN $Date: 2000/07/25 20:23:51 $
+.\" $Id: ipppd.man.in,v 1.11 2003/07/01 09:03:45 keil Exp $
+.\" CHECKIN $Date: 2003/07/01 09:03:45 $
 .\" SH section heading
 .\" SS subsection heading
 .\" LP paragraph
@@ -87,6 +87,22 @@ negotiation, unless the
 and/or
 .B ipcp-accept-remote
 options are given, respectively.
+.TP
+.B active-filter \fIfilter-expression
+Specifies a packet filter to be applied to data packets to determine
+which packets are to be regarded as link activity, and therefore reset
+the idle timer, or cause the link to be brought up in demand-dialling
+mode. This option is useful in conjunction with the
+\fBidle\fR option if there are packets being sent or received
+regularly over the link (for example, routing information packets)
+which would otherwise prevent the link from ever appearing to be idle.
+The \fIfilter-expression\fR syntax is as described for tcpdump(1),
+except that qualifiers which are inappropriate for a PPP link, such as
+\fBether\fR and \fBarp\fR, are not permitted. Generally the filter
+expression should be enclosed in single-quotes to prevent whitespace
+in the expression from being interpreted by the shell. This option
+is currently only available if both the kernel and ipppd were compiled
+with IPPP_FILTER defined.
 .TP
 .B -ac
 Disable Address/Control compression negotiation (use default, i.e.
@@ -514,6 +530,23 @@ Set the maximum time that
 .I ipppd
 will wait for the peer to authenticate itself with PAP to
 <n> seconds (0 means no limit).
+.TP
+.B pass-filter \fIfilter-expression
+Specifies a packet filter to applied to data packets being sent or
+received to determine which packets should be allowed to pass.
+Packets which are rejected by the filter are silently discarded. This
+option can be used to prevent specific network daemons (such as
+routed) using up link bandwidth, or to provide a basic firewall
+capability.
+The \fIfilter-expression\fR syntax is as described for tcpdump(1),
+except that qualifiers which are inappropriate for a PPP link, such as
+\fBether\fR and \fBarp\fR, are not permitted. Generally the filter
+expression should be enclosed in single-quotes to prevent whitespace
+in the expression from being interpreted by the shell. Note that it
+is possible to apply different constraints to incoming and outgoing
+packets using the \fBinbound\fR and \fBoutbound\fR qualifiers. This
+option is currently only available if both the kernel and ipppd were
+compiled with IPPP_FILTER defined.
 .TP
 .B -pc
 Disable protocol field compression negotiation (use default, i.e.
