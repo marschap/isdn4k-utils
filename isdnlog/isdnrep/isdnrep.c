@@ -1,4 +1,4 @@
-/* $Id: isdnrep.c,v 1.96 2003/07/25 22:18:03 tobiasb Exp $
+/* $Id: isdnrep.c,v 1.97 2003/10/29 17:41:35 tobiasb Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -24,6 +24,37 @@
  *
  *
  * $Log: isdnrep.c,v $
+ * Revision 1.97  2003/10/29 17:41:35  tobiasb
+ * isdnlog-4.67:
+ *  - Enhancements for isdnrep:
+ *    - New option -r for recomputing the connection fees with the rates
+ *      from the current (and for a different or the cheapest provider).
+ *    - Revised output format of summaries at end of report.
+ *    - New format parameters %j, %v, and %V.
+ *    - 2 new input formats for -t option.
+ *  - Fix for dualmode workaround 0x100 to ensure that incoming calls
+ *    will not become outgoing calls if a CALL_PROCEEDING message with
+ *    an B channel confirmation is sent by a terminal prior to CONNECT.
+ *  - Fixed and enhanced t: Tag handling in pp_rate.
+ *  - Fixed typo in interface description of tools/rate.c
+ *  - Fixed typo in tools/isdnrate.man, found by Paul Slootman.
+ *  - Minor update to sample isdn.conf files:
+ *    - Default isdnrep format shows numbers with 16 chars (+ & 15 digits).
+ *    - New isdnrep format (-FNIO) without display of transfered bytes.
+ *    - EUR as currency in Austria, may clash with outdated rate-at.dat.
+ *      The number left of the currency symbol is nowadays insignificant.
+ *  - Changes checked in earlier but after step to isdnlog-4.66:
+ *    - New option for isdnrate: `-rvNN' requires a vbn starting with NN.
+ *    - Do not compute the zone with empty strings (areacodes) as input.
+ *    - New ratefile tags r: und t: which need an enhanced pp_rate.
+ *      For a tag description see rate-files(5).
+ *    - Some new and a few updated international cellphone destinations.
+ *
+ * NOTE: If there any questions, problems, or problems regarding isdnlog,
+ *    feel free to join the isdn4linux mailinglist, see
+ *    https://www.isdn4linux.de/mailman/listinfo/isdn4linux for details,
+ *    or send a mail in English or German to <tobiasb@isdn4linux.de>.
+ *
  * Revision 1.96  2003/07/25 22:18:03  tobiasb
  * isdnlog-4.65:
  *  - New values for isdnlog option -2x / dual=x with enable certain
@@ -159,8 +190,6 @@
 #include "isdnrep.h"
 #include "../../vbox/src/libvbox.h"
 #include "libisdn.h"
-
-#define END_TIME    1
 
 #define SET_TIME    1
 #define GET_TIME    2
@@ -298,8 +327,6 @@ typedef struct {
 			
 /*****************************************************************************/
 
-static time_t get_month(char *String, int TimeStatus);
-static time_t get_time(char *String, int TimeStatus);
 static int show_msn(one_call *cur_call);
 static int add_sum_calls(sum_calls *s1, sum_calls *s2);
 static int print_sum_calls(sum_calls *s, int computed);
@@ -598,6 +625,9 @@ int read_logfile(char *myname)
     known[knowns++]->num = "0000";
 	}
 
+	if (recalc.mode && !prep_recalc())
+		return UNKNOWN; /* error in -r Option, msg by prep_recalc to stdout */ 
+
   if (delentries)
   {
     if(begintime)
@@ -774,7 +804,7 @@ static int print_bottom(double unit, char *start, char *stop)
   sum_calls           tmp_sum;
   auto     double     s = 0.0, s2 = 0.0;
   auto	   int	      s1 = 0;
-
+	auto     int        showIO = 1;   /* display inbyte and outbyte */
 
 	if (timearea && summary < 2) {
 		strich(1);
@@ -818,8 +848,46 @@ static int print_bottom(double unit, char *start, char *stop)
 
 	print_line2(F_BODY_BOTTOM2,"");
 
-	get_format("%-14.14s %4d call(s) %10.10s  %12s %-12s %-12s");
+	i = 0;
+	if (recalc.mode && recalc.unknown)
+	{
+		print_line2(F_TEXT_LINE, "Recomputed %d of %d qualified call(s)",
+		            (recalc.count-recalc.unknown), recalc.count);
+		i++;
+	}
+	if (tolower(recalc.mode)=='b' &&
+	    recalc.cheaper != recalc.count- recalc.unknown)
+	{
+		print_line2(F_TEXT_LINE, "Found cheaper provider for %d of %d call(s)",
+		            recalc.cheaper, (recalc.count-recalc.unknown));
+		i++;
+	}
+	if (i)
+		print_line2(F_TEXT_LINE, "");
+	
+	/* foreign caller summary (out and in)  ------------------------------- */
+	/* strategy for width of summary lines:
+	 * call entry format (-F, -s) with %I or %O ==> summary also
+	 * call entry format longer than 80 chars ==> summary also
+	 * summary header out is 72 chars log, header in 74 chars */
 
+	if ( !(strstr(lineformat, "%I") || strstr(lineformat, "%O")) )
+		showIO = 0;
+	if ( set_col_size() > 80 )
+	{
+		if (showIO)
+			get_format("%-25.25s %4d call(s) %10.10s  %12s %-12s %-12s");
+		else
+			get_format("%-36.36s %4d call(s) %10.10s  %12s");
+	}
+	else
+	{
+		if (showIO)
+			get_format("%-14.14s %4d call(s) %10.10s  %12s %-12s %-12s");
+		else
+			get_format("%-36.36s %4d call(s) %10.10s  %12s");
+	}
+			
 	for (j = 0; summary < 2 && j < 2; j++)
 	{
 		if ((j == DIALOUT && !incomingonly) || (!outgoingonly && j == DIALIN))
@@ -839,10 +907,11 @@ static int print_bottom(double unit, char *start, char *stop)
 					          /*!numbers?*/known[i]->who/*:known[i]->num*/,
 					          known[i]->usage[j],
 					          double2clock(known[i]->dur[j]),
-                                                  j==DIALOUT?print_currency(known[i]->pay,0):
-                                                             fill_spaces(print_currency(known[i]->pay,0)),
+					          j==DIALOUT?print_currency(known[i]->pay,0):
+					          fill_spaces(print_currency(known[i]->pay,0)),
 					          set_byte_string(GET_IN|GET_BYTES,known[i]->ibytes[j]),
 					          set_byte_string(GET_OUT|GET_BYTES,known[i]->obytes[j]));
+					          /* the last two arguments may be excessive */
 				} /* if */
 			} /* for */
 
@@ -852,10 +921,13 @@ static int print_bottom(double unit, char *start, char *stop)
 
 	if (!incomingonly)
 	{
+		/* zone summary (outgoing)  ----------------------------------------- */
 		int ztypes = 0;
-		h_percent = 60.0;
+		/* prev.:   60.0 */
+		h_percent = 70.0;
 		h_table_color = H_TABLE_COLOR3;
-		get_format("%-21.21s %4d call(s) %10.10s  %12s");
+		/* prev.:  "%-21.21s %4d call(s) %10.10s  %12s" */
+		get_format("%-34.34s %4d call(s) %10.10s  %12s");
 		print_line2(F_BODY_HEADER,"");
 		/* Fixme: zones are provider-specific
 		   we are summing up zones for all provides here */
@@ -904,35 +976,41 @@ static int print_bottom(double unit, char *start, char *stop)
 
 		print_line2(F_BODY_BOTTOM2,"");
 
-		h_percent = 60.0;
+		/* provider summary (outgoing)  ------------------------------------- */
+		/* prev.:   60.0 */
+		h_percent = 80.0;
 		h_table_color = H_TABLE_COLOR4;
-                get_format("%-8.8s %05s %-25.25s %4d call(s) %10.10s  %12s %s");
+		/* prev.:  "%-8.8s %05s %-25.25s %4d call(s) %10.10s  %12s %s" */
+		get_format("%-8.8s %8.8s %-24.24s %4d call(s) %10.10s  %13.13s  %-13s");
+		/*          "Prov" vbn   provstr  no          durat.   cost     ..avail */
+    /*                                                80 chars >|           */
 		print_line2(F_BODY_HEADER,"");
 		print_line2(F_BODY_HEADERL,"Outgoing calls ordered by Provider");
 		strich(1);
 
 		for (i = 0; i < MAXPROVIDER; i++) {
-                  prefix2provider(i, string);
+			prefix2provider(i, string);
 		  if (usage_provider[i]) {
-                    if (duration_provider[i])
-                      sprintf(sx, "%5.1f%% avail.",
-                        100.0 * (usage_provider[i] - provider_failed[i]) / usage_provider[i]);
-                    else
-                      *sx = 0;
-    		   p = getProvider(i);
-    		   if (!p || p[strlen(p) - 1] == '?') /* UNKNOWN Provider */
-                      p = "UNKNOWN";
+				if (duration_provider[i])
+					sprintf(sx, "%5.1f%% avail.",
+					        100.0 * (usage_provider[i] - provider_failed[i]) / usage_provider[i]);
+				else
+					*sx = 0;
+				p = getProvider(i);
+				if (!p || p[strlen(p) - 1] == '?') /* UNKNOWN Provider */
+					p = "UNKNOWN";
 
-		    print_line3(NULL, "Provider", string, p,
-		      usage_provider[i],
-		      double2clock(duration_provider[i]),
-                      print_currency(pay_provider[i], 0), sx);
-       } /* if */
+				print_line3(NULL, "Provider", string, p,
+				            usage_provider[i],
+				            double2clock(duration_provider[i]),
+				            print_currency(pay_provider[i], 0), sx);
+			} /* if */
 
-    } /* for */
+		} /* for */
 
 		print_line2(F_BODY_BOTTOM2,"");
 
+		/* MSN summary (outgoing)  ------------------------------------------ */
 		h_percent = 60.0;
 		h_table_color = H_TABLE_COLOR5;
 		get_format("%-30.30s %4d call(s) %10.10s  %12s");
@@ -1040,7 +1118,7 @@ static int print_line3(const char *fmt, ...)
 				case 'f' : sprintf(tmpstr,"%f",va_arg(ap,double));
 				           append_string(&string,*fmtstring,tmpstr);
 				           break;
-                                default  : print_msg(PRT_ERR, "isdnrep: internal Error: unknown format `%c'!\n",(*fmtstring)->s_type);
+				default  : print_msg(PRT_ERR, "isdnrep: internal Error: unknown format `%c'!\n",(*fmtstring)->s_type);
 				           break;
 			}
 		}
@@ -1114,7 +1192,7 @@ static int print_line(int status, one_call *cur_call, int computed, char *overla
 	int dir;
 	int i = 0;
 	int free_col;
-        int last_free_col = UNKNOWN;
+	int last_free_col = UNKNOWN;
 
 
 	if (colsize == NULL || status == F_COUNT_ONLY)
@@ -1298,13 +1376,13 @@ static int print_line(int status, one_call *cur_call, int computed, char *overla
 				          	if (cur_call->dir)
 				          		colsize[i] = append_string(&string,NULL,"            ");
 				          	else
-                                                        colsize[i] = append_string(&string,*fmtstring,print_currency(cur_call->pay,computed));
+				          		colsize[i] = append_string(&string,*fmtstring,print_currency(cur_call->pay,computed));
 				          }
 				          else
 				          if ((status == F_BODY_LINE) &&
-                                              (cur_call->cause != UNKNOWN) &&
+				              (cur_call->cause != UNKNOWN) &&
 				              (cur_call->cause != 0x10) &&  /* Normal call clearing */
-                                              (cur_call->cause != 0x1f))    /* Normal, unspecified */
+				              (cur_call->cause != 0x1f))    /* Normal, unspecified */
 				          	colsize[i] = append_string(&string,*fmtstring,qmsg(TYPE_CAUSE, VERSION_EDSS1, cur_call->cause));
 				          else
 				          	colsize[i] = append_string(&string,NULL,"            ");
@@ -1332,22 +1410,67 @@ static int print_line(int status, one_call *cur_call, int computed, char *overla
 				          	colsize[i] = append_string(&string,*fmtstring,"  ");
 				          break;
 
+				/* provider name (from ratefile): */
+				/* should have range */
 			 	case 'j': if (status == F_BODY_LINE)
 				          {
-				          	if (!numbers)
+				          	/* if (!numbers) */ /* there is no numeric alternative */
 				          	{
-                                                        register char *p;
-
-                                                        p = (cur_call->provider >= 0) ? getProvider(cur_call->provider) : "";
-
-                                                        if (cur_call->dir == DIALIN)
-                                                          p = "";
-
-                                                        colsize[i] = append_string(&string,*fmtstring, p);
+				          		register char *p;
+				          		p = (cur_call->provider >= 0) ? getProvider(cur_call->provider) : "";
+				          		if (cur_call->dir == DIALIN)
+				           			p = "";
+				          		colsize[i] = append_string(&string,*fmtstring, p);
 				          		break;
 				          	}
 				          }
-                                          break;
+				          else
+				          {
+				          	free_col = 1;
+				          	if (!html || status == F_COUNT_ONLY)
+				          		colsize[i] = append_string(&string,*fmtstring, "");
+				          }
+				          break;
+
+				/* v: vbn aka carrier selection prefix (B: tag in ratefile) */
+				case 'v': if (status == F_BODY_LINE)
+				          {
+				          	char help2[16];
+				          	if (cur_call->dir == DIALIN)
+				          		help[0] = '\0';
+				          	else
+											prefix2provider(cur_call->provider, help);
+				          	snprintf(help2, 16, "%-8s", help);
+				            colsize[i] = append_string(&string,*fmtstring, help2);
+				          }
+				          else
+				          {
+				          	free_col = 1;
+				          	if (!html || status == F_COUNT_ONLY)
+				          		colsize[i] = append_string(&string,*fmtstring,
+				          		                           "        ");
+				          }
+				          break;
+
+				/* V: vbn and provider variant, e. g. "01012_3" */
+				case 'V': if (status == F_BODY_LINE)
+				          {
+				          	char help2[16];
+				          	if (cur_call->dir == DIALIN)
+				          		help[0] = '\0';
+				          	else
+											prefix2provider_variant(cur_call->provider, help);
+				          	snprintf(help2, 16, "%-10s", help);
+				            colsize[i] = append_string(&string,*fmtstring, help2);
+				          }
+				          else
+				          {
+				          	free_col = 1;
+				          	if (!html || status == F_COUNT_ONLY)
+				          		colsize[i] = append_string(&string,*fmtstring,
+				          		                           "          ");
+				          }
+				          break;
 
 				/* Link for answering machine! */
 				case 'C': if (html)
@@ -1379,7 +1502,7 @@ static int print_line(int status, one_call *cur_call, int computed, char *overla
 
 				          colsize[i] = append_string(&string,*fmtstring, " ");
 				          break;
-                                default : print_msg(PRT_ERR, "isdnrep: internal Error: unknown format `%c'!\n",(*fmtstring)->s_type);
+        default : print_msg(PRT_ERR, "isdnrep: internal Error: unknown format `%c'!\n",(*fmtstring)->s_type);
 				          break;
 			}
 		}
@@ -1401,7 +1524,7 @@ static int print_line(int status, one_call *cur_call, int computed, char *overla
 		i++;
 	}
 
-        if (last_free_col != UNKNOWN)
+	if (last_free_col != UNKNOWN)
 	{
 		char *help2 = NULL;
 
@@ -1409,7 +1532,7 @@ static int print_line(int status, one_call *cur_call, int computed, char *overla
 		if ((help2 = (char*) calloc(strlen(H_BODY_BOTTOM1)+(string?strlen(string):0)+strlen(overlap)+1,sizeof(char))) == NULL)
 		{
 			print_msg(PRT_ERR, nomemory);
-                        return(UNKNOWN);
+			return(UNKNOWN);
 		}
 
 		sprintf(help2,H_BODY_BOTTOM1,last_free_col+1,overlap,string?string:"");
@@ -1419,10 +1542,10 @@ static int print_line(int status, one_call *cur_call, int computed, char *overla
 		overlap = NULL;
 	}
 
-        colsize[i] = UNKNOWN;
+	colsize[i] = UNKNOWN;
 
 	if (status == F_COUNT_ONLY)
-		return strlen(string);
+		return (string) ? strlen(string) : 0;  /* do not call strlen(0) */
 	else
 		print_line2(status,"%s",overlap_string(string,overlap));
 
@@ -1501,7 +1624,7 @@ static int append_string(char **string, prt_fmt *fmt_ptr, char* value)
 		if ((tmpfmt = (char*) alloca(sizeof(char)*(strlen(htmlfmt)+strlen(tmpfmt2)+1))) == NULL)
 		{
 			print_msg(PRT_ERR, nomemory);
-                        return(UNKNOWN);
+			return(UNKNOWN);
 		}
 
 		sprintf(tmpfmt,htmlfmt,tmpfmt2);
@@ -1519,7 +1642,7 @@ static int append_string(char **string, prt_fmt *fmt_ptr, char* value)
 	if (*string == NULL)
 	{
 		print_msg(PRT_ERR, nomemory);
-                return(UNKNOWN);
+		return(UNKNOWN);
 	}
 
 	strcat(*string,tmpstr);
@@ -1955,18 +2078,42 @@ static int print_header(int lday)
 	time_t now;
 
 
-        if (lday == UNKNOWN) {
+	if (lday == UNKNOWN) {   /* first day, print overall header, no day sum */
 		time(&now);
 
-                if (bill)
-                  print_line2(F_1ST_LINE, "Ihre Verbindungen im einzelnen  -  %s", ctime(&now));
-                else
-		  print_line2(F_1ST_LINE,"I S D N  Connection Report  -  %s", ctime(&now));
+		if (bill)
+			print_line2(F_1ST_LINE, "Ihre Verbindungen im einzelnen  -  %s", ctime(&now));
+		else
+			print_line2(F_1ST_LINE,"I S D N  Connection Report  -  %s", ctime(&now));
+
+		if (recalc.mode)
+		{
+			char s[80];
+			char *prov, *vbn;
+			if (recalc.mode == '-')		  
+				snprintf(s, 80, "Connection fees recomputed");
+			else if (tolower(recalc.mode) == 'b')
+				snprintf(s, 80, "Connection fees recomputed using the cheapest "
+                 "of all %sproviders", (recalc.mode=='b')?"booked ":"");
+			else
+			{
+				prov = getProvider(recalc.prefix);
+				vbn = getProviderVBN(recalc.prefix);
+				if (strstr(prov, vbn))   /* don't show vbn twice */
+					snprintf(s, 80, "Connection fees recomputed for provider %s",
+					         prov);
+				else
+					snprintf(s, 80, "Connection fees recomputed for provider %s %s",
+				         vbn, prov);
+			}
+			print_line2(F_TEXT_LINE, "%s", s);
+		}
+		
 	}
 	else
 	{
-	    if (summary >= 2)
-		return 0;
+		if (summary >= 2)
+			return 0;
 		strich(1);
 		print_sum_calls(&day_sum,0);
 
@@ -1995,9 +2142,24 @@ static int print_header(int lday)
 	h_percent = 100.0;
 	h_table_color = H_TABLE_COLOR1;
 	print_line2(F_BODY_HEADER,"");
-	print_line2(F_BODY_HEADERL,"%s %s", get_time_value(0,NULL,GET_DATE),
-	                                       get_time_value(0,NULL,GET_YEAR));
-
+	if (summary < 2) 
+		print_line2(F_BODY_HEADERL,"%s %s", get_time_value(0,NULL,GET_DATE),
+	                                      get_time_value(0,NULL,GET_YEAR));
+	else   /* show timespam "from .. to" for options -SS */
+	{
+		char s[80];
+		s[0]=0;
+		strcat(s, get_time_value(0, NULL, GET_DATE));
+		strcat(s, " ");
+		strcat(s, get_time_value(0, NULL, GET_YEAR));
+		strcat(s, " .. ");
+		get_time_value(endtime, &lday, SET_TIME);
+		strcat(s, get_time_value(0, NULL, GET_DATE));
+		strcat(s, " ");
+		strcat(s, get_time_value(0, NULL, GET_YEAR));
+		print_line2(F_BODY_HEADERL, "%s", s);
+	}
+		
 	return 0;
 }
 
@@ -2066,7 +2228,7 @@ static int set_alias(one_call *cur_call, int *nx, char *myname)
 
 
 	for (n = CALLING; n <= CALLED; n++) {
-                nx[n] = UNKNOWN;
+		nx[n] = UNKNOWN;
 		hit = 0;
 
 		if (!*(cur_call->num[n])) {
@@ -2089,7 +2251,7 @@ static int set_alias(one_call *cur_call, int *nx, char *myname)
 					{
 						if (!strcmp(cur_call->version,LOG_VERSION_2) ||
 						    !strcmp(cur_call->version,LOG_VERSION_3) ||
-                                                    !strcmp(cur_call->version,LOG_VERSION_4) ||
+							  !strcmp(cur_call->version,LOG_VERSION_4) ||
 						    !strcmp(cur_call->version,LOG_VERSION) )
 							cc = ((known[i]->si == cur_call->si) || j) &&
 							     !n_match(known[i]->num, cur_call->num[n], cur_call->version);
@@ -2112,7 +2274,7 @@ static int set_alias(one_call *cur_call, int *nx, char *myname)
 
 					if (cc) {
 
-						strncpy(cur_call->who[n], known[i]->who,NUMSIZE);
+						Strncpy(cur_call->who[n], known[i]->who,RETSIZE);
 
  						nx[n] = i;
 						hit++;
@@ -2126,16 +2288,16 @@ static int set_alias(one_call *cur_call, int *nx, char *myname)
 			if (!hit && seeunknowns) {
 				for (i = 0; i < unknowns; i++)
 					if (!strcmp(unknown[i].num, cur_call->num[n])) {
-					hit++;
-					break;
-				} /* if */
+						hit++;
+						break;
+					} /* if */
 
 				strcpy(unknown[i].num, cur_call->num[n]);
-                                strcpy(unknown[i].mynum, cur_call->num[1 - n]);
-                                unknown[i].si1 = cur_call->si1;
+				strcpy(unknown[i].mynum, cur_call->num[1 - n]);
+				unknown[i].si1 = cur_call->si1;
 				unknown[i].called = !n;
 				unknown[i].connect[unknown[i].connects] = cur_call->t;
-                                unknown[i].cause = cur_call->cause;
+				unknown[i].cause = cur_call->cause;
 
 				/* ACHTUNG: MAXCONNECTS und MAXUNKNOWN sollten unbedingt groesser sein ! */
 				if (unknown[i].connects + 1 < MAXCONNECTS)
@@ -2158,7 +2320,7 @@ static int set_alias(one_call *cur_call, int *nx, char *myname)
 
 static void repair(one_call *cur_call)
 {
-  RATE Rate;
+  RATE Rate, lcrRate;
   TELNUM srcnum, destnum;
 	int have_z;    /* Zone Rate.z from getZone valid or not */
 	int best_zone; /* =Rate.z if valid or =Rate.zone if Rate.z invalid */
@@ -2205,6 +2367,35 @@ static void repair(one_call *cur_call)
     Rate.start = cur_call->t;
     Rate.now = call[0].disconnect;
     Rate.prefix = cur_call->provider;
+
+		if (recalc.mode) {
+			recalc.count++;
+			if (recalc.mode == 'p' || recalc.mode == 'v')
+				Rate.prefix = recalc.prefix;
+			if (!getRate(&Rate,0)) {
+				if ( (tolower(recalc.mode) == 'b') &&  /* find new provider with lcr */
+				     !getPrsel(cur_call->num[CALLED], &Rate.prefix, NULL, NULL) &&
+				     getLeastCost (&Rate, &lcrRate, recalc.mode=='b', Rate.prefix)
+				     != UNKNOWN &&
+				     lcrRate.Charge < Rate.Charge && 
+				     !strcmp(lcrRate.dst[1], Rate.dst[1]) /* no new special number */
+           ) {
+					recalc.cheaper++;
+					cur_call->pay = lcrRate.Charge;
+					cur_call->provider = lcrRate.prefix;
+				}
+				else {  /* lcr failed (error or no cheaper provider) or not requested */
+					cur_call->pay = Rate.Charge;
+					cur_call->provider = Rate.prefix;
+				}
+			}
+			else {  /* fall back to logged provider for zone name etc */
+				recalc.unknown++;
+				Rate.prefix = cur_call->provider;
+				Rate._zone = Rate._area = Rate.zone = UNKNOWN;
+			}
+		}
+
     if (!getRate(&Rate,0)) {
 #if DEBUG
 			fprintf(stderr,"Rate.zone=%i Rate.z=%i Rate.domestic=%i call.[0]so..r[CALLED]=%i\n", Rate.zone, Rate.z, Rate.domestic, call[0].sondernummer[CALLED]);
@@ -2437,7 +2628,7 @@ static int set_caller_infos(one_call *cur_call, char *string, time_t from)
 	/* repair() recalculates the connection cost for entries with LOG_VERSION
    * older than the current and sets cur_call->zone for outgoing calls with
    * recorded one of -1 (=UNKNWON).  The necessary information is taken from
-   * the current rate-file.
+   * the current rate-file.  The -r option is also handled there.
    */
   repair(cur_call);
 
@@ -2467,186 +2658,6 @@ static char **string_to_array(char *string)
 
 	array[++i] = NULL;
 	return array;
-}
-
-/*****************************************************************************/
-
-int get_term (char *String, time_t *Begin, time_t *End,int delentries)
-{
-  time_t now;
-  time_t  Date[2];
-  int Cnt;
-  char DateStr[2][256] = {"",""};
-
-
-  time(&now);
-
-  if (String[0] == '-')
-    strcpy(DateStr[1],String+1);
-  else
-  if (String[strlen(String)-1] == '-')
-  {
-    strcpy(DateStr[0],String);
-    DateStr[0][strlen(String)-1] ='\0';
-  }
-  else
-  if (strchr(String,'-'))
-  {
-    if (sscanf(String,"%[/.0-9]-%[/.0-9]",DateStr[0],DateStr[1]) != 2)
-      return 0;
-  }
-  else
-  {
-    strcpy(DateStr[0],String);
-    strcpy(DateStr[1],String);
-  }
-
-  for (Cnt = 0; Cnt < 2; Cnt++)
-  {
-    if (strchr(DateStr[Cnt],'/'))
-      Date[Cnt] = get_month(DateStr[Cnt],delentries?0:Cnt);
-    else
-      Date[Cnt] = get_time(DateStr[Cnt],delentries?0:Cnt);
-  }
-
-  *Begin = DateStr[0][0] == '\0' ? 0 : Date[0];
-  *End = DateStr[1][0] == '\0' ? now : Date[1];
-
-  return 1;
-}
-
-/*****************************************************************************/
-
-static time_t get_month(char *String, int TimeStatus)
-{
-  time_t now;
-  int Cnt = 0;
-  struct tm *TimeStruct;
-  int Args[3];
-  int ArgCnt;
-
-
-  time(&now);
-  TimeStruct = localtime(&now);
-  TimeStruct->tm_sec = 0;
-  TimeStruct->tm_min = 0;
-  TimeStruct->tm_hour= 0;
-  TimeStruct->tm_mday= 1;
-  TimeStruct->tm_isdst= UNKNOWN;
-
-  ArgCnt = sscanf(String,"%d/%d/%d",&(Args[0]),&(Args[1]),&(Args[2]));
-
-  switch (ArgCnt)
-  {
-    case 3:
-      TimeStruct->tm_mday = Args[0];
-      Cnt++;
-    case 2:
-      /* if (Args[Cnt+1] > 99) */
-      if (Args[Cnt+1] >= 1900)
-        TimeStruct->tm_year = ((Args[Cnt+1] / 100) - 19) * 100 + (Args[Cnt+1]%100);
-      else
-        if (Args[Cnt+1] < 70)
-          TimeStruct->tm_year = Args[Cnt+1] + 100;
-        else
-          TimeStruct->tm_year = Args[Cnt+1];
-    case 1:
-      TimeStruct->tm_mon = Args[Cnt];
-      break;
-    default:
-      return 0;
-  }
-
-  if (TimeStatus == END_TIME)
-  {
-    if (ArgCnt == 3)	/* Wenn Tag angegeben ist */
-    {
-      TimeStruct->tm_mday++;
-      TimeStruct->tm_mon--;
-    }
-  }
-  else
-    TimeStruct->tm_mon--;
-
-  return mktime(TimeStruct);
-}
-
-/*****************************************************************************/
-
-static time_t get_time(char *String, int TimeStatus)
-{
-  time_t now;
-  int Len = 0;
-  int Year;
-  char *Ptr;
-  struct tm *TimeStruct;
-
-
-  time(&now);
-  TimeStruct = localtime(&now);
-  TimeStruct->tm_sec = 0;
-  TimeStruct->tm_min = 0;
-  TimeStruct->tm_hour= 0;
-  TimeStruct->tm_isdst= UNKNOWN;
-
-  switch (strlen(String))
-  {
-    case 0:
-            return 0;
-    case 1:
-    case 2:
-            TimeStruct->tm_mday = atoi(String);
-            break;
-    default:
-            Len = strlen(String);
-
-      if ((Ptr = strchr(String,'.')) != NULL)
-      {
-        TimeStruct->tm_sec = atoi(Ptr+1);
-        Len -= strlen(Ptr);
-      }
-
-      if (Len % 2)
-        return 0;
-
-      if (sscanf(String,"%2d%2d%2d%2d%d",
-          &(TimeStruct->tm_mon),
-          &(TimeStruct->tm_mday),
-          &(TimeStruct->tm_hour),
-          &(TimeStruct->tm_min),
-          &Year		) 		> 4) {
-        /* if (Year > 99) */
-	if (Year >= 1900)
-          TimeStruct->tm_year = ((Year / 100) - 19) * 100 + (Year%100);
-        else {
-	  if (Year < 70)
-	    TimeStruct->tm_year = Year + 100;
-	  else
-	    TimeStruct->tm_year = Year;
-        }
-      }
-      TimeStruct->tm_mon--;
-      break;
-  }
-
-  if (TimeStatus == END_TIME) {
-    if (TimeStruct->tm_sec == 0 &&
-        TimeStruct->tm_min == 0 &&
-        TimeStruct->tm_hour== 0   )
-      TimeStruct->tm_mday++;
-    else {
-      if (TimeStruct->tm_sec == 0 &&
-        TimeStruct->tm_min == 0   )
-        TimeStruct->tm_hour++;
-      else {
-        if (TimeStruct->tm_sec == 0   )
-          TimeStruct->tm_min++;
-        else
-          TimeStruct->tm_sec++;
-      }
-    }
-  }
-  return mktime(TimeStruct);
 }
 
 /*****************************************************************************/
@@ -3749,6 +3760,69 @@ static int app_fmt_string(char *target, int targetlen, char *fmt, int condition,
 	value = condition?html_conv(tmpvalue):tmpvalue;
 
 	return snprintf(target,targetlen,tmpfmt,value);
+}
+
+/*****************************************************************************/
+/* find provider for recalculation of connection fees (-r Option) */
+int prep_recalc (void)
+{
+	int pnum;
+	char *variant;
+	/* eror messages should work in HTML mode (text/html) too */
+	if (recalc.mode == '-' || /* just recalc, no different provider */
+		  recalc.mode == 'b' || /* do lcr with booked providers */
+			recalc.mode == 'B' )  /* do lcr with all providers */
+		return 1;
+
+	if (recalc.mode == 'p')
+	{
+		if (strchr(recalc.input, '_'))     /* -rp21_0 */
+		{
+			recalc.prefix = pnum2prefix_variant(recalc.input, 0);
+		}
+		else                               /* -rp21 */
+		{
+			pnum = atoi(recalc.input);
+			recalc.prefix = pnum2prefix(pnum, 0);
+		}
+	}
+	else if (recalc.mode == 'v')
+	{
+		if ( (variant = strchr(recalc.input, '_')) )
+		{                                   /* -rv01021_0 */
+			int p;
+			char *vbn;
+			char s[16];
+			variant++;
+			for (p=0; p<getNProvider(); p++)
+			{                                 /* something like vbn2prefix_variant */
+				vbn = getProviderVBN(p);
+				if (strncmp(vbn, recalc.input, strlen(vbn)))
+					continue;
+				pnum = prefix2pnum(p);
+				snprintf(s, 12, "%d_%s", pnum, variant );
+				if ( (recalc.prefix = pnum2prefix_variant(s, 0)) != UNKNOWN )
+					break;
+			}
+		}
+		else                               /* -rv01021 */
+		{
+			int l;
+			recalc.prefix = vbn2prefix(recalc.input, &l);
+		}
+	}
+	else
+	{
+		printf("Unknown provider selection mode in option -r: %c.\n", recalc.mode);
+		return 0;
+	}
+	if (recalc.prefix == UNKNOWN)
+	{
+		printf("No provider found in ratefile for %s %s.\n",
+		       (recalc.mode=='p') ? "Pnum" : "VBN", recalc.input);
+		return 0;
+	}
+	return 1;
 }
 
 /* vim:set ts=2: */

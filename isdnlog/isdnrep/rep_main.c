@@ -1,4 +1,4 @@
-/* $Id: rep_main.c,v 1.16 2003/07/25 22:18:03 tobiasb Exp $
+/* $Id: rep_main.c,v 1.17 2003/10/29 17:41:35 tobiasb Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -20,6 +20,37 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rep_main.c,v $
+ * Revision 1.17  2003/10/29 17:41:35  tobiasb
+ * isdnlog-4.67:
+ *  - Enhancements for isdnrep:
+ *    - New option -r for recomputing the connection fees with the rates
+ *      from the current (and for a different or the cheapest provider).
+ *    - Revised output format of summaries at end of report.
+ *    - New format parameters %j, %v, and %V.
+ *    - 2 new input formats for -t option.
+ *  - Fix for dualmode workaround 0x100 to ensure that incoming calls
+ *    will not become outgoing calls if a CALL_PROCEEDING message with
+ *    an B channel confirmation is sent by a terminal prior to CONNECT.
+ *  - Fixed and enhanced t: Tag handling in pp_rate.
+ *  - Fixed typo in interface description of tools/rate.c
+ *  - Fixed typo in tools/isdnrate.man, found by Paul Slootman.
+ *  - Minor update to sample isdn.conf files:
+ *    - Default isdnrep format shows numbers with 16 chars (+ & 15 digits).
+ *    - New isdnrep format (-FNIO) without display of transfered bytes.
+ *    - EUR as currency in Austria, may clash with outdated rate-at.dat.
+ *      The number left of the currency symbol is nowadays insignificant.
+ *  - Changes checked in earlier but after step to isdnlog-4.66:
+ *    - New option for isdnrate: `-rvNN' requires a vbn starting with NN.
+ *    - Do not compute the zone with empty strings (areacodes) as input.
+ *    - New ratefile tags r: und t: which need an enhanced pp_rate.
+ *      For a tag description see rate-files(5).
+ *    - Some new and a few updated international cellphone destinations.
+ *
+ * NOTE: If there any questions, problems, or problems regarding isdnlog,
+ *    feel free to join the isdn4linux mailinglist, see
+ *    https://www.isdn4linux.de/mailman/listinfo/isdn4linux for details,
+ *    or send a mail in English or German to <tobiasb@isdn4linux.de>.
+ *
  * Revision 1.16  2003/07/25 22:18:03  tobiasb
  * isdnlog-4.65:
  *  - New values for isdnlog option -2x / dual=x with enable certain
@@ -268,7 +299,7 @@ int main(int argc, char *argv[], char *envp[])
 	auto char  fnbuff[512] = "";
 	auto char  usage[]     = "%s: usage: %s [ -%s ]\n";
 	auto char  wrongdate[] = "unknown date: %s\n";
-	auto char  options[]   = "ad:f:hinop:s:t:uvw:NVF:M:R:bES";
+	auto char  options[]   = "ad:f:hinop:r:s:t:uvw:NVF:M:R:bES";
 	auto char *myname      = basename(argv[0]);
 	auto char *ptr         = NULL;
 	auto char *linefmt     = "";
@@ -277,6 +308,9 @@ int main(int argc, char *argv[], char *envp[])
 
 
 	set_print_fct_for_tools(print_in_modules);
+
+	recalc.mode = '\0'; recalc.prefix = UNKNOWN; recalc.input = NULL;
+	recalc.count = recalc.unknown = recalc.cheaper = 0;
 
 	/* we don't need this at the moment:
 	new_args(&argc,&argv);
@@ -363,6 +397,10 @@ int main(int argc, char *argv[], char *envp[])
 
       case 'S' : summary++;
       	       	 break;
+
+      case 'r' : recalc.mode = *optarg;
+                 recalc.input = strdup(optarg+1);
+                 break;
 
       case '?' : printf(usage, argv[0], argv[0], options);
                  return(1);
@@ -478,4 +516,4 @@ int set_linefmt(char *linefmt)
 }
 
 /*****************************************************************************/
-
+/* vim:set ts=2: */

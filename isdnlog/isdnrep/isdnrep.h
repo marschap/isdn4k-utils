@@ -1,4 +1,4 @@
-/* $Id: isdnrep.h,v 1.21 2000/10/15 12:53:04 leo Exp $
+/* $Id: isdnrep.h,v 1.22 2003/10/29 17:41:35 tobiasb Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,37 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnrep.h,v $
+ * Revision 1.22  2003/10/29 17:41:35  tobiasb
+ * isdnlog-4.67:
+ *  - Enhancements for isdnrep:
+ *    - New option -r for recomputing the connection fees with the rates
+ *      from the current (and for a different or the cheapest provider).
+ *    - Revised output format of summaries at end of report.
+ *    - New format parameters %j, %v, and %V.
+ *    - 2 new input formats for -t option.
+ *  - Fix for dualmode workaround 0x100 to ensure that incoming calls
+ *    will not become outgoing calls if a CALL_PROCEEDING message with
+ *    an B channel confirmation is sent by a terminal prior to CONNECT.
+ *  - Fixed and enhanced t: Tag handling in pp_rate.
+ *  - Fixed typo in interface description of tools/rate.c
+ *  - Fixed typo in tools/isdnrate.man, found by Paul Slootman.
+ *  - Minor update to sample isdn.conf files:
+ *    - Default isdnrep format shows numbers with 16 chars (+ & 15 digits).
+ *    - New isdnrep format (-FNIO) without display of transfered bytes.
+ *    - EUR as currency in Austria, may clash with outdated rate-at.dat.
+ *      The number left of the currency symbol is nowadays insignificant.
+ *  - Changes checked in earlier but after step to isdnlog-4.66:
+ *    - New option for isdnrate: `-rvNN' requires a vbn starting with NN.
+ *    - Do not compute the zone with empty strings (areacodes) as input.
+ *    - New ratefile tags r: und t: which need an enhanced pp_rate.
+ *      For a tag description see rate-files(5).
+ *    - Some new and a few updated international cellphone destinations.
+ *
+ * NOTE: If there any questions, problems, or problems regarding isdnlog,
+ *    feel free to join the isdn4linux mailinglist, see
+ *    https://www.isdn4linux.de/mailman/listinfo/isdn4linux for details,
+ *    or send a mail in English or German to <tobiasb@isdn4linux.de>.
+ *
  * Revision 1.21  2000/10/15 12:53:04  leo
  * Changed iobytes to double
  *
@@ -149,6 +180,7 @@
 #include <tools.h>
 #include <holiday.h>
 #include <rate.h>
+#include <telnum.h>
 
 /*****************************************************************************/
 
@@ -168,6 +200,19 @@
 #define H_PRINT_HEADER 2
 
 /*****************************************************************************/
+
+typedef struct {
+  char	 mode;    /* \0 (none), - (logged provider), p (provider), v (vbn) */
+  int    prefix;  /* internal provider number */
+  int    count;   /* number of calls suitable for recomputing */
+  int    unknown; /* thereof the calls which have not been recomputed */
+  int    cheaper; /* number of calls where a cheaper provider was found */
+  char  *input;   /* input from command line after -r[vp] */
+} RECALC;
+
+/*****************************************************************************/
+
+/* isdnrep.c defines _REP_FUNC_C_, rep_main.c definies _ISDNREP_C_, ... */
 
 #ifdef _REP_FUNC_C_
 #define _EXTERN
@@ -191,6 +236,7 @@ _EXTERN int get_term (char *String, time_t *Begin, time_t *End,int delentries);
 _EXTERN int set_msnlist(char *String);
 _EXTERN int send_html_request(char *myname, char *option);
 _EXTERN int new_args(int *nargc, char ***nargv);
+_EXTERN int prep_recalc(void);
 
 _EXTERN int     print_msg(int Level, const char *, ...);
 _EXTERN int     incomingonly    _SET_0;
@@ -213,12 +259,24 @@ _EXTERN time_t  endtime         _SET_0;
 _EXTERN int     preselect	_SET_33;
 #endif
 _EXTERN int     summary		_SET_0;
-
+_EXTERN RECALC  recalc; /* initialiation done in main */
 
 #undef _SET_NULL
 #undef _SET_0
 #undef _SET_1
 #undef _SET_EMPTY
+#undef _EXTERN
+
+/*****************************************************************************/
+
+#ifdef _OPT_TIME_C_
+#define _EXTERN
+#else
+#define _EXTERN extern
+#endif
+
+_EXTERN int get_term (char *String, time_t *Begin, time_t *End,int delentries);
+
 #undef _EXTERN
 
 /*****************************************************************************/
@@ -231,9 +289,6 @@ _EXTERN int     summary		_SET_0;
 /*****************************************************************************/
 
 #define C_DELIM '|'
-
-/*****************************************************************************/
-
 
 /*****************************************************************************/
 
@@ -270,7 +325,7 @@ typedef struct {
   int    dir;
   double duration;
   char   num[2][NUMSIZE];
-  char   who[2][NUMSIZE];
+  char   who[2][RETSIZE];
   char	 sarea[2][TN_MAX_SAREA_LEN]; /* lt */
   double ibytes;
   double obytes;
@@ -283,7 +338,7 @@ typedef struct {
   int	 provider;
   int	 zone; /* fixme: zones may vary over time */
 } one_call;
-
+  
 /*****************************************************************************/
 
 #endif /* _ISDNREP_H_ */

@@ -23,7 +23,8 @@ OLABEL          = %b %e %T %Itei %t calling %N2 with %n2
 # OLABEL        = %a %b %e %T uitgaand %I%n2 -> %N2
 REPFMTWWW       = "%X %D %17.17H %T %-17.17F %-20.20l SI: %S %9u %U %I %O"
 REPFMTSHORT     = "%X%D %8.8H %T %-14.14F%U%I %O"
-REPFMT          = "  %X %D %15.15H %T %-15.15F %7u %U %I %O"
+REPFMTNIO       = "  %X %D %16.16H %T %-25.25F %U"
+REPFMT          = "  %X %D %16.16H %T %-15.15F %7u %U %I %O"
 CHARGEMAX       = 50.00
 CURRENCY        = 0.01,EUR
 

@@ -1,6 +1,6 @@
 /* #define DEBUG_REDIRZ */
 
-/* $Id: rate.c,v 1.85 2002/07/25 18:16:06 akool Exp $
+/* $Id: rate.c,v 1.86 2003/10/29 17:41:35 tobiasb Exp $
  *
  * Tarifdatenbank
  *
@@ -21,6 +21,37 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rate.c,v $
+ * Revision 1.86  2003/10/29 17:41:35  tobiasb
+ * isdnlog-4.67:
+ *  - Enhancements for isdnrep:
+ *    - New option -r for recomputing the connection fees with the rates
+ *      from the current (and for a different or the cheapest provider).
+ *    - Revised output format of summaries at end of report.
+ *    - New format parameters %j, %v, and %V.
+ *    - 2 new input formats for -t option.
+ *  - Fix for dualmode workaround 0x100 to ensure that incoming calls
+ *    will not become outgoing calls if a CALL_PROCEEDING message with
+ *    an B channel confirmation is sent by a terminal prior to CONNECT.
+ *  - Fixed and enhanced t: Tag handling in pp_rate.
+ *  - Fixed typo in interface description of tools/rate.c
+ *  - Fixed typo in tools/isdnrate.man, found by Paul Slootman.
+ *  - Minor update to sample isdn.conf files:
+ *    - Default isdnrep format shows numbers with 16 chars (+ & 15 digits).
+ *    - New isdnrep format (-FNIO) without display of transfered bytes.
+ *    - EUR as currency in Austria, may clash with outdated rate-at.dat.
+ *      The number left of the currency symbol is nowadays insignificant.
+ *  - Changes checked in earlier but after step to isdnlog-4.66:
+ *    - New option for isdnrate: `-rvNN' requires a vbn starting with NN.
+ *    - Do not compute the zone with empty strings (areacodes) as input.
+ *    - New ratefile tags r: und t: which need an enhanced pp_rate.
+ *      For a tag description see rate-files(5).
+ *    - Some new and a few updated international cellphone destinations.
+ *
+ * NOTE: If there any questions, problems, or problems regarding isdnlog,
+ *    feel free to join the isdn4linux mailinglist, see
+ *    https://www.isdn4linux.de/mailman/listinfo/isdn4linux for details,
+ *    or send a mail in English or German to <tobiasb@isdn4linux.de>.
+ *
  * Revision 1.85  2002/07/25 18:16:06  akool
  * isdnlog-2.60:
  *   - new provider "01081" (1,5 EuroCent/minute)
@@ -670,7 +701,7 @@
  *
  * int pnum2prefix(int pnum, time_t when)
  *   converts the external provider number to the internal prefix at
- *   the given date/time when, or know if when is 0
+ *   the given date/time when, or now if when is 0
  *
  * inline int prefix2pnum(int prefix)
  *    returns the external provider number

@@ -1,5 +1,5 @@
-.\" $Id: isdnrep.1.in,v 1.5 2000/11/06 15:02:17 paul Exp $
-.\" CHECKIN $Date: 2000/11/06 15:02:17 $
+.\" $Id: isdnrep.1.in,v 1.6 2003/10/29 17:41:35 tobiasb Exp $
+.\" CHECKIN $Date: 2003/10/29 17:41:35 $
 .TH isdnrep 1 "@MANDATE_ISDNREP@" "ISDN 4 Linux @I4LVERSION@" "Linux System Commands"
 
 .PD 0
@@ -126,6 +126,42 @@ At the end of the report, all numbers not aliased in callerid.conf or
 is requested.
 
 .TP
+.B \-rPROV recompute
+Recompute the connection fees with the current ratefile instead of
+showing the amounts stored in the logfile as usual.  The provider
+.B PROV
+for recomputation is selected in one of the following ways:
+
+.RS
+.TP 10
+\-
+Use the logged provider.
+.TP
+pNUM
+Use provider with Pnum NUM (according to P: tag in ratefile).
+The provider variant is taken from rate.conf where the provider
+must be enabled.
+.TP
+pNUM_VAR
+Use provider with Pnum NUM and variant VAR
+(according to P:NUM,VAR in ratefile).  No requirements for rate.conf.
+.TP
+vVBN
+.TP
+vVBN_VAR
+Similar to pNUM[_VAR] but the provider is selected via VBN
+(B: tag in ratefile) instead of Pnum.
+.TP
+b
+Use the cheapest of all booked providers.  The provider selection
+is done per call.  Booked providers are those, which are enabled
+in rate.conf
+.TP
+B
+Like b but allow all providers, not only the booked.
+.RE
+
+.TP
 .B \-wX	WWW
 isdnrep can give its output in HTML format; this is switched on with
 this option. Two modes are possible:
@@ -213,6 +249,19 @@ the cost, if known
 .br
 e.g. 2,28 DM
 .TP
+%\fBx\fRj
+the name of the used provider
+.TP
+%v
+the VBN (carrier selection prefix) of the provider
+.br
+e.g. 01012
+.TP
+%V
+the VBN and variant of the provider
+.br
+e.g. 01012_3
+.TP
 %I
 amount of INPUT data
 .TP
@@ -258,6 +307,15 @@ The above string is put into @CONFFILE@ at installation as
 .B REPFMTSHORT
 and can be used with
 .B -Fshort.
+
+Without showing the transfered bytes, this string also fits into 80 chars:
+
+.in +4
+"  %X %D %16.16H %T %-25.25F %U"
+.in -4
+
+It is included as
+.B REPFMTNIO.
 
 .in -7
 .TP
@@ -573,7 +631,7 @@ For the -d and -t options, the time is specified in the following formats:
 
 .TP
 [DD/][M]M/[[YY]YY]
-specifes the month or day.
+specifies the month or day.
 
 Examples:
 
@@ -585,8 +643,8 @@ July of the current year
 8/1996
 August 1996
 .TP
-29/6/95
-June 29th 1995
+29/6/05
+June 29th 2005
 .TP
 6/6/
 error, is not June 6th of the current year; it's June 1906
@@ -595,6 +653,25 @@ error, is not June 6th of the current year; it's June 1906
 .TP
 [D]D
 day of current month
+
+.TP
+[D]D.[M]M.[[[CC]Y]Y]
+specifies a day.  If century or year and century are missing, they will
+be taken from the current date. 
+
+Examples:
+
+.RS
+.TP 10
+23.5.
+May 23rd in the current year
+.TP
+19.01.38
+January 19th 2038
+.TP
+16.10.1998
+October 16th 1998
+.RE
 
 .TP
 [MM]DD[hhmm[[CC]YY][.ss]]
@@ -638,6 +715,9 @@ all entries between June 1st 1995 00:00:00 and August 12th 14:38:25
 all entries between September 12th 1995 03:04:20 and December 31st
 1995 23:59:59
 .TP
+09.06.2006-9/7/6
+all entries between June 6th 2006 00:00:00 and July 7th 2006 00:00:00
+.TP
 7/95
 all entries between July 1st 1995 00:00:00 and July 31st 1995 23:59:59
 .TP
@@ -648,6 +728,43 @@ September 8th in the current year 23:59:59
 3
 third day of the current month
 .RE
+
+.TP
+[CC]YY\-MM\-DDThh:mm:ss
+specifies a year, a moment, or something between.  Each seperator
+\'-', 'T', and ':' can be omitted or not.  If the first '-' is
+missing, the century must be given.
+
+This notation cannot be combined with the above notations.
+Time spans are noted with '--' instead of '-'.  If no '--' is given,
+\'i' must be noted after the \-t option.
+
+Examples:
+
+.RS
+.TP
+i2002
+the entire year 2002 from January 1st 00:00:00 to December 31st 23:59:59
+.TP
+i200306
+the entire month June 2003
+.TP
+200308--200309
+August and September 2003
+.TP
+2003-10-03T17--
+all entries after October 3rd 2003 16:59:59
+.TP
+2003-08-27T11:51:25--20030827115128
+4 seconds at August 27th 2003
+.TP
+200306
+error: neither 'i' nor '--' given
+.TP
+2003-1-4
+error: leading zeros (at month and day) must not omitted
+.RE
+.in -7
 
 .SH "FILES"
 .TP

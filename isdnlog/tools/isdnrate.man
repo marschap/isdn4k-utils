@@ -1,4 +1,4 @@
-.\" CHECKIN $Date: 2003/09/04 19:45:07 $
+.\" CHECKIN $Date: 2003/10/29 17:41:35 $
 .TH ISDNRATE 1 "@MANDATE@" -lt-
 .SH NAME
 isdnrate \- Print telefon rates and various info from rate\-files(5).
@@ -307,7 +307,7 @@ getting a SIGHUP signal.
 .SH "SEE ALSO"
 .BR rate-files(5) ", " isdnlog(8) ", " isdn.conf(5)
 .SH BUGS
-Definitly yes. Sometimes more then one daemon can be started, sometimes the
+Definitely yes. Sometimes more then one daemon can be started, sometimes the
 socket is not removed, when the daemon terminates. if this happens
 ('socket in use'), do a
 .I rm /tmp/isdnrate

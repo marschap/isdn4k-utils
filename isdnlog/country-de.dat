@@ -1,7 +1,7 @@
-V:1.55 Int [21-Sep-2003 01:00:00]
+V:1.56 Int [20-Oct-2003 01:00:00]
 #
 # This version of country.dat originates from rates4linux:
-# $Id: country-de.dat,v 1.44 2003/09/22 19:46:01 tobiasb Exp $
+# $Id: country-de.dat,v 1.45 2003/10/29 17:41:34 tobiasb Exp $
 # The rates4linux homepage: http://www.sourceforge.net/projects/rates4linux/
 # It bases on Rev. 1.39 of isdn4k-utils/isdnlog/country-de.dat 
 # in the CVS at http://www.isdn4linux.de.
@@ -1275,9 +1275,19 @@ N:Nicaragua
 C:+505
 T:NI
 
+# Source (2003-07-19):
+# http://www.itu.int/itudoc/itu-t/number/h/hnd/82323_ww2.doc
 N:Honduras
 C:+504
 T:HN
+
+N:Honduras Mobilfunk
+E:Honduras cellphone
+C:+5049575, +5049576, +5049577, +5049578, 5049579
+C:+504958, +504959
+C:+50496, +50497, +50498, +50499
+R:HN
+T:_HNMF
 
 N:El Salvador Mobilfunk
 E:El Salvador cellphone
