@@ -682,7 +682,8 @@ starten.  Eine genaue Beschreibung findet man unter dem Kapitel isdnrep.
 Dieser Eintrag ist optional.
 
 Beipiel:
-VBOXCMD = /usr/bin/zyxeltowav
+VBOXCMD1 = /usr/bin/zyxeltowav # Fuer Version vbox 0.x und 1.x
+VBOXCMD2 = /usr/bin/zyxeltowav # Fuer Version vbox 2.x
 
 Wenn der isdnrep via HTML angekommene Faxe anzeigen soll, dann muss hier
 der Pfad eingetragen werden. Eine genaue Beschreibung findet man unter 
@@ -2083,6 +2084,7 @@ angegeben werden.
        8 die Byte-Angaben ("ibyte", "obyte")
      Hier koennen auch Kombinationen angegeben werden
      (z.b. 2 + 4 = 6 == "/dev/isdnctrl" und "/dev/isdninfo")
+     Diese Datei wird bei einem "kill -HUP" geschlossen und wieder geoeffnet.
      (log=X)
 
  -s  isdnlog fuehrt nach jedem Schreibzugriff auf die "/tmp/isdnctrl0"
@@ -2104,6 +2106,7 @@ angegeben werden.
      werden soll. Nur gueltig mit Option -m zusammen!
      Es ist moeglich parallel die Option -C X zu setzen. Dann wird
      sowohl auf der Console als auch in der Datei die Ausgabe ausgegeben.
+     Diese Datei wird bei einem "kill -HUP" geschlossen und wieder geoeffnet.
      (outfile="value")
 
  -lX Angabe der gewuenschten Meldungen, die in's syslog eingetragen
@@ -2714,14 +2717,22 @@ program /play/file
 Dieses teilt man dem isdnrep wieder ueber die Datei isdn.conf mit. Es muss
 dort unter [ISDNLOG] der Eintrag
 
-VBOXCMD = /usr/bin/program
+VBOXCMD1 = /usr/bin/program1
 
-eingefuegt werden.
-Das Programm muss dann die Datei auf stdout ausgeben.
-Das Programm muss zuerst den Datei-Typ bekanntgeben.
-Um das Zyxel-Format in eine WAVE-Datei auszugeben, kann man folgendes Skript
+fuer Version 0.x und 1.x vom vbox
+und
+
+VBOXCMD2 = /usr/bin/program2
+
+fuer Version 2.x vom vbox
+eingefuegt werden. Es koennen auch beide gesetzt sein, da der isdnrep selber
+erkennt, welches Format die entsprechende Datei hat.
+
+Das Programm muss zuerst den Datei-Typ und die Sound-Datei auf stdout ausgeben.
+Um das Zyxel-Format in eine WAVE-Datei auszugeben, kann man folgende Skripte
 verwenden:
 
+Fuer Version 0.x und 1.x:
 -----------------------------------------------------------
 #! /bin/sh
 ##
@@ -2730,7 +2741,7 @@ verwenden:
 ## ACHTUNG! Wenn die Pfade falsch gesetzt sind oder fehlen,
 ## stuerzt netscape einfach ab!
 
-PATH=$PATH:"Pfad zum sox":"Pfad zun den pvftools"
+PATH=$PATH:"Pfad zum sox":"Pfad zu den pvftools"
 FILENAME1=/tmp/voxplay.$$.voc
 FILENAME2=/tmp/voxplay.$$.wav
 VOLUME=8
@@ -2738,7 +2749,7 @@ VOLUME=8
 zyxeltopvf < $1   | \
    pvfspeed 0.8   | \
    pvfamp $VOLUME | \
-   pvfcut 0.8     | \
+   pvfcut 0.20    | \
    pvftovoc > $FILENAME1
 
 sox $FILENAME1 $FILENAME2
@@ -2750,9 +2761,38 @@ cat $FILENAME2
 rm -f $FILENAME1 $FILENAME2
 -----------------------------------------------------------
 
-Das obige Skript benoetigt die Pakete sox und pvftools.
+Fuer Version 2.x:
+-----------------------------------------------------------
+#! /bin/sh
+##
+## Kommando zum abspielen von Voicenachrichten vom vbox-1.0
+##
+## ACHTUNG! Wenn die Pfade falsch gesetzt sind oder fehlen,
+## stuerzt netscape einfach ab!
+
+PATH=$PATH:"Pfad zum sox":"Pfad zu den pvftools":"Pfad zum vbox"
+FILENAME1=/tmp/voxplay.$$.voc
+FILENAME2=/tmp/voxplay.$$.wav
+VOLUME=8
+
+vboxtoau <$1             | \
+          autopvf        | \
+          pvfamp $VOLUME | \
+          pvfcut 0.20    | \
+   				pvftovoc > $FILENAME1
+
+sox $FILENAME1 $FILENAME2
+
+echo Content-Type: audio/x-wav
+echo
+cat $FILENAME2
+
+rm -f $FILENAME1 $FILENAME2
+-----------------------------------------------------------
+
+Die obigen Skripte benoetigen die Pakete sox und pvftools.
 Es ist darauf zu achten, dass die benoetigten Programme im Pfad stehen.
-Andernfalls quittiert netscape 3.0 gold dieses mit einem "bus error".
+Andernfalls quittiert netscape 3.0 gold (alpha??) dieses mit einem "bus error".
 
 Damit der Browser etwas mit dem Typ "audio/x-wav" anfangen kann, muss
 an den folgenden Dateien noch Zeilen angefuegt werden:

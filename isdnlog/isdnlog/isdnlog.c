@@ -1,4 +1,4 @@
-/* $Id: isdnlog.c,v 1.11 1997/05/09 23:30:47 luethje Exp $
+/* $Id: isdnlog.c,v 1.12 1997/05/25 19:40:58 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,12 @@
  * along with this program; if not, write to the Free Software
  *
  * $Log: isdnlog.c,v $
+ * Revision 1.12  1997/05/25 19:40:58  luethje
+ * isdnlog:  close all files and open again after kill -HUP
+ * isdnrep:  support vbox version 2.0
+ * isdnconf: changes by Roderich Schupp <roderich@syntec.m.EUnet.de>
+ * conffile: ignore spaces at the end of a line
+ *
  * Revision 1.11  1997/05/09 23:30:47  luethje
  * isdnlog: new switch -O
  * isdnrep: new format %S
@@ -62,7 +68,7 @@
 
 /*****************************************************************************/
 
- /* Letzte Exit-Nummer: 45 */
+ /* Letzte Exit-Nummer: 47 */
 
 /*****************************************************************************/
 
@@ -104,6 +110,28 @@ static void hup_handler(int isig)
   discardconfig();
   if (readconfig(myname) != 0)
   	Exit(41);
+
+	if (fprot != NULL && tmpout != NULL && *tmpout != '\0')
+	{
+		fclose(fprot);
+
+		if ((fprot = fopen(tmpout,"a")) == NULL)
+ 	 	{
+ 	 		print_msg(PRT_ERR,"Can not open file `%s': %s!\n",tmpout, strerror(errno));
+			Exit(46);
+		}
+	}
+
+	if (fout != NULL && outfile != NULL && *outfile != '\0')
+	{
+		fclose(fout);
+
+		if ((fout = fopen(outfile,"a")) == NULL)
+ 	 	{
+ 	 		print_msg(PRT_ERR,"Can not open file `%s': %s!\n",outfile, strerror(errno));
+			Exit(47);
+		}
+	}
 
   signal(SIGHUP, hup_handler);
 } /* hup_handler */
@@ -728,11 +756,10 @@ int main(int argc, char *argv[], char *envp[])
   register char  *p;
   register int 	  i, res = 0;
   auto 	   int    lastarg;
-  auto 	   char   fn[BUFSIZ];
 	auto     char   rlogfile[PATH_MAX];
 	auto     char **devices = NULL;
 #ifdef TESTCENTER
-  extern   void   test_center(void);
+  extern   void   test_center(char*);
 #endif
 
 
@@ -745,6 +772,10 @@ int main(int argc, char *argv[], char *envp[])
   init_variables(argc, argv);
 
   lastarg = set_options(argc,argv);
+
+#ifdef TESTCENTER
+    test_center(argv[lastarg]);
+#endif
 
 	if (outfile != NULL)
 	{
@@ -808,10 +839,6 @@ int main(int argc, char *argv[], char *envp[])
 
     openlog(myshortname, LOG_NDELAY, LOG_DAEMON);
 
-#ifdef TESTCENTER
-    test_center();
-#endif
-
     if (xinfo && read_user_access())
       Exit(22);
 
@@ -842,10 +869,10 @@ int main(int argc, char *argv[], char *envp[])
           else
             p = argv[lastarg];
 
-          sprintf(fn, "%s/%s", TMPDIR, p);
+          sprintf(tmpout, "%s/%s", TMPDIR, p);
         } /* if */
 
-        if (!verbose || ((fprot = fopen(fn, "a")) != (FILE *)NULL)) {
+        if (!verbose || ((fprot = fopen(tmpout, "a")) != (FILE *)NULL)) {
 
           for (i = 0; i < MAXCHAN; i++)
 	    clearchan(i, 1);
@@ -923,7 +950,7 @@ int main(int argc, char *argv[], char *envp[])
             fclose(fprot);
         }
         else {
-          print_msg(PRT_ERR, msg1, myshortname, fn, strerror(errno));
+          print_msg(PRT_ERR, msg1, myshortname, tmpout, strerror(errno));
           res = 5;
         } /* else */
 
@@ -931,7 +958,7 @@ int main(int argc, char *argv[], char *envp[])
           fclose(fcons);
       }
       else {
-        print_msg(PRT_ERR, msg1, myshortname, fn, strerror(errno));
+        print_msg(PRT_ERR, msg1, myshortname, ptty, strerror(errno));
         res = 3;
       } /* else */
 

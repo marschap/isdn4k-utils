@@ -1,5 +1,5 @@
 
-/* $Id: conffile.h,v 1.7 1997/04/15 00:20:16 luethje Exp $
+/* $Id: conffile.h,v 1.8 1997/05/25 19:41:25 luethje Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,12 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: conffile.h,v $
+ * Revision 1.8  1997/05/25 19:41:25  luethje
+ * isdnlog:  close all files and open again after kill -HUP
+ * isdnrep:  support vbox version 2.0
+ * isdnconf: changes by Roderich Schupp <roderich@syntec.m.EUnet.de>
+ * conffile: ignore spaces at the end of a line
+ *
  * Revision 1.7  1997/04/15 00:20:16  luethje
  * replace variables: some bugfixes, README comleted
  *
@@ -44,11 +50,12 @@
 
 /****************************************************************************/
 
-#define C_OVERWRITE       1
-#define C_WARN            2
-#define C_NOT_UNIQUE      4
-#define C_APPEND          8
-#define C_NO_WARN_FILE   16
+#define C_OVERWRITE          1
+#define C_WARN               2
+#define C_NOT_UNIQUE         4
+#define C_APPEND             8
+#define C_NO_WARN_FILE      16
+#define C_ALLOW_LAST_BLANKS 32
 
 /****************************************************************************/
 

@@ -1,4 +1,4 @@
-/* $Id: isdnlog.h,v 1.6 1997/05/09 23:30:50 luethje Exp $
+/* $Id: isdnlog.h,v 1.7 1997/05/25 19:41:02 luethje Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,12 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnlog.h,v $
+ * Revision 1.7  1997/05/25 19:41:02  luethje
+ * isdnlog:  close all files and open again after kill -HUP
+ * isdnrep:  support vbox version 2.0
+ * isdnconf: changes by Roderich Schupp <roderich@syntec.m.EUnet.de>
+ * conffile: ignore spaces at the end of a line
+ *
  * Revision 1.6  1997/05/09 23:30:50  luethje
  * isdnlog: new switch -O
  * isdnrep: new format %S
@@ -237,6 +243,7 @@ _EXTERN	int	watchdog;
 _EXTERN char   *isdnctrl;
 _EXTERN	char    isdnctrl2[FNSIZE];
 _EXTERN	char   *outfile;
+_EXTERN	char    tmpout[PATH_MAX];
 
 _EXTERN IFO     ifo[ISDN_MAX_CHANNELS];
 _EXTERN IO      io[ISDN_MAX_CHANNELS];

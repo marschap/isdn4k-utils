@@ -1,4 +1,4 @@
-/* $Id: isdnconf.c,v 1.10 1997/05/15 22:21:45 luethje Exp $
+/* $Id: isdnconf.c,v 1.11 1997/05/25 19:41:13 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -20,6 +20,12 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnconf.c,v $
+ * Revision 1.11  1997/05/25 19:41:13  luethje
+ * isdnlog:  close all files and open again after kill -HUP
+ * isdnrep:  support vbox version 2.0
+ * isdnconf: changes by Roderich Schupp <roderich@syntec.m.EUnet.de>
+ * conffile: ignore spaces at the end of a line
+ *
  * Revision 1.10  1997/05/15 22:21:45  luethje
  * New feature: isdnrep can transmit via HTTP fax files and vbox files.
  *
@@ -929,10 +935,9 @@ static int _readconfig(char *_myname)
   start_procs.infoargs = NULL;
   start_procs.flags    = 0;
   conf_dat       = NULL;
-  vboxversion   = 0;
   vboxpath      = NULL;
-  vboxcommand   = NULL;
-  mgettyversion = 0;
+  vboxcommand1  = NULL;
+  vboxcommand2  = NULL;
   mgettypath    = NULL;
   mgettycommand = NULL;
 
@@ -1083,17 +1088,14 @@ static int Set_Globals(section *SPtr)
 	    	currency++;
 	  }
 
-		if ((CEPtr = Get_Entry(Ptr->entries,CONF_ENT_VBOXVER)) != NULL)
-			vboxversion = strtod(CEPtr->value,NULL);
-
 		if ((CEPtr = Get_Entry(Ptr->entries,CONF_ENT_VBOXPATH)) != NULL)
 			vboxpath = CEPtr->value;
 
-		if ((CEPtr = Get_Entry(Ptr->entries,CONF_ENT_VBOXCMD)) != NULL)
-			vboxcommand = CEPtr->value;
+		if ((CEPtr = Get_Entry(Ptr->entries,CONF_ENT_VBOXCMD1)) != NULL)
+			vboxcommand1 = CEPtr->value;
 
-		if ((CEPtr = Get_Entry(Ptr->entries,CONF_ENT_MGTYVER)) != NULL)
-			mgettyversion = strtod(CEPtr->value,NULL);
+		if ((CEPtr = Get_Entry(Ptr->entries,CONF_ENT_VBOXCMD2)) != NULL)
+			vboxcommand2 = CEPtr->value;
 
 		if ((CEPtr = Get_Entry(Ptr->entries,CONF_ENT_MGTYPATH)) != NULL)
 			mgettypath = CEPtr->value;

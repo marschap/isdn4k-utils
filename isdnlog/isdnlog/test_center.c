@@ -1,8 +1,11 @@
 #include "isdnlog.h"
 
-void test_center (void)
+void test_center (char* string)
 {
-#if 0
+#if 1
+	printf("%d\n",CheckTime(string));
+	exit(0);
+#elif 0
 	char File[256];
 	int Cnt = 20000;
 
@@ -89,7 +92,7 @@ void test_center (void)
 		printf("Accepted\n");
 
 	Exit(-3);
-#elif 1
+#elif 0
 	readconfig("isdnlog");
 	Exit(-4);
 #endif

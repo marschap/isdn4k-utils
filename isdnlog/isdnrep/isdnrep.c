@@ -1,4 +1,4 @@
-/* $Id: isdnrep.c,v 1.26 1997/05/19 22:58:18 luethje Exp $
+/* $Id: isdnrep.c,v 1.27 1997/05/25 19:41:06 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -20,6 +20,12 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnrep.c,v $
+ * Revision 1.27  1997/05/25 19:41:06  luethje
+ * isdnlog:  close all files and open again after kill -HUP
+ * isdnrep:  support vbox version 2.0
+ * isdnconf: changes by Roderich Schupp <roderich@syntec.m.EUnet.de>
+ * conffile: ignore spaces at the end of a line
+ *
  * Revision 1.26  1997/05/19 22:58:18  luethje
  * - bugfix: it is possible to install isdnlog now
  * - improved performance for read files for vbox files and mgetty files.
@@ -198,6 +204,7 @@
 #include <linux/limits.h>
 
 #include "isdnrep.h"
+#include "../../vbox/src/libvbox.h"
 
 /*****************************************************************************/
 
@@ -289,6 +296,7 @@ typedef struct {
 
 typedef struct {
 	int    version;
+	int    compression;
 	int    used;
 	time_t time;
 	char   type;
@@ -342,6 +350,7 @@ static int time_in_interval(time_t t1, time_t t2, char type);
 static char *nam2html(char *file);
 static char *get_a_day(time_t t, int d_diff, int m_diff, int flag);
 static char *get_time_string(time_t begin, time_t end, int d_diff, int m_diff);
+static char *create_vbox_file(char *file, int *compression);
 
 /*****************************************************************************/
 
@@ -400,23 +409,51 @@ int send_html_request(char *myname, char *option)
 	char commandline[PATH_MAX];
 	char *filetype = NULL;
 	char *command  = NULL;
+	char *vboxfile = NULL;
+	int  compression;
 
 
 	if (*option == C_VBOX)
 	{
 		sprintf(file,"%s%c%s",vboxpath,C_SLASH,option+2);
-		command = vboxcommand;
 
 		if (option[1] == '1')
-			filetype = "application/x-zyxel4";
+		{
+			if (vboxcommand1)
+				command = vboxcommand1;
+			else
+				filetype = "application/x-zyxel4";
+		}
 		else
 		if (option[1] == '2')
 		{
+			if (vboxcommand2)
+				command = vboxcommand2;
+			else
+			{
+				vboxfile = strcpy(file,create_vbox_file(file,&compression));
+
+				switch(compression)
+				{
+					case 2 : filetype = "application/x-zyxel2";
+					         break;
+					case 3 : filetype = "application/x-zyxel3";
+					         break;
+					case 4 : filetype = "application/x-zyxel4";
+					         break;
+					case 6 : filetype = "application/x-ulaw";
+					         break;
+					default: print_msg(PRT_NORMAL, "Content-Type: text/plain\n\n");
+				           print_msg(PRT_NORMAL, "%s: unsupported compression type of vbox file :`%d'\n",myname,compression);
+				           return -1;
+					         break;
+				}
+			}
 		}
 		else
 		{
 			print_msg(PRT_NORMAL, "Content-Type: text/plain\n\n");
-			print_msg(PRT_NORMAL, "%s:invalid version of vbox `%c'\n",myname,option[0]);
+			print_msg(PRT_NORMAL, "%s: unsupported version of vbox `%c'\n",myname,option[0]);
 			return -1;
 		}
 	}
@@ -424,14 +461,18 @@ int send_html_request(char *myname, char *option)
 	if (*option == C_FAX)
 	{
 		sprintf(file,"%s%c%s",mgettypath,C_SLASH,option+2);
-		command = mgettycommand;
 
 		if (option[1] == '3')
-			filetype = "application/x-faxg3";
+		{
+			if (mgettycommand)
+				command = mgettycommand;
+			else
+				filetype = "application/x-faxg3";
+		}
 		else
 		{
 			print_msg(PRT_NORMAL, "Content-Type: text/plain\n\n");
-			print_msg(PRT_NORMAL, "%s:invalid version of fax `%c%c'\n",myname,option[0]);
+			print_msg(PRT_NORMAL, "%s:unsupported version of fax `%c%c'\n",myname,option[0]);
 			return -1;
 		}
 	}
@@ -455,6 +496,15 @@ int send_html_request(char *myname, char *option)
 
 	sprintf(commandline,"%s %s",command?command:"cat",file);
 	system(commandline);
+
+	if (vboxfile)
+	{
+		if (unlink(vboxfile))
+		{
+			print_msg(PRT_ERR,"Can not delete file `%s': %s!\n",file, strerror(errno));
+			return -1;
+		}
+	}
 
 	return 0;
 }
@@ -2550,24 +2600,33 @@ static int set_vbox_entry(const char *path, const char *file)
 	file_list *lptr = NULL;
 	char string[PATH_MAX];
 	int cnt;
+	FILE *fp;
+	vaheader_t ptr;
 
-	if (1 /*vboxversion < 2*/)
+
+
+	sprintf(string,"%s%c%s",path,C_SLASH,file);
+
+	if ((fp = fopen(string,"r")) == NULL)
+		return -1;
+
+	fread(&ptr,sizeof(vaheader_t),1,fp);
+	fclose(fp);
+
+	if (strncmp(ptr.magic,"VBOX",4))
 	{
-		sprintf(string,"%s%c%s",path,C_SLASH,file);
-
-		if (access(string,R_OK))
-			return -1;
+		/* Version 0.x and 1.x of vbox! */
 
 		if ((cnt = sscanf(file,"%2d%2d%2d%2d%2d%2d",
-	 	            &(tm.tm_year),
-	 	            &(tm.tm_mon),
-	 	            &(tm.tm_mday),
-	 	            &(tm.tm_hour),
-	 	            &(tm.tm_min),
-	 	            &(tm.tm_sec))) != 6)
+	 		            &(tm.tm_year),
+	 		            &(tm.tm_mon),
+	 		            &(tm.tm_mday),
+	 		            &(tm.tm_hour),
+	 		            &(tm.tm_min),
+	 		            &(tm.tm_sec))) != 6)
 		{
-			/* Not implemented yet! */
-			print_msg(PRT_ERR, "Internal error: wrong number of parameter (%d) or wrong version of vbox!\n",cnt);
+			print_msg(PRT_ERR,"invalid file name `%s'!\n",file);
+			return -1;
 		}
 
 		if ((lptr = (file_list*) calloc(1,sizeof(file_list))) == NULL)
@@ -2591,19 +2650,33 @@ static int set_vbox_entry(const char *path, const char *file)
 		lptr->type = C_VBOX;
 		lptr->used = 0;
 		lptr->version = 1;
+		lptr->compression = 0;
 	}
 	else
-	if (vboxversion == 2)
 	{
-		/* Not implemented yet! */
+		/* Version 2.x of vbox! */
+
+		if ((lptr = (file_list*) calloc(1,sizeof(file_list))) == NULL)
+		{
+			print_msg(PRT_ERR, nomemory);
+			return -1;
+		}
+
+		lptr->name = strdup(file);
+	 	lptr->time = ntohl(ptr.time);
+		lptr->type = C_VBOX;
+		lptr->used = 0;
+		lptr->version = 2;
+		lptr->compression = ntohl(ptr.compression);
+	}
+/*
+	else
+	{
 		print_msg(PRT_ERR, "Version %d of vbox is not implemented yet!\n",vboxversion);
-		return -1;
-	}
-	else
-	{
 		print_msg(PRT_ERR, "Invalid version %d of vbox!\n",vboxversion);
 		return -1;
 	}
+*/
 
 	return set_element_list(lptr);
 }
@@ -2635,6 +2708,7 @@ static int set_mgetty_entry(const char *path, const char *file)
 	lptr->type = C_FAX;
 	lptr->used = 0;
 	lptr->version = 3;
+	lptr->compression = 0;
 
 	return set_element_list(lptr);
 }
@@ -2925,6 +2999,52 @@ static char *get_time_string(time_t begin, time_t end, int d_diff, int m_diff)
 	}
 
 	return NULL;
+}
+
+/*****************************************************************************/
+
+static char *create_vbox_file(char *file, int *compression)
+{
+	int fdin, fdout, len;
+	char string[BUFSIZ];
+	char *fileout = NULL;
+	vaheader_t header;
+
+	if ((fdin = open(file,O_RDONLY)) == -1)
+	{
+		print_msg(PRT_ERR,"Can not open file `%s': %s!\n",file, strerror(errno));
+		return NULL;
+	}
+
+	if (read(fdin,&header,sizeof(vaheader_t)) == sizeof(vaheader_t))
+	{
+		if (compression != NULL)
+			*compression = ntohl(header.compression);
+
+		if ((fileout = tmpnam(NULL)) == NULL || (fdout = open(fileout,O_WRONLY | O_CREAT,0444)) == -1)
+		{
+			print_msg(PRT_ERR,"Can not open file `%s': %s!\n",fileout, strerror(errno));
+			close(fdin);
+			return NULL;
+		}
+
+		while((len = read(fdin,string,BUFSIZ)) > 0)
+		{
+			if (write(fdout,string,len) != len)
+			{
+				print_msg(PRT_ERR,"Can not write to file `%s': %s!\n",fileout, strerror(errno));
+				close(fdout);
+				close(fdin);
+				unlink(fileout);
+				return NULL;
+			}
+		}
+
+		close(fdout);
+	}
+	
+	close(fdin);
+	return fileout;
 }
 
 /*****************************************************************************/

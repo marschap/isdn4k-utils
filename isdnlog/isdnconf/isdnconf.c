@@ -1,4 +1,4 @@
-/* $Id: isdnconf.c,v 1.8 1997/05/05 21:21:42 luethje Exp $
+/* $Id: isdnconf.c,v 1.9 1997/05/25 19:40:53 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -19,6 +19,12 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnconf.c,v $
+ * Revision 1.9  1997/05/25 19:40:53  luethje
+ * isdnlog:  close all files and open again after kill -HUP
+ * isdnrep:  support vbox version 2.0
+ * isdnconf: changes by Roderich Schupp <roderich@syntec.m.EUnet.de>
+ * conffile: ignore spaces at the end of a line
+ *
  * Revision 1.8  1997/05/05 21:21:42  luethje
  * bugfix for option -M
  *
@@ -618,22 +624,34 @@ int main(int argc, char *argv[], char *envp[])
 	}
 
 	if (number[0] != '\0')
+	{
 		strcpy(number, expand_number(number));
+		if (isdnmon)
+			print_msg(PRT_NORMAL,"%s\t",number);
+	}
 
 	if (areacode[0] != '\0')
 	{
 		char *ptr;
+		int len;
 		
-		if ((ptr = get_areacode(areacode,NULL,quiet?C_NO_ERROR|C_NO_WARN:0)) != NULL)
+		if ((ptr = get_areacode(areacode,&len,quiet?C_NO_ERROR|C_NO_WARN:0)) != NULL)
 		{
-			print_msg(PRT_NORMAL,"%s%s",ptr,isdnmon?" ":"\n");
-
 			if (!isdnmon)
+			{
+				print_msg(PRT_NORMAL,"%s\n",ptr);
 				exit(0);
 		}
+			
+			print_msg(PRT_NORMAL,"%s\t%d\t",ptr,len);
+		}
 		else
+		{
 			if (!isdnmon)
 				exit(3);
+
+			print_msg(PRT_NORMAL,"\t0\t");
+		}
 	}
 
 	if (optind < argc && !add)

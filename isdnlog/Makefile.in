@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.27 1997/05/20 19:00:51 luethje Exp $
+## $Id: Makefile.in,v 1.28 1997/05/25 19:40:43 luethje Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,12 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.28  1997/05/25 19:40:43  luethje
+## isdnlog:  close all files and open again after kill -HUP
+## isdnrep:  support vbox version 2.0
+## isdnconf: changes by Roderich Schupp <roderich@syntec.m.EUnet.de>
+## conffile: ignore spaces at the end of a line
+##
 ## Revision 1.27  1997/05/20 19:00:51  luethje
 ## some primitve changes
 ##
@@ -226,7 +232,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 2.99.20
+VERSION     = 2.99.21
 
 ifeq ($(POSTGRES),1)
 DEFS       += -DPOSTGRES

@@ -38,6 +38,8 @@ Die Syntax wurde allerdings um Untersektionen erweitert. Ein Eintrag kann
 wieder eine Sektion darstellen. Diese Untersektionen koennen beliebig oft
 verschachtelt sein.
 
+Alle Tabulatoren und Leerzeichen am Ende einer Zeile werden ignoriert.
+
 Es wird die Gross/Kleinschreibung bei den Eintrags- und Sektionsnamen
 ignoriert. Also vor dem Gleichheitszeichen. Danach wird sehr wohl in
 Gross und Kleinschreibung unterschieden.

@@ -1,4 +1,4 @@
-/* $Id: tools.h,v 1.14 1997/05/15 22:21:49 luethje Exp $
+/* $Id: tools.h,v 1.15 1997/05/25 19:41:16 luethje Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,12 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools.h,v $
+ * Revision 1.15  1997/05/25 19:41:16  luethje
+ * isdnlog:  close all files and open again after kill -HUP
+ * isdnrep:  support vbox version 2.0
+ * isdnconf: changes by Roderich Schupp <roderich@syntec.m.EUnet.de>
+ * conffile: ignore spaces at the end of a line
+ *
  * Revision 1.14  1997/05/15 22:21:49  luethje
  * New feature: isdnrep can transmit via HTTP fax files and vbox files.
  *
@@ -408,7 +414,8 @@
 
 #define CONF_ENT_VBOXVER  "VBOXVERSION"
 #define CONF_ENT_VBOXPATH "VBOXPATH"
-#define CONF_ENT_VBOXCMD  "VBOXCMD"
+#define CONF_ENT_VBOXCMD1 "VBOXCMD1"
+#define CONF_ENT_VBOXCMD2 "VBOXCMD2"
 #define CONF_ENT_MGTYVER  "MGETTYVERSION"
 #define CONF_ENT_MGTYPATH "MGETTYPATH"
 #define CONF_ENT_MGTYCMD  "MGETTYCMD"
@@ -648,10 +655,9 @@ _EXTERN char* logfile   = LOGFILE;
 _EXTERN int  (*_print_msg)(const char *, ...) = printf;
 _EXTERN int   use_new_config = 1;
 _EXTERN char ***lineformats = NULL;
-_EXTERN int   vboxversion   = 0;
 _EXTERN char *vboxpath      = NULL;
-_EXTERN char *vboxcommand   = NULL;
-_EXTERN int   mgettyversion = 0;
+_EXTERN char *vboxcommand1  = NULL;
+_EXTERN char *vboxcommand2  = NULL;
 _EXTERN char *mgettypath    = NULL;
 _EXTERN char *mgettycommand = NULL;
 
@@ -665,10 +671,9 @@ _EXTERN char* logfile;
 _EXTERN int  (*_print_msg)(const char *, ...);
 _EXTERN int   use_new_config;
 _EXTERN char ***lineformats;
-_EXTERN int   vboxversion;
 _EXTERN char *vboxpath;
-_EXTERN char *vboxcommand;
-_EXTERN int   mgettyversion;
+_EXTERN char *vboxcommand1;
+_EXTERN char *vboxcommand2;
 _EXTERN char *mgettypath;
 _EXTERN char *mgettycommand;
 
