@@ -1,5 +1,5 @@
 #
-# $Id: README,v 1.10 1999/01/01 17:48:25 armin Exp $
+# $Id: README,v 1.11 1999/07/05 21:19:12 werner Exp $
 #
 This is the README file for the "isdn4k-utils" package from "The i4l-crew".
 
@@ -15,6 +15,7 @@ This package contains the following stuff:
   avmcapictrl setup utility for the avmb1 driver.
   actctrl     setup utility for the act2000 driver.
   eiconctrl   setup utility for the eicon driver.
+  divertctrl  setup utility for dss1 diversion services
 
 2. Tools for monitoring activity:
   imon,       a ncurses based utility for monitoring ISDN-activities.
