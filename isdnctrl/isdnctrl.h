@@ -1,4 +1,4 @@
-/* $Id: isdnctrl.h,v 1.13 1999/03/15 15:53:06 cpetig Exp $
+/* $Id: isdnctrl.h,v 1.14 1999/06/07 19:25:42 paul Exp $
  * ISDN driver for Linux. (Control-Utility)
  *
  * Copyright 1994,95 by Fritz Elfert (fritz@wuemaus.franken.de)
@@ -21,6 +21,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnctrl.h,v $
+ * Revision 1.14  1999/06/07 19:25:42  paul
+ * isdnctrl.man.in
+ *
  * Revision 1.13  1999/03/15 15:53:06  cpetig
  * added v110 and modem to the level2 encapsulations
  *
@@ -113,6 +116,7 @@ enum {
 #ifdef I4L_CTRL_CONF
         WRITECONF, READCONF,
 #endif /* I4L_CTRL_CONF */
+	STATUS,
 		IFDEFAULTS
 };
 
@@ -182,6 +186,7 @@ cmd_struct cmds[] =
         {"writeconf", "01"},
         {"readconf", "01"},
 #endif /* I4L_CTRL_CONF */
+        {"status", "1"},
         {"ifdefaults", "01"},
         {NULL,}
 };
