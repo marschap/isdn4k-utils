@@ -1,4 +1,4 @@
-V:0.92 Int based on 1.03-Germany [10-Jan-2000 21:00:00]
+V:0.92 Int based on 1.03-Germany [07-Feb-2000 12:19:00]
 # ISO 3166 Countrycodes ( ftp://sunsite.unc.edu/pub/Linux/apps/misc/
 #	countrycodes.1.0.2.tar.gz
 # Airportcodes: http://www.TravelDesk.com/airports.html
@@ -250,6 +250,7 @@ C:+87439, +87339, +87239, +87139
 T:_INBH
 
 N:Inmarsat B
+A:AOR, IOR, POR
 C:+8743 Inmarsat B (W. Atlantic)
 C:+8733 Inmarsat B (Indien)
 C:+8723 Inmarsat B (Pacific)
@@ -333,7 +334,8 @@ N:Vietnam
 C:+84
 T:VN
 
-N:Korea Rep. (South) Mobilfunk
+N:Korea (Süd) Mobilfunk
+A:Korea Rep. (South) Mobilfunk
 C:+8227, +821
 R:KR
 T:_KRMF
@@ -454,6 +456,7 @@ T:NC
 
 N:Kiribati Mobilfunk
 C:+6861, +6862, +6863, +6864, +6865, +6866, +6867, +6868, +6869
+R:KI
 T:_KIMF
 
 N:Kiribati
@@ -563,9 +566,19 @@ N:Guam
 C:+671
 T:GU
 
+N:Thailand Mobilfunk
+C:+661
+R:TH
+T:_THMF
+
 N:Thailand
 C:+66
 T:TH
+
+N:Singapur Mobilfunk
+C:+656, +657, +658
+R:SG
+T:_SGMF
 
 N:Singapur
 E:Singapore
@@ -600,6 +613,11 @@ A:Phillippinen
 C:+63
 T:PH
 
+N:Indonesien Mobilfunk
+C:+6281, +6282
+R:ID
+T:_IDMF
+
 N:Indonesien
 E:Indonesia
 C:+62
@@ -614,6 +632,11 @@ N:Australien
 E:Australia
 C:+61
 T:AU
+
+N:Malaysia-Mobilfunk
+C:+601
+R:MY
+T:_MYMF
 
 N:Malaysia
 A:Malaysien
@@ -917,6 +940,11 @@ N:Frankfurt
 C:+4969
 R:DE
 T:_FRA
+
+N:Polen-Mobilfunk
+C:+48501, +48502, +48601, +48602
+R:PL
+T:_PLMF
 
 N:Polen
 E:Poland
@@ -1236,7 +1264,8 @@ R:FI
 T:_FIMF
 
 N:Zypern(griech) Mobilfunk
-C:+3579
+A:Zypern-Mobilfunk
+C:+3579, +3576
 T:_CYMF
 
 N:Zypern
@@ -1292,11 +1321,13 @@ R:LU
 T:_LUMF
 
 N:Azoren
+A:Portugal-Azoren
 C:+35196, +35195, +35192
 R:PT
 T:_AZOR
 
 N:Madeira
+A:Portugal-Madeira
 C:+35191
 R:PT
 T:_MADE
@@ -1825,12 +1856,13 @@ C:+1868, +1809680, +180967, +180966, +180965, +180964, +180963, +180962, +180961
 T:TT
 
 N:Dominikanische Rep. Mobilfunk
+A:Domin. Rep.-Mobilfunk
 C:+18092, +1809227, +1809241, +1809474, +1809537, +1809540, +1809563, +1809683, +1809695
 T:_DOMF
 
 N:Dominikanische Republik
 E:Dominican Republic
-A:Dominikanische Rep., Dom Rep
+A:Dominikanische Rep., Dom Rep, Domin. Rep.
 C:+184, +1809971, +1809970, +1809908, +1809818, +1809814, +1809813, +1809810, +1809808, +1809807, +1809806, +1809710, +1809707, +1809701, +1809699, +1809698, +1809697, +1809696, +1809694, +1809689, +1809688, +1809687, +1809686, +1809685, +1809684, +1809682, +1809681, +1809616, +1809615, +1809612, +1809606, +1809604, +180959, +180958, +180957, +180956, +1809559, +1809558, +1809557, +1809556, +1809554, +1809553, +1809552, +1809551, +1809550, +180954, +180953, +180952, +1809519, +1809518, +1809512, +1809508, +1809506, +1809504, +1809481, +180947, +1809414, +1809412, +1809350, +1809343, +1809320, +1809310, +1809301, +1809299, +1809295, +1809293, +1809292, +1809291, +1809290, +1809282, +1809281, +1809280, +1809279, +1809278, +1809277, +1809276, +1809275, +1809274, +1809273, +1809248, +1809247, +1809246, +1809245, +1809244, +1809243, +1809242, +1809240, +1809239, +1809238, +1809237, +1809236, +1809234, +1809233, +1809231, +1809226, +1809225, +1809224, +1809223, +1809222, +1809221, +1809220, +1809209, +1809208, +1809204, +1809188
 T:DO
 

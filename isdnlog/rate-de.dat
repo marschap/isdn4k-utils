@@ -1,4 +1,4 @@
-V:1.10-Germany [03-Feb-2000 19:08:15]
+V:1.10-Germany [07-Feb-2000 20:49:15]
 
 # Währungsformat
 U:%.3f DM
@@ -6,9 +6,9 @@ U:%.3f DM
 # Diese Tariftabelle ist ein Service der I4L-Tarifdatenbank-Crew.
 # Alle Angaben erfolgen ohne Gewähr
 #
-# (C) Copyright 1999 by Andreas Kool (akool@isdn4linux.de)
+# (C) Copyright 1999, 2000 by Andreas Kool (akool@isdn4linux.de)
 #
-# $Id: rate-de.dat,v 1.76 2000/02/03 18:24:49 akool Exp $
+# $Id: rate-de.dat,v 1.77 2000/02/07 20:32:38 akool Exp $
 #
 #
 # Das "A:" Tag muß folgendermaßen gefüllt werden:
@@ -441,6 +441,1539 @@ N:011*
 #####################################################################
 #
 #
+P:100,0 TELELEV
+B:010000
+C:Name:TELELEV
+C:Address:Telekommunikation GmbH, Dönhoffstraße 39, 51373 Leverkusen
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+##################################################################
+P:100,1 Meocom
+B:010000
+C:EMail: service@meocom.de
+C:Address: MEOCOM Telekommunikation, Burgstr. 1, 45467 Mülheim a. d. Ruhr
+C:Telefon: 0800/0-636-636
+C:Homepage: http://www.meocom.de
+C:Name:Meocom spontan
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Meocom spontan ist Call-by-Call (60 Sekunden Takt)
+C:Meocom abo isd Preselection (sekundengenaue Abrechnung)
+C:Surftarif ist ebenfalls vorhanden, Rufnummer und Tarife fehlen noch
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+Z:1-2 Meocom lokal
+T:W/9-21=0.08/60
+T:W/21-9=0.04/60
+T:E,H/*=0.04/60
+Z:3-4 Meocom fern
+T:W/9-21=0.14/60
+T:W/21-9=0.07/60
+T:E,H/*=0.07/60
+Z:10-15 Mobilfunk
+T:*/*=0.59/60
+Z:201
+A:AF,BD,DJ,SN,SC,VN
+T:*/*=2.49/60
+Z:202
+A:EG,BI,PF,HN,JM,CG,LB
+A:LC,IQ,SR
+T:*/*=2.69/60
+Z:203
+A:_ALAS,_HAWA,MY,MT,PL,PT,SK,SI
+A:CZ,HU,GR
+T:*/*=0.59/60
+Z:204
+A:AL,AS,AW,CR,FO,LT
+A:MK,SM,SZ,LV
+T:*/*=0.79/60
+Z:205
+A:DZ,KY,GI,GL,GT,NA,RO
+A:PM,TC,UA,MD
+T:*/*=0.89/60
+Z:206
+A:VI,GY,MU,NR,NG,OM,RW
+A:SL,LK,FJ,ML
+T:*/*=2.29/60
+Z:207
+A:AD
+T:*/*=0.48/60
+Z:208
+A:AO,AI,AG,BT,GH,PE,RE,MZ
+A:VC,TH,AE
+T:*/*=1.29/60
+Z:209
+A:GQ,ET,CI,GW,YE,QA
+A:MM,TO,CF
+T:*/*=2.59/60
+Z:210
+A:AR,BN,CN,CO,MQ,YT
+A:PG,ZW,ZA,TJ,TT
+A:TN,FK
+T:*/*=1.09/60
+Z:211
+A:AM,BH,BZ,BO,CV,KE
+A:NC,NGR,ZM,WS
+T:*/*=1.79/60
+Z:212
+A:ASI
+T:*/*=2.20/60
+Z:213
+A:AZ,SV,GF,GP,GN,LS
+A:MW,EH,MH,KN,SD,UG
+T:*/*=1.19/60
+Z:214
+A:AU,BE,DK,FI,FR,IE,NZ
+A:NL,NO,AT,SE,CH
+T:*/*=0.23/60
+Z:215
+A:BS,BM
+T:*/*=0.44/60
+Z:216
+A:BB,BJ,GM,HT,PA,UY,UZ
+T:*/*=1.59/60
+Z:217
+A:BA
+T:*/*=0.88/60
+Z:218
+A:BW,BR,BG,EC,KR,LY,MO,PH
+A:SU,VE,BY
+T:*/*=0.99/60
+Z:219
+A:VG,YU,TR,CY
+T:*/*=0.69/60
+Z:220
+A:BF,GA,IN,MS,PY,SY,ZR,SH
+T:*/*=1.99/60
+Z:221
+A:CL,IS,IL,_UKIK,TW,VA
+T:*/*=0.49/60
+Z:222
+A:CK,TD
+T:*/*=2.89/60
+Z:223
+A:DM,ID,NI
+T:*/*=1.39/60
+Z:224
+A:TZ,TM,GD,KZ,KG
+T:*/*=1.49/60
+Z:225
+A:TG,VU,IR,KH,KI,CU,LA,MN,NP,PK
+T:*/*=2.39/60
+Z:226
+A:US,UK,_UKIR,HK,CA
+T:*/*=0.19/60
+Z:227
+A:DO,SG
+T:*/*=0.55/60
+Z:228
+A:ER
+T:*/*=2.99/60
+Z:229
+A:EE
+T:*/*=2.10/60
+Z:230
+A:GE
+T:*/*=1.66/60
+Z:231
+A:GU,ES
+T:*/*=0.39/60
+Z:232
+A:IT
+T:*/*=0.33/60
+Z:233
+A:JP,LU
+T:*/*=0.36/60
+Z:234
+A:CM,KW,MG,MV,SA,CM
+T:*/*=2.19/60
+Z:235
+A:MX
+T:*/*=0.66/60
+Z:236
+A:HR,AN
+T:*/*=0.63/60
+Z:237
+A:LR,PW,SO
+T:*/*=2.09/60
+Z:238
+A:LI,MC,PR
+T:*/*=0.29/60
+Z:239
+A:MP
+T:*/*=3.00/60
+Z:240
+A:MR,FM,SB
+T:*/*=1.89/60
+#####################################################################
+#
+#
+P:101,0 Netnet
+B:010001
+C:Name:Netnet
+C:Address:Netnet International AB, P.O. Box 6708, S-11385 Stockholm
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+#####################################################################
+#
+#
+P:102,0 EncoTel
+B:010002
+C:Name:EncoTel
+C:Address:EncoTel GmbH & Co.KG, Leibnitzstraße 73, 07548 Gera
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+#####################################################################
+#
+#
+P:103,0 mevacom
+B:010003
+C:Name:mevacom
+C:Address:mevacom Telekommunikationsdienstleistungen GmbH, Posthofstraße 16, 14467 Potsdam
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+#####################################################################
+#
+#
+P:107,0 KPN
+B:010007
+C:Name:KPN
+C:Address:Telecom BV, Prinses Beatrixlaan 23, 2595 AK's Gravenhage, Niederlande 010007
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+#####################################################################
+#
+#
+P:108,0 USA Global Link
+B:010008
+C:Address:USA Global Link Deutschland GmbH, Theaterstraße 90, 52062 Aachen
+C:Name:USA Global Link
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+#####################################################################
+#
+#
+P:109,0 ChemTel
+B:010009
+C:Name:ChemTel
+C:Address:Telekommunikations GmbH Chemnitz, Postfach 510, 09031 Chemnitz
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+#####################################################################
+#
+#
+P:110,0 Bertelsmann mediaSystems
+B:010010
+C:Address:Bertelsmann mediaSystems GmbH, An der Autobahn, 33311 Gütersloh
+C:Name:Bertelsmann mediaSystems
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+#####################################################################
+#
+#
+P:111,0 RED LINE
+B:010011
+C:Telekommunikationsgesellschaft mbH, Brückenstraße 17, 63897 Miltenberg 010011
+C:Name:RED LINE
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+#####################################################################
+#
+#
+P:112,0 MEGASAT
+B:010012
+C:Address:MEGASAT, Friedrich-Krupp-Str. 16-18, 45164 Kaarst
+C:Name:MEGASAT
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+#####################################################################
+#
+#
+P:115,0 Delta Three
+B:010015
+C:Inc., 430 Park Ave, New York 010015
+C:Name:Delta Three
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+#####################################################################
+#
+#
+P:118,0 MFS
+B:010018
+C:Address:MFS Communications GmbH, Postfach 190409, 60091 Frankfurt am Main
+C:Name:MFS
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+#####################################################################
+#
+#
+P:119,0 E.T.H.
+B:010019
+C:Telefondienste GmbH, Bettinastraße 25a, 60325 Frankfurt 010019
+C:Name:E.T.H.
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+#####################################################################
+#
+#
+P:120,0 Komm Consult
+B:010020
+C:Address:Komm Consult, Oberweg 15, 82024 Taufkirchen bei München
+C:Name:Komm Consult
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+#####################################################################
+#
+#
+P:122,0 Motorola
+B:010022
+C:Electronic GmbH, Hagenauer Straße 47, 65203 Wiesbaden 010022
+C:Name:Motorola
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+#####################################################################
+#
+#
+P:125,0 Mediascape
+B:010025
+C:Address:Mediascape Communications GmbH, Usedomstraße 19, 22047 Hamburg
+C:Name:Mediascape
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+#####################################################################
+#
+#
+P:130,0 tnp telenet
+B:010030
+C:potsdam, kommunikationsgesellschaft mbH, Erich-Weinert-Straße 100, 14478 Potsdam 010030
+C:Name:tnp telenet
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+#####################################################################
+#
+#
+P:131,0 accom
+B:010031
+C:Address:accom Gesellschaft für Telekommunikationsnetze und -dienstleistungen GmbH & Co.KG, Borngasse 34, 52064 Aachen
+C:Name:accom
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+#####################################################################
+#
+#
+P:132,0 SD
+B:010032
+C:Name:SD Telecom
+C:Address:SD Telecom Telekommunikations GmbH, Heinersdorfer Damm 55-57, 16303 Schwedt
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+#####################################################################
+#
+#
+P:133,0 Level 3
+B:010033
+C:Address:Level 3 Communications GmbH, Oberlindau 54 - 56, 60323 Frankfurt/Main
+C:Name:Level 3
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+#####################################################################
+#
+#
+P:140,0 VossNet
+B:010040
+C:Name:VossNet
+C:Address:VossNet Communications GmbH, 28199 Bremen
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+#####################################################################
+#
+#
+P:142,0 connection 42
+B:010042
+C:Address:connection 42, Ernst-Abbe-Straße 10, 25451 Quickborn
+C:Name:connection 42
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+#####################################################################
+#
+#
+P:144,0 Carrier 1
+B:010044
+C:AG, Militärstraße 36, CH-8004 Zürich 010044
+C:Name:Carrier 1
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+#####################################################################
+#
+#
+P:150,0 Drillisch Superregionen
+# Dieser Tarif gilt nur in den City-Zonen der Städte
+# Essen, Frankfurt/Main, Hamburg, Hannover, Köln, Leipzig, Mannheim,
+# Nürnberg, Stuttgart!
+B:010050
+# G:01-Feb-2000
+D:dtag
+C:Address:Drillisch AG, Horbeller Straße 33, 50858 Köln
+C:Name:Drillisch Superregionen
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+Z:1-4 Deutschland
+A:+49
+T:W/08-19=0.098/60
+T:W/19-22=0.078/60
+T:W/22-06=0.0595/60
+T:W/06-08=0.078/60
+T:E/06-22=0.0785/60
+T:E/22-06=0.0595/60
+Z:10 Mobilfunk C/D-Netze
+A:01618
+A:01610,01611,01612,01613,01614,01615,01616,01617,01619
+A:0170,0171,0175
+A:0172,0173,0174
+T:W/08-19=0.59/60
+T:W/19-08=0.49/60
+T:E/*=0.49/60
+Z:11 Mobilfunk E-Netze
+A:0177,0178
+A:0176,0179
+T:W/08-19=0.69/60
+T:W/19-08=0.49/60
+T:E/*=0.49/60
+Z:200 Ägypten
+A:EG
+T:*/*=0.99/60
+Z:201 Ägypten-Mobilfunk
+A:_EGMF
+T:*/*=1.33/60
+Z:202 Alaska
+A:_ALAS
+T:*/*=0.14/60
+Z:203 Albanien
+A:AL
+T:*/*=0.54/60
+Z:204 Algerien
+A:DZ
+T:*/*=0.65/60
+Z:205 Amer. Jungferninseln
+A:VI
+T:*/*=0.28/60
+Z:206 Amerikanisches Samoa
+A:AS
+T:*/*=0.66/60
+Z:207 Andorra
+A:AD
+T:*/*=0.29/60
+Z:208 Angola
+A:AO
+T:*/*=0.81/60
+Z:209 Anguilla
+A:AI
+T:*/*=0.99/60
+Z:210 Antarktis
+A:AQ
+T:*/*=0.66/60
+Z:211 Antigua & Barbuda
+A:AG
+T:*/*=0.99/60
+Z:212 Argentinen Mobilfunk
+A:_ARMF
+T:*/*=0.99/60
+Z:213 Argentinien
+A:AR
+T:*/*=0.66/60
+Z:214 Aruba
+A:AW
+T:*/*=0.66/60
+Z:215 Aserbaidschan
+A:AZ
+T:*/*=0.99/60
+Z:216 Australien
+A:AU
+T:*/*=0.18/60
+Z:217 Australien Mobilfunk
+A:_AUMF
+T:*/*=0.55/60
+Z:218 Bahamas
+A:BS
+T:*/*=0.36/60
+Z:219 Barbados
+A:BB
+T:*/*=0.99/60
+Z:220 Belgien
+A:BE
+T:*/*=0.15/60
+Z:221 Belgien Mobilfunk
+A:_BEMF
+T:*/*=0.45/60
+Z:222 Bermuda
+A:BM
+T:*/*=0.45/60
+Z:223 Bhutan
+A:BT
+T:*/*=0.99/60
+Z:224 Bolivien
+A:BO
+T:*/*=0.99/60
+Z:225 Bosnien-Herzegowina
+A:BA
+T:*/*=0.57/60
+Z:226 Botswana
+A:BW
+T:*/*=0.99/60
+Z:227 Brasilien
+A:BR
+T:*/*=0.45/60
+Z:228 Brasilien Mobilfunk
+A:_BRMF
+T:*/*=0.66/60
+Z:229 Brit. Jungferninseln
+A:VG
+T:*/*=0.66/60
+Z:230 Brunei
+A:BN
+T:*/*=0.78/60
+Z:231 Bulgarien
+A:BG
+T:*/*=0.66/60
+Z:232 Cayman Inseln
+A:KY
+T:*/*=0.45/60
+Z:233 Chile
+A:CL
+T:*/*=0.32/60
+Z:234 Chile-Mobilfunk
+A:_CLMF
+T:*/*=0.66/60
+Z:235 China VR
+A:CN
+T:*/*=0.64/60
+Z:236 China-Mobilfunk
+A:_CNMF
+T:*/*=0.99/60
+Z:237 Costa Rica
+A:CR
+T:*/*=0.54/60
+Z:238 Costa-Rica Mobilfunk
+A:_CRMF
+T:*/*=0.66/60
+Z:239 Dänemark
+A:DK
+T:*/*=0.16/60
+Z:240 Dänemark Mobilfunk
+A:_DKMF
+T:*/*=0.45/60
+Z:241 Domin. Rep.
+A:DO
+T:*/*=0.39/60
+Z:242 Domin. Rep.-Mobilfunk
+A:_DOMF
+T:*/*=0.55/60
+Z:243 Dominica
+A:DM
+T:*/*=0.99/60
+Z:244 Ecuador
+A:EC
+T:*/*=0.78/60
+Z:245 Ecuador Mobilfunk
+A:_ECMF
+T:*/*=0.99/60
+Z:246 El Salvador
+A:SV
+T:*/*=0.78/60
+Z:247 El Salvador Mobilfunk
+A:_SVMF
+T:*/*=0.99/60
+Z:248 Estland
+A:EE
+T:*/*=0.55/60
+Z:249 Estland Mobilfunk
+A:_EEMF
+T:*/*=0.66/60
+Z:250 Fäeröer
+A:FO
+T:*/*=0.66/60
+Z:251 Falklandinseln
+A:FK
+T:*/*=0.99/60
+Z:252 Finnland
+A:FI
+T:*/*=0.17/60
+Z:253 Finnland Mobilfunk
+A:_FIMF
+T:*/*=0.39/60
+Z:254 Frankreich
+A:FR
+T:*/*=0.15/60
+Z:255 Frankreich Mobilfunk
+A:_FRMF
+T:*/*=0.45/60
+Z:256 Franz. Guyana
+A:GF
+T:*/*=0.99/60
+Z:257 Gibraltar
+A:GI
+T:*/*=0.38/60
+Z:258 Griechenland
+A:GR
+T:*/*=0.38/60
+Z:259 Griechenland-Mobilfunk
+A:_GRMF
+T:*/*=0.66/60
+Z:260 Grönland
+A:GL
+T:*/*=0.66/60
+Z:261 Großbritannien
+A:UK
+T:*/*=0.12/60
+Z:262 Großbritannien Mobilfunk
+A:_UKMF
+T:*/*=0.45/60
+Z:263 Guadeloupe
+A:GP
+T:*/*=0.99/60
+Z:264 Guam
+A:GU
+T:*/*=0.32/60
+Z:265 Guantanamo
+A:_GUAN
+T:*/*=0.99/60
+Z:266 Guatemala
+A:GT
+T:*/*=0.66/60
+Z:267 Guatemala-Mobilfunk
+A:_GTMF
+T:*/*=0.81/60
+Z:268 Guinea
+A:GN
+T:*/*=0.99/60
+Z:269 Haiti
+A:HT
+T:*/*=0.98/60
+Z:270 Haiti Mobilfunk
+A:_HTMF
+T:*/*=1.33/60
+Z:271 Hawaii-Inseln
+A:_HAWA
+T:*/*=0.14/60
+Z:272 Honduras
+A:HN
+T:*/*=0.98/60
+Z:273 Hong Kong
+A:HK
+T:*/*=0.19/60
+Z:274 Hong Kong Mobilfunk
+A:_HKMF
+T:*/*=0.45/60
+Z:275 Indien
+A:IN
+T:*/*=1.21/60
+Z:276 Indien-Mobilfunk
+A:_INMF
+T:*/*=1.99/60
+Z:277 Indonesien
+A:ID
+T:*/*=0.72/60
+Z:278 Indonesien-Mobilfunk
+A:_IDMF
+T:*/*=0.99/60
+Z:279 Irland
+A:IE
+T:*/*=0.18/60
+Z:280 Irland Mobilfunk
+A:_IEMF
+T:*/*=0.55/60
+Z:281 Island
+A:IS
+T:*/*=0.28/60
+Z:282 Island Mobilfunk
+A:_IEMF
+T:*/*=0.45/60
+Z:283 Israel
+A:IL
+T:*/*=0.29/60
+Z:284 Israel Mobilfunk
+A:_ILMF
+T:*/*=0.55/60
+Z:285 Italien
+A:IT
+T:*/*=0.19/60
+Z:286 Italien Mobilfunk
+A:_ITMF
+T:*/*=0.66/60
+Z:287 Jamaika
+A:JM
+T:*/*=0.99/60
+Z:288 Japan
+A:JP
+T:*/*=0.23/60
+Z:289 Japan Mobilfunk
+A:_JPMF
+T:*/*=0.66/60
+Z:290 Jugoslawien-Serbien
+A:YU
+T:*/*=0.53/60
+Z:291 Kanada
+A:CA
+T:*/*=0.14/60
+Z:292 Kokos-InselnKeeling-Inseln
+A:CC
+T:*/*=0.66/60
+Z:293 Kolumbien
+A:CO
+T:*/*=0.58/60
+Z:294 Kolumbien Mobilfunk
+A:_COMF
+T:*/*=0.99/60
+Z:295 Korea (Süd)
+A:KR
+T:*/*=0.29/60
+Z:296 Korea (Süd) Mobilfunk
+A:_KRMF
+T:*/*=0.66/60
+Z:297 Kroatien
+A:HR
+T:*/*=0.52/60
+Z:298 Kuwait
+A:KW
+T:*/*=1.33/60
+Z:299 Kuwait-Mobilfunk
+A:_KWMF
+T:*/*=1.33/60
+Z:300 Lesotho
+A:LS
+T:*/*=0.99/60
+Z:301 Lettland (Latvia)
+A:LV
+T:*/*=0.65/60
+Z:302 Liberia
+A:LR
+T:*/*=0.91/60
+Z:303 Libyen
+A:LY
+T:*/*=0.7/60
+Z:304 Liechtenstein
+A:LI
+T:*/*=0.26/60
+Z:305 Litauen
+A:LT
+T:*/*=0.66/60
+Z:306 Luxemburg
+A:LU
+T:*/*=0.26/60
+Z:307 Luxemburg-Mobilfunk
+A:_LUMF
+T:*/*=0.33/60
+Z:308 Macao
+A:MO
+T:*/*=0.99/60
+Z:309 Madagaskar
+A:MG
+T:*/*=1.33/60
+Z:310 Malawi
+A:MW
+T:*/*=0.99/60
+Z:311 Malaysia
+A:MY
+T:*/*=0.45/60
+Z:312 Malaysia-Mobilfunk
+A:_MYMF
+T:*/*=0.45/60
+Z:313 Malediven
+A:MV
+T:*/*=1.33/60
+Z:314 Malta
+A:MT
+T:*/*=0.45/60
+Z:315 Marianen (Saipan)
+A:MP
+T:*/*=0.33/60
+Z:316 Marokko
+A:EH
+T:*/*=0.81/60
+Z:317 Marshallinseln
+A:MH
+T:*/*=0.99/60
+Z:318 Martinique
+A:MQ
+T:*/*=0.66/60
+Z:319 Mayotte
+A:YT
+T:*/*=0.99/60
+Z:320 Mazedonien
+A:MK
+T:*/*=0.69/60
+Z:321 Mexico
+A:MX
+T:*/*=0.42/60
+Z:322 Moldavien
+A:MD
+T:*/*=0.87/60
+Z:323 Monaco
+A:MC
+T:*/*=0.28/60
+Z:324 Monaco Mobilfunk
+A:_MCMF
+T:*/*=0.28/60
+Z:325 Mosambik
+A:MZ
+T:*/*=0.99/60
+Z:326 Namibia
+A:NA
+T:*/*=0.78/60
+Z:327 Neuseeland
+A:NZ
+T:*/*=0.18/60
+Z:328 Neuseeland-Mobilfunk
+A:_NZMF
+T:*/*=0.55/60
+Z:329 Nevis/St.Kitts
+A:KN
+T:*/*=0.99/60
+Z:330 Nicaragua
+A:NI
+T:*/*=0.99/60
+Z:331 Nicaragua-Mobilfunk
+A:_NIMF
+T:*/*=1.33/60
+Z:332 Niederlande
+A:NL
+T:*/*=0.13/60
+Z:333 Niederlande Mobilfunk
+A:_NLMF
+T:*/*=0.55/60
+Z:334 Norfolk Inseln
+A:NF
+T:*/*=0.99/60
+Z:335 Norwegen
+A:NO
+T:*/*=0.17/60
+Z:336 Norwegen Mobilfunk
+A:_NOMF
+T:*/*=0.45/60
+Z:337 Östereich
+A:AT
+T:*/*=0.17/60
+Z:338 Österreich Mobilfunk
+A:_ATMF
+T:*/*=0.45/60
+Z:339 Panama
+A:PA
+T:*/*=0.97/60
+Z:340 Panama-Mobilfunk
+A:_PAMF
+T:*/*=1.33/60
+Z:341 Papua-Neuguinea
+A:PG
+T:*/*=0.99/60
+Z:342 Peru
+A:PE
+T:*/*=0.87/60
+Z:343 Peru Mobilfunk
+A:_PEMF
+T:*/*=1.33/60
+Z:344 Philippinen
+A:PH
+T:*/*=0.55/60
+Z:345 Philippinen-Mobilfunk
+A:_PHMF
+T:*/*=0.99/60
+Z:346 Polen
+A:PL
+T:*/*=0.42/60
+Z:347 Polen-Mobilfunk
+A:_PLMF
+T:*/*=0.55/60
+Z:348 Portugal
+A:PT
+T:*/*=0.29/60
+Z:349 Portugal-Azoren
+A:_AZOR
+T:*/*=0.29/60
+Z:350 Portugal-Madeira
+A:_MADE
+T:*/*=0.29/60
+Z:351 Portugal-Mobilfunk
+A:_PTMF
+T:*/*=0.55/60
+Z:352 Puerto Rico
+A:PR
+T:*/*=0.28/60
+Z:353 Reunion
+A:RE
+T:*/*=0.99/60
+Z:354 Rumänien
+A:RO
+T:*/*=0.99/60
+Z:355 Rumänien-Mobilfunk
+A:_ROMF
+T:*/*=0.99/60
+Z:356 Rußland
+A:SU
+T:*/*=0.55/60
+Z:357 Rußland-Mobilfunk
+A:_RUMF
+T:*/*=0.66/60
+Z:358 Salomonen
+A:SB
+T:*/*=1.33/60
+Z:359 San Marino
+A:SM
+T:*/*=0.33/60
+Z:360 Saudi Arabien
+A:SA
+T:*/*=1.28/60
+Z:361 Schweden
+A:SE
+T:*/*=0.14/60
+Z:362 Schweden Mobilfunk
+A:_SEMF
+T:*/*=0.39/60
+Z:363 Schweiz
+A:CH
+T:*/*=0.14/60
+Z:364 Schweiz Mobilfunk
+A:_CHMF
+T:*/*=0.45/60
+Z:365 Simbabwe
+A:ZW
+T:*/*=0.99/60
+Z:366 Singapur
+A:SG
+T:*/*=0.33/60
+Z:367 Singapur Mobilfunk
+A:_SGMF
+T:*/*=0.45/60
+Z:368 Slowakische Rep.
+A:SK
+T:*/*=0.44/60
+Z:369 Slowenien
+A:SI
+T:*/*=0.45/60
+Z:370 Spanien
+A:ES
+T:*/*=0.23/60
+Z:371 Spanien Balearen
+A:PMI
+T:*/*=0.23/60
+Z:372 Spanien Kanarische Inseln
+A:PLP
+T:*/*=0.23/60
+Z:373 Spanien Mobilfunk
+A:_ESMF
+T:*/*=0.55/60
+Z:374 Sri Lanka
+A:LK
+T:*/*=1.33/60
+Z:375 St. Lucia
+A:LC
+T:*/*=0.99/60
+Z:376 St. Pierre & Miquel.
+A:PM
+T:*/*=0.66/60
+Z:377 St. Vincent
+A:VC
+T:*/*=0.99/60
+Z:378 Südafrika
+A:ZA
+T:*/*=0.65/60
+Z:379 Südafrika-Mobilfunk
+A:_ZAMF
+T:*/*=0.99/60
+Z:380 Sudan
+A:SD
+T:*/*=0.99/60
+Z:381 Swasiland
+A:SZ
+T:*/*=0.66/60
+Z:382 Tadschikistan
+A:TJ
+T:*/*=0.99/60
+Z:383 Taiwan
+A:TW
+T:*/*=0.33/60
+Z:384 Taiwan Mobilfunk
+A:_TWMF
+T:*/*=0.66/60
+Z:385 Tansania
+A:TZ
+T:*/*=0.97/60
+Z:386 Thailand
+A:TH
+T:*/*=0.72/60
+Z:387 Thailand Mobilfunk
+A:_THMF
+T:*/*=0.99/60
+Z:388 Trinidad/Tobago
+A:TT
+T:*/*=0.99/60
+Z:389 Tschechische Rep.
+A:CZ
+T:*/*=0.39/60
+Z:390 Tschechische Rep.-Mobilfunk
+A:_CZMF
+T:*/*=0.45/60
+Z:391 Tunesien
+A:TN
+T:*/*=0.99/60
+Z:392 Türkei
+A:TR
+T:*/*=0.45/60
+Z:393 Türkei Mobilfunk
+A:_TKMF
+T:*/*=0.55/60
+Z:394 Turks- & Caicosins.
+A:TC
+T:*/*=0.99/60
+Z:395 Ukraine
+A:UA
+T:*/*=0.66/60
+Z:396 Ungarn
+A:HU
+T:*/*=0.39/60
+Z:397 Ungarn Mobilfunk
+A:_HUMF
+T:*/*=0.45/60
+Z:398 Uruguay
+A:UY
+T:*/*=0.99/60
+Z:399 USA
+A:US
+T:*/*=0.13/60
+Z:400 Usbekistan
+A:UZ
+T:*/*=0.99/60
+Z:401 Vatikanstadt
+A:VA
+T:*/*=0.19/60
+Z:402 Venezuela
+A:VE
+T:*/*=0.64/60
+Z:403 Venuzuela-Mobilfunk
+A:_VEMF
+T:*/*=1.33/60
+Z:404 Ver. Arab. Emirate
+A:AE
+T:*/*=0.97/60
+Z:405 Wallis und Futuna
+A:WF
+T:*/*=0.99/60
+Z:406 Weihnachtsinsel
+A:CX
+T:*/*=0.33/60
+Z:407 Weißrußland (Belarus)
+A:BY
+T:*/*=0.65/60
+Z:408 Zypern (griechisch)
+A:CY
+T:*/*=0.45/60
+Z:409 Zypern (türkisch)
+A:_CYTK
+T:*/*=0.45/60
+Z:410 Zypern-Mobilfunk
+A:_CYMF
+T:*/*=0.55/60
+#####################################################################
+P:150,1 Drillisch
+B:010050
+# G:05-Nov-1999
+D:dtag
+C:Address:Drillisch AG, Horbeller Straße 33, 50858 Köln
+C:Name:Drillisch
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+Z:1-4 Deutschland
+A:+49
+T:W/08-19=0.098/60
+T:W/19-22=0.078/60
+T:W/22-06=0.0595/60
+T:W/06-08=0.078/60
+T:E/06-22=0.0785/60
+T:E/22-06=0.0595/60
+Z:10 Mobilfunk C/D-Netze
+A:01618
+A:01610,01611,01612,01613,01614,01615,01616,01617,01619
+A:0170,0171,0175
+A:0172,0173,0174
+T:W/08-19=0.59/60
+T:W/19-08=0.49/60
+T:E/*=0.49/60
+Z:11 Mobilfunk E-Netze
+A:0177,0178
+A:0176,0179
+T:W/08-19=0.69/60
+T:W/19-08=0.49/60
+T:E/*=0.49/60
+#####################################################################
+#
+#
+P:154,0 Osnatel
+B:010054
+C:Name:Osnatel
+C:Address:Osnatel GmbH, Luisenstraße 16, 49074 Osnabrück
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+#####################################################################
+#
+#
+P:155,0 Telia
+B:010055
+C:Address:Telia Telekommunikation GmbH, Herrengraben 3, 20459 Hamburg
+C:Name:Telia
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+#####################################################################
+#
+#
+P:156,0 NETCOM
+B:010056
+C:Kassel GmbH, Königstor 3 - 13, 34117 Kassel 010056
+C:Name:NETCOM
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+#####################################################################
+#
+#
+P:160,0 JelloCom
+B:010060
+C:Address:JelloCom GmbH & Co.KG, Prüssingstraße 41, 07745 Jena
+C:Name:JelloCom
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+#####################################################################
+#
+#
+P:168,0 VSE
+B:010068
+C:Address:VSE Net GmbH, Postfach, 103232, 66032 Saarbrücken
+C:Name:VSE
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+#####################################################################
+#
+#
+P:170,0 Deutsche Telefon- und Marketing Services
+B:010070
+C:Address:Deutsche Telefon-und Marketing Services GmbH, Isaac-Fulda-Allee 16, 55124 Mainz
+C:Name:Deutsche Telefon- und Marketing Services
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+#####################################################################
+#
+#
+P:173,0 TFN COM SA
+B:010073
+C:TFN COM SA World Of Communication, Via Greina 2 CP 2950, CH-6901 Lugano
+C:Name:TFN COM SA
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+#####################################################################
+#
+#
+P:175,0 Gigabell
+B:010075
+C:Address:Gigabell AG, 60325 Frankfurt am Main
+C:Name:Gigabell
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+#####################################################################
+#
+#
+P:177,0 WorldxChange
+B:010077
+C:Address:WorldxChange Communications GmbH, Am Seedamm 44, 60489 Frankfurt
+C:Name:WorldxChange
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+#####################################################################
+#
+#
+P:178,0 Cybernet
+B:010078
+C:Cybernet Internet-Dienstleistungen AG, Stefan-George-Ring 19-23, 81929 München
+C:Name:Cybernet
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+#####################################################################
+#
+#
+P:180,0 FaciliCom
+B:010080
+C:Address:FaciliCom Telekommunikation GmbH, Windmühlstraße 1, 60329 Frankfurt/Main
+C:Name:FaciliCom
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+#####################################################################
+#
+#
+P:181,0 Daten- und Telekommunikations-GmbH Dessau
+B:010081
+C:Daten- und Telekommunikations-GmbH Dessau, Willy-Lohmann-Straße 6a, 06844 Dessau
+C:Name:Daten- und Telekommunikations-GmbH
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+#####################################################################
+#
+#
+P:184,0 Startec
+B:010084
+C:Address:Startec Global Communications (Germany) GmbH, Broßstraße 6, 60487 Frankfurt
+C:Name:Startec
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+#####################################################################
+#
+#
+P:185,0 FirstMark
+B:010085
+C:FirstMark Communications Deutschland GmbH, Am Opernplatz 2, 60313 Frankfurt am Main
+C:Name:FirstMark
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+#####################################################################
+#
+#
+P:188,0 jk-tel
+B:010088
+C:jk-tel GmbH i.G., Hopfenplatz 5, 39120 Magdeburg
+C:Name:jk-tel
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+#####################################################################
+#
+#
+P:190,0 CNE
+B:010090
+C:Corporate Network Essen Gesellschaft für Telekommunikation mbH, Kruppstraße 82 - 100, 45145 Essen
+C:Name:CNE
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+#####################################################################
+#
+#
+P:195,0 TeleNec
+B:010095
+C:Address:Telenec Telekommunikation Neustadt GmbH & Co.KG, Postfach 14 40, 96459 Neustadt
+C:Name:TeleNec
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+#####################################################################
+#
+#
+P:199,0 ESTel
+B:010099
+C:Energieversorgung Südsachsen Telekommunikationsgesellschaft mbH, Postfach 2 38, 09002 Chemnitz
+C:Name:ESTel
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+#####################################################################
+#
+#
 P:10,0 Teleglobe
 B:01010
 C:Name:Teleglobe
@@ -504,12 +2037,12 @@ A:0176,0179
 T:W/07-19=0.94/60 Geschaeftszeit
 T:W/19-07=0.47/60 Freizeit
 T:E,H/*=0.47/60 Wochenende
-Z:10 Mobilfunk D1
+Z:11 Mobilfunk D1
 A:0170,0171,0175
 T:W/07-19=0.69/60 Geschaeftszeit
 T:W/19-07=0.43/60 Freizeit
 T:E,H/*=0.43/60 Wochenende
-Z:10 Mobilfunk D2
+Z:12 Mobilfunk D2
 A:0172,0173,0174
 T:W/07-19=0.67/60 Geschaeftszeit
 T:W/19-07=0.43/60 Freizeit
@@ -13627,7 +15160,7 @@ A:IS
 T:*/*=0.27/60
 Z:216 Israel
 A:IL
-T:*/*=0.31/60
+T:*/*=0.30/60
 Z:217 Japan (Festnetz)
 A:JP
 T:*/*=0.24/60
@@ -13642,10 +15175,10 @@ A:HR
 T:*/*=0.55/60
 Z:222 Liechtenstein
 A:LI
-T:*/*=0.28/60
+T:*/*=0.27/60
 Z:223 Luxemburg
 A:LU
-T:*/*=0.28/60
+T:*/*=0.27/60
 Z:224 Mexico
 A:MX
 T:*/*=0.45/60
@@ -13696,10 +15229,10 @@ A:ZA
 T:*/*=0.66/60
 Z:240 Südkorea
 A:KR
-T:*/*=0.34/60
+T:*/*=0.33/60
 Z:241 Taiwan
 A:TW
-T:*/*=0.36/60
+T:*/*=0.35/60
 Z:242 USA,Alaska,Hawaii
 A:US,_ALAS,_HAWA
 T:*/*=0.14/60
@@ -15241,6 +16774,7 @@ T:*/*=0.189(60)/1
 Z:41 Telefonauskunft Ausland (Austria, dial 01078004366211812)
 A:+4366211812
 T:*/*=0.189(60)/1
+#####################################################################
 Z:200 Afghanistan
 A:AF
 T:*/*=1.87(60)/1
@@ -15271,10 +16805,9 @@ T:*/*=0.869(60)/1
 Z:209 Antarktis
 A:AQ
 T:*/*=0.619(60)/1
-# COUNTRY-DE BUG -> dasselbe wie "Antarktis"
-# Z:210 Antarktis-Casey Base
-# A:Antarktis-Casey Base # +67212
-# T:*/*=0.619(60)/1
+Z:210 Antarktis-Casey Base
+A:AQ
+T:*/*=0.619(60)/1
 Z:211 Antigua & Barbuda
 A:AG
 T:*/*=0.929(60)/1
@@ -15557,32 +17090,27 @@ T:*/*=9.95(60)/1
 Z:304 Inmarsat AOR-E/A (64kb)
 A:_INAE
 T:*/*=10.6(60)/1
-# COUNTRY-DE BUG -> dasselbe wie "Inmarsat AOR-E/A (64kb)"
-# Z:305 Inmarsat B AOR IOR POR
-# A:Inmarsat B AOR IOR POR # +8713, +8723, +8733, +8743
-# T:*/*=6.2(60)/1
-# COUNTRY-DE BUG -> dasselbe wie "Inmarsat AOR-E/A (64kb)"
-# Z:306 Inmarsat IOR/A (64kb)
-# A:Inmarsat IOR/A (64kb) # +8738
-# T:*/*=10.6(60)/1
+Z:305 Inmarsat B, AOR, IOR, POR
+A:_INB_,_INB_,_INB_,_INB_
+T:*/*=6.2(60)/1
+Z:306 Inmarsat IOR/A (64kb)
+A:_INAE
+T:*/*=10.6(60)/1
 Z:307 Inmarsat M
 A:_INM_
 T:*/*=6.2(60)/1
 Z:308 Inmarsat Mini-M
 A:_INMM
 T:*/*=6.2(60)/1
-# COUNTRY-DE BUG -> dasselbe wie "Inmarsat AOR-E/A (64kb)"
-# Z:309 Inmarsat POR/A (64kb)
-# A:Inmarsat POR/A (64kb) # +8728
-# T:*/*=10.6(60)/1
-# COUNTRY-DE BUG -> dasselbe wie "Inmarsat M"
-# Z:310 Inmarsat S
-# A:Inmarsat S # +8715, +8725, +8735, +8745
-# T:*/*=10.6(60)/1
-# COUNTRY-DE BUG -> dasselbe wie "Inmarsat A"
-# Z:311 Inmarsat SNAC
-# A:Inmarsat SNAC # +8703, +8706
-# T:*/*=10.6(60)/1
+Z:309 Inmarsat POR/A (64kb)
+A:_INAE
+T:*/*=10.6(60)/1
+Z:310 Inmarsat S
+A:_INM_
+T:*/*=10.6(60)/1
+Z:311 Inmarsat SNAC
+A:_INA_
+T:*/*=10.6(60)/1
 Z:312 Irak
 A:IQ
 T:*/*=1.49(60)/1
@@ -15604,10 +17132,9 @@ T:*/*=0.409(60)/1
 Z:318 Island
 A:IS
 T:*/*=0.269(60)/1
-# FIXME: Rufnummer?
-# Z:319 Island Mobilfunk
-# A:Island Mobilfunk # +354
-# T:*/*=0.329(60)/1
+Z:319 Island Mobilfunk
+A:_IEMF
+T:*/*=0.329(60)/1
 Z:320 Israel
 A:IL
 T:*/*=0.309(60)/1
@@ -15653,568 +17180,558 @@ T:*/*=1.41(60)/1
 Z:334 Kanada
 A:CA
 T:*/*=0.149(60)/1
-Z:335 Kanada Mobilfunk
-A:_CAMF
-T:*/*=0.769(60)/1
-Z:336 Kap Verde
+Z:335 Kap Verde
 A:CV
 T:*/*=1.12(60)/1
-Z:337 Kasachstan
+Z:336 Kasachstan
 A:KZ
 T:*/*=0.989(60)/1
-Z:338 Katar
+Z:337 Katar
 A:QA
 T:*/*=1.29(60)/1
-Z:339 Kenia
+Z:338 Kenia
 A:KE
 T:*/*=1.26(60)/1
-Z:340 Kirgisien
+Z:339 Kirgisien
 A:KG
 T:*/*=1.14(60)/1
-Z:341 Kirgisien Mobilfunk
+Z:340 Kirgisien Mobilfunk
 A:_KGMF
 T:*/*=1.44(60)/1
-Z:342 Kiribati
+Z:341 Kiribati
 A:KI
 T:*/*=1.49(60)/1
-Z:343 Kiribati Mobilfunk
+Z:342 Kiribati Mobilfunk
 A:_KIMF
 T:*/*=1.49(60)/1
-Z:344 Kolumbien
+Z:343 Kolumbien
 A:CO
 T:*/*=0.599(60)/1
-Z:345 Kolumbien Mobilfunk
+Z:344 Kolumbien Mobilfunk
 A:_COMF
 T:*/*=0.599(60)/1
-Z:346 Komoren
+Z:345 Komoren
 A:KM
 T:*/*=1.39(60)/1
-Z:347 Kongo
+Z:346 Kongo
 A:CG
 T:*/*=1.2(60)/1
-Z:348 Korea (North)
+Z:347 Korea (North)
 A:KP
 T:*/*=1.33(60)/1
-Z:349 Korea Rep. (South)
+Z:348 Korea Rep. (South)
 A:KR
 T:*/*=0.339(60)/1
-Z:350 Korea Rep.(South) Mobilfunk
+Z:349 Korea Rep.(South) Mobilfunk
 A:_KRMF
 T:*/*=0.639(60)/1
-Z:351 Kroatien
+Z:350 Kroatien
 A:HR
 T:*/*=0.569(60)/1
-Z:352 Kuba
+Z:351 Kuba
 A:CU
 T:*/*=1.26(60)/1
-Z:353 Kuwait
+Z:352 Kuwait
 A:KW
 T:*/*=1.37(60)/1
-Z:354 Kuwait Mobilfunk
+Z:353 Kuwait Mobilfunk
 A:_KWMF
 T:*/*=1.49(60)/1
-Z:355 Laos
+Z:354 Laos
 A:LA
 T:*/*=1.49(60)/1
-Z:356 Lesotho
+Z:355 Lesotho
 A:LS
 T:*/*=0.929(60)/1
-Z:357 Lettland (Latvia)
+Z:356 Lettland (Latvia)
 A:LV
 T:*/*=0.659(60)/1
-Z:358 Libanon
+Z:357 Libanon
 A:LB
 T:*/*=0.919(60)/1
-Z:359 Libanon Mobilfunk
+Z:358 Libanon Mobilfunk
 A:_LBMF
 T:*/*=0.919(60)/1
-Z:360 Liberia
+Z:359 Liberia
 A:LR
 T:*/*=0.929(60)/1
-Z:361 Libyen
+Z:360 Libyen
 A:LY
 T:*/*=0.709(60)/1
-Z:362 Liechtenstein
+Z:361 Liechtenstein
 A:LI
 T:*/*=0.279(60)/1
-Z:363 Litauen
+Z:362 Litauen
 A:LT
 T:*/*=0.699(60)/1
-Z:364 Luxemburg
+Z:363 Luxemburg
 A:LU
 T:*/*=0.279(60)/1
-Z:365 Luxemburg Mobilfunk
+Z:364 Luxemburg Mobilfunk
 A:_LUMF
 T:*/*=0.309(60)/1
-Z:366 Macao
+Z:365 Macao
 A:MO
 T:*/*=0.829(60)/1
-Z:367 Madagaskar
+Z:366 Madagaskar
 A:MG
 T:*/*=1.49(60)/1
-Z:368 Madaira
+Z:367 Madeira
 A:_MADE
 T:*/*=0.449(60)/1
-Z:369 Malawi
+Z:368 Malawi
 A:MW
 T:*/*=0.979(60)/1
-Z:370 Malaysia
+Z:369 Malaysia
 A:MY
 T:*/*=0.479(60)/1
-Z:371 Malediven
+Z:370 Malediven
 A:MV
 T:*/*=1.35(60)/1
-Z:372 Mali Rep.
+Z:371 Mali Rep.
 A:ML
 T:*/*=1.49(60)/1
-Z:373 Malta
+Z:372 Malta
 A:MT
 T:*/*=0.489(60)/1
-# COUNTRY-DE BUG -> dasselbe wie "Saipan"
-# Z:374 Marianen
-# A:Marianen # +670
-# T:*/*=0.639(60)/1
-Z:375 Marokko
-A:EH
-T:*/*=0.819(60)/1
-Z:376 Marshallinseln
-A:MH
-T:*/*=0.809(60)/1
-Z:377 Martinique
-A:MQ
-T:*/*=0.659(60)/1
-Z:378 Mauretanien
-A:MR
-T:*/*=1.24(60)/1
-Z:379 Mauritius
-A:MU
-T:*/*=1.39(60)/1
-Z:380 Mazedonien
-A:MK
-T:*/*=0.699(60)/1
-Z:381 Mexico
-A:MX
-T:*/*=0.449(60)/1
-Z:382 Midway Island
-A:_MIDW
-T:*/*=1.65(60)/1
-Z:383 Mikronesien
-A:FM
-T:*/*=1.38(60)/1
-Z:384 Moldavien
-A:MD
-T:*/*=0.859(60)/1
-Z:385 Monaco
-A:MC
-T:*/*=0.289(60)/1
-Z:386 Monaco Mobilfunk
-A:_MCMF
-T:*/*=0.329(60)/1
-Z:387 Mongolische VR
-A:MN
-T:*/*=1.49(60)/1
-Z:388 Montserrat
-A:MS
-T:*/*=1.19(60)/1
-Z:389 Mozambik
-A:MZ
-T:*/*=0.959(60)/1
-Z:390 Myanmar (Burma)
-A:MM
-T:*/*=1.49(60)/1
-Z:391 Namibia
-A:NA
-T:*/*=0.769(60)/1
-Z:392 Nauru
-A:NR
-T:*/*=1.46(60)/1
-Z:393 Nepal
-A:NP
-T:*/*=1.39(60)/1
-Z:394 Neukaledonien
-A:NC
-T:*/*=1.29(60)/1
-Z:395 Neuseeland
-A:NZ
-T:*/*=0.209(60)/1
-# COUNTRY-DE BUG -> dasselbe wie "Neuseeland"
-# Z:396 Neuseeland Chatham Inseln
-# A:Neuseeland Chatham Inseln # +643
-# T:*/*=0.659(60)/1
-Z:397 Neuseeland Mobilfunk
-A:_NZMF
-T:*/*=0.659(60)/1
-Z:398 Nevis Islands
-A:KN
-T:*/*=0.939(60)/1
-Z:399 Nicaragua
-A:NI
-T:*/*=0.859(60)/1
-Z:400 Nicaragua Mobilfunk
-A:_NIMF
-T:*/*=0.989(60)/1
-Z:401 Niederlande
-A:NL
-T:*/*=0.149(60)/1
-Z:402 Niederlande Mobilfunk
-A:_NLMF
-T:*/*=0.359(60)/1
-Z:403 Niederländische Antillen
-A:AN
-T:*/*=0.659(60)/1
-Z:404 Niger
-A:NGR
-T:*/*=1.21(60)/1
-Z:405 Nigeria
-A:NG
-T:*/*=1.46(60)/1
-Z:406 Niue Islands
-A:NU
-T:*/*=1.49(60)/1
-Z:407 Norfolk Islands
-A:NF
-T:*/*=0.989(60)/1
-Z:408 Norwegen
-A:NO
-T:*/*=0.179(60)/1
-Z:409 Norwegen Mobilfunk
-A:_NOMF
-T:*/*=0.289(60)/1
-Z:410 Oman
-A:OM
-T:*/*=1.49(60)/1
-Z:411 Osterinseln
-A:_WAKE
-T:*/*=0.349(60)/1
-Z:412 Pakistan
-A:PK
-T:*/*=1.43(60)/1
-Z:413 Palau (=Belau)
-A:PW
-T:*/*=1.49(60)/1
-Z:414 Panama
-A:PA
-T:*/*=0.989(60)/1
-Z:415 Panama Mobilfunk
-A:_PAMF
-T:*/*=0.989(60)/1
-Z:416 Papua Neu Guinea
-A:PG
-T:*/*=0.809(60)/1
-Z:417 Paraguay
-A:PY
-T:*/*=1.22(60)/1
-Z:418 Peru
-A:PE
-T:*/*=0.829(60)/1
-Z:419 Peru Mobilfunk
-A:_PEMF
-T:*/*=0.889(60)/1
-Z:420 Philippinen
-A:PH
-T:*/*=0.659(60)/1
-Z:421 Philippinen Mobilfunk
-A:_PHMF
-T:*/*=0.659(60)/1
-Z:422 Polen
-A:PL
-T:*/*=0.449(60)/1
-Z:423 Portugal
-A:PT
-T:*/*=0.369(60)/1
-# COUNTRY-DE BUG -> dasselbe wie "Portugal"
-# Z:424 Portugal Azoren
-# A:Portugal Azoren # +3519
-# T:*/*=0.369(60)/1
-# Z:425 Portugal Madeira
-# A:Portugal Madeira # +35156
-# T:*/*=0.369(60)/1
-Z:426 Portugal Mobilfunk
-A:_PTMF
-T:*/*=0.539(60)/1
-Z:427 Puerto Rico
-A:PR
-T:*/*=0.289(60)/1
-Z:428 Reunion Islands
-A:RE
-T:*/*=0.989(60)/1
-Z:429 Ruanda
-A:RW
-T:*/*=1.49(60)/1
-Z:430 Rumänien
-A:RO
-T:*/*=0.649(60)/1
-Z:431 Rumänien Mobilfunk
-A:_ROMF
-T:*/*=0.649(60)/1
-Z:432 Rußland
-A:SU
-T:*/*=0.579(60)/1
-Z:433 Rußland Mobilfunk
-A:_RUMF
-T:*/*=0.579(60)/1
-Z:434 Rußland Moskau
-A:MOW
-T:*/*=0.349(60)/1
-# COUNTRY-DE BUG -> dasselbe wie "Rußland"
-# Z:435 Rußland Overlay
-# A:Rußland Overlay # +7096, +7097, +750, +751, +752, +753, +754, +7543
-# T:*/*=0.579(60)/1
-Z:436 Rußland St. Petersburg
-A:LED
-T:*/*=0.349(60)/1
-Z:437 Saipan
+Z:373 Marianen
 A:MP
 T:*/*=0.639(60)/1
-Z:438 Salomonen
+Z:374 Marokko
+A:EH
+T:*/*=0.819(60)/1
+Z:375 Marshallinseln
+A:MH
+T:*/*=0.809(60)/1
+Z:376 Martinique
+A:MQ
+T:*/*=0.659(60)/1
+Z:377 Mauretanien
+A:MR
+T:*/*=1.24(60)/1
+Z:378 Mauritius
+A:MU
+T:*/*=1.39(60)/1
+Z:379 Mazedonien
+A:MK
+T:*/*=0.699(60)/1
+Z:380 Mexico
+A:MX
+T:*/*=0.449(60)/1
+Z:381 Midway Island
+A:_MIDW
+T:*/*=1.65(60)/1
+Z:382 Mikronesien
+A:FM
+T:*/*=1.38(60)/1
+Z:383 Moldavien
+A:MD
+T:*/*=0.859(60)/1
+Z:384 Monaco
+A:MC
+T:*/*=0.289(60)/1
+Z:385 Monaco Mobilfunk
+A:_MCMF
+T:*/*=0.329(60)/1
+Z:386 Mongolische VR
+A:MN
+T:*/*=1.49(60)/1
+Z:387 Montserrat
+A:MS
+T:*/*=1.19(60)/1
+Z:388 Mozambik
+A:MZ
+T:*/*=0.959(60)/1
+Z:389 Myanmar (Burma)
+A:MM
+T:*/*=1.49(60)/1
+Z:390 Namibia
+A:NA
+T:*/*=0.769(60)/1
+Z:391 Nauru
+A:NR
+T:*/*=1.46(60)/1
+Z:392 Nepal
+A:NP
+T:*/*=1.39(60)/1
+Z:393 Neukaledonien
+A:NC
+T:*/*=1.29(60)/1
+Z:394 Neuseeland
+A:NZ
+T:*/*=0.209(60)/1
+Z:395 Neuseeland Chatham Inseln
+A:NZ
+T:*/*=0.659(60)/1
+Z:396 Neuseeland Mobilfunk
+A:_NZMF
+T:*/*=0.659(60)/1
+Z:397 Nevis Islands
+A:KN
+T:*/*=0.939(60)/1
+Z:398 Nicaragua
+A:NI
+T:*/*=0.859(60)/1
+Z:399 Nicaragua Mobilfunk
+A:_NIMF
+T:*/*=0.989(60)/1
+Z:400 Niederlande
+A:NL
+T:*/*=0.149(60)/1
+Z:401 Niederlande Mobilfunk
+A:_NLMF
+T:*/*=0.359(60)/1
+Z:402 Niederländische Antillen
+A:AN
+T:*/*=0.659(60)/1
+Z:403 Niger
+A:NGR
+T:*/*=1.21(60)/1
+Z:404 Nigeria
+A:NG
+T:*/*=1.46(60)/1
+Z:405 Niue Islands
+A:NU
+T:*/*=1.49(60)/1
+Z:406 Norfolk Islands
+A:NF
+T:*/*=0.989(60)/1
+Z:407 Norwegen
+A:NO
+T:*/*=0.179(60)/1
+Z:408 Norwegen Mobilfunk
+A:_NOMF
+T:*/*=0.289(60)/1
+Z:409 Oman
+A:OM
+T:*/*=1.49(60)/1
+Z:410 Osterinseln
+A:_WAKE
+T:*/*=0.349(60)/1
+Z:411 Pakistan
+A:PK
+T:*/*=1.43(60)/1
+Z:412 Palau (=Belau)
+A:PW
+T:*/*=1.49(60)/1
+Z:413 Panama
+A:PA
+T:*/*=0.989(60)/1
+Z:414 Panama Mobilfunk
+A:_PAMF
+T:*/*=0.989(60)/1
+Z:415 Papua Neu Guinea
+A:PG
+T:*/*=0.809(60)/1
+Z:416 Paraguay
+A:PY
+T:*/*=1.22(60)/1
+Z:417 Peru
+A:PE
+T:*/*=0.829(60)/1
+Z:418 Peru Mobilfunk
+A:_PEMF
+T:*/*=0.889(60)/1
+Z:419 Philippinen
+A:PH
+T:*/*=0.659(60)/1
+Z:420 Philippinen Mobilfunk
+A:_PHMF
+T:*/*=0.659(60)/1
+Z:421 Polen
+A:PL
+T:*/*=0.449(60)/1
+Z:422 Portugal
+A:PT
+T:*/*=0.369(60)/1
+Z:423 Portugal Azoren
+A:PT
+T:*/*=0.369(60)/1
+Z:424 Portugal Madeira
+A:PT
+T:*/*=0.449(60)/1
+Z:425 Portugal Mobilfunk
+A:_PTMF
+T:*/*=0.539(60)/1
+Z:426 Puerto Rico
+A:PR
+T:*/*=0.289(60)/1
+Z:427 Reunion Islands
+A:RE
+T:*/*=0.989(60)/1
+Z:428 Ruanda
+A:RW
+T:*/*=1.49(60)/1
+Z:429 Rumänien
+A:RO
+T:*/*=0.649(60)/1
+Z:430 Rumänien Mobilfunk
+A:_ROMF
+T:*/*=0.649(60)/1
+Z:431 Rußland
+A:SU
+T:*/*=0.579(60)/1
+Z:432 Rußland Mobilfunk
+A:_RUMF
+T:*/*=0.579(60)/1
+Z:433 Rußland Moskau
+A:MOW
+T:*/*=0.349(60)/1
+Z:434 Rußland Overlay
+A:SU
+T:*/*=0.579(60)/1
+Z:435 Rußland St. Petersburg
+A:LED
+T:*/*=0.349(60)/1
+Z:436 Saipan
+A:MP
+T:*/*=0.639(60)/1
+Z:437 Salomonen
 A:SB
 T:*/*=1.13(60)/1
-Z:439 Sambia
+Z:438 Sambia
 A:ZM
 T:*/*=1.3(60)/1
-Z:440 San Marino
+Z:439 San Marino
 A:SM
 T:*/*=0.449(60)/1
-Z:441 Sansibar
+Z:440 Sansibar
 A:TZ
 T:*/*=1.49(60)/1
-Z:442 Sao Tome
+Z:441 Sao Tome
 A:ST
 T:*/*=1.49(60)/1
-Z:443 Saudi Arabien
+Z:442 Saudi Arabien
 A:SA
 T:*/*=1.3(60)/1
-Z:444 Schweden
+Z:443 Schweden
 A:SE
 T:*/*=0.169(60)/1
-Z:445 Schweden Mobilfunk
+Z:444 Schweden Mobilfunk
 A:_SEMF
 T:*/*=0.319(60)/1
-Z:446 Schweiz
+Z:445 Schweiz
 A:CH
 T:*/*=0.179(60)/1
-Z:447 Schweiz Mobilfunk
+Z:446 Schweiz Mobilfunk
 A:_CHMF
 T:*/*=0.359(60)/1
-Z:448 Senegal Republic
+Z:447 Senegal Republic
 A:SN
 T:*/*=1.49(60)/1
-Z:449 Seychellen
+Z:448 Seychellen
 A:SC
 T:*/*=1.49(60)/1
-Z:450 Sierra Leone
+Z:449 Sierra Leone
 A:SL
 T:*/*=1.49(60)/1
-Z:451 Simbabwe
+Z:450 Simbabwe
 A:ZW
 T:*/*=0.749(60)/1
-Z:452 Singapur
+Z:451 Singapur
 A:SG
 T:*/*=0.369(60)/1
-Z:453 Slowakische Rep.
+Z:452 Slowakische Rep.
 A:SK
 T:*/*=0.449(60)/1
-Z:454 Slowenien
+Z:453 Slowenien
 A:SI
 T:*/*=0.489(60)/1
-Z:455 Somalia
+Z:454 Somalia
 A:SO
 T:*/*=1.49(60)/1
-Z:456 Spanien
+Z:455 Spanien
 A:ES
 T:*/*=0.239(60)/1
-Z:457 Spanien Balearen
+Z:456 Spanien Balearen
 A:PMI
 T:*/*=0.239(60)/1
-Z:458 Spanien Kanarische Inseln
+Z:457 Spanien Kanarische Inseln
 A:PLP
 T:*/*=0.239(60)/1
-Z:459 Spanien Mobilfunk
+Z:458 Spanien Mobilfunk
 A:_ESMF
 T:*/*=0.399(60)/1
-Z:460 Sri Lanka
+Z:459 Sri Lanka
 A:LK
 T:*/*=1.36(60)/1
-Z:461 St. Helena
+Z:460 St. Helena
 A:SH
 T:*/*=1.33(60)/1
-# COUNTRY-DE BUG -> dasselbe wie "Nevis Islands"
-# Z:462 St. Kitts
-# A:St. Kitts # +1869
-# T:*/*=0.939(60)/1
-Z:463 St. Lucia
+Z:461 St. Kitts
+A:KN
+T:*/*=0.939(60)/1
+Z:462 St. Lucia
 A:LC
 T:*/*=0.989(60)/1
-Z:464 St. Pierre and Miquelon
+Z:463 St. Pierre and Miquelon
 A:PM
 T:*/*=0.649(60)/1
-Z:465 St. Vincent and Grenadines
+Z:464 St. Vincent and Grenadines
 A:VC
 T:*/*=0.989(60)/1
-Z:466 Sudan
+Z:465 Sudan
 A:SD
 T:*/*=0.859(60)/1
-Z:467 Surinam
+Z:466 Surinam
 A:SR
 T:*/*=1.49(60)/1
-Z:468 Swasiland
+Z:467 Swasiland
 A:SZ
 T:*/*=0.539(60)/1
-Z:469 Syrien
+Z:468 Syrien
 A:SY
 T:*/*=0.969(60)/1
-Z:470 Südafrika
+Z:469 Südafrika
 A:ZA
 T:*/*=0.659(60)/1
-Z:471 Südafrika Mobilfunk
+Z:470 Südafrika Mobilfunk
 A:_ZAMF
 T:*/*=0.749(60)/1
-Z:472 Tadschikistan
+Z:471 Tadschikistan
 A:TJ
 T:*/*=0.989(60)/1
-Z:473 Taiwan
+Z:472 Taiwan
 A:TW
 T:*/*=0.359(60)/1
-Z:474 Taiwan Mobilfunk
+Z:473 Taiwan Mobilfunk
 A:_TWMF
 T:*/*=0.409(60)/1
-# COUNTRY-DE BUG
-# Z:475 Tansania
-# A:Tansania # +255
-# T:*/*=0.989(60)/1
-Z:476 Thailand
+Z:474 Tansania
+A:TZ
+T:*/*=0.989(60)/1
+Z:475 Thailand
 A:TH
 T:*/*=0.839(60)/1
-Z:477 Togo
+Z:476 Togo
 A:TG
 T:*/*=1.49(60)/1
-Z:478 Tokelau
+Z:477 Tokelau
 A:TK
 T:*/*=1.38(60)/1
-Z:479 Tonga Kingdom
+Z:478 Tonga Kingdom
 A:TO
 T:*/*=1.49(60)/1
-Z:480 Trinidad and Tobago
+Z:479 Trinidad and Tobago
 A:TT
 T:*/*=0.989(60)/1
-Z:481 Tschad
+Z:480 Tschad
 A:TD
 T:*/*=1.49(60)/1
-Z:482 Tschechische Rep.
+Z:481 Tschechische Rep.
 A:CZ
 T:*/*=0.449(60)/1
-Z:483 Tschechische Rep. Mobilfunk
+Z:482 Tschechische Rep. Mobilfunk
 A:_CZMF
 T:*/*=0.449(60)/1
-Z:484 Tunesien
+Z:483 Tunesien
 A:TN
 T:*/*=0.759(60)/1
-Z:485 Turkmenistan
+Z:484 Turkmenistan
 A:TM
 T:*/*=1.12(60)/1
-Z:486 Turks and Caicos Islands
+Z:485 Turks and Caicos Islands
 A:TC
 T:*/*=0.909(60)/1
-Z:487 Tuvalu
+Z:486 Tuvalu
 A:TV
 T:*/*=1.49(60)/1
-Z:488 Türkei
+Z:487 Türkei
 A:TR
 T:*/*=0.479(60)/1
-Z:489 Türkei Mobilfunk
+Z:488 Türkei Mobilfunk
 A:_TKMF
 T:*/*=0.519(60)/1
-Z:490 USA
+Z:489 USA
 A:US
 T:*/*=0.139(60)/1
-Z:491 Uganda
+Z:490 Uganda
 A:UG
 T:*/*=0.859(60)/1
-Z:492 Ukraine
+Z:491 Ukraine
 A:UA
 T:*/*=0.809(60)/1
-Z:493 Ungarn
+Z:492 Ungarn
 A:HU
 T:*/*=0.479(60)/1
-Z:494 Ungarn Mobilfunk
+Z:493 Ungarn Mobilfunk
 A:_HUMF
 T:*/*=0.479(60)/1
-Z:495 Uruguay
+Z:494 Uruguay
 A:UY
 T:*/*=1.12(60)/1
-Z:496 Usbekistan
+Z:495 Usbekistan
 A:UZ
 T:*/*=1.14(60)/1
-Z:497 Vanuatu
+Z:496 Vanuatu
 A:VU
 T:*/*=1.49(60)/1
-Z:498 Vatican City
+Z:497 Vatican City
 A:VA
 T:*/*=0.229(60)/1
-Z:499 Venezuela
+Z:498 Venezuela
 A:VE
 T:*/*=0.659(60)/1
-Z:500 Venezuela Mobilfunk
+Z:499 Venezuela Mobilfunk
 A:_VEMF
 T:*/*=0.789(60)/1
-Z:501 Ver.Arab. Emirate
+Z:500 Ver.Arab. Emirate
 A:AE
 T:*/*=0.989(60)/1
-Z:502 Vietnam
+Z:501 Vietnam
 A:VN
 T:*/*=1.49(60)/1
-Z:503 Wallis und Futuna
+Z:502 Wallis und Futuna
 A:WF
 T:*/*=0.819(60)/1
-Z:504 Weihnachtsinseln
+Z:503 Weihnachtsinseln
 A:CX
 T:*/*=0.279(60)/1
-Z:505 Weißrußland/Belarus
+Z:504 Weißrußland/Belarus
 A:BY
 T:*/*=0.659(60)/1
-Z:506 Western Samoa (Independent State of)
+Z:505 Western Samoa (Independent State of)
 A:WS
 T:*/*=1.26(60)/1
-Z:507 Zaire
+Z:506 Zaire
 A:ZR
 T:*/*=1.22(60)/1
-Z:508 Zaire Mobilfunk
+Z:507 Zaire Mobilfunk
 A:_ZRMF
 T:*/*=1.47(60)/1
-Z:509 Zentral Afrika (Rep.)
+Z:508 Zentral Afrika (Rep.)
 A:CF
 T:*/*=1.49(60)/1
-Z:510 Zypern(griech)
+Z:509 Zypern(griech)
 A:CY
 T:*/*=0.499(60)/1
-Z:511 Zypern(griech) Mobilfunk
+Z:510 Zypern(griech) Mobilfunk
 A:_CYMF
 T:*/*=0.499(60)/1
-Z:512 Zypern(türkisch)
+Z:511 Zypern(türkisch)
 A:_CYTK
 T:*/*=0.549(60)/1
-Z:513 Ägypten
+Z:512 Ägypten
 A:EG
 T:*/*=0.919(60)/1
-Z:514 Ägypten Mobilfunk
+Z:513 Ägypten Mobilfunk
 A:_EGMF
 T:*/*=1.03(60)/1
-Z:515 Äquatorial Guinea
+Z:514 Äquatorial Guinea
 A:GQ
 T:*/*=1.49(60)/1
-Z:516 Äthiopien
+Z:515 Äthiopien
 A:ET
 T:*/*=1.49(60)/1
-Z:517 Österreich
+Z:516 Österreich
 A:AT
 T:*/*=0.189(60)/1
-Z:518 Österreich Mobilfunk
+Z:517 Österreich Mobilfunk
 A:_ATMF
 T:*/*=0.379(60)/1
-Z:519 Österreich Sondernummern
+Z:518 Österreich Sondernummern
 A:_ATSO
 T:*/*=0.379(60)/1
-#####################################################################
 #
 #
 P:79,0 Viatel
@@ -16748,7 +18265,7 @@ Z:101 knUUT
 A:0191955
 T:*/09-21=0.055/60
 T:*/21-09=0.049/60
-Z:102 
+Z:102
 C:Homepage:http://service.rhein-main.net/info.html
 C:Kosten: 13.99 DM/Monat für Abonnenten der RMN, 19.99/Monat ohne Abo
 A:0192353 rhein-main-net
@@ -17492,906 +19009,6 @@ Z:255
 T:*/8-18=0.89(60)/1
 T:*/18-8=0.79(60)/1
 A:CY
-#####################################################################
-#
-#
-P:100,0 TELELEV
-B:010000
-C:Name:TELELEV
-C:Address:Telekommunikation GmbH, Dönhoffstraße 39, 51373 Leverkusen
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
-Z:0 FreeCall
-A:011*
-A:0130*,0800*,0801*
-A:031*
-A:110
-A:112
-T:*/*=0
-##################################################################
-P:100,1 Meocom
-B:010000
-C:EMail: service@meocom.de
-C:Address: MEOCOM Telekommunikation, Burgstr. 1, 45467 Mülheim a. d. Ruhr
-C:Telefon: 0800/0-636-636
-C:Homepage: http://www.meocom.de
-C:Name:Meocom spontan
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
-C:Meocom spontan ist Call-by-Call (60 Sekunden Takt)
-C:Meocom abo isd Preselection (sekundengenaue Abrechnung)
-C:Surftarif ist ebenfalls vorhanden, Rufnummer und Tarife fehlen noch
-Z:0 FreeCall
-A:011*
-A:0130*,0800*,0801*
-A:031*
-A:110
-A:112
-T:*/*=0
-Z:1-2 Meocom lokal
-T:W/9-21=0.08/60
-T:W/21-9=0.04/60
-T:E,H/*=0.04/60
-Z:3-4 Meocom fern
-T:W/9-21=0.14/60
-T:W/21-9=0.07/60
-T:E,H/*=0.07/60
-Z:10-15 Mobilfunk
-T:*/*=0.59/60
-Z:201
-A:AF,BD,DJ,SN,SC,VN
-T:*/*=2.49/60
-Z:202
-A:EG,BI,PF,HN,JM,CG,LB
-A:LC,IQ,SR
-T:*/*=2.69/60
-Z:203
-A:_ALAS,_HAWA,MY,MT,PL,PT,SK,SI
-A:CZ,HU,GR
-T:*/*=0.59/60
-Z:204
-A:AL,AS,AW,CR,FO,LT
-A:MK,SM,SZ,LV
-T:*/*=0.79/60
-Z:205
-A:DZ,KY,GI,GL,GT,NA,RO
-A:PM,TC,UA,MD
-T:*/*=0.89/60
-Z:206
-A:VI,GY,MU,NR,NG,OM,RW
-A:SL,LK,FJ,ML
-T:*/*=2.29/60
-Z:207
-A:AD
-T:*/*=0.48/60
-Z:208
-A:AO,AI,AG,BT,GH,PE,RE,MZ
-A:VC,TH,AE
-T:*/*=1.29/60
-Z:209
-A:GQ,ET,CI,GW,YE,QA
-A:MM,TO,CF
-T:*/*=2.59/60
-Z:210
-A:AR,BN,CN,CO,MQ,YT
-A:PG,ZW,ZA,TJ,TT
-A:TN,FK
-T:*/*=1.09/60
-Z:211
-A:AM,BH,BZ,BO,CV,KE
-A:NC,NGR,ZM,WS
-T:*/*=1.79/60
-Z:212
-A:ASI
-T:*/*=2.20/60
-Z:213
-A:AZ,SV,GF,GP,GN,LS
-A:MW,EH,MH,KN,SD,UG
-T:*/*=1.19/60
-Z:214
-A:AU,BE,DK,FI,FR,IE,NZ
-A:NL,NO,AT,SE,CH
-T:*/*=0.23/60
-Z:215
-A:BS,BM
-T:*/*=0.44/60
-Z:216
-A:BB,BJ,GM,HT,PA,UY,UZ
-T:*/*=1.59/60
-Z:217
-A:BA
-T:*/*=0.88/60
-Z:218
-A:BW,BR,BG,EC,KR,LY,MO,PH
-A:SU,VE,BY
-T:*/*=0.99/60
-Z:219
-A:VG,YU,TR,CY
-T:*/*=0.69/60
-Z:220
-A:BF,GA,IN,MS,PY,SY,ZR,SH
-T:*/*=1.99/60
-Z:221
-A:CL,IS,IL,_UKIK,TW,VA
-T:*/*=0.49/60
-Z:222
-A:CK,TD
-T:*/*=2.89/60
-Z:223
-A:DM,ID,NI
-T:*/*=1.39/60
-Z:224
-A:TZ,TM,GD,KZ,KG
-T:*/*=1.49/60
-Z:225
-A:TG,VU,IR,KH,KI,CU,LA,MN,NP,PK
-T:*/*=2.39/60
-Z:226
-A:US,UK,_UKIR,HK,CA
-T:*/*=0.19/60
-Z:227
-A:DO,SG
-T:*/*=0.55/60
-Z:228
-A:ER
-T:*/*=2.99/60
-Z:229
-A:EE
-T:*/*=2.10/60
-Z:230
-A:GE
-T:*/*=1.66/60
-Z:231
-A:GU,ES
-T:*/*=0.39/60
-Z:232
-A:IT
-T:*/*=0.33/60
-Z:233
-A:JP,LU
-T:*/*=0.36/60
-Z:234
-A:CM,KW,MG,MV,SA,CM
-T:*/*=2.19/60
-Z:235
-A:MX
-T:*/*=0.66/60
-Z:236
-A:HR,AN
-T:*/*=0.63/60
-Z:237
-A:LR,PW,SO
-T:*/*=2.09/60
-Z:238
-A:LI,MC,PR
-T:*/*=0.29/60
-Z:239
-A:MP
-T:*/*=3.00/60
-Z:240
-A:MR,FM,SB
-T:*/*=1.89/60
-#####################################################################
-#
-#
-P:101,0 Netnet
-B:010001
-C:Name:Netnet
-C:Address:Netnet International AB, P.O. Box 6708, S-11385 Stockholm
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
-Z:0 FreeCall
-A:011*
-A:0130*,0800*,0801*
-A:031*
-A:110
-A:112
-T:*/*=0
-#####################################################################
-#
-#
-P:102,0 EncoTel
-B:010002
-C:Name:EncoTel
-C:Address:EncoTel GmbH & Co.KG, Leibnitzstraße 73, 07548 Gera
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
-Z:0 FreeCall
-A:011*
-A:0130*,0800*,0801*
-A:031*
-A:110
-A:112
-T:*/*=0
-#####################################################################
-#
-#
-P:103,0 mevacom
-B:010003
-C:Name:mevacom
-C:Address:mevacom Telekommunikationsdienstleistungen GmbH, Posthofstraße 16, 14467 Potsdam
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
-Z:0 FreeCall
-A:011*
-A:0130*,0800*,0801*
-A:031*
-A:110
-A:112
-T:*/*=0
-#####################################################################
-#
-#
-P:107,0 KPN
-B:010007
-C:Name:KPN
-C:Address:Telecom BV, Prinses Beatrixlaan 23, 2595 AK's Gravenhage, Niederlande 010007
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
-Z:0 FreeCall
-A:011*
-A:0130*,0800*,0801*
-A:031*
-A:110
-A:112
-T:*/*=0
-#####################################################################
-#
-#
-P:108,0 USA Global Link
-B:010008
-C:Address:USA Global Link Deutschland GmbH, Theaterstraße 90, 52062 Aachen
-C:Name:USA Global Link
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
-Z:0 FreeCall
-A:011*
-A:0130*,0800*,0801*
-A:031*
-A:110
-A:112
-T:*/*=0
-#####################################################################
-#
-#
-P:109,0 ChemTel
-B:010009
-C:Name:ChemTel
-C:Address:Telekommunikations GmbH Chemnitz, Postfach 510, 09031 Chemnitz
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
-Z:0 FreeCall
-A:011*
-A:0130*,0800*,0801*
-A:031*
-A:110
-A:112
-T:*/*=0
-#####################################################################
-#
-#
-P:110,0 Bertelsmann mediaSystems
-B:010010
-C:Address:Bertelsmann mediaSystems GmbH, An der Autobahn, 33311 Gütersloh
-C:Name:Bertelsmann mediaSystems
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
-Z:0 FreeCall
-A:011*
-A:0130*,0800*,0801*
-A:031*
-A:110
-A:112
-T:*/*=0
-#####################################################################
-#
-#
-P:111,0 RED LINE
-B:010011
-C:Telekommunikationsgesellschaft mbH, Brückenstraße 17, 63897 Miltenberg 010011
-C:Name:RED LINE
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
-Z:0 FreeCall
-A:011*
-A:0130*,0800*,0801*
-A:031*
-A:110
-A:112
-T:*/*=0
-#####################################################################
-#
-#
-P:112,0 MEGASAT
-B:010012
-C:Address:MEGASAT, Friedrich-Krupp-Str. 16-18, 45164 Kaarst
-C:Name:MEGASAT
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
-Z:0 FreeCall
-A:011*
-A:0130*,0800*,0801*
-A:031*
-A:110
-A:112
-T:*/*=0
-#####################################################################
-#
-#
-P:115,0 Delta Three
-B:010015
-C:Inc., 430 Park Ave, New York 010015
-C:Name:Delta Three
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
-Z:0 FreeCall
-A:011*
-A:0130*,0800*,0801*
-A:031*
-A:110
-A:112
-T:*/*=0
-#####################################################################
-#
-#
-P:118,0 MFS
-B:010018
-C:Address:MFS Communications GmbH, Postfach 190409, 60091 Frankfurt am Main
-C:Name:MFS
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
-Z:0 FreeCall
-A:011*
-A:0130*,0800*,0801*
-A:031*
-A:110
-A:112
-T:*/*=0
-#####################################################################
-#
-#
-P:119,0 E.T.H.
-B:010019
-C:Telefondienste GmbH, Bettinastraße 25a, 60325 Frankfurt 010019
-C:Name:E.T.H.
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
-Z:0 FreeCall
-A:011*
-A:0130*,0800*,0801*
-A:031*
-A:110
-A:112
-T:*/*=0
-#####################################################################
-#
-#
-P:120,0 Komm Consult
-B:010020
-C:Address:Komm Consult, Oberweg 15, 82024 Taufkirchen bei München
-C:Name:Komm Consult
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
-Z:0 FreeCall
-A:011*
-A:0130*,0800*,0801*
-A:031*
-A:110
-A:112
-T:*/*=0
-#####################################################################
-#
-#
-P:122,0 Motorola
-B:010022
-C:Electronic GmbH, Hagenauer Straße 47, 65203 Wiesbaden 010022
-C:Name:Motorola
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
-Z:0 FreeCall
-A:011*
-A:0130*,0800*,0801*
-A:031*
-A:110
-A:112
-T:*/*=0
-#####################################################################
-#
-#
-P:125,0 Mediascape
-B:010025
-C:Address:Mediascape Communications GmbH, Usedomstraße 19, 22047 Hamburg
-C:Name:Mediascape
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
-Z:0 FreeCall
-A:011*
-A:0130*,0800*,0801*
-A:031*
-A:110
-A:112
-T:*/*=0
-#####################################################################
-#
-#
-P:130,0 tnp telenet
-B:010030
-C:potsdam, kommunikationsgesellschaft mbH, Erich-Weinert-Straße 100, 14478 Potsdam 010030
-C:Name:tnp telenet
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
-Z:0 FreeCall
-A:011*
-A:0130*,0800*,0801*
-A:031*
-A:110
-A:112
-T:*/*=0
-#####################################################################
-#
-#
-P:131,0 accom
-B:010031
-C:Address:accom Gesellschaft für Telekommunikationsnetze und -dienstleistungen GmbH & Co.KG, Borngasse 34, 52064 Aachen
-C:Name:accom
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
-Z:0 FreeCall
-A:011*
-A:0130*,0800*,0801*
-A:031*
-A:110
-A:112
-T:*/*=0
-#####################################################################
-#
-#
-P:132,0 SD
-B:010032
-C:Name:SD Telecom
-C:Address:SD Telecom Telekommunikations GmbH, Heinersdorfer Damm 55-57, 16303 Schwedt
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
-Z:0 FreeCall
-A:011*
-A:0130*,0800*,0801*
-A:031*
-A:110
-A:112
-T:*/*=0
-#####################################################################
-#
-#
-P:133,0 Level 3
-B:010033
-C:Address:Level 3 Communications GmbH, Oberlindau 54 - 56, 60323 Frankfurt/Main
-C:Name:Level 3
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
-Z:0 FreeCall
-A:011*
-A:0130*,0800*,0801*
-A:031*
-A:110
-A:112
-T:*/*=0
-#####################################################################
-#
-#
-P:140,0 VossNet
-B:010040
-C:Name:VossNet
-C:Address:VossNet Communications GmbH, 28199 Bremen
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
-Z:0 FreeCall
-A:011*
-A:0130*,0800*,0801*
-A:031*
-A:110
-A:112
-T:*/*=0
-#####################################################################
-#
-#
-P:142,0 connection 42
-B:010042
-C:Address:connection 42, Ernst-Abbe-Straße 10, 25451 Quickborn
-C:Name:connection 42
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
-Z:0 FreeCall
-A:011*
-A:0130*,0800*,0801*
-A:031*
-A:110
-A:112
-T:*/*=0
-#####################################################################
-#
-#
-P:144,0 Carrier 1
-B:010044
-C:AG, Militärstraße 36, CH-8004 Zürich 010044
-C:Name:Carrier 1
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
-Z:0 FreeCall
-A:011*
-A:0130*,0800*,0801*
-A:031*
-A:110
-A:112
-T:*/*=0
-#####################################################################
-#
-#
-P:150,0 Drillisch Superregionen
-# Dieser Tarif gilt nur in den City-Zonen der Städte
-# Essen, Frankfurt/Main, Hamburg, Hannover, Köln, Leipzig, Mannheim,
-# Nürnberg, Stuttgart!
-B:010050
-# G:01-Feb-2000
-D:dtag
-C:Address:Drillisch AG, Horbeller Straße 33, 50858 Köln
-C:Name:Drillisch Superregionen
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
-Z:0 FreeCall
-A:011*
-A:0130*,0800*,0801*
-A:031*
-A:110
-A:112
-T:*/*=0
-Z:1-4 Deutschland
-A:+49
-T:W/08-19=0.098/60
-T:W/19-22=0.078/60
-T:W/22-06=0.0595/60
-T:W/06-08=0.078/60
-T:E/06-22=0.0785/60
-T:E/22-06=0.0595/60
-Z:10 Mobilfunk C/D-Netze
-A:01618
-A:01610,01611,01612,01613,01614,01615,01616,01617,01619
-A:0170,0171,0175
-A:0172,0173,0174
-T:W/08-19=0.59/60
-T:W/19-08=0.49/60
-T:E/*=0.49/60
-Z:11 Mobilfunk E-Netze
-A:0177,0178
-A:0176,0179
-T:W/08-19=0.69/60
-T:W/19-08=0.49/60
-T:E/*=0.49/60
-#####################################################################
-P:150,1 Drillisch
-B:010050
-# G:05-Nov-1999
-D:dtag
-C:Address:Drillisch AG, Horbeller Straße 33, 50858 Köln
-C:Name:Drillisch
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
-Z:0 FreeCall
-A:011*
-A:0130*,0800*,0801*
-A:031*
-A:110
-A:112
-T:*/*=0
-Z:1-4 Deutschland
-A:+49
-T:W/08-19=0.098/60
-T:W/19-22=0.078/60
-T:W/22-06=0.0595/60
-T:W/06-08=0.078/60
-T:E/06-22=0.0785/60
-T:E/22-06=0.0595/60
-Z:10 Mobilfunk C/D-Netze
-A:01618
-A:01610,01611,01612,01613,01614,01615,01616,01617,01619
-A:0170,0171,0175
-A:0172,0173,0174
-T:W/08-19=0.59/60
-T:W/19-08=0.49/60
-T:E/*=0.49/60
-Z:11 Mobilfunk E-Netze
-A:0177,0178
-A:0176,0179
-T:W/08-19=0.69/60
-T:W/19-08=0.49/60
-T:E/*=0.49/60
-#####################################################################
-#
-#
-P:154,0 Osnatel
-B:010054
-C:Name:Osnatel
-C:Address:Osnatel GmbH, Luisenstraße 16, 49074 Osnabrück
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
-Z:0 FreeCall
-A:011*
-A:0130*,0800*,0801*
-A:031*
-A:110
-A:112
-T:*/*=0
-#####################################################################
-#
-#
-P:155,0 Telia
-B:010055
-C:Address:Telia Telekommunikation GmbH, Herrengraben 3, 20459 Hamburg
-C:Name:Telia
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
-Z:0 FreeCall
-A:011*
-A:0130*,0800*,0801*
-A:031*
-A:110
-A:112
-T:*/*=0
-#####################################################################
-#
-#
-P:156,0 NETCOM
-B:010056
-C:Kassel GmbH, Königstor 3 - 13, 34117 Kassel 010056
-C:Name:NETCOM
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
-Z:0 FreeCall
-A:011*
-A:0130*,0800*,0801*
-A:031*
-A:110
-A:112
-T:*/*=0
-#####################################################################
-#
-#
-P:160,0 JelloCom
-B:010060
-C:Address:JelloCom GmbH & Co.KG, Prüssingstraße 41, 07745 Jena
-C:Name:JelloCom
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
-Z:0 FreeCall
-A:011*
-A:0130*,0800*,0801*
-A:031*
-A:110
-A:112
-T:*/*=0
-#####################################################################
-#
-#
-P:168,0 VSE
-B:010068
-C:Address:VSE Net GmbH, Postfach, 103232, 66032 Saarbrücken
-C:Name:VSE
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
-Z:0 FreeCall
-A:011*
-A:0130*,0800*,0801*
-A:031*
-A:110
-A:112
-T:*/*=0
-#####################################################################
-#
-#
-P:170,0 Deutsche Telefon- und Marketing Services
-B:010070
-C:Address:Deutsche Telefon-und Marketing Services GmbH, Isaac-Fulda-Allee 16, 55124 Mainz
-C:Name:Deutsche Telefon- und Marketing Services
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
-Z:0 FreeCall
-A:011*
-A:0130*,0800*,0801*
-A:031*
-A:110
-A:112
-T:*/*=0
-#####################################################################
-#
-#
-P:173,0 TFN COM SA
-B:010073
-C:TFN COM SA World Of Communication, Via Greina 2 CP 2950, CH-6901 Lugano
-C:Name:TFN COM SA
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
-Z:0 FreeCall
-A:011*
-A:0130*,0800*,0801*
-A:031*
-A:110
-A:112
-T:*/*=0
-#####################################################################
-#
-#
-P:175,0 Gigabell
-B:010075
-C:Address:Gigabell AG, 60325 Frankfurt am Main
-C:Name:Gigabell
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
-Z:0 FreeCall
-A:011*
-A:0130*,0800*,0801*
-A:031*
-A:110
-A:112
-T:*/*=0
-#####################################################################
-#
-#
-P:177,0 WorldxChange
-B:010077
-C:Address:WorldxChange Communications GmbH, Am Seedamm 44, 60489 Frankfurt
-C:Name:WorldxChange
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
-Z:0 FreeCall
-A:011*
-A:0130*,0800*,0801*
-A:031*
-A:110
-A:112
-T:*/*=0
-#####################################################################
-#
-#
-P:178,0 Cybernet
-B:010078
-C:Cybernet Internet-Dienstleistungen AG, Stefan-George-Ring 19-23, 81929 München
-C:Name:Cybernet
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
-Z:0 FreeCall
-A:011*
-A:0130*,0800*,0801*
-A:031*
-A:110
-A:112
-T:*/*=0
-#####################################################################
-#
-#
-P:180,0 FaciliCom
-B:010080
-C:Address:FaciliCom Telekommunikation GmbH, Windmühlstraße 1, 60329 Frankfurt/Main
-C:Name:FaciliCom
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
-Z:0 FreeCall
-A:011*
-A:0130*,0800*,0801*
-A:031*
-A:110
-A:112
-T:*/*=0
-#####################################################################
-#
-#
-P:181,0 Daten- und Telekommunikations-GmbH Dessau
-B:010081
-C:Daten- und Telekommunikations-GmbH Dessau, Willy-Lohmann-Straße 6a, 06844 Dessau
-C:Name:Daten- und Telekommunikations-GmbH
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
-Z:0 FreeCall
-A:011*
-A:0130*,0800*,0801*
-A:031*
-A:110
-A:112
-T:*/*=0
-#####################################################################
-#
-#
-P:184,0 Startec
-B:010084
-C:Address:Startec Global Communications (Germany) GmbH, Broßstraße 6, 60487 Frankfurt
-C:Name:Startec
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
-Z:0 FreeCall
-A:011*
-A:0130*,0800*,0801*
-A:031*
-A:110
-A:112
-T:*/*=0
-#####################################################################
-#
-#
-P:185,0 FirstMark
-B:010085
-C:FirstMark Communications Deutschland GmbH, Am Opernplatz 2, 60313 Frankfurt am Main
-C:Name:FirstMark
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
-Z:0 FreeCall
-A:011*
-A:0130*,0800*,0801*
-A:031*
-A:110
-A:112
-T:*/*=0
-#####################################################################
-#
-#
-P:188,0 jk-tel
-B:010088
-C:jk-tel GmbH i.G., Hopfenplatz 5, 39120 Magdeburg
-C:Name:jk-tel
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
-Z:0 FreeCall
-A:011*
-A:0130*,0800*,0801*
-A:031*
-A:110
-A:112
-T:*/*=0
-#####################################################################
-#
-#
-P:190,0 CNE
-B:010090
-C:Corporate Network Essen Gesellschaft für Telekommunikation mbH, Kruppstraße 82 - 100, 45145 Essen
-C:Name:CNE
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
-Z:0 FreeCall
-A:011*
-A:0130*,0800*,0801*
-A:031*
-A:110
-A:112
-T:*/*=0
-#####################################################################
-#
-#
-P:195,0 TeleNec
-B:010095
-C:Address:Telenec Telekommunikation Neustadt GmbH & Co.KG, Postfach 14 40, 96459 Neustadt
-C:Name:TeleNec
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
-Z:0 FreeCall
-A:011*
-A:0130*,0800*,0801*
-A:031*
-A:110
-A:112
-T:*/*=0
-#####################################################################
-#
-#
-P:199,0 ESTel
-B:010099
-C:Energieversorgung Südsachsen Telekommunikationsgesellschaft mbH, Postfach 2 38, 09002 Chemnitz
-C:Name:ESTel
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
-Z:0 FreeCall
-A:011*
-A:0130*,0800*,0801*
-A:031*
-A:110
-A:112
-T:*/*=0
 #####################################################################
 #
 #

@@ -1,5 +1,5 @@
-.\" $Id: isdnlog.8.in,v 1.4 1999/12/24 14:17:04 akool Exp $
-.\" CHECKIN $Date: 1999/12/24 14:17:04 $
+.\" $Id: isdnlog.8.in,v 1.5 2000/02/07 20:32:40 akool Exp $
+.\" CHECKIN $Date: 2000/02/07 20:32:40 $
 .TH isdnlog 8 "@MANDATE_ISDNLOG8@" "ISDN 4 Linux @I4LVERSION@" "Linux System Administration"
 .PD 0
 .SH NAME
@@ -256,7 +256,7 @@ Show throughput in bytes (every -wX seconds).
 
 .TP
 0x800
-Show state of B-channels.
+Show state of B-channels (use with -M monitor).
 
 .TP
 0x1000
@@ -267,6 +267,19 @@ You should log at least 0x7 (errors, warnings, notice) messages.
 .TP
 0x2000
 Log estimated time till next charge signal.
+
+.TP
+0x4000
+Show chargemax.
+
+.TP
+0x8000
+Enable
+.I core
+file on SIGSEGV.
+
+.TP
+0x10000 ... 0x800000, show more diagnostic and debug messages.
 
 .TP
 .B \-m\fIX\fB	stdout="value"
@@ -411,6 +424,22 @@ isdnlog config file. Options to isdnlog can be given on the command line, can
 be stored in this file in [options] (with command line option
 -f@I4LCONFDIR@/@CONFFILE@), or in a different config file, but isdnlog will
 look at this file for sections [global] [variables] [isdnlog].
+
+.SH SIGNALS
+.TP
+.B SIGHUP (-1)
+On SIGHUP isdnlog restarts, and does therefore reread it's config files.
+
+.TP
+.B SIGINT (-2), SIGTERM (-15), SIGQUIT (-3)
+Isdnlog quits gracefully on receiving these termination signals.
+
+.TP
+.B SIGSEGV (-11)
+If the log level contains 0x8000 (and your ulimits permit this) isdlog will
+generate a
+.I core
+file before terminating.
 
 .SH EXAMPLE
 

@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.145 2000/02/03 18:24:49 akool Exp $
+## $Id: Makefile.in,v 1.146 2000/02/07 20:32:38 akool Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,14 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.146  2000/02/07 20:32:38  akool
+## isdnlog-4.09
+##   - NEW: 01078:3U and 010050:Drillisch foreign countries
+##   - isdnlog/isdnrep/isdnrep.c ... moved hist, provider ok again
+##   - isdnlog/isdnrep/CHANGES.isdnrep ... NEW (old changes)
+##   - isdnlog/isdnlog/isdnlog.8.in ... addded signals
+##   - isdnlog/README ... upd. core (SIGSEGV), files
+##
 ## Revision 1.145  2000/02/03 18:24:49  akool
 ## isdnlog-4.08
 ##   isdnlog/tools/rate.c ... LCR patch again
@@ -1050,7 +1058,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 4.08
+VERSION     = 4.09
 
 MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 \
 	      isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 \
