@@ -1,7 +1,7 @@
 #
 # This file is borrowed from the kernel configuration.
 #
-# Format of this file: description<nl>variable<nl>helptext<nl><nl>. 
+# Format of this file: description<nl>variable<nl>helptext<nl><nl>.
 # If the question being documented is of type "choice", we list
 # only the first occurring config variable. The help texts
 # must not contain empty lines. No variable should occur twice; if it
@@ -164,7 +164,7 @@ Build icnctrl
 CONFIG_ICNCTRL
   This program is used to configure the ICN driver. With this tool,
   you can add cards, download protocol firmware into cards and
-  configure ports, memory, leased-line mode etc. 
+  configure ports, memory, leased-line mode etc.
   This program is documented in icnctrl(8).
 
 Enable debugging features of icnctrl
@@ -178,7 +178,7 @@ Build actctrl
 CONFIG_ACTCTRL
   This program is used to configure the IBM Active 2000 driver. With
   this tool, you can add cards, download protocol firmware into cards
-  and configure ports, irq, D-channel protocol etc. 
+  and configure ports, irq, D-channel protocol etc.
   This program is documented in actctrl (8).
 
 Enable debugging features of actctrl
@@ -198,7 +198,7 @@ Build eiconctrl
 CONFIG_EICONCTRL
   This program is used to configure the Eicon.Diehl driver. With
   this tool, you can add cards, download protocol firmware into cards
-  and configure ports, irq, D-channel protocol etc. 
+  and configure ports, irq, D-channel protocol etc.
   This program is documented in eiconctrl (8).
 
 CONFIG_AVMCAPICTRL
@@ -426,20 +426,28 @@ CONFIG_ISDNLOG_MYSQLDIR
 Country specific chargeinfo support
 CONFIG_ISDN_LOG_DE
   Check exactly one box to integrate country specific support into
-  isdnlog. 
+  isdnlog.
+  If you country is not supported directly, please use 'XX'.
+
+Country code
+CONFIG_ISDN_LOG_CC
+  Enter your iso country code here, also knwon as TLD (top level domain).
+  Note: please use small letters. Note also: data files for your country
+  might not exist yet.
+  See isdnlog/README.Internationalization for more info.
 
 Primary language for country names
 CONFIG_ISDN_LOG_CC_DE
   The destination database can be built with german or english
   country names.
-  
+
 National support for cities
 CONFIG_ISDN_LOG_DEST_DE
-  Select this, if you want to have German cities in the destination 
+  Select this, if you want to have German cities in the destination
   database.
   So isdnlog can show a city name instead of a number prefix.
   In isdnrate you can type in known city names and countries.
-   
+
 National support for cities
 CONFIG_ISDN_LOG_DEST_AT
   S. above text for German cities.
@@ -447,15 +455,15 @@ CONFIG_ISDN_LOG_DEST_AT
 National support for cities
 CONFIG_ISDN_LOG_DEST_NL
   S. above text for German cities.
-  
-Diversion services support 
+
+Diversion services support
 CONFIG_DIVERTCTRL
   This program is needed to configure the supplementary diversion
   services in conjunction with the HiSax driver on an EURO/DSS1
-  line. Supported options are CD (call deflection), CFU (Call 
-  forward unconditional), CFB (Call forward when busy) and CFNR 
+  line. Supported options are CD (call deflection), CFU (Call
+  forward unconditional), CFB (Call forward when busy) and CFNR
   (call forward not reachable).
-  Additionally the actual CFU, CFB and CFNR state may be 
+  Additionally the actual CFU, CFB and CFNR state may be
   interrogated. The use of CFU, CFB, CFNR and interrogation may
   be limited to some countries. The keypad protocol is still not
   implemented.
@@ -470,7 +478,7 @@ CONFIG_EUROFILE
   software that implements the above protocol. Typing 'y'
   here will build the eftp4linux package, which will allow your
   linux box to exchange files over isdn with such PCs.
-. 
+.
   The package actually consists of a core library 'libeft' (which
   mainly implements the protocols ETS 300-383 and ETS 300-075) and
   some applications which use that library.
@@ -510,7 +518,7 @@ CONFIG_EFTD_SERVER_MSN
 .
   If you also use ISDN for connecting your computer to your internet
   provider, it is recommended to use a different MSN than for
-  ippp/rawip (or whatever) network interfaces (in particular if 
+  ippp/rawip (or whatever) network interfaces (in particular if
   you use isdn network interfaces that accept incoming connections).
 
 Install eftd boot time script
@@ -521,8 +529,8 @@ CONFIG_EFT_INSTALL_EFTD_SH
   Actually, `make install' only  copies the script file to the sysv
   init directory (currently hardcoded /sbin/init.d). It does not
   configure the runlevels which still remains your own task. Please
-  refer to the doc of your Linux distribution on how to do this. 
-.  
+  refer to the doc of your Linux distribution on how to do this.
+.
   You might want to say 'n' here if you already have an own costumized
   version of the script installed which should not be overwritten when
   doing `make install'
@@ -532,7 +540,7 @@ CONFIG_EFTP
   This will build an eurofile client 'eftp' which allows you to
   connect to other computers from your linux computer via ISDN and
   to download or upload files. eftp provides a command line user
-  interface somewhat similar to ftp (thus, the name). 
+  interface somewhat similar to ftp (thus, the name).
 
 Command line editing for eftp
 CONFIG_EFTP_READLINE
