@@ -1,7 +1,10 @@
 /*
- * $Id: capiinit.c,v 1.4 2000/06/30 14:08:45 calle Exp $
+ * $Id: capiinit.c,v 1.5 2000/07/24 08:38:04 calle Exp $
  *
  * $Log: capiinit.c,v $
+ * Revision 1.5  2000/07/24 08:38:04  calle
+ * - Bugfix: devfs mount was never detected, because an extra / in path.
+ *
  * Revision 1.4  2000/06/30 14:08:45  calle
  * - creat /dev/capi if not exist, and mount capifs if available and devfs
  *   not availabe or not mounted on /dev.
@@ -1088,7 +1091,7 @@ static int check_for_capifs_mounted(void)
 {
 	char *mp;
 	if (filesystem_available("devfs")) {
-		if ((mp = mounted("devfs")) != 0 && strcmp(mp, "/dev/") == 0)
+		if ((mp = mounted("devfs")) != 0 && strcmp(mp, "/dev") == 0)
 			return 0;
 	}
 	if (filesystem_available("capifs")) {
