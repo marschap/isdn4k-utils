@@ -1,6 +1,6 @@
 /* #define DEBUG_REDIRZ */
 
-/* $Id: rate.c,v 1.86 2003/10/29 17:41:35 tobiasb Exp $
+/* $Id: rate.c,v 1.87 2004/01/11 15:16:11 tobiasb Exp $
  *
  * Tarifdatenbank
  *
@@ -21,6 +21,12 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rate.c,v $
+ * Revision 1.87  2004/01/11 15:16:11  tobiasb
+ * Do not ignore last provider in ratefile if it contains only redirs (R:)
+ * and no real zones (Z:).
+ * Check whether the resulting zone from getZone is covered by a redir.
+ * Describe current limitations of redirs in rate-files manpage.
+ *
  * Revision 1.86  2003/10/29 17:41:35  tobiasb
  * isdnlog-4.67:
  *  - Enhancements for isdnrep:
@@ -1592,6 +1598,7 @@ again:
       break;
 
     case 'P': /* P:\[daterange\]nn[,v] Bezeichnung */
+      /* the "end of provider" code below also occurs after the input loop */
       if (zone!=UNKNOWN) {
 	Provider[prefix].Zone[zone].Domestic = (where & DOMESTIC) == DOMESTIC;
 	line--;
@@ -2169,13 +2176,9 @@ again:
     if (Provider[prefix].Zone[zone].nHour==0)
       if (zone) /* AK:17Dec99 Zone=0 is per definition free of charge */
         whimper (dat, "Zone %d has no 'T:' Entries", zone);
-#if 0 /* AK:31Dec1999 - Sorry, Leo ... Millenium-Release! Michi: Hier wird _Bloedsinn_ gemeldet!! */
-    if (!(where & FEDERAL))
-      whimper (dat, "Provider %s has no default domestic zone #2 (missing 'A:%s')", epnum(prefix), mycountry);
-#endif
     line++;
   }
-  else if(nProvider) { /* silently ignore empty providers */
+  else if(nProvider && !Provider[prefix].nRedir) { /* silently ignore empty providers */
     free_provider(prefix);
     nProvider--;
   }
@@ -2326,6 +2329,10 @@ static int get_area1(int prefix, RATE *Rate, char *number, TELNUM *num,
         for (a=0; a<Provider[prefix].nArea; a++) {
 	  if (Provider[prefix].Area[a].Zone < rz->start_zone)
 	    continue;
+	  /* The next condition causes an error when the redir contains only
+	   * zone numbers as returned by getZone but not the default domestic
+	   * zone number with the area A:+CC, e.g. R:58,0;1 will not work
+	   * with P:58,0 /../ Z:1 /../ Z:2-4 // A:+49  */
 	  if (Provider[prefix].Area[a].Zone > rz->end_zone)
 	    break;
 	  if (isdigit(*Provider[prefix].Area[a].Code) ||
@@ -2366,6 +2373,7 @@ static int get_area1(int prefix, RATE *Rate, char *number, TELNUM *num,
     }
   }
 
+  /* Provider[prefix].Area[Rate->_area] is valid or get_area1 was left above */
   if (Rate->_zone==UNKNOWN) {
     Rate->_zone=Provider[prefix].Area[Rate->_area].Zone;
     if (Rate->domestic && *(Rate->dst[0])) {
@@ -2374,7 +2382,8 @@ static int get_area1(int prefix, RATE *Rate, char *number, TELNUM *num,
       if (z!=UNKNOWN) {
 	for (i=0; i<Provider[prefix].nZone; i++) {
 	  for (j=0; j<Provider[prefix].Zone[i].nNumber; j++) {
-	    if (Provider[prefix].Zone[i].Number[j]==z) {
+	    if (Provider[prefix].Zone[i].Number[j]==z &&
+	        i >= rz->start_zone && i <= rz->end_zone) {
 	      Rate->_zone=i;
 	      goto done;
 	    }

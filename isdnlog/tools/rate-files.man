@@ -1,6 +1,6 @@
 '\" t
 '\" ** above should format a table **
-.\" CHECKIN $Date: 2003/09/22 19:46:01 $
+.\" CHECKIN $Date: 2004/01/11 15:16:11 $
 .TH rate-files 5 "@MANDATE@" -lt-
 .SH NAME
 rate-files \- Format of rate-files
@@ -210,7 +210,16 @@ may be missing then all zones from the start zone are used.
 e.g.
 .br
 R:1,1 ; 1-4,6, 10-
+.P
+There some limitations:
 .br
+The reference cannot be more exact than the referenced providerzones.
+R:42,0;1 will not work as desired if P:42,0 defines Z:1-4.
+.br
+It is not possible to reference a providerzone without areas when the
+default domestic zone (with your countrycode as area) is not included
+in the same range of referenced zones.  This applies mainly to zones for
+different distances in the national fixed network, e.g. Z:1-3 in Germany.
 .P
 .B r:prov, sub ; start_zone-
 .P
