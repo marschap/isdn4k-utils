@@ -26,7 +26,7 @@
 #include <linux/if.h>
 #include <linux/in.h>
 
-static char *revision = "$Revision: 1.29 $";
+static char *revision = "$Revision: 1.30 $";
 
 /* -------------------------------------------------------------------- */
 
@@ -73,6 +73,7 @@ static int wakeupnow = 0;
 /* -------------------------------------------------------------------- */
 
 static void handlemessages(void) ;
+static int shmatch(char *string, char *expr);
 static void stringlist_free(STRINGLIST **pp);
 static int stringlist_append_string(STRINGLIST **pp, char *s);
 static STRINGLIST *stringlist_split(char *tosplit, char *seps);
@@ -521,8 +522,24 @@ static void plugin_check_options(void)
 	 * cli & inmsn
 	 */
 	if (opt_cli) {
+		STRINGLIST *sl;
+		char *old;
 		stringlist_free(&clis);
 		clis = stringlist_split(opt_cli, " \t,");
+		for (sl = clis; sl; sl = sl->next) {
+		   if (*sl->s != '*') {
+		      old = sl->s;
+		      sl->s = (char *)malloc(strlen(old)+2);
+		      if (sl->s) {
+			 *sl->s = '*';
+			 strcpy(sl->s+1, old);
+			 free(old);
+		      } else {
+			 sl->s = old;
+	                 option_error("capiplugin: prepend '*' to cli failed");
+		      }
+		   }
+		}
 	}
 	if (opt_inmsn) {
 		stringlist_free(&inmsns);
@@ -604,6 +621,55 @@ illcontr:
 	option_error("capiplugin: illegal controller specification \"%s\"",
 				opt_controller);
 	die(1);
+}
+
+/* -------------------------------------------------------------------- */
+/* -------- Match with * and ? ---------------------------------------- */
+/* -------------------------------------------------------------------- */
+
+static int shmatch(char *string, char *expr)
+{
+   char *match = expr;
+   char *s = string;
+   char *p;
+   int escape = 0;
+
+   while (*match && *s) {
+      if (escape) {
+	     if (*s != *match)
+		    return 0;
+	     s++;
+		 match++;
+      } else if (*match == '\\') {
+         match++;
+         escape = 1;
+      } else if (*match == '*') {
+		 match++;
+		 if (*match == 0) 
+		    return 1;
+         if (*match == '\\') 
+            match++;
+         while ((p = strchr(s, *match)) != 0) {
+		    if (shmatch(p+1, match+1))
+			   return 1;
+		    s = p + 1;
+         }
+		 return 0;
+	  } else if (*match == '?') {
+	     s++;
+		 match++;
+	  } else {
+	     if (*s != *match)
+		    return 0;
+	     s++;
+		 match++;
+	  }
+   }
+   if (*s == 0) {
+      if (*match == 0) return 1;
+      if (*match == '*' && match[1] == 0) return 1;
+   }
+   return 0;
 }
 
 /* -------------------------------------------------------------------- */
@@ -1170,9 +1236,8 @@ static void incoming(capi_connection *cp,
 
 	if (opt_cli) {
 	   for (p = clis; p; p = p->next) {
-	       if (   (s = strstr(callingnumber, p->s)) != 0
-                   && strcmp(s, p->s) == 0)
-		   break;
+	       if (shmatch(callingnumber, p->s))
+		  break;
 	   }
 	   if (!p) {
 	           info("capiplugin: ignoring call, cli mismatch (%s != %s)",
