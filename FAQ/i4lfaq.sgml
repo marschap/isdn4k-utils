@@ -4,7 +4,7 @@
 
 <title>FAQ for isdn4linux
 <author>Matthias Hessler (<tt><htmlurl url="mailto:hessler@isdn4linux.de" name="hessler@isdn4linux.de"></tt>)
-<date>v2.0.40, 13. May 2000
+<date>v2.0.41, 4. June 2000
 <abstract>
 If you are reading this FAQ online, you may consider downloading the whole
 thing, and reading it offline (much cheaper). To download the latest
@@ -295,6 +295,9 @@ on this rather complicated problem. For more info on its status have a look at:
 fax as one of its features). Get the newest stuff from:
 <tt><url url="ftp://ftp.aeccom.com/pub/fax4i4l/howto/current/"></tt>
 However, it has been reported that setting it up properly is very tricky.
+<item><bf>For the active Hypercope PCI cards HYSDN Ergo2 and
+HYSDN Metro4: Yes, after upgrade with a special fax card</bf>.
+The setup is similar to that of an AVM B1, but may require extra patches.
 <item><bf>For the active Eicon Diva Server cards (except Diva 2.0Pro):
 Yes</bf>. Have a look at README.fax and README.eicon in the
 <tt>isdn/Documentation/isdn</tt> directory, as well as:
@@ -311,16 +314,18 @@ ATZ&amp;E&lt;your_msn&gt;S0=1S13=1+FCLASS=1
 </code>
 and use a normal Hylafax class 1 config file, where you've replaced
 non-supported commands (flow control,...) by dummies.
-
 </itemize>
+
 If you do want to fax now, your best choice is to install an analog fax modem
-along with your ISDN card.
+along with your ISDN card. For companies who want to set up a fax server
+servicing multiple connections you could also have a look at the active
+ISDN cards.
 
 <sect1> feature_modem: Can isdn4linux connect to/be called by an analog  
 modem?  
 <label id="feature_modem">
 <p>
-Generally: <bf>NO</bf>. It only works for cards with which you can fax: see
+Generally: <bf>NO</bf>. It may only work for cards with which you can fax: see
 question <ref id="feature_fax" name="feature_fax">.
 
 <sect1> feature_divert: Is it possible to initiate call forwarding with i4l?  
@@ -430,7 +435,13 @@ dosemu) is started.  Tested with the following configurations:
 <sect1> feature_capi: Is there a CAPI interface available?  
 <label id="feature_capi">
 <p>
-Currently, there is a CAPI 2.0 interface only for the active card AVM B1.
+Currently, these cards support the CAPI 2.0 interface:
+<itemize>
+<item> the active card AVM B1.
+<item> the active cards from Hypercope (HYSDN Champ2, HYSDN Ergo2,
+HYSDN Metro4)
+</itemize>
+
 This interface follows the official CAPI 2.0 standard that was established
 recently for Linux by the CAPI Association (see
 <url url="http://www.capi.org">).
@@ -784,6 +795,9 @@ If you want to buy an active card, then the developers would recommend
 the PCI Server from Eicon. The reason is that it can fax on both channels
 with AT class 2 commands, and includes a V.90 modem.
 The AVM B1 works also very well, but can only fax on one channel.
+The Hypercope cards have also been reported to work very well, servicing
+all available channels for faxing. However, they require a hardware update
+for faxing and their linux driver is fairly new.
 
 If faxing is important for you, but you don't want to spent the money for an
 active card, then a card with ISAR chipset may work well for you, e.g.
@@ -1022,8 +1036,8 @@ course you can always send a patch.
 <p>
 This card supports many special features in its firmware and is very well
 supported by its Linux driver. It's currently one of the only ISDN cards
-that you can use to fax under ISDN4LINUX, as well as the only one which
-has a CAPI 2.0 interface. You can get the newest driver from:
+that you can use to fax under ISDN4LINUX, or which supports the
+CAPI 2.0 interface. You can get the newest driver from:
 <url url="ftp://calle.in-berlin.de/pub/linux/avmb1">
 or
 <url url="ftp://ftp.avm.de/cardware/b1/linux/">.
@@ -1042,6 +1056,19 @@ There is also a mailing list for problems with the AVM B1 available on:
 linux-avmb1@calle.in-berlin.de (send an email to majordomo@calle.in-berlin.de
 with <tt>subscribe linux-avmb1 &lt;your email address&gt;</tt> in its body). 
 
+<sect1> hardware_hypercope: What is special about the Hypercope cards?  
+<label id="hardware_hypercope">
+<p>
+These cards support several special features in their firmware. They are newly
+supported by a Linux driver. They are currently one of the only ISDN cards
+that support the CAPI 2.0 interface. Also, you can use them very well for
+faxing under ISDN4LINUX (after upgrade with a fax card - possible for
+HYSDN Ergo2 and HYSDN Metro4).
+
+More information on company and hardware is available on:
+<url url="http://www.hypercope.de">
+Configuration is similar to that of an AVM B1.
+
 <sect1> hardware_icn: What is special about the ICN card?  
 <label id="hardware_icn">
 <p>
@@ -1049,7 +1076,8 @@ This was the first active card supported by isdn4linux. The manufacturer has
 always supported i4l developers (<tt><url url="http://www.think.de/"></tt>).
 The ICN does not need any interrupt (polling), therefore a PC can be equipped
 with many of them without any interrupt conflicts. The newest firmware should
-be available at <tt><url url="ftp://ftp.think.de/pub/isdn4linux/firmware/"></tt>.
+be available at
+<tt><url url="ftp://ftp.think.de/pub/isdn4linux/icn/firmware/"></tt>.
 Unfortunately, the ICN is not produced any more.
 
 
@@ -1282,11 +1310,22 @@ or by hand.
 to my computer?  
 <label id="config_gsmv110">
 <p>
-Set up async PPP with a normal pppd on a ttyI* device. Additionally to setting
-the msn, you have to initialize the ttyI* device with <tt/ATS19=0/ for V.110.
-The rate should be set to 9600 with <tt/AT&amp;R9600/. pppd needs to be
-called with <tt/noccp/ and <tt/require-pap/. For a mini-howto see:
+Set up async PPP with a normal pppd on a ttyI* device (sync ppp will not work).
+Additionally to setting the msn, you have to initialize the ttyI* device
+with <tt/ATS19=0/ for V.110. The rate should be set to 9600 with
+<tt/AT&amp;R9600/. pppd needs to be called with <tt/noccp/ and
+<tt/require-pap/. For a mini-howto see:
 <url url="http://www.oltom.com/Linux/Docs/GSM%20over%20V.110%20Mini-HOWTO.txt">
+
+You also have to set up your GSM accordingly. As an example, to switch the
+Nokia 7110 into V.110 mode, use the undocumented command
+<code>
+at+cbst=75,0,1
+</code>
+If the bearer capability is reported as &dquot;88 90 21 48 06 bb&dquot; by
+isdn4linux, then you have set it correctly (88 90 21 means V.110, 48 means
+ASYNC 9.6kbit, 06 means flowcontrol RX/TX, bb means 8 bit 1 stop none parity).
+
 
 <sect1> config_h323: How do I configure isdn4linux to act as a voice-over-ip  
 gateway for H.323 clients?  
@@ -1294,10 +1333,9 @@ gateway for H.323 clients?
 <p>
 You have to install the Linux H.323 - ISDN Gateway, which can be found on
 <url url="http://www.telos.de/linux/H323/">.
-Please note that not all ISDN hardware supports full duplex audio. Depending
-on your hardware you may end up with uni-directional voice. Unfortunately,
-the author of the FAQ does not have a list of ISDN cards which support full
-duplex audio. Please contact the mailing list for this.
+
+Please note that not all sound cards support full duplex audio. Depending
+on your hardware you may end up with uni-directional voice.
 
 <sect1> config_point2point: How do I configure a point-to-point connection?  
 <label id="config_point2point">
@@ -1713,6 +1751,19 @@ After you stopped your system with the <tt/reboot/ command or with
 needs to receive a hardware signal to reinitialize properly.
 
 
+<sect1> trouble_noisdnctrl: When attempting to use isdnctrl, I get the  
+error &dquot;/dev/isdnctrl: No such file or directory&dquot;?  
+<label id="trouble_noisdnctrl">
+<p>
+First check whether there is a device /dev/isdnctrl0. If there is, just
+create a symbolic link by executing
+<code>
+ln -s /dev/isdnctrl0 /dev/isdnctrl
+</code>
+If the device is not there, run the script <tt>scripts/makedev.sh</tt>,
+which is part of the isdn4k-utils.
+
+
 <sect1> trouble_xosview: xosview doesn't show any network activity since  
 installing i4l.  
 <label id="trouble_xosview">
@@ -1931,12 +1982,13 @@ functionality (see section <ref id="dod" name="dod">).
 the ISDN card(s) in my Linux PC (like a modem server)?  
 <label id="lan_modemserver">
 <p>
-On the Linux side use modemd, which is a very short perl script:
+On the Linux side use modemd, which is a very short perl script
+(also see Windows-Modem-Sharing-MiniHowto):
 <code>
 &num;!/usr/bin/perl
-select((select(STDOUT), &dollar;| = 1)(&dollar;());
-select((select(STDIN), &dollar;| = 1)(&dollar;());
-exec &dquot;cu&dquot;,&dquot;-E&dquot;,&dquot;''&dquot;, &dquot;-l&dquot;, &dquot;&dollar;ARGV(0)&dquot;;
+select((select(STDOUT), &dollar;| = 1)(&dollar;[]);
+select((select(STDIN), &dollar;| = 1)(&dollar;[]);
+exec &dquot;cu&dquot;,&dquot;-E&dquot;,&dquot;''&dquot;, &dquot;-l&dquot;, &dquot;&dollar;ARGV[0]&dquot;;
 die &dquot;&dollar;0: Cannot exec cu: &dollar;!\n&dquot;;
 </code>
 It has to be started by inetd, therefore this has to be added to
@@ -1955,12 +2007,20 @@ serial port, but redirects it via telnet to the Linux ISDN computer.
 Some telnet clients allow this functionality (e.g. some uucicos).
 If you generally want to offer all applications a kind of &dquot;remote COM
 port&dquot;, then there is COMT for Windows (95), and
-&dquot;telser.device&dquot; for Amigas. Disadvantage of COMT: it is only visible
-to 16bit applications.
+&dquot;telser.device&dquot; for Amigas. Disadvantage of COMT: it is only
+visible to 16bit applications. Another program is DialOut/IP, but it´s
+fairly expensive ($70).
 
 COMT may be found on Simtel:
 <tt><url url="http://educom.sce.fct.unl.pt/ftp/pub/shareware/win-utils/comt2.zip"></tt>
 
+DialOut/IP can be found on:
+<tt><url url="http://tacticalsoftware.com"></tt>
+
+Those who just want to save their CrossPoint installation should be aware that
+there are plans to have telnet support added, such that it will run without
+additional software. Watch out for news on:
+<tt><url url="http://www.openxp.de"></tt>
 
 
 <!-- Dialout
@@ -2111,6 +2171,8 @@ invalid MSN with the correct one. Use <tt/isdnctrl mapping/ to configure the
 correct MSNs (see item 'dialout on one specific card').
 <item>Dialout on one specific channel: Use the <tt/isdnctrl bind/
 (not pppbind) command to specify which channel should be used.
+Please use this command after all other configuration with isdnctrl has
+been done! Check with <tt/isdnctrl list/ that the binding actually works.
 <item> Dialout with different MSN on each card:
 You can configure this by using the <tt/isdnctrl mappping/ functionality.
 Just map MSNs on the letters 0 to 9, like this:
@@ -2260,9 +2322,12 @@ configure the link level device ippp0:
 /sbin/isdnctrl addif ippp0
 /sbin/isdnctrl encap ippp0 syncppp
 </code>
+Please note that syncppp is very peculiar about the names of the device.
+Only devices starting with &dquot;ippp&dquot; will work.
 All ippp* devices in use must be configured separately. Each ippp* device
-should be assigned to its own IP address  (routing!). Several ippp* devices can
-be assigned to a single MSN. Several callers can then simultaneously use this MSN.
+should be assigned to its own IP address (routing!). Several ippp* devices can
+be assigned to a single MSN. Several callers can then simultaneously use
+this MSN.
 
 To use these devices you need the program <tt/ipppd/, which you have to
 configure. You have to start ipppd once after the modules are installed. ipppd
@@ -3397,7 +3462,8 @@ Then you must configure a slave device for every additional channel (e.g.
 &dquot;isdnctrl addslave ippp0 &lt;slave_interface&gt;&dquot;, configure
 slave_interface, etc - see the i4l manual for more).
 To enable MPPP negotiation, ipppd must be called with the &dquot;+mp&dquot;
-option.
+option and both devices have to be given to ipppd. Please note that the
+name of both devices has to start with &dquot;ippp&dquot;.
 
 To use channel bundling you must first activate the 'master' or initial
 call. Now you can add the slave channels with the command:
@@ -3406,7 +3472,7 @@ isdnctrl addlink device
 </code>
 and close them with the command:
 <code>
-isdnctrl removelink ippp0
+isdnctrl removelink device
 </code>
 This is different to other encapsulations of isdn4linux!
 If addlink gives you error -2, then this means that there are no slave devices
@@ -3428,7 +3494,7 @@ which can do this automatically. Have a look at:
 <url url="http://www.compound.se/ibod.html">
 
 In the file <tt>etc/rc.isdn.syncppp.MPPP</tt> in the isdn4k-utils package you
-can find a sample script (unfortunately missing in some i4l version).
+can find a sample script (unfortunately missing in some i4l versions).
 
 Please note that your Internet Provider has to allow you to make use of these
 features. Also, there may be a limit on how many channels you are allowed to
