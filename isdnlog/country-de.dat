@@ -1,7 +1,7 @@
-V:1.59 Int [26-Sep-2004 01:05:00]
+V:1.60 Int [03-Jan-2005 01:02:00]
 #
 # This version of country.dat originates from rates4linux:
-# $Id: country-de.dat,v 1.48 2004/09/29 21:23:16 tobiasb Exp $
+# $Id: country-de.dat,v 1.49 2005/02/27 22:01:41 tobiasb Exp $
 # The rates4linux homepage: http://www.sourceforge.net/projects/rates4linux/
 # It bases on Rev. 1.39 of isdn4k-utils/isdnlog/country-de.dat 
 # in the CVS at http://www.isdn4linux.de.
@@ -1881,6 +1881,14 @@ C:+49900
 R:DE
 T:_DESO
 
+# http://www.sperr-ev.de/
+N:Deutschland Sperr-Notruf
+E:Germany block-forwarding
+A:Germany block-forwarding service
+C:+49116116
+R:DE
+T:_DESN
+
 N:Deutschland Persönliche Rufnummer
 E:Germany personal number
 C:+49700		# reserved (2002-05-23): +49701
@@ -1899,6 +1907,13 @@ E:Germany test numbers
 C:+4931
 R:DE
 T:_DETE
+
+N:Deutschland nat. Teilnehmerrufnummern
+E:Germany national subscriber numbers
+A:Deutschland nationale Teilnehmerrufnummern, Deutschland NTR
+C:+4932
+R:DE
+T:_DENT
 
 N:Deutschland Cityruf
 A:Cityruf, Cityruf Voicebox, Cityruf automatic, Cityruf Operator
@@ -2559,6 +2574,8 @@ R:LT
 T:_LTMF
 
 
+# Source (2003-11-18)
+# http://www.itu.int/itudoc/itu-t/number/h/hun/82458.html
 N:Ungarn
 E:Hungary
 C:+36
@@ -2566,7 +2583,10 @@ T:HU
 
 N:Ungarn Mobilfunk
 E:Hungary cellphone
-C:+3620, +3630, +3660
+C:+3620					# PANNOM GSM
+C:+3630					# WESTEL Mobile
+C:+3670					# Vodafone
+# +3650 (paging), +3660 (mobile) have been withdrawn 2003-10-31
 R:HU
 T:_HUMF
 
@@ -4137,6 +4157,11 @@ C:+1907
 R:US
 T:ALAS		# fixme: should be _USAK
 
+N:Alaska Mobilfunk
+E:Alaska cellphone
+R:ALAS
+T:_USAKM
+
 N:Alabama (USA state)
 C:+1205, +1251, +1256, +1334
 R:US
@@ -4195,6 +4220,11 @@ A:Hawai, Hawaii-Inseln, Hawaii (USA state)
 C:+1808
 R:US
 T:_HAWA		# fixme: should be _USHI
+
+N:Hawaii Mobilfunk
+E:Hawaii cellphone
+R:_HAWA
+T:_USHIM
 
 N:Iowa (USA state)
 C:+1319, +1515, +1563, +1641, +1712
