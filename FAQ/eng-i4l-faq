@@ -12,7 +12,7 @@ Posting-frequency: monthly
 Last-modified: 18-Mar-97
 URL: http://www.lrz-muenchen.de/~ui161ab/www/isdn/
 
-!1FAQ for isdn4linux - Version 1.3.2!br (translation 27-Sep-97)
+!1FAQ for isdn4linux - Version 1.3.2!br (translation 3-Oct-97)
 
 [Translator's notes]!br
 --5-May-97: Translation complete for 1.3.2 (except for the proofreading)! !br
@@ -20,6 +20,7 @@ URL: http://www.lrz-muenchen.de/~ui161ab/www/isdn/
 --25-May-97: Numerous corrections submitted by Paul Slootman!br
 --27-May-97: Minor cleanup, noted additional countries!br
 --27-Sep-97: Added more translator's notes for various countries and 2.0.30!br
+--3-Oct-97: Added note for MSNs in the UK
 
 This FAQ is protected by the GNU General Public License (GPL) Version 2;
 (C) 1996 Volker Götz, Bernhard Hailer, Matthias Heßler, Michael Hipp and
@@ -4915,13 +4916,13 @@ A: Michael Hipp <Michael.Hipp@student.uni-tuebingen.de> wrote on 11 Oct 1996:
 !2National Peculiarities
 
 [Translator's note: Here are some notes we've received that are
-not yet in the main FAQ:!br
+not yet in the main FAQ:!br!br
 
 -Elie Milgrom  <em@info.ucl.ac.be> reports that in Belgium the MSN is 
-"Nothing special: a MSN is just a 'regular' phone number here."!br
+"Nothing special: a MSN is just a 'regular' phone number here."!br!br
 
 -Sunny Marueli <sunnym@netvision.net.il> reports that "isdn4linux
-works in Israel as well (with Teles PnP)."!br
+works in Israel as well (with Teles PnP)."!br!br
 
 -Jerome Lefranc <decision@calva.net> reports for France that:
 	"(1) if you don't have MSN, you need to specify
@@ -4931,7 +4932,20 @@ works in Israel as well (with Teles PnP)."!br
 
 	(2) you can use sub-address number (not MSN).
 		ex: 01 41 33 67 87   (phone number), 02 (sub-address),
-	then the local phone will be 6787.02 with the HiSax driver."]
+	then the local phone will be 6787.02 with the HiSax driver."!br!br
+
+-I'm not sure how to set up an EAZ/MSN in the UK, but Paul 
+Slootman <paul@wau.mis.ah.nl> wrote:
+
+"I have information that in the UK, there are no "normal" MSNs. Each
+MSN is actually a single digit, 0 - 9, corresponding to the last digit
+of the actual phone number. Apparently in the UK you either have *no*
+MSNs, or 10 MSNs; you then always get a block of 10 sequential
+numbers. I've also heard that from middle October, BT is going to
+offer "normal" EuroISDN, which they will call ISDN-2e (their current
+offering is ISDN-2). This will also have facilities such as call
+forwarding etc.  Look somewhere on www.andrews-arnold.co.uk/isdn/ for
+more info."]
 
 
 !3Germany (1TR6)
