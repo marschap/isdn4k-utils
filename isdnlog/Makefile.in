@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.175 2000/08/01 20:31:28 akool Exp $
+## $Id: Makefile.in,v 1.176 2000/08/04 11:08:26 paul Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,9 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.176  2000/08/04 11:08:26  paul
+## Also remove *.gdbm in distclean target
+##
 ## Revision 1.175  2000/08/01 20:31:28  akool
 ## isdnlog-4.37
 ## - removed "09978 Schoenthal Oberpfalz" from "zone-de.dtag.cdb". Entry was
@@ -1498,7 +1501,7 @@ clean:
 distclean:      clean
 		-rm -f $(MANPAGES)
 		-rm -f $(PROGS) .depend config.h config.status config.cache \
-		config.log Makefile confdefs.h policy.h *~
+		config.log Makefile confdefs.h policy.h *~ *.gdbm
 		set -e; for i in `echo $(SUBDIRS)`; do $(MAKE) -C $$i distclean; done
 
 ifeq (.depend,$(wildcard .depend))
