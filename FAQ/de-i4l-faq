@@ -9,11 +9,11 @@ Summary: This posting describes what every reader of de.alt.comm.isdn4linux
          i4l-faq.
 Archive-name: de-i4l-faq
 Posting-frequency: monthly
-Last-modified: 02-Feb-97
+Last-modified: 21-Feb-97
 URL: http://www.lrz-muenchen.de/~ui161ab/www/isdn/
 
 
-!1FAQ für isdn4linux - Version 1.2.2
+!1FAQ für isdn4linux - Version 1.3
 
 Diese FAQ genießt den Schutz der GNU General Public License (GPL) Version 2;
 (C) 1996 Volker Götz, Bernhard Hailer, Matthias Heßler, Michael Hipp sowie 
@@ -529,50 +529,57 @@ A: CVS - Concurent Version System!br
    Sourcen sind eventuell mehr bugs drin, als in den releasten !!!
    Hier die entsprechende Nachricht von Fritz Elfert <fritz@wuemaus.franken.de>
    zu diesem Thema:!br
-   ANOTHER IMPORTANT THING:!br
-   I often get patches - against current official releases of course -
-   where i have problems applying them. My local source here
-   sometimes is 2 or 3 version ahead however i cannot release it, since
-   it is incomplete or completely untested etc.!br
-   Therefore i now decided to make the CVS repository of the isdn4linux
-   public available. Now, programmers who want to have a look at the
-   development ongoing or those who always want to get the newest stuff
-   here is how to access the CVS repository:!br
-   1. Install GNU CVS (any version >= 1.6 will do)!br
-   2. create a small shellscript .cvsrsh in your homedir:!br
 !verbon
-       #!/bin/sh
-       exec rsh -l guest $*
+          Ich bekomme oft Patches - gegen die aktuell offizielle Release des
+        Quellcodes - bei denen ich Probleme bekomme, sie einzubinden.
+        Mein lokaler Quellcode hier ist manchmal zwei oder drei Versionen
+        weiter, wobei ich sie allerdings nicht releasen kann, weil er
+        unvollständig oder völlig ungeprüft ist etc.
+
+          Deshalb habe ich jetzt beschlossen, das CVS-Repository von
+        isdn4linux öffentlich zugänglich zu machen. Jetzt können Programmierer,
+        die einen Blick auf den Fortgang der Entwicklung werfen wollen, oder
+        Leute, die immer den allerneuesten Stand haben wollen, folgendermaßen
+        auf das CVS-Repository zugreifen:
+
+        1.) Man installiere GNU CVS (irgendeine Version >= 1.6 tut's).
+        2.) Man schreibe ein kleines Shellscript .cvsrsh im Homedir:
+              #!/bin/sh
+              exec rsh -l guest $*
+        3.) Man setze CVS_RSH auf dieses Script (z.B. CVS_RSH=~/.cvsrsh)
+        4.) Man setze CVS_ROOT auf oldhades.think.de:/i4ldev
+            (z.B. export CVS_ROOT=oldhades.think.de:/i4ldev)
+        5.) Man führe aus: "cvs -z9 checkout isdn"
+            -> Dies läßt einen Verzeichnisbaum im aktuellen Verzeichnis
+               entstehen. Unterhalb von isdn/ findet man die gleiche 
+               Hierarchie wie im Linux-Source nebst einigen Scripten, um
+               den Inhalt in den Linux-Quellcodezweig zu kopieren/diffen.
+
+        Ähnlicher Zugang ist auch auf das Utility-Paket möglich, mit dem
+        Kommando:
+
+              cvs -z9 checkout isdn4k-utils
+
+        ABER VORSICHT! DAS NEUESTE MATERIAL IST MANCHMAL ZIEMLICH INSTABIL ODER
+        WENIGSTENS NICHT OHNE GUTE PROGRAMMIERKENNTNISSE COMPILIERBAR -
+        bitte keine Newbie-Fragen zu diesem Thema! Use the source, Luke!
+
+        Hinweis:
+          Natürlich ist der Zugriff Read-Only. Der Zugriff ist auf die 
+          folgenden Kommandos beschränkt:
+            checkout
+            diff
+            export
+            status
+            update
+
+        Zur Benutzung dieser Befehle sehe sich die Dokumentation zu CVS an.
+
+        Leute, die das Entwicklerteam _ständig_ unterstützen wollen
+        (z.B. neue Treiber schreiben [oder FAQ-Mitarbeit! Die Red.]),
+        können einen echten Account zum vollständigen Zugriff erhalten. 
+        Man schreibe mir in diesem Falle eine Mail.
 !verboff
-   3. Set CVS_RSH to this script (eg.: export CVS_RSH=~/.cvsrsh)!br
-   4. Set CVS_ROOT to oldhades.think.de:/i4ldev!br
-   (eg: export CVS_ROOT=oldhades.think.de:/i4ldev)!br
-   5. Execute "cvs -z9 checkout isdn"!br
-   -> This will create a directory-tree isdn/ in your current directory.!br
-   Below isdn/ you will find the same hierarchy like in the linux
-   source plus some scripts to copy/diff the stuff into the linux
-   sourcetree.!br
-   Similar access is available for the utility-package with the command:!br
-!verbon
-   cvs -z9 checkout isdn4k-utils
-!verboff
-   WATCH OUT!!! THE NEWEST STUFF SOMETIMES IS REALLY INSTABLE OR EVEN
-   DOES NOT COMPILE WITHOUT PROGRAMMING KNOWLEDGE -
-   No newbies questions on this PLEASE! Use the source, Luke!!br
-   Note:!br
-   Of course the public access is readonly. Access is limited
-   to the following cvs commands:!br
-!verbon
-       checkout
-       diff
-       export
-       status
-       update
-!verboff
-   See the CVS-doc for how to use these commands.!br
-   People who want to help _continuously_ developing isdn4linux by writing
-   new driver etc. can get a real account for full access. Write me a mail in
-   this case.
 
 !old
 Q: Kann man ISDN4linux auch unter dem dosemu ansprechen?
@@ -682,7 +689,7 @@ A: Soviele, wie ISA-Slots da sind bzw. Interrupts/IO-Adressen.
    daher können nur maximal 3 verwendet werden. Außerdem wird für jede Karte
    ein eigener Interrupt benötigt.!br
    Peter Strunk <webadmin@mail.bicos.de> hatte am 8. Nov 1996 folgenden Tip
-   für die Installation einer vierten Teleskarte:
+   für die Installation einer vierten Teles-Karte:
 !verbon
         Probiere doch mal Port 0x080h, DIP-SW in die nicht dokumentierte
         Position!
