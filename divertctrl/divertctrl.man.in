@@ -1,6 +1,6 @@
-.\" $Id: divertctrl.man.in,v 1.1 2000/01/27 14:26:22 kai Exp $
+.\" $Id: divertctrl.man.in,v 1.2 2001/01/09 20:49:21 werner Exp $
 .\"
-.\" CHECKIN $Date: 2000/01/27 14:26:22 $
+.\" CHECKIN $Date: 2001/01/09 20:49:21 $
 .\"
 .\" Process this file with
 .\" groff -man -Tascii divertctrl.8 for ASCII output, or
@@ -122,13 +122,12 @@ The /proc/net/isdn/divert device may be used for debug purposes or interfacing t
       
 .LP
 .SH BUGS
-With some commands an explicit driverid needs to be specified under certain conditions even if wildcards should be allowed.
-The interrogate command only reports the active diversions through the ascii interface, but not through stdout. This will be implemented soon. 
+With some commands an explicit driverid needs to be specified under certain conditions even if wildcards should be allowed. If you get a core dump using wildcards try to use a cmd line specifying a single interface. 
 This man page is still not complete.
 
 .LP
 .SH AUTHOR
-Werner Cornelius <werner@isdn4linux.de or werner@titro.de>
+Werner Cornelius <werner@isdn4linux.de or werner@isdn-development.de>
 
 
 
