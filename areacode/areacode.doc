@@ -4,7 +4,7 @@
 
        Portable library module to search for an area code in a database.
 
-				 Version 1.01
+				 Version 1.02
 
 		(C) Copyright 1996,97 by Ullrich von Bassewitz
 			      <uz@musoftware.com>
@@ -72,7 +72,8 @@ The package has some limits as stated below:
 
   * Current language is german.
 
-  * The data file contains area codes for germany and switzerland.
+  * The data file contains area codes for germany, austria, switzerland
+    and the netherlands.
 
   * The area code including the country code (but not including the
     international prefix, often 00) may not exceed 8 digits. This may be
@@ -89,7 +90,7 @@ The package has some limits as stated below:
 You may get the source for the package itself, for the datafile builder and
 for new datafiles from
 
-	ftp://ftp.musoftware.com/areacode
+	ftp://ftp.musoftware.com/pub/areacode
 
 Note: Please do not distribute modified data files. The data files contain
 a version stamp to make shure, users don't overwrite newer versions with
@@ -99,7 +100,7 @@ by third parties.
 Note: The datafile builder needs spunk, a C++ class library to compile.
 You may want to have a look in
 
-	ftp://ftp.musoftwware.com/spunk
+	ftp://ftp.musoftware.com/pub/spunk
 
 for the current spunk version.
 
@@ -162,4 +163,8 @@ Many thanks to all people that helped developing the module:
     Alois Schneider (Alois.Schneider@magnet.at),
     for the austrian area codes.
 
+    Paul Slootman (paul@wurtel.demon.nl),
+    for the two versions of the area codes for the netherlands
+    and for his patience:-)
 
+			

@@ -1,14 +1,3 @@
-/* $Id: areacode.c,v 1.3 1997/04/17 23:29:35 luethje Exp $
- *
- * $Log: areacode.c,v $
- * Revision 1.3  1997/04/17 23:29:35  luethje
- * new structure of isdnrep completed.
- *
- * Revision 1.2  1997/04/17 19:41:41  luethje
- * patch of Ullrich von Bassewitz
- *
- */
-
 /*****************************************************************************/
 /*                                                                           */
 /*                                AREACODE.C                                 */
@@ -124,7 +113,7 @@ unsigned long   acMaxMem        = 0x8000L;
 #  define u32               unsigned long
 #endif
 
-/* The version of the data file we support */
+/* The version of the data file we support (major only, minor is ignored) */
 #define acVersion       0x100
 
 /* The magic words in little and big endian format */
@@ -144,11 +133,12 @@ unsigned long   acMaxMem        = 0x8000L;
  */
 typedef struct {
     u32         Magic;
-    u32         Version;        /* Version in hi word, build in lo word */
+    u32         Version;            /* Version in hi word, build in lo word */
     u32         Count;
     u32         AreaCodeStart;
     u32         NameIndexStart;
     u32         NameStart;
+    u32		AreaCodeLenStart;   /* Version 1.02 and higher */
 } PrefixHeader;
 
 /* This is what's really used: */
@@ -167,6 +157,7 @@ typedef struct {
     u32         AreaCodeStart;
     u32         NameIndexStart;
     u32         NameStart;
+    u32		AreaCodeLenStart;
 
     /* Control data */
     long        First;
@@ -291,6 +282,12 @@ static unsigned LoadFileHeader (AreaCodeDesc* Desc)
     Desc->AreaCodeStart   = Load_u32 (Desc);
     Desc->NameIndexStart  = Load_u32 (Desc);
     Desc->NameStart       = Load_u32 (Desc);
+    if (Desc->Version >= 0x101) {
+	/* Beginning with version 1.01 we have an additional table that is
+	 * ignored by older versions.
+	 */
+	Desc->AreaCodeLenStart = Load_u32 (Desc);
+    }
 
     /* Check for some error conditions */
     if (ferror (Desc->F)) {
@@ -382,11 +379,11 @@ static void LoadTable (AreaCodeDesc* Desc)
 
 
 
-static unsigned CalcCodeLen (u32 Code)
+static unsigned char CalcCodeLen (u32 Code)
 /* Calculate the length of a given (encoded) area code in characters */
 {
     u32 Mask;
-    unsigned Len = 0;
+    unsigned char Len = 0;
     for (Mask = 0xF0000000L; Mask; Mask >>= 4) {
         if ((Code & Mask) != Mask) {
             Len++;
@@ -418,7 +415,7 @@ unsigned GetAreaCodeInfo (acInfo* AC, const char* PhoneNumber)
     u32           Phone;                /* PhoneNumber encoded in BCD */
     long          First, Last, Current; /* For binary search */
     u32           CurrentVal;           /* The value at Table [Current] */
-    unsigned      AreaCodeLen;          /* The length of the area code found */
+    unsigned char AreaCodeLen;          /* The length of the area code found */
     unsigned char InfoLen;              /* Length of info string */
     unsigned      RC = acOk;            /* Result code of the function */
     u32           Mask;
@@ -532,14 +529,9 @@ unsigned GetAreaCodeInfo (acInfo* AC, const char* PhoneNumber)
         goto ExitWithClose;
     }
 
-    /* Ok, we have now definitely found the code. Set up the data structure,
-     * we return to the caller.
-     */
-    AC->AreaCodeLen = AreaCodeLen;
-
-    /* Current is the index of the area code. Seek to the corresponding
-     * position in the name index, get the name position from there and seek
-     * to that place.
+    /* Ok, we have now definitely found the code. Current is the index of the
+     * area code. Seek to the corresponding position in the name index, get
+     * the name position from there and seek to that place.
      */
     fseek (Desc.F, Desc.NameIndexStart + Current * sizeof (u32), SEEK_SET);
     fseek (Desc.F, Desc.NameStart + Load_u32 (&Desc), SEEK_SET);
@@ -565,6 +557,19 @@ unsigned GetAreaCodeInfo (acInfo* AC, const char* PhoneNumber)
         }
     }
 #endif
+
+    /* If the areacode file is version 1.01 or greater, there is an additional
+     * table with the length of the "real" area code. Older versions use the
+     * length of the area code. This enables dividing of number spaces, e.g.
+     * 49212[0-8] = Solingen, 492129 = Haan. With the old data file, the
+     * areacode of Solingen would be 492120 but the official code is just
+     * 49212 which needs an additional length byte.
+     */
+    if (Desc.Version >= 0x101) {
+	fseek (Desc.F, Desc.AreaCodeLenStart + Current, SEEK_SET);
+	fread (&AreaCodeLen, 1, sizeof (AreaCodeLen), Desc.F);
+    }
+    AC->AreaCodeLen = AreaCodeLen;
 
 ExitWithClose:
     /* Close the data file */
