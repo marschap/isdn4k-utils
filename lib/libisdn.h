@@ -1,5 +1,5 @@
 
-/* $Id: libisdn.h,v 1.2 1997/03/03 22:05:41 luethje Exp $
+/* $Id: libisdn.h,v 1.3 1997/03/06 20:36:35 luethje Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -134,6 +134,7 @@ _EXTERN int delete_runfile(const char* progname);
 _EXTERN int Set_Codes(section* Section);
 _EXTERN char *get_areacode(char *code, int *Len, int flag);
 _EXTERN int read_conffiles(section **Section, char *groupfile);
+_EXTERN int paranoia_check(char *cmd);
 
 #undef SET_NULL
 #undef _EXTERN

@@ -1,4 +1,4 @@
-/* $Id: isdntools.c,v 1.2 1997/03/03 22:05:39 luethje Exp $
+/* $Id: isdntools.c,v 1.3 1997/03/06 20:36:34 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdntools.c,v $
+ * Revision 1.3  1997/03/06 20:36:34  luethje
+ * Problem in create_runfie() fixed. New function paranoia_check() implemented.
+ *
  * Revision 1.2  1997/03/03 22:05:39  luethje
  * merging of the current version and my tree
  *
@@ -82,6 +85,7 @@
 #include <sys/stat.h>
 #include <signal.h>
 #include <unistd.h>
+#include <fcntl.h>
 
 #include "libisdn.h"
 
@@ -318,6 +322,7 @@ int create_runfile(const char *progname)
   char runfile[PATH_MAX];
   char string[SHORT_STRING_SIZE];
   int RetCode = -1;
+  int fd      = -1;
   FILE *fp;
 
 	if (progname == NULL)
@@ -326,16 +331,19 @@ int create_runfile(const char *progname)
 	Ptr = strrchr(progname,C_SLASH);
 	sprintf(runfile,"%s%c%s.pid",RUNDIR,C_SLASH,Ptr?Ptr+1:progname);
 
-	if (access(runfile,W_OK) != 0 && errno == ENOENT)
+	if ((fd = open(runfile, O_WRONLY|O_CREAT|O_EXCL|O_TRUNC, 0644)) >= 0)
 	{
-		if ((fp = fopen(runfile, "w")) == NULL)
-			return -1;
+		sprintf(string, "%10d\n", (int)getpid());
 
-		fprintf(fp, "%d\n", (int)getpid());
-		fclose(fp);
-		chmod(runfile, 0644);
-  
-  	RetCode = 0;
+		if (write(fd, string, strlen(string)) != strlen(string) )
+		{
+			print_msg("Can not write to PID file `%s'!\n", runfile);
+  		RetCode = -1;
+		}
+  	else
+  		RetCode = 0;
+
+		close(fd);
 	}
 	else
 	{
@@ -692,6 +700,37 @@ int read_conffiles(section **Section, char *groupfile)
 
 	read_again = 1;
 	return RetCode;
+}
+
+/****************************************************************************/
+
+int paranoia_check(char *cmd)
+{
+	struct stat stbuf;
+
+
+	if (getuid() == 0)
+	{
+		if (stat(cmd, &stbuf))
+		{
+			print_msg("stat() failed for file `%s', stay on the safe side!\n", cmd);
+			return -1;
+		}
+
+		if (stbuf.st_uid != 0)
+		{
+			print_msg("Owner of file `%s' is not root!\n", cmd);
+			return -1;
+		}
+
+		if (stbuf.st_mode & (S_IWGRP | S_IWOTH))
+		{
+			print_msg("File `%s' is writable by group or world!\n", cmd);
+			return -1;
+		}
+	}
+
+	return 0;
 }
 
 /****************************************************************************/

@@ -210,3 +210,20 @@ Im Fehlerfalle wird -1 geliefert.
 
 -----------------------------------------------------------------------------
 
+Funktion:
+
+int paranoia_check(char *cmd)
+
+Prueft, ob das auszufuehrende Programm die User-ID 0 (root) hat, und prueft
+dann, ob das Programm "cmd"
+- auch vom owner root ist
+- nur schreibberechtigung fuer root besitzt.
+
+cmd: Beinhaltet einen Datenamen
+
+Rueckgabewert:
+0, wenn die Bedingungen eingehalten wurden,
+Ansonsten -1.
+
+-----------------------------------------------------------------------------
+

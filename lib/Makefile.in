@@ -34,7 +34,7 @@ config:
 	@echo '#include "../scripts/autoconf.h"' >> policy.h
 	@echo '#define I4LCONFDIR CONFIG_I4LCONFDIR' >> policy.h
 	@echo '#define CONFFILE CONFIG_CONFFILE' >> policy.h
-#	@echo '#define CALLERIDFILE CONFIG_CALLERIDFILE' >> policy.h
+	@echo '#define CALLERIDFILE CONFIG_CALLERIDFILE' >> policy.h
 	@echo '#define USERCONFFILE CONFIG_USERCONFFILE' >> policy.h
 	@echo '#define RUNDIR CONFIG_RUNDIR' >> policy.h
 	@echo '#define S_COUNTRY_PRFIX CONFIG_COUNTRY_PREFIX' >> policy.h
