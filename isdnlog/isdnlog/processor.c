@@ -1,4 +1,4 @@
-/* $Id: processor.c,v 1.75 1999/07/01 20:39:52 akool Exp $
+/* $Id: processor.c,v 1.76 1999/07/11 15:30:55 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.76  1999/07/11 15:30:55  akool
+ * Patch from Karsten (thanks a lot!)
+ *
  * Revision 1.75  1999/07/01 20:39:52  akool
  * isdnrate optimized
  *
@@ -3515,14 +3518,14 @@ static void processLCR(int chan, char *hint)
 
   *hint='\0';
   *(p=buffer)='\0';
-  
+
   clearRate (&pselRate);
   pselRate.prefix=preselect;
   memcpy (pselRate.src, call[chan].Rate.src, sizeof (pselRate.src));
   memcpy (pselRate.dst, call[chan].Rate.dst, sizeof (pselRate.dst));
   pselRate.start = call[chan].Rate.start;
   pselRate.now   = call[chan].Rate.now;
-  
+
   hintRate = pselRate;
   hintRate.prefix=call[chan].hint;
 
@@ -3563,7 +3566,7 @@ static void processLCR(int chan, char *hint)
     p+=sprintf(p, "\nHINT: LCR:%s", (bestRate.prefix == call[chan].provider) ? "OK" : "FAILED");
     sprintf (hint, "%s", buffer+1);
   }
-  
+
 } /* processLCR */
 
 
@@ -4474,9 +4477,11 @@ doppelt:break;
 	  processRate(chan);
 
       	  if (call[chan].tarifknown) {
-	    char *h=hints;
+	    char *h = hints;
+
 	    processLCR(chan, h);
-            while (*h)
+
+            while (h)
               info(chan, PRT_SHOWHANGUP, STATE_HANGUP, strsep(&h, "\n"));
       	  } /* if */
         } /* if */
