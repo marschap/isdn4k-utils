@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.63 1999/03/24 19:37:29 akool Exp $
+## $Id: Makefile.in,v 1.64 1999/03/25 19:39:41 akool Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,10 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.64  1999/03/25 19:39:41  akool
+## - isdnlog Version 3.11
+## - make isdnlog compile with egcs 1.1.7 (Bug report from Christophe Zwecker <doc@zwecker.com>)
+##
 ## Revision 1.63  1999/03/24 19:37:29  akool
 ## - isdnlog Version 3.10
 ## - moved "sondernnummern.c" from isdnlog/ to tools/
@@ -494,7 +498,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 3.10
+VERSION     = 3.11
 
 MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 isdnlog/isdnlog.users.5 isdnrep/isdnrep.1 isdnconf/isdnconf.1
 

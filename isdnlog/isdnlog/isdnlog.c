@@ -1,4 +1,4 @@
-/* $Id: isdnlog.c,v 1.38 1999/03/24 19:37:46 akool Exp $
+/* $Id: isdnlog.c,v 1.39 1999/03/25 19:39:51 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,10 @@
  * along with this program; if not, write to the Free Software
  *
  * $Log: isdnlog.c,v $
+ * Revision 1.39  1999/03/25 19:39:51  akool
+ * - isdnlog Version 3.11
+ * - make isdnlog compile with egcs 1.1.7 (Bug report from Christophe Zwecker <doc@zwecker.com>)
+ *
  * Revision 1.38  1999/03/24 19:37:46  akool
  * - isdnlog Version 3.10
  * - moved "sondernnummern.c" from isdnlog/ to tools/
@@ -420,7 +424,7 @@ static void loop(void)
             break;
           } /* else */
         }
-        else if (X_FD_ISSET(sockets[Cnt].descriptor, &readmask))
+        else if (X_FD_ISSET(sockets[Cnt].descriptor, &readmask)) {
           if (sockets[Cnt].fp == NULL) {
             eval_message(Cnt);
             /* Arbeite immer nur ein Client ab, du weisst nicht, ob der
@@ -429,6 +433,7 @@ static void loop(void)
           }
           else
             Print_Cmd_Output(Cnt);
+        } /* else */
       } /* for */
 
       if (xinfo && X_FD_ISSET(sockets[IN_PORT].descriptor, &readmask)) {

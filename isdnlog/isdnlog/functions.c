@@ -1,4 +1,4 @@
-/* $Id: functions.c,v 1.19 1999/03/07 18:18:48 akool Exp $
+/* $Id: functions.c,v 1.20 1999/03/25 19:39:48 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,10 @@
  * along with this program; if not, write to the Free Software
  *
  * $Log: functions.c,v $
+ * Revision 1.20  1999/03/25 19:39:48  akool
+ * - isdnlog Version 3.11
+ * - make isdnlog compile with egcs 1.1.7 (Bug report from Christophe Zwecker <doc@zwecker.com>)
+ *
  * Revision 1.19  1999/03/07 18:18:48  akool
  * - new 01805 tarif of DTAG
  * - new March 1999 tarife
@@ -180,7 +184,7 @@ static void saveCharge()
 
 /*****************************************************************************/
 
-void _Exit(char *File, int Line, int RetCode) /* WARNING: RetCode==-9 does _not_ call exit()! */
+void _Exit_isdnlog(char *File, int Line, int RetCode) /* WARNING: RetCode==-9 does _not_ call exit()! */
 {
 #ifdef Q931
   if (!q931dmp)
@@ -421,7 +425,7 @@ int print_msg(int Level, const char *fmt, ...)
       fputs(width ? s : String, stderr);
       fflush(stderr);
     }
-    else 
+    else
     if (!fout){
       fputs(width ? s : String, fcons);
       fflush(fcons);

@@ -1,4 +1,4 @@
-/* $Id: isdnlog.h,v 1.18 1999/03/24 19:37:49 akool Exp $
+/* $Id: isdnlog.h,v 1.19 1999/03/25 19:39:55 akool Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnlog.h,v $
+ * Revision 1.19  1999/03/25 19:39:55  akool
+ * - isdnlog Version 3.11
+ * - make isdnlog compile with egcs 1.1.7 (Bug report from Christophe Zwecker <doc@zwecker.com>)
+ *
  * Revision 1.18  1999/03/24 19:37:49  akool
  * - isdnlog Version 3.10
  * - moved "sondernnummern.c" from isdnlog/ to tools/
@@ -417,9 +421,9 @@ _EXTERN void clearchan(int chan, int total);
 #define _EXTERN extern
 #endif
 
-#define Exit(a) _Exit(__FILE__,__LINE__,a)
+#define Exit(a) _Exit_isdnlog(__FILE__,__LINE__,a)
 
-_EXTERN void _Exit(char *File, int Line, int RetCode);
+_EXTERN void _Exit_isdnlog(char *File, int Line, int RetCode);
 #ifndef  _REP_FUNC_C_
 _EXTERN int  print_msg(int Level, const char *fmt, ...);
 #endif
