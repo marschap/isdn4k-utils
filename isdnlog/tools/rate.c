@@ -1,4 +1,4 @@
-/* $Id: rate.c,v 1.21 1999/06/15 20:05:13 akool Exp $
+/* $Id: rate.c,v 1.22 1999/06/16 19:13:00 akool Exp $
  *
  * Tarifdatenbank
  *
@@ -19,6 +19,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rate.c,v $
+ * Revision 1.22  1999/06/16 19:13:00  akool
+ * isdnlog Version 3.34
+ *   fixed some memory faults
+ *
  * Revision 1.21  1999/06/15 20:05:13  akool
  * isdnlog Version 3.33
  *   - big step in using the new zone files
@@ -651,7 +655,7 @@ int initRate(char *conf, char *dat, char *dom, char **msg)
       s+=2; while (isblank(*s)) s++;
       snprintf (path, LENGTH, dom, s);
       if (initZone(prefix, path, &c)==0) {
-	notice (c);
+	notice ("%s", c);
       } else {
 	warning (dat, c);
       }

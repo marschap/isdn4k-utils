@@ -1,4 +1,4 @@
-/* $Id: tools.c,v 1.29 1999/06/15 20:05:20 akool Exp $
+/* $Id: tools.c,v 1.30 1999/06/16 19:13:03 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -19,6 +19,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools.c,v $
+ * Revision 1.30  1999/06/16 19:13:03  akool
+ * isdnlog Version 3.34
+ *   fixed some memory faults
+ *
  * Revision 1.29  1999/06/15 20:05:20  akool
  * isdnlog Version 3.33
  *   - big step in using the new zone files
@@ -687,9 +691,7 @@ char *vnum(int chan, int who)
       auto     char *s;
 
 
-      i = getCountrycode(call[chan].num[who], &s);
-
-      if (i) {
+      if ((i = getCountrycode(call[chan].num[who], &s)) != UNKNOWN) {
         Strncpy(call[chan].areacode[who], call[chan].num[who], i + 1);
 	strcpy(call[chan].rufnummer[who], call[chan].num[who] + i);
 	*call[chan].vorwahl[who] = 0;

@@ -1,4 +1,4 @@
-/* $Id: isdnrep.c,v 1.68 1999/06/15 20:04:31 akool Exp $
+/* $Id: isdnrep.c,v 1.69 1999/06/16 19:12:42 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -24,6 +24,10 @@
  *
  *
  * $Log: isdnrep.c,v $
+ * Revision 1.69  1999/06/16 19:12:42  akool
+ * isdnlog Version 3.34
+ *   fixed some memory faults
+ *
  * Revision 1.68  1999/06/15 20:04:31  akool
  * isdnlog Version 3.33
  *   - big step in using the new zone files
@@ -916,7 +920,7 @@ int read_logfile(char *myname)
 
   /* FIXME: */
   initHoliday(holifile, NULL);
-  initRate("/etc/isdn/rate.conf", "/usr/lib/isdn/rate-de.dat", "/usr/lib/isdn/rate-de-%s.gdbm", NULL);
+  initRate("/etc/isdn/rate.conf", "/usr/lib/isdn/rate-de.dat", "/usr/lib/isdn/zone-de-%s.gdbm", NULL);
   currency = strdup("DM");
   vbn = strdup("010");
   interns0 = 3;

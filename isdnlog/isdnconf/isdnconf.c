@@ -1,4 +1,4 @@
-/* $Id: isdnconf.c,v 1.32 1999/06/15 20:03:46 akool Exp $
+/* $Id: isdnconf.c,v 1.33 1999/06/16 19:12:21 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -20,6 +20,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnconf.c,v $
+ * Revision 1.33  1999/06/16 19:12:21  akool
+ * isdnlog Version 3.34
+ *   fixed some memory faults
+ *
  * Revision 1.32  1999/06/15 20:03:46  akool
  * isdnlog Version 3.33
  *   - big step in using the new zone files
@@ -1273,7 +1277,7 @@ int main(int argc, char *argv[], char *envp[])
                                 }
 				else {
                                   if (isalpha(*areacode)) {
-				    if (getCountry(areacode, &Country))
+				    if (getCountry(areacode, &Country) != UNKNOWN)
 				      strcpy(areacode, Country->Code[0]);
                                   } /* if */
 
@@ -1302,7 +1306,7 @@ int main(int argc, char *argv[], char *envp[])
 #endif
 
                                 if (zone2 == UNKNOWN) {
-				  if (getCountrycode(areacode, &country))
+				  if (getCountrycode(areacode, &country) != UNKNOWN)
                                     print_msg(PRT_NORMAL, "Ein %d Sekunden langes Gespraech nach %s (%s) kostet am %s",
                                       duration, country, areacode, ctime(&Rate.start));
                                   else
