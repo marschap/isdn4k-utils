@@ -1,4 +1,4 @@
-/* $Id: ctrlconf.c,v 1.6 1997/10/26 23:39:37 fritz Exp $
+/* $Id: ctrlconf.c,v 1.7 1997/10/27 00:05:03 fritz Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: ctrlconf.c,v $
+ * Revision 1.7  1997/10/27 00:05:03  fritz
+ * Fixed typo.
+ *
  * Revision 1.6  1997/10/26 23:39:37  fritz
  * Applied (slightly modified) fix for compiling without triggercps by
  * Bernhard Rosenkraenzer <root@BOL-SubNet.ml.org>
@@ -241,7 +244,7 @@ static char* readoptions(int fd, char *name, int is_master, section *CSec, secti
 		sprintf(string,"%d",cfg.slavedelay);
 		if (Set_Entry(SubSec,interface,CONF_ENT_SDELAY, string, C_OVERWRITE | C_WARN) == NULL)
 			return NULL;
-#ifdev HAVE_TRIGGERCPS		
+#ifdef HAVE_TRIGGERCPS		
 		sprintf(string,"%d",(data_version < 3)?6000:cfg.triggercps);
 #else
 		sprintf(string,"6000");
