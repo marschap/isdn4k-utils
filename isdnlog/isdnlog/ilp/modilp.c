@@ -22,6 +22,7 @@
  * 0.11 21.12.2000 lt calculate duration
  * 0.12 05.04.2002 lt adapted for 2.4.x
  * 0.13 05.04.2002 lt 2. try, thanks Achim Steinmetz
+ * 0.14 08.04.2002 lt fixed module unload
  */
 
 /* based on code found in lkmpg/node17.html, which is: */
@@ -37,7 +38,7 @@
 #include <linux/proc_fs.h>
 #include <linux/time.h>	/* get time */
 
-#define MODULE_VERSION "0.13"
+#define MODULE_VERSION "0.14"
 #define MODULE_NAME "modilp"
 
 /* In 2.2.3 /usr/include/linux/version.h includes a 
@@ -135,13 +136,12 @@ read_func(
 				strlen(message[i].text) >= 70 && 
 				strstr(message[i].text, Connect))
 			calc_diff(tv.tv_sec-message[i].start, message[i].text+62);
-	sprintf (page,
+	len = sprintf (page,
 			/*2345678901234567890123456789012345678901234567890123456789012345678901234567890 */
 			/*        1         2         3         4         5         6         7          */
 			"Ch State   Msn - Number                    Alias              Duration Cost\n%s%s",
 			message[0].text, message[1].text);
 
-	len = strlen(page);
 	*eof = 1;
 	/* BUG_ON(len > count); ? */
 	return len;
@@ -281,7 +281,7 @@ static int __init init_modilp(void)
 
 static void __exit exit_modilp(void) 
 {
-	remove_proc_entry("isdnlog", modilp_file);
+	remove_proc_entry("isdnlog", NULL);
 }
 
 module_init(init_modilp);
