@@ -218,7 +218,7 @@
 1185931	Vrouwenpolder	3
 1185934	Vrouwenpolder	3
 11860	Arnemuiden	3
-129	PTT Telecom	3
+129	KPN Telecom	3
 13	Tilburg	2
 1350	Hilvarenbeek	2
 13503	Castelre	2
@@ -297,7 +297,7 @@
 1653824	Sprundel	3
 1653827	Sprundel	3
 1653861	Sprundel	3
-1655	PTT Telecom	4
+1655	KPN Telecom	4
 16550	Hoeven	3
 16551	Oud Gastel	3
 166	Tholen	3
@@ -2674,15 +2674,22 @@
 59964	Gieterveen	3
 59966	Valthermond	3
 59967	Tweede Exloermond	3
-651	PTT GSM	1
-652	PTT NMT	1
-653	PTT GSM	1
+610	KPN GSM	1
+622	KPN GSM	1
+624	Ben GSM	1
+626	Telfort GSM	1
+627	KPN GSM	1
+628	Dutchtone	1
+629	Libertel	1
+651	KPN GSM	1
+652	KPN NMT	1
+653	KPN GSM	1
 654	Libertel GSM	1
 655	Libertel GSM	1
-658	PTT semafoon	1
+658	KPN semafoon	1
 660	Callmax buzzer	1
 6616	Seiko message watch	1
-665	PTT semafoon	1
+665	KPN semafoon	1
 70	's-Gravenhage	2
 70300	Voorburg	2
 70301	Leidschendam	2
@@ -3090,10 +3097,10 @@
 82123	ESPRIT Telecom Benelux	2
 82221	AT&T Unisource	2
 82222	AT&T Unisource	2
-8421	PTT Telecom	3
-8422	PTT Telecom	3
-84250	PTT Telecom	3
-84251	PTT Telecom	3
+8421	KPN Telecom	3
+8422	KPN Telecom	3
+84250	KPN Telecom	3
+84251	KPN Telecom	3
 870	Orion Telematica	3
 900	Koopnummer (serieuze info)	3
 906	Koopnummer (erotisch)	3
