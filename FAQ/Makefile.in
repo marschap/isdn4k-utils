@@ -1,19 +1,17 @@
-# Makefile fuer i4l-faq
+# Makefile for i4l-faq
 # (c) 1997 by Matthias Heßler (MatHes)
 #
-# Erzeugt FAQ etc.
+# Generate FAQ, support FAQ development
 
 # Directories
-# BIN enthaelt alle Perl-Skripte
+# All Perl scripts for generation of FAQ are in BIN
 BIN = ./bin
-# in OUT werden alle Output-Dateien erzeugt
+# All output files are generated in GEN_DIR
 GEN_DIR = ./out
-# Für Bernhard:
-#TARGET_DIR = /home/dl4mhk/www/i4l-faq
-# Ich selbst behalte den Kram lieber da, wo er erzeugt wurde:
+# After generation, install files in TARGET_DIR (if different from GEN_DIR)
 TARGET_DIR = @TARGET_DIR@
 
-# Programm-Namen
+# Program file names
 ZIP     = @C_ZIP@
 GZIP    = @C_GZIP@
 PERL    = @C_PERL@
@@ -23,7 +21,7 @@ HTML    = $(PERL) $(BIN)/html.pl
 OLD     = $(PERL) $(BIN)/old.pl
 NEW     = $(PERL) $(BIN)/new.pl
 
-# Quell-Dateien
+# Source file names
 SRC = de-i4l-faq
 OLD_SRC = $(SRC).old
 SRC_DIFF = $(SRC).diff
@@ -32,119 +30,154 @@ SRC_ENG = eng-i4l-faq
 OLD_SRC_ENG = $(SRC_ENG).old
 SRC_ENG_DIFF = $(SRC_ENG).diff
 
-# Ausgabe-Dateien
+# Output file names
 OUT_7BIT = $(SRC).asc
 OUT_HTML = $(SRC).html
+
 OUT_ENG_7BIT = $(SRC_ENG).asc
 OUT_ENG_HTML = $(SRC_ENG).html
 
 
-# Aufrufe zur Erzeugung verschiedener FAQ-Versionen:
-# alles
-all:	7bit html e7bit ehtml \
-	7bit.zip html.zip e7bit.zip ehtml.zip \
-	7bit.gz html.gz e7bit.gz ehtml.gz
+# *** Generate FAQ ***
 
-# deutsche 7Bit-Version
+# Generate all FAQ versions
+all: 7bit html e7bit ehtml
+
+
+# Generate 7bit version of German FAQ
 7bit: $(GEN_DIR)/$(OUT_7BIT)
-7bit.zip: $(GEN_DIR)/$(OUT_7BIT).zip
-7bit.gz: $(GEN_DIR)/$(OUT_7BIT).gz
 
 $(GEN_DIR)/$(OUT_7BIT): $(SRC)
 	$(7BIT) $(SRC) $(GEN_DIR)/$(OUT_7BIT)
+
+
+# Generate html version of German FAQ
+html: $(GEN_DIR)/$(OUT_HTML)
+
+$(GEN_DIR)/$(OUT_HTML): $(SRC)
+	$(HTML) $(SRC) $(GEN_DIR)/$(OUT_HTML)
+
+# Generate 7bit version of English FAQ
+e7bit: $(GEN_DIR)/$(OUT_ENG_7BIT)
+
+$(GEN_DIR)/$(OUT_ENG_7BIT): $(SRC)
+	$(7BIT) $(SRC_ENG) $(GEN_DIR)/$(OUT_ENG_7BIT)
+
+
+# Generate html version of English FAQ
+ehtml: $(GEN_DIR)/$(OUT_ENG_HTML)
+
+$(GEN_DIR)/$(OUT_ENG_HTML): $(SRC)
+	$(HTML) $(SRC_ENG) $(GEN_DIR)/$(OUT_ENG_HTML)
+
+
+# *** Develop FAQ ***
+
+# Generate zip-compressed versions of FAQ
+zip: 7bit.zip html.zip e7bit.zip ehtml.zip
+
+# Generate gz-compressed versions of FAQ
+gz: 7bit.gz html.gz e7bit.gz ehtml.gz
+
+
+# Compress 7bit version of German FAQ
+7bit.zip: $(GEN_DIR)/$(OUT_7BIT).zip
+7bit.gz: $(GEN_DIR)/$(OUT_7BIT).gz
+
 $(GEN_DIR)/$(OUT_7BIT).zip: $(GEN_DIR)/$(OUT_7BIT)
 	$(ZIP) -l $(GEN_DIR)/$(OUT_7BIT).zip $(GEN_DIR)/$(OUT_7BIT)
 $(GEN_DIR)/$(OUT_7BIT).gz: $(GEN_DIR)/$(OUT_7BIT)
 	$(GZIP) -cf $(GEN_DIR)/$(OUT_7BIT) > $(GEN_DIR)/$(OUT_7BIT).gz
 
 
-# deutsche HTML-Version
-html: $(GEN_DIR)/$(OUT_HTML)
+# Compress html version of German FAQ
 html.zip: $(GEN_DIR)/$(OUT_HTML).zip
 html.gz: $(GEN_DIR)/$(OUT_HTML).gz
 
-$(GEN_DIR)/$(OUT_HTML): $(SRC)
-	$(HTML) $(SRC) $(GEN_DIR)/$(OUT_HTML)
 $(GEN_DIR)/$(OUT_HTML).zip: $(GEN_DIR)/$(OUT_HTML)
 	$(ZIP) -l $(GEN_DIR)/$(OUT_HTML).zip $(GEN_DIR)/$(OUT_HTML)
 $(GEN_DIR)/$(OUT_HTML).gz: $(GEN_DIR)/$(OUT_HTML)
 	$(GZIP) -cf $(GEN_DIR)/$(OUT_HTML) > $(GEN_DIR)/$(OUT_HTML).gz
 
 
-# deutsches Diff erzeugen
-dif:
-	[ ! -e $(SRC_DIFF) ] # Diff nur erzeugen, wenn noch nicht vorhanden
-	diff -u $(OLD_SRC) $(SRC) > $(SRC_DIFF); echo -n
-
-# deutsches Diff einspielen
-pat:
-	[ -e $(SRC_DIFF) ] # Nur patchen wenn diff vorhanden
-	patch $(SRC) < $(SRC_DIFF)
-	if [ -e $(SRC).orig ]; then mv $(SRC).orig $(OLD_SRC); fi
-
-# Alle Fragen der deutschen FAQ als NEU deklarieren
-new:
-	$(NEW) $(SRC)
-
-# Alle Fragen der deutschen FAQ als ALT deklarieren
-old:
-	$(OLD) $(SRC)
-
-
-# englische 7Bit-Version
-e7bit: $(GEN_DIR)/$(OUT_ENG_7BIT)
+# Compress 7bit version of English FAQ
 e7bit.zip: $(GEN_DIR)/$(OUT_ENG_7BIT).zip
 e7bit.gz: $(GEN_DIR)/$(OUT_ENG_7BIT).gz
 
-$(GEN_DIR)/$(OUT_ENG_7BIT): $(SRC)
-	$(7BIT) $(SRC_ENG) $(GEN_DIR)/$(OUT_ENG_7BIT)
 $(GEN_DIR)/$(OUT_ENG_7BIT).zip: $(GEN_DIR)/$(OUT_ENG_7BIT)
 	$(ZIP) -l $(GEN_DIR)/$(OUT_ENG_7BIT).zip $(GEN_DIR)/$(OUT_ENG_7BIT)
 $(GEN_DIR)/$(OUT_ENG_7BIT).gz: $(GEN_DIR)/$(OUT_ENG_7BIT)
 	$(GZIP) -cf $(GEN_DIR)/$(OUT_ENG_7BIT) > $(GEN_DIR)/$(OUT_ENG_7BIT).gz
 
 
-# englische HTML-Version
-ehtml: $(GEN_DIR)/$(OUT_ENG_HTML)
+# Compress html version of English FAQ
 ehtml.zip: $(GEN_DIR)/$(OUT_ENG_HTML).zip
 ehtml.gz: $(GEN_DIR)/$(OUT_ENG_HTML).gz
 
-$(GEN_DIR)/$(OUT_ENG_HTML): $(SRC)
-	$(HTML) $(SRC_ENG) $(GEN_DIR)/$(OUT_ENG_HTML)
 $(GEN_DIR)/$(OUT_ENG_HTML).zip: $(GEN_DIR)/$(OUT_ENG_HTML)
 	$(ZIP) -l $(GEN_DIR)/$(OUT_ENG_HTML).zip $(GEN_DIR)/$(OUT_ENG_HTML)
 $(GEN_DIR)/$(OUT_ENG_HTML).gz: $(GEN_DIR)/$(OUT_ENG_HTML)
 	$(GZIP) -cf $(GEN_DIR)/$(OUT_ENG_HTML) > $(GEN_DIR)/$(OUT_ENG_HTML).gz
 
 
-# englisches Diff erzeugen
+
+# create German diff of German FAQ
+dif:
+	[ ! -e $(SRC_DIFF) ] # Only create diff if there is no diff already!
+	diff -u $(OLD_SRC) $(SRC) > $(SRC_DIFF); echo -n
+
+
+# patch German FAQ with German diff
+pat:
+	[ -e $(SRC_DIFF) ] # Only patch if there is a diff for it!
+	patch $(SRC) < $(SRC_DIFF)
+	if [ -e $(SRC).orig ]; then mv $(SRC).orig $(OLD_SRC); fi
+
+# Declare all questions in German FAQ as OLD (and store as OLD version)
+old:
+	$(OLD) $(SRC); \
+	if [ -e $(OLD_SRC) ]; then rm $(OLD_SRC); fi; \
+	mv $(SRC) $(OLD_SRC); \
+	cp $(OLD_SRC) $(SRC)
+
+# Declare all questions in German FAQ as NEW
+new:
+	$(NEW) $(SRC)
+
+
+# Create English diff of English FAQ
 edif:
-	[ ! -e $(SRC_ENG_DIFF) ] # Diff nur erzeugen, wenn noch nicht vorhanden
+	[ ! -e $(SRC_ENG_DIFF) ] # Only create diff if there is no diff already!
 	diff -u $(OLD_SRC_ENG) $(SRC_ENG) > $(SRC_ENG_DIFF); echo -n
 
-# englisches Diff einspielen
+# Patch English FAQ with English diff
 epat:
-	[ -e $(SRC_ENG_DIFF) ] # Nur patchen wenn diff vorhanden
+	[ -e $(SRC_ENG_DIFF) ] # Only patch if there is a diff for it!
 	patch $(SRC_ENG) < $(SRC_ENG_DIFF)
 	if [ -e $(SRC_ENG).orig ]; then mv $(SRC_ENG).orig $(OLD_SRC_ENG); fi
 
-# Alle Fragen der englischen FAQ als NEU deklarieren
+# Declare all questions in English FAQ as OLD (and store as OLD version)
+eold:
+	$(OLD) $(SRC_ENG); \
+	if [ -e $(OLD_SRC_ENG) ]; then rm $(OLD_SRC_ENG); fi; \
+	mv $(SRC_ENG) $(OLD_SRC_ENG); \
+	cp $(OLD_SRC_ENG) $(SRC_ENG)
+
+# Declare all questions in English FAQ as NEW
 enew:
 	$(NEW) $(SRC_ENG)
 
-# Alle Fragen der englischen FAQ als ALT deklarieren
-eold:
-	$(OLD) $(SRC_ENG)
 
+# *** General Stuff ***
 
-# Erzeugte Dateien installieren
+# Install output files
 install: all
 	if [ $(TARGET_DIR) != $(GEN_DIR) ]; then \
 		$(INSTALL) -m 0755 -d $(TARGET_DIR); \
 		$(INSTALL) -m 0644 $(GEN_DIR)/* $(TARGET_DIR); \
 	fi
 
-# Erzeugte Dateien deinstallieren
+# Un-install output files
 uninstall:
 	set -e; allow_null_glob_expansion=1; \
 	if [ $(TARGET_DIR) != $(GEN_DIR) ]; then \
@@ -154,10 +187,11 @@ uninstall:
 		done; \
 	fi
 
-# Aufraeumen
+# Cleanup
 clean:
 	if [ -e *~ ]; then rm *~; fi
 	if [ -e \#* ]; then rm \#*; fi
+	if [ -e *.orig ]; then rm *.orig; fi
 	set -e; allow_null_glob_expansion=1; \
 	cd $(GEN_DIR); \
 	for i in $(OUT_7BIT) $(OUT_HTML) $(OUT_ENG_7BIT) $(OUT_ENG_HTML) ; do \
