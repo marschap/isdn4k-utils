@@ -1,4 +1,4 @@
-/* $Id: eiconctrl.c,v 1.18 2000/06/08 20:56:42 armin Exp $
+/* $Id: eiconctrl.c,v 1.19 2000/06/12 12:29:06 armin Exp $
  *
  * Eicon-ISDN driver for Linux. (Control-Utility)
  *
@@ -21,6 +21,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA. 
  *
  * $Log: eiconctrl.c,v $
+ * Revision 1.19  2000/06/12 12:29:06  armin
+ * removed compiler warnings.
+ *
  * Revision 1.18  2000/06/08 20:56:42  armin
  * added checking for card id.
  *
@@ -153,6 +156,8 @@ char *no_of_tables;
 #else
 /* new driver Release >= 2.0 */
 
+extern char DrvID[];
+
 extern int Divaload_main(int, char **); 
 #include <divas.h>
 
@@ -160,8 +165,6 @@ extern int Divaload_main(int, char **);
 
 int fd;
 isdn_ioctl_struct ioctl_s;
-
-extern char DrvID[];
 
 char protoname[1024];
 char Man_Path[160];
@@ -1380,7 +1383,9 @@ int main(int argc, char **argv) {
 	} else
 		eiconctrl_usage();
 
+#ifndef HAVE_NPCI
 	strcpy(DrvID, ioctl_s.drvid);
+#endif
 
 	ac = argc - (arg_ofs - 1);
 	if (arg_ofs >= argc)
@@ -1574,6 +1579,8 @@ int main(int argc, char **argv) {
                 char filename[1024];
                 u_char protobuf[0x100000];
                 eicon_codebuf *cb = NULL;
+
+		card_id = -1;
 
 		if (argc <= (arg_ofs + 1))
                        	strcpy(protoname,"etsi");
