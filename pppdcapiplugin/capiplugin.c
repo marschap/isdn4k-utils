@@ -213,8 +213,6 @@ static int capi_new_phase_hook(int phase)
 			if ((fd = capi20_fileno(applid)) >= 0)
 			   remove_fd(fd);
 			unsetup_timeout();
-			(void)capiconn_freecontext(ctx);
-			(void)capi20_release(applid);
 			break;
 		case PHASE_DISCONNECT:
 			info("capiplugin: phase disconnect");
