@@ -3,7 +3,9 @@ Menuconfig is borrowed from the linux kernel configuration.
 Overview
 --------
 Menu items beginning with [*] or [ ] represent features 
-configured to be built in or removed respectively.
+configured to be built in or removed respectively. Items
+beginning with < > are disabled items depending on another
+feature.
 
 To change any of these features, highlight it with the cursor 
 keys and press <Y> to build it in or <N> to removed it. You may

@@ -1,4 +1,6 @@
 #
+# $Id: config.in,v 1.6 1997/03/03 12:59:13 fritz Exp $
+#
 # The whole configuration stuff is borrowed from the kernel
 # configuration.
 #

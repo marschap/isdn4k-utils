@@ -1,5 +1,7 @@
 #! /bin/sh
 #
+# $Id: Menuconfig,v 1.3 1997/03/03 12:59:11 fritz Exp $
+#
 # This script is borrowed from the linux Menuconfig script.
 #
 # This script attempts to parse the configuration files, which are
