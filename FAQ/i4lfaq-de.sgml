@@ -4,7 +4,7 @@
 
 <title>ISDN4LINUX - FAQ (deutsche Version)
 
-<author>Uebersetzer: Wolfgang Bornath (<tt><htmlurl url="mailto:wobo@wolf-b.de" name="wobo@wolf-b.de"></tt>)
+<author>Uebersetzer: Wolfgang Bornath (<tt><htmlurl url="mailto:i4lfaq-de@wolf-b.de" name="i4lfaq-de@wolf-b.de"></tt>)
 <date>Uebersetzung:v2.0.27-1, 5. Februar 2000
 <abstract>
 </abstract>
@@ -71,9 +71,9 @@ oder:
 
 
 Diese FAQ unterliegt der GNU General Public License (GPL) Version 2; (C)
-1999 Matthias Hessler (fuer Version 2.0) Die Weitergabe unter den
+1999 Matthias Hessler (fuer Version 2.0). Die Weitergabe unter den
 Bedingungen der GPL wird begruesst. Wir uebernehmen jedoch KEINE
-GARANTIEEN fuer die hier enthaltenen Informationen. Zur weiteren
+GARANTIEN fuer die hier enthaltenen Informationen. Zur weiteren
 Information lies bitte die GNU General Public License. Bei der Free
 Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA ist
 eine gedruckte Ausgabe erhaeltlich, eine elektronische Version bekommst
@@ -83,7 +83,7 @@ Du vom Autor der Originalversion dieser FAQ.
 <sect1> pro_wobo: Vorwort zur deutschen Uebersetzung
 <label id="pro_wobo">
 <p>
-Vom Uebersetzer <bf>Wolfgang Bornath</bf> (<tt><htmlurl url="mailto:wobo@wolf-b.de" name="wobo@wolf-b.de"></tt>)
+Vom Uebersetzer <bf>Wolfgang Bornath</bf> (<tt><htmlurl url="mailto:i4lfaq-de@wolf-b.de" name="i4lfaq-de@wolf-b.de"></tt>)
 
 Dies ist nun die lang erwartete deutsche Version von Matthias
 Hessler's FAQ fuer ISDN4LINUX. Es hat lange gedauert, bis diese erste
@@ -108,16 +108,14 @@ mit den bald kommenden Versionen aendern.
 
 Mein wichtigstes Hilfsmittel bei dieser Uebersetzung war (au&szlig;er meiner
 Linuxbox mit Linux-Mandrake 6.1/7.0) Gerhard Sittig (<tt><htmlurl
-url="mailto:Gerhard.Sittig@gmx.net" name="Gerhard Sittig
-<Gerhard.Sittig@gmx.net>"></tt>), der fuer die erstklassige
-Rechtschreibung sorgte und mir auch ueber manche sachliche
+url="mailto:Gerhard.Sittig@gmx.net" name="<Gerhard.Sittig@gmx.net>"></tt>), der fuer die erstklassige Rechtschreibung sorgte und mir auch ueber manche sachliche
 Verstaendnishuerde hinweg half. Danke Gerhard!
 
 Die neueste deutsche Version dieser FAQ findest Du unter:
-<tt><url url="http://www.wolf-b.de/i4lfaq.html"></tt>
+<tt><url url="http://www.wolf-b.de/i4l/i4lfaq-de.html"></tt>
 
 Alle Mails zur deutschen Version sende bitte an:
-<tt><htmlurl url="mailto:i4lfaq@wolf-b.de" name="i4lfaq@wolf-b.de"></tt>.  
+<tt><htmlurl url="mailto:i4lfaq-de@isdn4linux.de" name="i4lfaq-de@isdn4linux.de"></tt>.  
 
 
 <!-- General Section: About isdn4linux, features
@@ -231,6 +229,7 @@ Dir die Frage zum Zugang zu CVS: <ref id="distrib_cvs"
 name="distrib_cvs">.
 </itemize>
 
+
 <sect1> distrib_cvs: Wie erhalte ich Zugang zu den Quellen der aktuellen Entwicklung / Worum geht es bei dem CVS Baum?
 <label id="distrib_cvs">
 <p>
@@ -246,13 +245,18 @@ enthalten als die offiziell herausgegebenen Versionen!!!
 
 So bekommst Du die neueste Version:
 <enum>
-<item>Erstelle ein Verzeichnis fuer I4L und wechsle dorthin <code>mkdir
-~/cvs; cd ~/cvs; cvs -d :pserver:guest@cvs.isdn4linux.de:/i4ldev
-login</code> 
+<item>Erstelle ein Verzeichnis fuer I4L und wechsle dorthin 
+<code>
+mkdir ~/cvs 
+cd ~/cvs 
+cvs -d :pserver:guest@cvs.isdn4linux.de:/i4ldev login
+</code> 
 <item>Login (die Frage nach dem Password beantworte mit <em>readonly</em>) 
 <item>Hol Dir die ISDN Kerneltreiber (in der gleichen Hierarchie wie in den
-Linux Quellen) <code>cvs -d:pserver:guest@cvs.isdn4linux.de:/i4ldev checkout
-isdn</code>  
+Linux Quellen) 
+<code>
+cvs -d:pserver:guest@cvs.isdn4linux.de:/i4ldev checkout isdn
+</code>  
 <item>Hol Dir das Utility-Paket und speichere es im aktuellen Verzeichnis
 <code>
 cvs -d :pserver:guest@cvs.isdn4linux.de:/i4ldev checkout isdn4k-utils
@@ -260,8 +264,7 @@ cvs -d :pserver:guest@cvs.isdn4linux.de:/i4ldev checkout isdn4k-utils
 Wenn Du die neueste Version fuer Kernel 2.0.x und nicht fuer den neuesten Kernel
 brauchst, musst Du die Option `-r' setzen:
 <code>
-cvs -d :pserver:guest@cvs.isdn4linux.de:/i4ldev checkout -r isdn4kernel_2_0
-isdn
+cvs -d :pserver:guest@cvs.isdn4linux.de:/i4ldev checkout -r isdn4kernel_2_0 isdn
 </code> 
 <item>Nach dem Auschecken koennen weitere Updates durchgefuehrt werden, indem
 man erst in das Verzeichnis <tt>isdn</tt> oder <tt>isdn4k-utils</tt> wechselt
@@ -393,7 +396,7 @@ IPX_CHANGE setzen.
 Die aktuellen Versionen von ISDN4LINUX unterstuetzen 2 Arten der
 Kanalbuendelung:
 <itemize>
-<item><bf>MP</bf> (auch weithin als &dquot;MPPP&dquot; bezeichnet) basiert auf 
+<item><bf>MP</bf> (auch weithin als &dquot;MPPP&dquot; bezeichnet, basiert auf 
 syncPPP) 
 <item><bf>Raw bundling</bf> (konfiguriert durch sogenannte Slave Channels)
 </itemize>
@@ -417,7 +420,7 @@ Ja. Wenn eine Netzwerk-Device (z.B. &dquot;isdn0&dquot;) eingerichtet
 wurde, wird der Treiber die angegebene Nummer waehlen. Wenn zusaetzlich ein
 Hangup-Timeout (Idle Timeout) angegeben wurde (z.B.: <tt>isdnctrl
 huptime &lt;interface&gt; &lt;time&gt;</tt>), wird der Treiber die
-Verbindung automatisch trennen, wenn waehrend &gt;time&lt; Sekunden keine
+Verbindung automatisch trennen, wenn waehrend &lt;time&gt; Sekunden keine
 Daten ueber das Device transportiert wurden. Allerdings gibt es da
 Probleme mit syncPPP (siehe Abschnitt ueber syncPPP).  Schau Dir auch mal
 die Beschreibung von dialmode an (siehe Frage <ref id="dialout_dialmode"
@@ -593,7 +596,7 @@ Die offizielle Website findest Du unter:
 <sect1> docu_abc: Wo finde ich die Dokumentation ueber die abc-Erweiterungen?
 <label id="docu_abc">
 <p>
-Diese findest DU auf:
+Diese findest Du auf:
 <url url="http://i4l.mediatronix.de/">
 
 <sect1> docu_newsgroup: Wie nennt sich die Newsgroup fuer ISDN4LINUX?
@@ -905,7 +908,7 @@ Das haengt von den verfuegbaren Slots, den freien Interrupts und IO-Addressen in
 Deinem Computer und den Moeglichkeiten der ISDN Karte ab. Die meisten passiven
 Karten haben ihre Grenzen durch die unterstuetzten IO-Addressen (z.B. sind bei
 der Teles 16.x nur 3 Addressen gesetzlich zugelassen) und die Gesamtzahl an
-Interrupts (jede Karte benoetigt einen).<tt>Anm.d.Uebers.: Da HiSax und auch PCI 
+Interrupts (jede Karte benoetigt einen). <tt>Anm.d.Uebers.: Da HiSax und auch PCI 
 laut Definition mit IRQ-Sharing zurecht kommen, ist diese Limitierung
 (zumindest fuer PCI-Karten) eigentlich nicht mehr gegeben.</tt>
 
@@ -1150,7 +1153,7 @@ normalerweise die Durchwahl am Ende der Telefonnummer.
 <sect1> hardware_telestrouble: Die PNP-Tools funktionieren nicht mit meiner Teles 16.3 PNP Karte!  
 <label id="hardware_telestrouble">
 <p>
-Es ist moeglicherweise gar keine Plug 'n Play Karte - obwohl Teles jetzt auf
+Es ist moeglicherweise gar keine Plug 'n' Play Karte - obwohl Teles jetzt auf
 alle ihre Karten und Kartons PNP druckt. Der Unterschied ist leicht zu
 erkennen: eine wahre Teles PnP Karte hat die (winzigen) DIP-Schalter zur
 Einstellung der IO-Addresse nicht mehr.
@@ -1243,14 +1246,14 @@ vorschlagen!)
 <item>Aktiviere die Konfiguration mit:
 <code>isapnp /etc/isapnp.conf</code> (muss bei jedem Boot gestartet werden)
 <item>Nun kann das HiSax Modul fuer Euro-ISDN gestartet werden:
-<code>modprobe hisax io=4,2,INT,IO0,IO1</code>
+<code>modprobe hisax hisax=4,2,INT,IO0,IO1</code>
 (Ersetze INT, IO0 und IO1 mit den Werten in Deiner isapnp.conf.)
 </enum>
 
 <sect1> config_kerneld: Warum sollte ich nicht <em>kerneld</em> benutzen, um die ISDN Module bei Bedarf in den Kernel zu laden?  
 <label id="config_kerneld">
 <p>
-<em>kerneld</em> arbeitet nich allzu gut  mit den ISDN Modulen, da die ISDN
+<em>kerneld</em> arbeitet nicht allzu gut mit den ISDN Modulen, da die ISDN
 Module ihren Status nicht speichern koennen und wichtige Meldungen auf dem
 D-Kanal verpassen koennten. Neuere Versionen von I4L lassen sich nicht vom
 kerneld entladen. Dennoch solltest Du den kerneld mit keiner Version von I4L
@@ -1397,7 +1400,7 @@ kennst, versuche es bei Gernot (siehe <ref id="trouble_guestaccess" name="Gibt
 es Sites, die einen Gastzugang anbieten, wo ich meine ISDN4LINUX-Einstellungen
 testen kann?">). Bei Problemen mit der Modem-Emulation siehe
 &dquot;Fehlerbehebung bei Modem-Emulation&dquot;
-<item>Als fuenften Schritt versuche, das Netzwerk-Interface oder ipppd
+<item>Als sechsten Schritt versuche, das Netzwerk-Interface oder ipppd
 einzurichten. Erfahrungsgemae&szlig; bereitet das den Anfaengern (und nicht nur den
 Anfaengern!) die meisten Probleme.
 Wenn Du mit asyncPPP zufrieden bist (ueber asyncPPP siehe die Frage
@@ -1513,7 +1516,7 @@ Du dort eine Art Mailbox und kannst einige News lesen.
 In diesem Fall zeigt der Aufruf &dquot;fuser -v /dev/isdn* /dev/ippp*
 /dev/cui* /dev/ttyI*&dquot; welche Prozesse diese Geraete belegen.
 <itemize>
-<item>Benutzt irgenein Programm noch das ISDN Device?
+<item>Benutzt irgendein Programm noch das ISDN Device?
 <item>Hast Du alle getty's beendet? (Sie koennten automatisch neu gestartet sein)
 <item>Laufen isdnlog, imon, iprofd, usw. noch?
 <item>Liegt vielleicht noch eine Route auf Deinem Netz-Interface und ist noch
@@ -1599,8 +1602,8 @@ Ausgabe des Befehls muss in eine Form aehnlich der System.map gebracht werden,
 z.B. so:
 <code>
 insmod -m isdn.o | sort | sed -e 's/   / T /g' |
-                   egrep '.* T (a-z,A-Z,_)+'  /etc/isdn/isdn.map
-cat /System.map /etc/isdn/isdn.map  /iSystem.map
+                   egrep '.* T (a-z,A-Z,_)+' &gt; /etc/isdn/isdn.map
+cat /System.map /etc/isdn/isdn.map &gt; /iSystem.map
 </code>
 (Die Zeile mit &dquot;|&dquot; am Ende und die naechste Zeile bilden eine
 Zeile!). Zum Aufspueren des Fehlers sollte dann iSystem.map anstelle von
@@ -1663,8 +1666,10 @@ name="Peter.Hettkamp@kassel.netsurf.de"></tt> schrieb:
 xosview reagiert, zumindest bei mir in der Version 1.4, auf das IP Accounting
 im Kernel. Also konfiguriere und, falls noetig, baue einen neuen Kernel und
 aktiviere es mit:
+<code>
 ipfwadm -A -a -S deine-ip-addresse-hier -D 0.0.0.0/0
 ipfwadm -A -a -D deine-ip-addresse-hier -S 0.0.0.0/0
+</code>
 (Ich weis nicht wie das mit dynamischen IP-Addressen geht. Ich habe eine feste 
 Addresse.)
 </quote>
@@ -1682,8 +1687,8 @@ Computern des LAN der Nameserver des Providers eingetragen werden.
 Pruefe nach:
 <itemize>
 <item>Ist der Linux-Computer als Gateway eingetragen? (Einige
-&quot;Betriebssysteme&quot; muss man neu starten bevor die Aenderungen am Netzwerk 
-wirksam werden)?
+'Betriebssysteme' muss man neu starten bevor die Aenderungen am Netzwerk 
+wirksam werden)
 <item>Hat der Router eine defaultroute vom eingerichteten Interface zum
 Provider (z.B. ippp0 mit syncPPP oder sl0 fuer diald (auch wenn die
 tatsaechliche Verbindung ueber ppp0 geht benutzt diald ein slip Interface als
@@ -1751,7 +1756,7 @@ ISDN-Treiber schon im Kernel konfiguriert und aktiv sein).
 <p>
 Wenn Deine Telefonnummer 56789 ist, wird sie folgenderma&szlig;en eingestellt:
 <itemize>
-<item>Modememulation: <tt>&dquot;AT&amp;e56789&dquot;</tt>
+<item>Modememulation: <tt>&dquot;AT&amp;E56789&dquot;</tt>
 <item>Netzwerk Interface: <tt>&dquot;isdnctrl msn &lt;interface&gt; 56789&dquot;</tt>
 <item>Bei Testanrufen an Dich selbst musst Du die Ortsvorwahl hinzufuegen
 (z.B. 01234):
@@ -1792,7 +1797,7 @@ anbieten. Generell bekommt man mindestens 3 MSNs. Jedoch mag eine Minimierung
 des Gebrauchs von MSNs in anderen Laendern immer noch interessant sein.
 
 Ankommende digitale Daten koennen leicht durch den Code fuer die
-&quot;Dienstekennung&quot; (&dquot;digital, data&dquot;) von Anrufen durch Stimme
+'Dienstekennung' (&dquot;digital, data&dquot;) von Anrufen durch Stimme
 (Telefon) bzw. analoge Modems unterschieden werden.
 
 Die Unterscheidung zwischen Netz-Interfaces (ipppd, rawip) und ttyI* (X.75)
@@ -1818,7 +1823,7 @@ und richtest Dein Modem nur zum Faxempfang und/oder analogen Datenverkehr ein.
 <p>
 Ja, Du brauchst dazu jedoch die Hilfe Deiner Telefongesellschaft. Sie kann
 mehrere BRIs mit gleicher MSN im Point-to-point-Modus einrichten. In
-Deutschland nennt man das einen `B&uuml;ndelanschlu&szlig;'.
+Deutschland nennt man das einen 'Buendelanschlu&szlig;'.
 
 Beachte, da&szlig; in diesem Fall die MSN vielleicht nicht an Dich uebertragen
 wird. Benutze dann die vorgegebene MSN 0.
@@ -1999,7 +2004,7 @@ Leserechte fuer die ISDN ttys. Diejenigen, die ISDN benutzen duerfen, muessen
 explizit in die Gruppe 'isdn' aufgenommen werden.
 <item>Du kannst festlegen, da&szlig; nur root hinauswaehlen darf, jedoch Ausnahmen
 fuer andere Nutzer mit su1 schaffen (siehe man su1). Editiere als root
-<tt>/etc/su1.priv</tt>. Fueege diese Zeilen hinzu, wenn sie (oder aehnliche)
+<tt>/etc/su1.priv</tt>. Fuege diese Zeilen hinzu, wenn sie (oder aehnliche)
 nicht schon vorhanden sind, und erlaube damit den Nutzern XXXX und YYYY das
 Waehlen und Auflegen:
 <code>
@@ -2041,7 +2046,7 @@ korrekten MSNs ein (siehe Punkt 'Hinauswahl mit einer bestimmten Karte').
 <item>Hinauswahl auf einem bestimmten Kanal: Zur Angabe, welcher Kanal benutzt 
 werden soll, dient der Befehl <tt/isdnctrl bind/ (nicht pppbind).
 <item> Hinauswahl mit einer verschiedenen MSN fuer jede Karte:
-Du stellst dies ein mit dem Befehl <tt/isdnctrl mappping/.
+Du stellst dies ein mit dem Befehl <tt/isdnctrl mapping/.
 
 Definiere einfach eine Zuordnung der Ziffern 0 bis 9 zu den MSN's, etwa so:
 <code>
@@ -2152,7 +2157,7 @@ Setze das Password in Anfuehrungszeichen!
 <sect1> syncppp_whichppp: pppd, ipppd, syncPPP, asyncPPP .. was ist das alles? Welchen soll ich benutzen?  
 <label id="syncppp_whichppp">
 <p>
-Siehe zu dieser Frage den Abschnitt in <em/async PPP/;:
+Siehe zu dieser Frage den Abschnitt in <em/async PPP/:
 <ref id="asyncppp_whichppp" name="asyncppp_whichppp">.
 
 
@@ -2377,20 +2382,23 @@ normalerweise in <tt>/var/log/messages</tt>, <tt>/var/log/debug</tt> oder
 Zur Fehlersuche kannst Du das PPP-Log in eine gesonderte Datei
 umleiten. Editiere dazu die Datei <tt>/etc/syslog.conf</tt> und fuege die
 folgende Zeile hinzu (Achtung: gebrauche KEINE Leerzeichen sondern TABs - Du
-findest weitere Details mit <tt>man syslog.conf(5)</tt>):
+findest weitere Details mit <tt>man 5 syslog.conf</tt>):
 <code>
 daemon.*          /var/log/ppp-log
 </code>
 Nun werden alle Informationen des Dienstes PPP in die Datei /var/log/ppp-log
-geschrieben. Emil Stephan <tt><htmlurl url="mailto:ste@esqhen.su.eunet.de"
+geschrieben. 
+Emil Stephan <tt><htmlurl url="mailto:ste@esqhen.su.eunet.de"
 name="ste@esqhen.su.eunet.de"></tt> schrieb dazu:
-<verb>
+<quote>
 Entferne das Kommentar-Zeichen vor dieser Zeile in /etc/syslog.conf:
+<code>
 &num;*.=debug        /tmp/debug
+</code>
 Nach der Aenderung dieser Datei kannst Du den syslogd mit &dquot;kill -1 pid of
 syslogd&dquot; neu starten. Die Meldungen in /tmp/debug koennen zur Optimierung 
 der PPP-Optionen genutzt werden.
-</verb>
+</quote>
 
 <sect1> syncppp_nopppsupport: Beim Start des ipppd bekomme ich die Fehlermeldung &dquot;this systems lacks ppp support&dquot;.  
 <label id="syncppp_nopppsupport">
@@ -2509,7 +2517,7 @@ Sven Engelhardt <tt><htmlurl url="mailto:sven@sik.de"
 name="sven@sik.de"></tt> schrieb am 12. Dezember 1996:
 <quote>
 Wir sind ein ISP in Dresden und benutzen Linux (neben anderen Systemen) fuer
-unseren Zugang (mit I4L ebenso wie mit exterenen Terminaladaptern).
+unseren Zugang (mit I4L ebenso wie mit externen Terminaladaptern).
 Wir haben dieses Problem hauptsaechlich mit Kunden, die unter Windows 95 und NT
 die &dquot;enthaltene&dquot; (Modem Netzwerk) Software benutzen. Es ist dabei
 unerheblich, ob der Kunde sich mit asynchronem oder synchronem PPP
@@ -2523,8 +2531,10 @@ hatten keine Probleme mit Linux-Kunden und Benutzern von Trumpet Winsock,
 daher vermuten wir einen Fehler in MS-PPP).
 Die folgende Abhilfe funktioniert normalerweise bei uns: (es ist keine Kur,
 aber es lindert die Schmerzen...)
-* Reduziere den Wert fuer Max MTU auf 576 oder sogar 296
-* Reduziere das DefaultRcvWindow auf 2144
+<itemize>
+<item>Reduziere den Wert fuer Max MTU auf 576 oder sogar 296
+<item>Reduziere das DefaultRcvWindow auf 2144
+</itemize>
 Bei Windows 95 sind das zwei Eintraege in der Registry, unter Linux kannst Du
 die Optionen &dquot;mtu 576&dquot; und &dquot;mru 576&dquot; fuer PPP
 setzen. (Siehe auch: <tt><url
@@ -2745,13 +2755,13 @@ auf das gleiche Device zuzugreifen).
 <sect1> ttyI_hdlc: Wie stelle ich die Modememulation von X.75 um auf HDLC?  
 <label id="ttyI_hdlc">
 <p>
-Mit der Option S14=3; z.B. &dquot;ATS13=3&dquot;..
+Mit der Option S14=3; z.B. &dquot;ATS14=3&dquot;..
 
 <sect1> ttyI_uucp: Wie kann ich mit Taylor-UUCP unter Verwendung von ISDN4LINUX Nachrichten holen?  
 <label id="ttyI_uucp">
 <p>
 Wie gewohnt, genauso wie mit seriellen Schnittstellen. Benutze einfach
-/dev/ttyI* als Device., Du musst nur die richtige MSN oder EAZ fuer die
+/dev/ttyI* als Device. Du musst nur die richtige MSN oder EAZ fuer die
 Modememulation per Init-String setzen: &dquot;AT&amp;Emsn/eaz&dquot;.
 
 <sect1> ttyI_speed: Welche Geschwindigkeit sollte ich fuer die ttyI* Devices einstellen?  
@@ -2783,7 +2793,7 @@ lautet, musst Du <tt>AT&amp;E123456</tt> eingeben.
 <label id="ttyI_callphone">
 <p>
 Das kannst Du. ISDN unterscheidet jedoch die verschiedenen Dienste. Alle ueber
-die ttyI* Devices hinaus gehenden Rufe benutzen den Dienst &dquot;Digital
+die ttyI* Devices hinausgehenden Rufe benutzen den Dienst &dquot;Digital
 Data&dquot;, der zu Telefon und Fax inkompatibel ist. Dadurch geht der Ruf nie 
 hinaus. Aendere die Diensteerkennung mit dem Befehl <tt>ATS18=1</tt> auf Audio,
 dann kannst Du das Telefon oder das Fax waehlen lassen.
@@ -2793,8 +2803,7 @@ dann kannst Du das Telefon oder das Fax waehlen lassen.
 <p>
 Da gibt es mehrere moegliche Protokolleinstellungen. Es gibt HDLC, X.75 und
 mehrere moegliche Blockgroe&szlig;en bei X.75. Die Blockgroe&szlig;e uebergibst Du der
-Modememulation mit <tt>AT&amp;B</tt>.Gebraeuchlich ist eine Blockgroe&szlig;e von 2048
-Byte: <tt>AT&amp;B2048</tt>.
+Modememulation mit <tt>AT&amp;B</tt>. Gebraeuchlich ist eine Blockgroe&szlig;e von 2048 Byte: <tt>AT&amp;B2048</tt>.
 
 <sect1> ttyI_forcehangup: Meine Modememulation haengt. Wie kann ich meine Karte zum Auflegen zwingen?  
 <label id="ttyI_forcehangup">
@@ -3144,7 +3153,7 @@ vorher die anzuwaehlende Telefonnummer entfernt hast, erhaeltst Du die Meldung
 &dquot;no outgoing number...&dquot; im syslog und sobald das Interface wieder
 gestartet ist werden alle offenen Verbindungen geschlossen.
 
-<sect1> dod_onlineoncrash: Ist es moeglich, da&szlig; selbst bei einem abgestuezten Computer eine ISDN-Verbindung bestehen bleibt (und die Gebuehren weiterlaufen)?  
+<sect1> dod_onlineoncrash: Ist es moeglich, da&szlig; selbst bei einem abgestuerzten Computer eine ISDN-Verbindung bestehen bleibt (und die Gebuehren weiterlaufen)?  
 <label id="dod_onlineoncrash">
 <p>
 Der ISAC Chipset, der auf vielen ISDN-Karten benutzt wird, kann im auto Modus
@@ -3224,7 +3233,7 @@ selten uebereinstimmen (wichtig bei Preselection und Call-by-Call),
 selten ueberhaupt die genaue Zeit anzeigen, und au&szlig;erdem bei ISDN
 sowieso nur Minuten und keine Sekunden uebertragen werden!
 
-<sect1> chargeint_nohangup: Die Verbindung wird nicht durch einen Timeout.beendet.  
+<sect1> chargeint_nohangup: Die Verbindung wird nicht durch einen Timeout beendet.  
 <label id="chargeint_nohangup">
 <p>
 Chargeint legt nur auf, wenn es keine Aktivitaet auf der Leitung
@@ -3388,7 +3397,7 @@ stellst Du nach Deinen Gegebenheiten ein.
 <p>
 Zur Zeit wird das Leonardo Protokoll nicht von I4L unterstuetzt. Wenn Du den
 Mac anrufst, sollte er das Protokoll auf X.75 oder HDLC setzen. Wenn er Dich
-anruft, muss er das Protokoll explizit in der gewaehlten Nummer angeben (z.B.,
+anruft, muss er das Protokoll explizit in der gewaehlten Nummer angeben (z.B. 
 durch Einfuegen eines &dquot;X&dquot; fuer X.75).
 
 <sect1> remote_macpap: Ein Macintosh mit einer Leonardo Karte versucht sich einzuwaehlen und will chap md5 benutzen. Wie kann ich das auf CHAP/PAP umwandeln?  
@@ -3470,7 +3479,7 @@ wobei HiSax mit &dquot;id=HiSax&dquot; aufgerufen wurde und &lt;channel&gt;
 entweder 0 oder 1 sein kann. Zusaetzlich zur normalen Konfiguration sind die
 folgenden Befehle wichtig:
 <code>
-/sbin/isdnctrl bind HiSax,&lt;channel&gt
+/sbin/isdnctrl bind HiSax,&lt;channel&gt;
 /sbin/isdnctrl eaz isdn0 1
 /sbin/isdnctrl addphone isdn0 out 2
 /sbin/isdnctrl addphone isdn0 in  3
@@ -3521,7 +3530,7 @@ darauf an, wie Du moechtest, da&szlig; sich andere bei Dir einwaehlen.
 <item>Richte Netzwerk-Devices zur Einwahl ueber syncppp oder rawip ein. Setze
 die Option <tt/secure off/ um jedem die Einwahl zu ermoeglichen oder <tt/secure
 on/ um die Einwahl nur ueber ISDN-Nummern zu ermoeglichen, die Du mit
-<tt>isdnctr addphone &lt;device&gt; in &lt;Telefonnummer&gt;</tt> eintraegst.
+<tt>isdnctrl addphone &lt;device&gt; in &lt;Telefonnummer&gt;</tt> eintraegst.
 Es wurde berichtet, da&szlig; Du die Option <tt/ms-dns/ fuer ipppd setzen musst
 damit die IPCP-Verhandlung funktioniert.
 <item>Benutze die ttyI* Devices fuer asyncppp oder X.75.
@@ -3583,8 +3592,7 @@ Das spielt keine Rolle. Es hat auch nichts mit der Nummer des B-Kanals (0 oder
 Ja, ist es. Dieses Feature nennt sich &dquot;AutoPPP&dquot;. Siehe
 Konfiguration von mgetty.
 
-<sect1> dialin_passwd: Wie bringe ich (i)pppd dazu, bei einer Einwahl die
-Passwoerter mit /etc/passwd statt mit /etc/ppp/pap-secrets zu vergleichen?  
+<sect1> dialin_passwd: Wie bringe ich (i)pppd dazu, bei einer Einwahl die Passwoerter mit /etc/passwd statt mit /etc/ppp/pap-secrets zu vergleichen?  
 <label id="dialin_passwd">
 <p>
 ipppd muss mit den Optionen &dquot;login&dquot; und &dquot;auth&dquot;
@@ -3695,13 +3703,13 @@ das Loggen nicht ueber das serielle Interface durchfuehren kann.
 <label id="callback_ascend">
 <p>
 Ulrich Klein <tt><htmlurl url="mailto:ulik@hprc.tandem.com"
-name="ulik@hprc.tandem.com"></tt> schrieb am 14 Dezember 1996:
+name="ulik@hprc.tandem.com"></tt> schrieb am 14. Dezember 1996:
 <quote>
 Irgendwo in den Ascend-Menues kannst Du &dquot;dial broadcast&dquot; auf
 &dquot;no&dquot; oder &dquot;off&dquot; setzen. Anderenfalls wird das Ding mit 
 jedem Rundruf waehlen. Zumindest mir half das. Falls jemand aus dem Netzwerk,
 an das die Ascend angeschlossen ist, wirklich eine Verbindung aufbauen will,
-musst Du die strange filters [wobo: seltsamen Filter???] benutzen. Ich glaube,
+musst Du die etwas seltsamen Filter benutzen. Ich glaube,
 es gibt da einen, der nur als Rueckruf hinauswaehlt.
 </quote>
 
@@ -3852,8 +3860,7 @@ beschrieb am 06. Februar 1997 eine weitere Moeglichkeit:
 Auf Sunsite fand ich ein kleines Tool fuer die Konsole namens netload und
 passte es fuer die ISDN-Interfaces an. Damit kannst Du sehr leicht den
 aktuellen Verkehr auf der Leitung beobachten. Du findest es auf:
-<tt><url url="ftp://ftp.region.trier.de/pub/unix/linux/sources/
-network/isdn/netload-0.92.isdn.tar.gz"></tt>. 
+<tt><url url="ftp://ftp.region.trier.de/pub/unix/linux/sources/network/isdn/netload-0.92.isdn.tar.gz"></tt>. 
 Starte es einfach mit <tt>netload isdnxx</tt>.
 </quote>
 
@@ -3883,10 +3890,10 @@ Auf das Sound-Device kann nur jeweils ein Prozess zugreifen. Du brauchst eine
 hoehere Instanz, die den Zugriff auf das Sound-Device koordiniert. Das koennte
 NAS (Network Audio System) und rplay sein.
 
-<sect1> isdnlog_noshell: Isdnlog soll ein Programm mit umgeleiteter Ausgabe aufrufen (z.B. <tt>play anruf.au 2/dev/null</tt>). Warum erzaehlt mir ISDN dann: <tt>Can't start '/usr/local/bin/play anruf.au 2&gt;/dev/null' with execvp()</tt>? 
+<sect1> isdnlog_noshell: Isdnlog soll ein Programm mit umgeleiteter Ausgabe aufrufen (z.B. <tt>play anruf.au 2&gt;/dev/null</tt>). Warum erzaehlt mir ISDN dann: <tt>Can't start '/usr/local/bin/play anruf.au 2&gt;/dev/null' with execvp()</tt>? 
 <label id="isdnlog_noshell">
 <p>
-Weil isdnlog keine (Bourne)-Shell ist ;-). Isdnlog kann nur <bf>echte</bf>
+Weil isdnlog keine (Bourne-)Shell ist ;-). Isdnlog kann nur <bf>echte</bf>
 Programme starten. Schreibe einfach ein kleines Script und mach es ausfuehrbar
 (chmod +x): 
 <code>
@@ -3945,7 +3952,7 @@ Das geht mit vbox am besten mit dem Format 6 (uLaw - muss beim kompilieren
 eingebunden sein). Du kannst dann die Nachrichten einfach mit dem folgenden
 Befehl abspielen:
 <code>
-cat xxx  /dev/audio
+cat xxx &gt; /dev/audio
 </code>
 wobei xxx die Nachrichtendatei ist.
 
@@ -3967,11 +3974,11 @@ name="stueble@ls6.informatik.uni-dortmund.de"></tt>:
 Bei mir funktioniert die folgende (etwas indirekte) Methode: 
 <code>
 sox file.wav -r 8000 file.ul rate
-rmdcatheader -u file.ul  file.msg
-cat file.ul  file.msg
+rmdcatheader -u file.ul &gt; file.msg
+cat file.ul &gt;&gt; file.msg
 </code>
 Vielleicht musst Du andere Parameter fuer SOX eingeben. Als ersten Test kannst
-Du <tt>cat file.msg  /dev/audio</tt> versuchen. Du solltest dabei etwas hoeren
+Du <tt>cat file.msg &gt; /dev/audio</tt> versuchen. Du solltest dabei etwas hoeren
 koennen. 
 </quote>
 
@@ -3985,7 +3992,7 @@ vboxgetty benoetigt &dquot;.vboxrc&dquot; im Verzeichnis des Benutzers, fuer den
 vboxgetty konfiguriert wurde. In dieser Datei steht die Anzahl der Rufsignale
 nach denen vboxgetty abheben soll.
 
-<sect1> audio_nocat: Wenn vboxgetty eine Nachricht in einem Format aufgezeichnet hat, das ich nicht mit &dquot;cat xxx /dev/audio&dquot; abspielen kann; wie kann ich mir dann die Nachricht anhoeren?
+<sect1> audio_nocat: Wenn vboxgetty eine Nachricht in einem Format aufgezeichnet hat, das ich nicht mit &dquot;cat xxx &gt; /dev/audio&dquot; abspielen kann; wie kann ich mir dann die Nachricht anhoeren?
 <label id="audio_nocat">
 <p>
 Vboxgetty kann alle Formate abspielen. Du kannst die Nachricht in die
@@ -4181,7 +4188,7 @@ C-Kanal-Protokoll NI-1 benutzt. NI-1 ist mit DSS1 verwandt (beide sind
 Q.931-Protokolle), jedoch haben beide ganz verschiedene Funktionsgruppen und
 sind daher nicht kompatibel zueinander. 
 
-Allerdings hat die Firma &quot;Spellcaster&dquot; einen ISDN4LINUX-Treiber fuer
+Allerdings hat die Firma 'Spellcaster&dquot; einen ISDN4LINUX-Treiber fuer
 ihre eigenen (aktiven) Karten geschrieben. Weitere Informationen erhaeltst Du
 bei: 
 <verb>
@@ -4222,7 +4229,7 @@ Das haengt von Deiner Art von ISDN ab.
 <item> ISDN: Erlaubt keine normalen MSNs in Gro&szlig;britannien. Jede einzelne MSN
 ist eine einzelne Ziffer (0 - 9), entsprechend der letzten Ziffer Deiner
 Telefonnummer. Entweder hast Du <em>keine</em> MSNs (dann stellst Du in
-ISDN4LINUX die &quot;0&quot; als MSN ein) oder 10 MSNs. In dem Fall bekommst
+ISDN4LINUX die '0' als MSN ein) oder 10 MSNs. In dem Fall bekommst
 Du einen Block mit 10 fortlaufenden Telefonnummern (xxx0-xxx9), von denen
 jeweils die letzte Ziffer (0-9) Deine MSN ist (0 wird benutzt, wenn Du eine
 ungueltige Nummer einstellst). 
@@ -4233,15 +4240,15 @@ benutzen und in ISDN4LINUX einstellen kannst (?)
 noch 2 analoge Leitungen mit separaten Telefonnummern. Anrufe von und zu
 diesen analogen Ports werden allerdings nicht auf der ISDN-Leitung angezeigt,
 obwohl sie einen B-Kanal belegen. Zusaetzliche MSNs sind <em>nicht</em>
-verfuegbar (benutze darum &quot;0&quot; als MSN fuer
+verfuegbar (benutze darum '0' als MSN fuer
 ISDN4LINUX). Gebuehrenanzeige ist gegen extra Bezahlung erhaeltlich. Stelle in
-ISDN4LINUX nur Deine &quot;digitale&quot; Telefonnummer als MSN ein. 
-<item> BTBH (BT BusinessHighway): Der zusaetzliche &quot;Papierkrieg&quot;
+ISDN4LINUX nur Deine 'digitale' Telefonnummer als MSN ein. 
+<item> BTBH (BT BusinessHighway): Der zusaetzliche 'Papierkrieg'
 inklusive einer Bonitaetspruefung verschafft Dir MSNs und andere Extras gegen
 gesonderte Bezahlung. Darueber hinaus ist es ziemlich so wie bei BTHH. Trage in
-ISDN4LINUX Deine &quot;digitale&quot; Nummer und/oder Deine MSNs ein. 
+ISDN4LINUX Deine 'digitale' Nummer und/oder Deine MSNs ein. 
 </itemize>
-Beachte bitte, da&szlig; BT ein unerwartetes &quot;Feature&quot; bei internationalen
+Beachte bitte, da&szlig; BT ein unerwartetes 'Feature' bei internationalen
 Anrufen bietet. Bei internationalen Datenverbindungen musst Du
 000&lt;Landescode&gt; (drei Nullen) waehlen anstatt  dem ueblichen
 00&lt;Landescode&gt; (zwei Nullen) fuer internationale Sprechverbindungen.
@@ -4297,7 +4304,7 @@ Ende des Gespraeches). In Deutschland ist dieser Service im
 BRI steht fuer Basic Rate Interface und ist das am weitesten verbreitete
 Interface. In Europa enthaelt ein BRI 2 B-Kanaele fuer die Datenuebertragung und 1
 D-Kanal fuer die Verwaltung der Datenuebertragung. Die Alternative waere ein PRI
-(Prime Rate Interface). 
+(Primary Rate Interface). 
 
 <tag/CLIR/
 CLIR (Calling Line Identification Restriction = Einschraenkung der
@@ -4334,7 +4341,7 @@ Ein gebraeuchliches low-level Protokoll.
 Ein Siemens-Chip, den man wie den ISAC auf vielen passiven Karten findet. Er
 uebernimmt den seriellen Bus vom ISAC und setzt zwischen diesem und den
 B-Kanaelen beim Empfang (demultiplexing) oder Senden (multiplexing,
-Einsetzen der Bits in der korrekten ANordnung) um. 
+Einsetzen der Bits in der korrekten Anordnung) um. 
 
 <tag/ISAC/
 Ein Siemens-Chip, den man wie den HSCX auf vielen passiven Karten findet. Er
@@ -4398,9 +4405,11 @@ TEI steht fuer Terminal End Identifier. Die lokale Vermittlungsstelle (bei
 einem internen S0 die PBX) ordnet automatisch oder permanent jedem Endgeraet
 einen TEI zu. Das ermoeglicht die Addressierung des D-Kanals. TEIs haben die
 folgende Werte: 
-0-63 = permanente TEIs (z.B. 0 fuer Point-to-Point Verbindungen)
-64-126 = automatisch zugeteilte TEIs
-127 = Sendung an alle Geraete (z.B. ein eingehender Anruf)
+<itemize>
+<item>0-63 = permanente TEIs (z.B. 0 fuer Point-to-Point Verbindungen)
+<item>64-126 = automatisch zugeteilte TEIs
+<item>127 = Sendung an alle Geraete (z.B. ein eingehender Anruf)
+</itemize>
 
 <tag/UUS/
 UUS steht fuer User-to-User Signalling. Es bedeutet, da&szlig; beim Anruf einige
@@ -4418,7 +4427,7 @@ ablehnen, wenn ihnen die Unterstuetzung fuer UUS angezeigt wird.
 
 </article>
 
-<!-- $Id: i4lfaq-de.sgml,v 1.1 2000/02/28 01:16:56 hessler Exp $ -->
+<!-- $Id: i4lfaq-de.sgml,v 1.2 2000/04/02 22:07:50 hessler Exp $ -->
 
 <!-- Keep this comment at the end of the file
 Local variables:
