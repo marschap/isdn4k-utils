@@ -9,7 +9,8 @@ Report bugs, problems etc. to: i4l-ippp@franken.de
 ATTENTION .. NEW NEW NEW NEW NEW
 ********************************
 
-You NEED at least the 2.0.29 base patch because of a new ioctl!! 
+You NEED at least the 2.0.29 base patch (for 2.0.29 kernels)
+or the 2.0.30A patch (for 2.0.30 kernels) because of a new ioctl!! 
 
 changed default pathname for options to:
   /etc/ppp/ioptions
@@ -48,7 +49,8 @@ CHANGELOG:
    everything from the remote side.
  - IPX and MS_DNS are now compiled into the binary without additional option
    Applied Hartwig Felgers MS-DNS (re)patch for this
- - added Markus Hofmann's <markus@tower.de> maxconnect patches
+ - added pppd2.3b3 maxconnect patches I got from Markus Hofmann
+    <markus@tower.de> 
  - added 'pidfile <own pidfilename>' option .. 
  - added 'set_userip'  .. you may define valid IPs in /etc/ppp/useriptab
    (it's a patch from: Meno Abels <Meno.Abels@Technical.Adviser.com>)
