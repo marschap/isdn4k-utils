@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.37 1998/03/29 23:17:47 luethje Exp $
+## $Id: Makefile.in,v 1.38 1998/05/10 22:11:47 luethje Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,9 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.38  1998/05/10 22:11:47  luethje
+## Added support for VORWAHLEN2.EXE
+##
 ## Revision 1.37  1998/03/29 23:17:47  luethje
 ## mySQL-Patch of Sascha Matzke
 ##
@@ -267,7 +270,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 2.99.27
+VERSION     = 2.99.28
 
 ifeq ($(POSTGRES),1)
 DEFS       += -DPOSTGRES

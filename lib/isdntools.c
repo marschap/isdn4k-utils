@@ -1,4 +1,4 @@
-/* $Id: isdntools.c,v 1.18 1998/04/28 08:34:36 paul Exp $
+/* $Id: isdntools.c,v 1.19 1998/05/10 22:12:01 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdntools.c,v $
+ * Revision 1.19  1998/05/10 22:12:01  luethje
+ * Added support for VORWAHLEN2.EXE
+ *
  * Revision 1.18  1998/04/28 08:34:36  paul
  * Fixed compiler warnings from egcs.
  *
@@ -147,8 +150,20 @@
 #include <signal.h>
 #include <unistd.h>
 #include <fcntl.h>
+#include <netinet/in.h>
 
 #include "libisdn.h"
+
+/****************************************************************************/
+
+#define GERMAN_CODE 49
+
+/****************************************************************************/
+
+typedef struct {
+	char code[15];
+	long int pointer;
+} s_areacode;
 
 /****************************************************************************/
 
@@ -156,6 +171,9 @@ static int (*print_msg)(const char *, ...) = printf;
 static char *_get_avon(char *code, int *Len, int flag);
 static char *_get_areacode(char *code, int *Len, int flag);
 static int create_runfile(const char *file, const char *format);
+static long int area_read_value(FILE *fp, int size);
+static int area_read_file(void);
+static int area_get_index(char *code);
 
 /****************************************************************************/
 
@@ -203,6 +221,8 @@ static char countrycodes[][2][30] = {
 
 static char *avonlib = NULL;
 static char *codelib = NULL;
+static s_areacode *codes = NULL;
+static int codes_number = 0;
 
 /****************************************************************************/
 
@@ -550,11 +570,11 @@ static int create_runfile(const char *file, const char *format)
    muss von jedem Programm aufgerufen werden!!!
 */
 
-#define _MAX_VARS 7
+#define _MAX_VARS 8
 
 int Set_Codes(section* Section)
 {
-	static char *ptr[_MAX_VARS] = {NULL,NULL,NULL,NULL,NULL,NULL,NULL};
+	static char *ptr[_MAX_VARS] = {NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL};
 	int i;
 	int RetCode = 0;
 	entry *Entry;
@@ -629,6 +649,27 @@ int Set_Codes(section* Section)
 			RetCode++;
 		else
 			print_msg("Error: Variable `%s' are not set!\n",CONF_ENT_COUNTRY);
+	}
+
+	if ((Entry = Get_Entry(SPtr->entries,CONF_ENT_AREADIFF)) != NULL &&
+	    Entry->value != NULL                                             )
+		ptr[7] = areadifffile = strdup(Entry->value);
+	else
+	{
+		if ((areadifffile = (char*) calloc(strlen(confdir())+strlen(S_AREA_DIFF_FILE)+2,sizeof(char))) == NULL)
+			print_msg("Can not allocate memory!\n");
+		else
+		{
+			sprintf(areadifffile,"%s%c%s",confdir(),C_SLASH,S_AREA_DIFF_FILE);
+
+			if (access(areadifffile,R_OK))
+			{
+				free(areadifffile);
+				areadifffile = NULL;
+			}
+			else
+				ptr[7] = areadifffile;
+		}
 	}
 
 	SPtr = Section;
@@ -933,3 +974,202 @@ int paranoia_check(char *cmd)
 
 /****************************************************************************/
 
+static long int area_read_value(FILE *fp, int size)
+{
+	long value = 0;
+	static int endian = -1;
+
+	if (size != 2 && size != 4 && size != 1)
+	{
+		print_msg("Can not read lenght %d, only 1, 2, 4\n");
+		return -1;
+	}
+
+	if (endian == -1)
+	{
+		if (htons(0x0101) == 0x0101)
+			endian = 0;
+		else
+			endian = 1;
+	}
+
+	if (fread(&value,size,1,fp) != 1)
+	{
+		print_msg("Can not read from file `%s': Too less data!\n", areadifffile);
+		return -1;
+	}
+
+	if (endian)
+	{
+		if (size == 2)
+			value = ntohs(value);
+		else
+		if (size == 4)
+			value = ntohl(value);
+	}
+
+	return value;
+}
+
+/****************************************************************************/
+
+const char* area_diff_string(char* number1, char* number2)
+{
+	int area = area_diff(number1,number2);
+	return area == AREA_LOCAL?"Nahbereich":area == AREA_R50?"Region 50":area == AREA_FAR?"Fernzone":"";
+}
+
+/****************************************************************************/
+
+int area_diff(char* _code, char *_diffcode)
+{
+	FILE *fp = NULL;
+	char code[15];
+	char diffcode[15];
+	char value[15];
+	int index;
+	int number;
+	int i = 0;
+
+
+	if (codes == NULL)
+		if (area_read_file() == -1)
+			return AREA_ERROR;
+
+	if (_code == NULL)
+	{
+		strcpy(code,mycountry);
+		strcat(code,myarea);
+	}
+	else
+		strcpy(code,expand_number(_code));
+
+	if (_diffcode == NULL)
+		return AREA_ERROR;
+	else
+		strcpy(diffcode,expand_number(_diffcode));
+
+	if ((index = area_get_index(code)) == -1)
+		return AREA_ERROR;
+
+	if ((fp = fopen(areadifffile,"r")) == NULL)
+	{
+		print_msg("Can not open file `%s': %s\n", areadifffile, strerror(errno));
+		return -1;
+	}
+
+	fseek(fp,codes[index].pointer,SEEK_SET);
+
+	number = area_read_value(fp,2);
+
+	while(i++<number)
+	{
+		sprintf(value,"%s%d%ld",countryprefix,GERMAN_CODE,(area_read_value(fp,2)+32768)%65536);
+		if (!strncmp(value,diffcode,strlen(value)))
+		{
+			fclose(fp);
+			return AREA_LOCAL;
+		}
+	}
+
+	number = area_read_value(fp,2);
+	
+	while(i++<number)
+	{
+		sprintf(value,"%s%d%ld",countryprefix,GERMAN_CODE,(area_read_value(fp,2)+32768)%65536);
+		if (!strncmp(value,diffcode,strlen(value)))
+		{
+			fclose(fp);
+			return AREA_R50;
+		}
+	}
+
+	fclose(fp);
+
+	if (!strncmp(mycountry,diffcode,strlen(mycountry)))
+		return AREA_FAR;
+
+	return AREA_UNKNOWN;
+}
+
+/****************************************************************************/
+
+static int area_get_index(char *code)
+{
+	int index = -1;
+
+	if (codes == NULL)
+		return -1;
+
+	while(++index < codes_number)
+		if (!strcmp(codes[index].code,code))
+			break;
+
+	if (index == codes_number)
+	{
+		print_msg("Can not find area code `%s'!\n", code);
+		index = -1;
+	}
+
+	return index;
+}
+
+/****************************************************************************/
+
+static int area_read_file(void)
+{
+	FILE *fp = NULL;
+	int i = 0;
+
+
+	if (areadifffile == NULL)
+	{
+//		print_msg("There is no file name for vorwahl database!\n");
+		return -1;
+	}
+
+	if ((fp = fopen(areadifffile,"r")) == NULL)
+	{
+		print_msg("Can not open file `%s': %s\n", areadifffile, strerror(errno));
+		return -1;
+	}
+
+	if ((codes_number = area_read_value(fp,2)) < 0)
+	{
+		print_msg("Number of areacodes is wrong: %d\n", codes_number);
+		return -1;
+	}
+
+	if (codes != NULL)
+		free(codes);
+
+	if ((codes = (s_areacode*) calloc(codes_number,sizeof(s_areacode))) == NULL)
+	{
+		print_msg("%s\n", strerror(errno));
+		return -1;
+	}
+
+	if (fseek(fp,3,SEEK_SET) != 0)
+	{
+		print_msg("Can not seek file `%s' to position %d: %s\n", areadifffile, 4*codes_number+3, strerror(errno));
+		return -1;
+	}
+
+	while (i<codes_number)
+		codes[i++].pointer = area_read_value(fp,4) -1;
+
+	if (fseek(fp,4*codes_number+3,SEEK_SET) != 0)
+	{
+		print_msg("Can not seek file `%s' to position %d: %s\n", areadifffile, 4*codes_number+3, strerror(errno));
+		return -1;
+	}
+
+	i = 0;
+	while (i<codes_number)
+		sprintf(codes[i++].code,"%s%d%ld",countryprefix,GERMAN_CODE,(area_read_value(fp,2)+32768)%65536);
+
+	fclose(fp);
+	return 0;
+}
+
+/****************************************************************************/

@@ -28,7 +28,7 @@ endif
 # USER CONFIGURATION AREA
 ######################################################################
 
-CFLAGS      = -Wall -pipe -O6
+CFLAGS      = -g -Wall -pipe #-O6
 DEFS        =
 ifndef _CC
 export _CC  = gcc

@@ -1,5 +1,5 @@
 
-/* $Id: libisdn.h,v 1.7 1997/05/19 22:58:29 luethje Exp $
+/* $Id: libisdn.h,v 1.8 1998/05/10 22:12:04 luethje Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: libisdn.h,v $
+ * Revision 1.8  1998/05/10 22:12:04  luethje
+ * Added support for VORWAHLEN2.EXE
+ *
  * Revision 1.7  1997/05/19 22:58:29  luethje
  * - bugfix: it is possible to install isdnlog now
  * - improved performance for read files for vbox files and mgetty files.
@@ -105,6 +108,10 @@ extern char *basename __P((__const char *__name));
 # define S_AREA_PREFIX  "0"
 #endif
 
+#ifndef S_AREA_DIFF_FILE
+# define S_AREA_DIFF_FILE  "vorwahlen.dat"
+#endif
+
 #ifndef AVON
 # define AVON  "avon"
 #endif
@@ -119,6 +126,7 @@ extern char *basename __P((__const char *__name));
 #define CONF_ENT_AREALIB        "AREALIB"
 #define CONF_ENT_AVONLIB        "AVON"
 #define CONF_ENT_CODELIB        "CODELIB"
+#define CONF_ENT_AREADIFF       "AREADIFF"
 
 #define CONF_SEC_VAR    "VARIABLES"
 
@@ -148,14 +156,24 @@ extern char *basename __P((__const char *__name));
 
 /****************************************************************************/
 
+#define AREA_ERROR   -1
+#define AREA_UNKNOWN  0
+#define AREA_LOCAL    1
+#define AREA_R50      2
+#define AREA_FAR      3
+
+/****************************************************************************/
+
 #ifdef _ISDNTOOLS_C_
 #define _EXTERN
 #define SET_NULL           = ""
+#define SET_NULL2          = NULL
 #define SET_AREA_PREFIX    = S_AREA_PREFIX
 #define SET_COUNTRY_PREFIX = S_COUNTRY_PREFIX
 #else
 #define _EXTERN extern
 #define SET_NULL
+#define SET_NULL2
 #define SET_AREA_PREFIX
 #define SET_COUNTRY_PREFIX
 #endif
@@ -164,6 +182,7 @@ _EXTERN char    *mycountry     SET_NULL;
 _EXTERN char    *myarea        SET_NULL;
 _EXTERN char    *areaprefix    SET_AREA_PREFIX;
 _EXTERN char    *countryprefix SET_COUNTRY_PREFIX;
+_EXTERN char    *areadifffile  SET_NULL2;
 
 _EXTERN void set_print_fct_for_lib(int (*new_print_msg)(const char *, ...));
 _EXTERN int num_match(char *Pattern, char *number);
@@ -175,8 +194,11 @@ _EXTERN int Set_Codes(section* Section);
 _EXTERN char *get_areacode(char *code, int *Len, int flag);
 _EXTERN int read_conffiles(section **Section, char *groupfile);
 _EXTERN int paranoia_check(char *cmd);
+_EXTERN int area_diff(char* _code, char *_diffcode);
+_EXTERN const char* area_diff_string(char* number1, char* number2);
 
 #undef SET_NULL
+#undef SET_NULL2
 #undef SET_AREA_PREFIX
 #undef SET_COUNTRY_PREFIX
 #undef _EXTERN
