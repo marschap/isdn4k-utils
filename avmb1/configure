@@ -1088,19 +1088,21 @@ EOF
 
 	
 
-ac_safe=`echo "$CONFIG_KERNELDIR/include/linux/isdn.h" | sed 'y%./+-%__p_%'`
-echo $ac_n "checking for $CONFIG_KERNELDIR/include/linux/isdn.h""... $ac_c" 1>&6
-echo "configure:1094: checking for $CONFIG_KERNELDIR/include/linux/isdn.h" >&5
+for ac_hdr in $CONFIG_KERNELDIR/include/linux/isdn.h $CONFIG_KERNELDIR/include/linux/b1lli.h $CONFIG_KERNELDIR/include/linux/capi.h $CONFIG_KERNELDIR/include/linux/kernelcapi.h
+do
+ac_safe=`echo "$ac_hdr" | sed 'y%./+-%__p_%'`
+echo $ac_n "checking for $ac_hdr""... $ac_c" 1>&6
+echo "configure:1096: checking for $ac_hdr" >&5
 if eval "test \"`echo '$''{'ac_cv_header_$ac_safe'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
   cat > conftest.$ac_ext <<EOF
-#line 1099 "configure"
+#line 1101 "configure"
 #include "confdefs.h"
-#include <$CONFIG_KERNELDIR/include/linux/isdn.h>
+#include <$ac_hdr>
 EOF
 ac_try="$ac_cpp conftest.$ac_ext >/dev/null 2>conftest.out"
-{ (eval echo configure:1104: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }
+{ (eval echo configure:1106: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }
 ac_err=`grep -v '^ *+' conftest.out`
 if test -z "$ac_err"; then
   rm -rf conftest*
@@ -1116,91 +1118,28 @@ rm -f conftest*
 fi
 if eval "test \"`echo '$ac_cv_header_'$ac_safe`\" = yes"; then
   echo "$ac_t""yes" 1>&6
-  :
-else
-  echo "$ac_t""no" 1>&6
-{ echo "configure: error: "Missing $CONFIG_KERNELDIR/include/linux/isdn.h. Kernel source installed?"" 1>&2; exit 1; }
-fi
-
-ac_safe=`echo "$CONFIG_KERNELDIR/include/linux/b1lli.h" | sed 'y%./+-%__p_%'`
-echo $ac_n "checking for $CONFIG_KERNELDIR/include/linux/b1lli.h""... $ac_c" 1>&6
-echo "configure:1128: checking for $CONFIG_KERNELDIR/include/linux/b1lli.h" >&5
-if eval "test \"`echo '$''{'ac_cv_header_$ac_safe'+set}'`\" = set"; then
-  echo $ac_n "(cached) $ac_c" 1>&6
-else
-  cat > conftest.$ac_ext <<EOF
-#line 1133 "configure"
-#include "confdefs.h"
-#include <$CONFIG_KERNELDIR/include/linux/b1lli.h>
+    ac_tr_hdr=HAVE_`echo $ac_hdr | sed 'y%abcdefghijklmnopqrstuvwxyz./-%ABCDEFGHIJKLMNOPQRSTUVWXYZ___%'`
+  cat >> confdefs.h <<EOF
+#define $ac_tr_hdr 1
 EOF
-ac_try="$ac_cpp conftest.$ac_ext >/dev/null 2>conftest.out"
-{ (eval echo configure:1138: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }
-ac_err=`grep -v '^ *+' conftest.out`
-if test -z "$ac_err"; then
-  rm -rf conftest*
-  eval "ac_cv_header_$ac_safe=yes"
-else
-  echo "$ac_err" >&5
-  echo "configure: failed program was:" >&5
-  cat conftest.$ac_ext >&5
-  rm -rf conftest*
-  eval "ac_cv_header_$ac_safe=no"
-fi
-rm -f conftest*
-fi
-if eval "test \"`echo '$ac_cv_header_'$ac_safe`\" = yes"; then
-  echo "$ac_t""yes" 1>&6
-  :
+ 
 else
   echo "$ac_t""no" 1>&6
-{ echo "configure: error: "Missing $CONFIG_KERNELDIR/include/linux/b1lli.h. Kernel source installed?"" 1>&2; exit 1; }
+{ echo "configure: error: "Missing $ac_hdr. Kernel source installed?"" 1>&2; exit 1; }
 fi
-
-ac_safe=`echo "$CONFIG_KERNELDIR/include/linux/capi.h" | sed 'y%./+-%__p_%'`
-echo $ac_n "checking for $CONFIG_KERNELDIR/include/linux/capi.h""... $ac_c" 1>&6
-echo "configure:1162: checking for $CONFIG_KERNELDIR/include/linux/capi.h" >&5
-if eval "test \"`echo '$''{'ac_cv_header_$ac_safe'+set}'`\" = set"; then
-  echo $ac_n "(cached) $ac_c" 1>&6
-else
-  cat > conftest.$ac_ext <<EOF
-#line 1167 "configure"
-#include "confdefs.h"
-#include <$CONFIG_KERNELDIR/include/linux/capi.h>
-EOF
-ac_try="$ac_cpp conftest.$ac_ext >/dev/null 2>conftest.out"
-{ (eval echo configure:1172: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }
-ac_err=`grep -v '^ *+' conftest.out`
-if test -z "$ac_err"; then
-  rm -rf conftest*
-  eval "ac_cv_header_$ac_safe=yes"
-else
-  echo "$ac_err" >&5
-  echo "configure: failed program was:" >&5
-  cat conftest.$ac_ext >&5
-  rm -rf conftest*
-  eval "ac_cv_header_$ac_safe=no"
-fi
-rm -f conftest*
-fi
-if eval "test \"`echo '$ac_cv_header_'$ac_safe`\" = yes"; then
-  echo "$ac_t""yes" 1>&6
-  :
-else
-  echo "$ac_t""no" 1>&6
-{ echo "configure: error: "Missing $CONFIG_KERNELDIR/linux/include/capi.h. Kernel source installed?"" 1>&2; exit 1; }
-fi
+done
 
 
 
 if test $ac_cv_prog_gcc = yes; then
     echo $ac_n "checking whether ${CC-cc} needs -traditional""... $ac_c" 1>&6
-echo "configure:1198: checking whether ${CC-cc} needs -traditional" >&5
+echo "configure:1137: checking whether ${CC-cc} needs -traditional" >&5
 if eval "test \"`echo '$''{'ac_cv_prog_gcc_traditional'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
     ac_pattern="Autoconf.*'x'"
   cat > conftest.$ac_ext <<EOF
-#line 1204 "configure"
+#line 1143 "configure"
 #include "confdefs.h"
 #include <sgtty.h>
 Autoconf TIOCGETP
@@ -1218,7 +1157,7 @@ rm -f conftest*
 
   if test $ac_cv_prog_gcc_traditional = no; then
     cat > conftest.$ac_ext <<EOF
-#line 1222 "configure"
+#line 1161 "configure"
 #include "confdefs.h"
 #include <termio.h>
 Autoconf TCGETA
@@ -1242,12 +1181,12 @@ fi
 for ac_func in mmap
 do
 echo $ac_n "checking for $ac_func""... $ac_c" 1>&6
-echo "configure:1246: checking for $ac_func" >&5
+echo "configure:1185: checking for $ac_func" >&5
 if eval "test \"`echo '$''{'ac_cv_func_$ac_func'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
   cat > conftest.$ac_ext <<EOF
-#line 1251 "configure"
+#line 1190 "configure"
 #include "confdefs.h"
 /* System header to define __stub macros and hopefully few prototypes,
     which can conflict with char $ac_func(); below.  */
@@ -1270,7 +1209,7 @@ $ac_func();
 
 ; return 0; }
 EOF
-if { (eval echo configure:1274: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest; then
+if { (eval echo configure:1213: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest; then
   rm -rf conftest*
   eval "ac_cv_func_$ac_func=yes"
 else

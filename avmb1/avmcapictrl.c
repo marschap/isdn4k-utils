@@ -1,11 +1,16 @@
 /*
- * $Id: avmcapictrl.c,v 1.5 1998/01/16 14:02:08 calle Exp $
+ * $Id: avmcapictrl.c,v 1.6 1998/02/07 20:09:00 calle Exp $
  * 
  * AVM-B1-ISDN driver for Linux. (Control-Utility)
  * 
  * Copyright 1996 by Carsten Paeth (calle@calle.in-berlin.de)
  * 
  * $Log: avmcapictrl.c,v $
+ * Revision 1.6  1998/02/07 20:09:00  calle
+ * - added support for DN1/SPID1 DN2/SPID2 for 5ESS und NI1 protocols.
+ * - allow debuging of patchvalues.
+ * - optimize configure.in/configure
+ *
  * Revision 1.5  1998/01/16 14:02:08  calle
  * patchvalues working now, leased lines and dchannel protocols like
  * CT1,VN3 und AUSTEL support okay, point to point also patchable.
@@ -47,10 +52,12 @@ char *cmd;
 char *ctrldev;
 int arg_ofs;
 
+int debugpatch = 0;
+
 void usage(void)
 {
 	fprintf(stderr, "usage: %s add <portbase> <irq> [B1|M1|T1] (Add a new card)\n", cmd);
-	fprintf(stderr, "   or: %s load <bootcode> [contrnr [protocol [P2P]]] (load firmware)\n", cmd);
+	fprintf(stderr, "   or: %s load <bootcode> [contrnr [protocol [P2P | DN1:SPID1 [DN2:SPID2]]]] (load firmware)\n", cmd);
 	fprintf(stderr, "   or: %s reset [contrnr] (reset controller)\n", cmd);
 	exit(1);
 }
@@ -86,9 +93,9 @@ static struct pmap {
   { "CT1", DP_CT1 },
   { "VN3", DP_VN3 },
   { "AUSTEL", DP_AUSTEL },
-#if 0
   { "5ESS", DP_5ESS },
   { "NI1", DP_NI1 },
+#if 0
   { "DSS1MOBIL", DP_DSS1MOBIL },
   { "1TR6MOBIL", DP_1TR6MOBIL },
   { "GSM", DP_GSM },
@@ -149,7 +156,8 @@ static void addpatchvalue(char *name, char *value, int len)
    patcharea[patchlen+1] = 0;
 }
 
-int set_configuration(avmb1_t4file *t4config, int protocol, int p2p)
+int set_configuration(avmb1_t4file *t4config, int protocol, int p2p,
+		      char *dn1, char *spid1, char *dn2, char *spid2)
 {
    addpatchvalue("AutoFrame", "\001", 1);
    addpatchvalue("WATCHDOG", "1", 1);
@@ -181,11 +189,29 @@ int set_configuration(avmb1_t4file *t4config, int protocol, int p2p)
          addpatchvalue("PROTOCOL", "\004", 1);
 	 break;
       case DP_NI1: 
+	 p2p = 0;
          addpatchvalue("PROTOCOL", "\003", 1);
-	 break; /* $$$ */
+	 if (dn1 && spid1) {
+            addpatchvalue("DN", dn1, strlen(dn1));
+            addpatchvalue("SPID", spid1, strlen(spid1));
+	 }
+	 if (dn2 && spid2) {
+            addpatchvalue("DN2", dn2, strlen(dn2));
+            addpatchvalue("SPID2", spid2, strlen(spid2));
+	 }
+	 break;
       case DP_5ESS: 
+	 p2p = 0;
          addpatchvalue("PROTOCOL", "\005", 1);
-	 break; /* $$$ */
+	 if (dn1 && spid1) {
+            addpatchvalue("DN", dn1, strlen(dn1));
+            addpatchvalue("SPID", spid1, strlen(spid1));
+	 }
+	 if (dn2 && spid2) {
+            addpatchvalue("DN2", dn2, strlen(dn2));
+            addpatchvalue("SPID2", spid2, strlen(spid2));
+	 }
+	 break;
       case DP_DSS1MOBIL: 
          addpatchvalue("PatchMobileMode", "0", 1);
 	 break;
@@ -205,6 +231,14 @@ int set_configuration(avmb1_t4file *t4config, int protocol, int p2p)
    }
    t4config->len = patchlen+1;
    t4config->data = patcharea;
+   if (debugpatch) {
+      FILE *fp = fopen("/tmp/b1.pvals", "w");
+      if (fp) {
+	 fwrite(t4config->data, t4config->len, 1, fp);
+	 fclose(fp);
+	 fprintf(stderr, "avmcapictrl: patchvalues written to /tmp/b1.pvals\n");
+      }
+   }
    return 0;
 }
 
@@ -223,6 +257,10 @@ int main(int argc, char **argv)
 	avmb1_resetdef rdef;
         avmb1_getdef gdef;
 	int newdriver;
+	char *dn1 = 0;
+	char *spid1 = 0;
+	char *dn2 = 0;
+	char *spid2 = 0;
 
 	cmd = strrchr(argv[0], '/');
 	cmd = (cmd == NULL) ? argv[0] : ++cmd;
@@ -317,12 +355,21 @@ int main(int argc, char **argv)
 			return 0;
 		}
 	}
-	if (!strcasecmp(argv[arg_ofs], "load")) {
+	if (   strcasecmp(argv[arg_ofs], "load") == 0
+	    || strcasecmp(argv[arg_ofs], "test") == 0 ) {
 		struct stat st;
 		int codefd;
 		int contr = 1;
 		int protocol = 0;
 		int p2p = 0;
+
+	        if (strcasecmp(argv[arg_ofs], "test") == 0)
+		   debugpatch = 1;
+
+		if (ac == 2) {
+		   usage();
+		   exit(1);
+		}
 
 		if (ac > 3)
 			contr = atoi(argv[arg_ofs + 2]);
@@ -345,9 +392,31 @@ int main(int argc, char **argv)
 		   if (strcasecmp(argv[arg_ofs + 4], "P2P") == 0) {
 		      p2p = 1;
 		   } else {
-		      fprintf(stderr,"parameter should be P2P not \"%s\"\n",
+		     if (protocol !=  DP_5ESS && protocol != DP_NI1) {
+		        fprintf(stderr,"parameter should be P2P not \"%s\"\n",
 				      argv[arg_ofs + 4]);
-		      exit(1);
+		        exit(1);
+		     }
+		     dn1 = argv[arg_ofs + 4];
+		     spid1 = strchr(dn1, ':');
+		     if (spid1 == 0) {
+		        fprintf(stderr,"DN1 and SPID1 should be spearated by ':s': %s\n",
+				      argv[arg_ofs + 4]);
+		        exit(1);
+			
+		     }
+		     *spid1++ = 0;
+		     if (ac > 6) {
+			dn2 = argv[arg_ofs + 5];
+			spid2 = strchr(dn2, ':');
+			if (spid2 == 0) {
+			   fprintf(stderr,"DN2 and SPID2 should be spearated by ':s': %s\n",
+				      argv[arg_ofs + 5]);
+			   exit(1);
+			
+			}
+			*spid2++ = 0;
+		     }
 		   }
 		}
 
@@ -369,8 +438,14 @@ int main(int argc, char **argv)
 
 		ldef.t4config.len = 0;
 		ldef.t4config.data = 0;
-		if (protocol || p2p)
-		   set_configuration(&ldef.t4config, protocol, p2p);
+		if (protocol || p2p || (dn1 && spid1) || (dn2 && spid2)) {
+		   set_configuration(&ldef.t4config, protocol, p2p,
+					dn1, spid1, dn2, spid2);
+		   if (debugpatch) 
+		      exit(0);
+		} else if (debugpatch) {
+		   fprintf(stderr,"avmcapictrl: no patchvalues needed\n");
+		}
 		printf("Loading Bootcode %s ... ", argv[arg_ofs + 1]);
 		fflush(stdout);
 	        if (newdriver)
