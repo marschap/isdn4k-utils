@@ -1,5 +1,5 @@
 /*
-** $Id: script.c,v 1.4 1997/02/26 20:33:54 michael Exp $
+** $Id: script.c,v 1.5 1997/03/08 19:56:55 michael Exp $
 **
 ** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
 */
@@ -25,6 +25,8 @@ int vbox_put_message(ClientData, Tcl_Interp *, int, char *[]);
 int vbox_get_message(ClientData, Tcl_Interp *, int, char *[]);
 int vbox_wait(ClientData, Tcl_Interp *, int, char *[]);
 int vbox_pause(ClientData, Tcl_Interp *, int, char *[]);
+int vbox_get_nr_new_messages(ClientData, Tcl_Interp *, int, char *[]);
+int vbox_get_nr_all_messages(ClientData, Tcl_Interp *, int, char *[]);
 
 /** Defines **************************************************************/
 
@@ -62,21 +64,23 @@ int script_run(char *script)
 			needcreated = 0;
 			havecreated = 0;
 
-			TCLCREATECMD("vbox_breaklist"			, vbox_breaklist			, NULL, NULL);
-			TCLCREATECMD("vbox_put_message"		, vbox_put_message		, NULL, NULL);
-			TCLCREATECMD("vbox_play_message"		, vbox_put_message		, NULL, NULL);
-			TCLCREATECMD("vbox_get_message"		, vbox_get_message		, NULL, NULL);
-			TCLCREATECMD("vbox_record_message"	, vbox_get_message		, NULL, NULL);
-			TCLCREATECMD("vbox_init_touchtones"	, vbox_init_touchtones	, NULL, NULL);
-			TCLCREATECMD("vbox_wait"				, vbox_wait					, NULL, NULL);
-			TCLCREATECMD("vbox_pause"				, vbox_pause				, NULL, NULL);
+			TCLCREATECMD("vbox_breaklist"				, vbox_breaklist				, NULL, NULL);
+			TCLCREATECMD("vbox_put_message"			, vbox_put_message			, NULL, NULL);
+			TCLCREATECMD("vbox_play_message"			, vbox_put_message			, NULL, NULL);
+			TCLCREATECMD("vbox_get_message"			, vbox_get_message			, NULL, NULL);
+			TCLCREATECMD("vbox_record_message"		, vbox_get_message			, NULL, NULL);
+			TCLCREATECMD("vbox_init_touchtones"		, vbox_init_touchtones		, NULL, NULL);
+			TCLCREATECMD("vbox_wait"					, vbox_wait						, NULL, NULL);
+			TCLCREATECMD("vbox_pause"					, vbox_pause					, NULL, NULL);
+			TCLCREATECMD("vbox_get_nr_new_messages", vbox_get_nr_new_messages	, NULL, NULL);
+			TCLCREATECMD("vbox_get_nr_all_messages", vbox_get_nr_all_messages	, NULL, NULL);
 
          if (havecreated == needcreated)
          {
 				needcreated = 0;
 				havecreated = 0;
 
-				sprintf(savename, "%16.16lu-%6.6lu", (unsigned long)time(NULL), (unsigned long)getpid());
+				sprintf(savename, "%14.14lu-%8.8lu", (unsigned long)time(NULL), (unsigned long)getpid());
 				sprintf(savetime, "%d", setup.voice.recordtime);
 
 				TCLCREATEVAR("vbox_var_bindir"	, BINDIR);
@@ -385,6 +389,58 @@ int vbox_init_touchtones(ClientData cd, Tcl_Interp *ip, int argc, char *argv[])
 	*touchtones = '\0';
 
 	printstring(ip->result, "OK");
+
+	return(TCL_OK);
+}
+
+/*************************************************************************
+ ** 
+ *************************************************************************/
+
+int vbox_get_nr_new_messages(ClientData cd, Tcl_Interp *ip, int argc, char *argv[])
+{
+	int n;
+
+	if (argc != 2)
+	{
+		log(L_ERROR, "[vbox_get_nr_new_messages] usage: vbox_get_nr_new_messages <path>\n");
+
+		printstring(ip->result, "0");
+	}
+	else
+	{
+		log(L_JUNK, "[vbox_get_nr_new_messages] counting new messages in \"%s\"...\n", argv[1]);
+
+		n = get_nr_messages(argv[1], TRUE);
+
+		printstring(ip->result, "%d", n);
+	}
+
+	return(TCL_OK);
+}
+
+/*************************************************************************
+ ** 
+ *************************************************************************/
+
+int vbox_get_nr_all_messages(ClientData cd, Tcl_Interp *ip, int argc, char *argv[])
+{
+	int n;
+
+	if (argc != 2)
+	{
+		log(L_ERROR, "[vbox_get_nr_all_messages] usage: vbox_get_nr_all_messages <path>\n");
+
+		printstring(ip->result, "0");
+	}
+	else
+	{
+		log(L_JUNK, "[vbox_get_nr_all_messages] counting new messages in \"%s\"...\n", argv[1]);
+
+		n = get_nr_messages(argv[1], FALSE);
+
+		printstring(ip->result, "%d", n);
+	}
 
 	return(TCL_OK);
 }

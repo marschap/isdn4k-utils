@@ -1,5 +1,5 @@
 /*
-** $Id: libvbox.c,v 1.4 1997/02/26 20:33:51 michael Exp $
+** $Id: libvbox.c,v 1.5 1997/03/08 19:56:50 michael Exp $
 **
 ** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
 */
@@ -12,7 +12,8 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
-
+#include <dirent.h>
+              
 #include "libvbox.h"                     
 
 /** Variables ************************************************************/
@@ -21,6 +22,75 @@ char *compressions[] =
 {
    "?", "?", "ADPCM-2", "ADPCM-3", "ADPCM-4", "ALAW", "ULAW"
 };
+
+/*************************************************************************
+ ** get_message_ptime():	Returns the vbox message length in seconds.	**
+ **								The length is calculated from the size & the	**
+ **								compression mode.										**
+ *************************************************************************
+ ** compression				Compression mode of the sample.					**
+ ** size							Size of the sample.									**
+ ** <return>					Sample length in seconds.							**
+ *************************************************************************/
+
+int get_message_ptime(int compression, int size)
+{
+	if ((compression >= 2) && (compression <= 4))
+	{
+		size = ((size * 8) / compression);
+	}
+                           
+	return((size / KERNEL_SAMPLE_FREQ));
+}
+
+/*************************************************************************
+ ** get_nr_messages():	Returns number of files in directory <path>. If	**
+ **							<countnew> is set only files with modification	**
+ **							time greater 0 are counted. Theres no check if	**
+ **							the files is a vbox message!							**
+ *************************************************************************
+ ** path						Directory with files to count.						**
+ ** countnew				0 to count all or 1 to count only new files.		**
+ ** <return>				Number of files found.									**
+ *************************************************************************/
+
+int get_nr_messages(char *path, int countnew)
+{
+	struct dirent *entry;
+	struct stat		status;
+
+	char	temp[PATH_MAX + 1];
+	DIR  *dir;
+	int	messages;
+
+	messages = 0;
+
+	if ((dir = opendir(path)))
+	{
+		while ((entry = readdir(dir)))
+		{
+			if (countnew)
+			{
+				if (strcmp(entry->d_name, "." ) == 0) continue;
+				if (strcmp(entry->d_name, "..") == 0) continue;
+
+				xstrncpy(temp, path			 , PATH_MAX);
+				xstrncat(temp, "/"			 , PATH_MAX);
+				xstrncat(temp, entry->d_name, PATH_MAX);
+
+				if (stat(temp, &status) == 0)
+				{
+					if (status.st_mtime > 0) messages++;
+				}
+			}
+			else messages++;
+		}
+		
+		closedir(dir);
+	}
+
+	return(messages);
+}
 
 /*************************************************************************
  ** ctrl_create():	Creates a vbox control file. The file is created	**

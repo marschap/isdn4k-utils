@@ -312,13 +312,8 @@ int voice_put_message(char *message)
 
 	if (timeend >= timebeg)
 	{
-		if ((compression >= 2) && (compression <= 4))
-		{
-			bytetotal = ((bytetotal * 8) / compression);
-		}
-
 		secstotal = (timeend - timebeg);
-		bytetotal = (bytetotal / 8000 );
+		bytetotal = get_message_ptime(compression, bytetotal);
 
 		log(L_JUNK, "Function play %d secs (kernel needs %d secs)...\n", secstotal, bytetotal);
 

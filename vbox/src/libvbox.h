@@ -1,5 +1,5 @@
 /*
-** $Id: libvbox.h,v 1.3 1997/02/26 13:10:39 michael Exp $
+** $Id: libvbox.h,v 1.4 1997/03/08 19:56:51 michael Exp $
 **
 ** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
 */
@@ -16,6 +16,8 @@
 
 #define CTRL_MODE_REMOVE		(0)
 #define CTRL_MODE_CREATE		(1)
+
+#define KERNEL_SAMPLE_FREQ		(8000)
 
 #define VAH_MAGIC					"VBOX"							/* Magic id	*/
 #define VAH_MAX_MAGIC			(4)
@@ -69,5 +71,8 @@ extern long xstrtol(char *, long);
 
 extern int header_put(int, vaheader_t *);
 extern int header_get(int, vaheader_t *);
+
+extern int get_nr_messages(char *, int);
+extern int get_message_ptime(int, int);
 
 #endif /* _VBOX_LIBVBOX_H */

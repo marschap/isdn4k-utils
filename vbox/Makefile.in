@@ -1,5 +1,5 @@
 #
-# $Id: Makefile.in,v 1.7 1997/03/07 08:15:36 michael Exp $
+# $Id: Makefile.in,v 1.8 1997/03/08 19:56:42 michael Exp $
 
 #----------------------------------------------------------------------------#
 # Things you can change to personalize the Makefile for your own site.       #
@@ -69,6 +69,7 @@ LOGFILE		= @VBOX_LOGDIR@/vboxgetty-%s.log
 # the "configure" script [/var/run]:                                         #
 #----------------------------------------------------------------------------#
 
+PIDFDIR		= @VBOX_PIDDIR@
 PIDFILE		= @VBOX_PIDDIR@/vboxgetty-%s.pid
 
 #----------------------------------------------------------------------------#
@@ -105,6 +106,12 @@ INSTALL_BIN	= @INSTALL@ -m 755 -o root -g root -s
 #----------------------------------------------------------------------------#
 
 INSTALL_SHBIN	= @INSTALL@ -m 755 -o root -g root
+
+#----------------------------------------------------------------------------#
+# Program to install binaries to the bin directory and set the suid bit:     #
+#----------------------------------------------------------------------------#
+
+INSTALL_UBIN	= @INSTALL@ -m 4755 -o root -g root -s
 
 #----------------------------------------------------------------------------#
 # Program to install configurations to sysconf directory:                    #
@@ -214,6 +221,9 @@ endif
 		  @$(ECHO) "Installing '$(bindir)/vboxctrl'..."
 		  @$(INSTALL_BIN) $(TOPDIR)/src/vboxctrl $(bindir)
 
+		  @$(ECHO) "Installing '$(bindir)/vboxbeep'..."
+		  @$(INSTALL_UBIN) $(TOPDIR)/src/vboxbeep $(bindir)
+
 		  @$(ECHO) "Installing '$(bindir)/vboxmail'..."
 		  @$(INSTALL_SHBIN) $(TOPDIR)/utils/vboxmail $(bindir)
 
@@ -254,6 +264,7 @@ createconfig:	ignore
 		@$(ECHO) "#define VERDATE \"$(VERDATE)\"" >>$(RUNTIMEFILE)
 		@$(ECHO) "#define SPOOLDIR \"$(SPOOLDIR)\"" >>$(RUNTIMEFILE)
 		@$(ECHO) "#define LOGFILE \"$(LOGFILE)\"" >>$(RUNTIMEFILE)
+		@$(ECHO) "#define PIDFDIR \"$(PIDFDIR)\"" >>$(RUNTIMEFILE)
 		@$(ECHO) "#define PIDFILE \"$(PIDFILE)\"" >>$(RUNTIMEFILE)
 		@$(ECHO) "#define LOCKFILE \"$(LOCKFILE)\"" >>$(RUNTIMEFILE)
 		@$(ECHO) "#define BINDIR  \"$(bindir)\"" >>$(RUNTIMEFILE)
@@ -287,6 +298,7 @@ clean:		  ignore
 		  @$(RM) -f $(TOPDIR)/src/vbox
 		  @$(RM) -f $(TOPDIR)/src/vboxconvert
 		  @$(RM) -f $(TOPDIR)/src/vboxctrl
+		  @$(RM) -f $(TOPDIR)/src/vboxbeep
 		  @$(RM) -f $(TOPDIR)/doc/*.html
 		  @$(RM) -f $(TOPDIR)/doc/*.sgml
 		  @$(RM) -f $(TOPDIR)/doc/*.txt

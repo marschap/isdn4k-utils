@@ -227,6 +227,4 @@ AC_SUBST(ISDN_GLOBAL_CONFIG)
 # ...and create the files from *.in...
 #--------------------------------------------------------------------------
 
-bindir=xxx
-
 AC_OUTPUT(Makefile src/Makefile)

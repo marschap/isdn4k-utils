@@ -1,5 +1,5 @@
 /*
-** $Id: modem.c,v 1.6 1997/02/28 14:12:53 michael Exp $
+** $Id: modem.c,v 1.7 1997/03/08 19:56:53 michael Exp $
 **
 ** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
 */
@@ -845,13 +845,7 @@ int modem_count_rings(int needrings)
 	int	haverings;
 	int	havesregs;
 	int	havesetup;
-
-	if (needrings <= 0)
-	{
-		log(L_INFO, "Call will not be answered - no rings are set...\n");
-
-		returnerror();
-	}
+	int	n;
 
 	voice_init_section();
 	
@@ -901,7 +895,6 @@ int modem_count_rings(int needrings)
 				returnok();
 			}
 
-
 			if (!setup.voice.doanswer)
 			{
 				log(L_INFO, "Call will not be answered - disabled in \"vboxrc\"...\n");
@@ -916,7 +909,6 @@ int modem_count_rings(int needrings)
 				returnerror();
 			}
 		}
-
 
 		if ((strncmp(line, "CALLER NUMBER: ", 15) == 0) && (!havesetup))
 		{
@@ -948,7 +940,14 @@ int modem_count_rings(int needrings)
 
 			if ((setup.voice.ringsonnew >= 0) && (setup.voice.ringsonnew != needrings))
 			{
-				log(L_INFO, "*** TOLLCHECK NOT SUPPORTED ***\n");
+				log(L_DEBUG, "Checking for new messages in \"%s\"...\n", setup.voice.checknewpath);
+
+				if ((n = get_nr_messages(setup.voice.checknewpath, TRUE)) > 0)
+				{
+ 					log(L_DEBUG, "Found %d new messages; new number of rings are %d...\n", n, setup.voice.ringsonnew);
+
+					needrings = setup.voice.ringsonnew;
+				}
 			}
 
 			havesetup = TRUE;

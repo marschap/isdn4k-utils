@@ -1,5 +1,5 @@
 /*
-** $Id: rcgetty.c,v 1.3 1997/02/26 13:10:46 michael Exp $
+** $Id: rcgetty.c,v 1.4 1997/03/08 19:56:54 michael Exp $
 **
 ** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
 */
@@ -229,6 +229,8 @@ static char *parse_cmp(char *cmd, char *arg, void *ptr, int min, int max)
 	if ((cmp < min) || (cmp > max)) return("unknown compression");
 
 	if (cmp == 5) return("alaw not longer supported");
+
+	(*(int *)ptr) = cmp;
 
 	return(NULL);
 }

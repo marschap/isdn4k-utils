@@ -1,5 +1,5 @@
 /*
-** $Id: vboxconvert.c,v 1.4 1997/02/27 15:43:52 michael Exp $
+** $Id: vboxconvert.c,v 1.5 1997/03/08 19:56:56 michael Exp $
 **
 ** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
 **
@@ -1078,6 +1078,8 @@ static unsigned char byte_linear_to_ulaw(int sample)
 
 static int test_sample_is_vbox(char *name, int quiet)
 {
+	struct stat status;
+
 	vaheader_t	header;
 	time_t		timestamp;
 	long int		compression;
@@ -1093,18 +1095,22 @@ static int test_sample_is_vbox(char *name, int quiet)
 
 			if ((compression < 2) || (compression > 6)) compression = 0;
 
-			timestamp = ntohl(header.time);
-
-			if (!quiet)
+			if (fstat(fd, &status) == 0)
 			{
-				fprintf(stdout, "\n");
-				fprintf(stdout, "Creation time...........: %s", ctime(&timestamp));
-				fprintf(stdout, "Compression.............: %s\n", compressions[compression]);
-				fprintf(stdout, "Speaker name............: %s\n", header.name);
-				fprintf(stdout, "Speaker caller number...: %s\n", header.callerid);
-				fprintf(stdout, "Speaker phone number....: %s\n", header.phone);
-				fprintf(stdout, "Speaker location........: %s\n", header.location);
-				fprintf(stdout, "\n");
+				timestamp = ntohl(header.time);
+
+				if (!quiet)
+				{
+					fprintf(stdout, "\n");
+					fprintf(stdout, "Creation time...........: %s", ctime(&timestamp));
+					fprintf(stdout, "Compression.............: %s\n", compressions[compression]);
+					fprintf(stdout, "Length..................: %d seconds\n", get_message_ptime(compression, (status.st_size - sizeof(vaheader_t))));
+					fprintf(stdout, "Speaker name............: %s\n", header.name);
+					fprintf(stdout, "Speaker caller number...: %s\n", header.callerid);
+					fprintf(stdout, "Speaker phone number....: %s\n", header.phone);
+					fprintf(stdout, "Speaker location........: %s\n", header.location);
+					fprintf(stdout, "\n");
+				}
 			}
 		}
 
