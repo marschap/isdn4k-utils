@@ -73,6 +73,7 @@ void usage(char *argv[]) {
 static int (*zones)[3];
 static int *numbers;
 static bool verbose=false;
+static bool stdoutisatty=true;  /* assume the worst :-) */
 static int table[256];
 static int tablelen, keylen, keydigs, maxnum;
 static int n, nn;
@@ -104,7 +105,7 @@ static void read_rzfile(char *rf) {
 		printf("Reading %s\n", rf);
 
 	while (fgets(line, BUFSIZ, fp)) {
-		if (verbose && (n % 1000) == 0) {
+		if (verbose && stdoutisatty && (n % 1000) == 0) {
 			printf("%d\r", n);
 			fflush(stdout);
 		}
@@ -262,7 +263,7 @@ static void write_db(char * df) {
 		UC uc;
 		unsigned char buf[4];
 
-		if (verbose && (i % 1000) == 0) {
+		if (verbose && stdoutisatty && (i % 1000) == 0) {
 			printf("%d\r", i);
 			fflush(stdout);
 		}
@@ -358,6 +359,9 @@ int main (int argc, char *argv[])
 			case 'l' : numlen = atoi(optarg); break;
 		}
 	}
+        if (verbose)
+            stdoutisatty = isatty(fileno(stdout));
+
 	read_rzfile(rf);
 	make_table();
 	write_db(df);

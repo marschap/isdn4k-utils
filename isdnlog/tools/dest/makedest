@@ -44,6 +44,8 @@ my $VERSION='1.0';
 
 
 my(%db,$N,$A,$T,$E,$C,$R, $lang,$append,$verbose,$i, $cc, $file, $tied);	
+my $outistty = (-t STDOUT);
+
 while ($ARGV[0] =~ /^-(.)(\S*)/) {
     shift(@ARGV);
     $append=1,next if ($1 eq 'a');
@@ -105,7 +107,7 @@ sub write_global   {
 		die("Cant find country.dat");
     $i=0;
     while (<IN>) {
-	print "$i\r" if (++$i % 10==0 && $verbose);
+	print "$i\r" if (++$i % 10==0 && $verbose && $outistty);
 	s/\s*#.*$//; # kill comments
 	next if /^$/; # skip empty
         if (/^N:(.*)/) {
@@ -246,7 +248,7 @@ sub write_cc {
     $db{$vers}=$value;
     $i=0;
     while (<IN>) {	    
-	print "$i\r" if (++$i % 10==0 && $verbose);
+	print "$i\r" if (++$i % 10==0 && $verbose && $outistty);
 	s/\s*#.*$//; # kill comments
 	next if /^$/; # skip empty
 	my ($num, $ort, $len);
