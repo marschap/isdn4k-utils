@@ -1,4 +1,4 @@
-/* $Id: eiconctrl.c,v 1.9 1999/11/21 12:41:25 armin Exp $
+/* $Id: eiconctrl.c,v 1.10 2000/01/12 07:05:09 armin Exp $
  *
  * Eicon-ISDN driver for Linux. (Control-Utility)
  *
@@ -21,6 +21,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA. 
  *
  * $Log: eiconctrl.c,v $
+ * Revision 1.10  2000/01/12 07:05:09  armin
+ * Fixed error on loading old S card.
+ *
  * Revision 1.9  1999/11/21 12:41:25  armin
  * Added further check for future driver changes.
  *
@@ -2079,7 +2082,7 @@ void load_startup_code(char *startupcode, char *fileext)
 		perror("ioctl LOADBOOT");
 		exit(-1);
 	}
-	if ((tmp = ioctl(fd, EICON_IOCTL_GETTYPE + IIOCDRVCTL, &ioctl_s)) < 1) {
+	if ((tmp = ioctl(fd, EICON_IOCTL_GETTYPE + IIOCDRVCTL, &ioctl_s)) < 0) {
 		perror("ioctl GETTYPE");
 		exit(-1);
 	}
