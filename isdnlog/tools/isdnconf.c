@@ -1,4 +1,4 @@
-/* $Id: isdnconf.c,v 1.34 2002/07/04 10:29:18 paul Exp $
+/* $Id: isdnconf.c,v 1.35 2004/02/06 16:58:01 tobiasb Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -20,6 +20,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnconf.c,v $
+ * Revision 1.35  2004/02/06 16:58:01  tobiasb
+ * Fixed outdated source code comment.
+ *
  * Revision 1.34  2002/07/04 10:29:18  paul
  * "DEM" -> "EUR"
  *
@@ -1824,7 +1827,7 @@ static int readoldconfig(char *myname)
   }
 
   return 0;
-} /* readconfig */
+} /* readoldconfig */
 
 /****************************************************************************/
 
