@@ -1,5 +1,5 @@
-.\" $Id: vboxgetty.conf.man,v 1.3 2000/09/15 09:19:50 paul Exp $
-.\" CHECKIN $Date: 2000/09/15 09:19:50 $
+.\" $Id: vboxgetty.conf.man,v 1.4 2003/03/11 13:05:18 paul Exp $
+.\" CHECKIN $Date: 2003/03/11 13:05:18 $
 .TH vboxgetty.conf 5 "@MANDATE@" "ISDN 4 Linux @I4LVERSION@" "Linux System Administration"
 .PD 0
 .SH NAME
@@ -98,6 +98,13 @@ Full path of the vbox config file. Default value is <spooldir>/vbox.conf.
 .B freespace <number>
 Number of bytes that must be available on the partition with the spool
 directory, so that a call may be taken. Default is 0.
+
+.TP
+.B debuglevel <string>
+What messages are be written to @LOGFILEDIR@/vboxgetty-<device>.log.
+The string consists of letters representing the severities of the messages
+to log (F=FATAL, E=ERROR, W=WARNING, I=INFO, D=DEBUG, J=JUNK).  Default
+is FEWI.
 
 .SH FILES
 .TP
