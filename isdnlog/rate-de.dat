@@ -1,11 +1,11 @@
-V:1.02-Germany [03-Jun-1999 19:49:22]
+V:1.02-Germany [09-Jun-1999 21:45:26]
 
 # Diese Tariftabelle ist ein Service der I4L-Tarifdatenbank-Crew.
 # Alle Angaben erfolgen ohne Gewähr
 #
 # (C) Copyright 1999 by Andreas Kool (akool@isdn4linux.de)
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 # Zonenzuordnung für Deutschland
 #
@@ -156,40 +156,55 @@ V:1.02-Germany [03-Jun-1999 19:49:22]
 # werden z.Zt. nicht unterstützt
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:10 Teleglobe
 C:GmbH, Gutleutstraße 85, 60329 Frankfurt 01010
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:11 o.tel.o CbC
-G:13.05.1999
 C:o.tel.o communications GmbH, Am Bonneshof 35, 40474 Düsseldorf 01011
 C:Homepage: http://www.o-tel-o.de
 C:Hotline:  01803/1998 oder 0800/7370 (Geschaeftskunden)
 C:Adresse:  96038 Bamberg
+C:Erfasste Zonen:
+C:0, 2	-   4	Deutschland
+C:10	-  11	Mobilfunk
+C:31	-  39	Satelitenfunk
+C:45		Auskunft o.tel.o
+C:60	-  75	Pieper
+C:81	-  85	Service 0180-x
+C:91	-  94	Service 0190-x
+C:100		T-Online
+C:101		AOL
+C:102		o.tel.o online
+C:160	- 164	DTAG Service Nummern
+C:171		Info Expo 2000
+C:172		IVBB
+C:200	-	Ausland
+G:13.05.1999
 Z:0 Freephone
-A:+49130,+49800,International Freephone
+A:0130,0800,International Freephone
 Z:2-4 Inlandsverbindungen
 T:W/08-18=0.15/60 Geschaeftszeit
 T:W/00-08,18-21=0.10/60 Freizeit
 T:*/21-00=0.04/60 Happy Hour
 T:E,H/00-21=0.095/60 Wochenende
 Z:10 Mobilfunk C Mobilbox
-A:+491618	# T-C-Tel Voice Mail
+A:01618	# T-C-Tel Voice Mail
 T:W/08-18=0.629996/60 Geschaeftszeit
 T:W/08-18=0.430012/60 Freizeit
 T:W/18-21=0.430012/60 Freizeit
 T:*/21-00=0.430012/60 Happy Hour
 T:E,H/00-21=0.430012/60 Wochenende
 Z:11 Mobilfunk
-A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
-A:+49170,+49171		# D1
-A:+49172,+49173		# D2
-A:+49177,+49178		# Eplus
-A:+49176,+49179		# E2
+A:01610,01611,01612,01613,01614,01615,01616,01617,01619 # C
+A:0170,0171		# D1
+A:0172,0173		# D2
+A:0177,0178		# Eplus
+A:0176,0179		# E2
 T:W/08-18=0.94/60 Geschaeftszeit
 T:W/18-08=0.47/60 Freizeit
 T:E,H/*=0.47/60 Freizeit
@@ -217,120 +232,120 @@ T:*/*=8.999976
 Z:39 Inmarsat-Mini-M
 A:Inmarsat Mini-M
 T:*/*=7.200004/60
-Z:40 o.tel.o Auskunft
+Z:45 o.tel.o Auskunft
 A:11888
 T:*/*=1.5899888/0,0.489984(60)/1
 Z:60 Cityruf automatic
-A:+49164,+491682,+491683,+491684,+491685,+491686,+491687,+491688,+491689
+A:0164,01682,01683,01684,01685,01686,01687,01688,01689
 T:W/08-18=0.359948/60 Geschaeftszeit
 T:W/00-08=0.240004/60 Freizeit
 T:W/18-21=0.240004/60 Freizeit
 T:*/21-00=0.240004/60 Happy Hour
 T:E,H/00-21=0.240004/60 Wochenende
 Z:61 Cityruf Operator
-A:+4916951,+4916952
+A:016951,016952
 T:*/*=1.440024/60
 Z:62 Scall IVR
-A:+491680
+A:01680
 T:*/*=0.5999984/0
 Z:63 Scall DTMF
-A:+491681
+A:01681
 T:W/08-18=1.4399892/0 Geschaeftszeit
 T:W/18-08=0.9599928/0 Freizeit und Wochenende
 T:E,H/*=0.9599928/0 Freizeit und Wochenende
 Z:64 Scall Operator
-A:+491699
+A:01699
 T:*/*=2.3999936/0
 Z:65 Scall Modem
-A:+491696
+A:01696
 T:*/*=0.9599928/0
 Z:66 TeLMI automatic
-A:+491660,+491665,+491669
+A:01660,01665,01669
 T:*/*=1.380052/60
 Z:67 TeLMI Operator
-A:+491661
+A:01661
 T:*/*=5.529952/60
 Z:68 Skyper Operator
-A:+4916953
+A:016953
 T:*/*=2.3999936/0
 Z:69 Skyper
-A:+491692,+491693
+A:01692,01693
 T:*/*=0.9599928/0
 Z:70 Quix Service
-A:+4916500,+4916501,+4916502,+4916503,+4916504,+4916505,+4916506,+4916507,+4916508,+491655
+A:016500,016501,016502,016503,016504,016505,016506,016507,016508,01655
 T:W/08-18=0.539980/60 Geschaeftszeit
 T:W/18-08=0.270048/60
 T:E,H/*=0.270048/60
 Z:71 Quix DTMF
-A:+491651
+A:01651
 T:*/*=0.219994/0
 Z:72 Quix Modem
-A:+4916591,+4916592,+4916593
+A:016591,016592,016593
 T:W/08-18=1.0799948/0 Geschaeftszeit
 T:W/18-08=0.8599892/0
 T:E,H/*=0.8599892/0
 Z:73 Quix Operator 1
-A:+491653
+A:01653
 T:W/08-18=1.0799948/0 Geschaeftszeit
 T:W/18-08=0.8599892/0
 T:E,H/*=0.8599892/0
 Z:74 Quix IVR
-A:+491654
+A:01654
 T:W/08-18=1.0799948/0 Geschaeftszeit
 T:W/18-08=0.8599892/0
 T:E,H/*=0.8599892/0
 Z:75 Quix Operator 2
-A:+491656
+A:01656
 T:*/*=2.1599896/0
 # FIXME: 01801 ????
 Z:81 Service 01801
-A:+491801
+A:01801
 T:W/08-18=0.090016/60 Geschaeftszeit
 T:W/18-08=0.049996/60
 T:E,H/*=0.049996/60
 Z:82 Service 01802
-A:+491802
+A:01802
 T:*/*=0.119712/0
 Z:83 Service 01803
 # FIXME: 01803 ???? Telekom: 18/60, o.tel.o 18/40 ?
-A:+491803
+A:01803
 T:*/*=0.180032/60
 Z:84 Servie 01804
-A:+491804
+A:01804
 T:*/*=0.4799964
 Z:85 Service 01805
-A:+491805
+A:01805
 # FIXME: 01805 ???? Telekom: 24/60, o.tel.o 24/30 ?
 T:*/*=0.240004/60
 Z:91 Service 01901 3 5
-A:+491901,+491903,+491905
+A:01901,01903,01905
 T:*/*=0.120988/6
 Z:92 Service 01904
-A:+491904
+A:01904
 T:*/*=0.120988/9
 Z:100 T-Online
-A:+491910
+A:01910
 T:W/08-18=0.090016/60 Geschaeftszeit
 T:W/18-08=0.049996/60
 T:E,H/*=0.049996/60 Wochenende
 Z:101 AOL-Online
-A:+491914
+A:01914
 T:W/08-18=0.090016/60 Geschaeftszeit
 T:W/18-08=0.049996/60
 T:E,H/*=0.049996/60 Wochenende
 Z:102 o.tel.o online 01011
-A:+49191501 # (Benutzername: otelo; Passwort: online)
+A:0191501 # Proxy: proxy.otelo-online.de:8080; DNS: 195.50.149.33 und 195.50.140.6; Mail: mail.otelo-online.de; User: otelo; Passwort: online
 T:W/09-21=0.059044/60 Geschaeftszeit
 T:W/21-09=0.059044/60
 T:E,H/*=0.059044/60
 Z:160 Televotum
-A:+491370,+491373,+491374,+491375,+491376,+491377,+491378,+491379
+A:01370,01373,01374,01375,01376,01377,01378,01379
 T:*/*=0.119712/0,0.359948/60
 Z:161 Teledialog
-A:+49138
+A:0138
 T:*/*=0.119712/0,0.359948/60
 Z:162 T-VoteCall 1
-A:+491371
+A:01371
 T:*/*=0.2399924/0
 Z:163 T-VoteCall 2
 A:01372
@@ -340,10 +355,10 @@ T:W/08-18=0.090016/60 Geschaeftszeit
 T:W/18-08=0.049996/60
 T:E,H/*=0.049996/60 Wochenende
 Z:171 Expo 2000
-A:+492000
+A:02000
 T:*/*=0.5999984/0,0.
 Z:172 Informationsverband Berlin-Bonn
-A:+491888
+A:01888
 T:W/08-18=0.230028/60 Geschaeftszeit
 T:W/18-08=0.140012/60
 T:E,H/*=0.140012/60 Wochenende
@@ -392,13 +407,28 @@ A:+	# Alle anderen Auslandsverbindungen
 T:*/*=2.790032/60
 #####################################################################
 P:11,1 o.tel.o direct Preselection
-G:13.05.1999
 C:o.tel.o communications GmbH, Am Bonneshof 35, 40474 Düsseldorf 01011
 C:Homepage: http://www.o-tel-o.de
 C:Hotline:  01803/1998 oder 0800/7370 (Geschaeftskunden)
 C:Adresse:  96038 Bamberg
+C:Erfasste Zonen:
+C:0, 2	-   4	Deutschland
+C:10	-  11	Mobilfunk
+C:31	-  39	Satelitenfunk
+C:45		Auskunft o.tel.o
+C:60	-  75	Pieper
+C:81	-  85	Service 0180-x
+C:91	-  94	Service 0190-x
+C:100		T-Online
+C:101		AOL
+C:102		o.tel.o online
+C:160	- 164	DTAG Service Nummern
+C:171		Info Expo 2000
+C:172		IVBB
+C:201	-	Ausland
+G:13.05.1999
 Z:0 Freephone
-A:+49130,+49800,International Freephone
+A:0130,0800,International Freephone
 Z:2 Regional
 T:W/08-18=0.05/0,0.09(60)/1 Geschaeftszeit
 T:W/00-08,18-21=0.05/0,0.05(60)/1 Freizeit
@@ -412,18 +442,18 @@ T:E,H/08-21=0.05/0,0.095(60)/1 Wochenende Tagsüber
 T:E,H/00-08=0.05/0,0.095(60)/1 Wochenende Nacht
 T:*/21-00=0.05/0,0.04(60)/1 Happy Hour
 Z:10 Mobilfunk C Mobilbox
-A:+491618	# T-C-Tel Voice Mail
+A:01618	# T-C-Tel Voice Mail
 T:W/08-18=0.05/0,0.629996(60)/1 Geschaeftszeit
 T:W/08-18=0.05/0,0.430012(60)/1 Freizeit
 T:W/18-21=0.05/0,0.430012(60)/1 Freizeit
 T:*/21-00=0.05/0,0.430012(60)/1 Happy Hour
 T:E,H/00-21=0.05/0,0.430012(60)/1 Wochenende
 Z:11 Mobilfunk
-A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
-A:+49170,+49171		# D1
-A:+49172,+49173		# D2
-A:+49177,+49178		# Eplus
-A:+49176,+49179		# E2
+A:01610,01611,01612,01613,01614,01615,01616,01617,01619 # C
+A:0170,0171		# D1
+A:0172,0173		# D2
+A:0177,0178		# Eplus
+A:0176,0179		# E2
 T:W/08-18=0.05/0,0.94(60)/1 Geschaeftszeit
 T:W/18-08=0.05/0,0.47(60)/1 Freizeit
 T:E,H/*=0.05/0,0.47(60)/1 Freizeit
@@ -451,120 +481,120 @@ T:*/*=0.05/0,8.999976
 Z:39 Inmarsat-Mini-M
 A:Inmarsat Mini-M
 T:*/*=0.05/0,7.200004(60)/1
-Z:40 o.tel.o Auskunft
+Z:45 o.tel.o Auskunft
 A:11888
 T:*/*=0.05/0,1.5899888/0,0.489984(60)/1
 Z:60 Cityruf automatic
-A:+49164,+491682,+491683,+491684,+491685,+491686,+491687,+491688,+491689
+A:0164,01682,01683,01684,01685,01686,01687,01688,01689
 T:W/08-18=0.05/0,0.359948(60)/1 Geschaeftszeit
 T:W/00-08=0.05/0,0.240004(60)/1 Freizeit
 T:W/18-21=0.05/0,0.240004(60)/1 Freizeit
 T:*/21-00=0.05/0,0.240004(60)/1 Happy Hour
 T:E,H/00-21=0.05/0,0.240004(60)/1 Wochenende
 Z:61 Cityruf Operator
-A:+4916951,+4916952
+A:016951,016952
 T:*/*=0.05/0,1.440024(60)/1
 Z:62 Scall IVR
-A:+491680
+A:01680
 T:*/*=0.05/0,0.5999984/0
 Z:63 Scall DTMF
-A:+491681
+A:01681
 T:W/08-18=0.05/0,1.4399892/0 Geschaeftszeit
 T:W/18-08=0.05/0,0.9599928/0 Freizeit und Wochenende
 T:E,H/*=0.05/0,0.9599928/0 Freizeit und Wochenende
 Z:64 Scall Operator
-A:+491699
+A:01699
 T:*/*=0.05/0,2.3999936/0
 Z:65 Scall Modem
-A:+491696
+A:01696
 T:*/*=0.05/0,0.9599928/0
 Z:66 TeLMI automatic
-A:+491660,+491665,+491669
+A:01660,01665,01669
 T:*/*=0.05/0,1.380052(60)/1
 Z:67 TeLMI Operator
-A:+491661
+A:01661
 T:*/*=0.05/0,5.529952(60)/1
 Z:68 Skyper Operator
-A:+4916953
+A:016953
 T:*/*=0.05/0,2.3999936/0
 Z:69 Skyper
-A:+491692,+491693
+A:01692,01693
 T:*/*=0.05/0,0.9599928/0
 Z:70 Quix Service
-A:+4916500,+4916501,+4916502,+4916503,+4916504,+4916504,+4916505,+4916506,+4916507,+4916508,+491655
+A:016500,016501,016502,016503,016504,016504,016505,016506,016507,016508,01655
 T:W/08-18=0.05/0,0.539980(60)/1 Geschaeftszeit
 T:W/18-08=0.05/0,0.270048(60)/1
 T:E,H/*=0.05/0,0.270048(60)/1
 Z:71 Quix DTMF
-A:+491651
+A:01651
 T:*/*=0.05/0,0.219994/0
 Z:72 Quix Modem
-A:+4916591,+4916592,+4916593
+A:016591,016592,016593
 T:W/08-18=0.05/0,1.0799948/0 Geschaeftszeit
 T:W/18-08=0.05/0,0.8599892/0
 T:E,H/*=0.05/0,0.8599892/0
 Z:73 Quix Operator 1
-A:+491653
+A:01653
 T:W/08-18=0.05/0,1.0799948/0 Geschaeftszeit
 T:W/18-08=0.05/0,0.8599892/0
 T:E,H/*=0.05/0,0.8599892/0
 Z:74 Quix IVR
-A:+491654
+A:01654
 T:W/08-18=0.05/0,1.0799948/0 Geschaeftszeit
 T:W/18-08=0.05/0,0.8599892/0
 T:E,H/*=0.05/0,0.8599892/0
 Z:75 Quix Operator 2
-A:+491656
+A:01656
 T:*/*=0.05/0,2.1599896/0
 # FIXME: 01801 ????
 Z:81 Service 01801
-A:+491801
+A:01801
 T:W/08-18=0.05/0,0.090016(60)/1 Geschaeftszeit
 T:W/18-08=0.05/0,0.049996(60)/1
 T:E,H/*=0.05/0,0.049996(60)/1
 Z:82 Service 01802
-A:+491802
+A:01802
 T:*/*=0.05/0,0.119712/0
 Z:83 Service 01803
 # FIXME: 01803 ???? Telekom: 18(60)/1, o.tel.o 18/40 ?
-A:+491803
+A:01803
 T:*/*=0.05/0,0.180032(60)/1
 Z:84 Servie 01804
-A:+491804
+A:01804
 T:*/*=0.05/0,0.4799964
 Z:85 Service 01805
-A:+491805
+A:01805
 # FIXME: 01805 ???? Telekom: 24/60, o.tel.o 24/30 ?
 T:*/*=0.05/0,0.240004(60)/1
 Z:91 Service 01901 3 5
-A:+491901,+491903,+491905
+A:01901,01903,01905
 T:*/*=0.05/0,0.120988/6
 Z:92 Service 01904
-A:+491904
+A:01904
 T:*/*=0.05/0,0.120988/9
 Z:100 T-Online
-A:+491910
+A:01910
 T:W/08-18=0.05/0,0.090016(60)/1 Geschaeftszeit
 T:W/18-08=0.05/0,0.049996(60)/1
 T:E,H/*=0.05/0,0.049996(60)/1 Wochenende
 Z:101 AOL-Online
-A:+491914
+A:01914
 T:W/08-18=0.05/0,0.090016(60)/1 Geschaeftszeit
 T:W/18-08=0.05/0,0.049996(60)/1
 T:E,H/*=0.05/0,0.049996(60)/1 Wochenende
 Z:102 o.tel.o online 01011
-A:+49191501 # (Benutzername: otelo; Passwort: online)
+A:0191501 # (Benutzername: otelo; Passwort: online)
 T:W/09-21=0.05/0,0.059044(60)/1 Geschaeftszeit
 T:W/21-09=0.05/0,0.059044(60)/1
 T:E,H/*=0.05/0,0.059044(60)/1
 Z:160 Televotum
-A:+491370,+491373,+491374,+491375,+491376,+491377,+491378,+491379
+A:01370,01373,01374,01375,01376,01377,01378,01379
 T:*/*=0.05/0,0.119712/0,0.359948(60)/1
 Z:161 Teledialog
-A:+49138
+A:0138
 T:*/*=0.05/0,0.119712/0,0.359948(60)/1
 Z:162 T-VoteCall 1
-A:+491371
+A:01371
 T:*/*=0.05/0,0.2399924/0
 Z:163 T-VoteCall 2
 A:01372
@@ -574,10 +604,10 @@ T:W/08-18=0.05/0,0.090016(60)/1 Geschaeftszeit
 T:W/18-08=0.05/0,0.049996(60)/1
 T:E,H/*=0.05/0,0.049996(60)/1 Wochenende
 Z:171 Expo 2000
-A:+492000
+A:02000
 T:*/*=0.05/0,0.5999984/0,0.
 Z:172 Informationsverband Berlin-Bonn
-A:+491888
+A:01888
 T:W/08-18=0.05/0,0.230028(60)/1 Geschaeftszeit
 T:W/18-08=0.05/0,0.140012(60)/1
 T:E,H/*=0.05/0,0.140012(60)/1 Wochenende
@@ -621,31 +651,36 @@ A:+	# Alle anderen Auslandsverbindungen
 T:*/*=0.05/0,2.790032(60)/1
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:12 Tele Danmark
 C:Internetz GmbH, Süderstraße 75, 20097 Hamburg 01012
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:13 Tele 2
-G:15.04.1999
 C:Tele 2 Kinnevik Telecommunciations International S.A., 75, route de Longwy, L-8080 Bertrange, Luxembourg 01013
 C:Homepage: http://www.tele2.de
 C:Hotline:  0800/24-01013
 C:Adresse:  Postfach 130840, 40558
 C:	    Duesseldorf
+C:Erfasste Zonen:
+C:2	-   4	Deutschland
+C:10		Mobilfunk
+C:200	-	Ausland
+G:15.04.1999
 Z:2-4 National
 T:*/07-19=0.10/60
 T:*/19-22=0.07/60
 T:*/22-07=0.05/60
 Z:10 Mobilfunknetz
-A:01610,01617,01619,01618 # C
-A:0170,0171  		  # D1
-A:0172,0173		  # D2
-A:0177,0178		  # Eplus
-A:0176,0179  		  # E2
+A:01618		# T-C-Tel Voice Mail
+A:01610,01611,01612,01613,01614,01615,01616,01617,01619 # C
+A:0170,0171		# D1
+A:0172,0173		# D2
+A:0177,0178		# Eplus
+A:0176,0179		# E2
 T:*/*=0.79/60
 Z:200 Euro 1 / USA, Kanada
 A:Vereinigte Staaten (USA), Kanada, Niederlande, Belgien, Frankreich, Spanien
@@ -697,31 +732,42 @@ A:Georgien, Kirgisistan, Usbekistan
 T:*/*=2.44/60
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:14 EWE TEL Call By Call national
 C:GmbH, Donnerschweer Straße 22-26, 26123 Oldenburg 01014
 C:Homepage: http://www.ewetel.de
 C:Hotline: (07-22h) 01803/25 24 23
 C:Regionaltarif gilt nur in bestimmten Orten in der Nähe von Oldenburg
+C:Erfasste Zonen:
+C:0	-   4	Deutschland
+C:10,12,14,15	Mobilfunk
+C:33	-  39	Satelitenfunk
+C:200	-	Ausland
 Z:2-4 Inland
 T:W/06-18=0.18(60)/1 Tagestarif
 T:W/18-21=0.12(60)/1 Abendtarif
 T:E,H/06-21=0.12(60)/1 Tagestarif
 T:*/21-06=0.08(60)/1 Nachttarif
 Z:10 C-Netz
+A:01618		# T-C-Tel Voice Mail
+A:01610,01611,01612,01613,01614,01615,01616,01617,01619 # C
 T:W/09-18=0.88(60)/1 Tagestarif
 T:W/18-09=0.48(60)/1 Nachttarif
 T:E,H/*=0.48(60)/1 Wochenende
 Z:12 D-Netze
+A:0170,0171		# D1
+A:0172,0173		# D2
 T:W/09-18=0.88(60)/1 Tagestarif
 T:W/18-09=0.48(60)/1 Nachttarif
 T:E,H/*=0.48(60)/1 Wochenende
 Z:14 E-Plus
+A:0177,0178		# Eplus
 T:W/09-18=1.29(60)/1 Tagestarif
 T:W/18-09=0.55(60)/1 Nachttarif
 T:E,H/*=0.55(60)/1 Wochenende
 Z:15 City-Partner
+A:0176,0179		# E2
 T:W/09-18=0.96(60)/1 Tagestarif
 T:W/18-09=0.48(60)/1 Nachttarif
 T:E,H/*=0.48(60)/1 Wochenende
@@ -761,6 +807,11 @@ C:GmbH, Donnerschweer Straße 22-26, 26123 Oldenburg 01014
 C:Homepage: http://www.ewetel.de
 C:Hotline: (07-22h) 01803/25 24 23
 C:Regionaltarif gilt nur in bestimmten Orten in der Nähe von Oldenburg
+C:Erfasste Zonen:
+C:0	-   4	Deutschland
+C:10,12,14,15	Mobilfunk
+C:33	-  39	Satelitenfunk
+C:200	-	Ausland
 Z:2 City
 T:W/06-18=0.075(60)/1 Tagestarif
 T:W/18-21=0.05(60)/1 Abendtarif
@@ -777,18 +828,24 @@ T:W/18-21=0.12(60)/1 Abendtarif
 T:E,H/06-21=0.12(60)/1 Tagestarif
 T:*/21-06=0.07(60)/1 Nachttarif
 Z:10 C-Netz
+A:01618		# T-C-Tel Voice Mail
+A:01610,01611,01612,01613,01614,01615,01616,01617,01619 # C
 T:W/09-18=0.88(60)/1 Tagestarif
 T:W/18-09=0.48(60)/1 Nachttarif
 T:E,H/*=0.48(60)/1 Wochenende
 Z:12 D-Netze
+A:0170,0171		# D1
+A:0172,0173		# D2
 T:W/09-18=0.88(60)/1 Tagestarif
 T:W/18-09=0.48(60)/1 Nachttarif
 T:E,H/*=0.48(60)/1 Wochenende
 Z:14 E-Plus
+A:0177,0178		# Eplus
 T:W/09-18=1.29(60)/1 Tagestarif
 T:W/18-09=0.55(60)/1 Nachttarif
 T:E,H/*=0.55(60)/1 Wochenende
 Z:15 City-Partner
+A:0176,0179		# E2
 T:W/09-18=0.96(60)/1 Tagestarif
 T:W/18-09=0.48(60)/1 Nachttarif
 T:E,H/*=0.48(60)/1 Wochenende
@@ -828,6 +885,11 @@ C:GmbH, Donnerschweer Straße 22-26, 26123 Oldenburg 01014
 C:Homepage: http://www.ewetel.de
 C:Hotline: (07-22h) 01803/25 24 23
 C:Regionaltarif gilt nur in bestimmten Orten in der Nähe von Oldenburg
+C:Erfasste Zonen:
+C:0	-   4	Deutschland
+C:10,12,14,15	Mobilfunk
+C:33	-  39	Satelitenfunk
+C:200	-	Ausland
 Z:2 City
 T:W/06-18=0.065(60)/1 Tagestarif
 T:E,H/06-18=0.05(60)/1 Tagestarif
@@ -844,18 +906,24 @@ T:W/18-21=0.12(60)/1 Abendtarif
 T:E,H/06-21=0.12(60)/1 Tagestarif
 T:*/21-06=0.06(60)/1 Nachttarif
 Z:10 C-Netz
+A:01618		# T-C-Tel Voice Mail
+A:01610,01611,01612,01613,01614,01615,01616,01617,01619 # C
 T:W/09-18=0.88(60)/1 Tagestarif
 T:W/18-09=0.48(60)/1 Nachttarif
 T:E,H/*=0.48(60)/1 Wochenende
 Z:12 D-Netze
+A:0170,0171		# D1
+A:0172,0173		# D2
 T:W/09-18=0.88(60)/1 Tagestarif
 T:W/18-09=0.48(60)/1 Nachttarif
 T:E,H/*=0.48(60)/1 Wochenende
 Z:14 E-Plus
+A:0177,0178		# Eplus
 T:W/09-18=1.29(60)/1 Tagestarif
 T:W/18-09=0.55(60)/1 Nachttarif
 T:E,H/*=0.55(60)/1 Wochenende
 Z:15 City-Partner
+A:0176,0179		# E2
 T:W/09-18=0.96(60)/1 Tagestarif
 T:W/18-09=0.48(60)/1 Nachttarif
 T:E,H/*=0.48(60)/1 Wochenende
@@ -891,10 +959,25 @@ A:+
 T:*/*=2.99(60)/1
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:15 RSL clever call
+##
+## macht *keinen* Tarifwechsel in laufender Verbindung!
+##
 C:RSL COM Deutschland GmbH, Lyoner Straße 36, 60528 Frankfurt/Main 01015
+C:Erfasste Zonen:
+C:0, 2	-   4	Deutschland
+C:10		Mobilfunk
+C:33	-  39	Satelitenfunk
+C:60	-  75	Pieper
+C:81	-  85	Service 0180-x
+C:91	-  94	Service 0190-x
+C:100		T-Online
+C:160, 164	DTAG Service Nummern
+C:170		Persöhnliche Rufnummer
+C:171		Info Expo 2000
+C:200	-	Ausland
 G:01.04.1999
 Z:0 Freecall
 A:01171, 01172, 01174	# DTAG Störungsannahme
@@ -904,11 +987,12 @@ T:W/08-21=0.18/60
 T:E,H/08-21=0.14/60
 T:*/21-08=0.07/60
 Z:10 Mobilnetze
-A:01610,01617,01619,01618 # C
-A:0170,0171  		  # D1
-A:0172,0173		  # D2
-A:0177,0178		  # Eplus
-A:0176,0179  		  # E2
+A:01618		# T-C-Tel Voice Mail
+A:01610,01611,01612,01613,01614,01615,01616,01617,01619 # C
+A:0170,0171		# D1
+A:0172,0173		# D2
+A:0177,0178		# Eplus
+A:0176,0179		# E2
 T:W/08-21=0.69/60
 T:W/21-08=0.49/60
 T:E,H/*=0.49/60
@@ -1615,7 +1699,7 @@ Z:400
 A:St. Kitts Und Nevis
 T:*/*=1.67/60
 Z:401
-A:St. Lucia 
+A:St. Lucia
 T:*/*=1.55/60
 Z:402
 A:St. Pierre Und Miquelon
@@ -1740,6 +1824,18 @@ T:*/*=0.89/60
 #####################################################################
 P:15,1 RSL CleverLine global
 C:RSL COM Deutschland GmbH, Lyoner Straße 36, 60528 Frankfurt/Main 01015
+C:Erfasste Zonen:
+C:0, 2	-   4	Deutschland
+C:10		Mobilfunk
+C:33	-  39	Satelitenfunk
+C:60	-  75	Pieper
+C:81	-  85	Service 0180-x
+C:91	-  94	Service 0190-x
+C:100		T-Online
+C:160, 164	DTAG Service Nummern
+C:170		Persöhnliche Rufnummer
+C:171		Info Expo 2000
+C:200	-	Ausland
 G:01.04.1999
 Z:0 Freecall
 A:01171, 01172, 01174	# DTAG Störungsannahme
@@ -1757,11 +1853,12 @@ T:W/08-21=0.18(60)/1
 T:E,H/08-21=0.14(60)/1
 T:*/21-08=0.07(60)/1
 Z:10 RSL COM - mobil
-A:01610,01617,01619,01618 # C
-A:0170,0171  		  # D1
-A:0172,0173		  # D2
-A:0177,0178		  # Eplus
-A:0176,0179  		  # E2
+A:01618		# T-C-Tel Voice Mail
+A:01610,01611,01612,01613,01614,01615,01616,01617,01619 # C
+A:0170,0171		# D1
+A:0172,0173		# D2
+A:0177,0178		# Eplus
+A:0176,0179		# E2
 T:W/08-21=0.69(60)/1
 T:E,H/08-21=0.49(60)/1
 T:*/21-08=0.49(60)/1
@@ -2468,7 +2565,7 @@ Z:400
 A:St. Kitts Und Nevis
 T:*/*=1.67(60)/1
 Z:401
-A:St. Lucia 
+A:St. Lucia
 T:*/*=1.55(60)/1
 Z:402
 A:St. Pierre Und Miquelon
@@ -2593,6 +2690,18 @@ T:*/*=0.89(60)/1
 #####################################################################
 P:15,2 RSL CleverLine metropolitan
 C:RSL COM Deutschland GmbH, Lyoner Straße 36, 60528 Frankfurt/Main 01015
+C:Erfasste Zonen:
+C:0, 2	-   4	Deutschland
+C:10		Mobilfunk
+C:33	-  39	Satelitenfunk
+C:60	-  75	Pieper
+C:81	-  85	Service 0180-x
+C:91	-  94	Service 0190-x
+C:100		T-Online
+C:160, 164	DTAG Service Nummern
+C:170		Persöhnliche Rufnummer
+C:171		Info Expo 2000
+C:200	-	Ausland
 G:01.04.1999
 Z:0 Freecall
 A:01171, 01172, 01174	# DTAG Störungsannahme
@@ -2610,11 +2719,12 @@ T:W/08-21=0.18(60)/1
 T:E,H/08-21=0.14(60)/1
 T:*/21-08=0.07(60)/1
 Z:10 RSL COM - mobil
-A:01610,01617,01619,01618 # C
-A:0170,0171  		  # D1
-A:0172,0173		  # D2
-A:0177,0178		  # Eplus
-A:0176,0179  		  # E2
+A:01618		# T-C-Tel Voice Mail
+A:01610,01611,01612,01613,01614,01615,01616,01617,01619 # C
+A:0170,0171		# D1
+A:0172,0173		# D2
+A:0177,0178		# Eplus
+A:0176,0179		# E2
 T:W/08-21=0.69(60)/1
 T:E,H/08-21=0.49(60)/1
 T:*/21-08=0.49(60)/1
@@ -3321,7 +3431,7 @@ Z:400
 A:St. Kitts Und Nevis
 T:*/*=1.67(60)/1
 Z:401
-A:St. Lucia 
+A:St. Lucia
 T:*/*=1.55(60)/1
 Z:402
 A:St. Pierre Und Miquelon
@@ -3449,39 +3559,60 @@ C:Man kann sich entweder bei Debitel einwählen, oder bei RSL
 C:Beides geht nicht.
 C:homepage: http://www.debitel.de/willkommen/index.html
 C:Preise:   http://www.debitel.de/popups/pop_festnetz_tarife_directcall_free.html
+C:Erfasste Zonen:
+C:2	-   4	Deutschland
+C:10		Mobilfunk
 G:02.04.1999
 Z:2-4 Inland
 T:*/06-20=0.15/60 Hauptzeit
 T:*/20-06=0.15/120 Nebenzeit
 Z:10 Mobilfunknetze
+A:01618		# T-C-Tel Voice Mail
+A:01610,01611,01612,01613,01614,01615,01616,01617,01619 # C
+A:0170,0171		# D1
+A:0172,0173		# D2
+A:0177,0178		# Eplus
+A:0176,0179		# E2
 T:*/*=0.69/60
+#####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:16 LausitzNet
 C:Telekommunikationsgesellschaft mbH, Lausitzer Straße 1-7, 03046 Cottbus 01016
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:17 SEC
 C:Service AG, Dieskaustraße 246, 04249 Leipzig 01017
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:18 debitel DirectLine Privat-Tarif Minuten
 C:Kommunikationstechnik GmbH & Co KG, Schelmenwasenstr. 37 - 39, 70567 Stuttgart 01018
+C:Erfasste Zonen:
+C:2	-   4	Deutschland
+C:10		Mobilfunk
+C:43		Auskunft debitel
+C:200	-	Ausland
 G:01.06.1999
 Z:2-4 Fern
 T:W/09-18=0.17/60 Hauptzeit
 T:*/06-09,18-21=0.10/60 Nebenzeit
 T:*/21-06=0.05/60 Private Time
 Z:10 Mobilfunknetze
+A:01618		# T-C-Tel Voice Mail
+A:01610,01611,01612,01613,01614,01615,01616,01617,01619 # C
+A:0170,0171		# D1
+A:0172,0173		# D2
+A:0177,0178		# Eplus
+A:0176,0179		# E2
 T:W/09-18=0.69/60 Hauptzeit
 T:W/18-09=0.48/60
 T:E,H/*=0.48/60
-Z:40 Telefonauskunft
+Z:43 Telefonauskunft
 A:11818
 T:*/*=0.968/0,0.121/7.5
 Z:200 Europa 1
@@ -3514,14 +3645,25 @@ T:*/*=2.49/60
 #####################################################################
 P:18,1 debitel DirectLine Profi-Tarif 30 Sekunden
 C:Kommunikationstechnik GmbH & Co KG, Schelmenwasenstr. 37 - 39, 70567 Stuttgart 01018
+C:Erfasste Zonen:
+C:2	-   4	Deutschland
+C:10		Mobilfunk
+C:43		Auskunft debitel
+C:200	-	Ausland
 G:01.06.1999
 Z:2-4 Fern
 T:*/*=0.15/30
 Z:10 Mobilfunknetze
+A:01618		# T-C-Tel Voice Mail
+A:01610,01611,01612,01613,01614,01615,01616,01617,01619 # C
+A:0170,0171		# D1
+A:0172,0173		# D2
+A:0177,0178		# Eplus
+A:0176,0179		# E2
 T:W/09-18=0.69/30 Hauptzeit
 T:W/18-09=0.48/30
 T:E,H/*=0.48/30
-Z:40 Telefonauskunft
+Z:43 Telefonauskunft
 A:11818
 T:*/*=0.968/0,0.121/7.5
 Z:200 Europa 1
@@ -3554,16 +3696,27 @@ T:*/*=2.49/30
 #####################################################################
 P:18,2 debitel DirectLine Privat-Tarif Sekunden Takt
 C:Kommunikationstechnik GmbH & Co KG, Schelmenwasenstr. 37 - 39, 70567 Stuttgart 01018
+C:Erfasste Zonen:
+C:2	-   4	Deutschland
+C:10		Mobilfunk
+C:43		Auskunft debitel
+C:200	-	Ausland
 G:01.06.1999
 Z:2-4 Fern
 T:W/09-18=0.05/0,0.17/60 Hauptzeit
 T:*/06-09,18-21=0.05/0,0.10/60 Nebenzeit
 T:*/21-06=0.05/0,0.05/60 Private Time
 Z:10 Mobilfunknetze
+A:01618		# T-C-Tel Voice Mail
+A:01610,01611,01612,01613,01614,01615,01616,01617,01619 # C
+A:0170,0171		# D1
+A:0172,0173		# D2
+A:0177,0178		# Eplus
+A:0176,0179		# E2
 T:W/09-18=0.05/0,0.69/60 Hauptzeit
 T:W/18-09=0.05/0,0.48/60
 T:E,H/*=0.05/0,0.48/60
-Z:40 Telefonauskunft
+Z:43 Telefonauskunft
 A:11818
 T:*/*=0.968/0,0.121/7.5
 Z:200 Europa 1
@@ -3597,13 +3750,24 @@ T:*/*=0.05/0,2.49/60
 P:18,3 debitel DirectLine Profi-Tarif Sekunden Takt
 C:Kommunikationstechnik GmbH & Co KG, Schelmenwasenstr. 37 - 39, 70567 Stuttgart 01018
 G:01.06.1999
+C:Erfasste Zonen:
+C:2	-   4	Deutschland
+C:10		Mobilfunk
+C:43		Auskunft debitel
+C:200	-	Ausland
 Z:2-4 Fern
 T:*/*=0.05/0,0.15/30
 Z:10 Mobilfunknetze
+A:01618		# T-C-Tel Voice Mail
+A:01610,01611,01612,01613,01614,01615,01616,01617,01619 # C
+A:0170,0171		# D1
+A:0172,0173		# D2
+A:0177,0178		# Eplus
+A:0176,0179		# E2
 T:W/09-18=0.05/0,0.69/30 Hauptzeit
 T:W/18-09=0.05/0,0.48/30
 T:E,H/*=0.05/0,0.48/30
-Z:40 Telefonauskunft
+Z:43 Telefonauskunft
 A:11818
 T:*/*=0.968/0,0.121/7.5
 Z:200 Europa 1
@@ -3635,30 +3799,36 @@ A:+
 T:*/*=0.05/0,2.49/30
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:19 Mobilcom CbC
 C:CityLine Telefondienste GmbH, Schwarzer Weg 13, 24837 Schleswig 01019
-G:06.04.1999
 C:MobilCom AG
 C:Homepage: http://www.mobilcom.de
 C:Hotline:  01805/191919
 C:Adresse:  Postfach 1249
 C:	    24822 Schleswig
+C:Erfasste Zonen:
+C:2	-   4	Deutschland
+C:10		Mobilfunk
+C:102		01019freenet
+C:200		Ausland Gruppe A
+G:06.04.1999
 Z:2-4 Ferngespräche bundesweit
 T:*/07-19=0.12/60 Standard
 T:*/19-22=0.08/60 Spar
 T:*/22-07=0.04/60 Nacht
 Z:10 Mobilfunk
-A:01610,01617,01619,01618 # C
-A:0170,0171  		  # D1
-A:0172,0173		  # D2
-A:0177,0178		  # Eplus
-A:0176,0179  		  # E2
+A:01618		# T-C-Tel Voice Mail
+A:01610,01611,01612,01613,01614,01615,01616,01617,01619 # C
+A:0170,0171		# D1
+A:0172,0173		# D2
+A:0177,0178		# Eplus
+A:0176,0179		# E2
 T:*/*=0.49/60
 Z:102 01019freenet
-A:+491929 # (Benutzername und Passwort: egal, min. 1 Buchstabe)
-T:*/*=0.05(60)/1 FreeNet
+A:01929 # DNS: 62.104.197.193 und 212.81.191.16; POP3: pop3.01019freenet.de; SMTP: mx.01019freenet.de; User: mobilcom; Passwort: mobilcom
+T:*/*=0.05/60 FreeNet
 Z:200 Gruppe A
 A:Vereinigte Staaten (USA), Griechenland, Niederlande, Belgien, Frankreich
 A:Spanien, Gibraltar, Portugal, Luxemburg, Irland, Malta, Finnland
@@ -3668,6 +3838,11 @@ T:*/*=0.49/60
 #####################################################################
 P:19,1 Mobilcom Preselection/Business
 C:CityLine Telefondienste GmbH, Schwarzer Weg 13, 24837 Schleswig 01019
+C:Erfasste Zonen:
+C:2	-   4	Deutschland
+C:10		Mobilfunk
+C:102		01019freenet
+C:200	-	Ausland
 G:13.05.1999
 C:MobilCom AG
 C:Homepage: http://www.mobilcom.de
@@ -3679,14 +3854,15 @@ T:*/*=0.08(60)/1
 Z:4 Ferngespräche außerhalb Regio 50
 T:*/*=0.012(60)/1
 Z:10 Mobilfunk
-A:01610,01617,01619,01618 # C
-A:0170,0171  		  # D1
-A:0172,0173		  # D2
-A:0177,0178		  # Eplus
-A:0176,0179  		  # E2
+A:01618		# T-C-Tel Voice Mail
+A:01610,01611,01612,01613,01614,01615,01616,01617,01619 # C
+A:0170,0171		# D1
+A:0172,0173		# D2
+A:0177,0178		# Eplus
+A:0176,0179		# E2
 T:*/*=0.49(60)/1
 Z:102 01019freenet
-A:+491929 # (Benutzername und Passwort: egal, min. 1 Buchstabe)
+A:01929 # (Benutzername und Passwort: egal, min. 1 Buchstabe)
 T:*/*=0.05(60)/1 FreeNet
 Z:200 Gruppe A
 A:Andorra, Belgien, Dänemark, Finnland, Frankreich, Gibraltar
@@ -3715,25 +3891,31 @@ T:*/*=1.49(60)/1
 #####################################################################
 P:19,2 Mobilcom Preselection/Privat
 C:CityLine Telefondienste GmbH, Schwarzer Weg 13, 24837 Schleswig 01019
-G:13.05.1999
 C:MobilCom AG
 C:Homepage: http://www.mobilcom.de
 C:Hotline:  01805/191919
 C:Adresse:  Postfach 1249
 C:	    24822 Schleswig
+C:Erfasste Zonen:
+C:2	-   4	Deutschland
+C:10		Mobilfunk
+C:102		01019freenet
+C:200	-	Ausland
+G:13.05.1999
 Z:2-4 Ferngespräche bundesweit
 T:*/07-19=0.12(60)/1 Standard
 T:*/19-22=0.08(60)/1 Spar
 T:*/22-07=0.04(60)/1 Nacht
 Z:10 Mobilfunk
-A:01610,01617,01619,01618 # C
-A:0170,0171  		  # D1
-A:0172,0173		  # D2
-A:0177,0178		  # Eplus
-A:0176,0179  		  # E2
+A:01618		# T-C-Tel Voice Mail
+A:01610,01611,01612,01613,01614,01615,01616,01617,01619 # C
+A:0170,0171		# D1
+A:0172,0173		# D2
+A:0177,0178		# Eplus
+A:0176,0179		# E2
 T:*/*=0.49(60)/1
 Z:102 01019freenet
-A:+491929 # (Benutzername und Passwort: egal, min. 1 Buchstabe)
+A:01929 # (Benutzername und Passwort: egal, min. 1 Buchstabe)
 T:*/*=0.05(60)/1 FreeNet
 Z:200 Gruppe A
 A:Andorra, Belgien, Dänemark, Finnland, Frankreich, Gibraltar
@@ -3761,17 +3943,30 @@ A:China (Volksrepublik), Amerikanische Jungeferninseln
 T:*/*=1.49(60)/1
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:20 ISIS isiFON classic
 C:ISIS Multimedia Net GmbH, Kaistraße 6, 40221 Düsseldorf 01020
-G:01.04.1999
 C:Homepage: http://www.isis.de
 C:Telefon:  0800/809 0100
 C:Telefax:  0211/85 27 610
 C:Faxabruf: 0800/809 0111
 C:Spezialtarif "isiFON-zu-isiFON": Gilt innerhalb des gleichen Ortsnetzes,
 C:wenn beide Teilnehmer einen ISIS-Telefonanschluß haben.
+C:Erfasste Zonen:
+C:0	-   4	Deutschland
+C:5		Sondertarif
+C:10		Mobilfunk
+C:40		Auskunft DTAG Inland
+C:41		Auskunft DTAG Ausland
+C:47		Auskunft Telegate
+C:60	-  75	Pieper
+C:81	-  85	Service 0180-x
+C:91	-  94	Service 0190-x
+C:100		T-Online
+C:102		isiFONLINE
+C:200	-	Ausland
+G:01.04.1999
 Z:0 0800 Nulltarif
 A:0130, 0800
 Z:1-2 lokal
@@ -3791,11 +3986,12 @@ T:W/09-18=0.1044/300 Hauptzeit
 T:W/18-09=0.1044/600 Nebenzeit
 T:E,H/*=0.1044/600 Wochenende
 Z:10 Mobilfunk
-A:01610,01617,01619,01618 # C
-A:0170,0171               # D1
-A:0172,0173               # D2
-A:0177,0178               # Eplus
-A:0176,0179               # E2
+A:01618		# T-C-Tel Voice Mail
+A:01610,01611,01612,01613,01614,01615,01616,01617,01619 # C
+A:0170,0171		# D1
+A:0172,0173		# D2
+A:0177,0178		# Eplus
+A:0176,0179		# E2
 T:W/09-18=0.1044/8 Hauptzeit
 T:W/18-09=0.1044/12 Nebenzeit
 T:E,H/*=0.1044/12 Wochenende
@@ -3805,7 +4001,7 @@ T:*/*=0.96/30,0.12/3.8
 Z:41 DTAG Auslandsauskunft
 A:11834
 T:*/*=0.96/0,0.12/3.8
-Z:42 Telegate Auskunft
+Z:47 Telegate Auskunft
 A:11880
 T:*/*=0.96/0,0.12/7.5
 Z:60 Cityruf
@@ -3923,6 +4119,19 @@ T:*/*=0.1044/2.4
 #####################################################################
 P:20,1 ISIS isiFON plus
 C:ISIS Multimedia Net GmbH, Kaistraße 6, 40221 Düsseldorf 01020
+C:Erfasste Zonen:
+C:0	-   4	Deutschland
+C:5		Sondertarif
+C:10		Mobilfunk
+C:40		Auskunft DTAG Inland
+C:41		Auskunft DTAG Ausland
+C:47		Auskunft Telegate
+C:60	-  75	Pieper
+C:81	-  85	Service 0180-x
+C:91	-  94	Service 0190-x
+C:100		T-Online
+C:102		isiFONLINE
+C:200	-	Ausland
 G:01.04.1999
 C:Homepage: http://www.isis.de
 C:Telefon:  0800/809 0100
@@ -3949,11 +4158,12 @@ T:W/09-18=0.1044/300 Hauptzeit
 T:W/18-09=0.1044/600 Nebenzeit
 T:E,H/*=0.1044/600 Wochenende
 Z:10 Mobilfunk
-A:01610,01617,01619,01618 # C
-A:0170,0171               # D1
-A:0172,0173               # D2
-A:0177,0178               # Eplus
-A:0176,0179               # E2
+A:01618		# T-C-Tel Voice Mail
+A:01610,01611,01612,01613,01614,01615,01616,01617,01619 # C
+A:0170,0171		# D1
+A:0172,0173		# D2
+A:0177,0178		# Eplus
+A:0176,0179		# E2
 T:W/09-18=0.1044/8 Hauptzeit
 T:W/18-09=0.1044/12 Nebenzeit
 T:E,H/*=0.1044/12 Wochenende
@@ -3963,7 +4173,7 @@ T:*/*=0.96/30,0.12/3.8
 Z:41 DTAG Auslandsauskunft
 A:11834
 T:*/*=0.96/0,0.12/3.8
-Z:42 Telegate Auskunft
+Z:47 Telegate Auskunft
 A:11880
 T:*/*=0.96/0,0.12/7.5
 Z:60 Cityruf
@@ -4081,6 +4291,18 @@ T:*/*=0.1044/2.4
 #####################################################################
 P:20,2 ISIS Preselection
 C:ISIS Multimedia Net GmbH, Kaistraße 6, 40221 Düsseldorf 01020
+C:Erfasste Zonen:
+C:0	-   4	Deutschland
+C:10		Mobilfunk
+C:40		Auskunft DTAG Inland
+C:41		Auskunft DTAG Ausland
+C:47		Auskunft Telegate
+C:60	-  75	Pieper
+C:81	-  85	Service 0180-x
+C:91	-  94	Service 0190-x
+C:100		T-Online
+C:102		isiFONLINE
+C:200	-	Ausland
 G:01.04.1999
 C:Homepage: http://www.isis.de
 C:Telefon:  0800/809 0100
@@ -4101,11 +4323,12 @@ T:W/09-18=0.1044/33 Hauptzeit
 T:W/18-09=0.1044/69 Nebenzeit
 T:E,H/*=0.1044/69 Wochenende
 Z:10 Mobilfunk
-A:01610,01617,01619,01618 # C
-A:0170,0171               # D1
-A:0172,0173               # D2
-A:0177,0178               # Eplus
-A:0176,0179               # E2
+A:01618		# T-C-Tel Voice Mail
+A:01610,01611,01612,01613,01614,01615,01616,01617,01619 # C
+A:0170,0171		# D1
+A:0172,0173		# D2
+A:0177,0178		# Eplus
+A:0176,0179		# E2
 T:W/09-18=0.1044/8 Hauptzeit
 T:W/18-09=0.1044/12 Nebenzeit
 T:E,H/*=0.1044/12 Wochenende
@@ -4232,18 +4455,22 @@ A:+
 T:*/*=0.1044/2.4
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:21 QS
 C:Communication Service GmbH, Oberländer Ufer 180-182, 50968 Köln 01021
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:22 NetCologne
 C:GmbH, Maarweg 163, 50825 Köln 01022
 C:Homepage: http://www.netcologne.de
 C:Tarife: http://www.netcologne.de/tarife/tarif1.html
+C:Erfasste Zonen:
+C:1	-   4	Deutschland
+C:10		Mobilfunk
+C:200	-	Ausland
 Z:1-2 City Tarif
 T:W/08-18=0.06(60)/1 Hauptzeit
 T:E,H/08-18=0.035(60)/1 Wochenende
@@ -4254,12 +4481,12 @@ T:E,H/08-18=0.09(60)/1 Wochenende
 T:*/18-22=0.09(60)/1 Nebenzeit
 T:*/22-08=0.06(60)/1 Nachttarif
 Z:10 Mobilfunk
-A:+491618		# T-C-Tel Voice Mail
-A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
-A:+49170,+49171		# D1
-A:+49172,+49173		# D2
-A:+49177,+49178		# Eplus
-A:+49176,+49179		# E2
+A:01618		# T-C-Tel Voice Mail
+A:01610,01611,01612,01613,01614,01615,01616,01617,01619 # C
+A:0170,0171		# D1
+A:0172,0173		# D2
+A:0177,0178		# Eplus
+A:0176,0179		# E2
 T:W/08-18=0.94(60)/1 Hauptzeit
 T:E,H/08-18=0.49(60)/1 Wochenende
 T:*/18-08=0.49(60)/1 Nebenzeit
@@ -4338,11 +4565,15 @@ A:Somalia, Tonga, Zentralafrikanische Republik
 T:*/*=3.10(60)/1
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:23 tesion connectClassic
 C:Communikationsnetze Süd-West GmbH & Co. KG, Kriegsbergstr. 11, 70174 Stuttgart 01023
 C:Homepage: http://www.tesion.de
+C:Erfasste Zonen:
+C:1	-   4	Deutschland
+C:10		Mobilfunk
+C:200	-	Ausland
 G:01.06.1999
 Z:1-2 Nah
 T:W/09-19=0.10(60)/1
@@ -4360,12 +4591,12 @@ T:W/06-09,19-21=0.10(60)/1
 T:E,H/06-21=0.10(60)/1
 T:*/21-06=0.06(60)/1
 Z:10 Mobilfunk
-A:+491618		# T-C-Tel Voice Mail
-A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
-A:+49170,+49171		# D1
-A:+49172,+49173		# D2
-A:+49177,+49178		# Eplus
-A:+49176,+49179		# E2
+A:01618		# T-C-Tel Voice Mail
+A:01610,01611,01612,01613,01614,01615,01616,01617,01619 # C
+A:0170,0171		# D1
+A:0172,0173		# D2
+A:0177,0178		# Eplus
+A:0176,0179		# E2
 T:W/09-19=0.81(60)/1
 T:E,H/09-19=0.48(60)/1
 T:*/19-09=0.48(60)/1
@@ -4406,6 +4637,10 @@ T:*/*=2.31(60)/1
 P:23,1 tesion connectProfi
 C:Communikationsnetze Süd-West GmbH & Co. KG, Kriegsbergstr. 11, 70174 Stuttgart 01023
 C:Homepage: http://www.tesion.de
+C:Erfasste Zonen:
+C:1	-   4	Deutschland
+C:10		Mobilfunk
+C:200	-	Ausland
 G:01.06.1999
 Z:1-2 Nah
 T:W/09-19=0.09(60)/1
@@ -4420,12 +4655,12 @@ T:W/09-19=0.18(60)/1
 T:W/19-09=0.10(60)/1
 T:E,H/*=0.10(60)/1
 Z:10 Mobilfunk
-A:+491618		# T-C-Tel Voice Mail
-A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
-A:+49170,+49171		# D1
-A:+49172,+49173		# D2
-A:+49177,+49178		# Eplus
-A:+49176,+49179		# E2
+A:01618		# T-C-Tel Voice Mail
+A:01610,01611,01612,01613,01614,01615,01616,01617,01619 # C
+A:0170,0171		# D1
+A:0172,0173		# D2
+A:0177,0178		# Eplus
+A:0176,0179		# E2
 T:W/09-19=0.81(60)/1
 T:E,H/09-19=0.48(60)/1
 T:*/19-09=0.48(60)/1
@@ -4466,6 +4701,10 @@ T:*/*=2.31(60)/1
 P:23,2 tesion Call-By-Call
 C:Communikationsnetze Süd-West GmbH & Co. KG, Kriegsbergstr. 11, 70174 Stuttgart 01023
 C:Homepage: http://www.tesion.de
+C:Erfasste Zonen:
+C:1	-   4	Deutschland
+C:10		Mobilfunk
+C:200	-	Ausland
 G:01.06.1999
 Z:1-2 Nah
 T:W/09-19=0.06/0,0.10(60)/1
@@ -4483,12 +4722,12 @@ T:W/06-09,19-21=0.06/0,0.10(60)/1
 T:E,H/06-21=0.06/0,0.10(60)/1
 T:*/21-06=0.06/0,0.06(60)/1
 Z:10 Mobilfunk
-A:+491618		# T-C-Tel Voice Mail
-A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
-A:+49170,+49171		# D1
-A:+49172,+49173		# D2
-A:+49177,+49178		# Eplus
-A:+49176,+49179		# E2
+A:01618		# T-C-Tel Voice Mail
+A:01610,01611,01612,01613,01614,01615,01616,01617,01619 # C
+A:0170,0171		# D1
+A:0172,0173		# D2
+A:0177,0178		# Eplus
+A:0176,0179		# E2
 T:W/09-19=0.06/0,0.81(60)/1
 T:E,H/09-19=0.06/0,0.48(60)/1
 T:*/19-09=0.06/0,0.48(60)/1
@@ -4504,10 +4743,9 @@ A:San Marino, Schweden, Spanien
 T:*/*=0.06/0,0.46(60)/1
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:24 Telepassport 99 Plus
-G:01.05.1999
 C:GmbH, Schwindstraße 3, 60325 Frankfurt 01024
 C:Name:     TelePassport Service GmbH
 C:Homepage: http://www.telepassport.de
@@ -4516,51 +4754,58 @@ C:Telefon:  0361/594 2500
 C:Telefax:  0800/808 808 9
 C:Adresse:  Juri-Gagarin-Ring 88, 99084
 C:	    Erfurt
+C:Erfasste Zonen:
+C:2	-   4	Deutschland
+C:10		Mobilfunk
+C:102		TelePassport-Online
+C:200	-	Ausland
+G:01.05.1999
 Z:2 Lokal
-T:W/08-18=0.12(60)/1 Geschäftszeit
-T:W/18-08=0.08(60)/1 Freizeit
-T:E,H/*=0.08(60)/1 Wochenende
+T:W/08-18=0.12/60 Geschäftszeit
+T:W/18-08=0.08/60 Freizeit
+T:E,H/*=0.08/60 Wochenende
 Z:3 Nah
-T:W/08-18=0.14(60)/1 Geschäftszeit
-T:W/18-08=0.10(60)/1 Freizeit
-T:E,H/*=0.10(60)/1 Wochenende
+T:W/08-18=0.14/60 Geschäftszeit
+T:W/18-08=0.10/60 Freizeit
+T:E,H/*=0.10/60 Wochenende
 Z:4 Fern
-T:W/08-18=0.16(60)/1 Geschäftszeit
-T:W/18-08=0.12(60)/1 Freizeit
-T:E,H/*=0.12(60)/1 Wochenende
+T:W/08-18=0.16/60 Geschäftszeit
+T:W/18-08=0.12/60 Freizeit
+T:E,H/*=0.12/60 Wochenende
 Z:10 Mobilfunk
-A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
-A:+49170,+49171		# D1
-A:+49172,+49173		# D2
-A:+49177,+49178		# Eplus
-A:+49176,+49179		# E2
-T:W/08-18=0.56(60)/1 Geschäftszeit
-T:W/18-08=0.46(60)/1 Freizeit
-T:E,H/*=0.46(60)/1 Wochenende
+A:01618		# T-C-Tel Voice Mail
+A:01610,01611,01612,01613,01614,01615,01616,01617,01619 # C
+A:0170,0171		# D1
+A:0172,0173		# D2
+A:0177,0178		# Eplus
+A:0176,0179		# E2
+T:W/08-18=0.56/60 Geschäftszeit
+T:W/18-08=0.46/60 Freizeit
+T:E,H/*=0.46/60 Wochenende
 Z:102 TelePassport-Online
-A:01924924 # (Benutzername: beliebig; Passwort: beliebig)
-T:*/*=0.06(60)/1
+A:01924924 # Proxy: proxy.telepassport.de; DNS: 212.41.64.33 und 212.41.68.33; User: tele; Passwort: tele
+T:*/*=0.06/60
 Z:200 Euro 1
 A:Andorra, Belgien, Dänemark, Färöer, Finnland, Frankreich, Griechenland
 A:Großbritannien, Insel Man, Irland, Island, Italien, Kanalinseln
 A:Liechtenstein, Luxemburg, Monaco, Niederlande, Nordirland, Norwegen
 A:Österreich, Polen, Portugal, San Marino, Schweden, Schweiz, Slowakei
 A:Spanien, Tschechische Republik, Vatikanstadt
-T:*/*=0.56(60)/1
+T:*/*=0.56/60
 Z:201 Euro 2
 A:Albanien, Bosnien-Herzegowina, Bulgarien, Estland, Gibraltar, Israel
 A:Jugoslawien, Kroatien, Lettland, Litauen, Malta, Mazedonien, Moldau
 A:Rumänien, Russland, Slowenien, Türkei, Ukraine, Ungarn, Weißrußland, Zypern
-T:*/*=0.96(60)/1
+T:*/*=0.96/60
 Z:202 Welt 1
 A:Kanada, USA
-T:*/*=0.46(60)/1
+T:*/*=0.46/60
 Z:203 Welt 2
 A:Australien, Hongkong, Korea (Republik), Japan, Singapur, Neuseeland
-T:*/*=0.96(60)/1
+T:*/*=0.96/60
 Z:204 Welt 3
 A:+
-T:*/*=1.96(60)/1
+T:*/*=1.96/60
 #####################################################################
 P:24,1 Telepassport 01024 Plus
 G:01.05.1999
@@ -4572,43 +4817,49 @@ C:Telefon:  0361/594 2500
 C:Telefax:  0800/808 808 9
 C:Adresse:  Juri-Gagarin-Ring 88, 99084
 C:	    Erfurt
+C:Erfasste Zonen:
+C:2	-   4	Deutschland
+C:10		Mobilfunk
+C:102		TelePassport-Online
+C:200	-	Ausland
 Z:2-4 Inland
-T:W/08-18=0.16(60)/1 Geschäftszeit
-T:W/18-08=0.12(60)/1 Freizeit
-T:E,H/*=0.12(60)/1 Wochenende
+T:W/08-18=0.16/60 Geschäftszeit
+T:W/18-08=0.12/60 Freizeit
+T:E,H/*=0.12/60 Wochenende
 Z:10 Mobilfunk
-A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
-A:+49170,+49171		# D1
-A:+49172,+49173		# D2
-A:+49177,+49178		# Eplus
-A:+49176,+49179		# E2
-T:*/*=0.56(60)/1
+A:01618		# T-C-Tel Voice Mail
+A:01610,01611,01612,01613,01614,01615,01616,01617,01619 # C
+A:0170,0171		# D1
+A:0172,0173		# D2
+A:0177,0178		# Eplus
+A:0176,0179		# E2
+T:*/*=0.56/60
 Z:102 TelePassport-Online
 A:01924924 # (Benutzername: beliebig; Passwort: beliebig)
-T:W/08-18=0.08(60)/1 Geschäftszeit
-T:W/18-08=0.06(60)/1 Freizeit
-T:E,H/*=0.08(60)/1 Wochenende
+T:W/08-18=0.08/60 Geschäftszeit
+T:W/18-08=0.06/60 Freizeit
+T:E,H/*=0.08/60 Wochenende
 Z:200 Euro 1
 A:Andorra, Belgien, Dänemark, Färöer, Finnland, Frankreich, Griechenland
 A:Großbritannien, Insel Man, Irland, Island, Italien, Kanalinseln
 A:Liechtenstein, Luxemburg, Monaco, Niederlande, Nordirland, Norwegen
 A:Österreich, Polen, Portugal, San Marino, Schweden, Schweiz, Slowakei
 A:Spanien, Tschechische Republik, Vatikanstadt
-T:*/*=0.56(60)/1
+T:*/*=0.56/60
 Z:201 Euro 2
 A:Albanien, Bosnien-Herzegowina, Bulgarien, Estland, Gibraltar, Israel
 A:Jugoslawien, Kroatien, Lettland, Litauen, Malta, Mazedonien, Moldau
 A:Rumänien, Russland, Slowenien, Türkei, Ukraine, Ungarn, Weißrußland, Zypern
-T:*/*=0.96(60)/1
+T:*/*=0.96/60
 Z:202 Welt 1
 A:Kanada, USA
-T:*/*=0.46(60)/1
+T:*/*=0.46/60
 Z:203 Welt 2
 A:Australien, Hongkong, Korea (Republik), Japan, Singapur, Neuseeland
-T:*/*=0.96(60)/1
+T:*/*=0.96/60
 Z:204 Welt 3
 A:+
-T:*/*=1.96(60)/1
+T:*/*=1.96/60
 #####################################################################
 P:24,2 Telepassport 01024 by Call
 G:01.05.1999
@@ -4620,16 +4871,22 @@ C:Telefon:  0361/594 2500
 C:Telefax:  0800/808 808 9
 C:Adresse:  Juri-Gagarin-Ring 88, 99084
 C:	    Erfurt
+C:Erfasste Zonen:
+C:2	-   4	Deutschland
+C:10		Mobilfunk
+C:102		TelePassport-Online
+C:200	-	Ausland
 Z:2-4 Inland
 T:W/08-18=0.16/60 Geschäftszeit
 T:W/18-08=0.12/60 Freizeit
 T:E,H/*=0.12/60 Wochenende
 Z:10 Mobilfunk
-A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
-A:+49170,+49171		# D1
-A:+49172,+49173		# D2
-A:+49177,+49178		# Eplus
-A:+49176,+49179		# E2
+A:01618		# T-C-Tel Voice Mail
+A:01610,01611,01612,01613,01614,01615,01616,01617,01619 # C
+A:0170,0171		# D1
+A:0172,0173		# D2
+A:0177,0178		# Eplus
+A:0176,0179		# E2
 T:*/*=0.56/60
 Z:102 TelePassport-Online
 A:01924924 # (Benutzername: beliebig; Passwort: beliebig)
@@ -4669,22 +4926,29 @@ C:Telefax:  0800/808 808 9
 C:Adresse:  Juri-Gagarin-Ring 88, 99084
 C:	    Erfurt
 C:Sondertarif 5 "Bundesland/Region":Gespräche innerhalb des Bundeslandes/Region
+C:Erfasste Zonen:
+C:2	-   4	Deutschland
+C:5		Sondertarif
+C:10		Mobilfunk
+C:102		TelePassport-Online
+C:200	-	Ausland
 Z:2 Lokal
-T:*/*=0.10(60)/1
+T:*/*=0.10/60
 Z:3-4 Fern
-T:*/*=0.16(60)/1
+T:*/*=0.16/60
 Z:5 Bundesland/Region
-T:*/*=0.14(60)/1
+T:*/*=0.14/60
 Z:10 Mobilfunk
-A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
-A:+49170,+49171		# D1
-A:+49172,+49173		# D2
-A:+49177,+49178		# Eplus
-A:+49176,+49179		# E2
-T:*/*=0.56(60)/1
+A:01618		# T-C-Tel Voice Mail
+A:01610,01611,01612,01613,01614,01615,01616,01617,01619 # C
+A:0170,0171		# D1
+A:0172,0173		# D2
+A:0177,0178		# Eplus
+A:0176,0179		# E2
+T:*/*=0.56/60
 Z:102 TelePassport-Online
 A:01924924 # (Benutzername: beliebig; Passwort: beliebig)
-T:*/*=0.06(60)/1
+T:*/*=0.06/60
 Z:200 International 1
 A:Andorra, Belgien, Dänemark, Färöer, Finnland, Frankreich, Griechenland
 A:Großbritannien, Insel Man, Irland, Island, Italien, Kanalinseln
@@ -4692,16 +4956,16 @@ A:Liechtenstein, Luxemburg, Monaco, Niederlande, Nordirland, Norwegen
 A:Österreich, Polen, Portugal, San Marino, Schweden, Schweiz, Slowakei
 A:Spanien, Tschechische Republik, Vatikanstadt
 A:Kanada, USA
-T:*/*=0.56(60)/1
+T:*/*=0.56/60
 Z:201 International 2
 A:Albanien, Bosnien-Herzegowina, Bulgarien, Estland, Gibraltar, Israel
 A:Jugoslawien, Kroatien, Lettland, Litauen, Malta, Mazedonien, Moldau
 A:Rumänien, Russland, Slowenien, Türkei, Ukraine, Ungarn, Weißrußland, Zypern
 A:Australien, Hongkong, Korea (Republik), Japan, Singapur, Neuseeland
-T:*/*=0.96(60)/1
+T:*/*=0.96/60
 Z:202 International 3
 A:+
-T:*/*=1.96(60)/1
+T:*/*=1.96/60
 #####################################################################
 P:24,4 Telepassport SüdOst-Tarif
 G:01.05.1999
@@ -4713,36 +4977,42 @@ C:Telefon:  0361/594 2500
 C:Telefax:  0800/808 808 9
 C:Adresse:  Juri-Gagarin-Ring 88, 99084
 C:	    Erfurt
+C:Erfasste Zonen:
+C:2	-   4	Deutschland
+C:10		Mobilfunk
+C:102		TelePassport-Online
+C:200	-	Ausland
 Z:2 Lokal
-T:*/*=0.12(60)/1
+T:*/*=0.12/60
 Z:3 Nah
-T:W/08-18=0.16(60)/1 Geschäftszeit
-T:W/18-08=0.12(60)/1 Freizeit
-T:E,H/*=0.12(60)/1 Wochenende
+T:W/08-18=0.16/60 Geschäftszeit
+T:W/18-08=0.12/60 Freizeit
+T:E,H/*=0.12/60 Wochenende
 Z:4 Fern
-T:W/08-18=0.18(60)/1 Geschäftszeit
-T:W/18-08=0.12(60)/1 Freizeit
-T:E,H/*=0.12(60)/1 Wochenende
+T:W/08-18=0.18/60 Geschäftszeit
+T:W/18-08=0.12/60 Freizeit
+T:E,H/*=0.12/60 Wochenende
 Z:10 Mobilfunk
-A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
-A:+49170,+49171		# D1
-A:+49172,+49173		# D2
-A:+49177,+49178		# Eplus
-A:+49176,+49179		# E2
-T:W/08-18=0.58(60)/1 Geschäftszeit
-T:W/18-08=0.48(60)/1 Freizeit
-T:E,H/*=0.48(60)/1 Wochenende
+A:01618		# T-C-Tel Voice Mail
+A:01610,01611,01612,01613,01614,01615,01616,01617,01619 # C
+A:0170,0171		# D1
+A:0172,0173		# D2
+A:0177,0178		# Eplus
+A:0176,0179		# E2
+T:W/08-18=0.58/60 Geschäftszeit
+T:W/18-08=0.48/60 Freizeit
+T:E,H/*=0.48/60 Wochenende
 Z:102 TelePassport-Online
 A:01924924 # (Benutzername: beliebig; Passwort: beliebig)
-T:W/08-18=0.08(60)/1 Geschäftszeit
-T:W/18-08=0.06(60)/1 Freizeit
-T:E,H/*=0.08(60)/1 Wochenende
+T:W/08-18=0.08/60 Geschäftszeit
+T:W/18-08=0.06/60 Freizeit
+T:E,H/*=0.08/60 Wochenende
 Z:200 Global 1
 A:Belgien, Dänemark, Finnland, Frankreich, Griechenland, Großbritannien
 A:Irland, Island, Italien, Liechtenstein, Luxemburg, Monaco, Niederlande
 A:Norwegen, Österreich, Polen, Portugal, Schweden, Schweiz, Slowakei, Spanien
 A:Tschechische Republik, Türkei, USA, Kanada
-T:*/*=0.68(60)/1
+T:*/*=0.68/60
 Z:201 Global 2
 A:Albanien, Bosnien-Herzegowina, Bulgarien, Israel, Jugoslawien, Kroatien
 A:Malta, Mazedonien, Rumänien, Slowenien, Ungarn, Zypern
@@ -4750,14 +5020,14 @@ A:Aserbaidschan, Estland, Lettland, Litauen, Moldawien, Russland
 A:Tadschikistan, Ukraine, Belarus
 A:Australien, China (Taiwan), Hongkong, Korea (Republik), Indonesien, Japan
 A:Malaysia, Neuseeland, Philippinen, Singapur, Thailand
-T:*/*=0.88(60)/1
+T:*/*=0.88/60
 Z:202 Global 3
 A:Armenien, Georgien, Kasachstan, Kirgisien, Turkmenistan, Usbekistan
 A:Südafrika
-T:*/*=1.48(60)/1
+T:*/*=1.48/60
 Z:203 Global 4
 A:+
-T:*/*=1.98(60)/1
+T:*/*=1.98/60
 #####################################################################
 P:24,5 Telepassport SüdOst 01024
 G:01.05.1999
@@ -4770,25 +5040,26 @@ C:Telefax:  0800/808 808 9
 C:Adresse:  Juri-Gagarin-Ring 88, 99084
 C:	    Erfurt
 Z:2-4 Inland
-T:W/08-18=0.18(60)/1 Geschäftszeit
-T:W/18-08=0.12(60)/1 Freizeit
-T:E,H/*=0.12(60)/1 Wochenende
+T:W/08-18=0.18/60 Geschäftszeit
+T:W/18-08=0.12/60 Freizeit
+T:E,H/*=0.12/60 Wochenende
 Z:10 Mobilfunk
-A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
-A:+49170,+49171		# D1
-A:+49172,+49173		# D2
-A:+49177,+49178		# Eplus
-A:+49176,+49179		# E2
-T:*/*=0.56(60)/1
+A:01618		# T-C-Tel Voice Mail
+A:01610,01611,01612,01613,01614,01615,01616,01617,01619 # C
+A:0170,0171		# D1
+A:0172,0173		# D2
+A:0177,0178		# Eplus
+A:0176,0179		# E2
+T:*/*=0.56/60
 Z:102 TelePassport-Online
 A:01924924 # (Benutzername: beliebig; Passwort: beliebig)
-T:*/*=0.08(60)/1
+T:*/*=0.08/60
 Z:200 Global 1
 A:Belgien, Dänemark, Finnland, Frankreich, Griechenland, Großbritannien
 A:Irland, Island, Italien, Liechtenstein, Luxemburg, Monaco, Niederlande
 A:Norwegen, Österreich, Polen, Portugal, Schweden, Schweiz, Slowakei, Spanien
 A:Tschechische Republik, Türkei, USA, Kanada
-T:*/*=0.68(60)/1
+T:*/*=0.68/60
 Z:201 Global 2
 A:Albanien, Bosnien-Herzegowina, Bulgarien, Israel, Jugoslawien, Kroatien
 A:Malta, Mazedonien, Rumänien, Slowenien, Ungarn, Zypern
@@ -4796,14 +5067,14 @@ A:Aserbaidschan, Estland, Lettland, Litauen, Moldawien, Russland
 A:Tadschikistan, Ukraine, Belarus
 A:Australien, China (Taiwan), Hongkong, Korea (Republik), Indonesien, Japan
 A:Malaysia, Neuseeland, Philippinen, Singapur, Thailand
-T:*/*=0.88(60)/1
+T:*/*=0.88/60
 Z:202 Global 3
 A:Armenien, Georgien, Kasachstan, Kirgisien, Turkmenistan, Usbekistan
 A:Südafrika
-T:*/*=1.48(60)/1
+T:*/*=1.48/60
 Z:203 Global 4
 A:+
-T:*/*=1.98(60)/1
+T:*/*=1.98/60
 #####################################################################
 P:24,6 Telepassport StudentenTarif
 G:01.05.1999
@@ -4816,61 +5087,68 @@ C:Telefax:  0800/808 808 9
 C:Adresse:  Juri-Gagarin-Ring 88, 99084
 C:	    Erfurt
 Z:2 Lokal
-T:*/*=0.10(60)/1
+T:*/*=0.10/60
 Z:3 Nah
-T:W/08-18=0.12(60)/1 Geschäftszeit
-T:W/18-08=0.10(60)/1 Freizeit
-T:E,H/*=0.10(60)/1 Wochenende
+T:W/08-18=0.12/60 Geschäftszeit
+T:W/18-08=0.10/60 Freizeit
+T:E,H/*=0.10/60 Wochenende
 Z:4 Fern
-T:W/08-18=0.14(60)/1 Geschäftszeit
-T:W/18-08=0.10(60)/1 Freizeit
-T:E,H/*=0.10(60)/1 Wochenende
+T:W/08-18=0.14/60 Geschäftszeit
+T:W/18-08=0.10/60 Freizeit
+T:E,H/*=0.10/60 Wochenende
 Z:10 Mobilfunk
-A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
-A:+49170,+49171		# D1
-A:+49172,+49173		# D2
-A:+49177,+49178		# Eplus
-A:+49176,+49179		# E2
-T:W/08-18=0.58(60)/1 Geschäftszeit
-T:W/18-08=0.48(60)/1 Freizeit
-T:E,H/*=0.48(60)/1 Wochenende
+A:01618		# T-C-Tel Voice Mail
+A:01610,01611,01612,01613,01614,01615,01616,01617,01619 # C
+A:0170,0171		# D1
+A:0172,0173		# D2
+A:0177,0178		# Eplus
+A:0176,0179		# E2
+T:W/08-18=0.58/60 Geschäftszeit
+T:W/18-08=0.48/60 Freizeit
+T:E,H/*=0.48/60 Wochenende
 Z:102 TelePassport-Online
 A:01924924 # (Benutzername: beliebig; Passwort: beliebig)
-T:W/08-18=0.08(60)/1 Geschäftszeit
-T:W/18-08=0.06(60)/1 Freizeit
-T:E,H/*=0.06(60)/1 Wochenende
+T:W/08-18=0.08/60 Geschäftszeit
+T:W/18-08=0.06/60 Freizeit
+T:E,H/*=0.06/60 Wochenende
 Z:200 Ausland Spezial
 A:Belgien, Dänemark, Finnland, Frankreich, Großbritannien, Italien
 A:Niederlande, Norwegen, Österreich, Schweden, Schweiz
 A:Kanada, USA
-T:*/*=0.48(60)/1
+T:*/*=0.48/60
 Z:201 International 1
 A:Andorra, Färöer, Griechenland, Irland, Island, Liechtenstein, Luxemburg
 A:Monaco, Polen, Portugal, San Marino, Slowakei, Spanien
 A:Tschechische Republik, Vatikanstadt
-T:*/*=0.68(60)/1
+T:*/*=0.68/60
 Z:202 International 2
 A:Albanien, Bosnien-Herzegowina, Bulgarien, Estland, Gibraltar, Israel
 A:Jugoslawien, Kroatien, Lettland, Litauen, Malta, Mazedonien, Moldau
 A:Rumänien, Russland, Slowenien, Türkei, Ukraine, Ungarn, Weißrußland, Zypern
 A:Australien, Hongkong, Korea (Republik), Japan, Singapur, Neuseeland
-T:*/*=0.98(60)/1
+T:*/*=0.98/60
 Z:203 Global 4
 A:+
-T:*/*=1.98(60)/1
+T:*/*=1.98/60
 #####################################################################
 P:24,7 Super 24
 C:Hotline: 0800/24-01024
 C:Homepage: http://www.super24.com
+C:Erfasste Zonen:
+C:2	-   4	Deutschland
+C:10		Mobilfunk
+C:102		SUPER24 Internet
+C:200	-	Ausland
 G:05.05.1999
 Z:2-4 SUPER24 Phone
 T:*/*=0.11/60
 Z:10 SUPER24 Mobile
-A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
-A:+49170,+49171		# D1
-A:+49172,+49173		# D2
-A:+49177,+49178		# Eplus
-A:+49176,+49179		# E2
+A:01618		# T-C-Tel Voice Mail
+A:01610,01611,01612,01613,01614,01615,01616,01617,01619 # C
+A:0170,0171		# D1
+A:0172,0173		# D2
+A:0177,0178		# Eplus
+A:0176,0179		# E2
 T:*/*=0.45/60
 Z:102 SUPER24 Internet
 T:*/*=0.055/60
@@ -4892,7 +5170,7 @@ A:+
 T:*/*=1.85/60
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:25 CityKom
 C:Münster, Haferlandweg 8, 48155 Münster 01025
@@ -4906,6 +5184,12 @@ C:Analog: 24,40 DM
 C:ISDN: 45,00 DM
 C:CITYMS-ISDNet: 55,55 DM (ISDN + Internet)
 C:Sondertarif CITYMS-Jovel: Gespräche von CityKom Kunde zu CityKom Kunde
+C:Erfasste Zonen:
+C:1	-   4	Deutschland
+C:5		Sondertarif
+C:10		Mobilfunk
+C:102		CITYMS-Internet
+C:200	-	Ausland
 G:01.02.1999
 Z:1 CITYMS-Münsterland
 T:W/09-18=0.07/60 Hauptzeit
@@ -5366,11 +5650,12 @@ T:*/05-09=0.056/106 Nebenzeit
 T:E,H/09-18=0.056/106 Nebenzeit
 T:*/21-05=0.056/145 Nachtzeit
 Z:10 CITYMS-Mobilfunk
-A:+491610
-A:+491617
-A:+491618
-A:+491619
-A:+4917
+A:01618		# T-C-Tel Voice Mail
+A:01610,01611,01612,01613,01614,01615,01616,01617,01619 # C
+A:0170,0171		# D1
+A:0172,0173		# D2
+A:0177,0178		# Eplus
+A:0176,0179		# E2
 T:W/08-18=0.07/60 Hauptzeit
 T:W/18-08=0.07/60 Nebenzeit
 T:E,H/*=0.07/60 Nebenzeit
@@ -5421,6 +5706,11 @@ C:nur Preselection oder Direct Access in der Gegend von Münster!
 C:Achtung!
 C:Ortsbereich ist erweitert von 20km auf 30km um Münster.  Orte siehe unten.
 C:Region 50 ist ebenfalls erweitert auf 100km um Münster.  Orte siehe unten.
+C:Erfasste Zonen:
+C:1	-   4	Deutschland
+C:10		Mobilfunk
+C:102		CITYMS-Internet
+C:200	-	Ausland
 G:01.02.1999
 Z:1 CITYMS-Münsterland
 T:W/09-18=0.07/60 Hauptzeit
@@ -5872,11 +6162,12 @@ T:W/09-18=0.07/60 Hauptzeit
 T:W/18-09=0.07/60 Nebenzeit
 T:E,H/*=0.07/60 Nebenzeit
 Z:10 CITYMS-Mobilfunk
-A:+491610
-A:+491617
-A:+491618
-A:+491619
-A:+4917
+A:01618		# T-C-Tel Voice Mail
+A:01610,01611,01612,01613,01614,01615,01616,01617,01619 # C
+A:0170,0171		# D1
+A:0172,0173		# D2
+A:0177,0178		# Eplus
+A:0176,0179		# E2
 T:W/08-18=0.07/60 Hauptzeit
 T:W/18-08=0.07/60 Nebenzeit
 T:E,H/*=0.07/60 Nebenzeit
@@ -5921,19 +6212,25 @@ A:+
 T:*/*=0.07/1.8
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:26 ECN
 C:Telekommunikation GmbH, Schmickstraße 38-40, 60314 Frankfurt 01026
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:27 Nordcom Butensurf
 C:Communications Netzmanagement Bremen GmbH
 C:Theodor-Heuss-Allee 20, 28215 Bremen 01027
 C:Sondertarif 5 "Nordcom-Nordcom": Netzinterne Gespräche zwischen Nordcom
 C:Kunden
+C:Erfasste Zonen:
+C:1	-   4	Deutschland
+C:5		Sondertarif
+C:10		Mobilfunk
+C:102		Butensurf
+C:200	-	Ausland
 Z:1-3 Binnen
 T:W/06-18=0.06(60)/1 Tag
 T:W/18-06=0.05(60)/1 Freizeit
@@ -5947,12 +6244,12 @@ T:W/06-18=0.04(60)/1 Tag
 T:W/18-06=0.03(60)/1 Freizeit
 T:E,H/*=0.03(60)/1 Wochenende
 Z:10 Mobil
-A:+491618		# T-C-Tel Voice Mail
-A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
-A:+49170,+49171		# D1
-A:+49172,+49173		# D2
-A:+49177,+49178		# Eplus
-A:+49176,+49179		# E2
+A:01618		# T-C-Tel Voice Mail
+A:01610,01611,01612,01613,01614,01615,01616,01617,01619 # C
+A:0170,0171		# D1
+A:0172,0173		# D2
+A:0177,0178		# Eplus
+A:0176,0179		# E2
 T:W/06-18=0.79(60)/1 Tag
 T:W/18-06=0.49(60)/1 Freizeit
 T:E,H/*=0.49(60)/1 Wochenende
@@ -6033,6 +6330,12 @@ C:Communications Netzmanagement Bremen GmbH
 C:Theodor-Heuss-Allee 20, 28215 Bremen 01027
 C:Sondertarif 5 "Nordcom-Nordcom": Netzinterne Gespräche zwischen Nordcom
 C:Kunden
+C:Erfasste Zonen:
+C:1	-   4	Deutschland
+C:5		Sondertarif
+C:10		Mobilfunk
+C:102		Butensurf Plus
+C:200	-	Ausland
 Z:1-3 Binnen
 T:W/06-18=0.06(60)/1 Tag
 T:W/18-06=0.05(60)/1 Freizeit
@@ -6046,12 +6349,12 @@ T:W/06-18=0.04(60)/1 Tag
 T:W/18-06=0.03(60)/1 Freizeit
 T:E,H/*=0.03(60)/1 Wochenende
 Z:10 Mobil
-A:+491618		# T-C-Tel Voice Mail
-A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
-A:+49170,+49171		# D1
-A:+49172,+49173		# D2
-A:+49177,+49178		# Eplus
-A:+49176,+49179		# E2
+A:01618		# T-C-Tel Voice Mail
+A:01610,01611,01612,01613,01614,01615,01616,01617,01619 # C
+A:0170,0171		# D1
+A:0172,0173		# D2
+A:0177,0178		# Eplus
+A:0176,0179		# E2
 T:W/06-18=0.79(60)/1 Tag
 T:W/18-06=0.49(60)/1 Freizeit
 T:E,H/*=0.49(60)/1 Wochenende
@@ -6128,7 +6431,7 @@ A:+
 T:*/*=2.99(60)/1
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:28 Colt
 C:Telecom GmbH, Gervinusstraße 18-22, 60323 Frankfurt 01028
@@ -6137,14 +6440,32 @@ C:Reseller von COLT : Telebridge, Global Communications, Nikoma
 P:28,1 TeleBridge Call-By-Call-Tarif
 C:TeleBridge ist Reseller von COLT.
 C:Homepage: http://www.telebridge.de
+C:Erfasste Zonen:
+C:2	-   4	Deutschland
+C:10		Mobilfunk
+C:31	-  39	Satelitenfunk
+C:40		Auskunft DTAG Inland
+C:41		Auskunft DTAG Ausland
+C:42		Auskunft Arcor
+C:43		Auskunft debitel
+C:44		Auskunft Frag Fred
+C:45		Auskunft o.tel.o
+C:46		Auskunft Talkline
+C:47		Auskunft Telegate
+C:48		Auskunft Telegate Ausland
+C:49		Auskunft Viag Interkom
+C:60		Cityruf
+C:82	-  85	Service 0180-x
+C:91	-  94	Service 0190-x
+C:200	-	Ausland
 Z:2-4 Inland
 T:*/*=0/5,0.13/60
 Z:10 Mobilfunk
-A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
-A:+49170,+49171		# D1
-A:+49172,+49173		# D2
-A:+49177,+49178		# Eplus
-A:+49176,+49179		# E2
+A:01610,01611,01612,01613,01614,01615,01616,01617,01619 # C
+A:0170,0171		# D1
+A:0172,0173		# D2
+A:0177,0178		# Eplus
+A:0176,0179		# E2
 T:*/*=0/5,0.47/60
 Z:31 Iridium GSM
 A:Iridium GSM-Homed
@@ -6299,16 +6620,34 @@ T:*/*=0/5,2.22/60
 P:28,2 TeleBridge EasyBridge
 C:TeleBridge ist Reseller von COLT.
 C:Homepage: http://www.telebridge.de
+C:Erfasste Zonen:
+C:2	-   4	Deutschland
+C:10		Mobilfunk
+C:31	-  39	Satelitenfunk
+C:40		Auskunft DTAG Inland
+C:41		Auskunft DTAG Ausland
+C:42		Auskunft Arcor
+C:43		Auskunft debitel
+C:44		Auskunft Frag Fred
+C:45		Auskunft o.tel.o
+C:46		Auskunft Talkline
+C:47		Auskunft Telegate
+C:48		Auskunft Telegate Ausland
+C:49		Auskunft Viag Interkom
+C:60		Cityruf
+C:82	-  85	Service 0180-x
+C:91	-  94	Service 0190-x
+C:200	-	Ausland
 Z:2-4 Inland
 T:W/08-21=0/5,0.11/60 Hauptzeit
 T:E,H/08-21=0/5,0.055/60 Nebenzeit
 T:*/21-08=0/5,0.055/60 Nebenzeit
 Z:10 Mobilfunk
-A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
-A:+49170,+49171		# D1
-A:+49172,+49173		# D2
-A:+49177,+49178		# Eplus
-A:+49176,+49179		# E2
+A:01610,01611,01612,01613,01614,01615,01616,01617,01619 # C
+A:0170,0171		# D1
+A:0172,0173		# D2
+A:0177,0178		# Eplus
+A:0176,0179		# E2
 T:*/*=0/5,0.47/60
 Z:31 Iridium GSM
 A:Iridium GSM-Homed
@@ -6462,17 +6801,21 @@ T:*/*=0/5,2.22/60
 #####################################################################
 P:28,3 UPX Standard
 C:Homepage: http://www.upx.de
+C:Erfasste Zonen:
+C:2	-   4	Deutschland
+C:10		Mobilfunk
+C:200	-	Ausland
 Z:2-4 Deutschland
-T:=0.136(60)/1 Haupt
-T:=0.113(60)/1 Neben
-T:=0.082(60)/1 Nacht
+T:*/08-18=0.136(60)/1 Haupt
+T:*/18-21=0.113(60)/1 Neben
+T:*/21-08=0.082(60)/1 Nacht
 Z:10 Mobilfunk
-A:+491618		# T-C-Tel Voice Mail
-A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
-A:+49170,+49171		# D1
-A:+49172,+49173		# D2
-A:+49177,+49178		# Eplus
-A:+49176,+49179		# E2
+A:01618		# T-C-Tel Voice Mail
+A:01610,01611,01612,01613,01614,01615,01616,01617,01619 # C
+A:0170,0171		# D1
+A:0172,0173		# D2
+A:0177,0178		# Eplus
+A:0176,0179		# E2
 T:*/*=0.673(60)/1
 Z:200 London
 A:London
@@ -7212,17 +7555,21 @@ T:*/*=2.57520(60)/1
 #####################################################################
 P:28,4 UPX City-Spezial
 C:Homepage: http://www.upx.de
+C:Erfasste Zonen:
+C:2	-   4	Deutschland
+C:10		Mobilfunk
+C:200	-	Ausland
 Z:2-4 Deutschland
-T:=0.110(60)/1 Haupt
-T:=0.097(60)/1 Neben
-T:=0.067(60)/1 Nacht
+T:*/08-18=0.110(60)/1 Haupt
+T:*/18-21=0.097(60)/1 Neben
+T:*/21-08=0.067(60)/1 Nacht
 Z:10 Mobilfunk
-A:+491618		# T-C-Tel Voice Mail
-A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
-A:+49170,+49171		# D1
-A:+49172,+49173		# D2
-A:+49177,+49178		# Eplus
-A:+49176,+49179		# E2
+A:01618		# T-C-Tel Voice Mail
+A:01610,01611,01612,01613,01614,01615,01616,01617,01619 # C
+A:0170,0171		# D1
+A:0172,0173		# D2
+A:0177,0178		# Eplus
+A:0176,0179		# E2
 T:*/*=0.673(60)/1
 Z:200 London
 A:London
@@ -7961,13 +8308,13 @@ A:China
 T:*/*=2.57520(60)/1
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:29 Unisource
 C:Carrier Services, Industriestraße 21, CH-8304 Wallisellen/Schweiz 01029
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:30 TelDaFax
 G:19.04.1999
@@ -7979,6 +8326,17 @@ C:Hotline:  0800/01030-23
 C:Hotfax:   0800/01030-35
 C:Adresse:  Postfach 2206
 C:	    35010 Marburg
+C:Erfasste Zonen:
+C:2	-   4	Deutschland
+C:10		Mobilfunk
+C:33	-  39	Satelitenfunk
+C:40		Auskunft DTAG Inland
+C:41		Auskunft DTAG Ausland
+C:60	-  75	Pieper
+C:81	-  85	Service 0180-x
+C:91	-  94	Service 0190-x
+C:102		TelDa.net
+C:200	-	Ausland
 Z:2-4 Deutschland
 T:W/07-09=0.09(60)/1
 T:W/09-18=0.12(60)/1
@@ -7986,12 +8344,13 @@ T:W/18-21=0.09(60)/1
 T:W/21-07=0.06(60)/1
 T:E,H/*=0.09(60)/1
 Z:10 C/D/E-Netz
-A:+491610,+491617,+491619,+491618 # C
-A:+49170,+49171  		  # D1
-A:+49172,+49173			  # D2
-A:+49177,+49178			  # Eplus
-A:+49176,+49179  		  # E2
-T:*/*=0.48(60)/1
+A:01618		# T-C-Tel Voice Mail
+A:01610,01611,01612,01613,01614,01615,01616,01617,01619 # C
+A:0170,0171		# D1
+A:0172,0173		# D2
+A:0177,0178		# Eplus
+A:0176,0179		# E2
+T:*/*=0.12/15
 Z:102 TelDa.net
 T:*/*=0.06/60
 Z:200 Europa 1
@@ -8029,22 +8388,21 @@ A:Vereinigte Arabische Emirate, Vietnam
 T:*/*=1.49(60)/1
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:31 HEAG
 C:MediaNet GmbH, Luisenplatz 6, 64283 Darmstadt 01031
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:32 KDD
 C:Deutschland GmbH, Immermannstraße 45, 40210 Düsseldorf 01032
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:33 DTAG
-G:01.04.1999
 C:Deutsche Telekom AG, Friedrich-Ebert-Allee 140, 53113 Bonn 01033
 C:Name:     Deutsche Telekom AG
 C:Homepage: http://www.dtag.de
@@ -8054,6 +8412,30 @@ C:		   dort ist nur das Verbindungsentgeld faellig
 C:ISDN-Tarif
 C:FORMEL: 7,2 / Minutenpreis => Taktlaenge
 C:Quelle: http://www.telekom.de/untern/tarife/mobil/index.htm
+C:Erfasste Zonen:
+C:0	-   4	Deutschland
+C:10	-  15	Mobilfunk
+C:31	-  39	Satelitenfunk
+C:40		Auskunft DTAG Inland
+C:41		Auskunft DTAG Ausland
+C:42		Auskunft Arcor
+C:43		Auskunft debitel
+C:44		Auskunft Frag Fred
+C:45		Auskunft o.tel.o
+C:46		Auskunft Talkline
+C:47		Auskunft Telegate
+C:48		Auskunft Telegate Ausland
+C:49		Auskunft Viag Interkom
+C:60		Cityruf
+C:81	-  85	Service 0180-x
+C:91	-  94	Service 0190-x
+C:100		T-Online
+C:162	- 166	DTAG Service Nummern
+C:170		Persöhnliche Rufnummer
+C:171		Info Expo 2000
+C:172		Sonderrufnummern zum Citytarif
+C:200	-	Ausland
+G:01.04.1999
 Z:0 FreeCall
 A:08003301113 # Telekom Direkt
 A:08003301000 # Telekom Privatkundenvertrieb
@@ -8193,7 +8575,7 @@ A:01802
 T:*/*=0.12/0
 Z:83 Shared Cost Service 0180-3
 A:01803
-T:*/*=0.12/30
+T:*/*=0.12/40
 Z:84 Shared Cost Service 0180-4
 A:01804
 T:*/*=0.48/0
@@ -8214,6 +8596,7 @@ A:01908
 T:*/*=0.12/2
 Z:100 T-Online
 A:0191011
+C:Dies ist *kein* All-in-One Zugang, es werden zusätzliche Gebühren erhoben!
 T:*/*=0.06/0,0.06/60 T-Online eco
 Z:162 T-VoteCall
 A:01371
@@ -8234,6 +8617,7 @@ A:01910		# Online-Dienste Zugang SLIP
 A:01914		# Online-Dienste AOL Zugang
 A:019161	# Online-Dienste AOL Zugang
 A:019102345	# Online-Dienste 1&1 Zugang
+C:Dies sind *keine* All-in-One Zugänge, es werden zusätzliche Gebühren erhoben!
 T:W/09-18=0.12/90 Standard
 T:W/05-09,18-21=0.12/150 Spar
 T:E,H/05-21=0.12/150 Spar
@@ -8242,7 +8626,7 @@ Z:200 Euro 1
 A:Dänemark
 T:*/*=0.12/10
 Z:201 Euro 2
-A:Großbritannien, Irland
+A:Großbritannien, Irland, USA
 T:W/08-18=0.12/8.6
 T:W/18-08=0.12/10
 T:E,H/*=0.12/10
@@ -8254,12 +8638,11 @@ A:Vereinigte Arabische Emirate
 T:*/*=0.12/2.61
 #####################################################################
 P:33,1 DTAG CityPlus
-G:01.04.1999
 C:Anmerkung zum Tarif "CityPlus":
 C:Ist das CityPlus-Budget überschritten, ist die Gebührenberechnung
 C:zwischen 05-09 und 18-21 Uhr inkorrekt. Ebenso werden Ortsverbindungen
 C:nur dann korrekt verrechnet, wenn die angerufene Nummer für CityPlus
-C:reserviert ist.                     
+C:reserviert ist.
 C:Deutsche Telekom AG, Friedrich-Ebert-Allee 140, 53113 Bonn 01033
 C:Name:     Deutsche Telekom AG
 C:Homepage: http://www.dtag.de
@@ -8269,6 +8652,30 @@ C:		   dort ist nur das Verbindungsentgeld faellig
 C:ISDN-Tarif
 C:FORMEL: 7,2 / Minutenpreis => Taktlaenge
 C:Quelle: http://www.telekom.de/untern/tarife/mobil/index.htm
+C:Erfasste Zonen:
+C:0	-   4	Deutschland
+C:10	-  15	Mobilfunk
+C:31	-  39	Satelitenfunk
+C:40		Auskunft DTAG Inland
+C:41		Auskunft DTAG Ausland
+C:42		Auskunft Arcor
+C:43		Auskunft debitel
+C:44		Auskunft Frag Fred
+C:45		Auskunft o.tel.o
+C:46		Auskunft Talkline
+C:47		Auskunft Telegate
+C:48		Auskunft Telegate Ausland
+C:49		Auskunft Viag Interkom
+C:60		Cityruf
+C:81	-  85	Service 0180-x
+C:91	-  94	Service 0190-x
+C:100		T-Online
+C:162	- 166	DTAG Service Nummern
+C:170		Persöhnliche Rufnummer
+C:171		Info Expo 2000
+C:172		Sonderrufnummern zum Citytarif
+C:200	-	Ausland
+G:01.04.1999
 Z:0 FreeCall
 A:08003301113 # Telekom Direkt
 A:08003301000 # Telekom Privatkundenvertrieb
@@ -8448,7 +8855,7 @@ Z:200 Euro 1
 A:Dänemark
 T:*/*=0.12/10
 Z:201 Euro 2
-A:Großbritannien, Irland
+A:Großbritannien, Irland, USA
 T:W/08-18=0.12/8.6
 T:W/18-08=0.12/10
 T:E,H/*=0.12/10
@@ -8460,7 +8867,6 @@ A:Vereinigte Arabische Emirate
 T:*/*=0.12/2.61
 #####################################################################
 P:33,2 DTAG CityWeekend
-G:01.04.1999
 C:Deutsche Telekom AG, Friedrich-Ebert-Allee 140, 53113 Bonn 01033
 C:Name:     Deutsche Telekom AG
 C:Homepage: http://www.dtag.de
@@ -8470,6 +8876,30 @@ C:		   dort ist nur das Verbindungsentgeld faellig
 C:ISDN-Tarif
 C:FORMEL: 7,2 / Minutenpreis => Taktlaenge
 C:Quelle: http://www.telekom.de/untern/tarife/mobil/index.htm
+C:Erfasste Zonen:
+C:0	-   4	Deutschland
+C:10	-  15	Mobilfunk
+C:31	-  39	Satelitenfunk
+C:40		Auskunft DTAG Inland
+C:41		Auskunft DTAG Ausland
+C:42		Auskunft Arcor
+C:43		Auskunft debitel
+C:44		Auskunft Frag Fred
+C:45		Auskunft o.tel.o
+C:46		Auskunft Talkline
+C:47		Auskunft Telegate
+C:48		Auskunft Telegate Ausland
+C:49		Auskunft Viag Interkom
+C:60		Cityruf
+C:81	-  85	Service 0180-x
+C:91	-  94	Service 0190-x
+C:100		T-Online
+C:162	- 166	DTAG Service Nummern
+C:170		Persöhnliche Rufnummer
+C:171		Info Expo 2000
+C:172		Sonderrufnummern zum Citytarif
+C:200	-	Ausland
+G:01.04.1999
 Z:0 FreeCall
 A:08003301113 # Telekom Direkt
 A:08003301000 # Telekom Privatkundenvertrieb
@@ -8653,7 +9083,7 @@ Z:200 Euro 1
 A:Dänemark
 T:*/*=0.12/10
 Z:201 Euro 2
-A:Großbritannien, Irland
+A:Großbritannien, Irland, USA
 T:W/08-18=0.12/8.6
 T:W/18-08=0.12/10
 T:E,H/*=0.12/10
@@ -8665,12 +9095,11 @@ A:Vereinigte Arabische Emirate
 T:*/*=0.12/2.61
 #####################################################################
 P:33,3 DTAG CityWeekend & CityPlus
-G:01.04.1999
 C:Anmerkung zum Tarif "CityPlus":
 C:Ist das CityPlus-Budget überschritten, ist die Gebührenberechnung
 C:zwischen 05-09 und 18-21 Uhr inkorrekt. Ebenso werden Ortsverbindungen
 C:nur dann korrekt verrechnet, wenn die angerufene Nummer für CityPlus
-C:reserviert ist.                     
+C:reserviert ist.
 C:Deutsche Telekom AG, Friedrich-Ebert-Allee 140, 53113 Bonn 01033
 C:Name:     Deutsche Telekom AG
 C:Homepage: http://www.dtag.de
@@ -8680,6 +9109,30 @@ C:		   dort ist nur das Verbindungsentgeld faellig
 C:ISDN-Tarif
 C:FORMEL: 7,2 / Minutenpreis => Taktlaenge
 C:Quelle: http://www.telekom.de/untern/tarife/mobil/index.htm
+C:Erfasste Zonen:
+C:0	-   4	Deutschland
+C:10	-  15	Mobilfunk
+C:31	-  39	Satelitenfunk
+C:40		Auskunft DTAG Inland
+C:41		Auskunft DTAG Ausland
+C:42		Auskunft Arcor
+C:43		Auskunft debitel
+C:44		Auskunft Frag Fred
+C:45		Auskunft o.tel.o
+C:46		Auskunft Talkline
+C:47		Auskunft Telegate
+C:48		Auskunft Telegate Ausland
+C:49		Auskunft Viag Interkom
+C:60		Cityruf
+C:81	-  85	Service 0180-x
+C:91	-  94	Service 0190-x
+C:100		T-Online
+C:162	- 166	DTAG Service Nummern
+C:170		Persöhnliche Rufnummer
+C:171		Info Expo 2000
+C:172		Sonderrufnummern zum Citytarif
+C:200	-	Ausland
+G:01.04.1999
 Z:0 FreeCall
 A:08003301113 # Telekom Direkt
 A:08003301000 # Telekom Privatkundenvertrieb
@@ -8861,7 +9314,7 @@ Z:200 Euro 1
 A:Dänemark
 T:*/*=0.12/10
 Z:201 Euro 2
-A:Großbritannien, Irland
+A:Großbritannien, Irland, USA
 T:W/08-18=0.12/8.6
 T:W/18-08=0.12/10
 T:E,H/*=0.12/10
@@ -8873,24 +9326,29 @@ A:Vereinigte Arabische Emirate
 T:*/*=0.12/2.61
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:34 NEFkom
 C:Telekommunikation GmbH & Co. KG, Bärenschanzstraße 4, 90429 Nürnberg 01034
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:35 interCOM
 C:GmbH, Hauptstraße 52a, 28876 Oyten 01035
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:36 Hutchison fairfon
 C:Münsterstraße 109, 48155 Münster 01036
 C:Sondertarif 11 "Hutchison Mobilfunk-Kunde": Vergünstigte Gespräche zu
 C:Hutchison Mobilfunk Teilnehmern
+C:Erfasste Zonen:
+C:2	-   4	Deutschland
+C:10		Mobilfunk
+C:11		Sondertarif
+C:200	-	Ausland
 Z:2-3 regional
 T:W/08-18=0.14(60)/15 Geschäftszeit
 T:E,H/08-18=0.12(60)/15 Wochenende
@@ -8900,6 +9358,11 @@ T:W/08-18=0.22(60)/15 Geschäftszeit
 T:E,H/08-18=0.12(60)/15 Wochenende
 T:*/18-08=0.12(60)/15 Freizeit
 Z:10 Mobilfunk
+A:01610,01617,01619,01618 # C
+A:0170,0171  		  # D1
+A:0172,0173		  # D2
+A:0177,0178		  # Eplus
+A:0176,0179  		  # E2
 T:W/08-18=0.77(60)/15 Geschäftszeit
 T:E,H/08-18=0.65(60)/15 Wochenende
 T:*/18-08=0.65(60)/15 Freizeit
@@ -8936,9 +9399,20 @@ C:Münsterstraße 109, 48155 Münster 01036
 C:Mindestumsatz: 69,- DM
 C:Sondertarif 11 "Hutchison Mobilfunk-Kunde": Vergünstigte Gespräche zu
 C:Hutchison Mobilfunk Teilnehmern
+C:Erfasste Zonen:
+C:2	-   4	Deutschland
+C:10		Mobilfunk
+C:11		Sondertarif
+C:200	-	Ausland
 Z:2-4 Inland
 T:*/*=0.17(60)/15
 Z:10 Mobilfunk
+A:01618		# T-C-Tel Voice Mail
+A:01610,01611,01612,01613,01614,01615,01616,01617,01619 # C
+A:0170,0171		# D1
+A:0172,0173		# D2
+A:0177,0178		# Eplus
+A:0176,0179		# E2
 T:*/*=0.73(60)/15
 Z:11 Hutchison Mobilfunk-Kunde
 T:*/*=0.59(60)/15
@@ -8970,6 +9444,11 @@ T:*/*=2.42(60)/15
 #####################################################################
 P:36,2 Hutchison o.tel.o private
 C:Münsterstraße 109, 48155 Münster 01036
+C:Erfasste Zonen:
+C:2	-   4	Deutschland
+C:10		Mobilfunk
+C:11		Sondertarif
+C:200	-	Ausland
 Z:2-3 Regional
 T:W/08-18=0.05/0,0.09(60)/1 Geschäftszeit
 T:E,H/08-18=0.05/0,0.05(60)/1 Wochenende
@@ -8980,12 +9459,12 @@ T:W/18-21=0.05/0,0.10(60)/1 Freizeit
 T:E,H/08-21=0.05/0,0.095(60)/1 Wochenende
 T:*/21-08=0.05/0,0.06(60)/1 Nacht
 Z:10 Mobilfunk
-A:+491618		# T-C-Tel Voice Mail
-A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
-A:+49170,+49171		# D1
-A:+49172,+49173		# D2
-A:+49177,+49178		# Eplus
-A:+49176,+49179		# E2
+A:01618		# T-C-Tel Voice Mail
+A:01610,01611,01612,01613,01614,01615,01616,01617,01619 # C
+A:0170,0171		# D1
+A:0172,0173		# D2
+A:0177,0178		# Eplus
+A:0176,0179		# E2
 T:W/08-18=0.05/0,0.94(60)/1 Geschäftszeit
 T:E,H/08-18=0.05/0,0.47(60)/1 Wochenende
 T:*/18-08=0.05/0,0.47(60)/1 Freizeit
@@ -9025,6 +9504,11 @@ C:Münsterstraße 109, 48155 Münster 01036
 C:Sondertarif 11 "Hutchison Mobilfunk-Kunde": Vergünstigte Gespräche zu
 C:Hutchison Mobilfunk Teilnehmern
 C:Grundgebühr: 11,- DM, oder Abschluß eines 12 Monatsvertrages
+C:Erfasste Zonen:
+C:2	-   4	Deutschland
+C:10		Mobilfunk
+C:11		Sondertarif
+C:200	-	Ausland
 Z:2-3 regional
 T:W/08-18=0.14(60)/1 Geschäftszeit
 T:E,H/08-18=0.12(60)/1 Wochenende
@@ -9034,6 +9518,12 @@ T:W/08-18=0.22(60)/1 Geschäftszeit
 T:E,H/08-18=0.12(60)/1 Wochenende
 T:*/18-08=0.12(60)/1 Freizeit
 Z:10 Mobilfunk
+A:01618		# T-C-Tel Voice Mail
+A:01610,01611,01612,01613,01614,01615,01616,01617,01619 # C
+A:0170,0171		# D1
+A:0172,0173		# D2
+A:0177,0178		# Eplus
+A:0176,0179		# E2
 T:W/08-18=0.77(60)/1 Geschäftszeit
 T:E,H/08-18=0.65(60)/1 Wochenende
 T:*/18-08=0.65(60)/1 Freizeit
@@ -9071,9 +9561,20 @@ C:Mindestumsatz: 69,- DM
 C:Sondertarif 11 "Hutchison Mobilfunk-Kunde": Vergünstigte Gespräche zu
 C:Hutchison Mobilfunk Teilnehmern
 C:Grundgebühr: 11,- DM, oder Abschluß eines 12 Monatsvertrages
+C:Erfasste Zonen:
+C:2	-   4	Deutschland
+C:10		Mobilfunk
+C:11		Sondertarif
+C:200	-	Ausland
 Z:2-4 Inland
 T:*/*=0.17(60)/1
 Z:10 Mobilfunk
+A:01618		# T-C-Tel Voice Mail
+A:01610,01611,01612,01613,01614,01615,01616,01617,01619 # C
+A:0170,0171		# D1
+A:0172,0173		# D2
+A:0177,0178		# Eplus
+A:0176,0179		# E2
 T:*/*=0.73(60)/1
 Z:11 Hutchison Mobilfunk-Kunde
 T:*/*=0.59(60)/1
@@ -9104,41 +9605,46 @@ A:+
 T:*/*=2.42(60)/1
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:37 ETS
 C:Verwaltung für Sprach- und Datennetze GmbH, Brunnenstraße 4, 61191 Rosbach 01037
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:38 MediaWays
 C:GmbH, An der Autobahn, 33311 Gütersloh 01038
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:39 First Telecom
 C:GmbH, Lyoner Straße 51, 60528 Frankfurt/Main 01039
+C:Erfasste Zonen:
+C:2	-   4	Deutschland
+C:10		Mobilfunk
+C:203		Ausland (Kanada & USA)
 Z:2-4 Inland
 T:W/08-18=0.02/0,0.15/60 Standard
 T:W/18-21=0.02/0,0.10/60 Abend
 T:E,H/08-21=0.02/0,0.10/60 Wochenende
 T:*/21-08=0.02/0,0.07/60 Nacht
 Z:10 Mobilfunk
-A:+491618		# T-C-Tel Voice Mail
-A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
-A:+49170,+49171		# D1
-A:+49172,+49173		# D2
-A:+49177,+49178		# Eplus
-A:+49176,+49179		# E2
+A:01618		# T-C-Tel Voice Mail
+A:01610,01611,01612,01613,01614,01615,01616,01617,01619 # C
+A:0170,0171		# D1
+A:0172,0173		# D2
+A:0177,0178		# Eplus
+A:0176,0179		# E2
 T:*/*=0.02/0,0.48/60
+# FIXME: Ausland erfassen
 Z:203 Welt 1
 A:Kanada, USA
 T:*/*=0.02/0,0.17/60
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:40 Esprit Call by Night
 C:beim RegTP eingetragen als:
@@ -9151,20 +9657,30 @@ C:Homepage: http://www.esprittelecom.de
 C:Hotline:  0800/1040800
 C:Adresse:  August-Thyssen-Str. 1, 40211
 C:	    Duesseldorf
+C:Erfasste Zonen:
+C:2	-   4	Deutschland
+C:10		Mobilfunk
+C:102		net@home
+C:103		Call POP
+C:161	- 166	DTAG Service Nummern
+C:170		Persöhnliche Rufnummer
+C:171		Info Expo 2000
+C:172		IVBB
+C:200	-	Ausland
 Z:2-4 Deutschland
 T:E,H/08-18=0.09/60 Wochenende
 T:*/18-21=0.09/60 Early night
 T:*/21-08=0.05/60 Late night
 Z:10 Mobilfunk
-A:+491618		# T-C-Tel Voice Mail
-A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
-A:+49170,+49171		# D1
-A:+49172,+49173		# D2
-A:+49177,+49178		# Eplus
-A:+49176,+49179		# E2
+A:01618		# T-C-Tel Voice Mail
+A:01610,01611,01612,01613,01614,01615,01616,01617,01619 # C
+A:0170,0171		# D1
+A:0172,0173		# D2
+A:0177,0178		# Eplus
+A:0176,0179		# E2
 T:*/*=0.48/60
 Z:102 net@home
-A:0192340 # (Benutzername: Esprit Telecom, Kennwort: Internet)
+A:0192340 # DNS: 195.222.195.222 und 195.222.195.223; User: esprit; Passwort: telecom
 T:*/08-18=0.08/60 Geschäftszeit
 T:*/18-21=0.06/60 Early night
 T:*/21-08=0.06/60 Late night
@@ -9174,8 +9690,7 @@ Z:103 CALL POP
 #     01.05.99: 06/07/08/09
 #     01.06.99: 02/052/054/056/057/059
 A:0192343 # (Benutzername: Call, Passwort: POP)
-T:*/08-18=0.08/60
-T:*/18-08=0.06/60
+T:*/*=0.058/60
 Z:200 Euro 1/Welt 1
 A:Belgien, Dänemark, Finnland, Frankreich
 A:Großbritannien, Irland, Italien, Luxemburg
@@ -9208,10 +9723,14 @@ A:+
 T:*/*=2.79/60
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:41 HanseNet 01041
 C:Telekommunikation GmbH, Hammerbrookstraße 63, 20097 Hamburg 01041
+C:Erfasste Zonen:
+C:2	-   4	Deutschland
+C:10		Mobilfunk
+C:200	-	Ausland
 Z:2 Hamburg-plus-20
 T:W/08-18=0.07/60
 T:E,H/08-18=0.05/60
@@ -9223,6 +9742,12 @@ T:E,H/08-18=0.09/60
 T:*/18-21=0.09/60
 T:*/21-08=0.065/60
 Z:10 Festnetz zu Mobilfunk
+A:01618		# T-C-Tel Voice Mail
+A:01610,01611,01612,01613,01614,01615,01616,01617,01619 # C
+A:0170,0171		# D1
+A:0172,0173		# D2
+A:0177,0178		# Eplus
+A:0176,0179		# E2
 T:W/08-18=0.80/60
 T:E,H/08-18=0.50/60
 T:*/18-08=0.50/60
@@ -9253,6 +9778,10 @@ A:+
 T:*/*=2.80/60
 #####################################################################
 P:41,1 HanseNet Preselection
+C:Erfasste Zonen:
+C:2	-   4	Deutschland
+C:10		Mobilfunk
+C:200	-	Ausland
 Z:2 Hamburg-plus-20
 T:W/08-18=0.07/60
 T:E,H/08-18=0.05/60
@@ -9263,6 +9792,12 @@ T:E,H/08-18=0.09/60
 T:*/18-21=0.09/60
 T:*/21-08=0.06/60
 Z:10 Festnetz zu Mobilfunk
+A:01618		# T-C-Tel Voice Mail
+A:01610,01611,01612,01613,01614,01615,01616,01617,01619 # C
+A:0170,0171		# D1
+A:0172,0173		# D2
+A:0177,0178		# Eplus
+A:0176,0179		# E2
 T:W/08-18=0.80/60
 T:E,H/08-18=0.50/60
 T:*/18-08=0.50/60
@@ -9306,7 +9841,7 @@ A:+
 T:*/*=2.80/60
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:42 TeleBeL
 C:Telekommunikation Bergisches Land GmbH, Johannisberg 7, 42103 Wuppertal 01042
@@ -9317,6 +9852,14 @@ C:Grundgebühr: ISDN 36,- DM, Analog 22,- DM
 C:Internetzugang: Grundgebühr im Anschluß enthalten
 C:Sondertarif "Unter Uns": Gespräche zwischen TeleBeL Kunden, 0.02(60)/1 !
 G:01.05.1999
+C:Erfasste Zonen:
+C:0	-   4	Deutschland
+C:5		Sondertarif
+C:10		Mobilfunk
+C:31	-  39	Satelitenfunk
+C:60	-  75	Pieper
+C:102		TeleBeL Internet
+C:200	-	Ausland
 Z:0 Freecall
 A:110, 112
 A:0800, 0130, International Freephone
@@ -9335,7 +9878,12 @@ T:E,H/*=0.11(60)/1 Nebenzeit
 Z:5 Unter Uns
 T:*/*=0.02(60)/1
 Z:10 Mobilfunk
-A:0170,0171,0172,0173,0176,0177,0178,0179
+A:01618		# T-C-Tel Voice Mail
+A:01610,01611,01612,01613,01614,01615,01616,01617,01619 # C
+A:0170,0171		# D1
+A:0172,0173		# D2
+A:0177,0178		# Eplus
+A:0176,0179		# E2
 T:W/08-18=0.90(60)/1 Hauptzeit
 T:W/18-08=0.48(60)/1 Nebenzeit
 T:E,H/*=0.48(60)/1 Nebenzeit
@@ -9363,57 +9911,57 @@ Z:39 Inmarsat Phone (Mini-M)
 A:Inmarsat Phone (Mini-M)
 T:*/*=0.121/1
 Z:60 Cityruf automatic
-A:+49164,+491682
-A:+491683,+491684,+491685,+491686,+491687,+491688,+491689
-A:+491690,+491691
+A:0164,01682
+A:01683,01684,01685,01686,01687,01688,01689
+A:01690,01691
 T:W/09-18=0.363(60)/1 Geschaeftszeit
 T:W/18-09=0.242(60)/1 Freizeit
 T:E,H/*=0.242(60)/1 Wochenende
 Z:61 Cityruf Operator
-A:+4916951,+4916952
+A:016951,016952
 T:*/*=0.0242/1
 Z:62 Scall IVR
-A:+491680
+A:01680
 T:*/*=0.605/0
 Z:63 Scall DTMF
-A:+491681
+A:01681
 T:W/08-18=1.452/0 Geschaeftszeit
 T:W/18-09=0.968/0 Freizeit
 T:E,H/*=0.968/0 Wochenende
 Z:64 Scall Operator
-A:+491699
+A:01699
 T:*/*=2.42/0
 Z:65 Scall Modem
-A:+491696
+A:01696
 T:*/*=0.968/0
 Z:66 TeLMI automatic
-A:+491660,+491665,+491669
+A:01660,01665,01669
 T:*/*=0.02326922833/1
 Z:67 TeLMI Operator
-A:+491661
+A:01661
 T:*/*=0.09307692167/1
 Z:68 Skyper Operator
-A:+4916953
+A:016953
 T:*/*=2.42/0
 Z:69 Skyper
-A:+491692,+491693
+A:01692,01693
 T:*/*=0.968/0
 Z:70 Quix Service
-A:+4916500,+4916501,+4916502,+4916503,+4916504,+4916505,+4916506,+4916507,+4916508,+491655
+A:016500,016501,016502,016503,016504,016505,016506,016507,016508,01655
 T:W/09-18=0.605(60)/1 Geschaeftszeit
 T:W/18-09=0.3025(60)/1 Freizeit
 T:E,H/*=0.3025(60)/1 Wochenende
 Z:71 Quix DTMF
-A:+491651
+A:01651
 T:*/*=0.242/0
 Z:72 Quix Modem
-A:+491653,+491654
-A:+4916591,+4916592,+4916593
+A:01653,01654
+A:016591,016592,016593
 T:W/09-18=1.21/0 Geschaeftszeit
 T:W/18-09=0.968/0 Freizeit
 T:E,H/*=0.968/0 Wochenende
 Z:75 Quix Operator 2
-A:+491656
+A:01656
 T:*/*=2.42/0
 # FIXME: Shared Cost, Premium Rate, T-Vote etc. einfügen
 # FIXME: identisch mit VEW-Telnet ?
@@ -9447,16 +9995,31 @@ A:+
 T:*/*=2.75(60)/1
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:43 KielNet
 C:GmbH, Postfach 41 60, 24100 Kiel 01043
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:44 VEW TELNET
 C:Gesellschaft für Telekommunikation und Netzdienste mbH, Unterste-Wilms-Straße 29, 44143 Dortmund 01044
+C:Erfasste Zonen:
+C:0	-   4	Deutschland
+C:10		Mobilfunk
+C:33, 37	Satelitenfunk
+C:40		Auskunft DTAG
+C:60	-  75	Pieper
+C:81	-  85	Service 0180-x
+C:91	-  94	Service 0190-x
+C:100		T-Online
+C:101		AOL
+C:160	- 163	DTAG Service Nummern
+C:170		Persöhnliche Rufnummer
+C:171		Info Expo 2000
+C:172		IVBB
+C:200	-	Ausland
 Z:0 FreeCall
 A:0800, 0130, International Freephone
 A:+49231438110	# TELNET Support Nummern
@@ -9471,12 +10034,12 @@ T:E,H/08-18=0.10/60 Freizeit
 T:*/18-22=0.10/60 Freizeit
 T:*/22-08=0.06/120 Nacht
 Z:10 TELNET Mobil
-A:+491618		# T-C-Tel Voice Mail
-A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
-A:+49170,+49171		# D1
-A:+49172,+49173		# D2
-A:+49177,+49178		# Eplus
-A:+49176,+49179		# E2
+A:01618		# T-C-Tel Voice Mail
+A:01610,01611,01612,01613,01614,01615,01616,01617,01619 # C
+A:0170,0171		# D1
+A:0172,0173		# D2
+A:0177,0178		# Eplus
+A:0176,0179		# E2
 T:W/08-18=0.80/60 Tag
 T:E,H/08-18=0.45/60 Freizeit
 T:*/18-22=0.45/60 Freizeit
@@ -9490,59 +10053,59 @@ Z:40 DTAG Auskunft
 A:11833, 11834
 T:*/*=0.96/30,1.90/60
 Z:60 Cityruf automatic
-A:+49164,+491682
-A:+491683,+491684,+491685,+491686,+491687,+491688,+491689
-A:+491690,+491691
+A:0164,01682
+A:01683,01684,01685,01686,01687,01688,01689
+A:01690,01691
 T:W/08-18=0.36/60 Tag
 T:E,H/08-18=0.36/60 Freizeit
 T:*/18-22=0.36/60 Freizeit
 T:*/22-08=0.36/120 Nacht
 Z:61 Cityruf Operator
-A:+4916951,+4916952
+A:016951,016952
 T:*/*=1.44/60
 Z:62 Scall IVR
-A:+491680
+A:01680
 T:*/*=0.60/0
 Z:63 Scall DTMF
-A:+491681
+A:01681
 T:W/08-18=1.44/0 Tag
 T:E,H/08-18=0.96/0 Freizeit
 T:*/18-22=0.96/0 Freizeit
 T:*/22-08=0.96/0 Nacht
 Z:64 Scall Operator
-A:+491699
+A:01699
 T:*/*=2.90/0
 Z:65 Scall Modem
-A:+491696
+A:01696
 T:*/*=0.968/0
 Z:66 TeLMI automatic
-A:+491660,+491665,+491669
+A:01660,01665,01669
 T:*/*=1.39/60
 Z:67 TeLMI Operator
-A:+491661
+A:01661
 T:*/*=5.54/60
 Z:68 Skyper Operator
-A:+4916953
+A:016953
 T:*/*=2.90/0
 Z:69 Skyper
-A:+491692,+491693
+A:01692,01693
 T:*/*=1.20/0
 Z:70 Quix Service
-A:+4916500,+4916501,+4916502,+4916503,+4916504,+4916505,+4916506,+4916507,+4916508,+491655
+A:016500,016501,016502,016503,016504,016505,016506,016507,016508,01655
 T:W/08-18=0.60/60 Tag
 T:E,H/08-18=0.30/60 Freizeit
 T:*/18-08=0.30/60 Freizeit
 Z:71 Quix DTMF
-A:+491651
+A:01651
 T:*/*=0.24/0
 Z:72 Quix Modem
-A:+491653,+491654
-A:+4916591,+4916592,+4916593
+A:01653,01654
+A:016591,016592,016593
 T:W/08-18=1.20/0 Tag
 T:E,H/08-18=0.96/0 Freizeit
 T:*/18-08=0.96/0 Freizeit
 Z:75 Quix Operator 2
-A:+491656
+A:01656
 T:*/*=2.40/0
 Z:81 Service 0180-1
 A:01801
@@ -9622,18 +10185,35 @@ T:*/08-22=2.75/60 Tag
 T:*/22-08=2.75/120 Nacht
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:45 Global Network
 C:Telephone Deutschland, Grosser Plan 8, 29221 Celle 01045
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:46 KomTel Deutschland-Tarif
 C:Gesellschaft für Kommunikation und Informationsdienste GmbH, Batteriestraße 48, 24937 Flensburg 01046
 C:Spezialtarif 5 "Nord-Ostsee": gilt für Verbindungen mit Niedersachsen,
 C:Bremen, Mecklenburg-Vorpommern, Schleswig-Holstein und Hamburg
+C:Erfasste Zonen:
+C:0	-   4	Deutschland
+C:5		Sondertarif
+C:10		Mobilfunk
+C:33	-  39	Satelitenfunk
+C:40		Auskunft DTAG Inland
+C:41		Auskunft DTAG Ausland
+C:60	-  75	Pieper
+C:81	-  85	Service 0180-x
+C:91	-  94	Service 0190-x
+C:100		T-Online
+C:101		AOL
+C:161	- 166	DTAG Service Nummern
+C:170		Persöhnliche Rufnummer
+C:171		Info Expo 2000
+C:172		IVBB
+C:200	-	Ausland
 Z:0 Freephone
 A:0800, 0130		# FreeCall
 A:01113, 01114, 01115	# DTAG-Service
@@ -9648,12 +10228,12 @@ T:W/08-20=0.15(60)/1 Tag
 T:W/20-08=0.10(60)/1 Nacht
 T:E,H/*=0.10(60)/1 Wochenende
 Z:10 Mobilfunk
-A:+491618		# T-C-Tel Voice Mail
-A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
-A:+49170,+49171		# D1
-A:+49172,+49173		# D2
-A:+49177,+49178		# Eplus
-A:+49176,+49179		# E2
+A:01618		# T-C-Tel Voice Mail
+A:01610,01611,01612,01613,01614,01615,01616,01617,01619 # C
+A:0170,0171		# D1
+A:0172,0173		# D2
+A:0177,0178		# Eplus
+A:0176,0179		# E2
 T:W/08-20=0.90(60)/1 Tag
 T:W/20-08=0.70(60)/1 Nacht
 T:E,H/*=0.70(60)/1 Wochenende
@@ -9681,57 +10261,57 @@ Z:41 Auskunft DTAG Ausland
 A:11834
 T:*/*=2.90(60)/1
 Z:60 Cityruf automatic
-A:+49164
-A:+491682,+491683,+491684,+491685,+491686,+491687,+491688,+491689
-A:+491690,+491691
+A:0164
+A:01682,01683,01684,01685,01686,01687,01688,01689
+A:01690,01691
 T:W/09-18=0.36(60)/1 Geschaeftszeit
 T:W/18-09=0.24(60)/1 Freizeit
 T:E,H/*=0.24(60)/1 Wochenende
 Z:61 Cityruf Operator
-A:+4916951,+4916952
+A:016951,016952
 T:*/*=1.44(60)/1
 Z:62 Scall IVR
-A:+491680
+A:01680
 T:*/*=0.60/0
 Z:63 Scall DTMF
-A:+491681
+A:01681
 T:W/08-18=1.44/0 Geschaeftszeit
 T:W/18-09=0.96/0 Freizeit
 T:E,H/*=0.96/0 Wochenende
 Z:64 Scall Operator
-A:+491699
+A:01699
 T:*/*=2.40/0
 Z:65 Scall Modem
-A:+491696
+A:01696
 T:*/*=0.96/0
 Z:66 TeLMI automatic
-A:+491660,+491665,+491669
+A:01660,01665,01669
 T:*/*=1.40(60)/1
 Z:67 TeLMI Operator
-A:+491661
+A:01661
 T:*/*=5.64(60)/1
 Z:68 Skyper Operator
-A:+4916953
+A:016953
 T:*/*=2.40/0
 Z:69 Skyper
-A:+491692,+491693
+A:01692,01693
 T:*/*=0.96/0
 Z:70 Quix Service
-A:+4916500,+4916501,+4916502,+4916503,+4916504,+4916505,+4916506,+4916507,+4916508,+491655
+A:016500,016501,016502,016503,016504,016505,016506,016507,016508,01655
 T:W/09-18=0.60(60)/1 Geschaeftszeit
 T:W/18-09=0.30(60)/1 Freizeit
 T:E,H/*=0.30(60)/1 Wochenende
 Z:71 Quix DTMF
-A:+491651
+A:01651
 T:*/*=0.24/0
 Z:72 Quix Modem
-A:+491653,+491654
-A:+4916591,+4916592,+4916593
+A:01653,01654
+A:016591,016592,016593
 T:W/09-18=1.20/0 Geschaeftszeit
 T:W/18-09=0.96/0 Freizeit
 T:E,H/*=0.96/0 Wochenende
 Z:75 Quix Operator 2
-A:+491656
+A:01656
 T:*/*=2.40/0
 Z:81 Service 0180-1
 A:01801
@@ -9774,21 +10354,21 @@ T:W/08-20=0.10(60)/1 Tag
 T:W/20-08=0.06(60)/1 Nacht
 T:E,H/*=0.06(60)/1 Wochenende
 Z:161 Teledialog
-A:+49138
+A:0138
 T:*/*=0.24(60)/1
 Z:162 T-VoteCall 1
-A:+491370, +491373, +491379
+A:01370, 01373, 01379
 T:*/*=0.24/0
 Z:163 T-VoteCall 2
-A:+491371, +491372, +491374
+A:01371, 01372, 01374
 T:*/*=0.36/0
 Z:164 DTAG Ansagedienste
-A:+49115, +49116
+A:0115, 0116
 T:W/08-20=0.10(60)/1 Tag
 T:W/20-08=0.06(60)/1 Nacht
 T:E,H/*=0.06(60)/1 Wochenende
 Z:166 DTAG Zeitansage
-A:+491191
+A:01191
 T:W/08-20=0.10(60)/1 Tag
 T:W/20-08=0.06(60)/1 Nacht
 T:E,H/*=0.06(60)/1 Wochenende
@@ -9801,7 +10381,7 @@ Z:171 Info Expo 2000
 A:02000
 T:*/*=0.60(60)/1
 Z:172 IVBB
-A:+491888
+A:01888
 T:*/*=0.30(60)/1
 Z:202 Welt 1
 A:Alaska, Großbritanien, Kanada, Vereinigte Staaten von Amerika
@@ -9921,6 +10501,23 @@ P:46,1 KomTel MoinMoin-Region
 C:Gesellschaft für Kommunikation und Informationsdienste GmbH, Batteriestraße 48, 24937 Flensburg 01046
 C:Spezialtarif 5 "Nord-Ostsee": gilt für Verbindungen mit Niedersachsen,
 C:Bremen, Mecklenburg-Vorpommern, Schleswig-Holstein und Hamburg
+C:Erfasste Zonen:
+C:0	-   4	Deutschland
+C:5		Sondertarif
+C:10		Mobilfunk
+C:33	-  39	Satelitenfunk
+C:40		Auskunft DTAG Inland
+C:41		Auskunft DTAG Ausland
+C:60	-  75	Pieper
+C:81	-  85	Service 0180-x
+C:91	-  94	Service 0190-x
+C:100		T-Online
+C:101		AOL
+C:161	- 166	DTAG Service Nummern
+C:170		Persöhnliche Rufnummer
+C:171		Info Expo 2000
+C:172		IVBB
+C:200	-	Ausland
 Z:0 Freephone
 A:0800, 0130		# FreeCall
 A:01113, 01114, 01115	# DTAG-Service
@@ -9947,12 +10544,12 @@ T:W/08-20=0.15(60)/1 Tag
 T:W/20-08=0.10(60)/1 Nacht
 T:E,H/*=0.10(60)/1 Wochenende
 Z:10 Mobilfunk
-A:+491618		# T-C-Tel Voice Mail
-A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
-A:+49170,+49171		# D1
-A:+49172,+49173		# D2
-A:+49177,+49178		# Eplus
-A:+49176,+49179		# E2
+A:01618		# T-C-Tel Voice Mail
+A:01610,01611,01612,01613,01614,01615,01616,01617,01619 # C
+A:0170,0171		# D1
+A:0172,0173		# D2
+A:0177,0178		# Eplus
+A:0176,0179		# E2
 T:W/08-20=0.90(60)/1 Tag
 T:W/20-08=0.70(60)/1 Nacht
 T:E,H/*=0.70(60)/1 Wochenende
@@ -9980,57 +10577,57 @@ Z:41 Auskunft DTAG Ausland
 A:11834
 T:*/*=2.90(60)/1
 Z:60 Cityruf automatic
-A:+49164
-A:+491682, +491683,+491684,+491685,+491686,+491687,+491688,+491689
-A:+491690,+491691
+A:0164
+A:01682, 01683,01684,01685,01686,01687,01688,01689
+A:01690,01691
 T:W/09-18=0.36(60)/1 Geschaeftszeit
 T:W/18-09=0.24(60)/1 Freizeit
 T:E,H/*=0.24(60)/1 Wochenende
 Z:61 Cityruf Operator
-A:+4916951,+4916952
+A:016951,016952
 T:*/*=1.44(60)/1
 Z:62 Scall IVR
-A:+491680
+A:01680
 T:*/*=0.60/0
 Z:63 Scall DTMF
-A:+491681
+A:01681
 T:W/08-18=1.44/0 Geschaeftszeit
 T:W/18-09=0.96/0 Freizeit
 T:E,H/*=0.96/0 Wochenende
 Z:64 Scall Operator
-A:+491699
+A:01699
 T:*/*=2.40/0
 Z:65 Scall Modem
-A:+491696
+A:01696
 T:*/*=0.96/0
 Z:66 TeLMI automatic
-A:+491660,+491665,+491669
+A:01660,01665,01669
 T:*/*=1.40(60)/1
 Z:67 TeLMI Operator
-A:+491661
+A:01661
 T:*/*=5.64(60)/1
 Z:68 Skyper Operator
-A:+4916953
+A:016953
 T:*/*=2.40/0
 Z:69 Skyper
-A:+491692,+491693
+A:01692,01693
 T:*/*=0.96/0
 Z:70 Quix Service
-A:+4916500,+4916501,+4916502,+4916503,+4916504,+4916505,+4916506,+4916507,+4916508,+491655
+A:016500,016501,016502,016503,016504,016505,016506,016507,016508,01655
 T:W/09-18=0.60(60)/1 Geschaeftszeit
 T:W/18-09=0.30(60)/1 Freizeit
 T:E,H/*=0.30(60)/1 Wochenende
 Z:71 Quix DTMF
-A:+491651
+A:01651
 T:*/*=0.24/0
 Z:72 Quix Modem
-A:+491653,+491654
-A:+4916591,+4916592,+4916593
+A:01653,01654
+A:016591,016592,016593
 T:W/09-18=1.20/0 Geschaeftszeit
 T:W/18-09=0.96/0 Freizeit
 T:E,H/*=0.96/0 Wochenende
 Z:75 Quix Operator 2
-A:+491656
+A:01656
 T:*/*=2.40/0
 Z:81 Service 0180-1
 A:01801
@@ -10073,21 +10670,21 @@ T:W/08-20=0.10(60)/1 Tag
 T:W/20-08=0.06(60)/1 Nacht
 T:E,H/*=0.06(60)/1 Wochenende
 Z:161 Teledialog
-A:+49138
+A:0138
 T:*/*=0.24(60)/1
 Z:162 T-VoteCall 1
-A:+491370, +491373, +491379
+A:01370, 01373, 01379
 T:*/*=0.24/0
 Z:163 T-VoteCall 2
-A:+491371, +491372, +491374
+A:01371, 01372, 01374
 T:*/*=0.36/0
 Z:164 DTAG Ansagedienste
-A:+49115, +49116
+A:0115, 0116
 T:W/08-20=0.10(60)/1 Tag
 T:W/20-08=0.06(60)/1 Nacht
 T:E,H/*=0.06(60)/1 Wochenende
 Z:166 DTAG Zeitansage
-A:+491191
+A:01191
 T:W/08-20=0.10(60)/1 Tag
 T:W/20-08=0.06(60)/1 Nacht
 T:E,H/*=0.06(60)/1 Wochenende
@@ -10100,7 +10697,7 @@ Z:171 Info Expo 2000
 A:02000
 T:*/*=0.60(60)/1
 Z:172 IVBB
-A:+491888
+A:01888
 T:*/*=0.30(60)/1
 Z:200 MoinSonderjylland
 A:Sonderjylland # +4573, +4574
@@ -10227,19 +10824,24 @@ A:Äquatorialguinea, Cookinseln, Eritrea, Sao Tome und Principe
 T:*/*=1.99(60)/1
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:47 PrimeTec
 C:International Europe Ltd. 01047
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:48 DOKOM
 C:GmbH, Im Defdahl 5, 44141 Dortmund 01048
 C:Sondertarif 5 "Surf-Tarif": "Der günstige Surf-Tarif für DOKOM-Kunden,
 C:die auch einen Internetanschluss bei uns haben." ?  Gilt der Tarif nur
 C:für´s Surfen, oder allgemein im Stadtgebiet ?
+C:Erfasste Zonen:
+C:1	-   4	Deutschland
+C:5		Sondertarif
+C:10		Mobilfunk
+C:200	- 206	Ausland
 Z:1-2 City
 T:W/09-18=0.1044/90 Tag
 T:W/18-21=0.1044/150 Freizeit
@@ -10259,16 +10861,16 @@ T:E,H/05-21=0.0696/150 Freizeit
 T:W/21-09=0.0696/240 Nacht
 T:E,H/21-05=0.0696/240 Nacht
 Z:10 Mobilfunk C- & D-Netze
-A:+491618		# T-C-Tel Voice Mail
-A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
-A:+49170,+49171		# D1
-A:+49172,+49173		# D2
+A:01618		# T-C-Tel Voice Mail
+A:01610,01611,01612,01613,01614,01615,01616,01617,01619 # C
+A:0170,0171		# D1
+A:0172,0173		# D2
 T:W/09-18=0.1044/7.5 Tag
 T:W/18-08=0.1044/15 Freizeit
 T:E,H/*=0.1044/15 Wochenende
 Z:14-15 Mobilfunk E-Netze
-A:+49177,+49178		# Eplus
-A:+49176,+49179		# E2
+A:0177,0178		# Eplus
+A:0176,0179		# E2
 T:W/09-18=0.1044/5.3 Tag
 T:W/18-08=0.1044/12.8 Freizeit
 T:E,H/*=0.1044/12.8 Wochenende
@@ -10304,11 +10906,15 @@ A:China, Indien
 T:*/*=0.1044/2.31
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:49,1 ACC ACCess Direkt Pre-Selection Einheitentarif
 C:Telekommunikation GmbH, Heinrich-Heine-Allee 53, 40213 Düsseldorf 01049
 C:Homepage: http://www.acctelecom.de
+C:Erfasste Zonen:
+C:2	-   4	Deutschland
+C:10		Mobilfunk
+C:200	- 211	Ausland
 Z:2 Nah
 T:W/08-18=0.08/60
 T:W/18-08=0.08/90
@@ -10322,6 +10928,12 @@ T:W/08-18=0.08/30
 T:W/18-08=0.08/60
 T:E,H/*=0.08/60
 Z:10 Mobilfunk
+A:01618		# T-C-Tel Voice Mail
+A:01610,01611,01612,01613,01614,01615,01616,01617,01619 # C
+A:0170,0171		# D1
+A:0172,0173		# D2
+A:0177,0178		# Eplus
+A:0176,0179		# E2
 T:W/08-18=0.09/7.5
 T:W/18-08=0.09/15
 T:E,H/*=0.09/7.5
@@ -10381,11 +10993,15 @@ A:+
 T:*/*=0.09/2.3
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:49,2 ACC ACCess Direkt Pre-Selection Minutentarif
 C:Telekommunikation GmbH, Heinrich-Heine-Allee 53, 40213 Düsseldorf 01049
 C:Homepage: http://www.acctelecom.de
+C:Erfasste Zonen:
+C:2	-   4	Deutschland
+C:10		Mobilfunk
+C:200	- 211	Ausland
 G:01.06.1999
 Z:2 Nah
 T:W/08-18=0.12(60)/1
@@ -10396,6 +11012,12 @@ T:W/08-18=0.15(60)/1
 T:W/18-08=0.09(60)/1
 T:E,H/*=0.09(60)/1
 Z:10 Mobilfunk
+A:01618		# T-C-Tel Voice Mail
+A:01610,01611,01612,01613,01614,01615,01616,01617,01619 # C
+A:0170,0171		# D1
+A:0172,0173		# D2
+A:0177,0178		# Eplus
+A:0176,0179		# E2
 T:W/08-18=0.49(60)/1
 T:W/18-08=0.36(60)/1
 T:E,H/*=0.36(60)/1
@@ -10456,11 +11078,15 @@ A:+
 T:*/*=2.35(60)/1
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:49,3 ACC ACCess 01049 Einheitentarif Call-By-Call
 C:Telekommunikation GmbH, Heinrich-Heine-Allee 53, 40213 Düsseldorf 01049
 C:Homepage: http://www.acctelecom.de
+C:Erfasste Zonen:
+C:2	-   4	Deutschland
+C:10		Mobilfunk
+C:200	- 211	Ausland
 Z:2 Nah
 T:W/09-18=0.12/90
 T:W/18-09=0.12/150
@@ -10555,12 +11181,16 @@ A:+
 T:*/*=0.09/2.3
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:49,4 ACC ACCess 01049 Minutentarif Call-By-Call
 C:Telekommunikation GmbH, Heinrich-Heine-Allee 53, 40213 Düsseldorf 01049
 C:Homepage: http://www.acctelecom.de
 G:01.06.1999
+C:Erfasste Zonen:
+C:2	-   4	Deutschland
+C:10		Mobilfunk
+C:200	- 211	Ausland
 Z:2-3 Nah
 T:W/08-18=0.12(60)/1
 T:W/18-08=0.09(60)/1
@@ -10640,9 +11270,12 @@ A:+
 T:*/*=2.35(60)/1
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:50 Talkline
+##
+## macht *keinen* Tarifwechsel in laufender Verbindung!
+##
 G:01.05.1999
 C:PS PhoneServices GmbH, Adenauer Damm 1, 25337 Elmshorn 01050
 C:Homepage: http://www.null1050.de
@@ -10657,7 +11290,7 @@ T:E,H/22-07=0.039/60
 Z:10-15 Mobil
 T:*/*=0.69/60
 Z:100 Talknet by call
-A:019251 # (Benutzername: talknet; Passwort: talknet; DNS-Server: 195.252.128.53)
+A:019251 # Proxy: proxy.tli.de:8080; DNS: 195.252.128.53 und 195.252.128.54; User: talknet; Passwort: talknet
 T:W/07-19=0.09(60)/180
 T:W/19-22=0.07(60)/180
 T:W/22-07=0.059(60)/180
@@ -10672,7 +11305,7 @@ A:Österreich,Schweden,Schweiz,Spanien,USA
 T:*/*=0.45/60
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:51 01051
 C:ID-Switch GmbH, Graf-Adolf-Straße, 40210 Düsseldorf 01051
@@ -10694,35 +11327,53 @@ A:USA
 T:*/*=0.16/60
 Z:201
 A:Niederlande
+A:Schweden
 T:*/*=0.21/60
 Z:202
 A:Kanada
 T:*/*=0.22/60
 Z:203
+A:Dänemark
+A:Norwegen
+A:Finnland
+T:*/*=0.23/60
+Z:204
 A:Österreich
 A:Frankreich
 A:Schweiz
 A:Australien
 T:*/*=0.25/60
-Z:204
+Z:205
 A:Alaska
 A:Hawaii
 T:*/*=0.26/60
-Z:205
+Z:206
 A:Belgien
 T:*/*=0.27/60
-Z:206
+Z:207
 A:Neuseeland
 A:Hongkong
 A:Japan
 T:*/*=0.29/60
-Z:207
+Z:208
+A:Liechtenstein
+T:*/*=0.31/60
+Z:209
+A:Spanien
+T:*/*=0.32/60
+Z:210
+A:Luxemburg
+T:*/*=0.34/60
+Z:211
 A:Italien
 T:*/*=0.35/60
-Z:208
+Z:212
+A:Monaco
+T:*/*=0.36/60
+Z:213
 A:Österreich Mobilfunk
 T:*/*=0.75/60
-Z:209 impossible
+Z:214 impossible
 # Mobilfunk in den folgenden Ländern ist über 01051 nicht möglich!
 # Daher wird hier erst mal ein viel zu hoher Preis dafür
 # definiert.
@@ -10731,16 +11382,24 @@ A:Belgien Mobilfunk
 A:Niederlande Mobilfunk
 A:Schweiz Mobilfunk
 A:Italien Mobilfunk
+A:Dänemark Mobilfunk
+A:Schweden Mobilfunk
+A:Norwegen Mobilfunk
+A:Finnland Mobilfunk
+A:Spanien Mobilfunk
+A:Liechtenstein Mobilfunk
+A:Luxemburg Mobilfunk
+A:Monaco Mobilfunk
 T:*/*=99.99/60
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:52 Long Distance
 C:International Ltd., 5 Duke's Gate Acton, London W 4 5 DX, GB 01052
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:53 WOBCOM
 G:01.04.1999
@@ -10973,79 +11632,79 @@ A:+
 T:*/*=0.06/1.29
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:54 USFI
 C:Global Network Services Germany GmbH, Kindsbacherstraße 41, 66877 Ramstein 01054
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:55 ESPRIT Telecom Deutschland GmbH, August-Thyssen-Str. 1
 C:40211 Düsseldorf
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:56 BITel
 C:Gesellschaft für kommunale Telekommunikation mbh, Schildescher Straße 16, 33611 Bielefeld 01056
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:57 Mox
 C:Telecom GmbH, Industriestraße 3a, 40878 Ratingen 01057
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:58 KaTel
 C:Gesellschaft für Telekommunikation mbH, Mathias-Brüggen-Straße 87-89, 50829 Köln 01058
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:59 Pacific Gateway Exchange
 C:Inc., 533 Airport Boulevard, Suite 505, Burlingame, CA 94010, USA 01059
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:60 Telecom-InfoService
 C:GmbH, Postfach 174, A-1000 Wien (A) 01060
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:61 TelSA
 C:Telekommunikationsgesellschaft mbH, Magdeburger Str. 51, 06112 Halle 01061
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:62 DENTEL
 C:GmbH i.G. Grimmstraße 4 80336 München 01062
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:63 Conos
 C:Corporate Network & Services Aktiengesellschaft Lievelingsweg 125 52119 Bonn 01063
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:64 Hannoversche
 C:Telekommunikations- und Netzgesellschaft mbH, Glockseestraße 33, 30161 Hannover 01064
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:65 Rapid Link
 C:Telecommunications GmbH, Donaustraße 68, 68199 Mannheim 01065
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:66 Interoute
 C:Telecom Deutschland GmbH, Lyoner Str. 15, 60528 Frankfurt 01066
@@ -11057,9 +11716,9 @@ T:W/17-08=0.08/60
 T:E,H/08-17=0.10/80
 T:E,H/17-08=0.08/80
 Z:10-15 Mobil
-T:W/08-17=0.58/60
-T:W/17-08=0.48/60
-T:E,H/*=0.48/60
+T:W/08-17=0.58(60)/1
+T:W/17-08=0.48(60)/1
+T:E,H/*=0.48(60)/1
 Z:200 International (Top 12)
 A:Australien, Belgien, Dänemark
 A:Finnland, Frankreich
@@ -11067,18 +11726,18 @@ A:Großbritannien, Niederlande
 A:Norwegen, Österreich
 A:Schweden, Schweiz
 A:USA, Kanada
-T:W/08-17=0.38/60
+T:W/08-17=0.38(60)/1
 # bei Preselection:
 # T:W/08-17=0.29(60)/1
-T:W/17-08=0.29/60
-T:E,H/*=0.29/60
+T:W/17-08=0.29(60)/1
+T:E,H/*=0.29(60)/1
 Z:201 International B
 A:Hong Kong, Irland, Israel
 A:Italien, Japan, Liechtenstein
 A:Luxemburg, Monaco, Spanien
-T:W/08-17=0.48/60
-T:W/17-08=0.38/60
-T:E,H/*=0.38/60
+T:W/08-17=0.48(60)/1
+T:W/17-08=0.38(60)/1
+T:E,H/*=0.38(60)/1
 Z:202 International C
 A:Alaska, Albanien, Algerien
 A:Andorra, Bahamas, Bermuda
@@ -11096,7 +11755,7 @@ A:Slowenien, Süd-Korea
 A:Tschechische Republik, Türkei
 A:Tunesien, Ungarn, Weißrußland
 A:Zypern
-T:*/*=0.88/60
+T:*/*=0.88(60)/1
 Z:203 International D
 A:Ägypten, Armenien, Azoren
 A:Barbados, Bolivien, Costa Rica
@@ -11111,7 +11770,7 @@ A:Rumänien, Rußland (östl.)
 A:Syrien (Arabische Republik)
 A:Swasiland, Taiwan, Thailand
 A:Ukraine, Venezuela
-T:*/*=1.48/60
+T:*/*=1.48(60)/1
 Z:204 International E
 A:Angola, Argentinien
 A:Aserbaidschan, Botswana
@@ -11127,31 +11786,31 @@ A:Nord-Korea, Saudi-Arabien
 A:Simbabwe, Sudan, Südafrika
 A:Tajikistan, Uganda, Uruguay
 A:Uzbekistan, Vereinigte Arab. Emirate
-T:*/*=1.98/60
+T:*/*=1.98(60)/1
 A:205 International F (Rest der Welt)
 A:+
-T:*/*=2.48/60
+T:*/*=2.48(60)/1
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:67 RegioCom
 C:GmbH, Steinfeldstraße 3, 39179 Barleben 01067
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:68 Tele Media
 C:International, Wilhelm-Leuschner-Strasse 23-25, 60329 Frankfurt/Main 01068
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:69 Primus
 C:Telecommunications Ltd. 01069
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:70,1 Arcor CbC
 G:01.04.99
@@ -11440,8 +12099,10 @@ A:Kirgisistan
 A:Usbekistan
 T:*/*=2.72/60
 Z:100 Internet
-A:0192070 # (Benutzername: arcor; Passwort: internet; Proxy: proxy.arcor-ip.de:80; Startseite: http://www.call.arcor.net)
-A:0192020 # (Benutzername: yahoo; Passwort: yahoo) -> "Yahoo! Online"
+C:Arcor Online
+A:0192070 # Proxy: proxy.arcor-ip.de:80; DNS: 145.253.2.11 und 145.253.2.75; Mail: mail.arcor-ip.de; User: arcor; Passwort: internet
+C:Yahoo! Online
+A:0192020 # Proxy: proxy.arcor-ip.de:80; DNS: 145.253.2.11 und 145.253.2.75; Mail: mail.arcor-ip.de; User: arcor; Passwort: internet
 T:*/*=0.06/60
 Z:40 Telefonauskunft
 A:11870
@@ -11520,49 +12181,49 @@ T:E,H/06-21=0.058/0,0.095(60)/1 Freizeit
 T:E,H/21-06=0.058/0,0.06(60)/1 Nebenzeit
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:71 DeTeMobil
 C:Deutsche Telekom MobilNet GmbH, Landgrabenweg 151, 53227 Bonn 01071
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:72 Mannesmann
 C:Mobilfunk GmbH, Am Seestern 1, 40547 Düsseldorf 01072
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:73 AXXON
 C:Telecom GmbH, Am Seestern 24, 40547 Düsseldorf 01073
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:74 Alpha
 C:Telecom GmbH, Beethovenstraße 1-3, 60325 Frankfurt/Main 01074
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:75 ARCIS
 C:Media Com Management GmbH, Maximilianstr. 14, 80539 München 01075
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:76 QuickNet
 C:Telenetworks & Service AG, Else-Lasker-Schüler-Straße 47, 42107 Wuppertal 01076
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:77 E-Plus
 C:Mobilfunk GmbH, E-Plus-Platz 1, 40468 Düsseldorf 01077
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:78 3U
 G:01.04.1999
@@ -12729,9 +13390,12 @@ T:*/08-20=0.289(60)/1
 T:*/20-08=0.269(60)/1
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:79 Viatel
+##
+## macht *keinen* Tarifwechsel in laufender Verbindung!
+##
 G:01.05.1999
 C:VIAPHONE GmbH, Hanauer Landstraße 187, 60314 Frankfurt 01079
 C:Homepage: http://www.viatel.de
@@ -12755,7 +13419,7 @@ T:W/18-09=0.18/30,0.36(60)/1 Spar
 T:E/*=0.18/30,0.36(60)/1 Spar
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:80 Telegate
 C:Aktiengesellschaft für telefonische Informationsdienste, Bahnhofstraße 26, 82211 Herrsching 01080
@@ -12767,31 +13431,31 @@ A:11890
 T:*/*=3.51/60
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:81 Infotel
 C:bV, Onderlangs 120, 6812 CJ Arnhem, Niederlande 01081
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:82 AugustaKom
 C:Telekommunikation GmbH & Co.KG Hoher Weg 1 86152 Augsburg 01082
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:83 Wuerzburger
 C:Telekommunikationsgesellschaft mbH, Bahnhofstraße 12-18, 97070 Würzburg 01083
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:84 Telegroup
 C:Network Services GmbH, Grossenbaumer Weg 6, 40472 Düsseldorf 01084
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:85 GTS-WESTCom
 G:01.02.1999
@@ -12841,19 +13505,19 @@ T:*/*=2.22(60)/1
 A:+
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:86 ONE.TEL
 C:Limited (UK), Clements House, 14-18 Gresham Street, London, EC2V 7JE, England 01086
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:87 HAMCOM
 C:GmbH Telekommunikation, Südring 1-3, 59065 Hamm 01087
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:88 WorldCom
 C:Telecommunication Services GmbH, Brönnerstr. 15, 60313 Frankfurt 01088
@@ -12861,6 +13525,7 @@ C:Dies sind *nicht* die korrekten Tarife von WorldCom, da WorldCom
 C:keine Tarifdaten veroeffentlicht!
 C:Vielmehr handelt es sich hier nur um die Tarife fuer den
 C:UUnet Ortstarif-Zugang!
+C:Dies ist *kein* All-in-One Zugang, es werden zusätzliche Gebühren erhoben!
 Z:100 Internet
 A:0191999
 T:W/05-09=0.048(60)/1 UUnet
@@ -12871,24 +13536,25 @@ T:E,H/05-21=0.048(60)/1 UUnet
 T:E,H/21-05=0.03(60)/1 UUnet
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:89 M'net
 C:Telekommunikations GmbH, Corneliusstraße 10, 80469 München 01089
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:90 Viag Interkom
 G:01.04.1999
 C:GmbH & Co. KG, Elsenheimer Straße 11, 81927 München 01090
 Z:2-4 Fern
+T:W/06-08=0.10/60 Sparzeit
 T:W/08-18=0.15/60 Hauptzeit
-T:W/18-21,6-8=0.10/60 Freizeit
+T:W/18-21=0.10/60 Freizeit
+T:W/21-06=0.05/60 Traumzeit
 # T:E,H/*=0.10/60 Freizeit
 # Der "Meld' Dich mal wieder" Tarif gilt nur im Juni 1999!
 T:E,H/*=0.029/60 Meld' Dich mal wieder
-T:*/21-6=0.05/60 Traumzeit
 Z:10-15 Mobil
 T:W/08-18=0.89/60
 T:W/18-08=0.49/60 Freizeit
@@ -12918,54 +13584,54 @@ Z:203 Asien Pazifik
 A:Australien, Hongkong, Japan, Korea (Republik), Malaysia
 A:Neuseeland, Singapur
 T:*/*=1.49/60
-Z:204 Sonstige Länder
-A:+
-T:*/*=1.99/60
+#Z:204 Sonstige Länder
+#A:+
+#T:*/*=1.99/60
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:91 IDT
 C:Global Limited, London, United Kingdom 01091
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:92 Hallo Telefon Service
 C:GmbH Dinkelbergstraße 6 76684 Östringen 01092
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:93 Kray
 C:Informationssysteme, Brüder-Grimm-Allee 73 A, 37085 Göttingen 01093
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:94 Global Communications
 C:GmbH, Eupener Straße 57 - 59, 50933 Köln 01094
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:95 Teleos
 C:GmbH, Bielefelder Straße 3, 32051 Herford 01095
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:96 GELSEN-NET
 C:Kommunikationsgesellschaft mbH, Munscheidstraße 14, 45886 Gelsenkirchen 01096
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:97 AT & T-Unisource
 C:Communication Services (Deutschland) GmbH, Lyoner Str. 15, 60528 Frankfurt 01097
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:98 STAR
 C:Telecommunications Deutschland GmbH, Voltastraße 1a, 60486 Frankfurt 01098
@@ -12992,11 +13658,17 @@ T:*/08-21=0.259(60)/1
 T:*/21-08=0.199(60)/1
 Z:201
 A:Australien
+A:Belgien
 A:Dänemark
+A:Finnland
 A:Frankreich
+A:Italien
 A:Kanada
+A:Luxemburg
+A:Neuseeland
 A:Niederlande
 A:Norwegen
+A:Österreich
 A:Schweden
 A:Schweiz
 A:Spanien
@@ -13077,122 +13749,122 @@ A:+49193434
 T:*/*=0.05(60)/1
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:99 ECONOPHONE
 C:GmbH, Flughafenstraße 54b, 22335 Hamburg 01099
 C:Reseller von ECONOPHONE : Telco
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:100 TELELEV
 C:Telekommunikation GmbH, Dönhoffstraße 39, 51373 Leverkusen 010000
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:101 Netnet
 C:International AB, P.O. Box 6708, S-11385 Stockholm 010001
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:102 EncoTel
 C:GmbH & Co.KG, Leibnitzstraße 73, 07548 Gera 010002
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:103 mevacom
 C:Telekommunikationsdienstleistungen GmbH, Posthofstraße 16, 14467 Potsdam 010003
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:107 KPN
 C:Telecom BV, Prinses Beatrixlaan 23, 2595 AK's Gravenhage, Niederlande 010007
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:108 USA Global Link
 C:Deutschland GmbH, Theaterstraße 90, 52062 Aachen 010008
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:110 Bertelsmann mediaSystems
 C:GmbH, An der Autobahn, 33311 Gütersloh 010010
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:111 RED LINE
 C:Telekommunikationsgesellschaft mbH, Brückenstraße 17, 63897 Miltenberg 010011
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:114 NordKom
 C:Weser-Elbe Telekommunikation GmbH, Stresemannstraße 48, 28207 Bremen 010014
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:115 Delta Three
 C:Inc., 430 Park Ave, New York 010015
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:119 E.T.H.
 C:Telefondienste GmbH, Bettinastraße 25a, 60325 Frankfurt 010019
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:120 Komm Consult
 C:Oberweg 15, 82024 Taufkirchen bei München 010020
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:122 Motorola
 C:Electronic GmbH, Hagenauer Straße 47, 65203 Wiesbaden 010022
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:130 tnp telenet
 C:potsdam, kommunikationsgesellschaft mbH, Erich-Weinert-Straße 100, 14478 Potsdam 010030
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:131 accom
 C:Gesellschaft für Telekommunikationsnetze und -dienstleistungen GmbH & Co.KG, Borngasse 34, 52064 Aachen 010031
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:133 Level 3
 C:Communications GmbH, Oberlindau 54 - 56, 60323 Frankfurt/Main 010033
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:142 connection 42
 C:Ernst-Abbe-Straße 10, 25451 Quickborn 010042
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:144 Carrier 1
 C:AG, Militärstraße 36, CH-8004 Zürich 010044
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:150 Drillisch
 C:AG, Horbeller Straße 33, 50858 Köln 010050
@@ -13206,85 +13878,85 @@ T:W/21-08=0.07/60,0.07(60)/1
 T:E/*=0.07/60,0.07(60)/1
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:155 Telia
 C:Telekommunikation GmbH, Herrengraben 3, 20459 Hamburg 010055
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:156 NETCOM
 C:Kassel GmbH, Königstor 3 - 13, 34117 Kassel 010056
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:160 JelloCom
 C:GmbH & Co.KG, Prüssingstraße 41, 07745 Jena 010060
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:166 InterCard
 C:GmbH, POS-Service, Mehlbeerenstraße 4, 82024 Taufkirchen bei München 010066
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:170 Deutsche Telefon- und Marketing Services
 C:GmbH, Isaac-Fulda-Allee 16, 55124 Mainz 010070
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:173 TFN COM SA
 C:World Of Communication, Via Greina 2 CP 2950, CH-6901 Lugano 010073
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:177 WorldxChange
 C:Communications GmbH, Am Seedamm 44, 60489 Frankfurt 010077
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:180 FaciliCom
 C:Telekommunikation GmbH; Windmühlstraße 1, 60329 Frankfurt/Main 010080
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:184 Startec
 C:Global Communications (Germany) GmbH, Broßstraße 6, 60487 Frankfurt 010084
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:188 jk-tel
 C:GmbH i.G., Hopfenplatz 5, 39120 Magdeburg 010088
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:190 CNE
 C:Corporate Network Essen Gesellschaft für Telekommunikation mbH, Kruppstraße 82 - 100, 45145 Essen 010090
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:195 TeleNec
 C:Telekommunikation Neustadt GmbH & Co.KG, Postfach 14 40, 96459 Neustadt 010095
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:199 ESTel
 C:Energieversorgung Südsachsen Telekommunikationsgesellschaft mbH, Postfach 2 38, 09002 Chemnitz 010099
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
 P:201 Frag Fred
 Z:21 Telefonauskunft
@@ -13292,32 +13964,47 @@ A:11811
 T:*/*=0.847/0,0.121/6.7
 #####################################################################
 #
-# $Id: rate-de.dat,v 1.17 1999/06/03 18:49:49 akool Exp $
+# $Id: rate-de.dat,v 1.18 1999/06/09 19:57:29 akool Exp $
 #
-# Wichtige Provider:
+# Erfasste Provider:
 # 1. Echtes Call-by-call (per 1-Mai-99):
-#    11:o.tel.o		    27.05.1999 as
-#    15:Debitel		    01.05.1999 ak
-#    19:MobilCom            21.05.1999 as
-#    24:TelePassport	    01.05.1999 ak
-#    30:TelDaFax            21.05.1999 as
-#    33:Deutsche Telekom    01.05.1999 ak
-#    40:Esprit              01.05.1999 ak
-#    50:Talkline	    01.05.1999 ak
-#    51:01051 Telecom       01.05.1999 ak
-#    70:Arcor               01.05.1999 ak
-#    78:3U                  01.05.1999 ak
-#    79:Viatel		    01.05.1999 ak
-#    85:GTS-WESTCom	    01.05.1999 ak
-#    90:Viag Interkom	    29.05.1999 je
+#    11:o.tel.o			27.05.1999 as
+#    15:debitel CbC		01.05.1999 ak
+#    19:MobilCom		21.05.1999 as
+#    24:TelePassport		01.05.1999 ak
+#    30:TelDaFax		21.05.1999 as
+#    33:Deutsche Telekom	01.05.1999 ak
+#    39:First Telecom		28.05.1999 as
+#    40:Esprit			01.05.1999 ak
+#    50:Talkline		01.05.1999 ak
+#    51:01051 Telecom		04.06.1999 je
+#    70:Arcor			01.05.1999 ak
+#    78:3U			01.05.1999 ak
+#    79:Viatel			01.05.1999 ak
+#    85:GTS-WESTCom		01.05.1999 ak
+#    90:Viag Interkom		29.05.1999 je
 #
 # 2. Angemeldet:
-#    13:Tele 2              27.05.1999 as
-#    15:RSL COM		    01.05.1999 ak
-#    25:CityKom		    06.05.1999 as
-#    42:TeleBeL		    06.05.1999 as
-#    53:WOBCOM              01.06.1999 je
-#    49:ACC		    06.05.1999 as
-#    88:UUnet		    01.05.1999 ak
-#    98:Mox                 01.05.1999 ak
+#    13:Tele 2			27.05.1999 as
+#    15:RSL COM			01.05.1999 ak
+#    18:debitel Preselection	28.05.1999 as
+#    24:SUPER 24		27.05.1999 as
+#    28:COLT: TeleBridge/UPX	29.05.1999 as
+#    46:KomTel			29.05.1999 as
+#    49:ACC			06.05.1999 as
+#    53:WOBCOM			01.06.1999 je
+#    88:UUnet			01.05.1999 ak
+#    98:Mox			01.05.1999 ak
+#
+# 3. Regionale Anbieter:
+#    14:EWE TEL			28.05.1999 as
+#    20:ISIS			27.05.1999 as
+#    22:NetCologne		27.05.1999 as
+#    23:tesion ))		28.05.1999 as
+#    25:CityKom			06.05.1999 as
+#    27:Nordcom			31.05.1999 as
+#    41:HanseNet		28.05.1999 as
+#    42:TeleBeL			06.05.1999 as
+#    44:VEW TELNET		29.05.1999 as
+#    48:DOKOM			30.05.1999 as
 #

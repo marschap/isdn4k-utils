@@ -1,4 +1,4 @@
-/* $Id: processor.c,v 1.64 1999/06/03 18:50:33 akool Exp $
+/* $Id: processor.c,v 1.65 1999/06/09 19:58:26 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,11 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.65  1999/06/09 19:58:26  akool
+ * isdnlog Version 3.31
+ *  - Release 0.91 of zone-Database (aka "Verzonungstabelle")
+ *  - "rate-de.dat" V:1.02-Germany [09-Jun-1999 21:45:26]
+ *
  * Revision 1.64  1999/06/03 18:50:33  akool
  * isdnlog Version 3.30
  *  - rate-de.dat V:1.02-Germany [03-Jun-1999 19:49:22]
@@ -697,6 +702,7 @@
 
 #define _PROCESSOR_C_
 #include "isdnlog.h"
+#include "sys/times.h"
 #include "asn1.h"
 
 static int    HiSax = 0, hexSeen = 0, uid = UNKNOWN, lfd = 0;
@@ -2797,7 +2803,7 @@ static void huptime(int chan, int setup)
   auto     int                oldchargeint = 0, newchargeint = 0;
   auto     int                oldhuptimeout, newhuptimeout;
   auto     char               sx[BUFSIZ], why[BUFSIZ];
-#if LCR
+#if LCRtest
   auto	   char		      n[1024], n1[1024];
   auto	   union 	      p {
                 	        isdn_net_ioctl_phone phone;
@@ -2821,7 +2827,7 @@ static void huptime(int chan, int setup)
 #endif
       call[chan].huptimeout = oldhuptimeout = cfg.onhtime;
 
-#if LCR
+#if LCRtest
       if (setup) {
         strcpy(ph.phone.name, known[c]->interface);
         ph.phone.outgoing = 1;
@@ -3636,6 +3642,50 @@ static void prepareRate(int chan, char **msg, char **tip, int viarep)
 } /* prepareRate */
 
 
+static void LCR(int chan, char *s)
+{
+  auto char      *why, *hint;
+  auto struct tms t1, t2;
+  auto long int   tr1, tr2;
+
+
+  tr1 = times(&t1);
+
+  print_msg(PRT_NORMAL, ">> LCR: OUTGOING SETUP(%s)\n", s + 5);
+
+  print_msg(PRT_NORMAL, ">> LCR: from TEI %d, to number \"%s\", Provider=%s%d:%s, Sonderrufnummer=%d, InternalCall=%d, LocalCall=%d\n",
+    call[chan].tei, call[chan].num[CALLED], vbn, call[chan].provider, getProvidername(call[chan].provider),
+    call[chan].sondernummer[CALLED], call[chan].intern[CALLED], call[chan].local[CALLED]);
+
+  if (!call[chan].intern[CALLED]) {                     /* keine Hausinternen Gespr„che */
+    if (!call[chan].local[CALLED]) {		        /* keine Ortsgespr„che */
+      if (call[chan].sondernummer[CALLED] == UNKNOWN) { /* keine Sonderrufnummern */
+
+        call[chan].disconnect = call[chan].connect = cur_time;
+    	prepareRate(chan, &why, &hint, 0);
+
+    	if (call[chan].hint == UNKNOWN)
+      	  print_msg(PRT_NORMAL, ">> LCR: NO ACTION: Better provider unknown :-(\n", why);
+    	else if (call[chan].hint == call[chan].provider)
+      	  print_msg(PRT_NORMAL, ">> LCR: Best provider already used!", why);
+    	else {
+      	  print_msg(PRT_NORMAL, ">> LCR: %s\n", why);
+      	  print_msg(PRT_NORMAL, ">> LCR: %s\n", hint);
+      	  tr2 = times(&t2);
+      	  print_msg(PRT_NORMAL, ">> LCR: FAKE! TRYING(%s%d0%s) - Time required: %8.6g s\n", vbn, call[chan].hint, call[chan].num[CALLED] + 3, (double)(tr2 - tr1) / (double)CLK_TCK);
+    	} /* else */
+      }
+      else
+        print_msg(PRT_NORMAL, ">> LCR: NO ACTION: Sonderrufnummer\n");
+    }
+    else
+      print_msg(PRT_NORMAL, ">> LCR: NO ACTION: Local call\n");
+  }
+  else
+    print_msg(PRT_NORMAL, ">> LCR: NO ACTION: Internal call\n");
+} /* LCR */
+
+
 static void processctrl(int card, char *s)
 {
   register char       *ps = s, *p;
@@ -3956,6 +4006,11 @@ static void processctrl(int card, char *s)
       call[chan].card = card;
       call[chan].uid = ++uid;
       decode(chan, ps, type, version, tei);
+
+#if 0
+      if (OUTGOING && *call[chan].num[CALLED])
+        LCR(chan, s);
+#endif
 
       if (call[chan].channel) { /* Aha, Kanal war dabei, dann nehmen wir den gleich */
         chan = call[chan].channel - 1;

@@ -1,4 +1,4 @@
-/* $Id: isdnconf.c,v 1.29 1999/06/03 18:50:10 akool Exp $
+/* $Id: isdnconf.c,v 1.30 1999/06/09 19:58:12 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -20,6 +20,11 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnconf.c,v $
+ * Revision 1.30  1999/06/09 19:58:12  akool
+ * isdnlog Version 3.31
+ *  - Release 0.91 of zone-Database (aka "Verzonungstabelle")
+ *  - "rate-de.dat" V:1.02-Germany [09-Jun-1999 21:45:26]
+ *
  * Revision 1.29  1999/06/03 18:50:10  akool
  * isdnlog Version 3.30
  *  - rate-de.dat V:1.02-Germany [03-Jun-1999 19:49:22]
@@ -978,6 +983,76 @@ retry:
 } /* showLCR */
 
 
+static void showWorld(int duration)
+{
+  auto     FILE *f = fopen("/usr/lib/isdn/countries.dat", "r");
+  auto     char  s[BUFSIZ], areacode[BUFSIZ];
+  auto	   int	 provider;
+  register int   n;
+  register char *p;
+  auto	   RATE  Rate;
+  auto	   char *msg;
+
+
+  if (f != (FILE *)NULL) {
+    while (fgets(s, BUFSIZ, f)) {
+
+      if (p = strchr(s, '\n'))
+        *p = 0;
+
+      if (abroad(s, areacode)) {
+
+        memset(&Rate, 0, sizeof(Rate));
+
+  	time(&Rate.start);
+      	Rate.now    = Rate.start + duration - ZAUNPFAHL;
+
+        n = 0;
+
+      	for (Rate.prefix = 0; Rate.prefix < MAXPROVIDER; Rate.prefix++) {
+      	  Rate.zone = getZone(Rate.prefix, areacode);
+
+          if (Rate.zone != UNKNOWN) {
+
+  	    time(&Rate.start);
+      	    Rate.now    = Rate.start + duration - ZAUNPFAHL;
+
+
+            if (getRate(&Rate, &msg) != UNKNOWN) {
+      	      sort[n].prefix = Rate.prefix;
+      	      sort[n].rate = Rate.Charge;
+              sort[n].msg = strdup(msg);
+	      sort[n].explain = strdup(printrate(Rate));
+      	      n++;
+            } /* if */
+#if 0
+            if (provider = getLeastCost(&Rate, UNKNOWN)) {
+              print_msg(PRT_NORMAL, "%-50s  %s %s%d:%s (%s)\n",
+                s, areacode, vbn, provider, getProvidername(provider), explainRate(&Rate));
+              break;
+            } /* if */
+#endif
+          } /* if */
+      	} /* for */
+
+        if (n > 0) {
+          qsort((void *)sort, n, sizeof(SORT), compare);
+
+          print_msg(PRT_NORMAL, "%-46s  %-9s %s%d:%s (%s)\n",
+            s, areacode, vbn, sort[0].prefix,
+            getProvidername(sort[0].prefix), sort[0].explain);
+        } /* if */
+
+      }
+      else
+        print_msg(PRT_NORMAL, "%-50s  UNKNOWN\n", s);
+    } /* while */
+
+    fclose(f);
+  } /* if */
+} /* showWorld */
+
+
 int main(int argc, char *argv[], char *envp[])
 {
 	int c, n = 0;
@@ -1173,6 +1248,10 @@ int main(int argc, char *argv[], char *envp[])
                                     showLCR(duration);
                			    exit(0);
                                   } /* else */
+                                }
+                                else if (*areacode == '*') {
+                                  showWorld(duration);
+                                  exit(0);
                                 }
 				else {
                                   if (isalpha(*areacode)) {

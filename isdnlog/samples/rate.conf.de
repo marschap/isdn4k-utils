@@ -7,14 +7,29 @@ P:20=99
 # Dont use NetCologne
 P:22=99
 
+# Dont use tesion))
+P:23=99
+
 # Dont use CityKom
 P:25=99
+
+# Dont use Nordcom Butensurf
+P:27=99
 
 # Dont use Telebridge
 P:28=99
 
+# Dont use HanseNet
+P:41=99
+
 # Dont use TeleBeL
 P:42=99
+
+# Dont use VEW TELNET
+P:44=99
+
+# Dont use DOKOM
+P:48=99
 
 # Dont use ACC
 P:49=99
@@ -37,14 +52,17 @@ P:70=1
 #   4=Nikocity Minutentakt
 #   5=Nikocity Sekundentakt
 #   6=C@llas Clever Communications
-# dont use 98
-P:98=99
+# dont use Star
+P:98=5
 
 # Dont use Drillisch
 P:150=99
 
-
 # my LCR
-P:11=99
-P:13=99
-P:40=99
+#P:11=99
+#P:13=99
+#P:18=99
+#P:19=99
+#P:24=99
+#P:40=99
+#P:70=99
