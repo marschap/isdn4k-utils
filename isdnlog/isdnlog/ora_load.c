@@ -11,6 +11,9 @@
  * ora_load.c 1999/01/07 Jan Bolt
  *
  * $Log: ora_load.c,v $
+ * Revision 1.2  2002/03/11 16:17:10  paul
+ * DM -> EUR
+ *
  * Revision 1.1  1999/12/31 13:30:02  akool
  * isdnlog-4.00 (Millenium-Edition)
  *  - Oracle support added by Jan Bolt (Jan.Bolt@t-online.de)
@@ -26,7 +29,7 @@
 #include "policy.h"
 #include "oracle.h"
 
-static const char rcsid[] = "$Id: ora_load.c,v 1.1 1999/12/31 13:30:02 akool Exp $";
+static const char rcsid[] = "$Id: ora_load.c,v 1.2 2002/03/11 16:17:10 paul Exp $";
 
 extern const char *db_load_error;
 static const char *logfile;
@@ -128,7 +131,7 @@ int isdngeb(FILE *fp)
 				case 15: /* Currency Factor (0.121) */
 					call.currency_factor = atof(p);
 					break;
-				case 16: /* Waehrung (DM) */
+				case 16: /* Waehrung (EUR) */
 					strncpy(call.currency, trim(p), sizeof(call.currency));
 					call.currency[sizeof(call.currency)-1] = '\0';
 					break;

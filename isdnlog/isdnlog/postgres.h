@@ -1,4 +1,4 @@
-/* $Id: postgres.h,v 1.2 1997/03/31 20:50:56 akool Exp $
+/* $Id: postgres.h,v 1.3 2002/03/11 16:17:10 paul Exp $
  *
  * Interface for Postgres95-Database for isdn4linux.
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: postgres.h,v $
+ * Revision 1.3  2002/03/11 16:17:10  paul
+ * DM -> EUR
+ *
  * Revision 1.2  1997/03/31 20:50:56  akool
  * fixed the postgres95 part of isdnlog
  *
@@ -90,7 +93,7 @@ struct _DbStrIn
   int     si1;                /* Dienstkennung fuer diese Verbindung (1=Speech, 7=Data usw.) */
   int     si11;               /* Bei Dienstkennung 1=Speech -> analog oder digital ? */
   double  currency_factor;    /* Der Currency Factor fuer diese Verbinung (hier z.Zt. 0,12) */
-  char    currency[32];       /* (16) Die Waehrung fuer diese Verbindung (in Deutschland "DM") */
+  char    currency[32];       /* (16) Die Waehrung fuer diese Verbindung (in Europa "EUR") */
   double  pay;		      /* Der Endbetrag i.d. jeweiligen Landeswaehrung fuer diese Verbindung */
 };
 

@@ -1,4 +1,4 @@
-/* $Id: rep_main.c,v 1.14 2000/08/17 21:34:44 akool Exp $
+/* $Id: rep_main.c,v 1.15 2002/03/11 16:17:11 paul Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -20,6 +20,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rep_main.c,v $
+ * Revision 1.15  2002/03/11 16:17:11  paul
+ * DM -> EUR
+ *
  * Revision 1.14  2000/08/17 21:34:44  akool
  * isdnlog-4.40
  *  - README: explain possibility to open the "outfile=" in Append-Mode with "+"
@@ -369,7 +372,7 @@ int main(int argc, char *argv[], char *envp[])
 	}
 
   if (!currency_factor)
-    currency = "DM";
+    currency = "EUR";
 
   if (fnbuff[0])
 	  logfile = fnbuff;

@@ -1,4 +1,4 @@
-/* $Id: server.c,v 1.6 1999/10/25 18:33:15 akool Exp $
+/* $Id: server.c,v 1.7 2002/03/11 16:17:10 paul Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: server.c,v $
+ * Revision 1.7  2002/03/11 16:17:10  paul
+ * DM -> EUR
+ *
  * Revision 1.6  1999/10/25 18:33:15  akool
  * isdnlog-3.57
  *   WARNING: Experimental version!
@@ -465,7 +468,7 @@ char *Build_Call_Info(CALL *call, int chan)
         (int)(call->connect?cur_time - call->connect:0), /* aktuelle Dauer - in Sekunden seit CONNECT */
         call->aoce,		     	                         /* Einheiten (negativ: laufende Impulse, positiv: AOCE) */
         double2str(abs(call->aoce) * currency_factor, 6, 2, DEB), /* kostet gerade */
-        currency_factor ? currency : "DM", 	       		       	 	      	       /* Waehrung */
+        currency_factor ? currency : "EUR", 	       		       	 	      	       /* Waehrung */
         call->ibytes,	     	 						       /* Frank's ibytes */
         call->obytes,	     	 						       /* Frank's obytes */
         call->ibps,									       /* Aktueller Durchsatz INPUT: Bytes/Sekunde */

@@ -1,4 +1,4 @@
-/* $Id: mysqldb.h,v 1.2 2000/04/02 17:35:07 akool Exp $
+/* $Id: mysqldb.h,v 1.3 2002/03/11 16:17:10 paul Exp $
  *
  * Interface for mySQL-Database for isdn4linux.
  *
@@ -20,6 +20,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: mysqldb.h,v $
+ * Revision 1.3  2002/03/11 16:17:10  paul
+ * DM -> EUR
+ *
  * Revision 1.2  2000/04/02 17:35:07  akool
  * isdnlog-4.18
  *  - isdnlog/isdnlog/isdnlog.8.in  ... documented hup3
@@ -88,7 +91,7 @@ struct _DbStrIn
   int     si1;                /* Dienstkennung fuer diese Verbindung (1=Speech, 7=Data usw.) */
   int     si11;               /* Bei Dienstkennung 1=Speech -> analog oder digital ? */
   double  currency_factor;    /* Der Currency Factor fuer diese Verbinung (hier z.Zt. 0,12) */
-  char    currency[32];       /* (16) Die Waehrung fuer diese Verbindung (in Deutschland "DM") */
+  char    currency[32];       /* (16) Die Waehrung fuer diese Verbindung (in Europa "EUR") */
   double  pay;		      /* Der Endbetrag i.d. jeweiligen Landeswaehrung fuer diese Verbindung */
   char    provider[NUMSIZE];  /* Der Provider der Verbindung */
 };
