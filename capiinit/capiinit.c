@@ -1,7 +1,10 @@
 /*
- * $Id: capiinit.c,v 1.1 2000/03/17 16:19:43 calle Exp $
+ * $Id: capiinit.c,v 1.2 2000/05/18 15:20:18 calle Exp $
  *
  * $Log: capiinit.c,v $
+ * Revision 1.2  2000/05/18 15:20:18  calle
+ * Umount capifs on "stop".
+ *
  * Revision 1.1  2000/03/17 16:19:43  calle
  * New command capiinit, this will replace avmcapictrl in the future, if
  * called as "capiinit start" ist will load all modules, add all cards
@@ -1113,8 +1116,10 @@ int main_stop(void)
 	unload_module("capidrv");
 	unload_module("kernelcapi");
 	unload_module("capiutil");
-	if (filesystem_available("capifs"))
+	if (filesystem_available("capifs")) {
+		umount("/dev/capi");
 		unload_filesystem("capifs");
+	}
 
 	return 0;
 }
