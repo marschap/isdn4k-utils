@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.183 2000/09/08 10:41:54 paul Exp $
+## $Id: Makefile.in,v 1.184 2000/09/19 16:29:33 leo Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,9 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.184  2000/09/19 16:29:33  leo
+## avoid double includes
+##
 ## Revision 1.183  2000/09/08 10:41:54  paul
 ## Replaced {,} expansions, those only work with SHELL = /bin/bash,
 ## not with a POSIX-compliant shell.
@@ -1398,7 +1401,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 4.42
+VERSION     = 4.43
 
 MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 \
 	      isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 \
@@ -1447,8 +1450,7 @@ DEFS       += \
                -DI4LVERSION=\"$(I4LVERSION)\"   \
 	       -D@NATION_MACRO@=1		\
  	       -DNATION=\"$(NATION)\"		\
-	       -DBIG_PHONE_NUMBERS=1		\
-                $(INCLUDE)
+	       -DBIG_PHONE_NUMBERS=1
 
 PC = proc
 PCFLAGS = mode=oracle ireclen=160 lines=yes
