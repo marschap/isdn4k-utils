@@ -61,6 +61,7 @@ typedef unsigned char *CAPI_MESSAGE;
 #if defined(__GLIBC__) && defined(__GLIBC_MINOR__)
 #if (__GLIBC__ == 2 && __GLIBC_MINOR__ >= 1) || __GLIBC__ > 2
 #define HAS_UINT8_T
+#include <stdint.h>
 #endif
 #endif
 
