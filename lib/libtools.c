@@ -1,4 +1,4 @@
-/* $Id: libtools.c,v 1.3 1997/03/20 00:28:02 luethje Exp $
+/* $Id: libtools.c,v 1.4 1997/04/10 23:32:35 luethje Exp $
  * ISDN accounting for isdn4linux.
  *
  * Copyright 1996 by Stefan Luethje (luethje@sl-gw.lake.de)
@@ -18,6 +18,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: libtools.c,v $
+ * Revision 1.4  1997/04/10 23:32:35  luethje
+ * Added the feature, that environment variables are allowed in the config files.
+ *
  * Revision 1.3  1997/03/20 00:28:02  luethje
  * Inserted lines into the files for the revision tool.
  *
@@ -28,6 +31,7 @@
 /****************************************************************************/
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <malloc.h>
 #include <fnmatch.h>
@@ -120,7 +124,7 @@ char *FGets(char *String, int StringLen, FILE *fp, int *Line)
 
 		strcat(String,Help);
 
-		if ((Len = strlen(String)) > 0 && String[Len-1]  == '\\' )
+		if ((Len = strlen(String)) > 0 && String[Len-1]  == C_QUOTE_CHAR )
 			String[Len-1] = '\0';
 		else
 			break;
@@ -152,7 +156,7 @@ char *Check_Quote(char *String, char *Quote, int Flag)
 
   while ((Ptr = Strpbrk(Ptr,Quote)) != NULL)
   {
-  	if (Ptr != String && *(Ptr - 1) == '\\')
+  	if (Ptr != String && *(Ptr - 1) == C_QUOTE_CHAR)
   	{
       if (Flag == QUOTE_IGNORE)
       {
@@ -210,7 +214,7 @@ const char* Quote_Chars(char *string)
 		for (i = strlen(Ptr); i >= Index; i--)
 			Ptr[i+1] = Ptr[i];
 
-		Ptr[Index] =  '\\';
+		Ptr[Index] =  C_QUOTE_CHAR;
 
 		Index += 2;
 	}
@@ -497,6 +501,107 @@ int is_integer (char *string, long int *value)
 		*value = dummy2;
 
 	return (sscanf(string,"%ld%s",value,dummy) == 1);
+}
+
+/****************************************************************************/
+
+char *Replace_Variable(char *String)
+{
+	static char *RetCode = NULL;
+	char *Begin = NULL;
+	char *Var = NULL;
+	char *End = NULL;
+	char *Value = NULL;
+	int num;
+
+
+	if (RetCode != NULL)
+		free(RetCode);
+
+	if ((RetCode = strdup(String))  == NULL ||
+	    (Var     = strdup(RetCode)) == NULL ||
+	    (End     = strdup(RetCode)) == NULL ||
+	    (Begin   = strdup(RetCode)) == NULL   )
+	{
+		print_msg("%s!\n","Can not alllocate memory!\n");
+		return NULL;
+	}
+
+	Begin[0] ='\0';
+
+	while ((num = sscanf(RetCode,"%[^$]$%[0-9a-zA-Z]%[^\n]",Begin,Var,End)+1)   > 2 ||
+			   (num = sscanf(RetCode,"%[^$]${%[0-9a-zA-Z]}%[^\n]",Begin,Var,End)+1) > 2 ||
+	       (num = sscanf(RetCode,"$%[0-9a-zA-Z]%[^\n]",Var,End))                > 0 ||
+			   (num = sscanf(RetCode,"${%[0-9a-zA-Z]}%[^\n]",Var,End))              > 0   )
+	{
+		if ((num > 2 && Begin[strlen(Begin)-1] == C_QUOTE_CHAR) || (Value = getenv(Var)) == NULL)
+		{
+			RetCode[strlen(Begin)] = 1;
+
+			if (strlen(Begin) > 0)
+				memmove(RetCode+strlen(Begin)-1,RetCode+strlen(Begin),strlen(RetCode)-strlen(Begin)+1);
+		}
+		else
+		if (Value != NULL)
+		{
+			if ((RetCode = (char*) realloc(RetCode,sizeof(char)*(strlen(RetCode)+strlen(Value)-strlen(Var)))) == NULL)
+			{
+				print_msg("%s!\n","Can not alllocate memory!\n");
+				return NULL;
+			}
+
+			switch(num)
+			{
+				case 1:  sprintf(RetCode,"%s",Value);
+				         break;
+				case 2:  sprintf(RetCode,"%s%s",Value,End);
+				         break;
+				case 3:  sprintf(RetCode,"%s%s",Begin,Value);
+				         break;
+				case 4:  sprintf(RetCode,"%s%s%s",Begin,Value,End);
+				         break;
+				default: break;
+			}
+
+			free(Begin);
+			free(Var);
+			free(End);
+
+			if ((Var   = strdup(RetCode)) == NULL ||
+			    (End   = strdup(RetCode)) == NULL ||
+			    (Begin = strdup(RetCode)) == NULL   )
+			{
+				print_msg("%s!\n","Can not alllocate memory!\n");
+				return NULL;
+			}
+
+			Begin[0] ='\0';
+		}
+		else
+		{
+			print_msg("Invalid variable `%s'!\n",Var);
+			free(RetCode);
+			RetCode = NULL;
+			break;
+		}
+	}
+
+	free(Begin);
+	free(Var);
+	free(End);
+
+	if ((Begin = RetCode) != NULL)
+	{
+		while (*Begin != '\0')
+		{
+			if (*Begin == 1)
+				*Begin = '$';
+
+			Begin++;
+		}
+	}
+
+	return RetCode;
 }
 
 /****************************************************************************/

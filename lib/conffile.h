@@ -1,5 +1,5 @@
 
-/* $Id: conffile.h,v 1.5 1997/04/03 22:39:12 luethje Exp $
+/* $Id: conffile.h,v 1.6 1997/04/10 23:32:34 luethje Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: conffile.h,v $
+ * Revision 1.6  1997/04/10 23:32:34  luethje
+ * Added the feature, that environment variables are allowed in the config files.
+ *
  * Revision 1.5  1997/04/03 22:39:12  luethje
  * bug fixes: environ variables are working again, no seg. 11 :-)
  * improved performance for reading the config files.
@@ -138,6 +141,7 @@ _EXTERN section* Get_Section_Match(section* Section, char *Path, char* Value, in
 _EXTERN char *Get_Value(section *Section, char *Path);
 _EXTERN int _Get_Type_Match(section *Section, char *Path, char* Pattern, int  (*_match)(char*, char*), int Type, void **Pointer);
 _EXTERN int _Get_Type_Value(section *Section, char *Path, int Type, void **Pointer);
+_EXTERN int Replace_Variables(section *Section);
 
 #undef _EXTERN
 

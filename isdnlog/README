@@ -1,3 +1,6 @@
+# Lock und PID-Files
+# Beschreibung, was bei der Installation genau gemacht werden muss
+# (isdn.conf vorhanden oder neu)
 ISDNLOG - Version 3.0 -  				31-Mar-97  22:09
 
 
@@ -754,6 +757,35 @@ anlegen kann, wo auch die Nummer nur beim isdnrep angezeigt werden.
 Es koennen hier aber die [MSN]-Eintraege ueberschrieben werden fuer die
 beiden Programme isdnconf und isdnrep.
 
+Es koennen hier Variablen verwendet werden, die entweder in der isdn.conf
+gesetzt wurden oder vorher (z.b. auf Shellebene).
+In den Dateien "callerid.conf" und "~/.isdn" koennen keine Variablen mehr
+gesetzt werden. Das bedeutet also, dass es dort keine Sektion [VARIABLES]
+gibt.
+
+Eine Variable wird allerdings nur ab dem Gleichheitszeichen ersetzt.
+
+Wenn man an die Variable noch etwas anhaengen will, dann muss man den
+Variablenname in geschweifte Klammern setzen.
+Im Gegensatz zur frueheren Version koennen die Variablen an beliebiger Stelle
+kommen.
+
+Beispiele:
+
+[$num]          # wobei num=NUMBER ist geht nicht!!!!
+$alias=fred     # wobei alias=ALIAS ist geht nicht!!!!
+
+[NUMBER]
+NUMBER=$MSN1    # MSN1=1234 -> "1234"
+ALIAS=${PHONE}1 # PHONE=Telefon -> "Telefon1"
+
+...
+ PROGRAM= auplay ${MY_PATH}ring.au  # MY_PATH=/home/fred/ -> "/home/fred/ring.au"
+ PROGRAM= auplay $MY_PATHring.au    # geht nicht!!
+ PROGRAM= auplay ${MY_PATH}ring.au ${SOUND_PATH}/$RING_FILE
+ # SOUND_PATH=/home/sound RING_FILE=ring.au -> "/home/sound/ring.au"
+...
+
 Es gibt bestimmte Regeln, nachdem Eintraege aus der Datei "~/.isdn" die
 Eintraege der "callerid.conf" ueberschreiben:
 
@@ -1278,9 +1310,6 @@ Info-Arg
 Hier wird das Info-Argument angegeben. Es steht dort der gesamte zu
 startende Befehl
 
-Es koennen hier Variablen verwendet werden, die entweder in der isdn.conf
-gesetzt wurden oder vorher (z.b. auf Shellebene).
-
 Es gibt aber drei zusaetzliche Variablen, die verwendet werden duerfen:
 
 $1   : Sind die Flags, die den Programmstart ausgeloest haben.
@@ -1335,14 +1364,6 @@ Ausgehendes Gspraech (O), Ereignis CONNECT (C)
 -----------------^^^^^^^
 Nummer des Anrufenden (also Meine)
 Nummer des Angerufenden
-
-Eine Variable muss immer am Anfang eines Argumentes stehen. Also
-"/bin$PROG" und "/bin${MYPATH}prog" gehen nicht.
-
-Wenn ich an die Variable noch etwas anhaengen will, dann muss ich den
-Variablenname in geschweifte Klammern setzen:
-"${MY_PATH}/ring.au"
-"$MY_PATH/ring.au"    geht nicht.
 
 Die Variablen von isdnlog ($1, $2, ..) kann man nicht in geschweiften Klammern
 setzen. Also auch nicht anhaengen.

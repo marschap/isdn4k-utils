@@ -1,4 +1,4 @@
-/* $Id: isdnconf.c,v 1.3 1997/04/03 22:58:39 luethje Exp $
+/* $Id: isdnconf.c,v 1.4 1997/04/10 23:32:24 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -911,6 +911,9 @@ static int _readconfig(char *_myname)
 	ClearEnv(&Environment);
 
 	if ((SPtr = read_isdnconf(&conf_dat)) == NULL)
+		return -1;
+
+	if (Replace_Variables(conf_dat))
 		return -1;
 
 	Set_Globals(conf_dat);

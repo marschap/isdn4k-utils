@@ -96,36 +96,28 @@ zurueckgeliefert.
 
 Funktion:
 
-int create_runfile(const char *progname)
+int handle_runfile(const char *progname, char **devices, int flag)
 
-Legt eine PID-Datei im Verzeichnis RUNDIR (/var/run) an. In der Datei
-steht im ASCII-Format die Prozess-ID des aktuellen Prozesses.
+Legt eine PID-Datei im Verzeichnis RUNDIR (/var/run)  und die
+entsprechenden LOCK-Dateien im Verszeichnis LOCKDIR (/var/lock) an. In den
+Dateien steht im ASCII-Format die Prozess-ID des aktuellen Prozesses.
+Oder Loescht alle angelegt Dateien.
 
-progname: Ist der Name, der als PID-Datei angelegt wird.
-          "fred" -> "/var/run/fred.pid"
-          "isdnlog.tty2" -> "/var/run/isdnlog.tty2.pid"
+progname: Ist der Name, der als PID-Datei angelegt wird. Es wird dort noch
+          der erste Name des Devices angehaengt.
+          progname = "fred", devices[0] = "null" -> "/var/run/fred.null.pid"
 
+devices: Ist eine List mit den verwendeten Devices. Das letzte Element der 
+         Liste muss NULL enthalten.
+
+flag: Kann zwei Werte beinhalten: START_PROG (legt die o.g. Dateien an) oder
+      STOP_PROG (loescht die angelegten Dateien wieder).
 
 Rueckgabewert:
 Wenn schon ein gueltiger/laufender Prozess mit der ID besteht liefert
 Die Funktion die PID zurueck.
 Wenn die Datei ordnungsgemaess angelegt werden konnte liefert sie 0 zurueck,
 andernfalls -1.
-
------------------------------------------------------------------------------
-
-Funktion:
-
-int delete_runfile(const char *progname)
-
-Loescht eine PID-Datei im Verzeichnis RUNDIR (/var/run).
-
-progname: Ist der Name, der als PID-Datei geloescht werden soll.
-          "fred" -> "/var/run/fred.pid"
-          "isdnlog.tty2" -> "/var/run/isdnlog.tty2.pid"
-
-Rueckgabewert:
-Im Erfolgsfall 0, sonst -1.
 
 -----------------------------------------------------------------------------
 

@@ -67,6 +67,8 @@ Mit folgenden Schritten kommt man in den Genuss von isdnlog-2.99.2:
          eine SQL-Relation eintragen. Dies darf nur eingeschaltet werden,
          wenn postgres95 einsatzbereit installiert ist!
 
+Zur Zeit sind die naechsten beiden Schalter ueberfluessig, da der
+xisdn voruebergehend aus der Distribution genommen wurde!!!!
        # export NEED_GDBM=1 
          Falls man _nicht_ LIBAREA=1 eingeschaltet hat, und zudem
          keine Datei "/usr/lib/libdbm.a", dafuer aber "/usr/lib/libgdbm.a"
@@ -122,14 +124,14 @@ Mit folgenden Schritten kommt man in den Genuss von isdnlog-2.99.2:
 
    Der neue isdnlog arbeitet mit einer vollstaendig anderen 
    Konfigurationsdatei. 
+   Diese wird automatisch aus der bestehenden generiert.
+   Es wird das alte Verzeichnis "etc/isdnlog" nach "etc/isdn" umkopiert.
+
    isdnlog-2.99.2 versucht daher beim ersten Start, die alte 
    Konfigurationsdatei "isdnlog.conf" in die neue Syntax umzuwandeln.
-   Damit isdnlog-2.99.2 die alte Konfigurationsdatei finden kann, muss diese
-   evtl. in das in "policy.h" unter "I4LCONFDIR" angegebene Verzeichnis
-   kopiert werden:
-     
-     $ cp /etc/isdnlog/isdnlog.conf /etc/isdn
-
+   Dieses passiert automatisch mit make install
+   Es werden in dieser Version alle Telefonnummern in der Datei callerid.conf
+   ausgelagert, so dass die isdn.conf sehr klien wird.
 
 6. Erster Start des neuen isdnlog:
 
@@ -196,11 +198,10 @@ Mit folgenden Schritten kommt man in den Genuss von isdnlog-2.99.2:
    Daher muessen diese von Hand uebernommen werden.
 
    In der Section [GLOBAL]
-   muessen die beiden Eintraege
+   werden automatisch mit make install die beiden Eintraege
      COUNTRYCODE = +49
      AREACODE = xxxx
-   eingefuegt werden - bei AREACODE ist die eigene Vorwahl _ohne_
-   vorlaufende "0" einzutragen.
+   eingefuegt, wenn vorher diese Daten im Menue eingegeben wurden.
 
    Nachdem die neue Konfigurationsdatei fuer gut befunden wurde, sollte 
    die alte Konfigurationsdatei "isdnlog.conf" geloescht werden, da
@@ -212,12 +213,13 @@ Mit folgenden Schritten kommt man in den Genuss von isdnlog-2.99.2:
    ausstossen! Nun ist es endlich an der Zeit, 
 
 
-7.1 Es gibt nun zwei neue Konfigurationsdateien:
+7.1 Es gibt nun zwei (oder sogar drei!?!) neue Konfigurationsdateien:
       /etc/isdn/isdn.conf 
       /etc/isdn/callerid.conf
+      ~/.isdn
     Wobei sich in der "isdn.conf" nur noch die rein auf isdnlog beziehenden
     Eintraege befinden, und in der "callerid.conf" die von isdnlog und
-    vbox gemeinsam verwendeten Eintraege!
+    (bald!?!) vbox gemeinsam verwendeten Eintraege!
 
 
 8. Die neuen Features von isdnlog erkunden
@@ -255,6 +257,9 @@ Mit folgenden Schritten kommt man in den Genuss von isdnlog-2.99.2:
             - ESTIC
           diese Library, weitere Applikationen werden sicherlich folgen!
     
+      Wer unbedingt auf seine AVON besteht, kann diese natuerlich
+      weiterverwenden. Dieses muss dann allerdings im Menu angegeben werden.
+
     - chargeint (auflegen kurz vor dem naechsten Gebuehrenimpuls) ist
       mittlerweile offizieller Bestandteil von isdn4linux, und damit 
       aus dem "Patch" Stadium heraus. Die Steuerung durch isdnlog

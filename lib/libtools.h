@@ -1,4 +1,4 @@
-/* $Id: libtools.h,v 1.3 1997/03/20 00:28:03 luethje Exp $
+/* $Id: libtools.h,v 1.4 1997/04/10 23:32:35 luethje Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: libtools.h,v $
+ * Revision 1.4  1997/04/10 23:32:35  luethje
+ * Added the feature, that environment variables are allowed in the config files.
+ *
  * Revision 1.3  1997/03/20 00:28:03  luethje
  * Inserted lines into the files for the revision tool.
  *
@@ -56,6 +59,8 @@ extern char *basename __P((__const char *__name));
 #define QUOTE_IGNORE 0
 #define QUOTE_DELETE 1
 
+#define C_QUOTE_CHAR '\\'
+
 /****************************************************************************/
 
 #define F_IGNORE_CASE		1024
@@ -89,6 +94,7 @@ _EXTERN int _delete_element(void ***elem, int deep);
 _EXTERN int match(register char *p, register char *s, int flags);
 _EXTERN int is_double (char *string, double *value);
 _EXTERN int is_integer (char *string, long int *value);
+_EXTERN char *Replace_Variable(char *String);
 
 #undef _EXTERN
 

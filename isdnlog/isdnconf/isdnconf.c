@@ -1,4 +1,4 @@
-/* $Id: isdnconf.c,v 1.4 1997/04/06 21:06:08 luethje Exp $
+/* $Id: isdnconf.c,v 1.5 1997/04/10 23:32:15 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnconf.c,v $
+ * Revision 1.5  1997/04/10 23:32:15  luethje
+ * Added the feature, that environment variables are allowed in the config files.
+ *
  * Revision 1.4  1997/04/06 21:06:08  luethje
  * problem with empty/not existing file resolved.
  *
@@ -284,7 +287,7 @@ int look_data(section **conf_dat)
 {
 	int Cnt = 0;
 	auto entry *CEPtr;
-	char *_number = NULL, *_alias;
+	char *_number = NULL, *_alias = NULL;
 	char _si[SHORT_STRING_SIZE];
 	section *old_conf_dat = NULL;
 
@@ -297,18 +300,20 @@ int look_data(section **conf_dat)
 		{
 			int Ret = 0;
 
+			free(_number);
+			free(_alias);
 			_number = _alias = NULL;
 			_si[0] = '\0';
 
 			if ((CEPtr = Get_Entry((*conf_dat)->entries,CONF_ENT_NUM)) != NULL)
-				_number = CEPtr->value;
+				_number = strdup(Replace_Variable(CEPtr->value));
 
 			if ((CEPtr = Get_Entry((*conf_dat)->entries,CONF_ENT_ALIAS)) != NULL)
-				_alias = CEPtr->value;
+				_alias = strdup(Replace_Variable(CEPtr->value));
 
 			if ((CEPtr = Get_Entry((*conf_dat)->entries,CONF_ENT_SI)) != NULL &&
 			    CEPtr->value != NULL)
-				sprintf(_si,"%ld",strtol(CEPtr->value, NIL, 0));
+				sprintf(_si,"%ld",strtol(Replace_Variable(CEPtr->value), NIL, 0));
 
 			if (and)
 				Ret = 1;
@@ -371,6 +376,8 @@ int look_data(section **conf_dat)
 	if (Cnt == 0 && quiet && !del)
 		find_data(NULL,_number,*conf_dat);
 
+	free(_number);
+	free(_alias);
 	return Cnt;
 }
 
@@ -628,6 +635,9 @@ int main(int argc, char *argv[], char *envp[])
 		print_msg(PRT_ERR,"Error: Can not do long and short output together!\n");
 		exit(1);
 	}
+
+	if (!add && !del && Replace_Variables(conf_dat))
+		exit(8);
 
 	if (add)
 		Cnt = add_data(&conf_dat);

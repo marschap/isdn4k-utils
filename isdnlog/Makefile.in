@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.10 1997/04/08 21:56:42 luethje Exp $
+## $Id: Makefile.in,v 1.11 1997/04/10 23:32:04 luethje Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,9 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.11  1997/04/10 23:32:04  luethje
+## Added the feature, that environment variables are allowed in the config files.
+##
 ## Revision 1.10  1997/04/08 21:56:42  luethje
 ## Create the file isdn.conf
 ## some bug fixes for pid and lock file
@@ -106,6 +109,7 @@ LIBISDNDIR		:= @LIBISDNDIR@
 I4LCONFDIR		:= @I4LCONFDIR@
 CONFFILE  		:= @CONFFILE@
 OLDCONFDIR		:= @OLDCONFDIR@
+OLDCONFFILE 	:= @OLDCONFFILE@
 LIBAREA				:= @LIBAREA@
 RUNDIR				:= @RUNDIR@
 DBMLIB				:= @DBMLIB@
@@ -162,7 +166,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 2.99.6
+VERSION     = 2.99.7
 
 ifeq ($(POSTGRES),1)
 DEFS       += -DPOSTGRES
@@ -253,7 +257,8 @@ installdirs: rootperm
 install: depend all rootperm installdirs
 		if ps -x | fgrep $(ISDNLOG) >/dev/null; then kill `cat $(RUNDIR)/isdnlog.pid`; fi
 		-test ! -d $(OLDCONFDIR) || (cp -auv $(OLDCONFDIR)/* $(I4LCONFDIR) \
-		 && $(ISDNREP) 1>/dev/null 2>&1)
+		 && $(ISDNREP) 1>/dev/null 2>&1) \
+		 && mv $(I4LCONFDIR)/$(OLDCONFFILE) $(I4LCONFDIR)/$(OLDCONFFILE).old
 		$(GENCONF) $(I4LCONFDIR)/$(CONFFILE)
 		$(INSTALL_BIN) $(ISDNLOG)  $(SBINDIR)
 		$(INSTALL_BIN) $(ISDNREP)  $(BINDIR)
