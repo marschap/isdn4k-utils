@@ -26,7 +26,7 @@
 #include <linux/if.h>
 #include <linux/in.h>
 
-static char *revision = "$Revision: 1.24 $";
+static char *revision = "$Revision: 1.25 $";
 
 /* -------------------------------------------------------------------- */
 
@@ -499,7 +499,9 @@ static void plugin_check_options(void)
 		if (tmp == sl->s || *tmp) goto illcontr;
 		if (sl->next) {
 			sl = sl->next;
-			cinfo.ddi = sl->s;
+			cinfo.ddi = strdup(sl->s);
+			if (cinfo.ddi == 0)
+			   goto illcontr;
 			if (sl->next && sl->next->s) {
 			        sl = sl->next;
 				cinfo.ndigits = strtol(sl->s, &tmp, 10);
