@@ -1,4 +1,4 @@
-/* $Id: eiconctrl.c,v 1.15 2000/04/24 07:53:03 armin Exp $
+/* $Id: eiconctrl.c,v 1.16 2000/06/07 21:08:35 armin Exp $
  *
  * Eicon-ISDN driver for Linux. (Control-Utility)
  *
@@ -21,6 +21,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA. 
  *
  * $Log: eiconctrl.c,v $
+ * Revision 1.16  2000/06/07 21:08:35  armin
+ * Fixed OAD, OSA and SPID parameter setting.
+ *
  * Revision 1.15  2000/04/24 07:53:03  armin
  * Extended interface to divaload.
  *
@@ -194,7 +197,7 @@ char *spid_state[] =
 __u16 xlog(FILE * stream,void * buffer);
 
 void eiconctrl_usage() {
-  fprintf(stderr,"Eiconctrl Utility Version 2.0                      (c) 2000 Cytronics & Melware\n");
+  fprintf(stderr,"Eiconctrl Utility Version 2.1                      (c) 2000 Cytronics & Melware\n");
   fprintf(stderr,"usage: %s add <DriverID> <membase> <irq>              (add card)\n",cmd);
   fprintf(stderr,"   or: %s [-d <DriverID>] membase [membase-addr]      (get/set memaddr)\n",cmd);
   fprintf(stderr,"   or: %s [-d <DriverID>] irq   [irq-nr]              (get/set irq)\n",cmd);
@@ -1481,25 +1484,25 @@ int main(int argc, char **argv) {
 				newargv[newarg] = malloc(4);
 				strcpy(newargv[newarg], "-t");
 				newarg++;
-				newargv[newarg] = malloc(sizeof(argv[i]) + 1);
+				newargv[newarg] = malloc(strlen(argv[i]) + 1);
 				strcpy(newargv[newarg], argv[i] + 2);
 			} else
 			if ((!(strncmp(argv[i], "-l", 2))) && (strlen(argv[i]) > 2)){
 				newargv[newarg] = malloc(4);
 				strcpy(newargv[newarg], "-l");
 				newarg++;
-				newargv[newarg] = malloc(sizeof(argv[i]) + 1);
+				newargv[newarg] = malloc(strlen(argv[i]) + 1);
 				strcpy(newargv[newarg], argv[i] + 2);
 			} else
 			if ((!(strncmp(argv[i], "-s", 2))) && (strlen(argv[i]) > 2)){
 				newargv[newarg] = malloc(4);
 				strcpy(newargv[newarg], "-s");
 				newarg++;
-				newargv[newarg] = malloc(sizeof(argv[i]) + 1);
+				newargv[newarg] = malloc(strlen(argv[i]) + 1);
 				strcpy(newargv[newarg], argv[i] + 2);
 			} else
 			{
-				newargv[newarg] = malloc(sizeof(argv[i]) + 1);
+				newargv[newarg] = malloc(strlen(argv[i]) + 1);
 				strcpy(newargv[newarg], argv[i]);
 			}
 			if ((!(strcmp(argv[i],"-c"))) || (!(strcmp(argv[i],"-all")))) {

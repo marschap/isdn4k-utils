@@ -186,7 +186,7 @@ int main( int argc, char *argv[] )
 
 				if (strcmp(pParamStr, "oad") == 0)
 				{
-					pOAD = pParamStr + 4;
+					pOAD = argv[opt+1];
 					if (check_oa(pOAD))
 					{
 							strcpy((char *)OAD[byId], pOAD);
@@ -194,11 +194,12 @@ int main( int argc, char *argv[] )
 					else
 					{
 						fprintf(stderr, "Invalid OAD - %s\n", pOAD);
+						return 1;
 					}
 				}
 				else if (strcmp(pParamStr, "osa") == 0)
 				{
-					pOSA = pParamStr + 4;
+					pOSA = argv[opt+1];
 					if (check_osa(pOSA))
 					{
 						strcpy((char *)OSA[byId], pOSA);
@@ -206,11 +207,12 @@ int main( int argc, char *argv[] )
 					else
 					{
 						fprintf(stderr, "Invalid OSA - %s\n", pOSA);
+						return 1;
 					}
 				}
 				else if (strcmp(pParamStr, "spid") == 0)
 				{
-					pSPID = pParamStr + 5;
+					pSPID = argv[opt+1];
 					if (check_spid(pSPID))
 					{
 						strcpy((char *)SPID[byId], pSPID);
@@ -218,6 +220,7 @@ int main( int argc, char *argv[] )
 					else
 					{
 						fprintf(stderr, "Invalid SPID - %s\n", pSPID);
+						return 1;
 					}
 				}
 				else
