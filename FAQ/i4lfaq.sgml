@@ -4,7 +4,7 @@
 
 <title>FAQ for isdn4linux
 <author>Matthias Hessler (<tt><htmlurl url="mailto:hessler@isdn4linux.de" name="hessler@isdn4linux.de"></tt>)
-<date>v2.0.23, 8. November 1999
+<date>v2.0.24, 28. November 1999
 <abstract>
 If you are reading this FAQ online, you may consider downloading the whole
 thing, and reading it offline (much cheaper). To download the latest
@@ -675,8 +675,6 @@ Note:
 <item>Eicon.Diehl Diva U interface not tested
 <item>Some cards do not work when compiled into the kernel, only when
 started as modules
-<item>No voice mode for all cards from CCD yet: HFC (Teleint) and HFC-S
-based cards (exception: HFC-S PCI works in voice mode)
 <item>To distinguish between HFC-PCI and PCI/Winbond, have a look at the
 output of <tt>cat /proc/pci</tt>. You have HFC-PCI if you have a line
 saying "Master capable" for your card.
@@ -1038,6 +1036,11 @@ Have a look in section <ref id="hardware" name="hardware">.
 <label id="config_dialout">
 <p>
 See section <ref id="dialout" name="dialout">.
+
+<sect1> config_dialin: How should I configure dialin?  
+<label id="config_dialin">
+<p>
+See section <ref id="dialin" name="dialin">.
 
 <sect1> config_suse: I can not select my card in yast?  
 <label id="config_suse">
@@ -3287,8 +3290,11 @@ In general, there are several ways, depending on how you want others
 to dial in.
 <itemize>
 <item>Set up networking devices for dialin via syncppp, or rawip. Set option
-<tt/secure on/ to only allow dialin by isdn numbers you know, which you set
+<tt/secure off/ to allow everybody to dial in, or set option <tt/secure on/
+to only allow dialin by the isdn numbers you configure, which you set
 up with <tt>isdnctrl addphone &lt;device&gt; in &lt;phonenumber&gt;</tt>.
+It has been reported that you need to set option <tt/ms-dns/ for ipppd to
+have successful IPCP negotion.
 <item>Use the ttyI* devices for asyncppp or X.75.
 </itemize>
 Here some more details for setting up the ttyI* devices. The setup is like for
@@ -3804,6 +3810,7 @@ We are aware of at least the following countries:
 <item>Finland
 <item>France
 <item>Germany
+<item>Hungary
 <item>Ireland
 <item>Israel
 <item>Italy
@@ -4027,12 +4034,6 @@ ISA or PCI - depends on what you got).
 
 <sect> misc: Miscellaneous  
 <label id="misc">
-
-<sect1> misc_ntbadip: Where can I find information on the dip switches of my 
-German NTBA?  
-<label id="misc_ntbadip">
-<p>
-<tt><url url="ftp://novix.oih.rwth-aachen.de/pub/ntba.zip"></tt> (ca. 170kB)
 
 <sect1> misc_nonullcable: Can I connect two ISDN devices directly with a kind  
 of &dquot;null modem cable&dquot;?  
