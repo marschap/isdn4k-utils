@@ -1,10 +1,10 @@
 '\" t
 '\" ** above should format a table **
-.TH rate-files 5 "21.Sep.1999" -lt-
+.TH rate-files 5 "29.Nov.1999" -lt-
 .SH NAME
 rate-files \- Format of rate-files
 .SH DESCRIPTION
-The rate-files used by isdnlog(8) and by isdnrate(1) are textfiles with 
+The rate-files used by isdnlog(8) and by isdnrate(1) are textfiles with
 the following overall layout:
 .P
 .I Header entries
@@ -16,22 +16,46 @@ and empty lines are ignored. The first letter (tag) followed by a colon
 discerns the entries. Additional white space may be used after the tags
 to group content more readably.
 .SS Header entries
-.B V:versionsstring 
+.B V:versionsstring
 .IP
-e.g. 
+e.g.
 V:1.0-Germany [18-Mar-1999]
+.P
+.B S:Servicename
+.P
+.B N:Servicenumber[,Servicenumber...]
+.IP
+This defines Services with special numbers. Special numbers are numbers which
+a) start with no '0' or b) can not be dialed with every provider. A number
+with a variable length should have the wildcard '*' at the end, eg.
+.I 07189*
+which matches all numbers startig with
+.IR 07189 .
+Numbers with wildcards should be placed after numbers which would match the
+wildcard, because matching is done straight top down.
+There may be multiple
+.B N:
+tags for one Service.
+.IP
+e.g.
+.br
+S:Internet
+.br
+N:07189*,19430
+.br
+N:19440
 .P
 .B U:currencyfmt currency
 .IP
 e.g.
 U:%.3 DEM
 .SS Provider entries
-A new provider starts always with a 
+A new provider starts always with a
 .B P:
-tag and consists of a 
-.I Providerheader 
-followed by 
-.I Providerzones. 
+tag and consists of a
+.I Providerheader
+followed by
+.I Providerzones.
 .SS Providerheader
 .P
 .B P:providernumber providername
@@ -45,9 +69,6 @@ VBN-Number for provider
 .IP
 e.g.
 B:1002
-.P
-Note: Currently the vbn is calculated from the providernumber, but this may
-change in the near future. The providernumber will be an arbitrary string then.
 .P
 .B C:COMMENT: comment
 .P
@@ -75,31 +96,39 @@ l l.
 .P
 .B D:zone
 .P
-Name of zone file (inserted for 
+Name of zone file (inserted for
 .B %s
-in ZONEFILE=/usr/lib/isdn/zone-de-%s.dat from isdn.conf)
+.RI "in ZONEFILE = /usr/lib/isdn/zone-" CC "-%s.dat from isdn.conf)"
 .IP
 e.g.
 D:dtag # DTAG zone file
 .P
 Note: if the provider has no different domestic zones, you should not define a D:tag.
+.P
+.B G:[fromDate][-toDate]
+.P
+Set a time range for the validity of rates for this provider. Dates have to
+be numeric in format
+.BR dd.mm.yyyy .
+Note: as time is assumed as 00:00, take for
+.I toDate
+the day+1.
 .SS Providerzones
 A Providerzone entry starts with a
 .B Z:
 tag followed by one or more
 .B A:
-and 
+and
 .B T:
-tags and optional
-.B S:
 tags.
 .P
 A zone is a region of areas, for which the same rates apply. Interior and
-foreign zones should not be mixed.
+foreign zones should not be mixed and all foreign zones should follow
+domestic zones.
 .P
 .B Z:zonelist zonename
 .P
-where 
+where
 .I zonelist
 is
 .BR zone [ -zone ][ ,... ]
@@ -111,8 +140,10 @@ Z:1-2,4 Interior
 .P
 .I area
 may be a telefonnumber (including +countrycode for numbers which may
-be reached from everywhere, a telefonnumber without +countrycode for numbers only reachable 
+be reached from everywhere, a telefonnumber without +countrycode for numbers only reachable
 in the own country) or an area name or alias as defined in country-de.dat.
+Country names have to be translated to their code by the rate-preprocessor
+.IR pp_rate .
 .IP
 e.g.
 A:19430,07189 # Online
@@ -120,7 +151,7 @@ A:19430,07189 # Online
 e.g.
 A:+31,Belgium # Int 1
 .P
-Note: There should always be exactly one zone with your countrycode 
+Note: There should always be exactly one zone with your countrycode
 or countryname respectively:
 .IP
 Z:4
@@ -129,12 +160,11 @@ A:+49
 .br
 T:...
 .P
-.BR N:area [ ,area... ]
-.P
-.I area
-as above, but numbers can not be dialed, because provider doesn't support it.
-.P
-Note: N/Y
+Countrynames like
+.I Belgium
+in the above example are replaced by their ISO-Code (or TLD) with the
+rate preprocessor
+.IR pp_rate .
 .P
 .BR T:daylist/timelist [ ! ] "=chargelist chargename"
 .P
@@ -142,15 +172,15 @@ where
 .I daylist
 is
 .BR day [ -day ][ ,... ]
-and day is a daynumber (1=Mon, 2=Tue, ...) or W (weekday), E (weekend), H (holiday) or 
+and day is a daynumber (1=Mon, 2=Tue, ...) or W (weekday), E (weekend), H (holiday) or
 * (everyday).
 .P
-.I timelist 
-is 
+.I timelist
+is
 .BR hour [ -hour ][ ,hour ]
 where hour is a number 0..23 or * for everytime.
 .P
-After 
+After
 .I daylist/timelist
 follows
 .B =
@@ -168,11 +198,11 @@ where
 .I MinCharge|
 is an (optional) minimum charge,
 .I Charge
-the rate per 
+the rate per
 .I Duration
 seconds or optional rate per
 .I (Divider)
-seconds, 
+seconds,
 .I Duration
 is the length of one charge impuls in seconds. After
 .I Delay
@@ -196,24 +226,16 @@ T:*/*=0.50/0,1(60)/1 always
 Everyday, everytime there is a connection fee of 0.50, then charge is 1 per minute.
 .IP
 e.g.
-T:H/*=0.05/60:600,0.05/30 holidays
+T:H/*=0.5/60:600,0.5/30 holidays
 .IP
-On holidays, everytime a charge of 0.05 per second in a minutes interval, after
-10 minutes in half a minutes interval.
+On holidays, everytime a charge of 0.5 per minute in a minutes interval, after
+10 minutes 0.5 per half minute in half a minutes interval.
 .IP
 e.g.
 T:*/*=1.3/0,0/1
 .IP
 Everyday, everytime the charge is 1.30 independent of duration, which could also
 be written as T:*/*=1.3|0/1.
-.P
-.B S:servicename 
-.P
-.I servicename
-is currently under construction.
-.IP
-e.g. 
-S:Internet by call
 .P
 .SH SEE ALSO
 .IR isdnlog(8) ,
