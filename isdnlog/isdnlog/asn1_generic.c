@@ -1,4 +1,4 @@
-/* $Id: asn1_generic.c,v 1.3 1999/12/31 13:30:01 akool Exp $
+/* $Id: asn1_generic.c,v 1.4 2000/01/20 07:30:09 kai Exp $
  *
  * ISDN accounting for isdn4linux. (ASN.1 parser)
  *
@@ -21,6 +21,14 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: asn1_generic.c,v $
+ * Revision 1.4  2000/01/20 07:30:09  kai
+ * rewrote the ASN.1 parsing stuff. No known problems so far, apart from the
+ * following:
+ *
+ * I don't use buildnumber() anymore to translate the numbers to aliases, because
+ * it apparently did never work quite right. If someone knows how to handle
+ * buildnumber(), we can go ahead and fix this.
+ *
  * Revision 1.3  1999/12/31 13:30:01  akool
  * isdnlog-4.00 (Millenium-Edition)
  *  - Oracle support added by Jan Bolt (Jan.Bolt@t-online.de)
@@ -41,91 +49,113 @@
  *
  */
 
-
 #include "asn1.h"
+#include "asn1_generic.h"
 
-ELEMENT_1(ParseInteger, int, integer)
+// ======================================================================
+// general ASN.1
+
+int
+ParseBoolean(struct Aoc *chanp, u_char *p, u_char *end, int *i)
 {
-  CHECK_TAG(ASN1_TAG_INTEGER);
+	INIT;
 
-  *integer = octets2Int(el);
-
-  print_msg(PRT_DEBUG_DECODE, " DEBUG> Integer = %d\n", *integer);
-
-  return 1;
+	*i = 0;
+	while (len--) {
+		CHECK_P;
+		*i = (*i >> 8) + *p;
+		p++;
+	}
+	print_msg(PRT_DEBUG_DECODE, " DEBUG> BOOL = %d %#x\n", *i, *i);
+	return p - beg;
 }
 
-ELEMENT_1(ParseOctetString, char, s)
+int
+ParseNull(struct Aoc *chanp, u_char *p, u_char *end, int dummy)
 {
-  char *px;
-  int i;
+	INIT;
 
-  CHECK_TAG(ASN1_TAG_OCTET_STRING);
-
-  px = s;
-
-  for (i = 0; i < el.length; i++) {
-    px += strlen(px);
-    sprintf(px, "%2x ", el.content.octets[i]);
-  }
-
-  print_msg(PRT_DEBUG_DECODE, " DEBUG> Octet String = %s\n", s);
-
-  return 1;
+	return p - beg;
 }
 
-ELEMENT(ParseNull)
+int
+ParseInteger(struct Aoc *chanp, u_char *p, u_char *end, int *i)
 {
-  CHECK_TAG(ASN1_TAG_NULL);
+	INIT;
 
-  return 1;
+	*i = 0;
+	while (len--) {
+		CHECK_P;
+		*i = (*i >> 8) + *p;
+		p++;
+	}
+	print_msg(PRT_DEBUG_DECODE, " DEBUG> INT = %d %#x\n", *i, *i);
+	return p - beg;
 }
 
-ELEMENT_1(ParseEnum, int, num)
+int
+ParseEnum(struct Aoc *chanp, u_char *p, u_char *end, int *i)
 {
-  CHECK_TAG(ASN1_TAG_ENUM);
+	INIT;
 
-  *num = octets2Int(el);
-
-  print_msg(PRT_DEBUG_DECODE, " DEBUG> Enum = %d\n", *num);
-
-  return 1;
+	*i = 0;
+	while (len--) {
+		CHECK_P;
+		*i = (*i >> 8) + *p;
+		p++;
+	}
+	print_msg(PRT_DEBUG_DECODE, " DEBUG> ENUM = %d %#x\n", *i, *i);
+	return p - beg;
 }
 
-ELEMENT_1(ParseBoolean, int, bl)
+int
+ParseIA5String(struct Aoc *chanp, u_char *p, u_char *end, char *str)
 {
-  CHECK_TAG(ASN1_TAG_BOOLEAN);
+	INIT;
 
-  if (octets2Int(el))
-    *bl = 1;
-  else
-    *bl = 0;
-
-  print_msg(PRT_DEBUG_DECODE, " DEBUG> Bool = %d\n", *bl);
-
-  return 1;
+	print_msg(PRT_DEBUG_DECODE, " DEBUG> IA5 = ");
+	while (len--) {
+		CHECK_P;
+		print_msg(PRT_DEBUG_DECODE, "%c", *p);
+		*str++ = *p;
+		p++;
+	}
+	print_msg(PRT_DEBUG_DECODE, "\n");
+	*str = 0;
+	return p - beg;
 }
 
-ELEMENT_1(ParseNumericString, char, s)
+int
+ParseNumericString(struct Aoc *chanp, u_char *p, u_char *end, char *str)
 {
-  CHECK_TAG(ASN1_TAG_NUMERIC_STRING);
+	INIT;
 
-  strncpy(s, el.content.octets, el.length);
-  s[el.length] = 0;
-
-  print_msg(PRT_DEBUG_DECODE, " DEBUG> NumericString = %s\n", s);
-
-  return 1;
+	print_msg(PRT_DEBUG_DECODE, " DEBUG> NumStr = ");
+	while (len--) {
+		CHECK_P;
+		print_msg(PRT_DEBUG_DECODE, "%c", *p);
+		*str++ = *p;
+		p++;
+	}
+	print_msg(PRT_DEBUG_DECODE, "\n");
+	*str = 0;
+	return p - beg;
 }
 
-ELEMENT_1(ParseIA5String, char, s)
+int
+ParseOctetString(struct Aoc *chanp, u_char *p, u_char *end, char *str)
 {
-  CHECK_TAG(ASN1_TAG_IA5_STRING);
+	INIT;
 
-  strncpy(s, el.content.octets, el.length);
-  s[el.length] = 0;
-
-  print_msg(PRT_DEBUG_DECODE, " DEBUG> IA5String = %s\n", s);
-
-  return 1;
+	print_msg(PRT_DEBUG_DECODE, " DEBUG> Octets = ");
+	while (len--) {
+		CHECK_P;
+		print_msg(PRT_DEBUG_DECODE, " %02x", *p);
+		*str++ = *p;
+		p++;
+	}
+	print_msg(PRT_DEBUG_DECODE, "\n");
+	*str = 0;
+	return p - beg;
 }
+

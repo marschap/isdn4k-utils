@@ -1,4 +1,4 @@
-/* $Id: asn1_aoc.c,v 1.3 1999/12/31 13:30:01 akool Exp $
+/* $Id: asn1_aoc.c,v 1.4 2000/01/20 07:30:09 kai Exp $
  *
  * ISDN accounting for isdn4linux. (ASN.1 parser)
  *
@@ -21,6 +21,14 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: asn1_aoc.c,v $
+ * Revision 1.4  2000/01/20 07:30:09  kai
+ * rewrote the ASN.1 parsing stuff. No known problems so far, apart from the
+ * following:
+ *
+ * I don't use buildnumber() anymore to translate the numbers to aliases, because
+ * it apparently did never work quite right. If someone knows how to handle
+ * buildnumber(), we can go ahead and fix this.
+ *
  * Revision 1.3  1999/12/31 13:30:01  akool
  * isdnlog-4.00 (Millenium-Edition)
  *  - Oracle support added by Jan Bolt (Jan.Bolt@t-online.de)
@@ -41,562 +49,342 @@
  *
  */
 
-
 #include "asn1.h"
+#include "asn1_generic.h"
+#include "asn1_address.h"
+#include "asn1_aoc.h"
 
-ELEMENT_1(ParseARGAOCDCurrency, Aoc, );
-ELEMENT_1(ParseARGAOCDChargingUnit, Aoc, );
-ELEMENT_1(ParseARGAOCECurrency, Aoc, );
-ELEMENT_1(ParseARGAOCEChargingUnit, Aoc, );
+// ======================================================================
+// AOC EN 300 182-1 V1.3.3
 
-ELEMENT_1(ParseAOCDCurrencyInfo, Aoc, );
-ELEMENT_1(ParseAOCDSpecificCurrency, Aoc, );
-ELEMENT_1(ParseAOCDChargingUnitInfo, Aoc, );
-ELEMENT_1(ParseAOCDSpecificChargingUnits, Aoc, );
-ELEMENT_1(ParseRecordedCurrency, Aoc, );
-ELEMENT_1(ParseRecordedUnitsList, Aoc, );
-ELEMENT_1(ParseTypeOfChargingInfo, int, );
-ELEMENT_1(ParseRecordedUnits, Aoc, );
-ELEMENT_1(ParseRecordedUnitsChoice, Aoc, );
-ELEMENT_1(ParseAOCDBillingId, int, );
-ELEMENT_1(ParseAOCECurrencyInfo, Aoc, );
-ELEMENT_1(ParseAOCECurrencyInfoChoice, Aoc, );
-ELEMENT_1(ParseAOCESpecificCurrency, Aoc, );
-ELEMENT_1(ParseAOCEChargingUnitInfo, Aoc, );
-ELEMENT_1(ParseAOCEChargingUnitInfoChoice, Aoc, );
-ELEMENT_1(ParseAOCESpecificChargingUnits, Aoc, );
-ELEMENT_1(ParseAOCEBillingId, int, );
-ELEMENT_1(ParseCurrency, char, msg);
-ELEMENT_1(ParseAmount, Aoc, aoc);
-ELEMENT_1(ParseCurrencyAmount, int, );
-ELEMENT_1(ParseMultiplier, int, );
-ELEMENT_1(ParseTypeOfUnit, int, );
-ELEMENT_1(ParseNumberOfUnits, int, );
-ELEMENT_1(ParseChargingAssociation, char, );
-ELEMENT_1(ParseChargeIdentifier, int, );
+// AOCDCurrency
 
-char* XTypeOfChargingInfo[] = {
-  "subTotal",
-  "total",
-};
-
-const int NTypeOfChargingInfo = 2;
-
-char* AOCDBillingId[] = {
-  "normalCharging",
-  "reverseCharging",
-  "creditCardCharging",
-};
-
-const int NAOCDBillingId = 3;
-
-char* AOCEBillingId[] = {
-  "normalCharging",
-  "reverseCharging",
-  "creditCardCharging",
-  "callForwardingUnconditional",
-  "callForwardingBusy",
-  "callForwardingNoReply",
-  "callDeflection",
-  "callTransfer",
-};
-
-const int NAOCEBillingId = 8;
-
-float XMultiplier[] = {
-  0.001,
-  0.01,
-  0.1,
-  1,
-  10,
-  100,
-  1000,
-};
-
-const int NMultiplier = 7;
-
-// ---------------------------------------
-
-ELEMENT_1(ParseARGAOCDCurrency, Aoc, aoc)
+int
+ParseAOCDCurrency(struct Aoc *chanp, u_char *p, u_char *end, int dummy)
 {
-  char tmp[255];
+	INIT;
 
-  CHECK_TAG(ASN1_TAG_SEQUENCE);
-  MY_DEBUG("ParseARGAOCDCurrency");
-
-  aoc->type = 33; // AOCDCurrency
-  if (ParseAOCDCurrencyInfo(el, ASN1_NOT_TAGGED, aoc)) {
-    ;
-  } else if (ParseNull(el, ASN1_NOT_TAGGED)) {
-    aoc->amount = -1; // chargeNotAvailable
-    strcpy(aoc->msg, "chargeNotAvailable");
-    strcpy(aoc->currency, "");
-  } else {
-    return 0;
-  }
-
-  sprintf(tmp, "AOC-D: %f %s %s\n",
-	  aoc->amount*aoc->multiplier, aoc->currency, aoc->msg);
-  strcpy(aoc->msg, tmp);
-  print_msg(PRT_DEBUG_DECODE, " DEBUG> %s\n", aoc->msg);
-
-  return 1;
+	XCHOICE(ParseNull, ASN1_TAG_NULL, ASN1_NOT_TAGGED); // chargeNotAvail
+	XCHOICE(ParseAOCDCurrencyInfo, ASN1_TAG_SEQUENCE, ASN1_NOT_TAGGED);
+	XCHOICE_DEFAULT;
 }
 
-ELEMENT_1(ParseARGAOCDChargingUnit, Aoc, aoc)
+// AOCDChargingUnit
+
+int
+ParseAOCDChargingUnit(struct Aoc *chanp, u_char *p, u_char *end, int dummy)
 {
-  char tmp[255];
+	INIT;
 
-  MY_DEBUG("ParseARGAOCDChargingUnit");
-
-  aoc->type = 34; // AOCDChargingUnit
-  if (ParseAOCDChargingUnitInfo(el, ASN1_NOT_TAGGED, aoc)) {
-    ;
-  } else if (ParseNull(el, ASN1_NOT_TAGGED)) {
-    aoc->amount = 1; // chargeNotAvailable
-    strcpy(aoc->msg, "chargeNotAvailable");
-  } else {
-    return 0;
-  }
-
-  sprintf(tmp, "AOC-D: %d EH, %s", aoc->amount, aoc->msg);
-  strcpy(aoc->msg, tmp);
-  print_msg(PRT_DEBUG_DECODE, " DEBUG> %s\n", aoc->msg);
-
-  return 1;
+	XCHOICE(ParseNull, ASN1_TAG_NULL, ASN1_NOT_TAGGED); // chargeNotAvail
+	XCHOICE(ParseAOCDChargingUnitInfo, ASN1_TAG_SEQUENCE, ASN1_NOT_TAGGED);
+	XCHOICE_DEFAULT;
 }
 
-ELEMENT_1(ParseARGAOCECurrency, Aoc, aoc)
+// AOCECurrency
+
+int
+ParseAOCECurrency(struct Aoc *chanp, u_char *p, u_char *end, int dummy)
 {
-  char tmp[255];
+	INIT;
 
-  CHECK_TAG(ASN1_TAG_SEQUENCE);
-  MY_DEBUG("ParseARGAOCECurrency");
-
-  aoc->type = 35; // AOCECurrency
-  if (ParseAOCECurrencyInfo(el, ASN1_NOT_TAGGED, aoc)) {
-    ;
-  } else if (ParseNull(el, ASN1_NOT_TAGGED)) {
-    aoc->amount = -1; // chargeNotAvailable
-    strcpy(aoc->msg, "chargeNotAvailable");
-    strcpy(aoc->currency, "");
-  } else {
-    return 0;
-  }
-
-  sprintf(tmp, "AOC-D: %f %s %s\n",
-	  aoc->amount*aoc->multiplier, aoc->currency, aoc->msg);
-  strcpy(aoc->msg, tmp);
-  print_msg(PRT_DEBUG_DECODE, " DEBUG> %s\n", aoc->msg);
-
-  return 1;
+	XCHOICE(ParseNull, ASN1_TAG_NULL, ASN1_NOT_TAGGED); // chargeNotAvail
+	XCHOICE(ParseAOCECurrencyInfo, ASN1_TAG_SEQUENCE, ASN1_NOT_TAGGED);
+	XCHOICE_DEFAULT;
 }
 
-ELEMENT_1(ParseARGAOCEChargingUnit, Aoc, aoc)
+// AOCEChargingUnit
+
+int
+ParseAOCEChargingUnit(struct Aoc *chanp, u_char *p, u_char *end, int dummy)
 {
-  char tmp[255];
+	INIT;
 
-  MY_DEBUG("ParseARGAOCEChargingUnit");
-
-  aoc->type = 36; // AOCEChargingUnit
-  if (ParseAOCEChargingUnitInfo(el, ASN1_NOT_TAGGED, aoc)) {
-    ;
-  } else if (ParseNull(el, ASN1_NOT_TAGGED)) {
-    aoc->amount = -1; // chargeNotAvailable
-    strcpy(aoc->msg, "chargeNotAvailable");
-  } else {
-    return 0;
-  }
-
-  sprintf(tmp, "AOC-E: %d EH, %s", aoc->amount, aoc->msg);
-  strcpy(aoc->msg, tmp);
-  print_msg(PRT_DEBUG_DECODE, " DEBUG> %s\n", aoc->msg);
-
-  return 1;
+	XCHOICE(ParseNull, ASN1_TAG_NULL, ASN1_NOT_TAGGED); // chargeNotAvail
+	XCHOICE(ParseAOCEChargingUnitInfo, ASN1_TAG_SEQUENCE, ASN1_NOT_TAGGED);
+	XCHOICE_DEFAULT;
 }
 
-ELEMENT_1(ParseAOCDCurrencyInfo, Aoc, aoc)
+// AOCDCurrencyInfo
+
+int
+ParseAOCDSpecificCurrency(struct Aoc *chanp, u_char *p, u_char *end, int dummy)
 {
- MY_DEBUG("ParseAOCDCurrencyInfo");
+	int typeOfChargingInfo;
+	int billingId;
+	INIT;
 
-  if (ParseAOCDSpecificCurrency(el, tag, aoc)) {
-    ;
-  } else if (ParseNull(el, 1)) {
-    aoc->amount = 0; // freeOfCharge
-    strcpy(aoc->msg, "freeOfCharge");
-  } else {
-    return 0;
-  }
+	XSEQUENCE(ParseRecordedCurrency, ASN1_TAG_SEQUENCE, 1);
+	XSEQUENCE_1(ParseTypeOfChargingInfo, ASN1_TAG_ENUM, 2, &typeOfChargingInfo);
+	XSEQUENCE_OPT_1(ParseAOCDBillingId, ASN1_TAG_ENUM, 3, &billingId);
 
-  return 1;
+	return p - beg;
 }
 
-ELEMENT_1(ParseAOCDSpecificCurrency, Aoc, aoc)
+int
+ParseAOCDCurrencyInfo(struct Aoc *chanp, u_char *p, u_char *end, int dummy)
 {
-  int billingId = -1;
+	INIT;
 
-  CHECK_TAG(ASN1_TAG_SEQUENCE);
-  MY_DEBUG("ParseAOCDSpecificCurrency");
-
-  SEQ_TAGGED_1(ParseRecordedCurrency, 1, aoc);
-  SEQ_TAGGED_1(ParseTypeOfChargingInfo, 2, &aoc->type_of_charging_info);
-  SEQOPT_TAGGED_1(ParseAOCDBillingId, 3, &billingId);
-
-  sprintf(aoc->msg, "typeOfChargingInfo = %s, billingId = %s",
-	  XTypeOfChargingInfo[aoc->type_of_charging_info],
-	  (billingId==-1)?"-":AOCDBillingId[billingId]);
-
-  return 1;
+	XCHOICE(ParseAOCDSpecificCurrency, ASN1_TAG_SEQUENCE, ASN1_NOT_TAGGED);
+	XCHOICE(ParseNull, ASN1_TAG_NULL, 1); // freeOfCharge
+	XCHOICE_DEFAULT;
 }
 
-ELEMENT_1(ParseAOCDChargingUnitInfo, Aoc, aoc)
+// AOCDChargingUnitInfo
+
+int
+ParseAOCDSpecificChargingUnits(struct Aoc *chanp, u_char *p, u_char *end, int dummy)
 {
-  MY_DEBUG("ParseAOCDChargingUnitInfo");
+	int recordedUnits;
+	int typeOfChargingInfo;
+	int billingId;
+	INIT;
 
-  if (ParseAOCDSpecificChargingUnits(el, tag, aoc)) {
-    ;
-  } else if (ParseNull(el, 1)) {
-    aoc->amount = 0; // freeOfCharge
-    strcpy(aoc->msg, "freeOfCharge");
-  } else {
-    return 0;
-  }
+	XSEQUENCE_1(ParseRecordedUnitsList, ASN1_TAG_SEQUENCE, 1, &recordedUnits);
+	XSEQUENCE_1(ParseTypeOfChargingInfo, ASN1_TAG_ENUM, 2, &typeOfChargingInfo);
+	XSEQUENCE_OPT_1(ParseAOCDBillingId, ASN1_TAG_ENUM, 3, &billingId);
 
-  return 1;
+	chanp->type_of_charging_info = typeOfChargingInfo;
+	chanp->amount = recordedUnits;
+
+	return p - beg;
 }
 
-ELEMENT_1(ParseAOCDSpecificChargingUnits, Aoc, aoc)
+int
+ParseAOCDChargingUnitInfo(struct Aoc *chanp, u_char *p, u_char *end, int dummy)
 {
-  int billingId = -1;
+	INIT;
 
-  CHECK_TAG(ASN1_TAG_SEQUENCE);
-  MY_DEBUG("ParseAOCDSpecificChargingUnits");
-
-  SEQ_TAGGED_1(ParseRecordedUnitsList, 1, aoc);
-  SEQ_TAGGED_1(ParseTypeOfChargingInfo, 2, &aoc->type_of_charging_info);
-  SEQOPT_TAGGED_1(ParseAOCDBillingId, 3, &billingId);
-
-  sprintf(aoc->msg, "typeOfChargingInfo = %s, billingId = %s",
-	  XTypeOfChargingInfo[aoc->type_of_charging_info],
-	  (billingId==-1)?"-":AOCDBillingId[billingId]);
-
-  return 1;
+	XCHOICE(ParseAOCDSpecificChargingUnits, ASN1_TAG_SEQUENCE, ASN1_NOT_TAGGED);
+	XCHOICE(ParseNull, ASN1_TAG_NULL, 1); // freeOfCharge
+	XCHOICE_DEFAULT;
 }
 
-ELEMENT_1(ParseRecordedCurrency, Aoc, aoc)
+// RecordedCurrency
+
+int
+ParseRecordedCurrency(struct Aoc *chanp, u_char *p, u_char *end, int dummy)
 {
-  CHECK_TAG(ASN1_TAG_SEQUENCE);
-  MY_DEBUG("ParseRecordedCurrency");
+	INIT;
 
-  SEQ_TAGGED_1(ParseCurrency, 1, aoc->currency);
-  SEQ_TAGGED_1(ParseAmount, 2, aoc);
+	XSEQUENCE_1(ParseCurrency, ASN1_TAG_IA5_STRING, 1, chanp->currency);
+	XSEQUENCE(ParseAmount, ASN1_TAG_SEQUENCE, 2);
 
-  return 1;
+	return p - beg;
 }
 
-ELEMENT_1(ParseRecordedUnitsList, Aoc, aoc)
+// RecordedUnitsList
+
+int
+ParseRecordedUnitsList(struct Aoc *chanp, u_char *p, u_char *end, int *recordedUnits)
 {
-  CHECK_TAG(ASN1_TAG_SEQUENCE);
-  MY_DEBUG("ParseRecordedUnitsList");
+	int i;
+	INIT;
 
-  aoc->amount = 0;
-  while (elnr < el.length) {
-    SEQ_NOT_TAGGED_1(ParseRecordedUnits, aoc);
-  }
+	XSEQUENCE_1(ParseRecordedUnits, ASN1_TAG_SEQUENCE, ASN1_NOT_TAGGED, recordedUnits);
+	for (i = 0; i < 31; i++) 
+		XSEQUENCE_OPT_1(ParseRecordedUnits, ASN1_TAG_SEQUENCE, ASN1_NOT_TAGGED, recordedUnits);
 
-  return 1;
+	return p - beg;
 }
 
-ELEMENT_1(ParseTypeOfChargingInfo, int, typeOfChargingInfo)
+// TypeOfChargingInfo
+
+int
+ParseTypeOfChargingInfo(struct Aoc *chanp, u_char *p, u_char *end, int *typeOfChargingInfo)
 {
-  MY_DEBUG("ParseTypeOfChargingInfo");
-
-  if (!ParseEnum(el, tag, typeOfChargingInfo)) return 0;
-
-  if ((*typeOfChargingInfo < 0) || (*typeOfChargingInfo > NTypeOfChargingInfo))
-    return 0;
-
-  print_msg(PRT_DEBUG_DECODE, " DEBUG> typeOfChargingInfo = %s\n",
-	    XTypeOfChargingInfo[*typeOfChargingInfo]);
-  return 1;
+	return ParseEnum(chanp, p, end, typeOfChargingInfo);
 }
 
-ELEMENT_1(ParseRecordedUnits, Aoc, aoc)
+// RecordedUnits
+
+int
+ParseRecordedUnitsChoice(struct Aoc *chanp, u_char *p, u_char *end, int *recordedUnits)
 {
-  int typeOfUnit = -1;
+	INIT;
 
-  CHECK_TAG(ASN1_TAG_SEQUENCE);
-  MY_DEBUG("ParseRecordedUnits");
-
-  SEQ_NOT_TAGGED_1(ParseRecordedUnitsChoice, aoc);
-  SEQOPT_NOT_TAGGED_1(ParseTypeOfUnit, &typeOfUnit);
-
-  if (typeOfUnit != -1) {
-    sprintf(aoc->msg, "typeOfUnit = %d", typeOfUnit);
-  }
-  return 1;
+	XCHOICE_1(ParseNumberOfUnits, ASN1_TAG_INTEGER, ASN1_NOT_TAGGED, recordedUnits);
+	XCHOICE(ParseNull, ASN1_TAG_NULL, ASN1_NOT_TAGGED); // not available
+	XCHOICE_DEFAULT;
 }
 
-ELEMENT_1(ParseRecordedUnitsChoice, Aoc, aoc)
+int
+ParseRecordedUnits(struct Aoc *chanp, u_char *p, u_char *end, int *recordedUnits)
 {
-  int eh;
+	int typeOfUnit;
+	INIT;
 
-  MY_DEBUG("ParseRecordedUnitsChoice");
+	XSEQUENCE_1(ParseRecordedUnitsChoice, ASN1_NOT_TAGGED, ASN1_NOT_TAGGED, recordedUnits);
+	XSEQUENCE_OPT_1(ParseTypeOfUnit, ASN1_TAG_INTEGER, ASN1_NOT_TAGGED, &typeOfUnit);
 
-  if (ParseNumberOfUnits(el, ASN1_NOT_TAGGED, &eh)) {
-    aoc->amount += eh;
-  } else if (ParseNull(el, ASN1_NOT_TAGGED)) {
-    aoc->amount = -1; // notAvailable
-  } else {
-    return 0;
-  }
-  return 1;
+	return p - beg;
 }
 
-ELEMENT_1(ParseAOCDBillingId, int, billingId)
+// AOCDBillingId
+
+int
+ParseAOCDBillingId(struct Aoc *chanp, u_char *p, u_char *end, int *billingId)
 {
-  MY_DEBUG("ParseAOCDBillingId");
-
-  if (!ParseEnum(el, tag, billingId)) return 0;
-
-  if ((*billingId < 0) || (*billingId > NAOCDBillingId))
-    return 0;
-
-  print_msg(PRT_DEBUG_DECODE, " DEBUG> AOCDBillingId = %s\n",
-	    AOCDBillingId[*billingId]);
-  return 1;
+	return ParseEnum(chanp, p, end, billingId);
 }
 
-ELEMENT_1(ParseAOCECurrencyInfo, Aoc, aoc)
+// AOCECurrencyInfo
+
+int
+ParseAOCESpecificCurrency(struct Aoc *chanp, u_char *p, u_char *end, int dummy)
 {
-  char msg[21] = "";
+	int billingId;
+	INIT;
 
-  CHECK_TAG(ASN1_TAG_SEQUENCE);
-  MY_DEBUG("ParseARGAOCECurrencyInfo");
+	XSEQUENCE(ParseRecordedCurrency, ASN1_TAG_SEQUENCE, 1);
+	XSEQUENCE_OPT_1(ParseAOCEBillingId, ASN1_TAG_ENUM, 2, &billingId);
 
-  SEQ_NOT_TAGGED_1(ParseAOCECurrencyInfoChoice, aoc);
-  SEQOPT_NOT_TAGGED_1(ParseChargingAssociation, msg);
-
-  if (strcmp(msg, "") != 0) {
-    strcat(aoc->msg, " chargingAssociation: ");
-    strcat(aoc->msg, msg);
-  }
-
-  return 1;
+	return p - beg;
 }
 
-ELEMENT_1(ParseAOCECurrencyInfoChoice, Aoc, aoc)
+int
+ParseAOCECurrencyInfoChoice(struct Aoc *chanp, u_char *p, u_char *end, int dummy)
 {
- MY_DEBUG("ParseAOCECurrencyInfoChoice");
+	INIT;
 
-  if (ParseAOCESpecificCurrency(el, tag, aoc)) {
-    ;
-  } else if (ParseNull(el, 1)) {
-    aoc->amount = 0; // freeOfCharge
-    strcpy(aoc->msg, "freeOfCharge");
-  } else {
-    return 0;
-  }
-
-  return 1;
+	XCHOICE(ParseAOCESpecificCurrency, ASN1_TAG_SEQUENCE, ASN1_NOT_TAGGED);
+	XCHOICE(ParseNull, ASN1_TAG_NULL, 1); // freeOfCharge
+	XCHOICE_DEFAULT;
 }
 
-ELEMENT_1(ParseAOCESpecificCurrency, Aoc, aoc)
+int
+ParseAOCECurrencyInfo(struct Aoc *chanp, u_char *p, u_char *end, int dummy)
 {
-  int billingId = -1;
+	INIT;
 
-  CHECK_TAG(ASN1_TAG_SEQUENCE);
-  MY_DEBUG("ParseAOCESpecificCurrency");
-
-  SEQ_TAGGED_1(ParseRecordedCurrency, 1, aoc);
-  SEQOPT_TAGGED_1(ParseAOCEBillingId, 2, &billingId);
-
-  if (billingId != -1) {
-    strcpy(aoc->msg, "billingId = ");
-    strcat(aoc->msg, AOCEBillingId[billingId]);
-  } else {
-    strcpy(aoc->msg, "");
-  }
-  return 1;
+	XSEQUENCE(ParseAOCECurrencyInfoChoice, ASN1_NOT_TAGGED, ASN1_NOT_TAGGED);
+	XSEQUENCE_OPT(ParseChargingAssociation, ASN1_NOT_TAGGED, ASN1_NOT_TAGGED);
+	XCHOICE_DEFAULT;
 }
 
-ELEMENT_1(ParseAOCEChargingUnitInfo, Aoc, aoc)
+// AOCEChargingUnitInfo
+
+int
+ParseAOCESpecificChargingUnits(struct Aoc *chanp, u_char *p, u_char *end, int dummy)
 {
-  char msg[21] = "";
+	int recordedUnits;
+	int billingId;
+	INIT;
 
-  CHECK_TAG(ASN1_TAG_SEQUENCE);
-  MY_DEBUG("ParseAOCEChargingUnitInfo");
+	XSEQUENCE_1(ParseRecordedUnitsList, ASN1_TAG_SEQUENCE, 1, &recordedUnits);
+	XSEQUENCE_OPT_1(ParseAOCEBillingId, ASN1_TAG_ENUM, 2, &billingId);
 
-  SEQ_NOT_TAGGED_1(ParseAOCEChargingUnitInfoChoice, aoc);
-  SEQOPT_NOT_TAGGED_1(ParseChargingAssociation, msg);
+	chanp->amount = recordedUnits;
 
-  if (strcmp(msg, "") != 0) {
-    strcat(aoc->msg, " ChargingAssociation = ");
-    strcat(aoc->msg, msg);
-  }
-
-  return 1;
+	return p - beg;
 }
 
-ELEMENT_1(ParseAOCEChargingUnitInfoChoice, Aoc, aoc)
+int
+ParseAOCEChargingUnitInfoChoice(struct Aoc *chanp, u_char *p, u_char *end, int dummy)
 {
-  MY_DEBUG("ParseAOCEChargingUnitInfoChoice");
+	INIT;
 
-  if (ParseAOCESpecificChargingUnits(el, tag, aoc)) {
-    ;
-  } else if (ParseNull(el, 1)) {
-    aoc->amount = 0; // freeOfCharge
-    strcpy(aoc->msg, "freeOfCharge");
-  } else {
-    return 0;
-  }
-  return 1;
+	XCHOICE(ParseAOCESpecificChargingUnits, ASN1_TAG_SEQUENCE, ASN1_NOT_TAGGED);
+	XCHOICE(ParseNull, ASN1_TAG_NULL, 1); // freeOfCharge
+	XCHOICE_DEFAULT;
 }
 
-ELEMENT_1(ParseAOCESpecificChargingUnits, Aoc, aoc)
+int
+ParseAOCEChargingUnitInfo(struct Aoc *chanp, u_char *p, u_char *end, int dummy)
 {
-  int billingId = -1;
+	INIT;
 
-  CHECK_TAG(ASN1_TAG_SEQUENCE);
-  MY_DEBUG("ParseAOCESpecificChargingUnits");
+	XSEQUENCE(ParseAOCEChargingUnitInfoChoice, ASN1_NOT_TAGGED, ASN1_NOT_TAGGED);
+	XSEQUENCE_OPT(ParseChargingAssociation, ASN1_NOT_TAGGED, ASN1_NOT_TAGGED);
 
-  SEQ_TAGGED_1(ParseRecordedUnitsList, 1, aoc);
-  SEQOPT_TAGGED_1(ParseAOCEBillingId, 2, &billingId);
-
-  if (billingId != -1) {
-    strcpy(aoc->msg, "billingId = ");
-    strcat(aoc->msg, AOCEBillingId[billingId]);
-  } else {
-    strcpy(aoc->msg, "");
-  }
-
-  return 1;
+	return p - beg;
 }
 
+// AOCEBillingId
 
-ELEMENT_1(ParseAOCEBillingId, int, billingId)
+int
+ParseAOCEBillingId(struct Aoc *chanp, u_char *p, u_char *end, int *billingId)
 {
-  MY_DEBUG("ParseAOCEBillingId");
-
-  if (!ParseEnum(el, tag, billingId)) return 0;
-
-  if ((*billingId < 0) || (*billingId > NAOCEBillingId))
-    return 0;
-
-  print_msg(PRT_DEBUG_DECODE, " DEBUG> billingId = %s\n",
-	    AOCEBillingId[*billingId]);
-  return 1;
+	return ParseEnum(chanp, p, end, billingId);
 }
 
-ELEMENT_1(ParseCurrency, char, msg)
+// Currency
+
+int
+ParseCurrency(struct Aoc *chanp, u_char *p, u_char *end, char *currency)
 {
-  MY_DEBUG("ParseCurrency");
-
-  if (!ParseIA5String(el, tag, msg)) return 0;
-
-  print_msg(PRT_DEBUG_DECODE, " DEBUG> Currency = %s\n",
-	    msg);
-
-  return 1;
+	return ParseIA5String(chanp, p, end, currency);
 }
 
-ELEMENT_1(ParseAmount, Aoc, aoc)
+// Amount
+
+int
+ParseAmount(struct Aoc *chanp, u_char *p, u_char *end, int dummy)
 {
-  int multiplier;
+	int multiplier;
+	INIT;
 
-  CHECK_TAG(ASN1_TAG_SEQUENCE);
+	XSEQUENCE_1(ParseCurrencyAmount, ASN1_TAG_INTEGER, 1, &chanp->amount);
+	XSEQUENCE_1(ParseMultiplier, ASN1_TAG_INTEGER, 2, &multiplier);
 
-  MY_DEBUG("ParseAmount");
+	chanp->multiplier = pow(10, multiplier-3);
 
-  SEQ_TAGGED_1(ParseCurrencyAmount, 1, &aoc->amount);
-  SEQ_TAGGED_1(ParseMultiplier, 2, &multiplier);
-
-  aoc->multiplier = XMultiplier[multiplier];
-
-  print_msg(PRT_DEBUG_DECODE, " DEBUG> Amount = %d * %f\n",
-	    aoc->amount, aoc->multiplier);
-
-  return 1;
+	return p - beg;
 }
 
-ELEMENT_1(ParseCurrencyAmount, int, amount)
+// CurrencyAmount
+
+int
+ParseCurrencyAmount(struct Aoc *chanp, u_char *p, u_char *end, int *currencyAmount)
 {
-  MY_DEBUG("ParseCurrencyAmount");
-
-  if (!ParseInteger(el, tag, amount)) return 0;
-
-  print_msg(PRT_DEBUG_DECODE, " DEBUG> CurrencyAmount = %d\n",
-	    *amount);
-
-  return 1;
+	return ParseInteger(chanp, p, end, currencyAmount);
 }
 
-ELEMENT_1(ParseMultiplier, int, multiplier)
+// Multiplier
+
+int
+ParseMultiplier(struct Aoc *chanp, u_char *p, u_char *end, int *multiplier)
 {
-  MY_DEBUG("ParseMultiplier");
-
-  if (!ParseEnum(el, tag, multiplier)) return 0;
-
-  if ((*multiplier < 0) || (*multiplier > NMultiplier))
-    return 0;
-
-  print_msg(PRT_DEBUG_DECODE, " DEBUG> Multiplier = %f\n",
-	    XMultiplier[*multiplier]);
-
-  return 1;
+	return ParseEnum(chanp, p, end, multiplier);
 }
 
-ELEMENT_1(ParseTypeOfUnit, int, typeOfUnit)
+// TypeOfUnit
+
+int
+ParseTypeOfUnit(struct Aoc *chanp, u_char *p, u_char *end, int *typeOfUnit)
 {
-  MY_DEBUG("ParseTypeOfUnit");
-
-  if (!ParseInteger(el, tag, typeOfUnit)) return 0;
-
-  print_msg(PRT_DEBUG_DECODE, " DEBUG> typeOfUnit = %d\n",
-	    *typeOfUnit);
-
-  return 1;
+	return ParseInteger(chanp, p, end, typeOfUnit);
 }
 
-ELEMENT_1(ParseNumberOfUnits, int, numberOfUnits)
+// NumberOfUnits
+
+int
+ParseNumberOfUnits(struct Aoc *chanp, u_char *p, u_char *end, int *numberOfUnits)
 {
-  MY_DEBUG("ParseNumberOfUnits");
-
-  if (!ParseInteger(el, tag, numberOfUnits)) return 0;
-
-  print_msg(PRT_DEBUG_DECODE, " DEBUG> numberOfUnits = %d\n",
-	    *numberOfUnits);
-
-  return 1;
+	return ParseInteger(chanp, p, end, numberOfUnits);
 }
 
-ELEMENT_1(ParseChargingAssociation, char, s)
+// Charging Association
+
+int
+ParseChargingAssociation(struct Aoc *chanp, u_char *p, u_char *end, int dummy)
 {
-  int chargeIdentifier;
+	char partyNumber[30];
+	INIT;
 
-  MY_DEBUG("ParseChargingAssociation");
-
-  if ((el.tag &~ 0xa0) == 0) {
-    if (!ParsePartyNumber(el.content.elements[0], ASN1_NOT_TAGGED, s))
-      return 0;
-  } else {
-    if (!ParseChargeIdentifier(el, ASN1_NOT_TAGGED, &chargeIdentifier)) {
-      return 0;
-    } else {
-      sprintf(s, "%d", chargeIdentifier);
-    }
-  }
-  return 1;
+	XCHOICE_1(ParsePartyNumber, ASN1_TAG_SEQUENCE, 0, partyNumber);
+	XCHOICE(ParseChargeIdentifier, ASN1_TAG_INTEGER, ASN1_NOT_TAGGED);
+	XCHOICE_DEFAULT;
 }
 
-ELEMENT_1(ParseChargeIdentifier, int, chargeIdentifier)
+// ChargeIdentifier
+
+int
+ParseChargeIdentifier(struct Aoc *chanp, u_char *p, u_char *end, int dummy)
 {
-  MY_DEBUG("ParseChargeIdentifier");
+	int chargeIdentifier;
 
-  if (!ParseInteger(el, tag, chargeIdentifier)) return 0;
-
-  print_msg(PRT_DEBUG_DECODE, " DEBUG> chargeIdentifier = %d\n",
-	    *chargeIdentifier);
-
-  return 1;
+	return ParseInteger(chanp, p, end, &chargeIdentifier);
 }
+

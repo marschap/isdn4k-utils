@@ -1,4 +1,4 @@
-/* $Id: asn1.c,v 1.3 1999/12/31 13:30:01 akool Exp $
+/* $Id: asn1.c,v 1.4 2000/01/20 07:30:09 kai Exp $
  *
  * ISDN accounting for isdn4linux. (ASN.1 parser)
  *
@@ -21,6 +21,14 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: asn1.c,v $
+ * Revision 1.4  2000/01/20 07:30:09  kai
+ * rewrote the ASN.1 parsing stuff. No known problems so far, apart from the
+ * following:
+ *
+ * I don't use buildnumber() anymore to translate the numbers to aliases, because
+ * it apparently did never work quite right. If someone knows how to handle
+ * buildnumber(), we can go ahead and fix this.
+ *
  * Revision 1.3  1999/12/31 13:30:01  akool
  * isdnlog-4.00 (Millenium-Edition)
  *  - Oracle support added by Jan Bolt (Jan.Bolt@t-online.de)
@@ -41,154 +49,132 @@
  *
  */
 
-
 #include "asn1.h"
 
-int splitASN1(char **asnp, int lev, Element* el)
+#define ASN1_DEBUG
+
+int ParseTag(u_char *p, u_char *end, int *tag)
 {
-  uchar c, l;
-  int ll, result;
-  char s[BUF_SIZE];
-  char *px;
-  int len = 0;
-
-  strcpy(s, "                ");
-  px = s + lev;
-
-  el->tag = strtol(*asnp += 3, NIL, 16); len++;
-  sprintf(px, "ASN TAG = %2x", el->tag);
-  aoc_debug(el->tag, s);
-
-  l = strtol(*asnp += 3, NIL, 16); len++;
-  sprintf(px, "ASN l0 = %2x", l);
-  aoc_debug(l, s);
-
-  if (l == 0x80) { // indefinite length
-    el->length = -1;
-  } else if (l & 0x80) {
-    l &= ~0x80;
-    el->length = 0;
-    while (l-- > 0) {
-      c = strtol(*asnp += 3, NIL, 16); len++;
-      sprintf(px, "ASN l1 = %2x", c);
-      aoc_debug(c, s);
-      el->length = (el->length >> 8) + c;
-    }
-  } else {
-    el->length = l;
-  }
-
-  sprintf(px, "ASN length = %d", el->length);
-  aoc_debug(-2, s);
-
-  if (el->tag & 0x20) { // constructed
-    el->content.elements = calloc(10, sizeof(Element));
-    if (el->length == -1) { // indefinite length
-      el->length = 0;
-      while ((c = strtol(*asnp + 3, NIL, 16)) != 0x00) {
-	len += splitASN1(asnp, lev + 1, &el->content.elements[el->length++]);
-      }
-      *asnp += 3; len ++;
-      sprintf(px, "ASN ENDTAG = %2x", c);
-      aoc_debug(c, s);
-      c = strtol(*asnp += 3, NIL, 16); len++;
-      sprintf(px, "ASN ENDTAG = %2x", c);
-      aoc_debug(c, s);
-      if (c != 0x00) return -1;
-    } else {
-      ll = el->length;
-      el->length = 0;
-      while (ll > 0) {
-	result = splitASN1(asnp, lev + 1, &el->content.elements[el->length++]);
-	ll -= result;
-	len += result;
-      }
-    }
-  } else {
-    el->content.octets = calloc(200, sizeof(uchar));
-    ll = el->length;
-    el->length = 0;
-    while (ll--) {
-      c = strtol(*asnp += 3, NIL, 16); len++;
-      sprintf(px, "ASN contents = %2x", c);
-      aoc_debug(c, s);
-
-      el->content.octets[el->length++] = c;
-    }
-  }
-
-  sprintf(px, "ASN parsed len = %d", len);
-  aoc_debug(-2, s);
-
-  return len;
+	*tag = *p;
+	return 1;
 }
 
-int octets2Int(Element el)
+int ParseLen(u_char *p, u_char *end, int *len)
 {
-  int integer = 0;
-  int i;
+	int l, i;
 
-  for (i = 0; i < el.length; i++) {
-    integer = (integer >> 8) + el.content.octets[i];
-  }
-
-  return integer;
+	if (*p == 0x80) { // indefinite
+		*len = -1;
+		return 1;
+	}
+	if (!(*p & 0x80)) { // one byte
+		*len = *p;
+		return 1;
+	}
+	*len = 0;
+	l = *p & ~0x80;
+	p++;
+	for (i = 0; i < l; i++) {
+		*len = (*len << 8) + *p; 
+		p++;
+	}
+	return l+1;
 }
 
-void printASN1(Element el, int lev)
+int
+ParseASN1(u_char *p, u_char *end, int level)
 {
-  char s[BUF_SIZE];
-  char *px;
-  int i;
+	int tag, len;
+	int ret;
+	int j;
+	u_char *tag_end, *beg;
 
-  strcpy(s, "                ");
-  px = s + lev;
+	beg = p;
 
-  switch (el.tag) {
-  case 0x02:
-    sprintf(px, "Integer = %d", octets2Int(el));
-    aoc_debug(-2, s);
-    return;
-  case 0x0a:
-    sprintf(px, "Enum = %d", octets2Int(el));
-    aoc_debug(-2, s);
-    return;
-  case 0x12:
-    strcpy(px, "NumberDigits = ");
-    px += strlen(px);
-    for (i = 0; i < el.length; i++) {
-      *px++ = el.content.octets[i];
-    }
-    *px = 0;
-    aoc_debug(-2, s);
-    return;
-
-  case 0x30:
-    sprintf(px, "SEQUENCE");
-    break;
-  case 0x31:
-    sprintf(px, "SET");
-    break;
-
-  default:
-    sprintf(px, "TAG = %2x", el.tag);
-  }
-  aoc_debug(-2, s);
-
-  sprintf(px, "LENGTH = %d", el.length);
-  aoc_debug(-2, s);
-
-  if (el.tag & 0x20) { // constructed
-    for (i = 0; i < el.length; i++) {
-      printASN1(el.content.elements[i], lev+1);
-    }
-  } else { // primitive
-    strcpy(px, "CONTENT = ");
-
-    for (i = 0; i < el.length; i++) {
-      px += strlen(px);
-      sprintf(px, "%2x ", el.content.octets[i]);
-    }
-    aoc_debug(-2, s);
-  }
+	CallASN1(ret, p, end, ParseTag(p, end, &tag));
+	CallASN1(ret, p, end, ParseLen(p, end, &len));
+	for (j = 0; j < level*5; j++) print_msg(PRT_DEBUG_DECODE, " ");
+	print_msg(PRT_DEBUG_DECODE, "TAG 0x%02x LEN %3d\n", tag, len);
+	
+	if (tag & ASN1_TAG_CONSTRUCTED) {
+		if (len == -1) { // indefinite
+			while (*p) {
+				CallASN1(ret, p, end, ParseASN1(p, end, level + 1));
+			}
+			p++;
+			if (*p) 
+				return -1;
+			p++;
+		} else {
+			tag_end = p + len;
+			while (p < tag_end) {
+				CallASN1(ret, p, end, ParseASN1(p, end, level +1));
+			}
+		}
+	} else {
+		for (j = 0; j < level*5; j++) print_msg(PRT_DEBUG_DECODE, " ");
+		while (len--) {
+			print_msg(PRT_DEBUG_DECODE, "%02x ", *p);
+			p++;
+		}
+		print_msg(PRT_DEBUG_DECODE, "\n");
+	}
+	for (j = 0; j < level*5; j++) print_msg(PRT_DEBUG_DECODE, " ");
+	print_msg(PRT_DEBUG_DECODE, "END (%d)\n", p - beg - 2);
+	return p - beg;
 }
+
+#if 0
+
+#if 0
+u_char data[] = {"\xA2\x03\x02\x01\xA3"};
+#endif
+#if 0 // ActNotDiv
+u_char data[] = {"\xA1\x2C\x02\x01\x7E\x02\x01\x09\x30\x24\x0A"
+		 "\x01\x02\x0A\x01\x03\x30\x0C\x80\x0A\x30\x31"
+		 "\x33\x30\x31\x34\x34\x37\x37\x30\xA1\x0E\x0A"
+		 "\x01\x02\x12\x09\x32\x31\x31\x33\x34\x31\x38\x33\x30"};
+#endif
+#if 0 // ActDiv
+u_char data[] = {"\xA1\x24\x02\x01\xA1\x02\x01\x07\x30\x1C\x0A"
+		 "\x01\x02\x0A\x01\x01\x30\x0C\x80\x0A\x30"
+		 "\x31\x33\x30\x31\x34\x34\x37\x37\x30\x80"
+		 "\x06\x33\x34\x31\x38\x33\x30"};
+#endif
+#if 0 // DeactNotDiv
+u_char data[] = {"\xA1\x1E\x02\x01\x08\x02\x01\x0A\x30\x16\x0A"
+		 "\x01\x02\x0A\x01\x03\xA1\x0E\x0A\x01\x02\x12"
+		 "\x09\x32\x31\x31\x33\x34\x31\x38\x33\x30"};
+#endif
+#if 1 // DeactDiv
+u_char data[] = {"\xA1\x16\x02\x01\xB1\x02\x01\x08\x30\x0E\x0A"
+		 "\x01\x02\x0A\x01\x01\x80\x06\x33\x34\x31\x38\x33\x30"};
+#endif
+#if 0 // AOCE, 0 Einheiten
+u_char data[] = {"\xA1\x15\x02\x02\x00\xDC\x02\x01\x24\x30\x0C"
+		 "\x30\x0A\xA1\x05\x30\x03\x02\x01\x00\x82\x01\x00"};
+#endif
+#if 0 // AOCE, 1 Einheit
+u_char data[] = {"\xA1\x15\x02\x02\x00\xBC\x02\x01\x24\x30\x0C\x30"
+		 "\x0A\xA1\x05\x30\x03\x02\x01\x01\x82\x01\x00"};
+#endif
+#if 0 // AOCD currency
+u_char data[] = {"\xA1\x1A\x02\x02\x1C\x65\x02\x01\x21\x30\x11\xA1\x0C\x81\x02\x44\x4D\xA2\x06\x81\x01\x18\x82\x01\x01\x82\x01\x00"};
+#endif
+u_char *end = data + 47;
+
+#include "asn1_component.h"
+
+void
+main()
+{
+	struct Aoc chan;
+
+#ifdef ASN1_DEBUG
+	ParseASN1(data, end, 0);
+#endif
+
+	ParseComponent(&chan, data, end);
+}
+
+#endif

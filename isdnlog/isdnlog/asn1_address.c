@@ -1,4 +1,4 @@
-/* $Id: asn1_address.c,v 1.3 1999/12/31 13:30:01 akool Exp $
+/* $Id: asn1_address.c,v 1.4 2000/01/20 07:30:09 kai Exp $
  *
  * ISDN accounting for isdn4linux. (ASN.1 parser)
  *
@@ -21,6 +21,14 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: asn1_address.c,v $
+ * Revision 1.4  2000/01/20 07:30:09  kai
+ * rewrote the ASN.1 parsing stuff. No known problems so far, apart from the
+ * following:
+ *
+ * I don't use buildnumber() anymore to translate the numbers to aliases, because
+ * it apparently did never work quite right. If someone knows how to handle
+ * buildnumber(), we can go ahead and fix this.
+ *
  * Revision 1.3  1999/12/31 13:30:01  akool
  * isdnlog-4.00 (Millenium-Edition)
  *  - Oracle support added by Jan Bolt (Jan.Bolt@t-online.de)
@@ -41,355 +49,242 @@
  *
  */
 
-
 #include "asn1.h"
+#include "asn1_generic.h"
+#include "asn1_address.h"
 
-ELEMENT_1(ParsePresentedAddressScreened, char, );
-ELEMENT_1(ParsePresentedAddressUnscreened, char, );
-ELEMENT_1(ParsePresentedNumberScreened, char, );
-ELEMENT_1(ParsePresentedNumberUnscreened, char, );
-ELEMENT_1(ParseAddressScreened, char, );
-ELEMENT_1(ParseNumberScreened, char, );
-ELEMENT_1(ParseAddress, char, );
-ELEMENT_1(ParsePartyNumber, char, );
-ELEMENT_1(ParsePublicPartyNumber, char, );
-ELEMENT_1(ParsePrivatePartyNumber, char, );
-ELEMENT_1(ParseNumberDigits, char, );
-ELEMENT_1(ParsePublicTypeOfNumber, int, );
-ELEMENT_1(ParsePrivateTypeOfNumber, int, );
-ELEMENT_1(ParsePartySubaddress, char, );
-ELEMENT_1(ParseUserSpecifiedSubaddress, char, );
-ELEMENT_1(ParseNSAPSubaddress, char, );
-ELEMENT_1(ParseSubaddressInformation, char, );
-ELEMENT_1(ParseScreeningIndicator, int, );
-
-char* PublicTypeOfNumber[] = {
-  "unknown",
-  "internationalNumber",
-  "nationalNumber",
-  "networkSpecificNumber",
-  "subscriberNumber",
-  "--",
-  "abbreviatedNumber",
-};
-
-const int NPublicTypeOfNumber = 7;
-
-char* PrivateTypeOfNumber[] = {
-  "unknown",
-  "level2RegionalNumber",
-  "level1RegionalNumber",
-  "pTNSpecificNumber",
-  "localNumber",
-  "--",
-  "abbreviatedNumber",
-};
-
-const int NPrivateTypeOfNumber = 7;
-
-char* ScreeningIndicator[] = {
-  "userProvidedNotScreened",
-  "userProvidedVerifiedAndPassed",
-  "userProvidedVerifiedAndFailed",
-  "networkProvided",
-};
-
-const int NScreeningIndicator = 4;
+void buildnumber(char *num, int oc3, int oc3a, char *result, int version,
+		 int *provider, int *sondernummer, int *intern, int *local,
+		 int dir, int who);
 
 
-ELEMENT_1(ParsePresentedAddressScreened, char, num)
+// ======================================================================
+// Address Types EN 300 196-1 D.3
+
+int ParsePresentationRestricted(struct Aoc *chanp, u_char *p, u_char *end, char *str)
 {
-  char tmp[255];
+	int ret;
 
-  MY_DEBUG("ParsePresentedAddressScreened");
-
-  switch (IMP_TAG(el.tag)) {
-    CASE_TAGGED_1(0, ParseAddressScreened, tmp);
-    CASE_TAGGED_1(3, ParseAddressScreened, tmp);
-  }
-  switch (IMP_TAG(el.tag)) {
-  case 0 : sprintf(num, "presentationAllowedAddress: %s", tmp); break;
-  case 1 : strcpy(num, "presentationRestricted"); break;
-  case 2 : strcpy(num, "numberNotAvailableDueToInterworking"); break;
-  case 3 : sprintf(num, "presentationRestrictedAddress: %s", tmp); break;
-  default : return 0;
-  }
-
-  print_msg(PRT_DEBUG_DECODE, " DEBUG> %s\n", num);
-
-  return 1;
+	ret = ParseNull(chanp, p, end, -1);
+	if (ret < 0)
+		return ret;
+	strcpy(str, "(presentation restricted)");
+	return ret;
 }
 
-ELEMENT_1(ParsePresentedAddressUnscreened, char, num)
+int ParseNotAvailInterworking(struct Aoc *chanp, u_char *p, u_char *end, char *str)
 {
-  char tmp[255];
+	int ret;
 
-  MY_DEBUG("ParsePresentedAddressUnscreened");
-
-  switch (IMP_TAG(el.tag)) {
-    CASE_TAGGED_1(0, ParseAddress, tmp);
-    CASE_TAGGED_1(3, ParseAddress, tmp);
-  }
-  switch (IMP_TAG(el.tag)) {
-  case 0 : sprintf(num, "presentationAllowedAddress: %s", tmp); break;
-  case 1 : strcpy(num, "presentationRestricted"); break;
-  case 2 : strcpy(num, "numberNotAvailableDueToInterworking"); break;
-  case 3 : sprintf(num, "presentationRestrictedAddress: %s", tmp); break;
-  default : return 0;
-  }
-
-  print_msg(PRT_DEBUG_DECODE, " DEBUG> %s\n", num);
-
-  return 1;
+	ret = ParseNull(chanp, p, end, -1);
+	if (ret < 0)
+		return ret;
+	strcpy(str, "(not available)");
+	return ret;
 }
 
-ELEMENT_1(ParsePresentedNumberScreened, char, num)
+int ParsePresentedAddressScreened(struct Aoc *chanp, u_char *p, u_char *end, char *str)
 {
-  char tmp[255];
+	INIT;
 
-  MY_DEBUG("ParsePresentedNumberScreened");
-
-  switch (IMP_TAG(el.tag)) {
-    CASE_TAGGED_1(0, ParseNumberScreened, tmp);
-    CASE_TAGGED_1(3, ParseNumberScreened, tmp);
-  }
-  switch (IMP_TAG(el.tag)) {
-  case 0 : sprintf(num, "presentationAllowedNumber: %s", tmp); break;
-  case 1 : strcpy(num, "presentationRestricted"); break;
-  case 2 : strcpy(num, "numberNotAvailableDueToInterworking"); break;
-  case 3 : sprintf(num, "presentationRestrictedNumber: %s", tmp); break;
-  default : return 0;
-  }
-
-  print_msg(PRT_DEBUG_DECODE, " DEBUG> %s\n", num);
-
-  return 1;
+	XCHOICE_1(ParseAddressScreened, ASN1_TAG_SEQUENCE, 0, str);
+	XCHOICE_1(ParsePresentationRestricted, ASN1_TAG_NULL, 1, str);
+	XCHOICE_1(ParseNotAvailInterworking, ASN1_TAG_NULL, 2, str);
+	XCHOICE_1(ParseAddressScreened, ASN1_TAG_NULL, 3, str);
+	XCHOICE_DEFAULT;
 }
 
-ELEMENT_1(ParsePresentedNumberUnscreened, char, num)
+int ParsePresentedNumberScreened(struct Aoc *chanp, u_char *p, u_char *end, char *str)
 {
-  char tmp[255];
+	INIT;
 
-  MY_DEBUG("ParsePresentedNumberUnscreened");
-
-  switch (IMP_TAG(el.tag)) {
-    CASE_TAGGED_1(0, ParsePartyNumber, tmp);
-    CASE_TAGGED_1(3, ParsePartyNumber, tmp);
-  }
-  switch (IMP_TAG(el.tag)) {
-  case 0 : sprintf(num, "presentationAllowedNumber: %s", tmp); break;
-  case 1 : strcpy(num, "presentationRestricted"); break;
-  case 2 : strcpy(num, "numberNotAvailableDueToInterworking"); break;
-  case 3 : sprintf(num, "presentationRestrictedNumber: %s", tmp); break;
-  default : return 0;
-  }
-
-  print_msg(PRT_DEBUG_DECODE, " DEBUG> %s\n", num);
-
-  return 1;
+	XCHOICE_1(ParseNumberScreened, ASN1_TAG_SEQUENCE, 0, str);
+	XCHOICE_1(ParsePresentationRestricted, ASN1_TAG_NULL, 1, str);
+	XCHOICE_1(ParseNotAvailInterworking, ASN1_TAG_NULL, 2, str);
+	XCHOICE_1(ParseNumberScreened, ASN1_TAG_NULL, 3, str);
+	XCHOICE_DEFAULT;
 }
 
-ELEMENT_1(ParseAddressScreened, char, addr)
+int ParsePresentedNumberUnscreened(struct Aoc *chanp, u_char *p, u_char *end, char *str)
 {
-  char num[BUF_SIZE];
-  char sa[BUF_SIZE];
-  int screeningIndicator;
+	INIT;
 
-  CHECK_TAG(ASN1_TAG_SEQUENCE);
-  MY_DEBUG("ParseAddressScreened");
-
-  strcpy(sa, "");
-  SEQ_NOT_TAGGED_1(ParsePartyNumber, num);
-  SEQ_NOT_TAGGED_1(ParseScreeningIndicator, &screeningIndicator);
-  SEQOPT_NOT_TAGGED_1(ParsePartySubaddress, sa);
-
-  if (strcmp(sa, "") != 0)
-    sprintf(addr, "%s SUB %s", num, sa);
-  else
-    strcpy(addr, num);
-  return 1;
+	XCHOICE_1(ParsePartyNumber, ASN1_TAG_SEQUENCE, 0, str); // FIXME EXP
+	XCHOICE_1(ParsePresentationRestricted, ASN1_TAG_NULL, 1, str);
+	XCHOICE_1(ParseNotAvailInterworking, ASN1_TAG_NULL, 2, str);
+	XCHOICE_1(ParsePartyNumber, ASN1_TAG_SEQUENCE, 3, str); // FIXME EXP
+	XCHOICE_DEFAULT;
 }
 
-ELEMENT_1(ParseNumberScreened, char, addr)
+int ParseNumberScreened(struct Aoc *chanp, u_char *p, u_char *end, char *str)
 {
-  int screeningIndicator;
+	char partyNumber[30];
+	char screeningIndicator[30];
+	INIT;
 
-  CHECK_TAG(ASN1_TAG_SEQUENCE);
-  MY_DEBUG("ParseNumberScreened");
+	XSEQUENCE_1(ParsePartyNumber, ASN1_NOT_TAGGED, ASN1_NOT_TAGGED, partyNumber);
+	XSEQUENCE_1(ParseScreeningIndicator, ASN1_NOT_TAGGED, ASN1_NOT_TAGGED, screeningIndicator);
 
-  SEQ_NOT_TAGGED_1(ParsePartyNumber, addr);
-  SEQ_NOT_TAGGED_1(ParseScreeningIndicator, &screeningIndicator);
+	str += sprintf(str, "%s", partyNumber);
 
-  return 1;
+	return p - beg;
 }
 
-ELEMENT_1(ParseAddress, char, addr)
+int ParseAddressScreened(struct Aoc *chanp, u_char *p, u_char *end, char *str)
 {
-  char num[BUF_SIZE];
-  char sa[BUF_SIZE];
+	char partyNumber[30];
+	char partySubaddress[30] = "";
+	char screeningIndicator[30];
+	INIT;
 
-  CHECK_TAG(ASN1_TAG_SEQUENCE);
-  MY_DEBUG("ParseAddress");
+	XSEQUENCE_1(ParsePartyNumber, ASN1_NOT_TAGGED, ASN1_NOT_TAGGED, partyNumber);
+	XSEQUENCE_1(ParseScreeningIndicator, ASN1_NOT_TAGGED, ASN1_NOT_TAGGED, screeningIndicator);
+	XSEQUENCE_OPT_1(ParsePartySubaddress, ASN1_NOT_TAGGED, ASN1_NOT_TAGGED, partySubaddress);
 
-  strcpy(sa, "");
-  SEQ_NOT_TAGGED_1(ParsePartyNumber, num);
-  SEQOPT_NOT_TAGGED_1(ParsePartySubaddress, sa);
+	str += sprintf(str, "%s", partyNumber);
+	if (strlen(partySubaddress))
+		str += sprintf(str, ".%s", partySubaddress);
 
-  if (strcmp(sa, "") != 0)
-    sprintf(addr, "%s SUB %s", num, sa);
-  else
-    strcpy(addr, num);
-  return 1;
+	return p - beg;
 }
 
-ELEMENT_1(ParsePartyNumber, char, num)
+int ParseAddress(struct Aoc *chanp, u_char *p, u_char *end, char *str)
 {
-  int a1, a2, a3, a4;
+	char partyNumber[30];
+	char partySubaddress[30] = "";
+	INIT;
 
-  MY_DEBUG("ParsePartyNumber");
+	XSEQUENCE_1(ParsePartyNumber, ASN1_NOT_TAGGED, ASN1_NOT_TAGGED, partyNumber);
+	XSEQUENCE_OPT_1(ParsePartySubaddress, ASN1_NOT_TAGGED, ASN1_NOT_TAGGED, partySubaddress);
 
-  switch (IMP_TAG(el.tag)) {
-    CASE_TAGGED_1(0, ParseNumberDigits, num);       // unknownPartyNumber
-    CASE_TAGGED_1(1, ParsePublicPartyNumber, num);  // publicPartyNumber
-    CASE_TAGGED_1(3, ParseNumberDigits, num);       // dataPartyNumber
-    CASE_TAGGED_1(4, ParseNumberDigits, num);       // telexPartyNumber
-    CASE_TAGGED_1(5, ParsePrivatePartyNumber, num); // privatePartyNumber
-    CASE_TAGGED_1(8, ParseNumberDigits, num);       // nationalStandardPartyNumber
-  default:
-    return 0;
-  }
-  if (el.tag == 0) {
-    buildnumber(num, 0, 0, call[6].num[CLIP],
-		VERSION_EDSS1, &a1, &a2, &a3, &a4, 0, 999);
-    strcpy(num, vnum(6, CLIP));
-  }
-  return 1;
+	str += sprintf(str, partyNumber);
+	if (strlen(partySubaddress))
+		str += sprintf(str, ".%s", partySubaddress);
+
+	return p - beg;
 }
 
-ELEMENT_1(ParsePublicPartyNumber, char, num)
+int ParsePartyNumber(struct Aoc *chanp, u_char *p, u_char *end, char *str)
 {
-  int pton;
-  char digits[BUF_SIZE];
-  int a1, a2, a3, a4;
+	INIT;
 
-  CHECK_TAG(ASN1_TAG_SEQUENCE);
-  MY_DEBUG("ParsePublicPartyNumber");
-
-  SEQ_NOT_TAGGED_1(ParsePublicTypeOfNumber, &pton);
-  SEQ_NOT_TAGGED_1(ParseNumberDigits, digits);
-
-  buildnumber(digits, pton << 4, 0, call[6].num[CLIP],
-	      VERSION_EDSS1, &a1, &a2, &a3, &a4, 0, 999);
-  strcpy(num, vnum(6, CLIP));
-
-  return 1;
+	XCHOICE_1(ParseNumberDigits, ASN1_TAG_NUMERIC_STRING, 0, str); // unknownPartyNumber
+	XCHOICE_1(ParsePublicPartyNumber, ASN1_TAG_SEQUENCE, 1, str); 
+	XCHOICE_1(ParseNumberDigits, ASN1_TAG_NUMERIC_STRING, 3, str); // dataPartyNumber
+	XCHOICE_1(ParseNumberDigits, ASN1_TAG_NUMERIC_STRING, 4, str); // telexPartyNumber
+	XCHOICE_1(ParsePrivatePartyNumber, ASN1_TAG_SEQUENCE, 5, str);
+	XCHOICE_1(ParseNumberDigits, ASN1_TAG_NUMERIC_STRING, 8, str); // nationalStandardPartyNumber
+	XCHOICE_DEFAULT;
 }
 
-ELEMENT_1(ParsePrivatePartyNumber, char, num)
+int ParsePublicPartyNumber(struct Aoc *chanp, u_char *p, u_char *end, char *str)
 {
-  int pton;
-  char digits[BUF_SIZE];
+	int publicTypeOfNumber;
+	char numberDigits[20];
+	INIT;
 
+	XSEQUENCE_1(ParsePublicTypeOfNumber, ASN1_TAG_ENUM, ASN1_NOT_TAGGED, &publicTypeOfNumber);
+	XSEQUENCE_1(ParseNumberDigits, ASN1_TAG_NUMERIC_STRING, ASN1_NOT_TAGGED, numberDigits);
+	
+	switch (publicTypeOfNumber) {
+	case 0: break; // unknown
+	case 1: str += sprintf(str, countryprefix); break;
+	case 2: str += sprintf(str, areaprefix); break;
+	case 3: str += sprintf(str, "(network)"); break;
+	case 4: str += sprintf(str, "(MSN)"); break;
+	case 6: str += sprintf(str, "(abbrev)"); break;
+	}
+	str += sprintf(str, numberDigits);
 
-  CHECK_TAG(ASN1_TAG_SEQUENCE);
-  MY_DEBUG("ParsePrivatePartyNumber");
-
-  SEQ_NOT_TAGGED_1(ParsePrivateTypeOfNumber, &pton);
-  SEQ_NOT_TAGGED_1(ParseNumberDigits, digits);
-
-  sprintf(num, "%s %s", PrivateTypeOfNumber[pton], digits);
-
-  return 1;
+	return p - beg;
 }
 
-ELEMENT_1(ParseNumberDigits, char, s)
+int ParsePrivatePartyNumber(struct Aoc *chanp, u_char *p, u_char *end, char *str)
 {
-  MY_DEBUG("ParseNumberDigits");
+	int privateTypeOfNumber;
+	char numberDigits[20];
+	INIT;
 
-  return ParseNumericString(el, tag, s);
+	XSEQUENCE_1(ParsePrivateTypeOfNumber, ASN1_TAG_ENUM, ASN1_NOT_TAGGED, privateTypeOfNumber); 
+	XSEQUENCE_1(ParseNumberDigits, ASN1_TAG_NUMERIC_STRING, ASN1_NOT_TAGGED, numberDigits); 
+
+	switch (privateTypeOfNumber) {
+	case 0: str += sprintf(str, "(unknown)"); break;
+	case 1: str += sprintf(str, "(regional2)"); break;
+	case 2: str += sprintf(str, "(regional1)"); break;
+	case 3: str += sprintf(str, "(ptn)"); break;
+	case 4: str += sprintf(str, "(local)"); break;
+	case 6: str += sprintf(str, "(abbrev)"); break;
+	}
+	str += sprintf(str, numberDigits);
+
+	return p - beg;
 }
 
-ELEMENT_1(ParsePublicTypeOfNumber, int, publicTypeOfNumber)
+int ParsePublicTypeOfNumber(struct Aoc *chanp, u_char *p, u_char *end, int *publicTypeOfNumber)
 {
-  MY_DEBUG("ParsePublicTypeOfNumber");
-
-  if (!ParseEnum(el, tag, publicTypeOfNumber)) return 0;
-
-  if ((*publicTypeOfNumber < 0) || (*publicTypeOfNumber > NPublicTypeOfNumber))
-    return 0;
-
-  print_msg(PRT_DEBUG_DECODE, " DEBUG> publicTypeOfNumber = %s\n",
-	    PublicTypeOfNumber[*publicTypeOfNumber]);
-  return 1;
+	return ParseEnum(chanp, p, end, publicTypeOfNumber);
 }
 
-ELEMENT_1(ParsePrivateTypeOfNumber, int, privateTypeOfNumber)
+int ParsePrivateTypeOfNumber(struct Aoc *chanp, u_char *p, u_char *end, int dummy)
 {
-  MY_DEBUG("ParsePrivateTypeOfNumber");
+	int typeOfNumber;
 
-  if (!ParseEnum(el, tag, privateTypeOfNumber)) return 0;
-
-  if ((*privateTypeOfNumber < 0) || (*privateTypeOfNumber > NPrivateTypeOfNumber))
-    return 0;
-
-  print_msg(PRT_DEBUG_DECODE, " DEBUG> publicTypeOfNumber = %s\n",
-	    PrivateTypeOfNumber[*privateTypeOfNumber]);
-  return 1;
+	return ParseEnum(chanp, p, end, &typeOfNumber);
 }
 
-ELEMENT_1(ParsePartySubaddress, char, sa)
+int ParsePartySubaddress(struct Aoc *chanp, u_char *p, u_char *end, char *str)
 {
-  MY_DEBUG("ParsePartySubaddress");
+	INIT;
 
-  switch (el.tag &~ 0x20) {
-    CASE_1(ASN1_TAG_SEQUENCE, ParseUserSpecifiedSubaddress, sa);
-    CASE_1(ASN1_TAG_OCTET_STRING, ParseNSAPSubaddress, sa);
-  default:
-    return 0;
-  }
-  return 1;
+	XCHOICE_1(ParseUserSpecifiedSubaddress, ASN1_TAG_SEQUENCE, ASN1_NOT_TAGGED, str);
+	XCHOICE_1(ParseNSAPSubaddress, ASN1_TAG_OCTET_STRING, ASN1_NOT_TAGGED, str);
+	XCHOICE_DEFAULT;
 }
 
-ELEMENT_1(ParseUserSpecifiedSubaddress, char, sa)
+int ParseUserSpecifiedSubaddress(struct Aoc *chanp, u_char *p, u_char *end, char *str)
 {
-  int oddCountIndicator = -2;
+	int oddCountIndicator;
+	INIT;
 
-  CHECK_TAG(ASN1_TAG_SEQUENCE);
-  MY_DEBUG("ParsePublicPartyNumber");
-
-  SEQ_NOT_TAGGED_1(ParseSubaddressInformation, sa);
-  SEQOPT_NOT_TAGGED_1(ParseBoolean, &oddCountIndicator);
-
-  if (oddCountIndicator != -2) {
-    sprintf(sa, "%s %s", sa, oddCountIndicator?"odd":"even");
-  }
-  return 1;
+	XSEQUENCE_1(ParseSubaddressInformation, ASN1_TAG_OCTET_STRING, ASN1_NOT_TAGGED, str);
+	XSEQUENCE_OPT_1(ParseBoolean, ASN1_TAG_BOOLEAN, ASN1_NOT_TAGGED, &oddCountIndicator);
+	
+	return p - beg;
 }
 
-ELEMENT_1(ParseNSAPSubaddress, char, sa)
+int ParseNSAPSubaddress(struct Aoc *chanp, u_char *p, u_char *end, char *str)
 {
-  MY_DEBUG("ParseNSAPSubaddress");
-
-  return ParseOctetString(el, tag, sa);
+	return ParseOctetString(chanp, p, end, str);
 }
 
-ELEMENT_1(ParseSubaddressInformation, char, sa)
+int ParseSubaddressInformation(struct Aoc *chanp, u_char *p, u_char *end, char *str)
 {
-  MY_DEBUG("ParseSubaddressInformation");
-
-  return ParseOctetString(el, tag, sa);
+	return ParseOctetString(chanp, p, end, str);
 }
 
-ELEMENT_1(ParseScreeningIndicator, int, screeningIndicator)
+int ParseScreeningIndicator(struct Aoc *chanp, u_char *p, u_char *end, char *str)
 {
-  MY_DEBUG("ParseScreeningIndicator");
+	int ret;
+	int screeningIndicator;
 
-  if (!ParseEnum(el, tag, screeningIndicator)) return 0;
+	ret = ParseEnum(chanp, p, end, &screeningIndicator);
+	if (ret < 0)
+		return ret;
+	
+	switch (screeningIndicator) {
+	case 0: sprintf(str, "user provided, not screened"); break;
+	case 1: sprintf(str, "user provided, passed"); break;
+	case 2: sprintf(str, "user provided, failed"); break;
+	case 3: sprintf(str, "network provided"); break;
+	default: sprintf(str, "(%d)", screeningIndicator); break;
+	}
 
-  if ((*screeningIndicator < 0) || (*screeningIndicator > NScreeningIndicator))
-    return 0;
-
-  print_msg(PRT_DEBUG_DECODE, " DEBUG> screeningIndicator = %s\n",
-	    ScreeningIndicator[*screeningIndicator]);
-  return 1;
+	return ret;
 }
+
+int ParseNumberDigits(struct Aoc *chanp, u_char *p, u_char *end, char *str)
+{
+	return ParseNumericString(chanp, p, end, str);
+}
+

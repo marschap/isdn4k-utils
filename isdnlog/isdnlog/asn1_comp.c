@@ -1,4 +1,4 @@
-/* $Id: asn1_comp.c,v 1.3 1999/12/31 13:30:01 akool Exp $
+/* $Id: asn1_comp.c,v 1.4 2000/01/20 07:30:09 kai Exp $
  *
  * ISDN accounting for isdn4linux. (ASN.1 parser)
  *
@@ -21,6 +21,14 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: asn1_comp.c,v $
+ * Revision 1.4  2000/01/20 07:30:09  kai
+ * rewrote the ASN.1 parsing stuff. No known problems so far, apart from the
+ * following:
+ *
+ * I don't use buildnumber() anymore to translate the numbers to aliases, because
+ * it apparently did never work quite right. If someone knows how to handle
+ * buildnumber(), we can go ahead and fix this.
+ *
  * Revision 1.3  1999/12/31 13:30:01  akool
  * isdnlog-4.00 (Millenium-Edition)
  *  - Oracle support added by Jan Bolt (Jan.Bolt@t-online.de)
@@ -41,279 +49,145 @@
  *
  */
 
-
 #include "asn1.h"
+#include "asn1_generic.h"
+#include "asn1_diversion.h"
+#include "asn1_aoc.h"
+#include "asn1_comp.h"
 
-ELEMENT_1(ParseComponent, Aoc, );
+// ======================================================================
+// Component EN 300 196-1 D.1
 
-ELEMENT_1(ParseInvokeComponent, Aoc, );
-ELEMENT_1(ParseReturnResultComponent, Aoc, );
-ELEMENT_1(ParseReturnResultComponentSequence, char, msg);
-ELEMENT_1(ParseReturnErrorComponent, Aoc, );
-ELEMENT_1(ParseInvokeID, int, );
-ELEMENT_1(ParseOperationValue, int, );
-ELEMENT_1(ParseErrorValue, int, );
-
-char* OperationValue[] = {
-  "?",
-  "uUsa",                                        //  1
-  "cUGCall",
-  "mCIDRequest",
-  "beginTPY",
-  "endTPY",                                      //  5
-  "eCTRequest",
-  "activationDiversion",
-  "deactivationDiversion",
-  "activationStatusNotificationDiv",
-  "deactivationStatusNotificationDiv",           // 10
-  "interrogationDiversion",
-  "diversionInformation",
-  "callDeflection",
-  "callRerouting",
-  "divertingLegInformation2",                    // 15
-  "invokeStatus",
-  "interrogateServedUserNumbers",
-  "divertingLegInformation1",
-  "divertingLegInformation3",
-  "explicitReservationCreationControl",          // 20
-  "explicitReservationManagement",
-  "explicitReservationCancel",
-  "?",
-  "mLPP lfb Query",
-  "mLPP Call Request",                           // 25
-  "mLPP Call preemption",
-  "?",
-  "?",
-  "?",
-  "chargingRequest",                             // 30
-  "aOCSCurrency",
-  "aOCSSpecialArrangement",
-  "aOCDCurrency",
-  "aOCDChargingUnit",
-  "aOCECurrency",                                // 35
-  "aOCEChargingUnit",
-  "identificationOfChange",
-  "?",
-  "?",
-  "beginConf",                                   // 40
-  "addConf",
-  "splitConf",
-  "dropConf",
-  "IsolateConf",
-  "reattachConf",                                // 45
-  "partyDISC",
-  "floatConf",
-  "endConf",
-  "identifyConferee",
-  "?",                                           // 50
-  "?",
-  "?",
-  "?",
-  "?",
-  "?",                                           // 55
-  "?",
-  "?",
-  "?",
-  "?",
-  "requestREV",                                  // 60
-};
-
-const int NOperationValue = 61;
-
-char* ErrorValue[] = {
-  "notSubscribed",
-  "1",                                           //  1
-  "2",
-  "notAvailable",
-  "notImplemented",
-  "5",                                           //  5
-  "invalidServedUserNr",
-  "invalidCallState",
-  "basicServiceNotProvided",
-  "notIncomingCall",
-  "supplementaryServiceInteractionNotAllowed",   // 10
-  "resourceUnavailable",
-  "invalidDivertedToNr",
-  "13",
-  "specialServiceNr",
-  "diversionToServedUserNr",                     // 15
-  "16",
-  "17",
-  "18",
-  "19",
-  "20",                                           // 20
-  "21",
-  "22",
-  "incomingCallAccepted",
-  "numberOfDiversionsExceeded",
-  "25",                                           // 25
-  "noChargingInfoAvailable",
-  "27",
-  "28",
-  "29",
-  "30",                                           // 30
-  "31",
-  "32",
-  "33",
-  "34",
-  "35",                                           // 35
-  "36",
-  "37",
-  "38",
-  "39",
-  "40",                                           // 40
-  "41",
-  "42",
-  "43",
-  "44",
-  "45",                                           // 45
-  "notActivated",
-  "47",
-  "requestAlreadyAccepted",
-};
-
-const int NErrorValue = 49;
-
-// ---------------------------------------
-
-ELEMENT_1(ParseComponent, Aoc, aoc)
+int
+ParseInvokeId(struct Aoc *chanp, u_char *p, u_char *end, int *invokeId)
 {
-  MY_DEBUG("ParseComponent");
-
-  strcpy(aoc->msg, "");
-  switch (IMP_TAG(el.tag)) {
-    CASE_TAGGED_1(1, ParseInvokeComponent, aoc);
-    CASE_TAGGED_1(2, ParseReturnResultComponent, aoc);
-    CASE_TAGGED_1(3, ParseReturnErrorComponent, aoc);
-  default:
-    return 0;
-  }
-
-#if 0 /* DEBUG */
-  if (strcmp(aoc->msg, "") != 0) {
-    print_msg(PRT_SHOWNUMBERS, "%s\n", aoc->msg);
-  }
-#endif
-
-  return 1;
+	return ParseInteger(chanp, p, end, invokeId);
 }
 
-ELEMENT_1(ParseInvokeComponent, Aoc, aoc)
+int
+ParseErrorValue(struct Aoc *chanp, u_char *p, u_char *end, int *errorValue)
 {
-  int invokeID, linkedID, operation;
-
-
-  CHECK_TAG(ASN1_TAG_SEQUENCE);
-  MY_DEBUG("ParseInvokeComponent");
-
-  SEQ_NOT_TAGGED_1(ParseInvokeID, &invokeID);
-  if ((el.content.elements[elnr].tag &~ 0xa0) == 0) {
-    SEQ_TAGGED_1(ParseInvokeID, 0, &linkedID);
-  }
-  SEQ_NOT_TAGGED_1(ParseOperationValue, &operation);
-
-  switch (operation) {
-  case  7 : SEQ_NOT_TAGGED_1(ParseARGActivationDiversion, aoc->msg); break;
-  case  8 : SEQ_NOT_TAGGED_1(ParseARGDeactivationDiversion, aoc->msg); break;
-  case  9 : SEQ_NOT_TAGGED_1(ParseARGActivationStatusNotificationDiv, aoc->msg); break;
-  case 10 : SEQ_NOT_TAGGED_1(ParseARGDeactivationStatusNotificationDiv, aoc->msg); break;
-  case 11 : SEQ_NOT_TAGGED_1(ParseARGInterrogationDiversion, aoc->msg); break;
-  case 12 : SEQ_NOT_TAGGED_1(ParseARGDiversionInformation, aoc->msg); break;
-
-  case 33 : SEQ_NOT_TAGGED_1(ParseARGAOCDCurrency, aoc); break;
-  case 34 : SEQ_NOT_TAGGED_1(ParseARGAOCDChargingUnit, aoc); break;
-  case 35 : SEQ_NOT_TAGGED_1(ParseARGAOCECurrency, aoc); break;
-  case 36 : SEQ_NOT_TAGGED_1(ParseARGAOCEChargingUnit, aoc); break;
-  }
-
-  return 1;
+	return ParseInteger(chanp, p, end, errorValue);
 }
 
-ELEMENT_1(ParseInvokeID, int, invokeID)
+int
+ParseOperationValue(struct Aoc *chanp, u_char *p, u_char *end, int *operationValue)
 {
-  MY_DEBUG("ParseInvokeID");
-
-  if (!ParseInteger(el, tag, invokeID)) return 0;
-
-  print_msg(PRT_DEBUG_DECODE, " DEBUG> invokeID = %d\n",
-	    *invokeID);
-
-  return 1;
+	return ParseInteger(chanp, p, end, operationValue);
 }
 
-ELEMENT_1(ParseReturnResultComponent, Aoc, aoc)
+int
+ParseInvokeComponent(struct Aoc *chanp, u_char *p, u_char *end, int dummy)
 {
-  int invokeID;
+	int invokeId, operationValue;
+	INIT;
 
-  CHECK_TAG(ASN1_TAG_SEQUENCE);
-  MY_DEBUG("ParseReturnResultComponent");
+	XSEQUENCE_1(ParseInvokeId, ASN1_TAG_INTEGER, ASN1_NOT_TAGGED, &invokeId);
+//	XSEQUENCE_OPT(ParseLinkedId, ASN1_TAG_INTEGER, 0);
+	XSEQUENCE_1(ParseOperationValue, ASN1_TAG_INTEGER, ASN1_NOT_TAGGED, &operationValue);
+	switch (operationValue) {
+	case 7:	 XSEQUENCE(ParseARGActivationDiversion, ASN1_TAG_SEQUENCE, ASN1_NOT_TAGGED); break;
+	case 8:	 XSEQUENCE(ParseARGDeactivationDiversion, ASN1_TAG_SEQUENCE, ASN1_NOT_TAGGED); break;
+ 	case 9:	 XSEQUENCE(ParseARGActivationStatusNotificationDiv, ASN1_TAG_SEQUENCE, ASN1_NOT_TAGGED); break;
+ 	case 10: XSEQUENCE(ParseARGDeactivationStatusNotificationDiv, ASN1_TAG_SEQUENCE, ASN1_NOT_TAGGED); break;
+ 	case 11: XSEQUENCE(ParseARGInterrogationDiversion, ASN1_TAG_SEQUENCE, ASN1_NOT_TAGGED); break;
+ 	case 12: XSEQUENCE(ParseARGDiversionInformation, ASN1_TAG_SEQUENCE, ASN1_NOT_TAGGED); break;
+ 	case 17: XSEQUENCE(ParseARGInterrogateServedUserNumbers, ASN1_TAG_SEQUENCE, ASN1_NOT_TAGGED); break;
+//	case 30: XSEQUENCE(ParseChargingRequest, ASN1_TAG_SEQUENCE, ASN1_NOT_TAGGED); break;
+//	case 31: XSEQUENCE(ParseAOCSCurrency, ASN1_TAG_SEQUENCE, ASN1_NOT_TAGGED); break;
+//	case 32: XSEQUENCE(ParseAOCSSpecialArr, ASN1_TAG_SEQUENCE, ASN1_NOT_TAGGED); break;
+	case 33: XSEQUENCE(ParseAOCDCurrency, ASN1_TAG_SEQUENCE, ASN1_NOT_TAGGED); break;
+	case 34: XSEQUENCE(ParseAOCDChargingUnit, ASN1_TAG_SEQUENCE, ASN1_NOT_TAGGED); break;
+	case 35: XSEQUENCE(ParseAOCECurrency, ASN1_TAG_SEQUENCE, ASN1_NOT_TAGGED); break;
+	case 36: XSEQUENCE(ParseAOCEChargingUnit, ASN1_TAG_SEQUENCE, ASN1_NOT_TAGGED); break;
+	default:
+		return -1;
+	}
 
-  SEQ_NOT_TAGGED_1(ParseInvokeID, &invokeID);
-  SEQOPT_NOT_TAGGED_1(ParseReturnResultComponentSequence, aoc->msg);
+	switch (operationValue) {
+	case 33:
+	case 34:
+	case 35:
+	case 36:
+		chanp->type = operationValue;
+		break;
+	}
 
-  return 1;
+	return p - beg;
 }
 
-ELEMENT_1(ParseReturnResultComponentSequence, char, msg)
+int
+ParseReturnResultComponentSequence(struct Aoc *chanp, u_char *p, u_char *end, int dummy)
 {
-  int operationValue;
+	int operationValue;
+	INIT;
 
-  CHECK_TAG(ASN1_TAG_SEQUENCE);
-  MY_DEBUG("ParseReturnResultComponentSequence");
-
-  SEQ_NOT_TAGGED_1(ParseOperationValue, &operationValue);
-
-  switch (operationValue) {
-  case 11 : SEQ_NOT_TAGGED_1(ParseRESInterrogationDiversion, msg); break;
-  case 17 : SEQ_NOT_TAGGED_1(ParseRESInterrogateServedUserNumbers, msg); break;
-  }
-
-  return 1;
+	XSEQUENCE_1(ParseOperationValue, ASN1_TAG_INTEGER, ASN1_NOT_TAGGED, &operationValue);
+	switch (operationValue) {
+ 	case 11: XSEQUENCE(ParseRESInterrogationDiversion, ASN1_TAG_SET, ASN1_NOT_TAGGED); break;
+ 	case 17: XSEQUENCE(ParseRESInterrogateServedUserNumbers, ASN1_TAG_SET, ASN1_NOT_TAGGED); break;
+	default: return -1;
+	}
+		
+	return p - beg;
 }
 
-ELEMENT_1(ParseReturnErrorComponent, Aoc, aoc)
+int
+ParseReturnResultComponent(struct Aoc *chanp, u_char *p, u_char *end, int dummy)
 {
-  int invokeID, errorValue;
+	int invokeId;
+	INIT;
 
-  CHECK_TAG(ASN1_TAG_SEQUENCE);
-  MY_DEBUG("ParseReturnErrorComponent");
+	XSEQUENCE_1(ParseInvokeId, ASN1_TAG_INTEGER, ASN1_NOT_TAGGED, &invokeId);
+	XSEQUENCE_OPT(ParseReturnResultComponentSequence, ASN1_TAG_SEQUENCE, ASN1_NOT_TAGGED);
 
-  SEQ_NOT_TAGGED_1(ParseInvokeID, &invokeID);
-  SEQ_NOT_TAGGED_1(ParseErrorValue, &errorValue);
-
-  sprintf(aoc->msg, "ERROR: %s", ErrorValue[errorValue]);
-
-  switch (errorValue) {
-  }
-
-  return 1;
+	return p - beg;
 }
 
-
-ELEMENT_1(ParseOperationValue, int, operationValue)
+int
+ParseReturnErrorComponent(struct Aoc *chanp, u_char *p, u_char *end, int dummy)
 {
-  MY_DEBUG("ParseOperationValue");
+	int invokeId;
+	int errorValue;
+	char error[80];
+	INIT;
 
-  if (!ParseInteger(el, tag, operationValue)) return 0;
+	XSEQUENCE_1(ParseInvokeId, ASN1_TAG_INTEGER, ASN1_NOT_TAGGED, &invokeId);
+	XSEQUENCE_1(ParseErrorValue, ASN1_TAG_INTEGER, ASN1_NOT_TAGGED, &errorValue);
 
-  if ((*operationValue < 0) || (*operationValue > NOperationValue))
-    return 0;
+	switch (errorValue) {
+	case 0: sprintf(error, "not subscribed"); break;
+	case 3: sprintf(error, "not available"); break;
+	case 4: sprintf(error, "not implemented"); break;
+	case 6: sprintf(error, "invalid served user nr"); break;
+	case 7: sprintf(error, "invalid call state"); break;
+	case 8: sprintf(error, "basic service not provided"); break;
+	case 9: sprintf(error, "not incoming call"); break;
+	case 10: sprintf(error, "supplementary service interaction not allowed"); break;
+	case 11: sprintf(error, "resource unavailable"); break;
+	case 12: sprintf(error, "invalid diverted-to nr"); break;
+	case 14: sprintf(error, "special service nr"); break;
+	case 15: sprintf(error, "diversion to served user nr"); break;
+	case 23: sprintf(error, "incoming call accepted"); break;
+	case 24: sprintf(error, "number of diversions exceeded"); break;
+	case 46: sprintf(error, "not activated"); break;
+	case 48: sprintf(error, "request already accepted"); break;
+	default: sprintf(error, "(%d)", errorValue); break;
+	}
+	print_msg(PRT_SHOWNUMBERS, "ReturnError: %s\n", error);
 
-  print_msg(PRT_DEBUG_DECODE, " DEBUG>  operationValue = %s\n",
-	    OperationValue[*operationValue]);
-  return 1;
+	return p - beg;
 }
 
-ELEMENT_1(ParseErrorValue, int, errorValue)
+int
+ParseComponent(struct Aoc *chanp, u_char *p, u_char *end)
 {
-  MY_DEBUG("ParseErrorValue");
+        INIT;
 
-  if (!ParseInteger(el, tag, errorValue)) return 0;
-
-  if ((*errorValue < 0) || (*errorValue > NErrorValue))
-    return 0;
-
-  print_msg(PRT_DEBUG_DECODE, " DEBUG>  errorValue = %s\n",
-	    ErrorValue[*errorValue]);
-  return 1;
+	XCHOICE(ParseInvokeComponent, ASN1_TAG_SEQUENCE, 1);
+	XCHOICE(ParseReturnResultComponent, ASN1_TAG_SEQUENCE, 2);
+	XCHOICE(ParseReturnErrorComponent, ASN1_TAG_SEQUENCE, 3);
+//	XCHOICE(ParseRejectComponent, ASN1_TAG_SEQUENCE, 4);
+	XCHOICE_DEFAULT;
 }
+

@@ -1,4 +1,4 @@
-/* $Id: processor.c,v 1.95 2000/01/12 23:22:52 akool Exp $
+/* $Id: processor.c,v 1.96 2000/01/20 07:30:09 kai Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,14 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.96  2000/01/20 07:30:09  kai
+ * rewrote the ASN.1 parsing stuff. No known problems so far, apart from the
+ * following:
+ *
+ * I don't use buildnumber() anymore to translate the numbers to aliases, because
+ * it apparently did never work quite right. If someone knows how to handle
+ * buildnumber(), we can go ahead and fix this.
+ *
  * Revision 1.95  2000/01/12 23:22:52  akool
  * - isdnlog/tools/holiday.c ... returns ERVERYDAY for '*'
  * - FAQ/configure{,.in} ...  test '==' => '='
@@ -864,6 +872,7 @@
 #include "isdnlog.h"
 #include "sys/times.h"
 #include "asn1.h"
+#include "asn1_comp.h"
 #include "zone.h"
 #include "telnum.h"
 #if HAVE_ABCEXT
@@ -1219,25 +1228,29 @@ void aoc_debug(int val, char *s)
 */
 
 
-static int parseRemoteOperationProtocol(char **asnp, Aoc *aoc)
+static int parseRemoteOperationProtocol(char **asnp, struct Aoc *aoc)
 {
-  auto Element el;
+  char msg[255];
+  char *p = msg;
+  char *asne = *asnp + strlen(*asnp);
 
+  *asnp += 3;
+  while (*asnp < asne) {
+    *p++ = strtol(*asnp, NIL, 16);
+    *asnp += 3;
+  } 
+  ParseASN1(msg, p, 0);
+  if (ParseComponent(aoc, msg, p) < 0)
+    return 0;
 
-  splitASN1(asnp, 0, &el);
-  printASN1(el, 0);
-
-  if (!ParseComponent(el, ASN1_NOT_TAGGED, aoc))
-    return(0);
-
-  return(1);
+  return 1;
 } /* parseRemoteOperationProtocol */
 
 
 static int facility(int l, char* p)
 {
   auto   int  c;
-  static Aoc  aoc;
+  static struct Aoc  aoc;
 
 
   asnp = p;
@@ -1271,7 +1284,7 @@ static int facility(int l, char* p)
 		    	        currency_factor = aoc.multiplier;
 
                               if (*aoc.currency)
-			      	currency = aoc.currency;
+			        currency = aoc.currency;
 
 			      return(aoc.amount);
 
