@@ -1,4 +1,4 @@
-/* $Id: isdnrep.h,v 1.9 1998/03/08 11:43:08 luethje Exp $
+/* $Id: isdnrep.h,v 1.10 1998/03/29 19:54:17 luethje Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnrep.h,v $
+ * Revision 1.10  1998/03/29 19:54:17  luethje
+ * idnrep: added html feature (incoming/outgoing calls)
+ *
  * Revision 1.9  1998/03/08 11:43:08  luethje
  * I4L-Meeting Wuerzburg final Edition, golden code - Service Pack number One
  *
@@ -105,6 +108,7 @@ _EXTERN void set_print_fct_for_isdnrep(int (*new_print_msg)(int Level, const cha
 _EXTERN int get_term (char *String, time_t *Begin, time_t *End,int delentries);
 _EXTERN int set_msnlist(char *String);
 _EXTERN int send_html_request(char *myname, char *option);
+_EXTERN int new_args(int *nargc, char ***nargv);
 
 _EXTERN int     (*print_msg)(int Level, const char *, ...) _SET_NULL;
 _EXTERN int     incomingonly    _SET_0;

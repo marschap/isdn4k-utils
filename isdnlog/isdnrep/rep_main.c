@@ -1,4 +1,4 @@
-/* $Id: rep_main.c,v 1.4 1997/05/15 22:21:41 luethje Exp $
+/* $Id: rep_main.c,v 1.5 1998/03/29 19:54:22 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -20,6 +20,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rep_main.c,v $
+ * Revision 1.5  1998/03/29 19:54:22  luethje
+ * idnrep: added html feature (incoming/outgoing calls)
+ *
  * Revision 1.4  1997/05/15 22:21:41  luethje
  * New feature: isdnrep can transmit via HTTP fax files and vbox files.
  *
@@ -163,6 +166,10 @@ int main(int argc, char *argv[], char *envp[])
 
 	set_print_fct_for_tools(printf);
 	set_print_fct_for_isdnrep(print_in_modules);
+
+	/* we don't need this at the moment:
+	new_args(&argc,&argv);
+	*/
 
   while ((c = getopt(argc, argv, options)) != EOF)
     switch (c) {

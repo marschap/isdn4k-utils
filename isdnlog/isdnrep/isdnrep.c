@@ -1,4 +1,4 @@
-/* $Id: isdnrep.c,v 1.34 1998/03/25 20:58:46 luethje Exp $
+/* $Id: isdnrep.c,v 1.35 1998/03/29 19:54:11 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -19,7 +19,14 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
+ * functions htoi() and url_unescape():
+ * Copyright 1994, Steven Grimm <koreth@hyperion.com>.
+ *
+ *
  * $Log: isdnrep.c,v $
+ * Revision 1.35  1998/03/29 19:54:11  luethje
+ * idnrep: added html feature (incoming/outgoing calls)
+ *
  * Revision 1.34  1998/03/25 20:58:46  luethje
  * isdnrep: added html feature (verbose on/off)
  * processor.c: Patch of Oliver Lauer
@@ -282,13 +289,18 @@
 
 /*****************************************************************************/
 
-#define F_1ST_LINE      1
-#define F_BODY_HEADER   2
-#define F_BODY_HEADERL  4
-#define F_BODY_LINE     8
-#define F_BODY_BOTTOM1 16
-#define F_BODY_BOTTOM2 32
-#define F_COUNT_ONLY   64
+#define H_ENV_VAR "QUERY_STRING"
+
+/*****************************************************************************/
+
+#define F_1ST_LINE       1
+#define F_BODY_HEADER    2
+#define F_BODY_HEADERL   4
+#define F_BODY_LINE      8
+#define F_BODY_BOTTOM1  16
+#define F_BODY_BOTTOM2  32
+#define F_COUNT_ONLY    64
+#define F_TEXT_LINE    128
 
 /*****************************************************************************/
 
@@ -297,7 +309,11 @@
 #define H_TABLE_COLOR2 "#FFCCCC"
 #define H_TABLE_COLOR3 "#CCFFCC"
 
+#define H_FORM_ON      "<FORM METHOD=\"put\" ACTION=\"%s\">"
+#define H_FORM_OFF     "</FORM>"
+
 #define H_1ST_LINE     "<CENTER><FONT size=+1><B>%s</B></FONT><P>\n"
+#define H_TEXT_LINE    "<CENTER><B>%s</B><P>\n"
 #define H_BODY_LINE    "<TR>%s</TR>\n"
 #define H_BODY_HEADER1 "<TABLE width=%g%% bgcolor=%s border=0 cellspacing=0 cellpadding=0>\n"
 #define H_BODY_HEADER2 "<COL width=%d*>\n"
@@ -313,7 +329,7 @@
 #define H_RIGHT        "<TD align=right><TT>%s</TT></TD>"
 #define H_LINK         "<A HREF=\"%s?-M+%c%d%s\">%s</A>"
 #define H_LINK_DAY     "<A HREF=\"%s?%s\">%s</A>&nbsp;"
-#define H_FORM_DAY     "<FORM METHOD=\"get\" ACTION=\"%s?%s\">%s<input name=\"%s\" maxlength=%d value=\"\" size=%d><INPUT TYPE=\"submit\" NAME=\"submit\" VALUE=\"go\"></FORM>"
+#define H_FORM_DAY     "%s<input name=\"%s\" maxlength=%d value=\"\" size=%d><INPUT TYPE=\"submit\" NAME=\"submit\" VALUE=\"go\">"
 
 #define H_EMPTY        "&nbsp;"
 
@@ -391,6 +407,9 @@ static char *get_a_day(time_t t, int d_diff, int m_diff, int flag);
 static char *get_time_string(time_t begin, time_t end, int d_diff, int m_diff);
 static char *get_default_html_params(void);
 static char *create_vbox_file(char *file, int *compression);
+static int htoi(char *s);
+static char **get_http_args(char *str, int *index);
+static char *url_unescape(char *str);
 
 /*****************************************************************************/
 
@@ -729,6 +748,23 @@ int read_logfile(char *myname)
 	if (delentries) /* Erzeugt neue verkuerzte Datei */
 		lday = -1;
 
+	if (lday == -1 && html)
+	{
+		get_time_value(begintime,&lday,SET_TIME);
+		sprintf(start, "%s %s", get_time_value(0,NULL,GET_DATE),
+		                        get_time_value(0,NULL,GET_YEAR));
+
+		get_time_value(endtime,&lday,SET_TIME);
+		sprintf(stop, "%s %s", get_time_value(0,NULL,GET_DATE),
+		                       get_time_value(0,NULL,GET_YEAR));
+
+		print_line2(F_1ST_LINE,"I S D N  Connection Report");
+		print_line2(F_TEXT_LINE,"");
+		print_line2(F_TEXT_LINE,"no calls from %s to %s", start, stop);
+		print_line2(F_TEXT_LINE,"");
+		lday = -1;
+	}
+
 	if (lday != -1 && header)
 		print_bottom(einheit, start, stop);
 
@@ -1020,6 +1056,8 @@ static int print_line2(int status, const char *fmt, ...)
 		case F_COUNT_ONLY  : break;
 		case F_1ST_LINE    : print_msg(PRT_NORMAL,H_1ST_LINE,string);
 		                     break;
+		case F_TEXT_LINE    : print_msg(PRT_NORMAL,H_TEXT_LINE,string);
+		                     break;
 		case F_BODY_BOTTOM1:
 		case F_BODY_LINE   : print_msg(PRT_NORMAL,H_BODY_LINE,string);
 		                     break;
@@ -1049,6 +1087,7 @@ static int print_line(int status, one_call *cur_call, int computed, char *overla
 	int i = 0;
 	int free_col;
 	int last_free_col = -1;
+
 
 	if (colsize == NULL || status == F_COUNT_ONLY)
 	{
@@ -2628,7 +2667,8 @@ static int html_header(void)
 
 static int html_bottom(char *_progname, char *start, char *stop)
 {
-	int old_verbose = verbose;
+	int value;
+	int value2;
 	char *progname = strdup(_progname);
 	char *ptr      = strrchr(progname,'.');
 
@@ -2636,14 +2676,52 @@ static int html_bottom(char *_progname, char *start, char *stop)
 	if (ptr)
 		*ptr = '\0';
 
-/* later
-	print_msg(PRT_NORMAL,H_FORM_DAY,_myname,get_default_html_params(),"Date:","-w",40,10);
+/*
+	print_msg(PRT_NORMAL,H_FORM_ON,_myname);
+	print_msg(PRT_NORMAL,H_FORM_DAY,"Date:","-t",40,10);
+	print_msg(PRT_NORMAL,H_FORM_OFF);
 */
 
+	if (!incomingonly)
+	{
+		value = incomingonly;
+		value2 = outgoingonly;
+		incomingonly++;
+		outgoingonly = 0;
+		if ((ptr = get_time_string(_begintime,endtime,0,0)) != NULL)
+			print_msg(PRT_NORMAL,H_LINK_DAY,_myname,ptr,"incoming only");
+		incomingonly = value;
+		outgoingonly = value2;
+	}
+
+	if (!outgoingonly)
+	{
+		value = incomingonly;
+		value2 = outgoingonly;
+		incomingonly = 0;
+		outgoingonly++;
+		if ((ptr = get_time_string(_begintime,endtime,0,0)) != NULL)
+			print_msg(PRT_NORMAL,H_LINK_DAY,_myname,ptr,"outgoing only");
+		incomingonly = value;
+		outgoingonly = value2;
+	}
+
+	if (outgoingonly || incomingonly)
+	{
+		value = incomingonly;
+		value2 = outgoingonly;
+		incomingonly = outgoingonly = 0;
+		if ((ptr = get_time_string(_begintime,endtime,0,0)) != NULL)
+			print_msg(PRT_NORMAL,H_LINK_DAY,_myname,ptr,"all calls");
+		incomingonly = value;
+		outgoingonly = value2;
+	}
+
+	value = verbose;
 	verbose = !verbose;
 	if ((ptr = get_time_string(_begintime,endtime,0,0)) != NULL)
-		print_msg(PRT_NORMAL,H_LINK_DAY,_myname,ptr,old_verbose?"verbose off":"verbose on");
-	verbose = old_verbose;
+		print_msg(PRT_NORMAL,H_LINK_DAY,_myname,ptr,value?"verbose off":"verbose on");
+	verbose = value;
 
 	if ((ptr = get_time_string(_begintime,endtime,0,-1)) != NULL)
 		print_msg(PRT_NORMAL,H_LINK_DAY,_myname,ptr,"previous month");
@@ -3146,8 +3224,12 @@ static char *get_default_html_params(void)
 {
 	static char string[50];
 
-	sprintf(string,"-w%d%s",html-1,verbose?"+-v":"");
+	sprintf(string,"-w%d%s%s%s",
+	                        html-1,
 	/*                         ^^---sehr gefaehrlich, da eine UND-Verknuepfung!!! */
+	                        verbose?"+-v":"",
+	                        outgoingonly?"+-o":"",
+	                        incomingonly?"+-i":"");
 	return string;
 }
 
@@ -3203,6 +3285,143 @@ static char *create_vbox_file(char *file, int *compression)
 	
 	close(fdin);
 	return fileout;
+}
+
+/*****************************************************************************/
+
+static int htoi(char *s)
+{
+	int	value;
+	char c;
+
+	c = s[0];
+	if (isupper(c))
+		c = tolower(c);
+	value = (c >= '0' && c <= '9' ? c - '0' : c - 'a' + 10) * 16;
+
+	c = s[1];
+	if (isupper(c))
+		c = tolower(c);
+	value += c >= '0' && c <= '9' ? c - '0' : c - 'a' + 10;
+
+	return (value);
+}
+
+/*****************************************************************************/
+
+static char *url_unescape(char *str)
+{
+	char *RetCode = str;
+	char *dest = str;
+
+	while (str[0])
+	{
+		if (str[0] == '+')
+			dest[0] = ' ';
+		else if (str[0] == '%' && isxdigit(str[1]) && isxdigit(str[2]))
+		{
+			dest[0] = (unsigned char) htoi(str + 1);
+			str += 2;
+		}
+		else
+			dest[0] = str[0];
+
+		str++;
+		dest++;
+	}
+
+	dest[0] = '\0';
+
+	return RetCode;
+}
+
+/*****************************************************************************/
+
+int new_args(int *nargc, char ***nargv)
+{
+	int index = *nargc;
+	int index2 = 1;
+	char **h_args;
+	char *h_env;
+
+	if ((h_env = getenv(H_ENV_VAR)) == NULL)
+		return 1;
+
+	if ((h_args = get_http_args(h_env,&index)) == NULL)
+		return 2;
+
+	while (index2 < *nargc)
+		h_args[index++] = (*nargv)[index2++];
+
+	h_args[0] = (*nargv)[0];
+	h_args[index] = NULL;
+
+	*nargc = index;
+	*nargv = h_args;
+
+unlink("/tmp/iii");
+{
+FILE *fp = fopen("/tmp/iii","w");
+for(index2=0;index2 < index;index2++)
+{
+fputs(h_args[index2],fp);
+fputs("*\n",fp);
+}
+fclose(fp);
+}
+	return 0;
+}
+
+/*****************************************************************************/
+
+static char **get_http_args(char *str, int *index)
+{
+	char **RetCode = NULL;
+
+	if (index == NULL)
+		return NULL;
+
+	if (*index < 0)
+		*index = 0;
+
+	str = url_unescape(strdup(str));
+
+	if (str == NULL)
+		return NULL;
+
+	if (str == '\0')
+	{
+		free(str);
+		return NULL;
+	}
+
+	if ((RetCode = (char**) calloc(20+(*index),sizeof(char*))) == NULL)
+	{
+		print_msg(PRT_ERR,"%s\n", strerror(errno));
+		return NULL;
+	}
+
+	*index = 1;
+	RetCode[0] = NULL;
+
+	RetCode[(*index)++] = str;
+
+	while(*str != '\0')
+	{
+		if (*str == ' ' || *str == '=')
+		{
+			*str++ = '\0';
+
+			if (*str != ' ' && *str != '=' &&  *str != '\0')
+				RetCode[(*index)++] = str;
+		}
+		else
+			str++;
+	}
+
+	RetCode[*index] = NULL;
+
+	return RetCode;
 }
 
 /*****************************************************************************/

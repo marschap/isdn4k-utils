@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.35 1998/03/15 22:35:44 tsbogend Exp $
+## $Id: Makefile.in,v 1.36 1998/03/29 19:54:04 luethje Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,9 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.36  1998/03/29 19:54:04  luethje
+## idnrep: added html feature (incoming/outgoing calls)
+##
 ## Revision 1.35  1998/03/15 22:35:44  tsbogend
 ## not every CPU is from Intel (greetings from Digital :-))
 ##
@@ -259,7 +262,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 2.99.25
+VERSION     = 2.99.26
 
 ifeq ($(POSTGRES),1)
 DEFS       += -DPOSTGRES
