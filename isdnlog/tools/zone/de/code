@@ -1,3 +1,4 @@
+130	FreeCall 
 170	Mobilfunknetz D1
 171	Mobilfunknetz D1
 172	Mobilfunknetz D2
@@ -6,6 +7,20 @@
 178	Mobilfunknetz Eplus
 176	Mobilfunknetz E2
 179	Mobilfunknetz E2
+1801	Shared Cost 0180-1	3
+1802	Shared Cost 0180-2      3
+1803	Shared Cost 0180-3      3
+1804	Shared Cost 0180-4      3
+1805	Shared Cost 0180-5      3
+1901	Premium Rate 0190-1     3
+1902	Premium Rate 0190-2     3
+1903	Premium Rate 0190-3     3
+1904	Premium Rate 0190-4     3
+1905	Premium Rate 0190-5     3
+1906	Premium Rate 0190-6     3
+1907	Premium Rate 0190-7     3
+1908	Premium Rate 0190-8     3
+1909	Premium Rate 0190-9     3
 201	Essen
 202	Wuppertal
 203	Duisburg
@@ -3717,6 +3732,7 @@
 6897	Sulzbach
 6898	Völklingen
 69	Frankfurt am Main
+700	persönliche Rufnummer 
 7021	Kirchheim
 7022	Nürtlingen
 7023	Weilheim
@@ -4227,6 +4243,7 @@
 7975	Untergröningen
 7976	Sulzbach-Laufen
 7977	Oberrot
+800	FreeCall 
 8020	Weyarn
 8021	Waakirchen
 8022	Tegernsee

@@ -1,4 +1,4 @@
-V:1.10-Germany [29-Aug-1999 12:11:51]
+V:1.10-Germany [03-Sep-1999 19:13:20]
 
 # Währungsformat
 U:%.3f DM
@@ -8,7 +8,7 @@ U:%.3f DM
 #
 # (C) Copyright 1999 by Andreas Kool (akool@isdn4linux.de)
 #
-# $Id: rate-de.dat,v 1.41 1999/08/29 10:28:22 akool Exp $
+# $Id: rate-de.dat,v 1.42 1999/09/08 13:11:04 akool Exp $
 #
 #
 # Das "A:" Tag muß folgendermaßen gefüllt werden:
@@ -11683,7 +11683,7 @@ A:Japan
 T:*/*=0.29/60
 Z:210
 A:Kanada
-T:*/*=0.18/60
+T:*/*=0.15/60
 Z:211
 A:Liechtenstein
 T:*/*=0.31/60
@@ -11722,11 +11722,38 @@ A:USA
 T:*/*=0.15/60
 Z:224
 A:Alaska
-T:*/*=0.22/60
+T:*/*=0.15/60
 Z:225
 A:Hawaii
-T:*/*=0.22/60
-Z:226 impossible
+T:*/*=0.15/60
+Z:226
+A:Argentinien
+T:*/*=0.69/60
+Z:227
+A:China
+T:*/*=0.69/60
+Z:228
+A:Israel
+T:*/*=0.31/60
+Z:229
+A:Island
+T:*/*=0.27/60
+Z:230
+A:Singapore
+T:*/*=0.39/60
+Z:231
+A:Taiwan
+T:*/*=0.36/60
+Z:232
+A:Südkorea
+T:*/*=0.35/60
+Z:233
+A:+7095 # Moskau
+T:*/*=0.35/60
+Z:234
+A:+1800, +1877, +1880, +1881, +1882, +1888 # USA toll free
+T:*/*=0.15/60
+Z:235 impossible
 # Mobilfunk in den folgenden Ländern ist über 01051 nicht möglich!
 # Daher wird hier erst mal ein viel zu hoher Preis dafür
 # definiert.
@@ -11748,6 +11775,8 @@ A:Österreich Mobilfunk
 A:Schweden Mobilfunk
 A:Schweiz Mobilfunk
 A:Spanien Mobilfunk
+A:Israel Mobilfunk
+A:Moskau Mobilfunk
 T:*/*=99.99/60
 #####################################################################
 #
@@ -14244,7 +14273,7 @@ A:+
 T:*/*=1.759(60)/1
 #####################################################################
 P:98,4 Nikocity Study&Surf
-G:01.08.1999
+G:01-Sep-1999
 C:Nikoma, Reseller von Star Telekom
 C:Homepage: http://www.nikoma.de/
 C:Nikocity gilt nur in den Städten Augsburg, Berlin, Bremen, Bielefeld,
@@ -14261,7 +14290,7 @@ T:*/9-21=0.12(60)/1 Hauptzeit
 T:*/21-9=0.07(60)/1 Nebenzeit
 A:+49
 Z:10-15 Mobil
-# Tarife werden zum 1.9.1999 erhöht!
+# Tarife werden zum 1.11.1999 erhöht!
 A:+491618	# T-C-Tel Voice Mail
 A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
 A:+49170,+49171		# D1
@@ -14271,11 +14300,12 @@ A:+49176,+49179		# E2
 T:*/*=0.46(60)/1
 Z:100 Internet
 A:0193434
-T:*/9-21=0.049(60)/1
-T:*/21-9=0.0389(60)/1
+T:*/8-21=0.0479(60)/1
+T:*/21-1=0.0389(60)/1
+T:*/1-8=0.0299(60)/1
 #####################################################################
 P:98,5 Nikocity
-G:01.08.99
+G:01-Sep-1999
 C:Nikoma, Reseller von Star Telekom
 C:Homepage: http://www.nikoma.de/
 C:Nikocity gilt nur in den Städten Augsburg, Berlin, Bremen, Bielefeld,
@@ -14291,7 +14321,7 @@ T:*/9-21=0.12(60)/1 Hauptzeit
 T:*/21-9=0.07(60)/1 Nebenzeit
 A:+49
 Z:10-15 Mobil
-# Tarife werden zum 1.9.1999 erhöht!
+# Tarife werden zum 1.11.1999 erhöht!
 A:+491618	# T-C-Tel Voice Mail
 A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
 A:+49170,+49171		# D1
@@ -14301,7 +14331,8 @@ A:+49176,+49179		# E2
 T:*/*=0.46(60)/1
 Z:100 Internet
 A:0193434
-T:*/*=0.049(60)/1
+T:*/8-1=0.0479(60)/1
+T:*/1-8=0.0299(60)/1
 #####################################################################
 #
 #
