@@ -38,7 +38,7 @@
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-char auth_rcsid[] = "$Id: auth.c,v 1.17 2000/07/25 20:23:51 kai Exp $";
+char auth_rcsid[] = "$Id: auth.c,v 1.18 2001/07/18 18:51:34 keil Exp $";
 
 #include <stdio.h>
 #include <stddef.h>
@@ -221,7 +221,7 @@ void link_down(int unit)
 	else {
 		struct link_struct *q;
 		int i; /* bugcheck, stop after 1024 links */
-		for(i=1024,q=lns[unit].bundle_next;!i && q!=&lns[unit];q=q->bundle_next,i--) {
+		for(i=1024,q=lns[unit].bundle_next;i && q!=&lns[unit];q=q->bundle_next,i--) {
 			if(q->bundle_next == &lns[unit])
 			break;
 		}
