@@ -1,4 +1,4 @@
-V:1.10-Germany [23-Nov-2000 21:31:34]
+V:1.10-Germany [12-Dec-2000 21:39:05]
 
 # Währungsformat
 U:%.3f DM
@@ -8,7 +8,7 @@ U:%.3f DM
 #
 # (C) Copyright 1999, 2000 by Andreas Kool (akool@isdn4linux.de)
 #
-# $Id: rate-de.dat,v 1.107 2000/11/23 20:42:29 akool Exp $
+# $Id: rate-de.dat,v 1.108 2000/12/12 21:07:33 akool Exp $
 #
 #
 # Das "A:" Tag muß folgendermaßen gefüllt werden:
@@ -1082,15 +1082,12 @@ T:*/*=0
 #####################################################################
 #
 #
-P:150,0 Drillisch Superregionen
-# Dieser Tarif gilt nur in den City-Zonen der Städte
-# Essen, Frankfurt/Main, Hamburg, Hannover, Köln, Leipzig, Mannheim,
-# Nürnberg, Stuttgart!
+P:150,0 ElisaNet
 B:010050
-# G:01-Feb-2000
+# G:01-Nov-2000
 D:dtag
-C:Address:Drillisch AG, Horbeller Straße 33, 50858 Köln
-C:Name:Drillisch Superregionen
+C:Address:ElisaNet GmbH, Horbeller Straße 33, 50858 Köln
+C:Name:ElisaNet
 C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
@@ -1102,26 +1099,13 @@ A:112
 T:*/*=0
 Z:1-4 Deutschland
 A:+49
-T:W/08-19=0.098/60
-T:W/19-22=0.078/60
-T:W/22-06=0.0595/60
-T:W/06-08=0.078/60
-T:E/06-22=0.0785/60
-T:E/22-06=0.0595/60
-Z:10 Mobilfunk C/D-Netze
-A:_DEMCM
-A:_DEMC
-A:_DEMD1
-A:_DEMD2
-T:W/08-19=0.59/60
-T:W/19-08=0.49/60
-T:E/*=0.49/60
-Z:11 Mobilfunk E-Netze
-A:_DEME1
-A:_DEME2
-T:W/08-19=0.69/60
-T:W/19-08=0.49/60
-T:E/*=0.49/60
+T:W/08-18=0.09/60
+T:W/18-22=0.06/60
+T:W/22-08=0.04/60
+T:E,H/*=0.04/60
+Z:10 Mobilfunk
+A:_DEMF
+T:*/*=0.48/60
 Z:200 Ägypten
 A:EG
 T:*/*=0.99/60
@@ -1755,44 +1739,6 @@ T:*/*=0.45/60
 Z:410 Zypern-Mobilfunk
 A:_CYMF
 T:*/*=0.55/60
-#####################################################################
-P:150,1 Drillisch
-B:010050
-# G:05-Nov-1999
-D:dtag
-C:Address:Drillisch AG, Horbeller Straße 33, 50858 Köln
-C:Name:Drillisch
-C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
-Z:0 FreeCall
-A:011*
-A:0130*,0800*,0801*
-A:031*
-A:110
-A:112
-T:*/*=0
-Z:1-4 Deutschland
-A:+49
-T:W/08-19=0.098/60
-T:W/19-22=0.078/60
-T:W/22-06=0.0595/60
-T:W/06-08=0.078/60
-T:E/06-22=0.0785/60
-T:E/22-06=0.0595/60
-Z:10 Mobilfunk C/D-Netze
-A:_DEMCM
-A:_DEMC
-A:_DEMD1
-A:_DEMD2
-T:W/08-19=0.59/60
-T:W/19-08=0.49/60
-T:E/*=0.49/60
-Z:11 Mobilfunk E-Netze
-A:_DEME1
-A:_DEME2
-T:W/08-19=0.69/60
-T:W/19-08=0.49/60
-T:E/*=0.49/60
 #####################################################################
 #
 #
@@ -25468,6 +25414,11 @@ A:0191799
 T:W/08-18=0.032(60)/1
 T:W/18-08=0.025(60)/1
 T:E,H/*=0.025(60)/1
+Z:170 Persönliche Rufnummer
+A:0700
+T:W/09-18=0.24/60 Hauptzeit
+T:W/18-08=0.12/60 Nebenzeit
+T:E,H/*=0.12/60 Nebenzeit
 Z:200 EuroNah
 A:AD,BE,DK,FO,FI,FR,GI
 A:GR,UK,IE,IS,IT,LI

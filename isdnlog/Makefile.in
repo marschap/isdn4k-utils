@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.186 2000/12/07 16:25:27 leo Exp $
+## $Id: Makefile.in,v 1.187 2000/12/12 21:07:32 akool Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,15 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.187  2000/12/12 21:07:32  akool
+## isdnlog-4.46
+##   010050: Drillisch AG -> ElisaNet GmbH
+##
+##     WARNING: Please update your "/etc/isdn/rate.conf"
+##     	     (see "samples/rate.conf.de" for details)
+## 	     Drillisch "Superregionen" is no longer a CbC service ...
+##              only "P:150=0 #E ElisaNet" is CbC by now!
+##
 ## Revision 1.186  2000/12/07 16:25:27  leo
 ## Pauls 2.2/2.4 patch, rate.c: 4.45
 ##
@@ -1407,7 +1416,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 4.45
+VERSION     = 4.46
 
 MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 \
 	      isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 \

@@ -1,4 +1,4 @@
-# rate.conf  4.37  25-Jul-00  18:31
+# rate.conf  4.46  12-Dec-00  21:59
 
 # E = echtes Call by Call, d.h. kann sofort ohne Anmeldung genutzt
 #     werden. Abrechnung erfolgt ueber die Telekom-Rechnung
@@ -180,8 +180,7 @@ P:121=0   #E FITphone
 # P:140=0 #A VossNet
 # P:142=0 #A connection 42
 # P:144=0 #A Carrier 1
-# P:150=0 #E Drillisch Superregionen
-P:150=1   #A Drillisch
+P:150=0   #E ElisaNet
 # P:154=0 #A Osnatel
 # P:155=0 #A Telia
 # P:156=0 #A NETCOM
