@@ -1,0 +1,19 @@
+2004-07-24  Tobias Becker  <tobiasb@isdn4linux.de>
+
+	* rep_main.c (parse_options): New option `-x', selects calls by hour
+	or type of day. 
+	* isdnrep.h (days, hours): New global variables for result of `-x'.
+	* isdnrep.c (select_day_hour): New function, parses contents of `-x'.
+	(check_day_hour): New function, determines selection of call by `-x'.
+	(read_logfile): Process only selected calls.
+
+	* rep_main.c (parse_options): New option `-L', selects summaries.
+	* isdnrep.h (sel_sums): New global variable for result of `-L'.
+	* isdnrep.c (select_summaries): New function, parses contents of `-L'.  
+	(print_bottom):	Produce only selected summaries.
+
+	* rep_main.c (parse_options): New function for option parsing.
+	(main): Replaced option parsing by call to parse_options, added
+	conversion of `REP_OPTIONS' contents to standard argc/argv values.
+
+	* ChangeLog: Started this file.

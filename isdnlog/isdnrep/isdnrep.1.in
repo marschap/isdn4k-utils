@@ -1,5 +1,5 @@
-.\" $Id: isdnrep.1.in,v 1.6 2003/10/29 17:41:35 tobiasb Exp $
-.\" CHECKIN $Date: 2003/10/29 17:41:35 $
+.\" $Id: isdnrep.1.in,v 1.7 2004/07/24 17:58:06 tobiasb Exp $
+.\" CHECKIN $Date: 2004/07/24 17:58:06 $
 .TH isdnrep 1 "@MANDATE_ISDNREP@" "ISDN 4 Linux @I4LVERSION@" "Linux System Commands"
 
 .PD 0
@@ -98,6 +98,11 @@ only successful connections are displayed.
 Display warnings on startup.
 
 .TP
+.B \-c	ignore default options
+Do not append the "REPOPTIONS" setting from @I4LCONFDIR@/@CONFFILE@
+to the commandline.
+
+.TP
 .B \-p [n][m]'number'[,[m]'number'...]	phonenumber
 Display only selected phone numbers.
 
@@ -120,10 +125,85 @@ Only incoming connections are displayed.
 Only outgoing connections are displayed.
 
 .TP
+.B \-xX	include/exclude calls
+Select calls by day and/or hour.  The following selections are possible
+and can specified in any combination and quantity using
+.B : 
+as separator:
+.RS
+.TP
+.RI d daylist
+only days matching
+.I daylist
+.TP
+.RI D daylist
+all days not matching
+.I daylist
+.TP
+.RI h timelist
+only hours matching
+.I timelist
+.TP
+.RI H timelist
+all hours not matching
+.I timelist
+.RE
+
+.in +7
+.I daylist
+and
+.I timelist
+have the same syntax as described in
+.IR rate-files(5) .
+If a day or an hour is included and excluded it will be excluded.
+
+Example
+.br
+-xd2-4:DH:h9-17:H12-15
+.br
+This will display all calls on Tuesdays, Wednesdays, or Thursdays
+that are no holidays with a start time between 09:00 and 12:00 or
+15:00 and 17:00.
+.in -7
+
+.TP
 .B \-u	unknown caller
 At the end of the report, all numbers not aliased in callerid.conf or
 ~/.isdn are displayed. This option is not available when HTML output
 is requested.
+
+.TP
+.B \-LX	summary lists
+Select the summaries in the footer by any combination of the following
+letters:
+.RS
+.TP
+i,I
+foreign numbers of incoming calls
+.TP
+o,O
+foreign numbers of outgoing calls
+.TP
+c,C
+foreign numbers of all calls
+.TP
+z,Z
+zones of outgoing calls
+.TP
+p,P
+providers of outgoing calls
+.TP
+m,M
+MSNs (own subscriber numbers) of outgoing calls
+.RE
+
+.in +7
+Upper case letters deselect, lower case letters select a summary.
+With at least one lower case letter, only the selected
+summaries are shown, as long as they are not also deselected.
+-LiI for example will show no summary at all.
+Per default all summaries are displayed.
+.in -7
 
 .TP
 .B \-rPROV recompute
@@ -780,7 +860,7 @@ general configuration
 aliases for telephone numbers
 
 .SH SEE ALSO
-.B isdnlog(5) isdnlog(8)
+.B isdnlog(5) isdnlog(8) isdn.conf(5)
 
 .SH AUTHOR
 This manual page was adapted from isdnlog/README by

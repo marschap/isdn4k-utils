@@ -1,4 +1,4 @@
-/* $Id: isdnrep.h,v 1.22 2003/10/29 17:41:35 tobiasb Exp $
+/* $Id: isdnrep.h,v 1.23 2004/07/24 17:58:06 tobiasb Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,14 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnrep.h,v $
+ * Revision 1.23  2004/07/24 17:58:06  tobiasb
+ * New isdnrep options: `-L:' controls the displayed call summaries in the
+ * report footer.  `-x' displays only call selected or not deselected by
+ * hour or type of day -- may be useful in conjunction with `-r'.
+ *
+ * Activated new configuration file entry `REPOPTIONS' for isdnrep default
+ * options.  This options can be disabled by `-c' on the command line.
+ *
  * Revision 1.22  2003/10/29 17:41:35  tobiasb
  * isdnlog-4.67:
  *  - Enhancements for isdnrep:
@@ -211,9 +219,7 @@ typedef struct {
 } RECALC;
 
 /*****************************************************************************/
-
-/* isdnrep.c defines _REP_FUNC_C_, rep_main.c definies _ISDNREP_C_, ... */
-
+/* isdnrep.c defines _REP_FUNC_C_, rep_main.c defines _ISDNREP_C_, ... */
 #ifdef _REP_FUNC_C_
 #define _EXTERN
 #define _SET_NULL   = NULL
@@ -221,6 +227,7 @@ typedef struct {
 #define _SET_1      = 1
 #define _SET_33	    = 33
 #define _SET_EMPTY  = ""
+#define _SET_ARRAY_0 = { 0 }
 #else
 #define _EXTERN extern
 #define _SET_NULL
@@ -228,6 +235,7 @@ typedef struct {
 #define _SET_1
 #define _SET_33
 #define _SET_EMPTY
+#define _SET_ARRAY_0
 #define _SET_FILE
 #endif
 
@@ -237,6 +245,8 @@ _EXTERN int set_msnlist(char *String);
 _EXTERN int send_html_request(char *myname, char *option);
 _EXTERN int new_args(int *nargc, char ***nargv);
 _EXTERN int prep_recalc(void);
+_EXTERN int select_summaries(int *list, char *input);
+_EXTERN char *select_day_hour(bitfield *days, bitfield *hours, char *input);
 
 _EXTERN int     print_msg(int Level, const char *, ...);
 _EXTERN int     incomingonly    _SET_0;
@@ -259,12 +269,16 @@ _EXTERN time_t  endtime         _SET_0;
 _EXTERN int     preselect	_SET_33;
 #endif
 _EXTERN int     summary		_SET_0;
-_EXTERN RECALC  recalc; /* initialiation done in main */
+_EXTERN RECALC  recalc; /* initiation done in main */
+_EXTERN int     sel_sums[3]     _SET_ARRAY_0;
+_EXTERN bitfield days[2]        _SET_ARRAY_0;
+_EXTERN bitfield hours[2]       _SET_ARRAY_0;
 
 #undef _SET_NULL
 #undef _SET_0
 #undef _SET_1
 #undef _SET_EMPTY
+#undef _SET_ARRAY_0
 #undef _EXTERN
 
 /*****************************************************************************/

@@ -1,4 +1,4 @@
-/* $Id: rep_main.c,v 1.17 2003/10/29 17:41:35 tobiasb Exp $
+/* $Id: rep_main.c,v 1.18 2004/07/24 17:58:06 tobiasb Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -20,6 +20,14 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rep_main.c,v $
+ * Revision 1.18  2004/07/24 17:58:06  tobiasb
+ * New isdnrep options: `-L:' controls the displayed call summaries in the
+ * report footer.  `-x' displays only call selected or not deselected by
+ * hour or type of day -- may be useful in conjunction with `-r'.
+ *
+ * Activated new configuration file entry `REPOPTIONS' for isdnrep default
+ * options.  This options can be disabled by `-c' on the command line.
+ *
  * Revision 1.17  2003/10/29 17:41:35  tobiasb
  * isdnlog-4.67:
  *  - Enhancements for isdnrep:
@@ -287,30 +295,38 @@
 
 /*****************************************************************************/
 
+static int parse_options(int argc, char *argv[], char *myname);
 int print_msg(int Level, const char *fmt, ...);
 int print_in_modules(const char *fmt, ...);
 static int set_linefmt(char *linefmt);
 
 /*****************************************************************************/
 
+static char  fnbuff[512] = "";
+static char  usage[]     = "%s: usage: %s [ -%s ]\n";
+static char  wrongdate[] = "unknown date: %s\n";
+static char  wrongxopt[] = "error in -x option starting at: %s\n";
+static char  options[]   = "abcd:f:hinop:r:s:t:uvw:x:EF:L:M:NR:SV";
+static char *linefmt     = "";
+static char *htmlreq     = NULL;
+static char *phonenumberarg = NULL;
+static int   do_defopts  = 1;
+
+/*****************************************************************************/
+
 int main(int argc, char *argv[], char *envp[])
 {
   auto int   c;
-	auto char  fnbuff[512] = "";
-	auto char  usage[]     = "%s: usage: %s [ -%s ]\n";
-	auto char  wrongdate[] = "unknown date: %s\n";
-	auto char  options[]   = "ad:f:hinop:r:s:t:uvw:NVF:M:R:bES";
 	auto char *myname      = basename(argv[0]);
 	auto char *ptr         = NULL;
-	auto char *linefmt     = "";
-	auto char *htmlreq     = NULL;
-	auto char *phonenumberarg = NULL;
+	auto char **pptr;
 
 
 	set_print_fct_for_tools(print_in_modules);
 
 	recalc.mode = '\0'; recalc.prefix = UNKNOWN; recalc.input = NULL;
 	recalc.count = recalc.unknown = recalc.cheaper = 0;
+	select_summaries(sel_sums, NULL); /* default: all summaries */
 
 	/* we don't need this at the moment:
 	new_args(&argc,&argv);
@@ -323,6 +339,106 @@ int main(int argc, char *argv[], char *envp[])
 	 * the simple `isdnrep -V'.  Resolution: parse options first but call
 	 * set_msnlist after readconfig.
 	 */
+
+	if ((c=parse_options(argc, argv, myname) > 0))
+		return c;
+
+  if (readconfig(myname) != 0)
+  	return 1;
+	
+
+	pptr = (char **) 0;
+	while (do_defopts && isdnrep_defopts)  /* default options from isdn.conf */
+	{
+		int dargc;
+		char **dargv;
+		
+		pptr = String_to_Array(isdnrep_defopts, ';');
+		if (!pptr)
+			break;
+		dargc = 0;
+		dargv = pptr;
+		while (*dargv++)
+			dargc++;
+		if (!dargc)
+			break;
+
+		dargv = (char **) calloc(dargc+2, sizeof(char *));
+		if (!dargv)
+			break;
+		dargv[0] = argv[0];
+		memcpy(dargv+1, pptr, dargc * sizeof(char *));
+
+		if ((c=parse_options(dargc+1, dargv, myname) > 0))
+			return c;
+		
+		break;
+	}
+	if (pptr)
+		del_Array(pptr);
+
+	if (phonenumberonly && phonenumberarg != NULL) {
+		set_msnlist(phonenumberarg);
+		free(phonenumberarg);
+	}
+
+  if (htmlreq)
+  {
+		send_html_request(myname,htmlreq);
+		exit(0);
+  }
+
+	if (!html && (ptr = strrchr(myname,'.')) != NULL && !strcasecmp(ptr+1,"cgi"))
+		html = H_PRINT_HEADER;
+
+	if (html)
+	{
+		seeunknowns = 0;
+		header++;
+	}
+
+	if (linefmt != NULL)
+	{
+		if (*linefmt == '\0')
+		{
+			if (html)
+				set_linefmt("WWW");
+			else
+				set_linefmt(linefmt);
+		}
+		else
+		{
+			if (set_linefmt(linefmt))
+			{
+				printf("Error: %s can not find format `%s%s'!\n",myname,CONF_ENT_REPFMT,To_Upper(linefmt));
+				exit(0);
+			}
+		}
+	}
+
+  if (!currency_factor)
+    currency = "EUR";
+
+  if (fnbuff[0])
+	  logfile = fnbuff;
+
+	return (read_logfile(myname));
+}
+
+/*****************************************************************************/
+/* handle options from cammandline and isdn.conf */
+static int parse_options(int argc, char *argv[], char *myname)
+{
+	auto int   c;
+	auto char *ptr         = NULL;
+	
+	/* reset internal state of getopt ...
+	 * for an explanation look at bugs.debian.org, bug #192834 */
+#ifdef __GLIBC__
+	optind = 0;
+#else
+	optind = 1;
+#endif
 
   while ((c = getopt(argc, argv, options)) != EOF)
     switch (c) {
@@ -377,7 +493,8 @@ int main(int argc, char *argv[], char *envp[])
                  linefmt = NULL;
                  break;
 
-      case 'F' : linefmt = strdup(optarg);
+      case 'F' : if (linefmt && !*linefmt)
+			             linefmt = strdup(optarg);
                  break;
 
       case 'N' : use_new_config = 0;
@@ -402,62 +519,28 @@ int main(int argc, char *argv[], char *envp[])
                  recalc.input = strdup(optarg+1);
                  break;
 
+			case 'L' : select_summaries(sel_sums, optarg);
+			           break;
+
+			case 'x' : ptr = select_day_hour(days, hours, optarg);
+			           if (ptr) {
+			             printf(wrongxopt, ptr);
+			             return 1;
+			           }
+			           break;
+
+			case 'c' : do_defopts = 0;
+			           break;
+
       case '?' : printf(usage, argv[0], argv[0], options);
                  return(1);
     } /* switch */
 
-  if (readconfig(myname) != 0)
-  	return 1;
-
-	if (phonenumberonly && phonenumberarg != NULL) {
-		set_msnlist(phonenumberarg);
-		free(phonenumberarg);
-	}
-
-  if (htmlreq)
-  {
-		send_html_request(myname,htmlreq);
-		exit(0);
-  }
-
-	if (!html && (ptr = strrchr(myname,'.')) != NULL && !strcasecmp(ptr+1,"cgi"))
-		html = H_PRINT_HEADER;
-
-	if (html)
-	{
-		seeunknowns = 0;
-		header++;
-	}
-
-	if (linefmt != NULL)
-	{
-		if (*linefmt == '\0')
-		{
-			if (html)
-				set_linefmt("WWW");
-			else
-				set_linefmt(linefmt);
-		}
-		else
-		{
-			if (set_linefmt(linefmt))
-			{
-				printf("Error: %s can not find format `%s%s'!\n",myname,CONF_ENT_REPFMT,To_Upper(linefmt));
-				exit(0);
-			}
-		}
-	}
-
-  if (!currency_factor)
-    currency = "EUR";
-
-  if (fnbuff[0])
-	  logfile = fnbuff;
-
-	return (read_logfile(myname));
-}
+	return 0;
+} /* /parse_options() */
 
 /*****************************************************************************/
+
 int     print_msg(int Level, const char *fmt,...)
 {
   auto va_list ap;

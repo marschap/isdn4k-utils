@@ -1,4 +1,4 @@
-/* $Id: isdnrep.c,v 1.99 2004/02/25 12:09:08 paul Exp $
+/* $Id: isdnrep.c,v 1.100 2004/07/24 17:58:06 tobiasb Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -24,6 +24,14 @@
  *
  *
  * $Log: isdnrep.c,v $
+ * Revision 1.100  2004/07/24 17:58:06  tobiasb
+ * New isdnrep options: `-L:' controls the displayed call summaries in the
+ * report footer.  `-x' displays only call selected or not deselected by
+ * hour or type of day -- may be useful in conjunction with `-r'.
+ *
+ * Activated new configuration file entry `REPOPTIONS' for isdnrep default
+ * options.  This options can be disabled by `-c' on the command line.
+ *
  * Revision 1.99  2004/02/25 12:09:08  paul
  * There was no bounds checking on unknownzones, which is only useds
  * if DEBUG is defined. This caused a SIGSEGV with many unknown numbers
@@ -308,12 +316,28 @@
 #define	UNKNOWNZONE  MAXZONES
 
 /*****************************************************************************/
-
 /* flags for zones_src.flags (FZN = flag zone name) */
 #define FZN_KNOWN   0x01  /* zone_names[i] is a valid zone name, not ?? */
 #define FZN_UNSURE  0x02  /* zone_names[i] may be incorrect */
 #define FZN_MPROV   0x04  /* zone i is used with more than one provider */
 #define FZN_MNAME   0x08  /* found different names for zone i */
+
+/*****************************************************************************/
+/* bits in sel_sums[] for the footer summaries */
+#define SUM_IN      0x01
+#define SUM_OUT     0x02
+#define SUM_INOUT   0x04
+#define SUM_ZONE    0x08
+#define SUM_PROV    0x10
+#define SUM_MSN     0x20
+#define SUM_ALL     0x3f
+#define SUM__CHARS  "ioczpm"  /* corresponding chars for option value */
+
+/*****************************************************************************/
+/* indices for sel_sums, days, and hours option */
+#define INCLUDE     0
+#define EXCLUDE     1
+#define RESULT      2
 
 /*****************************************************************************/
 
@@ -390,6 +414,7 @@ static char **get_http_args(char *str, int *index);
 static char *url_unescape(char *str);
 static int app_fmt_string(char *target, int targetlen, char *fmt, int condition, char *value);
 static int find_format_length(char *string);
+static int check_day_hour(bitfield *days, bitfield *hours, const time_t check);
 
 /*****************************************************************************/
 
@@ -704,6 +729,9 @@ int read_logfile(char *myname)
 			}
 		}
 
+		/* TODO (tobiasb|2004-02): right place for setting begintime?
+		   either verify whether delentries is working or disable/remove it */
+
 		if (!print_failed && cur_call.duration == 0)
 			continue;
 
@@ -718,6 +746,9 @@ int read_logfile(char *myname)
 			continue;
 
 		if (outgoingonly && cur_call.dir == DIALIN)
+			continue;
+
+		if (check_day_hour(days, hours, cur_call.t))
 			continue;
 
 		get_time_value(cur_call.t,&day,SET_TIME);
@@ -906,9 +937,10 @@ static int print_bottom(double unit, char *start, char *stop)
 			get_format("%-36.36s %4d call(s) %10.10s  %12s");
 	}
 			
-	for (j = 0; summary < 2 && j < 2; j++)
+	for (j = 0; j < 2; j++)
 	{
-		if ((j == DIALOUT && !incomingonly) || (!outgoingonly && j == DIALIN))
+		if ( (j == DIALOUT && !incomingonly && sel_sums[RESULT] & SUM_OUT) ||
+		     (j == DIALIN  && !outgoingonly && sel_sums[RESULT] & SUM_IN ) )
 		{
 			sprintf(string, "%s Summary for %s", (j == DIALOUT) ? "Outgoing calls (calling:)" : "Incoming calls (called by:)",
 			              print_diff_date(start,stop));
@@ -934,10 +966,41 @@ static int print_bottom(double unit, char *start, char *stop)
 			} /* for */
 
 			print_line2(F_BODY_BOTTOM2,"");
-		}
+		} /* /if show out|in summary */
 	}
 
-	if (!incomingonly)
+	if (sel_sums[RESULT] & SUM_INOUT) {
+		/* print mixed summary about foreign numbers */
+		sprintf(string, "Calls (incoming & outgoing) Summary for %s",
+				              print_diff_date(start,stop));
+
+		h_percent = 80.0;
+		h_table_color = H_TABLE_COLOR2;
+		print_line2(F_BODY_HEADER,"");
+		print_line2(F_BODY_HEADERL,"%s",string);
+		strich(1);
+
+		for (i = 0 ; i < knowns; i++) {
+			if (known[i]->usage[DIALIN]||known[i]->usage[DIALOUT]) {
+				print_line3(NULL,
+				          /*!numbers?*/known[i]->who/*:known[i]->num*/,
+				          known[i]->usage[DIALIN] + known[i]->usage[DIALOUT],
+				          double2clock(known[i]->dur[DIALIN] + known[i]->dur[DIALOUT]),
+				          known[i]->usage[DIALOUT]?print_currency(known[i]->pay,0):
+				          fill_spaces(print_currency(known[i]->pay,0)),
+				          set_byte_string(GET_IN|GET_BYTES,
+				              known[i]->ibytes[DIALIN] + known[i]->ibytes[DIALOUT]),
+				          set_byte_string(GET_OUT|GET_BYTES,
+				              known[i]->obytes[DIALIN] + known[i]->obytes[DIALOUT]) );
+				          /* the last two arguments may be excessive */
+			} /* if */
+		} /* for */
+
+		print_line2(F_BODY_BOTTOM2,"");
+	} /* /if show foreign in&out summary */
+
+
+	if (!incomingonly && sel_sums[RESULT] & SUM_ZONE)
 	{
 		/* zone summary (outgoing)  ----------------------------------------- */
 		int ztypes = 0;
@@ -993,7 +1056,10 @@ static int print_bottom(double unit, char *start, char *stop)
 		}
 
 		print_line2(F_BODY_BOTTOM2,"");
+	} /* /if show zone summary */
 
+	if (!incomingonly && sel_sums[RESULT] & SUM_PROV)
+	{
 		/* provider summary (outgoing)  ------------------------------------- */
 		/* prev.:   60.0 */
 		h_percent = 80.0;
@@ -1028,6 +1094,10 @@ static int print_bottom(double unit, char *start, char *stop)
 
 		print_line2(F_BODY_BOTTOM2,"");
 
+	} /* /if show provider summary */
+
+	if (!incomingonly && sel_sums[RESULT] & SUM_MSN)
+	{
 		/* MSN summary (outgoing)  ------------------------------------------ */
 		h_percent = 60.0;
 		h_table_color = H_TABLE_COLOR5;
@@ -1049,7 +1119,7 @@ static int print_bottom(double unit, char *start, char *stop)
 				s2 += dur_sum[k];
 			} /* if */
  		} /* for */
-	}
+	} /* /if show MSN summary */
 
 #if 0
   if (s) {
@@ -3785,6 +3855,31 @@ static int app_fmt_string(char *target, int targetlen, char *fmt, int condition,
 }
 
 /*****************************************************************************/
+/* returns 0 if check is allowed by -x option, 1 if not, 2 in case of error  */
+static int check_day_hour(bitfield *days, bitfield *hours, const time_t check)
+{
+	struct tm *tp, t;
+
+	if (!days[INCLUDE] && !days[EXCLUDE] && !hours[INCLUDE] && !hours[EXCLUDE])
+		return 0;
+
+	if ( !(tp = localtime(&check)) )
+		return 2;
+	t = *tp;  /* save result from further time.h functioncalls */
+
+	if ( hours[INCLUDE] && !(hours[INCLUDE] & (1 << t.tm_hour)) )
+		return 1;  /* hour is not included */
+	if ( hours[EXCLUDE] && hours[EXCLUDE] & (1 << t.tm_hour) )
+		return 1;  /* hour is excluded */
+	if ( days[INCLUDE] && !isDay(&t, days[INCLUDE], 0) )
+		return 1;  /* day is not included */
+	if ( days[EXCLUDE] && isDay(&t, days[EXCLUDE], 0) )
+		return 1;  /* day is excluded */
+
+	return 0;	
+} /* /check_day_hour() */
+
+/*****************************************************************************/
 /* find provider for recalculation of connection fees (-r Option) */
 int prep_recalc (void)
 {
@@ -3847,5 +3942,144 @@ int prep_recalc (void)
 	return 1;
 }
 
+/*****************************************************************************/
+/* parse contents of select summaries option,
+ * with NULL as input, all summaries are enabled as default */
+int select_summaries(int *list, char *input)
+{
+	int   bit=1;
+	char *s=SUM__CHARS;
+	if (input)
+		while (*s)
+		{
+			if ( strchr(input, *s) )
+				list[INCLUDE] |= bit;
+			if ( strchr(input, toupper(*s)) )
+				list[EXCLUDE] |= bit;
+			bit <<= 1;
+			s++;
+		}
+	list[RESULT] = list[INCLUDE] ? list[INCLUDE] : SUM_ALL;
+	list[RESULT] &= ~list[EXCLUDE];
+	return list[RESULT];
+}
+
+/*****************************************************************************/
+/* parse contents of select day/hour option,
+ * result is NULL for correct option or pointer to first failed char */
+char *select_day_hour(bitfield *days, bitfield *hours, char *input)
+{
+	char *s=input, *t;
+	int   inex;
+	char  a, b, c;
+	int   i, j, k;
+
+	if (!s || !*s)
+		return NULL;	
+	s--;  /* char before [dDhH] */
+	do
+	{
+		/* first char selects day/hour include/EXCLUDE */
+		inex = islower(*++s) ? INCLUDE : EXCLUDE;
+		if (tolower(*s) == 'd')
+		{
+			do
+			{
+				t = ++s;  /* move behind 'd', 'D', or ',' */
+				if (isdigit(*s))
+				{
+					a = b = *s++;
+					if (*s == '-')
+					{
+						s++;
+						b = *s++;
+					}
+					if (a < '1' || b < '1' || a > '7' || b > '7')
+						return t;
+					if (a <= b)
+						for (c=a; c <= b; c++)  /* e.g. 1-1 or 1-5 */
+							days[inex] |= 1 << (MONDAY + (c - '1'));
+					else
+					{
+						for (c=a; c <= '7'; c++)  /* e.g. 6-1 -> 6-7, 1-1 */
+							days[inex] |= 1 << (MONDAY + (c - '1'));
+						for (c='1'; c <= b; c++)
+							days[inex] |= 1 << (MONDAY + (c - '1'));
+					}
+				}
+				else
+				{
+					if (*s == 'W')
+						days[inex] |= 1 << WORKDAY;
+					else if (*s == 'E')
+						days[inex] |= 1 << WEEKEND;
+					else if (*s == 'H')
+						days[inex] |= 1 << HOLIDAY;
+					else if (*s == '*')
+						days[inex] |= 1 << EVERYDAY;
+					else
+						return s;
+					s++;
+				}
+			}
+			while (*s == ',');
+		}
+		else if (tolower(*s) == 'h')
+		{
+			do
+			{
+				t = ++s;  /* move behind 'h', 'H', or ',' */
+				if (*s == '*')
+				{
+					i = 0; j = 24;
+					s++;
+				}
+				else
+				{
+					errno = 0;
+					i = j = (int) strtol(s, &s, 10);
+					if (errno)
+						return s;
+					if (*s == '-')
+					{
+						s++;
+						errno = 0;
+						j = (int) strtol(s, &s, 10);
+						if (errno)
+							return s;
+					}
+					i = (i==24) ? 0 : i;
+					j = (j==24) ? 0 : j;
+					j = (i==j) ? j+1 : j;  /* e.g. 17-17 (wrong) -> 17-18 */
+					j = (j==24) ? 0 : j;
+					if (i < 0 || j < 0 || i > 23 || j > 23)
+						return t;  /* wrong values in range */
+				}
+				if (i <= j)
+					for (k=i; k < j; k++)  /* e.g. 09-18 */
+						hours[inex] |= 1 << k;
+				else
+				{
+					for (k=i; k < 24; k++)  /* e.g. 18-09 -> 18-00, 00-18 */
+						hours[inex] |= 1 << k;
+					for (k=0; k < j; k++)
+						hours[inex] |= 1 << k;
+				}
+			}
+			while (*s == ',');
+		}
+		else
+			return s;
+	}
+	while (*s == ':');
+	if (*s)
+		return s;
+#if DEBUG
+	fprintf(stderr, "xopt: d= %04X, D= %04X, h= %07X, H= %07X\n",
+	        (int) days[INCLUDE], (int) days[EXCLUDE],
+	        (int) hours[INCLUDE], (int) hours[EXCLUDE]);
+#endif
+	return NULL;
+} /* /select_day_hour() */
 /* vim:set ts=2: */
 /*****************************************************************************/
