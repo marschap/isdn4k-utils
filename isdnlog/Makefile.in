@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.44 1998/10/13 22:17:09 luethje Exp $
+## $Id: Makefile.in,v 1.45 1998/10/16 12:38:04 keil Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,9 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.45  1998/10/16 12:38:04  keil
+## fixes to compile and install under 2.0.36
+##
 ## Revision 1.44  1998/10/13 22:17:09  luethje
 ## isdnlog: evaluate the variable PATH for program starts.
 ##
@@ -256,12 +259,12 @@ SBINDIR			:= @sbindir@
 LIBEXECDIR		:= @libexecdir@
 DATADIR			:= @datadir@
 SYSCONFDIR		:= @sysconfdir@
-SHAREDSTATEDIR	:= @sharedstatedir@
-LOCALSTATEDIR	:= @localstatedir@
+SHAREDSTATEDIR		:= @sharedstatedir@
+LOCALSTATEDIR		:= @localstatedir@
 LIBDIR			:= @libdir@
 INFODIR			:= @infodir@
 INCLUDEDIR		:= @includedir@
-OLDINCLUDEDIR	:= @oldincludedir@
+OLDINCLUDEDIR		:= @oldincludedir@
 MANDIR			:= @mandir@
 MAN1DIR			:= $(MANDIR)/man1
 MAN8DIR			:= $(MANDIR)/man8
@@ -276,37 +279,37 @@ SRCDIR			:= @srcdir@
 #
 # autoconf isdnlog specific stuff
 #
-INSTALL					:= @INSTALL@
-INSTALL_DIR			:= $(INSTALL) -m 0755 -o 0 -g 0 -d
+INSTALL			:= @INSTALL@
+INSTALL_DIR		:= $(INSTALL) -m 0755 -o 0 -g 0 -d
 INSTALL_SBIN		:= $(INSTALL) -m 0700 -o 0 -g 0
-INSTALL_BIN			:= $(INSTALL) -m 0755 -o 0 -g 0
+INSTALL_BIN		:= $(INSTALL) -m 0755 -o 0 -g 0
 INSTALL_DATA		:= $(INSTALL) -m 0644 -o 0 -g 0
 
 LIBISDNDIR		:= @LIBISDNDIR@
 I4LCONFDIR		:= @I4LCONFDIR@
-CONFFILE  		:= @CONFFILE@
-CALLERIDFILE  := @CALLERIDFILE@
+CONFFILE		:= @CONFFILE@
+CALLERIDFILE		:= @CALLERIDFILE@
 OLDCONFDIR		:= @OLDCONFDIR@
-OLDCONFFILE 	:= @OLDCONFFILE@
-LIBAREA				:= @LIBAREA@
-RUNDIR				:= @RUNDIR@
-DBMLIB				:= @DBMLIB@
-POSTGRES			:= @POSTGRES@
-POSTGRESDIR			:= @POSTGRESDIR@
-MYSQLDB 			:= @MYSQLDB@
-MYSQLDIR 			:= @MYSQLDIR@
-SERV_PORT			:= @SERV_PORT@
-USERFILE			:= @USERFILE@
-DEFS          :=
-SUBDIRS     		:=
+OLDCONFFILE		:= @OLDCONFFILE@
+LIBAREA			:= @LIBAREA@
+RUNDIR			:= @RUNDIR@
+DBMLIB			:= @DBMLIB@
+POSTGRES		:= @POSTGRES@
+POSTGRESDIR		:= @POSTGRESDIR@
+MYSQLDB			:= @MYSQLDB@
+MYSQLDIR		:= @MYSQLDIR@
+SERV_PORT		:= @SERV_PORT@
+USERFILE		:= @USERFILE@
+DEFS			:=
+SUBDIRS			:=
 
 NATION			:= @NATION@
 
-export LOGFILE       := @LOGFILE@
-export COUNTRYCODE   := @COUNTRYCODE@
-export COUNTRYPREFIX := @COUNTRYPREFIX@
-export AREACODE      := @AREACODE@
-export AREAPREFIX    := @AREAPREFIX@
+export LOGFILE		:= @LOGFILE@
+export COUNTRYCODE	:= @COUNTRYCODE@
+export COUNTRYPREFIX	:= @COUNTRYPREFIX@
+export AREACODE		:= @AREACODE@
+export AREAPREFIX	:= @AREAPREFIX@
 
 export ILABEL        := %b %e %T %ICall to tei %t from %N2 on %n2
 export OLABEL        := %b %e %T %Itei %t calling %N2 with %n2
@@ -429,7 +432,7 @@ clean:
 
 distclean:      clean
 		-rm -f $(PROGS) .depend config.h config.status config.cache \
-		config.log Makefile confdefs.h policy.h
+		config.log Makefile confdefs.h policy.h *~
 		set -e; for i in `echo $(SUBDIRS)`; do $(MAKE) -C $$i distclean; done
 
 ifeq (.depend,$(wildcard .depend))
@@ -462,10 +465,10 @@ install: all rootperm installdirs
 		-@test ! -d $(DESTDIR)$(OLDCONFDIR) || (cp -auv $(DESTDIR)$(OLDCONFDIR)/$(OLDCONFFILE) $(DESTDIR)$(I4LCONFDIR) \
 		 && $(ISDNREP) 1>/dev/null 2>&1) \
 		 && mv $(DESTDIR)$(I4LCONFDIR)/$(OLDCONFFILE) $(DESTDIR)$(I4LCONFDIR)/$(OLDCONFFILE).old
-		@if [ -n "$(DESTDIR)" ]; then
-			$(GENCONF) $(DESTDIR)$(I4LCONFDIR)/$(CONFFILE).new $(DESTDIR)$(I4LCONFDIR)/$(CALLERIDFILE).new
-		else
-			$(GENCONF) $(DESTDIR)$(I4LCONFDIR)/$(CONFFILE) $(DESTDIR)$(I4LCONFDIR)/$(CALLERIDFILE)
+		@if [ -n "$(DESTDIR)" ]; then \
+			$(GENCONF) $(DESTDIR)$(I4LCONFDIR)/$(CONFFILE).new $(DESTDIR)$(I4LCONFDIR)/$(CALLERIDFILE).new ; \
+		else \
+			$(GENCONF) $(DESTDIR)$(I4LCONFDIR)/$(CONFFILE) $(DESTDIR)$(I4LCONFDIR)/$(CALLERIDFILE) ; \
 		fi
 		@echo "Generate config files. Wait a moment..."
 		-@$(ISDNCONF) -c 040 1>/dev/null 2>&1 || echo "Can not read areacode/avon lib."

@@ -1,4 +1,4 @@
-# $Id: Makefile.in,v 1.9 1998/10/13 22:36:53 keil Exp $
+# $Id: Makefile.in,v 1.10 1998/10/16 12:38:11 keil Exp $
 #
 # Makefile for pcbitctl
 # (C) 1997 Fritz Elfert
@@ -13,6 +13,7 @@ MODULES			= pcbitctl.o convhexbin.o
 MANPAGE			= pcbitctl.8
 SBINDIR			= @CONFIG_SBINDIR@
 MANDIR			= @CONFIG_MANDIR@
+MAN8DIR			= $(MANDIR)/man8
 INSTALL			= @INSTALL@
 INSTALL_PROGRAM		= $(INSTALL) -o 0 -g 0 -m 0750
 INSTALL_MAN		= $(INSTALL) -o 0 -g 0 -m 0644

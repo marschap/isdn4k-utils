@@ -1,11 +1,12 @@
 #
 # ipppd makefile for Linux
-# $Id: Makefile.in,v 1.11 1998/09/26 18:28:10 akool Exp $
+# $Id: Makefile.in,v 1.12 1998/10/16 12:37:43 keil Exp $
 #
 
 HAVE_LIBDES   := @HAVE_LIBDES@
 HAVE_LIBCRYPT := @HAVE_LIBCRYPT@
 HAVE_SHADOW_H := @HAVE_SHADOW_H@
+HAVE_LZSCOMP_H:= @HAVE_LZSCOMP_H@
 SBINDIR       := @CONFIG_SBINDIR@
 MANDIR        := @CONFIG_MANDIR@
 CC            := @CC@
@@ -115,6 +116,10 @@ endif
 ifeq ($(HAVE_SHADOW_H),1)
 PPPDOBJS += isexpired.o
 PPPDSRCS += isexpired.c
+endif
+
+ifeq ($(HAVE_LZSCOMP_H),1)
+	CFLAGS += -DHAVE_LZSCOMP_H
 endif
 
 %.8: %.man

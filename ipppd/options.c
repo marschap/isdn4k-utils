@@ -17,7 +17,7 @@
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-char options_rcsid[] = "$Id: options.c,v 1.11 1998/07/08 16:48:22 hipp Exp $";
+char options_rcsid[] = "$Id: options.c,v 1.12 1998/10/16 12:37:53 keil Exp $";
 
 #include <stdio.h>
 #include <errno.h>
@@ -53,7 +53,11 @@ char options_rcsid[] = "$Id: options.c,v 1.11 1998/07/08 16:48:22 hipp Exp $";
 
 #include <linux/ppp-comp.h>
 
+#ifdef HAVE_LZSCOMP_H
 #include <linux/isdn_lzscomp.h>
+#else
+#include "../ipppcomp/isdn_lzscomp.h"
+#endif
 
 #define FALSE	0
 #define TRUE	1
