@@ -1,4 +1,4 @@
-/* $Id: isdnbill.c,v 1.3 1999/11/28 11:15:42 akool Exp $
+/* $Id: isdnbill.c,v 1.4 1999/11/28 19:32:41 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Billing-module)
  *
@@ -34,6 +34,7 @@
 #include <string.h>
 #include <time.h>
 
+#undef  DEBUG
 
 #define CALLING          0
 #define CALLED           1
@@ -83,12 +84,13 @@ typedef struct {
 } CALLER;
 
 typedef struct {
-  char   msn[10];
-  int    ncalls;
-  double pay;
-  double duration;
-  double compute;
-  double aktiv;
+  char    msn[10];
+  int     ncalls;
+  double  pay;
+  double  duration;
+  double  compute;
+  double  aktiv;
+  char	 *alias[8];
 } MSNSUM;
 
 typedef struct {
@@ -115,6 +117,7 @@ static ZONESUM zonesum[2][MAXZONE];
 static char    rstr[BUFSIZ];
 
 static int     nhome = 0;
+static int     homei = 0;
 
 int verbose = 0;
 
@@ -136,6 +139,20 @@ int print_msg(int Level, const char *fmt, ...)
 
   return(0);
 } /* print_msg */
+
+
+int print_in_modules(const char *fmt, ...)
+{
+  auto va_list ap;
+  auto char    String[LONG_STRING_SIZE];
+
+
+  va_start(ap, fmt);
+  (void)vsnprintf(String, LONG_STRING_SIZE, fmt, ap);
+  va_end(ap);
+
+  return print_msg(PRT_ERR, "%s", String);
+} /* print_in_modules */
 
 
 static int when(time_t connect, char *s)
@@ -312,10 +329,31 @@ static void total(int w)
 } /* total */
 
 
+static char *numtonam(int n)
+{
+  register int i, j = -1;
+
+
+  for (i = 0; i < knowns; i++) {
+    if (!num_match(known[i]->num, curcall.num[n])) {
+      j = i;
+
+      if (known[i]->si == curcall.si1)
+        return(known[i]->who);
+    } /* if */
+  } /* for */
+
+  return((j == -1) ? NULL : known[j]->who);
+} /* numtonam */
+
+
 static void justify(char *fromnum, char *tonum, int dialout, TELNUM number)
 {
-  auto char s[BUFSIZ], sx[BUFSIZ];
+  register char *p1, *p2;
+  auto 	   char  s[BUFSIZ], sx[BUFSIZ];
 
+
+  p1 = numtonam(dialout ? CALLED : CALLING);
 
   if (*number.msn)
     sprintf(sx, "%s%s%s", number.area, (*number.area ? "/" : ""), number.msn);
@@ -327,7 +365,12 @@ static void justify(char *fromnum, char *tonum, int dialout, TELNUM number)
   else
     sprintf(s, "%s%s", (*number.country ? "0" : ""), sx);
 
-  printf("%6s %s %-17s", fromnum, (dialout ? "->" : "<-"), s);
+  p2 = msnsum[SUBTOTAL][homei].alias[curcall.si1];
+
+  printf("%12s %s %-17s",
+    p2 ? p2 : fromnum,
+    (dialout ? "->" : "<-"),
+    p1 ? p1 : s);
 
   *s = 0;
 
@@ -359,26 +402,28 @@ static void justify(char *fromnum, char *tonum, int dialout, TELNUM number)
 int main(int argc, char *argv[], char *envp[])
 {
   register char    *pl, *pr, *p;
+#ifdef DEBUG
+  auto     FILE    *f = fopen("/www/log/isdn.log", "r");
+#else
   auto     FILE    *f = fopen("/var/log/isdn.log", "r");
+#endif
   auto     char     s[BUFSIZ], sx[BUFSIZ], home[BUFSIZ];
-  auto     int      z, i, l, col, homei, month = -1;
+  auto     int      z, i, l, col, month = -1;
   auto     TELNUM   number[2];
   auto     double   dur;
   auto     RATE     Rate;
   auto     char    *version;
+  auto 	   char    *myname = basename(argv[0]);
 
 
   if (f != (FILE *)NULL) {
 
     *home = 0;
 
-    vbn = strdup("010");
-    vbnlen = strdup("2:3");
+    set_print_fct_for_tools(print_in_modules);
 
-    mymsns    = 3;
-    mycountry = "+49";
-    myarea    = "6171";
-    preselect = 33;
+    if (readconfig(myname) != 0)
+      return(1);
 
     initHoliday("/usr/lib/isdn/holiday-de.dat", &version);
 
@@ -478,7 +523,6 @@ int main(int argc, char *argv[], char *envp[])
         normalizeNumber(curcall.num[CALLED], &number[CALLED], TN_ALL);
 
         if (curcall.dialout) {
-          justify(number[CALLING].msn, curcall.num[CALLED], curcall.dialout, number[CALLED]);
 
           p = strstr(home, number[CALLING].msn);
 
@@ -490,11 +534,21 @@ int main(int argc, char *argv[], char *envp[])
             homei = (int)(p - home) / 7;
 
             strcpy(msnsum[SUBTOTAL][homei].msn, number[CALLING].msn);
+
+            i = curcall.si1;
+
+            for (curcall.si1 = 1; curcall.si1 < 8; curcall.si1++)
+	      msnsum[SUBTOTAL][homei].alias[curcall.si1] = numtonam(CALLING);
+
+            curcall.si1 = i;
+
             nhome++;
           } /* if */
 
           homei = (int)(p - home) / 7;
           msnsum[SUBTOTAL][homei].ncalls++;
+
+          justify(number[CALLING].msn, curcall.num[CALLED], curcall.dialout, number[CALLED]);
 
           provsum[SUBTOTAL][curcall.provider].ncalls++;
 

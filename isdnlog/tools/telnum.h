@@ -14,7 +14,7 @@
 
 /* string lens */
 
-#define TN_MAX_VBN_LEN 5
+#define TN_MAX_VBN_LEN 4
 #define TN_MAX_PROVIDER_LEN 12
 #define TN_MAX_COUNTRY_LEN 8
 #define TN_MAX_SCOUNTRY_LEN 40

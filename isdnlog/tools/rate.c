@@ -1,4 +1,4 @@
-/* $Id: rate.c,v 1.63 1999/11/28 11:15:42 akool Exp $
+/* $Id: rate.c,v 1.64 1999/11/28 19:32:42 akool Exp $
  *
  * Tarifdatenbank
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rate.c,v $
+ * Revision 1.64  1999/11/28 19:32:42  akool
+ * isdnlog-3.71
+ *
  * Revision 1.63  1999/11/28 11:15:42  akool
  * isdnlog-3.70
  *   - patch from Jochen Erwied (j.erwied@gmx.de)
@@ -533,7 +536,7 @@ typedef struct {
   int      booked;
 //  int      used;
   BOOKED _provider;
-  char    Vbn[TN_MAX_VBN_LEN+1]; /* B:-Tag */
+  char    Vbn[TN_MAX_PROVIDER_LEN+1]; /* B:-Tag */
   time_t  FromDate; /* N/Y */
   time_t  ToDate;   /* N/Y */
   char    *Name;
@@ -1047,8 +1050,8 @@ int initRate(char *conf, char *dat, char *dom, char **msg)
 
     case 'B':  /* B: VBN */
       s += 2;
-      strncpy(Provider[prefix].Vbn, strip(s), TN_MAX_VBN_LEN);
-      Provider[prefix].Vbn[TN_MAX_VBN_LEN] = '\0'; // safety
+      strncpy(Provider[prefix].Vbn, strip(s), TN_MAX_PROVIDER_LEN);
+      Provider[prefix].Vbn[TN_MAX_PROVIDER_LEN] = '\0'; // safety
       break;
 
     case 'C':  /* C:Comment */
