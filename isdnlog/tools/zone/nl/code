@@ -2696,10 +2696,11 @@
 627	Libertel GSM	1
 628	Dutchtone GSM	1
 629	Libertel GSM	1
+644     Telfort GSM     1
 65	GSM	1
 650	Libertel GSM	1
 651	KPN GSM	1
-652	KPN NMT	1
+652	Libertel GSM	1
 653	KPN GSM	1
 654	Libertel GSM	1
 655	Libertel GSM	1
@@ -2711,6 +2712,7 @@
 660	Callmax buzzer	1
 6616	Seiko message watch	1
 665	KPN semafoon	1
+6760    internet        10
 70	's-Gravenhage	2
 70300	Voorburg	2
 70301	Leidschendam	2
