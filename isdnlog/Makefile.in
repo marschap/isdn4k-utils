@@ -1,0 +1,275 @@
+## $Id: Makefile.in,v 1.1 1997/03/23 19:22:33 fritz Exp $
+##
+## ISDN accounting for isdn4linux.
+##
+## Copyright 1995, 1997 by Andreas Kool (akool@Kool.f.EUnet.de)
+##
+## This program is free software; you can redistribute it and/or modify
+## it under the terms of the GNU General Public License as published by
+## the Free Software Foundation; either version 2, or (at your option)
+## any later version.
+##
+## This program is distributed in the hope that it will be useful,
+## but WITHOUT ANY WARRANTY; without even the implied warranty of
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+## GNU General Public License for more details.
+##
+## You should have received a copy of the GNU General Public License
+## along with this program; if not, write to the Free Software
+## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+##
+## $Log: Makefile.in,v $
+## Revision 1.1  1997/03/23 19:22:33  fritz
+## Make isdnlog configurable.
+##
+## Revision 2.6.37  1997/02/11  17:53:19  akool
+
+.SUFFIXES:
+.SUFFIXES: .c .o
+
+SHELL			:= /bin/sh
+
+#
+# autoconf generic stuff
+#
+PREFIX			:= @prefix@
+EXEC_PREFIX		:= @exec_prefix@
+BINDIR			:= @bindir@
+SBINDIR			:= @sbindir@
+LIBEXECDIR		:= @libexecdir@
+DATADIR			:= @datadir@
+SYSCONFDIR		:= @sysconfdir@
+SHAREDSTATEDIR	:= @sharedstatedir@
+LOCALSTATEDIR	:= @localstatedir@
+LIBDIR			:= @libdir@
+INFODIR			:= @infodir@
+INCLUDEDIR		:= @includedir@
+OLDINCLUDEDIR	:= @oldincludedir@
+MANDIR			:= @mandir@
+MAN1DIR			:= $(MANDIR)/man1
+MAN8DIR			:= $(MANDIR)/man8
+MAN1EXT			:= .1
+MAN8EXT			:= .8
+SRCDIR			:= @srcdir@
+#
+# end of autoconf generic stuff
+#
+
+#
+# autoconf isdnlog specific stuff
+#
+INSTALL				:= @INSTALL@
+INSTALL_DIR			:= $(INSTALL) -m 0755 -o 0 -g 0 -d
+INSTALL_SBIN		:= $(INSTALL) -m 0700 -o 0 -g 0
+INSTALL_BIN			:= $(INSTALL) -m 0755 -o 0 -g 0
+INSTALL_DATA		:= $(INSTALL) -m 0644 -o 0 -g 0
+
+LIBISDNDIR			:= @LIBISDNDIR@
+I4LCONFDIR			:= @I4LCONFDIR@
+LIBAREA				:= @LIBAREA@
+RUNDIR				:= @RUNDIR@
+DBMLIB				:= @DBMLIB@
+POSTGRES			:= @POSTGRES@
+POSTGRESDIR			:= @POSTGRESDIR@
+SERV_PORT			:= @SERV_PORT@
+USERFILE			:= @USERFILE@
+
+ifndef ROOTDIR
+export ROOTDIR=$(shell pwd)
+PREFIXDIR=.
+MAKELIB  =1
+else
+PREFIXDIR=$(ROOTDIR)
+endif
+
+ifeq ($(MAKELIB),1)
+SUBDIRS     = $(LIBISDNDIR)
+endif
+
+ifndef _CC
+export _CC  = gcc -Wall -pipe -O6 -m486 -fomit-frame-pointer -fforce-mem -fforce-addr -funroll-loops -fstrength-reduce
+endif
+
+CC          = $(_CC)
+
+INCLUDE     = -I./connect -I./tools -I$(PREFIXDIR) -I$(LIBISDNDIR)
+
+ifneq ($(LIBAREA),1)
+LIB         = $(DBMLIB)
+endif
+
+
+
+
+SERVICEFILE = /etc/services
+
+
+######################################################################
+# DON'T EDIT BELOW THIS LINE
+######################################################################
+
+VERSION     = 2.99.1
+
+ifeq ($(POSTGRES),1)
+CFLAGS     += -DPOSTGRES
+INCLUDE    += -I$(POSTGRESDIR)/include
+LIB        += -L$(POSTGRESDIR)/lib -lpq
+endif
+
+ifdef DBMALLOC
+CFLAGS     += -DDBMALLOC=1
+LIB        += -ldbmalloc
+endif
+
+CFLAGS       += \
+               -DVERSION=\"$(VERSION)\"   \
+               -DI4LVERSION=\"$(I4LVERSION)\"   \
+                $(INCLUDE)
+
+ISDNLOG_OBJS =  isdnlog/isdnlog.o isdnlog/processor.o isdnlog/functions.o \
+                isdnlog/server.o isdnlog/start_prog.o isdnlog/messages.o  \
+                connect/connect.o connect/socket.o tools/tools.o      	  \
+                connect/conv_address.o isdnlog/user_access.o 		  \
+                isdnrep/cheap.o tools/isdnconf.o $(LIBISDNDIR)/libisdn.a
+
+
+ifeq ($(POSTGRES),1)
+ISDNLOG_OBJS += isdnlog/postgres.o
+endif
+
+ifdef TESTCENTER
+ISDNLOG_OBJS += isdnlog/test_center.o
+endif
+
+ISDNREP_OBJS =  isdnrep/isdnrep.o isdnrep/cheap.o tools/tools.o           \
+                tools/isdnconf.o isdnlog/messages.o $(LIBISDNDIR)/libisdn.a
+
+ISDNCONF_OBJS=  isdnconf/isdnconf.o tools/tools.o tools/isdnconf.o        \
+                $(LIBISDNDIR)/libisdn.a
+
+ISDNLOG      =  bin/isdnlog
+ISDNCONF     =  bin/isdnconf
+ISDNREP      =  bin/isdnrep
+
+MODS         =  *.o */*.o
+
+PROGS        =  $(ISDNLOG) $(ISDNREP) $(ISDNCONF)
+
+all:            libs $(PROGS)
+
+libs:
+		set -e; for i in $(SUBDIRS); do $(MAKE) -C $$i; done
+
+clean:
+		-rm -f $(MODS)
+		set -e; for i in $(SUBDIRS); do $(MAKE) -C $$i clean; done
+
+distclean:      clean
+		-rm -f $(PROGS) .depend config.h config.status config.cache \
+		config.log Makefile confdefs.h policy.h
+		set -e; for i in $(SUBDIRS); do $(MAKE) -C $$i distclean; done
+
+ifeq (.depend,$(wildcard .depend))
+include .depend
+HEADERS := $(HEADERS) .depend
+endif
+
+rootperm:
+		@if [ `id -u` != "0" ]; then \
+			echo ""; echo 'Do "make install" as root!' ;echo ""; false; \
+		fi
+
+installdirs: rootperm
+		$(INSTALL_DIR) $(I4LCONFDIR)
+		$(INSTALL_DIR) $(BINDIR)
+		$(INSTALL_DIR) $(SBINDIR)
+		$(INSTALL_DIR) $(MAN1DIR)
+		$(INSTALL_DIR) $(MAN8DIR)
+
+install: depend all rootperm installdirs
+		if ps -x | fgrep $(ISDNLOG) >/dev/null; then kill `cat $(RUNDIR)/isdnlog.pid`; fi
+		$(INSTALL_BIN) $(ISDNLOG)  $(SBINDIR)
+		$(INSTALL_BIN) $(ISDNREP)  $(BINDIR)
+		$(INSTALL_BIN) $(ISDNCONF) $(BINDIR)
+		$(INSTALL_DATA) isdnlog/isdnlog.8 $(MAN8DIR)
+		$(INSTALL_DATA) isdnrep/isdnrep.1 $(MAN1DIR)
+		@echo ""
+		@echo "Don't forget to create $(I4LCONFDIR)/$(USERFILE)"
+		@echo ""
+		@(grep isdnlog $(SERVICEFILE) >/dev/null) || \
+		(echo "";echo "";echo "Add a line to the file $(SERVICEFILE)" ;echo "";echo ""; \
+		echo "isdnlog $(SERV_PORT)/tcp        isdnlog" >> $(SERVICEFILE))
+
+install-strip:
+		$(MAKE) INSTALL_BIN='$(INSTALL_BIN) -s' \
+			INSTALL_SBIN='$(INSTALL_SBIN) -s' install
+
+distrib: distclean
+		cd .. && tar cf /tmp/isdnlog-$(I4LVERSION).tar    \
+		  isdnlog-$(I4LVERSION)/Makefile       \
+		  isdnlog-$(I4LVERSION)/Isdn           \
+		  isdnlog-$(I4LVERSION)/README         \
+		  isdnlog-$(I4LVERSION)/NEWS           \
+		  isdnlog-$(I4LVERSION)/COPYING        \
+		  isdnlog-$(I4LVERSION)/BUGS           \
+		  isdnlog-$(I4LVERSION)/TODO           \
+		  isdnlog-$(I4LVERSION)/FAQ            \
+		  isdnlog-$(I4LVERSION)/samples        \
+		  isdnlog-$(I4LVERSION)/tools          \
+		  isdnlog-$(I4LVERSION)/isdnconf       \
+		  isdnlog-$(I4LVERSION)/isdnlog        \
+		  isdnlog-$(I4LVERSION)/isdnrep        \
+		  isdnlog-$(I4LVERSION)/connect        \
+		  isdnlog-$(I4LVERSION)/lib            \
+		  isdnlog-$(I4LVERSION)/contrib	    \
+		  isdnlog-$(I4LVERSION)/bin
+		gzip -f9 /tmp/isdnlog-$(I4LVERSION).tar
+#		uuencode /tmp/isdnlog-$(I4LVERSION).tar.gz isdnlog-$(I4LVERSION).tar.gz > /tmp/isdnlog-$(I4LVERSION).uue
+
+$(ISDNLOG):     $(ISDNLOG_OBJS)
+		$(CC) -o $(ISDNLOG) $(LFLAGS) $(ISDNLOG_OBJS) $(LIB)
+
+$(ISDNREP):     $(ISDNREP_OBJS)
+		$(CC) -o $(ISDNREP) $(LFLAGS) $(ISDNREP_OBJS) $(LIB)
+
+$(ISDNCONF):    $(ISDNCONF_OBJS)
+		$(CC) -o $(ISDNCONF) $(LFLAGS) $(ISDNCONF_OBJS) $(LIB)
+
+tools/tools.h: $(LIBISDNDIR)/libisdn.h $(PREFIXDIR)/policy.h
+		touch tools/tools.h
+
+isdnlog/isdnlog.o:         isdnlog/isdnlog.c isdnlog/isdnlog.h tools/tools.h \
+			   connect/socket.h
+
+isdnlog/processor.o:       isdnlog/processor.c isdnlog/isdnlog.h tools/tools.h \
+			   connect/socket.h
+
+isdnlog/functions.o:       isdnlog/functions.c isdnlog/isdnlog.h tools/tools.h \
+			   connect/socket.h
+
+isdnlog/server.o:          isdnlog/server.c  isdnlog/isdnlog.h tools/tools.h \
+			   connect/socket.h
+
+isdnlog/start_prog.o:      isdnlog/start_prog.c isdnlog/isdnlog.h tools/tools.h
+
+isdnlog/user_access.o:     isdnlog/user_access.c isdnlog/isdnlog.h tools/tools.h
+
+tools/tools.o:             tools/tools.c     tools/tools.h
+
+tools/isdnconf.o:          tools/isdnconf.c  tools/tools.h
+
+isdnrep/isdnrep.o:         isdnrep/isdnrep.c isdnrep/isdnrep.h tools/tools.h
+
+isdnconf/isdnconf.o:       isdnconf/isdnconf.c isdnconf/isdnconf.h tools/tools.h
+
+isdnrep/cheap.o:           isdnrep/cheap.c   isdnrep/isdnrep.h tools/tools.h
+
+connect/conv_address.o:    connect/conv_address.c    connect/socket.h tools/tools.h
+connect/socket.o:          connect/socket.c          connect/socket.h tools/tools.h
+connect/connect.o:         connect/connect.c         connect/socket.h tools/tools.h
+
+depend: .depend
+
+.depend:
+		$(CPP) -M $(CFLAGS) */*.c >.depend
+#		$(CPP) -M $(CFLAGS) */*.c */*/*.c >.depend

@@ -1,5 +1,12 @@
 mainmenu_option next_comment
 comment 'Options for isdnlog package'
+int 'Server listen at port' CONFIG_ISDNLOG_SERV_PORT 20011
+string 'User file' CONFIG_ISDNLOG_USERFILE 'isdnlog.users'
+string 'Charge file' CONFIG_ISDNLOG_CHARGEFILE 'charge.dat'
+string 'Log file' CONFIG_ISDNLOG_LOGFILE '/var/log/isdn.log'
+string 'Reload command' CONFIG_ISDNLOG_RELOADCMD 'reload'
+string 'Stop command' CONFIG_ISDNLOG_STOPCMD 'stop'
+string 'Reboot command' CONFIG_ISDNLOG_REBOOTCMD '/sbin/reboot'
 string 'Old config directory' CONFIG_ISDNLOG_OLDI4LCONFDIR '/etc/isdnlog'
 string 'Old config file' CONFIG_ISDNLOG_OLDI4LCONFFILE 'isdnlog.conf'
 bool 'Support postgres95 SQL-Database' CONFIG_ISDNLOG_POSTGRES

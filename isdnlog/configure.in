@@ -1,0 +1,153 @@
+dnl Process this file with autoconf to produce a configure script.
+AC_INIT(isdnlog/isdnlog.c)
+AC_PREFIX_DEFAULT(/usr)
+AC_CONFIG_HEADER(policy.h)
+
+if test -r ../.config ; then
+
+dnl
+dnl i4l package setup, get variables from ../config
+dnl
+
+source ../.config
+bindir=$CONFIG_BINDIR
+sbindir=$CONFIG_SBINDIR
+mandir=$CONFIG_MANDIR
+LIBISDNDIR=../lib
+I4LCONFDIR=$CONFIG_I4LCONFDIR
+OLDCONFDIR=$CONFIG_ISDNLOG_OLDI4LCONFDIR
+OLDCONFFILE=$CONFIG_ISDNLOG_OLDI4LCONFFILE
+RUNDIR=$CONFIG_RUNDIR
+SERV_PORT=$CONFIG_ISDNLOG_SERV_PORT
+USERFILE=$CONFIG_ISDNLOG_USERFILE
+LOGFILE=$CONFIG_ISDNLOG_LOGFILE
+CHARGEFILE=$CONFIG_ISDNLOG_CHARGEFILE
+RELOADCMD=$CONFIG_ISDNLOG_RELOADCMD
+STOPCMD=$CONFIG_ISDNLOG_STOPCMD
+REBOOTCMD=$CONFIG_ISDNLOG_REBOOTCMD
+if test "$CONFIG_LIB_AREACODE" = "y" ; then
+	ALIB=area
+fi
+
+else
+
+dnl
+dnl Standalone setup defaults
+dnl
+
+LIBISDNDIR="../lib"
+I4LCONFDIR="/etc/isdn"
+OLDCONFDIR="/etc/isdnlog"
+OLDCONFFILE="isdnlog.conf"
+RUNDIR="/var/run"
+ALIB=area
+SERV_PORT=20011
+USERFILE=isdnlog.users
+LOGFILE=/var/log/isdn.log
+CHARGEFILE=charge.dat
+RELOADCMD=reload
+STOPCMD=stop
+REBOOTCMD=/sbin/reboot
+
+fi
+
+dnl
+dnl To make it possible to set variables in policy.h
+dnl they have to be defined with AC_DEFINE...
+dnl
+AC_DEFINE_UNQUOTED(OLDCONFDIR,"$OLDCONFDIR")
+AC_DEFINE_UNQUOTED(OLDCONFFILE,"$OLDCONFFILE")
+AC_DEFINE_UNQUOTED(SERV_PORT,$SERV_PORT)
+AC_DEFINE_UNQUOTED(USERFILE,"$USERFILE")
+AC_DEFINE_UNQUOTED(LOGFILE,"$LOGFILE")
+AC_DEFINE_UNQUOTED(CHARGEFILE,"$CHARGEFILE")
+AC_DEFINE_UNQUOTED(RELOADCMD,"$RELOADCMD")
+AC_DEFINE_UNQUOTED(STOPCMD,"$STOPCMD")
+AC_DEFINE_UNQUOTED(REBOOTCMD,"$REBOOTCMD")
+if test "$CONFIG_ISDNLOG_CH" = "y" ; then
+	AC_DEFINE(ISDN_CH,1)
+fi
+if test "$CONFIG_ISDNLOG_NL" = "y" ; then
+	AC_DEFINE(ISDN_NL,1)
+fi
+if test "$CONFIG_ISDNLOG_OLD_I4L" = "y" ; then
+	AC_DEFINE(OLD_I4L,1)
+fi
+
+dnl Checks for programs.
+AC_PROG_CC
+AC_PROG_INSTALL
+AC_PROG_MAKE_SET
+
+dnl Checks for libraries.
+AC_CHECK_LIB(dbm, dbm_open, DBMLIB=-ldbm; AC_DEFINE(HAVE_LIBDBM),
+	AC_CHECK_LIB(gdbm, gdbm_open, DBMLIB=-lgdbm; AC_DEFINE(HAVE_LIBGDBM)))
+AC_CHECK_POSTGRES
+
+dnl TODO: replace main by a funcion within libdbmalloc
+#AC_CHECK_LIB(dbmalloc, main)
+
+dnl Checks for header files.
+AC_HEADER_STDC
+AC_HEADER_SYS_WAIT
+AC_CHECK_HEADERS(fcntl.h limits.h sys/ioctl.h sys/time.h syslog.h unistd.h)
+
+dnl Manual config
+AC_ARG_WITH(isdnlib,
+	[  --with-isdnlib=DIR      Set isdn library [../lib]],
+	LIBISDNDIR=$withval; AC_DEFINE_UNQUOTED(LIBISDNDIR,"$withval"))
+AC_ARG_WITH(area-lib,
+	[  --with-area-lib=STRING  Set area library type [area]],
+	ALIB=$withval)
+AC_ARG_WITH(charge,
+	[  --with-charge=XX        Set country specific chargeinfo [DE]],
+	CHARGECOUNTRY=$withval)
+AC_ARG_WITH(oldconfdir,
+	[  --with-oldconfdir=DIR   Set old config directory [/etc/isdnlog]],
+	OLDCONFDIR=$withval; AC_DEFINE_UNQUOTED(OLDCONFDIR,"$withval"))
+AC_ARG_WITH(oldconf,
+	[  --with-oldconf=NAME     Set old config file name [isdnlog.conf]],
+	OLDCONFFILE=$withval; AC_DEFINE_UNQUOTED(OLDCONFFILE,"$withval"))
+AC_ARG_WITH(sport,
+	[  --with-sport=INT        Set server port [20011]],
+	SERV_PORT=$withval; AC_DEFINE_UNQUOTED(SERV_PORT,$withval))
+
+dnl Checks for typedefs, structures, and compiler characteristics.
+AC_C_CONST
+AC_TYPE_PID_T
+AC_TYPE_SIZE_T
+AC_HEADER_TIME
+AC_STRUCT_TM
+
+dnl Checks for C library functions.
+AC_PROG_GCC_TRADITIONAL
+AC_FUNC_MEMCMP
+AC_TYPE_SIGNAL
+AC_FUNC_UTIME_NULL
+AC_CHECK_FUNCS(mktime select socket stime strdup strerror strftime strstr strtod strtol)
+
+dnl Set variables in output files.
+
+if test "$ALIB" = "area" ; then
+	LIBAREA=1
+	AC_DEFINE(LIBAREA)
+fi
+case "$CHARGECOUNTRY" in
+	CH)
+		ISDN_CH=1
+		AC_DEFINE(ISDN_CH)
+		;;
+	NL)
+		ISDN_NL=1
+		AC_DEFINE(ISDN_NL)
+		;;
+esac
+
+AC_SUBST(LIBISDNDIR)
+AC_SUBST(I4LCONFDIR)
+AC_SUBST(DBMLIB)
+AC_SUBST(LIBAREA)
+AC_SUBST(RUNDIR)
+AC_SUBST(SERV_PORT)
+AC_SUBST(USERFILE)
+AC_OUTPUT(Makefile)
