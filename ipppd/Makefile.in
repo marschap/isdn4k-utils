@@ -1,6 +1,6 @@
 #
-# pppd makefile for Linux
-# $Id: Makefile.in,v 1.1 1997/03/24 01:17:56 fritz Exp $
+# ipppd makefile for Linux
+# $Id: Makefile.in,v 1.2 1997/03/24 03:12:12 fritz Exp $
 #
 
 HAVE_LIBBSD   := @HAVE_LIBBSD@
@@ -8,6 +8,11 @@ HAVE_LIBDES   := @HAVE_LIBDES@
 HAVE_LIBCRYPT := @HAVE_LIBCRYPT@
 HAVE_SHADOW_H := @HAVE_SHADOW_H@
 CC            := @CC@
+INSTALL       := @INSTALL@
+INSTALL_DIR   := $(INSTALL) -m 0755 -o 0 -g 0 -d
+INSTALL_SBIN  := $(INSTALL) -m 0700 -o 0 -g 0
+INSTALL_BIN   := $(INSTALL) -m 0755 -o 0 -g 0
+INSTALL_DATA  := $(INSTALL) -m 0644 -o 0 -g 0
 
 ifeq (../.config,$(wildcard ../.config))
 	include ../.config
@@ -33,10 +38,14 @@ PPPDOBJS = main.o magic.o fsm.o lcp.o ipcp.o upap.o chap.o md5.o ccp.o \
 ifeq ($(HAVE_LIBBSD),1)
 all: ipppd
 
+uninstall:
+	rm -f $(SBINDIR)/ipppd $(MANDIR)/man8/ipppd.8
+
 install: ipppd
-	mkdir -p $(SBINDIR) $(MANDIR)
-	install -s -c -m 555 -o 0 ipppd $(SBINDIR)/ipppd
-	install -c -m 555 -o 0 ipppd.8 $(MANDIR)/man8
+	$(INSTALL_DIR) $(SBINDIR)
+	$(INSTALL_DIR) $(MANDIR)/man8
+	$(INSTALL_SBIN) ipppd $(SBINDIR)/ipppd
+	$(INSTALL_DATA) ipppd.8 $(MANDIR)/man8/ipppd.8
 
 else
 all:
