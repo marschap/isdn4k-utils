@@ -17,7 +17,7 @@
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-char options_rcsid[] = "$Id: options.c,v 1.16 2000/01/10 21:22:56 kai Exp $";
+char options_rcsid[] = "$Id: options.c,v 1.17 2000/04/29 08:57:24 kai Exp $";
 
 #include <stdio.h>
 #include <errno.h>
@@ -114,6 +114,7 @@ int	disable_defaultip = 0;	/* Don't use hostname for default IP adrs */
 char *ipparam = NULL;	/* Extra parameter for ip up/down scripts */
 int	cryptpap;		/* Passwords in pap-secrets are encrypted */
 int useifip=0;		/* try to get IP addresses from interface */
+int deldefaultroute=0;  /* delete default route, if it exists */
 int usefirstip=0;
 int useifmtu=0;		/* get MTU value from network device */
 
@@ -247,6 +248,7 @@ static int setwinsaddr __P((int,char **));
 static int setgetwinsaddr __P((int,char **));
 static int resetipxproto __P((int));
 static int setuseifip __P((int));
+static int setdeldefaultroute __P((int));
 static int setusefirstip __P((int));
 static int setmp __P((int));
 static int setpwlog __P((int));
@@ -413,6 +415,7 @@ static struct cmd {
     {"-ipx",   0, resetipxproto},      /* Disable IPXCP (and IPX) */
 
     {"useifip",0,setuseifip},            /* call setifip() for IP addrs */
+    {"deldefaultroute",0, setdeldefaultroute}, /* call setdeldefaultroute for defaultroute */
     {"usefirstip",0,setusefirstip}, /* use first IP from auth file for remote */
     {"+mp",0,setmp},
     {"+pwlog",0,setpwlog},
@@ -1313,6 +1316,12 @@ static int setusefirstip(int slot)
 static int setuseifip(int slot)
 {
   useifip = 1;
+  return 1;
+}
+
+static int setdeldefaultroute(int slot)
+{
+  deldefaultroute = 1;
   return 1;
 }
 

@@ -22,7 +22,7 @@
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-char sys_rcsid[] = "$Id: sys-linux.c,v 1.23 1999/10/25 12:17:29 keil Exp $";
+char sys_rcsid[] = "$Id: sys-linux.c,v 1.24 2000/04/29 08:57:24 kai Exp $";
 
 #define _LINUX_STRING_H_
 
@@ -35,6 +35,7 @@ char sys_rcsid[] = "$Id: sys-linux.c,v 1.23 1999/10/25 12:17:29 keil Exp $";
 #include <sys/stat.h>
 #include <sys/file.h>
 #include <sys/utsname.h>
+#include <sys/sysmacros.h>
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -92,6 +93,10 @@ static void decode_version (char *buf, int *version,
 int sockfd;			/* socket for doing interface ioctls */
 
 static char *lock_file;
+static int kernel_version;
+
+#define SIN_ADDR(x)     (((struct sockaddr_in *) (&(x)))->sin_addr.s_addr)
+#define KVERSION(j,n,p) ((j)*1000000 + (n)*1000 + (p))
 
 #define MAX_IFS		4096
 
@@ -857,26 +862,35 @@ static int defaultroute_exists (void)
     int    result = 0;
 
     if (!open_route_table())
-      {
-        return 0;
-      }
+      return 0;
 
     while (read_route_table(&rt) != 0)
       {
+        if (kernel_version > KVERSION(2,1,0) && SIN_ADDR(rt.rt_genmask) != 0)
+	  continue;
+	
         if ((rt.rt_flags & RTF_UP) == 0)
-	  {
-	    continue;
-	  }
+          continue;
 
         if (((struct sockaddr_in *) &rt.rt_dst)->sin_addr.s_addr == 0L)
 	  {
             struct in_addr ina;
             ina.s_addr = ((struct sockaddr_in *) &rt.rt_gateway)->sin_addr.s_addr;
-	    syslog (LOG_ERR,
-		    "ppp not replacing existing default route to %s[%s]",
-		    rt.rt_dev, inet_ntoa (ina) );
-	    result = 1;
-	    break;
+	    if (!deldefaultroute)
+	      {
+	        syslog (LOG_ERR,
+		      "ppp not replacing existing default route to %s[%s]",
+		       rt.rt_dev, inet_ntoa (ina) );
+	        result = 1;
+	        break;
+	      }
+	    else
+	      {
+	        SET_SA_FAMILY (rt.rt_dst,     AF_INET);
+		SET_SA_FAMILY (rt.rt_gateway, AF_INET);
+		rt.rt_flags = RTF_UP | RTF_GATEWAY;
+		ioctl(sockfd, SIOCDELRT, &rt);
+	      }
 	  }
       }
 

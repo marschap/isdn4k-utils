@@ -21,7 +21,7 @@
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-char lcp_rcsid[] = "$Id: lcp.c,v 1.9 1998/09/23 08:10:25 paul Exp $";
+char lcp_rcsid[] = "$Id: lcp.c,v 1.10 2000/04/29 08:57:23 kai Exp $";
 
 /*
  * TODO:
@@ -190,6 +190,7 @@ static void lcp_init(int unit)
     {
       *(u_int32_t *) (&our_discr_addr[0]) = magic();
       *(u_int32_t *) (&our_discr_addr[4]) = magic();
+     
       first_call = 0;
     }
 

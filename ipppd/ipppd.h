@@ -16,7 +16,7 @@
  * IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Id: ipppd.h,v 1.18 1999/11/10 08:01:32 werner Exp $
+ * $Id: ipppd.h,v 1.19 2000/04/29 08:57:23 kai Exp $
  */
 
 /*
@@ -179,6 +179,7 @@ extern char sys_rcsid[];
 
 extern int maxconnect;
 extern int      usefirstip,useifip,useifmtu;
+extern int      deldefaultroute;/* delete default gw, if it exists */
 extern int      numdev;		/* number of handled devices */
 extern int	debug;		/* Debug flag */
 extern int	kdebugflag;	/* Tell kernel to print debug messages */

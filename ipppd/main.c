@@ -25,7 +25,7 @@
  * PATCHLEVEL 9
  */
 
-char main_rcsid[] = "$Id: main.c,v 1.16 1999/06/21 13:28:49 hipp Exp $";
+char main_rcsid[] = "$Id: main.c,v 1.17 2000/04/29 08:57:24 kai Exp $";
 
 #include <stdio.h>
 #include <stdarg.h>
@@ -165,6 +165,11 @@ int main(int argc,char **argv)
 		exit(1);
 	}
 
+	/*
+	 * Initialize magic number package.
+	 */
+	magic_init();
+
 	for(i=0;i<NUM_PPP;i++) {
 		lns[i].openfails = 0;
 		lns[i].initfdflags = -1;
@@ -245,11 +250,6 @@ int main(int argc,char **argv)
       }
       syslog(LOG_NOTICE,devstr);
     }
-
-    /*
-     * Initialize magic number package.
-     */
-    magic_init();
 
     /*
      * Detach ourselves from the terminal, if required,
