@@ -1,7 +1,16 @@
-# $Id: CHANGES,v 1.5 1997/02/27 15:43:39 michael Exp $
+# $Id: CHANGES,v 1.6 1997/02/28 14:12:49 michael Exp $
 #
 # To describe the news & fixes better (my english is not the best :-) the
 # changelog is only available in german.
+
+28-Feb-97
+=========
+
+o [Neu]	Funktion eingebaut die berechnet wielange die internen Routinen
+	gebraucht haben um ein Audiosample ans Modem zu schicken und
+	wielange der Kernel bräuchte diese Daten komplett zu spielen. Wenn
+	die internen Routinen schneller waren, wird solange gewartet bis der
+	Kernel zuende gespielt hat.
 
 27-Feb-97
 =========

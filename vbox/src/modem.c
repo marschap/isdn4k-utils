@@ -1,5 +1,5 @@
 /*
-** $Id: modem.c,v 1.5 1997/02/27 15:43:48 michael Exp $
+** $Id: modem.c,v 1.6 1997/02/28 14:12:53 michael Exp $
 **
 ** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
 */
@@ -23,7 +23,7 @@
 /** Defines **************************************************************/
 
 #define USE_NEW_MODEM_READER	  /* Define to use new modem read command	*/
-#define DBG_NEW_MODEM_READER	/* Define to debug new modem read command	*/
+#undef  DBG_NEW_MODEM_READER	/* Define to debug new modem read command	*/
 #undef  DBG_OLD_MODEM_READER	/* Define to debug old modem read command	*/
 
 /** Variables ************************************************************/
@@ -32,11 +32,17 @@ static int   timeoutstatus		= FALSE;
 static int   nocarrier			= FALSE;
 static int   nocarrierpos		= 0;
 static char *nocarriertxt		= "NO CARRIER";
+
+static char	 modem_store_result[MODEM_BUFFER_LEN + 1];
+
+#ifdef USE_NEW_MODEM_READER
+
 static int	 modem_input_pos	= 0;
 static int	 modem_input_len	= 0;
 
-static char	 modem_store_result[MODEM_BUFFER_LEN + 1];
 static char	 modem_input[MODEM_INPUT_LEN + 1];
+
+#endif 
 
 /** Prototypes ***********************************************************/
 
@@ -999,6 +1005,10 @@ int modem_check_input(void)
 
 	fd_set	fd;
 	int		result;
+
+#ifdef USE_NEW_MODEM_READER
+	if (modem_input_len > 0) returnok();
+#endif
         
 	FD_ZERO(&fd);
 	FD_SET(setup.modem.fd, &fd);

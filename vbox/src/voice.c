@@ -35,6 +35,7 @@ static void		voice_set_header(vaheader_t *);
 static void		voice_handle_dle(char);
 static void		voice_handle_touchtone(char);
 static void		voice_close_or_unlink(int, char *);
+static void		voice_handle_touchtone_dle(int);
 
 /*************************************************************************
  ** voice_init_section():	Set the voice setup defaults.						**
@@ -122,13 +123,18 @@ int voice_put_message(char *message)
 
 	long int compression;
 
-	char	linein[MODEM_BUFFER_LEN + 1];
-	char	lineout[MODEM_BUFFER_LEN + MODEM_BUFFER_LEN + 1];
+	char	line_i[MODEM_BUFFER_LEN + 1];
+	char	line_o[MODEM_BUFFER_LEN + MODEM_BUFFER_LEN + 1];
 	int	fd;
 	int	i;
-	int	bytesin;
-	int	bytesout;
+	int	byte_i;
+	int	byte_o;
 	int	written;
+	int	havedle;
+	time_t timebeg;
+	time_t timeend;
+	int	bytetotal;
+	int	secstotal;
 
 	log(L_INFO, "Playing \"%s\"...\n", message);
 
@@ -181,54 +187,101 @@ int voice_put_message(char *message)
 
 	voicestatus		= VOICE_ACTION_OK;
 	sequencestatus	= ST_NO_INPUT;
+	havedle			= FALSE;
+	bytetotal		= 0;
+
+	timebeg = time(NULL);
 
 	while (voicestatus == VOICE_ACTION_OK)
 	{
-			/* Daten vom Modem in den Buffer lesen. Wenn keine Daten mehr	*/
-			/* vorhanden sind, Schleife abbrechen.									*/
-
-		if ((bytesin = read(fd, linein, MODEM_BUFFER_LEN)) <= 0) break;
-
-			/* Eingelesene Daten durchlaufen und alle <DLE> in <DLE><DLE>	*/
-			/* umwandeln?!																	*/
-
-		bytesout = 0;
-
-		for (i = 0; i < bytesin; i++)
+		if ((byte_i = read(fd, line_i, MODEM_BUFFER_LEN)) <= 0)
 		{
-			lineout[bytesout] = linein[i];
+			log(L_DEBUG, "End of audio data (%s).\n", strerror(errno));
 
-			if (lineout[bytesout++] == DLE) lineout[bytesout++] = DLE;
+			break;
 		}
+
+		byte_o = 0;
+
+		for (i = 0; i < byte_i; i++)
+		{
+			line_o[byte_o] = line_i[i];
+
+			if (line_o[byte_o++] == DLE) line_o[byte_o++] = DLE;
+		}
+
+		bytetotal += byte_o;
 
 			/* Daten so lange schreiben, bis sie zu Ende sind oder ein	*/
 			/* Fehler aufgetreten ist.												*/
 
-		log(L_JUNK, "Play: <DATA %d incoming; %d outgoing>\n", bytesin, bytesout);
+		log(L_JUNK, "Play: <DATA %d incoming; %d outgoing>\n", byte_i, byte_o);
 
 		if (!modem_get_nocarrier_state())
 		{
 			written	= 0;
 			errno		= 0;
 
-			while (((written += modem_raw_write(&lineout[written], bytesout - written)) != bytesout) && (errno == 0));
-
-			if ((written != bytesout) || (errno != 0))
+			while (written != byte_o)
 			{
-				log(L_ERROR, "Could only write %d of %d bytes (%s).\n", written, bytesout, strerror(errno));
+				written += modem_raw_write(&line_o[written], (byte_o - written));
+
+				if (errno != 0) break;
+			}
+
+			if ((written != byte_o) || (errno != 0))
+			{
+				log(L_ERROR, "Could only write %d of %d bytes (%s).\n", written, byte_o, strerror(errno));
 
 				voicestatus = VOICE_ACTION_ERROR;
 			}
 		}
 		else voicestatus = VOICE_ACTION_REMOTEHANGUP;
 
-
-
 		while ((modem_check_input()) && (voicestatus == VOICE_ACTION_OK))
 		{
-			if ((bytesin = modem_raw_read(linein, 1)) > 0)
+			log(L_JUNK, "Have input...\n");
+
+			if (modem_raw_read(line_i, 1) == 1)
 			{
-				voice_handle_dle(linein[0]);
+				if (havedle)
+				{
+					switch (*line_i)
+					{
+						case ETX:
+						case 'b':
+						case 'c':
+						case 'e':
+						case 'd':
+						case 'q':
+						case 's':
+							log_line(L_DEBUG, "Found sequence \"<DLE>");
+							log_char(L_DEBUG, *line_i);
+							log_text(L_DEBUG, "\" (ignored)...\n");
+							break;
+
+						case DC4:
+							log(L_DEBUG, "Found sequence \"<DLE><DC4>\" (remote hangup)...\n");
+							voicestatus = VOICE_ACTION_REMOTEHANGUP;
+							break;
+							
+						default:
+							voice_handle_touchtone_dle(*line_i);
+							break;
+					}
+
+					havedle = FALSE;
+				}
+				else
+				{
+					if (*line_i != DLE)
+					{
+						log_line(L_DEBUG, "Got unneeded character \"");
+						log_char(L_DEBUG, *line_i);
+						log_text(L_DEBUG, "\" (need a <DLE>).\n");
+					}
+					else havedle = TRUE;
+				}
 
 				if (voicestatus == VOICE_ACTION_OK)
 				{
@@ -255,30 +308,51 @@ int voice_put_message(char *message)
 		}
 	}
 
+	timeend = time(NULL);
+
+	if (timeend >= timebeg)
+	{
+		if ((compression >= 2) && (compression <= 4))
+		{
+			bytetotal = ((bytetotal * 8) / compression);
+		}
+
+		secstotal = (timeend - timebeg);
+		bytetotal = (bytetotal / 8000 );
+
+		log(L_JUNK, "Function play %d secs (kernel needs %d secs)...\n", secstotal, bytetotal);
+
+		if (secstotal < bytetotal)
+		{
+			log(L_JUNK, "Waiting %d secs to complete playing...\n", (bytetotal - secstotal));
+
+			xpause((bytetotal - secstotal) * 1000);
+		}
+	}
+	else log(L_WARN, "Oops - can't calculate time to wait!\n");
+
 	close(fd);
 
 
-	if ((voicestatus == VOICE_ACTION_LOCALHANGUP) || (voicestatus == VOICE_ACTION_REMOTEHANGUP) || (modem_get_nocarrier_state()))
+	if ((voicestatus == VOICE_ACTION_REMOTEHANGUP) || (modem_get_nocarrier_state()))
 	{
 			/* Remote hangup: We have got the sequence <DLE><DC4> in the	*/
 			/* modem stream...															*/
 
-		printstring(linein, "%c%c", DLE, DC4);
-
-		modem_command("", "NO CARRIER");	/* NO CARRIER */
-
-/*		modem_get_echo(linein);*/
-						/* <DLE><DC4> */
+		modem_command("", "NO CARRIER");
 	}
 	else
 	{
+			/* Local hangup: Send <DLE><ETX> to the modem and wait for the	*/
+			/* result VCON...																*/
+
 		log(L_JUNK, "Sending \"<DLE><ETX>\"...\n");
 
-		printstring(lineout, "%c%c", DLE, ETX);
+		printstring(line_o, "%c%c", DLE, ETX);
                     
-		modem_raw_write(lineout, strlen(lineout));
+		modem_raw_write(line_o, strlen(line_o));
 
-		modem_command("",  linein);
+		modem_command("", "VCON");
 	}
 
 	if (modem_get_nocarrier_state()) voicestatus = VOICE_ACTION_REMOTEHANGUP;
@@ -307,9 +381,9 @@ int voice_get_message(char *name, char *timestr, int save)
 	savetimeout = xstrtol(timestr, 90);
 
 	if (save)
-		log(L_DEBUG, "Recording \"%s\" (%d secs)...\n", name, savetimeout);
+		log(L_INFO, "Recording \"%s\" (%d secs)...\n", name, savetimeout);
 	else
-		log(L_DEBUG, "Waiting %d secs for input...\n", savetimeout);
+		log(L_INFO, "Waiting %d secs for input...\n", savetimeout);
 
 	if (!voice_set_compression(setup.modem.compression))
 	{
@@ -381,29 +455,29 @@ int voice_get_message(char *name, char *timestr, int save)
 
 				if (havedle)
 				{
-					havedle = FALSE;
-                              
-					switch (line_i[0])
+					switch (*line_i)
 					{
 						case DLE:
 							line_o[byte_o++] = DLE;
 							break;
 
 						case ETX:
+							log(L_DEBUG, "Found sequence \"<DLE><ETX>\" (remote hangup)...\n");
 							voicestatus = VOICE_ACTION_REMOTEHANGUP;
 							break;
 
 						default:
-							voice_handle_dle(DLE);
-							voice_handle_dle(line_i[0]);
+							voice_handle_touchtone_dle(*line_i);
 							break;
 					}
+
+					havedle = FALSE;
 				}
 				else
 				{
-					if (line_i[0] != DLE)
+					if (*line_i != DLE)
 					{
-						line_o[byte_o++] = line_i[0];
+						line_o[byte_o++] = *line_i;
 					}
 					else havedle = TRUE;
 				}
@@ -467,28 +541,25 @@ int voice_get_message(char *name, char *timestr, int save)
 	if ((voicestatus == VOICE_ACTION_REMOTEHANGUP) || (modem_get_nocarrier_state()))
 	{
 			/* Remote hangup: Modem should response with the sequence	*/
-			/* VCON or NO CARRIER.													*/
+			/* NO CARRIER.																*/
 
-		printstring(line_i, "VCON|NO CARRIER|%c%c", DLE, ETX);
-
-		log(L_JUNK, "%s: <DLE><ETX>\n", (save ? "Record" : "Wait"));
-
-		modem_command("", line_i);	/* NO CARRIER */
-		modem_command("", line_i);	/* <DLE><ETX> */
+		modem_command("", "NO CARRIER");
 	}
 	else
 	{
 			/* Local hangup: send <DLE><DC4> to the modem and read the	*/
-			/* response <DLE><ETX>.													*/
+			/* response <DLE><ETX> and VCON.										*/
 
-		printstring(line_i, "VCON|NO CARRIER|%c%c", DLE, ETX);
 		printstring(line_o, "%c%c", DLE, DC4);
+		printstring(line_i, "%c%c", DLE, ETX);
 
 		log(L_JUNK, "Sending \"<DLE><DC4>\"...\n");
 
 		modem_raw_write(line_o, strlen(line_o));
 
-		modem_command("", line_i);	/* VCON */
+		modem_get_sequence(line_i);
+
+		modem_command("", "VCON");
 	}
 
 	if (modem_get_nocarrier_state()) voicestatus = VOICE_ACTION_REMOTEHANGUP;
@@ -521,6 +592,43 @@ static void voice_set_header(vaheader_t *header)
 	header->time			= htonl(time(NULL));
 	header->compression	= htonl(setup.modem.compression);
 }
+
+/*************************************************************************
+ ** voice_handle_touchtone_dle():	Checks a byte for a touchtone DLE	**
+ **											sequence.									**
+ *************************************************************************/
+
+static void voice_handle_touchtone_dle(int byte)
+{
+	switch (byte)
+	{
+		case '0':
+		case '1':
+		case '2':
+		case '3':
+		case '4':
+		case '5':
+		case '6':
+		case '7':
+		case '8':
+		case '9':
+		case '*':
+		case '#':
+		case 'A':
+		case 'B':
+		case 'C':
+		case 'D':
+			voice_handle_touchtone(byte);
+			break;
+
+		default:
+			log_line(L_ERROR, "Illeagal <DLE> shielded code \"");
+			log_char(L_ERROR, byte);
+			log_text(L_ERROR, "\" (ignored)...\n");
+			break;
+	}
+}
+
 
 
 static void voice_handle_dle(char Byte)
@@ -650,6 +758,8 @@ static void voice_handle_dle(char Byte)
 static void voice_handle_touchtone(char Tone)
 {
 	char Temp[2];
+
+	log(L_DEBUG, "Found touchtone \"%c\"...\n", Tone);
 
 	if (Tone == '*')
 	{
