@@ -1,4 +1,4 @@
-/* $Id: processor.c,v 1.104 2000/03/09 18:50:02 akool Exp $
+/* $Id: processor.c,v 1.105 2000/04/25 20:12:20 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,11 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.105  2000/04/25 20:12:20  akool
+ * isdnlog-4.19
+ *   isdnlog/isdnlog/processor.c ... abclcr (-d0) turn off
+ *   isdnlog/tools/dest.c ... isKey
+ *
  * Revision 1.104  2000/03/09 18:50:02  akool
  * isdnlog-4.16
  *  - isdnlog/samples/isdn.conf.no ... changed VBN
@@ -4958,6 +4963,8 @@ static void processlcr(char *p)
   auto char    	 		   lcr_amtsholung[BUFSIZ];
   auto int			   abort = 0;
 
+  if(!abclcr)
+    return;
 
 #ifdef CONFIG_ISDN_WITH_ABC_LCR_SUPPORT
   sscanf(p, "%s %s %s %s %s", ji, kenn, cid, eaz, dst);
