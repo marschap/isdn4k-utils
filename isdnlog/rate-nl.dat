@@ -1,0 +1,308 @@
+V:1.0-Netherlands [14-Apr-1999] paul@isdn4linux.de
+
+# Zonenvergabe:
+# (How is this handled in other countries? - Paul)
+#
+#   0 : Verbindungen an der eigenen Tk-Anlage (zwangsläufig kostenlos)
+#     	sowie alle "FreeCall" (kostenlos) Nummern des jeweiligen Providers
+#   1 : Ortszone (alle Nummern, die ohne Vorwahl erreichbar sind.
+#     		  Z.Zt. nur über den preselected Provider erreichbar)
+#   2 : Cityzone (Nummern im Umkreis von max. 20 km)
+#   3 : Region 50 (Nummern im Umkreis von max. 50 km)
+#   4 : Fernzone (Deutschlandweit)
+#   5 : C-Mobilbox
+#   6 : C-Netz
+#   7 : D1-Netz
+#   8 : D2-Netz
+#   9 : E-plus-Netz
+#  10 : E2-Netz
+#  11 : Euro City
+#  12 : Euro 1    (Schweiz und Frankreich)
+#  13 : Euro 2
+#  14 : Welt 1
+#  15 : Welt 2
+#  16 : Welt 3
+#  17 : Welt 4
+#
+#  20 : Internet
+
+###########################################
+P:0 KPN
+C:KPN Telecom
+C:"nacht" + "zaterdag" only until 1999-09-01, then same as "dal"
+Z:1-2
+T:1-5/08-20=0.01/0,0.000851063/1 piek
+T:1-5/20-24=0.01/0,0.000425531/1 dal
+T:1-5/00-08=0.01/0,0.000283687/1 nacht
+T:6/*=0.01/0,0.000283687/1 zaterdag
+T:7/*=0.01/0,0.000283687/1 zondag
+Z:3-4
+T:1-5/08-20=0.01/0,0.001773049/1 piek
+T:1-5/20-08=0.01/0,0.000886524/1 dal
+T:6-7/*=0.01/0,0.000886524/1 weekend
+Z:5-10
+T:1-5/08-20=0.01/0,0.012765957/1 piek
+T:1-5/20-08=0.01/0,0.007092198/1 dal
+T:6-7/*=0.01/0,0.007092198/1 weekend
+###########################################
+P:1600 Uniport
+C:Uniport Communications B.V., Amsterdam
+Z:1-4
+T:1-5/08-20=0.01/0,0.002416583/1 piek
+T:1-5/20-08=0.01/0,0.001208291/1 dal
+T:6-7/*=0.01/0,0.001208291/1 weekend
+Z:5-10
+T:1-5/08-20=0.01/0,0.012729166/1 piek
+T:1-5/20-08=0.01/0,0.008812500/1 dal
+T:6-7/*=0.01/0,0.008812500/1 weekend
+############################
+P:1601 IITS
+C:IITS SA, Lugano, CH
+############################
+P:1602 Tele2
+C:Tele2 Nederland B.V., Oude Meer
+Z:1-4
+T:1-5/08-18=0.01/0,0.002350000/1 piek
+T:1-5/18-08=0.01/0,0.001175000/1 dal
+T:6-7/*=0.01/0,0.001175000/1 weekend
+Z:5-10
+T:*/*=0.01/0,0.009791666/1
+############################
+P:1603 United World Telecom
+C:United World Telecom Netherlands, Broek op Langedijk
+############################
+P:1605 PrimeTec
+C:PrimeTec Netherlands B.V., Amsterdam
+############################
+P:1606 Talkline
+C:Talkline Benelux B.V., Baarn
+Z:1-4
+T:1-5/08-20=0.01/0,0.001958333/1 piek
+T:1-5/20-08=0.01/0,0.000979166/1 dal
+T:6-7/*=0.01/0,0.000979166/1 weekend
+Z:5-10
+T:1-5/08-20=0.01/0,0.012729166/1 piek
+T:1-5/20-08=0.01/0,0.008420833/1 dal
+T:6-7/*=0.01/0,0.008420833/1 weekend
+############################
+P:1608 Casema
+C:N.V. Casema, Delft
+C:zelfde als 1600?
+############################
+P:1609 01051 Telecom
+C:01051 Telecom GmbH, Dusseldorf
+############################
+P:1610 M-Tel B.V.
+C:Hoofddorp
+############################
+P:1611 Versatel
+C:Versatel Telecom International N.V., Amsterdam
+Z:1-4
+T:1-5/08-20=0.01/0,0.002203125/1 piek
+T:1-5/20-08=0.01/0,0.001102541/1 dal
+T:6-7/*=0.01/0,0.001102541/1 weekend
+Z:5-10
+T:1-5/08-20=0.01/0,0.015421875/1 piek
+T:1-5/20-08=0.01/0,0.008567708/1 dal
+T:6-7/*=0.01/0,0.008567708/1 weekend
+############################
+P:1612 Startec
+C:Startec Global Communications Corporation, Bethesda, USA
+############################
+P:1615 World Telecom Labs
+C:World Telecom Labs NL B.V., Zaventem, B
+############################
+P:1616 Telfort
+C:Telfort B.V., Amsterdam
+Z:1-4
+T:1-5/08-20=0.01/0,0.043083320/20,0.002154166/1 piek
+T:1-5/20-08=0.01/0,0.032195000/20,0.001609750/1 dal
+T:6-7/*=0.01/0,0.032195000/20,0.001609750/1 weekend
+Z:5-10
+T:1-5/08-20=0.01/0,0.220900000/20,0.011045000/1 piek
+T:1-5/20-08=0.01/0,0.124236660/20,0.006211833/1 dal
+T:6-7/*=0.01/0,0.124236660/20,0.006211833/1 weekend
+############################
+P:1618 H.L.K
+C:H.L.K Holding Venray B.V., Amsterdam
+############################
+P:1620 Interoute
+C:Interoute Netherlands B.V, Amsterdam
+############################
+P:1621 Carrier 1
+C:Carrier 1 B.V., Hoofddorp
+############################
+P:1622 PNEM
+C:N.V. PNEM Teleservices, 's-Hertogenbosch
+############################
+P:1623 Viatel
+C:Viafoperations Communications B.V., Hoofddorp
+Z:1-4
+T:1-5/08-20=0.01/0,0.082837500/30,0.002761250/1 piek
+T:1-5/20-08=0.01/0,0.048292500/30,0.001609750/1 dal
+T:6-7/*=0.01/0,0.048292500/30,0.001609750/1 weekend
+Z:5-10
+T:1-5/08-20=0.01/0,0.331350000/30,0.011045000/1 piek
+T:1-5/20-08=0.01/0,0.186354990/30,0.006211833/1 dal
+T:6-7/*=0.01/0,0.186354990/30,0.006211833/1 weekend
+############################
+P:1624 BEN
+C:BEN Nederland B.V., 's Gravenhage
+############################
+P:1625 Colt
+C:Colt B.V., Amsterdam
+############################
+P:1626 IMS
+C:IMS Telecom, Amsterdam
+############################
+P:1627 Socratel
+C:Socratel B.V., 's-Hertogenbosch
+############################
+P:1628 Dutchtone
+C:Dutchtone N.V., Den Haag
+############################
+P:1630 LDI
+C:Long Distance International Ltd., London, UK
+############################
+P:1631 Interflux
+C:Interflux Telecom B.V., Maastricht
+############################
+P:1633 Telegroup
+C:Telegroup Nederland B.V., Lelystad
+C: minimum 50.00 per month, else 5.00 costs
+Z:1-4
+T:1-5/08-20=0.1/0,0.014100000/6 piek
+T:1-5/20-08=0.1/0,0.007050000/6 dal
+T:6-7/*=0.1/0,0.007050000/6 weekend
+Z:5-10
+T:1-5/08-20=0.1/0,0.058750000/6 piek
+T:1-5/20-08=0.1/0,0.056400000/6 dal
+T:6-7/*=0.1/0,0.056400000/6 weekend
+############################
+P:1636 Steady Sports
+C:Steady Sports BV, Rijswijk
+############################
+P:1640 debitel
+C:debitel Nederland B.V., Hoofddorp
+############################
+P:1644 Worldxchange
+C:Worldxchange NL Corporation, Amsterdam
+Z:1-4
+T:1-5/08-20=0.01/0,0.064625000/30,0.012925000/6 piek
+T:1-5/20-08=0.01/0,0.032312500/30,0.006462500/6 dal
+T:6-7/*=0.01/0,0.032312500/30,0.006462500/6 weekend
+Z:5-10
+T:*/*=0.01/0,0.287875000/30,0.057575000/6
+############################
+P:1646 Ocean
+C:Global One Communications B.V., Amstelveen
+Z:1-4
+T:1-5/08-20=0.01/0,0.002152208/1 piek
+T:1-5/20-08=0.01/0,0.001223958/1 dal
+T:6-7/*=0.01/0,0.001223958/1 weekend
+Z:5-10
+T:1-5/08-20=0.01/0,0.011554166/1 piek
+T:1-5/20-08=0.01/0,0.009791666/1 dal
+T:6-7/*=0.01/0,0.009791666/1 weekend
+############################
+P:1649 Infotel
+C:Infotel B.V., Oss
+############################
+P:1654 Axxon
+C:Axxon Telecom B.V., Capelle a/d Ijssel
+Z:1-4
+T:1-5/08-20=0.01/0,0.002130667/1 piek
+T:1-5/20-08=0.01/0,0.001065333/1 dal
+T:6-7/*=0.01/0,0.001065333/1 weekend
+Z:5-10
+T:1-5/08-20=0.01/0,0.014540625/1 piek
+T:1-5/20-08=0.01/0,0.008078125/1 dal
+T:6-7/*=0.01/0,0.008078125/1 weekend
+############################
+P:1655 KPN
+C:KPN Telecom B.V., 's-Gravenhage
+############################
+P:1656 Netsource
+C:Atlantic Telecom Venray B.V., Venray
+C:Pay 100.00 in advance!
+Z:1-4
+T:1-5/08-20=0.01/0,0.002154166/1 piek
+T:1-5/20-08=0.01/0,0.001194583/1 dal
+T:6-7/*=0.01/0,0.001194583/1 weekend
+Z:5-10
+T:1-5/08-20=0.01/0,0.013414583/1 piek
+T:1-5/20-08=0.01/0,0.009791666/1 dal
+T:6-7/*=0.01/0,0.009791666/1 weekend
+############################
+P:1658 One.Tel
+C:One.Tel B.V., Amsterdam Z.O.
+Z:1-4
+T:1-5/08-20=0.01/0,0.1645000/60 piek
+T:1-5/20-08=0.01/0,0.0734375/60 dal
+T:6-7/*=0.01/0,0.0734375/60 weekend
+Z:5-10
+T:*/*=0.01/0,0.56400/60
+############################
+P:1660 Callmax B.V.
+C:Eindhoven
+############################
+P:1661 RSL COM Holdings B.V.
+C:Hoogland
+############################
+P:1664 N.V. Telekabel
+C:Velp
+############################
+P:1665 Worldport Communications Europe B.V.
+C:'s-Gravenhage
+############################
+P:1666 Teltrack B.V.
+C:Wassenaar
+############################
+P:1667 USA Global Link Holdings B.V.
+C:Amsterdam
+############################
+P:1668 AT&T Unisource Communication Services v.o.f.
+C:Hoofddorp
+############################
+P:1669 International Tele Group (I.T.G.) B.V.
+C:Utrecht
+############################
+P:1670 Worldcom Communications B.V.
+C:Amsterdam
+############################
+P:1676 EduTel B.V.
+C:Eindhoven
+############################
+P:1677 Kabeltelevisie Amsterdam B.V.
+C:Amsterdam
+############################
+P:1680 Esprit Telecom Benelux B.V.
+C:Amsterdam
+############################
+P:1681 Econophone Netherlands B.V.
+C:Amsterdam
+############################
+P:1684 Swift Global Netherlands B.V.
+C:Leiderdorp
+############################
+P:1685 n.v. CasTel
+C:Groningen
+############################
+P:1686 T.M.I. Tele Media International Ltd.
+C:Amsterdam
+############################
+P:1687 Orion Telecom B.V.
+C:Rotterdam
+############################
+P:1688 FCI Carrier Services B.V.
+C:Amstelveen
+############################
+P:1689 N.V. ENECO
+C:Rotterdam
+############################
+P:1694 KPN Telecom B.V.
+C:'s-Gravenhage
+############################
+P:1696 KPN Telecom B.V.
+C:'s-Gravenhage
+############################
