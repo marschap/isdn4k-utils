@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.44 2000/06/08 10:06:01 keil Exp $
+# $Id: Makefile,v 1.45 2000/06/20 10:16:16 keil Exp $
 #
 # Toplevel Makefile for isdn4k-utils
 #
@@ -49,12 +49,8 @@ endif
 ifeq ($(CONFIG_PCBITCTL),y)
 	SUBDIRS := $(SUBDIRS) pcbit
 endif
-ifeq ($(CONFIG_TELESCTRL),y)
-	SUBDIRS := $(SUBDIRS) teles
-else
-	ifeq ($(CONFIG_HISAXCTRL),y)
-		SUBDIRS := $(SUBDIRS) teles
-	endif
+ifeq ($(CONFIG_HISAXCTRL),y)
+	SUBDIRS := $(SUBDIRS) hisax
 endif
 
 ifeq ($(CONFIG_RCAPID),y)

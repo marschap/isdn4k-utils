@@ -1,5 +1,5 @@
 #
-# $Id: config.in,v 1.35 2000/05/18 15:22:09 calle Exp $
+# $Id: config.in,v 1.36 2000/06/20 10:16:16 keil Exp $
 #
 # The whole configuration stuff is borrowed from the kernel
 # configuration.
@@ -63,7 +63,6 @@ bool 'divertctrl' CONFIG_DIVERTCTRL
 endmenu
 mainmenu_option nextcomment
 comment 'Card configuration tools'
-bool 'telesctrl' CONFIG_TELESCTRL
 bool 'hisaxctrl' CONFIG_HISAXCTRL
 bool 'icnctrl' CONFIG_ICNCTRL
 if [ "$CONFIG_ICNCTRL" = "y" ]; then

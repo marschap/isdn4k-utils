@@ -41,7 +41,6 @@ CONFIG_IPROFD=y
 #
 # Card configuration tools
 #
-# CONFIG_TELESCTRL is not set
 CONFIG_HISAXCTRL=y
 CONFIG_ICNCTRL=y
 # CONFIG_ICNCTRL_DEBUG is not set
