@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.1 1999/06/30 17:19:01 he Exp $
+# $Id: Makefile,v 1.2 1999/10/08 00:31:05 he Exp $
 
 default: eftd
 
@@ -44,7 +44,10 @@ eftd.o:	eftd.c
 eftd: eftd.o 
 	$(LINK.o) eftd.o $(EFT_LIBDIR_FLAGS) $(AUTH_LIB) -left $(CRYPTLIB) -o eftd
 
-.PHONY: clean default
+install: eftd
+	$(INSTALL_PROGRAM) eftd $(SBINDIR)/
+
+.PHONY: clean default install
 
 clean:
 	rm -f eftd *.o 

@@ -1,8 +1,31 @@
-@EFT_AUTOCONF_WARNING@
-# generated from $Id: Rules.make.in,v 1.3 1999/06/30 22:56:09 he Exp $ 
-CRYPTLIB = @CONFIG_LIBCRYPT@
+# @configure_input@
+# generated from $Id: Rules.make.in,v 1.4 1999/10/08 00:31:04 he Exp $ 
+CRYPTLIB = @LIBCRYPT@
 CONFIG_EFTD = @CONFIG_EFTD@
 CONFIG_EFTD_WUAUTH = @CONFIG_EFTD_WUAUTH@
 CONFIG_EFTP = @CONFIG_EFTP@
+CONFIG_EFTP_SETUID = @CONFIG_EFTP_SETUID@
 CONFIG_EFTP_READLINE = @CONFIG_EFTP_READLINE@
-CONFIG_KERNELDIR = @CONFIG_KERNELDIR@
+CONFIG_EFT_INSTALL_CONF = @CONFIG_EFT_INSTALL_CONF@
+INSTALL = @INSTALL@
+INSTALL_PROGRAM = @INSTALL_PROGRAM@
+INSTALL_SCRIPT = @INSTALL_SCRIPT@
+INSTALL_DATA = @INSTALL_DATA@
+#
+# default values as inherited from gnu autoconf.
+#
+prefix = @prefix@
+exec_prefix = @exec_prefix@
+bindir = @bindir@
+sbindir = @sbindir@
+localstatedir = @localstatedir@
+#
+#
+SBINDIR = @SBINDIR@
+BINDIR = @BINDIR@
+RUNDIR = @RUNDIR@
+SYSVINIT_RC_DIR = @SYSVINIT_RC_DIR@
+KERNELDIR = @KERNELDIR@
+I4LCONFDIR = @I4LCONFDIR@
+
+

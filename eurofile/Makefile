@@ -1,4 +1,7 @@
-# $Id: Makefile,v 1.10 1999/10/05 21:57:26 he Exp $
+# $Id: Makefile,v 1.11 1999/10/08 00:31:04 he Exp $
+
+-include Rules.make
+
 
 SHELL = /bin/sh
 
@@ -50,8 +53,14 @@ configureclean: distclean
 # This (dummy) target is required by the isdn4k-utils
 # root makefile but not implemented yet. 
 #
-install:
-	@echo "NOTE: eurofile install not yet implemented. Install by hand for now!"
+install: 
+	make -C src install
+ifeq ($(CONFIG_EFT_INSTALL_EFTD_SH),y)
+	cd scripts; $(INSTALL_SCRIPT) eftd.sh $(SYSVINIT_RC_DIR)/
+endif
+ifeq ($(CONFIG_EFT_INSTALL_CONF),y)
+	cd examples; $(INSTALL_DATA) eft.conf $(I4LCONFDIR)/	
+endif
 
 commit: distclean configure
 	$(CVS) commit .

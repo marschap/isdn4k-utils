@@ -1,4 +1,5 @@
-# $Id: eft.conf,v 1.2 1999/07/26 22:04:40 he Exp $
+# @configure_input@
+# from $Id: eft.conf.in,v 1.1 1999/10/08 00:31:05 he Exp $
 #
 # MSNs to be used be eurofile server and client.
 #
@@ -12,10 +13,10 @@
 #   isdn network interface MSNs. (otherwise, you need to tune the
 #   default scripts)
 #
-EFT_SERVER_MSN=xxxx
+EFT_SERVER_MSN=@EFTD_SERVER_MSN@
 # dont use quotes around or trailing blanks after the next parameter
 # because it is parsed from the eftp binary
-EFT_CLIENT_MSN=xxxx
+EFT_CLIENT_MSN=@EFTP_CLIENT_MSN@
 #
 # As currently the eurofile client script "eftp.sh" needs to be run as
 # root in order to configure the network interfaces, that script will
@@ -32,6 +33,3 @@ EFT_CLIENT_USERID=xxxx
 # other variables which are set in eftd.sh before this file is
 # included, might also be (re-)set here
 #
-
-
-

@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.2 1999/06/30 21:05:21 he Exp $
+# $Id: Makefile,v 1.3 1999/10/08 00:31:05 he Exp $
 
 SHELL = /bin/sh
 
@@ -14,11 +14,11 @@ CURRENT_DIR := $(shell pwd)
 EFT_LIBDIR  = $(CURRENT_DIR)/eft
 EFT_INCDIR  = $(CURRENT_DIR)/eft/include
 EFT_AUTHDIR = $(CURRENT_DIR)/wuauth
-KERNEL_INCDIR = $(CONFIG_KERNELDIR)/include
+KERNEL_INCDIR = $(KERNELDIR)/include
 
-CFLAGS = -g -Wall
+CFLAGS += -g -Wall
 
-export EFT_LIBDIR EFT_INCDIR EFT_AUTHDIR CONFIG_EFTP_READLINE CONFIG_EFTD_WUAUTH CRYPTLIB CFLAGS KERNEL_INCDIR
+export EFT_LIBDIR EFT_INCDIR EFT_AUTHDIR CONFIG_EFTP_READLINE CONFIG_EFTD_WUAUTH CRYPTLIB CFLAGS KERNEL_INCDIR INSTALL INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA SYSVINIT_RC_DIR prefix exec_prefix bindir sbindir BINDIR SBINDIR CONFIG_EFTP_SETUID
 
 LIBDIRS    = eft  wuauth
 CLIENTDIRS = eftp
@@ -26,20 +26,25 @@ SERVERDIRS = eftd
 TESTDIRS   = testing
 EFTDIRS    = $(CLIENTDIRS) $(SERVERDIRS) 
 
-SUBDIRS := $(LIBDIRS) $(EFTDIRS)
-ALL_SUBDIRS := $(SUBDIRS) $(TESTDIRS)
+BASIC_SUBDIRS := $(LIBDIRS) $(EFTDIRS)
+ALL_SUBDIRS := $(BASIC_SUBDIRS) $(TESTDIRS)
 
-DEFAULT_SUBDIRS := $(LIBDIRS)
 
 ifeq ($(CONFIG_EFTP),y)
-DEFAULT_SUBDIRS += eftp
+APP_SUBDIRS += eftp
 endif
 
 ifeq ($(CONFIG_EFTD),y)
-DEFAULT_SUBDIRS += eftd
+APP_SUBDIRS += eftd
 endif
 
-default: $(DEFAULT_SUBDIRS)
+DEFAULT_SUBDIRS := $(LIBDIRS)
+DEFAULT_SUBDIRS += $(APP_SUBDIRS)
+
+default: $(DEFAULT_SUBDIRS) 	
+#	echo $(DEFAULT_SUBDIRS)
+#	echo $(MAKEFLAGS)
+#
 
 all: $(ALL_SUBDIRS)
 
@@ -58,9 +63,10 @@ clean:
 distclean: clean
 	rm -f config.h `find . \( -name '*~' -o -name '#*#' -o -name core \)`
 
-install: eftp/eftp eftd/eftd
-	cp eftp/eftp /usr/local/bin
-	cp eftd/eftd /usr/local/sbin
+install: $(APP_SUBDIRS) 
+ifneq ($(APP_SUBDIRS),)
+	for i in $(APP_SUBDIRS); do $(MAKE) -C $$i install; done
+endif
 
 new_version:
 	make -C eft new_version

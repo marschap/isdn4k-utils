@@ -1,4 +1,4 @@
-/* $Id: eftp.c,v 1.5 1999/10/06 18:16:24 he Exp $ */
+/* $Id: eftp.c,v 1.6 1999/10/08 00:31:06 he Exp $ */
 /*
   Copyright 1997 by Henner Eisen
 
@@ -561,7 +561,7 @@ int main(int argc, char **argv)
  */
 	struct sockaddr_x25 x25bind, x25connect;
 	struct x25_route_struct x25_route;
-	int s, count, on=1, selval, prompt_for_pw = 1, use_readline=1;
+	int s, on=1, selval, prompt_for_pw = 1, use_readline=1;
 	unsigned char called[TDU_PLEN_ADDR+1], udata[TDU_PLEN_UDATA+1];
 	uid_t ruid, euid;
 
