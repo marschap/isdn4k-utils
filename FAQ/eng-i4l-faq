@@ -12,17 +12,13 @@ Posting-frequency: monthly
 Last-modified: 18-Mar-97
 URL: http://www.lrz-muenchen.de/~ui161ab/www/isdn/
 
-!1FAQ for isdn4linux - Version 1.3.2!br (translation 25-May-97)
+!1FAQ for isdn4linux - Version 1.3.2!br (translation 27-May-97)
 
 [Translator's notes]!br
---31-Mar-97: First step in updating the FAQ from 1.0.5
-(6-Jan-97) to 1.3.2 (18-Mar-97). Headings are now complete and in the right order,
-but many questions are missing or are still in German!!br
---14-Apr-97: Questions complete in all sections (but not all updated or 
-translated)!br
---5-May-97: Translation complete (except for the proofreading)! !br
+--5-May-97: Translation complete for 1.3.2 (except for the proofreading)! !br
 --8-May-97: Added correction for Italy.!br
 --25-May-97: Numerous corrections submitted by Paul Slootman!br
+--27-May-97: Minor cleanup, noted additional countries
 This FAQ is protected by the GNU General Public License (GPL) Version 2;
 (C) 1996 Volker Götz, Bernhard Hailer, Matthias Heßler, Michael Hipp and
 Rainer May.!br
@@ -37,11 +33,11 @@ Original FAQ by Volker Goetz <volker@oops.franken.de>, (c) 1995!br
 Comprehensive edition and additions (1996, 1997):!br
 Matthias Hessler <hessler@wi-inf.uni-essen.de>,!br
 Bernhard Hailer <Bernhard.Hailer@lrz.uni-muenchen.de>,!br
-Scott Hanson <shanson@mail.hh.provi.de> (English translation),!br
+Scott Hanson <shanson@shcon.com> (English translation),!br
 Michael Hipp <Michael.Hipp@student.uni-tuebingen.de> (many syncPPP questions)!br
 Rainer May <r_may@khavi.desaster.heide.de> (i4l and networks)!br
 !br
-English translation coordinated by Scott Hanson <shanson@mail.hh.provi.de>
+English translation coordinated by Scott Hanson <shanson@shcon.com>
 with contributions from:!br
 Sven Tervoort <sveneric@xs4all.nl>!br
 Matthias Hessler <hessler@wi-inf.uni-essen.de>!br
@@ -99,16 +95,15 @@ A: isdn4linux controls ISDN PC cards and can emulate a modem with the
 
 Q: What can't isdn4linux do (yet)?
 A: There is no !u1full duplex!u0 audio connection possible.
-   Some protocols are still missing (V.110, American
-   protocols).
+   Some protocols are still missing (V.110, American protocols).
 
 Q: Can I use isdn4linux in North America?
 A: See this question in the section "National Peculiarities".
 
 Q: What do I need for isdn4linux?
 A: isdn4linux has been part of the Linux kernel since version 1.3.59.
-   In addition, you need the package isdn4k-utils-2.0.tar.gz and possibly
-   the HiSax driver.
+   In addition, you need the package isdn4k-utils-2.0.tar.gz and
+   possibly the HiSax driver.
 
 !old
 Q: How can I get isdn4linux?
@@ -125,7 +120,7 @@ A: Via FTP:!br
        +49 931   781467   Atrie 1914A        V.32(bis), V.42(bis), V32terbo
        +49 931   781468   Atrie 1914A        V.32(bis), V.42(bis), V32terbo
 !verboff
-     New Ringdown (16 Lines. First log in as 'bbs'):
+     New ringdown (16 Lines. First log in as 'bbs'):
 !verbon
        +49 931 79002055   Motorola 3400      V.32(bis), V.42(bis), V.34
 !verboff
@@ -205,7 +200,7 @@ Q: Is there a mailing list for isdn4linux?
 A: Yes, there is. To subscribe, send an email message to 
    "majordomo@hub-wue.franken.de". The subject doesn't matter. The message
    should read  "subscribe isdn4linux <Email address>", where <Email
-   address> is  the address to which mail from the list should be sent.
+   address> is the address to which mail from the list should be sent.
    Currently there are about 20-50 messages per day.
 
 !old
@@ -219,7 +214,6 @@ A: To unsubscribe, send another email message to
 Q: Is the mailing list mirrored to a newsgroup?
 A: Yes, the mailing list can also be accessed at de.alt.comm.isdn4linux -
    a bidirectional gateway makes sure that one can also answer postings.
-
 
 !old
 Q: Is there an archive of the isdn4linux mailing list?
@@ -258,11 +252,16 @@ A: We are aware of the following countries:
      The Netherlands
      USA
 !verboff
+[Translator's note: I've also seen messages on the mailing list from
+isdn4linux users in Belgium, Canada, Denmark, Hungary, Slovenia and
+the United Kingdom. I've also seen mentions of isdn4linux from
+Australia, the Czech Republic and Poland, but I'm not sure if it is
+actually in use in those countries.]
 
 !old
-Q: Is isdn4linux approved for use by the post office ("postzugelassen")?
+Q: Is isdn4linux approved for use by the telecommunications authorities?
 A: Germany:!br
-     That depends on the driver used. For active cards, the post approval 
+     That depends on the driver used. For active cards, the approval 
      covers the entire card including its firmware. Thus the approval 
      also covers the use of these cards with isdn4linux. The Teles driver 
      is not approved in Germany, even though it works superbly. Therefore, 
@@ -273,20 +272,21 @@ A: Germany:!br
 
 !old
 Q: What is the most recent version?
-A: Currently isdn4k-utils-2.0 is required in addition to the drivers included
-   with the kernel. For use with kernel 2.0.0 (and only it), two patches
-   (isdn4kernel-2.0-patch1+2) are required. Kernel 2.0.2 is unusable
-   because of a bug. Kernels between 2.0.15 and 2.0.24 don't seem to work
-   correctly with syncPPP. 2.0.26 contained many i4l bug fixes, but an
-   include file (proto.h) was forgotten. A new 'jumbo patch' was included in
-   version 2.0.30. Kernels 2.0.27+ are very stable.!br
-   There are many changes in kernels 2.1.0 and
-   higher; for now they can only be recommended for developers. Together
-   with HiSax 1.4, they only work up to 2.1.14. Kernels 2.1.15 and higher 
-   require HiSax 2.0 along with a necessary kernel patch.!br
-   It's recommended to use i4l versions 2.0 or higher together with a
-   2.0.3 or higher kernel (no longer requires any patches!). Kernel
-   >2.0.27 is the current standard.
+A: Currently isdn4k-utils-2.0 is required in addition to the drivers
+   included with the kernel. For use with kernel 2.0.0 (and only it),
+   two patches (isdn4kernel-2.0-patch1+2) are required. Kernel 2.0.2
+   is unusable because of a bug. Kernels between 2.0.15 and 2.0.24
+   don't seem to work correctly with syncPPP. 2.0.26 contained many
+   i4l bug fixes, but an include file (proto.h) was forgotten. A new
+   'jumbo patch' was included in version 2.0.30. Kernels 2.0.27+ are
+   very stable.!br
+   There are many changes in kernels 2.1.0 and higher; for now they
+   can only be recommended for developers. Together with HiSax 1.4,
+   they only work up to 2.1.14. Kernels 2.1.15 and higher require
+   HiSax 2.0 along with a necessary kernel patch.!br It's recommended
+   to use i4l versions 2.0 or higher together with a 2.0.3 or higher
+   kernel (no longer requires any patches!). Kernel >2.0.27 is the
+   current standard.
 
 Q: What hardware is u1NOT!u0 supported?
 A: For not (with the exception of ICN) no active ISDN cards are supported,
@@ -300,17 +300,19 @@ A: No, but it doesn't need to. Terminal adapters are designed to behave
 
 !old
 Q: Which internal cards are supported?
-A: Right now there is a driver for all card with a certain 
-   Siemens chipset (HiSax driver), that also supports Plug&Play cards.
-   See the next question for details.!br
-   The HiSax driver has superceded has the old Teles driver, which is therefore is 
-   not being further developed. For this reason, the Teles driver has
-   many more bugs and should not be used any longer.!br
-   Further drivers includes that for the (active) ICN card (ICN driver),
-   as well as that for the PCbit card (Octal, Portugal).!br
-   There used to be a (special) driver for the ITK ix1 micro" from Frank Mohr
-   <mohr@fhdacom2.fhrz.fh-darmstadt.de>, but that is not included in HiSax 2.0.
-   It supports the following cards:
+A: Right now there is a driver for all card with a certain Siemens
+   chip set (HiSax driver), that also supports Plug&Play cards.  See
+   the next question for details.!br
+   The HiSax driver has superseded has the old Teles driver, which is
+   therefore is not being further developed. For this reason, the
+   Teles driver has many more bugs and should not be used any
+   longer.!br 
+   Further drivers includes that for the (active) ICN card
+   (ICN driver), as well as that for the PCbit card (Octal,
+   Portugal).!br
+   There used to be a (special) driver for the ITK ix1 micro" from
+   Frank Mohr <mohr@fhdacom2.fhrz.fh-darmstadt.de>, but that is not
+   included in HiSax 2.0.  It supports the following cards:
 !verbon
        * ITK ix1 micro V2.0 and V2.1
        * Cisco 200
@@ -322,7 +324,7 @@ A: Right now there is a driver for all card with a certain
 !old
 Q: What is the new HiSax driver all about?
 A: It is a new driver that should support all passive cards that are based on a
-   certain Siemens chipset. Currently it supports:
+   certain Siemens chip set. Currently it supports:
 !verbon
         * Teles S0-8
         * Teles S0-16 and S0-16.2
@@ -377,8 +379,8 @@ A: Karsten Keil <keil@temic-ech.spacenet.de> wrote on 12. Nov 1996:!br
    "My AVM card produces very many interrupts" in HiSax part if the 
    Troubleshooting section], but maybe I can get that right with the timer,
    since that's only noticeable when, for example, the system busy with 
-   rendering for an entire night.
-  Karsten Keil <keil@temic-ech.spacenet.de> wrote further on 2. Dec 1996
+   rendering for an entire night.!br
+   Karsten Keil <keil@temic-ech.spacenet.de> wrote further on 2. Dec 1996
    on stability and lack of bugs:
 !verbon
         1st choice ELSA
@@ -391,7 +393,7 @@ A: Karsten Keil <keil@temic-ech.spacenet.de> wrote on 12. Nov 1996:!br
           
 !old
 Q: Does isdn4linux support external ISDN adapters?
-A: No, isdn4linux supports only internal cards. External  ISDN adapters
+A: No, isdn4linux supports only internal cards. External ISDN adapters
    can be accessed either like an analog modem or like a network card, and
    therefore do not need isdn4linux.
 
@@ -696,9 +698,9 @@ A: Just as many as there are ISA slots and interrupts/IO addresses.
    The ICN has no interrupts, a more flexible port configuration
    and the driver places the shared memory area of all ICN cards at the same
    address. The card memory is shown only as needed. !br
-   Therefore, one could use
-   as many cards are there are slots... one could even increase
-   the number of ISA slots with an ISA bus extender.
+   Therefore, one could use as many cards are there are slots... one
+   could even increase the number of ISA slots with an ISA bus
+   extender.
 
 Q: Do I need a DOS setup program to setup my Teles card?
 A: Karsten Keil <keil@temic-ech.spacenet.de> wrote on 21 Feb 1997:!br
@@ -718,8 +720,8 @@ A: Yes. If a network interface (e.g. "isdn0") is set up, the driver will dial
 
 Q: Does isdn4linux support PNP (Plug and Play)?
 A: Yes, but only with the HiSax driver. With "Plug" alone
-   it's unfortunately not yet ready, more work is necessary:
-   (from Karsten Keil <keil@temic-ech.spacenet.de>)
+   it's unfortunately not yet ready, more work is necessary: (from
+   Karsten Keil <keil@temic-ech.spacenet.de>)
 !verbon
         1. HiSax has to be patched into the kernel
            (Attention: use the "-pn" parameter!)
@@ -864,7 +866,6 @@ A: Henner Eisen <eis@baty.hanse.de> wrote on 13 Feb 1997:
    privileges for the ISDN ttys. Those allowed to use ISDN have to be
    explicitly added to the group 'isdn'.
 
-
 !3MSN
 
 Q: What is an MSN?
@@ -929,9 +930,9 @@ Q: Where should I configure my own MSN in order to test syncPPP by calling
    myself?
 A: If you want to call yourself as a test then you have to configure
    your MSN both as the outgoing and the incoming number.!br
-   The configuration of the !i1outgoing!i0 number is done with "isdnctrl
-   addphone <interface> out <msn>". You must use the MSN !u1including
-   area code!u0 (including the "0" at the start -
+   The configuration of the !i1outgoing!i0 number is done with
+   "isdnctrl addphone <interface> out <msn>". You must use the MSN
+   !u1including area code!u0 (including the "0" at the start -
    Deutsche Telekom needs this in order to dial correctly). "isdnctrl
    delphone" is used similarly.!br
    The configuration of the !i1incoming!i0 number is done with "isdnctrl
@@ -958,7 +959,8 @@ Q: Can I do the following on *THE SAME* MSN:
 	- IP interface for IP connections to other computers?
 !verboff
 A: Gernot Zander <hifi@scorpio.in-berlin.de> wrote on this subject Dec. 4
-   1996: Yes. However, IP dialin cannot be differentiated from X.75 
+   1996:!br
+    Yes. However, IP dialin cannot be differentiated from X.75 
    dialin, so you are either restricted to dialout, or you must enter
    the MSN of the other party and set secure to on. Then the driver will
    start by asking the net interfaces, and if none match, the call will
@@ -979,13 +981,14 @@ A: For data privacy reasons, telephone numbers from the analog network
    are are transmitted unless the caller has explicitly allowed the Telekom 
    to do so (costs nothing) and is connected to a digital switching
    office!br
-   Those with an ISDN connection, on the other hand, must explicitly deny
-   permission for the Telekom to transmit the number, or apply to be able to
-   do this on a call-by-call basis [CLIR]. Call-by-call denial is free; 
-   call-by-call transmission costs extra. However, it seems to be !u1very!u0
-   difficult for the Telekom to configure this correctly on the first try.
-   If you depend on the transmission of Caller ID, you should check closely
-   that everything is configured correctly.
+   Those with an ISDN connection, on the other hand, must explicitly
+   deny permission for the Telekom to transmit the number, or apply to
+   be able to do this on a call-by-call basis [CLIR]. Call-by-call
+   denial is free; call-by-call transmission costs extra. However, it
+   seems to be !u1very!u0 difficult for the Telekom to configure this
+   correctly on the first try.  If you depend on the transmission of
+   Caller ID, you should check closely that everything is configured
+   correctly.
 
 Q: Do I receive the Caller ID from foreign calls (German Telekom)?
 A: Yes, with calls from countries that don't view Caller ID quite as strictly
@@ -1025,9 +1028,9 @@ A:  You can enter do this by entering the correct kernel options at boot.
     "/usr/src/linux/drivers/isdn/teles/config.c" to reflect the correct
     settings for your card(s). (read comments in that file)
 
-Q: I'm confused: according to the documentation, my Teles card is configured for 
-   IO address 0x180. In Linux (and also in some Windows programs)
-   the address is shown as 0xd80?
+Q: I'm confused: according to the documentation, my Teles card is
+   configured for IO address 0x180. In Linux (and also in some Windows
+   programs) the address is shown as 0xd80?
 A: The card uses both IO addresses! Karsten Keil
    <keil@temic-ech.spacenet.de> wrote on 3 Jan 1997:
 !verbon
@@ -1585,32 +1588,34 @@ A: Rainer May <r_may@kahvi.desaster.heide.de> described it as follows:
      for the Mitbenutzernummer "0003", the line before "[?25h" <passwort>
      should read:
        "[?25h" 0003\c
-     (since the entry field is full after "0003", no CR is entered afterwards)
-     When diald is running, an interface "sl0" should suddenly be available
-     (ask ifconfig), and the default route should point to it (route -n will
-     tell you; without "-n", "route" will try to resolve the fantasy IP
-     addresses (which are later replaced with real addresses) -  we don't need
-     it do to that). Those who don't work only with numeric addresses, but
-     also want to successfully try to "ftp ftp.sunsite.edu", should of course
-     enter a name server in /etc/resolv.conf (one from the Telekom has the
-     address 94.25.2.129). Then start ftp, telnet, netscape, whatever. That's
-     it. By the way, diald will write novels in your syslog. You can read the
-     entire login procedure, even if it looks somewhat chaotic. If a request
-     doesn't work, use "kill" to stop diald (routes will be automatically
-     erased) and check the syslog -  if there is something like Zur Zeit 
-     keine verbindung möglich", then the Telekom's gateway is down.  Or
-     perhaps the login is incorrect... watch out, after three unsuccessful
-     login attempts, the login will be closed and has to be reactivated
-     (either per telephone or directly from BTX (e.g. seyon or minicom, dial 
-     01910, slowly go through the login screen by hand and follow the
-     instructions).
+     (since the entry field is full after "0003", no CR is entered
+     afterwards) When diald is running, an interface "sl0" should
+     suddenly be available (ask ifconfig), and the default route
+     should point to it (route -n will tell you; without "-n", "route"
+     will try to resolve the fantasy IP addresses (which are later
+     replaced with real addresses) - we don't need it do to
+     that). Those who don't work only with numeric addresses, but also
+     want to successfully try to "ftp ftp.sunsite.edu", should of
+     course enter a name server in /etc/resolv.conf (one from the
+     Telekom has the address 94.25.2.129). Then start ftp, telnet,
+     netscape, whatever. That's it. By the way, diald will write
+     novels in your syslog. You can read the entire login procedure,
+     even if it looks somewhat chaotic. If a request doesn't work, use
+     "kill" to stop diald (routes will be automatically erased) and
+     check the syslog - if there is something like "Zur Zeit keine
+     verbindung möglich", then the Telekom's gateway is down.  Or
+     perhaps the login is incorrect... watch out, after three
+     unsuccessful login attempts, the login will be closed and has to
+     be reactivated (either per telephone or directly from BTX
+     (e.g. seyon or minicom, dial 01910, slowly go through the login
+     screen by hand and follow the instructions).
 !verboff
    A further example with dip instead of diald can be found at:!br
      !link http://www.rosat.mpe-garching.mpg.de/~web/ISDN.html;
 
 !old
-Q: I've set up an Internet connection over T-Online as described in the
-   groups, but the chat script fails ("Connect script failed").
+Q: I've set up an Internet connection over T-Online as described in
+   the groups, but the chat script fails ("Connect script failed").
 A: Gerhard Träger <gerhard@gt-priv.m.eunet.de>: wrote:
 !verbon
      In the mentioned version of chat, there is a small mistake in logf():
@@ -1665,7 +1670,6 @@ A: Harald Milz <hm@seneca.muc.de> wrote on 28 Nov 1996:!br
 !verboff
    or more elegantly in perl.!br
    [isdnlog might also be able to be programmed to do this - Ed.]
-
 
 
 !3Modem emulation (use with ttyI* devices)
@@ -2210,7 +2214,6 @@ A: Marc Neitzner <marc@zeus.han.de> wrote on 15 Dec 1996:
    use under win95 and Windows NT therefore is restricted to 16-bit 
    stuff.
 
-
 !3Isdnlog
 
 !old
@@ -2672,8 +2675,8 @@ A: As long as the patch form Karsten Keil <isdn4@temic-ech.spacenet.de> is not
      2       Voice (Mother)                  Net interface
      3       Modem/Fax                       X.75
 !verboff
-   If you want, you can install another answering machine on MSN 2 that play a totally
-   different message...
+   If you want, you can install another answering machine on MSN 2
+   that plays a totally different message...
    
 !old
 Q: Which ISDN routers are there that are OS-independent?
@@ -2786,7 +2789,6 @@ A: Sakari Aaltonen <sakari@picea.hut.fi>:
 !verboff
 
 !3Leased lines 
-
 
 !old
 Q: How does establishing and ending a connection work with D64S 
@@ -3019,7 +3021,7 @@ A: Robert O'Kane <okane@em.uni-frankfurt.de> wrote on 27 Dec 1996:!br
    starved or if the scheduling algorithm is just not being too smart at
    these bit-rates?!br
    Has anyone else done/had these kinds of experiences ?
-   Robert O'Kane <okane@em.uni-frankfurt.de> ergänzte am 1. Feb 1997:
+   Robert O'Kane <okane@em.uni-frankfurt.de> added am 1. Feb 1997:
      I now use 2.0.28 and HiSax 1.5 with NO difference in bandwidth.
    (I also choose 70 for the CPS trigger and 30 seconds slave delay).
      Could you also try setting isdnctrl verbose 4 and watch the bogocps
@@ -3134,15 +3136,15 @@ A: The following steps are recommended:!br!br
       what is that? What should I use?"), you can use the normal pppd with
       modem emulation (i.e. /dev/ttyI*). 
 !verboff      
-   Otherwise, it is highly recommended
-   that use an example script form the HowTo (see the question "Where can 
-   I find scripts and other information on configuring i4l?"). For testing
-   you can try your own provider or of the guest accounts (see "Are there 
-   sites that offer guest access where I can test my isdn4linux setup?").
-   The latter have the advantage of being able to see the log files as well
-   as a stable, working configuration. For example, if accessing via ipppd 
-   doesn't work, you can log in via modem or modem emulation to find out
-   what happened on the other side. Not all providers are so 
+   Otherwise, it is highly recommended that use an example script form
+   the HowTo (see the question "Where can I find scripts and other
+   information on configuring i4l?"). For testing you can try your own
+   provider or of the guest accounts (see "Are there sites that offer
+   guest access where I can test my isdn4linux setup?").  The latter
+   have the advantage of being able to see the log files as well as a
+   stable, working configuration. For example, if accessing via ipppd
+   doesn't work, you can log in via modem or modem emulation to find
+   out what happened on the other side. Not all providers are so
    cooperative.... :-)
 
 !old
@@ -3176,13 +3178,13 @@ A: Isdn4linux sets "digital data" as it's own service when it calls out.
    a telephone or a fax machine.
 
 !old
-Q: If i4l uses one B-channel then the other one will be blocked (incoming as
-   well as outgoing)
-A: This behavior is typical for a cable with confused a/b wiring. Some NT from
-   Quante had a wrong labeling. They caused exactly the mentioned behavior if
-   the PBX was connected to the plug of the NT and the ISDN card to the pins
-   of the NT. As soon as some device activates the bus the other one can no
-   longer get through.
+Q: If i4l uses one B-channel then the other one will be blocked
+   (incoming as well as outgoing)...
+A: This behavior is typical for a cable with confused a/b wiring. Some
+   NT from Quante had a wrong labeling. They caused exactly the
+   mentioned behavior if the PBX was connected to the plug of the NT
+   and the ISDN card to the pins of the NT. As soon as some device
+   activates the bus the other one can no longer get through.
 
 Q: In the instructions for my NTBA it says that a crossed 
    a/b cable pair has no effect on the operation?
@@ -3193,8 +3195,7 @@ A: Gernot Zander <hifi@scorpio.in-berlin.de> wrote on 21 Jan 1997:
 
 Q: How can I test whether a a/b cable pair has been crossed?
 A: Karsten Keil <keil@temic-ech.spacenet.de> wrote on 21 Jan 1997:!br
-   I simply start with the Western plug:
-   4 lines are used:
+   I simply start with the Western plug: 4 lines are used:
 !verbon
        | | | | 
        | | | |
@@ -3299,8 +3300,8 @@ A: Peter Gramlich <peter.gramlich@wiwi.uni-karlsruhe.de>:
      (voice, data, G4-fax,...).
 !verboff
 
-Q: My PBX produces a reset on the SO bus every hour, after which isdn4linux no long
-   accepts any calls?
+Q: My PBX produces a reset on the SO bus every hour, after which
+   isdn4linux no longer accepts any calls?
 A: With HiSax 1.5 isdn4linux will survive the bus reset..
 
 !old
@@ -3603,10 +3604,7 @@ A: The file proto.h was not included in the patch. It should read::
         #endif
 !verboff
 
-
-
 !3HiSax driver
-
 
 Q: How can I tell whether my ISDN card has been corrected recognized by
    the HiSax driver?
@@ -3845,7 +3843,6 @@ A: Joachim Gassen <joachim@fb4-1112.uni-muenster.de> wrote on 8 Jan
 
 !3Sync PPP
 
-
 !old
 Q: How can I get a log for ipppd?
 A: For debugging purposes you can redirect the PPP log into a separate file.
@@ -3876,10 +3873,10 @@ A: Ari Biel <aribiel@sun14.hrz.th-darmstadt.de> wrote on 3 Oct 1996:
      start ipppd. Looks like version problems.
 !verboff
 
-
 !commenton
 (The following questions are from the sync PPP FAQ.)
 !commentoff
+
 !old
 Q: Starting ipppd I get the error message "this systems lacks ppp support".
 A: Check whether the device "ippp0" exists (i.e. with the program "ifconfig").
@@ -3957,6 +3954,7 @@ A: Frank Meyer <fm@textware.k.eunet.de> wrote:
 !commenton
 (The following question was taken from the syncPPP FAQ)
 !commentoff
+
 !old
 Q: I can't get a connect. How can I find out where the problem is?
 A: The output of ipppd is very helpful... Check whether you can find:
@@ -4093,11 +4091,12 @@ A: Probably one of the compressions is activated (i4l can't handle those very
 
 !old
 Q: The connection with ipppd seems to work, but eventually it crashes.
-A: It could be that some compression is activated (that i4l can't handle
-   properly). Common error: "-vj" has to be used *additionally* to "-vjccomp"
-   (it completely switches off the VJ compression) - the example scripts coming
-   with ipppd don't have that option included already.
-   Other compression modes (bsd, pccomp) can cause trouble, too.
+A: It could be that some compression is activated (that i4l can't
+   handle properly). Common error: "-vj" has to be used *additionally*
+   to "-vjccomp" (it completely switches off the VJ compression) - the
+   example scripts coming with ipppd don't have that option included
+   already.  Other compression modes (bsd, pccomp) can cause trouble,
+   too.
 
 Q: I only have problems with ipppd when the connection is being heavily 
    burdened. Then everything stops. What could be causing this?
@@ -4238,6 +4237,7 @@ A: The first zero is not dialed. It only shows which channel is used for
 !commenton
 (The following question was taken from the syncPPP FAQ)
 !commentoff
+
 !old
 Q: My ISDN device is shown with HWaddr and IRQ=0 and base address = 0 when I
    list it with ifconfig
@@ -4782,18 +4782,21 @@ A: G. Richter <richter@ecos.de> wrote to Michael Hipp
 !commenton
 (The following question was taken from the syncPPP FAQ)  
 !commentoff
+
 Q: A SunISDN tries to dial into my i4l system.
-A: The Sun tries to communicate with asyncPPP. ipppd can't handle this, you
-   have to use the ttyI* devices and the standard pppd.
+A: The Sun tries to communicate with asyncPPP. ipppd can't handle
+   this, you have to use the ttyI* devices and the standard pppd.
 
 
 !3Callback
 
 !old
-Q: An incoming call is rejected by i4l. i4l then calls back. The reject is not
-   recognized by the other side which keeps on dialing to i4l.
-A: Most problems with callback can be solved by adjusting the callback delay
-   with "isdnctrl cbdelay". One second has been successful in many cases.
+Q: An incoming call is rejected by i4l. i4l then calls back. The
+   reject is not recognized by the other side which keeps on dialing
+   to i4l.
+A: Most problems with callback can be solved by adjusting the callback
+   delay with "isdnctrl cbdelay". One second has been successful in
+   many cases.
 
 Q: Callback isn't working. How many ippp* devices do I need (at a
    minimum)?
@@ -4824,7 +4827,7 @@ A: Torsten Hentschel <Torsten.Hentschel@DInet.de> wrote on 3 Oct 1996:
      That's how they are programmed (firm statement of a Cisco developer):
        If a Cisco receives a packet that should be routed through a "dial on
        demand" telephone connection, and there is a D-channel available for
-       dialing out it dials out immediately.
+       dialing out, it dials out immediately.
      If in such a situation (which has be the case with Delta Internet for half
      a year now) a Cisco with 8 D-channels is on the other side and somebody
      does a simple "ping <RemoteIP>" then the Cisco will use (worst case) all
@@ -4938,9 +4941,6 @@ code is 045, my MSN is 4572004681.
 Now with the setting AT&E4572004681 isdn4linux works fine. ]
 !verboff
 
-
-
-
 !3The Netherlands
 
 Q: What does our MSN look like?
@@ -5003,9 +5003,7 @@ A: CPN=Called Party Number, the number of your own side. It's missing, that's
    was set to the EAZ of your getty. It could also be an error of your
    telephone company.
 
-
 !3Switzerland
-
 
 !old
 Q: We have neither an MSN nor an EAZ, just a plain telephone number. What do we
@@ -5068,20 +5066,18 @@ A: NI-1 is used - it's related to DSS1. Both are Q.931 Protocols, but
    have totally different groups of functions and are therefore not 
    compatible to one other.    
 
-
 !2Miscellaneous
-
 
 !old
 Q: How can I set the clock of my computer with ISDN?
-A: Isdnlog offers this feature with option "-t". Unfortunately, the seconds are
-   not transmitted via ISDN, and the transmitted time is not very accurate -
-   depending on the ISDN equipment of your telephone company there may be a
-   deviation of several minutes (!).
-   It's better to get a PC clock that is set by radio signals and check it with,
-   for example, xntp. You can also use a time server in the Internet with
-   "netdate" or "rdate". One time server can be found in Cologne:
-   time.rrz.uni-koeln.de, but there are many more.
+A: Isdnlog offers this feature with option "-t". Unfortunately, the
+   seconds are not transmitted via ISDN, and the transmitted time is
+   not very accurate - depending on the ISDN equipment of your
+   telephone company there may be a deviation of several minutes (!).
+   It's better to get a PC clock that is set by radio signals and
+   check it with, for example, xntp. You can also use a time server in
+   the Internet with "netdate" or "rdate". One time server can be
+   found in Cologne: time.rrz.uni-koeln.de, but there are many more.
 
 Q: Where can I find information on the dip switches of my NTBA?
 A: !link ftp://novix.oih.rwth-aachen.de/pub/ntba.zip; (ca. 170kB)
@@ -5128,10 +5124,10 @@ A: Alexander List <alex@ag.or.at> wrote:
 Q: Where can I find the "bat" book about configuration of sendmail?
 A: dietmar <dietmar@highway.bertelsmann.de> wrote on 8 Oct 1996:
 !verbon
-     O'Reilly catalog 1997 (brand new from the book fair):
-     "book dealers report to us, that some books are so strongly associated with
-     animals that many clients won't ask for the normal title, but just for the
-     (i.e.) 'camel book' (Programming Perl)."
+     O'Reilly catalog 1997 (brand new from the book fair): "book
+     dealers report to us that some books are so strongly associated
+     with animals that many clients won't ask for the normal title,
+     but just for the (i.e.) 'camel book' (Programming Perl)."
 !verboff
    In a _good_ book shop you should find the following:
 !verbon
@@ -5143,3 +5139,14 @@ A: dietmar <dietmar@highway.bertelsmann.de> wrote on 8 Oct 1996:
      !link http://www.ora.com/catalog/sendmail/noframes.html;
      !link http://www.lob.de/;
 !verboff
+
+
+
+
+
+
+
+
+
+
+
