@@ -219,7 +219,7 @@ int     getDest(char *onumber, TELNUM * num)
   size_t  len;
   datum   key, value, nvalue;
   static char unknown[] = "Unknown";
-  char   *p, *q, *city = 0, *s, *name;
+  char   *p, *q, *r = 0, *city = 0, *s, *name;
   int     arealen, countrylen, prefixlen;
   char   *number = strdup(onumber);
   char    dummy[100]; /* V2.7.2.3 kills stack */
@@ -338,6 +338,8 @@ again2:
       }
       if (strstr(num->area, q))	/* only if new number has same prefix */
         countrylen = strlen(q);	/* last one must be country */
+      else
+        r = strtok(NULL, ";"); /* save remaining number codes if any */
     }
 
     p = strsep(&s, ";");
@@ -349,6 +351,14 @@ again2:
     if (!p) {
 
       append(num->scountry, name);
+      if (!countrylen)         /* countrylen missing */
+        while (r) {            /* test remaining number codes */
+          q = strsep(&r, ",");
+          if (strstr(num->area, q)) {
+            countrylen = strlen(q);
+            break;
+          }
+        }
       if (countrylen && (arealen || prefixlen)) {
 	append(num->sarea, city);
 	Strncpy(num->country, num->area, countrylen+1);

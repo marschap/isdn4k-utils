@@ -1,0 +1,702 @@
+Folgender Text stammt von Tobias Becker, dem ich dafür meinen
+herzlichen Dank aussprechen möchte.
+
+Der Text zeigt erstens umfassend, wie die Länder- und Nummernerkennung
+in isndlog funktioniert und behebt zweitens einen Bug darin, deshalb
+gebe ich ihn hier ungekürzt wieder. -lt
+
+
+isdnlog: country[-de].dat dest.cdb
+==================================
+
+Problem
+-------
+isdnrate -N <NUMMER>
+scheitert wenn <NUMMER> zwar in country-de.dat definiert ist,
+dieser Eintrag aber ein top-level Eintrag ist, d. h. über
+kein R:-Tag verfügt und <NUMMER> nicht als erstes mit
+einem C:-Tag definiert ist.
+
+Beispiel
+--------
+country.dat:
+| N:Marianen (SaipanNord-)
+| A:Nördliche Marianen, Marianen, Marianen (Saipan), Saipan, Salpan
+| A:Marianen (Nördliche)
+| A:Westl. Marianen
+| E:Northern Mariana Islands
+| C:+1670, +1671
+| T:MP
+
+isdnrate erkennt nur den ersten Eintrag:
+| isdnrate -N +1670 +1671
+| +1670 => +1670 - (MP) - DTAG T-ISDN
+| +1671 => - (DE) - DTAG T-ISDN
+
+Ziel
+----
+Das Problem liesse sich wahrscheinlich umgehen, in dem alle Einträge,
+deren Nummernraum eine Teilmenge des Nummernraumes eines anderen Lands
+darstellt, mit entsprechenden R:-Tags ausgestattet würden.  Allerdings
+entspricht diese logische Zuordnung nicht den realen (politischen)
+Gegebenheiten.
+	Alternativ könnte man für die gemeinsamen Rufnummernräume
+(+1, +269, +44, +7, u. a.) Pseudo top-level Einträge anlegen,
+müßte dann aber z. B. die USA vollständig definieren und könnte
+nicht mittels einer Art default-Zuordnung für +1, wie sie jetzt
+verwendet wird, arbeiten.
+	Daher soll versucht werden, denn Quelltext entsprechend
+abzuändern, um ohne Nebeneffekte und ohne Zuordnung mit R:-Tags
+das Problem zu lösen.
+
+Ansatz
+------
+main() von isdnrate liegt in der Datei isdnlog/tools/isdnrate.c.
+hier wird opts() zum Auswerten der Optionen aufgerufen, -N
+veranlasst das Setzen der globalen Variable explain auf 55.
+opts() gibt den Index der ersten Nichtoption, hier der ersten
+Nummer zurueck.
+Es folgen die Funktionen init() und doit().
+init() ruft unter anderen initDest() aus isdnlog/tools/dest.c auf.
+
+doit() beginnt mit post_init():
+|   clearNum(&srcnum);
+|   if (fromarea) {
+|     Strncpy(srcnum.area, fromarea, TN_MAX_AREA_LEN);
+|     free(fromarea);
+|     fromarea = 0;
+|   }
+|   initNum(&srcnum);
+|
+|   if (wanted_day)
+| get_day(wanted_day);
+
+srcnum ist global definiert:
+| static TELNUM srcnum, destnum;
+
+Der Typ TELNUM stammt aus  isdnlog/tools/telnum.h:
+| /* for number 1002 0043 1 2345 or 1002 01 2345 it gives */
+| typedef struct {
+|   char vbn[TN_MAX_VBN_LEN];             /* "10" */
+|   char provider[TN_MAX_PROVIDER_LEN];   /* "UTA" */
+|   int nprovider;                        /* 2 */
+|   char scountry[TN_MAX_SCOUNTRY_LEN];   /* "Austria" */
+|   char country[TN_MAX_COUNTRY_LEN];     /* "+43" */
+|   char keys[TN_MAX_SCOUNTRY_LEN];       /* "VIA/AT" */
+|   char tld[3];                          /* "AT" */
+|   int ncountry;                         /* 43 */
+|   char area[TN_MAX_AREA_LEN];           /* "1" */
+|   int narea;                            /* 1 */
+|   char sarea[TN_MAX_SAREA_LEN];         /* "Wien" */
+|   char msn[TN_MAX_MSN_LEN];             /* "2345" */
+| } TELNUM;
+
+clearNum() stammt aus isdnlog/tools/telnum.c und wird dort
+wie folgt beschrieben
+|  * void clearNum(TELNUM *num)
+|  * --------------------------
+|  *      call this if you have a number on stack or want to reuse it
+|  *      normalizeNumber calls this for you
+|  *
+|  * void initNum(TELNUM *num)
+|  *      inits a number with myarea, mycountry
+|  *      you may set the area yourself prior to calling this
+
+clearNum() kopiert defnum, dies sind Standardwerte abhängig von der Konfiguration
+nach num.  defnum wird von initTelNum() aus telnum.c erstellt, das von initRate()
+aus rate.c aufgerufen, welches in isdnrate.c von init() aufgerufen wird.
+
+initNum() belegt einige Defaultwerte, falls nicht vorhanden und ruft getDest()
+auf mit +431, sofern im vergleich zu obigen TELNUM-Beispiel nichts anderes
+angegeben ist.
+
+getDest("+431", &srcnum) stammt aus isdnlog/tools/dest.c und ruft seinerseits
+get_cache("+431", &srcnum) auf, offenbar eine Art Zwischenspeicher fuer Zugriffe
+auf dest.cdb?
+
+
+... zunächst weiter mit doit() aus isdnrate.c unter der Annahme, das
+post_init nur srcnum sinnvoll vorbelegt, was hier nicht weiter von
+Interesse sein dürfte.  Möglicherweise ist aber das oben erwähnte
+getDest() der gesuchte Ansatzpunkt.
+
+In doit werden nun in einer Schleife alle weitere Parameter der Befehlszeile
+abgearbeitet, hier der relevante Teil, da -N explain=55 zur Folge hatte.
+
+|    num = sub_sp(argv[i]);
+|    if (explain == 55) {
+|      if (n_providers) {
+|        destnum.nprovider = pnum2prefix_variant(providers[0], 0);
+|        Strncpy(destnum.provider, getProvider(destnum.nprovider), TN_MAX_PROVIDER_LEN);
+|        normalizeNumber(num, &destnum, TN_NO_PROVIDER);
+|      }
+|      else
+|        normalizeNumber(num, &destnum, TN_ALL);
+|      printf("%s => %s \n", num, formatNumber("%l - %p", &destnum));
+|      i++;
+|      continue;
+|    }
+
+sub_sp ersetzt Unterstriche durch Leerzeichen, sofern num nicht vollständig aus
+Grossbuchstaben, Unterstrichen und Ziffern besteht, was bei Codes der Bauart
+AT oder _DEMD1 der Fall wäre.
+
+n_providers ist ein globaler int, der anfänglich 0 ist und die Anzahl der in
+providers gespeicherten und mittels -p Option gewählten Provider angibt.
+Gibt es keine Option -p, bleibt nproviders 0. (?)  Da im gewählten Fehlerfall
+kein -p angegeben wurde, reduziert sich die Betrachtung auf die beiden Zeilen
+|        normalizeNumber(num, &destnum, TN_ALL);
+|      printf("%s => %s \n", num, formatNumber("%l - %p", &destnum));
+
+ num ist die Zielnummer aus der Befehlszeile, &destnum vom Typ TELNUM und
+bislang uninitialisiert, TN_ALL ist gleich 15 (telnum.h).  normalizeNumber
+stammt aus telnum.c und hat die Aufgabe num in einzelne Bestandteile zu
+zerlegen.
+
+ Rufen wir uns die kritisierte Ausgabe in Erinnerung:
+| isdnrate -N +1670 +1671
+| +1670 => +1670 - (MP) - DTAG T-ISDN
+| +1671 => - (DE) - DTAG T-ISDN
+formatNumber (ebenfalls aus telnum.c) ersetzt %p durch
+den verwendeten Provider, wobei hier die rate.conf offenbar
+nicht berücksichtigt wird.  Für %l ist folgende Beispielausgabe
+vermerkt: %l .. long +49 30 12356 - Berlin (DE)
+
+%l ist ein Abkürzung für formatNumber("%1c %1a %1m - %1A (%t)", num)
+wobei %c = .country  wenn vorhanden und .ncountry>0
+                     .country ist die Landesvorwahl als String mit + am Anfang,
+                     .ncountry die Landesvorwahl (country code) als Zahl
+      %a = .area  ist die inländische Vorwahl (area code) als String,
+                  .narea ist das numerische Pendant.
+      %m = .msn  ist die Anschlussnummer im jeweiligen (Orts-) Netz als String.
+      %A = .sarea  ist die Bezeichnung der Vorwahl, z. B. Ortsname.
+      %t = .tld   ist die top-level Destination der Rufnummer.
+                  .tld ist nur 3 Zeichen lang, hier wäre zu klären, ob es bei
+                  längeren top-level Bezeichnern zu mehr als optischen Problemen
+                  kommt, Beispiel Inmarsat A = _INA_.
+
+Angeben sind jeweils die Komponenten von TELNUM.
+Die 1 nach dem Prozentzeich unterdrückt bei Nichtvorhandensein des
+Elements 1 nachfolgendes Leerzeichen.
+
+Nun weiter zu normalizeNumber(num, &destnum, TN_ALL).
+TN_ALL ist ein flagwert aus telnum.h, hier alle:
+| /* flags */
+| #define TN_PROVIDER 1
+| #define TN_COUNTRY      2
+| #define TN_AREA         4
+| #define TN_MSN          8
+| #define TN_ALL          15
+| #define TN_NO_PROVIDER 14
+| #define TN_NOCLEAR 0x80
+
+Zunächst clearNum(&destnum) was für konfiguruierte Standardwerte sorgt:
+|   if ((flag & TN_NOCLEAR) == 0)
+|   clearNum(num);
+
+Dann erfolgt die Verarbeitung einer eventuellen VBN, z. B. 01033:
+|   if (flag & TN_PROVIDER) {
+|     if (!split_vbn(&p, num)) {
+|       num->nprovider = pnum2prefix(preselect,0);
+|     }
+|     Strncpy(num->provider, getProvider(num->nprovider), TN_MAX_PROVIDER_LEN);
+|   }
+
+Der Reihe nach, zunächst split_vbn:
+static int split_vbn(char **p, TELNUM * num)
+| {
+|   int     l;
+|
+|   if ((l = provider2prefix(*p, &num->nprovider))) {
+|     Strncpy(num->provider, *p, l + 1);
+|     *p += l;
+|     return l;
+|   }
+|   return 0;
+| }
+Sinn und Zweck ist es offenbar, zu erkennen, ob eine VBN am
+Anfang von num steht, split_vbn gibt die Länge der VBN zurück.
+Ist eine VBN vorhanden, steht die Providernummer (alle P:-Tags
+aus der rate-CC.dat durchnumeriert) dann in num.nprovider,
+andernfalls wird der Standardprovider (PRESELECTED in isdn.conf)
+mit dem Subprovider 0 eingetragen, die rate.conf wird also nicht
+ausgewertet, dies erklärt die Angabe von T-ISDN an Stelle von
+T-ISDN xxl im isdnrate-Beispiel.  Die weitere Funktionialität
+in provider2prefix, u. a. das Beobachten der X:-Tags aus der
+rate-CC.dat wird bis auf weiteres nicht betrachtet.
+
+In normalizeNumber() geht es wie folgt weiter:
+|   if (flag & TN_COUNTRY) {
+|     /* subst '00' => '+' */
+|     if (p[0] == '0' && p[1] == '0')
+|       *++p = '+';
+|     if (getSpecial(p)) {        /* sondernummer */
+|       goto is_sonder;
+|     }
+|     if (!isdigit(*p)) {
+|       res = getDest(p, num);
+|       /* isdnrate is coming with +4319430 but this may be a
+|          sondernummer */
+|       if (atoi(mycountry + 1) == num->ncountry && (*num->area || *num->msn)) {
+|
+
+TN_COUNTRY ist durch TN_ALL gesetzt, p zeigt auf den Beginn einer Kopie der
+zu untersuchenden Nummer num.  Eine Nummer 0012345 wird zu +12345, an dieser
+Stelle ist die internationale Vorwahl hart kodiert, es gibt (noch) Länder,
+die eine anderen Zugang zum internationalen Telefonnetz verwenden.
+
+getSpecial (rate.c) prüft, ob eine (nationale) Sondernummer vorliegt.  Die
+Sonderrufnummern werden durch N:-Tags in der rate-CC.dat definiert ist für
+nur national erreichbare Rufnummern verwendet.  Dies soll nicht der Fall sein.
+
+Liegt eine internationale Rufnummer, d. h. begann die Nummer auf der
+Befehlszeile mit + oder 00 wird getDest() aufgerufen.  Dies trifft auch
+auf nationale Rufnummer zu, die mitsamt Landesvorwahl angegeben wurde.
+num kann an dieser Stelle auch ein Name sein.
+Im weiteren wird hier geprüft (letzte Zeile des obigen Ausschnitts),
+ob der eben genannte Fall, Rufnummer im eigenen Land vorliegt, und falls
+ja, ob es eine Sonderrufnummer ist.  Ist letzteres nicht der Fall, endet
+normalizeNumber mit dem Rückgabewert von getDest.
+
+Liegt keine internationale Nummer vor, wird ebenfalls auf Sonderrufnummern
+geprüft.  Ist dies negativ und beginnt die Rufnummer mit einer 0 (ebenfalls
+hard kodiert nationale Vorwahl, AREAPREFIX aus isdn.conf wird nicht verwendet)
+wird die Rufnummer ins internationale Format gebracht und getDest wie oben
+aufgerufen.  Liegt andernfalls eine Rufnummer ohne 0 am Anfang vor, wird diese
+nach num.msn kopiert; num.area, num.naera num.sarea wurden zuvor bereits mit
+den Werten des eigenen Ortsnetzes belegt.
+
+
+Im weiteren zu untersuchen ist also, was getDest mit einer internationalen
+Rufnummer 'number' und einer bis auf .vbn (?), .provider, .nprovider
+undefinierten TELNUM-Struktur 'num' anfängt.
+
+Unser Beispiel ist weiterhin:
+| isdnrate -N +1670 +1671
+| +1670 => +1670 - (MP) - DTAG T-ISDN
+| +1671 => - (DE) - DTAG T-ISDN
+
+In der dest.cdb finden sich nach cdbdump dazu folgende Einträge:
+| +2,35:MP->Marianen (SaipanNord-);+1670,+1671^@
+| +5,4:+1670->:MP^@
+| +5,4:+1671->:MP^@
+Links vom Doppelpunkt stehen die Längen von Schlüssel und Wert,
+Rechts davon Schlüssel->Wert. ^@ ist das NUL-Zeichen.
+
+Eingangs finden wir den Typ datum, definiert in isdnlog/tools/cdb/i4l_cdb.h:
+| typedef struct datum_t {
+|     unsigned char *dptr;
+|     size_t dsize;
+| } datum;
+
+Anschließend begegnet uns erneut get_cache, womit ein lokaler Zwischenspeicher
+für CACHE_SIZE Nummern realisiert wird.  Ist hier das Ergebnis eines getDest()-
+Aufrufs in Form einer TELNUM-Variable bereits abgelegt, wird diese ab der
+Komponente scountry einfach nach 'num' kopiert.  Die Details dieses cleveren
+Mechanismus sollten nicht von Belang sein, da isdnrate -N +1671 ebenfalls
+fehl schlägt.  Gehen wir also im folgenden davon aus, das number noch
+nicht angefragt wurde.
+
+Weiter geht es in getDest():
+|   len = strlen(number);
+|   if (len==2 && isalpha(*number) && isupper(*number))
+|     Strncpy(tld,number,3);
+|
+|   if (isdigit(*number)) {
+|     warning("getDest called with local number '%s'", number);
+|     add_cache(number, num);
+|     return UNKNOWN;
+|   }
+Ist number zwei Zeichen land und das erste ein Großbuchstabe, wird offenbar ein
+Countrycode angenommen und nach num.tld kopiert.  Bei unserem Beispiel trifft
+dies nicht zu.
+Beginnt Nummer mit einer Ziffer liegt ein Fehler vor, da internationale Rufnummern
+hier zumindest bei unserer Vorgeschichte mit einem + beginnen.
+
+Es folgen Initialisierungen:
+|   countrylen = arealen = prefixlen = 0;
+|   num->ncountry = 0;
+|   num->narea = 0;
+|   *num->area = '\0';
+|   *num->sarea = '\0';
+|   *num->scountry = '\0';
+|   *num->country = '\0';
+|   *num->msn = '\0';
+|   *num->keys = '\0';
+|   if (len > 1 && !isdigit(number[1]) && !isKey(number))
+|     city = strdup(number);
+Besteht number aus mindestens zwei Zeichen und ist das zweite Zeichen keine Ziffer
+(number damit keine int. Nummer sondern ein Name) und kein Code der Bauart
+/[A-Z_]?[A-Z_0-9]*/ (Perl-Regexp), wie z. B. AT oder _DEMD1, wird number nach city
+kopiert.
+
+Nun die (erste(n)) Abfragen der dest.cdb:
+| again:
+|   key.dptr = number;
+|   key.dsize = len;
+|   value = FETCH(db, key);
+| again2:
+|   if (value.dptr != 0) {
+| /* we have a value:
+|  * it could be
+|  *   :RKEY ... pointer to a KEY
+|  *   :city ... pointer to a city
+|  *   name;code ... top level entry i.e country
+|  *   name;codes[;:KEY]  ... region
+|  *   [#len];code;:KEY ... city
+|  */
+| [...]
+|   }/* if value */
+|   else if (first && len && *number == '+') {    /* try shorter nums */
+|     number[--len] = '\0';
+|     goto again;                 /* I like it */
+|   }
+Es unter number nachgesehen, das Ergebnis der Länge value.dsize steht unter
+value.dptr.  Wird nichts gefunden, wird bei einer Nummer (+123..) am Ende
+Ziffer um Ziffer entfernt, bis ein Fund auftritt oder die Nummer komplett
+gelöscht wurde.  Die Anwendung ist offensichtlich, es geht darum, für eine
+beliebige Nummer die genauest mögliche Destination zu bekommen, gemessen
+über die Nummernlänge
+In unserem Beispiel sollte für beide Nummern der Wert ":MP" bestimmt werden,
+gemäß Kommentar ein RKEY.
+
+Schauen wir uns den Anfang der obige Auslassung [...] genauer an:
+|     while (value.dptr && *value.dptr == ':') {
+|       /* check for city, i.e. lowercase chars */
+|       if (!isKey(value.dptr + 1)) {
+|         city = strdup(value.dptr + 1);
+|       }
+|       else {
+|         append(num->keys, value.dptr + 1);
+|         Strncpy(tld,value.dptr+1,3);
+|       }
+|       key.dptr = value.dptr + 1;
+|       key.dsize = value.dsize - 2;      /* w/o : and \x0 */
+|       nvalue = FETCH(db, key);
+|       if (*dbv == 'G')
+|         free(value.dptr);
+|       value = nvalue;
+|     }
+|
+Ein Ergebnis, das mit : beginnt ist entweder ein Code oder eine
+Stadt.  Ersterer (seine ersten 2 Zeichen) werden nach num.tld
+kopiert.  Strncpy terminiert im Gegensatz zu strncpy in jedem
+Fall den Zielstring.  Der Code beginnt ferner die hierarchiche
+Liste der Codes in num->keys.  Haben wir es mit einer Stadt
+zu tun, landet ihr Name in city und würde dort die ursprüngliche
+Anfrage überschreiben, wenn denn eine Abfrage mit einer Stadt
+wiederum eine Stadt liefern würde, was hier nicht der Fall ist.
+
+Danach wird ein reverse lookup gemacht, in unserem Fall
+wird nach 'MP' gesucht und dafür als nvalue
+'Marianen (SaipanNord-);+1670,+1671' gefunden.
+dbv ist in isdnlog/tools/zone/common.h definiert und bezeichnet die
+verwendete Datenbank: CDB/GBDM/.. . Somit dienen die Abfragen *dbv == 'G'
+wohl nur der sorgsamen Speicherverwaltung.
+Schließlich wird das erste Ergebnis verworfen und durch das zweite ersetzt.
+number ist weiterhin +1671,
+value.dptr zeigt auf 'Marianen (SaipanNord-);+1670,+1671'
+
+Sollte der neue Wert wiederum mit : beginnen, würde das obige Procedere
+wiederholt.  Ein Beispiel hierfür ist nicht bekannt:
++49170 liefert :_DEMD1,
+es folgt num.keys = _DEMD1,
+_DEMD1 liefert Deutschland Mobilfunk D1;+491511,+49160,+49170,+49171,+49175;:_DEMF
+Zumindest zu dieser Phase wird die while-Schleife nur einmal genutzt.  Ein Code müßte
+direkt den nächsten Code liefern.
+
+Betrachten wir noch einen Durchlauf der mit einem Namen (Stadt) als
+number beginnt:
+"Grünau, Almtal" liefert ;+437616;:AT
+dies löst keinen reverse-lookup aus.
+
+Eine Flughafenstadt:
++4969 führt zu :_FRA,
+_FRA zu ;Frankfurt;+4969;:DE
+('Frankfurt' würde zu :_FRA führen.)
+
+Zusammenfassung hieraus:  value sollte nun die Form [city];nummer[,nummer][;:code]
+haben.  Ist city nicht vorhanden, ist die gleichnamige Variable aber belegt.
+
+Es geht weiter:
+|     /* do we have something valid */
+|     if (value.dptr == 0 && first) {
+|       strcpy(num->scountry, unknown);
+|       strcpy(num->sarea, unknown);
+|       Strncpy(num->msn, number, TN_MAX_MSN_LEN);
+|       free(number);
+|       if (city)
+|         free(city);
+|       return 0;
+|     }
+Ist beim ersten Durchlauf (first unterhalb dieses Abschnitts
+unabänderlich false) nichts gefunden worden, wird die gesamte
+number num.msn zugeschlagen und getDest() beendet.
+
+Es geht weiter:
+|     first = false;
+|     s = value.dptr;
+|     p = strsep(&s, ";");
+|     /* name or #len or empty */
+|     name = 0;
+|     if (p && *p) {
+|       if (*p == '#')
+|         prefixlen = atoi(p + 1);
+|       else
+|         name = strdup(p);
+|     }
+Ein evtl. vorhandener Name gelangt nach name, bspwl. "Marianen (SaipanNord-)".
+
+Bei #num wurde die Laengenangabe nach prefixlen gelangen, das ansonsten 0 bleibt.
+Den #-Fall gibt es hier genau einmal:
+Shared Cost 0180-1->#3;+491801;:DE
+Ursprung ist isdnlog/tools/zone/de/code,
+die restlichen 0180-Einträge sind offenbar falsch kodiert:
+Shared Cost 0180-4      3->;+491804;:DE
+Konkret stehen vor der abschließenden Prefixlänge Leerzeichen statt
+Tabulatoren.  Andere Baustelle (TODO).
+
+s Zeigt auf den Beginn der Nummernliste, bsplw. +1670,+1671.
+
+weiter gehts in getDest() aus der Datei dest.c:
+|     p = strsep(&s, ";");
+|     /* codes or empty */
+|     if (p && *p) {
+|       q = strtok(p, ",");       /* we could have multiple codes */
+|       if(*number!='+') {
+|         if (arealen == 0) {     /* first one must be city */
+|           arealen = strlen(q);
+|           Strncpy(num->area, q, TN_MAX_AREA_LEN);
+|         }
+|       }
+|       else {
+|         if (arealen == 0) {     /* we take the orig number */
+|           arealen = strlen(number);
+|           Strncpy(num->area, number, TN_MAX_AREA_LEN);
+|         }
+|       }
+|       if (strstr(num->area, q)) /* only if new number has same prefix */
+|         countrylen = strlen(q); /* last one must be country */
+|     }
+p zeigt auf die Nummernliste. q auf den Eintrag davon.
+Ist die angefragte number ein Name, wird die erste Nummer nach num.area kopiert und
+arealen entsprechend gesetzt.  Andernfalls (arealen beim ersten Erreichen zwingend
+0) wird die angefragte number als num.area eingesetzt und arealen gesetzt.
+Im Beispiel ist num.aera somit (zunächst) +1670 und +1671, arealen wird 5.
+Kommt der die erste Nummer in der angefragten vor wird countrylen auf die erste
+Länge gesetzt.
+Bei +1670 ist dies der Fall: countrylen = 5,
+bei +1671 nicht:             countrylen = 0.
+
+Weiter gehts, die Ursache könnte naheliegen, daher erstmal das Anfangsbeispiel
+betrachten:
+|     p = strsep(&s, ";");
+|     /* :KEY or empty */
+|     /* we should be at toplevel i.e country */
+|     if (!p) {
+So, hinter dem 2. ; steht nichts, kein höhere/allgemeinerer Eintrag vorhanden.
+Daher num fertigmachen:
+|       append(num->scountry, name);
+name ist in beiden Fällen Marianen ..., passender _s_tring für country.
+
+|       if (countrylen && (arealen || prefixlen)) {
+das trifft nur für den ersten Code zu, die +1670, nicht für +1671.
+
+|         append(num->sarea, city);
+city wäre Name für Stadt oder auch Ortsnetz, haben wir hier nicht.
+num.sarea bleibt leer.
+|         Strncpy(num->country, num->area, countrylen+1);
+|         num->ncountry = atoi(num->country+1);
+num.area ist +1670: num.country wird +1670\0\0
+|         strcpy(num->tld,tld);
+num.tld wird MP, ansonsten wurde num.tld bislang in getDest() nicht angefasst.
+num ist physisch destnum in doit() aus isdnrate.c und wurde an normalizeNumber()
+übergeben, das den hier untersuchten getDest() Aufruf veranlasste, vorher aber
+mittels Clearnum u. a. .tld für die eigene Rufnummer setzt (über defnum und _init()
+in telnum.c).  Dies erklärt das (DE) in der Ausgabe für +1671.
+|         p = num->area + countrylen;
+p zeigt auf \0
+|         arealen -= countrylen;
+arealen = 5 - 5 = 0
+|         if(prefixlen)
+|           arealen=prefixlen;
+haben wir hier nicht, nur bei #len vor ersten ;
+|         Strncpy(num->area, p, 1 + arealen);
+num.area wird geleert, richtig, da Angabe komplett country.
+|         num->narea = atoi(num->area);
+num.narea = 0
+|         if (*onumber == '+' && strlen(onumber) > arealen + countrylen)
+|           Strncpy(num->msn, onumber + arealen + countrylen, TN_MAX_MSN_LEN);
+Was nicht in der dest.cdb gefunden wurde, ist die lokale Nummer.
+area werden in dest.cdb Nummernbestandteile mit Ausnahme des letzten Fundes,
+der country darstellt.
+|         add_cache(onumber, num);
+|       }
+|     }
+Abschließend cache-Verwaltung.
+bei +1671 fehlen die ganzen obigen Zuweisungen!
+
+|     else if (p && *p == ':') {
+|       /* do we have a  code */
+|       append(num->sarea, name);
+|       append(num->keys, p + 1);
+|       Strncpy(tld,p+1,3);
+|       key.dptr = p + 1;
+|       key.dsize = strlen(p + 1);
+|       nvalue = FETCH(db, key);
+|       value = nvalue;
+|       goto again2;
+|     }
+Obiger Mechanismus durchläuft Abfrage erneut, wenn nach dem zweiten ; :CODE angegeben war,
+um einen möglichst allgemeinen Code zu finden.
+
+|     free(number);
+|     if (city)
+|       free(city);
+|     return 0;
+|   }                             /* if value */
+Wurde einmal etwas in der dest.cdb gefunden (mit ggf. verkürzter Nummer, das dadurch
+entfallene sollte in num.msn landen) endet getDest hier und führt im zweiten Testfall
+(+1671) zu dn unvollständigen Daten in num und damit der unvollständigen Ausgabe.
+
+
+Fazit der Fehlersuche
+---------------------
+Eine Nummer wird zunächst soweit verkürzt, bis sie in der dest.cdb auftaucht.
+Nach dem erst Fund wird ihr Code oder Cityname bestimmt, der ggf. zu übergeordneten
+Codes führt.  Dieser Pfad wird bis zu einem Code verfolgt, zu dem kein übergeordneter
+mehr angegeben ist.  Während im allgemeinen mehrere Nummer zum selben Code führen können,
+und für einen Code mehrere Nummern(anfänge) angegeben sind, wird für den letzten Code
+erwartet, dass er nur über eine Nummer verfügt, die Landesvorwahl.  Dies ist im
+gewählten Beispiel nicht der Fall.
+
+
+Korrekturansatz
+---------------
+(Teilweise spekulativ).  Der letzte Code wird am Fehlen eines übergeordneten
+erkannt.  countrylen>0 ist dann erforderlich, damit die Struktur num richtig
+belegt wird.  Warum sollte daher bei gescheiterter Prüfung strstr(number, code),
+wobei code der erste ist, nicht der nächste Code versucht werden?
+
+Gewissermaßen könnte dies zum Beispiel die folgende Notation in der
+country-de.dat erklären, wahrscheinlicher liegt hier aber einfach ein
+unentdeckter Widerspruch infolge einer automatischen Datenübernahme vor:
+| N:Kasachstan
+| E:Kazakhstan
+| C:+7336, +7330, +7329, +7328, +7327, +7326, +7325, +7324, +7323, +7322, +7321, +7318, +7317, +7316, +7315, +7314, +7313, +7312, +7311, +7310, +73
+| T:KZ
+(Man beachte die +73 am Ende).
+
+Eine derartige Erweiterung deckt möglicherweise bislang unerkannte Probleme im
+Umfeld country-de.dat / dest.cdb auf oder aber schafft neue.
+
+Historische Analyse
+-------------------
+Für die Datei isdnlog/tools/dest.c und hierin die Funktion getDest():
+aktuell ist Version 1.8, zuletzt geändert 2000-08-01 durch Andreas Kool
+oder Leopold Tötsch (CVS Benutzer, Name im Changelog).
+getDest() wurde in Version 1.6 in Bezug auf die Behandlung prefixlen
+(Hinweis auf 'dutch virtual area codes').
+Version 1.4 machte tld zu einem char-Feld der Länge 4 und brachte
+vermutlich die Erkennung von Codes als zu bearbeitende Nummer in
+getDest().
+Version 1.2 ließ eine Hilfsvariable für abschließende Bestimmung
+von num.ncountry entfallen.
+Die auslösende Stelle (bzw. die als solches angesehene) ist somit
+von Anfang an enthalten.
+
+Doppelte Nummern bei Ländercodes in der country-de.dat finden sich
+ab der ersten CVS Version 1.1 von 1999-06-27.
+R: und T: Tags erscheinen zuerst in Version 1.15 von 1999-09-26.
+
+1. Versuch
+----------
+$ cvs diff -u dest.c
+Index: dest.c
+===================================================================
+RCS file: /i4ldev/isdn4k-utils/isdnlog/tools/dest.c,v
+retrieving revision 1.8
+diff -u -r1.8 dest.c
+--- dest.c      2000/08/01 20:31:31     1.8
++++ dest.c      2002/08/25 02:00:30
+@@ -338,6 +338,12 @@
+       }
+       if (strstr(num->area, q))        /* only if new number has same prefix */
+         countrylen = strlen(q);        /* last one must be country */
++      else                             /* test other (country(?)) codes */
++        while ( (q = strtok(NULL, ",")) )
++          if (strstr(num->area, q)) {
++            countrylen = strlen(q);
++            break;
++          }
+     }
+
+     p = strsep(&s, ";");
+
+
+kleiner Erfolg:
+| $ ./bin/isdnrate -N +1670 +1671
+| +1670 => +1670 - (MP) - DTAG T-ISDN
+| +1671 => +1671 - (MP) - DTAG T-ISDN
+
+etwas größerer Erfolg: geänderte Programme überleben
+einen (halben) Telefonsonntag, bis die Frage nach der
+Performance auftaucht, da jetzt unter Umständen gegen
+zahlreiche Nummern mit strstr() geprüft wird, siehe
+etwa _DEMF:
+|_DEMF->Deutschland Mobilfunk;+491610,+491611,+491612,+491613,+491614,+491615,
+| +491616,+491617,+491619,+491618,+491511,+49160,+49170,+49171,+49175,+491520,
+| +49162,+49172,+49173,+49174,+49163,+49177,+49178,+49176,+49179,+491505,
+| +491566;:DE^
+
+
+2. Versuch
+----------
+$ cvs diff -u dest.c
+Index: dest.c
+===================================================================
+RCS file: /i4ldev/isdn4k-utils/isdnlog/tools/dest.c,v
+retrieving revision 1.8
+diff -u -r1.8 dest.c
+--- dest.c      2000/08/01 20:31:31     1.8
++++ dest.c      2002/08/25 12:34:24
+@@ -219,7 +219,7 @@
+   size_t  len;
+   datum   key, value, nvalue;
+   static char unknown[] = "Unknown";
+-  char   *p, *q, *city = 0, *s, *name;
++  char   *p, *q, *r = 0, *city = 0, *s, *name;
+   int     arealen, countrylen, prefixlen;
+   char   *number = strdup(onumber);
+   char    dummy[100]; /* V2.7.2.3 kills stack */
+@@ -338,6 +338,8 @@
+       }
+       if (strstr(num->area, q))        /* only if new number has same prefix */
+         countrylen = strlen(q);        /* last one must be country */
++      else
++        r = strtok(NULL, ";"); /* save remaining number codes if any */
+     }
+
+     p = strsep(&s, ";");
+@@ -349,6 +351,14 @@
+     if (!p) {
+
+       append(num->scountry, name);
++      if (!countrylen)         /* countrylen missing */
++        while (r) {            /* test remaining number codes */
++          q = strsep(&r, ",");
++          if (strstr(num->area, q)) {
++            countrylen = strlen(q);
++            break;
++          }
++        }
+       if (countrylen && (arealen || prefixlen)) {
+        append(num->sarea, city);
+        Strncpy(num->country, num->area, countrylen+1);
+
+
+So sollte sich der Aufwand deutlich reduzieren, anstelle über
+strtok() dürfte r sich ebenfalls mittels Pointerarithmetik bestimmen
+lassen.
+
+Bislang funktioniert es.
