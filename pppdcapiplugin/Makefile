@@ -16,7 +16,9 @@ export MKDIR=$(TOPDIR)/mkinstalldirs
 
 PPPSRCDIRS=/src/isdn/pppd
 
+ifeq ($(PPPVERSIONS),)
 PPPVERSIONS = 2.3.11 2.4.0 2.4.1 2.4.1b1 2.4.1b2
+endif
 
 PEERDIR=${DESTDIR}/etc/ppp/peers/isdn
 PEERS= arcor otelo talkline avm avm-ml leased
@@ -46,7 +48,7 @@ install-peers:
 	done
 
 install-man:
-	for i in /usr/share/man /usr/man; do \
+	for i in ${DESTDIR}/usr/share/man ${DESTDIR}/usr/man; do \
 		if [ -d $$i/man8 ] ; then \
 			echo $(INSTALL) capiplugin.8 $$i/man8; \
 			$(INSTALL) capiplugin.8 $$i/man8; \
