@@ -1,5 +1,5 @@
 /*
-** $Id: vboxbeep.c,v 1.6 2000/06/22 15:56:55 keil Exp $
+** $Id: vboxbeep.c,v 1.7 2001/03/01 14:52:58 paul Exp $
 **
 ** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
 */
@@ -234,6 +234,8 @@ int main(int argc, char **argv)
 		log(LOG_DEBUG, "time range \"%s\".", timestrings);
 	}
 
+	set_new_starttime(0);
+
 	while (TRUE)
 	{
 		for (i = 0; i < MAX_MESSAGE_BOXES; i++)
@@ -390,8 +392,6 @@ static void lets_hear_the_sound(void)
 		}
 
 		beep(vt);
-		beep(vt);
-		beep(vt);
 
 		close(vt);
 	}
@@ -405,7 +405,11 @@ static void beep(int vt)
 {
 	ioctl(vt, KIOCSOUND, 3200);
 
-	xpause(100);
+	xpause(50);
+
+	ioctl(vt, KIOCSOUND, 5200);
+
+	xpause(20);
 
 	ioctl(vt, KIOCSOUND, 0);
 
@@ -473,7 +477,7 @@ static time_t get_newest_message_time(char *box)
 		{
 			while ((one = readdir(dir)))
 			{
-				if (stat(one->d_name, &status) == 0)
+				if (stat(one->d_name, &status) == 0 && S_ISREG(status.st_mode))
 				{
 					if (status.st_mtime > newest) newest = status.st_mtime;
 				}
