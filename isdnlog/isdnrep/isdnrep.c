@@ -1,4 +1,4 @@
-/* $Id: isdnrep.c,v 1.35 1998/03/29 19:54:11 luethje Exp $
+/* $Id: isdnrep.c,v 1.36 1998/04/27 22:35:31 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -24,6 +24,9 @@
  *
  *
  * $Log: isdnrep.c,v $
+ * Revision 1.36  1998/04/27 22:35:31  luethje
+ * bugfix on HTML code
+ *
  * Revision 1.35  1998/03/29 19:54:11  luethje
  * idnrep: added html feature (incoming/outgoing calls)
  *
@@ -750,6 +753,12 @@ int read_logfile(char *myname)
 
 	if (lday == -1 && html)
 	{
+		if (begintime == 0)
+			begintime = time(NULL);
+
+		if (endtime == 0)
+			endtime = time(NULL);
+
 		get_time_value(begintime,&lday,SET_TIME);
 		sprintf(start, "%s %s", get_time_value(0,NULL,GET_DATE),
 		                        get_time_value(0,NULL,GET_YEAR));
