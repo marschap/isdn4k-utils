@@ -1,4 +1,4 @@
-/* $Id: conffile.c,v 1.9 1997/03/23 23:12:10 luethje Exp $
+/* $Id: conffile.c,v 1.10 1997/03/24 03:56:30 fritz Exp $
  * ISDN accounting for isdn4linux.
  *
  * Copyright 1996 by Stefan Luethje (luethje@sl-gw.lake.de)
@@ -18,6 +18,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: conffile.c,v $
+ * Revision 1.10  1997/03/24 03:56:30  fritz
+ * Fixed 2 typos
+ *
  * Revision 1.9  1997/03/23 23:12:10  luethje
  * improved performance
  *
@@ -685,7 +688,7 @@ static section *Insert_Section(section **main_sec, section **ins_sec, char **var
 
 static int Compare_Sections(section* sec1, section *sec2, char **variables)
 {
-	int i Cnt1, Cnt2;
+	int i, Cnt1, Cnt2;
 	int found1, found2, Cnt, depth, width, exist = 1;
 	char   **array;
 	char   **array2;
@@ -742,7 +745,7 @@ static int Compare_Sections(section* sec1, section *sec2, char **variables)
 					}
 				}
 
-				if (exist && array2[depth-1][0] == C_EXIST && Cnt1 == 0 && Cnt2 == 0)                              &&
+				if (exist && array2[depth-1][0] == C_EXIST && Cnt1 == 0 && Cnt2 == 0)
 						found2++;
 
 				if ((++Cnt)%width == 0)
