@@ -1,5 +1,5 @@
 /*
- * $Id: capiconn.c,v 1.9 2004/06/14 11:33:07 calle Exp $
+ * $Id: capiconn.c,v 1.10 2004/10/06 15:26:13 calle Exp $
  *
  * Copyright 2000 Carsten Paeth (calle@calle.in-berlin.de)
  * Copyright 2000 AVM GmbH Berlin (info@avm.de)
@@ -10,6 +10,9 @@
  *  2 of the License, or (at your option) any later version.
  *
  * $Log: capiconn.c,v $
+ * Revision 1.10  2004/10/06 15:26:13  calle
+ * - "SendingComplete-Patch" reverted.
+ *
  * Revision 1.9  2004/06/14 11:33:07  calle
  * New version of capiconn.
  *
@@ -43,7 +46,7 @@
 #include <string.h>
 #include "capiconn.h"
 
-static char *revision = "$Revision: 1.9 $";
+static char *revision = "$Revision: 1.10 $";
 
 static _cmsg cmdcmsg;
 static _cmsg cmsg;
@@ -998,8 +1001,6 @@ static void handle_controller(capiconn_context *ctx, _cmsg * cmsg)
 	       cmsg->adr.adrController);
 }
 
-static unsigned char SendingComplete[5] = { 4, 1, 0, 0, 0 };
-
 static void check_incoming_complete(capi_connection *plcip)
 {
 	capi_contr *card = plcip->contr;
@@ -1039,8 +1040,7 @@ static void check_incoming_complete(capi_connection *plcip)
 			    	0,	/* BChannelinformation */
 			    	0,	/* Keypadfacility */
 			    	0,	/* Useruserdata */
-			    	0,	/* Facilitydataarray */
-				SendingComplete
+			    	0	/* Facilitydataarray */
 				);
 		plcip->msgid = cmsg.Messagenumber;
 		send_message(card, &cmsg);
