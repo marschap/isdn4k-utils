@@ -1,4 +1,4 @@
-ISDNLOG - Version pre3.0 -  				01-Nov-98  09:26
+ISDNLOG - Version 3.0 -  				07-Nov-98  17:36
 
 
 isdnlog ist ein Utility zur Auswertung des D-Kanals eines
@@ -1613,7 +1613,7 @@ jemanden anrufe mit der Nummer 0815 (Meine MSN 040/1234):
 "/bin/auplay  OC 0401234 0815"
 
 --------------^^
-Ausgehendes Gspraech (O), Ereignis CONNECT (C)
+Ausgehendes Gespraech (O), Ereignis CONNECT (C)
 -----------------^^^^^^^
 Nummer des Anrufenden (also Meine)
 Nummer des Angerufenden
@@ -2320,8 +2320,11 @@ angegeben werden.
      Kann nicht zusammen mit Option -d verwendet werden!
      (keyboard={yes|no})
 
- -i  isdnlog laeuft an einem internen S0-Bus (*FUTURE*EXPANSION*)
-     (interns0={yes|no})
+ -ix isdnlog laeuft an einem internen S0-Bus
+     Mit x wird dabei die Mindestanzahl Ziffern fÅr eine externe
+     Telefonnummer angegeben. Arbeitet die Anlage also z.b. mit 2-stelligen
+     internen Teilnehmernummern. sollte hier 3 angegeben werden.
+     (interns0="value")
 
 
 Bei den Optionen -mX, -lX -xX sind folgende Flags moeglich:
@@ -3608,6 +3611,9 @@ S  5 -- TX- 1b -- offen        ------------  Karte
 
 
 Abschliessend muss isdnlog mit der weiteren Option "-2" gestartet werden.
+Nach heutigem Kenntnisstand ist es nicht moeglich, eine Teles-16.3c
+Karte als Echo-Karte einzusetzen. Ein Grund mehr, diese Karte nicht
+zu kaufen ...
 
 
 16. SQL-Anbindung
@@ -3664,6 +3670,7 @@ Wie bei postgres95 ueblich kann ueber die Environment-Variablen
 sowie
   $PGPORT
 auch ein postmaster auf einem anderen Host angesprochen werden.
+
 
 16.2. MySQL
 -----------

@@ -1,4 +1,4 @@
-/* $Id: processor.c,v 1.32 1998/11/06 23:43:52 akool Exp $
+/* $Id: processor.c,v 1.33 1998/11/07 17:13:01 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.33  1998/11/07 17:13:01  akool
+ * Final cleanup. This _is_ isdnlog-3.00
+ *
  * Revision 1.32  1998/11/06 23:43:52  akool
  * for Paul
  *
@@ -3313,11 +3316,14 @@ static void huptime(int chan, int bchan, int setup)
   auto     isdn_net_ioctl_cfg cfg;
   auto     int                oldchargeint = 0, newchargeint = 0;
   auto     int                oldhuptimeout, newhuptimeout;
-  auto     char               sx[BUFSIZ], why[BUFSIZ], n[1024], n1[1024];
+  auto     char               sx[BUFSIZ], why[BUFSIZ];
+#if LCR
+  auto	   char		      n[1024], n1[1024];
   auto	   union 	      p {
                 	        isdn_net_ioctl_phone phone;
                 		char n[1024];
   			      } ph;
+#endif
 
 
   if (hupctrl && (c > -1) && (*known[c]->interface > '@') && expensive(bchan)) {
@@ -3332,7 +3338,7 @@ static void huptime(int chan, int bchan, int setup)
 #endif
       call[chan].huptimeout = oldhuptimeout = cfg.onhtime;
 
-#if 0 /* and now for the magic least-cost-routing part ... */
+#if LCR
       if (setup) {
         strcpy(ph.phone.name, known[c]->interface);
         ph.phone.outgoing = 1;

@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.47 1998/11/05 19:09:42 akool Exp $
+## $Id: Makefile.in,v 1.48 1998/11/07 17:12:45 akool Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,9 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.48  1998/11/07 17:12:45  akool
+## Final cleanup. This _is_ isdnlog-3.00
+##
 ## Revision 1.47  1998/11/05 19:09:42  akool
 ##  - Support for all the new L2 frames from HiSax 3.0d (RR, UA, SABME and
 ##    tei management)
@@ -370,7 +373,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 2.99.36
+VERSION     = 3.00
 
 ifeq ($(POSTGRES),1)
 DEFS       += -DPOSTGRES
@@ -466,7 +469,7 @@ rootperm:
 	fi
 
 uninstall: rootperm
-		if ps -x | fgrep $(ISDNLOG) >/dev/null; then kill `cat $(RUNDIR)/isdnlog.pid` 2>/dev/null; fi
+		if ps x | fgrep $(ISDNLOG) >/dev/null; then kill `cat $(RUNDIR)/isdnlog.isdnctrl0.pid` 2>/dev/null; fi
 		rm -f $(DESTDIR)$(SBINDIR)/$(ISDNLOG) $(DESTDIR)$(BINDIR)/$(ISDNREP) $(DESTDIR)$(BINDIR)/$(ISDNCONF)
 		rm -f $(DESTDIR)$(MAN8DIR)/isdnlog.8 $(DESTDIR)$(MAN1DIR)/isdnrep.1
 
@@ -479,7 +482,7 @@ installdirs: rootperm
 
 install: all rootperm installdirs
 		@echo "Killing running isdnlog!"
-		-@if ps -x | fgrep $(ISDNLOG) >/dev/null; then kill `cat $(RUNDIR)/isdnlog.pid 2>/dev/null`; fi
+		-@if ps x | fgrep $(ISDNLOG) >/dev/null; then kill `cat $(RUNDIR)/isdnlog.isdnctrl0.pid 2>/dev/null`; fi
 		-@test ! -d $(DESTDIR)$(OLDCONFDIR) || cp -auv $(DESTDIR)$(OLDCONFDIR)/$(USERFILE) $(DESTDIR)$(I4LCONFDIR)
 		-@test ! -d $(DESTDIR)$(OLDCONFDIR) || (cp -auv $(DESTDIR)$(OLDCONFDIR)/$(OLDCONFFILE) $(DESTDIR)$(I4LCONFDIR) \
 		 && $(ISDNREP) 1>/dev/null 2>&1) \

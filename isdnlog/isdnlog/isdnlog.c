@@ -1,4 +1,4 @@
-/* $Id: isdnlog.c,v 1.27 1998/11/01 08:49:43 akool Exp $
+/* $Id: isdnlog.c,v 1.28 1998/11/07 17:12:56 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,9 @@
  * along with this program; if not, write to the Free Software
  *
  * $Log: isdnlog.c,v $
+ * Revision 1.28  1998/11/07 17:12:56  akool
+ * Final cleanup. This _is_ isdnlog-3.00
+ *
  * Revision 1.27  1998/11/01 08:49:43  akool
  *  - fixed "configure.in" problem with NATION_*
  *  - DESTDIR fixes (many thanks to Michael Reinelt <reinelt@eunet.at>)
@@ -604,7 +607,7 @@ int set_options(int argc, char* argv[])
       case 'K' : readkeyboard++;
       	       	 break;
 
-      case 'i' : interns0++;
+      case 'i' : interns0 = strtol(optarg, NIL, 0);
       	       	 break;
 
       case '?' : printf(usage, myshortname, myshortname, options);
@@ -775,7 +778,7 @@ static int read_param_file(char *FileName)
 					readkeyboard = toupper(*(Ptr->value)) == 'Y'?1:0;
 				else
 				if (!strcmp(Ptr->name,CONF_ENT_INTERNS0))
-					interns0 = toupper(*(Ptr->value)) == 'Y'?1:0;
+					interns0 = (int)strtol(Ptr->value, NIL, 0);
 				else
 					print_msg(PRT_ERR,"Error: Invalid entry `%s'!\n",Ptr->name);
 
