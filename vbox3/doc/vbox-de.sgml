@@ -1,0 +1,131 @@
+<!doctype linuxdoc system>
+
+<article>
+
+<title>VBOX
+<author>Michael Herold, <tt/michael@abadonna.mayn.de/
+<date>v3.0, 12. Juni 1998
+<abstract>
+This document is a brief example using the Linuxdoc-SGML DTD.
+</abstract>
+
+<!-- *********************************************************************
+     **                                                                 **
+     **                        C O P Y R I G H T                        **
+     **                                                                 **
+     ********************************************************************* -->
+
+<toc>
+
+
+
+
+
+
+
+
+
+
+
+<!-- *********************************************************************
+     **                                                                 **
+     **                        C O P Y R I G H T                        **
+     **                                                                 **
+     ********************************************************************* -->
+
+
+<!-- *********************************************************************
+     **                                                                 **
+     **                        C O P Y R I G H T                        **
+     **                                                                 **
+     ********************************************************************* -->
+
+<sect>Konfigurationsdateien<label id="id-setup">
+
+<!-- #===================================================================#
+     #                                                                   #
+     #===================================================================# -->
+
+<sect1>vboxgetty.user<label id="id-setup-users">
+
+<p>
+
+Ab Version 3 von <em/vbox/ kann ein <em/vboxgetty/ mehrere Nummern
+überwachen. Über die Datei ``<em/<file/vboxgetty.user//'' wird festgelegt,
+welche Telefonnummer welchem lokalen Benutzer zugeordnet ist. Voreingestellt
+liegt diese Datei in ``<em><file>/usr/local/etc/</file></em>''.
+
+Bei einem eingehenden Anruf wird die angerufene Nummer in dieser Datei
+gesucht und der Anruf einem lokalen Benutzer zugeordnet. Danach werden die
+Rechte des <em/vboxgetty/ auf diesen Benutzer gesetzt und alle weiteren
+Operationen werden unter diesen Rechten vorgenommen.
+
+Jede Zuordnung beginnt in einer neuen Zeile und hat folgendes Format:
+
+<tscreen><verb>
+number:user:group:umask:space
+</verb></tscreen>
+
+Kommentare (mit dem Zeichen ``<tt/#/'' eingeleitet) und leere Zeilen werden
+überlesen. Eine einzelne Zeile darf nicht länger als 200 Zeichen werden!
+
+<descrip>
+
+<tag/number/
+Hier wird die Telefonnummer definiert, die einem Benutzer zugeordnet werden
+soll. Wenn <em/regex/ auf dem System installiert ist, können hier die
+üblichen Muster angegeben werden. Eine Angabe von ``<tt/*/'' gilt für
+<bf/alle/ Nummern. Das Feld <bf/muß/ angegeben werden!
+
+<tag/user/
+Lokaler Benutzer dem die Nummer zugeordnet werden soll. Der Benutzer kann
+namentlich oder als UID (eingeleitet mit einem ``<tt/#/'') angegeben werden.
+Bei einer namentlichen Angabe muß der entsprechende Benutzer in
+``<em><file>/etc/passwd</file></em>'' eingetragen sein! Das Feld <bf/muß/
+angegeben werden!
+
+<tag/group/
+Gruppe die für den Benutzer gesetzt werden soll. Die Gruppe kann namentlich
+oder als GID (eingeleitet mit einem ``<tt/#/'') angegeben werden. Bei einer
+namentlichen Angabe muß die entsprechende Gruppe in
+``<em><file>/etc/groups</file></em>'' eingetragen sein! Bei einem leeren
+Feld oder ``<tt/-/'' wird keine Gruppe gesetzt. Das Feld ist optional und
+muß nicht angegeben werden.
+
+<tag/umask/
+Die Maske die zum anlegen von neuen Dateien oder Verzeichnissen benutzt
+werden soll. Bei einem leeren Feld oder ``<tt/-/'' wird die Maske (umask)
+nicht gesetzt. Das Feld ist optional und muß nicht angegeben werden.
+
+<tag/space/
+Freier Platz in Bytes, der auf der Partition auf der sich das
+Spoolverzeichnis des Benutzers befindet frei sein muß, damit der Anruf
+angenommen wird. Bei einem leeren Feld, ``<tt/0/'' oder ``<tt/-/'' wird
+keine Überprüfung des freien Platzes gemacht. Das Feld ist optional und muß
+nicht angegeben werden.
+
+</descrip>
+
+Ein eingehender Anruf wird <bf/nicht/ angenommen, wenn die Datei nicht
+existiert oder der angerufenen Nummer kein Benutzer zugeordnet werden
+konnte!
+
+<bf/Beispiel der Datei ``<em/vboxgetty.user/'':/
+
+<tscreen><verb>
+# Number to user mapping. Please read the documentation to learn how this
+# configuration file work!
+#
+# The fields "number" and "user" *must* be set - all others are optional!
+#
+# Format: number:user:group:umask:freespace
+
+7850012:nicole::077:2000000
+*:#100:#500:077:
+</verb></tscreen>
+
+
+
+
+
+</article>

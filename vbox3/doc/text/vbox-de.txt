@@ -1,0 +1,66 @@
+  VBOX
+  Michael Herold, michael@abadonna.mayn.de
+  v3.0, 12. Juni 1998
+
+  This document is a brief example using the Linuxdoc-SGML DTD.
+  ______________________________________________________________________
+
+  Inhaltsverzeichnis
+
+
+  1. AID CDATA id-setup
+
+     1.1 vboxgetty.conf
+     1.2 vboxgetty.user
+
+
+  ______________________________________________________________________
+
+  11..  KKoonnffiigguurraattiioonnssddaatteeiieenn
+
+  11..11..  vvbbooxxggeettttyy..ccoonnff
+
+  Das ist ein Test!
+
+
+
+
+  11..22..  vvbbooxxggeettttyy..uusseerr
+
+
+  Ab Version 3 von _v_b_o_x kann ein _v_b_o_x_g_e_t_t_y mehrere Nummern überwachen.
+  Über die Datei ``_v_b_o_x_g_e_t_t_y_._u_s_e_r'' wird festgelegt, welche
+  Telefonnummer welchem lokalen Benutzer zugeordnet ist.
+
+  Voreingestellt liegt diese Datei in ``_/_u_s_r_/_l_o_c_a_l_/_e_t_c_/''.
+
+  Jede Zuordnung beginnt in einer neuen Zeile und hat folgendes Format:
+
+
+
+       ______________________________________________________________________
+       number:user:group:umask:space
+       ______________________________________________________________________
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
