@@ -1,4 +1,4 @@
-/* $Id: isdnctrl.c,v 1.48 2001/05/23 14:59:23 kai Exp $
+/* $Id: isdnctrl.c,v 1.49 2001/06/11 17:55:58 paul Exp $
  * ISDN driver for Linux. (Control-Utility)
  *
  * Copyright 1994,95 by Fritz Elfert (fritz@isdn4linux.de)
@@ -21,6 +21,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnctrl.c,v $
+ * Revision 1.49  2001/06/11 17:55:58  paul
+ * Added 'break' statement after handling data version 5 (otherwise fallthrough
+ * into data version 6 handling!!)
+ *
  * Revision 1.48  2001/05/23 14:59:23  kai
  * removed traces of TIMRU. I hope it's been dead for a long enough time now.
  *
@@ -309,6 +313,7 @@ int set_isdn_net_ioctl_phone(isdn_net_ioctl_phone *ph, char *name,
 		strncpy(ph->phone_5.name, name, sizeof(ph->phone_5.name)-1);
 		strncpy(ph->phone_5.phone, phone, sizeof(ph->phone_5.phone)-1);
 		ph->phone_5.outgoing = outflag;
+                break;
 	case 0x06:
 		if (strlen(phone) > 31) {
 			fprintf(stderr, "phone-number must not exceed %d characters\n", 31);
