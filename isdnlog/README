@@ -1,11 +1,11 @@
-ISDNLOG - Version 3.64 -  				29-Oct-1999
+ISDNLOG - Version 4.00 -  				01-Jan-2000
 
 
 isdnlog ist ein Utility zur Auswertung des D-Kanals eines
 ISDN-BRI Anschlusses.
 
-isdnlog-3.64 wurde ausgiebig mit Linux-2.0.38, Linux-2.2.13 sowie
-Linux-2.3.25 getestet.
+isdnlog-4.00 wurde ausgiebig mit Linux-2.0.38, Linux-2.2.13 sowie
+Linux-2.3.34 getestet.
 
 
 Fuer alle, die es nun ueberhaupt nicht mehr abwarten koennen, hier das
@@ -113,6 +113,7 @@ Inhalt:
 16.     SQL-Anbindung
 16.1.   Postgres95
 16.2.   MySQL
+16.3. 	Oracle
 17.	Tarifdatenbank
 18.	LCR (Least cost router)
 19.    	Probleme?
@@ -1591,7 +1592,7 @@ Es gibt aber 10 zusaetzliche Variablen, die verwendet werden duerfen:
 \$8   : Die Output-Bytes
 \$9   : Die Input-Bytes pro Sekunde
 \$10  : Die Output-Bytes pro Sekunde
-\$11  : Die Dienstekenung
+\$11  : Die Dienstkennung
 \$12  : Die Gebuehren
 \$13  : Gibt als String die Landesvorwahl des Anrufenden an.
 \$14  : Gibt als String die Landesvorwahl des Angerufenden an.
@@ -3962,6 +3963,57 @@ CREATE TABLE isdnlog (
 );
 
 --
+
+
+16.3. Oracle
+------------
+
+Wenn im Konfigurationmenue Oracle ausgewaehlt wird, werden alle
+Verbindungsdaten zusaetzlich zur Datei isdn.log in die Tabelle isdn
+in der Oracle-Datenbank geschrieben.
+
+Der Connect-String wird in der Datei ./isdnlog/oracle.h definiert.
+DB_CONNECT_STRING=isdn/isdn
+Durch die Environment-Variable DB_CONNECT_STRING kann der Wert ueberschrieben
+werden. export DB_CONNECT_STRING=user/password@db
+
+In der Datenabnk ist der user anzulegen.
+sqlplus system/system_password
+SQL> create user isdn identified by isdn
+SQL> default tablespace users temporary tablespace temp;
+SQL> grant connect, resource to isdn;
+SQL> quit
+
+Mit dem isdnlog/isdnlog/oracle/Script oracle.sql
+wird die Tabelle isdn angelegt:
+# sqlplus isdn/isdn @oracle
+
+Verbindungsdaten, deren insert fehlschlaegt (DB is offline), landen als SQL
+in /var/log/isdn-fail.sql und koennen mit sqlplus nachgeladen werden.
+
+Das Programm ora_load importiert die bestehende Datei isdn.log in die
+Oracle-Datenbank. (DB_CONNECT_STRING s.o.)
+
+Die Oracle-Umgebung muss fuer isdnlog und ora_load gesetzt sein, alle
+Start-Scripts muessen entsprechend angepasst werden.
+
+Bei mir sieht das so aus
+
+# Oracle 8.0
+export ORACLE_BASE ORACLE_HOME ORACLE_SID ORACLE_TERM ORA_NLS33
+export TNS_ADMIN NLS_LANG LD_LIBRARY_PATH TWO_TASK
+ORACLE_BASE=/ora01/app/oracle
+ORACLE_HOME=/ora01/app/oracle/product/8.0.5
+ORACLE_SID=orcl
+#ORACLE_TERM=vt100
+ORA_NLS33=$ORACLE_HOME/ocommon/nls/admin/data
+#NLS_LANG=AMERICAN_AMERICA.WE8ISO8859P1
+TNS_ADMIN=$ORACLE_HOME/network/admin
+# Alternativ in /etc/ld.so.conf
+LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$ORACLE_HOME/lib
+#PATH="$PATH:$ORACLE_HOME/bin"
+# Default DB
+TWO_TASK=jb2
 
 
 17. Tarifdatenbank

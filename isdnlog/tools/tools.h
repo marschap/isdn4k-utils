@@ -1,8 +1,8 @@
-/* $Id: tools.h,v 1.50 1999/11/02 21:01:58 akool Exp $
+/* $Id: tools.h,v 1.51 1999/12/31 13:57:20 akool Exp $
  *
  * ISDN accounting for isdn4linux.
  *
- * Copyright 1995, 1999 by Andreas Kool (akool@isdn4linux.de)
+ * Copyright 1995 .. 2000 by Andreas Kool (akool@isdn4linux.de)
  *                     and Stefan Luethje (luethje@sl-gw.lake.de)
  *
  * This program is free software; you can redistribute it and/or modify
@@ -20,6 +20,13 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools.h,v $
+ * Revision 1.51  1999/12/31 13:57:20  akool
+ * isdnlog-4.00 (Millenium-Edition)
+ *  - Oracle support added by Jan Bolt (Jan.Bolt@t-online.de)
+ *  - resolved *any* warnings against rate-de.dat
+ *  - Many new rates
+ *  - CREDITS file added
+ *
  * Revision 1.50  1999/11/02 21:01:58  akool
  * isdnlog-3.62
  *  - many new rates

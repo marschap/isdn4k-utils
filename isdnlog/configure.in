@@ -123,6 +123,7 @@ AC_CHECK_LIB(gdbm, gdbm_open, DBMLIB=-lgdbm; AC_DEFINE(HAVE_LIBGDBM),
 		AC_CHECK_LIB(db, dbm_open, DBMLIB=-ldb; AC_DEFINE(HAVE_LIBDB))))
 AC_CHECK_POSTGRES
 AC_CHECK_MYSQLDB
+AC_CHECK_ORACLE
 
 dnl TODO: replace main by a funcion within libdbmalloc
 #AC_CHECK_LIB(dbmalloc, main)

@@ -113,4 +113,26 @@ AC_DEFUN(AC_CHECK_MYSQLDB, [
 	AC_SUBST(MYSQLDIR)
 ])
 
+dnl
+dnl Check for Oracle
+dnl
+
+AC_DEFUN(AC_CHECK_ORACLE, [
+	oradir="no"
+	if test "$ORACLE_HOME" != "" && test "$CONFIG_ISDNLOG_ORACLE" = "y" ; then
+		AC_MSG_CHECKING([for Oracle in ${ORACLE_HOME}])
+		if test -x ${ORACLE_HOME}/bin/proc ; then
+			oradir="yes"
+		fi
+	fi
+	if test "$oradir" != "no" ; then
+		AC_MSG_RESULT("yes")
+		ORACLE=1
+		AC_DEFINE_UNQUOTED(ORACLE,1)
+	else
+		AC_MSG_RESULT("no ORACLE DISABLED")
+	fi
+	AC_SUBST(ORACLE)
+])
+
 sinclude(../etc/ackernel.m4)dnl

@@ -1,8 +1,8 @@
-/* $Id: tools.c,v 1.42 1999/12/24 14:17:06 akool Exp $
+/* $Id: tools.c,v 1.43 1999/12/31 13:57:20 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
- * Copyright 1995, 1999 by Andreas Kool (akool@isdn4linux.de)
+ * Copyright 1995 .. 2000 by Andreas Kool (akool@isdn4linux.de)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +19,13 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools.c,v $
+ * Revision 1.43  1999/12/31 13:57:20  akool
+ * isdnlog-4.00 (Millenium-Edition)
+ *  - Oracle support added by Jan Bolt (Jan.Bolt@t-online.de)
+ *  - resolved *any* warnings against rate-de.dat
+ *  - Many new rates
+ *  - CREDITS file added
+ *
  * Revision 1.42  1999/12/24 14:17:06  akool
  * isdnlog-3.81
  *  - isdnlog/tools/NEWS
@@ -1204,13 +1211,10 @@ go:   	         if (!ndigit)
 
 int print_version(char *myname)
 {
-	_print_msg("%s Version %s, Copyright (C) 1995, 1996, 1997, 1998, 1999\n",myname,VERSION);
-	/*
-	_print_msg("                                   Andreas Kool (akool@isdn4linux.de)\n");
-	_print_msg("                               and Stefan Luethje (luethje@sl-gw.lake.de)\n\n");
-	*/
-	_print_msg("                                   Andreas Kool and Stefan Luethje\n");
-	_print_msg("                                   (i4l-isdnlog@franken.de)\n\n");
+	_print_msg("%s Version %s\n", myname, VERSION);
+	_print_msg("Copyright (C) 1995 .. 2000 by Andreas Kool (akool@isdn4linux.de)\n\n");
+	_print_msg("The isdnlog project is the work of many people;\n");
+	_print_msg("for at least a partial list see CREDITS.\n");
 	_print_msg("%s comes with ABSOLUTELY NO WARRANTY; for details see COPYING.\n", myname);
 	_print_msg("This is free software, and you are welcome to redistribute it\n");
 	_print_msg("under certain conditions; see COPYING for details.\n");

@@ -1,8 +1,8 @@
-/* $Id: isdnrep.c,v 1.85 1999/12/17 22:51:54 akool Exp $
+/* $Id: isdnrep.c,v 1.86 1999/12/31 13:57:18 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
- * Copyright 1995, 1999 by Andreas Kool (akool@isdn4linux.de)
+ * Copyright 1995 .. 2000 by Andreas Kool (akool@isdn4linux.de)
  *                     and Stefan Luethje (luethje@sl-gw.lake.de)
  *
  * This program is free software; you can redistribute it and/or modify
@@ -24,6 +24,13 @@
  *
  *
  * $Log: isdnrep.c,v $
+ * Revision 1.86  1999/12/31 13:57:18  akool
+ * isdnlog-4.00 (Millenium-Edition)
+ *  - Oracle support added by Jan Bolt (Jan.Bolt@t-online.de)
+ *  - resolved *any* warnings against rate-de.dat
+ *  - Many new rates
+ *  - CREDITS file added
+ *
  * Revision 1.85  1999/12/17 22:51:54  akool
  * isdnlog-3.79
  *  - isdnlog/isdnrep/isdnrep.{c,h} ... error -handling, print_msg
@@ -1318,7 +1325,7 @@ static int print_bottom(double unit, char *start, char *stop)
 		print_line2(F_BODY_HEADERL,"Outgoing calls ordered by Zone");
 		strich(1);
 
-                for (i = 0; i < MAXZONES + 1; i++)
+                for (i = 0; i < MAXZONES /* + 1 */; i++)
                   if (zones_usage[i]) {
                     auto     char  s[BUFSIZ];
 

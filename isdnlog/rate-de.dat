@@ -1,4 +1,4 @@
-V:1.10-Germany [24-Dec-1999 11:58:50]
+V:1.10-Germany [31-Dec-1999 12:35:20]
 
 # Währungsformat
 U:%.3f DM
@@ -8,7 +8,7 @@ U:%.3f DM
 #
 # (C) Copyright 1999 by Andreas Kool (akool@isdn4linux.de)
 #
-# $Id: rate-de.dat,v 1.71 1999/12/24 14:17:02 akool Exp $
+# $Id: rate-de.dat,v 1.72 1999/12/31 13:57:17 akool Exp $
 #
 #
 # Das "A:" Tag muß folgendermaßen gefüllt werden:
@@ -173,133 +173,271 @@ U:%.3f DM
 #
 #
 # Sonderrufnummern:
-S:Auftrags- und Ansagedienst
-N:01141
+# S:Auftrags- und Ansagedienst
+# N:01141
+#
+# # Internetzugänge zzgl. Grundgebühr
+# S:UUnet classic
+# N:0191999
+# S:T-Online SLIP
+# N:01910
+# S:T-Online
+# N:0191011
+# S:AOL
+# N:01914, 019161
+#
+# S:Internet by call
+# N:0191501, 01929, 01924924, 0192340, 0192343, 0192070, 0192340, 0191501, 01924924
+# N:019251, 01928120
+#
+# S:T-VoteCall
+# N:01371, 01372, 01373, 01374, 0138
+#
+# S:Cityruf
+# N:01640, 01641, 01642, 01643, 01644, 01645, 01646, 01647, 01648, 01649
+# N:01682, 01683, 01684, 01685, 01686, 01687, 01688, 01689, 01690, 01691
+# N:016951, 016952
+#
+# S:Quix
+# N:016500, 016501, 016502, 016503, 016504, 016505, 016506, 016507
+# N:016508, 01651, 01653, 01654, 01655, 01656, 016591, 016592, 016593
+#
+# S:TeLMI
+# N:01660, 01661, 01665, 01669
+#
+# S:Scall
+# N:01680, 01681, 01696, 01699
+#
+# S:Skyper
+# N:01692, 01693, 016953
+#
+# S:C-Netz
+# N:01610*, 01611*, 01612*, 01613*, 01614*, 01615*, 01616*, 01617*, 01619*
+#
+# S:T-C-Tel Voice Mail
+# N:01618*
+#
+# S:D1
+# N:0170*, 0171*, 0175*
+#
+# S:D2
+# N:0172*, 0173*, 0174*
+#
+# S:Eplus
+# N:0177*, 0178*
+#
+# S:E2
+# N:0176*, 0179*
+#
+# S:Shared Cost Service 01801
+# N:01801*
+#
+# S:Shared Cost Service 01802
+# N:01802*
+#
+# S:Shared Cost Service 01803
+# N:01803*
+#
+# S:Shared Cost Service 01804
+# N:01804*
+#
+# S:Shared Cost Service 01805
+# N:01805*
+#
+# S:Service 01901
+# N:01901*
+#
+# S:Service 01902
+# N:01902*
+#
+# S:Service 01903
+# N:01903*
+#
+# S:Service 01904
+# N:01904*
+#
+# S:Service 01905
+# N:01905*
+#
+# S:Service 01906
+# N:01906*
+#
+# S:Service 01907
+# N:01907*
+#
+# S:Service 01908
+# N:01908*
+#
+# S:Service 01909
+# N:01909*
+#
+# S:Expo 2000 Hotline
+# N:02000
+#
+# S:Persönliche Rufnummer
+# N:0700*
+#
+# S:freecall
+# N:0130*, 0800*
+#
+# S:Polizei / Notruf
+# N:110
+#
+# S:Feuerwehr / Rettungsleitstelle
+# N:112
+#
+# S:Auskunft
+# N:11811 # DTV
+# N:11818 # Debitel
+# N:11822 # GTS
+# N:11833 # DTAG Inland
+# N:11834 # DTAG Ausland
+# N:11850 # Talkline
+# N:11870 # Mannesmann Arcor
+# N:11871 # Mannesmann Arcor
+# N:11880 # Telegate
+# N:11890 # Telegate
+#
+# S:Weckruf
+# N:0190600000 # Virtual Interactive Phone GmbH, VIP Wecker (0,81 Pf/min)
+#########################################################################
+# Der Nummernraum für das öffentliche Telefonnetz/ISDN in Deutschland
+# Stand: 30.08.1999
+#
+# S:nationale Verkehrsausscheidungsziffer
+# N:0*
+#
+# S:Fernvermittlung Hand der DTAG (auslaufend)
+# N:0010*
+#
+# S:internationale Verkehrsausscheidungsziffer
+# N:00*
+#
+# S:Ortsnetzkennzahlen (ONKz); Ausnahmen: 0xyyyy mit x = 2 ... 9 und y = 0 ... 9
+# N:0xy, 0xyy, 0xyyy
+#
+# S:Teilnehmerrufnummern; Ausnahmen: mit x = 1 ... 9 und y = 0 ... 9
+# N:xyy (auslaufend)
+# N:xy
+# N:yy (auslaufend),
+# N:x yy yy, xy yy
+# N:yy,
+# N:x yy yy yy, xy
+# N:yy yy yy
+#
+# S:optional der Verkehrsausscheidungsziffer voranzustellende Ziffernfolge zur Verbindungsnetzbetreiberauswahl Call-by-Call (010xy, 0100yy mit x = 1 ... 9 und y = 0 ... 9)
+# N:010*, 0100*
 
-# Internetzugaenge zzgl. Grundgebuehr
-S:UUnet classic
-N:0191999
-S:T-Online SLIP
-N:01910
-S:T-Online
-N:0191011
-S:AOL
-N:01914, 019161
+S:Mehrwertdienste # (auslaufend) Verlagerung wird gegenwärtig vorbereitet; danach: Reserve
+N:011*
 
-S:Internet by call
-N:0191501, 01929, 01924924, 0192340, 0192343, 0192070, 0192340, 0191501, 01924924
-N:019251, 01928120
+S:Innovative Dienste
+N:012*
 
-S:T-VoteCall
-N:01371, 01372, 01373, 01374, 0138
+S:Freephone # (auslaufend)
+N:0130*
 
-S:Cityruf
-N:01640, 01641, 01642, 01643, 01644, 01645, 01646, 01647, 01648, 01649
-N:01682, 01683, 01684, 01685, 01686, 01687, 01688, 01689, 01690, 01691
-N:016951, 016952
+S:Zugänge zu Datennetzen der DTAG # (auslaufend)
+N:013111*, 013115*, 013119*
 
-S:Quix
-N:016500, 016501, 016502, 016503, 016504, 016505, 016506, 016507
-N:016508, 01651, 01653, 01654, 01655, 01656, 016591, 016592, 016593
+S:frei (Planung:"Mabez"-Dienste)
+N:0136*
 
-S:TeLMI
-N:01660, 01661, 01665, 01669
+S:Televotum, Teledialog # (Planung: Verlagerung nach 0136 bzw. 0902 danach Reserve)
+N:0137*, 01381*
 
-S:Scall
-N:01680, 01681, 01696, 01699
+S:C-Netz # (TMobil)
+N:0161*
 
-S:Skyper
-N:01692, 01693, 016953
+S:Testbetrieb Ermes
+N:0163*
 
-S:C-Netz
-N:01610*, 01611*, 01612*, 01613*, 01614*, 01615*, 01616*, 01617*, 01619*
+S:Cityruf # (TMobil)
+N:0164*
 
-S:T-C-Tel Voice Mail
-N:01618*
+S:Quix # (Miniruf GmbH)
+N:0165*
 
-S:D1
+S:Telmi # (Deutsche Funkruf GmbH)
+N:0166*
+
+S:Scall # (TMobil)
+N:0168*
+
+S:Cityruf, Scall, Skyper # (TMobil)
+N:0169*
+
+S:D1 # (TMobil)
 N:0170*, 0171*, 0175*
 
-S:D2
+S:D2 # (Mannesmann Mobilfunk) # 0174:Nutzung ab 17.01.2000
 N:0172*, 0173*, 0174*
 
-S:Eplus
+S:E1 # (E-Plus Mobilfunk)
 N:0177*, 0178*
 
-S:E2
-N:0176*, 0179*
+S:E2 # (Viag Interkom)
+N:0179*, 0176*
 
-S:Shared Cost Service 01801
-N:01801*
+S:Shared Cost
+N:0180*
 
-S:Shared Cost Service 01802
-N:01802*
+S:Internationale Virtuelle Private Netze (IVPN) (0181xxx, 0181xxxx)
+N:0181*
 
-S:Shared Cost Service 01803
-N:01803*
+S:geschlossene Nutzergruppen # Ausnahme: 018xyyy, 018xyyyy, 018xyyyyy, 018xyyyyyy mit x = 2 ... 9 und y = 0 ... 9)
+N:018*
 
-S:Shared Cost Service 01804
-N:01804*
+S:UPT DTAG # (auslaufend)
+N:0182*
 
-S:Shared Cost Service 01805
-N:01805*
+S:Premium Rate # (Planung: Verlagerung nach 0900; danach: Reserve)
+N:0190*
 
-S:Service 01901
-N:01901*
+S:Online-Dienste # (019xz, 019yzzz mit x = 1 ... 3, y = 1 ... 4 und z = 0 ... 9) (Planung: Verlagerung nach 0905; danach: Reserve)
+N:019*
 
-S:Service 01902
-N:01902*
+S:Zugänge zu Datennetzen der DTAG (auslaufend)
+N:0195*, 0197*
 
-S:Service 01903
-N:01903*
+S:Routingnummern für Auskunftsdienste
+N:01989*
 
-S:Service 01904
-N:01904*
+S:Netzinterne Verkehrslenkung
+N:0199*
 
-S:Service 01905
-N:01905*
+S:Testrufnummern # z.b. 031000:Ansage des aktuellen CbC-Anbieters
+N:031*
 
-S:Service 01906
-N:01906*
+S:Persönliche Rufnummern
+N:0700*, 0701*
 
-S:Service 01907
-N:01907*
+S:Freephone
+N:0800*, 0801*
 
-S:Service 01908
-N:01908*
+S:frei # (Nutzung für Premium Rate-Dienste ist in Vorbereitung)
+N:0900*
 
-S:Service 01909
-N:01909*
+S:frei # (Planung: "Mabez"-Dienste)
+N:0902*
 
-S:Expo 2000 Hotline
-N:02000
+S:frei # Reserve für Telekommunikationsdienste
+N:0901*, 0903*, 0904*
 
-S:Persönliche Rufnummer
-N:0700*
+S:frei # Reserve für Online-Dienste
+N:0905*
 
-S:freecall
-N:0130*, 0800*
-
-S:Polizei / Notruf
+S:Polizei
 N:110
 
-S:Feuerwehr / Rettungsleitstelle
+S:Notruf, Feuerwehr
 N:112
 
-S:Auskunft
-N:11811 # DTV
-N:11818 # Debitel
-N:11822 # GTS
-N:11833 # DTAG Inland
-N:11834 # DTAG Ausland
-N:11850 # Talkline
-N:11870 # Mannesmann Arcor
-N:11871 # Mannesmann Arcor
-N:11880 # Telegate
-N:11890 # Telegate
+S:Auskunftsdienste # 118xy, 1180yy mit x = 1 ... 9 und y = 0 ... 9; Rufnummern der Struktur 1180yy werden nur zugeteilt, wenn keine Rufnummern der Struktur 118xy mehr verfügbar sind
+N:118*
 
-S:Weckruf
-N:0190600000 # Virtual Interactive Phone GmbH, VIP Wecker (0,81 Pf/min)
+S:netzinterne Nutzung
+N:011*
 #####################################################################
 #
 #
@@ -309,12 +447,16 @@ C:Name:Teleglobe
 C:Address:Teleglobe GmbH, Gutleutstraße 85, 60329 Frankfurt
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 #####################################################################
 #
 #
 P:11 o.tel.o CbC
 B:01011
-# G:01-Aug-1999
+# G:01-Jan-2000
 D:dtag
 C:Name:o.tel.o CbC
 C:Address:Mannesmann Zwölfte Verwaltungsgesellschaft mbH, Mannesmannufer 2, 40213 Düsseldorf
@@ -337,8 +479,9 @@ C:160	- 164	DTAG Service Nummern
 C:171		Info Expo 2000
 C:172		IVBB
 C:200	-	Ausland
-Z:0 Freephone
-A:0130,0800,_F800
+Z:0 FreeCall
+A:0130*,0800*,0801*
+A:031*
 T:*/*=0
 Z:1-4 Inlandsverbindungen
 A:DE
@@ -576,8 +719,10 @@ C:172		IVBB
 C:201	-	Ausland
 # G:13.05.1999
 D:dtag
-Z:0 Freephone
-A:0130,0800,_F800
+Z:0 FreeCall
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 Z:1-2 Regional
 T:W/08-18=0.05/0,0.09(60)/1 Geschaeftszeit
 T:W/18-08=0.05/0,0.05(60)/1
@@ -1545,6 +1690,10 @@ C:Name:Tele Danmark
 C:Address:Tele Danmark Internetz GmbH, Süderstraße 75, 20097 Hamburg
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 #####################################################################
 #
 #
@@ -1562,6 +1711,10 @@ C:10		Mobilfunk
 C:200	-	Ausland
 # G:20-Sep-1999
 D:dtag
+Z:0 FreeCall
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 Z:1-4 National
 A:+49
 T:*/07-19=0.10/60
@@ -1638,6 +1791,10 @@ C:10		Mobilfunk
 C:200	-	Ausland
 # G:20-Sep-1999
 D:dtag
+Z:0 FreeCall
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 Z:1-4 National
 A:+49
 T:*/07-19=0.09/60
@@ -1716,6 +1873,10 @@ C:0	-   4	Deutschland
 C:10,12,14,15	Mobilfunk
 C:33	-  39	Satelitenfunk
 C:200	-	Ausland
+Z:0 FreeCall
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 Z:1-4 Inland
 T:W/06-18=0.18(60)/1 Tagestarif
 T:W/18-21=0.12(60)/1 Abendtarif
@@ -1789,6 +1950,10 @@ C:0	-   4	Deutschland
 C:10,12,14,15	Mobilfunk
 C:33	-  39	Satelitenfunk
 C:200	-	Ausland
+Z:0 FreeCall
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 Z:1-2 City
 T:W/06-18=0.075(60)/1 Tagestarif
 T:W/18-21=0.05(60)/1 Abendtarif
@@ -1872,6 +2037,10 @@ C:0	-   4	Deutschland
 C:10,12,14,15	Mobilfunk
 C:33	-  39	Satelitenfunk
 C:200	-	Ausland
+Z:0 FreeCall
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 Z:1-2 City
 T:W/06-18=0.065(60)/1 Tagestarif
 T:E,H/06-18=0.05(60)/1 Tagestarif
@@ -1967,9 +2136,10 @@ C:171		Info Expo 2000
 C:200	-	Ausland
 # G:15-Aug-1999
 D:dtag
-Z:0 Freecall
-A:01171,01172,01174
-A:0130,0800,_F800
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
 T:*/*=0
 Z:1-4 National
 A:+49
@@ -2832,9 +3002,11 @@ C:170		Persönliche Rufnummer
 C:171		Info Expo 2000
 C:200	-	Ausland
 # G:01.04.1999
-Z:0 Freecall
-A:01171,01172,01174
-A:0130,0800,_F800
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 Z:1-2 RSL COM - city
 T:W/08-21=0.10(60)/1
 T:E,H/08-21=0.10(60)/1
@@ -3704,9 +3876,11 @@ C:170		Persönliche Rufnummer
 C:171		Info Expo 2000
 C:200	-	Ausland
 # G:01.04.1999
-Z:0 Freecall
-A:01171,01172,01174
-A:0130,0800,_F800
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 Z:1-2 RSL COM - city
 T:W/08-21=0.09(60)/1
 T:E,H/08-21=0.09(60)/1
@@ -4564,6 +4738,11 @@ C:Name:LausitzNet
 C:Address:LausitzNet Telekommunikationsgesellschaft mbH, Lausitzer Straße 1-7, 03046 Cottbus
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 #####################################################################
 #
 #
@@ -4571,6 +4750,11 @@ P:17 SEC
 B:01017
 C:Name:SEC
 C:Address:SEC Service AG, Dieskaustraße 246, 04249 Leipzig
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 #####################################################################
 #
 #
@@ -4588,6 +4772,11 @@ C:43		Auskunft debitel
 C:200	-	Ausland
 # G:01.06.1999
 D:dtag
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 Z:1-4 Fern
 A:+49
 T:W/09-18=0.17/60 Hauptzeit
@@ -4641,6 +4830,11 @@ C:10		Mobilfunk
 C:43		Auskunft debitel
 C:200	-	Ausland
 # G:01.06.1999
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 Z:1-4 Fern
 A:DE
 T:*/*=0.15/30
@@ -4692,6 +4886,11 @@ C:10		Mobilfunk
 C:43		Auskunft debitel
 C:200	-	Ausland
 # G:01.06.1999
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 Z:1-4 Fern
 A:DE
 T:W/09-18=0.05/0,0.17/60 Hauptzeit
@@ -4745,6 +4944,11 @@ C:2	-   4	Deutschland
 C:10		Mobilfunk
 C:43		Auskunft debitel
 C:200	-	Ausland
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 Z:1-4 Fern
 A:DE
 T:*/*=0.05/0,0.15/30
@@ -4801,6 +5005,11 @@ C:102		01019freenet
 C:200		Ausland Gruppe A
 # G:06-Apr-1999
 D:dtag
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 Z:1-4 Ferngespräche bundesweit
 A:+49
 T:*/07-19=0.12/60 Standard
@@ -4846,6 +5055,11 @@ C:Homepage: http://www.mobilcom.de
 C:Hotline:  01805/191919
 C:Adresse:  Postfach 1249
 C:	    24822 Schleswig
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 Z:1-3 Ferngespräche innerhalb Regio 50
 T:*/*=0.08(60)/1
 Z:4 Ferngespräche außerhalb Regio 50
@@ -4903,6 +5117,11 @@ C:10		Mobilfunk
 C:102		01019freenet
 C:200	-	Ausland
 # G:13.05.1999
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 Z:1-4 Ferngespräche bundesweit
 A:+49
 T:*/07-19=0.12(60)/1 Standard
@@ -4974,8 +5193,11 @@ C:100		T-Online
 C:102		isiFONLINE
 C:200	-	Ausland
 # G:01.04.1999
-Z:0 0800 Nulltarif
-A:0130,0800
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 Z:1-2 Lokal
 T:W/09-18=0.05/60 Tag
 T:W/18-09=0.03/60 Freizeit
@@ -5152,8 +5374,11 @@ C:100		T-Online
 C:102		isiFONLINE
 C:200	-	Ausland
 # G:01.04.1999
-Z:0 0800 Nulltarif
-A:0130,0800
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 Z:1-2 Lokal
 T:W/09-18=0.05/60 Tag
 T:W/18-09=0.03/60 Freizeit
@@ -5324,8 +5549,11 @@ C:100		T-Online
 C:102		isiFONLINE
 C:200	-	Ausland
 # G:01.04.1999
-Z:0 0800 Nulltarif
-A:0130,0800
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 Z:1-2 Lokal
 T:W/09-18=0.07/60 Tag
 T:W/18-09=0.04/60 Freizeit
@@ -5478,6 +5706,11 @@ C:Name:QS
 C:Address:QS Communication Service GmbH, Oberländer Ufer 180-182, 50968 Köln
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 #####################################################################
 #
 #
@@ -5493,6 +5726,11 @@ C:Erfasste Zonen:
 C:1	-   4	Deutschland
 C:10		Mobilfunk
 C:200	-	Ausland
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 Z:1-2 City Tarif
 T:W/08-18=0.06(60)/1 Hauptzeit
 T:E,H/08-18=0.035(60)/1 Wochenende
@@ -5630,6 +5868,11 @@ C:1	-   4	Deutschland
 C:10		Mobilfunk
 C:200	-	Ausland
 # G:01.10.1999
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 Z:1-2 Nah
 #### FIXME: Gilt nur für Gespräche mit Ursprung UND Ziel Baden-Würtemberg!
 T:W/09-19=0.10(60)/1
@@ -5698,6 +5941,11 @@ C:10		Mobilfunk
 C:200	-	Ausland
 C:Mindestumsatz: 200,- DM
 # G:01.10.1999
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 Z:1-2 Nah
 #### FIXME: Gilt nur für Gespräche mit Ursprung UND Ziel Baden-Würtemberg!
 T:W/09-19=0.09(60)/1
@@ -5762,6 +6010,11 @@ C:1	-   4	Deutschland
 C:10		Mobilfunk
 C:200	-	Ausland
 # G:01.06.1999
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 Z:1-2 Nah
 #### FIXME: Gilt nur für Gespräche mit Ursprung UND Ziel Baden-Würtemberg!
 T:W/09-19=0.06/0,0.10(60)/1
@@ -5814,6 +6067,11 @@ C:102		TelePassport-Online
 C:200	-	Ausland
 # G:15-Jul-1999
 D:dtag
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 Z:1-2 Lokal
 T:W/08-18=0.12/60 Geschäftszeit
 T:W/18-08=0.08/60 Freizeit
@@ -5880,6 +6138,11 @@ C:2	-   4	Deutschland
 C:10		Mobilfunk
 C:102		TelePassport-Online
 C:200	-	Ausland
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 Z:1-4 Inland
 A:+49
 T:W/08-18=0.16/60 Geschäftszeit
@@ -5938,6 +6201,11 @@ C:2	-   4	Deutschland
 C:10		Mobilfunk
 C:102		TelePassport-Online
 C:200	-	Ausland
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 Z:1-4 Inland
 A:+49
 T:*/07-21=0.14/60 Geschäftszeit
@@ -5997,6 +6265,11 @@ C:5		Sondertarif
 C:10		Mobilfunk
 C:102		TelePassport-Online
 C:200	-	Ausland
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 Z:1-2 Lokal
 T:*/*=0.10/60
 Z:3-4 Fern
@@ -6051,6 +6324,11 @@ C:2	-   4	Deutschland
 C:10		Mobilfunk
 C:102		TelePassport-Online
 C:200	-	Ausland
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 Z:1-2 Lokal
 T:*/*=0.12/60
 Z:3 Nah
@@ -6112,6 +6390,11 @@ C:Telefon:0361/594 2500
 C:Telefax:0800/808 808 9
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 Z:1-4 Inland
 A:+49
 T:W/08-18=0.18/60 Geschäftszeit
@@ -6163,6 +6446,11 @@ C:Telefon:0361/594 2500
 C:Telefax:0800/808 808 9
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 Z:1-2 Lokal
 T:*/*=0.10/60
 Z:3 Nah
@@ -6223,6 +6511,11 @@ C:10		Mobilfunk
 C:102		SUPER24 Internet
 C:200	-	Ausland
 # G:05.05.1999
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 Z:1-4 SUPER24 Phone
 A:+49
 T:*/*=0.11/60
@@ -6279,6 +6572,11 @@ C:10		Mobilfunk
 C:102		CITYMS-Internet
 C:200	-	Ausland
 # G:01.09.1999
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 Z:1-2 CITYMS-Münsterland
 A:+492382
 A:+492387
@@ -6795,6 +7093,11 @@ C:10		Mobilfunk
 C:102		CITYMS-Internet
 C:200	-	Ausland
 # G:01.02.1999
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 Z:1-2 CITYMS-Münsterland
 A:+492382
 A:+492387
@@ -7292,6 +7595,11 @@ C:Name:ECN
 C:Address:ECN Telekommunikation GmbH, Schmickstraße 38-40, 60314 Frankfurt
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 #####################################################################
 #
 #
@@ -7311,6 +7619,11 @@ C:102		Butensurf
 C:200	-	Ausland
 C:Butensurf: Internet Zugang, 9,95 DM / Monat, 0,05 DM / Min
 C:Stand: 1999-11-01
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 Z:1-3 Binnen
 T:W/06-18=0.06(60)/1 Tag
 T:W/18-06=0.05(60)/1 Freizeit
@@ -7407,6 +7720,11 @@ C:102		Butensurf Plus
 C:200	-	Ausland
 C:Butensurf Plus: Internet Zugang, Pauschal Preis! 29,95 DM / Monat!
 C:Stand: 1999-11-01
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 Z:1-3 Binnen
 T:W/06-18=0.06(60)/1 Tag
 T:W/18-06=0.05(60)/1 Freizeit
@@ -7519,6 +7837,11 @@ C:60		Cityruf
 C:82	-  85	Service 0180-x
 C:91	-  94	Service 0190-x
 C:200	-	Ausland
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 Z:1-4 Inland
 T:*/*=0/5,0.13/60
 Z:10 Mobilfunk
@@ -7698,6 +8021,11 @@ C:60		Cityruf
 C:82	-  85	Service 0180-x
 C:91	-  94	Service 0190-x
 C:200	-	Ausland
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 Z:1-4 Inland
 T:W/08-21=0/5,0.11/60 Hauptzeit
 T:E,H/08-21=0/5,0.055/60 Nebenzeit
@@ -7867,6 +8195,11 @@ C:2	-   4	Deutschland
 C:10		Mobilfunk
 C:200	-	Ausland
 C:Stand: 1999-10-31
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 Z:2-4 Deutschland
 T:*/*=0.084/60
 Z:10 Mobilfunk
@@ -8622,6 +8955,11 @@ C:Name:Unisource
 C:Address:Unisource Carrier Services, Industriestraße 21, CH-8304 Wallisellen/Schweiz
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 #####################################################################
 #
 #
@@ -8649,6 +8987,11 @@ C:81	-  85	Service 0180-x
 C:91	-  94	Service 0190-x
 C:102		TelDa.net
 C:200	-	Ausland
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 Z:1-2 Regio 20
 T:W/07-21=0.07(60)/1
 T:W/21-07=0.04(60)/1
@@ -8712,6 +9055,11 @@ C:Name:HEAG
 C:Address:HEAG MediaNet GmbH, Luisenplatz 6, 64283 Darmstadt
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 #####################################################################
 #
 #
@@ -8722,6 +9070,11 @@ C:Address:KDD Deutschland GmbH, Immermannstraße 45, 40210 Düsseldorf 01032
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 C:Ist das KDD-Conos? Wenn ja, Tarife bei 01063
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 #####################################################################
 #
 #
@@ -8782,6 +9135,9 @@ A:0130
 A:0800
 A:_NLFF,_CHFF
 A:_F800
+A:011*
+A:0130*,0800*,0801*
+A:031*
 T:*/*=0
 Z:1 Ortszone
 T:W/09-18=0.12/90 Standard
@@ -9049,6 +9405,10 @@ A:0130
 A:0800
 A:_NLFF,_CHFF
 A:_F800
+A:011*
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 Z:1-2 CityPlus
 T:*/05-21=0.06/90 Standard
 T:*/21-05=0.12/240 Nacht
@@ -9293,6 +9653,10 @@ A:0130
 A:0800
 A:_NLFF,_CHFF
 A:_F800
+A:011*
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 Z:1-2 CityWeekend
 T:W/09-18=0.12/90 Standard
 T:W/05-09,18-21=0.12/150 Spar
@@ -9546,6 +9910,10 @@ A:0130
 A:0800
 A:_NLFF,_CHFF
 A:_F800
+A:011*
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 Z:1-2 CityPlus & CityWeekend
 T:W/05-21=0.06/90 CityPlus
 T:E,H/05-21=0.12/240 CityWeekend
@@ -9792,6 +10160,10 @@ A:0130
 A:0800
 A:_NLFF,_CHFF
 A:_F800
+A:011*
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 Z:1-2 Orts-/Cityzone
 T:W/09-18=0.06/60 Standard
 T:W/18-09=0.03/60 Spar
@@ -10000,6 +10372,11 @@ C:10	-   11	Mobilfunk
 C:102		Internetzugang NEFkom InterNEF
 C:200	- 209	Ausland
 C:Sondertarif 5: Gespräche zwischen NEFkom Telefonkunden
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 Z:1-2 NEFcity
 T:W/08-18=0.06(60)/1 Hauptzeit
 T:W/18-08=0.04(60)/1 Nebenzeit
@@ -10061,6 +10438,11 @@ C:Name:interCOM
 C:Address:interCOM GmbH, Hauptstraße 52a, 28876 Oyten
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 #####################################################################
 #
 #
@@ -10079,6 +10461,11 @@ C:2	-   4	Deutschland
 C:10		Mobilfunk
 C:11		Sondertarif
 C:200	-	Ausland
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 Z:1-3 regional
 T:W/08-18=0.14(60)/15 Geschäftszeit
 T:E,H/08-18=0.12(60)/15 Wochenende
@@ -10135,6 +10522,11 @@ C:2	-   4	Deutschland
 C:10		Mobilfunk
 C:11		Sondertarif
 C:200	-	Ausland
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 Z:1-4 Inland
 A:DE
 T:*/*=0.17(60)/15
@@ -10180,6 +10572,11 @@ C:2	-   4	Deutschland
 C:10		Mobilfunk
 C:11		Sondertarif
 C:200	-	Ausland
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 Z:1-3 Regional
 T:W/08-18=0.05/0,0.09(60)/1 Geschäftszeit
 T:E,H/08-18=0.05/0,0.05(60)/1 Wochenende
@@ -10240,6 +10637,11 @@ C:2	-   4	Deutschland
 C:10		Mobilfunk
 C:11		Sondertarif
 C:200	-	Ausland
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 Z:1-3 regional
 T:W/08-18=0.14(60)/1 Geschäftszeit
 T:E,H/08-18=0.12(60)/1 Wochenende
@@ -10297,6 +10699,11 @@ C:2	-   4	Deutschland
 C:10		Mobilfunk
 C:11		Sondertarif
 C:200	-	Ausland
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 Z:1-4 Inland
 A:DE
 T:*/*=0.17(60)/1
@@ -10339,6 +10746,11 @@ C:Name:ETS
 C:Address:Verwaltung für Sprach- und Datennetze GmbH, Brunnenstraße 4, 61191 Rosbach
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 #####################################################################
 #
 #
@@ -10348,6 +10760,11 @@ C:Name:MediaWays
 C:Address:MediaWays GmbH, An der Autobahn, 33311 Gütersloh 01038
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 #####################################################################
 #
 #
@@ -10363,6 +10780,11 @@ C:Erfasste Zonen:
 C:2	-   4	Deutschland
 C:10		Mobilfunk
 C:203		Ausland (Kanada & USA)
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 Z:1-4 Inland
 A:+49
 T:W/08-18=0.02/0,0.15/60 Standard
@@ -10409,6 +10831,11 @@ C:170		Persönliche Rufnummer
 C:171		Info Expo 2000
 C:172		IVBB
 C:200	-	Ausland
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 Z:1-4 Deutschland
 A:+49
 T:W/08-18=0.15/60 Standard
@@ -10482,6 +10909,11 @@ C:Erfasste Zonen:
 C:2	-   4	Deutschland
 C:10		Mobilfunk
 C:200	-	Ausland
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 Z:1-2 Hamburg-plus-20
 T:W/08-18=0.07/60
 T:E,H/08-18=0.05/60
@@ -10539,6 +10971,11 @@ C:Erfasste Zonen:
 C:2	-   4	Deutschland
 C:10		Mobilfunk
 C:200	-	Ausland
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 Z:1-2 Hamburg-plus-20
 T:W/08-18=0.07/60
 T:E,H/08-18=0.05/60
@@ -10621,9 +11058,13 @@ C:31	-  39	Satelitenfunk
 C:60	-  75	Pieper
 C:102		TeleBeL Internet
 C:200	-	Ausland
-Z:0 Freecall
-A:110,112
-A:0800,0130,_F800
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
 Z:1-2 City
 T:W/08-18=0.06(60)/1 Hauptzeit
 T:W/18-08=0.04(60)/1 Nebenzeit
@@ -10775,9 +11216,13 @@ C:31	-  39	Satelitenfunk
 C:60	-  75	Pieper
 C:102		TeleBeL Internet
 C:200	-	Ausland
-Z:0 Freecall
-A:110,112
-A:0800,0130,_F800
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
 Z:1-2 City
 T:W/08-18=0.06(60)/1 Hauptzeit
 T:W/18-08=0.04(60)/1 Nebenzeit
@@ -10924,6 +11369,13 @@ C:  10		Mobilfunk
 C: 102		Internetzugang KielNet
 C: 200 		Ausland Gruppe A
 C:Sondertarif 5: Gilt für Verbindungen NACH Schleswig-Holstein
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
 Z:1-4 Deutschland
 A:DE
 T:*/*=0.19/60
@@ -10983,6 +11435,13 @@ C: 200 		Ausland Gruppe A
 C: 201		Ausland Gruppe B
 C: 202		Ausland Gruppe C
 C:Sondertarif 5: Gilt für Verbindungen NACH Schleswig-Holstein
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
 Z:1-4 Deutschland
 A:DE
 T:*/*=0.19/60
@@ -11062,6 +11521,13 @@ C: 201		Ausland Gruppe B
 C: 202		Ausland Gruppe C
 C:Sondertarif 5: Gilt für Verbindungen NACH Schleswig-Holstein
 C:Sondertarif 6: Verbindungen von KielNet zu KielNet sind kostenlos
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
 Z:1-3 KielNet Region
 A:494302,494307,494308,49431,494340,494342,494343
 A:494344,494346,494347,494348,494349,494384
@@ -11152,8 +11618,13 @@ C:172		IVBB
 C:200	-	Ausland
 C:Über VEW sind KEINE Verbindungen zu 0190 möglich!
 Z:0 FreeCall
-A:0800,0130,_F800
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
 A:+49231438110
+T:*/*=0
 Z:1-3 TELNET NRW
 T:W/08-18=0.12/60 Tag
 T:E,H/08-18=0.08/60 Freizeit
@@ -11310,6 +11781,13 @@ C:Address:Global Network Telephone Deutschland, Grosser Plan 8, 29221 Celle
 C:Name:Global Network
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
 #####################################################################
 #
 #
@@ -11340,10 +11818,13 @@ C:170		Persönliche Rufnummer
 C:171		Info Expo 2000
 C:172		IVBB
 C:200	-	Ausland
-Z:0 Freephone
-A:0800,0130
-A:01113,01114,01115
-A:110,112
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
 Z:1-4 HalloDeutschland
 A:+49
 T:W/08-20=0.16(60)/1 Tag
@@ -11648,10 +12129,13 @@ C:170		Persönliche Rufnummer
 C:171		Info Expo 2000
 C:172		IVBB
 C:200	-	Ausland
-Z:0 Freephone
-A:0800,0130
-A:01113,01114,01115
-A:110,112
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
 Z:1 MoinNachbar
 T:W/08-20=0.06(60)/1 Tag
 T:W/20-08=0.03(60)/1 Nacht
@@ -11959,6 +12443,13 @@ C:Address:PrimeTec International Europe Ltd.
 C:Name:PrimeTec
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
 #####################################################################
 #
 #
@@ -11980,6 +12471,13 @@ C:1	-   4	Deutschland
 C:5		Sondertarif
 C:10		Mobilfunk
 C:200	- 206	Ausland
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
 Z:1-2 City
 T:W/09-18=0.1044/90 Tag
 T:W/18-21=0.1044/150 Freizeit
@@ -12055,6 +12553,13 @@ C:Erfasste Zonen:
 C:2	-   4	Deutschland
 C:10		Mobilfunk
 C:200	- 211	Ausland
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
 Z:1-2 Nah
 T:W/08-18=0.08/60
 T:W/18-08=0.08/90
@@ -12143,6 +12648,13 @@ C:2	-   4	Deutschland
 C:10		Mobilfunk
 C:200	- 211	Ausland
 # G:01.06.1999
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
 Z:1-2 Nah
 T:W/08-18=0.12(60)/1
 T:W/18-08=0.09(60)/1
@@ -12227,6 +12739,13 @@ C:Erfasste Zonen:
 C:2	-   4	Deutschland
 C:10		Mobilfunk
 C:200	- 211	Ausland
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
 Z:1-2 Nah
 T:W/09-18=0.12/90
 T:W/18-09=0.12/150
@@ -12336,6 +12855,13 @@ C:Erfasste Zonen:
 C:2	-   4	Deutschland
 C:10		Mobilfunk
 C:200	- 211	Ausland
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
 Z:1-3 Nah
 T:W/08-18=0.12(60)/1
 T:W/18-08=0.09(60)/1
@@ -12442,6 +12968,13 @@ C:  40		Talkline Auskunft
 C: 102		Internet Talkline By Call
 C: 200 - 	Ausland
 D:dtag
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
 Z:1-4 Fern
 A:+49
 T:W/07-19=0.15/60
@@ -12516,6 +13049,13 @@ C:Sondertarif 5: Mobiloption: nur für Talkline Mobilfunkkunden
 C:                   bei Gesprächen zum eigenen Talkline-Handy.
 D:dtag
 F:P
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
 Z:1-4 Inland
 A:DE
 T:W/7-19=0.15/60
@@ -12589,6 +13129,13 @@ C: 102		Internet Talkline By Call
 C: 200 - 	Ausland
 D:dtag
 F:P
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
 Z:1-4 Inland
 A:DE
 T:W/8-18=0.18/60
@@ -12664,6 +13211,13 @@ C:                   bei Gesprächen zum eigenen Talkline-Handy.
 C:Sondertarif 6: Data (national) ??? von 02:00h bis 06:00h
 D:dtag
 F:P
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
 Z:1-4 Inland
 A:DE
 T:W/08-18=0.0812/60 Hauptzeit
@@ -12744,6 +13298,13 @@ C:                   bei Gesprächen zum eigenen Talkline-Handy.
 C:Sondertarif 6: Data (national) ??? von 02:00h bis 06:00h
 D:dtag
 F:P
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
 Z:1-2 City
 T:W/08-18=0.06844(60)/1 Hauptzeit
 T:W/18-08=0.04060(60)/1 Nebenzeit
@@ -12812,13 +13373,20 @@ T:*/*=2.3084(60)/1
 P:51 01051
 B:01051
 C:ID-Switch GmbH, Graf-Adolf-Straße, 40210 Düsseldorf
-# G:01-Dec-1999
+# G:24-Dec-1999
 C:Homepage: http://www.01051.com
 C:Adresse:  ID-Switch GmbH, Koenigsallee 60f, 40210 Duesseldorf
 C:Name:01051
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 D:dtag
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
 Z:2-4 Ferngespräche
 A:DE
 T:*/*=0.09/60
@@ -13064,6 +13632,13 @@ C:Address:Long Distance International Ltd., 5 Duke's Gate Acton, London W 4 5 DX
 C:Name:Long Distance
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
 #####################################################################
 #
 #
@@ -13078,9 +13653,13 @@ C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/
 C:TarifURL:http://www.wobkom.de/telefonie/tarife.htm
 # Eigene Verzonung - TODO
 D:dtag # 53
-# Sondernummern
-Z:0 Freecall
-T:*/*=0/0,0/1
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
 # Inlandstarife
 Z:1 Ortsbereich
 T:W/8-18=0.06/60 Normal
@@ -13311,6 +13890,13 @@ C:Address:USFI Global Network Services Germany GmbH, Kindsbacherstraße 41, 66877
 C:Name:USFI
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
 #####################################################################
 #
 #
@@ -13320,6 +13906,13 @@ C:Address:ESPRIT Telecom Deutschland GmbH, August-Thyssen-Str. 1, 40211 Düsseldo
 C:Name:ESPRIT
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
 #####################################################################
 #
 #
@@ -13329,6 +13922,13 @@ C:Address:BITel Gesellschaft für kommunale Telekommunikation mbh, Schildescher S
 C:Name:BITel
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
 #####################################################################
 #
 #
@@ -13338,6 +13938,13 @@ C:Mox Telecom GmbH, Industriestraße 3a, 40878 Ratingen
 C:Name:Mox
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
 #####################################################################
 #
 #
@@ -13347,6 +13954,13 @@ C:Address:KaTel Gesellschaft für Telekommunikation mbH, Mathias-Brüggen-Straße 8
 C:Name:KaTel
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
 #####################################################################
 #
 #
@@ -13356,6 +13970,13 @@ C:Address:Pacific Gateway Exchange Inc., 533 Airport Boulevard, Suite 505, Burli
 C:Name:Pacific Gateway Exchange
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
 #####################################################################
 #
 #
@@ -13365,6 +13986,13 @@ C:Address:Telecom-InfoService GmbH, Postfach 174, A-1000 Wien (A)
 C:Name:Telecom-InfoService
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
 #####################################################################
 #
 #
@@ -13374,6 +14002,13 @@ C:Address:TelSA Telekommunikationsgesellschaft mbH, Magdeburger Str. 51, 06112 H
 C:Name:TelSA
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
 #####################################################################
 #
 #
@@ -13383,6 +14018,13 @@ C:Address:DENTEL GmbH i.G. Grimmstraße 4 80336 München
 C:Name:DENTEL
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
 #####################################################################
 #
 #
@@ -13403,6 +14045,13 @@ C:10		Mobilfunk
 C:200	- 209	Ausland
 C:Sondertarif 5: Gespräche zu KDD-Conos Mobilfunkteilnehmern
 # G: 07-99
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
 Z:1-2 Lokal
 T:W/08-18=0.09/60
 T:W/18-08=0.06/60
@@ -13486,6 +14135,13 @@ C:10		Mobilfunk
 C:200	- 209	Ausland
 C:Sondertarif 5: Gespräche zu KDD-Conos Mobilfunkteilnehmern
 # G: 07-99
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
 Z:1-2 Lokal
 T:W/08-18=0.12(60)/1
 T:W/18-21=0.08(60)/1
@@ -13560,6 +14216,13 @@ C:Address:Hannoversche Telekommunikations- und Netzgesellschaft mbH, Glockseestr
 C:Name:Hannoversche
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
 #####################################################################
 #
 #
@@ -13570,6 +14233,13 @@ C:Address:Rapid Link Telecommunications GmbH, Donaustraße 68, 68199 Mannheim
 C:Name:Rapid Link
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
 #####################################################################
 #
 #
@@ -13582,6 +14252,13 @@ C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/
 C:Bei Preselection sekundengenaue Taktung
 D:dtag
 # G:16-Dec-1999
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
 Z:1-4 National
 T:W/08-17=0.14/60
 T:W/17-08=0.078/60
@@ -13600,11 +14277,11 @@ T:W/17-08=0.48(60)/1
 T:E,H/*=0.48(60)/1
 Z:200 International Top A Mobilfunk
 A:_DKMF,_UKMF,_SEMF
-T:[16.12.1999-16.01.2000]W/08-17=0.32(60)/1 Millenium-Tarif
+T:[16.12.1999-16.01.2000]*/08-17=0.32(60)/1 Millenium-Tarif
 T:*/*=0.38(60)/1
 Z:201 International Top A
 A:DK,UK,CA,SE,US
-T:[16.12.1999-16.01.2000]W/08-17=0.12(60)/1 Millenium-Tarif
+T:[16.12.1999-16.01.2000]*/08-17=0.12(60)/1 Millenium-Tarif
 T:*/*=0.18(60)/1
 Z:202 International A Mobilfunk
 A:_AUMF,_BEMF,_FIMF
@@ -13673,6 +14350,13 @@ C:RegioCom GmbH, Steinfeldstraße 3, 39179 Barleben
 C:Name:RegioCom
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
 #####################################################################
 #
 #
@@ -13682,6 +14366,13 @@ C:Address:Tele Media International, Wilhelm-Leuschner-Strasse 23-25, 60329 Frank
 C:Name:Tele Media
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
 #####################################################################
 #
 #
@@ -13691,6 +14382,13 @@ C:Address:Primus Telecommunications Ltd.
 C:Name:Primus
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
 #####################################################################
 #
 #
@@ -13703,6 +14401,13 @@ C:Name:Arcor CbC
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 D:dtag
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
 Z:1-3 Regio Plus
 T:W/06-09=0.07/60
 T:W/09-18=0.14/60
@@ -14024,6 +14729,13 @@ C:Name:Arcor Town to Town
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com
 D:dtag
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
 Z:1-2 Nah
 T:W/06-09=0.05(60)/30 Freizeit
 T:W/09-18=0.09(60)/30 Hauptzeit
@@ -14057,6 +14769,13 @@ C:Name:Arcor Town to Town Sekunde
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com
 D:dtag
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
 Z:1-2 Nah
 T:W/06-09=0.058/0,0.05(60)/1 Freizeit
 T:W/09-18=0.058/0,0.09(60)/1 Hauptzeit
@@ -14088,6 +14807,13 @@ C:Address:Deutsche Telekom MobilNet GmbH, Landgrabenweg 151, 53227 Bonn
 C:Name:DeTeMobil
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
 #####################################################################
 #
 #
@@ -14097,6 +14823,13 @@ C:Address:Mannesmann Mobilfunk GmbH, Am Seestern 1, 40547 Düsseldorf
 C:Name:Mannesmann
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
 #####################################################################
 #
 #
@@ -14106,6 +14839,13 @@ C:AXXON Telecom GmbH, Am Seestern 24, 40547 Düsseldorf
 C:Name:AXXON
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
 #####################################################################
 #
 #
@@ -14115,6 +14855,13 @@ C:Address:Alpha Telecom GmbH, Beethovenstraße 1-3, 60325 Frankfurt/Main
 C:Name:Alpha
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
 #####################################################################
 #
 #
@@ -14126,10 +14873,17 @@ C:Name:Callino
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 D:dtag
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
 Z:1-4 Fern
 A:+49
-# T:W/08-18=0.139/60
-T:W/08-18=0.119/60 # Sonderangebot, nur bis 31Dec99 gültig
+T:[-01.01.2000]W/08-18=0.119/60
+T:W/08-18=0.139/60
 T:W/18-21=0.079/60
 T:W/21-06=0.059/60
 T:W/06-08=0.079/60
@@ -14215,6 +14969,13 @@ C:Address:QuickNet Telenetworks & Service AG, Else-Lasker-Schüler-Straße 47, 421
 C:Name:QuickNet
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
 #####################################################################
 #
 #
@@ -14224,6 +14985,13 @@ C:Address:E-Plus Mobilfunk GmbH, E-Plus-Platz 1, 40468 Düsseldorf
 C:Name:E-Plus
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
 #####################################################################
 #
 #
@@ -14240,6 +15008,13 @@ C:Hotline:  01805/01078-0
 C:Adresse:  Mergenthalerallee 79-81
 C:	    65760 Eschborn
 D:dtag
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
 Z:1-4 Fern
 T:*/08-21=0.099(60)/1
 T:*/21-08=0.059(60)/1
@@ -15250,6 +16025,13 @@ C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 C:Special:Macht keinen Tarifwechsel in laufender Verbindung!
 D:dtag
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
 Z:1-4 National
 T:W/09-18=0.102/60 Hauptzeit
 T:W/18-21=0.085(60)/60 Nebenzeit
@@ -15439,15 +16221,15 @@ T:*/*=0.12/30,0.24(60)/1
 #####################################################################
 #
 #
-P:80 Telegate
-B:01080
-# G:01-Aug-1999
 #
 #                                ACHTUNG:
 #
-#	     Dieser Service (01080) läuft zum Jahresende 1999 aus!
+#	     Dieser Service (01080) läuft im März 2000 aus!
 #
 #
+P:[-01.01.2000]80 Telegate 1999
+B:01080
+# G:01-Aug-1999
 D:dtag
 C:Address:Aktiengesellschaft für telefonische Informationsdienste, Bahnhofstraße 26, 82211 Herrsching
 C:Name:Telegate
@@ -15455,6 +16237,13 @@ C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 # Bislang kann dieses Angebot nicht im Vorwahlgebiet 02 (NRW)
 # genutzt werden.
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
 Z:1-4 Inlandsverbindungen
 A:+49
 T:W/09-17=0.089/60
@@ -15484,6 +16273,46 @@ Z:22 Telefonauskunft Ausland
 A:11890
 T:*/*=3.51/60
 #####################################################################
+P:[01.01.2000]80 Telegate 2000
+B:01080
+# G:01-Aug-1999
+D:dtag
+C:Address:Aktiengesellschaft für telefonische Informationsdienste, Bahnhofstraße 26, 82211 Herrsching
+C:Name:Telegate
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+# Bislang kann dieses Angebot nicht im Vorwahlgebiet 02 (NRW)
+# genutzt werden.
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+Z:1-4 Inlandsverbindungen
+A:+49
+T:W/09-18=0.1015/60
+T:W/18-21=0.0845/60
+T:W/21-07=0.0495/60
+T:W/07-08=0.0585/60
+T:W/08-09=0.0795/60
+T:E,H/09-21=0.0890/60
+T:E,H/21-09=0.0495/60
+Z:11 Mobilfunk
+A:01610,01611,01612,01613,01614,01615,01616,01617,01619
+A:0170,0171,0175
+A:0172,0173,0174
+A:0177,0178
+A:0176,0179
+T:*/*=0.44/60
+Z:21 Telefonauskunft Inland
+A:11880
+T:*/*=0.968/0,0.121/7.5
+Z:22 Telefonauskunft Ausland
+A:11890
+T:*/*=3.51/60
+#####################################################################
 #
 #
 P:81 Infotel
@@ -15492,6 +16321,13 @@ C:Infotel bV, Onderlangs 120, 6812 CJ Arnhem, Niederlande
 C:Name:Infotel
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
 #####################################################################
 #
 #
@@ -15501,6 +16337,13 @@ C:Address:AugustaKom Telekommunikation GmbH & Co.KG Hoher Weg 1 86152 Augsburg
 C:Name:AugustaKom
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
 #####################################################################
 #
 #
@@ -15510,6 +16353,13 @@ C:Address:Wuerzburger Telekommunikationsgesellschaft mbH, Bahnhofstraße 12-18, 9
 C:Name:Wuerzburger
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
 #####################################################################
 #
 #
@@ -15519,10 +16369,17 @@ C:Telegroup Network Services GmbH, Grossenbaumer Weg 6, 40472 Düsseldorf
 C:Name:Telegroup
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
 #####################################################################
 #
 #
-P:85 GTS-WESTCom
+P:[-28.12.1999]85 GTS-WESTCom
 B:01085
 # G:01-Mai-1999
 #
@@ -15541,6 +16398,13 @@ C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/
 C:
 C:Tarif: Westcom privat
 D:dtag
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
 Z:1-4 National
 T:W/08-18=0.16(60)/1 Standard
 T:W/18-08=0.09(60)/1 Spar
@@ -15593,6 +16457,13 @@ C:Address:ONE.TEL Limited (UK), Clements House, 14-18 Gresham Street, London, EC
 C:Name:ONE.TEL
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
 #####################################################################
 #
 #
@@ -15602,10 +16473,17 @@ C:HAMCOM GmbH Telekommunikation, Südring 1-3, 59065 Hamm
 C:Name:HAMCOM
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
 #####################################################################
 #
 #
-P:88 WorldCom
+P:[01.11.1999-]88 WorldCom
 B:01088
 # G:01-Nov-1999
 C:Telecommunication Services GmbH, Brönnerstr. 15, 60313 Frankfurt 01088
@@ -15614,12 +16492,49 @@ C:keine Tarifdaten veroeffentlicht!
 C:Vielmehr handelt es sich hier nur um die Tarife fuer den
 C:UUnet Ortstarif-Zugang!
 C:Dies ist *kein* All-in-One Zugang, es werden zusätzliche Gebühren erhoben!
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
 Z:100 Internet
 A:0191999
 A:0192333
 T:*/09-18=0.046(60)/1 UUnet
 T:*/18-21=0.035(60)/1 UUnet
 T:*/21-09=0.023(60)/1 UUnet
+Z:101 knUUT
+A:0191955
+T:*/09-21=0.055/60
+T:*/21-09=0.049/60
+#####################################################################
+P:[-01.11.1999]88 WorldCom
+B:01088
+# G:15-Aug-1999
+C:Telecommunication Services GmbH, Brönnerstr. 15, 60313 Frankfurt 01088
+C:Dies sind *nicht* die korrekten Tarife von WorldCom, da WorldCom
+C:keine Tarifdaten veroeffentlicht!
+C:Vielmehr handelt es sich hier nur um die Tarife fuer den
+C:UUnet Ortstarif-Zugang!
+C:Dies ist *kein* All-in-One Zugang, es werden zusätzliche Gebühren erhoben!
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+Z:100 Internet
+A:0191999
+A:0192333
+T:W/05-09=0.048(60)/1 UUnet
+T:W/09-18=0.08(60)/1 UUnet
+T:W/18-21=0.048(60)/1 UUnet
+T:W/21-05=0.03(60)/1 UUnet
+T:E,H/05-21=0.048(60)/1 UUnet
+T:E,H/21-05=0.03(60)/1 UUnet
 Z:101 knUUT
 A:0191955
 T:*/09-21=0.055/60
@@ -15636,6 +16551,13 @@ C:Erfasste Zonen:
 C:2	-   4	Deutschland
 C:10		Mobilfunk
 C:200	-	Ausland
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
 Z:2-4 Inland
 A:DE
 T:W/08-18=0.179/60 Geschäftszeit
@@ -15685,6 +16607,13 @@ C:Address:M'net Telekommunikations GmbH, Corneliusstraße 10, 80469 München
 C:Name:M'net
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
 #####################################################################
 #
 #
@@ -15696,6 +16625,13 @@ C:Name:Viag Interkom
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 D:dtag
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
 Z:1-4 Fern
 T:W/06-08=0.10/60 Sparzeit
 T:W/08-18=0.15/60 Hauptzeit
@@ -15751,6 +16687,13 @@ C:Address:IDT Global Limited, London, United Kingdom
 C:Name:IDT
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
 #####################################################################
 #
 #
@@ -15760,6 +16703,13 @@ C:Address:Hallo Telefon Service GmbH Dinkelbergstraße 6 76684 Östringen
 C:Name:Hallo Telefon Service
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
 #####################################################################
 #
 #
@@ -15769,6 +16719,13 @@ C:Address:Informationssysteme, Brüder-Grimm-Allee 73 A, 37085 Göttingen
 C:Name:Kray
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
 #####################################################################
 #
 #
@@ -15778,6 +16735,13 @@ C:Address:Global Communications GmbH, Eupener Straße 57 - 59, 50933 Köln
 C:Name:Global Communications
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
 #####################################################################
 #
 #
@@ -15787,6 +16751,13 @@ C:Address:Teleos GmbH, Bielefelder Straße 3, 32051 Herford
 C:Name:TeleOs
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
 #####################################################################
 #
 #
@@ -15796,6 +16767,13 @@ C:Address:GELSEN-NET, Kommunikationsgesellschaft mbH, Munscheidstraße 14, 45886 
 C:Name:GELSEN-NET
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
 #####################################################################
 #
 #
@@ -15806,6 +16784,13 @@ C:Address:Communication Services (Deutschland) GmbH, Lyoner Str. 15, 60528 Frank
 C:Name:AT&T-Unisource
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
 #####################################################################
 #
 #
@@ -15825,6 +16810,13 @@ C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/
 C:Special:Reseller von Star Telecom (01098)
 C:Reseller von Star Telecom
 D:dtag
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
 Z:1-4 Deutschlandweit
 T:*/08-21=0.139(60)/1
 T:*/21-08=0.079(60)/1
@@ -15928,6 +16920,13 @@ C:Düsseldorf, Dortmund, Frankfurt, Hamburg, Hannover, München, Nürnberg,
 C:Stuttgart, Köln, Karlsruhe, Leipzig oder Mannheim und den jeweiligen
 C:Orten in der City-Zone
 C:Study&Surf gilt nur für Studenten, die sich dafür angemeldet haben.
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
 Z:1-2 Nikocity
 # Entspricht nicht der DTAG-City-Zone!
 T:*/9-21=0.08(60)/1 Hauptzeit
@@ -15965,6 +16964,13 @@ C:Nikocity gilt nur in den Städten Augsburg, Berlin, Bremen, Bielefeld,
 C:Düsseldorf, Dortmund, Frankfurt, Hamburg, Hannover, München, Nürnberg,
 C:Stuttgart, Köln, Karlsruhe, Leipzig oder Mannheim und den jeweiligen
 C:Orten in der City-Zone
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
 Z:1-2 Nikocity
 # Entspricht nicht der DTAG-City-Zone!
 T:*/9-21=0.08(60)/1 Hauptzeit
@@ -15998,6 +17004,13 @@ C:Special:Reseller von Star Telecom (01098)
 C:Nikoma, Reseller von Star Telekom
 C:Homepage: http://www.nikoma.de/
 C:Nikoma Internet By Call
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
 Z:1-4 Deutschlandweit
 T:*/9-21=0.12(60)/1 Hauptzeit
 T:*/21-9=0.07(60)/1 Nebenzeit
@@ -16030,6 +17043,13 @@ C:Special:bei Preselection bundesweit, Anmeldung kostenfrei
 C:Special:Reseller von ECONOPHONE : Telco
 D:dtag
 # Inlands-Tarife
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
 Z:1-4 Inland
 T:W/8-18=0.119(60)/1
 T:W/18-21,6-8=0.099(60)/1
@@ -16262,6 +17282,10 @@ C:Address:Telekommunikation GmbH, Dönhoffstraße 39, 51373 Leverkusen
 C:Name:TELELEV
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 ##################################################################
 P:100,1 Meocom
 B:010000
@@ -16275,6 +17299,10 @@ C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/
 C:Meocom spontan ist Call-by-Call (60 Sekunden Takt)
 C:Meocom abo isd Preselection (sekundengenaue Abrechnung)
 C:Surftarif ist ebenfalls vorhanden, Rufnummer und Tarife fehlen noch
+Z:0 FreeCall
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 Z:1-2 Meocom lokal
 T:W/9-21=0.08/60
 T:W/21-9=0.04/60
@@ -16427,6 +17455,10 @@ C:Netnet International AB, P.O. Box 6708, S-11385 Stockholm
 C:Name:Netnet
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 #####################################################################
 #
 #
@@ -16436,6 +17468,10 @@ C:GmbH & Co.KG, Leibnitzstraße 73, 07548 Gera 010002
 C:Name:EncoTel
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 #####################################################################
 #
 #
@@ -16445,6 +17481,10 @@ C:Address:mevacom Telekommunikationsdienstleistungen GmbH, Posthofstraße 16, 144
 C:Name:mevacom
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 #####################################################################
 #
 #
@@ -16454,6 +17494,10 @@ C:Telecom BV, Prinses Beatrixlaan 23, 2595 AK's Gravenhage, Niederlande 010007
 C:Name:KPN
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 #####################################################################
 #
 #
@@ -16463,6 +17507,10 @@ C:Address:USA Global Link Deutschland GmbH, Theaterstraße 90, 52062 Aachen
 C:Name:USA Global Link
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 #####################################################################
 P:109 ChemTel
 B:010009
@@ -16470,6 +17518,10 @@ C:Name:ChemTel
 C:Address:Telekommunikations GmbH Chemnitz, Postfach 510, 09031 Chemnitz
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 #####################################################################
 #
 #
@@ -16481,6 +17533,10 @@ C:Address:Bertelsmann mediaSystems GmbH, An der Autobahn, 33311 Gütersloh
 C:Name:Bertelsmann mediaSystems
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 #####################################################################
 #
 #
@@ -16490,6 +17546,10 @@ C:Telekommunikationsgesellschaft mbH, Brückenstraße 17, 63897 Miltenberg 010011
 C:Name:RED LINE
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 #####################################################################
 P:112 MEGASAT
 B:010012
@@ -16497,6 +17557,10 @@ C:Address:MEGASAT, Friedrich-Krupp-Str. 16-18, 45164 Kaarst
 C:Name:MEGASAT
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 #####################################################################
 #
 #
@@ -16508,6 +17572,10 @@ C:Inc., 430 Park Ave, New York 010015
 C:Name:Delta Three
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 #####################################################################
 P:118 MFS
 B:010018
@@ -16515,6 +17583,10 @@ C:Address:MFS Communications GmbH, Postfach 190409, 60091 Frankfurt am Main
 C:Name:MFS
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 #####################################################################
 #
 #
@@ -16526,6 +17598,10 @@ C:Telefondienste GmbH, Bettinastraße 25a, 60325 Frankfurt 010019
 C:Name:E.T.H.
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 #####################################################################
 #
 #
@@ -16535,6 +17611,10 @@ C:Address:Komm Consult, Oberweg 15, 82024 Taufkirchen bei München
 C:Name:Komm Consult
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 #####################################################################
 #
 #
@@ -16544,6 +17624,10 @@ C:Electronic GmbH, Hagenauer Straße 47, 65203 Wiesbaden 010022
 C:Name:Motorola
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 #####################################################################
 P:125 Mediascape
 B:010025
@@ -16551,6 +17635,10 @@ C:Address:Mediascape Communications GmbH, Usedomstraße 19, 22047 Hamburg
 C:Name:Mediascape
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 #####################################################################
 #
 #
@@ -16562,6 +17650,10 @@ C:potsdam, kommunikationsgesellschaft mbH, Erich-Weinert-Straße 100, 14478 Potsd
 C:Name:tnp telenet
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 #####################################################################
 #
 #
@@ -16571,6 +17663,10 @@ C:Address:accom Gesellschaft für Telekommunikationsnetze und -dienstleistungen G
 C:Name:accom
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 #####################################################################
 P:132 SD
 B:010032
@@ -16578,6 +17674,10 @@ C:Name:SD Telecom
 C:Address:SD Telecom Telekommunikations GmbH, Heinersdorfer Damm 55-57, 16303 Schwedt
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 #####################################################################
 #
 #
@@ -16589,6 +17689,10 @@ C:Address:Level 3 Communications GmbH, Oberlindau 54 - 56, 60323 Frankfurt/Main
 C:Name:Level 3
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 #####################################################################
 P:140 VossNet
 B:010040
@@ -16596,6 +17700,10 @@ C:Name:VossNet
 C:Address:VossNet Communications GmbH, 28199 Bremen
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 #####################################################################
 #
 #
@@ -16607,6 +17715,10 @@ C:Address:connection 42, Ernst-Abbe-Straße 10, 25451 Quickborn
 C:Name:connection 42
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 #####################################################################
 #
 #
@@ -16616,6 +17728,10 @@ C:AG, Militärstraße 36, CH-8004 Zürich 010044
 C:Name:Carrier 1
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 #####################################################################
 #
 #
@@ -16630,6 +17746,10 @@ C:Address:Drillisch AG, Horbeller Straße 33, 50858 Köln
 C:Name:Drillisch Superregionen
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 Z:1-4 Deutschland
 A:+49
 T:W/08-21=0.098/60
@@ -16656,6 +17776,10 @@ C:Address:Drillisch AG, Horbeller Straße 33, 50858 Köln
 C:Name:Drillisch
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 Z:1-4 Deutschland
 A:+49
 T:W/08-21=0.119/60
@@ -16680,6 +17804,10 @@ C:Name:Osnatel
 C:Address:Osnatel GmbH, Luisenstraße 16, 49074 Osnabrück
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 #####################################################################
 #
 #
@@ -16691,6 +17819,10 @@ C:Address:Telia Telekommunikation GmbH, Herrengraben 3, 20459 Hamburg
 C:Name:Telia
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 #####################################################################
 #
 #
@@ -16700,6 +17832,10 @@ C:Kassel GmbH, Königstor 3 - 13, 34117 Kassel 010056
 C:Name:NETCOM
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 #####################################################################
 #
 #
@@ -16709,6 +17845,10 @@ C:Address:JelloCom GmbH & Co.KG, Prüssingstraße 41, 07745 Jena
 C:Name:JelloCom
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 #####################################################################
 P:168 VSE
 B:010068
@@ -16716,6 +17856,10 @@ C:Address:VSE Net GmbH, Postfach, 103232, 66032 Saarbrücken
 C:Name:VSE
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 #####################################################################
 #
 #
@@ -16727,6 +17871,10 @@ C:Address:Deutsche Telefon-und Marketing Services GmbH, Isaac-Fulda-Allee 16, 55
 C:Name:Deutsche Telefon- und Marketing Services
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 #####################################################################
 #
 #
@@ -16736,6 +17884,10 @@ C:TFN COM SA World Of Communication, Via Greina 2 CP 2950, CH-6901 Lugano
 C:Name:TFN COM SA
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 #####################################################################
 P:175 Gigabell
 B:010075
@@ -16743,6 +17895,10 @@ C:Address:Gigabell AG, 60325 Frankfurt am Main
 C:Name:Gigabell
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 #####################################################################
 #
 #
@@ -16754,6 +17910,10 @@ C:Address:WorldxChange Communications GmbH, Am Seedamm 44, 60489 Frankfurt
 C:Name:WorldxChange
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 #####################################################################
 P:178 Cybernet
 B:010078
@@ -16761,6 +17921,10 @@ C:Cybernet Internet-Dienstleistungen AG, Stefan-George-Ring 19-23, 81929 München
 C:Name:Cybernet
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 #####################################################################
 #
 #
@@ -16772,6 +17936,10 @@ C:Address:FaciliCom Telekommunikation GmbH, Windmühlstraße 1, 60329 Frankfurt/Ma
 C:Name:FaciliCom
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 #####################################################################
 P:181 Daten- und Telekommunikations-GmbH Dessau
 B:010081
@@ -16779,6 +17947,10 @@ C:Daten- und Telekommunikations-GmbH Dessau, Willy-Lohmann-Straße 6a, 06844 Dess
 C:Name:Daten- und Telekommunikations-GmbH
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 #####################################################################
 #
 #
@@ -16790,6 +17962,10 @@ C:Address:Startec Global Communications (Germany) GmbH, Broßstraße 6, 60487 Fran
 C:Name:Startec
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 #####################################################################
 P:185 FirstMark
 B:010085
@@ -16797,6 +17973,10 @@ C:FirstMark Communications Deutschland GmbH, Am Opernplatz 2, 60313 Frankfurt am
 C:Name:FirstMark
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 #####################################################################
 #
 #
@@ -16808,6 +17988,10 @@ C:jk-tel GmbH i.G., Hopfenplatz 5, 39120 Magdeburg
 C:Name:jk-tel
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 #####################################################################
 #
 #
@@ -16817,6 +18001,10 @@ C:Corporate Network Essen Gesellschaft für Telekommunikation mbH, Kruppstraße 82
 C:Name:CNE
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 #####################################################################
 #
 #
@@ -16826,6 +18014,10 @@ C:Address:Telenec Telekommunikation Neustadt GmbH & Co.KG, Postfach 14 40, 96459
 C:Name:TeleNec
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 #####################################################################
 #
 #
@@ -16835,6 +18027,10 @@ C:Energieversorgung Südsachsen Telekommunikationsgesellschaft mbH, Postfach 2 38
 C:Name:ESTel
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+Z:0 FreeCall
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
 #####################################################################
 #
 #

@@ -17,6 +17,7 @@ bool 'Support mysql SQL-Database' CONFIG_ISDNLOG_MYSQLDB
 if [ "$CONFIG_ISDNLOG_MYSQLDB" = "y" ]; then
 	string 'directory of mysql' CONFIG_ISDNLOG_MYSQLDIR
 fi
+bool 'Support Oracle SQL-Database' CONFIG_ISDNLOG_ORACLE
 choice 'Country specific chargeinfo support' \
 	"DE CONFIG_ISDN_LOG_DE \
 	 AT CONFIG_ISDN_LOG_AT \

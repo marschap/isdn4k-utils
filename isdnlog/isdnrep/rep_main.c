@@ -1,8 +1,8 @@
-/* $Id: rep_main.c,v 1.11 1999/12/17 22:51:55 akool Exp $
+/* $Id: rep_main.c,v 1.12 1999/12/31 13:57:19 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
- * Copyright 1995, 1999 by Andreas Kool (akool@isdn4linux.de)
+ * Copyright 1995 .. 2000 by Andreas Kool (akool@isdn4linux.de)
  *                     and Stefan Luethje (luethje@sl-gw.lake.de)
  *
  * This program is free software; you can redistribute it and/or modify
@@ -20,6 +20,13 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rep_main.c,v $
+ * Revision 1.12  1999/12/31 13:57:19  akool
+ * isdnlog-4.00 (Millenium-Edition)
+ *  - Oracle support added by Jan Bolt (Jan.Bolt@t-online.de)
+ *  - resolved *any* warnings against rate-de.dat
+ *  - Many new rates
+ *  - CREDITS file added
+ *
  * Revision 1.11  1999/12/17 22:51:55  akool
  * isdnlog-3.79
  *  - isdnlog/isdnrep/isdnrep.{c,h} ... error -handling, print_msg

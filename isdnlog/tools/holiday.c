@@ -1,4 +1,4 @@
- /* $Id: holiday.c,v 1.16 1999/09/09 11:21:05 akool Exp $
+ /* $Id: holiday.c,v 1.17 1999/12/31 13:57:19 akool Exp $
  *
  * Feiertagsberechnung
  *
@@ -19,6 +19,13 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: holiday.c,v $
+ * Revision 1.17  1999/12/31 13:57:19  akool
+ * isdnlog-4.00 (Millenium-Edition)
+ *  - Oracle support added by Jan Bolt (Jan.Bolt@t-online.de)
+ *  - resolved *any* warnings against rate-de.dat
+ *  - Many new rates
+ *  - CREDITS file added
+ *
  * Revision 1.16  1999/09/09 11:21:05  akool
  * isdnlog-3.49
  *
@@ -197,7 +204,7 @@ typedef struct {
   char *name;
 } HOLIDATE;
 
-static char *defaultWeekday[] = { "", /* not used */ 
+static char *defaultWeekday[] = { "", /* not used */
 				  "Everyday",
 				  "Workday",
 				  "Weekend",
@@ -208,7 +215,7 @@ static char *defaultWeekday[] = { "", /* not used */
 				  "Friday",
 				  "Saturday",
 				  "Sunday",
-				  "Holiday" }; 
+				  "Holiday" };
 
 static int        line = 0;
 static char      *Weekday[COUNT(defaultWeekday)] = { NULL, };
@@ -457,11 +464,11 @@ static char *staticString (char *fmt, ...)
   for (i=0; i<Size; i++)
     if (strcmp (buffer, Table[i])==0)
       return Table[i];
-  
+
   Size++;
   Table=realloc(Table, Size*sizeof(char*));
   Table[Size-1]=strdup(buffer);
-  
+
   return Table[Size-1];
 }
 
@@ -472,7 +479,7 @@ int isDay(struct tm *tm, bitfield mask, char **name)
   julian day=(date2julian(tm->tm_year+1900,tm->tm_mon+1,tm->tm_mday)-6)%7+MONDAY;
 
   if ((mask & (1<<HOLIDAY)) && isHoliday(tm, &holiname)) {
-    if (name) *name=staticString("%s (%s)", Weekday[HOLIDAY], holiname); 
+    if (name) *name=staticString("%s (%s)", Weekday[HOLIDAY], holiname);
     return HOLIDAY;
   }
 
@@ -480,22 +487,22 @@ int isDay(struct tm *tm, bitfield mask, char **name)
     if (name) *name=staticString("%s (%s)", Weekday[WEEKEND], Weekday[day]);
     return WEEKEND;
   }
-  
+
   if ((mask & (1<<WORKDAY)) && day!=SATURDAY && day!=SUNDAY && !isHoliday(tm, NULL)) {
     if (name) *name=staticString("%s (%s)", Weekday[WORKDAY], Weekday[day]);
     return WORKDAY;
   }
-  
+
   if (mask & (1<<day)) {
     if (name) *name=staticString("%s", Weekday[day]);
     return day;
   }
-  
+
   if (mask & (1<<EVERYDAY)) {
     if (name) *name=staticString("%s", Weekday[EVERYDAY]);
     return day;
   }
-  
+
   return 0;
 }
 

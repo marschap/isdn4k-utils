@@ -1,8 +1,8 @@
-/* $Id: country.c,v 1.6 1999/09/26 10:55:20 akool Exp $
+/* $Id: country.c,v 1.7 1999/12/31 13:57:19 akool Exp $
  *
  * Länderdatenbank
  *
- * Copyright 1995, 1999 by Andreas Kool (akool@isdn4linux.de)
+ * Copyright 1995 .. 2000 by Andreas Kool (akool@isdn4linux.de)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +19,13 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: country.c,v $
+ * Revision 1.7  1999/12/31 13:57:19  akool
+ * isdnlog-4.00 (Millenium-Edition)
+ *  - Oracle support added by Jan Bolt (Jan.Bolt@t-online.de)
+ *  - resolved *any* warnings against rate-de.dat
+ *  - Many new rates
+ *  - CREDITS file added
+ *
  * Revision 1.6  1999/09/26 10:55:20  akool
  * isdnlog-3.55
  *   - Patch from Oliver Lauer <Oliver.Lauer@coburg.baynet.de>

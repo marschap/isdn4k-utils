@@ -1,8 +1,8 @@
-/* $Id: rate.c,v 1.69 1999/12/24 14:17:06 akool Exp $
+/* $Id: rate.c,v 1.70 1999/12/31 13:57:20 akool Exp $
  *
  * Tarifdatenbank
  *
- * Copyright 1995, 1999 by Andreas Kool (akool@isdn4linux.de)
+ * Copyright 1995 .. 2000 by Andreas Kool (akool@isdn4linux.de)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +19,13 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rate.c,v $
+ * Revision 1.70  1999/12/31 13:57:20  akool
+ * isdnlog-4.00 (Millenium-Edition)
+ *  - Oracle support added by Jan Bolt (Jan.Bolt@t-online.de)
+ *  - resolved *any* warnings against rate-de.dat
+ *  - Many new rates
+ *  - CREDITS file added
+ *
  * Revision 1.69  1999/12/24 14:17:06  akool
  * isdnlog-3.81
  *  - isdnlog/tools/NEWS
@@ -1138,8 +1145,10 @@ int initRate(char *conf, char *dat, char *dom, char **msg)
 	if (Provider[prefix].Zone[zone].nHour==0)
 	  if (zone) /* AK:17Dec99 Zone=0 is per definition free of charge */
 	    whimper (dat, "Zone %d has no 'T:' Entries", zone);
+#if 0 /* AK:28Dec1999 - Sorry, Leo ... Millenium-Release! */
 	if (!(where & FEDERAL))
 	  whimper (dat, "Provider %d has no default domestic zone #1 (missing 'A:%s')", prefix, mycountry);
+#endif
 	line++;
       }
       else if(nProvider) { /* silently ignore empty providers */
@@ -1654,8 +1663,10 @@ int initRate(char *conf, char *dat, char *dom, char **msg)
     if (Provider[prefix].Zone[zone].nHour==0)
       if (zone) /* AK:17Dec99 Zone=0 is per definition free of charge */
         whimper (dat, "Zone %d has no 'T:' Entries", zone);
+#if 0 /* AK:31Dec1999 - Sorry, Leo ... Millenium-Release! Michi: Hier wird _Bloedsinn_ gemeldet!! */
     if (!(where & FEDERAL))
       whimper (dat, "Provider %d has no default domestic zone #2 (missing 'A:%s')", prefix, mycountry);
+#endif
     line++;
   }
   else if(nProvider) { /* silently ignore empty providers */
