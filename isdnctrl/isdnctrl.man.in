@@ -1,11 +1,14 @@
 #!/bin/sh
-# $Id: isdnctrl.man.in,v 1.4 1997/07/22 22:36:12 luethje Exp $
+# $Id: isdnctrl.man.in,v 1.5 1997/07/23 20:39:17 luethje Exp $
 #
 # Generator for isdnctrl manpage
 # (C) 1997 Stefan Luethje
 #
 #
 # $Log: isdnctrl.man.in,v $
+# Revision 1.5  1997/07/23 20:39:17  luethje
+# added the option "force" for the commands delif and reset
+#
 # Revision 1.4  1997/07/22 22:36:12  luethje
 # isdnrep:  Use "&nbsp;" for blanks
 # isdnctrl: Add the option "reset"
@@ -47,7 +50,7 @@ BEGIN {printall=1}
 EOF
 
 awk -f $AWKFILE >$MANOUTFILE << EOF
-.TH ISDNCTRL 8 "25. June 1997"
+.TH ISDNCTRL 8 "23. July 1997"
 .UC 4
 .SH NAME
 isdnctrl \- get/set ISDN device information
@@ -76,14 +79,13 @@ Adds a new ISDN IP-interface "name" to the kernel. If "name" is
 omitted, the kernel will use "ethX", while X is an increasing
 number starting from 0.
 .TP 5
-.B delif name
+.B delif name [force]
 Removes the ISDN IP-interface "name" from the kernel.
+The option "force" starts at first for the interface the command "ifconfig down".
 .TP 5
-.B reset
-Removes all ISDN IP-interfaces from the kernel if it possible.
-At first all entries for ISDN of the command 
-.B ifconfig
-have to be removed.
+.B reset [force]
+Removes all ISDN IP-interfaces from the kernel if it is possible.
+The option "force" starts at first for each interface the command "ifconfig down".
 .TP 5
 .B addphone name out num
 Set the phone number(s) of the remote site for the IP-interface

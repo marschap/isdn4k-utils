@@ -94,6 +94,7 @@ deinstall: distclean
 
 libisdn.a: conffile.o isdntools.o libtools.o $(LIB_AREA) $(LIB_AVON)
 		ar rs libisdn.a isdntools.o conffile.o libtools.o $(LIB_AREA) $(LIB_AVON)
+		ranlib libisdn.a
 
 ifeq (.depend,$(wildcard .depend))
 include .depend

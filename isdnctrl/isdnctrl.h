@@ -1,4 +1,4 @@
-/* $Id: isdnctrl.h,v 1.3 1997/07/22 22:36:11 luethje Exp $
+/* $Id: isdnctrl.h,v 1.4 1997/07/23 20:39:16 luethje Exp $
  * ISDN driver for Linux. (Control-Utility)
  *
  * Copyright 1994,95 by Fritz Elfert (fritz@wuemaus.franken.de)
@@ -21,6 +21,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnctrl.h,v $
+ * Revision 1.4  1997/07/23 20:39:16  luethje
+ * added the option "force" for the commands delif and reset
+ *
  * Revision 1.3  1997/07/22 22:36:11  luethje
  * isdnrep:  Use "&nbsp;" for blanks
  * isdnctrl: Add the option "reset"
@@ -33,6 +36,10 @@
  *
  *
  */
+
+/*****************************************************************************/
+
+#define FILE_PROC "/proc/net/dev"
 
 /*****************************************************************************/
 
@@ -65,7 +72,7 @@ cmd_struct cmds[] =
 {
         {"addif", "01"},
         {"addslave", "2"},
-        {"delif", "1"},
+        {"delif", "12"},
         {"dial", "1"},
         {"bind", "123"},
         {"unbind", "1"},
@@ -97,7 +104,7 @@ cmd_struct cmds[] =
         {"removelink", "1"},
         {"encap", "12"},
         {"trigger", "12"},
-        {"reset", "0"},
+        {"reset", "01"},
 #ifdef I4L_CTRL_CONF
         {"writeconf", "01"},
         {"readconf", "01"},
