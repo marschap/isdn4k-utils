@@ -1,6 +1,6 @@
-.\" $Id: xmonisdn.man.in,v 1.2 1998/12/02 11:58:51 paul Exp $
+.\" $Id: xmonisdn.man.in,v 1.3 1999/08/03 14:00:22 paul Exp $
 .\"
-.\" CHECKIN $Date: 1998/12/02 11:58:51 $
+.\" CHECKIN $Date: 1999/08/03 14:00:22 $
 .\"
 .TH XMONISDN 1 "@MANDATE@" isdn4k-utils-@I4LVERSION@ "X Tools"   
 .SH NAME
@@ -199,6 +199,41 @@ The default translation is
 	<ButtonPress>Button3:  netdown()
 .fi
 .sp
+
+.SH SECURITY ISSUES
+There are a number of reasons why you should not run
+.I xmonisdn
+as a `setuid root' program.
+Most importantly, any setuid root program is a potential security hole.
+The scripts that are executed by
+.I xmonisdn
+may be compromised, or contain non-absolute paths to the commands called
+(so that by changing the PATH variable the wrong binary is executed!);
+or the script may in turn call other things that are not secure.
+.br
+If you are sure that your scripts are secure and you insist on making
+.I xmonisdn
+setuid root, you can give the
+.B -r
+option as
+.I first
+option. This will turn off xmonisdn's setuid detection. However, you are on
+your own if you do this!
+.br
+
+A better alternative is to put the isdn devices in group
+.B dialout
+(if not so already), and add yourself to the
+.B dialout
+group. This way you have permission to manipulate the ISDN devices, e.g.
+to use
+.I isdnctrl
+to change the dialmode setting to off (to disable dialing) or auto (for
+autodial). The whole ISDN system may also be turned on and off, see the
+.I isdnctrl manpage for more info.
+This is a more secure way of controlling the dialing than e.g. by
+manipulating routes.
+
 .SH ENVIRONMENT
 .PP
 .TP 8
@@ -211,4 +246,4 @@ stored in the RESOURCE_MANAGER property.
 .SH AUTHOR
 Bernhard Nebel
 .SH SEE ALSO
-.BR xmonisdn(1x)
+.BR isdnctrl(8)

@@ -1,3 +1,4 @@
+#include <unistd.h>
 #include <stdio.h>
 #include <X11/Xatom.h>
 #include <X11/Intrinsic.h>
@@ -7,6 +8,9 @@
 
 extern void exit();
 static void quit();
+
+/* Only allow calling scripts when setuid root if the -r option is given */
+int allow_setuid = 0;
 
 char *ProgramName;
 
@@ -55,6 +59,24 @@ int main (argc, argv)
     Widget toplevel, w;
 
     ProgramName = argv[0];
+
+    /* check for first arg `-r'. Must be first! */
+    if (argc > 1 && !strcmp(argv[1], "-r")) {
+	int i;
+	allow_setuid = 1;
+	argc--;
+	for (i = 1; i < argc; i++)
+	        argv[i] = argv[i+1];
+	argv[i] = 0;
+    }
+    else {
+	if (geteuid() == 0 && getuid() != 0) {
+	    fprintf(stderr,
+		    "`%s' setuid root not allowed! Read the manpage to find out why.\n",
+		    ProgramName);
+	    exit(1);
+	}
+    }
 
     toplevel = XtAppInitialize(&xtcontext, "xmonisdn", options, XtNumber (options),
 			       &argc, argv, NULL, NULL, 0);

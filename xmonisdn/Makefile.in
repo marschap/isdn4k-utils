@@ -1,14 +1,25 @@
 #
 # This Makefile is used for compatibility to the
-# isdn4k-utils package. In order to superseede
-# the original Makefile, it is called makefile.
+# isdn4k-utils package. In order to supercede
+# the original Makefile, it is called GNUmakefile.
 #
 
-#
 # Add security check:
 #  - executed commands must be owned by root
 #    and only writable by owner.
+
+# Additional security stuff:
 #
+#  - don't be setuid root, and check for this; Bad Things can be done with
+#    setting IFS and/or PATH before invoking xmonisdn!
+#
+#  - It's better to make the ISDN devices group `dialout' (or so), and put
+#    the user also into that group. Then no setuid/setgid bits are needed.
+#
+#  - Cater for users who think they know what they are doing: refuse to run
+#    setuid root unless an option `-r' is given; hide this option in the
+#    docs where the problems with setuid programs are explained :-)
+
 I4LU_DEFINES := $(CFLAGS) -DPARANOIA_CHECK -I.
 ifeq (../.config,$(wildcard ../.config))
 	include ../.config

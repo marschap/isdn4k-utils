@@ -4,6 +4,7 @@
 #include <X11/Xosdefs.h>		/* for X_NOT_POSIX def */
 #include <pwd.h>			/* for getting username */
 #include <sys/stat.h>			/* for stat() ** needs types.h ***/
+#include <unistd.h>
 #include <stdio.h>			/* for printing error messages */
 #include <stdlib.h>
 #include <sys/types.h>
@@ -48,6 +49,8 @@ typedef union wait	waitType;
 #include <X11/Xmu/Drawing.h>
 #include <X11/extensions/shape.h>
 
+/* Only allow calling scripts when setuid root if the -r option is given */
+extern int allow_setuid;
 /*
  * The default user interface is to have the netstat turn itself off whenever
  * the user presses a button in it.  Expert users might want to make this 
@@ -245,15 +248,23 @@ static int paranoia_check(cmd)
 #ifdef PARANOIA_CHECK
     struct stat stbuf;
 
-	if (stat(cmd, &stbuf))
+    /* only check if setuid root */
+    if (geteuid() != 0 || getuid() == 0)
+	return 1;
+
+    /* don't allow any scripts if setuid root and not called with -r option */
+    if (!allow_setuid)
+	return 0;
+
+    if (stat(cmd, &stbuf))
       /* stat failed, stay on the safe side */
-      return 0;
+	return 0;
     if (stbuf.st_uid != 0)
       /* owner is not root */
-      return 0;
+	return 0;
     if (stbuf.st_mode & (S_IWGRP | S_IWOTH))
       /* writable by group or world */
-      return 0;
+	return 0;
 #endif
     return 1;
 }
@@ -271,10 +282,11 @@ static void NetUp (gw, event, params, nparams)
     if ((w->netstat.state <= 1) && (!updownwait)) {
       w->netstat.state = 5;
       updownwait = 150 / w->netstat.update;
-      if (updownwait < 2) updownwait = 2;
+      if (updownwait < 2)
+	  updownwait = 2;
       redraw_netstat(w);
       if (paranoia_check(NETUP_COMMAND))
-      	system(NETUP_COMMAND);
+      	  system(NETUP_COMMAND);
     }
     return;
 }
@@ -294,9 +306,10 @@ static void NetDown (gw, event, params, nparams)
       w->netstat.state = 6;
       redraw_netstat(w);
       updownwait = 150 / w->netstat.update;
-      if (updownwait < 2) updownwait = 2;
+      if (updownwait < 2)
+	  updownwait = 2;
       if (paranoia_check(NETDOWN_COMMAND))
-      system(NETDOWN_COMMAND);
+          system(NETDOWN_COMMAND);
     }
     return;
 }
@@ -592,9 +605,13 @@ static int parse_info()
     infoptr = infoline + 7;
     for (i=0; i<ISDN_MAX_CHANNELS; i++) {
       sscanf(infoptr,"%d",&num);
-      if ((num&ISDN_USAGE_MASK) == ISDN_USAGE_NET) 
-	if (num&ISDN_USAGE_OUTGOING) newstate = 4;
-	else if (newstate < 3) newstate = 3;
+      if ((num&ISDN_USAGE_MASK) == ISDN_USAGE_NET) {
+	if (num&ISDN_USAGE_OUTGOING)
+	   newstate = 4;
+	else
+	   if (newstate < 3)
+	      newstate = 3;
+      }
       sscanf(infoptr,"%s",temp);
       infoptr = infoptr + strlen(temp) + 1;
     }

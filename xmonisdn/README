@@ -40,8 +40,15 @@ Pressing button 2 in the window while the ISDN system is inactive
 executes the command "/sbin/isdnnet start &" and pressing button 3
 executes "/sbin/isdnnet stop". Provided /sbin/isdnnet is a
 shell-script that can start and stop the ISDN subsystem and provided
-xmonisdn is installed as setuid root, you can startup and stop the 
-ISDN system in this way.
+you are in the dialout group (and the ISDN devices in /dev are also
+in the dialout group) you can startup and stop the ISDN system in
+this way.
+
+An alternative is to install xmonisdn as setuid root, but that may
+have serious security problems, so that is strongly discouraged.
+If you insist on using xmonisdn as setuid root, read the manual
+page on info how to do that.  You could also install xmonisdn as
+setgid dialout, but that too is not without possible problems.
 
 
 4. Compilation and Installation
@@ -52,8 +59,7 @@ After having installed the source directory type
 	make
 	make install.all
 
-which compiles and installs all files. Note: xmonisdn is installed
-as setiud root!
+which compiles and installs all files.
 
 Now you only have to setup the shell-script /sbin/isdnnet, which could
 simply be a link to the appropriate initialization script. I wrote a
@@ -62,7 +68,4 @@ all mail that has been queued while the ISDN system was inactive.
 
 Bernhard Nebel, December 9, 1996
 
-
-
-
-
+Modified August 3, 1999 by Paul Slootman <paul@isdn4linux.de>
