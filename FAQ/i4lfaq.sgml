@@ -4,7 +4,7 @@
 
 <title>FAQ for isdn4linux
 <author>Matthias Hessler (<tt><htmlurl url="mailto:hessler@isdn4linux.de" name="hessler@isdn4linux.de"></tt>)
-<date>v2.0.81, 26. October 2003
+<date>v2.0.82, 22. November 2003
 <abstract>
 If you are reading this FAQ online, you may consider downloading the whole
 thing, and reading it offline (much cheaper). To download the latest
@@ -2317,6 +2317,32 @@ hisaxctrl &lt;id&gt; 0 99
 It is ok if you have the occasional CRC error, but if you see a lot of
 errors then check your cable termination & connectivity.
 
+
+<sect1> trouble_amproglibtool: When compiling isdn4k-utils I get the  
+error 'AM_PROG_LIBTOOL not found'?  
+<label id="trouble_amproglibtool">
+<p>
+You have to regenerate the files from automake/autoconf with your version of
+automake/autoconf.
+You can do it with the following shell script (assuming you
+stored the source code for the isdn4k-utils under ~/isdn/isdn4k-util):
+<code>
+cd ~/isdn/isdn4k-utils
+for i in capi20 capiinfo capifax capiinit rcapid ; do
+ cd $i
+ rm -f lt*
+ aclocal
+ libtoolize --force --automake --copy
+ automake --add-missing --copy
+ autoconf
+ cd ..
+done
+for i in eicon isdnlog ipppd ; do
+ cd $i
+ autoconf
+ cd ..
+done
+</code>
 
 
 <!-- Config MSN
@@ -4894,6 +4920,24 @@ This may happen when you start isdnlog with the options <tt>-t1</tt>
 or <tt>-t2</tt>, then the time is synchronized with the digital
 switching station. The screen saver thinks that more than x minutes have
 passed, which causes a short blackout of the screen.
+
+<sect1> isdnlog_nologging: Isdnlog does not log any incoming call for me?  
+<label id="isdnlog_nologging">
+<p>
+Please verify whether your setup complies with the restrictions given in the
+isdnlog man page:
+
+Isdnlog only works with the HiSax isdn driver. Other cards with their own
+driver are not supported. Additionally you need to enable d-channel logging
+(you can use "hisaxctrl &lt;DriverId&gt; 1 4" to do that, e.g.
+"hisaxctrl line0  1  4").  Isdnlog can only log outgoing calls that
+originate from your isdn card, and incoming calls. To get information
+about outgoing calls from other isdn devices (e.g. telephones), you need
+a second Teles isdn card, with crossed lines. Such a card is not usable
+for communicating, but can log outgoing calls from any device.
+
+See also question <ref id="isdnlog_reversedcard" name="isdnlog_reversedcard">
+for using two ISDN cards for logging.
 
 
 <!-- Audio
