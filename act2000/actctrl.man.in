@@ -1,6 +1,6 @@
-.\" $Id: actctrl.man.in,v 1.1 1997/09/25 21:41:38 fritz Exp $
+.\" $Id: actctrl.man.in,v 1.2 1997/09/26 09:08:33 fritz Exp $
 .\"
-.\" CHECKIN $Date: 1997/09/25 21:41:38 $
+.\" CHECKIN $Date: 1997/09/26 09:08:33 $
 .\"
 .\" Process this file with
 .\" groff -man -Tascii actctrl.1 for ASCII output, or
@@ -98,7 +98,7 @@ may be appended. For defining an empty entry in this list, use a dash.
 .BI "load " firmware
 downloads the firmware into the card and starts operation.
 Usually the images are located in
-.IR @I4LCONFDIR@ .
+.IR @CONFIG_DATADIR@ .
 The firmware is named
 .IR bip1120.bpl .
 .TP
@@ -108,7 +108,7 @@ is available if the program is configured using the
 option only. The contents of internal driver variables is dumped on stdout.
 .SH FILES
 .TP
-.I @I4LCONFDIR@/bip1120.bpl
+.I @CONFIG_DATADIR@/bip1120.bpl
 This is the image of the firmware designed for both the German 1TR6 protocol
 and Euro ISDN.
 .LP

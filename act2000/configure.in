@@ -3,6 +3,7 @@ AC_INIT(actctrl.c)
 AC_PREFIX_DEFAULT(/usr)
 
 I4LCONFDIR=${I4LCONFDIR:-"/etc/isdn"}
+CONFIG_DATADIR=${CONFIG_DATADIR:-"/usr/lib/isdn"}
 I4LVERSION=${I4LVERSION:-"?.?"}
 MANDATE=`grep CHECKIN actctrl.man.in | awk '{print $4}'`
 
@@ -33,6 +34,7 @@ AC_ARG_ENABLE(dump,[  --enable-dump           Enable dump feature for debugging]
 AC_SUBST(INSTALL)
 AC_SUBST(DEBUGVAR)
 AC_SUBST(MANDATE)
+AC_SUBST(CONFIG_DATADIR)
 AC_SUBST(I4LCONFDIR)
 AC_SUBST(I4LVERSION)
 AC_OUTPUT(Makefile actctrl.man)
