@@ -1,6 +1,6 @@
 /* #define DEBUG_REDIRZ */
 
-/* $Id: rate.c,v 1.81 2000/08/01 20:31:31 akool Exp $
+/* $Id: rate.c,v 1.82 2000/11/19 14:33:05 leo Exp $
  *
  * Tarifdatenbank
  *
@@ -21,6 +21,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rate.c,v $
+ * Revision 1.82  2000/11/19 14:33:05  leo
+ * Work around a SIGSEGV with R:Tags - V4.44
+ *
  * Revision 1.81  2000/08/01 20:31:31  akool
  * isdnlog-4.37
  * - removed "09978 Schoenthal Oberpfalz" from "zone-de.dtag.cdb". Entry was
@@ -2396,6 +2399,7 @@ int getRate(RATE *Rate, char **msg)
   time_t time;
   struct tm tm;
   char *number=0;
+  static int oprefix = -1;
 
   if (msg)
     *(*msg=message)='\0';
@@ -2435,10 +2439,22 @@ int getRate(RATE *Rate, char **msg)
     if (msg) snprintf(message, LENGTH, "Unknown provider %s",epnum(prefix));
     return UNKNOWN;
   }
+  /* isdnlog doesn't remember R:-edirected providers, but calls us
+     with "known" _area and _zone, from other prefix, which gives nice
+     SIGSEGVs
+  */
+        
+  if (prefix != oprefix) {
+    oprefix = prefix;
+    Rate->_area = Rate->_zone = UNKNOWN;
+  }
+  
   if (Rate->_area==UNKNOWN || Rate->_zone == UNKNOWN)
-  if(get_area(&prefix, Rate, number, msg, message) == UNKNOWN)
-    return UNKNOWN;
+    if(get_area(&prefix, Rate, number, msg, message) == UNKNOWN)
+      return UNKNOWN;
 
+  oprefix = prefix;
+  
   Rate->Country  = Provider[prefix].Area[Rate->_area].Name;
   if (Rate->dst[0] && *Rate->dst[0])
     Rate->Zone     = Provider[prefix].Zone[Rate->_zone].Name;
