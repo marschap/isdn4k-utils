@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.29 1998/11/16 22:45:36 fritz Exp $
+# $Id: Makefile,v 1.30 1998/11/17 13:52:50 fritz Exp $
 #
 # Toplevel Makefile for isdn4k-utils
 #
@@ -175,6 +175,13 @@ scripts/lxdialog/lxdialog:
 scripts/autoconf.h: .config
 	perl scripts/mk_autoconf.pl
 
+cfgerror:
+	@echo ""
+	@echo "WARNING! Configure in $(ERRDIR) failed, disabling package"
+	@echo ""
+	@sleep 1
+	@cp etc/Makefile.disabled $(ERRDIR)/Makefile
+
 # Next target makes three attempts to configure:
 #  - if a configure script exists, execute it
 #  - if a Makefile.in exists, make -f Makefile.in config
@@ -185,7 +192,7 @@ subconfig: scripts/autoconf.h
 	@set -e; for i in `echo $(SUBDIRS)`; do \
 		if [ -x $$i/configure ] ; then \
 			echo -e "\nRunning configure in $$i ...\n"; sleep 1; \
-			(cd $$i; ./configure); \
+			(cd $$i; ./configure || $(MAKE) -C ../ ERRDIR=$$i cfgerror); \
 		elif [ -f $$i/Makefile.in ] ; then \
 			echo -e "\nRunning make -f Makefile.in config in $$i ...\n"; sleep 1; \
 			$(MAKE) -C $$i -f Makefile.in config; \
