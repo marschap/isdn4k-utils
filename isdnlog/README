@@ -1,10 +1,10 @@
-ISDNLOG - Version 3.22 -  				29-Apr-99  09:24
+ISDNLOG - Version 3.23 -  				30-Apr-99  20:12
 
 
 isdnlog ist ein Utility zur Auswertung des D-Kanals eines
 ISDN-BRI Anschlusses.
 
-isdnlog-3.22 wurde ausgiebig mit Linux-2.0.36 getestet.
+isdnlog-3.23 wurde ausgiebig mit Linux-2.0.36 getestet.
 
 
 Fuer alle, die es nun ueberhaupt nicht mehr abwarten koennen, hier das
@@ -3243,13 +3243,15 @@ Kommentare werden geloescht.
      	      		AREACODE in der "callerid.conf") zu der Telefonnummer
                         "code".
                         Daneben wird ausgegeben, ueber welchen Provider
-                        jetzt gerade eine (181 Sekunden lange) Verbindung
+                        jetzt gerade eine (153 Sekunden lange) Verbindung
                         zu dieser Nummer am guenstigsten waere.
                         Gilt nicht fuer -A und -D.
-                        (181 Sekunden als gedachte Dauer der Verbindung
-                         wurde gewaehlt, weil durch diese "krumme" Zahl
-                         alle Provider, die im Sekunden-Takt abrechnen
-                         massiv im Vorteil sind - was gewuenscht ist!)
+                        (153 Sekunden als gedachte Dauer der Verbindung
+                         wurde gewaehlt, da es sich um den statistischen
+                         Durchschnitt eines typischen Telefonats handelt,
+                         und durch diese "krumme" Zahl alle Provider,
+                         die im Sekunden-Takt abrechnen massiv im Vorteil
+                         sind - was gewuenscht ist!)
 
   -i          "ignore"  Es wird dann bei den Optionen -n und -a die
                         Gross/Kleinschreibung ignoriert.

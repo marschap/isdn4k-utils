@@ -1,4 +1,4 @@
-/* $Id: isdnconf.c,v 1.22 1999/04/19 19:24:02 akool Exp $
+/* $Id: isdnconf.c,v 1.23 1999/04/30 19:07:46 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -20,6 +20,12 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnconf.c,v $
+ * Revision 1.23  1999/04/30 19:07:46  akool
+ * isdnlog Version 3.23
+ *
+ *  - changed LCR probing duration from 181 seconds to 153 seconds
+ *  - "rate-de.dat" filled with May, 1. rates
+ *
  * Revision 1.22  1999/04/19 19:24:02  akool
  * isdnlog Version 3.18
  *
@@ -955,7 +961,7 @@ int main(int argc, char *argv[], char *envp[])
 	if (areacode[0] != '\0')
 	{
 		char *ptr;
-		int len, i, zone = UNKNOWN, duration = 181;
+		int len, i, zone = UNKNOWN, duration = TESTDURATION;
 
 
  		initHoliday(holifile, NULL);

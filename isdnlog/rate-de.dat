@@ -1,4 +1,4 @@
-V:1.0-Germany [29-Apr-1999]
+V:1.0-Germany [30-Apr-1999]
 
 # Diese Tariftabelle ist ein Service der I4L-Tarifdatenbank-Crew.
 # Alle Angaben erfolgen ohne Gewähr
@@ -357,6 +357,9 @@ C:Service AG, Dieskaustraße 246, 04249 Leipzig 01017
 #####################################################################
 P:18 debitel
 C:Kommunikationstechnik GmbH & Co KG, Schelmenwasenstr. 37 - 39, 70567 Stuttgart 01018
+Z:2-4 Fern
+T:*/06-20=0.15/60
+T:*/20-06=0.075/60
 #####################################################################
 P:19 Mobilcom CbC
 C:CityLine Telefondienste GmbH, Schwarzer Weg 13, 24837 Schleswig 01019
@@ -451,7 +454,24 @@ P:23 tesion
 C:Communikationsnetze Süd-West GmbH & Co. KG, Kriegsbergstr. 11, 70174 Stuttgart 01023
 #####################################################################
 P:24 Telepassport
+G:01.05.1999
 C:GmbH, Schwindstraße 3, 60325 Frankfurt 01024
+C:Name:     TelePassport Service GmbH
+C:Homepage: http://www.telepassport.de
+C:Hotline:  0800/808 808 8
+C:Telefon:  0361/594 2500
+C:Telefax:  0800/808 808 9
+C:Adresse:  Juri-Gagarin-Ring 88, 99084
+C:	    Erfurt
+Z:2-4 Fern
+T:W/08-18=0.16/60 Standard
+T:W/18-08=0.12/60 Spar
+T:E/*=0.12/60 Spar
+Z:20 Internet
+A:01924924 (Benutzername: beliebig; Passwort: beliebig)
+T:W/08-18=0.08/60 Standard
+T:W/18-08=0.06/60 Spar
+T:E/*=0.06/60 Spar
 #####################################################################
 P:25 CityKom
 C:Münster, Haferlandweg 8, 48155 Münster 01025
@@ -536,11 +556,36 @@ T:W/21-06=0.06/60 Nacht
 T:W/06-09=0.12/60:600,0.1084/60 Spar
 T:E,H/06-21=0.12/60:600,0.1084/60 Spar
 T:E,H/21-06=0.06/60 Nacht
-Z:8 Mobilfunknetz D2
-A:0172,0173
+Z:5 C-Mobilboxen
+A:01618
+T:W/09-18=0.12/11.4
+T:W/18-09=0.12/16.7
+T:E,H/*=0.12/16.7
+Z:6 Mobilfunk C
+A:01610,01617,01619
 T:W/09-18=0.12/7.5
 T:W/18-09=0.12/15
-T:E,H/0-24=0.12/15
+T:E,H/*=0.12/15
+Z:7 Mobilfunknetz D1
+A:0170,0171
+T:W/09-18=0.12/7.5
+T:W/18-09=0.12/15
+T:E,H/*=0.12/15
+Z:8 Mobilfunknetz D2
+A:0172,0173
+T:W/09-18=0.12/5.4
+T:W/18-09=0.12/13
+T:E,H/*=0.12/13
+Z:9 Mobilfunknetz E-Plus
+A:0177,0178
+T:W/09-18=0.12/5.3
+T:W/18-09=0.12/12.8
+T:E,H/*=0.12/12.8
+Z:10 Mobilfunknetz Viag Interkom
+A:0176,0179
+T:W/09-18=0.12/5.4
+T:W/18-09=0.12/13
+T:E,H/*=0.12/13
 Z:20 Internet
 A:0191011
 T:*/*=0.06/0,0.06/60 T-Online eco
@@ -554,19 +599,78 @@ A:08003301172 # Störungsannahme GK
 A:08003301174 # Störungsannahme Kabelfernsehen
 A:08003302050 # Beratung Telefonkarten
 A:01300190    # Hotline Online-Dienste
-A:110   # Polizei / Notruf
-A:112   # Feuerwehr / Rettungsleitstelle
-A:0010  # Operator Service
-A:0130  # freecall 0130
-A:0800  # freecall 0800
-Z:21 Shared Cost Service 01801
-A:01801
+A:01136       # Telegrammaufnahme per Telefax
+A:110         # Polizei / Notruf
+A:112         # Feuerwehr / Rettungsleitstelle
+A:0010        # Operator Service
+A:0130        # freecall 0130
+A:0800        # freecall 0800
+A:+31800      # Plus Freephone Service (Niederl.)
+A:+41800      # Plus Freephone Service (Schweiz)
+A:+800        # Freephone Service 800
+Z:21 Sonderrufnummern zum Citytarif
+A:01141   # Auftrags-und Ansagedienst
+A:0115    # Ansagen (regional)
+A:0116    # Ansagen (bundesweit)
+A:01191   # Zeitansage
+A:01801   # Shared Cost Service 01801
+A:01910   # Online-Dienste Zugang SLIP
+A:01914   # Online-Dienste AOL Zugang
+A:019161  # Online-Dienste AOL Zugang
+A:019102323 # Online-Dienste 1&1 Zugang
 T:W/09-18=0.12/90 Standard
 T:W/18-21=0.12/150 Spar
 T:W/21-05=0.12/240 Nacht
 T:W/05-09=0.12/150 Spar
 T:E,H/05-21=0.12/150 Spar
 T:E,H/21-05=0.12/240 Nacht
+Z:22 T-VoteCall
+A:01371
+T:*/*=0.24/0
+Z:23 T-VoteCall
+A:01372,01373,01374,0138
+T:*/*=0.12/20
+Z:24 Cityruf
+A:01640 # Cityruf Voicebox
+A:01641,01642,01643,01644,01645
+A:01646,01647,01648,01649
+T:W/09-18=0.12/20
+T:W/18-09=0.12/30
+T:E,H/*=0.12/30
+Z:25 Shared Cost Service 01802
+A:01802
+T:*/*=0.12/0
+Z:26 Shared Cost Service 01803
+A:01803
+T:*/*=0.12/30
+Z:27 Shared Cost Service 01804
+A:01804
+T:*/*=0.48/0
+Z:28 Shared Cost Service 01805
+A:01805
+T:*/*=0.12/30
+Z:29 Service 0190
+A:01901,01902,01903,01905
+T:*/*=0.12/6
+Z:30 Service 0190
+A:01904,01906
+T:*/*=0.12/9
+Z:31 Service 190
+A:01907,01909
+T:*/*=0.12/3
+Z:32 Service 190
+A:01908
+T:*/*=0.12/2
+Z:33 Persönliche Rufnummer
+A:0700
+T:*/09-18=0.12/15
+T:*/18-09=0.12/30
+Z:34 Auskunft Inland
+A:11833
+T:*/*=0.96/30,0.12/3.8
+Z:35 Auskunft Ausland
+A:11834
+T:*/*=0.96/30,0.12/3.8
 #####################################################################
 P:34 NEFkom
 C:Telekommunikation GmbH & Co. KG, Bärenschanzstraße 4, 90429 Nürnberg 01034
@@ -617,7 +721,26 @@ P:49 ACC
 C:Telekommunikation GmbH, Heinrich-Heine-Allee 53, 40213 Düsseldorf 01049
 #####################################################################
 P:50 TALKLINE
+G:01.05.1999
 C:PS PhoneServices GmbH, Adenauer Damm 1, 25337 Elmshorn 01050
+C:Homepage: http://www.null1050.de
+C:Hotline:  01802/2002
+C:Faxabruf: 01802/2001
+Z:2-4 Fern
+T:W/07-08=0.09/60
+T:W/08-19=0.18/60
+T:W/19-21=0.18/60
+T:W/21-22=0.09/60
+T:W/22-07=0.09/60
+T:E/*=0.09/60
+Z:20 Talknet by call
+A:019251 (Benutzername: talknet; Passwort: talknet; DNS-Server: 195.252.128.53)
+T:W/07-08=0.09(60)/180
+T:W/08-19=0.09(60)/180
+T:W/19-21=0.08(60)/180
+T:W/21-22=0.07(60)/180
+T:W/22-07=0.05(60)/180
+T:E/*=0.06(60)/180
 #####################################################################
 P:51 01051
 C:ID-Switch GmbH, Graf-Adolf-Straße, 40210 Düsseldorf 01051
@@ -638,7 +761,33 @@ P:54 USFI
 C:Global Network Services Germany GmbH, Kindsbacherstraße 41, 66877 Ramstein 01054
 #####################################################################
 P:55 ESPRIT
+G:01.04.99
 C:Telecom Deutschland GmbH, Kaistraße 16 A, 40221 Düsseldorf 01055
+C:Name:  Esprit Telecom
+C:Homepage: http://www.esprittelecom.de
+C:Hotline:  0800/1040800
+C:Adresse:  August-Thyssen-Str. 1, 40211
+C:	    Duesseldorf
+Z:2-3 Region 50
+T:W/18-21=0.09/60 Early night
+T:W/21-08=0.05/60 Late night
+T:E/08-18=0.09/60 Wochenende
+T:E/18-21=0.09/60 Early night
+T:E/21-08=0.05/60 Late night
+Z:4 Fern
+T:W/18-21=0.09/60 Early night
+T:W/21-08=0.05/60 Late night
+T:E/08-18=0.09/60 Wochenende
+T:E/18-21=0.09/60 Early night
+T:E/21-08=0.05/60 Late night
+Z:20 net@home
+A:0192340 # (Benutzername: Esprit Telecom, Kennwort: Internet)
+T:W/08-18=0.08/60 Geschäftszeit
+T:W/18-21=0.06/60 Early night
+T:W/21-08=0.06/60 Late night
+T:E/08-18=0.08/60 Geschäftszeit
+T:E/18-21=0.06/60 Early night
+T:E/21-08=0.06/60 Late night
 #####################################################################
 P:56 BITel
 C:Gesellschaft für kommunale Telekommunikation mbh, Schildescher Straße 16, 33611 Bielefeld 01056
@@ -1074,7 +1223,7 @@ C:Homepage: http://www.uuu.de
 C:Hotline:  01805/01078-0
 C:Adresse:  Mergenthalerallee 79-81
 C:	    65760 Eschborn
-Z:2-4
+Z:2-4 Fern
 T:W/08-20=0.139(60)/1
 T:W/20-08=0.059(60)/1
 T:E,H/08-20=0.139(60)/1
@@ -1805,7 +1954,7 @@ T:*/08-20=9.969(60)/1
 T:*/20-08=9.949(60)/1
 #####################################################################
 P:79 Viatel
-G:24.12.1998
+G:01.05.1999
 C:VIAPHONE GmbH, Hanauer Landstraße 187, 60314 Frankfurt 01079
 C:Homepage: http://www.viatel.de
 C:Hotline:  0800/79-01079
@@ -1842,8 +1991,16 @@ C:Telekommunikationsgesellschaft mbH, Bahnhofstraße 12-18, 97070 Würzburg 01083
 P:84 Telegroup
 C:Network Services GmbH, Grossenbaumer Weg 6, 40472 Düsseldorf 01084
 #####################################################################
-P:85 WESTCom
+P:85 GTS-WESTCom
+G:01.02.1999
 C:GmbH, Hebelstraße 22 c, 69115 Heidelberg 01085
+C:Homepage: http://www.westcom.de
+C:Hotline:  0800/937-8266
+C:Adresse:  Hebelstrasse 22c
+C:	    69115 Heidelberg
+Z:2-4 Fern
+T:*/09-21=0.19(60)/1 Standard
+T:*/21-09=0.09(60)/1 Spar
 #####################################################################
 P:86 ONE.TEL
 C:Limited (UK), Clements House, 14-18 Gresham Street, London, EC2V 7JE, England 01086
@@ -1870,7 +2027,16 @@ P:89 M'net
 C:Telekommunikations GmbH, Corneliusstraße 10, 80469 München 01089
 #####################################################################
 P:90 VIAG INTERKOM
+G:01.04.1999
 C:GmbH & Co. KG, Elsenheimer Straße 11, 81927 München 01090
+Z:2-4 Fern
+T:W/08-18=0.17/60
+T:W/18-08=0.10/60
+T:E/*=0.10/60
+Z:5-10 Mobil
+T:W/08-18=0.99/60
+T:W/18-08=0.59/60
+T:E,H/*=0.59/60
 #####################################################################
 P:91 IDT
 C:Global Limited, London, United Kingdom 01091
@@ -1912,20 +2078,6 @@ A:0177,0178		  # Eplus
 A:0176,0179  		  # E2
 T:*/08-21=0.449(60)/1
 T:*/21-08=0.399(60)/1
-#####################################################################
-P:98,2 Mox
-G:01.04.1999
-C:Mox Telecom AG
-C:Reseller von Star Telecom
-Z:2-4 Deutschlandweit
-T:*/*=0.159(60)/1
-Z:5-10 Fest-zu-Mobil
-A:01610,01617,01619,01618 # C
-A:0170,0171  		  # D1
-A:0172,0173		  # D2
-A:0177,0178		  # Eplus
-A:0176,0179  		  # E2
-T:*/*=0.499(60)/1
 # Großbritannien, USA                             25,9 Pfg.
 #
 # Australien, Dänemark, Frankreich,
@@ -2013,6 +2165,14 @@ C:AG, Militärstraße 36, CH-8004 Zürich 010044
 #####################################################################
 P:150 Drillisch
 C:AG, Horbeller Straße 33, 50858 Köln 010050
+Z:2 City
+T:W/08-21=0.10/60,0.10(60)/1
+T:W/21-08=0.07/60,0.07(60)/1
+T:E/*=0.07/60,0.07(60)/1
+Z:3-4 Fern
+T:W/08-21=0.14/60,0.14(60)/1
+T:W/21-08=0.07/60,0.07(60)/1
+T:E/*=0.07/60,0.07(60)/1
 #####################################################################
 P:155 Telia
 C:Telekommunikation GmbH, Herrengraben 3, 20459 Hamburg 010055
@@ -2054,24 +2214,27 @@ P:199 ESTel
 C:Energieversorgung Südsachsen Telekommunikationsgesellschaft mbH, Postfach 2 38, 09002 Chemnitz 010099
 #
 # Wichtige Provider:
-# 1. Echtes Call-by-call (per 1-Apr-99):
-#    11:o.tel.o
-#    15:Debitel
-#    19:MobilCom
-#    24:TelePassport
-#    30:TelDaFax
-#    33:Deutsche Telekom
-#    40:Esprit
-#    50:Talkline
-#    51:01051 Telecom
-#    70:Arcor
-#    78:3U
-#    79:Viatel
-#    85:GTS-WESTCom
-#    90:Viag Interkom
+# 1. Echtes Call-by-call (per 1-Mai-99):
+#    11:o.tel.o		    x
+#    15:Debitel		    x
+#    19:MobilCom            x
+#    24:TelePassport	    x
+#    30:TelDaFax            x
+#    33:Deutsche Telekom    x
+#    40:Esprit              x
+#    50:Talkline	    x
+#    51:01051 Telecom       x
+#    70:Arcor               x
+#    78:3U                  x
+#    79:Viatel		    x
+#    85:GTS-WESTCom	    x
+#    90:Viag Interkom	    x
 #
 # 2. Angemeldet:
-#    13:Tele 2
-#    15:RSL COM
-#    88:UUnet
-#    98:Mox
+#    13:Tele 2              x
+#    15:RSL COM		    x
+#    88:UUnet		    x
+#    98:Mox                 x
+#
+# --------------------------^
+# x = Tarife zum 1.Mai 1999 geprüft: akool

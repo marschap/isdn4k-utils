@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.75 1999/04/29 19:02:56 akool Exp $
+## $Id: Makefile.in,v 1.76 1999/04/30 19:07:28 akool Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,12 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.76  1999/04/30 19:07:28  akool
+## isdnlog Version 3.23
+##
+##  - changed LCR probing duration from 181 seconds to 153 seconds
+##  - "rate-de.dat" filled with May, 1. rates
+##
 ## Revision 1.75  1999/04/29 19:02:56  akool
 ## isdnlog Version 3.22
 ##
@@ -601,7 +607,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 3.22
+VERSION     = 3.23
 
 MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 \
 	      isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 \

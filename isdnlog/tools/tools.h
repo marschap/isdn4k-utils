@@ -1,4 +1,4 @@
-/* $Id: tools.h,v 1.37 1999/04/16 14:40:07 akool Exp $
+/* $Id: tools.h,v 1.38 1999/04/30 19:08:27 akool Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,12 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools.h,v $
+ * Revision 1.38  1999/04/30 19:08:27  akool
+ * isdnlog Version 3.23
+ *
+ *  - changed LCR probing duration from 181 seconds to 153 seconds
+ *  - "rate-de.dat" filled with May, 1. rates
+ *
  * Revision 1.37  1999/04/16 14:40:07  akool
  * isdnlog Version 3.16
  *
@@ -498,6 +504,8 @@
 
 /* Fixme: this is specific to Germany */
 #define	DTAG	     33
+
+#define	TESTDURATION 153 /* 181 */
 
 /****************************************************************************/
 
