@@ -36,7 +36,7 @@
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-char auth_rcsid[] = "$Id: auth.c,v 1.15 1999/11/10 08:01:32 werner Exp $";
+char auth_rcsid[] = "$Id: auth.c,v 1.16 2000/06/21 09:01:54 keil Exp $";
 
 #include <stdio.h>
 #include <stddef.h>
@@ -1079,7 +1079,12 @@ int auth_ip_addr(int unit,u_int32_t addr)
 		if (strcmp(ptr_word, "-") == 0)
 			break;
 
+		/* "*" means any addresses authorized */
+		if (strcmp(ptr_word, "*") == 0)
+			return 1;
+
 		accept = 1;
+
 		if (*ptr_word == '!') {
 			accept = 0;
 			++ptr_word;
