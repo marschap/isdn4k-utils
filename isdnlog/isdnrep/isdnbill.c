@@ -1,4 +1,4 @@
-/* $Id: isdnbill.c,v 1.16 2001/04/03 19:15:29 akool Exp $
+/* $Id: isdnbill.c,v 1.17 2002/01/26 20:43:31 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Billing-module)
  *
@@ -367,9 +367,11 @@ static void total(int w)
       } /* if */
 
       if (i < 100)
-        printf(" %s%02d", vbn, i);
+        printf(" 010%02d", i);
+      else if (i < 200)
+        printf("0100%03d", i - 100);
       else
-        printf("%s%03d", vbn, i - 100);
+        printf("01900%02d", i - 200);
 
       printf(":%-24s", getProvider(pnum2prefix(i, c.connect)));
 
@@ -1164,9 +1166,11 @@ int main(int argc, char *argv[], char *envp[])
             s[PROVLEN] = 0;
 
             if (c.provider < 100)
-              sprintf(c.sprovider, " %s%02d:%-*s", vbn, c.provider, PROVLEN, s);
+              sprintf(c.sprovider, " 010%02d:%-*s", c.provider, PROVLEN, s);
+            else if (c.provider < 200)
+              sprintf(c.sprovider, "0100%03d:%-*s", c.provider - 100, PROVLEN, s);
             else
-              sprintf(c.sprovider, "%s%03d:%-*s", vbn, c.provider - 100, PROVLEN, s);
+              sprintf(c.sprovider, "01900%02d:%-*s", c.provider - 200, PROVLEN, s);
 
 
             if (c.duration) {

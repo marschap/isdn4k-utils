@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.198 2001/12/30 17:17:40 akool Exp $
+## $Id: Makefile.in,v 1.199 2002/01/26 20:43:30 akool Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,35 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.199  2002/01/26 20:43:30  akool
+## isdnlog-4.56:
+##  - dont set the Provider-field of the MySQL DB to "?*? ???" on incoming calls
+##
+##  - implemented
+##      0190029 Telebillig        (17,5 Cent/minute to any cellphone)
+## 		 0190031 Teledump
+## 		 0190035 TeleDiscount
+## 		 0190037 Fonfux            (1,5 Cent/minute german-call)
+## 		 0190087 Phonecraft
+##
+##    you have to change:
+##
+##    1. "/etc/isdn/rate.conf" - add the following:
+##
+##      P:229=0		#E Telebillig
+## 		 P:231=0		#E Teledump
+## 		 P:235=0		#E TeleDiscount
+## 		 P:237=0		#E Fonfux
+## 		 P:287=0		#E Phonecraft
+##
+##    2. "/etc/isdn/isdn.conf" (or "/etc/isdn/callerid.conf"):
+##
+## 	     VBN = 010
+##
+## 	   to
+##
+## 	     VBN = 010:01900
+##
 ## Revision 1.198  2001/12/30 17:17:40  akool
 ## isdnlog-4.55:
 ##   Tatahhh: isdnlog speaks Euro :-)
@@ -1481,7 +1510,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 4.55
+VERSION     = 4.56
 
 MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 \
 	      isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 \

@@ -1,4 +1,4 @@
-# rate.conf  4.46  12-Dec-00  21:59
+# rate.conf  4.46  26-Jan-02  21:22
 
 # E = echtes Call by Call, d.h. kann sofort ohne Anmeldung genutzt
 #     werden. Abrechnung erfolgt ueber die Telekom-Rechnung
@@ -194,3 +194,8 @@ P:150=0   #E ElisaNet
 # P:190=0 #A CNE
 # P:195=0 #A TeleNec
 # P:199=0 #A ESTel
+P:229=0		#E Telebillig
+P:231=0		#E Teledump
+P:235=0		#E TeleDiscount
+P:237=0		#E Fonfux
+P:287=0		#E Phonecraft

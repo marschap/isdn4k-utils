@@ -1,4 +1,4 @@
-V:2.00b2-Germany [30-Dez-2001 19:16:09]
+V:2.01rc2 [26-Jan-2002 20:46:13]
 
 # Währungsformat
 U:%.3f EUR
@@ -8,7 +8,7 @@ U:%.3f EUR
 #
 # (C) Copyright 1999, 2001 by Andreas Kool (akool@isdn4linux.de)
 #
-# $Id: rate-de.dat,v 1.113 2001/12/30 18:22:02 akool Exp $
+# $Id: rate-de.dat,v 1.114 2002/01/26 20:43:30 akool Exp $
 #
 #
 # Das "A:" Tag muß folgendermaßen gefüllt werden:
@@ -627,6 +627,606 @@ T:*/*=0.04/0,0.23(60)/1
 #####################################################################
 #
 #
+P:24,0 TelePassport
+B:01024
+C:Name:Telepassport 99 Plus
+C:Address:Telepassport Service GmbH, Schwindstraße 3, 60325 Frankfurt
+C:Adresss:Telepassprt, Juri-Gagarin-Ring 88, 99084 Erfurt
+C:Homepage:http://www.telepassport.de
+C:Hotline:0800/808 808 8
+C:Telefon:0361/594 2500
+C:Telefax:0800/808 808 9
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
+C:Erfasste Zonen:
+C:2	-   4	Deutschland
+C:10		Mobilfunk
+C:102		TelePassport-Online
+C:200	-	Ausland
+# G:15-Jul-1999
+D:dtag
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+Z:1-2 Lokal
+T:W/08-18=0.12/60 Geschäftszeit
+T:W/18-08=0.08/60 Freizeit
+T:E,H/*=0.08/60 Wochenende
+Z:3 Nah
+T:W/08-18=0.14/60 Geschäftszeit
+T:W/18-08=0.10/60 Freizeit
+T:E,H/*=0.10/60 Wochenende
+Z:4 Fern
+A:+49
+T:W/08-18=0.16/60 Geschäftszeit
+T:W/18-08=0.12/60 Freizeit
+T:E,H/*=0.12/60 Wochenende
+Z:10 Mobilfunk
+A:_DEMCM
+A:_DEMC
+A:_DEMD1
+A:_DEMD2
+A:_DEME1
+A:_DEME2
+T:W/08-18=0.56/60 Geschäftszeit
+T:W/18-08=0.46/60 Freizeit
+T:E,H/*=0.46/60 Wochenende
+Z:102 TelePassport-Online
+A:01924924
+S:Internet by call
+T:*/*=0.06/60
+Z:200 Euro 1
+A:AD,BE,DK,FO,FI,FR,GR
+A:UK,_UKIM,IE,IS,IT,_UKIK
+A:LI,LU,MC,NL,_UKIR,NO
+A:AT,PL,PT,SM,SE,CH,SK
+A:ES,CZ,VA
+T:*/*=0.56/60
+Z:201 Euro 2
+A:AL,BA,BG,EE,GI,IL
+A:YU,HR,LV,LT,MT,MK,MD
+A:RO,SU,SI,TR,UA,HU,BY,CY
+T:*/*=0.96/60
+Z:202 Welt 1
+A:CA,US
+T:*/*=0.46/60
+Z:203 Welt 2
+A:AU,HK,KR,JP,SG,NZ
+T:*/*=0.96/60
+Z:204 Welt 3
+A:+
+T:*/*=1.96/60
+#####################################################################
+P:24,1 Telepassport Plus
+B:01024
+# G:15-Jul-1999
+C:Name:Telepassport Plus
+C:Address:Telepassport Service GmbH, Schwindstraße 3, 60325 Frankfurt
+C:Adresss:Telepassport, Juri-Gagarin-Ring 88, 99084 Erfurt
+C:Homepage:http://www.telepassport.de
+C:Hotline:0800/808 808 8
+C:Telefon:0361/594 2500
+C:Telefax:0800/808 808 9
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
+C:Erfasste Zonen:
+C:2	-   4	Deutschland
+C:10		Mobilfunk
+C:102		TelePassport-Online
+C:200	-	Ausland
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+Z:1-4 Inland
+A:+49
+T:W/08-18=0.16/60 Geschäftszeit
+T:W/18-08=0.12/60 Freizeit
+T:E,H/*=0.12/60 Wochenende
+Z:10 Mobilfunk
+A:_DEMCM
+A:_DEMC
+A:_DEMD1
+A:_DEMD2
+A:_DEME1
+A:_DEME2
+T:*/*=0.56/60
+Z:102 TelePassport-Online
+A:01924924
+S:Internet by call
+T:W/08-18=0.08/60 Geschäftszeit
+T:W/18-08=0.06/60 Freizeit
+T:E,H/*=0.08/60 Wochenende
+Z:200 Euro 1
+A:AD,BE,DK,FO,FI,FR,GR
+A:UK,_UKIM,IE,IS,IT,_UKIK
+A:LI,LU,MC,NL,_UKIR,NO
+A:AT,PL,PT,SM,SE,CH,SK
+A:ES,CZ,VA
+T:*/*=0.56/60
+Z:201 Euro 2
+A:AL,BA,BG,EE,GI,IL
+A:YU,HR,LV,LT,MT,MK,MD
+A:RO,SU,SI,TR,UA,HU,BY,CY
+T:*/*=0.96/60
+Z:202 Welt 1
+A:CA,US
+T:*/*=0.46/60
+Z:203 Welt 2
+A:AU,HK,KR,JP,SG,NZ
+T:*/*=0.96/60
+Z:204 Welt 3
+A:+
+T:*/*=1.96/60
+#####################################################################
+P:24,2 Telepassport CbC
+B:01024
+# G:15-Jul-1999
+C:Name:Telepassport CbC
+C:Address:Telepassport Service GmbH, Schwindstraße 3, 60325 Frankfurt
+C:Adresss:Telepassport, Juri-Gagarin-Ring 88, 99084 Erfurt
+C:Homepage:http://www.telepassport.de
+C:Hotline:0800/808 808 8
+C:Telefon:0361/594 2500
+C:Telefax:0800/808 808 9
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
+C:Erfasste Zonen:
+C:2	-   4	Deutschland
+C:10		Mobilfunk
+C:102		TelePassport-Online
+C:200	-	Ausland
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+Z:1-4 Inland
+A:+49
+T:*/07-21=0.14/60 Geschäftszeit
+T:*/21-07=0.10/60 Freizeit
+Z:10 Mobilfunk
+A:_DEMCM
+A:_DEMC
+A:_DEMD1
+A:_DEMD2
+A:_DEME1
+A:_DEME2
+T:*/*=0.56/60
+Z:102 TelePassport-Online
+A:01924924
+S:Internet by call
+T:W/08-18=0.08/60 Geschäftszeit
+T:W/18-08=0.06/60 Freizeit
+T:E,H/*=0.08/60 Wochenende
+Z:200 Euro 1
+A:AD,BE,DK,FO,FI,FR,GR
+A:UK,_UKIM,IE,IS,IT,_UKIK
+A:LI,LU,MC,NL,_UKIR,NO
+A:AT,PL,PT,SM,SE,CH,SK
+A:ES,CZ,VA
+T:*/*=0.56/60
+Z:201 Euro 2
+A:AL,BA,BG,EE,GI,IL
+A:YU,HR,LV,LT,MT,MK,MD
+A:RO,SU,SI,TR,UA,HU,BY,CY
+T:*/*=0.96/60
+Z:202 Welt 1
+A:CA,US
+T:*/*=0.46/60
+Z:203 Welt 2
+A:AU,HK,KR,JP,SG,NZ
+T:*/*=0.96/60
+Z:204 Welt 3
+A:+
+T:*/*=1.96/60
+#####################################################################
+P:24,3 Telepassport RegionalTarif Plus
+B:01024
+# G:01.05.1999
+C:Name:Telepassport RegionalTarif Plus
+C:Address:Telepassport Service GmbH, Schwindstraße 3, 60325 Frankfurt
+C:Adresss:Telepassport, Juri-Gagarin-Ring 88, 99084 Erfurt
+C:Homepage:http://www.telepassport.de
+C:Hotline:0800/808 808 8
+C:Telefon:0361/594 2500
+C:Telefax:0800/808 808 9
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
+C:Sondertarif 5 "Bundesland/Region":Gespräche innerhalb des Bundeslandes/Region
+C:Erfasste Zonen:
+C:2	-   4	Deutschland
+C:5		Sondertarif
+C:10		Mobilfunk
+C:102		TelePassport-Online
+C:200	-	Ausland
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+Z:1-2 Lokal
+T:*/*=0.10/60
+Z:3-4 Fern
+A:+49
+T:*/*=0.16/60
+Z:5 Bundesland/Region
+T:*/*=0.14/60
+Z:10 Mobilfunk
+A:_DEMCM
+A:_DEMC
+A:_DEMD1
+A:_DEMD2
+A:_DEME1
+A:_DEME2
+T:*/*=0.56/60
+Z:102 TelePassport-Online
+A:01924924
+S:Internet by call
+T:*/*=0.06/60
+Z:200 International 1
+A:AD,BE,DK,FO,FI,FR,GR
+A:UK,_UKIM,IE,IS,IT,_UKIK
+A:LI,LU,MC,NL,_UKIR,NO
+A:AT,PL,PT,SM,SE,CH,SK
+A:ES,CZ,VA
+A:CA,US
+T:*/*=0.56/60
+Z:201 International 2
+A:AL,BA,BG,EE,GI,IL
+A:YU,HR,LV,LT,MT,MK,MD
+A:RO,SU,SI,TR,UA,HU,BY,CY
+A:AU,HK,KR,JP,SG,NZ
+T:*/*=0.96/60
+Z:202 International 3
+A:+
+T:*/*=1.96/60
+#####################################################################
+P:24,4 Telepassport SüdOst-Tarif
+B:01024
+# G:01.05.1999
+C:Name:Telepassport SüdOst-Tarif
+C:Address:Telepassport Service GmbH, Schwindstraße 3, 60325 Frankfurt
+C:Adresss:Telepassport, Juri-Gagarin-Ring 88, 99084 Erfurt
+C:Homepage:http://www.telepassport.de
+C:Hotline:0800/808 808 8
+C:Telefon:0361/594 2500
+C:Telefax:0800/808 808 9
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
+C:Erfasste Zonen:
+C:2	-   4	Deutschland
+C:10		Mobilfunk
+C:102		TelePassport-Online
+C:200	-	Ausland
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+Z:1-2 Lokal
+T:*/*=0.12/60
+Z:3 Nah
+T:W/08-18=0.16/60 Geschäftszeit
+T:W/18-08=0.12/60 Freizeit
+T:E,H/*=0.12/60 Wochenende
+Z:4 Fern
+A:+49
+T:W/08-18=0.18/60 Geschäftszeit
+T:W/18-08=0.12/60 Freizeit
+T:E,H/*=0.12/60 Wochenende
+Z:10 Mobilfunk
+A:_DEMCM
+A:_DEMC
+A:_DEMD1
+A:_DEMD2
+A:_DEME1
+A:_DEME2
+T:W/08-18=0.58/60 Geschäftszeit
+T:W/18-08=0.48/60 Freizeit
+T:E,H/*=0.48/60 Wochenende
+Z:102 TelePassport-Online
+A:01924924
+S:Internet by call
+T:W/08-18=0.08/60 Geschäftszeit
+T:W/18-08=0.06/60 Freizeit
+T:E,H/*=0.08/60 Wochenende
+Z:200 Global 1
+A:BE,DK,FI,FR,GR,UK
+A:IE,IS,IT,LI,LU,MC,NL
+A:NO,AT,PL,PT,SE,CH,SK,ES
+A:CZ,TR,US,CA
+T:*/*=0.68/60
+Z:201 Global 2
+A:AL,BA,BG,IL,YU,HR
+A:MT,MK,RO,SI,HU,CY
+A:AZ,EE,LV,LT,MD,SU
+A:TJ,UA,BY
+A:AU,TW,HK,KR,ID,JP
+A:MY,NZ,PH,SG,TH
+T:*/*=0.88/60
+Z:202 Global 3
+A:AM,GE,KZ,KG,TM,UZ
+A:ZA
+T:*/*=1.48/60
+Z:203 Global 4
+A:+
+T:*/*=1.98/60
+#####################################################################
+P:24,5 Telepassport SüdOst
+B:01024
+# G:01.05.1999
+C:Name:Telepassport SüdOst
+C:Address:Telepassport Service GmbH, Schwindstraße 3, 60325 Frankfurt
+C:Adresss:Telepassport, Juri-Gagarin-Ring 88, 99084 Erfurt
+C:Homepage:http://www.telepassport.de
+C:Hotline:0800/808 808 8
+C:Telefon:0361/594 2500
+C:Telefax:0800/808 808 9
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+Z:1-4 Inland
+A:+49
+T:W/08-18=0.18/60 Geschäftszeit
+T:W/18-08=0.12/60 Freizeit
+T:E,H/*=0.12/60 Wochenende
+Z:10 Mobilfunk
+A:_DEMCM
+A:_DEMC
+A:_DEMD1
+A:_DEMD2
+A:_DEME1
+A:_DEME2
+T:*/*=0.56/60
+Z:102 TelePassport-Online
+A:01924924
+S:Internet by call
+T:*/*=0.08/60
+Z:200 Global 1
+A:BE,DK,FI,FR,GR,UK
+A:IE,IS,IT,LI,LU,MC,NL
+A:NO,AT,PL,PT,SE,CH,SK,ES
+A:CZ,TR,US,CA
+T:*/*=0.68/60
+Z:201 Global 2
+A:AL,BA,BG,IL,YU,HR
+A:MT,MK,RO,SI,HU,CY
+A:AZ,EE,LV,LT,MD,SU
+A:TJ,UA,BY
+A:AU,TW,HK,KR,ID,JP
+A:MY,NZ,PH,SG,TH
+T:*/*=0.88/60
+Z:202 Global 3
+A:AM,GE,KZ,KG,TM,UZ
+A:ZA
+T:*/*=1.48/60
+Z:203 Global 4
+A:+
+T:*/*=1.98/60
+#####################################################################
+P:24,6 Telepassport StudentenTarif
+B:01024
+# G:01.05.1999
+C:Name:Telepassport StudentenTarif
+C:Address:Telepassport Service GmbH, Schwindstraße 3, 60325 Frankfurt
+C:Adresss:Telepassport, Juri-Gagarin-Ring 88, 99084 Erfurt
+C:Homepage:http://www.telepassport.de
+C:Hotline:0800/808 808 8
+C:Telefon:0361/594 2500
+C:Telefax:0800/808 808 9
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+Z:1-2 Lokal
+T:*/*=0.10/60
+Z:3 Nah
+T:W/08-18=0.12/60 Geschäftszeit
+T:W/18-08=0.10/60 Freizeit
+T:E,H/*=0.10/60 Wochenende
+Z:4 Fern
+A:+49
+T:W/08-18=0.14/60 Geschäftszeit
+T:W/18-08=0.10/60 Freizeit
+T:E,H/*=0.10/60 Wochenende
+Z:10 Mobilfunk
+A:_DEMCM
+A:_DEMC
+A:_DEMD1
+A:_DEMD2
+A:_DEME1
+A:_DEME2
+T:W/08-18=0.58/60 Geschäftszeit
+T:W/18-08=0.48/60 Freizeit
+T:E,H/*=0.48/60 Wochenende
+Z:102 TelePassport-Online
+A:01924924
+S:Internet by call
+T:W/08-18=0.08/60 Geschäftszeit
+T:W/18-08=0.06/60 Freizeit
+T:E,H/*=0.06/60 Wochenende
+Z:200 Ausland Spezial
+A:BE,DK,FI,FR,UK,IT
+A:NL,NO,AT,SE,CH
+A:CA,US
+T:*/*=0.48/60
+Z:201 International 1
+A:AD,FO,GR,IE,IS,LI,LU
+A:MC,PL,PT,SM,SK,ES
+A:CZ,VA
+T:*/*=0.68/60
+Z:202 International 2
+A:AL,BA,BG,EE,GI,IL
+A:YU,HR,LV,LT,MT,MK,MD
+A:RO,SU,SI,TR,UA,HU,BY,CY
+A:AU,HK,KR,JP,SG,NZ
+T:*/*=0.98/60
+Z:203 Global 4
+A:+
+T:*/*=1.98/60
+#####################################################################
+P:24,7 Super 24
+B:01024
+C:*** Die Euro-Preise sind bislang nicht bekanntgegeben worden!
+C:*** Daher bislang schlicht umgerechnet! 30.Dec.2001/AK
+C:Name:Super 24
+C:Hotline:0800/24-01024
+C:Homepage:http://www.super24.com
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
+C:Erfasste Zonen:
+C:2	-   4	Deutschland
+C:10		Mobilfunk
+C:102		SUPER24 Internet
+C:200	-	Ausland
+# G:13.06.2000
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+Z:1-4 Inland
+A:+49
+T:*/*=0.03/60
+Z:10 Mobilfunk
+A:_DEMF
+T:*/*=0.19/60
+#####################################################################
+#
+#
+P:27,0 Nordcom nordFon(Net) ISDN
+B:01027
+C:Name:Nordcom nordFon(Net) ISDN
+C:Address:Nordcom GmbH, Dötlinger Str. 6-8, 28197 Bremen
+C:Homepage:http://www.nordcom.net
+C:Sondertarif 5 "Nordcom-Nordcom": Netzinterne Gespräche zwischen Nordcom Kunden
+C:Euro
+C:Erfasste Zonen:
+C:1     -   4   Deutschland
+C:5             Sondertarif
+C:10            Mobilfunk
+C:102           nordNet
+C:nordNet: Internet Zugang, 0,025 DM / Min
+C:Stand: 2001-06-01
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+Z:1-3 Ortstarif
+T:W/06-18=0.031(60)/1 Tag
+T:W/18-06=0.015(60)/1 Freizeit
+T:E,H/*=0.015(60)/1 Wochenende
+Z:4 Ferntarif
+T:W/06-18=0.061(60)/1 Tag
+T:W/18-06=0.026(60)/1 Freizeit
+T:E,H/*=0.026(60)/1 Wochenende
+A:DE
+Z:5 Nordcom-Nordcom
+T:W/06-18=0.02(60)/1 Tag
+T:W/18-06=0.01(60)/1 Freizeit
+T:E,H/*=0.01(60)/1 Wochenende
+Z:12-13 Mobilfunk D1/D2
+A:_DEMD1
+A:_DEMD2
+T:*/*=0.245(60)/1
+Z:14 Mobilfunk E-plus
+A:_DEME1
+T:W/06-18=0.276(60)/1 Tag
+T:W/18-06=0.245(60)/1 Freizeit
+Z:15 Mobilfunk E2
+A:_DEME2
+T:W/06-18=0.291(60)/1 Tag
+T:W/18-06=0.245(60)/1 Freizeit
+T:E,H/*=0.245(60)/1 Wochenende
+Z:102 nordNet
+A:+494212774003
+A:+494713084003
+T:*/*=0.013(60)/1
+#####################################################################
+P:27,1 Nordcom nordFonNet Pro
+B:01027
+C:Name:Nordcom nordFonNet Pro
+C:Address:Nordcom GmbH, Dötlinger Str. 6-8, 28197 Bremen
+C:Sondertarif 5 "Nordcom-Nordcom": Netzinterne Gespräche zwischen Nordcom
+C:Kunden
+C:Euro
+C:Erfasste Zonen:
+C:1     -   4   Deutschland
+C:5             Sondertarif
+C:10            Mobilfunk
+C:102           nordNet Flatrate
+C:Stand: 2001-06-01
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+Z:1-3 Ortstarif
+T:W/06-18=0.031(60)/1 Tag
+T:W/18-06=0.015(60)/1 Freizeit
+T:E,H/*=0.015(60)/1 Wochenende
+Z:4 Ferntarif
+T:W/06-18=0.061(60)/1 Tag
+T:W/18-06=0.026(60)/1 Freizeit
+T:E,H/*=0.026(60)/1 Wochenende
+A:DE
+Z:5 Nordcom-Nordcom
+T:W/06-18=0.02(60)/1 Tag
+T:W/18-06=0.01(60)/1 Freizeit
+T:E,H/*=0.01(60)/1 Wochenende
+Z:12-13 Mobilfunk D1/D2
+A:_DEMD1
+A:_DEMD2
+T:*/*=0.245(60)/1
+Z:14 Mobilfunk E-plus
+A:_DEME1
+T:W/06-18=0.276(60)/1 Tag
+T:W/18-06=0.245(60)/1 Freizeit
+T:E,H/*=0.245(60)/1 Wochenende
+Z:15 Mobilfunk E2
+A:_DEME2
+T:W/06-18=0.291(60)/1 Tag
+T:W/18-06=0.276(60)/1 Freizeit
+T:E,H/*=0.276(60)/1 Wochenende
+Z:102 nordNet Flatrate
+A:+494212774003
+A:+494713084003
+T:*/*=0/60
+#####################################################################
+#
+#
 P:33,0 DTAG T-ISDN Standard
 B:01033
 # G:26-Dez-2001
@@ -724,6 +1324,79 @@ Z:15 Mobilfunknetz E2/Quam
 A:_DEME2
 A:_DEMQ
 T:*/*=0.246/60
+Z:70 Dienst 0137-1
+A:01371
+T:*/*=0.12/0,0/1
+Z:71 Dienst 0137-2
+A:01372
+T:*/*=0.12/0,0.06/20
+Z:72 Dienst 0137-3
+A:013723
+T:*/*=0.12/0,0.06/20
+Z:73 Dienst 0137-4
+A:01374
+T:*/*=0.12/0,0.06/20
+Z:74 Dienst 0137-8
+A:01378
+T:*/*=0.12/0,0.06/20
+Z:75 Dienst 0137-9
+A:01379
+T:*/*=0.12/0,0.06/30
+Z:76 Dienst 0138
+A:0138
+T:*/*=0.12/0,0.06/30
+Z:80 Dienst 0180-1
+A:01801
+T:W/09-18=0.046/60 Geschaeftszeit
+T:W/18-09=0.025/60 Freizeit
+T:E,H/*=0.025/60 Freizeit
+Z:81 Dienst 0180-2
+A:01802
+T:*/*=0.06/0,0/1
+Z:82 Dienst 0180-3
+A:01803
+T:*/*=0.09/60
+Z:83 Dienst 0180-4
+A:01804
+T:*/*=0.24/0,0/1
+Z:84 Dienst 0180-5
+A:01805
+T:*/*=0.12/60
+Z:90 Dienst 0190-0
+A:01900
+T:*/*=5.00/60
+Z:91 Dienst 0190-1
+A:01901
+T:*/*=0.62/60
+Z:92 Dienst 0190-2
+A:01902
+T:*/*=0.62/60
+Z:93 Dienst 0190-3
+A:01903
+T:*/*=0.62/60
+Z:94 Dienst 0190-4
+A:01904
+T:*/*=0.43/60
+Z:95 Dienst 0190-5
+A:01905
+T:*/*=0.62/60
+Z:96 Dienst 0190-6
+A:01906
+T:*/*=0.43/60
+Z:97 Dienst 0190-7
+A:01907
+T:*/*=1.24/60
+Z:98 Dienst 0190-8
+A:01908
+T:*/*=1.86/60
+Z:99 Dienst 0190-9
+A:01909
+T:*/*=1.24/60
+Z:170 Persoenliche Rufnummer
+A:0700
+T:W/09-18=0.062/30
+T:W/18-09=0.062/60
+T:E,H/*=0.062/60
 #####################################################################
 P:33,2 DTAG T-ISDN xxl
 B:01033
@@ -743,6 +1416,7 @@ C: ** Zonen 0 (Freecall) wird von P:33,0 DTAG ISDN übernommen **
 C: ** Zonen 10-15 (Mobilfunk) werden von P:33,1 DTAG AktivPlus übernommen **
 # 1. R-Tag muss exakt sein, letztes darf nicht existente Zone (199) nennen.
 R:33,1;10-15
+R:33,1;70-170
 R:33,0;0
 Z:1-2 CityCall
 T:W/09-18=0.031/60 Sunshine
@@ -909,7 +1583,7 @@ A:031*
 A:110
 A:112
 T:*/*=0
-Z:1-4 Deutschland
+Z:2-4 Deutschland
 A:+49
 T:*/*=0.026/60
 Z:10 Mobilfunk
@@ -1456,4 +2130,338 @@ T:*/*=1.49/60
 #Z:204 Sonstige Länder
 #A:+
 #T:*/*=1.99/60
+#####################################################################
+#
+#
+P:100,0 TELELEV
+B:010000
+C:Name:TELELEV
+C:Address:Telekommunikation GmbH, Dönhoffstraße 39, 51373 Leverkusen
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+##################################################################
+P:100,1 Meocom
+B:010000
+C:EMail: service@meocom.de
+C:Address: MEOCOM Telekommunikation, Burgstr. 1, 45467 Mülheim a. d. Ruhr
+C:Telefon: 0800/0-636-636
+C:Homepage: http://www.meocom.de
+C:Name:Meocom ISDN
+C:Zusaetzliche Tarife: Meocom-direkt (analog) und -ISDN-plus
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
+C:Meocom ist nur als Preselection-Tarif nutzbar (minutengenaue Abrechnung)
+C:Meocom-Kunden untereinander telefonieren fuer 1 Cent/min (Mo-So, 0-24 Uhr)
+C: Es fehlen weitere Sonderrufnummern (0180,0190,0900,... [wie Telekom]
+C: Auslandsmobilfunk [+0,25 Euro zu den Auslandstarifen])
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+Z:1 Meocom lokal
+A:+49208*
+T:W/8-18=0.31(600)/60
+T:W/18-8=0.03(120)/60
+T:E,H/*=0.03(120)/60
+Z:2 Meocom City
+A:+49201*,+492041*,+492043*,+492045*,+492051*,+492054*,+492056*,+492858*
+A:+492064*,+492065*,+492066*,+49209*,+492102*,+492841*,+492843*,+492844*
+A:+492855*
+T:W/8-18=0.31(600)/60
+T:W/18-8=0.03(120)/60
+T:E,H/*=0.03(120)/60
+Z:3 Meocom Regional
+A:+49202*,+492052*,+492053*,+492058*,+492058*
+A:+492103*,+492104*,+492104*,+49211*,+49212*,+492131*,+492132*,+492133*
+A:+492137*,+492150*,+492151*,+492152*,+492153*,+492154*,+492156*,+492158*
+A:+492159*,+492159*,+492161*,+492162*,+492171*,+492173*,+492174*,+492175*
+A:+492181*,+492182*,+492191*,+492192*,+492195
+A:+492302*,+492304*,+492305*,+492306*,+492309*,+49231*,+492323*,+492324*
+A:+492325*,+492327*,+492330*,+492332*,+492333*,+492335*,+492336*,+492338*
+A:+492339*,+49234*,+492360*,+492361*,+492362*,+492363*,+492364*,+492364*
+A:+492365*,+492366*,+492367*,+492368*,+492369*
+A:+492592*,+492594*,+492595*
+A:+492801*,+492802*,+492803*,+492804*,+49281*,+492831*,+492832*,+492833*
+A:+492834*,+492835*,+492836*,+492838*,+492839*,+492845*,+492850*,+492851*
+A:+492852*,+492853*,+492856*,+492856*,+492857*,+492859*,+492861*,+492864*
+A:+492865*,+492865*,+492866*,+492867*,+49287*,+492873*,+492874*
+T:W/8-18=0.23(300)/60
+T:W/5-8,18-22=0.31(600)/60
+T:W/22-5=0.02(60)/60
+T:E,H/*=0.31(600)/60
+Z:4 Meocom fern
+A:DE
+T:W/8-18=0.36(300)/60
+T:W/5-8,18-22=0.31(600)/60
+T:W/22-5=0.02(60)/60
+T:E,H/*=0.31(600)/60
+Z:12 Mobilfunk D1
+A:_DEMD1
+T:*/*=0.47(120)/60
+Z:13 Mobilfunk D2
+A:_DEMD2
+T:*/*=0.47(120)/60
+Z:14 Mobilfunk E+
+A:_DEME1
+T:*/*=1.38(300)/60
+Z:15 Mobilfunk E2
+A:_DEME2
+T:*/*=2.91(600)/60
+Z:100 MeoSurf
+A:01921560
+T:*/*=1.23(6000)/60
+Z:201 Europa 1
+A:AD,BE,DK,TO,FI,FR,GI,UK
+A:IE,IT,LI,LU,_MADE
+A:NL,NO,AT,PT,SM,SE
+A:CH,ES,VA
+T:*/*=0.12(60)/60
+Z:202 Europa 2
+A:AL,BA,GR,IS,YU,HR,MT,MC
+A:PL,SK,SI,CZ,TR,HU,CY
+T:*/*=0.25(60)/60
+Z:203 Europa 3
+A:BG,KZ,MK,MD,RO,SU,BY
+T:*/*=0.45(60)/60
+Z:204 Nordamerika
+A:CA,US,_HAWA
+T:*/*=0.12(60)/60
+Z:205 Suedamerika/Suedafrika
+A:AR,CL,CO,LS,ZA
+T:*/*=1.20(60)/60
+Z:206 Welt 1
+A:EG,DZ,EE,IL,JO,LB,LY,LV,LT
+A:EH,SY,TN
+T:*/*=0.60(60)/60
+Z:207 Welt 2
+A:AU,CN,HK,JP,KP,NZ,SG,TW
+T:*/*=0.80(60)/60
+Z:208 Welt 3
+A:BR,DO,MX
+T:*/*=1.00(60)/60
+Z:209 Welt 4 (restliche Laender)
+T:*/*=1.40(60)/60
+#####################################################################
+P:100,2 Meocom ISDN plus
+B:010000
+C:EMail: service@meocom.de
+C:Address: MEOCOM Telekommunikation, Helmholtzstr. 144, 46045 Oberhausen
+C:Telefon: 0800/0-636-636
+C:Homepage: http://www.meocom.de
+C:Name:Meocom ISDN
+C:Zusaetzliche Tarife: Meocom-direkt (analog) und -ISDN-plus
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
+C:Meocom ist nur als Preselection-Tarif nutzbar (minutengenaue Abrechnung)
+C:Meocom-Kunden untereinander telefonieren fuer 1 Cent/min (Mo-So, 0-24 Uhr)
+C: Es fehlen weitere Sonderrufnummern (0180,0190,0900,... [wie Telekom]
+C: Auslandsmobilfunk [+0,25 Euro zu den Auslandstarifen])
+Z:0 FreeCall
+A:0130*,0800*
+A:110
+A:112
+T:*/*=0
+Z:1 Meocom Lokal
+A:+49208*
+T:W/8-18=0.13(300)/60
+T:W/18-8=0.03(120)/60
+T:E,H/*=0.03(120)/60
+Z:2 Meocom City
+A:+49201*,+492041*,+492043*,+492045*,+492051*,+492054*,+492056*,+492858*
+A:+492064*,+492065*,+492066*,+49209*,+492102*,+492841*,+492843*,+492844*
+A:+492855*
+T:W/8-18=0.13(300)/60
+T:W/18-8=0.03(120)/60
+T:E,H/*=0.03(120)/60
+Z:3 Meocom Regional
+A:+49202*,+492052*,+492053*,+492058*,+492058*
+A:+492103*,+492104*,+492104*,+49211*,+49212*,+492131*,+492132*,+492133*
+A:+492137*,+492150*,+492151*,+492152*,+492153*,+492154*,+492156*,+492158*
+A:+492159*,+492159*,+492161*,+492162*,+492171*,+492173*,+492174*,+492175*
+A:+492181*,+492182*,+492191*,+492192*,+492195
+A:+492302*,+492304*,+492305*,+492306*,+492309*,+49231*,+492323*,+492324*
+A:+492325*,+492327*,+492330*,+492332*,+492333*,+492335*,+492336*,+492338*
+A:+492339*,+49234*,+492360*,+492361*,+492362*,+492363*,+492364*,+492364*
+A:+492365*,+492366*,+492367*,+492368*,+492369*
+A:+492592*,+492594*,+492595*
+A:+492801*,+492802*,+492803*,+492804*,+49281*,+492831*,+492832*,+492833*
+A:+492834*,+492835*,+492836*,+492838*,+492839*,+492845*,+492850*,+492851*
+A:+492852*,+492853*,+492856*,+492856*,+492857*,+492859*,+492861*,+492864*
+A:+492865*,+492865*,+492866*,+492867*,+49287*,+492873*,+492874*
+T:W/8-18=0.23(300)/60
+T:W/5-8,18-22=0.02(60)/60
+T:W/22-5=0.03(120)/60
+T:E,H/*=0.02(60)/60
+Z:4 Meocom fern
+A:DE
+T:W/8-18=0.23(300)/60
+T:W/5-8,18-22=0.13(300)/60
+T:W/22-5=0.02(60)/60
+T:E,H/*=0.13(300)/60
+Z:12 Mobilfunk D1
+A:_DEMD1
+T:*/*=1.99(600)/60
+Z:13 Mobilfunk D2
+A:_DEMD2
+T:*/*=1.99(600)/60
+Z:14 Mobilfunk E+
+A:_DEME1
+T:*/*=0.23(60)/60
+Z:15 Mobilfunk E2
+A:_DEME2
+T:*/*=0.49(120)/60
+Z:100 MeoSurf
+A:01921560
+T:*/*=0.36(3000)/60
+Z:201 Europa 1
+A:AD,BE,DK,TO,FI,FR,GI,UK
+A:IE,IT,LI,LU,_MADE
+A:NL,NO,AT,PT,SM,SE
+A:CH,ES,VA
+T:*/*=0.12(60)/60
+Z:202 Europa 2
+A:AL,BA,GR,IS,YU,HR,MT,MC
+A:PL,SK,SI,CZ,TR,HU,CY
+T:*/*=0.25(60)/60
+Z:203 Europa 3
+T:*/*=0.45(60)/60
+A:BG,KZ,MK,MD,RO,SU,BY
+Z:204 Nordamerika
+A:CA,US,_HAWA
+T:*/*=0.12(60)/60
+Z:205 Suedamerika/Suedafrika
+A:AR,CL,CO,LS,ZA
+T:*/*=1.20(60)/60
+Z:206 Welt 1
+A:EG,DZ,EE,IL,JO,LB,LY,LV,LT
+A:EH,SY,TN
+T:*/*=0.60(60)/60
+Z:207 Welt 2
+A:AU,CN,HK,JP,KP,NZ,SG,TW
+T:*/*=0.80(60)/60
+Z:208 Welt 3
+A:BR,DO,MX
+T:*/*=1.00(60)/60
+Z:209 Welt 4 (restliche Laender)
+T:*/*=1.40(60)/60
+#####################################################################
+#
+#
+P:229,0 Telebillig
+B:0190029
+C:Address:
+C:Name:Telebillig
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+Z:1-4 GermanCall
+A:+49
+T:*/*=0.015/60
+Z:10 Mobilfunk
+A:_DEMF
+T:*/*=0.175/60
+#####################################################################
+#
+#
+P:231,0 Teledump
+B:0190031
+C:Address:
+C:Name:Teledump
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+Z:1-4 GermanCall
+A:+49
+T:*/*=0.028/60
+Z:10 Mobilfunk
+A:_DEMF
+T:*/*=0.19/60
+#####################################################################
+#
+#
+P:235,0 TeleDiscount
+B:0190035
+C:Address:
+C:Name:TeleDiscount
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+Z:1-4 GermanCall
+A:+49
+T:*/*=0.026/60
+Z:10 Mobilfunk
+A:_DEMF
+T:*/*=0.185/60
+#####################################################################
+#
+#
+P:237,0 Fonfux
+B:0190037
+C:Address:
+C:Name:Fonfux
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+Z:1-4 GermanCall
+A:+49
+T:*/*=0.015/60
+Z:10 Mobilfunk
+A:_DEMF
+T:*/*=0.179/60
+#####################################################################
+#
+#
+P:287,0 Phonecraft
+B:0190087
+C:Address:
+C:Name:Phonecraft
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+Z:1-4 GermanCall
+A:+49
+T:*/*=0.025/60
+Z:10 Mobilfunk
+A:_DEMF
+T:*/*=0.20/60
 #####################################################################

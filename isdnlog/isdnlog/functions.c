@@ -1,4 +1,4 @@
-/* $Id: functions.c,v 1.32 2001/08/18 12:04:08 paul Exp $
+/* $Id: functions.c,v 1.33 2002/01/26 20:43:31 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,35 @@
  * along with this program; if not, write to the Free Software
  *
  * $Log: functions.c,v $
+ * Revision 1.33  2002/01/26 20:43:31  akool
+ * isdnlog-4.56:
+ *  - dont set the Provider-field of the MySQL DB to "?*? ???" on incoming calls
+ *
+ *  - implemented
+ *      0190029 Telebillig        (17,5 Cent/minute to any cellphone)
+ * 		 0190031 Teledump
+ * 		 0190035 TeleDiscount
+ * 		 0190037 Fonfux            (1,5 Cent/minute german-call)
+ * 		 0190087 Phonecraft
+ *
+ *    you have to change:
+ *
+ *    1. "/etc/isdn/rate.conf" - add the following:
+ *
+ *      P:229=0		#E Telebillig
+ * 		 P:231=0		#E Teledump
+ * 		 P:235=0		#E TeleDiscount
+ * 		 P:237=0		#E Fonfux
+ * 		 P:287=0		#E Phonecraft
+ *
+ *    2. "/etc/isdn/isdn.conf" (or "/etc/isdn/callerid.conf"):
+ *
+ * 	     VBN = 010
+ *
+ * 	   to
+ *
+ * 	     VBN = 010:01900
+ *
  * Revision 1.32  2001/08/18 12:04:08  paul
  * Don't attempt to write to stderr if we're a daemon.
  *
@@ -298,7 +327,7 @@ void _Exit_isdnlog(char *File, int Line, int RetCode) /* WARNING: RetCode==-9 do
     if (xinfo && sockets[IN_PORT].descriptor != -2)
       close(sockets[IN_PORT].descriptor);
   } /* if */
-  
+
   procinfo(1, NULL, -1);	/* close proc */
   closelog();
 
@@ -438,7 +467,7 @@ void logger(int chan)
 			              call[chan].cause, call[chan].ibytes, call[chan].obytes,
 			              LOG_VERSION, call[chan].si1, call[chan].si11,
 			              currency_factor, currency, call[chan].pay,
-				      prefix2pnum(call[chan].provider),
+				      			prefix2pnum(call[chan].provider),
 			              call[chan].zone);
 
 			fclose(flog);
@@ -482,7 +511,7 @@ void logger(int chan)
   mysql_db_set.currency_factor = currency_factor;
   strcpy(mysql_db_set.currency, currency);
   mysql_db_set.pay = call[chan].pay;
-  strcpy(mysql_db_set.provider, getProvider(call[chan].provider));
+  strcpy(mysql_db_set.provider, call[chan].dialin ? "" : getProvider(call[chan].provider));
   mysql_dbAdd(&mysql_db_set);
 #endif
 #ifdef ORACLE

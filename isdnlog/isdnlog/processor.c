@@ -1,4 +1,4 @@
-/* $Id: processor.c,v 1.121 2001/03/13 14:39:30 leo Exp $
+/* $Id: processor.c,v 1.122 2002/01/26 20:43:31 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,35 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.122  2002/01/26 20:43:31  akool
+ * isdnlog-4.56:
+ *  - dont set the Provider-field of the MySQL DB to "?*? ???" on incoming calls
+ *
+ *  - implemented
+ *      0190029 Telebillig        (17,5 Cent/minute to any cellphone)
+ * 		 0190031 Teledump
+ * 		 0190035 TeleDiscount
+ * 		 0190037 Fonfux            (1,5 Cent/minute german-call)
+ * 		 0190087 Phonecraft
+ *
+ *    you have to change:
+ *
+ *    1. "/etc/isdn/rate.conf" - add the following:
+ *
+ *      P:229=0		#E Telebillig
+ * 		 P:231=0		#E Teledump
+ * 		 P:235=0		#E TeleDiscount
+ * 		 P:237=0		#E Fonfux
+ * 		 P:287=0		#E Phonecraft
+ *
+ *    2. "/etc/isdn/isdn.conf" (or "/etc/isdn/callerid.conf"):
+ *
+ * 	     VBN = 010
+ *
+ * 	   to
+ *
+ * 	     VBN = 010:01900
+ *
  * Revision 1.121  2001/03/13 14:39:30  leo
  * added IIOCNETGPN support for 2.0 kernels
  * s. isdnlog/kernel_2_0/README for more information (isdnlog 4.51)
@@ -1375,6 +1404,9 @@ void buildnumber(char *num, int oc3, int oc3a, char *result, int version,
 
     if (l == 6) /* Fixme: German specific */
       *provider += 100;
+
+    if (l == 7) /* Fixme: German specific */
+      *provider += 200;
 
     num[l] = c;
     num += l;
@@ -3403,10 +3435,6 @@ static void huptime(int chan, int setup)
       } /* else */
     } /* if */
   } /* if */
-  else if (hupctrl) {
-    sprintf(sx, "No HUP: HUP = %d c = %d *INTERFACE=%c", hupctrl, c, *INTERFACE);
-    info(chan, PRT_ERR, STATE_HUPTIMEOUT, sx);
-  }    
 } /* huptime */
 
 
@@ -3495,7 +3523,7 @@ static int findinterface(void)
 #if IIOCNETGPN == -1
      /* IIOCDBGVAR works on isdnctrl */
     rc = iiocnetgpn(sockets[ISDNCTRL].descriptor, &phone);
-#else    
+#else
     rc = ioctl(sockets[ISDNINFO].descriptor, IIOCNETGPN, &phone);
 #endif
     if (rc) {
@@ -4921,9 +4949,9 @@ static void processctrl(int card, char *s)
 
         if (sound)
           ringer(chan, RING_CONNECT);
-	  
+
 	procinfo(call[chan].channel, &call[chan], CONNECT);
-	
+
 doppelt:break;
 
       case SUSPEND_ACKNOWLEDGE :

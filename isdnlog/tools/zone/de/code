@@ -14,7 +14,7 @@
 178	Mobilfunknetz Eplus
 176	Mobilfunknetz E2
 179	Mobilfunknetz E2
-1505	Mobilfunknetz Quam
+150	Mobilfunknetz Quam
 1801	Shared Cost 0180-1	3
 1802	Shared Cost 0180-2      3
 1803	Shared Cost 0180-3      3
@@ -29,6 +29,11 @@
 1907	Premium Rate 0190-7     3
 1908	Premium Rate 0190-8     3
 1909	Premium Rate 0190-9     3
+190029	Telebillig
+190031	Teledump
+190035	TeleDiscount
+190037	Fonfux
+190087	Phonecraft
 201	Essen
 202	Wuppertal
 203	Duisburg

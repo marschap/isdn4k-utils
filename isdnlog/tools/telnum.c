@@ -243,7 +243,7 @@ int     provider2prefix(char *p, int *prefix)
 
   q = strtok(vbns, ":");
   while (q) {
-    l1 = strlen(vbns);
+    l1 = strlen(q);
     if (!memcmp(p, q, l1)) {
 /*        Strncpy(num->vbn, q, TN_MAX_VBN_LEN); */
 #if DEBUG

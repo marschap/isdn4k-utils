@@ -32,7 +32,7 @@ ZONEFILE= /usr/lib/isdn/zone-de-%s.cdb
 DESTFILE= /usr/lib/isdn/dest.cdb
 
 # providerselect
-VBN = 010
+VBN = 010:01900
 VBNLEN = 2:3
 PRESELECTED=33
 
