@@ -12,14 +12,15 @@ Posting-frequency: monthly
 Last-modified: 18-Mar-97
 URL: http://www.lrz-muenchen.de/~ui161ab/www/isdn/
 
-!1FAQ for isdn4linux - Version 1.3.2!br (translation in progress 14-Apr-97)
+!1FAQ for isdn4linux - Version 1.3.2!br (translation in progress 15-Apr-97)
 
-[Translator's notes!br
+[Translator's notes]!br
 --31-Mar-97: First step in updating the FAQ from 1.0.5
 (6-Jan-97) to 1.3.2 (18-Mar-97). Headings are now complete and in the right order,
 but many questions are missing or are still in German!!br
 --14-Apr-97: Questions complete in all section (but not all updated or 
 translated)!br
+--15-Apr-97: Section 1 translated.!br
 !br
 
 This FAQ is protected by the GNU General Public License (GPL) Version 2;
@@ -89,25 +90,24 @@ A: isdn4linux is a set of kernel modules that "teach" the Linux
    actual hardware drivers that control the specific cards.
 
 !old
-Q: Was can isdn4linux do?
+Q: What can isdn4linux do?
 A: isdn4linux controls ISDN PC cards and can emulate a modem with the
    Hayes command set ("AT" commands). The possibilities range from 
    simply using a terminal program to connections via HDLC (using included
    devices) to full connection to the Internet with PPP to audio applications.
 
-Q: Was kann isdn4linux noch nicht?
-A: Noch sind keine !u1Vollduplex!u0-Audio-Verbindungen machbar.
-   Es fehlt noch das eine oder andere Protokoll (V.110, amerikanische
-   Protokolle).
+Q: What can't isdn4linux do (yet)?
+A: There is no !u1full duplex!u0 audio connection possible.
+   Some protocols are still missing (V.110, American
+   protocols).
 
-Q: Kann ich isdn4linux in Nordamerika einsetzen?
-A: Siehe dazu die entsprechende Frage im Kapitel "Nationale Besonderheiten".
+Q: Can I use isdn4linux in North America?
+A: See this question the the secion "National Peculiarities".
 
-Q: Was benötige ich für isdn4linux?
-A: Seit Kernel 1.2.59 ist isdn4linux fester Bestandteil des Linux-Kernel.
-   Zusätzlich benötigt wird das Paket isdn4k-utils-2.0.tar.gz und ggf.
-   der HiSax-Treiber.
-
+Q: What do I need for isdn4linux?
+A: isdn4linux has been part of the Linux kernel since version 1.3.59.
+   In addition, you need the package isdn4k-utils-2.0.tar.gz and possibly
+   the HiSax driver.
 
 !old
 Q: How can I get isdn4linux?
@@ -179,24 +179,24 @@ A:
 
 !verboff   
 
-Q: Welche hilfreiche Links gibt es rund um isdn4linux?
-A: Scripte und Installationstips von vielen Leuten:!br
+Q: What helpful links are there about isdn4linux?
+A: Scripts und installation tips from several people:!br
      !link http://www.rosat.mpe-garching.mpg.de/~web/ISDN.html;!br
-   I4l, syncPPP, email, Usenet, Voicebox, diese FAQ und mehr:!br
+   I4l, syncPPP, email, Usenet, Voicebox, this FAQ and more:!br
      !link http://www.lrz-muenchen.de/~ui161ab/www/isdn/;!br
    Michael Hipp's page (ipppd):!br
      !link http://www.sfs.nphil.uni-tuebingen.de/~hipp/isdn/;!br
-   Chargeint-Anleitung:!br
+   Chargeint instructions:!br
      !link http://www.provi.de/~gvz/chargeint.html;!br
-   Stefan Nehlsen's Anleitung für sync-ppp:!br
+   Stefan Nehlsen's instructions for sync ppp:!br
      !link http://www.techfak.uni-kiel.de/~stn/i4l/;!br
-   xled (fr<FC>her xvboxled) gibt es auf:!br
+   xled (formerly xvboxled) is at:!br
      !link fb4-1112.uni-muenster.de/pub/ffwd/;!br
-   Beispielkonfigurationen zu isdn4linux soll es auch geben auf:!br
+   Example configurations for isdn4linux are said to be at:!br
      !link http://www.datenhighway.com/isdn4linux.html;!br
-   Diese FAQ sowie isdn4linux gibt es auf:!br
+   This FAQ along with isdn4linux is at:!br
      !link ftp://ftp.franken.de/pub/isdn4linux/;!br
-   Die FAQ gibt es auch auf:!br
+   This FAQ is also so:!br
      !link ftp://ftp.pop.de/pub2/linux/isdn4linux/FAQ;
 
 !old
@@ -215,10 +215,9 @@ A: To unsubscribe, send another mial to majordomo@hub-wue.franken.de -
    is the address to which mail messages from the mailing list had been
    sent.
 
-Q: Gibt es die Mailingliste auch als Newsgruppe?
-A: Ja, auf die Mailingliste kann man auch über de.alt.comm.isdn4linux
-   zugreifen - ein bidirektionales Gateway sorgt dafür, daß man auch antworten
-   kann.
+Q: Is the mailing list mirrored to a newsgroup?
+A: Yes, the mailing list can also be accessed at de.alt.comm.isdn4linux -
+   a bidirectional gateway makes sure that one can also answer postings.
 
 
 !old
@@ -288,39 +287,36 @@ A: Currently isdn4k-utils-2.0 is required in addition to the drivers included
    2.0.3 or higher kernel (no longer requires any patches!). Kernel
    >2.0.27 is the current standard.
 
-Q: Welche Hardware wird !u1NICHT!u0 unterstützt?
-A: Z.Zt. werden (mit Ausnahme der ICN) keine einzige aktiven ISDN-Karten
-   unterstützt.  Lediglich noch für die AVM B1 gibt es einen Alpha-Treiber auf
-   Binary-Only Basis.  
+Q: What hardware is u1NOT!u0 supported?
+A: For not (with the exception of ICN) no active ISDN cards are supported,
+   except the AVM B1, for which there an alpha driver as binary only.  
 
-Q: Unterstützt isdn4linux externe Terminaladapter?
-A: Nein, aber das braucht es auch nicht. Schließlich sind Terminaladapter so
-   gebaut, daß sie sich entweder wie ein Modem oder wie eine Netzwerkkarte
-   verhalten. Linux unterstützt aber auch schon ohne isdn4linux Modems und
-   Netzwerkkarten - daher ist kein spezieller ISDN-Treiber erforderlich
-   (womit sich die Konfiguration meist deutlich vereinfacht).
+Q: Does isdn4linux support external terminal adapters?
+A: No, but it doesn't need not. Terminal adapaters are designed to behave
+   either like a modem or like a netware card. Linux already supports both
+   modems and network cards without isdn4linux - so not special ISDN driver
+   is necessary (which usually greatly simpligies the configuration),
 
 !old
 Q: Which internal cards are supported?
-A: Im Moment gibt es einen Treiber für alle Karten mit einem bestimmten
-   Siemens-Chipsatz (HiSax-Treiber), der auch Plug&Play-Karten unterstützt.
-   Zu den Details siehe die nächste Frage.!br
-   Der HiSax-Treiber hat den alten Telestreiber überflügelt, der entsprechend
-   nicht mehr weiterentwickelt wird. Dementsprechend hat der Telestreiber
-   mittlerweile wesentlich mehr Bugs und sollte nicht mehr verwendet werden.!br
-   Weitere Treiber gibt es für die (aktive) ICN-Karte (ICN-Treiber),
-   sowie für die PCbit-Karte (Octal, Portugal).!br
-   Für die "itk ix1 micro" gab es einen (speziellen) Treiber von Frank Mohr
-   <mohr@fhdacom2.fhrz.fh-darmstadt.de>, der jedoch mittlerweile im HiSax 2.0
-   enthalten ist. Er unterstützte die folgenden Karten:
+A: Right now there is a driver for all card with a certain 
+   Siemens chipset (HiSax driver), that also supports Plug&Play cards.
+   See the next question for details.!br
+   The HiSax driver has superceded has the old Teles driver, which is therefore is 
+   not being further developed. For this reason, the Teles driver has
+   many more bugs and should not be used any longer.!br
+   Further drivers includes that for the (active) ICN card (ICN driver),
+   as well as that for the PCbit card (Octal, Portugal).!br
+   There used to for a (special) driver for the itk ix1 micro" from Frank Mohr
+   <mohr@fhdacom2.fhrz.fh-darmstadt.de>, but that is not included in HiSax 2.0.
+   It supports the following cards:
 !verbon
-       * ITK ix1 micro V2.0 und V2.1
+       * ITK ix1 micro V2.0 and V2.1
        * Cisco 200
        * ITK Columbus
 !verboff
-   Schließlich gibt es noch einen (Alpha-) Treiber für die aktive AVM B1,
-   mit einigen Besonderheiten. Siehe dazu die Frage "Wie sieht es aus mit
-   der aktiven AVM B1?".
+   Finally there is also a (alpha) driver for the active AVM B1,
+   with its own peculiarities. See the question "What about the active AVM B1?".
                                      
 !old
 Q: What is the new HiSax driver all about?
@@ -328,8 +324,8 @@ A: It is a new driver that should support all passive cards that are based on a
    certail Siemens chipset. Currently it supports:
 !verbon
         * Teles S0-8
-        * Teles S0-16 und S0-16.2
-          (baugleich: Dr. Neuhaus Niccy 1016, Creatix 16/S0)
+        * Teles S0-16 and S0-16.2
+          (identical to: Dr. Neuhaus Niccy 1016, Creatix 16/S0)
         * Teles S0-16.3
         * Teles S0-16.3 PNP
         * Teles PCMCIA
@@ -340,8 +336,8 @@ A: It is a new driver that should support all passive cards that are based on a
         * ELSA Microlink PCF/pro (only ISDN, not the V34 Modem Chip)
         * ITK ix1-micro Rev.2  
 !verboff
-   Die ELSA PCC-8 sollte eigentlich auch unterstützt werden, mangels
-   Debuggingmöglichkeit hält sich jedoch noch einen Bug, der dies verhindert.
+   The ELSA PCC-8 should really also be supported, but without the chance
+   to debug there remains a bug that prevents this.
    Karsten Keil <keil@temic-ech.spacenet.de> wrote on 14 Oct 1996:
 !verbon
      The first goal of the HiSax driver was to add support for more ISDN
@@ -358,40 +354,38 @@ A: It is a new driver that should support all passive cards that are based on a
      that I'm sure I cannot do alone. Anyone with any knowledge of
      programming and ISDN (I myself first heard of ISDN in January, and my
      work has nothing to do with ISDN... I learned everything on my own
-     time), and wants to help can contact me.
+     time), and anyone who wants to help can contact me.
 !verboff
      If you're interested in HiSax, you can find it at
         !link ftp://ftp.franken.de/pub/isdn4linux/HiSax/;
      (and hopefully soon at all isdn4linux mirrors!)
-   Seit HiSax 1.5/2.0 werden auch D64-Verbindungen unterstützt. HiSax 2.0 wird
-   ins Kernel 2.0.30 wandern, und braucht ab dann nicht mehr gesondert in den
-   Kernel gepatcht werden.                                
-
-Q: Wie sieht es aus mit der aktiven AVM B1?
-A: Andreas Schultz <aschultz@hppool.cs.Uni-Magdeburg.de> hat dafür einen
-   Treiber geschrieben, den es (als Alpha-Version) unter folgendem Link gibt:
+   Since HiSax 1.5/2.0 D64 connections are supported. HiSax 2.0 will become
+   part of kernel 2.0.30 , and then will no longer need special patches.
+   
+Q: What about the active AVM B1?
+A: Andreas Schultz <aschultz@hppool.cs.Uni-Magdeburg.de> has written a driver,
+   that can be found (as an alpha version at:
    !link http://www.cs.uni-magdeburg.de/~aschultz/avmb1-1.2-alpha.tar.gz;
-   Da er ein NDA mit AVM unterzeichnen mußte, gibt es den Treiber jedoch nur
-   als Binary.                 
+   Because he had to sign an NDA, the driver is available only as a binary.
 
-Q: Nachdem meine AVM ja so viele Interrupts erzeugt mit dem HiSax-Treiber,
-   welches ist die beste passive Karte in Verbindung mit HiSax?
-A: Karsten Keil <keil@temic-ech.spacenet.de> schrieb dazu am 12. Nov 1996:!br
-   Das sollte sich fast nichts nehmen. Von der Belastung des Rechners ist die
-   Fritz! wahrscheinlich auf Dauer die Schlechteste [siehe dazu die Frage
-   "Meine AVM-Karte erzeugt extrem viele Interrupts" im Abschnitt HiSax im
-   Kapitel Troubleshooting], aber vielleicht bekomm ich das mit dem Timer
-   noch raus, wie gesagt macht sich nur bemerkbar wenn der Rechner z.B die
-   ganze Nacht rendering betreibt.
-  Karsten Keil <keil@temic-ech.spacenet.de> schrieb weiterhin am 2. Dez 1996
-   hinsichtlich Stabilität und Bug-Freiheit:
+Q: Now that my AVM produces so many interrupts with the HiSax driver,
+   which is the best passive card to use with HiSax?
+A: Karsten Keil <keil@temic-ech.spacenet.de> wrote on 12. Nov 1996:!br
+   It shouldn't make that much difference. As for the load on the system, the 
+   Fritz! is probably the worst in the long run [see also the question 
+   "My AVM card produces very many interrupts" in HiSax part if the 
+   Troubleshooting section], but maybe I can get that right with the timer,
+   since that's only noticable when, for example, the system busy with 
+   rendering for an entire night.
+  Karsten Keil <keil@temic-ech.spacenet.de> wrote further on 2. Dec 1996
+   on stability and lack of bugs:
 !verbon
-        1. Wahl ELSA
-           ELSA stellt im Gegensatz zu AVM die Spezifikation zur Verfügung.
-        2. Wahl Creatix PNP
-           Auch Creatix Mitarbeiter stehen Linux nicht vollkommen negativ
-           gegenueber ;-). Ist uebrigens eine Creatix Eigenentwicklung und
-           nicht mit der Teles 16.3 PNP identisch.
+        1st choice ELSA
+           ELSA (as opposed to AVM) makes the specifications available.
+        2nd choice Creatix PNP
+           Creatix employees are sldo not completely negative towards Linux ;-). 
+           By the way, this card has been developed by Creatix and
+           is not identical to the Teles 16.3 PNP.
 !verboff
           
 !old
@@ -409,15 +403,13 @@ A:
    128k synchronous  : yes (channel bundling - see the next question)
 !verboff
 
-
 Q: Does isdn4linux support channel bundling?
 A: The current version of isdn4linux support 2 methods of channel 
    bundling:!br
-     - !b1MPPP!b0 (basiert auf syncPPP)!br
-     - !b1Raw Bundling!b0 (Konfiguration von sogenannten Slave-Kanälen)!br
-   Beide Varianten haben z.Zt. eigene Vor- und Nachteile. Siehe dazu "Wie
-   benutzt man Channel Bundling?" im Abschnitt "Channel-Bundling" weiter
-   unten.!br                                                             
+     - !b1MPPP!b0 (based on sync PPP)!br
+     - !b1Raw bundling!b0 (configured by so-called slave channels)!br
+   Both variants have their own advantages and disadvantages  See the question "
+   How do I use channel bundling?" in the "Channel bundling" section below.!br                                                             
    Warning: Channel bundling saves time, but not any telephone charges.
    Only if you really need the extra bandwidth is it useful.
    
@@ -459,7 +451,7 @@ A: Yes, the following sites offer guest access for modem emulation or IP:!br
 
 !old
 Q: Can I combine isdn4linux with diald?
-A: Ja, siehe dazu den Abschnitt "Diald" im Kapitel "Konfiguration".
+A: Yes, see the "Diald" part of the "Configuration" section.
 
 !old
 Q: Can I use isdn4linux as an answering machine?
@@ -467,41 +459,39 @@ A: Yes, voice support is possible wih the current version of isdn4linux.
    You can either use "vgetty" from Gert Doerings "mgetty+sendfax", 
    or "vboxgetty" from Michael Herold, which is made especially for
    isdn4linux.
-   Letzteres findet sich unter:
+   The latter can be found at:
    !link ftp://ftp.franken.de/pub/isdn4linux/contributions/
 
 Q: Can I fax with isdn4linux?
 A: Several groups are working on fax software
    that will work together with isdn4linux. At the moment, it looks like
    it will never work... because timing is critical
-   for fax software, and Linux doesn't have a real time environment. 
+   for fax software, and Linux doesn't yet have a real time environment. 
    If you do want to fax, you'll have to install an analog fax modem 
    along with your ISDN card.
 
-
 !old 
 Q: Is videotex/Btx/Datex-J possible with isdn4linux?  
-
 A: Yes, it works with the modem emulation with the ttyI* devices. There is
    a special register to set for videotex (ATSx=y -  see the Readme's)
    It's also possible to access the Internet via the German T-Online.
    Warning! XCept (formerly Xbtx) has an ISDN configuration option. This
    should NOT be used. XCept should be configured as if a normal modem
    were being used.!br 
-   Siehe auch die Fragen zu T-Online im Abschnitt Konfiguration|Gegenstellen.
+   See also the qestions about zu T-Online in the "Configuration" section.
 
-Q: Kann ich mit isdn4linux eine Verbindung zu Compuserve aufbauen?
-A: Nein, da Compuserve's ISDN-Zugänge nur mit dem veralteten V.110-Protokoll
-   funktionieren. V.110 ist in isdn4linux (noch?) nicht implementiert.
-   Inzwischen bietet Compuserve aber auch viele X.75-Einstiege an.
-
-Q: Welche ISDN-Features wird isdn4linux nicht bieten können?
-A: Einige ISDN-Features sind gerätespezifisch und können daher nicht von
-   isdn4linux für andere Geräte aktiviert werden, es sei denn, isdn4linux
-   würde deren TEI fälschen (was die Geräte jedoch ziemlich verwirren dürfte).
-   Solche gerätespezifischen ISDN-Features sind u.a.: Ablehnen eines
-   anklopfenden Anrufes, Rufnummernübermittlung aus/ein, Makeln, Konferenz,
-   Vermitteln im Amt, diverse COLP/CLRP.
+Q: Can I connedt to Compuserve with isdn4linux?
+A: No, because Compuserve's ISDN dial-in works only with the old V.110 
+   protocol. V.110 is not (yet) implemented in isdn4linux. In the meantime, 
+   Compuserve offers several X.75 numbers.
+   
+Q: Which ISDN features can not be offered by isdn4linux?
+A: Some ISDN features are device-specifc and can there not be activated by
+   isdn4linux for other devices, unless isdn4linux were to falsify the 
+   the TEI (which would probably confuse the other device).
+   Such device-specific ISDN features are, among others: rejection of a
+   waiting call, caller id on/off, hold, conference calls,
+   call forwarding, differing COLP/CLRP.
          
 !old
 Q: I'd like to write a new hardware driver. Where can I find a description
@@ -513,14 +503,14 @@ A: In the kernel source (in /usr/src/linux/Documentation/isdn) you can find
 Q: Wie habe ich Zugriff auf den Source der aktuellen Entwicklung/was hat
    es mit dem CVS-Tree auf sich?
 A: CVS - Concurent Version System!br
-   Ist eine Multiuser/Server Erweiterung von RCS (Revision Control System).
-   Die I4L Treiber werden unter CVS entwickelt, dazu existiert auf einem
-   Rechner (oldhades.think.de) ein CVS-tree auf den alle Entwickler Zugriff
-   haben. Zusätzlich hat Fritz einen anonymen Readonly Zugriff gebastelt, wer
-   also unbedingt das Neuste haben will kann sich das dort holen, in den
-   Sourcen sind eventuell mehr bugs drin, als in den releasten !!!
-   Hier die entsprechende Nachricht von Fritz Elfert <fritz@wuemaus.franken.de>
-   zu diesem Thema:!br
+   This is a multiuser/server extension to RCS (Revision Control System).
+   The I4L drivcers are developed under CVS, and there exists on server
+   (oldhades.think.de) a CVS tree to which all developers have access.
+   In addition, Fritz has put together an anonymous read-only access. If you
+   must have the very newest versions, you can get them there,  however the y
+   may contain more bugs than the released versions!!!
+   Here is the message from Fritz Elfert <fritz@wuemaus.franken.de>
+   about this:!br
    ANOTHER IMPORTANT THING:!br
    I often get patches - against current official releases of course -
    where i have problems applying them. My local source here
@@ -580,101 +570,97 @@ A: Yes, you really can! Steffan Henke <henker@informatik.uni-bremen.de>
      - Kernel 2.0.21, HiSax
 !verboff   
 
-Q: Gibt es eine funktionierende ISDN Karte für einen DEC Alpha mit Linux?
-A: Thomas Bogendoerfer <tsbogend@alpha.franken.de> schrieb am 17. Dez 1996:!br
-   Ich verwende eine ICN ISDN Karte in meinem Alpha Noname für den
-   Internetzugang und mail/news via uucp.!br
-   Ich habe keine passive ISDN Karte um HiSax mit Linux/Alpha zu testen. Es
-   gibt jedoch Probleme mit den Timern (HZ ist 1024 auf Alphas). Selbst im
-   icn Treiber ist der "falsche" Timer, was ein wenig zu viel Polling der Karte
-   verursacht (aber es führt zu besseren ping Zeiten:-)). Ich vermute, es ist
-   an der Zeit das zu beheben.
+Q: Is there a working ISDN card for a DEC Alpha with Linux?
+A: Thomas Bogendoerfer <tsbogend@alpha.franken.de> wrote on 17 Dec 1996:!br
+   I use an ICN ISDN card in my Alpha Noname for
+   Internet access and mail/news via uucp.!br
+   Ich don't have a passive ISDN card to test HiSax with Linux/Alpha . There
+   are problems with the timers (HZ is 1024 on the Alpha). Even the
+   icn driver has the "wrong" Timer, which causes a little too much poling of 
+   the card (but leads to better ping times:-)). I suspect that this can be
+   fixed in time.
 
-Q: Läuft isdn4linux parallel zu UISDN?
-A: Nils Rennebarth <nils@nus.de> schrieb dazu am 10. Dez 1996:
+Q: Can isdn4linux run in parallel to UISDN?
+A: Nils Rennebarth <nils@nus.de> wrote on 10 Dec 1996:
 !verbon
-        Es läuft parallel. Und es läuft unter 2.0.X.
-        Beide ISDN-Pakete laden jedoch das Modul isdn.o, ansonsten ist der
-        Namensraum verschieden. Abhilfe: Urlichs isdn.o in uisdn.o umbenennen,
-        entsprechend /lib/modules/modules.isdn (oder wie immer das Ding heißt,
-        wo die Module drinstehen, und das das Skript ausliest) anpassen.
-        Freundlicherweise sind auch die Default-Namen der ISDN-devices
-        verschieden.
+        They run parallel. And they run under 2.0.X.
+        Both ISDN packages load the module isdn.o, otherwise the naming conventions
+        are different. Tip: rename Urlichs isdn.o to uisdn.o ,
+        and change lib/modules/modules.isdn (or whatever the file is called
+        that lists the modules and is read by the script) accordingly.
+        Happily the default names of the ISDN devices are also different.
 !verboff
 
-Q: Was heisst eigentlich AOC-x, CLIR, COLP, CVS, HDLC, HSCX, ISAC, TEI...?
-A: Hier ein kleines Glossar:!br
+Q: What are AOC-x, CLIR, COLP, CVS, HDLC, HSCX, ISAC, TEI...?
+A: Here is a small glossary:!br
 !b1AOC-D!b0
 !verbon
-        AOC-D ist die "Gebühreninformation während der Verbindung".
+        "Advice Of Charge During the Call".
 !verboff
-!b1AOC-E!b0
+!b1AOC-E (Advice of Charge at the End of the Call)!b0
 !verbon
-        AOC-D ist die "Gebühreninformation nach der Verbindung". Dieses 
-        Dienstemerkmal ist in Deutschland im "Komfort-Anschluß" enthalten.
+        "Advice of Charge at the End of the Call". In Germany, this service 
+        is included in the "Komfort-Anschluß".
 !verboff
-!b1CLIR!b0
+!b1CLIR (Calling Line Identification Restriction)!b0
 !verbon
-        CLIR ist ein Angebot des ISDN-Anbieters: man kann fallweise
-        die Übermittlung der eigenen Rufnummer an den Gesprächspartner 
-        unterdrücken lassen. CLIR muß man beantragen, es ist (in Deutschland) 
-        jedoch kostenlos. Hingegen kostet die fallweise !i1Übermittlung!i0
-        der Rufnummer Geld.
+        CLIR (Calling Line Identification Restriction) can be offered by
+        the ISDN provider: one can (from call to call) restict the identification 
+        of one's own caller ID to the other party. In Germany, this must be applied 
+        for but is without charge (however !ilreceiving!i0 the caller ID
+        costs money).
 !verboff
-!b1COLP!b0
+!b1COLP (Connected Line Identification Presentation)!b0
 !verbon
-        Auch COLP ist ein Angebot des ISDN-Anbieters. Man muß es beantragen,
-        aber es kostet (in Deutschland) 10.-- DM pro Monat extra. Wer COLP
-        beantragt hat, bekommt ein erweitertes Wählprotokoll über die
-        Leitung, welches man dann z.B. in der Tk-Anlage auswerten kann.
-        Derzeit wird an einer Möglichkeit gebastelt, das mit Hilfe einer 
-        "verkehrtherum" angeschlossenen zweiten Teleskarte zu umgehen. Man
-        bekommt dann ganz ohne Gebühren mehr Informationen als mit laufendem
-        COLP. Das rechnet sich bald...
+        COLP can also be offered by the ISDN provier. In Germany, it must be
+        applied for, and costs an extra 10.-- DM per month. If you've applied
+        for COLP, you get an extended dialing protocal that, for example, can be
+        evaluated in the PBX. Current the possibility is being worked on to get 
+        around this with the help of a backwards-connected Teles card. One could 
+        then get more information than with a running COLP without using any units. 
+        That could quickly pay off...
 !verboff
-!b1CVS-Tree!b0
+!b1CVS Tree!b0
 !verbon
-        Die i4l-Entwickler haben sich zu einem Team zusammengeschlossen. Das
-        Tool "cvs" erlaubt es den Mitgliedern, relativ problemlos Patches
-        einfließen zu lassen. Der Werdegang des Projektes wird damit
-        ausgezeichnet dokumentiert, und es ist auch nicht schwierig, eine
-        ältere Version wieder herzustellen.
+        The i4l developers have formed a team. The tool "cvs" allows the members 
+        to easily make patches. The history of the project is also thereby 
+        documented, and it is also not difficult to reproduce older versions.
 !verboff
 !b1HDLC!b0
 !verbon
-        Ein sehr verbreitetes Low-Level-Protokoll.
+        A widely used low-level protocol.
 !verboff
 !b1HSCX!b0
 !verbon
-        Ein Siemens-Chip, der ähnlich ->ISAC auf vielen passiven ISDN-Karten
-        sitzt. Er übernimmt den seriellen Bus vom ISAC und demultiplext beim
-        Empfangen bzw. multiplext (d.h. fügt die Bits an der richtigen Stelle
-        ein) die B-Kanäle.
+        A Siemens chip, that similar to ISAC is on many passive cards.
+        It takes over the serial bus from ISAC and demultiplexes when 
+        receiving  or multiplexes (i.e. inserts the bits in the correct
+        position) the B channels.
 !verboff
 !b1ISAC!b0
 !verbon
-        Ein Siemens-Chip, der ähnlich ->HSCX auf vielen passiven ISDN-Karten 
-        sitzt. Er ist für "Level 1" zustaendig, sitzt also (beinahe) direkt an
-        der Leitung. Er kann das D-Kanalprotokoll handhaben und setzt die
-        S0-Daten auf einen speziellen seriellen Bus (IOM) um. Beim Senden
-        geht es umgekehrt.
+        A Siemens chip, that similar to HSCX is on many passive cards.
+        Et is responsible for "Level 1", so it sits (almost) directly on
+        the line. It handles the D channel protocol handhaben and send  the
+        S0 data to a speial serial bus (IOM) um. When sending it does the
+        opposite.
 !verboff
 !b1TEI!b0 (Terminal End Identifier)
 !verbon
-        Die lokale Vermittlungsstelle oder bei internen S0 die Anlage weist
-        jedem Endgerät automatisch oder fest eine TEI zu. Diese dient ganz
-        einfach zur Addressierung des D-Kanals. TEIs haben folgende Werte:
-         0- 63   feste TEIs (z.B wird 0 bei Anlagenanschlüssen verwendet)
-        64-126   automatisch zugewiesen
-           127   Rundruf an alle (z.B. bei hereinkommendem Anruf)
+        The local switching office, or with an internal S0 the PBX, automatically 
+        or permanently assigns each end device a TEI. This simply allows 
+        thre addessing of the D channels. TEIs have the following values:
+         0- 63   permanent TEIs (e.g. 0 is used for PBX connections)
+        64-126   automatically assigned
+           127   call for all (e.g. an incoming call)
 !verboff
 !b1PBX!b0 (Private Branch eXchange)
 !verbon
-        Eine TK-Anlage dient dazu, verschiedene interne Geräte an das
-        ISDN-Netz anzuschließen. Meist handelt es sich dabei um analoge
-        Geräte, die nicht direkt ans ISDN-Netz angeschlossen werden können.
-        Die TK-Anlage kann jedoch auch einen internen digitalen S0-Bus zur
-        Verfügung stellen, an dem dann ISDN-Geräte angeschlossen werden können.
+        A PBX is used to connect different internal devices to the 
+        ISDN network. This is usually for analog devices.
+        that cannot be directly connected to an ISDN network.
+        The PBX can also maje an internal digital S0 bus available,
+        on which ISDN devices can be connected.
 !verboff
 
 !2Configuration
@@ -699,11 +685,11 @@ Q: How many ISDN cards can I stuff into my computer?
 A: Just as many as there are ISA slots and interrupts/IO addresses.
    The Teles 16.3 can use only 3 different IO addresses, therefore you can
    use at most 3 cards. They each would also need an interrupt.!br
-   Peter Strunk <webadmin@mail.bicos.de> hatte am 8. Nov 1996 folgenden Tip
-   für die Installation einer vierten Teles-Karte:
+   Peter Strunk <webadmin@mail.bicos.de> gave the following tip on 8 Nov 1996 
+   for isntalling a fourth Teles card:
 !verbon
-        Probiere doch mal Port 0x080h, DIP-SW in die nicht dokumentierte
-        Position!
+        Try out port 0x080h, DIP-SW in the undocumented
+        position!
 !verboff
    The AVM is similar.!br
    The ICN has no interrupts, a more flexible port configuration
@@ -713,15 +699,14 @@ A: Just as many as there are ISA slots and interrupts/IO addresses.
    as many cards are there are slots... one could even increase
    the number of ISA slots with an ISA bus extender.
 
-Q: Brauche ich ein DOS Setup-Programm, um meine Teleskarte zu initialisieren?
-A: Karsten Keil <keil@temic-ech.spacenet.de> schrieb dazu am 21. Feb 1997:!br
-   Du brauchst aber kein DOS Setup fuer Linux, mit einer Ausnahme:!br
-   Es gab von Teles eine Charge PnP Karten die kein echtes PnP gemacht haben.
-   Zu erkennen sind diese Karten daran, das sie KEINEN Jumper/Dip haben aber
-   von isapnp nicht erkannt werden.!br
-   Alle anderen Karten werden mit den Linuxtreibern bzw. die PnP mit isapnp
-   konfiguriert.
-
+Q: Do I need a DOS setup program to setup my Teles card?
+A: Karsten Keil <keil@temic-ech.spacenet.de> wrote on 21 Feb 1997:!br
+   You don't need a DOS setup for Linux, with one exception:!br
+   Teles once offered a Charge PnP card that did not do PnP correctly.
+   These card can be recognized in that the have NO jumper/dip switch, but are not
+   recognized by isapnp .!br
+   All other cards are configured with the Linux drivers or with isapnp
+   
 !old
 Q: Does the driver support "dial on demand"?
 A: Yes. If a network interface (e.g. "isdn0") is set up, the driver will dial
@@ -730,42 +715,42 @@ A: Yes. If a network interface (e.g. "isdn0") is set up, the driver will dial
    up when no data was been transferred over the interface for "time" seconds.
    However, with syncPPP there are problems (see the syncPPP section),
 
-Q: Unterstützt isdn4linux PNP (Plug and Play)?
-A: Ja. Allerdings nur in Verbindung mit dem HiSax-Treiber. Mit "Plug" alleine
-   ist's leider noch nicht getan, es fällt noch etwas mehr Arbeit an:
-   (von Karsten Keil <keil@temic-ech.spacenet.de>)
+Q: Does isdn4linux support PNP (Plug and Play)?
+A: Yes, but only with the HiSax driver. With "Plug" alone
+   it's unfortunately not yet ready, more work is necessary:
+   (from Karsten Keil <keil@temic-ech.spacenet.de>)
 !verbon
-        1. HiSax muß in den Kernel gepatcht werden
-           (Achtung: den "-pn" Parameter verwenden!)
-        2. Mit "make menuconfig" (oder "make config") werden folgende Kernel-
-           Optionen eingestellt:
-             * ISDN = "M" (als Modul - PNP funktioniert sonst nicht!)
-             * HiSax = "M" (als Modul - PNP funktioniert sonst nicht!)
+        1. HiSax has to be patched into the kernel
+           (Attention: use the "-pn" parameter!)
+        2. With "make menuconfig" (or "make config") set the following
+           kernel options :
+             * ISDN = "M" (as module - otherwise PNP doesn't work!)
+             * HiSax = "M" (as module - otherwise PNP doesn't work!)
              * 16.3/PNP support
              * EURO support
-        3. Kernel und Module kompilieren & installieren, depmod. (Reboot!)
-        4. Die Konfiguration der PNP-Karte auslesen mit:
+        3. Compile and install kernel and modules, depmod. (Reboot!)
+        4. Read the configuration of the PNP card with:
            "pnpdump > /etc/isapnp.conf".
-        5. Die Konfigurationsdatei "/etc/isapnp.conf" muß von Hand angepaßt
-           werden. Folgende Werte sind zu setzen:
-             INT0 - der von der Karte verwendete Interrupt
-                  (Default bei Teles 16.3 PNP: 10)
-             IO0, IO1 - die von der Karte verwendeten IO-Ports
-                  (Default bei Teles 16.3 PNP: 0x580 bzw. 0x180)
-                  (Achtung: diese Werte müssen 64bit aligned sein! Frühe
-                  Versionen der PNP-Karten schlagen evtl. falsche Werte vor!)
-        6. Aktivieren der Konfiguration per:
+        5. The configuration file "/etc/isapnp.conf" has to be set by hand.
+           Set the following values:
+             INT0 - the interupt used by the card
+                  (Default for Teles 16.3 PNP: 10)
+             IO0, IO1 - the IO ports used by the card
+                  (Default for Teles 16.3 PNP: 0x580 and 0x180)
+                  (Attention: these values must be 64-bit aligned! Early
+                  versions of the PNP cards my suggest incorrect values!)
+        6. Activate the configuration with:
            "isapnp /etc/isapnp.conf"
-           (muß bei jedem Booten gestartet werden)
-        7. Nun kann das HiSax-Modul gestartet werden mit:
+           (must be started at every boot)
+        7. Now the HiSax module can be started with:
            "modprobe hisax io=4,<P>,<INT>,<IO0>,<IO1>"
-             4     - PNP-Karte
-             <P>   - Protokoll:
-                       2 - für Euro-ISDN (normalerweise)
-                       1 - für 1TR6-ISDN (deutscher Vorgänger von Euro-ISDN)
-             <INT> - der in /etc/isapnp.conf bei INT0 eingetragene Wert
-             <IO0> - der in /etc/isapnp.conf bei IO0 eingetragene Wert
-             <IO1> - der in /etc/isapnp.conf bei IO1 eingetragene Wert
+             4     - PNP card
+             <P>   - Protocol:
+                       2 - for Euro-ISDN (normally)
+                       1 - für 1TR6-ISDN (German predacessor to Euro-ISDN)
+             <INT> - the value in etc/isapnp.conf for INT0 
+             <IO0> - the value in etc/isapnp.conf for IO0 
+             <IO1> - the value in etc/isapnp.conf for IO1 
 !verboff
 
 !old 
@@ -797,8 +782,7 @@ A: Andreas Kool <akool@Kool.f.EUnet.de> wrote on 14.10.1996:
 !verboff
 
 !old
-Q: Kann ich den kerneld einsetzen, um die ISDN-Module bei Bedarf in den Kernel
-   zu binden?
+Q: Can I use kerneld to load the ISDN module as needed into the kernel?
 A: Emil Stephan <ste@esqhen.su.eunet.de> schrieb dazu am 15. Oktober 1996:
 !verbon
         Das Entladen der Module, wenn sie eine Minute lang nicht mehr
