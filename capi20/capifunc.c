@@ -1,7 +1,11 @@
 /*
- * $Id: capifunc.c,v 1.8 2005/02/22 11:39:43 keil Exp $
+ * $Id: capifunc.c,v 1.9 2005/03/08 07:26:47 keil Exp $
  *
  * $Log: capifunc.c,v $
+ * Revision 1.9  2005/03/08 07:26:47  keil
+ * - add SENDING_COMPLETE to INFO_REQ CONNECT_REQ and CONNECT_IND
+ * - remove SENDING_COMPLETE parameter (always NULL) from capi_fill_DISCONNECT_REQ
+ *
  * Revision 1.8  2005/02/22 11:39:43  keil
  * for backward compatibility the libcapi20 can now compiled to support the
  * old (buggy) version2 ABI. This is not for future developments. This is only
@@ -80,7 +84,11 @@ unsigned CONNECT_REQ (_cmsg *cmsg, _cword ApplId, _cword Messagenumber,
                       _cstruct BChannelinformation,
                       _cstruct Keypadfacility,
                       _cstruct Useruserdata,
-                      _cstruct Facilitydataarray) {
+                      _cstruct Facilitydataarray
+#ifndef CAPI_LIBRARY_V2
+                     ,_cstruct SendingComplete
+#endif
+                      ) {
     capi_cmsg_header (cmsg,ApplId,0x02,0x80,Messagenumber,adr);
     cmsg->CIPValue = CIPValue;
     cmsg->CalledPartyNumber = CalledPartyNumber;
@@ -103,6 +111,9 @@ unsigned CONNECT_REQ (_cmsg *cmsg, _cword ApplId, _cword Messagenumber,
     cmsg->Keypadfacility = Keypadfacility;
     cmsg->Useruserdata = Useruserdata;
     cmsg->Facilitydataarray = Facilitydataarray;
+#ifndef CAPI_LIBRARY_V2
+    cmsg->SendingComplete = SendingComplete;
+#endif
     return capi_put_cmsg (cmsg);
 }
 
@@ -147,6 +158,9 @@ unsigned DISCONNECT_REQ (_cmsg *cmsg, _cword ApplId, _cword Messagenumber,
     cmsg->Keypadfacility = Keypadfacility;
     cmsg->Useruserdata = Useruserdata;
     cmsg->Facilitydataarray = Facilitydataarray;
+#ifndef CAPI_LIBRARY_V2
+    cmsg->SendingComplete = NULL;
+#endif
     return capi_put_cmsg (cmsg);
 }
 
@@ -166,13 +180,20 @@ unsigned INFO_REQ (_cmsg *cmsg, _cword ApplId, _cword Messagenumber,
                    _cstruct BChannelinformation,
                    _cstruct Keypadfacility,
                    _cstruct Useruserdata,
-                   _cstruct Facilitydataarray) {
+                   _cstruct Facilitydataarray
+#ifndef CAPI_LIBRARY_V2
+                  ,_cstruct SendingComplete
+#endif
+                   ) {
     capi_cmsg_header (cmsg,ApplId,0x08,0x80,Messagenumber,adr);
     cmsg->CalledPartyNumber = CalledPartyNumber;
     cmsg->BChannelinformation = BChannelinformation;
     cmsg->Keypadfacility = Keypadfacility;
     cmsg->Useruserdata = Useruserdata;
     cmsg->Facilitydataarray = Facilitydataarray;
+#ifndef CAPI_LIBRARY_V2
+    cmsg->SendingComplete = SendingComplete;
+#endif
     return capi_put_cmsg (cmsg);
 }
 

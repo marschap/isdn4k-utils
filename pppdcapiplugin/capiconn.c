@@ -1,5 +1,5 @@
 /*
- * $Id: capiconn.c,v 1.12 2005/03/04 11:45:13 calle Exp $
+ * $Id: capiconn.c,v 1.13 2005/03/08 07:26:49 keil Exp $
  *
  * Copyright 2000 Carsten Paeth (calle@calle.in-berlin.de)
  * Copyright 2000 AVM GmbH Berlin (info@avm.de)
@@ -10,6 +10,10 @@
  *  2 of the License, or (at your option) any later version.
  *
  * $Log: capiconn.c,v $
+ * Revision 1.13  2005/03/08 07:26:49  keil
+ * - add SENDING_COMPLETE to INFO_REQ CONNECT_REQ and CONNECT_IND
+ * - remove SENDING_COMPLETE parameter (always NULL) from capi_fill_DISCONNECT_REQ
+ *
  * Revision 1.12  2005/03/04 11:45:13  calle
  * SendingComplete was missing for DISCONNECT_REQ ...
  *
@@ -56,7 +60,7 @@
 #include <string.h>
 #include "capiconn.h"
 
-static char *revision = "$Revision: 1.12 $";
+static char *revision = "$Revision: 1.13 $";
 
 static _cmsg cmdcmsg;
 static _cmsg cmsg;
@@ -832,8 +836,7 @@ static void n0(capi_contr * card, capi_ncci * ncci)
 				 0,	/* BChannelinformation */
 				 0,	/* Keypadfacility */
 				 0,	/* Useruserdata */   /* $$$$ */
-				 0,	/* Facilitydataarray */
-			    	 0	/* SendingComplete */
+				 0	/* Facilitydataarray */
 	);
 	send_message(card, &cmsg);
 	plci_change_state(card, ncci->plcip, EV_PLCI_DISCONNECT_REQ);
@@ -1689,7 +1692,8 @@ capi_connection *capiconn_connect(
 			      plcip->conninfo.bchaninfo, /* BChannelinformation */
 			      0,	/* Keypadfacility */
 			      0,	/* Useruserdata */
-			      0		/* Facilitydataarray */
+			      0,	/* Facilitydataarray */
+			      0		/* Sendingcomplete */
 			    );
 
 	plcip->msgid = cmdcmsg.Messagenumber;
@@ -1859,8 +1863,7 @@ int capiconn_disconnect(capi_connection *plcip, _cstruct ncpi)
 					 0,	/* BChannelinformation */
 					 0,	/* Keypadfacility */
 					 0,	/* Useruserdata */
-					 0,	/* Facilitydataarray */
-			    	         0	/* SendingComplete */
+					 0	/* Facilitydataarray */
 					);
 		plci_change_state(card, plcip, EV_PLCI_DISCONNECT_REQ);
 		send_message(card, &cmdcmsg);

@@ -963,7 +963,11 @@ unsigned CONNECT_REQ (_cmsg *cmsg, _cword ApplId, _cword Messagenumber
 		,_cstruct BChannelinformation
 		,_cstruct Keypadfacility
 		,_cstruct Useruserdata
-		,_cstruct Facilitydataarray);
+		,_cstruct Facilitydataarray
+#ifndef CAPI_LIBRARY_V2
+		,_cstruct SendingComplete
+#endif
+		);
 unsigned CONNECT_B3_REQ (_cmsg *cmsg, _cword ApplId, _cword Messagenumber
 		,_cdword adr
 		,_cstruct NCPI);
@@ -992,7 +996,11 @@ unsigned INFO_REQ (_cmsg *cmsg, _cword ApplId, _cword Messagenumber
 		,_cstruct BChannelinformation
 		,_cstruct Keypadfacility
 		,_cstruct Useruserdata
-		,_cstruct Facilitydataarray);
+		,_cstruct Facilitydataarray
+#ifndef CAPI_LIBRARY_V2
+		,_cstruct SendingComplete
+#endif
+		);
 unsigned LISTEN_REQ (_cmsg *cmsg, _cword ApplId, _cword Messagenumber
 		,_cdword adr
 		,_cdword InfoMask
@@ -1098,7 +1106,11 @@ static inline void capi_fill_INFO_REQ(_cmsg * cmsg, _cword ApplId, _cword Messag
 				      _cstruct BChannelinformation,
 				      _cstruct Keypadfacility,
 				      _cstruct Useruserdata,
-				      _cstruct Facilitydataarray)
+				      _cstruct Facilitydataarray
+#ifndef CAPI_LIBRARY_V2
+				     ,_cstruct SendingComplete
+#endif
+				      )
 {
 	capi_cmsg_header(cmsg, ApplId, 0x08, 0x80, Messagenumber, adr);
 	cmsg->CalledPartyNumber = CalledPartyNumber;
@@ -1106,6 +1118,9 @@ static inline void capi_fill_INFO_REQ(_cmsg * cmsg, _cword ApplId, _cword Messag
 	cmsg->Keypadfacility = Keypadfacility;
 	cmsg->Useruserdata = Useruserdata;
 	cmsg->Facilitydataarray = Facilitydataarray;
+#ifndef CAPI_LIBRARY_V2
+	cmsg->SendingComplete = SendingComplete;
+#endif
 }
 
 static inline void capi_fill_LISTEN_REQ(_cmsg * cmsg, _cword ApplId, _cword Messagenumber,
@@ -1167,7 +1182,11 @@ static inline void capi_fill_CONNECT_REQ(_cmsg * cmsg, _cword ApplId, _cword Mes
 					 _cstruct BChannelinformation,
 					 _cstruct Keypadfacility,
 					 _cstruct Useruserdata,
-					 _cstruct Facilitydataarray)
+					 _cstruct Facilitydataarray
+#ifndef CAPI_LIBRARY_V2
+					 ,_cstruct SendingComplete
+#endif
+					 )
 {
 
 	capi_cmsg_header(cmsg, ApplId, 0x02, 0x80, Messagenumber, adr);
@@ -1192,6 +1211,9 @@ static inline void capi_fill_CONNECT_REQ(_cmsg * cmsg, _cword ApplId, _cword Mes
 	cmsg->Keypadfacility = Keypadfacility;
 	cmsg->Useruserdata = Useruserdata;
 	cmsg->Facilitydataarray = Facilitydataarray;
+#ifndef CAPI_LIBRARY_V2
+	cmsg->SendingComplete = SendingComplete;
+#endif
 }
 
 static inline void capi_fill_DATA_B3_REQ(_cmsg * cmsg, _cword ApplId, _cword Messagenumber,
@@ -1214,11 +1236,7 @@ static inline void capi_fill_DISCONNECT_REQ(_cmsg * cmsg, _cword ApplId, _cword 
 					    _cstruct BChannelinformation,
 					    _cstruct Keypadfacility,
 					    _cstruct Useruserdata,
-					    _cstruct Facilitydataarray
-#ifndef CAPI_LIBRARY_V2
-				       ,_cstruct SendingComplete
-#endif
-					    )
+					    _cstruct Facilitydataarray)
 {
 
 	capi_cmsg_header(cmsg, ApplId, 0x04, 0x80, Messagenumber, adr);
@@ -1227,7 +1245,7 @@ static inline void capi_fill_DISCONNECT_REQ(_cmsg * cmsg, _cword ApplId, _cword 
 	cmsg->Useruserdata = Useruserdata;
 	cmsg->Facilitydataarray = Facilitydataarray;
 #ifndef CAPI_LIBRARY_V2
-	cmsg->SendingComplete = SendingComplete;
+	cmsg->SendingComplete = NULL;
 #endif
 }
 

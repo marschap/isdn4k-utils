@@ -1,7 +1,11 @@
 /*
- * $Id: convert.c,v 1.17 2005/03/04 11:45:12 calle Exp $
+ * $Id: convert.c,v 1.18 2005/03/08 07:26:47 keil Exp $
  *
  * $Log: convert.c,v $
+ * Revision 1.18  2005/03/08 07:26:47  keil
+ * - add SENDING_COMPLETE to INFO_REQ CONNECT_REQ and CONNECT_IND
+ * - remove SENDING_COMPLETE parameter (always NULL) from capi_fill_DISCONNECT_REQ
+ *
  * Revision 1.17  2005/03/04 11:45:12  calle
  * SendingComplete was missing for DISCONNECT_REQ ...
  *
@@ -369,7 +373,7 @@ static unsigned char *cpars[] = {
     /*00*/ 0,
 #ifndef CAPI_LIBRARY_V2
     /*01 ALERT_REQ*/            (unsigned char*)"\x03\x04\x0c\x28\x30\x1c\x32\x01\x01",
-    /*02 CONNECT_REQ*/          (unsigned char*)"\x03\x14\x0e\x10\x0f\x11\x0d\x06\x08\x0a\x05\x07\x09\x33\x01\x0b\x29\x23\x04\x0c\x28\x30\x1c\x01\x01",
+    /*02 CONNECT_REQ*/          (unsigned char*)"\x03\x14\x0e\x10\x0f\x11\x0d\x06\x08\x0a\x05\x07\x09\x33\x01\x0b\x29\x23\x04\x0c\x28\x30\x1c\x32\x01\x01",
 #else
     /*01 ALERT_REQ*/            (unsigned char*)"\x03\x04\x0c\x28\x30\x1c\x01\x01",
     /*02 CONNECT_REQ*/          (unsigned char*)"\x03\x14\x0e\x10\x0f\x11\x0d\x06\x08\x0a\x05\x07\x09\x01\x0b\x29\x23\x04\x0c\x28\x30\x1c\x01\x01",
@@ -383,7 +387,11 @@ static unsigned char *cpars[] = {
     /*05 LISTEN_REQ*/           (unsigned char*)"\x03\x26\x12\x13\x10\x11\x01",
     /*06*/ 0,
     /*07*/ 0,
+#ifndef CAPI_LIBRARY_V2
+    /*08 INFO_REQ*/             (unsigned char*)"\x03\x0e\x04\x0c\x28\x30\x1c\x32\x01\x01",
+#else
     /*08 INFO_REQ*/             (unsigned char*)"\x03\x0e\x04\x0c\x28\x30\x1c\x01\x01",
+#endif
     /*09 FACILITY_REQ*/         (unsigned char*)"\x03\x20\x1e\x01",
 #ifndef CAPI_LIBRARY_V2
     /*0a SELECT_B_PROTOCOL_REQ*/ (unsigned char*)"\x03\x0d\x06\x08\x0a\x05\x07\x09\x33\x01\x01",
@@ -417,7 +425,11 @@ static unsigned char *cpars[] = {
     /*23*/ 0,
     /*24*/ 0,
     /*25*/ 0,
+#ifndef CAPI_LIBRARY_V2
+    /*26 CONNECT_IND*/          (unsigned char*)"\x03\x14\x0e\x10\x0f\x11\x0b\x29\x23\x04\x0c\x28\x30\x1c\x32\x01\x01",
+#else
     /*26 CONNECT_IND*/          (unsigned char*)"\x03\x14\x0e\x10\x0f\x11\x0b\x29\x23\x04\x0c\x28\x30\x1c\x01\x01",
+#endif
     /*27 CONNECT_ACTIVE_IND*/   (unsigned char*)"\x03\x16\x17\x29\x01",
     /*28 DISCONNECT_IND*/       (unsigned char*)"\x03\x2d\x01",
     /*29*/ 0,
