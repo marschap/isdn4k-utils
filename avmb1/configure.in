@@ -23,7 +23,7 @@ dnl Check for kernel stuff
 AC_FIND_KERNEL
 OLD_CPPFLAGS="$CPPFLAGS"
 CPPFLAGS="-I$CONFIG_KERNELDIR/include $CPPFLAGS"
-AC_CHECK_FILES(linux/isdn.h linux/b1lli.h linux/capi.h linux/kernelcapi.h,,
+AC_CHECK_HEADERS(linux/isdn.h linux/b1lli.h linux/capi.h linux/kernelcapi.h,,
 	AC_MSG_ERROR("Missing $ac_hdr. Kernel source installed?"))
 CPPFLAGS="$OLD_CPPFLAGS"
 
