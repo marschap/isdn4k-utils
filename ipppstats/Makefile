@@ -1,6 +1,6 @@
 #
 # pppstats makefile
-# $Id: Makefile,v 1.1 1997/03/07 15:57:03 hipp Exp $
+# $Id: Makefile,v 1.2 1997/03/23 19:55:50 fritz Exp $
 #
 
 PPPSTATSRCS = ipppstats.c
@@ -26,6 +26,8 @@ ipppstats: $(PPPSTATSRCS)
 
 clean:
 	rm -f ipppstats *~ #* core
+
+distclean: clean
 
 depend:
 	cpp -M $(CFLAGS) $(PPPSTATSRCS) >.depend

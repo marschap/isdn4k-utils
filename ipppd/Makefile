@@ -1,6 +1,6 @@
 #
 # pppd makefile for Linux
-# $Id: Makefile,v 1.1 1997/03/07 16:01:00 hipp Exp $
+# $Id: Makefile,v 1.2 1997/03/23 19:54:02 fritz Exp $
 #
 
 # These are set from the main Makefile
@@ -74,6 +74,8 @@ pppd.tar.gz: pppd.tar
 
 clean:
 	rm -f $(PPPDOBJS) ipppd *~ #* core
+
+distclean: clean
 
 depend:
 	$(CPP) -M $(CFLAGS) $(PPPDSRCS) >.depend
