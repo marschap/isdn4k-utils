@@ -11,7 +11,7 @@ noccp
 noipx
 #
 persist
-demand
+#demand
 connect ""
 #
 mru 1490
@@ -22,7 +22,9 @@ ipcp-accept-remote
 #
 #
 plugin userpass.so
-username 000000000000\#000000000000\#0001\#@t-online.de
+# Anschlusskennung T-Online-Nummer Mitbenutzerkennung
+#          |           |           |
+user 000000000000\#000000000000\#0001\#@t-online.de
 password 00000000
 linkname t-dsl
 ipparam internet
