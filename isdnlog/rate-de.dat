@@ -1,4 +1,4 @@
-V:1.02-Germany [31-Jul-1999 11:30:28]
+V:1.02-Germany [04-Aug-1999 18:56:52]
 
 # Währungsformat
 U:%.3f DM
@@ -8,7 +8,7 @@ U:%.3f DM
 #
 # (C) Copyright 1999 by Andreas Kool (akool@isdn4linux.de)
 #
-# $Id: rate-de.dat,v 1.34 1999/07/31 09:25:08 akool Exp $
+# $Id: rate-de.dat,v 1.35 1999/08/04 23:11:24 akool Exp $
 #
 # Zonenzuordnung für Deutschland
 #
@@ -188,7 +188,7 @@ C:172		IVBB
 C:200	-	Ausland
 Z:0 Freephone
 A:+49130,+49800,International Freephone
-Z:2-4 Inlandsverbindungen
+Z:1-4 Inlandsverbindungen
 A:+49
 T:W/07-19=0.15/60 Geschaeftszeit
 T:W/19-21=0.08/60 Freizeit
@@ -428,7 +428,7 @@ G:13.05.1999
 D:dtag
 Z:0 Freephone
 A:+49130,+49800,International Freephone
-Z:2 Regional
+Z:1-2 Regional
 T:W/08-18=0.05/0,0.09(60)/1 Geschaeftszeit
 T:W/00-08,18-21=0.05/0,0.05(60)/1 Freizeit
 T:*/21-00=0.05/0,0.04(60)/1 Happy Hour
@@ -669,7 +669,7 @@ C:10		Mobilfunk
 C:200	-	Ausland
 G:15.04.1999
 D:dtag
-Z:2-4 National
+Z:1-4 National
 A:+49
 T:*/07-19=0.10/60
 T:*/19-22=0.07/60
@@ -743,7 +743,7 @@ C:0	-   4	Deutschland
 C:10,12,14,15	Mobilfunk
 C:33	-  39	Satelitenfunk
 C:200	-	Ausland
-Z:2-4 Inland
+Z:1-4 Inland
 T:W/06-18=0.18(60)/1 Tagestarif
 T:W/18-21=0.12(60)/1 Abendtarif
 T:E,H/06-21=0.12(60)/1 Tagestarif
@@ -812,7 +812,7 @@ C:0	-   4	Deutschland
 C:10,12,14,15	Mobilfunk
 C:33	-  39	Satelitenfunk
 C:200	-	Ausland
-Z:2 City
+Z:1-2 City
 T:W/06-18=0.075(60)/1 Tagestarif
 T:W/18-21=0.05(60)/1 Abendtarif
 T:E,H/06-21=0.05(60)/1 Tagestarif
@@ -891,7 +891,7 @@ C:0	-   4	Deutschland
 C:10,12,14,15	Mobilfunk
 C:33	-  39	Satelitenfunk
 C:200	-	Ausland
-Z:2 City
+Z:1-2 City
 T:W/06-18=0.065(60)/1 Tagestarif
 T:E,H/06-18=0.05(60)/1 Tagestarif
 T:*/18-21=0.04(60)/1 Abendtarif
@@ -984,7 +984,7 @@ D:dtag
 Z:0 Freecall
 A:+491171, +491172, +491174	# DTAG Störungsannahme
 A:+49130, +49800, International Freephone
-Z:2-4 National
+Z:1-4 National
 A:+49
 T:W/08-21=0.18/60
 T:E,H/08-21=0.14/60
@@ -1843,7 +1843,7 @@ G:01.04.1999
 Z:0 Freecall
 A:+491171, +491172, +491174	# DTAG Störungsannahme
 A:+49130, +49800, International Freephone
-Z:2 RSL COM - city
+Z:1-2 RSL COM - city
 T:W/08-21=0.10(60)/1
 T:E,H/08-21=0.10(60)/1
 T:*/21-08=0.07(60)/1
@@ -2709,7 +2709,7 @@ G:01.04.1999
 Z:0 Freecall
 A:+491171, +491172, +491174	# DTAG Störungsannahme
 A:+49130, +49800, International Freephone
-Z:2 RSL COM - city
+Z:1-2 RSL COM - city
 T:W/08-21=0.09(60)/1
 T:E,H/08-21=0.09(60)/1
 T:*/21-08=0.05(60)/1
@@ -3566,7 +3566,7 @@ C:Erfasste Zonen:
 C:2	-   4	Deutschland
 C:10		Mobilfunk
 G:07-Jun-1999
-Z:2-4 Inland
+Z:1-4 Inland
 A:+49
 T:*/06-20=0.15/60 Hauptzeit
 T:*/20-06=0.15/120 Nebenzeit
@@ -3601,7 +3601,7 @@ C:43		Auskunft debitel
 C:200	-	Ausland
 G:01.06.1999
 D:dtag
-Z:2-4 Fern
+Z:1-4 Fern
 A:+49
 T:W/09-18=0.17/60 Hauptzeit
 T:*/06-09,18-21=0.10/60 Nebenzeit
@@ -3655,7 +3655,7 @@ C:10		Mobilfunk
 C:43		Auskunft debitel
 C:200	-	Ausland
 G:01.06.1999
-Z:2-4 Fern
+Z:1-4 Fern
 T:*/*=0.15/30
 Z:10 Mobilfunknetze
 A:+491618		# T-C-Tel Voice Mail
@@ -3706,7 +3706,7 @@ C:10		Mobilfunk
 C:43		Auskunft debitel
 C:200	-	Ausland
 G:01.06.1999
-Z:2-4 Fern
+Z:1-4 Fern
 T:W/09-18=0.05/0,0.17/60 Hauptzeit
 T:*/06-09,18-21=0.05/0,0.10/60 Nebenzeit
 T:*/21-06=0.05/0,0.05/60 Private Time
@@ -3759,7 +3759,7 @@ C:2	-   4	Deutschland
 C:10		Mobilfunk
 C:43		Auskunft debitel
 C:200	-	Ausland
-Z:2-4 Fern
+Z:1-4 Fern
 T:*/*=0.05/0,0.15/30
 Z:10 Mobilfunknetze
 A:+491618		# T-C-Tel Voice Mail
@@ -3818,7 +3818,7 @@ C:102		01019freenet
 C:200		Ausland Gruppe A
 G:06-Apr-1999
 D:dtag
-Z:2-4 Ferngespräche bundesweit
+Z:1-4 Ferngespräche bundesweit
 A:+49
 T:*/07-19=0.12/60 Standard
 T:*/19-22=0.08/60 Spar
@@ -3857,7 +3857,7 @@ C:Homepage: http://www.mobilcom.de
 C:Hotline:  01805/191919
 C:Adresse:  Postfach 1249
 C:	    24822 Schleswig
-Z:2-3 Ferngespräche innerhalb Regio 50
+Z:1-3 Ferngespräche innerhalb Regio 50
 T:*/*=0.08(60)/1
 Z:4 Ferngespräche außerhalb Regio 50
 T:*/*=0.012(60)/1
@@ -3911,7 +3911,7 @@ C:10		Mobilfunk
 C:102		01019freenet
 C:200	-	Ausland
 G:13.05.1999
-Z:2-4 Ferngespräche bundesweit
+Z:1-4 Ferngespräche bundesweit
 T:*/07-19=0.12(60)/1 Standard
 T:*/19-22=0.08(60)/1 Spar
 T:*/22-07=0.04(60)/1 Nacht
@@ -4772,7 +4772,7 @@ C:102		TelePassport-Online
 C:200	-	Ausland
 G:01.05.1999
 D:dtag
-Z:2 Lokal
+Z:1-2 Lokal
 T:W/08-18=0.12/60 Geschäftszeit
 T:W/18-08=0.08/60 Freizeit
 T:E,H/*=0.08/60 Wochenende
@@ -4836,7 +4836,7 @@ C:2	-   4	Deutschland
 C:10		Mobilfunk
 C:102		TelePassport-Online
 C:200	-	Ausland
-Z:2-4 Inland
+Z:1-4 Inland
 A:+49
 T:W/08-18=0.16/60 Geschäftszeit
 T:W/18-08=0.12/60 Freizeit
@@ -4892,7 +4892,7 @@ C:2	-   4	Deutschland
 C:10		Mobilfunk
 C:102		TelePassport-Online
 C:200	-	Ausland
-Z:2-4 Inland
+Z:1-4 Inland
 T:*/07-21=0.14/60 Geschäftszeit
 T:*/21-07=0.10/60 Freizeit
 Z:10 Mobilfunk
@@ -4948,7 +4948,7 @@ C:5		Sondertarif
 C:10		Mobilfunk
 C:102		TelePassport-Online
 C:200	-	Ausland
-Z:2 Lokal
+Z:1-2 Lokal
 T:*/*=0.10/60
 Z:3-4 Fern
 T:*/*=0.16/60
@@ -4999,7 +4999,7 @@ C:2	-   4	Deutschland
 C:10		Mobilfunk
 C:102		TelePassport-Online
 C:200	-	Ausland
-Z:2 Lokal
+Z:1-2 Lokal
 T:*/*=0.12/60
 Z:3 Nah
 T:W/08-18=0.16/60 Geschäftszeit
@@ -5057,7 +5057,7 @@ C:Telefon:  0361/594 2500
 C:Telefax:  0800/808 808 9
 C:Adresse:  Juri-Gagarin-Ring 88, 99084
 C:	    Erfurt
-Z:2-4 Inland
+Z:1-4 Inland
 T:W/08-18=0.18/60 Geschäftszeit
 T:W/18-08=0.12/60 Freizeit
 T:E,H/*=0.12/60 Wochenende
@@ -5105,7 +5105,7 @@ C:Telefon:  0361/594 2500
 C:Telefax:  0800/808 808 9
 C:Adresse:  Juri-Gagarin-Ring 88, 99084
 C:	    Erfurt
-Z:2 Lokal
+Z:1-2 Lokal
 T:*/*=0.10/60
 Z:3 Nah
 T:W/08-18=0.12/60 Geschäftszeit
@@ -5160,7 +5160,7 @@ C:10		Mobilfunk
 C:102		SUPER24 Internet
 C:200	-	Ausland
 G:05.05.1999
-Z:2-4 SUPER24 Phone
+Z:1-4 SUPER24 Phone
 T:*/*=0.11/60
 Z:10 SUPER24 Mobile
 A:+491618		# T-C-Tel Voice Mail
@@ -5210,13 +5210,13 @@ C:10		Mobilfunk
 C:102		CITYMS-Internet
 C:200	-	Ausland
 G:01.02.1999
-Z:1 CITYMS-Münsterland
+Z:1-2 CITYMS-Münsterland
 T:W/09-18=0.07/60 Hauptzeit
 T:*/18-21=0.07/106 Nebenzeit
 T:*/05-09=0.07/106 Nebenzeit
 T:E,H/09-18=0.07/106 Nebenzeit
 T:*/21-05=0.07/145 Nachtzeit
-Z:2 CITYMS-Münsterland
+Z:1-2 CITYMS-Münsterland
 A:+492382	# Ahlen/Westfalen
 A:+492387	# Drensteinfurt-Walstedde
 A:+492501	# Münster-Hiltrup
@@ -5732,13 +5732,13 @@ C:10		Mobilfunk
 C:102		CITYMS-Internet
 C:200	-	Ausland
 G:01.02.1999
-Z:1 CITYMS-Münsterland
+Z:1-2 CITYMS-Münsterland
 T:W/09-18=0.07/60 Hauptzeit
 T:*/18-21=0.07/106 Nebenzeit
 T:*/05-09=0.07/106 Nebenzeit
 T:E,H/09-18=0.07/106 Nebenzeit
 T:*/21-05=0.07/145 Nachtzeit
-Z:2 CITYMS-Münsterland
+Z:1-2 CITYMS-Münsterland
 A:+492382	# Ahlen/Westfalen
 A:+492387	# Drensteinfurt-Walstedde
 A:+492501	# Münster-Hiltrup
@@ -6477,7 +6477,7 @@ C:60		Cityruf
 C:82	-  85	Service 0180-x
 C:91	-  94	Service 0190-x
 C:200	-	Ausland
-Z:2-4 Inland
+Z:1-4 Inland
 T:*/*=0/5,0.13/60
 Z:10 Mobilfunk
 A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
@@ -6657,7 +6657,7 @@ C:60		Cityruf
 C:82	-  85	Service 0180-x
 C:91	-  94	Service 0190-x
 C:200	-	Ausland
-Z:2-4 Inland
+Z:1-4 Inland
 T:W/08-21=0/5,0.11/60 Hauptzeit
 T:E,H/08-21=0/5,0.055/60 Nebenzeit
 T:*/21-08=0/5,0.055/60 Nebenzeit
@@ -6824,7 +6824,7 @@ C:Erfasste Zonen:
 C:2	-   4	Deutschland
 C:10		Mobilfunk
 C:200	-	Ausland
-Z:2-4 Deutschland
+Z:1-4 Deutschland
 T:*/08-18=0.136(60)/1 Haupt
 T:*/18-21=0.113(60)/1 Neben
 T:*/21-08=0.082(60)/1 Nacht
@@ -7578,7 +7578,7 @@ C:Erfasste Zonen:
 C:2	-   4	Deutschland
 C:10		Mobilfunk
 C:200	-	Ausland
-Z:2-4 Deutschland
+Z:1-4 Deutschland
 T:*/08-18=0.110(60)/1 Haupt
 T:*/18-21=0.097(60)/1 Neben
 T:*/21-08=0.067(60)/1 Nacht
@@ -8355,7 +8355,7 @@ C:81	-  85	Service 0180-x
 C:91	-  94	Service 0190-x
 C:102		TelDa.net
 C:200	-	Ausland
-Z:2 Regio 20
+Z:1-2 Regio 20
 T:W/07-21=0.07(60)/1
 T:W/21-07=0.04(60)/1
 T:E/*=0.04(60)/1
@@ -9602,7 +9602,7 @@ C:2	-   4	Deutschland
 C:10		Mobilfunk
 C:11		Sondertarif
 C:200	-	Ausland
-Z:2-3 regional
+Z:1-3 regional
 T:W/08-18=0.14(60)/15 Geschäftszeit
 T:E,H/08-18=0.12(60)/15 Wochenende
 T:*/18-08=0.12(60)/15 Freizeit
@@ -9658,7 +9658,7 @@ C:2	-   4	Deutschland
 C:10		Mobilfunk
 C:11		Sondertarif
 C:200	-	Ausland
-Z:2-4 Inland
+Z:1-4 Inland
 T:*/*=0.17(60)/15
 Z:10 Mobilfunk
 A:+491618		# T-C-Tel Voice Mail
@@ -9703,7 +9703,7 @@ C:2	-   4	Deutschland
 C:10		Mobilfunk
 C:11		Sondertarif
 C:200	-	Ausland
-Z:2-3 Regional
+Z:1-3 Regional
 T:W/08-18=0.05/0,0.09(60)/1 Geschäftszeit
 T:E,H/08-18=0.05/0,0.05(60)/1 Wochenende
 T:*/18-08=0.05/0,0.05(60)/1 Freizeit
@@ -9763,7 +9763,7 @@ C:2	-   4	Deutschland
 C:10		Mobilfunk
 C:11		Sondertarif
 C:200	-	Ausland
-Z:2-3 regional
+Z:1-3 regional
 T:W/08-18=0.14(60)/1 Geschäftszeit
 T:E,H/08-18=0.12(60)/1 Wochenende
 T:*/18-08=0.12(60)/1 Freizeit
@@ -9820,7 +9820,7 @@ C:2	-   4	Deutschland
 C:10		Mobilfunk
 C:11		Sondertarif
 C:200	-	Ausland
-Z:2-4 Inland
+Z:1-4 Inland
 T:*/*=0.17(60)/1
 Z:10 Mobilfunk
 A:+491618		# T-C-Tel Voice Mail
@@ -9878,7 +9878,7 @@ C:Erfasste Zonen:
 C:2	-   4	Deutschland
 C:10		Mobilfunk
 C:203		Ausland (Kanada & USA)
-Z:2-4 Inland
+Z:1-4 Inland
 A:+49
 T:W/08-18=0.02/0,0.15/60 Standard
 T:W/18-21=0.02/0,0.10/60 Abend
@@ -9923,7 +9923,7 @@ C:170		Persönliche Rufnummer
 C:171		Info Expo 2000
 C:172		IVBB
 C:200	-	Ausland
-Z:2-4 Deutschland
+Z:1-4 Deutschland
 A:+49
 T:W/08-18=0.15/60 Standard
 T:W/18-21=0.09/60 Abend
@@ -9989,7 +9989,7 @@ C:Erfasste Zonen:
 C:2	-   4	Deutschland
 C:10		Mobilfunk
 C:200	-	Ausland
-Z:2 Hamburg-plus-20
+Z:1-2 Hamburg-plus-20
 T:W/08-18=0.07/60
 T:E,H/08-18=0.05/60
 T:*/18-21=0.05/60
@@ -10041,7 +10041,7 @@ C:Erfasste Zonen:
 C:2	-   4	Deutschland
 C:10		Mobilfunk
 C:200	-	Ausland
-Z:2 Hamburg-plus-20
+Z:1-2 Hamburg-plus-20
 T:W/08-18=0.07/60
 T:E,H/08-18=0.05/60
 T:*/18-08=0.035/60
@@ -10281,7 +10281,7 @@ C:200	-	Ausland
 Z:0 FreeCall
 A:+49800, +49130, International Freephone
 A:+49231438110	# TELNET Support Nummern
-Z:2-3 TELNET NRW
+Z:1-3 TELNET NRW
 T:W/08-18=0.12/60 Tag
 T:E,H/08-18=0.08/60 Freizeit
 T:*/18-22=0.08/60 Freizeit
@@ -10477,7 +10477,7 @@ Z:0 Freephone
 A:+49800, +49130		# FreeCall
 A:+491113, +491114, +491115	# DTAG-Service
 A:110, 112		# Polizei, Feuerwehr
-Z:2-4 HalloDeutschland
+Z:1-4 HalloDeutschland
 A:+49
 T:W/08-20=0.25(60)/1 Tag
 T:W/20-08=0.15(60)/1 Nacht
@@ -11173,7 +11173,7 @@ C:Erfasste Zonen:
 C:2	-   4	Deutschland
 C:10		Mobilfunk
 C:200	- 211	Ausland
-Z:2 Nah
+Z:1-2 Nah
 T:W/08-18=0.08/60
 T:W/18-08=0.08/90
 T:E,H/*=0.08/90
@@ -11260,7 +11260,7 @@ C:2	-   4	Deutschland
 C:10		Mobilfunk
 C:200	- 211	Ausland
 G:01.06.1999
-Z:2 Nah
+Z:1-2 Nah
 T:W/08-18=0.12(60)/1
 T:W/18-08=0.09(60)/1
 T:E,H/*=0.09(60)/1
@@ -11343,7 +11343,7 @@ C:Erfasste Zonen:
 C:2	-   4	Deutschland
 C:10		Mobilfunk
 C:200	- 211	Ausland
-Z:2 Nah
+Z:1-2 Nah
 T:W/09-18=0.12/90
 T:W/18-09=0.12/150
 T:E,H/*=0.12/90
@@ -11446,7 +11446,7 @@ C:Erfasste Zonen:
 C:2	-   4	Deutschland
 C:10		Mobilfunk
 C:200	- 211	Ausland
-Z:2-3 Nah
+Z:1-3 Nah
 T:W/08-18=0.12(60)/1
 T:W/18-08=0.09(60)/1
 T:E,H/*=0.09(60)/1
@@ -11534,7 +11534,7 @@ C:Hotline:  01802/2002
 C:Faxabruf: 01802/2001
 P:50,1 Talkline CbC
 D:dtag
-Z:2-4 Fern
+Z:1-4 Fern
 A:+49
 T:W/07-19=0.15/60
 T:W/19-22=0.08/60
@@ -11568,7 +11568,7 @@ T:*/*=0.45/60
 P:50,2 Talkline EasyLine
 D:dtag
 F:P
-Z:2-4 Inland
+Z:1-4 Inland
 T:W/7-19=0.15/60
 T:W/19-22=0.08/60
 T:W/22-7=0.039/60
@@ -11589,7 +11589,7 @@ A:+49176,+49179		# E2
 P:50,4 Talkline BusinessLine Classic
 D:dtag
 F:P100
-Z:2
+Z:1-2
 T:*/8-18=0.07(60)/90
 T:*/18-8=0.035(60)/90
 Z:3,4
@@ -11619,7 +11619,7 @@ C:Homepage: http://www.01051.com
 C:Adresse:  Koenigsallee 60f
 C:	    40210 Duesseldorf
 D:dtag
-Z:2-4 Ferngespräche
+Z:1-4 Ferngespräche
 A:+49
 T:*/*=0.09/60
 Z:40 Telefonauskunft Inland (Austria, dial 01051004366211811)
@@ -12042,7 +12042,7 @@ C:Telecom Deutschland GmbH, Lyoner Str. 15, 60528 Frankfurt 01066
 C:Bei Preselection sekundengenaue Taktung
 D:dtag
 G:01-Jun-1999
-Z:2-4 National
+Z:1-4 National
 T:W/08-17=0.14/60
 T:W/17-08=0.08/60
 T:E,H/08-17=0.10/60
@@ -12152,7 +12152,7 @@ G:15-Jul-1999
 C:Mannesmann Arcor
 C:Mannesmann AG & Co., Kölner Str. 12, 65760 Eschborn 01070
 D:dtag
-Z:2-3 Regio Plus
+Z:1-3 Regio Plus
 T:W/06-09=0.07/60
 T:W/09-18=0.14/60
 T:W/18-21=0.07/60
@@ -12468,7 +12468,7 @@ G:01.04.99
 C:Mannesmann Arcor
 C:Mannesmann AG & Co., Kölner Str. 12, 65760 Eschborn 01070
 D:dtag
-Z:2 Nah
+Z:1-2 Nah
 T:W/06-09=0.05(60)/30 Freizeit
 T:W/09-18=0.09(60)/30 Hauptzeit
 T:W/18-21=0.05(60)/30 Freizeit
@@ -12496,7 +12496,7 @@ G:01.04.99
 C:Mannesmann Arcor
 C:Mannesmann AG & Co., Kölner Str. 12, 65760 Eschborn 01070
 D:dtag
-Z:2 Nah
+Z:1-2 Nah
 T:W/06-09=0.058/0,0.05(60)/1 Freizeit
 T:W/09-18=0.058/0,0.09(60)/1 Hauptzeit
 T:W/18-21=0.058/0,0.05(60)/1 Freizeit
@@ -12545,7 +12545,7 @@ P:75 Callino
 G:01-Jul-99
 C:ARCIS Media Com Management GmbH, Maximilianstr. 14, 80539 München 01075
 D:dtag
-Z:2-4 Fern
+Z:1-4 Fern
 A:+49
 T:W/08-20=0.14/60
 T:W/20-08=0.08/60
@@ -12581,7 +12581,7 @@ C:Hotline:  01805/01078-0
 C:Adresse:  Mergenthalerallee 79-81
 C:	    65760 Eschborn
 D:dtag
-Z:2-4 Fern
+Z:1-4 Fern
 T:W/08-20=0.139(60)/1
 T:W/20-08=0.059(60)/1
 T:E,H/08-20=0.139(60)/1
@@ -13698,7 +13698,7 @@ C:Telefax:  069/94 994-100
 C:Adresse:  Hanauer Landstrasse 187-189
 C:	    60314 Frankfurt am Main
 D:dtag
-Z:2-4 National
+Z:1-4 National
 T:W/09-18=0.102/60 Hauptzeit
 T:W/18-21=0.085(60)/60 Nebenzeit
 T:W/21-9=0.05(60)/60 Nacht
@@ -13890,7 +13890,34 @@ T:*/*=0.12/30,0.24(60)/1
 #
 #
 P:80 Telegate
+G:04-Aug-1999
+D:dtag
 C:Aktiengesellschaft für telefonische Informationsdienste, Bahnhofstraße 26, 82211 Herrsching 01080
+# Bislang kann dieses Angebot nur in den folgenden Städten genutzt werden:
+# Hamburg, Berlin, Hannover, Düsseldorf, Frankfurt/Main, Nürnberg,
+# Stuttgart, München
+Z:1-4 Inlandsverbindungen
+A:+49
+T:W/09-17=0.089/60
+T:W/17-20=0.079/60
+T:W/20-21=0.058/60
+T:W/21-22=0.039/60
+T:W/22-07=0.038/60
+T:W/07-08=0.049/60
+T:W/08-09=0.054/60
+T:E,H/09-20=0.069/60
+T:E,H/20-21=0.058/60
+T:E,H/21-22=0.039/60
+T:E,H/22-07=0.038/60
+T:E,H/07-08=0.049/60
+T:E,H/08-09=0.054/60
+Z:11 Mobilfunk
+A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
+A:+49170,+49171		# D1
+A:+49172,+49173		# D2
+A:+49177,+49178		# Eplus
+A:+49176,+49179		# E2
+T:*/*=0.44/60
 Z:21 Telefonauskunft Inland
 A:11880
 T:*/*=0.968/0,0.121/7.5
@@ -13930,7 +13957,7 @@ C:	    69115 Heidelberg
 C:
 C:Tarif: Westcom privat
 D:dtag
-Z:2-4 National
+Z:1-4 National
 T:W/08-18=0.16(60)/1 Standard
 T:W/18-08=0.09(60)/1 Spar
 T:E,H/*=0.09(60)/1 Spar
@@ -14015,7 +14042,7 @@ P:90 Viag Interkom
 G:01-May-1999
 C:GmbH & Co. KG, Elsenheimer Straße 11, 81927 München 01090
 D:dtag
-Z:2-4 Fern
+Z:1-4 Fern
 T:W/06-08=0.10/60 Sparzeit
 T:W/08-18=0.15/60 Hauptzeit
 T:W/18-21=0.10/60 Freizeit
@@ -14108,7 +14135,7 @@ G:01.05.1999
 C:Mox Telecom AG
 C:Reseller von Star Telecom
 D:dtag
-Z:2-4 Deutschlandweit
+Z:1-4 Deutschlandweit
 T:*/08-21=0.139(60)/1
 T:*/21-08=0.079(60)/1
 A:+49
@@ -14205,7 +14232,7 @@ C:Düsseldorf, Dortmund, Frankfurt, Hamburg, Hannover, München, Nürnberg,
 C:Stuttgart, Köln, Karlsruhe, Leipzig oder Mannheim und den jeweiligen
 C:Orten in der City-Zone
 D:dtag
-Z:2 City
+Z:1-2 City
 T:*/9-21=0.08(60)/1 Hauptzeit
 T:*/21-9=0.06(60)/1 Nebenzeit
 Z:3-4 Fern
@@ -14234,7 +14261,7 @@ C:bei Preselection bundesweit, Anmeldung kostenfrei
 C:Reseller von ECONOPHONE : Telco
 D:dtag
 # Inlands-Tarife
-Z:2-4 Inland
+Z:1-4 Inland
 T:W/8-18=0.119(60)/1
 T:W/18-21,6-8=0.099(60)/1
 T:W/21-6=0.058(60)/1
@@ -14251,7 +14278,7 @@ A:+49176,+49179  		  # E2
 T:*/8-18=0.59(60)/30,0.59(60)/6
 T:*/18-8=0.57(60)/30,0.57(60)/6
 # Auslandstarife - warum bloß so viele...
-Z:200 
+Z:200
 T:*/*=2.49(60)/1
 A:Afghanistan,Äthopien,Ascension Inseln,Bangladesch,Bhutan,Elfenbeinküste
 A:Komoren,Kongo,Laos,Mali,Mikronesien,Nauru,Nepal,Palau,Seychellen
@@ -14533,11 +14560,11 @@ C:Oberweg 15, 82024 Taufkirchen bei München 010020
 P:122 Motorola
 C:Electronic GmbH, Hagenauer Straße 47, 65203 Wiesbaden 010022
 #####################################################################
-+P:125 Mediascape
-+C:Mediascape Communications GmbH, Usedomstraße 19, 22047 Hamburg
-+#####################################################################
-+#
-+#
+P:125 Mediascape
+C:Mediascape Communications GmbH, Usedomstraße 19, 22047 Hamburg
+#####################################################################
+#
+#
 #
 #
 P:130 tnp telenet
@@ -14579,7 +14606,7 @@ P:150 Drillisch
 G:01-Jul-1999
 D:dtag
 C:AG, Horbeller Straße 33, 50858 Köln 010050
-Z:2-4 Deutschland
+Z:1-4 Deutschland
 A:+49
 T:W/08-21=0.11/60,0.11(60)/15
 T:W/21-08=0.07/60,0.07(60)/15
