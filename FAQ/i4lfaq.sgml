@@ -4,7 +4,7 @@
 
 <title>FAQ for isdn4linux
 <author>Matthias Hessler (<tt><htmlurl url="mailto:hessler@isdn4linux.de" name="hessler@isdn4linux.de"></tt>)
-<date>v2.0.22, 2. November 1999
+<date>v2.0.23, 8. November 1999
 <abstract>
 If you are reading this FAQ online, you may consider downloading the whole
 thing, and reading it offline (much cheaper). To download the latest
@@ -292,6 +292,13 @@ to do it (special patch needed).
 If you do want to fax now, your best choice is to install an analog fax modem
 along with your ISDN card.
 
+<sect1> feature_modem: Can isdn4linux connect to/be called by an analog  
+modem?  
+<label id="feature_modem">
+<p>
+Generally: <bf>NO</bf>. It only works for cards with which you can fax: see
+question <ref id="feature_fax" name="feature_fax">.
+
 <sect1> feature_divert: Is it possible to initiate call forwarding with i4l?  
 <label id="feature_divert">
 <p>
@@ -503,17 +510,36 @@ The offical website can be found at:
 <sect1> docu_newsgroup: Where is the newsgroup for isdn4linux? 
 <label id="docu_newsgroup">
 <p>
-The newsgroup is <tt/de.alt.comm.isdn4linux/. Most isdn4linux developers are
-present, and many other knowledgeable people. Don't be confused by the many
-German messages on it. <bf>English postings are very welcome, and will be
+The newsgroup is <tt/de.alt.comm.isdn4linux/.
+You can read what is going on, or send a message yourself (before please
+make sure it is not answered in this FAQ).
+Most isdn4linux developers are present, and many other knowledgeable
+people. Don't be confused by the many German messages on it.
+<bf>English postings are very welcome, and will be
 answered in English!</bf>
 
 <sect1> docu_mailinglist: Where is the mailing list for isdn4linux?  
 <label id="docu_mailinglist">
 <p>
-The mailing list contains the same messages as the newsgroup. A bidirectional
-gateway ensures that both are in sync.
-To subscribe to the mailing list, send an email message to 
+The address of the mailing list is
+<tt>isdn4linux@listserv.isdn4linux.de</tt>. Before posting a message
+there please make sure it is not answered in this FAQ, and that the
+question has not been answered numerous times in the past (search
+<url url="http://www.deja.com/"> with keywords like ISDN, Linux, i4l,
+isdn4linux,...). People on the mailing list get really annoyed when
+the question "can I fax with my card xxx" is asked yet another time
+(see question <ref id="feature_fax" name="feature_fax"> for the answer).
+
+Most isdn4linux developers are present on the mailing list, and many
+other knowledgeable people. <bf>English postings are very welcome,
+and will be answered in English!</bf>
+
+The mailing list contains the same messages as the newsgroup (see question
+<ref id="docu_newsgroup" name="docu_newsgroup">), so you can read any
+responses to your question with your news reader. A bidirectional
+gateway ensures that mailing list and news are in sync.
+
+To subscribe constantly to the mailing list, send an email message to 
 <tt><htmlurl url="mailto:majordomo@listserv.isdn4linux.de"
 name="majordomo@listserv.isdn4linux.de"></tt>.
 The subject doesn't matter. The message body should read <tt/subscribe
@@ -870,6 +896,9 @@ or
 <url url="ftp://ftp.avm.de/cardware/b1/linux/">.
 The firmware is available on:
 <url url="ftp://ftp.avm.de/cardware/b1/linux/firmware">.
+The latest firmware will also allow D channel traces with isdnlog without
+usage of a reversed card.
+
 There is also a mailing list for problems with the AVM B1 available on:
 linux-avmb1@calle.in-berlin.de (send an email to majordomo@calle.in-berlin.de
 with <tt>subscribe linux-avmb1 &lt;your email address&gt;</tt> in its body). 
@@ -1106,8 +1135,6 @@ The rate should be set to 9600 with <tt/AT&amp;R9600/. pppd needs to be
 called with <tt/noccp/ and <tt/require-pap/. For a mini-howto see:
 <url url="http://www.oltom.com/Linux/Docs/GSM%20over%20V.110%20Mini-HOWTO.txt">
 
-
-<!-- links outdated? - may need to be reworked! -->
 
 <sect1> config_links: What helpful links are there about isdn4linux?  
 <label id="config_links">
