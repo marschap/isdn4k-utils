@@ -11,7 +11,7 @@
 # for collecting and preparing most of the call charges.
 
 
-V:1.88-Austria [27-Oct-1999]
+V:1.89-Austria [02-Nov-1999]
 
 U:%.3f öS
 
@@ -66,7 +66,7 @@ S:Internet by call
 T:W/08-18=1.116/120                Geschäftszeit
 T:W/18-08=1.116/360                Freizeit
 T:E,H/*=1.116/360                  Freizeit
-A:+437189, 19411, 19430, 19440
+A:07189*, 19411, 19430, 19440
 
 Z:6                                Ausland Zone 1
 T:W/08-18=1.116/15                 Geschäftszeit
@@ -273,7 +273,7 @@ S:Internet by call
 T:W/08-18=1.056/120                Geschäftszeit
 T:W/18-08=1.056/360                Freizeit
 T:E,H/*=1.056/360                  Freizeit
-A:+437189, 19411, 19430, 19440
+A:07189*, 19411, 19430, 19440
 
 Z:6                                Ausland Zone 1
 T:W/08-18=1.056/15                 Geschäftszeit
@@ -480,7 +480,7 @@ S:Internet by call
 T:W/08-18=0.996/120                Geschäftszeit
 T:W/18-08=0.996/360                Freizeit
 T:E,H/*=0.996/360                  Freizeit
-A:+437189, 19411, 19430, 19440
+A:07189*, 19411, 19430, 19440
 
 Z:6                                Ausland Zone 1
 T:W/08-18=0.996/15                 Geschäftszeit
@@ -687,7 +687,7 @@ S:Internet by call
 T:W/08-18=0.936/120                Geschäftszeit
 T:W/18-08=0.936/360                Freizeit
 T:E,H/*=0.936/360                  Freizeit
-A:+437189, 19411, 19430, 19440
+A:07189*, 19411, 19430, 19440
 
 Z:6                                Ausland Zone 1
 T:W/08-18=0.936/15                 Geschäftszeit
@@ -894,7 +894,7 @@ S:Internet by call
 T:W/08-18=0.816/120                Geschäftszeit
 T:W/18-08=0.816/360                Freizeit
 T:E,H/*=0.816/360                  Freizeit
-A:+437189, 19411, 19430, 19440
+A:07189*, 19411, 19430, 19440
 
 Z:6                                Ausland Zone 1
 T:W/08-18=0.816/15                 Geschäftszeit

@@ -1,4 +1,4 @@
-V:1.10-Germany [30-Oct-1999 16:50:33]
+V:1.10-Germany [02-Nov-1999 21:54:18]
 
 # Währungsformat
 U:%.3f DM
@@ -8,7 +8,7 @@ U:%.3f DM
 #
 # (C) Copyright 1999 by Andreas Kool (akool@isdn4linux.de)
 #
-# $Id: rate-de.dat.src,v 1.6 1999/10/30 18:03:30 akool Exp $
+# $Id: rate-de.dat.src,v 1.7 1999/11/02 21:01:57 akool Exp $
 #
 #
 # Das "A:" Tag muß folgendermaßen gefüllt werden:
@@ -176,7 +176,7 @@ C:GmbH, Gutleutstraße 85, 60329 Frankfurt 01010
 #####################################################################
 #
 #
-P:11 o.tel.o CbC
+P:11 o.tel.o Call-By-Call
 # G:01-Aug-1999
 C:Mannesmann Zwölfte Verwaltungsgesellschaft mbH, Mannesmannufer 2, 40213 Düsseldorf
 C:Homepage: http://www.o-tel-o.de
@@ -4764,33 +4764,26 @@ C:200	-	Ausland
 # G:01.04.1999
 Z:0 0800 Nulltarif
 A:0130,0800
-Z:1-2 lokal
-T:W/09-18=0.1044/120 Hauptzeit
-T:W/18-09=0.1044/240 Nebenzeit
-T:E,H/*=0.1044/240 Wochenende
+Z:1-2 Lokal
+T:W/09-18=0.05/60 Tag
+T:W/18-09=0.03/60 Freizeit
+T:E,H/*=0.03/60 Wochenende
 Z:3 Regio
-T:W/09-18=0.1044/30 Hauptzeit
-T:W/18-09=0.1044/60 Nebenzeit
-T:E,H/*=0.1044/60 Wochenende
+T:W/09-18=0.21/60 Tag
+T:W/18-09=0.10/60 Freizeit
+T:E,H/*=0.10/60 Wochenende
 Z:4 Distanz
-T:W/09-18=0.1044/15 Hauptzeit
-T:W/18-09=0.1044/30 Nebenzeit
-T:E,H/*=0.1044/30 Wochenende
+T:W/09-18=0.42/60 Tag
+T:W/18-09=0.21/60 Freizeit
+T:E,H/*=0.21/60 Wochenende
 A:+49
 Z:5 isiFON-zu-isiFON
-T:W/09-18=0.1044/300 Hauptzeit
-T:W/18-09=0.1044/600 Nebenzeit
-T:E,H/*=0.1044/600 Wochenende
+T:*/*=0.02/60
 Z:10 Mobilfunk
-A:+491618		# T-C-Tel Voice Mail
-A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
-A:+49170,+49171		# D1
-A:+49172,+49173		# D2
-A:+49177,+49178		# Eplus
-A:+49176,+49179		# E2
-T:W/09-18=0.1044/8 Hauptzeit
-T:W/18-09=0.1044/12 Nebenzeit
-T:E,H/*=0.1044/12 Wochenende
+A:C-Tel Voice Mail, C-Netz, D1, D2, E1, E2
+T:W/09-18=0.78/60 Tag
+T:W/18-09=0.52/60 Freizeit
+T:E,H/*=0.52/60 Wochenende
 Z:40 DTAG Inlandsauskunft
 A:11833
 T:*/*=0.96/30,0.12/3.8
@@ -4801,48 +4794,49 @@ Z:47 Telegate Auskunft
 A:11880
 T:*/*=0.96/0,0.12/7.5
 Z:60 Cityruf
-A:+49164, +491690, +491691, +491682, +491683, +491684, +491685, +491686, +491687, +491688, +491689
-T:W/09-18=0.12/20 Hauptzeit
+A:Cityruf
+T:W/09-18=0.12/20 Tag
 T:W/18-09=0.12/30 Nebenzeit
 T:E,H/*=0.12/30 Wochenende
 Z:61 Cityruf Auftragsdienst
-A:+4916951, +4916952
+A:Cityruf Auftragsdienst
 T:*/*=0.12/5
 Z:62 Scall IVR
-A:+491680
+A:Scall 1680
 T:*/*=0.60/0,0/1
 Z:63 Scall DTMF
-A:+491681
-T:W/09-18=1.44/0,0/1 Hauptzeit
+A:Scall 1681
+T:W/09-18=1.44/0,0/1 Tag
 T:W/18-09=0.96/0,0/1 Nebenzeit
 T:E,H/*=0.96/0,0/1 Wochenende
 Z:64 Scall Operator
-A:+491699
+A:Scall Operator
 T:*/*=2.40/0,0/1
 Z:65 Scall Modem
+A:Scall Modem
 T:*/*=0.96/0,0/1
 Z:66 TeLMI automatic
-A:+491660, +491665, +491669
+A:TelMI automatic
 T:*/*=0.12/5.2
 Z:67 TeLMI Operator
-A:+491661
+A:TelMI Operatorzugang
 T:*/*=0.12/1.3
 Z:68 Skyper
-A:+491692, +491693
+A:Skyper
 T:*/*=0.96/0,0/1
 Z:69 Skyper Operator
-A:+4916953
+A:Skyper Operator
 T:*/*=2.40/0,0/1
 Z:70 Quix Service
-A:+491650, +491655
+A:Quix Service
 T:W/09-18=0.12/12 Hauptzeit
 T:W/18-09=0.12/24 Nebenzeit
 T:E,H/*=0.12/24 Wochenende
 Z:71 Quix DTMF
-A:+491651
+A:Quix DTMF
 T:*/*=0.24/0,0/1
 Z:72 Quix
-A:+4916591, +4916593, +4916592
+A:Quix
 T:W/09-18=1.20/0,0/1 Hauptzeit
 T:W/18-09=0.96/0,0/1 Nebenzeit
 T:E,H/*=0.96/0,0/1 Wochenende
@@ -4883,38 +4877,49 @@ Z:102 isiFONLINE
 T:W/09-18=0.1044/300
 T:W/18-09=0.1044/600
 T:E,H/*=0.1044/600
-Z:200 EuroPlus
-A:Andorra, Belgien, Dänemark, Färöer, Finnland, Frankreich
-A:Griechenland, Großbritannien, Insel Man, Irland, Island, Italien
-A:Kanalinseln, Liechtenstein, Luxemburg, Monaco, Niederlande
-A:Nordirland, Norwegen, Österreich, Polen, Portugal, San Marino
-A:Schweden, Schweiz, Slowakei, Spanien, Tschechische Republik, Vatikanstadt
-T:*/*=0.1044/10
-Z:201 EuroMare
-A:Albanien, Algerien, Bosnien-Herzegowina, Bulgarien, Estland
-A:Gibraltar, Grönland, Israel, Jugoslawien, Kroatien, Lettland
-A:Libysch-Arabische Dschamahirija, Litauen, Malta, Marokko, Mazedonien
-A:Moldau, Rumänien, Slowenien, Türkei, Tunesien, Ukraine, Ungarn
-A:Weißrußland, Zypern
-T:*/*=0.1044/7
-Z:202 Nordamerika
+Z:200 Euro 1
+A:Andorra, Belgien, Dänemark, Finnland, Frankreich, Großbritannien, Irland
+A:Italien, Kanalinseln, Liechtenstein, Luxemburg, Monaco, Niederlande
+A:Nordirland, Norwegen, Österreich, Schweden, Schweiz, Spanien
+A:Tschechische Republik, Vatikanstadt
+T:*/*=0.39/60
+Z:201 Euro 2
+A:Bosnien-Herzegowina, Färöer, Griechenland, Insel Man, Island, Jugoslawien
+A:Kroatien, Polen, Portugal, San Marino, Slowakei, Slowenien
+T:*/*=0.63/60
+Z:202 Euro 3
+A:Albanien, Algerien, Bulgarien, Estland, Gibraltar, Grönland, Israel
+A:Lettland, Lybisch-Arabische Dschamahija, Litauen, Malta, Marokko, Mazedonien
+A:Moldau, Rumänien, Tunesien, Ukraine, Ungarn, Weißrußland, Zypern
+T:*/*=0.89/60
+Z:203 Türkei Spezial
+A:Türkei
+T:*/*=0.56/60
+Z:204 Welt 1
 A:Alaska, Hawai, USA, Kanada
-T:*/*=0.1044/10
-Z:203 WeltPazifik
+T:*/*=0.39/60
+Z:205 Welt 2
 A:Australien, Hongkong, Indonesien, Japan, Republik Korea, Neuseeland, Singapur
-T:*/*=0.1044/3.5
-Z:204 WeltSpezial
-A:Ägypten, Argentinien, Brasilien, Chile, Dominikanische Republik
-A:Iran, Jordanien, Kasachstan, Kolumbien, Libanon, Niederländische Antillen
-A:Philippinen, Rußland (westl.), Saudi-Arabien, Südafrika
-A:Syrien (Arabische Republik), Taiwan, Vereinigte Arabische Emirate
-T:*/*=0.1044/3
-Z:205 WeltMix
-A:+
-T:*/*=0.1044/2.4
+T:*/*=1.79/60
+Z:206 Welt 3
+A:Ägypten, Argentinien, Brasilien, Chile, Dominikanische Republik, Iran
+A:Jordanien, Kasachstan, Kolumbien, Libanon, Niederländische Antillen
+A:Philippinen, Russische Föderation (westl.)
+A:Saudi-Arabien, Südafrika, Syrien (Arabische Republik)
+A:Taiwan, Vereinigte Arabische Emirate
+T:*/*=2.09/60
+Z:207 Welt 4
+A:+	# Rest
+T:*/*=2.61/60
 #####################################################################
 P:20,1 ISIS isiFON plus
 C:ISIS Multimedia Net GmbH, Kaistraße 6, 40221 Düsseldorf 01020
+C:Homepage: http://www.isis.de
+C:Telefon:  0800/809 0100
+C:Telefax:  0211/85 27 610
+C:Faxabruf: 0800/809 0111
+C:Spezialtarif "isiFON-zu-isiFON": Gilt innerhalb des gleichen Ortsnetzes,
+C:wenn beide Teilnehmer einen ISIS-Telefonanschluß haben.
 C:Erfasste Zonen:
 C:0	-   4	Deutschland
 C:5		Sondertarif
@@ -4929,41 +4934,24 @@ C:100		T-Online
 C:102		isiFONLINE
 C:200	-	Ausland
 # G:01.04.1999
-C:Homepage: http://www.isis.de
-C:Telefon:  0800/809 0100
-C:Telefax:  0211/85 27 610
-C:Faxabruf: 0800/809 0111
-C:Spezialtarif "isiFON-zu-isiFON": Gilt innerhalb des gleichen Ortsnetzes,
-C:wenn beide Teilnehmer einen ISIS-Telefonanschluß haben.
 Z:0 0800 Nulltarif
 A:0130,0800
-Z:1-2 lokal
-T:W/09-18=0.1044/120 Hauptzeit
-T:W/18-09=0.1044/240 Nebenzeit
-T:E,H/*=0.1044/240 Wochenende
-Z:3 Regio
-T:W/09-18=0.1044/33 Hauptzeit
-T:W/18-09=0.1044/69 Nebenzeit
-T:E,H/*=0.1044/69 Wochenende
-Z:4 Distanz
-T:W/09-18=0.1044/33 Hauptzeit
-T:W/18-09=0.1044/69 Nebenzeit
-T:E,H/*=0.1044/33 Wochenende
-A:+49
+Z:1-2 Lokal
+T:W/09-18=0.05/60 Tag
+T:W/18-09=0.03/60 Freizeit
+T:E,H/*=0.03/60 Wochenende
+Z:3-4 Regio & Distanz
+T:W/09-18=0.14/60 Tag
+T:W/05-09,18-22=0.08/60 Freizeit plus
+T:E,H/05-22=0.08/60 Freizeit plus
+T:*/22-05=0.06/60 Nacht
 Z:5 isiFON-zu-isiFON
-T:W/09-18=0.1044/300 Hauptzeit
-T:W/18-09=0.1044/600 Nebenzeit
-T:E,H/*=0.1044/600 Wochenende
+T:*/*=0.02/60
 Z:10 Mobilfunk
-A:+491618		# T-C-Tel Voice Mail
-A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
-A:+49170,+49171		# D1
-A:+49172,+49173		# D2
-A:+49177,+49178		# Eplus
-A:+49176,+49179		# E2
-T:W/09-18=0.1044/8 Hauptzeit
-T:W/18-09=0.1044/12 Nebenzeit
-T:E,H/*=0.1044/12 Wochenende
+A:C-Tel Voice Mail, C-Netz, D1, D2, E1, E2
+T:W/09-18=0.78/60 Tag
+T:W/18-09=0.52/60 Freizeit
+T:E,H/*=0.52/60 Wochenende
 Z:40 DTAG Inlandsauskunft
 A:11833
 T:*/*=0.96/30,0.12/3.8
@@ -4974,48 +4962,49 @@ Z:47 Telegate Auskunft
 A:11880
 T:*/*=0.96/0,0.12/7.5
 Z:60 Cityruf
-A:+49164, +491690, +491691, +491682, +491683, +491684, +491685, +491686, +491687, +491688, +491689
-T:W/09-18=0.12/20 Hauptzeit
+A:Cityruf
+T:W/09-18=0.12/20 Tag
 T:W/18-09=0.12/30 Nebenzeit
 T:E,H/*=0.12/30 Wochenende
 Z:61 Cityruf Auftragsdienst
-A:+4916951, +4916952
+A:Cityruf Auftragsdienst
 T:*/*=0.12/5
 Z:62 Scall IVR
-A:+491680
+A:Scall 1680
 T:*/*=0.60/0,0/1
 Z:63 Scall DTMF
-A:+491681
-T:W/09-18=1.44/0,0/1 Hauptzeit
+A:Scall 1681
+T:W/09-18=1.44/0,0/1 Tag
 T:W/18-09=0.96/0,0/1 Nebenzeit
 T:E,H/*=0.96/0,0/1 Wochenende
 Z:64 Scall Operator
-A:+491699
+A:Scall Operator
 T:*/*=2.40/0,0/1
 Z:65 Scall Modem
+A:Scall Modem
 T:*/*=0.96/0,0/1
 Z:66 TeLMI automatic
-A:+491660, +491665, +491669
+A:TelMI automatic
 T:*/*=0.12/5.2
 Z:67 TeLMI Operator
-A:+491661
+A:TelMI Operatorzugang
 T:*/*=0.12/1.3
 Z:68 Skyper
-A:+491692, +491693
+A:Skyper
 T:*/*=0.96/0,0/1
 Z:69 Skyper Operator
-A:+4916953
+A:Skyper Operator
 T:*/*=2.40/0,0/1
 Z:70 Quix Service
-A:+491650, +491655
+A:Quix Service
 T:W/09-18=0.12/12 Hauptzeit
 T:W/18-09=0.12/24 Nebenzeit
 T:E,H/*=0.12/24 Wochenende
 Z:71 Quix DTMF
-A:+491651
+A:Quix DTMF
 T:*/*=0.24/0,0/1
 Z:72 Quix
-A:+4916591, +4916593, +4916592
+A:Quix
 T:W/09-18=1.20/0,0/1 Hauptzeit
 T:W/18-09=0.96/0,0/1 Nebenzeit
 T:E,H/*=0.96/0,0/1 Wochenende
@@ -5056,38 +5045,47 @@ Z:102 isiFONLINE
 T:W/09-18=0.1044/300
 T:W/18-09=0.1044/600
 T:E,H/*=0.1044/600
-Z:200 EuroPlus
-A:Andorra, Belgien, Dänemark, Färöer, Finnland, Frankreich
-A:Griechenland, Großbritannien, Insel Man, Irland, Island, Italien
-A:Kanalinseln, Liechtenstein, Luxemburg, Monaco, Niederlande
-A:Nordirland, Norwegen, Österreich, Polen, Portugal, San Marino
-A:Schweden, Schweiz, Slowakei, Spanien, Tschechische Republik, Vatikanstadt
-T:*/*=0.1044/10
-Z:201 EuroMare
-A:Albanien, Algerien, Bosnien-Herzegowina, Bulgarien, Estland
-A:Gibraltar, Grönland, Israel, Jugoslawien, Kroatien, Lettland
-A:Libysch-Arabische Dschamahirija, Litauen, Malta, Marokko, Mazedonien
-A:Moldau, Rumänien, Slowenien, Türkei, Tunesien, Ukraine, Ungarn
-A:Weißrußland, Zypern
-T:*/*=0.1044/7
-Z:202 Nordamerika
+Z:200 Euro 1
+A:Andorra, Belgien, Dänemark, Finnland, Frankreich, Großbritannien, Irland
+A:Italien, Kanalinseln, Liechtenstein, Luxemburg, Monaco, Niederlande
+A:Nordirland, Norwegen, Österreich, Schweden, Schweiz, Spanien
+A:Tschechische Republik, Vatikanstadt
+T:*/*=0.39/60
+Z:201 Euro 2
+A:Bosnien-Herzegowina, Färöer, Griechenland, Insel Man, Island, Jugoslawien
+A:Kroatien, Polen, Portugal, San Marino, Slowakei, Slowenien
+T:*/*=0.63/60
+Z:202 Euro 3
+A:Albanien, Algerien, Bulgarien, Estland, Gibraltar, Grönland, Israel
+A:Lettland, Lybisch-Arabische Dschamahija, Litauen, Malta, Marokko, Mazedonien
+A:Moldau, Rumänien, Tunesien, Ukraine, Ungarn, Weißrußland, Zypern
+T:*/*=0.89/60
+Z:203 Türkei Spezial
+A:Türkei
+T:*/*=0.56/60
+Z:204 Welt 1
 A:Alaska, Hawai, USA, Kanada
-T:*/*=0.1044/10
-Z:203 WeltPazifik
+T:*/*=0.39/60
+Z:205 Welt 2
 A:Australien, Hongkong, Indonesien, Japan, Republik Korea, Neuseeland, Singapur
-T:*/*=0.1044/3.5
-Z:204 WeltSpezial
-A:Ägypten, Argentinien, Brasilien, Chile, Dominikanische Republik
-A:Iran, Jordanien, Kasachstan, Kolumbien, Libanon, Niederländische Antillen
-A:Philippinen, Rußland (westl.), Saudi-Arabien, Südafrika
-A:Syrien (Arabische Republik), Taiwan, Vereinigte Arabische Emirate
-T:*/*=0.1044/3
-Z:205 WeltMix
-A:+
-T:*/*=0.1044/2.4
+T:*/*=1.79/60
+Z:206 Welt 3
+A:Ägypten, Argentinien, Brasilien, Chile, Dominikanische Republik, Iran
+A:Jordanien, Kasachstan, Kolumbien, Libanon, Niederländische Antillen
+A:Philippinen, Russische Föderation (westl.)
+A:Saudi-Arabien, Südafrika, Syrien (Arabische Republik)
+A:Taiwan, Vereinigte Arabische Emirate
+T:*/*=2.09/60
+Z:207 Welt 4
+A:+	# Rest
+T:*/*=2.61/60
 #####################################################################
 P:20,2 ISIS Preselection
 C:ISIS Multimedia Net GmbH, Kaistraße 6, 40221 Düsseldorf 01020
+C:Homepage: http://www.isis.de
+C:Telefon:  0800/809 0100
+C:Telefax:  0211/85 27 610
+C:Faxabruf: 0800/809 0111
 C:Erfasste Zonen:
 C:0	-   4	Deutschland
 C:10		Mobilfunk
@@ -5101,87 +5099,74 @@ C:100		T-Online
 C:102		isiFONLINE
 C:200	-	Ausland
 # G:01.04.1999
-C:Homepage: http://www.isis.de
-C:Telefon:  0800/809 0100
-C:Telefax:  0211/85 27 610
-C:Faxabruf: 0800/809 0111
 Z:0 0800 Nulltarif
 A:0130,0800
-Z:1-2 lokal
-T:W/09-18=0.1044/90 Hauptzeit
-T:W/18-09=0.1044/150 Nebenzeit
-T:E,H/*=0.1044/150 Wochenende
-Z:3 Regio
-T:W/09-18=0.1044/33 Hauptzeit
-T:W/18-09=0.1044/69 Nebenzeit
-T:E,H/*=0.1044/69 Wochenende
-Z:4 Distanz
-T:W/09-18=0.1044/33 Hauptzeit
-T:W/18-09=0.1044/69 Nebenzeit
-T:E,H/*=0.1044/69 Wochenende
-A:+49
+Z:1-2 Lokal
+T:W/09-18=0.07/60 Tag
+T:W/18-09=0.04/60 Freizeit
+T:E,H/*=0.04/60 Wochenende
+Z:3-4 Regio & Distanz
+T:W/09-18=0.14/60 Tag
+T:W/05-09,18-22=0.08/60 Freizeit preselection
+T:E,H/05-22=0.08/60 Freizeit preselection
 Z:10 Mobilfunk
-A:+491618		# T-C-Tel Voice Mail
-A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
-A:+49170,+49171		# D1
-A:+49172,+49173		# D2
-A:+49177,+49178		# Eplus
-A:+49176,+49179		# E2
-T:W/09-18=0.1044/8 Hauptzeit
-T:W/18-09=0.1044/12 Nebenzeit
-T:E,H/*=0.1044/12 Wochenende
+A:C-Tel Voice Mail, C-Netz, D1, D2, E1, E2
+T:W/09-18=0.78/60 Tag
+T:W/18-09=0.52/60 Freizeit
+T:E,H/*=0.52/60 Wochenende
 Z:40 DTAG Inlandsauskunft
 A:11833
 T:*/*=0.96/30,0.12/3.8
 Z:41 DTAG Auslandsauskunft
 A:11834
 T:*/*=0.96/0,0.12/3.8
-Z:42 Telegate Auskunft
+Z:47 Telegate Auskunft
 A:11880
 T:*/*=0.96/0,0.12/7.5
 Z:60 Cityruf
-A:+49164, +491690, +491691, +491682, +491683, +491684, +491685, +491686, +491687, +491688, +491689
-T:W/09-18=0.12/20 Hauptzeit
+A:Cityruf
+T:W/09-18=0.12/20 Tag
 T:W/18-09=0.12/30 Nebenzeit
 T:E,H/*=0.12/30 Wochenende
 Z:61 Cityruf Auftragsdienst
-A:+4916951, +4916952
+A:Cityruf Auftragsdienst
 T:*/*=0.12/5
 Z:62 Scall IVR
-A:+491680
+A:Scall 1680
 T:*/*=0.60/0,0/1
 Z:63 Scall DTMF
-A:+491681
-T:W/09-18=1.44/0,0/1 Hauptzeit
+A:Scall 1681
+T:W/09-18=1.44/0,0/1 Tag
 T:W/18-09=0.96/0,0/1 Nebenzeit
 T:E,H/*=0.96/0,0/1 Wochenende
 Z:64 Scall Operator
-A:+491699
+A:Scall Operator
 T:*/*=2.40/0,0/1
 Z:65 Scall Modem
+A:Scall Modem
 T:*/*=0.96/0,0/1
 Z:66 TeLMI automatic
-A:+491660, +491665, +491669
+A:TelMI automatic
 T:*/*=0.12/5.2
 Z:67 TeLMI Operator
-A:+491661
+A:TelMI Operatorzugang
 T:*/*=0.12/1.3
 Z:68 Skyper
-A:+491692, +491693
+A:Skyper
 T:*/*=0.96/0,0/1
 Z:69 Skyper Operator
-A:+4916953
+A:Skyper Operator
 T:*/*=2.40/0,0/1
 Z:70 Quix Service
-A:+491650, +491655
+A:Quix Service
 T:W/09-18=0.12/12 Hauptzeit
 T:W/18-09=0.12/24 Nebenzeit
 T:E,H/*=0.12/24 Wochenende
 Z:71 Quix DTMF
-A:+491651
+A:Quix DTMF
 T:*/*=0.24/0,0/1
 Z:72 Quix
-A:+4916591, +4916593, +4916592
+A:Quix
 T:W/09-18=1.20/0,0/1 Hauptzeit
 T:W/18-09=0.96/0,0/1 Nebenzeit
 T:E,H/*=0.96/0,0/1 Wochenende
@@ -5222,35 +5207,40 @@ Z:102 isiFONLINE
 T:W/09-18=0.1044/300
 T:W/18-09=0.1044/600
 T:E,H/*=0.1044/600
-Z:200 EuroPlus
-A:Andorra, Belgien, Dänemark, Färöer, Finnland, Frankreich
-A:Griechenland, Großbritannien, Insel Man, Irland, Island, Italien
-A:Kanalinseln, Liechtenstein, Luxemburg, Monaco, Niederlande
-A:Nordirland, Norwegen, Österreich, Polen, Portugal, San Marino
-A:Schweden, Schweiz, Slowakei, Spanien, Tschechische Republik, Vatikanstadt
-T:*/*=0.1044/10
-Z:201 EuroMare
-A:Albanien, Algerien, Bosnien-Herzegowina, Bulgarien, Estland
-A:Gibraltar, Grönland, Israel, Jugoslawien, Kroatien, Lettland
-A:Libysch-Arabische Dschamahirija, Litauen, Malta, Marokko, Mazedonien
-A:Moldau, Rumänien, Slowenien, Türkei, Tunesien, Ukraine, Ungarn
-A:Weißrußland, Zypern
-T:*/*=0.1044/7
-Z:202 Nordamerika
+Z:200 Euro 1
+A:Andorra, Belgien, Dänemark, Finnland, Frankreich, Großbritannien, Irland
+A:Italien, Kanalinseln, Liechtenstein, Luxemburg, Monaco, Niederlande
+A:Nordirland, Norwegen, Österreich, Schweden, Schweiz, Spanien
+A:Tschechische Republik, Vatikanstadt
+T:*/*=0.39/60
+Z:201 Euro 2
+A:Bosnien-Herzegowina, Färöer, Griechenland, Insel Man, Island, Jugoslawien
+A:Kroatien, Polen, Portugal, San Marino, Slowakei, Slowenien
+T:*/*=0.63/60
+Z:202 Euro 3
+A:Albanien, Algerien, Bulgarien, Estland, Gibraltar, Grönland, Israel
+A:Lettland, Lybisch-Arabische Dschamahija, Litauen, Malta, Marokko, Mazedonien
+A:Moldau, Rumänien, Tunesien, Ukraine, Ungarn, Weißrußland, Zypern
+T:*/*=0.89/60
+Z:203 Türkei Spezial
+A:Türkei
+T:*/*=0.56/60
+Z:204 Welt 1
 A:Alaska, Hawai, USA, Kanada
-T:*/*=0.1044/10
-Z:203 WeltPazifik
+T:*/*=0.39/60
+Z:205 Welt 2
 A:Australien, Hongkong, Indonesien, Japan, Republik Korea, Neuseeland, Singapur
-T:*/*=0.1044/3.5
-Z:204 WeltSpezial
-A:Ägypten, Argentinien, Brasilien, Chile, Dominikanische Republik
-A:Iran, Jordanien, Kasachstan, Kolumbien, Libanon, Niederländische Antillen
-A:Philippinen, Rußland (westl.), Saudi-Arabien, Südafrika
-A:Syrien (Arabische Republik), Taiwan, Vereinigte Arabische Emirate
-T:*/*=0.1044/3
-Z:205 WeltMix
-A:+
-T:*/*=0.1044/2.4
+T:*/*=1.79/60
+Z:206 Welt 3
+A:Ägypten, Argentinien, Brasilien, Chile, Dominikanische Republik, Iran
+A:Jordanien, Kasachstan, Kolumbien, Libanon, Niederländische Antillen
+A:Philippinen, Russische Föderation (westl.)
+A:Saudi-Arabien, Südafrika, Syrien (Arabische Republik)
+A:Taiwan, Vereinigte Arabische Emirate
+T:*/*=2.09/60
+Z:207 Welt 4
+A:+	# Rest
+T:*/*=2.61/60
 #####################################################################
 #
 #
@@ -5271,62 +5261,91 @@ Z:1-2 City Tarif
 T:W/08-18=0.06(60)/1 Hauptzeit
 T:E,H/08-18=0.035(60)/1 Wochenende
 T:*/18-08=0.035(60)/1 Nebenzeit
-Z:3-4 City Tarif
+Z:3-4 Deutschland
 T:W/08-18=0.16(60)/1 Hauptzeit
 T:E,H/08-18=0.09(60)/1 Wochenende
 T:*/18-22=0.09(60)/1 Nebenzeit
 T:*/22-08=0.06(60)/1 Nachttarif
 Z:10 Mobilfunk
-A:+491618		# T-C-Tel Voice Mail
-A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
-A:+49170,+49171		# D1
-A:+49172,+49173		# D2
-A:+49177,+49178		# Eplus
-A:+49176,+49179		# E2
-T:W/08-18=0.94(60)/1 Hauptzeit
+A:C-Tel Voice Mail, C-Netz, D1, D2, E1, E2
+T:W/08-18=0.75(60)/1 Hauptzeit
 T:E,H/08-18=0.49(60)/1 Wochenende
 T:*/18-08=0.49(60)/1 Nebenzeit
-Z:200 Euro 1
-A:Andorra, Belgien, Dänemark, Finnland, Frankreich
-A:Griechenland, Großbritannien, Irland, Israel, Italien
-A:Luxemburg, Monaco, Niederlande, Norwegen, Österreich
-A:Polen, Portugal, Schweden, Schweiz, Slowakei
-A:Spanien, Tschechien
-T:*/*=0.68(60)/1
-Z:201 Euro 2
+Z:81 Service 0180-1
+A:01801
+T:W/08-18=0.065/60 Peak
+T:W/18-08,18=0.035/60 Off-Peak
+Z:82 Service 0180-2
+A:01802
+T:*/*=0.04(60)/1
+Z:83 Service 0180-3
+A:01803
+T:*/*=0.18(60)/1
+Z:84 Service 0180-4
+A:01804
+T:*/*=0.16(60)/1
+Z:85 Service 0180-5
+A:01805
+T:*/*=0.24(60)/1
+Z:91 Service 0190-1, -2, -3, -5
+A:01901,01902,01903,01905
+T:*/*=1.20(60)/1
+Z:92 Service 0190-4, -6
+A:01904,01906
+T:*/*=0.80(60)/1
+Z:93 Service 0190-7, -9
+A:01907,01909
+T:*/*=2.40(60)/1
+Z:94 Service 0190-8
+A:01908
+T:*/*=3.60(60)/1
+Z:162 TeleVoteCall
+A:TeleVoteCall
+T:*/*=0.24/20,0.36/60
+### FIXME: Nicht alle Länder übernommen!  siehe http://www.netcologne.de/tarife/internf.html
+### !!! KEINE GEWÄHR ZU DEN LÄNDERANGABEN !!!
+Z:200 Euro
+A:Dänemark, Finnland, Frankreich, Großbritannien, Italien, Niederlande
+A:Polen, Schweden, Portugal, Schweiz, Spanien
+T:*/*=0.48(60)/1
+Z:201 Euro 1
+A:Andorra, Belgien
+A:Griechenland, Irland, Israel
+A:Luxemburg, Monaco, Norwegen, Österreich
+A:Slowakei
+A:Spanien, Tschechien, Türkei
+T:*/*=0.65(60)/1
+Z:202 Euro 2
 A:Albanien, Algerien, Bosnien-Herzegowina, Bulgarien, Estland
 A:Färöer, Gibraltar, Island, Jugoslawien, Kroatien
 A:Lettland, Malta, Marokko, Mazedonien, Rumänien
 A:Russland, Slowenien, Tunesien, Ukraine, Ungarn
 A:Weißrußland, Zypern
-T:*/*=1.04(60)/1
-Z:202 Euro 3
-A:Türkei
-T:*/*=0.85(60)/1
-Z:203 Welt 1
+T:*/*=0.98(60)/1
+Z:204 Welt 1
 A:USA, Kanada
-T:*/*=0.68(60)/1
-Z:204 Welt 2
-A:Amerikan. Jungferninseln, Burkina Faso, Hawaii, Hongkong, Litauen
+T:*/*=0.48(60)/1
+Z:205 Welt 2
+A:Burkina Faso, Hawaii, Hongkong, Litauen
 A:Neuseeland, Puerto Rico
 T:*/*=1.60(60)/1
-Z:205 Welt 3
-A:Alaska, Australien, Bahamas, Bahrain, Bhutan
+Z:206 Welt 3
+A:Amerikan. Jungeferninseln, Alaska, Australien, Bahamas, Bahrain, Bhutan
 A:Chile, China (Taiwan), Dominikanische Republik, Georgien, Guadeloupe
 A:Iran, Japan, Kirgisistan, Korea (Süd), Libyen
 A:Malaysia, Marianen (Saipan), Martinique, Mexiko, Moldavien
 A:Namibia, Niederl. Antillen, Ruanda, Saudi-Arabien, Senegal
 A:Singapur, St. Pierre und Miquelon, Vereinigte Arab. Emirate
-T:*/*=1.80(60)/1
-Z:206 Welt 4
+T:*/*=1.75(60)/1
+Z:207 Welt 4
 A:Angola, Argentinien, Aruba, Ascension, Aserbaidschan
 A:Bermuda, Elfenbeinküste, Fidschi, Ghana, Grönland
 A:Guinea-Bissau, Jordanien, Kasachstan, Katar, Kolumbien
 A:Kuwait, Macau, Mayotte, Nepal, Philippinen
 A:Simbabwe, Südafrika, Sudan, Syrien, Tadschikistan
 A:Tansania, Uganda
-T:*/*=2.10(60)/1
-Z:207 Welt 5
+T:*/*=1.95(60)/1
+Z:208 Welt 5
 A:Ägypten, Amerikanisch-Samoa, Anguilla, Antigua & Barbuda, Armenien
 A:Bangladesch, Benin, Botswana, Brasilien, Britische Jungferninseln
 A:Burundi, China (Volksrepublik), Dominica, Falkland-Inseln, Franz. Guyana
@@ -5337,16 +5356,16 @@ A:Mosambik, Niger, Nigeria, Niue-Inseln, Norfolk-Inseln (Australien)
 A:Oman, Peru, Sambia, Sao Tome und Principe, Sri Lanka
 A:St. Helena, St. Kitts, Suriname, Thailand, Turkmenistan
 A:Uruguay, Usbekistan, Zaire
-T:*/*=2.30(60)/1
-Z:208 Welt 6
+T:*/*=2.10(60)/1
+Z:209 Welt 6
 A:Antarktis, Äquatorial-Guinea, Äthiopien, Barbados, Belize
 A:Bolivien, Costa Rica, El Salvador, Franz. Polynesien, Guatemala
 A:Jemen, Kiribati, Komoren, Korea (Nord), Lesotho
 A:Mali, Mauretanien, Mikronesien, Myanmar, Neukaledonien
 A:Paraguay, Réunion, Swasiland, Togo, Trinidad und Tobago
 A:Tuvalu, Venezuela, Vietnam
-T:*/*=2.60(60)/1
-Z:209 Welt 7
+T:*/*=2.35(60)/1
+Z:210 Welt 7
 A:Cayman-Inseln, Cookinseln, Ecuador, Eritrea, Grenada
 A:Guam, Haiti, Honduras, Kambodscha, Kap Verde
 A:Kongo, Laos, Madagaskar, Marshallinseln, Mauritius
@@ -5354,53 +5373,49 @@ A:Mongolei, Nauru, Nicaragua, Pakistan, Palau
 A:Panama, Salomonen, Samoa, Seychellen, Sierra Leone
 A:St. Lucia, St. Vincent & Grenadinen, Tschad, Turks- und Caicosinseln, Vanuatu
 A:Wallis und Futuna
-T:*/*=2.90(60)/1
-Z:210 Welt 8
+T:*/*=2.60(60)/1
+Z:211 Welt 8
 A:Brunei, Dschibuti, Guantanamo, Liberia, Papua-Neuguinea
 A:Somalia, Tonga, Zentralafrikanische Republik
-T:*/*=3.10(60)/1
+T:*/*=2.75(60)/1
 #####################################################################
 #
 #
 P:23 tesion connectClassic
-C:Communikationsnetze Süd-West GmbH & Co. KG, Kriegsbergstr. 11, 70174 Stuttgart 01023
+C:Communikationsnetze Süd-West GmbH & Co. KG, Kriegsbergstr. 11
+C:70174 Stuttgart 01023
 C:Homepage: http://www.tesion.de
 C:Erfasste Zonen:
 C:1	-   4	Deutschland
 C:10		Mobilfunk
 C:200	-	Ausland
-# G:01.06.1999
+# G:01.10.1999
 Z:1-2 Nah
+#### FIXME: Gilt nur für Gespräche mit Ursprung UND Ziel Baden-Würtemberg!
 T:W/09-19=0.10(60)/1
 T:W/06-09,19-21=0.08(60)/1
 T:E,H/06-21=0.08(60)/1
-T:*/21-06=0.06(60)/1
+T:*/21-06=0.05(60)/1
 Z:3 Baden-Württemberg
+#### FIXME: Gilt nur für Gespräche mit Ursprung UND Ziel Baden-Würtemberg!
 T:W/09-19=0.12(60)/1
 T:W/06-09,19-21=0.08(60)/1
 T:E,H/06-21=0.08(60)/1
-T:*/21-06=0.06(60)/1
+T:*/21-06=0.05(60)/1
 Z:4 Deutschland
-T:W/09-19=0.19(60)/1
+T:W/09-19=0.15(60)/1
 T:W/06-09,19-21=0.10(60)/1
 T:E,H/06-21=0.10(60)/1
 T:*/21-06=0.06(60)/1
 A:+49
 Z:10 Mobilfunk
-A:+491618		# T-C-Tel Voice Mail
-A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
-A:+49170,+49171		# D1
-A:+49172,+49173		# D2
-A:+49177,+49178		# Eplus
-A:+49176,+49179		# E2
+A:C-Tel Voice Mail, D1, D2, E1, E2
 T:W/09-19=0.81(60)/1
 T:E,H/09-19=0.48(60)/1
 T:*/19-09=0.48(60)/1
 Z:200 Schweiz, ...
 A:Schweiz, Frankreich, Österreich, Italien
-T:W/09-19=0.37(60)/1
-T:E,H/09-19=0.29(60)/1
-T:*/19-09=0.29(60)/1
+T:*/*=0.23(60)/1
 Z:201 EU
 A:Andorra, Belgien, Dänemark, Finnland, Griechenland, Großbritannien, Irland
 A:Lichtenstein, Luxembourg, Monaco, Niederlande, Norwegen, Portugal
@@ -5437,35 +5452,31 @@ C:Erfasste Zonen:
 C:1	-   4	Deutschland
 C:10		Mobilfunk
 C:200	-	Ausland
-# G:01.06.1999
+C:Mindestumsatz: 200,- DM
+# G:01.10.1999
 Z:1-2 Nah
+#### FIXME: Gilt nur für Gespräche mit Ursprung UND Ziel Baden-Würtemberg!
 T:W/09-19=0.09(60)/1
 T:W/19-09=0.08(60)/1
 T:E,H/*=0.08(60)/1
 Z:3 Baden-Württemberg
+#### FIXME: Gilt nur für Gespräche mit Ursprung UND Ziel Baden-Würtemberg!
 T:W/09-19=0.11(60)/1
 T:W/19-09=0.08(60)/1
 T:E,H/*=0.08(60)/1
 Z:4 Deutschland
-T:W/09-19=0.18(60)/1
+T:W/09-19=0.14(60)/1
 T:W/19-09=0.10(60)/1
 T:E,H/*=0.10(60)/1
 A:+49
 Z:10 Mobilfunk
-A:+491618		# T-C-Tel Voice Mail
-A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
-A:+49170,+49171		# D1
-A:+49172,+49173		# D2
-A:+49177,+49178		# Eplus
-A:+49176,+49179		# E2
+A:C-Tel Voice Mail, D1, D2, E1, E2
 T:W/09-19=0.81(60)/1
 T:E,H/09-19=0.48(60)/1
 T:*/19-09=0.48(60)/1
 Z:200 Schweiz, ...
 A:Schweiz, Frankreich, Österreich, Italien
-T:W/09-19=0.37(60)/1
-T:E,H/09-19=0.29(60)/1
-T:*/19-09=0.29(60)/1
+T:*/*=0.23(60)/1
 Z:201 EU
 A:Andorra, Belgien, Dänemark, Finnland, Griechenland, Großbritannien, Irland
 A:Lichtenstein, Luxembourg, Monaco, Niederlande, Norwegen, Portugal
@@ -5504,39 +5515,34 @@ C:10		Mobilfunk
 C:200	-	Ausland
 # G:01.06.1999
 Z:1-2 Nah
+#### FIXME: Gilt nur für Gespräche mit Ursprung UND Ziel Baden-Würtemberg!
 T:W/09-19=0.06/0,0.10(60)/1
 T:W/06-09,19-21=0.06/0,0.08(60)/1
 T:E,H/06-21=0.06/0,0.08(60)/1
 T:*/21-06=0.06/0,0.06(60)/1
 Z:3 Baden-Württemberg
+#### FIXME: Gilt nur für Gespräche mit Ursprung UND Ziel Baden-Würtemberg!
 T:W/09-19=0.06/0,0.12(60)/1
 T:W/06-09,19-21=0.06/0,0.08(60)/1
 T:E,H/06-21=0.06/0,0.08(60)/1
 T:*/21-06=0.06/0,0.06(60)/1
 Z:4 Deutschland
-T:W/09-19=0.06/0,0.19(60)/1
+T:W/09-19=0.06/0,0.15(60)/1
 T:W/06-09,19-21=0.06/0,0.10(60)/1
 T:E,H/06-21=0.06/0,0.10(60)/1
 T:*/21-06=0.06/0,0.06(60)/1
 A:+49
 Z:10 Mobilfunk
-A:+491618		# T-C-Tel Voice Mail
-A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
-A:+49170,+49171		# D1
-A:+49172,+49173		# D2
-A:+49177,+49178		# Eplus
-A:+49176,+49179		# E2
+A:C-Tel Voice Mail, D1, D2, E1, E2
 T:W/09-19=0.06/0,0.81(60)/1
 T:E,H/09-19=0.06/0,0.48(60)/1
 T:*/19-09=0.06/0,0.48(60)/1
 Z:200 Schweiz, ...
 A:Schweiz, Frankreich, Österreich, Italien
-T:W/09-19=0.06/0,0.37(60)/1
-T:E,H/09-19=0.06/0,0.29(60)/1
-T:*/19-09=0.06/0,0.29(60)/1
+T:*/*=0.06/0,0.23(60)/1
 Z:201 EU
 A:Andorra, Belgien, Dänemark, Finnland, Griechenland, Großbritannien, Irland
-A:Lichtenstein, Luxembourg, Monaco, Niederlande, Norwegen, Portugal
+A:Lichtenstein, Luxemburg, Monaco, Niederlande, Norwegen, Portugal
 A:San Marino, Schweden, Spanien
 T:*/*=0.06/0,0.46(60)/1
 #####################################################################
@@ -6001,7 +6007,7 @@ C:5		Sondertarif
 C:10		Mobilfunk
 C:102		CITYMS-Internet
 C:200	-	Ausland
-# G:01.02.1999
+# G:01.09.1999
 Z:1-2 CITYMS-Münsterland
 A:+492382	# Ahlen/Westfalen
 A:+492387	# Drensteinfurt-Walstedde
@@ -6053,9 +6059,8 @@ A:+495481	# Lengerich/Westfalen
 A:+495484	# Lienen-Kattenvenne
 A:+495485	# Ladbergen
 T:W/09-18=0.07/60 Hauptzeit
-T:*/18-21=0.07/106 Nebenzeit
-T:*/05-09=0.07/106 Nebenzeit
-T:E,H/09-18=0.07/106 Nebenzeit
+T:W/05-09,18-21=0.07/106 Nebenzeit
+T:E,H/05-21=0.07/106 Nebenzeit
 T:*/21-05=0.07/145 Nachtzeit
 Z:3 CITYMS-Interregio
 A:+49201	# Essen
@@ -6441,68 +6446,63 @@ A:+495975	# Rheine-Mesum
 A:+495976	# Salzbergen
 A:+495977	# Spelle
 A:+495978	# Hörstel-Dreierwalde
-T:W/09-18=0.07/60 Hauptzeit
-T:W/18-09=0.07/40 Nebenzeit
-T:E,H/*=0.07/40 Nebenzeit
+T:W/09-18=0.07/30 Hauptzeit
+T:W/05-09,18-21=0.07/44 Nebenzeit
+T:E,H/05-21=0.07/44 Nebenzeit
+T:*/21-05=0.07/70 Nachtzeit
 Z:4 CITYMS-100 plus
-T:W/09-18=0.07/60 Hauptzeit
-T:W/18-09=0.07/60 Nebenzeit
-T:E,H/*=0.07/60 Nebenzeit
 A:+49
+T:W/09-18=0.07/26.4 Hauptzeit
+T:W/05-09,18-21=0.07/44 Nebenzeit
+T:E,H/05-21=0.07/44 Nebenzeit
+T:*/21-05=0.07/70 Nachtzeit
 Z:5 CITYMS-Jovel
 T:W/09-18=0.056/60 Hauptzeit
-T:*/18-21=0.056/106 Nebenzeit
-T:*/05-09=0.056/106 Nebenzeit
-T:E,H/09-18=0.056/106 Nebenzeit
+T:W/05-09,18-21=0.056/106 Nebenzeit
+T:E,H/05-21=0.056/106 Nebenzeit
 T:*/21-05=0.056/145 Nachtzeit
 Z:10 CITYMS-Mobilfunk
-A:+491618		# T-C-Tel Voice Mail
-A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
-A:+49170,+49171		# D1
-A:+49172,+49173		# D2
-A:+49177,+49178		# Eplus
-A:+49176,+49179		# E2
-T:W/08-18=0.07/60 Hauptzeit
-T:W/18-08=0.07/60 Nebenzeit
-T:E,H/*=0.07/60 Nebenzeit
+A:C-Tel Voice Mail, C-Netz, D1, D2, E1, E2
+T:W/08-18=0.07/5 Hauptzeit
+T:W/18-08=0.07/8 Nebenzeit
+T:E,H/*=0.07/8 Nebenzeit
 Z:102 CITYMS-Internet
-T:W/09-18=0.0455/60 Hauptzeit
-T:*/18-21=0.0455/106 Nebenzeit
-T:*/05-09=0.0455/106 Nebenzeit
-T:E,H/09-18=0.0455/106 Nebenzeit
-T:*/21-05=0.0455/145 Nachtzeit
-Z:200 Sonderpreis Niederlande und Großbritannien
-# FIXME: Großbritannien OHNE Nordirlan, Isle of Man & Kanalinseln!
-A:Niederlande, Großbritannien
+T:W/09-18=0.046/60 Hauptzeit
+T:W/05-09,18-21=0.046/106 Nebenzeit
+T:E,H/05-21=0.046/106 Nebenzeit
+T:*/21-05=0.046/145 Nachtzeit
+Z:200 Sonderpreis Niederlande, Großbritannien und Frankreich
+A:Niederlande, Großbritannien, Frankreich
 T:*/*=0.07/12
-Z:201 CITYMS-Euro
-A:Andorra, Belgien, Dänemark, Färöer, Finnland, Griechenland, Irland
-A:Island, Italien, Monaco, Norwegen, Österreich, Polen, Portugal
-A:San Marino, Schweden, Schweiz, Slowakei, Spanien, Tschechien, Vatikanstadt
-# FIXME: A:+44	# Insel Man (Großbritannien)
-# FIXME: A:+44	# Kanalinseln (Großbritannien)
-# FIXME: A:+44	# Nordirland
+Z:201 CITYMS EU und Schweiz
+A:Belgien, Dänemark, Finnland, Griechenland, Irland, Italien, Luxemburg
+A:Österreich, Portugal, Schweden, Schweiz, Spanien
+T:*/*=0.07/8.8
+Z:202 CITYMS Europa 1
+A:Andorra, Färörer, Island, Liechtenstein, Monaco, Norwegen
+A:Polen, San Marino, Slowakei, Tschechische Republik, Vatikanstadt
 T:*/*=0.07/6.7
-Z:202 CITYMS-Europa
-A:Ägypten, Albanien, Algerien, Belarus, Bosnien-Herzegowina, Bulgarien
-A:Estland, Gibraltar, Israel, Jordanien, Jugoslawien Serbien und Montenegro
-A:Kroatien, Lettland, Libanon, Libyen, Malta, Marokko, Mazedonien
-A:Moldau Republik, Rumänien, Russische Föderat. (westl.), Slowenien
-A:Syrien, Türkei, Tunesien, Ukraine, Ungarn, Zypern
+Z:203 CITYMS Europa 2
+A:Ägypten, Albanien, Algerien, Belarus (Weißrußland), Bosnien-Herzegowina
+A:Bulgarien, Estland, Gibraltar, Israel, Jordanien, Jugoslawien
+A:Kroatien, Lettland, Libanon, Libyen, Litauen, Malta, Marokko
+A:Mazedonien, Moldawien, Rumänien, Russische Föderation (westl.)
+A:Sahara, Slowenien, Syrien, Tunesien, Türkei, Ukraine
+A:Ungarn, Zypern
 T:*/*=0.07/4.7
-Z:203 CITYMS-Nordamerika
-A:Kanada, USA
+Z:204 CITYMS Nordamerika
+A:USA, Kanada
 T:*/*=0.07/7.5
-Z:204 CITYMS-Welt 2
-A:Australien, Hongkong, Japan, Korea (Republik), Neuseeland, Singapur
+Z:205 CITYMS Welt 2
+A:Australien, Japan, Neuseeland, Singapur, Südkorea
 T:*/*=0.07/2.5
-Z:205 CITYMS-Welt 3
-A:Argentinien, Brasilien, Chile, China (Taiwan), Dominikanische Republik
-A:Iran, Kasachstan, Kolumbien, Niederländische Antillen, Philippinen
-A:Saudi Arabien, Jemen (Arabische Republik), Vereinigte Arabische Emirate
+Z:206 CITYMS Welt 3
+A:Argentinien, Brasilien, Chile, Iran, Kasachstan
+A:Kolumbien, Malaysia, Mexiko, Philippinen
+A:Saudi-Arabien, Südafrika, Taiwan, Vereinigte Arabische Emirate
 T:*/*=0.07/1.9
-Z:206 CITYMS-Welt 4
-A:+
+Z:207 CITYMS Welt 4
+A:+	# der ganze Rest
 T:*/*=0.07/1.8
 #####################################################################
 P:25,1 CityKom Preselection
@@ -7029,18 +7029,21 @@ C:Communications Netzmanagement Bremen GmbH
 C:Theodor-Heuss-Allee 20, 28215 Bremen 01027
 C:Sondertarif 5 "Nordcom-Nordcom": Netzinterne Gespräche zwischen Nordcom
 C:Kunden
+C:URL: http://www.nordcom.net
 C:Erfasste Zonen:
 C:1	-   4	Deutschland
 C:5		Sondertarif
 C:10		Mobilfunk
 C:102		Butensurf
 C:200	-	Ausland
+C:Butensurf: Internet Zugang, 9,95 DM / Monat, 0,05 DM / Min
+C:Stand: 1999-11-01
 Z:1-3 Binnen
 T:W/06-18=0.06(60)/1 Tag
 T:W/18-06=0.05(60)/1 Freizeit
 T:E,H/*=0.05(60)/1 Wochenende
 Z:4 Buten
-T:W/06-18=0.17(60)/1 Tag
+T:W/06-18=0.12(60)/1 Tag
 T:W/18-06=0.07(60)/1 Freizeit
 T:E,H/*=0.07(60)/1 Wochenende
 A:+49
@@ -7049,86 +7052,71 @@ T:W/06-18=0.04(60)/1 Tag
 T:W/18-06=0.03(60)/1 Freizeit
 T:E,H/*=0.03(60)/1 Wochenende
 Z:10 Mobil
-A:+491618		# T-C-Tel Voice Mail
-A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
-A:+49170,+49171		# D1
-A:+49172,+49173		# D2
-A:+49177,+49178		# Eplus
-A:+49176,+49179		# E2
+A:C-Tel Voice Mail, C-Netz, D1, D2, E1, E2
 T:W/06-18=0.79(60)/1 Tag
 T:W/18-06=0.49(60)/1 Freizeit
 T:E,H/*=0.49(60)/1 Wochenende
 Z:102 Butensurf
-T:W/06-18=0.09(60)/1 Tag
-T:W/18-06=0.08(60)/1 Freizeit
-T:E,H/*=0.08(60)/1 Wochenende
+T:*/*=0.05(60)/1
 Z:200 Tarifgruppe 1
-A:Kanada, USA
-T:*/*=0.39(60)/1
+A:Hongkong, Kanada, USA
+T:*/*=0.29(60)/1
 Z:201 Tarifgruppe 2
-A:Belgien, Brüssel, Dänemark, Finnland, Frankreich
-A:Großbritannien, Insel Man, Irland, Italien, Kanalinseln
-A:Lichtenstein, Luxemburg, Monaco, Niederlande
-A:Norwegen, Österreich, Schweden, Schweiz, Spanien
-T:*/*=0.49(60)/1
+A:Australien, Belgien, Brüssel, Dänemark, Finnland, Frankreich, Großbritannien
+A:Irland, Italien, Japan, Kanalinseln, Lichtenstein, Luxemburg, Monaco
+A:Niederlande, Norwegen, Österreich, Polen, Schweden, Schweiz, Spanien, 
+T:*/*=0.39(60)/1
 Z:202 Tarifgruppe 3
-A:Andorra, Estland, Färöer, Griechenland, Island
-A:Israel, Malta, Polen, Portugal
-A:Slowake, Slowenien, Tschechische Republik, Ungarn, Vatikanstadt
+A:Andorra, Chile, Estland, Färöer, Griechenland, Irland Mobilfunk, Island
+A:Israel, Italien Mobilfunk, Malaysia, Malta, Mexiko, Portugal, Singapur
+A:Slowakische Republik, Slowenien, Spanien Mobilfunk, Südkorea, Taiwan, 
+A:Tschechische Republik, Türkei, Ungarn, Vatikanstadt
 T:*/*=0.69(60)/1
 Z:203 Tarifgruppe 4
-A:Albanien, Algerien, Aruba, Bosnien-Herzegowina, Botswana
-A:Brasilien, Brunei, Bulgarien, Costa Rica, Ecuador
-A:Gibraltar, Grönland, Guatemala, Hongkong, Jugoslawien
-A:Kolumbien, Kroatien, Lettland, Libyen, Litauen
-A:Malaysia, Marokko, Mazedonien, Mexiko, Philippinen
-A:Rumänien, San Marino, Simbabwe, Singapur, Südkorea
-A:Tunesien, Türkei, Ukraine, Venezuela, Weißrußland, Zypern
+A:Albanien, Algerien, Angola, Argentinien, Aruba, Bosnien-Herzegowina
+A:Botswana, Brasilien, Brunei, Bulgarien, China, Costa Rica, Ecuador
+A:Gibraltar, Grönland, Guatemala, Jugoslawien, Kolumbien, Kroatien, Lettland
+A:Lybien, Litauen, Mazedonien, Namibia, Philippinen, Rumänien
+A:Russische Föderation, San Marino, Simbabwe, Südafrika, Thailand
+A:Tunesien, Ukraine, Venezuela, Weißrußland, Zypern
 T:*/*=0.99(60)/1
 Z:204 Tarifgruppe 5
-A:Australien, Bahamas, Bermuda
-A:Chil, Dominikanische Republi, Japan, Neuseeland, Puerto Rico
+A:Bahamas, Bermuda, Dominikanische Republik, Ghana, Indonesien
+A:Kaiman Inseln, Marokko, Neuseeland, Puerto Rico, Vereinigte Arabische Emirate
 T:*/*=1.19(60)/1
 Z:205 Tarifgruppe 6
-A:Angola, Antigua, Argentinien, Aserbaidschan, Barbados
-A:Burundi, China, El Salvador, Gambia, Ghana
-A:Honduras, Indonesien, Jamaica, Macau, Moldau
-A:Mosambik, Namibia, Nicaragua, Peru, Russische Föderation
-A:St. Lucia, Südafrika, Sudan, Taiwan
-A:Tansani, Thailand, Trinidad und Tobago, Uganda, Vereinigte Arabische Emirate
-T:*/*=1.69(60)/1
+A:Antigua und Barbuda, Barbados, Burundi, El Salvador, Gambia, Honduras
+A:Jamaica, Jordanien, Macau, Moldawien, Mosambik, Nicaragua, Peru
+A:St. Lucia, Sudan, Tansania, Tansania, Trinidad und Tobago
+A:Uganda, Uruguay, 
+T:*/*=1.49(60)/1
 Z:206 Tarifgruppe 7
-A:Ägypten, Armenien, Ascension, Bahrain, Bangladesch
-A:Belize, Benin, Bolivien, Burkina Faso, Dschibuti
-A:Gabun, Georgien, Jordanien, Kasachstan, Katar
-A:Kenia, Kirgisistan, Kongo, Kuba, Libanon
-A:Niger, Nordkorea, Panama, Paraguay, Ruanda
-A:Sambia, Syrien, Tadschikistan, Turkmenistan, Uruguay
-A:Usbekistan, Zaire
-T:*/*=2.29(60)/1
+A:Ägypten, Armenien, Ascension Island, Bahrein, Bangladesch, Belize, Benin
+A:Bolivien, Burkina Faso, Dschibuti, Gabun, Georgien, Indien, Kamerun
+A:Katar, Kirgisistan, Kongo (Demokratische Republik), Kongo, Kuba
+A:Libanon, Niger, Nordkorea, Panama, Paraguay, Ruanda, Sambia, Syrien
+A:Tadschikistan, Turkmenistan, Usbekistan
+T:*/*=1.79(60)/1
 Z:207 Tarifgruppe 8
-A:Afghanistan, Amerikanische Jungferninseln, Anguilla, Antarktis, Antillen
-A:Äthopien, Azoren, Bhutan, Britische Jungferninseln, Kap Verde
-A:Weihnachtsinseln, Cookinseln, Diego Garcia, Dominica, Ecuador Guinea
-A:Elfenbeinküste, Eritrea, Falkland inseln, Fidschi, Französisch Guayana
-A:Französisch Polynesien, Grenada, Guadeloupe, Guam, Guantanamo
-A:Guinea, Guinea-Bissau, Guyana, Haiti, Indien
-A:Irak, Iran, Jemen, Kambodscha, Kiribati
-A:Kuwait, Laos, Lesotho, Liberia, Madagaskar
-A:Madeira, Malawi, Malediven, Mali
-A:Marshallinseln, Martinique, Mauretanien, Mauritius, Mayotte
-A:Midway Inseln, Mikronesien, Mongolei, Montserrat, Myanmar
-A:Nauru, Nepal, Neukaledonien, Nevis, Niederländische Antillen
-A:Nigeria, Niue, Norfolkinseln, Oman, Pakistan
-A:Palau, Papua-Neuguinea, Réunion, Salomonen, Samoa
-A:Sao Tomé, Saudi-Arabien, Senegal, Seyschellen, Sierra Leone
-A:Somalia, Sri Lanka, St. Helena, St. Kitts, St. Pierre
-A:St. Vincent und Grenadinen, Suriname, Swasiland, Togo, Tokelau
-A:Tonga, Tschad, Turks- und Caicosinseln, Tuvalu
-A:Vanuat, Vietnam, Wake Inseln, Wallis, Zentralafrikanische Republik
-A:Nördliche Marianen	# +1670
-A:+
-T:*/*=2.99(60)/1
+A:Afghanistan, Amerikanische Jungferninseln, Amerikanisch Samoa
+A:Anguilla, Antarktis, Äquatorialguinea, Äthiopien, Azoren, Bhutan
+A:Britische Jungferninseln, Christmas Inseln, Cook Inseln, Diego Garcia
+A:Dominica, Elfenbeinküste, Eritrea, Falkland Inseln, Fidschi Inseln
+A:Französisch-Guayana, Französisch-Polynesien , Grenada, Guadeloupe, Guam
+A:Guantanamo, Guinea, Guinea-Bissau, Guyana, Haiti, Irak, Iran, Jemen
+A:Kambodscha, Kap Verde, Kasachstan, Kenia, Kiribati, Komoren, Kuwait, Laos
+A:Lesotho, Liberia, Madagaskar, Maderia, Malawi, Malediven, Mali
+A:Nördliche Marianen, Marshallinseln, Martinique, Mauretanien, Mauritius
+A:Mayotte, Midway-Inseln, Mikronesien, Mongolei, Montserrat, Myanmar
+A:Nauru, Nepal, Neukaledonien, Nevis, Niederl. Antillen, Nigeria, Niue
+A:Norfolkinseln, Oman, Pakistan, Palau, Papua-Neuguinea, Réunion
+A:Salomonen, West-Samoa, Sao Tomé, Saudi-Arabien, Senegal, Seychellen
+A:Sierra Leone, Somalia, Sri Lanka, St. Helena, St. Kitts und Nevis
+A:St. Pierre und Miquelon, St. Vincent und Grenadien, Suriname
+A:Swasiland, Togo, Tokelau, Tonga, Tschad, Turks- und Caicosinseln
+A:Tuvalu, Vanuatu, Vietnam, Wake Inseln
+A:Wallis und Futuna, Zentralafrikanische Republik
+T:*/*=1.99(60)/1
 #####################################################################
 P:27,1 Nordcom Butensurf Plus
 C:Communications Netzmanagement Bremen GmbH
@@ -7141,12 +7129,14 @@ C:5		Sondertarif
 C:10		Mobilfunk
 C:102		Butensurf Plus
 C:200	-	Ausland
+C:Butensurf Plus: Internet Zugang, Pauschal Preis! 29,95 DM / Monat!
+C:Stand: 1999-11-01
 Z:1-3 Binnen
 T:W/06-18=0.06(60)/1 Tag
 T:W/18-06=0.05(60)/1 Freizeit
 T:E,H/*=0.05(60)/1 Wochenende
 Z:4 Buten
-T:W/06-18=0.17(60)/1 Tag
+T:W/06-18=0.12(60)/1 Tag
 T:W/18-06=0.07(60)/1 Freizeit
 T:E,H/*=0.07(60)/1 Wochenende
 A:+49
@@ -7155,86 +7145,71 @@ T:W/06-18=0.04(60)/1 Tag
 T:W/18-06=0.03(60)/1 Freizeit
 T:E,H/*=0.03(60)/1 Wochenende
 Z:10 Mobil
-A:+491618		# T-C-Tel Voice Mail
-A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
-A:+49170,+49171		# D1
-A:+49172,+49173		# D2
-A:+49177,+49178		# Eplus
-A:+49176,+49179		# E2
+A:C-Tel Voice Mail, C-Netz, D1, D2, E1, E2
 T:W/06-18=0.79(60)/1 Tag
 T:W/18-06=0.49(60)/1 Freizeit
 T:E,H/*=0.49(60)/1 Wochenende
-Z:102 Butensurf Plus
-T:W/06-18=0.04(60)/1 Tag
-T:W/18-06=0.03(60)/1 Freizeit
-T:E,H/*=0.03(60)/1 Wochenende
+Z:102 Butensurf
+T:*/*=0/1
 Z:200 Tarifgruppe 1
-A:Kanada, USA
-T:*/*=0.39(60)/1
+A:Hongkong, Kanada, USA
+T:*/*=0.29(60)/1
 Z:201 Tarifgruppe 2
-A:Belgien, Brüssel, Dänemark, Finnland, Frankreich
-A:Großbritannien, Insel Man, Irland, Italien, Kanalinseln
-A:Lichtenstein, Luxemburg, Monaco, Niederlande
-A:Norwegen, Österreich, Schweden, Schweiz, Spanien
-T:*/*=0.49(60)/1
+A:Australien, Belgien, Brüssel, Dänemark, Finnland, Frankreich, Großbritannien
+A:Irland, Italien, Japan, Kanalinseln, Lichtenstein, Luxemburg, Monaco
+A:Niederlande, Norwegen, Österreich, Polen, Schweden, Schweiz, Spanien, 
+T:*/*=0.39(60)/1
 Z:202 Tarifgruppe 3
-A:Andorra, Estland, Färöer, Griechenland, Island
-A:Israel, Malta, Polen, Portugal
-A:Slowake, Slowenien, Tschechische Republik, Ungarn, Vatikanstadt
+A:Andorra, Chile, Estland, Färöer, Griechenland, Irland Mobilfunk, Island
+A:Israel, Italien Mobilfunk, Malaysia, Malta, Mexiko, Portugal, Singapur
+A:Slowakische Republik, Slowenien, Spanien Mobilfunk, Südkorea, Taiwan, 
+A:Tschechische Republik, Türkei, Ungarn, Vatikanstadt
 T:*/*=0.69(60)/1
 Z:203 Tarifgruppe 4
-A:Albanien, Algerien, Aruba, Bosnien-Herzegowina, Botswana
-A:Brasilien, Brunei, Bulgarien, Costa Rica, Ecuador
-A:Gibraltar, Grönland, Guatemala, Hongkong, Jugoslawien
-A:Kolumbien, Kroatien, Lettland, Libyen, Litauen
-A:Malaysia, Marokko, Mazedonien, Mexiko, Philippinen
-A:Rumänien, San Marino, Simbabwe, Singapur, Südkorea
-A:Tunesien, Türkei, Ukraine, Venezuela, Weißrußland, Zypern
+A:Albanien, Algerien, Angola, Argentinien, Aruba, Bosnien-Herzegowina
+A:Botswana, Brasilien, Brunei, Bulgarien, China, Costa Rica, Ecuador
+A:Gibraltar, Grönland, Guatemala, Jugoslawien, Kolumbien, Kroatien, Lettland
+A:Lybien, Litauen, Mazedonien, Namibia, Philippinen, Rumänien
+A:Russische Föderation, San Marino, Simbabwe, Südafrika, Thailand
+A:Tunesien, Ukraine, Venezuela, Weißrußland, Zypern
 T:*/*=0.99(60)/1
 Z:204 Tarifgruppe 5
-A:Australien, Bahamas, Bermuda
-A:Chil, Dominikanische Republi, Japan, Neuseeland, Puerto Rico
+A:Bahamas, Bermuda, Dominikanische Republik, Ghana, Indonesien
+A:Kaiman Inseln, Marokko, Neuseeland, Puerto Rico, Vereinigte Arabische Emirate
 T:*/*=1.19(60)/1
 Z:205 Tarifgruppe 6
-A:Angola, Antigua, Argentinien, Aserbaidschan, Barbados
-A:Burundi, China, El Salvador, Gambia, Ghana
-A:Honduras, Indonesien, Jamaica, Macau, Moldau
-A:Mosambik, Namibia, Nicaragua, Peru, Russische Föderation
-A:St. Lucia, Südafrika, Sudan, Taiwan
-A:Tansani, Thailand, Trinidad und Tobago, Uganda, Vereinigte Arabische Emirate
-T:*/*=1.69(60)/1
+A:Antigua und Barbuda, Barbados, Burundi, El Salvador, Gambia, Honduras
+A:Jamaica, Jordanien, Macau, Moldawien, Mosambik, Nicaragua, Peru
+A:St. Lucia, Sudan, Tansania, Tansania, Trinidad und Tobago
+A:Uganda, Uruguay, 
+T:*/*=1.49(60)/1
 Z:206 Tarifgruppe 7
-A:Ägypten, Armenien, Ascension, Bahrain, Bangladesch
-A:Belize, Benin, Bolivien, Burkina Faso, Dschibuti
-A:Gabun, Georgien, Jordanien, Kasachstan, Katar
-A:Kenia, Kirgisistan, Kongo, Kuba, Libanon
-A:Niger, Nordkorea, Panama, Paraguay, Ruanda
-A:Sambia, Syrien, Tadschikistan, Turkmenistan, Uruguay
-A:Usbekistan, Zaire
-T:*/*=2.29(60)/1
+A:Ägypten, Armenien, Ascension Island, Bahrein, Bangladesch, Belize, Benin
+A:Bolivien, Burkina Faso, Dschibuti, Gabun, Georgien, Indien, Kamerun
+A:Katar, Kirgisistan, Kongo (Demokratische Republik), Kongo, Kuba
+A:Libanon, Niger, Nordkorea, Panama, Paraguay, Ruanda, Sambia, Syrien
+A:Tadschikistan, Turkmenistan, Usbekistan
+T:*/*=1.79(60)/1
 Z:207 Tarifgruppe 8
-A:Afghanistan, Amerikanische Jungferninseln, Anguilla, Antarktis, Antillen
-A:Äthopien, Azoren, Bhutan, Britische Jungferninseln, Kap Verde
-A:Weihnachtsinseln, Cookinseln, Diego Garcia, Dominica, Ecuador Guinea
-A:Elfenbeinküste, Eritrea, Falkland inseln, Fidschi, Französisch Guayana
-A:Französisch Polynesien, Grenada, Guadeloupe, Guam, Guantanamo
-A:Guinea, Guinea-Bissau, Guyana, Haiti, Indien
-A:Irak, Iran, Jemen, Kambodscha, Kiribati
-A:Kuwait, Laos, Lesotho, Liberia, Madagaskar
-A:Madeira, Malawi, Malediven, Mali
-A:Marshallinseln, Martinique, Mauretanien, Mauritius, Mayotte
-A:Midway Inseln, Mikronesien, Mongolei, Montserrat, Myanmar
-A:Nauru, Nepal, Neukaledonien, Nevis, Niederländische Antillen
-A:Nigeria, Niue, Norfolkinseln, Oman, Pakistan
-A:Palau, Papua-Neuguinea, Réunion, Salomonen, Samoa
-A:Sao Tomé, Saudi-Arabien, Senegal, Seyschellen, Sierra Leone
-A:Somalia, Sri Lanka, St. Helena, St. Kitts, St. Pierre
-A:St. Vincent und Grenadinen, Suriname, Swasiland, Togo, Tokelau
-A:Tonga, Tschad, Turks- und Caicosinseln, Tuvalu
-A:Vanuat, Vietnam, Wake Inseln, Wallis, Zentralafrikanische Republik
-A:Nördliche Marianen	# +1670
-A:+
-T:*/*=2.99(60)/1
+A:Afghanistan, Amerikanische Jungferninseln, Amerikanisch Samoa
+A:Anguilla, Antarktis, Äquatorialguinea, Äthiopien, Azoren, Bhutan
+A:Britische Jungferninseln, Christmas Inseln, Cook Inseln, Diego Garcia
+A:Dominica, Elfenbeinküste, Eritrea, Falkland Inseln, Fidschi Inseln
+A:Französisch-Guayana, Französisch-Polynesien , Grenada, Guadeloupe, Guam
+A:Guantanamo, Guinea, Guinea-Bissau, Guyana, Haiti, Irak, Iran, Jemen
+A:Kambodscha, Kap Verde, Kasachstan, Kenia, Kiribati, Komoren, Kuwait, Laos
+A:Lesotho, Liberia, Madagaskar, Maderia, Malawi, Malediven, Mali
+A:Nördliche Marianen, Marshallinseln, Martinique, Mauretanien, Mauritius
+A:Mayotte, Midway-Inseln, Mikronesien, Mongolei, Montserrat, Myanmar
+A:Nauru, Nepal, Neukaledonien, Nevis, Niederl. Antillen, Nigeria, Niue
+A:Norfolkinseln, Oman, Pakistan, Palau, Papua-Neuguinea, Réunion
+A:Salomonen, West-Samoa, Sao Tomé, Saudi-Arabien, Senegal, Seychellen
+A:Sierra Leone, Somalia, Sri Lanka, St. Helena, St. Kitts und Nevis
+A:St. Pierre und Miquelon, St. Vincent und Grenadien, Suriname
+A:Swasiland, Togo, Tokelau, Tonga, Tschad, Turks- und Caicosinseln
+A:Tuvalu, Vanuatu, Vietnam, Wake Inseln
+A:Wallis und Futuna, Zentralafrikanische Republik
+T:*/*=1.99(60)/1
 #####################################################################
 #
 #
@@ -7266,11 +7241,7 @@ C:200	-	Ausland
 Z:1-4 Inland
 T:*/*=0/5,0.13/60
 Z:10 Mobilfunk
-A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
-A:+49170,+49171		# D1
-A:+49172,+49173		# D2
-A:+49177,+49178		# Eplus
-A:+49176,+49179		# E2
+A:C-Tel Voice Mail, C-Netz, D1, D2, E1, E2
 T:*/*=0/5,0.47/60
 Z:31 Iridium GSM
 A:Iridium GSM-Homed
@@ -7326,9 +7297,7 @@ Z:49 Viag Interkom Auskunft
 A:11881
 T:*/*=1.59/0,0.036666666666666666/10	# FIXME: ,0.22(60)/10
 Z:60 Cityruf
-A:+491640 # Cityruf Voicebox
-A:+491641,+491642,+491643,+491644,+491645
-A:+491646,+491647,+491648,+491649
+A:Cityruf
 T:W/09-18=0.12/20
 T:W/18-09=0.12/30
 T:E,H/*=0.12/30
@@ -7425,6 +7394,9 @@ T:*/*=0/5,2.22/60
 P:28,2 TeleBridge EasyBridge
 C:TeleBridge ist Reseller von COLT.
 C:Homepage: http://www.telebridge.de
+C:Preselection Tarif
+C:Mindestumsatz: 39,- DM bei 12 Monaten Bindung
+C:               19,- DM bei 24 Monaten
 C:Erfasste Zonen:
 C:2	-   4	Deutschland
 C:10		Mobilfunk
@@ -7448,11 +7420,7 @@ T:W/08-21=0/5,0.11/60 Hauptzeit
 T:E,H/08-21=0/5,0.055/60 Nebenzeit
 T:*/21-08=0/5,0.055/60 Nebenzeit
 Z:10 Mobilfunk
-A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
-A:+49170,+49171		# D1
-A:+49172,+49173		# D2
-A:+49177,+49178		# Eplus
-A:+49176,+49179		# E2
+A:C-Tel Voice Mail, C-Netz, D1, D2, E1, E2
 T:*/*=0/5,0.47/60
 Z:31 Iridium GSM
 A:Iridium GSM-Homed
@@ -7604,779 +7572,22 @@ A:Jamaika, Grenada, Domenica, Saint Lucia, Saint Vincent und Grenadinen
 A:St. Kitts, Montserrat, Turkmenistan
 T:*/*=0/5,2.22/60
 #####################################################################
-P:28,3 UPX Standard
+P:28,3 UPX Super 8
 C:Homepage: http://www.upx.de
+C:Preselection
 C:Erfasste Zonen:
 C:2	-   4	Deutschland
 C:10		Mobilfunk
 C:200	-	Ausland
-Z:1-4 Deutschland
-T:*/08-18=0.136(60)/1 Haupt
-T:*/18-21=0.113(60)/1 Neben
-T:*/21-08=0.082(60)/1 Nacht
+C:Stand: 1999-10-31
+Z:2-4 Deutschland
+T:*/*=0.084/60
 Z:10 Mobilfunk
-A:+491618		# T-C-Tel Voice Mail
-A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
-A:+49170,+49171		# D1
-A:+49172,+49173		# D2
-A:+49177,+49178		# Eplus
-A:+49176,+49179		# E2
-T:*/*=0.673(60)/1
-Z:200 London
-A:London
-T:*/*=0.22388(60)/1
-Z:201 England
-A:England
-T:*/*=0.23548(60)/1
-Z:202 Nordirland
-A:Nordirland
-T:*/*=0.24012(60)/1
-Z:203 Zürich
-A:Zürich
-T:*/*=0.28072(60)/1
-Z:204 Brüssel
-A:Brüssel
-T:*/*=0.29116(60)/1
-Z:205 Paris
-A:Paris
-T:*/*=0.29580(60)/1
-Z:206 Kanada
-A:Kanada
-T:*/*=0.29812(60)/1
-Z:207 USA
-A:USA
-T:*/*=0.29812(60)/1
-Z:208 Alaska
-A:Alaska
-T:*/*=0.30392(60)/1
-Z:209 Frankreich
-A:Frankreich
-T:*/*=0.30740(60)/1
-Z:210 Dänemark
-A:Dänemark
-T:*/*=0.30972(60)/1
-Z:211 Schweiz
-A:Schweiz
-T:*/*=0.31320(60)/1
-Z:212 Schweden
-A:Schweden
-T:*/*=0.31436(60)/1
-Z:213 Belgien
-A:Belgien
-T:*/*=0.31784(60)/1
-Z:214 Amsterdam
-A:Amsterdam
-T:*/*=0.32248(60)/1
-Z:215 Rotterdam
-A:Rotterdam
-T:*/*=0.32248(60)/1
-Z:216 Stockholm
-A:Stockholm
-T:*/*=0.32248(60)/1
-Z:217 Puerto Rico
-A:Puerto Rico
-T:*/*=0.32828(60)/1
-Z:218 Jungferninseln (USA)
-A:Jungferninseln (USA)
-T:*/*=0.33060(60)/1
-Z:219 Holland
-A:Holland
-T:*/*=0.33176(60)/1
-Z:220 Wien
-A:Wien
-T:*/*=0.33640(60)/1
-Z:221 Neuseeland
-A:Neuseeland
-T:*/*=0.34452(60)/1
-Z:222 Österreich
-A:Österreich
-T:*/*=0.34568(60)/1
-Z:223 Australien
-A:Australien
-T:*/*=0.34684(60)/1
-Z:224 Dublin
-A:Dublin
-T:*/*=0.34684(60)/1
-Z:225 Liechtenstein
-A:Liechtenstein
-T:*/*=0.34684(60)/1
-Z:226 Irland
-A:Irland
-T:*/*=0.36076(60)/1
-Z:227 Monaco
-A:Monaco
-T:*/*=0.36192(60)/1
-Z:228 Finnland
-A:Finnland
-T:*/*=0.37120(60)/1
-Z:229 Norwegen
-A:Norwegen
-T:*/*=0.37236(60)/1
-Z:230 Guam
-A:Guam
-T:*/*=0.38512(60)/1
-Z:231 Luxemburg
-A:Luxemburg
-T:*/*=0.38860(60)/1
-Z:232 Spanien
-A:Spanien
-T:*/*=0.44428(60)/1
-Z:233 Chatham Inseln
-A:Chatham Inseln
-T:*/*=0.44892(60)/1
-Z:234 Madrid
-A:Madrid
-T:*/*=0.45008(60)/1
-Z:235 Mailand
-A:Mailand
-T:*/*=0.45008(60)/1
-Z:236 Andorra
-A:Andorra
-T:*/*=0.45472(60)/1
-Z:237 Italien
-A:Italien
-T:*/*=0.46284(60)/1
-Z:238 Chile
-A:Chile
-T:*/*=0.48256(60)/1
-Z:239 Bahamas
-A:Bahamas
-T:*/*=0.49416(60)/1
-Z:240 Hong Kong
-A:Hong Kong
-T:*/*=0.49648(60)/1
-Z:241 Bermuda
-A:Bermuda
-T:*/*=0.51156(60)/1
-Z:242 Israel
-A:Israel
-T:*/*=0.53708(60)/1
-Z:243 Dominikanische Republik
-A:Dominikanische Republik
-T:*/*=0.54636(60)/1
-Z:244 Tschechien
-A:Tschechien
-T:*/*=0.54752(60)/1
-Z:245 Malaysia
-A:Malaysia
-T:*/*=0.56144(60)/1
-Z:246 Slowenien
-A:Slowenien
-T:*/*=0.56492(60)/1
-Z:247 Ungarn
-A:Ungarn
-T:*/*=0.57420(60)/1
-Z:248 Vatikanstadt
-A:Vatikanstadt
-T:*/*=0.57768(60)/1
-Z:249 Malta
-A:Malta
-T:*/*=0.58116(60)/1
-Z:250 Slowakei
-A:Slowakei
-T:*/*=0.59972(60)/1
-Z:251 Estland
-A:Estland
-T:*/*=0.60668(60)/1
-Z:252 Martinique
-A:Martinique
-T:*/*=0.60668(60)/1
-Z:253 Portugal
-A:Portugal
-T:*/*=0.61248(60)/1
-Z:254 San Mario
-A:San Mario
-T:*/*=0.61248(60)/1
-Z:255 Faeroer
-A:Faeroer
-T:*/*=0.61480(60)/1
-Z:256 Island
-A:Island
-T:*/*=0.62408(60)/1
-Z:257 Madeira
-A:Madeira
-T:*/*=0.62408(60)/1
-Z:258 Polen
-A:Polen
-T:*/*=0.62408(60)/1
-Z:259 Azoren
-A:Azoren
-T:*/*=0.62524(60)/1
-Z:260 Griechenland
-A:Griechenland
-T:*/*=0.64032(60)/1
-Z:261 Swaziland
-A:Swaziland
-T:*/*=0.64148(60)/1
-Z:262 Zypern
-A:Zypern
-T:*/*=0.65076(60)/1
-Z:263 Groenland
-A:Groenland
-T:*/*=0.66584(60)/1
-# FIXME: Mobilfunk wohin? AK:25-Oct-99
-# Z:264 Mobilfunk
-# A:Mobilfunk
-# T:*/*=0.67280(60)/1
-Z:265 Aruba
-A:Aruba
-T:*/*=0.69368(60)/1
-Z:266 Bosnien-Herzegowina
-A:Bosnien-Herzegowina
-T:*/*=0.69716(60)/1
-Z:267 Kanarische Inseln
-A:Kanarische Inseln
-T:*/*=0.69716(60)/1
-Z:268 Saint Pierre und Miquelon
-A:Saint Pierre und Miquelon
-T:*/*=0.69948(60)/1
-Z:269 Zypern (Türkisch)
-A:Zypern (Türkisch)
-T:*/*=0.70528(60)/1
-Z:270 Weihnachtsinseln
-A:Weihnachtsinseln
-T:*/*=0.71572(60)/1
-Z:271 Marianen
-A:Marianen
-T:*/*=0.72964(60)/1
-Z:272 Singapur
-A:Singapur
-T:*/*=0.72964(60)/1
-Z:273 Guatemala
-A:Guatemala
-T:*/*=0.73428(60)/1
-Z:274 Guadeloupe
-A:Guadeloupe
-T:*/*=0.73544(60)/1
-Z:275 Französisch Guayana
-A:Französisch Guayana
-T:*/*=0.73776(60)/1
-Z:276 Reunion
-A:Reunion
-T:*/*=0.73892(60)/1
-Z:277 Caymaninseln
-A:Caymaninseln
-T:*/*=0.74124(60)/1
-Z:278 Ecuador
-A:Ecuador
-T:*/*=0.74704(60)/1
-Z:279 Costa Rica
-A:Costa Rica
-T:*/*=0.75052(60)/1
-Z:280 Serbien
-A:Serbien
-T:*/*=0.75168(60)/1
-Z:281 Kroatien
-A:Kroatien
-T:*/*=0.76212(60)/1
-Z:282 Lettland
-A:Lettland
-T:*/*=0.76444(60)/1
-Z:283 Albanien
-A:Albanien
-T:*/*=0.77140(60)/1
-Z:284 Uzbekistan
-A:Uzbekistan
-T:*/*=0.77604(60)/1
-Z:285 Falkland Inseln
-A:Falkland Inseln
-T:*/*=0.77720(60)/1
-Z:286 Korea (Süd)
-A:Korea (Süd)
-T:*/*=0.77720(60)/1
-Z:287 Libyen
-A:Libyen
-T:*/*=0.78184(60)/1
-Z:288 Malawi
-A:Malawi
-T:*/*=0.78300(60)/1
-Z:289 Mexico
-A:Mexico
-T:*/*=0.79112(60)/1
-Z:290 Bulgarien
-A:Bulgarien
-T:*/*=0.79692(60)/1
-Z:291 Litauen
-A:Litauen
-T:*/*=0.79924(60)/1
-Z:292 Simbabwe
-A:Simbabwe
-T:*/*=0.80504(60)/1
-Z:293 Niederländische Antillen
-A:Niederländische Antillen
-T:*/*=0.81084(60)/1
-Z:294 Papua-Neuguinea
-A:Papua-Neuguinea
-T:*/*=0.81316(60)/1
-Z:295 Weißrussland
-A:Weißrussland
-T:*/*=0.81316(60)/1
-Z:296 Ukraine
-A:Ukraine
-T:*/*=0.81432(60)/1
-Z:297 Brasilien
-A:Brasilien
-T:*/*=0.82592(60)/1
-Z:298 Kolumbien
-A:Kolumbien
-T:*/*=0.83404(60)/1
-Z:299 Algerien
-A:Algerien
-T:*/*=0.84332(60)/1
-Z:300 Rumänien
-A:Rumänien
-T:*/*=0.84332(60)/1
-Z:301 Türkei
-A:Türkei
-T:*/*=0.84332(60)/1
-Z:302 Macao
-A:Macao
-T:*/*=0.85028(60)/1
-Z:303 Namibia
-A:Namibia
-T:*/*=0.85376(60)/1
-Z:304 Tadschikistan
-A:Tadschikistan
-T:*/*=0.85492(60)/1
-Z:305 Venezuela
-A:Venezuela
-T:*/*=0.85492(60)/1
-Z:306 Botswana
-A:Botswana
-T:*/*=0.85840(60)/1
-Z:307 Brunei Darussalam
-A:Brunei Darussalam
-T:*/*=0.86420(60)/1
-Z:308 Gibraltar
-A:Gibraltar
-T:*/*=0.86652(60)/1
-Z:309 Mazedonien
-A:Mazedonien
-T:*/*=0.86652(60)/1
-Z:310 Tunesien
-A:Tunesien
-T:*/*=0.86768(60)/1
-Z:311 Jungferninseln (GB)
-A:Jungferninseln (GB)
-T:*/*=0.86884(60)/1
-Z:312 Wallis und Futuna
-A:Wallis und Futuna
-T:*/*=0.87928(60)/1
-Z:313 Guinea
-A:Guinea
-T:*/*=0.88392(60)/1
-Z:314 Moldawien
-A:Moldawien
-T:*/*=0.89436(60)/1
-Z:315 Bhutan
-A:Bhutan
-T:*/*=0.91408(60)/1
-Z:316 Lesotho
-A:Lesotho
-T:*/*=0.92568(60)/1
-Z:317 Marshallinseln
-A:Marshallinseln
-T:*/*=0.92568(60)/1
-Z:318 Angola
-A:Angola
-T:*/*=0.93032(60)/1
-Z:319 Russland (westlich)
-A:Russland (westlich)
-T:*/*=0.93728(60)/1
-Z:320 Aserbaidschan
-A:Aserbaidschan
-T:*/*=0.94424(60)/1
-Z:321 Uganda
-A:Uganda
-T:*/*=0.94424(60)/1
-Z:322 Marokko
-A:Marokko
-T:*/*=0.94540(60)/1
-Z:323 Südafrika
-A:Südafrika
-T:*/*=0.94772(60)/1
-Z:324 Taiwan
-A:Taiwan
-T:*/*=0.94772(60)/1
-Z:325 Anguilla
-A:Anguilla
-T:*/*=0.95468(60)/1
-Z:326 Vereinigte Arabische Emirate
-A:Vereinigte Arabische Emirate
-T:*/*=0.96860(60)/1
-Z:327 Argentinien
-A:Argentinien
-T:*/*=0.99412(60)/1
-Z:328 Sudan
-A:Sudan
-T:*/*=1.00340(60)/1
-Z:329 El Salvador
-A:El Salvador
-T:*/*=1.00688(60)/1
-Z:330 Mayotte Island
-A:Mayotte Island
-T:*/*=1.00688(60)/1
-Z:331 Liberia
-A:Liberia
-T:*/*=1.02312(60)/1
-Z:332 Dominica
-A:Dominica
-T:*/*=1.02544(60)/1
-Z:333 St Kitts und Nevis
-A:St Kitts und Nevis
-T:*/*=1.03472(60)/1
-Z:334 Antigua & Barbuda
-A:Antigua & Barbuda
-T:*/*=1.04632(60)/1
-Z:335 Ghana
-A:Ghana
-T:*/*=1.04748(60)/1
-Z:336 Norfolk-Inseln
-A:Norfolk-Inseln
-T:*/*=1.04864(60)/1
-Z:337 Japan
-A:Japan
-T:*/*=1.05444(60)/1
-Z:338 Indonesien
-A:Indonesien
-T:*/*=1.05908(60)/1
-Z:339 Russland (östlich)
-A:Russland (östlich)
-T:*/*=1.05908(60)/1
-Z:340 Saint Vincent und Grenadinen
-A:Saint Vincent und Grenadinen
-T:*/*=1.05908(60)/1
-Z:341 Gabun
-A:Gabun
-T:*/*=1.07300(60)/1
-Z:342 Gambia
-A:Gambia
-T:*/*=1.08228(60)/1
-Z:343 Mosambik
-A:Mosambik
-T:*/*=1.09968(60)/1
-Z:344 Philippinen
-A:Philippinen
-T:*/*=1.13796(60)/1
-Z:345 Turks- und Caicosinseln
-A:Turks- und Caicosinseln
-T:*/*=1.14260(60)/1
-Z:346 Saint Lucia
-A:Saint Lucia
-T:*/*=1.15304(60)/1
-Z:347 Ägypten
-A:Ägypten
-T:*/*=1.15304(60)/1
-Z:348 Kazachstan
-A:Kazachstan
-T:*/*=1.16116(60)/1
-Z:349 Tansania
-A:Tansania
-T:*/*=1.16232(60)/1
-Z:350 Turkmenistan
-A:Turkmenistan
-T:*/*=1.16232(60)/1
-Z:351 Trinidad & Tobago
-A:Trinidad & Tobago
-T:*/*=1.18088(60)/1
-Z:352 Burkina Faso
-A:Burkina Faso
-T:*/*=1.18320(60)/1
-Z:353 Nicaragua
-A:Nicaragua
-T:*/*=1.18320(60)/1
-Z:354 Kirgisistan
-A:Kirgisistan
-T:*/*=1.18784(60)/1
-Z:355 Samoa (US)
-A:Samoa (US)
-T:*/*=1.19828(60)/1
-Z:356 Georgien
-A:Georgien
-T:*/*=1.19944(60)/1
-Z:357 Uruguay
-A:Uruguay
-T:*/*=1.20060(60)/1
-Z:358 Barbados
-A:Barbados
-T:*/*=1.23888(60)/1
-Z:359 Kap Verde
-A:Kap Verde
-T:*/*=1.24004(60)/1
-Z:360 Guinea Bissau
-A:Guinea Bissau
-T:*/*=1.24816(60)/1
-Z:361 Jamaika
-A:Jamaika
-T:*/*=1.25280(60)/1
-Z:362 Madagaskar
-A:Madagaskar
-T:*/*=1.26324(60)/1
-Z:363 Honduras
-A:Honduras
-T:*/*=1.26672(60)/1
-Z:364 Armenien
-A:Armenien
-T:*/*=1.27484(60)/1
-Z:365 Burundi
-A:Burundi
-T:*/*=1.27716(60)/1
-Z:366 Bolivien
-A:Bolivien
-T:*/*=1.28064(60)/1
-Z:367 Grenada
-A:Grenada
-T:*/*=1.28064(60)/1
-Z:368 Kongo
-A:Kongo
-T:*/*=1.28760(60)/1
-Z:369 Französisch Polynesien
-A:Französisch Polynesien
-T:*/*=1.28992(60)/1
-Z:370 Benin
-A:Benin
-T:*/*=1.29108(60)/1
-Z:371 Panama
-A:Panama
-T:*/*=1.29804(60)/1
-Z:372 Katar
-A:Katar
-T:*/*=1.30384(60)/1
-Z:373 Haiti
-A:Haiti
-T:*/*=1.32704(60)/1
-Z:374 Belize
-A:Belize
-T:*/*=1.34676(60)/1
-Z:375 Zaire
-A:Zaire
-T:*/*=1.36416(60)/1
-Z:376 Saint Helena
-A:Saint Helena
-T:*/*=1.37692(60)/1
-Z:377 Jordanien
-A:Jordanien
-T:*/*=1.40244(60)/1
-Z:378 Libanon
-A:Libanon
-T:*/*=1.40244(60)/1
-Z:379 Syrien
-A:Syrien
-T:*/*=1.40244(60)/1
-Z:380 Thailand
-A:Thailand
-T:*/*=1.40244(60)/1
-Z:381 Montserrat
-A:Montserrat
-T:*/*=1.40476(60)/1
-Z:382 Sambia
-A:Sambia
-T:*/*=1.41172(60)/1
-Z:383 Bahrain
-A:Bahrain
-T:*/*=1.41752(60)/1
-Z:384 Niger
-A:Niger
-T:*/*=1.41984(60)/1
-Z:385 Korea (Nord)
-A:Korea (Nord)
-T:*/*=1.44188(60)/1
-Z:386 Mauretanien
-A:Mauretanien
-T:*/*=1.44304(60)/1
-Z:387 Neukaledonien
-A:Neukaledonien
-T:*/*=1.46276(60)/1
-Z:388 Paraguay
-A:Paraguay
-T:*/*=1.46740(60)/1
-Z:389 Zentralafrikanische Republik
-A:Zentralafrikanische Republik
-T:*/*=1.49640(60)/1
-Z:390 Solomon Inseln
-A:Solomon Inseln
-T:*/*=1.49756(60)/1
-Z:391 Sri Lanka
-A:Sri Lanka
-T:*/*=1.52192(60)/1
-Z:392 Mikronesien
-A:Mikronesien
-T:*/*=1.54396(60)/1
-Z:393 Guyanna
-A:Guyanna
-T:*/*=1.54512(60)/1
-Z:394 Kenia
-A:Kenia
-T:*/*=1.55208(60)/1
-Z:395 Kuba
-A:Kuba
-T:*/*=1.56832(60)/1
-Z:396 Mauritius
-A:Mauritius
-T:*/*=1.60428(60)/1
-Z:397 Elfenbeinküste
-A:Elfenbeinküste
-T:*/*=1.61588(60)/1
-Z:398 Fidschi
-A:Fidschi
-T:*/*=1.61936(60)/1
-Z:399 Nauru
-A:Nauru
-T:*/*=1.62284(60)/1
-Z:400 Ascension
-A:Ascension
-T:*/*=1.62864(60)/1
-Z:401 Malediven
-A:Malediven
-T:*/*=1.62980(60)/1
-Z:402 Palau
-A:Palau
-T:*/*=1.66924(60)/1
-Z:403 Seychellen
-A:Seychellen
-T:*/*=1.68896(60)/1
-Z:404 Kamerun
-A:Kamerun
-T:*/*=1.69592(60)/1
-Z:405 Ruanda
-A:Ruanda
-T:*/*=1.71796(60)/1
-Z:406 Bangladesch
-A:Bangladesch
-T:*/*=1.72260(60)/1
-Z:407 Saudi Arabien
-A:Saudi Arabien
-T:*/*=1.72376(60)/1
-Z:408 Somalia
-A:Somalia
-T:*/*=1.72956(60)/1
-Z:409 Nepal
-A:Nepal
-T:*/*=1.73768(60)/1
-Z:410 Aquatorial-Guinea
-A:Aquatorial-Guinea
-T:*/*=1.74232(60)/1
-Z:411 Oman
-A:Oman
-T:*/*=1.74232(60)/1
-Z:412 Togo
-A:Togo
-T:*/*=1.75624(60)/1
-Z:413 Mali
-A:Mali
-T:*/*=1.79452(60)/1
-Z:414 Kuwait
-A:Kuwait
-T:*/*=1.79800(60)/1
-Z:415 Dschibuti
-A:Dschibuti
-T:*/*=1.81424(60)/1
-Z:416 Sierra Leone
-A:Sierra Leone
-T:*/*=1.81424(60)/1
-Z:417 Laos
-A:Laos
-T:*/*=1.81656(60)/1
-Z:418 Jemen
-A:Jemen
-T:*/*=1.81888(60)/1
-Z:419 Vanuatu
-A:Vanuatu
-T:*/*=1.82932(60)/1
-Z:420 Nigeria
-A:Nigeria
-T:*/*=1.83976(60)/1
-Z:421 Peru
-A:Peru
-T:*/*=1.84440(60)/1
-Z:422 Indien
-A:Indien
-T:*/*=1.85484(60)/1
-Z:423 Mongolei
-A:Mongolei
-T:*/*=1.86528(60)/1
-Z:424 Kiribati
-A:Kiribati
-T:*/*=1.89312(60)/1
-Z:425 Niue
-A:Niue
-T:*/*=1.90472(60)/1
-Z:426 Iran
-A:Iran
-T:*/*=1.91168(60)/1
-Z:427 Pakistan
-A:Pakistan
-T:*/*=1.91864(60)/1
-Z:428 Afghanistan
-A:Afghanistan
-T:*/*=1.97316(60)/1
-Z:429 Tuvalu
-A:Tuvalu
-T:*/*=2.01840(60)/1
-Z:430 Kambodscha
-A:Kambodscha
-T:*/*=2.02072(60)/1
-Z:431 Cook Inseln
-A:Cook Inseln
-T:*/*=2.02884(60)/1
-Z:432 Tschad
-A:Tschad
-T:*/*=2.02884(60)/1
-Z:433 Samoa (Western)
-A:Samoa (Western)
-T:*/*=2.03348(60)/1
-Z:434 Senegal
-A:Senegal
-T:*/*=2.09728(60)/1
-Z:435 Vietnam
-A:Vietnam
-T:*/*=2.10076(60)/1
-Z:436 Surinam
-A:Surinam
-T:*/*=2.12164(60)/1
-Z:437 Irak
-A:Irak
-T:*/*=2.14600(60)/1
-Z:438 Äthiopien
-A:Äthiopien
-T:*/*=2.15992(60)/1
-Z:439 Tonga
-A:Tonga
-T:*/*=2.17152(60)/1
-Z:440 Sao Tome et Principe
-A:Sao Tome et Principe
-T:*/*=2.17848(60)/1
-Z:441 Birma (Myanmar)
-A:Birma (Myanmar)
-T:*/*=2.19820(60)/1
-Z:442 Eritrea
-A:Eritrea
-T:*/*=2.28520(60)/1
-Z:443 Pitcairn Inseln
-A:Pitcairn Inseln
-T:*/*=2.29332(60)/1
-Z:444 China
-A:China
-T:*/*=2.57520(60)/1
-#####################################################################
-P:28,4 UPX City-Spezial
-C:Homepage: http://www.upx.de
-C:Erfasste Zonen:
-C:2	-   4	Deutschland
-C:10		Mobilfunk
-C:200	-	Ausland
-Z:1-4 Deutschland
-T:*/08-18=0.110(60)/1 Haupt
-T:*/18-21=0.097(60)/1 Neben
-T:*/21-08=0.067(60)/1 Nacht
-Z:10 Mobilfunk
-A:+491618		# T-C-Tel Voice Mail
-A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
-A:+49170,+49171		# D1
-A:+49172,+49173		# D2
-A:+49177,+49178		# Eplus
-A:+49176,+49179		# E2
-T:*/*=0.673(60)/1
+A:C-Tel Voice Mail, C-Netz, D1, D2, E1, E2
+T:*/*=0.790/60
+# FIXME: Länderliste auf den neuesten Stand bringen!
+# http://www.upx.de/anz_druck_preisliste.htm
+# 1 Land = 1 Zone (etwa) -> viel Spaß! :-]
 Z:200 London
 A:London
 T:*/*=0.22388(60)/1
@@ -9148,20 +8359,15 @@ T:W/21-07=0.04(60)/1
 T:E/*=0.04(60)/1
 Z:3-4 Deutschland
 A:+49
-T:W/07-09=0.09(60)/1
 T:W/09-18=0.12(60)/1
-T:W/18-21=0.09(60)/1
+T:W/07-09,18-21=0.09(60)/1
 T:W/21-07=0.06(60)/1
 T:E,H/*=0.09(60)/1
 Z:10 C/D/E-Netz
-A:+491618		# T-C-Tel Voice Mail
-A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
-A:+49170,+49171,+49175	# D1
-A:+49172,+49173,+49174	# D2
-A:+49177,+49178		# Eplus
-A:+49176,+49179		# E2
+A:C-Tel Voice Mail, C-Netz, D1, D2, E1, E2
 T:*/*=0.48(60)/1
 Z:102 TelDa.net
+A:08000103021
 T:*/*=0.06/60
 Z:200 Europa 1
 A:Andorra, Azoren, Belgien, Dänemark, Färöer, Finnland, Frankreich
@@ -9206,6 +8412,7 @@ C:MediaNet GmbH, Luisenplatz 6, 64283 Darmstadt 01031
 #
 P:32 KDD
 C:Deutschland GmbH, Immermannstraße 45, 40210 Düsseldorf 01032
+C:Ist das KDD-Conos? Wenn ja, Tarife bei 01063
 #####################################################################
 #
 #
@@ -10379,6 +9586,71 @@ T:*/*=0.12/2.61
 #
 P:34 NEFkom
 C:Telekommunikation GmbH & Co. KG, Bärenschanzstraße 4, 90429 Nürnberg 01034
+C:Nur Direkt Anschluß in folgenden Vorwahlgebieten:
+C:0911 Nürnberg/Fürth
+C:09131 Erlangen
+C:09132 Herzogenaurach
+C:09135 Heßdorf
+C:Homepage: http://www.nefkom.de
+C:Erfasste Zonen:
+C:0	-   4	Deutschland
+C:5		Sondertarif
+C:10	-   11	Mobilfunk
+C:102		Internetzugang NEFkom InterNEF
+C:200	- 209	Ausland
+C:Sondertarif 5: Gespräche zwischen NEFkom Telefonkunden
+Z:1-2 NEFcity
+T:W/08-18=0.06(60)/1 Hauptzeit
+T:W/18-08=0.04(60)/1 Nebenzeit
+T:E,H/*=0.04(60)/1 Wochenende
+Z:3 Mittelfranken
+T:W/08-18=0.11(60)/1 Hauptzeit
+T:W/05-08,18-22=0.08(60)/1 Nebenzeit
+T:E,H/05-22=0.08(60)/1 Nebenzeit
+T:*/22-05=0.05(60)/1 Nacht
+Z:4 DeutschlandWeit
+A:+49
+T:W/08-18=0.15(60)/1 Hauptzeit
+T:W/05-08,18-22=0.09(60)/1 Nebenzeit
+T:E,H/05-22=0.09(60)/1 Nebenzeit
+T:*/22-05=0.06(60)/1 Nacht
+Z:5 NEF-zu-NEF
+T:W/08-18=0.04(60)/1 Hauptzeit
+T:W/18-08=0/60,0.03(60)/1 Nebenzeit
+T:E,H/*=0/60,0.03(60)/1 Wochenende
+Z:10 Mobilfunk
+A:C-Tel Voice Mail, C-Netz, D1, D2, E1, E2
+T:W/08-18=0.78(60)/1 Hauptzeit
+T:W/18-08=0.45(60)/1 Nebenzeit
+T:E,H/*=0.45(60)/1 Wochenende
+Z:11 Mobilfunk E-Plus
+A:E1
+T:W/08-18=1.05(60)/1 Hauptzeit
+T:W/18-08=0.49(60)/1 Nebenzeit
+T:E,H/*=0.49(60)/1 Wochenende
+Z:102 InterNEF
+T:*/*=0.04/60
+Z:200 EuroNah
+A:Andorra, Belgien, Dänemark, Färöer, Finnland, Frankreich, Gibraltar
+A:Griechenland, Großbritannien, Irland, Island, Italien, Luxemburg, Monaco,
+A:Niederlande, Norwegen, Österreich, Polen, Portugal, Azoren, Madeira, San
+A:San Marino, Schweden, Schweiz, Slowakische Republik, Spanien, 
+A:Tschechische Republik, Ungarn, Zypern
+T:*/*=0.45(60)/1
+Z:201 EuroFern
+A:Albanien, Belarus, Bosnien-Herzegowina, Bulgarien, Estland
+A:Jugoslawien (Serbien und Montenegro), Kroatien, Lettland, Litauen, Malta
+A:Mazedonien, Rumänien, Russian Federation, Slowenien, Türkei, Ukraine
+T:*/*=0.98(60)/1
+Z:202 Nordamerika
+A:Kanada, USA
+T:*/*=0.39(60)/1
+Z:203 Asien/Pazifik
+A:Australien, Hongkong, Japan, Korea (Republik), Malaysia, Neuseeland, Singapur
+T:*/*=1.49(60)/1
+Z:204 WeltWeit
+A:+	# alle übrigen
+T:*/*=2.59(60)/1
 #####################################################################
 #
 #
@@ -10392,6 +9664,7 @@ D:dtag
 C:Münsterstraße 109, 48155 Münster 01036
 C:Sondertarif 11 "Hutchison Mobilfunk-Kunde": Vergünstigte Gespräche zu
 C:Hutchison Mobilfunk Teilnehmern
+C:Call By Call (nur für Mobilfunk Kunden!) siehe 01088
 C:Erfasste Zonen:
 C:2	-   4	Deutschland
 C:10		Mobilfunk
@@ -10935,12 +10208,7 @@ A:+49
 Z:5 Unter Uns
 T:*/*=0.02(60)/1
 Z:10 Mobilfunk
-A:+491618		# T-C-Tel Voice Mail
-A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
-A:+49170,+49171		# D1
-A:+49172,+49173		# D2
-A:+49177,+49178		# Eplus
-A:+49176,+49179		# E2
+A:C-Tel Voice Mail, C-Netz, D1, D2, E1, E2
 T:W/08-18=0.90(60)/1 Hauptzeit
 T:W/18-08=0.48(60)/1 Nebenzeit
 T:E,H/*=0.48(60)/1 Nebenzeit
@@ -11090,12 +10358,7 @@ A:+49
 Z:5 Unter Uns
 T:*/*=0.02(60)/1
 Z:10 Mobilfunk
-A:+491618		# T-C-Tel Voice Mail
-A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
-A:+49170,+49171		# D1
-A:+49172,+49173		# D2
-A:+49177,+49178		# Eplus
-A:+49176,+49179		# E2
+A:C-Tel Voice Mail, C-Netz, D1, D2, E1, E2
 T:W/08-18=0.90(60)/1 Hauptzeit
 T:W/18-08=0.48(60)/1 Nebenzeit
 T:E,H/*=0.48(60)/1 Nebenzeit
@@ -11211,8 +10474,207 @@ T:*/*=2.55(60)/1
 #####################################################################
 #
 #
-P:43 KielNet
+P:43 KielNet Call-By-Call
 C:GmbH, Postfach 41 60, 24100 Kiel 01043
+C:Homepage: http://www.kielnet.de
+C:Erfasste Zonene
+C:   1 -    4	Deutschland
+C:   5		Sondertarif
+C:  10		Mobilfunk
+C: 102		Internetzugang KielNet
+C: 200 		Ausland Gruppe A
+C:Sondertarif 5: Gilt für Verbindungen NACH Schleswig-Holstein
+Z:1-4 Deutschland
+A:Deutschland
+T:*/*=0.19/60
+Z:5 S-H Region
+A: +494101, +494102, +494103, +494104, +494106, +494107, +494109, +494120, +494121, +494122
+A: +494123, +494124, +494125, +494126, +494127, +494128, +494129, +494151, +494152, +494153
+A: +494154, +494155, +494156, +494158, +494159, +494191, +494192, +494193, +494194, +494195
+A: +494302, +494303, +494305, +494307, +494308, +49431, +494320, +494321, +494322, +494323
+A: +494324, +494326, +494327, +494328, +494329, +494330, +494331, +494332, +494333, +494334
+A: +494335, +494336, +494337, +494338, +494339, +494340, +494342, +494343, +494344, +494346
+A: +494347, +494348, +494349, +494351, +494352, +494353, +494354, +494355, +494356, +494357
+A: +494358, +494361, +494362, +494363, +494364, +494365, +494366, +494367, +494371, +494372
+A: +494381, +494382, +494383, +494384, +494385, +494392, +494393, +494394, +494502, +494503
+A: +494504, +494505, +494506, +494508, +494509, +49451, +494521, +494522, +494523, +494524
+A: +494525, +494526, +494527, +494528, +494529, +494531, +494532, +494533, +494534, +494535
+A: +494536, +494537, +494539, +494541, +494542, +494543, +494544, +494545, +494546, +494547
+A: +494550, +494551, +494552, +494553, +494554, +494555, +494556, +494557, +494558, +494559
+A: +494561, +494562, +494563, +494564, +494602, +494603, +494604, +494605, +494606, +494607
+A: +494608, +494609, +49461, +494621, +494622, +494623, +494624, +494625, +494626, +494627
+A: +494630, +494631, +494632, +494633, +494634, +494635, +494636, +494637, +494638, +494639
+A: +494641, +494642, +494643, +494644, +494646, +494651, +494661, +494662, +494663, +494664
+A: +494665, +494666, +494667, +494668, +494671, +494672, +494673, +494674, +494681, +494682
+A: +494683, +494684, +494802, +494803, +494804, +494805, +494806, +49481, +494821, +494822
+A: +494823, +494824, +494825, +494826, +494827, +494828, +494829, +494830, +494832, +494833
+A: +494834, +494835, +494836, +494837, +494838, +494839, +494841, +494842, +494843, +494844
+A: +494845, +494846, +494847, +494848, +494849, +494851, +494852, +494853, +494854, +494855
+A: +494857, +494858, +494859, +494861, +494862, +494863, +494864, +494865, +494871, +494872
+A: +494873, +494874, +494875, +494876, +494877, +494881, +494882, +494883, +494884
+A: +494885, +494892, +494893, +494856
+T:*/*=0.09/60
+Z:10 Mobilfunk
+A:C-Tel Voice Mail, C-Netz, D1, D2, E1, E2
+T:*/*=0.99/60
+Z:102 KielNET - FreeNET
+A:01927
+T:*/*=0.05/60
+Z:200 Gruppe A
+A:Andorra, Belgien, Dänemark, Finnland, Frankreich, Großbritanien, Irland
+A:Italien, Kanada, Luxemburg, Malta, Monaco, Niederlande, Norwegen, Österreich
+A:Portugal, Schweden, Schweiz, Spanien, Ungarn, USA
+T:*/*=0.69/60
+#####################################################################
+P:43,1 KielNet Preselection
+C:GmbH, Postfach 41 60, 24100 Kiel 01043
+C:Homepage: http://www.kielnet.de
+C:Erfasste Zonene
+C:   1 -    4	Deutschland
+C:   5		Sondertarif
+C:  10		Mobilfunk
+C: 102		Internetzugang KielNet
+C: 200 		Ausland Gruppe A
+C: 201		Ausland Gruppe B
+C: 202		Ausland Gruppe C
+C:Sondertarif 5: Gilt für Verbindungen NACH Schleswig-Holstein
+Z:1-4 Deutschland
+A:Deutschland
+T:*/*=0.19/60
+Z:5 S-H Region
+A: +494101, +494102, +494103, +494104, +494106, +494107, +494109, +494120, +494121, +494122
+A: +494123, +494124, +494125, +494126, +494127, +494128, +494129, +494151, +494152, +494153
+A: +494154, +494155, +494156, +494158, +494159, +494191, +494192, +494193, +494194, +494195
+A: +494302, +494303, +494305, +494307, +494308, +49431, +494320, +494321, +494322, +494323
+A: +494324, +494326, +494327, +494328, +494329, +494330, +494331, +494332, +494333, +494334
+A: +494335, +494336, +494337, +494338, +494339, +494340, +494342, +494343, +494344, +494346
+A: +494347, +494348, +494349, +494351, +494352, +494353, +494354, +494355, +494356, +494357
+A: +494358, +494361, +494362, +494363, +494364, +494365, +494366, +494367, +494371, +494372
+A: +494381, +494382, +494383, +494384, +494385, +494392, +494393, +494394, +494502, +494503
+A: +494504, +494505, +494506, +494508, +494509, +49451, +494521, +494522, +494523, +494524
+A: +494525, +494526, +494527, +494528, +494529, +494531, +494532, +494533, +494534, +494535
+A: +494536, +494537, +494539, +494541, +494542, +494543, +494544, +494545, +494546, +494547
+A: +494550, +494551, +494552, +494553, +494554, +494555, +494556, +494557, +494558, +494559
+A: +494561, +494562, +494563, +494564, +494602, +494603, +494604, +494605, +494606, +494607
+A: +494608, +494609, +49461, +494621, +494622, +494623, +494624, +494625, +494626, +494627
+A: +494630, +494631, +494632, +494633, +494634, +494635, +494636, +494637, +494638, +494639
+A: +494641, +494642, +494643, +494644, +494646, +494651, +494661, +494662, +494663, +494664
+A: +494665, +494666, +494667, +494668, +494671, +494672, +494673, +494674, +494681, +494682
+A: +494683, +494684, +494802, +494803, +494804, +494805, +494806, +49481, +494821, +494822
+A: +494823, +494824, +494825, +494826, +494827, +494828, +494829, +494830, +494832, +494833
+A: +494834, +494835, +494836, +494837, +494838, +494839, +494841, +494842, +494843, +494844
+A: +494845, +494846, +494847, +494848, +494849, +494851, +494852, +494853, +494854, +494855
+A: +494857, +494858, +494859, +494861, +494862, +494863, +494864, +494865, +494871, +494872
+A: +494873, +494874, +494875, +494876, +494877, +494881, +494882, +494883, +494884
+A: +494885, +494892, +494893, +494856
+T:*/*=0.09/60
+Z:10 Mobilfunk
+A:C-Tel Voice Mail, C-Netz, D1, D2, E1, E2
+T:*/*=0.99/60
+Z:102 KielNET - FreeNET
+A:01927
+T:*/*=0.05/60
+Z:200 Gruppe A
+A:Andorra, Belgien, Dänemark, Finnland, Frankreich, Großbritanien, Irland
+A:Italien, Kanada, Luxemburg, Malta, Monaco, Niederlande, Norwegen, Österreich
+A:Portugal, Schweden, Schweiz, Spanien, Ungarn, USA
+T:*/*=0.69/60
+Z:201 Gruppe B
+A:Albanien, Algerien, Bosnien-Herzegowina, Bulgarien, Estland, Fäeroer, Georgien
+A:Gibraltar, Griechenland, Hongkong, Island, Israel, Japan, Jugoslawien
+A:Korea (Süd), Kroatien, Lettland, Litauen, Malaysia, Marokko, Mazedonien
+A:Moldavien, Polen, Rumänien, San Marino, Singapur, Slowakische Republik
+A:Slowenien, Tschechische Republik, Türkei, Tunesien, Ukraine, Weißrußland, Zypern
+T:*/*=1.69/60
+Z:202 Gruppe C
+A:Amerikanische Jungferninseln, Argentinien, Ascension, Aserbaidschan, Australien
+A:Bahamas, Bahrein, Bangladesh, Bermuda, Bhutan, Brasilien, Chile, China
+A:Dom Rep, Ecuador, Fidschi, Franz. Guyana, Guadeloupe, Guatemala, Guinea-Bissau
+A:Guyana, Hawaii, Indien, Indonesien, Iran, Kasachstan, Katar, Kolumbien
+A:Kuweit, Laos, Macao, Marianen, Martinique, Mayotte, Mexico, Nepal, Neuseeland
+A:Pakistan, Peru, Philippinen, Puerto Rico, Rußland
+A:Sao Tome und Principe, Saudi Arabien, St. Helena, St. Pierre und Miquelon
+A:Südafrika, Taiwan, Thailand, Uruguay, VAE
+T:*/*=2.69/60
+#####################################################################
+P:43,2 KielNet Telefonanschluß
+C:GmbH, Postfach 41 60, 24100 Kiel 01043
+C:Homepage: http://www.kielnet.de
+C:Erfasste Zonene
+C:   1 -    4	Deutschland
+C:   5		Sondertarif
+C:   6		Sondertarif
+C:  10		Mobilfunk
+C: 102		Internetzugang KielNet
+C: 200 		Ausland Gruppe A
+C: 201		Ausland Gruppe B
+C: 202		Ausland Gruppe C
+C:Sondertarif 5: Gilt für Verbindungen NACH Schleswig-Holstein
+C:Sondertarif 6: Verbindungen von KielNet zu KielNet sind kostenlos
+Z:1-3 KielNet Region
+A:494302, 494307, 494308, 49431, 494340, 494342, 494343
+A:494344, 494346, 494347, 494348, 494349, 494384
+T:*/*=0.05/60
+Z:4 Deutschland
+A:Deutschland
+T:*/*=0.19/60
+Z:5 S-H Region
+A: +494101, +494102, +494103, +494104, +494106, +494107, +494109, +494120, +494121, +494122
+A: +494123, +494124, +494125, +494126, +494127, +494128, +494129, +494151, +494152, +494153
+A: +494154, +494155, +494156, +494158, +494159, +494191, +494192, +494193, +494194, +494195
+A: +494302, +494303, +494305, +494307, +494308, +49431, +494320, +494321, +494322, +494323
+A: +494324, +494326, +494327, +494328, +494329, +494330, +494331, +494332, +494333, +494334
+A: +494335, +494336, +494337, +494338, +494339, +494340, +494342, +494343, +494344, +494346
+A: +494347, +494348, +494349, +494351, +494352, +494353, +494354, +494355, +494356, +494357
+A: +494358, +494361, +494362, +494363, +494364, +494365, +494366, +494367, +494371, +494372
+A: +494381, +494382, +494383, +494384, +494385, +494392, +494393, +494394, +494502, +494503
+A: +494504, +494505, +494506, +494508, +494509, +49451, +494521, +494522, +494523, +494524
+A: +494525, +494526, +494527, +494528, +494529, +494531, +494532, +494533, +494534, +494535
+A: +494536, +494537, +494539, +494541, +494542, +494543, +494544, +494545, +494546, +494547
+A: +494550, +494551, +494552, +494553, +494554, +494555, +494556, +494557, +494558, +494559
+A: +494561, +494562, +494563, +494564, +494602, +494603, +494604, +494605, +494606, +494607
+A: +494608, +494609, +49461, +494621, +494622, +494623, +494624, +494625, +494626, +494627
+A: +494630, +494631, +494632, +494633, +494634, +494635, +494636, +494637, +494638, +494639
+A: +494641, +494642, +494643, +494644, +494646, +494651, +494661, +494662, +494663, +494664
+A: +494665, +494666, +494667, +494668, +494671, +494672, +494673, +494674, +494681, +494682
+A: +494683, +494684, +494802, +494803, +494804, +494805, +494806, +49481, +494821, +494822
+A: +494823, +494824, +494825, +494826, +494827, +494828, +494829, +494830, +494832, +494833
+A: +494834, +494835, +494836, +494837, +494838, +494839, +494841, +494842, +494843, +494844
+A: +494845, +494846, +494847, +494848, +494849, +494851, +494852, +494853, +494854, +494855
+A: +494857, +494858, +494859, +494861, +494862, +494863, +494864, +494865, +494871, +494872
+A: +494873, +494874, +494875, +494876, +494877, +494881, +494882, +494883, +494884
+A: +494885, +494892, +494893, +494856
+T:*/*=0.09/60
+Z:6 KielNet
+T:*/*=0/60
+Z:10 Mobilfunk
+A:C-Tel Voice Mail, C-Netz, D1, D2, E1, E2
+T:*/*=0.99/60
+Z:102 KielNET - FreeNET
+A:01927
+T:*/*=0.05/60
+Z:200 Gruppe A
+A:Andorra, Belgien, Dänemark, Finnland, Frankreich, Großbritanien, Irland
+A:Italien, Kanada, Luxemburg, Malta, Monaco, Niederlande, Norwegen, Österreich
+A:Portugal, Schweden, Schweiz, Spanien, Ungarn, USA
+T:*/*=0.69/60
+Z:201 Gruppe B
+A:Albanien, Algerien, Bosnien-Herzegowina, Bulgarien, Estland, Fäeroer, Georgien
+A:Gibraltar, Griechenland, Hongkong, Island, Israel, Japan, Jugoslawien
+A:Korea (Süd), Kroatien, Lettland, Litauen, Malaysia, Marokko, Mazedonien
+A:Moldavien, Polen, Rumänien, San Marino, Singapur, Slowakische Republik
+A:Slowenien, Tschechische Republik, Türkei, Tunesien, Ukraine, Weißrußland, Zypern
+T:*/*=1.69/60
+Z:202 Gruppe C
+A:Amerikanische Jungferninseln, Argentinien, Ascension, Aserbaidschan, Australien
+A:Bahamas, Bahrein, Bangladesh, Bermuda, Bhutan, Brasilien, Chile, China
+A:Dom Rep, Ecuador, Fidschi, Franz. Guyana, Guadeloupe, Guatemala, Guinea-Bissau
+A:Guyana, Hawaii, Indien, Indonesien, Iran, Kasachstan, Katar, Kolumbien
+A:Kuweit, Laos, Macao, Marianen, Martinique, Mayotte, Mexico, Nepal, Neuseeland
+A:Pakistan, Peru, Philippinen, Puerto Rico, Rußland
+A:Sao Tome und Principe, Saudi Arabien, St. Helena, St. Pierre und Miquelon
+A:Südafrika, Taiwan, Thailand, Uruguay, VAE
+T:*/*=2.69/60
 #####################################################################
 #
 #
@@ -11225,14 +10687,15 @@ C:33, 37	Satelitenfunk
 C:40		Auskunft DTAG
 C:60	-  75	Pieper
 C:81	-  85	Service 0180-x
-C:91	-  94	Service 0190-x
 C:100		T-Online
 C:101		AOL
+C:102		Area 44 (Internetzugang von VEW)
 C:160	- 163	DTAG Service Nummern
 C:170		Persönliche Rufnummer
 C:171		Info Expo 2000
 C:172		IVBB
 C:200	-	Ausland
+C:Über VEW sind KEINE Verbindungen zu 0190 möglich!
 Z:0 FreeCall
 A:0800,0130, International Freephone
 A:+49231438110	# TELNET Support Nummern
@@ -11240,20 +10703,15 @@ Z:1-3 TELNET NRW
 T:W/08-18=0.12/60 Tag
 T:E,H/08-18=0.08/60 Freizeit
 T:*/18-22=0.08/60 Freizeit
-T:*/22-08=0.04/120 Nacht
+T:*/22-08=0.08/120 Nacht
 Z:4 TELNET Deutschland
+A:+49
 T:W/08-18=0.15/60 Tag
 T:E,H/08-18=0.10/60 Freizeit
 T:*/18-22=0.10/60 Freizeit
-T:*/22-08=0.06/120 Nacht
-A:+49
+T:*/22-08=0.12/120 Nacht
 Z:10 TELNET Mobil
-A:+491618		# T-C-Tel Voice Mail
-A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
-A:+49170,+49171		# D1
-A:+49172,+49173		# D2
-A:+49177,+49178		# Eplus
-A:+49176,+49179		# E2
+A:C-Tel Voice Mail, C-Netz, D1, D2, E1, E2
 T:W/08-18=0.80/60 Tag
 T:E,H/08-18=0.45/60 Freizeit
 T:*/18-22=0.45/60 Freizeit
@@ -11338,18 +10796,6 @@ T:*/*=0.48/0,0/1
 Z:85 Service 0180-5
 A:01805
 T:*/*=0.24/60
-Z:91 Service 0190-1, -2, -3, -5
-A:01901,01902,01903,01905
-T:*/*=1.20/60
-Z:92 Service 0190-4, -6
-A:01904,01906
-T:*/*=0.80/60
-Z:93 Service 0190-7, -9
-A:01907,01909
-T:*/*=2.40/60
-Z:94 Service 0190-8
-A:01908
-T:*/*=3.60/60
 Z:100 T-Online
 A:01910
 T:W/08-18=0.08/60 Tag
@@ -11360,6 +10806,9 @@ A:01914,019161
 T:W/08-18=0.08/60 Tag
 T:W/18-08=0.05/60 Nacht
 T:E,H/*=0.05/60 Wochenende
+Z:102 Area 44
+A:0192344
+T:*/*=0.048/60
 Z:160 Televotum
 A:01370,01373,01374,01375,01376,01377,01378,01379
 T:*/*=0.12/0,0.36/60
@@ -11407,7 +10856,9 @@ C:Telephone Deutschland, Grosser Plan 8, 29221 Celle 01045
 #
 P:46 KomTel
 D:dtag
-C:Gesellschaft für Kommunikation und Informationsdienste GmbH, Batteriestraße 48, 24937 Flensburg 01046
+C:Gesellschaft für Kommunikation und Informationsdienste GmbH
+C:Batteriestraße 48, 24937 Flensburg 01046
+C:Homepage: http://www.komtel.de
 C:Spezialtarif 5 "Nord-Ostsee": gilt für Verbindungen mit Niedersachsen,
 C:Bremen, Mecklenburg-Vorpommern, Schleswig-Holstein und Hamburg
 C:Erfasste Zonen:
@@ -11433,21 +10884,18 @@ A:01113,01114,01115	# DTAG-Service
 A:110, 112		# Polizei, Feuerwehr
 Z:1-4 HalloDeutschland
 A:+49
-T:W/08-20=0.25(60)/1 Tag
-T:W/20-08=0.15(60)/1 Nacht
-T:E,H/*=0.15(60)/1 Wochenende
+T:W/08-20=0.16(60)/1 Tag
+T:W/20-08=0.12(60)/1 Nacht
+T:E,H/*=0.12(60)/1 Wochenende
 Z:5 Nord-Ostsee
-# FIXME: Zonen einfügen
-T:W/08-20=0.15(60)/1 Tag
+##### FIXME: Zonen einfügen
+###### gilt für Verbindungen mit Niedersachsen, Bremen, Mecklenburg-Vorpommern,
+###### Schleswig-Holstein und Hamburg
+T:W/08-20=0.14(60)/1 Tag
 T:W/20-08=0.10(60)/1 Nacht
 T:E,H/*=0.10(60)/1 Wochenende
 Z:10 Mobilfunk
-A:+491618		# T-C-Tel Voice Mail
-A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
-A:+49170,+49171		# D1
-A:+49172,+49173		# D2
-A:+49177,+49178		# Eplus
-A:+49176,+49179		# E2
+A:C-Tel Voice Mail, C-Netz, D1, D2, E1, E2
 T:W/08-20=0.90(60)/1 Tag
 T:W/20-08=0.70(60)/1 Nacht
 T:E,H/*=0.70(60)/1 Wochenende
@@ -11597,6 +11045,8 @@ T:*/*=0.60(60)/1
 Z:172 IVBB
 A:01888
 T:*/*=0.30(60)/1
+###### FIXME: Ausland überprüfen!
+###### siehe dazu: http://www.komtel.de/lhome/leistungen/mleistungen/mtelefonie/mauslandNEU/mauslandneu.html
 Z:202 Welt 1
 A:Alaska, Großbritanien, Kanada, Vereinigte Staaten von Amerika
 T:*/*=0.25(60)/1
@@ -11740,16 +11190,16 @@ Z:1 MoinNachbar
 T:W/08-20=0.06(60)/1 Tag
 T:W/20-08=0.03(60)/1 Nacht
 T:E,H/*=0.03(60)/1 Wochenende
-Z:2 MonMoinRegional
+Z:2 MoinMoinRegional
 T:W/08-20=0.08(60)/1 Tag
 T:W/20-08=0.05(60)/1 Nacht
 T:E,H/*=0.05(60)/1 Wochenende
-Z:3 MonMoin
+Z:3 MoinMoin
 T:W/08-20=0.10(60)/1 Tag
 T:W/20-08=0.06(60)/1 Nacht
 T:E,H/*=0.06(60)/1 Wochenende
 Z:4 HalloDeutschland
-T:W/08-20=0.20(60)/1 Tag
+T:W/08-20=0.16(60)/1 Tag
 T:W/20-08=0.10(60)/1 Nacht
 T:E,H/*=0.10(60)/1 Wochenende
 Z:5 Nord-Ostsee
@@ -11758,12 +11208,7 @@ T:W/08-20=0.15(60)/1 Tag
 T:W/20-08=0.10(60)/1 Nacht
 T:E,H/*=0.10(60)/1 Wochenende
 Z:10 Mobilfunk
-A:+491618		# T-C-Tel Voice Mail
-A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
-A:+49170,+49171		# D1
-A:+49172,+49173		# D2
-A:+49177,+49178		# Eplus
-A:+49176,+49179		# E2
+A:C-Tel Voice Mail, C-Netz, D1, D2, E1, E2
 T:W/08-20=0.90(60)/1 Tag
 T:W/20-08=0.70(60)/1 Nacht
 T:E,H/*=0.70(60)/1 Wochenende
@@ -11920,9 +11365,11 @@ T:W/20-08=0.15(60)/1 Nacht
 T:E,H/*=0.15(60)/1 Wochenende
 Z:201 MoinDanmark
 A:Dänemark
-T:W/08-20=0.30(60)/1 Tag
+T:W/08-20=0.29(60)/1 Tag
 T:W/20-08=0.20(60)/1 Nacht
 T:E,H/*=0.20(60)/1 Wochenende
+###### FIXME: Ausland überprüfen!
+###### siehe dazu: http://www.komtel.de/lhome/leistungen/mleistungen/mtelefonie/mauslandNEU/mauslandneu.html
 Z:202 Welt 1
 A:Alaska, Großbritanien, Kanada, Vereinigte Staaten von Amerika
 T:*/*=0.25(60)/1
@@ -12049,6 +11496,10 @@ C:GmbH, Im Defdahl 5, 44141 Dortmund 01048
 C:Sondertarif 5 "Surf-Tarif": "Der günstige Surf-Tarif für DOKOM-Kunden,
 C:die auch einen Internetanschluss bei uns haben." ?  Gilt der Tarif nur
 C:für´s Surfen, oder allgemein im Stadtgebiet ?
+C:Sondertarif 5 gilt bei Abschluß des Kombi Paketes, bei dem man
+C:zeitlich und volumenmäßig unbegrenzten Internetzugang hat, und auch
+C:vergünstigte Telefontarife!
+C:Siehe dazu: http://www.dokom.de/telefondienste/tarife_spezial.htm
 C:Erfasste Zonen:
 C:1	-   4	Deutschland
 C:5		Sondertarif
@@ -12061,12 +11512,12 @@ T:E,H/05-21=0.1044/150 Freizeit
 T:W/21-09=0.1044/240 Nacht
 T:E,H/21-05=0.1044/240 Nacht
 Z:3-4 Regional/National
+A:+49
 T:W/09-18=0.1044/30 Tag
 T:W/18-21=0.1044/60 Freizeit
 T:E,H/05-21=0.1044/60 Freizeit
 T:W/21-09=0.0522/60 Nacht
 T:E,H/21-05=0.0522/60 Nacht
-A:+49
 Z:5 Surf-Tarif
 T:W/09-18=0.0696/90 Tag
 T:W/18-21=0.0696/150 Freizeit
@@ -12074,19 +11525,17 @@ T:E,H/05-21=0.0696/150 Freizeit
 T:W/21-09=0.0696/240 Nacht
 T:E,H/21-05=0.0696/240 Nacht
 Z:10 Mobilfunk C- & D-Netze
-A:+491618		# T-C-Tel Voice Mail
-A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
-A:+49170,+49171		# D1
-A:+49172,+49173		# D2
+A:C-Tel Voice Mail, C-Netz, D1, D2
 T:W/09-18=0.1044/7.5 Tag
 T:W/18-08=0.1044/15 Freizeit
 T:E,H/*=0.1044/15 Wochenende
 Z:14-15 Mobilfunk E-Netze
-A:+49177,+49178		# Eplus
-A:+49176,+49179		# E2
+A:E1, E2
 T:W/09-18=0.1044/5.3 Tag
 T:W/18-08=0.1044/12.8 Freizeit
 T:E,H/*=0.1044/12.8 Wochenende
+##### FIXME: Länder überprüfen
+##### http://www.dokom.de/telefondienste/tarife/tarife_privat_international.htm
 Z:200 Europa 1
 A:Niederlande, Belgien, Luxemburg
 A:Frankreich, Griechenland, Großbritannien
@@ -13041,8 +12490,153 @@ C:GmbH i.G. Grimmstraße 4 80336 München 01062
 #####################################################################
 #
 #
-P:63 Conos
+P:63 KDD-Conos PrivateCall easy
+C:Corporate Network & Services Aktiengesellschaft Lievelingsweg 125
+A:52119 Bonn 01063
+C:URL: http://www.kdd-conos.de
+C:Preselection
+C:Erfasste Zonen:
+C:0	-   4	Deutschland
+C:5		Sondertarif
+C:10		Mobilfunk
+C:200	- 209	Ausland
+C:Sondertarif 5: Gespräche zu KDD-Conos Mobilfunkteilnehmern
+# G: 07-99
+Z:1-2 Lokal
+T:W/08-18=0.09/60
+T:W/18-08=0.06/60
+T:E,H/0.06/60
+Z:3-4 Deutschland
+T:W/08-18=0.14/60
+T:W/18-21=0.09/60
+T:W/21-08=0.06/60
+T:E,H/*=0.06/60
+Z:5 KDD-Conos Mobilfunk
+A:C-Tel Voice Mail, C-Netz, D1, D2, E1, E2
+T:W/08-18=0.44/60
+T:W/18-08=0.35/60
+T:E,H/0.35/60
+Z:10 Mobilfunk
+A:C-Tel Voice Mail, C-Netz, D1, D2, E1, E2
+T:W/08-18=0.49/60
+T:W/18-08=0.39/60
+T:E,H/0.39/60
+Z:200 EuroCenter
+A:Andorra, Belgien, Dänemark, Frankreich, Großbritannien
+A:Italien, Liechtenstein, Luxemburg, Monaco, Niederlande
+A:Österreich, Polen, Schweden, Spanien, Schweiz
+A:Tschechische Republik, Vatikanstadt
+T:*/*=0.39/60
+Z:201 EuroGreece
+A:Griechenland
+T:*/*=0.39/60
+Z:202 EuroTurkey
+A:Türkei
+T:*/*=0.59/60
+Z:203 EuroPlus
+A:Azoren, Finnland, Irland, Island, Madeira, Norwegen
+A:Portugal, San Marino, Slowakische Republik
+T:*/*=0.49/60
+Z:204 EuroMare
+A:Ägypten, Albanien, Algerien, Belarus (Weißrussland)
+A:Bosnien-Herzegowina, Bulgarien, Estland, Gibraltar, Israel
+A:Jordanien, Jugoslawien (Serbien und Montenegro)
+A:Kroatien, Lettland, Libyen, Libanon, Litauen, Malta
+A:Marokko, Mazedonien, Moldau Republik, Rumänien
+A:Russische Föderation (westl.)
+A:Slowenien, Syrien, Tunesien, Ukraine, Ungarn, Zypern
+T:*/*=0.77/60
+Z:205 Welt I
+A:Vereinigte Staaten von Amerika, Kanada
+T:*/*=0.29/60
+Z:206 Welt II
+A:Australien, Hongkong, Japan, Südkorea, Neuseeland, Singapur, Taiwan
+T:*/*=0.59/60
+Z:207 Welt III
+A:Argentinien, Brasilien, Chile, Dominikanische Republik
+A:Iran, Kasachstan, Kolumbien, Niederländische Antillen
+A:Philippinen, Saudi-Arabien, Südafrika, Vereinigte Arabische Emirate
+T:*/*=1.79/60
+Z:208 Welt V
+A:China
+T:*/*=1.69/60
+Z:209 Welt IV
+A:+	# alle übrigen
+T:*/*=1.99/60
+#####################################################################
+P:63 KDD-Conos PrivateCall genau
 C:Corporate Network & Services Aktiengesellschaft Lievelingsweg 125 52119 Bonn 01063
+C:URL: http://www.kdd-conos.de
+C:Preselection
+C:Erfasste Zonen:
+C:0	-   4	Deutschland
+C:5		Sondertarif
+C:10		Mobilfunk
+C:200	- 209	Ausland
+C:Sondertarif 5: Gespräche zu KDD-Conos Mobilfunkteilnehmern
+# G: 07-99
+Z:1-2 Lokal
+T:W/08-18=0.12(60)/1
+T:W/18-21=0.08(60)/1
+T:W/21-08=0.06(60)/1
+T:E,H/*=0.06(60)/1
+Z:3-4 Deutschland
+T:W/08-18=0.16(60)/1
+T:W/18-21=0.11(60)/1
+T:W/21-08=0.08(60)/1
+T:E,H/*=0.08(60)/1
+Z:5 KDD-Conos Mobilfunk
+A:C-Tel Voice Mail, C-Netz, D1, D2, E1, E2
+T:W/08-18=0.54(60)/1
+T:W/18-08=0.39(60)/1
+T:E,H/0.35(60)/1
+Z:10 Mobilfunk
+A:C-Tel Voice Mail, C-Netz, D1, D2, E1, E2
+T:W/08-18=0.59(60)/1
+T:W/18-08=0.45(60)/1
+T:E,H/0.45(60)/1
+Z:200 EuroCenter
+A:Andorra, Belgien, Dänemark, Frankreich, Großbritannien
+A:Italien, Liechtenstein, Luxemburg, Monaco, Niederlande
+A:Österreich, Polen, Schweden, Spanien, Schweiz
+A:Tschechische Republik, Vatikanstadt
+T:*/*=0.44(60)/1
+Z:201 EuroGreece
+A:Griechenland
+T:*/*=0.44(60)/1
+Z:202 EuroTurkey
+A:Türkei
+T:*/*=0.64(60)/1
+Z:203 EuroPlus
+A:Azoren, Finnland, Irland, Island, Madeira, Norwegen
+A:Portugal, San Marino, Slowakische Republik
+T:*/*=0.54(60)/1
+Z:204 EuroMare
+A:Ägypten, Albanien, Algerien, Belarus (Weißrussland)
+A:Bosnien-Herzegowina, Bulgarien, Estland, Gibraltar, Israel
+A:Jordanien, Jugoslawien (Serbien und Montenegro)
+A:Kroatien, Lettland, Libyen, Libanon, Litauen, Malta
+A:Marokko, Mazedonien, Moldau Republik, Rumänien
+A:Russische Föderation (westl.)
+A:Slowenien, Syrien, Tunesien, Ukraine, Ungarn, Zypern
+T:*/*=0.79(60)/1
+Z:205 Welt I
+A:Vereinigte Staaten von Amerika, Kanada
+T:*/*=0.34(60)/1
+Z:206 Welt II
+A:Australien, Hongkong, Japan, Südkorea, Neuseeland, Singapur, Taiwan
+T:*/*=0.64(60)/1
+Z:207 Welt III
+A:Argentinien, Brasilien, Chile, Dominikanische Republik
+A:Iran, Kasachstan, Kolumbien, Niederländische Antillen
+A:Philippinen, Saudi-Arabien, Südafrika, Vereinigte Arabische Emirate
+T:*/*=1.79(60)/1
+Z:208 Welt V
+A:China
+T:*/*=1.74(60)/1
+Z:209 Welt IV
+A:+	# alle übrigen
+T:*/*=2.19(60)/1
 #####################################################################
 #
 #
@@ -15003,6 +14597,53 @@ Z:101 knUUT
 A:0191955
 T:*/09-21=0.055/60
 T:*/21-09=0.049/60
+#####################################################################
+P:88,1 Hutchison Call By Call
+C:Nur für Mobilfunkkunden von Hutchison!
+C:Homepage: http://www.hutchison.de
+C:Erfasste Zonen:
+C:2	-   4	Deutschland
+C:10		Mobilfunk
+C:200	-	Ausland
+Z:2-4 Inland
+A:+49
+T:W/08-18=0.179/60 Geschäftszeit
+T:W/18-21=0.109/60 Freizeit
+T:E,H/08-21=0.109/60 Freizeit
+T:*/21-08=0.059 Nacht
+Z:10 Mobil
+A:C-Tel Voice Mail, C-Netz, D1, D2, E1, E2
+T:*/*=0.559/60
+########## FIXME: Preise einfügen! 
+########## http://www.hutchison.de/html/festnetz/tarifberatung/minpreise_int.htm
+Z:200 Europe 1
+A:Belgien, Dänemark, Faröer, Finnland, Frankreich, Großbritannien, Irland
+A:Italien, Luxemburg, Monaco, Niederlande, Norwegen, Österreich, Polen
+A:Portugal, Schweden, Schweiz, Spanien, Tschechische Republik
+T:*/*=0.68/60
+Z:201 Europe 2
+A:Andorra, Bosnien-Herzegowina, Bulgarien, Estland, Gibraltar
+A:Griechenland, Jugoslawien, Kroatien, Liechtenstein, Malta, San Marino
+A:Serbien, Slowakei, Türkei, Ukraine, Ungarn, Vatikanstadt, Weissrussland
+A:Zypern
+T:*/*=0.99/60
+Z:202 World 1
+A:Australien, Japan, Neuseeland, USA, Kanada
+T:*/*=0.68/60
+Z:203 World 2
+A:Ägypten, Albanien, Algerien, Hongkong, Island, Israel, Jordanien, South Korea
+A:Lettland, Libanon, Libyen, Litauen, Marokko
+A:Mazedonien, Rumänien, Russische Föderation, Singapur, Slowenien
+A:Tunesien
+T:*/*=1.84/60
+Z:204 World 3
+A:Argentinien, Brasilien, Chile, China, Kasachstan, Kolumbien, Moldawien
+A:Niederl. Antillen, Philippinen, Saudi Arabien, Südafrika, Syrien, Taiwan
+A:Vereinigte Arabische Emirate
+T:*/*=2.16/60
+Z:205 World 4
+A:+       # Alle übrigen
+T:*/*=2.42/60
 #####################################################################
 #
 #

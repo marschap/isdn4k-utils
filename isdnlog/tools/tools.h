@@ -1,4 +1,4 @@
-/* $Id: tools.h,v 1.49 1999/10/29 19:46:01 akool Exp $
+/* $Id: tools.h,v 1.50 1999/11/02 21:01:58 akool Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,11 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools.h,v $
+ * Revision 1.50  1999/11/02 21:01:58  akool
+ * isdnlog-3.62
+ *  - many new rates
+ *  - next try to fix "Sonderrufnummern"
+ *
  * Revision 1.49  1999/10/29 19:46:01  akool
  * isdnlog-3.60
  *  - sucessfully ported/tested to/with:
@@ -1037,6 +1042,8 @@ _EXTERN char    	idate[256];
 _EXTERN CALL    	call[MAXCHAN];
 #ifdef Q931
 _EXTERN int     	q931dmp;
+#else
+#define q931dmp 0
 #endif
 #if 0 /* Fixme: remove */
 _EXTERN int     	CityWeekend;

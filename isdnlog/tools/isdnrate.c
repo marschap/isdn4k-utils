@@ -1,4 +1,4 @@
-/* $Id: isdnrate.c,v 1.22 1999/10/26 18:17:14 akool Exp $
+/* $Id: isdnrate.c,v 1.23 1999/11/02 21:01:57 akool Exp $
 
  * ISDN accounting for isdn4linux. (rate evaluation)
  *
@@ -19,6 +19,11 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnrate.c,v $
+ * Revision 1.23  1999/11/02 21:01:57  akool
+ * isdnlog-3.62
+ *  - many new rates
+ *  - next try to fix "Sonderrufnummern"
+ *
  * Revision 1.22  1999/10/26 18:17:14  akool
  * isdnlog-3.58
  *   - big cleanup ( > 1.3 Mb removed!)
@@ -850,7 +855,7 @@ static int compute(char *num)
 static void print_header(void)
 {
   print_msg(PRT_NORMAL, "Eine %d Sekunden lange Verbindung von %s nach %s kostet am %s\n",
-  duration, formatNumber("%f", &srcnum), formatNumber("%f", &destnum),
+  duration, formatNumber("%F", &srcnum), formatNumber("%F", &destnum),
 	    ctime(&start));
 }
 

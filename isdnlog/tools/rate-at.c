@@ -291,7 +291,7 @@ void rate_1001(void)
 		     { "Österreichzone", "Österreich" },
 		     { "Mobilfunk 1", "+43663,+43664,+43676" },
 		     { "Mobilfunk 2", "+43699" },
-		     { "Online", "+437189,19411,19430,19440" },
+		     { "Online", "07189*,19411,19430,19440" },
 		     { "Ausland Zone 1", "Deutschland, Italien, Liechtenstein, Schweiz, Slowakei, Slowenien, Tschechien, Ungarn" },
 		     { "Ausland Zone 2", "Albanien, Andorra, Belarus, Belgien, Bosnien-Herzegowina, Bulgarien, Dänemark,Finnland, Frankreich, Großbritannien, Nordirland, Irland, Jugoslawien, Kroatien, Luxemburg, Malta, Mazedonien, Monaco, Niederlande, Norwegen, Rumänien, San Marino, Schweden, Spanien, Ukraine, Vatikanstadt, Zypern" },
 		     { "Ausland Zone 3", "Algerien, Estland, Färöer-Inseln, Georgien, Gibraltar, Island, Israel, Lettland, Litauen, Marokko, Portugal, Russische Föderation, Tadschikistan, Turkmenistan, Usbekistan" },
@@ -2325,7 +2325,7 @@ int main (int argc, char *argv[])
   printf ("# Many thanks to Daniela Bruder <dbruder@sime.com>\n");
   printf ("# for collecting and preparing most of the call charges.\n\n\n");
   
-  printf ("V:1.88-Austria [27-Oct-1999]\n\n");
+  printf ("V:1.89-Austria [02-Nov-1999]\n\n");
   printf ("U:%%.3f öS\n");
   
 #if 0
