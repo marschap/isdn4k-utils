@@ -1,4 +1,4 @@
-/* $Id: isdntools.c,v 1.3 1997/03/06 20:36:34 luethje Exp $
+/* $Id: isdntools.c,v 1.4 1997/03/07 23:34:49 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -19,6 +19,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdntools.c,v $
+ * Revision 1.4  1997/03/07 23:34:49  luethje
+ * README.conffile completed, paranoid_check() used by read_conffiles(),
+ * policy.h will be removed by "make distclean".
+ *
  * Revision 1.3  1997/03/06 20:36:34  luethje
  * Problem in create_runfie() fixed. New function paranoia_check() implemented.
  *
@@ -652,9 +656,15 @@ int read_conffiles(section **Section, char *groupfile)
 	if (!read_again)
 	{
 	  sprintf(s[0], "%s%c%s", confdir(), C_SLASH, CONFFILE);
-	  append_element(&files,s[0]);
-
 	  sprintf(s[1], "%s%c%s", confdir(), C_SLASH, CALLERIDFILE);
+
+		if (paranoia_check(s[0]))
+			return -1;
+
+		if (paranoia_check(s[1]))
+			return -1;
+
+	  append_element(&files,s[0]);
 	  append_element(&files,s[1]);
 
 	  if (groupfile != NULL)
@@ -723,7 +733,8 @@ int paranoia_check(char *cmd)
 			return -1;
 		}
 
-		if (stbuf.st_mode & (S_IWGRP | S_IWOTH))
+		if ((stbuf.st_gid != 0 && (stbuf.st_mode & S_IWGRP)) ||
+		    (stbuf.st_mode & S_IWOTH)                          )
 		{
 			print_msg("File `%s' is writable by group or world!\n", cmd);
 			return -1;

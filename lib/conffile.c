@@ -27,6 +27,7 @@
 #include <string.h>
 #include <ctype.h>
 #include <time.h>
+#include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
 
@@ -92,7 +93,7 @@ section *write_file(section *Section, const char *FileName, char *Program, char*
 	Write_Lines(Section,fp,FileName,0);
 
   fclose(fp);
-	return NULL;
+	return Section;
 }
 
 /****************************************************************************/
@@ -158,7 +159,7 @@ static const char *Pre_String(int Level)
 section *read_file(section *Section, const char *FileName, int Flags)
 {
 	int   Line = 0;
-	FILE *fp;
+	FILE *fp   = NULL;
 	section  *RetCode = NULL;
 
 
@@ -696,6 +697,54 @@ static int Compare_Sections(section* sec1, section *sec2, char ***variables)
 
 	return -1;
 }
+
+/****************************************************************************/
+
+#if 0
+/* IN PROGRESS!!!!!! */
+static int Compare_Sections(section* sec1, section *sec2, char **variables)
+{
+	int i;
+	char **array;
+
+
+	if (sec1 == NULL || sec2 == NULL)
+		return -1;
+
+	if (variables == NULL)
+	{
+		if (!strcmp(sec1->name,sec2->name))
+			return 0;
+	}
+	else
+	{
+		for (i=0; variables[i] != NULL; i++)
+		{
+			if ((array = String_to_Array(Path,C_SLASH)) == NULL)
+				return NULL;
+
+			if (Compare_Section_From_Path(sec1,sec2,array) == 0)
+			{
+				del_Array(array);
+				return 0;
+			}
+
+			del_Array(array);
+		}
+	}
+
+	return -1;
+}
+
+/****************************************************************************/
+
+static int Compare_Section_From_Path(section* sec1, section *sec2, char **array)
+{
+	if (!strcmp(sec1->name,array[0])   &&
+	    !strcmp(sec1->name,sec2->name)   )
+}
+
+#endif
 
 /****************************************************************************/
 

@@ -186,5 +186,50 @@ werden.
 
 -----------------------------------------------------------------------------
 
+Funktion:
+
+section *write_file(section *Section, const char *FileName, char *Program,
+                    char* Version)
+
+Erzeugt eine Datei mit der bekannten Syntax zurueck. Dabei wird ein Datei-
+header erzeugt.
+Diese Datei laesst sich auch sehr sinnvoll fuer Debuggingzwecke nutzen.
+
+
+Section: Beinhaltet den Pointer auf die Struktur, die zurueckgeschrieben
+         wertden soll.
+
+FileName: Beinhaltet den Dateinamen, in der die Struktur abgelegt werden soll.
+          Besteht diese Datei, wird sie ohne Warnung ueberschrieben.
+
+Programm: Name des Programm, das diese Datei anlegen soll.
+
+Version:  Version des Programmes, das diese Datei anlegen soll.
+
+
+Rueckgabewert:
+
+Bei erfolgreicher Erstellung der Datei wird Section zurueckgeliefert.
+Im Fehlerfall NULL.
+
+
+-----------------------------------------------------------------------------
+
+Funktion:
+
+void free_section(section *Ptr)
+
+Loescht eine Section mit ihrer ganzen Unterstruktur. Es wird also die gesamte
+verkettete Liste (inklusive ihrer Subsections) geloescht.
+
+Ptr: Pointer auf eine Struktur, die geloescht werden soll.
+
+
+Rueckgabewert:
+
+Keiner.
+
+-----------------------------------------------------------------------------
+
 Da noch nicht mehr dokumentiert ist, verweise ich mal frech auf die Dateien
-lib/conffile.c und vboxgetty/vboxlib.c ;-(((
+lib/conffile.c ;-(((

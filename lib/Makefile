@@ -69,7 +69,7 @@ clean:
 		set -e; for i in $(SUBDIRS); do $(MAKE) -C $$i clean; done
 
 distclean: clean
-		-rm -f .depend
+		-rm -f .depend policy.h
 		set -e; for i in $(SUBDIRS); do $(MAKE) -C $$i distclean; done
 
 install: depend all
