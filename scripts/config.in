@@ -1,5 +1,5 @@
 #
-# $Id: config.in,v 1.21 1997/10/26 23:19:19 fritz Exp $
+# $Id: config.in,v 1.22 1998/03/07 18:26:06 cal Exp $
 #
 # The whole configuration stuff is borrowed from the kernel
 # configuration.
@@ -53,6 +53,7 @@ bool 'isdnctrl' CONFIG_ISDNCTRL
 if [ "$CONFIG_ISDNCTRL" = "y" ]; then
 #	bool 'Enable isdnctrl debug-option' CONFIG_ISDNCTRL_DEBUG
 	bool 'Enable configfile-option (uses dbm lib)' CONFIG_ISDNCTRL_CONF
+	bool 'Enable timru-controls' CONFIG_ISDNCTRL_TIMRU
 fi
 bool 'iprofd' CONFIG_IPROFD
 endmenu

@@ -1,4 +1,4 @@
-/* $Id: isdnctrl.c,v 1.12 1997/10/26 23:12:20 fritz Exp $
+/* $Id: isdnctrl.c,v 1.13 1998/03/07 18:25:57 cal Exp $
  * ISDN driver for Linux. (Control-Utility)
  *
  * Copyright 1994,95 by Fritz Elfert (fritz@wuemaus.franken.de)
@@ -21,6 +21,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnctrl.c,v $
+ * Revision 1.13  1998/03/07 18:25:57  cal
+ * added support for dynamic timeout-rules vs. 971110
+ *
  * Revision 1.12  1997/10/26 23:12:20  fritz
  * Get rid of including ../.config in Makefile
  * Now all configuration is done in configure.
@@ -116,7 +119,9 @@
 #include <sys/types.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 #include <linux/isdn.h>
 #include <linux/isdnif.h>
@@ -147,6 +152,7 @@ void usage(void)
         fprintf(stderr, "    addif [name]               add net-interface\n");
         fprintf(stderr, "    delif name [force]         remove net-interface\n");
         fprintf(stderr, "    reset [force]              remove all net-interfaces\n");
+        fprintf(stderr, "    status name [on|off]       switch single interface on or off\n");
         fprintf(stderr, "    addphone name in|out num   add phone-number to interface\n");
         fprintf(stderr, "    delphone name in|out num   remove phone-number from interface\n");
         fprintf(stderr, "    eaz name [eaz|msn]         get/set eaz for interface\n");
@@ -160,6 +166,8 @@ void usage(void)
         fprintf(stderr, "    cbhup name [on|off]        get/set reject-before-callback for interface\n");
         fprintf(stderr, "    cbdelay name [seconds]     get/set delay before callback for interface\n");
         fprintf(stderr, "    dialmax name [num]         get/set number of dial-atempts for interface\n");
+        fprintf(stderr, "    dialtimeout name [seconds] get/set timeout for successful dial-attempt\n");
+        fprintf(stderr, "    dialwait name [seconds]    get/set waittime after failed dial-attempt\n");
         fprintf(stderr, "    encap name [encapname]     get/set packet-encapsulation for interface\n");
         fprintf(stderr, "    l2_prot name [protocol]    get/set layer-2-protocol for interface\n");
         fprintf(stderr, "    l3_prot name [protocol]    get/set layer-3-protocol for interface\n");
@@ -180,6 +188,17 @@ void usage(void)
         fprintf(stderr, "    removelink name            MPPP, decrease number of links\n");
         fprintf(stderr, "    pppbind name [devicenum]   PPP, bind interface to ippp-device (exclusive)\n");
         fprintf(stderr, "    pppunbind name             PPP, remove ippp-device binding\n");
+        fprintf(stderr, "    addrule name rule ...      add timeout-rule\n");
+        fprintf(stderr, "    insrule name rule ...      insert timeout-rule\n");
+        fprintf(stderr, "    delrule name rule ...      delete timeout-rule\n");
+        fprintf(stderr, "    showrules name             show all timeout-rules\n");
+        fprintf(stderr, "    flushrules name rule-type  delete all timeout-rules of a spec. type\n");
+        fprintf(stderr, "    flushallrules name         delete all timeout-rules\n");
+        fprintf(stderr, "    default name rule-type ... set default for a spec. rule-type\n");
+        fprintf(stderr, "    budget name type ...       set various budgets\n");
+        fprintf(stderr, "    showbudgets name           show budget-settings\n");
+        fprintf(stderr, "    savebudgets name           output budget-settings for later restore\n");
+        fprintf(stderr, "    restorebudgets name ...    restore budget-settings\n");
 #ifdef I4L_CTRL_CONF
         fprintf(stderr, "    writeconf [file]           write the settings to file\n");
         fprintf(stderr, "    readconf [file]            read the settings from file\n");
@@ -298,9 +317,10 @@ static void listif(int isdnctrl, char *name, int errexit)
         printf("\nCurrent setup of interface '%s':\n\n", cfg.name);
         printf("EAZ/MSN:                %s\n", cfg.eaz);
         printf("Phone number(s):\n");
-        printf("  Outgoing:	            %s\n", ph.n);
-        printf("  Incoming:	            %s\n", nn);
-        printf("Secure:        	        %s\n", cfg.secure ? "on" : "off");
+        printf("  Outgoing:             %s\n", ph.n);
+        printf("  Incoming:             %s\n", nn);
+        printf("Status:                 %s\n", cfg.stopped ? "off" : "on");
+        printf("Secure:                 %s\n", cfg.secure ? "on" : "off");
         printf("Callback:               %s\n", num2callb[cfg.callback]);
         if (cfg.callback == 2)
                 printf("Hangup after Dial       %s\n", cfg.cbdelay ? "on" : "off");
@@ -308,6 +328,8 @@ static void listif(int isdnctrl, char *name, int errexit)
                 printf("Reject before Callback: %s\n", cfg.cbhup ? "on" : "off");
         printf("Callback-delay:         %d\n", cfg.cbdelay / 5);
         printf("Dialmax:                %d\n", cfg.dialmax);
+        printf("Dial-Timeout:           %d\n", cfg.dialtimeout);
+        printf("Dial-Wait:              %d\n", cfg.dialwait);
         printf("Hangup-Timeout:         %d\n", cfg.onhtime);
         printf("Incoming-Hangup:        %s\n", cfg.ihup ? "on" : "off");
         printf("ChargeHangup:           %s\n", cfg.chargehup ? "on" : "off");
@@ -1053,6 +1075,97 @@ int exec_args(int fd, int argc, char **argv)
 			case RESET:
 			        reset_interfaces(fd, args?id:NULL);
 			        break;
+
+
+			case DIALTIMEOUT:
+			        strcpy(cfg.name, id);
+                		if((result = ioctl(fd, IIOCNETGCF, &cfg)) < 0) {
+                       			perror(id);
+                       			exit(-1);
+                		}
+                        	if (args) {
+                                	i = -1;
+                                	sscanf(arg1, "%d", &i);
+                                	if (i < 0) {
+                                        	fprintf(stderr, "Dial-Timeout must be >= 0\n");
+                                        	exit(-1);
+                                	}
+                                	cfg.dialtimeout = i;
+                                	if ((result = ioctl(fd, IIOCNETSCF, &cfg)) < 0) {
+                                        	perror(id);
+                                        	exit(-1);
+                                	}
+                        	}
+                        	printf("Dial-Timeout for %s is %d sec.\n", cfg.name, cfg.dialtimeout);
+                        	break;
+
+                	case DIALWAIT:
+                        	strcpy(cfg.name, id);
+                        	if ((result = ioctl(fd, IIOCNETGCF, &cfg)) < 0) {
+                                	perror(id);
+                                	exit(-1);
+                        	}
+                        	if (args) {
+                                	i = -1;
+                                	sscanf(arg1, "%d", &i);
+                                	if (i < 0) {
+                                        	fprintf(stderr, "Dial-Wait must be >= 0\n");
+                                        	exit(-1);
+                                	}
+                                	cfg.dialwait = i;
+                                	if ((result = ioctl(fd, IIOCNETSCF, &cfg)) < 0) {
+                                        	perror(id);
+                                        	exit(-1);
+                                	}
+                        	}
+                        	printf("Dial-Wait for %s is %d sec.\n", cfg.name, cfg.dialwait);
+                        	break;
+
+                	case STATUS:
+                        	strcpy(cfg.name, id);
+                        	if ((result = ioctl(fd, IIOCNETGCF, &cfg)) < 0) {
+                                	perror(id);
+                               		exit(-1);
+                        	}
+				if(args) {
+                        		if (strcmp(arg1, "on") && strcmp(arg1, "off")) {
+                                		fprintf(stderr, "Status must be 'on' or 'off'\n");
+                                		exit(-1);
+                        		}
+                        		cfg.stopped = strcmp(arg1, "on");
+                            		if ((result = ioctl(fd, IIOCNETSCF, &cfg)) < 0) {
+                                		perror(id);
+                                		exit(-1);
+                            		}
+				}
+                        	printf("Status for %s is %s.\n", cfg.name, (cfg.stopped ? "off" : "on"));
+                        	break;
+
+#ifdef I4L_CTRL_TIMRU
+                	case ADDRULE:
+                	case INSRULE:
+                	case DELRULE:
+                	case SHOWRULES:
+                	case FLUSHRULES:
+                	case FLUSHALLRULES:
+                	case DEFAULT:
+                        	if((args = hdl_timeout_rule(fd, id, i, argc, argv)) < 0)
+					exit(-1);
+				argc -= args;
+				argv += args;
+                        	break;
+
+			case BUDGET:
+			case SHOWBUDGETS:
+			case SAVEBUDGETS:
+			case RESTOREBUDGETS:
+                        	if((args = hdl_budget(fd, id, i, argc, argv)) < 0)
+					exit(-1);
+				argc -= args;
+				argv += args;
+                        	break;
+#endif
+
 #ifdef I4L_CTRL_CONF
 			case WRITECONF:
 			        if (args == 0) {
