@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.5 1997/03/03 04:00:33 fritz Exp $
+# $Id: Makefile,v 1.6 1997/03/03 04:06:41 fritz Exp $
 #
 # Toplevel Makefile for isdn4k-utils
 #
@@ -93,12 +93,14 @@ uninstall: rootperm
 clean:
 	-set -e; allow_null_glob_expansion=1; \
 	for i in */Makefile; do $(MAKE) -i -C `dirname $$i` clean; done
+	for i in */GNUmakefile; do $(MAKE) -i -C `dirname $$i` clean; done
 	rm -f *~ *.o
 
 distclean: clean
 	-$(MAKE) -C scripts/lxdialog clean
 	-set -e; allow_null_glob_expansion=1; \
 	for i in */Makefile; do $(MAKE) -i -C `dirname $$i` distclean; done
+	for i in */GNUmakefile; do $(MAKE) -i -C `dirname $$i` distclean; done
 	rm -f *~ .config .config.old scripts/autoconf.h .menuconfig \
 		Makefile.tmp .menuconfig.log scripts/defconfig.old
 
