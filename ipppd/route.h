@@ -6,27 +6,6 @@
 #ifndef IPPPD_ROUTE_H
 #define IPPPD_ROUTE_H
 
-struct rtentry
-{
-	unsigned long   rt_pad1;
-	struct sockaddr rt_dst;         /* target address               */
-	struct sockaddr rt_gateway;     /* gateway addr (RTF_GATEWAY)   */
-	struct sockaddr rt_genmask;     /* target network mask (IP)     */
-	unsigned short  rt_flags;
-	short           rt_pad2;
-	unsigned long   rt_pad3;
-	unsigned char   rt_tos;
-	unsigned char   rt_class;
-	short           rt_pad4;
-	short           rt_metric;      /* +1 for binary compatibility! */
-	char            *rt_dev;        /* forcing the device at add    */
-	unsigned long   rt_mtu;         /* per route MTU/Window         */
-	#define rt_mss  rt_mtu          /* Compatibility :-(            */
-	unsigned long   rt_window;      /* Window clamping              */
-	unsigned short  rt_irtt;        /* Initial RTT                  */
-};
-
-
 #define RTF_UP          0x0001          /* route usable                 */
 #define RTF_GATEWAY     0x0002          /* destination is a gateway     */
 #define RTF_HOST        0x0004          /* host entry (net otherwise)   */

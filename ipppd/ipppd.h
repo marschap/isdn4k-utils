@@ -16,7 +16,7 @@
  * IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Id: ipppd.h,v 1.9 1998/03/08 13:01:34 hipp Exp $
+ * $Id: ipppd.h,v 1.10 1998/03/12 15:07:17 hipp Exp $
  */
 
 /*
@@ -187,34 +187,20 @@ extern int      hostroute;      /* Add a route to the host at the other end? */
  */
 struct protent {
     u_short protocol;       /* PPP protocol number */
-    /* Initialization procedure */
-    void (*init) __P((int unit));
-    /* Process a received packet */
-    void (*input) __P((int unit, u_char *pkt, int len));
-    /* Process a received protocol-reject */
-    void (*protrej) __P((int unit));
-    /* Lower layer has come up */
-    void (*lowerup) __P((int unit));
-    /* Lower layer has gone down */
-    void (*lowerdown) __P((int unit));
-    /* Open the protocol */
-    void (*open) __P((int unit));
-    /* Close the protocol */
-    void (*close) __P((int unit, char *reason));
-    /* Print a packet in readable form */
-    int  (*printpkt) __P((u_char *pkt, int len,
-              void (*printer) __P((void *, char *, ...)),
-              void *arg));
-    /* Process a received data packet */
-    void (*datainput) __P((int unit, u_char *pkt, int len));
-    int  enabled_flag;      /* 0 iff protocol is disabled */
+    void (*init) (int unit);
+    void (*input) (int unit, u_char *pkt, int len);
+    void (*protrej) (int unit);
+    void (*lowerup) (int unit);
+    void (*lowerdown) (int unit);
+    void (*open) (int unit);
+    void (*close) (int unit, char *reason);
+    int  (*printpkt) (u_char *pkt, int len, void (*printer) (void *, char *, ...), void *arg);
+    void (*datainput) (int unit, u_char *pkt, int len);
+    int  enabled_flag;  /* 0 iff protocol is disabled */
     char *name;         /* Text name of protocol */
-    /* Check requested options, assign defaults */
-    void (*check_options) __P((void));
-    /* Configure interface for demand-dial */
-    int  (*demand_conf) __P((int unit));
-    /* Say whether to bring up link for this pkt */
-    int  (*active_pkt) __P((u_char *pkt, int len));
+    void (*check_options) (void);
+    int  (*demand_conf) (int unit);
+    int  (*active_pkt) (u_char *pkt, int len);
 };
 
 /* Table of pointers to supported protocols */
@@ -223,22 +209,15 @@ extern struct protent *protocols[];
 /*
  * Prototypes.
  */
-void quit __P((void));	/* Cleanup and exit */
-void timeout __P((void (*)(), caddr_t, int));
-				/* Look-alike of kernel's timeout() */
-void untimeout __P((void (*)(), caddr_t));
-				/* Look-alike of kernel's untimeout() */
-void output_ppp __P((int, u_char *, int));
-				/* Output a PPP packet */
-void demuxprotrej __P((int,u_short));
-				/* Demultiplex a Protocol-Reject */
-int  check_passwd __P((int, char *, int, char *, int, char **, int *));
-				/* Check peer-supplied username/password */
-int  get_secret __P((int, char *, char *, char *, int *, int));
-				/* get "secret" for chap */
-u_int32_t GetMask __P((u_int32_t)); /* get netmask for address */
-void die __P((int));
-void check_access __P((FILE *, char *));
+void quit(void);	                /* Cleanup and exit */
+void timeout(void (*)(), caddr_t, int); /* Look-alike of kernel's timeout() */
+void untimeout (void (*)(), caddr_t);   /* Look-alike of kernel's untimeout() */
+void demuxprotrej (int,u_short);        /* Demultiplex a Protocol-Reject */
+int  check_passwd (int, char *, int, char *, int, char **, int *); /* Check peer-supplied username/password */
+int  get_secret (int, char *, char *, char *, int *, int);    /* get "secret" for chap */
+u_int32_t GetMask (u_int32_t);          /* get netmask for address */
+void die (int);
+void check_access (FILE *, char *);
 
 int ccp_getunit(int);
 int ipcp_getunit(int);
@@ -268,18 +247,18 @@ int options_for_tty(void);
 int options_from_user(void);
 int parse_args(int argc,char **argv);
 int run_program(char *prog,char **args,int must_exist,int tu);
-void establish_ppp __P((int));
-void calltimeout __P((void));
-struct timeval *timeleft __P((struct timeval *));
-void reap_kids __P((void));
-void cleanup __P((int, caddr_t,int));
-void close_fd __P((int));
-void die __P((int));
-void novm __P((char *));
-void log_packet __P((u_char *, int, char *,int));
+void establish_ppp (int);
+void calltimeout (void);
+struct timeval *timeleft (struct timeval *);
+void reap_kids (void);
+void cleanup (int, caddr_t,int);
+void close_fd (int);
+void die (int);
+void novm (char *);
+void log_packet (u_char *, int, char *,int);
 void sys_init(void);
 void note_debug_level (void);
-void output (int unit, unsigned char *p, int len);
+void output_ppp (int unit, unsigned char *p, int len);
 void wait_input (struct timeval *timo);
 int read_packet (unsigned char *buf,int tu);
 void ppp_send_config (int unit,int mtu,u_int32_t asyncmap,int pcomp,int accomp);
@@ -308,10 +287,10 @@ void setifip(int);
 extern void enable_mp(int,int);
 void remove_sys_options(void);
 u_int32_t magic(void);
-int fmtmsg __P((char *, int, char *, ...));              /* sprintf++ */
-int vfmtmsg __P((char *, int, char *, va_list)); /* vsprintf++ */
-void option_error __P((char *fmt, ...));
-void usage __P((void));          /* Print a usage message */
+int fmtmsg (char *, int, char *, ...);              /* sprintf++ */
+int vfmtmsg (char *, int, char *, va_list); /* vsprintf++ */
+void option_error (char *fmt, ...);
+void usage (void);          /* Print a usage message */
 
 /*
  * This structure is used to store information about certain

@@ -22,7 +22,7 @@
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-char sys_rcsid[] = "$Id: sys-linux.c,v 1.8 1998/03/08 13:01:43 hipp Exp $";
+char sys_rcsid[] = "$Id: sys-linux.c,v 1.9 1998/03/12 15:07:19 hipp Exp $";
 
 #define _LINUX_STRING_H_
 
@@ -1509,9 +1509,8 @@ void setifip(int ipcp_unit)
 
 
 /************************ IPX SUPPORT *********************************/
-#if !defined(__GLIBC__) 
-/* <linux/ipx.h> includes <linux/socket.h>, which
-                           breaks glibc 2.x support. Prevent that...   */
+#if defined(__GLIBC__) && (__GLIBC__ > 1)
+/* <linux/ipx.h> includes <linux/socket.h>, which breaks glibc 2.x support. Prevent that...   */
 # define _LINUX_SOCKET_H
 #endif
 
