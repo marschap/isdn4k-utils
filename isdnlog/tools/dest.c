@@ -215,12 +215,15 @@ int     getDest(char *onumber, TELNUM * num)
   char   *p, *q, *city = 0, *s, *name;
   int     arealen, countrylen, prefixlen;
   char   *number = strdup(onumber);
-  char   tld[3];
+  char    dummy[100]; /* V2.7.2.3 kills stack */
+  char   *tld;
+  char    dummy2[100]; /* V2.7.2.3 kills stack */
   
 #ifdef DEBUG
   printf("getD. %s\n", number);
 #endif
-  *tld = '\0';
+  *dummy = *dummy2 = '\0'; /* for keeping gcc happy */
+  tld = malloc(4);
   if (get_cache(number, num)) {
 #ifdef DEBUG
     printf("getD (cache). %s %s\n", number, formatNumber("%f",num));
@@ -286,6 +289,7 @@ again2:
       free(number);
       if (city)
 	free(city);
+      free(tld);		
       return 0;
     }
     /* now we must have a name or city */
@@ -334,14 +338,12 @@ again2:
 #endif
     /* we should be at toplevel i.e country */
     if (!p) {
-      char    cc[TN_MAX_AREA_LEN];
 
       append(num->scountry, name);
       if (countrylen && (arealen || prefixlen)) {
 	append(num->sarea, city);
-	Strncpy(cc, num->area + 1, countrylen);
 	Strncpy(num->country, num->area, countrylen+1);
-	num->ncountry = atoi(cc);
+	num->ncountry = atoi(num->country+1);
 	strcpy(num->tld,tld);
 	p = num->area + countrylen;
 	arealen -= countrylen;
@@ -368,6 +370,7 @@ again2:
     if (*dbv == 'G')
       free(value.dptr);
     free(number);
+    free(tld);		
     if (city)
       free(city);
     return 0;
@@ -377,6 +380,7 @@ again2:
     goto again;			/* I like it */
   }
   free(number);
+  free(tld);		
   if (city)
     free(city);
   return UNKNOWN;

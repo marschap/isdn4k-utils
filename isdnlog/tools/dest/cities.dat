@@ -1,36 +1,36 @@
 N:Graz
 T:GRZ
-C:+316
+C:+43316
 R:AT
 
 N:Dornbirn
 T:QDI
-C:+5572
+C:+435572
 R:AT
 
 N:Hohenems
 T:HOH
-C:+5576
+C:+435576
 R:AT
 
 N:Klagenfurt
 T:KLU
-C:+463
+C:+43463
 R:AT
 
 N:Innsbruck
 T:INN
-C:+512
+C:+43512
 R:AT
 
 N:Linz
 T:LNZ
-C:+732
+C:+43732
 R:AT
 
 N:Salzburg
 T:SZG
-C:+662
+C:+43662
 R:AT
 
 N:Luanda
@@ -44,7 +44,7 @@ C:+5491
 R:AR	# Argentinien
 
 N:Buenos Aires
-T:AEP
+T:BUE
 C:+541
 R:AR	# Argentinien
 
@@ -68,10 +68,10 @@ T:MDZ
 C:+5461
 R:AR	# Argentinien
 
-#N:Rosario (Santa Fe)
-#T:
-#C:+5441
-#R:AR	# Argentinien
+N:Rosario		#Rosario (Santa Fe)
+T:ROS
+C:+5441
+R:AR	# Argentinien
 
 N:San Juan
 T:SIG
@@ -139,34 +139,44 @@ C:+613
 R:AU	# Australien
 
 N:Melbourne
-T:KAH
+T:MEL
 C:+613
 R:AU	# Australien
 
-#N:Perth (WA)
-#T:
-#C:+619
-#R:AU	# Australien
+N:Perth		#Perth (WA)
+T:PER
+C:+619
+R:AU	# Australien
 
 N:Sydney
-T:LBH
+T:SYD
 C:+612
 R:AU	# Australien
 
 N:Alexandria
-T:AEX
+T:ALY
 C:+203
 R:EG	# Ägypten
 
-#N:Asswan (Assuan)
+#N:Asswan		#Asswan (Assuan)
 #T:
 #C:+2097
 #R:EG	# Ägypten
 
-#N:Ghardaka (Hurghada)
+#N:Assuan		#Asswan (Assuan)
+#T:
+#C:+2097
+#R:EG	# Ägypten
+
+#N:Ghardaka		#Ghardaka (Hurghada)
 #T:
 #C:+2065
 #R:EG	# Ägypten
+
+N:Hurghada		#Ghardaka (Hurghada)
+T:HRG
+C:+2065
+R:EG	# Ägypten
 
 #N:Kairo
 #T:
@@ -218,10 +228,10 @@ T:CGP
 C:+88031
 R:BD	# Bangladesch
 
-#N:Dhaka (Dacca)
-#T:
-#C:+8802
-#R:BD	# Bangladesch
+N:Dhaka		#Dhaka (Dacca)
+T:DAC
+C:+8802
+R:BD	# Bangladesch
 
 #N:Kushtia
 #T:
@@ -263,7 +273,12 @@ R:BY	# Belarus
 #C:+3250
 #R:BE	# Belgien
 
-#N:Brussel -  Bruxelles (Brüssel)
+#N:Brussel -  Bruxelles		#Brussel -  Bruxelles (Brüssel)
+#T:
+#C:+322
+#R:BE	# Belgien
+
+#N:Brüssel		#Brussel -  Bruxelles (Brüssel)
 #T:
 #C:+322
 #R:BE	# Belgien
@@ -333,7 +348,12 @@ R:BE	# Belgien
 #C:+3261
 #R:BE	# Belgien
 
-#N:Liège -  Luik (Lüttich)
+#N:Liège -  Luik		#Liège -  Luik (Lüttich)
+#T:
+#C:+324
+#R:BE	# Belgien
+
+#N:Lüttich		#Liège -  Luik (Lüttich)
 #T:
 #C:+324
 #R:BE	# Belgien
@@ -358,7 +378,12 @@ R:BE	# Belgien
 #C:+3281
 #R:BE	# Belgien
 
-#N:Nivelles -  Nijvel (Nuvel)
+#N:Nivelles -  Nijvel		#Nivelles -  Nijvel (Nuvel)
+#T:
+#C:+3267
+#R:BE	# Belgien
+
+#N:Nuvel		#Nivelles -  Nijvel (Nuvel)
 #T:
 #C:+3267
 #R:BE	# Belgien
@@ -414,7 +439,7 @@ C:+5015
 R:BZ	# Belize
 
 N:Independence
-T:IDP
+T:INB
 C:+5016
 R:BZ	# Belize
 
@@ -444,7 +469,7 @@ C:+59162
 R:BO	# Bolivien
 
 N:Santa Cruz
-T:FLW
+T:SCZ
 C:+5913
 R:BO	# Bolivien
 
@@ -468,10 +493,10 @@ T:SJJ
 C:+38771
 R:BA	# Bosnien-Herzegowina
 
-#N:Belem (Para)
-#T:
-#C:+5591
-#R:BR	# Brasilien
+N:Belem		#Belem (Para)
+T:BEL
+C:+5591
+R:BR	# Brasilien
 
 N:Belo Horizonte
 T:BHZ
@@ -494,7 +519,7 @@ C:+5592
 R:BR	# Brasilien
 
 N:Porto Alegre
-T:PGP
+T:POA
 C:+5551
 R:BR	# Brasilien
 
@@ -523,7 +548,12 @@ R:BR	# Brasilien
 #C:+6732
 #R:BN	# Brunei
 
-#N:Belait (Region)
+#N:Belait		#Belait (Region)
+#T:
+#C:+6733
+#R:BN	# Brunei
+
+#N:Region		#Belait (Region)
 #T:
 #C:+6733
 #R:BN	# Brunei
@@ -533,7 +563,12 @@ R:BR	# Brasilien
 #C:+6732
 #R:BN	# Brunei
 
-#N:Temburong (Region)
+#N:Temburong		#Temburong (Region)
+#T:
+#C:+6735
+#R:BN	# Brunei
+
+#N:Region		#Temburong (Region)
 #T:
 #C:+6735
 #R:BN	# Brunei
@@ -614,7 +649,7 @@ C:+5645
 R:CL	# Chile
 
 N:Valparaiso
-T:EGI
+T:VAP
 C:+5632
 R:CL	# Chile
 
@@ -703,7 +738,7 @@ T:BFE
 C:+49521
 R:DE	# Deutschland
 
-#N:Bingen, Rhein
+#N:Bingen		#Bingen, Rhein
 #T:
 #C:+496721
 #R:DE	# Deutschland
@@ -788,10 +823,10 @@ R:DE	# Deutschland
 #C:+4969
 #R:DE	# Deutschland
 
-#N:Frankfurt, Oder
-#T:
-#C:+49335
-#R:DE	# Deutschland
+N:Frankfurt		#Frankfurt, Oder
+T:FRA
+C:+49335
+R:DE	# Deutschland
 
 #N:Freiburg im Breisgau
 #T:
@@ -823,12 +858,12 @@ R:DE	# Deutschland
 #C:+49551
 #R:DE	# Deutschland
 
-#N:Halle, Saale
+#N:Halle		#Halle, Saale
 #T:
 #C:+49345
 #R:DE	# Deutschland
 
-#N:Halle, Westfalen
+#N:Halle		#Halle, Westfalen
 #T:
 #C:+495201
 #R:DE	# Deutschland
@@ -848,20 +883,20 @@ T:HDB
 C:+496221
 R:DE	# Deutschland
 
-#N:Heilbronn, Neckar
+#N:Heilbronn		#Heilbronn, Neckar
 #T:
 #C:+497131
 #R:DE	# Deutschland
 
-#N:Hof, Saale
-#T:
-#C:+499281
-#R:DE	# Deutschland
+N:Hof		#Hof, Saale
+T:HOF
+C:+499281
+R:DE	# Deutschland
 
-#N:Ingolstadt, Donau
-#T:
-#C:+49841
-#R:DE	# Deutschland
+N:Ingolstadt		#Ingolstadt, Donau
+T:ZNQ
+C:+49841
+R:DE	# Deutschland
 
 #N:Jena
 #T:
@@ -883,7 +918,7 @@ T:KSF
 C:+49561
 R:DE	# Deutschland
 
-#N:Kempten, Allgäu
+#N:Kempten		#Kempten, Allgäu
 #T:
 #C:+49831
 #R:DE	# Deutschland
@@ -983,7 +1018,7 @@ R:DE	# Deutschland
 #C:+494361
 #R:DE	# Deutschland
 
-#N:Oldenburg, Oldenburg
+#N:Oldenburg		#Oldenburg, Oldenburg
 #T:
 #C:+49441
 #R:DE	# Deutschland
@@ -1038,7 +1073,7 @@ R:DE	# Deutschland
 #C:+499721
 #R:DE	# Deutschland
 
-#N:Schwerin, Mecklenburg
+#N:Schwerin		#Schwerin, Mecklenburg
 #T:
 #C:+49385
 #R:DE	# Deutschland
@@ -1049,7 +1084,7 @@ R:DE	# Deutschland
 #R:DE	# Deutschland
 
 N:Stuttgart
-T:SGT
+T:STR
 C:+49711
 R:DE	# Deutschland
 
@@ -1058,18 +1093,18 @@ R:DE	# Deutschland
 #C:+49651
 #R:DE	# Deutschland
 
-#N:Ulm, Donau
-#T:
-#C:+49731
-#R:DE	# Deutschland
+N:Ulm		#Ulm, Donau
+T:QUL
+C:+49731
+R:DE	# Deutschland
 
-#N:Weinheim, Bergstraße
+#N:Weinheim		#Weinheim, Bergstraße
 #T:
 #C:+496201
 #R:DE	# Deutschland
 
 N:Wiesbaden
-T:UWE
+T:WIE
 C:+49611
 R:DE	# Deutschland
 
@@ -1143,7 +1178,12 @@ R:ER	# Eritrea
 #C:+37238
 #R:EE	# Estland
 
-#N:Rakvere (Wesenburg)
+#N:Rakvere		#Rakvere (Wesenburg)
+#T:
+#C:+37232
+#R:EE	# Estland
+
+#N:Wesenburg		#Rakvere (Wesenburg)
 #T:
 #C:+37232
 #R:EE	# Estland
@@ -1158,10 +1198,10 @@ R:ER	# Eritrea
 #C:+37239
 #R:EE	# Estland
 
-#N:Tartu (Dorpat)
-#T:
-#C:+3727
-#R:EE	# Estland
+N:Tartu		#Tartu (Dorpat)
+T:TAY
+C:+3727
+R:EE	# Estland
 
 #N:Valga
 #T:
@@ -1223,10 +1263,10 @@ T:KUT
 C:+995331
 R:GE	# Georgien
 
-#N:Tbilisi (Tiflis)
-#T:
-#C:+99532
-#R:GE	# Georgien
+N:Tbilisi		#Tbilisi (Tiflis)
+T:TBS
+C:+99532
+R:GE	# Georgien
 
 #N:Accra City
 #T:
@@ -1278,10 +1318,10 @@ R:GR	# Griechenland
 #C:+30681
 #R:GR	# Griechenland
 
-#N:Athina (Athen)
-#T:
-#C:+301
-#R:GR	# Griechenland
+N:Athina		#Athina (Athen)
+T:ATH
+C:+301
+R:GR	# Griechenland
 
 #N:Delfi
 #T:
@@ -1303,7 +1343,12 @@ R:GR	# Griechenland
 #C:+30221
 #R:GR	# Griechenland
 
-#N:Iraklio Kritis (Herakleon Kreta)
+#N:Iraklio Kritis		#Iraklio Kritis (Herakleon Kreta)
+#T:
+#C:+3081
+#R:GR	# Griechenland
+
+#N:Herakleon Kreta		#Iraklio Kritis (Herakleon Kreta)
 #T:
 #C:+3081
 #R:GR	# Griechenland
@@ -1318,7 +1363,12 @@ T:KVA
 C:+3051
 R:GR	# Griechenland
 
-#N:Kerkira (Korfu)
+#N:Kerkira		#Kerkira (Korfu)
+#T:
+#C:+30661
+#R:GR	# Griechenland
+
+#N:Korfu		#Kerkira (Korfu)
 #T:
 #C:+30661
 #R:GR	# Griechenland
@@ -1348,10 +1398,10 @@ R:GR	# Griechenland
 #C:+30294
 #R:GR	# Griechenland
 
-#N:Mikonos (Mykonos)
-#T:
-#C:+30289
-#R:GR	# Griechenland
+N:Mikonos		#Mikonos (Mykonos)
+T:JMK
+C:+30289
+R:GR	# Griechenland
 
 N:Milos
 T:MLO
@@ -1373,28 +1423,43 @@ R:GR	# Griechenland
 #C:+30221
 #R:GR	# Griechenland
 
-#N:Patra (Patras)
+#N:Patra		#Patra (Patras)
 #T:
 #C:+3061
 #R:GR	# Griechenland
 
-#N:Rodos (Rhodos)
+#N:Patras		#Patra (Patras)
+#T:
+#C:+3061
+#R:GR	# Griechenland
+
+#N:Rodos		#Rodos (Rhodos)
 #T:
 #C:+30241
 #R:GR	# Griechenland
 
-#N:Sparti (Sparta)
+N:Rhodos		#Rodos (Rhodos)
+T:RHO
+C:+30241
+R:GR	# Griechenland
+
+#N:Sparti		#Sparti (Sparta)
 #T:
 #C:+30731
 #R:GR	# Griechenland
 
-#N:Thessaloniki (Saloniki)
-#T:
-#C:+3031
-#R:GR	# Griechenland
+N:Sparta		#Sparti (Sparta)
+T:SPA
+C:+30731
+R:GR	# Griechenland
+
+N:Thessaloniki		#Thessaloniki (Saloniki)
+T:SKG
+C:+3031
+R:GR	# Griechenland
 
 N:Tripoli
-T:KYE
+T:TIP
 C:+3071
 R:GR	# Griechenland
 
@@ -1428,7 +1493,12 @@ T:BHM
 C:+44121
 R:UK	# Großbritannien und Nordirland
 
-#N:Blackburn (Lancashire)
+#N:Blackburn		#Blackburn (Lancashire)
+#T:
+#C:+441254
+#R:UK	# Großbritannien und Nordirland
+
+#N:Lancashire		#Blackburn (Lancashire)
 #T:
 #C:+441254
 #R:UK	# Großbritannien und Nordirland
@@ -1438,10 +1508,10 @@ T:BLK
 C:+441253
 R:UK	# Großbritannien und Nordirland
 
-#N:Bradford (Yorkshire)
-#T:
-#C:+441274
-#R:UK	# Großbritannien und Nordirland
+N:Bradford		#Bradford (Yorkshire)
+T:BRF
+C:+441274
+R:UK	# Großbritannien und Nordirland
 
 N:Brighton
 T:BSH
@@ -1488,7 +1558,12 @@ T:DRB
 C:+441332
 R:UK	# Großbritannien und Nordirland
 
-#N:Dorchester (Dorset)
+#N:Dorchester		#Dorchester (Dorset)
+#T:
+#C:+441305
+#R:UK	# Großbritannien und Nordirland
+
+#N:Dorset		#Dorchester (Dorset)
 #T:
 #C:+441305
 #R:UK	# Großbritannien und Nordirland
@@ -1514,7 +1589,7 @@ R:UK	# Großbritannien und Nordirland
 #R:UK	# Großbritannien und Nordirland
 
 N:Glasgow
-T:GGW
+T:GLA
 C:+44141
 R:UK	# Großbritannien und Nordirland
 
@@ -1554,7 +1629,7 @@ R:UK	# Großbritannien und Nordirland
 #R:UK	# Großbritannien und Nordirland
 
 N:Lincoln
-T:AYJ
+T:LNK
 C:+441522
 R:UK	# Großbritannien und Nordirland
 
@@ -1568,15 +1643,15 @@ T:MAN
 C:+44161
 R:UK	# Großbritannien und Nordirland
 
-#N:Newcastle (Staffordshire)
-#T:
-#C:+441782
-#R:UK	# Großbritannien und Nordirland
+N:Newcastle		#Newcastle (Staffordshire)
+T:BEO
+C:+441782
+R:UK	# Großbritannien und Nordirland
 
-#N:Newport (Gwent)
-#T:
-#C:+441633
-#R:UK	# Großbritannien und Nordirland
+N:Newport		#Newport (Gwent)
+T:NPT
+C:+441633
+R:UK	# Großbritannien und Nordirland
 
 N:Norwich
 T:NWI
@@ -1589,12 +1664,12 @@ R:UK	# Großbritannien und Nordirland
 #R:UK	# Großbritannien und Nordirland
 
 N:Oxford
-T:BZZ
+T:OXF
 C:+441865
 R:UK	# Großbritannien und Nordirland
 
 N:Plymouth
-T:MNI
+T:PLH
 C:+441752
 R:UK	# Großbritannien und Nordirland
 
@@ -1654,7 +1729,7 @@ C:+441904
 R:UK	# Großbritannien und Nordirland
 
 N:Georgetown
-T:GED
+T:GEO
 C:+5922
 R:GY	# Guyana
 
@@ -1666,62 +1741,62 @@ R:GY	# Guyana
 N:Agra
 T:AGR
 C:+91562
-R:	# Indien
+R:IN	# Indien
 
 N:Amritsar
 T:ATQ
 C:+91183
-R:	# Indien
+R:IN	# Indien
 
 N:Bangalore
 T:BLR
 C:+9180
-R:	# Indien
+R:IN	# Indien
 
 N:Bombay
 T:BOM
 C:+9122
-R:	# Indien
+R:IN	# Indien
 
 N:Calcutta
 T:CCU
 C:+9133
-R:	# Indien
+R:IN	# Indien
 
 N:Hyderabad
-T:HDD
+T:HYD
 C:+9140
-R:	# Indien
+R:IN	# Indien
 
 N:Jaipur
 T:JAI
 C:+91141
-R:	# Indien
+R:IN	# Indien
 
 N:Jodhpur
 T:JDH
 C:+91291
-R:	# Indien
+R:IN	# Indien
 
 N:Madras
 T:MAA
 C:+9144
-R:	# Indien
+R:IN	# Indien
 
 #N:New Delhi
 #T:
 #C:+9111
-#R:	# Indien
+#R:IN	# Indien
 
 N:Rourkela
 T:RRK
 C:+91661
-R:	# Indien
+R:IN	# Indien
 
 #N:Shimla
 #T:
 #C:+91177
-#R:	# Indien
+#R:IN	# Indien
 
 N:Bandung
 T:BDO
@@ -1753,10 +1828,10 @@ T:SUB
 C:+6231
 R:ID	# Indonesien
 
-#N:Baghdad (Bagdad)
-#T:
-#C:+9641
-#R:IQ	# Irak
+N:Baghdad		#Baghdad (Bagdad)
+T:BGT
+C:+9641
+R:IQ	# Irak
 
 #N:Erbil
 #T:
@@ -1783,10 +1858,10 @@ R:IR	# Iran
 #C:+98451
 #R:IR	# Iran
 
-#N:Isfahan (Esfahan)
-#T:
-#C:+9831
-#R:IR	# Iran
+N:Isfahan		#Isfahan (Esfahan)
+T:IFN
+C:+9831
+R:IR	# Iran
 
 #N:Karaj
 #T:
@@ -1834,7 +1909,7 @@ C:+35321
 R:IE	# Irland
 
 N:Dublin
-T:DBN
+T:DUB
 C:+3531
 R:IE	# Irland
 
@@ -1883,7 +1958,12 @@ R:IE	# Irland
 #C:+9728
 #R:IL	# Israel
 
-#N:Ashkelon (Askalon)
+#N:Ashkelon		#Ashkelon (Askalon)
+#T:
+#C:+9727
+#R:IL	# Israel
+
+#N:Askalon		#Ashkelon (Askalon)
 #T:
 #C:+9727
 #R:IL	# Israel
@@ -1913,7 +1993,12 @@ T:HFA
 C:+9724
 R:IL	# Israel
 
-#N:Herzelia (Herzeliya)
+#N:Herzelia		#Herzelia (Herzeliya)
+#T:
+#C:+9729
+#R:IL	# Israel
+
+#N:Herzeliya		#Herzelia (Herzeliya)
 #T:
 #C:+9729
 #R:IL	# Israel
@@ -1929,7 +2014,7 @@ C:+9722
 R:IL	# Israel
 
 N:Lod
-T:LDR
+T:LOK
 C:+9728
 R:IL	# Israel
 
@@ -1964,7 +2049,7 @@ R:IL	# Israel
 #R:IL	# Israel
 
 N:Tel Aviv
-T:SDV
+T:TLV
 C:+9723
 R:IL	# Israel
 
@@ -2008,12 +2093,17 @@ R:IT	# Italien
 #C:+39342
 #R:IT	# Italien
 
-#N:Bozen (Bolzano)
+N:Bozen		#Bozen (Bolzano)
+T:BZO
+C:+39471
+R:IT	# Italien
+
+#N:Brenner		#Brenner (Brennero)
 #T:
-#C:+39471
+#C:+39472
 #R:IT	# Italien
 
-#N:Brenner (Brennero)
+#N:Brennero		#Brenner (Brennero)
 #T:
 #C:+39472
 #R:IT	# Italien
@@ -2023,12 +2113,22 @@ T:QBS
 C:+3930
 R:IT	# Italien
 
-#N:Brixen (Bressanone)
+#N:Brixen		#Brixen (Bressanone)
 #T:
 #C:+39472
 #R:IT	# Italien
 
-#N:Bruneck (Brunico)
+#N:Bressanone		#Brixen (Bressanone)
+#T:
+#C:+39472
+#R:IT	# Italien
+
+#N:Bruneck		#Bruneck (Brunico)
+#T:
+#C:+39474
+#R:IT	# Italien
+
+#N:Brunico		#Bruneck (Brunico)
 #T:
 #C:+39474
 #R:IT	# Italien
@@ -2073,32 +2173,47 @@ R:IT	# Italien
 #C:+39532
 #R:IT	# Italien
 
-#N:Firenze (Florenz)
-#T:
-#C:+3955
-#R:IT	# Italien
+N:Firenze		#Firenze (Florenz)
+T:FLR
+C:+3955
+R:IT	# Italien
 
-#N:Franzensfeste (Fortezza)
+#N:Franzensfeste		#Franzensfeste (Fortezza)
 #T:
 #C:+39472
 #R:IT	# Italien
 
-#N:Genova (Genua)
+#N:Fortezza		#Franzensfeste (Fortezza)
 #T:
-#C:+3910
+#C:+39472
 #R:IT	# Italien
+
+N:Genova		#Genova (Genua)
+T:GOA
+C:+3910
+R:IT	# Italien
 
 #N:Grado
 #T:
 #C:+39431
 #R:IT	# Italien
 
-#N:Görz (Gorizia)
+#N:Görz		#Görz (Gorizia)
 #T:
 #C:+39481
 #R:IT	# Italien
 
-#N:Innichen (San Candido)
+#N:Gorizia		#Görz (Gorizia)
+#T:
+#C:+39481
+#R:IT	# Italien
+
+#N:Innichen		#Innichen (San Candido)
+#T:
+#C:+39474
+#R:IT	# Italien
+
+#N:San Candido		#Innichen (San Candido)
 #T:
 #C:+39474
 #R:IT	# Italien
@@ -2133,12 +2248,22 @@ R:IT	# Italien
 #C:+3945
 #R:IT	# Italien
 
-#N:Mantova (Mantua)
+#N:Mantova		#Mantova (Mantua)
 #T:
 #C:+39376
 #R:IT	# Italien
 
-#N:Meran (Merano)
+#N:Mantua		#Mantova (Mantua)
+#T:
+#C:+39376
+#R:IT	# Italien
+
+#N:Meran		#Meran (Merano)
+#T:
+#C:+39473
+#R:IT	# Italien
+
+#N:Merano		#Meran (Merano)
 #T:
 #C:+39473
 #R:IT	# Italien
@@ -2148,7 +2273,12 @@ T:MEZ
 C:+3990
 R:IT	# Italien
 
-#N:Milano (Mailand)
+#N:Milano		#Milano (Mailand)
+#T:MIL
+#C:+392
+#R:IT	# Italien
+
+#N:Mailand		#Milano (Mailand)
 #T:
 #C:+392
 #R:IT	# Italien
@@ -2158,20 +2288,20 @@ R:IT	# Italien
 #C:+3939
 #R:IT	# Italien
 
-#N:Napoli (Neapel)
-#T:
-#C:+3981
-#R:IT	# Italien
+N:Napoli		#Napoli (Neapel)
+T:NAP
+C:+3981
+R:IT	# Italien
 
 #N:Novara
 #T:
 #C:+39321
 #R:IT	# Italien
 
-#N:Padova (Padua)
-#T:
-#C:+3949
-#R:IT	# Italien
+N:Padova		#Padova (Padua)
+T:QPA
+C:+3949
+R:IT	# Italien
 
 N:Palermo
 T:PMO
@@ -2213,8 +2343,13 @@ T:RMI
 C:+39541
 R:IT	# Italien
 
-#N:Roma (Rom)
-#T:
+#N:Roma		#Roma (Rom)
+#T:ROM
+#C:+396
+#R:IT	# Italien
+
+#N:Rom		#Roma (Rom)
+#T:ROM
 #C:+396
 #R:IT	# Italien
 
@@ -2233,17 +2368,27 @@ T:QSR
 C:+3989
 R:IT	# Italien
 
-#N:Seis (Siusi)
+#N:Seis		#Seis (Siusi)
 #T:
 #C:+39471
 #R:IT	# Italien
 
-#N:Sorrento (Sorrent)
+#N:Siusi		#Seis (Siusi)
 #T:
-#C:+3981
+#C:+39471
 #R:IT	# Italien
 
-#N:Sterzing (Vipiteno)
+N:Sorrento		#Sorrento (Sorrent)
+T:RRO
+C:+3981
+R:IT	# Italien
+
+#N:Sterzing		#Sterzing (Vipiteno)
+#T:
+#C:+39472
+#R:IT	# Italien
+
+#N:Vipiteno		#Sterzing (Vipiteno)
 #T:
 #C:+39472
 #R:IT	# Italien
@@ -2253,35 +2398,40 @@ R:IT	# Italien
 #C:+39428
 #R:IT	# Italien
 
-#N:Toblach (Dobbiaco)
+#N:Toblach		#Toblach (Dobbiaco)
 #T:
 #C:+39474
 #R:IT	# Italien
 
-#N:Torino (Turin)
+#N:Dobbiaco		#Toblach (Dobbiaco)
 #T:
-#C:+3911
+#C:+39474
 #R:IT	# Italien
+
+N:Torino		#Torino (Turin)
+T:TRN
+C:+3911
+R:IT	# Italien
 
 #N:Torre Annunziata
 #T:
 #C:+3981
 #R:IT	# Italien
 
-#N:Trento (Trient)
-#T:
-#C:+39461
-#R:IT	# Italien
+N:Trento		#Trento (Trient)
+T:TRX
+C:+39461
+R:IT	# Italien
 
 N:Treviso
-T:QTV
+T:TSF
 C:+39422
 R:IT	# Italien
 
-#N:Trieste (Triest)
-#T:
-#C:+3940
-#R:IT	# Italien
+N:Trieste		#Trieste (Triest)
+T:TRS
+C:+3940
+R:IT	# Italien
 
 N:Udine
 T:UDN
@@ -2293,10 +2443,10 @@ R:IT	# Italien
 #C:+39332
 #R:IT	# Italien
 
-#N:Venezia (Venedig)
-#T:
-#C:+3941
-#R:IT	# Italien
+N:Venezia		#Venezia (Venedig)
+T:VCE
+C:+3941
+R:IT	# Italien
 
 #N:Ventimiglia
 #T:
@@ -2313,12 +2463,17 @@ T:VIC
 C:+39444
 R:IT	# Italien
 
-#N:Hiroshima (Prov. Hiroshima)
+N:Hiroshima		#Hiroshima (Prov. Hiroshima)
+T:HIJ
+C:+8182
+R:JP	# Japan
+
+#N:Kawasaki		#Kawasaki (Prov. Kanagawa)
 #T:
-#C:+8182
+#C:+8144
 #R:JP	# Japan
 
-#N:Kawasaki (Prov. Kanagawa)
+#N:Prov. Kanagawa		#Kawasaki (Prov. Kanagawa)
 #T:
 #C:+8144
 #R:JP	# Japan
@@ -2333,10 +2488,10 @@ T:UKY
 C:+8175
 R:JP	# Japan
 
-#N:Nagasaki (Prov. Nagasaki)
-#T:
-#C:+81958
-#R:JP	# Japan
+N:Nagasaki		#Nagasaki (Prov. Nagasaki)
+T:NGS
+C:+81958
+R:JP	# Japan
 
 N:Nagoya
 T:NGO
@@ -2344,7 +2499,7 @@ C:+8152
 R:JP	# Japan
 
 N:Osaka
-T:ITM
+T:OSA
 C:+816
 R:JP	# Japan
 
@@ -2464,7 +2619,7 @@ R:YE	# Jemen
 #R:YE	# Jemen
 
 N:Amman
-T:ADJ
+T:AMM
 C:+9626
 R:JO	# Jordanien
 
@@ -2478,10 +2633,10 @@ R:JO	# Jordanien
 #C:+9622
 #R:JO	# Jordanien
 
-#N:Beograd (Belgrad)
-#T:
-#C:+38111
-#R:YU	# Jugoslawien (Serbien, Montenegro)
+N:Beograd		#Beograd (Belgrad)
+T:BEG
+C:+38111
+R:YU	# Jugoslawien (Serbien, Montenegro)
 
 N:Budva
 T:QBA
@@ -2494,7 +2649,7 @@ R:YU	# Jugoslawien (Serbien, Montenegro)
 #R:YU	# Jugoslawien (Serbien, Montenegro)
 
 N:Nis
-T:INI
+T:IIS
 C:+38118
 R:YU	# Jugoslawien (Serbien, Montenegro)
 
@@ -2533,75 +2688,60 @@ R:YU	# Jugoslawien (Serbien, Montenegro)
 #C:+85523
 #R:KH	# Kambodscha
 
-#N:Calgary, Alta
-#T:
-#C:+1403
-#R:US	# Kanada
+N:Calgary		#Calgary, Alta
+T:YYC
+C:+1403
+R:US	# Kanada
 
-#N:Edmonton, Alta
-#T:
-#C:+1403
-#R:US	# Kanada
+N:Edmonton		#Edmonton, Alta
+T:YED
+C:+1403
+R:US	# Kanada
 
-#N:Hamilton, Ontario
-#T:
-#C:+1905
-#R:US	# Kanada
+N:Hamilton		#Hamilton, Ontario
+T:HAB
+C:+1905
+R:US	# Kanada
 
-#N:Kitchener, Ontario
-#T:
-#C:+1519
-#R:US	# Kanada
+N:Kitchener		#Kitchener, Ontario
+T:YKF
+C:+1519
+R:US	# Kanada
 
-#N:Montreal, Quebec
-#T:
-#C:+1514
-#R:US	# Kanada
+N:Montreal		#Montreal, Quebec
+T:YHU
+C:+1514
+R:US	# Kanada
 
-#N:Ottawa, Ontario
-#T:
-#C:+1613
-#R:US	# Kanada
+N:Ottawa		#Ottawa, Ontario
+T:OWI
+C:+1613
+R:US	# Kanada
 
-#N:Toronto, Ontario (Innerer Bereich)
-#T:
-#C:+1416
-#R:US	# Kanada
+N:Toronto		#Toronto, Ontario (Innerer Bereich)
+T:YTO
+C:+1416
+R:US	# Kanada
 
-#N:Toronto, Ontario (Äußerer Bereich)
-#T:
-#C:+1905
-#R:US	# Kanada
+N:Vancouver		#Vancouver, British Columbia
+T:CXH
+C:+1604
+R:US	# Kanada
 
-#N:Vancouver, British Columbia
-#T:
-#C:+1604
-#R:US	# Kanada
+N:Victoria		#Victoria, British Columbia
+T:VCC
+C:+1604
+R:US	# Kanada
 
-#N:Vancouver, British Columbia
-#T:
-#C:+1250
-#R:US	# Kanada
+N:Windsor		#Windsor, Ontario
+T:YQG
+C:+1519
+R:US	# Kanada
 
-#N:Victoria, British Columbia
-#T:
-#C:+1604
-#R:US	# Kanada
-
-#N:Victoria, British Columbia
-#T:
-#C:+1250
-#R:US	# Kanada
-
-#N:Windsor, Ontario
-#T:
-#C:+1519
-#R:US	# Kanada
-
-#N:Winnipeg, Manitoba
-#T:
-#C:+1204
-#R:US	# Kanada
+N:Winnipeg		#Winnipeg, Manitoba
+T:YWG
+C:+1204
+R:US	# Kanada
 
 N:Alma Ata
 T:ALA
@@ -2714,7 +2854,7 @@ C:+575
 R:CO	# Kolumbien
 
 N:Medellin
-T:EOH
+T:MDE
 C:+574
 R:CO	# Kolumbien
 
@@ -2734,7 +2874,7 @@ C:+8251
 R:KR	# Korea, Republik
 
 N:Seoul
-T:JGE
+T:SEL
 C:+822
 R:KR	# Korea, Republik
 
@@ -2798,7 +2938,12 @@ R:HR	# Kroatien
 #C:+38551
 #R:HR	# Kroatien
 
-#N:Opatija (Abazzia)
+#N:Opatija		#Opatija (Abazzia)
+#T:
+#C:+38551
+#R:HR	# Kroatien
+
+#N:Abazzia		#Opatija (Abazzia)
 #T:
 #C:+38551
 #R:HR	# Kroatien
@@ -2818,10 +2963,10 @@ R:HR	# Kroatien
 #C:+38534
 #R:HR	# Kroatien
 
-#N:Pula (Pola)
-#T:
-#C:+38552
-#R:HR	# Kroatien
+N:Pula		#Pula (Pola)
+T:PUY
+C:+38552
+R:HR	# Kroatien
 
 N:Rijeka
 T:RJK
@@ -2903,10 +3048,10 @@ R:LA	# Laos
 #C:+37139
 #R:LV	# Lettland
 
-#N:Daugavpils (Dünaburg)
-#T:
-#C:+37154
-#R:LV	# Lettland
+N:Daugavpils		#Daugavpils (Dünaburg)
+T:DGP
+C:+37154
+R:LV	# Lettland
 
 #N:Dobele
 #T:
@@ -2928,10 +3073,10 @@ R:LA	# Laos
 #C:+37133
 #R:LV	# Lettland
 
-#N:Liepaja (Libau)
-#T:
-#C:+37134
-#R:LV	# Lettland
+N:Liepaja		#Liepaja (Libau)
+T:LPX
+C:+37134
+R:LV	# Lettland
 
 #N:Limbazi
 #T:
@@ -3003,11 +3148,6 @@ R:LB	# Libanon
 #C:+9611
 #R:LB	# Libanon
 
-N:Tripoli
-T:KYE
-C:+9616
-R:LB	# Libanon
-
 #N:Tyr
 #T:
 #C:+9617
@@ -3021,11 +3161,6 @@ R:LY	# Libyen
 N:Derna
 T:DNF
 C:+21881
-R:LY	# Libyen
-
-N:Tripoli
-T:KYE
-C:+21821
 R:LY	# Libyen
 
 #N:Tripoli Airport
@@ -3053,25 +3188,30 @@ T:KUN
 C:+3707
 R:LT	# Litauen
 
-#N:Klaipeda (Memel)
-#T:
-#C:+3706
-#R:LT	# Litauen
+N:Klaipeda		#Klaipeda (Memel)
+T:KLJ
+C:+3706
+R:LT	# Litauen
 
 #N:Panevezys
 #T:
 #C:+3705
 #R:LT	# Litauen
 
-#N:Siauliai (Schaulen)
+#N:Siauliai		#Siauliai (Schaulen)
 #T:
 #C:+3701
 #R:LT	# Litauen
 
-#N:Vilnius (Wilna)
+#N:Schaulen		#Siauliai (Schaulen)
 #T:
-#C:+3702
+#C:+3701
 #R:LT	# Litauen
+
+N:Vilnius		#Vilnius (Wilna)
+T:VNO
+C:+3702
+R:LT	# Litauen
 
 N:Antalaha
 T:ANM
@@ -3104,7 +3244,7 @@ C:+2615
 R:MG	# Madagaskar
 
 N:Arau
-T:AUC
+T:ARQ
 C:+604
 R:MY	# Malaysia
 
@@ -3333,10 +3473,15 @@ R:MD	# Moldau
 #C:+97635
 #R:MN	# Mongolei
 
-#N:Ulaan Baatar (Ulan Bator)
+#N:Ulaan Baatar		#Ulaan Baatar (Ulan Bator)
 #T:
 #C:+9761
 #R:MN	# Mongolei
+
+N:Ulan Bator		#Ulaan Baatar (Ulan Bator)
+T:ULN
+C:+9761
+R:MN	# Mongolei
 
 N:Beira
 T:BEW
@@ -3364,7 +3509,7 @@ C:+2586
 R:MZ	# Mosambik
 
 N:Tete
-T:TCV
+T:TET
 C:+25852
 R:MZ	# Mosambik
 
@@ -3373,17 +3518,22 @@ R:MZ	# Mosambik
 #C:+25822
 #R:MZ	# Mosambik
 
-#N:Akyab (Sittway)
+N:Akyab		#Akyab (Sittway)
+T:AKY
+C:+9543
+R:MM	# Myanmar
+
+N:Bassein		#Bassein (Pathein)
+T:BSX
+C:+9542
+R:MM	# Myanmar
+
+#N:Hpakan		#Hpakan (Hpa- an)
 #T:
-#C:+9543
+#C:+9535
 #R:MM	# Myanmar
 
-#N:Bassein (Pathein)
-#T:
-#C:+9542
-#R:MM	# Myanmar
-
-#N:Hpakan (Hpa- an)
+#N:Hpa- an		#Hpakan (Hpa- an)
 #T:
 #C:+9535
 #R:MM	# Myanmar
@@ -3393,10 +3543,10 @@ T:LIW
 C:+9583
 R:MM	# Myanmar
 
-#N:Magwe (Magway)
-#T:
-#C:+9563
-#R:MM	# Myanmar
+N:Magwe		#Magwe (Magway)
+T:MWQ
+C:+9563
+R:MM	# Myanmar
 
 N:Mandalay
 T:MDL
@@ -3408,10 +3558,10 @@ R:MM	# Myanmar
 #C:+9564
 #R:MM	# Myanmar
 
-#N:Moulmein (Mawlamyine)
-#T:
-#C:+9532
-#R:MM	# Myanmar
+N:Moulmein		#Moulmein (Mawlamyine)
+T:MNU
+C:+9532
+R:MM	# Myanmar
 
 #N:Pegu
 #T:
@@ -3443,20 +3593,25 @@ R:MM	# Myanmar
 #C:+9554
 #R:MM	# Myanmar
 
-#N:Yangon (Rangoon)
+#N:Yangon		#Yangon (Rangoon)
 #T:
 #C:+951
 #R:MM	# Myanmar
+
+N:Rangoon		#Yangon (Rangoon)
+T:RGN
+C:+951
+R:MM	# Myanmar
 
 #N:J. G. Strydom Airport
 #T:
 #C:+26461
 #R:NA	# Namibia
 
-#N:Luderitz (Lüderitz)
-#T:
-#C:+2646331
-#R:NA	# Namibia
+N:Luderitz		#Luderitz (Lüderitz)
+T:LUD
+C:+2646331
+R:NA	# Namibia
 
 N:Swakopmund
 T:SWP
@@ -3464,7 +3619,7 @@ C:+26464
 R:NA	# Namibia
 
 N:Windhoek
-T:ERS
+T:WDH
 C:+26461
 R:NA	# Namibia
 
@@ -3503,11 +3658,6 @@ T:DUD
 C:+643
 R:NZ	# Neuseeland
 
-N:Hamilton
-T:HAB
-C:+647
-R:NZ	# Neuseeland
-
 N:Invercargill
 T:IVC
 C:+643
@@ -3524,7 +3674,7 @@ C:+643
 R:NZ	# Neuseeland
 
 N:Wellington
-T:EGT
+T:WLG
 C:+644
 R:NZ	# Neuseeland
 
@@ -3598,8 +3748,8 @@ R:NL	# Niederlande
 #C:+3115
 #R:NL	# Niederlande
 
-#N:Den Haag, s'- Gravenhage
-#T:
+#N:Den Haag		#Den Haag, s'- Gravenhage
+#T:HAG
 #C:+3170
 #R:NL	# Niederlande
 
@@ -3608,7 +3758,12 @@ T:EIN
 C:+3140
 R:NL	# Niederlande
 
-#N:Elst (Utrecht)
+#N:Elst		#Elst (Utrecht)
+#T:
+#C:+31318
+#R:NL	# Niederlande
+
+#N:Utrecht		#Elst (Utrecht)
 #T:
 #C:+31318
 #R:NL	# Niederlande
@@ -3738,11 +3893,6 @@ T:LOS
 C:+2341
 R:NG	# Nigeria
 
-N:Hyderabad
-T:HDD
-C:+92221
-R:PK	# Pakistan
-
 #N:Islamabad 
 #T:
 #C:+9251
@@ -3784,7 +3934,7 @@ C:+5184
 R:PE	# Peru
 
 N:Lima
-T:AOH
+T:LIM
 C:+511
 R:PE	# Peru
 
@@ -3813,17 +3963,22 @@ T:SPO
 C:+6393
 R:PH	# Philippinen
 
-#N:Gdansk (Danzig)
+N:Gdansk		#Gdansk (Danzig)
+T:GDN
+C:+4858
+R:PL	# Polen
+
+N:Katowice		#Katowice (Kattowitz)
+T:KTW
+C:+4832
+R:PL	# Polen
+
+#N:Kraków		#Kraków (Krakau)
 #T:
-#C:+4858
+#C:+4812
 #R:PL	# Polen
 
-#N:Katowice (Kattowitz)
-#T:
-#C:+4832
-#R:PL	# Polen
-
-#N:Kraków (Krakau)
+#N:Krakau		#Kraków (Krakau)
 #T:
 #C:+4812
 #R:PL	# Polen
@@ -3838,35 +3993,40 @@ R:PH	# Philippinen
 #C:+4842
 #R:PL	# Polen
 
-#N:Opole (Oppeln)
+#N:Opole		#Opole (Oppeln)
 #T:
 #C:+4877
 #R:PL	# Polen
 
-#N:Poznan (Posen)
+#N:Oppeln		#Opole (Oppeln)
 #T:
-#C:+4861
+#C:+4877
 #R:PL	# Polen
+
+N:Poznan		#Poznan (Posen)
+T:POZ
+C:+4861
+R:PL	# Polen
 
 #N:Radom
 #T:
 #C:+4848
 #R:PL	# Polen
 
-#N:Szczecin (Stettin)
-#T:
-#C:+4891
-#R:PL	# Polen
+N:Szczecin		#Szczecin (Stettin)
+T:SZZ
+C:+4891
+R:PL	# Polen
 
-#N:Warszawa (Warschau)
-#T:
-#C:+4822
-#R:PL	# Polen
+N:Warszawa		#Warszawa (Warschau)
+T:WAW
+C:+4822
+R:PL	# Polen
 
-#N:Wroclaw (Breslau)
-#T:
-#C:+4871
-#R:PL	# Polen
+N:Wroclaw		#Wroclaw (Breslau)
+T:WRO
+C:+4871
+R:PL	# Polen
 
 N:Arad
 T:ARW
@@ -3883,25 +4043,40 @@ R:RO	# Rumänien
 #C:+4039
 #R:RO	# Rumänien
 
-#N:Brasov (Kronstadt)
+#N:Brasov		#Brasov (Kronstadt)
 #T:
 #C:+4068
 #R:RO	# Rumänien
 
-#N:Bucuresti (Bukarest)
+#N:Kronstadt		#Brasov (Kronstadt)
+#T:
+#C:+4068
+#R:RO	# Rumänien
+
+#N:Bucuresti		#Bucuresti (Bukarest)
 #T:
 #C:+401
 #R:RO	# Rumänien
 
-#N:Cluj- Napoca (Klausenburg)
+#N:Bukarest		#Bucuresti (Bukarest)
+#T:
+#C:+401
+#R:RO	# Rumänien
+
+#N:Cluj- Napoca		#Cluj- Napoca (Klausenburg)
 #T:
 #C:+4064
 #R:RO	# Rumänien
 
-#N:Constanta (Konstanza)
+#N:Klausenburg		#Cluj- Napoca (Klausenburg)
 #T:
-#C:+4041
+#C:+4064
 #R:RO	# Rumänien
+
+N:Constanta		#Constanta (Konstanza)
+T:CND
+C:+4041
+R:RO	# Rumänien
 
 N:Craiova
 T:CRA
@@ -3913,7 +4088,12 @@ R:RO	# Rumänien
 #C:+4041
 #R:RO	# Rumänien
 
-#N:Galati (Galatz)
+#N:Galati		#Galati (Galatz)
+#T:
+#C:+4036
+#R:RO	# Rumänien
+
+#N:Galatz		#Galati (Galatz)
 #T:
 #C:+4036
 #R:RO	# Rumänien
@@ -3938,10 +4118,10 @@ R:RO	# Rumänien
 #C:+4041
 #R:RO	# Rumänien
 
-#N:Oradea (Großwardein)
-#T:
-#C:+4059
-#R:RO	# Rumänien
+N:Oradea		#Oradea (Großwardein)
+T:OMR
+C:+4059
+R:RO	# Rumänien
 
 #N:Pitesti
 #T:
@@ -3958,10 +4138,10 @@ T:SUJ
 C:+4061
 R:RO	# Rumänien
 
-#N:Sibiu (Hermannstadt)
-#T:
-#C:+4069
-#R:RO	# Rumänien
+N:Sibiu		#Sibiu (Hermannstadt)
+T:SBZ
+C:+4069
+R:RO	# Rumänien
 
 #N:Sighisoara
 #T:
@@ -3998,7 +4178,12 @@ T:URS
 C:+7071
 R:SU	# Russische Föderation
 
-#N:Moscow (Moskau)
+#N:Moscow		#Moscow (Moskau)
+#T:MOW
+#C:+7095
+#R:SU	# Russische Föderation
+
+#N:Moskau		#Moscow (Moskau)
 #T:
 #C:+7095
 #R:SU	# Russische Föderation
@@ -4024,7 +4209,7 @@ R:SU	# Russische Föderation
 #R:SU	# Russische Föderation
 
 N:St. Petersburg
-T:LED
+T:SPG
 C:+7812
 R:SU	# Russische Föderation
 
@@ -4038,10 +4223,10 @@ T:VVO
 C:+7423
 R:SU	# Russische Föderation
 
-#N:Volgograd (Caricin)
-#T:
-#C:+7844
-#R:SU	# Russische Föderation
+N:Volgograd		#Volgograd (Caricin)
+T:VOG
+C:+7844
+R:SU	# Russische Föderation
 
 #N:S. Tomè
 #T:
@@ -4073,10 +4258,10 @@ T:JED
 C:+9662
 R:SA	# Saudi-Arabien
 
-#N:Makkah (Mecca)
-#T:
-#C:+9662
-#R:SA	# Saudi-Arabien
+N:Makkah		#Makkah (Mecca)
+T:QCA
+C:+9662
+R:SA	# Saudi-Arabien
 
 N:Medina
 T:MED
@@ -4098,10 +4283,10 @@ R:SA	# Saudi-Arabien
 #C:+46171
 #R:SE	# Schweden
 
-#N:Eskilstuna (- Torshälla)
-#T:
-#C:+4616
-#R:SE	# Schweden
+N:Eskilstuna		#Eskilstuna (- Torshälla)
+T:EKT
+C:+4616
+R:SE	# Schweden
 
 #N:Falun
 #T:
@@ -4113,7 +4298,12 @@ R:SA	# Saudi-Arabien
 #C:+46590
 #R:SE	# Schweden
 
-#N:Gävle (- Sandviken)
+#N:Gävle		#Gävle (- Sandviken)
+#T:
+#C:+4626
+#R:SE	# Schweden
+
+#N:- Sandviken		#Gävle (- Sandviken)
 #T:
 #C:+4626
 #R:SE	# Schweden
@@ -4123,12 +4313,17 @@ R:SA	# Saudi-Arabien
 #C:+4631
 #R:SE	# Schweden
 
-#N:Helsingborg (- Höganäs)
+N:Helsingborg		#Helsingborg (- Höganäs)
+T:JHE
+C:+4642
+R:SE	# Schweden
+
+#N:Jönköping		#Jönköping (- Huskvarna)
 #T:
-#C:+4642
+#C:+4636
 #R:SE	# Schweden
 
-#N:Jönköping (- Huskvarna)
+#N:- Huskvarna		#Jönköping (- Huskvarna)
 #T:
 #C:+4636
 #R:SE	# Schweden
@@ -4148,7 +4343,12 @@ T:KID
 C:+4644
 R:SE	# Schweden
 
-#N:Landskrona (- Svalöv)
+#N:Landskrona		#Landskrona (- Svalöv)
+#T:
+#C:+46418
+#R:SE	# Schweden
+
+#N:- Svalöv		#Landskrona (- Svalöv)
 #T:
 #C:+46418
 #R:SE	# Schweden
@@ -4178,10 +4378,10 @@ R:SE	# Schweden
 #C:+468
 #R:SE	# Schweden
 
-#N:Sundsvall (- Timrå)
-#T:
-#C:+4660
-#R:SE	# Schweden
+N:Sundsvall		#Sundsvall (- Timrå)
+T:SDL
+C:+4660
+R:SE	# Schweden
 
 #N:Trelleborg
 #T:
@@ -4213,7 +4413,12 @@ R:SE	# Schweden
 #C:+4621
 #R:SE	# Schweden
 
-#N:Ålvesta (- Rydaholm)
+#N:Ålvesta		#Ålvesta (- Rydaholm)
+#T:
+#C:+46472
+#R:SE	# Schweden
+
+#N:- Rydaholm		#Ålvesta (- Rydaholm)
 #T:
 #C:+46472
 #R:SE	# Schweden
@@ -4238,12 +4443,12 @@ T:BRN
 C:+4131
 R:CH	# Schweiz
 
-#N:Biel (Bienne)
+#N:Buchs		#Buchs (SG)
 #T:
-#C:+4132
+#C:+4181
 #R:CH	# Schweiz
 
-#N:Buchs (SG)
+#N:SG		#Buchs (SG)
 #T:
 #C:+4181
 #R:CH	# Schweiz
@@ -4258,7 +4463,12 @@ R:CH	# Schweiz
 #C:+4126
 #R:CH	# Schweiz
 
-#N:Genève (Genf)
+#N:Genève		#Genève (Genf)
+#T:
+#C:+4122
+#R:CH	# Schweiz
+
+#N:Genf		#Genève (Genf)
 #T:
 #C:+4122
 #R:CH	# Schweiz
@@ -4363,35 +4573,45 @@ R:ZW	# Simbabwe
 #C:+26313
 #R:ZW	# Simbabwe
 
-#N:Banská Bystrica (Neusohl)
+#N:Banská Bystrica		#Banská Bystrica (Neusohl)
 #T:
 #C:+42188
 #R:SK	# Slowakische Republik
 
-#N:Bratislava (Preßburg)
+#N:Neusohl		#Banská Bystrica (Neusohl)
 #T:
-#C:+4217
+#C:+42188
 #R:SK	# Slowakische Republik
 
-#N:Nitra (Neutra)
+N:Bratislava		#Bratislava (Preßburg)
+T:BTS
+C:+4217
+R:SK	# Slowakische Republik
+
+#N:Nitra		#Nitra (Neutra)
 #T:
 #C:+42187
 #R:SK	# Slowakische Republik
 
-#N:Poprad (Deutschendorf)
+#N:Neutra		#Nitra (Neutra)
 #T:
-#C:+42192
+#C:+42187
 #R:SK	# Slowakische Republik
+
+N:Poprad		#Poprad (Deutschendorf)
+T:TAT
+C:+42192
+R:SK	# Slowakische Republik
 
 #N:Trencin
 #T:
 #C:+421831
 #R:SK	# Slowakische Republik
 
-#N:Zilina (Sillein)
-#T:
-#C:+42189
-#R:SK	# Slowakische Republik
+N:Zilina		#Zilina (Sillein)
+T:ILZ
+C:+42189
+R:SK	# Slowakische Republik
 
 #N:Bled 
 #T:
@@ -4408,20 +4628,25 @@ R:ZW	# Simbabwe
 #C:+38666
 #R:SI	# Slowenien
 
-#N:Kranj (Krainburg)
+#N:Kranj		#Kranj (Krainburg)
 #T:
 #C:+38664
 #R:SI	# Slowenien
 
-#N:Ljubljana (Laibach)
+#N:Krainburg		#Kranj (Krainburg)
 #T:
-#C:+38661
+#C:+38664
 #R:SI	# Slowenien
 
-#N:Maribor (Marburg)
-#T:
-#C:+38662
-#R:SI	# Slowenien
+N:Ljubljana		#Ljubljana (Laibach)
+T:LJU
+C:+38661
+R:SI	# Slowenien
+
+N:Maribor		#Maribor (Marburg)
+T:MBX
+C:+38662
+R:SI	# Slowenien
 
 #N:Rogaska Slatina
 #T:
@@ -4468,10 +4693,10 @@ R:ES	# Spanien (einschl. Balearen, Ceuta, Melilla und Kanarische Inseln)
 #C:+3420
 #R:ES	# Spanien (einschl. Balearen, Ceuta, Melilla und Kanarische Inseln)
 
-N:Barcelona
-T:BCN
-C:+343
-R:ES	# Spanien (einschl. Balearen, Ceuta, Melilla und Kanarische Inseln)
+#N:Barcelona
+#T:BCN
+#C:+343
+#R:ES	# Spanien (einschl. Balearen, Ceuta, Melilla und Kanarische Inseln)
 
 #N:Bilbao
 #T:BIO
@@ -4488,11 +4713,6 @@ R:ES	# Spanien (einschl. Balearen, Ceuta, Melilla und Kanarische Inseln)
 #C:+343
 #R:ES	# Spanien (einschl. Balearen, Ceuta, Melilla und Kanarische Inseln)
 
-N:Cartagena
-T:CTG
-C:+3468
-R:ES	# Spanien (einschl. Balearen, Ceuta, Melilla und Kanarische Inseln)
-
 #N:Ceuta
 #T:
 #C:+3456
@@ -4502,11 +4722,6 @@ R:ES	# Spanien (einschl. Balearen, Ceuta, Melilla und Kanarische Inseln)
 #T:
 #C:+3426
 #R:ES	# Spanien (einschl. Balearen, Ceuta, Melilla und Kanarische Inseln)
-
-N:Cordoba
-T:COR
-C:+3457
-R:ES	# Spanien (einschl. Balearen, Ceuta, Melilla und Kanarische Inseln)
 
 #N:El Escorial
 #T:
@@ -4538,10 +4753,10 @@ R:ES	# Spanien (einschl. Balearen, Ceuta, Melilla und Kanarische Inseln)
 #C:+3459
 #R:ES	# Spanien (einschl. Balearen, Ceuta, Melilla und Kanarische Inseln)
 
-#N:Ibiza (gesamte Insel)
-#T:
-#C:+3471
-#R:ES	# Spanien (einschl. Balearen, Ceuta, Melilla und Kanarische Inseln)
+N:Ibiza		#Ibiza (gesamte Insel)
+T:IBZ
+C:+3471
+R:ES	# Spanien (einschl. Balearen, Ceuta, Melilla und Kanarische Inseln)
 
 N:Jerez de la Frontera
 T:JRZ
@@ -4558,10 +4773,10 @@ R:ES	# Spanien (einschl. Balearen, Ceuta, Melilla und Kanarische Inseln)
 #C:+3473
 #R:ES	# Spanien (einschl. Balearen, Ceuta, Melilla und Kanarische Inseln)
 
-N:Madrid
-T:MAD
-C:+341
-R:ES	# Spanien (einschl. Balearen, Ceuta, Melilla und Kanarische Inseln)
+#N:Madrid
+#T:MAD
+#C:+341
+#R:ES	# Spanien (einschl. Balearen, Ceuta, Melilla und Kanarische Inseln)
 
 N:Malaga
 T:AGP
@@ -4649,7 +4864,7 @@ R:ES	# Spanien (einschl. Balearen, Ceuta, Melilla und Kanarische Inseln)
 #R:ES	# Spanien (einschl. Balearen, Ceuta, Melilla und Kanarische Inseln)
 
 N:Toledo
-T:QTO
+T:TOL
 C:+3425
 R:ES	# Spanien (einschl. Balearen, Ceuta, Melilla und Kanarische Inseln)
 
@@ -4663,10 +4878,10 @@ R:ES	# Spanien (einschl. Balearen, Ceuta, Melilla und Kanarische Inseln)
 #C:+3472
 #R:ES	# Spanien (einschl. Balearen, Ceuta, Melilla und Kanarische Inseln)
 
-N:Valencia
-T:VLC
-C:+346
-R:ES	# Spanien (einschl. Balearen, Ceuta, Melilla und Kanarische Inseln)
+#N:Valencia
+#T:VLC
+#C:+346
+#R:ES	# Spanien (einschl. Balearen, Ceuta, Melilla und Kanarische Inseln)
 
 N:Valladolid
 T:VLL
@@ -4789,7 +5004,7 @@ C:+25568
 R:TZ	# Tansania
 
 N:Tanga
-T:TGT
+T:TAN
 C:+25553
 R:TZ	# Tansania
 
@@ -4823,72 +5038,107 @@ T:UTH
 C:+6642
 R:TH	# Thailand
 
-#N:Brno (Brünn)
-#T:
-#C:+4205
-#R:CZ	# Tschechische Republik
+N:Brno		#Brno (Brünn)
+T:BRQ
+C:+4205
+R:CZ	# Tschechische Republik
 
-#N:Ceské Budéjovice (Budweis)
+#N:Ceské Budéjovice		#Ceské Budéjovice (Budweis)
 #T:
 #C:+42038
 #R:CZ	# Tschechische Republik
 
-#N:Hradec Králové (Königgrätz)
+#N:Budweis		#Ceské Budéjovice (Budweis)
+#T:
+#C:+42038
+#R:CZ	# Tschechische Republik
+
+#N:Hradec Králové		#Hradec Králové (Königgrätz)
 #T:
 #C:+42049
 #R:CZ	# Tschechische Republik
 
-#N:Jihlava (Iglau)
+#N:Königgrätz		#Hradec Králové (Königgrätz)
+#T:
+#C:+42049
+#R:CZ	# Tschechische Republik
+
+#N:Jihlava		#Jihlava (Iglau)
 #T:
 #C:+42066
 #R:CZ	# Tschechische Republik
 
-#N:Karlovy Vary (Karlsbad)
+#N:Iglau		#Jihlava (Iglau)
 #T:
-#C:+42017
+#C:+42066
 #R:CZ	# Tschechische Republik
 
-#N:Liberec (Reichenberg)
+N:Karlovy Vary		#Karlovy Vary (Karlsbad)
+T:KLV
+C:+42017
+R:CZ	# Tschechische Republik
+
+#N:Liberec		#Liberec (Reichenberg)
 #T:
 #C:+42048
 #R:CZ	# Tschechische Republik
 
-#N:Most (Brüx)
+#N:Reichenberg		#Liberec (Reichenberg)
 #T:
-#C:+42035
+#C:+42048
 #R:CZ	# Tschechische Republik
 
-#N:Olomouc (Olmütz)
-#T:
-#C:+42068
-#R:CZ	# Tschechische Republik
+N:Most		#Most (Brüx)
+T:MZS
+C:+42035
+R:CZ	# Tschechische Republik
 
-#N:Ostrava (Mährisch Ostrau)
-#T:
-#C:+42069
-#R:CZ	# Tschechische Republik
+N:Olomouc		#Olomouc (Olmütz)
+T:OLO
+C:+42068
+R:CZ	# Tschechische Republik
 
-#N:Pardubice (Pardubitz)
+N:Ostrava		#Ostrava (Mährisch Ostrau)
+T:OSR
+C:+42069
+R:CZ	# Tschechische Republik
+
+#N:Pardubice		#Pardubice (Pardubitz)
 #T:
 #C:+42040
 #R:CZ	# Tschechische Republik
 
-#N:Plzen (Pilsen)
+#N:Pardubitz		#Pardubice (Pardubitz)
+#T:
+#C:+42040
+#R:CZ	# Tschechische Republik
+
+#N:Plzen		#Plzen (Pilsen)
 #T:
 #C:+42019
 #R:CZ	# Tschechische Republik
 
-#N:Praha (Prag)
+#N:Pilsen		#Plzen (Pilsen)
 #T:
-#C:+4202
+#C:+42019
 #R:CZ	# Tschechische Republik
+
+N:Praha		#Praha (Prag)
+T:PRG
+C:+4202
+R:CZ	# Tschechische Republik
 
 #N:Tábor
 #T:
 #C:+420361
 #R:CZ	# Tschechische Republik
 
-#N:Usti nad Labem (Aussig a d Elbe)
+#N:Usti nad Labem		#Usti nad Labem (Aussig a d Elbe)
+#T:
+#C:+42047
+#R:CZ	# Tschechische Republik
+
+#N:Aussig a d Elbe		#Usti nad Labem (Aussig a d Elbe)
 #T:
 #C:+42047
 #R:CZ	# Tschechische Republik
@@ -4898,7 +5148,12 @@ R:TH	# Thailand
 #C:+42067
 #R:CZ	# Tschechische Republik
 
-#N:Znojmo (Znaim)
+#N:Znojmo		#Znojmo (Znaim)
+#T:
+#C:+420624
+#R:CZ	# Tschechische Republik
+
+#N:Znaim		#Znojmo (Znaim)
 #T:
 #C:+420624
 #R:CZ	# Tschechische Republik
@@ -4999,7 +5254,7 @@ C:+90222
 R:TR	# Türkei
 
 N:Izmir
-T:ADB
+T:IZM
 C:+90232
 R:TR	# Türkei
 
@@ -5024,7 +5279,7 @@ C:+25643
 R:UG	# Uganda
 
 N:Kampala
-T:EBB
+T:KLA
 C:+25641
 R:UG	# Uganda
 
@@ -5073,7 +5328,12 @@ T:KGO
 C:+380522
 R:UA	# Ukraine
 
-#N:Kyiv (Kiew)
+#N:Kyiv		#Kyiv (Kiew)
+#T:
+#C:+38044
+#R:UA	# Ukraine
+
+#N:Kiew		#Kyiv (Kiew)
 #T:
 #C:+38044
 #R:UA	# Ukraine
@@ -5088,15 +5348,15 @@ R:UA	# Ukraine
 #C:+3803322
 #R:UA	# Ukraine
 
-#N:Lviv (Lemberg)
-#T:
-#C:+380322
-#R:UA	# Ukraine
+N:Lviv		#Lviv (Lemberg)
+T:LWO
+C:+380322
+R:UA	# Ukraine
 
-#N:Mykolayiv (Nikolaev)
-#T:
-#C:+380512
-#R:UA	# Ukraine
+N:Mykolayiv		#Mykolayiv (Nikolaev)
+T:NLV
+C:+380512
+R:UA	# Ukraine
 
 #N:Odesa 
 #T:
@@ -5163,7 +5423,12 @@ R:HU	# Ungarn
 #C:+3633
 #R:HU	# Ungarn
 
-#N:Györ (Raab)
+#N:Györ		#Györ (Raab)
+#T:
+#C:+3696
+#R:HU	# Ungarn
+
+#N:Raab		#Györ (Raab)
 #T:
 #C:+3696
 #R:HU	# Ungarn
@@ -5208,7 +5473,12 @@ R:HU	# Ungarn
 #C:+3668
 #R:HU	# Ungarn
 
-#N:Pécs (Fünfkirchen)
+#N:Pécs		#Pécs (Fünfkirchen)
+#T:
+#C:+3672
+#R:HU	# Ungarn
+
+#N:Fünfkirchen		#Pécs (Fünfkirchen)
 #T:
 #C:+3672
 #R:HU	# Ungarn
@@ -5218,7 +5488,12 @@ R:HU	# Ungarn
 #C:+3684
 #R:HU	# Ungarn
 
-#N:Sopron (Ödenburg)
+#N:Sopron		#Sopron (Ödenburg)
+#T:
+#C:+3699
+#R:HU	# Ungarn
+
+#N:Ödenburg		#Sopron (Ödenburg)
 #T:
 #C:+3699
 #R:HU	# Ungarn
@@ -5228,7 +5503,12 @@ R:HU	# Ungarn
 #C:+3662
 #R:HU	# Ungarn
 
-#N:Szobathely (Steinamanger)
+#N:Szobathely		#Szobathely (Steinamanger)
+#T:
+#C:+3694
+#R:HU	# Ungarn
+
+#N:Steinamanger		#Szobathely (Steinamanger)
 #T:
 #C:+3694
 #R:HU	# Ungarn
@@ -5283,7 +5563,12 @@ R:UY	# Uruguay
 #C:+7374
 #R:SU	# Usbekistan
 
-#N:Chircikik (Circik)
+#N:Chircikik		#Chircikik (Circik)
+#T:
+#C:+737171
+#R:SU	# Usbekistan
+
+#N:Circik		#Chircikik (Circik)
 #T:
 #C:+737171
 #R:SU	# Usbekistan
@@ -5338,10 +5623,10 @@ T:PZO
 C:+5886
 R:VE	# Venezuela
 
-N:Valencia
-T:VLC
-C:+5841
-R:VE	# Venezuela
+#N:Valencia
+#T:VLC
+#C:+5841
+#R:VE	# Venezuela
 
 N:Abu Dhabi
 T:AUH
@@ -5378,172 +5663,137 @@ R:AE	# Vereinigte Arabische Emirate
 #C:+9716
 #R:AE	# Vereinigte Arabische Emirate
 
-#N:Atlanta, Georgia
-#T:
-#C:+1404
-#R:US	# Vereinigte Staaten von Amerika (alle Bundesstaaten, ausgen. Alaska)
+N:Atlanta		#Atlanta, Georgia
+T:ATL
+C:+1404
+R:US	# Vereinigte Staaten von Amerika (alle Bundesstaaten, ausgen. Alaska)
 
-#N:Atlanta, Georgia
-#T:
-#C:+1770
-#R:US	# Vereinigte Staaten von Amerika (alle Bundesstaaten, ausgen. Alaska)
+N:Boston		#Boston, Massachusetts
+T:BOS
+C:+1617
+R:US	# Vereinigte Staaten von Amerika (alle Bundesstaaten, ausgen. Alaska)
 
-#N:Baltimore, Maryland
-#T:
-#C:+1410
-#R:US	# Vereinigte Staaten von Amerika (alle Bundesstaaten, ausgen. Alaska)
-
-#N:Boston, Massachusetts
-#T:
-#C:+1617
-#R:US	# Vereinigte Staaten von Amerika (alle Bundesstaaten, ausgen. Alaska)
-
-#N:Chicago Heights, Illinois
+#N:Chicago Heights		#Chicago Heights, Illinois
 #T:
 #C:+1708
 #R:US	# Vereinigte Staaten von Amerika (alle Bundesstaaten, ausgen. Alaska)
 
-#N:Chicago Ridge, Illinois
+#N:Chicago Ridge		#Chicago Ridge, Illinois
 #T:
 #C:+1708
 #R:US	# Vereinigte Staaten von Amerika (alle Bundesstaaten, ausgen. Alaska)
 
-#N:Chicago, Illinois
-#T:
-#C:+1773
-#R:US	# Vereinigte Staaten von Amerika (alle Bundesstaaten, ausgen. Alaska)
+N:Chicago		#Chicago, Illinois
+T:CHI
+C:+1773
+R:US	# Vereinigte Staaten von Amerika (alle Bundesstaaten, ausgen. Alaska)
 
-#N:Chicago, Illinois
-#T:
-#C:+1312
-#R:US	# Vereinigte Staaten von Amerika (alle Bundesstaaten, ausgen. Alaska)
+N:Cincinnati		#Cincinnati, Ohio
+T:LUK
+C:+1513
+R:US	# Vereinigte Staaten von Amerika (alle Bundesstaaten, ausgen. Alaska)
 
-#N:Cincinnati, Ohio
-#T:
-#C:+1513
-#R:US	# Vereinigte Staaten von Amerika (alle Bundesstaaten, ausgen. Alaska)
+N:Cleveland		#Cleveland, Ohio
+T:CLE
+C:+1440
+R:US	# Vereinigte Staaten von Amerika (alle Bundesstaaten, ausgen. Alaska)
 
-#N:Cleveland, Ohio
-#T:
-#C:+1440
-#R:US	# Vereinigte Staaten von Amerika (alle Bundesstaaten, ausgen. Alaska)
+N:Denver		#Denver, Colorado
+T:DEN
+C:+1303
+R:US	# Vereinigte Staaten von Amerika (alle Bundesstaaten, ausgen. Alaska)
 
-#N:Cleveland, Ohio
-#T:
-#C:+1216
-#R:US	# Vereinigte Staaten von Amerika (alle Bundesstaaten, ausgen. Alaska)
+N:Detroit		#Detroit, Michigan
+T:DET
+C:+1313
+R:US	# Vereinigte Staaten von Amerika (alle Bundesstaaten, ausgen. Alaska)
 
-#N:Denver, Colorado
-#T:
-#C:+1303
-#R:US	# Vereinigte Staaten von Amerika (alle Bundesstaaten, ausgen. Alaska)
+N:Honolulu		#Honolulu, Hawaii
+T:HIK
+C:+1808
+R:US	# Vereinigte Staaten von Amerika (alle Bundesstaaten, ausgen. Alaska)
 
-#N:Detroit, Michigan
-#T:
-#C:+1313
-#R:US	# Vereinigte Staaten von Amerika (alle Bundesstaaten, ausgen. Alaska)
+N:Houston		#Houston, Texas
+T:HOU
+C:+1713
+R:US	# Vereinigte Staaten von Amerika (alle Bundesstaaten, ausgen. Alaska)
 
-#N:Honolulu, Hawaii
-#T:
-#C:+1808
-#R:US	# Vereinigte Staaten von Amerika (alle Bundesstaaten, ausgen. Alaska)
-
-#N:Houston, Texas
-#T:
-#C:+1713
-#R:US	# Vereinigte Staaten von Amerika (alle Bundesstaaten, ausgen. Alaska)
-
-#N:Houston, Texas
-#T:
-#C:+1281
-#R:US	# Vereinigte Staaten von Amerika (alle Bundesstaaten, ausgen. Alaska)
-
-#N:Las Vegas, Nevada
-#T:
-#C:+1702
-#R:US	# Vereinigte Staaten von Amerika (alle Bundesstaaten, ausgen. Alaska)
+N:Las Vegas		#Las Vegas, Nevada
+T:LAS
+C:+1702
+R:US	# Vereinigte Staaten von Amerika (alle Bundesstaaten, ausgen. Alaska)
 
 N:Los Angeles
-T:CCD
+T:LAX
 C:+1323
 R:US	# Vereinigte Staaten von Amerika (alle Bundesstaaten, ausgen. Alaska)
 
-#N:Los Angeles, Nord
-#T:
-#C:+1213
-#R:US	# Vereinigte Staaten von Amerika (alle Bundesstaaten, ausgen. Alaska)
+N:Miami		#Miami, Florida
+T:MIA
+C:+1305
+R:US	# Vereinigte Staaten von Amerika (alle Bundesstaaten, ausgen. Alaska)
 
-#N:Los Angeles, Süd
-#T:
-#C:+1310
-#R:US	# Vereinigte Staaten von Amerika (alle Bundesstaaten, ausgen. Alaska)
+N:Milwaukee		#Milwaukee, Wisconsin
+T:MKE
+C:+1414
+R:US	# Vereinigte Staaten von Amerika (alle Bundesstaaten, ausgen. Alaska)
 
-#N:Miami, Florida
-#T:
-#C:+1305
-#R:US	# Vereinigte Staaten von Amerika (alle Bundesstaaten, ausgen. Alaska)
-
-#N:Milwaukee, Wisconsin
-#T:
-#C:+1414
-#R:US	# Vereinigte Staaten von Amerika (alle Bundesstaaten, ausgen. Alaska)
-
-#N:Minneapolis, Minnesota
-#T:
-#C:+1612
-#R:US	# Vereinigte Staaten von Amerika (alle Bundesstaaten, ausgen. Alaska)
+N:Minneapolis		#Minneapolis, Minnesota
+T:MIC
+C:+1612
+R:US	# Vereinigte Staaten von Amerika (alle Bundesstaaten, ausgen. Alaska)
 
 #N:New York City
 #T:
 #C:+1212
 #R:US	# Vereinigte Staaten von Amerika (alle Bundesstaaten, ausgen. Alaska)
 
-#N:Philadelphia, Pennsylvania
-#T:
-#C:+1215
-#R:US	# Vereinigte Staaten von Amerika (alle Bundesstaaten, ausgen. Alaska)
+N:Philadelphia		#Philadelphia, Pennsylvania
+T:PHL
+C:+1215
+R:US	# Vereinigte Staaten von Amerika (alle Bundesstaaten, ausgen. Alaska)
 
-#N:Phoenix, Arizona
-#T:
-#C:+1602
-#R:US	# Vereinigte Staaten von Amerika (alle Bundesstaaten, ausgen. Alaska)
+N:Phoenix		#Phoenix, Arizona
+T:PHX
+C:+1602
+R:US	# Vereinigte Staaten von Amerika (alle Bundesstaaten, ausgen. Alaska)
 
-#N:Pittsburgh,Pennsylvania
-#T:
-#C:+1412
-#R:US	# Vereinigte Staaten von Amerika (alle Bundesstaaten, ausgen. Alaska)
+N:Pittsburgh		#Pittsburgh,Pennsylvania
+T:PIT
+C:+1412
+R:US	# Vereinigte Staaten von Amerika (alle Bundesstaaten, ausgen. Alaska)
 
-#N:Portland, Oregon
-#T:
-#C:+1503
-#R:US	# Vereinigte Staaten von Amerika (alle Bundesstaaten, ausgen. Alaska)
+N:Portland		#Portland, Oregon
+T:PDX
+C:+1503
+R:US	# Vereinigte Staaten von Amerika (alle Bundesstaaten, ausgen. Alaska)
 
-#N:Rochester, NY State
-#T:
-#C:+1716
-#R:US	# Vereinigte Staaten von Amerika (alle Bundesstaaten, ausgen. Alaska)
+N:Rochester		#Rochester, NY State
+T:ROC
+C:+1716
+R:US	# Vereinigte Staaten von Amerika (alle Bundesstaaten, ausgen. Alaska)
 
-#N:San Diego, California
-#T:
-#C:+1619
-#R:US	# Vereinigte Staaten von Amerika (alle Bundesstaaten, ausgen. Alaska)
+N:San Diego		#San Diego, California
+T:SAN
+C:+1619
+R:US	# Vereinigte Staaten von Amerika (alle Bundesstaaten, ausgen. Alaska)
 
-#N:San Francisco, California
-#T:
-#C:+1415
-#R:US	# Vereinigte Staaten von Amerika (alle Bundesstaaten, ausgen. Alaska)
+N:San Francisco		#San Francisco, California
+T:SCY
+C:+1415
+R:US	# Vereinigte Staaten von Amerika (alle Bundesstaaten, ausgen. Alaska)
 
-#N:St. Louis, Missouri
-#T:
-#C:+1314
-#R:US	# Vereinigte Staaten von Amerika (alle Bundesstaaten, ausgen. Alaska)
+N:St. Louis		#St. Louis, Missouri
+T:STL
+C:+1314
+R:US	# Vereinigte Staaten von Amerika (alle Bundesstaaten, ausgen. Alaska)
 
-#N:Washington, D. C.
-#T:
-#C:+1202
-#R:US	# Vereinigte Staaten von Amerika (alle Bundesstaaten, ausgen. Alaska)
+N:Washington		#Washington, D. C.
+T:WAS
+C:+1202
+R:US	# Vereinigte Staaten von Amerika (alle Bundesstaaten, ausgen. Alaska)
 
-#N:White Lake, NY State
+#N:White Lake		#White Lake, NY State
 #T:
 #C:+1914
 #R:US	# Vereinigte Staaten von Amerika (alle Bundesstaaten, ausgen. Alaska)
@@ -5578,7 +5828,12 @@ R:VN	# Vietnam
 #C:+8454
 #R:VN	# Vietnam
 
-#N:Khanh Hoa (Nhatrang City)
+#N:Khanh Hoa		#Khanh Hoa (Nhatrang City)
+#T:
+#C:+8458
+#R:VN	# Vietnam
+
+#N:Nhatrang City		#Khanh Hoa (Nhatrang City)
 #T:
 #C:+8458
 #R:VN	# Vietnam
@@ -5592,11 +5847,6 @@ R:VN	# Vietnam
 #T:
 #C:+3573
 #R:CY	# Zypern, griechischer Teil
-
-N:Dali
-T:DLC
-C:+3572
-R:CY	# Zypern, griechischer Teil
 
 N:Larnaca
 T:LCA
@@ -5618,17 +5868,32 @@ R:CY	# Zypern, griechischer Teil
 #C:+3575
 #R:CY	# Zypern, griechischer Teil
 
-#N:Famagusta (Gazimagosa)
+#N:Famagusta		#Famagusta (Gazimagosa)
 #T:
 #C:+90392
 #R:TR	# Zypern, türkischer Teil
 
-#N:Kyrenia (Girne)
+#N:Gazimagosa		#Famagusta (Gazimagosa)
 #T:
 #C:+90392
 #R:TR	# Zypern, türkischer Teil
 
-#N:Lefkosia (Lefkosa)
+#N:Kyrenia		#Kyrenia (Girne)
+#T:
+#C:+90392
+#R:TR	# Zypern, türkischer Teil
+
+#N:Girne		#Kyrenia (Girne)
+#T:
+#C:+90392
+#R:TR	# Zypern, türkischer Teil
+
+#N:Lefkosia		#Lefkosia (Lefkosa)
+#T:
+#C:+90392
+#R:TR	# Zypern, türkischer Teil
+
+#N:Lefkosa		#Lefkosia (Lefkosa)
 #T:
 #C:+90392
 #R:TR	# Zypern, türkischer Teil

@@ -400,7 +400,7 @@ void rate_1002(void) {
   char *Zone[][2] = {
     { "Österreich", "Österreich" },
     { "Mobilnetz", "+43663,+43664,+43676,+43699" },
-    { "EasyInternet", "" },
+    { "EasyInternet", "019088333" },
     { "Nachbarländer West (Z1)", "Deutschland, Italien, Liechtenstein, Schweiz" },
     { "Nachbarländer Ost (Z2)", "Slowakei, Slowenien, Tschechien, Ungarn" },
     { "Europa 3, USA (Z3)", "Belgien, Dänemark, Frankreich, Großbritannien, Irland, Amerikanische Jungferninseln, Kanada, Luxemburg, Niederlande, Norwegen, Puerto Rico, Schweden, Vereinigte Staaten (USA), Alaska, Hawaii" },
@@ -607,14 +607,14 @@ void rate_1005(void) {
 		     { "Welt 2", "Bermuda,Antigua und Barbuda,St. Lucia,Dominikanische Republik,Dominica,Britische Jungferninseln,Turks- und Caicosinseln,Puerto Rico,Bahamas,Anguilla,Jamaika,St. Vincent und Grenadinen,Montserrat,St. Kitts und Nevis,Grenada,Trinidad und Tobago,Marianen (SaipanNord-),Kaimaninseln,Amerikanische Jungferninseln,Barbados,+"}
   };
   
-  double Tarif[] = { 0.90, 3.90, 2.50, 3.50, 6.00, 9.00, 19.00 };
+  double Tarif[] = { 0.85, 3.90, 2.50, 3.50, 6.00, 9.00, 19.00 };
   
   int z;
   
   
   rprintf ("P:05", "tele2" );
   rprintf ("C:Name:", "Tele2 Telecommunications Services GmbH" );
-  rprintf ("C:TarifChanged:", "14.09.1999" );
+  rprintf ("C:TarifChanged:", "27.10.1999" );
   /*  rprintf ("","C:Address:"); */
   rprintf ("C:Homepage:", "http://www.tele2.at" );
   rprintf ("C:TarifURL:", "http://www.tele2.at/ger/tarif.htm" );
@@ -2279,7 +2279,7 @@ int main (int argc, char *argv[])
   printf ("# Many thanks to Daniela Bruder <dbruder@sime.com>\n");
   printf ("# for collecting and preparing most of the call charges.\n\n\n");
   
-  printf ("V:1.87-Austria [26-Oct-1999]\n\n");
+  printf ("V:1.88-Austria [27-Oct-1999]\n\n");
   printf ("U:%%.3f öS\n");
   
 #if 0

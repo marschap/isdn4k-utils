@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.112 1999/10/26 18:17:11 akool Exp $
+## $Id: Makefile.in,v 1.113 1999/10/28 18:36:43 akool Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,12 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.113  1999/10/28 18:36:43  akool
+## isdnlog-3.59
+##  - problems with gcc-2.7.2.3 fixed
+##  - *any* startup-warning solved/removed (only 4u, Karsten!)
+##  - many new rates
+##
 ## Revision 1.112  1999/10/26 18:17:11  akool
 ## isdnlog-3.58
 ##   - big cleanup ( > 1.3 Mb removed!)
@@ -796,7 +802,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 3.58
+VERSION     = 3.59
 
 MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 \
 	      isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 \

@@ -1,4 +1,4 @@
-V:1.10-Germany [26-Oct-1999 20:59:34]
+V:1.10-Germany [28-Oct-1999 20:24:54]
 
 # Währungsformat
 U:%.3f DM
@@ -8,7 +8,7 @@ U:%.3f DM
 #
 # (C) Copyright 1999 by Andreas Kool (akool@isdn4linux.de)
 #
-# $Id: rate-de.dat.src,v 1.2 1999/10/26 19:27:34 akool Exp $
+# $Id: rate-de.dat.src,v 1.3 1999/10/28 18:36:44 akool Exp $
 #
 #
 # Das "A:" Tag muß folgendermaßen gefüllt werden:
@@ -199,6 +199,7 @@ C:172		IVBB
 C:200	-	Ausland
 Z:0 Freephone
 A:0130,0800,International Freephone
+T:*/*=0
 Z:1-4 Inlandsverbindungen
 A:+49
 T:W/07-19=0.15/60 Geschaeftszeit
@@ -995,6 +996,7 @@ D:dtag
 Z:0 Freecall
 A:01171,01172,01174	# DTAG Störungsannahme
 A:0130,0800,International Freephone
+T:*/*=0
 Z:1-4 National
 A:+49
 T:W/08-21=0.12/60
@@ -8463,11 +8465,12 @@ A:0130190190  # Info zu 0190 Nummern
 A:01136       # Telegrammaufnahme per Telefax
 A:110         # Polizei / Notruf
 A:112         # Feuerwehr / Rettungsleitstelle
-A:+10         # Operator Service
+# A:+10         # Operator Service
 A:0130        # freecall 0130
 A:0800        # freecall 0800
 A:Plus Freephone Service (Niederl.), Plus Freephone Service (Schweiz)
 A:International Freephone
+T:*/*=0
 Z:1 Ortszone
 T:W/09-18=0.12/90 Standard
 T:W/05-09,18-21=0.12/150 Spar
@@ -9901,7 +9904,7 @@ P:40 GTS Esprit
 C:beim RegTP eingetragen als:
 C:PLUSNET
 C:Gesellschaft für Netzwerk Services mbH, August-Thyssen-Straße 1, 40211 Düsseldorf 01040
-# G:16-Jun-1999
+# G:01-Oct-1999
 D:dtag
 C:Telecom Deutschland GmbH, Kaistraße 16 A, 40221 Düsseldorf 01055
 C:Name:  Esprit Telecom
@@ -9933,7 +9936,9 @@ A:+49170,+49171,+49175	# D1
 A:+49172,+49173,+49174	# D2
 A:+49177,+49178		# Eplus
 A:+49176,+49179		# E2
-T:*/*=0.48/60
+T:W/07-19=0.64/60
+T:W/19-07=0.48/60
+T:E,H/*=0.48/60
 Z:102 net@home
 A:0192340 # DNS: 195.222.195.222 und 195.222.195.223; User: esprit; Passwort: telecom
 S:Internet by call
@@ -11609,7 +11614,7 @@ A:+49176,+49179		# E2
 #
 P:51 01051
 C:ID-Switch GmbH, Graf-Adolf-Straße, 40210 Düsseldorf 01051
-# G:18-Sep-1999
+# G:11-Oct-1999
 C:Homepage: http://www.01051.com
 C:Adresse:  Koenigsallee 60f
 C:	    40210 Duesseldorf
@@ -12101,12 +12106,12 @@ P:66 Interoute
 C:Telecom Deutschland GmbH, Lyoner Str. 15, 60528 Frankfurt 01066
 C:Bei Preselection sekundengenaue Taktung
 D:dtag
-# G:01-Jun-1999
+# G:15-Oct-1999
 Z:1-4 National
 T:W/08-17=0.14/60
-T:W/17-08=0.08/60
+T:W/17-08=0.078/60
 T:E,H/08-17=0.10/60
-T:E,H/17-08=0.08/60
+T:E,H/17-08=0.078/60
 A:+49
 Z:10-15 Mobil
 A:+491618	# T-C-Tel Voice Mail
@@ -12187,7 +12192,6 @@ A:Tajikistan, Uganda, Uruguay
 A:Uzbekistan, Vereinigte Arab. Emirate
 T:*/*=1.98(60)/1
 A:205 International F (Rest der Welt)
-A:+
 T:*/*=2.48(60)/1
 #####################################################################
 #
@@ -12602,7 +12606,7 @@ C:Telecom GmbH, Beethovenstraße 1-3, 60325 Frankfurt/Main 01074
 #
 #
 P:75 Callino
-# G:01-Oct-99
+# G:18-Oct-99
 C:ARCIS Media Com Management GmbH, Maximilianstr. 14, 80539 München 01075
 D:dtag
 Z:1-4 Fern
@@ -12680,7 +12684,7 @@ A:Slowakische Republik, Türkei
 T:*/*=0.99/60
 Z:203 Welt 1
 A:USA, Kanada
-Z:*/*=0.69/60
+T:*/*=0.69/60
 Z:204 Welt 2
 A:Australien, Neuseeland, Singapur, Japan, Korea (Republik), Hongkong
 T:*/*=1.49/60
@@ -12753,9 +12757,10 @@ T:*/*=0.869(60)/1
 Z:209 Antarktis
 A:Antarktis # +672
 T:*/*=0.619(60)/1
-Z:210 Antarktis-Casey Base
-A:Antarktis-Casey Base # +67212
-T:*/*=0.619(60)/1
+# COUNTRY-DE BUG -> dasselbe wie "Antarktis"
+# Z:210 Antarktis-Casey Base
+# A:Antarktis-Casey Base # +67212
+# T:*/*=0.619(60)/1
 Z:211 Antigua & Barbuda
 A:Antigua & Barbuda # +1268
 T:*/*=0.929(60)/1
@@ -13038,27 +13043,32 @@ T:*/*=9.95(60)/1
 Z:304 Inmarsat AOR-E/A (64kb)
 A:Inmarsat AOR-E/A (64kb) # +8718
 T:*/*=10.6(60)/1
-Z:305 Inmarsat B AOR IOR POR
-A:Inmarsat B AOR IOR POR # +8713, +8723, +8733, +8743
-T:*/*=6.2(60)/1
-Z:306 Inmarsat IOR/A (64kb)
-A:Inmarsat IOR/A (64kb) # +8738
-T:*/*=10.6(60)/1
+# COUNTRY-DE BUG -> dasselbe wie "Inmarsat AOR-E/A (64kb)"
+# Z:305 Inmarsat B AOR IOR POR
+# A:Inmarsat B AOR IOR POR # +8713, +8723, +8733, +8743
+# T:*/*=6.2(60)/1
+# COUNTRY-DE BUG -> dasselbe wie "Inmarsat AOR-E/A (64kb)"
+# Z:306 Inmarsat IOR/A (64kb)
+# A:Inmarsat IOR/A (64kb) # +8738
+# T:*/*=10.6(60)/1
 Z:307 Inmarsat M
 A:Inmarsat M # +8716, +8726, +8736, +8746
 T:*/*=6.2(60)/1
 Z:308 Inmarsat Mini-M
 A:Inmarsat Mini-M # +87076, +87176, +87276, +87376, +87476
 T:*/*=6.2(60)/1
-Z:309 Inmarsat POR/A (64kb)
-A:Inmarsat POR/A (64kb) # +8728
-T:*/*=10.6(60)/1
-Z:310 Inmarsat S
-A:Inmarsat S # +8715, +8725, +8735, +8745
-T:*/*=10.6(60)/1
-Z:311 Inmarsat SNAC
-A:Inmarsat SNAC # +8703, +8706
-T:*/*=10.6(60)/1
+# COUNTRY-DE BUG -> dasselbe wie "Inmarsat AOR-E/A (64kb)"
+# Z:309 Inmarsat POR/A (64kb)
+# A:Inmarsat POR/A (64kb) # +8728
+# T:*/*=10.6(60)/1
+# COUNTRY-DE BUG -> dasselbe wie "Inmarsat M"
+# Z:310 Inmarsat S
+# A:Inmarsat S # +8715, +8725, +8735, +8745
+# T:*/*=10.6(60)/1
+# COUNTRY-DE BUG -> dasselbe wie "Inmarsat A"
+# Z:311 Inmarsat SNAC
+# A:Inmarsat SNAC # +8703, +8706
+# T:*/*=10.6(60)/1
 Z:312 Irak
 A:Irak # +964
 T:*/*=1.49(60)/1
@@ -13245,9 +13255,10 @@ T:*/*=1.49(60)/1
 Z:373 Malta
 A:Malta # +356
 T:*/*=0.489(60)/1
-Z:374 Marianen
-A:Marianen # +670
-T:*/*=0.639(60)/1
+# COUNTRY-DE BUG -> dasselbe wie "Saipan"
+# Z:374 Marianen
+# A:Marianen # +670
+# T:*/*=0.639(60)/1
 Z:375 Marokko
 A:Marokko # +212
 T:*/*=0.819(60)/1
@@ -13311,9 +13322,10 @@ T:*/*=1.29(60)/1
 Z:395 Neuseeland
 A:Neuseeland # +64
 T:*/*=0.209(60)/1
-Z:396 Neuseeland Chatham Inseln
-A:Neuseeland Chatham Inseln # +643
-T:*/*=0.659(60)/1
+# COUNTRY-DE BUG -> dasselbe wie "Neuseeland"
+# Z:396 Neuseeland Chatham Inseln
+# A:Neuseeland Chatham Inseln # +643
+# T:*/*=0.659(60)/1
 Z:397 Neuseeland Mobilfunk
 A:Neuseeland Mobilfunk # +642, +648
 T:*/*=0.659(60)/1
@@ -13395,12 +13407,13 @@ T:*/*=0.449(60)/1
 Z:423 Portugal
 A:Portugal # +351
 T:*/*=0.369(60)/1
-Z:424 Portugal Azoren
-A:Portugal Azoren # +3519
-T:*/*=0.369(60)/1
-Z:425 Portugal Madeira
-A:Portugal Madeira # +35156
-T:*/*=0.369(60)/1
+# COUNTRY-DE BUG -> dasselbe wie "Portugal"
+# Z:424 Portugal Azoren
+# A:Portugal Azoren # +3519
+# T:*/*=0.369(60)/1
+# Z:425 Portugal Madeira
+# A:Portugal Madeira # +35156
+# T:*/*=0.369(60)/1
 Z:426 Portugal Mobilfunk
 A:Portugal Mobilfunk # +3514707, +35167, +35193
 T:*/*=0.539(60)/1
@@ -13428,9 +13441,10 @@ T:*/*=0.579(60)/1
 Z:434 Rußland Moskau
 A:Rußland Moskau # +7095
 T:*/*=0.349(60)/1
-Z:435 Rußland Overlay
-A:Rußland Overlay # +7096, +7097, +750, +751, +752, +753, +754, +7543
-T:*/*=0.579(60)/1
+# COUNTRY-DE BUG -> dasselbe wie "Rußland"
+# Z:435 Rußland Overlay
+# A:Rußland Overlay # +7096, +7097, +750, +751, +752, +753, +754, +7543
+# T:*/*=0.579(60)/1
 Z:436 Rußland St. Petersburg
 A:Rußland St. Petersburg # +7812
 T:*/*=0.349(60)/1
@@ -13509,9 +13523,10 @@ T:*/*=1.36(60)/1
 Z:461 St. Helena
 A:St. Helena # +290
 T:*/*=1.33(60)/1
-Z:462 St. Kitts
-A:St. Kitts # +1869
-T:*/*=0.939(60)/1
+# COUNTRY-DE BUG -> dasselbe wie "Nevis Islands"
+# Z:462 St. Kitts
+# A:St. Kitts # +1869
+# T:*/*=0.939(60)/1
 Z:463 St. Lucia
 A:St. Lucia # +1758
 T:*/*=0.989(60)/1
@@ -13548,9 +13563,10 @@ T:*/*=0.359(60)/1
 Z:474 Taiwan Mobilfunk
 A:Taiwan Mobilfunk # +88660, +88670, +8869
 T:*/*=0.409(60)/1
-Z:475 Tansania
-A:Tansania # +255
-T:*/*=0.989(60)/1
+# COUNTRY-DE BUG
+# Z:475 Tansania
+# A:Tansania # +255
+# T:*/*=0.989(60)/1
 Z:476 Thailand
 A:Thailand # +66
 T:*/*=0.839(60)/1

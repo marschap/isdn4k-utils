@@ -1,4 +1,4 @@
-/* $Id: rate.c,v 1.50 1999/10/25 18:30:03 akool Exp $
+/* $Id: rate.c,v 1.51 1999/10/28 18:36:48 akool Exp $
  *
  * Tarifdatenbank
  *
@@ -19,6 +19,12 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rate.c,v $
+ * Revision 1.51  1999/10/28 18:36:48  akool
+ * isdnlog-3.59
+ *  - problems with gcc-2.7.2.3 fixed
+ *  - *any* startup-warning solved/removed (only 4u, Karsten!)
+ *  - many new rates
+ *
  * Revision 1.50  1999/10/25 18:30:03  akool
  * isdnlog-3.57
  *   WARNING: Experimental version!
@@ -470,7 +476,7 @@ static void notice (char *fmt, ...)
 #ifdef STANDALONE
   fprintf(stderr, "%s\n", msg);
 #else
-  print_msg(PRT_NORMAL, "%s\n", msg);
+  print_msg(PRT_ERR, "%s\n", msg);
 #endif
 }
 
@@ -592,8 +598,8 @@ static int appendArea (int prefix, char *code, char *name, int zone, int *where,
   for (i=0; i<Provider[prefix].nArea; i++) {
     if (strcmp (Provider[prefix].Area[i].Code,code)==0) {
       if (Provider[prefix].Area[i].Zone!=zone && msg) {
-	fmt = name && *name ? "Duplicate area %s (%s)" : "Duplicate area %s";
-	warning (msg, fmt, code, name);
+	fmt = name && *name ? "Duplicate area %s (%s) @%d" : "Duplicate area %s @%d";
+	warning (msg, fmt, code, line, name);
       }
       return 0;
     }
@@ -783,8 +789,10 @@ int initRate(char *conf, char *dat, char *dom, char **msg)
 	  whimper (dat, "Zone has no 'T:' Entries", zone);
 	if ((where & DOMESTIC) && (where & ABROAD))
 	  whimper (dat, "Zone contains domestic and abroad areas");
+#if 0 /* AK:28Oct99 */
 	if (!(where & FEDERAL))
 	  whimper (dat, "Provider %d has no default domestic zone (missing 'A:%s')", prefix, mycountry);
+#endif
 	line++;
       }
       v = UNKNOWN;
@@ -965,10 +973,10 @@ int initRate(char *conf, char *dat, char *dom, char **msg)
 	}
 	break;
       }
-
+#if 0 /* AK:28Oct99 */
       if (*s=='\0')
 	whimper (dat, "Zone should have a name...");
-      
+#endif
       zone=Provider[prefix].nZone++;
       Provider[prefix].Zone=realloc(Provider[prefix].Zone, Provider[prefix].nZone*sizeof(ZONE));
       Provider[prefix].Zone[zone].Name=*s?strdup(s):NULL;
@@ -1320,8 +1328,10 @@ int initRate(char *conf, char *dat, char *dom, char **msg)
       whimper (dat, "Zone has no 'T:' Entries", zone);
     if ((where & DOMESTIC) && (where & ABROAD))
       whimper (dat, "Zone contains domestic and abroad areas");
+#if 0 /* AK:28Oct99 */
     if (!(where & FEDERAL))
       whimper (dat, "Provider %d has no default domestic zone (missing 'A:%s')", prefix, mycountry);
+#endif
     line++;
   }
   

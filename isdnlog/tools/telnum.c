@@ -127,9 +127,11 @@ void initTelNum(void)
   _init();
 } /* pre_init */
 
+#ifndef STANDALONE
 static inline int Isspace(c) {
   return isspace(c) || c == '_';
 }  
+#endif
 
 static int split_vbn(char **p, TELNUM *num) {
   int l;
@@ -330,7 +332,7 @@ int normalizeNumber(char *target, TELNUM *num, int flag) {
     if(!isdigit(*p)) {
       res=getDest(p, num);
       /* isdnrate is coming with +4319430 but this is a sondernummer */
-      if (atoi(mycountry+1) == num->ncountry) {
+      if (atoi(mycountry+1) == num->ncountry && (*num->area || *num->msn)) {
         q = malloc(strlen(num->area)+strlen(num->msn)+1);
 	strcpy(q, num->area);
 	strcat(q, num->msn);
