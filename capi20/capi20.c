@@ -1,7 +1,11 @@
 /*
- * $Id: capi20.c,v 1.12 2000/03/03 15:56:14 calle Exp $
+ * $Id: capi20.c,v 1.13 2000/04/03 14:27:15 calle Exp $
  * 
  * $Log: capi20.c,v $
+ * Revision 1.13  2000/04/03 14:27:15  calle
+ * non CAPI2.0 standard functions now named capi20ext not capi20.
+ * Extentionfunctions will work with actual driver version.
+ *
  * Revision 1.12  2000/03/03 15:56:14  calle
  * - now uses cloning device /dev/capi20.
  * - middleware extentions prepared.
@@ -423,7 +427,7 @@ capi20_fileno(unsigned ApplID)
  */
 
 int
-capi20_get_flags(unsigned ApplID, unsigned *flagsptr)
+capi20ext_get_flags(unsigned ApplID, unsigned *flagsptr)
 {
    if (ioctl(applid2fd(ApplID), CAPI_GET_FLAGS, flagsptr) < 0)
       return CapiMsgOSResourceErr;
@@ -431,7 +435,7 @@ capi20_get_flags(unsigned ApplID, unsigned *flagsptr)
 }
 
 int
-capi20_set_flags(unsigned ApplID, unsigned flags)
+capi20ext_set_flags(unsigned ApplID, unsigned flags)
 {
    if (ioctl(applid2fd(ApplID), CAPI_SET_FLAGS, &flags) < 0)
       return CapiMsgOSResourceErr;
@@ -439,7 +443,7 @@ capi20_set_flags(unsigned ApplID, unsigned flags)
 }
 
 int
-capi20_clr_flags(unsigned ApplID, unsigned flags)
+capi20ext_clr_flags(unsigned ApplID, unsigned flags)
 {
    if (ioctl(applid2fd(ApplID), CAPI_CLR_FLAGS, &flags) < 0)
       return CapiMsgOSResourceErr;
@@ -447,20 +451,28 @@ capi20_clr_flags(unsigned ApplID, unsigned flags)
 }
 
 char *
-capi20_get_tty_devname(unsigned applid, unsigned ncci, char *buf, size_t size)
+capi20ext_get_tty_devname(unsigned applid, unsigned ncci, char *buf, size_t size)
 {
-	snprintf(buf, size, "/dev/capi/tty%d-%x", applid, ncci);
+	int unit;
+        unit = ioctl(applid2fd(applid), CAPI_NCCI_GETUNIT, &ncci);
+        if (unit < 0)
+		return 0;
+	snprintf(buf, size, "/dev/capi/%d", unit);
 	return buf;
 }
 
 char *
-capi20_get_raw_devname(unsigned applid, unsigned ncci, char *buf, size_t size)
+capi20ext_get_raw_devname(unsigned applid, unsigned ncci, char *buf, size_t size)
 {
-	snprintf(buf, size, "/dev/capi/raw%d-%x", applid, ncci);
+	int unit;
+        unit = ioctl(applid2fd(applid), CAPI_NCCI_GETUNIT, &ncci);
+        if (unit < 0)
+		return 0;
+	snprintf(buf, size, "/dev/capi/r%d", unit);
 	return buf;
 }
 
-int capi20_ncci_opencount(unsigned applid, unsigned ncci)
+int capi20ext_ncci_opencount(unsigned applid, unsigned ncci)
 {
    return ioctl(applid2fd(applid), CAPI_NCCI_OPENCOUNT, &ncci);
 }

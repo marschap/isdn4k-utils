@@ -1,7 +1,11 @@
 /*
- * $Id: capi20.h,v 1.9 2000/03/03 15:56:14 calle Exp $
+ * $Id: capi20.h,v 1.10 2000/04/03 14:27:15 calle Exp $
  *
  * $Log: capi20.h,v $
+ * Revision 1.10  2000/04/03 14:27:15  calle
+ * non CAPI2.0 standard functions now named capi20ext not capi20.
+ * Extentionfunctions will work with actual driver version.
+ *
  * Revision 1.9  2000/03/03 15:56:14  calle
  * - now uses cloning device /dev/capi20.
  * - middleware extentions prepared.
@@ -51,16 +55,20 @@ int capi20_fileno(unsigned ApplID);
 
 /* end standard CAPI2.0 functions */
 
-int capi20_get_flags(unsigned ApplID, unsigned *flagsptr);
-int capi20_set_flags(unsigned ApplID, unsigned flags);
-int capi20_clr_flags(unsigned ApplID, unsigned flags);
+/* extentions functions (no standard functions) */
 
-char *capi20_get_tty_devname(unsigned applid, unsigned ncci,
+int capi20ext_get_flags(unsigned ApplID, unsigned *flagsptr);
+int capi20ext_set_flags(unsigned ApplID, unsigned flags);
+int capi20ext_clr_flags(unsigned ApplID, unsigned flags);
+
+char *capi20ext_get_tty_devname(unsigned applid, unsigned ncci,
 				char *buf, size_t size);
-char *capi20_get_raw_devname(unsigned applid, unsigned ncci,
+char *capi20ext_get_raw_devname(unsigned applid, unsigned ncci,
 				char *buf, size_t size);
 
-int capi20_ncci_opencount(unsigned applid, unsigned ncci);
+int capi20ext_ncci_opencount(unsigned applid, unsigned ncci);
+
+/* end extentions functions (no standard functions) */
 
 #ifdef __cplusplus
 }
