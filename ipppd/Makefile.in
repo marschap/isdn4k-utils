@@ -1,6 +1,6 @@
 #
 # ipppd makefile for Linux
-# $Id: Makefile.in,v 1.6 1998/03/08 13:01:27 hipp Exp $
+# $Id: Makefile.in,v 1.7 1998/03/15 22:34:57 tsbogend Exp $
 #
 
 HAVE_LIBDES   := @HAVE_LIBDES@
@@ -68,7 +68,7 @@ endif
 DEBUG_FLAGS   = @CONFIG_IPPPD_DEBUGFLAGS@
 COMPILE_FLAGS = 
 COPTS         = -I@CONFIG_KERNELDIR@/include
-CFLAGS        = -O2 -fomit-frame-pointer -m486 -Wall
+CFLAGS        = -O2 -fomit-frame-pointer -Wall
 VER           = 2.2.0
 
 # it's a hack

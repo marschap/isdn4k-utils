@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.34 1998/03/08 11:42:27 luethje Exp $
+## $Id: Makefile.in,v 1.35 1998/03/15 22:35:44 tsbogend Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,9 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.35  1998/03/15 22:35:44  tsbogend
+## not every CPU is from Intel (greetings from Digital :-))
+##
 ## Revision 1.34  1998/03/08 11:42:27  luethje
 ## I4L-Meeting Wuerzburg final Edition, golden code - Service Pack number One
 ##
@@ -234,7 +237,7 @@ ifeq ($(MAKELIB),1)
 SUBDIRS     += $(LIBISDNDIR)
 endif
 
-export CFLAGS  = -Wall -pipe -O6 -m486 -fomit-frame-pointer -fforce-mem -fforce-addr -funroll-loops -fstrength-reduce
+export CFLAGS  = -Wall -pipe -O6 -fomit-frame-pointer -fforce-mem -fforce-addr -funroll-loops -fstrength-reduce
 
 ifndef _CC
 export _CC  = gcc
