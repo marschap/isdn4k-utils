@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.31 1997/09/07 00:43:06 luethje Exp $
+## $Id: Makefile.in,v 1.32 1997/09/26 09:13:01 fritz Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,9 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.32  1997/09/26 09:13:01  fritz
+## Set SUBDIRS always to overwrite environment.
+##
 ## Revision 1.31  1997/09/07 00:43:06  luethje
 ## create new error messages for isdnrep
 ##
@@ -196,6 +199,7 @@ POSTGRESDIR		:= @POSTGRESDIR@
 SERV_PORT			:= @SERV_PORT@
 USERFILE			:= @USERFILE@
 DEFS          :=
+SUBDIRS     		:=
 
 export LOGFILE       := @LOGFILE@
 export COUNTRYCODE   := @COUNTRYCODE@
@@ -218,7 +222,7 @@ endif
 PREFIXDIR=.
 
 ifeq ($(MAKELIB),1)
-SUBDIRS     = $(LIBISDNDIR)
+SUBDIRS     += $(LIBISDNDIR)
 endif
 
 export CFLAGS  = -Wall -pipe -O6 -m486 -fomit-frame-pointer -fforce-mem -fforce-addr -funroll-loops -fstrength-reduce
