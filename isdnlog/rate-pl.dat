@@ -1,4 +1,4 @@
-V:0.4-Poland [2000-09-02]
+V:0.6-Poland [2000-09-19]
 
 # autor: Karsten Voss (vossdoku@gmx.net)
 
@@ -11,17 +11,32 @@ U:%.2f PLN
 P:10 tpsa
 #:zarejestrowane strefy:
 #:1		strefowe
+#:2		strefa II
+#:3		strefa III
 #:101           teleinformatyczne
 # D:tpsa
 B:01010
 Z:1 strefowe
 # Nastepna linia dotyczy Warszawe. Ewentualnie zmienic,
-# dopoki nie ma pliku ze strefami (zone-pl-tpsa.gdbm).
+# dopoki nie ma pliku ze strefami (zone-pl-tpsa.cdb).
 A:+4822
-T:*/08-22=0.35/180 szczyt
-T:*/22-08=0.35/360 pozaszczytem
+T:*/08-22=0.3538/180 szczyt
+T:*/22-08=0.3538/360 pozaszczytem
+Z:2 strefa II
+A:+4846,+4825
+T:1-5/08-18=0.3538/36.29 T1
+T:6-7/08-18=0.3538/48.3  T2
+T:*/18-08=0.3538/72.5    T3
+Z:3 strefa III
+A:+48
+T:1-5/08-18=0.3538/31.1 T1
+T:6-7/08-18=0.3538/41.4 T2
+T:*/18-08=0.3538/62.2   T3
 Z:101 teleinformatyczne
 A:+48202422
-T:1-5/08-18=0.35/180 szczyt
-T:6-7/08-18=0.35/360 weekend
-T:*/18-08=0.35/360 pozaszczytem
+T:1-5/08-18=0.3538/180 szczyt
+T:6-7/08-18=0.3538/360 weekend
+T:*/18-08=0.3538/360 pozaszczytem
+Z:201 Niemcy
+A:+49
+T:*/*=0.3538/11.2
