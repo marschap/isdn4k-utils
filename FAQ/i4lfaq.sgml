@@ -4,12 +4,12 @@
 
 <title>FAQ for isdn4linux
 <author>Matthias Hessler (<tt><htmlurl url="mailto:hessler@isdn4linux.de" name="hessler@isdn4linux.de"></tt>)
-<date>v2.0.48, 26. August 2000
+<date>v2.0.49, 6. November 2000
 <abstract>
 If you are reading this FAQ online, you may consider downloading the whole
 thing, and reading it offline (much cheaper). To download the latest
 version of this FAQ in TXT/HTML/SGML format, go to the homepage of this FAQ:
-<url url="http://www.mhessler.de/i4lfaq.html">.
+<url url="http://www.mhessler.de/i4lfaq/">.
 
 A German translation of the FAQ is available at:
 <url url="http://www.wolf-b.de/i4l/i4lfaq-de.html">.
@@ -50,7 +50,7 @@ or:
 	     name="hessler@isdn4linux.de"></tt>.
 
 The newest version of this FAQ can be found at:
-<tt><url url="http://www.mhessler.de/i4lfaq.html"></tt>
+<tt><url url="http://www.mhessler.de/i4lfaq/"></tt>
 or:
 <tt><url url="http://www.isdn4linux.de/faq/"></tt>.
 
@@ -121,6 +121,9 @@ with the isdn4linux package. Then there is the isdn4linux website:
 mailing list on isdn4linux which will give you the most up to date
 information. To find out more about these great information sources, see
 section <ref id="docu" name="docu">.
+And: check out all the great links listed in question
+<ref id="config_links" name="config_links">! You find information in your language,
+or information specific to your linux distribution.
 
 <sect1> general_getlatest: Where do I get the latest version of isdn4linux?  
 <label id="general_getlatest">
@@ -1409,6 +1412,7 @@ isdn4linux:
 <item>English: <url url="http://www.wurtel.demon.nl/i4l-howto-uk.html">
 <item>German: <url url="http://www.franken.de/users/klaus/">
 <item>French: <url url="http://www.linux-france.org/article/connex/ISDN/">
+and <url url="http://www.linux-france.org/prj/inetdoc/guides/rnis/">
 <item>Suse Support database:
 <url url="http://sdb.suse.de/sdb/en/html/index.html">; there is also an ISDN
 howto (isdn.html) and a ISDN quick-install guide (isdnquick.html).
@@ -1422,6 +1426,8 @@ howto (isdn.html) and a ISDN quick-install guide (isdnquick.html).
 <tt><url url="http://www.rosat.mpe-garching.mpg.de/&tilde;web/ISDN.html"></tt>
 <item>Documentation on abc extensions:
 <tt><url url="http://i4l.mediatronix.de/"></tt>
+<item>Vbox development:
+<tt><url url="http://innominate.org/projects/vbox/index.php3"></tt>
 <item>Michael Hipp's page (general informations):
 <tt><url url="http://www-ti.informatik.uni-tuebingen.de/~hippm/isdn.html"></tt>
 <item>Chargeint tips:
@@ -2099,7 +2105,7 @@ If you generally want to offer all applications a kind of &dquot;remote COM
 port&dquot;, then there is COMT for Windows (95), and
 &dquot;telser.device&dquot; for Amigas. Disadvantage of COMT: it is only
 visible to ancient 16bit Win applications, and not even working in the DOS box.
-Another program is DialOut/IP, but it´s fairly expensive ($70).
+Another program is DialOut/IP, but it's fairly expensive ($70).
 
 COMT may be found on Simtel:
 <tt><url url="http://educom.sce.fct.unl.pt/ftp/pub/shareware/win-utils/comt2.zip"></tt>
@@ -3311,6 +3317,24 @@ set up your domain name server with cname = "WORKGROUP.domain.de" (other
 domain names are also possible). Or set up a Primary Domain Controller
 within your LAN. You can also use diald to control dialouts for DNS request.
 
+<sect1> dod_forwarddns: I have set up my name server in 'forward' mode,  
+with one forward address. Now it dials out about every minute?  
+<label id="dod_forwarddns">
+<p>
+From time to time, the name server will query its forwarderi, which will
+trigger a dialout. Since your ISP uses dynamic ip addresses, the request
+is sent out with the wrong ip address at startup of the dial-in connection.
+Therefore, no answer will be received. Bind waits for one minute
+before resubmitting. Since your line has come down in the mean time, this
+will trigger a new dialout, resulting in a different ip address, and so on...
+Workaround: enter 4 forwarders in the 'forwarders' section of named.conf
+(you can enter 4 times the same ip address).
+In 'forward' mode, BIND 8.2.2p5 retransmits its queries after the
+following period of time: 60 Seconds divided by the number of nameservers
+given in the section "forwarders" of named.conf. With 4 forwarders a
+retransmission will be attempted after 15 seconds, in time before the line
+would go down.
+
 <sect1> dod_sendmail: How can I get sendmail to not initiate any connections  
 without local mail being left undelivered?  
 <label id="dod_sendmail">
@@ -3714,13 +3738,13 @@ The parameter with the least problems is -h0.
 <!-- Config Leased line/D64S  
 --> 
 
-<sect1> leased_flatrate: What´s the difference between a leased line and  
+<sect1> leased_flatrate: What's the difference between a leased line and  
 a flat rate?  
 <label id="leased_flatrate">
 <p>
 A leased line requires a special setup of your S0 interface. After that,
 you can not reach any other destination than the one the leased line is
-set up for. It´s also rather expensive.
+set up for. It's also rather expensive.
 
 A flat rate is still a normal dialup, therefore the setup should be done
 like any dialup connection. The only difference from a normal dialup is
@@ -4224,6 +4248,10 @@ name="dl4mhk@lrz.uni-muenchen.de"></tt>; you can get the manual at:
 - click on &dquot;Audio!&dquot; (still in German we're afraid - sorry...)
 They are currently very outdated, but may give you a few hints?
 
+A newer place has now come up as a place for further vbox development.
+Please check it out:
+<tt><url url="http://innominate.org/projects/vbox/index.php3"></tt>
+
 <sect1> audio_links: Where can I find helpful links regarding vbox?  
 <label id="audio_links">
 <p>
@@ -4570,7 +4598,8 @@ e.g. with <tt>AT&amp;E0</tt>), or 10 MSNs; you then always get a block of
 (xxx0-xxx9), of which the last digit (0-9) is your MSN (0 is used in case
 you use an invalid number).
 <item> ISDN2e: Seems to be normal EuroISDN. You are assigned MSNs which you
-can use and configure for isdn4linux (?).
+can use and configure for isdn4linux. The MSN is your telephone number
+without the area code.
 <item> BTHH (BT HomeHighway): additionally to 2 ISDN ports it includes two
 analog lines with separate telephone number - but calls to and fro for those
 won't be signalled on the ISDN line, even so they use up a B-channel.
