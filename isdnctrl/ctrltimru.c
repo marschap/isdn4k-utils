@@ -26,6 +26,7 @@
 #include <unistd.h>
 #include <time.h>
 #include <sys/ioctl.h>
+#include <sys/types.h>
 #include <linux/isdn.h>
 #include <netdb.h>
 #include <linux/socket.h>
@@ -48,6 +49,7 @@
 26.06.97:cal:neben "*" auch "any" als Wildcard-Angabe und neben "!" auch "not"
 	als Negations-Angabe zulassen; bei "bringup" jetzt auch hup-timeout als
 	initial-timeout einlesen.
+09.06.98:cal:Mini-Glibc-Patch von Andreas Steffan <deas@uni-hamburg.de> eing.
 */
 
 char	*timru_protfam_kt [] =	{ "ip", "ipx", "ppp", "*", "any", "\0" };
