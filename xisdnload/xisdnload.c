@@ -147,7 +147,7 @@ static Siobytes iobytes[ISDN_MAX_CHANNELS];
 static Pixel onlinecolor, activecolor, tryingcolor, bgcolor;
 static long last[ISDN_MAX_CHANNELS];
 static int usageflags[ISDN_MAX_CHANNELS];
-static int flags[ISDN_MAX_CHANNELS];
+static int flags[ISDN_MAX_DRIVERS];
 static char phone[ISDN_MAX_CHANNELS][20];
 static int fd_isdninfo;
 static Widget label_wid;
@@ -322,7 +322,7 @@ XtPointer call_data;	/* pointer to (double) return value */
 #ifdef REGEX_NUMBER
       if (!regexec(&preg, phone[idx], 0, NULL, 0)) {  
 #endif
-        if (flags[idx]) {
+        if (flags[idx/2]) {
 	  online_now++;
 	  if (get_iobytes) {
             if (ioctl(fd_isdninfo, IIOCGETCPS, &iobytes))
