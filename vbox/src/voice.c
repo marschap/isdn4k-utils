@@ -1,5 +1,5 @@
 /*
-** $Id: voice.c,v 1.13 1999/10/15 15:43:27 keil Exp $
+** $Id: voice.c,v 1.14 2002/01/31 20:12:16 paul Exp $
 **
 ** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
 */
@@ -205,7 +205,10 @@ int voice_put_message(char *message)
 	{
 		if ((byte_i = read(fd, line_i, MODEM_BUFFER_LEN)) <= 0)
 		{
-			log(L_DEBUG, "End of audio data (%s).\n", strerror(errno));
+			if (byte_i == 0)
+                            log(L_DEBUG, "End of audio data\n");
+                        else
+                            log(L_DEBUG, "End of audio data with error (%s)\n", strerror(errno));
 
 			break;
 		}
