@@ -9,7 +9,7 @@ include_HEADERS = capi20.h capiutils.h
 lib_LTLIBRARIES = libcapi20.la
 
 libcapi20_la_SOURCES = capi20.c capifunc.c convert.c
-libcapi20_la_LDFLAGS = -version-info 2:2:0
+libcapi20_la_LDFLAGS = -version-info 2:3:0
 # libcapi20_la_LIBADD = $(LIBADD_DL)
 
 $(OBJECTS): libtool

@@ -1,7 +1,10 @@
 /*
- * $Id: capi20.c,v 1.13 2000/04/03 14:27:15 calle Exp $
+ * $Id: capi20.c,v 1.14 2000/04/07 16:06:09 calle Exp $
  * 
  * $Log: capi20.c,v $
+ * Revision 1.14  2000/04/07 16:06:09  calle
+ * Bugfix: without devfs open where without NONBLOCK, ahhh.
+ *
  * Revision 1.13  2000/04/03 14:27:15  calle
  * non CAPI2.0 standard functions now named capi20ext not capi20.
  * Extentionfunctions will work with actual driver version.
@@ -154,7 +157,7 @@ capi20_register (unsigned MaxB3Connection,
     if (capi20_isinstalled() != CapiNoError)
        return CapiRegNotInstalled;
 
-    if ((fd = open(capidevname, O_RDWR, 0666)) < 0 && errno == ENOENT)
+    if ((fd = open(capidevname, O_RDWR|O_NONBLOCK, 0666)) < 0 && errno == ENOENT)
          fd = open(capidevnamenew, O_RDWR|O_NONBLOCK, 0666);
     if (fd < 0)
        return CapiRegOSResourceErr;
