@@ -1,4 +1,4 @@
-V:1.10-Germany [20-Aug-1999 21:23:27]
+V:1.10-Germany [21-Aug-1999 22:26:53]
 
 # Währungsformat
 U:%.3f DM
@@ -8,7 +8,18 @@ U:%.3f DM
 #
 # (C) Copyright 1999 by Andreas Kool (akool@isdn4linux.de)
 #
-# $Id: rate-de.dat,v 1.38 1999/08/20 19:27:23 akool Exp $
+# $Id: rate-de.dat,v 1.39 1999/08/21 21:11:42 akool Exp $
+#
+#
+# Das "A:" Tag muß folgendermaßen gefüllt werden:
+#
+#   A:0191011     Sonderrufnummer (nur innerhalb eines Landes gültig,
+#    		  und daher _ohne_ Landesvorwahl!
+#   A:+496171	  Normale Telefonnummer _immer_ mit Landesvorwahl, und
+#   		  ohne führende "0"
+#
+#   Handy-Rufnummern werden _mit_ Landesvorwahl eingetragen!
+#
 #
 # Zonenzuordnung für Deutschland
 #
@@ -26,12 +37,12 @@ U:%.3f DM
 #  80 -  89	: Shared Cost (0180)
 #  90 -  99	: Premium Rate (0190)
 # 100 - 159	: Internet Tarife
-# 160 - 169	: Televotum, etc. 
+# 160 - 169	: Televotum, etc.
 # 170		: Persönliche Rufnummer (0700)
 # 171 - 199	: Sonstiges
 # 200 - xxx	: Auslandstarife
 #
-# Beschreibung einzelner Zonen 
+# Beschreibung einzelner Zonen
 #
 #    0 -   9 : Inland
 #    0 : Verbindungen an der eigenen Tk-Anlage (zwangsläufig kostenlos)
@@ -42,7 +53,7 @@ U:%.3f DM
 #    3 : Region 50 (Nummern im Umkreis von max. 50 km)
 #    4 : Fernzone (Deutschlandweit)
 #    5 -   9 : bei Bedarf, weitere Inlandszonen
-#    
+#
 #   10 -  30 : Handies, GSM-Netze
 #   10 : C-Mobilbox
 #   11 : C-Netz
@@ -60,7 +71,7 @@ U:%.3f DM
 #   36 : Inmarsat B
 #   37 : Inmarsat B HSD
 #   38 : Inmarsat M
-#   39 : Inmarsat Mini-M 
+#   39 : Inmarsat Mini-M
 #
 #   40 -  59 : Auskunftstarife
 #
@@ -82,7 +93,7 @@ U:%.3f DM
 #   74 : Quix IVR		(01654)
 #   75 : Quix Operator 2	(01656)
 #
-#   80 -  89 : Shared Cost Service 0180   
+#   80 -  89 : Shared Cost Service 0180
 #   81 : Service 0180-1
 #   82 : Service 0180-2
 #   83 : Service 0180-3
@@ -108,7 +119,7 @@ U:%.3f DM
 #  164 : DTAG Ansagedienste
 #
 #  170 : Persönliche Rufnummer	(0700)
-#  
+#
 #  171 - 199 : Sonstiges
 #  171 : Expo 2000		(02000)
 #
@@ -187,7 +198,7 @@ C:171		Info Expo 2000
 C:172		IVBB
 C:200	-	Ausland
 Z:0 Freephone
-A:+49130,+49800,International Freephone
+A:0130,0800,International Freephone
 Z:1-4 Inlandsverbindungen
 A:+49
 T:W/07-19=0.15/60 Geschaeftszeit
@@ -427,7 +438,7 @@ C:201	-	Ausland
 G:13.05.1999
 D:dtag
 Z:0 Freephone
-A:+49130,+49800,International Freephone
+A:0130,0800,International Freephone
 Z:1-2 Regional
 T:W/08-18=0.05/0,0.09(60)/1 Geschaeftszeit
 T:W/00-08,18-21=0.05/0,0.05(60)/1 Freizeit
@@ -982,8 +993,8 @@ C:200	-	Ausland
 G:15-Aug-1999
 D:dtag
 Z:0 Freecall
-A:+491171, +491172, +491174	# DTAG Störungsannahme
-A:+49130, +49800, International Freephone
+A:01171,01172,01174	# DTAG Störungsannahme
+A:0130,0800,International Freephone
 Z:1-4 National
 A:+49
 T:W/08-21=0.12/60
@@ -1089,14 +1100,14 @@ Z:100 DTAG online
 T:*/08-21=0.121/60
 T:*/21-08=0.08/60
 Z:160 Televotum
-A:+49137, +49138
+A:0137,0138
 T:*/*=0.30/0
 Z:164 DTAG Ansagedienst
-A:+49114, +49115, +49116, +49119
+A:0114,0115,0116,0119
 T:*/08-21=0.15/60
 T:*/21-08=0.09/60
 Z:171 Expo 2000 Call Center
-A:+492000
+A:02000
 T:*/*=0.65/60
 Z:200
 A:Afghanistan
@@ -1841,8 +1852,8 @@ C:171		Info Expo 2000
 C:200	-	Ausland
 G:01.04.1999
 Z:0 Freecall
-A:+491171, +491172, +491174	# DTAG Störungsannahme
-A:+49130, +49800, International Freephone
+A:01171,01172,01174	# DTAG Störungsannahme
+A:0130,0800,International Freephone
 Z:1-2 RSL COM - city
 T:W/08-21=0.10(60)/1
 T:E,H/08-21=0.10(60)/1
@@ -1955,14 +1966,14 @@ Z:100 DTAG online
 T:*/08-21=0.12(60)/1
 T:*/21-08=0.08(60)/1
 Z:160 Televotum
-A:+49137, +49138
+A:0137,0138
 T:*/*=0.30/0
 Z:164 DTAG Ansagedienst
-A:+49114, +49115, +49116, +49119
+A:0114,0115,0116,0119
 T:*/08-21=0.15(60)/1
 T:*/21-08=0.09(60)/1
 Z:171 Expo 2000 Call Center
-A:+492000
+A:02000
 T:*/*=0.65(60)/1
 Z:200
 A:Afghanistan
@@ -2707,8 +2718,8 @@ C:171		Info Expo 2000
 C:200	-	Ausland
 G:01.04.1999
 Z:0 Freecall
-A:+491171, +491172, +491174	# DTAG Störungsannahme
-A:+49130, +49800, International Freephone
+A:01171,01172,01174	# DTAG Störungsannahme
+A:0130,0800,International Freephone
 Z:1-2 RSL COM - city
 T:W/08-21=0.09(60)/1
 T:E,H/08-21=0.09(60)/1
@@ -2821,14 +2832,14 @@ Z:100 DTAG online
 T:*/08-21=0.12(60)/1
 T:*/21-08=0.08(60)/1
 Z:160 Televotum
-A:+49137, +49138
+A:0137,0138
 T:*/*=0.30/0
 Z:164 DTAG Ansagedienst
-A:+49114, +49115, +49116, +49119
+A:0114,0115,0116,0119
 T:*/08-21=0.15(60)/1
 T:*/21-08=0.09(60)/1
 Z:171 Expo 2000 Call Center
-A:+492000
+A:02000
 T:*/*=0.65(60)/1
 Z:200
 A:Afghanistan
@@ -3977,7 +3988,7 @@ C:102		isiFONLINE
 C:200	-	Ausland
 G:01.04.1999
 Z:0 0800 Nulltarif
-A:+49130, +49800
+A:0130,0800
 Z:1-2 lokal
 T:W/09-18=0.1044/120 Hauptzeit
 T:W/18-09=0.1044/240 Nebenzeit
@@ -4150,7 +4161,7 @@ C:Faxabruf: 0800/809 0111
 C:Spezialtarif "isiFON-zu-isiFON": Gilt innerhalb des gleichen Ortsnetzes,
 C:wenn beide Teilnehmer einen ISIS-Telefonanschluß haben.
 Z:0 0800 Nulltarif
-A:+49130, +49800
+A:0130,0800
 Z:1-2 lokal
 T:W/09-18=0.1044/120 Hauptzeit
 T:W/18-09=0.1044/240 Nebenzeit
@@ -4320,7 +4331,7 @@ C:Telefon:  0800/809 0100
 C:Telefax:  0211/85 27 610
 C:Faxabruf: 0800/809 0111
 Z:0 0800 Nulltarif
-A:+49130, +49800
+A:0130,0800
 Z:1-2 lokal
 T:W/09-18=0.1044/90 Hauptzeit
 T:W/18-09=0.1044/150 Nebenzeit
@@ -8621,20 +8632,20 @@ A:0191011
 C:Dies ist *kein* All-in-One Zugang, es werden zusätzliche Gebühren erhoben!
 T:*/*=0.06/0,0.06/60 T-Online eco
 Z:162 T-VoteCall
-A:+491371
+A:01371
 T:*/*=0.24/0
 Z:163 T-VoteCall
-A:+491372,+491373,+491374,+49138
+A:01372,01373,01374,0138
 T:*/*=0.12/20
 Z:170 Persönliche Rufnummer
-A:+49700
+A:0700
 T:*/09-18=0.12/15
 T:*/18-09=0.12/30
 Z:172 Sonderrufnummern zum Citytarif
-A:+491141		# Auftrags-und Ansagedienst
-A:+49115		# Ansagen (regional)
-A:+49116		# Ansagen (bundesweit)
-A:+491191		# Zeitansage
+A:01141		# Auftrags-und Ansagedienst
+A:0115		# Ansagen (regional)
+A:0116		# Ansagen (bundesweit)
+A:01191		# Zeitansage
 A:01910		# Online-Dienste Zugang SLIP
 A:01914		# Online-Dienste AOL Zugang
 A:019161	# Online-Dienste AOL Zugang
@@ -8855,20 +8866,20 @@ Z:100 T-Online
 A:0191011
 T:*/*=0.06/0,0.06/60 T-Online eco
 Z:162 T-VoteCall
-A:+491371
+A:01371
 T:*/*=0.24/0
 Z:163 T-VoteCall
-A:+491372,+491373,+491374,+49138
+A:01372,01373,01374,0138
 T:*/*=0.12/20
 Z:170 Persönliche Rufnummer
-A:+49700
+A:0700
 T:*/09-18=0.12/15
 T:*/18-09=0.12/30
 Z:172 Sonderrufnummern zum Citytarif
-A:+491141   # Auftrags-und Ansagedienst
-A:+49115    # Ansagen (regional)
-A:+49116    # Ansagen (bundesweit)
-A:+491191   # Zeitansage
+A:01141   # Auftrags-und Ansagedienst
+A:0115    # Ansagen (regional)
+A:0116    # Ansagen (bundesweit)
+A:01191   # Zeitansage
 A:01910   # Online-Dienste Zugang SLIP
 A:01914   # Online-Dienste AOL Zugang
 A:019161  # Online-Dienste AOL Zugang
@@ -9083,20 +9094,20 @@ Z:100 T-Online
 A:0191011
 T:*/*=0.06/0,0.06/60 T-Online eco
 Z:162 T-VoteCall
-A:+491371
+A:01371
 T:*/*=0.24/0
 Z:163 T-VoteCall
-A:+491372,+491373,+491374,+49138
+A:01372,01373,01374,0138
 T:*/*=0.12/20
 Z:170 Persönliche Rufnummer
-A:+49700
+A:0700
 T:*/09-18=0.12/15
 T:*/18-09=0.12/30
 Z:172 Sonderrufnummern zum Citytarif
-A:+491141		# Auftrags-und Ansagedienst
-A:+49115		# Ansagen (regional)
-A:+49116		# Ansagen (bundesweit)
-A:+491191		# Zeitansage
+A:01141		# Auftrags-und Ansagedienst
+A:0115		# Ansagen (regional)
+A:0116		# Ansagen (bundesweit)
+A:01191		# Zeitansage
 A:01910		# Online-Dienste Zugang SLIP
 A:01914		# Online-Dienste AOL Zugang
 A:019161	# Online-Dienste AOL Zugang
@@ -9317,20 +9328,20 @@ Z:100 T-Online
 A:0191011
 T:*/*=0.06/0,0.06/60 T-Online eco
 Z:162 T-VoteCall
-A:+491371
+A:01371
 T:*/*=0.24/0
 Z:163 T-VoteCall
-A:+491372,+491373,+491374,+49138
+A:01372,01373,01374,0138
 T:*/*=0.12/20
 Z:170 Persönliche Rufnummer
-A:+49700
+A:0700
 T:*/09-18=0.12/15
 T:*/18-09=0.12/30
 Z:172 Sonderrufnummern zum Citytarif
-A:+491141		# Auftrags-und Ansagedienst
-A:+49115		# Ansagen (regional)
-A:+49116		# Ansagen (bundesweit)
-A:+491191		# Zeitansage
+A:01141		# Auftrags-und Ansagedienst
+A:0115		# Ansagen (regional)
+A:0116		# Ansagen (bundesweit)
+A:01191		# Zeitansage
 A:01910		# Online-Dienste Zugang SLIP
 A:01914		# Online-Dienste AOL Zugang
 A:019161	# Online-Dienste AOL Zugang
@@ -9540,20 +9551,20 @@ A:0191011
 C:Dies ist *kein* All-in-One Zugang, es werden zusätzliche Gebühren erhoben!
 T:*/*=0.06/0,0.06/60 T-Online eco
 Z:162 T-VoteCall
-A:+491371
+A:01371
 T:*/*=0.24/0
 Z:163 T-VoteCall
-A:+491372,+491373,+491374,+49138
+A:01372,01373,01374,0138
 T:*/*=0.12/20
 Z:170 Persönliche Rufnummer
-A:+49700
+A:0700
 T:*/09-18=0.12/15
 T:*/18-09=0.12/30
 Z:172 Sonderrufnummern zum Citytarif
-A:+491141		# Auftrags-und Ansagedienst
-A:+49115		# Ansagen (regional)
-A:+49116		# Ansagen (bundesweit)
-A:+491191		# Zeitansage
+A:01141		# Auftrags-und Ansagedienst
+A:0115		# Ansagen (regional)
+A:0116		# Ansagen (bundesweit)
+A:01191		# Zeitansage
 A:01910		# Online-Dienste Zugang SLIP
 A:01914		# Online-Dienste AOL Zugang
 A:019161	# Online-Dienste AOL Zugang
@@ -10406,13 +10417,13 @@ T:W/08-18=0.08/60 Tag
 T:W/18-08=0.05/60 Nacht
 T:E,H/*=0.05/60 Wochenende
 Z:160 Televotum
-A:+491370, +491373, +491374, +491375, +491376, +491377, +491378, +491379
+A:01370,01373,01374,01375,01376,01377,01378,01379
 T:*/*=0.12/0,0.36/60
 Z:162 TeleVoteCall 1
-A:+491371
+A:01371
 T:*/*=0.24/0
 Z:163 TeleVoteCall 2
-A:+491372
+A:01372
 T:*/*=0.12/0,0.36/60
 Z:200 TELNET International EU Plus
 A:Andorra, Belgien, Dänemark, Finnland, Frankreich
@@ -10614,31 +10625,31 @@ T:W/08-20=0.10(60)/1 Tag
 T:W/20-08=0.06(60)/1 Nacht
 T:E,H/*=0.06(60)/1 Wochenende
 Z:161 Teledialog
-A:+49138
+A:0138
 T:*/*=0.24(60)/1
 Z:162 T-VoteCall 1
-A:+491370, +491373, +491379
+A:01370,01373,01379
 T:*/*=0.24/0
 Z:163 T-VoteCall 2
-A:+491371, +491372, +491374
+A:01371,01372,01374
 T:*/*=0.36/0
 Z:164 DTAG Ansagedienste
-A:+49115, +49116
+A:0115,0116
 T:W/08-20=0.10(60)/1 Tag
 T:W/20-08=0.06(60)/1 Nacht
 T:E,H/*=0.06(60)/1 Wochenende
 Z:166 DTAG Zeitansage
-A:+491191
+A:01191
 T:W/08-20=0.10(60)/1 Tag
 T:W/20-08=0.06(60)/1 Nacht
 T:E,H/*=0.06(60)/1 Wochenende
 Z:170 Persönliche Rufnummer 0700
-A:+49700
+A:0700
 T:W/08-20=0.48(60)/1 Tag
 T:W/20-08=0.24(60)/1 Nacht
 T:E,H/*=0.24(60)/1 Wochenende
 Z:171 Info Expo 2000
-A:+492000
+A:02000
 T:*/*=0.60(60)/1
 Z:172 IVBB
 A:01888
@@ -10930,31 +10941,31 @@ T:W/08-20=0.10(60)/1 Tag
 T:W/20-08=0.06(60)/1 Nacht
 T:E,H/*=0.06(60)/1 Wochenende
 Z:161 Teledialog
-A:+49138
+A:0138
 T:*/*=0.24(60)/1
 Z:162 T-VoteCall 1
-A:+491370, +491373, +491379
+A:01370,01373,01379
 T:*/*=0.24/0
 Z:163 T-VoteCall 2
-A:+491371, +491372, +491374
+A:01371,01372,01374
 T:*/*=0.36/0
 Z:164 DTAG Ansagedienste
-A:+49115, +49116
+A:0115,0116
 T:W/08-20=0.10(60)/1 Tag
 T:W/20-08=0.06(60)/1 Nacht
 T:E,H/*=0.06(60)/1 Wochenende
 Z:166 DTAG Zeitansage
-A:+491191
+A:01191
 T:W/08-20=0.10(60)/1 Tag
 T:W/20-08=0.06(60)/1 Nacht
 T:E,H/*=0.06(60)/1 Wochenende
 Z:170 Persönliche Rufnummer 0700
-A:+49700
+A:700
 T:W/08-20=0.48(60)/1 Tag
 T:W/20-08=0.24(60)/1 Nacht
 T:E,H/*=0.24(60)/1 Wochenende
 Z:171 Info Expo 2000
-A:+492000
+A:02000
 T:*/*=0.60(60)/1
 Z:172 IVBB
 A:01888
@@ -11842,7 +11853,7 @@ Z:40 T-Auskunft
 A:11833, 11834
 T:*/*=0.96/30,0.06/1.875
 Z:41 Ansagedienste
-A:+49115, +49116
+A:0115,0116
 T:W/8-18=0.06/60
 T:W/18-8=0.06/90
 T:E,H/*=0.06/90
@@ -11926,13 +11937,13 @@ Z:94 T1908
 A:01908
 T:*/*=0.06/1.0
 Z:160 TeleVotum
-A:+491370, +491373
+A:01370,01373
 T:*/*=0.24/20,0.06/7.5
 Z:162 TVoteCall1
-A:+491371
+A:01371
 T:*/*=0.24/0
 Z:161,163 TVoteCall2
-A:+491372, +49138
+A:01372,0138
 T:*/*=0.24/0,0.06/7.5
 # Auslandsnummern
 Z:200 VW WELT
@@ -14220,16 +14231,17 @@ Z:206
 A:+
 T:*/*=1.759(60)/1
 #####################################################################
-P:98,5 Nikocity
-G:01.05.1999
+P:98,4 Nikocity Study&Surf
+G:01.08.1999
 C:Nikoma, Reseller von Star Telekom
 C:Homepage: http://www.nikoma.de/
 C:Nikocity gilt nur in den Städten Augsburg, Berlin, Bremen, Bielefeld,
 C:Düsseldorf, Dortmund, Frankfurt, Hamburg, Hannover, München, Nürnberg,
 C:Stuttgart, Köln, Karlsruhe, Leipzig oder Mannheim und den jeweiligen
 C:Orten in der City-Zone
-D:dtag
-Z:1-2 City
+C:Study&Surf gilt nur für Studenten, die sich dafür angemeldet haben.
+Z:1-2 Nikocity
+# Entspricht nicht der DTAG-City-Zone!
 T:*/9-21=0.08(60)/1 Hauptzeit
 T:*/21-9=0.06(60)/1 Nebenzeit
 Z:3-4 Fern
@@ -14237,6 +14249,7 @@ T:*/9-21=0.12(60)/1 Hauptzeit
 T:*/21-9=0.07(60)/1 Nebenzeit
 A:+49
 Z:10-15 Mobil
+# Tarife werden zum 1.9.1999 erhöht!
 A:+491618	# T-C-Tel Voice Mail
 A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
 A:+49170,+49171		# D1
@@ -14246,7 +14259,37 @@ A:+49176,+49179		# E2
 T:*/*=0.46(60)/1
 Z:100 Internet
 A:0193434
-T:*/*=0.05(60)/1
+T:*/9-21=0.049(60)/1
+T:*/21-9=0.0389(60)/1
+#####################################################################
+P:98,5 Nikocity
+G:01-Aug-1999
+C:Nikoma, Reseller von Star Telekom
+C:Homepage: http://www.nikoma.de/
+C:Nikocity gilt nur in den Städten Augsburg, Berlin, Bremen, Bielefeld,
+C:Düsseldorf, Dortmund, Frankfurt, Hamburg, Hannover, München, Nürnberg,
+C:Stuttgart, Köln, Karlsruhe, Leipzig oder Mannheim und den jeweiligen
+C:Orten in der City-Zone
+Z:1-2 Nikocity
+# Entspricht nicht der DTAG-City-Zone!
+T:*/9-21=0.08(60)/1 Hauptzeit
+T:*/21-9=0.06(60)/1 Nebenzeit
+Z:3-4 Fern
+T:*/9-21=0.12(60)/1 Hauptzeit
+T:*/21-9=0.07(60)/1 Nebenzeit
+A:+49
+Z:10-15 Mobil
+# Tarife werden zum 1.9.1999 erhöht!
+A:+491618	# T-C-Tel Voice Mail
+A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
+A:+49170,+49171		# D1
+A:+49172,+49173		# D2
+A:+49177,+49178		# Eplus
+A:+49176,+49179		# E2
+T:*/*=0.46(60)/1
+Z:100 Internet
+A:0193434
+T:*/*=0.049(60)/1
 #####################################################################
 #
 #
