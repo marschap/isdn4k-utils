@@ -1,0 +1,417 @@
+                 English-German mini-FAQ for ISDN4Linux
+               Englisch-Deutsche mini-FAQ für ISDN4Linux
+
+    Mini-FAQ online: http://www.franken.de/users/klaus/
+
+See below for English!
+
+1.   Wo gibt es die FAQ?
+
+     http://www.mhessler.de/i4lfaq.html Leider noch nicht in Deutsch übersetzt.
+     Die alte deutsche FAQ ist nicht mehr aktuell, aber es gibt sie noch unter
+     http://www.isdn4linux.de/leafsite/
+
+2.   Wo gibt es eine einfache Anleitung für ISDN4Linux?
+
+     http://www.franken.de/users/klaus/  Wenn du lieber Niederländisch oder
+     Englisch liest, kann http://www.wurtel.demon.nl/ nützlich sein.   Es gibt
+     auch eine französische Mini-HOWTO unter
+     http://perso.wanadoo.fr/philippe.latu
+
+3.   Wo gibt es die SuSE Support-Datenbank, wo viele Fragen zu ISDN4Linux
+     beantwortet werden?
+
+     http://www.suse.de/sdb/de/html/katlist.ISDN.html
+
+4.   Was gibt es sonst für Dokumentationen?
+
+     'man isdnctrl', schau auch unter "SEE ALSO".  Auch 'man ipppd'.  Und die
+     README-Dateien in /usr/src/linux/Documentation/isdn  Viele von den HOWTOs
+     haben generell mit Netzwerk zu tun, und sind auch für ISDN4Linux
+     relevant.  Siehe deinen Lieblingsmirror vom LDP, z.B.
+     http://SunSITE.auc.dk/ldp/HOWTO/HOWTO-INDEX-3.html
+
+5.   Wo gibt es die "geheime FAQ"?
+
+     www.deja.com   Suche mit Stichwort isdn4linux (wer hätt's gedacht).
+     Nicht vergessen, auch in der Datenbank mit den alten Artikeln zu suchen,
+     wenn du erstmal nichts findest.
+
+6.   Die erste Verbindung geht immer kaputt wegen dynamischen IP-Adressen.
+
+     Hast du SuSE 5.2, 3. Auflage oder neuer schreibst du in /etc/rc.config
+       IP_DYNIP="yes"
+     Sonst (oder wenn du nicht neu booten willst) machst du
+       echo 5 > /proc/sys/net/ipv4/ip_dynaddr
+     Das kannst du z.B. auch in /etc/rc.d/rc.local schreiben.  Siehe
+     /usr/src/Linux/Documentation/networking/ip_dynaddr.txt und
+     http://www.suse.de/Support/sdb/dynippatch.html
+
+7.   Es wird immer wieder gewählt, besonders wenn ich hart auflege (ohne auf
+     Timeout zu warten).
+
+     Starte den RST-Provoking-Mode.  Zum Aktivieren siehe Frage 6 und siehe
+     auch http://www.suse.de/sdb/de/html/katlist.ISDN.html  Wenn du Kernel
+     2.2 verwendest, siehe auch
+     http://www-users.rwth-aachen.de/Michael.Mueller4/dynip.html  Dieser Patch
+     geht mit neueren Kernels nicht mehr sauber rein, und ist deshalb nicht
+     nutzbar, wenn du kein C-Programmierer bist.
+
+8.   Nur die erste ISDN-Verbindung funktioniert, wegen Routing-Problemen.
+       oder
+     Die Verbindung scheint zu klappen, aber keine Daten werden übertragen,
+     und ISDN4Linux legt nach kurzer Zeit wieder auf.
+
+     Du hast wahrscheinlich keine Default-Route.  Siehe das Output von 'route
+     -n'.  Du brauchst die Zeile:
+       /sbin/route add default $1
+     in deiner /etc/ppp/ip-up-Datei (für Red Hat etc/ppp/ip-up.local) und
+     deiner /etc/ppp/ip-down-Datei (für Red Hat etc/ppp/ip-down.local).  Diese
+     Dateien müssen genau mit:
+       #!/bin/sh
+     am Anfang der ersten Zeile anfangen, und müssen ausführbar sein (siehe
+     'man chmod').  Befehle müssen mit vollem Pfad angegeben werden, z.B.
+     '/sbin/route ...', nicht einfach 'route ...'.
+
+9.   Wird meine Karte unterstützt?  Welchen Optionen brauche ich, wenn ich die
+     Modulen lade?
+
+     Schau in den README-Dateien in /usr/src/linux/Documentation/isdn und frag
+     Deja News mit den Stichwörtern "isdn4linux" und
+     "wiedeinekartegenauheisst".
+
+10.  Wo gibt es die neusten ISDN4Linux Software.
+
+     Die Utils von ftp://ftp.isdn4linux.de/pub/isdn4linux/utils/testing
+     Den Kernel-Treiber aus dem neusten offiziellen Kernel von www.kernel.org
+     oder ein Mirror, z.B. ftp://ftp.de.kernel.org/pub/linux/kernel
+     Wenn der Kernel sehr neu sein muß (aus der -ac Serie) schaue unter z.B.
+     ftp://ftp.de.kernel.org/pub/linux/kernel/people/alan/
+
+     Siehe auch den Web-Server deines Distributions, und deine lokale
+     RPM-Repository, z.B.  http://SunSITE.auc.dk/linux/rpmrepository.html
+
+11.  Seitdem ich Kernel-2.0.36 verwende geht ISDN4Linux nicht mehr.
+
+     Du brauchst die neusten isdn4k-utils, 3.0beta1 oder neuer.  Siehe oben.
+     Siehe insbesondere den neuen 'dialmode'-Befehl in isdnctrl.  Bemerke:
+     die Utils müssen mit der verwendeten Kernel-Version übersetzt werden,
+     d.h. wenn du dein Kernel updatest, musst du u.U. die Utils auch neu
+     übersetzen.
+
+     Achtung!  Die '2.0.36'-er Kernel in Red Hat 5.2 ist keine richtige
+     2.0.36er, sondern eine Prerelease ohne die neuen ISDN-Änderungen.
+     Du brauchst also entweder die richtige 2.0.36 von www.kernel.org oder
+     den neusten Kernel-Treiber, siehe Frage 10.
+
+12.  Seitdem ich Kernel-2.2.x verwende geht ISDN4Linux nicht mehr.
+
+     Die Version von ISDN4Linux in frühen 2.2.x-Kernels war leider ziemlich
+     fehlerhaft.  Jetzt (seit 2.2.11 und 2.3.16) sind die ISDN-Treiber im
+     normalen Kernel wieder auf dem aktuellsten Stand.  Du brauchst immer noch
+     ziemlich aktuellen isdn4kutils, siehe Frage 10.
+
+     Wenn den Sprung auf 2.2.13 machst, musst du deine isdn4kutils neu
+     übersetzen, oder ein neues, für 2.2.13 geeignetes, Package installieren.
+
+13.  Kann ich mit ISDN4Linux faxen?
+
+     Nur mit Aktiven Karten.  Für Eicon DIVA Server Karten (BRI und
+     PRI) siehe http://www.melware.de/  Für die AVM B1, siehe 
+     ftp://ftp.aeccom.com/pub/fax4i4l/howto/current
+     Es wird an Software für passive Karten gearbeitet.  Siehe
+     http://w1.2667.telia.com/~u266700740/linux/i4lfax/index.html
+
+14.  Es wird gewählt, aber die Verbindung klappt nicht.
+
+     Du musst in ipppd debug einschalten, und dann in /var/log/messages
+     nachschauen (siehe auch Frage 17).  Dabei heisst:
+
+     sent ConfReq ... Dein Rechner wollte etwas
+     sent ConfRej ... Dein Recher weigerte sich etwas zu tun
+     sent ConfNak ... Dein Rechner wollte was anderes stattdessen machen
+     sent ConfAck ... Dein Rechner stimmte etwas zu
+     rcvd ...         Was die Gegenseite dazu gesagt hat
+
+15.  Was bedeuten diese komischen 'Cause'-Nummern.
+
+     Siehe 'man isdn_cause'
+
+16.  Kann ich meinen externen Terminal-Adapter mit ISDN4Linux verwenden?
+   
+     Nein, nicht mit ISDN4Linux aber schon mit Linux,  Sie werden wie Modems
+     behandelt.  Du brauchst also pppd und vielleicht diald.  Fragen 6, 7, 8
+     und 14 sind auch für dich relevant.
+
+17.  Ich habe diverse Debug-Options in ipppd und isdnctrl eingeschaltet, aber
+     es erscheint nichts in der Datei /var/log/messages.
+
+     Es kann sein, daß du dein Syslog anders konfigurieren musst.  Siehe z.B.
+     'man syslogd' und 'man syslog.conf' und die Datei /etc/syslog.conf.
+     Falls deine Distribution kein GUI-Tool zum Administrieren vom Syslog
+     bietet kannst du auch als Schnelllösung:
+       echo '*.*   -/var/log/isdnfix' >> /etc/syslog.conf
+       killall -HUP syslogd
+     tippen.  Dann wird alles Relevante und Irrelevante in /var/log/isdnfix
+     geschrieben.  Um das hinterher zu entfernen (empfehlenswert da die Datei
+     schnell sehr groß wird) schreibst du:
+       grep -v isdnfix /etc/syslog.conf > /etc/syslog.conf.new
+       mv -f /etc/syslog.conf.new /etc/syslog.conf
+       killall -HUP syslogd
+
+18.  Welche Pakete installiere ich, oder Man-Seiten lese ich, oder
+     Such-Stichwörter in Deja News verwende ich für:
+
+     Alles:                          ISDN4Linux Kernel-Modul und isdn4kutils
+     Ein Telefonbeantworter:         vbox oder vgetty
+     Eine Fax-Maschine:              Siehe Frage 13
+     Sync-PPP (Internet):            isdnctrl und ipppd
+     Async-PPP oder externer ISDN:   pppd und diald
+     ISDN Terminal-Programm:         minicom und /dev/ttyI0 (man ttyI)
+     Euro-File Transfer:             Noch nicht (EFTP4Linux)
+     ISDN-Anrufe mitprotokollieren:  isdnlog in dual mode
+     ISDN-Anrufe belauschen:         geht nicht mit ISDN4Linux
+     Lokalnetz ans Internet:         Masquerading/ipfwadm.  Alternativ mit
+                                     squid/sendmail.  Siehe auch Frage 2.
+     Plug-n-Play ISA-Karten:         isapnptools.
+
+19.  Die ISDN-Verbindung läuft, und ich kann numerischen Adressen pingen, z.B.
+     mit 'ping -c 20 198.41.0.4' aber Netscape etc. funktioniert nicht.
+
+     Du hast Probleme mit Nameserver-Einstellungen.  Siehe Frage 2.
+
+20.  Die ISDN-Verbindung läuft, aber ich kann nicht mal numerischen Adressen
+     pingen, z.B.  mit 'ping -c 20 198.41.0.4' und Netscape etc. funktioniert
+     nicht.
+
+     Du hast Probleme mit Routing.  Siehe Fragen 8 und 2.
+
+21.  Manchmal wird meine Internetverbindung sehr sehr langsam.  Ping zeiten
+     verzögern sich tausende von millisekunden.
+
+     Entweder Kernel 2.2.13 oder neuer verwenden, oder den Patch aus
+     http://x45.deja.com/=dnc/getdoc.xp?AN=529129151 installieren.  Siehe auch
+     Frage 12.
+
+22.  Es will einfach nicht klappen!
+
+     Frag mal hier in der Newsgruppe/Mailingliste.  Wir versuchen hilfreich zu
+     sein, aber es geht leichter, wenn wir ein Paar Infos haben:
+
+     Versionsnummern vom Kernel, ISDN Treiber, Distribution, isdn4kutils.
+     Kurze Auszüge aus /var/log/messages wenn da was steht.  Das Output von
+     'route -n', 'ifconfig', 'lsmod' und 'isdnctrl list ippp0'
+
+Kommentare wilkommen, bitte direkt an mich, Erik Corry <erik@arbat.com>.
+
+
+                English mini-FAQ for ISDN4Linux
+
+
+0.   Why is everyone speaking German here.
+
+     That's because they are mostly German.  If you start an English thread it
+     will be continued in English.  If you have trouble getting this group
+     (de.alt.comm.isdn4linux) it is also available as a mailing list.  See the
+     FAQ.  Since most Germans would be more likely to take part in an English
+     thread here than in a new English-only mailing list, there seems little
+     point in a split.
+
+1.   Where's the FAQ?
+
+     http://www.mhessler.de/i4lfaq.html
+
+2.   Where can I find a simple guide to using ISDN4Linux
+
+     See http://www.wurtel.demon.nl/ (also available in Dutch).  There is
+     a different HOWTO in German on http://www.franken.de/users/klaus/  There
+     is also a French Mini-HOWTO under http://perso.wanadoo.fr/philippe.latu
+
+3.   Where is the SuSE Support Database, where many of my questions are
+     answered?
+
+     http://www.suse.de/sdb/en/html/katlist.ISDN.html
+
+4.   What other documentation is available?
+
+     'man isdnctrl', see also under "SEE ALSO".  Also 'man ipppd'.  And the
+     README files in /usr/src/linux/Documentation/isdn  Many of the HOWTOS
+     deal with general networking questions and are relevant to ISDN4Linux,
+     too.  See your favourite LDP mirror, eg.
+     http://SunSITE.auc.dk/ldp/HOWTO/HOWTO-INDEX-3.html
+
+5.   Where is the "secret FAQ"?
+
+     www.deja.com   Search with the keyword isdn4linux (surprise, surprise).
+     Many articles, but not all, are in German.  Don't forget to look in the
+     'past' article database if you don't find anything in the 'current' one.
+
+6.   The first connection never works because of dynamic IP addresses.
+
+     If you have SuSE 5.2, 3rd edition or newer you can put
+       IP_DYNIP="yes"
+     in /etc/rc.config.  Otherwise (or if you don't want to reboot) you do an:
+       echo 5 > /proc/sys/net/ipv4/ip_dynaddr
+     You can put that in /etc/rc.d/rc.local See
+     /usr/src/Linux/Documentation/networking/ip_dynaddr.txt and
+     http://www.suse.de/Support/sdb_e/dynippatch.html
+
+7.   ISDN4Linux keeps redialling, especially if I do a hard hangup (without
+     waiting for timeout)
+
+     This can be alleviated with RST-provoking.  Activate this as in question
+     6 and see also http://www.suse.de/sdb/en/html/katlist.ISDN.html  If you
+     use kernel 2.2 see also
+     http://www-users.rwth-aachen.de/Michael.Mueller4/dynip.html  This patch
+     does not go cleanly into newer 2.2 kernels, so it is only usable by C
+     programmers.
+
+8.   Only the first ISDN connection works because of routing problems.
+       or
+     The connection appears to work, but no data is sent over the link.  After
+     a short interval, ISDN4Linux cuts the connection again.
+
+     You probably don't have a default route.  See the output of 'route -n'.
+     You need the line
+       /sbin/route add default $1
+     in your /etc/ppp/ip-up file (for Red Hat etc/ppp/ip-up.local)
+     and your /etc/ppp/ip-down file (for Red Hat etc/ppp/ip-down.local).
+     These files should have the exact text:
+       #!/bin/sh
+     at the start of the first line, and be executable (see 'man chmod').
+     Commands should be written with full paths, eg '/sbin/route ...', not
+     just 'route ...'.
+
+9.   Is my card supported?  What options should I give when loading modules?
+
+     See the README-files in /usr/src/linux/Documentation/isdn and ask Deja
+     News with the search word "isdn4linux" and "yourcardsprecisename".
+
+10.  Where can I get the newest ISDN4Linux software?
+
+     Get the utils from ftp://ftp.isdn4linux.de/pub/isdn4linux/utils/testing
+     Get the kernel driver from the newest official kernel from www.kernel.org
+     or a mirror, eg.  ftp://ftp.us.kernel.org/pub/linux/kernel
+     If you need a very new kernel (in the -ac series) check eg.
+     ftp://ftp.us.kernel.org/pub/linux/kernel/people/alan/
+
+     See also the web/ftp server of your distribution and your local RPM
+     repository, eg.  http://SunSITE.auc.dk/linux/rpmrepository.html
+
+11.  ISDN4Linux doesn't work any more since I updated to kernel 2.0.36
+
+     You need the newest isdn4k-utils, 3.0beta1 or newer.  See above.  In
+     particular you need the new 'dialmode' command isdnctrl.  Note: the
+     utils must be compiled with the version of the kernel you are using, so
+     when you upgrade your kernel, you may need to recompile the utils.
+
+     Warning!  The '2.0.36' kernel in Red Hat 5.2 is not the real 2.0.36, but
+     rather a pre-release without the new ISDN code.  So you either need the
+     real 2.0.36 kernel from www.kernel.org or an update for the kernel
+     driver, see question 10.
+
+12.  ISDN4Linux doesn't work any more since I updated to kernel 2.2.x
+
+     Unfortunately, the version of ISDN4Linux in early releases of kernel 2.2
+     was quite buggy.  Since 2.2.11 and 2.3.16, the ISDN-Driver in the official
+     kernels has been up to date.  You still need a fairly new version of the
+     isdn4kutils, see question 10.
+
+     If you upgrade to 2.2.13 you will need to recompile your isdn4kutils or
+     download a new package that is suitable for 2.2.13.
+
+13.  Can I fax with ISDN4Linux?
+
+     Only with active cards.  For Eicon DIVA Server cards (BRI and PRI)
+     see http://www.melware.de/  For the AVM B1 see
+     ftp://ftp.aeccom.com/pub/fax4i4l/howto/current (German only,
+     unfortunately).  Software for passive cards is being worked on.  See
+     http://w1.2667.telia.com/~u266700740/linux/i4lfax/index.html
+
+14.  ISDN4Linux dials, but the connection isn't set up.
+
+     You have to switch on debug in ipppd, and then take a look at
+     /var/log/messages (see also question 17).  Here are some explantions
+     to help you see what is going on:
+
+     sent ConfReq ... What your machine wanted
+     sent ConfRej ... Your machine rejected a configuration/password option
+     sent ConfNak ... Your machine suggested something else instead
+     sent ConfAck ... Your machine agreed to something
+     rcvd ...         What the remote server said
+
+15.  What do these funny 'cause' codes mean?
+
+     See 'man isdn_cause'
+
+16.  Can I use ISDN4Linux with my external ISDN Terminal Adapter?
+
+     No, they don't work with ISDN4Linux, but they do work with Linux.  You
+     treat these like a modem, so you need pppd and perhaps diald.  Questions
+     6, 7, 8 and 14 still apply, using pppd instead of ipppd.
+
+17.  I activated various debug options in ipppd and isdnctrl, but I don't see
+     anything in /var/log/messages.
+
+     You may need to reconfigure syslog.  See eg. 'man syslogd' and 'man
+     syslog.conf' and the file /etc/syslog.conf.  If you distribution doesn't
+     have a GUI-tool for configuring syslog you could use the quick commands:
+       echo '*.*   -/var/log/isdnfix' >> /etc/syslog.conf
+       killall -HUP syslogd
+     at the command prompt.  This will cause all relevant and irrelevant data
+     to be logged to /var/log/isdn.  Don't leave this logging around as the
+     log file will quickly become very big.  You can remove it again with:
+       grep -v isdnfix /etc/syslog.conf > /etc/syslog.conf.new
+       mv -f /etc/syslog.conf.new /etc/syslog.conf
+       killall -HUP syslogd
+
+18.  Which packages should I install, or man pages/HOWTOs should I read, or
+     keywords should I use in Deja News for:
+
+     Everything:                     ISDN4Linux kernel module and isdn4kutils
+     A telephone answering machine   vbox or vgetty
+     A fax machine:                  See question 13
+     Sync-PPP (Internet):            isdnctrl and ipppd
+     Async-PPP or external ISDN:     pppd and diald
+     ISDN terminal programm:         minicom and /dev/ttyI0 (man ttyI)
+     Euro-File Transfer:             Not yet (EFTP4Linux)
+     Logging of ISDN calls:          isdnlog in dual mode
+     Bugging of ISDN calls:          not possible with ISDN4Linux
+     Local area network to the Internet: Masquerading/ipfwadm.  Alternatively
+                                     with squid/sendmail.  See also question 2
+     Plug-n-Play ISA cards:          isapnptools.
+
+19.  The ISDN connection is working, and I can ping numeric addresses eg with
+     'ping -c 20 198.41.0.4' but Netscape etc. don't work.
+
+     You have a problem with your nameserver.  See question 2.
+
+20.  The ISDN connection is working, but I can't even ping numeric addresses
+     eg. with 'ping -c 20 198.41.0.4' and Netscape etc. don't work.
+
+     You have a problem with your routing.  See questions 8 and 2.
+
+21.  Sometimes my ISDN connection becomes very slow.  I get ping times of
+     several thousand milliseconds.
+
+     Apply the patch from http://x45.deja.com/=dnc/getdoc.xp?AN=529129151 or
+     upgrade to 2.2.13.  See also question 12.
+
+22.  It just doesn't work!
+
+     Ask us in the news group/mailing list.  We try to be helpful, but it is
+     simpler if we have a few facts:
+
+     Version numbers for the kernel, ISDN driver, distribution and
+     isdn4kutils.  Short extracts from /var/log/messages if it contains
+     anything interesting.  The output from 'route -n', 'ifconfig', 'lsmod'
+     and 'isdnctrl list ippp0'
+
+Corrections and suggestions welcome, please send them directly to me,
+Erik Corry, <erik@arbat.com>.
+
+Thanks to Andreas Barth, Klaus Franken, Jürgen Lennefer, Eyal Lotem, Christian
+Otto-Lange, Wolfgang Schetter and Gerhard Sittig.
+
+-- 
+Erik Corry
