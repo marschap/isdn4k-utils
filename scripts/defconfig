@@ -10,6 +10,7 @@
 #
 # General configuration
 #
+CONFIG_BUILDX11=y
 CONFIG_BINDIR='/usr/bin'
 CONFIG_SBINDIR='/sbin'
 CONFIG_MANDIR='/usr/man'
