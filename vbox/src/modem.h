@@ -1,5 +1,5 @@
 /*
-** $Id: modem.h,v 1.6 1998/03/26 13:10:36 keil Exp $
+** $Id: modem.h,v 1.7 2002/01/31 20:08:41 paul Exp $
 **
 ** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
 */
@@ -19,7 +19,7 @@
 #define MODEM_MAX_S_REGISTER		22			 /* Max. available S-register	*/
 
 #define MODEM_TOGGLETIME			800
-#define MODEM_RINGTIMEOUT			5
+#define MODEM_RINGTIMEOUT			6
 #define MODEM_ECHOTIMEOUT			3
 #define MODEM_CMDTIMEOUT			3
 #define MODEM_TIMEOUT				1800
