@@ -1,4 +1,4 @@
-V:1.10-Germany [07-Jul-2000 21:15:49]
+V:1.10-Germany [16-Jul-2000 02:40:30]
 
 # Währungsformat
 U:%.3f DM
@@ -8,7 +8,7 @@ U:%.3f DM
 #
 # (C) Copyright 1999, 2000 by Andreas Kool (akool@isdn4linux.de)
 #
-# $Id: rate-de.dat,v 1.96 2000/07/07 19:38:29 akool Exp $
+# $Id: rate-de.dat,v 1.97 2000/07/16 00:46:00 akool Exp $
 #
 #
 # Das "A:" Tag muß folgendermaßen gefüllt werden:
@@ -3403,6 +3403,7 @@ Z:1-4 National
 A:+49
 T:[11.06.2000-12.06.2000]*/*=0 Pfingstangebot
 T:[02.07.2000-03.07.2000]*/*=0 Sonderangebot
+T:[16.07.2000-17.07.2000]*/*=0 Sonderangebot
 T:W/06-18=0.06/60
 T:W/18-06=0.04/60
 T:E,H/*=0.04/60
@@ -23352,7 +23353,8 @@ S:Internet by call
 T:[-30.11.1999]*/*=0.06/60
 T:[01.12.1999-23.02.2000]*/09-21=0.054/60 Hauptzeit
 T:[01.12.1999-23.02.2000]*/21-09=0.049/60 Nebenzeit
-T:[24.02.2000-]*/*=0.049/60
+T:[24.02.2000-31.05.2000]*/*=0.049/60
+T:[01.06.2000-]*/*=0.033/60
 Z:40 Telefonauskunft
 A:11870
 T:*/*=0.968/30
