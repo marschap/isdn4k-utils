@@ -1,4 +1,4 @@
-V:2.02 [07-Jun-2002 17:30:14]
+V:2.02 [26-Jun-2002 20:03:34]
 
 # Währungsformat
 U:%.3f EUR
@@ -8,7 +8,7 @@ U:%.3f EUR
 #
 # (C) Copyright 1999, 2001 by Andreas Kool (akool@isdn4linux.de)
 #
-# $Id: rate-de.dat,v 1.119 2002/06/07 15:39:23 akool Exp $
+# $Id: rate-de.dat,v 1.120 2002/06/26 18:07:02 akool Exp $
 #
 #
 # Das "A:" Tag muß folgendermaßen gefüllt werden:
@@ -2230,7 +2230,6 @@ T:E,H/*=0.25/60
 #
 # P:50 Talkline
 # B:01050
-# G:17-Jan-2000
 # C:PS PhoneServices GmbH, Adenauer Damm 1, 25337 Elmshorn 01050
 # C:Homepage:	http://www.null1050.de (??)
 # C:oder:  	http://www.talkline.de
@@ -2254,6 +2253,7 @@ C:  40		Talkline Auskunft
 C: 102		Internet Talkline By Call
 C: 200 - 	Ausland
 D:dtag
+# G:17-Jun-2002
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -2264,12 +2264,14 @@ T:*/*=0
 Z:2-4 Fern
 A:DE
 T:W/07-18=0.082/60
-T:W/18-07=0.019/60
+T:W/18-22=0.039/60
+T:W/22-07=0.019/60
 T:E,H/07-18=0.05/60
-T:E,H/18-07=0.019/60
+T:E,H/18-22=0.039/60
+T:E,H/22-07=0.019/60
 Z:10 Mobil
 A:_DEMF
-T:*/*=0.30/60
+T:*/*=0.185/60
 #####################################################################
 #
 #
@@ -2293,8 +2295,7 @@ A:112
 T:*/*=0
 Z:2-4 Ferngespräche
 A:DE
-# T:*/*=0.0358/60
-T:*/*=0.01/60 # am 22-May-2002 angemeldetes Sonderangebot
+T:*/*=0.036/60
 Z:10 Mobilfunk
 A:_DEMF
 T:*/*=0.2045/60
@@ -2530,22 +2531,23 @@ T:*/*=0
 Z:2-4 Inland
 A:+49
 T:W/07-18=0.092/60
-T:W/18-07=0.022/60
+T:W/18-20=0.031/60
+T:W/20-07=0.019/60
 T:E,H/*=0.022/60
 Z:11 D1 Netz
 A:_DEMD1
-T:*/*=0.2454/60
+T:*/*=0.245/60
 Z:12 D2 Netz
 A:_DEMD2
-T:W/07-18=0.2454/60 Hauptzeit
-T:W/18-07=0.2352/60 Nebenzeit
-T:E,H/*=0.2352/60 Freizeit
+T:W/07-18=0.245/60 Hauptzeit
+T:W/18-07=0.235/60 Nebenzeit
+T:E,H/*=0.235/60 Freizeit
 Z:14 E-Plus Netz
 A:_DEME1
-T:*/*=0.2761/60
+T:*/*=0.276/60
 Z:15 E2 Netz
 A:_DEME2
-T:*/*=0.2914/60
+T:*/*=0.291/60
 #####################################################################
 P:70,1 Arcor Town to Town sunny
 B:01070
@@ -3206,7 +3208,7 @@ C:Address:
 C:Name:Phonedump (01058)
 C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
-# G:07-Jun-2002
+# G:26-Jun-2002
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -3216,7 +3218,7 @@ A:112
 T:*/*=0
 Z:1-4 GermanCall
 A:+49
-T:*/*=0.02/60
+T:*/*=0.028/60
 Z:10 Mobilfunk
 A:_DEMD1
 A:_DEMD2
@@ -3273,6 +3275,32 @@ T:*/*=0.179/60
 #####################################################################
 #
 #
+P:249,0 Germanphone
+B:0190049
+C:Address:
+C:Name:Germanphone (01058)
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
+# G:22-Jun-2002
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+Z:1-4 GermanCall
+A:+49
+T:*/*=0.018(60)/300
+Z:10 Mobilfunk
+A:_DEMD1
+A:_DEMD2
+A:_DEME1
+A:_DEME2
+T:*/*=0.16(60)/300
+#####################################################################
+#
+#
 P:254,0 Calladin
 B:0190054
 C:Address:
@@ -3317,7 +3345,7 @@ A:112
 T:*/*=0
 Z:1-4 GermanCall
 A:+49
-T:*/*=0.019(60)/240 Freizeit
+T:*/*=0.019(60)/240
 Z:10 Mobilfunk
 A:_DEMD1
 A:_DEMD2
@@ -3350,10 +3378,10 @@ T:*/*=0.17/60
 #####################################################################
 #
 #
-P:282,0 LightTALK
+P:282,0 lightTALK
 B:0190082
 C:Address:
-C:Name:LightTALK (01058)
+C:Name:lightTALK (01058)
 C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
@@ -3383,7 +3411,7 @@ C:Address:
 C:Name:maxbell (01058)
 C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
-# G:01-Mai-2002
+# G:26-Jun-2002
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -3393,7 +3421,7 @@ A:112
 T:*/*=0
 Z:1-4 GermanCall
 A:+49
-T:*/*=0.027/60
+T:*/*=0.021/60
 Z:10 Mobilfunk
 A:_DEMD1
 A:_DEMD2
