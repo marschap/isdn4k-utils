@@ -4,7 +4,7 @@
 
 <title>FAQ for isdn4linux
 <author>Matthias Hessler (<tt><htmlurl url="mailto:hessler@isdn4linux.de" name="hessler@isdn4linux.de"></tt>)
-<date>v2.0.16, 08. October 1999
+<date>v2.0.17, 11. October 1999
 <abstract>
 If you are reading this FAQ online, you may consider downloading the whole
 thing, and reading it offline (much cheaper). To download the latest
@@ -132,7 +132,7 @@ version that is currently in development. See the section
 <label id="general_contacts">
 <p>
 You can contact the isdn4linux developers through the www.isdn4linux.de
-website. Have a look at <url url="http://www.isdn4linux.de/contacts">.
+website. Have a look at <url url="http://www.isdn4linux.de/contacts.php3">.
 
 
 <!-- Development & Distribution -->
@@ -281,7 +281,8 @@ on this rather complicated problem. For more info on its status have a look at:
 <item><bf>For the active card AVM B1: Yes</bf> (its firmware has implemented
 fax as one of its features). Get the newest stuff from:
 <tt><url url="ftp://ftp.aeccom.com/pub/fax4i4l/howto/current/"></tt>
-<item><bf>For some active Eicon cards: Yes</bf>
+<item><bf>For the active Eicon Diva Server cards: Yes</bf>. Have a look at
+README.fax and README.eicon in the <tt>isdn/Documentation/isdn</tt> directory.
 <item><bf>For semiactive cards Sedlbauer Speedfax+ and Siemens ISURF 1.0: Yes</bf>
 But currently this requires some manual work. Check the mailing list on how
 to do it (special patch needed).
@@ -331,9 +332,10 @@ section.
 <p>
 Yes. If a network interface (e.g. &dquot;isdn0&dquot;) is set up, the driver
 will dial the number. If in addition a hangup timeout (Idle Timeout) has been
-given, isdnctrl huptime interface time, then the driver will automatically hang
-up when no data was been transferred over the interface for &dquot;time&dquot;
-seconds. However, with syncPPP there are problems (see the syncPPP section).
+given (like: <tt>isdnctrl huptime &lt;interface&gt; &lt;time&gt;</tt>), then
+the driver will automatically hang up when no data was been transferred over
+the interface for &gt;time&lt; seconds. However, with syncPPP there are
+problems (see the syncPPP section).
 Also look at the dialmode description (see question
 <ref id="dialout_dialmode" name="dialout_dialmode">).
 You should definitely be very interested in the large section of this FAQ that
@@ -636,6 +638,8 @@ Note:
 <item>Teles PCI is EXPERIMENTAL
 <item>Teles S0Box is EXPERIMENTAL
 <item>Eicon.Diehl Diva U interface not tested
+<item>Some cards do not work when compiled into the kernel, only when
+started as modules
 <item>No voice mode for all cards from CCD yet: HFC (Teleint) and HFC-S
 based cards (exception: HFC-S PCI works in voice mode)
 <item>To distinguish between HFC-PCI and PCI/Winbond, have a look at the
@@ -900,9 +904,16 @@ plug off, and new plug (in the right direction) on.
 <label id="hardware_pbx">
 <p>
 Many PBX run non-standard ISDN protocolls on their internal bus. This may cause
-i4l to print warnings when it encounters unexpected frames (some old versions
-even crash). This can increase your message file by as much as 1 MB in 3 days
-(the German PBX <tt/Ackermann Euracom 181/ seems to be notorious for this).
+i4l to print warnings like "Unexpected discriminator 0xZZ" (where ZZ is a
+hexadecimal number) when it encounters unexpected frames (some old versions
+even crash). This can increase your message file by as much as 1 MB in 3 days.
+The PBX <tt/Ackermann Euracom 181/ (discriminator 0xaa) as well as
+<tt/Ascom/ (discriminator 0x44/0x47) seem to be notorious for this.
+You can avoid the warning by adjusting the switch/case code for isdnlog in
+function <tt>processctrl()</tt> in <tt>processor.c</tt>.
+Please be aware, that the PBX may hang if the ISDN card does not respond to
+the PBX requests - bypass the PBX in such a case.
+
 Also, a PBX may run 1TR6 protocoll on the internal bus by default, rather
 than Euro ISDN. You have to configure i4l (or the PBX) accordingly, best
 is you try to configure both on the same or similar protocolls.
@@ -1692,13 +1703,14 @@ Incoming connections are also possible.
 In this mode, the interface will never make any connections on its
 own. You must explicitly initiate a connection with:
 <code>isdnctrl dial ippp0</code>
+To end the connection, use:
+<code>isdnctrl hangup ippp0</code>
 Please note that the <tt/huptimeout/ may still end the connection
 automatically! To ensure that you have to hang up manually, you have to switch
 this off:
 <code>isdnctrl huptimeout ippp0 0</code>
-To end the connection, use:
-<code>isdnctrl hangup ippp0</code>
 </descrip>
+
 To allow a normal user to initiate a dialout, have a look at question
 <ref id="dialout_permission" name="dialout_permission">.
 
@@ -2635,8 +2647,10 @@ Then a new connection is started to bring down the open IP connections,
 which fails because the IP address is now different. The line is hung up,
 but the IP connections are still open, the line is dialed again, and
 so on... This can only be avoided with the RST-Revoking patch, which has found
-its way into the 2.0.x kernels, but not into 2.1/2.2/2.3 (see the appropriate
-question below).
+its way into the 2.0.x kernels, but not into 2.1/2.2/2.3. However, you can get
+an adjustment to 2.2.12 kernel from:
+<url url="//www.another.de/linux/router/linux-2.2.12-rst.diff.gz">.
+See the mailing list archives for more information on the RST-Revoking patch.
 <item>Requests from your local DNS trigger a dialout: see question
 <ref id="dod_localdns" name="dod_localdns">.
 <item>Sendmail triggers the dialout: see question
@@ -3922,6 +3936,13 @@ credit-check enables you to get MSNs and other extras for extra cost.
 Otherwise pretty much like BTHH. Configure isdn4linux to use your 'digital
 number' and/or your MSNs.
 </itemize>
+Please note that BT offers an unexpected special "feature" on
+international calls. For international data calls you have to dial
+000&lt;country_code&gt; (three zeros), rather than the 00&lt;country_code&gt;
+(two zeros) for international voice calls.
+
+By the way: for a BT Speedway card try to select AVM Fritz card (either
+ISA or PCI - depends on what you got).
 
 <sect> misc: Miscellaneous  
 <label id="misc">
