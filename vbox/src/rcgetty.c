@@ -1,5 +1,5 @@
 /*
-** $Id: rcgetty.c,v 1.9 1997/10/22 20:47:11 fritz Exp $
+** $Id: rcgetty.c,v 1.10 2002/01/31 20:09:21 paul Exp $
 **
 ** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
 */
@@ -174,6 +174,10 @@ int getty_get_settings(char *rcname)
 		
 		returnerror();
 	}
+
+        if (setup.modem.timeout_ring < MODEM_RINGTIMEOUT) {
+            log(L_WARN, "ringtimeout is set to %d; at least %d is recommended.\n", setup.modem.timeout_ring, MODEM_RINGTIMEOUT);
+        }
 
 	returnok();
 }
