@@ -1,7 +1,10 @@
 /*
- * $Id: capi20.c,v 1.23 2004/10/06 15:24:42 calle Exp $
+ * $Id: capi20.c,v 1.24 2004/12/15 14:27:54 calle Exp $
  * 
  * $Log: capi20.c,v $
+ * Revision 1.24  2004/12/15 14:27:54  calle
+ * Bugfix: returncode of get_buffer() is now checked.
+ *
  * Revision 1.23  2004/10/06 15:24:42  calle
  * - "SendingComplete"-Patch reverted => 2.0.8 was not binaer compartible
  * - Bugfix: capi20_register() with MaxB3Connection == 0 results in a
@@ -209,7 +212,7 @@ static struct applinfo *alloc_buffers(unsigned MaxB3Connection,
 		                      unsigned MaxSizeB3)
 {
    struct applinfo *ap;
-   unsigned nbufs = 1 + MaxB3Connection * (MaxB3Blks + 1);
+   unsigned nbufs = 2 + MaxB3Connection * (MaxB3Blks + 1);
    size_t recvbuffersize = 128 + MaxSizeB3;
    unsigned i;
    size_t size;
@@ -488,7 +491,8 @@ capi20_get_message (unsigned ApplID, unsigned char **Buf)
 
     fd = applid2fd(ApplID);
 
-    *Buf = rcvbuf = get_buffer(ApplID, &bufsiz, &offset);
+    if ((*Buf = rcvbuf = get_buffer(ApplID, &bufsiz, &offset)) == 0)
+        return CapiMsgOSResourceError;
 
     if ((rc = read(fd, rcvbuf, bufsiz)) > 0) {
 	CAPIMSG_SETAPPID(rcvbuf, ApplID); // workaround for old driver
