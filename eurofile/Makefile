@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.7 1999/06/30 22:17:51 he Exp $
+# $Id: Makefile,v 1.8 1999/07/12 10:35:29 keil Exp $
 
 SHELL = /bin/sh
 
@@ -48,6 +48,9 @@ distclean: clean
 
 configureclean: distclean
 	rm -f configure
+
+install:
+	echo "dummy install"
 
 commit: distclean
 	$(CVS) commit .
