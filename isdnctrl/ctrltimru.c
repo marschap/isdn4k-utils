@@ -329,6 +329,7 @@ write_icmp_type(char *s, __u8 from, __u8 to) {
 	} else { \
 		++args_used; \
 	} \
+fprintf(stderr, "looking for <%s>: argp = %d/%d (%s)\n", msg, argp, argc, argv [argp]); \
 }
 
 
@@ -405,7 +406,7 @@ hdl_timeout_rule(int fd, char *id, int cmd, int argc, char *argv []) {
 	strncpy(timru.name, id, sizeof(timru.name) - 1);
 
 	/* rule-type */
-	SHIFT_ARGS("rule-type");
+	/* SHIFT_ARGS("rule-type"); */
 	if(! strcmp(argv [argp], "bringup")) {
 		timru.rule.type = ISDN_TIMRU_BRINGUP;
 	} else if(! strcmp(argv [argp], "keepup")) {

@@ -1,0 +1,67 @@
+.TP
+.BI status " name" [on|off]
+Switches the interface
+.IR name
+on or off.
+If set to
+.B off ,
+incoming calls for this interface are ignored and no dialout will be triggered.
+If the interface is already connected it will be hung up.
+.TP
+.BI dialtimeout " name" [seconds]
+Maximum duration of dialattempts. A dialout must not take longer than
+.B seconds .
+seconds.
+.TP
+.BI dialwait " name" [seconds]
+After a failed dialattempt all dials are blocked for
+.B seconds
+seconds.
+.TP
+.BI addrule " name" rule
+adds a timeout-rule to the interface
+.IR name .
+The rule is appended to the list of rules.
+The syntax of the rules is explained in section
+.B Dynamic Timeout Rules .
+.TP
+.BI insrule " name" rule
+adds a timeout-rule to the interface
+.IR name .
+The rule is prepended to the list of rules.
+.TP
+.BI delrule " name" rule
+removes a timeout-rule from the list of rules of the interface
+.IR name .
+.TP
+.BI showrules " name"
+shows all timeout-rules of the interface
+.IR name .
+.TP
+.BI flushrules " name" ruletype
+removes all timeout-rules of the given type from the interface
+.IR name .
+.TP
+.BI flushallrules " name"
+removes all timeout-rules from the interface
+.IR name .
+.TP
+.BI budget " name" type amount period
+sets a budget for the interface
+.IR name .
+Budgets are explained in section
+.B Budgets .
+.TP
+.BI showbudgets " name"
+shows all budgets for the interface
+.IR name .
+.TP
+.BI readbudgets " name"
+dumps the budgets for the interface
+.IR name .
+in a format suitable for laster restore to allow budgetperiods to span reboots.
+.TP
+.BI writebudgets " name"
+restore the budgets for the interface
+.IR name .
+from the output of a " readbudgets" - command.

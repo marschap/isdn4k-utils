@@ -1,4 +1,4 @@
-# $Id: Makefile.in,v 1.9 1998/03/07 18:25:52 cal Exp $
+# $Id: Makefile.in,v 1.10 1998/03/16 09:40:51 cal Exp $
 #
 # Makefile for isdnctrl
 # (C) 1997 Fritz Elfert
@@ -31,7 +31,7 @@ endif
 ifeq (@CONFIG_ISDNCTRL_TIMRU@,y)
 COPTS		+= -DI4L_CTRL_TIMRU
 MODULES		+= ctrltimru.o
-# MANPAGES    += .isdnctrl_timru.8
+MANPAGES    += .isdnctrl_timru.8
 endif
 
 .SUFFIXES:
