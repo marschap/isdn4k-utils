@@ -1,5 +1,5 @@
 /*
-** $Id: stringutils.h,v 1.4 1998/09/18 15:09:04 michael Exp $
+** $Id: stringutils.h,v 1.5 1998/11/10 18:36:33 michael Exp $
 **
 ** Copyright 1996-1998 Michael 'Ghandi' Herold <michael@abadonna.mayn.de>
 */
@@ -15,6 +15,7 @@
 
 extern unsigned char *xstrtoupper(unsigned char *);
 extern void xstrncpy(unsigned char *, unsigned char *, int);
+extern void xstrncat(unsigned char *, unsigned char *, int);
 extern long xstrtol(unsigned char *, long);
 extern long xstrtoo(unsigned char *, long);
 

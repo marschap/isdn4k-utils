@@ -1,5 +1,5 @@
 /*
-** $Id: voice.h,v 1.8 1998/09/18 15:09:12 michael Exp $
+** $Id: voice.h,v 1.9 1998/11/10 18:36:40 michael Exp $
 **
 ** Copyright 1996-1998 Michael 'Ghandi' Herold <michael@abadonna.mayn.de>
 */
@@ -50,6 +50,10 @@
 #define VBOXSAVE_NAME				64
 #define VBOXSAVE_CAID				64
 #define VBOXSAVE_VBOX				 6
+
+/** Variables ************************************************************/
+
+extern unsigned char voice_touchtone_sequence[VBOXVOICE_SEQUENCE + 1];
 
 /** Prototypes ***********************************************************/
 

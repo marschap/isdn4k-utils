@@ -1,4 +1,4 @@
-# $Id: answercall.tcl,v 1.2 1998/08/31 15:30:54 michael Exp $
+# $Id: answercall.tcl,v 1.3 1998/11/10 18:37:05 michael Exp $
 
 #----------------------------------------------------------------------#
 # This script is called after the call is answered. Here you can do    #
@@ -24,8 +24,6 @@
    # users spool directory and add the touchtone functions!        #
 
 vbox_breaklist c
-vbox_breaklist a "5"
-vbox_breaklist a "*123#"
 
    # Start voice recording and stop audio playback. If you want a #
    # permanent audio playback, you can start it here. If not, use #
@@ -44,8 +42,6 @@ if {("$result" != "HANGUP") && ("$result" != "SUSPEND")} {
 
         # Now the message will be recorded. The script will stop if the #
         # remote caller hangup or if the call should be suspended.      #
-
-vbox_breaklist r "5"
 
     set result [vbox_voice w $vbxv_savetime]
 }
@@ -69,7 +65,7 @@ vbox_voice a stop
 
 #if {([file isfile "$vbxv_saveulaw"]) && ([file isfile "$vbxv_savevbox"])} {
 #
-#    vbox_log D "Mailing recorded message to \"$vbxv_username\"..."
+#    vbox_log A "Mailing recorded message to \"$vbxv_username\"..."
 #
 #    exec mutt -s "New vbox message ($vbxv_callername)" -a "$vbxv_saveulaw" $vbxv_username <$vbxv_savevbox
 #}

@@ -1,5 +1,5 @@
 /*
-** $Id: audio.c,v 1.4 1998/09/18 15:08:56 michael Exp $
+** $Id: audio.c,v 1.5 1998/11/10 18:36:25 michael Exp $
 **
 ** Copyright 1996-1998 Michael 'Ghandi' Herold <michael@abadonna.mayn.de>
 */
@@ -10,6 +10,7 @@
 #include <errno.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include <sys/ioctl.h>
 #include <sys/soundcard.h>
 
 #include "audio.h"

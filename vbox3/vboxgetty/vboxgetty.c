@@ -1,5 +1,5 @@
 /*
-** $Id: vboxgetty.c,v 1.9 1998/09/18 15:09:06 michael Exp $
+** $Id: vboxgetty.c,v 1.10 1998/11/10 18:36:35 michael Exp $
 **
 ** Copyright 1996-1998 Michael 'Ghandi' Herold <michael@abadonna.mayn.de>
 */
@@ -457,185 +457,7 @@ static int run_modem_init(void)
 	return(-1);
 }
 
-/*************************************************************************
- ** vboxgettyrc_parse():	Liest die Konfiguration des gettys ein. Zu-	**
- **								erst wird die globale und dann die des je-	**
- **								weiligen tty's eingelesen.							**
- *************************************************************************
- ** => tty						Name des benutzten tty's.							**
- **																							**
- ** <=							0 wenn alles eingelesen werden konnte oder	**
- **								-1 bei einem Fehler.									**
- *************************************************************************/
 
-static int vboxgettyrc_parse(unsigned char *tty)
-{
-	unsigned char tempsectname[VBOX_MAX_RCLINE_SIZE + 1];
-
-	printstring(temppathname, "%s/vboxgetty.conf", SYSCONFDIR);
-
-	printstring(tempsectname, "vboxgetty-tty");
-
-	if (rc_read(rc_getty_c, temppathname, tempsectname) == -1) return(-1);
-
-	printstring(tempsectname, "vboxgetty-%s", tty);
-
-	if (rc_read(rc_getty_c, temppathname, tempsectname) == -1) return(-1);
-
-	log_line(LOG_D, "Filling unset configuration variables with defaults...\n");
-
-	if (!rc_set_empty(rc_getty_c, "init"				, "ATZ&B512"		 )) return(-1);
-	if (!rc_set_empty(rc_getty_c, "badinitsexit"		, "10"				 )) return(-1);
-	if (!rc_set_empty(rc_getty_c, "initpause"			, "2500"				 )) return(-1);
-	if (!rc_set_empty(rc_getty_c, "commandtimeout"	, "4"					 )) return(-1);
-	if (!rc_set_empty(rc_getty_c, "echotimeout"		, "4"					 )) return(-1);
-	if (!rc_set_empty(rc_getty_c, "ringtimeout"		, "6"					 )) return(-1);
-	if (!rc_set_empty(rc_getty_c, "alivetimeout"		, "1800"				 )) return(-1);
-	if (!rc_set_empty(rc_getty_c, "toggledtrtime"	, "400"				 )) return(-1);
-	if (!rc_set_empty(rc_getty_c, "spooldir"			, "/var/spool/vbox")) return(-1);
-
-	modemsetup.echotimeout		= xstrtol(rc_get_entry(rc_getty_c, "echotimeout"	), 4		);
-	modemsetup.commandtimeout	= xstrtol(rc_get_entry(rc_getty_c, "commandtimeout"), 4		);
-	modemsetup.ringtimeout		= xstrtol(rc_get_entry(rc_getty_c, "ringtimeout"	), 6		);
-	modemsetup.alivetimeout		= xstrtol(rc_get_entry(rc_getty_c, "alivetimeout"	), 1800	);
-	modemsetup.toggle_dtr_time	= xstrtol(rc_get_entry(rc_getty_c, "toggledtrtime"	), 400	);
-
-	if (!rc_get_entry(rc_getty_c, "initnumber"))
-	{
-		log_line(LOG_E, "Variable \"initnumber\" *must* be set!\n");
-		
-		return(-1);
-	}
-
-	return(0);
-}
-
-/************************************************************************* 
- **
- *************************************************************************/
-
-static int userrc_parse(struct vboxuser *vboxuser, unsigned char *home)
-{
-	unsigned char   tempsectname[VBOX_MAX_RCLINE_SIZE + 1];
-	struct passwd	*pwdent;
-	struct group	*grpent;
-	unsigned char  *varusr;
-	unsigned char  *vargrp;
-	unsigned char  *varspc;
-	unsigned char  *varmsk;
-	int				 havegroup;
-
-	static struct vboxrc rc_user_c[] =
-	{
-		{ "user"		, NULL },
-		{ "group"	, NULL },
-		{ "umask"	, NULL },
-		{ "hdspace"	, NULL },
-		{ NULL		, NULL }
-	};
-
-	printstring(temppathname, "%s/vboxgetty.conf", SYSCONFDIR			 );
-	printstring(tempsectname, "vboxgetty-%s"		, vboxuser->localphone);
-
-	if (rc_read(rc_user_c, temppathname, tempsectname) < 0) return(-1);
-
-	varusr = rc_get_entry(rc_user_c, "user"	);
-	vargrp = rc_get_entry(rc_user_c, "group"	);
-	varspc = rc_get_entry(rc_user_c, "hdspace");
-	varmsk = rc_get_entry(rc_user_c, "umask"  );
-
-	if ((!varusr) || (!*varusr))
-	{
-		log_line(LOG_E, "You *must* specify a user name or a user id!\n");
-
-		rc_free(rc_user_c);
-
-		return(-1);
-	}
-
-	if (*varusr == '#')
-		pwdent = getpwuid((uid_t)xstrtol(&varusr[1], 0));
-	else
-		pwdent = getpwnam(varusr);
-
-	if (!pwdent)
-	{
-		log_line(LOG_E, "Unable to locate \"%s\" in systems passwd list.\n", varusr);
-
-		rc_free(rc_user_c);
-
-		return(-1);
-	}
-
-	vboxuser->uid = pwdent->pw_uid;
-	vboxuser->gid = pwdent->pw_gid;
-
-	if ((strlen(home) + strlen(pwdent->pw_name) + 2) < (PATH_MAX - 100))
-	{
-		xstrncpy(vboxuser->name, pwdent->pw_name, VBOXUSER_USERNAME);
-
-		printstring(vboxuser->home, "%s/%s", home, pwdent->pw_name);
-	}
-	else
-	{
-		log_line(LOG_E, "Oops! Spool directory name and user name too long!\n");
-
-		rc_free(rc_user_c);
-
-		return(-1);
-	}
-
-	if ((vargrp) && (*vargrp))
-	{
-		havegroup = 0;
-
-		setgrent();
-					
-		while ((grpent = getgrent()))
-		{
-			if (*vargrp == '#')
-			{
-				if (grpent->gr_gid == (gid_t)xstrtol(&vargrp[1], 0))
-				{
-					vboxuser->gid = grpent->gr_gid;
-					havegroup	  = 1;
-								
-					break;
-				}
-			}
-			else
-			{
-				if (strcmp(grpent->gr_name, vargrp) == 0)
-				{
-					vboxuser->gid = grpent->gr_gid;
-					havegroup	  = 1;
-								
-					break;
-				}
-			}
-		}
-					
-		endgrent();
-
-		if (!havegroup)
-		{
-			log_line(LOG_E, "Unable to locate \"%s\" in systems group list.\n", vargrp);
-
-			rc_free(rc_user_c);
-
-			return(-1);
-		}
-	}
-
-	if (varspc) vboxuser->space = xstrtol(varspc, 0);
-	if (varmsk) vboxuser->umask = xstrtoo(varmsk, 0);
-
-	log_line(LOG_D, "User \"%s\" (%d.%d) will be used...\n", vboxuser->name, vboxuser->uid, vboxuser->gid);
-
-	rc_free(rc_user_c);
-
-	return(0);
-}
 
 
 
@@ -891,3 +713,222 @@ static void pid_remove(unsigned char *name)
 
 	remove(name);
 }
+
+
+
+
+
+
+/************************************************************************* 
+ ** vboxgettyrc_parse():	Reads the gettys ttyI setup.						**
+ *************************************************************************
+ ** => tty						Name of the used ttyI.								**
+ **																							**
+ ** On success, 0 is returned. On error, -1 is returned.						**
+ *************************************************************************/
+
+static int vboxgettyrc_parse(unsigned char *tty)
+{
+	unsigned char tempsectname[VBOX_MAX_RCLINE_SIZE + 1];
+
+	xstrncpy(temppathname, SYSCONFDIR		 , PATH_MAX);
+	xstrncat(temppathname, "/vboxgetty.conf", PATH_MAX);
+
+		/* First time, the global ttyI settings will be	*/
+		/* parsed.													*/
+
+	xstrncpy(tempsectname, "vboxgetty-tty", VBOX_MAX_RCLINE_SIZE);
+
+	if (rc_read(rc_getty_c, temppathname, tempsectname) == -1) return(-1);
+
+		/* Second, the settings for the used ttyI will be	*/
+		/* parsed.														*/
+
+	xstrncpy(tempsectname, "vboxgetty-", VBOX_MAX_RCLINE_SIZE);
+	xstrncat(tempsectname, tty			  , VBOX_MAX_RCLINE_SIZE);
+
+	if (rc_read(rc_getty_c, temppathname, tempsectname) == -1) return(-1);
+
+		/* After this, all unset variables will be filled with	*/
+		/* the defaults.														*/
+
+	log_line(LOG_D, "Filling unset configuration variables with defaults...\n");
+
+	if (!rc_set_empty(rc_getty_c, "init"				, "ATZ&B512"		 )) return(-1);
+	if (!rc_set_empty(rc_getty_c, "badinitsexit"		, "10"				 )) return(-1);
+	if (!rc_set_empty(rc_getty_c, "initpause"			, "2500"				 )) return(-1);
+	if (!rc_set_empty(rc_getty_c, "commandtimeout"	, "4"					 )) return(-1);
+	if (!rc_set_empty(rc_getty_c, "echotimeout"		, "4"					 )) return(-1);
+	if (!rc_set_empty(rc_getty_c, "ringtimeout"		, "6"					 )) return(-1);
+	if (!rc_set_empty(rc_getty_c, "alivetimeout"		, "1800"				 )) return(-1);
+	if (!rc_set_empty(rc_getty_c, "toggledtrtime"	, "400"				 )) return(-1);
+	if (!rc_set_empty(rc_getty_c, "spooldir"			, "/var/spool/vbox")) return(-1);
+
+	modemsetup.echotimeout		= xstrtol(rc_get_entry(rc_getty_c, "echotimeout"	), 4		);
+	modemsetup.commandtimeout	= xstrtol(rc_get_entry(rc_getty_c, "commandtimeout"), 4		);
+	modemsetup.ringtimeout		= xstrtol(rc_get_entry(rc_getty_c, "ringtimeout"	), 6		);
+	modemsetup.alivetimeout		= xstrtol(rc_get_entry(rc_getty_c, "alivetimeout"	), 1800	);
+	modemsetup.toggle_dtr_time	= xstrtol(rc_get_entry(rc_getty_c, "toggledtrtime"	), 400	);
+
+	if (!rc_get_entry(rc_getty_c, "initnumber"))
+	{
+		log_line(LOG_E, "Variable \"initnumber\" *must* be set!\n");
+		
+		return(-1);
+	}
+
+	return(0);
+}
+
+/************************************************************************* 
+ ** userrc_parse():	Reads the getty user setup.								**
+ *************************************************************************
+ ** => vboxuser
+ ** => home
+ *************************************************************************/
+
+static int userrc_parse(struct vboxuser *vboxuser, unsigned char *home)
+{
+	unsigned char   tempsectname[VBOX_MAX_RCLINE_SIZE + 1];
+	struct passwd	*pwdent;
+	struct group	*grpent;
+	unsigned char  *varusr;
+	unsigned char  *vargrp;
+	unsigned char  *varspc;
+	unsigned char  *varmsk;
+	int				 havegroup;
+
+	static struct vboxrc rc_user_c[] =
+	{
+		{ "user"		, NULL },
+		{ "group"	, NULL },
+		{ "umask"	, NULL },
+		{ "hdspace"	, NULL },
+		{ NULL		, NULL }
+	};
+
+	xstrncpy(temppathname, SYSCONFDIR		 , PATH_MAX);
+	xstrncat(temppathname, "/vboxgetty.conf", PATH_MAX);
+
+	xstrncpy(tempsectname, "vboxgetty-phone-"	 , VBOX_MAX_RCLINE_SIZE);
+	xstrncat(tempsectname, vboxuser->localphone, VBOX_MAX_RCLINE_SIZE);
+
+	if (rc_read(rc_user_c, temppathname, tempsectname) < 0) return(-1);
+
+	varusr = rc_get_entry(rc_user_c, "user"	);
+	vargrp = rc_get_entry(rc_user_c, "group"	);
+	varspc = rc_get_entry(rc_user_c, "hdspace");
+	varmsk = rc_get_entry(rc_user_c, "umask"  );
+
+	vboxuser->uid		= 0;
+	vboxuser->gid		= 0;
+	vboxuser->space	= 0;
+	vboxuser->umask	= 0;
+
+	strcpy(vboxuser->home, "");
+	strcpy(vboxuser->name, "");
+
+	if ((!varusr) || (!*varusr))
+	{
+		log_line(LOG_E, "You *must* specify a user name or a user id!\n");
+
+		rc_free(rc_user_c);
+
+		return(-1);
+	}
+
+	if (*varusr == '#')
+		pwdent = getpwuid((uid_t)xstrtol(&varusr[1], 0));
+	else
+		pwdent = getpwnam(varusr);
+
+	if (!pwdent)
+	{
+		log_line(LOG_E, "Unable to locate \"%s\" in systems passwd list.\n", varusr);
+
+		rc_free(rc_user_c);
+
+		return(-1);
+	}
+
+	vboxuser->uid = pwdent->pw_uid;
+	vboxuser->gid = pwdent->pw_gid;
+
+	if ((strlen(home) + strlen(pwdent->pw_name) + 2) < (PATH_MAX - 100))
+	{
+		xstrncpy(vboxuser->name, pwdent->pw_name, VBOXUSER_USERNAME);
+
+		printstring(vboxuser->home, "%s/%s", home, pwdent->pw_name);
+	}
+	else
+	{
+		log_line(LOG_E, "Oops! Spool directory name and user name too long!\n");
+
+		rc_free(rc_user_c);
+
+		return(-1);
+	}
+
+	if ((vargrp) && (*vargrp))
+	{
+		havegroup = 0;
+
+		setgrent();
+					
+		while ((grpent = getgrent()))
+		{
+			if (*vargrp == '#')
+			{
+				if (grpent->gr_gid == (gid_t)xstrtol(&vargrp[1], 0))
+				{
+					vboxuser->gid = grpent->gr_gid;
+					havegroup	  = 1;
+								
+					break;
+				}
+			}
+			else
+			{
+				if (strcmp(grpent->gr_name, vargrp) == 0)
+				{
+					vboxuser->gid = grpent->gr_gid;
+					havegroup	  = 1;
+								
+					break;
+				}
+			}
+		}
+					
+		endgrent();
+
+		if (!havegroup)
+		{
+			log_line(LOG_E, "Unable to locate \"%s\" in systems group list.\n", vargrp);
+
+			rc_free(rc_user_c);
+
+			return(-1);
+		}
+	}
+
+	if (varspc) vboxuser->space = xstrtol(varspc, 0);
+	if (varmsk) vboxuser->umask = xstrtoo(varmsk, 0);
+
+	log_line(LOG_D, "User \"%s\" (%d.%d) [%04o] will be used...\n", vboxuser->name, vboxuser->uid, vboxuser->gid, vboxuser->umask);
+
+	rc_free(rc_user_c);
+
+	return(0);
+}
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,5 +1,5 @@
 /*
-** $Id: tclscript.c,v 1.10 1998/09/18 15:09:04 michael Exp $
+** $Id: tclscript.c,v 1.11 1998/11/10 18:36:33 michael Exp $
 **
 ** Copyright 1996-1998 Michael 'Ghandi' Herold <michael@abadonna.mayn.de>
 */
@@ -18,13 +18,13 @@
 #include "tclscript.h"
 #include "stringutils.h"
 #include "breaklist.h"
+#include "voice.h"
 
+/** Variables ************************************************************/
 
 static Tcl_Interp *interpreter = NULL;
 
-
-
-
+/** Tcl Prototypes *******************************************************/
 
 int vbox_block(VBOX_TCLFUNC_PROTO);
 int vbox_log(VBOX_TCLFUNC_PROTO);
@@ -32,22 +32,21 @@ int vbox_modem_command(VBOX_TCLFUNC_PROTO);
 int vbox_voice(VBOX_TCLFUNC_PROTO);
 int vbox_breaklist(VBOX_TCLFUNC_PROTO);
 
+/** Structures ***********************************************************/
 
 static struct vbox_tcl_function vbox_tcl_functions[] =
 {
-	{ "exit", vbox_block },
-	{ "vbox_log", vbox_log },
-	{ "vbox_modem_command", vbox_modem_command },
-	{ "vbox_voice"				, vbox_voice },
-	{ "vbox_breaklist", vbox_breaklist },
-	{ NULL, NULL }
+	{ "exit"						, vbox_block			},
+	{ "vbox_log"				, vbox_log				},
+	{ "vbox_modem_command"	, vbox_modem_command	},
+	{ "vbox_voice"				, vbox_voice			},
+	{ "vbox_breaklist"		, vbox_breaklist		},
+	{ NULL						, NULL					}
 };
 
+/** Prototypes ***********************************************************/
 
 static int scr_init_functions(void);
-
-
-
 
 
 
@@ -287,6 +286,8 @@ int vbox_voice(VBOX_TCLFUNC)
 	int	rc;
 	int	i;
 
+	rc = 0;
+
 	if (objc >= 3)
 	{
 		cmd = Tcl_GetStringFromObj(objv[1], NULL);
@@ -309,7 +310,7 @@ int vbox_voice(VBOX_TCLFUNC)
 							break;
 
 						case 1:
-							Tcl_SetResult(intp, "TOUCHTONE", NULL);
+							Tcl_SetResult(intp, voice_touchtone_sequence, NULL);
 							break;
 
 						case 2:
@@ -348,7 +349,7 @@ int vbox_voice(VBOX_TCLFUNC)
 							break;
 
 						case 1:
-							Tcl_SetResult(intp, "TOUCHTONE", NULL);
+							Tcl_SetResult(intp, voice_touchtone_sequence, NULL);
 							break;
 
 						case 2:
@@ -437,7 +438,6 @@ int vbox_breaklist(VBOX_TCLFUNC)
 	unsigned char *cmd;
 	unsigned char *arg;
 	int	rc;
-	int	i;
 	char *rs;
 
 	if (objc == 2)

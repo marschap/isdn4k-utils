@@ -1,5 +1,5 @@
 /*
-** $Id: vboxrc.c,v 1.3 1998/09/18 15:09:09 michael Exp $
+** $Id: vboxrc.c,v 1.4 1998/11/10 18:36:36 michael Exp $
 **
 ** Copyright 1996-1998 Michael 'Ghandi' Herold <michael@abadonna.mayn.de>
 */             
@@ -20,9 +20,11 @@
 #endif
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
 #include <limits.h>
+#include <fnmatch.h>
 
 #include "vboxrc.h"
 #include "log.h"

@@ -1,5 +1,5 @@
 /*
-** $Id: voice.c,v 1.10 1998/09/18 15:09:10 michael Exp $
+** $Id: voice.c,v 1.11 1998/11/10 18:36:39 michael Exp $
 **
 ** Copyright 1996-1998 Michael 'Ghandi' Herold <michael@abadonna.mayn.de>
 */
@@ -50,7 +50,7 @@ static unsigned char voicename_ulaw[PATH_MAX + 1];
 static unsigned char voicename_vbox[PATH_MAX + 1];
 static unsigned char voicename_call[PATH_MAX + 1];
 
-static unsigned char voice_touchtone_sequence[VBOXVOICE_SEQUENCE + 1];
+unsigned char voice_touchtone_sequence[VBOXVOICE_SEQUENCE + 1];
 
 /** Prototypes ***********************************************************/
 
@@ -71,8 +71,6 @@ int voice_init(struct vboxuser *vboxuser, struct vboxcall *vboxcall)
 {
 	unsigned char	tempconnect[12];
 	unsigned char	msgsavetime[32];
-	unsigned char	voicestoppl[2];
-	unsigned char	voicestoprc[2];
 	time_t	      currenttime;
 	char	        *stop;
 	int		      rc;
@@ -616,8 +614,6 @@ int voice_save(int save)
 
 int voice_hear(int mode)
 {
-	int i;
-
 	if (mode > 0)
 	{
 		if (audiodesc == -1)
@@ -736,7 +732,7 @@ static void voice_create_vboxcall(void)
 			/* CallerID, Name, tty-Device und die aktuelle PID in der	*/
 			/* Datei speichern.														*/
 
-		fprintf(call, "%s:%s:%s:ld\n", voicevboxuser->incomingid, voicevboxuser->name, savettydname, getpid());
+		fprintf(call, "%s:%s:%s:%d\n", voicevboxuser->incomingid, voicevboxuser->name, savettydname, getpid());
 
 		fclose(call);
 	}

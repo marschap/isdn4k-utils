@@ -1,71 +1,62 @@
-AC_INIT(vboxgetty/vboxgetty.c)
 
-AM_INIT_AUTOMAKE(vbox, 2.1.1)
+dnl Process this file with autoconf to produce a configure script.
+
+## init ###################################################################
+
+AC_INIT(acinclude.m4)
+
+AC_CANONICAL_SYSTEM
+AC_ARG_PROGRAM
+
+AM_INIT_AUTOMAKE(vbox, 3.0B1)
+
+AC_PREFIX_DEFAULT(/opt/vbox)
+
 AM_CONFIG_HEADER(config.h)
 
+## programs ###############################################################
+
 AC_PROG_CC
+AC_PROG_CC_WORKS
+AC_PROG_CC_GNU
+
 AC_PROG_RANLIB
 AM_PROG_INSTALL
 
-AC_C_CONST
-AC_C_INLINE
+## libraries ##############################################################
+
+AC_PATH_TCL
+
+## headers ################################################################
 
 AC_HEADER_STDC
 AC_HEADER_TIME
 AC_CHECK_HEADERS(sys/time.h)
 
-AC_CHECK_LIB(c, siginterrupt, AC_DEFINE(HAVE_SIGINTERRUPT))
+## typedefs ###############################################################
 
-##AM_WITH_REGEX
+## structures #############################################################
 
-dnl #------------------------------------------------------------------------#
-dnl # Checks for needed external packages:                                   #
-dnl #------------------------------------------------------------------------#
+## compiler characteristics ###############################################
 
-VBOX_PACKAGE_TCL
+AC_C_CONST
+AC_C_INLINE
 
-dnl #---------------------------------------------------------------------#
-dnl # The place where log's should be stored                              #
-dnl #---------------------------------------------------------------------#
+## library functions ######################################################
 
-packagelogdir="`eval echo ${packagelogdir:-"/var/log"}`"
+AC_CHECK_FUNCS(siginterrupt)
 
-AC_ARG_WITH(packagelogdir,
-        [  --with-logdir=DIR       where logs should be stored [/var/log]],
-        packagelogdir=${withval}
-)
+## system services ########################################################
 
-AC_SUBST(packagelogdir)
+AC_PATH_PKGLOGDIR
+AC_PATH_PKGLOCKDIR
+AC_PATH_PKGPIDDIR
 
-dnl #---------------------------------------------------------------------#
-dnl # The place where lock's should be stored                             #
-dnl #---------------------------------------------------------------------#
+## output #################################################################
 
-packagelockdir="`eval echo ${packagelockdir:-"/var/lock"}`"
-
-AC_ARG_WITH(packagelockdir,
-        [  --with-lockdir=DIR      where locks should be stored [/var/lock]],
-        packagelockdir=${withval}
-)
-
-AC_SUBST(packagelockdir)
-
-dnl #---------------------------------------------------------------------#
-dnl # The place where pid's should be stored                              #
-dnl #---------------------------------------------------------------------#
-
-packagepiddir="`eval echo ${packagepiddir:-"/var/run"}`"
-
-AC_ARG_WITH(packagepiddir,
-        [  --with-piddir=DIR       where PID's should be stored [/var/run]],
-        packagepiddir=${withval}
-)
-
-AC_SUBST(packagepiddir)
-
-
-
-
-
-
-AC_OUTPUT(Makefile vboxgetty/Makefile vboxgetty/examples/Makefile vboxgetty/examples/scripts/Makefile)
+AC_OUTPUT(Makefile \
+   vboxgetty/Makefile \
+   vboxgetty/docs/Makefile \
+   vboxgetty/docs/de/Makefile \
+   vboxgetty/examples/Makefile \
+   vboxgetty/examples/scripts/Makefile)

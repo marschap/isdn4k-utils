@@ -1,118 +1,131 @@
-dnl #------------------------------------------------------------------------#
-dnl # Test if all needed libraries for vboxgetty are installed. We will end  #
-dnl # the configure script if one is missing!                                #
-dnl #------------------------------------------------------------------------#
 
-AC_DEFUN(VBOX_PACKAGE_TCL,
-   [
-      HAVE_TCL_LIBS="n"
-      HAVE_TCL_INCL="n"
-      HAVE_TCL_PACK="n"
-      LINK_TCL_LIBS=""
-      LINK_TCL_INCL=""
-
-      gnd_use_tcl_lib=""
-      gnd_use_tcl_dir=""
-
-      AC_ARG_WITH(tcllib,
-         [  --with-tcllib=LIB       use tcl library LIB to link [tcl]],
-         gnd_use_tcl_lib="${withval}",
-         gnd_use_tcl_lib="`eval echo ${VBOX_TCL:-""}`"
-      )
-
-      AC_ARG_WITH(tcldir,
-         [  --with-tcldir=DIR       tcl base directory []],
-         gnd_use_tcl_dir="${withval}"
-      )
-
-      gnd_tcl_inc_dir=""
-      gnd_tcl_lib_dir=""
-
-      if (test "${gnd_use_tcl_dir}" != "")
-      then
-         gnd_tcl_inc_dir="-I${gnd_use_tcl_dir}/include"
-         gnd_tcl_lib_dir="-L${gnd_use_tcl_dir}/lib"
-      fi
-
-      if (test "${gnd_use_tcl_lib}" = "")
-      then
-         gnd_1st_tcl_lib_test="tcl8.1"
-         gnd_2nd_tcl_lib_test="tcl8.0"
-         gnd_3rd_tcl_lib_test="tcl"
-      else
-         gnd_1st_tcl_lib_test="${gnd_use_tcl_lib}"
-         gnd_2nd_tcl_lib_test="tcl8.0"
-         gnd_3rd_tcl_lib_test="tcl"
-      fi
-
-      AC_CHECK_LIB(m,
-         cos,
-         AC_CHECK_LIB(dl,
-            dlerror,
-            AC_CHECK_LIB(${gnd_1st_tcl_lib_test},
-               Tcl_CreateInterp,
-               LINK_TCL_LIBS="${gnd_tcl_lib_dir} -l${gnd_1st_tcl_lib_test} -lm -ldl",
-               AC_CHECK_LIB(${gnd_2nd_tcl_lib_test},
-                  Tcl_CreateInterp,
-                  LINK_TCL_LIBS="${gnd_tcl_lib_dir} -l${gnd_2nd_tcl_lib_test} -lm -ldl",
-                  AC_CHECK_LIB(${gnd_3rd_tcl_lib_test},
-                     Tcl_CreateInterp,
-                     LINK_TCL_LIBS="${gnd_tcl_lib_dir} -l${gnd_3rd_tcl_lib_test} -lm -ldl",
-                     ,
-                     ${gnd_tcl_lib_dir} -lm -ldl
-                  ),
-                  ${gnd_tcl_lib_dir} -lm -ldl
-               ),
-               ${gnd_tcl_lib_dir} -lm -ldl
-            ),
-         ),
-      )
-
-      if (test "${LINK_TCL_LIBS}" != "")
-      then
-         HAVE_TCL_LIBS="y"
-      fi
-
-         dnl #-------------------------------------------#
-         dnl # Check if the compiler find the tcl header #
-         dnl #-------------------------------------------#
-
-      AC_CHECK_HEADER(tcl.h, HAVE_TCL_INCL="y")
-
-      if (test "${HAVE_TCL_INCL}" = "n")
-      then
-         if (test "${gnd_use_tcl_dir}" != "")
+AC_DEFUN(AC_FIND_FILE,
+[
+   $3=NO
+   for i in $2;
+   do
+      for j in $1;
+      do
+         if test -r "$i/$j"
          then
-            AC_MSG_CHECKING("for tcl header in ${gnd_use_tcl_dir}/include")
+            $3=$i
+            break 2
+         fi
+      done
+   done
+])
 
-            if (test -e "${gnd_use_tcl_dir}/include/tcl.h")
+AC_DEFUN(AC_PATH_PKGLOGDIR,
+[
+   packagelogdir="`eval echo ${packagelogdir:-/var/log}`"
+
+   AC_ARG_WITH(packagelogdir,
+      [  --with-logdir=DIR       where logs should be stored [/var/log]],
+      [ packagelogdir=${withval} ])
+                
+   AC_SUBST(packagelogdir)
+])
+
+AC_DEFUN(AC_PATH_PKGLOCKDIR,
+[
+   packagelockdir="`eval echo ${packagelockdir:-/var/lock}`"
+
+   AC_ARG_WITH(packagelockdir,
+      [  --with-lockdir=DIR      where locks should be stored [/var/lock]],
+      [ packagelockdir=${withval} ])
+                
+   AC_SUBST(packagelockdir)
+])                
+
+AC_DEFUN(AC_PATH_PKGPIDDIR,
+[
+   packagepiddir="`eval echo ${packagepiddir:-/var/run}`"
+
+   AC_ARG_WITH(packagepiddir,
+      [  --with-piddir=DIR       where PID's should be stored [/var/run]],
+      [ packagepiddir=${withval} ])
+                
+   AC_SUBST(packagepiddir)
+])
+                         
+AC_DEFUN(AC_PATH_TCL,
+[
+   ac_tcl_inc=""
+   ac_tcl_lib=""
+
+   AC_ARG_WITH(tcl-include,
+      [  --with-tcl-include=DIR  where the tcl include is installed. ],
+      [ ac_tcl_inc="$withval" ])
+                   
+   AC_ARG_WITH(tcl-library,
+      [  --with-tcl-library=DIR  where the tcl library is installed. ],
+      [ ac_tcl_lib="$withval" ])
+
+   tcl_include=""
+   tcl_library=""
+                   
+   AC_CHECK_LIB(m, cos,
+      [
+         AC_CHECK_LIB(dl, dlerror,
+            [
+               AC_CHECKING([whether tcl is installed in a standard location...])
+
+               AC_CHECK_LIB(tcl, Tcl_CreateInterp,
+                  [ tcl_library="-ltcl -lm -ldl" ],
+                  [
+                     AC_CHECKING([whether tcl is installed in a special locations...])
+
+                     searchstring="$ac_tcl_lib /lib /usr/lib /usr/local/lib /opt/lib /opt/tcl/lib"
+
+                     AC_FIND_FILE(libtcl.so, $searchstring, searchresult)
+
+                     if (test ! "$searchresult" = "NO")
+                     then
+                        AC_CHECK_LIB(tcl, Tcl_CreateInterp,
+                           [ tcl_library="-L$searchresult -ltcl -lm -ldl" ],
+                           ,
+                           -L$searchresult -lm -ldl)
+                     fi
+                  ],
+                  -lm -ldl)
+            ])
+      ])
+
+   if (test ! "$tcl_library" = "")
+   then
+      AC_CHECK_HEADERS(tcl.h,
+         ,
+         [
+            AC_MSG_CHECKING([for tcl.h in a special location])
+
+            searchstring="$ac_tcl_inc /usr/include /usr/local/include /opt/include /opt/tcl/include"
+
+            AC_FIND_FILE(tcl.h, $searchstring, searchresult)
+
+            if (test ! "$searchresult" = "NO")
             then
-               AC_MSG_RESULT("yes")
+               AC_MSG_RESULT([$searchresult])
 
-               HAVE_TCL_INCL="y"
-               LINK_TCL_INCL="${gnd_tcl_inc_dir}"
+               tcl_include="-I$searchresult"
             else
-               AC_MSG_RESULT("no")
+               AC_MSG_RESULT([no])
+
+               AC_MSG_WARN([***********************************************************])
+               AC_MSG_WARN([* The tcl header file can not be located!                 *])
+               AC_MSG_WARN([***********************************************************])
             fi
-         fi
-      fi
+         ])
+   else
+      AC_MSG_WARN([***********************************************************])
+      AC_MSG_WARN([* The tcl library can not be located!                     *])
+      AC_MSG_WARN([*                                                         *])
+      AC_MSG_WARN([* If tcl is installed but no tcl.so exists (but something *])
+      AC_MSG_WARN([* like tcl8.0.so or tcl8.1.so), create a link 'tcl.so'    *])
+      AC_MSG_WARN([* that points to your installed tcl library and start     *])
+      AC_MSG_WARN([* ./configure again!                                      *])
+      AC_MSG_WARN([***********************************************************])
+   fi
 
-      if (test "${HAVE_TCL_LIBS}" = "y")
-      then
-         if (test "${HAVE_TCL_INCL}" = "y")
-         then
-            HAVE_TCL_PACK="y"
-         fi
-      fi
-
-      if (test "${HAVE_TCL_PACK}" = "n")
-      then
-         AC_MSG_WARN("**")
-         AC_MSG_WARN("** vboxgetty will not compile without TCL installed!")
-         AC_MSG_WARN("**")
-      fi
-
-      AC_SUBST(LINK_TCL_LIBS)
-      AC_SUBST(LINK_TCL_INCL)
-   ]
-)
+   AC_SUBST(tcl_library)
+   AC_SUBST(tcl_include)
+])

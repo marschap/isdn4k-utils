@@ -1,5 +1,5 @@
 /*
-** $Id: modem.c,v 1.6 1998/09/18 15:09:00 michael Exp $
+** $Id: modem.c,v 1.7 1998/11/10 18:36:28 michael Exp $
 **
 ** Copyright 1996-1998 Michael 'Ghandi' Herold <michael@abadonna.mayn.de>
 */
@@ -73,7 +73,11 @@ void modem_set_timeout(int timeout)
 		timeoutstatus = 0;
 
 		signal(SIGALRM, modem_timeout_function);
+
+#ifdef HAVE_SIGINTERRUPT 
 		siginterrupt(SIGALRM, 1);
+#endif
+
 		alarm(timeout);
 	}
 	else

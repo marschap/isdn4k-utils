@@ -1,5 +1,5 @@
 /*
-** $Id: stringutils.c,v 1.5 1998/09/18 15:09:03 michael Exp $
+** $Id: stringutils.c,v 1.6 1998/11/10 18:36:32 michael Exp $
 **
 ** Copyright 1996-1998 Michael 'Ghandi' Herold <michael@abadonna.mayn.de>
 */
@@ -8,6 +8,7 @@
 #  include "../config.h"
 #endif
 
+#include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
 
@@ -40,14 +41,30 @@ void xstrncpy(unsigned char *dest, unsigned char *source, int max)
 	dest[max] = '\0';
 }
 
+/************************************************************************* 
+ **
+ *************************************************************************/
+
+void xstrncat(unsigned char *dest, unsigned char *source, int max)
+{
+   if ((max - strlen(dest)) > 0) strncat(dest, source, max - strlen(dest));
+
+   dest[max] = '\0';
+}
+
+
+
+
+
+
 /*************************************************************************/
 /** xstrtol():																				**/
 /*************************************************************************/
       
 long xstrtol(unsigned char *string, long number)
 {
-	long           back;
-	unsigned char *stop;
+	long  back;
+	char *stop;
 
 	if (string)
 	{
@@ -65,8 +82,8 @@ long xstrtol(unsigned char *string, long number)
 
 long xstrtoo(unsigned char *string, long number)
 {
-	long           back;
-	unsigned char *stop;
+	long  back;
+	char *stop;
 
 	if (string)
 	{

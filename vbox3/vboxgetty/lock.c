@@ -1,5 +1,5 @@
 /*
-** $Id: lock.c,v 1.3 1998/09/18 15:08:59 michael Exp $
+** $Id: lock.c,v 1.4 1998/11/10 18:36:27 michael Exp $
 **
 ** Copyright 1996-1998 Michael 'Ghandi' Herold <michael@abadonna.mayn.de>
 */
@@ -16,6 +16,7 @@
 
 #include "lock.h"
 #include "log.h"
+#include "stringutils.h"
 
 /*************************************************************************/
 /** lock_create():	Erzeugt einen Lock.											**/
@@ -84,7 +85,7 @@ int lock_create(unsigned char *name)
 	{
 		if ((lptr = fopen(name, "w")))
 		{
-			fprintf(lptr, "%010ld\n", getpid());
+			fprintf(lptr, "%010d\n", getpid());
 			fclose(lptr);
 			return(0);
 		}
