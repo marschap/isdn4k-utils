@@ -4,7 +4,7 @@
 
 <title>FAQ for isdn4linux
 <author>Matthias Hessler (<tt><htmlurl url="mailto:hessler@isdn4linux.de" name="hessler@isdn4linux.de"></tt>)
-<date>v2.0.62, 4. June 2001
+<date>v2.0.63, 19. June 2001
 <abstract>
 If you are reading this FAQ online, you may consider downloading the whole
 thing, and reading it offline (much cheaper). To download the latest
@@ -3972,6 +3972,17 @@ These channels do not necessarily have to be ISDN channels. In theory,
 modem connections could be mixed with ISDN channels. However, here we only
 cover ISDN channels.
 
+<sect1> 2channel_mpppgoodbad: What are the advantages and disadvantages of  
+MPPP?  
+<label id="2channel_mpppgoodbad">
+<p>
+A disadvantage is that the slave channel has to be activated 
+&dquot;manually&dquot;. ipppd cannot by itself turn the slave channel on and
+off as it needs to. The normal automatic functions of ipppd are 
+either unreliable (auto hangup) don't work at all (auto dial).
+This is not true for the other encapsulations. The transfers
+rates are very good (ca. 30 KB/s with 4 channels).
+
 <sect1> 2channel_mpppconfig: How do I configure MPPP?  
 <label id="2channel_mpppconfig">
 <p>
@@ -4024,16 +4035,6 @@ features. Also, there may be a limit on how many channels you are allowed to
 open at the same time. It could be that all links are dropped when you exceed
 this limit.
 
-<sect1> 2channel_mpppgoodbad: What are the advantages and disadvantages of MPPP?  
-<label id="2channel_mpppgoodbad">
-<p>
-A disadvantage is that the slave channel has to be activated 
-&dquot;manually&dquot;. ipppd cannot by itself turn the slave channel on and
-off as it needs to. The normal automatic functions of ipppd are 
-either unreliable (auto hangup) don't work at all (auto dial).
-This is not true for the other encapsulations. The transfers
-rates are very good (ca. 30 KB/s with 4 channels).
-
 <sect1> 2channel_mpppcompile: I tried MPPP but it doesn't work. The ipppd  
 writes in the debug log something like:  
 &dquot; ...  rcvd (0)(proto=0x3d) c0 00 00 00 80 fd 01 01 00 0a ...  
@@ -4042,6 +4043,15 @@ sent (0)(LCP ProtRej id=0x2 00 3d c0 00 00 00 80 fd 01 ...&dquot;
 <p>
 You forgot to compile MPPP/RFC1717 support into the ISDN Subsystem.
 Recompile with this option enabled.
+
+<sect1> 2channel_cantlocateippp1: When trying to use MPPP I get the error  
+message &dquot;modprobe: Can't locate module ippp1&dquot; and  
+&dquot;ipppd: ioctl(SIOCSIFMTU): No such device...&dquot;?  
+<label id="2channel_cantlocateippp1">
+<p>
+This is a pecularity of ipppd. It tries to set MTU even for slave devices,
+and the kernel can not find a corresponding network device. You can safely
+ignore this information message, MPPP should work nevertheless.
 
 
 <!-- Pecularities of your counterpart (remote device)
