@@ -1,4 +1,4 @@
-/* $Id: isdnctrl.c,v 1.41 2000/04/12 21:49:40 detabc Exp $
+/* $Id: isdnctrl.c,v 1.42 2000/04/27 06:32:28 calle Exp $
  * ISDN driver for Linux. (Control-Utility)
  *
  * Copyright 1994,95 by Fritz Elfert (fritz@isdn4linux.de)
@@ -21,6 +21,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnctrl.c,v $
+ * Revision 1.42  2000/04/27 06:32:28  calle
+ * DriverId can be longer than 8 for "mapping" and "busreject".
+ *
  * Revision 1.41  2000/04/12 21:49:40  detabc
  * add test for maybe undefined IIOCNETDWRSET define
  *
@@ -773,7 +776,13 @@ int exec_args(int fd, int argc, char **argv)
 #else
 		if (id != NULL && i != RESET) {
 #endif /* I4L_CTRL_CONF */
-			if (strlen(id) > 8) {
+			if (i == BUSREJECT || i == MAPPING) {
+			   if (strlen(id) > sizeof(iocts.drvid)-1) {
+				fprintf(stderr, "DriverId must not exceed %d characters!\n", sizeof(iocts.drvid)-1);
+				close(fd);
+				return -1;
+			   }
+			} else if (strlen(id) > 8) {
 				fprintf(stderr, "Interface name must not exceed 8 characters!\n");
 				close(fd);
 				return -1;
