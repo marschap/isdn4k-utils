@@ -1,4 +1,4 @@
-/* $Id: isdnlog.c,v 1.66 2000/09/05 08:05:02 paul Exp $
+/* $Id: isdnlog.c,v 1.67 2001/08/18 12:01:25 paul Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,9 @@
  * along with this program; if not, write to the Free Software
  *
  * $Log: isdnlog.c,v $
+ * Revision 1.67  2001/08/18 12:01:25  paul
+ * Close stdout and stderr if we're becoming a daemon.
+ *
  * Revision 1.66  2000/09/05 08:05:02  paul
  * Now isdnlog doesn't use any more ISDN_XX defines to determine the way it works.
  * It now uses the value of "COUNTRYCODE = 999" to determine the country, and sets
@@ -1003,11 +1006,17 @@ int set_options(int argc, char* argv[])
     if (syslogmessage == -1)
       syslogmessage = defaultmsg;
 
+    fflush(stdout); /* always advisable before a fork */
+    fflush(stderr);
     switch (fork()) {
       case -1 : print_msg(PRT_ERR,"%s","Can not fork()!\n");
                 Exit(18);
                 break;
-      case 0  : break;
+      case 0  : /* we're a daemon, so "close" stdout, stderr */
+                /* stdin is "closed" elsewhere */
+                freopen("/dev/null", "a+", stdout);
+                freopen("/dev/null", "a+", stderr);
+                break;
 
       default : _exit(0);
     }
@@ -1015,7 +1024,7 @@ int set_options(int argc, char* argv[])
     /* Wenn message nicht explixit gesetzt wurde, dann gibt es beim daemon auch
        kein Output auf der Console/ttyx                                   */
 
-    if (!outfile && !newmessage && (ptty == NULL))
+    if (!outfile && !newmessage && !ptty)
       message = 0;
   } /* if */
 
@@ -1670,3 +1679,4 @@ int main(int argc, char *argv[], char *envp[])
   Exit(res);
   return(res);
 } /* main */
+/* vim:set ts=2: */
