@@ -6,6 +6,8 @@
 # 300 Mb of free disk space!
 # (But my nice SMP host does this in 34 minutes :-) Try to beat me!)
 # ./mk  2027.48s user 87.48s system 100% cpu 35:10.32 total
+# I beat you ;-) My Athlon 1400MHz/1Gb RAM does it in 15 minutes :-)
+# ./mk   819,62s user 227,69s system 99% cpu 17:32,24 total
 
 #cd /usr/src/isdn4k-utils/isdnlog/tools/zone/de/01033
 
@@ -32,6 +34,7 @@ rm ../../zone-de-dtag.cdb
 make DE
 
 # verify it
+make zone
 ./zone -d ../../zone-de-dtag.cdb -z de/01033/zoneall -v
 
 rm de/01033/zoneall

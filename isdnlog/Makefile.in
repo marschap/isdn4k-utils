@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.196 2001/10/15 19:51:47 akool Exp $
+## $Id: Makefile.in,v 1.197 2001/11/22 15:09:01 akool Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,10 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.197  2001/11/22 15:09:01  akool
+## isdnlog-4.54
+##   added new prefix 01505 Quam (new german cellphone company)
+##
 ## Revision 1.196  2001/10/15 19:51:47  akool
 ## isdnlog-4.53
 ##  - verified Leo's correction of Paul's byte-order independent Patch to the CDB
@@ -1463,7 +1467,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 4.53
+VERSION     = 4.54
 
 MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 \
 	      isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 \

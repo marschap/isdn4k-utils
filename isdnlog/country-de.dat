@@ -1,4 +1,4 @@
-V:1.30 Int [05-Feb-2001 18:22:00]
+V:1.40 Int [22-Nov-2001 16:00:00]
 # ISO 3166 Countrycodes ( ftp://sunsite.unc.edu/pub/Linux/apps/misc/
 #	countrycodes.1.0.2.tar.gz
 # Airportcodes: http://www.TravelDesk.com/airports.html
@@ -1022,6 +1022,7 @@ C:+49151,+49160,+49170,+49171,+49175	# D1
 C:+491520,+49162,+49172,+49173,+49174	# D2
 C:+49163,+49177,+49178		# Eplus
 C:+49176,+49179		# E2
+C:+491505		# Quam
 R:DE
 T:_DEMF
 
@@ -1066,6 +1067,13 @@ A:E2
 C:+49176,+49179
 R:_DEMF
 T:_DEME2
+
+N:Deutschland Mobilfunk Quam
+E:Germany cellphone Quam
+A:Quam
+C:+491505
+R:_DEMF
+T:_DEMQ
 
 N:Deutschland Freecall
 E:Germany Freephone
