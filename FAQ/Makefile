@@ -9,9 +9,9 @@ BIN = ./bin
 # in OUT werden alle Output-Dateien erzeugt
 GEN_DIR = ./out
 # Für Bernhard:
-TARGET_DIR = /home/dl4mhk/www/i4l-faq
+#TARGET_DIR = /home/dl4mhk/www/i4l-faq
 # Ich selbst behalte den Kram lieber da, wo er erzeugt wurde:
-#TARGET_DIR = $(GEN_DIR)
+TARGET_DIR = $(GEN_DIR)
 
 # Programm-Namen
 HTML = $(BIN)/html.pl
@@ -139,7 +139,6 @@ eold:
 install:
 	if [ $(TARGET_DIR) != $(GEN_DIR) ]; then cp $(GEN_DIR)/* $(TARGET_DIR); fi
 
-distclean: clean
 
 # Aufraeumen
 clean:
