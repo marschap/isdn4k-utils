@@ -1,0 +1,154 @@
+.\" $Id: diehlctrl.man.in,v 1.1 1998/06/12 11:11:46 fritz Exp $
+.\"
+.\" CHECKIN $Date: 1998/06/12 11:11:46 $
+.\"
+.\" Process this file with
+.\" groff -man -Tascii diehlctrl.1 for ASCII output, or
+.\" groff -man -Tps diehlctrl.1 for PostScript output
+.\"
+.TH DIEHLCTRL 8 "@MANDATE@" isdn4k-utils-@I4LVERSION@ "Linux System Administration"
+.SH NAME
+diehlctrl \- configure Diehl active ISDN adaptor
+.SH SYNOPSIS
+.B diehlctrl [-d
+.IB Driver-Id ]
+.I action options
+.B ...
+.SH DESCRIPTION
+.B diehlctrl
+is used to setup the Diehl
+.SM ISDN
+device driver and for downloading the firmware into the
+.SM ISDN
+card.
+.LP
+The use of
+.I diehlctrl
+makes sense, if you are using an active Diehl ISDN card only.
+.LP
+.SH OPTIONS
+.TP
+.BI "-d " Driver-Id
+selects the S0 interface named by
+.IR Driver-Id .
+Driver-Ids are defined during driver initialisation. See
+.BR diehl (4)
+for a description of the syntax to be used for modularised and
+monolithic driver versions.
+This option
+.B must
+be used to identify the S0 interface if more than one S0 interface is
+existent. If a single card is used, it may be omitted.
+If using more than one card, support for the other cards is enabled
+with the
+.B add
+action of diehlctrl. Ids may
+.B not
+start with
+.B digits
+or small
+.BR x ,
+because these values are misinterpreted
+as numeric parameters by
+.BR insmod .
+For loading the module, always the
+newest
+.B modutils
+package should be used to avoid problems during load.
+.LP
+The following 
+.I actions
+may be given to
+.BR diehlctrl .
+.TP
+.BI "irq [" "interrupt" ]
+sets the irq number to use.
+After loading the diehl-module into kernel-space, this command
+should be used as the very first setup, if the hardware settings are
+different from the default settings below.
+If both parameters are omitted, prints out current settings. The
+default irq number is
+.IR 0x320 .
+.TP
+.B leased on|1|2|off
+switches between normal (dialup) and leased-line mode. Leased-line mode
+is intended for usage with S64K-lines or - if both channels are used -
+for S02. If the second parameter is
+.B 1
+, only one channel is enabled.
+If the second parameter is
+.BR 2 " or " on
+both channels are enabled. Leased lines do not have a D-channel. When
+leased-line mode is enabled, the driver simulates incoming calls using
+special "phone-numbers" for calling and called address which are generated
+as follows:
+.ie 1
+.RS
+Calling number:
+.RS
+.BI LEASED x
+.RS
+where
+.I x
+is the internal slot-number of the S0 interface. This number starts with
+.I 0
+for the first S0 interface and is incremented by one for every S0 interface
+configured using the
+.B add
+action.
+.RE
+.RE
+.ie 1
+Called number:
+.RS
+.I x
+.RS
+where
+.I x
+is equal to the channel number of the calling S0 interface starting with
+.IR 1 .
+.RE
+.RE
+.RE
+.TP
+.BI "load " boot-code " " firmware
+downloads the firmware into the card and starts operation. The firmware
+name
+.B must
+be given
+.B without
+extension, since the card-type is determined automatically and according
+to this, the appropriate extension is appended by the program. The
+following extensions are used for various card-types:
+Diehl-S:
+.B .bin
+Diehl-SX:
+.B .sx
+Diehl-SCOM:
+.B .sy
+Diehl-Quadro:
+.B .sq
+Diehl-PRI
+.B .p
+Using this command, after loading the diehl-module into kernel-space the
+first real access to the hardware is done. Therefore the
+.B irq
+action above, should be used before, if the hardware settings are different
+from the default settings.
+Usually the images are located in
+.IR @DATADIR@ .
+The boot-code is named
+.IR prload.bin .
+.TP
+.B dump
+is available if the program is configured using the
+.B --enable-dump
+option only. The contents of internal driver variables is dumped on stdout.
+.LP
+.SH BUGS
+No bugs so far.
+.SH AUTHOR
+\(co 1998 by Fritz Elfert <fritz@wuemaus.franken.de>
+.LP
+.SH SEE ALSO
+.BR isdnctrl "(8), " diehl "(4), " isdnctrl "(4), " ttyI (4).
