@@ -1,4 +1,4 @@
-V:1.10-Germany [25-Oct-1999 20:02:41]
+V:1.10-Germany [26-Oct-1999 20:59:34]
 
 # Währungsformat
 U:%.3f DM
@@ -8,7 +8,7 @@ U:%.3f DM
 #
 # (C) Copyright 1999 by Andreas Kool (akool@isdn4linux.de)
 #
-# $Id: rate-de.dat.src,v 1.1 1999/10/25 18:33:14 akool Exp $
+# $Id: rate-de.dat.src,v 1.2 1999/10/26 19:27:34 akool Exp $
 #
 #
 # Das "A:" Tag muß folgendermaßen gefüllt werden:
@@ -12698,7 +12698,7 @@ C:Mobilfunk GmbH, E-Plus-Platz 1, 40468 Düsseldorf 01077
 #
 #
 P:78 3U
-# G:28-Jun-1999
+# G:27-Oct-1999
 C:Telekommunikation GmbH, Äußere Zittauer Straße 51, 02708 Löbau 01078
 C:3U Telekommunikation GmbH
 C:Homepage: http://www.uuu.de
@@ -12707,10 +12707,8 @@ C:Adresse:  Mergenthalerallee 79-81
 C:	    65760 Eschborn
 D:dtag
 Z:1-4 Fern
-T:W/08-20=0.139(60)/1
-T:W/20-08=0.059(60)/1
-T:E,H/08-20=0.139(60)/1
-T:E,H/20-08=0.059(60)/1
+T:*/08-21=0.099(60)/1
+T:*/21-08=0.059(60)/1
 A:+49
 Z:10-15
 A:+491610,+491617,+491619,+491618 # C
@@ -12721,1201 +12719,970 @@ A:+49176,+49179  		  # E2
 T:*/*=0.499(60)/1
 Z:40 Telefonauskunft Inland (Austria, dial 01078004366211811)
 A:+4366211811
-T:*/08-20=0.319(60)/1
-T:*/20-08=0.299(60)/1
+T:*/*=0.189(60)/1
 Z:41 Telefonauskunft Ausland (Austria, dial 01078004366211812)
 A:+4366211812
-T:*/08-20=0.319(60)/1
-T:*/20-08=0.299(60)/1
-Z:200 Kanada
-A:Kanada # +1
-T:*/08-20=0.289(60)/1
-T:*/20-08=0.269(60)/1
-Z:201 USA
-A:USA # +1
-T:*/08-20=0.269(60)/1
-T:*/20-08=0.249(60)/1
-Z:202 Bahamas
-A:Bahamas # +1242
-T:*/08-20=0.429(60)/1
-T:*/20-08=0.409(60)/1
-Z:203 Barbados
-A:Barbados # +1246
-T:*/08-20=1.02(60)/1
-T:*/20-08=0.999(60)/1
-Z:204 Anguilla
-A:Anguilla # +1264
-T:*/08-20=0.889(60)/1
-T:*/20-08=0.869(60)/1
-Z:205 Antigua & Barbuda
-A:Antigua & Barbuda # +1268
-T:*/08-20=0.949(60)/1
-T:*/20-08=0.929(60)/1
-Z:206 Brit. Jungferninseln
-A:Brit. Jungferninseln # +1284
-T:*/08-20=0.759(60)/1
-T:*/20-08=0.739(60)/1
-Z:207 Amerikanische Jungferninseln
-A:Amerikanische Jungferninseln # +1340
-T:*/08-20=0.309(60)/1
-T:*/20-08=0.289(60)/1
-Z:208 Kaiman Inseln
-A:Kaiman Inseln # +1345
-T:*/08-20=0.629(60)/1
-T:*/20-08=0.609(60)/1
-Z:209 Bermuda
-A:Bermuda # +1441
-T:*/08-20=0.539(60)/1
-T:*/20-08=0.519(60)/1
-Z:210 Grenada
-A:Grenada # +1473
-T:*/08-20=1.06(60)/1
-T:*/20-08=1.04(60)/1
-Z:211 Turks and Caicos Islands
-A:Turks and Caicos Islands # +1649
-T:*/08-20=0.929(60)/1
-T:*/20-08=0.909(60)/1
-Z:212 Montserrat
-A:Montserrat # +1664
-T:*/08-20=1.21(60)/1
-T:*/20-08=1.19(60)/1
-Z:213 Guam
-A:Guam # +1671
-T:*/08-20=0.389(60)/1
-T:*/20-08=0.369(60)/1
-Z:214 St. Lucia
-A:St. Lucia # +1758
-T:*/08-20=1.07(60)/1
-T:*/20-08=1.05(60)/1
-Z:215 Dominica
-A:Dominica # +1767
-T:*/08-20=1.02(60)/1
-T:*/20-08=0.999(60)/1
-Z:216 St. Vincent and Grenadines
-A:St. Vincent and Grenadines # +1784
-T:*/08-20=1.18(60)/1
-T:*/20-08=1.16(60)/1
-Z:217 Puerto Rico
-A:Puerto Rico # +1787
-T:*/08-20=0.309(60)/1
-T:*/20-08=0.289(60)/1
-Z:218 Hawaii
-A:Hawaii # +1808
-T:*/08-20=0.319(60)/1
-T:*/20-08=0.299(60)/1
-Z:219 Dominikanische Rep.
-A:Dominikanische Rep. # +1809
-T:*/08-20=0.489(60)/1
-T:*/20-08=0.469(60)/1
-Z:220 Dominikanische Rep. Mobilfunk
-A:Dominikanische Rep. Mobilfunk # +18092, +1809227, +1809241, +1809474, +1809537, +1809540, +1809563, +1809683, +1809695
-T:*/08-20=0.679(60)/1
-T:*/20-08=0.659(60)/1
-Z:221 Trinidad and Tobago
-A:Trinidad and Tobago # +1868
-T:*/08-20=1.09(60)/1
-T:*/20-08=1.07(60)/1
-Z:222 Nevis Islands/St Kitts
-A:Nevis Islands # +1869
-T:*/08-20=0.959(60)/1
-T:*/20-08=0.939(60)/1
-Z:224 Jamaica
-A:Jamaica # +1876
-T:*/08-20=1.01(60)/1
-T:*/20-08=0.989(60)/1
-Z:225 Alaska
+T:*/*=0.189(60)/1
+Z:200 Afghanistan
+A:Afghanistan # +93
+T:*/*=1.87(60)/1
+Z:201 Alaska
 A:Alaska # +1907
-T:*/08-20=0.319(60)/1
-T:*/20-08=0.299(60)/1
-Z:226 Ägypten
-A:Ägypten # +20
-T:*/08-20=1.2(60)/1
-T:*/20-08=1.18(60)/1
-Z:227 Ägypten Mobilfunk
-A:Ägypten Mobilfunk # +2012
-T:*/08-20=1.2(60)/1
-T:*/20-08=1.18(60)/1
-Z:228 Marokko
-A:Marokko # +212
-T:*/08-20=0.839(60)/1
-T:*/20-08=0.819(60)/1
-Z:229 Algerien
-A:Algerien # +213
-T:*/08-20=0.699(60)/1
-T:*/20-08=0.679(60)/1
-Z:230 Tunesien
-A:Tunesien # +216
-T:*/08-20=0.779(60)/1
-T:*/20-08=0.759(60)/1
-Z:231 Libyen
-A:Libyen # +218
-T:*/08-20=0.729(60)/1
-T:*/20-08=0.709(60)/1
-Z:232 Gambia
-A:Gambia # +220
-T:*/08-20=1.08(60)/1
-T:*/20-08=1.06(60)/1
-Z:233 Senegal Republic
-A:Senegal Republic # +221
-T:*/08-20=1.8(60)/1
-T:*/20-08=1.78(60)/1
-Z:234 Mauretanien
-A:Mauretanien # +222
-T:*/08-20=1.26(60)/1
-T:*/20-08=1.24(60)/1
-Z:235 Mali Rep.
-A:Mali Rep. # +223
-T:*/08-20=1.5(60)/1
-T:*/20-08=1.49(60)/1
-Z:236 Guinea Republic
-A:Guinea Republic # +224
-T:*/08-20=0.849(60)/1
-T:*/20-08=0.829(60)/1
-Z:237 Elfenbeinküste
-A:Elfenbeinküste # +225
-T:*/08-20=1.53(60)/1
-T:*/20-08=1.51(60)/1
-Z:238 Burkina Faso
-A:Burkina Faso # +226
-T:*/08-20=1.22(60)/1
-T:*/20-08=1.2(60)/1
-Z:239 Niger
-A:Niger # +227
-T:*/08-20=1.23(60)/1
-T:*/20-08=1.21(60)/1
-Z:240 Togo
-A:Togo # +228
-T:*/08-20=1.52(60)/1
-T:*/20-08=1.5(60)/1
-Z:241 Benin
-A:Benin # +229
-T:*/08-20=1.06(60)/1
-T:*/20-08=1.04(60)/1
-Z:242 Mauritius
-A:Mauritius # +230
-T:*/08-20=1.41(60)/1
-T:*/20-08=1.39(60)/1
-Z:243 Liberia
-A:Liberia # +231
-T:*/08-20=0.949(60)/1
-T:*/20-08=0.929(60)/1
-Z:244 Sierra Leone
-A:Sierra Leone # +232
-T:*/08-20=1.54(60)/1
-T:*/20-08=1.52(60)/1
-Z:245 Ghana
-A:Ghana # +233
-T:*/08-20=0.819(60)/1
-T:*/20-08=0.799(60)/1
-Z:246 Nigeria
-A:Nigeria # +234
-T:*/08-20=1.48(60)/1
-T:*/20-08=1.46(60)/1
-Z:247 Tschad
-A:Tschad # +235
-T:*/08-20=1.97(60)/1
-T:*/20-08=1.95(60)/1
-Z:248 Zentral Afrika (Rep.)
-A:Zentral Afrika (Rep.) # +236
-T:*/08-20=1.85(60)/1
-T:*/20-08=1.83(60)/1
-Z:249 Kamerun
-A:Kamerun # +237
-T:*/08-20=1.43(60)/1
-T:*/20-08=1.41(60)/1
-Z:250 Kap Verde
-A:Kap Verde # +238
-T:*/08-20=1.14(60)/1
-T:*/20-08=1.12(60)/1
-Z:251 Sao Tome
-A:Sao Tome # +239
-T:*/08-20=1.78(60)/1
-T:*/20-08=1.76(60)/1
-Z:252 Äquatorial Guinea
-A:Äquatorial Guinea # +240
-T:*/08-20=1.7(60)/1
-T:*/20-08=1.68(60)/1
-Z:253 Gabun
-A:Gabun # +241
-T:*/08-20=1.28(60)/1
-T:*/20-08=1.26(60)/1
-Z:254 Kongo
-A:Kongo # +242
-T:*/08-20=1.22(60)/1
-T:*/20-08=1.2(60)/1
-Z:255 Zaire
-A:Zaire # +243
-T:*/08-20=1.24(60)/1
-T:*/20-08=1.22(60)/1
-Z:256 Zaire Mobilfunk
-A:Zaire Mobilfunk # +24388
-T:*/08-20=1.49(60)/1
-T:*/20-08=1.47(60)/1
-Z:257 Angola
-A:Angola # +244
-T:*/08-20=0.929(60)/1
-T:*/20-08=0.909(60)/1
-Z:258 Guinea Bissau
-A:Guinea Bissau # +245
-T:*/08-20=1.55(60)/1
-T:*/20-08=1.53(60)/1
-Z:259 Diego Garcia
-A:Diego Garcia # +246
-T:*/08-20=1.28(60)/1
-T:*/20-08=1.26(60)/1
-Z:260 Ascension Island
-A:Ascension Island # +247
-T:*/08-20=1.41(60)/1
-T:*/20-08=1.39(60)/1
-Z:261 Seychellen
-A:Seychellen # +248
-T:*/08-20=1.64(60)/1
-T:*/20-08=1.62(60)/1
-Z:262 Sudan
-A:Sudan # +249
-T:*/08-20=0.879(60)/1
-T:*/20-08=0.859(60)/1
-Z:263 Ruanda
-A:Ruanda # +250
-T:*/08-20=1.5(60)/1
-T:*/20-08=1.49(60)/1
-Z:264 Äthiopien
-A:Äthiopien # +251
-T:*/08-20=1.8(60)/1
-T:*/20-08=1.78(60)/1
-Z:265 Somalia
-A:Somalia # +252
-T:*/08-20=1.6(60)/1
-T:*/20-08=1.58(60)/1
-Z:266 Dschibuti
-A:Dschibuti # +253
-T:*/08-20=1.58(60)/1
-T:*/20-08=1.56(60)/1
-Z:267 Kenia
-A:Kenia # +254
-T:*/08-20=1.28(60)/1
-T:*/20-08=1.26(60)/1
-Z:268 Tansania
-A:Tansania # +255
-T:*/08-20=1.04(60)/1
-T:*/20-08=1.02(60)/1
-Z:269 Uganda
-A:Uganda # +256
-T:*/08-20=0.879(60)/1
-T:*/20-08=0.859(60)/1
-Z:270 Burundi
-A:Burundi # +257
-T:*/08-20=1.16(60)/1
-T:*/20-08=1.14(60)/1
-Z:271 Mozambik
-A:Mozambik # +258
-T:*/08-20=0.979(60)/1
-T:*/20-08=0.959(60)/1
-Z:272 Sambia
-A:Sambia # +260
-T:*/08-20=1.32(60)/1
-T:*/20-08=1.3(60)/1
-Z:273 Madagaskar
-A:Madagaskar # +261
-T:*/08-20=1.56(60)/1
-T:*/20-08=1.54(60)/1
-Z:274 Reunion Islands
-A:Reunion Islands # +262
-T:*/08-20=1.04(60)/1
-T:*/20-08=1.02(60)/1
-Z:275 Simbabwe
-A:Simbabwe # +263
-T:*/08-20=0.769(60)/1
-T:*/20-08=0.749(60)/1
-Z:276 Namibia
-A:Namibia # +264
-T:*/08-20=0.789(60)/1
-T:*/20-08=0.769(60)/1
-Z:277 Malawi
-A:Malawi # +265
-T:*/08-20=0.999(60)/1
-T:*/20-08=0.979(60)/1
-Z:278 Lesotho
-A:Lesotho # +266
-T:*/08-20=0.949(60)/1
-T:*/20-08=0.929(60)/1
-Z:279 Botswana Republic
-A:Botswana Republic # +267
-T:*/08-20=0.799(60)/1
-T:*/20-08=0.779(60)/1
-Z:280 Swasiland
-A:Swasiland # +268
-T:*/08-20=0.559(60)/1
-T:*/20-08=0.539(60)/1
-Z:281 Komoren
-A:Komoren # +269
-T:*/08-20=1.41(60)/1
-T:*/20-08=1.39(60)/1
-Z:282 Mayotte
-A:Mayotte # +2696
-T:*/08-20=0.949(60)/1
-T:*/20-08=0.929(60)/1
-Z:283 Südafrika
-A:Südafrika # +27
-T:*/08-20=0.779(60)/1
-T:*/20-08=0.759(60)/1
-Z:284 St. Helena
-A:St. Helena # +290
-T:*/08-20=1.35(60)/1
-T:*/20-08=1.33(60)/1
-Z:285 Eritrea
-A:Eritrea # +291
-T:*/08-20=1.92(60)/1
-T:*/20-08=1.9(60)/1
-Z:286 Aruba
-A:Aruba # +297
-T:*/08-20=0.719(60)/1
-T:*/20-08=0.699(60)/1
-Z:287 Färöer
-A:Färöer # +298
-T:*/08-20=0.659(60)/1
-T:*/20-08=0.639(60)/1
-Z:288 Grönland
-A:Grönland # +299
-T:*/08-20=0.689(60)/1
-T:*/20-08=0.669(60)/1
-Z:289 Griechenland
-A:Griechenland # +30
-T:*/08-20=0.589(60)/1
-T:*/20-08=0.569(60)/1
-Z:290 Griechenland Mobilfunk
-A:Griechenland Mobilfunk # +309
-T:*/08-20=0.829(60)/1
-T:*/20-08=0.809(60)/1
-Z:291 Niederlande
-A:Niederlande # +31
-T:*/08-20=0.249(60)/1
-T:*/20-08=0.229(60)/1
-Z:292 Niederlande Mobilfunk
-A:Niederlande Mobilfunk # +3162, +3165
-T:*/08-20=0.369(60)/1
-T:*/20-08=0.349(60)/1
-Z:293 Belgien
-A:Belgien # +32
-T:*/08-20=0.299(60)/1
-T:*/20-08=0.279(60)/1
-Z:294 Belgien Mobilfunk
-A:Belgien Mobilfunk # +3217, +3218, +32475, +32476, +32477, +3275, +32486, +32495, +32496, +3275
-T:*/08-20=0.389(60)/1
-T:*/20-08=0.369(60)/1
-Z:295 Frankreich
-A:Frankreich # +33
-T:*/08-20=0.279(60)/1
-T:*/20-08=0.259(60)/1
-Z:296 Frankreich Mobilfunk
-A:Frankreich Mobilfunk # +336
-T:*/08-20=0.369(60)/1
-T:*/20-08=0.359(60)/1
-Z:297 Spanien
-A:Spanien # +34
-T:*/08-20=0.419(60)/1
-T:*/20-08=0.399(60)/1
-Z:298 Spanien Mobilfunk
-A:Spanien Mobilfunk # +34606, +34607, +34608, +34609, +34610, +34616, +34617, +34619, +34629, +34630, +34639, +34649, +34670, +34689
-T:*/08-20=0.529(60)/1
-T:*/20-08=0.509(60)/1
-Z:299 Gibraltar
-A:Gibraltar # +350
-T:*/08-20=0.759(60)/1
-T:*/20-08=0.739(60)/1
-Z:300 Portugal
-A:Portugal # +351
-T:*/08-20=0.529(60)/1
-T:*/20-08=0.519(60)/1
-Z:301 Portugal Mobilfunk
-A:Portugal Mobilfunk # +35193
-T:*/08-20=0.779(60)/1
-T:*/20-08=0.759(60)/1
-Z:302 Luxemburg
-A:Luxemburg # +352
-T:*/08-20=0.399(60)/1
-T:*/20-08=0.379(60)/1
-Z:303 Irland
-A:Irland # +353
-T:*/08-20=0.329(60)/1
-T:*/20-08=0.309(60)/1
-Z:304 Irland Mobilfunk
-A:Irland Mobilfunk # +35386, +35387, +35388, +35389
-T:*/08-20=0.499(60)/1
-T:*/20-08=0.479(60)/1
-Z:305 Island
-A:Island # +354
-T:*/08-20=0.549(60)/1
-T:*/20-08=0.529(60)/1
-Z:306 Albanien
+T:*/*=0.169(60)/1
+Z:202 Albanien
 A:Albanien # +355
-T:*/08-20=0.649(60)/1
-T:*/20-08=0.629(60)/1
-Z:307 Malta
-A:Malta # +356
-T:*/08-20=0.569(60)/1
-T:*/20-08=0.549(60)/1
-Z:308 Zypern(griech)
-A:Zypern(griech) # +357
-T:*/08-20=0.679(60)/1
-T:*/20-08=0.659(60)/1
-Z:309 Finland
-A:Finland # +358
-T:*/08-20=0.279(60)/1
-T:*/20-08=0.259(60)/1
-Z:310 Finland Mobilfunk
-A:Finland Mobilfunk # +35840, +358400, +35841, +35842, +35843, +35849, +35850, +358500
-T:*/08-20=0.479(60)/1
-T:*/20-08=0.459(60)/1
-Z:311 Bulgarien
-A:Bulgarien # +359
-T:*/08-20=0.689(60)/1
-T:*/20-08=0.669(60)/1
-Z:312 Ungarn
-A:Ungarn # +36
-T:*/08-20=0.519(60)/1
-T:*/20-08=0.499(60)/1
-Z:313 Litauen
-A:Litauen # +370
-T:*/08-20=0.789(60)/1
-T:*/20-08=0.769(60)/1
-Z:314 Lettland (Latvia)
-A:Lettland (Latvia) # +371
-T:*/08-20=0.709(60)/1
-T:*/20-08=0.689(60)/1
-Z:315 Estland
-A:Estland # +372
-T:*/08-20=0.599(60)/1
-T:*/20-08=0.579(60)/1
-Z:316 Moldavien
-A:Moldavien # +373
-T:*/08-20=0.879(60)/1
-T:*/20-08=0.859(60)/1
-Z:317 Armenien
-A:Armenien # +374
-T:*/08-20=1.22(60)/1
-T:*/20-08=1.2(60)/1
-Z:318 Weißrußland/Belarus
-A:Weißrußland/Belarus # +375
-T:*/08-20=0.809(60)/1
-T:*/20-08=0.789(60)/1
-Z:319 Andorra
+T:*/*=0.549(60)/1
+Z:203 Algerien
+A:Algerien # +213
+T:*/*=0.659(60)/1
+Z:204 Amerikanisch Samoa
+A:Amerikanisch Samoa # +684
+T:*/*=0.659(60)/1
+Z:205 Amerikanische Jungferninseln
+A:Amerikanische Jungferninseln # +1340
+T:*/*=0.289(60)/1
+Z:206 Andorra
 A:Andorra # +376
-T:*/08-20=0.599(60)/1
-T:*/20-08=0.579(60)/1
-Z:320 Monaco
-A:Monaco # +377
-T:*/08-20=0.409(60)/1
-T:*/20-08=0.389(60)/1
-Z:321 San Marino
-A:San Marino # +378
-T:*/08-20=0.719(60)/1
-T:*/20-08=0.699(60)/1
-Z:322 Vatican City
-A:Vatican City # +379
-T:*/08-20=0.489(60)/1
-T:*/20-08=0.469(60)/1
-Z:323 Ukraine
-A:Ukraine # +380
-T:*/08-20=0.829(60)/1
-T:*/20-08=0.809(60)/1
-Z:324 Jugoslawien
-A:Jugoslawien # +381
-T:*/08-20=0.759(60)/1
-T:*/20-08=0.739(60)/1
-Z:325 Kroatien
-A:Kroatien # +385
-T:*/08-20=0.679(60)/1
-T:*/20-08=0.659(60)/1
-Z:326 Slowenien
-A:Slowenien # +386
-T:*/08-20=0.509(60)/1
-T:*/20-08=0.489(60)/1
-Z:327 Bosnien-Herzegowina
-A:Bosnien-Herzegowina # +387
-T:*/08-20=0.689(60)/1
-T:*/20-08=0.669(60)/1
-Z:328 Mazedonien
-A:Mazedonien # +389
-T:*/08-20=0.769(60)/1
-T:*/20-08=0.749(60)/1
-Z:329 Italien
-A:Italien # +39
-T:*/08-20=0.379(60)/1
-T:*/20-08=0.359(60)/1
-Z:330 Italien Mobilfunk
-A:Italien Mobilfunk # +39328, +39329, +39330, +39335, +39336, +39337, +39338, +39339, +39347, +39348, +39349, +39360, +39368
-T:*/08-20=0.499(60)/1
-T:*/20-08=0.479(60)/1
-Z:331 Rumänien
-A:Rumänien # +40
-T:*/08-20=0.779(60)/1
-T:*/20-08=0.759(60)/1
-Z:332 Schweiz
-A:Schweiz # +41
-T:*/08-20=0.279(60)/1
-T:*/20-08=0.259(60)/1
-Z:333 Schweiz Mobilfunk
-A:Schweiz Mobilfunk # +4176, +4178, +4179
-T:*/08-20=0.369(60)/1
-T:*/20-08=0.359(60)/1
-Z:334 Tschechische Rep.
-A:Tschechische Rep. # +420
-T:*/08-20=0.569(60)/1
-T:*/20-08=0.549(60)/1
-Z:335 Slowakische Rep.
-A:Slowakische Rep. # +421
-T:*/08-20=0.629(60)/1
-T:*/20-08=0.609(60)/1
-Z:336 Liechtenstein
-A:Liechtenstein # +423
-T:*/08-20=0.419(60)/1
-T:*/20-08=0.399(60)/1
-Z:337 Österreich
-A:Österreich # +43
-T:*/08-20=0.319(60)/1
-T:*/20-08=0.299(60)/1
-Z:338 Österreich Mobilfunk
-A:Österreich Mobilfunk # +43663, +43664, +43676, +43699
-T:*/08-20=0.399(60)/1
-T:*/20-08=0.379(60)/1
-Z:339 Großbritannien
-A:Großbritannien # +44
-T:*/08-20=0.239(60)/1
-T:*/20-08=0.219(60)/1
-Z:340 Großbritannien Mobilfunk
-A:Großbritannien Mobilfunk # +44139, +441426, +441459, +441523, +441693, +44331, +44336, +44338, +443740, +443741, +443742, +443743, +443744, +443746, +443747, +443748, +443749, +44378, +44401, +44402, +44403, +44410, +44411, +44421, +444325, +44441, +44448, +444624, +44467, +44468, +44469, +44585, +44589, +44632, +44640, +4466, +44696, +447, +44802, +44831, +44836, +44839, +44850, +44853, +44860, +44881, +4489, +44910, +44918, +44930, +44941, +449582, +449583, +449584, +449585, +449586, +449587, +449589, +44961, +44966, +44973, +44976, +44979, +44991
-T:*/08-20=0.389(60)/1
-T:*/20-08=0.369(60)/1
-Z:341 Dänemark
-A:Dänemark # +45
-T:*/08-20=0.279(60)/1
-T:*/20-08=0.259(60)/1
-Z:342 Dänemark Mobilfunk
-A:Dänemark Mobilfunk # +45201, +45202, +45203, +45204, +45205, +45206, +45207, +45208, +45209, +4521, +4522, +4523, +4526, +4528, +4530, +45401, +45402, +45403, +45404, +45405, +45406, +45407, +45408, +45409, +45501, +45502, +45503
-T:*/08-20=0.349(60)/1
-T:*/20-08=0.329(60)/1
-Z:343 Schweden
-A:Schweden # +46
-T:*/08-20=0.239(60)/1
-T:*/20-08=0.219(60)/1
-Z:344 Schweden Mobilfunk
-A:Schweden Mobilfunk # +4610, +46702, +46703, +46704, +46705, +46706, +46707, +46708, +46709, +4673
-T:*/08-20=0.409(60)/1
-T:*/20-08=0.389(60)/1
-Z:345 Norwegen
-A:Norwegen # +47
-T:*/08-20=0.289(60)/1
-T:*/20-08=0.269(60)/1
-Z:346 Norwegen Mobilfunk
-A:Norwegen Mobilfunk # +479
-T:*/08-20=0.469(60)/1
-T:*/20-08=0.449(60)/1
-Z:347 Polen
-A:Polen # +48
-T:*/08-20=0.619(60)/1
-T:*/20-08=0.599(60)/1
-Z:348 Falklandinseln
-A:Falklandinseln # +500
-T:*/08-20=0.769(60)/1
-T:*/20-08=0.749(60)/1
-Z:349 Belize
-A:Belize # +501
-T:*/08-20=1.15(60)/1
-T:*/20-08=1.13(60)/1
-Z:350 Guatemala
-A:Guatemala # +502
-T:*/08-20=0.599(60)/1
-T:*/20-08=0.579(60)/1
-Z:351 Guatemala Mobilfunk
-A:Guatemala Mobilfunk # +50220
-T:*/08-20=0.779(60)/1
-T:*/20-08=0.759(60)/1
-Z:352 El Salvador
-A:El Salvador # +503
-T:*/08-20=0.809(60)/1
-T:*/20-08=0.789(60)/1
-Z:353 El Salvador Mobilfunk
-A:El Salvador Mobilfunk # +5038
-T:*/08-20=1.37(60)/1
-T:*/20-08=1.35(60)/1
-Z:354 Honduras
-A:Honduras # +504
-T:*/08-20=1.03(60)/1
-T:*/20-08=1.01(60)/1
-Z:355 Nicaragua
-A:Nicaragua # +505
-T:*/08-20=0.879(60)/1
-T:*/20-08=0.859(60)/1
-Z:356 Nicaragua Mobilfunk
-A:Nicaragua Mobilfunk # +505800, +505830, +50583, +505832, +5059
-T:*/08-20=1.09(60)/1
-T:*/20-08=1.07(60)/1
-Z:357 Costa Rica
-A:Costa Rica # +506
-T:*/08-20=0.579(60)/1
-T:*/20-08=0.559(60)/1
-Z:358 Panama
-A:Panama # +507
-T:*/08-20=1.03(60)/1
-T:*/20-08=1.01(60)/1
-Z:359 Panama Mobilfunk
-A:Panama Mobilfunk # +5076
-T:*/08-20=1.37(60)/1
-T:*/20-08=1.35(60)/1
-Z:360 St. Pierre and Miquelon
-A:St. Pierre and Miquelon # +508
-T:*/08-20=0.659(60)/1
-T:*/20-08=0.649(60)/1
-Z:361 Haiti
-A:Haiti # +509
-T:*/08-20=1.01(60)/1
-T:*/20-08=0.999(60)/1
-Z:362 Peru
-A:Peru # +51
-T:*/08-20=0.849(60)/1
-T:*/20-08=0.829(60)/1
-Z:363 Peru Mobilfunk
-A:Peru Mobilfunk # +51246, +51346, +51446, +51546, +51646, +51746, +51846, +51946
-T:*/08-20=1.37(60)/1
-T:*/20-08=1.35(60)/1
-Z:364 Mexico
-A:Mexico # +52
-T:*/08-20=0.589(60)/1
-T:*/20-08=0.569(60)/1
-Z:365 Kuba
-A:Kuba # +53
-T:*/08-20=1.28(60)/1
-T:*/20-08=1.26(60)/1
-Z:366 Guantanamo Bay
-A:Guantanamo Bay # +5399
-T:*/08-20=0.899(60)/1
-T:*/20-08=0.889(60)/1
-Z:367 Argentinien
+T:*/*=0.449(60)/1
+Z:207 Angola
+A:Angola # +244
+T:*/*=0.909(60)/1
+Z:208 Anguilla
+A:Anguilla # +1264
+T:*/*=0.869(60)/1
+Z:209 Antarktis
+A:Antarktis # +672
+T:*/*=0.619(60)/1
+Z:210 Antarktis-Casey Base
+A:Antarktis-Casey Base # +67212
+T:*/*=0.619(60)/1
+Z:211 Antigua & Barbuda
+A:Antigua & Barbuda # +1268
+T:*/*=0.929(60)/1
+Z:212 Argentinien
 A:Argentinien # +54
-T:*/08-20=0.839(60)/1
-T:*/20-08=0.819(60)/1
-Z:368 Argentinien Mobilfunk
-A:Argentinien Mobilfunk # +5414, +54153, +54156, +54167, +54193, +54197, +5420, +5421, +5422, +5426, +5428, +5430, +5440, +54414
-T:*/08-20=1.17(60)/1
-T:*/20-08=1.15(60)/1
-Z:369 Brasilien
-A:Brasilien # +55
-T:*/08-20=0.709(60)/1
-T:*/20-08=0.689(60)/1
-Z:370 Brasilien Mobilfunk
-A:Brasilien Mobilfunk # +55119, +55664
-T:*/08-20=1.17(60)/1
-T:*/20-08=1.15(60)/1
-Z:371 Chile
-A:Chile # +56
-T:*/08-20=0.429(60)/1
-T:*/20-08=0.409(60)/1
-Z:372 Chile Mobilfunk
-A:Chile Mobilfunk # +561, +56568, +56569, +56600, +569
-T:*/08-20=0.779(60)/1
-T:*/20-08=0.759(60)/1
-Z:373 Kolumbien
-A:Kolumbien # +57
-T:*/08-20=0.729(60)/1
-T:*/20-08=0.709(60)/1
-Z:374 Kolumbien Mobilfunk
-A:Kolumbien Mobilfunk # +573
-T:*/08-20=1.19(60)/1
-T:*/20-08=1.17(60)/1
-Z:375 Venezuela
-A:Venezuela # +58
-T:*/08-20=0.769(60)/1
-T:*/20-08=0.749(60)/1
-Z:376 Venezuela Mobilfunk
-A:Venezuela Mobilfunk # +5814, +5816
-T:*/08-20=1.37(60)/1
-T:*/20-08=1.35(60)/1
-Z:377 Guadeloupe
-A:Guadeloupe # +590
-T:*/08-20=0.849(60)/1
-T:*/20-08=0.829(60)/1
-Z:378 Bolivien
-A:Bolivien # +591
-T:*/08-20=1.12(60)/1
-T:*/20-08=1.1(60)/1
-Z:379 Guyana
-A:Guyana # +592
-T:*/08-20=1.4(60)/1
-T:*/20-08=1.38(60)/1
-Z:380 Ecuador
-A:Ecuador # +593
-T:*/08-20=0.669(60)/1
-T:*/20-08=0.649(60)/1
-Z:381 Ecuador Mobilfunk
-A:Ecuador Mobilfunk # +5939
-T:*/08-20=1.02(60)/1
-T:*/20-08=0.999(60)/1
-Z:382 Französisch Guyana
-A:Französisch Guyana # +594
-T:*/08-20=0.869(60)/1
-T:*/20-08=0.849(60)/1
-Z:383 Paraguay
-A:Paraguay # +595
-T:*/08-20=1.24(60)/1
-T:*/20-08=1.22(60)/1
-Z:384 Martinique
-A:Martinique # +596
-T:*/08-20=0.789(60)/1
-T:*/20-08=0.769(60)/1
-Z:385 Surinam
-A:Surinam # +597
-T:*/08-20=1.82(60)/1
-T:*/20-08=1.81(60)/1
-Z:386 Uruguay
-A:Uruguay # +598
-T:*/08-20=1.14(60)/1
-T:*/20-08=1.12(60)/1
-Z:387 Niederländische Antillen
-A:Niederländische Antillen # +599
-T:*/08-20=0.839(60)/1
-T:*/20-08=0.819(60)/1
-Z:388 Malaysia
-A:Malaysia # +60
-T:*/08-20=0.519(60)/1
-T:*/20-08=0.499(60)/1
-Z:389 Australien
+T:*/*=0.669(60)/1
+Z:213 Argentinien Mobilfunk
+A:Argentinien Mobilfunk # +5411, +5414, +54153, +54154, +54155, +54156, +54193, +54197, +5420, +5421, +5422, +5426, +5428, +5430, +5440
+T:*/*=0.669(60)/1
+Z:214 Armenien
+A:Armenien # +374
+T:*/*=0.989(60)/1
+Z:215 Aruba
+A:Aruba # +297
+T:*/*=0.659(60)/1
+Z:216 Ascension Island
+A:Ascension Island # +247
+T:*/*=1.39(60)/1
+Z:217 Aserbaidschan
+A:Aserbaidschan # +994
+T:*/*=0.849(60)/1
+Z:218 Australien
 A:Australien # +61
-T:*/08-20=0.309(60)/1
-T:*/20-08=0.289(60)/1
-Z:390 Australien Mobilfunk
-A:Australien Mobilfunk # +61071, +6112, +6113, +6114, +6115, +6116, +6117, +6118, +6119, +6140, +6141, +6142, +61500
-T:*/08-20=0.459(60)/1
-T:*/20-08=0.439(60)/1
-Z:391 Kokos-Inseln
-A:Kokos-Inseln # +6189162
-T:*/08-20=0.549(60)/1
-T:*/20-08=0.529(60)/1
-Z:392 Indonesien
+T:*/*=0.189(60)/1
+Z:219 Australien Mobilfunk
+A:Australien Mobilfunk # +61071, +611, +6114, +6115, +6128, +61500
+T:*/*=0.309(60)/1
+Z:220 Bahamas
+A:Bahamas # +1242
+T:*/*=0.409(60)/1
+Z:221 Bahrain
+A:Bahrain # +973
+T:*/*=1.26(60)/1
+Z:222 Bangladesh
+A:Bangladesh # +880
+T:*/*=1.47(60)/1
+Z:223 Bangladesh Mobilfunk
+A:Bangladesh Mobilfunk # +8801
+T:*/*=1.47(60)/1
+Z:224 Barbados
+A:Barbados # +1246
+T:*/*=0.989(60)/1
+Z:225 Belgien
+A:Belgien # +32
+T:*/*=0.159(60)/1
+Z:226 Belgien Mobilfunk
+A:Belgien Mobilfunk # +3217, +3218, +3245, +3247, +3248, +3249, +3270, +3272, +3273, +3275, +3277, +3290, +3294, +3295, +3296
+T:*/*=0.369(60)/1
+Z:227 Belize
+A:Belize # +501
+T:*/*=1.13(60)/1
+Z:228 Benin
+A:Benin # +229
+T:*/*=1.04(60)/1
+Z:229 Bermuda
+A:Bermuda # +1441
+T:*/*=0.519(60)/1
+Z:230 Bhutan
+A:Bhutan # +975
+T:*/*=0.919(60)/1
+Z:231 Bolivien
+A:Bolivien # +591
+T:*/*=1.1(60)/1
+Z:232 Bosnien-Herzegowina
+A:Bosnien-Herzegowina # +387
+T:*/*=0.619(60)/1
+Z:233 Botswana Republic
+A:Botswana Republic # +267
+T:*/*=0.779(60)/1
+Z:234 Brasilien
+A:Brasilien # +55
+T:*/*=0.469(60)/1
+Z:235 Brasilien Mobilfunk
+A:Brasilien Mobilfunk # +55110, +55111, +55119, +55216, +55217, +55219, +55519, +55619, +55664
+T:*/*=0.589(60)/1
+Z:236 Brit. Jungferninseln
+A:Brit. Jungferninseln # +1284
+T:*/*=0.659(60)/1
+Z:237 Brunei
+A:Brunei # +673
+T:*/*=0.799(60)/1
+Z:238 Bulgarien
+A:Bulgarien # +359
+T:*/*=0.659(60)/1
+Z:239 Burkina Faso
+A:Burkina Faso # +226
+T:*/*=1.2(60)/1
+Z:240 Burundi
+A:Burundi # +257
+T:*/*=1.14(60)/1
+Z:241 Chile
+A:Chile # +56
+T:*/*=0.349(60)/1
+Z:242 Chile Mobilfunk
+A:Chile Mobilfunk # +561, +56568, +56569, +56600, +569
+T:*/*=0.489(60)/1
+Z:243 China
+A:China # +86
+T:*/*=0.669(60)/1
+Z:244 China Mobilfunk
+A:China Mobilfunk # +8613, +86568, +86569, +86886
+T:*/*=0.689(60)/1
+Z:245 Cokos Islands
+A:Cokos Islands # +619162
+T:*/*=0.529(60)/1
+Z:246 Cook Islands
+A:Cook Islands # +682
+T:*/*=1.49(60)/1
+Z:247 Costa Rica
+A:Costa Rica # +506
+T:*/*=0.559(60)/1
+Z:248 Costa Rica Mobilfunk
+A:Costa Rica Mobilfunk # +506238, +506283, +506284, +5063
+T:*/*=0.659(60)/1
+Z:249 Diego Garcia
+A:Diego Garcia # +246
+T:*/*=1.26(60)/1
+Z:250 Dominica
+A:Dominica # +1767
+T:*/*=0.989(60)/1
+Z:251 Dominikanische Rep.
+A:Dominikanische Rep. # +1809
+T:*/*=0.399(60)/1
+Z:252 Dominikanische Rep. Mobilfunk
+A:Dominikanische Rep. Mobilfunk # +18092, +1809474, +1809537, +1809540, +1809563, +1809683, +1809695
+T:*/*=0.399(60)/1
+Z:253 Dschibuti
+A:Dschibuti # +253
+T:*/*=1.49(60)/1
+Z:254 Dänemark
+A:Dänemark # +45
+T:*/*=0.169(60)/1
+Z:255 Dänemark Mobilfunk
+A:Dänemark Mobilfunk # +452, +4530, +4540, +45501, +45502, +45503
+T:*/*=0.329(60)/1
+Z:256 Ecuador
+A:Ecuador # +593
+T:*/*=0.649(60)/1
+Z:257 Ecuador Mobilfunk
+A:Ecuador Mobilfunk # +5939
+T:*/*=0.989(60)/1
+Z:258 El Salvador
+A:El Salvador # +503
+T:*/*=0.789(60)/1
+Z:259 El Salvador Mobilfunk
+A:El Salvador Mobilfunk # +5038
+T:*/*=0.989(60)/1
+Z:260 Elfenbeinküste
+A:Elfenbeinküste # +225
+T:*/*=1.49(60)/1
+Z:261 Eritrea
+A:Eritrea # +291
+T:*/*=1.69(60)/1
+Z:262 Estland
+A:Estland # +372
+T:*/*=0.579(60)/1
+Z:263 Estland Mobilfunk
+A:Estland Mobilfunk # +37250, +37251, +37252, +37253, +37254, +37255, +37256
+T:*/*=0.509(60)/1
+Z:264 Falklandinseln
+A:Falklandinseln # +500
+T:*/*=0.749(60)/1
+Z:265 Fidschi
+A:Fidschi # +679
+T:*/*=1.42(60)/1
+Z:266 Finnland
+A:Finnland # +358
+T:*/*=0.179(60)/1
+Z:267 Finnland Mobilfunk
+A:Finnland Mobilfunk # +3584, +35850
+T:*/*=0.289(60)/1
+Z:268 Frankreich
+A:Frankreich # +33
+T:*/*=0.159(60)/1
+Z:269 Frankreich Mobilfunk
+A:Frankreich Mobilfunk # +336
+T:*/*=0.359(60)/1
+Z:270 Französisch Guyana
+A:Französisch Guyana # +594
+T:*/*=0.849(60)/1
+Z:271 Französisch Polynesien
+A:Französisch Polynesien # +689
+T:*/*=1.21(60)/1
+Z:272 Färöer
+A:Färöer # +298
+T:*/*=0.639(60)/1
+Z:273 Gabun
+A:Gabun # +241
+T:*/*=1.26(60)/1
+Z:274 Gambia
+A:Gambia # +220
+T:*/*=0.989(60)/1
+Z:275 Georgien
+A:Georgien # +995
+T:*/*=1.26(60)/1
+Z:276 Ghana
+A:Ghana # +233
+T:*/*=0.799(60)/1
+Z:277 Gibraltar
+A:Gibraltar # +350
+T:*/*=0.389(60)/1
+Z:278 Grenada
+A:Grenada # +1473
+T:*/*=1.04(60)/1
+Z:279 Griechenland
+A:Griechenland # +30
+T:*/*=0.449(60)/1
+Z:280 Griechenland Mobilfunk
+A:Griechenland Mobilfunk # +309
+T:*/*=0.549(60)/1
+Z:281 Großbritannien
+A:Großbritannien # +44
+T:*/*=0.139(60)/1
+Z:282 Großbritannien Mobilfunk
+A:Großbritannien Mobilfunk # +440, +44139, +441426, +441523, +441893, +442, +443, +444, +445, +446, +447, +448, +449
+T:*/*=0.369(60)/1
+Z:283 Großbritannien Sondernummern
+A:Großbritannien Sondernummern # +44345, +44645, +44704, +44990
+T:*/*=0.229(60)/1
+Z:284 Grönland
+A:Grönland # +299
+T:*/*=0.659(60)/1
+Z:285 Guadeloupe
+A:Guadeloupe # +590
+T:*/*=0.829(60)/1
+Z:286 Guam
+A:Guam # +1671
+T:*/*=0.329(60)/1
+Z:287 Guantanamo Bay
+A:Guantanamo Bay # +5399
+T:*/*=0.879(60)/1
+Z:288 Guatemala
+A:Guatemala # +502
+T:*/*=0.579(60)/1
+Z:289 Guatemala Mobilfunk
+A:Guatemala Mobilfunk # +50220, +50270, +50290
+T:*/*=0.659(60)/1
+Z:290 Guinea Bissau
+A:Guinea Bissau # +245
+T:*/*=1.49(60)/1
+Z:291 Guinea Republic
+A:Guinea Republic # +224
+T:*/*=0.829(60)/1
+Z:292 Guyana
+A:Guyana # +592
+T:*/*=1.38(60)/1
+Z:293 Haiti
+A:Haiti # +509
+T:*/*=0.989(60)/1
+Z:294 Haiti Mobilfunk
+A:Haiti Mobilfunk # +509251
+T:*/*=0.989(60)/1
+Z:295 Hawaii
+A:Hawaii # +1808
+T:*/*=0.299(60)/1
+Z:296 Honduras
+A:Honduras # +504
+T:*/*=0.989(60)/1
+Z:297 Hong Kong
+A:Hong Kong # +852
+T:*/*=0.209(60)/1
+Z:298 Hong Kong Mobilfunk
+A:Hong Kong Mobilfunk # +8529
+T:*/*=0.209(60)/1
+Z:299 Hong Kong Sondernummern
+A:Hong Kong Sondernummern # +85217, +85221, +852264, +8528
+T:*/*=0.289(60)/1
+Z:300 Indien
+A:Indien # +91
+T:*/*=1.22(60)/1
+Z:301 Indien Mobilfunk
+A:Indien Mobilfunk # +91351, +919
+T:*/*=1.29(60)/1
+Z:302 Indonesien
 A:Indonesien # +62
-T:*/08-20=0.819(60)/1
-T:*/20-08=0.799(60)/1
-Z:393 Philippinen
-A:Philippinen # +63
-T:*/08-20=0.699(60)/1
-T:*/20-08=0.679(60)/1
-Z:394 Philippinen Mobilfunk
-A:Philippinen Mobilfunk # +63241, +63242, +6327, +63275, +63291, +6385, +6390, +63912, +63915, +63917, +63918, +63973
-T:*/08-20=1.19(60)/1
-T:*/20-08=1.17(60)/1
+T:*/*=0.799(60)/1
+Z:303 Inmarsat A
+A:Inmarsat A # +8711, +8721, +8731, +8741
+T:*/*=9.95(60)/1
+Z:304 Inmarsat AOR-E/A (64kb)
+A:Inmarsat AOR-E/A (64kb) # +8718
+T:*/*=10.6(60)/1
+Z:305 Inmarsat B AOR IOR POR
+A:Inmarsat B AOR IOR POR # +8713, +8723, +8733, +8743
+T:*/*=6.2(60)/1
+Z:306 Inmarsat IOR/A (64kb)
+A:Inmarsat IOR/A (64kb) # +8738
+T:*/*=10.6(60)/1
+Z:307 Inmarsat M
+A:Inmarsat M # +8716, +8726, +8736, +8746
+T:*/*=6.2(60)/1
+Z:308 Inmarsat Mini-M
+A:Inmarsat Mini-M # +87076, +87176, +87276, +87376, +87476
+T:*/*=6.2(60)/1
+Z:309 Inmarsat POR/A (64kb)
+A:Inmarsat POR/A (64kb) # +8728
+T:*/*=10.6(60)/1
+Z:310 Inmarsat S
+A:Inmarsat S # +8715, +8725, +8735, +8745
+T:*/*=10.6(60)/1
+Z:311 Inmarsat SNAC
+A:Inmarsat SNAC # +8703, +8706
+T:*/*=10.6(60)/1
+Z:312 Irak
+A:Irak # +964
+T:*/*=1.49(60)/1
+Z:313 Iran
+A:Iran # +98
+T:*/*=1.28(60)/1
+Z:314 Iridium-8816
+A:Iridium-8816 # +8816
+T:*/*=5(60)/1
+Z:315 Iridium-8817
+A:Iridium-8817 # +8817
+T:*/*=7(60)/1
+Z:316 Irland
+A:Irland # +353
+T:*/*=0.209(60)/1
+Z:317 Irland Mobilfunk
+A:Irland Mobilfunk # +353
+T:*/*=0.409(60)/1
+Z:318 Island
+A:Island # +354
+T:*/*=0.269(60)/1
+Z:319 Island Mobilfunk
+A:Island Mobilfunk # +354
+T:*/*=0.329(60)/1
+Z:320 Israel
+A:Israel # +972
+T:*/*=0.309(60)/1
+Z:321 Israel Mobilfunk
+A:Israel Mobilfunk # +9725
+T:*/*=0.549(60)/1
+Z:322 Italien
+A:Italien # +39
+T:*/*=0.219(60)/1
+Z:323 Italien Mobilfunk
+A:Italien Mobilfunk # +393, +3956
+T:*/*=0.449(60)/1
+Z:324 Jamaica
+A:Jamaica # +1876
+T:*/*=0.989(60)/1
+Z:325 Japan
+A:Japan # +81
+T:*/*=0.289(60)/1
+Z:326 Japan Mobilfunk
+A:Japan Mobilfunk # +8110, +8120, +8130, +8140, +8150, +8160, +8170, +8180, +819
+T:*/*=0.349(60)/1
+Z:327 Jemen Arab. Rep.
+A:Jemen Arab. Rep. # +967
+T:*/*=1.49(60)/1
+Z:328 Jordanien
+A:Jordanien # +962
+T:*/*=0.919(60)/1
+Z:329 Jordanien Mobilfunk
+A:Jordanien Mobilfunk # +96269, +96279
+T:*/*=1.1(60)/1
+Z:330 Jugoslawien
+A:Jugoslawien # +381
+T:*/*=0.619(60)/1
+Z:331 Kaiman Inseln
+A:Kaiman Inseln # +1345
+T:*/*=0.609(60)/1
+Z:332 Kambodscha
+A:Kambodscha # +855
+T:*/*=1.49(60)/1
+Z:333 Kamerun
+A:Kamerun # +237
+T:*/*=1.41(60)/1
+Z:334 Kanada
+A:Kanada # +1
+T:*/*=0.149(60)/1
+Z:335 Kanada Mobilfunk
+A:Kanada Mobilfunk # +1204, +1250, +1306, +1403, +1416, +1418, +1450, +1506, +1514, +1519, +1600, +1604, +1613, +1705, +1709, +1780, +1807, +1819, +1867, +1902, +1905
+T:*/*=0.769(60)/1
+Z:336 Kap Verde
+A:Kap Verde # +238
+T:*/*=1.12(60)/1
+Z:337 Kasachstan
+A:Kasachstan # +731, +732, +733
+T:*/*=0.989(60)/1
+Z:338 Katar
+A:Katar # +974
+T:*/*=1.29(60)/1
+Z:339 Kenia
+A:Kenia # +254
+T:*/*=1.26(60)/1
+Z:340 Kirgisien
+A:Kirgisien # +996
+T:*/*=1.14(60)/1
+Z:341 Kirgisien Mobilfunk
+A:Kirgisien Mobilfunk # +99631, +99632, +99634, +99635, +99636, +99637, +99639
+T:*/*=1.44(60)/1
+Z:342 Kiribati
+A:Kiribati # +686
+T:*/*=1.49(60)/1
+Z:343 Kiribati Mobilfunk
+A:Kiribati Mobilfunk # +6861, +6862, +6863, +6864, +6865, +6866, +6867, +6868, +6869
+T:*/*=1.49(60)/1
+Z:344 Kolumbien
+A:Kolumbien # +57
+T:*/*=0.599(60)/1
+Z:345 Kolumbien Mobilfunk
+A:Kolumbien Mobilfunk # +573
+T:*/*=0.599(60)/1
+Z:346 Komoren
+A:Komoren # +269
+T:*/*=1.39(60)/1
+Z:347 Kongo
+A:Kongo # +242
+T:*/*=1.2(60)/1
+Z:348 Korea (North)
+A:Korea (North) # +850
+T:*/*=1.33(60)/1
+Z:349 Korea Rep. (South)
+A:Korea Rep. (South) # +82
+T:*/*=0.339(60)/1
+Z:350 Korea Rep.(South) Mobilfunk
+A:Korea Rep.(South) Mobilfunk # +821, +8227
+T:*/*=0.639(60)/1
+Z:351 Kroatien
+A:Kroatien # +385
+T:*/*=0.569(60)/1
+Z:352 Kuba
+A:Kuba # +53
+T:*/*=1.26(60)/1
+Z:353 Kuwait
+A:Kuwait # +965
+T:*/*=1.37(60)/1
+Z:354 Kuwait Mobilfunk
+A:Kuwait Mobilfunk # +9659
+T:*/*=1.49(60)/1
+Z:355 Laos
+A:Laos # +856
+T:*/*=1.49(60)/1
+Z:356 Lesotho
+A:Lesotho # +266
+T:*/*=0.929(60)/1
+Z:357 Lettland (Latvia)
+A:Lettland (Latvia) # +371
+T:*/*=0.659(60)/1
+Z:358 Libanon
+A:Libanon # +961
+T:*/*=0.919(60)/1
+Z:359 Libanon Mobilfunk
+A:Libanon Mobilfunk # +9613
+T:*/*=0.919(60)/1
+Z:360 Liberia
+A:Liberia # +231
+T:*/*=0.929(60)/1
+Z:361 Libyen
+A:Libyen # +218
+T:*/*=0.709(60)/1
+Z:362 Liechtenstein
+A:Liechtenstein # +423
+T:*/*=0.279(60)/1
+Z:363 Litauen
+A:Litauen # +370
+T:*/*=0.699(60)/1
+Z:364 Luxemburg
+A:Luxemburg # +352
+T:*/*=0.279(60)/1
+Z:365 Luxemburg Mobilfunk
+A:Luxemburg Mobilfunk # +35221, +3526, +3527
+T:*/*=0.309(60)/1
+Z:366 Macao
+A:Macao # +853
+T:*/*=0.829(60)/1
+Z:367 Madagaskar
+A:Madagaskar # +261
+T:*/*=1.49(60)/1
+Z:368 Madaira
+A:Madaira # +35156, +35191
+T:*/*=0.449(60)/1
+Z:369 Malawi
+A:Malawi # +265
+T:*/*=0.979(60)/1
+Z:370 Malaysia
+A:Malaysia # +60
+T:*/*=0.479(60)/1
+Z:371 Malediven
+A:Malediven # +960
+T:*/*=1.35(60)/1
+Z:372 Mali Rep.
+A:Mali Rep. # +223
+T:*/*=1.49(60)/1
+Z:373 Malta
+A:Malta # +356
+T:*/*=0.489(60)/1
+Z:374 Marianen
+A:Marianen # +670
+T:*/*=0.639(60)/1
+Z:375 Marokko
+A:Marokko # +212
+T:*/*=0.819(60)/1
+Z:376 Marshallinseln
+A:Marshallinseln # +692
+T:*/*=0.809(60)/1
+Z:377 Martinique
+A:Martinique # +596
+T:*/*=0.659(60)/1
+Z:378 Mauretanien
+A:Mauretanien # +222
+T:*/*=1.24(60)/1
+Z:379 Mauritius
+A:Mauritius # +230
+T:*/*=1.39(60)/1
+Z:380 Mazedonien
+A:Mazedonien # +389
+T:*/*=0.699(60)/1
+Z:381 Mexico
+A:Mexico # +52
+T:*/*=0.449(60)/1
+Z:382 Midway Island
+A:Midway Island # +6998
+T:*/*=1.65(60)/1
+Z:383 Mikronesien
+A:Mikronesien # +691
+T:*/*=1.38(60)/1
+Z:384 Moldavien
+A:Moldavien # +373
+T:*/*=0.859(60)/1
+Z:385 Monaco
+A:Monaco # +377
+T:*/*=0.289(60)/1
+Z:386 Monaco Mobilfunk
+A:Monaco Mobilfunk # +3776
+T:*/*=0.329(60)/1
+Z:387 Mongolische VR
+A:Mongolische VR # +976
+T:*/*=1.49(60)/1
+Z:388 Montserrat
+A:Montserrat # +1664
+T:*/*=1.19(60)/1
+Z:389 Mozambik
+A:Mozambik # +258
+T:*/*=0.959(60)/1
+Z:390 Myanmar (Burma)
+A:Myanmar (Burma) # +95
+T:*/*=1.49(60)/1
+Z:391 Namibia
+A:Namibia # +264
+T:*/*=0.769(60)/1
+Z:392 Nauru
+A:Nauru # +674
+T:*/*=1.46(60)/1
+Z:393 Nepal
+A:Nepal # +977
+T:*/*=1.39(60)/1
+Z:394 Neukaledonien
+A:Neukaledonien # +687
+T:*/*=1.29(60)/1
 Z:395 Neuseeland
 A:Neuseeland # +64
-T:*/08-20=0.339(60)/1
-T:*/20-08=0.319(60)/1
-Z:396 Neuseeland Mobilfunk
-A:Neuseeland Mobilfunk # +648
-T:*/08-20=0.679(60)/1
-T:*/20-08=0.659(60)/1
-Z:397 Singapur
-A:Singapur # +65
-T:*/08-20=0.489(60)/1
-T:*/20-08=0.469(60)/1
-Z:398 Thailand
-A:Thailand # +66
-T:*/08-20=0.859(60)/1
-T:*/20-08=0.839(60)/1
-Z:399 Marianen/Saipan
-A:Marianen # +670
-T:*/08-20=0.659(60)/1
-T:*/20-08=0.639(60)/1
-Z:401 Antarktis
-A:Antarktis # +672
-T:*/08-20=0.629(60)/1
-T:*/20-08=0.619(60)/1
-Z:402 Norfolk Islands
-A:Norfolk Islands # +6723
-T:*/08-20=1.15(60)/1
-T:*/20-08=1.13(60)/1
-Z:403 Weihnachtsinseln
-A:Weihnachtsinseln # +6724
-T:*/08-20=0.709(60)/1
-T:*/20-08=0.689(60)/1
-Z:404 Brunei
-A:Brunei # +673
-T:*/08-20=0.819(60)/1
-T:*/20-08=0.809(60)/1
-Z:405 Nauru
-A:Nauru # +674
-T:*/08-20=1.48(60)/1
-T:*/20-08=1.46(60)/1
-Z:406 Papua Neu Guinea
-A:Papua Neu Guinea # +675
-T:*/08-20=0.819(60)/1
-T:*/20-08=0.809(60)/1
-Z:407 Tonga Kingdom
-A:Tonga Kingdom # +676
-T:*/08-20=1.66(60)/1
-T:*/20-08=1.64(60)/1
-Z:408 Solomonen
-A:Solomonen # +677
-T:*/08-20=1.28(60)/1
-T:*/20-08=1.26(60)/1
-Z:409 Vanuatu
-A:Vanuatu # +678
-T:*/08-20=1.52(60)/1
-T:*/20-08=1.5(60)/1
-Z:410 Fidschi
-A:Fidschi # +679
-T:*/08-20=1.44(60)/1
-T:*/20-08=1.42(60)/1
-Z:411 Palau (=Belau)
-A:Palau (=Belau) # +680
-T:*/08-20=1.5(60)/1
-T:*/20-08=1.49(60)/1
-Z:412 Wallis und Futuna
-A:Wallis und Futuna # +681
-T:*/08-20=0.839(60)/1
-T:*/20-08=0.819(60)/1
-Z:413 Cook Islands
-A:Cook Islands # +682
-T:*/08-20=2.05(60)/1
-T:*/20-08=2.03(60)/1
-Z:414 Niue Islands
+T:*/*=0.209(60)/1
+Z:396 Neuseeland Chatham Inseln
+A:Neuseeland Chatham Inseln # +643
+T:*/*=0.659(60)/1
+Z:397 Neuseeland Mobilfunk
+A:Neuseeland Mobilfunk # +642, +648
+T:*/*=0.659(60)/1
+Z:398 Nevis Islands
+A:Nevis Islands # +1869
+T:*/*=0.939(60)/1
+Z:399 Nicaragua
+A:Nicaragua # +505
+T:*/*=0.859(60)/1
+Z:400 Nicaragua Mobilfunk
+A:Nicaragua Mobilfunk # +5058, +5059
+T:*/*=0.989(60)/1
+Z:401 Niederlande
+A:Niederlande # +31
+T:*/*=0.149(60)/1
+Z:402 Niederlande Mobilfunk
+A:Niederlande Mobilfunk # +3162, +3165
+T:*/*=0.359(60)/1
+Z:403 Niederländische Antillen
+A:Niederländische Antillen # +599
+T:*/*=0.659(60)/1
+Z:404 Niger
+A:Niger # +227
+T:*/*=1.21(60)/1
+Z:405 Nigeria
+A:Nigeria # +234
+T:*/*=1.46(60)/1
+Z:406 Niue Islands
 A:Niue Islands # +683
-T:*/08-20=1.93(60)/1
-T:*/20-08=1.91(60)/1
-Z:415 Amerikanisch Samoa
-A:Amerikanisch Samoa # +684
-T:*/08-20=0.739(60)/1
-T:*/20-08=0.719(60)/1
-Z:416 Western Samoa (Independent State of)
-A:Western Samoa (Independent State of) # +685
-T:*/08-20=1.28(60)/1
-T:*/20-08=1.26(60)/1
-Z:417 Kiribati
-A:Kiribati # +686
-T:*/08-20=1.59(60)/1
-T:*/20-08=1.57(60)/1
-Z:418 Neukaledonien
-A:Neukaledonien # +687
-T:*/08-20=1.31(60)/1
-T:*/20-08=1.29(60)/1
-Z:419 Tuvalu
-A:Tuvalu # +688
-T:*/08-20=1.73(60)/1
-T:*/20-08=1.71(60)/1
-Z:420 Französisch Polynesien
-A:Französisch Polynesien # +689
-T:*/08-20=1.23(60)/1
-T:*/20-08=1.21(60)/1
-Z:421 Tokelau
-A:Tokelau # +690
-T:*/08-20=1.4(60)/1
-T:*/20-08=1.38(60)/1
-Z:422 Mikronesien
-A:Mikronesien # +691
-T:*/08-20=1.4(60)/1
-T:*/20-08=1.38(60)/1
-Z:423 Marshallinseln
-A:Marshallinseln # +692
-T:*/08-20=0.829(60)/1
-T:*/20-08=0.809(60)/1
-Z:424 Rußland
-A:Rußland # +7
-T:*/08-20=0.699(60)/1
-T:*/20-08=0.679(60)/1
-Z:425 Rußland Moskau
-A:Rußland Moskau # +7095
-T:*/08-20=0.429(60)/1
-T:*/20-08=0.409(60)/1
-Z:426 Kasachstan
-A:Kasachstan # +731, +732, +733
-T:*/08-20=1.09(60)/1
-T:*/20-08=1.07(60)/1
-Z:427 Rußland Moskau Overlay
-A:Rußland Moskau Overlay # +7501, +7502
-T:*/08-20=0.859(60)/1
-T:*/20-08=0.839(60)/1
-Z:428 Rußland St. Petersburg
-A:Rußland St. Petersburg # +7812
-T:*/08-20=0.429(60)/1
-T:*/20-08=0.409(60)/1
-Z:429 Japan
-A:Japan # +81
-T:*/08-20=0.379(60)/1
-T:*/20-08=0.359(60)/1
-Z:430 Japan Mobilfunk
-A:Japan Mobilfunk # +8170, +8190
-T:*/08-20=0.669(60)/1
-T:*/20-08=0.649(60)/1
-Z:431 Korea Rep. (South)
-A:Korea Rep. (South) # +82
-T:*/08-20=0.499(60)/1
-T:*/20-08=0.479(60)/1
-Z:432 Korea Rep. (South) Mobilfunk
-A:Korea Rep. (South) Mobilfunk # +821, +8227
-T:*/08-20=0.659(60)/1
-T:*/20-08=0.639(60)/1
-Z:433 Vietnam
-A:Vietnam # +84
-T:*/08-20=1.61(60)/1
-T:*/20-08=1.59(60)/1
-Z:434 Korea (North)
-A:Korea (North) # +850
-T:*/08-20=1.35(60)/1
-T:*/20-08=1.33(60)/1
-Z:435 Hong Kong
-A:Hong Kong # +852
-T:*/08-20=0.409(60)/1
-T:*/20-08=0.389(60)/1
-Z:436 Hong Kong Mobilfunk
-A:Hong Kong Mobilfunk # +8522, +8529
-T:*/08-20=0.559(60)/1
-T:*/20-08=0.539(60)/1
-Z:437 Macao
-A:Macao # +853
-T:*/08-20=0.849(60)/1
-T:*/20-08=0.829(60)/1
-Z:438 Kambodscha
-A:Kambodscha # +855
-T:*/08-20=1.75(60)/1
-T:*/20-08=1.73(60)/1
-Z:439 Laos
-A:Laos # +856
-T:*/08-20=1.53(60)/1
-T:*/20-08=1.51(60)/1
-Z:440 China
-A:China # +86
-T:*/08-20=0.869(60)/1
-T:*/20-08=0.849(60)/1
-# FIXME: Warum kommt hier "Duplicate area +86886 sowie +8613 ??
-# Z:441 China Mobilfunk
-# A:China Mobilfunk # +8613, +86886
-# T:*/08-20=1.33(60)/1
-# T:*/20-08=1.31(60)/1
-Z:442 Inmarsat Mini-M (Worldwide)
-A:Inmarsat Mini-M (Worldwide) # +87076
-T:*/08-20=4.22(60)/1
-T:*/20-08=4.2(60)/1
-Z:443 Inmarsat A (E.Atlantic)
-A:Inmarsat A (E.Atlantic) # +8711
-T:*/08-20=9.97(60)/1
-T:*/20-08=9.95(60)/1
-Z:444 Inmarsat B ( E.Atlantic)
-A:Inmarsat B ( E.Atlantic) # +8713
-T:*/08-20=6.22(60)/1
-T:*/20-08=6.2(60)/1
-Z:445 Inmarsat M (E.Atlantic)
-A:Inmarsat M (E.Atlantic) # +8716
-T:*/08-20=6.22(60)/1
-T:*/20-08=6.2(60)/1
-Z:446 Inmarsat Mini-M (E.Atlantic)
-A:Inmarsat Mini-M (E.Atlantic) # +87176
-T:*/08-20=4.22(60)/1
-T:*/20-08=4.2(60)/1
-Z:447 Inmarsat A (Pacific)
-A:Inmarsat A (Pacific) # +8721
-T:*/08-20=9.97(60)/1
-T:*/20-08=9.95(60)/1
-Z:448 Inmarsat B (Pacific)
-A:Inmarsat B (Pacific) # +8723
-T:*/08-20=6.22(60)/1
-T:*/20-08=6.2(60)/1
-Z:449 Inmarsat M (Pacific)
-A:Inmarsat M (Pacific) # +8726
-T:*/08-20=6.22(60)/1
-T:*/20-08=6.2(60)/1
-Z:450 Inmarsat Mini-M (Pacific)
-A:Inmarsat Mini-M (Pacific) # +87276
-T:*/08-20=4.22(60)/1
-T:*/20-08=4.2(60)/1
-Z:451 Inmarsat A (Indien)
-A:Inmarsat A (Indien) # +8731
-T:*/08-20=9.97(60)/1
-T:*/20-08=9.95(60)/1
-Z:452 Inmarsat B (Indien)
-A:Inmarsat B (Indien) # +8733
-T:*/08-20=6.22(60)/1
-T:*/20-08=6.2(60)/1
-Z:453 Inmarsat M (Indien)
-A:Inmarsat M (Indien) # +8736
-T:*/08-20=6.22(60)/1
-T:*/20-08=6.2(60)/1
-Z:454 Inmarsat Mini-M (Indien)
-A:Inmarsat Mini-M (Indien) # +87376
-T:*/08-20=4.22(60)/1
-T:*/20-08=4.2(60)/1
-Z:455 Inmarsat A (W. Atlantic)
-A:Inmarsat A (W. Atlantic) # +8741
-T:*/08-20=9.97(60)/1
-T:*/20-08=9.95(60)/1
-Z:456 Inmarsat B (W. Atlantic)
-A:Inmarsat B (W. Atlantic) # +8743
-T:*/08-20=6.22(60)/1
-T:*/20-08=6.2(60)/1
-Z:457 Inmarsat M (W.Atlantic)
-A:Inmarsat M (W.Atlantic) # +8746
-T:*/08-20=6.22(60)/1
-T:*/20-08=6.2(60)/1
-Z:458 Inmarsat Mini-M (W.Atlantic)
-A:Inmarsat Mini-M (W.Atlantic) # +87476
-T:*/08-20=4.22(60)/1
-T:*/20-08=4.2(60)/1
-Z:459 Bangladesh
-A:Bangladesh # +880
-T:*/08-20=1.49(60)/1
-T:*/20-08=1.47(60)/1
-Z:460 Bangladesh Mobilfunk
-A:Bangladesh Mobilfunk # +8801
-T:*/08-20=1.49(60)/1
-T:*/20-08=1.47(60)/1
-Z:461 Taiwan
-A:Taiwan # +886
-T:*/08-20=0.489(60)/1
-T:*/20-08=0.469(60)/1
-Z:462 Taiwan Mobilfunk
-A:Taiwan Mobilfunk # +8869
-T:*/08-20=0.859(60)/1
-T:*/20-08=0.839(60)/1
-Z:463 Türkei
-A:Türkei # +90
-T:*/08-20=0.709(60)/1
-T:*/20-08=0.689(60)/1
-Z:464 Türkei Mobilfunk
-A:Türkei Mobilfunk # +905
-T:*/08-20=0.809(60)/1
-T:*/20-08=0.789(60)/1
-Z:465 Indien
-A:Indien # +91
-T:*/08-20=1.24(60)/1
-T:*/20-08=1.22(60)/1
-Z:466 Indien Mobilfunk
-A:Indien Mobilfunk # +9198
-T:*/08-20=1.43(60)/1
-T:*/20-08=1.41(60)/1
-Z:467 Pakistan
-A:Pakistan # +92
-T:*/08-20=1.45(60)/1
-T:*/20-08=1.43(60)/1
-Z:468 Afghanistan
-A:Afghanistan # +93
-T:*/08-20=1.89(60)/1
-T:*/20-08=1.87(60)/1
-Z:469 Sri Lanka
-A:Sri Lanka # +94
-T:*/08-20=1.38(60)/1
-T:*/20-08=1.36(60)/1
-Z:470 Myanmar (Burma)
-A:Myanmar (Burma) # +95
-T:*/08-20=1.75(60)/1
-T:*/20-08=1.73(60)/1
-Z:471 Malediven
-A:Malediven # +960
-T:*/08-20=1.37(60)/1
-T:*/20-08=1.35(60)/1
-Z:472 Libanon
-A:Libanon # +961
-T:*/08-20=1.17(60)/1
-T:*/20-08=1.15(60)/1
-Z:473 Libanon Mobilfunk
-A:Libanon Mobilfunk # +9613
-T:*/08-20=1.97(60)/1
-T:*/20-08=1.96(60)/1
-Z:474 Jordanien
-A:Jordanien # +962
-T:*/08-20=1.3(60)/1
-T:*/20-08=1.28(60)/1
-Z:475 Jordanien Mobilfunk
-A:Jordanien Mobilfunk # +96279
-T:*/08-20=1.39(60)/1
-T:*/20-08=1.37(60)/1
-Z:476 Syrien
-A:Syrien # +963
-T:*/08-20=1.26(60)/1
-T:*/20-08=1.24(60)/1
-Z:477 Irak
-A:Irak # +964
-T:*/08-20=1.72(60)/1
-T:*/20-08=1.7(60)/1
-Z:478 Kuwait
-A:Kuwait # +965
-T:*/08-20=1.39(60)/1
-T:*/20-08=1.37(60)/1
-Z:479 Kuwait Mobilfunk
-A:Kuwait Mobilfunk # +9659
-T:*/08-20=1.51(60)/1
-T:*/20-08=1.49(60)/1
-Z:480 Saudi Arabien
-A:Saudi Arabien # +966
-T:*/08-20=1.32(60)/1
-T:*/20-08=1.3(60)/1
-Z:481 Jemen Arab. Rep.
-A:Jemen Arab. Rep. # +967
-T:*/08-20=1.55(60)/1
-T:*/20-08=1.53(60)/1
-Z:482 Oman
+T:*/*=1.49(60)/1
+Z:407 Norfolk Islands
+A:Norfolk Islands # +6723
+T:*/*=0.989(60)/1
+Z:408 Norwegen
+A:Norwegen # +47
+T:*/*=0.179(60)/1
+Z:409 Norwegen Mobilfunk
+A:Norwegen Mobilfunk # +4784, +479
+T:*/*=0.289(60)/1
+Z:410 Oman
 A:Oman # +968
-T:*/08-20=1.53(60)/1
-T:*/20-08=1.51(60)/1
-Z:483 Ver.Arab. Emirate
-A:Ver.Arab. Emirate # +971
-T:*/08-20=1.05(60)/1
-T:*/20-08=1.03(60)/1
-Z:484 Israel
-A:Israel # +972
-T:*/08-20=0.399(60)/1
-T:*/20-08=0.379(60)/1
-Z:485 Israel Mobilfunk
-A:Israel Mobilfunk # +97250, +97251, +97252, +97253, +97254, +97255
-T:*/08-20=0.649(60)/1
-T:*/20-08=0.629(60)/1
-Z:486 Bahrain
-A:Bahrain # +973
-T:*/08-20=1.28(60)/1
-T:*/20-08=1.26(60)/1
-Z:487 Katar
-A:Katar # +974
-T:*/08-20=1.31(60)/1
-T:*/20-08=1.29(60)/1
-Z:488 Bhutan
-A:Bhutan # +975
-T:*/08-20=0.939(60)/1
-T:*/20-08=0.919(60)/1
-Z:489 Mongolische VR
-A:Mongolische VR # +976
-T:*/08-20=1.8(60)/1
-T:*/20-08=1.78(60)/1
-Z:490 Nepal
-A:Nepal # +977
-T:*/08-20=1.41(60)/1
-T:*/20-08=1.39(60)/1
-Z:491 Iran
-A:Iran # +98
-T:*/08-20=1.34(60)/1
-T:*/20-08=1.32(60)/1
-Z:492 Tadschikistan
-A:Tadschikistan # +992
-T:*/08-20=1.04(60)/1
-T:*/20-08=1.03(60)/1
-Z:493 Turkmenistan
+T:*/*=1.49(60)/1
+Z:411 Osterinseln
+A:Osterinseln # +5632
+T:*/*=0.349(60)/1
+Z:412 Pakistan
+A:Pakistan # +92
+T:*/*=1.43(60)/1
+Z:413 Palau (=Belau)
+A:Palau (=Belau) # +680
+T:*/*=1.49(60)/1
+Z:414 Panama
+A:Panama # +507
+T:*/*=0.989(60)/1
+Z:415 Panama Mobilfunk
+A:Panama Mobilfunk # +5076
+T:*/*=0.989(60)/1
+Z:416 Papua Neu Guinea
+A:Papua Neu Guinea # +675
+T:*/*=0.809(60)/1
+Z:417 Paraguay
+A:Paraguay # +595
+T:*/*=1.22(60)/1
+Z:418 Peru
+A:Peru # +51
+T:*/*=0.829(60)/1
+Z:419 Peru Mobilfunk
+A:Peru Mobilfunk # +5119, +51246, +51346, +51446, +51546, +51549, +51646, +51746, +51749, +51846, +51946
+T:*/*=0.889(60)/1
+Z:420 Philippinen
+A:Philippinen # +63
+T:*/*=0.659(60)/1
+Z:421 Philippinen Mobilfunk
+A:Philippinen Mobilfunk # +6330, +6340, +6350, +6360, +6370, +6380, +6385, +6390, +63912, +63915, +63917, +63918
+T:*/*=0.659(60)/1
+Z:422 Polen
+A:Polen # +48
+T:*/*=0.449(60)/1
+Z:423 Portugal
+A:Portugal # +351
+T:*/*=0.369(60)/1
+Z:424 Portugal Azoren
+A:Portugal Azoren # +3519
+T:*/*=0.369(60)/1
+Z:425 Portugal Madeira
+A:Portugal Madeira # +35156
+T:*/*=0.369(60)/1
+Z:426 Portugal Mobilfunk
+A:Portugal Mobilfunk # +3514707, +35167, +35193
+T:*/*=0.539(60)/1
+Z:427 Puerto Rico
+A:Puerto Rico # +1787
+T:*/*=0.289(60)/1
+Z:428 Reunion Islands
+A:Reunion Islands # +262
+T:*/*=0.989(60)/1
+Z:429 Ruanda
+A:Ruanda # +250
+T:*/*=1.49(60)/1
+Z:430 Rumänien
+A:Rumänien # +40
+T:*/*=0.649(60)/1
+Z:431 Rumänien Mobilfunk
+A:Rumänien Mobilfunk # +4092, +4094
+T:*/*=0.649(60)/1
+Z:432 Rußland
+A:Rußland # +7
+T:*/*=0.579(60)/1
+Z:433 Rußland Mobilfunk
+A:Rußland Mobilfunk # +7901, +7902
+T:*/*=0.579(60)/1
+Z:434 Rußland Moskau
+A:Rußland Moskau # +7095
+T:*/*=0.349(60)/1
+Z:435 Rußland Overlay
+A:Rußland Overlay # +7096, +7097, +750, +751, +752, +753, +754, +7543
+T:*/*=0.579(60)/1
+Z:436 Rußland St. Petersburg
+A:Rußland St. Petersburg # +7812
+T:*/*=0.349(60)/1
+Z:437 Saipan
+A:Saipan # +670
+T:*/*=0.639(60)/1
+Z:438 Salomonen
+A:Salomonen # +677
+T:*/*=1.13(60)/1
+Z:439 Sambia
+A:Sambia # +260
+T:*/*=1.3(60)/1
+Z:440 San Marino
+A:San Marino # +378
+T:*/*=0.449(60)/1
+Z:441 Sansibar
+A:Sansibar # +259
+T:*/*=1.49(60)/1
+Z:442 Sao Tome
+A:Sao Tome # +239
+T:*/*=1.49(60)/1
+Z:443 Saudi Arabien
+A:Saudi Arabien # +966
+T:*/*=1.3(60)/1
+Z:444 Schweden
+A:Schweden # +46
+T:*/*=0.169(60)/1
+Z:445 Schweden Mobilfunk
+A:Schweden Mobilfunk # +4610, +4670, +4673
+T:*/*=0.319(60)/1
+Z:446 Schweiz
+A:Schweiz # +41
+T:*/*=0.179(60)/1
+Z:447 Schweiz Mobilfunk
+A:Schweiz Mobilfunk # +4176, +4177, +4178, +4179, +4186
+T:*/*=0.359(60)/1
+Z:448 Senegal Republic
+A:Senegal Republic # +221
+T:*/*=1.49(60)/1
+Z:449 Seychellen
+A:Seychellen # +248
+T:*/*=1.49(60)/1
+Z:450 Sierra Leone
+A:Sierra Leone # +232
+T:*/*=1.49(60)/1
+Z:451 Simbabwe
+A:Simbabwe # +263
+T:*/*=0.749(60)/1
+Z:452 Singapur
+A:Singapur # +65
+T:*/*=0.369(60)/1
+Z:453 Slowakische Rep.
+A:Slowakische Rep. # +421
+T:*/*=0.449(60)/1
+Z:454 Slowenien
+A:Slowenien # +386, +386
+T:*/*=0.489(60)/1
+Z:455 Somalia
+A:Somalia # +252
+T:*/*=1.49(60)/1
+Z:456 Spanien
+A:Spanien # +34
+T:*/*=0.239(60)/1
+Z:457 Spanien Balearen
+A:Spanien Balearen # +3471, +34971
+T:*/*=0.239(60)/1
+Z:458 Spanien Kanarische Inseln
+A:Spanien Kanarische Inseln # +3422, +34922, +34928
+T:*/*=0.239(60)/1
+Z:459 Spanien Mobilfunk
+A:Spanien Mobilfunk # +34606, +34607, +34608, +34609, +34610, +34616, +34617, +34619, +34629, +34630, +34639, +34649, +34670, +34689
+T:*/*=0.399(60)/1
+Z:460 Sri Lanka
+A:Sri Lanka # +94
+T:*/*=1.36(60)/1
+Z:461 St. Helena
+A:St. Helena # +290
+T:*/*=1.33(60)/1
+Z:462 St. Kitts
+A:St. Kitts # +1869
+T:*/*=0.939(60)/1
+Z:463 St. Lucia
+A:St. Lucia # +1758
+T:*/*=0.989(60)/1
+Z:464 St. Pierre and Miquelon
+A:St. Pierre and Miquelon # +508
+T:*/*=0.649(60)/1
+Z:465 St. Vincent and Grenadines
+A:St. Vincent and Grenadines # +1784
+T:*/*=0.989(60)/1
+Z:466 Sudan
+A:Sudan # +249
+T:*/*=0.859(60)/1
+Z:467 Surinam
+A:Surinam # +597
+T:*/*=1.49(60)/1
+Z:468 Swasiland
+A:Swasiland # +268
+T:*/*=0.539(60)/1
+Z:469 Syrien
+A:Syrien # +963
+T:*/*=0.969(60)/1
+Z:470 Südafrika
+A:Südafrika # +27
+T:*/*=0.659(60)/1
+Z:471 Südafrika Mobilfunk
+A:Südafrika Mobilfunk # +2782, +2783
+T:*/*=0.749(60)/1
+Z:472 Tadschikistan
+A:Tadschikistan # +7346, +7377, +7379, +7431, +7433, +992
+T:*/*=0.989(60)/1
+Z:473 Taiwan
+A:Taiwan # +886
+T:*/*=0.359(60)/1
+Z:474 Taiwan Mobilfunk
+A:Taiwan Mobilfunk # +88660, +88670, +8869
+T:*/*=0.409(60)/1
+Z:475 Tansania
+A:Tansania # +255
+T:*/*=0.989(60)/1
+Z:476 Thailand
+A:Thailand # +66
+T:*/*=0.839(60)/1
+Z:477 Togo
+A:Togo # +228
+T:*/*=1.49(60)/1
+Z:478 Tokelau
+A:Tokelau # +690
+T:*/*=1.38(60)/1
+Z:479 Tonga Kingdom
+A:Tonga Kingdom # +676
+T:*/*=1.49(60)/1
+Z:480 Trinidad and Tobago
+A:Trinidad and Tobago # +1868
+T:*/*=0.989(60)/1
+Z:481 Tschad
+A:Tschad # +235
+T:*/*=1.49(60)/1
+Z:482 Tschechische Rep.
+A:Tschechische Rep. # +420
+T:*/*=0.449(60)/1
+Z:483 Tschechische Rep. Mobilfunk
+A:Tschechische Rep. Mobilfunk # +420602, +420603, +420604, +420963
+T:*/*=0.449(60)/1
+Z:484 Tunesien
+A:Tunesien # +216
+T:*/*=0.759(60)/1
+Z:485 Turkmenistan
 A:Turkmenistan # +993
-T:*/08-20=1.14(60)/1
-T:*/20-08=1.12(60)/1
-Z:494 Aserbaidschan
-A:Aserbaidschan # +994
-T:*/08-20=0.869(60)/1
-T:*/20-08=0.849(60)/1
-Z:495 Georgien
-A:Georgien # +995
-T:*/08-20=1.28(60)/1
-T:*/20-08=1.26(60)/1
-Z:496 Kirgisien
-A:Kirgisien # +996
-T:*/08-20=1.15(60)/1
-T:*/20-08=1.14(60)/1
-Z:497 Kirgisien Mobilfunk
-A:Kirgisien Mobilfunk # +99631, +99632, +99634, +99635, +99636, +99637, +99639
-T:*/08-20=1.49(60)/1
-T:*/20-08=1.47(60)/1
-Z:498 Usbekistan
-A:Usbekistan # +998
-T:*/08-20=1.16(60)/1
-T:*/20-08=1.14(60)/1
+T:*/*=1.12(60)/1
+Z:486 Turks and Caicos Islands
+A:Turks and Caicos Islands # +1649
+T:*/*=0.909(60)/1
+Z:487 Tuvalu
+A:Tuvalu # +688
+T:*/*=1.49(60)/1
+Z:488 Türkei
+A:Türkei # +90
+T:*/*=0.479(60)/1
+Z:489 Türkei Mobilfunk
+A:Türkei Mobilfunk # +905
+T:*/*=0.519(60)/1
+Z:490 USA
+A:USA # +1
+T:*/*=0.139(60)/1
+Z:491 Uganda
+A:Uganda # +256
+T:*/*=0.859(60)/1
+Z:492 Ukraine
+A:Ukraine # +380
+T:*/*=0.809(60)/1
+Z:493 Ungarn
+A:Ungarn # +36
+T:*/*=0.479(60)/1
+Z:494 Ungarn Mobilfunk
+A:Ungarn Mobilfunk # +3620, +3630, +3660
+T:*/*=0.479(60)/1
+Z:495 Uruguay
+A:Uruguay # +598
+T:*/*=1.12(60)/1
+Z:496 Usbekistan
+A:Usbekistan # +7267, +7340, +7361, +7362, +7365, +7366, +7367, +7368, +7369, +7370, +7371, +7372, +7373, +7374, +7375, +7376, +7434, +7436, +998
+T:*/*=1.14(60)/1
+Z:497 Vanuatu
+A:Vanuatu # +678
+T:*/*=1.49(60)/1
+Z:498 Vatican City
+A:Vatican City # +379
+T:*/*=0.229(60)/1
+Z:499 Venezuela
+A:Venezuela # +58
+T:*/*=0.659(60)/1
+Z:500 Venezuela Mobilfunk
+A:Venezuela Mobilfunk # +5814, +5816
+T:*/*=0.789(60)/1
+Z:501 Ver.Arab. Emirate
+A:Ver.Arab. Emirate # +971
+T:*/*=0.989(60)/1
+Z:502 Vietnam
+A:Vietnam # +84
+T:*/*=1.49(60)/1
+Z:503 Wallis und Futuna
+A:Wallis und Futuna # +681
+T:*/*=0.819(60)/1
+Z:504 Weihnachtsinseln
+A:Weihnachtsinseln # +619164, +6724
+T:*/*=0.279(60)/1
+Z:505 Weißrußland/Belarus
+A:Weißrußland/Belarus # +375
+T:*/*=0.659(60)/1
+Z:506 Western Samoa (Independent State of)
+A:Western Samoa (Independent State of) # +685
+T:*/*=1.26(60)/1
+Z:507 Zaire
+A:Zaire # +243
+T:*/*=1.22(60)/1
+Z:508 Zaire Mobilfunk
+A:Zaire Mobilfunk # +24388
+T:*/*=1.47(60)/1
+Z:509 Zentral Afrika (Rep.)
+A:Zentral Afrika (Rep.) # +236
+T:*/*=1.49(60)/1
+Z:510 Zypern(griech)
+A:Zypern(griech) # +357
+T:*/*=0.499(60)/1
+Z:511 Zypern(griech) Mobilfunk
+A:Zypern(griech) Mobilfunk # +3579
+T:*/*=0.499(60)/1
+Z:512 Zypern(türkisch)
+A:Zypern(türkisch) # +905
+T:*/*=0.549(60)/1
+Z:513 Ägypten
+A:Ägypten # +20
+T:*/*=0.919(60)/1
+Z:514 Ägypten Mobilfunk
+A:Ägypten Mobilfunk # +201, +2012
+T:*/*=1.03(60)/1
+Z:515 Äquatorial Guinea
+A:Äquatorial Guinea # +240
+T:*/*=1.49(60)/1
+Z:516 Äthiopien
+A:Äthiopien # +251
+T:*/*=1.49(60)/1
+Z:517 Österreich
+A:Österreich # +43
+T:*/*=0.189(60)/1
+Z:518 Österreich Mobilfunk
+A:Österreich Mobilfunk # +43660, +43661, +43663, +43664, +43665, +43666, +43667, +43668, +43669, +4367, +4368, +4369
+T:*/*=0.379(60)/1
+Z:519 Österreich Sondernummern
+A:Österreich Sondernummern # +4345, +43700, +4371, +4389
+T:*/*=0.379(60)/1
 #####################################################################
 #
 #

@@ -10,6 +10,7 @@ V:0.92 Int based on 1.03-Germany [25-Oct-1999 20:00:00]
 # Country Mobilfunk : _ccMF
 # Freephone : _ccFF
 # Auskunft :  _ccAK
+# Sonderrufnummern : _ccSO
 
 
 N:Usbekistan
@@ -310,9 +311,13 @@ C:+853
 T:MO
 
 N:Hong Kong Mobilfunk
-C:+8529, +8522
+C:+8529
 R:HK
 T:_HKMF
+
+N:Hong Kong Sondernummern
+C:+85217, +85221, +852264, +8528
+T:_HKSO
 
 N:Hongkong
 C:+852
@@ -357,6 +362,10 @@ T:JP
 N:international freephone
 C:+800
 T:_F800
+
+N:Rußland Mobilfunk
+C:+7901, +7902
+T:_RUMF
 
 N:Russische Föderat. (westl.)
 A:Russische Foderat. (westl.)
@@ -443,6 +452,10 @@ N:Neukaledonien
 E:New Caledonia
 C:+687
 T:NC
+
+N:Kiribati Mobilfunk
+C:+6861, +6862, +6863, +6864, +6865, +6866, +6867, +6868, +6869
+T:_KIMF
 
 N:Kiribati
 C:+686
@@ -744,6 +757,10 @@ N:Peru
 C:+51
 T:PE
 
+N:Haiti Mobilfunk
+C:+509251
+T:_HTMF
+
 N:Haiti
 C:+509
 T:HT
@@ -764,6 +781,10 @@ T:_PAMF
 N:Panama
 C:+507
 T:PA
+
+N:Costa Rica Mobilfunk
+C:+506238, +506283, +506284, +5063
+T:_CRMF
 
 N:Costa Rica
 A:Kosta Rica
@@ -881,6 +902,10 @@ C:+44991, +44979, +44976, +44973, +44966, +44961, +449589, +449587, +449586, +44
 R:UK
 T:_UKMF
 
+N:Großbritannien Sondernummern
+C:+44345, +44645, +44704, +44990
+T:_UKSO
+
 N:London
 C:+44171, +44181
 R:UK
@@ -921,6 +946,10 @@ C:+43699, +43676, +43664, +43663
 R:AT
 T:_ATMF
 
+N:Österreich Sondernummern
+C:+4345, +43700, +4371, +4389
+T:_ATSO
+
 N:Österreich Auskunft
 A:Auskunft Austria
 C:+4366211811
@@ -949,6 +978,10 @@ A:Slowakei, Slowakische Rep., Slowak. Rep., Slovakia
 E:Slovak Republic
 C:+421
 T:SK
+
+N:Tschechische Rep. Mobilfunk
+C:+420602, +420603, +420604, +420963
+T:_CZMF
 
 N:Tschechische Republik
 A:Tschechien, Tschechische Rep., Tschech. Rep.
@@ -981,6 +1014,10 @@ N:Schweiz
 E:Switzerland
 C:+41
 T:CH
+
+N:Rumänien Mobilfunk
+C:+4092, +4094
+T:_ROMF
 
 N:Rumänien
 E:Romania
@@ -1056,14 +1093,14 @@ N:San Marino
 C:+378
 T:SM
 
+N:Monaco Mobilfunk
+C:+3776
+R:MC
+T:_MCMF
+
 N:Monaco
 C:+377
 T:MC
-
-# N:Monaco Mobilfunk
-# C:+377 # fixme
-# R:MC
-# T:_MCMF
 
 N:Andorra
 C:+376
@@ -1087,6 +1124,10 @@ E:Moldova
 C:+373
 T:MD
 
+N:Estland Mobilfunk
+C:+37250, +37251, +37252, +37253, +37254, +37255, +37256
+T:_EEMF
+
 N:Estland
 E:Estonia
 C:+372
@@ -1102,6 +1143,10 @@ N:Litauen
 E:Lithuania
 C:+370
 T:LT
+
+N:Ungarn Mobilfunk
+C:+3620, +3630, +3660
+T:_HUMF
 
 N:Ungarn
 E:Hungary
@@ -1122,6 +1167,10 @@ N:Finnland Mobilfunk
 C:+35840, +358400, +35841, +35842, +35843, +35849, +35850, +358500
 R:FI
 T:_FIMF
+
+N:Zypern(griech) Mobilfunk
+C:+3579
+T:_CYMF
 
 N:Zypern
 E:Cyprus
@@ -1144,6 +1193,10 @@ N:Albanien
 E:Albania
 C:+355
 T:AL
+
+N:Island Mobilfunk
+C:+354
+T:_ISMF
 
 N:Island
 E:Iceland
@@ -1378,6 +1431,10 @@ N:Tristan da Cunha
 C:+2897
 R:SH
 T:_TRIS
+
+N:Südafrika Mobilfunk
+C:+2782, +2783
+T:_ZAMF
 
 N:Südafrika
 A:Sudafrika
@@ -1675,6 +1732,9 @@ N:Alaska
 C:+1907
 R:US
 T:_ALAS
+
+N:Kanada Mobilfunk
+C:+1204, +1250, +1306, +1403, +1416, +1418, +1450, +1506, +1514, +1519, +1600, +1604, +1613, +1705, +1709, +1780, +1807, +1819, +1867, +1902, +1905
 
 N:Kanada
 E:Canada

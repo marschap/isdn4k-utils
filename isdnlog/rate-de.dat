@@ -1,4 +1,4 @@
-V:1.10-Germany [25-Oct-1999 20:02:41]
+V:1.10-Germany [26-Oct-1999 20:59:34]
 
 # Währungsformat
 U:%.3f DM
@@ -8,7 +8,7 @@ U:%.3f DM
 #
 # (C) Copyright 1999 by Andreas Kool (akool@isdn4linux.de)
 #
-# $Id: rate-de.dat,v 1.51 1999/10/25 18:33:13 akool Exp $
+# $Id: rate-de.dat,v 1.52 1999/10/26 19:27:33 akool Exp $
 #
 #
 # Das "A:" Tag muß folgendermaßen gefüllt werden:
@@ -12698,7 +12698,7 @@ C:Mobilfunk GmbH, E-Plus-Platz 1, 40468 Düsseldorf 01077
 #
 #
 P:78 3U
-# G:28-Jun-1999
+# G:27-Oct-1999
 C:Telekommunikation GmbH, Äußere Zittauer Straße 51, 02708 Löbau 01078
 C:3U Telekommunikation GmbH
 C:Homepage: http://www.uuu.de
@@ -12707,10 +12707,8 @@ C:Adresse:  Mergenthalerallee 79-81
 C:	    65760 Eschborn
 D:dtag
 Z:1-4 Fern
-T:W/08-20=0.139(60)/1
-T:W/20-08=0.059(60)/1
-T:E,H/08-20=0.139(60)/1
-T:E,H/20-08=0.059(60)/1
+T:*/08-21=0.099(60)/1
+T:*/21-08=0.059(60)/1
 A:+49
 Z:10-15
 A:+491610,+491617,+491619,+491618
@@ -12721,1201 +12719,970 @@ A:+49176,+49179
 T:*/*=0.499(60)/1
 Z:40 Telefonauskunft Inland (Austria, dial 01078004366211811)
 A:+4366211811
-T:*/08-20=0.319(60)/1
-T:*/20-08=0.299(60)/1
+T:*/*=0.189(60)/1
 Z:41 Telefonauskunft Ausland (Austria, dial 01078004366211812)
 A:+4366211812
-T:*/08-20=0.319(60)/1
-T:*/20-08=0.299(60)/1
-Z:200 Kanada
-A:CA
-T:*/08-20=0.289(60)/1
-T:*/20-08=0.269(60)/1
-Z:201 USA
-A:US
-T:*/08-20=0.269(60)/1
-T:*/20-08=0.249(60)/1
-Z:202 Bahamas
-A:BS
-T:*/08-20=0.429(60)/1
-T:*/20-08=0.409(60)/1
-Z:203 Barbados
-A:BB
-T:*/08-20=1.02(60)/1
-T:*/20-08=0.999(60)/1
-Z:204 Anguilla
-A:AI
-T:*/08-20=0.889(60)/1
-T:*/20-08=0.869(60)/1
-Z:205 Antigua & Barbuda
-A:AG
-T:*/08-20=0.949(60)/1
-T:*/20-08=0.929(60)/1
-Z:206 Brit. Jungferninseln
-A:VG
-T:*/08-20=0.759(60)/1
-T:*/20-08=0.739(60)/1
-Z:207 Amerikanische Jungferninseln
-A:VI
-T:*/08-20=0.309(60)/1
-T:*/20-08=0.289(60)/1
-Z:208 Kaiman Inseln
-A:KY
-T:*/08-20=0.629(60)/1
-T:*/20-08=0.609(60)/1
-Z:209 Bermuda
-A:BM
-T:*/08-20=0.539(60)/1
-T:*/20-08=0.519(60)/1
-Z:210 Grenada
-A:GD
-T:*/08-20=1.06(60)/1
-T:*/20-08=1.04(60)/1
-Z:211 Turks and Caicos Islands
-A:TC
-T:*/08-20=0.929(60)/1
-T:*/20-08=0.909(60)/1
-Z:212 Montserrat
-A:MS
-T:*/08-20=1.21(60)/1
-T:*/20-08=1.19(60)/1
-Z:213 Guam
-A:GU
-T:*/08-20=0.389(60)/1
-T:*/20-08=0.369(60)/1
-Z:214 St. Lucia
-A:LC
-T:*/08-20=1.07(60)/1
-T:*/20-08=1.05(60)/1
-Z:215 Dominica
-A:DM
-T:*/08-20=1.02(60)/1
-T:*/20-08=0.999(60)/1
-Z:216 St. Vincent and Grenadines
-A:VC
-T:*/08-20=1.18(60)/1
-T:*/20-08=1.16(60)/1
-Z:217 Puerto Rico
-A:PR
-T:*/08-20=0.309(60)/1
-T:*/20-08=0.289(60)/1
-Z:218 Hawaii
-A:_HAWA
-T:*/08-20=0.319(60)/1
-T:*/20-08=0.299(60)/1
-Z:219 Dominikanische Rep.
-A:DO
-T:*/08-20=0.489(60)/1
-T:*/20-08=0.469(60)/1
-Z:220 Dominikanische Rep. Mobilfunk
-A:_DOMF
-T:*/08-20=0.679(60)/1
-T:*/20-08=0.659(60)/1
-Z:221 Trinidad and Tobago
-A:TT
-T:*/08-20=1.09(60)/1
-T:*/20-08=1.07(60)/1
-Z:222 Nevis Islands/St Kitts
-A:KN
-T:*/08-20=0.959(60)/1
-T:*/20-08=0.939(60)/1
-Z:224 Jamaica
-A:JM
-T:*/08-20=1.01(60)/1
-T:*/20-08=0.989(60)/1
-Z:225 Alaska
+T:*/*=0.189(60)/1
+Z:200 Afghanistan
+A:AF
+T:*/*=1.87(60)/1
+Z:201 Alaska
 A:_ALAS
-T:*/08-20=0.319(60)/1
-T:*/20-08=0.299(60)/1
-Z:226 Ägypten
-A:EG
-T:*/08-20=1.2(60)/1
-T:*/20-08=1.18(60)/1
-Z:227 Ägypten Mobilfunk
-A:_EGMF
-T:*/08-20=1.2(60)/1
-T:*/20-08=1.18(60)/1
-Z:228 Marokko
-A:EH
-T:*/08-20=0.839(60)/1
-T:*/20-08=0.819(60)/1
-Z:229 Algerien
-A:DZ
-T:*/08-20=0.699(60)/1
-T:*/20-08=0.679(60)/1
-Z:230 Tunesien
-A:TN
-T:*/08-20=0.779(60)/1
-T:*/20-08=0.759(60)/1
-Z:231 Libyen
-A:LY
-T:*/08-20=0.729(60)/1
-T:*/20-08=0.709(60)/1
-Z:232 Gambia
-A:GM
-T:*/08-20=1.08(60)/1
-T:*/20-08=1.06(60)/1
-Z:233 Senegal Republic
-A:SN
-T:*/08-20=1.8(60)/1
-T:*/20-08=1.78(60)/1
-Z:234 Mauretanien
-A:MR
-T:*/08-20=1.26(60)/1
-T:*/20-08=1.24(60)/1
-Z:235 Mali Rep.
-A:ML
-T:*/08-20=1.5(60)/1
-T:*/20-08=1.49(60)/1
-Z:236 Guinea Republic
-A:GN
-T:*/08-20=0.849(60)/1
-T:*/20-08=0.829(60)/1
-Z:237 Elfenbeinküste
-A:CI
-T:*/08-20=1.53(60)/1
-T:*/20-08=1.51(60)/1
-Z:238 Burkina Faso
-A:BF
-T:*/08-20=1.22(60)/1
-T:*/20-08=1.2(60)/1
-Z:239 Niger
-A:NGR
-T:*/08-20=1.23(60)/1
-T:*/20-08=1.21(60)/1
-Z:240 Togo
-A:TG
-T:*/08-20=1.52(60)/1
-T:*/20-08=1.5(60)/1
-Z:241 Benin
-A:BJ
-T:*/08-20=1.06(60)/1
-T:*/20-08=1.04(60)/1
-Z:242 Mauritius
-A:MU
-T:*/08-20=1.41(60)/1
-T:*/20-08=1.39(60)/1
-Z:243 Liberia
-A:LR
-T:*/08-20=0.949(60)/1
-T:*/20-08=0.929(60)/1
-Z:244 Sierra Leone
-A:SL
-T:*/08-20=1.54(60)/1
-T:*/20-08=1.52(60)/1
-Z:245 Ghana
-A:GH
-T:*/08-20=0.819(60)/1
-T:*/20-08=0.799(60)/1
-Z:246 Nigeria
-A:NG
-T:*/08-20=1.48(60)/1
-T:*/20-08=1.46(60)/1
-Z:247 Tschad
-A:TD
-T:*/08-20=1.97(60)/1
-T:*/20-08=1.95(60)/1
-Z:248 Zentral Afrika (Rep.)
-A:CF
-T:*/08-20=1.85(60)/1
-T:*/20-08=1.83(60)/1
-Z:249 Kamerun
-A:CM
-T:*/08-20=1.43(60)/1
-T:*/20-08=1.41(60)/1
-Z:250 Kap Verde
-A:CV
-T:*/08-20=1.14(60)/1
-T:*/20-08=1.12(60)/1
-Z:251 Sao Tome
-A:ST
-T:*/08-20=1.78(60)/1
-T:*/20-08=1.76(60)/1
-Z:252 Äquatorial Guinea
-A:GQ
-T:*/08-20=1.7(60)/1
-T:*/20-08=1.68(60)/1
-Z:253 Gabun
-A:GA
-T:*/08-20=1.28(60)/1
-T:*/20-08=1.26(60)/1
-Z:254 Kongo
-A:CG
-T:*/08-20=1.22(60)/1
-T:*/20-08=1.2(60)/1
-Z:255 Zaire
-A:ZR
-T:*/08-20=1.24(60)/1
-T:*/20-08=1.22(60)/1
-Z:256 Zaire Mobilfunk
-A:_ZRMF
-T:*/08-20=1.49(60)/1
-T:*/20-08=1.47(60)/1
-Z:257 Angola
-A:AO
-T:*/08-20=0.929(60)/1
-T:*/20-08=0.909(60)/1
-Z:258 Guinea Bissau
-A:GW
-T:*/08-20=1.55(60)/1
-T:*/20-08=1.53(60)/1
-Z:259 Diego Garcia
-A:NKW
-T:*/08-20=1.28(60)/1
-T:*/20-08=1.26(60)/1
-Z:260 Ascension Island
-A:ASI
-T:*/08-20=1.41(60)/1
-T:*/20-08=1.39(60)/1
-Z:261 Seychellen
-A:SC
-T:*/08-20=1.64(60)/1
-T:*/20-08=1.62(60)/1
-Z:262 Sudan
-A:SD
-T:*/08-20=0.879(60)/1
-T:*/20-08=0.859(60)/1
-Z:263 Ruanda
-A:RW
-T:*/08-20=1.5(60)/1
-T:*/20-08=1.49(60)/1
-Z:264 Äthiopien
-A:ET
-T:*/08-20=1.8(60)/1
-T:*/20-08=1.78(60)/1
-Z:265 Somalia
-A:SO
-T:*/08-20=1.6(60)/1
-T:*/20-08=1.58(60)/1
-Z:266 Dschibuti
-A:DJ
-T:*/08-20=1.58(60)/1
-T:*/20-08=1.56(60)/1
-Z:267 Kenia
-A:KE
-T:*/08-20=1.28(60)/1
-T:*/20-08=1.26(60)/1
-Z:268 Tansania
-A:TZ
-T:*/08-20=1.04(60)/1
-T:*/20-08=1.02(60)/1
-Z:269 Uganda
-A:UG
-T:*/08-20=0.879(60)/1
-T:*/20-08=0.859(60)/1
-Z:270 Burundi
-A:BI
-T:*/08-20=1.16(60)/1
-T:*/20-08=1.14(60)/1
-Z:271 Mozambik
-A:MZ
-T:*/08-20=0.979(60)/1
-T:*/20-08=0.959(60)/1
-Z:272 Sambia
-A:ZM
-T:*/08-20=1.32(60)/1
-T:*/20-08=1.3(60)/1
-Z:273 Madagaskar
-A:MG
-T:*/08-20=1.56(60)/1
-T:*/20-08=1.54(60)/1
-Z:274 Reunion Islands
-A:RE
-T:*/08-20=1.04(60)/1
-T:*/20-08=1.02(60)/1
-Z:275 Simbabwe
-A:ZW
-T:*/08-20=0.769(60)/1
-T:*/20-08=0.749(60)/1
-Z:276 Namibia
-A:NA
-T:*/08-20=0.789(60)/1
-T:*/20-08=0.769(60)/1
-Z:277 Malawi
-A:MW
-T:*/08-20=0.999(60)/1
-T:*/20-08=0.979(60)/1
-Z:278 Lesotho
-A:LS
-T:*/08-20=0.949(60)/1
-T:*/20-08=0.929(60)/1
-Z:279 Botswana Republic
-A:BW
-T:*/08-20=0.799(60)/1
-T:*/20-08=0.779(60)/1
-Z:280 Swasiland
-A:SZ
-T:*/08-20=0.559(60)/1
-T:*/20-08=0.539(60)/1
-Z:281 Komoren
-A:KM
-T:*/08-20=1.41(60)/1
-T:*/20-08=1.39(60)/1
-Z:282 Mayotte
-A:YT
-T:*/08-20=0.949(60)/1
-T:*/20-08=0.929(60)/1
-Z:283 Südafrika
-A:ZA
-T:*/08-20=0.779(60)/1
-T:*/20-08=0.759(60)/1
-Z:284 St. Helena
-A:SH
-T:*/08-20=1.35(60)/1
-T:*/20-08=1.33(60)/1
-Z:285 Eritrea
-A:ER
-T:*/08-20=1.92(60)/1
-T:*/20-08=1.9(60)/1
-Z:286 Aruba
-A:AW
-T:*/08-20=0.719(60)/1
-T:*/20-08=0.699(60)/1
-Z:287 Färöer
-A:FO
-T:*/08-20=0.659(60)/1
-T:*/20-08=0.639(60)/1
-Z:288 Grönland
-A:GL
-T:*/08-20=0.689(60)/1
-T:*/20-08=0.669(60)/1
-Z:289 Griechenland
-A:GR
-T:*/08-20=0.589(60)/1
-T:*/20-08=0.569(60)/1
-Z:290 Griechenland Mobilfunk
-A:_GRMF
-T:*/08-20=0.829(60)/1
-T:*/20-08=0.809(60)/1
-Z:291 Niederlande
-A:NL
-T:*/08-20=0.249(60)/1
-T:*/20-08=0.229(60)/1
-Z:292 Niederlande Mobilfunk
-A:_NLMF
-T:*/08-20=0.369(60)/1
-T:*/20-08=0.349(60)/1
-Z:293 Belgien
-A:BE
-T:*/08-20=0.299(60)/1
-T:*/20-08=0.279(60)/1
-Z:294 Belgien Mobilfunk
-A:_BEMF
-T:*/08-20=0.389(60)/1
-T:*/20-08=0.369(60)/1
-Z:295 Frankreich
-A:FR
-T:*/08-20=0.279(60)/1
-T:*/20-08=0.259(60)/1
-Z:296 Frankreich Mobilfunk
-A:_FRMF
-T:*/08-20=0.369(60)/1
-T:*/20-08=0.359(60)/1
-Z:297 Spanien
-A:ES
-T:*/08-20=0.419(60)/1
-T:*/20-08=0.399(60)/1
-Z:298 Spanien Mobilfunk
-A:_ESMF
-T:*/08-20=0.529(60)/1
-T:*/20-08=0.509(60)/1
-Z:299 Gibraltar
-A:GI
-T:*/08-20=0.759(60)/1
-T:*/20-08=0.739(60)/1
-Z:300 Portugal
-A:PT
-T:*/08-20=0.529(60)/1
-T:*/20-08=0.519(60)/1
-Z:301 Portugal Mobilfunk
-A:_PTMF
-T:*/08-20=0.779(60)/1
-T:*/20-08=0.759(60)/1
-Z:302 Luxemburg
-A:LU
-T:*/08-20=0.399(60)/1
-T:*/20-08=0.379(60)/1
-Z:303 Irland
-A:IE
-T:*/08-20=0.329(60)/1
-T:*/20-08=0.309(60)/1
-Z:304 Irland Mobilfunk
-A:_IEMF
-T:*/08-20=0.499(60)/1
-T:*/20-08=0.479(60)/1
-Z:305 Island
-A:IS
-T:*/08-20=0.549(60)/1
-T:*/20-08=0.529(60)/1
-Z:306 Albanien
+T:*/*=0.169(60)/1
+Z:202 Albanien
 A:AL
-T:*/08-20=0.649(60)/1
-T:*/20-08=0.629(60)/1
-Z:307 Malta
-A:MT
-T:*/08-20=0.569(60)/1
-T:*/20-08=0.549(60)/1
-Z:308 Zypern(griech)
-A:CY
-T:*/08-20=0.679(60)/1
-T:*/20-08=0.659(60)/1
-Z:309 Finland
-A:FI
-T:*/08-20=0.279(60)/1
-T:*/20-08=0.259(60)/1
-Z:310 Finland Mobilfunk
-A:_FIMF
-T:*/08-20=0.479(60)/1
-T:*/20-08=0.459(60)/1
-Z:311 Bulgarien
-A:BG
-T:*/08-20=0.689(60)/1
-T:*/20-08=0.669(60)/1
-Z:312 Ungarn
-A:HU
-T:*/08-20=0.519(60)/1
-T:*/20-08=0.499(60)/1
-Z:313 Litauen
-A:LT
-T:*/08-20=0.789(60)/1
-T:*/20-08=0.769(60)/1
-Z:314 Lettland (Latvia)
-A:LV
-T:*/08-20=0.709(60)/1
-T:*/20-08=0.689(60)/1
-Z:315 Estland
-A:EE
-T:*/08-20=0.599(60)/1
-T:*/20-08=0.579(60)/1
-Z:316 Moldavien
-A:MD
-T:*/08-20=0.879(60)/1
-T:*/20-08=0.859(60)/1
-Z:317 Armenien
-A:AM
-T:*/08-20=1.22(60)/1
-T:*/20-08=1.2(60)/1
-Z:318 Weißrußland/Belarus
-A:BY
-T:*/08-20=0.809(60)/1
-T:*/20-08=0.789(60)/1
-Z:319 Andorra
+T:*/*=0.549(60)/1
+Z:203 Algerien
+A:DZ
+T:*/*=0.659(60)/1
+Z:204 Amerikanisch Samoa
+A:AS
+T:*/*=0.659(60)/1
+Z:205 Amerikanische Jungferninseln
+A:VI
+T:*/*=0.289(60)/1
+Z:206 Andorra
 A:AD
-T:*/08-20=0.599(60)/1
-T:*/20-08=0.579(60)/1
-Z:320 Monaco
-A:MC
-T:*/08-20=0.409(60)/1
-T:*/20-08=0.389(60)/1
-Z:321 San Marino
-A:SM
-T:*/08-20=0.719(60)/1
-T:*/20-08=0.699(60)/1
-Z:322 Vatican City
-A:VA
-T:*/08-20=0.489(60)/1
-T:*/20-08=0.469(60)/1
-Z:323 Ukraine
-A:UA
-T:*/08-20=0.829(60)/1
-T:*/20-08=0.809(60)/1
-Z:324 Jugoslawien
-A:YU
-T:*/08-20=0.759(60)/1
-T:*/20-08=0.739(60)/1
-Z:325 Kroatien
-A:HR
-T:*/08-20=0.679(60)/1
-T:*/20-08=0.659(60)/1
-Z:326 Slowenien
-A:SI
-T:*/08-20=0.509(60)/1
-T:*/20-08=0.489(60)/1
-Z:327 Bosnien-Herzegowina
-A:BA
-T:*/08-20=0.689(60)/1
-T:*/20-08=0.669(60)/1
-Z:328 Mazedonien
-A:MK
-T:*/08-20=0.769(60)/1
-T:*/20-08=0.749(60)/1
-Z:329 Italien
-A:IT
-T:*/08-20=0.379(60)/1
-T:*/20-08=0.359(60)/1
-Z:330 Italien Mobilfunk
-A:_ITMF
-T:*/08-20=0.499(60)/1
-T:*/20-08=0.479(60)/1
-Z:331 Rumänien
-A:RO
-T:*/08-20=0.779(60)/1
-T:*/20-08=0.759(60)/1
-Z:332 Schweiz
-A:CH
-T:*/08-20=0.279(60)/1
-T:*/20-08=0.259(60)/1
-Z:333 Schweiz Mobilfunk
-A:_CHMF
-T:*/08-20=0.369(60)/1
-T:*/20-08=0.359(60)/1
-Z:334 Tschechische Rep.
-A:CZ
-T:*/08-20=0.569(60)/1
-T:*/20-08=0.549(60)/1
-Z:335 Slowakische Rep.
-A:SK
-T:*/08-20=0.629(60)/1
-T:*/20-08=0.609(60)/1
-Z:336 Liechtenstein
-A:LI
-T:*/08-20=0.419(60)/1
-T:*/20-08=0.399(60)/1
-Z:337 Österreich
-A:AT
-T:*/08-20=0.319(60)/1
-T:*/20-08=0.299(60)/1
-Z:338 Österreich Mobilfunk
-A:_ATMF
-T:*/08-20=0.399(60)/1
-T:*/20-08=0.379(60)/1
-Z:339 Großbritannien
-A:UK
-T:*/08-20=0.239(60)/1
-T:*/20-08=0.219(60)/1
-Z:340 Großbritannien Mobilfunk
-A:_UKMF
-T:*/08-20=0.389(60)/1
-T:*/20-08=0.369(60)/1
-Z:341 Dänemark
-A:DK
-T:*/08-20=0.279(60)/1
-T:*/20-08=0.259(60)/1
-Z:342 Dänemark Mobilfunk
-A:_DKMF
-T:*/08-20=0.349(60)/1
-T:*/20-08=0.329(60)/1
-Z:343 Schweden
-A:SE
-T:*/08-20=0.239(60)/1
-T:*/20-08=0.219(60)/1
-Z:344 Schweden Mobilfunk
-A:_SEMF
-T:*/08-20=0.409(60)/1
-T:*/20-08=0.389(60)/1
-Z:345 Norwegen
-A:NO
-T:*/08-20=0.289(60)/1
-T:*/20-08=0.269(60)/1
-Z:346 Norwegen Mobilfunk
-A:_NOMF
-T:*/08-20=0.469(60)/1
-T:*/20-08=0.449(60)/1
-Z:347 Polen
-A:PL
-T:*/08-20=0.619(60)/1
-T:*/20-08=0.599(60)/1
-Z:348 Falklandinseln
-A:FK
-T:*/08-20=0.769(60)/1
-T:*/20-08=0.749(60)/1
-Z:349 Belize
-A:BZ
-T:*/08-20=1.15(60)/1
-T:*/20-08=1.13(60)/1
-Z:350 Guatemala
-A:GT
-T:*/08-20=0.599(60)/1
-T:*/20-08=0.579(60)/1
-Z:351 Guatemala Mobilfunk
-A:_GTMF
-T:*/08-20=0.779(60)/1
-T:*/20-08=0.759(60)/1
-Z:352 El Salvador
-A:SV
-T:*/08-20=0.809(60)/1
-T:*/20-08=0.789(60)/1
-Z:353 El Salvador Mobilfunk
-A:_SVMF
-T:*/08-20=1.37(60)/1
-T:*/20-08=1.35(60)/1
-Z:354 Honduras
-A:HN
-T:*/08-20=1.03(60)/1
-T:*/20-08=1.01(60)/1
-Z:355 Nicaragua
-A:NI
-T:*/08-20=0.879(60)/1
-T:*/20-08=0.859(60)/1
-Z:356 Nicaragua Mobilfunk
-A:_NIMF
-T:*/08-20=1.09(60)/1
-T:*/20-08=1.07(60)/1
-Z:357 Costa Rica
-A:CR
-T:*/08-20=0.579(60)/1
-T:*/20-08=0.559(60)/1
-Z:358 Panama
-A:PA
-T:*/08-20=1.03(60)/1
-T:*/20-08=1.01(60)/1
-Z:359 Panama Mobilfunk
-A:_PAMF
-T:*/08-20=1.37(60)/1
-T:*/20-08=1.35(60)/1
-Z:360 St. Pierre and Miquelon
-A:PM
-T:*/08-20=0.659(60)/1
-T:*/20-08=0.649(60)/1
-Z:361 Haiti
-A:HT
-T:*/08-20=1.01(60)/1
-T:*/20-08=0.999(60)/1
-Z:362 Peru
-A:PE
-T:*/08-20=0.849(60)/1
-T:*/20-08=0.829(60)/1
-Z:363 Peru Mobilfunk
-A:_PEMF
-T:*/08-20=1.37(60)/1
-T:*/20-08=1.35(60)/1
-Z:364 Mexico
-A:MX
-T:*/08-20=0.589(60)/1
-T:*/20-08=0.569(60)/1
-Z:365 Kuba
-A:CU
-T:*/08-20=1.28(60)/1
-T:*/20-08=1.26(60)/1
-Z:366 Guantanamo Bay
-A:_GUAB
-T:*/08-20=0.899(60)/1
-T:*/20-08=0.889(60)/1
-Z:367 Argentinien
+T:*/*=0.449(60)/1
+Z:207 Angola
+A:AO
+T:*/*=0.909(60)/1
+Z:208 Anguilla
+A:AI
+T:*/*=0.869(60)/1
+Z:209 Antarktis
+A:AQ
+T:*/*=0.619(60)/1
+Z:210 Antarktis-Casey Base
+A:AQ
+T:*/*=0.619(60)/1
+Z:211 Antigua & Barbuda
+A:AG
+T:*/*=0.929(60)/1
+Z:212 Argentinien
 A:AR
-T:*/08-20=0.839(60)/1
-T:*/20-08=0.819(60)/1
-Z:368 Argentinien Mobilfunk
+T:*/*=0.669(60)/1
+Z:213 Argentinien Mobilfunk
 A:_ARMF
-T:*/08-20=1.17(60)/1
-T:*/20-08=1.15(60)/1
-Z:369 Brasilien
-A:BR
-T:*/08-20=0.709(60)/1
-T:*/20-08=0.689(60)/1
-Z:370 Brasilien Mobilfunk
-A:_BRMF
-T:*/08-20=1.17(60)/1
-T:*/20-08=1.15(60)/1
-Z:371 Chile
-A:CL
-T:*/08-20=0.429(60)/1
-T:*/20-08=0.409(60)/1
-Z:372 Chile Mobilfunk
-A:_CLMF
-T:*/08-20=0.779(60)/1
-T:*/20-08=0.759(60)/1
-Z:373 Kolumbien
-A:CO
-T:*/08-20=0.729(60)/1
-T:*/20-08=0.709(60)/1
-Z:374 Kolumbien Mobilfunk
-A:_COMF
-T:*/08-20=1.19(60)/1
-T:*/20-08=1.17(60)/1
-Z:375 Venezuela
-A:VE
-T:*/08-20=0.769(60)/1
-T:*/20-08=0.749(60)/1
-Z:376 Venezuela Mobilfunk
-A:_VEMF
-T:*/08-20=1.37(60)/1
-T:*/20-08=1.35(60)/1
-Z:377 Guadeloupe
-A:GP
-T:*/08-20=0.849(60)/1
-T:*/20-08=0.829(60)/1
-Z:378 Bolivien
-A:BO
-T:*/08-20=1.12(60)/1
-T:*/20-08=1.1(60)/1
-Z:379 Guyana
-A:GY
-T:*/08-20=1.4(60)/1
-T:*/20-08=1.38(60)/1
-Z:380 Ecuador
-A:EC
-T:*/08-20=0.669(60)/1
-T:*/20-08=0.649(60)/1
-Z:381 Ecuador Mobilfunk
-A:_ECMF
-T:*/08-20=1.02(60)/1
-T:*/20-08=0.999(60)/1
-Z:382 Französisch Guyana
-A:GF
-T:*/08-20=0.869(60)/1
-T:*/20-08=0.849(60)/1
-Z:383 Paraguay
-A:PY
-T:*/08-20=1.24(60)/1
-T:*/20-08=1.22(60)/1
-Z:384 Martinique
-A:MQ
-T:*/08-20=0.789(60)/1
-T:*/20-08=0.769(60)/1
-Z:385 Surinam
-A:SR
-T:*/08-20=1.82(60)/1
-T:*/20-08=1.81(60)/1
-Z:386 Uruguay
-A:UY
-T:*/08-20=1.14(60)/1
-T:*/20-08=1.12(60)/1
-Z:387 Niederländische Antillen
-A:AN
-T:*/08-20=0.839(60)/1
-T:*/20-08=0.819(60)/1
-Z:388 Malaysia
-A:MY
-T:*/08-20=0.519(60)/1
-T:*/20-08=0.499(60)/1
-Z:389 Australien
+T:*/*=0.669(60)/1
+Z:214 Armenien
+A:AM
+T:*/*=0.989(60)/1
+Z:215 Aruba
+A:AW
+T:*/*=0.659(60)/1
+Z:216 Ascension Island
+A:ASI
+T:*/*=1.39(60)/1
+Z:217 Aserbaidschan
+A:AZ
+T:*/*=0.849(60)/1
+Z:218 Australien
 A:AU
-T:*/08-20=0.309(60)/1
-T:*/20-08=0.289(60)/1
-Z:390 Australien Mobilfunk
+T:*/*=0.189(60)/1
+Z:219 Australien Mobilfunk
 A:_AUMF
-T:*/08-20=0.459(60)/1
-T:*/20-08=0.439(60)/1
-Z:391 Kokos-Inseln
+T:*/*=0.309(60)/1
+Z:220 Bahamas
+A:BS
+T:*/*=0.409(60)/1
+Z:221 Bahrain
+A:BH
+T:*/*=1.26(60)/1
+Z:222 Bangladesh
+A:BD
+T:*/*=1.47(60)/1
+Z:223 Bangladesh Mobilfunk
+A:_BDMF
+T:*/*=1.47(60)/1
+Z:224 Barbados
+A:BB
+T:*/*=0.989(60)/1
+Z:225 Belgien
+A:BE
+T:*/*=0.159(60)/1
+Z:226 Belgien Mobilfunk
+A:_BEMF
+T:*/*=0.369(60)/1
+Z:227 Belize
+A:BZ
+T:*/*=1.13(60)/1
+Z:228 Benin
+A:BJ
+T:*/*=1.04(60)/1
+Z:229 Bermuda
+A:BM
+T:*/*=0.519(60)/1
+Z:230 Bhutan
+A:BT
+T:*/*=0.919(60)/1
+Z:231 Bolivien
+A:BO
+T:*/*=1.1(60)/1
+Z:232 Bosnien-Herzegowina
+A:BA
+T:*/*=0.619(60)/1
+Z:233 Botswana Republic
+A:BW
+T:*/*=0.779(60)/1
+Z:234 Brasilien
+A:BR
+T:*/*=0.469(60)/1
+Z:235 Brasilien Mobilfunk
+A:_BRMF
+T:*/*=0.589(60)/1
+Z:236 Brit. Jungferninseln
+A:VG
+T:*/*=0.659(60)/1
+Z:237 Brunei
+A:BN
+T:*/*=0.799(60)/1
+Z:238 Bulgarien
+A:BG
+T:*/*=0.659(60)/1
+Z:239 Burkina Faso
+A:BF
+T:*/*=1.2(60)/1
+Z:240 Burundi
+A:BI
+T:*/*=1.14(60)/1
+Z:241 Chile
+A:CL
+T:*/*=0.349(60)/1
+Z:242 Chile Mobilfunk
+A:_CLMF
+T:*/*=0.489(60)/1
+Z:243 China
+A:CN
+T:*/*=0.669(60)/1
+Z:244 China Mobilfunk
+A:_CNMF
+T:*/*=0.689(60)/1
+Z:245 Cokos Islands
 A:CC
-T:*/08-20=0.549(60)/1
-T:*/20-08=0.529(60)/1
-Z:392 Indonesien
+T:*/*=0.529(60)/1
+Z:246 Cook Islands
+A:CK
+T:*/*=1.49(60)/1
+Z:247 Costa Rica
+A:CR
+T:*/*=0.559(60)/1
+Z:248 Costa Rica Mobilfunk
+A:_CRMF
+T:*/*=0.659(60)/1
+Z:249 Diego Garcia
+A:NKW
+T:*/*=1.26(60)/1
+Z:250 Dominica
+A:DM
+T:*/*=0.989(60)/1
+Z:251 Dominikanische Rep.
+A:DO
+T:*/*=0.399(60)/1
+Z:252 Dominikanische Rep. Mobilfunk
+A:_DOMF
+T:*/*=0.399(60)/1
+Z:253 Dschibuti
+A:DJ
+T:*/*=1.49(60)/1
+Z:254 Dänemark
+A:DK
+T:*/*=0.169(60)/1
+Z:255 Dänemark Mobilfunk
+A:_DKMF
+T:*/*=0.329(60)/1
+Z:256 Ecuador
+A:EC
+T:*/*=0.649(60)/1
+Z:257 Ecuador Mobilfunk
+A:_ECMF
+T:*/*=0.989(60)/1
+Z:258 El Salvador
+A:SV
+T:*/*=0.789(60)/1
+Z:259 El Salvador Mobilfunk
+A:_SVMF
+T:*/*=0.989(60)/1
+Z:260 Elfenbeinküste
+A:CI
+T:*/*=1.49(60)/1
+Z:261 Eritrea
+A:ER
+T:*/*=1.69(60)/1
+Z:262 Estland
+A:EE
+T:*/*=0.579(60)/1
+Z:263 Estland Mobilfunk
+A:_EEMF
+T:*/*=0.509(60)/1
+Z:264 Falklandinseln
+A:FK
+T:*/*=0.749(60)/1
+Z:265 Fidschi
+A:FJ
+T:*/*=1.42(60)/1
+Z:266 Finnland
+A:FI
+T:*/*=0.179(60)/1
+Z:267 Finnland Mobilfunk
+A:_FIMF
+T:*/*=0.289(60)/1
+Z:268 Frankreich
+A:FR
+T:*/*=0.159(60)/1
+Z:269 Frankreich Mobilfunk
+A:_FRMF
+T:*/*=0.359(60)/1
+Z:270 Französisch Guyana
+A:GF
+T:*/*=0.849(60)/1
+Z:271 Französisch Polynesien
+A:PF
+T:*/*=1.21(60)/1
+Z:272 Färöer
+A:FO
+T:*/*=0.639(60)/1
+Z:273 Gabun
+A:GA
+T:*/*=1.26(60)/1
+Z:274 Gambia
+A:GM
+T:*/*=0.989(60)/1
+Z:275 Georgien
+A:GE
+T:*/*=1.26(60)/1
+Z:276 Ghana
+A:GH
+T:*/*=0.799(60)/1
+Z:277 Gibraltar
+A:GI
+T:*/*=0.389(60)/1
+Z:278 Grenada
+A:GD
+T:*/*=1.04(60)/1
+Z:279 Griechenland
+A:GR
+T:*/*=0.449(60)/1
+Z:280 Griechenland Mobilfunk
+A:_GRMF
+T:*/*=0.549(60)/1
+Z:281 Großbritannien
+A:UK
+T:*/*=0.139(60)/1
+Z:282 Großbritannien Mobilfunk
+A:_UKMF
+T:*/*=0.369(60)/1
+Z:283 Großbritannien Sondernummern
+A:_UKSO
+T:*/*=0.229(60)/1
+Z:284 Grönland
+A:GL
+T:*/*=0.659(60)/1
+Z:285 Guadeloupe
+A:GP
+T:*/*=0.829(60)/1
+Z:286 Guam
+A:GU
+T:*/*=0.329(60)/1
+Z:287 Guantanamo Bay
+A:_GUAB
+T:*/*=0.879(60)/1
+Z:288 Guatemala
+A:GT
+T:*/*=0.579(60)/1
+Z:289 Guatemala Mobilfunk
+A:_GTMF
+T:*/*=0.659(60)/1
+Z:290 Guinea Bissau
+A:GW
+T:*/*=1.49(60)/1
+Z:291 Guinea Republic
+A:GN
+T:*/*=0.829(60)/1
+Z:292 Guyana
+A:GY
+T:*/*=1.38(60)/1
+Z:293 Haiti
+A:HT
+T:*/*=0.989(60)/1
+Z:294 Haiti Mobilfunk
+A:_HTMF
+T:*/*=0.989(60)/1
+Z:295 Hawaii
+A:_HAWA
+T:*/*=0.299(60)/1
+Z:296 Honduras
+A:HN
+T:*/*=0.989(60)/1
+Z:297 Hong Kong
+A:HK
+T:*/*=0.209(60)/1
+Z:298 Hong Kong Mobilfunk
+A:_HKMF
+T:*/*=0.209(60)/1
+Z:299 Hong Kong Sondernummern
+A:_HKSO
+T:*/*=0.289(60)/1
+Z:300 Indien
+A:IN
+T:*/*=1.22(60)/1
+Z:301 Indien Mobilfunk
+A:_INMF
+T:*/*=1.29(60)/1
+Z:302 Indonesien
 A:ID
-T:*/08-20=0.819(60)/1
-T:*/20-08=0.799(60)/1
-Z:393 Philippinen
-A:PH
-T:*/08-20=0.699(60)/1
-T:*/20-08=0.679(60)/1
-Z:394 Philippinen Mobilfunk
-A:_PHMF
-T:*/08-20=1.19(60)/1
-T:*/20-08=1.17(60)/1
+T:*/*=0.799(60)/1
+Z:303 Inmarsat A
+A:_INA_
+T:*/*=9.95(60)/1
+Z:304 Inmarsat AOR-E/A (64kb)
+A:_INAE
+T:*/*=10.6(60)/1
+Z:305 Inmarsat B AOR IOR POR
+A:_INAE
+T:*/*=6.2(60)/1
+Z:306 Inmarsat IOR/A (64kb)
+A:_INAE
+T:*/*=10.6(60)/1
+Z:307 Inmarsat M
+A:_INM_
+T:*/*=6.2(60)/1
+Z:308 Inmarsat Mini-M
+A:_INMM
+T:*/*=6.2(60)/1
+Z:309 Inmarsat POR/A (64kb)
+A:_INAE
+T:*/*=10.6(60)/1
+Z:310 Inmarsat S
+A:_INM_
+T:*/*=10.6(60)/1
+Z:311 Inmarsat SNAC
+A:_INA_
+T:*/*=10.6(60)/1
+Z:312 Irak
+A:IQ
+T:*/*=1.49(60)/1
+Z:313 Iran
+A:IR
+T:*/*=1.28(60)/1
+Z:314 Iridium-8816
+A:_IR16
+T:*/*=5(60)/1
+Z:315 Iridium-8817
+A:_IR17
+T:*/*=7(60)/1
+Z:316 Irland
+A:IE
+T:*/*=0.209(60)/1
+Z:317 Irland Mobilfunk
+A:_IEMF
+T:*/*=0.409(60)/1
+Z:318 Island
+A:IS
+T:*/*=0.269(60)/1
+Z:319 Island Mobilfunk
+A:_ISMF
+T:*/*=0.329(60)/1
+Z:320 Israel
+A:IL
+T:*/*=0.309(60)/1
+Z:321 Israel Mobilfunk
+A:_ILMF
+T:*/*=0.549(60)/1
+Z:322 Italien
+A:IT
+T:*/*=0.219(60)/1
+Z:323 Italien Mobilfunk
+A:_ITMF
+T:*/*=0.449(60)/1
+Z:324 Jamaica
+A:JM
+T:*/*=0.989(60)/1
+Z:325 Japan
+A:JP
+T:*/*=0.289(60)/1
+Z:326 Japan Mobilfunk
+A:_JPMF
+T:*/*=0.349(60)/1
+Z:327 Jemen Arab. Rep.
+A:YE
+T:*/*=1.49(60)/1
+Z:328 Jordanien
+A:JO
+T:*/*=0.919(60)/1
+Z:329 Jordanien Mobilfunk
+A:_JOMF
+T:*/*=1.1(60)/1
+Z:330 Jugoslawien
+A:YU
+T:*/*=0.619(60)/1
+Z:331 Kaiman Inseln
+A:KY
+T:*/*=0.609(60)/1
+Z:332 Kambodscha
+A:KH
+T:*/*=1.49(60)/1
+Z:333 Kamerun
+A:CM
+T:*/*=1.41(60)/1
+Z:334 Kanada
+A:CA
+T:*/*=0.149(60)/1
+Z:335 Kanada Mobilfunk
+A:_ALAS
+T:*/*=0.769(60)/1
+Z:336 Kap Verde
+A:CV
+T:*/*=1.12(60)/1
+Z:337 Kasachstan
+A:KZ
+T:*/*=0.989(60)/1
+Z:338 Katar
+A:QA
+T:*/*=1.29(60)/1
+Z:339 Kenia
+A:KE
+T:*/*=1.26(60)/1
+Z:340 Kirgisien
+A:KG
+T:*/*=1.14(60)/1
+Z:341 Kirgisien Mobilfunk
+A:_KGMF
+T:*/*=1.44(60)/1
+Z:342 Kiribati
+A:KI
+T:*/*=1.49(60)/1
+Z:343 Kiribati Mobilfunk
+A:_KIMF
+T:*/*=1.49(60)/1
+Z:344 Kolumbien
+A:CO
+T:*/*=0.599(60)/1
+Z:345 Kolumbien Mobilfunk
+A:_COMF
+T:*/*=0.599(60)/1
+Z:346 Komoren
+A:KM
+T:*/*=1.39(60)/1
+Z:347 Kongo
+A:CG
+T:*/*=1.2(60)/1
+Z:348 Korea (North)
+A:KP
+T:*/*=1.33(60)/1
+Z:349 Korea Rep. (South)
+A:KR
+T:*/*=0.339(60)/1
+Z:350 Korea Rep.(South) Mobilfunk
+A:_KRMF
+T:*/*=0.639(60)/1
+Z:351 Kroatien
+A:HR
+T:*/*=0.569(60)/1
+Z:352 Kuba
+A:CU
+T:*/*=1.26(60)/1
+Z:353 Kuwait
+A:KW
+T:*/*=1.37(60)/1
+Z:354 Kuwait Mobilfunk
+A:_KWMF
+T:*/*=1.49(60)/1
+Z:355 Laos
+A:LA
+T:*/*=1.49(60)/1
+Z:356 Lesotho
+A:LS
+T:*/*=0.929(60)/1
+Z:357 Lettland (Latvia)
+A:LV
+T:*/*=0.659(60)/1
+Z:358 Libanon
+A:LB
+T:*/*=0.919(60)/1
+Z:359 Libanon Mobilfunk
+A:_LBMF
+T:*/*=0.919(60)/1
+Z:360 Liberia
+A:LR
+T:*/*=0.929(60)/1
+Z:361 Libyen
+A:LY
+T:*/*=0.709(60)/1
+Z:362 Liechtenstein
+A:LI
+T:*/*=0.279(60)/1
+Z:363 Litauen
+A:LT
+T:*/*=0.699(60)/1
+Z:364 Luxemburg
+A:LU
+T:*/*=0.279(60)/1
+Z:365 Luxemburg Mobilfunk
+A:_LUMF
+T:*/*=0.309(60)/1
+Z:366 Macao
+A:MO
+T:*/*=0.829(60)/1
+Z:367 Madagaskar
+A:MG
+T:*/*=1.49(60)/1
+Z:368 Madaira
+A:_MADE
+T:*/*=0.449(60)/1
+Z:369 Malawi
+A:MW
+T:*/*=0.979(60)/1
+Z:370 Malaysia
+A:MY
+T:*/*=0.479(60)/1
+Z:371 Malediven
+A:MV
+T:*/*=1.35(60)/1
+Z:372 Mali Rep.
+A:ML
+T:*/*=1.49(60)/1
+Z:373 Malta
+A:MT
+T:*/*=0.489(60)/1
+Z:374 Marianen
+A:MP
+T:*/*=0.639(60)/1
+Z:375 Marokko
+A:EH
+T:*/*=0.819(60)/1
+Z:376 Marshallinseln
+A:MH
+T:*/*=0.809(60)/1
+Z:377 Martinique
+A:MQ
+T:*/*=0.659(60)/1
+Z:378 Mauretanien
+A:MR
+T:*/*=1.24(60)/1
+Z:379 Mauritius
+A:MU
+T:*/*=1.39(60)/1
+Z:380 Mazedonien
+A:MK
+T:*/*=0.699(60)/1
+Z:381 Mexico
+A:MX
+T:*/*=0.449(60)/1
+Z:382 Midway Island
+A:_MIDW
+T:*/*=1.65(60)/1
+Z:383 Mikronesien
+A:FM
+T:*/*=1.38(60)/1
+Z:384 Moldavien
+A:MD
+T:*/*=0.859(60)/1
+Z:385 Monaco
+A:MC
+T:*/*=0.289(60)/1
+Z:386 Monaco Mobilfunk
+A:_MCMF
+T:*/*=0.329(60)/1
+Z:387 Mongolische VR
+A:MN
+T:*/*=1.49(60)/1
+Z:388 Montserrat
+A:MS
+T:*/*=1.19(60)/1
+Z:389 Mozambik
+A:MZ
+T:*/*=0.959(60)/1
+Z:390 Myanmar (Burma)
+A:MM
+T:*/*=1.49(60)/1
+Z:391 Namibia
+A:NA
+T:*/*=0.769(60)/1
+Z:392 Nauru
+A:NR
+T:*/*=1.46(60)/1
+Z:393 Nepal
+A:NP
+T:*/*=1.39(60)/1
+Z:394 Neukaledonien
+A:NC
+T:*/*=1.29(60)/1
 Z:395 Neuseeland
 A:NZ
-T:*/08-20=0.339(60)/1
-T:*/20-08=0.319(60)/1
-Z:396 Neuseeland Mobilfunk
+T:*/*=0.209(60)/1
+Z:396 Neuseeland Chatham Inseln
+A:NZ
+T:*/*=0.659(60)/1
+Z:397 Neuseeland Mobilfunk
 A:_NZMF
-T:*/08-20=0.679(60)/1
-T:*/20-08=0.659(60)/1
-Z:397 Singapur
-A:SG
-T:*/08-20=0.489(60)/1
-T:*/20-08=0.469(60)/1
-Z:398 Thailand
-A:TH
-T:*/08-20=0.859(60)/1
-T:*/20-08=0.839(60)/1
-Z:399 Marianen/Saipan
-A:MP
-T:*/08-20=0.659(60)/1
-T:*/20-08=0.639(60)/1
-Z:401 Antarktis
-A:AQ
-T:*/08-20=0.629(60)/1
-T:*/20-08=0.619(60)/1
-Z:402 Norfolk Islands
-A:NF
-T:*/08-20=1.15(60)/1
-T:*/20-08=1.13(60)/1
-Z:403 Weihnachtsinseln
-A:CX
-T:*/08-20=0.709(60)/1
-T:*/20-08=0.689(60)/1
-Z:404 Brunei
-A:BN
-T:*/08-20=0.819(60)/1
-T:*/20-08=0.809(60)/1
-Z:405 Nauru
-A:NR
-T:*/08-20=1.48(60)/1
-T:*/20-08=1.46(60)/1
-Z:406 Papua Neu Guinea
-A:PG
-T:*/08-20=0.819(60)/1
-T:*/20-08=0.809(60)/1
-Z:407 Tonga Kingdom
-A:TO
-T:*/08-20=1.66(60)/1
-T:*/20-08=1.64(60)/1
-Z:408 Solomonen
-A:SB
-T:*/08-20=1.28(60)/1
-T:*/20-08=1.26(60)/1
-Z:409 Vanuatu
-A:VU
-T:*/08-20=1.52(60)/1
-T:*/20-08=1.5(60)/1
-Z:410 Fidschi
-A:FJ
-T:*/08-20=1.44(60)/1
-T:*/20-08=1.42(60)/1
-Z:411 Palau (=Belau)
-A:PW
-T:*/08-20=1.5(60)/1
-T:*/20-08=1.49(60)/1
-Z:412 Wallis und Futuna
-A:WF
-T:*/08-20=0.839(60)/1
-T:*/20-08=0.819(60)/1
-Z:413 Cook Islands
-A:CK
-T:*/08-20=2.05(60)/1
-T:*/20-08=2.03(60)/1
-Z:414 Niue Islands
+T:*/*=0.659(60)/1
+Z:398 Nevis Islands
+A:KN
+T:*/*=0.939(60)/1
+Z:399 Nicaragua
+A:NI
+T:*/*=0.859(60)/1
+Z:400 Nicaragua Mobilfunk
+A:_NIMF
+T:*/*=0.989(60)/1
+Z:401 Niederlande
+A:NL
+T:*/*=0.149(60)/1
+Z:402 Niederlande Mobilfunk
+A:_NLMF
+T:*/*=0.359(60)/1
+Z:403 Niederländische Antillen
+A:AN
+T:*/*=0.659(60)/1
+Z:404 Niger
+A:NGR
+T:*/*=1.21(60)/1
+Z:405 Nigeria
+A:NG
+T:*/*=1.46(60)/1
+Z:406 Niue Islands
 A:NU
-T:*/08-20=1.93(60)/1
-T:*/20-08=1.91(60)/1
-Z:415 Amerikanisch Samoa
-A:AS
-T:*/08-20=0.739(60)/1
-T:*/20-08=0.719(60)/1
-Z:416 Western Samoa (Independent State of)
-A:WS
-T:*/08-20=1.28(60)/1
-T:*/20-08=1.26(60)/1
-Z:417 Kiribati
-A:KI
-T:*/08-20=1.59(60)/1
-T:*/20-08=1.57(60)/1
-Z:418 Neukaledonien
-A:NC
-T:*/08-20=1.31(60)/1
-T:*/20-08=1.29(60)/1
-Z:419 Tuvalu
-A:TV
-T:*/08-20=1.73(60)/1
-T:*/20-08=1.71(60)/1
-Z:420 Französisch Polynesien
-A:PF
-T:*/08-20=1.23(60)/1
-T:*/20-08=1.21(60)/1
-Z:421 Tokelau
-A:TK
-T:*/08-20=1.4(60)/1
-T:*/20-08=1.38(60)/1
-Z:422 Mikronesien
-A:FM
-T:*/08-20=1.4(60)/1
-T:*/20-08=1.38(60)/1
-Z:423 Marshallinseln
-A:MH
-T:*/08-20=0.829(60)/1
-T:*/20-08=0.809(60)/1
-Z:424 Rußland
-A:SU
-T:*/08-20=0.699(60)/1
-T:*/20-08=0.679(60)/1
-Z:425 Rußland Moskau
-A:MOW
-T:*/08-20=0.429(60)/1
-T:*/20-08=0.409(60)/1
-Z:426 Kasachstan
-A:KZ
-T:*/08-20=1.09(60)/1
-T:*/20-08=1.07(60)/1
-Z:427 Rußland Moskau Overlay
-A:MOW
-T:*/08-20=0.859(60)/1
-T:*/20-08=0.839(60)/1
-Z:428 Rußland St. Petersburg
-A:LED
-T:*/08-20=0.429(60)/1
-T:*/20-08=0.409(60)/1
-Z:429 Japan
-A:JP
-T:*/08-20=0.379(60)/1
-T:*/20-08=0.359(60)/1
-Z:430 Japan Mobilfunk
-A:_JPMF
-T:*/08-20=0.669(60)/1
-T:*/20-08=0.649(60)/1
-Z:431 Korea Rep. (South)
-A:KR
-T:*/08-20=0.499(60)/1
-T:*/20-08=0.479(60)/1
-Z:432 Korea Rep. (South) Mobilfunk
-A:_KRMF
-T:*/08-20=0.659(60)/1
-T:*/20-08=0.639(60)/1
-Z:433 Vietnam
-A:VN
-T:*/08-20=1.61(60)/1
-T:*/20-08=1.59(60)/1
-Z:434 Korea (North)
-A:KP
-T:*/08-20=1.35(60)/1
-T:*/20-08=1.33(60)/1
-Z:435 Hong Kong
-A:HK
-T:*/08-20=0.409(60)/1
-T:*/20-08=0.389(60)/1
-Z:436 Hong Kong Mobilfunk
-A:_HKMF
-T:*/08-20=0.559(60)/1
-T:*/20-08=0.539(60)/1
-Z:437 Macao
-A:MO
-T:*/08-20=0.849(60)/1
-T:*/20-08=0.829(60)/1
-Z:438 Kambodscha
-A:KH
-T:*/08-20=1.75(60)/1
-T:*/20-08=1.73(60)/1
-Z:439 Laos
-A:LA
-T:*/08-20=1.53(60)/1
-T:*/20-08=1.51(60)/1
-Z:440 China
-A:CN
-T:*/08-20=0.869(60)/1
-T:*/20-08=0.849(60)/1
-# FIXME: Warum kommt hier "Duplicate area +86886 sowie +8613 ??
-# Z:441 China Mobilfunk
-# A:China Mobilfunk # +8613, +86886
-# T:*/08-20=1.33(60)/1
-# T:*/20-08=1.31(60)/1
-Z:442 Inmarsat Mini-M (Worldwide)
-A:_INMM
-T:*/08-20=4.22(60)/1
-T:*/20-08=4.2(60)/1
-Z:443 Inmarsat A (E.Atlantic)
-A:_INDF
-T:*/08-20=9.97(60)/1
-T:*/20-08=9.95(60)/1
-Z:444 Inmarsat B ( E.Atlantic)
-A:_INDF
-T:*/08-20=6.22(60)/1
-T:*/20-08=6.2(60)/1
-Z:445 Inmarsat M (E.Atlantic)
-A:_INDF
-T:*/08-20=6.22(60)/1
-T:*/20-08=6.2(60)/1
-Z:446 Inmarsat Mini-M (E.Atlantic)
-A:_INMM
-T:*/08-20=4.22(60)/1
-T:*/20-08=4.2(60)/1
-Z:447 Inmarsat A (Pacific)
-A:_INDF
-T:*/08-20=9.97(60)/1
-T:*/20-08=9.95(60)/1
-Z:448 Inmarsat B (Pacific)
-A:_INMM
-T:*/08-20=6.22(60)/1
-T:*/20-08=6.2(60)/1
-Z:449 Inmarsat M (Pacific)
-A:_INMM
-T:*/08-20=6.22(60)/1
-T:*/20-08=6.2(60)/1
-Z:450 Inmarsat Mini-M (Pacific)
-A:_INMM
-T:*/08-20=4.22(60)/1
-T:*/20-08=4.2(60)/1
-Z:451 Inmarsat A (Indien)
-A:_INMM
-T:*/08-20=9.97(60)/1
-T:*/20-08=9.95(60)/1
-Z:452 Inmarsat B (Indien)
-A:_INMM
-T:*/08-20=6.22(60)/1
-T:*/20-08=6.2(60)/1
-Z:453 Inmarsat M (Indien)
-A:_INMM
-T:*/08-20=6.22(60)/1
-T:*/20-08=6.2(60)/1
-Z:454 Inmarsat Mini-M (Indien)
-A:_INMM
-T:*/08-20=4.22(60)/1
-T:*/20-08=4.2(60)/1
-Z:455 Inmarsat A (W. Atlantic)
-A:_INDF
-T:*/08-20=9.97(60)/1
-T:*/20-08=9.95(60)/1
-Z:456 Inmarsat B (W. Atlantic)
-A:_INDF
-T:*/08-20=6.22(60)/1
-T:*/20-08=6.2(60)/1
-Z:457 Inmarsat M (W.Atlantic)
-A:_INDF
-T:*/08-20=6.22(60)/1
-T:*/20-08=6.2(60)/1
-Z:458 Inmarsat Mini-M (W.Atlantic)
-A:_INMM
-T:*/08-20=4.22(60)/1
-T:*/20-08=4.2(60)/1
-Z:459 Bangladesh
-A:BD
-T:*/08-20=1.49(60)/1
-T:*/20-08=1.47(60)/1
-Z:460 Bangladesh Mobilfunk
-A:_BDMF
-T:*/08-20=1.49(60)/1
-T:*/20-08=1.47(60)/1
-Z:461 Taiwan
-A:TW
-T:*/08-20=0.489(60)/1
-T:*/20-08=0.469(60)/1
-Z:462 Taiwan Mobilfunk
-A:_TWMF
-T:*/08-20=0.859(60)/1
-T:*/20-08=0.839(60)/1
-Z:463 Türkei
-A:TR
-T:*/08-20=0.709(60)/1
-T:*/20-08=0.689(60)/1
-Z:464 Türkei Mobilfunk
-A:_TKMF
-T:*/08-20=0.809(60)/1
-T:*/20-08=0.789(60)/1
-Z:465 Indien
-A:IN
-T:*/08-20=1.24(60)/1
-T:*/20-08=1.22(60)/1
-Z:466 Indien Mobilfunk
-A:_INMF
-T:*/08-20=1.43(60)/1
-T:*/20-08=1.41(60)/1
-Z:467 Pakistan
-A:PK
-T:*/08-20=1.45(60)/1
-T:*/20-08=1.43(60)/1
-Z:468 Afghanistan
-A:AF
-T:*/08-20=1.89(60)/1
-T:*/20-08=1.87(60)/1
-Z:469 Sri Lanka
-A:LK
-T:*/08-20=1.38(60)/1
-T:*/20-08=1.36(60)/1
-Z:470 Myanmar (Burma)
-A:MM
-T:*/08-20=1.75(60)/1
-T:*/20-08=1.73(60)/1
-Z:471 Malediven
-A:MV
-T:*/08-20=1.37(60)/1
-T:*/20-08=1.35(60)/1
-Z:472 Libanon
-A:LB
-T:*/08-20=1.17(60)/1
-T:*/20-08=1.15(60)/1
-Z:473 Libanon Mobilfunk
-A:_LBMF
-T:*/08-20=1.97(60)/1
-T:*/20-08=1.96(60)/1
-Z:474 Jordanien
-A:JO
-T:*/08-20=1.3(60)/1
-T:*/20-08=1.28(60)/1
-Z:475 Jordanien Mobilfunk
-A:_JOMF
-T:*/08-20=1.39(60)/1
-T:*/20-08=1.37(60)/1
-Z:476 Syrien
-A:SY
-T:*/08-20=1.26(60)/1
-T:*/20-08=1.24(60)/1
-Z:477 Irak
-A:IQ
-T:*/08-20=1.72(60)/1
-T:*/20-08=1.7(60)/1
-Z:478 Kuwait
-A:KW
-T:*/08-20=1.39(60)/1
-T:*/20-08=1.37(60)/1
-Z:479 Kuwait Mobilfunk
-A:_KWMF
-T:*/08-20=1.51(60)/1
-T:*/20-08=1.49(60)/1
-Z:480 Saudi Arabien
-A:SA
-T:*/08-20=1.32(60)/1
-T:*/20-08=1.3(60)/1
-Z:481 Jemen Arab. Rep.
-A:YE
-T:*/08-20=1.55(60)/1
-T:*/20-08=1.53(60)/1
-Z:482 Oman
+T:*/*=1.49(60)/1
+Z:407 Norfolk Islands
+A:NF
+T:*/*=0.989(60)/1
+Z:408 Norwegen
+A:NO
+T:*/*=0.179(60)/1
+Z:409 Norwegen Mobilfunk
+A:_NOMF
+T:*/*=0.289(60)/1
+Z:410 Oman
 A:OM
-T:*/08-20=1.53(60)/1
-T:*/20-08=1.51(60)/1
-Z:483 Ver.Arab. Emirate
-A:AE
-T:*/08-20=1.05(60)/1
-T:*/20-08=1.03(60)/1
-Z:484 Israel
-A:IL
-T:*/08-20=0.399(60)/1
-T:*/20-08=0.379(60)/1
-Z:485 Israel Mobilfunk
-A:_ILMF
-T:*/08-20=0.649(60)/1
-T:*/20-08=0.629(60)/1
-Z:486 Bahrain
-A:BH
-T:*/08-20=1.28(60)/1
-T:*/20-08=1.26(60)/1
-Z:487 Katar
-A:QA
-T:*/08-20=1.31(60)/1
-T:*/20-08=1.29(60)/1
-Z:488 Bhutan
-A:BT
-T:*/08-20=0.939(60)/1
-T:*/20-08=0.919(60)/1
-Z:489 Mongolische VR
-A:MN
-T:*/08-20=1.8(60)/1
-T:*/20-08=1.78(60)/1
-Z:490 Nepal
-A:NP
-T:*/08-20=1.41(60)/1
-T:*/20-08=1.39(60)/1
-Z:491 Iran
-A:IR
-T:*/08-20=1.34(60)/1
-T:*/20-08=1.32(60)/1
-Z:492 Tadschikistan
+T:*/*=1.49(60)/1
+Z:411 Osterinseln
+A:_WAKE
+T:*/*=0.349(60)/1
+Z:412 Pakistan
+A:PK
+T:*/*=1.43(60)/1
+Z:413 Palau (=Belau)
+A:PW
+T:*/*=1.49(60)/1
+Z:414 Panama
+A:PA
+T:*/*=0.989(60)/1
+Z:415 Panama Mobilfunk
+A:_PAMF
+T:*/*=0.989(60)/1
+Z:416 Papua Neu Guinea
+A:PG
+T:*/*=0.809(60)/1
+Z:417 Paraguay
+A:PY
+T:*/*=1.22(60)/1
+Z:418 Peru
+A:PE
+T:*/*=0.829(60)/1
+Z:419 Peru Mobilfunk
+A:_PEMF
+T:*/*=0.889(60)/1
+Z:420 Philippinen
+A:PH
+T:*/*=0.659(60)/1
+Z:421 Philippinen Mobilfunk
+A:_PHMF
+T:*/*=0.659(60)/1
+Z:422 Polen
+A:PL
+T:*/*=0.449(60)/1
+Z:423 Portugal
+A:PT
+T:*/*=0.369(60)/1
+Z:424 Portugal Azoren
+A:PT
+T:*/*=0.369(60)/1
+Z:425 Portugal Madeira
+A:PT
+T:*/*=0.369(60)/1
+Z:426 Portugal Mobilfunk
+A:_PTMF
+T:*/*=0.539(60)/1
+Z:427 Puerto Rico
+A:PR
+T:*/*=0.289(60)/1
+Z:428 Reunion Islands
+A:RE
+T:*/*=0.989(60)/1
+Z:429 Ruanda
+A:RW
+T:*/*=1.49(60)/1
+Z:430 Rumänien
+A:RO
+T:*/*=0.649(60)/1
+Z:431 Rumänien Mobilfunk
+A:_ROMF
+T:*/*=0.649(60)/1
+Z:432 Rußland
+A:SU
+T:*/*=0.579(60)/1
+Z:433 Rußland Mobilfunk
+A:_RUMF
+T:*/*=0.579(60)/1
+Z:434 Rußland Moskau
+A:MOW
+T:*/*=0.349(60)/1
+Z:435 Rußland Overlay
+A:SU
+T:*/*=0.579(60)/1
+Z:436 Rußland St. Petersburg
+A:LED
+T:*/*=0.349(60)/1
+Z:437 Saipan
+A:MP
+T:*/*=0.639(60)/1
+Z:438 Salomonen
+A:SB
+T:*/*=1.13(60)/1
+Z:439 Sambia
+A:ZM
+T:*/*=1.3(60)/1
+Z:440 San Marino
+A:SM
+T:*/*=0.449(60)/1
+Z:441 Sansibar
+A:TZ
+T:*/*=1.49(60)/1
+Z:442 Sao Tome
+A:ST
+T:*/*=1.49(60)/1
+Z:443 Saudi Arabien
+A:SA
+T:*/*=1.3(60)/1
+Z:444 Schweden
+A:SE
+T:*/*=0.169(60)/1
+Z:445 Schweden Mobilfunk
+A:_SEMF
+T:*/*=0.319(60)/1
+Z:446 Schweiz
+A:CH
+T:*/*=0.179(60)/1
+Z:447 Schweiz Mobilfunk
+A:_CHMF
+T:*/*=0.359(60)/1
+Z:448 Senegal Republic
+A:SN
+T:*/*=1.49(60)/1
+Z:449 Seychellen
+A:SC
+T:*/*=1.49(60)/1
+Z:450 Sierra Leone
+A:SL
+T:*/*=1.49(60)/1
+Z:451 Simbabwe
+A:ZW
+T:*/*=0.749(60)/1
+Z:452 Singapur
+A:SG
+T:*/*=0.369(60)/1
+Z:453 Slowakische Rep.
+A:SK
+T:*/*=0.449(60)/1
+Z:454 Slowenien
+A:SI
+T:*/*=0.489(60)/1
+Z:455 Somalia
+A:SO
+T:*/*=1.49(60)/1
+Z:456 Spanien
+A:ES
+T:*/*=0.239(60)/1
+Z:457 Spanien Balearen
+A:PMI
+T:*/*=0.239(60)/1
+Z:458 Spanien Kanarische Inseln
+A:PLP
+T:*/*=0.239(60)/1
+Z:459 Spanien Mobilfunk
+A:_ESMF
+T:*/*=0.399(60)/1
+Z:460 Sri Lanka
+A:LK
+T:*/*=1.36(60)/1
+Z:461 St. Helena
+A:SH
+T:*/*=1.33(60)/1
+Z:462 St. Kitts
+A:KN
+T:*/*=0.939(60)/1
+Z:463 St. Lucia
+A:LC
+T:*/*=0.989(60)/1
+Z:464 St. Pierre and Miquelon
+A:PM
+T:*/*=0.649(60)/1
+Z:465 St. Vincent and Grenadines
+A:VC
+T:*/*=0.989(60)/1
+Z:466 Sudan
+A:SD
+T:*/*=0.859(60)/1
+Z:467 Surinam
+A:SR
+T:*/*=1.49(60)/1
+Z:468 Swasiland
+A:SZ
+T:*/*=0.539(60)/1
+Z:469 Syrien
+A:SY
+T:*/*=0.969(60)/1
+Z:470 Südafrika
+A:ZA
+T:*/*=0.659(60)/1
+Z:471 Südafrika Mobilfunk
+A:_ZAMF
+T:*/*=0.749(60)/1
+Z:472 Tadschikistan
 A:TJ
-T:*/08-20=1.04(60)/1
-T:*/20-08=1.03(60)/1
-Z:493 Turkmenistan
+T:*/*=0.989(60)/1
+Z:473 Taiwan
+A:TW
+T:*/*=0.359(60)/1
+Z:474 Taiwan Mobilfunk
+A:_TWMF
+T:*/*=0.409(60)/1
+Z:475 Tansania
+A:TZ
+T:*/*=0.989(60)/1
+Z:476 Thailand
+A:TH
+T:*/*=0.839(60)/1
+Z:477 Togo
+A:TG
+T:*/*=1.49(60)/1
+Z:478 Tokelau
+A:TK
+T:*/*=1.38(60)/1
+Z:479 Tonga Kingdom
+A:TO
+T:*/*=1.49(60)/1
+Z:480 Trinidad and Tobago
+A:TT
+T:*/*=0.989(60)/1
+Z:481 Tschad
+A:TD
+T:*/*=1.49(60)/1
+Z:482 Tschechische Rep.
+A:CZ
+T:*/*=0.449(60)/1
+Z:483 Tschechische Rep. Mobilfunk
+A:_CZMF
+T:*/*=0.449(60)/1
+Z:484 Tunesien
+A:TN
+T:*/*=0.759(60)/1
+Z:485 Turkmenistan
 A:TM
-T:*/08-20=1.14(60)/1
-T:*/20-08=1.12(60)/1
-Z:494 Aserbaidschan
-A:AZ
-T:*/08-20=0.869(60)/1
-T:*/20-08=0.849(60)/1
-Z:495 Georgien
-A:GE
-T:*/08-20=1.28(60)/1
-T:*/20-08=1.26(60)/1
-Z:496 Kirgisien
-A:KG
-T:*/08-20=1.15(60)/1
-T:*/20-08=1.14(60)/1
-Z:497 Kirgisien Mobilfunk
-A:_KGMF
-T:*/08-20=1.49(60)/1
-T:*/20-08=1.47(60)/1
-Z:498 Usbekistan
+T:*/*=1.12(60)/1
+Z:486 Turks and Caicos Islands
+A:TC
+T:*/*=0.909(60)/1
+Z:487 Tuvalu
+A:TV
+T:*/*=1.49(60)/1
+Z:488 Türkei
+A:TR
+T:*/*=0.479(60)/1
+Z:489 Türkei Mobilfunk
+A:_TKMF
+T:*/*=0.519(60)/1
+Z:490 USA
+A:US
+T:*/*=0.139(60)/1
+Z:491 Uganda
+A:UG
+T:*/*=0.859(60)/1
+Z:492 Ukraine
+A:UA
+T:*/*=0.809(60)/1
+Z:493 Ungarn
+A:HU
+T:*/*=0.479(60)/1
+Z:494 Ungarn Mobilfunk
+A:_HUMF
+T:*/*=0.479(60)/1
+Z:495 Uruguay
+A:UY
+T:*/*=1.12(60)/1
+Z:496 Usbekistan
 A:UZ
-T:*/08-20=1.16(60)/1
-T:*/20-08=1.14(60)/1
+T:*/*=1.14(60)/1
+Z:497 Vanuatu
+A:VU
+T:*/*=1.49(60)/1
+Z:498 Vatican City
+A:VA
+T:*/*=0.229(60)/1
+Z:499 Venezuela
+A:VE
+T:*/*=0.659(60)/1
+Z:500 Venezuela Mobilfunk
+A:_VEMF
+T:*/*=0.789(60)/1
+Z:501 Ver.Arab. Emirate
+A:AE
+T:*/*=0.989(60)/1
+Z:502 Vietnam
+A:VN
+T:*/*=1.49(60)/1
+Z:503 Wallis und Futuna
+A:WF
+T:*/*=0.819(60)/1
+Z:504 Weihnachtsinseln
+A:CX
+T:*/*=0.279(60)/1
+Z:505 Weißrußland/Belarus
+A:BY
+T:*/*=0.659(60)/1
+Z:506 Western Samoa (Independent State of)
+A:WS
+T:*/*=1.26(60)/1
+Z:507 Zaire
+A:ZR
+T:*/*=1.22(60)/1
+Z:508 Zaire Mobilfunk
+A:_ZRMF
+T:*/*=1.47(60)/1
+Z:509 Zentral Afrika (Rep.)
+A:CF
+T:*/*=1.49(60)/1
+Z:510 Zypern(griech)
+A:CY
+T:*/*=0.499(60)/1
+Z:511 Zypern(griech) Mobilfunk
+A:_CYMF
+T:*/*=0.499(60)/1
+Z:512 Zypern(türkisch)
+A:_CYTK
+T:*/*=0.549(60)/1
+Z:513 Ägypten
+A:EG
+T:*/*=0.919(60)/1
+Z:514 Ägypten Mobilfunk
+A:_EGMF
+T:*/*=1.03(60)/1
+Z:515 Äquatorial Guinea
+A:GQ
+T:*/*=1.49(60)/1
+Z:516 Äthiopien
+A:ET
+T:*/*=1.49(60)/1
+Z:517 Österreich
+A:AT
+T:*/*=0.189(60)/1
+Z:518 Österreich Mobilfunk
+A:_ATMF
+T:*/*=0.379(60)/1
+Z:519 Österreich Sondernummern
+A:_ATSO
+T:*/*=0.379(60)/1
 #####################################################################
 #
 #
