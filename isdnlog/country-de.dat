@@ -113,7 +113,7 @@ C:+966
 T:SA
 
 N:Kuwait Mobilfunk
-N:Kuwait cellphone
+E:Kuwait cellphone
 C:+9659
 T:_KWMF
 
@@ -189,7 +189,7 @@ C:+91
 T:IN
 
 N:Türkei Mobilfunk
-N:Turkey cellphone
+E:Turkey cellphone
 C:+905
 R:TK
 T:_TKMF
@@ -760,7 +760,7 @@ C:+61
 T:AU
 
 N:Malaysia-Mobilfunk
-N:Malaysia cellphone
+E:Malaysia cellphone
 C:+601
 R:MY
 T:_MYMF
@@ -1199,7 +1199,7 @@ C:+44998 # Fixme
 T:_UKIK
 
 N:Nordirland
-N:Nothern Ireland
+E:Northern Ireland
 C:+441232 # Fixme, this is Belfast only
 R:UK
 T:_UKIR
@@ -1659,7 +1659,7 @@ R:NL
 T:HAG
 
 N:Niederlande Mobilfunk
-N:Netherlands cellphone
+E:Netherlands cellphone
 C:+3165, +3162, +3161
 R:NL
 T:_NLMF
