@@ -21,7 +21,7 @@
 #include <dlfcn.h>
 #include <errno.h>
 
-static char *revision = "$Revision: 1.9 $";
+static char *revision = "$Revision: 1.10 $";
 
 static capiconn_context *ctx;
 static capi_connection *conn = 0;
@@ -486,6 +486,8 @@ static void init_capiconn(void)
 	else
 		dbglog("capiplugin: contr=%d", controller);
 
+	(void) capiconn_listen(ctx, controller, 0, 0);
+	handlemessages();
 	add_fd(capi20_fileno(applid));
 	setup_timeout();
 }
@@ -588,6 +590,12 @@ static int channels2capi20(char *teln, unsigned char *AdditionalInfo)
 
 static void check_options(void)
 {
+	static int init = 0;
+
+	if (init)
+		return;
+	init = 1;
+
 	if (   opt_proto
 	    && strcasecmp(opt_proto, "hdlc")
 	    && strcasecmp(opt_proto, "x75")
@@ -699,6 +707,8 @@ static int capi_new_phase_hook(int phase)
 			}
 			break;
 		case PHASE_DORMANT:
+			check_options();
+			init_capiconn();
 			info("capiplugin: phase dormant");
 			break;
 		case PHASE_ESTABLISH:
@@ -907,7 +917,7 @@ static void connected(capi_connection *cp, _cstruct NCPI)
 
         tty = capi20ext_get_tty_devname(p->appid, p->ncci, buf, sizeof(buf));
         serrno = errno;
-	while (tty == 0 && serrno == ESRCH) {
+	while ((tty == 0 && serrno == ESRCH) || (tty && access(tty,0))) {
 	   if (++retry > 4) 
 	      break;
 	   info("capiplugin: capitty not ready, waiting for driver ...");
@@ -959,6 +969,7 @@ void plugin_init(void)
 	int err;
 
 	info("capiplugin: %s", revision);
+	info("capiconn: %s", capiconn_version());
 
 	add_options(my_options);
 

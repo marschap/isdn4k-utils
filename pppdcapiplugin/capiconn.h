@@ -1,5 +1,5 @@
 /*
- * $Id: capiconn.h,v 1.2 2000/10/25 10:01:47 calle Exp $
+ * $Id: capiconn.h,v 1.3 2001/01/25 14:45:41 calle Exp $
  *
  * Copyright 2000 Carsten Paeth (calle@calle.in-berlin.de)
  * Copyright 2000 AVM GmbH Berlin (info@avm.de)
@@ -10,6 +10,11 @@
  *  2 of the License, or (at your option) any later version.
  *
  * $Log: capiconn.h,v $
+ * Revision 1.3  2001/01/25 14:45:41  calle
+ * - listen always (for info messages)
+ * - show versions on startup
+ * - wait for capifs if needed
+ *
  * Revision 1.2  2000/10/25 10:01:47  calle
  * (c) in all files
  *
@@ -193,6 +198,7 @@
 
 /* ----------------------------------------------------------------------- */
 
+char *capiconn_version(void);
 
 /* -------- context ------------------------------------------------------ */
 

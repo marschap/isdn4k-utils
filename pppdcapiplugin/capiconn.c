@@ -1,5 +1,5 @@
 /*
- * $Id: capiconn.c,v 1.3 2000/10/25 10:01:47 calle Exp $
+ * $Id: capiconn.c,v 1.4 2001/01/25 14:45:41 calle Exp $
  *
  * Copyright 2000 Carsten Paeth (calle@calle.in-berlin.de)
  * Copyright 2000 AVM GmbH Berlin (info@avm.de)
@@ -10,6 +10,11 @@
  *  2 of the License, or (at your option) any later version.
  *
  * $Log: capiconn.c,v $
+ * Revision 1.4  2001/01/25 14:45:41  calle
+ * - listen always (for info messages)
+ * - show versions on startup
+ * - wait for capifs if needed
+ *
  * Revision 1.3  2000/10/25 10:01:47  calle
  * (c) in all files
  *
@@ -25,7 +30,7 @@
 #include <string.h>
 #include "capiconn.h"
 
-static char *revision = "$Revision: 1.3 $";
+static char *revision = "$Revision: 1.4 $";
 
 /* xxxxxxxxxxxxxxxxxx */
 static _cmsg cmdcmsg;
@@ -68,6 +73,7 @@ struct capi_contr {
 	 * LISTEN state
 	 */
 	int state;
+	_cdword infomask;
 	_cdword cipmask;
 	_cdword cipmask2;
 
@@ -124,6 +130,21 @@ typedef struct ncci_datahandle_queue ncci_datahandle_queue;
 /* -------- data definitions ----------------------------------------- */
 
 capiconn_context *context_list = 0;
+
+/* -------- version -------------------------------------------------- */
+
+char *capiconn_version(void)
+{
+	static char retbuf[256];
+	char *p;
+
+	if ((p = strchr(revision, ':'))) {
+		strncpy(retbuf, p + 1, sizeof(retbuf));
+		p = strchr(retbuf, '$');
+		*p = 0;
+	}
+	return retbuf;
+}
 
 /* -------- context handling ----------------------------------------- */
 
@@ -616,7 +637,7 @@ static void listen_change_state(capi_contr * card, int event)
 	while (p->event) {
 		if (card->state == p->actstate && p->event == event) {
 			(*cb->debugmsg)("controller %d: listen_change_state %d -> %d",
-				       card->contrnr, card->state, p->nextstate);
+			       card->contrnr, card->state, p->nextstate);
 			card->state = p->nextstate;
 			return;
 		}
@@ -828,8 +849,12 @@ static void handle_controller(capiconn_context *ctx, _cmsg * cmsg)
 	switch (CAPICMD(cmsg->Command, cmsg->Subcommand)) {
 
 	case CAPI_LISTEN_CONF:	/* Controller */
-		(*cb->debugmsg)("contr %d: listenconf Info=0x%04x (%s) cipmask=0x%x",
-			       card->contrnr, cmsg->Info, capi_info2str(cmsg->Info), card->cipmask);
+		(*cb->debugmsg)("contr %d: listenconf Info=0x%04x (%s) infomask=0x%x cipmask=0x%x capimask2=0x%x",
+			       card->contrnr, cmsg->Info,
+			       capi_info2str(cmsg->Info),
+			       card->infomask,
+			       card->cipmask,
+			       card->cipmask2);
 		if (cmsg->Info) {
 			listen_change_state(card, EV_LISTEN_CONF_ERROR);
 		} else if (card->cipmask == 0) {
@@ -1733,15 +1758,17 @@ int capiconn_send(capi_connection *plcip,
 static void send_listen(capi_contr *card)
 {
 	capiconn_context *ctx = card->ctx;
-	_cdword infomask = 0;
-	infomask |= (1<<2); /* Display */
-	infomask |= (1<<6); /* Charge Info */
-	if (card->ddilen)
-	   infomask |= (1<<7); /* Called Party Number */
+
+	card->infomask = 0;
+	card->infomask |= (1<<2); /* Display */
+	card->infomask |= (1<<6); /* Charge Info */
+	if (card->ddilen) card->infomask |= (1<<7); /* Called Party Number */
+	card->infomask |= (1<<8); /* Channel Info */
+
 	capi_fill_LISTEN_REQ(&cmdcmsg, ctx->appid,
 			     card->msgid++,
 			     card->contrnr,
-			     infomask,
+			     card->infomask,
 			     card->cipmask,
 			     card->cipmask2,
 			     0, 0);
