@@ -1,5 +1,5 @@
 #
-# $Id: Makefile.in,v 1.23 2000/11/30 15:35:19 paul Exp $
+# $Id: Makefile.in,v 1.24 2002/01/31 20:05:40 paul Exp $
 
 #----------------------------------------------------------------------------#
 # Things you can change to personalize the Makefile for your own site. Some  #
@@ -180,6 +180,7 @@ programs-i:	  ignore
 		  @echo "Installing '$(DESTDIR)$(bindir)/vboxcnvt'..."
 		  @$(INSTALL_BIN) $(TOPDIR)/src/vboxconvert $(DESTDIR)$(bindir)/vboxcnvt
 		  @cd $(DESTDIR)$(bindir); \
+		  $(LN) -f vboxcnvt rmdtovbox; \
 		  $(LN) -f vboxcnvt vboxtoau; \
 		  $(LN) -f vboxcnvt autovbox; \
 		  $(LN) -f vboxcnvt vboxmode
