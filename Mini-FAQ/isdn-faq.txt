@@ -9,8 +9,10 @@ germantoc
 
 1.   Wo gibt es die FAQ?
 
-     http://www.mhessler.de/i4lfaq.html Leider noch nicht in Deutsch übersetzt.
-     Die alte deutsche FAQ ist nicht mehr aktuell, aber es gibt sie noch unter
+     http://www.mhessler.de/i4lfaq.html (View + Download)
+     Die FAQ wird in Englisch gewartet, und ist leider noch nicht ins
+     Deutsche übersetzt. Die alte deutsche FAQ ist nicht mehr aktuell
+     (Stand 02/97), aber es gibt sie noch unter
      http://www.isdn4linux.de/leafsite/
 
 2.   Wo gibt es eine einfache Anleitung für ISDN4Linux?
@@ -222,7 +224,7 @@ englishtoc
 
 1.   Where's the FAQ?
 
-     http://www.mhessler.de/i4lfaq.html
+     http://www.mhessler.de/i4lfaq.html (View + Download)
 
 2.   Where can I find a simple guide to using ISDN4Linux?
 
