@@ -1,4 +1,4 @@
-/* $Id: tools.c,v 1.21 1999/03/20 16:55:22 akool Exp $
+/* $Id: tools.c,v 1.22 1999/04/03 12:47:45 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -19,6 +19,19 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools.c,v $
+ * Revision 1.22  1999/04/03 12:47:45  akool
+ * - isdnlog Version 3.12
+ * - "%B" tag in ILABEL/OLABEL corrected
+ * - isdnlog now register's incoming calls when there are no free B-channels
+ *   (idea from sergio@webmedia.es)
+ * - better "samples/rate.conf.de" (suppress provider without true call-by-call)
+ * - "tarif.dat" V:1.17 [03-Apr-99]
+ * - Added EWE-Tel rates from Reiner Klaproth <rk1@msjohan.dd.sn.schule.de>
+ * - isdnconf can now be used to generate a Least-cost-router table
+ *   (try "isdnconf -c .")
+ * - isdnlog now simulate a RELEASE COMPLETE if nothing happpens after a SETUP
+ * - CHARGEMAX Patches from Oliver Lauer <Oliver.Lauer@coburg.baynet.de>
+ *
  * Revision 1.21  1999/03/20 16:55:22  akool
  * isdnlog 3.09 : support for all Internet-by-call numbers
  *
@@ -856,7 +869,7 @@ int iprintf(char *obuf, int chan, register char *fmt, ...)
       case 'C' : p = itoa(call[chan].cref, p, 10, 0);
       	       	 break;
 
-      case 'B' : p = itoa(chan, p, 10, 0);
+      case 'B' : p = itoa(call[chan].channel, p, 10, 0);
       	       	 break;
 
       case 'A' : s = sx;

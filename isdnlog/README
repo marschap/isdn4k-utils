@@ -1,10 +1,10 @@
-ISDNLOG - Version 3.08 -  				18-Mar-99  22:27
+ISDNLOG - Version 3.12 -  				30-Mar-99  20:48
 
 
 isdnlog ist ein Utility zur Auswertung des D-Kanals eines
 ISDN-BRI Anschlusses.
 
-isdnlog-3.08 wurde ausgiebig mit Linux-2.0.36 getestet.
+isdnlog-3.12 wurde ausgiebig mit Linux-2.0.36 getestet.
 
 
 Fuer alle, die es nun ueberhaupt nicht mehr abwarten koennen, hier das
@@ -773,7 +773,7 @@ koennen folgende Platzhalter angegeben werden:
  %b   Monat (-> "Aug")
  %e   Tag im Monat (-> " 8")
  %T   Uhrzeit (-> "13:17:11")
- %B   B-Kanal (0, oder 1)
+ %B   B-Kanal (1 oder 2)
  %k   Nummer der ISDN-Karte, von der die Meldung kam (0 = 1. Karte)
  %p   Nummer des Provider's
  %P   "via <Providerbezeichnung>"

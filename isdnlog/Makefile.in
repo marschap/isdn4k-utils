@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.64 1999/03/25 19:39:41 akool Exp $
+## $Id: Makefile.in,v 1.65 1999/04/03 12:46:39 akool Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,19 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.65  1999/04/03 12:46:39  akool
+## - isdnlog Version 3.12
+## - "%B" tag in ILABEL/OLABEL corrected
+## - isdnlog now register's incoming calls when there are no free B-channels
+##   (idea from sergio@webmedia.es)
+## - better "samples/rate.conf.de" (suppress provider without true call-by-call)
+## - "tarif.dat" V:1.17 [03-Apr-99]
+## - Added EWE-Tel rates from Reiner Klaproth <rk1@msjohan.dd.sn.schule.de>
+## - isdnconf can now be used to generate a Least-cost-router table
+##   (try "isdnconf -c .")
+## - isdnlog now simulate a RELEASE COMPLETE if nothing happpens after a SETUP
+## - CHARGEMAX Patches from Oliver Lauer <Oliver.Lauer@coburg.baynet.de>
+##
 ## Revision 1.64  1999/03/25 19:39:41  akool
 ## - isdnlog Version 3.11
 ## - make isdnlog compile with egcs 1.1.7 (Bug report from Christophe Zwecker <doc@zwecker.com>)
@@ -498,7 +511,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 3.11
+VERSION     = 3.12
 
 MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 isdnlog/isdnlog.users.5 isdnrep/isdnrep.1 isdnconf/isdnconf.1
 

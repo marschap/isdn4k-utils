@@ -1,4 +1,4 @@
-/* $Id: takt_de.c,v 1.17 1999/03/24 19:38:03 akool Exp $
+/* $Id: takt_de.c,v 1.18 1999/04/03 12:47:10 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,19 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: takt_de.c,v $
+ * Revision 1.18  1999/04/03 12:47:10  akool
+ * - isdnlog Version 3.12
+ * - "%B" tag in ILABEL/OLABEL corrected
+ * - isdnlog now register's incoming calls when there are no free B-channels
+ *   (idea from sergio@webmedia.es)
+ * - better "samples/rate.conf.de" (suppress provider without true call-by-call)
+ * - "tarif.dat" V:1.17 [03-Apr-99]
+ * - Added EWE-Tel rates from Reiner Klaproth <rk1@msjohan.dd.sn.schule.de>
+ * - isdnconf can now be used to generate a Least-cost-router table
+ *   (try "isdnconf -c .")
+ * - isdnlog now simulate a RELEASE COMPLETE if nothing happpens after a SETUP
+ * - CHARGEMAX Patches from Oliver Lauer <Oliver.Lauer@coburg.baynet.de>
+ *
  * Revision 1.17  1999/03/24 19:38:03  akool
  * - isdnlog Version 3.10
  * - moved "sondernnummern.c" from isdnlog/ to tools/
@@ -1255,22 +1268,25 @@ static int compare(const SORT *s1, const SORT *s2)
 } /* compare */
 
 
-void showcheapest(int zone, int duration, int ignoreprovider, char *info)
+int showcheapest(int zone, int duration, char *ignoreprovider, char *info, int tz, int hour, int verbose)
 {
-  register int        prefix, n = 0, n1, tz, cheapest = UNKNOWN;
+  register int        prefix, n = 0, n1, cheapest = UNKNOWN, tz1;
   auto     char       why[BUFSIZ], s[BUFSIZ];
   auto	   double     cheaptarif, providertarif = 0.0, tarif;
   auto	   time_t     cur_time;
   auto 	   struct tm *tm;
 
 
+  if (hour == UNKNOWN) {
   time(&cur_time);
   tm = localtime(&cur_time);
-  tz = tarifzeit(tm, why, 0);
+    hour = tm->tm_hour;
 
-  if (ignoreprovider == UNKNOWN)
+    if (verbose) {
+      tz1 = tarifzeit(tm, why, ((prefix == DTAG) && CityWeekend));
   print_msg(PRT_NORMAL, "%s\n", why);
-
+    } /* if */
+  } /* if */
 
   if (!preselect) {
     preselect = DTAG;
@@ -1280,14 +1296,18 @@ void showcheapest(int zone, int duration, int ignoreprovider, char *info)
 
   cheaptarif = 99999.9;
 
-  if (duration == -1)
+  if (duration == UNKNOWN)
     duration = TEST;
 
   for (prefix = 0; prefix < MAXPROVIDER; prefix++) {
-    if (t[prefix].used && (prefix != ignoreprovider)) {
+    if (t[prefix].used && !strchr(ignoreprovider, prefix)) {
 
-      tz = tarifzeit(tm, why, ((prefix == DTAG) && CityWeekend));
-      tarif = tpreis(prefix, zone, tz, tm->tm_hour, duration);
+      if (tz == UNKNOWN)
+        tz1 = tarifzeit(tm, why, ((prefix == DTAG) && CityWeekend));
+      else
+        tz1 = tz;
+
+      tarif = tpreis(prefix, zone, tz1, hour, duration);
 
       if (prefix == preselect)
         providertarif = tarif;
@@ -1304,13 +1324,14 @@ void showcheapest(int zone, int duration, int ignoreprovider, char *info)
     } /* if */
   } /* for */
 
-  if ((cheapest != UNKNOWN) && (ignoreprovider != UNKNOWN)) {
+
+  if (!verbose) {
     sprintf(info, "Try 010%02d:%s", cheapest, t[cheapest].Provider);
-    return;
+    return(cheapest);
   } /* if */
 
   if (cheapest != UNKNOWN) {
-    tarif = t[cheapest].tarif[zone][tz][tm->tm_hour];
+    tarif = t[cheapest].tarif[zone][tz1][hour];
 
     if (t[cheapest].takt1[zone] == UNKNOWN)
       sprintf(s, "DM %5.3f/%7.3fs", t[cheapest].taktpreis[zone], tarif);
@@ -1333,9 +1354,20 @@ void showcheapest(int zone, int duration, int ignoreprovider, char *info)
   qsort(sort, n, sizeof(SORT), compare);
 
   for (n1 = 0; n1 < n; n1++)
-    if (sort[n1].tarif != -1)
-      print_msg(PRT_NORMAL, "010%02d:%s%*sDM %5.3f\n", sort[n1].prefix,
-        t[sort[n1].prefix].Provider, 15 - strlen(t[sort[n1].prefix].Provider), "", sort[n1].tarif);
+    if (sort[n1].tarif != -1) {
+
+      if (t[sort[n1].prefix].takt1[zone] == UNKNOWN) {
+        tarif = t[sort[n1].prefix].tarif[zone][tz1][hour];
+        sprintf(s, "[Takt DM %6.3f/%7.3fs]", t[sort[n1].prefix].taktpreis[zone], tarif);
+      }
+      else
+        sprintf(s, "[Takt %d/%d]", t[sort[n1].prefix].takt1[zone], t[sort[n1].prefix].takt2[zone]);
+
+      print_msg(PRT_NORMAL, "010%02d:%s%*sDM %5.3f %s\n", sort[n1].prefix,
+        t[sort[n1].prefix].Provider, 15 - strlen(t[sort[n1].prefix].Provider), "", sort[n1].tarif, s);
+    } /* if */
+
+  return(cheapest);
 } /* showcheapest */
 
 

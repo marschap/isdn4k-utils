@@ -1,4 +1,4 @@
-/* $Id: processor.c,v 1.48 1999/03/25 19:40:01 akool Exp $
+/* $Id: processor.c,v 1.49 1999/04/03 12:47:03 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,19 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.49  1999/04/03 12:47:03  akool
+ * - isdnlog Version 3.12
+ * - "%B" tag in ILABEL/OLABEL corrected
+ * - isdnlog now register's incoming calls when there are no free B-channels
+ *   (idea from sergio@webmedia.es)
+ * - better "samples/rate.conf.de" (suppress provider without true call-by-call)
+ * - "tarif.dat" V:1.17 [03-Apr-99]
+ * - Added EWE-Tel rates from Reiner Klaproth <rk1@msjohan.dd.sn.schule.de>
+ * - isdnconf can now be used to generate a Least-cost-router table
+ *   (try "isdnconf -c .")
+ * - isdnlog now simulate a RELEASE COMPLETE if nothing happpens after a SETUP
+ * - CHARGEMAX Patches from Oliver Lauer <Oliver.Lauer@coburg.baynet.de>
+ *
  * Revision 1.48  1999/03/25 19:40:01  akool
  * - isdnlog Version 3.11
  * - make isdnlog compile with egcs 1.1.7 (Bug report from Christophe Zwecker <doc@zwecker.com>)
@@ -551,6 +564,7 @@
 
 static int    HiSax = 0, hexSeen = 0, uid = UNKNOWN;
 static char  *asnp, *asnm;
+static int    chanused[2] = { 0, 0 };
 #ifdef Q931
 static int    lfd = 0;
 #endif
@@ -784,6 +798,9 @@ static void buildnumber(char *num, int oc3, int oc3a, char *result, int version,
 #endif
 
   *intern = strlen(num) < interns0;
+
+  if (*provider == UNKNOWN)
+    *provider = preselect;
 
   if (!dir && (who == CALLED) && !*intern) {
     *internetnumber = isInternetAccess(*provider, num);
@@ -2090,7 +2107,6 @@ static void decode(int chan, register char *p, int type, int version, int tei)
 #else
                       n = facility_start(p, AOC_INITIAL, 0);
 #endif
-
                       if (n == AOC_OTHER)
                         ; /* info(chan, PRT_SHOWAOCD, STATE_AOCD, asnm); */
                       else {
@@ -2118,10 +2134,13 @@ static void decode(int chan, register char *p, int type, int version, int tei)
                           if (call[chan].aoce == -1) /* Firsttime */
                             call[chan].aoce = 1;
 			  else
-                          call[chan].aoce++;
+                            call[chan].aoce++;
                         } /* if */
 
-                        call[chan].pay = pay;
+                        /* Wenn ueberhaupt, dann nur wenn n<>0, aber bei
+                           selbst generierten AOC-Informationen nicht mehr
+                           noetig
+                        call[chan].pay = pay; */
 
                         if (currency_mode == AOC_UNITS)
                           call[chan].aoce = n;
@@ -2135,8 +2154,8 @@ static void decode(int chan, register char *p, int type, int version, int tei)
                         aoc_debug(-1, s);
 
                         if (!n) {
-                          if (call[chan].provider == 33) /* Only DTAG send's AOCD */
-                          info(chan, PRT_SHOWAOCD, STATE_AOCD, "Free of charge");
+                          if (call[chan].provider == DTAG) /* Only DTAG send's AOCD */
+                            info(chan, PRT_SHOWAOCD, STATE_AOCD, "Free of charge");
                         }
                         else if (n < 0) {
                           tx = cur_time - call[chan].connect;
@@ -2166,50 +2185,6 @@ static void decode(int chan, register char *p, int type, int version, int tei)
                                   currency,
                                   double2str(call[chan].pay, 6, 2, DEB));
                             } /* else */
-
-                            if (!replay && (chargemax != 0.0)) {
-                              if (day != known[c]->day) {
-                                sprintf(s1, "CHARGEMAX resetting %s's charge (day %d->%d)",
-                                  known[c]->who, (known[c]->day == -1) ? 0 : known[c]->day, day);
-
-                                info(chan, PRT_SHOWCHARGEMAX, STATE_AOCD, s1);
-
-                                known[c]->scharge += known[c]->charge;
-                                known[c]->charge = known[c]->rcharge = 0.0;
-                                known[c]->day = day;
-                              } /* if */
-
-                              known[c]->charge += (pay / call[chan].aoce);
-                              known[c]->rcharge += (pay / call[chan].aoce);
-
-                              sprintf(s1, "CHARGEMAX remaining=%s %s %s %s",
-                                currency,
-                                double2str((chargemax - known[c]->charge), 6, 2, DEB),
-                                (connectmax == 0.0) ? "" : double2clock(connectmax - known[c]->online - tx),
-                                (bytemax == 0.0) ? "" : double2byte((double)(bytemax - known[c]->bytes)));
-
-
-                              info(chan, PRT_SHOWCHARGEMAX, STATE_AOCD, s1);
-
-                              if ((known[c]->charge >= chargemax) && (*known[c]->interface > '@'))
-                                chargemaxAction(chan, (known[c]->charge - chargemax));
-                            } /* if */
-
-                            if (!replay && (connectmax != 0.0)) {
-                              if (month != known[c]->month) {
-                                sprintf(s1, "CONNECTMAX resetting %s's online (month %d->%d)",
-                                  known[c]->who, (known[c]->month == -1) ? 0 : known[c]->month, month);
-
-                                info(chan, PRT_SHOWCHARGEMAX, STATE_AOCD, s1);
-
-                                known[c]->sonline += known[c]->online;
-                                known[c]->online = 0.0;
-                                known[c]->month = month;
-
-                                known[c]->sbytes += known[c]->bytes;
-                                known[c]->bytes = 0.0;
-                              } /* if */
-                            } /* if */
                           }
                           else if (-n > 1) { /* try to guess Gebuehrenzone */
 #ifdef ISDN_AT
@@ -2302,42 +2277,6 @@ static void decode(int chan, register char *p, int type, int version, int tei)
                             } /* if */
                           } /* if */
                         }
-                        else { /* AOC-E */
-                          if ((c = call[chan].confentry[OTHER]) > -1) {
-
-                            if (!replay && (chargemax != 0.0)) { /* only used here if no AOC-D */
-                              if (day != known[c]->day) {
-                                sprintf(s, "CHARGEMAX resetting %s's charge (day %d->%d)",
-                                  known[c]->who, (known[c]->day == -1) ? 0 : known[c]->day, day);
-
-                                info(chan, PRT_SHOWCHARGEMAX, STATE_AOCD, s);
-
-                                known[c]->scharge += known[c]->charge;
-                                known[c]->charge = 0.0;
-                                known[c]->day = day;
-                              } /* if */
-                            } /* if */
-
-                            if (!replay && (connectmax != 0.0)) { /* only used here if no AOC-D */
-                              if (month != known[c]->month) {
-                                sprintf(s, "CONNECTMAX resetting %s's online (month %d->%d)",
-                                  known[c]->who, (known[c]->month == -1) ? 0 : known[c]->month, month);
-
-                                info(chan, PRT_SHOWCHARGEMAX, STATE_AOCD, s);
-
-                                known[c]->sonline += known[c]->online;
-                                known[c]->online = 0.0;
-                                known[c]->month = month;
-
-                                known[c]->sbytes += known[c]->bytes;
-                                known[c]->bytes = 0.0;
-                              } /* if */
-                            } /* if */
-
-                            known[c]->charge -= known[c]->rcharge;
-                            known[c]->charge += pay;
-                          } /* if */
-                        } /* else */
                       } /* if */
                     } /* if */
 
@@ -2667,9 +2606,6 @@ static void decode(int chan, register char *p, int type, int version, int tei)
                       } /* if */
 #endif
 
-                      if ((c = call[chan].confentry[OTHER]) > -1)
-                        known[c]->rcharge = 0.0;
-
                       /* This message comes before bearer capability */
                       /* So dont show it here, show it at Bearer capability */
 
@@ -2683,6 +2619,15 @@ static void decode(int chan, register char *p, int type, int version, int tei)
                         if (call[chan].knock) {
                       	  info(chan, PRT_SHOWNUMBERS, STATE_RING, "NO FREE B-CHANNEL !!");
                       	  info(chan, PRT_SHOWNUMBERS, STATE_RING, "********************");
+#ifdef Q931
+       			  if (!q931dmp) {
+#endif
+      			    call[chan].connect = call[chan].disconnect = cur_time;
+                            call[chan].cause = -2;
+          		    logger(chan);
+#ifdef Q931
+			  } /* if */
+#endif
                         } /* if */
 
                       	if (sound)
@@ -4051,9 +3996,10 @@ static void processctrl(int card, char *s)
   register int         wegchan; /* fuer gemakelte */
   auto     int         dialin, type = 0, cref = -1, creflen, version;
   static   int         tei = BROADCAST, sapi = 0, net = 1, firsttime = 1;
-  auto     char        sx[BUFSIZ], s2[BUFSIZ], why[BUFSIZ], hint[BUFSIZ];
+  auto     char        sx[BUFSIZ], s1[BUFSIZ], s2[BUFSIZ], why[BUFSIZ], hint[BUFSIZ];
   static   char        last[BUFSIZ];
   auto     int         isAVMB1 = 0;
+  auto     double      tx;
 
 
   hexSeen = 1;
@@ -4376,6 +4322,11 @@ static void processctrl(int card, char *s)
       if (call[chan].channel) { /* Aha, Kanal war dabei, dann nehmen wir den gleich */
         chan = call[chan].channel - 1;
 
+        if (chanused[chan])
+          print_msg(PRT_DEBUG_BUGS, " DEBUG> %s: chan#%d already in use!\n", st + 4, chan);
+
+        chanused[chan] = 1;
+
         print_msg(PRT_DEBUG_BUGS, " DEBUG> %s: Chan auf %d gesetzt\n", st + 4, chan);
 
         /* nicht --channel, channel muss unveraendert bleiben! */
@@ -4509,6 +4460,7 @@ static void processctrl(int card, char *s)
        ein reingerufener Kanal eine gueltige tei */
 
     decode(chan, ps, type, version, tei);
+    chanused[chan] = 2;
 
     switch (type) {
 
@@ -4569,7 +4521,50 @@ static void processctrl(int card, char *s)
             sprintf(sx, "1.CI %s %s (now)", currency, double2str(call[chan].pay, 6, 3, DEB));
 
             info(chan, PRT_SHOWCONNECT, STATE_CONNECT, sx);
-        } /* if */
+            if ((c = call[chan].confentry[OTHER]) > -1) {
+              if (!replay && (chargemax != 0.0)) {
+                if (day != known[c]->day) {
+                  sprintf(s1, "CHARGEMAX resetting %s's charge (day %d->%d)",
+                    known[c]->who, (known[c]->day == -1) ? 0 : known[c]->day, day);
+
+                  info(chan, PRT_SHOWCHARGEMAX, STATE_AOCD, s1);
+
+                  known[c]->scharge += known[c]->charge;
+                  known[c]->charge = 0.0;
+                  known[c]->day = day;
+                } /* if */
+
+                tx = cur_time - call[chan].connect;
+                sprintf(s1, "CHARGEMAX remaining=%s %s %s %s",
+                  currency,
+                  double2str((chargemax - known[c]->charge - call[chan].pay), 6, 2, DEB),
+                  (connectmax == 0.0) ? "" : double2clock(connectmax - known[c]->online - tx),
+                  (bytemax == 0.0) ? "" : double2byte((double)(bytemax - known[c]->bytes)));
+
+
+                info(chan, PRT_SHOWCHARGEMAX, STATE_AOCD, s1);
+
+                if (((known[c]->charge + call[chan].pay)>= chargemax) && (*known[c]->interface > '@'))
+                  chargemaxAction(chan, (known[c]->charge + call[chan].pay - chargemax));
+              } /* if */
+
+              if (!replay && (connectmax != 0.0)) {
+                if (month != known[c]->month) {
+                  sprintf(s1, "CONNECTMAX resetting %s's online (month %d->%d)",
+                    known[c]->who, (known[c]->month == -1) ? 0 : known[c]->month, month);
+
+                  info(chan, PRT_SHOWCHARGEMAX, STATE_AOCD,s1);
+
+                  known[c]->sonline += known[c]->online;
+                  known[c]->online = 0.0;
+                  known[c]->month = month;
+
+                  known[c]->sbytes += known[c]->bytes;
+                  known[c]->bytes = 0.0;
+                } /* if */
+              } /* if */
+            } /* if */
+          } /* if */
         } /* if */
 
         if (sound)
@@ -4703,6 +4698,7 @@ doppelt:break;
 #endif
           logger(chan);
 
+        chanused[chan] = 0;
 	addlist(chan, type, 2);
 
         if (call[chan].dialog || any) {
@@ -4755,7 +4751,9 @@ doppelt:break;
                (call[chan].loc == 3))) {    /* Transit network */
             auto char s[BUFSIZ], s1[BUFSIZ];
 
-            showcheapest(call[chan].zone, 181, call[chan].provider, s1);
+	    *s = call[chan].provider;
+            s[1] = 0;
+            showcheapest(call[chan].zone, 181, s, s1, -1, -1, 0);
 
             sprintf(s, "OVERLOAD %s", s1);
 
@@ -4764,6 +4762,7 @@ doppelt:break;
 
           if (OUTGOING && ((c = call[chan].confentry[OTHER]) > -1)) {
 	    if (chargemax != 0.0) {
+            known[c]->charge += call[chan].pay;
             sprintf(sx, "CHARGEMAX total=%s %s today=%s %s remaining=%s %s",
               currency,
               double2str(known[c]->scharge + known[c]->charge, 7, 2, DEB),
@@ -4776,7 +4775,7 @@ doppelt:break;
 
             if (connectmax != 0.0) {
               if (connectmaxmode == 1)
-								known[c]->online += ((int)((call[chan].disconnect - call[chan].connect + 59) / 60.0)) * 60.0;
+		known[c]->online += ((int)((call[chan].disconnect - call[chan].connect + 59) / 60.0)) * 60.0;
               else
                 known[c]->online += call[chan].disconnect - call[chan].connect;
 
@@ -4946,7 +4945,7 @@ retry:
             ;
           else
           processctrl(atoi(p3), p3 + 3);
-        }
+        } /* else */
       }
       else
         processctrl(card, p1);
@@ -5062,19 +5061,51 @@ void morekbd()
 
 /*****************************************************************************/
 
+static void teardown(int chan)
+{
+  auto char sx[BUFSIZ];
+
+
+#ifdef Q931
+  if (!q931dmp)
+#endif
+    logger(chan);
+
+  chanused[chan] = 0;
+
+  call[chan].disconnect = call[chan].connect;
+  call[chan].cause = 0x66; /* Recovery on timer expiry */
+
+  addlist(chan, SETUP, 2);
+
+  sprintf(sx, "HANGUP (%s)", qmsg(TYPE_CAUSE, VERSION_EDSS1, call[chan].cause));
+  info(chan, PRT_SHOWHANGUP, STATE_HANGUP, sx);
+
+  if (sound)
+    ringer(chan, RING_HANGUP);
+
+  clearchan(chan, 1);
+} /* teardown */
+
+/*****************************************************************************/
+
 void processcint()
 {
-  register int    chan;
-  auto	   char   sx[BUFSIZ], why[BUFSIZ];
-  auto	   double  newcint;
+  register int    chan, c;
+  auto	   char   sx[BUFSIZ], s1[BUFSIZ], why[BUFSIZ];
+  auto	   double newcint, tx;
   auto	   int	  dur;
 
 
   for (chan = 0; chan < 2; chan++) {
-    if (OUTGOING && (call[chan].cint > 1)) {
-      if (cur_time >= call[chan].nextcint) {
 
         dur = cur_time - call[chan].connect;
+
+    if ((chanused[chan] == 1) && (dur > 50)) /* more than 50 seconds after SETUP nothing happen? */
+      teardown(chan);
+
+    if (OUTGOING && (call[chan].cint > 1)) {
+      if (cur_time >= call[chan].nextcint) {
 
         if (call[chan].cinth != hour) { /* Moeglicherweise Taktwechsel */
 
@@ -5095,14 +5126,31 @@ void processcint()
         price(chan, why, 0);
 
         sprintf(sx, "%d.CI %s %s (after %s) ",
-            call[chan].ctakt,
-            currency,
-            double2str(call[chan].pay, 6, 3, DEB),
-            double2clock((double)dur));
+          call[chan].ctakt,
+          currency,
+          double2str(call[chan].pay, 6, 3, DEB),
+          double2clock((double)dur));
 
-          info(chan, PRT_SHOWCONNECT, STATE_CONNECT, sx);
+        info(chan, PRT_SHOWCONNECT, STATE_CONNECT, sx);
 
         call[chan].nextcint += (int)call[chan].cint;
+
+        if ((c = call[chan].confentry[OTHER]) > -1) {
+          if (!replay && (chargemax != 0.0)) {
+
+            tx = cur_time - call[chan].connect;
+            sprintf(s1, "CHARGEMAX remaining=%s %s %s %s",
+              currency,
+              double2str((chargemax - known[c]->charge - call[chan].pay), 6, 2, DEB),
+              (connectmax == 0.0) ? "" : double2clock(connectmax - known[c]->online - tx),
+              (bytemax == 0.0) ? "" : double2byte((double)(bytemax - known[c]->bytes)));
+
+            info(chan, PRT_SHOWCHARGEMAX, STATE_AOCD, s1);
+
+            if (((known[c]->charge + call[chan].pay) >= chargemax) && (*known[c]->interface > '@'))
+              chargemaxAction(chan, (known[c]->charge + call[chan].pay - chargemax));
+          } /* if */
+        } /* if */
       } /* if */
     } /* if */
   } /* for */

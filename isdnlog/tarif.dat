@@ -1,13 +1,13 @@
-# @(#)tarif.dat  1.14  24-Mar-99  20:43
+# @(#)tarif.dat  1.17  03-Apr-99  13:46
 #
 # Copyright 1995, 1999 by Andreas Kool (akool@isdn4linux.de)
 #
-V:1.14 [24-Mar-99]
+V:1.17 [03-Apr-99]
 #
 # P: Provider
-# G: tt.mm.jjjj Tarif gltig ab
+# G: tt.mm.jjjj Tarif gueltig ab
 # C: Comment's
-# +: Verbindungsentgelt pro Gespräch
+# +: Verbindungsentgelt pro Gespraech
 # -: kostenlose Zeit in Sekunden
 # I: Internet-Zugangsnummer
 # Z: (Zone)
@@ -28,30 +28,30 @@ V:1.14 [24-Mar-99]
 #   *=jeder Tag (flat rate)
 #
 ################################################################
-P:11=o.tel.o
-G:01.03.1999
+P:11,0=o.tel.o
+G:01.04.1999
 C:Homepage: http://www.o-tel-o.de
 C:Hotline:  01803/1998 oder 0800/7370 (Geschaeftskunden)
 C:Adresse:  96038 Bamberg
 I:0191501 # (Benutzername: otelo; Passwort: online)
 Z:2-3,60/60
-T:W08-18=0.20
+T:W08-18=0.15
 T:W18-08=0.10
 T:E=0.095
 Z:4-9,60/60
 T:W08-18=0.94
 T:W18-08=0.47
 T:E=0.47
-# W22-09 sowie E* sinkt der Tarif ab der 31. Minute auf DM 0.03
+# Internet:W22-09 sowie E* sinkt der Tarif ab der 31. Minute auf DM 0.03
 Z:H,60/60
 T:*=0.059
 ################################################################
-P:13=Tele 2
+P:13,0=Tele 2
 G:08.02.1999
 C:Homepage: http://www.tele2.de
 C:Hotline:  0800/24-01013
 C:Adresse:  Postfach 130840, 40558
-C:	    Düsseldorf
+C:	    Duesseldorf
 Z:2-3,60/60
 T:W07-19=0.15
 T:W19-22=0.07
@@ -68,19 +68,68 @@ T:*=0.47
 Z:G,60/60
 T:*=2.44
 ################################################################
+P:14,0=EWE Tel
+G:01.04.1999
+C:Name:        EWE Tel GmbH
+C:Homepage:    http://www.ewetel.de
+C:Hotline:     01803 252423
+C:Adresse:     Postfach 2509
+C:             26015 Oldenburg
+C:Internet:    ueber WinShuttle, siehe
+C:             http://www.shuttle.de
+I:04919999999
+I:04413508000
+I:04413508888
+Z:1-3,1/1
+T:W06-18=0.18
+T:W18-21=0.12
+T:W21-06=0.08
+T:E06-21=0.12
+T:E21-06=0.08
+Z:4-7,1/1
+T:W09-18=0.88
+T:W18-09=0.48
+T:E=0.48
+Z:8,1/1
+T:W09-18=1.29
+T:W18-09=0.55
+T:E=0.55
+Z:9,1/1
+T:W09-18=0.96
+T:W18-09=0.48
+T:E=0.48
+Z:A,1/1
+T:*=0.62
+Z:B,1/1
+T:*=0.69
+Z:C,1/1
+T:*=1.04
+Z:D,1/1
+T:*=0.69
+Z:E,1/1
+T:*=1.79
+Z:F,1/1
+T:*=2.29
+Z:G,1/1
+T:*=3.09
+Z:H,1/1
+T:W09-21=0.07
+T:W21-09=0.04
+T:E09-21=0.07
+T:E21-09=0.04
+################################################################
 P:15,0=RSL COM
-G:23.11.1998
+G:01.04.1999
 C:Clever call
 Z:2-3,60/60
-T:W08-18=0.25 # Standard
-T:W18-21=0.13 # Abend
-T:W21-08=0.07 # Nacht
-T:E08-21=0.13
+T:W08-21=0.18
+T:W21-08=0.07
+T:E08-21=0.14
 T:E21-08=0.07
 Z:4-9,60/60
-T:W08-21=0.65
-T:W21-08=0.45
-T:E=0.45
+T:W08-21=0.69
+T:W21-08=0.49
+T:E=0.49
 Z:D,60/60
 T:*=0.40
 Z:E,60/60
@@ -113,7 +162,8 @@ C:Fax     : 0221/2222-390
 C:Adresse : Maarweg 163, 50825 Koeln
 C:Internet-Telefonkosten: Pauschaltarif 35DM/Monat bzw. Zeittakt H
 C:Reine Internetkosten  : 39DM/Monat inkl. 60 Std., danach 5Pf/Min.
-C                         5DM/Monat + 5Pf/Min.
+C:                        5DM/Monat + 5Pf/Min.
+I:?????
 Z:1,6/1
 T:W08-18=0.06
 T:W18-08=0.035
@@ -137,15 +187,15 @@ T:W08-18=0.04
 T:W18-08=0.02
 T:E=0.02
 ################################################################
-P:23=tesion ))
-G:01.02.1999
+P:23,0=tesion ))
+G:18.03.1999
 C:Name:     tesion )) Neue
 C:          Telekommunikation
 C:Homepage: http://www.tesion.de
 C: Hotline: 0800/711 0 711
 C: Telefon: 0711/20 21-610
 C: Telefax: 0711/20 21-611
-C: Adresse: Kriegsbergstraße 11,
+C: Adresse: Kriegsbergstrasse 11,
 C:          70174 Stuttgart
 +:0.06
 Z:2-3,1/1
@@ -165,93 +215,137 @@ T:*=0.59
 Z:E,1/1
 T:*=1.61
 ################################################################
-P:28=Telebridge
-G:01.01.1999
+P:24,0=TelePassport
+G:01.04.1999
+C:Name:     TelePassport Service GmbH
+C:Homepage: http://www.telepassport.de
+C:Hotline:  0800/808 808 8
+C:Telefon:  0361/594 2500
+C:Telefax:  0800/808 808 9
+C:Adresse:  Juri-Gagarin-Ring 88, 99084
+C:	    Erfurt
+I:?????
+Z:2-3,60/60
+T:W08-18=0.18
+T:W18-08=0.12
+T:E=0.12
+Z:4-9,60/60
+T:*=0.58
+Z:H,60/60
+T:*=0.12
+################################################################
+P:28,0=Telebridge
+G:01.03.1999
 C:Hotline:  01805/335 440
-C:Adresse:  Zeppelinstraße 3, 73105
-C:	    Dürnau
+C:Adresse:  Zeppelinstrasse 3, 73105
+C:	    Duernau
 C:Reseller von COLT
 -:5
 Z:1,120/120
-T:*=0.09
+T:*=0.13
 Z:2,60/60
-T:*=0.14
+T:*=0.13
 Z:3,60/60
-T:*=0.22
+T:*=0.13
 Z:4-9,60/60
-T:*=0.49
+T:*=0.47
 ################################################################
-P:30=TelDaFax
-G:04.01.1999
+P:30,0=TelDaFax
+G:31.03.1999
+C:Name:	    TeDaFax Telefon-, Daten- und Faxtransfer AG
+C:Homepage: http://www.teldafax.de
 C:Hotline:  0800/01030-00
 C:Adresse:  Postfach 2206
 C:	    35010 Marburg
 Z:2-3,1/1
-T:W09-18=0.17
-T:W18-09=0.09
+T:W07-09=0.09
+T:W09-18=0.15
+T:W18-21=0.09
+T:W21-07=0.06
 T:E=0.09
 Z:4-9,1/1
-T:W09-18=0.84
-T:W18-09=0.48
-T:E=0.48
+T:*=0.48
 ################################################################
 P:33,0=DTAG
-G:15.01.1999
+G:01.04.1999
 C:Name:     Deutsche Telekom AG
 C:Homepage: http://www.dtag.de
-C:Hotline:  0800/33-01000
-C:Internet-Zugang: Citytarif zzgl. DM 0.05/Minute Nutzungsentgeld
-C:		   pro Monat 2 Stunden Nutzungsentgelt frei
-C:                 monatliche Grundgebhr DM 8,00
+C:Hotline:  0800/33-01000, T-Online Tarifhotline: 0800/33-03333
+C:Internet-Zugang: monatliche Grundgebhr DM 8,00 enthalten 2 Freistunden
+C:		   dort ist nur das Verbindungsentgeld faellig
 C:ISDN-Tarif
-C:FIXME: Tarife überprüfen! 04-Mar-99
 C:FORMEL: 7,2 / Minutenpreis => Taktlaenge
 C:Quelle: http://www.telekom.de/untern/tarife/mobil/index.htm
 I:0191011
 Z:1,0.12
-T:W02-05=240  # Nacht
-T:W05-09=150  # Spar
-T:W09-18=90   # Standard
-T:W18-21=150  # Spar
-T:W21-02=240  # Mondschein
-T:E05-21=150  # Spar
-T:E21-05=240  # Mondschein
-Z:2-3,0.12
-T:W02-05=120  # Nacht
-T:W05-09=60   # Spar
-T:W09-18=30   # Standard
-T:W18-21=60   # Spar
-T:W21-02=60   # Mondschein
-T:E=60        # Spar
+T:W09-18=90
+T:W18-21=150
+T:W21-05=240
+T:W05-09=150
+T:E05-21=150
+T:E21-05=240
+Z:2,0.12
+T:W09-18=30
+T:W18-21=60
+T:W21-06=120
+T:W06-09=60
+T:E06-21=60
+T:E21-06=120
+Z:3,0.12
+T:W09-18=30
+T:W18-21=60
+T:W21-06=120 # FALSCH: Seit 1.4.99 kostet hier die Einheit nur DM 0,06
+T:W06-09=60
+T:E06-21=60
+T:E21-06=120 # FALSCH: Seit 1.4.99 kostet hier die Einheit nur DM 0,06
+# Z:3 Fern
+# T:1-5/09-18=0.12/30:600,0.084/30 Standard
+# T:1-5/18-21=0.12/60:600,0.084/60 Spar
+# T:1-5/21-06=0.06/60 Nacht
+# T:1-5/06-09=0.12/60:600,0.084/60 Spar
+# T:6-7,H/06-21=0.12/60:600,0.084/60 Spar
+# T:6-7,H/21-06=0.06/60 Nacht
+# Z:H T-Online
+# A:0191011
+# T:*=0.06/0,0.06/10
 Z:4-9,0.12
-T:W09-18=7.5  # Standard
-T:W18-09=15   # Spar
-T:E=15        # Spar
-Z:5,60/60
-T:W09-18=0.632  # Standard
-T:W18-09=0.431  # Spar
-T:E=0.431       # Spar
-Z:7-9,60/60
-T:W09-18=0.96  	# Standard
-T:W18-09=0.48  	# Spar
-T:E=0.60       	# Spar
-Z:8,60/60
-T:W09-18=1.44  	# Standard
-T:W18-09=0.60  	# Spar
-T:E=0.60       	# Spar
+T:W09-18=7.5
+T:W18-09=15
+T:E=15
+Z:5,0,12
+T:W09-18=11.392
+T:W18-09=16.705
+T:E=16.705
+Z:8,0.12
+T:W09-18=5.294
+T:W18-09=12.811
+T:E=12.811
 Z:H,10/10
-T:W05-09=0.098
-T:W09-18=0.13
-T:W18-21=0.098
-T:W21-05=0.08
-T:E05-21=0.098
-T:E21-05=0.08
-# ab 1.4.1999
-# Z:H,60/60
-# T:*=0.06
+T:*=0.06
+# zzgl. DM 0.06 Verbindungsentgeld/Einwahl
 ################################################################
-P:49=ACC
-G:01.01.1999
+P:40,0=Esprit
+G:01.04.1999
+C:Name:  Esprit Telecom
+C:Homepage: http://www.esprittelecom.de
+C:Hotline:  0800/1040800
+C:Adresse:  August-Thyssen-Str. 1, 40211
+C:	    Duesseldorf
+I:0192340 # (Benutzername: Esprit Telecom, Kennwort: Internet)
+Z:2-3,60/60
+T:W18-21=0.09
+T:W21-08=0.05
+T:E08-21=0.09
+T:E21-08=0.05
+Z:4-9,60/60
+T:W18-08=0.48
+T:E=0.48
+Z:H,60/60
+T:W08-18=0.08
+T:W18-08=0.06
+################################################################
+P:49,0=ACC
+G:01.04.1999
 C:Name:     ACC Telecom
 C:Homepage: http://www.acctelecom.de
 C:Hotline:  0800/122 55 222 bzw.
@@ -263,7 +357,7 @@ T:W08-18=0.12
 T:W18-08=0.09
 T:E=0.09
 Z:2-3,30/30
-T:W08-18=0.18
+T:W08-18=0.15
 T:W18-08=0.09
 T:E=0.09
 Z:4-9,1/1
@@ -283,7 +377,7 @@ T:E=0.55
 Z:E,1/1
 T:*=1.64
 ################################################################
-P:50=Talkline
+P:50,0=Talkline
 G:03.03.1999
 C:Homepage: http://www.null1050.de
 C:Hotline:  01802/2002
@@ -294,7 +388,7 @@ T:W08-21=0.18
 T:W21-08=0.09
 T:E=0.09
 Z:4-9,60/60
-T:*=0.99
+T:*=0.69
 Z:H,180/180
 T:W08-09=0.09
 T:W09-18=0.16
@@ -302,22 +396,32 @@ T:W18-21=0.09
 T:W21-08=0.09
 T:E=0.09
 ################################################################
-P:51=01051 Telecom
+P:51,0=01051
 G:17.02.1999
 C:Homepage: http://www.01051.com
-C:Adresse:  Königsalle 60f
-C:	    40210 Düsseldorf
+C:Adresse:  Koenigsallee 60f
+C:	    40210 Duesseldorf
 Z:2-3,60/60
 T:*=0.09
 ################################################################
-P:70=Arcor
-G:01.01.1999
+P:70,0=Arcor
+G:01.04.1999
 C:Mannesmann Arcor
 I:0192070 # (Benutzername: arcor; Passwort: internet; Proxy: proxy.arcor-ip.de:80; Startseite: http://www.call.arcor.net)
-Z:2-3,60/60
-T:W09-18=0.18 # Standard
-T:W18-09=0.10 # Spar
-T:E=0.10      # Spar
+Z:2,60/60
+T:W06-09=0.075
+T:W09-18=0.14
+T:W18-21=0.075
+T:W21-06=0.04
+T:E06-21=0.075
+T:E21-06=0.04
+Z:3,60/60
+T:W06-09=0.095
+T:W09-18=0.18
+T:W18-21=0.095
+T:W21-06=0.06
+T:E06-21=0.095
+T:E21-06=0.06
 Z:4-6,60/60
 T:W09-18=0.96
 T:W18-09=0.48
@@ -339,13 +443,31 @@ T:*=2.72 # FIXME
 Z:H,60/60
 T:*=0.06
 ################################################################
-P:79=Viatel
-G:24.12.1999
+P:78,0=3U
+G:01.04.1999
+C:3U Telekommunikation GmbH
+C:Homepage: http://www.uuu.de
+C:Hotline:  01805/01078-0
+C:Adresse:  Mergenthalerallee 79-81
+C:	    65760 Eschborn
+Z:2-3,1/1
+T:W08-20=0.139
+T:W20-08=0.059
+T:E08-20=0.139
+T:E20-08=0.059
+Z:4-9,1/1
+T:W08-20=0.419
+T:W20-08=0.399
+T:E08-20=0.419
+T:E20-08=0.399
+################################################################
+P:79,0=Viatel
+G:24.12.1998
 C:Homepage: http://www.viatel.de
 C:Hotline:  0800/79-01079
 C:Telefon:  069/94 994-0
 C:Telefax:  069/94 994-100
-C:Adresse:  Hanauer Landstraße 187-189,
+C:Adresse:  Hanauer Landstrasse 187-189
 C:	    60314 Frankfurt am Main
 Z:2-3,30/1
 T:W09-18=0.16
@@ -356,7 +478,7 @@ T:W09-18=0.73
 T:W18-09=0.36
 T:E=0.36
 ################################################################
-P:85=GTS-WESTCom
+P:85,0=GTS-WESTCom
 G:01.02.1999
 C:Homepage: http://www.westcom.de
 C:Hotline:  0800/937-8266
@@ -373,7 +495,7 @@ T:W21-09=0.60
 T:E09-21=0.74
 T:E21-09=0.60
 ################################################################
-P:88=WorldCom
+P:88,0=WorldCom
 C:Dies sind *nicht* die korrekten Tarife von WorldCom, da WorldCom
 C:keine Tarifdaten veroeffentlicht!
 C:Vielmehr handelt es sich hier nur um die Tarife fuer den
@@ -387,7 +509,7 @@ T:W21-05=0.03
 T:E05-21=0.048
 T:E21-05=0.03
 ################################################################
-P:90=Viag Intercom
+P:90,0=Viag Intercom
 G:01.01.1999
 Z:2-3,60/60
 T:W08-18=0.17
@@ -485,3 +607,26 @@ Z:F,60/60
 T:*=0.199
 Z:G,60/60
 T:*=0.259
+#
+# Wichtige Provider:
+# 1. Echtes Call-by-call (per 1-Apr-99):
+# 11:o.tel.o
+# 15:Debitel
+# 19:MobilCom
+# 24:TelePassport
+# 30:TelDaFax
+# 33:Deutsche Telekom
+# 40:Esprit
+# 50:Talkline
+# 51:01051 Telecom
+# 70:Arcor
+# 78:3U
+# 79:Viatel
+# 85:GTS-WESTCom
+# 90:Viag Interkom
+#
+# 2. Angemeldet:
+# 13:Tele 2
+# 15:RSL COM
+# 88:UUnet
+# 98:Mox
