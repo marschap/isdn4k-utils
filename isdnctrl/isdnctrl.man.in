@@ -1,6 +1,6 @@
-.\" $Id: isdnctrl.man.in,v 1.8 1998/03/16 09:40:57 cal Exp $
+.\" $Id: isdnctrl.man.in,v 1.9 1998/05/14 17:32:20 paul Exp $
 .\"
-.\" CHECKIN $Date: 1998/03/16 09:40:57 $
+.\" CHECKIN $Date: 1998/05/14 17:32:20 $
 .\"
 .\" Process this file with
 .\" groff -man -Tascii isdnctrl.8 for ASCII output, or
@@ -25,7 +25,7 @@ ttys!
 .LP
 The use of
 .B isdnctrl
-is independant of the hardware driver.
+is independent of the hardware driver.
 .LP
 .SH OPTIONS
 The following 
@@ -46,6 +46,9 @@ is an increasing number starting from 0. This is probably not useful with
 .SM ISDN
 so using a name like
 .B isdn0
+(for raw ip interfaces) or
+.B ippp0
+(for synchronous PPP interfaces)
 is always recommended.
 .TP
 .BI delif " name " [force]
@@ -78,11 +81,12 @@ to the list of outgoing numbers of the
 interface
 .IR name .
 Numbers in this list are used to dial the remote station if
-the connection is down and packets are to be send via the interface
+the connection is down and packets are to be sent via the interface
 (Dial on demand). More than one number can be set by calling
 .B isdnctrl addphone
 repeatedly. If more than one number is set, these will be tried
-one after another. When using a german SPV-type connection,
+one after another (the last added number is tried first, etc.).
+When using a german SPV-type connection,
 the number has to be prefixed by a capital S.
 .TP
 .BI addphone " name " in " num"
@@ -111,7 +115,7 @@ Set the EAZ (German 1TR6 protocol) or MSN (Euro-ISDN E-DSS1) for
 .SM ISDN
 interface
 .IR name " to " num .
-For an EAZ this is only one digit, while for a MSN
+For an EAZ this is only one digit, while for an MSN
 .I num
 is the whole MSN (usually the local phone number). If
 .I num
@@ -423,7 +427,7 @@ has to have a load of more than
 .I num
 cps for at least
 .B sdelay
-seconds, before it's slave starts dialing.
+seconds, before its slave starts dialing.
 .TP
 .BI dial " name"
 Force dialing of interface
