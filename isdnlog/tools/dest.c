@@ -200,13 +200,14 @@ static void append(char *dest, char *what)
 
 static bool isKey(const char *p)
 {
-  bool    key = true;
+  bool    key;
 
-  for (; *p; p++)
-    if(!isupper(*p) && *p != '_' && !isdigit(*p)) { /* e.g. _DEMD1 */
-      key = false;
-      break;
-    }
+  if ( (key = !isdigit(*p)) )
+    for (; key && *p; p++)
+      if(!isupper(*p) && *p != '_' && !isdigit(*p)) { /* e.g. _DEMD1 */
+        key = false;
+        break;
+      }
   return key;
 }
 
@@ -353,7 +354,9 @@ again2:
 	strcpy(num->tld,tld);
 	p = num->area + countrylen;
 	arealen -= countrylen;
-	Strncpy(num->area, p, 1 + (prefixlen ? prefixlen : arealen));
+	if(prefixlen)
+	  arealen=prefixlen;
+	Strncpy(num->area, p, 1 + arealen);
 	num->narea = atoi(num->area);
 	if (*onumber == '+' && strlen(onumber) > arealen + countrylen)
 	  Strncpy(num->msn, onumber + arealen + countrylen, TN_MAX_MSN_LEN);
