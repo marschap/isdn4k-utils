@@ -1,4 +1,4 @@
-/* $Id: isdnctrl.c,v 1.1 1997/02/17 00:09:21 fritz Exp $
+/* $Id: isdnctrl.c,v 1.2 1997/03/10 09:51:24 fritz Exp $
  * ISDN driver for Linux. (Control-Utility)
  *
  * Copyright 1994,95 by Fritz Elfert (fritz@wuemaus.franken.de)
@@ -21,6 +21,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnctrl.c,v $
+ * Revision 1.2  1997/03/10 09:51:24  fritz
+ * Bugfix: mapping was broken.
+ *
  * Revision 1.1  1997/02/17 00:09:21  fritz
  * New CVS tree
  *
@@ -346,7 +349,7 @@ static cmd_struct cmds[] =
         {"pppbind", "1"},
         {"pppunbind", "0"},
         {"busreject", "1"},
-        {"mapping", "0"},
+        {"mapping", "01"},
         {"system", "0"},
         {"hangup", "0"},
         {"addphone", "2"},
