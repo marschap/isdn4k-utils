@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.47 2000/08/14 18:41:42 akool Exp $
+# $Id: Makefile,v 1.48 2000/09/08 09:52:59 paul Exp $
 #
 # Toplevel Makefile for isdn4k-utils
 #
@@ -28,7 +28,7 @@ EXTRADIRS = isdnlog/tools/zone isdnlog/tools/dest isdnlog/tools/cdb
 
 SUBDIRS :=
 ifeq ($(CONFIG_ISDNLOG),y)
-	SUBDIRS := $(SUBDIRS) lib $(EXTRADIRS)
+	SUBDIRS := $(SUBDIRS) lib $(EXTRADIRS) isdnlog
 else
 	ifeq ($(CONFIG_CTRL_CONF),y)
 		SUBDIRS := $(SUBDIRS) lib
@@ -78,9 +78,6 @@ ifeq ($(CONFIG_IMON),y)
 endif
 ifeq ($(CONFIG_IMONTTY),y)
 	SUBDIRS := $(SUBDIRS) imontty
-endif
-ifeq ($(CONFIG_ISDNLOG),y)
-	SUBDIRS := $(SUBDIRS) isdnlog
 endif
 ifeq ($(CONFIG_IPPPSTATS),y)
 	SUBDIRS := $(SUBDIRS) ipppstats
