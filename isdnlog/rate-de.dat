@@ -1,14 +1,15 @@
-V:2.02 [29-Jun-2002 12:27:46]
+V:2.02 [25-Jul-2002 20:03:36]
 
 # Währungsformat
-U:%.3f EUR
+#U:%.3f EUR
+U:^%.3f c
 
 # Diese Tariftabelle ist ein Service der I4L-Tarifdatenbank-Crew.
 # Alle Angaben erfolgen ohne Gewähr
 #
 # (C) Copyright 1999, 2001 by Andreas Kool (akool@isdn4linux.de)
 #
-# $Id: rate-de.dat,v 1.121 2002/06/29 10:43:42 akool Exp $
+# $Id: rate-de.dat,v 1.122 2002/07/25 18:16:05 akool Exp $
 #
 #
 # Das "A:" Tag muß folgendermaßen gefüllt werden:
@@ -2466,7 +2467,7 @@ T:*/*=0
 Z:2-4 Deutschland
 A:+49
 T:W/08-18=0.04/60
-T:W/18-21=0.028/60   
+T:W/18-21=0.028/60
 T:W/21-08=0.025/60
 T:E,H/*=0.025/60
 Z:10 Mobilfunk D1/D2
@@ -2659,6 +2660,881 @@ T:*/*=0.245(60)/1
 #####################################################################
 #
 #
+P:81,0 01081
+B:01081
+C:Name:01081 AG
+D:dtag
+C:Name:01081 Telecom AG
+C:Address:Postfach 10 49 27, 40040 Düsseldorf
+C:Homepage:http://www.01081.com/
+C:TarifURL:http://www.01081.com/tarife.php
+C:EMail:info@01081.com
+C:Telefax:01805-908060
+C:TarifChanged:2002-07-25
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
+# G:25-Jul-2002
+C:Euro
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+Z:1-4 GermanCall
+A:+49
+T:*/*=0.015/60
+Z:10 Mobilfunk
+A:_DEMD1
+A:_DEMD2
+A:_DEME1
+A:_DEME2
+T:*/*=0.17/60
+#
+Z:200 Afghanistan
+A:AF
+T:*/*=0.97/60
+Z:202 Ägypten Mobilfunk
+A:_EGMF
+T:*/*=0.46/60
+Z:201 Ägypten
+A:EG
+T:*/*=0.42/60
+Z:203 Albanien
+A:AL
+T:*/*=0.2/60
+Z:204 Algerien
+A:DZ
+T:*/*=0.22/60
+Z:205 Amerikanisch Samoa
+A:AS
+T:*/*=0.245/60
+#Z:207 Andorra Mobilfunk
+#A:Andorra Mobilfunk
+#T:*/*=0.25/60
+Z:206 Andorra
+A:AD
+T:*/*=0.14/60
+Z:208 Angola
+A:AO
+T:*/*=0.245/60
+Z:209 Anguilla
+A:AI
+T:*/*=0.385/60
+Z:210 Antarktis
+A:AQ
+T:*/*=0.5/60
+Z:211 Antigua und Barbuda
+A:AG
+T:*/*=0.45/60
+Z:212 Äquatorial-Guinea
+A:GQ
+T:*/*=0.34/60
+Z:214 Argentinien Mobilfunk
+A:_ARMF
+T:*/*=0.27/60
+Z:213 Argentinien
+A:AR
+T:*/*=0.25/60
+Z:215 Armenien
+A:AM
+T:*/*=0.35/60
+Z:216 Aruba
+A:AW
+T:*/*=0.31/60
+Z:217 Ascension
+A:ASI
+T:*/*=0.81/60
+Z:218 Aserbaidschan
+A:AZ
+T:*/*=0.4/60
+Z:219 Äthiopien
+A:ET
+T:*/*=0.86/60
+Z:221 Australien Mobilfunk
+A:_AUMF
+T:*/*=0.225/60
+Z:220 Australien
+A:AU
+T:*/*=0.02/60
+Z:222 Bahamas
+A:BS
+T:*/*=0.18/60
+Z:223 Bahrain
+A:BH
+T:*/*=0.49/60
+Z:224 Bangladesch
+A:BD
+T:*/*=0.55/60
+Z:225 Barbados
+A:BB
+T:*/*=0.39/60
+Z:226 Belarus
+A:BY
+T:*/*=0.35/60
+Z:228 Belgien Mobilfunk
+A:_BEMF
+T:*/*=0.3/60
+Z:227 Belgien
+A:BE
+T:*/*=0.02/60
+Z:229 Belize
+A:BZ
+T:*/*=0.455/60
+Z:230 Benin
+A:BJ
+T:*/*=0.38/60
+Z:231 Bermuda
+A:BM
+T:*/*=0.21/60
+Z:232 Bhutan
+A:BT
+T:*/*=0.185/60
+Z:233 Bolivien
+A:BO
+T:*/*=0.4/60
+Z:234 Bosnien-Herzegovina
+A:BA
+T:*/*=0.27/60
+Z:235 Botswana
+A:BW
+T:*/*=0.37/60
+Z:237 Brasilien Mobilfunk
+A:_BRMF
+T:*/*=0.29/60
+Z:236 Brasilien
+A:BR
+T:*/*=0.2/60
+Z:238 Britische Jungferninseln
+A:VG
+T:*/*=0.1/60
+Z:239 Brunei
+A:BN
+T:*/*=0.27/60
+#Z:241 Bulgarien Mobilfunk
+#A:Bulgarien Mobilfunk
+#T:*/*=0.31/60
+Z:240 Bulgarien
+A:BG
+T:*/*=0.18/60
+Z:242 Burkina Faso
+A:BF
+T:*/*=0.7/60
+Z:243 Burundi
+A:BI
+T:*/*=0.5/60
+Z:245 Chile Mobilfunk
+A:_CLMF
+T:*/*=0.29/60
+Z:244 Chile
+A:CL
+T:*/*=0.1/60
+Z:247 China Mobilfunk
+A:_CNMF
+T:*/*=0.34/60
+Z:246 China
+A:CN
+T:*/*=0.21/60
+Z:248 Cook Inseln
+A:CK
+T:*/*=1/60
+Z:250 Costa Rica Mobilfunk
+A:_CRMF
+T:*/*=0.26/60
+Z:249 Costa Rica
+A:CR
+T:*/*=0.17/60
+Z:252 Dänemark Mobilfunk
+A:_DKMF
+T:*/*=0.23/60
+Z:251 Dänemark
+A:DK
+T:*/*=0.02/60
+Z:253 Dominica
+A:DM
+T:*/*=0.45/60
+Z:255 Dominikanische Republik Mobilfunk
+A:_DOMF
+T:*/*=0.31/60
+Z:254 Dominikanische Republik
+A:DO
+T:*/*=0.16/60
+Z:256 Dschibuti
+A:DJ
+T:*/*=0.78/60
+Z:258 Ecuador Mobilfunk
+A:_ECMF
+T:*/*=0.49/60
+Z:257 Ecuador
+A:EC
+T:*/*=0.305/60
+Z:259 El Salvador
+A:SV
+T:*/*=0.37/60
+Z:260 Elfenbeinküste
+A:CI
+T:*/*=0.5/60
+Z:261 Eritrea
+A:ER
+T:*/*=1/60
+Z:263 Estland Mobilfunk
+A:_EEMF
+T:*/*=0.25/60
+Z:262 Estland
+A:EE
+T:*/*=0.05/60
+Z:264 Falkland Inseln
+A:FK
+T:*/*=0.5/60
+Z:265 Färöer Inseln
+A:FO
+T:*/*=0.14/60
+Z:266 Fidschi
+A:FJ
+T:*/*=0.65/60
+Z:268 Finnland Mobilfunk
+A:_FIMF
+T:*/*=0.255/60
+Z:267 Finnland
+A:FI
+T:*/*=0.02/60
+Z:270 Frankreich Mobilfunk
+A:_FRMF
+T:*/*=0.28/60
+Z:269 Frankreich
+A:FR
+T:*/*=0.02/60
+Z:271 Französisch Guyana
+A:GF
+T:*/*=0.27/60
+Z:272 Französisch Polynesien
+A:PF
+T:*/*=0.35/60
+Z:273 Gabun
+A:GA
+T:*/*=0.38/60
+Z:274 Gambia
+A:GM
+T:*/*=0.42/60
+Z:275 Georgien
+A:GE
+T:*/*=0.17/60
+#Z:277 Ghana Mobilfunk
+#A:Ghana Mobilfunk
+#T:*/*=0.37/60
+Z:276 Ghana
+A:GH
+T:*/*=0.345/60
+Z:278 Gibraltar
+A:GI
+T:*/*=0.16/60
+Z:279 Grenada
+A:GD
+T:*/*=0.5/60
+Z:281 Griechenland Mobilfunk
+A:_GRMF
+T:*/*=0.23/60
+Z:280 Griechenland
+A:GR
+T:*/*=0.145/60
+Z:282 Grönland
+A:GL
+T:*/*=0.33/60
+Z:284 Großbritannien Mobilfunk
+A:_UKMF
+T:*/*=0.29/60
+Z:283 Großbritannien
+A:UK
+T:*/*=0.02/60
+Z:285 Guadeloupe
+A:GP
+T:*/*=0.275/60
+Z:286 Guam
+A:GU
+T:*/*=0.125/60
+Z:287 Guantanamo Bay
+A:_GUAB
+T:*/*=0.8/60
+Z:289 Guatemala Mobilfunk
+A:_GTMF
+T:*/*=0.39/60
+Z:288 Guatemala
+A:GT
+T:*/*=0.3/60
+Z:290 Guinea
+A:GN
+T:*/*=0.34/60
+Z:291 Guinea-Bissau
+A:GW
+T:*/*=0.69/60
+Z:292 Guyana
+A:GY
+T:*/*=0.76/60
+Z:293 Haiti
+A:HT
+T:*/*=0.48/60
+#Z:295 Honduras Mobilfunk
+#A:Honduras Mobilfunk
+#T:*/*=0.6/60
+Z:294 Honduras
+A:HN
+T:*/*=0.46/60
+Z:297 Hongkong Mobilfunk
+A:_HKMF
+T:*/*=0.099/60
+Z:296 Hongkong
+A:HK
+T:*/*=0.06/60
+Z:299 Indien Mobilfunk
+A:_INMF
+T:*/*=0.8/60
+Z:298 Indien
+A:IN
+T:*/*=0.56/60
+Z:301 Indonesien Mobilfunk
+A:_IDMF
+T:*/*=0.265/60
+Z:300 Indonesien
+A:ID
+T:*/*=0.14/60
+Z:302 Irak
+A:IQ
+T:*/*=0.725/60
+Z:303 Iran
+A:IR
+T:*/*=0.54/60
+Z:305 Irland Mobilfunk
+A:_IEMF
+T:*/*=0.27/60
+Z:304 Irland
+A:IE
+T:*/*=0.05/60
+Z:307 Island Mobilfunk
+A:_ISMF
+T:*/*=0.135/60
+Z:306 Island
+A:IS
+T:*/*=0.115/60
+Z:309 Israel Mobilfunk
+A:_ILMF
+T:*/*=0.27/60
+Z:308 Israel
+A:IL
+T:*/*=0.1/60
+Z:311 Italien Mobilfunk
+A:_ITMF
+T:*/*=0.28/60
+Z:310 Italien
+A:IT
+T:*/*=0.02/60
+Z:312 Jamaika
+A:JM
+T:*/*=0.33/60
+Z:314 Japan Mobilfunk
+A:_JPMF
+T:*/*=0.24/60
+Z:313 Japan
+A:JP
+T:*/*=0.02/60
+Z:315 Jemen
+A:YE
+T:*/*=0.73/60
+Z:316 Jordanien
+A:JO
+T:*/*=0.34/60
+Z:317 Jugoslawien
+A:YU
+T:*/*=0.24/60
+Z:318 Kambodscha
+A:KH
+T:*/*=0.725/60
+Z:319 Kamerun
+A:CM
+T:*/*=0.45/60
+Z:320 Kanada
+A:CA
+T:*/*=0.02/60
+Z:321 Kasachstan
+A:KZ
+T:*/*=0.265/60
+Z:322 Katar
+A:QA
+T:*/*=0.475/60
+Z:323 Kenia
+A:KE
+T:*/*=0.41/60
+Z:325 Kirgisien Mobilfunk
+A:_KGMF
+T:*/*=0.49/60
+Z:324 Kirgisien
+A:KG
+T:*/*=0.275/60
+Z:326 Kiribati
+A:KI
+T:*/*=0.9/60
+Z:328 Kolumbien Mobilfunk
+A:_COMF
+T:*/*=0.34/60
+Z:327 Kolumbien
+A:CO
+T:*/*=0.175/60
+Z:329 Komoren
+A:KM
+T:*/*=0.5/60
+Z:330 Kongo
+A:CG
+T:*/*=0.49/60
+Z:331 Nordkorea
+A:KP
+T:*/*=0.51/60
+Z:333 Südkorea Mobilfunk
+A:_KRMF
+T:*/*=0.2/60
+Z:332 Südkorea
+A:KR
+T:*/*=0.12/60
+#Z:335 Kroatien Mobilfunk
+#A:Kroatien Mobilfunk
+#T:*/*=0.28/60
+Z:334 Kroatien
+A:HR
+T:*/*=0.165/60
+Z:336 Kuba
+A:CU
+T:*/*=1/60
+Z:337 Kuwait
+A:KW
+T:*/*=0.32/60
+Z:338 Laos
+A:LA
+T:*/*=0.66/60
+Z:339 Lesotho
+A:LS
+T:*/*=0.445/60
+#Z:341 Lettland Mobilfunk
+#A:Lettland Mobilfunk
+#T:*/*=0.33/60
+Z:340 Lettland
+A:LV
+T:*/*=0.21/60
+Z:343 Libanon Mobilfunk
+A:_LBMF
+T:*/*=0.57/60
+Z:342 Libanon
+A:LB
+T:*/*=0.37/60
+Z:344 Liberia
+A:LR
+T:*/*=0.39/60
+Z:345 Libyen
+A:LY
+T:*/*=0.33/60
+Z:346 Liechtenstein
+A:LI
+T:*/*=0.12/60
+#Z:348 Litauen Mobilfunk
+#A:Litauen Mobilfunk
+#T:*/*=0.35/60
+Z:347 Litauen
+A:LT
+T:*/*=0.259/60
+Z:350 Luxemburg Mobilfunk
+A:_LUMF
+T:*/*=0.19/60
+Z:349 Luxemburg
+A:LU
+T:*/*=0.05/60
+Z:351 Macau
+A:MO
+T:*/*=0.39/60
+Z:352 Madagaskar
+A:MG
+T:*/*=0.44/60
+Z:353 Malawi
+A:MW
+T:*/*=0.44/60
+Z:354 Malaysia
+A:MY
+T:*/*=0.089/60
+Z:355 Malediven
+A:MV
+T:*/*=0.485/60
+Z:356 Mali
+A:ML
+T:*/*=0.495/60
+Z:357 Malta
+A:MT
+T:*/*=0.195/60
+#Z:359 Marokko Mobilfunk
+#A:Marokko Mobilfunk
+#T:*/*=0.51/60
+Z:358 Marokko
+A:EH
+T:*/*=0.33/60
+Z:360 Marshall Inseln
+A:MH
+T:*/*=0.5/60
+Z:361 Mauretanien
+A:MR
+T:*/*=0.49/60
+Z:362 Mauritius
+A:MU
+T:*/*=0.59/60
+Z:363 Mayotte
+A:YT
+T:*/*=0.41/60
+Z:364 Mazedonien
+A:MK
+T:*/*=0.3/60
+#Z:366 Mexiko Mobilfunk
+#A:Mexiko Mobilfunk
+#T:*/*=0.205/60
+Z:365 Mexiko
+A:MX
+T:*/*=0.175/60
+Z:367 Mikronesien
+A:FM
+T:*/*=0.76/60
+Z:368 Moldavien
+A:MD
+T:*/*=0.24/60
+Z:369 Monaco
+A:MC
+T:*/*=0.31/60
+Z:370 Mongolei
+A:MN
+T:*/*=0.38/60
+Z:371 Montserrat
+A:MS
+T:*/*=0.8/60
+Z:372 Mosambik
+A:MZ
+T:*/*=0.39/60
+Z:373 Myanmar
+A:MM
+T:*/*=0.65/60
+Z:374 Namibia
+A:NA
+T:*/*=0.275/60
+Z:375 Nauru
+A:NR
+T:*/*=0.81/60
+Z:376 Nepal
+A:NP
+T:*/*=0.345/60
+Z:377 Neukaledonien
+A:NC
+T:*/*=0.485/60
+Z:379 Neuseeland Mobilfunk
+A:_NZMF
+T:*/*=0.25/60
+Z:378 Neuseeland
+A:NZ
+T:*/*=0.02/60
+Z:381 Nicaragua Mobilfunk
+A:_NIMF
+T:*/*=0.59/60
+Z:380 Nicaragua
+A:NI
+T:*/*=0.33/60
+Z:383 Niederlande Mobilfunk
+A:_NLMF
+T:*/*=0.29/60
+Z:382 Niederlande
+A:NL
+T:*/*=0.02/60
+Z:384 Niederländische Antillen
+A:AN
+T:*/*=0.29/60
+Z:385 Niger
+A:NGR
+T:*/*=0.49/60
+Z:386 Nigeria
+A:NG
+T:*/*=0.49/60
+Z:387 Niue
+A:NU
+T:*/*=0.96/60
+Z:389 Norwegen Mobilfunk
+A:_NOMF
+T:*/*=0.25/60
+Z:388 Norwegen
+A:NO
+T:*/*=0.02/60
+Z:390 Oman
+A:OM
+T:*/*=0.58/60
+Z:392 Österreich Mobilfunk
+A:_ATMF
+T:*/*=0.27/60
+Z:391 Österreich
+A:AT
+T:*/*=0.02/60
+Z:393 Pakistan
+A:PK
+T:*/*=0.55/60
+Z:394 Palau
+A:PW
+T:*/*=0.5/60
+Z:395 Panama
+A:PA
+T:*/*=0.385/60
+Z:396 Papua-Neuguinea
+A:PG
+T:*/*=0.305/60
+Z:398 Paraguay Mobilfunk
+#A:Paraguay Mobilfunk
+#T:*/*=0.47/60
+#Z:397 Paraguay
+A:PY
+T:*/*=0.42/60
+Z:400 Peru Mobilfunk
+A:_PEMF
+T:*/*=0.445/60
+Z:399 Peru
+A:PE
+T:*/*=0.28/60
+Z:402 Philippinen Mobilfunk
+A:_PHMF
+T:*/*=0.275/60
+Z:401 Philippinen
+A:PH
+T:*/*=0.235/60
+Z:404 Polen Mobilfunk
+A:_PLMF
+T:*/*=0.12/60
+Z:403 Polen
+A:PL
+T:*/*=0.07/60
+Z:406 Portugal Mobilfunk
+A:_PTMF
+T:*/*=0.3/60
+Z:405 Portugal
+A:PT
+T:*/*=0.02/60
+Z:407 Puerto Rico
+A:PR
+T:*/*=0.085/60
+Z:408 Reunion
+A:RE
+T:*/*=0.42/60
+Z:409 Ruanda
+A:RW
+T:*/*=0.54/60
+Z:411 Rumänien Mobilfunk
+A:_ROMF
+T:*/*=0.295/60
+Z:410 Rumänien
+A:RO
+T:*/*=0.245/60
+Z:412 Russland
+A:SU
+T:*/*=0.09/60
+Z:413 Sambia
+A:ZM
+T:*/*=0.34/60
+Z:414 San Marino
+A:SM
+T:*/*=0.14/60
+Z:415 Saudi Arabien
+A:SA
+T:*/*=0.45/60
+Z:417 Schweden Mobilfunk
+A:_SEMF
+T:*/*=0.25/60
+Z:416 Schweden
+A:SE
+T:*/*=0.02/60
+Z:419 Schweiz Mobilfunk
+A:_CHMF
+T:*/*=0.28/60
+Z:418 Schweiz
+A:CH
+T:*/*=0.02/60
+Z:420 Senegal
+A:SN
+T:*/*=0.645/60
+Z:421 Seychellen
+A:SC
+T:*/*=0.53/60
+Z:422 Sierra Leone
+A:SL
+T:*/*=0.585/60
+Z:423 Simbabwe
+A:ZW
+T:*/*=0.365/60
+Z:424 Singapur
+A:SG
+T:*/*=0.11/60
+#Z:426 Slowakei Mobilfunk
+#A:Slowakei Mobilfunk
+#T:*/*=0.25/60
+Z:425 Slowakei
+A:SK
+T:*/*=0.14/60
+#Z:428 Slowenien Mobilfunk
+#A:Slowenien Mobilfunk
+#T:*/*=0.245/60
+Z:427 Slowenien
+A:SI
+T:*/*=0.195/60
+Z:429 Somalia
+A:SO
+T:*/*=0.74/60
+Z:431 Spanien Mobilfunk
+A:_ESMF
+T:*/*=0.3/60
+Z:430 Spanien
+A:ES
+T:*/*=0.02/60
+Z:432 Sri Lanka
+A:LK
+T:*/*=0.315/60
+Z:433 St. Vincent und Grenadinen
+A:VC
+T:*/*=0.465/60
+Z:434 St. Pierre und Miquelon
+A:PM
+T:*/*=0.29/60
+Z:435 St. Helena
+A:SH
+T:*/*=0.5/60
+Z:436 St. Kitts und Necis
+A:KN
+T:*/*=0.44/60
+Z:437 St. Lucia
+A:LC
+T:*/*=0.46/60
+Z:438 Südafrika
+A:ZA
+T:*/*=0.18/60
+Z:439 Sudan
+A:SD
+T:*/*=0.49/60
+Z:440 Surinam
+A:SR
+T:*/*=0.66/60
+Z:441 Swasiland
+A:SZ
+T:*/*=0.21/60
+Z:442 Syrien
+A:SY
+T:*/*=0.6/60
+Z:443 Tadschikistan
+A:TJ
+T:*/*=0.345/60
+Z:445 Taiwan Mobilfunk
+A:_TWMF
+T:*/*=0.19/60
+Z:444 Taiwan
+A:TW
+T:*/*=0.099/60
+Z:446 Tansania
+A:TZ
+T:*/*=0.405/60
+Z:448 Thailand Mobilfunk
+A:_THMF
+T:*/*=0.35/60
+Z:447 Thailand
+A:TH
+T:*/*=0.265/60
+Z:449 Togo
+A:TG
+T:*/*=0.54/60
+Z:450 Tonga
+A:TO
+T:*/*=0.66/60
+Z:451 Trinidad und Tobago
+A:TT
+T:*/*=0.445/60
+Z:452 Tschad
+A:TD
+T:*/*=0.74/60
+Z:454 Tschechische Republik Mobilfunk
+A:_CZMF
+T:*/*=0.3/60
+Z:453 Tschechische Republik
+A:CZ
+T:*/*=0.1/60
+Z:455 Tunesien
+A:TN
+T:*/*=0.36/60
+Z:457 Türkei Mobilfunk
+A:_TRMF
+T:*/*=0.23/60
+Z:456 Türkei
+A:TR
+T:*/*=0.16/60
+Z:458 Turkmenistan
+A:TM
+T:*/*=0.375/60
+Z:459 Turks- und Caicosinseln
+A:TC
+T:*/*=0.435/60
+Z:460 Tuvalu
+A:TV
+T:*/*=0.76/60
+Z:467 USA
+A:US
+T:*/*=0.01/60
+Z:461 Uganda
+A:UG
+T:*/*=0.285/60
+Z:462 Ukraine
+A:UA
+T:*/*=0.21/60
+Z:464 Ungarn Mobilfunk
+A:_HUMF
+T:*/*=0.26/60
+Z:463 Ungarn
+A:HU
+T:*/*=0.145/60
+#Z:466 Uruguay Mobilfunk
+#A:Uruguay Mobilfunk
+#T:*/*=0.45/60
+Z:465 Uruguay
+A:UY
+T:*/*=0.35/60
+Z:468 Usbekistan
+A:UZ
+T:*/*=0.39/60
+Z:469 Vanuatu
+A:VU
+T:*/*=1/60
+Z:470 Vatikanstadt
+A:VA
+T:*/*=0.11/60
+Z:472 Venezuela Mobilfunk
+A:_VEMF
+T:*/*=0.345/60
+Z:471 Venezuela
+A:VE
+T:*/*=0.24/60
+Z:473 Vereinigte Arabische Emirate
+A:AE
+T:*/*=0.34/60
+Z:474 Vietnam
+A:VN
+T:*/*=0.81/60
+Z:475 West Samoa
+A:WS
+T:*/*=0.505/60
+Z:476 Zaire
+A:ZR
+T:*/*=0.445/60
+Z:477 Zentralafrikanische Republik
+A:CF
+T:*/*=0.43/60
+Z:479 Zypern Mobilfunk
+A:_CYMF
+T:*/*=0.16/60
+Z:478 Zypern
+A:CY
+T:*/*=0.165/60
+#####################################################################
+#
+#
 P:86,0 One.Tel
 B:01086
 C:Address:ONE.TEL Limited (UK), Clements House, 14-18 Gresham Street, London, EC2V 7JE, England
@@ -2825,7 +3701,7 @@ A:_DEMD1
 A:_DEMD2
 T:*/*=0.22/60
 
-Z:11 Mobilfunk E-plus/Quam 
+Z:11 Mobilfunk E-plus/Quam
 A:_DEME1
 A:_DEMQ
 T:*/*=0.3017/60
@@ -3199,7 +4075,7 @@ A:+49
 T:*/*=0.028/60
 Z:10 Mobilfunk
 A:_DEMF
-T:*/*=0.165/60
+T:*/*=0.19/60
 #####################################################################
 #
 #
@@ -3276,7 +4152,7 @@ T:*/*=0.179/60
 #####################################################################
 #
 #
-P:249,0 Germanphone
+P:249,0 Germanphone!
 B:0190049
 C:Address:
 C:Name:Germanphone (01058)
@@ -3292,13 +4168,35 @@ A:112
 T:*/*=0
 Z:1-4 GermanCall
 A:+49
-T:*/*=0.018(60)/300
+T:*/*=0.02(60)/300
 Z:10 Mobilfunk
 A:_DEMD1
 A:_DEMD2
 A:_DEME1
 A:_DEME2
-T:*/*=0.16(60)/300
+T:*/*=0.14(60)/300
+#####################################################################
+#
+#
+P:251,0 Junior Telecom*
+B:0190051
+C:Address:
+C:Name:Junior Telecom (01051)
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+Z:1-4 GermanCall
+A:+49
+T:*/*=0.017/60
+Z:10 Mobilfunk
+A:_DEMF
+T:*/*=0.155/60
 #####################################################################
 #
 #
@@ -3364,7 +4262,7 @@ C:Address:
 C:Name:Telestunt (01051)
 C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
-# G:01-Mai-2002
+# G:24-Jul-2002
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -3374,10 +4272,12 @@ A:112
 T:*/*=0
 Z:1-4 GermanCall
 A:+49
-T:*/*=0.019/60
+T:*/09-18=0.028/60
+T:*/18-09=0.017/60
 Z:10 Mobilfunk
 A:_DEMF
-T:*/*=0.15(60)/240
+T:*/09-18=0.185/60
+T:*/18-09=0.155/60
 #####################################################################
 #
 #
@@ -3424,13 +4324,13 @@ A:112
 T:*/*=0
 Z:1-4 GermanCall
 A:+49
-T:*/*=0.020/60
+T:*/*=0.028/60
 Z:10 Mobilfunk
 A:_DEMD1
 A:_DEMD2
 A:_DEME1
 A:_DEME2
-T:*/*=0.20/60
+T:*/*=0.189/60
 #####################################################################
 #
 #

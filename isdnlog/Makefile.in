@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.203 2002/07/19 19:03:55 keil Exp $
+## $Id: Makefile.in,v 1.204 2002/07/25 18:16:05 akool Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,13 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.204  2002/07/25 18:16:05  akool
+## isdnlog-2.60:
+##   - new provider "01081" (1,5 EuroCent/minute)
+## 	- good bye Euro ;-)
+##   	with the entry "U:^%.3f c" in "rate-de.dat" now isdnlog/isdnbill
+##     shows amounts in EuroCent (Value *= 100.0)
+##
 ## Revision 1.203  2002/07/19 19:03:55  keil
 ## First changes to compile utils without /usr/src/linux/drivers/isdn
 ##
@@ -1537,7 +1544,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 4.59
+VERSION     = 4.60
 
 MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 \
 	      isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 \

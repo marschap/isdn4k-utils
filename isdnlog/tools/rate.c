@@ -1,6 +1,6 @@
 /* #define DEBUG_REDIRZ */
 
-/* $Id: rate.c,v 1.84 2002/04/22 19:07:50 akool Exp $
+/* $Id: rate.c,v 1.85 2002/07/25 18:16:06 akool Exp $
  *
  * Tarifdatenbank
  *
@@ -21,6 +21,13 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rate.c,v $
+ * Revision 1.85  2002/07/25 18:16:06  akool
+ * isdnlog-2.60:
+ *   - new provider "01081" (1,5 EuroCent/minute)
+ * 	- good bye Euro ;-)
+ *   	with the entry "U:^%.3f c" in "rate-de.dat" now isdnlog/isdnbill
+ *     shows amounts in EuroCent (Value *= 100.0)
+ *
  * Revision 1.84  2002/04/22 19:07:50  akool
  * isdnlog-4.58:
  *   - Patches from Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
@@ -2469,18 +2476,18 @@ static int _getRate(RATE *Rate, char **msg, int clear)
      with "known" _area and _zone, from other prefix, which gives nice
      SIGSEGVs
   */
-        
+
   if (clear && prefix != oprefix) {
     oprefix = prefix;
     Rate->_area = Rate->_zone = UNKNOWN;
   }
-  
+
   if (Rate->_area==UNKNOWN || Rate->_zone == UNKNOWN)
     if(get_area(&prefix, Rate, number, msg, message) == UNKNOWN)
       return UNKNOWN;
 
   oprefix = prefix;
-  
+
   Rate->Country  = Provider[prefix].Area[Rate->_area].Name;
   if (Rate->dst[0] && *Rate->dst[0])
     Rate->Zone     = Provider[prefix].Zone[Rate->_zone].Name;
@@ -2820,7 +2827,12 @@ char *printRate (double value)
   static int  index=0;
 
   if (++index>=STRINGS) index=0;
-  snprintf (buffer[index], STRINGL, Format, value);
+
+  if (*Format == '^')
+    snprintf (buffer[index], STRINGL, Format + 1, value * 100.0);
+  else
+    snprintf (buffer[index], STRINGL, Format, value);
+
   return buffer[index];
 }
 

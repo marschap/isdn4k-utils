@@ -1,4 +1,4 @@
-# rate.conf  4.46  07-Jun-02  17:33
+# rate.conf  4.46  25-Jul-02  18:32
 
 # E = echtes Call by Call, d.h. kann sofort ohne Anmeldung genutzt
 #     werden. Abrechnung erfolgt ueber die Telekom-Rechnung
@@ -129,7 +129,7 @@ P:75=0    #E Callino
 P:78=0    #E 3U
 P:79=0    #E Viatel
 # P:80=0  #E Telegate                     # diesen Dienst gibt es seit 14.3.2000 nicht mehr
-# P:81=0  #A Infotel
+P:81=0    #E 01081
 # P:82=0  #A AugustaKom
 # P:83=0  #A Wuerzburger
 # P:84=0  #A Telegroup
@@ -194,16 +194,17 @@ P:150=0   #E ElisaNet
 # P:190=0 #A CNE
 # P:195=0 #A TeleNec
 # P:199=0 #A ESTel
-P:224=0		#E Pennyphone   # -> 01058
-P:229=0		#E Telebillig   # -> 01051
-P:231=0		#E Teledump     # -> 01051
-P:232=0		#E Phonedump    # -> 01058
-P:235=0		#E TeleDiscount # -> 01051
-P:237=0		#E Fonfux       # -> 01058
-P:249=0		#E Germanphone	# -> 01058
-P:254=0		#E Calladin	# -> 01058
-P:271=0		#E RapidCall	# -> 01058
-P:276=0		#E Telestunt	# -> 01051
-P:282=0		#E lightTalk	# -> 01058
-P:284=0		#E maxbell	# -> 01058
-P:287=0		#E Phonecraft	# -> 01058
+P:224=0		#E Pennyphone     # -> 01058
+P:229=0		#E Telebillig     # -> 01051
+P:231=0		#E Teledump       # -> 01051
+P:232=0		#E Phonedump      # -> 01058
+P:235=0		#E TeleDiscount   # -> 01051
+P:237=0		#E Fonfux         # -> 01058
+P:249=0		#E Germanphone	  # -> 01058
+P:251=0		#E Junior Telecom # -> 01051
+P:254=0		#E Calladin	  # -> 01058
+P:271=0		#E RapidCall	  # -> 01058
+P:276=0		#E Telestunt	  # -> 01051
+P:282=0		#E lightTalk	  # -> 01058
+P:284=0		#E maxbell	  # -> 01058
+P:287=0		#E Phonecraft	  # -> 01058

@@ -1,4 +1,4 @@
-/* $Id: isdnbill.c,v 1.18 2002/03/01 19:33:52 akool Exp $
+/* $Id: isdnbill.c,v 1.19 2002/07/25 18:16:05 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Billing-module)
  *
@@ -297,19 +297,18 @@ static void total(int w)
   	  strich('-', 67);
         }
 
-        printf("%6s,%d %-12s %5d %s  %s %9.4f",
+        printf("%6s,%d %-12s %5d %s  %13s",
           msnsum[w][j][i].msn,
           j,
           msnsum[w][j][i].alias ? msnsum[w][j][i].alias : "",
           msnsum[w][j][i].ncalls,
           timestr(msnsum[w][j][i].duration),
-          c.currency,
-          msnsum[w][j][i].pay);
+	  printRate(msnsum[w][j][i].pay));
 
         if (msnsum[w][j][i].pay == msnsum[w][j][i].compute)
           printf("\n");
         else
-          printf("  %s %9.4f\n", c.currency, msnsum[w][j][i].compute);
+          printf("  %13s\n", printRate(msnsum[w][j][i].compute));
 
         ncalls   += msnsum[w][j][i].ncalls;
         duration += msnsum[w][j][i].duration;
@@ -336,16 +335,15 @@ static void total(int w)
   if (!firsttime) {
   strich('=', 67);
 
-  printf("                      %5d %s  %s %9.4f",
+  printf("                      %5d %s  %13s",
     ncalls,
     timestr(duration),
-    c.currency,
-    pay);
+    printRate(pay));
 
   if (pay == compute)
     printf("\n");
   else
-    printf("  %s %9.4f\n", c.currency, compute);
+    printf("  %13s\n", printRate(compute));
   } /* if */
 
   ncalls = 0;
@@ -375,13 +373,11 @@ static void total(int w)
 
       printf(":%-24s", getProvider(pnum2prefix(i, c.connect)));
 
-      printf("%5d %s  %s %9.4f  %s %9.4f %8d %5.1f%%\n",
+      printf("%5d %s  %13s  %13s %8d %5.1f%%\n",
         provsum[w][i].ncalls,
         timestr(provsum[w][i].duration),
-        c.currency,
-        provsum[w][i].pay,
-        c.currency,
-        provsum[w][i].compute,
+        printRate(provsum[w][i].pay),
+        printRate(provsum[w][i].compute),
         provsum[w][i].failed,
         100.0 * (provsum[w][i].ncalls - provsum[w][i].failed) / provsum[w][i].ncalls);
 
@@ -410,14 +406,12 @@ static void total(int w)
   if (!firsttime) {
   strich('=', 93);
 
-  printf("%*s%5d %s  %s %9.4f  %s %9.4f %8d %5.1f%%\n",
+  printf("%*s%5d %s  %13s  %13s %8d %5.1f%%\n",
     32, "",
     ncalls,
     timestr(duration),
-    c.currency,
-    pay,
-    c.currency,
-    compute,
+    printRate(pay),
+    printRate(compute),
     failed,
     100.0 * (ncalls - failed) / ncalls);
   } /* if */
@@ -461,16 +455,14 @@ static void total(int w)
         case 7 : printf("elsewhere       "); break;
       } /* switch */
 
-      printf("%5d %s  %s %9.4f  %s %9.4f",
+      printf("%5d %s  %13s  %13s",
         zonesum[w][i].ncalls,
         timestr(zonesum[w][i].duration),
-        c.currency,
-        zonesum[w][i].pay,
-        c.currency,
-        zonesum[w][i].compute);
+        printRate(zonesum[w][i].pay),
+        printRate(zonesum[w][i].compute));
 
       if (0 /* preselect == DTAG */)
-        printf("  %s %9.4f\n", c.currency, zonesum[w][i].aktiv);
+        printf("  %13s\n", printRate(zonesum[w][i].aktiv));
       else
         printf("\n");
 
@@ -499,17 +491,15 @@ static void total(int w)
   if (!firsttime) {
   strich('=', (0 /* preselect == DTAG */) ? 73 : 61);
 
-  printf("%*s%5d %s  %s %9.4f  %s %9.4f",
+  printf("%*s%5d %s  %13s  %13s",
     16, "",
     ncalls,
     timestr(duration),
-    c.currency,
-    pay,
-    c.currency,
-    compute);
+    printRate(pay),
+    printRate(compute));
 
   if (0 /* preselect == DTAG */)
-    printf("  %s %9.4f\n", c.currency, aktiv);
+    printf("  %13s\n", printRate(aktiv));
   else
     printf("\n");
 
@@ -606,14 +596,12 @@ static void showpartner()
               firsttime[k][0] = 1;
             } /* if */
 
-            printf("%-25s %5d   %s %9.4f %s   %s %9.4f\n",
+            printf("%-25s %5d   %12s %s   %12s\n",
               clip(onlynumbers ? partner[k][i].num : known[i]->who, 25),
               partner[k][i].ncalls,
-              c.currency,
-              partner[k][i].pay,
+              printRate(partner[k][i].pay),
               timestr(partner[k][i].duration),
-              c.currency,
-              partner[k][i].compute);
+              printRate(partner[k][i].compute));
           }
           else {
 
@@ -646,15 +634,13 @@ static void showpartner()
 
             p1 = msnsum[SUBTOTAL][unknown[k][i].si1][unknown[k][i].ihome].alias;
 
-            printf("%-16s <- %-12s %5d   %s %9.4f  %s   %s %9.4f\n",
+            printf("%-16s <- %-12s %5d   %12s  %s   %12s\n",
               p,
               clip(p1 ? p1 : "", 16),
               unknown[k][i].ncalls,
-              c.currency,
-              unknown[k][i].pay,
+              printRate(unknown[k][i].pay),
               timestr(unknown[k][i].duration),
-              c.currency,
-              unknown[k][i].compute);
+              printRate(unknown[k][i].compute));
           }
           else {
 
@@ -1218,7 +1204,7 @@ int main(int argc, char *argv[], char *envp[])
                 c.pay = c.pay * 100.0 / 116.0;
 
               if (c.pay)
-                printf("%s%9.4f%s ", c.currency, c.pay, c.computed ? "*" : " ");
+                printf("%12s%s ", printRate(c.pay), c.computed ? "*" : " ");
               else
                 printf("%*s", indent, "");
 
@@ -1226,7 +1212,7 @@ int main(int argc, char *argv[], char *envp[])
 
 #if 0
               if (c.aktiv)
-                printf(" AktivPlus - %s%9.4f", c.currency, c.pay - c.aktiv);
+                printf(" AktivPlus - %13s", printRate(c.pay - c.aktiv));
 #endif
 
               msnsum[SUBTOTAL][c.si1][c.ihome].pay += c.pay;
