@@ -18,7 +18,7 @@
  * IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Id: ipppd.h,v 1.22 2002/07/06 00:34:08 keil Exp $
+ * $Id: ipppd.h,v 1.23 2003/06/30 22:30:57 keil Exp $
  */
 
 /*
@@ -215,6 +215,11 @@ extern int	cryptpap;	/* Others' PAP passwords are encrypted */
 #ifdef __linux__
 extern int      hostroute;      /* Add a route to the host at the other end? */
 #endif
+#ifdef IPPP_FILTER
+#include <net/bpf.h>
+extern struct   bpf_program pass_filter;   /* Filter for pkts to pass */
+extern struct   bpf_program active_filter; /* Filter for link-active pkts */
+#endif /* IPPP_FILTER */
 
 /*
  * Values for phase.
@@ -288,6 +293,9 @@ void link_required(int);
 void link_terminated(int);
 void link_down(int);
 void link_established(int unit);
+#ifdef IPPP_FILTER
+int set_filters(int, struct bpf_program *, struct bpf_program *);
+#endif /* IPPP_FILTER */
 int device_script(char *program,int in,int out);
 void check_auth_options(void);
 void setipdefault(void);

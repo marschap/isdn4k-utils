@@ -17,7 +17,7 @@
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-char options_rcsid[] = "$Id: options.c,v 1.23 2003/01/20 02:23:28 keil Exp $";
+char options_rcsid[] = "$Id: options.c,v 1.24 2003/06/30 22:30:57 keil Exp $";
 
 #include <stdio.h>
 #include <errno.h>
@@ -38,6 +38,10 @@ char options_rcsid[] = "$Id: options.c,v 1.23 2003/01/20 02:23:28 keil Exp $";
 #ifdef RADIUS
 #include <radiusclient.h>
 #endif
+
+#ifdef IPPP_FILTER
+#include <pcap.h>
+#endif /* IPPP_FILTER */
 
 #include "fsm.h"
 #include "ipppd.h"
@@ -140,6 +144,10 @@ int force_driver = 0;
 struct option_info auth_req_info;
 struct option_info devnam_info;
 
+#ifdef IPPP_FILTER
+struct  bpf_program pass_filter;/* Filter program for packets to pass */
+struct  bpf_program active_filter; /* Filter program for link-active pkts */
+#endif /* IPPP_FILTER */
 
 /*
  * Prototypes
@@ -291,6 +299,11 @@ static int setforcedriver(int dummy);
 char *make_username_realm ( char * );
 int __P (radius_init ( void ));
 #endif
+
+#ifdef IPPP_FILTER
+static int setpassfilter __P((int,char **));
+static int setactivefilter __P((int,char **));
+#endif /* IPPP_FILTER */
 
 /*
  * Valid arguments.
@@ -470,7 +483,10 @@ static struct cmd {
     {"nohostroute", 0, setnohostroute}, /* Don't add host route */
 #endif
     {"+force-driver",0,setforcedriver},
-
+#ifdef IPPP_FILTER
+    { "pass-filter", 1, setpassfilter},		/* pass filter */
+    { "active-filter", 1, setactivefilter},	/* link-active filter */
+#endif /* IPPP_FILTER */
     {NULL, 0, NULL}
 };
 
@@ -2614,3 +2630,33 @@ static int setforcedriver(int dummy)
     force_driver = 1;
     return 1;
 }
+
+#ifdef IPPP_FILTER
+/*
+ * setpassfilter - Set the pass filter for packets
+ */
+static int
+setpassfilter(argc, argv)
+    int argc;
+    char **argv;
+{
+    if (pcap_compile_nopcap(PPP_HDRLEN, DLT_PPP, &pass_filter, *argv, 1, netmask) == 0)
+        return 1;
+    option_error("error in pass-filter expression.\n");
+    return 0;
+}
+
+/*
+ * setactivefilter - Set the active filter for packets
+ */
+static int
+setactivefilter(argc, argv)
+    int argc;
+    char **argv;
+{
+    if (pcap_compile_nopcap(PPP_HDRLEN, DLT_PPP, &active_filter, *argv, 1, netmask) == 0)
+        return 1;
+    option_error("error in active-filter expression.\n");
+    return 0;
+}
+#endif /* IPPP_FILTER */

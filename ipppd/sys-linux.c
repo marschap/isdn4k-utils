@@ -22,7 +22,7 @@
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-char sys_rcsid[] = "$Id: sys-linux.c,v 1.25 2000/07/25 20:23:51 kai Exp $";
+char sys_rcsid[] = "$Id: sys-linux.c,v 1.26 2003/06/30 22:30:57 keil Exp $";
 
 #define _LINUX_STRING_H_
 
@@ -57,6 +57,7 @@ char sys_rcsid[] = "$Id: sys-linux.c,v 1.25 2000/07/25 20:23:51 kai Exp $";
 #if defined __GLIBC__ && __GLIBC__ >= 2
 # include </usr/include/net/ppp_defs.h>
 # include </usr/include/net/if_ppp.h>
+# include "ippp-filter-compat.h"
 # include </usr/include/net/ethernet.h>
 # include "route.h"
 #else
@@ -69,6 +70,11 @@ char sys_rcsid[] = "$Id: sys-linux.c,v 1.25 2000/07/25 20:23:51 kai Exp $";
 #if __GLIBC__ >= 2 && __GLIBC_MINOR__ >= 1
 # include <netipx/ipx.h>
 #endif
+
+#ifdef IPPP_FILTER
+#include <net/bpf.h>
+#include <linux/filter.h>
+#endif /* IPPP_FILTER */
 
 #include "fsm.h"
 #include "ipppd.h"
@@ -514,6 +520,40 @@ int sifvjcomp (int unit, int vjcomp, int cidcomp, int maxcid)
 
 	return 1;
 }
+
+#ifdef IPPP_FILTER
+/*
+ * set_filters - set the active and pass filters in the kernel driver.
+ */
+int set_filters(int u, struct bpf_program *pass, struct bpf_program *active)
+{       
+        struct sock_fprog fp;
+
+	/*
+	 *  unfortunately there is no way of checking for kernel support. the
+	 *  driver just returns 0 for unsupported ioctls, which means without
+	 *  kernel support we won't even notice the error.
+	 */
+
+	if (pass) {
+		fp.len = pass->bf_len;
+		fp.filter = (struct sock_filter *) pass->bf_insns;
+		if (ioctl(lns[u].fd, PPPIOCSPASS, &fp) < 0) {
+			syslog(LOG_ERR, "Couldn't set pass-filter in kernel.");
+			return 0;
+		}
+	}
+	if (active) {
+		fp.len = active->bf_len;
+		fp.filter = (struct sock_filter *) active->bf_insns;
+		if (ioctl(lns[u].fd, PPPIOCSACTIVE, &fp) < 0) {
+			syslog(LOG_ERR, "Couldn't set active-filter in kernel.");
+	        	return 0;
+		}
+	}
+	return 1;
+}
+#endif /* IPPP_FILTER */
 
 /*
  * sifup - Config the interface up and enable IP packets to pass.
