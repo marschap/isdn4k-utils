@@ -17,7 +17,7 @@
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-char options_rcsid[] = "$Id: options.c,v 1.9 1998/04/29 14:29:36 hipp Exp $";
+char options_rcsid[] = "$Id: options.c,v 1.10 1998/05/05 08:51:26 hipp Exp $";
 
 #include <stdio.h>
 #include <errno.h>
@@ -1873,14 +1873,18 @@ static int setdoradius(slot)
 {
 	static char *func = "setdoradius" ;
 	useradius = 1;
-	if(!called_radius_init && (radius_init() < 0))   
+	if(!called_radius_init)
 	{
-		syslog(LOG_WARNING, "can't init radiusclient in %s", func);
-	} 
-	else
-	{
-		called_radius_init = 1 ;
-		auth_order = rc_conf_int("auth_order");
+		if ( (radius_init() < 0))
+		{
+			syslog(LOG_WARNING, "can't init radiusclient in %s", func);
+			die (1) ;
+		} 
+		else
+		{
+			called_radius_init = 1 ;
+			auth_order = rc_conf_int("auth_order");
+		}
 	}
 	return 1;
 }
@@ -1890,14 +1894,18 @@ static int setdoradacct(slot)
 {
 	static char *func = "setdoradacct" ;
 	useradacct = 1;
-	if(!called_radius_init && (radius_init() < 0))   
+	if(!called_radius_init)
 	{
-		syslog(LOG_WARNING, "can't init radiusclient in %s", func);
-	} 
-	else
-	{
-		called_radius_init = 1 ;
-		auth_order = rc_conf_int("auth_order");
+		if ( (radius_init() < 0))  
+		{
+			syslog(LOG_WARNING, "can't init radiusclient in %s", func);
+			die (1) ;
+		} 
+		else
+		{
+			called_radius_init = 1 ;
+			auth_order = rc_conf_int("auth_order");
+		}
 	}
 	return 1;
 }

@@ -16,7 +16,7 @@
  * IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Id: ipppd.h,v 1.15 1998/04/29 14:29:31 hipp Exp $
+ * $Id: ipppd.h,v 1.16 1998/05/05 08:51:21 hipp Exp $
  */
 
 /*
@@ -119,7 +119,6 @@ struct link_struct {
   int rx_bytes;
   int tx_bytes;  
   time_t start_time;
-  char radius_user [MAXUSERNAME+1];
   char session_id[MAXSESSIONID+1];
   char remote_number [MAXCID+1] ;
 #endif  

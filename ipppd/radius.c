@@ -1,5 +1,5 @@
 /*
- * $Id: radius.c,v 1.2 1998/04/29 14:29:42 hipp Exp $
+ * $Id: radius.c,v 1.3 1998/05/05 08:51:28 hipp Exp $
  *
  * Copyright (C) 1996, Matjaz Godec <gody@elgo.si>
  * Copyright (C) 1996, Lars Fenneberg <in5y050@public.uni-hamburg.de>
@@ -14,6 +14,7 @@
 #include <linux/if.h>
 #include <linux/ip_fw.h>
 #include <radiusclient.h>
+#include <ctype.h>
 
 #include "ipppd.h"
 #include "fsm.h"
@@ -48,6 +49,12 @@ struct ifstats
 	long 	tx_bytes;
 	long 	tx_packets;
 };
+
+ENV *env = NULL;
+char **environment;
+#ifndef ENV_SIZE
+#define ENV_SIZE 128
+#endif
 
 /***************************************************************************
  *
@@ -189,7 +196,7 @@ static int radius_setparams(unit,vp)
 
 			case PW_FRAMED_MTU:
 			/* Don't know if this is OK but what the hack 	*/
-			/* anyoune using this succesfully ?		*/
+			/* anyone using this succesfully ?		*/
 				lcp_allowoptions[unit].mru = vp->lvalue;
 				syslog (LOG_DEBUG, 
 					"Assigned mtu %ld in %s" ,
@@ -290,6 +297,69 @@ radius_wtmp_logging(user,unit)
 }
 #endif
 
+/***************************************************************************
+ *
+ * Name: radius_buildenv
+ *
+ * Purpose: 
+ *
+ ***************************************************************************/
+int 
+radius_buildenv(env, vp)
+	ENV     *env ;
+	VALUE_PAIR *vp ;
+                      
+{
+                      
+	char name[2048] ;
+	char value[2048]; /* more than enough */
+	char *p;
+	int acount[256];
+	int attr;
+        
+        rc_add_env(env, "RADIUS_USER_NAME", radius_user);
+
+	while (vp)
+	{
+		strcpy(name, "RADIUS_");
+		
+		if (rc_avpair_tostr(vp, name+7, sizeof(name)-7, value,
+				sizeof(value)) < 0)
+		{
+			return 1;
+		}
+		
+		/* Translate "-" => "_" and uppercase*/
+		for(p = name; *p; p++)
+		{
+			*p = toupper(*p);
+			if (*p == '-') *p = '_';
+		}
+		
+		/* Add to the attribute count and append the var if necessary. */
+		if ((attr = vp->attribute) < 256)
+		{
+			int count;
+			if ((count = acount[attr]++) > 0)
+			{
+				char buf[10];
+				sprintf(buf, "_%d", count);
+				strcat(name,buf);
+			}
+		}
+		
+		if (rc_add_env(env, name, value) < 0)
+		{
+			return 1;
+		}
+		
+		vp = vp->next;
+	}
+	
+	return 0;
+
+}
+
 /****************************************************************************
  *
  * Name: radius_pap_auth 
@@ -324,12 +394,6 @@ radius_pap_auth (unit, user, passwd, msg, msglen )
 
 	received = NULL;
 
-	if ((!called_radius_init) && ( radius_init() < 0) )
-	{
-		syslog (LOG_ERR, "Can't init radiusclient in %s" , func );
-		return (UPAP_AUTHNAK);
-	}
-	
 	client_port = rc_map2id (lns[unit].devnam);
 
 	av_type = PW_FRAMED;
@@ -355,6 +419,24 @@ radius_pap_auth (unit, user, passwd, msg, msglen )
 			syslog (LOG_ERR,"Error setting params in %s" , 
 				func );
 			result = ERROR_RC;
+		}
+		else
+		{
+			/* Build the environment for ip-up and ip-down */
+			if ( env != NULL )  
+			{
+				rc_free_env ( env ) ;
+			} ;
+
+			env = rc_new_env(ENV_SIZE);
+
+			if (env != NULL)
+			{
+				if (radius_buildenv(env, received))
+					env = NULL;
+				if (env != NULL)
+					environment = env->env;
+			}
 		}
 	}
 	else
@@ -388,7 +470,7 @@ radius_pap_auth (unit, user, passwd, msg, msglen )
  *
  ***************************************************************************/
 int
-radius_chap_auth (unit, user, remmd, cstate )
+radius_chap_auth (unit,user, remmd, cstate )
 
 	int	unit ;
 	char 	*user;
@@ -416,12 +498,6 @@ radius_chap_auth (unit, user, remmd, cstate )
 	}
 
 	send = received = NULL;
-
-	if ((!called_radius_init) && (radius_init() < 0))
-	{
-		syslog (LOG_ERR,"Can't init radiusclient in %s" , func );
-		return (-1);
-	}
 
   	client_port = rc_map2id (lns[unit].devnam);
 
@@ -477,14 +553,6 @@ radius_chap_auth (unit, user, remmd, cstate )
 	
 	return (result == OK_RC)?0:(-1);
 
-}
-
-/*
- *
- */
-static int __inline__ isspace(unsigned char c)
-{
-	return c == ' ' || c == '\t' || c == '\n';
 }
 
 /***************************************************************************
@@ -629,7 +697,7 @@ radius_ip_acct_on ( unit )
 
 	close ( sockfd ) ;
 	
-	return ret;
+		return ret;
 
 };
 
@@ -707,16 +775,12 @@ radius_acct_start(unit)
 	UINT4 	av_type;
 	int 	result;
 	VALUE_PAIR *send = NULL;
+	ipcp_options *ho = &ipcp_hisoptions[unit];
+	u_int32_t hisaddr ;
 
 	static char *func = "radius_acct_start" ;
 	
 	syslog(LOG_DEBUG, "%s: entered", func ) ;
-
-	if ((!called_radius_init) && (radius_init() < 0))
-	{
-		syslog (LOG_ERR,"Can't init radiusclient in %s" , func );
-		return (UPAP_AUTHNAK);
-	}
 
   	client_port = rc_map2id (lns[unit].devnam);
 
@@ -741,6 +805,16 @@ radius_acct_start(unit)
 
 	av_type = PW_RADIUS;
 	rc_avpair_add (&send, PW_ACCT_AUTHENTIC, &av_type, 0);
+
+	rc_avpair_add (&send, PW_CALLING_STATION_ID, lns[unit].remote_number, 0);
+
+	av_type = PW_ISDN_SYNC ;
+	rc_avpair_add(&send, PW_NAS_PORT_TYPE, &av_type, 0);
+
+      
+        hisaddr = ho->hisaddr;
+	av_type = htonl(hisaddr) ;
+	rc_avpair_add (&send, PW_FRAMED_IP_ADDRESS , &av_type , 0 ) ;
       
 	result = rc_acct (client_port, send);
 
@@ -756,8 +830,13 @@ radius_acct_start(unit)
 	else 
 	{
         	lns[unit].radius_in = TRUE;
-	}
 
+#ifdef RADIUS_WTMP_LOGGING
+		if ( lns[unit].logged_in == FALSE ) 
+			radius_wtmp_logging(user,unit);
+#endif
+	}
+	
 	return ( result ) ;
 
 }
@@ -778,6 +857,8 @@ radius_acct_stop (unit)
 	int 	result;
 	VALUE_PAIR 	*send = NULL;
 	struct 	ifstats ifstats;
+	ipcp_options *ho = &ipcp_hisoptions[unit];
+	u_int32_t hisaddr ;
 
 	static char *func = "radius_acct_stop" ;
 	
@@ -825,6 +906,10 @@ radius_acct_stop (unit)
 	av_type = PW_ISDN_SYNC ;
 	rc_avpair_add(&send, PW_NAS_PORT_TYPE, &av_type, 0);
 	
+        hisaddr = ho->hisaddr;
+	av_type = htonl(hisaddr) ;
+	rc_avpair_add (&send, PW_FRAMED_IP_ADDRESS , &av_type , 0 ) ;	
+	
 	result = rc_acct (client_port, send);
 
 	rc_avpair_free(send);
@@ -856,10 +941,7 @@ char
 	char 	*user ;
 
 {
-	char 	*default_realm;
-	
-
-
+	char 	*default_realm;	
 	static char *func = "radius_acct_stop" ;
 
 	syslog(LOG_DEBUG, "%s: entered", func ) ;

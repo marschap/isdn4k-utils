@@ -33,7 +33,9 @@ of files with tty suffix is disabled by default.
 	- radius
 	- radacct
  With first (radius) one enables authentication thru RADIUS server.
- With second (radacct) one enables accounting thru RADIUS server.
+ With second (radacct) one enables accounting thru RADIUS server. If we
+ don't have PAP authentication for this ppp enabled, then user option is
+ mandatory for accounting.
 
  Those options are not interchanged in any way. So only specifying radius
 will enable ONLY authentication and not accounting.
@@ -80,3 +82,40 @@ traffic between the session measurement won't be acurate. (Unfortunately with
 current iimplementation all information in accounting chain is zeroed when
 one issues command ipfwadm -A -z). 
 
+
+Changes:
+
+19980501:
+
+	- radius_start_acct moved to ipcp_up, so we know what remote address
+	is. It is no longer fatal if accounting START record is not
+	succesfull.  (hint from John Lewis, thanks John).
+
+	- Oh, and in ipcp_up, before we call radius_acct_start, we check if
+	we didn't do this before, so no duplicated entries should hapen.
+
+	- Added PW_FRAMED_ADDRESS to START & STOP records
+
+	- Added PW_CALLER_STATION_ID to START RECORD
+
+	- Added PW_NAS_PORT_TYPE to START RECORD
+
+	- Removed radius_init calls in radius.c; they are in options.c now
+	  and are called only once, when program is started.
+
+	- If radius or radacct are specified and radius_init fails then pppd
+	  dies. It logs cause to SYSLOG before it dies.
+
+	- Question for more knowledgable as me:
+		is it ok to reset session timeout in lcp_echo_lowerdown ? 
+		does it means, that when we enter this funciton link will go
+		down ?  I just saw that idle_timeout is reset in this
+		function and I put reseting session timeout also but don't
+		know if this is OK ?
+
+	- for ipppd when RADIUS is defined also _linux_=1 is defined, so
+	  that we have idle-timeout and session-timeout
+
+	- in main.c char *envtosue is changed to **envtosue, because of
+	  warning messages. Whoever put this in, please check that if this
+	  is OK.

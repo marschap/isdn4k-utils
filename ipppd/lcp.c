@@ -21,7 +21,7 @@
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-char lcp_rcsid[] = "$Id: lcp.c,v 1.7 1998/04/29 14:29:33 hipp Exp $";
+char lcp_rcsid[] = "$Id: lcp.c,v 1.8 1998/05/05 08:51:22 hipp Exp $";
 
 /*
  * TODO:
@@ -2206,8 +2206,6 @@ static void lcp_echo_lowerdown (int unit)
 		UNTIMEOUT (StopSession, (caddr_t) f );
 		session_timer_running = 0 ;
 	}
-#endif        
+#endif
 #endif
 }
-
-

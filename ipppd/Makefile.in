@@ -1,6 +1,6 @@
 #
 # ipppd makefile for Linux
-# $Id: Makefile.in,v 1.8 1998/04/29 14:29:25 hipp Exp $
+# $Id: Makefile.in,v 1.9 1998/05/05 08:51:16 hipp Exp $
 #
 
 HAVE_LIBDES   := @HAVE_LIBDES@
@@ -100,7 +100,7 @@ endif
 ifdef RADIUS
 	PPPDSRCS += radius.c
 	PPPDOBJS += radius.o
-	COPTS    += -DRADIUS -I/usr/local/include 
+	COPTS    += -DRADIUS -D_linux_=1 -I/usr/local/include 
 	COPTS 	 += -DPATH_RADIUSCLIENT_CONF=\"$(RADIUS_CLIENT_CONFIG_FILE)\"
 	LIBS     += -L/usr/local/lib -lradiusclient
 	ifdef RADIUS_WTMP_LOGGING

@@ -1,4 +1,4 @@
- /*
+/*
  * auth.c - PPP authentication and phase control.
  *
  * Fairly patched version for isdn4linux
@@ -36,7 +36,7 @@
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-char auth_rcsid[] = "$Id: auth.c,v 1.12 1998/04/29 14:29:26 hipp Exp $";
+char auth_rcsid[] = "$Id: auth.c,v 1.13 1998/05/05 08:51:18 hipp Exp $";
 
 #include <stdio.h>
 #include <stddef.h>
@@ -796,14 +796,6 @@ int radius_check_passwd(linkunit,auser,userlen,apasswd,passwdlen,msg,msglen)
 		lns[linkunit].attempts = 0;		/* Reset count */
 		*msg = "Login ok";
 		*msglen = strlen(*msg);
-		if ( useradacct )
-		{
-			if (radius_acct_start (linkunit) != OK_RC) 
-			{
-				syslog(LOG_WARNING, "RADIUS accounting failed for %s", user);
-				ret = UPAP_AUTHNAK ;
-			} ;
-		}
 	}
 
 	return ret;

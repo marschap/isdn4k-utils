@@ -25,7 +25,7 @@
  * PATCHLEVEL 9
  */
 
-char main_rcsid[] = "$Id: main.c,v 1.13 1998/04/28 08:33:57 paul Exp $";
+char main_rcsid[] = "$Id: main.c,v 1.14 1998/05/05 08:51:24 hipp Exp $";
 
 #include <stdio.h>
 #include <stdarg.h>
@@ -204,7 +204,7 @@ int main(int argc,char **argv)
 			(*protp->init)(j); /* modifies our options .. !!!! */
 
 #ifdef OPTIONS_TTY_FIRST
-	if (!options_from_file(_PATH_SYSOPTIONS, REQ_SYSOPTIONS, 0) ||
+	if (!options_from_file(_PATH_SYSOPTIONS, REQ_SYSOPTIONS, 0, 0 ) ||
 	    !options_for_tty() ||
 	    !parse_args(argc-1, argv+1))
 #else
@@ -898,6 +898,10 @@ int run_program(char *prog,char **args,int must_exist,int unit)
 {
 	int pid;
 	char *nullenv[1];
+#ifdef RADIUS
+	char **envtouse;
+	extern char **environment; /* from radius.c */
+#endif
 
 	pid = fork();
 	if (pid < 0) {
@@ -932,7 +936,15 @@ int run_program(char *prog,char **args,int must_exist,int unit)
 		}
 
 		nullenv[0] = NULL;
+#ifdef RADIUS
+		if (environment)
+			envtouse = environment;
+		else
+			envtouse = nullenv;
+		execve(prog, args, envtouse);
+#else
 		execve(prog, args, nullenv);
+#endif
 		if (must_exist || errno != ENOENT)
 			syslog(LOG_WARNING, "Can't execute %s: %m", prog);
 		exit(99); /* CHILD exit */

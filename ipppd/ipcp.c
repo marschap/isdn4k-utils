@@ -17,7 +17,7 @@
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-char ipcp_rcsid[] = "$Id: ipcp.c,v 1.4 1998/03/08 13:01:33 hipp Exp $";
+char ipcp_rcsid[] = "$Id: ipcp.c,v 1.5 1998/05/05 08:51:20 hipp Exp $";
 
 /*
  * TODO:
@@ -1132,18 +1132,32 @@ static void ipcp_up(fsm *f)
 		if (sifdefaultroute(f->unit, ho->hisaddr))
 			go->default_route = 1;
 
-    /*
+        /*
 	 * Make a proxy ARP entry if requested.
 	 */
 	if (ipcp_wantoptions[tlns->ipcp_unit].proxy_arp)
 		if (sifproxyarp(f->unit, ho->hisaddr))
 			go->proxy_arp = 1;
 
+#ifdef RADIUS
+	/*
+	 * Now we are really armed with enough information to send
+	 * accounting START request to RADIUS
+	 * we need hisaddr if we wont to send peers FRAMED_IP address
+	 * to RADIUS server 
+	 */
+	 if ( useradacct && !tlns->radius_in )
+	 {
+	 	radius_acct_start (tlns->ipcp_unit) ;
+	 }
+#endif
+
 	/*
 	 * Execute the ip-up script, like this:
 	 * /etc/ppp/ip-up interface tty speed local-IP remote-IP
 	 */
 	ipcp_script(f, _PATH_IPUP);
+
 }
 
 
