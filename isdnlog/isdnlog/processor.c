@@ -1,4 +1,4 @@
-/* $Id: processor.c,v 1.118 2000/12/13 14:43:16 paul Exp $
+/* $Id: processor.c,v 1.119 2000/12/15 14:36:05 leo Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.119  2000/12/15 14:36:05  leo
+ * modilp, ilp - B-chan usage in /proc/isdnlog
+ * s. isdnlog/ilp/README for more information
+ *
  * Revision 1.118  2000/12/13 14:43:16  paul
  * Translated progress messages;
  * german language version still available with #define LANG_DE
@@ -4275,6 +4279,7 @@ static void LCR(int chan, char *s)
 } /* LCR */
 #endif
 
+extern void procinfo(int channel, CALL * cp, int state);
 
 static void processctrl(int card, char *s)
 {
@@ -4890,7 +4895,9 @@ static void processctrl(int card, char *s)
 
         if (sound)
           ringer(chan, RING_CONNECT);
-
+	  
+	procinfo(call[chan].channel, &call[chan], CONNECT);
+	
 doppelt:break;
 
       case SUSPEND_ACKNOWLEDGE :
@@ -5208,6 +5215,9 @@ doppelt:break;
 
           if (sound)
             ringer(chan, RING_HANGUP);
+
+	  procinfo(call[chan].channel, &call[chan], RELEASE);
+
         } /* if */
 
         clearchan(chan, 1);

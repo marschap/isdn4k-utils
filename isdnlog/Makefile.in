@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.187 2000/12/12 21:07:32 akool Exp $
+## $Id: Makefile.in,v 1.188 2000/12/15 14:36:04 leo Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,10 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.188  2000/12/15 14:36:04  leo
+## modilp, ilp - B-chan usage in /proc/isdnlog
+## s. isdnlog/ilp/README for more information
+##
 ## Revision 1.187  2000/12/12 21:07:32  akool
 ## isdnlog-4.46
 ##   010050: Drillisch AG -> ElisaNet GmbH
@@ -1416,7 +1420,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 4.46
+VERSION     = 4.47
 
 MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 \
 	      isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 \
@@ -1510,6 +1514,10 @@ endif
 
 ifdef TESTCENTER
 ISDNLOG_OBJS += isdnlog/test_center.o
+endif
+
+ifdef ILP
+ISDNLOG_OBJS += isdnlog/ilp/ilp.o
 endif
 
 ISDNREP_OBJS =  isdnrep/rep_main.o tools/tools.o tools/isdnconf.o         \

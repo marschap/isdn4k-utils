@@ -1,4 +1,4 @@
-/* $Id: functions.c,v 1.30 2000/06/20 17:09:59 akool Exp $
+/* $Id: functions.c,v 1.31 2000/12/15 14:36:05 leo Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,10 @@
  * along with this program; if not, write to the Free Software
  *
  * $Log: functions.c,v $
+ * Revision 1.31  2000/12/15 14:36:05  leo
+ * modilp, ilp - B-chan usage in /proc/isdnlog
+ * s. isdnlog/ilp/README for more information
+ *
  * Revision 1.30  2000/06/20 17:09:59  akool
  * isdnlog-4.29
  *  - better ASN.1 display
@@ -270,6 +274,7 @@ static void saveCharge()
 } /* saveCharge */
 
 /*****************************************************************************/
+extern void procinfo(int channel, CALL * cp, int state);
 
 void _Exit_isdnlog(char *File, int Line, int RetCode) /* WARNING: RetCode==-9 does _not_ call exit()! */
 {
@@ -290,7 +295,8 @@ void _Exit_isdnlog(char *File, int Line, int RetCode) /* WARNING: RetCode==-9 do
     if (xinfo && sockets[IN_PORT].descriptor != -2)
       close(sockets[IN_PORT].descriptor);
   } /* if */
-
+  
+  procinfo(1, NULL, -1);	/* close proc */
   closelog();
 
 	if (fout)
