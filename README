@@ -1,5 +1,5 @@
 #
-# $Id: README,v 1.4 1997/03/24 23:38:38 fritz Exp $
+# $Id: README,v 1.5 1997/05/17 12:23:24 fritz Exp $
 #
 This is the README file for the "isdn4k-utils" package from "The i4l-crew".
 
@@ -34,6 +34,23 @@ This package contains the following stuff:
   avmcapictrl.8, hisaxctrl.8 icnctrl.8, imon.8, ipppd.8, ipppstats.8,
   iprofd.8, isdnctrl.8, isdnlog.8, isdnrep.1, telesctrl.8, xisdnload.1x
   and xmonisdn.1x
+
+COPYRIGHT/COPYING:
+
+  Until explicitely stated, all programs in this package can be freely
+  redistributed and/or modified under the terms of the GNU General
+  Public License as published by the Free Software Foundation; either
+  version 2, or (at your option) any later version.
+
+  This package is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details. (File: COPYING)
+
+  You should have received a copy of the GNU General Public License
+  along with this program; if not, write to the Free Software
+  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ 
 
 System prerequisites:
 
