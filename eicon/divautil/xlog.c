@@ -1,87 +1,89 @@
 
 /*
  *
- * Copyright (C) Eicon Technology Corporation, 2000.
+  Copyright (c) Eicon Technology Corporation, 2000.
  *
- * This source file is supplied for the exclusive use with Eicon
- * Technology Corporation's range of DIVA Server Adapters.
+  This source file is supplied for the exclusive use with Eicon
+  Technology Corporation's range of DIVA Server Adapters.
  *
- * Eicon File Revision :    1.1  
+  Eicon File Revision :    1.8
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2, or (at your option)
- * any later version.
+  This program is free software; you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation; either version 2, or (at your option)
+  any later version.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY OF ANY KIND WHATSOEVER INCLUDING ANY 
- * implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
- * See the GNU General Public License for more details.
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY OF ANY KIND WHATSOEVER INCLUDING ANY
+  implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+  You should have received a copy of the GNU General Public License
+  along with this program; if not, write to the Free Software
+  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  */
-
-
+/* -------------------------------------------------  
+This LOG.C does output to STREAM  
+-------------------------------------------------- */  
+/* VST #include "platform.h"  */
+/*------------------------------------------------------------------*/
+/* File: log.c                                                      */
+/* Copyright (c) Diehl ISDN GmbH 1993 - 1998                        */
+/*                                                                  */
+/* xlog interpretation                                              */
+/*------------------------------------------------------------------*/
 #define byte unsigned char
 #define word unsigned short
 #define dword unsigned long
 #define TRUE 1
 #define FALSE 0
-
 #include <stdio.h>
 #include <string.h>
 #include "cau_1tr6.h"
 #include "cau_q931.h"
-
-#ifdef	far
-#undef  far
+#include "pc.h"
+#if !defined(N_XON)
+#define N_XON           15      /* clear RNR state */
 #endif
-
-#define far
-
-#define SWAP(a) a
-
+int diva_convert_be2le = 0;
+word diva_word2le (word w);
 /*----------------------------------------------------------------*/
 /* Prints into a buffer instead into a file if PRT2BUF is defined */
-#if defined(PRT2BUF)
-  #define FILE byte
-  #define fprintf o+=sprintf
-  #define Out  &stream[o]
-#else
   #define Out stream
-#endif
 static word o;  /* index to buffer, not used if printed to file */
 /*----------------------------------------------------------------*/
 /* Define max byte count of a message to print before "cont"      */
 /* variable can be set externally to change this behaviour        */
 word maxout = 30;
-
+#define LOBYTE(w)  ((byte)(w))
+#define HIBYTE(w)  ((byte)(((word)(w) >> 8) & 0xFF))
 struct l1s {
   short length;
   unsigned char i[22];
 };
-
 struct l2s {
   short code;
   short length;
   unsigned char i[20];
 };
-
+struct nu_info_s {
+ short code;
+ short Id;
+ short info;
+ short info1;
+};
 union par {
   char text[42];
   struct l1s l1;
   struct l2s l2;
+ struct nu_info_s nu_info;
 };
-
 typedef struct xlog_s XLOG;
 struct xlog_s {
   short code;
   union par info;
 };
-
 typedef struct log_s LOG;
 struct log_s {
   word length;
@@ -90,10 +92,8 @@ struct log_s {
   word timel;
   byte buffer[80];
 };
-
 #define ZERO_BASED_INDEX_VALID(x,t) ((unsigned)x < sizeof(t)/sizeof(t[0]))
 #define ONE_BASED_INDEX_VALID(x,t) ((unsigned)x <= sizeof(t)/sizeof(t[0]))
-
 static char *ll_name[13] = {
   "LL_UDATA",
   "LL_ESTABLISH",
@@ -109,7 +109,6 @@ static char *ll_name[13] = {
   "LL_XID",
   "LL_XID_R"
 };
-
 static char *ns_name[13] = {
   "N-MDATA",
   "N-CONNECT",
@@ -125,7 +124,6 @@ static char *ns_name[13] = {
   "N-DATA ACK",
   "N-EDATA ACK"
 };
-
 static char * l1_name[] = {
   "SYNC_LOST",
   "SYNC_GAINED",
@@ -139,7 +137,6 @@ static char * l1_name[] = {
   "L1_FC3",
   "L1_FC4"
 };
-
 static struct {
   byte code;
   char * name;
@@ -150,9 +147,7 @@ static struct {
   { 0x04, "DISCONNECT" },
   { 0x05, "LISTEN" },
   { 0x08, "INFO" },
-
   { 0x41, "SELECT_B" },
-
   { 0x80, "FACILITY" },
   { 0x82, "CONNECT_B3" },
   { 0x83, "CONNECT_B3_ACTIVE" },
@@ -160,12 +155,9 @@ static struct {
   { 0x86, "DATA_B3" },
   { 0x87, "RESET_B3" },
   { 0x88, "CONNECT_B3_T90_ACTIVE" },
-
   { 0xd4, "PORTABILITY" }, /* suspend/resume */
-
   { 0xff, "MANUFACTURER" }
 };
-
 static struct {
   byte code;
   char * name;
@@ -179,10 +171,8 @@ static struct {
   { 0x07, "INFO" },
   { 0x08, "DATA" },
   { 0x09, "CONNECT_INFO" },
-
   { 0x40, "SELECT_B2" },
   { 0x80, "SELECT_B3" },
-
   { 0x81, "LISTEN_B3" },
   { 0x82, "CONNECT_B3" },
   { 0x83, "CONNECT_B3_ACTIVE" },
@@ -191,7 +181,6 @@ static struct {
   { 0x86, "DATA_B3" },
   { 0x87, "HANDSET" },
 };
-
 static struct {
   byte code;
   char * name;
@@ -201,7 +190,6 @@ static struct {
   { 0x82, "IND" },
   { 0x83, "RES" }
 };
-
 static struct {
   byte code;
   char * name;
@@ -211,7 +199,6 @@ static struct {
   { 0x02, "IND" },
   { 0x03, "RES" }
 };
-
 #define PD_MAX 4
 static struct {
   byte code;
@@ -222,7 +209,6 @@ static struct {
   { 0x40, "DKZE   " },
   { 0x41, "1TR6   " }
 };
-
 #define MT_MAX 34
 static struct {
   byte code;
@@ -263,7 +249,6 @@ static struct {
   { 0x7d, "STATUS" },
   { 0x7b, "INFO" }
 };
-
 #define IE_MAX 41
 static struct {
   word code;
@@ -273,7 +258,6 @@ static struct {
   { 0x00a0, "MORE" },
   { 0x00b0, "Congestion level" },
   { 0x00d0, "Repeat indicator" },
-
   { 0x0000, "SMSG" },
   { 0x0004, "Bearer Capability" },
   { 0x0008, "Cause" },
@@ -305,7 +289,6 @@ static struct {
   { 0x007d, "HLC" },
   { 0x007e, "User User Info" },
   { 0x007f, "ESC" },
-
   { 0x051a, "Advice of Charge" },
   { 0x061a, "Advice of Charge" },
   { 0x0601, "Service Indicator" },
@@ -313,7 +296,6 @@ static struct {
   { 0x0603, "Date" },
   { 0x0607, "Called Party State" }
 };
-
 static char * sig_state[] = {
   "Null state",
   "Call initiated",
@@ -342,7 +324,6 @@ static char * sig_state[] = {
   "",
   "Overlap receiving"
 };
-
 static char * sig_timeout[] = {
   "",
   "T303",
@@ -371,14 +352,11 @@ static char * sig_timeout[] = {
   "",
   "T302"
 };
-
 struct msg_s {
   word code;
   word length;
   byte info[1000];
 } message = {0,0,{0}};
-
-
 /* MIPS CPU exeption context structure */
 struct xcptcontext {
     dword       sr;
@@ -391,7 +369,6 @@ struct xcptcontext {
     dword       reseverd;
     dword       xclass;
 }xcp;
-
 /* MIPS CPU exception classes */
 #define XCPC_GENERAL    0
 #define XCPC_TLBMISS    1
@@ -399,7 +376,6 @@ struct xcptcontext {
 #define XCPC_CACHEERR   3
 #define XCPC_CLASS      0x0ff
 #define XCPC_USRSTACK   0x100
-
 #define XCPTINTR        0
 #define XCPTMOD         1
 #define XCPTTLBL        2
@@ -433,7 +409,6 @@ struct xcptcontext {
 #define XCPTRES30       30
 #define XCPTVCED        31
 #define NXCPT           32
-
 /* exception classes */
 #define XCPC_GENERAL    0
 #define XCPC_TLBMISS    1
@@ -441,392 +416,652 @@ struct xcptcontext {
 #define XCPC_CACHEERR   3
 #define XCPC_CLASS      0x0ff
 #define XCPC_USRSTACK   0x100
-
-
 /*------------------------------------------------------------------*/
 /* local function prototypes                                        */
 /*------------------------------------------------------------------*/
-
-word xlog(FILE * stream,void * buffer);
+word xlog(FILE * stream,XLOG * buffer);
 void xlog_sig(FILE * stream, struct msg_s * message);
 void call_failed_event(FILE * stream, struct msg_s * message, word code);
 void display_q931_message(FILE * stream, struct msg_s * message);
 void display_ie(FILE * stream, byte pd, word w, byte * ie);
 void spid_event(FILE * stream, struct msg_s * message, word code);
-
-word xlog(FILE *stream, void * buf)
+static void rc2str (byte rc, char* p);
+static void encode_sig_req (byte req, char* p, int is_req);
+static void encode_man_req (byte req, char* p, int is_req);
+word xlog(FILE *stream, XLOG * buffer)
 {
   word i;
   word n;
   word code;
-  XLOG *buffer = buf;
-
+  word offs;
+ word Id;
+ byte nl_sec;
+ static char tmp[128];
   o = 0;
-  switch((byte)SWAP(buffer->code)) {
+  offs = 0;
+  buffer->code = diva_word2le (buffer->code);
+  switch((byte)buffer->code) {
   case 1:
-    n = SWAP(buffer->info.l1.length);
-    if(SWAP(buffer->code) &0xff00) fprintf(stream,"B%d-X(%03d) ",SWAP(buffer->code)>>8,n);
-    else fprintf(stream,"B-X(%03d) ",n);
+    n = diva_word2le(buffer->info.l1.length);
+    if(buffer->code &0xff00) fprintf(Out,"B%d-X(%03d) ",buffer->code>>8,n);
+    else fprintf(Out,"B-X(%03d) ",n);
+    if(maxout>30) fprintf(Out,"\n  (%04d) - ",0);
     for(i=0;i<n && i<maxout;i++)
-      fprintf(stream,"%02X ",buffer->info.l1.i[i]);
-    if(n>i) fprintf(stream,"cont");
+    {
+      fprintf(Out,"%02X ",buffer->info.l1.i[i]);
+      if(++offs>=20 && maxout>30)
+      {
+        fprintf(Out,"\n  (%04d) - ",i+1);
+        offs = 0;
+      }
+    }
+    if(n>i) fprintf(Out,"cont");
     break;
   case 2:
-    n = SWAP(buffer->info.l1.length);
-    if(SWAP(buffer->code) &0xff00) fprintf(stream,"B%d-R(%03d) ",SWAP(buffer->code)>>8,n);
-    else fprintf(stream,"B-R(%03d) ",n);
+    n = diva_word2le(buffer->info.l1.length);
+    if(buffer->code &0xff00) fprintf(Out,"B%d-R(%03d) ",buffer->code>>8,n);
+    else fprintf(Out,"B-R(%03d) ",n);
+    if(maxout>30) fprintf(Out,"\n  (%04d) - ",0);
     for(i=0;i<n && i<maxout;i++)
-      fprintf(stream,"%02X ",buffer->info.l1.i[i]);
-    if(n>i) fprintf(stream,"cont");
+    {
+      fprintf(Out,"%02X ",buffer->info.l1.i[i]);
+      if(++offs>=20 && maxout>30)
+      {
+        fprintf(Out,"\n  (%04d) - ",i+1);
+        offs = 0;
+      }
+    }
+    if(n>i) fprintf(Out,"cont");
     break;
   case 3:
-    n = SWAP(buffer->info.l1.length);
-    fprintf(stream,"D-X(%03d) ",n);
+    n = diva_word2le(buffer->info.l1.length);
+    fprintf(Out,"D-X(%03d) ",n);
     for(i=0;i<n && i<maxout;i++)
-      fprintf(stream,"%02X ",buffer->info.l1.i[i]);
-    if(n>i) fprintf(stream,"cont");
+      fprintf(Out,"%02X ",buffer->info.l1.i[i]);
+    if(n>i) fprintf(Out,"cont");
     break;
   case 4:
-    n = SWAP(buffer->info.l1.length);
-    fprintf(stream,"D-R(%03d) ",n);
+    n = diva_word2le(buffer->info.l1.length);
+    fprintf(Out,"D-R(%03d) ",n);
     for(i=0;i<n && i<maxout;i++)
-      fprintf(stream,"%02X ",buffer->info.l1.i[i]);
-    if(n>i) fprintf(stream,"cont");
+      fprintf(Out,"%02X ",buffer->info.l1.i[i]);
+    if(n>i) fprintf(Out,"cont");
     break;
   case 5:
-    n = SWAP(buffer->info.l2.length);
-    fprintf(stream,"SIG-EVENT(%03d)%04X - ",n,SWAP(buffer->info.l2.code));
+    n = diva_word2le(buffer->info.l2.length);
+    fprintf(Out,"SIG-EVENT(%03d)%04X - ",n,diva_word2le(buffer->info.l2.code));
     for(i=0;i<n && i<maxout;i++)
-      fprintf(stream,"%02X ",buffer->info.l2.i[i]);
-    if(n>i) fprintf(stream,"cont");
+      fprintf(Out,"%02X ",buffer->info.l2.i[i]);
+    if(n>i) fprintf(Out,"cont");
     break;
   case 6:
-    code = SWAP(buffer->info.l2.code);
+    code = diva_word2le(buffer->info.l2.code);
     if(code && code <= 13)
-      fprintf(stream,"%s IND",ll_name[code-1]);
+      fprintf(Out,"%s IND",ll_name[code-1]);
     else
-      fprintf(stream,"UNKNOWN LL IND");
+      fprintf(Out,"UNKNOWN LL IND");
     break;
   case 7:
-    code = SWAP(buffer->info.l2.code);
+    code = diva_word2le(buffer->info.l2.code);
     if(code && code <= 13)
-      fprintf(stream,"%s REQ",ll_name[code-1]);
+      fprintf(Out,"%s REQ",ll_name[code-1]);
     else
-      fprintf(stream,"UNKNOWN LL REQ");
+      fprintf(Out,"UNKNOWN LL REQ");
     break;
   case 8:
-    n = SWAP(buffer->info.l2.length);
-    fprintf(stream,"DEBUG%04X - ",SWAP(buffer->info.l2.code));
+    n = diva_word2le(buffer->info.l2.length);
+    fprintf(Out,"DEBUG%04X - ",diva_word2le(buffer->info.l2.code));
     for(i=0;i<n && i<maxout;i++)
-      fprintf(stream,"%02X ",buffer->info.l2.i[i]);
-    if(n>i) fprintf(stream,"cont");
+      fprintf(Out,"%02X ",buffer->info.l2.i[i]);
+    if(n>i) fprintf(Out,"cont");
     break;
-  case 9:
-    fprintf(stream,"MDL-ERROR(%s)",buffer->info.text);
+  case 9: {
+   char tmp[2];
+   *(word*)&tmp[0] = diva_word2le(*(word*)&buffer->info.text[0]);
+     fprintf(Out,"MDL-ERROR(%s)", &tmp[0]);
+  }
     break;
   case 10:
-    fprintf(stream,"UTASK->PC(%02X)",SWAP(buffer->info.l2.code));
+    fprintf(Out,"UTASK->PC(%02X)",diva_word2le(buffer->info.l2.code));
     break;
   case 11:
-    fprintf(stream,"PC->UTASK(%02X)",SWAP(buffer->info.l2.code));
+    fprintf(Out,"PC->UTASK(%02X)",diva_word2le(buffer->info.l2.code));
     break;
   case 12:
-    n = SWAP(buffer->info.l1.length);
-    fprintf(stream,"X-X(%03d) ",n);
+    n = diva_word2le(buffer->info.l1.length);
+    fprintf(Out,"X-X(%03d) ",n);
     for(i=0;i<n && i<maxout;i++)
-      fprintf(stream,"%02X ",buffer->info.l1.i[i]);
-    if(n>i) fprintf(stream,"cont");
+      fprintf(Out,"%02X ",buffer->info.l1.i[i]);
+    if(n>i) fprintf(Out,"cont");
     break;
   case 13:
-    n = SWAP(buffer->info.l1.length);
-    fprintf(stream,"X-R(%03d) ",n);
+    n = diva_word2le(buffer->info.l1.length);
+    fprintf(Out,"X-R(%03d) ",n);
     for(i=0;i<n && i<maxout;i++)
-      fprintf(stream,"%02X ",buffer->info.l1.i[i]);
-    if(n>i) fprintf(stream,"cont");
+      fprintf(Out,"%02X ",buffer->info.l1.i[i]);
+    if(n>i) fprintf(Out,"cont");
     break;
   case 14:
-    code = SWAP(buffer->info.l2.code)-1;
+    code = diva_word2le(buffer->info.nu_info.code)-1;
+  Id   = diva_word2le(buffer->info.nu_info.Id);
+  nl_sec = HIBYTE(diva_word2le(buffer->info.nu_info.Id));
     if((code &0x0f)<=12)
-      fprintf(stream,"%s IND",ns_name[code &0x0f]);
+      fprintf(Out,"[%02x] %s IND Id:%02x, Ch:%02x", nl_sec,
+       ns_name[code &0x0f],
+         (byte)Id, HIBYTE(diva_word2le(buffer->info.nu_info.code)));
     else
-      fprintf(stream,"UNKNOWN NS IND");
+      fprintf(Out,"[%02x] N-UNKNOWN NS IND(%02x) Id:%02x, Ch:%02x", nl_sec,
+       (byte)(code+1),
+       (byte)Id, HIBYTE(diva_word2le(buffer->info.nu_info.code)));
     break;
   case 15:
-    code = SWAP(buffer->info.l2.code)-1;
-    if((code & 0x0f)<=12)
-      fprintf(stream,"%s REQ",ns_name[code &0x0f]);
-    else
-      fprintf(stream,"UNKNOWN NS REQ");
+    code   = diva_word2le(buffer->info.nu_info.code)-1;
+  Id     = diva_word2le(buffer->info.nu_info.Id);
+  nl_sec = HIBYTE(diva_word2le(buffer->info.nu_info.Id));
+  if (((byte)Id) == NL_ID) {
+      fprintf(Out,"[%02x] %s REQ Id:%s, Ch:%02x", nl_sec, "N-ASSIGN",
+         "NL_ID", HIBYTE(diva_word2le(buffer->info.nu_info.code)));
+  } else if ((byte)(code+1) == REMOVE) {
+      fprintf(Out,"[%02x] %s REQ Id:%02x, Ch:%02x", nl_sec, "N-REMOVE",
+         (byte)Id, HIBYTE(diva_word2le(buffer->info.nu_info.code)));
+  } else if ((byte)(code+1) == N_XON) {
+      fprintf(Out,"[%02x] %s REQ Id:%02x, Ch:%02x", nl_sec, "N-XON",
+         (byte)Id, HIBYTE(diva_word2le(buffer->info.nu_info.code)));
+  } else if ((byte)(code+1) == UREMOVE) {
+      fprintf(Out,"[%02x] %s REQ Id:%02x, Ch:%02x", nl_sec, "N-UREMOVE",
+         (byte)Id, HIBYTE(diva_word2le(buffer->info.nu_info.code)));
+  } else if((code & 0x0f)<=12) {
+      fprintf(Out,"[%02x] %s REQ Id:%02x, Ch:%02x", nl_sec, ns_name[code &0x0f],
+         (byte)Id, HIBYTE(diva_word2le(buffer->info.nu_info.code)));
+  } else {
+      fprintf(Out,"[%02x] N-UNKNOWN NS REQ(%02x) Id:%02x, Ch:%02x", nl_sec,
+       (byte)(code+1),
+         (byte)Id, HIBYTE(diva_word2le(buffer->info.nu_info.code)));
+  }
     break;
   case 16:
-    fprintf(stream,"TASK %02i: %s",
-                   SWAP(buffer->info.l2.code),buffer->info.l2.i);
+    fprintf(Out,"TASK %02i: %s",
+                   diva_word2le(buffer->info.l2.code),buffer->info.l2.i);
     break;
   case 18:
-    code = SWAP(buffer->info.l2.code);
-    fprintf(stream,"IO-REQ %02x",code);
+    code = diva_word2le(buffer->info.l2.code);
+    fprintf(Out,"IO-REQ %02x",code);
     break;
   case 19:
-    code = SWAP(buffer->info.l2.code);
-    fprintf(stream,"IO-CON %02x",code);
+    code = diva_word2le(buffer->info.l2.code);
+    fprintf(Out,"IO-CON %02x",code);
     break;
   case 20:
-    code = SWAP(buffer->info.l2.code);
+    code = diva_word2le(buffer->info.l2.code);
     if ( ZERO_BASED_INDEX_VALID(code,l1_name) )
-      fprintf(stream, l1_name[code]);
-	else
-      fprintf(stream, "UNKNOWN L1 STATE (0x%04x)", code);
+      fprintf(Out, l1_name[code]);
+ else
+      fprintf(Out, "UNKNOWN L1 STATE (0x%04x)", code);
     break;
   case 21:
-    for(i=0;i<(word)SWAP(buffer->info.l2.length);i++)
+    for(i=0;i<(word)diva_word2le(buffer->info.l2.length);i++)
       message.info[message.length++] = buffer->info.l2.i[i];
-
-    if(SWAP(buffer->info.l2.code)) {
-
-      switch(SWAP(buffer->info.l2.code) &0xff) {
+    if(diva_word2le(buffer->info.l2.code)) {
+      switch(diva_word2le(buffer->info.l2.code) &0xff) {
       case 1:
         xlog_sig(stream,&message);
         break;
       default:
-        fprintf(stream,"MSG%04X - ",SWAP(buffer->info.l2.code));
+        fprintf(Out,"MSG%04X - ",diva_word2le(buffer->info.l2.code));
         for(i=0;i<message.length;i++)
-          fprintf(stream,"%02X ",message.info[i]);
+          fprintf(Out,"%02X ",message.info[i]);
         break;
       }
       message.length = 0;
     }
     else {
-      fprintf(stream,"MORE");
+      fprintf(Out,"MORE");
     }
     break;
   case 22:
-    for(i=0;i<(word)SWAP(buffer->info.l2.length);i++)
+    for(i=0;i<(word)diva_word2le(buffer->info.l2.length);i++)
       message.info[message.length++] = buffer->info.l2.i[i];
-
-    if(SWAP(buffer->info.l2.code)) {
-
-      switch(SWAP(buffer->info.l2.code) &0xff) {
+    if(diva_word2le(buffer->info.l2.code)) {
+      switch(diva_word2le(buffer->info.l2.code) &0xff) {
       case 1:
-        call_failed_event(stream, &message, SWAP(buffer->info.l2.code));
+        call_failed_event(stream, &message, diva_word2le(buffer->info.l2.code));
         break;
       case 2:
-        spid_event(stream, &message, SWAP(buffer->info.l2.code));
+        spid_event(stream, &message, diva_word2le(buffer->info.l2.code));
         break;
       default:
-        fprintf(stream,"EVENT%04X - ",SWAP(buffer->info.l2.code));
+        fprintf(Out,"EVENT%04X - ",diva_word2le(buffer->info.l2.code));
         for(i=0;i<message.length;i++)
-          fprintf(stream,"%02X ",message.info[i]);
+          fprintf(Out,"%02X ",message.info[i]);
         break;
       }
       message.length = 0;
     }
     else {
-      fprintf(stream,"MORE");
+      fprintf(Out,"MORE");
     }
     break;
   case 23:
-    fprintf(stream,"EYE");
-    for(i=0; i<(word)SWAP(buffer->info.l1.length); i+=2) {
-      fprintf(stream," %02x%02x",buffer->info.l1.i[i+1],buffer->info.l1.i[i]);
+    fprintf(Out,"EYE");
+    for(i=0; i<(word)diva_word2le(buffer->info.l1.length); i+=2) {
+      fprintf(Out," %02x%02x",buffer->info.l1.i[i+1],buffer->info.l1.i[i]);
     }
     break;
-
   case 24:
-    fprintf(stream, buffer->info.text);
+    fprintf(Out, "%s", buffer->info.text);
     break;
-
   case 50:
-    /*--- register dump comes in two blocks, each 80 Bytes long. Print
-      --- content after second part has been arrived */
-
-    if (0 == ((byte)(SWAP(buffer->code)>>8)))  /* first part */
+    //--- register dump comes in two blocks, each 80 Bytes long. Print
+    //--- content after second part has been arrived
+    if (0 == ((byte)(buffer->code>>8)))  // first part
     {
       for (i=0; i<20; i++)
-        ((dword far *)(&xcp.sr))[i] = ((dword far *)&buffer->info.text)[i];
-      fprintf(stream,"Register Dump part #1 received.");
-      break;  /* wait for next */
+        ((dword   *)(&xcp.sr))[i] = ((dword   *)&buffer->info.text)[i];
+      fprintf(Out,"Register Dump part #1 received.");
+      break;  // wait for next
     }
     for (i=0; i<20; i++)
-      ((dword far *)(&xcp.sr))[i+20] = ((dword far *)&buffer->info.text)[i];
-    fprintf(stream,"Register Dump part #2 received, printing now:\n");
-    fprintf(stream,"CPU Exception Class: %04x Code:",(int) xcp.xclass);
-
+      ((dword   *)(&xcp.sr))[i+20] = ((dword   *)&buffer->info.text)[i];
+    fprintf(Out,"Register Dump part #2 received, printing now:\n");
+    fprintf(Out,"CPU Exception Class: %04lx Code:", xcp.xclass);
     switch ((xcp.cr &0x0000007c) >> 2)
     {
-      case XCPTINTR: fprintf(stream,"interrupt                  "); break;
-      case XCPTMOD:  fprintf(stream,"TLB mod  /IBOUND           "); break;
-      case XCPTTLBL: fprintf(stream,"TLB load /DBOUND           "); break;
-      case XCPTTLBS: fprintf(stream,"TLB store                  "); break;
-      case XCPTADEL: fprintf(stream,"Address error load         "); break;
-      case XCPTADES: fprintf(stream,"Address error store        "); break;
-      case XCPTIBE:  fprintf(stream,"Instruction load bus error "); break;
-      case XCPTDBE:  fprintf(stream,"Data load/store bus error  "); break;
-      case XCPTSYS:  fprintf(stream,"Syscall                    "); break;
-      case XCPTBP:   fprintf(stream,"Breakpoint                 "); break;
-      case XCPTCPU:  fprintf(stream,"Coprocessor unusable       "); break;
-      case XCPTRI:   fprintf(stream,"Reverd instruction         "); break;
-      case XCPTOVF:  fprintf(stream,"Overflow                   "); break;
-      case 23:       fprintf(stream,"WATCH                      "); break;
-      default:       fprintf(stream,"Unknown Code               "); break;
+      case XCPTINTR: fprintf(Out,"interrupt                  "); break;
+      case XCPTMOD:  fprintf(Out,"TLB mod  /IBOUND           "); break;
+      case XCPTTLBL: fprintf(Out,"TLB load /DBOUND           "); break;
+      case XCPTTLBS: fprintf(Out,"TLB store                  "); break;
+      case XCPTADEL: fprintf(Out,"Address error load         "); break;
+      case XCPTADES: fprintf(Out,"Address error store        "); break;
+      case XCPTIBE:  fprintf(Out,"Instruction load bus error "); break;
+      case XCPTDBE:  fprintf(Out,"Data load/store bus error  "); break;
+      case XCPTSYS:  fprintf(Out,"Syscall                    "); break;
+      case XCPTBP:   fprintf(Out,"Breakpoint                 "); break;
+      case XCPTCPU:  fprintf(Out,"Coprocessor unusable       "); break;
+      case XCPTRI:   fprintf(Out,"Reverd instruction         "); break;
+      case XCPTOVF:  fprintf(Out,"Overflow                   "); break;
+      case 23:       fprintf(Out,"WATCH                      "); break;
+      default:       fprintf(Out,"Unknown Code               "); break;
     }
-    fprintf(stream,"\n");
-
-    fprintf(stream,"sr  = %08lx\t",xcp.sr);
-    fprintf(stream,"cr  = %08lx\t",xcp.cr);
-    fprintf(stream,"epc = %08lx\t",xcp.epc);
-    fprintf(stream,"vadr= %08lx\n",xcp.vaddr);
-
-    fprintf(stream,"zero= %08lx\t",xcp.regs[0]);
-    fprintf(stream,"at  = %08lx\t",xcp.regs[1]);
-    fprintf(stream,"v0  = %08lx\t",xcp.regs[2]);
-    fprintf(stream,"v1  = %08lx\n",xcp.regs[3]);
-    fprintf(stream,"a0  = %08lx\t",xcp.regs[4]);
-    fprintf(stream,"a1  = %08lx\t",xcp.regs[5]);
-    fprintf(stream,"a2  = %08lx\t",xcp.regs[6]);
-    fprintf(stream,"a3  = %08lx\n",xcp.regs[7]);
-    fprintf(stream,"t0  = %08lx\t",xcp.regs[8]);
-    fprintf(stream,"t1  = %08lx\t",xcp.regs[9]);
-    fprintf(stream,"t2  = %08lx\t",xcp.regs[10]);
-    fprintf(stream,"t3  = %08lx\n",xcp.regs[11]);
-    fprintf(stream,"t4  = %08lx\t",xcp.regs[12]);
-    fprintf(stream,"t5  = %08lx\t",xcp.regs[13]);
-    fprintf(stream,"t6  = %08lx\t",xcp.regs[14]);
-    fprintf(stream,"t7  = %08lx\n",xcp.regs[15]);
-    fprintf(stream,"s0  = %08lx\t",xcp.regs[16]);
-    fprintf(stream,"s1  = %08lx\t",xcp.regs[17]);
-    fprintf(stream,"s2  = %08lx\t",xcp.regs[18]);
-    fprintf(stream,"s3  = %08lx\n",xcp.regs[19]);
-    fprintf(stream,"s4  = %08lx\t",xcp.regs[20]);
-    fprintf(stream,"s5  = %08lx\t",xcp.regs[21]);
-    fprintf(stream,"s6  = %08lx\t",xcp.regs[22]);
-    fprintf(stream,"s7  = %08lx\n",xcp.regs[23]);
-    fprintf(stream,"t8  = %08lx\t",xcp.regs[24]);
-    fprintf(stream,"t9  = %08lx\t",xcp.regs[25]);
-    fprintf(stream,"k0  = %08lx\t",xcp.regs[26]);
-    fprintf(stream,"k1  = %08lx\n",xcp.regs[27]);
-    fprintf(stream,"gp  = %08lx\t",xcp.regs[28]);
-    fprintf(stream,"sp  = %08lx\t",xcp.regs[29]);
-    fprintf(stream,"s8  = %08lx\t",xcp.regs[30]);
-    fprintf(stream,"ra  = %08lx\n",xcp.regs[31]);
-    fprintf(stream,"mdlo= %08lx\t",xcp.mdlo);
-    fprintf(stream,"mdhi= %08lx\n",xcp.mdhi);
+    fprintf(Out,"\n");
+    fprintf(Out,"sr  = %08lx\t",xcp.sr);
+    fprintf(Out,"cr  = %08lx\t",xcp.cr);
+    fprintf(Out,"epc = %08lx\t",xcp.epc);
+    fprintf(Out,"vadr= %08lx\n",xcp.vaddr);
+    fprintf(Out,"zero= %08lx\t",xcp.regs[0]);
+    fprintf(Out,"at  = %08lx\t",xcp.regs[1]);
+    fprintf(Out,"v0  = %08lx\t",xcp.regs[2]);
+    fprintf(Out,"v1  = %08lx\n",xcp.regs[3]);
+    fprintf(Out,"a0  = %08lx\t",xcp.regs[4]);
+    fprintf(Out,"a1  = %08lx\t",xcp.regs[5]);
+    fprintf(Out,"a2  = %08lx\t",xcp.regs[6]);
+    fprintf(Out,"a3  = %08lx\n",xcp.regs[7]);
+    fprintf(Out,"t0  = %08lx\t",xcp.regs[8]);
+    fprintf(Out,"t1  = %08lx\t",xcp.regs[9]);
+    fprintf(Out,"t2  = %08lx\t",xcp.regs[10]);
+    fprintf(Out,"t3  = %08lx\n",xcp.regs[11]);
+    fprintf(Out,"t4  = %08lx\t",xcp.regs[12]);
+    fprintf(Out,"t5  = %08lx\t",xcp.regs[13]);
+    fprintf(Out,"t6  = %08lx\t",xcp.regs[14]);
+    fprintf(Out,"t7  = %08lx\n",xcp.regs[15]);
+    fprintf(Out,"s0  = %08lx\t",xcp.regs[16]);
+    fprintf(Out,"s1  = %08lx\t",xcp.regs[17]);
+    fprintf(Out,"s2  = %08lx\t",xcp.regs[18]);
+    fprintf(Out,"s3  = %08lx\n",xcp.regs[19]);
+    fprintf(Out,"s4  = %08lx\t",xcp.regs[20]);
+    fprintf(Out,"s5  = %08lx\t",xcp.regs[21]);
+    fprintf(Out,"s6  = %08lx\t",xcp.regs[22]);
+    fprintf(Out,"s7  = %08lx\n",xcp.regs[23]);
+    fprintf(Out,"t8  = %08lx\t",xcp.regs[24]);
+    fprintf(Out,"t9  = %08lx\t",xcp.regs[25]);
+    fprintf(Out,"k0  = %08lx\t",xcp.regs[26]);
+    fprintf(Out,"k1  = %08lx\n",xcp.regs[27]);
+    fprintf(Out,"gp  = %08lx\t",xcp.regs[28]);
+    fprintf(Out,"sp  = %08lx\t",xcp.regs[29]);
+    fprintf(Out,"s8  = %08lx\t",xcp.regs[30]);
+    fprintf(Out,"ra  = %08lx\n",xcp.regs[31]);
+    fprintf(Out,"mdlo= %08lx\t",xcp.mdlo);
+    fprintf(Out,"mdhi= %08lx\n",xcp.mdhi);
     break;
-
   case 128:
   case 129:
-    n = SWAP(buffer->info.l1.length);
-    if(SWAP(buffer->code)==128) fprintf(stream,"CAPI20_PUT(%03d) ",n);
-    else fprintf(stream,"CAPI20_GET(%03d) ",n);
-    fprintf(stream,"APPL %02x%02x ", buffer->info.l1.i[1], buffer->info.l1.i[0]);
-
-    fprintf(stream,"%02x%02x:%02x%02x%02x%02x ",
-        buffer->info.l1.i[5], buffer->info.l1.i[4],
-        buffer->info.l1.i[9], buffer->info.l1.i[8],
-        buffer->info.l1.i[7], buffer->info.l1.i[6]);
-
+    n = buffer->info.l1.length;
+    if(buffer->code==128) fprintf(Out,"CAPI20_PUT(%03d) ",n);
+    else fprintf(Out,"CAPI20_GET(%03d) ",n);
+    fprintf(Out,"APPL %04x ",*(word *)&buffer->info.l1.i[0]);
+    fprintf(Out,"%04x:%08lx ",*(word *)&buffer->info.l1.i[4],
+                                 *(dword *)&buffer->info.l1.i[6]);
     for(i=0;i<15 && buffer->info.l1.i[2]!=capi20_command[i].code;i++);
-    if(i<15) fprintf(stream,"%s ",capi20_command[i].name);
-    else fprintf(stream,"CMD(%x) ",buffer->info.l1.i[2]);
-
+    if(i<15) fprintf(Out,"%s ",capi20_command[i].name);
+    else fprintf(Out,"CMD(%x) ",buffer->info.l1.i[2]);
     for(i=0;i<4 && buffer->info.l1.i[3]!=capi20_subcommand[i].code;i++);
-    if(i<4) fprintf(stream,"%s",capi20_subcommand[i].name);
-    else fprintf(stream,"SUB(%x)",buffer->info.l1.i[3]);
-
-    fprintf(stream,"\n                                             ");
+    if(i<4) fprintf(Out,"%s",capi20_subcommand[i].name);
+    else fprintf(Out,"SUB(%x)",buffer->info.l1.i[3]);
+    fprintf(Out,"\n                                             ");
     for(i=10;i<n-2;i++)
-      fprintf(stream,"%02X ",buffer->info.l1.i[i]);
+      fprintf(Out,"%02X ",buffer->info.l1.i[i]);
     break;
   case 130:
   case 131:
-    n = SWAP(buffer->info.l1.length);
-    if(SWAP(buffer->code)==130) fprintf(stream,"CAPI11_PUT(%03d) ",n);
-    else fprintf(stream,"CAPI11_GET(%03d) ",n);
-    fprintf(stream,"APPL %02x%02x ", buffer->info.l1.i[1], buffer->info.l1.i[0]);
-    fprintf(stream,"%02x%02x:", buffer->info.l1.i[5], buffer->info.l1.i[4]);
-
+    n = buffer->info.l1.length;
+    if(buffer->code==130) fprintf(Out,"CAPI11_PUT(%03d) ",n);
+    else fprintf(Out,"CAPI11_GET(%03d) ",n);
+    fprintf(Out,"APPL %04x ",*(word *)&buffer->info.l1.i[0]);
+    fprintf(Out,"%04x:",*(word *)&buffer->info.l1.i[4]);
     for(i=0;i<18 && buffer->info.l1.i[2]!=capi11_command[i].code;i++);
-    if(i<18) fprintf(stream,"%s ",capi11_command[i].name);
-    else fprintf(stream,"CMD(%x) ",buffer->info.l1.i[2]);
-
+    if(i<18) fprintf(Out,"%s ",capi11_command[i].name);
+    else fprintf(Out,"CMD(%x) ",buffer->info.l1.i[2]);
     for(i=0;i<4 && buffer->info.l1.i[3]!=capi11_subcommand[i].code;i++);
-    if(i<4) fprintf(stream,"%s",capi11_subcommand[i].name);
-    else fprintf(stream,"SUB(%x)",buffer->info.l1.i[3]);
-
-    fprintf(stream,"\n                                             ");
+    if(i<4) fprintf(Out,"%s",capi11_subcommand[i].name);
+    else fprintf(Out,"SUB(%x)",buffer->info.l1.i[3]);
+    fprintf(Out,"\n                                             ");
     for(i=6;i<n-2;i++)
-      fprintf(stream,"%02X ",buffer->info.l1.i[i]);
+      fprintf(Out,"%02X ",buffer->info.l1.i[i]);
     break;
+  case 201: { /* Log Return Code */
+   char *p;
+   Id   = diva_word2le(buffer->info.nu_info.Id);
+   nl_sec = HIBYTE(diva_word2le(buffer->info.nu_info.Id));
+     code = (byte)diva_word2le(buffer->info.nu_info.code);
+   sprintf (tmp, "[%02x] N-RC=", nl_sec);
+   p = &tmp[strlen(tmp)];
+   rc2str ((byte)code, p);
+   p = &tmp[strlen(tmp)];
+   if (((byte)Id) == NL_ID + GL_ERR_ID) {
+    sprintf (p, " Id:%s, Ch:%02x",
+      "NL_ID+GL_ERR_ID", HIBYTE(diva_word2le(buffer->info.nu_info.code)));
+   } else {
+    sprintf (p, " Id:%02x, Ch:%02x",
+         (byte)Id, HIBYTE(diva_word2le(buffer->info.nu_info.code)));
+   }
+      fprintf(Out,"%s", tmp);
+  } break;
+  case 202:
+   Id   = diva_word2le(buffer->info.nu_info.Id);
+     code = diva_word2le(buffer->info.nu_info.code);
+   nl_sec = HIBYTE(diva_word2le(buffer->info.nu_info.Id));
+      fprintf(Out,"[%02x] N-RNR Id:%02x, Ch:%02x",
+       nl_sec, (byte)Id, HIBYTE(code));
+   break;
+  case 220: /* log XDI request */ {
+   char *p;
+      code = diva_word2le(buffer->info.nu_info.info) - 1;
+   sprintf (tmp, "XDI[%02x] ",
+    HIBYTE(diva_word2le(buffer->info.nu_info.code)));
+   p = &tmp[strlen(tmp)];
+   switch (HIBYTE(diva_word2le(buffer->info.nu_info.info))) {
+    case NL_ID: /* NL REQ */
+     if (((byte)(code+1) == ASSIGN) &&
+       (((byte)diva_word2le(buffer->info.nu_info.Id)) == NL_ID)) {
+         strcpy (p,"N-ASSIGN");
+     } else if ((byte)(code+1) == REMOVE) {
+         strcpy (p, "N-REMOVE");
+     } else if ((byte)(code+1) == N_XON) {
+         strcpy (p, "N-XON");
+     } else if ((byte)(code+1) == UREMOVE) {
+      strcpy (p, "N-UREMOVE");
+     } else if((code & 0x0f)<=12) {
+          strcpy (p, ns_name[code &0x0f]);
+     } else {
+         sprintf (p, "N-UNKNOWN NS(%02x)",
+           (byte)diva_word2le(buffer->info.nu_info.info));
+     }
+     break;
+    case DSIG_ID: /* SIG REQ */
+     Id = (byte)diva_word2le(buffer->info.nu_info.Id);
+     if (Id == DSIG_ID) {
+      strcpy (p, "S-ASSIGN");
+     } else {
+      encode_sig_req ((byte)diva_word2le(buffer->info.nu_info.info),
+                            p, 1);
+      }
+     break;
+    case MAN_ID:
+     encode_man_req ((byte)diva_word2le(buffer->info.nu_info.info), p, 1);
+     break;
+    default:
+     sprintf (p, "?-(%02x)",
+                   (byte)diva_word2le(buffer->info.nu_info.info));
+     break;
+   }
+   strcat (tmp, " REQ Id:");
+   p = &tmp[strlen(tmp)];
+   Id = (byte)diva_word2le(buffer->info.nu_info.Id);
+   switch (Id) {
+    case DSIG_ID:
+     strcpy (p, "DSIG_ID");
+     break;
+    case NL_ID:
+     strcpy (p, "NL_ID");
+     break;
+    case BLLC_ID:
+     strcpy (p, "BLLC_ID");
+     break;
+    case TASK_ID:
+     strcpy (p, "TASK_ID");
+     break;
+    case TIMER_ID:
+     strcpy (p, "TIMER_ID");
+     break;
+    case TEL_ID:
+     strcpy (p, "TEL_ID");
+     break;
+    case MAN_ID:
+     strcpy (p, "MAN_ID");
+     break;
+    default:
+     sprintf (p, "%02x", Id);
+     break;
+   }
+   p = &tmp[strlen(tmp)];
+   sprintf (p, ", Ch:%02x, A(%02x)",
+               HIBYTE(diva_word2le(buffer->info.nu_info.Id)),
+               (byte)diva_word2le(buffer->info.nu_info.code));
+      fprintf(Out,"%s", tmp);
+  } break;
+  case 221: { /* XDI RC code log */
+   char *p;
+   byte A  = LOBYTE(diva_word2le(buffer->info.nu_info.code));
+   byte s  = HIBYTE(diva_word2le(buffer->info.nu_info.code));
+   byte id = LOBYTE(diva_word2le(buffer->info.nu_info.Id));
+   byte ch = HIBYTE(diva_word2le(buffer->info.nu_info.Id));
+   byte rc = LOBYTE(diva_word2le(buffer->info.nu_info.info));
+   byte t  = HIBYTE(diva_word2le(buffer->info.nu_info.info));
+   byte cb = LOBYTE(diva_word2le(buffer->info.nu_info.info1));
+   Id = id;
+   sprintf (tmp, "XDI[%02x] ", s);
+   p = &tmp[strlen(tmp)];
+  
+   switch (t) {
+   case NL_ID: /* NL REQ */
+    strcpy (p, "N-");
+    break;
+   case DSIG_ID: /* SIG REQ */
+    strcpy (p, "S-");
+    break;
+   case MAN_ID:
+    strcpy (p, "MAN-");
+    break;
+   }
+   strcat (p, "RC=");
+   p = &tmp[strlen(tmp)];
+   if (rc == READY_INT) {
+   strcat (p, "READY_INT");
+   } else {
+    rc2str (rc, p);
+   }
+   p = &tmp[strlen(tmp)];
+   if (id == NL_ID + GL_ERR_ID) {
+    sprintf (p, " Id:%s, Ch:%02x", "NL_ID+GL_ERR_ID", ch);
+   } else if (id == DSIG_ID + GL_ERR_ID) {
+    sprintf (p, " Id:%s, Ch:%02x", "DSIG_ID+GL_ERR_ID", ch);
+   } else if (id == MAN_ID + GL_ERR_ID) {
+    sprintf (p, " Id:%s, Ch:%02x", "MAN_ID+GL_ERR_ID", ch);
+   } else {
+    sprintf (p, " Id:%02x, Ch:%02x", id, ch);
+   }
+   switch (cb) {
+   case 0: /* delivery */
+    strcat (tmp, " DELIVERY");
+    break;
+   case 1: /* callback */
+    strcat (tmp, " CALLBACK");
+    break;
+   case 2: /* assign */
+    strcat (tmp, " ASSIGN");
+    break;
+   }
+   p = &tmp[strlen(tmp)];
+   sprintf (p, " A(%02x)", A);
+   
+     fprintf(Out,"%s", tmp);
+  } break;
+  case 222: {/* XDI xlog IND */
+   char *p;
+   byte A   = LOBYTE(diva_word2le(buffer->info.nu_info.code));
+   byte s   = HIBYTE(diva_word2le(buffer->info.nu_info.code));
+   byte id  = LOBYTE(diva_word2le(buffer->info.nu_info.Id));
+   byte ch  = HIBYTE(diva_word2le(buffer->info.nu_info.Id));
+   byte ind = LOBYTE(diva_word2le(buffer->info.nu_info.info));
+   byte t   = HIBYTE(diva_word2le(buffer->info.nu_info.info));
+   byte rnr = LOBYTE(diva_word2le(buffer->info.nu_info.info1));
+   byte val = HIBYTE(diva_word2le(buffer->info.nu_info.info1));
+  
+   Id = id;
+   sprintf (tmp, "XDI[%02x] ", s);
+   p = &tmp[strlen(tmp)];
+   switch (t) {
+    case NL_ID: /* NL REQ */
+     if (((ind-1) & 0x0f)<=12) {
+      strcpy (p, ns_name[(ind-1) &0x0f]);
+     } else {
+         sprintf (p, "N-UNKNOWN NS(%02x)", ind);
+     }
+     break;
+    case DSIG_ID: /* SIG REQ */
+     encode_sig_req (ind, p, 0);
+     break;
+    case MAN_ID:
+     encode_man_req (ind, p, 0);
+     break;
+    default:
+     sprintf (p, "?-(%02x)", ind);
+     break;
+   }
+   strcat (tmp, " IND Id:");
+   p = &tmp[strlen(tmp)];
+   switch (id) {
+    case DSIG_ID:
+     strcpy (p, "DSIG_ID");
+     break;
+    case NL_ID:
+     strcpy (p, "NL_ID");
+     break;
+    case BLLC_ID:
+     strcpy (p, "BLLC_ID");
+     break;
+    case TASK_ID:
+     strcpy (p, "TASK_ID");
+     break;
+    case TIMER_ID:
+     strcpy (p, "TIMER_ID");
+     break;
+    case TEL_ID:
+     strcpy (p, "TEL_ID");
+     break;
+    case MAN_ID:
+     strcpy (p, "MAN_ID");
+     break;
+    default:
+     sprintf (p, "%02x", id);
+     break;
+   }
+   p = &tmp[strlen(tmp)];
+   sprintf (p, ", Ch:%02x ", ch);
+   p = &tmp[strlen(tmp)];
+   switch (val) {
+    case 0:
+     strcpy (p, "DELIVERY");
+     break;
+    case 1:
+     sprintf (p, "RNR=%d", rnr);
+     break;
+    case 2:
+     strcpy (p, "RNum=0");
+     break;
+    case 3:
+     strcpy (p, "COMPLETE");
+     break;
+   }
+   p = &tmp[strlen(tmp)];
+   sprintf (p, " A(%02x)", A);
+      fprintf(Out,"%s", tmp);
+  } break;
   }
-  fprintf(stream,"\n");
+  fprintf(Out,"\n");
   return o;
 }
-
 void xlog_sig(FILE * stream, struct msg_s * message)
 {
   word n;
   word i;
   word cr;
   byte msg;
-
   n = message->length;
-
-
   msg = TRUE;
-  switch(SWAP(*(word *)&message->info[0])) {
+  *(word *)&message->info[0] = diva_word2le(*(word *)&message->info[0]);
+  switch(*(word *)&message->info[0]) {
   case 0x0000:
-    fprintf(stream,"SIG-x(%03i)",n-4);
+    fprintf(Out,"SIG-x(%03i)",n-4);
     break;
   case 0x0010:
   case 0x0013:
-    fprintf(stream,"SIG-R(%03i)",n-4);
+    fprintf(Out,"SIG-R(%03i)",n-4);
     cr ^=0x8000;
     break;
   case 0x0020:
-    fprintf(stream,"SIG-X(%03i)",n-4);
+    fprintf(Out,"SIG-X(%03i)",n-4);
     break;
   default:
-    fprintf(stream,"SIG-EVENT %04X", SWAP(*(word *)&message->info[0]));
+    fprintf(Out,"SIG-EVENT %04X",*(word *)&message->info[0]);
     msg = FALSE;
     break;
   }
   for(i=0; (i<n-4) && (n>4); i++)
-    fprintf(stream," %02X",message->info[4+i]);
-  fprintf(stream,"\n");
-
+    fprintf(Out," %02X",message->info[4+i]);
+  fprintf(Out,"\n");
   if(msg) display_q931_message(stream, message);
 }
-
 void call_failed_event(FILE * stream, struct msg_s * message, word code)
 {
-  fprintf(stream, "EVENT: Call failed in State '%s'\n", sig_state[code>>8]);
-  switch(SWAP(*(word *)&message->info[0])) {
+  fprintf(Out, "EVENT: Call failed in State '%s'\n", sig_state[code>>8]);
+  *(word *)&message->info[0] = diva_word2le(*(word *)&message->info[0]);
+  switch(*(word *)&message->info[0]) {
   case 0x0000:
   case 0x0010:
   case 0x0020:
     display_q931_message(stream, message);
     break;
   case 0xff00:
-    fprintf(stream,"                     ");
-    fprintf(stream,"Signaling Timeout %s",sig_timeout[code>>8]);
+    fprintf(Out,"                     ");
+    fprintf(Out,"Signaling Timeout %s",sig_timeout[code>>8]);
     break;
   case 0xffff:
-    fprintf(stream,"                     ");
-    fprintf(stream,"Link disconnected");
+    fprintf(Out,"                     ");
+    fprintf(Out,"Link disconnected");
     switch(message->info[4]) {
     case 8:
-      fprintf(stream,", Layer-1 error (cable or NT)");
+      fprintf(Out,", Layer-1 error (cable or NT)");
       break;
     case 9:
-      fprintf(stream,", Layer-2 error");
+      fprintf(Out,", Layer-2 error");
       break;
     case 10:
-      fprintf(stream,", TEI error");
+      fprintf(Out,", TEI error");
       break;
     }
     break;
   }
 }
-
 void display_q931_message(FILE * stream, struct msg_s * message)
 {
   word i;
@@ -835,16 +1070,12 @@ void display_q931_message(FILE * stream, struct msg_s * message)
   word w;
   word wlen;
   byte codeset,lock;
-
-  fprintf(stream,"                     ");
-
+  fprintf(Out,"                     ");
   cr = 0;
-
         /* read one byte call reference */
   if(message->info[5]==1) {
     cr = message->info[6] &0x7f;
   }
-
         /* read two byte call reference */
   if(message->info[5]==2) {
     cr = message->info[7];
@@ -854,22 +1085,18 @@ void display_q931_message(FILE * stream, struct msg_s * message)
   if(message->info[5]) {
     if(message->info[6] &0x80) cr |=0x8000;
   }
-
   for(i=0;i<PD_MAX && message->info[4]!=pd[i].code;i++);
-  if(i<PD_MAX) fprintf(stream,"%sCR%04x ",pd[i].name,cr);
-  else fprintf(stream,"PD(%02xCR%04x)  ",message->info[4],cr);
-
+  if(i<PD_MAX) fprintf(Out,"%sCR%04x ",pd[i].name,cr);
+  else fprintf(Out,"PD(%02xCR%04x)  ",message->info[4],cr);
   p = 6+message->info[5];
   for(i=0;i<MT_MAX && message->info[p]!=mt[i].code;i++);
-  if(i<MT_MAX) fprintf(stream,"%s",mt[i].name);
-  else fprintf(stream,"MT%02x",message->info[p]);
+  if(i<MT_MAX) fprintf(Out,"%s",mt[i].name);
+  else fprintf(Out,"MT%02x",message->info[p]);
   p++;
-
   codeset = 0;
   lock = 0;
   while(p<message->length) {
-    fprintf(stream,"\n                            ");
-
+    fprintf(Out,"\n                            ");
       /* read information element id and length                   */
     w = message->info[p];
     if(w & 0x80) {
@@ -879,14 +1106,12 @@ void display_q931_message(FILE * stream, struct msg_s * message)
     else {
       wlen = message->info[p+1]+2;
     }
-
     if(lock & 0x80) lock &=0x7f;
     else codeset = lock;
-
     if(w==0x90) {
       codeset = message->info[p];
-      if(codeset &8) fprintf(stream,"SHIFT %02x",codeset &7);
-      else fprintf(stream,"SHIFT LOCK %02x",codeset &7);
+      if(codeset &8) fprintf(Out,"SHIFT %02x",codeset &7);
+      else fprintf(Out,"SHIFT LOCK %02x",codeset &7);
       if(!(codeset & 0x08)) lock = (byte)(codeset & 7);
       codeset &=7;
       lock |=0x80;
@@ -894,90 +1119,315 @@ void display_q931_message(FILE * stream, struct msg_s * message)
     else {
       w |= (codeset<<8);
       for(i=0;i<IE_MAX && w!=ie[i].code;i++);
-      if(i<IE_MAX) fprintf(stream,"%s",ie[i].name);
-      else fprintf(stream,"%01x/%02x ",codeset,(byte)w);
-
+      if(i<IE_MAX) fprintf(Out,"%s",ie[i].name);
+      else fprintf(Out,"%01x/%02x ",codeset,(byte)w);
       if((p+wlen) > message->length) {
-        fprintf(stream,"IE length error");
+        fprintf(Out,"IE length error");
       }
       else {
         if(wlen>1) display_ie(stream,message->info[4],w,&message->info[1+p]);
       }
     }
-
       /* check if length valid (not exceeding end of packet)      */
     p+=wlen;
   }
 }
-
 void display_ie(FILE * stream, byte pd, word w, byte * ie)
 {
   word i;
-
   switch(w) {
-
   case 0x08:
-    for(i=0;i<ie[0];i++) fprintf(stream," %02x",ie[1+i]);
+    for(i=0;i<ie[0];i++) fprintf(Out," %02x",ie[1+i]);
     switch(pd) {
     case 0x08:
       for(i=0; i<ie[0] && !(ie[1+i]&0x80); i++);
-      fprintf(stream, " '%s'",cau_q931[ie[2+i]&0x7f]);
+      fprintf(Out, " '%s'",cau_q931[ie[2+i]&0x7f]);
       break;
     case 0x41:
-      if(ie[0]) fprintf(stream, " '%s'",cau_1tr6[ie[1]&0x7f]);
-      else fprintf(stream, " '%s'",cau_1tr6[0]);
+      if(ie[0]) fprintf(Out, " '%s'",cau_1tr6[ie[1]&0x7f]);
+      else fprintf(Out, " '%s'",cau_1tr6[0]);
       break;
     }
     break;
-
   case 0x0c:
   case 0x6c:
   case 0x6d:
   case 0x70:
   case 0x71:
     for(i=0; i<ie[0] && !(ie[1+i]&0x80); i++)
-      fprintf(stream, " %02x",ie[1+i]);
-    fprintf(stream, " %02x",ie[1+i++]);
-    fprintf(stream," '");
-    for( ; i<ie[0]; i++) fprintf(stream, "%c",ie[1+i]);
-    fprintf(stream,"'");
+      fprintf(Out, " %02x",ie[1+i]);
+    fprintf(Out, " %02x",ie[1+i++]);
+    fprintf(Out," '");
+    for( ; i<ie[0]; i++) fprintf(Out, "%c",ie[1+i]);
+    fprintf(Out,"'");
     break;
-
   case 0x2c:
   case 0x603:
-    fprintf(stream," '");
-    for(i=0 ; i<ie[0]; i++) fprintf(stream, "%c",ie[1+i]);
-    fprintf(stream,"'");
+    fprintf(Out," '");
+    for(i=0 ; i<ie[0]; i++) fprintf(Out, "%c",ie[1+i]);
+    fprintf(Out,"'");
     break;
-
   default:
-    for(i=0;i<ie[0];i++) fprintf(stream," %02x",ie[1+i]);
+    for(i=0;i<ie[0];i++) fprintf(Out," %02x",ie[1+i]);
     break;
   }
 }
-
 void spid_event(FILE * stream, struct msg_s * message, word code)
 {
   word i;
-
   switch(code>>8) {
   case 1:
-    fprintf(stream, "EVENT: SPID rejected");
+    fprintf(Out, "EVENT: SPID rejected");
     break;
   case 2:
-    fprintf(stream, "EVENT: SPID accepted");
+    fprintf(Out, "EVENT: SPID accepted");
     break;
   case 3:
-    fprintf(stream, "EVENT: Timeout, resend SPID");
+    fprintf(Out, "EVENT: Timeout, resend SPID");
     break;
   case 4:
-    fprintf(stream, "EVENT: Layer-2 failed, resend SPID");
+    fprintf(Out, "EVENT: Layer-2 failed, resend SPID");
     break;
   case 5:
-    fprintf(stream, "EVENT: Call attempt on inactive SPID");
+    fprintf(Out, "EVENT: Call attempt on inactive SPID");
     break;
   }
-  fprintf(stream, " '");
-  for(i=0;i<message->info[0];i++) fprintf(stream,"%c",message->info[1+i]);
-  fprintf(stream, "'");
+  fprintf(Out, " '");
+  for(i=0;i<message->info[0];i++) fprintf(Out,"%c",message->info[1+i]);
+  fprintf(Out, "'");
+}
+static void rc2str (byte rc, char* p) {
+ if ((rc & 0xf0) == 0xf0) {
+  switch (rc) {
+   case OK_FC:
+    strcpy (p, "OK_FC");
+    break;
+   case READY_INT:
+    strcpy (p, "READY_INT");
+    break;
+   case TIMER_INT:
+    strcpy (p, "TIMER_INT");
+    break;
+   case OK:
+    strcpy (p, "OK");
+    break;
+   default:
+    sprintf (p, "%02x", rc);
+    break;
+  }
+  return;
+ }
+ if (rc & 0xe0) {
+  switch (rc) {
+   case ASSIGN_RC:
+    strcpy (p, "ASSIGN_RC");
+    break;
+   case ASSIGN_OK:
+    strcpy (p, "ASSIGN_OK");
+    return;
+   default:
+    sprintf (p, "%02x", rc);
+    return;
+  }
+ }
+ strcat (p, " | ");
+ p = p+strlen(p);
+ switch (rc & 0x1f) {
+    case UNKNOWN_COMMAND:
+     strcpy (p, "UNKNOWN_COMMAND");
+     break;
+    case WRONG_COMMAND:
+     strcpy (p, "WRONG_COMMAND");
+     break;
+    case WRONG_ID:
+     strcpy (p, "WRONG_ID");
+     break;
+    case WRONG_CH:
+     strcpy (p, "WRONG_CH");
+     break;
+    case UNKNOWN_IE:
+     strcpy (p, "UNKNOWN_IE");
+     break;
+    case WRONG_IE:
+     strcpy (p, "WRONG_IE");
+     break;
+    case OUT_OF_RESOURCES:
+     strcpy (p, "OUT_OF_RESOURCES");
+     break;
+    case N_FLOW_CONTROL:
+     strcpy (p, "N_FLOW_CONTROL");
+     break;
+    case ASSIGN_RC:
+     strcpy (p, "ASSIGN_RC");
+     break;
+    case ASSIGN_OK:
+     strcpy (p, "ASSIGN_OK");
+     break;
+    default:
+     sprintf (p, "%02x", rc);
+     break;
+   }
+}
+static void encode_sig_req (byte code, char* p, int is_req) {
+ strcpy (p, "S-");
+ p = p+strlen(p);
+ switch (code) {
+  case CALL_REQ:    /* 1 call request                             */
+     /* CALL_CON          1 call confirmation                        */
+   if (is_req) {
+    strcpy(p, "CALL_REQ");
+   } else {
+    strcpy(p, "CALL_CON");
+   }
+   break;
+  case LISTEN_REQ:   /* 2  listen request                           */
+   /* CALL_IND      2  incoming call connected                  */
+   if (is_req) {
+    strcpy (p, "LISTEN_REQ");
+   } else {
+    strcpy (p, "CALL_IND");
+   }
+   break;
+  case HANGUP:     /* 3  hangup request/indication                */
+   strcpy(p, "HANGUP");
+   break;
+  case SUSPEND:     /* 4  call suspend request/confirm             */
+   strcpy (p, "SUSPEND");
+   break;
+  case RESUME:     /* 5  call resume request/confirm              */
+   strcpy (p, "RESUME");
+   break;
+  case SUSPEND_REJ:   /* 6  suspend rejected indication              */
+   strcpy (p, "SUSPEND_REJ");
+   break;
+  case USER_DATA:    /* 8  user data for user to user signaling     */
+   strcpy (p, "USER_DATA");
+   break;
+  case CONGESTION:    /* 9  network congestion indication            */
+   strcpy (p, "CONGESTION");
+   break;
+  case INDICATE_REQ:  /* 10 request to indicate an incoming call     */
+   /* INDICATE_IND    10 indicates that there is an incoming call */
+   if (is_req) {
+    strcpy (p, "INDICATE_REQ");
+   } else {
+    strcpy (p, "INDICATE_IND");
+   }
+   break;
+  case CALL_RES:    /* 11 accept an incoming call                  */
+   strcpy (p, "CALL_RES");
+   break;
+  case CALL_ALERT:   /* 12 send ALERT for incoming call             */
+   strcpy (p, "CALL_ALERT");
+   break;
+  case INFO_REQ:    /* 13 INFO request                             */
+   /* INFO_IND      13 INFO indication                          */
+   if (is_req) {
+    strcpy (p, "INFO_REQ");
+   } else {
+    strcpy (p, "INFO_IND");
+   }
+   break;
+  case REJECT:     /* 14 reject an incoming call                  */
+   strcpy (p, "REJECT");
+   break;
+  case RESOURCES:     /* 15 reserve B-Channel hardware resources     */
+   strcpy (p, "RESOURCES");
+   break;
+  case TEL_CTRL:      /* 16 Telephone control request/indication     */
+   strcpy (p, "TEL_CTRL");
+   break;
+  case STATUS_REQ:    /* 17 Request D-State (returned in INFO_IND)   */
+   strcpy (p, "STATUS_REQ");
+   break;
+  case FAC_REG_REQ:   /* 18 connection idependent fac registration   */
+   strcpy (p, "FAC_REG_REQ");
+   break;
+  case FAC_REG_ACK:   /* 19 fac registration acknowledge             */
+   strcpy (p, "FAC_REG_ACK");
+   break;
+  case FAC_REG_REJ:   /* 20 fac registration reject                  */
+   strcpy (p, "FAC_REG_REJ");
+   break;
+  case CALL_COMPLETE: /* 21 send a CALL_PROC for incoming call       */
+   strcpy (p, "CALL_COMPLETE");
+   break;
+  case FACILITY_REQ:  /* 22 send a Facility Message type             */
+   /* FACILITY_IND    22 Facility Message type indication         */
+   if (is_req) {
+    strcpy (p, "FACILITY_REQ");
+   } else {
+    strcpy (p, "FACILITY_IND");
+   }
+   break;
+  case SIG_CTRL:      /* 29 Control for signalling hardware          */
+   strcpy (p, "SIG_CTRL");
+   break;
+  case DSP_CTRL:      /* 30 Control for DSPs                         */
+   strcpy (p, "DSP_CTRL");
+   break;
+  case LAW_REQ:       /* 31 Law config request for (returns info_i)  */
+   strcpy (p, "LAW_REQ");
+   break;
+  case UREMOVE:
+   strcpy (p, "UREMOVE");
+   break;
+  case REMOVE:
+   strcpy (p, "REMOVE");
+   break;
+  default:
+   sprintf (p, "UNKNOWN(%02x)", code);
+   break;
+ }
+}
+static void encode_man_req (byte code, char* p, int is_req) {
+ strcpy (p, "M-");
+ p = p+strlen(p);
+ switch (code) {
+  case ASSIGN:      /* 1 */
+   strcpy (p, "ASSIGN");
+   break;
+  case MAN_READ:    /* 2 */
+   /* MAN_INFO_IND    2 */
+   strcpy (p, is_req ? "MAN_READ" : "MAN_INFO_IND");
+   break;
+  case MAN_WRITE:   /* 3 */
+   /* MAN_EVENT_IND   3 */
+   strcpy (p, is_req ? "MAN_WRITE" : "MAN_EVENT_IND");
+   break;
+  case MAN_EXECUTE: /* 4 */
+   /* MAN_TRACE_IND   4 */
+   strcpy (p, is_req ? "MAN_EXECUTE" : "MAN_TRACE_IND");
+   break;
+  case MAN_EVENT_ON:/* 5 */
+   strcpy (p, "MAN_EVENT_ON");
+   break;
+  case MAN_EVENT_OFF:/*6 */
+   strcpy (p, "MAN_EVENT_OFF");
+   break;
+  case MAN_LOCK:    /* 7 */
+   strcpy (p, "MAN_LOCK");
+   break;
+  case MAN_UNLOCK:  /* 8 */
+   strcpy (p, "MAN_UNLOCK");
+   break;
+  case REMOVE:
+   strcpy (p, "REMOVE");
+   break;
+  case UREMOVE:
+   strcpy (p, "UREMOVE");
+   break;
+  default:
+   sprintf (p, "UNKNOWN(%02x)", code);
+   break;
+ }
+}
+#define MAKEWORD(a, b)      ((word)(((byte)(a)) | ((word)((byte)(b))) << 8))
+#define LOBYTE(w)           ((byte)(w))
+#define HIBYTE(w)           ((byte)(((word)(w) >> 8) & 0xFF))
+word diva_word2le (word w) {
+ if (diva_convert_be2le) {
+  return (MAKEWORD(HIBYTE(w), LOBYTE(w)));
+ }
+ return (w);
 }

@@ -70,7 +70,8 @@ static char dsp_file_format_identification[DSP_FILE_FORMAT_IDENTIFICATION_SIZE] 
   '\0','\0','\0','\0','\0','\0','\0','\0'
 };
 */
-#define COMBIFILE DATADIR "/dspdload.bin"
+
+/* #define COMBIFILE DATADIR "/dspdload.bin" */
 
 /*These files will contain the binaries wriiten to card*/
 #ifdef DEBUG
@@ -101,6 +102,8 @@ dword store_download(char *data, word size, char *store);
 int set_alignment_mask(int card_type);
 int download(char *block, dword size, int code);
 
+extern char* selected_protocol_code_directory;
+extern int selected_bri_code_version;
 
 /*--------------------------------------------------------------------------
  * load_combifile() function
@@ -114,7 +117,7 @@ int download(char *block, dword size, int code);
  * Parameters: cardtype = Card ordinal as specified in cardtype.h
  *--------------------------------------------------------------------------*/
 
-void load_combifile(int card_type, word wFeatures)
+void load_combifile(int card_type, word wFeatures, int bri_card)
 {
 	int fd;
 	int count;
@@ -126,6 +129,16 @@ void load_combifile(int card_type, word wFeatures)
 	t_dsp_combifile_directory_entry *directory;
 	t_dsp_combifile_directory_entry *tmp_directory;
 	dword download_size;
+	char COMBIFILE[1024];
+
+	strcpy (COMBIFILE, selected_protocol_code_directory);
+	strcat (COMBIFILE, "dspdload.bin");
+	if ((bri_card == 1) && (selected_bri_code_version)) {
+		strcpy (COMBIFILE, selected_protocol_code_directory);
+		strcat (COMBIFILE, "dspdload.s6");
+	}
+
+	//printf ("I: DSP FILE:<%s>\n", COMBIFILE);
   
 #ifdef DEBUG 
 	int dsp_fd;

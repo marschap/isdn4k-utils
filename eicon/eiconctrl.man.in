@@ -1,12 +1,12 @@
-.\" $Id: eiconctrl.man.in,v 1.11 2000/07/08 14:18:52 armin Exp $
+.\" $Id: eiconctrl.man.in,v 1.12 2000/12/02 21:39:42 armin Exp $
 .\"
-.\" CHECKIN $Date: 2000/07/08 14:18:52 $
+.\" CHECKIN $Date: 2000/12/02 21:39:42 $
 .\"
 .\" Process this file with
 .\" groff -man -Tascii eiconctrl.1 for ASCII output, or
 .\" groff -man -Tps eiconctrl.1 for PostScript output
 .\"
-.TH EICONCTRL 8 "@MANDATE@" eiconctrl-V2.2 "Linux System Administration"
+.TH EICONCTRL 8 "@MANDATE@" eiconctrl-V2.3 "Linux System Administration"
 .SH NAME
 eiconctrl \- configure Eicon active ISDN card 
 .SH SYNOPSIS
@@ -146,6 +146,8 @@ automatically.
 .TP
 .BI "PRI"
 When using PRI-PtP set -n -S2
+.br
+Use option -x to set NT mode.
 .TP
 
 

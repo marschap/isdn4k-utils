@@ -1,4 +1,7 @@
-$Id: CHANGES,v 1.5 2000/07/08 14:18:52 armin Exp $
+$Id: CHANGES,v 1.6 2000/12/02 21:39:42 armin Exp $
+
+V2.3 - 2000-12-01 - New load features. NT mode for PRI,
+                    firmware update.
 
 V2.2 - 2000-07-08 - Capable for 2.4 devfs.
                     ("/dev/isdnctrl" -> "/dev/isdn/isdnctrl")

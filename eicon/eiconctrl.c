@@ -1,4 +1,4 @@
-/* $Id: eiconctrl.c,v 1.20 2000/07/08 14:18:52 armin Exp $
+/* $Id: eiconctrl.c,v 1.21 2000/12/02 21:39:42 armin Exp $
  *
  * Eicon-ISDN driver for Linux. (Control-Utility)
  *
@@ -21,6 +21,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA. 
  *
  * $Log: eiconctrl.c,v $
+ * Revision 1.21  2000/12/02 21:39:42  armin
+ * Update of load and log utility.
+ * New firmware and NT mode for PRI card.
+ *
  * Revision 1.20  2000/07/08 14:18:52  armin
  * Changes for devfs.
  *
@@ -211,7 +215,7 @@ char *spid_state[] =
 __u16 xlog(FILE * stream,void * buffer);
 
 void eiconctrl_usage() {
-  fprintf(stderr,"Eiconctrl Utility Version 2.2                      (c) 2000 Cytronics & Melware\n");
+  fprintf(stderr,"Eiconctrl Utility Version 2.3                      (c) 2000 Cytronics & Melware\n");
   fprintf(stderr,"usage: %s add <DriverID> <membase> <irq>              (add card)\n",cmd);
   fprintf(stderr,"   or: %s [-d <DriverID>] membase [membase-addr]      (get/set memaddr)\n",cmd);
   fprintf(stderr,"   or: %s [-d <DriverID>] irq   [irq-nr]              (get/set irq)\n",cmd);
@@ -239,7 +243,7 @@ void eiconctrl_usage() {
   fprintf(stderr,"         : -o            allow disordered info elements\n");
   fprintf(stderr,"         : -z            switch to loopback mode\n");
 #ifndef HAVE_NPCI
-  fprintf(stderr,"Please use '%s divaload -h' for divaload options.\n", cmd);
+  fprintf(stderr,"Please use 'divaload' for DIVA Server options.\n");
 #endif
   exit(-1);
 }
@@ -1013,7 +1017,7 @@ void eicon_manage_draw(void)
                                 (man_ent[i].status &0x02) ? 'e' : '-',
                                 (man_ent[i].status &0x04) ? 'p' : '-');
                 }
-                sprintf(MLine, "%-17s %s %-55s",
+                sprintf(MLine, "%-17s %s %-56s",
                         man_ent[i].Name,
                         AttSt,
                         man_ent[i].Var);
@@ -1139,6 +1143,12 @@ void eicon_management(void)
 		case 27:
 		case 'q':
 		case 'Q':
+		        move(22,0);
+        		refresh();
+	        	endwin();
+
+                        close(fd); 
+                        exit(0);
 			break;
 		case KEY_UP:
 			if (h_line) {
@@ -2211,7 +2221,7 @@ int main(int argc, char **argv) {
 		endwin();
 
                 close(fd); 
-		return 0;
+		exit(0);
 	}
 
 	fprintf(stderr, "unknown command\n");
