@@ -1,4 +1,4 @@
-## $Id: Makefile,v 1.4 1997/03/23 21:04:03 luethje Exp $
+## $Id: Makefile,v 1.5 1997/03/24 22:51:59 luethje Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,9 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile,v $
+## Revision 1.5  1997/03/24 22:51:59  luethje
+## isdnrep completed.
+##
 ## Revision 1.4  1997/03/23 21:04:03  luethje
 ## some bugfixes
 ##
@@ -145,7 +148,8 @@ ISDNLOG_OBJS += isdnlog/test_center.o
 endif
 
 ISDNREP_OBJS =  isdnrep/isdnrep.o isdnrep/cheap.o tools/tools.o           \
-                tools/isdnconf.o isdnlog/messages.o $(LIBISDNDIR)/libisdn.a
+                tools/isdnconf.o isdnlog/messages.o isdnrep/function.o    \
+                $(LIBISDNDIR)/libisdn.a
 
 ISDNCONF_OBJS=  isdnconf/isdnconf.o tools/tools.o tools/isdnconf.o        \
                 $(LIBISDNDIR)/libisdn.a

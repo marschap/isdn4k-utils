@@ -1,8 +1,9 @@
-/* $Id: isdnrep.h,v 1.2 1997/03/23 20:25:25 luethje Exp $
+/* $Id: isdnrep.h,v 1.3 1997/03/24 22:52:14 luethje Exp $
  *
  * ISDN accounting for isdn4linux.
  *
  * Copyright 1995, 1997 by Andreas Kool (akool@Kool.f.EUnet.de)
+ *                     and Stefan Luethje (luethje@sl-gw.lake.de)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +19,10 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
+ * $Log: isdnrep.h,v $
+ * Revision 1.3  1997/03/24 22:52:14  luethje
+ * isdnrep completed.
+ *
  */
 
 #ifndef _ISDNREP_H_
@@ -25,6 +30,8 @@
 
 #define PUBLIC extern
 #include <tools.h>
+
+/*****************************************************************************/
 
 #ifdef  MAXUNKNOWN
 #undef  MAXUNKNOWN
@@ -36,7 +43,9 @@
 #endif
 #define MAXCONNECTS  500
 
-#ifdef _ISDNREP_C_
+/*****************************************************************************/
+
+#ifdef _CHEAP_C_
 #define _EXTERN
 #else
 #define _EXTERN extern
@@ -46,5 +55,74 @@ _EXTERN double cheap96(time_t when, int zone, int *zeit);
 _EXTERN double cheap(time_t when, int zone);
 
 #undef _EXTERN
+
+/*****************************************************************************/
+
+#ifdef _REP_FUNC_C_
+#define _EXTERN
+#define _SET_NULL   = NULL
+#define _SET_0      = 0
+#define _SET_1      = 1
+#define _SET_EMPTY  = ""
+#define _SET_FILE   = LOGFILE
+#else
+#define _EXTERN extern
+#define _SET_NULL
+#define _SET_0
+#define _SET_1
+#define _SET_EMPTY
+#define _SET_FILE
+#endif
+
+_EXTERN int read_logfile(char *myname);
+_EXTERN void set_print_fct_for_isdnrep(int (*new_print_msg)(int Level, const char *, ...));
+_EXTERN int get_term (char *String, time_t *Begin, time_t *End,int delentries);
+_EXTERN int set_msnlist(char *String);
+
+_EXTERN int     (*print_msg)(int Level, const char *, ...) _SET_NULL;
+_EXTERN char   *lfnam           _SET_FILE;
+_EXTERN int     incomingonly    _SET_0;
+_EXTERN int     outgoingonly    _SET_0;
+_EXTERN int     verbose         _SET_0;
+_EXTERN int     timearea        _SET_0;
+_EXTERN int     phonenumberonly _SET_0;
+_EXTERN int     compute         _SET_0;
+_EXTERN int     delentries      _SET_0;
+_EXTERN int     numbers         _SET_0;
+_EXTERN int     header          _SET_1;
+_EXTERN char	  timestring[256] _SET_EMPTY;
+_EXTERN time_t  begintime;
+_EXTERN time_t  endtime;
+
+#undef _SET_NULL
+#undef _SET_0
+#undef _SET_1
+#undef _SET_EMPTY
+#undef _SET_FILE
+#undef _EXTERN
+
+/*****************************************************************************/
+
+#define LOG_VERSION_1 "1.0"
+#define LOG_VERSION_2 "2.0"
+#define LOG_VERSION_3 LOG_VERSION
+
+/*****************************************************************************/
+
+#define C_DELIM '|'
+
+/*****************************************************************************/
+
+
+/*****************************************************************************/
+
+typedef struct {
+  char   num[NUMSIZE];
+  int	 called;
+  int	 connects;
+  time_t connect[MAXCONNECTS];
+} UNKNOWN;
+
+/*****************************************************************************/
 
 #endif /* _ISDNREP_H_ */

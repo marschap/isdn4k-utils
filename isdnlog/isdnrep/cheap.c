@@ -1,8 +1,9 @@
-/* $Id: cheap.c,v 1.1 1997/03/16 20:59:02 luethje Exp $
+/* $Id: cheap.c,v 1.2 1997/03/24 22:52:08 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (Feiertagsberechnung)
  *
  * Copyright 1995, 1997 by Andreas Kool (akool@Kool.f.EUnet.de)
+ *                     and Stefan Luethje (luethje@sl-gw.lake.de)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +20,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: cheap.c,v $
+ * Revision 1.2  1997/03/24 22:52:08  luethje
+ * isdnrep completed.
+ *
  * Revision 1.1  1997/03/16 20:59:02  luethje
  * Added the source code isdnlog. isdnlog is not working yet.
  * A workaround for that problem:
@@ -64,6 +68,8 @@
  *
  */
 
+
+#define _CHEAP_C_
 
 #include "isdnrep.h"
 

@@ -1851,6 +1851,12 @@ Die Optionen von isdnrep haben im einzelnen folgende Funktion:
   -a        "all"     isdnrep druckt alle Verbindungen an, die sich in der
                       "/var/log/isdn.log" angesammelt haben (sonst nur "heute")
 
+  -h        "no header" Es wird weder fuer jeden Tag der Header angegeben,
+                        noch wird die Tages-/Gesamtzusammenfassung der
+                        Gespraeche und Gebuehren angezeigt.
+                        Dieses ist sinnvoll, wenn man den Output in ein
+                        anderes Programm einlesen will.
+
   -n        "numbers" isdnrep druckt anstelle der Symbolischen Namen die
                       Telefonnummern an
 
