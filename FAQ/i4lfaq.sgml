@@ -4,7 +4,7 @@
 
 <title>FAQ for isdn4linux
 <author>Matthias Hessler (<tt><htmlurl url="mailto:hessler@isdn4linux.de" name="hessler@isdn4linux.de"></tt>)
-<date>v2.0.47, 14. August 2000
+<date>v2.0.48, 26. August 2000
 <abstract>
 If you are reading this FAQ online, you may consider downloading the whole
 thing, and reading it offline (much cheaper). To download the latest
@@ -288,9 +288,14 @@ the other way around. For configuration see question
 <label id="feature_fax">
 <p>
 <itemize>
-<item><bf>For all passive cards: NO</bf>. However, there is a project working
-on this rather complicated problem. For more info on its status have a look at:
+<item><bf>For all passive cards (except from AVM): NO</bf>. However, there
+is a project working on this rather complicated problem. For more info on
+its status have a look at:
 <tt><url url="http://home.enitel.no/Morten.Rolland/linux/i4lfax/index.html"></tt>
+<item><bf>For passive cards from AVM: Yes</bf>. AVM recently released a
+binary CAPI 2.0 driver which supports faxing. However, the setup is rather
+complicated. Please have a look on the mailing list for tips how to do it,
+and what the consequences/disadvantages are are.
 <item><bf>For the active card AVM B1: Yes</bf> (its firmware has implemented
 fax as one of its features). Get the newest stuff from:
 <tt><url url="ftp://ftp.aeccom.com/pub/fax4i4l/howto/current/"></tt>
@@ -767,6 +772,8 @@ Note:
 <item>Teles S0Box is EXPERIMENTAL
 <item>Eicon Diva U interface not tested
 <item>Some cards do not work when compiled into the kernel, only when
+<item>Asuscom card: please note that the ISA version is a different type
+(12) then the PCI version (35 or 36)!
 started as modules
 <item>To distinguish between HFC-PCI and PCI/Winbond, have a look at the
 output of <tt>cat /proc/pci</tt>. You have HFC-PCI if you have a line

@@ -6,7 +6,7 @@
 
 <author>&Uuml;bersetzer: Wolfgang Bornath (<tt><htmlurl
 url="mailto:i4lfaq-de@wolf-b.de" name="i4lfaq-de@wolf-b.de"></tt>)
-<date>&Uuml;bersetzung: v2.0.38-1, 05. Mai 2000
+<date>&Uuml;bersetzung: v2.0.44-1, 12. Juli 2000
 <abstract>
 </abstract>
 <!-- Table of Content
@@ -116,7 +116,9 @@ name="<Gerhard.Sittig@gmx.net>"></tt>), der f&uuml;r die erstklassige
 Rechtschreibung sorgt und mir auch &uuml;ber manche sachliche
 Verst&auml;ndnish&uuml;rde hinweg hilft. Danke Gerhard!
 
-Wo gibt es die <bf>neueste deutsche Version</bf> dieser FAQ?
+<sect1> wo_de: Wo gibt es die <bf>neueste deutsche Version</bf> dieser FAQ?
+<label id="wo_de">
+<p>
 <quote>
 Die Online-Version zum Lesen: <tt><htmlurl
 url="http://www.wolf-b.de/i4l/i4lfaq-de.html"
@@ -4846,7 +4848,7 @@ wird.
 
 </article>
 
-<!-- $Id: i4lfaq-de.sgml,v 1.5 2000/07/23 16:05:24 hessler Exp $ -->
+<!-- $Id: i4lfaq-de.sgml,v 1.6 2000/08/29 21:17:41 hessler Exp $ -->
 
 <!-- Keep this comment at the end of the file
 Local variables:
