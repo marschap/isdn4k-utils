@@ -1,0 +1,121 @@
+#!/usr/bin/perl
+
+# make a zone.gdbm from reduced zonefile
+#
+# Copyright 1999 by Leopold Toetsch <lt@toetsch.at>
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2, or (at your option)
+# any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+use strict;
+use GDBM_File;
+use Getopt::Std;
+
+my($inf, $df, $verbose, $force);
+&getargs;
+&usage unless($inf ne '' && -e $inf && $df ne '');
+&read_in;
+&sort_it;
+&write_db;
+1;
+
+my ($L, $LC, %nums, %count, $tot, %zones, @nums, $n);
+
+sub read_in {
+	open(IN, $inf) || die("Can't read $inf");
+	$L='S'; # pack key
+	my($from,$to,$z);
+	print "Reading '$inf'\n" if ($verbose);
+	while (<IN>) {
+    	chomp;
+	    print STDERR "$tot\r" if($tot % 1000 == 0 && $verbose);
+	    $tot++;
+	    ($from, $to, $z) = split(/ /);
+    	next unless ($from =~ /^\d+$/);
+		push(@{ $zones{$from} }, "$to $z");
+		$count{$to}++;
+		$L='L' if($from > 0xffff);
+	}
+	close(IN);
+}
+sub sort_it {
+	my ($k, $bytes, $words,);
+	$n=keys(%count);
+	print "There are $n diff nums in $tot res\n" if($verbose);	
+	$n=0;
+	$LC='C';
+	foreach $k (sort {$count{$b} <=> $count{$a} } (keys(%count))) {
+		print "$k $count{$k}\n" if($n<10 && $verbose);
+		if($n<256) {
+			$bytes += $count{$k};
+			$nums{$k} = $n;
+			push(@nums, $k);
+			$LC='S' if ($k > 255);
+			$LC='L' if ($k > 0xffff);
+		}
+		else {
+			$words += $count{$k};
+		}	
+		$n++;
+	}	
+	print "Total $tot Bytes orig, $bytes Bytes, $words Words.\n" if($verbose);
+}
+sub write_db {
+	my(%db, $value, $count, $key, $k, $from, $tz, $to, $z, $f);
+	my ($version)= "V0.91 K$L C$LC N$n T$tot\x0";
+	tie(%db, 'GDBM_File',$df, $force? GDBM_NEWDB :GDBM_WRCREAT, 0644);
+	$db{"vErSiO\x0"} = $version; # write version, key format
+	print "Writing '$df'\n" if ($verbose);
+	print "$version\n";
+	$k = @nums;
+	$value = pack("$LC$k", @nums);
+	$db{"_tAbLe\x0"} = $value;
+	$tot=0;
+	foreach $from (sort(keys %zones)) {
+		$key = pack($L, $from);
+		$value = '';
+		$count = 0;
+		foreach $tz (@{ $zones{$from} }) {
+		    print STDERR "$tot\r" if($tot % 1000 == 0 && $verbose);
+		    $tot++;
+			($to, $z) = split(/ /, $tz);
+			if (defined $nums{$to}) {
+				$to = $nums{$to}; # get index
+				$f = 'C';	# pack u.char
+			}
+			else {	
+				$z += 128; # mark zone
+				$f = $L; # pack longer
+			}
+			$count++;
+			$value .= pack("C$f", $z, $to);
+		}
+		$db{$key} = pack('S',$count) . $value; # and write		
+	}
+	untie(%db);
+}
+
+    
+sub getargs {
+	my(%opt);
+    $verbose=1;
+    $force=0;
+	push(@ARGV,'-V');
+	getopt('r:d:v:f', \%opt);
+	$inf=$opt{'r'};
+	$df=$opt{'d'};
+	$verbose=$opt{'v'};
+	$force= $opt{'f'};
+}
+sub usage {
+    print STDERR "$0: -rInfile -dDBMfile [ -v ] [ -f ]\n";
+    print STDERR "\tv=verbose, f=forcenew \n";
+    exit 1;
+}        
