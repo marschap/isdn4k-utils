@@ -1,10 +1,10 @@
-ISDNLOG - Version 3.0 -  				22-Feb-97  13:44
+ISDNLOG - Version 3.0 -  				20-Mar-97  23:29
 
 
 isdnlog ist ein Tool zur Auswertung der Info's vom ISDN-S0-Bus sowie
 isdn4linux. isdn4linux ist seit Version 1.3.69 im Linux-Kernel enthalten.
 
-isdnlog-3.0 wurde ausgiebig mit Linux-2.0.29 / isdn4kernel-2.0.29.2
+isdnlog-3.0 wurde ausgiebig mit Linux-2.0.29 / isdn4kernel-2.0.29.5
 getestet.
 
 
@@ -430,7 +430,7 @@ ACHTUNG: Durch die Syntaxandaerung und den Erweiterungen, muessen folgende
          her. Die beiden Eintrage sollten also folgende Form aufweisen:
 
          COUNTRYCODE=+49 # fuer Anwender innerhalb Deutschland
-         AREA=7531       # fuer Anwender im Ortsnetz Konstanz 
+         AREA=7531       # fuer Anwender im Ortsnetz Konstanz
 
 Wer sowohl das Motif-Development-Kit 2.0  (und hoeher) besitzt, und
 dazu nicht vor Software im Alpha-Stadium zurueckschreckt, kann sich mit
@@ -506,7 +506,7 @@ AREACODE:
 	AREACODE = 081540
 
 COUNTRYCODE:
-	Hier wird die eigene Laenderkennung gesetzt (mit oder ohne vorlaufendem "+". 
+	Hier wird die eigene Laenderkennung gesetzt (mit oder ohne vorlaufendem "+".
 	Der Prefix "+" wird in der Datei config.h durch das Macro S_COUNTRY_PREFIX
 	representiert). Dieser Eintrag ist ebenfalls zwingend.
 	Beispiel fuer Deutschland:
@@ -648,7 +648,7 @@ unter "START" nach.
 
 Diese Zeilen koennen verwendet werden, wenn man fuer alle Verbindungen
 die gleichen Programme starten will, oder fuer alle unbekannten Nummern.
-Die Syntax ist unter "Info-Args" der Dateien "callerid.conf" und"~/.isdn" 
+Die Syntax ist unter "Info-Args" der Dateien "callerid.conf" und"~/.isdn"
 zu finden.
 
 
@@ -660,7 +660,7 @@ zusaetzlichen Parametern angegeben werden.
 Die Angabe _aller_ eigenen Telefonnummern ist zwingend, alle weiteren
 Partner-Telefonnummern koennen eingeben werden.
 
-Jede Sektion (Nummer) kann eine Dienstekennung enthalten. Dieses wird durch 
+Jede Sektion (Nummer) kann eine Dienstekennung enthalten. Dieses wird durch
 einen Eintrag in der Form
 
 SI=4 # Video
@@ -747,7 +747,7 @@ Es gibt zwei verschienden Sektionen in diesen Dateien:
 Die Eintraege in den einzelnen Sektionen sind gleich. Es koennen beliebig viele
 von den einzelnen Sektionen (MSN,NUMBER) existieren. Im Gegensatz zu frueheren
 Versionen des isdnlog's muss nun nicht mehr die Anzahl der eigenen MSN angegeben
-werden (MYMSNS entfaellt). 
+werden (MYMSNS entfaellt).
 
 
 Alle Eintraege in einer Sektion koennen in einer beliebigen Reihenfolge
@@ -811,7 +811,7 @@ die Verneinung, also [!6])
 In diesem Entrag steht eine beliebige Symbolische Beschreibung fuer
 diese Nummer ("Mausi", "EUnet" usw.). Diese darf Blanks enthalten!
 Wenn hier das Zeichen '#' verwendet werden soll, muss dieses gequotet
-werden mit "\#". 
+werden mit "\#".
 
 ALIAS = MSN #1
 ist falsch, dieses fuehrt zu dem Ergebnis:
@@ -836,6 +836,7 @@ ALIAS = helmut kohl
 Ein weiterer Eintrag ist die Tarifzone, in der sich von uns aus gesehen
 diese Nummer befindet:
 
+ 0 = Verbindung am internen S0-Bus
  1 = City (bis 31.12.1995 "Ortszone/Nahzone", bis 20 km)
  2 = Region 50 (bis 31.12.1995 "Regionalzone", bis 50 km)
  3 = Region 200 (bis 31.12.1995 "Weitzone", dann bis 200 km)
@@ -1480,7 +1481,7 @@ welches man gangesprochen hat. Somit kann isdnlog
 jederzeit mittels "kill `cat /var/run/isdnlog.'device'.pid`" terminiert werden.
 (Was z.b. zwingend ist, wenn man das teles- oder isdn-Modul entladen will!)
 Wenn isdnlog ein zweites mal gestartet wird mit dem gleichen Device, beendet
-er sich sofort wieder, da nur ein isdnlog gleichzeitig auf einem 
+er sich sofort wieder, da nur ein isdnlog gleichzeitig auf einem
 device laufen kann.
 
 Muessen mehrere isdnlog's gleichzeitig gestartet werden, muessen diese mit
@@ -1677,7 +1678,9 @@ angegeben werden.
 
  -Ax Hiermit kann/koennen die Ziffer(n) angegeben werden, die
      an einer Telefonanlage vorgewaehlt werden muessen, um ein Amt
-     zu bekommen.
+     zu bekommen. Hierbei koennen beliebig viele, jeweils durch ein ":"
+     getrennte Amtsholungen angegeben werden, also z.B.
+       -A0:80:81:82:83:84:85:86:87:88:89
      (amt="value")
 
  -2x Dual-Mode. isdnlog empfaengt die D-Kanal-Frames der anderen
@@ -2559,7 +2562,7 @@ darauf ein Teles-/HiSax-Treiber installiert werden.
 Bei mir sieht das so aus:
 
   modprobe hisax io=0xd80,0xe80 irq=12,9 mem=0xd0000,0xd2000 type=1,1
-  	   protocol=2,2 id=bri1
+  	   protocol=2,2 id=bri1%echo
 
 Dann muss diese zweite Karte (diese muss beim laden des HiSax-Treibers
 auch auf jeden Fall als *zweite* Karte angegeben werden!) _verkehrt_

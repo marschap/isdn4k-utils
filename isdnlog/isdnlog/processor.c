@@ -1,4 +1,4 @@
-/* $Id: processor.c,v 1.1 1997/03/16 20:58:47 luethje Exp $
+/* $Id: processor.c,v 1.2 1997/03/20 22:42:33 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.2  1997/03/20 22:42:33  akool
+ * Some minor enhancements.
+ *
  * Revision 1.1  1997/03/16 20:58:47  luethje
  * Added the source code isdnlog. isdnlog is not working yet.
  * A workaround for that problem:
@@ -373,12 +376,18 @@ static int facility(int type, int l)
 
   switch(type) {
     case AOC_INITIAL          : ID = OP = EH = MP = 0;
+#if 0                                
+                                if (asnp == NULL)
+                                  return(AOC_OTHER);
+#endif
                                 c = strtol(asnp += 3, NIL, 16);              /* Ext/Spare/Profile */
 
                                 switch (c) {                                 /* Remote Operation Protocol */
                                   case 0x91 : aoc_debug(c, "Remote Operation Protocol"); break;
                                   case 0x92 : aoc_debug(c, "CMIP Protocol");             break;
                                   case 0x93 : aoc_debug(c, "ACSE Protocol");             break;
+                                    default : aoc_debug(c, "UNKNOWN Protocol");		  
+                                              return(AOC_OTHER);
                                 } /* switch */
 
                                 c = strtol(asnp += 3, NIL, 16);              /* Invoke Comp type */
@@ -388,6 +397,8 @@ static int facility(int type, int l)
                                   case 0xa2 : aoc_debug(c, "ReturnResultComponent"); break;
                                   case 0xa3 : aoc_debug(c, "ReturnErrorComponent");  break;
                                   case 0xa4 : aoc_debug(c, "RejectComponent");       break;
+                                    default : aoc_debug(c, "UNKNOWN Component");
+                                              return(AOC_OTHER);
                                 } /* switch */
 
                                 l = strtol(asnp += 3, NIL, 16);              /* Invoke Comp length */
@@ -1171,17 +1182,27 @@ static void buildnumber(char *num, int oc3, int oc3a, char *result, int version)
 
   switch (oc3 & 0x70) { /* Calling party number Information element, Octet 3 - Table 4-11/Q.931 */
     case 0x00 : if (*num) {                  /* 000 Unknown */
-                  if (*amtsholung && !strncmp(num, amtsholung, strlen(amtsholung))) {
-                    num += strlen(amtsholung);
-#ifdef Q931
-                    if (q931dmp) {
-                      auto char s[BUFSIZ];
+                  char *amt = amtsholung;
+                  
+                  while (amt && *amt) {
+                    int len = strchr(amt, ':') ? strchr(amt, ':') - amt : strlen(amt);
 
-                      sprintf(s, "Amtsholung: %s", amtsholung);
-                      Q931dump(TYPE_STRING, -2, s, version);
-                    } /* if */
+                    if (len && !strncmp(num, amt, len)) {
+                      num += len;
+#ifdef Q931
+                      if (q931dmp) {
+                        auto char s[BUFSIZ], s1[BUFSIZ];
+
+                        strncpy(s1, amt, len);
+                      	sprintf(s, "Amtsholung: %s", s1);
+                      	Q931dump(TYPE_STRING, -2, s, version);
+                      } /* if */
 #endif
-                  } /* if */
+                      break;
+		    } /* if */
+                    
+                    amt += len + (strchr(amt, ':') ? 1 : 0);
+                  } /* while */
 
                   if (*num != '0')
                     sprintf(result, "%s%s", mycountry, myarea);
@@ -1279,28 +1300,35 @@ static void chargemaxAction(int chan, double charge_overflow)
   auto     char  cmd[BUFSIZ], msg[BUFSIZ];
 
 
-  sprintf(cmd, "%s/%s", confdir(), STOPCMD);
+  sprintf(cmd, "%s/dontstop", confdir());
+  
+  if (access(cmd, F_OK)) {
+    sprintf(cmd, "%s/%s", confdir(), STOPCMD);
 
-  if (!access(cmd, X_OK)) {
+    if (!access(cmd, X_OK)) {
 
-    sprintf(cmd, "%s/%s %s %s %s",
-      confdir(), STOPCMD, double2str((charge_overflow), 6, 2, DEB),
-      known[c]->who,
-      double2str(known[c]->scharge, 6, 2, DEB));
+      sprintf(cmd, "%s/%s %s %s %s",
+        confdir(), STOPCMD, double2str((charge_overflow), 6, 2, DEB),
+        known[c]->who,
+        double2str(known[c]->scharge, 6, 2, DEB));
 
-    sprintf(msg, "CHARGEMAX exhausted: %s", cmd);
+      sprintf(msg, "CHARGEMAX exhausted: %s", cmd);
+      info(chan, PRT_ERR, STATE_AOCD, msg);
+
+      (void)detach();
+
+      cc = replay ? 0 : system(cmd);
+
+      (void)attach();
+
+      sprintf(msg, "CHARGEMAX exhausted: result = %d", cc);
+      info(chan, PRT_ERR, STATE_AOCD, msg);
+    } /* if */
+  }
+  else {
+    sprintf(msg, "CHARGEMAX exhausted - NO ACTION!! - %s exists!", cmd);
     info(chan, PRT_ERR, STATE_AOCD, msg);
-
-    (void)detach();
-
-    cc = replay ? 0 : system(cmd);
-
-    (void)attach();
-
-    sprintf(msg, "CHARGEMAX exhausted: result = %d", cc);
-    info(chan, PRT_ERR, STATE_AOCD, msg);
-  } /* if */
-
+  } /* else */
 } /* chargemaxAction */
 
 
@@ -2063,9 +2091,17 @@ static void decode(int chan, register char *p, int type, int version)
                       /* So dont show it here, show it at Bearer capability */
 
                       if (version != VERSION_1TR6) {
+                        if (call[chan].knock)
+                      	  info(chan, PRT_SHOWNUMBERS, STATE_RING, "********************");
+                        
                         sprintf(s, "RING (%s)", call[chan].service);
                       	info(chan, PRT_SHOWNUMBERS, STATE_RING, s);
 
+                        if (call[chan].knock) {
+                      	  info(chan, PRT_SHOWNUMBERS, STATE_RING, "NO FREE B-CHANNEL !!");
+                      	  info(chan, PRT_SHOWNUMBERS, STATE_RING, "********************");
+                        } /* if */
+                      	
                       	if (sound)
                           ringer(chan, RING_RING);
                       } /* if */
@@ -2366,7 +2402,9 @@ escape:             for (c = 0; c <= sxp; c++)
                       px += sprintf(px, "CHANNEL: ");
 
                     switch (c) {
-                      case 0x80 : px += sprintf(px, "BRI, kein Kanal");                      break;
+                      case 0x80 : px += sprintf(px, "BRI, kein Kanal");                      
+                      	   	  call[chan].knock = 1;
+                      	   	  break;
                       case 0x81 : px += sprintf(px, "BRI, B1 bevorzugt");                    break;
                       case 0x82 : px += sprintf(px, "BRI, B2 bevorzugt");                    break;
                       case 0x83 : px += sprintf(px, "BRI, beliebiger Kanal");                break;

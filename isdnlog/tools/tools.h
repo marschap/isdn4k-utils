@@ -1,4 +1,4 @@
-/* $Id: tools.h,v 1.3 1997/03/20 00:19:18 luethje Exp $
+/* $Id: tools.h,v 1.4 1997/03/20 22:42:41 akool Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools.h,v $
+ * Revision 1.4  1997/03/20 22:42:41  akool
+ * Some minor enhancements.
+ *
  * Revision 1.3  1997/03/20 00:19:18  luethje
  * inserted the line #include <errno.h> in avmb1/avmcapictrl.c and imon/imon.c,
  * some bugfixes, new structure in isdnlog/isdnrep/isdnrep.c.
@@ -428,6 +431,7 @@ typedef struct {
   int	  takteChargeInt;
   int	  aoc;
   int 	  card;
+  int	  knock; 
 } CALL;
 
 /****************************************************************************/
@@ -553,7 +557,7 @@ PUBLIC int     	q931dmp;
 PUBLIC int     	CityWeekend;
 PUBLIC int	dual;
 PUBLIC char    	mlabel[BUFSIZ];
-PUBLIC char    	amtsholung[NUMSIZE];
+PUBLIC char    *amtsholung;
 
 /****************************************************************************/
 
