@@ -1,4 +1,4 @@
-/* $Id: ctrlconf.c,v 1.7 1997/10/27 00:05:03 fritz Exp $
+/* $Id: ctrlconf.c,v 1.8 1998/03/20 07:52:13 calle Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: ctrlconf.c,v $
+ * Revision 1.8  1998/03/20 07:52:13  calle
+ * Allow readconf to read multilink configs with more than 2 channels.
+ *
  * Revision 1.7  1997/10/27 00:05:03  fritz
  * Fixed typo.
  *
@@ -284,6 +287,22 @@ static char* write_all_numbers(char *numbers)
 
 /*****************************************************************************/
 
+static char *get_masterinterface(int fd, char *name)
+{
+	isdn_net_ioctl_cfg cfg;
+	static char mname[sizeof(cfg.master)];
+
+	strncpy(cfg.name, name, sizeof(cfg.name));
+
+	if (ioctl(fd, IIOCNETGCF, &cfg) < 0)
+		return name;
+
+	if (cfg.master[0] == 0) return name;
+	return strncpy(mname, cfg.master, sizeof(mname));
+}
+
+/*****************************************************************************/
+
 int readconfig(int fd, char *file)
 {
 	section *Section;
@@ -500,7 +519,7 @@ int readconfig(int fd, char *file)
 			if (!strcmp(Entry->name,CONF_ENT_ADDSLAVE))
 			{
 				argv[0] = cmds[ADDSLAVE].cmd;
-				argv[1] = name;
+				argv[1] = get_masterinterface(fd, name);
 				argv[2] = Entry->value;
 				argv[3] = NULL;
 				exec_args(fd,3,argv);
