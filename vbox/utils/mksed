@@ -1,0 +1,11 @@
+#! /bin/sh
+##
+## Please *only* call this script from top level makefile!
+
+$SED \
+	-e "s;@BINDIR@;${bindir};g" \
+	-e "s;@VERSION@;${VERSION};g" \
+	-e "s;@VERDATE@;${VERDATE};g" \
+        -e "s;@MAILCMD@;${MAILCMD};g" \
+	-e "s;@SPOOLDIR@;${SPOOLDIR};g"
+

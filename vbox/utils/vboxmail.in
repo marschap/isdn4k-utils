@@ -1,0 +1,23 @@
+#! /bin/sh
+##
+## vboxmail v@VERSION@ (@VERDATE@)
+
+#----------------------------------------------------------------------------#
+# Script to notify a user about new incoming voice message. This is only a   #
+# *example* - you can modify it if you like!                                 #
+#                                                                            #
+# Usage: vboxmail MESSAGENAME CALLERNAME CALLERID MAIL-TO-ADDRESS            #
+#----------------------------------------------------------------------------#
+
+MSNAME="${1}"
+CALLER="${2}"
+CALLID="${3}"
+MAILTO="${4}"
+
+if (test -f "${MSNAME}")
+then
+   (
+      @BINDIR@/vboxmode $MSNAME
+
+   ) | @MAILCMD@ -s "New message from ${CALLER} (${CALLID})" ${MAILTO}
+fi

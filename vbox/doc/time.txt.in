@@ -1,0 +1,38 @@
+
+Angabe der Zeitzonen
+====================
+
+Ab v2.0 von vbox können die verschiedenen Zeitzonen (z.B. bei den Rings)
+auch mit einer Minutenangabe versehen werden.
+
+Einzelne Zeitangaben werden durch Kommatas getrennt, Angaben von Start- und
+Endzeit durch ein Minuszeichen. Die Stundenangaben müssen im 24-Stunden-
+Format - also von 0 Uhr bis 23 Uhr - gemacht werden.
+
+Die Zeitangaben werden intern immer in Start- und Endzeit umgerechnet, auch
+dann, wenn nur eine Startzeit angegeben ist.
+
+Nehmen wir zum Beispiel folgende Zeitangaben:
+
+20:15-21:14
+
+Diese Zeit wird intern in 20:15:00-21:14:59 umgerechnet, d.h. Start- und
+Endzeit sind *inklusive*!
+
+Wenn bei einer Zeitangabe keine Minuten angebenen sind, wird bei der
+Startzeit 0 Minuten und bei der Endzeit 59 Minuten benutzt. Intern werden
+die Sekunden - die nicht einstellbar sind - nach dem gleichen Schema
+behandelt.
+
+Beispiele:
+
+20          - Umrechnung nach 20:00:00-20:59:59
+20:15-21:14 - Umrechnung nach 20:15:00-21:14:59
+08-11       - Umrechnung nach 08:00:00-11:59:59
+12-15:30    - Umrechnung nach 12:00:00-15:30:59
+
+Eine Zeitzone zählt als zutreffend (match) wenn die aktuelle Zeit
+größer/gleich der Startzeit *und* kleiner/gleich der Endzeit ist.
+
+Ein '*' als *einzige* Zeitangabe wird als *immer* behandelt, ein '-' oder
+'!' als *einzige* Zeitangabe als *nie*.

@@ -1,0 +1,198 @@
+dnl     This file is an input file used by the GNU "autoconf" program to
+dnl     generate the file "configure", which is run during vbox installation
+dnl     to configure the system for the local environment.
+
+AC_INIT(src/vboxgetty.h)
+
+#--------------------------------------------------------------------------
+# Version of the vbox package. Theres no need to change this ;-)
+#--------------------------------------------------------------------------
+
+VBOX_VERSION="2.0.0"
+VBOX_VERDATE="4. Januar 1997"
+
+#--------------------------------------------------------------------------
+# Some defaults...
+#--------------------------------------------------------------------------
+
+AC_PREFIX_DEFAULT(/usr/local/vbox)
+
+CFLAGS="-i486 -O2 -Wall"
+
+#--------------------------------------------------------------------------
+# Search for some programs needed by the makefiles.
+#--------------------------------------------------------------------------
+
+AC_PROG_CC
+AC_PROG_INSTALL
+AC_PROG_MAKE_SET
+AC_PROG_LN_S
+
+AC_PATH_PROG(VBOX_ECHO, echo, "echo")
+AC_PATH_PROG(VBOX_MAKE, make, "make")
+AC_PATH_PROG(VBOX_RM, rm, "rm")
+AC_PATH_PROG(VBOX_MV, mv, "mv")
+AC_PATH_PROG(VBOX_SED, sed, "sed")
+AC_PATH_PROG(VBOX_MAIL, mail, "mail")
+AC_PATH_PROG(VBOX_AR, ar, "ar")
+AC_PATH_PROG(VBOX_RANLIB, ranlib, "ranlib")
+
+
+#--------------------------------------------------------------------------
+# Get the top-level install tree for the package.
+#--------------------------------------------------------------------------
+
+AC_MSG_CHECKING(for prefix)
+
+if test "$prefix" = "NONE"
+then
+	VBOX_PREFIX="$ac_default_prefix"
+else
+	VBOX_PREFIX="$prefix"
+fi
+
+AC_MSG_RESULT($VBOX_PREFIX)
+
+#--------------------------------------------------------------------------
+# Test where vbox stores the message tree.
+#--------------------------------------------------------------------------
+
+AC_MSG_CHECKING(where the messages are stored)
+
+VBOX_SPOOLDIR="/var/spool/vbox"
+
+AC_ARG_WITH(spooldir,
+	[  --with-spooldir=DIR     vbox's stores messages in DIR [/var/spool/vbox]],
+	VBOX_SPOOLDIR=${withval}
+)
+
+AC_MSG_RESULT(${VBOX_SPOOLDIR})
+
+#--------------------------------------------------------------------------
+# Test where vbox writes the logs.
+#--------------------------------------------------------------------------
+
+AC_MSG_CHECKING(where the logs are stored)
+
+VBOX_LOGDIR="/var/log"
+
+AC_ARG_WITH(logdir,
+	[  --with-logdir=DIR       logs are stored in DIR [/var/log]],
+	VBOX_LOGDIR=${withval}
+)
+
+AC_MSG_RESULT($VBOX_LOGDIR)
+
+#--------------------------------------------------------------------------
+# Test where vbox stores the process ids.
+#--------------------------------------------------------------------------
+
+AC_MSG_CHECKING(where the pids are stored)
+
+VBOX_PIDDIR="/var/run"
+
+AC_ARG_WITH(piddir,
+	[  --with-piddir=DIR       pids are stored in DIR [/var/run]],
+	VBOX_PIDDIR=${withval}
+)
+
+AC_MSG_RESULT($VBOX_PIDDIR)
+
+#--------------------------------------------------------------------------
+# Test where vbox made the locks.
+#--------------------------------------------------------------------------
+
+AC_MSG_CHECKING(where the locks are made)
+
+VBOX_LOCKDIR="/var/lock"
+
+AC_ARG_WITH(lockdir,
+	[  --with-lockdir=DIR      locks are made in DIR [/var/lock]],
+	VBOX_LOCKDIR=${withval}
+)
+
+AC_MSG_RESULT($VBOX_LOCKDIR)
+
+#--------------------------------------------------------------------------
+# Test where the global isdn configuration is stored...
+#--------------------------------------------------------------------------
+
+AC_MSG_CHECKING(where the isdn configuration is stored)
+
+if test "$I4LCONFDIR" = ""
+then
+	ISDN_GLOBAL_CONFIG="/etc/isdn"
+else
+	ISDN_GLOBAL_CONFIG="$I4LCONFDIR"
+fi
+
+AC_ARG_WITH(confdir,
+	[  --with-i4lconfdir=DIR   global isdn configuration directory [\$I4LCONFDIR] ],
+	ISDN_GLOBAL_CONFIG=${withval}
+)
+
+AC_MSG_RESULT($ISDN_GLOBAL_CONFIG)
+
+#--------------------------------------------------------------------------
+# Test if the complete ncurses package is installed. This means the lib's
+# ncurses and panel must exist. If not some tools from the package will not
+# compile!
+#--------------------------------------------------------------------------
+
+VBOX_LIB_NCURSES="n"
+
+AC_CHECK_LIB(ncurses, initscr,
+	AC_CHECK_LIB(panel, update_panels,
+		VBOX_LIB_NCURSES="y",
+		[AC_MSG_WARN(vbox needs ncurses (1.9.9g or higher) to compile!)],
+		-lncurses
+	),
+	[AC_MSG_WARN(vbox needs ncurses (1.9.9g or higher) to compile!)]
+)
+
+#--------------------------------------------------------------------------
+# Test if all needed libraries for vboxgetty are installed. We will end the
+# configure script if one is missing!
+#--------------------------------------------------------------------------
+
+AC_CHECK_LIB(m, cos,
+	AC_CHECK_LIB(dl, dlerror,
+		AC_CHECK_LIB(tcl, Tcl_CreateInterp,
+			VBOX_GETTY_LIBS="-ltcl -lm -ldl",
+			[AC_MSG_ERROR(vboxgetty needs the tcl package (7.6 or higher) to compile!)],
+			-lm -ldl
+		),
+		[AC_MSG_ERROR(vboxgetty needs the dynamic link library to compile!)]
+	),
+	[AC_MSG_ERROR(vboxgetty needs the math library to compile!)]
+)
+
+#--------------------------------------------------------------------------
+# Subst the variables...
+#--------------------------------------------------------------------------
+
+AC_SUBST(VBOX_PREFIX)
+AC_SUBST(VBOX_VERSION)
+AC_SUBST(VBOX_VERDATE)
+AC_SUBST(VBOX_SPOOLDIR)
+AC_SUBST(VBOX_LOGDIR)
+AC_SUBST(VBOX_PIDDIR)
+AC_SUBST(VBOX_LOCKDIR)
+AC_SUBST(VBOX_GETTY_LIBS)
+AC_SUBST(VBOX_LIBS)
+AC_SUBST(VBOX_ECHO)
+AC_SUBST(VBOX_MAKE)
+AC_SUBST(VBOX_RM)
+AC_SUBST(VBOX_MV)
+AC_SUBST(VBOX_SED)
+AC_SUBST(VBOX_MAIL)
+AC_SUBST(VBOX_AR)
+AC_SUBST(VBOX_RANLIB)
+AC_SUBST(VBOX_LIB_NCURSES)
+AC_SUBST(ISDN_GLOBAL_CONFIG)
+
+#--------------------------------------------------------------------------
+# ...and create the files from *.in...
+#--------------------------------------------------------------------------
+
+AC_OUTPUT(Makefile src/Makefile)

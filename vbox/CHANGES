@@ -1,0 +1,97 @@
+
+# To describe the news & fixes better (my english is not the best :-)
+# the changelog is only available in german.
+
+25-Feb-97
+=========
+
+o [neu] Beim ersten erscheinen der CALLER NUMBER wird im S-Register 20
+	geprüft ob der Wert 1 (Voice) ist. Anrufe werden nur noch beant-
+	wortet, wenn das S-Register ausgelesen werden konnte!
+
+o [neu] Wenn bei einem Anruf die Kontrolldatei 'vboxctrl-reject' exist-
+	iert, wird der Anruf nicht angenommen - egal was in den Konfig-
+	urationen eingestellt wurde. Die Datei wird dann von vboxgetty
+	gelöscht.
+
+o [neu] Wenn bei einem Anruf die Kontrolldatei 'vboxctrl-answerall' oder
+	'vboxctrl-answernow' existiert, wird der Anruf - ohne rücksicht-
+	name auf die eingestellten Rings - sofort beantwortet. Die Datei
+	'vboxctrl-answernow' wird von vboxgetty zuvor gelöscht!
+
+o [neu] Flags TOLLRINGS und TOLLCHECK eingebaut. Bei neuen Nachrichten kann
+	damit eine neue Anzahl Rings festgelegt werden.
+
+o [neu] Support-Funktionen in einer Library zusammengefasst. Diese kann ohne
+	Zusatz von anderen Programmen verwendet werden.
+
+o [neu] Beim "Alive-Check" und bei einem eingehenden Anruf wird geprüft ob
+	sich die Datei 'vboxctrl-stop' im Spoolverzeichnis befindet. Wenn ja
+	killt sich der vboxgetty selbst!
+
+o [neu] Wenn sich beim Starten die Datei 'vboxctrl-stop' im Spoolverzeichnis
+	befindet, wartet vboxgetty solange, bis diese wieder gelöscht ist.
+	Der Modemport wird *nicht* geöffnet, somit kann an Tk-Anlagen der
+	Anrufschutz benutzt werden. Es wird alle 5 Sekunden geprüft ob die
+	Datei noch existiert (von Ralf G. R. Bergs <rabe@RWTH-Aachen.DE>).
+
+
+24-Feb-97
+=========
+
+o [neu] Skripte vboxmail und vboxplay an den eigenen Konverter angepasst.
+
+o [neu] Beim locken werden jetzt die Rechte der Locks auf die des Benutzers
+	gesetzt, damit diese beim beenden wieder entfernt werden können.
+
+o [neu] Die Dokumentation und die Skripts werden jetzt von einem SED-Sktipt
+	bearbeitet um die eingestellten Pfade zu ersetzen.
+
+o [neu] Globale Variable I4LCONFDIR in configure.in eingebaut. Die Environ-
+	ment wird als Voreinstellung genommen, wenn diese nicht gesetzt ist
+	/etc/isdn.
+
+o [neu]	Programm vboxconvert fertiggestellt. Konvertierung ist jetzt von
+	au nach vbox und von vbox nach au möglich.
+
+o [neu] Einige kleine Änderungen in den Makefile's gemacht.
+
+
+16-Feb-97
+=========
+
+o [neu]	Unterstützung für die Modemgeschwindigkeit entfernt. Es wird jetzt
+	immer mit 57600 gearbeitet.
+
+o [neu] Unterstützung für das Hangup-Kommando entfernt. Es wird jetzt immer
+	'drop data terminal line' benutzt.
+
+o [neu]	Unterstützung für Flow-Control entfernt. Es wird jetzt immer mit
+	CTS/RTS gearbeitet.
+
+o [neu] Angabe einer umask eingebaut und die Funktionen zum setzten der
+	Rechte angepasst.
+
+
+12-Feb-97
+=========
+
+o [neu] Das Programm läuft jetzt unter den Rechten des jeweiligen Benutzers.
+	Die Einschränkungen, Nachrichten nur aus dem Spoolverzeichnis zu
+	spielen oder zu speichern bestehen jetzt nicht mehr.
+
+o [neu]	Locking komplett geändert. Der Lock für das ttyI-Device bleibt jetzt
+	*immer* bestehen!
+
+o [neu]	In bestimmten Fällen ist es *normal*, daß vboxgetty sich beendet;
+	nämlich dann, wenn z.B. der Port nicht mehr initialisiert werden
+	konnte. Der getty sollte daher immer von einem Skript oder aus der
+	/etc/inittab gestartet werden!
+
+o [neu]	Beim initialisieren wird geprüft, ob die Datei 'vboxrc' existiert.
+	Die Datei kann leer, muß aber vorhanden sein. Das Programm beendet
+	sich, wenn die Datei nicht existiert.
+
+o [neu]	Tcl Skriptunterstützung eingebaut. Es wird *immer* ein Skript ge-
+	braucht, auch wenn nur Anrufe aufgezeichnet werden sollen!
+

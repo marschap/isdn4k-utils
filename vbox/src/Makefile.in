@@ -1,0 +1,111 @@
+
+#----------------------------------------------------------------------------#
+# The information below is modified by the configure script when Makefile is #
+# generated from Makefile.in. You shouldn't normally modify any of this      #
+# stuff by hand.                                                             #
+#----------------------------------------------------------------------------#
+
+GOT_LIB_NCURSES	= @VBOX_LIB_NCURSES@
+
+#----------------------------------------------------------------------------#
+# Headers                                                                    #
+#----------------------------------------------------------------------------#
+
+HEADERS		= init.h lists.h lock.h log.h modem.h streamio.h perms.h \
+		  rcgetty.h script.h voice.h vboxgetty.h rcvbox.h
+
+#----------------------------------------------------------------------------#
+# Object compile modes                                                       #
+#----------------------------------------------------------------------------#
+
+log.o:		$(HEADERS) log.c
+		$(CC) $(CFLAGS) -c log.c
+
+init.o:		$(HEADERS) init.c
+		$(CC) $(CFLAGS) -c init.c
+
+rcgetty.o:	$(HEADERS) rcgetty.c
+		$(CC) $(CFLAGS) -c rcgetty.c
+
+lists.o:	$(HEADERS) lists.c
+		$(CC) $(CFLAGS) -c lists.c
+
+script.o:	$(HEADERS) script.c
+		$(CC) $(CFLAGS) -c script.c
+
+voice.o:	$(HEADERS) voice.c
+		$(CC) $(CFLAGS) -c voice.c
+
+streamio.o:	$(HEADERS) streamio.c
+		$(CC) $(CFLAGS) -c streamio.c
+
+perms.o:	$(HEADERS) perms.c
+		$(CC) $(CFLAGS) -c perms.c
+
+modem.o:	$(HEADERS) modem.c
+		$(CC) $(CFLAGS) -c modem.c
+
+lock.o:		$(HEADERS) lock.c
+		$(CC) $(CFLAGS) -c lock.c
+
+rcvbox.o:	$(HEADERS) rcvbox.c
+		$(CC) $(CFLAGS) -c rcvbox.c
+
+vboxgetty.o:	$(HEADERS) vboxgetty.c
+		$(CC) $(CFLAGS) -c vboxgetty.c
+
+vboxconvert.o:	$(HEADERS) vboxconvert.c
+		$(CC) $(CFLAGS) -c vboxconvert.c
+
+vboxctrl.o:	$(HEADERS) vboxctrl.c
+		$(CC) $(CFLAGS) -c vboxctrl.c
+
+libvbox.o:	$(HEADERS) libvbox.c
+		$(CC) $(CFLAGS) -c libvbox.c
+
+#----------------------------------------------------------------------------#
+# Compiling vboxlib                                                          #
+#----------------------------------------------------------------------------#
+
+VBOXLIBOBJS	= libvbox.o
+
+vboxlib:	  $(VBOXLIBOBJS)
+		  @$(AR) rc libvbox.a $(VBOXLIBOBJS)
+		 -@$(RANLIB) libvbox.a
+
+#----------------------------------------------------------------------------#
+# Compiling vboxgetty                                                        #
+#----------------------------------------------------------------------------#
+
+VBOXGETTYLIBS   = @VBOX_GETTY_LIBS@
+
+VBOXGETTYOBJS	= vboxgetty.o init.o log.o perms.o lock.o streamio.o modem.o \
+		  script.o voice.o lists.o rcvbox.o rcgetty.o \
+
+vboxgetty:	  $(VBOXGETTYOBJS)
+		  $(CC) $(VBOXGETTYOBJS) $(VBOXGETTYLIBS) -L. -lvbox -o vboxgetty
+
+#----------------------------------------------------------------------------#
+# Compiling vbox                                                             #
+#----------------------------------------------------------------------------#
+
+ifeq ($(GOT_LIB_NCURSES),y)
+
+VBOXLIBS	= -lpanel -lncurses
+
+VBOXOBJS	= vbox.o parserc.o misc.o
+
+vbox:		  $(VBOXOBJS)
+		  $(CC) $(VBOXOBJS) $(VBOXLIBS) -o vbox
+
+endif
+
+#----------------------------------------------------------------------------#
+# Compiling vboxconvert                                                      #
+#----------------------------------------------------------------------------#
+
+CONVOBJS	= vboxconvert.o
+
+vboxconvert:	  $(CONVOBJS)
+		  $(CC) $(CONVOBJS) -L. -lvbox -o vboxconvert
+
