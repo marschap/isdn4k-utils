@@ -1,6 +1,6 @@
 '\" t
 '\" ** above should format a table **
-.\" CHECKIN $Date: 2004/01/11 15:16:11 $
+.\" CHECKIN $Date: 2004/10/04 14:50:41 $
 .TH rate-files 5 "@MANDATE@" -lt-
 .SH NAME
 rate-files \- Format of rate-files
@@ -74,8 +74,16 @@ N:19440
 .P
 .B U:currencyfmt currency
 .IP
-e.g.
-U:%.3f DEM
+If the first char of
+.I currencyfmt
+is ^, the amount is multiplied by 100 before it is displayed 
+without leading ^.
+.IP
+e.g. (one of these, ¢ = cent)
+.br
+U:%.3f EUR
+.br
+U:^%.3f ¢
 .P
 .B X:num_wildcard = provider[zZone] [,...]
 .IP
@@ -301,8 +309,11 @@ are optional.
 .I daylist
 is
 .BR day [ -day ][ ,... ]
-and day is a daynumber (1=Mon, 2=Tue, ...) or W (weekday), E (weekend), H (holiday) or
+and day is a daynumber (1=Mon, 2=Tue, ...) or
+W (workday, Monday to Friday), E (weekend), H (holiday) or
 * (everyday).
+If more than one of these days match a given date, the following order of
+priority (highest first) applies: H 7 .. 1 E W *.
 .P
 .I timelist
 is
@@ -347,7 +358,7 @@ after this charging is calculated in seconds interval.
 .IP
 T:W/18-8=0.30|1.2(60)/1 night
 .IP
-On weekday, night, charge is the bigger of 1.20 per minute or 0.30
+On workdays, night, charge is the bigger of 1.20 per minute or 0.30
 .IP
 T:*/*=0.50/0,1(60)/1 always
 .IP
@@ -426,7 +437,7 @@ can be shortened as long as it remains definite.
 .IP
 EXAMPLE
 .br
-T:[-24.12.2003]W/*=0.08/60 weekdays
+T:[-24.12.2003]W/*=0.08/60 on workdays
 .br
 T:[-24.12.2003]E,H/*=0.06 weekend
 .br
@@ -440,19 +451,19 @@ t:[01.01.2004]=[-24.12.]
 .IP
 This will be transformed into:
 .IP
-T:[-24.12.2003]W/*=0.08/60 weekdays
+T:[-24.12.2003]W/*=0.08/60 on workdays
 .br
 T:[-24.12.2003]E,H/*=0.06/60 weekend
 .br
 T:[24.12.2003-25.12.2003]*/*=0.04/60 Christmas Eve
 .br
-T:[25.12.2003-31.12.2003]W/*=0.08/60 weekdays
+T:[25.12.2003-31.12.2003]W/*=0.08/60 on workdays
 .br
 T:[25.12.2003-31.12.2003]E,H/*=0.06/60 weekend
 .br
 T:[31.12.2003-01.01.2004]=0.04/60 New Years' Eve
 .br
-T:[01.01.2004]W/*=0.08/60 weekdays
+T:[01.01.2004]W/*=0.08/60 on workdays
 .br
 T:[01.01.2004]E,H/*=0.06/60 weekend
 .SH SEE ALSO

@@ -1,4 +1,4 @@
- /* $Id: holiday.c,v 1.18 2000/01/12 23:22:53 akool Exp $
+ /* $Id: holiday.c,v 1.19 2004/10/04 14:50:41 tobiasb Exp $
  *
  * Feiertagsberechnung
  *
@@ -19,6 +19,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: holiday.c,v $
+ * Revision 1.19  2004/10/04 14:50:41  tobiasb
+ * Removed restriction that workday (W) must not be holiday (H) too.
+ * Updated rate-files(5): priority of days, U:^..., s/weekday/workday.
+ *
  * Revision 1.18  2000/01/12 23:22:53  akool
  * - isdnlog/tools/holiday.c ... returns ERVERYDAY for '*'
  * - FAQ/configure{,.in} ...  test '==' => '='
@@ -502,7 +506,7 @@ int isDay(struct tm *tm, bitfield mask, char **name)
     return WEEKEND;
   }
 
-  if ((mask & (1<<WORKDAY)) && day!=SATURDAY && day!=SUNDAY && !isHoliday(tm, NULL)) {
+  if ((mask & (1<<WORKDAY)) && day!=SATURDAY && day!=SUNDAY) { 
     if (name) *name=staticString("%s (%s)", Weekday[WORKDAY], Weekday[day]);
     return WORKDAY;
   }

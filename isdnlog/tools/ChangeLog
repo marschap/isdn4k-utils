@@ -1,3 +1,8 @@
+2004-10-04  Tobias Becker  <tobiasb@isdn4linux.de>
+
+	* holiday.c (isDay): Removed restriction that workday (W) must not be
+	holiday (H) too.  See rate-files(5) for order of priority.
+
 2004-09-29  Tobias Becker  <tobiasb@isdn4linux.de>
 
         * tools.h (ignoreCLIP): New global variable, similiar ignoreCOLP.
