@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.39 1999/10/26 18:17:11 akool Exp $
+# $Id: Makefile,v 1.40 2000/03/17 16:15:31 calle Exp $
 #
 # Toplevel Makefile for isdn4k-utils
 #
@@ -66,7 +66,7 @@ else
 endif
 
 ifeq ($(CONFIG_AVMCAPICTRL),y)
-	SUBDIRS := $(SUBDIRS) avmb1
+	SUBDIRS := $(SUBDIRS) avmb1 capiinit
 endif
 ifeq ($(CONFIG_ACTCTRL),y)
 	SUBDIRS := $(SUBDIRS) act2000
@@ -204,7 +204,7 @@ subconfig: scripts/autoconf.h
 	@set -e; for i in `echo $(SUBDIRS)`; do \
 		if [ -x $$i/configure ] ; then \
 			echo -e "\nRunning configure in $$i ...\n"; sleep 1; \
-			(cd $$i; ./configure || $(MAKE) -C ../ ERRDIR=$$i cfgerror); \
+			(cd $$i; ./configure --sbindir=$(CONFIG_SBINDIR) --bindir=$(CONFIG_BINDIR) --mandir=$(CONFIG_MANDIR) --datadir=$(CONFIG_DATADIR) || $(MAKE) -C ../ ERRDIR=$$i cfgerror); \
 		elif [ -f $$i/Makefile.in ] ; then \
 			echo -e "\nRunning make -f Makefile.in config in $$i ...\n"; sleep 1; \
 			$(MAKE) -C $$i -f Makefile.in config; \
