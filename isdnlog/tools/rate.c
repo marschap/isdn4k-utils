@@ -1,4 +1,4 @@
-/* $Id: rate.c,v 1.15 1999/05/10 20:37:42 akool Exp $
+/* $Id: rate.c,v 1.16 1999/05/11 20:27:22 akool Exp $
  *
  * Tarifdatenbank
  *
@@ -19,6 +19,11 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rate.c,v $
+ * Revision 1.16  1999/05/11 20:27:22  akool
+ * isdnlog Version 3.27
+ *
+ *  - country matching fixed (and faster)
+ *
  * Revision 1.15  1999/05/10 20:37:42  akool
  * isdnlog Version 3.26
  *
@@ -390,19 +395,19 @@ static int countrymatch(char *name, char *num)
   down(k);
 
   for (i = 0; i < nCountry; i++)
-    if (strstr(Country[i].match, k) && (test || !strncmp(Country[i].prefix, num, strlen(Country[i].prefix))))
+    if ((test || !strncmp(Country[i].prefix, num, strlen(Country[i].prefix))) && !strncmp(Country[i].match, k, strlen(Country[i].match)))
       return(nCountry);
 
   for (i = 0; i < nCountry; i++)
-    if (strstr(Country[i].hints, k) && (test || !strncmp(Country[i].prefix, num, strlen(Country[i].prefix))))
+    if ((test || !strncmp(Country[i].prefix, num, strlen(Country[i].prefix))) && strstr(Country[i].match, k))
       return(nCountry);
 
   for (i = 0; i < nCountry; i++)
-    if (strstr(k, Country[i].hints) && (test || !strncmp(Country[i].prefix, num, strlen(Country[i].prefix))))
+    if ((test || !strncmp(Country[i].prefix, num, strlen(Country[i].prefix))) && strstr(Country[i].hints, k))
       return(nCountry);
 
   for (i = 0; i < nCountry; i++)
-    if ((wld(k, Country[i].match) <= DISTANCE) && (test || !strncmp(Country[i].prefix, num, strlen(Country[i].prefix))))
+    if ((test || !strncmp(Country[i].prefix, num, strlen(Country[i].prefix))) && (wld(k, Country[i].match) <= DISTANCE))
       return(nCountry);
 
   return(0);
@@ -434,35 +439,49 @@ int abroad(char *key, char *result)
     down(k);
   } /* else */
 
-  for (i = 0; i < nCountry; i++) {
-    if (mode == 1) {
+  if (mode == 1) {
+    for (i = 0; i < nCountry; i++) {
       res = strlen(Country[i].prefix);
       match = !strncmp(Country[i].prefix, key, res);
-    }
-    else {
-      res = 1;
-      match = (strstr(Country[i].match, k) != NULL);
 
-      if (!match)
-        match = (strstr(Country[i].hints, k) != NULL);
+      if (match)
+        break;
+    } /* for */
+  }
+  else { /* mode == 2 */
+    res = 1;
 
-      if (!match)
-        match = (strstr(k, Country[i].hints) != NULL);
+    for (i = 0; i < nCountry; i++)
+      if ((match = !strncmp(Country[i].match, k, strlen(Country[i].match))))
+        break;
 
-      if (!match)
-        match = (wld(k, Country[i].match) <= DISTANCE);
+    if (!match)
+      for (i = 0; i < nCountry; i++)
+        if ((match = (strstr(Country[i].match, k) != NULL)))
+          break;
 
-    } /* else */
+    if (!match)
+      for (i = 0; i < nCountry; i++)
+        if ((match = (strstr(Country[i].hints, k) != NULL)))
+          break;
 
-    if (match) {
-      if (mode == 1)
-        strcpy(result, Country[i].name);
-      else
-        strcpy(result, Country[i].prefix);
+#if 0
+    if (!match)
+      for (i = 0; i < nCountry; i++)
+        if ((match = (wld(k, Country[i].match) <= DISTANCE)))
+          break;
+#endif
 
-      return(res);
-    } /* if */
-  } /* for */
+  } /* else */
+
+  if (match) {
+    if (mode == 1)
+      strcpy(result, Country[i].name);
+    else
+      strcpy(result, Country[i].prefix);
+
+    return(res);
+  } /* if */
 
   return(0);
 } /* abroad */

@@ -7,8 +7,14 @@ P:20=99
 # Dont use NetCologne
 P:22=99
 
+# Dont use CityKom
+P:25=99
+
 # Dont use Telebridge
 P:28=99
+
+# Dont use TeleBeL
+P:42=99
 
 # Dont use ACC
 P:49=99

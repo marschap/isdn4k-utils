@@ -1,10 +1,10 @@
-ISDNLOG - Version 3.25 -  				06-May-99  21:59
+ISDNLOG - Version 3.27 -  				11-May-99  22:27
 
 
 isdnlog ist ein Utility zur Auswertung des D-Kanals eines
 ISDN-BRI Anschlusses.
 
-isdnlog-3.25 wurde ausgiebig mit Linux-2.0.36 getestet.
+isdnlog-3.27 wurde ausgiebig mit Linux-2.0.36 getestet.
 
 
 Fuer alle, die es nun ueberhaupt nicht mehr abwarten koennen, hier das
@@ -3220,6 +3220,36 @@ Ein 153 Sekunden langes Gespraech nach Italien (+39) kostet am Thu May  6 21:56:
 01078 DEM    0.915 (DEM 0.006/1.0s = DEM 0.359/Min (3U, Zone 110))
 01013 DEM    1.170 (DEM 0.390/60.0s = DEM 0.390/Min (Tele 2, Euro 1 / USA, Kanada))
 01019 DEM    1.470 (DEM 0.490/60.0s = DEM 0.490/Min (Mobilcom CbC, Gruppe A))
+
+Anstelle einer Telefonnummer kann auch direkt eine Zone angegeben werden:
+
+$ isdnconf -c .<Zone>
+
+Ein 153 Sekunden langes Gespraech in Zone 8 kostet am Tue May 11 09:07:58 1999
+01078 DEM    1.068 (DEM 0.007/1.0s = DEM 0.419/Min (3U, Zone 8, Workday (Thuesday)))
+01098 DEM    1.170 (DEM 0.008/1.0s = DEM 0.459/Min (Mox, Fest-zu-Mobil))
+01030 DEM    1.224 (DEM 0.008/1.0s = DEM 0.480/Min (TelDaFax, C/D/E-Netz))
+01019 DEM    1.470 (DEM 0.490/60.0s = DEM 0.490/Min (Mobilcom CbC, Mobilfunk))
+01079 DEM    1.861 (DEM 0.012/1.0s = DEM 0.730/Min (Viatel, Deutschland GSM, Workday (Thuesday), Standard))
+
+Hier sind bislang folgende einheitliche Zonen moeglich:
+
+   0 : Verbindungen an der eigenen Tk-Anlage (zwangslaeufig kostenlos)
+       sowie alle "FreeCall" (kostenlos) Nummern des jeweiligen Providers
+   1 : Ortszone (alle Nummern, die ohne Vorwahl erreichbar sind.
+       Z.Zt. nur ueber den preselected Provider erreichbar)
+   2 : Cityzone (Nummern im Umkreis von max. 20 km)
+   3 : Region 50 (Nummern im Umkreis von max. 50 km)
+   4 : Fernzone (Deutschlandweit)
+   5 : C-Mobilbox
+   6 : C-Netz
+   7 : D1-Netz
+   8 : D2-Netz
+   9 : E-plus-Netz
+  10 : E2-Netz
+  20 : Internet
+  21 : Auskunft Inland
+  22 : Auskunft Ausland
 
 
 Hier nun die Optionen des Programmes:
