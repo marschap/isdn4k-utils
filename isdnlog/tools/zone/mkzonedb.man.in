@@ -1,0 +1,53 @@
+.\" $Id: mkzonedb.man.in,v 1.1 2003/03/11 13:08:00 paul Exp $
+.\"
+.\" CHECKIN $Date: 2003/03/11 13:08:00 $
+.\"
+.TH MKZONEDB 8 "@MANDATE@" mkzonedb "Linux System Administration"
+.SH NAME
+mkzonedb \- Utility create a zone file for isdnlog
+.SH SYNOPSIS
+mkzonedb -r zonefile -d database [-v] [-V] [-o Oz] [-l len]
+.SH DESCRIPTION
+.B mkzonedb
+reads a text file with zone (area code) information,
+and writes it in a special format to the database file
+so that other apps such as isdnlog can easily access the data.
+
+This data is used to determine in what "zone" a given area code
+is in relation to another, to see what rate applies to a call
+between these area codes ("is the call a local call").
+
+This utility is really only used during the building of the isdnlog-data
+package, but it may be useful for those who want to create their own
+custom tables.
+.SH OPTIONS
+.TP
+.BI "-r" " zonefile"
+the text file with the zone information.
+Use "-" for standard input.
+
+.TP
+.BI "-d" " database"
+the output database filename
+
+.TP
+.BI -v
+verbose mode
+
+.TP
+.BI -V
+show version information, and quit (don't do anything)
+
+.TP
+.BI "-o" " Oz"
+Use "Oz" area zone. Default is 1. (What does this mean, exactly?)
+
+.TP
+.BI "-l" " len"
+"len" is the length of areacodes.
+.br
+If 5 or more is given, then more space is allocated for the internal tables
+(40000 instead of 10000 numbers allowed). Other values aren't really used.
+
+.SH AUTHOR
+manpage written from C source by Paul Slootman <paul@debian.org>.

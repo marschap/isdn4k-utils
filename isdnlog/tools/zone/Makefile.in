@@ -81,7 +81,7 @@ install-man: $(PROGRAM).man
 	mkdir -p $(DESTDIR)$(MAN8DIR)
 	$(INSTALL_MAN) $< $(DESTDIR)$(MAN8DIR)/$(MANPAGE)
 
-install: $(PROGRAM) # install-man
+install: $(PROGRAM) install-man
 	$(INSTALL_PROGRAM) $(PROGRAM) $(DESTDIR)$(SBINDIR)/$(PROGRAM)
 
 install-strip: $(PROGRAM)
@@ -91,7 +91,7 @@ uninstall:
 	rm -f $(DESTDIR)$(SBINDIR)/$(PROGRAM) $(DESTDIR)$(MAN8DIR)/$(MANPAGE)
 
 clean:
-	rm -f *.o *~ $(PROGRAM) zone
+	rm -f *.o *~ $(PROGRAM) zone zone-at-pta$(DBEXT)
 	@if [ -e ../cdb/i4l_cdb.c ] ; then \
 	    $(MAKE) -C ../cdb clean ; \
 	fi
@@ -113,7 +113,7 @@ test: zone mkzonedb
 # ATTENTION:
 # zonedatabasefilenames must be zone-CC-*
 #
-zonefiles:	AT DE NL CH
+zonefiles:	AT DE NL CH defaultzone
 
 at: AT
 de: DE
@@ -186,3 +186,8 @@ CH-10741:
 	if [ ! -e ../../zone-ch-10741$(DBEXT) ] ; then \
 	./$(PROGRAM) -d ../../zone-ch-10741$(DBEXT) -r ch/10741/zred -v; \
 	fi
+
+.PHONY: defaultzone
+defaultzone:
+	# some dummy values
+	echo "123 124 3" |  ./$(PROGRAM) -d ../../zone-default-x$(DBEXT) -r - -v;

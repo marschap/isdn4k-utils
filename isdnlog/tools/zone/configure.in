@@ -51,6 +51,8 @@ fi
 dnl Checks for library functions.
 AC_CHECK_FUNCS(strdup strtoul)
 
+MANDATE=`grep CHECKIN mkzonedb.man.in | awk '{print $4}'`
+
 AC_SUBST(DBMLIB)
 AC_SUBST(DBEXT)
 AC_SUBST(RDBEXT)
@@ -60,4 +62,5 @@ AC_SUBST(INSTALL)
 AC_SUBST(CONFIG_SBINDIR)
 AC_SUBST(CONFIG_MANDIR)
 AC_SUBST(WORDS_BIGENDIAN)
-AC_OUTPUT(Makefile)
+AC_SUBST(MANDATE)
+AC_OUTPUT(Makefile mkzonedb.man)
