@@ -1,4 +1,4 @@
-/* $Id: tools.c,v 1.35 1999/09/13 09:09:44 akool Exp $
+/* $Id: tools.c,v 1.36 1999/09/19 14:16:27 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools.c,v $
+ * Revision 1.36  1999/09/19 14:16:27  akool
+ * isdnlog-3.53
+ *
  * Revision 1.35  1999/09/13 09:09:44  akool
  * isdnlog-3.51
  *   - changed getProvider() to not return NULL on unknown providers
@@ -940,7 +943,19 @@ int iprintf(char *obuf, int chan, register char *fmt, ...)
     } /* if */
 
     if (c != '%') {
-      *op++ = c;
+      if (c == '\\') {
+	c = *fmt++;
+	switch (c) {
+	case 't':
+	  *op++ = '\t';
+	  break;
+	default:
+	  *op++ = '\\';
+	  *op++ = c;
+	}
+      } else {
+	*op++ = c;
+      }
       continue;
     } /* if */
 

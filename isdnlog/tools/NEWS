@@ -1,5 +1,85 @@
 NEWS betreffend tools, (rate, isdnrate)
 
+1999.09.15
+  isdnrate.c
+      neue Varianten
+        -X51 Inlandszonen
+	-X50 Auslandszonen
+
+1999.09.07
+  rate-CC.dat: Syntaxerweiterung im C:Tag
+  
+      C:TarifChanged:dd.mm.yyyy
+          (Datum der letzten Tarifwartung)
+
+1999.09.05
+
+    telrate.cgi:
+      uses now gd 1.6.3, GD 1.21  with PNG instead of GIF
+      (smaller, no licence troubles)
+      
+      requires
+        gd 1.6.3 which
+           requires
+	      libz, libpng
+	        (e.g. ln -s /usr/X11R6/lib/libz.so /usr/lib/libz.so 
+		    ln -s /usr/X11R6/lib/libpng.so /usr/lib/libpng.so
+		    ln -s /usr/X11R6/include/png.h /usr/local/include/png.h
+		    ln -s /usr/X11R6/include/pngconf.h /usr/local/include/pngconf.h
+		)    
+    or from GD README
+    Make sure you have downloaded and installed the following packages:
+
+	a. Perl 5.004 or higher:
+		http://www.perl.com/
+	b. The gd graphics library, version 1.6.3 or higher:
+		http://www.boutell.com/gd/
+	c. The PNG graphics library:
+		http://www.cdrom.com/pub/png/
+	d. The zlib compression library:
+		http://www.cdrom.com/pub/infozip/zlib/
+		
+    dann noch ein kleiner Patch in GD.c, weiss der Geier warum
+
+--- GD.c	Sat Sep  4 19:06:37 1999
++++ GD.c.leo	Sat Sep  4 19:01:46 1999
+@@ -1974,7 +1974,8 @@
+ #ifdef __cplusplus
+ extern "C"
+ #endif
+-XS(boot__CAPI_entry)
++/* XS(boot__CAPI_entry) */
++XS(boot_GD)
+ {
+     dXSARGS;
+     char* file = __FILE__;
+@@ -2039,7 +2040,7 @@
+     XSRETURN_YES;
+ }
+ 
+-
++#if 0
+ #define XSCAPI(name) void name(CV* cv, void* pPerl)
+ 
+ #ifdef __cplusplus
+@@ -2051,3 +2052,4 @@
+     boot__CAPI_entry(cv);
+ }
+ 
++#endif
+    
+
+1999.09.04
+
+    isdnrate.c:
+      -p, -x take now an additional argument 'B'
+      -pB ... show only business providers
+      -xB ... don't show
+      
+      The provider is considered as a business-provider if the
+      C:GT:-Tag contains the string "Business" (uppercase)
+      
+
 1999.09.03
 
     holiday.c: holiday-CC.dat

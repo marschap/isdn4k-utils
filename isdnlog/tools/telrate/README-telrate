@@ -27,11 +27,11 @@ make it readable for your webserver
 
 edit telrate.cgi:
 --------------
- location of code file ( .../tools/zone/CC/code )
- location of telrate (only if pipe's are used not sockets)
+ country $CC='de' ...
+ location of code file ( /usr/lib/isdn/code-$CC.dat )
+     ( this file is actually ./tools/zone/CC/code )
+ location of isdnrate (only if pipe's are used not sockets)
  location of mktemp (should be ok)
- @prob_zones should be areacodes of villages in zone 1-3
-     qw (from to to .. ) with leading '0'
  
  location of index.html, info.html, pic, (default /telrate/ under htdocs)
  
@@ -57,9 +57,9 @@ ScriptAlias /perl/ "/usr/local/httpd/cgi-bin/"
 
 <Location /perl>
 AddHandler  perl-script .pl
+AddHandler  perl-script .cgi
 PerlHandler Apache::Registry
-PerlModule = CGI;
-PerlSendHeader On
+PerlModule = CGI GD IO::Handle
 Options +ExecCGI
 </Location>
 
@@ -73,8 +73,6 @@ PerlSendHeader On
 Options +ExecCGI
 </Location>
 
-NOTE: Running under mod_perl has still some bugs, therefor extension cgi
-is used by now.
 -----------------
 End Apache config
 
@@ -83,29 +81,29 @@ End Apache config
  # chmod 755 /usr/local/httpd/cgi-bin/telrate.cgi
  # chmod 644 /etc/isdn/isdn.conf  
  
- edit telnum.c (if not compiled with proper -D ISDN_CC )
-  first line defines TESTat or TEDTnl
 
 NB: telrate.cgi uses the following perl modules:
- CGI, GD, IO::Handle
- if you don't have these, point your browser to www.perl.org, 
+ CGI, GD, IO::Handle und Socket
+ if you don't have these, point your browser to www.perl.com, 
  and look for CPAN mirrors near your location.
  
  
  index.html, info.html
  ---------------------
  
-If your script-url ist not /perl/ change it to /cgi-bin in both files. 
-If you expanded to a different dirr then /telrate/ you have to adjust 
+If your script-url ist not /perl/ change it to /cgi-bin in both files or
+configure apache to use /perl for your /cgi-bin.
+If you expanded to a different dir then /telrate/ you have to adjust 
 IMG tags too.
 
 
 Running the Program
 -------------------
 
-if $use_sockets is on, start the server instance of isdnlog/bin/telrate with
-options -D [-v]
-as soon as you see "Setup sockets" you can point your browser to 
+if $use_sockets is on, start the server instance of isdnlog/bin/isdnrate with
+options -D2 [-v]
+as soon as you see "Setup sockets" and "Going background" you can point 
+your browser to 
 
 /telrate/index.html
 

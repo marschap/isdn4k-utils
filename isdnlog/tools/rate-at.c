@@ -12,6 +12,7 @@
 /*
 Adressen-URL: http://telecom.bmv.gv.at/deutch/contacts/konzess.html
 */
+static int leo=0;
 
 char *strip (char *s)
 {
@@ -30,9 +31,10 @@ char *strip (char *s)
 
 void rprintf (char *name, char *fmt, ...) 
 {
-  char buf[BUFSIZ], *p;
+  char buf[BUFSIZ], *p, *s;
   int len;
   va_list ap;
+  int prefix, v;
   
   va_start(ap, fmt);
   len=vsnprintf(buf, BUFSIZ, fmt, ap);
@@ -41,7 +43,35 @@ void rprintf (char *name, char *fmt, ...)
     for (p=buf+len; len<TABSTOP;len++)
       *(p++)=' ';
     *p='\0';
+    s = buf;  
+    switch (*s) {
+      case 'P':
+	s+=2;
+	while (isblank(*s)) s++;
+	prefix = strtol(s, &s ,10);
+	while (isblank(*s)) s++;
+	printf("\n###########################\n");
+	v=0;
+	if (leo && *s == ',') {
+	  s++;
+	  while (isblank(*s)) s++;
+	  v=strtol(s, &s, 10);
+	  sprintf(buf, "P:%d%s ", prefix+100*v,s);
+	  printf ("%s%s\n", buf, name);
+	}
+	else
+	  printf ("%s%s\n", buf, name);
+	sprintf(buf,"%4d",1000+prefix);
+	printf("B:%s\n",prefix<95?buf:"Kabel");
+	printf("C:NR:%s\n",prefix<95?buf:"Kabel");
+	return;
+      case 'Z':
+        printf("\n");
+	break;
+    }	  
     printf ("%s%s\n", buf, name);
+    if (strcmp(name, "Online") == 0 || strcmp(name, "Internet") == 0)
+      printf("S:Internet by call\n");
   } else {
     printf ("%s\n", buf);
   }
@@ -124,7 +154,7 @@ void rate_sample(void) {
 void rate_1001_old(void) {
 
   char *Name[] = { "Minimumtarif",
-		   "Standartarif",
+		   "Standardtarif",
 		   "Geschäftstarif 1",
 		   "Geschäftstarif 2",
 		   "Geschäftstarif 3" };
@@ -202,7 +232,6 @@ void rate_1001_old(void) {
   char s[BUFSIZ];
 
   for (t=0; t<4; t++) {
-    printf ("\n");
     rprintf ("Telekom Austria", "P:01,%d", t+1);
     rprintf ("Michael Reinelt <reinelt@eunet.at>", "C:Maintainer:");
     rprintf ("Die Regionalzone geht bis zu einer Entfernung von 50 Km, ","C:Zone:");
@@ -217,7 +246,6 @@ void rate_1001_old(void) {
     rprintf (s, "# Tarif:");
     rprintf ("# Verzonung", "D:pta");
     for (z=0; z<COUNT(Zone); z++) {
-      printf ("\n");
       rprintf (Zone[z][0], "Z:%d", z);
       if (z==0) { /* Freephone */
 	rprintf (NULL,"T:*/*=0/72");
@@ -248,7 +276,7 @@ void rate_1001_old(void) {
 void rate_1001(void) {
 
   char *Name[] = { "Minimumtarif",
-		   "Standartarif",
+		   "Standardtarif",
 		   "Geschäftstarif 1",
 		   "Geschäftstarif 2",
 		   "Geschäftstarif 3" };
@@ -262,14 +290,14 @@ void rate_1001(void) {
 		     { "Mobilfunk 2", "+43699" },
 		     { "Online", "+437189,19411,19430,19440" },
 		     { "Ausland Zone 1", "Deutschland, Italien, Liechtenstein, Schweiz, Slowakei, Slowenien, Tschechien, Ungarn" },
-		     { "Ausland Zone 2", "Albanien, Andorra, Belarus, Belgien, Bosnien-Herzegowina, Bulgarien, Dänemark,Finnland, Frankreich, Großbritannien, Nordirland, Irland, Jugoslawien, Serbien, Montenegro, Kroatien, Luxemburg, Malta, Mazedonien, Monaco, Niederlande, Norwegen, Rumänien, San Marino, Schweden, Spanien, Ukraine, Vatikanstadt, Zypern" },
+		     { "Ausland Zone 2", "Albanien, Andorra, Belarus, Belgien, Bosnien-Herzegowina, Bulgarien, Dänemark,Finnland, Frankreich, Großbritannien, Nordirland, Irland, Jugoslawien, Kroatien, Luxemburg, Malta, Mazedonien, Monaco, Niederlande, Norwegen, Rumänien, San Marino, Schweden, Spanien, Ukraine, Vatikanstadt, Zypern" },
 		     { "Ausland Zone 3", "Algerien, Estland, Färöer-Inseln, Georgien, Gibraltar, Island, Israel, Lettland, Litauen, Marokko, Portugal, Russische Föderation, Tadschikistan, Turkmenistan, Usbekistan" },
 		     { "Ausland Zone 4", "Antarktis, Armenien, Australien, Aserbaidschan, Weihnachtsinseln, Kokosinseln" },
 		     { "Ausland Zone 5", "Chile, Französisch-Guayana, Guadeloupe, Hongkong, Libyen, Martinique, Mayotte, Moldau, Neuseeland, Reunion, St. Pierre und Miquelon, Südafrika" },
 		     { "Ausland Zone 6", "Japan, Südkorea, Malaysia, Niederländische Antillen, Philippinen, Saipan" },
 		     { "Ausland Zone 7", "Angola, Bermuda, Bhutan, Brasilien, China, Ecuador, Iran, Macao, Mexiko, Saudi-Arabien, Venezuela" },
 		     { "Ausland Zone 8", "Ägypten, Äquatorial-Guinea, Aruba, Bahamas, Barbados, Belize, Botsuana, Brunei, Burundi, Dominikanische Republik, Gabun, Ghana, Grönland, Guinea-Bissau, Guyana, Jordanien, Kirgisistan, Kolumbien, Kuwait, Libanon, Panama, Singapur, Sao Tome und Principe, Saint Vincent und die Grenadinen, Trinidad und Tobago, Vereinigte Arabische Emirate" },
-		     { "Ausland Zone 9", "Bahrain, Cote d'Ivoire, Guinea, Kasachstan, Katar, Laos, Lesotho, Liberia, Malawi, Namibia, Nauru, Nepal, Neukaledonien, Nigeria, Norfolk-Inseln, Peru, Saint Helena, Saint Lucia, Samoa, Sudan, Swasiland, Syrien, Tansania, Tonga, Turks- und Caicos-Inseln, Sambia, Simbabwe" },
+		     { "Ausland Zone 9", "Bahrain, Cote d'Ivoire, Guinea, Kasachstan, Katar, Laos, Lesotho, Liberia, Malawi, Namibia, Nauru, Nepal, Neukaledonien, Nigeria, Norfolk-Inseln, Peru, Saint Helena, Saint Lucia, Samoa (West), Sudan, Swasiland, Syrien, Tansania, Tonga, Turks- und Caicos-Inseln, Sambia, Simbabwe" },
 		     { "Ausland Zone 10", "Argentinien, Äthiopien, Benin, Costa Rica, Fidschi, Französisch-Polynesien, Gambia, Irak, Jamaika, Kenia, Kiribati, Komoren, Malediven, Mauretanien, Mongolei, Mosambik, Myanmar, Nicaragua, Niue, Oman, Ruanda, Suriname, Taiwan, Thailand, Togo, Uganda, Vanuatu, Zentralafrikanische Republik" },
 		     { "Ausland Zone 11", "Bolivien, Caymaninseln, Dschibuti, Indien, Indonesien, Britische Jungferninseln, Nordkorea, Kuba, Mauritius, Niger, Papua-Neuguinea, Paraguay, Sierra Leone, Sri Lanka, Uruguay" },
 		     { "Ausland Zone 12", "Anguilla, Antigua und Barbuda, Ascension, Bangladesch, Burkina Faso, Dominica, El Salvador, Eritrea, Falklandinseln, Grenada, Guam, Guatemala, Haiti, Honduras, Jemen, Kamerun, Kap Verde, Kambodscha, Kongo, Mali, Montserrat, Pakistan, Saint Kitts und Nevis, Senegal, Seychellen, Salomonen, Somalia, Tschad, Vietnam, Zaire" },
@@ -324,12 +352,14 @@ void rate_1001(void) {
 
   int t, z;
   char s[BUFSIZ];
-
+  char *gf[] = {"","Cost=240-198","Cost=288-198","Cost=468-198","Cost=1788-198"};
+  char *gt[] = {"Grundgebühr ATS 198","Grundgebühr ATS 240","Grundgebühr ATS 288",
+      "Grundgebühr ATS 468","Grundgebühr ATS 1788"};
   for (t=0; t<5; t++) {
-    printf ("\n");
     sprintf(s,"Telekom Austria %s",Name[t]);
     rprintf (s, "P:01,%d", t+1);
     rprintf ("Michael Reinelt <reinelt@eunet.at>", "C:Maintainer:");
+    rprintf ("01.09.1999","C:TarifChanged:");
     rprintf ("Die Regionalzone geht bis zu einer Entfernung von 50 Km, alles andere ist Österreichzone.","C:Zone:");
     rprintf ("Variable Taktung, abhängig von Zone und Tageszeit.","C:Special:"); 
     rprintf ("Telekom Austria","C:Name:");
@@ -337,11 +367,13 @@ void rate_1001(void) {
     rprintf ("http://www.telekom.at","C:Homepage:");
     rprintf ("http://www.telekom.at/tarife/","C:TarifURL:");
     rprintf ("0800 100 100","C:Telefon:");
+    if (*gt[t])
+      rprintf (gt[t], "C:GT:");
+    rprintf (gf[t], "C:GF:");
     sprintf (s, "%s (ATS %.3f pro Einheit)", Name[t], Tarif[t]);
     rprintf (s, "# Tarif:");
     rprintf ("# Verzonung", "D:pta");
     for (z=0; z<COUNT(Zone); z++) {
-      printf ("\n");
       rprintf (Zone[z][0], "Z:%d", z);
       if (z==0) { /* Freephone */
 	rprintf (NULL,"T:*/*=0/72");
@@ -364,30 +396,28 @@ void rate_1002(void) {
 
   char *Zone[][2] = {
 		     { "Österreich", "Österreich" },
-		     { "special friends", "" },
 		     { "Mobilnetz", "+43663,+43664,+43676,+43699" },
 		     { "EasyInternet", "" },
-		     { "Nachbarländer West", "Deutschland, Italien, Liechtenstein, Schweiz" },
-		     { "Nachbarländer Ost", "Slowakei, Slowenien, Tschechien, Ungarn" },
-		     { "Europa 3, USA", "Belgien, Dänemark, Frankreich, Großbritannien, Irland, Amerikanische Jungferninseln, Kanada, Luxemburg, Niederlande, Norwegen, Puerto Rico, Schweden, Großbritannien, Vereinigte Staaten (USA), Alaska, Hawaii" },
-		     { "Europa 4", "Andorra, Bosnien-Herzegowina, Finnland, Griechenland, Kanarische Inseln, Kroatien, Madeira, Monaco, Polen, Portugal, San Marino, Spanien, Vatikan" },
-		     { "Europa 5", "Albanien, Azoren, Belarus, Bulgarien, Estland, Lettland, Malta, Mazedonien, Rumänien, Türkei, Ukraine, Zypern" },
-		     { "Europa 6", "Algerien, Färöer-Inseln, Georgien, Gibraltar, Island, Israel, Litauen, Marokko, Rußland, Tadschikistan, Turkmenistan, Usbekistan" },
-		     { "Fernost, Südafrika", "Australien, Hongkong, Japan, Kokosinseln, Neuseeland, Singapur, Südafrika, Südkorea, Weihnachtsinseln" },
-		     { "Welt 1", "Armenien, Aserbaidschan, Chile, Französisch-Guayana, Guadeloupe, Libyen, Martinique, Reunion" },
-		     { "Welt 2", "Angola, Antarktis, Bermuda, Bhutan, Brasilien, China, Ecuador, Iran, Kuwait, Macao, Malaysia, Mexiko, Saint Pierre und Miquelon, Moldau, Niederländische Antillen, Philippinen, Saipan, Saudi-Arabien, Venezuela" },
-		     { "Welt 3", "Ägypten, Äquatorial-Guinea, Aruba, Bahamas, Bahrain, Barbados, Belize, Botswana, Brunei, Burundi, Dominica, Dominikanische Republik, Elfenbeinküste, Gabun, Ghana, Grenada, Grönland, Guinea, Guinea-Bissau, Guyana, Jordanien, Britische Jungferninseln, Kasachstan, Katar, Kirgisistan, Kolumbien, Komoren, Laos, Lesotho, Libanon, Liberia, Malawi, Mayotte, Namibia, Nauru, Nepal, Neukaledonien, Saint Kitts und Nevis, Nigeria, Norfolk-Inseln, Panama, Peru, Sambia, Sao Tome und Principe, Simbabwe, Saint Helena, Saint Kitts und Nevis, Saint Lucia, Saint Vincent und die Grenadinen, Sudan, Swasiland, Syrien, Tansania, Tonga, Trinidad & Tobago, Turks- und Caicos-Inseln, Vereinigte Arabische Emirate, Samoa" },
-		     { "Welt 4", "Anguilla, Argentinien, Äthiopien, Benin, Bolivien, Caymaninseln, Costa Rica, Dschibuti, Fidschi, Französisch-Polynesien, Gambia, Indien, Indonesien, Irak, Jamaica, Kenia, Kiribati, Kuba, Malediven, Mauretanien, Mauritius, Mongolei, Mosambik, Myanmar, Nicaragua, Niger, Niue, Nordkorea, Oman, Papua-Neuguinea, Paraguay, Ruanda, Sierra Leone, Sri Lanka, Surinam, Taiwan, Togo, Uganda, Uruguay, Vanuatu, Zentralafrikanische Republik" },
-		     { "Welt 5", "Afghanistan, Amerikanisch-Samoa, Antigua & Barbuda, Ascension, Bangladesch, Burkina Faso, Cook-Inseln, Diego Garcia, El Salvador, Eritrea, Falklandinseln, Guam, Guantanamo, Guatemala, Haiti, Kamerun, Kongo, Madagaskar, Honduras, Jemen, Kambodscha, Kamerun, Kap Verde, Kongo, Madagaskar, Mali, Marshallinseln, Midway-Inseln, Mikronesien, Montserrat, Pakistan, Palau, Salomonen, Senegal, Seychellen, Somalia, Tokelau, Tschad, Tuvalu, Vietnam, Wake-Inseln, Wallis- und Futuna-Inseln, Zaire" }};
+		     { "Nachbarländer West (Z1)", "Deutschland, Italien, Liechtenstein, Schweiz" },
+		     { "Nachbarländer Ost (Z2)", "Slowakei, Slowenien, Tschechien, Ungarn" },
+		     { "Europa 3, USA (Z3)", "Belgien, Dänemark, Frankreich, Großbritannien, Irland, Amerikanische Jungferninseln, Kanada, Luxemburg, Niederlande, Norwegen, Puerto Rico, Schweden, Vereinigte Staaten (USA), Alaska, Hawaii" },
+		     { "Europa 4 (Z4)", "Andorra, Bosnien-Herzegowina, Finnland, Griechenland, Kanarische Inseln, Kroatien, Madeira, Monaco, Polen, Portugal, San Marino, Spanien, Vatikan" },
+		     { "Europa 5 (Z5)", "Albanien, Azoren, Belarus, Bulgarien, Estland, Lettland, Malta, Mazedonien, Rumänien, Türkei, Ukraine, Zypern" },
+		     { "Europa 6 (Z6)", "Algerien, Färöer-Inseln, Georgien, Gibraltar, Island, Israel, Litauen, Marokko, Rußland, Tadschikistan, Turkmenistan, Usbekistan" },
+		     { "Fernost, Südafrika (Z7)", "Australien, Hongkong, Japan, Kokosinseln, Neuseeland, Singapur, Südafrika, Südkorea, Weihnachtsinseln" },
+		     { "Welt 1 (Z8)", "Armenien, Aserbaidschan, Chile, Französisch-Guayana, Guadeloupe, Libyen, Martinique, Reunion" },
+		     { "Welt 2 (Z9)", "Angola, Antarktis, Bermuda, Bhutan, Brasilien, China, Ecuador, Iran, Kuwait, Macao, Malaysia, Mexiko, Saint Pierre und Miquelon, Moldau, Niederländische Antillen, Philippinen, Saipan, Saudi-Arabien, Venezuela" },
+		     { "Welt 3 (Z10)", "Ägypten, Äquatorial-Guinea, Aruba, Bahamas, Bahrain, Barbados, Belize, Botswana, Brunei, Burundi, Dominica, Dominikanische Republik, Elfenbeinküste, Gabun, Ghana, Grenada, Grönland, Guinea, Guinea-Bissau, Guyana, Jordanien, Britische Jungferninseln, Kasachstan, Katar, Kirgisistan, Kolumbien, Komoren, Laos, Lesotho, Libanon, Liberia, Malawi, Mayotte, Namibia, Nauru, Nepal, Neukaledonien, Saint Kitts und Nevis, Nigeria, Norfolk-Inseln, Panama, Peru, Sambia, Sao Tome und Principe, Simbabwe, Saint Helena, Saint Lucia, Saint Vincent und die Grenadinen, Sudan, Swasiland, Syrien, Tansania, Tonga, Trinidad & Tobago, Turks- und Caicos-Inseln, Vereinigte Arabische Emirate, Samoa (West)" },
+		     { "Welt 4 (Z11)", "Anguilla, Argentinien, Äthiopien, Benin, Bolivien, Caymaninseln, Costa Rica, Dschibuti, Fidschi, Französisch-Polynesien, Gambia, Indien, Indonesien, Irak, Jamaica, Kenia, Kiribati, Kuba, Malediven, Mauretanien, Mauritius, Mongolei, Mosambik, Myanmar, Nicaragua, Niger, Niue, Nordkorea, Oman, Papua-Neuguinea, Paraguay, Ruanda, Sierra Leone, Sri Lanka, Surinam, Taiwan, Togo, Uganda, Uruguay, Vanuatu, Zentralafrikanische Republik" },
+		     { "Welt 5 (Z12)", "Afghanistan, Amerikanisch-Samoa, Antigua & Barbuda, Ascension, Bangladesch, Burkina Faso, Cook-Inseln, Diego Garcia, El Salvador, Eritrea, Falklandinseln, Guam, Guantanamo, Guatemala, Haiti, Kamerun, Kongo, Madagaskar, Honduras, Jemen, Kambodscha, Kap Verde, Mali, Marshallinseln, Midway-Inseln, Mikronesien, Montserrat, Pakistan, Palau, Salomonen, Senegal, Seychellen, Somalia, Tokelau, Tschad, Tuvalu, Vietnam, Wake-Inseln, Wallis- und Futuna-Inseln, Zaire" }};
   
   double Tarif[][2] = {
 		       {  0.88,  0.88 }, /* 1.9. rundum die Uhr */
-		       {  0.88,  0.88 }, /* spec. friends ?? 0.73 */
 		       {  3.90,  2.88 },
 		       {  0.53,  0.18 }, /* internet = TA-Online */
 		       {  2.50,  2.30 }, /* Nachb west */
 		       {  3.70,  3.50 },
-		       {  3.60,  3.40 },
+		       {  3.60,  3.40 }, /* Z 3 */
 		       {  5.60,  5.40 },
 		       {  5.60,  5.40 },
 		       {  8.00,  7.80 },
@@ -400,17 +430,15 @@ void rate_1002(void) {
   
   int z;
   
-  printf ("\n");
   rprintf ("UTA", "P:02");
   rprintf ("Leopold Toetsch <lt@toetsch.at>", "C:Maintainer:");
+  rprintf ("07.09.1999","C:TarifChanged:");
   rprintf ("http://www.utanet.at","C:Homepage:");
   rprintf ("http://www.utanet.at/1/txt/0/12.html","C:TarifURL:");
   rprintf ("UTA Telekom AG","C:Name:");
   rprintf ("Rooseveltplatz 2, A-1090 Wien","C:Address:");
-  rprintf ("0800 882 882","C:Telefon:");
+  rprintf ("0800 882 882, 0800 800 800","C:Telefon:");
   rprintf ("0800 882 329","C:Telefax:");
-  rprintf ("Mindestumsatz in 2 Monaten ATS 198.","C:GT:");
-  rprintf ("Cost = Ch > 198/2 ? 0 : 198/2","C:GF:");
 
   for (z=0; z<COUNT(Zone); z++) {
     rprintf (Zone[z][0], "Z:%d", z+1);
@@ -442,7 +470,7 @@ void rate_1003(void) {
 		     { "Ausland Zone 6", "Azerbaijan, Chile, French Guyana, Georgia, Greenland, Guadaloupe, Hongkong, Iceland, Libya, Lithuania, Martinique, Mayotte, Mexico, Phillipines, Reunion, St. Pierre and Miquelon, Singapore, Thailand, Turkmenistan, Uganda, United Arab Emirates" },
 		     { "Ausland Zone 7", "Angola, Argentina, Bahrain, Bhutan, Botswana, Brazil, Burundi, Comoros, Dominican Republic, Ecuador, Egypt, Gabon, Gambia, India, Indonesia, Iran, Jordan, Kuwait, Kyrgyzstan, Macau, Malawi, Malaysia, Namibia, Netherlands Antilles, New Zealand, Nigeria, Oman, Saipan, Saudi Arabia, Sri Lanka, Swaziland, Taiwan, Venezuela, Zambia, Zimbabwe" },
 		     { "Ausland Zone 8", "Armenia, Aruba, Bahamas, Barbados, Belize, Bermuda, Brunei, Central African Republic, China, Colombia, Costa Rica, Cuba, Djibouti, Equatorial Guinea, Ghana, Guinea-Bissau, Guyana, Kazakhstan, Lesotho, Liberia, Mongolia, Nepal, Panama, Saint Helena, Sao Tome and Principa, Sudan, Syria, Tanzania, Trinidad & Tobago, Turks & Caicos Islands" },
-		     { "Ausland Zone 9", "Ascension, Benin, Bolivia, Burkina Faso, Cameroon, Cape Verde, Chad, Elfenbeinküste, El Salvador, Ethiopia, Fiji, French Polynesia, Guatemala, Haiti, Honduras, Iraq, Jamaica, Kenya, Kiribati, Laos, Lebanon, Maldives, Mali, Mauritania, Mauritius, Mozambique, Myanmar, Nauru, New Caledonia, Nicaragua, Niue, Norfolk Island, Pakistan, Papua New Guinea, Peru, Quatar, Rwanda, Saint Lucia, St. Vincent and the Grenadines, Samoa, Senegal, Seychelles Islands, Sierra Leone, Somalia, Suriname, Togo, Tonga, Uzbekistan, Vanuatu, Jemen, Zaire" },
+		     { "Ausland Zone 9", "Ascension, Benin, Bolivia, Burkina Faso, Cameroon, Cape Verde, Chad, Elfenbeinküste, El Salvador, Ethiopia, Fiji, French Polynesia, Guatemala, Haiti, Honduras, Iraq, Jamaica, Kenya, Kiribati, Laos, Lebanon, Maldives, Mali, Mauritania, Mauritius, Mozambique, Myanmar, Nauru, New Caledonia, Nicaragua, Niue, Norfolk Island, Pakistan, Papua New Guinea, Peru, Quatar, Rwanda, Saint Lucia, St. Vincent and the Grenadines, Samoa (West), Senegal, Seychelles Islands, Sierra Leone, Somalia, Suriname, Togo, Tonga, Uzbekistan, Vanuatu, Jemen, Zaire" },
 		     { "Ausland Zone 10", "Afghanistan, American Samoa, Anguilla, Antigua & Barbuda, Bangladesh, British Virgin Isles, Cambodia, Cayman Islands, Congo, Cook Islands, Dominica, Eritrea, Falkland Islands, Grenada, Guam, Guantanamo, Nordkorea, Madagascar, Marshall Islands, Montserrat, Niger, Palau, Paraguay, Pitcairn Islands, Tuvalu, Uruguay, Vietnam, Wake Island" }};
   
   double Tarif[][2] = {{ 1.0,  1.0},
@@ -465,7 +493,6 @@ void rate_1003(void) {
   
   int z;
   
-  printf ("\n");
   rprintf ("Multikom", "P:03");
   rprintf ("1003 Multikom Austria Telekom","C:Name:");
   rprintf ("","C:Address:");
@@ -494,13 +521,12 @@ void rate_1004_1(void) {
     { "Mobilfunk", "+43663,+43664,+43676,+43699" },
   }; 
   double Tarif[][2] = {
-   {0.65, 0.65}, /* W/N/B O/ST/K V/T */ /* Fixme: + 20 % ??? */
+   {0.65, 0.65}, /* W/N/B O/ST/K V/T */
    {0.90, 0.75},
    {2.50, 2.05}
   }; 
   int z;
   
-  printf ("\n");
   rprintf ("Globalone", "P:04,1");
   rprintf ("Globalone","C:Name:");
   rprintf ("Print Eugen-Str. 8-10, A-1040","C:Address:");
@@ -534,16 +560,16 @@ void rate_1004_2(void) {
     { "Mobilfunk", "+43663,+43664,+43676,+43699" },
   }; 
   double Tarif[][2] = {
-   {0.55, 0.55}, /* W/N/B O/ST/K V/T */ /* Fixme: + 20 % ??? */
+   {0.55, 0.55}, /* W/N/B O/ST/K V/T */
    {0.80, 0.70},
    {2.40, 1.95}
   }; 
   int z;
   
-  printf ("\n");
   rprintf ("Globalone Bus.", "P:04,2");
   rprintf ("Globalone","C:Name:");
   rprintf ("","C:Address:");
+  rprintf ("01.09.1999","C:TarifChanged:");
   rprintf ("http://www.globalone.at","C:Homepage:");
   rprintf ("http://www.globalone.at/tele_assi_national.html","C:TarifURL:");
   rprintf ("Regionalzone sind Gespräche innerhalb Wien/NÖ/B, OÖ/St/K und S/T/V, ","C:Zone:");
@@ -572,19 +598,20 @@ void rate_1005(void) {
   char *Zone[][2] = {{ "National", "Österreich" }, 
 		     { "Mobilfunknetz", "+43663,+43664,+43676,+43699" },
 		     { "D-I-CH","Deutschland, Italien, Schweiz" },
-		     { "Europa 1 / USA", "Belgien, Dänemark, Finnland, Frankreich, Griechenland, Grossbritannien, Irland, Italien, Liechtenstein, Luxemburg, Monaco, Niederlande, Nordirland, Norwegen, Schweden, Schweiz, Slowakei, Slowenien, Spanien,  Tschechien, Ungarn, USA, Hawaii, Kanada" },
+		     { "Europa 1 / USA", "Belgien, Dänemark, Finnland, Frankreich, Griechenland, Grossbritannien, Irland, Liechtenstein, Luxemburg, Monaco, Niederlande, Nordirland, Norwegen, Schweden, Slowakei, Slowenien, Spanien,  Tschechien, Ungarn, USA, Hawaii, Kanada" },
 		     { "Europa 2", "Albanien, Algerien, Andorra, Bosnien-Herzegowina, Bulgarien, Estland, Färöer-Inseln, Gibraltar, Island, Israel, Jugoslawien, Kroatien, Lettland, Litauen, Mazedonien, Malta, Marokko, Polen, Portugal, Rumänien, Russland, San Marino, Tunesien, Türkei, Zypern" },
 		     { "Welt 1", "Australien, Hongkong, Japan, Neuseeland, Südkorea, Singapur" },
-		     { "Welt 2", "+" }};
+		     { "Welt 2", "Bermuda,Antigua und Barbuda,St. Lucia,Dominikanische Republik,Dominica,Britische Jungferninseln,Turks- und Caicosinseln,Puerto Rico,Bahamas,Anguilla,Jamaika,St. Vincent und Grenadinen,Montserrat,St. Kitts und Nevis,Grenada,Trinidad und Tobago,Marianen (SaipanNord-),Kaimaninseln,Amerikanische Jungferninseln,Barbados,+"}
+  };
   
   double Tarif[] = { 0.90, 3.90, 2.50, 3.50, 6.00, 9.00, 19.00 };
   
   int z;
   
 
-  printf ("\n");
   rprintf ("tele2", "P:05");
   rprintf ("Tele2 Telecommunications Services GmbH","C:Name:");
+  rprintf ("14.09.1999","C:TarifChanged:");
 /*  rprintf ("","C:Address:"); */
   rprintf ("http://www.tele2.at","C:Homepage:");
   rprintf ("http://www.tele2.at/ger/tarif.htm","C:TarifURL:");
@@ -603,13 +630,13 @@ void rate_1007(void) { /* Fairtel lt 24.08.99 */
 		     { "EU+Angrenzende","Deutschland, Italien, Liechtenstein, Schweiz, Slowakei, Slowenien, Tschechien, Ungarn,"
 		       "Belgien, Dänemark, Finnland, Griechenland, Großbritannien, Irland, Luxemburg, Niederlande, Norwegen, Portugal, Schweden, Spanien"
 		      },
-		      {"Welt","+"}
+		      {"Welt","Kanada,Bermuda,Antigua und Barbuda,St. Lucia,Dominikanische Republik,Dominica,Britische Jungferninseln,Turks- und Caicosinseln,USA,Puerto Rico,Anguilla,Bahamas,Jamaika,St. Vincent und Grenadinen,Montserrat,St. Kitts und Nevis,Grenada,Trinidad und Tobago,Hawaii,Marianen (SaipanNord-),Kaimaninseln,Amerikanische Jungferninseln,Barbados,+"}
 		      };
-  double Tarif[] = { 0.82, 0.88, 3.60, 2.50, 21.12 }; /* Fixme: Auslandstarife*/
+  double Tarif[] = { 0.82, 0.88, 3.60, 2.50, 21.12 };
   int z;      
 
-  printf ("\n"); 
   rprintf ("European Telecom Fairtel", "P:07");
+  rprintf ("14.09.1999","C:TarifChanged:");
   rprintf ("European Telecom","C:Name:");
   rprintf ("Vorwahlen 1XXX und 2XXX, bzw. mit gleicher Anfangsziffer liegen in der ","C:Zone:");
   rprintf ("Nahzone sonst in der Fernzone.","C:Zone:");
@@ -642,7 +669,7 @@ void rate_1007_old(void) { /* lt 24.08.99 */
 		     { "Ausland Zone 6", "Japan, Südkorea, Malaysia, Niederländische Antillen, Philippinen, Saipan" },
 		     { "Ausland Zone 7", "Angola, Bermuda, Bhutan, Brasilien, China, Ecuador, Iran, Macao, Mexiko, Saudi-Arabien, Venezuela" },
 		     { "Ausland Zone 8", "Ägypten, Äquatorial-Guinea, Aruba, Bahamas, Barbados, Belize, Botsuana, Brunei, Burundi, Dominikanische Republik, Gabun, Ghana, Grönland, Guinea-Bissau, Guyana, Jordanien, Kirgisistan, Kolumbien, Kuwait, Libanon, Panama, Singapur, Sao Tome und Principe, Saint Vincent und die Grenadinen, Trinidad und Tobago, Vereinigte Arabische Emirate" },
-		     { "Ausland Zone 9", "Bahrain, Cote d'Ivoire, Guinea, Kasachstan, Katar, Laos, Lesotho, Liberia, Malawi, Namibia, Nauru, Nepal, Neukaledonien, Nigeria, Norfolk-Inseln, Peru, Saint Helena, Saint Lucia, Samoa, Sudan, Swasiland, Syrien, Tansania, Tonga, Turks- und Caicos-Inseln, Sambia, Simbabwe" },
+		     { "Ausland Zone 9", "Bahrain, Cote d'Ivoire, Guinea, Kasachstan, Katar, Laos, Lesotho, Liberia, Malawi, Namibia, Nauru, Nepal, Neukaledonien, Nigeria, Norfolk-Inseln, Peru, Saint Helena, Saint Lucia, Samoa (West), Sudan, Swasiland, Syrien, Tansania, Tonga, Turks- und Caicos-Inseln, Sambia, Simbabwe" },
 		     { "Ausland Zone 10", "Argentinien, Äthiopien, Benin, Costa Rica, Fidschi, Französisch-Polynesien, Gambia, Irak, Jamaika, Kenia, Kiribati, Komoren, Malediven, Mauretanien, Mongolei, Mosambik, Myanmar, Nicaragua, Niue, Oman, Ruanda, Suriname, Taiwan, Thailand, Togo, Uganda, Vanuatu, Zentralafrikanische Republik" },
 		     { "Ausland Zone 11", "Bolivien, Caymaninseln, Dschibuti, Indien, Indonesien, Britische Jungferninseln, Nordkorea, Kuba, Mauritius, Niger, Papua-Neuguinea, Paraguay, Sierra Leone, Sri Lanka, Uruguay" },
 		     { "Ausland Zone 12", "Anguilla, Antigua und Barbuda, Ascension, Bangladesch, Burkina Faso, Dominica, El Salvador, Eritrea, Falklandinseln, Grenada, Guam, Guatemala, Haiti, Honduras, Jemen, Kamerun, Kap Verde, Kambodscha, Kongo, Mali, Montserrat, Pakistan, Saint Kitts und Nevis, Senegal, Seychellen, Salomonen, Somalia, Tschad, Vietnam, Zaire" },
@@ -695,7 +722,6 @@ void rate_1007_old(void) { /* lt 24.08.99 */
   int t,z;
   
   for (t=0; t<2; t++) {
-    printf ("\n");
     rprintf ("European Telecom", "P:07,%d", t+1);
     rprintf ("Verzonung nicht verifiziert", "# Fixme:");
   rprintf ("European Telecom","C:Name:");
@@ -732,40 +758,64 @@ void rate_1007_old(void) { /* lt 24.08.99 */
 
 void rate_1008(void) {
   
-  char *Zone[][2] = { {"Nah", ""},
-		     { "Österreich", "Österreich" },
-		     { "Österreich", "Österreich" },
+  char *Zone[][2] = {
+		     { "Östereich", "Österreich" },
 		     { "Mobil A1,max","+43664, +43676"},
-		     { "Mobil D,One", "+43663, +43699"}
+		     { "Mobil D,One", "+43663, +43699"},
+/* 2.5 */	{"Deutschland", "Deutschland"},
+/* 2.98 */	{"Großbritannien ...", "Großbritannien, Italien, Liechtenstein, Schweiz, USA"},
+/* 3.58 */	{"Belgien ...", "Belgien, Dänemark, Finnland, Frankreich, Luxemburg, Niederlande, Slowakische Republik, Slowenien, Spanien, Tschechische Republik, Ungarn, Alaska, Kanada, Paris, Hawaii, Irland, Italien Mobilfunk, Kanarische Inseln, Monaco, Norwegen, Schweden"},
+/* 4.78 */	{"Deutschland Mobilfunk ...", "Deutschland Mobilfunk, Schweiz Mobilfunk"},
+/* 5.62 */	{"Israel ...", "Israel, Kroatien, Polen, Türkei, Albanien, Andorra, Australien, Weissrussland, Belgien Mobilfunk, Bosnien-Herzegowina, Bulgarien, Dänemark Mobilfunk, Estland, Färöer-Inseln, Frankreich Mobilfunk, Griechenland, Großbritannien Mobilfunk, Irland Mobilfunk, Amerikanische Jungferninseln, Lettland, Litauen, Malta, Mazedonien, Niederlande Mobilfunk, Norwegen Mobilfunk, Portugal, Puerto Rico, Rumänien, San Marino, Schweden Mobilfunk, Jugoslawien, Spanien Mobilfunk, Tunesien, Ukraine, Vatikan, Zypern"},
+/* 6.58 */	{"Hongkong ...", "Hongkong, Japan, Algerien, Azoren, Georgien, Gibraltar, Island, Israel Mobilfunk, Marokko, Madeira, Palestina, Russische Förderation (östl.), Singapur, Tadschikistan, Turkmenistan, Usbekistan"},
+/* 9.46 */	{"Antarktis ...", "Antarktis, Armenien, Aserbaidschan, Australien Mobilfunk, Chile, Weihnachtsinseln, Kokosinseln, Hong Kong Mobilfunk, Japan Mobilfunk, Libyen, Neuseeland, Südafrika"},
+/* 11.62 */	{"Bahamas ...", "Bahamas, Bermuda, Brasilien, China, Französisch-Guayana, Guadeloupe, Südkorea, Macao, Malaysia, Martinique / Franz. Antillen, Mayotte, Mexiko, Moldavien Moldau (Republik), Niederl. Antillen, Philippinen, Reunion, Marianen (SaipanNord-), Saudi Arabien, St. Pierre und Miquelon, Tokelan, Venezuela, Ver. Arabische Emirate"},
+/* 15.58 */	{"Argentinien ...", "Argentinien, Ägypten, Angola, Aruba, Bhutan, Brasilien Mobilfunk, Brunei, China Mobilfunk, Dominikanische Republik, Ecuador, Ecuador Mobilfunk, Ghana, Iran, Jordanien, Katar, Kolumbien, Kuwait, St. Vincent und Grenadinen, Taiwan, Trinidad und Tobago"},
+/* 17.98 */	{"Ägypten Mobilfunk ...", "Äquatorial-Guinea, Bahrain, Barbados, Belize, Botsuana Botswana, Burundi, Gabun, Grönland, Guinea, Guinea-Bissau, Guyana, Haiti, Kirgistan, Kolumbien Mobilfunk, Lesotho, Libanon, Libanon Mobilfunk, Liberia, Malawi, Namibia, Panama, Panama Mobilfunk, Peru, Sambia, Tansania, Simbabwe, St. Helena, St. Lucia, Sao Tome und Principe, Sudan, Swasiland, Syrien, Turks- und Caicosinseln"},
+/* 20.38 */	{"Costa Rica ...", "Costa Rica, Indonesien, Irak, Elfenbeinküste Cote de Ivoire, Jamaika, Kasachstan, Kenia, Laos, Malediven, Nauru, Nepal, Neukaledonien, Nicaragua, Nigeria, Niue-Inseln, Norfolkinseln, Oman, Ruanda, West-Samoa, Thailand, Tonga"},
+/* 21.58 */	{"Äthiopien ...", "Äthiopien, Argentinien Mobilfunk, Benin, Fidschi, Französisch-Polynesien, Gambia, Indien, Kiribati, Komoren, Mauretanien, Mauritius, Mongolei, Mosambik, Myanmar Burma, Niger, Peru Mobilfunk, St. Kitts und Nevis, Suriname, Taiwan Mobilfunk, Togo, Uganda, Vanuatu, Zentralafrikanische Republik"},
+/* 24.88 */	{"Anguilla ...", "Anguilla, Antigua und Barbuda, Bolivien, Kaimaninseln, Diego Garcia, Dschibuti, El Salvador Mobilfunk, Nordkorea, Kuba, Papua-Neuguinea, Paraguay, Sierra Leone, Sri Lanka, Uruguay"},
+/* 27.58 */	{"Ascension ...", "Ascension, Bangladesch, Burkina Faso Obervolta, Kamerun, Cookinseln, Dominica, El Salvador, Eritrea, Falklandinseln, Grenada, Guam, Guatemala, Honduras, Jemen (Arab. Republik), Kambodscha, Cape Verde, Kongo, Madagaskar, Mali, Montserrat, Pakistan, Salomonen, Senegal, Seyschellen, Somalia, Tschad, Vietnam, Zaire"},
+/* 46.62 */	{"Afghanistan ...", "Afghanistan, Amerikanisch-Samoa, Guantanamo Bay, Marshallinseln, Midway-Inseln, Mikronesien, Palau /Belau, Pitcairn Inseln, Tuvalu, Wake Inseln, Wallis und Futuna"},
 		    };
 		     
-  double Tarif[][2] = {{ 0.98, 0.98 },
-		       { 2.48, 1.20 },
-		       { 2.48, 1.20 },
-		       { 4.20, 3.30 }, /* a1,max */
-		       { 4.68, 3.30 } /* one, D */
-		      };
+  double Tarif[] = {
+    0.90,
+    3.30, /* a1,max */
+    3.60, /* one, D */
+2.50,  /* Deutschland ... */
+2.98,  /* Großbritannien ... */
+3.58,  /* Belgien ... */
+4.78,  /* Deutschland Mobilfunk ... */
+5.62,  /* Israel ... */
+6.58,  /* Hongkong ... */
+9.46,  /* Antarktis ... */
+11.62,  /* Bahamas ... */
+15.58,  /* Argentinien ... */
+17.98,  /* Ägypten Mobilfunk ... */
+20.38,  /* Costa Rica ... */
+21.58,  /* Äthiopien ... */
+24.88,  /* Anguilla ... */
+27.58,  /* Ascension ... */
+46.62,  /* Afghanistan ... */
+		      
+};
   int z;
   		       
-  printf ("\n");
   rprintf ("TELEforum", "P:08");
-  rprintf ("# Verzonung", "D:pta");
-  printf ("# Verzonung nicht verifiziert\n");
   rprintf ("Freischaltgebühren ATS 480","C:GT:");
+  rprintf ("15.09.1999","C:TarifChanged:");
   rprintf ("Cost = 480/12","C:GF:");
   rprintf ("TELEforum Telekommunikations GmbH", "C:Name:");
   rprintf ("Sporg. 32, A-8010 Graz","C:Address:");
+  rprintf ("0316 9166 ","C:Telefon:");
+  rprintf ("0316 9166-8 ","C:Telefax:");
   rprintf ("http://www.teleforum.at", "C:Homepage:");
+  rprintf ("http://www.teleforum.at/fpreise.htm", "C:TarifURL:");
   rprintf ("office@teleforum.at", "C:EMail:");
   for (z=0; z<COUNT(Zone); z++) {
     rprintf (Zone[z][0], "Z:%d", z+1);
-    if (Tarif[z][0]==Tarif[z][1]) {
-      rprintf ("0-24h", "T:*/*=%.2f(60)/1", Tarif[z][0]);
-    } else {
-      rprintf ("Tag", "T:W/8-18=%.2f(60)/1", Tarif[z][0]);
-      rprintf ("Nacht", "T:W/18-8=%.2f(60)/1", Tarif[z][1]);
-      rprintf ("Weekend", "T:E,H/*=%.2f(60)/1", Tarif[z][1]);
-    }
+    rprintf ("0-24h", "T:*/*=%.2f(60)/1", Tarif[z]);
     print_area(Zone[z][1]);
   }
 }  
@@ -774,8 +824,8 @@ void rate_1009(void) {
 
   char *Zone[][2] = {
                      { "Regional",""},
-		     { "Österreich", "Österreich" },
-		     { "Österreich", "Österreich" },
+		     { "Fern", "" },
+		     { "Fern", "Österreich" },
 		     { "Mobilfunk", "+43663,+43664,+43676,+43699" },
 /* 2.86 */	{"Deutschland", "Deutschland"},
 /* 3.46 */	{"USA", "USA"},
@@ -815,7 +865,7 @@ void rate_1009(void) {
 /* 15.56 */	{"Argentinien ...", "Argentinien, Costa Rica, Guinea, Guinea-Bissau, Kasachstan, Nordkorea, Kuba, Lesotho, Malawi, Namibia, Nauru, Nepal, Neukaledonien, Norfolkinseln, Papua-Neuguinea, Paraguay, Sambia, West-Samoa, Simbabwe, Swasiland, Turks- und Caicosinseln"},
 /* 15.96 */	{"Bahrain ...", "Bahrain, Laos, Nigeria, St. Helena, St. Lucia"},
 /* 16.76 */	{"Ascension ...", "Ascension, Belize, Bolivien, Burundi, Dominica, El Salvador, Fidschi, Grenada, Guatemala, Guyana, Jamaika, Kenia, Malediven, Mauretanien, Mauritius, Montserrat, Nicaragua, Somalia, Uruguay, Vietnam"},
-/* 16.96 */	{"Mayotte ...", "Mayotte, Sao Tome und Principe"},
+/* 16.96 */	{"Komoren ...", "Komoren, Sao Tome und Principe"},
 /* 17.96 */	{"Äquatorial-Guinea ...", "Äquatorial-Guinea, Äthiopien, Afghanistan, Anguilla, Antigua und Barbuda, Bangladesch, Benin, Burkina Faso Obervolta, Kaimaninseln, "
     "Cookinseln, Elfenbeinküste Cote de Ivoire, Dschibuti, Eritrea, Falklandinseln, Französisch-Polynesien, Gambia, Guam, Guantanamo Bay, Haiti, Honduras, Irak, Jemen (Arab. Republik), "
     "Kambodscha, Kamerun, Cape Verde, Kiribati, Kongo, Madagaskar, Mali, Marshallinseln, Mikronesien, Mongolei, Mosambik, Myanmar Burma, Niger, Niue-Inseln, Oman, Pakistan, Palau /Belau, "
@@ -824,7 +874,7 @@ void rate_1009(void) {
         }; 
 		    
   double Tarif[] = { 
-    9.99,
+    5999.4, /* 99.99*60 no Z1*/
     1.46,
     1.46,
     3.98, /* Mobil */
@@ -872,10 +922,12 @@ void rate_1009(void) {
 		    };	 
   int z;
   
-  printf ("\n");
   rprintf ("Vocalis", "P:09");
+  rprintf ("# Verzonung", "D:pta");
+  printf ("# Verzonung nicht verifiziert\n");
+  rprintf ("01.09.1999","C:TarifChanged:");
   rprintf ("Vocalis Telekom-Dienste GmbH","C:Name:");
-  rprintf ("34 g Gesprächs-Herstellungsgebühr","C:Special:"); /* Fixme: oder Mindestgeb. ? */
+  rprintf ("34 g Gesprächs-Herstellungsgebühr","C:Special:");
   rprintf ("http://www.vocalis.at", "C:Homepage:");
   rprintf ("http://www.vocalis.at/voc_tarife_frame.htm", "C:TarifURL:");
   for (z=0; z<COUNT(Zone); z++) {
@@ -894,8 +946,8 @@ void rate_1011(void) {
 		     {"Ausland 1", "Frankreich, Großbritannien, Italien, Liechtenstein, Paraguay, Schweiz, Slowakei, Slowenien, Tschechien, Ungarn, Vatikanstadt"},
 		     {"Ausland 2", "Belgien, Dänemark, Finnland, Irland, Kanada, Luxemburg, Niederlande, Norwegen, Papua-Neuguinea, San Marino, Schweden, Spanien, Vereinigte Staaten (USA)"},
 		     {"Ausland 3", "Andorra, Bosnien-Herzegowina, Bulgarien, Kroatien, Malediven, Zypern"},
-		     {"Ausland 4", "Weißrußland, Färöer-Inseln, Griechenland, Jugoslawien, Serbien, Montenegro, Britische Jungferninseln, Kanarische Inseln, Palau, Rumänien, Tunesien, Türkei, Ukraine"},
-		     {"Ausland 5", "Albanien, Algerien, Antarktis, Australien, Estland, Lettland, Malawi, Malaysia, Marokko, Moldau, Moldau"},
+		     {"Ausland 4", "Weißrußland, Färöer-Inseln, Griechenland, Jugoslawien, Britische Jungferninseln, Kanarische Inseln, Palau, Rumänien, Tunesien, Türkei, Ukraine"},
+		     {"Ausland 5", "Albanien, Algerien, Antarktis, Australien, Estland, Lettland, Malawi, Malaysia, Marokko, Moldau"},
 		     {"Ausland 6", "Gibraltar, Island, Israel"},
 		     {"Ausland 7", "Litauen, Russische Föderation, Tadschikistan"},
 		     {"Ausland 8", "Georgien, Hongkong, Japan, Südkorea, Neuseeland, Singapur, Turkmenistan, Usbekistan"},
@@ -905,10 +957,10 @@ void rate_1011(void) {
 		     {"Ausland 12", "Angola, Bermuda, Bhutan, China, Ecuador, Iran, Kuwait, Mali, Saudi-Arabien, Venezuela, Vereinigte Arabische Emirate"},
 		     {"Ausland 13", "Bahamas, Dominikanische Republik, Madagaskar, Ägypten"},
 		     {"Ausland 14", "Aruba, Barbados, Belize, Botswana, Brunei, Burundi, El Salvador, Gabun, Ghana, Grönland, Guinea-Bissau, Guyana, Jordanien, Katar, Kirgisistan, Kolumbien, Libanon, Martinique, Mayotte, Sao Tome und Principe, Saint Vincent und die Grenadinen, Taiwan, Trinidad und Tobago, Äquatorial-Guinea"},
-		     {"Ausland 15", "Argentinien, Bahrain, Benin, Cote d'Ivoire, Dominica, Grenada, Guinea, Kasachstan, Kenia, Komoren, Laos, Lesotho, Liberia, Mauretanien, Namibia, Nauru, Nepal, Neukaledonien, Nigeria, Norfolk-Inseln, Sambia, Samoa, Simbabwe, St. Helena, Saint Kitts und Nevis, St. Lucia, Sudan, Swasiland, Syrien, Tansania, Tonga, Turks- und Caicos-Inseln"},
-		     {"Ausland 16", "Mikronesien, Mikronesien, Äthiopien"},
+		     {"Ausland 15", "Argentinien, Bahrain, Benin, Cote d'Ivoire, Dominica, Grenada, Guinea, Kasachstan, Kenia, Komoren, Laos, Lesotho, Liberia, Mauretanien, Namibia, Nauru, Nepal, Neukaledonien, Nigeria, Norfolk-Inseln, Sambia, Samoa (West), Simbabwe, St. Helena, Saint Kitts und Nevis, St. Lucia, Sudan, Swasiland, Syrien, Tansania, Tonga, Turks- und Caicos-Inseln"},
+		     {"Ausland 16", "Mikronesien, Äthiopien"},
 		     {"Ausland 17", "Costa Rica, Fidschi, Französisch-Polynesien, Gambia, Indonesien, Irak, Jamaika, Kiribati, Nicaragua, Niue, Oman, Panama, Philippinen, Ruanda, Amerikanisch-Samoa, Suriname, Thailand, Togo, Uganda, Vanuatu, Zentralafrikanische Republik"},
-		     {"Ausland 18", "Afghanistan, Anguilla, Antigua und Barbuda, Ascension, Bangladesch, Bolivien, Burkina Faso, Cook-Inseln, Caymaninseln, Dschibuti, Eritrea, Falklandinseln, Guam, Guantanamo, Guatemala, Haiti, Honduras, Indien, Jemen, Kambodscha, Kamerun, Kap Verde, Kongo, Nordkorea, Kuba, Macao, Malta, Marshallinseln, Mazedonien, Mazedonien, Niger, Pakistan, Salomonen, Senegal, Seychellen, Sierra Leone, Somalia, Sri Lanka, Tschad, Tuvalu, Uruguay, Vietnam, Wallis- und Futuna-Inseln, Zaire"}};
+		     {"Ausland 18", "Afghanistan, Anguilla, Antigua und Barbuda, Ascension, Bangladesch, Bolivien, Burkina Faso, Cook-Inseln, Caymaninseln, Dschibuti, Eritrea, Falklandinseln, Guam, Guantanamo, Guatemala, Haiti, Honduras, Indien, Jemen, Kambodscha, Kamerun, Kap Verde, Kongo, Nordkorea, Kuba, Macao, Malta, Marshallinseln, Mazedonien, Niger, Pakistan, Salomonen, Senegal, Seychellen, Sierra Leone, Somalia, Sri Lanka, Tschad, Tuvalu, Uruguay, Vietnam, Wallis- und Futuna-Inseln, Zaire"}};
   
   double Tarif[][2] = {{ 1.00, 0.88 },
 		       { 1.50, 0.88 },
@@ -935,7 +987,6 @@ void rate_1011(void) {
 		       
 		       int z;
   
-  printf ("\n");
   rprintf ("RSL COM", "P:11");
   rprintf ("# Verzonung", "D:1012");
   rprintf ("RSL COM Austria AG","C:Name:");
@@ -961,7 +1012,7 @@ void rate_1011(void) {
   }
 }
 
-void rate_1012(void) { /* Fixme: ab wann ( 1.9.99 ?? ) */
+void rate_1012(what) { /* 1012 == 1044 (Citykom) */
 
   char *Zone[][2] = {
 		     { "Österreich", "Österreich" },
@@ -969,10 +1020,10 @@ void rate_1012(void) { /* Fixme: ab wann ( 1.9.99 ?? ) */
 		     { "Deutschland spezial", "Deutschland" },
 		     { "Nachbarn", "Frankreich, Italien, Schweiz, Liechtenstein, Slowakei, Slowenien, Tschechien, Ungarn" },
 		     { "Europa 1 + USA", "Belgien, Dänemark, Finnland, Großbritannien, Irland, Kanada, Luxemburg, Niederlande, Norwegen, Schweden, Spanien, Vereinigte Staaten (USA)" },
-		     { "Europa 2", "Andorra, Bosnien-Herzegowina, Färöer-Inseln, Jugoslawien, Serbien, Montenegro, Kroatien, Malta, Monaco" },
+		     { "Europa 2", "Andorra, Bosnien-Herzegowina, Färöer-Inseln, Jugoslawien, Kroatien, Malta, Monaco" },
 		     { "Europa 3", "Albanien, Bulgarien, Estland, Griechenland, Mazedonien, Polen, Portugal, Rumänien, San Marino, Tunesien, Ukraine,Weißrußland, Zypern" },
 		     { "Welt 1", "Algerien, Australien, Gibraltar, Hongkong, Island, Israel, Japan, Lettland, Litauen, Marokko, Neuseeland, Russische Föderation, Singapur, Südkorea, Türkei" },
-		     { "Welt 2", "+" }};
+		     { "Welt 2", "Bermuda,Antigua und Barbuda,St. Lucia,Dominikanische Republik,Dominica,Britische Jungferninseln,Turks- und Caicosinseln,Puerto Rico,Anguilla,Bahamas,Jamaika,St. Vincent und Grenadinen,Montserrat,St. Kitts und Nevis,Grenada,Trinidad und Tobago,Hawaii,Marianen (SaipanNord-),Kaimaninseln,Amerikanische Jungferninseln,Barbados,+" }};
   
   double Tarif[] = { 0.90 ,
 		        4.00 ,
@@ -986,13 +1037,24 @@ void rate_1012(void) { /* Fixme: ab wann ( 1.9.99 ?? ) */
 		       
   
   int z;
-  
-  printf ("\n");
+  if(what==1012) {
   rprintf ("1012", "P:12");
+  rprintf ("14.09.1999","C:TarifChanged:");
   rprintf ("1012 privat","C:Name:");
   rprintf ("Linzer Str. 221, A-1140 Wien","C:Address:"); 
   rprintf ("http://www.1012privat.at","C:Homepage:");
   rprintf ("0800 1012 1012","C:Telefon:"); 
+  }
+  else {
+  rprintf ("Citykom", "P:44");
+  rprintf ("15.09.1999","C:TarifChanged:");
+  rprintf ("Citykom Austria Telekommunikations GmbH","C:Name:");
+  rprintf ("Alserbachstr. 144-16, A-1090 Wien","C:Address:"); 
+  rprintf ("http://www.citykom.at","C:Homepage:");
+  rprintf ("j.schmolinsk@citykom.at","C:EMail:");
+  rprintf ("0800 201 301","C:Telefon:"); 
+  rprintf ("Mit 1012privat verschmolzen","C:Special:"); 
+  }
   for (z=0; z<COUNT(Zone); z++) {
     rprintf (Zone[z][0], "Z:%d", z+1);
     rprintf ("0-24h", "T:*/*=%.2f(60)/60/1", Tarif[z]);
@@ -1008,7 +1070,7 @@ void rate_1012_old(void) {
 		     { "Deutschland spezial", "Deutschland" },
 		     { "Nachbarn", "Frankreich, Italien, Schweiz, Liechtenstein, Slowakei, Slowenien, Tschechien, Ungarn" },
 		     { "Europa 1 + USA", "Belgien, Dänemark, Finnland, Großbritannien, Irland, Kanada, Luxemburg, Niederlande, Norwegen, Schweden, Spanien, Vereinigte Staaten (USA)" },
-		     { "Europa 2", "Andorra, Bosnien-Herzegowina, Färöer-Inseln, Jugoslawien, Serbien, Montenegro, Kroatien, Malta, Monaco" },
+		     { "Europa 2", "Andorra, Bosnien-Herzegowina, Färöer-Inseln, Jugoslawien, Kroatien, Malta, Monaco" },
 		     { "Europa 3", "Albanien, Bulgarien, Estland, Griechenland, Mazedonien, Polen, Portugal, Rumänien, San Marino, Tunesien, Ukraine,Weißrußland, Zypern" },
 		     { "Welt 1", "Algerien, Australien, Gibraltar, Hongkong, Island, Israel, Japan, Lettland, Litauen, Marokko, Neuseeland, Russische Föderation, Singapur, Südkorea, Türkei" },
 		     { "Welt 2", "+" }};
@@ -1027,7 +1089,6 @@ void rate_1012_old(void) {
   
   int z;
   
-  printf ("\n");
   rprintf ("1012", "P:12");
   rprintf ("1012 privat","C:Name:");
   rprintf ("Linzer Str. 221, A-1140 Wien","C:Address:"); 
@@ -1052,7 +1113,6 @@ void rate_1012_old(void) {
 }    
 
 void rate_1013(void) {
-  printf ("\n");
   rprintf ("NETnet", "P:13");
   rprintf ("NETnet Telekommunikation GmbH","C:Name:");
   rprintf ("Nur Businesskunden","C:Special:");
@@ -1061,6 +1121,41 @@ void rate_1013(void) {
   rprintf ("customercare@netnet.co.at","C:EMail:");
 }  
 
+void rate_1014(void) {
+
+  char *Zone[][2] = {
+    { "Nah", "" }, 
+    { "Fern", "Österreich" },
+  };    
+  double Tarif[][2] = {
+    { 1.50, 0.60}, /* Fixme: */
+    { 1.50, 0.60},
+  };
+  int z;
+  
+  rprintf ("MCN", "P:14");
+  rprintf ("# Verzonung", "D:pta");
+  rprintf ("Millenium Communication Network GmbH", "C:Name:");
+  rprintf ("Handelskai 94 - 96, A-1200 Wien", "C:Address:");
+  rprintf ("http://www.mcn-tower.com", "C:Homepage:");
+  rprintf ("0800 1014 1014", "C:Telefon:");
+  rprintf ("01 207 1099", "C:Telefax:");
+  rprintf ("Die Regionalzone geht bis zu einer Entfernung von 50 Km, alles andere ist Österreichzone.","C:Zone:");
+  rprintf ("Kostenlose MCN-Wählbox", "C:Special:");
+  rprintf ("Ausland nicht implemtiert", "# Fixme:");
+  rprintf ("Ausland nicht implemtiert", "C:Special:");
+  for (z=0; z<COUNT(Zone); z++) {
+    rprintf (Zone[z][0], "Z:%d", z+1);
+    if (Tarif[z][0]==Tarif[z][1]) {
+      rprintf ("0-24h", "T:*/*=%.2f(60)/1", Tarif[z][0]);
+    } else {
+      rprintf ("Tag", "T:W/8-18=%.2f(60)/1", Tarif[z][0], Tarif[z][0]);
+      rprintf ("Nacht", "T:W/18-8=%.2f(60)/1", Tarif[z][1], Tarif[z][1]);
+      rprintf ("Weekend", "T:E,H/*=%.2f(60)/1", Tarif[z][1], Tarif[z][1]);
+    }
+    print_area(Zone[z][1]);
+  }
+}
 
 void rate_1024(void) {
 
@@ -1070,11 +1165,11 @@ void rate_1024(void) {
 		     { "Mobilfunk", "+43663,+43664,+43676,+43699" },
 		     { "WeltWeit 1", "Deutschland, Schweiz" },
 		     { "WeltWeit 2", "Belgien, Dänemark, Finnland, Frankreich, Großbritannien, Irland, Italien, Liechtenstein, Luxemburg, Monaco, Niederlande, Norwegen, Schweden, Slowenien, Slowakei, Spanien, Tschechien, Ungarn, Vatikan, Vereinigte Staaten (USA), Puerto Rico, Alaska, Hawaii, Kanada" },
-		     { "WeltWeit 3", "Andorra, Bosnien-Herzegowina, Bulgarien, Estland, Griechenland, Island, Kroatien, Lettland, Litauen, Malta, Mazedonien, Polen, Portugal, Rumänien, Serbien, Montenegro, Zypern, Australien, Färöer, Israel, Neuseeland, Amerikanische Jungferninseln" },
-		     { "WeltWeit 4", "Albanien, Weihnachtsinseln, Gibraltar, Kokosinseln, Rußland, San Marino, Türkei, Tunesien, Ukraine, Weißrußland, Algerien, Hongkong, Japan, Südkorea, Marokko, Philippinen, Russische Föderation, Singapur" },
+		     { "WeltWeit 3", "Andorra, Bosnien-Herzegowina, Bulgarien, Estland, Griechenland, Island, Kroatien, Lettland, Litauen, Malta, Mazedonien, Polen, Portugal, Rumänien, Serbien, Zypern, Australien, Färöer, Israel, Neuseeland, Amerikanische Jungferninseln" },
+		     { "WeltWeit 4", "Albanien, Weihnachtsinseln, Gibraltar, Kokosinseln, Rußland, San Marino, Türkei, Tunesien, Ukraine, Weißrußland, Algerien, Hongkong, Japan, Südkorea, Marokko, Philippinen, Singapur" },
 		     { "WeltWeit 5", "Ägypten, Südafrika, Aserbaidschan, Armenien, China, Georgien, Libyen, Malaysia, Moldau, Tadschikistan, Taiwan, Turkmenistan, Usbekistan, Argentinien, Brasilien, Chile, Costa Rica, Dominikanische Republik, Ecuador, El Salvador, Guatemala, Kolumbien, Mexiko, Nicaragua, Panama, Peru, Venezuela" },
-		     { "WeltWeit 6", "Angola, Aruba, Bahamas, Bahrain, Barbados, Bermuda, Bhutan, Bolivien, Botswana, Brunei, Burundi, Ghana, Grönland, Guadeloupe, Guam, Guinea, Martinique, Französisch-Guayana, Honduras, Indien, Indonesien, Iran, Jordanien, Kasachstan, Kirgisistan, Kuba, Kuwait, Lesotho, Libanon, Liberia, Macao, Malawi, Martinique, Mayotte, Namibia, Niederländische Antillen, Nigeria, Paraguay, Reunion, Saipan, Saudi-Arabien, St. Lucia, St. Pierre und Miquelon, Saint Vincent und die Grenadinen, Sudan, Syrien, Swasiland, Tansania, Thailand, Trinidad und Tobago, Uruguay, Vereinigte Arabische Emirate" },
-		     { "WeltWeit 7", "+" }};
+		     { "WeltWeit 6", "Angola, Aruba, Bahamas, Bahrain, Barbados, Bermuda, Bhutan, Bolivien, Botswana, Brunei, Burundi, Ghana, Grönland, Guadeloupe, Guam, Guinea, Martinique, Französisch-Guayana, Honduras, Indien, Indonesien, Iran, Jordanien, Kasachstan, Kirgisistan, Kuba, Kuwait, Lesotho, Libanon, Liberia, Macao, Malawi, Mayotte, Namibia, Niederländische Antillen, Nigeria, Paraguay, Reunion, Saipan, Saudi-Arabien, St. Lucia, St. Pierre und Miquelon, Saint Vincent und die Grenadinen, Sudan, Syrien, Swasiland, Tansania, Thailand, Trinidad und Tobago, Uruguay, Vereinigte Arabische Emirate" },
+		     { "WeltWeit 7", "Antigua und Barbuda,Dominica,Britische Jungferninseln,Turks- und Caicosinseln,Anguilla,Jamaika,Montserrat,St. Kitts und Nevis,Grenada,Kaimaninseln,+" }};
   
   double Tarif[][2] = {{ 0.98, 0.88},
 		       { 1.28, 1.18},
@@ -1090,7 +1185,6 @@ void rate_1024(void) {
   
   int z;
   
-  printf ("\n");
   rprintf ("Telepassport", "P:24");
   rprintf ("Leopold Toetsch <lt@toetsch.at>", "C:Maintainer:");
   rprintf ("TelePassport Telekommunikationsdiensleitungen GmbH", "C:Name:");
@@ -1102,7 +1196,7 @@ void rate_1024(void) {
   rprintf ("01 506 44-199","C:Telefax:");
   rprintf ("Vorwahlen 1XXX und 2XXX, sind in der Zone RundUm-Wien, andere Vorwahlen "
     "mit gleicher Anfangsziffer liegen in der Zone RundUm-Regional, der Rest ist "
-    "Ganzland.","C:Zone");
+    "Ganzland.","C:Zone:");
   rprintf ("# Verzonung", "D:1024");
   for (z=0; z<COUNT(Zone); z++) {
     rprintf (Zone[z][0], "Z:%d", z+1);
@@ -1130,17 +1224,17 @@ void rate_1029_privat(void) {
 		     { "Mobilfunk One", "+43699" },
 		     { "Deutschland", "Deutschland, Liechtenstein, Schweiz, Italien" },
 		     { "International 1", "Frankreich, Grossbritannien, Slowakei, Slowenien, Tschechische Republik, Ungarn" },
-	{ "International 2", "Andorra, Belgien, Bosnien-Herzegowina, Dänemark, Finnland, Irland, Britische Jungferninseln, Kanada, Kroatien, Luxemburg, Malta, Monaco, Niederlande, Norwegen, Polen, Schweden, Spanien, USA, Vatikan, Zypern" },
+	{ "International 2", "Andorra, Belgien, Bosnien-Herzegowina, Dänemark, Finnland, Irland, Kanada, Kroatien, Luxemburg, Malta, Monaco, Niederlande, Norwegen, Polen, Schweden, Spanien, USA, Vatikan, Zypern" },
 	{ "International 3-1","Albanien,Belarus,Bulgarien,Mazedonien,Rumänien,San Marino,Serbien,Ukraine"},
 	{ "International 3-2","Estland, Färöer Inseln, Gibraltar, Griechenland, Island, Israel,Portugal, Puerto Rico, Russland, Tunesien, Türkei"},
 	{ "International 4","Angola, Bermuda, Brasilien, Chile, Franz. Guyana, Guadeloupe, Hong Kong, Japan, Libyen, Macao, Madeira, Malaysia, Martinique, Mayotte, Mexico, Moldawien, Neu Seeland, Niederl. Antillen, Philippinen, Reunion, Saipan, Singapur, St. Pierre und Miquelon, Südafrika, Südkorea, Venezuela"},
 	{ "International 5","Ägypten, Aruba, Bahamas, Barbados, Belize, Bhutan, Botswana, Brunei, Burundi, China, Dominikanische Republik, Ecuador, Gabun, Ghana, Grönland, Guyana, Iran, Jordanien, Kirgisistan, Kolumbien, Kuweit, Libanon, Panama, Saudiarabien, St. Vincent und Grenadinen, Trinidad und Tobago, Vereinigte Arabische Emirate"},
 	{ "International 6","Argentinien, Äthiopien, Bahrain, Benin, Costa Rica, Elfenbeinküste, Französisch-Polynesien, Gambia, Guinea, Guinea-Bissau, Jamaica, Kasachstan, Katar, Kenia, Kiribati, Komoren, Laos, Lesotho, Liberia, Malawi, Malediven, Mauretanien, Mozambique, Namibia, Nauru, Nepal, Neu Kaledonien, Nicaragua, Nigeria, Niue, Norfolk Inseln, Oman, Peru, Ruanda, Sambia, Samoa West, Simbabwe, St. Helena, St. Lucia, Sao Tome und Principe, Sudan, Suriname, Swasiland, Syrien, Taiwan, Tansania, Thailand, Togo, Tonga, Turks & Caicos Islands, Uganda, Vanuatu, Zentralafrikanische Republik"},
-	{ "International 7","Anguilla, Antigua & Barbuda, Ascension, Bangla Desh, Bolivien, Burkina Faso, Myanmar/Burma, Cayman Inseln, Dominica, Dschibuti, El Salvador, Eritrea, Falkland Inseln, Grenada, Guam, Guatemala, Haiti, Honduras, Indien, Indonesien, Irak, Jemen, Jungfern Inseln britisch, Kambodscha, Kamerun, Kap Verde, Kongo, Kuba, Mali, Mauritius, Mongolei, Montserrat, Nevis Islands, Niger, Nordkorea, Pakistan, Papua Neuguinea, Paraguay, Salomonen, Senegal, Seychellen, Sierra Leone, Somalia, Sri Lanka, St. Kitts & Nevis, Tschad, Uruguay, Vietnam, Zaire"},
+	{ "International 7","Anguilla, Antigua & Barbuda, Ascension, Bangla Desh, Bolivien, Burkina Faso, Myanmar/Burma, Cayman Inseln, Dominica, Dschibuti, El Salvador, Eritrea, Falkland Inseln, Grenada, Guam, Guatemala, Haiti, Honduras, Indien, Indonesien, Irak, Jemen, Jungfern Inseln britisch, Kambodscha, Kamerun, Kap Verde, Kongo, Kuba, Mali, Mauritius, Mongolei, Montserrat, Niger, Nordkorea, Pakistan, Papua Neuguinea, Paraguay, Salomonen, Senegal, Seychellen, Sierra Leone, Somalia, Sri Lanka, St. Kitts & Nevis, Tschad, Uruguay, Vietnam, Zaire"},
 	{ "International 8","Algerien, Georgien, Lettland, Litauen, Marokko, Tadschikistan, Turkmenistan, Usbekistan"}, 
 	{ "International 9","Armenien, Aserbaidschan, Christmas Island, Kokos Inseln"},
 
-		     { "International 10", "+" }}; /* Afghanistan, Cook Inseln, Diego Garcia, Guantanamo, Madagaskar, Marshall Inseln, Micronesia, Midway Inseln, Palau, Samoa Ost, Tuvalu, Wake, Wallis/Futuna */
+		     { "International 10", "Hawaii,Amerikanische Jungferninseln,+" }}; /* Afghanistan, Cook Inseln, Diego Garcia, Guantanamo, Madagaskar, Marshall Inseln, Micronesia, Midway Inseln, Palau, Samoa Ost, Tuvalu, Wake, Wallis/Futuna */
 
   
   double Tarif[][4] = {{ 0.87, 0.84, 0.57, 0.39}, /* Fixme: 1.9. */
@@ -1166,7 +1260,6 @@ void rate_1029_privat(void) {
   int z;
   char s[BUFSIZ];
 
-    printf ("\n");
     rprintf ("CyberTron easy.Talk privat", "P:29,1");
 
   rprintf ("Cybertron EDV- NetzwerkbetriebsgmbH","C:Name:");
@@ -1211,10 +1304,6 @@ void rate_1029_privat(void) {
 
 void rate_1029_business(void) {
 
-  char *Name =  "easy.Talk business" ;
-  
-  double Einheit = 74;
-  
   char *Zone[][2] = {{ "Regionalzone", "" }, 
 		     { "Fernzone", "Österreich" },
 		     { "Mobilfunk A1, max", "+43663,+43664,+43676" },
@@ -1245,7 +1334,7 @@ void rate_1029_business(void) {
 /* 7.56 */	{"Hongkong ...", "Hongkong, Japan, Japan Mobilfunk, Tokyo"},
 /* 7.80 */	{"Algerien ...", "Algerien, Marokko"},
 /* 7.98 */	{"Madeira", "Madeira"},
-/* 8.04 */	{"Weihnachtsinseln ...", "Weihnachtsinseln, Cookinseln"},
+/* 8.04 */	{"Weihnachtsinseln ...", "Weihnachtsinseln, Kokosinseln"},
 /* 8.16 */	{"Singapur", "Singapur"},
 /* 8.52 */	{"Georgien ...", "Georgien, Tadschikistan, Turkmenistan, Usbekistan"},
 /* 9.48 */	{"Südafrika", "Südafrika"},
@@ -1268,7 +1357,7 @@ void rate_1029_business(void) {
 /* 15.84 */	{"Libanon", "Libanon"},
 /* 15.96 */	{"Gabun", "Gabun"},
 /* 16.56 */	{"Bahrain ...", "Bahrain, Katar, Lesotho, Liberia, Namibia, Peru, Sambia, Simbabwe, St. Helena, St. Lucia, Sudan, Swasiland, Tansania, Turks- und Caicosinseln"},
-/* 16.68 */	{"Nigeria ...", "Nigeria, Amerikanisch-Samoa"},
+/* 16.68 */	{"Nigeria ...", "Nigeria, Samoa (West)"},
 /* 16.74 */	{"Burundi ...", "Burundi, Elfenbeinküste Cote de Ivoire, Guinea, Kasachstan, Laos, Nauru, Neukaledonien"},
 /* 16.92 */	{"Nepal ...", "Nepal, Syrien"},
 /* 17.28 */	{"Guyana", "Guyana"},
@@ -1279,13 +1368,13 @@ void rate_1029_business(void) {
 /* 18.74 */	{"Norfolkinseln", "Norfolkinseln"},
 /* 18.78 */	{"Wallis und Futuna", "Wallis und Futuna"},
 /* 18.90 */	{"Fidschi", "Fidschi"},
-/* 18.96 */	{"Äthiopien ...", "Äthiopien, Irak, Kiribati, Mayotte, Mauretanien, Mongolei, Mosambik, Suriname"},
+/* 18.96 */	{"Äthiopien ...", "Äthiopien, Irak, Kiribati, Komoren, Mauretanien, Mongolei, Mosambik, Suriname"},
 /* 19.14 */	{"Tonga ...", "Tonga, Zentralafrikanische Republik"},
 /* 19.44 */	{"Togo", "Togo"},
 /* 20.28 */	{"Myanmar Burma", "Myanmar Burma"},
 /* 21.36 */	{"Bolivien ...", "Bolivien, Kaimaninseln, Dschibuti, Indien, Indonesien, Britische Jungferninseln, Kuba, Niger, Papua-Neuguinea, Paraguay, Sierra Leone, Sri Lanka, Uruguay"},
 /* 21.66 */	{"Mauritius ...", "Mauritius, Nordkorea"},
-/* 24.06 */	{"Anguilla ...", "Anguilla, Antigua und Barbuda, Ascension, Bangladesch, Burkina Faso Obervolta, Dominica, El Salvador, Eritrea, Falklandinseln, Grenada, Guam, Guatemala, Haiti, Honduras, Jemen (Arab. Republik), Kambodscha, Kamerun, Cape Verde, Kongo, Mali, Montserrat, Niue-Inseln, Pakistan, Salomonen, Senegal, Seyschellen, Somalia, St. Kitts und Nevis, Tschad, Vietnam, Zaire"},
+/* 24.06 */	{"Anguilla ...", "Anguilla, Antigua und Barbuda, Ascension, Bangladesch, Burkina Faso Obervolta, Dominica, El Salvador, Eritrea, Falklandinseln, Grenada, Guam, Guatemala, Haiti, Honduras, Jemen (Arab. Republik), Kambodscha, Kamerun, Cape Verde, Kongo, Mali, Montserrat, Pakistan, Salomonen, Senegal, Seyschellen, Somalia, St. Kitts und Nevis, Tschad, Vietnam, Zaire"},
 /* 29.28 */	{"Wake Inseln", "Wake Inseln"},
 /* 30.60 */	{"Diego Garcia", "Diego Garcia"},
 /* 32.16 */	{"Cookinseln ...", "Cookinseln, Madagaskar"},
@@ -1294,88 +1383,87 @@ void rate_1029_business(void) {
 };
 		     
   
-  double Tarif[][4] = 	
-			   {{ 0.96, 0.96, 0.84, 0.84}, /* Business regional */
-			    { 2.52, 2.52, 1.20, 1.20},
-			    { 4.40, 4.40, 4.40, 4.40},
-			    { 4.46, 4.46, 4.46, 4.46}, /* One */
-{3.24, 3.24, 3.24, 3.24}, /* Deutschland ... */
-{3.48, 3.48, 3.48, 3.48}, /* Liechtenstein ... */
-{3.60, 3.60, 3.60, 3.60}, /* Italien ... */
-{3.96, 3.96, 3.96, 3.96}, /* Frankreich ... */
-{4.20, 4.20, 4.20, 4.20}, /* Spanien ... */
-{4.32, 4.32, 4.32, 4.32}, /* Belgien ... */
-{4.68, 4.68, 4.68, 4.68}, /* Dänemark ... */
-{4.74, 4.74, 4.74, 4.74}, /* Monaco ... */
-{4.80, 4.80, 4.80, 4.80}, /* Bosnien-Herzegovina ... */
-{4.86, 4.86, 4.86, 4.86}, /* Polen ... */
-{5.04, 5.04, 5.04, 5.04}, /* Griechenland ... */
-{5.16, 5.16, 5.16, 5.16}, /* Andorra ... */
-{5.22, 5.22, 5.22, 5.22}, /* Jungfern Inseln USA ... */
-{5.28, 5.28, 5.28, 5.28}, /* Puerto Rico ... */
-{5.52, 5.52, 5.52, 5.52}, /* Serbien/Montenegro ... */
-{5.94, 5.94, 5.94, 5.94}, /* Bulgarien ... */
-{6.06, 6.06, 6.06, 6.06}, /* Mazedonien ... */
-{6.18, 6.18, 6.18, 6.18}, /* Albanien ... */
-{6.24, 6.24, 6.24, 6.24}, /* Israel ... */
-{6.30, 6.30, 6.30, 6.30}, /* Gibraltar ... */
-{6.36, 6.36, 6.36, 6.36}, /* Australien ... */
-{6.38, 6.38, 6.38, 6.38}, /* Russland ... */
-{6.42, 6.42, 6.42, 6.42}, /* Island ... */
-{7.56, 7.56, 7.56, 7.56}, /* Hongkong ... */
-{7.80, 7.80, 7.80, 7.80}, /* Algerien ... */
-{7.98, 7.98, 7.98, 7.98}, /* Madeira ... */
-{8.04, 8.04, 8.04, 8.04}, /* Christmas Insel ... */
-{8.16, 8.16, 8.16, 8.16}, /* Singapur ... */
-{8.52, 8.52, 8.52, 8.52}, /* Georgien ... */
-{9.48, 9.48, 9.48, 9.48}, /* Südafrika ... */
-{9.54, 9.54, 9.54, 9.54}, /* Libyen ... */
-{9.66, 9.66, 9.66, 9.66}, /* Chile ... */
-{9.72, 9.72, 9.72, 9.72}, /* Franz. Guyana ... */
-{9.96, 9.96, 9.96, 9.96}, /* Armenien ... */
-{10.44, 10.44, 10.44, 10.44}, /* Aserbaidschan ... */
-{11.16, 11.16, 11.16, 11.16}, /* Malaysia ... */
-{11.28, 11.28, 11.28, 11.28}, /* Saipan ... */
-{11.76, 11.76, 11.76, 11.76}, /* Brasilien ... */
-{12.78, 12.78, 12.78, 12.78}, /* Bermudas ... */
-{12.84, 12.84, 12.84, 12.84}, /* China ... */
-{12.96, 12.96, 12.96, 12.96}, /* Angola ... */
-{13.32, 13.32, 13.32, 13.32}, /* Ägypten ... */
-{14.40, 14.40, 14.40, 14.40}, /* Aruba ... */
-{14.52, 14.52, 14.52, 14.52}, /* Panama ... */
-{14.58, 14.58, 14.58, 14.58}, /* Barbados ... */
-{14.64, 14.64, 14.64, 14.64}, /* Belize ... */
-{15.84, 15.84, 15.84, 15.84}, /* Libanon ... */
-{15.96, 15.96, 15.96, 15.96}, /* Gabun ... */
-{16.56, 16.56, 16.56, 16.56}, /* Bahrain ... */
-{16.68, 16.68, 16.68, 16.68}, /* Nigeria ... */
-{16.74, 16.74, 16.74, 16.74}, /* Burundi ... */
-{16.92, 16.92, 16.92, 16.92}, /* Nepal ... */
-{17.28, 17.28, 17.28, 17.28}, /* Guyana ... */
-{18.12, 18.12, 18.12, 18.12}, /* Guinea-Bissau ... */
-{18.30, 18.30, 18.30, 18.30}, /* Nicaragua ... */
-{18.56, 18.56, 18.56, 18.56}, /* Malawi ... */
-{18.66, 18.66, 18.66, 18.66}, /* Argentinien ... */
-{18.74, 18.74, 18.74, 18.74}, /* Norfolk Inseln ... */
-{18.78, 18.78, 18.78, 18.78}, /* Wallis/Futuna ... */
-{18.90, 18.90, 18.90, 18.90}, /* Fidschi ... */
-{18.96, 18.96, 18.96, 18.96}, /* Äthiopien ... */
-{19.14, 19.14, 19.14, 19.14}, /* Tonga ... */
-{19.44, 19.44, 19.44, 19.44}, /* Togo ... */
-{20.28, 20.28, 20.28, 20.28}, /* Burma/Myanmar ... */
-{21.36, 21.36, 21.36, 21.36}, /* Bolivien ... */
-{21.66, 21.66, 21.66, 21.66}, /* Mauritius ... */
-{24.06, 24.06, 24.06, 24.06}, /* Anguilla ... */
-{29.28, 29.28, 29.28, 29.28}, /* Wake ... */
-{30.60, 30.60, 30.60, 30.60}, /* Diego Garcia ... */
-{32.16, 32.16, 32.16, 32.16}, /* Cook Inseln ... */
-{40.14, 40.14, 40.14, 40.14} /* Afghanistan ... */
+  double Tarif[] = 	
+			   { 0.80, /* Business regional 0.67,1,3.08,3.28+20% */
+			     1.20,
+			     3.70,
+			     3.99, /* One */
+3.24, /* Deutschland ... */
+3.48, /* Liechtenstein ... */
+3.60, /* Italien ... */
+3.96, /* Frankreich ... */
+4.20, /* Spanien ... */
+4.32, /* Belgien ... */
+4.68, /* Dänemark ... */
+4.74, /* Monaco ... */
+4.80, /* Bosnien-Herzegovina ... */
+4.86, /* Polen ... */
+5.04, /* Griechenland ... */
+5.16, /* Andorra ... */
+5.22, /* Jungfern Inseln USA ... */
+5.28, /* Puerto Rico ... */
+5.52, /* Serbien/Montenegro ... */
+5.94, /* Bulgarien ... */
+6.06, /* Mazedonien ... */
+6.18, /* Albanien ... */
+6.24, /* Israel ... */
+6.30, /* Gibraltar ... */
+6.36, /* Australien ... */
+6.38, /* Russland ... */
+6.42, /* Island ... */
+7.56, /* Hongkong ... */
+7.80, /* Algerien ... */
+7.98, /* Madeira ... */
+8.04, /* Christmas Insel ... */
+8.16, /* Singapur ... */
+8.52, /* Georgien ... */
+9.48, /* Südafrika ... */
+9.54, /* Libyen ... */
+9.66, /* Chile ... */
+9.72, /* Franz. Guyana ... */
+9.96, /* Armenien ... */
+10.4, /* Aserbaidschan ... */
+11.16, /* Malaysia ... */
+11.28, /* Saipan ... */
+11.76, /* Brasilien ... */
+12.78, /* Bermudas ... */
+12.84, /* China ... */
+12.96, /* Angola ... */
+13.32, /* Ägypten ... */
+14.40, /* Aruba ... */
+14.52, /* Panama ... */
+14.58, /* Barbados ... */
+14.64, /* Belize ... */
+15.84, /* Libanon ... */
+15.96, /* Gabun ... */
+16.56, /* Bahrain ... */
+16.68, /* Nigeria ... */
+16.74, /* Burundi ... */
+16.92, /* Nepal ... */
+17.28, /* Guyana ... */
+18.12, /* Guinea-Bissau ... */
+18.30, /* Nicaragua ... */
+18.56, /* Malawi ... */
+18.66, /* Argentinien ... */
+18.74, /* Norfolk Inseln ... */
+18.78, /* Wallis/Futuna ... */
+18.90, /* Fidschi ... */
+18.96, /* Äthiopien ... */
+19.14, /* Tonga ... */
+19.44, /* Togo ... */
+20.28, /* Burma/Myanmar ... */
+21.36, /* Bolivien ... */
+21.66, /* Mauritius ... */
+24.06, /* Anguilla ... */
+29.28, /* Wake ... */
+30.60, /* Diego Garcia ... */
+32.16, /* Cook Inseln ... */
+40.14 /* Afghanistan ... */
 };			 
   int  z;
-  char s[BUFSIZ];
 
-    printf ("\n");
     rprintf ("CyberTron easy.Talk business", "P:29,2");
+  rprintf ("10.09.1999","C:TarifChanged:");
 
   rprintf ("Cybertron - austrian digital telecom","C:Name:");
   rprintf ("","C:Address:");
@@ -1384,41 +1472,17 @@ void rate_1029_business(void) {
   rprintf ("0800 400 400, 1029 1029","C:Telefon:");
   rprintf ("Die Regionalzone geht bis zu einer Entfernung von 100 Km, die Fernzone ","C:Zone:");
   rprintf ("darüber - Die Regionalzone ist nicht implementiert","C:Zone:");
-  rprintf ("Variable Taktung.","C:Special:");
 
     rprintf ("# Verzonung", "#Fixme: +-100Km nicht implemtiert");
-    sprintf (s, "%s (%.3f Takteinheit)", Name, Einheit);
-    rprintf (s, "# Tarif:");
-    rprintf ("Internationale Zonen nicht implementiert!", "# Fixme:");
 
-    for (z=0; z<COUNT(Zone); z++) {
-      rprintf (Zone[z][0], "Z:%d", z+1);
-      if (Tarif[z][0]!=0.0) { /* Tarif bekannt? */
-	if (Tarif[z][0]==Tarif[z][1] && Tarif[z][0]==Tarif[z][2] && Tarif[z][0]==Tarif[z][3]) {
-	  rprintf ("0-24h", "T:*/*=%.2f(60)/%.0f", Tarif[z][0], Einheit/Tarif[z][0]);
-	} else {
-	  if (Tarif[z][0]==Tarif[z][1]) {
-	    rprintf ("Tageszeit", "T:W/8-18=%.2f(60)/%.0f", Tarif[z][0], Einheit/Tarif[z][0]);
-	  } else {
-	    rprintf ("Tageszeit 1", "T:W/8-12=%.2f(60)/%.0f", Tarif[z][0], Einheit/Tarif[z][0]);
-	    rprintf ("Tageszeit 1", "T:1-4/13-16=%.2f(60)/%.0f", Tarif[z][0], Einheit/Tarif[z][0]);
-	    rprintf ("Tageszeit 2", "T:1-4/12-13,16-18=%.2f(60)/%.0f", Tarif[z][1], Einheit/Tarif[z][1]);
-	    rprintf ("Tageszeit 2", "T:5/12-18=%.2f(60)/%.0f", Tarif[z][1], Einheit/Tarif[z][1]);
-	  }
-	  if (Tarif[z][2]==Tarif[z][3]) {
-	    rprintf ("Sparzeit", "T:*/*=%.2f(60)/%.0f", Tarif[z][2], Einheit/Tarif[z][2]);
-	  } else {
-	    rprintf ("Sparzeit",      "T:W/06-08,18-20=%.2f(60)/%.0f", Tarif[z][2], Einheit/Tarif[z][2]);
-	    rprintf ("Sparzeit",      "T:E,H/06-20=%.2f(60)/%.0f", Tarif[z][2], Einheit/Tarif[z][2]);
-	    rprintf ("Supersparzeit", "T:*/20-06=%.2f(60)/%.0f", Tarif[z][3], Einheit/Tarif[z][3]);
-	  }
-	}
-      }
-      print_area(Zone[z][1]);
-    }
+  for (z=0; z<COUNT(Zone); z++) {
+    rprintf (Zone[z][0], "Z:%d", z+1);
+    rprintf ("0-24h", "T:*/*=%.2f(60)/60/1", Tarif[z]);
+    print_area(Zone[z][1]);
+  }
 }
 
-void rate_1044(void) {
+void rate_1044_old(void) {
 
   char *Zone[][2] = {{ "Regional", "" }, 
 		     { "Österreich", "Österreich" },
@@ -1428,13 +1492,13 @@ void rate_1044(void) {
   double Tarif[][2] = {{ 0.864, 0.864 },
 		       { 1.728, 0.864 },
 		       { 5.04, 5.04 },
-		       { 0.00, 0.00 }};
+		       { 5999.40, 5999.40 }};
   
   int z;
   
-  printf ("\n");
   rprintf ("Citykom", "P:44");
 
+  rprintf ("01.09.1999","C:TarifChanged:");
   rprintf ("Citykom Austria Telekommunikations GmbH","C:Name:");
   rprintf ("Alserbachstr. 144-16, A-1090 Wien","C:Address:"); 
   rprintf ("http://www.citykom.at","C:Homepage:");
@@ -1445,7 +1509,8 @@ void rate_1044(void) {
 /*  rprintf ("","C:Special:"); */
 
   rprintf ("# Verzonung", "D:1012");
-  rprintf ("internationale Zonen nicht implementiert", "# Fixme:");
+  rprintf ("Ausland nicht implemtiert", "# Fixme:");
+  rprintf ("Ausland nicht implemtiert", "C:Special:");
   for (z=0; z<COUNT(Zone); z++) {
     rprintf (Zone[z][0], "Z:%d", z+1);
     if (Tarif [z][0]!=0.0) { /* Tarif bekannt? */
@@ -1475,10 +1540,10 @@ void rate_1049(void) {
 /* 4.56 */	{"Spanien", "Spanien"},
 /* 4.68 */	{"Irland ...", "Irland, Luxemburg, Slowakische Republik, Tschechische Republik"},
 /* 4.80 */	{"Polen", "Polen"},
-/* 5.28 */	{"Amerikanische Jungferninseln ...", "Amerikanische Jungferninseln, Andorra, Azoren, Griechenland, Monaco, Malta, Jugoslawien, Jugoslawien, Ukraine"},
+/* 5.28 */	{"Amerikanische Jungferninseln ...", "Amerikanische Jungferninseln, Andorra, Azoren, Griechenland, Monaco, Malta, Jugoslawien, Ukraine"},
 /* 5.52 */	{"Kroatien", "Kroatien"},
 /* 5.64 */	{"Portugal", "Portugal"},
-/* 5.88 */	{"Albanien ...", "Albanien, Bosnien-Herzegowina, Bulgarien, Rumänien, Zypern (Griechenland)"},
+/* 5.88 */	{"Albanien ...", "Albanien, Bosnien-Herzegowina, Bulgarien, Rumänien, Zypern (Griechisch)"},
 /* 6.00 */	{"Puerto Rico ...", "Puerto Rico, San Marino"},
 /* 6.24 */	{"Australien ...", "Australien, Türkei"},
 /* 6.60 */	{"Algerien ...", "Algerien, Estland, Mazedonien"},
@@ -1492,7 +1557,7 @@ void rate_1049(void) {
 /* 9.48 */	{"Libyen ...", "Libyen, Neuseeland"},
 /* 9.60 */	{"Chile ...", "Chile, Martinique / Franz. Antillen"},
 /* 10.20 */	{"Moldavien Moldau (Republik) ...", "Moldavien Moldau (Republik), Südafrika"},
-/* 10.68 */	{"Guadeloupe ...", "Guadeloupe, Niederl. Antillen, Südkorea, Reunion, Zypern (Türkei)"},
+/* 10.68 */	{"Guadeloupe ...", "Guadeloupe, Niederl. Antillen, Südkorea, Reunion, Zypern (Türkisch)"},
 /* 10.92 */	{"Französisch-Guayana", "Französisch-Guayana"},
 /* 11.40 */	{"Turkmenistan", "Turkmenistan"},
 /* 11.88 */	{"Malaysia", "Malaysia"},
@@ -1510,11 +1575,11 @@ void rate_1049(void) {
 /* 16.20 */	{"Burkina Faso Obervolta ...", "Burkina Faso Obervolta, Burundi, Trinidad und Tobago"},
 /* 16.44 */	{"Libanon", "Libanon"},
 /* 16.68 */	{"Diego Garcia ...", "Diego Garcia, Gabun, Guinea, Peru, Panama, Swasiland, Syrien, Tansania"},
-/* 17.28 */	{"Kasachstan ...", "Kasachstan, Katar"},
+/* 17.28 */	{"Kasachstan ...", "Kasachstan"},
 /* 17.40 */	{"Bahrain ...", "Bahrain, Benin, Kaimaninseln"},
 /* 17.88 */	{"Dominica ...", "Dominica, Kolumbien, Malawi, St. Pierre und Miquelon, Sudan"},
 /* 18.00 */	{"Äquatorial-Guinea ...", "Äquatorial-Guinea, Elfenbeinküste Cote de Ivoire, Französisch-Polynesien"},
-/* 19.08 */	{"Fidschi ...", "Fidschi, Guyana, Mayotte, Kenia, Namibia, Nauru, Nepal, Nigeria, Neukaledonien, Sao Tome und Principe, St. Helena, St. Kitts und Nevis, St. Lucia, Simbabwe, West-Samoa"},
+/* 19.08 */	{"Fidschi ...", "Fidschi, Guyana, Komoren, Kenia, Namibia, Nauru, Nepal, Nigeria, Neukaledonien, Sao Tome und Principe, St. Helena, St. Kitts und Nevis, St. Lucia, Simbabwe, West-Samoa"},
 /* 19.20 */	{"Ascension ...", "Ascension, Britische Jungferninseln, Brunei"},
 /* 19.56 */	{"Botsuana Botswana", "Botsuana Botswana"},
 /* 19.80 */	{"Äthiopien ...", "Äthiopien, Anguilla, Gambia, Grenada, Norfolkinseln, Sambia"},
@@ -1524,7 +1589,7 @@ void rate_1049(void) {
 /* 22.20 */	{"Eritrea", "Eritrea"},
 /* 22.68 */	{"Niue-Inseln ...", "Niue-Inseln, Jemen (Arab. Republik), Senegal, Seyschellen, Wallis und Futuna, Zentralafrikanische Republik"},
 /* 23.40 */	{"Afghanistan ...", "Afghanistan, Falklandinseln, Kuba, Madagaskar"},
-/* 23.88 */	{"Haiti ...", "Haiti, Jemen (Arab. Republik), Kambodscha, Kamerun, Kongo, Nordkorea, Mali, Marshallinseln, Myanmar Burma, Pitcairn Inseln, Salomonen, Suriname, Tschad, Vietnam"},
+/* 23.88 */	{"Haiti ...", "Haiti, Kambodscha, Kamerun, Kongo, Nordkorea, Mali, Marshallinseln, Myanmar Burma, Pitcairn Inseln, Salomonen, Suriname, Tschad, Vietnam"},
 /* 35.88 */	{"Wake Inseln", "Wake Inseln"},
 };
 
@@ -1595,8 +1660,8 @@ void rate_1049(void) {
 
   int z;
   
-  printf ("\n");
   rprintf ("Pegasus Telekom", "P:49");
+  rprintf ("01.09.1999","C:TarifChanged:");
   rprintf ("# Verzonung", "D:pta");
   rprintf ("Pegasus Telekom Netzwerkdienste AG","C:Name:");
   rprintf ("Serrravag. 10-12, A-1140 Wien","C:Address:");
@@ -1625,7 +1690,7 @@ void rate_1066(void) {
 		     { "Welt 1", "Hawaii, Amerikanische Jungferninseln, Puerto Rico, Vereinigte Staaten (USA), Kanada" },
 		     { "Welt 2", "Albanien, Antarktis, Armenien, Aserbaidschan, Australien, Bahamas, Chile, Weihnachtsinseln, Kokosinseln, Dominikanische Republik, Georgien, Gibraltar, Guadeloupe, Französisch-Guayana, Hongkong, Island, Israel, Japan, Lettland, Libyen, Litauen, Mazedonien, Malaysia, Malta, Marokko, Martinique, Mayotte, Moldau, Neuseeland, Niederländische Antillen, Philippinen, Russische Föderation, Reunion, St. Pierre und Miquelon, Singapur, Südafrika, Südkorea, Saipan" },
 		     { "Welt 3", "Ägypten, Angola, Argentinien, Aruba, Ascension, Bahrain, Barbados, Belize, Benin, Bermuda, Bhutan, Bolivien, Botsuana, Brasilien, Brunei, Burkina Faso, Burundi, Caymaninseln, China, Costa Rica, Dschibuti, Dominica, Ecuador, El Salvador, Färöer-Inseln, Falklandinseln, Fidschi, Französisch-Polynesien, Gabun, Gambia, Ghana, Grenada, Grönland, Guatemala, Haiti, Honduras, Indien, Indonesien, Iran, Jamaika, Jordanien, Katar, Kenia, Kirgisistan, Kolumbien, Nordkorea, Kongo, Kuba, Kuwait, Laos, Lesotho, Libanon, Liberia, Macau, Malawi, Malediven, Marshallinseln, Mauretanien, Mauritius, Mexiko, Montserrat, Nepal, Neukaledonien, Nicaragua, Nigeria, Norfolk-Inseln, Panama, Paraguay, Peru, Ruanda, Sambia, Saudi-Arabien, Salomonen, Simbabwe, Somalia, St. Helena, Saint Kitts und Nevis, St. Lucia, Saint Vincent und die Grenadinen, Sudan, Syrien, Tadschikistan, Tansania, Taiwan, Thailand, Trinidad und Tobago, Turkmenistan, Uruguay, Usbekistan, Vanuatu, Venezuela, Vereinigte Arabische Emirate" },
-		     { "Welt 4", "Afghanistan, Algerien, Anguilla, Antigua und Barbuda, Äquatorial-Guinea, Äthiopien, Bangladesch, Cook-Inseln, Cote d'Ivoire, Diego Garcia, Eritrea, Guam, Guantanamo, Guinea, Guinea-Bissau, Guyana, Irak, Jemen, Kambodscha, Kamerun, Kap Verde, Kasachstan, Kiribati, Komoren, Madagaskar, Mali, Midway-Inseln, Mikronesien, Mongolei, Mosambik, Myanmar, Namibia, Nauru, Niger, Niue, Oman, Pakistan, Palau, Papua-Neuguinea, Pitcairn-Inseln, Sao Tome und Principe, Amerikanisch-Samoa, Samoa, Senegal, Seychellen, Sierra Leone, Sri Lanka, Suriname, Swasiland, Togo, Tonga, Tschad, Turks- und Caicos-Inseln, Tuvalu, Uganda, Vietnam, Wake-Inseln, Zaire, Zentralafrikanische Republik" }};
+		     { "Welt 4", "Afghanistan, Algerien, Anguilla, Antigua und Barbuda, Äquatorial-Guinea, Äthiopien, Bangladesch, Cook-Inseln, Cote d'Ivoire, Diego Garcia, Eritrea, Guam, Guantanamo, Guinea, Guinea-Bissau, Guyana, Irak, Jemen, Kambodscha, Kamerun, Kap Verde, Kasachstan, Kiribati, Komoren, Madagaskar, Mali, Midway-Inseln, Mikronesien, Mongolei, Mosambik, Myanmar, Namibia, Nauru, Niger, Niue, Oman, Pakistan, Palau, Papua-Neuguinea, Pitcairn-Inseln, Sao Tome und Principe, Amerikanisch-Samoa, Samoa (West), Senegal, Seychellen, Sierra Leone, Sri Lanka, Suriname, Swasiland, Togo, Tonga, Tschad, Turks- und Caicos-Inseln, Tuvalu, Uganda, Vietnam, Wake-Inseln, Zaire, Zentralafrikanische Republik" }};
   
   double Tarif[][2] = {{ 1.00, 0.80}, /* Fixme: */
 		       { 2.20, 1.00 },
@@ -1640,7 +1705,6 @@ void rate_1066(void) {
 		       
   int z;
   
-  printf ("\n");
   rprintf ("MIT 1066", "P:66");
 
   rprintf ("M.I.T Multi Media Informations Technologies GesmbH","C:Name:");
@@ -1671,13 +1735,13 @@ void rate_1067(void) {
 		     { "max.box", "+4367622" },
 		     { "max.online", "+436762323" },
 		     { "max.mobil", "+43676" },
-		     { "andere Mobilfunknetze", "+43663,+43664,+43669" },
+		     { "andere Mobilfunknetze", "+43663,+43664,+43699" },
 		     { "Nachbarländer", "Deutschland, Italien, Schweiz, Tschechische Republik, Ungarn, Slowakische Republik, Slowenien, Liechtenstein" },
 		     { "EU", "Belgien, Dänemark, Finnland, Frankreich, Griechenland, Irland, Luxemburg, Niederlande, Portugal, Spanien, Schweden, Großbritannien, Nordirland" },
 		     { "Weltzone 1", "Andorra, Australien, Bahamas, Bosnien-Herzegowina, Kanada, Kroatien, Färöer-Inseln, Gibraltar, Island, Japan, Lettland, Malta, Mazedonien, Monaco, Neuseeland, Norwegen, Polen, Puerto Rico, San Marino, Singapur, USA, Vatikan, Jugoslawien" },
 		     { "Weltzone 2", "Albanien, Algerien, Belarus, Bulgarien, Zypern, Estland, Hong Kong, Litauen, Marokko, Oman, Rumänien, Rußland, Tunesien, Türkei, Ukraine, American Virgin Isles" },
 		     { "Weltzone 3", "Bermuda, Brasilien, Brunei, Chile, Christmas Island, Cocos Island, Dominikanische Republik, Georgien, Ghana, Grönland, Israel, Jamaica, Kasachstan, Südkorea, Kirgisistan, Libyen, Macau, Malaysia, Mexiko, Südafrika, Taiwan, Tadschikistan" },
-		     { "Weltzone 4", "+" },
+		     { "Weltzone 4", "Antigua und Barbuda,St. Lucia,Dominica,Britische Jungferninseln,Turks- und Caicosinseln,Anguilla,St. Vincent und Grenadinen,Montserrat,St. Kitts und Nevis,Grenada,Trinidad und Tobago,Hawaii,Marianen (SaipanNord-),Kaimaninseln,Barbados,+" },
 		     { "Iridium 8816", "Iridium 008816"},
 		     { "Iridium 8817", "Iridium 008817"}};
   
@@ -1697,7 +1761,6 @@ void rate_1067(void) {
   
   int z;
   
-  printf ("\n");
   rprintf ("max.plus","P:67");
   rprintf ("Michael Reinelt <reinelt@eunet.at>", "C:Maintainer:");
   rprintf ("max.plus","C:Name:");
@@ -1723,7 +1786,7 @@ void rate_1069(void) {
 		      { "Internationale Zone 2", "Andorra, Australien, Bosnien-Herzegowina, Griechenland, Island, Japan, Jugoslawien, Kanada, Kroatien, Malta, Monaco, Neuseeland, Polen, Portugal, Puerto Rico, Mazedonien, San Marino, Vereinigte Staaten (USA), Vatikanstadt" },
 		      { "Internationale Zone 3", "Albanien, Algerien, Bulgarien, Estland, Gibraltar, Hongkong, Israel, Lettland,Litauen, Marokko, Rumänien, Rußland, Singapur, Tunesien, Türkei, Ukraine, Weißrußland, Zypern" },
 		      { "Internationale Zone 4", "Aserbaidschan, Amerikanisch-Samoa, Armenien, Bahamas, Bermuda, Brasilien, Brunei, Chile, Dominikanische Republik, Falklandinseln, Georgien, Ghana, Grönland, Jamaika, Kasachstan, Kokosinseln, Libyen, Macao, Mexico, Malaysia, Moldau, Oman, Südkorea, Südafrika, Tadschikistan,Taiwan, Usbekistan, Venezuela, Vereinigte Arabische Emirate, Weihnachtsinseln" },
-		      { "Internationale Zone 5", "+" }};
+		      { "Internationale Zone 5", "Antigua und Barbuda,St. Lucia,Dominica,Britische Jungferninseln,Turks- und Caicosinseln,Anguilla,St. Vincent und Grenadinen,Montserrat,St. Kitts und Nevis,Grenada,Trinidad und Tobago,Hawaii,Marianen (SaipanNord-),Kaimaninseln,Amerikanische Jungferninseln,Barbados,+" }};
   
   double Tarif[] = { 01.00, 
 		     02.00, 
@@ -1736,7 +1799,6 @@ void rate_1069(void) {
   
   int z;
   
-  printf ("\n");
   rprintf ("ONE","P:69");
 
   rprintf ("Connect Austria Gesellschaft für Telekommunikation GmbH","C:Name:");
@@ -1746,48 +1808,462 @@ void rate_1069(void) {
 /*  rprintf ("","C:Zone:");
   rprintf ("","C:Special:"); */
   
-  for (z=0; z<7; z++) {
+  for (z=0; z<COUNT(Zone); z++) {
     rprintf (Zone[z][0], "Z:%d", z+1);
     rprintf ("0-24h", "T:*/*=%.2f(60)/30", Tarif[z]);
     print_area(Zone[z][1]);
   }
 }    
+void rate_librotel(void) {
+  char *Zone[][2] = {
+    { "Österreich", "Österreich" }, 
+    { "Mobilfunk", "+43663,+43664,+43676,+43699" },  
+    { "Internet", "0800400600"},
+/* 2.50 */	{"Deutschland", "Deutschland"},
+/* 3.50 */	{"Italien ...", "Italien, Amerikanische Jungferninseln, Liechtenstein, Schweiz, Slowakische Republik, Slowenien, Tschechische Republik, Ungarn, USA"},
+/* 4.00 */	{"Andorra ...", "Andorra, Belgien, Dänemark, Finnland, Frankreich, Großbritannien, Irland, Luxemburg, Monaco, Niederlande, Norwegen, Schweden, Vatikan"},
+/* 5.25 */	{"Australien ...", "Australien, Bosnien-Herzegowina, Kanada, Kroatien, Malta, Polen, Spanien, Zypern"},
+/* 7.00 */	{"Albanien ...", "Albanien, Bulgarien, Estland, Färöer-Inseln, Gibraltar, Griechenland, Island, Israel, Mazedonien, Portugal, Puerto Rico, Rumänien, Russische Förderation (östl.), San Marino, Jugoslawien, Tunesien, Türkei, Ukraine, Weissrussland"},
+/* 8.90 */	{"Algerien ...", "Algerien, Georgien, Lettland, Litauen, Marokko, Tadschikistan, Turkmenistan, Usbekistan"},
+/* 10.50 */	{"Armenien ...", "Armenien, Aserbaidschan, Weihnachtsinseln, Kokosinseln"},
+/* 12.50 */	{"Angola ...", "Angola, Bermuda, Brasilien, Chile, Französisch-Guayana, Guadeloupe, Hongkong, Japan, Libyen, Macao, Madeira, Malaysia, Martinique / Franz. Antillen, Mayotte, Mexiko, Moldavien Moldau (Republik), Neuseeland, Niederl. Antillen, Philippinen, Reunion, Marianen (SaipanNord-), Singapur, St. Pierre und Miquelon, Südafrika, Südkorea, Venezuela"},
+/* 17.50 */	{"Ägypten ...", "Ägypten, Aruba, Bahamas, Barbados, Belize, Bhutan, Botsuana Botswana, Brunei, Burundi, China, Dominikanische Republik, Ecuador, Gabun, Ghana, Grönland, Guyana, Iran, Jordanien, Kirgistan, Kolumbien, Kuwait, Libanon, Panama, Saudi Arabien, St. Vincent und Grenadinen, Trinidad und Tobago, Ver. Arabische Emirate"},
+/* 19.50 */	{"Argentinien ...", "Argentinien, Äthiopien, Bahrain, Benin, Costa Rica, Elfenbeinküste Cote de Ivoire, Fidschi, Französisch-Polynesien, Gambia, Guinea, Guinea-Bissau, Jamaika, Kasachstan, Katar, Kenia, Kiribati, Komoren, Laos, Lesotho, Liberia, Malawi, Malediven, Mauretanien, Mosambik, Namibia, Nauru, Nepal, Neukaledonien, Nicaragua, Nigeria, Niue-Inseln, Norfolkinseln, Oman, Peru, Ruanda, Sambia, West-Samoa, Simbabwe, St. Helena, St. Lucia, Sao Tome und Principe, Sudan, Suriname, Swasiland, Syrien, Taiwan, Tansania, Thailand, Togo, Tonga, Turks- und Caicosinseln, Uganda, Vanuatu, Zentralafrikanische Republik"},
+/* 24.50 */	{"Anguilla ...", "Anguilla, Antigua und Barbuda, Ascension, Bangladesch, Bolivien, Burkina Faso Obervolta, Myanmar Burma, Kaimaninseln, Dominica, Dschibuti, El Salvador, Eritrea, Falklandinseln, Grenada, Guam, Guatemala, Haiti, Honduras, Indien, Indonesien, Irak, Jemen (Arab. Republik), Britische Jungferninseln, Kambodscha, Kamerun, Cape Verde, Kongo, Kuba, Mali, Mauritius, Mongolei, Montserrat, Niger, Nordkorea, Pakistan, Papua-Neuguinea, Paraguay, Salomonen, Senegal, Seyschellen, Sierra Leone, Somalia, Sri Lanka, St. Kitts und Nevis, Tschad, Uruguay, Vietnam, Zaire"},
+/* 40.00 */	{"Cookinseln ...", "Cookinseln, Diego Garcia, Guantanamo, Madagaskar, Marshallinseln, Mikronesien, Midway-Inseln, Palau /Belau, Amerikanisch-Samoa, Tuvalu, Wake Inseln, Wallis und Futuna"},
+  };        
+  double Tarif[][2] = {
+    { 0.85, 0.85 }, // oest
+    { 3.99, 3.33 }, // mob
+    { 0.49, 0.49 }, // sur
+{2.50,2.50},  /* Deutschland ... */
+{3.50,3.50},  /* Italien ... */
+{4.00,4.00},  /* Andorra ... */
+{5.25,5.25},  /* Australien ... */
+{7.00,7.00},  /* Albanien ... */
+{8.90,8.90},  /* Algerien ... */
+{10.50,10.50},  /* Armenien ... */
+{12.50,12.50},  /* Angola ... */
+{17.50,17.50},  /* Ägypten ... */
+{19.50,19.50},  /* Argentinien ... */
+{24.50,24.50},  /* Anguilla ... */
+{40.00,40.00}  /* Cookinseln ... */
+};
+  int z;    
+  rprintf ("LibroTel","P:29,5"); /* 1029 ? */
+  rprintf ("10.09.1999","C:TarifChanged:");
+  rprintf ("http://www.librotel.at","C:Homepage:");
+  rprintf ("0800 400 808","C:Telefon:");
+  rprintf ("Nur mit Router, ATS 299.-","C:Special:");
+  rprintf ("Nur mit Router, ATS 299.-","C:GT:"); 
+  rprintf ("Cost=299/12","C:GF:"); 
+  
+  for (z=0; z<COUNT(Zone); z++) {
+    rprintf (Zone[z][0], "Z:%d", z+1);
+    if (Tarif[z][0]==Tarif[z][1]) {
+	rprintf ("0-24h", "T:*/*=%.2f(60)/60/1", Tarif[z][0]);
+    } else {
+	rprintf ("Tag", "T:W/8-18=%.2f(60)/60/1", Tarif[z][0]);
+	rprintf ("Nacht", "T:W/18-8=%.2f(60)/60/1", Tarif[z][1]);
+	rprintf ("Weekend", "T:E,H/*=%.2f(60)/60/1", Tarif[z][1]);
+    } 
+    print_area(Zone[z][1]);
+  }
+}
 
-void rate_priority(void) {
- /*
-  Classic 136 Grundentgeld
-   Priority 0.54,0.36
-   Regional 0.84,0.42
-   Inland   2.46,0.84
-   Mobil    4.50,3.40
-   
-  Business 396 Grundentgeld
-   Priority 0.48,0.34
-   Regional 0.72,0.35
-   Inland   0.96,0.72
-   Mobil    3.84,2.88
-   
-  Standard 200 Grundentgeld
-   Priority 0.54,0.36
-   Regional 0.80,0.40
-   Inland   1.00,0.80
-   Mobil    4.00,3.00
-   
-  (8-18 , *) 
-  */
-  rprintf ("Priority Telecom","P:PT-TK"); /* Telekabel */
+void rate_tns(void) {
+char *Zone[][2] = {
+/* 2.30 */	{"Österreich", "Österreich"},
+/* 3.30 */	{"Mobil", "+43663,+43664,+43676,+43699"},
+/* 2.99 */	{"Deutschland", "Deutschland"},
+/* 3.30 */	{"USA", "USA"},
+/* 3.85 */	{"Großbritannien ...", "Großbritannien, Schweiz"},
+/* 4.40 */	{"Italien ...", "Italien, Schweden"},
+/* 4.46 */	{"Ungarn", "Ungarn"},
+/* 4.50 */	{"Alaska ...", "Alaska, Slowakische Republik, Slowenien"},
+/* 4.95 */	{"Belgien ...", "Belgien, Dänemark, Finnland, Hawaii, Kanada, Liechtenstein, Monaco, Niederlande, Norwegen, Tschechische Republik"},
+/* 5.00 */	{"Israel", "Israel"},
+/* 5.50 */	{"Irland ...", "Irland, Luxemburg, Polen"},
+/* 5.83 */	{"Puerto Rico", "Puerto Rico"},
+/* 5.95 */	{"Bulgarien ...", "Bulgarien, Kroatien, Jugoslawien, Zypern"},
+/* 6.05 */	{"Albanien ...", "Albanien, Andorra, Australien, Weissrussland, Bosnien-Herzegowina, Griechenland, Malta, Spanien"},
+/* 6.18 */	{"Türkei", "Türkei"},
+/* 6.30 */	{"Ukraine", "Ukraine"},
+/* 6.50 */	{"Estland ...", "Estland, Mazedonien"},
+/* 6.60 */	{"Island", "Island"},
+/* 6.70 */	{"Tunesien", "Tunesien"},
+/* 6.82 */	{"Rumänien", "Rumänien"},
+/* 7.15 */	{"Lettland ...", "Lettland, Litauen"},
+/* 7.26 */	{"Portugal", "Portugal"},
+/* 7.68 */	{"Marokko", "Marokko"},
+/* 7.70 */	{"Algerien ...", "Algerien, Bermuda, Gibraltar"},
+/* 7.90 */	{"Russische Förderation (östl.)", "Russische Förderation (östl.)"},
+/* 7.92 */	{"Färöer-Inseln ...", "Färöer-Inseln, Japan"},
+/* 8.14 */	{"Singapur", "Singapur"},
+/* 8.20 */	{"Tadschikistan", "Tadschikistan"},
+/* 8.25 */	{"Hongkong ...", "Hongkong, Niederl. Antillen, Usbekistan"},
+/* 8.70 */	{"Turkmenistan", "Turkmenistan"},
+/* 8.80 */	{"Libyen", "Libyen"},
+/* 9.11 */	{"Aserbaidschan", "Aserbaidschan"},
+/* 9.35 */	{"Georgien ...", "Georgien, Philippinen"},
+/* 9.90 */	{"Bahamas ...", "Bahamas, Chile, China, Guyana, Liberia, Neuseeland"},
+/* 10.12 */	{"Südkorea", "Südkorea"},
+/* 10.23 */	{"Marianen (SaipanNord-)", "Marianen (SaipanNord-)"},
+/* 10.45 */	{"Armenien ...", "Armenien, Südafrika"},
+/* 10.89 */	{"Venezuela", "Venezuela"},
+/* 11.00 */	{"Brasilien ...", "Brasilien, Malaysia, Moldavien Moldau (Republik), Nicaragua"},
+/* 11.33 */	{"Botsuana Botswana ...", "Botsuana Botswana, Kaimaninseln"},
+/* 11.44 */	{"St. Pierre und Miquelon", "St. Pierre und Miquelon"},
+/* 11.50 */	{"Guadeloupe", "Guadeloupe"},
+/* 12.09 */	{"Aruba", "Aruba"},
+/* 12.10 */	{"Brunei ...", "Brunei, Macao, Mayotte"},
+/* 12.21 */	{"Dominica", "Dominica"},
+/* 12.32 */	{"Ecuador ...", "Ecuador, Reunion"},
+/* 12.54 */	{"Mexiko", "Mexiko"},
+/* 12.65 */	{"Ägypten", "Ägypten"},
+/* 13.20 */	{"Burundi ...", "Burundi, Guatemala, Kolumbien, Marshallinseln"},
+/* 13.42 */	{"Grönland ...", "Grönland, Honduras, Iran"},
+/* 13.53 */	{"Taiwan", "Taiwan"},
+/* 13.59 */	{"Angola", "Angola"},
+/* 13.64 */	{"Barbados ...", "Barbados, Dominikanische Republik, Ghana, Tansania"},
+/* 13.75 */	{"Argentinien ...", "Argentinien, Bolivien, Guam, Neukaledonien, Uruguay, Ver. Arabische Emirate"},
+/* 14.07 */	{"Anguilla", "Anguilla"},
+/* 14.30 */	{"Gambia", "Gambia"},
+/* 14.41 */	{"Panama", "Panama"},
+/* 14.85 */	{"Belize ...", "Belize, Bhutan, Peru, Saudi Arabien, Trinidad und Tobago"},
+/* 15.40 */	{"Benin ...", "Benin, Costa Rica, Jamaika, Jemen (Arab. Republik), Jordanien, Kamerun, Kuba, Kuwait, Laos"},
+/* 15.62 */	{"Haiti ...", "Haiti, Kasachstan, Katar"},
+/* 15.73 */	{"Bahrain ...", "Bahrain, Indonesien"},
+/* 15.95 */	{"Burkina Faso Obervolta ...", "Burkina Faso Obervolta, Gabun, Libanon, Niger"},
+/* 16.50 */	{"Indien ...", "Indien, Kirgistan, Madagaskar, Namibia, Nauru, Nepal"},
+/* 16.61 */	{"Sudan ...", "Sudan, Swasiland"},
+/* 16.72 */	{"El Salvador ...", "El Salvador, Sierra Leone, Vanuatu"},
+/* 16.83 */	{"Thailand ...", "Thailand, Zaire"},
+/* 16.94 */	{"Sambia", "Sambia"},
+/* 17.05 */	{"Paraguay", "Paraguay"},
+/* 17.16 */	{"Syrien", "Syrien"},
+/* 17.27 */	{"Sri Lanka", "Sri Lanka"},
+/* 17.38 */	{"St. Helena ...", "St. Helena, St. Vincent und Grenadinen, St. Lucia"},
+/* 17.50 */	{"Nigeria", "Nigeria"},
+/* 17.60 */	{"Kongo ...", "Kongo, Mikronesien, Montserrat"},
+/* 17.71 */	{"Diego Garcia", "Diego Garcia"},
+/* 17.82 */	{"Somalia", "Somalia"},
+/* 17.93 */	{"Kenia", "Kenia"},
+/* 18.04 */	{"Simbabwe ...", "Simbabwe, Suriname"},
+/* 18.15 */	{"Palau /Belau", "Palau /Belau"},
+/* 18.70 */	{"Französisch-Polynesien ...", "Französisch-Polynesien, Grenada, Malediven, Mauretanien, Mauritius, Mosambik"},
+/* 18.92 */	{"Irak", "Irak"},
+/* 19.31 */	{"Bangladesch", "Bangladesch"},
+/* 19.36 */	{"Sao Tome und Principe", "Sao Tome und Principe"},
+/* 19.80 */	{"Guinea-Bissau ...", "Guinea-Bissau, Kiribati, Mali, Uganda"},
+/* 19.91 */	{"Niue-Inseln ...", "Niue-Inseln, Oman"},
+/* 20.13 */	{"Äthiopien", "Äthiopien"},
+/* 20.24 */	{"Ruanda", "Ruanda"},
+/* 20.35 */	{"Senegal ...", "Senegal, Togo, Vietnam"},
+/* 20.90 */	{"Nordkorea", "Nordkorea"},
+/* 20.93 */	{"Amerikanisch-Samoa", "Amerikanisch-Samoa"},
+/* 21.01 */	{"Fidschi", "Fidschi"},
+/* 21.12 */	{"Falklandinseln", "Falklandinseln"},
+/* 21.45 */	{"Eritrea", "Eritrea"},
+/* 21.67 */	{"Papua-Neuguinea ...", "Papua-Neuguinea, Tonga"},
+/* 22.00 */	{"Antigua und Barbuda ...", "Antigua und Barbuda, Kambodscha, Mongolei"},
+/* 22.11 */	{"Zentralafrikanische Republik", "Zentralafrikanische Republik"},
+/* 22.44 */	{"Ascension", "Ascension"},
+/* 22.55 */	{"Tuvalu", "Tuvalu"},
+/* 23.10 */	{"Seyschellen", "Seyschellen"},
+/* 24.20 */	{"Dschibuti", "Dschibuti"},
+/* 24.31 */	{"Cookinseln ...", "Cookinseln, Pakistan"},
+/* 26.40 */	{"Afghanistan", "Afghanistan"}
+};
+double Tarif[] = {
+2.30,  /* Regional  ... */
+3.30,  /* Mobil */
+2.99,  /* Deutschland ... */
+3.30,  /* USA */
+3.85,  /* Großbritannien ... */
+4.40,  /* Italien ... */
+4.46,  /* Ungarn ... */
+4.50,  /* Alaska ... */
+4.95,  /* Belgien ... */
+5.00,  /* Israel ... */
+5.50,  /* Irland ... */
+5.83,  /* Puerto Rico ... */
+5.95,  /* Bulgarien ... */
+6.05,  /* Albanien ... */
+6.18,  /* Türkei ... */
+6.30,  /* Ukraine ... */
+6.50,  /* Estland ... */
+6.60,  /* Island ... */
+6.70,  /* Tunesien ... */
+6.82,  /* Rumänien ... */
+7.15,  /* Lettland ... */
+7.26,  /* Portugal ... */
+7.68,  /* Marokko ... */
+7.70,  /* Algerien ... */
+7.90,  /* Russische Förderation (östl.) ... */
+7.92,  /* Färöer-Inseln ... */
+8.14,  /* Singapur ... */
+8.20,  /* Tadschikistan ... */
+8.25,  /* Hongkong ... */
+8.70,  /* Turkmenistan ... */
+8.80,  /* Libyen ... */
+9.11,  /* Aserbaidschan ... */
+9.35,  /* Georgien ... */
+9.90,  /* Bahamas ... */
+10.12,  /* Südkorea ... */
+10.23,  /* Marianen (SaipanNord-) ... */
+10.45,  /* Armenien ... */
+10.89,  /* Venezuela ... */
+11.00,  /* Brasilien ... */
+11.33,  /* Botsuana Botswana ... */
+11.44,  /* St. Pierre und Miquelon ... */
+11.50,  /* Guadeloupe ... */
+12.09,  /* Aruba ... */
+12.10,  /* Brunei ... */
+12.21,  /* Dominica ... */
+12.32,  /* Ecuador ... */
+12.54,  /* Mexiko ... */
+12.65,  /* Ägypten ... */
+13.20,  /* Burundi ... */
+13.42,  /* Grönland ... */
+13.53,  /* Taiwan ... */
+13.59,  /* Angola ... */
+13.64,  /* Barbados ... */
+13.75,  /* Argentinien ... */
+14.07,  /* Anguilla ... */
+14.30,  /* Gambia ... */
+14.41,  /* Panama ... */
+14.85,  /* Belize ... */
+15.40,  /* Benin ... */
+15.62,  /* Haiti ... */
+15.73,  /* Bahrain ... */
+15.95,  /* Burkina Faso Obervolta ... */
+16.50,  /* Indien ... */
+16.61,  /* Sudan ... */
+16.72,  /* El Salvador ... */
+16.83,  /* Thailand ... */
+16.94,  /* Sambia ... */
+17.05,  /* Paraguay ... */
+17.16,  /* Syrien ... */
+17.27,  /* Sri Lanka ... */
+17.38,  /* St. Helena ... */
+17.50,  /* Nigeria ... */
+17.60,  /* Kongo ... */
+17.71,  /* Diego Garcia ... */
+17.82,  /* Somalia ... */
+17.93,  /* Kenia ... */
+18.04,  /* Simbabwe ... */
+18.15,  /* Palau /Belau ... */
+18.70,  /* Französisch-Polynesien ... */
+18.92,  /* Irak ... */
+19.31,  /* Bangladesch ... */
+19.36,  /* Sao Tome und Principe ... */
+19.80,  /* Guinea-Bissau ... */
+19.91,  /* Niue-Inseln ... */
+20.13,  /* Äthiopien ... */
+20.24,  /* Ruanda ... */
+20.35,  /* Senegal ... */
+20.90,  /* Nordkorea ... */
+20.93,  /* Amerikanisch-Samoa ... */
+21.01,  /* Fidschi ... */
+21.12,  /* Falklandinseln ... */
+21.45,  /* Eritrea ... */
+21.67,  /* Papua-Neuguinea ... */
+22.00,  /* Antigua und Barbuda ... */
+22.11,  /* Zentralafrikanische Republik ... */
+22.44,  /* Ascension ... */
+22.55,  /* Tuvalu ... */
+23.10,  /* Seyschellen ... */
+24.20,  /* Dschibuti ... */
+24.31,  /* Cookinseln ... */
+26.40  /* Afghanistan ... */
+};
+  int z;
+  rprintf ("TNS","P:29,6"); /* 1029 ? */
+  rprintf ("10.09.1999","C:TarifChanged:");
+  rprintf ("Telephone Network Service Ges.m.b.H Telekommunikationsdienstleistungen","C:Name:");
+  rprintf ("1100 Wien Davidgasse 79","C:Address:"); 
+  rprintf ("http://www.tns.at","C:Homepage:");
+  rprintf ("01 641 72 72-0","C:Telefon:");
+  rprintf ("01 641 72 72-20","C:Telefax:");
+  rprintf ("Zugangsnummer 1029 ??","C:Special:"); 
+  
+  for (z=0; z<COUNT(Zone); z++) {
+    rprintf (Zone[z][0], "Z:%d", z+1);
+    rprintf ("0-24h", "T:*/*=%.2f(60)/30/6", Tarif[z]);
+    print_area(Zone[z][1]);
+  }
+}
+void rate_priority_class(void) {
+  double Tarif[][2] = {
+  {0.84,0.42}, // Regional 
+  {2.46,0.84}, //Inland   
+  {4.50,3.40},  // Mobil
+  {0.54,0.36}, //   Priority 
+{3.50,3.30},  /* Ausland 1 ... */
+{3.60,3.50},  /* Ausland 2 ... */
+{5.00,4.20},  /* Ausland 3 ... */
+{6.00,5.00},  /* Ausland 4 ... */
+{8.50,8.00},  /* Ausland 5 ... */
+{11.00,11.00},  /* Ausland 6 ... */
+{15.00,15.00},  /* Ausland 7 ... */
+{22.00,22.00},  /* Ausland 8 ... */
+  };
+  char *Zone[][2] =  {
+    { "Regional","" },
+    { "Österreich", "Österreich" }, 
+    { "Mobilfunk", "+43663,+43664,+43676,+43699" },
+    { "Priority","" },
+/* 1 */	{"Ausland 1", "Deutschland, Italien, Liechtenstein, Schweiz, Slowakische Republik, Slowenien, Tschechische Republik, Ungarn"},
+/* 2 */	{"Ausland 2", "Belgien, Dänemark, Finnland, Frankreich, Großbritannien, Irland, Amerikanische Jungferninseln, Kanada, Kanarische Inseln, Luxemburg, Monaco, Niederlande, Norwegen, Puerto Rico, Schweden, Spanien, USA"},
+/* 3 */	{"Ausland 3", "Albanien, Andorra, Weissrussland, Bosnien-Herzegowina, Bulgarien, Estland, Gibraltar, Griechenland, Jugoslawien, Kroatien, Lettland, Malta, Mazedonien, Polen, Portugal, Rumänien, San Marino, Tunesien, Türkei, Ukraine, Vatikan, Zypern"},
+/* 4 */	{"Ausland 4", "Algerien, Färöer-Inseln, Georgien, Island, Israel, Litauen, Marokko, Russische Förderation (östl.), Tadschikistan, Turkmenistan, Usbekistan"},
+/* 5 */	{"Ausland 5", "Antarktis, Niederl. Antillen, Armenien, Aserbaidschan, Australien, Chile, Weihnachtsinseln, Kokosinseln, Franz. Guyana, Guadeloupe, Hongkong, Japan, Südkorea, Libyen, Malaysia, Martinique / Franz. Antillen, Mayotte, Moldavien Moldau (Republik), Neuseeland, Philippinen, Reunion, St. Pierre und Miquelon, Marianen (SaipanNord-), Südafrika"},
+/* 6 */	{"Ausland 6", "Angola, Aruba, Bahamas, Barbados, Belize, Bermuda, Bhutan, Botsuana Botswana, Brasilien, Brunei, Burundi, China, Dominikanische Republik, Ecuador, Gabun, Ghana, Grönland, Guinea-Bissau, Guyana, Iran, Jordanien, Kirgistan, Kolumbien, Kuwait, Libanon, Macao, Mexiko, Panama, St. Vincent und Grenadinen, Sao Tome und Principe, Saudi Arabien, Singapur, Trinidad und Tobago, Venezuela, Ver. Arabische Emirate, Ägypten, Äquatorial-Guinea"},
+/* 7 */	{"Ausland 7", "Argentinien, Bahrain, Benin, Costa Rica, Elfenbeinküste Cote de Ivoire, Fidschi, Französisch-Polynesien, Gambia, Guinea, Irak, Jamaika, Britische Jungferninseln, Kasachstan, Katar, Kenia, Kiribati, Komoren, Laos, Lesotho, Liberia, Malawi, Malediven, Mauretanien, Mongolei, Mosambik, Myanmar Burma, Namibia, Nauru, Nepal, Neukaledonien, Nicaragua, Nigeria, Niue-Inseln, Norfolkinseln, Oman, Peru, Ruanda, St. Helena, St. Lucia, Sambia, Samoa (West), Simbabwe, Sudan, Suriname, Swasiland, Syrien, Taiwan, Tansania, Thailand, Togo, Tonga, Turks- und Caicosinseln, Uganda, Vanuatu, Zentralafrikanische Republik, Äthiopien"},
+/* 8 */	{"Ausland 8", "Afghanistan, Amerikanisch-Samoa, Anguilla, Antigua und Barbuda, Ascension, Bangladesch, Bolivien, Burkina Faso Obervolta, Kaimaninseln, Cookinseln, Dominica, El Salvador, Eritrea, Falklandinseln, Grenada, Guam, Guatemala, Haiti, Honduras, Indien, Indonesien, Jemen (Arab. Republik), Kambodscha, Kamerun, Cape Verde, Kongo, Nordkorea, Kuba, Madagaskar, Mali, Marshallinseln, Mauritius, Mikronesien, Montserrat, Niger, Pakistan, Palau /Belau, Papua-Neuguinea, Paraguay, St. Kitts und Nevis, Salomonen, Senegal, Seyschellen, Sierra Leone, Somalia, Sri Lanka, Dschibuti, Tschad, Tuvalu, Uruguay, Vietnam, Zaire"},
+  };    
+  int z;    
+  rprintf ("Priority Telecom Classic","P:95,1"); /* Telekabel */
+  rprintf ("# Verzonung", "D:priority");
   rprintf ("Priority Telecom, Telekabel Wien Ges.m.b.H.","C:Name:");
   rprintf ("","C:Address:");
   rprintf ("http://www.prioritytelecom.at","C:Homepage:");
-  rprintf ("infp@prioritytelecom.at", "C:EMail:");
+  rprintf ("info@prioritytelecom.at", "C:EMail:");
   rprintf ("0800 700 700","C:Telefon:");
-  rprintf ("","C:Zone:");
+  rprintf ("Taktung ?","# Fixme:");
   rprintf ("Nur über Telekabel Wien","C:Special:");
+  rprintf ("Cost=136-198","C:GF:"); 
+  rprintf ("ATS 136 Grundgebühr/Monat","C:GT:"); 
+  
+  for (z=0; z<COUNT(Zone); z++) {
+    rprintf (Zone[z][0], "Z:%d", z+1);
+    if (Tarif[z][0]==Tarif[z][1]) {
+	rprintf ("0-24h", "T:*/*=0.30|%.2f(60)/1", Tarif[z][0]);
+    } else {
+	rprintf ("Tag", "T:W/8-18=0.30|%.2f(60)/1", Tarif[z][0]);
+	rprintf ("Nacht", "T:W/18-8=0.30|%.2f(60)/1", Tarif[z][1]);
+	rprintf ("Weekend", "T:E,H/*=0.30|%.2f(60)/1", Tarif[z][1]);
+    } 
+    print_area(Zone[z][1]);
+  }
+}
+
+void rate_priority_stand(void) {
+  double Tarif[][2] = {
+  {0.80,0.40}, // Regional 
+  {1.00,0.80}, //Inland   
+  {4.00,3.00},  // Mobil
+  {0.54,0.36}, //   Priority 
+{2.70,2.50},  /* Ausland 1 ... */
+{4.20,3.50},  /* Ausland 2 ... */
+{5.50,4.20},  /* Ausland 3 ... */
+{6.50,6.00},  /* Ausland 4 ... */
+{9.00,8.00},  /* Ausland 5 ... */
+{15.00,13.00},  /* Ausland 6 ... */
+{20.00,19.00},  /* Ausland 7 ... */
+{25.00,23.00},  /* Ausland 8 ... */
+  };
+  char *Zone[][2] =  {
+    { "Regional","" },
+    { "Österreich", "Österreich" }, 
+    { "Mobilfunk", "+43663,+43664,+43676,+43699" },
+    { "Priority","" },
+/* 1 */	{"Ausland 1", "Deutschland, Italien, Liechtenstein, Schweiz, Slowakische Republik, Slowenien, Tschechische Republik, Ungarn"},
+/* 2 */	{"Ausland 2", "Belgien, Dänemark, Finnland, Frankreich, Großbritannien, Irland, Amerikanische Jungferninseln, Kanada, Kanarische Inseln, Luxemburg, Monaco, Niederlande, Norwegen, Puerto Rico, Schweden, Spanien, USA"},
+/* 3 */	{"Ausland 3", "Albanien, Andorra, Weissrussland, Bosnien-Herzegowina, Bulgarien, Estland, Gibraltar, Griechenland, Jugoslawien, Kroatien, Lettland, Malta, Mazedonien, Polen, Portugal, Rumänien, San Marino, Tunesien, Türkei, Ukraine, Vatikan, Zypern"},
+/* 4 */	{"Ausland 4", "Algerien, Färöer-Inseln, Georgien, Island, Israel, Litauen, Marokko, Russische Förderation (östl.), Tadschikistan, Turkmenistan, Usbekistan"},
+/* 5 */	{"Ausland 5", "Antarktis, Niederl. Antillen, Armenien, Aserbaidschan, Australien, Chile, Weihnachtsinseln, Kokosinseln, Franz. Guyana, Guadeloupe, Hongkong, Japan, Südkorea, Libyen, Malaysia, Martinique / Franz. Antillen, Mayotte, Moldavien Moldau (Republik), Neuseeland, Philippinen, Reunion, St. Pierre und Miquelon, Marianen (SaipanNord-), Südafrika"},
+/* 6 */	{"Ausland 6", "Angola, Aruba, Bahamas, Barbados, Belize, Bermuda, Bhutan, Botsuana Botswana, Brasilien, Brunei, Burundi, China, Dominikanische Republik, Ecuador, Gabun, Ghana, Grönland, Guinea-Bissau, Guyana, Iran, Jordanien, Kirgistan, Kolumbien, Kuwait, Libanon, Macao, Mexiko, Panama, St. Vincent und Grenadinen, Sao Tome und Principe, Saudi Arabien, Singapur, Trinidad und Tobago, Venezuela, Ver. Arabische Emirate, Ägypten, Äquatorial-Guinea"},
+/* 7 */	{"Ausland 7", "Argentinien, Bahrain, Benin, Costa Rica, Elfenbeinküste Cote de Ivoire, Fidschi, Französisch-Polynesien, Gambia, Guinea, Irak, Jamaika, Britische Jungferninseln, Kasachstan, Katar, Kenia, Kiribati, Komoren, Laos, Lesotho, Liberia, Malawi, Malediven, Mauretanien, Mongolei, Mosambik, Myanmar Burma, Namibia, Nauru, Nepal, Neukaledonien, Nicaragua, Nigeria, Niue-Inseln, Norfolkinseln, Oman, Peru, Ruanda, St. Helena, St. Lucia, Sambia, Samoa (West), Simbabwe, Sudan, Suriname, Swasiland, Syrien, Taiwan, Tansania, Thailand, Togo, Tonga, Turks- und Caicosinseln, Uganda, Vanuatu, Zentralafrikanische Republik, Äthiopien"},
+/* 8 */	{"Ausland 8", "Afghanistan, Amerikanisch-Samoa, Anguilla, Antigua und Barbuda, Ascension, Bangladesch, Bolivien, Burkina Faso Obervolta, Kaimaninseln, Cookinseln, Dominica, El Salvador, Eritrea, Falklandinseln, Grenada, Guam, Guatemala, Haiti, Honduras, Indien, Indonesien, Jemen (Arab. Republik), Kambodscha, Kamerun, Cape Verde, Kongo, Nordkorea, Kuba, Madagaskar, Mali, Marshallinseln, Mauritius, Mikronesien, Montserrat, Niger, Pakistan, Palau /Belau, Papua-Neuguinea, Paraguay, St. Kitts und Nevis, Salomonen, Senegal, Seyschellen, Sierra Leone, Somalia, Sri Lanka, Dschibuti, Tschad, Tuvalu, Uruguay, Vietnam, Zaire"},
+  };    
+  int z;    
+  rprintf ("Priority Telecom Standard","P:95,2"); /* Telekabel */
+  rprintf ("# Verzonung", "D:priority");
+  rprintf ("Priority Telecom, Telekabel Wien Ges.m.b.H.","C:Name:");
+  rprintf ("","C:Address:");
+  rprintf ("http://www.prioritytelecom.at","C:Homepage:");
+  rprintf ("info@prioritytelecom.at", "C:EMail:");
+  rprintf ("0800 700 700","C:Telefon:");
+  rprintf ("Taktung ?","# Fixme:");
+  rprintf ("Nur über Telekabel Wien","C:Special:");
+  rprintf ("Cost=200-198","C:GF:"); 
+  rprintf ("ATS 200 Grundgebühr/Monat","C:GT:"); 
+  
+  for (z=0; z<COUNT(Zone); z++) {
+    rprintf (Zone[z][0], "Z:%d", z+1);
+    if (Tarif[z][0]==Tarif[z][1]) {
+	rprintf ("0-24h", "T:*/*=0.30|%.2f(60)/1", Tarif[z][0]);
+    } else {
+	rprintf ("Tag", "T:W/8-18=0.30|%.2f(60)/1", Tarif[z][0]);
+	rprintf ("Nacht", "T:W/18-8=0.30|%.2f(60)/1", Tarif[z][1]);
+	rprintf ("Weekend", "T:E,H/*=0.30|%.2f(60)/1", Tarif[z][1]);
+    } 
+    print_area(Zone[z][1]);
+  }
+}
+
+void rate_priority_busi(void) {
+  double Tarif[][2] = {
+  {0.72,0.35}, // Regional 
+  {0.96,0.72}, //Inland   
+  {3.84,2.88},  // Mobil
+  {0.48,0.34}, //   Priority 
+{2.60,2.45},  /* Ausland 1 ... */
+{3.30,3.00},  /* Ausland 2 ... */
+{4.20,3.70},  /* Ausland 3 ... */
+{5.30,4.60},  /* Ausland 4 ... */
+{6.80,5.50},  /* Ausland 5 ... */
+{9.00,9.00},  /* Ausland 6 ... */
+{14.00,14.00},  /* Ausland 7 ... */
+{18.70,17.00},  /* Ausland 8 ... */
+  };
+  char *Zone[][2] =  {
+    { "Regional","" },
+    { "Österreich", "Österreich" }, 
+    { "Mobilfunk", "+43663,+43664,+43676,+43699" },
+    { "Priority","" },
+/* 1 */	{"Ausland 1", "Deutschland, Italien, Liechtenstein, Schweiz, Slowakische Republik, Slowenien, Tschechische Republik, Ungarn"},
+/* 2 */	{"Ausland 2", "Belgien, Dänemark, Finnland, Frankreich, Großbritannien, Irland, Amerikanische Jungferninseln, Kanada, Kanarische Inseln, Luxemburg, Monaco, Niederlande, Norwegen, Puerto Rico, Schweden, Spanien, USA"},
+/* 3 */	{"Ausland 3", "Albanien, Andorra, Weissrussland, Bosnien-Herzegowina, Bulgarien, Estland, Gibraltar, Griechenland, Jugoslawien, Kroatien, Lettland, Malta, Mazedonien, Polen, Portugal, Rumänien, San Marino, Tunesien, Türkei, Ukraine, Vatikan, Zypern"},
+/* 4 */	{"Ausland 4", "Algerien, Färöer-Inseln, Georgien, Island, Israel, Litauen, Marokko, Russische Förderation (östl.), Tadschikistan, Turkmenistan, Usbekistan"},
+/* 5 */	{"Ausland 5", "Antarktis, Niederl. Antillen, Armenien, Aserbaidschan, Australien, Chile, Weihnachtsinseln, Kokosinseln, Franz. Guyana, Guadeloupe, Hongkong, Japan, Südkorea, Libyen, Malaysia, Martinique / Franz. Antillen, Mayotte, Moldavien Moldau (Republik), Neuseeland, Philippinen, Reunion, St. Pierre und Miquelon, Marianen (SaipanNord-), Südafrika"},
+/* 6 */	{"Ausland 6", "Angola, Aruba, Bahamas, Barbados, Belize, Bermuda, Bhutan, Botsuana Botswana, Brasilien, Brunei, Burundi, China, Dominikanische Republik, Ecuador, Gabun, Ghana, Grönland, Guinea-Bissau, Guyana, Iran, Jordanien, Kirgistan, Kolumbien, Kuwait, Libanon, Macao, Mexiko, Panama, St. Vincent und Grenadinen, Sao Tome und Principe, Saudi Arabien, Singapur, Trinidad und Tobago, Venezuela, Ver. Arabische Emirate, Ägypten, Äquatorial-Guinea"},
+/* 7 */	{"Ausland 7", "Argentinien, Bahrain, Benin, Costa Rica, Elfenbeinküste Cote de Ivoire, Fidschi, Französisch-Polynesien, Gambia, Guinea, Irak, Jamaika, Britische Jungferninseln, Kasachstan, Katar, Kenia, Kiribati, Komoren, Laos, Lesotho, Liberia, Malawi, Malediven, Mauretanien, Mongolei, Mosambik, Myanmar Burma, Namibia, Nauru, Nepal, Neukaledonien, Nicaragua, Nigeria, Niue-Inseln, Norfolkinseln, Oman, Peru, Ruanda, St. Helena, St. Lucia, Sambia, Samoa (West), Simbabwe, Sudan, Suriname, Swasiland, Syrien, Taiwan, Tansania, Thailand, Togo, Tonga, Turks- und Caicosinseln, Uganda, Vanuatu, Zentralafrikanische Republik, Äthiopien"},
+/* 8 */	{"Ausland 8", "Afghanistan, Amerikanisch-Samoa, Anguilla, Antigua und Barbuda, Ascension, Bangladesch, Bolivien, Burkina Faso Obervolta, Kaimaninseln, Cookinseln, Dominica, El Salvador, Eritrea, Falklandinseln, Grenada, Guam, Guatemala, Haiti, Honduras, Indien, Indonesien, Jemen (Arab. Republik), Kambodscha, Kamerun, Cape Verde, Kongo, Nordkorea, Kuba, Madagaskar, Mali, Marshallinseln, Mauritius, Mikronesien, Montserrat, Niger, Pakistan, Palau /Belau, Papua-Neuguinea, Paraguay, St. Kitts und Nevis, Salomonen, Senegal, Seyschellen, Sierra Leone, Somalia, Sri Lanka, Dschibuti, Tschad, Tuvalu, Uruguay, Vietnam, Zaire"},
+  };    
+  int z;    
+  rprintf ("Priority Telecom Business","P:95,3"); /* Telekabel */
+  rprintf ("# Verzonung", "D:priority");
+  rprintf ("Priority Telecom, Telekabel Wien Ges.m.b.H.","C:Name:");
+  rprintf ("","C:Address:");
+  rprintf ("http://www.prioritytelecom.at","C:Homepage:");
+  rprintf ("info@prioritytelecom.at", "C:EMail:");
+  rprintf ("0800 700 700","C:Telefon:");
+  rprintf ("Taktung ?","# Fixme:");
+  rprintf ("Nur über Telekabel Wien","C:Special:");
+  rprintf ("Cost=396-198","C:GF:"); 
+  rprintf ("ATS 396 Grundgebühr/Monat","C:GT:"); 
+  
+  for (z=0; z<COUNT(Zone); z++) {
+    rprintf (Zone[z][0], "Z:%d", z+1);
+    if (Tarif[z][0]==Tarif[z][1]) {
+	rprintf ("0-24h", "T:*/*=0.30|%.2f(60)/1", Tarif[z][0]);
+    } else {
+	rprintf ("Tag", "T:W/8-18=0.30|%.2f(60)/1", Tarif[z][0]);
+	rprintf ("Nacht", "T:W/18-8=0.30|%.2f(60)/1", Tarif[z][1]);
+	rprintf ("Weekend", "T:E,H/*=0.30|%.2f(60)/1", Tarif[z][1]);
+    } 
+    print_area(Zone[z][1]);
+  }
 }
 
 
 int main (int argc, char *argv[])
 {
+  if (argc > 1 && strcmp(argv[1], "-leo") == 0)
+    leo++;
   printf ("# created by rate-at.c\n\n");
   printf ("# The information herein was machine-generated,\n");
   printf ("# so do not contribute patches to this file.\n\n");
@@ -1797,7 +2273,7 @@ int main (int argc, char *argv[])
   printf ("# Many thanks to Daniela Bruder <dbruder@sime.com>\n");
   printf ("# for collecting and preparing most of the call charges.\n\n\n");
 
-  printf ("V:1.84-Austria [30-Aug-1999]\n\n");
+  printf ("V:1.85-Austria [13-Sep-1999]\n\n");
   printf ("U:%%.3f öS\n");
 
 #if 0
@@ -1813,16 +2289,25 @@ int main (int argc, char *argv[])
   rate_1008();
   rate_1009();
   rate_1011();
-  rate_1012();
+  rate_1012(1012);
   rate_1013();
+  rate_1014();
   rate_1024();
   rate_1029_privat();
   rate_1029_business();
-  rate_1044();
+  rate_tns();
+  rate_librotel();
+/*  rate_1044_old(); */
+  rate_1012(1044);
   rate_1049();
   rate_1066();
   rate_1067();
   rate_1069();
+  if(leo) {
+    rate_priority_class();
+    rate_priority_stand();
+    rate_priority_busi();
+  }
 #endif
   return(EXIT_SUCCESS);	
 }
@@ -1830,6 +2315,7 @@ int main (int argc, char *argv[])
 /* template 
   rprintf ("","C:Name:");
   rprintf ("","C:Maintainer:");
+  rprintf ("","C:TarifChanged:");
   rprintf ("","C:Address:");
   rprintf ("","C:Homepage:");
   rprintf ("","C:TarifURL:");

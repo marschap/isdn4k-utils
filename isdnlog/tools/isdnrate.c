@@ -1,4 +1,4 @@
-/* $Id: isdnrate.c,v 1.19 1999/09/16 20:27:21 akool Exp $
+/* $Id: isdnrate.c,v 1.20 1999/09/19 14:16:27 akool Exp $
 
  * ISDN accounting for isdn4linux. (rate evaluation)
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnrate.c,v $
+ * Revision 1.20  1999/09/19 14:16:27  akool
+ * isdnlog-3.53
+ *
  * Revision 1.19  1999/09/16 20:27:21  akool
  * isdnlog-3.52
  *
@@ -92,14 +95,11 @@
 #include "isdnlog.h"
 #include "tools/zone.h"
 #include <unistd.h>
-#include <ctype.h>
-#include <string.h>
 #include "telnum.h"
 
 #define WIDTH   19
 #define _MAXLAST 20		/* the real max */
 #define MAXLAST	 ((best>=_MAXLAST||best<=2)?5:best)
-#define ZAUNPFAHL  1		/* FIXME: Michi: Offset */
 
 
 static void print_header(void);
@@ -108,8 +108,9 @@ static char *myname, *myshortname;
 static char options[] = "b:d:f:h:l:p:t:v::x:CD::G:HLS:TUVX::";
 static char usage[] = "%s: usage: %s [ -%s ] Destination ...\n";
 
-static int verbose = 0, header = 0, best = MAXPROVIDER, table = 0,
+static int header = 0, best = MAXPROVIDER, table = 0,
         explain = 0;
+int verbose = 0;
 static int usestat = 0;
 static int duration = LCR_DURATION;
 static time_t start;
@@ -118,10 +119,13 @@ static char ignore[MAXPROVIDER];
 static char *fromarea = 0;
 static char wanted_day;
 static int list = 0;
-static int *providers = 0;	/* incl/ excl these */
-static int n_providers = 0;
-static int exclude = 0;
 static char *comment;
+static int *providers = 0;	/* incl these */
+static int n_providers = 0;
+static int business=0;
+static int *xproviders = 0;	/* excl these */
+static int nx_providers = 0;
+static int xbusiness=0;
 
 #define SOCKNAME "/tmp/isdnrate"
 static int is_daemon = 0;
@@ -129,6 +133,8 @@ static int is_client = 0;
 static int we_are_daemon = 0;
 static int takt = 99999;
 static char sortby;
+static int need_dest;
+static int h_param=0;
 
 static TELNUM srcnum, destnum;
 
@@ -213,20 +219,23 @@ static void get_day(char d)
 
   tm = localtime(&start);	/* now */
   switch (d) {
-  case 'W':			/* we need a normal weekday, so we take
+  case 'W':			/* we need a normal weekday, so we take 
 
 				   today and inc. day if today is
 				   holiday */
     what = WORKDAY;
-    hour = 10;
+    if(!h_param)
+      hour = 10;
     break;
   case 'N':
     what = WORKDAY;
-    hour = 23;
+    if(!h_param)
+      hour = 23;
     break;
   case 'E':
     what = SUNDAY;
-    hour = 10;
+    if(!h_param)
+      hour = 10;
     break;
   }
   mask = 1 << what;
@@ -259,8 +268,10 @@ static int opts(int argc, char *argv[])
   register int c;
   register char *p;
   int     x;
+  h_param=0;
 
   optind = 0;			/* make it repeatable */
+  need_dest=1;
   while ((c = getopt(argc, argv, options)) != EOF) {
     switch (c) {
     case 'b':
@@ -300,12 +311,15 @@ static int opts(int argc, char *argv[])
 
     case 'h':
       hour = atoi(optarg);
-      sec = min = 0;
+      h_param++;
+      sec = 0;
       if ((p = strchr(optarg + 1, ':'))) {
 	min = atoi(p + 1);
 	if ((p = strchr(p + 1, ':')))
 	  sec = atoi(p + 1);
       }
+      else
+        min=0;
       break;
 
     case 'l':
@@ -313,22 +327,49 @@ static int opts(int argc, char *argv[])
       break;
 
     case 't':
-      takt = strtol(optarg, NIL, 0);
+      x = strtol(optarg, NIL, 0);
+      if (x > 0)
+        takt = x; 
       break;
 
     case 'x':			/* eXclude Poviders */
-      exclude = 1;
-      /* goon */
-    case 'p':			/* Providers ... */
-      p = strsep(&optarg, ",");
-      while (p) {
-	providers = realloc(providers, (n_providers + 1) * sizeof(int));
-
-	providers[n_providers] = atoi(p);
-	p = strsep(&optarg, ",");
-	n_providers++;
+      {
+      	char *arg = strdup(optarg);	
+      	p = strtok(arg, ",");
+      	while (p) {
+	  if (*p == 'B') {	/* Business Provider */
+	    xbusiness=1;
+	    p = strtok(0, ",");
+	    continue;
+	  }        
+	  xproviders = realloc(xproviders, (nx_providers + 1) * sizeof(int));
+	  xproviders[nx_providers] = atoi(p);
+	  p = strtok(0, ",");
+	  nx_providers++;
+	}  
+	free(arg);
       }
       break;
+      
+    case 'p':			/* Providers ... */
+      {
+      	char *arg = strdup(optarg);	
+      	p = strtok(arg, ",");
+      	while (p) {
+	  if (*p == 'B') {	/* Business Provider */
+	    business=1;
+	    p = strtok(0, ",");
+	    continue;
+	  }        
+	  providers = realloc(providers, (n_providers + 1) * sizeof(int));
+	  providers[n_providers] = atoi(p);
+	  p = strtok(0, ",");
+	  n_providers++;
+	}  
+	free(arg);
+      }
+      break;
+      
     case 'v':
       verbose++;
       if (optarg && (x = atoi(optarg)))
@@ -342,6 +383,7 @@ static int opts(int argc, char *argv[])
 
     case 'D':
       is_daemon = 1;
+      need_dest = 0;
       if (optarg) {
 	x = atoi(optarg);
 	is_daemon = x;
@@ -364,7 +406,7 @@ static int opts(int argc, char *argv[])
       break;
     case 'S':
       sortby = *optarg;
-      break;
+      break;  
     case 'T':
       table++;
       break;
@@ -380,11 +422,15 @@ static int opts(int argc, char *argv[])
     case 'X':
       if (explain == 0) {
 	explain++;
-	if (optarg && isdigit(*optarg) && (x = atoi(optarg)))
+	if (optarg && isdigit(*optarg) && (x = atoi(optarg))) {
 	  explain = x;
-	else if(optarg) {
+	  if (x==50||x==51)
+	    need_dest=0;
+	}  
+	else if(optarg) { 
 	  comment = strdup(optarg);
           explain = 8;
+	  need_dest=0;
 	}
 	break;
       }
@@ -412,6 +458,9 @@ static int opts(int argc, char *argv[])
     best = MAXPROVIDER;
     print_msg(PRT_A, "Illegal options, -b ignored\n");
   }
+  if ((explain==50||explain==51) && header) {
+    print_msg(PRT_A, "Conflicting options, -H ignored\n");
+  }        
   if (argc > optind)
     return (optind);
   else
@@ -554,7 +603,7 @@ static char *takt_str(RATE * Rate)
   return s;
 }
 
-static inline char * P_EMPTY(char *s)
+static inline char * P_EMPTY(char *s) 
 {
  char *p = s;
  return p ? p : "";
@@ -571,6 +620,7 @@ static int compute(char *num)
   char    prov[TN_MAX_PROVIDER_LEN];
   int     oldprov;
   int     first = 1;
+  static char BUSINESS[] = "Business"; /* in C:GT:Tag */
 
   if (destnum.nprovider != UNKNOWN) {
     low = high = destnum.nprovider;
@@ -599,13 +649,25 @@ static int compute(char *num)
   }
   for (i = low; i <= high; i++) {
     int     found, p;
-    char   *px;
+    char *t;
 
     if (ignore[i])
       continue;
-    px = getProvider(i);
-    if (px[strlen(px) - 1] == '?') /* UNKNOWN Provider */
+    t = getProvider(i);
+    if (!t || t[strlen(t) - 1] == '?') /* UNKNOWN Provider */
       continue;
+      
+    t = getComment(i, "GT"); /* get Geb. Text comment */  
+    if (business) { /* only business wanted */
+      if (t == 0)
+	continue;
+      else if(strstr(t, BUSINESS) == 0)   
+	continue;
+    }	    
+    if (xbusiness) { /* no business wanted */
+      if(t && strstr(t, BUSINESS) > 0)   
+      	continue;
+    }		
     found = 0;
     if (n_providers) {
       for (p = 0; p < n_providers; p++)
@@ -613,7 +675,16 @@ static int compute(char *num)
 	  found = 1;
 	  break;
 	}
-      if ((!found && !exclude) || (found && exclude))
+      if (!found)
+	continue;
+    }
+    if (nx_providers) {
+      for (p = 0; p < nx_providers; p++)
+	if (xproviders[p] == i) {
+	  found = 1;
+	  break;
+	}
+      if (found)
 	continue;
     }
     clearRate(&Rate);
@@ -639,7 +710,7 @@ static int compute(char *num)
     Rate.prefix = i;
 
     Rate.start = start;
-    Rate.now = start + duration - ZAUNPFAHL;
+    Rate.now = start + duration - 1;
     if (explain == 99) {
       int     j;
       double  oldCharge = -1.0;
@@ -682,6 +753,18 @@ static int compute(char *num)
       }
       if (Rate.Duration <= takt)
 	printf("@----- %s %s\n", currency, Rate.Provider);
+    }
+    else if (explain==50||explain==51) {
+      int fi=1;	
+      while(getZoneRate(&Rate, explain-50,fi) == 0) {
+	double  cpm = Rate.Duration > 0 ? 60 * Rate.Price / Rate.Duration : 99.99;
+        fi=0;
+	if (Rate.Price != 99.99)
+	  printf("%s%c%s%c%s%c%.2f%c%.2f%c%s\n", prefix2provider(Rate.prefix, prov, &destnum), DEL,
+	    Rate.Provider,DEL,currency,DEL,Rate.Charge,DEL,cpm,DEL,
+	    P_EMPTY(Rate.Country));
+	free(Rate.Country);
+      }	
     }
     else {
       /* kludge to suppress "impossible" Rates */
@@ -743,7 +826,7 @@ static void print_header(void)
 	    ctime(&start));
 }
 
-static void printList(char *target, int n)
+static void printList(int n)
 {
   int     i;
 
@@ -756,7 +839,7 @@ static void printList(char *target, int n)
     print_msg(PRT_NORMAL, "%s\n", sort[i].explain);
 }
 
-static void result(char *target, int n)
+static void result(int n)
 {
 
   register int i;
@@ -1007,6 +1090,7 @@ static void clean_up()
     free(comment);
   comment = 0;
   sortby = 0;
+  need_dest=1;
 }
 
 
@@ -1055,7 +1139,10 @@ static void doit(int i, int argc, char *argv[])
 
   post_init();
   memset(ignore, 0, sizeof(ignore));
-
+  if (!need_dest && i==0) {
+    i=0; argc=1;
+    argv[0]="2345";
+  }    
   while (i < argc) {
     destnum.nprovider = UNKNOWN;
     normalizeNumber(argv[i], &destnum, TN_PROVIDER);
@@ -1068,9 +1155,9 @@ static void doit(int i, int argc, char *argv[])
     else {
       n = compute(argv[i]);
       if (list)
-	printList(argv[i], n);
+	printList(n);
       else if (explain < 10)
-	result(argv[i], n);
+	result(n);
       purge(n);
     }
     i++;
@@ -1113,7 +1200,7 @@ static int handle_client(int fd)
     time(&start);		/* set time of call */
     splittime();		/* date time my be overridden by opts */
     we_are_daemon = 1;
-    if ((i = opts(argc, argv))) {
+    if ((i = opts(argc, argv))||need_dest==0) {
       if (shutdown(fd, 0) < 0)	/* no read any more */
 	err("shutdown");
       if (dup2(fd, STDOUT_FILENO) < 0)	/* stdout to sock */
@@ -1159,7 +1246,17 @@ static void do_reinit(void)
   init();
   reinit=0;
 }
+      
+/* thank's to Jochen Erwied for this: */
+#ifndef TEMP_FAILURE_RETRY
+# define TEMP_FAILURE_RETRY(expression) \
+ (__extension__ \
+ ({ long int __result; \
+ do __result = (long int) (expression); \
+ while (__result == -1L && errno == EINTR); \
+ __result; })) \
 
+#endif
 
 static void setup_daemon()
 {
@@ -1189,7 +1286,7 @@ static void setup_daemon()
     else if (pid > 0)
       exit(EXIT_SUCCESS);
   }
-  if ((sock = socket(PF_UNIX, SOCK_STREAM, 0)) < 0)
+  if ((sock = socket(PF_UNIX, SOCK_STREAM, 0)) < 0) 
     err("Can't open socket");
   sa.sun_family = AF_UNIX;
   strcpy(sa.sun_path, sock_name);
@@ -1277,7 +1374,7 @@ static int connect_2_daemon(int argc, char *argv[])
     case 'C':
       break;
     case 'D':
-      if (optarg && atoi(optarg) == 3) ;	/* goon, kill a running
+      if (optarg && atoi(optarg) == 3) ;	/* goon, kill a running 
 
 						   daemon */
       else
@@ -1320,7 +1417,7 @@ int     main(int argc, char *argv[], char *envp[])
   time(&start);
   splittime();
 
-  if ((i = opts(argc, argv)) || is_daemon) {
+  if ((i = opts(argc, argv)) || need_dest==0) {
     if (is_client)
       exit(connect_2_daemon(argc, argv));
     else
@@ -1340,10 +1437,10 @@ int     main(int argc, char *argv[], char *envp[])
     print_msg(PRT_A, "\t-f areacode\tyou are calling from <areacode>\n");
     print_msg(PRT_A, "\t-h h[:m[:s]]\tstart time of call (default now)\n");
     print_msg(PRT_A, "\t-l duration\tduration of call in seconds (default %d seconds)\n", LCR_DURATION);
-    print_msg(PRT_A, "\t-p prov[,prov...]\t show only these providers\n");
+    print_msg(PRT_A, "\t-p prov|B[,prov...]\t show only these providers\n");
     print_msg(PRT_A, "\t-t takt\t\tshow providers if chargeduration<=takt\n");
     print_msg(PRT_A, "\t-v [level]\tverbose\n");
-    print_msg(PRT_A, "\t-x prov[,prov...]\t exclude these providers\n");
+    print_msg(PRT_A, "\t-x prov|B[,prov...]\t exclude these providers\n");
 
     print_msg(PRT_A, "\tOutput and run options\n");
     print_msg(PRT_A, "\t-C\trun as client, connecting to a running daemon\n");

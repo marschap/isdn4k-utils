@@ -1,4 +1,4 @@
-/* $Id: rate.c,v 1.44 1999/09/16 20:27:22 akool Exp $
+/* $Id: rate.c,v 1.45 1999/09/19 14:16:27 akool Exp $
  *
  * Tarifdatenbank
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rate.c,v $
+ * Revision 1.45  1999/09/19 14:16:27  akool
+ * isdnlog-3.53
+ *
  * Revision 1.44  1999/09/16 20:27:22  akool
  * isdnlog-3.52
  *
@@ -344,9 +347,11 @@ extern const char *basename (const char *name);
 #endif
 #define mycountry "+43"
 #define vbn "010"
+#define verbose 3
 #else
 #include "isdnlog.h"
 #include "tools.h"
+#define verbose 2 /* AK:17Sep99 (T'schuldigung, Michi :) */
 #endif
 
 #include "holiday.h"
@@ -457,12 +462,14 @@ static void whimper (char *file, char *fmt, ...)
 {
   va_list ap;
   char msg[BUFSIZ];
-
-  va_start (ap, fmt);
-  vsnprintf (msg, BUFSIZ, fmt, ap);
-  va_end (ap);
-  notice ("WHIMPER: %s line %3d: %s", basename(file), line, msg);
-}           
+  
+  if (verbose>2) {
+    va_start (ap, fmt);
+    vsnprintf (msg, BUFSIZ, fmt, ap);
+    va_end (ap);
+    notice ("WHIMPER: %s line %3d: %s", basename(file), line, msg);
+  }           
+}
 
 static char *strip (char *s)
 {
@@ -531,26 +538,28 @@ static char* strcat3 (char **s)
   return buffer;
 }
 
-static int appendArea (int prefix, char *code, char *name, int zone, int *domestic, int *abroad, char *msg)
+static int appendArea (int prefix, char *code, char *name, int zone, int *federal, int *domestic, int *abroad, char *msg)
 {
   int i;
+  char *fmt;
 
   for (i=0; i<Provider[prefix].nArea; i++) {
     if (strcmp (Provider[prefix].Area[i].Code,code)==0) {
-      if (msg)
-	if (name && *name)
-	  whimper (msg, "Duplicate area %s (%s)", code, name);
-	else
-	  whimper (msg, "Duplicate area %s", code);
+      if (Provider[prefix].Area[i].Zone!=zone && msg) {
+	fmt = name && *name ? "Duplicate area %s (%s)" : "Duplicate area %s";
+	warning (msg, fmt, code, name);
+      }
       return 0;
     }
   }
-
-  if (strcmp(code, mycountry)==0)
+  
+  if (*code!='+' || strncmp(code,mycountry,strlen(mycountry))==0) {
     *domestic=1;
-  else if (*code=='+' && strncmp(code,mycountry,strlen(mycountry))==0)
+    if (strcmp(code, mycountry)==0)
+      *federal=1;
+  } else
     *abroad=1;
-
+  
   Provider[prefix].Area=realloc(Provider[prefix].Area, (Provider[prefix].nArea+1)*sizeof(AREA));
   Provider[prefix].Area[Provider[prefix].nArea].Code=strdup(code);
   Provider[prefix].Area[Provider[prefix].nArea].Name=name?strdup(name):NULL;
@@ -606,7 +615,7 @@ int initRate(char *conf, char *dat, char *dom, char **msg)
   char     *c, *s;
   int      booked[MAXPROVIDER], variant[MAXPROVIDER];
   int      Providers=0, Comments=0, Services=0, Areas=0, Specials=0, Zones=0, Hours=0;
-  int      ignore=0, domestic=0, abroad=0, prefix=UNKNOWN;
+  int      ignore=0, federal=0, domestic=0, abroad=0, prefix=UNKNOWN;
   int      zone, zone1, zone2, day1, day2, hour1, hour2, freeze, delay;
   int     *number, numbers;
   int      d, i, n, t, u, v, z;
@@ -719,19 +728,20 @@ int initRate(char *conf, char *dat, char *dom, char **msg)
 
     case 'P': /* P:nn[,v] Bezeichnung */
       if (zone!=UNKNOWN && !ignore) {
-	if (Provider[prefix].Zone[zone].nHour==0) {
-	  line--;
+	Provider[prefix].Zone[zone].Domestic=domestic;
+	line--;
+	if (Provider[prefix].Zone[zone].nHour==0)
 	  whimper (dat, "Zone has no 'T:' Entries", zone);
-	  line++;
-	}
-	if (!domestic)
+	if (domestic && abroad)
+	  whimper (dat, "Zone contains domestic and abroad areas");
+	if (!federal)
 	  whimper (dat, "Provider %d has no default domestic zone (missing 'A:%s')", prefix, mycountry);
-	if (!abroad)
-	  Provider[prefix].Zone[zone].Domestic=1;
+	line++;
       }
       v = UNKNOWN;
       zone = UNKNOWN;
       ignore = 1;
+      federal = 0;
       domestic = 0;
       abroad = 0;
 
@@ -839,16 +849,18 @@ int initRate(char *conf, char *dat, char *dom, char **msg)
 	break;
       }
       if (zone != UNKNOWN) {
-	Provider[prefix].Zone[zone].Domestic=!abroad;
-	if (Provider[prefix].Zone[zone].nHour==0) {
-	  line--;
+	Provider[prefix].Zone[zone].Domestic=domestic;
+	line--;
+	if (Provider[prefix].Zone[zone].nHour==0)
 	  whimper (dat, "Zone has no 'T:' Entries", zone);
-	  line++;
-	}
+	if (domestic && abroad)
+	  whimper (dat, "Zone contains domestic and abroad areas");
+	line++;
       }
       s+=2;
       number=NULL;
       numbers=0;
+      domestic=0;
       abroad=0;
       while (1) {
 	while (isblank(*s)) s++;
@@ -878,12 +890,14 @@ int initRate(char *conf, char *dat, char *dom, char **msg)
 	  }
 	}
 	for (i=zone1; i<=zone2; i++) {
-	  for (z=0; z<Provider[prefix].nZone; z++)
-	    for (n=0; n<Provider[prefix].Zone[z].nNumber; n++)
+	  for (z=0; z<Provider[prefix].nZone; z++) {
+	    for (n=0; n<Provider[prefix].Zone[z].nNumber; n++) {
 	      if (Provider[prefix].Zone[z].Number[n]==i) {
 		warning (dat, "Duplicate zone %d", i);
 		goto skip;
 	      }
+	    }
+	  }
 	  numbers++;
 	  number=realloc(number, numbers*sizeof(int));
 	  number[numbers-1]=i;
@@ -906,6 +920,9 @@ int initRate(char *conf, char *dat, char *dom, char **msg)
 	break;
       }
 
+      if (*s=='\0')
+	whimper (dat, "Zone should have a name...");
+      
       zone=Provider[prefix].nZone++;
       Provider[prefix].Zone=realloc(Provider[prefix].Zone, Provider[prefix].nZone*sizeof(ZONE));
       Provider[prefix].Zone[zone].Name=*s?strdup(s):NULL;
@@ -929,17 +946,17 @@ int initRate(char *conf, char *dat, char *dom, char **msg)
 	if (*(c=strip(str2list(&s)))) {
 	  if (!isdigit(*c) && (d=getCountry(c, &Country)) != UNKNOWN) {
 	    if (*c=='+') {
-	      Areas += appendArea (prefix, c, Country->Name, zone, &domestic, &abroad, dat);
+	      Areas += appendArea (prefix, c, Country->Name, zone, &federal, &domestic, &abroad, dat);
 	    } else if (d>2) {
 	      whimper (dat, "Unknown country '%s' (%s?), ignoring", c, Country->Name);
 	    } else {
 	      if (d>0)
 		whimper (dat, "Unknown country '%s', using '%s'", c, Country->Name);
 	      for (i=0; i<Country->nCode; i++)
-		Areas += appendArea (prefix, Country->Code[i], Country->Name, zone, &domestic, &abroad, dat);
+		Areas += appendArea (prefix, Country->Code[i], Country->Name, zone, &federal, &domestic, &abroad, dat);
 	    }
 	  } else { /* unknown country or Sondernummer */
-	    Areas += appendArea (prefix, c, NULL, zone, &domestic, &abroad, dat);
+	    Areas += appendArea (prefix, c, NULL, zone, &federal, &domestic, &abroad, dat);
 	    Specials++;
 	  }
 	} else {
@@ -1246,17 +1263,17 @@ int initRate(char *conf, char *dat, char *dom, char **msg)
   fclose(stream);
 
   if (zone!=UNKNOWN && !ignore) {
-    if (Provider[prefix].Zone[zone].nHour==0) {
-      line--;
-      warning (dat, "Zone has no 'T:' Entries", zone);
-      line++;
-    }
-    if (!domestic)
+    Provider[prefix].Zone[zone].Domestic=domestic;
+    line--;
+    if (Provider[prefix].Zone[zone].nHour==0)
+      whimper (dat, "Zone has no 'T:' Entries", zone);
+    if (domestic && abroad)
+      whimper (dat, "Zone contains domestic and abroad areas");
+    if (!federal)
       whimper (dat, "Provider %d has no default domestic zone (missing 'A:%s')", prefix, mycountry);
-    if (!abroad)
-      Provider[prefix].Zone[zone].Domestic=1;
+    line++;
   }
-
+  
   if (!*Version) {
     warning (dat, "Database version could not be identified");
     strcpy (Version, "<unknown>");
