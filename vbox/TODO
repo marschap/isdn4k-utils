@@ -1,8 +1,0 @@
-
-o Funktion zum zählen der neuen Nachrichten (Tcl).
-
-o Environment Variable VBOXSPOOL als Voreinstellungen für das Spoolverzeich-
-  nis benutzen. vbox und vboxctrl werten diese dann aus.
-
-o Programm vboxctrl mit dem die Kontrolldateien für vboxgetty gesteuert
-  werden können.
