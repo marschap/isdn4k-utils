@@ -4,7 +4,7 @@
  * Copyright 1999 by Leopold Toetsch <lt@toetsch.at>
  *
  * SYNOPSIS
- * mkzonedb -r Zonefile -d database [-f] [-v] [-V] [-o Oz] [-l L]
+ * mkzonedb -r Zonefile -d database [-v] [-V] [-o Oz] [-l L]
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -95,7 +95,7 @@ static void read_rzfile(char *rf) {
         else {
             fp = stdin;
         }
-	maxnum = numlen==5 ? 40000 : 10000;
+	maxnum = numlen>=5 ? 40000 : 10000;
 	if ((numbers = calloc(maxnum+1, sizeof(int))) == 0) {
 		fprintf(stderr, "Out of mem\n");
 		exit(EXIT_FAILURE);
