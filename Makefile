@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.27 1998/10/23 12:57:26 fritz Exp $
+# $Id: Makefile,v 1.28 1998/11/11 23:54:09 fritz Exp $
 #
 # Toplevel Makefile for isdn4k-utils
 #
@@ -224,7 +224,7 @@ archive: distclean
 distarch: distclean
 	(cd .. ;\
 	ln -nfs isdn4k-utils isdn4k-utils-$(I4LVERSION) ;\
-	tar -cvhz --exclude=CVS -f distisdn/isdn4k-utils-$(I4LVERSION).tar.gz \
+	tar -cvhz -X distexclude -f distisdn/isdn4k-utils-$(I4LVERSION).tar.gz \
 	isdn4k-utils-$(I4LVERSION) ;\
 	rm isdn4k-utils-$(I4LVERSION) )
 
