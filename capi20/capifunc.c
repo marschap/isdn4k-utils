@@ -1,7 +1,10 @@
 /*
- * $Id: capifunc.c,v 1.4 1999/09/10 17:20:33 calle Exp $
+ * $Id: capifunc.c,v 1.5 2004/06/14 11:23:48 calle Exp $
  *
  * $Log: capifunc.c,v $
+ * Revision 1.5  2004/06/14 11:23:48  calle
+ * Erweiterungen fuer ALERT_REQ.
+ *
  * Revision 1.4  1999/09/10 17:20:33  calle
  * Last changes for proposed standards (CAPI 2.0):
  * - AK1-148 "Linux Extention"
@@ -22,12 +25,14 @@ unsigned ALERT_REQ (_cmsg *cmsg, _cword ApplId, _cword Messagenumber,
                     _cstruct BChannelinformation,
                     _cstruct Keypadfacility,
                     _cstruct Useruserdata,
-                    _cstruct Facilitydataarray) {
+                    _cstruct Facilitydataarray,
+		    _cstruct SendingComplete) {
     capi_cmsg_header (cmsg,ApplId,0x01,0x80,Messagenumber,adr);
     cmsg->BChannelinformation = BChannelinformation;
     cmsg->Keypadfacility = Keypadfacility;
     cmsg->Useruserdata = Useruserdata;
     cmsg->Facilitydataarray = Facilitydataarray;
+    cmsg->SendingComplete = SendingComplete;
     return capi_put_cmsg (cmsg);
 }
 

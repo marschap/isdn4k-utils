@@ -1,7 +1,10 @@
 /*
- * $Id: capi20.c,v 1.21 2004/03/31 18:12:40 calle Exp $
+ * $Id: capi20.c,v 1.22 2004/06/14 11:23:48 calle Exp $
  * 
  * $Log: capi20.c,v $
+ * Revision 1.22  2004/06/14 11:23:48  calle
+ * Erweiterungen fuer ALERT_REQ.
+ *
  * Revision 1.21  2004/03/31 18:12:40  calle
  * - add receive buffer managment according to CAPI2.0 spec.
  * - send buffer is now on stack.
@@ -205,6 +208,8 @@ static struct applinfo *alloc_buffers(unsigned MaxB3Connection,
    size_t recvbuffersize = 128 + MaxSizeB3;
    unsigned i;
    size_t size;
+
+   if (recvbuffersize < 2048) recvbuffersize = 2048;
 
    size = sizeof(struct applinfo);
    size += sizeof(struct recvbuffer) * nbufs;
