@@ -64,7 +64,7 @@ typedef unsigned char *CAPI_MESSAGE;
 #endif
 #endif
 
-#ifdef HAS_UINT8_t
+#ifdef HAS_UINT8_T
 typedef uint8_t   _cbyte;
 typedef uint16_t  _cword;
 typedef uint32_t  _cdword;
