@@ -50,6 +50,7 @@ depend: .depend
 		$(CPP) -M $(CFLAGS) createDB.c >.depend
 
 distclean: clean
+		rm -f .depend
 
 install: depend all
 		-test $(AVON) -ot $(I4LCONFDIR)/$(AVON) || ( $(INSTALL) -m 644 $(AVON) $(I4LCONFDIR) )
