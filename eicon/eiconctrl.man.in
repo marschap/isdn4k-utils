@@ -1,6 +1,6 @@
-.\" $Id: eiconctrl.man.in,v 1.3 1999/03/29 11:05:25 armin Exp $
+.\" $Id: eiconctrl.man.in,v 1.4 1999/08/18 20:20:47 armin Exp $
 .\"
-.\" CHECKIN $Date: 1999/03/29 11:05:25 $
+.\" CHECKIN $Date: 1999/08/18 20:20:47 $
 .\"
 .\" Process this file with
 .\" groff -man -Tascii eiconctrl.1 for ASCII output, or
@@ -107,6 +107,12 @@ Downloads the protocol- and dsp-code into the card and starts operation.
 .TP
 .BI "manage " [read | exec " " <path>]
 Starts Management-Interface.
+.TP
+.BI "xlog " [cont]
+Retrieving XLOG entries of adapter.
+With option
+.I cont
+given, it will be on a continuous cycle.
 .LP
 .SH EXAMPLE 
 .TP
