@@ -22,7 +22,7 @@
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-char sys_rcsid[] = "$Id: sys-linux.c,v 1.15 1998/10/29 17:28:49 hipp Exp $";
+char sys_rcsid[] = "$Id: sys-linux.c,v 1.16 1998/11/05 09:42:37 hipp Exp $";
 
 #define _LINUX_STRING_H_
 
@@ -149,7 +149,7 @@ static int get_flags (int tu,int *error)
 	}
 
 	if (ioctl(lns[tu].fd, PPPIOCGFLAGS, (caddr_t) &flags) < 0) {
-		syslog(LOG_ERR, "ioctl(PPPIOCGFLAGS): %m");
+		syslog(LOG_ERR, "ioctl(PPPIOCGFLAGS) on %d: %m",lns[tu].fd);
 		*error = 1;
 		return 0;
 	}
@@ -518,22 +518,22 @@ int sifup (int u)
 	memset (&ifr, '\0', sizeof (ifr));
 	strncpy(ifr.ifr_name, lns[u].ifname, sizeof (ifr.ifr_name));
 	if (ioctl(sockfd, SIOCGIFFLAGS, (caddr_t) &ifr) < 0) {
-		syslog(LOG_ERR, "ioctl (SIOCGIFFLAGS): %m");
+		syslog(LOG_ERR, "Ifup: ioctl (SIOCGIFFLAGS): %m");
 		return 0;
 	}
 
 	ifr.ifr_flags |= (IFF_UP | IFF_POINTOPOINT);
     if (ioctl(sockfd, SIOCSIFFLAGS, (caddr_t) &ifr) < 0) {
-		syslog(LOG_ERR, "ioctl(SIOCSIFFLAGS): %m");
+		syslog(LOG_ERR, "Ifup: ioctl(SIOCSIFFLAGS): %m");
 		return 0;
 	}
     if( ioctl(lns[u].fd,PPPIOCGFLAGS,(caddr_t) &x) < 0) {
-		syslog(LOG_ERR,"ioctl(PPPIOCGFLAGS): %m");
+		syslog(LOG_ERR,"Ifup: ioctl(PPPIOCGFLAGS) on %d: %m",lns[u].fd);
 		return 0;
 	}
 	x |= SC_ENABLE_IP;
 	if( ioctl(lns[u].fd,PPPIOCSFLAGS,(caddr_t) &x) < 0) {
-		syslog(LOG_ERR,"ioctl(PPPIOCSFLAGS): %m");
+		syslog(LOG_ERR,"Ifup: ioctl(PPPIOCSFLAGS): %m");
 		return 0;
 	}
 	return 1;
@@ -1520,7 +1520,7 @@ void setifip(int ipcp_unit)
   ouraddr = ((struct sockaddr_in *) &ifr.ifr_addr)->sin_addr.s_addr;
 
   if(debug)
-    syslog (LOG_DEBUG, "got if-src: %08lx\n",(unsigned long) ouraddr);
+    syslog (LOG_DEBUG, "Useifip for %s: Got IF-Src-IP: %08lx\n",ifr.ifr_name,(unsigned long) ouraddr);
   
   if(ouraddr)
     wo->ouraddr = ouraddr;
@@ -1534,7 +1534,7 @@ void setifip(int ipcp_unit)
   hisaddr = ((struct sockaddr_in *) &ifr.ifr_dstaddr)->sin_addr.s_addr;
 
   if(debug)
-    syslog (LOG_DEBUG, "got if-dst: %08lx\n",(unsigned long) hisaddr);
+    syslog (LOG_DEBUG, "Useifip for %s: Got IF-Dst-IP: %08lx\n",ifr.ifr_name,(unsigned long) hisaddr);
 
   if(hisaddr)
     wo->hisaddr = hisaddr;

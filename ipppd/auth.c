@@ -36,7 +36,7 @@
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-char auth_rcsid[] = "$Id: auth.c,v 1.13 1998/05/05 08:51:18 hipp Exp $";
+char auth_rcsid[] = "$Id: auth.c,v 1.14 1998/11/05 09:42:36 hipp Exp $";
 
 #include <stdio.h>
 #include <stddef.h>
@@ -313,7 +313,7 @@ static void network_phase(int linkunit)
   if(ho->neg_mpmrru || ho->neg_mpshortseq) 
 	ho->neg_mp = 1;
 
-  syslog(LOG_INFO,"bundle, he: %d we: %d",go->neg_mp?1:0,ho->neg_mp?1:0);
+  syslog(LOG_INFO,"MPPP negotiation, He: %s We: %s",go->neg_mp?"Yes":"No",ho->neg_mp?"Yes":"No");
 
   if(go->neg_mp && ho->neg_mp)
 	for(i=0;i<numdev && higher_up;i++)
