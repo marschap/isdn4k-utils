@@ -7,6 +7,9 @@
 # But you are not allowed to use this program on public webservers.
 #
 # For commercial usage on public webservers contact the author.
+#
+# Version 1.00 1999.08.30
+#
 
 use CGI qw(:standard);
 use CGI::Carp 'fatalsToBrowser';
@@ -16,23 +19,35 @@ use IO::Handle;
 # socket stuff
 my $use_sockets=1;
 use Socket;
+
+# path for unix socket
 my $server='/tmp/isdnrate';
 
 # configure adjusts these n/y :-(
+
 my $MKTEMP= '/bin/mktemp';
 my $ISDNRATE='/usr/bin/isdnrate';
-my $CODEF=   '/usr/lib/isdn/code-de.dat';
+my $CODEF=   '/usr/lib/isdn/code-at.dat';
+
+my $LOGO="(c) 1999 www.Tel-R.at";
+
+my $docroot=$ENV{'DOCUMENT_ROOT'};
+
 # for getting zone info, check ( from to ... ), to should be diff zones
 # adjust this
-my @probe_zones = qw ( 01 01 02245 0732 05574 );
-my $tempdir=$ENV{'DOCUMENT_ROOT'};
-my $DEFLEN=153;
+my @probe_zones = qw ( 01 01 02245 0732 07667 05574 ); #AT
+#my @probe_zones = qw ( 030 030 03302 033200 089 ); #DE
+
+# rest should be ok
+
+my $tempdir = "$docroot/tmp";
+my $tempdir_url = '/tmp';
+
+my $DEFLEN=60;
 
 my $debug=0;
 
 my $LEER='--kein--';
-$tempdir = "$tempdir/tmp";
-my $tempdir_url = '/tmp';
 # end configurable
 
 # cgi
@@ -41,31 +56,40 @@ my $q=new CGI;
 $CGI::POST_MAX=1000;
 $CGI::DISABLE_UPLOADS=1;
 
-# data
+# global data
 
 my %towns = ($LEER => $LEER);
 my (@countries);
 my (%url, $len, $TITLE);
-my ($weekly, $daily, @names, $help, $mix);
+my ($weekly, $daily, @names, $help, $mix, $info);
+
 # main
+
 $|=1;
 $TITLE="Telefonkosten";
+$help=0;
+$weekly=$daily=$help=$mix= $info=0;
+@names=param();
+foreach (@names) {
+    my $v = param($_);
+    $v =~ s/[^\w\d.:, +\-~ÄÖÜäöüß]//g;
+    $v =~ s/^-//; # no options in params
+    param($_, $v)
+}	
 
-    @names=param();
-    foreach (@names) {
-	my $v = param($_);
-	$v =~ s/[^\w\d.:, -]//g;
-	param($_, $v)
-    }	
-
-if ($debug==2) {
+if ($debug) {
     &html_header('debug',1);
-    $q->print(hr, $q->dump());
-    $q->print(hr);
+    print(hr, dump());
+    print(hr);
 }    
+
 if (param('info')) {
     &html_header("$TITLE - Info",0);
     &info(param('info'));
+}    
+elsif (param('list')) {
+    &html_header("$TITLE - Providerliste",0);
+    &list(param('list'));
 }   
 else {
     $weekly=param('graf') =~ /Wo/;
@@ -73,6 +97,7 @@ else {
     $mix=param('mix');
     my $subt = $mix?"Gesprächsmix":$daily?"Tagesverlauf":
 	$weekly?"Wochenverlauf":"Einzelgespräch";
+    $subt = 'Hilfe' if(param('help'));	
     &html_header("$TITLE - $subt",$mix?0:1);
     if (((param('town') && param('town') !~ /--/) || param('gettown')) && !$mix) {
        &read_towns;
@@ -83,7 +108,7 @@ else {
     $help=0;
     push(@names, 'help_tel.x') if (@names && !param('tel') && 
 	!param('town') && !param('country') && 
-	!param('gettown') && !param('getcountry') && !param('mix'));
+	!param('gettown') && !param('getcountry') && !param('mix') && !param('help'));
     foreach (@names) {
 	if (/help_(.*?)\.x/) {
 	    show_help($1);
@@ -91,6 +116,10 @@ else {
 	    last;
 	}	
     }
+    if (param('help')) {
+	$help=param('help');
+	&help_all($help);
+    }	
     if (param('clear')) { # clear mix
 	my $n;
 	param('mix',$mix=10);
@@ -105,11 +134,11 @@ else {
 	param('xprov','');
 	param('_3D','on')
     }    
-    if (!$help) {    
-	&print_table if(param('tab') eq 'Tabelle');
+    if (!$help && ( (param()>1 && $mix) || param())) {    
+	&print_table if(param('tab'));
 	&make_graf if(param('graf'));
     }    
-    if (param('more')) {
+    if (param('more.x')) {
 	$mix+=10 ;
 	param('mix', $mix);
     }    
@@ -119,53 +148,87 @@ else {
 	param('now','on');
 	param('len',$DEFLEN);
     }	
-    else {
-	$q->print(p, img({-src=>"/telrate/hr.gif", -width=>600, -height=>4})
+    elsif ($help < 3) {
+	print(p, img({-src=>"/telrate/hr.gif", -width=>600, 
+	    -height=>4, -alt=>'-----'})
 	, h3('Neue Eingabe'));
     }	
-    &print_form;
+    &print_form if($help != 3);
     &clean_up;
+    &footer();
 }   
+1;
+
+# subs
 # footer
-$q->print(p,
-	img({-src=>"/telrate/hr.gif", -width=>600, -height=>4}),p,
+
+sub footer {
+    my($pnum) = $_[0];
+    my($t);
+    print(
+	img({-src=>"/telrate/hr.gif", -width=>600, -height=>4, -alt=>'-----'}),p,
 	div({-class=>'sm'},
+	    'Alle Angaben ohne Gewähr.',br,
 	    'Die Tarife der Provider ändern sich häufig und können daher ',
-	    'eventuell ungenau sein. Wenn ein Tarif falsch sein sollte, wenden ',
-	    'Sie sich bitte',
+	    'eventuell falsch sein. In diesem Falle wenden ',
+	    'Sie sich bitte'));
+    if ($pnum && ($t=&get_info($pnum, 'Maintainer'))) {
+	my ($e, $n);
+	if ($t =~ /(.*?)\s*<(.*?)>/) {
+	    $e = $t; $n = $1;
+	}    
+	else {
+	    $e = $n = $t;
+	}    
+	print(span({-class=>'sm'},'an den Maintainer der Tarife ',
+	    a({-href=>"mailto:$e?subject=Tarife $pnum"},$n),' oder'));
+    }	
+    print(	    
+	span({-class=>'sm'},
 	    ul(li('in Österreich an ',
 	    a({-href=>'mailto:reinelt@eunet.at?subject=Tarife'},
 	    'Michael Reinelt')),
 	    li('in Deutschland an ',
 	    a({-href=>'mailto:rate-de@Joker.E.Ruhr.de?subject=Tarife'},
 	    'die deutsche ISDN-Rate Crew'))),
-	    ' oder an den Autor dieses Pogrammes ',
-	    a({-href=>'mailto:lt@toetsch.at?subject=Tarife'},'Leopold Tötsch.') ),
-	    p,img({-src=>"/telrate/hr.gif", -width=>600, -height=>4}),p,
+	    'oder an den Autor dieses Pogrammes ',
+	    a({-href=>'mailto:lt@toetsch.at?subject=Tarife'},'Leopold Tötsch'),'.'),
+	    p,img({-src=>"/telrate/hr.gif", -width=>600, -height=>4, -alt=>'-----'}),p,
 	    a({-href=>'/telrate/index.html'},'Startseite',
-	    img({-src=>'/telrate/start.jpg', -border=>0, width=>60, height=>39,-hspace=>8})),
+	    img({-src=>'/telrate/start.jpg', -border=>0, width=>80, 
+	    height=>40,-hspace=>8, -alt=>'Startseite'})),
 	    '&nbsp;','&nbsp;'
-	);
-    my $url= $q->url();
-    if ($mix) {
-	$q->print(a({-href=>$url}, 'Einzelgespr&auml;ch',
-	    img({-src=>'/telrate/eg0.jpg', -border=>0, width=>60, height=>39,-hspace=>8})));
+    );
+    my $url= url();
+    $url =~ s/&help.*?=\w+//g;
+    if ($mix || $help == 3) {
+	print(a({-href=>$url}, 'Einzelgespr&auml;ch',
+	    img({-src=>'/telrate/eg0.jpg', -border=>0, width=>80, 
+	    height=>40,-hspace=>8, -alt=>'Einzelgespr&auml;ch'})));
     }
-    else {	    
+    if (!$mix || $help == 3) {	    
 	$url .= '?mix=10';
-	$q->print(a({-href=>$url}, 'Gespr&auml;chsmix',
-	    img({-src=>'/telrate/gm0.jpg', -border=>0, width=>80, height=>39,-hspace=>8})));
+	print(a({-href=>$url}, 'Gespr&auml;chsmix',
+	    img({-src=>'/telrate/gm0.jpg', -border=>0, width=>80, 
+	    height=>40,-hspace=>8, -alt=>'Gespr&auml;chsmix'})));
     }	    
-$q->print(end_html);
-    
-1;
-
-# subs
+    print('&nbsp;&nbsp;&nbsp;',a({-href=>'/telrate/info.html'}, 'Info, Hilfe',
+	    img({-src=>'/telrate/info0.jpg', -border=>0, width=>80, 
+	    height=>40,-hspace=>8, -alt=>'Info'})));
+    if (!param('list')) {
+	$url =~ s/\?.*//g;
+	$url .= '?list=1';
+	print(a({-href=>$url}, 'Providerliste',
+	    img({-src=>'/telrate/list0.jpg', -border=>0, width=>80, 
+	    height=>40,-hspace=>8, -alt=>'Providerliste'})));
+    }	    
+    print(end_html);
+}    
 
 sub html_header {
     my($title, $use_script) = @_;
     my $script;
-    $q->print(header);
+    print(header);
     if ($use_script) {
 	$script = q(
     tim = 0;
@@ -201,7 +264,7 @@ h1,h2,h3,h4,p,td,th,body { font-family:Sans Serif,Arial }
 -->
 ); 
 
-    $q->print(start_html(-title=>$title, -bgcolor=>'#f0f0f0',
+    print(start_html(-title=>$title, -bgcolor=>'#f0f0f0',
 	    -script=> $script, -head=>style({-type=>'text/css'},$style)),
 	h1({-align=>'center'},$title));
 }
@@ -209,13 +272,13 @@ h1,h2,h3,h4,p,td,th,body { font-family:Sans Serif,Arial }
 sub read_towns {
    my($c, $t, $wanted);	
    if (param('town') && ($wanted=substr(param('town'),0,1)) ne '-') {
-   open(IN, $CODEF) || $q->print("Can't read $CODEF");	
-   while (<IN>) {
-	chomp;
-        ($c, $t) = split(/\t/,$_,2);
+	open(IN, $CODEF) || print("Can't read $CODEF");	
+	while (<IN>) {
+	    chomp;
+    	    ($c, $t) = split(/\t/,$_,2);
    	    $towns{$t}=$c if($t =~ /^$wanted/i);
-   }
-   close(IN);
+       }
+       close(IN);
     }
     for $c ('A'..'Z','Ä','Ö','Ü') {
 	$towns{$c}=$c;
@@ -224,33 +287,48 @@ sub read_towns {
 
 sub help {
   my $help = 'help_'. $_[0];
-  image_button(-name=>$help, -src=>'/pic/help.gif', -border=>0);
+  image_button(-name=>$help, -src=>'/telrate/help.gif', 
+      -border=>0, -alt=>'Hilfe', -tabindex=>999);
 }  
 
 sub show_help {
     my $what = $_[0];
+    my $mixt =
+	'<br>Ist <i>Mit Gebühren/Monat</i> ausgewählt, werden in der letzten '
+	.'Spalte allfällige Gebühren (Mindestumsatz usw.) aufgelistet. '
+	.'Einmalige Gebühren (Anmeldung, Freischaltung) werden auf 1 Jahr aufgeteilt.<br>'
+	.'Provider, die nicht alle Dienste zu Verfügung stellen, oder deren '
+	.'Mindestumsatz nicht erreicht wird, werden normalerweise nicht angezeigt. '
+	.'Wenn sie alle <i>Alle</i> angekreuzt haben, werden diese Provider '
+	.'mit <i>**</i> markiert aufgelistet.';
+    
     if ($what eq 'from') {
-	$q->print('Geben Sie hier die Vorwahl Ihres Standortes ein, ',
+	print('Geben Sie hier die Vorwahl Ihres Standortes ein, ',
 	    'dann werden die Gebühren von dieser Vorwahl aus berechnet',
 	    br,'Z.B. ', tt('02345'));
     }
     elsif($what eq 'tel') {
-	$q->print('Geben Sie die Nummer ein, zu der Sie die Gebühren ',
+	print('Geben Sie die Nummer ein, zu der Sie die Gebühren ',
 	    'berechnet haben möchten.',br,
 	    ul(li(tt("1234\t"),'Ortsnetz'),
 	    li(tt("012345\t"),'Anderer Ort'),
 	    li(tt("00156789\t"),'Ausland'),
 	    li(tt("+1 56789\t"),'Ausland'),
 	    li(tt("China\t"),'Ausland'),
-	    li(tt("1012 01 47110815\t"),'Provider+Nummer')),
+	    li(tt("1012 01 47110815\t"),'Provider+Nummer (damit wird aber nur dieser angezeigt)')),
 	    'oder wählen Sie aus der Liste der Städte oder Länder.',br,
 	    'Hinweis: eine ausgewählte Stadt hat Priorität vor einem Land, ',
-	    'dieses vor einer manuellen Eingabe.');
+	    'dieses vor einer manuellen Eingabe.', br,
+	    'Wenn Sie ein anderes Land oder eine andere Stadt wählen möchten ',
+	    'selektieren Sie den gewünschten Anfangsbuchstaben und dann ',i('GO'), 
+	    ' damit wird auch die Länder- bzw. Städteliste für diesen Buchstaben ',
+	    'gefüllt.',br
+	    i('GO'),' dient zur schnellen Anwahl von ',i('Tabelle'),'.');
     }	    
     elsif($what eq 'len') {
-	$q->print('Wählen Sie hier Dauer und Zeitpunkt des Gesprächs. ',
-	    'Die Dauer ist Standardmäßig in Sekunden anzugeben, Sie  können ',
-	    'aber auch durch anhängen eines ',i('m'),' die Dauer in Minuten ',
+	print('Wählen Sie hier Dauer und Zeitpunkt des Gesprächs. ',
+	    'Die Dauer ist standardmäßig in Sekunden anzugeben, Sie  können ',
+	    'aber auch durch Anhängen eines ',i('m'),' die Dauer in Minuten ',
 	    'eingeben, z.B. ',tt(i('2m 33')),'.',br,
 	    'Mittels ',i('Start'),' können Sie aktuelle Gespräche mitstoppen ',
 	    'und sich so die angefallenen Gesprächsgebühren anzeigen lassen.',br,
@@ -259,11 +337,14 @@ sub show_help {
 	    'Ist auch keine Uhrzeit angegeben, gilt der Zeitpunkt der Auswahlbox.');
     }	
     elsif($what eq 'tab') {
-	$q->print('Mit der Schaltfläche ',i('Tabelle'),' erhalten Sie eine ',
-	    'Aufstellung der Telefongebühen pro Provider.');
+	print('Mit der Schaltfläche ',i('Tabelle'),' erhalten Sie eine ',
+	    'Aufstellung der Telefongebühen pro Provider. ',
+	    'Durck Klicken auf ',i('Nr.'),' bzw. ',i('Provider'),' bekommen ',
+	    'Sie die Liste sortiert nach Zugangsnummer bzw. Providerbezeichnung - ',
+	    'die Standardsortierung ist nach der Gebühr.');
     }	
     elsif($what eq 'graf') {
-	$q->print('Mit der Schaltfläche ',i('Grafik'),' erhalten Sie eine ',
+	print('Mit der Schaltfläche ',i('Grafik'),' erhalten Sie eine ',
 	    'grafische Darstellung des Verlaufs der Telefongebühen bis ',
 	    'zur gewählten Dauer. Damit sehen Sie sehr übersichtlich, ',
 	    'ob der Provider Sekundentakt oder einen anderen vewendet.', 
@@ -272,107 +353,169 @@ sub show_help {
 	    'und/oder schalten Sie ',i('3D'),' aus.');
     }	
     elsif($what eq 'tag') {
-	$q->print('Die Schaltflächen ',i('Tag'),' und ',i('Woche'),' zeigen die ',
+	print('Die Schaltflächen ',i('Tag'),' und ',i('Woche'),' zeigen die ',
 	    'Gebühren für die gewählte Dauer und den gewählten Tag im Verlauf ',
-	    'eines Tages bzw. einer Woche.');
+	    'eines Tages bzw. einer Woche. Dabei werden die Gebühren am Tag (8-18h) ',
+	    'in der Reihung der Provider stärker gewichtet, als in der übrigen Zeit.');
     }
     elsif($what eq 'prov') {
-	$q->print('Wählen Sie hier welche und wie viele Provider angzeigt werden. ',
+	print('Wählen Sie hier welche und wie viele Provider angzeigt werden. ',
 	    'Sind ',i('nur Provider'),' angegeben, werden nur diese angezeigt. ',
 	    'Sind ',i('nicht Provider'),' angegeben, werden diese nicht angezeigt.',
 	    br,'Hinweis: wenn Sie mehrere Provider eingeben, trennen Sie diese ',
 	    'mit einem Beistrich oder Leerzeichen. Sie können die ',
 	    'Providernummer eingeben z.B. ',tt('01033,010050'),' oder auch in ',
 	    'einer abgekürzten Variante, wobei Sie in Deutschland bei den ',
-	    '6-stelligen Providernummern 100 addieren, also ',tt('33,150'),' für obiges Beispiel.',
-	    br,i('Reset'),' stellt den vorhergehenden Zustand wieder her, ',
+	    '6-stelligen Providernummern 100 addieren, also ',tt('33,150'),
+	    ' für obiges Beispiel.',p,
+	    'Bei ',i('Taktdauer'),' können Sie angeben, daß nur Provider mit einer ',
+	    'Taktung kleiner-gleich dem gewählten Wert ', 
+	    'angezeigt werden. Beachten Sie, daß ',
+	    'bei Providern, die eine uneinheitliche Taktung ',
+	    'verwenden, der Takt am Ende der Gesprächsdauer verwendet wird.', 
+	    p,
+	    i('Reset'),' stellt den vorhergehenden Zustand wieder her, ',
 	    i('Löschen'),' löscht alle Eingabefelder, bzw. stellt Standardwerte ein.');
     }
     elsif($what eq 'mix') {
-	$q->print('Geben Sie die Nummer ein, zu der Sie die Gebühren ',
+	print('Geben Sie die Nummern ein, zu der Sie die Gebühren ',
 	    'berechnet haben möchten.',br,
 	    ul(li(tt("1234\t"),'Ortsnetz'),
 		li(tt("012345\t"),'Anderer Ort'),
 		li(tt("00156789\t"),'Ausland'),
 		li(tt("+1 56789\t"),'Ausland'),
-		li(tt("China\t"),'Ausland'),
-		li(tt("1012 01 47110815\t"),'Provider+Nummer')),
-	    'Und wie oft Sie im Zeitraum, wie lange (in Sekunden), bzw. ',
-	    'mit nachgestelltem ',i('m'),' z.B. ',tt(i('2 m 10')),
+		li(tt("China\t"),'Ausland')),
+	    'Sie brauchen natürlich nicht jedes Ziel eingeben, sondern nur ',
+	    'Vorwahlen in unterschiedlichen Entfernungen, bzw. in verschiedenen ',
+	    'Zonen.',p,	
+	    'Und wie oft Sie im Zeitraum *), wie lange (in Sekunden), bzw. ',
+	    'mit nachgestelltem ',i('m'),' z.B. ',tt(i('2m10')),
 	    ' &nbsp;in Minuten/Sekunden dorthin ',
 	    'zu welcher Tageszeit durchschnittlich telefonieren.',br,
+	    'Wenn Sie ein Tildezeichen ',tt(i("'~'")),' vor die Zeitdauer setzen ',
+	    'werden maximal 20 Zufallslängen +/- 50 Prozent von Ihrer gewünschten ',
+	    'Zeitdauer berechnet, z.B. bei ',tt(i('~1m')),' werden Gesprächslängen von ',
+	    '30s bis 1m30s verwendet.',
+	    br,
 	    'Wenn Sie mehr Eingabefelder benötigen, klicken Sie auf ',
-	    i('Mehr'));    
+	    i('Mehr'),'.',p,
+	    '<SUP>*)</SUP> Wenn sie ',i('Mit Gebühren/Monat'), ' gewählt haben ',
+	    'sollten Sie die Anzahl der Gespräche in einem Monat eingeben, ',
+	    'da die Gebühren pro Monat berechnet werden.');    
     }	    
     elsif($what eq 'tabm') {
-	$q->print('Sie erhalten eine Tabelle mit den Gesamtkosten ',
-	    'sowie mit den einzelnen Teilen Ihres Gesprächsmix. ',
-	    'Provider, die nicht alle Dienste zu Verfügung stellen ',
-	    'werden mit ', tt(i('**')), ' markiert.');
+	print('Sie erhalten eine Tabelle mit den Gesamtkosten ',
+	    'sowie mit den einzelnen Teilen Ihres Gesprächsmix.',
+	    $mixt);
     }	    
     elsif($what eq 'grafm') {
-	$q->print('Sie bekomme eine grafische Übersicht über Ihren ',
+	print('Sie bekomme eine grafische Übersicht über Ihren ',
 	    'gewählten Gesprächsmix. Jede Stufe im Diagramm zeigt ',
 	    'die Gebühren für den jeweiligen Dienst. ',
-	    'Rechst sehen Sie die Gesamkosten für all Gespräche',br,
-	    'Provider, die nicht alle Dienste zu Verfügung stellen ',
-	    'werden mit ', tt(i('**')), ' markiert.',
-	    br
+	    'Rechts sehen Sie die Gesamkosten für alle Gespräche.',
+	    $mixt,
+	    br,
 	    'Um kleinere Bilder (schneller) zu erhalten, verringern Sie die Größe ',
 	    'und/oder schalten Sie ',i('3D'),' aus.');
     }	    
     if ($what =~ /tab|graf/) {
-	$q->print(br,'Sie können auf die Providerbezeichnung ',
-	    'klicken um weitere Information über diesen Provider zu ',
+	print(br,'Sie können auf die Providerbezeichnung ',
+	    'klicken um weitere Information über den jeweiligen Provider zu ',
 	    'erhalten.');
     }	    
+    if ($help == 0) {
+	my ($url) = self_url;
+	$url =~ s/&help.*?=\w+//g;
+	$url .= '&help=';
+	$url .= $mix?'2':'1';
+	print(p,'Hilfe über alle Eingabemöglichkeiten gibt es ',
+	    a({-href=>$url}, 'hier'),'.');
+    }	    
 }   
+
+sub help_all {
+    my ($what) = $_[0];
+    my ($e, %allh, @allh);
+#    print(h3('Allgemein'));
+    if ($what & 1) {
+	%allh = (from => 'Von wo wählen Sie', tel => 'Wohin telefonieren Sie',
+	    len => 'Wie lange', tab => 'Tabelle', graf => 'Grafik', 
+	    tag => 'Tag / Woche', prov => 'Provider');
+	@allh = qw( from tel len tab graf tag prov );	
+	print(h2('Einzelgespräch'));
+	foreach $e (@allh) {
+	    print(h3($allh{$e})); 
+	    show_help($e);
+	}	
+    }	
+    if ($what & 2) {
+	%allh = (from => 'Von wo wählen Sie', mix => 'Wohin telefonieren Sie',
+	    tabm => 'Tabelle', grafm => 'Grafik', 
+	    prov => 'Provider');
+	@allh = qw( from mix tabm grafm prov );	
+	print(h2('Gesprächsmix'));
+	foreach $e (@allh) {
+	    print(h3($allh{$e})); 
+	    show_help($e);
+	}	
+    }	
+    param('help');
+    print(p,br);
+}
+
 sub byname {
     my($ca, $cb) = ($a, $b);
     foreach ($ca,$cb) {
 	s/Ä/Ae/;
 	s/Ö/Oe/;
 	s/Ü/Ue/;
-    }	
+    }
     $ca cmp $cb;	
 } 	
 sub print_form {
     my($t,  $i);
     my @codes = sort byname (keys(%towns));
-    my $t= q!$q->print(
+    my $t= q!print(
     	start_form(-name=>'form'),
 	table({-border=>8},
-	    Tr(td(table({-bgcolor=>'#ffffe0', -cellspacing=>0, -cellpadding=>0}, 
-	    Tr(td(['&nbsp;', b('Ich wähle von: ')]),
-    		td({-colspan=>2},textfield(-name=>'from', -size=>20, -maxlength=>20)),
-		td(['&nbsp;',
-		&help('from')])), !;
+	    Tr(td(table({-bgcolor=>'#ffffe0', -cellspacing=>0, -cellpadding=>0, -border=>0}, 
+	    Tr({-bgcolor=>'#ffffa8'},td(['&nbsp;', b('Ich wähle von: ')]),
+    		td({-colspan=>2},textfield(-name=>'from', -size=>12, -maxlength=>20)),
+		td(['&nbsp;', &help('from')])), !;
     if ($mix) { 
-	$t .= q!Tr([
-	    td({-colspan=>6},hr),
-	    td(['&nbsp;',b('Und Telefoniere nach&nbsp;&nbsp;&nbsp;'),
-		b('So oft&nbsp;&nbsp;&nbsp;'),
-		b('So lang (s)&nbsp;&nbsp;'),
-		b('am'),&help('mix')]), 
-	    !;
+	$t .= q!
+	    Tr({-bgcolor=>'#ffffa8'},[
+		td({-colspan=>6},hr),
+		td(['&nbsp;',b('Und telefoniere nach&nbsp;&nbsp;&nbsp;'),
+		    b('so oft&nbsp;&nbsp;&nbsp;'),
+		    b('so lang <span class="sm"><i>(s)</i></span>&nbsp;&nbsp;'),
+		    b('am'),&help('mix')])]),!;
 	for $i (0..$mix-1) {
 	    my($ii)=$i+1;
+	    my ($col) ;
+	    $col=sprintf("'#ffff%2x'", (0xa8 + $ii*4) > 0xe0 ? 0xe0 : (0xa8 + $ii*4));
 	    $ii=qq('$ii&nbsp;&nbsp;');
-	    $t .= q!Tr(td([! . "$ii" .q!,textfield(-name=>"tel! .$i .q!", -size=>20, -maxlength=>20),
-			textfield(-name=>"oft! .$i .q!", -size=>4, -maxlength=>4),
-			textfield(-name=>"len! .$i .q!", -size=>8, -maxlength=>8),
-			popup_menu(-name=>"dday! .$i .q!", -values=> ['W','N'],
-		    -labels=> {'W' =>'Tag','N'=>'Nacht'})!;
-	    $t .= ($i==$mix-1) ? q!,submit('more','Mehr')! : q!,'&nbsp;'!;
+	    $t .= q!
+	    Tr({-bgcolor=>!."$col".q!},
+		td([! . "$ii" .q!,
+		    textfield(-name=>"tel! .$i .q!", -size=>12, -maxlength=>20),
+		    textfield(-name=>"oft! .$i .q!", -size=>4, -maxlength=>4),
+		    textfield(-name=>"len! .$i .q!", -size=>8, -maxlength=>8),
+		    popup_menu(-name=>"dday! .$i .q!", -values=> ['W','N'],
+		    	-labels=> {'W' =>'Tag','N'=>'Nacht'}),
+		    !;
+	    $t .= ($i==$mix-1) ? q!image_button({-name=>'more', -src=>'/telrate/more.gif', 
+              -border=>0, -alt=>'Mehr Felder'})! : q!'&nbsp;'!;
 	    $t .= q!])),!;
 	} # for
     } # if mix	
     else {    
-	$t .= q!Tr([
+	$t .= q!Tr({-bgcolor=>'#ffffa8'},[
 	    td({-colspan=>6},hr),
-    	    td(['&nbsp', '<b>nach</b> TelefonNummer: ',
-    	    textfield(-name=>'tel', -size=>20, -maxlength=>20),'&nbsp;',
-			'&nbsp;',&help('tel')])]),
+    	    td(['&nbsp', '<b>nach</b> TelefonNummer: &nbsp;',
+    	    textfield(-name=>'tel', -size=>12, -maxlength=>20),'&nbsp;',
+		submit('tab','GO'),
+			&help('tel')])]),
 	!;
 	# town/gettown
 	my $cs=2;
@@ -383,7 +526,7 @@ sub print_form {
     	    $t.= q!td({-colspan=>!. $cs. q!},popup_menu(-name=>'town', -values=> \@codes)),!;
 	}   
 	if(!param('town') || length(param('town'))==1 || param('gettown')) {	
-    	    $t .= q!td(submit(-name=>'gettown',-value=>'Städteliste laden')),!;
+    	    $t .= q!td(submit(-name=>'gettown',-value=>'Städteliste')),!;
 	    $cs++;
 	}
 	while ($cs++<7) {
@@ -399,7 +542,7 @@ sub print_form {
     	    $t.= q!td({-colspan=>!. $cs. q!},popup_menu(-name=>'country', -values=> \@countries)),!;
 	}   
 	if(!param('country') || length(param('country'))==1 || param('getcountry')) {	
-    	    $t .= q!td(submit(-name=>'getcountry',-value=>'Länderliste laden')),!;
+    	    $t .= q!td(submit(-name=>'getcountry',-value=>'Länderliste')),!;
 	    $cs++;
 	}
 	while ($cs++<7) {
@@ -409,7 +552,7 @@ sub print_form {
 	$t .= q!
 	Tr([    
 	    td({-colspan=>6},hr),
-	    td(['&nbsp;','<b>Dauer</b> s o. 2m 33',
+	    td(['&nbsp;','<b>Dauer</b> <span class="sm"><i>s</i> o. <i>2m 33</i></span>',
     		textfield(-name=>'len', -size=>6, -maxlength=>6),
 		'Stoppuhr',
 		button(-name=>'Start',-value=>'Start', -onClick=>'start()'),
@@ -418,13 +561,14 @@ sub print_form {
     		popup_menu(-name=>'dday', -values=> ['W','N','E'],
 		    -labels=> {'W' =>'Werktag','N'=>'Nacht','E'=>'Sonntag'}),
 		'&nbsp;','&nbsp;','&nbsp;']),
-	    td(['&nbsp;','oder um (hh[:mm[:ss]]) ',
+	    td(['&nbsp;','oder um <span class="sm"><i>hh[:mm[:ss]]</i></span> ',
     		textfield(-name=>'hour', -size=>8, -maxlength=>8),
-    		'am (dd[.mm[.jj]]) ',
+    		'am <span class="sm"><i>dd[.mm[.jj]]</i></span> &nbsp; ',
     		textfield(-name=>'day', -size=>10, -maxlength=>10),'&nbsp;']),
+	]),	
 	    !;
     } # else mix   	
-    $t .= q!    
+    $t .= q!Tr([    
 	    td({-colspan=>6},hr),
 	    td({-bgcolor=>'#ff80c0', colspan=>6, align=>'center'},b('Ausgabe')),
 	    td({-bgcolor=>'#ffc080'},['&nbsp;',
@@ -432,24 +576,21 @@ sub print_form {
 	!;
     if ($mix) {
 	$t .= q!	
-		'oder', 
-		'&nbsp;',
-		'&nbsp;',
+		'mit', 
+    		popup_menu(-name=>'cost', -values=> ['0','1'],
+		    -labels=> {'0' =>'Nur Gesprächskosten','1'=>'Mit Gebühren/Monat'}),
+		checkbox(-name=>'all',label=>'Alle'),
 		&help('tabm'),hidden(-name=>'mix', value=>$mix)]),
 	!;
     }
     else {        	
-	$t .= q!	
-    		'mit',
-    		popup_menu(-name=>'explain', -values=> [0,1,2],
-		    -labels=> {0 =>'Nur Kosten',1=>'Zonen',2=>'Details'}),
-		'&nbsp;',
+	$t .= q!'&nbsp;','&nbsp;','&nbsp;',	
 		&help('tab')]), 
 	!;
     }
     $t .= q! 
-	    td([ '&nbsp;',		
-    		submit('graf',' Grafik '), 
+	    td({-bgcolor=>'#87cefa'},[ '&nbsp;',		
+    		submit('graf','Grafik'), 
 		'Größe',
     		popup_menu(-name=>'swidth', -values=> ['1024','800','640'],
 		    -labels=> {'1024' =>'groß','800'=>'mittel','640'=>'klein'}),
@@ -460,15 +601,15 @@ sub print_form {
 	$t .= q!	
     	    td({-bgcolor=>'#ffdead'},[
 		'&nbsp;',
-    		submit('graf','  Tag   '),
-		"Tagespreise",
+    		submit('graf','Tag'),
+		"Tagesverlauf",
 		'&nbsp;',
 		'&nbsp;',
 		&help('tag')]),
-    	    td({-bgcolor=>'#ffdead'},[
+    	    td({-bgcolor=>'#eeb0ee'},[
 		'&nbsp;',
-    		submit('graf','Woche '),
-		"Wochenpreise",
+    		submit('graf','Woche'),
+		"Wochenverlauf",
 		'&nbsp;','&nbsp;','&nbsp;'
 		]), 
 	!;	
@@ -477,20 +618,24 @@ sub print_form {
 	    td({-colspan=>6},hr),
     	    td(['&nbsp;','der besten ',
     		textfield(-name=>'best', -size=>2, -maxlength=>2),
-		'Provider','&nbsp;',&help('prov')])
+		'Provider',
+		,'&nbsp;',
+		&help('prov')])
 	]),
 	Tr(	
 	    td(['&nbsp;','oder nur Provider']),
-	    td({-colspan=>2},textfield(-name=>'prov', -size=>20, -maxlength=>100)),
+	    td({-colspan=>2},textfield(-name=>'prov', -size=>12, -maxlength=>100)),
 	    td(['&nbsp;','&nbsp;'])
 	),
 	Tr(	
 	    td(['&nbsp;','oder nicht Provider']),
-	    td({-colspan=>2},textfield(-name=>'xprov', -size=>20, -maxlength=>100)),
+	    td({-colspan=>2},textfield(-name=>'xprov', -size=>12, -maxlength=>100)),
 	    td(['&nbsp;','&nbsp;'])
 	),
 	Tr(
-	    td(['&nbsp;','&nbsp;','&nbsp;',	
+	    td(['&nbsp;','mit Taktdauer <=',
+    		popup_menu(-name=>'takt', -values=> ['9999','60','30','10','1'],
+		    -labels=> {'9999'=>'Alle','60' =>'1 m','30'=>'30 s','10'=>'10 s','1'=>'1 s'}),
 		reset('Reset'), 
     !;
     if ($mix) {
@@ -509,13 +654,18 @@ sub print_form {
     # uff
 }	
 
+sub del1_vbn {
+    my $n = $_[0];
+    if ($n =~ s/^0?10//) {
+        $n=100+$n if (length($n) == 3);
+    }    
+    $n;
+}    
 sub del_vbn {
     my @p = split(/,/, $_[0]);
     my (@np, $ret);
     foreach (@p) {
-	if (s/^0?10//) {
-	    $_=100+$_ if (length($_) == 3);
-	}    
+	$_=del1_vbn($_);
 	push(@np, $_);
     }
     $ret=join(',',@np);
@@ -523,7 +673,7 @@ sub del_vbn {
 }    	
 sub parse_len {
     my $l = $_[0];
-    if ($l =~ /(\d+)\s*m\s*(\d)\s*s?/) {
+    if ($l =~ /(\d+)\s*m\s*(\d+)\s*s?/) {
 	60*$1+$2;
     }
     elsif ($l =~ /(\d+)\s*m/) {
@@ -534,59 +684,8 @@ sub parse_len {
 	$1;
     }
 }    	
-sub call_isdnrate {	
-    my ($hour, $day);
-    my ($lines) = @_;
-    my ($now, $explain, $tel, $from, $best, $prov);
-    if ($towns{param('town')} =~ /\d+/ && !$mix) {
-	param('country', '') if(param('country'));
-	$tel = '0' . $towns{param('town')};
-	param('tel',$tel);
-    }
-    elsif (length(param('country'))>1&&param('country') !~ /--/ && !$mix) {
-	param('tel','');
-	param('town', '') if(param('town'));
-	$tel=param('country');
-    }
-    else {	
-	param('country','') if (param('country') =~ /--/);	
-	param('town','') if (param('town') =~ /--/);	
-	$tel = param('tel');
-    }	
-    $tel =~s/ /_/g; # preserv spaces
-    return if($tel eq '');		
-    my @args=($ISDNRATE,"-H", $tel);
-    unless (param('now')) {
-    	push(@args, "-h$hour") if ($hour=param('hour'));
-    	push(@args, "-d$day") if ($day=param('day')||param('hour')?param('day'):param('dday'));
-    }	
-    if ($prov=param('xprov')) {
-	$prov =~ s/\s+/,/g;
-	$prov=&del_vbn($prov);
-	push(@args, "-x$prov");
-    }	
-    elsif ($prov=param('prov')) {
-	$prov =~ s/\s/,/g;
-	$prov=&del_vbn($prov);
-	push(@args, "-p$prov");
-    }	
-    if ($from=param('from')) {
-	$from =~ s/\s//g;
-	push(@args, "-f$from") ;
-    }	
-    if (param('graf') && !$mix) {
-	push(@args,$weekly? '-G98':$daily?'-G97':'-G99');
-    }
-    else {  
-	push(@args, "-X$explain") if ($explain=param('explain'));
-    }  
-    $len=&parse_len(param('len')) || $DEFLEN;
-    $len=&min($len, 1200);
-    param('len', $len);
-    push(@args, "-l$len");
-    $best=param('best') || 20;
-    param('best', $best>0 ? $best: 20); 
-    push(@args, "-b$best") ;
+sub  _call_isdnrate {
+    my ($lines, @args) = @_;
     print "<pre>@args</pre>" if($debug);
     if ($use_sockets) {
 	socket(SOCK, PF_UNIX, SOCK_STREAM, 0) || die("socket: $!");
@@ -609,11 +708,97 @@ sub call_isdnrate {
         close(PIPE);
     }  
 }
+    
+sub call_isdnrate {	
+    my ($hour, $day);
+    my ($lines) = @_;
+    my ($now, $tel, $from, $best, $prov,$takt, $sort);
+    if ($towns{param('town')} =~ /\d+/ && !$mix) {
+	param('country', '') if(param('country'));
+	$tel = '0' . $towns{param('town')};
+	param('tel',$tel);
+    }
+    elsif (length(param('country'))>1&&param('country') !~ /--/ && !$mix) {
+	param('tel','');
+	param('town', '') if(param('town'));
+	$tel=param('country');
+    }
+    else {
+	param('country','') if (param('country') =~ /--/);	
+	param('town','') if (param('town') =~ /--/);	
+	$tel = param('tel');
+    }	
+    $tel =~s/ /_/g; # preserv spaces
+    return if($tel eq '');		
+    my @args=($ISDNRATE,"-H", $tel);
+    unless (param('now')) {
+    	push(@args, "-h$hour") if ($hour=param('hour'));
+    	push(@args, "-d$day") if ($day=param('day')||param('hour')?param('day'):param('dday'));
+    }	
+    if (($prov=param('xprov')) && $prov =~ /\d/) {
+	$prov =~ s/\s+/,/g;
+	$prov=&del_vbn($prov);
+	push(@args, "-x$prov");
+    }	
+    elsif (($prov=param('prov')) && $prov =~ /\d/) {
+	$prov =~ s/\s/,/g;
+	$prov=&del_vbn($prov);
+	push(@args, "-p$prov");
+    }	
+    if ($from=param('from')) {
+	$from =~ s/\s//g;
+	push(@args, "-f$from") ;
+    }	
+    if (param('graf') && !$mix) {
+	push(@args,$weekly? '-G98':$daily?'-G97':'-G99');
+    }
+    else {  
+	push(@args, "-L"); # list
+    }  
+    push(@args,"-t$takt") if(($takt=param('takt')) <= 60 && !$info);
+    $len=&parse_len(param('len')) || $DEFLEN;
+    $len=&min($len, param('graf') ? 1200 : 3600);
+    $len=&max($len, 10) if (param('graf'));
+    param('len', $len);
+    push(@args, "-l$len");
+    if ($sort=param('sort')) {
+	push(@args, "-S$sort");
+	param('sort', '');
+    }	
+    if (!$mix) {
+        $best=param('best') || 20;
+  	param('best', $best>0 ? $best: 20); 
+	push(@args, "-b$best") ;
+    }	
+    _call_isdnrate($lines, @args);
+}
 
 sub round {
-    $_[0] == 0 ? '--.--': sprintf("%.03f", $_[0]);
+    $_[0] == 0 ? '<tt>--.--</tt>': sprintf("%.02f", $_[0]);
 }    
 
+sub eval_cost {
+    my ($pnum, $ch, $maxch) = @_;
+    my (@lines, $f);
+    $pnum = del1_vbn($pnum);
+    my @args=($ISDNRATE,"-p$pnum -XGF $probe_zones[0]");
+    _call_isdnrate(\@lines, @args);
+    chomp($lines[0]);
+    $f = (split(/  +/,$lines[0]))[3];
+    if ($f) {
+	my ($Cost, $Ch, $ret, $MaxCh);
+	$Ch = $ch;
+	$MaxCh = $maxch;
+	$f =~ s/([a-zA-z]\w*)/\$$1/ig; # vars
+	$f =~ s/`//g; # no` backticks
+	$ret = eval($f);
+	print pre("$pnum: $f ($Cost)") if($debug);
+	($ret, round($Cost));
+    }	
+    else {
+	(0,0);
+    }
+}    
 sub call_mix {
     my ($lines) = @_;
     my ($n, $N);
@@ -635,107 +820,256 @@ sub call_mix {
     }	
     $N=0;
     foreach $n (0..$mix-1) {
-	my(@one);
-	last unless(param("tel$n") && param("oft$n") && param("len$n"));
+	my(@one, $len, $oft, $first, $ca, $totlen, $o, $olen, $ooft);
+	last unless(param("tel$n") && ($ooft=$oft=param("oft$n")) && ($len=param("len$n")));
 	param('tel', param("tel$n"));
-	param('len', param("len$n"));
 	param('dday', param("dday$n"));
-	&call_isdnrate(\@one);
-        shift(@one); # -H
-	shift(@one); # empty
-	foreach (@one) {
-    	    ($pnum, $prov, $cur, $charge, $rest) = &split_line($_);
-    	    $ptot{$pnum} += ($ch=&round($charge * param("oft$n")));
-	    $pstring{$pnum} = $prov;
-	    $pcost{$pnum}[$N]= $ch;
-	    $lines{$pnum}++;
+	$first=1;
+	$o=1;
+	if ($len =~ /^~(.*)/) {
+	    $ca=1;
+	    $olen=parse_len($1);
+	    $o = min(20,$oft);
+    	    $oft = int($oft/$o) || 1;
+	}
+	$totlen=0;
+	while(1) {    
+	    if ($ca) {
+		$len = max(10,min(1200,int($olen/2 + rand($olen))));
+		if ($totlen+$oft*$len+10 >= $ooft*$olen) {
+		    if ($oft > 1) {
+			$oft =int($oft/2) || 1;
+			next;
+		    }	
+		    $len = int(($ooft*$olen-$totlen)/$oft);
+		}
+	    }
+	    $totlen += $oft*$len;
+#print(pre("O=$o, OFT=$oft, LEN=$len, OLEN=$olen,TOT=$totlen\n"));	
+	    param('len', $len);
+	    @one=();
+	    &call_isdnrate(\@one);
+    	    shift(@one); # -H
+	    shift(@one); # empty
+	    foreach (@one) {
+    		($pnum, $prov,undef,undef,undef, $cur, $charge) = &split_line($_);
+    		$ptot{$pnum} += ($ch=&round($charge * $oft));
+		$pcost{$pnum}[$N]+= $ch;
+		if ($first) {
+		    $pstring{$pnum} = $prov;
+		    $lines{$pnum}++;
+		} # $first
+	    }	
+	    last if($ca && $totlen >= $ooft*$olen);
+	    last unless($ca);
+	    $first=0;
 	}    
 	$N++;
     }
     param('mix', &min($N+5,$mix));
     $len=$N+1;
+    my($ign1, $ign2);
     foreach $pnum (keys(%lines)) {
-	$pstring{$pnum} .= ' **' if($lines{$pnum}<$N);
+	$pstring{$pnum} = '*) '.$pstring{$pnum} , $ign1++ if($lines{$pnum}<$N);
     }	
+    my ($maxch, $i);
     if (param('tab')) {
-        param('explain',1);
+	if (param('cost') >0) {
+	    foreach $pnum (keys(%ptot)) {
+		next if($pstring{$pnum} =~ m/^\*\*/ && !param('all'));
+    		foreach (@{ $pcost{$pnum} }) {
+		    $ch = &round($_);
+		    $maxch=max($maxch, $ch);
+		}    
+	        $ch = $ptot{$pnum};
+		my ($ret, $cost) = eval_cost($pnum, $ch, $maxch);
+		$ign2++, $pstring{$pnum} = '**) '.$pstring{$pnum} if($ret == -1);
+		$pcost{$pnum}[$N] = $cost;
+		$ptot{$pnum} += $cost;
+	    }	
+	    $N++;$len++;
+	}    
+	$n=0;
 	foreach $pnum (sort { $ptot{$a} <=> $ptot{$b} } (keys(%ptot))) {
+	    next if($pstring{$pnum} =~ m/^\*/ && !param('all'));
+	    last if(++$n > param('best'));
 	    $rest = '';
-    	    foreach (@{ $pcost{$pnum} }) {
-		$ch = &round($_);
-		$rest .= qq(</font></td><td align="right"><font size=-1><b>$ch</b>&nbsp;&nbsp;);
-	    }    
+    	    for $i (0..$N-1) {
+		$ch = $pcost{$pnum}[$i];
+		$ch = round($ch) if($ch>0);
+		$rest .= qq(</font></td><td align="right"><font size=-1><b> $ch </b>);
+	    }		
 	    $prov = $pstring{$pnum};
 	    $ch = $ptot{$pnum};
-	    push(@$lines, "$pnum:$prov  $cur  $ch $rest"); 
+	    push(@$lines, "$pnum;$prov;;;;$cur;$ch;$rest"); 
 	}
     }	
     else { # graf
+	my($c1);
+	if (param('cost') > 0) {
+	    foreach $pnum (keys(%ptot)) {
+		$maxch=0;
+		$ch=0;
+    		foreach $n (0..$N-1)  {
+		    $ch += ($c1=0+&round($pcost{$pnum}[$n]));
+		    $maxch=max($maxch, $c1);
+		}    
+		my ($ret,$cost) = eval_cost($pnum, $ch, $maxch);
+		$pstring{$pnum} = '** '. $pstring{$pnum}, $ign2++ if($ret == -1);
+		push(@{$pcost{$pnum}}, $cost);
+	    }	
+	    $N++; $len++;
+	}    
+	$n=0;
 	foreach $pnum (keys(%ptot)) {
+	    next if($pstring{$pnum} =~ m/^\*/ && !param('all'));
+	    last if(++$n > param('best'));
 	    push(@$lines, "@ $pnum"); # start
 	    $ch = 0;
-    	    foreach $n (0..$N-1)  {
-		$ch += 0+&round($pcost{$pnum}[$n]);
-		push(@$lines, "$n $ch");
+    	    foreach $i (0..$N-1)  {
+		$ch += 0+&round($pcost{$pnum}[$i]);
+		push(@$lines, "$i $ch");
 	    }	
 	    push(@$lines, "$N $ch");
 	    $prov = $pstring{$pnum};
 	    push(@$lines, "@---- $cur $prov"); # end
 	}
     }
+    ($ign1, $ign2);
+}
+
+sub dig2str {
+    $_[0] > 3 ? $_[0] : ('Ein','Zwei','Drei')[$_[0]-1];
+}
+
+sub print_ign {
+    my ($ign1, $ign2) = @_;
+    print(p,"*) ", dig2str($ign1),' Provider biete',$ign1>1?'n':'t',
+	' nicht alle gewünschten Zielorte an. ') if ($ign1);
+    print(br,"**) ", dig2str($ign2),' Provider erreich',$ign2>1?'en':'t',
+	' den Mindestumsatz nicht. ')  if ($ign2);
+    print (p,'Um die nicht angezeigten Provider zu sehen, wählen Sie bitte ',
+	i('Alle'),'.') if(($ign1 || $ign2) && !param('all'));	
 }
 
 sub print_table {
     my (@lines);
-    my($pnum, $prov, $cur, $charge, $bgcolor, $i, $rest, $url);
+    my($pnum, $prov, $cur, $charge, $bgcolor, $i, $rest, $url, $ign1, $ign2);
     if ($mix) {
-	&call_mix(\@lines);
+	($ign1, $ign2) = &call_mix(\@lines);
     }
     else {	
 	&call_isdnrate(\@lines);
         $lines[0] = &fmt_date($lines[0]);
-	$q->print(p({-class=>'t'},$lines[0]));
+	print(p({-class=>'t'},$lines[0]));
         shift(@lines); # -H
 	shift(@lines); # empty
     }	
-    (undef, $cur) = split(/  +/, $lines[0]);
-    $q->print("<table><tr><th>Nr.</th><th>Provider</th><th>$cur</th>");
-    $q->print("<th>Info</th>") if(param('explain'));
+    (undef,undef,undef,undef,undef,$cur)=&split_line($lines[0]);
+    print("<table cellpadding=3><tr>");
     if ($mix) {
-	for($i=1;$i<$len;$i++) {
-	    $q->print("<th>$i</th>");
+	foreach ('Nr.', 'Provider',$cur,
+	    '- % <A href="#hint"><SUP>1)</SUP></A>','Z.') {
+    	    print("<th>$_</th>");
+	}    
+	for($i=1;$i<$len-(param('cost')>0);$i++) {
+	    print("<th>$i</th>");
+	}
+	print("<th>Gebühren</th>") if (param('cost')>0);
+    }	    
+    else {
+	print("<th>");
+	$url = self_url;
+	$url =~ s/&sort=.//g;
+	print(a({-href=>$url ."&sort=v"}, 'Nr.'));
+	print("</th><th>");
+	print(a({-href=>$url ."&sort=n"}, 'Provider'));
+	print("</th><th>");
+	print(a({-href=>$url}, $cur));
+	print("</th>");
+	foreach ('- % <A href="#hint"><SUP>1)</SUP></A>',
+	    ' /min <A href="#hint"><SUP>2)</SUP></A>',
+	    'Takt <A href="#hint"><SUP>3)</SUP></A>',
+	    'Zone','Tag','Zeit') {
+	    print("<th>$_</th>");
 	}
     }	    
-    $q->print("</tr>\n");
+    print("</tr>\n");
     $i=0;
+    my $max_ch=0;
     foreach (@lines) {
-    	($pnum, $prov, $cur, $charge, $rest) = &split_line($_);
+	(undef,undef,undef,undef,undef,undef,$charge) =  &split_line($_);
+	$max_ch = $charge if($charge > $max_ch);
+    }	
+    foreach (@lines) {
+	my ($mind,$unit,$mp,$zone,$dur,$day,$time,$takt);
+    	($pnum,$prov,$zone,$day,$time,$cur,$charge,$mind,$unit,$dur,$mp,$takt) = &split_line($_);
+	$takt =~ s/(\d+\.\d?)0+/$1/g;	
+	if (!$mix) {
+	    $mind=round($mind); $mp=round($mp);	
+	    $mp = "$mind + $mp/m"if($mind > 0);
+	}
+	else {
+	    $rest=$mind;
+	}    
 	$charge=&round($charge);
-	$url{$pnum}=$q->self_url ."&info=$pnum";
+	$url{$pnum}=self_url ."&info=$pnum";
 	$url=a({-href=>$url{$pnum}}, $prov);
-	$bgcolor=++$i&1?' bgcolor="#e0e0e0"':'';
-	$q->print(qq(<tr$bgcolor><td>$pnum </td><td>&nbsp; $url&nbsp;&nbsp;&nbsp;</td><td align="right">$charge</td>));
-	$q->print(qq(<td><font size="-1">&nbsp;&nbsp;&nbsp;$rest</font></td>)) if(param('explain'));
-	$q->print("</tr>\n");
+	$bgcolor=++$i&1?' bgcolor="#fffff0"':'';
+	print(qq(<tr$bgcolor><td>$pnum</td><td>$url</td><td align="right">$charge</td>));
+	my $perc = $max_ch > 0 ? int(($max_ch - $charge)/$max_ch*100) : ' ';
+	print(qq(<td align="center"><font size="-1">$perc</font></td>));
+	if ($mix) {
+	    print(qq(<td><font size="-1">$rest</font></td>));
+	}
+	else {
+	    my $ali = 'center';
+	    my $j;
+	    foreach($mp, $takt,$zone,$day,$time) {
+		print(qq(<td align="$ali"><font size="-1">$_</font></td>));
+		$ali = 'left' if(++$j == 2);
+	    }    
+	}    
+	print("</tr>\n");
     }
-    $q->print("</table>\n");
-    $q->print(p({-class=>'t'},
-	'Bitte beachten Sie, daß Wechsel in der Taktung in der Tabelle ',
+    print("</table>\n",p);
+    print(span({-class=>'t'},
+	a({-name=>'hint'},'<SUP>1)</SUP>'), ' Prozentwert Ersparnis zum teuersten ',
+	'angezeigten Provider.'));    
+    if ($mix) {
+	print_ign($ign1, $ign2);
+    }
+    else {
+	print(span({-class=>'t'},
+	,br,
+	'<SUP>2)</SUP>', ' Die aktuellen Verbindungspreise können durch die Taktung ',
+	'höher sein, als die theoretischen Minutenpreise. Das fällt besonders ',
+	'eklatant auf, wenn Sie als Zeitdauer ',i('1m'),' wählen.',br,
+	'<SUP>3)</SUP> Bitte beachten Sie, daß Wechsel in der Taktung ',
+	'z.B. um 18<SUP>00</SUP> in der Tabelle ',
 	'nicht angezeigt werden, diese aber sehr wohl in der Berechnung ',
-	'berücksichtig werden.'));
+	'berücksichtig werden.',br,
+	'Eine schöne Übersicht über die Taktung erhalten Sie auch mit',
+	i('Grafik'),'.'));
+    }	
 
+}
+sub parse_explain {
+    $_[0] =~
+	m!(((\d+\.)?\d+)\s\S+\s\+\s)? # mind 2
+	    ((\d+\.)?\d+) # unit 4
+	    .*?/((\d+\.)?\d+)s # cur/dur 6
+	    \s=(\s((\d+\.)?\d+)\s\S+\s\+)? #8
+	    \s((\d+\.)?\d+) # mp 11
+	    \s.*?\( # explain
+	    ([^,]+) # zone? 13
+	    ,\s(\S+)(\s\(.+?\))? # day day? 14
+	    (,\s?(.+?))?\)!x; # time 17
+    ($2, $4, $6, $11, $13, $14, $17);
 }
 
 sub split_line {
-   my $l = $_[0];	
-   my ($pnum,$prov, $cur, $charge, $rest); 
-   ($prov, $cur, $charge) = split(/  +/, $l);
-   ($pnum,$prov) = split(/:/, $prov);
-   if(param('explain')) {
-	($charge,$rest) = split(/ /, $charge, 2);
-	$rest =~ s/0+s/0s/g;
-   }
-   ($pnum,$prov, $cur, $charge, $rest); 	
+    split(/;/, $_[0]);
 }
    
 sub fmt_date {
@@ -754,7 +1088,7 @@ sub fmt_date {
 	    $_[0] =~ s/$k/$m Minute$mn$st/;
 	}
     }	    	
-    if ($_[0] =~ s/(\w{3}) (\w{3}) (\d\d?) (\S{8}) (\d{4})//) {
+    if ($_[0] =~ s/(\w{3}) (\w{3}) \s?(\d\d?) (\S{8}) (\d{4})//) {
     	($db, $m, $d, $t, $y) = ($1,$2,$3,$4,$5);
     	$db=$days{$db};
     	$m=$mons{$m} ? $mons{$m} : $m;
@@ -796,10 +1130,11 @@ sub make_graf {
     $xo=35; $yo=20;
     # make some colors
     $n=0;
-    foreach $g ('00','33','66','99') {
-    	foreach $r ('00','33','66','99') {
-    	    foreach $bl ('00','33','66','99') {
-		$i= ++$n*29 % (4*4*4);
+    foreach $g ('00','33','66','99','aa') {
+    	foreach $r ('00','33','66','99','aa','dd') {
+    	    foreach $bl ('00','33','66','99','aa','dd') {
+		$i= ++$n*17 % (6*6*5);
+		next if($r eq $g && $r eq $bl);
 	    	push(@rawcolors, "$i-0x$r-0x$g-0x$bl");
 	    }
 	}
@@ -807,8 +1142,9 @@ sub make_graf {
     @rawcolors=sort(@rawcolors);		
     # get data
     my ($text);
+    my ($ign1, $ign2);
     if ($mix) {
-	&call_mix(\@lines);
+	($ign1, $ign2) = &call_mix(\@lines);
     }
     else {	
 	&call_isdnrate(\@lines);
@@ -828,7 +1164,7 @@ sub make_graf {
 	        push( @{ $pt{$pnum} }, $daily?24:7*24); # time
 		push( @{ $pc{$pnum} }, $pc{$pnum}[0]); # charge
 	    }	
-	    $url{$pnum}=$q->self_url ."&info=$pnum";
+	    $url{$pnum}=self_url ."&info=$pnum";
     	    $pnum = '';
 	}
         elsif (/^\@ (\d+)/) { # start
@@ -839,7 +1175,7 @@ sub make_graf {
 	    }	
 	}	
 	elsif (/(\d+) (\d+(\.\d+)?)/ && $pnum) {	
-	    push( @{ $pt{$pnum} }, $1==1&&!$mix?0.1:$1); # time
+	    push( @{ $pt{$pnum} }, $1); # time
 	    push( @{ $pc{$pnum} }, $2); # charge
 	}
 	elsif (/ekunden/) { # -H text
@@ -848,44 +1184,49 @@ sub make_graf {
     }
     # info
     $text = &fmt_date($text);
-    $q->print(p({-class=>'t'},$text));
+    print(p({-class=>'t'},$text));
     
-    my ($p, $max, $dy, $my, $min);
-    $max=$n=0;
-    $min = 99999;
-
     # sorting cheapest 1.
     sub bylast { $pc{$a}[$#{$pc{$a}}] <=> $pc{$b}[$#{$pc{$b}}] }
     sub byav {
-	my ($v, $sa, $sb);
+	my ($v, $sa, $sb, $i);
+	$i=0;
 	foreach $v (0..$#{ $pc{$a} }) {
-	    $sa += $pc{$a}[$v];
+	    $sa += $pc{$a}[$v] * ($i>=8&&$i<18?5:2);
+	    $i++;
 	}    
+	$i=0;
 	foreach $v (0..$#{ $pc{$b} }) {
-	    $sb += $pc{$b}[$v];
+	    $sb += $pc{$b}[$v] * ($i>=8&&$i<18?5:2);
+	    $i++;
 	}    
 	$sa <=> $sb;
     }
     my(@all, $sortfunc);
+    my ($p, $max, $dy, $my, $min);
+    $max=$n=0;
+    $min = 99999;
+
     $sortfunc = $daily||$weekly ? \*byav : \*bylast;
     foreach $p (sort $sortfunc (keys(%pstring))) {
-	push(@all, $p);
 	# calc max
 	foreach $i (0 .. $#{ $pc{$p} }) {
 	    $max = $pc{$p}[$i] if ($pc{$p}[$i] > $max);
 	    $min = $pc{$p}[$i] if ($pc{$p}[$i] < $min);
 	}
+	push(@all, $p);
 	last if (++$n >= param('best'));
     }	    
     return unless($n);
     @all=reverse(@all);
     my ($font, $tx, $lw);
-    $font = GD::gdMediumBoldFont;
+    $font = $swidth==1024 ? GD::gdMediumBoldFont : GD::gdSmallFont;
     $lw = int($DEP/$n);
     $DEP=$lw*$n;
     if (!param('_3D')) {
 	$DEP=0;$lw=2;
 	$LIN=50;
+	$LEG+=50;
     }	
     # make img
     my $im = new GD::Image($W+$LEG+$DEP, $H+$DEP);	
@@ -893,7 +1234,9 @@ sub make_graf {
     my(%rcols);
     my $c = 0;
     foreach $p (@all) {
-	(undef, $r, $g, $b) = split(/-/, $rawcolors[$c++]);
+	$c=del1_vbn($p);
+	(undef, $r, $g, $b) = split(/-/, $rawcolors[$c]);
+#	$pstring{$p} = "$r $g $b";
     	$rcols{$p} = $im->colorAllocate(eval($r), eval($g), eval($b));
     }	
     $white = $im->colorAllocate(255,255,255);
@@ -1006,7 +1349,13 @@ sub make_graf {
 		$tx = $i;
 	    }    
 	    elsif ($mix) {
-		$tx = $i+1 .' => '. substr(param("tel$i"),0,4);
+		if ($i == $len-2 && param('cost') > 0) {
+		    $tx = 'Geb.';
+		}
+		else {     
+		    $tx = $i+1;
+		    $tx .= '>'. substr(param("tel$i"),0,4) if($len<=10);
+		}    
 	    }    
 	    else {    
 		$tx = $i == $dx*(int($len/$dx)-1) ? $i ." s" : $i; # nn s
@@ -1029,7 +1378,7 @@ sub make_graf {
 	    $y2 = &_y($pc{$p}[$ii]);
 	    if ($i==0 && $y2 && $DEP) {
 		for $k ($dep ..$dep+$lw-2) {
-    		    $im->line($k+$x2, -$k+$y2-1, $k+$x2,-$k+&_y($sy)-3, 
+    		    $im->line($k+$x, -$k+$y-1, $k+$x,-$k+&_y($sy)-3, 
 			$k==$dep ?$rcols{$p} :$lgrey);
 		}    
 	    }	
@@ -1079,23 +1428,30 @@ nolegend:
     $im->line($xo+1,$DEP,$W-1,$DEP,!$DEP?$black:$lgrey);
     $im->line($W-1,$DEP,$W-1,$DEP+$H-1-$yo,!$DEP?$black:$lgrey);
     $im->line($W,$DEP,$DEP+$W-1,1,$lgrey) if($DEP);
+    $font = GD::gdSmallFont;
+    $im->filledRectangle($DEP+$xo+5,10,
+	$DEP+$xo+9+$font->width*length($LOGO),13+$font->height,$llgrey);
+    $im->string($font,$DEP+$xo+7,12,$LOGO,$black);
     # write file
     $tempf = `$MKTEMP -q "$tempdir/irXXXXXX"`;
     chomp($tempf);
-    rename($tempf, "$tempf.gif") || $q->print(p,"Can't rename $tempf");;
+    rename($tempf, "$tempf.gif") || print(p,"Can't rename $tempf");;
     $tempf = "$tempf.gif";
-    open(TEMP,">$tempf") || $q->print(p,"Can't write $tempf");
+    open(TEMP,">$tempf") || print(p,"Can't write $tempf");
     print(TEMP $im->gif);
     close(TEMP);
     # ret img tag
     $tempf =~ s!^$tempdir/!!;
-    $q->print(qq(<MAP NAME="map">\n));
+    print(qq(<MAP NAME="map">\n));
     foreach (@map) {
-	$q->print("$_\n");
+	print("$_\n");
     }	
-    $q->print(qq(</MAP>\n));
-    $q->print(img({-src=>"$tempdir_url/$tempf", -height=>$H+$DEP, -border=>0,
-    	-width=>$W+$LEG+$DEP, -align=>'"CENTER"', -usemap=>'#map'}));
+    print(qq(</MAP>\n));
+    print(img({-src=>"$tempdir_url/$tempf", -height=>$H+$DEP, -border=>0,
+    	-width=>$W+$LEG+$DEP, -align=>'"CENTER"', -usemap=>'#map'}),br);
+    if ($mix) {
+	print_ign($ign1, $ign2);
+    }
 }
 
 sub add_map {
@@ -1106,7 +1462,7 @@ sub add_map {
   $xu=int($width-2);
   $yu=int($mapy+$height);
   $url=$url{$p};
-  push(@$mref,qq(<AREA SHAPE="RECT" COORDS="$mapx,$mapy,$xu,$yu" href="$url">));
+  push(@$mref,qq(<AREA SHAPE="RECT" COORDS="$mapx,$mapy,$xu,$yu" href="$url"}>));
 }      
 sub _y {
     $DEP+$H-$yo-($_[0]-$sy)*$ys;
@@ -1129,69 +1485,76 @@ sub clean_up {
     }
 }
 
+sub get_info {
+    my ($pnum, $sect) = @_;
+    my (@lines, $t);
+    $pnum = del1_vbn($pnum);
+    my @args=($ISDNRATE,"-p$pnum -X$sect $probe_zones[0]");
+    _call_isdnrate(\@lines, @args);
+    chomp(@lines);
+    $t = (split(/  +/,$lines[0]))[3];
+    shift(@lines);
+    $t .= ' '. join(' ', @lines) if(@lines);
+    $t;
+}
+
+sub del0 {
+    $_[0] =~ s/(\d+\.\d{0,2}\d*?)0+/$1/;
+    $_[0];
+}    
 # info: show info for provider
 sub info {
     my($pnum) = $_[0];
+    $info=1;
     my(@lines, $l, $prov, $cur, $charge, $rest, $day, $text, $fromgraf, $sav_q);
-    $q->delete('info');
-    $fromgraf=param('graf');
-    $q->delete('graf');
-    CGI::delete('graf'); #??
-    $sav_q=$q->query_string;
-    param('prov', $pnum);
-    param('tab','Tabelle');
-    param('xprov','');
-    param('explain', 2);
-    param('now','');
-    param('tel',param('tel0')) if(!param('tel')); # coming from mix
+    my (@args);
     for $day ('W', 'N') { #
 	param('day',$day);
 	for $l (1,140) {
-	    my (@one);
-	    param('len', $l);
-	    call_isdnrate(\@one);
+	    my (@one, $pp);
+	    $pp = del1_vbn($pnum);
+	    @args =("$ISDNRATE", "-HL -p$pp -l$l -d$day");
+	    push(@args, "-f" . param('from')) if(param('from'));
+	    push(@args, param('tel')) if(param('tel'));
+	    push(@args, param('tel0')) if(!param('tel')); # coming from mix
+	    _call_isdnrate(\@one, @args);
 	    # -H & empty
 	    $text = $one[0] unless($text);
 	    print(pre(@one)) if($debug==2);
-    	    (undef, $prov, $cur, $charge, $rest) = &split_line($one[2]);
-	    push(@lines, $rest);    
+	    push(@lines, $one[2]);    
 	}    
     }
     # restore q/Q
-    $q = new CGI($sav_q);
     
     # print report
-    $q->print(h2('Provider',$pnum,'-', $prov),h3('Tarife'));
-    $q->print(pre(@lines)) if($debug);    
-    my (@unit, @dur, @mp, $i, $zone, $day, @time);
+    my (@mind,@unit, @dur, @mp, $i, $zone, $day, @time,$takt, $sales);
     $i=0;
-    foreach (@lines) {
-	m!((\d+\.)?\d+) # unit 1
-	    .*?/((\d+\.)?\d+)s # cur/dur 3
-	    \s=\s((\d+\.)?\d+) # mp 5
-	    \s.*?\( # explain
-	    ([^,]+) # zone? 7
-	    ,\s(\S+)(\s\(.+?\))? # day day? 8
-	    (,\s?(.+?))?\)!x; # time 11
-	($unit[$i], $dur[$i], $mp[$i], $zone, $day,$time[$i]) = ($1, $3, $5, $7, $8, $11);
-	$q->print("$unit[$i], $dur[$i], $mp[$i], $zone") if($debug==2);
+    foreach (@lines) { #TODO
+	(undef,$prov,$zone,$day,$time[$i],$cur,$charge,$mind[$i],
+	    $unit[$i],$dur[$i],$mp[$i],$takt, $sales) = split_line($_);
+	    $dur[$i]=int($dur[$i]);
+	    $mp[$i]=round($mp[$i]);
+	    $mind[$i]=del0($mind[$i]);
+	print("$unit[$i], $dur[$i], $mp[$i], $zone") if($debug==2);
 	$i++;
     }
+    print(h2('Provider',$pnum,'-', $prov),h3('Tarife'));
+    
     @time=qw(Tag Tag Abend Abend) unless $time[0];
     $text =~ s/^.*?indung //;
-    $text =~ s/ kost.*//; 
-    $q->print("Bei einem Gespräch ($text) in der Zone '$zone' ",
+    $text =~ s/ kost.*//;  
+    print("Bei einem Gespräch ($text) in der Zone '$zone' ",
 	'sind die Tarifseinheiten ');
     my $any=0;
     if ($unit[1] != $unit[3]) {
-	    $any=1;
+        $any=1;
     }	    
     if ($any) {
-	$q->print("unterschiedlich teuer, am Werktag ($time[1]), $unit[1], ",
-	    "sonst ($time[3]) $unit[3] $cur.");
+	print("unterschiedlich teuer, am Werktag ($time[1]), ",
+	    del0($unit[1]), " sonst ($time[3]) ", del0($unit[3])," $cur.");
     }
     else {		
-	$q->print('gleich teuer, und zwar ', $unit[1], " $cur",'.'); 
+	print('gleich teuer, und zwar ', del0($unit[1]), " $cur",'.'); 
     }	
     $any=0;
     for ($i = 1; $i <= $#dur; $i++) {
@@ -1201,74 +1564,82 @@ sub info {
 	}
     }	    
     if (!$any) {
-	$q->print(br,"Die Impulsdauer ist einheitlich $dur[0]s.");
+	print(br,"Die Impulsdauer ist einheitlich $dur[0]s.");
     }	
-    elsif ($dur[0] == $dur[1]) {
-	$q->print(br,"Die Impulsdauer ist am Tag $dur[1]s, sonst $dur[3]s.");
+    elsif ($dur[1] != $dur[3]) {
+	print(br,"Die Impulsdauer ist am Tag $dur[1]s, sonst $dur[3]s.");
     }	
-    else {
-	$q->print(br,"Der Provider scheint einen Mindestgesprächsgebühr von ",
-	    "$unit[0] $cur zu verrechnen");
-	$q->print(", bzw. dauert der erste Taktimpuls $dur[0]s, dann $dur[3]s") if($dur[0]);   
-	$q->print(".");	
+    elsif ($dur[0] != $dur[1]) {
+	print(br,"Der erste Taktimpuls dauert $dur[0]s, dann $dur[1]s, Takt $takt") if($dur[0]);   
+	print(".");	
     }
-    $any=0;
+    if($mind[0] > 0) {
+	print(br,"Der Provider verrechnet eine Gesprächs-Herstellungsgebühr von ",
+	    "$mind[0] $cur.");
+    }	    
+    if($sales > 0) {
+	print(br,"Der Provider verrechnet eine Mindestgesprächsgebühr von ",
+	    "$sales $cur.");
+    }	    
+    my $anytag=0;
     for ($i = 1; $i <= $#mp; $i++) {
 	if ($mp[0] != $mp[$i]) {
-	    $any=1;
+	    $anytag=1;
 	    last;
 	}
     }	    
-    $q->print(br,"Das führt in der genannten Zone zu einem Minutenpreis ");
-    if($any) {
-	$q->print("von am Tag $mp[1], sonst $mp[3] $cur.");
-	param('prov', $pnum);
-	param('graf', 'Tag');
-	$q->delete('_3D');
-	$q->delete('tab');
-	$q->delete('now');
-	$q->delete('mix');
-	param('tel',param('tel0')) if(!param('tel')); # coming from mix
-	param('day','W');
-	# Fixme: self_url not ok
-	$q->print(br,'Für eine genauere Gültigkeit der Preise wählen ',
-	    'Sie bitte die ',a({-href=>$q->self_url},'Tagesübersicht'),'.');
-	$q = new CGI($sav_q);
+    my($t);
+    $t="(theoretischen) " if((int($dur[1]) && 60 % $dur[1]) || (int($dur[3]) && 60 % $dur[3]));
+    print(br,"Das führt in der genannten Zone zu einem ${t}Minutenpreis ");
+    if($anytag) {
+	my($m1,$m2, $url);
+	$m1="$mind[1] + " if($mind[1] > 0);
+	$m2="$mind[3] + " if($mind[3] > 0);
+	print("von am Tag $m1$mp[1], sonst $m2$mp[3] $cur.");
+	$url = self_url;
+	$url =~ s/&_3D=\w+//;
+	$url =~ s/&tab=\w+//;
+	$url =~ s/&now=\w+//;
+	$url =~ s/&mix=\w+//;
+	$url =~ s/&graf=\w+//;
+	$url =~ s/&info=\w+//;
+	$url =~ s/&d?day=[\w.]+//g;
+	$url =~ s/&hour=[\w:]+//;
+	$url =~ s/&\w+=&/&/g;
+	$url .= "&prov=$pnum&graf=Tag&dday=W";
+	$url .= "&tel=".param('tel0') if(!param('tel')); # coming from mix
+	print(p,'Für eine genauere Gültigkeit der Preise wählen ',
+	    'Sie bitte die ',a({-href=>$url},'Tagesübersicht'),'.');
     }
     else {	
-	$q->print("von einheitlich $mp[3] $cur.");
+	my($m1);
+	$m1="$mind[3] + " if($mind[3] > 0);
+	print("von einheitlich $m1$mp[3] $cur.");
     }
     
     # probzones
-    $q->print(p,img({-src=>"/telrate/hr.gif", -width=>600, -height=>4}),h3('Zonen'));
-    param('prov', $pnum);
-    param('tab','Tabelle');
-    param('xprov','');
-    param('explain', 1);
-    param('len', 60);
-    $q->delete('now');
-    param('from',$probe_zones[0]);
+    print(p,img({-src=>"/telrate/hr.gif", -width=>600, -height=>4, -alt=>'-----'}),
+	h3('Inlands-Zonen (Festnetz)'));
     @lines = ();
-    my %mp;
+    my ($j,%mp);
     undef $text;
     for $day ('W', 'N') { #
-	param('day',$day);
-	for ($i=1; $i < @probe_zones; $i++) {
-	    my(@one);
-	    param('tel', $probe_zones[$i]);
-	    call_isdnrate(\@one);
+	for ($j=0; $j < @probe_zones; $j++) {
+	    for ($i=$j+1; $i < @probe_zones; $i++) {
+		my(@one, $pp);
+		$pp = del1_vbn($pnum);
+		@args =("$ISDNRATE", "-HL -p$pp -l60 -d$day");
+		push(@args, "-f" . $probe_zones[$j]);
+		push(@args,  $probe_zones[$i]);
+		_call_isdnrate(\@one, @args);
 	# -H & empty
-print(pre(@one)) if($debug==2);
-	    $text = $one[0] unless($text);
-    	    (undef, $prov, $cur, $charge, $rest) = &split_line($one[2]);
-	    $rest =~ tr/()/''/;
-	    push(@lines, $rest);    
-	    $mp{"${rest}$day"}= &round($charge);
-	}    
+		$text = $one[0] unless($text);
+    		(undef, $prov, $zone,undef,undef,$cur, $charge) = &split_line($one[2]);
+		$mp{qq("$zone"$day)}= &round($charge);
+		push(@lines, qq("$zone"));    
+	    }    
+	}
     }
-    # restore q/Q
-print(pre(@lines)) if($debug==2);
-    $q = new CGI($sav_q);
     $any=0;
     my %uniqz;
     $uniqz{$lines[0]}=0;
@@ -1279,38 +1650,98 @@ print(pre(@lines)) if($debug==2);
 	}
     }	    
     if ($any) {
-	$q->print("Der Provider $pnum hat im Inland unterschiedliche Zonen ",
+	print("Der Provider $pnum hat im Inland unterschiedliche Zonen ",
 	    "nämlich ", join(', ',sort{$uniqz{$a}<=>$uniqz{$b}}(keys(%uniqz))),'.');
     }
     else {	    
-	$q->print("Der Provider $pnum hat im Inland ein einheitliches Zonenschema.");
+	print("Der Provider $pnum hat im Inland ein einheitliches Zonenschema.");
     }	
     $text =~ s/g von.*/g/;
-    $q->print(br,$text, "kostet:",br,p);
-    my $t = q!$q->print(blockquote(table({border=>1,-cellspacing=>0,-cellpadding=>4},
-	Tr(th('Zone'),th({-colspan=>2},$cur)),
-	Tr(th(['&nbsp','Tag','Nacht'])),!;
+    print(br,$text, "kostet:",br,p);
+    my $t = q!print(blockquote(table({-border=>1,-cellspacing=>0,-cellpadding=>4},
+	Tr(th({-rowspan=>2},'Zone'),th({-colspan=>2},$cur)),
+	Tr(th(['Tag','Nacht'])),!;
     foreach $i (sort{$uniqz{$a}<=>$uniqz{$b}} (keys(%uniqz))) {
 	$t .= q!Tr(td([! . $i . ',"' . $mp{"${i}W"} .'","'. $mp{"${i}N"} . q!"])),!; #"
     }	
     $t .= ')));';
     eval($t);
-    $q->print(p,img({-src=>"/telrate/hr.gif", -width=>600, -height=>4}),h3('Gebühren'),p('TODO'));
-    $q->print(p,img({-src=>"/telrate/hr.gif", -width=>600, -height=>4}),h3('Kontakt'));
-    $q->print(table(Tr([
-	td(['Adresse','Todo']),
-	td(['Homepage','Todo']),
-	td(['Hotline','Todo']),
-	td(['Telefon','Todo']),
-	td(['Telefax','Todo'])
+    if ((int($dur[1]) && 60 % $dur[1]) || (int($dur[3]) && 60 % $dur[3])) {
+	print('Hinweis: Durch die Taktung sind die echten Minutenpreise ',
+	    'eventuell höher, als die theoretischen oben angeführten.',p);
+    }	    
+    print(p({-class=>'sm'},'Tag: Werktag 10<sup>00</sup>, Nacht: Werktag 23<sup>00</sup>. ',
+	'Der Provider hat eventuell eine weitere Unterteilung der Tarife ',
+	'pro Tageszeit/Wochentag. Genauers dazu sehen sie unter den Schaltflächen ',
+	i('Tag'),' (Tagesverlauf) und ',i('Woche'),' (Wochenverlauf).')) if($anytag);
+    print ($t=get_info($pnum, 'Zone')) if($t ne '');
+    
+    print(p,img({-src=>"/telrate/hr.gif", -width=>600, -height=>4, -alt=>'-----'}),h3('Gebühren'));
+    print (get_info($pnum, 'GT')||'Keine');
+    print(p,img({-src=>"/telrate/hr.gif", -width=>600, -height=>4, -alt=>'-----'}),h3('Besonderheiten'));
+    print (get_info($pnum, 'Special')||'Keine');
+    print(p,img({-src=>"/telrate/hr.gif", -width=>600, -height=>4, -alt=>'-----'}),h3('Kontakt'));
+    print(table({-cellpadding=>3},Tr([
+	td(['Name',get_info($pnum, 'Name')]),
+	td(['Adresse',get_info($pnum, 'Address')]),
+	td(['Homepage &nbsp;',a({-href=>($t=get_info($pnum, 'Homepage')),-target=>'blank'},$t)]),
+	td(['Tarife &nbsp;',a({-href=>($t=get_info($pnum, 'TarifURL')),-target=>'blank'},$t)]),
+	td(['E-Mail',a({-href=>'mailto:'.($t=get_info($pnum, 'EMail'))},$t)]),
+	td(['Hotline',get_info($pnum, 'Hotline')]),
+	td(['Telefon',get_info($pnum, 'Telefon')]),
+	td(['Telefax',get_info($pnum, 'Telefax')])
 	])));
-    param('graf',$fromgraf);
-    $q->param('graf',$fromgraf);
-    $q->print(p,img({-src=>"/telrate/hr.gif", -width=>600, -height=>4}),p 
+
+    my $url = self_url;
+    $url =~ s/&info=\w+//;	
+    print(p,img({-src=>"/telrate/hr.gif", -width=>600, -height=>4, -alt=>'-----'}),p 
 	a({-href=>'javascript:history.back()'},'[ Zurück ]'),
-	a({-href=>$q->self_url},'[ Vorhergehende Seite ]'));
+	a({-href=>$url},'[ Vorhergehende Seite ]'));
+    footer($pnum);	
 }    
 
+sub list {
+    my ($what)=$_[0];
+    my (@args, %prov, %hp, %tarif, %tel, %fax);
+    my (@X, @var, $i, $t, $pnum, $prov);
+    @X = qw( Homepage TarifURL Telefon Hotline Telefax );
+    @var = ( \%hp, \%tarif, \%tel, \%tel, \%fax );
+    for ($i = 0; $i < @X ; $i++) {
+	my (@args, @lines);
+	push(@args, $ISDNRATE,"-Sv $probe_zones[0]");
+	push(@args, "-X$X[$i]");
+	_call_isdnrate(\@lines, @args);
+	chomp(@lines);
+	foreach (@lines) {
+	    ($prov, undef, undef, $t) = split(/  +/);
+	    ($pnum, $prov) = split(/:/, $prov);
+	    $prov{$pnum} = $prov unless $prov{$pnum};
+	    $var[$i]->{$pnum} = $t unless $var[$i]->{$pnum};
+	}
+    }	    
+    my (@th);
+    @th = qw ( Nr. Provider/Homepage Tarife Telefon Fax );
+    print('<table cellspacing=3 cellpadding=3>',Tr(th([@th])));
+    $i = 0;	
+    foreach $pnum (sort (keys(%prov))) {
+	my $hp = $hp{$pnum};
+	$prov = $prov{$pnum};
+	my $bgcolor=++$i&1?' bgcolor="#fffff0"':'';
+	print("<tr$bgcolor><td>$pnum</td>",   
+	    "<td><a href=\"$hp\">$prov</a></td>");
+	my $tu = $tarif{$pnum};
+	($t= $tu) =~ s#\Q$hp\E##;
+	my $tel = $tel{$pnum};
+	$tel =~ s/,\s*/<br>/;
+	my $fax = $fax{$pnum};
+	$fax =~ s/,\s*/<br>/;
+	print("<td><a href=\"$tu\">$t</a></td><td>" .
+	    "$tel</td><td>$fax</tr>");
+    }
+    print('</table><p><br>');
+    $help=3;
+    footer($pnum);	
+}
     	    
 # next is from GIFgraph
 

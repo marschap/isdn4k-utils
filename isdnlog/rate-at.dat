@@ -11,71 +11,67 @@
 # for collecting and preparing most of the call charges.
 
 
-V:1.83-Austria [25-Jul-1999]
+V:1.84-Austria [30-Aug-1999]
 
 U:%.3f öS
 
-P:01,1                             Telekom Austria
+P:01,1                             Telekom Austria Minimumtarif
 C:Maintainer:                      Michael Reinelt <reinelt@eunet.at>
+C:Zone:                            Die Regionalzone geht bis zu einer Entfernung von 50 Km, alles andere ist Österreichzone.
+C:Special:                         Variable Taktung, abhängig von Zone und Tageszeit.
+C:Name:                            Telekom Austria
+C:Address:                         Postgasse 8, A-1010 Wien
+C:Homepage:                        http://www.telekom.at
+C:TarifURL:                        http://www.telekom.at/tarife/
+C:Telefon:                         0800 100 100
 # Tarif:                           Minimumtarif (ATS 1.116 pro Einheit)
 D:pta                              # Verzonung
 
 Z:0                                FreePhone
 T:*/*=0/72
-A:122, 133, 144, +43800
+A:112, 122, 133, 141, 142, 144, +43800, +43801, +43802, +43803, +43804
 
 Z:1                                Regionalzone
-T:1-5/08-12=1.116/57.6             Tageszeit 1
-T:1-4/13-16=1.116/57.6             Tageszeit 1
-T:1-4/12-13,16-18=1.116/72         Tageszeit 2
-T:5/12-18=1.116/72                 Tageszeit 2
-T:1-5/06-08,18-20=1.116/109.09     Sparzeit
-T:E,H/06-20=1.116/109.09           Sparzeit
-T:*/20-06=1.116/160                Supersparzeit
-A:+43660
+T:W/08-18=1.116/72                 Geschäftszeit
+T:W/18-08=1.116/160                Freizeit
+T:E,H/*=1.116/160                  Freizeit
+A:111*, 11820, 15*, +437111, +437112, +437113, +437114, +43810
 
-Z:2                                Fernzone 1
-T:1-5/08-12=1.116/20               Tageszeit 1
-T:1-4/13-16=1.116/20               Tageszeit 1
-T:1-4/12-13,16-18=1.116/25         Tageszeit 2
-T:5/12-18=1.116/25                 Tageszeit 2
-T:1-5/06-08,18-20=1.116/50         Sparzeit
-T:E,H/06-20=1.116/50               Sparzeit
-T:*/20-06=1.116/72                 Supersparzeit
-
-Z:3                                Fernzone 2
-T:1-5/08-12=1.116/15               Tageszeit 1
-T:1-4/13-16=1.116/15               Tageszeit 1
-T:1-4/12-13,16-18=1.116/19.2       Tageszeit 2
-T:5/12-18=1.116/19.2               Tageszeit 2
-T:1-5/06-08,18-20=1.116/40         Sparzeit
-T:E,H/06-20=1.116/40               Sparzeit
-T:*/20-06=1.116/50                 Supersparzeit
+Z:2                                Österreichzone
+T:W/08-18=1.116/25                 Geschäftszeit
+T:W/18-08=1.116/72                 Freizeit
+T:E,H/*=1.116/72                   Freizeit
 A:Österreich
 
-Z:4                                Online-Tarif
-T:1-5/08-18=1.116/120              Tageszeit
-T:1-5/18-8=1.116/360               Sparzeit
-T:E,H/*=1.116/360                  Sparzeit
+Z:3                                Mobilfunk 1
+T:W/08-18=1.116/14.4               Geschäftszeit
+T:W/18-08=1.116/19.2               Freizeit
+T:E,H/*=1.116/19.2                 Freizeit
+A:+43663, +43664, +43676
+
+Z:4                                Mobilfunk 2
+T:W/08-18=1.116/12.88              Geschäftszeit
+T:W/18-08=1.116/16.18              Freizeit
+T:E,H/*=1.116/16.18                Freizeit
+A:+43699
+
+Z:5                                Online
+T:W/08-18=1.116/120                Geschäftszeit
+T:W/18-08=1.116/360                Freizeit
+T:E,H/*=1.116/360                  Freizeit
 A:+437189, 19411, 19430, 19440
 
-Z:5                                Mobilfunk
-T:1-5/08-18=1.116/12               Tageszeit
-T:1-5/18-8=1.116/19.2              Sparzeit
-T:E,H/*=1.116/19.2                 Sparzeit
-A:+43663, +43664, +43676, +43699
-
 Z:6                                Ausland Zone 1
-T:1-5/08-18=1.116/12               Tageszeit
-T:1-5/18-8=1.116/14.4              Sparzeit
-T:E,H/*=1.116/14.4                 Sparzeit
+T:W/08-18=1.116/15                 Geschäftszeit
+T:W/18-08=1.116/18                 Freizeit
+T:E,H/*=1.116/18                   Freizeit
 A:Deutschland, Italien, Liechtenstein, Schweiz, Slowakei, Slowenien
 A:Tschechien, Ungarn
 
 Z:7                                Ausland Zone 2
-T:1-5/08-18=1.116/9                Tageszeit
-T:1-5/18-8=1.116/12                Sparzeit
-T:E,H/*=1.116/12                   Sparzeit
+T:W/08-18=1.116/12                 Geschäftszeit
+T:W/18-08=1.116/14.4               Freizeit
+T:E,H/*=1.116/14.4                 Freizeit
 A:Albanien, Andorra, Belarus, Belgien, Bosnien-Herzegowina, Bulgarien
 A:Dänemark, Finnland, Frankreich, Großbritannien, Nordirland, Irland
 A:Jugoslawien, Serbien, Montenegro, Kroatien, Luxemburg, Malta, Mazedonien
@@ -83,44 +79,44 @@ A:Monaco, Niederlande, Norwegen, Rumänien, San Marino, Schweden, Spanien
 A:Ukraine, Vatikanstadt, Zypern
 
 Z:8                                Ausland Zone 3
-T:1-5/08-18=1.116/6.5455           Tageszeit
-T:1-5/18-8=1.116/8                 Sparzeit
-T:E,H/*=1.116/8                    Sparzeit
+T:W/08-18=1.116/10.667             Geschäftszeit
+T:W/18-08=1.116/12                 Freizeit
+T:E,H/*=1.116/12                   Freizeit
 A:Algerien, Estland, Färöer-Inseln, Georgien, Gibraltar, Island, Israel
 A:Lettland, Litauen, Marokko, Portugal, Russische Föderation, Tadschikistan
 A:Turkmenistan, Usbekistan
 
 Z:9                                Ausland Zone 4
-T:1-5/08-18=1.116/5.1429           Tageszeit
-T:1-5/18-8=1.116/6                 Sparzeit
-T:E,H/*=1.116/6                    Sparzeit
+T:W/08-18=1.116/7.2                Geschäftszeit
+T:W/18-08=1.116/8                  Freizeit
+T:E,H/*=1.116/8                    Freizeit
 A:Antarktis, Armenien, Australien, Aserbaidschan, Weihnachtsinseln
 A:Kokosinseln
 
 Z:10                               Ausland Zone 5
-T:1-5/08-18=1.116/4.2353           Tageszeit
-T:1-5/18-8=1.116/4.8               Sparzeit
-T:E,H/*=1.116/4.8                  Sparzeit
+T:W/08-18=1.116/6                  Geschäftszeit
+T:W/18-08=1.116/6.5455             Freizeit
+T:E,H/*=1.116/6.5455               Freizeit
 A:Chile, Französisch-Guayana, Guadeloupe, Hongkong, Libyen, Martinique
 A:Mayotte, Moldau, Neuseeland, Reunion, St. Pierre und Miquelon, Südafrika
 
 Z:11                               Ausland Zone 6
-T:1-5/08-18=1.116/3.6              Tageszeit
-T:1-5/18-8=1.116/4.2353            Sparzeit
-T:E,H/*=1.116/4.2353               Sparzeit
+T:W/08-18=1.116/4.8                Geschäftszeit
+T:W/18-08=1.116/5.1429             Freizeit
+T:E,H/*=1.116/5.1429               Freizeit
 A:Japan, Südkorea, Malaysia, Niederländische Antillen, Philippinen, Saipan
 
 Z:12                               Ausland Zone 7
-T:1-5/08-18=1.116/3.1304           Tageszeit
-T:1-5/18-8=1.116/3.6               Sparzeit
-T:E,H/*=1.116/3.6                  Sparzeit
+T:W/08-18=1.116/4.2353             Geschäftszeit
+T:W/18-08=1.116/4.8                Freizeit
+T:E,H/*=1.116/4.8                  Freizeit
 A:Angola, Bermuda, Bhutan, Brasilien, China, Ecuador, Iran, Macao, Mexiko
 A:Saudi-Arabien, Venezuela
 
 Z:13                               Ausland Zone 8
-T:1-5/08-18=1.116/2.7692           Tageszeit
-T:1-5/18-8=1.116/3                 Sparzeit
-T:E,H/*=1.116/3                    Sparzeit
+T:W/08-18=1.116/3.6                Geschäftszeit
+T:W/18-08=1.116/4.2353             Freizeit
+T:E,H/*=1.116/4.2353               Freizeit
 A:Ägypten, Äquatorial-Guinea, Aruba, Bahamas, Barbados, Belize, Botsuana
 A:Brunei, Burundi, Dominikanische Republik, Gabun, Ghana, Grönland
 A:Guinea-Bissau, Guyana, Jordanien, Kirgisistan, Kolumbien, Kuwait, Libanon
@@ -128,35 +124,35 @@ A:Panama, Singapur, Sao Tome und Principe, Saint Vincent und die Grenadinen
 A:Trinidad und Tobago, Vereinigte Arabische Emirate
 
 Z:14                               Ausland Zone 9
-T:1-5/08-18=1.116/2.4              Tageszeit
-T:1-5/18-8=1.116/2.5714            Sparzeit
-T:E,H/*=1.116/2.5714               Sparzeit
+T:W/08-18=1.116/3.1304             Geschäftszeit
+T:W/18-08=1.116/3.6                Freizeit
+T:E,H/*=1.116/3.6                  Freizeit
 A:Bahrain, Cote d'Ivoire, Guinea, Kasachstan, Katar, Laos, Lesotho, Liberia
 A:Malawi, Namibia, Nauru, Nepal, Neukaledonien, Nigeria, Norfolk-Inseln, Peru
 A:Saint Helena, Saint Lucia, Samoa, Sudan, Swasiland, Syrien, Tansania, Tonga
 A:Turks- und Caicos-Inseln, Sambia, Simbabwe
 
 Z:15                               Ausland Zone 10
-T:1-5/08-18=1.116/2.1176           Tageszeit
-T:1-5/18-8=1.116/2.25              Sparzeit
-T:E,H/*=1.116/2.25                 Sparzeit
+T:W/08-18=1.116/3                  Geschäftszeit
+T:W/18-08=1.116/3.1304             Freizeit
+T:E,H/*=1.116/3.1304               Freizeit
 A:Argentinien, Äthiopien, Benin, Costa Rica, Fidschi, Französisch-Polynesien
 A:Gambia, Irak, Jamaika, Kenia, Kiribati, Komoren, Malediven, Mauretanien
 A:Mongolei, Mosambik, Myanmar, Nicaragua, Niue, Oman, Ruanda, Suriname
 A:Taiwan, Thailand, Togo, Uganda, Vanuatu, Zentralafrikanische Republik
 
 Z:16                               Ausland Zone 11
-T:1-5/08-18=1.116/1.8462           Tageszeit
-T:1-5/18-8=1.116/2                 Sparzeit
-T:E,H/*=1.116/2                    Sparzeit
+T:W/08-18=1.116/2.5714             Geschäftszeit
+T:W/18-08=1.116/2.7692             Freizeit
+T:E,H/*=1.116/2.7692               Freizeit
 A:Bolivien, Caymaninseln, Dschibuti, Indien, Indonesien
 A:Britische Jungferninseln, Nordkorea, Kuba, Mauritius, Niger
 A:Papua-Neuguinea, Paraguay, Sierra Leone, Sri Lanka, Uruguay
 
 Z:17                               Ausland Zone 12
-T:1-5/08-18=1.116/1.6364           Tageszeit
-T:1-5/18-8=1.116/1.8               Sparzeit
-T:E,H/*=1.116/1.8                  Sparzeit
+T:W/08-18=1.116/2.4                Geschäftszeit
+T:W/18-08=1.116/2.5                Freizeit
+T:E,H/*=1.116/2.5                  Freizeit
 A:Anguilla, Antigua und Barbuda, Ascension, Bangladesch, Burkina Faso
 A:Dominica, El Salvador, Eritrea, Falklandinseln, Grenada, Guam, Guatemala
 A:Haiti, Honduras, Jemen, Kamerun, Kap Verde, Kambodscha, Kongo, Mali
@@ -164,21 +160,19 @@ A:Montserrat, Pakistan, Saint Kitts und Nevis, Senegal, Seychellen, Salomonen
 A:Somalia, Tschad, Vietnam, Zaire
 
 Z:18                               Ausland Zone 13
-T:1-5/08-18=1.116/1.2203           Tageszeit
-T:1-5/18-8=1.116/1.3585            Sparzeit
-T:E,H/*=1.116/1.3585               Sparzeit
+T:W/08-18=1.116/2                  Geschäftszeit
+T:W/18-08=1.116/2.1176             Freizeit
+T:E,H/*=1.116/2.1176               Freizeit
 A:Cook-Inseln, Madagaskar
 
 Z:19                               Ausland Zone 14
-T:1-5/08-18=1.116/8                Tageszeit
-T:1-5/18-8=1.116/9                 Sparzeit
-T:E,H/*=1.116/9                    Sparzeit
+T:W/08-18=1.116/10.667             Geschäftszeit
+T:W/18-08=1.116/12                 Freizeit
+T:E,H/*=1.116/12                   Freizeit
 A:Amerikanische Jungferninseln, Kanada, Puerto Rico, Vereinigte Staaten (USA)
 
 Z:20                               Ausland Zone 15
-T:1-5/08-18=1.116/9                Tageszeit
-T:1-5/18-8=1.116/7.2               Sparzeit
-T:E,H/*=1.116/7.2                  Sparzeit
+T:*/*=1.116/10.667                 0-24h
 A:Griechenland, Polen, Tunesien, Türkei
 
 Z:21                               Handvermittelter Verkehr
@@ -186,122 +180,97 @@ A:Afghanistan, Amerikanisch-Samoa, Guantanamo, Marshallinseln, Midway-Inseln
 A:Mikronesien, Palau, Pitcairn-Inseln, Tuvalu, Wake-Inseln
 
 Z:22                               Grenznahverkehr
-T:1-5/08-18=1.116/18               Tageszeit
-T:1-5/18-8=1.116/24                Sparzeit
-T:E,H/*=1.116/24                   Sparzeit
+T:W/08-18=1.116/18                 Geschäftszeit
+T:W/18-08=1.116/24                 Freizeit
+T:E,H/*=1.116/24                   Freizeit
 
-Z:23                               Teleinfo 04570
-T:1-5/08-18=1.116/10.795           Tageszeit
-T:1-5/18-8=1.116/10.795            Sparzeit
-T:E,H/*=1.116/10.795               Sparzeit
-A:+434570
+Z:23                               Inmarsat-A
+T:*/*=1.116/0.72727                0-24h
+A:Inmarsat A
 
-Z:24                               Teleinfo 04500 
-T:1-5/08-18=1.116/7.2              Tageszeit
-T:1-5/18-8=1.116/7.2               Sparzeit
-T:E,H/*=1.116/7.2                  Sparzeit
-A:+434500
+Z:24                               Inmarsat-B/M
+T:*/*=1.116/1.0746                 0-24h
+A:Inmarsat B, Inmarsat M
 
-Z:25                               Telebusiness 04590
-T:1-5/08-18=1.116/4.5              Tageszeit
-T:1-5/18-8=1.116/4.5               Sparzeit
-T:E,H/*=1.116/4.5                  Sparzeit
-A:+434590
+Z:25                               Inmarsat-Mini-M
+T:*/*=1.116/1.5                    0-24h
+A:Inmarsat Mini-M
 
-Z:26                               Teleinfo 04580
-T:1-5/08-18=1.116/2.6997           Tageszeit
-T:1-5/18-8=1.116/2.6997            Sparzeit
-T:E,H/*=1.116/2.6997               Sparzeit
-A:+434580
+Z:26                               Iridium 008816
+T:*/*=1.116/0.48                   0-24h
+A:Iridium 008816
 
-Z:27                               Businessline 0711x
-T:1-5/08-12=1.116/57.6             Tageszeit 1
-T:1-4/13-16=1.116/57.6             Tageszeit 1
-T:1-4/12-13,16-18=1.116/72         Tageszeit 2
-T:5/12-18=1.116/72                 Tageszeit 2
-T:1-5/06-08,18-20=1.116/109.09     Sparzeit
-T:E,H/06-20=1.116/109.09           Sparzeit
-T:*/20-06=1.116/160                Supersparzeit
-A:+43711
+Z:27                               Iridium 008817
+T:*/*=1.116/1.0746                 0-24h
+A:Iridium 008817
 
-Z:28                               Businessline 0713x
-T:1-5/08-18=1.116/32               Tageszeit
-T:1-5/18-8=1.116/32                Sparzeit
-T:E,H/*=1.116/32                   Sparzeit
-A:+43713
+Z:28                               EMSAT
+T:*/*=1.116/1.5                    0-24h
 
-Z:29                               Businessline 0714x
-T:1-5/08-18=1.116/15               Tageszeit
-T:1-5/18-8=1.116/15                Sparzeit
-T:E,H/*=1.116/15                   Sparzeit
-A:+43714
+Z:29                               0711-5,6,7
+T:*/*=1.116/32                     0-24h
+A:+437115, +437116, +437117
 
-Z:30                               Votingline 0717x
-T:1-5/08-18=1.116/15               Tageszeit
-T:1-5/18-8=1.116/15                Sparzeit
-T:E,H/*=1.116/15                   Sparzeit
-A:+43717
+Z:30                               0711-8,9,0
+T:*/*=1.116/15                     0-24h
+A:+437118, +437119, +437110
 
-P:01,2                             Telekom Austria
+P:01,2                             Telekom Austria Standartarif
+C:Maintainer:                      Michael Reinelt <reinelt@eunet.at>
+C:Zone:                            Die Regionalzone geht bis zu einer Entfernung von 50 Km, alles andere ist Österreichzone.
+C:Special:                         Variable Taktung, abhängig von Zone und Tageszeit.
+C:Name:                            Telekom Austria
+C:Address:                         Postgasse 8, A-1010 Wien
+C:Homepage:                        http://www.telekom.at
+C:TarifURL:                        http://www.telekom.at/tarife/
+C:Telefon:                         0800 100 100
 # Tarif:                           Standartarif (ATS 1.056 pro Einheit)
 D:pta                              # Verzonung
-
 Z:0                                FreePhone
 T:*/*=0/72
-A:122, 133, 144, +43800
+A:112, 122, 133, 141, 142, 144, +43800, +43801, +43802, +43803, +43804
 
 Z:1                                Regionalzone
-T:1-5/08-12=1.056/57.6             Tageszeit 1
-T:1-4/13-16=1.056/57.6             Tageszeit 1
-T:1-4/12-13,16-18=1.056/72         Tageszeit 2
-T:5/12-18=1.056/72                 Tageszeit 2
-T:1-5/06-08,18-20=1.056/109.09     Sparzeit
-T:E,H/06-20=1.056/109.09           Sparzeit
-T:*/20-06=1.056/160                Supersparzeit
-A:+43660
+T:W/08-18=1.056/72                 Geschäftszeit
+T:W/18-08=1.056/160                Freizeit
+T:E,H/*=1.056/160                  Freizeit
+A:111*, 11820, 15*, +437111, +437112, +437113, +437114, +43810
 
-Z:2                                Fernzone 1
-T:1-5/08-12=1.056/20               Tageszeit 1
-T:1-4/13-16=1.056/20               Tageszeit 1
-T:1-4/12-13,16-18=1.056/25         Tageszeit 2
-T:5/12-18=1.056/25                 Tageszeit 2
-T:1-5/06-08,18-20=1.056/50         Sparzeit
-T:E,H/06-20=1.056/50               Sparzeit
-T:*/20-06=1.056/72                 Supersparzeit
-
-Z:3                                Fernzone 2
-T:1-5/08-12=1.056/15               Tageszeit 1
-T:1-4/13-16=1.056/15               Tageszeit 1
-T:1-4/12-13,16-18=1.056/19.2       Tageszeit 2
-T:5/12-18=1.056/19.2               Tageszeit 2
-T:1-5/06-08,18-20=1.056/40         Sparzeit
-T:E,H/06-20=1.056/40               Sparzeit
-T:*/20-06=1.056/50                 Supersparzeit
+Z:2                                Österreichzone
+T:W/08-18=1.056/25                 Geschäftszeit
+T:W/18-08=1.056/72                 Freizeit
+T:E,H/*=1.056/72                   Freizeit
 A:Österreich
 
-Z:4                                Online-Tarif
-T:1-5/08-18=1.056/120              Tageszeit
-T:1-5/18-8=1.056/360               Sparzeit
-T:E,H/*=1.056/360                  Sparzeit
+Z:3                                Mobilfunk 1
+T:W/08-18=1.056/14.4               Geschäftszeit
+T:W/18-08=1.056/19.2               Freizeit
+T:E,H/*=1.056/19.2                 Freizeit
+A:+43663, +43664, +43676
+
+Z:4                                Mobilfunk 2
+T:W/08-18=1.056/12.88              Geschäftszeit
+T:W/18-08=1.056/16.18              Freizeit
+T:E,H/*=1.056/16.18                Freizeit
+A:+43699
+
+Z:5                                Online
+T:W/08-18=1.056/120                Geschäftszeit
+T:W/18-08=1.056/360                Freizeit
+T:E,H/*=1.056/360                  Freizeit
 A:+437189, 19411, 19430, 19440
 
-Z:5                                Mobilfunk
-T:1-5/08-18=1.056/12               Tageszeit
-T:1-5/18-8=1.056/19.2              Sparzeit
-T:E,H/*=1.056/19.2                 Sparzeit
-A:+43663, +43664, +43676, +43699
-
 Z:6                                Ausland Zone 1
-T:1-5/08-18=1.056/12               Tageszeit
-T:1-5/18-8=1.056/14.4              Sparzeit
-T:E,H/*=1.056/14.4                 Sparzeit
+T:W/08-18=1.056/15                 Geschäftszeit
+T:W/18-08=1.056/18                 Freizeit
+T:E,H/*=1.056/18                   Freizeit
 A:Deutschland, Italien, Liechtenstein, Schweiz, Slowakei, Slowenien
 A:Tschechien, Ungarn
 
 Z:7                                Ausland Zone 2
-T:1-5/08-18=1.056/9                Tageszeit
-T:1-5/18-8=1.056/12                Sparzeit
-T:E,H/*=1.056/12                   Sparzeit
+T:W/08-18=1.056/12                 Geschäftszeit
+T:W/18-08=1.056/14.4               Freizeit
+T:E,H/*=1.056/14.4                 Freizeit
 A:Albanien, Andorra, Belarus, Belgien, Bosnien-Herzegowina, Bulgarien
 A:Dänemark, Finnland, Frankreich, Großbritannien, Nordirland, Irland
 A:Jugoslawien, Serbien, Montenegro, Kroatien, Luxemburg, Malta, Mazedonien
@@ -309,44 +278,44 @@ A:Monaco, Niederlande, Norwegen, Rumänien, San Marino, Schweden, Spanien
 A:Ukraine, Vatikanstadt, Zypern
 
 Z:8                                Ausland Zone 3
-T:1-5/08-18=1.056/6.5455           Tageszeit
-T:1-5/18-8=1.056/8                 Sparzeit
-T:E,H/*=1.056/8                    Sparzeit
+T:W/08-18=1.056/10.667             Geschäftszeit
+T:W/18-08=1.056/12                 Freizeit
+T:E,H/*=1.056/12                   Freizeit
 A:Algerien, Estland, Färöer-Inseln, Georgien, Gibraltar, Island, Israel
 A:Lettland, Litauen, Marokko, Portugal, Russische Föderation, Tadschikistan
 A:Turkmenistan, Usbekistan
 
 Z:9                                Ausland Zone 4
-T:1-5/08-18=1.056/5.1429           Tageszeit
-T:1-5/18-8=1.056/6                 Sparzeit
-T:E,H/*=1.056/6                    Sparzeit
+T:W/08-18=1.056/7.2                Geschäftszeit
+T:W/18-08=1.056/8                  Freizeit
+T:E,H/*=1.056/8                    Freizeit
 A:Antarktis, Armenien, Australien, Aserbaidschan, Weihnachtsinseln
 A:Kokosinseln
 
 Z:10                               Ausland Zone 5
-T:1-5/08-18=1.056/4.2353           Tageszeit
-T:1-5/18-8=1.056/4.8               Sparzeit
-T:E,H/*=1.056/4.8                  Sparzeit
+T:W/08-18=1.056/6                  Geschäftszeit
+T:W/18-08=1.056/6.5455             Freizeit
+T:E,H/*=1.056/6.5455               Freizeit
 A:Chile, Französisch-Guayana, Guadeloupe, Hongkong, Libyen, Martinique
 A:Mayotte, Moldau, Neuseeland, Reunion, St. Pierre und Miquelon, Südafrika
 
 Z:11                               Ausland Zone 6
-T:1-5/08-18=1.056/3.6              Tageszeit
-T:1-5/18-8=1.056/4.2353            Sparzeit
-T:E,H/*=1.056/4.2353               Sparzeit
+T:W/08-18=1.056/4.8                Geschäftszeit
+T:W/18-08=1.056/5.1429             Freizeit
+T:E,H/*=1.056/5.1429               Freizeit
 A:Japan, Südkorea, Malaysia, Niederländische Antillen, Philippinen, Saipan
 
 Z:12                               Ausland Zone 7
-T:1-5/08-18=1.056/3.1304           Tageszeit
-T:1-5/18-8=1.056/3.6               Sparzeit
-T:E,H/*=1.056/3.6                  Sparzeit
+T:W/08-18=1.056/4.2353             Geschäftszeit
+T:W/18-08=1.056/4.8                Freizeit
+T:E,H/*=1.056/4.8                  Freizeit
 A:Angola, Bermuda, Bhutan, Brasilien, China, Ecuador, Iran, Macao, Mexiko
 A:Saudi-Arabien, Venezuela
 
 Z:13                               Ausland Zone 8
-T:1-5/08-18=1.056/2.7692           Tageszeit
-T:1-5/18-8=1.056/3                 Sparzeit
-T:E,H/*=1.056/3                    Sparzeit
+T:W/08-18=1.056/3.6                Geschäftszeit
+T:W/18-08=1.056/4.2353             Freizeit
+T:E,H/*=1.056/4.2353               Freizeit
 A:Ägypten, Äquatorial-Guinea, Aruba, Bahamas, Barbados, Belize, Botsuana
 A:Brunei, Burundi, Dominikanische Republik, Gabun, Ghana, Grönland
 A:Guinea-Bissau, Guyana, Jordanien, Kirgisistan, Kolumbien, Kuwait, Libanon
@@ -354,35 +323,35 @@ A:Panama, Singapur, Sao Tome und Principe, Saint Vincent und die Grenadinen
 A:Trinidad und Tobago, Vereinigte Arabische Emirate
 
 Z:14                               Ausland Zone 9
-T:1-5/08-18=1.056/2.4              Tageszeit
-T:1-5/18-8=1.056/2.5714            Sparzeit
-T:E,H/*=1.056/2.5714               Sparzeit
+T:W/08-18=1.056/3.1304             Geschäftszeit
+T:W/18-08=1.056/3.6                Freizeit
+T:E,H/*=1.056/3.6                  Freizeit
 A:Bahrain, Cote d'Ivoire, Guinea, Kasachstan, Katar, Laos, Lesotho, Liberia
 A:Malawi, Namibia, Nauru, Nepal, Neukaledonien, Nigeria, Norfolk-Inseln, Peru
 A:Saint Helena, Saint Lucia, Samoa, Sudan, Swasiland, Syrien, Tansania, Tonga
 A:Turks- und Caicos-Inseln, Sambia, Simbabwe
 
 Z:15                               Ausland Zone 10
-T:1-5/08-18=1.056/2.1176           Tageszeit
-T:1-5/18-8=1.056/2.25              Sparzeit
-T:E,H/*=1.056/2.25                 Sparzeit
+T:W/08-18=1.056/3                  Geschäftszeit
+T:W/18-08=1.056/3.1304             Freizeit
+T:E,H/*=1.056/3.1304               Freizeit
 A:Argentinien, Äthiopien, Benin, Costa Rica, Fidschi, Französisch-Polynesien
 A:Gambia, Irak, Jamaika, Kenia, Kiribati, Komoren, Malediven, Mauretanien
 A:Mongolei, Mosambik, Myanmar, Nicaragua, Niue, Oman, Ruanda, Suriname
 A:Taiwan, Thailand, Togo, Uganda, Vanuatu, Zentralafrikanische Republik
 
 Z:16                               Ausland Zone 11
-T:1-5/08-18=1.056/1.8462           Tageszeit
-T:1-5/18-8=1.056/2                 Sparzeit
-T:E,H/*=1.056/2                    Sparzeit
+T:W/08-18=1.056/2.5714             Geschäftszeit
+T:W/18-08=1.056/2.7692             Freizeit
+T:E,H/*=1.056/2.7692               Freizeit
 A:Bolivien, Caymaninseln, Dschibuti, Indien, Indonesien
 A:Britische Jungferninseln, Nordkorea, Kuba, Mauritius, Niger
 A:Papua-Neuguinea, Paraguay, Sierra Leone, Sri Lanka, Uruguay
 
 Z:17                               Ausland Zone 12
-T:1-5/08-18=1.056/1.6364           Tageszeit
-T:1-5/18-8=1.056/1.8               Sparzeit
-T:E,H/*=1.056/1.8                  Sparzeit
+T:W/08-18=1.056/2.4                Geschäftszeit
+T:W/18-08=1.056/2.5                Freizeit
+T:E,H/*=1.056/2.5                  Freizeit
 A:Anguilla, Antigua und Barbuda, Ascension, Bangladesch, Burkina Faso
 A:Dominica, El Salvador, Eritrea, Falklandinseln, Grenada, Guam, Guatemala
 A:Haiti, Honduras, Jemen, Kamerun, Kap Verde, Kambodscha, Kongo, Mali
@@ -390,21 +359,19 @@ A:Montserrat, Pakistan, Saint Kitts und Nevis, Senegal, Seychellen, Salomonen
 A:Somalia, Tschad, Vietnam, Zaire
 
 Z:18                               Ausland Zone 13
-T:1-5/08-18=1.056/1.2203           Tageszeit
-T:1-5/18-8=1.056/1.3585            Sparzeit
-T:E,H/*=1.056/1.3585               Sparzeit
+T:W/08-18=1.056/2                  Geschäftszeit
+T:W/18-08=1.056/2.1176             Freizeit
+T:E,H/*=1.056/2.1176               Freizeit
 A:Cook-Inseln, Madagaskar
 
 Z:19                               Ausland Zone 14
-T:1-5/08-18=1.056/8                Tageszeit
-T:1-5/18-8=1.056/9                 Sparzeit
-T:E,H/*=1.056/9                    Sparzeit
+T:W/08-18=1.056/10.667             Geschäftszeit
+T:W/18-08=1.056/12                 Freizeit
+T:E,H/*=1.056/12                   Freizeit
 A:Amerikanische Jungferninseln, Kanada, Puerto Rico, Vereinigte Staaten (USA)
 
 Z:20                               Ausland Zone 15
-T:1-5/08-18=1.056/9                Tageszeit
-T:1-5/18-8=1.056/7.2               Sparzeit
-T:E,H/*=1.056/7.2                  Sparzeit
+T:*/*=1.056/10.667                 0-24h
 A:Griechenland, Polen, Tunesien, Türkei
 
 Z:21                               Handvermittelter Verkehr
@@ -412,122 +379,98 @@ A:Afghanistan, Amerikanisch-Samoa, Guantanamo, Marshallinseln, Midway-Inseln
 A:Mikronesien, Palau, Pitcairn-Inseln, Tuvalu, Wake-Inseln
 
 Z:22                               Grenznahverkehr
-T:1-5/08-18=1.056/18               Tageszeit
-T:1-5/18-8=1.056/24                Sparzeit
-T:E,H/*=1.056/24                   Sparzeit
+T:W/08-18=1.056/18                 Geschäftszeit
+T:W/18-08=1.056/24                 Freizeit
+T:E,H/*=1.056/24                   Freizeit
 
-Z:23                               Teleinfo 04570
-T:1-5/08-18=1.056/10.795           Tageszeit
-T:1-5/18-8=1.056/10.795            Sparzeit
-T:E,H/*=1.056/10.795               Sparzeit
-A:+434570
+Z:23                               Inmarsat-A
+T:*/*=1.056/0.72727                0-24h
+A:Inmarsat A
 
-Z:24                               Teleinfo 04500 
-T:1-5/08-18=1.056/7.2              Tageszeit
-T:1-5/18-8=1.056/7.2               Sparzeit
-T:E,H/*=1.056/7.2                  Sparzeit
-A:+434500
+Z:24                               Inmarsat-B/M
+T:*/*=1.056/1.0746                 0-24h
+A:Inmarsat B, Inmarsat M
 
-Z:25                               Telebusiness 04590
-T:1-5/08-18=1.056/4.5              Tageszeit
-T:1-5/18-8=1.056/4.5               Sparzeit
-T:E,H/*=1.056/4.5                  Sparzeit
-A:+434590
+Z:25                               Inmarsat-Mini-M
+T:*/*=1.056/1.5                    0-24h
+A:Inmarsat Mini-M
 
-Z:26                               Teleinfo 04580
-T:1-5/08-18=1.056/2.6997           Tageszeit
-T:1-5/18-8=1.056/2.6997            Sparzeit
-T:E,H/*=1.056/2.6997               Sparzeit
-A:+434580
+Z:26                               Iridium 008816
+T:*/*=1.056/0.48                   0-24h
+A:Iridium 008816
 
-Z:27                               Businessline 0711x
-T:1-5/08-12=1.056/57.6             Tageszeit 1
-T:1-4/13-16=1.056/57.6             Tageszeit 1
-T:1-4/12-13,16-18=1.056/72         Tageszeit 2
-T:5/12-18=1.056/72                 Tageszeit 2
-T:1-5/06-08,18-20=1.056/109.09     Sparzeit
-T:E,H/06-20=1.056/109.09           Sparzeit
-T:*/20-06=1.056/160                Supersparzeit
-A:+43711
+Z:27                               Iridium 008817
+T:*/*=1.056/1.0746                 0-24h
+A:Iridium 008817
 
-Z:28                               Businessline 0713x
-T:1-5/08-18=1.056/32               Tageszeit
-T:1-5/18-8=1.056/32                Sparzeit
-T:E,H/*=1.056/32                   Sparzeit
-A:+43713
+Z:28                               EMSAT
+T:*/*=1.056/1.5                    0-24h
 
-Z:29                               Businessline 0714x
-T:1-5/08-18=1.056/15               Tageszeit
-T:1-5/18-8=1.056/15                Sparzeit
-T:E,H/*=1.056/15                   Sparzeit
-A:+43714
+Z:29                               0711-5,6,7
+T:*/*=1.056/32                     0-24h
+A:+437115, +437116, +437117
 
-Z:30                               Votingline 0717x
-T:1-5/08-18=1.056/15               Tageszeit
-T:1-5/18-8=1.056/15                Sparzeit
-T:E,H/*=1.056/15                   Sparzeit
-A:+43717
+Z:30                               0711-8,9,0
+T:*/*=1.056/15                     0-24h
+A:+437118, +437119, +437110
 
-P:01,3                             Telekom Austria
+P:01,3                             Telekom Austria Geschäftstarif 1
+C:Maintainer:                      Michael Reinelt <reinelt@eunet.at>
+C:Zone:                            Die Regionalzone geht bis zu einer Entfernung von 50 Km, alles andere ist Österreichzone.
+C:Special:                         Variable Taktung, abhängig von Zone und Tageszeit.
+C:Name:                            Telekom Austria
+C:Address:                         Postgasse 8, A-1010 Wien
+C:Homepage:                        http://www.telekom.at
+C:TarifURL:                        http://www.telekom.at/tarife/
+C:Telefon:                         0800 100 100
 # Tarif:                           Geschäftstarif 1 (ATS 0.996 pro Einheit)
 D:pta                              # Verzonung
 
 Z:0                                FreePhone
 T:*/*=0/72
-A:122, 133, 144, +43800
+A:112, 122, 133, 141, 142, 144, +43800, +43801, +43802, +43803, +43804
 
 Z:1                                Regionalzone
-T:1-5/08-12=0.996/57.6             Tageszeit 1
-T:1-4/13-16=0.996/57.6             Tageszeit 1
-T:1-4/12-13,16-18=0.996/72         Tageszeit 2
-T:5/12-18=0.996/72                 Tageszeit 2
-T:1-5/06-08,18-20=0.996/109.09     Sparzeit
-T:E,H/06-20=0.996/109.09           Sparzeit
-T:*/20-06=0.996/160                Supersparzeit
-A:+43660
+T:W/08-18=0.996/72                 Geschäftszeit
+T:W/18-08=0.996/160                Freizeit
+T:E,H/*=0.996/160                  Freizeit
+A:111*, 11820, 15*, +437111, +437112, +437113, +437114, +43810
 
-Z:2                                Fernzone 1
-T:1-5/08-12=0.996/20               Tageszeit 1
-T:1-4/13-16=0.996/20               Tageszeit 1
-T:1-4/12-13,16-18=0.996/25         Tageszeit 2
-T:5/12-18=0.996/25                 Tageszeit 2
-T:1-5/06-08,18-20=0.996/50         Sparzeit
-T:E,H/06-20=0.996/50               Sparzeit
-T:*/20-06=0.996/72                 Supersparzeit
-
-Z:3                                Fernzone 2
-T:1-5/08-12=0.996/15               Tageszeit 1
-T:1-4/13-16=0.996/15               Tageszeit 1
-T:1-4/12-13,16-18=0.996/19.2       Tageszeit 2
-T:5/12-18=0.996/19.2               Tageszeit 2
-T:1-5/06-08,18-20=0.996/40         Sparzeit
-T:E,H/06-20=0.996/40               Sparzeit
-T:*/20-06=0.996/50                 Supersparzeit
+Z:2                                Österreichzone
+T:W/08-18=0.996/25                 Geschäftszeit
+T:W/18-08=0.996/72                 Freizeit
+T:E,H/*=0.996/72                   Freizeit
 A:Österreich
 
-Z:4                                Online-Tarif
-T:1-5/08-18=0.996/120              Tageszeit
-T:1-5/18-8=0.996/360               Sparzeit
-T:E,H/*=0.996/360                  Sparzeit
+Z:3                                Mobilfunk 1
+T:W/08-18=0.996/14.4               Geschäftszeit
+T:W/18-08=0.996/19.2               Freizeit
+T:E,H/*=0.996/19.2                 Freizeit
+A:+43663, +43664, +43676
+
+Z:4                                Mobilfunk 2
+T:W/08-18=0.996/12.88              Geschäftszeit
+T:W/18-08=0.996/16.18              Freizeit
+T:E,H/*=0.996/16.18                Freizeit
+A:+43699
+
+Z:5                                Online
+T:W/08-18=0.996/120                Geschäftszeit
+T:W/18-08=0.996/360                Freizeit
+T:E,H/*=0.996/360                  Freizeit
 A:+437189, 19411, 19430, 19440
 
-Z:5                                Mobilfunk
-T:1-5/08-18=0.996/12               Tageszeit
-T:1-5/18-8=0.996/19.2              Sparzeit
-T:E,H/*=0.996/19.2                 Sparzeit
-A:+43663, +43664, +43676, +43699
-
 Z:6                                Ausland Zone 1
-T:1-5/08-18=0.996/12               Tageszeit
-T:1-5/18-8=0.996/14.4              Sparzeit
-T:E,H/*=0.996/14.4                 Sparzeit
+T:W/08-18=0.996/15                 Geschäftszeit
+T:W/18-08=0.996/18                 Freizeit
+T:E,H/*=0.996/18                   Freizeit
 A:Deutschland, Italien, Liechtenstein, Schweiz, Slowakei, Slowenien
 A:Tschechien, Ungarn
 
 Z:7                                Ausland Zone 2
-T:1-5/08-18=0.996/9                Tageszeit
-T:1-5/18-8=0.996/12                Sparzeit
-T:E,H/*=0.996/12                   Sparzeit
+T:W/08-18=0.996/12                 Geschäftszeit
+T:W/18-08=0.996/14.4               Freizeit
+T:E,H/*=0.996/14.4                 Freizeit
 A:Albanien, Andorra, Belarus, Belgien, Bosnien-Herzegowina, Bulgarien
 A:Dänemark, Finnland, Frankreich, Großbritannien, Nordirland, Irland
 A:Jugoslawien, Serbien, Montenegro, Kroatien, Luxemburg, Malta, Mazedonien
@@ -535,44 +478,44 @@ A:Monaco, Niederlande, Norwegen, Rumänien, San Marino, Schweden, Spanien
 A:Ukraine, Vatikanstadt, Zypern
 
 Z:8                                Ausland Zone 3
-T:1-5/08-18=0.996/6.5455           Tageszeit
-T:1-5/18-8=0.996/8                 Sparzeit
-T:E,H/*=0.996/8                    Sparzeit
+T:W/08-18=0.996/10.667             Geschäftszeit
+T:W/18-08=0.996/12                 Freizeit
+T:E,H/*=0.996/12                   Freizeit
 A:Algerien, Estland, Färöer-Inseln, Georgien, Gibraltar, Island, Israel
 A:Lettland, Litauen, Marokko, Portugal, Russische Föderation, Tadschikistan
 A:Turkmenistan, Usbekistan
 
 Z:9                                Ausland Zone 4
-T:1-5/08-18=0.996/5.1429           Tageszeit
-T:1-5/18-8=0.996/6                 Sparzeit
-T:E,H/*=0.996/6                    Sparzeit
+T:W/08-18=0.996/7.2                Geschäftszeit
+T:W/18-08=0.996/8                  Freizeit
+T:E,H/*=0.996/8                    Freizeit
 A:Antarktis, Armenien, Australien, Aserbaidschan, Weihnachtsinseln
 A:Kokosinseln
 
 Z:10                               Ausland Zone 5
-T:1-5/08-18=0.996/4.2353           Tageszeit
-T:1-5/18-8=0.996/4.8               Sparzeit
-T:E,H/*=0.996/4.8                  Sparzeit
+T:W/08-18=0.996/6                  Geschäftszeit
+T:W/18-08=0.996/6.5455             Freizeit
+T:E,H/*=0.996/6.5455               Freizeit
 A:Chile, Französisch-Guayana, Guadeloupe, Hongkong, Libyen, Martinique
 A:Mayotte, Moldau, Neuseeland, Reunion, St. Pierre und Miquelon, Südafrika
 
 Z:11                               Ausland Zone 6
-T:1-5/08-18=0.996/3.6              Tageszeit
-T:1-5/18-8=0.996/4.2353            Sparzeit
-T:E,H/*=0.996/4.2353               Sparzeit
+T:W/08-18=0.996/4.8                Geschäftszeit
+T:W/18-08=0.996/5.1429             Freizeit
+T:E,H/*=0.996/5.1429               Freizeit
 A:Japan, Südkorea, Malaysia, Niederländische Antillen, Philippinen, Saipan
 
 Z:12                               Ausland Zone 7
-T:1-5/08-18=0.996/3.1304           Tageszeit
-T:1-5/18-8=0.996/3.6               Sparzeit
-T:E,H/*=0.996/3.6                  Sparzeit
+T:W/08-18=0.996/4.2353             Geschäftszeit
+T:W/18-08=0.996/4.8                Freizeit
+T:E,H/*=0.996/4.8                  Freizeit
 A:Angola, Bermuda, Bhutan, Brasilien, China, Ecuador, Iran, Macao, Mexiko
 A:Saudi-Arabien, Venezuela
 
 Z:13                               Ausland Zone 8
-T:1-5/08-18=0.996/2.7692           Tageszeit
-T:1-5/18-8=0.996/3                 Sparzeit
-T:E,H/*=0.996/3                    Sparzeit
+T:W/08-18=0.996/3.6                Geschäftszeit
+T:W/18-08=0.996/4.2353             Freizeit
+T:E,H/*=0.996/4.2353               Freizeit
 A:Ägypten, Äquatorial-Guinea, Aruba, Bahamas, Barbados, Belize, Botsuana
 A:Brunei, Burundi, Dominikanische Republik, Gabun, Ghana, Grönland
 A:Guinea-Bissau, Guyana, Jordanien, Kirgisistan, Kolumbien, Kuwait, Libanon
@@ -580,35 +523,35 @@ A:Panama, Singapur, Sao Tome und Principe, Saint Vincent und die Grenadinen
 A:Trinidad und Tobago, Vereinigte Arabische Emirate
 
 Z:14                               Ausland Zone 9
-T:1-5/08-18=0.996/2.4              Tageszeit
-T:1-5/18-8=0.996/2.5714            Sparzeit
-T:E,H/*=0.996/2.5714               Sparzeit
+T:W/08-18=0.996/3.1304             Geschäftszeit
+T:W/18-08=0.996/3.6                Freizeit
+T:E,H/*=0.996/3.6                  Freizeit
 A:Bahrain, Cote d'Ivoire, Guinea, Kasachstan, Katar, Laos, Lesotho, Liberia
 A:Malawi, Namibia, Nauru, Nepal, Neukaledonien, Nigeria, Norfolk-Inseln, Peru
 A:Saint Helena, Saint Lucia, Samoa, Sudan, Swasiland, Syrien, Tansania, Tonga
 A:Turks- und Caicos-Inseln, Sambia, Simbabwe
 
 Z:15                               Ausland Zone 10
-T:1-5/08-18=0.996/2.1176           Tageszeit
-T:1-5/18-8=0.996/2.25              Sparzeit
-T:E,H/*=0.996/2.25                 Sparzeit
+T:W/08-18=0.996/3                  Geschäftszeit
+T:W/18-08=0.996/3.1304             Freizeit
+T:E,H/*=0.996/3.1304               Freizeit
 A:Argentinien, Äthiopien, Benin, Costa Rica, Fidschi, Französisch-Polynesien
 A:Gambia, Irak, Jamaika, Kenia, Kiribati, Komoren, Malediven, Mauretanien
 A:Mongolei, Mosambik, Myanmar, Nicaragua, Niue, Oman, Ruanda, Suriname
 A:Taiwan, Thailand, Togo, Uganda, Vanuatu, Zentralafrikanische Republik
 
 Z:16                               Ausland Zone 11
-T:1-5/08-18=0.996/1.8462           Tageszeit
-T:1-5/18-8=0.996/2                 Sparzeit
-T:E,H/*=0.996/2                    Sparzeit
+T:W/08-18=0.996/2.5714             Geschäftszeit
+T:W/18-08=0.996/2.7692             Freizeit
+T:E,H/*=0.996/2.7692               Freizeit
 A:Bolivien, Caymaninseln, Dschibuti, Indien, Indonesien
 A:Britische Jungferninseln, Nordkorea, Kuba, Mauritius, Niger
 A:Papua-Neuguinea, Paraguay, Sierra Leone, Sri Lanka, Uruguay
 
 Z:17                               Ausland Zone 12
-T:1-5/08-18=0.996/1.6364           Tageszeit
-T:1-5/18-8=0.996/1.8               Sparzeit
-T:E,H/*=0.996/1.8                  Sparzeit
+T:W/08-18=0.996/2.4                Geschäftszeit
+T:W/18-08=0.996/2.5                Freizeit
+T:E,H/*=0.996/2.5                  Freizeit
 A:Anguilla, Antigua und Barbuda, Ascension, Bangladesch, Burkina Faso
 A:Dominica, El Salvador, Eritrea, Falklandinseln, Grenada, Guam, Guatemala
 A:Haiti, Honduras, Jemen, Kamerun, Kap Verde, Kambodscha, Kongo, Mali
@@ -616,21 +559,19 @@ A:Montserrat, Pakistan, Saint Kitts und Nevis, Senegal, Seychellen, Salomonen
 A:Somalia, Tschad, Vietnam, Zaire
 
 Z:18                               Ausland Zone 13
-T:1-5/08-18=0.996/1.2203           Tageszeit
-T:1-5/18-8=0.996/1.3585            Sparzeit
-T:E,H/*=0.996/1.3585               Sparzeit
+T:W/08-18=0.996/2                  Geschäftszeit
+T:W/18-08=0.996/2.1176             Freizeit
+T:E,H/*=0.996/2.1176               Freizeit
 A:Cook-Inseln, Madagaskar
 
 Z:19                               Ausland Zone 14
-T:1-5/08-18=0.996/8                Tageszeit
-T:1-5/18-8=0.996/9                 Sparzeit
-T:E,H/*=0.996/9                    Sparzeit
+T:W/08-18=0.996/10.667             Geschäftszeit
+T:W/18-08=0.996/12                 Freizeit
+T:E,H/*=0.996/12                   Freizeit
 A:Amerikanische Jungferninseln, Kanada, Puerto Rico, Vereinigte Staaten (USA)
 
 Z:20                               Ausland Zone 15
-T:1-5/08-18=0.996/9                Tageszeit
-T:1-5/18-8=0.996/7.2               Sparzeit
-T:E,H/*=0.996/7.2                  Sparzeit
+T:*/*=0.996/10.667                 0-24h
 A:Griechenland, Polen, Tunesien, Türkei
 
 Z:21                               Handvermittelter Verkehr
@@ -638,122 +579,98 @@ A:Afghanistan, Amerikanisch-Samoa, Guantanamo, Marshallinseln, Midway-Inseln
 A:Mikronesien, Palau, Pitcairn-Inseln, Tuvalu, Wake-Inseln
 
 Z:22                               Grenznahverkehr
-T:1-5/08-18=0.996/18               Tageszeit
-T:1-5/18-8=0.996/24                Sparzeit
-T:E,H/*=0.996/24                   Sparzeit
+T:W/08-18=0.996/18                 Geschäftszeit
+T:W/18-08=0.996/24                 Freizeit
+T:E,H/*=0.996/24                   Freizeit
 
-Z:23                               Teleinfo 04570
-T:1-5/08-18=0.996/10.795           Tageszeit
-T:1-5/18-8=0.996/10.795            Sparzeit
-T:E,H/*=0.996/10.795               Sparzeit
-A:+434570
+Z:23                               Inmarsat-A
+T:*/*=0.996/0.72727                0-24h
+A:Inmarsat A
 
-Z:24                               Teleinfo 04500 
-T:1-5/08-18=0.996/7.2              Tageszeit
-T:1-5/18-8=0.996/7.2               Sparzeit
-T:E,H/*=0.996/7.2                  Sparzeit
-A:+434500
+Z:24                               Inmarsat-B/M
+T:*/*=0.996/1.0746                 0-24h
+A:Inmarsat B, Inmarsat M
 
-Z:25                               Telebusiness 04590
-T:1-5/08-18=0.996/4.5              Tageszeit
-T:1-5/18-8=0.996/4.5               Sparzeit
-T:E,H/*=0.996/4.5                  Sparzeit
-A:+434590
+Z:25                               Inmarsat-Mini-M
+T:*/*=0.996/1.5                    0-24h
+A:Inmarsat Mini-M
 
-Z:26                               Teleinfo 04580
-T:1-5/08-18=0.996/2.6997           Tageszeit
-T:1-5/18-8=0.996/2.6997            Sparzeit
-T:E,H/*=0.996/2.6997               Sparzeit
-A:+434580
+Z:26                               Iridium 008816
+T:*/*=0.996/0.48                   0-24h
+A:Iridium 008816
 
-Z:27                               Businessline 0711x
-T:1-5/08-12=0.996/57.6             Tageszeit 1
-T:1-4/13-16=0.996/57.6             Tageszeit 1
-T:1-4/12-13,16-18=0.996/72         Tageszeit 2
-T:5/12-18=0.996/72                 Tageszeit 2
-T:1-5/06-08,18-20=0.996/109.09     Sparzeit
-T:E,H/06-20=0.996/109.09           Sparzeit
-T:*/20-06=0.996/160                Supersparzeit
-A:+43711
+Z:27                               Iridium 008817
+T:*/*=0.996/1.0746                 0-24h
+A:Iridium 008817
 
-Z:28                               Businessline 0713x
-T:1-5/08-18=0.996/32               Tageszeit
-T:1-5/18-8=0.996/32                Sparzeit
-T:E,H/*=0.996/32                   Sparzeit
-A:+43713
+Z:28                               EMSAT
+T:*/*=0.996/1.5                    0-24h
 
-Z:29                               Businessline 0714x
-T:1-5/08-18=0.996/15               Tageszeit
-T:1-5/18-8=0.996/15                Sparzeit
-T:E,H/*=0.996/15                   Sparzeit
-A:+43714
+Z:29                               0711-5,6,7
+T:*/*=0.996/32                     0-24h
+A:+437115, +437116, +437117
 
-Z:30                               Votingline 0717x
-T:1-5/08-18=0.996/15               Tageszeit
-T:1-5/18-8=0.996/15                Sparzeit
-T:E,H/*=0.996/15                   Sparzeit
-A:+43717
+Z:30                               0711-8,9,0
+T:*/*=0.996/15                     0-24h
+A:+437118, +437119, +437110
 
-P:01,4                             Telekom Austria
+P:01,4                             Telekom Austria Geschäftstarif 2
+C:Maintainer:                      Michael Reinelt <reinelt@eunet.at>
+C:Zone:                            Die Regionalzone geht bis zu einer Entfernung von 50 Km, alles andere ist Österreichzone.
+C:Special:                         Variable Taktung, abhängig von Zone und Tageszeit.
+C:Name:                            Telekom Austria
+C:Address:                         Postgasse 8, A-1010 Wien
+C:Homepage:                        http://www.telekom.at
+C:TarifURL:                        http://www.telekom.at/tarife/
+C:Telefon:                         0800 100 100
 # Tarif:                           Geschäftstarif 2 (ATS 0.936 pro Einheit)
 D:pta                              # Verzonung
 
 Z:0                                FreePhone
 T:*/*=0/72
-A:122, 133, 144, +43800
+A:112, 122, 133, 141, 142, 144, +43800, +43801, +43802, +43803, +43804
 
 Z:1                                Regionalzone
-T:1-5/08-12=0.936/57.6             Tageszeit 1
-T:1-4/13-16=0.936/57.6             Tageszeit 1
-T:1-4/12-13,16-18=0.936/72         Tageszeit 2
-T:5/12-18=0.936/72                 Tageszeit 2
-T:1-5/06-08,18-20=0.936/109.09     Sparzeit
-T:E,H/06-20=0.936/109.09           Sparzeit
-T:*/20-06=0.936/160                Supersparzeit
-A:+43660
+T:W/08-18=0.936/72                 Geschäftszeit
+T:W/18-08=0.936/160                Freizeit
+T:E,H/*=0.936/160                  Freizeit
+A:111*, 11820, 15*, +437111, +437112, +437113, +437114, +43810
 
-Z:2                                Fernzone 1
-T:1-5/08-12=0.936/20               Tageszeit 1
-T:1-4/13-16=0.936/20               Tageszeit 1
-T:1-4/12-13,16-18=0.936/25         Tageszeit 2
-T:5/12-18=0.936/25                 Tageszeit 2
-T:1-5/06-08,18-20=0.936/50         Sparzeit
-T:E,H/06-20=0.936/50               Sparzeit
-T:*/20-06=0.936/72                 Supersparzeit
-
-Z:3                                Fernzone 2
-T:1-5/08-12=0.936/15               Tageszeit 1
-T:1-4/13-16=0.936/15               Tageszeit 1
-T:1-4/12-13,16-18=0.936/19.2       Tageszeit 2
-T:5/12-18=0.936/19.2               Tageszeit 2
-T:1-5/06-08,18-20=0.936/40         Sparzeit
-T:E,H/06-20=0.936/40               Sparzeit
-T:*/20-06=0.936/50                 Supersparzeit
+Z:2                                Österreichzone
+T:W/08-18=0.936/25                 Geschäftszeit
+T:W/18-08=0.936/72                 Freizeit
+T:E,H/*=0.936/72                   Freizeit
 A:Österreich
 
-Z:4                                Online-Tarif
-T:1-5/08-18=0.936/120              Tageszeit
-T:1-5/18-8=0.936/360               Sparzeit
-T:E,H/*=0.936/360                  Sparzeit
+Z:3                                Mobilfunk 1
+T:W/08-18=0.936/14.4               Geschäftszeit
+T:W/18-08=0.936/19.2               Freizeit
+T:E,H/*=0.936/19.2                 Freizeit
+A:+43663, +43664, +43676
+
+Z:4                                Mobilfunk 2
+T:W/08-18=0.936/12.88              Geschäftszeit
+T:W/18-08=0.936/16.18              Freizeit
+T:E,H/*=0.936/16.18                Freizeit
+A:+43699
+
+Z:5                                Online
+T:W/08-18=0.936/120                Geschäftszeit
+T:W/18-08=0.936/360                Freizeit
+T:E,H/*=0.936/360                  Freizeit
 A:+437189, 19411, 19430, 19440
 
-Z:5                                Mobilfunk
-T:1-5/08-18=0.936/12               Tageszeit
-T:1-5/18-8=0.936/19.2              Sparzeit
-T:E,H/*=0.936/19.2                 Sparzeit
-A:+43663, +43664, +43676, +43699
-
 Z:6                                Ausland Zone 1
-T:1-5/08-18=0.936/12               Tageszeit
-T:1-5/18-8=0.936/14.4              Sparzeit
-T:E,H/*=0.936/14.4                 Sparzeit
+T:W/08-18=0.936/15                 Geschäftszeit
+T:W/18-08=0.936/18                 Freizeit
+T:E,H/*=0.936/18                   Freizeit
 A:Deutschland, Italien, Liechtenstein, Schweiz, Slowakei, Slowenien
 A:Tschechien, Ungarn
 
 Z:7                                Ausland Zone 2
-T:1-5/08-18=0.936/9                Tageszeit
-T:1-5/18-8=0.936/12                Sparzeit
-T:E,H/*=0.936/12                   Sparzeit
+T:W/08-18=0.936/12                 Geschäftszeit
+T:W/18-08=0.936/14.4               Freizeit
+T:E,H/*=0.936/14.4                 Freizeit
 A:Albanien, Andorra, Belarus, Belgien, Bosnien-Herzegowina, Bulgarien
 A:Dänemark, Finnland, Frankreich, Großbritannien, Nordirland, Irland
 A:Jugoslawien, Serbien, Montenegro, Kroatien, Luxemburg, Malta, Mazedonien
@@ -761,44 +678,44 @@ A:Monaco, Niederlande, Norwegen, Rumänien, San Marino, Schweden, Spanien
 A:Ukraine, Vatikanstadt, Zypern
 
 Z:8                                Ausland Zone 3
-T:1-5/08-18=0.936/6.5455           Tageszeit
-T:1-5/18-8=0.936/8                 Sparzeit
-T:E,H/*=0.936/8                    Sparzeit
+T:W/08-18=0.936/10.667             Geschäftszeit
+T:W/18-08=0.936/12                 Freizeit
+T:E,H/*=0.936/12                   Freizeit
 A:Algerien, Estland, Färöer-Inseln, Georgien, Gibraltar, Island, Israel
 A:Lettland, Litauen, Marokko, Portugal, Russische Föderation, Tadschikistan
 A:Turkmenistan, Usbekistan
 
 Z:9                                Ausland Zone 4
-T:1-5/08-18=0.936/5.1429           Tageszeit
-T:1-5/18-8=0.936/6                 Sparzeit
-T:E,H/*=0.936/6                    Sparzeit
+T:W/08-18=0.936/7.2                Geschäftszeit
+T:W/18-08=0.936/8                  Freizeit
+T:E,H/*=0.936/8                    Freizeit
 A:Antarktis, Armenien, Australien, Aserbaidschan, Weihnachtsinseln
 A:Kokosinseln
 
 Z:10                               Ausland Zone 5
-T:1-5/08-18=0.936/4.2353           Tageszeit
-T:1-5/18-8=0.936/4.8               Sparzeit
-T:E,H/*=0.936/4.8                  Sparzeit
+T:W/08-18=0.936/6                  Geschäftszeit
+T:W/18-08=0.936/6.5455             Freizeit
+T:E,H/*=0.936/6.5455               Freizeit
 A:Chile, Französisch-Guayana, Guadeloupe, Hongkong, Libyen, Martinique
 A:Mayotte, Moldau, Neuseeland, Reunion, St. Pierre und Miquelon, Südafrika
 
 Z:11                               Ausland Zone 6
-T:1-5/08-18=0.936/3.6              Tageszeit
-T:1-5/18-8=0.936/4.2353            Sparzeit
-T:E,H/*=0.936/4.2353               Sparzeit
+T:W/08-18=0.936/4.8                Geschäftszeit
+T:W/18-08=0.936/5.1429             Freizeit
+T:E,H/*=0.936/5.1429               Freizeit
 A:Japan, Südkorea, Malaysia, Niederländische Antillen, Philippinen, Saipan
 
 Z:12                               Ausland Zone 7
-T:1-5/08-18=0.936/3.1304           Tageszeit
-T:1-5/18-8=0.936/3.6               Sparzeit
-T:E,H/*=0.936/3.6                  Sparzeit
+T:W/08-18=0.936/4.2353             Geschäftszeit
+T:W/18-08=0.936/4.8                Freizeit
+T:E,H/*=0.936/4.8                  Freizeit
 A:Angola, Bermuda, Bhutan, Brasilien, China, Ecuador, Iran, Macao, Mexiko
 A:Saudi-Arabien, Venezuela
 
 Z:13                               Ausland Zone 8
-T:1-5/08-18=0.936/2.7692           Tageszeit
-T:1-5/18-8=0.936/3                 Sparzeit
-T:E,H/*=0.936/3                    Sparzeit
+T:W/08-18=0.936/3.6                Geschäftszeit
+T:W/18-08=0.936/4.2353             Freizeit
+T:E,H/*=0.936/4.2353               Freizeit
 A:Ägypten, Äquatorial-Guinea, Aruba, Bahamas, Barbados, Belize, Botsuana
 A:Brunei, Burundi, Dominikanische Republik, Gabun, Ghana, Grönland
 A:Guinea-Bissau, Guyana, Jordanien, Kirgisistan, Kolumbien, Kuwait, Libanon
@@ -806,35 +723,35 @@ A:Panama, Singapur, Sao Tome und Principe, Saint Vincent und die Grenadinen
 A:Trinidad und Tobago, Vereinigte Arabische Emirate
 
 Z:14                               Ausland Zone 9
-T:1-5/08-18=0.936/2.4              Tageszeit
-T:1-5/18-8=0.936/2.5714            Sparzeit
-T:E,H/*=0.936/2.5714               Sparzeit
+T:W/08-18=0.936/3.1304             Geschäftszeit
+T:W/18-08=0.936/3.6                Freizeit
+T:E,H/*=0.936/3.6                  Freizeit
 A:Bahrain, Cote d'Ivoire, Guinea, Kasachstan, Katar, Laos, Lesotho, Liberia
 A:Malawi, Namibia, Nauru, Nepal, Neukaledonien, Nigeria, Norfolk-Inseln, Peru
 A:Saint Helena, Saint Lucia, Samoa, Sudan, Swasiland, Syrien, Tansania, Tonga
 A:Turks- und Caicos-Inseln, Sambia, Simbabwe
 
 Z:15                               Ausland Zone 10
-T:1-5/08-18=0.936/2.1176           Tageszeit
-T:1-5/18-8=0.936/2.25              Sparzeit
-T:E,H/*=0.936/2.25                 Sparzeit
+T:W/08-18=0.936/3                  Geschäftszeit
+T:W/18-08=0.936/3.1304             Freizeit
+T:E,H/*=0.936/3.1304               Freizeit
 A:Argentinien, Äthiopien, Benin, Costa Rica, Fidschi, Französisch-Polynesien
 A:Gambia, Irak, Jamaika, Kenia, Kiribati, Komoren, Malediven, Mauretanien
 A:Mongolei, Mosambik, Myanmar, Nicaragua, Niue, Oman, Ruanda, Suriname
 A:Taiwan, Thailand, Togo, Uganda, Vanuatu, Zentralafrikanische Republik
 
 Z:16                               Ausland Zone 11
-T:1-5/08-18=0.936/1.8462           Tageszeit
-T:1-5/18-8=0.936/2                 Sparzeit
-T:E,H/*=0.936/2                    Sparzeit
+T:W/08-18=0.936/2.5714             Geschäftszeit
+T:W/18-08=0.936/2.7692             Freizeit
+T:E,H/*=0.936/2.7692               Freizeit
 A:Bolivien, Caymaninseln, Dschibuti, Indien, Indonesien
 A:Britische Jungferninseln, Nordkorea, Kuba, Mauritius, Niger
 A:Papua-Neuguinea, Paraguay, Sierra Leone, Sri Lanka, Uruguay
 
 Z:17                               Ausland Zone 12
-T:1-5/08-18=0.936/1.6364           Tageszeit
-T:1-5/18-8=0.936/1.8               Sparzeit
-T:E,H/*=0.936/1.8                  Sparzeit
+T:W/08-18=0.936/2.4                Geschäftszeit
+T:W/18-08=0.936/2.5                Freizeit
+T:E,H/*=0.936/2.5                  Freizeit
 A:Anguilla, Antigua und Barbuda, Ascension, Bangladesch, Burkina Faso
 A:Dominica, El Salvador, Eritrea, Falklandinseln, Grenada, Guam, Guatemala
 A:Haiti, Honduras, Jemen, Kamerun, Kap Verde, Kambodscha, Kongo, Mali
@@ -842,21 +759,19 @@ A:Montserrat, Pakistan, Saint Kitts und Nevis, Senegal, Seychellen, Salomonen
 A:Somalia, Tschad, Vietnam, Zaire
 
 Z:18                               Ausland Zone 13
-T:1-5/08-18=0.936/1.2203           Tageszeit
-T:1-5/18-8=0.936/1.3585            Sparzeit
-T:E,H/*=0.936/1.3585               Sparzeit
+T:W/08-18=0.936/2                  Geschäftszeit
+T:W/18-08=0.936/2.1176             Freizeit
+T:E,H/*=0.936/2.1176               Freizeit
 A:Cook-Inseln, Madagaskar
 
 Z:19                               Ausland Zone 14
-T:1-5/08-18=0.936/8                Tageszeit
-T:1-5/18-8=0.936/9                 Sparzeit
-T:E,H/*=0.936/9                    Sparzeit
+T:W/08-18=0.936/10.667             Geschäftszeit
+T:W/18-08=0.936/12                 Freizeit
+T:E,H/*=0.936/12                   Freizeit
 A:Amerikanische Jungferninseln, Kanada, Puerto Rico, Vereinigte Staaten (USA)
 
 Z:20                               Ausland Zone 15
-T:1-5/08-18=0.936/9                Tageszeit
-T:1-5/18-8=0.936/7.2               Sparzeit
-T:E,H/*=0.936/7.2                  Sparzeit
+T:*/*=0.936/10.667                 0-24h
 A:Griechenland, Polen, Tunesien, Türkei
 
 Z:21                               Handvermittelter Verkehr
@@ -864,145 +779,323 @@ A:Afghanistan, Amerikanisch-Samoa, Guantanamo, Marshallinseln, Midway-Inseln
 A:Mikronesien, Palau, Pitcairn-Inseln, Tuvalu, Wake-Inseln
 
 Z:22                               Grenznahverkehr
-T:1-5/08-18=0.936/18               Tageszeit
-T:1-5/18-8=0.936/24                Sparzeit
-T:E,H/*=0.936/24                   Sparzeit
+T:W/08-18=0.936/18                 Geschäftszeit
+T:W/18-08=0.936/24                 Freizeit
+T:E,H/*=0.936/24                   Freizeit
 
-Z:23                               Teleinfo 04570
-T:1-5/08-18=0.936/10.795           Tageszeit
-T:1-5/18-8=0.936/10.795            Sparzeit
-T:E,H/*=0.936/10.795               Sparzeit
-A:+434570
+Z:23                               Inmarsat-A
+T:*/*=0.936/0.72727                0-24h
+A:Inmarsat A
 
-Z:24                               Teleinfo 04500 
-T:1-5/08-18=0.936/7.2              Tageszeit
-T:1-5/18-8=0.936/7.2               Sparzeit
-T:E,H/*=0.936/7.2                  Sparzeit
-A:+434500
+Z:24                               Inmarsat-B/M
+T:*/*=0.936/1.0746                 0-24h
+A:Inmarsat B, Inmarsat M
 
-Z:25                               Telebusiness 04590
-T:1-5/08-18=0.936/4.5              Tageszeit
-T:1-5/18-8=0.936/4.5               Sparzeit
-T:E,H/*=0.936/4.5                  Sparzeit
-A:+434590
+Z:25                               Inmarsat-Mini-M
+T:*/*=0.936/1.5                    0-24h
+A:Inmarsat Mini-M
 
-Z:26                               Teleinfo 04580
-T:1-5/08-18=0.936/2.6997           Tageszeit
-T:1-5/18-8=0.936/2.6997            Sparzeit
-T:E,H/*=0.936/2.6997               Sparzeit
-A:+434580
+Z:26                               Iridium 008816
+T:*/*=0.936/0.48                   0-24h
+A:Iridium 008816
 
-Z:27                               Businessline 0711x
-T:1-5/08-12=0.936/57.6             Tageszeit 1
-T:1-4/13-16=0.936/57.6             Tageszeit 1
-T:1-4/12-13,16-18=0.936/72         Tageszeit 2
-T:5/12-18=0.936/72                 Tageszeit 2
-T:1-5/06-08,18-20=0.936/109.09     Sparzeit
-T:E,H/06-20=0.936/109.09           Sparzeit
-T:*/20-06=0.936/160                Supersparzeit
-A:+43711
+Z:27                               Iridium 008817
+T:*/*=0.936/1.0746                 0-24h
+A:Iridium 008817
 
-Z:28                               Businessline 0713x
-T:1-5/08-18=0.936/32               Tageszeit
-T:1-5/18-8=0.936/32                Sparzeit
-T:E,H/*=0.936/32                   Sparzeit
-A:+43713
+Z:28                               EMSAT
+T:*/*=0.936/1.5                    0-24h
 
-Z:29                               Businessline 0714x
-T:1-5/08-18=0.936/15               Tageszeit
-T:1-5/18-8=0.936/15                Sparzeit
-T:E,H/*=0.936/15                   Sparzeit
-A:+43714
+Z:29                               0711-5,6,7
+T:*/*=0.936/32                     0-24h
+A:+437115, +437116, +437117
 
-Z:30                               Votingline 0717x
-T:1-5/08-18=0.936/15               Tageszeit
-T:1-5/18-8=0.936/15                Sparzeit
-T:E,H/*=0.936/15                   Sparzeit
-A:+43717
+Z:30                               0711-8,9,0
+T:*/*=0.936/15                     0-24h
+A:+437118, +437119, +437110
+
+P:01,5                             Telekom Austria Geschäftstarif 3
+C:Maintainer:                      Michael Reinelt <reinelt@eunet.at>
+C:Zone:                            Die Regionalzone geht bis zu einer Entfernung von 50 Km, alles andere ist Österreichzone.
+C:Special:                         Variable Taktung, abhängig von Zone und Tageszeit.
+C:Name:                            Telekom Austria
+C:Address:                         Postgasse 8, A-1010 Wien
+C:Homepage:                        http://www.telekom.at
+C:TarifURL:                        http://www.telekom.at/tarife/
+C:Telefon:                         0800 100 100
+# Tarif:                           Geschäftstarif 3 (ATS 0.816 pro Einheit)
+D:pta                              # Verzonung
+
+Z:0                                FreePhone
+T:*/*=0/72
+A:112, 122, 133, 141, 142, 144, +43800, +43801, +43802, +43803, +43804
+
+Z:1                                Regionalzone
+T:W/08-18=0.816/72                 Geschäftszeit
+T:W/18-08=0.816/160                Freizeit
+T:E,H/*=0.816/160                  Freizeit
+A:111*, 11820, 15*, +437111, +437112, +437113, +437114, +43810
+
+Z:2                                Österreichzone
+T:W/08-18=0.816/25                 Geschäftszeit
+T:W/18-08=0.816/72                 Freizeit
+T:E,H/*=0.816/72                   Freizeit
+A:Österreich
+
+Z:3                                Mobilfunk 1
+T:W/08-18=0.816/14.4               Geschäftszeit
+T:W/18-08=0.816/19.2               Freizeit
+T:E,H/*=0.816/19.2                 Freizeit
+A:+43663, +43664, +43676
+
+Z:4                                Mobilfunk 2
+T:W/08-18=0.816/12.88              Geschäftszeit
+T:W/18-08=0.816/16.18              Freizeit
+T:E,H/*=0.816/16.18                Freizeit
+A:+43699
+
+Z:5                                Online
+T:W/08-18=0.816/120                Geschäftszeit
+T:W/18-08=0.816/360                Freizeit
+T:E,H/*=0.816/360                  Freizeit
+A:+437189, 19411, 19430, 19440
+
+Z:6                                Ausland Zone 1
+T:W/08-18=0.816/15                 Geschäftszeit
+T:W/18-08=0.816/18                 Freizeit
+T:E,H/*=0.816/18                   Freizeit
+A:Deutschland, Italien, Liechtenstein, Schweiz, Slowakei, Slowenien
+A:Tschechien, Ungarn
+
+Z:7                                Ausland Zone 2
+T:W/08-18=0.816/12                 Geschäftszeit
+T:W/18-08=0.816/14.4               Freizeit
+T:E,H/*=0.816/14.4                 Freizeit
+A:Albanien, Andorra, Belarus, Belgien, Bosnien-Herzegowina, Bulgarien
+A:Dänemark, Finnland, Frankreich, Großbritannien, Nordirland, Irland
+A:Jugoslawien, Serbien, Montenegro, Kroatien, Luxemburg, Malta, Mazedonien
+A:Monaco, Niederlande, Norwegen, Rumänien, San Marino, Schweden, Spanien
+A:Ukraine, Vatikanstadt, Zypern
+
+Z:8                                Ausland Zone 3
+T:W/08-18=0.816/10.667             Geschäftszeit
+T:W/18-08=0.816/12                 Freizeit
+T:E,H/*=0.816/12                   Freizeit
+A:Algerien, Estland, Färöer-Inseln, Georgien, Gibraltar, Island, Israel
+A:Lettland, Litauen, Marokko, Portugal, Russische Föderation, Tadschikistan
+A:Turkmenistan, Usbekistan
+
+Z:9                                Ausland Zone 4
+T:W/08-18=0.816/7.2                Geschäftszeit
+T:W/18-08=0.816/8                  Freizeit
+T:E,H/*=0.816/8                    Freizeit
+A:Antarktis, Armenien, Australien, Aserbaidschan, Weihnachtsinseln
+A:Kokosinseln
+
+Z:10                               Ausland Zone 5
+T:W/08-18=0.816/6                  Geschäftszeit
+T:W/18-08=0.816/6.5455             Freizeit
+T:E,H/*=0.816/6.5455               Freizeit
+A:Chile, Französisch-Guayana, Guadeloupe, Hongkong, Libyen, Martinique
+A:Mayotte, Moldau, Neuseeland, Reunion, St. Pierre und Miquelon, Südafrika
+
+Z:11                               Ausland Zone 6
+T:W/08-18=0.816/4.8                Geschäftszeit
+T:W/18-08=0.816/5.1429             Freizeit
+T:E,H/*=0.816/5.1429               Freizeit
+A:Japan, Südkorea, Malaysia, Niederländische Antillen, Philippinen, Saipan
+
+Z:12                               Ausland Zone 7
+T:W/08-18=0.816/4.2353             Geschäftszeit
+T:W/18-08=0.816/4.8                Freizeit
+T:E,H/*=0.816/4.8                  Freizeit
+A:Angola, Bermuda, Bhutan, Brasilien, China, Ecuador, Iran, Macao, Mexiko
+A:Saudi-Arabien, Venezuela
+
+Z:13                               Ausland Zone 8
+T:W/08-18=0.816/3.6                Geschäftszeit
+T:W/18-08=0.816/4.2353             Freizeit
+T:E,H/*=0.816/4.2353               Freizeit
+A:Ägypten, Äquatorial-Guinea, Aruba, Bahamas, Barbados, Belize, Botsuana
+A:Brunei, Burundi, Dominikanische Republik, Gabun, Ghana, Grönland
+A:Guinea-Bissau, Guyana, Jordanien, Kirgisistan, Kolumbien, Kuwait, Libanon
+A:Panama, Singapur, Sao Tome und Principe, Saint Vincent und die Grenadinen
+A:Trinidad und Tobago, Vereinigte Arabische Emirate
+
+Z:14                               Ausland Zone 9
+T:W/08-18=0.816/3.1304             Geschäftszeit
+T:W/18-08=0.816/3.6                Freizeit
+T:E,H/*=0.816/3.6                  Freizeit
+A:Bahrain, Cote d'Ivoire, Guinea, Kasachstan, Katar, Laos, Lesotho, Liberia
+A:Malawi, Namibia, Nauru, Nepal, Neukaledonien, Nigeria, Norfolk-Inseln, Peru
+A:Saint Helena, Saint Lucia, Samoa, Sudan, Swasiland, Syrien, Tansania, Tonga
+A:Turks- und Caicos-Inseln, Sambia, Simbabwe
+
+Z:15                               Ausland Zone 10
+T:W/08-18=0.816/3                  Geschäftszeit
+T:W/18-08=0.816/3.1304             Freizeit
+T:E,H/*=0.816/3.1304               Freizeit
+A:Argentinien, Äthiopien, Benin, Costa Rica, Fidschi, Französisch-Polynesien
+A:Gambia, Irak, Jamaika, Kenia, Kiribati, Komoren, Malediven, Mauretanien
+A:Mongolei, Mosambik, Myanmar, Nicaragua, Niue, Oman, Ruanda, Suriname
+A:Taiwan, Thailand, Togo, Uganda, Vanuatu, Zentralafrikanische Republik
+
+Z:16                               Ausland Zone 11
+T:W/08-18=0.816/2.5714             Geschäftszeit
+T:W/18-08=0.816/2.7692             Freizeit
+T:E,H/*=0.816/2.7692               Freizeit
+A:Bolivien, Caymaninseln, Dschibuti, Indien, Indonesien
+A:Britische Jungferninseln, Nordkorea, Kuba, Mauritius, Niger
+A:Papua-Neuguinea, Paraguay, Sierra Leone, Sri Lanka, Uruguay
+
+Z:17                               Ausland Zone 12
+T:W/08-18=0.816/2.4                Geschäftszeit
+T:W/18-08=0.816/2.5                Freizeit
+T:E,H/*=0.816/2.5                  Freizeit
+A:Anguilla, Antigua und Barbuda, Ascension, Bangladesch, Burkina Faso
+A:Dominica, El Salvador, Eritrea, Falklandinseln, Grenada, Guam, Guatemala
+A:Haiti, Honduras, Jemen, Kamerun, Kap Verde, Kambodscha, Kongo, Mali
+A:Montserrat, Pakistan, Saint Kitts und Nevis, Senegal, Seychellen, Salomonen
+A:Somalia, Tschad, Vietnam, Zaire
+
+Z:18                               Ausland Zone 13
+T:W/08-18=0.816/2                  Geschäftszeit
+T:W/18-08=0.816/2.1176             Freizeit
+T:E,H/*=0.816/2.1176               Freizeit
+A:Cook-Inseln, Madagaskar
+
+Z:19                               Ausland Zone 14
+T:W/08-18=0.816/10.667             Geschäftszeit
+T:W/18-08=0.816/12                 Freizeit
+T:E,H/*=0.816/12                   Freizeit
+A:Amerikanische Jungferninseln, Kanada, Puerto Rico, Vereinigte Staaten (USA)
+
+Z:20                               Ausland Zone 15
+T:*/*=0.816/10.667                 0-24h
+A:Griechenland, Polen, Tunesien, Türkei
+
+Z:21                               Handvermittelter Verkehr
+A:Afghanistan, Amerikanisch-Samoa, Guantanamo, Marshallinseln, Midway-Inseln
+A:Mikronesien, Palau, Pitcairn-Inseln, Tuvalu, Wake-Inseln
+
+Z:22                               Grenznahverkehr
+T:W/08-18=0.816/18                 Geschäftszeit
+T:W/18-08=0.816/24                 Freizeit
+T:E,H/*=0.816/24                   Freizeit
+
+Z:23                               Inmarsat-A
+T:*/*=0.816/0.72727                0-24h
+A:Inmarsat A
+
+Z:24                               Inmarsat-B/M
+T:*/*=0.816/1.0746                 0-24h
+A:Inmarsat B, Inmarsat M
+
+Z:25                               Inmarsat-Mini-M
+T:*/*=0.816/1.5                    0-24h
+A:Inmarsat Mini-M
+
+Z:26                               Iridium 008816
+T:*/*=0.816/0.48                   0-24h
+A:Iridium 008816
+
+Z:27                               Iridium 008817
+T:*/*=0.816/1.0746                 0-24h
+A:Iridium 008817
+
+Z:28                               EMSAT
+T:*/*=0.816/1.5                    0-24h
+
+Z:29                               0711-5,6,7
+T:*/*=0.816/32                     0-24h
+A:+437115, +437116, +437117
+
+Z:30                               0711-8,9,0
+T:*/*=0.816/15                     0-24h
+A:+437118, +437119, +437110
 
 P:02                               UTA
-# Fixme:                           angrenzende Bezirke werden falsch verzont
-D:uta                              # Verzonung
-Z:1                                Bundeslandzone
-T:1-5/8-18=1.00(60)/1              Geschäftszeit
-T:1-5/18-8=0.88(60)/1              Freizeit
-T:E,H/*=0.88(60)/1                 Freizeit
-Z:2                                Österreichzone
-T:1-5/8-18=1.50(60)/1              Geschäftszeit
-T:1-5/18-8=1.00(60)/1              Freizeit
-T:E,H/*=1.00(60)/1                 Freizeit
+C:Maintainer:                      Leopold Toetsch <lt@toetsch.at>
+C:Homepage:                        http://www.utanet.at
+C:TarifURL:                        http://www.utanet.at/1/txt/0/12.html
+C:Name:                            UTA Telekom AG
+C:Address:                         Rooseveltplatz 2, A-1090 Wien
+C:Telefon:                         0800 882 882
+C:Telefax:                         0800 882 329
+C:GT:                              Mindestumsatz in 2 Monaten ATS 198.
+C:GF:                              Cost = Ch > 198/2 ? 0 : 198/2
+Z:1                                Österreich
+T:*/*=0.88(60)/1                   0-24h
 A:Österreich
-Z:3                                special friends
-T:1-5/8-18=1.80(60)/1              Geschäftszeit
-T:1-5/18-8=0.88(60)/1              Freizeit
-T:E,H/*=0.88(60)/1                 Freizeit
-Z:4                                Mobilnetz
-T:1-5/8-18=4.20(60)/1              Geschäftszeit
-T:1-5/18-8=2.88(60)/1              Freizeit
+Z:2                                special friends
+T:*/*=0.88(60)/1                   0-24h
+Z:3                                Mobilnetz
+T:W/8-18=3.90(60)/1                Geschäftszeit
+T:W/18-8=2.88(60)/1                Freizeit
 T:E,H/*=2.88(60)/1                 Freizeit
 A:+43663, +43664, +43676, +43699
-Z:5                                EasyInternet
-T:1-5/8-18=1.00(60)/1              Geschäftszeit
-T:1-5/18-8=1.00(60)/1              Freizeit
-T:E,H/*=1.00(60)/1                 Freizeit
-Z:6                                Nachbarländer West
-T:1-5/8-18=3.60(60)/1              Geschäftszeit
-T:1-5/18-8=3.40(60)/1              Freizeit
-T:E,H/*=3.40(60)/1                 Freizeit
+Z:4                                EasyInternet
+T:W/8-18=0.53(60)/1                Geschäftszeit
+T:W/18-8=0.18(60)/1                Freizeit
+T:E,H/*=0.18(60)/1                 Freizeit
+Z:5                                Nachbarländer West
+T:W/8-18=2.50(60)/1                Geschäftszeit
+T:W/18-8=2.30(60)/1                Freizeit
+T:E,H/*=2.30(60)/1                 Freizeit
 A:Deutschland, Italien, Liechtenstein, Schweiz
-Z:7                                Nachbarländer Ost
-T:1-5/8-18=3.70(60)/1              Geschäftszeit
-T:1-5/18-8=3.50(60)/1              Freizeit
+Z:6                                Nachbarländer Ost
+T:W/8-18=3.70(60)/1                Geschäftszeit
+T:W/18-8=3.50(60)/1                Freizeit
 T:E,H/*=3.50(60)/1                 Freizeit
 A:Slowakei, Slowenien, Tschechien, Ungarn
-Z:8                                Europa 3, USA
-T:1-5/8-18=4.40(60)/1              Geschäftszeit
-T:1-5/18-8=4.00(60)/1              Freizeit
-T:E,H/*=4.00(60)/1                 Freizeit
+Z:7                                Europa 3, USA
+T:W/8-18=3.60(60)/1                Geschäftszeit
+T:W/18-8=3.40(60)/1                Freizeit
+T:E,H/*=3.40(60)/1                 Freizeit
 A:Belgien, Dänemark, Frankreich, Großbritannien, Irland
 A:Amerikanische Jungferninseln, Kanada, Luxemburg, Niederlande, Norwegen
 A:Puerto Rico, Schweden, Großbritannien, Vereinigte Staaten (USA), Alaska
 A:Hawaii
-Z:9                                Europa 4
-T:1-5/8-18=5.60(60)/1              Geschäftszeit
-T:1-5/18-8=5.40(60)/1              Freizeit
+Z:8                                Europa 4
+T:W/8-18=5.60(60)/1                Geschäftszeit
+T:W/18-8=5.40(60)/1                Freizeit
 T:E,H/*=5.40(60)/1                 Freizeit
 A:Andorra, Bosnien-Herzegowina, Finnland, Griechenland, Kanarische Inseln
 A:Kroatien, Madeira, Monaco, Polen, Portugal, San Marino, Spanien, Vatikan
-Z:10                               Europa 5
-T:1-5/8-18=6.10(60)/1              Geschäftszeit
-T:1-5/18-8=5.90(60)/1              Freizeit
-T:E,H/*=5.90(60)/1                 Freizeit
+Z:9                                Europa 5
+T:W/8-18=5.60(60)/1                Geschäftszeit
+T:W/18-8=5.40(60)/1                Freizeit
+T:E,H/*=5.40(60)/1                 Freizeit
 A:Albanien, Azoren, Belarus, Bulgarien, Estland, Lettland, Malta, Mazedonien
 A:Rumänien, Türkei, Ukraine, Zypern
-Z:11                               Europa 6
-T:1-5/8-18=8.00(60)/1              Geschäftszeit
-T:1-5/18-8=7.80(60)/1              Freizeit
+Z:10                               Europa 6
+T:W/8-18=8.00(60)/1                Geschäftszeit
+T:W/18-8=7.80(60)/1                Freizeit
 T:E,H/*=7.80(60)/1                 Freizeit
 A:Algerien, Färöer-Inseln, Georgien, Gibraltar, Island, Israel, Litauen
 A:Marokko, Rußland, Tadschikistan, Turkmenistan, Usbekistan
-Z:12                               Fernost, Südafrika
-T:1-5/8-18=9.80(60)/1              Geschäftszeit
-T:1-5/18-8=9.60(60)/1              Freizeit
+Z:11                               Fernost, Südafrika
+T:W/8-18=9.80(60)/1                Geschäftszeit
+T:W/18-8=9.60(60)/1                Freizeit
 T:E,H/*=9.60(60)/1                 Freizeit
 A:Australien, Hongkong, Japan, Kokosinseln, Neuseeland, Singapur, Südafrika
 A:Südkorea, Weihnachtsinseln
-Z:13                               Welt 1
-T:1-5/8-18=11.00(60)/1             Geschäftszeit
-T:1-5/18-8=10.80(60)/1             Freizeit
+Z:12                               Welt 1
+T:W/8-18=11.00(60)/1               Geschäftszeit
+T:W/18-8=10.80(60)/1               Freizeit
 T:E,H/*=10.80(60)/1                Freizeit
 A:Armenien, Aserbaidschan, Chile, Französisch-Guayana, Guadeloupe, Libyen
 A:Martinique, Reunion
-Z:14                               Welt 2
-T:1-5/8-18=14.40(60)/1             Geschäftszeit
-T:1-5/18-8=14.20(60)/1             Freizeit
+Z:13                               Welt 2
+T:W/8-18=14.40(60)/1               Geschäftszeit
+T:W/18-8=14.20(60)/1               Freizeit
 T:E,H/*=14.20(60)/1                Freizeit
 A:Angola, Antarktis, Bermuda, Bhutan, Brasilien, China, Ecuador, Iran, Kuwait
 A:Macao, Malaysia, Mexiko, Saint Pierre und Miquelon, Moldau
 A:Niederländische Antillen, Philippinen, Saipan, Saudi-Arabien, Venezuela
-Z:15                               Welt 3
-T:1-5/8-18=18.70(60)/1             Geschäftszeit
-T:1-5/18-8=18.50(60)/1             Freizeit
+Z:14                               Welt 3
+T:W/8-18=18.70(60)/1               Geschäftszeit
+T:W/18-8=18.50(60)/1               Freizeit
 T:E,H/*=18.50(60)/1                Freizeit
 A:Ägypten, Äquatorial-Guinea, Aruba, Bahamas, Bahrain, Barbados, Belize
 A:Botswana, Brunei, Burundi, Dominica, Dominikanische Republik
@@ -1015,9 +1108,9 @@ A:Saint Helena, Saint Kitts und Nevis, Saint Lucia
 A:Saint Vincent und die Grenadinen, Sudan, Swasiland, Syrien, Tansania, Tonga
 A:Trinidad & Tobago, Turks- und Caicos-Inseln, Vereinigte Arabische Emirate
 A:Samoa
-Z:16                               Welt 4
-T:1-5/8-18=24.80(60)/1             Geschäftszeit
-T:1-5/18-8=24.60(60)/1             Freizeit
+Z:15                               Welt 4
+T:W/8-18=24.80(60)/1               Geschäftszeit
+T:W/18-8=24.60(60)/1               Freizeit
 T:E,H/*=24.60(60)/1                Freizeit
 A:Anguilla, Argentinien, Äthiopien, Benin, Bolivien, Caymaninseln, Costa Rica
 A:Dschibuti, Fidschi, Französisch-Polynesien, Gambia, Indien, Indonesien
@@ -1025,9 +1118,9 @@ A:Irak, Jamaica, Kenia, Kiribati, Kuba, Malediven, Mauretanien, Mauritius
 A:Mongolei, Mosambik, Myanmar, Nicaragua, Niger, Niue, Nordkorea, Oman
 A:Papua-Neuguinea, Paraguay, Ruanda, Sierra Leone, Sri Lanka, Surinam, Taiwan
 A:Togo, Uganda, Uruguay, Vanuatu, Zentralafrikanische Republik
-Z:17                               Welt 5
-T:1-5/8-18=28.00(60)/1             Geschäftszeit
-T:1-5/18-8=27.80(60)/1             Freizeit
+Z:16                               Welt 5
+T:W/8-18=28.00(60)/1               Geschäftszeit
+T:W/18-8=27.80(60)/1               Freizeit
 T:E,H/*=27.80(60)/1                Freizeit
 A:Afghanistan, Amerikanisch-Samoa, Antigua & Barbuda, Ascension, Bangladesch
 A:Burkina Faso, Cook-Inseln, Diego Garcia, El Salvador, Eritrea
@@ -1038,25 +1131,31 @@ A:Pakistan, Palau, Salomonen, Senegal, Seychellen, Somalia, Tokelau, Tschad
 A:Tuvalu, Vietnam, Wake-Inseln, Wallis- und Futuna-Inseln, Zaire
 
 P:03                               Multikom
+C:Name:                            1003 Multikom Austria Telekom
+C:Address:
+C:Homepage:                        http://www.multikom.at
+C:EMail:                           multikom@multikom.at
+C:Zone:                            Die Regionalzone geht bis zu einer Entfernung von 50 Km, die Fernzone 1 bis 
+C:Zone:                            200 Km alles andere ist Fernzone 2.
 # Fixme:                           Verzonung nicht verifiziert
 D:pta                              # Verzonung
 Z:1                                Regionalzone
-T:*/*=1.00(60)/60/1                rund um die Uhr
+T:*/*=1.00(60)/60/1                0-24h
 Z:2                                Fernzone 1
-T:*/*=1.00(60)/60/1                rund um die Uhr
+T:*/*=1.00(60)/60/1                0-24h
 Z:3                                Fernzone 2
-T:*/*=2.00(60)/60/1                rund um die Uhr
+T:*/*=2.00(60)/60/1                0-24h
 A:Österreich
 Z:4                                5 Freunde
-T:*/*=1.00(60)/60/1                rund um die Uhr
+T:*/*=1.00(60)/60/1                0-24h
 Z:5                                Mobilfunk
-T:*/*=3.00(60)/60/1                rund um die Uhr
+T:*/*=3.00(60)/60/1                0-24h
 A:+43663, +43664, +43676, +43699
 Z:6                                Deutschland spezial
-T:*/*=3.00(60)/60/1                rund um die Uhr
+T:*/*=3.00(60)/60/1                0-24h
 A:Deutschland
 Z:7                                Europa spezial
-T:*/*=4.00(60)/60/1                rund um die Uhr
+T:*/*=4.00(60)/60/1                0-24h
 A:Belgien, Frankreich, Großbritannien
 Z:8                                Ausland Zone 1
 T:*/8-18=3.90(60)/60/1             Tag
@@ -1080,7 +1179,7 @@ A:Albania, Cyprus, Israel, Portugal, Turkey, Ukraine
 Z:12                               Ausland Zone 5
 T:*/8-18=10.90(60)/60/1            Tag
 T:*/18-8=10.60(60)/60/1            Nacht
-A:Algeria, Antarctica, Australia, Christmas Island, Cocos Island, Estonia
+A:Algeria, Antarctica, Australia, Weihnachtsinseln, Cocos Island, Estonia
 A:Färöer, Gibraltar, Japan, South Korea, Latvia, Moldova, Marocco
 A:Russian Federation, South Africa, Tajikistan
 Z:13                               Ausland Zone 6
@@ -1126,386 +1225,405 @@ A:Dominica, Eritrea, Falkland Islands, Grenada, Guam, Guantanamo, Nordkorea
 A:Madagascar, Marshall Islands, Montserrat, Niger, Palau, Paraguay
 A:Pitcairn Islands, Tuvalu, Uruguay, Vietnam, Wake Island
 
+P:04,1                             Globalone
+C:Name:                            Globalone
+C:Address:                         Print Eugen-Str. 8-10, A-1040
+C:Homepage:                        http://www.globalone.at
+C:TarifURL:                        http://www.globalone.at/tele_assi_national.html
+C:EMail:                           info.at@globalone.at
+C:Zone:                            Regionalzone sind Gespräche innerhalb W/NÖ/B, OÖ/St/K und S/T/V, 
+C:Zone:                            Gespräche zwischen diesen 3 Gebieten sind Fernzone 
+D:1004                             # Verzonung
+# Fixme:                           Ausland nicht implemtiert
+C:Special:                         Ausland nicht implemtiert
+C:GT:                              Businesskunden ab ATS 5000
+C:GF:                              Ch >= 5000 ? 1 : -1
+Z:1                                Regional
+T:*/*=0.78(60)/1                   0-24h
+Z:2                                Austria
+T:W/8-18=1.08(60)/1                Geschäftszeit
+T:*/*=0.90(60)/1                   Freizeit
+A:Österreich
+Z:3                                Mobilfunk
+T:W/8-18=3.00(60)/1                Geschäftszeit
+T:*/*=2.46(60)/1                   Freizeit
+A:+43663, +43664, +43676, +43699
+
+P:04,2                             Globalone Bus.
+C:Name:                            Globalone
+C:Address:
+C:Homepage:                        http://www.globalone.at
+C:TarifURL:                        http://www.globalone.at/tele_assi_national.html
+C:Zone:                            Regionalzone sind Gespräche innerhalb Wien/NÖ/B, OÖ/St/K und S/T/V, 
+C:Zone:                            Gespräche zwischen diesen 3 Gebieten sind Fernzone 
+D:1004                             # Verzonung
+# Fixme:                           Ausland nicht implemtiert
+C:Special:                         Ausland nicht implemtiert
+C:Special:                         Wien Geschäftszeit 0.68+Mwst.
+C:GT:                              Businesskunden ab ATS 5000
+C:GF:                              Ch >= 5000 ? 1 : -1
+Z:1                                Regional
+T:*/*=0.66(60)/1                   0-24h
+Z:2                                Austria
+T:W/8-18=0.96(60)/1                Geschäftszeit
+T:*/*=0.84(60)/1                   Freizeit
+A:Österreich
+Z:3                                Mobilfunk
+T:W/8-18=2.88(60)/1                Geschäftszeit
+T:*/*=2.34(60)/1                   Freizeit
+A:+43663, +43664, +43676, +43699
+
 P:05                               tele2
+C:Name:                            Tele2 Telecommunications Services GmbH
+C:Homepage:                        http://www.tele2.at
+C:TarifURL:                        http://www.tele2.at/ger/tarif.htm
+C:Telefon:                         0800 24 00 24
 Z:1                                National
-T:*/*=1.00(60)/60/1                rund um die Uhr
+T:*/*=0.90(60)/60/1                0-24h
 A:Österreich
 Z:2                                Mobilfunknetz
-T:*/*=4.00(60)/60/1                rund um die Uhr
+T:*/*=3.90(60)/60/1                0-24h
 A:+43663, +43664, +43676, +43699
-Z:3                                Europa 1 / USA
-T:*/*=3.50(60)/60/1                rund um die Uhr
-A:Belgien, Dänemark, Deutschland, Finnland, Frankreich, Griechenland
-A:Grossbritannien, Irland, Italien, Liechtenstein, Luxemburg, Monaco
-A:Niederlande, Nordirland, Norwegen, Schweden, Schweiz, Slowakei, Slowenien
-A:Spanien, Tschechien, Ungarn
-Z:4                                Europa 2
-T:*/*=6.00(60)/60/1                rund um die Uhr
+Z:3                                D-I-CH
+T:*/*=2.50(60)/60/1                0-24h
+A:Deutschland, Italien, Schweiz
+Z:4                                Europa 1 / USA
+T:*/*=3.50(60)/60/1                0-24h
+A:Belgien, Dänemark, Finnland, Frankreich, Griechenland, Grossbritannien
+A:Irland, Italien, Liechtenstein, Luxemburg, Monaco, Niederlande, Nordirland
+A:Norwegen, Schweden, Schweiz, Slowakei, Slowenien, Spanien, Tschechien
+A:Ungarn, USA, Hawaii, Kanada
+Z:5                                Europa 2
+T:*/*=6.00(60)/60/1                0-24h
 A:Albanien, Algerien, Andorra, Bosnien-Herzegowina, Bulgarien, Estland
 A:Färöer-Inseln, Gibraltar, Island, Israel, Jugoslawien, Kroatien, Lettland
 A:Litauen, Mazedonien, Malta, Marokko, Polen, Portugal, Rumänien, Russland
 A:San Marino, Tunesien, Türkei, Zypern
-Z:5                                Welt 1
-T:*/*=9.00(60)/60/1                rund um die Uhr
+Z:6                                Welt 1
+T:*/*=9.00(60)/60/1                0-24h
 A:Australien, Hongkong, Japan, Neuseeland, Südkorea, Singapur
-Z:6                                Welt 2
-T:*/*=19.00(60)/60/1               rund um die Uhr
-A:+                                alle übrigen Länder
+Z:7                                Welt 2
+T:*/*=19.00(60)/60/1               0-24h
+A:+                                # alle übrigen Länder
 
-P:07,1                             European Telecom
-# Fixme:                           Verzonung nicht verifiziert
-D:1007                             # Verzonung
-# Tarif:                           1 Jahr feste Bindung
-Z:1                                Fernzone 1
-T:1-5/08-12=2.376(60)/1            Tageszeit 1
-T:1-4/13-16=2.376(60)/1            Tageszeit 1
-T:1-4/12-13,16-18=1.896(60)/1      Tageszeit 2
-T:5/12-18=1.896(60)/1              Tageszeit 2
-T:1-5/06-08,18-20=0.948(60)/1      Sparzeit
-T:E,H/06-20=0.948(60)/1            Sparzeit
-T:*/20-06=0.660(60)/1              Supersparzeit
-Z:2                                Fernzone 2
-T:1-5/08-12=3.168(60)/1            Tageszeit 1
-T:1-4/13-16=3.168(60)/1            Tageszeit 1
-T:1-4/12-13,16-18=2.472(60)/1      Tageszeit 2
-T:5/12-18=2.472(60)/1              Tageszeit 2
-T:1-5/06-08,18-20=1.188(60)/1      Sparzeit
-T:E,H/06-20=1.188(60)/1            Sparzeit
-T:*/20-06=0.948(60)/1              Supersparzeit
+P:07                               European Telecom Fairtel
+C:Name:                            European Telecom
+C:Zone:                            Vorwahlen 1XXX und 2XXX, bzw. mit gleicher Anfangsziffer liegen in der 
+C:Zone:                            Nahzone sonst in der Fernzone.
+C:Address:                         Florag. 7, A-1040 Wien
+C:Homepage:                        http://www.europeantelecom.at
+C:EMail:                           info@europeantelecom.at
+C:Telefon:                         0800 1007 1007
+D:1012                             # Verzonung
+# Tarif:                           Fairtel
+Z:1                                Nahzone
+T:*/*=0.82(60)/1                   0-24h
+Z:2                                Fernzone
+T:*/*=0.88(60)/1                   0-24h
 A:Österreich
 Z:3                                Mobilfunk
-T:1-5/08-18=3.960(60)/1            Tageszeit
-T:1-5/18-8=2.472(60)/1             Sparzeit
-T:E,H/*=2.472(60)/1                Sparzeit
+T:*/*=3.60(60)/1                   0-24h
 A:+43663, +43664, +43676, +43699
-Z:4                                Ausland Zone 1
-T:1-5/08-18=3.960(60)/1            Tageszeit
-T:1-5/18-8=3.300(60)/1             Sparzeit
-T:E,H/*=3.300(60)/1                Sparzeit
+Z:4                                EU+Angrenzende
+T:*/*=2.50(60)/1                   0-24h
 A:Deutschland, Italien, Liechtenstein, Schweiz, Slowakei, Slowenien
-A:Tschechien, Ungarn
-Z:5                                Ausland Zone 2
-T:1-5/08-18=5.280(60)/1            Tageszeit
-T:1-5/18-8=3.960(60)/1             Sparzeit
-T:E,H/*=3.960(60)/1                Sparzeit
-A:Albanien, Andorra, Belarus, Belgien, Bosnien-Herzegowina, Bulgarien
-A:Dänemark, Finnland, Frankreich, Großbritannien, Nordirland, Irland
-A:Jugoslawien, Serbien, Montenegro, Kroatien, Luxemburg, Malta, Mazedonien
-A:Monaco, Niederlande, Norwegen, Rumänien, San Marino, Schweden, Spanien
-A:Ukraine, Vatikanstadt, Zypern
-Z:6                                Ausland Zone 3
-T:1-5/08-18=7.260(60)/1            Tageszeit
-T:1-5/18-8=5.940(60)/1             Sparzeit
-T:E,H/*=5.940(60)/1                Sparzeit
-A:Algerien, Estland, Färöer-Inseln, Georgien, Gibraltar, Island, Israel
-A:Lettland, Litauen, Marokko, Portugal, Russische Föderation, Tadschikistan
-A:Turkmenistan, Usbekistan
-Z:7                                Ausland Zone 4
-T:1-5/08-18=9.240(60)/1            Tageszeit
-T:1-5/18-8=7.920(60)/1             Sparzeit
-T:E,H/*=7.920(60)/1                Sparzeit
-A:Antarktis, Armenien, Australien, Aserbaidschan, Weihnachtsinseln
-A:Kokosinseln
-Z:8                                Ausland Zone 5
-T:1-5/08-18=11.220(60)/1           Tageszeit
-T:1-5/18-8=9.900(60)/1             Sparzeit
-T:E,H/*=9.900(60)/1                Sparzeit
-A:Chile, Französisch-Guayana, Guadeloupe, Hongkong, Libyen, Martinique
-A:Mayotte, Moldau, Neuseeland, Reunion, St. Pierre und Miquelon, Südafrika
-Z:9                                Ausland Zone 6
-T:1-5/08-18=13.200(60)/1           Tageszeit
-T:1-5/18-8=11.220(60)/1            Sparzeit
-T:E,H/*=11.220(60)/1               Sparzeit
-A:Japan, Südkorea, Malaysia, Niederländische Antillen, Philippinen, Saipan
-Z:10                               Ausland Zone 7
-T:1-5/08-18=15.180(60)/1           Tageszeit
-T:1-5/18-8=13.200(60)/1            Sparzeit
-T:E,H/*=13.200(60)/1               Sparzeit
-A:Angola, Bermuda, Bhutan, Brasilien, China, Ecuador, Iran, Macao, Mexiko
-A:Saudi-Arabien, Venezuela
-Z:11                               Ausland Zone 8
-T:1-5/08-18=17.160(60)/1           Tageszeit
-T:1-5/18-8=15.840(60)/1            Sparzeit
-T:E,H/*=15.840(60)/1               Sparzeit
-A:Ägypten, Äquatorial-Guinea, Aruba, Bahamas, Barbados, Belize, Botsuana
-A:Brunei, Burundi, Dominikanische Republik, Gabun, Ghana, Grönland
-A:Guinea-Bissau, Guyana, Jordanien, Kirgisistan, Kolumbien, Kuwait, Libanon
-A:Panama, Singapur, Sao Tome und Principe, Saint Vincent und die Grenadinen
-A:Trinidad und Tobago, Vereinigte Arabische Emirate
-Z:12                               Ausland Zone 9
-T:1-5/08-18=19.800(60)/1           Tageszeit
-T:1-5/18-8=18.480(60)/1            Sparzeit
-T:E,H/*=18.480(60)/1               Sparzeit
-A:Bahrain, Cote d'Ivoire, Guinea, Kasachstan, Katar, Laos, Lesotho, Liberia
-A:Malawi, Namibia, Nauru, Nepal, Neukaledonien, Nigeria, Norfolk-Inseln, Peru
-A:Saint Helena, Saint Lucia, Samoa, Sudan, Swasiland, Syrien, Tansania, Tonga
-A:Turks- und Caicos-Inseln, Sambia, Simbabwe
-Z:13                               Ausland Zone 10
-T:1-5/08-18=22.440(60)/1           Tageszeit
-T:1-5/18-8=21.120(60)/1            Sparzeit
-T:E,H/*=21.120(60)/1               Sparzeit
-A:Argentinien, Äthiopien, Benin, Costa Rica, Fidschi, Französisch-Polynesien
-A:Gambia, Irak, Jamaika, Kenia, Kiribati, Komoren, Malediven, Mauretanien
-A:Mongolei, Mosambik, Myanmar, Nicaragua, Niue, Oman, Ruanda, Suriname
-A:Taiwan, Thailand, Togo, Uganda, Vanuatu, Zentralafrikanische Republik
-Z:14                               Ausland Zone 11
-T:1-5/08-18=25.740(60)/1           Tageszeit
-T:1-5/18-8=23.760(60)/1            Sparzeit
-T:E,H/*=23.760(60)/1               Sparzeit
-A:Bolivien, Caymaninseln, Dschibuti, Indien, Indonesien
-A:Britische Jungferninseln, Nordkorea, Kuba, Mauritius, Niger
-A:Papua-Neuguinea, Paraguay, Sierra Leone, Sri Lanka, Uruguay
-Z:15                               Ausland Zone 12
-T:1-5/08-18=29.040(60)/1           Tageszeit
-T:1-5/18-8=26.400(60)/1            Sparzeit
-T:E,H/*=26.400(60)/1               Sparzeit
-A:Anguilla, Antigua und Barbuda, Ascension, Bangladesch, Burkina Faso
-A:Dominica, El Salvador, Eritrea, Falklandinseln, Grenada, Guam, Guatemala
-A:Haiti, Honduras, Jemen, Kamerun, Kap Verde, Kambodscha, Kongo, Mali
-A:Montserrat, Pakistan, Saint Kitts und Nevis, Senegal, Seychellen, Salomonen
-A:Somalia, Tschad, Vietnam, Zaire
-Z:16                               Ausland Zone 13
-T:1-5/08-18=38.940(60)/1           Tageszeit
-T:1-5/18-8=34.980(60)/1            Sparzeit
-T:E,H/*=34.980(60)/1               Sparzeit
-A:Cook-Inseln, Madagaskar
-Z:17                               Ausland Zone 14
-T:1-5/08-18=5.940(60)/1            Tageszeit
-T:1-5/18-8=5.280(60)/1             Sparzeit
-T:E,H/*=5.280(60)/1                Sparzeit
-A:Amerikanische Jungferninseln, Kanada, Puerto Rico, Vereinigte Staaten (USA)
-Z:18                               Ausland Zone 15
-T:1-5/08-18=5.280(60)/1            Tageszeit
-T:1-5/18-8=6.600(60)/1             Sparzeit
-T:E,H/*=6.600(60)/1                Sparzeit
-A:Griechenland, Polen, Tunesien, Türkei
-Z:19                               Grenznahverkehr
-T:1-5/08-18=2.640(60)/1            Tageszeit
-T:1-5/18-8=1.980(60)/1             Sparzeit
-T:E,H/*=1.980(60)/1                Sparzeit
+A:Tschechien, Ungarn, Belgien, Dänemark, Finnland, Griechenland
+A:Großbritannien, Irland, Luxemburg, Niederlande, Norwegen, Portugal
+A:Schweden, Spanien
+Z:5                                Welt
+T:*/*=21.12(60)/1                  0-24h
+A:+                                # alle übrigen Länder
 
-P:07,2                             European Telecom
-# Fixme:                           Verzonung nicht verifiziert
-D:1007                             # Verzonung
-# Tarif:                           14-tägig kündbar
-Z:1                                Fernzone 1
-T:1-5/08-12=2.532(60)/1            Tageszeit 1
-T:1-4/13-16=2.532(60)/1            Tageszeit 1
-T:1-4/12-13,16-18=2.028(60)/1      Tageszeit 2
-T:5/12-18=2.028(60)/1              Tageszeit 2
-T:1-5/06-08,18-20=1.020(60)/1      Sparzeit
-T:E,H/06-20=1.020(60)/1            Sparzeit
-T:*/20-06=0.708(60)/1              Supersparzeit
-Z:2                                Fernzone 2
-T:1-5/08-12=3.372(60)/1            Tageszeit 1
-T:1-4/13-16=3.372(60)/1            Tageszeit 1
-T:1-4/12-13,16-18=2.640(60)/1      Tageszeit 2
-T:5/12-18=2.640(60)/1              Tageszeit 2
-T:1-5/06-08,18-20=1.260(60)/1      Sparzeit
-T:E,H/06-20=1.260(60)/1            Sparzeit
-T:*/20-06=1.020(60)/1              Supersparzeit
+P:08                               TELEforum
+D:pta                              # Verzonung
+# Verzonung nicht verifiziert
+C:GT:                              Freischaltgebühren ATS 480
+C:GF:                              Cost = 480/12
+C:Name:                            TELEforum Telekommunikations GmbH
+C:Address:                         Sporg. 32, A-8010 Graz
+C:Homepage:                        http://www.teleforum.at
+C:EMail:                           office@teleforum.at
+Z:1                                Nah
+T:*/*=0.98(60)/1                   0-24h
+Z:2                                Österreich
+T:W/8-18=2.48(60)/1                Tag
+T:W/18-8=1.20(60)/1                Nacht
+T:E,H/*=1.20(60)/1                 Weekend
 A:Österreich
-Z:3                                Mobilfunk
-T:1-5/08-18=4.224(60)/1            Tageszeit
-T:1-5/18-8=2.640(60)/1             Sparzeit
-T:E,H/*=2.640(60)/1                Sparzeit
+Z:3                                Österreich
+T:W/8-18=2.48(60)/1                Tag
+T:W/18-8=1.20(60)/1                Nacht
+T:E,H/*=1.20(60)/1                 Weekend
+A:Österreich
+Z:4                                Mobil A1,max
+T:W/8-18=4.20(60)/1                Tag
+T:W/18-8=3.30(60)/1                Nacht
+T:E,H/*=3.30(60)/1                 Weekend
+A:+43664, +43676
+Z:5                                Mobil D,One
+T:W/8-18=4.68(60)/1                Tag
+T:W/18-8=3.30(60)/1                Nacht
+T:E,H/*=3.30(60)/1                 Weekend
+A:+43663, +43699
+
+P:09                               Vocalis
+C:Name:                            Vocalis Telekom-Dienste GmbH
+C:Special:                         34 g Gesprächs-Herstellungsgebühr
+C:Homepage:                        http://www.vocalis.at
+C:TarifURL:                        http://www.vocalis.at/voc_tarife_frame.htm
+Z:1                                Regional
+T:*/*=0.34/0,9.99(60)/1            0-24h
+Z:2                                Österreich
+T:*/*=0.34/0,1.46(60)/1            0-24h
+A:Österreich
+Z:3                                Österreich
+T:*/*=0.34/0,1.46(60)/1            0-24h
+A:Österreich
+Z:4                                Mobilfunk
+T:*/*=0.34/0,3.98(60)/1            0-24h
 A:+43663, +43664, +43676, +43699
-Z:4                                Ausland Zone 1
-T:1-5/08-18=4.224(60)/1            Tageszeit
-T:1-5/18-8=3.516(60)/1             Sparzeit
-T:E,H/*=3.516(60)/1                Sparzeit
-A:Deutschland, Italien, Liechtenstein, Schweiz, Slowakei, Slowenien
-A:Tschechien, Ungarn
-Z:5                                Ausland Zone 2
-T:1-5/08-18=5.628(60)/1            Tageszeit
-T:1-5/18-8=4.224(60)/1             Sparzeit
-T:E,H/*=4.224(60)/1                Sparzeit
-A:Albanien, Andorra, Belarus, Belgien, Bosnien-Herzegowina, Bulgarien
-A:Dänemark, Finnland, Frankreich, Großbritannien, Nordirland, Irland
-A:Jugoslawien, Serbien, Montenegro, Kroatien, Luxemburg, Malta, Mazedonien
-A:Monaco, Niederlande, Norwegen, Rumänien, San Marino, Schweden, Spanien
-A:Ukraine, Vatikanstadt, Zypern
-Z:6                                Ausland Zone 3
-T:1-5/08-18=7.740(60)/1            Tageszeit
-T:1-5/18-8=6.336(60)/1             Sparzeit
-T:E,H/*=6.336(60)/1                Sparzeit
-A:Algerien, Estland, Färöer-Inseln, Georgien, Gibraltar, Island, Israel
-A:Lettland, Litauen, Marokko, Portugal, Russische Föderation, Tadschikistan
-A:Turkmenistan, Usbekistan
-Z:7                                Ausland Zone 4
-T:1-5/08-18=9.852(60)/1            Tageszeit
-T:1-5/18-8=8.448(60)/1             Sparzeit
-T:E,H/*=8.448(60)/1                Sparzeit
-A:Antarktis, Armenien, Australien, Aserbaidschan, Weihnachtsinseln
-A:Kokosinseln
-Z:8                                Ausland Zone 5
-T:1-5/08-18=11.964(60)/1           Tageszeit
-T:1-5/18-8=10.560(60)/1            Sparzeit
-T:E,H/*=10.560(60)/1               Sparzeit
-A:Chile, Französisch-Guayana, Guadeloupe, Hongkong, Libyen, Martinique
-A:Mayotte, Moldau, Neuseeland, Reunion, St. Pierre und Miquelon, Südafrika
-Z:9                                Ausland Zone 6
-T:1-5/08-18=14.076(60)/1           Tageszeit
-T:1-5/18-8=11.964(60)/1            Sparzeit
-T:E,H/*=11.964(60)/1               Sparzeit
-A:Japan, Südkorea, Malaysia, Niederländische Antillen, Philippinen, Saipan
-Z:10                               Ausland Zone 7
-T:1-5/08-18=16.188(60)/1           Tageszeit
-T:1-5/18-8=14.076(60)/1            Sparzeit
-T:E,H/*=14.076(60)/1               Sparzeit
-A:Angola, Bermuda, Bhutan, Brasilien, China, Ecuador, Iran, Macao, Mexiko
-A:Saudi-Arabien, Venezuela
-Z:11                               Ausland Zone 8
-T:1-5/08-18=18.300(60)/1           Tageszeit
-T:1-5/18-8=16.896(60)/1            Sparzeit
-T:E,H/*=16.896(60)/1               Sparzeit
-A:Ägypten, Äquatorial-Guinea, Aruba, Bahamas, Barbados, Belize, Botsuana
-A:Brunei, Burundi, Dominikanische Republik, Gabun, Ghana, Grönland
-A:Guinea-Bissau, Guyana, Jordanien, Kirgisistan, Kolumbien, Kuwait, Libanon
-A:Panama, Singapur, Sao Tome und Principe, Saint Vincent und die Grenadinen
-A:Trinidad und Tobago, Vereinigte Arabische Emirate
-Z:12                               Ausland Zone 9
-T:1-5/08-18=21.120(60)/1           Tageszeit
-T:1-5/18-8=19.716(60)/1            Sparzeit
-T:E,H/*=19.716(60)/1               Sparzeit
-A:Bahrain, Cote d'Ivoire, Guinea, Kasachstan, Katar, Laos, Lesotho, Liberia
-A:Malawi, Namibia, Nauru, Nepal, Neukaledonien, Nigeria, Norfolk-Inseln, Peru
-A:Saint Helena, Saint Lucia, Samoa, Sudan, Swasiland, Syrien, Tansania, Tonga
-A:Turks- und Caicos-Inseln, Sambia, Simbabwe
-Z:13                               Ausland Zone 10
-T:1-5/08-18=23.940(60)/1           Tageszeit
-T:1-5/18-8=22.524(60)/1            Sparzeit
-T:E,H/*=22.524(60)/1               Sparzeit
-A:Argentinien, Äthiopien, Benin, Costa Rica, Fidschi, Französisch-Polynesien
-A:Gambia, Irak, Jamaika, Kenia, Kiribati, Komoren, Malediven, Mauretanien
-A:Mongolei, Mosambik, Myanmar, Nicaragua, Niue, Oman, Ruanda, Suriname
-A:Taiwan, Thailand, Togo, Uganda, Vanuatu, Zentralafrikanische Republik
-Z:14                               Ausland Zone 11
-T:1-5/08-18=27.456(60)/1           Tageszeit
-T:1-5/18-8=25.344(60)/1            Sparzeit
-T:E,H/*=25.344(60)/1               Sparzeit
-A:Bolivien, Caymaninseln, Dschibuti, Indien, Indonesien
-A:Britische Jungferninseln, Nordkorea, Kuba, Mauritius, Niger
-A:Papua-Neuguinea, Paraguay, Sierra Leone, Sri Lanka, Uruguay
-Z:15                               Ausland Zone 12
-T:1-5/08-18=30.972(60)/1           Tageszeit
-T:1-5/18-8=28.164(60)/1            Sparzeit
-T:E,H/*=28.164(60)/1               Sparzeit
-A:Anguilla, Antigua und Barbuda, Ascension, Bangladesch, Burkina Faso
-A:Dominica, El Salvador, Eritrea, Falklandinseln, Grenada, Guam, Guatemala
-A:Haiti, Honduras, Jemen, Kamerun, Kap Verde, Kambodscha, Kongo, Mali
-A:Montserrat, Pakistan, Saint Kitts und Nevis, Senegal, Seychellen, Salomonen
-A:Somalia, Tschad, Vietnam, Zaire
-Z:16                               Ausland Zone 13
-T:1-5/08-18=41.532(60)/1           Tageszeit
-T:1-5/18-8=37.308(60)/1            Sparzeit
-T:E,H/*=37.308(60)/1               Sparzeit
-A:Cook-Inseln, Madagaskar
-Z:17                               Ausland Zone 14
-T:1-5/08-18=6.336(60)/1            Tageszeit
-T:1-5/18-8=5.628(60)/1             Sparzeit
-T:E,H/*=5.628(60)/1                Sparzeit
-A:Amerikanische Jungferninseln, Kanada, Puerto Rico, Vereinigte Staaten (USA)
-Z:18                               Ausland Zone 15
-T:1-5/08-18=5.628(60)/1            Tageszeit
-T:1-5/18-8=7.044(60)/1             Sparzeit
-T:E,H/*=7.044(60)/1                Sparzeit
-A:Griechenland, Polen, Tunesien, Türkei
-Z:19                               Grenznahverkehr
-T:1-5/08-18=2.820(60)/1            Tageszeit
-T:1-5/18-8=2.112(60)/1             Sparzeit
-T:E,H/*=2.112(60)/1                Sparzeit
+Z:5                                Deutschland
+T:*/*=0.34/0,2.86(60)/1            0-24h
+A:Deutschland
+Z:6                                USA
+T:*/*=0.34/0,3.46(60)/1            0-24h
+A:USA
+Z:7                                Frankreich ...
+T:*/*=0.34/0,3.56(60)/1            0-24h
+A:Frankreich, Großbritannien, Italien, Liechtenstein, Schweden, Schweiz
+Z:8                                Belgien
+T:*/*=0.34/0,3.76(60)/1            0-24h
+A:Belgien
+Z:9                                Niederlande
+T:*/*=0.34/0,3.86(60)/1            0-24h
+A:Niederlande
+Z:10                               Dänemark ...
+T:*/*=0.34/0,3.96(60)/1            0-24h
+A:Dänemark, Finnland, Kanada, Spanien, Ungarn
+Z:11                               Irland ...
+T:*/*=0.34/0,4.46(60)/1            0-24h
+A:Irland, Norwegen, Slowenien, Tschechische Republik
+Z:12                               Monaco
+T:*/*=0.34/0,4.66(60)/1            0-24h
+A:Monaco
+Z:13                               Andorra ...
+T:*/*=0.34/0,4.76(60)/1            0-24h
+A:Andorra, Bosnien-Herzegowina, Vatikan, Kroatien, Luxemburg, Puerto Rico
+A:Amerikanische Jungferninseln
+Z:14                               Malta ...
+T:*/*=0.34/0,5.16(60)/1            0-24h
+A:Malta, San Marino, Slowakische Republik
+Z:15                               Griechenland ...
+T:*/*=0.34/0,5.36(60)/1            0-24h
+A:Griechenland, Polen
+Z:16                               Jugoslawien
+T:*/*=0.34/0,5.56(60)/1            0-24h
+A:Jugoslawien
+Z:17                               Portugal
+T:*/*=0.34/0,5.86(60)/1            0-24h
+A:Portugal
+Z:18                               Albanien ...
+T:*/*=0.34/0,5.96(60)/1            0-24h
+A:Albanien, Australien, Weissrussland, Bulgarien, Estland, Israel, Mazedonien
+A:Zypern
+Z:19                               Rumänien ...
+T:*/*=0.34/0,6.36(60)/1            0-24h
+A:Rumänien, Türkei, Ukraine
+Z:20                               Färöer-Inseln ...
+T:*/*=0.34/0,6.46(60)/1            0-24h
+A:Färöer-Inseln, Island
+Z:21                               Tunesien
+T:*/*=0.34/0,6.76(60)/1            0-24h
+A:Tunesien
+Z:22                               Gibraltar ...
+T:*/*=0.34/0,6.96(60)/1            0-24h
+A:Gibraltar, Lettland, Russische Förderation (östl.)
+Z:23                               Antarktis ...
+T:*/*=0.34/0,7.16(60)/1            0-24h
+A:Antarktis, Weihnachtsinseln, Kokosinseln, Hongkong, Japan, Litauen
+A:Neuseeland, Singapur
+Z:24                               Algerien
+T:*/*=0.34/0,7.46(60)/1            0-24h
+A:Algerien
+Z:25                               Südkorea
+T:*/*=0.34/0,7.76(60)/1            0-24h
+A:Südkorea
+Z:26                               Marokko
+T:*/*=0.34/0,7.96(60)/1            0-24h
+A:Marokko
+Z:27                               Malaysia ...
+T:*/*=0.34/0,8.36(60)/1            0-24h
+A:Malaysia, Mexiko, Philippinen, St. Pierre und Miquelon, Südafrika
+A:Tadschikistan
+Z:28                               Chile ...
+T:*/*=0.34/0,8.96(60)/1            0-24h
+A:Chile, Georgien, Guadeloupe, Libyen, Moldavien Moldau (Republik)
+A:Marianen (SaipanNord-), Turkmenistan, Usbekistan
+Z:29                               Aserbaidschan
+T:*/*=0.34/0,9.26(60)/1            0-24h
+A:Aserbaidschan
+Z:30                               Macao ...
+T:*/*=0.34/0,9.56(60)/1            0-24h
+A:Macao, Martinique / Franz. Antillen, Mayotte, Niederl. Antillen
+Z:31                               Armenien ...
+T:*/*=0.34/0,9.96(60)/1            0-24h
+A:Armenien, Französisch-Guayana
+Z:32                               Amerikanisch-Samoa
+T:*/*=0.34/0,10.16(60)/1           0-24h
+A:Amerikanisch-Samoa
+Z:33                               Bermuda ...
+T:*/*=0.34/0,10.76(60)/1           0-24h
+A:Bermuda, Dominikanische Republik, Reunion
+Z:34                               China
+T:*/*=0.34/0,11.36(60)/1           0-24h
+A:China
+Z:35                               Angola ...
+T:*/*=0.34/0,11.96(60)/1           0-24h
+A:Angola, Bahamas, Brasilien, Ecuador, Kolumbien, Panama, Taiwan, Thailand
+A:Venezuela
+Z:36                               Ägypten ...
+T:*/*=0.34/0,13.16(60)/1           0-24h
+A:Ägypten, Brunei, Grönland, St. Vincent und Grenadinen, Trinidad und Tobago
+A:Ver. Arabische Emirate
+Z:37                               Barbados ...
+T:*/*=0.34/0,13.96(60)/1           0-24h
+A:Barbados, Botsuana Botswana, Ghana, Jordanien
+Z:38                               Aruba ...
+T:*/*=0.34/0,14.36(60)/1           0-24h
+A:Aruba, Indien, Indonesien, Iran, Kirgistan, Kuwait, Libanon, Liberia, Peru
+A:Katar, Sudan, Syrien, Tansania
+Z:39                               Bhutan ...
+T:*/*=0.34/0,14.96(60)/1           0-24h
+A:Bhutan, Gabun, Saudi Arabien, Senegal
+Z:40                               Argentinien ...
+T:*/*=0.34/0,15.56(60)/1           0-24h
+A:Argentinien, Costa Rica, Guinea, Guinea-Bissau, Kasachstan, Nordkorea, Kuba
+A:Lesotho, Malawi, Namibia, Nauru, Nepal, Neukaledonien, Norfolkinseln
+A:Papua-Neuguinea, Paraguay, Sambia, West-Samoa, Simbabwe, Swasiland
+A:Turks- und Caicosinseln
+Z:41                               Bahrain ...
+T:*/*=0.34/0,15.96(60)/1           0-24h
+A:Bahrain, Laos, Nigeria, St. Helena, St. Lucia
+Z:42                               Ascension ...
+T:*/*=0.34/0,16.76(60)/1           0-24h
+A:Ascension, Belize, Bolivien, Burundi, Dominica, El Salvador, Fidschi
+A:Grenada, Guatemala, Guyana, Jamaika, Kenia, Malediven, Mauretanien
+A:Mauritius, Montserrat, Nicaragua, Somalia, Uruguay, Vietnam
+Z:43                               Mayotte ...
+T:*/*=0.34/0,16.96(60)/1           0-24h
+A:Mayotte, Sao Tome und Principe
+Z:44                               Äquatorial-Guinea ...
+T:*/*=0.34/0,17.96(60)/1           0-24h
+A:Äquatorial-Guinea, Äthiopien, Afghanistan, Anguilla, Antigua und Barbuda
+A:Bangladesch, Benin, Burkina Faso Obervolta, Kaimaninseln, Cookinseln
+A:Elfenbeinküste Cote de Ivoire, Dschibuti, Eritrea, Falklandinseln
+A:Französisch-Polynesien, Gambia, Guam, Guantanamo Bay, Haiti, Honduras, Irak
+A:Jemen (Arab. Republik), Kambodscha, Kamerun, Cape Verde, Kiribati, Kongo
+A:Madagaskar, Mali, Marshallinseln, Mikronesien, Mongolei, Mosambik
+A:Myanmar Burma, Niger, Niue-Inseln, Oman, Pakistan, Palau /Belau, Ruanda
+A:Salomonen, Seyschellen, Sierra Leone, Sri Lanka, St. Kitts und Nevis
+A:Suriname, Togo, Tonga, Tschad, Tuvalu, Uganda, Vanuatu
+A:Britische Jungferninseln, Wake Inseln, Zaire, Zentralafrikanische Republik
 
 P:11                               RSL COM
 D:1012                             # Verzonung
+C:Name:                            RSL COM Austria AG
+C:Address:                         Marktstr. 3, A-7000 Eisenstadt
+C:Homepage:                        http://www.rslcom.at
+C:EMail:                           info@rslcom.at
+C:Telefon:                         0800 008000
+C:Zone:                            Vorwahlen 1XXX und 2XXX, bzw. mit gleicher Anfangsziffer liegen in der 
+C:Zone:                            Bundelandzone sonst in der Zone Österreich.
+C:GT:                              Grundgebühr ATS 69, bei Rechnung < 200 ATS.
+C:GF:                              Cost = Ch >= 200 ? 0 : 69
 Z:1                                Bundesland
-T:1-5/8-18=1.00(60)/1              Tag
-T:1-5/18-8=0.88(60)/1              Nacht
-T:E/*=0.88(60)/1                   Weekend
+T:W/8-18=1.00(60)/1                Tag
+T:W/18-8=0.88(60)/1                Nacht
+T:E,H/*=0.88(60)/1                 Weekend
 Z:2                                Österreich
-T:1-5/8-18=1.68(60)/1              Tag
-T:1-5/18-8=0.88(60)/1              Nacht
-T:E/*=0.88(60)/1                   Weekend
+T:W/8-18=1.50(60)/1                Tag
+T:W/18-8=0.88(60)/1                Nacht
+T:E,H/*=0.88(60)/1                 Weekend
 A:Österreich
 Z:3                                Mobilfunk
-T:*/*=4.00(60)/1                   rund um die Uhr
+T:*/*=4.00(60)/1                   0-24h
 A:+43663, +43664, +43676, +43699
 Z:4                                Deutschland
-T:*/*=3.00(60)/1                   rund um die Uhr
+T:*/*=3.00(60)/1                   0-24h
 A:Deutschland
 Z:5                                Ausland 1
-T:*/*=3.60(60)/1                   rund um die Uhr
+T:*/*=3.60(60)/1                   0-24h
 A:Frankreich, Großbritannien, Italien, Liechtenstein, Paraguay, Schweiz
 A:Slowakei, Slowenien, Tschechien, Ungarn, Vatikanstadt
 Z:6                                Ausland 2
-T:*/*=4.20(60)/1                   rund um die Uhr
+T:*/*=4.20(60)/1                   0-24h
 A:Belgien, Dänemark, Finnland, Irland, Kanada, Luxemburg, Niederlande
 A:Norwegen, Papua-Neuguinea, San Marino, Schweden, Spanien
 A:Vereinigte Staaten (USA)
 Z:7                                Ausland 3
-T:*/*=4.80(60)/1                   rund um die Uhr
+T:*/*=4.80(60)/1                   0-24h
 A:Andorra, Bosnien-Herzegowina, Bulgarien, Kroatien, Malediven, Zypern
 Z:8                                Ausland 4
-T:*/*=5.40(60)/1                   rund um die Uhr
+T:*/*=5.40(60)/1                   0-24h
 A:Weißrußland, Färöer-Inseln, Griechenland, Jugoslawien, Serbien, Montenegro
 A:Britische Jungferninseln, Kanarische Inseln, Palau, Rumänien, Tunesien
 A:Türkei, Ukraine
 Z:9                                Ausland 5
-T:*/*=6.00(60)/1                   rund um die Uhr
+T:*/*=6.00(60)/1                   0-24h
 A:Albanien, Algerien, Antarktis, Australien, Estland, Lettland, Malawi
 A:Malaysia, Marokko, Moldau, Moldau
 Z:10                               Ausland 6
-T:*/*=6.60(60)/1                   rund um die Uhr
+T:*/*=6.60(60)/1                   0-24h
 A:Gibraltar, Island, Israel
 Z:11                               Ausland 7
-T:*/*=7.20(60)/1                   rund um die Uhr
+T:*/*=7.20(60)/1                   0-24h
 A:Litauen, Russische Föderation, Tadschikistan
 Z:12                               Ausland 8
-T:*/*=7.80(60)/1                   rund um die Uhr
+T:*/*=7.80(60)/1                   0-24h
 A:Georgien, Hongkong, Japan, Südkorea, Neuseeland, Singapur, Turkmenistan
 A:Usbekistan
 Z:13                               Ausland 9
-T:*/*=8.40(60)/1                   rund um die Uhr
+T:*/*=8.40(60)/1                   0-24h
 A:Armenien, Aserbaidschan, Weihnachtsinseln, Kokosinseln, Mauritius, Mexiko
 Z:14                               Ausland 10
-T:*/*=9.60(60)/1                   rund um die Uhr
+T:*/*=9.60(60)/1                   0-24h
 A:Chile, Französisch-Guayana, Guadeloupe, Libyen, Peru, Reunion
 A:St. Pierre und Miquelon, Südafrika
 Z:15                               Ausland 11
-T:*/*=12.00(60)/1                  rund um die Uhr
+T:*/*=12.00(60)/1                  0-24h
 A:Brasilien, Niederländische Antillen
 Z:16                               Ausland 12
-T:*/*=13.20(60)/1                  rund um die Uhr
+T:*/*=13.20(60)/1                  0-24h
 A:Angola, Bermuda, Bhutan, China, Ecuador, Iran, Kuwait, Mali, Saudi-Arabien
 A:Venezuela, Vereinigte Arabische Emirate
 Z:17                               Ausland 13
-T:*/*=14.40(60)/1                  rund um die Uhr
+T:*/*=14.40(60)/1                  0-24h
 A:Bahamas, Dominikanische Republik, Madagaskar, Ägypten
 Z:18                               Ausland 14
-T:*/*=15.60(60)/1                  rund um die Uhr
+T:*/*=15.60(60)/1                  0-24h
 A:Aruba, Barbados, Belize, Botswana, Brunei, Burundi, El Salvador, Gabun
 A:Ghana, Grönland, Guinea-Bissau, Guyana, Jordanien, Katar, Kirgisistan
 A:Kolumbien, Libanon, Martinique, Mayotte, Sao Tome und Principe
 A:Saint Vincent und die Grenadinen, Taiwan, Trinidad und Tobago
 A:Äquatorial-Guinea
 Z:19                               Ausland 15
-T:*/*=18.00(60)/1                  rund um die Uhr
+T:*/*=18.00(60)/1                  0-24h
 A:Argentinien, Bahrain, Benin, Cote d'Ivoire, Dominica, Grenada, Guinea
 A:Kasachstan, Kenia, Komoren, Laos, Lesotho, Liberia, Mauretanien, Namibia
 A:Nauru, Nepal, Neukaledonien, Nigeria, Norfolk-Inseln, Sambia, Samoa
 A:Simbabwe, St. Helena, Saint Kitts und Nevis, St. Lucia, Sudan, Swasiland
 A:Syrien, Tansania, Tonga, Turks- und Caicos-Inseln
 Z:20                               Ausland 16
-T:*/*=19.20(60)/1                  rund um die Uhr
+T:*/*=19.20(60)/1                  0-24h
 A:Mikronesien, Mikronesien, Äthiopien
 Z:21                               Ausland 17
-T:*/*=20.40(60)/1                  rund um die Uhr
+T:*/*=20.40(60)/1                  0-24h
 A:Costa Rica, Fidschi, Französisch-Polynesien, Gambia, Indonesien, Irak
 A:Jamaika, Kiribati, Nicaragua, Niue, Oman, Panama, Philippinen, Ruanda
 A:Amerikanisch-Samoa, Suriname, Thailand, Togo, Uganda, Vanuatu
 A:Zentralafrikanische Republik
 Z:22                               Ausland 18
-T:*/*=24.00(60)/1                  rund um die Uhr
+T:*/*=24.00(60)/1                  0-24h
 A:Afghanistan, Anguilla, Antigua und Barbuda, Ascension, Bangladesch
 A:Bolivien, Burkina Faso, Cook-Inseln, Caymaninseln, Dschibuti, Eritrea
 A:Falklandinseln, Guam, Guantanamo, Guatemala, Haiti, Honduras, Indien, Jemen
@@ -1515,101 +1633,107 @@ A:Seychellen, Sierra Leone, Somalia, Sri Lanka, Tschad, Tuvalu, Uruguay
 A:Vietnam, Wallis- und Futuna-Inseln, Zaire
 
 P:12                               1012
-D:1012                             # Verzonung
-Z:1                                Nah
-T:1-5/8-18=1.00(60)/60/1           Tag
-T:1-5/18-8=0.90(60)/60/1           Nacht
-T:E,H/*=0.90(60)/60/1              Weekend
-Z:2                                Fern
-T:1-5/8-18=2.00(60)/60/1           Tag
-T:1-5/18-8=0.90(60)/60/1           Nacht
-T:E,H/*=0.90(60)/60/1              Weekend
+C:Name:                            1012 privat
+C:Address:                         Linzer Str. 221, A-1140 Wien
+C:Homepage:                        http://www.1012privat.at
+C:Telefon:                         0800 1012 1012
+Z:1                                Österreich
+T:*/*=0.90(60)/60/1                0-24h
 A:Österreich
-Z:3                                Mobilfunk
-T:1-5/8-18=4.00(60)/60/1           Tag
-T:1-5/18-8=3.70(60)/60/1           Nacht
-T:E,H/*=3.70(60)/60/1              Weekend
+Z:2                                Mobilfunk
+T:*/*=4.00(60)/60/1                0-24h
 A:+43663, +43664, +43676, +43699
-Z:4                                Deutschland spezial
-T:*/*=2.90(60)/60/1                rund um die Uhr
+Z:3                                Deutschland spezial
+T:*/*=2.90(60)/60/1                0-24h
 A:Deutschland
-Z:5                                Nachbarn
-T:*/*=3.70(60)/60/1                rund um die Uhr
+Z:4                                Nachbarn
+T:*/*=3.70(60)/60/1                0-24h
 A:Frankreich, Italien, Schweiz, Liechtenstein, Slowakei, Slowenien
 A:Tschechien, Ungarn
-Z:6                                Europa 1 + USA
-T:*/*=4.40(60)/60/1                rund um die Uhr
+Z:5                                Europa 1 + USA
+T:*/*=4.40(60)/60/1                0-24h
 A:Belgien, Dänemark, Finnland, Großbritannien, Irland, Kanada, Luxemburg
 A:Niederlande, Norwegen, Schweden, Spanien, Vereinigte Staaten (USA)
-Z:7                                Europa 2
-T:*/*=5.60(60)/60/1                rund um die Uhr
+Z:6                                Europa 2
+T:*/*=5.60(60)/60/1                0-24h
 A:Andorra, Bosnien-Herzegowina, Färöer-Inseln, Jugoslawien, Serbien
 A:Montenegro, Kroatien, Malta, Monaco
-Z:8                                Europa 3
-T:*/*=6.10(60)/60/1                rund um die Uhr
+Z:7                                Europa 3
+T:*/*=6.10(60)/60/1                0-24h
 A:Albanien, Bulgarien, Estland, Griechenland, Mazedonien, Polen, Portugal
 A:Rumänien, San Marino, Tunesien, Ukraine, Weißrußland, Zypern
-Z:9                                Welt 1
-T:*/*=7.90(60)/60/1                rund um die Uhr
+Z:8                                Welt 1
+T:*/*=7.90(60)/60/1                0-24h
 A:Algerien, Australien, Gibraltar, Hongkong, Island, Israel, Japan, Lettland
 A:Litauen, Marokko, Neuseeland, Russische Föderation, Singapur, Südkorea
 A:Türkei
-Z:10                               Welt 2
-T:*/*=24.90(60)/60/1               rund um die Uhr
-A:+                                alle übrigen Länder
+Z:9                                Welt 2
+T:*/*=24.90(60)/60/1               0-24h
+A:+                                # alle übrigen Länder
+
+P:13                               NETnet
+C:Name:                            NETnet Telekommunikation GmbH
+C:Special:                         Nur Businesskunden
+C:Address:                         Inkustr. 2-7, A-3400 Klosterneuburg
+C:Homepage:                        http://www.netnet.at
+C:EMail:                           customercare@netnet.co.at
 
 P:24                               Telepassport
 C:Maintainer:                      Leopold Toetsch <lt@toetsch.at>
 C:Name:                            TelePassport Telekommunikationsdiensleitungen GmbH
-C:Adresse:                         Prinz-Eugen-Str. 10, A 1040 Wien
+C:Address:                         Prinz-Eugen-Str. 10, A 1040 Wien
 C:Homepage:                        http://www.telepassport.at
 C:Hotline:                         0800 80 1024
+C:EMail:                           info@telepassport.at
+C:Telefon:                         01 506 44-100
+C:Telefax:                         01 506 44-199
+C:Zone                             Vorwahlen 1XXX und 2XXX, sind in der Zone RundUm-Wien, andere Vorwahlen mit gleicher Anfangsziffer liegen in der Zone RundUm-Regional, der Rest ist Ganzland.
 D:1024                             # Verzonung
 Z:1                                RundUm-Wien
-T:1-5/8-18=0.98(60)/1              Tag
-T:1-5/18-8=0.88(60)/1              Nacht
+T:W/8-18=0.98(60)/1                Tag
+T:W/18-8=0.88(60)/1                Nacht
 T:E,H/*=0.88(60)/1                 Weekend
 Z:2                                RundUm-Regional
-T:1-5/8-18=1.28(60)/1              Tag
-T:1-5/18-8=1.18(60)/1              Nacht
+T:W/8-18=1.28(60)/1                Tag
+T:W/18-8=1.18(60)/1                Nacht
 T:E,H/*=1.18(60)/1                 Weekend
 Z:3                                Ganzland
-T:1-5/8-18=1.98(60)/1              Tag
-T:1-5/18-8=1.18(60)/1              Nacht
+T:W/8-18=1.98(60)/1                Tag
+T:W/18-8=1.18(60)/1                Nacht
 T:E,H/*=1.18(60)/1                 Weekend
 A:Österreich
 Z:4                                Mobilfunk
-T:*/*=3.98(60)/1                   rund um die Uhr
+T:*/*=3.98(60)/1                   0-24h
 A:+43663, +43664, +43676, +43699
 Z:5                                WeltWeit 1
-T:*/*=2.98(60)/1                   rund um die Uhr
+T:*/*=2.98(60)/1                   0-24h
 A:Deutschland, Schweiz
 Z:6                                WeltWeit 2
-T:*/*=3.98(60)/1                   rund um die Uhr
+T:*/*=3.98(60)/1                   0-24h
 A:Belgien, Dänemark, Finnland, Frankreich, Großbritannien, Irland, Italien
 A:Liechtenstein, Luxemburg, Monaco, Niederlande, Norwegen, Schweden
 A:Slowenien, Slowakei, Spanien, Tschechien, Ungarn, Vatikan
 A:Vereinigte Staaten (USA), Puerto Rico, Alaska, Hawaii, Kanada
 Z:7                                WeltWeit 3
-T:*/*=5.98(60)/1                   rund um die Uhr
+T:*/*=5.98(60)/1                   0-24h
 A:Andorra, Bosnien-Herzegowina, Bulgarien, Estland, Griechenland, Island
 A:Kroatien, Lettland, Litauen, Malta, Mazedonien, Polen, Portugal, Rumänien
 A:Serbien, Montenegro, Zypern, Australien, Färöer, Israel, Neuseeland
 A:Amerikanische Jungferninseln
 Z:8                                WeltWeit 4
-T:*/*=7.38(60)/1                   rund um die Uhr
+T:*/*=7.38(60)/1                   0-24h
 A:Albanien, Weihnachtsinseln, Gibraltar, Kokosinseln, Rußland, San Marino
 A:Türkei, Tunesien, Ukraine, Weißrußland, Algerien, Hongkong, Japan, Südkorea
 A:Marokko, Philippinen, Russische Föderation, Singapur
 Z:9                                WeltWeit 5
-T:*/*=12.98(60)/1                  rund um die Uhr
+T:*/*=12.98(60)/1                  0-24h
 A:Ägypten, Südafrika, Aserbaidschan, Armenien, China, Georgien, Libyen
 A:Malaysia, Moldau, Tadschikistan, Taiwan, Turkmenistan, Usbekistan
 A:Argentinien, Brasilien, Chile, Costa Rica, Dominikanische Republik, Ecuador
 A:El Salvador, Guatemala, Kolumbien, Mexiko, Nicaragua, Panama, Peru
 A:Venezuela
 Z:10                               WeltWeit 6
-T:*/*=14.98(60)/1                  rund um die Uhr
+T:*/*=14.98(60)/1                  0-24h
 A:Angola, Aruba, Bahamas, Bahrain, Barbados, Bermuda, Bhutan, Bolivien
 A:Botswana, Brunei, Burundi, Ghana, Grönland, Guadeloupe, Guam, Guinea
 A:Martinique, Französisch-Guayana, Honduras, Indien, Indonesien, Iran
@@ -1620,150 +1744,649 @@ A:St. Pierre und Miquelon, Saint Vincent und die Grenadinen, Sudan, Syrien
 A:Swasiland, Tansania, Thailand, Trinidad und Tobago, Uruguay
 A:Vereinigte Arabische Emirate
 Z:11                               WeltWeit 7
-T:*/*=19.98(60)/1                  rund um die Uhr
-A:+                                alle übrigen Länder
+T:*/*=19.98(60)/1                  0-24h
+A:+                                # alle übrigen Länder
 
-P:29,1                             CyberTron
+P:29,1                             CyberTron easy.Talk privat
+C:Name:                            Cybertron EDV- NetzwerkbetriebsgmbH
+C:Address:                         Davidstr. 79, A-1100 Wien
+C:Homepage:                        http://www.cybertron.at
+C:TarifURL:                        http://www.cybertron.at/html/easy.prod_1.html
+C:Telefon:                         0800 400 400, 1029 1029
+C:Zone:                            Die Regionalzone geht bis zu einer Entfernung von 50 Km, die Fernzone 1 bis 
+C:Zone:                            200 Km alles andere ist Fernzone 2.
+C:Special:                         Variable Taktung.
 D:pta                              # Verzonung
-# Tarif:                           easy.Talk privat (ATS 1.116 pro Einheit)
-# Fixme:                           Internationale Zonen nicht implementiert!
+# Tarif:                           easy.Talk privat (ATS 67.000 pro Einheit)
 Z:1                                Regionalzone
-T:1-5/8-12=0.99(60)/1.1273         Tageszeit 1
-T:1-4/13-16=0.99(60)/1.1273        Tageszeit 1
-T:1-4/12-13,16-18=0.84(60)/1.3286  Tageszeit 2
-T:5/12-18=0.84(60)/1.3286          Tageszeit 2
-T:1-5/06-08,18-20=0.57(60)/1.9579  Sparzeit
-T:E,H/06-20=0.57(60)/1.9579        Sparzeit
-T:*/20-06=0.39(60)/2.8615          Supersparzeit
+T:W/8-12=0.87(60)/77               Tageszeit 1
+T:1-4/13-16=0.87(60)/77            Tageszeit 1
+T:1-4/12-13,16-18=0.84(60)/80      Tageszeit 2
+T:5/12-18=0.84(60)/80              Tageszeit 2
+T:W/06-08,18-20=0.57(60)/118       Sparzeit
+T:E,H/06-20=0.57(60)/118           Sparzeit
+T:*/20-06=0.39(60)/172             Supersparzeit
 Z:2                                Fernzone 1
-T:1-5/8-12=2.67(60)/0.41798        Tageszeit 1
-T:1-4/13-16=2.67(60)/0.41798       Tageszeit 1
-T:1-4/12-13,16-18=2.41(60)/0.46307 Tageszeit 2
-T:5/12-18=2.41(60)/0.46307         Tageszeit 2
-T:1-5/06-08,18-20=1.21(60)/0.92231 Sparzeit
-T:E,H/06-20=1.21(60)/0.92231       Sparzeit
-T:*/20-06=0.87(60)/1.2828          Supersparzeit
+T:W/8-18=1.52(60)/44               Tageszeit
+T:W/06-08,18-20=1.21(60)/55        Sparzeit
+T:E,H/06-20=1.21(60)/55            Sparzeit
+T:*/20-06=0.87(60)/77              Supersparzeit
 Z:3                                Fernzone 2
-T:1-5/8-12=2.67(60)/0.41798        Tageszeit 1
-T:1-4/13-16=2.67(60)/0.41798       Tageszeit 1
-T:1-4/12-13,16-18=2.62(60)/0.42595 Tageszeit 2
-T:5/12-18=2.62(60)/0.42595         Tageszeit 2
-T:1-5/06-08,18-20=1.61(60)/0.69317 Sparzeit
-T:E,H/06-20=1.61(60)/0.69317       Sparzeit
-T:*/20-06=1.26(60)/0.88571         Supersparzeit
+T:W/8-18=1.52(60)/44               Tageszeit
+T:W/06-08,18-20=1.51(60)/44        Sparzeit
+T:E,H/06-20=1.51(60)/44            Sparzeit
+T:*/20-06=1.26(60)/53              Supersparzeit
 A:Österreich
 Z:4                                Mobilfunk A1, max
-T:1-5/8-18=4.46(60)/0.25022        Tageszeit
-T:1-5/08-18=3.14(60)/0.35541       Sparzeit
+T:W/8-18=3.96(60)/17               Tageszeit
+T:*/*=3.25(60)/21                  Sparzeit
 A:+43663, +43664, +43676
 Z:5                                Mobilfunk One
-T:1-5/8-18=4.46(60)/0.25022        Tageszeit
-T:1-5/08-18=3.14(60)/0.35541       Sparzeit
+T:W/8-18=4.46(60)/15               Tageszeit
+T:*/*=3.14(60)/21                  Sparzeit
 A:+43699
 Z:6                                Deutschland
-T:*/*=3.50(60)/0.31886             rund um die Uhr
-A:Deutschland
-Z:7                                Schweiz
-T:*/*=3.50(60)/0.31886             rund um die Uhr
-A:Schweiz
-Z:8                                USA
-T:*/*=5.25(60)/0.21257             rund um die Uhr
-A:Vereinigte Staaten (USA)
-Z:9                                International
-A:+                                alle übrigen Länder
+T:*/*=2.60(60)/26                  0-24h
+A:Deutschland, Liechtenstein, Schweiz, Italien
+Z:7                                International 1
+T:*/*=4.00(60)/17                  0-24h
+A:Frankreich, Grossbritannien, Slowakei, Slowenien, Tschechische Republik
+A:Ungarn
+Z:8                                International 2
+T:*/*=5.25(60)/13                  0-24h
+A:Andorra, Belgien, Bosnien-Herzegowina, Dänemark, Finnland, Irland
+A:Britische Jungferninseln, Kanada, Kroatien, Luxemburg, Malta, Monaco
+A:Niederlande, Norwegen, Polen, Schweden, Spanien, USA, Vatikan, Zypern
+Z:9                                International 3-1
+T:W/8-18=7.00(60)/10               Tageszeit
+T:*/*=5.25(60)/13                  Sparzeit
+A:Albanien, Belarus, Bulgarien, Mazedonien, Rumänien, San Marino, Serbien
+A:Ukraine
+Z:10                               International 3-2
+T:*/*=7.00(60)/10                  0-24h
+A:Estland, Färöer Inseln, Gibraltar, Griechenland, Island, Israel, Portugal
+A:Puerto Rico, Russland, Tunesien, Türkei
+Z:11                               International 4
+T:*/*=13.10(60)/5                  0-24h
+A:Angola, Bermuda, Brasilien, Chile, Franz. Guyana, Guadeloupe, Hong Kong
+A:Japan, Libyen, Macao, Madeira, Malaysia, Martinique, Mayotte, Mexico
+A:Moldawien, Neu Seeland, Niederl. Antillen, Philippinen, Reunion, Saipan
+A:Singapur, St. Pierre und Miquelon, Südafrika, Südkorea, Venezuela
+Z:12                               International 5
+T:*/*=17.50(60)/4                  0-24h
+A:Ägypten, Aruba, Bahamas, Barbados, Belize, Bhutan, Botswana, Brunei
+A:Burundi, China, Dominikanische Republik, Ecuador, Gabun, Ghana, Grönland
+A:Guyana, Iran, Jordanien, Kirgisistan, Kolumbien, Kuweit, Libanon, Panama
+A:Saudiarabien, St. Vincent und Grenadinen, Trinidad und Tobago
+A:Vereinigte Arabische Emirate
+Z:13                               International 6
+T:*/*=20.10(60)/3                  0-24h
+A:Argentinien, Äthiopien, Bahrain, Benin, Costa Rica, Elfenbeinküste
+A:Französisch-Polynesien, Gambia, Guinea, Guinea-Bissau, Jamaica, Kasachstan
+A:Katar, Kenia, Kiribati, Komoren, Laos, Lesotho, Liberia, Malawi, Malediven
+A:Mauretanien, Mozambique, Namibia, Nauru, Nepal, Neu Kaledonien, Nicaragua
+A:Nigeria, Niue, Norfolk Inseln, Oman, Peru, Ruanda, Sambia, Samoa West
+A:Simbabwe, St. Helena, St. Lucia, Sao Tome und Principe, Sudan, Suriname
+A:Swasiland, Syrien, Taiwan, Tansania, Thailand, Togo, Tonga
+A:Turks & Caicos Islands, Uganda, Vanuatu, Zentralafrikanische Republik
+Z:14                               International 7
+T:*/*=24.50(60)/3                  0-24h
+A:Anguilla, Antigua & Barbuda, Ascension, Bangla Desh, Bolivien, Burkina Faso
+A:Myanmar/Burma, Cayman Inseln, Dominica, Dschibuti, El Salvador, Eritrea
+A:Falkland Inseln, Grenada, Guam, Guatemala, Haiti, Honduras, Indien
+A:Indonesien, Irak, Jemen, Jungfern Inseln britisch, Kambodscha, Kamerun
+A:Kap Verde, Kongo, Kuba, Mali, Mauritius, Mongolei, Montserrat
+A:Nevis Islands, Niger, Nordkorea, Pakistan, Papua Neuguinea, Paraguay
+A:Salomonen, Senegal, Seychellen, Sierra Leone, Somalia, Sri Lanka
+A:St. Kitts & Nevis, Tschad, Uruguay, Vietnam, Zaire
+Z:15                               International 8
+T:W/8-18=8.90(60)/8                Tageszeit
+T:*/*=7.90(60)/8                   Sparzeit
+A:Algerien, Georgien, Lettland, Litauen, Marokko, Tadschikistan, Turkmenistan
+A:Usbekistan
+Z:16                               International 9
+T:*/*=10.50(60)/6                  0-24h
+A:Armenien, Aserbaidschan, Christmas Island, Kokos Inseln
+Z:17                               International 10
+T:*/*=40.14(60)/2                  0-24h
+A:+                                # alle übrigen Länder
 
-P:29,2                             CyberTron
-D:pta                              # Verzonung
-# Tarif:                           easy.Talk business (ATS 1.029 pro Einheit)
+P:29,2                             CyberTron easy.Talk business
+C:Name:                            Cybertron - austrian digital telecom
+C:Address:
+C:Homepage:                        http://www.cybertron.at
+C:TarifURL:                        http://www.cybertron.at/html/easy.prod_0.html
+C:Telefon:                         0800 400 400, 1029 1029
+C:Zone:                            Die Regionalzone geht bis zu einer Entfernung von 100 Km, die Fernzone 
+C:Zone:                            darüber - Die Regionalzone ist nicht implementiert
+C:Special:                         Variable Taktung.
+#Fixme: +-100Km nicht implemtiert  # Verzonung
+# Tarif:                           easy.Talk business (74.000 Takteinheit)
 # Fixme:                           Internationale Zonen nicht implementiert!
 Z:1                                Regionalzone
-T:*/*=0.96(60)/1.0719              rund um die Uhr
-Z:2                                Fernzone 1
-T:1-5/8-18=2.52(60)/0.40833        Tageszeit
-T:1-5/08-18=1.20(60)/0.8575        Sparzeit
-Z:3                                Fernzone 2
-T:1-5/8-18=2.52(60)/0.40833        Tageszeit
-T:1-5/08-18=1.20(60)/0.8575        Sparzeit
+T:W/8-18=0.96(60)/77               Tageszeit
+T:*/*=0.84(60)/88                  Sparzeit
+Z:2                                Fernzone
+T:W/8-18=2.52(60)/29               Tageszeit
+T:*/*=1.20(60)/62                  Sparzeit
 A:Österreich
-Z:4                                Mobilfunk A1, max
-T:*/*=4.48(60)/0.22969             rund um die Uhr
+Z:3                                Mobilfunk A1, max
+T:*/*=4.40(60)/17                  0-24h
 A:+43663, +43664, +43676
-Z:5                                Mobilfunk One
-T:1-5/8-12=4.58(60)/0.22467        Tageszeit 1
-T:1-4/13-16=4.58(60)/0.22467       Tageszeit 1
-T:1-4/12-13,16-18=4.48(60)/0.22969 Tageszeit 2
-T:5/12-18=4.48(60)/0.22969         Tageszeit 2
-T:1-5/08-18=4.48(60)/0.22969       Sparzeit
+Z:4                                Mobilfunk One
+T:*/*=4.46(60)/17                  0-24h
 A:+43699
-Z:6                                Deutschland
-T:*/*=3.24(60)/0.31759             rund um die Uhr
+Z:5                                Deutschland
+T:*/*=3.24(60)/23                  0-24h
 A:Deutschland
-Z:7                                Schweiz
-T:*/*=3.84(60)/0.26797             rund um die Uhr
-A:Schweiz
-Z:8                                USA
-T:*/*=4.38(60)/0.23493             rund um die Uhr
-A:Vereinigte Staaten (USA)
-Z:9                                International
-A:+                                alle übrigen Länder
+Z:6                                Liechtenstein ...
+T:*/*=3.48(60)/21                  0-24h
+A:Liechtenstein, Schweiz
+Z:7                                Italien ...
+T:*/*=3.60(60)/21                  0-24h
+A:Italien, Ungarn
+Z:8                                Frankreich ...
+T:*/*=3.96(60)/19                  0-24h
+A:Frankreich, Großbritannien, Großbritannien Mobilfunk, Kanada
+A:Slowakische Republik, Slowenien, Tschechische Republik
+Z:9                                Spanien ...
+T:*/*=4.20(60)/18                  0-24h
+A:Spanien, USA
+Z:10                               Belgien ...
+T:*/*=4.32(60)/17                  0-24h
+A:Belgien, Niederlande, Norwegen, Schweden
+Z:11                               Dänemark ...
+T:*/*=4.68(60)/16                  0-24h
+A:Dänemark, Finnland, Irland, Luxemburg, Malta
+Z:12                               Monaco ...
+T:*/*=4.74(60)/16                  0-24h
+A:Monaco, Vatikan
+Z:13                               Bosnien-Herzegowina
+T:*/*=4.80(60)/15                  0-24h
+A:Bosnien-Herzegowina
+Z:14                               Polen
+T:*/*=4.86(60)/15                  0-24h
+A:Polen
+Z:15                               Griechenland ...
+T:*/*=5.04(60)/15                  0-24h
+A:Griechenland, Kroatien
+Z:16                               Andorra
+T:*/*=5.16(60)/14                  0-24h
+A:Andorra
+Z:17                               Amerikanische Jungferninseln
+T:*/*=5.22(60)/14                  0-24h
+A:Amerikanische Jungferninseln
+Z:18                               Puerto Rico
+T:*/*=5.28(60)/14                  0-24h
+A:Puerto Rico
+Z:19                               Jugoslawien
+T:*/*=5.52(60)/13                  0-24h
+A:Jugoslawien
+Z:20                               Bulgarien
+T:*/*=5.94(60)/12                  0-24h
+A:Bulgarien
+Z:21                               Mazedonien
+T:*/*=6.06(60)/12                  0-24h
+A:Mazedonien
+Z:22                               Albanien ...
+T:*/*=6.18(60)/12                  0-24h
+A:Albanien, Weissrussland, Rumänien, San Marino, Tunesien, Türkei, Ukraine
+Z:23                               Israel
+T:*/*=6.24(60)/12                  0-24h
+A:Israel
+Z:24                               Gibraltar ...
+T:*/*=6.30(60)/12                  0-24h
+A:Gibraltar, Portugal
+Z:25                               Australien ...
+T:*/*=6.36(60)/12                  0-24h
+A:Australien, Estland, Färöer-Inseln, Lettland, Litauen
+Z:26                               Russische Förderation (östl.) ...
+T:*/*=6.38(60)/12                  0-24h
+A:Russische Förderation (östl.), Moskau, St. Petersburg
+Z:27                               Island
+T:*/*=6.42(60)/12                  0-24h
+A:Island
+Z:28                               Hongkong ...
+T:*/*=7.56(60)/10                  0-24h
+A:Hongkong, Japan, Japan Mobilfunk, Tokyo
+Z:29                               Algerien ...
+T:*/*=7.80(60)/9                   0-24h
+A:Algerien, Marokko
+Z:30                               Madeira
+T:*/*=7.98(60)/9                   0-24h
+A:Madeira
+Z:31                               Weihnachtsinseln ...
+T:*/*=8.04(60)/9                   0-24h
+A:Weihnachtsinseln, Cookinseln
+Z:32                               Singapur
+T:*/*=8.16(60)/9                   0-24h
+A:Singapur
+Z:33                               Georgien ...
+T:*/*=8.52(60)/9                   0-24h
+A:Georgien, Tadschikistan, Turkmenistan, Usbekistan
+Z:34                               Südafrika
+T:*/*=9.48(60)/8                   0-24h
+A:Südafrika
+Z:35                               Libyen ...
+T:*/*=9.54(60)/8                   0-24h
+A:Libyen, Neuseeland
+Z:36                               Chile ...
+T:*/*=9.66(60)/8                   0-24h
+A:Chile, Martinique / Franz. Antillen, Moldavien Moldau (Republik)
+A:St. Pierre und Miquelon
+Z:37                               Französisch-Guayana ...
+T:*/*=9.72(60)/8                   0-24h
+A:Französisch-Guayana, Guadeloupe, Mayotte, Reunion
+Z:38                               Armenien
+T:*/*=9.96(60)/7                   0-24h
+A:Armenien
+Z:39                               Aserbaidschan
+T:*/*=10.44(60)/7                  0-24h
+A:Aserbaidschan
+Z:40                               Malaysia ...
+T:*/*=11.16(60)/7                  0-24h
+A:Malaysia, Niederl. Antillen, Philippinen, Südkorea
+Z:41                               Marianen (SaipanNord-)
+T:*/*=11.28(60)/7                  0-24h
+A:Marianen (SaipanNord-)
+Z:42                               Brasilien
+T:*/*=11.76(60)/6                  0-24h
+A:Brasilien
+Z:43                               Bermuda ...
+T:*/*=12.78(60)/6                  0-24h
+A:Bermuda, Macao, Mexiko, Venezuela
+Z:44                               China
+T:*/*=12.84(60)/6                  0-24h
+A:China
+Z:45                               Angola ...
+T:*/*=12.96(60)/6                  0-24h
+A:Angola, Bhutan, Ecuador, Iran, Saudi Arabien
+Z:46                               Ägypten
+T:*/*=13.32(60)/6                  0-24h
+A:Ägypten
+Z:47                               Aruba ...
+T:*/*=14.40(60)/5                  0-24h
+A:Aruba, Bahamas, Brunei, Dominikanische Republik, Ghana, Jordanien
+A:Kolumbien, Kolumbien Mobilfunk, Kuwait, St. Vincent und Grenadinen
+A:Trinidad und Tobago
+Z:48                               Panama ...
+T:*/*=14.52(60)/5                  0-24h
+A:Panama, Ver. Arabische Emirate
+Z:49                               Barbados ...
+T:*/*=14.58(60)/5                  0-24h
+A:Barbados, Botsuana Botswana, Grönland
+Z:50                               Belize ...
+T:*/*=14.64(60)/5                  0-24h
+A:Belize, Kirgistan
+Z:51                               Libanon
+T:*/*=15.84(60)/5                  0-24h
+A:Libanon
+Z:52                               Gabun
+T:*/*=15.96(60)/5                  0-24h
+A:Gabun
+Z:53                               Bahrain ...
+T:*/*=16.56(60)/4                  0-24h
+A:Bahrain, Katar, Lesotho, Liberia, Namibia, Peru, Sambia, Simbabwe
+A:St. Helena, St. Lucia, Sudan, Swasiland, Tansania, Turks- und Caicosinseln
+Z:54                               Nigeria ...
+T:*/*=16.68(60)/4                  0-24h
+A:Nigeria, Amerikanisch-Samoa
+Z:55                               Burundi ...
+T:*/*=16.74(60)/4                  0-24h
+A:Burundi, Elfenbeinküste Cote de Ivoire, Guinea, Kasachstan, Laos, Nauru
+A:Neukaledonien
+Z:56                               Nepal ...
+T:*/*=16.92(60)/4                  0-24h
+A:Nepal, Syrien
+Z:57                               Guyana
+T:*/*=17.28(60)/4                  0-24h
+A:Guyana
+Z:58                               Guinea-Bissau ...
+T:*/*=18.12(60)/4                  0-24h
+A:Guinea-Bissau, Sao Tome und Principe
+Z:59                               Nicaragua
+T:*/*=18.30(60)/4                  0-24h
+A:Nicaragua
+Z:60                               Malawi
+T:*/*=18.56(60)/4                  0-24h
+A:Malawi
+Z:61                               Argentinien ...
+T:*/*=18.66(60)/4                  0-24h
+A:Argentinien, Benin, Costa Rica, Französisch-Polynesien, Gambia, Jamaika
+A:Kenia, Malediven, Niue-Inseln, Oman, Ruanda, Taiwan, Thailand, Uganda
+A:Vanuatu
+Z:62                               Norfolkinseln
+T:*/*=18.74(60)/4                  0-24h
+A:Norfolkinseln
+Z:63                               Wallis und Futuna
+T:*/*=18.78(60)/4                  0-24h
+A:Wallis und Futuna
+Z:64                               Fidschi
+T:*/*=18.90(60)/4                  0-24h
+A:Fidschi
+Z:65                               Äthiopien ...
+T:*/*=18.96(60)/4                  0-24h
+A:Äthiopien, Irak, Kiribati, Mayotte, Mauretanien, Mongolei, Mosambik
+A:Suriname
+Z:66                               Tonga ...
+T:*/*=19.14(60)/4                  0-24h
+A:Tonga, Zentralafrikanische Republik
+Z:67                               Togo
+T:*/*=19.44(60)/4                  0-24h
+A:Togo
+Z:68                               Myanmar Burma
+T:*/*=20.28(60)/4                  0-24h
+A:Myanmar Burma
+Z:69                               Bolivien ...
+T:*/*=21.36(60)/3                  0-24h
+A:Bolivien, Kaimaninseln, Dschibuti, Indien, Indonesien
+A:Britische Jungferninseln, Kuba, Niger, Papua-Neuguinea, Paraguay
+A:Sierra Leone, Sri Lanka, Uruguay
+Z:70                               Mauritius ...
+T:*/*=21.66(60)/3                  0-24h
+A:Mauritius, Nordkorea
+Z:71                               Anguilla ...
+T:*/*=24.06(60)/3                  0-24h
+A:Anguilla, Antigua und Barbuda, Ascension, Bangladesch
+A:Burkina Faso Obervolta, Dominica, El Salvador, Eritrea, Falklandinseln
+A:Grenada, Guam, Guatemala, Haiti, Honduras, Jemen (Arab. Republik)
+A:Kambodscha, Kamerun, Cape Verde, Kongo, Mali, Montserrat, Niue-Inseln
+A:Pakistan, Salomonen, Senegal, Seyschellen, Somalia, St. Kitts und Nevis
+A:Tschad, Vietnam, Zaire
+Z:72                               Wake Inseln
+T:*/*=29.28(60)/3                  0-24h
+A:Wake Inseln
+Z:73                               Diego Garcia
+T:*/*=30.60(60)/2                  0-24h
+A:Diego Garcia
+Z:74                               Cookinseln ...
+T:*/*=32.16(60)/2                  0-24h
+A:Cookinseln, Madagaskar
+Z:75                               Afghanistan ...
+T:*/*=40.14(60)/2                  0-24h
+A:Afghanistan, Guantanamo, Marshallinseln, Mikronesien, Midway-Inseln
+A:Palau /Belau, Amerikanisch-Samoa
 
 P:44                               Citykom
+C:Name:                            Citykom Austria Telekommunikations GmbH
+C:Address:                         Alserbachstr. 144-16, A-1090 Wien
+C:Homepage:                        http://www.citykom.at
+C:EMail:                           j.schmolinsk@citykom.at
+C:Telefon:                         0800 201 301
+C:Zone:                            Vorwahlen 1XXX und 2XXX, bzw. mit gleicher Anfangsziffer liegen in der 
+C:Zone:                            Regionalzone sonst in der Österreichzone.
 D:1012                             # Verzonung
 # Fixme:                           internationale Zonen nicht implementiert
 Z:1                                Regional
-T:*/*=0.72(60)/1                   rund um die Uhr
+T:*/*=0.86(60)/1                   0-24h
 Z:2                                Österreich
-T:1-5/8-18=1.44(60)/1              Tag
-T:1-5/18-8=0.72(60)/1              Nacht
-T:E,H/*=0.72(60)/1                 Weekend
+T:W/8-18=1.73(60)/1                Tag
+T:W/18-8=0.86(60)/1                Nacht
+T:E,H/*=0.86(60)/1                 Weekend
 A:Österreich
 Z:3                                Mobilfunk
-T:*/*=4.20(60)/1                   rund um die Uhr
+T:*/*=5.04(60)/1                   0-24h
 A:+43663, +43664, +43676, +43699
 Z:4                                Ausland
-A:+                                alle übrigen Länder
+A:+                                # alle übrigen Länder
+
+P:49                               Pegasus Telekom
+D:pta                              # Verzonung
+C:Name:                            Pegasus Telekom Netzwerkdienste AG
+C:Address:                         Serrravag. 10-12, A-1140 Wien
+C:Homepage:                        http://www.ptag.net
+C:TarifURL:                        http://www.ptag.net/F_Tarife.htm
+C:Telefon:                         01 9150 0
+#                                  Fixme: Verzonung nicht verifiziert.
+Z:1                                Regionalzone
+T:*/*=0.96(60)/1                   0-24h
+Z:2                                Fernzone 1
+T:*/*=1.74(60)/1                   0-24h
+Z:3                                Fernzone 2
+T:*/*=1.74(60)/1                   0-24h
+A:Österreich
+Z:4                                Mobilfunk
+T:*/*=3.60(60)/1                   0-24h
+A:+43663, +43664, +43676, +43699
+Z:5                                Deutschland
+T:*/*=3.00(60)/1                   0-24h
+A:Deutschland
+Z:6                                Italien ...
+T:*/*=3.60(60)/1                   0-24h
+A:Italien, Liechtenstein, Schweiz
+Z:7                                Dänemark ...
+T:*/*=3.96(60)/1                   0-24h
+A:Dänemark, Frankreich, Finnland, Großbritannien, Niederlande, Schweden
+A:Ungarn
+Z:8                                Belgien
+T:*/*=4.08(60)/1                   0-24h
+A:Belgien
+Z:9                                Kanada ...
+T:*/*=4.20(60)/1                   0-24h
+A:Kanada, Norwegen, Slowenien, USA
+Z:10                               Spanien
+T:*/*=4.56(60)/1                   0-24h
+A:Spanien
+Z:11                               Irland ...
+T:*/*=4.68(60)/1                   0-24h
+A:Irland, Luxemburg, Slowakische Republik, Tschechische Republik
+Z:12                               Polen
+T:*/*=4.80(60)/1                   0-24h
+A:Polen
+Z:13                               Amerikanische Jungferninseln ...
+T:*/*=5.28(60)/1                   0-24h
+A:Amerikanische Jungferninseln, Andorra, Azoren, Griechenland, Monaco, Malta
+A:Jugoslawien, Jugoslawien, Ukraine
+Z:14                               Kroatien
+T:*/*=5.52(60)/1                   0-24h
+A:Kroatien
+Z:15                               Portugal
+T:*/*=5.64(60)/1                   0-24h
+A:Portugal
+Z:16                               Albanien ...
+T:*/*=5.88(60)/1                   0-24h
+A:Albanien, Bosnien-Herzegowina, Bulgarien, Rumänien, Zypern (Griechenland)
+Z:17                               Puerto Rico ...
+T:*/*=6.00(60)/1                   0-24h
+A:Puerto Rico, San Marino
+Z:18                               Australien ...
+T:*/*=6.24(60)/1                   0-24h
+A:Australien, Türkei
+Z:19                               Algerien ...
+T:*/*=6.60(60)/1                   0-24h
+A:Algerien, Estland, Mazedonien
+Z:20                               Island ...
+T:*/*=7.08(60)/1                   0-24h
+A:Island, Israel, Palestina
+Z:21                               Gibraltar ...
+T:*/*=7.20(60)/1                   0-24h
+A:Gibraltar, Lettland, Litauen, Russische Förderation (östl.), Tadschikistan
+A:Weissrussland
+Z:22                               Weihnachtsinseln ...
+T:*/*=7.44(60)/1                   0-24h
+A:Weihnachtsinseln, Tunesien
+Z:23                               Färöer-Inseln ...
+T:*/*=7.92(60)/1                   0-24h
+A:Färöer-Inseln, Kanarische Inseln, Madeira, Marokko
+Z:24                               Georgien ...
+T:*/*=8.28(60)/1                   0-24h
+A:Georgien, Japan, Singapur
+Z:25                               Hongkong ...
+T:*/*=9.00(60)/1                   0-24h
+A:Hongkong, Usbekistan
+Z:26                               Armenien ...
+T:*/*=9.24(60)/1                   0-24h
+A:Armenien, Aserbaidschan, Antarktis
+Z:27                               Libyen ...
+T:*/*=9.48(60)/1                   0-24h
+A:Libyen, Neuseeland
+Z:28                               Chile ...
+T:*/*=9.60(60)/1                   0-24h
+A:Chile, Martinique / Franz. Antillen
+Z:29                               Moldavien Moldau (Republik) ...
+T:*/*=10.20(60)/1                  0-24h
+A:Moldavien Moldau (Republik), Südafrika
+Z:30                               Guadeloupe ...
+T:*/*=10.68(60)/1                  0-24h
+A:Guadeloupe, Niederl. Antillen, Südkorea, Reunion, Zypern (Türkei)
+Z:31                               Französisch-Guayana
+T:*/*=10.92(60)/1                  0-24h
+A:Französisch-Guayana
+Z:32                               Turkmenistan
+T:*/*=11.40(60)/1                  0-24h
+A:Turkmenistan
+Z:33                               Malaysia
+T:*/*=11.88(60)/1                  0-24h
+A:Malaysia
+Z:34                               Ägypten ...
+T:*/*=12.60(60)/1                  0-24h
+A:Ägypten, Angola, Brasilien, Bermuda, Bhutan
+Z:35                               China ...
+T:*/*=13.08(60)/1                  0-24h
+A:China, Venezuela
+Z:36                               Dominikanische Republik ...
+T:*/*=13.80(60)/1                  0-24h
+A:Dominikanische Republik, Ecuador
+Z:37                               Macao ...
+T:*/*=14.28(60)/1                  0-24h
+A:Macao, Philippinen, Taiwan
+Z:38                               Aruba ...
+T:*/*=14.40(60)/1                  0-24h
+A:Aruba, Bahamas, Bolivien, Ver. Arabische Emirate
+Z:39                               Jordanien
+T:*/*=14.64(60)/1                  0-24h
+A:Jordanien
+Z:40                               Barbados ...
+T:*/*=15.00(60)/1                  0-24h
+A:Barbados, Belize, El Salvador, Ghana, Grönland, Mayotte
+Z:41                               Saudi Arabien
+T:*/*=15.24(60)/1                  0-24h
+A:Saudi Arabien
+Z:42                               Iran ...
+T:*/*=15.48(60)/1                  0-24h
+A:Iran, Kuwait, Kirgistan, St. Vincent und Grenadinen
+Z:43                               Argentinien
+T:*/*=15.60(60)/1                  0-24h
+A:Argentinien
+Z:44                               Liberia
+T:*/*=15.84(60)/1                  0-24h
+A:Liberia
+Z:45                               Burkina Faso Obervolta ...
+T:*/*=16.20(60)/1                  0-24h
+A:Burkina Faso Obervolta, Burundi, Trinidad und Tobago
+Z:46                               Libanon
+T:*/*=16.44(60)/1                  0-24h
+A:Libanon
+Z:47                               Diego Garcia ...
+T:*/*=16.68(60)/1                  0-24h
+A:Diego Garcia, Gabun, Guinea, Peru, Panama, Swasiland, Syrien, Tansania
+Z:48                               Kasachstan ...
+T:*/*=17.28(60)/1                  0-24h
+A:Kasachstan, Katar
+Z:49                               Bahrain ...
+T:*/*=17.40(60)/1                  0-24h
+A:Bahrain, Benin, Kaimaninseln
+Z:50                               Dominica ...
+T:*/*=17.88(60)/1                  0-24h
+A:Dominica, Kolumbien, Malawi, St. Pierre und Miquelon, Sudan
+Z:51                               Äquatorial-Guinea ...
+T:*/*=18.00(60)/1                  0-24h
+A:Äquatorial-Guinea, Elfenbeinküste Cote de Ivoire, Französisch-Polynesien
+Z:52                               Fidschi ...
+T:*/*=19.08(60)/1                  0-24h
+A:Fidschi, Guyana, Mayotte, Kenia, Namibia, Nauru, Nepal, Nigeria
+A:Neukaledonien, Sao Tome und Principe, St. Helena, St. Kitts und Nevis
+A:St. Lucia, Simbabwe, West-Samoa
+Z:53                               Ascension ...
+T:*/*=19.20(60)/1                  0-24h
+A:Ascension, Britische Jungferninseln, Brunei
+Z:54                               Botsuana Botswana
+T:*/*=19.56(60)/1                  0-24h
+A:Botsuana Botswana
+Z:55                               Äthiopien ...
+T:*/*=19.80(60)/1                  0-24h
+A:Äthiopien, Anguilla, Gambia, Grenada, Norfolkinseln, Sambia
+Z:56                               Cookinseln ...
+T:*/*=20.28(60)/1                  0-24h
+A:Cookinseln, Costa Rica, Dschibuti, Guam, Guatemala, Guinea-Bissau, Kiribati
+A:Cape Verde, Laos, Lesotho, Mikronesien, Mongolei, Montserrat, Mosambik
+A:Nicaragua, Oman, Papua-Neuguinea, Paraguay, Sri Lanka, Thailand, Tonga
+A:Uganda, Uruguay
+Z:57                               Honduras ...
+T:*/*=21.48(60)/1                  0-24h
+A:Honduras, Indien, Indonesien, Irak, Jamaika, Mauritius, Malediven
+A:Mauretanien, Niger, Pakistan, Palau /Belau, Ruanda, Somalia
+A:Amerikanisch-Samoa, Sierra Leone, Togo, Tuvalu, Vanuatu
+Z:58                               Antigua und Barbuda
+T:*/*=21.60(60)/1                  0-24h
+A:Antigua und Barbuda
+Z:59                               Eritrea
+T:*/*=22.20(60)/1                  0-24h
+A:Eritrea
+Z:60                               Niue-Inseln ...
+T:*/*=22.68(60)/1                  0-24h
+A:Niue-Inseln, Jemen (Arab. Republik), Senegal, Seyschellen
+A:Wallis und Futuna, Zentralafrikanische Republik
+Z:61                               Afghanistan ...
+T:*/*=23.40(60)/1                  0-24h
+A:Afghanistan, Falklandinseln, Kuba, Madagaskar
+Z:62                               Haiti ...
+T:*/*=23.88(60)/1                  0-24h
+A:Haiti, Jemen (Arab. Republik), Kambodscha, Kamerun, Kongo, Nordkorea, Mali
+A:Marshallinseln, Myanmar Burma, Pitcairn Inseln, Salomonen, Suriname, Tschad
+A:Vietnam
+Z:63                               Wake Inseln
+T:*/*=35.88(60)/1                  0-24h
+A:Wake Inseln
 
 P:66                               MIT 1066
+C:Name:                            M.I.T Multi Media Informations Technologies GesmbH
+C:Address:                         Modecenterstrr. 14/5, A-1030 Wien
+C:Homepage:                        http://www.mit.co.at
+C:Telefon:                         01 79040 1500
+C:Zone:                            Die Regionalzone geht bis zu einer Entfernung von 50 Km, alles andere ist 
+C:Zone:                            Österreichzone.
+C:Special:                         0.30 ATS Mindestentgelt pro Verbindung
 D:1066                             # Verzonung
 # Fixme                            Verzonung -50/+50 nicht verifiziert
 Z:1                                Regionalzone
-T:1-5/8-18=0.96(60)/18.75/1        Tag
-T:1-5/18-8=0.80(60)/22.50/1        Nacht
-T:E,H/*=0.80(60)/22.50/1           Weekend
+T:W/8-18=0.30|1.00(60)/1           Tag
+T:W/18-8=0.30|0.80(60)/1           Nacht
+T:E,H/*=0.30|0.80(60)/1            Weekend
 Z:2                                Österreich
-T:1-5/8-18=2.26(60)/7.96/1         Tag
-T:1-5/18-8=1.86(60)/9.68/1         Nacht
-T:E,H/*=1.86(60)/9.68/1            Weekend
+T:W/8-18=0.30|2.20(60)/1           Tag
+T:W/18-8=0.30|1.00(60)/1           Nacht
+T:E,H/*=0.30|1.00(60)/1            Weekend
 A:Österreich
 Z:3                                Mobilfunk
-T:1-5/8-18=4.26(60)/4.23/1         Tag
-T:1-5/18-8=3.60(60)/5.00/1         Nacht
-T:E,H/*=3.60(60)/5.00/1            Weekend
+T:W/8-18=0.30|4.26(60)/1           Tag
+T:W/18-8=0.30|3.60(60)/1           Nacht
+T:E,H/*=0.30|3.60(60)/1            Weekend
 A:+43663, +43664, +43676, +43699
 Z:4                                Euro 1
-T:1-5/8-18=4.00(60)/4.50/1         Tag
-T:1-5/18-8=3.66(60)/4.92/1         Nacht
-T:E,H/*=3.66(60)/4.92/1            Weekend
+T:W/8-18=0.30|4.00(60)/1           Tag
+T:W/18-8=0.30|3.66(60)/1           Nacht
+T:E,H/*=0.30|3.66(60)/1            Weekend
 A:Deutschland, Frankreich, Großbritannien, Nordirland, Italien, Liechtenstein
 A:Schweiz, Slowakei, Slowenien, Tschechien, Ungarn
 Z:5                                Euro 2
-T:*/*=5.56(60)/3.24/1              rund um die Uhr
+T:*/*=0.30|5.56(60)/1              0-24h
 A:Andorra, Belarus, Belgien, Bosnien-Herzegowina, Bulgarien, Dänemark
 A:Estland, Finnland, Griechenland, Irland, Jugoslawien, Kroatien, Luxemburg
 A:Monaco, Niederlande, Norwegen, Polen, Portugal, Rumänien, San Marino
 A:Schweden, Spanien, Tunesien, Türkei, Ukraine, Vatikanstadt, Zypern
 Z:6                                Euro City
-T:1-5/8-18=3.76(60)/4.79/1         Tag
-T:1-5/18-8=3.46(60)/5.20/1         Nacht
-T:E,H/*=3.46(60)/5.20/1            Weekend
+T:W/8-18=0.30|3.76(60)/1           Tag
+T:W/18-8=0.30|3.46(60)/1           Nacht
+T:E,H/*=0.30|3.46(60)/1            Weekend
 A:Amsterdam, Brüssel, Frankfurt, London, Luxemburg City, Mailand, Paris
 A:Zürich
 Z:7                                Welt 1
-T:*/*=6.66(60)/2.70/1              rund um die Uhr
+T:*/*=0.30|6.66(60)/1              0-24h
 A:Hawaii, Amerikanische Jungferninseln, Puerto Rico, Vereinigte Staaten (USA)
 A:Kanada
 Z:8                                Welt 2
-T:*/*=11.66(60)/1.54/1             rund um die Uhr
+T:*/*=0.30|11.66(60)/1             0-24h
 A:Albanien, Antarktis, Armenien, Aserbaidschan, Australien, Bahamas, Chile
 A:Weihnachtsinseln, Kokosinseln, Dominikanische Republik, Georgien, Gibraltar
 A:Guadeloupe, Französisch-Guayana, Hongkong, Island, Israel, Japan, Lettland
@@ -1772,7 +2395,7 @@ A:Moldau, Neuseeland, Niederländische Antillen, Philippinen
 A:Russische Föderation, Reunion, St. Pierre und Miquelon, Singapur, Südafrika
 A:Südkorea, Saipan
 Z:9                                Welt 3
-T:*/*=19.66(60)/1                  rund um die Uhr
+T:*/*=0.30|19.66(60)/1             0-24h
 A:Ägypten, Angola, Argentinien, Aruba, Ascension, Bahrain, Barbados, Belize
 A:Benin, Bermuda, Bhutan, Bolivien, Botsuana, Brasilien, Brunei, Burkina Faso
 A:Burundi, Caymaninseln, China, Costa Rica, Dschibuti, Dominica, Ecuador
@@ -1788,7 +2411,7 @@ A:Saint Vincent und die Grenadinen, Sudan, Syrien, Tadschikistan, Tansania
 A:Taiwan, Thailand, Trinidad und Tobago, Turkmenistan, Uruguay, Usbekistan
 A:Vanuatu, Venezuela, Vereinigte Arabische Emirate
 Z:10                               Welt 4
-T:*/*=26.66(60)/1                  rund um die Uhr
+T:*/*=0.30|26.66(60)/1             0-24h
 A:Afghanistan, Algerien, Anguilla, Antigua und Barbuda, Äquatorial-Guinea
 A:Äthiopien, Bangladesch, Cook-Inseln, Cote d'Ivoire, Diego Garcia, Eritrea
 A:Guam, Guantanamo, Guinea, Guinea-Bissau, Guyana, Irak, Jemen, Kambodscha
@@ -1802,83 +2425,91 @@ A:Zentralafrikanische Republik
 
 P:67                               max.plus
 C:Maintainer:                      Michael Reinelt <reinelt@eunet.at>
+C:Name:                            max.plus
+C:Homepage:                        http://www.maxmobil.at
+C:Telefon:                         0676 20 200
+C:Special:                         Nur für max - Vertragskunden.
 Z:1                                Festnetz
-T:*/*=1.00(60)/30                  rund um die Uhr
+T:*/*=1.00(60)/30                  0-24h
 A:Österreich
 Z:2                                max.box
-T:*/*=1.00(60)/30                  rund um die Uhr
+T:*/*=1.00(60)/30                  0-24h
 A:+4367622
 Z:3                                max.online
-T:*/*=1.00(60)/30                  rund um die Uhr
+T:*/*=1.00(60)/30                  0-24h
 A:+436762323
 Z:4                                max.mobil
-T:*/*=2.70(60)/30                  rund um die Uhr
+T:*/*=2.70(60)/30                  0-24h
 A:+43676
 Z:5                                andere Mobilfunknetze
-T:*/*=3.90(60)/30                  rund um die Uhr
+T:*/*=3.90(60)/30                  0-24h
 A:+43663, +43664, +43669
 Z:6                                Nachbarländer
-T:*/*=3.30(60)/30                  rund um die Uhr
+T:*/*=3.30(60)/30                  0-24h
 A:Deutschland, Italien, Schweiz, Tschechische Republik, Ungarn
 A:Slowakische Republik, Slowenien, Liechtenstein
 Z:7                                EU
-T:*/*=3.50(60)/30                  rund um die Uhr
+T:*/*=3.50(60)/30                  0-24h
 A:Belgien, Dänemark, Finnland, Frankreich, Griechenland, Irland, Luxemburg
 A:Niederlande, Portugal, Spanien, Schweden, Großbritannien, Nordirland
 Z:8                                Weltzone 1
-T:*/*=5.50(60)/30                  rund um die Uhr
-A:Andorra, Australien, Bahamas, Bosnien-Herzegowina, Kanada, Kroatien, Faröer
-A:Gibraltar, Island, Japan, Lettland, Malta, Mazedonien, Monaco, Neuseeland
-A:Norwegen, Polen, Puerto Rico, San Marino, Singapur, USA, Vatikan
-A:Jugoslawien
+T:*/*=5.50(60)/30                  0-24h
+A:Andorra, Australien, Bahamas, Bosnien-Herzegowina, Kanada, Kroatien
+A:Färöer-Inseln, Gibraltar, Island, Japan, Lettland, Malta, Mazedonien
+A:Monaco, Neuseeland, Norwegen, Polen, Puerto Rico, San Marino, Singapur, USA
+A:Vatikan, Jugoslawien
 Z:9                                Weltzone 2
-T:*/*=9.70(60)/30                  rund um die Uhr
+T:*/*=9.70(60)/30                  0-24h
 A:Albanien, Algerien, Belarus, Bulgarien, Zypern, Estland, Hong Kong, Litauen
 A:Marokko, Oman, Rumänien, Rußland, Tunesien, Türkei, Ukraine
-A:Virgin Islands (US)
+A:American Virgin Isles
 Z:10                               Weltzone 3
-T:*/*=15.00(60)/30                 rund um die Uhr
-A:Bermuda, Brasilien, Brunei, Chile, Christmas Islands, Cocos Islands
+T:*/*=15.00(60)/30                 0-24h
+A:Bermuda, Brasilien, Brunei, Chile, Christmas Island, Cocos Island
 A:Dominikanische Republik, Georgien, Ghana, Grönland, Israel, Jamaica
-A:Kasachstan, Korea, Kirgisistan, Libyen, Macau, Malaysien, Mexiko, Südafrika
-A:Taiwan, Tadschikistan
+A:Kasachstan, Südkorea, Kirgisistan, Libyen, Macau, Malaysia, Mexiko
+A:Südafrika, Taiwan, Tadschikistan
 Z:11                               Weltzone 4
-T:*/*=22.00(60)/30                 rund um die Uhr
-A:+                                alle übrigen Länder
+T:*/*=22.00(60)/30                 0-24h
+A:+                                # alle übrigen Länder
 Z:12                               Iridium 8816
-T:*/*=122.00(60)/30                rund um die Uhr
+T:*/*=122.00(60)/30                0-24h
 A:Iridium 008816
 Z:13                               Iridium 8817
-T:*/*=62.00(60)/30                 rund um die Uhr
+T:*/*=62.00(60)/30                 0-24h
 A:Iridium 008817
 
 P:69                               ONE
+C:Name:                            Connect Austria Gesellschaft für Telekommunikation GmbH
+C:Address:                         Brünner Straße 52, A-1210 Wien 
+C:Homepage:                        http://www.one.at
+C:Telefon:                         0800 1069 3000
 Z:1                                Festnetz
-T:*/*=1.00(60)/30                  rund um die Uhr
+T:*/*=1.00(60)/30                  0-24h
 A:Österreich
 Z:2                                One Mobilfunknetz
-T:*/*=2.00(60)/30                  rund um die Uhr
+T:*/*=2.00(60)/30                  0-24h
 A:+43699
 Z:3                                andere Mobilfunknetze
-T:*/*=4.00(60)/30                  rund um die Uhr
+T:*/*=4.00(60)/30                  0-24h
 A:+43663, +43664, +43676
 Z:4                                EU und Nachbarländer
-T:*/*=3.50(60)/30                  rund um die Uhr
+T:*/*=3.50(60)/30                  0-24h
 A:Belgien, Dänemark, Deutschland, Finnland, Frankreich, Großbritannien
 A:Irland, Italien, Liechtenstein, Luxemburg, Niederlande, Norwegen, Schweden
 A:Schweiz, Slowakei, Slowenien, Spanien, Tschechien, Ungarn
 Z:5                                Internationale Zone 2
-T:*/*=5.50(60)/30                  rund um die Uhr
+T:*/*=5.50(60)/30                  0-24h
 A:Andorra, Australien, Bosnien-Herzegowina, Griechenland, Island, Japan
 A:Jugoslawien, Kanada, Kroatien, Malta, Monaco, Neuseeland, Polen, Portugal
 A:Puerto Rico, Mazedonien, San Marino, Vereinigte Staaten (USA), Vatikanstadt
 Z:6                                Internationale Zone 3
-T:*/*=8.00(60)/30                  rund um die Uhr
+T:*/*=8.00(60)/30                  0-24h
 A:Albanien, Algerien, Bulgarien, Estland, Gibraltar, Hongkong, Israel
 A:Lettland, Litauen, Marokko, Rumänien, Rußland, Singapur, Tunesien, Türkei
 A:Ukraine, Weißrußland, Zypern
 Z:7                                Internationale Zone 4
-T:*/*=15.00(60)/30                 rund um die Uhr
+T:*/*=15.00(60)/30                 0-24h
 A:Aserbaidschan, Amerikanisch-Samoa, Armenien, Bahamas, Bermuda, Brasilien
 A:Brunei, Chile, Dominikanische Republik, Falklandinseln, Georgien, Ghana
 A:Grönland, Jamaika, Kasachstan, Kokosinseln, Libyen, Macao, Mexico, Malaysia

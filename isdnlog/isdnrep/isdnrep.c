@@ -1,4 +1,4 @@
-/* $Id: isdnrep.c,v 1.76 1999/08/29 10:28:44 akool Exp $
+/* $Id: isdnrep.c,v 1.77 1999/09/09 11:21:05 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -24,6 +24,9 @@
  *
  *
  * $Log: isdnrep.c,v $
+ * Revision 1.77  1999/09/09 11:21:05  akool
+ * isdnlog-3.49
+ *
  * Revision 1.76  1999/08/29 10:28:44  akool
  * isdnlog-3.48
  *   cosmetics
@@ -1904,7 +1907,6 @@ static int print_line(int status, one_call *cur_call, int computed, char *overla
 static void bprint(one_call *call)
 {
   register char  *p = call->num[CALLED];
-  register int	  mobil = 0;
   auto	   char	  target[BUFSIZ], s[BUFSIZ];
   auto	   TELNUM number;
 

@@ -179,6 +179,8 @@ static int _getCountrycode(char *country, char ** t) {
     print_msg(PRT_A, "Problem getCountrycode \"%s\" returned\n", country,res);
 	return UNKNOWN;
   }	
+  if (country[1] == '1' || country[1] == '7') /* Fixme: quick hack fuer USA/GUS */
+    return last;
   Strncpy(c, country, res); /* try shorter because of towns in country.dat */
   l=strlen(c);
   while(l>1) {	

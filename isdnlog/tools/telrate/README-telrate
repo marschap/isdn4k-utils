@@ -1,5 +1,8 @@
-Isdnrate CGI 
+Telrate CGI 
 ------------
+
+Telrate.cgi is a web interface to isdnrate for displaying tables & graphics of
+provider costs.
 
 Installation
 ------------
@@ -15,16 +18,17 @@ Installation
 
 extract index.html,info.html,pics to /usr/local/httpd/htdocs/somedir
 (default is telrate, that's easiest)
+
 # cd /usr/local/httpd/htdocs
 # tar -xzf telrate.tgz
 
 make it readable for your webserver
  
 
-edit isdnrate:
+edit telrate.cgi:
 --------------
  location of code file ( .../tools/zone/CC/code )
- location of isdnrate (only if pipe's are used not sockets)
+ location of telrate (only if pipe's are used not sockets)
  location of mktemp (should be ok)
  @prob_zones should be areacodes of villages in zone 1-3
      qw (from to to .. ) with leading '0'
@@ -32,7 +36,7 @@ edit isdnrate:
  location of index.html, info.html, pic, (default /telrate/ under htdocs)
  
  if your /tmp ist not writable by all users, turn of $use_sockets
- or change the location of the unix socket in both isdnrate's.
+ or change the location of the unix socket in both isdnrate.c and telrate.cgi.
  
  make a tmp dir below htdocs
  # mkdir /usr/local/httpd/htdocs/tmp
@@ -69,20 +73,20 @@ PerlSendHeader On
 Options +ExecCGI
 </Location>
 
+NOTE: Running under mod_perl has still some bugs, therefor extension cgi
+is used by now.
 -----------------
 End Apache config
 
   
- # cp isdnrate /usr/local/httpd/cgi-bin
-or 
- # cp isdnrate /usr/local/httpd/cgi-bin
- # chmod 755 /usr/local/httpd/cgi-bin/isdnrate
+ # cp telrate.cgi /usr/local/httpd/cgi-bin
+ # chmod 755 /usr/local/httpd/cgi-bin/telrate.cgi
  # chmod 644 /etc/isdn/isdn.conf  
  
  edit telnum.c (if not compiled with proper -D ISDN_CC )
   first line defines TESTat or TEDTnl
 
-NB: isdnrate uses the following perl modules:
+NB: telrate.cgi uses the following perl modules:
  CGI, GD, IO::Handle
  if you don't have these, point your browser to www.perl.org, 
  and look for CPAN mirrors near your location.
@@ -99,7 +103,7 @@ IMG tags too.
 Running the Program
 -------------------
 
-if $use_sockets is on, start the server instance of isdnlog/bin/isdnrate with
+if $use_sockets is on, start the server instance of isdnlog/bin/telrate with
 options -D [-v]
 as soon as you see "Setup sockets" you can point your browser to 
 

@@ -1,4 +1,4 @@
-/* $Id: rate.c,v 1.41 1999/08/29 10:29:06 akool Exp $
+/* $Id: rate.c,v 1.42 1999/09/09 11:21:05 akool Exp $
  *
  * Tarifdatenbank
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rate.c,v $
+ * Revision 1.42  1999/09/09 11:21:05  akool
+ * isdnlog-3.49
+ *
  * Revision 1.41  1999/08/29 10:29:06  akool
  * isdnlog-3.48
  *   cosmetics
@@ -342,7 +345,7 @@ extern const char *basename (const char *name);
 #include "country.h"
 #include "rate.h"
 
-#define LENGTH 250             /* max length of lines in data file */
+#define LENGTH 512             /* max length of lines in data file */
 #define STRINGS 8              /* number of buffers for printRate() */
 #define STRINGL 64             /* length of printRate() buffer */
 #define DEFAULT_FORMAT "%.2f"  /* default format for printRate() */
@@ -364,6 +367,7 @@ typedef struct {
   bitfield  Day;
   bitfield  Hour;
   int       Freeze;
+  double    Sales;
   int       nUnit;
   UNIT     *Unit;
 } HOUR;
@@ -742,17 +746,21 @@ int initRate(char *conf, char *dat, char *dom, char **msg)
 
     case 'G':
       if (ignore) continue;
-//    warning (dat, "Legacy tag '%s'", s);
+      warning (dat, "Legacy tag '%s'", s);
       break;
 
     case 'C':  /* C:Comment */
       if (ignore) continue;
       s+=2; while (isblank(*s)) s++;
       if ((c=strchr(s,':'))!=NULL) {
-	*c++='\0';
+	*c='\0';
+	c=strip(c+1);
 	for (i=0; i<Provider[prefix].nComment; i++) {
 	  if (strcmp (Provider[prefix].Comment[i].Key,s)==0) {
-	    warning (dat, "Duplicate Comment '%s'", s);
+	    char **value=&Provider[prefix].Comment[i].Value;
+	    *value=realloc(*value, strlen(*value)+strlen(c)+2);
+	    strcat(*value, "\n");
+	    strcat(*value, c);
 	    s=NULL;
 	    break;
 	  }
@@ -760,7 +768,7 @@ int initRate(char *conf, char *dat, char *dom, char **msg)
 	if (s) {
 	  Provider[prefix].Comment=realloc(Provider[prefix].Comment, (Provider[prefix].nComment+1)*sizeof(COMMENT));
 	  Provider[prefix].Comment[Provider[prefix].nComment].Key=strdup(s);
-	  Provider[prefix].Comment[Provider[prefix].nComment].Value=strdup(strip(c));
+	  Provider[prefix].Comment[Provider[prefix].nComment].Value=strdup(c);
 	  Provider[prefix].nComment++;
 	  Comments++;
 	}
@@ -1072,6 +1080,7 @@ int initRate(char *conf, char *dat, char *dom, char **msg)
       Provider[prefix].Zone[zone].Hour[t].Day=day;
       Provider[prefix].Zone[zone].Hour[t].Hour=hour;
       Provider[prefix].Zone[zone].Hour[t].Freeze=freeze;
+      Provider[prefix].Zone[zone].Hour[t].Sales=0.0;
       Provider[prefix].Zone[zone].Hour[t].nUnit=0;
       Provider[prefix].Zone[zone].Hour[t].Unit=NULL;
 
@@ -1084,6 +1093,11 @@ int initRate(char *conf, char *dat, char *dom, char **msg)
 	}
 	price=strtod(s,&s);
 	while (isblank(*s)) s++;
+	if (*s=='|') {
+	  Provider[prefix].Zone[zone].Hour[t].Sales=price;
+	  s++;
+	  continue;
+	}	
 	divider=0.0;
 	duration=1.0;
 	if (*s=='(') {
@@ -1195,7 +1209,7 @@ char *getProvider (int prefix)
 char *getComment (int prefix, char *key)
 {
   int i;
-
+  
   if (prefix<0 || prefix>=nProvider || !Provider[prefix].used)
     return NULL;
 
@@ -1358,10 +1372,11 @@ int getRate(RATE *Rate, char **msg)
       }
       freeze=Hour->Freeze;
       Rate->Hour=Hour->Name;
+      Rate->Sales=Hour->Sales;
       Unit=Hour->Unit;
       if (now==0.0 && Unit->Duration==0.0)
 	Rate->Basic=Unit->Price;
-      for (i=0; i<Hour->nUnit; i++)
+      for (i=0; i<Hour->nUnit; i++) 
 	if ((Rate->Rhythm[0]=Unit[i].Duration)!=0)
 	  break;
       Rate->Rhythm[1]=Unit[Hour->nUnit-1].Duration;
@@ -1390,6 +1405,9 @@ int getRate(RATE *Rate, char **msg)
       Rate->Duration=Unit->Duration;
     }
   }
+
+  if (Rate->Charge < Rate->Sales)
+    Rate->Charge = Rate->Sales;
 
   if (now>0.0)
     Rate->Rest=now-Rate->Time;
@@ -1527,8 +1545,8 @@ void main (int argc, char *argv[])
   }
 
   time(&Rate.start);
-  Rate.now=Rate.start + LCR_DURATION;
-
+  Rate.now=Rate.start+153;
+  
 #if 0
   Rate.prefix = 2;
   for (i=0; i<10000; i++) {
@@ -1555,8 +1573,8 @@ void main (int argc, char *argv[])
   exit (0);
 #endif
 
-
-#if 1
+  
+#if 0
   time(&Rate.start);
   Rate.now=Rate.start + LCR_DURATION;
 
@@ -1593,10 +1611,10 @@ void main (int argc, char *argv[])
       printf ("%02d.%02d.%04d %02d:%02d:%02d  %10s (%6.3f %6.3f)  %4d  %4.1f  %2f/%2f %4ld  %4ld  %s\n",
 	      now.tm_mday, now.tm_mon+1, now.tm_year+1900,
 	      now.tm_hour, now.tm_min, now.tm_sec,
-	      printRate (Rate.Charge),
-	      Rate.Basic, Rate.Price,
-	      Rate.Units, Rate.Duration,
-	      Rate.Rhythm[0], Rate.Rhythm[1],
+	      printRate (Rate.Charge), 
+	      Rate.Basic, Rate.Price, 
+	      Rate.Units, Rate.Duration, 
+	      Rate.Rhythm[0], Rate.Rhythm[1], 
 	      Rate.Time, Rate.Rest,
 	      explainRate(&Rate));
     }
@@ -1606,7 +1624,7 @@ void main (int argc, char *argv[])
 
 #else
 
-  printf ("---Date--- --Time--  --Charge-- ( Basic  Price)  Unit   Dur  Time  Rest\n");
+  printf ("---Date--- --Time--  --Charge-- ( Sales Basic  Price)  Unit   Dur  Time  Rest\n");
 
   time(&Rate.start);
   time(&Rate.now);
@@ -1627,10 +1645,10 @@ void main (int argc, char *argv[])
       exit (1);
     }
     now=*localtime(&Rate.now);
-    printf ("%02d.%02d.%04d %02d:%02d:%02d  %10s (%6.3f %6.3f)  %4d  %4.1f  %4ld  %4ld\n",
+    printf ("%02d.%02d.%04d %02d:%02d:%02d  %10s (%6.3f %6.3f %6.3f)  %4d  %4.1f  %4ld  %4ld\n",
 	    now.tm_mday, now.tm_mon+1, now.tm_year+1900,
 	    now.tm_hour, now.tm_min, now.tm_sec,
-	    printRate (Rate.Charge), Rate.Basic, Rate.Price, Rate.Units, Rate.Duration, Rate.Time, Rate.Rest);
+	    printRate (Rate.Charge), Rate.Sales, Rate.Basic, Rate.Price, Rate.Units, Rate.Duration, Rate.Time, Rate.Rest);
 
     sleep(1);
   }

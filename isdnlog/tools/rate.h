@@ -1,4 +1,4 @@
-/* $Id: rate.h,v 1.11 1999/08/25 17:07:18 akool Exp $
+/* $Id: rate.h,v 1.12 1999/09/09 11:21:06 akool Exp $
  *
  * Tarifdatenbank
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rate.h,v $
+ * Revision 1.12  1999/09/09 11:21:06  akool
+ * isdnlog-3.49
+ *
  * Revision 1.11  1999/08/25 17:07:18  akool
  * isdnlog-3.46
  *
@@ -145,6 +148,7 @@ typedef struct {
   char      *Day;       /* Wochen- oder Feiertag */
   char      *Hour;      /* Bezeichnung des Tarifs */
   double     Basic;     /* Grundpreis einer Verbindung */
+  double     Sales;     /* Mindestumsatz einer Verbindung */
   double     Price;     /* Preis eines Tarifimpulses */
   double     Duration;  /* Länge eines Tarifimpulses */
   int        Units;     /* verbrauchte Tarifimpulse */

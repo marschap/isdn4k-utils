@@ -1,4 +1,4 @@
-V:1.10-Germany [03-Sep-1999 19:13:20]
+V:1.10-Germany [09-Sep-1999 13:17:12]
 
 # W‰hrungsformat
 U:%.3f DM
@@ -8,7 +8,7 @@ U:%.3f DM
 #
 # (C) Copyright 1999 by Andreas Kool (akool@isdn4linux.de)
 #
-# $Id: rate-de.dat,v 1.42 1999/09/08 13:11:04 akool Exp $
+# $Id: rate-de.dat,v 1.43 1999/09/09 11:21:04 akool Exp $
 #
 #
 # Das "A:" Tag muﬂ folgendermaﬂen gef¸llt werden:
@@ -4768,7 +4768,7 @@ T:*/*=0.06/0,0.46(60)/1
 #
 #
 P:24 Telepassport 99 Plus
-C:GmbH, Schwindstraﬂe 3, 60325 Frankfurt 01024
+C:GmbH, Schwindstraﬂe 3, 60325 Frankfurt
 C:Name:     TelePassport Service GmbH
 C:Homepage: http://www.telepassport.de
 C:Hotline:  0800/808 808 8
@@ -4832,9 +4832,9 @@ Z:204 Welt 3
 A:+
 T:*/*=1.96/60
 #####################################################################
-P:24,1 Telepassport 01024 Plus
+P:24,1 Telepassport Plus
 G:15-Jul-1999
-C:GmbH, Schwindstraﬂe 3, 60325 Frankfurt 01024
+C:GmbH, Schwindstraﬂe 3, 60325 Frankfurt
 C:Name:     TelePassport Service GmbH
 C:Homepage: http://www.telepassport.de
 C:Hotline:  0800/808 808 8
@@ -4890,7 +4890,7 @@ T:*/*=1.96/60
 #####################################################################
 P:24,2 Telepassport CbC
 G:15-Jul-1999
-C:GmbH, Schwindstraﬂe 3, 60325 Frankfurt 01024
+C:GmbH, Schwindstraﬂe 3, 60325 Frankfurt
 C:Name:     TelePassport Service GmbH
 C:Homepage: http://www.telepassport.de
 C:Hotline:  0800/808 808 8
@@ -4944,7 +4944,7 @@ T:*/*=1.96/60
 #####################################################################
 P:24,3 Telepassport RegionalTarif Plus
 G:01.05.1999
-C:GmbH, Schwindstraﬂe 3, 60325 Frankfurt 01024
+C:GmbH, Schwindstraﬂe 3, 60325 Frankfurt
 C:Name:     TelePassport Service GmbH
 C:Homepage: http://www.telepassport.de
 C:Hotline:  0800/808 808 8
@@ -4997,7 +4997,7 @@ T:*/*=1.96/60
 #####################################################################
 P:24,4 Telepassport S¸dOst-Tarif
 G:01.05.1999
-C:GmbH, Schwindstraﬂe 3, 60325 Frankfurt 01024
+C:GmbH, Schwindstraﬂe 3, 60325 Frankfurt
 C:Name:     TelePassport Service GmbH
 C:Homepage: http://www.telepassport.de
 C:Hotline:  0800/808 808 8
@@ -5058,9 +5058,9 @@ Z:203 Global 4
 A:+
 T:*/*=1.98/60
 #####################################################################
-P:24,5 Telepassport S¸dOst 01024
+P:24,5 Telepassport S¸dOst
 G:01.05.1999
-C:GmbH, Schwindstraﬂe 3, 60325 Frankfurt 01024
+C:GmbH, Schwindstraﬂe 3, 60325 Frankfurt
 C:Name:     TelePassport Service GmbH
 C:Homepage: http://www.telepassport.de
 C:Hotline:  0800/808 808 8
@@ -5108,7 +5108,7 @@ T:*/*=1.98/60
 #####################################################################
 P:24,6 Telepassport StudentenTarif
 G:01.05.1999
-C:GmbH, Schwindstraﬂe 3, 60325 Frankfurt 01024
+C:GmbH, Schwindstraﬂe 3, 60325 Frankfurt
 C:Name:     TelePassport Service GmbH
 C:Homepage: http://www.telepassport.de
 C:Hotline:  0800/808 808 8
@@ -14066,7 +14066,6 @@ C:Vielmehr handelt es sich hier nur um die Tarife fuer den
 C:UUnet Ortstarif-Zugang!
 C:Dies ist *kein* All-in-One Zugang, es werden zus‰tzliche Geb¸hren erhoben!
 Z:100 Internet
-A:+49 # FIXME: Verzonung per heute (29-Aug-99) nicht bekannt!
 A:0191999 # UUnet
 A:0192333 # NDH
 T:W/05-09=0.048(60)/1 UUnet
@@ -14798,7 +14797,6 @@ C:Energieversorgung S¸dsachsen Telekommunikationsgesellschaft mbH, Postfach 2 38
 #
 P:201 Frag Fred
 Z:21 Telefonauskunft
-A:+49 # FIXME: es gibt keine Verzonung, da nur Auskunftsdienste angeboten werden
 A:11811
 T:*/*=0.847/0,0.121/6.7
 #####################################################################

@@ -1,0 +1,102 @@
+NEWS betreffend tools, (rate, isdnrate)
+
+1999.09.03
+
+    holiday.c: holiday-CC.dat
+    ...
+      W:H	Feiertag
+      W:*	Immer 		# APPEND THIS
+      
+    Hat ein Provider jeden Tag den gleichen Tarif (T:*/...) wird nun statt
+    dem Wochentag 'Immer' ausgegeben. Damit ist eine klarere Unterscheidung
+    zu Providern mit tagesabhaengigen Tarifen gegeben.  
+    
+
+1999.09.01  
+
+  Neues Feld in struct RATE
+      double Sales; (Mindestgesprächsgebühr)
+  
+  rate-CC.dat: Syntaxerweiterung im T:Tag
+ 
+      T:*.*=0.30|2.20(60)/1
+          Mindestens 0.30, sonst 2.20 per Minute 
+      
+      aber:
+      
+      T:*.*=0.30/0,2.20(60/1
+          0.30 + 2.20/Min (0.30 = Herstellungsgebühr)
+  
+  rate-CC.dat: Syntaxerweiterung im C:Tag
+ 
+      gleichlautende C:Tags werden per '\n' appended
+      
+  telnum.c:
+      Dirty hack fuer +1, +7  (s. _getCountry...)    
+      
+  isdnrate.c:
+      Neue Option -S[v|n] (sort VBN oder Name statt Preis)
+      
+      z.B.
+          isdnrate -C -Sv -XHomepage      
+	  (sortierte Proiderliste mit Homepage)
+
+  
+  
+1999.08.24
+
+  rate-CC.dat: Syntaxerweiterung im C:Tag
+  
+    folgende C:-Tags sind dzt. in Verwendung:
+    
+    C:Name:Provider-Firmenbezeichnung
+    C:Address:Provider-Adresse
+    C:Homepage:http://www.provider.CC
+    C:TarifURL:http://www.provider.CC/tarife/
+    C:EMail:info@povider.CC
+    C:Telefon:0800 123 123
+    C:Telefax:0800 123 123
+    C:Hotline:0800 123 123
+    C:Maintainer:lt@toetsch.at
+    C:Special:Nur Businesskunden
+    C:Zone:Fernzone ab 100 Km
+    C:GT:Gebühentext z.B. 200 Mindestumsatz
+    C:GF:Formeln f. Gebühren
+     (Diese Formeln werden von telrate.cgi - Gesprächsmix ausgewertet)
+	z.B.
+	C:GT:99 Mindestumsatz (per Monat)
+	C:GF:Cost = Ch > 99 ? 0 : 99
+	
+	C:GT:Businesskunden ab 5000 Umsatz
+	C:GF:Ch >= 5000 ? 1 : -1
+	
+	C:GT:Freischaltgebühr einmalig 480
+	C:GF:Cost = 480/12
+	
+    Vom telrate.cgi sind dzt. die Variablen 
+	'Ch' ... Kosten pro Mix
+	'MaxCh' ... Teuerste Spalte im Mix
+	'Cost' ... Angefallenen Kosten
+    definiert.
+    
+    Ist der Rückgabewert (i.e. die letzte Expression) -1, wird der 
+    Provider verworfen (z.B. Mindestumsatz nicht erreicht).
+    
+    
+  isdnrate:    
+
+      isdnrate -D2 
+          begibt sich nach dem Starten in den Hintergund
+      isdnrate -CX9 Argentinien  
+          verbindet ich mit dem oben gestarteten Daemon und wirft die
+          Tarifliste aus.
+      isdnrate -CD3
+      killed den Daemon wieder      
+
+
+1999.08.24
+
+  Neues Feld in struct RATE
+      double Rhythm[2]; (Takt z.B. 60,1)
+  
+-lt-
