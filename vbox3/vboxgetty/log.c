@@ -1,9 +1,13 @@
 /*
-** $Id: log.c,v 1.4 1998/07/07 17:14:52 michael Exp $
+** $Id: log.c,v 1.5 1998/07/29 11:02:37 michael Exp $
 **
 ** Copyright 1996-1998 Michael 'Ghandi' Herold <michael@abadonna.mayn.de>
 **
 ** $Log: log.c,v $
+** Revision 1.5  1998/07/29 11:02:37  michael
+** - Added missing ATA to answer call (oh god, im so stupid).
+** - Some junk removed.
+**
 ** Revision 1.4  1998/07/07 17:14:52  michael
 ** - Since the ttyI interface will not work for me I have many time to write
 **   the damn docu ;-)
@@ -73,8 +77,6 @@ static struct logsequence logsequence[] =
 int log_open(char *name)
 {
 	if ((logtxtio = fopen(name, "a"))) return(0);
-
-fprin
 
 	return(-1);
 }
@@ -251,14 +253,4 @@ void log_code(int level, char *sequence)
 			log_char(level, sequence[i]);
 		}
 	}
-}
-
-
-														 /*************************************************************************/
-														 /**  **/
-														 /*************************************************************************/
-
-void xxx(123)
-{
-
 }

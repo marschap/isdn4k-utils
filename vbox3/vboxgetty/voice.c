@@ -1,9 +1,13 @@
 /*
-** $Id: voice.c,v 1.3 1998/07/06 09:05:38 michael Exp $
+** $Id: voice.c,v 1.4 1998/07/29 11:02:38 michael Exp $
 **
 ** Copyright 1996-1998 Michael 'Ghandi' Herold <michael@abadonna.mayn.de>
 **
 ** $Log: voice.c,v $
+** Revision 1.4  1998/07/29 11:02:38  michael
+** - Added missing ATA to answer call (oh god, im so stupid).
+** - Some junk removed.
+**
 ** Revision 1.3  1998/07/06 09:05:38  michael
 ** - New control file code added. The controls are not longer only empty
 **   files - they can contain additional informations.
@@ -112,46 +116,51 @@ int voice_init(struct vboxuser *vboxuser, struct vboxcall *vboxcall)
 
 	if (scr_init_variables(vars) == 0)
 	{
-		log_line(LOG_D, "Setting voice compression to \"ulaw\"...\n");
+		log_line(LOG_D, "Answering call...\n");
 
-		if (modem_command(&vboxmodem, "AT+VSM=6+VLS=2", "OK") > 0)
+		if (modem_command(&vboxmodem, "ATA", "VCON") > 0)
 		{
-			log_line(LOG_D, "Starting full duplex audio mode...\n");
+			log_line(LOG_D, "Setting voice compression to \"ulaw\"...\n");
 
-			if (modem_command(&vboxmodem, "AT+VTX+VRX", "CONNECT") > 0)
+			if (modem_command(&vboxmodem, "AT+VSM=6+VLS=2", "OK") > 0)
 			{
-				rc = scr_execute(vboxcall->script, vboxuser);
+				log_line(LOG_D, "Starting full duplex audio mode...\n");
 
-				voice_hear(0);
-				voice_save(0);
-
-				printstring(voicestoppl, "%c%c", DLE, ETX);
-				printstring(voicestoprc, "%c%c", DLE, DC4);
-
-				log_line(LOG_D, "Sending \"<DLE><ETX>\" to stop playback mode...\n");
-
-				vboxmodem_raw_write(&vboxmodem, voicestoppl, 2);
-
-				log_line(LOG_D, "Sending \"<DLE><DC4>\" to stop record mode...\n");
-
-				vboxmodem_raw_write(&vboxmodem, voicestoprc, 2);
-
-				modem_flush(&vboxmodem, 0);
-
-				if ((stop = ctrl_exists(vboxuser->home, "suspend")))
+				if (modem_command(&vboxmodem, "AT+VTX+VRX", "CONNECT") > 0)
 				{
-					ctrl_remove(vboxuser->home, "suspend");
+					rc = scr_execute(vboxcall->script, vboxuser);
 
-					log_line(LOG_A, "Suspending call to number %s...\n", stop);
+					voice_hear(0);
+					voice_save(0);
 
-					if (modem_command(&vboxmodem, "AT+S1", "OK") > 0) {
-						log_line(LOG_D, "Call suspended to number %s.\n", stop);
-					} else {
-						log_line(LOG_E, "Can't suspend call to number %s.\n", stop);
+					printstring(voicestoppl, "%c%c", DLE, ETX);
+					printstring(voicestoprc, "%c%c", DLE, DC4);
+
+					log_line(LOG_D, "Sending \"<DLE><ETX>\" to stop playback mode...\n");
+
+					vboxmodem_raw_write(&vboxmodem, voicestoppl, 2);
+
+					log_line(LOG_D, "Sending \"<DLE><DC4>\" to stop record mode...\n");
+
+					vboxmodem_raw_write(&vboxmodem, voicestoprc, 2);
+
+					modem_flush(&vboxmodem, 0);
+
+					if ((stop = ctrl_exists(vboxuser->home, "suspend")))
+					{
+						ctrl_remove(vboxuser->home, "suspend");
+
+						log_line(LOG_A, "Suspending call to number %s...\n", stop);
+
+						if (modem_command(&vboxmodem, "AT+S1", "OK") > 0) {
+							log_line(LOG_D, "Call suspended to number %s.\n", stop);
+						} else {
+							log_line(LOG_E, "Can't suspend call to number %s.\n", stop);
+						}
 					}
-				}
 
-				return(rc);
+					return(rc);
+				}
 			}
 		}
 	}
@@ -169,7 +178,6 @@ int voice_init(struct vboxuser *vboxuser, struct vboxcall *vboxcall)
 /**					 2 wenn der Anruf suspended werden soll.					**/
 /**					-1 bei einem Fehler.												**/
 /*************************************************************************/
-
 
 int voice_wait(int timeout)
 {
