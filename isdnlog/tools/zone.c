@@ -1,4 +1,4 @@
-/* $Id: zone.c,v 1.14 1999/07/25 15:58:13 akool Exp $
+/* $Id: zone.c,v 1.15 1999/07/26 16:28:51 akool Exp $
  *
  * Zonenberechnung
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: zone.c,v $
+ * Revision 1.15  1999/07/26 16:28:51  akool
+ * getRate() speedup from Leo
+ *
  * Revision 1.14  1999/07/25 15:58:13  akool
  * isdnlog-3.43
  *   added "telnum" module
@@ -84,7 +87,10 @@
  *
  * Changes:
  *
- * 1.21 1997.07.22 lt fixed bug, were T was overwritten, when an 'A'
+ * 1.22 1999.07.26 lt bug fix, getZone returned junk, when diff. providers
+ *                    used the same zone file
+ *
+ * 1.21 1999.07.22 lt fixed bug, were T was overwritten, when an 'A'
  *                    followed versio, occured w. DTAG 		
  *
  * 1.20 1999.07.08 lt added support for NL
@@ -140,7 +146,7 @@ struct sth {
 
 static struct sth *sthp;
 static int count;
-static char version[] = "1.21";
+static char version[] = "1.22";
 static bool area_read = false;
 
 #define LINK 127
@@ -354,6 +360,7 @@ static int _initZone(int provider, char *path, char **msg, bool area_only)
 			sthp[ocount].pack_key = sthp[i].pack_key;
 			sthp[ocount].pack_table = sthp[i].pack_table;
 			sthp[ocount].table = sthp[i].table;
+			sthp[ocount].cc = sthp[i].cc;
 			sthp[i].used++;
 			sthp[ocount].real = i;
 			found = true;

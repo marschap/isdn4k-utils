@@ -203,7 +203,7 @@ void rate_1001_old(void) {
     if (t==0)
       rprintf ("Michael Reinelt <reinelt@eunet.at>", "C:maintained by:");
     sprintf (s, "%s (ATS %.3f pro Einheit)", Name[t], Tarif[t]);
-    rprintf (s, "C:Tarif:");
+    rprintf (s, "# Tarif:");
     rprintf ("# Verzonung", "D:pta");
     for (z=0; z<COUNT(Zone); z++) {
       printf ("\n");
@@ -320,7 +320,7 @@ void rate_1001(void) {
     if (t==0)
       rprintf ("Michael Reinelt <reinelt@eunet.at>", "C:maintained by:");
     sprintf (s, "%s (ATS %.3f pro Einheit)", Name[t], Tarif[t]);
-    rprintf (s, "C:Tarif:");
+    rprintf (s, "# Tarif:");
     rprintf ("# Verzonung", "D:pta");
     for (z=0; z<COUNT(Zone); z++) {
       printf ("\n");
@@ -384,7 +384,7 @@ void rate_1002(void) {
   
   printf ("\n");
   rprintf ("UTA", "P:02");
-  rprintf ("angrenzende Bezirke werden falsch verzont", "C:Fixme:");
+  rprintf ("angrenzende Bezirke werden falsch verzont", "# Fixme:");
   rprintf ("# Verzonung", "D:uta");
   for (z=0; z<COUNT(Zone); z++) {
     rprintf (Zone[z][0], "Z:%d", z+1);
@@ -437,7 +437,7 @@ void rate_1003(void) {
   
   printf ("\n");
   rprintf ("Multikom", "P:03");
-  rprintf ("Verzonung nicht verifiziert", "C:Fixme:");
+  rprintf ("Verzonung nicht verifiziert", "# Fixme:");
   rprintf ("# Verzonung", "D:pta");
   for (z=0; z<COUNT(Zone); z++) {
     rprintf (Zone[z][0], "Z:%d", z+1);
@@ -545,9 +545,9 @@ void rate_1007(void) {
   for (t=0; t<2; t++) {
     printf ("\n");
     rprintf ("European Telecom", "P:07,%d", t+1);
-    rprintf ("Verzonung nicht verifiziert", "C:Fixme:");
+    rprintf ("Verzonung nicht verifiziert", "# Fixme:");
     rprintf ("# Verzonung", "D:1007");
-    rprintf (Name[t], "C:Tarif:");
+    rprintf (Name[t], "# Tarif:");
     for (z=0; z<COUNT(Zone); z++) {
       rprintf (Zone[z][0], "Z:%d", z+1);
       if (Tarif[t][z][0]==Tarif[t][z][1]) {
@@ -711,7 +711,7 @@ void rate_1024(void) {
   
   printf ("\n");
   rprintf ("Telepassport", "P:24");
-  rprintf ("'International D': Zentral- und Südamerika nicht implementiert", "C:Fixme:");
+  rprintf ("'International D': Zentral- und Südamerika nicht implementiert", "# Fixme:");
   rprintf ("# Verzonung", "D:1024");
   for (z=0; z<COUNT(Zone); z++) {
     rprintf (Zone[z][0], "Z:%d", z+1);
@@ -770,8 +770,8 @@ void rate_1029(void) {
     printf ("\n");
     rprintf ("CyberTron", "P:29,%d", t+1);
     sprintf (s, "%s (ATS %.3f pro Einheit)", Name[t], Einheit[t]);
-    rprintf (s, "C:Tarif:");
-    rprintf ("Internationale Zonen nicht implementiert!", "C:Fixme:");
+    rprintf (s, "# Tarif:");
+    rprintf ("Internationale Zonen nicht implementiert!", "# Fixme:");
 
     for (z=0; z<COUNT(Zone); z++) {
       rprintf (Zone[z][0], "Z:%d", z+1);
@@ -818,7 +818,7 @@ void rate_1044(void) {
   printf ("\n");
   rprintf ("Citykom", "P:44");
   rprintf ("# Verzonung", "D:1012");
-  rprintf ("internationale Zonen nicht implementiert", "C:Fixme:");
+  rprintf ("internationale Zonen nicht implementiert", "# Fixme:");
   for (z=0; z<COUNT(Zone); z++) {
     rprintf (Zone[z][0], "Z:%d", z+1);
     if (Tarif [z][0]!=0.0) { /* Tarif bekannt? */
@@ -921,7 +921,7 @@ void rate_1066(void) {
   printf ("\n");
   rprintf ("MIT 1066", "P:66");
   rprintf ("# Verzonung", "D:1066");
-  rprintf ("Verzonung -50/+50 nicht verifiziert", "C:Fixme");
+  rprintf ("Verzonung -50/+50 nicht verifiziert", "# Fixme");
   for (z=0; z<COUNT(Zone); z++) {
     rprintf (Zone[z][0], "Z:%d", z+1);
     if (Tarif[z][0]==Tarif[z][1]) {

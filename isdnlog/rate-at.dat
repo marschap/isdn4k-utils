@@ -17,7 +17,7 @@ U:%.3f öS
 
 P:01,1                             Telekom Austria
 C:maintained by:                   Michael Reinelt <reinelt@eunet.at>
-C:Tarif:                           Minimumtarif (ATS 1.116 pro Einheit)
+# Tarif:                           Minimumtarif (ATS 1.116 pro Einheit)
 D:pta                              # Verzonung
 
 Z:0                                FreePhone
@@ -243,7 +243,7 @@ T:E,H/*=1.116/15                   Sparzeit
 A:+43717
 
 P:01,2                             Telekom Austria
-C:Tarif:                           Standartarif (ATS 1.056 pro Einheit)
+# Tarif:                           Standartarif (ATS 1.056 pro Einheit)
 D:pta                              # Verzonung
 
 Z:0                                FreePhone
@@ -469,7 +469,7 @@ T:E,H/*=1.056/15                   Sparzeit
 A:+43717
 
 P:01,3                             Telekom Austria
-C:Tarif:                           Geschäftstarif 1 (ATS 0.996 pro Einheit)
+# Tarif:                           Geschäftstarif 1 (ATS 0.996 pro Einheit)
 D:pta                              # Verzonung
 
 Z:0                                FreePhone
@@ -695,7 +695,7 @@ T:E,H/*=0.996/15                   Sparzeit
 A:+43717
 
 P:01,4                             Telekom Austria
-C:Tarif:                           Geschäftstarif 2 (ATS 0.936 pro Einheit)
+# Tarif:                           Geschäftstarif 2 (ATS 0.936 pro Einheit)
 D:pta                              # Verzonung
 
 Z:0                                FreePhone
@@ -921,7 +921,7 @@ T:E,H/*=0.936/15                   Sparzeit
 A:+43717
 
 P:02                               UTA
-C:Fixme:                           angrenzende Bezirke werden falsch verzont
+# Fixme:                           angrenzende Bezirke werden falsch verzont
 D:uta                              # Verzonung
 Z:1                                Bundeslandzone
 T:1-5/8-18=1.00(60)/1              Geschäftszeit
@@ -1038,7 +1038,7 @@ A:Pakistan, Palau, Salomonen, Senegal, Seychellen, Somalia, Tokelau, Tschad
 A:Tuvalu, Vietnam, Wake-Inseln, Wallis- und Futuna-Inseln, Zaire
 
 P:03                               Multikom
-C:Fixme:                           Verzonung nicht verifiziert
+# Fixme:                           Verzonung nicht verifiziert
 D:pta                              # Verzonung
 Z:1                                Regionalzone
 T:*/*=1.00(60)/60/1                rund um die Uhr
@@ -1153,9 +1153,9 @@ T:*/*=19.00(60)/60/1               rund um die Uhr
 A:+                                alle übrigen Länder
 
 P:07,1                             European Telecom
-C:Fixme:                           Verzonung nicht verifiziert
+# Fixme:                           Verzonung nicht verifiziert
 D:1007                             # Verzonung
-C:Tarif:                           1 Jahr feste Bindung
+# Tarif:                           1 Jahr feste Bindung
 Z:1                                Fernzone 1
 T:1-5/08-12=2.376(60)/1            Tageszeit 1
 T:1-4/13-16=2.376(60)/1            Tageszeit 1
@@ -1285,9 +1285,9 @@ T:1-5/18-8=1.980(60)/1             Sparzeit
 T:E,H/*=1.980(60)/1                Sparzeit
 
 P:07,2                             European Telecom
-C:Fixme:                           Verzonung nicht verifiziert
+# Fixme:                           Verzonung nicht verifiziert
 D:1007                             # Verzonung
-C:Tarif:                           14-tägig kündbar
+# Tarif:                           14-tägig kündbar
 Z:1                                Fernzone 1
 T:1-5/08-12=2.532(60)/1            Tageszeit 1
 T:1-4/13-16=2.532(60)/1            Tageszeit 1
@@ -1559,7 +1559,7 @@ T:*/*=24.90(60)/60/1               rund um die Uhr
 A:+                                alle übrigen Länder
 
 P:24                               Telepassport
-C:Fixme:                           'International D': Zentral- und Südamerika nicht implementiert
+# Fixme:                           'International D': Zentral- und Südamerika nicht implementiert
 D:1024                             # Verzonung
 Z:1                                Regionalzone
 T:1-5/8-18=0.98(60)/1              Tag
@@ -1617,8 +1617,8 @@ T:*/*=19.98(60)/1                  rund um die Uhr
 A:+                                alle übrigen Länder
 
 P:29,1                             CyberTron
-C:Tarif:                           easy.Talk privat (ATS 1.116 pro Einheit)
-C:Fixme:                           Internationale Zonen nicht implementiert!
+# Tarif:                           easy.Talk privat (ATS 1.116 pro Einheit)
+# Fixme:                           Internationale Zonen nicht implementiert!
 Z:1                                Regionalzone
 T:1-5/8-12=0.99(60)/1.1273         Tageszeit 1
 T:1-4/13-16=0.99(60)/1.1273        Tageszeit 1
@@ -1665,8 +1665,8 @@ Z:9                                International
 A:+                                alle übrigen Länder
 
 P:29,2                             CyberTron
-C:Tarif:                           easy.Talk business (ATS 1.029 pro Einheit)
-C:Fixme:                           Internationale Zonen nicht implementiert!
+# Tarif:                           easy.Talk business (ATS 1.029 pro Einheit)
+# Fixme:                           Internationale Zonen nicht implementiert!
 Z:1                                Regionalzone
 T:*/*=0.96(60)/1.0719              rund um die Uhr
 Z:2                                Fernzone 1
@@ -1700,7 +1700,7 @@ A:+                                alle übrigen Länder
 
 P:44                               Citykom
 D:1012                             # Verzonung
-C:Fixme:                           internationale Zonen nicht implementiert
+# Fixme:                           internationale Zonen nicht implementiert
 Z:1                                Regional
 T:*/*=0.72(60)/1                   rund um die Uhr
 Z:2                                Österreich
@@ -1716,7 +1716,7 @@ A:+                                alle übrigen Länder
 
 P:66                               MIT 1066
 D:1066                             # Verzonung
-C:Fixme                            Verzonung -50/+50 nicht verifiziert
+# Fixme                            Verzonung -50/+50 nicht verifiziert
 Z:1                                Regionalzone
 T:1-5/8-18=0.96(60)/18.75/1        Tag
 T:1-5/18-8=0.80(60)/22.50/1        Nacht

@@ -1,4 +1,4 @@
-/* $Id: rate.c,v 1.36 1999/07/18 08:41:19 akool Exp $
+/* $Id: rate.c,v 1.37 1999/07/26 16:28:49 akool Exp $
  *
  * Tarifdatenbank
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rate.c,v $
+ * Revision 1.37  1999/07/26 16:28:49  akool
+ * getRate() speedup from Leo
+ *
  * Revision 1.36  1999/07/18 08:41:19  akool
  * fix from Michael
  *
@@ -1171,8 +1174,8 @@ int getRate(RATE *Rate, char **msg)
   ZONE  *Zone;
   HOUR  *Hour;
   UNIT  *Unit;
-  int    prefix, freeze, hour, cur, max, i, j;
-  double now, run, end, jmp;
+  int    prefix, freeze, cur, max, i, j;
+  double now, end, jmp, leap;
   char  *day;
   time_t time;
   struct tm tm;
@@ -1251,17 +1254,17 @@ int getRate(RATE *Rate, char **msg)
   Zone=&Provider[prefix].Zone[Rate->_zone];
   Hour=NULL;
   Unit=NULL;
-  hour=UNKNOWN; /* Stundenwechsel erzwingen */
   freeze=0;
-  now=Rate->start;
-  end=Rate->now;
-  Rate->Time=end-now;
-  run=0.0;
-  while (end>=now) {
-    time=now;
-    tm=*localtime(&time);
-    if (hour==UNKNOWN || (!freeze && hour!=tm.tm_hour)) { /* Neuberechnung bei Stundenwechsel */
-      hour=tm.tm_hour;
+  now=0.0;
+  end=Rate->now-Rate->start;
+  Rate->Time=end;
+  leap=UNKNOWN; /* Stundenwechsel erzwingen */
+  
+  while (now<end) {
+    if (!freeze && now>=leap) { /* Neuberechnung bei Stundenwechsel */
+      time=Rate->start+now;
+      leap=3600*(int)(time/3600+1)-Rate->start;
+      tm=*localtime(&time);
       hourBits=1<<tm.tm_hour;
       Hour=NULL;
       cur=max=0;
@@ -1281,31 +1284,34 @@ int getRate(RATE *Rate, char **msg)
       freeze=Hour->Freeze;
       Rate->Hour=Hour->Name;
       Unit=Hour->Unit;
-      jmp=run;
+      jmp=now;
       while (Unit->Delay!=UNKNOWN && Unit->Delay<=jmp) {
 	jmp-=Unit->Delay;
 	Unit++;
       }
+      if (now==0.0 && Unit->Duration==0.0)
+	Rate->Basic=Unit->Price;
+      else
+	Rate->Price=Unit->Price;
+      Rate->Duration=Unit->Duration;
     }
 
-    now+=Unit->Duration;
-    run+=Unit->Duration;
+    now+=Unit->Duration; 
     Rate->Charge+=Unit->Price;
-    Rate->Duration=Unit->Duration;
-    if (run==0.0 && Unit->Duration==0.0)
-      Rate->Basic=Unit->Price;
-    else
-      Rate->Price=Unit->Price;
+
     if (Unit->Duration>0.0)
       Rate->Units++;
-    if (Unit->Delay!=UNKNOWN && Unit->Delay<=run)
+
+    if (Unit->Delay!=UNKNOWN && Unit->Delay<=now) {
       Unit++;
-    else if (Unit->Duration==0.0)
+      Rate->Price=Unit->Price;
+      Rate->Duration=Unit->Duration;
+    } else if (Unit->Duration==0.0)
       break;
   }
 
-  if (run>0.0)
-    Rate->Rest=run-Rate->Time;
+  if (now>0.0)
+    Rate->Rest=now-Rate->Time;
 
   return 0;
 }
@@ -1426,7 +1432,7 @@ void main (int argc, char *argv[])
   printf ("%s\n", msg);
 
   clearRate(&Rate);
-  Rate.prefix = 1;
+  Rate.prefix = 2;
 
   if (argc==3) {
     getNumber (argv[1], Rate.src);
@@ -1439,6 +1445,32 @@ void main (int argc, char *argv[])
       getNumber (strdup("+43-1-4711"), Rate.dst);
   }
 
+  time(&Rate.start);
+  Rate.now=Rate.start;
+  
+  for (i=0; i<5000; i++) {
+    if (getRate(&Rate, &msg)==UNKNOWN) {
+      printf ("Ooops: %s\n", msg);
+      exit (1);
+    }
+    Rate.now++;
+  }
+  printf ("domestic=%d _area=%d _zone=%d zone=%d Country=%s Zone=%s Service=%s Flags=%s\n"
+	  "current=%s\n\n",
+	  Rate.domestic, Rate._area, Rate._zone, Rate.zone, Rate.Country, Rate.Zone,
+	  Rate.Service, Rate.Flags, explainRate(&Rate));
+
+  now=*localtime(&Rate.now);
+  printf ("---Date--- --Time--  --Charge-- ( Basic  Price)  Unit   Dur  Time  Rest\n");
+  printf ("%02d.%02d.%04d %02d:%02d:%02d  %10s (%6.3f %6.3f)  %4d  %4.1f  %4ld  %4ld  %s\n",
+	  now.tm_mday, now.tm_mon+1, now.tm_year+1900,
+	  now.tm_hour, now.tm_min, now.tm_sec,
+	  printRate (Rate.Charge), Rate.Basic, Rate.Price, Rate.Units, Rate.Duration, Rate.Time, Rate.Rest,
+	  explainRate(&Rate));
+  
+  exit (0);
+
+  
 #if 1
   time(&Rate.start);
   Rate.now=Rate.start+153;

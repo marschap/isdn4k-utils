@@ -1,4 +1,4 @@
-/* $Id: isdnrate.c,v 1.13 1999/07/25 15:57:46 akool Exp $
+/* $Id: isdnrate.c,v 1.14 1999/07/26 16:28:41 akool Exp $
  *
  * ISDN accounting for isdn4linux. (rate evaluation)
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnrate.c,v $
+ * Revision 1.14  1999/07/26 16:28:41  akool
+ * getRate() speedup from Leo
+ *
  * Revision 1.13  1999/07/25 15:57:46  akool
  * isdnlog-3.43
  *   added "telnum" module
@@ -99,7 +102,7 @@ static int 	exclude=0;
 static int 	is_daemon=0;
 
 static TELNUM srcnum, destnum;
-  
+
 typedef struct {
   int    prefix;
   double rate;
@@ -160,8 +163,8 @@ static void init()
 
   if (verbose && *version)
     print_msg(PRT_V, "%s\n", version);
-	
-  initTelNum();	
+
+  initTelNum();
 } /* init */
 
 /* calc a day/time W | E | H */
@@ -202,10 +205,10 @@ static void post_init()
   if (fromarea) {
 	Strncpy(srcnum.area, fromarea, TN_MAX_AREA_LEN);
 	free(fromarea);
-	fromarea=0;	
+	fromarea=0;
   }
   initNum(&srcnum);
-  
+
   if (wanted_day)
 	get_day(wanted_day);
 } /* post_init */
@@ -235,7 +238,7 @@ static int opts(int argc, char *argv[])
                      year = atoi(p + 1);
            	     if (year < 50)
                        year += 2000;
-		     else if (year < 100)  
+		     else if (year < 100)
                        year += 1900;
                    }
       	       	 }
@@ -252,7 +255,7 @@ static int opts(int argc, char *argv[])
 				}
 				break;
 
-      case 'h': hour = atoi(optarg);		  
+      case 'h': hour = atoi(optarg);
                 if ((p = strchr(optarg + 1, ':'))) {
                          min = atoi(p + 1);
                     if ((p = strchr(p + 1, ':')))
@@ -273,7 +276,7 @@ static int opts(int argc, char *argv[])
 		  providers[n_providers] = atoi(p);
 		  p = strtok(0, ",");
 		  n_providers++;
-		 }     
+		 }
       	       	 break;
       case 'v' : verbose++;
       	       	 break;
@@ -477,12 +480,12 @@ static int compute(char *num)
     Rate.src[2] = "";
 
 	oldprov = destnum.nprovider;
-	if (destnum.nprovider == UNKNOWN) 
+	if (destnum.nprovider == UNKNOWN)
 	  destnum.nprovider=i;
 	if (normalizeNumber(num, &destnum, TN_ALL) == UNKNOWN) {
 	  destnum.nprovider=oldprov;
 	  continue;
-	}  
+	}
 	destnum.nprovider=oldprov;
 
 	Rate.dst[0] = destnum.country?destnum.country->Code[0] : "";
@@ -553,7 +556,7 @@ static int compute(char *num)
       else if (explain == 1) {
         sprintf(s, " (%s)", Rate.Zone);
         sort[n].explain = strdup(s);
-      }	
+      }
       else
         sort[n].explain = strdup("");
 
@@ -569,7 +572,7 @@ static int compute(char *num)
 
 static void	print_header(void) {
     print_msg(PRT_NORMAL, "Eine %d Sekunden lange Verbindung von %s nach %s kostet am %s\n",
-      duration, formatNumber("%f",&srcnum), formatNumber("%f",&destnum), 
+      duration, formatNumber("%f",&srcnum), formatNumber("%f",&destnum),
 	  ctime(&start));
 }
 static void printList(char *target, int n) {
@@ -599,7 +602,7 @@ static void result(char *target, int n)
     n = best;
   if (explain < 10)
   for (i = 0; i < n; i++)
-    print_msg(PRT_NORMAL, "%s %s %8.3f%s\n",
+    print_msg(PRT_NORMAL, "%s %s %8.4f%s\n",
       Provider(sort[i].prefix), currency, sort[i].rate, sort[i].explain);
 } /* result */
 
@@ -853,7 +856,7 @@ static void	doit(int i, int argc, char *argv[]) {
 		  else
 	  result(argv[i], n);
 	  purge(n);
-	}	
+	}
       i++;
     } /* while */
 	clean_up();
