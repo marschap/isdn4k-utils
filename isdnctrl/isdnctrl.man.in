@@ -1,11 +1,14 @@
 #!/bin/sh
-# $Id: isdnctrl.man.in,v 1.1 1997/06/26 21:00:29 luethje Exp $
+# $Id: isdnctrl.man.in,v 1.2 1997/06/26 21:01:25 luethje Exp $
 #
-# Makefile for iprofd
+# Makefile for isdnctrl manpage generation
 # (C) 1997 Fritz Elfert
 #
 #
 # $Log: isdnctrl.man.in,v $
+# Revision 1.2  1997/06/26 21:01:25  luethje
+# bugfix
+#
 # Revision 1.1  1997/06/26 21:00:29  luethje
 # Create a dynamic man page.
 #
