@@ -1,4 +1,4 @@
-/* $Id: eftp.c,v 1.6 1999/10/08 00:31:06 he Exp $ */
+/* $Id: eftp.c,v 1.7 2004/02/12 11:26:44 keil Exp $ */
 /*
   Copyright 1997 by Henner Eisen
 
@@ -177,10 +177,10 @@ static int multi_prompt_yes(char* cmdname, char* filename)
 /*
  * FIXME: return values of local commands (!, lcd, lpwd, ldir)
  */
-int process_cmd_line (struct eft *eft, unsigned char *buf)
+int process_cmd_line (struct eft *eft, unsigned char **pp)
 {
 	static int mget_case_ignore = 0;
-	char **pp = (char **) & buf, *c, *arg1, *arg2, *cmd;
+	char *buf = *pp, *c, *arg1, *arg2, *cmd;
 
 	int ret = 1, count, r;
 	
@@ -444,7 +444,7 @@ static void readline_callback_handler(void)
  * for completeness and the problem is not triggered when the message is
  * provided by means of the msg cmd parameter)
  */
-		if( (r=process_cmd_line(eft, line_read)) < 0 ){
+		if( (r=process_cmd_line(eft, &line_read)) < 0 ){
 			if( r < -1) fprintf(stderr,"cmd execution error %d<0\n",r);
 			disconnect_please = 1;
 		}
@@ -509,7 +509,7 @@ static void pipe_callback_read(void)
 		fprintf(stderr,"executing command line: '%s'\n",
 			pipe_callback_line_buf);
 #endif
-		if( (r=process_cmd_line(eft, pipe_callback_line_buf)) < 0 ){
+		if( (r=process_cmd_line(eft, &pipe_callback_line_buf)) < 0 ){
 			if( r < -1) 
 #ifdef PIPE_DEBUG
 				fprintf(stderr,"cmd execution error %d<0\n",r);
