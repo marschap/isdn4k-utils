@@ -1,4 +1,4 @@
-V:1.10-Germany [02-Apr-2000 18:56:13]
+V:1.10-Germany [30-Apr-2000 19:07:33]
 
 # Währungsformat
 U:%.3f DM
@@ -8,7 +8,7 @@ U:%.3f DM
 #
 # (C) Copyright 1999, 2000 by Andreas Kool (akool@isdn4linux.de)
 #
-# $Id: rate-de.dat,v 1.87 2000/04/02 17:35:06 akool Exp $
+# $Id: rate-de.dat,v 1.88 2000/04/30 17:31:24 akool Exp $
 #
 #
 # Das "A:" Tag muß folgendermaßen gefüllt werden:
@@ -199,6 +199,7 @@ N:0192020  # Arcor Online
 N:0192300  # Call.Callino
 N:0191955  # knuut (Worldcom/UUnet)
 N:0192658  # MSN Easysurfer (Worldcom/UUnet)
+N:0192361  # Lübecker Nachrichten
 #
 # S:T-VoteCall
 # N:01371, 01372, 01373, 01374, 0138
@@ -12818,8 +12819,8 @@ T:*/*=2.319/60
 Z:327 Malta
 A:MT
 T:*/*=0.689/60
-Z:328 Marianen, Nördliche
-A:MP,KP
+Z:328 Nördliche Marianen
+A:MP
 T:*/*=1.049/60
 Z:329 Marokko
 A:EH
@@ -13570,8 +13571,8 @@ T:*/*=2.319(60)/1
 Z:327 Malta
 A:MT
 T:*/*=0.689(60)/1
-Z:328 Marianen, Nördliche
-A:MP,KP
+Z:328 Nördliche Marianen
+A:MP
 T:*/*=1.049(60)/1
 Z:329 Marokko
 A:EH
@@ -14318,8 +14319,8 @@ T:*/*=2.319/60
 Z:327 Malta
 A:MT
 T:*/*=0.689/60
-Z:328 Marianen, Nördliche
-A:MP,KP
+Z:328 Nördliche Marianen
+A:MP
 T:*/*=1.049/60
 Z:329 Marokko
 A:EH
@@ -15067,8 +15068,8 @@ T:*/*=2.319(60)/1
 Z:327 Malta
 A:MT
 T:*/*=0.689(60)/1
-Z:328 Marianen, Nördliche
-A:MP,KP
+Z:328 Nördliche Marianen
+A:MP
 T:*/*=1.049(60)/1
 Z:329 Marokko
 A:EH
@@ -15812,8 +15813,8 @@ T:*/*=2.319/60
 Z:327 Malta
 A:MT
 T:*/*=0.689/60
-Z:328 Marianen, Nördliche
-A:MP,KP
+Z:328 Nördliche Marianen
+A:MP
 T:*/*=1.049/60
 Z:329 Marokko
 A:EH
@@ -16559,8 +16560,8 @@ T:*/*=2.319(60)/1
 Z:327 Malta
 A:MT
 T:*/*=0.689(60)/1
-Z:328 Marianen, Nördliche
-A:MP,KP
+Z:328 Nördliche Marianen
+A:MP
 T:*/*=1.049(60)/1
 Z:329 Marokko
 A:EH
@@ -17306,8 +17307,8 @@ T:*/*=2.319/60
 Z:327 Malta
 A:MT
 T:*/*=0.689/60
-Z:328 Marianen, Nördliche
-A:MP,KP
+Z:328 Nördliche Marianen
+A:MP
 T:*/*=1.049/60
 Z:329 Marokko
 A:EH
@@ -18054,8 +18055,8 @@ T:*/*=2.319(60)/1
 Z:327 Malta
 A:MT
 T:*/*=0.689(60)/1
-Z:328 Marianen, Nördliche
-A:MP,KP
+Z:328 Nördliche Marianen
+A:MP
 T:*/*=1.049(60)/1
 Z:329 Marokko
 A:EH
@@ -24510,6 +24511,12 @@ T:W/21-05=0.03(60)/1
 T:W/05-09=0.04(60)/1
 T:E,H/05-21=0.04(60)/1
 T:E,H/21-05=0.03(60)/1
+Z:103 Lübecker Nachrichten
+A:0192361
+C:Homepage:http://www.ln-online.de/service/internet
+T:W/18-09=0.0444(60)/1
+T:W/09-18=0.0488(60)/1
+T:E,H/*=0.0444(60)/1
 #####################################################################
 P:88,1 Hutchison CbC
 B:01088
@@ -25307,7 +25314,8 @@ A:CY
 # Rainer Kaluscha <rainer@reha.medizin.uni-ulm.de> (Surf Callino)
 # Martin Koeppe <mkoeppe@gmx.de> (Rhein-Main-Net)
 # Tobias Kretschmar <tobias.kretschmar@hecker.oderwitz.de> (Nikocity IbC)
-# Sascha Rogmann <rogmann@math.uni-duesseldorf.de> (Arcor IbC)
+# Sascha Rogmann <rogmann@math.uni-duesseldorf.de> (Arcor IbC, Lübecker 
+#    Nachrichten)
 # Roland Rosenfeld <roland@spinnaker.de> (Nikocity)
 # Volker Widor <volker@widor.de>
 #

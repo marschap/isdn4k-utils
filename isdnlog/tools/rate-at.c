@@ -31,7 +31,7 @@ void  write_services(void) {
   sv_printf("Arbö","123");
   sv_printf("Öamtc","120");
   /* fixme 194* ??? z.b. spardat 19431 */
-  sv_printf("Internet","07189*,19411,19430,19440,019088333,194040");
+  sv_printf("Internet","07189*,19411,19430,19440,019088333,194040, 019331012");
   sv_printf("Störung","111*");
   sv_printf("Auskuft AT,DE","11811");
   sv_printf("Auskuft Int","11812");
@@ -1087,6 +1087,7 @@ void rate_1012(what) { /* 1012 == 1044 (Citykom) */
   char *Zone[][2] = {
     { "Österreich", "Österreich" },
     { "Mobilfunk", "+43663,+43664,+43676,+43699" },
+    /* FIXME Surfnet 1012 01933 1012 ~50g  / min 360/360 */
     { "Deutschland spezial", "Deutschland" },
     { "Nachbarn", "Frankreich, Italien, Schweiz, Liechtenstein, Slowakei, Slowenien, Tschechien, Ungarn" },
     { "Europa 1 + USA", "Belgien, Dänemark, Finnland, Großbritannien, Irland, Kanada, Luxemburg, Niederlande, Norwegen, Schweden, Spanien, Vereinigte Staaten (USA)" },
@@ -1833,25 +1834,43 @@ void rate_1067(void) {
 		     { "Iridium 8816", "Iridium 008816"},
 		     { "Iridium 8817", "Iridium 008817"}};
 
-  double Tarif[] = { 00.88,
-		     01.00,
-		     01.00,
-		     02.70,
-		     03.90,
-		     02.50,
-		     03.30,
-		     03.50,
-		     05.50,
-		     09.70,
-		     15.00,
-		     22.00,
-		     122.00,
-		     62.00 };
+  /* bis 15.04.2000 */
+  double Tarif1[] = { 00.88,
+		      01.00,
+		      01.00,
+		      02.70,
+		      03.90,
+		      02.50,
+		      03.30,
+		      03.50,
+		      05.50,
+		      09.70,
+		      15.00,
+		      22.00,
+		      122.00,
+		      62.00 };
+
+  /* ab 15.04.2000 */
+  double Tarif2[][2] = {{ 00.67, 00.30 },
+			{ 01.00, 01.00 },
+			{ 01.00, 01.00 },
+			{ 03.60, 03.60 },
+			{ 03.90, 03.90 },
+			{ 02.50, 02.50 },
+			{ 03.30, 03.30 },
+			{ 03.50, 03.50 },
+			{ 05.50, 05.50 },
+			{ 09.70, 09.70 },
+			{ 15.00, 15.00 },
+			{ 22.00, 22.00 },
+			{122.00,122.00 },
+			{ 62.00, 62.00 }};
 
   int z;
 
   rprintf ("P:67", "max.plus" );
   rprintf ("C:Maintainer:", "Michael Reinelt <reinelt@eunet.at>" );
+  rprintf ("C:TarifChanged:", "15.04.2000" );
   rprintf ("C:Name:", "max.mobil Telekommunikation Service GmbH" );
   rprintf ("C:Address:", "Postfach 333, A-1031 Wien");
   rprintf ("C:Homepage:", "http://www.maxmobil.at" );
@@ -1860,7 +1879,18 @@ void rate_1067(void) {
 
   for (z=0; z<COUNT(Zone); z++) {
     rprintf ("Z:%d", Zone[z][0] , z+1);
-    rprintf ("T:*/*=%.2f(60)/30", "0-24h" , Tarif[z]);
+    if (Tarif1[z]==Tarif2[z][0] && Tarif1[z]==Tarif2[z][1]) {
+      rprintf ("T:*/*=%.2f(60)/30", "0-24h" , Tarif2[z][0]);
+    } else {
+      rprintf ("T: [-15.04.2000] */*=%.2f(60)/30", "0-24h" , Tarif1[z]);
+      if (Tarif2[z][0]==Tarif2[z][1]) {
+	rprintf ("T: [15.04.2000-] */*=%.2f(60)/30", "0-24h" , Tarif2[z][0]);
+      } else {
+	rprintf ("T: [15.04.2000-] W/8-18=%.2f(60)/30", "Tag",    Tarif2[z][0]);
+	rprintf ("T: [15.04.2000-] W/18-8=%.2f(60)/30", "Nacht",  Tarif2[z][1]);
+	rprintf ("T: [15.04.2000-] E,H/*=%.2f(60)/30", "Weekend", Tarif2[z][1]);
+      }
+    }
     print_area(Zone[z][1]);
   }
 }

@@ -1,5 +1,25 @@
 NEWS for tools: (rate, isdnrate, isdnrep)
 
+2000.04.27
+  all tools:
+    If you use the English country names or the NL cities you should
+    rebuild you destintation database, there are more and corrected
+    entries now.
+
+    chdir to isdnlog/tools/dest
+    and do
+      $ make dataclean
+      $ make data
+    if you have a valid top level configuration
+    or
+      $ make alldata
+    for including all known countries.
+    Copy the resulting dest.gdbm to your isdn data dir (e.g. /usr/lib/isdn).
+
+2000.02.28
+  isdnrate.c:
+    A isdnrate daemon restarts now on the SIGHUP signal.
+
 1999.12.21
   rate.c:
     date-range for T:Tag s. man rate-files

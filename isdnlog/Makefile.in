@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.158 2000/04/25 20:12:20 akool Exp $
+## $Id: Makefile.in,v 1.159 2000/04/30 17:31:24 akool Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,15 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.159  2000/04/30 17:31:24  akool
+## isdnlog-4.20
+##  - isdnlog/tools/rate-at.c ... patch for max (new rates)
+##  - isdnlog/rate-at.dat  ... max new rates
+##  - isdnlog/country-de.dat ... _TRMF, some duplicate N entries
+##  - isdnlog/tools/NEWS ... hint for rebuilding dest.gdbm
+##
+##  => ** Please rebuild the destination database! **
+##
 ## Revision 1.158  2000/04/25 20:12:20  akool
 ## isdnlog-4.19
 ##   isdnlog/isdnlog/processor.c ... abclcr (-d0) turn off
@@ -1181,7 +1190,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 4.19
+VERSION     = 4.20
 
 MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 \
 	      isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 \

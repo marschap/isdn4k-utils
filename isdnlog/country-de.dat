@@ -115,6 +115,7 @@ T:SA
 N:Kuwait Mobilfunk
 E:Kuwait cellphone
 C:+9659
+R:KW
 T:_KWMF
 
 N:Kuwait
@@ -191,8 +192,8 @@ T:IN
 N:Türkei Mobilfunk
 E:Turkey cellphone
 C:+905
-R:TK
-T:_TKMF
+R:TR
+T:_TRMF
 
 N:Türkei
 E:Turkey
