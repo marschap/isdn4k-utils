@@ -1,14 +1,10 @@
-V:1.58 Int [24-Aug-2004 01:00:00]
+V:1.59 Int [26-Sep-2004 01:05:00]
 #
 # This version of country.dat originates from rates4linux:
-# $Id: country-de.dat,v 1.47 2004/08/24 23:40:59 tobiasb Exp $
+# $Id: country-de.dat,v 1.48 2004/09/29 21:23:16 tobiasb Exp $
 # The rates4linux homepage: http://www.sourceforge.net/projects/rates4linux/
 # It bases on Rev. 1.39 of isdn4k-utils/isdnlog/country-de.dat 
 # in the CVS at http://www.isdn4linux.de.
-#
-# ISO 3166 Countrycodes ( ftp://sunsite.unc.edu/pub/Linux/apps/misc/
-#	countrycodes.1.0.2.tar.gz
-# Airportcodes: http://www.TravelDesk.com/airports.html
 #
 # Countries have a 2 letter ISO-Code
 # Towns have a 3 letter airportcode or
@@ -20,8 +16,41 @@ V:1.58 Int [24-Aug-2004 01:00:00]
 # Auskunft :  _ccAK
 # Sonderrufnummern : _ccSO
 #
-# Partial source for national numbering plans (2002-08-23):
+# Structure of this file:
+# Country codes appear in reverse order from +999 to +1 (to +010 someday).
+# Each group of entries for one country should be separated by two blank
+# lines.  Entries for the same country should be separated by one blank line.
+# The entry for the whole county should be first, followed by the cellphone
+# ("Mobilfunk" in German) entry of this country, followed by further national
+# destinations if present. 
+#
+# Due to ratefile generation considerations, each real country (regular alpha-2
+# code) should have an cellphone entry, even if the cellphone numbering range
+# is unknown.  In this case, no C: tags are given.
+# It is not possible to change a code (T: entry) without breaking at least
+# some compatibility between an old ratefiles and a new destination database
+# and vice versa.  Until further evolution code changes should be avoided.
+#
+# International Country Codes according to: 
+# List of ITU-T Recommendation E.164 Assigned Country Codes (2004-02-01)
+# http://www.itu.int/itudoc/itu-t/ob-lists/icc/e164_763.html
+# 
+# Partial source for national numbering plans (2004-09-17):
 # http://www.itu.int/ITU-T/inr/nnp/index.html
+#
+# ISO 3166 Countrycodes (last change 2003-02-01)
+# ftp://sunsite.unc.edu/pub/Linux/apps/misc/countrycodes.1.0.5.tar.gz
+#
+# Decoding table for ISO 3166-1 alpha-2 codes (2004-09-17)
+# http://www.iso.org/iso/en/prods-services/iso3166ma/02iso-3166-code-lists/iso_3166-1_decoding_table.html
+#
+# Last code change was new entry for Âland Islands (AX) on 2004-02-13.
+#
+# User-assigned code elements: AA, QM..QZ, XA..XZ, ZZ
+# Should be used for numerical country codes not related to a country and
+# thus without an official alpha-2 code, e.g. +881.
+#
+# Airportcodes: http://www.TravelDesk.com/airports.html
 #
 # Offical German language country names (2004-08-20):
 # http://www.auswaertiges-amt.de/www/de/infoservice/download/pdf/publikationen/staatennamen.pdf
@@ -31,6 +60,15 @@ V:1.58 Int [24-Aug-2004 01:00:00]
 # bytes per entry value based on the size of buf in the function i4l_cdb_fetch
 # in the file isdnlog/tools/cdb/i4l_cdb.c.  The value for _DOMF (N;C[,C][;R])
 # would be longer if fully noted.
+#
+# Final disclaimer (seen at ISO and ITU):
+# The following informations do not express any opinion concerning the legal
+# status of any country or geographical area or of its authorities.
+
+
+# +999 -- Reserved for possible future use within the
+# Telecommunications for Disaster Relief (TDR) concept
+
 
 # Source (1998-05-19):
 # http://www.itu.int/itudoc/itu-t/number/u/uzb/81566_ww2.doc
@@ -45,12 +83,9 @@ C:+9989			# may be inaccurate
 R:UZ
 T:_UZMF
 
-N:Kirgisien Mobilfunk
-E:Kyrgyzstan cellphone
-A:Kirgisistan Mobilfunk
-C:+99631, +99632, +99634, +99635, +99636, +99637, +99639
-R:KG
-T:_KGMF
+
+# +997 -- Spare code
+
 
 N:Kirgisien
 A:Kirgizia,Kirgisistan, Kirgistan
@@ -58,10 +93,24 @@ E:Kyrgyzstan
 C:+996
 T:KG
 
+N:Kirgisien Mobilfunk
+E:Kyrgyzstan cellphone
+A:Kirgisistan Mobilfunk
+C:+99631, +99632, +99634, +99635, +99636, +99637, +99639
+R:KG
+T:_KGMF
+
+
 N:Georgien
 E:Georgia
 C:+995
 T:GE
+
+N:Georgien Mobilfunk
+E:Georgia cellphone
+R:GE
+T:_GEMF
+
 
 # Source (2002-05-22):
 # http://www.itu.int/itudoc/itu-t/number/a/aze/80942.html
@@ -76,9 +125,16 @@ C:+99450, +99455
 R:AZ
 T:_AZMF
 
+
 N:Turkmenistan
 C:+993
 T:TM
+
+N:Turkmenistan Mobilfunk
+E:Turkmenistan cellphone
+R:TM
+T:_TMMF
+
 
 # Source (2000-06-15):
 # http://www.itu.int/itudoc/itu-t/number/t/tjk/71088.html
@@ -92,6 +148,13 @@ E:Tajikistan cellphone
 C:+9929190		# Dushanbe
 R:TJ
 T:_TJMF
+
+
+# +991 -- Shared code
+# +991001 -- Neustar ENUM trials until 2004-05
+
+# +990 -- Spare code
+
 
 # Source (2003-11-01):
 # http://www.iran-telecom.com/numbering/
@@ -107,9 +170,21 @@ C:+9891 	# may be inaccurate
 R:IR
 T:_IRMF
 
+
+# +979 -- International Premium Rate Service (IPRS)
+
+# +978 -- Spare code
+
+
 N:Nepal
 C:+977
 T:NP
+
+N:Nepal Mobilfunk
+E:Nepal cellphone
+R:NP
+T:_NPMF
+
 
 N:Mongolei
 A:Mongolische VR
@@ -117,9 +192,21 @@ E:Mongolia
 C:+976
 T:MN
 
+N:Mongolei Mobilfunk
+E:Mongolia cellphone
+R:MN
+T:_MNMF
+
+
 N:Bhutan
 C:+975
 T:BT
+
+N:Bhutan Mobilfunk
+E:Bhutan cellphone
+R:BT
+T:_BTMF
+
 
 # Source (2002-03-15)
 # http://www.itu.int/itudoc/itu-t/number/q/qatar/72015.html
@@ -135,6 +222,7 @@ C:+97452, +97453, +97455, +97458
 R:QA
 T:_QAMF
 
+
 # Source (2003-07-05):
 # http://www.itu.int/itudoc/itu-t/number/b/bhr/84136_ww9.doc
 N:Bahrain
@@ -147,25 +235,27 @@ C:+9733			# to be implemented in 2003 or later
 R:BH
 T:_BHMF
 
+
+N:Israel
+C:+972
+T:IL
+
 N:Israel Mobilfunk
 E:Israel cellphone
 C:+97255, +97254, +97253, +97252, +97251, +97250
 R:IL
 T:_ILMF
 
-N:Israel
-C:+972
-T:IL
-
 N:Palestina
 A:Palästina, Palestinensisches Autonomiegebiet
 C:+972777
 T:PS # since 11.10.1999
 
-N:Vereinigte Arabische Emirate Mobilfunk
-# fixme
-R:AE
-T:_AEMF
+N:Palestina Mobilfunk
+E:Palestina cellphone
+R:PS
+T:_PSMF
+
 
 N:Ver. Arabische Emirate
 A:Vereinigte Arabische Emirate, Ver.Arab. Emirate, Vereinigte Arab. Emirate, VAE
@@ -173,6 +263,28 @@ E:United Arab Emirates
 A:Vereinte Arabische Emirate, V. Arabische Emirate
 C:+971
 T:AE
+
+N:Vereinigte Arabische Emirate Mobilfunk
+E:United Arab Emirates cellphone
+R:AE
+T:_AEMF
+
+
+# +970 -- Reserved for the Palestinian Authority
+
+# +969 -- Reserved
+
+
+N:Oman
+A:Oman (Sultanat)
+C:+968
+T:OM
+
+N:Oman Mobilfunk
+E:Oman cellphone
+R:OM
+T:_OMMF
+
 
 # Source (2000-10-02):
 # http://www.itu.int/itudoc/itu-t/number/y/yem/73267.html
@@ -188,15 +300,22 @@ C:+96779
 R:YE
 T:_YEMF
 
-N:Oman
-A:Oman (Sultanat)
-C:+968
-T:OM
 
 N:Saudi Arabien
 E:Saudi Arabia
 C:+966
 T:SA
+
+N:Saudi Arabien Mobilfunk
+E:Saudi Arabia cellphone
+R:SA
+T:_SAMF
+
+
+N:Kuwait
+A:Kuweit
+C:+965
+T:KW
 
 N:Kuwait Mobilfunk
 E:Kuwait cellphone
@@ -204,15 +323,17 @@ C:+9659
 R:KW
 T:_KWMF
 
-N:Kuwait
-A:Kuweit
-C:+965
-T:KW
 
 N:Irak
 E:Iraq
 C:+964
 T:IQ
+
+N:Irak Mobilfunk
+E:Iraq cellphone
+R:IQ
+T:_IQMF
+
 
 # Source (2003-11-12):
 # http://www.itu.int/itudoc/itu-t/number/s/syr/75921.html
@@ -229,16 +350,23 @@ C:+9639
 R:SY
 T:_SYMF
 
+
+N:Jordanien
+E:Jordan
+C:+962
+T:JO
+
 N:Jordanien Mobilfunk
 E:Jordan cellphone
 C:+96279
 R:JO
 T:_JOMF
 
-N:Jordanien
-E:Jordan
-C:+962
-T:JO
+
+N:Libanon
+E:Lebanon
+C:+961
+T:LB
 
 N:Libanon Mobilfunk
 E:Lebanon cellphone
@@ -246,10 +374,6 @@ C:+9613
 R:LB
 T:_LBMF
 
-N:Libanon
-E:Lebanon
-C:+961
-T:LB
 
 # Source (2001-12-27):
 # http://www.itu.int/itudoc/itu-t/number/m/mdv/76591.html
@@ -263,6 +387,7 @@ E:Maldives cellphone
 C:+9607
 R:MV
 T:_MVMF
+
 
 # Source (200-11-01):
 # http://www.itu.int/itudoc/itu-t/number/m/mmr/82387_ww2.doc
@@ -278,9 +403,16 @@ C:+959			# may be inaccurate
 R:MM
 T:_MMMF
 
+
 N:Sri Lanka
 C:+94
 T:LK
+
+N:Sri Lanka Mobilfunk
+E:Sri Lanka cellphone
+R:LK
+T:_LKMF
+
 
 # Source (2001-01-25):
 # http://www.itu.int/itudoc/itu-t/number/a/afg/77447.html
@@ -295,15 +427,16 @@ C:+9370
 R:AF
 T:_AFMF
 
+
 N:Pakistan
 C:+92
 T:PK
 
-N:Indien Mobilfunk
-E:India cellphone
-C:+9198
-R:IN
-T:_INMF
+N:Pakistan Mobilfunk
+E:Pakistan cellphone
+R:PK
+T:_PKMF
+
 
 # Codes _IN* also in use for Inmarsat.
 N:Indien
@@ -311,26 +444,51 @@ A:India
 C:+91
 T:IN
 
-N:Türkei Mobilfunk
-E:Turkey cellphone
-C:+905
-R:TR
-T:_TRMF
+N:Indien Mobilfunk
+E:India cellphone
+C:+9198
+R:IN
+T:_INMF
+
 
 N:Türkei
 E:Turkey
 C:+90
 T:TR
 
-N:Taiwan Mobilfunk
-C:+8869
-R:TW
-T:_TWMF
+N:Türkei Mobilfunk
+E:Turkey cellphone
+C:+905
+R:TR
+T:_TRMF
+
+
+# +890 .. +899 -- Reserved for E.164 country code expansion
+
+# +889 -- Spare code
+
+# +888 -- Reserved for future global service
+
+# +887 -- Spare code
+
 
 N:Taiwan
 A:China (Taiwan)
 C:+886
 T:TW
+
+N:Taiwan Mobilfunk
+C:+8869
+R:TW
+T:_TWMF
+
+
+# +883 .. +885 -- Spare codes
+
+
+N:International Networks
+C:+882
+T:_INTN
 
 # Source (2002-08-23):
 # http://www.thuraya.com/tech/
@@ -353,9 +511,8 @@ C:+88210
 R:_INTN
 T:_GEOV
 
-N:International Networks
-C:+882
-T:_INTN
+
+# +881 -- shared code, International Mobile
 
 N:Iridium 008817
 A:Iridium GSM-Homed, Iridium-8817
@@ -373,16 +530,55 @@ N:Ellipso
 C:+8813
 T:_ELLI
 
+
+N:Bangladesch
+E:Bangladesh
+C:+880
+T:BD
+
 N:Bangladesh Mobilfunk
 E:Bangladesh cellphone
 C:+8801
 R:BD
 T:_BDMF
 
-N:Bangladesch
-E:Bangladesh
-C:+880
-T:BD
+
+# +879 -- Reserved for national non-commercial purposes
+
+# +878 -- Universal Personal Telecommunication Service (UPT)
+
+# +875 .. +877 -- Reserved for Maritime Mobile Service Applications
+
+
+N:Atlantischer Ozean (West)
+A:Atlantic Ocean (west)
+C:+874
+T:_ATLA
+
+
+N:Indischer Ozean
+A:Indian Ocean
+E:British Indian Ocean Territory # Fixme: is that ok
+C:+873
+T:IO
+
+
+N:Pazifischer Ozean
+A:Pacific Ocean
+C:+872
+T:_PAZI
+
+
+N:Atlantischer Ozean (Ost)
+A:Atlantic Ocean (east)
+C:+871
+T:_ATLA
+
+
+# +870 -- Inmarsat SNAC (Single Network Access Code)
+
+
+# Order of following Inmarsat entries (+870* .. +874*) may be relevant.
 
 N:Inmarsat A Daten/Fax
 C:+8748, +8738, +8728, +8718
@@ -543,68 +739,75 @@ A:Inmarsat A (Pacific)
 R:_INA_
 T:_INAPO
 
-N:Atlantischer Ozean (West)
-A:Atlantic Ocean (west)
-C:+874
-T:_ATLA
 
-N:Indischer Ozean
-A:Indian Ocean
-E:British Indian Ocean Territory # Fixme: is that ok
-C:+873
-T:IO
-
-N:Pazifischer Ozean
-A:Pacific Ocean
-C:+872
-T:_PAZI
-
-N:Atlantischer Ozean (Ost)
-A:Atlantic Ocean (east)
-C:+871
-T:_ATLA
-
-N:China Mobilfunk
-E:China cellphone
-C:+86886, +8613
-R:CN
-T:_CNMF
-
+# Source (2004-07-06):
+# http://www.itu.int/itudoc/itu-t/number/c/chn/83400.html
 N:China
 A:China (Volksrepublik), China (People's Republic),V.R. China, China VR
 C:+86
 T:CN
+
+N:China Mobilfunk
+E:China cellphone
+C:+8613
+R:CN
+T:_CNMF
+
+
+# +857 .. +859 -- Spare code
+
 
 N:Laos
 A:Lao
 C:+856
 T:LA
 
+N:Laos Mobilfunk
+E:Laos cellphone
+R:LA
+T:_LAMF
+
+
 N:Kambodscha
 E:Cambodia
 C:+855
 T:KH
 
-# Source (2000-08-25)
+N:Kambodscha Mobilfunk
+E:Cambodia cellphone
+R:KH
+T:_KHMF
+
+
+# +854 -- Spare code
+
+
+# Source (2004-07-13)
 # http://www.itu.int/itudoc/itu-t/number/m/mac/79088.html
-N:Macao
-E:Macau
+N:Macau
+A:Macao
 C:+853
 T:MO
 
 N:Macao Mobilfunk
 E:Macau cellphone
-C:+85366, +85368
+C:+8536
 R:MO
 T:_MOMF
+
+
+# Source (2004-09-01):
+# http://www.ofta.gov.hk/numbering/noplan.pdf
+N:Hongkong
+C:+852
+T:HK
 
 # some reserved number blocks included
 N:Hong Kong Mobilfunk
 E:Hong Kong cellphone
-C:+852170, +852171, +852173, +852175, +852176, +852177, +852178, +852179
-C:+852601, +852602, +852603, +852604, +852605, +852607, +852608, +852609
-C:+85261, +85262, +85263, +85264, +85265, +85267, +85268
-C:+852901, +852902, +852903, +852904, +852905, +852907, +852908, +852909
+C:+85217, +85248, +85249, +8526
+C:+852901, +852902, +852903, +852903, +852904, +852905, +852906, +852907,
+C:+852908, +852909
 C:+85291, +85292, +85293, +85294, +85295, +85296, +85297, +85298
 R:HK
 T:_HKMF
@@ -614,11 +817,9 @@ E:Hong Kong special numbers
 C:+852900
 T:_HKSO
 
-# Source (2002-08-01):
-# http://www.ofta.gov.hk/numbering/noplan.pdf
-N:Hongkong
-C:+852
-T:HK
+
+# +851 -- Spare code
+
 
 N:Nordkorea
 A:Korea (Dem. Republik), Korea (Demokratische Republik), Korea (North), Korea (DVR), Nordkorea (DVR), Korea (Nord)
@@ -626,6 +827,12 @@ A:V.R. Korea, Korea Democratic Republic (north), Korea Dem. Volksrepublik
 E:North Korea
 C:+850
 T:KP
+
+N:Nordkorea Mobilfunk
+E:North Korea cellphone
+R:KP
+T:_KPMF
+
 
 # Source (2001-03-05):
 # http://www.itu.int/itudoc/itu-t/number/v/vin/81524_ww2.doc
@@ -640,12 +847,9 @@ C:+8490, +8491
 R:VN
 T:_VNMF
 
-N:Korea (Süd) Mobilfunk
-A:Korea Rep. (South) Mobilfunk
-E:South Korea cellphone
-C:+8227, +821
-R:KR
-T:_KRMF
+
+# +830 .. +839 -- Reserved for E.164 country code expansion
+
 
 N:Südkorea
 A:Korea (Süd), Korea Rep. (South), Korea (Republik), Südkorea (Republik), Republik Korea, Korea Republic (south)
@@ -653,6 +857,18 @@ A:Korea Republik (Süd)
 E:South Korea
 C:+82
 T:KR
+
+N:Korea (Süd) Mobilfunk
+A:Korea Rep. (South) Mobilfunk
+E:South Korea cellphone
+C:+8227, +821
+R:KR
+T:_KRMF
+
+
+N:Japan
+C:+81
+T:JP
 
 N:Japan Mobilfunk
 E:Japan cellphone
@@ -665,13 +881,19 @@ C:+813
 R:JP
 T:TYO
 
-N:Japan
-C:+81
-T:JP
+
+# +809 -- Spare code
+# allocation only after all three digits codes from groups of ten are exhausted
+
+# +808 -- International Shared Cost Service (ISCS)
+
+# +801 .. +807 -- Spare code, same allocation restrictions as for +809
+
 
 N:international freephone
 C:+800
 T:_F800
+
 
 # international numbering space +7... needs cleanup
 
@@ -695,6 +917,16 @@ C:+732191, +732391, +732591, +732691, +732791
 C:+732490, +732758, +732799
 R:KZ
 T:_KZMF
+
+
+# fixme: code SU ("USSR") was deleted 1992-02,
+# should be RU ("Russian Federation"), which is already used below.
+N:Russische Forderation (ostl.)
+A:Rußland, Russland, Rußland (östl.), Russische Föderation, Russian Federation, Russische Förderation Ost
+A:Russland (östl.), Russland (östlich)
+E:Russian Federation (east)
+C:+7
+T:SU
 
 N:Rußland Mobilfunk
 E:Russia cellphone
@@ -728,13 +960,9 @@ C:+7096, +7095
 R:RU
 T:MOW
 
-N:Russische Forderation (ostl.)
-A:Rußland, Russland, Rußland (östl.), Russische Föderation, Russian Federation, Russische Förderation Ost
-A:Russland (östl.), Russland (östlich)
-E:Russian Federation (east)
-C:+7
-T:SU
 
+# +699 -- Spare code
+# allocated below -- fixme: clarification needed
 N:Midway-Inseln
 A:Midway-Insel
 E:Midway Island
@@ -758,15 +986,36 @@ N:US Minor Outlying Islands
 R:US
 T:UM
 
+N:US Minor Outlying Islands Mobilfunk
+E:US Minor Outlying Islands cellphone
+R:UM
+T:_UMMF
+
+
+# +693 .. +699 -- Spare code
+
+
 N:Marshallinseln
 E:Marshall Islands
 C:+692
 T:MH
 
+N:Marshallinseln Mobilfunk
+E:Marshall Islands cellphone
+R:MH
+T:_MHMF
+
+
 N:Mikronesien
 E:Micronesia
 C:+691
 T:FM
+
+N:Mikronesien Mobilfunk
+E:Micronesia cellphone
+R:FM
+T:_FMMF
+
 
 N:Tokelan
 E:Tokelau
@@ -774,20 +1023,48 @@ A:Tokelauinseln
 C:+690
 T:TK
 
+N:Tokelan Mobilfunk
+E:Tokelau cellphone
+R:TK
+T:_TKMF
+
+
 N:Französisch-Polynesien
 A:Franz. Polynesien
 E:French Polynesia
 C:+689
 T:PF
 
+N:Französisch-Polynesien Mobilfunk
+E:French Polynesia cellphone
+R:PF
+T:_PFMF
+
+
 N:Tuvalu
 C:+688
 T:TV
+
+N:Tuvalu Mobilfunk
+E:Tuvalu cellphone
+R:TV
+T:_TVMF
+
 
 N:Neukaledonien
 E:New Caledonia
 C:+687
 T:NC
+
+N:Neukaledonien Mobilfunk
+E:New Caledonia cellphone
+R:NC
+T:_NCMF
+
+
+N:Kiribati
+C:+686
+T:KI
 
 N:Kiribati Mobilfunk
 E:Kiribati cellphone
@@ -795,15 +1072,18 @@ C:+6861, +6862, +6863, +6864, +6865, +6866, +6867, +6868, +6869
 R:KI
 T:_KIMF
 
-N:Kiribati
-C:+686
-T:KI
 
 N:West-Samoa
 A:Samoa (West), Western Samoa, Samoa W., Samoa, Westl. Samoa
 A:Samoa (Western), Western Samoa (Independent State of)
 C:+685
 T:WS
+
+N:West-Samoa Mobilfunk
+E:West-Samoa cellphone
+R:WS
+T:_WSMF
+
 
 # Source (2003-04-23): http://www.nanpa.com/pdf/PL_330.pdf
 # Will become +1-684 at 2004-10-02,
@@ -823,16 +1103,29 @@ C:+1684733
 T:_ASMF
 R:AS
 
+
 N:Niue-Inseln
 A:Niue Islands
 E:Niue
 C:+683
 T:NU
 
+N:Niue-Inseln Mobilfunk
+E:Niue cellphone
+R:NU
+T:_NUMF
+
+
 N:Cookinseln
 E:Cook Islands
 C:+682
 T:CK
+
+N:Cookinseln Mobilfunk
+E:Cook Islands cellphone
+R:CK
+T:_CKMF
+
 
 N:Wallis und Futuna
 A:Wallis- und Futuna-Inseln, Wallis & Fortuna Islands
@@ -841,11 +1134,24 @@ E:Wallis and Futuna Islands
 C:+681
 T:WF
 
-N:Palau /Belau
+N:Wallis und Futuna Mobilfunk
+E:Wallis and Futuna Islands cellphone
+R:WF
+T:_WFMF
+
+
+N:Palau
+A:Belau
 A:Palau-Inseln
 E:Palau
 C:+680
 T:PW
+
+N:Palau Mobilfunk
+E:Palau cellphone
+R:PW
+T:_PWMF
+
 
 # Source (2002-09-14):
 # http://www.itu.int/itudoc/itu-t/number/f/fji/75261.html
@@ -862,6 +1168,7 @@ C:+67992, +67999
 R:FJ
 T:_FJMF
 
+
 # Source (2002-03-25):
 # http://www.itu.int/itudoc/itu-t/number/v/vut/79348.html
 N:Vanuatu
@@ -874,25 +1181,50 @@ C:+6784
 R:VU
 T:_VUMF
 
+
 N:Salomonen
 A:Solomon Inseln, Solomonen, Salomoninseln
 E:Solomon Islands
 C:+677
 T:SB
 
+N:Salomonen Mobilfunk
+E:Solomon Islands cellphone
+R:SB
+T:_SBMF
+
+
 N:Tonga
 A:Tonga Kingdom
 C:+676
 T:TO
+
+N:Tonga Mobilfunk
+E:Tonga cellphone
+R:TO
+T:_TOMF
+
 
 N:Papua-Neuguinea
 E:Papua New Guinea
 C:+675
 T:PG
 
+N:Papua-Neuguinea Mobilfunk
+E:Papua New Guinea cellphone
+R:PG
+T:_PGMF
+
+
 N:Nauru
 C:+674
 T:NR
+
+N:Nauru Mobilfunk
+E:Nauru cellphone
+R:NR
+T:_NRMF
+
 
 # Source (2003-09-20):
 # http://www.telecom.gov.bn/ne/7_Digit.htm
@@ -909,13 +1241,9 @@ C:+67386, +67387, +67388
 R:BN
 T:_BNMF
 
-N:Weihnachtsinseln
-A:Weihnachtsinsel (Australien), Christmas Island, Christmas Island (Antarctica)
-A:Christmas Inseln, Weihnachtsinsel
-E:Christmas Islands
-C:+6724
-R:AU
-T:CX
+
+# +672 -- Australian External Territories,
+# including Australian Antarctic Territory and Norfolk Island
 
 N:Norfolkinseln
 A:Norfolkinseln (Australien), Norfolk Island
@@ -925,20 +1253,27 @@ C:+6723
 R:AU
 T:NF
 
-N:Kokosinseln
-A:Kokosinseln (Australien), Cocos Island, Cocos Island (Antarctica)
-A:Cocos Inseln, Kokos-InselnKeeling-Inseln
-E:Cocos Islands
-A:Cocos (Keeling) Islands,Keeling Islands
-C:+6722, +6189162
-R:AU
-T:CC
+N:Norfolkinseln Mobilfunk
+E:Norfolk Islands cellphone
+R:NF
+T:_NFMF
 
 N:Antarktis
 A:Antarctica, Antarktis-Casey Base
 C:+6721
 T:AQ
 
+N:Antarktis Mobilfunk
+E:Antarktis cellphone
+R:AQ
+T:_AQMF
+
+
+# +671 -- Spare code
+
+
+# fixme: code TP ("East Timor") was deleted 2002-05,
+# should be TL ("Timor-Leste")
 # Source (2001-08-09):
 # http://www.itu.int/itudoc/itu-t/number/e/etm/73477_ww9.doc
 # independent (international recognition) since 2002-05-20
@@ -955,15 +1290,22 @@ C:+67072, +67073, +67074, +67075
 R:TP
 T:_TPMF
 
+
+N:Thailand
+C:+66
+T:TH
+
 N:Thailand Mobilfunk
 E:Thailand cellphone
 C:+661
 R:TH
 T:_THMF
 
-N:Thailand
-C:+66
-T:TH
+
+N:Singapur
+E:Singapore
+C:+65
+T:SG
 
 N:Singapur Mobilfunk
 E:Singapore cellphone
@@ -971,10 +1313,6 @@ C:+656, +657, +658
 R:SG
 T:_SGMF
 
-N:Singapur
-E:Singapore
-C:+65
-T:SG
 
 N:Pitcairn Inseln
 E:Pitcairn Islands
@@ -982,6 +1320,12 @@ A:Pitcairn
 C:+649			# +64 is New Zealand, ?
 T:PN
 R:UK
+
+N:Pitcairn Inseln Mobilfunk
+E:Pitcairn Islands cellphone
+R:PN
+T:_PNMF
+
 
 N:Neuseeland
 E:New Zealand
@@ -995,11 +1339,6 @@ C:+6421
 R:NZ
 T:_NZMF
 
-N:Philippinen Mobilfunk
-E:Phillipines cellphone
-C:+63241, +63242, +6327, +63275, +63291, +6385, +6390, +63912, +63915, +63917, +63918, +63973
-R:PH
-T:_PHMF
 
 N:Philippinen
 E:Phillipines
@@ -1007,27 +1346,78 @@ A:Phillippinen
 C:+63
 T:PH
 
-N:Indonesien Mobilfunk
-E:Indonesia cellphone
-C:+6281, +6282
-R:ID
-T:_IDMF
+N:Philippinen Mobilfunk
+E:Phillipines cellphone
+C:+63241, +63242, +6327, +63275, +63291, +6385, +6390, +63912, +63915, +63917, +63918, +63973
+R:PH
+T:_PHMF
+
 
 N:Indonesien
 E:Indonesia
 C:+62
 T:ID
 
-N:Australien Mobilfunk
-E:Australia cellphone
-C:+61500, +6142, +6141, +6140, +6119, +6118, +6117, +6116, +6115, +6114, +6113, +6112, +61071
-R:AU
-T:_AUMF
+N:Indonesien Mobilfunk
+E:Indonesia cellphone
+C:+6281, +6282
+R:ID
+T:_IDMF
 
+
+# Source (2004-09-19):
+# http://www.aca.gov.au/telcomm/telephone_numbering/8_digit_numbering/plan/
 N:Australien
 E:Australia
 C:+61
 T:AU
+
+# including some special numbers ranges
+N:Australien Mobilfunk
+E:Australia cellphone
+C:+614
+C:+61500, +6119, +6118, +6117, +6116, +6115, +6114, +6113, +6112, +61071
+R:AU
+T:_AUMF
+
+N:Weihnachtsinseln
+A:Weihnachtsinsel (Australien), Christmas Island, Christmas Island (Antarctica)
+A:Christmas Inseln, Weihnachtsinsel
+E:Christmas Islands
+C:+6189164
+R:AU
+T:CX
+
+N:Weihnachtsinseln Mobilfunk
+E:Christmas Islands cellphone
+R:CX
+T:_CXMF
+
+N:Kokosinseln
+A:Kokosinseln (Australien), Cocos Island, Cocos Island (Antarctica)
+A:Cocos Inseln, Kokos-Inseln, Keeling-Inseln
+E:Cocos Islands
+A:Cocos (Keeling) Islands,Keeling Islands
+C:+6189162
+R:AU
+T:CC
+
+N:Kokosinseln Mobilfunk
+E:Cocos Islands cellphone
+R:CC
+T:_CCMF
+
+# nofix: uninhabited, islands far south of Madagascar
+#N:Heard Island and McDonald Islands
+#R:AU
+#T:HM
+
+
+
+N:Malaysia
+A:Malaysien, Malayisa
+C:+60
+T:MY
 
 N:Malaysia-Mobilfunk
 E:Malaysia cellphone
@@ -1035,10 +1425,6 @@ C:+601
 R:MY
 T:_MYMF
 
-N:Malaysia
-A:Malaysien, Malayisa
-C:+60
-T:MY
 
 # Source (2000-11-20):
 # http://www.itu.int/itudoc/itu-t/number/n/nat/76774.html
@@ -1057,6 +1443,7 @@ C:+59978, +59970
 R:AN
 T:_ANMF
 
+
 # Source (2000-01-10):
 # http://www.itu.int/itudoc/itu-t/number/u/ury/82703_ww2.doc
 N:Uruguay
@@ -1068,6 +1455,7 @@ E:Uruguay cellphone
 C:+5989
 R:UY
 T:_UYMF
+
 
 # Source (2000-09-04):
 # http://www.itu.int/itudoc/itu-t/number/s/sur/70766_ww9.doc
@@ -1082,12 +1470,19 @@ C:+59788
 R:SR
 T:_SRMF
 
+
 N:Martinique / Franz. Antillen
 E:Martinique
 A:Französische Antillen, Martinique (French Antilles)
 A:Franz. Antillen
 C:+596
 T:MQ
+
+N:Martinique / Franz. Antillen Mobilfunk
+E:Martinique cellphone
+R:MQ
+T:_MQMF
+
 
 # Source (2002)
 # http://www.conatel.gov.py/reglamentos/plantec/
@@ -1097,9 +1492,10 @@ T:PY
 
 N:Paraguay Mobilfunk
 E:Paraguay cellphone
-C:+5949
+C:+5959
 R:PY
 T:_PYMF
+
 
 N:Französisch-Guayana
 A:Französisch Guyana, Franz. Guyana, French Guyana
@@ -1107,16 +1503,23 @@ E:French Guiana
 C:+594
 T:GF
 
+N:Französisch-Guayana Mobilfunk
+E:French Guiana cellphone
+R:GF
+T:_GFMF
+
+
+N:Ecuador
+A:Equador
+C:+593
+T:EC
+
 N:Ecuador Mobilfunk
 E:Ecuador cellphone
 C:+5939
 R:EC
 T:_ECMF
 
-N:Ecuador
-A:Equador
-C:+593
-T:EC
 
 # Source (2001-01-06):
 # http://www.itu.int/itudoc/itu-t/number/g/guy/70635.html
@@ -1138,6 +1541,7 @@ C:+592678
 R:GY
 T:_GYMF
 
+
 # Source (2000-11):
 # http://www.sittel.gov.bo/archivos/mlrpnm.pdf
 N:Bolivien
@@ -1151,17 +1555,18 @@ C:+59171, +59174, +59176, +59177
 R:BO
 T:_BOMF
 
+
 N:Guadeloupe
 E:Guadaloupe
 A:Guadeloup
 C:+590
 T:GP
 
-N:Venezuela Mobilfunk
-E:Venezuela cellphone
-C:+58412, +58414, +58415, +58416, +58417, +58418
-R:VE
-T:_VEMF
+N:Guadeloupe Mobilfunk
+E:Guadaloupe cellphone
+R:GP
+T:_GPMF
+
 
 # Source (2001-01-15):
 # http://www.itu.int/itudoc/itu-t/number/v/ven/71706.html
@@ -1169,16 +1574,29 @@ N:Venezuela
 C:+58
 T:VE
 
+N:Venezuela Mobilfunk
+E:Venezuela cellphone
+C:+58412, +58414, +58415, +58416, +58417, +58418
+R:VE
+T:_VEMF
+
+
+N:Kolumbien
+E:Colombia
+C:+57
+T:CO
+
 N:Kolumbien Mobilfunk
 E:Colombia cellphone
 C:+573
 R:CO
 T:_COMF
 
-N:Kolumbien
-E:Colombia
-C:+57
-T:CO
+
+N:Chile
+A:Chile & Easter Island
+C:+56
+T:CL
 
 N:Chile Mobilfunk
 E:Chile cellphone
@@ -1186,16 +1604,6 @@ C:+561, +56568, +56569, +56600, +569
 R:CL
 T:_CLMF
 
-N:Chile
-A:Chile & Easter Island
-C:+56
-T:CL
-
-N:Brasilien Mobilfunk
-E:Brazil cellphone
-C:+55664, +55663
-R:BR
-T:_BRMF
 
 N:Brasilien
 A:Brazil
@@ -1203,11 +1611,12 @@ E:Brazil
 C:+55
 T:BR
 
-N:Argentinien Mobilfunk
-E:Argentina cellphone
-C:+54414, +5440, +5430, +5428, +5426, +5422, +5421, +5420, +54197, +54193, +54167, +54156, +54153, +5414
-R:AR
-T:_ARMF
+N:Brasilien Mobilfunk
+E:Brazil cellphone
+C:+55664, +55663
+R:BR
+T:_BRMF
+
 
 N:Argentinien
 A:Argentina
@@ -1215,17 +1624,12 @@ E:Argentina
 C:+54
 T:AR
 
-N:Guantanamo Bay
-A:Guatanamo Bay, Guantanamo Bay (Cuba)
-E:Guatanamo Bay
-C:+5399
-R:US # or CU?
-T:_GUAB
+N:Argentinien Mobilfunk
+E:Argentina cellphone
+C:+54414, +5440, +5430, +5428, +5426, +5422, +5421, +5420, +54197, +54193, +54167, +54156, +54153, +5414
+R:AR
+T:_ARMF
 
-N:Guantanamo
-C:+5321
-R:CU
-T:_GUAN
 
 # Source (2001-08):
 # http://www.itu.int/itudoc/itu-t/number/c/cub/76193.html
@@ -1246,10 +1650,33 @@ C:+537264, +5352279, +535679
 R:CU
 T:_CUMF
 
+N:Guantanamo Bay
+A:Guatanamo Bay, Guantanamo Bay (Cuba)
+E:Guatanamo Bay
+C:+5399
+R:US # or CU?
+T:_GUAB
+
+N:Guantanamo
+C:+5321
+R:CU
+T:_GUAN
+
+
 N:Mexiko
 E:Mexico
 C:+52
 T:MX
+
+N:Mexiko Mobilfunk
+E:Mexico cellphone
+R:MX
+T:_MXMF
+
+
+N:Peru
+C:+51
+T:PE
 
 N:Peru Mobilfunk
 E:Peru cellphone
@@ -1257,9 +1684,10 @@ C:+51946, +51846, +51746, +51646, +51546, +51446, +51346, +51246, +5119, +5116, 
 R:PE
 T:_PEMF
 
-N:Peru
-C:+51
-T:PE
+
+N:Haiti
+C:+509
+T:HT
 
 N:Haiti Mobilfunk
 E:Haiti cellphone
@@ -1267,9 +1695,6 @@ C:+509251
 R:HT
 T:_HTMF
 
-N:Haiti
-C:+509
-T:HT
 
 N:St. Pierre und Miquelon
 A:Saint Pierre und Miquelon, St. Pierre and Miquelon, Saint Pierre et Miquelon
@@ -1279,15 +1704,27 @@ C:+508
 R:FR
 T:PM
 
+N:St. Pierre und Miquelon Mobilfunk
+E:Saint Pierre and Miquelon cellphone
+R:PM
+T:_PMMF
+
+
+N:Panama
+C:+507
+T:PA
+
 N:Panama Mobilfunk
 E:Panama cellphone
 C:+5076
 R:PA
 T:_PAMF
 
-N:Panama
-C:+507
-T:PA
+
+N:Costa Rica
+A:Kosta Rica
+C:+506
+T:CR
 
 N:Costa Rica Mobilfunk
 E:Costa Rica cellphone
@@ -1295,10 +1732,10 @@ C:+506238, +506283, +506284, +5063
 R:CR
 T:_CRMF
 
-N:Costa Rica
-A:Kosta Rica
-C:+506
-T:CR
+
+N:Nicaragua
+C:+505
+T:NI
 
 N:Nicaragua Mobilfunk
 E:Nicaragua cellphone
@@ -1306,9 +1743,6 @@ C:+505800, +505830, +50583, +505832, +5059
 R:NI
 T:_NIMF
 
-N:Nicaragua
-C:+505
-T:NI
 
 # Source (2003-07-19):
 # http://www.itu.int/itudoc/itu-t/number/h/hnd/82323_ww2.doc
@@ -1324,15 +1758,21 @@ C:+50496, +50497, +50498, +50499
 R:HN
 T:_HNMF
 
+
+N:El Salvador
+C:+503
+T:SV
+
 N:El Salvador Mobilfunk
 E:El Salvador cellphone
 C:+5038
 R:SV
 T:_SVMF
 
-N:El Salvador
-C:+503
-T:SV
+
+N:Guatemala
+C:+502
+T:GT
 
 N:Guatemala Mobilfunk
 E:Guatemala cellphone
@@ -1340,9 +1780,6 @@ C:+50220
 R:GT
 T:_GTMF
 
-N:Guatemala
-C:+502
-T:GT
 
 # Source (2001-06-01):
 # http://www.itu.int/itudoc/itu-t/number/b/bez/70767.html
@@ -1356,12 +1793,19 @@ C:+5016
 R:BZ
 T:_BZMF
 
+
 N:Falklandinseln
 E:Falkland Islands
 A:Falkland Islands (Malvinas),Malvinas
 C:+500
 T:FK
 R:UK
+
+N:Falklandinseln Mobilfunk
+E:Falkland Islands cellphone
+R:FK
+T:_FKMF
+
 
 # Source (2003-03-55):
 # http://www.regtp.de/reg_tele/start/in_05-06-01-01-00_m/index.html
@@ -1503,6 +1947,12 @@ C:+4969
 R:DE
 T:_FRA
 
+
+N:Polen
+E:Poland
+C:+48
+T:PL
+
 N:Polen Mobilfunk
 E:Poland cellphone
 A:Polen-Mobilfunk
@@ -1510,26 +1960,42 @@ C:+48501, +48502, +48601, +48602
 R:PL
 T:_PLMF
 
-N:Polen
-E:Poland
-C:+48
-T:PL
 
-N:Norwegen Mobilfunk
-E:Norway cellphone
-C:+479
-R:NO
-T:_NOMF
-
+# Source (2004-09-16)
+# www.npt.no/pt_internet/e_164/nummerplaner.html
 N:Norwegen
 E:Norway
 C:+47
 T:NO
 
-N:Stockholm
-C:+468
-R:SE
-T:STO
+N:Norwegen Mobilfunk
+E:Norway cellphone
+C:+474, +479
+R:NO
+T:_NOMF
+
+N:Svalbard
+A:Svalbard and Jan Mayen
+C:+47790
+R:NO
+T:SJ
+
+N:Svalbard Mobilfunk
+E:Svalbard cellphone
+R:SJ
+T:_SJMF
+
+# nofix: uninhabited, only automatic meteorological station
+#N:Bouvet
+#A:Bouvetøya, Liverpool Island, Bouvet Island
+#R:NO
+#T:BV
+
+
+N:Schweden
+E:Sweden
+C:+46
+T:SE
 
 N:Schweden Mobilfunk
 E:Sweden cellphone
@@ -1537,21 +2003,18 @@ C:+4673, +46709, +46708, +46707, +46706, +46705, +46704, +46703, +46702, +4610
 R:SE
 T:_SEMF
 
-N:Schweden
-E:Sweden
-C:+46
-T:SE
+N:Stockholm
+C:+468
+R:SE
+T:STO
 
-N:Sønderjylland
-C:+4574, +4573
-R:DK
-T:_SOEN
 
-N:Dänemark Freephone
-E:Denmark freephone
-C:+4580
-R:DK
-T:_DKFF
+# Source (2003-07-07)
+# http://www.itst.dk/wimpdoc.asp?page=tema&objno=95024386
+N:Dänemark
+E:Denmark
+C:+45
+T:DK
 
 N:Dänemark Mobilfunk
 E:Denmark cellphone
@@ -1564,12 +2027,27 @@ C:+4560, +4561
 R:DK
 T:_DKMF
 
-# Source (2003-07-07)
-# http://www.itst.dk/wimpdoc.asp?page=tema&objno=95024386
-N:Dänemark
-E:Denmark
-C:+45
-T:DK
+N:Dänemark Freephone
+E:Denmark freephone
+C:+4580
+R:DK
+T:_DKFF
+
+N:Sønderjylland
+C:+4574, +4573
+R:DK
+T:_SOEN
+
+
+# nofix: code assigned is GB, UK is exceptionally reserved
+# Source (2003-07-22):
+# http://www.oftel.gov.uk/publications/numbering/2003/ntnp_final_c0703.pdf
+N:Großbritannien
+A:Großbritannien Insel Man Kanalinseln, Great Britain,Großbritanien
+A:Großbritannien und Nordirland, England
+E:United Kingdom
+C:+44
+T:UK
 
 # +447[789] excluding Isle of Man and Channel Islands
 N:Großbritannien Mobilfunk
@@ -1607,15 +2085,6 @@ N:Edinburgh
 C:+44131
 R:UK
 T:EDI
-
-# Source (2003-07-22):
-# http://www.oftel.gov.uk/publications/numbering/2003/ntnp_final_c0703.pdf
-N:Großbritannien
-A:Großbritannien Insel Man Kanalinseln, Great Britain,Großbritanien
-A:Großbritannien und Nordirland, England
-E:United Kingdom
-C:+44
-T:UK
 
 # Source (2001-09-17):
 # http://www.warwick.ac.uk/search/Phones/nng_list.txt
@@ -1671,6 +2140,23 @@ C:+4428
 R:UK
 T:_UKIR
 
+N:Nordirland Mobilfunk
+E:Northern Ireland cellphone
+R:_UKMF
+T:_UKMN
+
+# nofix: no indigenous inhabitants, used by military and scientists only
+#N:South Georgia and the South Sandwich Islands
+#R:UK
+#T:GS
+
+
+N:Österreich
+E:Austria
+A:Osterreich
+C:+43
+T:AT
+
 N:Österreich Mobilfunk
 E:Austria cellphone
 C:+43699, +43676, +43664, +43663
@@ -1695,11 +2181,9 @@ C:+431
 R:AT
 T:VIE
 
-N:Österreich
-E:Austria
-A:Osterreich
-C:+43
-T:AT
+
+# +424 .. +429 -- Spare codes
+
 
 # Source (2002-08-05):
 # http://www.ak.li/en/cc423NumberingPlan.asp
@@ -1720,6 +2204,10 @@ C:+42380
 R:LI
 T:_LIFF
 
+
+# +422 -- Spare code
+
+
 # Source (2002-06-03):
 # http://www.teleoff.gov.sk/Cislovanie/listnumb.html
 N:Slowakische Republik
@@ -1736,6 +2224,15 @@ C:+421905, +421906, +421907, +421908, +421915	# Globtel GSM
 R:SK
 T:_SKMF
 
+
+# Source (2002-09-22):
+# http://www.ctu.cz/english/announ.pdf
+N:Tschechische Republik
+A:Tschechien, Tschechische Rep., Tschech. Rep.
+E:Czech Republic
+C:+420
+T:CZ
+
 N:Tschechische Rep. Mobilfunk
 E:Czech Republic cellphone
 C:+420602, +420603, +420604	# temporary assignment (2002-09-22) 
@@ -1750,13 +2247,19 @@ C:+420800
 R:CZ
 T:_CZFF
 
-# Source (2002-09-22):
-# http://www.ctu.cz/english/announ.pdf
-N:Tschechische Republik
-A:Tschechien, Tschechische Rep., Tschech. Rep.
-E:Czech Republic
-C:+420
-T:CZ
+
+# Source (2001-11-20)
+# http://www.bakom.ch/imperia/md/content/english/telecomdienste/prescriptionstechniques/3.pdf
+N:Schweiz
+E:Switzerland
+C:+41
+T:CH
+
+N:Schweiz Mobilfunk
+E:Switzerland cellphone
+C:+4176, +4177, +4178, +4179
+R:CH
+T:_CHMF
 
 N:Freephone Schweiz
 A:Plus Freephone Service (Schweiz)
@@ -1764,12 +2267,6 @@ E:Plus Freephone Service (Switzerland)
 C:+41800
 R:CH
 T:_CHFF
-
-N:Schweiz Mobilfunk
-E:Switzerland cellphone
-C:+4176, +4177, +4178, +4179
-R:CH
-T:_CHMF
 
 N:Genf
 E:Geneva
@@ -1783,12 +2280,11 @@ C:+4143,+4144
 R:CH
 T:ZRH
 
-# Source (2001-11-20)
-# http://www.bakom.ch/imperia/md/content/english/telecomdienste/prescriptionstechniques/3.pdf
-N:Schweiz
-E:Switzerland
-C:+41
-T:CH
+
+N:Rumänien
+E:Romania
+C:+40
+T:RO
 
 N:Rumänien Mobilfunk
 E:Romania cellphone
@@ -1796,22 +2292,18 @@ C:+4092, +4094
 R:RO
 T:_ROMF
 
-N:Rumänien
-E:Romania
-C:+40
-T:RO
-
-N:Italien Mobilfunk
-E:Italy cellphone
-C:+39368, +39360, +39349, +39348, +39347, +39339, +39338, +39337, +39336, +39335, +39330, +39329, +39328
-R:IT
-T:_ITMF
 
 N:Italien
 E:Italy
 A:Italien POPs
 C:+39
 T:IT
+
+N:Italien Mobilfunk
+E:Italy cellphone
+C:+39368, +39360, +39349, +39348, +39347, +39339, +39338, +39337, +39336, +39335, +39330, +39329, +39328
+R:IT
+T:_ITMF
 
 N:Mailand
 E:Milan
@@ -1830,9 +2322,15 @@ T:ROM
 N:Vatikan
 A:Vatikanstadt / Rom, Vatikanstadt, Vatican City
 E:Vatican City State
-C:+379, +3906
+C:+379, +3906 	# +379 is reserved for future use
 T:VA
 R:IT
+
+N:Vatikan Mobilfunk
+E:Vatican City State cellphone
+R:VA
+T:_VAMF
+
 
 # Source (2001-11-15):
 # http://www.itu.int/itudoc/itu-t/number/s/svn/71836.html
@@ -1846,6 +2344,11 @@ E:Macedonia cellphone
 C:+38970
 R:MK
 T:_MKMF
+
+
+# +388 -- Group of countries
+# +3883 -- European Teleplony Numbering Space (ETNS)
+
 
 # Source (2001-11-29):
 # http://www.itu.int/itudoc/itu-t/number/b/bih/71264.html
@@ -1862,6 +2365,7 @@ C:+38761, +38763, +38765
 R:BA
 T:_BAMF
 
+
 # Source (2001-06-11):
 # http://www.itu.int/itudoc/itu-t/number/s/svn/71836.html
 N:Slowenien
@@ -1875,6 +2379,7 @@ C:+38620, +38621, +38630, +38631, +38640, +38641, +38649
 C:+38650, +38651, +38660, +38661, +38670, +38671
 R:SI
 T:_SIMF
+
 
 # Source (2001-10-22):
 # http://www.itu.int/itudoc/itu-t/number/c/cro/75465.html
@@ -1890,6 +2395,12 @@ C:+38591, +38598, +38599
 R:HR
 T:_HRMF
 
+
+# +382 .. +384 -- Spare codes
+
+
+# fixme: code YU ("Yugoslawia") was deleted 2003-07,
+# should be CS ("Serbia and Montenegro")
 # Source (2002-12-05):
 # http://www.itu.int/itudoc/itu-t/number/y/yug/82105_ww2.doc
 N:Serbien und Montenegro
@@ -1910,6 +2421,7 @@ C:+381663, +381664, +381665, +381666, +381667
 R:YU
 T:_YUMF
 
+
 # Source (2002-03-14):
 # http://www.itu.int/itudoc/itu-t/number/u/ukr/78457.html
 N:Ukraine
@@ -1922,9 +2434,23 @@ C:+38050
 R:UA
 T:_UAMF
 
+
+# +379 -- Vatican City State, reserved for future use, see +39 (Italy)
+
+
 N:San Marino
 C:+378
 T:SM
+
+N:San Marino Mobilfunk
+E:San Marino cellphone
+R:SM
+T:_SMMF
+
+
+N:Monaco
+C:+377
+T:MC
 
 N:Monaco Mobilfunk
 E:Monaco cellphone
@@ -1932,15 +2458,6 @@ C:+3776
 R:MC
 T:_MCMF
 
-N:Monaco
-C:+377
-T:MC
-
-N:Andorra Mobilfunk
-E:Andorra cellphone
-C:+3763
-R:AD
-T:_ADMF
 
 # Source (1998-07-14):
 # http://www.itu.int/itudoc/itu-t/number/a/and/75461.html
@@ -1948,12 +2465,25 @@ N:Andorra
 C:+376
 T:AD
 
+N:Andorra Mobilfunk
+E:Andorra cellphone
+C:+3763
+R:AD
+T:_ADMF
+
+
 N:Weissrussland
 A:Weissrussland Belarus
 E:Belarus
 A:Belarus (Weißrußland)
 C:+375
 T:BY
+
+N:Weissrussland Mobilfunk
+E:Belarus cellphone
+R:BY
+T:_BYMF
+
 
 # Source (2002-02-21)
 # http://www.itu.int/itudoc/itu-t/number/a/arm/71086.html
@@ -1968,6 +2498,7 @@ C:+3747, +374940, +374941
 R:AM
 T:_AMMF
 
+
 # Source (2003-08-19):
 # http://www.itu.int/itudoc/itu-t/number/m/mda/84396.html
 N:Moldau (Republik)
@@ -1980,9 +2511,15 @@ N:Moldau (Republik) Mobilfunk
 A:Moldau Mobilfunk, Republik Moldau Mobilfunk
 A:Moldawien Mobilfunk
 E:Moldova cellphone
-C:+37369, 37379
+C:+37369, +37379
 R:MD
 T:_MDMF
+
+
+N:Estland
+E:Estonia
+C:+372
+T:EE
 
 N:Estland Mobilfunk
 E:Estonia cellphone
@@ -1990,10 +2527,6 @@ C:+37250, +37251, +37252, +37253, +37254, +37255, +37256
 R:EE
 T:_EEMF
 
-N:Estland
-E:Estonia
-C:+372
-T:EE
 
 # Source (2002-10-21):
 # http://www.itu.int/itudoc/itu-t/number/l/ltu/81903_ww2.doc
@@ -2011,6 +2544,7 @@ C:+37191, +37192, +37193, +37194
 R:LV
 T:_LVMF
 
+
 # Source (2003-05-04):
 # http://www.rrt.lt/numeracija/en/index.htm
 N:Litauen
@@ -2024,16 +2558,18 @@ C:+3706		# old numbers closed 2002-09-01
 R:LT
 T:_LTMF
 
+
+N:Ungarn
+E:Hungary
+C:+36
+T:HU
+
 N:Ungarn Mobilfunk
 E:Hungary cellphone
 C:+3620, +3630, +3660
 R:HU
 T:_HUMF
 
-N:Ungarn
-E:Hungary
-C:+36
-T:HU
 
 # Source (2003-05-04)
 # http://www.crc.bg/v2/files/en/585.htm
@@ -2049,6 +2585,9 @@ C:+35949, +35989, +35998, +35999 	# reserved
 R:BG
 T:_BGMF
 
+
+# Source (2004-09-02):
+# http://www.ficora.fi/englanti/tele/kansallinen_numerointisuunnitelma.htm
 N:Finnland
 E:Finland
 C:+358
@@ -2056,16 +2595,26 @@ T:FI
 
 N:Finnland Mobilfunk
 E:Finland cellphone
-C:+35840, +358400, +35841, +35842, +35843, +35849, +35850, +358500
+C:+3584, +35850
 R:FI
 T:_FIMF
 
-N:Zypern(griech) Mobilfunk
-A:Zypern-Mobilfunk, Zypern Mobilfunk
-E:Cyprus cellphone
-C:+3579992, +357994, +357995, +357996, +357998
-R:CY
-T:_CYMF
+# According to http://www.aland.fi/, the Åland Islands form an autonomous
+# demilitarized and unilingually Swedish province of Finland.
+N:Åland Inseln
+E:Åland Islands
+A:Aland Inseln, Aland Islands
+C:+35818
+R:FI
+T:AX
+
+N:Åland Inseln Mobilfunk
+E:Åland Islands cellphone
+A:Aland Inseln Mobilfunk, Aland Islands cellphone
+C:+3584570, +3584573, +3584575
+R:_FIMF
+T:_AXMF
+
 
 # Quelle (2003-05-04):
 # http://www.cyta.com.cy/tesa/uk/ti.htm
@@ -2075,6 +2624,13 @@ A:Zypern (Griechisch), Zypern (griech.), Zypern Süd
 C:+357
 T:CY
 
+N:Zypern(griech) Mobilfunk
+A:Zypern-Mobilfunk, Zypern Mobilfunk
+E:Cyprus cellphone
+C:+3579992, +357994, +357995, +357996, +357998
+R:CY
+T:_CYMF
+
 N:Zypern (Türkisch)
 A:Zypern (Nord), Zypern (Nordzypern), Cyprus (north), Cyprus (turk)
 A:Zypern (Türk.), Nordzypern
@@ -2083,11 +2639,6 @@ C:+90392
 R:TK
 T:_CYTK
 
-N:Malta Mobilfunk
-E:Malta cellphone
-C:+35679, +35699
-R:MT
-T:_MTMF
 
 # Source (2002-06-18):
 # http://www.mca.org.mt/images/library/NumberingPlan%20%20for%20web%20site.pdf
@@ -2095,13 +2646,31 @@ N:Malta
 C:+356
 T:MT
 
+N:Malta Mobilfunk
+E:Malta cellphone
+C:+35679, +35699
+R:MT
+T:_MTMF
+
+
 N:Albanien
 E:Albania
 C:+355
 T:AL
 
+N:Albanien Mobilfunk
+E:Albania cellphone
+R:AL
+T:_ALMF
+
+
 # Source (2002-02-28) 
-http://www.pta.is/english/numbering/mobilecodes.htm
+# http://www.pta.is/english/numbering/mobilecodes.htm
+N:Island
+E:Iceland
+C:+354
+T:IS
+
 N:Island Mobilfunk
 E:Iceland cellphone
 C:+354388, +354389
@@ -2125,10 +2694,11 @@ C:+35489
 R:IS
 T:_ISMF
 
-N:Island
-E:Iceland
-C:+354
-T:IS
+
+N:Irland
+E:Ireland
+C:+353
+T:IE
 
 N:Irland Mobilfunk
 E:Ireland cellphone
@@ -2136,10 +2706,6 @@ C:+35389, +35388, +35387, +35386
 R:IE
 T:_IEMF
 
-N:Irland
-E:Ireland
-C:+353
-T:IE
 
 N:Luxemburg
 E:Luxembourg
@@ -2151,6 +2717,17 @@ E:Luxembourg cellphone
 C:+352021
 R:LU
 T:_LUMF
+
+
+N:Portugal
+C:+351
+T:PT
+
+N:Portugal Mobilfunk
+E:Portugal cellphone
+C:+35193
+R:PT
+T:_PTMF
 
 N:Azoren
 A:Portugal-Azoren
@@ -2164,15 +2741,6 @@ C:+35191
 R:PT
 T:_MADE
 
-N:Portugal Mobilfunk
-E:Portugal cellphone
-C:+35193
-R:PT
-T:_PTMF
-
-N:Portugal
-C:+351
-T:PT
 
 # Source (2003-09-20):
 # http://www.gra.gi/docs/Public_Numbering_Plan.xls 
@@ -2193,37 +2761,46 @@ C:+35080
 R:GI
 T:_GIFF
 
+
+# Source (1998-02-19):
+# http://www.itu.int/itudoc/itu-t/number/s/esp/73478.html
+N:Spanien
+E:Spain
+C:+34
+T:ES
+
+N:Spanien Mobilfunk
+E:Spain cellphone
+C:+346
+R:ES
+T:_ESMF
+
 N:Tarragona
 A:Spanien - Tarragona
-C:+3477
 C:+34977
 R:ES
 T:TARR
 
 N:Gerona
 A:Spanien - Gerona
-C:+3472
 C:+34972
 R:ES
 T:GRO
 
 N:Mallorca
 A:Spanien - Mallorca
-C:+3471
 C:+34971
 R:ES
 T:PMI
 
 N:Valencia
 A:Spanien - Valencia
-C:+346
 C:+3496
 R:ES
 T:VLC
 
 N:Bilbao
 A:Spanien - Bilbao
-C:+344
 C:+3494
 R:ES
 T:BIO
@@ -2254,16 +2831,11 @@ C:+3491
 R:ES
 T:MAD
 
-N:Spanien Mobilfunk
-E:Spain cellphone
-C:+34689, +34670, +34649, +34639, +34630, +34629, +34619, +34617, +34616, +34610, +34609, +34608, +34607, +34606
-R:ES
-T:_ESMF
 
-N:Spanien
-E:Spain
-C:+34
-T:ES
+N:Frankreich
+E:France
+C:+33
+T:FR
 
 N:Frankreich Mobilfunk
 E:France cellphone
@@ -2276,10 +2848,21 @@ C:+331
 R:FR
 T:PAR
 
-N:Frankreich
-E:France
-C:+33
-T:FR
+# nofix: uninhabited, atoll in the Pacific OCean
+#N:Clipperton Island
+#R:FR
+#T:CP
+
+# nofix: no indigenous inhabitants, used for fishing and research only
+#N:FrencH Southern Territories
+#A:French Southern and Antarctic Lands
+#R:FR
+#T:TF
+
+N:Belgien
+E:Belgium
+C:+32
+T:BE
 
 N:Belgien Mobilfunk
 E:Belgium cellphone
@@ -2304,10 +2887,18 @@ C:+3216
 R:BE
 T:_LEUV
 
-N:Belgien
-E:Belgium
-C:+32
-T:BE
+
+N:Niederlande
+A:Holland
+E:the Netherlands
+C:+31
+T:NL
+
+N:Niederlande Mobilfunk
+E:Netherlands cellphone
+C:+3165, +3162, +3161
+R:NL
+T:_NLMF
 
 N:Freephone Niederlande
 E:Freephone Netherlands
@@ -2321,12 +2912,6 @@ C:+3170
 R:NL
 T:HAG
 
-N:Niederlande Mobilfunk
-E:Netherlands cellphone
-C:+3165, +3162, +3161
-R:NL
-T:_NLMF
-
 N:Amsterdam
 C:+3120
 R:NL
@@ -2337,11 +2922,11 @@ C:+3110
 R:NL
 T:RTM
 
-N:Niederlande
-A:Holland
-E:the Netherlands
-C:+31
-T:NL
+
+N:Griechenland
+E:Greece
+C:+30
+T:GR
 
 N:Griechenland Mobilfunk
 E:Greece cellphone
@@ -2349,10 +2934,6 @@ C:+309
 R:GR
 T:_GRMF
 
-N:Griechenland
-E:Greece
-C:+30
-T:GR
 
 # Source (2000-09-18):
 # http://www.itu.int/itudoc/itu-t/number/g/gre/82117_ww2.doc
@@ -2368,21 +2949,26 @@ C:+29949, +29952, +29953, +29954, +29955, +29956, +29957, +29958, +29959
 R:GL
 T:_GLMF
 
-N:Färöer-Inseln Mobilfunk
-E:Faeroe Islands cellphone
-A:Färöer Inseln Mobilfunk, Färöer Mobilfunk
-C:+29821, +29871, +29891
-R:FO
-T:_FOMF
 
-# Source (2001-03-14):
-# http://www.fse.fo/images/Documents/6_20026114757_911.xls
+# Source (2003-10-27):
+# http://www.fse.fo/images/sidur/2_200310271729_403.xls
 N:Färöer-Inseln
 A:Färöer, Faröer, Faröer Inseln, Faroer Inseln, Fäeroer
-E:Faeroe Islands
+E:Faroe Islands
 C:+298
 T:FO
 R:DK
+
+N:Färöer-Inseln Mobilfunk
+E:Faroe Islands cellphone
+A:Färöer Inseln Mobilfunk, Färöer Mobilfunk
+C:+29821, +29822, +29823, +29824, +29825, +29826, +29827, +29828, +29829
+C:+2985
+C:+29871, +29872, +29873, +29874, +29875, +29876, +29877, +29878, +29879
+C:+29891, +29892, +29893, +29894, +29895, +29896, +29897, +29898, +29899
+R:FO
+T:_FOMF
+
 
 # Source (1993-09-30):
 # http://www.itu.int/itudoc/itu-t/number/a/aru/75916.html
@@ -2396,6 +2982,10 @@ C:+2979
 R:AW
 T:_AWMF
 
+
+# +292 .. +296 -- Spare codes
+
+
 # Source (2001-04-17):
 # http://www.itu.int/itudoc/itu-t/number/e/eri/79141.html
 N:Eritrea
@@ -2408,22 +2998,27 @@ C:+291171, +291172, +291173
 R:ER
 T:_ERMF
 
+
 N:St. Helena
 E:Saint Helena
 C:+290
 T:SH
 R:UK
 
+N:St. Helena Mobilfunk
+E:Saint Helena cellphone
+R:SH
+T:_SHMF
+
+# fixme: +289 is unallocated.  This island has about 300 inhabitants.
 N:Tristan da Cunha
 C:+2897
 R:SH
 T:_TRIS
 
-N:Südafrika Mobilfunk
-E:South Africa cellphone
-C:+2782, +2783
-R:ZA
-T:_ZAMF
+
+# +280 .. +289 -- Spare codes, reserved for E.164 country code expansion.
+
 
 N:Südafrika
 A:Sudafrika
@@ -2431,10 +3026,22 @@ E:South Africa
 C:+27
 T:ZA
 
+N:Südafrika Mobilfunk
+E:South Africa cellphone
+C:+2782, +2783
+R:ZA
+T:_ZAMF
+
+
 N:Komoren
 E:Comoros
 C:+269
 T:KM
+
+N:Komoren Mobilfunk
+E:Comoros cellphone
+R:KM
+T:_KMMF
 
 # Source (2002-08-23):
 # http://www.global269.com/global269/jsp/implementation.jsp
@@ -2458,6 +3065,7 @@ C:+26965, +26966, +26967, +26968, +26969
 R:YT
 T:_YTMF
 
+
 # Source (2002-05-09):
 # http://www.itu.int/itudoc/itu-t/number/s/swz/75920.html
 N:Swasiland
@@ -2471,11 +3079,18 @@ C:+26860
 R:SZ
 T:_SZMF
 
+
 N:Botsuana
 A:Botswana Republic, Botsuana (Botswana)
 E:Botswana
 C:+267
 T:BW
+
+N:Botsuana Mobilfunk
+E:Botswana cellphone
+R:BW
+T:_BWMF
+
 
 # Source (2003-02-23)
 # http://www.lta.org.ls/
@@ -2489,6 +3104,7 @@ C:+2665, +2666
 R:LS
 T:_LSMF
 
+
 # Source (2002-01-09):
 # http://www.itu.int/itudoc/itu-t/number/m/mwi/76657.html
 N:Malawi
@@ -2501,6 +3117,7 @@ C:+26508, +26509
 R:MW
 T:_MWMF
 
+
 # Source (2002-02-21):
 # http://www.itu.int/itudoc/itu-t/number/n/nam/79056.html
 N:Namibia
@@ -2512,6 +3129,7 @@ E:Namibia cellphone
 C:+26481
 R:NA
 T:_NAMF
+
 
 # Source (2001-07-11):
 # http://www.itu.int/itudoc/itu-t/number/z/zwe/76048.html
@@ -2526,16 +3144,29 @@ C:+2637
 R:ZW
 T:_ZWMF
 
+
 N:Reunion
 A:Réunion, Reunion Island, Reunion Islands
 C:+262
 T:RE
 R:FR
 
+N:Reunion Mobilfunk
+E:Reunion cellphone
+R:RE
+T:_REMF
+
+
 N:Madagaskar
 E:Madagascar
 C:+261
 T:MG
+
+N:Madagaskar Mobilfunk
+E:Madagascar cellphone
+R:MG
+T:_MGMF
+
 
 # Source (1999-11-22):
 # http://www.caz.gov.zm/numbers_plan.html
@@ -2550,19 +3181,41 @@ C:+26017
 R:ZM
 T:_ZMMF
 
+
+# +259 -- Spare code
+
+
 N:Mosambik
 A:Mozambik
 E:Mozambique
 C:+258
 T:MZ
 
+N:Mosambik Mobilfunk
+E:Mozambique cellphone
+R:MZ
+T:_MZMF
+
+
 N:Burundi
 C:+257
 T:BI
 
+N:Burundi Mobilfunk
+E:Burundi cellphone
+R:BI
+T:_BIMF
+
+
 N:Uganda
 C:+256
 T:UG
+
+N:Uganda Mobilfunk
+E:Uganda cellphone
+R:UG
+T:_UGMF
+
 
 # Source (2000-06-20):
 # http://www.itu.int/itudoc/itu-t/number/t/tan/71089.html
@@ -2578,6 +3231,13 @@ C:+25574
 R:TZ
 T:_TZMF
 
+N:Sansibar
+E:Zanzibar
+C:+25524		# including Pemba and Unguja
+R:TZ
+T:_TZZZ
+
+
 # Source (2002-08-24):
 # http://www.cck.go.ke/newnumbers/numbernew.html
 N:Kenia
@@ -2591,14 +3251,27 @@ C:+2547
 R:KE
 T:_KEMF
 
+
 N:Dschibuti
 E:Djibouti
 C:+253
 T:DJ
 
+N:Dschibuti Mobilfunk
+E:Djibouti cellphone
+R:DJ
+T:_DJMF
+
+
 N:Somalia
 C:+252
 T:SO
+
+N:Somalia Mobilfunk
+E:Somalia cellphone
+R:SO
+T:_SOMF
+
 
 # Source (2000-08-13):
 # http://www.itu.int/itudoc/itu-t/number/e/eth/73270.html
@@ -2614,6 +3287,7 @@ C:+251920, +251921, +251922, +251923, +251929
 R:ET
 T:_ETMF
 
+
 # Source (2000-08-04)
 # http://www.itu.int/itudoc/itu-t/number/r/rwa/75919.html
 N:Ruanda
@@ -2627,9 +3301,16 @@ C:+250081, +250082, +250083, +250084, +250085
 R:RW
 T:_RWMF
 
+
 N:Sudan
 C:+249
 T:SD
+
+N:Sudan Mobilfunk
+E:Sudan cellphone
+R:SD
+T:_SDMF
+
 
 # Source (2000-11-15):
 # http://www.itu.int/itudoc/itu-t/number/s/syc/72016.html
@@ -2645,19 +3326,42 @@ C:+2485
 R:SC
 T:_SCMF
 
+
+# fixme: code should be AC ("Ascension Island"),
+# ASI is Georgetown, St. Helena (SH), about 1000 km south-east of Ascension.
 N:Ascension
 A:Ascension Isle, Ascension Island, Ascension Inseln, Ascension Inseln (GB)
 C:+247
-R:SH
+R:SH 		# belongs politically to St. Helena
 T:ASI
 
+N:Ascension Mobilfunk
+E:Ascension cellphone
+R:ASI
+T:_ACMF
+
+
+# fixme: code should be DG ("Diego Garcia"), till 2016 leased to US Military,
+# belongs to British Indian Ocean Territory (IO)
 N:Diego Garcia
 C:+246
 T:NKW
 
+N:Diego Garcia Mobilfunk
+E:Diego Garcia cellphone
+R:NKW
+T:_DGMF
+
+
 N:Guinea-Bissau
 C:+245
 T:GW
+
+N:Guinea-Bissau Mobilfunk
+E:Guinea-Bissau cellphone
+R:GW
+T:_GWMF
+
 
 # Source (2001-07-31):
 # http://www.itu.int/itudoc/itu-t/number/a/ago/75259.html
@@ -2671,6 +3375,16 @@ C:+24491, +24492
 R:AO
 T:_AOMF
 
+
+# fixme: code ZR ("Zaire") was deleted 1997-07,
+# should be CD ("Congo, The Democratic Republic of the")
+N:Kongo (Demokratische Republik)
+A:Kongo (DR), Demokratische Republik Kongo, Democratic Republic of the Congo
+A:Zaire 	# till 1997
+E:Congo (Democratic Republic of the)
+C:+243
+T:ZR 	# internet cc-TLD may be .cd
+
 N:Kongo (Demokratische Republik) Mobilfunk
 E:Congo (Democratic Republik of the) cellphone
 A:Zaire Mobilfunk, Zaire cellphone
@@ -2678,18 +3392,18 @@ C:+24388
 R:ZR
 T:_ZRMF
 
+
 N:Kongo (Republik)
 A:Kongo, Kongo (Rebublik), Republik Kongo, Republic of the Congo, Congo
 E:Congo (Republic of the)
 C:+242
 T:CG
 
-N:Kongo (Demokratische Republik)
-A:Kongo (DR), Demokratische Republik Kongo, Democratic Republic of the Congo
-A:Zaire 	# till 1997
-E:Congo (Democratic Republic of the)
-C:+243
-T:ZR 	# internet cc-TLD may be .cd
+N:Kongo (Republik) Mobilfunk
+E:Congo (Republic of the) cellphone
+R:CG
+T:_CGMF
+
 
 # Source (2002-12-11):
 # http://www.itu.int/itudoc/itu-t/number/g/gab/82836_ww2.doc
@@ -2708,11 +3422,18 @@ C:+24180, +24181, +24189, +24191, +24194
 R:GA
 T:_GAMF
 
+
 N:Äquatorial-Guinea
 E:Equatorial Guinea
 A:Aquatorial Guinea
 C:+240
 T:GQ
+
+N:Äquatorial-Guinea Mobilfunk
+E:Equatorial Guinea cellphone
+R:GQ
+T:_GQMF
+
 
 N:Sao Tome und Principe
 A:Sao Tome et Principe, Sao Tome and Principa, Sao Tome, Sao Tomé
@@ -2720,10 +3441,22 @@ E:Sao Tome and Principe
 C:+239
 T:ST
 
+N:Sao Tome und Principe Mobilfunk
+E:Sao Tome and Principe cellphone
+R:ST
+T:_STMF
+
+
 N:Cape Verde
 A:Kap Verde, Cap Verde, Kapverdische Inseln, Kap Verde Inseln
 C:+238
 T:CV
+
+N:Cape Verde Mobilfunk
+E:Cape Verde cellphone
+R:CV
+T:_CVMF
+
 
 # Source: (2002-02-27):
 # http://www.itu.int/itudoc/itu-t/number/c/cam/75552.html
@@ -2738,11 +3471,18 @@ C:+23776, +23777, +23798, +23799
 R:CM
 T:_CMMF
 
+
 N:Zentralafrikanische Republik
 A:Zentral Afrika (Rep.), Zentralafrika
 E:Central African Republic
 C:+236
 T:CF
+
+N:Zentralafrikanische Republik Mobilfunk
+E:Central African Republic cellphone
+R:CF
+T:_CFMF
+
 
 N:Tschad
 A:Chad
@@ -2750,9 +3490,21 @@ E:Chad Republic
 C:+235
 T:TD
 
+N:Tschad Mobilfunk
+E:Chad Republic cellphone
+R:TD
+T:_TDMF
+
+
 N:Nigeria
 C:+234
 T:NG
+
+N:Nigeria Mobilfunk
+E:Nigeria cellphone
+R:NG
+T:_NGMF
+
 
 # Source (2003-12-16):
 # http://www.itu.int/itudoc/itu-t/number/g/gha/85550.html
@@ -2766,6 +3518,7 @@ C:+23320, +23324, +23327, +23328
 R:GH
 T:_GHMF
 
+
 # Source (2002-01-07):
 # http://www.itu.int/itudoc/itu-t/number/s/sle/77986.html
 N:Sierra Leone
@@ -2778,15 +3531,27 @@ C:+23223, +23230, +23276
 R:SL
 T:_SLMF
 
+
 N:Liberia
 C:+231
 T:LR
+
+N:Liberia Mobilfunk
+E:Liberia cellphone
+R:LR
+T:_LRMF
+
 
 # Source (2001-12-11):
 # http://www.itu.int/itudoc/itu-t/number/m/mli/79972.html
 N:Mauritius
 C:+230
 T:MU
+
+N:Mauritius Mobilfunk
+E:Mauritius cellphone
+R:MU
+T:_MUMF
 
 N:Mauritius Mobilfunk
 E:Mauritius cellphone
@@ -2799,9 +3564,16 @@ C:+23073, +23075, +23076, +23077
 R:MU
 T:_MUFF
 
+
 N:Benin
 C:+229
 T:BJ
+
+N:Benin Mobilfunk
+E:Benin cellphone
+R:BJ
+T:_BJMF
+
 
 # Source (2001-07-05):
 # http://www.itu.int/itudoc/itu-t/number/t/tgo/74129.html
@@ -2815,10 +3587,19 @@ C:+2289
 R:TG
 T:_TGMF
 
+
+# fixme: code should be NE ("Niger),
+# NGR is Ningerum, Papua New Guinea (PG)
 N:Niger
 E:Niger Republic
 C:+227
 T:NGR
+
+N:Niger Mobilfunk
+E:Niger cellphone
+R:NGR
+T:_NEMF
+
 
 # Source (2001-08-02)
 # http://www.itu.int/itudoc/itu-t/number/b/bfa/76021.html
@@ -2836,6 +3617,7 @@ C:+22680, +22681, +22682, +22683, +22685, +22685
 R:BF
 T:_BFMF
 
+
 N:Elfenbeinküste Cote de Ivoire
 A:Cote d'Ivoire (Elfenbeinküste), Cote d'Ivoire, Elfenbeinküste
 A:Cote DIvoire (Ivory Coast)
@@ -2844,10 +3626,22 @@ E:Ivory Coast
 C:+225
 T:CI
 
+N:Elfenbeinküste Cote de Ivoire Mobilfunk
+E:Ivory Coast cellphone
+R:CI
+T:_CIMF
+
+
 N:Guinea
 E:Guinea Republic
 C:+224
 T:GN
+
+N:Guinea Mobilfunk
+E:Guinea Republic cellphone
+R:GN
+T:_GNMF
+
 
 # Source (2002-06-21):
 # http://www.itu.int/itudoc/itu-t/number/m/mli/79972.html
@@ -2863,6 +3657,7 @@ C:+22367
 R:ML
 T:_MLMF
 
+
 # Source (2001-02-04):
 # http://www.itu.int/itudoc/itu-t/number/m/mrt/73079.html 
 N:Mauretanien
@@ -2875,6 +3670,7 @@ E:Mauritania cellphone
 C:+2226
 R:MR
 T:_MRMF
+
 
 # Source (1997-08-13):
 # http://www.itu.int/itudoc/itu-t/number/s/sen/78131.html
@@ -2889,6 +3685,7 @@ C:+2216
 R:SN
 T:_SNMF
 
+
 # Source (2002-01-03):
 # http://www.itu.int/itudoc/itu-t/number/g/gmb/77448.html 
 N:Gambia
@@ -2901,12 +3698,25 @@ C:+2209
 R:GM
 T:_GMMF
 
+
+# +219 -- Spare code
+
+
 N:Libyen
 A:Libysch-Arabische Dschamahirija, Lybien, Lybisch-Arabische Dschamahija
 A:Libysch-Arabische-Republik
 E:Libya
 C:+218
 T:LY
+
+N:Libyen Mobilfunk
+E:Libya cellphone
+R:LY
+T:_LYMF
+
+
+# +217 -- Spare code
+
 
 # Source (2001-09-08):
 # http://www.itu.int/itudoc/itu-t/number/t/tunis/74494.html
@@ -2922,11 +3732,9 @@ C:+21698
 R:TN
 T:_TNMF
 
-N:Algerien Mobilfunk
-E:Algeria cellphone
-C:+21361
-R:DZ
-T:_DZMF
+
+# +214 .. +215 -- Spare codes
+
 
 # Source (2000-08-15):
 # http://www.itu.int/itudoc/itu-t/number/a/alg/70713.html
@@ -2934,6 +3742,13 @@ N:Algerien
 E:Algeria
 C:+213
 T:DZ
+
+N:Algerien Mobilfunk
+E:Algeria cellphone
+C:+21361
+R:DZ
+T:_DZMF
+
 
 # Source (2001-08-08):
 # http://www.itu.int/itudoc/itu-t/number/m/mar/70657.html
@@ -2954,17 +3769,27 @@ C:+21248	# Lâayoune, maybe incomplete
 R:MA
 T:EH
 
-N:Ägypten Mobilfunk
-E:Egypt cellphone
-C:+2012
-R:EG
-T:_EGMF
+N:Western Sahara Mobilfunk
+E:Western Sahara cellphone
+R:EH
+T:_EHMF
+
+
+# +210 .. 211 -- Spare codes
+
 
 N:Ägypten
 E:Egypt
 A:Agypten
 C:+20
 T:EG
+
+N:Ägypten Mobilfunk
+E:Egypt cellphone
+C:+2012
+R:EG
+T:_EGMF
+
 
 # source: http://www.teltronics.com/beyond.html
 # Source (2002-08-12) for the list of canadian NPA (+1NPA):
@@ -2986,10 +3811,17 @@ C:+1204, +1250, +1306, +1403, +1416, +1418, +1450, +1506, +1514, +1519, +1600, +
 R:CA
 T:_CAMF
 
+
 N:Jamaika
 E:Jamaica
 C:+1876
 T:JM
+
+N:Jamaika Mobilfunk
+E:Jamaica cellphone
+R:JM
+T:_JMMF
+
 
 N:St. Kitts und Nevis
 A:St. Kitts & Nevis, Saint Kitts and Nevis, St Kitts, Nevis Islands
@@ -2998,6 +3830,12 @@ A:Nevis,Nevis Is.
 E:St. Kitts and Nevis
 C:+1869
 T:KN
+
+N:St. Kitts und Nevis Mobilfunk
+E:St. Kitts and Nevis cellphone
+R:KN
+T:_KNMF
+
 
 # Source (2002-07-10):
 # http://www.itu.int/itudoc/itu-t/number/t/tto/79162.html
@@ -3015,6 +3853,16 @@ C:+1686688, +1686689
 C:+18687
 R:TT
 T:_TTMF
+
+
+# Source (2002-02-22):
+# http://www.indotel.org.do/Site/codigos.htm
+# +1809 is nowadays used by Dominican Republic only
+N:Dominikanische Republik
+E:Dominican Republic
+A:Dominikanische Rep., Dom Rep, Domin. Rep.
+C:+1809
+T:DO
 
 N:Dominikanische Rep. Mobilfunk
 A:Domin. Rep.-Mobilfunk, Dominikanische Republik Mobilfunk
@@ -3049,14 +3897,6 @@ C:+1809943, +1809944
 R:DO
 T:_DOMF
 
-# Source (2002-02-22):
-# http://www.indotel.org.do/Site/codigos.htm
-# +1809 is nowadays used by Dominican Republic only
-N:Dominikanische Republik
-E:Dominican Republic
-A:Dominikanische Rep., Dom Rep, Domin. Rep.
-C:+1809
-T:DO
 
 N:Turks- und Caicosinseln
 E:Turks and Caicos Islands
@@ -3065,6 +3905,12 @@ A:Turks und Caicos, Turks and Caicos Inseln, Turks u. Caicosinseln
 C:+1649
 T:TC
 
+N:Turks- und Caicosinseln Mobilfunk
+E:Turks and Caicos Islands cellphone
+R:TC
+T:_TCMF
+
+
 N:Amerikanische Jungferninseln
 A:Jungferninseln (USA), Amerikan. Jungferninseln, American Virgin Isles
 A:US Jungferninseln, Amer. Jungferninseln
@@ -3072,12 +3918,24 @@ E:Virgin Islands (US)
 C:+1340
 T:VI
 
+N:Amerikanische Jungferninseln Mobilfunk
+E:Virgin Islands (US) cellphone
+R:VI
+T:_VIMF
+
+
 N:Britische Jungferninseln
 A:Jungferninseln (GB), Jungferninseln (britisch), British Virgin Isles
-A:Brit. Jungferninseln, Britisch Jungferninseln
-E:Virgin Islands (British), Virgin Islands (UK)
+A:Brit. Jungferninseln, Britisch Jungferninseln, Virgin Islands (British)
+E:Virgin Islands (UK)
 C:+1284
 T:VG
+
+N:Britische Jungferninseln Mobilfunk
+E:Virgin Islands (UK) cellphone
+R:VG
+T:_VGMF
+
 
 # Source (2003-07-29):
 # http://www.itu.int/itudoc/itu-t/number/s/svg/82143_ww9.doc
@@ -3097,34 +3955,60 @@ C:+1784526, +1784527, +1784528, +1784529, +1784530, +1784531 	# GSM
 R:VC
 T:_VCMF
 
+
 N:Dominica
 A:Domenica
 C:+1767
 T:DM
+
+N:Dominica Mobilfunk
+E:Dominica cellphone
+R:DM
+T:_DMMF
+
 
 N:Grenada
 A:Carriacou
 C:+1473
 T:GD
 
-N:Puerto Rico Mobilfunk
-R:PR
-T:_PRMF
-# fixme
+N:Grenada Mobilfunk
+E:Grenada cellphone
+R:GD
+T:_GDMF
+
 
 N:Puerto Rico
 C:+1787, +1939
 T:PR
+
+N:Puerto Rico Mobilfunk
+E:Puerto Rico cellphone
+R:PR
+T:_PRMF
+
 
 N:St. Lucia
 A:Saint Lucia
 C:+1758
 T:LC
 
+N:St. Lucia Mobilfunk
+E:St. Lucia cellphone
+R:LC
+T:_LCMF
+
+
 N:Guam
 C:+1671
 R:US
 T:GU
+
+N:Guam Mobilfunk
+E:Guam cellphone
+R:GU
+T:_GUMF
+
 
 N:Marianen (SaipanNord-)
 A:Nördliche Marianen, Marianen, Marianen (Saipan), Saipan, Salpan
@@ -3135,19 +4019,32 @@ E:Northern Mariana Islands
 C:+1670
 T:MP
 
+N:Marianen (SaipanNord-) Mobilfunk
+E:Northern Mariana Islands cellphone
+R:MP
+T:_MPMF
+
+
 N:Montserrat
 C:+1664
 T:MS
 
-N:Bermuda Mobilfunk
-# fixme
-R:BM
-T:_BMMF
+N:Montserrat Mobilfunk
+E:Montserrat cellphone
+R:MS
+T:_MSMF
+
 
 N:Bermuda
 A:Bermudas
 C:+1441
 T:BM
+
+N:Bermuda Mobilfunk
+E:Bermuda cellphone
+R:BM
+T:_BMMF
+
 
 N:Kaimaninseln
 A:Cayman-Inseln, Cayman
@@ -3156,6 +4053,12 @@ A:Kayman Inseln
 C:+1345
 T:KY
 R:UK
+
+N:Kaimaninseln Mobilfunk
+E:Cayman Islands cellphone
+R:KY
+T:_KYMF
+
 
 # Source (1999-09-03)
 # http://www.itu.int/itudoc/itu-t/number/a/atg/75462.html
@@ -3172,9 +4075,16 @@ C:+1268464, +1268723, +1268724
 R:AG
 T:_AGMF
 
+
 N:Anguilla
 C:+1264
 T:AI
+
+N:Anguilla Mobilfunk
+E:Anguilla cellphone
+R:AI
+T:_AIMF
+
 
 # Source (2002-02-27):
 # http://www.itu.int/itudoc/itu-t/number/b/brb/71262.html
@@ -3188,6 +4098,7 @@ C:+124623
 R:BB
 T:_BBMF
 
+
 # Source (2002-07-05):
 # http://www.itu.int/itudoc/itu-t/number/b/bhs/80946.html
 N:Bahamas
@@ -3200,9 +4111,6 @@ C:+1242357, +1242359, +1242457, +1242557
 R:BS
 T:_BSMF
 
-N:USA toll free
-C:+1800, +1866*, +1877, +1888
-T:_USTF			# fixme: should by _USFF
 
 N:USA
 A:Vereinigte Staaten (USA), United States of America, United States of America & Canada
@@ -3211,6 +4119,15 @@ E:United States
 A:North America
 C:+1
 T:US
+
+N:USA Mobilfunk
+E:United States cellphone
+R:US
+T:_USMF
+
+N:USA toll free
+C:+1800, +1866*, +1877, +1888
+T:_USTF			# fixme: should by _USFF
 
 # from here till end of file: +1NPA number blocks inside the USA by state
 # including moved Alsaka and Hawaii entries:
@@ -3479,3 +4396,6 @@ N:Wyoming (USA state)
 C:+1307
 R:US
 T:_USWY
+
+
+# +0 -- reserved, allocation possible since 2001.

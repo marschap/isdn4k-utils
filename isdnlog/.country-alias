@@ -37,6 +37,8 @@ costa-rica mobilfunk	costa rica mobilfunk
 cote d´ivory	elfenbeinküste cote de ivoire
 deutschland bündelfunk dolphin	deutschland bündelfunk dolphin telecom
 deutschland mobil	deutschland mobilfunk
+deutschland mobilfunk e+	deutschland mobilfunk e-plus
+deutschland mobilfunk eplus	deutschland mobilfunk e-plus
 dominikanische republi	dominikanische republik
 dublin	nordirland
 ecuador guinea	Äquatorial-guinea
@@ -51,7 +53,9 @@ fidschi-inseln	fidschi
 fidschiinseln	fidschi
 finland mobilfunk	finnland mobilfunk
 französisch guayana	französisch-guayana
+französisch guyana mobilfunk	französisch-guayana mobilfunk
 französisch polynesien	französisch-polynesien
+französisch polynesien mobilfunk	französisch-polynesien mobilfunk
 fäeroer	färöer-inseln
 fäeröer	färöer-inseln
 fäeröer mobilfunk	färöer-inseln mobilfunk
@@ -122,6 +126,7 @@ kirgistan mobilfunk	kirgisien mobilfunk
 kirgizstan	kirgisien
 kokos inseln	kokosinseln
 kokos-inseln	kokosinseln
+kongo mobilfunk	kongo (republik) mobilfunk
 korea	südkorea
 korea (republik) mobilfunk	korea (süd) mobilfunk
 korea nord	nordkorea
@@ -135,18 +140,22 @@ libyien	libyen
 libysch-arabische dschamahrija	libyen
 liechtensctein	liechtenstein
 luxemburg-mobilfunk	luxemburg mobilfunk
+macau mobilfunk	macao mobilfunk
 madaira	madeira
 maderia	madeira
 malayisa	malaysia
 malaysia mobilfunk	malaysia-mobilfunk
+malt	malta
 marianen (nördliche)	marianen (saipannord-)
 marokka	marokko
 marshall inseln	marshallinseln
 marshall-inseln	marshallinseln
+martinique mobilfunk	martinique / franz. antillen mobilfunk
 mauritanien	mauretanien
 mayotte island	mayotte
 mazedonien (ehemalige jugoslawische republik)	mazedonien
 mazedonien (ehemalige jugoslawische republik) mobilfunk	mazedonien mobilfunk
+melediven	malediven
 midway inseln	midway-inseln
 midway island	midway-inseln
 midway islands	midway-inseln
@@ -161,6 +170,8 @@ neu seeland	neuseeland
 neuseeland chatham inseln	neuseeland
 neuseeland-mobilfunk	neuseeland mobilfunk
 nicaragua-mobilfunk	nicaragua mobilfunk
+niederland	niederlande
+niederland mobilfunk	niederlande mobilfunk
 nord-korea	nordkorea
 nordzypern	zypern (türkisch)
 norfolk inseln	norfolkinseln
@@ -175,6 +186,9 @@ panama-mobilfunk	panama mobilfunk
 papua - neuguinea	papua-neuguinea
 papua neu guinea	papua-neuguinea
 papua neuguinea	papua-neuguinea
+papua neuguinea mobilfunk	papua-neuguinea mobilfunk
+paqua-neuguinea	papua-neuguinea
+paraquay	paraguay
 philippinen-mobilfunk	philippinen mobilfunk
 phillipinen	philippinen
 pitcairn-inseln	pitcairn inseln
@@ -193,8 +207,12 @@ russland	russische forderation (ostl.)
 russland (westlich)	russische föderat. (westl.)
 russland (östlich)	russische forderation (ostl.)
 russland mobilfunk	rußland mobilfunk
+russland moskau	rußland moskau
+russland st petersburg	rußland st. petersburg
+russland st. petersburg	rußland st. petersburg
 rußland moskau overlay	moskau
 rußland overlay	russische forderation (ostl.)
+rußland st petersburg	rußland st. petersburg
 rußland-mobilfunk	rußland mobilfunk
 saint kitts und nevis	st. kitts und nevis
 saint vincent und grenadinen	st. vincent und grenadinen
@@ -204,13 +222,15 @@ samoa (western)	west-samoa
 samoa us	amerikanisch-samoa
 samoa west	west-samoa
 san mario	san marino
-sansibar	tansania
 sao tome & principe	sao tome und principe
 saudi - arabien	saudi arabien
 saudi-arabien	saudi arabien
+saudi-arabien mobilfunk	saudi arabien mobilfunk
 saudiarabien	saudi arabien
 serbien / montenegro	serbien und montenegro
 serbien / montenegro mobilfunk	serbien und montenegro mobilfunk
+serbien/montenegro	serbien und montenegro
+serbien/montenegro mobilfunk	serbien und montenegro mobilfunk
 slowak. republik	slowakische republik
 slowak. republik mobilfunk	slowakische republik mobilfunk
 slowakai	slowakische republik
@@ -222,17 +242,23 @@ spanien kanarische inseln	kanarische inseln
 st . vincent und grenadin	st. vincent und grenadinen
 st . vincent und grenadin mobilfunk	st. vincent und grenadinen mobilfunk
 st kitts und nevis	st. kitts und nevis
+st lucia	st. lucia
+st lucia mobilfunk	st. lucia mobilfunk
 st pierre und miquelon	st. pierre und miquelon
+st. christoph & nevis st. kitts	st. kitts & nevis
+st. christoph & nevis st. kitts mobilfunk	st. kitts und nevis mobilfunk
 st. kitts	st. kitts und nevis
 st. kitts und navis	st. kitts und nevis
 st. kitts und necis	st. kitts und nevis
 st. vincent und grenadien	st. vincent und grenadinen
+st. vincent und grenadin	st. vincent und grenada
 surinam mobilfunk	suriname mobilfunk
 syrien (arabische repubik)	syrien
 süd-korea	südkorea
 südafrika-mobilfunk	südafrika mobilfunk
 südkorea mobilfunk	korea (süd) mobilfunk
 tansani	tansania
+thuraya / emsat	thuraya
 trinidad/tobago	trinidad und tobago
 tschagosinseln (diego garcia)	diego garcia
 tschech. republik	tschechische republik
@@ -243,12 +269,17 @@ tschechische republik mobilfunk	tschechische rep. mobilfunk
 turks und caicos inseln	turks- und caicosinseln
 turks- und caicos inseln	turks- und caicosinseln
 turks- und caicos-inseln	turks- und caicosinseln
+turks- und caicos-inseln mobilfunk	turks- und caicosinseln mobilfunk
 turmenistan	turkmenistan
 urugay	uruguay
+usa alaska	alaska
+usa hawai	hawai
 usa minor outlaying islands	us minor outlying islands
 v.r. korea.	nordkorea
 vanuat	vanuatu
+vartikanstadt	vatikanstadt
 vatikanstaat	vatikan
+vatikanstadt mobilfunk	vatikan mobilfunk
 venezuele mobilfunk	venezuela mobilfunk
 venuzuela-mobilfunk	venezuela mobilfunk
 venzuela	venezuela
