@@ -1,4 +1,4 @@
-/* $Id: icnctrl.c,v 1.4 1999/09/06 08:03:24 fritz Exp $
+/* $Id: icnctrl.c,v 1.5 2002/01/31 18:55:45 paul Exp $
 
  * ICN-ISDN driver for Linux. (Control-Utility)
  *
@@ -22,6 +22,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: icnctrl.c,v $
+ * Revision 1.5  2002/01/31 18:55:45  paul
+ * #include <stdlib.h> for prototypes against warnings.
+ *
  * Revision 1.4  1999/09/06 08:03:24  fritz
  * Changed my mail-address.
  *
@@ -59,6 +62,7 @@
  *
  */
 
+#include <stdlib.h>
 #include <stdio.h>
 #include <sys/ioctl.h>
 #include <sys/types.h>

@@ -1,4 +1,4 @@
-/* $Id: actctrl.c,v 1.2 1999/09/06 08:03:23 fritz Exp $
+/* $Id: actctrl.c,v 1.3 2002/01/31 18:50:51 paul Exp $
 
  * IBM Active 2000 ISDN driver for Linux. (Control-Utility)
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: actctrl.c,v $
+ * Revision 1.3  2002/01/31 18:50:51  paul
+ * #include <stdlib.h> for prototypes against warnings.
+ *
  * Revision 1.2  1999/09/06 08:03:23  fritz
  * Changed my mail-address.
  *
@@ -28,6 +31,7 @@
  *
  */
 
+#include <stdlib.h>
 #include <stdio.h>
 #include <sys/ioctl.h>
 #include <sys/types.h>
