@@ -1,4 +1,4 @@
-# $Id: Makefile.in,v 1.18 2001/05/23 14:59:23 kai Exp $
+# $Id: Makefile.in,v 1.19 2002/01/31 19:49:57 paul Exp $
 #
 # Makefile for isdnctrl
 # (C) 1997 Fritz Elfert
@@ -71,6 +71,7 @@ ifeq (@CONFIG_ISDNCTRL_CONF@,y)
 else
 	sed -e 's%@MANINC_CONF@%.\\\"%' < $<.tmp > $@
 endif
+	rm -f $<.tmp
 
 $(PROGRAM):	$(MODULES)
 	$(CC) $(CFLAGS) $(MODULES) $(LDFLAGS) -o $@
@@ -101,7 +102,7 @@ ifeq (@CONFIG_ISDNCTRL_DWABC_UDP_INFO@,y)
 endif
 
 clean:
-	rm -f *.o *.a *~ $(PROGRAM) *.man *.8 .*.man .*.8
+	rm -f *.o *.a *~ $(PROGRAM) *.man *.8 .*.man .*.8 *.tmp .*.tmp
 
 distclean: clean
 	rm -f config.status config.cache config.log config.h Makefile
