@@ -1,4 +1,4 @@
-/* $Id: eiconctrl.c,v 1.17 2000/06/08 08:31:03 armin Exp $
+/* $Id: eiconctrl.c,v 1.18 2000/06/08 20:56:42 armin Exp $
  *
  * Eicon-ISDN driver for Linux. (Control-Utility)
  *
@@ -21,6 +21,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA. 
  *
  * $Log: eiconctrl.c,v $
+ * Revision 1.18  2000/06/08 20:56:42  armin
+ * added checking for card id.
+ *
  * Revision 1.17  2000/06/08 08:31:03  armin
  * corrected tei parameter option
  *
@@ -157,6 +160,8 @@ extern int Divaload_main(int, char **);
 
 int fd;
 isdn_ioctl_struct ioctl_s;
+
+extern char DrvID[];
 
 char protoname[1024];
 char Man_Path[160];
@@ -1345,6 +1350,7 @@ int main(int argc, char **argv) {
 	int tmp;
 	int ac;
 	int arg_ofs=1;
+	int card_id;
 
 	cmd = argv[0];
 	if (argc > 1) {
@@ -1373,6 +1379,9 @@ int main(int argc, char **argv) {
 		}
 	} else
 		eiconctrl_usage();
+
+	strcpy(DrvID, ioctl_s.drvid);
+
 	ac = argc - (arg_ofs - 1);
 	if (arg_ofs >= argc)
 		eiconctrl_usage();
@@ -1474,11 +1483,23 @@ int main(int argc, char **argv) {
 		strcpy(newargv[0], "eiconctrl.divaload");
 		newarg++;
 
-		lcard = 0;
-		dlen = strlen(ioctl_s.drvid);
-		if (dlen) {
-			if (isdigit(ioctl_s.drvid[dlen - 1])) {
-				lcard = ioctl_s.drvid[dlen - 1] - '0';
+		card_id = -1;
+		ioctl_s.arg = (ulong) &card_id;
+		if ((ioctl(fd, EICON_IOCTL_GETTYPE + IIOCDRVCTL, &ioctl_s)) < 1) {
+			perror("ioctl GETTYPE");
+			exit(-1);
+		}
+
+		if (card_id > 0) {
+			lcard = card_id - 1;
+			printf("Card-ID = %d\n", card_id);
+		} else {
+			lcard = 0;
+			dlen = strlen(ioctl_s.drvid);
+			if (dlen) {
+				if (isdigit(ioctl_s.drvid[dlen - 1])) {
+					lcard = ioctl_s.drvid[dlen - 1] - '0';
+				}
 			}
 		}
 
@@ -1562,7 +1583,7 @@ int main(int argc, char **argv) {
 			else	
 	                        strcpy(protoname,argv[++arg_ofs]);
 		}
-
+		
 		if ((ctype = ioctl(fd, EICON_IOCTL_GETTYPE + IIOCDRVCTL, &ioctl_s)) < 1) {
 			perror("ioctl GETTYPE");
 			exit(-1);

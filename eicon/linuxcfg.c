@@ -1,4 +1,4 @@
-/* $Id: linuxcfg.c,v 1.1 2000/03/25 12:56:40 armin Exp $
+/* $Id: linuxcfg.c,v 1.2 2000/06/08 20:56:42 armin Exp $
  *
  * Eicon-ISDN driver for Linux. (Config)
  *
@@ -20,6 +20,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: linuxcfg.c,v $
+ * Revision 1.2  2000/06/08 20:56:42  armin
+ * added checking for card id.
+ *
  * Revision 1.1  2000/03/25 12:56:40  armin
  * First checkin of new version 2.0
  * - support for 4BRI, includes orig Eicon
@@ -41,6 +44,7 @@
 #include <eicon.h>
 
 
+char DrvID[100];
 
 int Divas_ioctl(int fd, int req, void * p)
 {
@@ -51,7 +55,7 @@ int Divas_ioctl(int fd, int req, void * p)
 	/* ret = ioctl(fd, req, p); */
 
 	newreq = req + EICON_IOCTL_DIA_OFFSET + IIOCDRVCTL;
-	iioctl_s.drvid[0] = '\0';
+	strcpy(iioctl_s.drvid, DrvID);
 	iioctl_s.arg = (ulong)p;
 
 	ret = ioctl(fd, newreq, &iioctl_s);
