@@ -1,4 +1,4 @@
-/* $Id: isdnctrl.c,v 1.45 2001/03/01 14:59:15 paul Exp $
+/* $Id: isdnctrl.c,v 1.46 2001/03/15 22:02:44 kai Exp $
  * ISDN driver for Linux. (Control-Utility)
  *
  * Copyright 1994,95 by Fritz Elfert (fritz@isdn4linux.de)
@@ -21,6 +21,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnctrl.c,v $
+ * Revision 1.46  2001/03/15 22:02:44  kai
+ * fixed a stack overflow when using isdnctrl status
+ *
  * Revision 1.45  2001/03/01 14:59:15  paul
  * Various patches to fix errors when using the newest glibc,
  * replaced use of insecure tempnam() function
@@ -623,7 +626,8 @@ static void listif(int isdnctrl, char *name, int errexit)
 #ifdef IIOCNETGPN
 static void statusif(int isdnctrl, char *name, int errexit)
 {
-	isdn_net_ioctl_phone phone;
+        isdn_net_ioctl_phone_new phone_new;
+	isdn_net_ioctl_phone_old phone_old;
 	int rc;
 	static int isdninfo = -1;
 
@@ -636,24 +640,39 @@ static void statusif(int isdnctrl, char *name, int errexit)
 			exit(-1);
 		}
 	}
-	memset(&phone, 0, sizeof phone);
-	strncpy(phone.name, name, sizeof phone.name);
-	rc = ioctl(isdninfo, IIOCNETGPN, &phone);
-	if (rc == 0) {
-		printf("%s connected %s %s\n",
-			name, phone.outgoing?"to":"from", phone.phone);
-		return;
+
+	switch (data_version) {
+	case 5:
+		memset(&phone_old, 0, sizeof phone_old);
+		strncpy(phone_old.name, name, sizeof phone_old.name);
+		rc = ioctl(isdninfo, IIOCNETGPN, &phone_old);
+		if (rc == 0) {
+			printf("%s connected %s %s\n",
+			       name, phone_old.outgoing?"to":"from", phone_old.phone);
+			return;
+		}
+		break;
+	case 6:
+		memset(&phone_new, 0, sizeof phone_new);
+		strncpy(phone_new.name, name, sizeof phone_new.name);
+		rc = ioctl(isdninfo, IIOCNETGPN, &phone_new);
+		if (rc == 0) {
+			printf("%s connected %s %s\n",
+			       name, phone_new.outgoing?"to":"from", phone_new.phone);
+			return;
+		}
+		break;
+	default:
+		puts("Sorry, not available in your kernel (2.2.12 or higher is required)");
+		exit(-1);
 	}
+
 	if (errno == ENOTCONN) {
 		printf("%s is not connected\n", name);
 		if (errexit) {
 			exit(1); /* exit 1 if interface specified & not conn. */
 		}
 		return;
-	}
-	if (errno == EINVAL) {
-		puts("Sorry, not available in your kernel (2.2.12 or higher is required)");
-		exit(-1);
 	}
 	if (errexit) {
 		perror(name);
@@ -1098,8 +1117,9 @@ int exec_args(int fd, int argc, char **argv)
 			        		}
 			        	}
 			        	fclose(iflst);
-			        } else
+			        } else {
 			        	statusif(fd, id, 1);
+				}
 #else
 				puts("Sorry, not configured into isdnctrl");
 #endif /* defined IIOCNETGPN */
