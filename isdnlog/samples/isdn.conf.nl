@@ -25,7 +25,7 @@ REPFMTWWW       = "%X %D %17.17H %T %-17.17F %-20.20l SI: %S %9u %U %I %O"
 REPFMTSHORT     = "%X%D %8.8H %T %-14.14F%U%I %O"
 REPFMT          = "  %X %D %15.15H %T %-15.15F %7u %U %I %O"
 CHARGEMAX       = 50.00
-CURRENCY        = 1.056,NLG
+CURRENCY        = 0.01,EUR
 
 COUNTRYFILE = /usr/lib/isdn/country.dat
 RATECONF= /etc/isdn/rate.conf
