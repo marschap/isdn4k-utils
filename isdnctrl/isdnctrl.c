@@ -1,4 +1,4 @@
-/* $Id: isdnctrl.c,v 1.39 1999/11/23 10:17:27 paul Exp $
+/* $Id: isdnctrl.c,v 1.40 2000/01/27 15:08:09 paul Exp $
  * ISDN driver for Linux. (Control-Utility)
  *
  * Copyright 1994,95 by Fritz Elfert (fritz@isdn4linux.de)
@@ -21,6 +21,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnctrl.c,v $
+ * Revision 1.40  2000/01/27 15:08:09  paul
+ * Error messages from addlink/removelink are now userfriendly.
+ *
  * Revision 1.39  1999/11/23 10:17:27  paul
  * Made error message for 'status' command clearer if IIOCNETGPN
  * is not implemented in kernel (e.g. 2.0.x kernels).
@@ -368,8 +371,8 @@ void usage(void)
         fprintf(stderr, "    trigger mastername cps     set slave trigger level\n");
         fprintf(stderr, "    dial name                  force dialing of interface\n");
         fprintf(stderr, "    system on|off              switch isdn-system on or off\n");
-        fprintf(stderr, "    addlink name               MPPP, increase number of links\n");
-        fprintf(stderr, "    removelink name            MPPP, decrease number of links\n");
+        fprintf(stderr, "    addlink name               MPPP, increase number of links (dial)\n");
+        fprintf(stderr, "    removelink name            MPPP, decrease number of links (hangup)\n");
         fprintf(stderr, "    pppbind name [devicenum]   PPP, bind interface to ippp-device (exclusive)\n");
         fprintf(stderr, "    pppunbind name             PPP, remove ippp-device binding\n");
         fprintf(stderr, "    addrule name rule ...      add timeout-rule\n");
@@ -1405,8 +1408,20 @@ int exec_args(int fd, int argc, char **argv)
 			        	perror(id);
 			        	return -1;
 			        }
-			        if (result)
-			        	printf("Can't increase the number of links. Error %d\n",-result);
+				if (result) {
+					printf("Can't increase the number of links:\n\t");
+					switch (result) {
+						case -1: printf("MPPP not in the kernel config.\n");
+							 break;
+						case 1: printf("%s doesn't exist\n", id);
+							break;
+						case 2: printf("no slave devices configured for %s\n", id);
+							break;
+						case 5: printf("%s not currently connected.\n", id);
+							break;
+						default: printf("unknown error %d\n", result);
+					}
+				}
 			        else
 			        	printf("Ok, added a new link. (dialing)\n");
 			        break;
@@ -1416,8 +1431,20 @@ int exec_args(int fd, int argc, char **argv)
 			        	perror(id);
 			        	return -1;
 			        }
-			        if (result)
-			        	printf("Can't decrease number of links: %d\n", result);
+				if (result) {
+					printf("Can't decrease the number of links:\n\t");
+					switch (result) {
+						case -1: printf("MPPP not in the kernel config.\n");
+							 break;
+						case 1: printf("%s doesn't exist\n", id);
+							break;
+						case 2: printf("no slave devices configured for %s\n", id);
+							break;
+						case 5: printf("%s not currently connected.\n", id);
+							break;
+						default: printf("unknown error %d\n", result);
+					}
+				}
 			        else
 			        	printf("Ok, removed a link. (hangup)\n");
 			        break;
