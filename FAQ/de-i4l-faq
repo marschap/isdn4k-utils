@@ -9,11 +9,11 @@ Summary: This posting describes what every reader of de.alt.comm.isdn4linux
          i4l-faq.
 Archive-name: de-i4l-faq
 Posting-frequency: monthly
-Last-modified: 21-Feb-97
+Last-modified: 16-Mar-97
 URL: http://www.lrz-muenchen.de/~ui161ab/www/isdn/
 
 
-!1FAQ für isdn4linux - Version 1.3
+!1FAQ für isdn4linux - Version 1.3.1
 
 Diese FAQ genießt den Schutz der GNU General Public License (GPL) Version 2;
 (C) 1996 Volker Götz, Bernhard Hailer, Matthias Heßler, Michael Hipp sowie 
@@ -244,6 +244,7 @@ A: Wir wissen derzeit von folgenden Ländern:
         Niederlande
         Norwegen
         Österreich
+        Peru
         Portugal
         Schweden
         Schweiz
@@ -618,8 +619,28 @@ A: Nils Rennebarth <nils@nus.de> schrieb dazu am 10. Dez 1996:
         verschieden.
 !verboff
 
-Q: Was heisst eigentlich CVS, HDLC, HSCX, ISAC, TEI, ...?
-A: CVS-Tree
+Q: Was heisst eigentlich CLIR, COLP, CVS, HDLC, HSCX, ISAC, TEI...?
+A: Hier ein kleines Glossar:!br
+!b1CLIR!b0
+!verbon
+        CLIR ist ein Angebot des ISDN-Anbieters: man kann fallweise
+        die Übermittlung der eigenen Rufnummer an den Gesprächspartner 
+        unterdrücken lassen. CLIR muß man beantragen, es ist (in Deutschland) 
+        jedoch kostenlos. Hingegen kostet die fallweise !i1Übermittlung!i0
+        der Rufnummer Geld.
+!verboff
+!b1COLP!b0
+!verbon
+        Auch COLP ist ein Angebot des ISDN-Anbieters. Man muß es beantragen,
+        aber es kostet (in Deutschland) 10.-- DM pro Monat extra. Wer COLP
+        beantragt hat, bekommt ein erweitertes Wählprotokoll über die
+        Leitung, welches man dann z.B. in der Tk-Anlage auswerten kann.
+        Derzeit wird an einer Möglichkeit gebastelt, das mit Hilfe einer 
+        "verkehrtherum" angeschlossenen zweiten Teleskarte zu umgehen. Man
+        bekommt dann ganz ohne Gebühren mehr Informationen als mit laufendem
+        COLP. Das rechnet sich bald...
+!verboff
+!b1CVS-Tree!b0
 !verbon
         Die i4l-Entwickler haben sich zu einem Team zusammengeschlossen. Das
         Tool "cvs" erlaubt es den Mitgliedern, relativ problemlos Patches
@@ -627,18 +648,18 @@ A: CVS-Tree
         ausgezeichnet dokumentiert, und es ist auch nicht schwierig, eine
         ältere Version wieder herzustellen.
 !verboff
-HDLC
+!b1HDLC!b0
 !verbon
         Ein sehr verbreitetes Low-Level-Protokoll.
 !verboff
-HSCX
+!b1HSCX!b0
 !verbon
         Ein Siemens-Chip, der ähnlich ->ISAC auf vielen passiven ISDN-Karten
         sitzt. Er übernimmt den seriellen Bus vom ISAC und demultiplext beim
         Empfangen bzw. multiplext (d.h. fügt die Bits an der richtigen Stelle
         ein) die B-Kanäle.
 !verboff
-ISAC
+!b1ISAC!b0
 !verbon
         Ein Siemens-Chip, der ähnlich ->HSCX auf vielen passiven ISDN-Karten 
         sitzt. Er ist für "Level 1" zustaendig, sitzt also (beinahe) direkt an
@@ -646,7 +667,7 @@ ISAC
         S0-Daten auf einen speziellen seriellen Bus (IOM) um. Beim Senden
         geht es umgekehrt.
 !verboff
-TEI (Terminal End Identifier)
+!b1TEI!b0 (Terminal End Identifier)
 !verbon
         Die lokale Vermittlungsstelle oder bei internen S0 die Anlage weist
         jedem Endgerät automatisch oder fest eine TEI zu. Diese dient ganz
@@ -655,7 +676,7 @@ TEI (Terminal End Identifier)
         64-126   automatisch zugewiesen
            127   Rundruf an alle (z.B. bei hereinkommendem Anruf)
 !verboff
-TK-Anlage (Telekommunikationsanlage)
+!b1TK-Anlage!b0 (Telekommunikationsanlage)
 !verbon
         Eine TK-Anlage dient dazu, verschiedene interne Geräte an das
         ISDN-Netz anzuschließen. Meist handelt es sich dabei um analoge
@@ -994,7 +1015,7 @@ A: Aus Datenschutzgründen wird die Telefonnummer nicht bei Anrufen aus dem
    Wer einen ISDN-Anschluß hat, muß dagegen der Übermittlung seiner Nummer
    ausdrücklich widersprechen - oder beantragen, daß er über die Übermittlung
    seiner Nummer fallweise entscheiden kann (per ISDN-Telefon; fallweise
-   Unterdrückung (CLIR) ist inzwischen kostenlos, fallweise Übermittlung kostet
+   Unterdrückung [CLIR] ist inzwischen kostenlos, fallweise Übermittlung kostet
    extra). Es fällt der Telekom jedoch offenbar !u1sehr!u0 schwer, das schon
    im ersten Anlauf richtig zu konfigurieren. Wer auf die Übermittlung der
    Caller Id angewiesen ist, sollte genau überprüfen, ob auch alles korrekt
@@ -1353,12 +1374,13 @@ A: dietmar <dietmar@highway.bertelsmann.de> schrieb am 8. Okt 1996:
    Steg in den Slot hineinrutscht. Deshalb: Sichtprüfung,
    daß die Kontakte der Karte alle gleich weit im Slot
    verschwinden.!br
-   Und Herbert Rosmanith <herp@wildsau.idv.uni-linz.ac.at> ergänzt am 10. Jan
+   Und Herbert Rosmanith <herp@wildsau.idv.uni-linz.ac.at> ergänzte am 10. Jan
    1997:!br
-   Die karte ist hardwaremäßig per Default auf 0x300 eingestellt. Die Software
-   nimmt allerdings per Default 0x320 an! das ist etwas inkonsequent, imo.
+   Die Karte ist hardwaremäßig per Default auf 0x300 eingestellt. Die Software
+   nimmt allerdings per Default 0x320 an! Das ist etwas inkonsequent, IMO.
    Vielleicht bist Du ja auf diese Verwirrtaktik reingefallen :-)!br
-   Am gleichen Tag ergänzt noch Thomas Bogendörfer <tsbogend@alpha.franken.de>:
+   Am gleichen Tag ergänzte noch Thomas Bogendörfer 
+   <tsbogend@alpha.franken.de>:
    Membase der 4B muß auf einer 32K Grenze liegen. Also 0xd0000 oder 0xd8000
    verwenden.
 
@@ -1532,12 +1554,22 @@ A: Es gibt eine entsprechende Mailingliste an der Uni Hannover.
 !verboff
 
 Q: Wie schalte ich Raw-IP auf der Ascend Max mit Radius ein?
-A: "Framed-Protocoll" muß auf "EURAW" eingestellt werden. Für die Autorisierung
+A: "Framed-Protocol" muß auf "EURAW" eingestellt werden. Für die Autorisierung
    per Caller Id muß "authentication-type = ascend-clid" eingestellt werden.
+Thomas Stinner <Thomas.Stinner@pop-siegen.de> schrieb uns dazu am 9.Mar.97:
+!verbon
+        Kann sein, dass das mit dem Authentication Type so funktioniert, ich 
+        nehme für sowas jedoch als Password "Ascend-CLID".
+        Ein Eintrag im users-file muß folgendermaßen aufgebaut sein:
+          69123456 Password="Ascend-CLID"
+          User-Name = "Username_fuer_Abrechnung"
+          User-Service = Framed-User
+        Also als Username die Caller-ID, als Password  "Ascend-CLID".
+!verboff
 
 Q: Wie schalte ich die Encapsulation "uihdlc" auf dem Max (eine Ascend) mit
    Radius ein?
-A: "Framed-Protocoll" muß auf "EUUI" eingestellt werden.
+A: "Framed-Protocol" muß auf "EUUI" eingestellt werden.
 
 !old
 Q: Welche Einstellungen braucht ein ELink, um mit isdn4linux
@@ -3243,8 +3275,8 @@ A: Zunächst muß für den ipppd ein (normales) Interface definiert werden (z.B.
         isdnctrl removelink <device>
 !verboff
    wieder geschlossen werden (siehe i4l-Anleitung für mehr Informationen). In
-   der Datei etc/rc.isdn.syncppp.MPPP im isdn4k-utils-Paket findet sich ein
-   Beispielskript.
+   der Datei etc/rc.isdn.syncppp.MPPP im isdn4k-utils-Paket findet sich 
+   eventuell ein Beispielscript (bei einigen i4l-Versionen fehlt sie leider).
 
 Q: Welche Vor- und Nachteile hat die Verwendung von MPPP?
 A: Nachteilig ist, daß die Slave-Kanäle "manuell" aktiviert werden müssen. Der
@@ -3911,9 +3943,10 @@ A: Wahrscheinlich ist es gar keine Plug'n Play-Karte - obwohl Teles
 
 !old
 Q: Bei meiner ICN gehen manchmal beim Verbindungsaufbau Pakete verloren.
-A: Torsten Hentschel <Torsten.Hentschel@DInet.de> hat einen Patch für
-   Kernel 2.0.21, mit dem nachweislich keine Pakete mehr verloren gehen.
-   Man wende sich an Torsten.
+A: Dies ist bei neueren Versionen von i4l (ab Kernel 2.0.26) behoben worden. 
+   Torsten Hentschel <Torsten.Hentschel@DInet.de> hatte einen Patch für
+   Kernel 2.0.21 gebaut, mit dem nachweislich keine Pakete mehr verloren 
+   gingen, der jetzt aber obsolet ist (nicht mehr anwenden!).
 
 
 !3Zusammenarbeit mit anderen Gegenstellen
@@ -3965,7 +3998,7 @@ Weitere Hinweise finden sich im gleichnamigen Abschnitt im Kapitel
 
 !old
 Q: Ich bekomme die Fehlermeldung "Protocol error, unspecified".
-A: "Protocol error, unspecified" heißt, das dort Messages oder Teile von 
+A: "Protocol error, unspecified" heißt, daß dort Messages oder Teile von 
    Messages zu einem Zeitpunkt angekommen sind, wo sie nicht erwartet
    wurden oder der Inhalt der Messages nicht decodierbar ist.
    Dazu schrieb Torsten Hentschel <Torsten.Hentschel@DInet.de>:
@@ -3975,7 +4008,9 @@ A: "Protocol error, unspecified" heißt, das dort Messages oder Teile von
         werden. Ich hatte das Problem bei raw hdlc, daß Pakete verloren
         gingen, aber nur wenn man von einer bestimmten Seite aus anrief.
 !verboff
-   Ein Patch sollte bei Torsten zu bekommen sein.
+   Bei neueren Versionen von isdn4linux (ab Kernel 2.0.26) ist das behoben 
+   worden. Ein früherer Patch von Torsten hierzu ist deshalb nun obsolet und 
+   darf nicht mehr angewendet werden!
 
 
 !3Modememulation (Betrieb mit ttyI*-Devices)
@@ -4873,7 +4908,7 @@ A: Gernot Zander <hifi@scorpio.in-berlin.de> schrieb hierzu am 10. Jan 1997:!br
         /sbin/isdnctrl system off
         /sbin/ifconfig ippp0 down
 !verboff
-   Und damits dann wieder loofen tut:
+   Und damit's dann wieder läuft:
 !verbon
         /sbin/isdnctrl system on
         /sbin/ifconfig ippp0 up 
