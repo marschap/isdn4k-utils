@@ -14,32 +14,32 @@ AC_DEFUN(AC_CHECK_POSTGRES, [
 	if test "$tst_postgresdir" != "" || test "$CONFIG_ISDNLOG_POSTGRES" = "y" ; then
 		AC_MSG_CHECKING([for postgres in ${tst_postgresdir}])
 		if test "${tst_postgresdir}" != "" ; then
-			CPPFLAGS="-nostdinc -I${tst_postgresdir}/include"
-			AC_TRY_CPP([#include <libpq-fe.h>], pqdir=${tst_postgresdir})
+			AC_EGREP_HEADER(PGconn,${tst_postgresdir}/include/libpq-fe.h,
+			pqdir=${tst_postgresdir})
 		fi
 		if test "$pqdir" = "no" ; then
 			AC_MSG_RESULT("$pqdir")
 			AC_MSG_CHECKING([for postgres in /lib/postgres95])
-			CPPFLAGS="-nostdinc -I/lib/postgres95/include"
-			AC_TRY_CPP([#include <libpq-fe.h>], pqdir=/lib/postgres95)
+			AC_EGREP_HEADER(PGconn,/lib/postgre95/include/libpq-fe.h,
+			pqdir=/lib/postgres95)
 		fi
 		if test "$pqdir" = "no" ; then
 			AC_MSG_RESULT("$pqdir")
 			AC_MSG_CHECKING([for postgres in /usr/lib/postgres95])
-			CPPFLAGS="-nostdinc -I/usr/lib/postgres95/include"
-			AC_TRY_CPP([#include <libpq-fe.h>], pqdir=/usr/lib/postgres95)
+			AC_EGREP_HEADER(PGconn,/usr/lib/postgre95/include/libpq-fe.h,
+			pqdir=/usr/lib/postgres95)
 		fi
 		if test "$pqdir" = "no" ; then
 			AC_MSG_RESULT("$pqdir")
 			AC_MSG_CHECKING([for postgres in /usr/local/postgres95])
-			CPPFLAGS="-nostdinc -I/usr/local/postgres95/include"
-			AC_TRY_CPP([#include <libpq-fe.h>], pqdir=/usr/local/postgres95)
+			AC_EGREP_HEADER(PGconn,/usr/lib/local/postgre95/include/libpq-fe.h,
+			pqdir=/usr/local/postgres95)
 		fi
 		if test "$pqdir" = "no" ; then
 			AC_MSG_RESULT("$pqdir")
 			AC_MSG_CHECKING([for postgres in /usr/local/lib/postgres95])
-			CPPFLAGS="-nostdinc -I/usr/local/lib/postgres95/include"
-			AC_TRY_CPP([#include <libpq-fe.h>], pqdir=/usr/local/lib/postgres95)
+			AC_EGREP_HEADER(PGconn,/usr/lib/local/lib/postgre95/include/libpq-fe.h,
+			pqdir=/usr/local/lib/postgres95)
 		fi
 	fi
 	if test "$pqdir" != "no" ; then
