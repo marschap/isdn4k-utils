@@ -98,6 +98,7 @@ VBOX_SPOOLDIR='/var/spool/vbox'
 VBOX_LOGDIR='/var/log/vbox'
 VBOX_PIDDIR='/var/run'
 VBOX_LOCKDIR='/var/lock'
+VBOX_DOCDIR='/usr/doc/vbox'
 VBOX_TCL='tcl8.0'
 CONFIG_IPPPD=y
 
