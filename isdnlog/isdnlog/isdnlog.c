@@ -1,4 +1,4 @@
-/* $Id: isdnlog.c,v 1.31 1998/12/09 20:39:28 akool Exp $
+/* $Id: isdnlog.c,v 1.32 1998/12/31 09:58:50 paul Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,9 @@
  * along with this program; if not, write to the Free Software
  *
  * $Log: isdnlog.c,v $
+ * Revision 1.32  1998/12/31 09:58:50  paul
+ * converted termio calls to termios
+ *
  * Revision 1.31  1998/12/09 20:39:28  akool
  *  - new option "-0x:y" for leading zero stripping on internal S0-Bus
  *  - new option "-o" to suppress causes of other ISDN-Equipment
@@ -197,7 +200,7 @@
 #define _ISDNLOG_C_
 
 #include <linux/limits.h>
-#include <termio.h>
+#include <termios.h>
 
 #include "isdnlog.h"
 #ifdef POSTGRES
@@ -934,11 +937,11 @@ static void restoreCharge()
 
 void raw_mode(int state)
 {
-  static struct termio newterminfo, oldterminfo;
+  static struct termios newterminfo, oldterminfo;
 
 
   if (state) {
-    ioctl(fileno(stdin), TCGETA, &oldterminfo);
+    tcgetattr(fileno(stdin), &oldterminfo);
     newterminfo = oldterminfo;
 
     newterminfo.c_iflag &= ~(INLCR | ICRNL | IUCLC | ISTRIP);
@@ -946,10 +949,10 @@ void raw_mode(int state)
     newterminfo.c_cc[VMIN] = 1;
     newterminfo.c_cc[VTIME] = 1;
 
-    ioctl(fileno(stdin), TCSETAF, &newterminfo);
+    tcsetattr(fileno(stdin), TCSAFLUSH, &newterminfo);
   }
   else
-    ioctl(fileno(stdin), TCSETA, &oldterminfo);
+    tcsetattr(fileno(stdin), TCSANOW, &oldterminfo);
 } /* raw_mode */
 
 /*****************************************************************************/
