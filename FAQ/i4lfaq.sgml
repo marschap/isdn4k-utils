@@ -4,7 +4,7 @@
 
 <title>FAQ for isdn4linux
 <author>Matthias Hessler (<tt><htmlurl url="mailto:hessler@isdn4linux.de" name="hessler@isdn4linux.de"></tt>)
-<date>v2.0.61, 7. May 2001
+<date>v2.0.62, 4. June 2001
 <abstract>
 If you are reading this FAQ online, you may consider downloading the whole
 thing, and reading it offline (much cheaper). To download the latest
@@ -1222,9 +1222,11 @@ ISA/PNP card have the same type (27), hisax will assume an ISA/PNP card
 if you pass an io address, and a PCI card if you do NOT pass an io address.
 Make sure to give the parameters properly.
 
-Unfortunately, the newest Fritz! PCI card seems to have a different hardware
+Unfortunately, the newest Fritz! PCI card (v2.0) has a different hardware
 chipset, which is not yet supported by isdn4linux. This card can be
-identified by lspci returning 0e00 as the card id.
+identified by lspci returning 0e00 as the card id. Since AVM does not want
+to publish the information to write a driver, this card will not be
+supported by isdn4linux any time soon.
 
 If the interrupt for the card is shared with other devices and your card does
 not work, then there could be an issue with the motherboard. See question
@@ -1683,6 +1685,8 @@ howto (isdn.html) and a ISDN quick-install guide (isdnquick.html).
 <url url="http://www.webideal.de/rh-isdn/">
 <item>Tips to configure Mandrake:
 <url url="http://www.mandrakeuser.org/connect/cisdn.html">
+<item>fli4l, a prepackaged Linux version to use an old PC as ISDN router:
+<url url="http://www.fli4l.de"> (great!)
 <item>Scripts and installation tips from several people:
 <tt><url url="http://www.rosat.mpe-garching.mpg.de/&tilde;web/ISDN.html"></tt>
 <item>Documentation on abc extensions:
@@ -4930,9 +4934,13 @@ telecommunications provider.
 <p>
 For use with Telemar you have to configure your MSN as your phone number
 without the leading area code.
+
 Brazil is using EuroISDN. The ISDN service DVI which was launched by Telemar
 is based on a hardware solution from Teles (BRI PCI card), which has to be
-configured as NETjet card.
+configured as NETjet card. However, since this card is very incompatible
+to the motherboards sold in Brazil, Telemar also offers the option of a
+Teles 16.3c ISA. You may be able to find some configuration help on
+<url url="http://www.olinux.com.br"> for this card.
 
 <sect1> country_france: France: How does our MSN look like?  
 <label id="country_france">
@@ -4961,41 +4969,32 @@ Telekom) <em>also the area code</em> - but without the leading zero.
 America?  
 <label id="country_northamerica">
 <p>
-Unfortunately, European ISDN cards can not be used in North America.
-In Europe, the telephone company normally makes the network terminator
-(NTBA) available. In North America <em>the customer</em> has to supply such
-a device(NT-1) himself! Therefore, most ISDN cards offer an 
-integrated NT-1.
+Yes, you can use isdn4linux in North America. However, some specialties
+apply.
 
-There are also other differences; e.g. in Europe a PRI (Primary
-Rate Interface) has 30 B channels, in North America only 23. Also the
-channel protocols NI-1 and 5ESS are used. NI-1 is related to DSS1 (both
-are Q.931 Protocols), but both have totally different groups of functions
-and are therefore not compatible to one other.
+In North America the telephone company will only provide a U instead of an S
+interface. This means that the customer rather than the telephone company
+has to supply the network terminator (NT-1). Your easiest solution
+is a card which has an integrated NT-1 and supports the U interface.
+Alternatively buy an external NT which translates between U and S interface,
+and connect your ISDN card with S interface (without NT-1) to it.
 
-Support for NI-1 has recently been added to HiSax, the driver for passive
-cards. Unfortunately, it is unknown whether the existing isdn4linux driver can
-handle the 5ESS protocol properly (any feedback from users in North
-America would be highly appreciated). See Documentation/isdn/README.HiSax
-for details on how to set it up (protocol type is 4, give SPID together
-with your own number).
+In North America the channel protocol NI-1 is being used. NI-1 is related
+to DSS1 (both are Q.931 Protocols), but both have totally different groups
+of functions. Support for NI-1 has recently been added to HiSax, the driver
+for passive cards, with great help from Traverse Technologies:
+<tt><url url="http://www.ttcomms.com"></tt>.
+Since they helped to implement and verify NI-1 usability, we would recommend
+you buy their card NETspider-U (with integrated NT-1), as a thank-you
+for their contribution to isdn4linux open source development.
 
-Additionally, the firm &dquot;Spellcaster&dquot; has written an isdn4linux
-driver for its own (active) cards. Both BRI and PRI cards are available. More
-information is available from:
-<verb>
-Ian James
-Customer Service Manager
-SpellCaster Telecommunications Inc.
-73 Laird Drive, Suite 206
-Toronto, Ontario
-Canada M4G 3T4
-Phone: 1 (800) 238-0547
-Fax: (416) 425-0854
-</verb>
-E-mail:  <tt><htmlurl url="mailto:ipj@spellcast.com"
-name="ipj@spellcast.com"></tt> or <tt><htmlurl url="mailto:sales@spellcast.com"
-name="sales@spellcast.com"></tt>
+See Documentation/isdn/README.HiSax for details on how to set up your
+system with HiSax (protocol type is 4, give SPID together with your own
+number).
+
+Quite some time ago, the firm &dquot;Spellcaster&dquot; has written their own
+isdn4linux driver for their (active) cards. Both BRI and PRI cards are
+available. More information is available on:
 <tt><url url="http://www.spellcast.com"></tt>
 
 Also, the active Eicon DIVA cards work fine in North America and have
