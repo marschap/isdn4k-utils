@@ -1763,7 +1763,7 @@ A:Moldau, Neuseeland, Niederländische Antillen, Philippinen
 A:Russische Föderation, Reunion, St. Pierre und Miquelon, Singapur, Südafrika
 A:Südkorea, Saipan
 Z:9                                Welt 3
-T:*/*=19.66(60)/0.92/1             rund um die Uhr
+T:*/*=19.66(60)/1                  rund um die Uhr
 A:Ägypten, Angola, Argentinien, Aruba, Ascension, Bahrain, Barbados, Belize
 A:Benin, Bermuda, Bhutan, Bolivien, Botsuana, Brasilien, Brunei, Burkina Faso
 A:Burundi, Caymaninseln, China, Costa Rica, Dschibuti, Dominica, Ecuador
@@ -1779,7 +1779,7 @@ A:Saint Vincent und die Grenadinen, Sudan, Syrien, Tadschikistan, Tansania
 A:Taiwan, Thailand, Trinidad und Tobago, Turkmenistan, Uruguay, Usbekistan
 A:Vanuatu, Venezuela, Vereinigte Arabische Emirate
 Z:10                               Welt 4
-T:*/*=26.66(60)/0.68/1             rund um die Uhr
+T:*/*=26.66(60)/1                  rund um die Uhr
 A:Afghanistan, Algerien, Anguilla, Antigua und Barbuda, Äquatorial-Guinea
 A:Äthiopien, Bangladesch, Cook-Inseln, Cote d'Ivoire, Diego Garcia, Eritrea
 A:Guam, Guantanamo, Guinea, Guinea-Bissau, Guyana, Irak, Jemen, Kambodscha

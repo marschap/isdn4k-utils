@@ -1,4 +1,4 @@
- /* $Id: holiday.c,v 1.14 1999/06/22 19:41:19 akool Exp $
+ /* $Id: holiday.c,v 1.15 1999/07/15 16:41:49 akool Exp $
  *
  * Feiertagsberechnung
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: holiday.c,v $
+ * Revision 1.15  1999/07/15 16:41:49  akool
+ * small enhancement's and fixes
+ *
  * Revision 1.14  1999/06/22 19:41:19  akool
  * zone-1.1 fixes
  *
@@ -433,39 +436,62 @@ static int isHoliday(struct tm *tm, char **name)
   return 0;
 }
 
+static char *staticString (char *fmt, ...)
+{
+  va_list ap;
+  char buffer[BUFSIZ];
+  int i;
+
+  static char **Table=NULL;
+  static int    Size=0;
+
+  va_start (ap, fmt);
+  vsnprintf (buffer, BUFSIZ, fmt, ap);
+  va_end (ap);
+
+  for (i=0; i<Size; i++)
+    if (strcmp (buffer, Table[i])==0)
+      return Table[i];
+  
+  Size++;
+  Table=realloc(Table, Size*sizeof(char*));
+  Table[Size-1]=strdup(buffer);
+  
+  return Table[Size-1];
+}
+
 int isDay(struct tm *tm, bitfield mask, char **name)
 {
   julian day;
   int    holiday;
   char  *holiname;
-  static char buffer[BUFSIZ];
   
   holiday=isHoliday(tm, &holiname);
 
   if ((mask & (1<<HOLIDAY)) && holiday) {
-    if (name) sprintf (*name=buffer, "%s (%s)", Weekday[HOLIDAY], holiname); 
+    if (name) *name=staticString("%s (%s)", Weekday[HOLIDAY], holiname); 
     return HOLIDAY;
   }
 
   day=(date2julian(tm->tm_year+1900,tm->tm_mon+1,tm->tm_mday)-6)%7+MONDAY;
 
   if ((mask & (1<<WEEKEND)) && (day==SATURDAY || day==SUNDAY)) {
-    if (name) sprintf (*name=buffer, "%s (%s)", Weekday[WEEKEND], Weekday[day]);
+    if (name) *name=staticString("%s (%s)", Weekday[WEEKEND], Weekday[day]);
     return WEEKEND;
   }
   
   if ((mask & (1<<WORKDAY)) && day!=SATURDAY && day!=SUNDAY && !holiday) {
-    if (name) sprintf (*name=buffer, "%s (%s)", Weekday[WORKDAY], Weekday[day]);
+    if (name) *name=staticString("%s (%s)", Weekday[WORKDAY], Weekday[day]);
     return WORKDAY;
   }
   
   if (mask & (1<<day)) {
-    if (name) sprintf(*name=buffer, "%s", Weekday[day]);
+    if (name) *name=staticString("%s", Weekday[day]);
     return day;
   }
   
   if (mask & (1<<EVERYDAY)) {
-    if (name) sprintf(*name=buffer, "%s", Weekday[day]);
+    if (name) *name=staticString("%s", Weekday[day]);
     return day;
   }
   

@@ -925,11 +925,22 @@ void rate_1066(void) {
   for (z=0; z<COUNT(Zone); z++) {
     rprintf (Zone[z][0], "Z:%d", z+1);
     if (Tarif[z][0]==Tarif[z][1]) {
-      rprintf ("rund um die Uhr", "T:*/*=%.2f(60)/%.2f/1", Tarif[z][0], 18.0/Tarif[z][0]);
+      if (18.0/Tarif[z][0]>1.0)
+	rprintf ("rund um die Uhr", "T:*/*=%.2f(60)/%.2f/1", Tarif[z][0], 18.0/Tarif[z][0]);
+      else
+	rprintf ("rund um die Uhr", "T:*/*=%.2f(60)/1", Tarif[z][0]);
     } else {
+      if (18.0/Tarif[z][0]>1.0)
 	rprintf ("Tag", "T:1-5/8-18=%.2f(60)/%.2f/1", Tarif[z][0], 18.0/Tarif[z][0]);
+      else
+	rprintf ("Tag", "T:1-5/8-18=%.2f(60)/1", Tarif[z][0]);
+      if (18.0/Tarif[z][1]>1.0) {
 	rprintf ("Nacht", "T:1-5/18-8=%.2f(60)/%.2f/1", Tarif[z][1], 18.0/Tarif[z][1]);
 	rprintf ("Weekend", "T:E,H/*=%.2f(60)/%.2f/1", Tarif[z][1], 18.0/Tarif[z][1]);
+      } else {
+	rprintf ("Nacht", "T:1-5/18-8=%.2f(60)/1", Tarif[z][1]);
+	rprintf ("Weekend", "T:E,H/*=%.2f(60)/1", Tarif[z][1]);
+      }
     }
     print_area(Zone[z][1]);
   }
@@ -1023,7 +1034,7 @@ int main (int argc, char *argv[])
   printf ("U:%%.3f öS\n");
 
 #if 0
-  rate_1001();
+  rate_1066();
 #else
   rate_1001_old();
   rate_1002();

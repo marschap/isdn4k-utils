@@ -1,4 +1,4 @@
-/* $Id: processor.c,v 1.76 1999/07/11 15:30:55 akool Exp $
+/* $Id: processor.c,v 1.77 1999/07/15 16:41:32 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.77  1999/07/15 16:41:32  akool
+ * small enhancement's and fixes
+ *
  * Revision 1.76  1999/07/11 15:30:55  akool
  * Patch from Karsten (thanks a lot!)
  *
@@ -3621,54 +3624,13 @@ static void prepareRate(int chan, char **msg, char **tip, int viarep)
     call[chan].Rate.src[1] = "";
     call[chan].Rate.src[2] = mynum;
   } else {
-#if 0
-    static char src[BUFSIZ], *text;
-    auto   int	l;
-
-    l = getAreacode(49, call[chan].num[CALLING] + 3, &text);
-    print_msg(PRT_NORMAL, "getAreacode(49,%s,\"%s\")=%d\n", call[chan].num[CALLING] + 3, text, l);
-
-    if ((get_areacode(call[chan].num[CALLING], &l, C_NO_WARN | C_NO_EXPAND | C_NO_ERROR)))
-      Strncpy(src, call[chan].num[CALLING], l + 1);
-    else
-      strcpy(src, call[chan].num[CALLING]);
-
-    call[chan].Rate.src = src;
-#else
     call[chan].Rate.src[0] = call[chan].areacode[CALLING];
     call[chan].Rate.src[1] = call[chan].vorwahl[CALLING];
     call[chan].Rate.src[2] = call[chan].rufnummer[CALLING];
-#endif
   }
-
-#if 0
-  {
-    static char dst[BUFSIZ];
-    auto   int	l;
-
-#if 0
-    auto char *text;
-
-    l = getAreacode(myicountry, call[chan].num[CALLED] + 3, &text);
-
-    print_msg(PRT_NORMAL, "getAreacode(%d, %s,\"%s\")=%d\n", myicountry, call[chan].num[CALLED] + 3, text, l);
-
-    if (text)
-      free(text);
-#endif
-
-    if ((get_areacode(call[chan].num[CALLED], &l, C_NO_WARN | C_NO_EXPAND | C_NO_ERROR)))
-      Strncpy(dst, call[chan].num[CALLED], l + 1);
-    else
-      strcpy(dst, call[chan].num[CALLED]);
-
-    call[chan].Rate.dst = dst;
-  }
-#else
   call[chan].Rate.dst[0] = call[chan].areacode[CALLED];
   call[chan].Rate.dst[1] = call[chan].vorwahl[CALLED];
   call[chan].Rate.dst[2] = call[chan].rufnummer[CALLED];
-#endif
 
   if (getRate(&call[chan].Rate, msg) == UNKNOWN)
     return;
@@ -3691,7 +3653,7 @@ static void prepareRate(int chan, char **msg, char **tip, int viarep)
     return;
 
   if (msg && call[chan].tarifknown)
-    showRates(&call[chan].Rate, message);
+    showRates(&call[chan].Rate, *msg=message);
 
   if ((call[chan].hint = getLeastCost(&call[chan].Rate, &lcRate, 1, -1)) != UNKNOWN) {
     if (tip) {
@@ -4991,7 +4953,7 @@ void processcint()
  	info(chan, PRT_SHOWCONNECT, STATE_CONNECT, sx);
 
 	processLCR(chan, h);
-	while (*h)
+	while (h)
 	  info(chan, PRT_SHOWHANGUP, STATE_HANGUP, strsep(&h,"\n"));
 
  	huptime(chan, 0);
