@@ -1,4 +1,4 @@
-/* $Id: takt_de.c,v 1.5 1998/12/16 20:57:24 akool Exp $
+/* $Id: takt_de.c,v 1.6 1999/01/05 14:43:52 paul Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -209,12 +209,14 @@ static int tarifzeit(struct tm *tm, char *why, int cwe)
 
 
   if ((tm->tm_mday == 24) && (tm->tm_mon == 11)) {
-    strcpy(why, "Feiertag (Heilig-Abend)");
+    strcpy(why, cwe ? "CityWeekend (Heilig-Abend)"
+                    : "Feiertag (Heilig-Abend)");
     return(FE);
   } /* if */
 
   if ((tm->tm_mday == 31) && (tm->tm_mon == 11)) {
-    strcpy(why, "Feiertag (Sylvester)");
+    strcpy(why, cwe ? "CityWeekend (Sylvester)"
+                    : "Feiertag (Sylvester)");
     return(FE);
   } /* if */
 
@@ -229,7 +231,9 @@ static int tarifzeit(struct tm *tm, char *why, int cwe)
     if ((t_ftag[i].monat == tm->tm_mon + 1) &&
         (t_ftag[i].tag == tm->tm_mday) &&
          t_ftag[i].telekom) {
-      sprintf(why, "Feiertag (%s)", t_ftag[i].bez);
+      sprintf(why, cwe ? "CityWeekend (Feiertag: %s)"
+                       : "Feiertag (%s)",
+                   t_ftag[i].bez);
       return(FE);
     } /* if */
 
@@ -455,7 +459,7 @@ float taktlaenge(int chan, char *description)
 
         tz = tarifzeit(tm, why, cwe);
 
-        if ((tz == WE) && cwe)
+        if ((tz == WE || tz == FE) && cwe)
           z = 5;
         else
           z = zeit[tm->tm_hour];
