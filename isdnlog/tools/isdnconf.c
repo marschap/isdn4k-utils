@@ -1,4 +1,4 @@
-/* $Id: isdnconf.c,v 1.33 2000/09/01 06:30:20 paul Exp $
+/* $Id: isdnconf.c,v 1.34 2002/07/04 10:29:18 paul Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -20,6 +20,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnconf.c,v $
+ * Revision 1.34  2002/07/04 10:29:18  paul
+ * "DEM" -> "EUR"
+ *
  * Revision 1.33  2000/09/01 06:30:20  paul
  * Now install country-de.dat as country.dat; renaming the source can be done by
  * someone who is more experienced with CVS.
@@ -972,10 +975,10 @@ static section* writeentry(section *SPtr, int Index)
 void setDefaults()
 {
   if (currency == NULL)
-    currency="DEM";
+    currency="EUR";
 
   if (currency_factor == 0.0)
-    currency_factor = 0.12;
+    currency_factor = 0.062;
 
   currency_mode = AOC_UNITS;
 } /* setDefaults */
