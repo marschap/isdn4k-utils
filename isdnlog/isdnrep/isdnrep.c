@@ -1,4 +1,4 @@
-/* $Id: isdnrep.c,v 1.21 1997/05/11 22:59:19 luethje Exp $
+/* $Id: isdnrep.c,v 1.22 1997/05/15 22:21:35 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -20,6 +20,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnrep.c,v $
+ * Revision 1.22  1997/05/15 22:21:35  luethje
+ * New feature: isdnrep can transmit via HTTP fax files and vbox files.
+ *
  * Revision 1.21  1997/05/11 22:59:19  luethje
  * new version
  *
@@ -175,6 +178,10 @@
 
 #define _REP_FUNC_C_
 
+#include <dirent.h>
+#include <search.h>
+#include <linux/limits.h>
+
 #include "isdnrep.h"
 
 /*****************************************************************************/
@@ -201,6 +208,11 @@
 
 #define FMT_FMT 1
 #define FMT_STR 2
+
+/*****************************************************************************/
+
+#define C_VBOX  'v'
+#define C_FAX   'f'
 
 /*****************************************************************************/
 
@@ -238,6 +250,7 @@
 #define H_LEFT         "<TD align=left><TT>%s</TT></TD>"
 #define H_CENTER       "<TD align=center><TT>%s</TT></TD>"
 #define H_RIGHT        "<TD align=right><TT>%s</TT></TD>"
+#define H_LINK         "<A HREF=\"%s?-M+%c%d%s\">%s</A>"
 
 #define H_EMPTY        "&nbsp;"
 
@@ -249,6 +262,14 @@ typedef struct {
 	char  s_type;
 	char *range;
 } prt_fmt;
+
+typedef struct {
+	int    version;
+	int    used;
+	time_t time;
+	char   type;
+	char  *name;
+} file_list;
 
 /*****************************************************************************/
 
@@ -284,6 +305,17 @@ static void free_format(prt_fmt** ptr);
 static int html_bottom(char *progname, char *start, char *stop);
 static int html_header(void);
 static char *print_diff_date(char *start, char *stop);
+static int get_file_list(void);
+static int set_dir_entries(char *directory, int (*set_fct)(const char *, const char *));
+static int set_vbox_entry(const char *path, const char *file);
+static int set_mgetty_entry(const char *path, const char *file);
+static int set_element_list(file_list* elem);
+static int Compare_files(const void *e1, const void *e2);
+static file_list *get_file_to_call(time_t filetime, char type);
+static char *get_links(time_t filetime, char type);
+static char *append_fax(char **string, char *file, char type, int version);
+static int time_in_interval(time_t t1, time_t t2, char type);
+static char *nam2html(char *file);
 
 /*****************************************************************************/
 
@@ -298,6 +330,10 @@ static char**   ShowMSN = NULL;
 static int*     colsize = NULL;
 static double   h_percent = 100.0;
 static char*    h_table_color = H_TABLE_COLOR1;
+static file_list **file_root = NULL;
+static int      file_root_size = 0;
+static int      file_root_member = 0;
+static char    *_myname;
 
 /*****************************************************************************/
 
@@ -330,6 +366,73 @@ void set_print_fct_for_isdnrep(int (*new_print_msg)(int Level, const char *, ...
 
 /*****************************************************************************/
 
+int send_html_request(char *myname, char *option)
+{
+	char file[PATH_MAX];
+	char commandline[PATH_MAX];
+	char *filetype = NULL;
+	char *command  = NULL;
+
+
+	if (*option == C_VBOX)
+	{
+		sprintf(file,"%s%c%s",vboxpath,C_SLASH,option+2);
+		command = vboxcommand;
+
+		if (option[1] == '1')
+			filetype = "application/x-zyxel4";
+		else
+		if (option[1] == '2')
+		{
+		}
+		else
+		{
+			print_msg(PRT_NORMAL, "Content-Type: text/plain\n\n");
+			print_msg(PRT_NORMAL, "%s:invalid version of vbox `%c'\n",myname,option[0]);
+			return -1;
+		}
+	}
+	else
+	if (*option == C_FAX)
+	{
+		sprintf(file,"%s%c%s",mgettypath,C_SLASH,option+2);
+		command = mgettycommand;
+
+		if (option[1] == '3')
+			filetype = "application/x-faxg3";
+		else
+		{
+			print_msg(PRT_NORMAL, "Content-Type: text/plain\n\n");
+			print_msg(PRT_NORMAL, "%s:invalid version of fax `%c%c'\n",myname,option[0]);
+			return -1;
+		}
+	}
+	else
+	{
+		print_msg(PRT_NORMAL, "Content-Type: text/plain\n\n");
+		print_msg(PRT_NORMAL, "%s:invalid option string `%c%c'\n",myname,option[0],option[1]);
+		return -1;
+	}
+
+	if (command == NULL)
+	{
+		char precmd[SHORT_STRING_SIZE];
+
+		sprintf(precmd, "echo \"Content-Type: %s\"",filetype);
+		system(precmd);
+		sprintf(precmd, "echo");
+		system(precmd);
+	//	print_msg(PRT_NORMAL, "Content-Type: %s\n\n",filetype);
+	}
+
+	sprintf(commandline,"%s %s",command?command:"cat",file);
+	system(commandline);
+
+	return 0;
+}
+
+/*****************************************************************************/
+
 int read_logfile(char *myname)
 {
   auto	   double     einheit = 0.23;
@@ -344,8 +447,13 @@ int read_logfile(char *myname)
   one_call            cur_call;
 
 
+	_myname = myname;
+
 	if (html & H_PRINT_HEADER)
 		html_header();
+
+	if (html)
+		get_file_list();
 
 	if (lineformat == NULL)
 	{
@@ -685,7 +793,7 @@ static int print_bottom(double unit, char *start, char *stop)
 static int print_line3(const char *fmt, ...)
 {
 	char *string = NULL;
-	char  tmpstr[BUFSIZ];
+	char  tmpstr[BUFSIZ*3];
 	auto  va_list ap;
 	prt_fmt** fmtstring;
 
@@ -743,12 +851,12 @@ static int print_line3(const char *fmt, ...)
 
 static int print_line2(int status, const char *fmt, ...)
 {
-	char string[BUFSIZ];
+	char string[BUFSIZ*3];
 	auto va_list ap;
 
 
 	va_start(ap, fmt);
-	vsnprintf(string, LONG_STRING_SIZE, fmt, ap);
+	vsnprintf(string, BUFSIZ*3, fmt, ap);
 	va_end(ap);
 
 	if (!html)
@@ -1010,6 +1118,28 @@ static int print_line(int status, one_call *cur_call, int computed, char *overla
 				          else
 				          	colsize[i] = append_string(&string,*fmtstring,"  ");
 				          break;
+				/* Link for answering machine! */
+				case 'C': if (html)
+				          {
+				          	if (status == F_BODY_LINE)
+				          		colsize[i] = append_string(&string,*fmtstring,get_links(cur_call->t,C_VBOX));
+				          	else
+				          		colsize[i] = append_string(&string,*fmtstring,"     ");
+				          }
+				          else
+				          	print_msg(PRT_ERR, "Unknown format %%C!\n");
+				          break;
+				/* Link for fax! */
+				case 'G': if (html)
+				          {
+				          	if (status == F_BODY_LINE)
+				          		colsize[i] = append_string(&string,*fmtstring,get_links(cur_call->t,C_FAX));
+				          	else
+				          		colsize[i] = append_string(&string,*fmtstring,"        ");
+				          }
+				          else
+				          	print_msg(PRT_ERR, "Unknown format %%G!\n");
+				          break;
 				/* there are dummy entries */
 				case 'c': 
 				case 'd': 
@@ -1074,10 +1204,11 @@ static int print_line(int status, one_call *cur_call, int computed, char *overla
 
 static int append_string(char **string, prt_fmt *fmt_ptr, char* value)
 {
-	char  tmpstr[BUFSIZ*2];
+	char  tmpstr[BUFSIZ*3];
 	char  tmpfmt2[20];
 	char *tmpfmt;
 	char *htmlfmt;
+	int   condition = html && (*value == ' ' || fmt_ptr == NULL || (fmt_ptr->s_type!='C' && fmt_ptr->s_type!='G'));
 
 
 	if (fmt_ptr != NULL)
@@ -1108,7 +1239,7 @@ static int append_string(char **string, prt_fmt *fmt_ptr, char* value)
 	else
 		tmpfmt = tmpfmt2;
 
-	sprintf(tmpstr,tmpfmt,html?html_conv(value):value);
+	sprintf(tmpstr,tmpfmt,condition?html_conv(value):value);
 	
 	if (*string == NULL)
 		*string = (char*) calloc(strlen(tmpstr)+1,sizeof(char));
@@ -2315,6 +2446,341 @@ static char *print_diff_date(char *start, char *stop)
 		sprintf(RetCode,"%s .. %s",start,stop);
 	else
 		sprintf(RetCode,"%s",start);
+
+	return RetCode;
+}
+
+/*****************************************************************************/
+
+static int get_file_list(void)
+{
+	set_dir_entries(vboxpath,set_vbox_entry);
+	set_dir_entries(mgettypath,set_mgetty_entry);
+
+	qsort(file_root,file_root_member,sizeof(file_list*),Compare_files);
+	return 0;
+}
+
+/*****************************************************************************/
+
+static int set_dir_entries(char *directory, int (*set_fct)(const char *, const char *))
+{
+	struct dirent *eptr;
+	DIR *dptr;
+
+	if (directory != NULL)
+	{
+		if ((dptr = opendir(directory)) != NULL)
+		{
+			while ((eptr = readdir(dptr)) != NULL)
+			{
+				if (eptr->d_name[0] != '.')
+				{
+					if (set_fct(directory,eptr->d_name))
+						return -1;
+				}
+			}
+
+			closedir(dptr);
+		}
+	}
+
+	return 0;
+}
+
+/*****************************************************************************/
+
+static int set_vbox_entry(const char *path, const char *file)
+{
+	struct tm tm;
+	file_list *lptr = NULL;
+	char string[PATH_MAX];
+	int cnt;
+
+	if (1 /*vboxversion < 2*/)
+	{
+		sprintf(string,"%s%c%s",path,C_SLASH,file);
+
+		if (access(string,R_OK))
+			return -1;
+
+		if ((cnt = sscanf(file,"%2d%2d%2d%2d%2d%2d",
+	 	            &(tm.tm_year),
+	 	            &(tm.tm_mon),
+	 	            &(tm.tm_mday),
+	 	            &(tm.tm_hour),
+	 	            &(tm.tm_min),
+	 	            &(tm.tm_sec))) != 6)
+		{
+			/* Not implemented yet! */
+			print_msg(PRT_ERR, "Internal error: wrong number of parameter (%d) or wrong version of vbox!\n",cnt);
+		}
+
+		if ((lptr = (file_list*) calloc(1,sizeof(file_list))) == NULL)
+		{
+			print_msg(PRT_ERR, nomemory);
+			return -1;
+		}
+
+	 	if (tm.tm_mday > 31)
+	 	{
+	 		int help = tm.tm_mday;
+	 		tm.tm_mday = tm.tm_year;
+	 		tm.tm_year = help;
+	 	}
+
+		tm.tm_mon--;
+		tm.tm_isdst = -1;
+
+		lptr->name = strdup(file);
+	 	lptr->time = mktime(&tm);
+		lptr->type = C_VBOX;
+		lptr->used = 0;
+		lptr->version = 1;
+	}
+	else
+	if (vboxversion == 2)
+	{
+		/* Not implemented yet! */
+		print_msg(PRT_ERR, "Version %d of vbox is not implemented yet!\n",vboxversion);
+		return -1;
+	}
+	else
+	{
+		print_msg(PRT_ERR, "Invalid version %d of vbox!\n",vboxversion);
+		return -1;
+	}
+
+	return set_element_list(lptr);
+}
+
+/*****************************************************************************/
+
+static int set_mgetty_entry(const char *path, const char *file)
+{
+	file_list *lptr = NULL;
+	char string[PATH_MAX];
+
+	sprintf(string,"%s%c%s",path,C_SLASH,file);
+
+	if (access(string,R_OK))
+		return -1;
+
+	if ((lptr = (file_list*) calloc(1,sizeof(file_list))) == NULL)
+	{
+		print_msg(PRT_ERR, nomemory);
+		return -1;
+	}
+
+	lptr->name = strdup(file);
+
+	strcpy(string,"0x3");
+	strncpy(string+3,file+2,7);
+	lptr->time = strtol(string,NIL,0);
+
+	lptr->type = C_FAX;
+	lptr->used = 0;
+	lptr->version = 3;
+
+	return set_element_list(lptr);
+}
+
+/*****************************************************************************/
+
+static int set_element_list(file_list* elem)
+{
+	if (file_root_size == file_root_member)
+	{
+		file_root_size += 10;
+		if ((file_root = (file_list**) realloc(file_root,sizeof(file_list*)*file_root_size)) == NULL)
+		{
+			print_msg(PRT_ERR, nomemory);
+			return -1;
+		}
+	}
+
+	file_root[file_root_member++] = elem;
+
+	return 0;
+}
+
+/*****************************************************************************/
+
+static int Compare_files(const void *e1, const void *e2)
+{
+	if ((*(file_list**) e1)->time > (*(file_list**) e2)->time)
+		return 1;
+	else
+	if ((*(file_list**) e1)->time < (*(file_list**) e2)->time)
+		return -1;
+	
+	return 0;
+}
+
+/*****************************************************************************/
+
+static file_list *get_file_to_call(time_t filetime, char type)
+{
+	static file_list **ptr = NULL;
+	static int         cnt;
+	static time_t      _filetime;
+	int interval;
+
+	if (filetime == 0)
+	{
+		if (ptr != NULL)
+		{
+			ptr++;
+			cnt--;
+		}
+	}
+	else
+	{
+		ptr = file_root;
+		cnt = file_root_member;
+		_filetime = filetime;
+	}
+
+	while (cnt > 0 && (interval = time_in_interval((*ptr)->time,_filetime,type)) < 1)
+	{
+		if (interval == 0 && (*ptr)->used == 0 && (*ptr)->type == type)
+		{
+			(*ptr)->used = 1;
+			return (*ptr);
+		}
+
+		ptr++;
+		cnt--;
+	}
+
+	return NULL;
+}
+
+/*****************************************************************************/
+
+static int time_in_interval(time_t t1, time_t t2, char type)
+{
+	int begin;
+	int end;
+
+	switch (type)
+	{
+		case C_VBOX : begin = 0;
+		              end   = 10;
+		              break;
+		case C_FAX  : begin = -2;
+		              end   = 1;
+		              break;
+		default     : begin = 0;
+		              end   = 0;
+		              break;
+	}
+
+	if ((int) t1 < ((int) t2) + begin)
+		return -1;
+
+	if ((int) t1 > ((int) t2) + end)
+		return 1;
+
+	return 0;
+}
+
+/*****************************************************************************/
+
+static char *get_links(time_t filetime, char type)
+{
+	static char *string[5] = {NULL,NULL,NULL,NULL,NULL};
+	static int   cnt = -1;
+	file_list   *ptr;
+
+
+	cnt = (cnt+1) % 5;
+	free(string[cnt]);
+	string[cnt] = NULL;
+
+	if (type == C_VBOX)
+	{
+		if ((ptr = get_file_to_call(filetime,type)) != NULL)
+		{
+			if ((string[cnt] = (char*) calloc(SHORT_STRING_SIZE,sizeof(char))) == NULL)
+			{
+				print_msg(PRT_ERR, nomemory);
+				return NULL;
+			}
+
+			sprintf(string[cnt],H_LINK,_myname,type,ptr->version,nam2html(ptr->name),"phone");
+		}
+	}
+	else
+	if (type == C_FAX)
+	{
+		while((ptr = get_file_to_call(filetime,type)) != NULL)
+		{
+			append_fax(&(string[cnt]),ptr->name,type,ptr->version);
+			filetime = 0;
+		}
+	}
+	else
+	{
+		print_msg(PRT_ERR, "Internal error: Invalid type %d of file!\n",(int)type);
+		return NULL;
+	}
+
+	return string[cnt]?string[cnt]:"        ";
+}
+
+/*****************************************************************************/
+
+static char *append_fax(char **string, char *file, char type, int version)
+{
+	static int cnt = 0;
+	char help[BUFSIZ];
+	char help2[20];
+
+	if (*string == NULL)
+		cnt = 1;
+	else
+		cnt++;
+
+	sprintf(help2,"&lt;%d&gt;",cnt);
+	sprintf(help,H_LINK,_myname,type,version,nam2html(file),help2);
+
+	if (*string == NULL)
+		*string = strdup("Fax: ");
+
+	if ((*string = (char*) realloc(*string,sizeof(char)*(strlen(*string)+strlen(help)+2))) == NULL)
+	{
+		print_msg(PRT_ERR, nomemory);
+		return NULL;
+	}
+
+	strcat(*string,help);
+	strcat(*string," ");
+
+	return *string;
+}
+
+/*****************************************************************************/
+
+static char *nam2html(char *file)
+{
+	static char RetCode[SHORT_STRING_SIZE];
+	char *ptr = RetCode;
+
+	while (*file != '\0')
+	{
+		switch (*file)
+		{
+			case '+': strcpy(ptr,"%2b");
+			          ptr += 3;
+			          file++;
+			          break;
+			default : *ptr++ = *file++; 
+			          break;
+		}
+	}
+
+	*ptr = '\0';
 
 	return RetCode;
 }

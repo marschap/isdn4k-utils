@@ -1,4 +1,4 @@
-/* $Id: isdnconf.c,v 1.9 1997/05/10 22:41:17 luethje Exp $
+/* $Id: isdnconf.c,v 1.10 1997/05/15 22:21:45 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -20,6 +20,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnconf.c,v $
+ * Revision 1.10  1997/05/15 22:21:45  luethje
+ * New feature: isdnrep can transmit via HTTP fax files and vbox files.
+ *
  * Revision 1.9  1997/05/10 22:41:17  luethje
  * bug in format string fixed
  *
@@ -926,6 +929,12 @@ static int _readconfig(char *_myname)
   start_procs.infoargs = NULL;
   start_procs.flags    = 0;
   conf_dat       = NULL;
+  vboxversion   = 0;
+  vboxpath      = NULL;
+  vboxcommand   = NULL;
+  mgettyversion = 0;
+  mgettypath    = NULL;
+  mgettycommand = NULL;
 
 
 	ClearEnv(&Environment);
@@ -1073,6 +1082,24 @@ static int Set_Globals(section *SPtr)
 	    else
 	    	currency++;
 	  }
+
+		if ((CEPtr = Get_Entry(Ptr->entries,CONF_ENT_VBOXVER)) != NULL)
+			vboxversion = strtod(CEPtr->value,NULL);
+
+		if ((CEPtr = Get_Entry(Ptr->entries,CONF_ENT_VBOXPATH)) != NULL)
+			vboxpath = CEPtr->value;
+
+		if ((CEPtr = Get_Entry(Ptr->entries,CONF_ENT_VBOXCMD)) != NULL)
+			vboxcommand = CEPtr->value;
+
+		if ((CEPtr = Get_Entry(Ptr->entries,CONF_ENT_MGTYVER)) != NULL)
+			mgettyversion = strtod(CEPtr->value,NULL);
+
+		if ((CEPtr = Get_Entry(Ptr->entries,CONF_ENT_MGTYPATH)) != NULL)
+			mgettypath = CEPtr->value;
+
+		if ((CEPtr = Get_Entry(Ptr->entries,CONF_ENT_MGTYCMD)) != NULL)
+			mgettycommand = CEPtr->value;
 
 		CEPtr = Ptr->entries;
 		cnt = 0;

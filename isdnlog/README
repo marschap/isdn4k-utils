@@ -2340,7 +2340,7 @@ Wobei in den einzelnen Spalten folgendes steht:
 
 
 10. Das Report-Modul isdnrep
----------------------------
+----------------------------
 
 Gestartet wird isdnrep mittels:
 
@@ -2361,15 +2361,15 @@ http://localhost/isdnrep.cgi?-t8+-v
                             ^------- representiert ein Blank zwischen dem
                                      Prorammnamen und dem ersten Parameter
 
-Alternativ kann man auch ein Shelscript schreiben mit der Endung ".cgi",
-wo der isdnrep gestartet wird:
+Alternativ kann man auch ein Shellscript mit der Endung ".cgi" schreiben,
+von dem aus der isdnrep gestartet wird:
 
 Beispiel:
 
-----------------------------------------------
+-------------------------------------------------
 #!/bin/sh
-isdnrep -w1 -t `date +%m` # Monatliche Anzeige
-----------------------------------------------
+isdnrep -w1 -t `date +%m` $@ # Monatliche Anzeige
+-------------------------------------------------
 
 Die Optionen von isdnrep haben im einzelnen folgende Funktion:
 
@@ -2571,6 +2571,17 @@ Die Optionen von isdnrep haben im einzelnen folgende Funktion:
                      %P: Gibt den INPUT-Datendurchsatz pro Sekunde an.
                      %p: Gibt den OUTPUT-Datendurchsatz pro Sekunde an.
                      %S: Gibt die SI an.
+                     %G: Gibt ein Link auf die entsprechenden Faxe fuer
+                         diese Verbindung an. Diese koennen dann angesehen
+                         werden. Die Faxe muessen allerdings mit mgetty
+                         empfangen worden sein.
+                         Diese Option geht nur mit der Option -wx
+                         Weitere Informationen weiter unten.
+                     %C: Gibt ein Link auf den entsprechenden gespeicherten
+                         Anruf vom vbox an.
+                         Diese Option geht nur mit der Option -wx
+                         Weitere Informationen weiter unten.
+                         
 
                      Defaultmaessig ist der folgende String fuer den isdnrep
                      (nicht HTML) eingestellt:
@@ -2595,6 +2606,203 @@ Die Optionen von isdnrep haben im einzelnen folgende Funktion:
                      REPFMT1        = ... # -> isdnrep -F1
                      REPFMTMYSTRING = ... # -> isdnrep -Fmystring oder
                                           #    isdnrep -F MYSTRING
+
+Abspielen von Anrufen vom vbox und Anzeigen von Faxen vom mgetty im HTML-Format
+-------------------------------------------------------------------------------
+
+Unter HTML kann der isdnrep die Dateien von den Programmen
+finden und sie dem entsprechenden Anruf zuordnen. Diese koennen dann via einem
+Link aufgerufen werden z.B. mit dem Netscape.
+Dazu sind allerdings noch einige Einstellung noetig.
+
+Anrufbeantworter abspielen
+--------------------------
+Wenn dieses im Formatstring mit %C eingetragen wurde unter REPFMTWWW= ... %C ...
+Dann wird isdnrep die entsprechenden Gespraeche mit einem Link hinterlegen,
+die dann abgerufen werden koennen. Zur Zeit funktioniert das nur mit Dateien
+vom Typ vbox-1.x und vbox-0.x.
+
+Dazu wird in der isdn.conf unter Sektion [ISDNLOG] folgender Eintrag benoetigt:
+
+VBOXPATH= /var/spool/vbox/fred/incoming #Pfad zum Incoming-Verzeichnis vom vbox.
+
+Nun kann der isdnrep diese Dateien finden. Wird nun der Link angeklickt,
+wird die Datei direkt uebermittelt. Die Datei besteht aus dem Zyxel-Format.
+Dieses kann der Browser nicht selber erkennen. Also muss
+dieser Typ ergaenzt werden. isdnrep uebertraegt folgende Zeile am Anfang:
+
+Content-Type: application/x-zyxel4
+
+Hier muss man also noch die entsprechende Applikation im Browser eintragen,
+damit die Datei erkannt werden kann.
+
+Alternativ kann man aber auch dem isdnrep ein Programm mitteilen, dass das
+Zyxel-Format umwandelt. Dieses Programm bekommt einen Parameter mit. Dieser
+Parameter enthaelt die zu uebertragende Datei:
+
+program /play/file
+
+Dieses teilt man dem isdnrep wieder ueber die Datei isdn.conf mit. Es muss
+dort unter [ISDNLOG] der Eintrag
+
+VBOXCMD = /usr/bin/program
+
+eingefuegt werden.
+Das Programm muss dann die Datei auf stdout ausgeben.
+Das Programm muss zuerst den Datei-Typ bekanntgeben.
+Um das Zyxel-Format in eine WAVE-Datei auszugeben, kann man folgendes Skript
+verwenden:
+
+-----------------------------------------------------------
+#! /bin/sh
+##
+## Kommando zum abspielen von Voicenachrichten vom vbox-1.0
+##
+## ACHTUNG! Wenn die Pfade falsch gesetzt sind oder fehlen,
+## stuerzt netscape einfach ab!
+
+PATH=$PATH:"Pfad zum sox":"Pfad zun den pvftools"
+FILENAME1=/tmp/voxplay.$$.voc
+FILENAME2=/tmp/voxplay.$$.wav
+VOLUME=8
+
+zyxeltopvf < $1   | \
+   pvfspeed 0.8   | \
+   pvfamp $VOLUME | \
+   pvfcut 0.8     | \
+   pvftovoc > $FILENAME1
+
+sox $FILENAME1 $FILENAME2
+
+echo Content-Type: audio/x-wav
+echo
+cat $FILENAME2
+
+rm -f $FILENAME1 $FILENAME2
+-----------------------------------------------------------
+
+Das obige Skript benoetigt die Pakete sox und pvftools.
+Es ist darauf zu achten, dass die benoetigten Programme im Pfad stehen.
+Andernfalls quittiert netscape 3.0 gold dieses mit einem "bus error".
+
+Damit der Browser etwas mit dem Typ "audio/x-wav" anfangen kann, muss
+an den folgenden Dateien noch Zeilen angefuegt werden:
+
+~/.mime.types
+-----------------------------------------------------------
+type=audio/x-wav  \
+desc="auWAV Audio"  \
+exts="wav"
+-----------------------------------------------------------
+
+~/.mailcap:
+-----------------------------------------------------------
+audio/x-wav;/usr/bin/auplay %s
+-----------------------------------------------------------
+
+Hierzu muss das Paket NAS installiert sein.
+
+Wenn jetzt der Browser gestartet wird, kann er diese Dateien vom Typ WAVE
+erkennen und das entsprechende Programm starten.
+Wird vom isdnlog jetzt der Link zu einer Anruf, angeklickt, wird die Datei
+abgespielt.
+
+Das Format WAVE habe ich aus dem Grund ausgewaehlt, da dieses auch unter
+Windows abspielbar ist.
+
+Anzeigen von Faxen vom mgetty
+-----------------------------
+
+Hierzu muss im Formatstring %G eingetragen werden. Dann werden alle Seiten
+einzeln, die zu diesem Fax gehoeren durch einen eigenen Link dargestellt.
+
+Diese laeuft analog zur vbox-Einstellungen.
+Es muss also der Pfad zu den Fax-Dateien dem isdnrep mitgeteilt werden:
+
+...
+[ISDNLOG]
+MGETTYPATH = /var/spool/fax/incoming
+...
+
+Wenn isdnrep diese Dateien an den Browser uebertraegt (oder besser der HTTPD),
+dann haben diese das G3-Format. Der isdnrep uebertraegt daher das Header-Type
+folgende Zeile:
+
+Content-Type: application/x-faxg3
+
+Da dieses der Browser nicht kennt, muessen wiederum folgendende Eintraege
+an den Dateien des Browsers ergaenzt werden:
+
+~/.mime.types
+-----------------------------------------------------------
+type=application/x-faxg3  \
+desc="G3-Fax Format" \
+exts="fax,g3"
+-----------------------------------------------------------
+
+~/.mailcap:
+-----------------------------------------------------------
+application/x-faxg3;/usr/X11/bin/g3view %s
+-----------------------------------------------------------
+
+Hierzu muss das Programm g3view installiert sein.
+
+Wird jetzt der Link verfolgt, wird automatisch vom Browser das externe Programm
+g3view gestartet.
+
+Wenn man auch hier nicht mit dem G3-Format einverstanden ist, kann man z.B.
+auch das JPEG-Format dem Browser uebermitteln lassen. Hierzu sollte man
+dann folgenden Eintrag fuer das Konvertierungsskript in die isdn.conf
+eintragen:
+
+...
+[ISDNLOG]
+VBOXCMD = /usr/bin/g3tojpeg # Beispielpfad
+...
+
+Dann sollte die Datei /usr/bin/g3tojpeg wie folgt aussehen:
+
+-----------------------------------------------------------
+#! /bin/sh
+##
+## Kommando zum abspielen von Voicenachrichten vom vbox-1.0
+##
+## ACHTUNG! Wenn die Pfade falsch gesetzt sind oder fehlen,
+## stuerzt netscape einfach ab!
+
+export PATH=$PATH:"Pfad zu g3topbm":"Pfad zu convert"
+
+echo Content-Type: image/jpeg
+echo
+
+g3topbm < $1 | convert pbm:- jpeg:-
+-----------------------------------------------------------
+
+Es werden hierfuer die Pakete ImageMagick und mgetty (sollte wohl vorhanden
+sein!) benoetigt.
+
+Wenn jetzt der Link angeklicht wird, wird das Fax im Browser angezeigt.
+
+Das Format JPEG habe ich aus dem Grund ausgewaehlt, da dieses auch unter
+Windows abspielbar ist.
+
+Ein Beipspiel fuer REPFMTWWW:
+
+REPFMTWWW     = "%X %D %17.17H %T %-17.17F %-20.20l SI: %S %9u %U %I %O %G %C"
+
+Falls jemand andere/bessere Skripte/Loesungen hat, sollte er sie unbedingt an
+
+i4l-isdnlog@franken.de
+
+senden, damit diese in der naechsten Version vom isdnlog aufgenommen werden
+koennen.
+
+Als Browser wurden von mir der netscape 3.0 gold und arena verwedet. Beide
+arbeiten mit der Ausgabe vom isdnrep. Allerdings, war die Ausgabe vom arena
+nicht so farbenpraechtig, wie die vom netscape.
+
+Anzeige der isdnrep
+-------------------
 
 Es wird nun auf stdout eine Abrechnung mit folgender Default-Optik generiert:
 

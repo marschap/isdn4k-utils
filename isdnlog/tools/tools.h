@@ -1,4 +1,4 @@
-/* $Id: tools.h,v 1.13 1997/05/09 23:31:00 luethje Exp $
+/* $Id: tools.h,v 1.14 1997/05/15 22:21:49 luethje Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools.h,v $
+ * Revision 1.14  1997/05/15 22:21:49  luethje
+ * New feature: isdnrep can transmit via HTTP fax files and vbox files.
+ *
  * Revision 1.13  1997/05/09 23:31:00  luethje
  * isdnlog: new switch -O
  * isdnrep: new format %S
@@ -380,28 +383,35 @@
 
 /* Keywords for isdn.conf */
 
-#define CONF_SEC_ISDNLOG "ISDNLOG"
-#define CONF_ENT_CHARGE  "CHARGEMAX"
-#define CONF_ENT_CONNECT "CONNECTMAX"
-#define CONF_ENT_BYTE    "BYTEMAX"
-#define CONF_ENT_CURR    "CURRENCY"
-#define CONF_ENT_ILABEL  "ILABEL"
-#define CONF_ENT_OLABEL  "OLABEL"
-#define CONF_ENT_RELOAD  "RELOADCMD"
-#define CONF_ENT_STOP    "STOPCMD"
-#define CONF_ENT_REBOOT  "REBOOTCMD"
-#define CONF_ENT_LOGFILE "LOGFILE"
+#define CONF_SEC_ISDNLOG  "ISDNLOG"
+#define CONF_ENT_CHARGE   "CHARGEMAX"
+#define CONF_ENT_CONNECT  "CONNECTMAX"
+#define CONF_ENT_BYTE     "BYTEMAX"
+#define CONF_ENT_CURR     "CURRENCY"
+#define CONF_ENT_ILABEL   "ILABEL"
+#define CONF_ENT_OLABEL   "OLABEL"
+#define CONF_ENT_RELOAD   "RELOADCMD"
+#define CONF_ENT_STOP     "STOPCMD"
+#define CONF_ENT_REBOOT   "REBOOTCMD"
+#define CONF_ENT_LOGFILE  "LOGFILE"
 
-#define CONF_SEC_START   "START"
-#define CONF_SEC_FLAG    "FLAG"
-#define CONF_ENT_FLAGS   "FLAGS"
-#define CONF_ENT_PROG    "PROGRAM"
-#define CONF_ENT_USER    "USER"
-#define CONF_ENT_GROUP   "GROUP"
-#define CONF_ENT_INTVAL  "INTERVAL"
-#define CONF_ENT_TIME    "TIME"
+#define CONF_SEC_START    "START"
+#define CONF_SEC_FLAG     "FLAG"
+#define CONF_ENT_FLAGS    "FLAGS"
+#define CONF_ENT_PROG     "PROGRAM"
+#define CONF_ENT_USER     "USER"
+#define CONF_ENT_GROUP    "GROUP"
+#define CONF_ENT_INTVAL   "INTERVAL"
+#define CONF_ENT_TIME     "TIME"
 
-#define CONF_ENT_REPFMT  "REPFMT"
+#define CONF_ENT_REPFMT   "REPFMT"
+
+#define CONF_ENT_VBOXVER  "VBOXVERSION"
+#define CONF_ENT_VBOXPATH "VBOXPATH"
+#define CONF_ENT_VBOXCMD  "VBOXCMD"
+#define CONF_ENT_MGTYVER  "MGETTYVERSION"
+#define CONF_ENT_MGTYPATH "MGETTYPATH"
+#define CONF_ENT_MGTYCMD  "MGETTYCMD"
 
 /****************************************************************************/
 
@@ -638,6 +648,12 @@ _EXTERN char* logfile   = LOGFILE;
 _EXTERN int  (*_print_msg)(const char *, ...) = printf;
 _EXTERN int   use_new_config = 1;
 _EXTERN char ***lineformats = NULL;
+_EXTERN int   vboxversion   = 0;
+_EXTERN char *vboxpath      = NULL;
+_EXTERN char *vboxcommand   = NULL;
+_EXTERN int   mgettyversion = 0;
+_EXTERN char *mgettypath    = NULL;
+_EXTERN char *mgettycommand = NULL;
 
 #else
 #define _EXTERN extern
@@ -649,6 +665,12 @@ _EXTERN char* logfile;
 _EXTERN int  (*_print_msg)(const char *, ...);
 _EXTERN int   use_new_config;
 _EXTERN char ***lineformats;
+_EXTERN int   vboxversion;
+_EXTERN char *vboxpath;
+_EXTERN char *vboxcommand;
+_EXTERN int   mgettyversion;
+_EXTERN char *mgettypath;
+_EXTERN char *mgettycommand;
 
 #endif
 
