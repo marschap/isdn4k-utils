@@ -161,25 +161,27 @@ CVS - Concurrent Version System
 This is a multiuser/server extension to RCS (Revision Control System).
 The I4L drivers are developed under CVS, and there exists on server
 (cvs.isdn4linux.de) a CVS tree to which all developers have access.
-In addition, Fritz has put together an anonymous read-only access. If you
+In addition, Fritz has configured an anonymous read-only access. If you
 must have the very newest versions, you can get them there, however they
 may contain more bugs than the released versions!!!
 
 Here is how to get the latest version:
 <enum>
 <item>Create and go to the directory where you want to store i4l
-<code>mkdir ~/cvs; cd ~/cvs</code>
-<item>Set CVSROOT to <tt>:pserver:guest@cvs.isdn4linux.de:/i4ldev</tt>
-<code>export CVSROOT=:pserver:guest@cvs.isdn4linux.de:/i4ldev</code>
-<item>Login in (asks for a password, any password will work)
-<code>cvs login</code>
+<code>mkdir ~/cvs; cd ~/cvs
+cvs -d :pserver:guest@cvs.isdn4linux.de:/i4ldev login</code>
+<item>Login in (asks for a password, enter <em>readonly</em>)
 <item>Get the isdn kernel driver stuff (same hierarchy as in the linux source)
-<code>cvs checkout isdn</code>
+<code>cvs -d :pserver:guest@cvs.isdn4linux.de:/i4ldev checkout isdn</code>
 <item>Get the utility package into the current directory
-<code>cvs checkout isdn4k-utils</code>
+<code>cvs -d :pserver:guest@cvs.isdn4linux.de:/i4ldev checkout isdn4k-utils</code>
 If you want to get the latest version for kernel 2.0.x rather than for the
 latest kernel, then you have to give the additional option `-r':
-<code>cvs checkout -r isdn4kernel_2_0 isdn</code>
+<code>cvs -d :pserver:guest@cvs.isdn4linux.de:/i4ldev checkout -r isdn4kernel_2_0 isdn</code>
+<item>After having checked out, further updates can be done by first
+changing into <tt>isdn</tt> or <tt>isdn4k-utils</tt> subdirectory and
+running
+<code>cvs update -P -d</code>
 </enum>
 
 WATCH OUT!!! THE NEWEST STUFF SOMETIMES IS REALLY INSTABLE OR EVEN
