@@ -3,7 +3,7 @@
  * (c) 1995-97 Volker Götz
  * (c) 2000 Paul Slootman <paul@isdn4linux.de>
  *
- * $Id: imontty.c,v 1.5 2000/06/29 17:38:26 akool Exp $
+ * $Id: imontty.c,v 1.6 2002/07/15 11:58:43 paul Exp $
  */
 
 #include <stdlib.h>
@@ -169,6 +169,7 @@ void scan_int(char * buffer, int (*field)[], int max) {
 int main(int argc, char **argv) {
 
     FILE * isdninfo;
+    static char  fbuf[2048];
     char buf[IM_BUFSIZE];
 
     char * idmap[ISDN_MAX_CHANNELS];
@@ -180,13 +181,13 @@ int main(int argc, char **argv) {
 
     int i, lines;
 
-    isdninfo = fopen("/dev/isdn/isdninfo", "r");
-    if (!isdninfo)
-        isdninfo = fopen("/dev/isdninfo", "r");
-    if (!isdninfo) {
-	perror("imontty: can't open /dev/isdninfo");
-        exit(1);
+    if (!(isdninfo = fopen("/dev/isdninfo", "r"))) {
+        if (!(isdninfo = fopen("/dev/isdn/isdninfo", "r"))) {
+            perror("imontty: can't open /dev/isdn/isdninfo nor /dev/isdninfo");
+            return 1;
+        }
     }
+    setvbuf(isdninfo, fbuf, _IOFBF, sizeof(fbuf));       /* up to 2048 needed */
 
     if (argc == 2)
        readphonebook(argv[1]);
