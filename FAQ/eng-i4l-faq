@@ -12,11 +12,14 @@ Posting-frequency: monthly
 Last-modified: 18-Mar-97
 URL: http://www.lrz-muenchen.de/~ui161ab/www/isdn/
 
-!1FAQ for isdn4linux - Version 1.3.2!br (translation in progress 31-Mar-97)
+!1FAQ for isdn4linux - Version 1.3.2!br (translation in progress 1-Apr-97)
 
-[Translator's note: 31-Mar-97 is the first step in updating the FAQ from 1.0.5
+[Translator's notes!br
+--31-Mar-97: First step in updating the FAQ from 1.0.5
 (6-Jan-97) to 1.3.2 (18-Mar-97). Headings are now complete and in the right order,
-but many questions are missing or are still in German!]!br
+but many questions are missing or are still in German!!br
+--1-Apr-97: Questions complete (but not all updated or translated) in Sections 1, 2.1-5, 4, 
+and 5]!br
 !br
 
 This FAQ is protected by the GNU General Public License (GPL) Version 2;
@@ -690,264 +693,92 @@ A: Configuration examples and scripts: !br
    Further FAQs with example scripts:!br
      !link http://www.fzi.de/sim/people/trautw/i4l/index.html;
 
-!old
-Q: Can you use kerneld to load the ISDN modules in the kernel as needed?
-A: Emil Stephan <ste@esqhen.su.eunet.de> wrote on 15 October 1996:
-!verbon
-     By default, kerneld unloads a module after it has not been needed for one
-     minute. This is no problem for device drivers ala floppy, etc., but it is
-     a problem for drivers that need to keep settings over a longer period 
-     of time, e.g. the mixer settings for a sound card or the configuration of
-     dial-in and dial-out parameters for ISDN. Unloading the ISDN drivers also
-     kills the IP interface ippp0 or isdn0. The entries in the IP layer of the
-     kernel then disappear. If you look in the start-up scripts for i4l,
-     you'll a lot of things that are configured with isdnctrl, etc.; they
-     would have to be reconfigured by ba kerneld each time the module is
-     reloaded. The status of the D channel could also be lost. Therefore, my
-     recommendation is not to use kerneld, rather load the modules at start-up
-     and only unload if necessary for some technical reason.
-!verboff
-   Also the the question "Is there are trick to sometimes boot Linux with ISDN
-   and sometimes without?".!br
-   Markus Gutschke <gutschk@uni-muenster.de> wrote:
-!verbon
-     For some time now there has been an extension to the modules package just
-     for this purpose; it allows the installation of a databank with the
-     current status of the modules. Unfortunately, this feature usually not
-     supported by the modules. An alternative are such options as the
-     "post-install" hook in "/etc/conf.modules". It would then be necessary to
-     write the appropriate scripts by hand, but in principle that would work
-     just as well as the modules automatically using the initializations
-     settings from a database.
-!verboff
-
-Q: I'm somehwat confused by the documentation. How should I enter my MSN?
-A: For the modem emulation, use the command AT&E<msn> without any area code.
-   The same goes for the command "isdnctrl eaz <interface> for network
-   use.!br
-   If you want to call yourself for testing, then (at least for the German
-   Telekom) with "isdnctrl addphone in" give the MSN with the area code,
-   but without any leading "0" (the Telekom does not transmit the leading
-   "0". However, for "isdnctrl addphone out" the leading "0" needs to be 
-   included (the Telekom needs the "0" for correct dialing). "isdnctrl
-   delphone" works similarly!br
-   However, note any exceptions for other countries (see "National 
-   Peculiarities".) 
-
-
-!old
-Q: How can I enable others to login via ISDN?
-A: The same way as via a normal serial port. Start a getty (mgetty from Gert
-   Doering is highly recommended) on one of the ISDN devices with modem 
-   emulation (/dev/ttyI*). The entry in /etc/inittab looks like this:
-!verbon
-     #
-     # ISDN Lines
-     #
-     I0:56:respawn:/usr/local/sbin/mgetty ttyI0
-     I1:56:respawn:/usr/local/sbin/mgetty ttyI1
-!verboff
-   Then the init string needs to be entered in the mgetty.config, since
-   mgetty needs to know which MSN or EAZ to "listen" to. Here is an example
-   for /dev/ttyI0
-!verbon
-     port ttyI0
-     modem-type data
-     speed 38400
-     init-chat "" ATZ OK AT&E0 OK AT&B512 OK
-!verboff
-   The example sets the EAZ (with 1TR6-ISDN) to 0. For Euro ISDN, the MSN
-   (without area code) would be given instead of the 0 in "AT&E0". 
-   For X.75 the block size is set to 512 bytes.
-   Alternatively you can enter the entire configuration onto a single line
-   in /etc/initab (here printed on two lines!):
-!verbon
-     i0:45:respawn:/sbin/mgetty -D -m '"" ATZ OK AT&E0 OK AT&B512 OK'
-       -s 38400 ttyI0
-!verboff
-   The most elegant way is to use iprofd. This daemon takes advantage of
-   the AT&W0 command in the i4l modem emulation. You start iprofd
-   with a path as parameter, e.g. "iprofd /etc/i4lprofile"
-   Then with minicom or another terminal program, open an ISDN tty
-   device and enter the necessary AT commander by hand. 
-   When finished, enter the command AT&W0, then the kernel notifies iprofd 
-   to write the current configuration to the file. From now it it is enough
-   to start iprofd in you isdn init script, and to initialize the appropriate
-   ISDN tty devices with ATZ
-   
-!old
-Q: How to I switch from X.75 to hdlc with the modem emulation?
-A: With the option S14=3. Therefore, "ATS14=3".
 
 !old
 Q: How many ISDN cards can I stuff into my computer?
 A: Just as many as there are ISA slots and interrupts/IO addresses.
    The Teles 16.3 can use only 3 different IO addresses, therefore you can
-   use at most 3 cards. They each would also need an interrupt. The AVM is
-   similar. The ICN has not interruprs, a more flexible port configuration
+   use at most 3 cards. They each would also need an interrupt.!br
+   Peter Strunk <webadmin@mail.bicos.de> hatte am 8. Nov 1996 folgenden Tip
+   für die Installation einer vierten Teles-Karte:
+!verbon
+        Probiere doch mal Port 0x080h, DIP-SW in die nicht dokumentierte
+        Position!
+!verboff
+   The AVM is similar.!br
+   The ICN has no interrupts, a more flexible port configuration
    and the driver places the shared memory area of all ICN cards at the same
-   address. The card memory is show only as needed. Therefore, one could use
-   really as many cards are there are slots... one could even increase
-   the number of ISA slots with an ISA bus extended.
+   address. The card memory is shown only as needed. !br
+   Therefore, one could use
+   as many cards are there are slots... one could even increase
+   the number of ISA slots with an ISA bus extender.
+
+Q: Brauche ich ein DOS Setup-Programm, um meine Teleskarte zu initialisieren?
+A: Karsten Keil <keil@temic-ech.spacenet.de> schrieb dazu am 21. Feb 1997:!br
+   Du brauchst aber kein DOS Setup fuer Linux, mit einer Ausnahme:!br
+   Es gab von Teles eine Charge PnP Karten die kein echtes PnP gemacht haben.
+   Zu erkennen sind diese Karten daran, das sie KEINEN Jumper/Dip haben aber
+   von isapnp nicht erkannt werden.!br
+   Alle anderen Karten werden mit den Linuxtreibern bzw. die PnP mit isapnp
+   konfiguriert.
 
 !old
-Q: How can I use more than one ippp* device? 
-A: All ippp* devices in use have to the separately configured with 
-   "isdnctrl addif". Each ippp* device should be so configured to use separate
-   IP addresses
+Q: Does the driver support "dial on demand"?
+A: Yes. If a network interface (e.g. "isdn0") is set up, the driver will dial
+   the number. If in addition a hang-up timeout (Idle Timeout) has been given,
+   isdnctrl huptime <interfaceY> time, then the driver will automatically hang
+   up when no data was been transferred over the interface for "time" seconds.
+   However, with syncPPP there are problems (see the syncPPP section),
 
-!old
-Q: How can I use the "chargeint" patch, so i4l will hang up before the next 
-   charge unit begins?
-A: Sascha Ottolski <sascha@alzhimer.isdn.cs.tu-berlin.de> wrote: 
+Q: Unterstützt isdn4linux PNP (Plug and Play)?
+A: Ja. Allerdings nur in Verbindung mit dem HiSax-Treiber. Mit "Plug" alleine
+   ist's leider noch nicht getan, es fällt noch etwas mehr Arbeit an:
+   (von Karsten Keil <keil@temic-ech.spacenet.de>)
 !verbon
-     I use chargeint, it works great; for me charge units come during the
-     connections, but I think that can be adjusted by hand. The two patches in
-     isdnlog-2.50/contrib/chargeint are for the kernel sources and for 
-     isdn4k-utils-2.0; then compile isdn with the -Dchargeint flag (see
-     Makefile). The kernel and isdnctrl of course also have to be recompiled.
-     Then start isdnlog with the -hx option, where x is the number of seconds
-     left until the next charge unit. Then chargeint will hang up. In the
-     start script for isdn, define a huptimeout as usual to activiate the
-     chargeint:
-     /sbin/isdnctrl huptimeout ippp0 80  # in sec;
-     if needed /sbin/isdnctrl chargeint ippp0
+        1. HiSax muß in den Kernel gepatcht werden
+           (Achtung: den "-pn" Parameter verwenden!)
+        2. Mit "make menuconfig" (oder "make config") werden folgende Kernel-
+           Optionen eingestellt:
+             * ISDN = "M" (als Modul - PNP funktioniert sonst nicht!)
+             * HiSax = "M" (als Modul - PNP funktioniert sonst nicht!)
+             * 16.3/PNP support
+             * EURO support
+        3. Kernel und Module kompilieren & installieren, depmod. (Reboot!)
+        4. Die Konfiguration der PNP-Karte auslesen mit:
+           "pnpdump > /etc/isapnp.conf".
+        5. Die Konfigurationsdatei "/etc/isapnp.conf" muß von Hand angepaßt
+           werden. Folgende Werte sind zu setzen:
+             INT0 - der von der Karte verwendete Interrupt
+                  (Default bei Teles 16.3 PNP: 10)
+             IO0, IO1 - die von der Karte verwendeten IO-Ports
+                  (Default bei Teles 16.3 PNP: 0x580 bzw. 0x180)
+                  (Achtung: diese Werte müssen 64bit aligned sein! Frühe
+                  Versionen der PNP-Karten schlagen evtl. falsche Werte vor!)
+        6. Aktivieren der Konfiguration per:
+           "isapnp /etc/isapnp.conf"
+           (muß bei jedem Booten gestartet werden)
+        7. Nun kann das HiSax-Modul gestartet werden mit:
+           "modprobe hisax io=4,<P>,<INT>,<IO0>,<IO1>"
+             4     - PNP-Karte
+             <P>   - Protokoll:
+                       2 - für Euro-ISDN (normalerweise)
+                       1 - für 1TR6-ISDN (deutscher Vorgänger von Euro-ISDN)
+             <INT> - der in /etc/isapnp.conf bei INT0 eingetragene Wert
+             <IO0> - der in /etc/isapnp.conf bei IO0 eingetragene Wert
+             <IO1> - der in /etc/isapnp.conf bei IO1 eingetragene Wert
 !verboff
-   Olav Brinkmann <olav@max.north.de> wrote: 
+
+!old 
+Q: Is there a trick to sometimes boot Linux with ISDN and sometimes
+   without?   
+A: Yes, you can use the run level for this (under SysVinit).
+   Emil Stephan <ste@esqhen.su.eunet.de> has written scripts:
 !verbon
-     The chargeint always hangs up two seconds before the end of the charge
-     unit. isdnlog, if compiled with -Dchargeint, sets the length of the
-     charge unit (i.e. Charge Interval) according to the time of day and the
-     date. An additional parameter for "-h" will reduce this length of time by
-     the given value. This additional paramet should not be used wotj
-     chargeint, otherwise chargein will end the connection too early. This
-     error increases with the number of charge units. Therefore: "-h0" to
-     aboid this problem. 
-       > /sbin/isdnctrl huptimeout ippp0 80  # in sec;
-     In this example is can be much short; I use 5 seconds. Then I can use the
-     last chage unit up th the last 7 seconds (huptimeout + 2 seconds
-     "chargeint reserve").
-       > /sbin/isdnctrl chargeint ippp0
-     Not needed; taken care of with by isdnlog with "-h".
-!verboff
-
-!old
-Q: How does the chargeint patch work?
-A: With the isdnctrl parameter "chargeset" you can set the length of a charge
-   unit, so that it can hang up at the correct time. However, since the length
-   of a charge unit depends on the time of day, day of week, holiday, etc., it
-   makes no sense to use a set value. Here's where isdnlog comes in. It
-   notices when a connection is established and calculates the length of a
-   charge unit depending on the time of day, day of week, holiday. This is
-   then given to isdnctrl, so it can hang up at the right time. isdnlog
-   "tunes" isdnctrl at each connection, and also during a connection (when
-   isdnlog is run with the "-w x" parameter). isdnlog allows isdnctrl exactly
-   2 seconds before the next charge unit to hang up, as long as the time
-   entered with "huptimeout" has elapsed with no data being transferred. The
-   transmission of a charge unit impulse is not necessary, since the times are
-   calculated closely enough. The charge unit impulse is sent a varying
-   intervals, so it cannot be relied upon
-
-!old
-Q: Is it normal that one receives a caller id from the Telekom only when one
-   is called from an ISDN number (and not from people that are directly on a
-   fully electronic switching center)? 
-A: Yes. These people have to apply with the Telekom for caller id (costs
-   nothing). Exceptions are that calls from countries that aren't so strict
-   about caller id (e.g. USA, Canada) always have the calling number sent.
-
-!old
-Q: I can I use Internet with the German T-Online with i4l?
-A: Rainer May <r_may@kahvi.desaster.heide.de> described it as follows:
-!verbon
-     (the same works of course with a modem. However, the initializing
-     sequence looks different.)
-     Step 1: Get diald. I don't know where to find it -  ask archie. 
-             (diald is used to set a default route to a physically
-             non-existant SLIP or CSLIP connection; when packets are set to
-             this pseudo-interface, diald establishes the (C)SLIP connection;
-             which packets start the connections and when/how the connection
-             is terminated can all be configured.) Then install the binary and
-             config files (you can use the sample files as they are, but if
-             you want e.g. ping to start a connection, you need to make minor
-             changes, the timeouts can also be adjusted as needed -  simply
-             try it out).
-     Step 2: Use a kernel with integrated SLIP/CSLIP or with SLIP/CSLIP
-             modules (which has to be loaded, of course).
-     Step 3: Isdn4Linux also has to be installed, of course; the important
-              part is the modem emulation (ttyIX),
-     Step 4: Start diald, e.g. with the following script (I call it
-             /etc/rc.d/rc.diald.t-online):
-     /usr/sbin/diald /dev/ttyI2 -m aslip local 192.168.90.9 \
-     remote 192.168.90.1 defaultroute dynamic modem crtscts \
-     lock speed 38400 connect "chat -v -f /etc/diald/t-online" \
-     mtu 1500 dslip-mode local-remote
-     (This can also be sensibly written in a _single_ line :-)
-     Step 5: Write the script, I call it "etc/diald/t-online".
-             Looks something like this:
-          TIMEOUT 30
-          ABORT "NO CARRIER"
-          ABORT ERROR
-          ABORT "NO DIALTONE"
-          ABORT BUSY
-          ABORT "NO ANSWER"
-          ABORT "NO MSN/EAZ"
-          "" ATZ
-          OK AT&B2000&E<MyMSN>&X1
-          OK ATD01910
-          CONNECT .
-          "[?25h" <ZugangsKennung>\c
-          "[?25h" ""
-          "[?25h" ""
-          "[?25h" <passwort>
-          "[?25h" *53#\c
-          "[?25h" *190144100#\c
-          "[?25h" 19\c
-          "STATUS OK" LIN
-          "" "OK"
-        Certain place holders need to be replaced, of cource:
-       <MyMSN> is the MSN, that you want to explore the world with.
-       <Zugangskennung>: The digit monster than usually begins with "000..." 
-                         that has been given to you by the Telekom.
-       <passwort>:       The password.
-     This example script assumes that the defult "Anschlußnummer" and
-     "Mitbenutzernummer" are used. If this is not the case, you have to
-     adjust the two lines before "[?25h" <passwort> accordingly. For example,
-     for the Mitbenutzernummer "0003", the line before "[?25h" <passwort>
-     should read:
-       "[?25h" 0003\c
-     (since the entry field is full after "0003", no CR is entered afterwards)
-     When diald is running, an interface "sl0" should suddenly be available
-     (ask ifconfig), and the default route should point to it (route -n will
-     tell you; without "-n", "route" will try to resolve the fantasy IP
-     addresses (which are later replaced with real addresses) -  we don't need
-     it do to that). Those who don't work only with numeric addresses, but
-     also want to successfully try to "ftp ftp.sunsite.edu", should of course
-     enter a name server in /etc/resolv.conf (one from the Telekom has the
-     address 94.25.2.129). Then start ftp, telnet, netscape, whatever. That's
-     it. By the way, diald will write novels in your syslog. You can read the
-     entire login procedure, even if it looks somewhat chaotic. If a request
-     doesn't work, use "kill" to stop daild (routes will be automatically
-     erased) and check the syslog -  if there is something like Zur Zeit 
-     keine verbindung möglich", then the Telekom's gateway is down.  Or
-     perhaps the login is incorrect... watch out, after three unsuccessful
-     login attempts, the login will be closed and has to be reactivated
-     (either per telephone or directly from BTX (e.g. seyon or minicom, dial 
-     01910, slowly go through the login screen by hand and follow the
-     instructions).
-!verboff
-   A further example with dip instead of diald can be found at:!br
-     !link http://www.rosat.mpe-garching.mpg.de/~web/ISDN.html;
-
-!old
-Q: I've set up an Internet connection over T-Online as described in in the
-   groups, but the chat scrupt fails ("Connect script failed").
-A: Gerhard Träger <gerhard@gt-priv.m.eunet.de>: wrote:
-!verbon
-     In the mentioned version of chat, there is a small mistake in logf():
-     it keeps writing in a 256 byte buffer until a line feed comes in. 
-     "T-Offline" sends many more bytes for its login page. Therefore, either
-     use chat without -v or enlarge the bugger (best with capacity checking).
+     On my computer I've defined 2 run levels (3 and 4), 3 runs without ISDN,
+     4 with. If I want to quit ISDN with all the associated processes like
+     ipppd, isdnlog and mgetty, as root I enter "init 3"; and to start "init
+     4". init then makes sure with "/sbin/init.d/i4l start" or 
+     "... stop" that the necessary things are done.
 !verboff
 
 !old
@@ -966,25 +797,95 @@ A: Andreas Kool <akool@Kool.f.EUnet.de> wrote on 14.10.1996:
 !verboff
 
 !old
-Q: Does the driver support "dial on demand"?
-A: Yes. If a network interface (e.g. "isdn0") is set up, the driver will dial
-   the number. If in addition a hang-up timeout (Idle Timeout) has been given,
-   isdnctrl huptime <interfaceY> time, then the driver will automatically hang
-   up when no data was been transferred over the interface for "time" seconds.
-   However, with syncPPP there are problems (see the syncPPP section),
-
-!old 
-Q: Is there a trick to sometimes boot Linux with ISDN and sometimes
-   without?   
-A: Yes, you can use the run level for this (under SysVinit).
-   Emil Stephan <ste@esqhen.su.eunet.de> has written scripts:
+Q: Kann ich den kerneld einsetzen, um die ISDN-Module bei Bedarf in den Kernel
+   zu binden?
+A: Emil Stephan <ste@esqhen.su.eunet.de> schrieb dazu am 15. Oktober 1996:
 !verbon
-     On my computer I've defined 2 run levels (3 and 4), 3 runs without ISDN,
-     4 with. If I want to quit ISDN with all the associated processes like
-     ipppd, isdnlog and mgetty, as root I enter "init 3"; and to start "init
-     4". init then makes sure with "/sbin/init.d/i4l start" or 
-     "... stop" that the necessary things are done.
+        Das Entladen der Module, wenn sie eine Minute lang nicht mehr
+        gebraucht wurden, macht der kerneld defaultmäßig. Das ist bei Modulen
+        wie Gerätetreibern ala Floppy etc. kein Problem; bei Treibern aber,
+        die irgendwelche Einstellungen über einen längeren Zeitraum behalten 
+        müssen, aber doch. Z.Bsp. sind die Einstellung des Mixers bei einer 
+        Soundkarte oder die Konfiguration von Dialin- und Dialout-Parametern
+        beim ISDN-Treiber solche. 
+        Das Entladen des ISDN-Treibers zerstört z.B. auch das IP-Interface
+        ippp0 oder isdn0. Die Einträge in der IP-Layer des Kernels gehen dann
+        ins Leere. Wenn man mal in die Start-Up-Skripten von i4l reinschaut,
+        wird man eine ganze Menge Dinge finden, die mit isdnctrl etc.
+        eingestellt werden; die müßte der kerneld bei jedem erneuten Laden
+        wieder einstellen lassen. Auch der Status des D-Kanals auf ISDN könnte
+        zu den Dingen gehören, die durch das Entladen verloren gehen.
+        Also mein Tip ist, nicht vom kerneld laden und entladen lassen,
+        sondern beim Systemstart laden und nur entladen, wenn es aus
+        technischen Gründen nötig ist.
 !verboff
+   Siehe dazu auch die Frage "Gibt es einen Trick, Linux mal mit, mal ohne 
+   ISDN-Subsystem zu booten?".!br
+   Markus Gutschke <gutschk@uni-muenster.de> setzte hinzu:
+!verbon
+        Genau für diesen Zweck gibt es seit geraumer Zeit in dem Modules
+        Paket eine Erweiterung, die es erlaubt, eine Datenbank mit
+        Zustandsinformationen über die Treiber zu installieren. Leider wird
+        dieses Feature bisher kaum oder gar nicht von den Modulen
+        unterstützt.
+        Als Alternative bieten sich auch solche Optionen wie der
+        "post-install" Hook in der "/etc/conf.modules" an. Es ist dann zwar
+        erforderlich, daß man von Hand die passenden Skripts schreibt, aber
+        im Prinzip funktioniert das dann genauso gut wie, wenn das Modul eine
+        automatische Initialisierung über eine Datenbank durchführen würde.
+!verboff
+
+Q: Wie komme ich zu einem für ISDN gepatchten tcpdump?
+A: Michael Stiller <michael@toyland.ping.de> schrieb dazu am 23. Okt 1996:!br
+   Tip zum ftp'en:!br
+     !link ftp://ftp.gwdg.de/pub/misc/isdn/linux/isdn4linux-gwdg;!br
+   Da gibts den patch: "tcpdump-3.0.4-1-isdn.dif.gz"!br
+   und den Rest unter:!br
+     !link /pub/linux/mirrors/funet/PEOPLE/Linus/net-source/tools/tcpdump-3.0.4-1.tar.gz;!br
+   Evtl muß man im Patch je nach Namen seines ISDN Interfaces (bei mir bri0)
+   noch weitere Möglichkeiten dazu hacken. Defaultmäßig kennt das Teil nur
+   isdn* und isdnY* als Interfacenamen.!br
+   Weiterhin schrieb Henning Schmiedehausen <henning@pong.iconsult.com> zu
+   diesem Thema am 30. Okt 1996:
+!verbon
+        Nachdem auch der Patch vom Eberhard Moenkeberg auf ftp.gwdg.de kein
+        cisco-hdlc ausdumpen kann, habe ich hier mal einen isdn-patch fuer
+        tcpdump-3.0.4 gemacht, der das Interface fragt, was fuer eine
+        Encapsulation es benutzt und sich entsprechend einstellt. Das Teil ist
+        gegen eine tcpdump-3.0.4-1.tar.gz Distribution, wie sie z.B. auf
+          !link ftp://ftp.funet.fi/pub/Linux/PEOPLE/Linus/tools; liegt,
+        gemacht. Dieser Patch erkennt RAW-IP, ISDN-IP und CISCO-HDLC und kann
+        die Pakete entspr. dumpen.
+!verboff
+   [An seiner Mail hing der Patch - er sollte sich einfach im Archiv der
+   Mailingliste wiederfinden lassen - die Red.]!br
+   Sascha Ottolski <sascha@alzhimer.isdn.cs.tu-berlin.de> hatte noch folgenden
+   Tip am 5. Nov 1996:
+!verbon
+        Es gibt doch isdn4k-utils-2.0/tcpdump-3.0.3-isdn.diff ! Damit klappts,
+        sofern man noch selbst Hand anlegt:
+        In der Datei tcpdump-3.0.3-isdn/libpcap-0.0/pcap-linux.c steht nach
+        dem Patch irgendwo folgendes:
+            else if (strncmp("ppp", device, 3) == 0)
+        Entweder man nennt seine ppp-devices irgendwie pppX statt ipppX, oder
+        ändert die Zeile z.B. in
+            else if (strncmp("ippp", device, 4) == 0)
+                              ^^^^          ^^
+        Dann erkennt tcpdump auch sync-ppp. Jedenfalls bei mir.
+!verboff
+
+Q: Wie kann ich Benutzerrechte für die Verwendung von ISDN einrichten?
+A: Henner Eisen <eis@baty.hanse.de> schrieb dazu am 13. Feb 1997:
+   Den Zugang über isdn-ttys kann man (ganz nach Unix-Philosophie)
+   beschränken, indem man in /etc/group eine Group (z.B. 'isdn') einrichtet,
+   und dann
+!verbon
+       chgrp isdn /dev/ttyI* /dev/cui*
+       chmod o-rw /dev/ttyI* /dev/cui*
+!verboff
+   allen Usern außer denen in der Gruppe 'isdn' die Lese/Schreibrechte für
+   die ISDN-ttys entzieht. Diejenigen, die ISDN benutzen dürfen, muß man dann
+   explizit zum Mitglied der Gruppe 'isdn' machen.
 
 
 !3MSN
@@ -1108,6 +1009,22 @@ A:  You can enter do this by entering the correct kernel options at boot.
     "/usr/src/linux/drivers/isdn/teles/config.c" to reflect the correct
     settings for your card(s). (read comments in that file)
 
+Q: I'm confused: according to the documentation, my Teles card is configured for 
+   IO address 0x180. In Linux (and also in some Windows programs)
+   the address is shown as 0xd80?
+A: The card uses both IO addresses! Karsten Keil
+   <keil@temic-ech.spacenet.de> wrote on 3 Jan 1997:
+!verbon
+        The addresses actually used are:
+          isac 980
+          hscx 180/580
+          cfg  d80
+        The confusion is the result of a misunderstanding. Teles gives the
+        HSCX0 address as a reference, while the old Teles driver needs the
+        cfg address. Since users were confused by this, both driver can 
+        now use either address (which confuses the users even further ;-))
+!verboff
+
 !old
 Q:  When compiling the teles drivers I get an error similar to: too many
     arguments to function _get_free_pages_R5243d78b'?
@@ -1124,7 +1041,7 @@ A:  From a certain kernel in 1.3.x the calling of kernel function
 
 !old
 Q:  I'm using kernel 1.3.x, the telesdriver compiles fine, all the
-    correction parameters are set in config.c but still the card won't work.
+    correct parameters are set in config.c, but the card still won't work.
 A:  From a certain kernel in 1.3.x the timer was altered. You should comment
     out the #define NEW_TIMERS line in teles/teles.h.
 !verbon
@@ -1142,7 +1059,8 @@ A:  Yes, it is. All the parameters should be entered in teles/config.c.
        /* u.s.w. */
      };
 !verboff
-  On 6-10-1996 Christian Kratzer <ck@toplink.net> suggested:
+  On 6-10-1996 Christian Kratzer <ck@toplink.net> suggested
+  (lines beginning with "io=" belong at the end of the previous line):
 !verbon
      # load modules
      /sbin/modprobe isdn.o
@@ -1165,6 +1083,16 @@ A: During booting a message "kernel: HSCX version A:5 B:5" and "kernel:
    (in particular A:0 B:0 or A:f B:f) mean the card is not recognized 
    correctly.!br
    Also check under Troubleshooting|Teles.
+
+Q: Where can I send complaints to Teles?
+A: At the  Email addresse"vertrieb@teles.de". They also have 
+   WWW pages: !link http://www.teles.de/;!br
+   Karl Heinz Kremer <khk@specht.stuttgart.netsurf.de> added
+   on 2 Jan 1997:
+!verbon
+        If you want to read more about Teles's business practices, look at
+          !link http://www.inx.de/~chris/isdn.htm; an.
+!verboff
 
 
 !3HiSax driver
