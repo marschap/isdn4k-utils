@@ -1,4 +1,4 @@
-/* $Id: isdnlog.h,v 1.24 1999/12/31 13:30:02 akool Exp $
+/* $Id: isdnlog.h,v 1.25 2001/06/08 11:55:24 kai Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnlog.h,v $
+ * Revision 1.25  2001/06/08 11:55:24  kai
+ * fix to compile with newer kernel headers. Maybe someone wants to fix isdnlog to recognize the number of channels at run time?
+ *
  * Revision 1.24  1999/12/31 13:30:02  akool
  * isdnlog-4.00 (Millenium-Edition)
  *  - Oracle support added by Jan Bolt (Jan.Bolt@t-online.de)
@@ -438,8 +441,12 @@ _EXTERN	char   *outfile;
 _EXTERN	char    tmpout[PATH_MAX];
 _EXTERN int     readkeyboard;
 _EXTERN	int	other;
-_EXTERN IFO     ifo[ISDN_MAX_CHANNELS];
-_EXTERN IO      io[ISDN_MAX_CHANNELS];
+
+// I think 16 is the maximum isdnlog currently handles, but to
+// be on the safe side, keep it at 64
+
+_EXTERN IFO     ifo[64];
+_EXTERN IO      io[64];
 
 #undef _EXTERN
 
