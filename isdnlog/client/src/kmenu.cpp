@@ -1,4 +1,4 @@
-/* $Id: kmenu.cpp,v 1.2 1998/05/10 23:40:09 luethje Exp $
+/* $Id: kmenu.cpp,v 1.3 1998/05/11 00:02:39 luethje Exp $
  *
  * kisdnog for ISDN accounting for isdn4linux. (Report-module)
  *
@@ -20,6 +20,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: kmenu.cpp,v $
+ * Revision 1.3  1998/05/11 00:02:39  luethje
+ * Made some changes
+ *
  * Revision 1.2  1998/05/10 23:40:09  luethje
  * some changes
  *
@@ -33,7 +36,7 @@
 
 KMenu::KMenu(KConnection *newmainwin, bool logVisible) : KMenuBar(newmainwin)
 {
-	QString HelpText;
+	char HelpText[300];
 	mainwin = newmainwin;
 
 	fileMenu = new QPopupMenu();
@@ -56,9 +59,8 @@ KMenu::KMenu(KConnection *newmainwin, bool logVisible) : KMenuBar(newmainwin)
 
 //	helpMenu = new KPopupMenu();
 
-Warum jetzt Segmentation fault ??
-	HelpText = KISDNLOG_NAME" "VERSION"\n\n"DEV_SL"\n"DEV_CW"\n\n";
-	HelpText += klocale->translate("monitoring tool for the isdnlog");
+	strcpy(HelpText,KISDNLOG_NAME" "VERSION"\n\n"DEV_SL"\n"DEV_CW"\n\n");
+	strcat(HelpText,klocale->translate("monitoring tool for the isdnlog"));
 	QPopupMenu *helpMenu = kapp->getHelpMenu(TRUE, HelpText);
 
 	insertItem(klocale->translate("&File"), fileMenu);
