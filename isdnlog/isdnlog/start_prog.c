@@ -1,4 +1,4 @@
-/* $Id: start_prog.c,v 1.14 1999/10/25 18:33:15 akool Exp $
+/* $Id: start_prog.c,v 1.15 1999/11/03 17:54:13 paul Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: start_prog.c,v $
+ * Revision 1.15  1999/11/03 17:54:13  paul
+ * Fixed empty lines in syslog if program could not be started.
+ *
  * Revision 1.14  1999/10/25 18:33:15  akool
  * isdnlog-3.57
  *   WARNING: Experimental version!
@@ -266,7 +269,8 @@ int Ring(info_args *Cmd, char *Opts[], int Die, int Async)
 		if (Async == 1)
 		{
 			while(fgets(String,LONG_STRING_SIZE,fp) != NULL)
-				print_msg(PRT_PROG_OUT,"%s\n",String);
+				if (!feof(fp) || String[0])
+					print_msg(PRT_PROG_OUT,"%s\n",String);
 
 			waitpid(pid,NULL,0);
 			fclose(fp);
@@ -564,8 +568,12 @@ static void KillCommand(int sock)
 
 	if (sock > 0)
 	{
-		while (fgets(String,LONG_STRING_SIZE,sockets[sock].fp))
-			print_msg(PRT_PROG_OUT,"%s\n",String);
+		if (!feof(sockets[sock].fp))
+		{
+			while (fgets(String,LONG_STRING_SIZE,sockets[sock].fp))
+				if (String[0])
+					print_msg(PRT_PROG_OUT,"%s\n",String);
+		}
 
 		kill(sockets[sock].pid, SIGTERM);
 		kill(sockets[sock].pid, SIGKILL);
@@ -708,7 +716,8 @@ int Print_Cmd_Output( int sock )
 
 	fgets(String,LONG_STRING_SIZE,sockets[sock].fp);
 
-	print_msg(PRT_PROG_OUT,"%s\n",String);
+	if (!feof(sockets[sock].fp) || String[0])
+		print_msg(PRT_PROG_OUT,"%s\n",String);
 
 	return 0;
 }
