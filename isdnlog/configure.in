@@ -136,8 +136,8 @@ if test -e tools/cdb/i4l_cdb.c  ; then
     AC_MSG_RESULT(Using 'cdb' as database)
 else
 AC_CHECK_LIB(gdbm, gdbm_open, DBMLIB=-lgdbm; AC_DEFINE(HAVE_LIBGDBM),
-	AC_CHECK_LIB(dbm, dbm_open, DBMLIB=-ldbm; AC_DEFINE(HAVE_LIBDBM),
-		AC_CHECK_LIB(db, dbm_open, DBMLIB=-ldb; AC_DEFINE(HAVE_LIBDB))))
+	[AC_CHECK_LIB(dbm, dbm_open, DBMLIB=-ldbm; AC_DEFINE(HAVE_LIBDBM),
+		[AC_CHECK_LIB(db, dbm_open, DBMLIB=-ldb; AC_DEFINE(HAVE_LIBDB))])])
 fi
 AC_DEFINE_UNQUOTED(RDBEXT,"$RDBEXT")
 

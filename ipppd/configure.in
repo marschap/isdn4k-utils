@@ -21,7 +21,7 @@ AC_FIND_KERNEL
 
 dnl Checks for libraries.
 AC_CHECK_LIB(bsd, daemon,HAVE_LIBBSD=1; AC_DEFINE(HAVE_LIBBSD),
-	AC_MSG_WARN(Could not find libbsd, build disabled))
+	[AC_MSG_WARN(Could not find libbsd, build disabled)])
 dnl Replace `main' with a function in -lcrypt:
 AC_CHECK_LIB(crypt, main,HAVE_LIBCRYPT=1; AC_DEFINE(HAVE_LIBCRYPT))
 AC_CHECK_LIB(des, des_ecb_encrypt, HAVE_LIBDES=1; AC_DEFINE(HAVE_LIBDES))

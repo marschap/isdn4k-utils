@@ -23,7 +23,7 @@ AC_CHECK_HEADERS(fcntl.h sys/ioctl.h unistd.h)
 dnl Find current kernel source
 AC_FIND_KERNEL
 AC_CHECK_HEADERS($CONFIG_KERNELDIR/drivers/isdn/act2000/act2000.h,,
-	AC_MSG_ERROR("Not found. You MUST specify a correct path to linux source!")
+	[AC_MSG_ERROR([Not found. You MUST specify a correct path to linux source!])]
 )
 
 dnl Checks for typedefs, structures, and compiler characteristics.

@@ -18,7 +18,7 @@
  * IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Id: ipppd.h,v 1.20 2000/07/25 20:23:51 kai Exp $
+ * $Id: ipppd.h,v 1.21 2002/07/06 00:11:18 keil Exp $
  */
 
 /*
@@ -48,6 +48,7 @@
 # include <utmp.h>
 #endif
 
+#if 0
 #include <linux/version.h>
 #if (LINUX_VERSION_CODE < ((0x020100)+88))
 #define ISDN_PPP_COMP_MAX_OPTIONS 16
@@ -57,6 +58,7 @@ struct isdn_ppp_comp_data {
         int optlen;
         int flags;
 };
+#endif
 #endif
 
 #ifndef PPP_LINK_CCP

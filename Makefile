@@ -1,11 +1,11 @@
-# $Id: Makefile,v 1.50 2002/07/04 10:20:06 paul Exp $
+# $Id: Makefile,v 1.51 2002/07/06 00:11:16 keil Exp $
 #
 # Toplevel Makefile for isdn4k-utils
 #
 
 .EXPORT_ALL_VARIABLES:
 
-export I4LVERSION = 3.1pre4
+export I4LVERSION = 3.1
 
 all:	do-it-all
 
@@ -24,11 +24,13 @@ CONFIGURATION = config
 do-it-all:      config
 endif
 
-EXTRADIRS = isdnlog/tools/cdb isdnlog/tools/zone isdnlog/tools/dest
+EXTRADIRS = isdnlog/tools/zone isdnlog/tools/dest
 
+BUILD_ONLY :=
 SUBDIRS :=
 ifeq ($(CONFIG_ISDNLOG),y)
 	SUBDIRS := $(SUBDIRS) lib $(EXTRADIRS) isdnlog
+	BUILD_ONLY := isdnlog/tools/cdb
 else
 	ifeq ($(CONFIG_CTRL_CONF),y)
 		SUBDIRS := $(SUBDIRS) lib
@@ -119,7 +121,7 @@ ifneq ($(SUBDIRS),)
 endif
 
 subtargets: $(CONFIGURATION)
-	set -e; for i in `echo $(SUBDIRS)`; do $(MAKE) -C $$i all; done
+	set -e; for i in `echo $(BUILD_ONLY) $(SUBDIRS)`; do $(MAKE) -C $$i all; done
 
 rootperm:
 	@echo 'main(int argc,char**argv){unlink(argv[0]);return(getuid()==0);}'>g
@@ -153,7 +155,7 @@ clean:
 	for i in `echo ${wildcard */Makefile}`; do \
 		$(MAKE) -i -C `dirname $$i` clean; \
 	done;
-	for i in `echo $(EXTRADIRS)`; do \
+	for i in `echo $(BUILD_ONLY) $(EXTRADIRS)`; do \
 		if [ -f $$i/Makefile ]; then $(MAKE) -i -C $$i clean; fi; \
 	done;
 	-rm -f *~ *.o
@@ -170,7 +172,7 @@ distclean: clean
 			$(MAKE) -i -C `dirname $$i` distclean; \
 		fi ; \
 	done;
-	for i in `echo $(EXTRADIRS)`; do \
+	for i in `echo $(BUILD_ONLY) $(EXTRADIRS)`; do \
 		if [ -f $$i/Makefile ]; then $(MAKE) -i -C $$i distclean; fi; \
 	done;
 	-rm -f *~ .config .config.old scripts/autoconf.h .menuconfig \
@@ -196,8 +198,8 @@ cfgerror:
 #  - if a Makefile already exists, make config
 #
 subconfig: scripts/autoconf.h
-	@echo Selected subdirs: $(SUBDIRS)
-	@set -e; for i in `echo $(SUBDIRS)`; do \
+	@echo Selected subdirs: $(BUILD_ONLY) $(SUBDIRS)
+	@set -e; for i in `echo $(BUILD_ONLY) $(SUBDIRS)`; do \
 		if [ -x $$i/configure ] ; then \
 			/bin/echo -e "\nRunning configure in $$i ...\n"; sleep 1; \
 			(cd $$i; ./configure --sbindir=$(CONFIG_SBINDIR) --bindir=$(CONFIG_BINDIR) --mandir=$(CONFIG_MANDIR) --datadir=$(CONFIG_DATADIR) || $(MAKE) -C ../ ERRDIR=$$i cfgerror); \

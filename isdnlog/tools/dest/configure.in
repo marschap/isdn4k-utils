@@ -23,9 +23,9 @@ else
 dnl Checks for libraries.
 dnl Berkeley DB appends RDBEXT
 AC_CHECK_LIB(gdbm, gdbm_open, DBMLIB=-lgdbm;DBEXT=".gdbm";RDBEXT=".gdbm"; AC_DEFINE(HAVE_LIBGDBM),
-	AC_CHECK_LIB(dbm, dbm_open, DBMLIB=-ldbm;RDBEXT=".db"; AC_DEFINE(HAVE_LIBDBM),
-		AC_CHECK_LIB(db, dbm_open, DBMLIB=-ldb;RDBEXT=".db"; AC_DEFINE(HAVE_LIBDB),
-			AC_MSG_ERROR('No db found'))))
+	[AC_CHECK_LIB(dbm, dbm_open, DBMLIB=-ldbm;RDBEXT=".db"; AC_DEFINE(HAVE_LIBDBM),
+		[AC_CHECK_LIB(db, dbm_open, DBMLIB=-ldb;RDBEXT=".db"; AC_DEFINE(HAVE_LIBDB),
+			[AC_MSG_ERROR([No db found])])])])
 
 dnl Checks for header files.
 fi

@@ -22,15 +22,15 @@ dnl Checks for header files.
 AC_HEADER_STDC
 AC_CHECK_HEADERS(sys/time.h unistd.h)
 AC_CHECK_HEADERS(ncurses.h,,
-	AC_CHECK_HEADERS(ncurses/curses.h,,
-		AC_CHECK_HEADERS(curses/ncurses.h,,
-			AC_CHECK_HEADERS(curses.h,,
-				AC_MSG_ERROR("Missing \(n\)curses.h")))))
+	[AC_CHECK_HEADERS(ncurses/curses.h,,
+		[AC_CHECK_HEADERS(curses/ncurses.h,,
+			[AC_CHECK_HEADERS(curses.h,,
+				[AC_MSG_ERROR([Missing \(n\)curses.h])])])])])
 
 dnl Check for linux/isdn.h, give up if not found.
 AC_FIND_KERNEL
 AC_CHECK_FILE($CONFIG_KERNELDIR/include/linux/isdn.h,,
-	AC_MSG_ERROR("Missing $CONFIG_KERNELDIR/include/linux/isdn.h. Kernel source installed?")
+	[AC_MSG_ERROR([Missing $CONFIG_KERNELDIR/include/linux/isdn.h. Kernel source installed?])]
 )
 
 dnl Checks for typedefs, structures, and compiler characteristics.

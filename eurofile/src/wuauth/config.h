@@ -1,8 +1,12 @@
 /*
  * Linux configuration file
- * $Id: config.h,v 1.2 1999/10/05 21:23:23 he Exp $
+ * $Id: config.h,v 1.3 2002/07/06 00:11:18 keil Exp $
  */
+#if 0
 #include <linux/version.h>
+#else
+#define LINUX_VERSION_CODE 0x020404
+#endif
 #if defined(LINUX_VERSION_CODE)
 #if LINUX_VERSION_CODE >= 66061
 /* 1.2.13 or later */
