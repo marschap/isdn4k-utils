@@ -1,3 +1,10 @@
+2004-12-16  Tobias Becker  <tobiasb@isdn4linux.de>
+
+	* rep_main.c (parse_options, main): New option `-U', sets default
+	source number for outgoing calls if missing in log entry.
+	* isdnrep.h (defsrc): New global variable for `-U' option.
+	* isdnrep.c (repair): Apply `-U' option.
+
 2004-07-25  Tobias Becker  <tobiasb@isdn4linux.de>
 
 	* rep_main.c (parse_options): New option `-m', multiplies or divides

@@ -1,5 +1,5 @@
-.\" $Id: isdnrep.1.in,v 1.8 2004/07/25 14:21:13 tobiasb Exp $
-.\" CHECKIN $Date: 2004/07/25 14:21:13 $
+.\" $Id: isdnrep.1.in,v 1.9 2004/12/16 21:30:50 tobiasb Exp $
+.\" CHECKIN $Date: 2004/12/16 21:30:50 $
 .TH isdnrep 1 "@MANDATE_ISDNREP@" "ISDN 4 Linux @I4LVERSION@" "Linux System Commands"
 
 .PD 0
@@ -115,6 +115,14 @@ E.g.: "m2" means MSN#2. If "m0" is given, all numbers are to be displayed.
 If the flag 'n' is given, the given number is
 .B not
 to be displayed.
+
+.TP
+.B \-U [_][.]'number'  default source number
+Use 'number' as source number for outgoing calls with an unknown source
+number ("?").  '.' is replaced by country and area code from @CONFFILE@.
+
+With '_' the default source number is used internally (e.g. for fetching
+the right zone names from the ratefile) but it is not displayed.
 
 .TP
 .B \-i	incoming

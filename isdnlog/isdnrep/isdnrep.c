@@ -1,4 +1,4 @@
-/* $Id: isdnrep.c,v 1.101 2004/07/25 14:21:13 tobiasb Exp $
+/* $Id: isdnrep.c,v 1.102 2004/12/16 21:30:50 tobiasb Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -24,6 +24,9 @@
  *
  *
  * $Log: isdnrep.c,v $
+ * Revision 1.102  2004/12/16 21:30:50  tobiasb
+ * New option -U: default source number for outgoing calls.
+ *
  * Revision 1.101  2004/07/25 14:21:13  tobiasb
  * New isdnrep option -m [*|/]number.  It multiplies or divide the cost of
  * each call by the given number.  `-m/1.16' for example displays the costs
@@ -2426,7 +2429,12 @@ static void repair(one_call *cur_call)
   TELNUM srcnum, destnum;
 	int have_z;    /* Zone Rate.z from getZone valid or not */
 	int best_zone; /* =Rate.z if valid or =Rate.zone if Rate.z invalid */
+  int is_defsrc = 0; /* default source number used or not */
 
+  if (cur_call->dir == DIALOUT && !*cur_call->num[CALLING] && defsrc.mode > 0) {
+    Strncpy(cur_call->num[CALLING], defsrc.number, NUMSIZE);
+    ++is_defsrc;
+  }
   if (*cur_call->num[CALLING]) {
     normalizeNumber(cur_call->num[CALLING],&srcnum,TN_ALL);
     strcpy(cur_call->sarea[CALLING], srcnum.sarea);
@@ -2576,6 +2584,8 @@ static void repair(one_call *cur_call)
 			} /* if valid zones_.. index */
     } /* if getRate sucessful */
   } /* if DIALOUT && duration > && num[CALLED] */
+  if (is_defsrc && defsrc.mode == 2) /* do not display default source number */
+    *cur_call->num[CALLING] = 0;
 } /* repair */
 
 /*****************************************************************************/
@@ -2730,7 +2740,7 @@ static int set_caller_infos(one_call *cur_call, char *string, time_t from)
 	/* repair() recalculates the connection cost for entries with LOG_VERSION
    * older than the current and sets cur_call->zone for outgoing calls with
    * recorded one of -1 (=UNKNWON).  The necessary information is taken from
-   * the current rate-file.  The -r option is also handled there.
+   * the current rate-file.  The -r and -U options are also handled there.
    */
   repair(cur_call);
 

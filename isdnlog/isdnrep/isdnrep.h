@@ -1,4 +1,4 @@
-/* $Id: isdnrep.h,v 1.24 2004/07/25 14:21:13 tobiasb Exp $
+/* $Id: isdnrep.h,v 1.25 2004/12/16 21:30:50 tobiasb Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnrep.h,v $
+ * Revision 1.25  2004/12/16 21:30:50  tobiasb
+ * New option -U: default source number for outgoing calls.
+ *
  * Revision 1.24  2004/07/25 14:21:13  tobiasb
  * New isdnrep option -m [*|/]number.  It multiplies or divide the cost of
  * each call by the given number.  `-m/1.16' for example displays the costs
@@ -232,6 +235,13 @@ typedef struct {
 } MODCOST;
 
 /*****************************************************************************/
+
+typedef struct {
+  int    mode;    /* 0 no action, 1 use and show, 2 only use */
+  char  *number;  /* replacement for missing source numbers */
+} DEFSRC;
+
+/*****************************************************************************/
 /* isdnrep.c defines _REP_FUNC_C_, rep_main.c defines _ISDNREP_C_, ... */
 #ifdef _REP_FUNC_C_
 #define _EXTERN
@@ -284,6 +294,7 @@ _EXTERN int     preselect	_SET_33;
 _EXTERN int     summary		_SET_0;
 _EXTERN RECALC  recalc; /* initiation done in main */
 _EXTERN MODCOST modcost;        /* initiation done in main */
+_EXTERN DEFSRC  defsrc;         /* initiation done in main */
 _EXTERN int     sel_sums[3]     _SET_ARRAY_0;
 _EXTERN bitfield days[2]        _SET_ARRAY_0;
 _EXTERN bitfield hours[2]       _SET_ARRAY_0;
