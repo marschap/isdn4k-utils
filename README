@@ -1,5 +1,5 @@
 #
-# $Id: README,v 1.13 2000/01/30 17:30:32 kai Exp $
+# $Id: README,v 1.14 2000/01/31 15:27:59 kai Exp $
 #
 This is the README file for the "isdn4k-utils" package from "The i4l-crew".
 
@@ -42,8 +42,9 @@ This package contains the following stuff:
   isdnrate.1, rate-files.5, xisdnload.1x and xmonisdn.1x
 
 IMPORTANT:
-  This will be the last release of isdn4k-utils as is. From now (February 2000) on,
-  the package will be splitted into the following packages:
+  This will be the last release of isdn4k-utils as is. From now 
+  (February 2000) on, the package will be splitted into the 
+  following packages:
 
   base: common configuration tools and Documentation
   isdnlog: D-Channel logging, charge calculation etc.
