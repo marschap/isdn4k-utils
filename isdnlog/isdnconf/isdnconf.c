@@ -1,4 +1,4 @@
-/* $Id: isdnconf.c,v 1.7 1997/05/05 21:04:15 luethje Exp $
+/* $Id: isdnconf.c,v 1.8 1997/05/05 21:21:42 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -19,9 +19,8 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnconf.c,v $
- * Revision 1.7  1997/05/05 21:04:15  luethje
- * README completed
- * some changes for the isdnmon
+ * Revision 1.8  1997/05/05 21:21:42  luethje
+ * bugfix for option -M
  *
  * Revision 1.6  1997/04/15 00:20:01  luethje
  * replace variables: some bugfixes, README comleted
@@ -363,7 +362,7 @@ int look_data(section **conf_dat)
 			{
 				int Ret2 = 0;
 
-				if (!strcmp(_si,si))
+				if (*_si == '\0' || !strcmp(_si,si))
 					Ret2 = 1;
 
 				if (and)
@@ -527,6 +526,7 @@ int main(int argc, char *argv[], char *envp[])
 
 			case 'M' : isdnmon++;
 			           oneentry++;
+			           and++;
 			           quiet++;
 			           strcpy(areacode, optarg);
 			           strcpy(number, optarg);
