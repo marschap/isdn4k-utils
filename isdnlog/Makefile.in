@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.26 1997/05/19 22:58:02 luethje Exp $
+## $Id: Makefile.in,v 1.27 1997/05/20 19:00:51 luethje Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,9 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.27  1997/05/20 19:00:51  luethje
+## some primitve changes
+##
 ## Revision 1.26  1997/05/19 22:58:02  luethje
 ## - bugfix: it is possible to install isdnlog now
 ## - improved performance for read files for vbox files and mgetty files.
@@ -320,7 +323,7 @@ install: depend all rootperm installdirs
 		 && mv $(I4LCONFDIR)/$(OLDCONFFILE) $(I4LCONFDIR)/$(OLDCONFFILE).old
 		$(GENCONF) $(I4LCONFDIR)/$(CONFFILE) $(I4LCONFDIR)/$(CALLERIDFILE)
 		@echo "Generate config files. Wait a moment..."
-		@$(ISDNCONF) -c 040 1>/dev/null 2>&1
+		-@$(ISDNCONF) -c 040 1>/dev/null 2>&1 || echo "Can not read areacode/avon lib."
 		$(INSTALL_BIN) $(ISDNLOG)  $(SBINDIR)
 		$(INSTALL_BIN) $(ISDNREP)  $(BINDIR)
 		$(INSTALL_BIN) $(ISDNCONF) $(BINDIR)
