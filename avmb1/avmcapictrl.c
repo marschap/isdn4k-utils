@@ -1,11 +1,14 @@
 /*
- * $Id: avmcapictrl.c,v 1.13 1999/12/06 17:01:51 calle Exp $
+ * $Id: avmcapictrl.c,v 1.14 2000/01/28 16:36:19 calle Exp $
  * 
  * AVM-B1-ISDN driver for Linux. (Control-Utility)
  * 
  * Copyright 1996 by Carsten Paeth (calle@calle.in-berlin.de)
  * 
  * $Log: avmcapictrl.c,v $
+ * Revision 1.14  2000/01/28 16:36:19  calle
+ * generic addcard (call add_card function of named driver)
+ *
  * Revision 1.13  1999/12/06 17:01:51  calle
  * more documentation and possible errors explained.
  *
@@ -89,6 +92,9 @@ void usage(void)
 	fprintf(stderr, "   or: %s remove [contrnr] (reset controller)\n", cmd);
 #ifdef KCAPI_CMD_TRACE
 	fprintf(stderr, "   or: %s trace [contrnr] [off|short|on|full|shortnodate|nodata]\n", cmd);
+#endif
+#ifdef KCAPI_CMD_ADDCARD
+	fprintf(stderr, "   or: %s addcard <driver> <portbase> <irq> [ <membase> [ <cardnr> ] ]\n", cmd);
 #endif
 	exit(1);
 }
@@ -341,9 +347,6 @@ int main(int argc, char **argv)
 	avmb1_loadandconfigdef ldef;
 	avmb1_resetdef rdef;
         avmb1_getdef gdef;
-#ifdef KCAPI_CMD_TRACE
-	kcapi_flagdef fdef;
-#endif
 	int newdriver;
 	char *dn1 = 0;
 	char *spid1 = 0;
@@ -574,6 +577,7 @@ int main(int argc, char **argv)
 	}
 #ifdef KCAPI_CMD_TRACE
 	if (!strcasecmp(argv[arg_ofs], "trace")) {
+		kcapi_flagdef fdef;
 		char *s = 0;
 		fdef.contr = 1;
 		fdef.flag = 0;
@@ -616,6 +620,73 @@ int main(int argc, char **argv)
 		if (fdef.flag != KCAPI_TRACE_OFF)
 		    printf("%s: trace switched on, look at the kernel messages, check dmesg(8)\n", cmd);
 	        else printf("%s: trace switched off\n", cmd);
+		return 0;
+	}
+#endif
+#ifdef KCAPI_CMD_ADDCARD
+	if (!strcasecmp(argv[arg_ofs], "addcard")) {
+		kcapi_carddef carddef;
+		char *s = 0;
+	        int port;
+		int irq;
+		int cardnr = 0;
+		unsigned long membase = 0;
+
+                memset(&carddef, 0, sizeof(carddef));
+
+		if (ac >= 5) {
+			s = argv[arg_ofs + 1];
+			if (strlen(s) > sizeof(carddef.driver)) {
+				fprintf(stderr, "%s: driver name > %d\n",
+						cmd, sizeof(carddef.driver));
+				exit(1);
+			}
+			strncpy(carddef.driver, s, sizeof(carddef.driver));
+
+			if (sscanf(argv[arg_ofs + 2], "%i", &port) != 1) {
+				fprintf(stderr, "%s: invalid port \"%s\"\n",
+						cmd, argv[arg_ofs + 2]);
+				exit(1);
+			}
+			carddef.port = port;
+
+			if (sscanf(argv[arg_ofs + 3], "%i", &irq) != 1) {
+				fprintf(stderr, "%s: invalid irq \"%s\"\n",
+						cmd, argv[arg_ofs + 3]);
+				exit(1);
+			}
+			carddef.irq = irq;
+
+			if (argv[arg_ofs + 4]) {
+			   if (sscanf(argv[arg_ofs + 4], "%li", &membase) != 1) {
+			   	fprintf(stderr, "%s: invalid membase \"%s\"\n",
+						cmd, argv[arg_ofs + 4]);
+				exit(1);
+			   }
+			   carddef.membase = membase;
+
+			   if (argv[arg_ofs + 5]) {
+			      if (sscanf(argv[arg_ofs + 5], "%i", &cardnr) != 1) {
+			   	fprintf(stderr, "%s: invalid cardnr \"%s\"\n",
+						cmd, argv[arg_ofs + 5]);
+				exit(1);
+			      }
+			      carddef.cardnr = cardnr;
+			   }
+			}
+		} else {
+			fprintf(stderr, "%s: missing arguments\n", cmd);
+			usage();
+			exit(1);
+		}
+
+		ioctl_s.cmd = KCAPI_CMD_ADDCARD;
+		ioctl_s.data = &carddef;
+		if ((ioctl(fd, CAPI_MANUFACTURER_CMD, &ioctl_s)) < 0) {
+			perror("\nioctl ADDCARD");
+			exit(2);
+		}
+		close(fd);
 		return 0;
 	}
 #endif
