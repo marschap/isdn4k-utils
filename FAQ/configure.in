@@ -13,8 +13,8 @@ dnl Checks for programs.
 AC_PROG_INSTALL
 AC_PATH_PROG(C_ZIP, zip,,$PATH:/usr/sbin:/sbin:/usr/local/bin)
 AC_PATH_PROG(C_GZIP, gzip,,$PATH:/usr/sbin:/sbin:/usr/local/bin)
-AC_PATH_PROG(C_SGML2HTML, sgml2html,,$PATH:/usr/sbin:/sbin:/usr/local/bin)
-AC_PATH_PROG(C_SGML2TXT, sgml2txt,,$PATH:/usr/sbin:/sbin:/usr/local/bin)
+AC_PATH_PROG(C_SGML2HTML, sgml2html,sgml2html-not-found-or-installed,$PATH:/usr/sbin:/sbin:/usr/local/bin)
+AC_PATH_PROG(C_SGML2TXT, sgml2txt,sgml2txt-not-found-or-installed,$PATH:/usr/sbin:/sbin:/usr/local/bin)
 
 dnl Check where to install.
 AC_ARG_WITH(dest,[  --with-dest=DIR         set installation directory], \
