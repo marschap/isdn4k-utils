@@ -1,4 +1,4 @@
-/* $Id: iprofd.c,v 1.8 2000/03/03 12:45:53 calle Exp $
+/* $Id: iprofd.c,v 1.9 2001/01/06 18:25:05 kai Exp $
 
  * Daemon for saving ttyIx-profiles to a file.
  *
@@ -21,33 +21,6 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
- * $Log: iprofd.c,v $
- * Revision 1.8  2000/03/03 12:45:53  calle
- * Make compile with newer versions of kernel drivers.
- *
- * Revision 1.7  1999/09/06 08:03:25  fritz
- * Changed my mail-address.
- *
- * Revision 1.6  1998/07/22 19:07:13  keil
- * Make it compiling with older I4L versions
- *
- * Revision 1.5  1998/06/26 15:20:13  fritz
- * Added capability to save listener string.
- *
- * Revision 1.4  1998/04/28 08:34:23  paul
- * Fixed compiler warnings from egcs.
- *
- * Revision 1.3  1998/04/24 09:19:23  paul
- * Ignore empty file when starting up instead of generating error message
- * about wrong signature, there is _no_ signature! iprofd writes new data
- * anyway in that case.
- *
- * Revision 1.2  1997/02/21 13:18:27  fritz
- * Reformatted, changed some error-messages.
- *
- * Revision 1.1  1997/02/17 00:09:12  fritz
- * New CVS tree
- *
  */
 
 #define SIGNATURE "iprofd%02x"
@@ -60,29 +33,46 @@
 #include <unistd.h>
 #include <sys/ioctl.h>
 #include <signal.h>
-#include <linux/isdn.h>
+#include <string.h>
+//#include <linux/isdn.h>
 
 typedef unsigned char uchar;
 
 int isdnctrl_fd;
 char *modemsettings;
 
-#ifndef ISDN_LMSNLEN
-#define ISDN_LMSNLEN 0
-#endif
+#define IIOCSIGPRF  _IO('I',14)
+#define IIOCGETPRF  _IO('I',15)
+#define IIOCSETPRF  _IO('I',16)
+#define IIOCGETDVR  _IO('I',22)
 
-#ifndef ISDN_MODEM_NUMREG
-#define ISDN_MODEM_NUMREG ISDN_MODEM_ANZREG
-#endif
+#define ISDN_MAX_CHANNELS   64
 
-#define BUFSZ ((ISDN_MODEM_NUMREG+ISDN_MSNLEN+ISDN_LMSNLEN)*ISDN_MAX_CHANNELS)
+#define ISDN_LMSNLEN_4 0
+#define ISDN_LMSNLEN_5 255
+#define ISDN_LMSNLEN_6 255
+
+#define ISDN_MSNLEN_4 20
+#define ISDN_MSNLEN_5 20
+#define ISDN_MSNLEN_6 32
+
+#define ISDN_MODEM_NUMREG_4 23
+#define ISDN_MODEM_NUMREG_5 24
+#define ISDN_MODEM_NUMREG_6 24
+
+#define BUFSZ_4 ((ISDN_MODEM_NUMREG_4+ISDN_MSNLEN_4+ISDN_LMSNLEN_4)*ISDN_MAX_CHANNELS)
+#define BUFSZ_5 ((ISDN_MODEM_NUMREG_5+ISDN_MSNLEN_5+ISDN_LMSNLEN_5)*ISDN_MAX_CHANNELS)
+#define BUFSZ_6 ((ISDN_MODEM_NUMREG_6+ISDN_MSNLEN_6+ISDN_LMSNLEN_6)*ISDN_MAX_CHANNELS)
+
+int bufsz;
+int tty_dv;
 
 void
 dumpModem(int dummy)
 {
 	int fd;
 	int len;
-	char buffer[BUFSZ];
+	char buffer[bufsz];
 	char signature[SIGLEN];
 
 	if ((len = ioctl(isdnctrl_fd, IIOCGETPRF, &buffer)) < 0) {
@@ -94,7 +84,7 @@ dumpModem(int dummy)
 		perror(modemsettings);
 		exit(-1);
 	}
-	sprintf(signature, SIGNATURE, TTY_DV);
+	sprintf(signature, SIGNATURE, tty_dv);
 	write(fd, signature, sizeof(signature));
 	write(fd, buffer, len);
 	close(fd);
@@ -106,10 +96,10 @@ readModem(void)
 {
 	int len;
 	int fd;
-	char buffer[BUFSZ];
+	char buffer[bufsz];
 	char signature[SIGLEN];
 
-	sprintf(signature, SIGNATURE, TTY_DV);
+	sprintf(signature, SIGNATURE, tty_dv);
 	fd = open(modemsettings, O_RDONLY);
 	if (fd < 0)
 		return;
@@ -118,18 +108,18 @@ readModem(void)
 		perror(modemsettings);
 		exit(-1);
 	}
-    if (len == 0) {     /* empty file, ignore it */
-        close(fd);
-        return;
-    }
+	if (len == 0) {     /* empty file, ignore it */
+		close(fd);
+		return;
+	}
 	if (strcmp(buffer, signature)) {
-		fprintf(stderr, "Version of iprofd (%d) does NOT match\n", TTY_DV);
+		fprintf(stderr, "Currently running kernel does NOT match\n");
 		fprintf(stderr, "signature of saved data!\n");
 		fprintf(stderr, "Profiles NOT restored, use AT&W0 to update data.\n");
 		close(fd);
 		return;
 	}
-	len = read(fd, buffer, BUFSZ);
+	len = read(fd, buffer, bufsz);
 	if (len < 0) {
 		perror(modemsettings);
 		exit(-1);
@@ -170,15 +160,25 @@ main(int argc, char **argv)
 		exit(-1);
 	}
 	close(isdnctrl_fd);
-	data_version &= 0xff;
-	if (data_version != TTY_DV) {
-		fprintf(stderr, "Version of kernel modem-profile (%d) does NOT match\n",
-			data_version);
-		fprintf(stderr, "version of iprofd (%d)!\n", TTY_DV);
-		fprintf(stderr, "Make sure, you are using the correct version.\n");
-		fprintf(stderr, "(Try recompiling iprofd).\n");
+	tty_dv = data_version & 0xff;
+	switch (tty_dv) {
+	case 4: 
+		bufsz = BUFSZ_4;
+		break;
+	case 5: 
+		bufsz = BUFSZ_5;
+		break;
+	case 6: 
+		bufsz = BUFSZ_6;
+		break;
+	default:
+		fprintf(stderr, "Version of kernel modem-profile (%d) is NOT handled\n",
+			tty_dv);
+		fprintf(stderr, "by this version of iprofd!\n");
+		fprintf(stderr, "(Try to get the latest version).\n");
 		exit(-1);
 	}
+
 	isdnctrl_fd = open("/dev/isdnctrl", O_RDONLY);
 	if (isdnctrl_fd < 0) {
 		perror("/dev/isdninfo");
