@@ -1,4 +1,4 @@
-/* $Id: isdntools.c,v 1.27 2000/09/05 08:05:03 paul Exp $
+/* $Id: isdntools.c,v 1.28 2001/08/18 11:59:01 paul Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -19,6 +19,11 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdntools.c,v $
+ * Revision 1.28  2001/08/18 11:59:01  paul
+ * Added missing endpwent() call that meant /etc/passwd was being kept open;
+ * reorganized num_match() a bit; made the arrays in expand_number() one byte
+ * bigger to prevent possible off-by-one buffer overflow.
+ *
  * Revision 1.27  2000/09/05 08:05:03  paul
  * Now isdnlog doesn't use any more ISDN_XX defines to determine the way it works.
  * It now uses the value of "COUNTRYCODE = 999" to determine the country, and sets
@@ -305,23 +310,21 @@ int num_match(char* Pattern, char *number)
 	char **Ptr;
 	char **Array;
 
-	if (!strcmp(Pattern, number))
-		RetCode = 0;
-	else
-	if (strchr(Pattern,C_NUM_DELIM))
+	if (!strcmp(Pattern, number)) /* match */
+		return 0;
+
+	if (!strchr(Pattern,C_NUM_DELIM))
+    return match(expand_number(Pattern), number, 0);
+
+	Ptr = Array = String_to_Array(Pattern,C_NUM_DELIM);
+
+	while (*Ptr != NULL && RetCode != 0)
 	{
-		Ptr = Array = String_to_Array(Pattern,C_NUM_DELIM);
-
-		while (*Ptr != NULL && RetCode != 0)
-		{
-			RetCode = match(expand_number(*Ptr), number, 0);
-			Ptr++;
-		}
-
-		del_Array(Array);
+		RetCode = match(expand_number(*Ptr), number, 0);
+		Ptr++;
 	}
-	else
-		RetCode = match(expand_number(Pattern), number, 0);
+
+	del_Array(Array);
 
 	return RetCode;
 }
@@ -333,8 +336,8 @@ char *expand_number(char *s)
 	int all_allowed = 0;
 	char *Ptr;
 	int   Index = 0;
-	char Help[NUMBER_SIZE] = "";
-	static char Num[NUMBER_SIZE];
+	char Help[NUMBER_SIZE+1];
+	static char Num[NUMBER_SIZE+1];
 
 
 	Help[0] = '\0';
@@ -435,7 +438,9 @@ char *expand_file(char *s)
 		setpwent();
 		while((password = getpwent()) != NULL &&
 		      strcmp(password->pw_name,Help)  &&
-		      password->pw_uid != id            );
+		      password->pw_uid != id)
+        ;
+    endpwent();
 
 		if (password == NULL)
 			return NULL;
@@ -643,6 +648,14 @@ static void set_country_behaviour(char *mycountry)
 {
 	/* amazing, strtol will also accept "+0049" */
 	mycountrynum = strtol(mycountry, (char **)0, 10);
+/*
+ * There's no real point in testing for a known country code.
+ * Setting an unknown countrycode to 49 (DE) is probably the worst
+ * thing you can do if you're not actually in Germany. You might
+ * give a warning, but do we really want that?  So simply accept
+ * the given value  - Paul Slootman 20010818
+ */
+#if 0
 	switch (mycountrynum) {
 		case CCODE_NL:
 		case CCODE_CH:
@@ -655,6 +668,7 @@ static void set_country_behaviour(char *mycountry)
 		default:
 			mycountrynum = 49; /* use Germany as default for now */
 	}
+#endif /* 0 */
 }
 
 
