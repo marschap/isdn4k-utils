@@ -1,4 +1,4 @@
-.TH ISDNCTRL 8 "02. April 1996"
+.TH ISDNCTRL 8 "25. June 1997"
 .UC 4
 .SH NAME
 isdnctrl \- get/set ISDN device information
@@ -196,6 +196,12 @@ interfaces cannot use that interface anymore.
 .B unbind name
 Unbinds a the previously bound interface "name".
 .TP 5
+.B pppbind name [num]
+Binds the current interface to a ippp device (/dev/ipppX).
+This works only for syncronous ppp.
+The value must be a number.
+If no number is omitted, it shows the the curring binding.
+.TP 5
 .B busreject driverId [on|off]
 If switched on, isdn4linux replies a REJECT to incoming calls, it
 cannot match to any configured interface. If switched off, nothing
@@ -236,6 +242,217 @@ Force dialing of interface "name".
 .TP 5
 .B mapping driverId MSN0[,MSN1[,MSN2]] ... [,MSN9]
 Installs a mapping-table for MSN<->EAZ-mapping. See README for details.
+.TP 5
+.B writeconf [file]
+Writes the configuration into a file. If "file" is omitted, the default file
+/etc/isdn/isdn.conf will be used.
+.TP 5
+.B readconf [file]
+Reads the configuration from a file. If "file" is omitted, the default file
+/etc/isdn/isdn.conf will be used.
+
+.SS Syntax of the configuration file
+This syntax will be used for the options
+.B readconf
+and
+.B writeconf.
+
+All entries are included in the section
+.B [ISDNCTRL].
+This section contains an entry
+.B INTERFACES,
+which describes the interfaces. Each subsection 
+.B [INTERFACE]
+or
+.B [SLAVE]
+describes one interface. There are the following entries possible:
+.TP 5
+.B NAME
+The name of the interface.
+This entry is required.
+
+.B Example:
+NAME = ippp0
+.TP 5
+.B EAZ
+Set the EAZ or the MSN.
+This entry is required.
+
+.B Example:
+EAZ = 4711
+.TP 5
+.B PHONE_IN
+Set the incoming phone number(s).
+It requires at least one blank between the different numbers.
+
+.B Example:
+PHONE_IN = 08151234 08151235 08151236
+.TP 5
+.B PHONE_OUT
+Set the outgoing phone number(s). 
+It requires at least one blank between the different numbers.
+
+.B Example:
+PHONE_OUT = 08151237 08151238
+.TP 5
+.B SECURE
+Turn on or off the security feature.
+Allowed values are "on" and "off".
+
+.B Example:
+SECURE = on
+.TP 5
+.B CALLBACK
+Selects callback mode.
+Allowed values are "off", "in" and "out".
+
+.B Example:
+CALLBACK = in
+.TP 5
+.B CBHUP
+Turns on or off hangup before starting callback.
+Allowed values are "on" and "off".
+
+.B Example:
+CBHUP = on
+.TP 5
+.B CBDELAY
+Set the callback delay to "seconds".
+
+.B Example:
+CBDELAY = 5
+.TP 5
+.B DIALMAX
+Set the number of dial atempts to "num".
+
+.B Example:
+DIALMAX = 1
+.TP 5
+.B HUPTIMEOUT
+Set the hanguptime to "seconds".
+
+.B Example:
+HUPTIMEOUT = 20
+.TP 5
+.B IHUP
+Turns on or off the hangup timeout for incoming calls.
+Allowed values are "on" and "off".
+
+.B Example:
+IHUP = on
+.TP 5
+.B CHARGEHUP
+Turns on or off hangup before next charge info.
+Allowed values are "on" and "off".
+
+.B Example:
+CHARGEHUP = on
+.TP 5
+.B CHARGEINT
+Sets the charge interval to "seconds".
+
+.B Example:
+CHARGEINT = 1
+.TP 5
+.B L2_PROT
+Set the layer-2 protocol.
+Allowed values are "x75i", "x75ui", "x75bui" and "hdlc".
+
+.B Example:
+L2_PROT = hdlc
+.TP 5
+.B L3_PROT
+Set the layer-3 protocol.
+Allowed value is only "trans".
+
+.B Example:
+L3_PROT = trans
+.TP 5
+.B ENCAP
+Sets the encapsulation mode.
+Allowed values are "rawip", "ip", "cisco_h", "ethernet", "syncppp" and "uihdlc".
+
+.B Example:
+ENCAP = rawip
+.TP 5
+.B SDELAY
+Set the delay in seconds for the slave-dialing.
+
+.B Example:
+SDELAY = 0
+.TP 5
+.B ADDSLAVE
+Adds a slave interface for channel-bundling.
+
+.B Example:
+ADDSLAVE = s-ippp0
+.TP 5
+.B BIND
+Binds the current interface to a specific physical channel.
+Before and after the comma may not be a blank.
+
+.B Example:
+BIND = teles1,0
+.TP 5
+.B PPPBIND
+Binds the current interface to a ippp device (/dev/ipppX).
+This works only for syncronous ppp.
+The value must be a number.
+
+.B Example:
+PPPBIND = 0
+
+
+.TP 5
+.B Example for a configuration file
+
+[ISDNCTRL]
+  INTERFACES = {
+    [INTERFACE]
+    NAME      = isdn0
+    EAZ       = 4711
+    PHONE_IN  = 08151234
+    PHONE_OUT = 08151234
+    SECURE    = on
+    DIALMAX   = 1
+    HUPTIMEOUT= 20
+    IHUP      = on
+    CHARGEHUP = on
+    L2_PROT   = hdlc
+    L3_PROT   = trans
+    ENCAP     = rawip
+    ADDSLAVE  = s-isdn0
+    SDELAY    = 10
+
+    [SLAVE]
+    NAME      = s-isdn0
+    EAZ       = 4711
+    PHONE_OUT = 08151234
+    SECURE    = on
+    DIALMAX   = 1
+    HUPTIMEOUT= 10
+    IHUP      = on
+    CHARGEHUP = on
+    L2_PROT   = hdlc
+    L3_PROT   = trans
+    ENCAP     = rawip
+
+    [INTERFACE]
+    NAME      = ippp0
+    EAZ       = 4712
+    PHONE_OUT = 08151235 08151236
+    SECURE    = on
+    DIALMAX   = 5
+    HUPTIMEOUT= 200
+    IHUP      = on
+    CHARGEHUP = on
+    L2_PROT   = hdlc
+    L3_PROT   = trans
+    ENCAP     = syncppp
+    PPPBIND   = 0
+  }
+
+
 
 .SH WILDCARDS
 For matching incoming calls phone numbers can be be set by

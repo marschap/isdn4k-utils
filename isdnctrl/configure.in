@@ -17,7 +17,10 @@ AC_CHECK_HEADER(linux/isdnif.h,,AC_MSG_ERROR("\nMissing linux/isdnif.h. Kernel s
 dnl Checks for typedefs, structures, and compiler characteristics.
 
 dnl Checks for library functions.
+AC_CHECK_LIB(dbm, dbm_open, DBMLIB=-ldbm; AC_DEFINE(HAVE_LIBDBM),
+  AC_CHECK_LIB(gdbm, gdbm_open, DBMLIB=-lgdbm; AC_DEFINE(HAVE_LIBGDBM)))
 AC_TYPE_SIGNAL
 
 AC_SUBST(INSTALL)
+AC_SUBST(DBMLIB)
 AC_OUTPUT(Makefile)

@@ -1,19 +1,22 @@
-# $Id: Makefile.in,v 1.2 1997/03/02 19:42:21 fritz Exp $
+# $Id: Makefile.in,v 1.3 1997/06/24 23:35:20 luethje Exp $
 #
 # Makefile for iprofd
 # (C) 1997 Fritz Elfert
 #
 #
-SHELL			= /bin/sh
+
+
+SHELL			  = /bin/sh
 CFLAGS			= -Wall -O2 -I. $(ISDN_INCLUDE)
-LDFLAGS			= -L../lib @LIBS@
+LDFLAGS			= @LIBS@ 
+DBMLIB 			= @DBMLIB@
 PROGRAM			= isdnctrl
 MODULES			= isdnctrl.o
 MANPAGE			= isdnctrl.8
 INSTALL			= @INSTALL@
 INSTALL_PROGRAM	= $(INSTALL) -o 0 -g 0 -m 0750
 INSTALL_MAN		= $(INSTALL) -o 0 -g 0 -m 0644
-CC				= @CC@
+CC				= @CC@ -DVERSION=\"$(I4LVERSION)\"
 prefix			= @prefix@
 exec_prefix		= @exec_prefix@
 ifeq (../.config,$(wildcard ../.config))
@@ -26,6 +29,12 @@ else
 endif
 MAN8DIR			= $(mandir)/man8
 
+ifdef CONFIG_CTRL_CONF
+CC           += -DI4L_CTRL_CONF
+LDFLAGS			 += -L../lib -lisdn $(DBMLIB) 
+MODULES			 += ctrlconf.o
+endif
+
 .SUFFIXES:
 .SUFFIXES: .c .o
 
@@ -35,7 +44,7 @@ config:
 	@./configure
 
 $(PROGRAM):	$(MODULES)
-	$(CC) $(CFLAGS) $? $(LDFLAGS) -o $@
+	$(CC) $(CFLAGS) $(MODULES) $(LDFLAGS) -o $@
 
 install-man: isdnctrl.man
 	$(INSTALL) -d $(MAN8DIR)

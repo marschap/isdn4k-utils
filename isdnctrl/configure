@@ -16,6 +16,11 @@ ac_default_prefix=/usr
 # Initialize some variables set by options.
 # The variables have the same names as the options, with
 # dashes changed to underlines.
+
+if test -r ../.config ; then
+	source ../.config
+fi
+
 build=NONE
 cache_file=./config.cache
 exec_prefix=NONE
@@ -717,6 +722,88 @@ else
 fi
 
 
+if test "$CONFIG_CTRL_CONF" = "y"; then
+echo $ac_n "checking for -ldbm""... $ac_c" 1>&6
+ac_lib_var=`echo dbm'_'dbm_open | tr './+\055' '__p_'`
+if eval "test \"`echo '$''{'ac_cv_lib_$ac_lib_var'+set}'`\" = set"; then
+  echo $ac_n "(cached) $ac_c" 1>&6
+else
+  ac_save_LIBS="$LIBS"
+LIBS="-ldbm  $LIBS"
+cat > conftest.$ac_ext <<EOF
+#line 868 "configure"
+#include "confdefs.h"
+/* Override any gcc2 internal prototype to avoid an error.  */
+/* We use char because int might match the return type of a gcc2
+    builtin and then its argument prototype would still apply.  */
+char dbm_open();
+
+int main() { return 0; }
+int t() {
+dbm_open()
+; return 0; }
+EOF
+if { (eval echo configure:880: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; }; then  rm -rf conftest*
+  eval "ac_cv_lib_$ac_lib_var=yes"
+else
+  rm -rf conftest*
+  eval "ac_cv_lib_$ac_lib_var=no"
+fi
+rm -f conftest*
+LIBS="$ac_save_LIBS"
+
+fi
+if eval "test \"`echo '$ac_cv_lib_'$ac_lib_var`\" = yes"; then
+  echo "$ac_t""yes" 1>&6
+  DBMLIB=-ldbm; cat >> confdefs.h <<\EOF
+#define HAVE_LIBDBM 1
+EOF
+
+else
+  echo "$ac_t""no" 1>&6
+echo $ac_n "checking for -lgdbm""... $ac_c" 1>&6
+ac_lib_var=`echo gdbm'_'gdbm_open | tr './+\055' '__p_'`
+if eval "test \"`echo '$''{'ac_cv_lib_$ac_lib_var'+set}'`\" = set"; then
+  echo $ac_n "(cached) $ac_c" 1>&6
+else
+  ac_save_LIBS="$LIBS"
+LIBS="-lgdbm  $LIBS"
+cat > conftest.$ac_ext <<EOF
+#line 907 "configure"
+#include "confdefs.h"
+/* Override any gcc2 internal prototype to avoid an error.  */
+/* We use char because int might match the return type of a gcc2
+    builtin and then its argument prototype would still apply.  */
+char gdbm_open();
+
+int main() { return 0; }
+int t() {
+gdbm_open()
+; return 0; }
+EOF
+if { (eval echo configure:919: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; }; then  rm -rf conftest*
+  eval "ac_cv_lib_$ac_lib_var=yes"
+else
+  rm -rf conftest*
+  eval "ac_cv_lib_$ac_lib_var=no"
+fi
+rm -f conftest*
+LIBS="$ac_save_LIBS"
+
+fi
+if eval "test \"`echo '$ac_cv_lib_'$ac_lib_var`\" = yes"; then
+  echo "$ac_t""yes" 1>&6
+  DBMLIB=-lgdbm; cat >> confdefs.h <<\EOF
+#define HAVE_LIBGDBM 1
+EOF
+
+else
+  echo "$ac_t""no" 1>&6
+fi
+
+fi
+fi
+
 
 echo $ac_n "checking how to run the C preprocessor""... $ac_c" 1>&6
 # On Suns, sometimes $CPP names a directory.
@@ -1174,6 +1261,7 @@ s%@INSTALL_DATA@%$INSTALL_DATA%g
 s%@CC@%$CC%g
 s%@CPP@%$CPP%g
 s%@INSTALL@%$INSTALL%g
+s%@DBMLIB@%$DBMLIB%g
 
 CEOF
 EOF
@@ -1231,6 +1319,7 @@ s%@configure_input@%$configure_input%g
 s%@srcdir@%$srcdir%g
 s%@top_srcdir@%$top_srcdir%g
 s%@INSTALL@%$INSTALL%g
+
 " -f conftest.subs $ac_given_srcdir/$ac_file_in > $ac_file
 fi; done
 rm -f conftest.subs

@@ -1,5 +1,5 @@
 #
-# $Id: config.in,v 1.18 1997/05/25 19:41:29 luethje Exp $
+# $Id: config.in,v 1.19 1997/06/24 23:35:39 luethje Exp $
 #
 # The whole configuration stuff is borrowed from the kernel
 # configuration.
@@ -54,6 +54,7 @@ comment 'Runtime configuration tools'
 bool 'isdnctrl' CONFIG_ISDNCTRL
 if [ "$CONFIG_ISDNCTRL" = "y" ]; then
 	bool 'Enable isdnctrl debug-option' CONFIG_ISDNCTRL_DEBUG
+	bool 'Enable configfile-option (uses dbm lib)' CONFIG_CTRL_CONF
 fi
 bool 'iprofd' CONFIG_IPROFD
 endmenu

@@ -34,6 +34,7 @@ CONFIG_AREACODE_DATA='/usr/lib/isdn'
 #
 CONFIG_ISDNCTRL=y
 # CONFIG_ISDNCTRL_DEBUG is not set
+# CONFIG_CTRL_CONF is not set
 CONFIG_IPROFD=y
 
 #
