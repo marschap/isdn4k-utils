@@ -1,4 +1,4 @@
-/* $Id: tools.c,v 1.9 1998/03/08 11:43:16 luethje Exp $
+/* $Id: tools.c,v 1.10 1998/04/09 19:15:45 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -19,6 +19,11 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools.c,v $
+ * Revision 1.10  1998/04/09 19:15:45  akool
+ *  - CityPlus Implementation from Oliver Lauer <Oliver.Lauer@coburg.baynet.de>
+ *  - dont change huptimeout, if disabled (via isdnctrl huptimeout isdnX 0)
+ *  - Support for more Providers (TelePassport, Tele 2, TelDaFax)
+ *
  * Revision 1.9  1998/03/08 11:43:16  luethje
  * I4L-Meeting Wuerzburg final Edition, golden code - Service Pack number One
  *
@@ -600,6 +605,20 @@ char *Providername(char *number)
     return("WorldCom");
   else if (!memcmp(number + 3, "25", 2))
     return("Citykom Muenster");
+  else if (!memcmp(number + 3, "13", 2))
+    return("Tele 2");
+  else if (!memcmp(number + 3, "49", 2))
+    return("ACC");
+  else if (!memcmp(number + 3, "18", 2))
+    return("Debitel");
+  else if (!memcmp(number + 3, "55", 2))
+    return("Esprit");
+  else if (!memcmp(number + 3, "14", 2))
+    return("EWE");
+  else if (!memcmp(number + 3, "41", 2))
+    return("HanseNet");
+  else if (!memcmp(number + 3, "36", 2))
+    return("Hutchison Telekom");
   else
     return("UNKNOWN PROVIDER");
 } /* Providername */
@@ -888,6 +907,7 @@ char *z2s(int zone)
     case 14 : return("Inmar");        break;
     case 15 : return("C-Box");        break;
     case 16 : return("T-Box");        break;
+    case 21 : return("City");         break; /* City Plus */
     default : return("");             break;
   } /* switch */
 } /* z2s */

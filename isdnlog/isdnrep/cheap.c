@@ -1,4 +1,4 @@
-/* $Id: cheap.c,v 1.3 1997/04/03 22:29:59 luethje Exp $
+/* $Id: cheap.c,v 1.4 1998/04/09 19:15:21 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Feiertagsberechnung)
  *
@@ -19,6 +19,11 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: cheap.c,v $
+ * Revision 1.4  1998/04/09 19:15:21  akool
+ *  - CityPlus Implementation from Oliver Lauer <Oliver.Lauer@coburg.baynet.de>
+ *  - dont change huptimeout, if disabled (via isdnctrl huptimeout isdnX 0)
+ *  - Support for more Providers (TelePassport, Tele 2, TelDaFax)
+ *
  * Revision 1.3  1997/04/03 22:29:59  luethje
  * improved performance
  *
@@ -339,7 +344,7 @@ double cheap96(time_t when, int zone, int *zeit)
   *zeit = 0;
   return(cheap(when, zone));
 #else
-  register int        i, takt = 0;
+  register int        i, takt = 0, CityPlus = 0;
   auto     struct tm *tm;
 
   /* neue Tarife aus: iX 10/95, Pg 32 */
@@ -379,6 +384,10 @@ double cheap96(time_t when, int zone, int *zeit)
      4 = Mondschein   21:00 ..  5:00
 
 */
+  if (zone == 21) {
+    CityPlus = 1;
+    zone = 1;
+    }
 
   tm = localtime(&when);
 
@@ -425,7 +434,7 @@ double cheap96(time_t when, int zone, int *zeit)
     if ((takt == 6) && (zone < 5)) {                  /* Feiertage */
       if ((tm->tm_hour > 4) && (tm->tm_hour < 21)) {
         if (CityWeekend && (zone == 1)) {
-          *zeit = 8;
+          *zeit = 7;
           return(gebuehr[2][zone - 1][3]);
         }
         else
@@ -438,8 +447,33 @@ double cheap96(time_t when, int zone, int *zeit)
              (tm->tm_mday > 26) && (zone < 5)) {
       return(gebuehr[2][zone - 1][*zeit = --takt]);
     }
-    else                                              /* Werktage bzw. Wochenenden */
-      return(gebuehr[1][zone - 1][*zeit = --takt]);
+    else {                                            /* Werktage bzw. Wochenenden */
+      if (((tm->tm_hour > 4) && (tm->tm_hour < 21)) &&
+          ((tm->tm_wday == 6) || (tm->tm_wday == 0))) { /* Wochenende Freizeit */
+        if (CityWeekend && (zone == 1)) {
+          *zeit=7;
+          return(gebuehr[1][zone - 1][3]);
+        }
+        else if (((zone == 3) || (zone == 4)) &&
+                 (((tm->tm_year > 97) && (tm->tm_mon > 2)) ||
+                   (tm->tm_year > 98))) {     /* GermanCall Freizeit Wochenende ab 01.03.98 30 s */
+          *zeit=4;
+          return(30); /* zusätzliche Tarifart, Matrix müßte erweitert werden */
+          }
+        else if (CityPlus) {
+          *zeit=8;
+          return(gebuehr[1][0][1]);
+          }
+        else
+          return(gebuehr[1][zone - 1][*zeit = --takt]);
+        }
+      else if (((tm->tm_hour > 4) && (tm->tm_hour < 21)) && CityPlus) {
+        *zeit=8;
+        return(gebuehr[1][0][1]);
+        }
+      else
+        return(gebuehr[1][zone - 1][*zeit = --takt]);
+    }
   }
   else {
     if (zone == 5) {	       	       	 	      /* Angrenzende Laender */
@@ -449,7 +483,7 @@ double cheap96(time_t when, int zone, int *zeit)
     else {
       if (takt == 6) { /* Feiertage */
         if ((tm->tm_hour > 4) && (tm->tm_hour < 21)) {
-          *zeit = 10;
+          *zeit = 9;
           return(gebuehr[0][zone - 1][2]);
         }
         else
