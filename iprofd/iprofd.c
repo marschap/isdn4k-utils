@@ -1,4 +1,4 @@
-/* $Id: iprofd.c,v 1.7 1999/09/06 08:03:25 fritz Exp $
+/* $Id: iprofd.c,v 1.8 2000/03/03 12:45:53 calle Exp $
 
  * Daemon for saving ttyIx-profiles to a file.
  *
@@ -22,6 +22,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: iprofd.c,v $
+ * Revision 1.8  2000/03/03 12:45:53  calle
+ * Make compile with newer versions of kernel drivers.
+ *
  * Revision 1.7  1999/09/06 08:03:25  fritz
  * Changed my mail-address.
  *
@@ -68,7 +71,11 @@ char *modemsettings;
 #define ISDN_LMSNLEN 0
 #endif
 
-#define BUFSZ ((ISDN_MODEM_ANZREG+ISDN_MSNLEN+ISDN_LMSNLEN)*ISDN_MAX_CHANNELS)
+#ifndef ISDN_MODEM_NUMREG
+#define ISDN_MODEM_NUMREG ISDN_MODEM_ANZREG
+#endif
+
+#define BUFSZ ((ISDN_MODEM_NUMREG+ISDN_MSNLEN+ISDN_LMSNLEN)*ISDN_MAX_CHANNELS)
 
 void
 dumpModem(int dummy)
