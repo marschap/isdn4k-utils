@@ -1,0 +1,65 @@
+/*
+ * modilp,ilp ... Kernelmodul for displaying B-channel usage
+ *
+ * Copyright 1999 by Leopold Toetsch <lt@toetsch.at>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ *
+ */
+ 
+
+What ist it?
+
+modilp is a small kernel module providing /proc/isdninfo. This file shows
+the connection state of 2 ISDN B-Channels.
+The information shown in /proc/isdnlog is written by isdnlog in the states
+CONNECT and RELEASE.
+For best usage (all devices on the S0 bus shown) you should use a HFCS-based
+ISDN card or a second reversed card (s. FAQ).
+
+
+Installation
+
+  Adjust Makefile for your kernel-gcc
+  make
+  su -c "insmod modilp"
+  cat /proc/isdnlog
+
+  Make isdnlog:
+
+  cd ../..
+  # make clean
+  make ILP=1
+  
+  as root, copy bin/isdnlog to /sbin/isdnlog and restart em.
+  
+  watch /proc/isdnlog
+  
+  
+  to revert to old isdnlog do:
+  
+  touch isdnlog/processor.c isdnlog/functions.c
+  make
+  
+
+TODO
+
+Check this with 2.2 and 2.4 kernels.
+After this integrate into build process.
+Remove PRT_INFO in modilp.c.
+
+Have fun!
+
+ 
