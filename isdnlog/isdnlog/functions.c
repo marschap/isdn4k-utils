@@ -1,4 +1,4 @@
-/* $Id: functions.c,v 1.12 1998/06/14 15:33:48 akool Exp $
+/* $Id: functions.c,v 1.13 1998/06/21 11:52:43 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,9 @@
  * along with this program; if not, write to the Free Software
  *
  * $Log: functions.c,v $
+ * Revision 1.13  1998/06/21 11:52:43  akool
+ * First step to let isdnlog generate his own AOCD messages
+ *
  * Revision 1.12  1998/06/14 15:33:48  akool
  * AVM B1 support (Layer 3)
  * Telekom's new currency DEM 0,121 supported
@@ -205,6 +208,7 @@ void set_time_str(void)
 
   day = tm_time->tm_mday;
   month = tm_time->tm_mon + 1;
+  hour = tm_time->tm_hour;
 } /* set_time_str */
 
 /*****************************************************************************/
@@ -536,7 +540,7 @@ int is_sondernummer(char *num)
 
   if (*num)
     for (i = 0; i < nSN; i++)
-      if (!strcmp(num, SN[i].msn))
+      if (!strncmp(num, SN[i].msn, strlen(SN[i].msn)))
         return(i);
 
   return(-1);

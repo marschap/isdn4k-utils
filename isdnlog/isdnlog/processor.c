@@ -1,4 +1,4 @@
-/* $Id: processor.c,v 1.21 1998/06/16 15:05:31 paul Exp $
+/* $Id: processor.c,v 1.22 1998/06/21 11:52:52 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.22  1998/06/21 11:52:52  akool
+ * First step to let isdnlog generate his own AOCD messages
+ *
  * Revision 1.21  1998/06/16 15:05:31  paul
  * isdnlog crashed with 1TR6 and "Unknown Codeset 7 attribute 3 size 5",
  * i.e. IE 03 which is not Date/Time
@@ -1940,7 +1943,7 @@ static void decode(int chan, register char *p, int type, int version)
 
                             if (message & PRT_SHOWTICKS)
                               sprintf(s, "%d.EH %s %s (%s %d) C=%s",
-                                call[chan].aoce,
+                                abs(call[chan].aoce),
                                 currency,
                                 double2str(call[chan].pay, 6, 2, DEB),
                                 tx ? double2clock(tx) : "", (int)err,
@@ -1948,13 +1951,13 @@ static void decode(int chan, register char *p, int type, int version)
                             else {
                               if (tx)
                                 sprintf(s, "%d.EH %s %s (%s)",
-                                  call[chan].aoce,
+                                  abs(call[chan].aoce),
                                   currency,
                                   double2str(call[chan].pay, 6, 2, DEB),
                                   double2clock(tx));
                               else
                                 sprintf(s, "%d.EH %s %s",
-                                  call[chan].aoce,
+                                  abs(call[chan].aoce),
                                   currency,
                                   double2str(call[chan].pay, 6, 2, DEB));
                             } /* else */
@@ -2032,7 +2035,7 @@ static void decode(int chan, register char *p, int type, int version)
 
                             if (message & PRT_SHOWTICKS)
                               sprintf(s, "%d.EH %s %s (%s %d %s?) C=%s",
-                                call[chan].aoce,
+                                abs(call[chan].aoce),
                                 currency,
                                 double2str(call[chan].pay, 6, 2, DEB),
                                 tx ? double2clock(tx) : "", (int)err, px,
@@ -2040,20 +2043,20 @@ static void decode(int chan, register char *p, int type, int version)
                             else {
                               if (tx)
                                 sprintf(s, "%d.EH %s %s (%s)",
-                                  call[chan].aoce,
+                                  abs(call[chan].aoce),
                                   currency,
                                   double2str(call[chan].pay, 6, 2, DEB),
                                   double2clock(tx));
                               else
                                 sprintf(s, "%d.EH %s %s",
-                                  call[chan].aoce,
+                                  abs(call[chan].aoce),
                                   currency,
                                   double2str(call[chan].pay, 6, 2, DEB));
                             } /* else */
                           }
                           else {
                             sprintf(s, "%d.EH %s %s",
-                              call[chan].aoce,
+                              abs(call[chan].aoce),
                               currency,
                               double2str(call[chan].pay, 6, 2, DEB));
                           } /* else */
@@ -3694,7 +3697,7 @@ static void how_expensive(int chan)
         sprintf(sx, "WARNING: Wrong ZONE (%d), assuming %d", zone, zone2);
         zone = zone2;
 
-        if (call[chan].sondernummer != -1)
+        if (call[chan].sondernummer == -1)
           info(chan, PRT_SHOWHANGUP, STATE_HANGUP, sx);
       } /* if */
     } /* if */
@@ -4246,14 +4249,18 @@ static void processctrl(int card, char *s)
         } /* else */
 
         if (!call[chan].dialin) {
-          auto   int  l;
           auto	 char s[BUFSIZ], sx[BUFSIZ];
-  	  extern int  taktlaenge(int provider, time_t connect, int zone, char *description);
+  	  extern float  taktlaenge(int chan, char *description);
 
 
-      	  l = taktlaenge(call[chan].provider, call[chan].connect, area_diff(NULL, call[chan].num[1]), s);
-          sprintf(sx, "NEXT CHARGEINT %d s (%s)", l, s);
+      	  if ((call[chan].cint = taktlaenge(chan, s)) > 1) {
+            call[chan].cinth    = hour;
+            call[chan].nextcint = call[chan].connect + (int)call[chan].cint;
+            call[chan].ctakt    = 1;
+
+            sprintf(sx, "NEXT CHARGEINT IN %s (%s)", double2clock(call[chan].cint), s);
           info(chan, PRT_SHOWCONNECT, STATE_CONNECT, sx);
+        } /* if */
         } /* if */
 
         if (sound)
@@ -4664,3 +4671,63 @@ void moreinfo()
       ps = s;
   } /* if */
 } /* moreinfo */
+
+/*****************************************************************************/
+
+void processcint()
+{
+  register int    chan;
+  auto	   char   s[BUFSIZ], sx[BUFSIZ];
+  auto	   float  newcint;
+  auto	   double exp;
+  auto	   int	  dur;
+  extern   float  taktlaenge(int chan, char *description);
+  extern   double pay(time_t ts, int dauer, int tarifz, int pro);
+
+
+  for (chan = 0; chan < 2; chan++) {
+    if (!call[chan].dialin && (call[chan].cint > 1)) {
+      if (call[chan].nextcint == cur_time) {
+
+        dur = cur_time - call[chan].connect;
+
+        if ((call[chan].cinth != hour) && ((hour ==  5) ||
+           		      	           (hour ==  9) ||
+           		      	           (hour == 12) ||
+           		      	           (hour == 18) ||
+           		      	           (hour == 21) ||
+           		      	           (hour ==  2))) { /* Moeglicherweise Taktwechsel */
+
+      	  newcint = taktlaenge(chan, s);
+
+          call[chan].cint = newcint;
+
+          sprintf(sx, "NEXT CHARGEINT %sIN %s (%s)", (newcint == call[chan].cint) ? "STILL " : "", double2clock((double)call[chan].cint), s);
+          info(chan, PRT_SHOWCONNECT, STATE_CONNECT, sx);
+        } /* if */
+
+        call[chan].cinth = hour;
+        call[chan].ctakt++;
+
+        if (1 /* message & PRT_SHOWTICKS */) {
+
+          if ((call[chan].provider == -1) || (call[chan].provider == 33))
+            exp = call[chan].ctakt * currency_factor;
+          else
+            /* call pay() with duration + 1 to get the charge for the _next_ chargeint! */
+            exp = pay(call[chan].connect, dur + 1, call[chan].zone, call[chan].provider);
+
+          sprintf(sx, "START %d.CHARGEINT %s %s (%s)",
+            call[chan].ctakt,
+            currency,
+            double2str(exp, 6, 2, DEB),
+            double2clock((double)dur));
+
+          info(chan, PRT_SHOWCONNECT, STATE_CONNECT, sx);
+        } /* if */
+
+        call[chan].nextcint += (int)call[chan].cint;
+      } /* if */
+    } /* if */
+  } /* for */
+} /* processcint */

@@ -1,4 +1,4 @@
-/* $Id: takt.c,v 1.2 1998/06/14 15:33:58 akool Exp $
+/* $Id: takt.c,v 1.3 1998/06/21 11:52:57 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -345,19 +345,94 @@ static float gebuehr[2][6][4][3] =
      {  -1.0,  60.0,  60.0 }}}};
 
 
-int taktlaenge(int provider, time_t connect, int zone, char *description)
+float taktlaenge(int chan, char *description)
 {
-  register int        l;
+  register int        c;
   auto     struct tm *tm;
   auto	   char	      why[BUFSIZ];
+  auto	   int	      provider = call[chan].provider;
+  auto	   time_t     connect = call[chan].connect;
+  auto	   int	      zone = -1, zone2 = -1;
+  auto	   float      takt;
 
 
   *description = 0;
 
+  if (!call[chan].dialin && *call[chan].num[1]) {
+
+    if ((provider == 11) || /* o.tel.o */
+        (provider == 13) || /* Tele2 */
+        (provider == 14) || /* EWE TEL */
+        (provider == 15) || /*  */
+        (provider == 23) || /* Tesion */
+        (provider == 24) || /* TelePassport */
+        (provider == 30) || /* TelDaFax */
+        (provider == 39) || /* tesion */
+        (provider == 41) || /* HanseNet */
+        (provider == 46) || /* KomTel */
+        (provider == 49) || /* ACC */
+        (provider == 66) || /* Interoute */
+        (provider == 70) || /* Arcor */
+        (provider == 79) || /* Viatel */
+        (provider == 90) || /* Viag Interkom */
+        (provider == 98))   /* STAR Telecom */
+      return(1);
+
+    if (provider == 18)	    /* Debitel */
+      return(30);
+
+    if ((provider == 36) || /* Hutchison Telekom */
+        (provider == 50))   /* Talkline */
+      return(10);
+
+    if (provider == 43)	    /* Hutchison Telekom */
+      return(60);
+
+    if (provider == 9)	    /* ECONOphone - mindestens jedoch 30 Sekunden! */
+      return(6);
+
   tm = localtime(&connect);
+
+    if (call[chan].sondernummer != -1) {
+      switch (SN[call[chan].sondernummer].tarif) {
+        case  0 : sprintf(description, "FreeCall");  /* Free of charge */
+              	  return(60 * 60 * 24);              /* one day should be enough ;-) */
+
+        case  1 : zone = 1;                          /* CityCall */
+                  break;
+
+        case -1 : if ((tm->tm_wday > 0) && (tm->tm_wday < 6)) {
+              	    if ((tm->tm_hour > 8) && (tm->tm_hour < 18))
+                      takt = SN[call[chan].sondernummer].takt1;  /* Werktag 9-18 Uhr */
+              	    else
+                      takt = SN[call[chan].sondernummer].takt2;  /* Restliche Zeit */
+        	  }
+    	    	  else
+    	    	    takt = SN[call[chan].sondernummer].takt2;
+
+                  strcpy(description, SN[call[chan].sondernummer].sinfo);
+		  return(takt);
+                  break;
+
+      } /* switch */
+    } /* if */
+
+    if (zone == -1) {
+      zone2 = area_diff(NULL, call[chan].num[1]);
+
+      if ((zone2 == -1) && (c = call[chan].confentry[OTHER]) > -1)
+        zone = known[c]->zone;
+      else
+        zone = zone2;
+
+    } /* if */
+
+    if (zone != -1) {
 
   if (provider == -1)
     provider = 33;
+
+      call[chan].zone = zone;
 
   zone--;
 
@@ -365,11 +440,16 @@ int taktlaenge(int provider, time_t connect, int zone, char *description)
     return(-1);
 
   if ((provider == 19) || (provider == 33)) {
-    l = gebuehr[(provider == 33) ? DTAG : MOBILCOM][zeit[tm->tm_hour]][tarifzeit(tm, why)][zone];
+        takt = gebuehr[(provider == 33) ? DTAG : MOBILCOM][zeit[tm->tm_hour]][tarifzeit(tm, why)][zone];
     sprintf(description, "%s, %s, %s", zeiten[zeit[tm->tm_hour]], why, zonen[zone]);
+        return(takt);
+      }
+      else
+        return(-1);
+    }
+    else
+      return(-1);
   }
   else
     return(-1);
-
-  return(l);
 } /* taktlaenge */

@@ -1,4 +1,4 @@
-/* $Id: isdnlog.c,v 1.20 1998/06/07 21:08:31 akool Exp $
+/* $Id: isdnlog.c,v 1.21 1998/06/21 11:52:46 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,9 @@
  * along with this program; if not, write to the Free Software
  *
  * $Log: isdnlog.c,v $
+ * Revision 1.21  1998/06/21 11:52:46  akool
+ * First step to let isdnlog generate his own AOCD messages
+ *
  * Revision 1.20  1998/06/07 21:08:31  akool
  * - Accounting for the following new providers implemented:
  *     o.tel.o, Tele2, EWE TEL, Debitel, Mobilcom, Isis, NetCologne,
@@ -258,6 +261,8 @@ static void loop(void)
         Start_Interval();
 
       now();
+
+      processcint();
 
       for (Cnt = first_descr; Cnt < socket_size(sockets); Cnt++) {
         if (X_FD_ISSET(sockets[Cnt].descriptor, &exceptmask)) {

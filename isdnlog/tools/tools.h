@@ -1,4 +1,4 @@
-/* $Id: tools.h,v 1.18 1998/06/07 21:10:02 akool Exp $
+/* $Id: tools.h,v 1.19 1998/06/21 11:53:27 akool Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools.h,v $
+ * Revision 1.19  1998/06/21 11:53:27  akool
+ * First step to let isdnlog generate his own AOCD messages
+ *
  * Revision 1.18  1998/06/07 21:10:02  akool
  * - Accounting for the following new providers implemented:
  *     o.tel.o, Tele2, EWE TEL, Debitel, Mobilcom, Isis, NetCologne,
@@ -556,6 +559,11 @@ typedef struct {
   int	  takteChargeInt;
   int 	  card;
   int	  knock; 
+  time_t  nextcint;
+  float	  cint;
+  int     cinth;
+  int	  ctakt;
+  int	  zone;
 } CALL;
 
 /****************************************************************************/
@@ -687,6 +695,7 @@ _EXTERN double   bytemax;
 _EXTERN int   	connectmaxmode;
 _EXTERN int   	bytemaxmode;
 _EXTERN char    *currency;
+_EXTERN int	 hour;
 _EXTERN int      day;
 _EXTERN int      month;
 _EXTERN int      retnum;

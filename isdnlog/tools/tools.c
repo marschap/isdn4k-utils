@@ -1,4 +1,4 @@
-/* $Id: tools.c,v 1.12 1998/06/07 21:09:57 akool Exp $
+/* $Id: tools.c,v 1.13 1998/06/21 11:53:23 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools.c,v $
+ * Revision 1.13  1998/06/21 11:53:23  akool
+ * First step to let isdnlog generate his own AOCD messages
+ *
  * Revision 1.12  1998/06/07 21:09:57  akool
  * - Accounting for the following new providers implemented:
  *     o.tel.o, Tele2, EWE TEL, Debitel, Mobilcom, Isis, NetCologne,
@@ -644,10 +647,12 @@ char *Providername(int number)
     case 11 : return("o.tel.o");
     case 13 : return("Tele2");
     case 14 : return("EWE TEL");
+    case 15 : return("???");
     case 18 : return("Debitel");
     case 19 : return("Mobilcom");
     case 20 : return("Isis");
     case 22 : return("NetCologne");
+    case 23 : return("Tesion");
     case 24 : return("TelePassport");
     case 25 : return("Citykom Muenster");
     case 30 : return("TelDaFax");
@@ -655,15 +660,19 @@ char *Providername(int number)
     case 36 : return("Hutchison Telekom");
     case 39 : return("tesion))");
     case 41 : return("HanseNet");
+    case 43 : return("???");
     case 46 : return("KomTel");
     case 49 : return("ACC");
     case 50 : return("Talkline");
     case 55 : return("Esprit");
     case 66 : return("Interoute");
     case 70 : return("Arcor");
+    case 79 : return("Viatel");
     case 85 : return("WESTCom");
     case 88 : return("WorldCom");
     case 90 : return("Viag Interkom");
+    case 98 : return("STAR Telecom");
+    case 99 : return("ECONOphone/Telco");
     default : return("UNKNOWN Provider");
   } /* switch */
 } /* Providername */
