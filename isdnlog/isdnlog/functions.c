@@ -1,4 +1,4 @@
-/* $Id: functions.c,v 1.31 2000/12/15 14:36:05 leo Exp $
+/* $Id: functions.c,v 1.32 2001/08/18 12:04:08 paul Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,9 @@
  * along with this program; if not, write to the Free Software
  *
  * $Log: functions.c,v $
+ * Revision 1.32  2001/08/18 12:04:08  paul
+ * Don't attempt to write to stderr if we're a daemon.
+ *
  * Revision 1.31  2000/12/15 14:36:05  leo
  * modilp, ilp - B-chan usage in /proc/isdnlog
  * s. isdnlog/ilp/README for more information
@@ -552,7 +555,8 @@ int print_msg(int Level, const char *fmt, ...)
   if (Level & message)
   {
     /* no console, no outfile -> log to stderr */
-    if ((fout==NULL) && (fcons == NULL)) {
+    /* if a daemon, don't use stderr either! */
+    if (!fout && !fcons && !isdaemon) {
       fputs(width ? s : String, stderr);
       fflush(stderr);
     }
@@ -721,3 +725,4 @@ int ringer(int chan, int event)
 
   return ProcessStarted;
 } /* ringer */
+/* vim:set ts=2: */
