@@ -3707,9 +3707,7 @@ A: <tpo@spin.ch> schrieb dazu am 8. Okt 1996:
 !verboff
 
 Q: Wo finde ich eine Übersicht aller causes?
-A: Klaus Kämpf <kkaempf@progis.de> schrieb hierzu:
-   Spontan fällt mir da die ISPA Dokumentation ein. Schau doch mal in
-   !link ftp://ftp.biochem.mpg.de//pc/isdn;.
+A: man isdn_cause
 
 Q: Bei meiner ELSA-Karte blinkt öfters die LED, die den Verlust der TEI
    anzeigt. Meine Verbindungen sind leider auch öfter gestört...
