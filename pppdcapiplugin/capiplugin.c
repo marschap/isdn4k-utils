@@ -26,7 +26,7 @@
 #include <linux/if.h>
 #include <linux/in.h>
 
-static char *revision = "$Revision: 1.27 $";
+static char *revision = "$Revision: 1.28 $";
 
 /* -------------------------------------------------------------------- */
 
@@ -1233,6 +1233,14 @@ static void incoming(capi_connection *cp,
 			   if (coso == COSO_LOCAL) goto callback;
 			   goto accept;
 	                } else if (proto == PROTO_V42BIS) {
+			   if (demand) goto wakeupmatch;
+			   if (coso == COSO_LOCAL) goto callback;
+			   goto accept;
+	                } else if (proto == PROTO_V110_ASYNC) {
+			   if (demand) goto wakeupmatch;
+			   if (coso == COSO_LOCAL) goto callback;
+			   goto accept;
+	                } else if (proto == PROTO_V120_ASYNC) {
 			   if (demand) goto wakeupmatch;
 			   if (coso == COSO_LOCAL) goto callback;
 			   goto accept;
