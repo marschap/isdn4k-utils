@@ -274,7 +274,7 @@ void rate_1002(void) {
   
   printf ("\n");
   rprintf ("UTA", "P:02");
-  rprintf ("Bundesland-Verzonung (angrenzende) nicht implementiert", "C:Fixme:");
+  rprintf ("angrenzende Bezirke werden falsch verzont", "C:Fixme:");
   rprintf ("# Verzonung", "D:uta");
   for (z=0; z<COUNT(Zone); z++) {
     rprintf (Zone[z][0], "Z:%d", z+1);
@@ -327,7 +327,7 @@ void rate_1003(void) {
   
   printf ("\n");
   rprintf ("Multikom", "P:03");
-  rprintf ("Verify Verzonung", "C:Fixme:");
+  rprintf ("Verzonung nicht verifiziert", "C:Fixme:");
   rprintf ("# Verzonung", "D:pta");
   for (z=0; z<COUNT(Zone); z++) {
     rprintf (Zone[z][0], "Z:%d", z+1);
@@ -435,7 +435,7 @@ void rate_1007(void) {
   for (t=0; t<2; t++) {
     printf ("\n");
     rprintf ("European Telecom", "P:07,%d", t+1);
-    rprintf ("Verify Verzonung", "C:Fixme:");
+    rprintf ("Verzonung nicht verifiziert", "C:Fixme:");
     rprintf ("# Verzonung", "D:1007");
     rprintf (Name[t], "C:Tarif:");
     for (z=0; z<COUNT(Zone); z++) {
@@ -600,7 +600,7 @@ void rate_1024(void) {
   
   printf ("\n");
   rprintf ("Telepassport", "P:24");
-  rprintf ("International D: Zentral- und Südamerika nicht implementiert", "C:Fixme:");
+  rprintf ("'International D': Zentral- und Südamerika nicht implementiert", "C:Fixme:");
   rprintf ("# Verzonung", "D:1024");
   for (z=0; z<COUNT(Zone); z++) {
     rprintf (Zone[z][0], "Z:%d", z+1);
@@ -810,7 +810,7 @@ void rate_1066(void) {
   printf ("\n");
   rprintf ("MIT 1066", "P:66");
   rprintf ("# Verzonung", "D:1066");
-  rprintf ("Verzonung -50/+50 verifizieren", "C:Fixme");
+  rprintf ("Verzonung -50/+50 nicht verifiziert", "C:Fixme");
   for (z=0; z<COUNT(Zone); z++) {
     rprintf (Zone[z][0], "Z:%d", z+1);
     if (Tarif[z][0]==Tarif[z][1]) {
@@ -823,6 +823,46 @@ void rate_1066(void) {
     print_area(Zone[z][1]);
   }
 }
+
+void rate_1067(void) {
+  
+  char *Zone[][2] = {{ "Festnetz", "Österreich" }, 
+		     { "max.box", "+4367622" },
+		     { "max.online", "+4367620" }, /* Fixme */ 
+		     { "max.mobil", "+43676" },
+		     { "andere Mobilfunknetze", "+43663,+43664,+43669" },
+		     { "Nachbarländer", "Deutschland, Italien" },
+		     { "EU", "" },
+		     { "Weltzone 1", "Griechenland, Portugal" },
+		     { "Weltzone 2", "" },
+		     { "Weltzone 3", "" },
+		     { "Weltzone 4", "+" }};
+  
+  double Tarif[] = { 01.00, 
+		     01.00, 
+		     01.00, 
+		     02.70, 
+		     03.90, 
+		     03.30, 
+		     03.50, 
+		     05.50, 
+		     09.70, 
+		     15.00, 
+		     22.00 }; 
+  
+  int z;
+  
+  printf ("\n");
+  rprintf ("max.plus","P:67");
+  rprintf ("Taktung unbekannt", "C:Fixme:");
+  for (z=0; z<7; z++) {
+    rprintf (Zone[z][0], "Z:%d", z+1);
+    /* Fixme: Taktung? */
+    rprintf ("rund um die Uhr", "T:*/*=%.2f(60)/1", Tarif[z]);
+    print_area(Zone[z][1]);
+  }
+}    
+
 
 void rate_1069(void) {
 
@@ -862,15 +902,16 @@ int main (int argc, char *argv[])
   printf ("# The information herein was machine-generated,\n");
   printf ("# so do not contribute patches to this file.\n\n");
   printf ("# Please contact Michael Reinelt <reinelt@eunet.at>\n");
-  printf ("# if you have any corrections or additions.\n\n");
+  printf ("# or Leo Tötsch <lt@toetsch.at> if you have\n");
+  printf ("# any corrections or additions.\n\n");
   printf ("# Many thanks to Daniela Bruder <dbruder@sime.com>\n");
   printf ("# for collecting and preparing most of the call charges.\n\n\n");
 
-  printf ("V:1.61-Austria [23-Jun-1999]\n\n");
+  printf ("V:1.70-Austria [27-Jun-1999]\n\n");
   printf ("U:%%.3f öS\n");
 
 #if 0
-  rate_1066();
+  rate_1067();
 #else
   rate_1001();
   rate_1002();
@@ -883,6 +924,7 @@ int main (int argc, char *argv[])
   rate_1029();
   rate_1044();
   rate_1066();
+  rate_1067();
   rate_1069();
 #endif
   return(EXIT_SUCCESS);	

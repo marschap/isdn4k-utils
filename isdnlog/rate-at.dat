@@ -4,13 +4,14 @@
 # so do not contribute patches to this file.
 
 # Please contact Michael Reinelt <reinelt@eunet.at>
-# if you have any corrections or additions.
+# or Leo Tötsch <lt@toetsch.at> if you have
+# any corrections or additions.
 
 # Many thanks to Daniela Bruder <dbruder@sime.com>
 # for collecting and preparing most of the call charges.
 
 
-V:1.61-Austria [23-Jun-1999]
+V:1.70-Austria [27-Jun-1999]
 
 U:%.3f öS
 
@@ -1711,7 +1712,7 @@ A:+                                alle übrigen Länder
 
 P:66                               MIT 1066
 D:1066                             # Verzonung
-C:Fixme                            Verzonung -50/+50 verifizieren
+C:Fixme                            Verzonung -50/+50 nicht verifiziert
 Z:1                                Regionalzone
 T:1-5/8-18=0.96(60)/18.75/1        Tag
 T:1-5/18-8=0.80(60)/22.50/1        Nacht
@@ -1785,6 +1786,29 @@ A:Sao Tome und Principe, Amerikanisch-Samoa, Samoa, Senegal, Seychellen
 A:Sierra Leone, Sri Lanka, Suriname, Swasiland, Togo, Tonga, Tschad
 A:Turks- und Caicos-Inseln, Tuvalu, Uganda, Vietnam, Wake-Inseln, Zaire
 A:Zentralafrikanische Republik
+
+P:67                               max.plus
+C:Fixme:                           Taktung unbekannt
+Z:1                                Festnetz
+T:*/*=1.00(60)/1                   rund um die Uhr
+A:Österreich
+Z:2                                max.box
+T:*/*=1.00(60)/1                   rund um die Uhr
+A:+4367622
+Z:3                                max.online
+T:*/*=1.00(60)/1                   rund um die Uhr
+A:+4367620
+Z:4                                max.mobil
+T:*/*=2.70(60)/1                   rund um die Uhr
+A:+43676
+Z:5                                andere Mobilfunknetze
+T:*/*=3.90(60)/1                   rund um die Uhr
+A:+43663, +43664, +43669
+Z:6                                Nachbarländer
+T:*/*=3.30(60)/1                   rund um die Uhr
+A:Deutschland, Italien
+Z:7                                EU
+T:*/*=3.50(60)/1                   rund um die Uhr
 
 P:69                               ONE
 Z:1                                Festnetz
