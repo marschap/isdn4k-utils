@@ -1,9 +1,11 @@
-#ifndef __CAPIUTIL_H__
-#define __CAPIUTIL_H__
+#ifndef __CAPIUTILS_H__
+#define __CAPIUTILS_H__
 
 #include <sys/types.h>
 #include <sys/time.h>
 #include <time.h>
+
+#include <capicmd.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -102,6 +104,51 @@ typedef enum { CAPI_COMPOSE = 0, CAPI_DEFAULT = 1 } _cmstruct;
 #define CAPI_IND    0x82
 #define CAPI_RESP   0x83
 
+/*-----------------------------------------------------------------------*/
+
+#define CAPIMSG_BASELEN		8
+#define CAPIMSG_U8(m, off)	(m[off])
+#define CAPIMSG_U16(m, off)	(m[off]|(m[(off)+1]<<8))
+#define CAPIMSG_U32(m, off)	(m[off]|(m[(off)+1]<<8)|(m[(off)+2]<<16)|(m[(off)+3]<<24))
+#define	CAPIMSG_LEN(m)		CAPIMSG_U16(m,0)
+#define	CAPIMSG_APPID(m)	CAPIMSG_U16(m,2)
+#define	CAPIMSG_COMMAND(m)	CAPIMSG_U8(m,4)
+#define	CAPIMSG_SUBCOMMAND(m)	CAPIMSG_U8(m,5)
+#define CAPIMSG_CMD(m)		(((m[4])<<8)|(m[5]))
+#define	CAPIMSG_MSGID(m)	CAPIMSG_U16(m,6)
+#define CAPIMSG_CONTROLLER(m)	(m[8] & 0x7f)
+#define CAPIMSG_CONTROL(m)	CAPIMSG_U32(m, 8)
+#define CAPIMSG_NCCI(m)		CAPIMSG_CONTROL(m)
+#define CAPIMSG_DATALEN(m)	CAPIMSG_U16(m,16) /* DATA_B3_REQ */
+
+static inline void capimsg_setu8(void *m, int off, _cbyte val)
+{
+	((_cbyte *)m)[off] = val;
+}
+
+static inline void capimsg_setu16(void *m, int off, _cword val)
+{
+	((_cbyte *)m)[off] = val & 0xff;
+	((_cbyte *)m)[off+1] = (val >> 8) & 0xff;
+}
+
+static inline void capimsg_setu32(void *m, int off, _cdword val)
+{
+	((_cbyte *)m)[off] = val & 0xff;
+	((_cbyte *)m)[off+1] = (val >> 8) & 0xff;
+	((_cbyte *)m)[off+2] = (val >> 16) & 0xff;
+	((_cbyte *)m)[off+3] = (val >> 24) & 0xff;
+}
+
+#define	CAPIMSG_SETLEN(m, len)		capimsg_setu16(m, 0, len)
+#define	CAPIMSG_SETAPPID(m, applid)	capimsg_setu16(m, 2, applid)
+#define	CAPIMSG_SETCOMMAND(m,cmd)	capimsg_setu8(m, 4, cmd)
+#define	CAPIMSG_SETSUBCOMMAND(m, cmd)	capimsg_setu8(m, 5, cmd)
+#define	CAPIMSG_SETMSGID(m, msgid)	capimsg_setu16(m, 6, msgid)
+#define	CAPIMSG_SETCONTROL(m, contr)	capimsg_setu32(m, 8, contr)
+#define	CAPIMSG_SETDATALEN(m, len)	capimsg_setu16(m, 16, len)
+
+
 /*
  * The _cmsg structure contains all possible CAPI 2.0 parameter.
  * All parameters are stored here first. The function capi_cmsg2message()
@@ -111,102 +158,91 @@ typedef enum { CAPI_COMPOSE = 0, CAPI_DEFAULT = 1 } _cmstruct;
  */
 
 typedef struct {
-    /* Header */
-    _cword ApplId;
-    _cbyte Command;
-    _cbyte Subcommand;
-    _cword Messagenumber;
+	/* Header */
+	_cword ApplId;
+	_cbyte Command;
+	_cbyte Subcommand;
+	_cword Messagenumber;
 
-    /* Parameter */
-    union {
-	_cdword adrController;
-	_cdword adrPLCI;
-	_cdword adrNCCI;
-    } adr;
+	/* Parameter */
+	union {
+		_cdword adrController;
+		_cdword adrPLCI;
+		_cdword adrNCCI;
+	} adr;
 
-    _cmstruct AdditionalInfo;
-    _cstruct B1configuration;
-    _cword B1protocol;
-    _cstruct B2configuration;
-    _cword B2protocol;
-    _cstruct B3configuration;
-    _cword B3protocol;
-    _cstruct BC;
-    _cstruct BChannelinformation;
-    _cmstruct BProtocol;
-    _cstruct CalledPartyNumber;
-    _cstruct CalledPartySubaddress;
-    _cstruct CallingPartyNumber;
-    _cstruct CallingPartySubaddress;
-    _cdword CIPmask;
-    _cdword CIPmask2;
-    _cword CIPValue;
-    _cdword Class;
-    _cstruct ConnectedNumber;
-    _cstruct ConnectedSubaddress;
-    _cdword Data32;
-    _cqword Data64;
-    _cword DataHandle;
-    _cword DataLength;
-    _cstruct FacilityConfirmationParameter;
-    _cstruct Facilitydataarray;
-    _cstruct FacilityIndicationParameter;
-    _cstruct FacilityRequestParameter;
-    _cstruct FacilityResponseParameters;
-    _cword FacilitySelector;
-    _cword Flags;
-    _cdword Function;
-    _cstruct HLC;
-    _cword Info;
-    _cstruct InfoElement;
-    _cdword InfoMask;
-    _cword InfoNumber;
-    _cstruct Keypadfacility;
-    _cstruct LLC;
-    _cstruct ManuData;
-    _cdword ManuID;
-    _cstruct NCPI;
-    _cword Reason;
-    _cword Reason_B3;
-    _cword Reject;
-    _cstruct Useruserdata;
-    unsigned char *Data;
+	_cmstruct AdditionalInfo;
+	_cstruct B1configuration;
+	_cword B1protocol;
+	_cstruct B2configuration;
+	_cword B2protocol;
+	_cstruct B3configuration;
+	_cword B3protocol;
+	_cstruct BC;
+	_cstruct BChannelinformation;
+	_cmstruct BProtocol;
+	_cstruct CalledPartyNumber;
+	_cstruct CalledPartySubaddress;
+	_cstruct CallingPartyNumber;
+	_cstruct CallingPartySubaddress;
+	_cdword CIPmask;
+	_cdword CIPmask2;
+	_cword CIPValue;
+	_cdword Class;
+	_cstruct ConnectedNumber;
+	_cstruct ConnectedSubaddress;
+	_cdword Data32;
+	_cqword Data64;
+	_cword DataHandle;
+	_cword DataLength;
+	_cstruct FacilityConfirmationParameter;
+	_cstruct Facilitydataarray;
+	_cstruct FacilityIndicationParameter;
+	_cstruct FacilityRequestParameter;
+	_cstruct FacilityResponseParameters;
+	_cword FacilitySelector;
+	_cword Flags;
+	_cdword Function;
+	_cstruct HLC;
+	_cword Info;
+	_cstruct InfoElement;
+	_cdword InfoMask;
+	_cword InfoNumber;
+	_cstruct Keypadfacility;
+	_cstruct LLC;
+	_cstruct ManuData;
+	_cdword ManuID;
+	_cstruct NCPI;
+	_cword Reason;
+	_cword Reason_B3;
+	_cword Reject;
+	_cstruct Useruserdata;
+	unsigned char *Data;
 
-    /* intern */
-    unsigned l,p;
-    unsigned char *par;
-    unsigned char *m;
+	/* intern */
+	unsigned l, p;
+	unsigned char *par;
+	_cbyte *m;
+
+	/* buffer to construct message */
+	_cbyte buf[180];
+
 } _cmsg;
 
 
-#define capi_cmsg2message	capi20_cmsg2message
-#define capi_message2cmsg	capi20_message2cmsg
-
-unsigned capi20_cmsg2message(_cmsg *cmsg, unsigned char *msg);
-
-unsigned capi20_message2cmsg (_cmsg *cmsg, unsigned char *msg);
+/*
+ * capi_cmsg2message() assembles the parameter from _cmsg to a CAPI 2.0
+ * conform message
+ */
+#define capi20_cmsg2message	capi_cmsg2message
+unsigned capi_cmsg2message(_cmsg *cmsg, unsigned char *msg);
 
 /*
- * capi20_put_cmsg() works like capi20_put_message() but it converts the
- * _cmsg * first with capi20_cmsg2message(). Possible errors from
- * capi20_put_message() will be returned.
+ *  capi20_message2cmsg disassembles a CAPI message an writes the parameter
+ *  into _cmsg for easy access
  */
-
-#define CAPI_PUT_CMSG	capi20_put_cmsg
-#define capi_put_cmsg	capi20_put_cmsg
-
-unsigned capi20_put_cmsg(_cmsg *cmsg);
-
-/*
- * capi20_get_cmsg() works like capi20_get_message() and converts the
- * CAPI message * to a _cmsg with capi20_message2cmsg().
- * Possible errors from capi20_get_message() will be returned.
- */
-
-#define CAPI_GET_CMSG	capi20_get_cmsg
-#define capi_get_cmsg	capi20_get_cmsg
-
-unsigned capi20_get_cmsg(_cmsg *cmsg, unsigned applid);
+#define capi20_message2cmsg	capi20_message2cmsg
+unsigned capi_message2cmsg (_cmsg *cmsg, unsigned char *msg);
 
 /*
  * capi20_cmsg_header() fills the _cmsg structure with default values,
@@ -214,21 +250,64 @@ unsigned capi20_get_cmsg(_cmsg *cmsg, unsigned applid);
  * sending the message.
  */
 
-#define CAPI_CMSG_HEADER	capi20_cmsg_header
-#define capi_cmsg_header	capi20_cmsg_header
-
-unsigned capi20_cmsg_header (_cmsg *cmsg, unsigned _ApplId, _cbyte _Command, _cbyte _Subcommand, _cword _Messagenumber, _cdword _Controller);
+#define CAPI_CMSG_HEADER	capi_cmsg_header
+#define capi20_cmsg_header	capi_cmsg_header
+unsigned capi_cmsg_header (_cmsg *cmsg, unsigned _ApplId, _cbyte _Command, _cbyte _Subcommand, _cword _Messagenumber, _cdword _Controller);
 
 /*
- * capi20_cmsg_answer() is used to answer indications. It changes the header
+ * capi_cmsg_answer() is used to answer indications. It changes the header
  * of an indication to a response, and leaves all other parameters the same
  */
 
-#define capi_cmsg_answer	capi20_cmsg_answer
+#define capi20_cmsg_answer	capi_cmsg_answer
 
-unsigned capi20_cmsg_answer (_cmsg *cmsg);
+static inline void capi_cmsg_answer(_cmsg * cmsg)
+{
+	cmsg->Subcommand |= 0x01;
+}
 
-/*----- defines to access specific parameter -----*/
+/*
+ * capi_get_cmsg() works like capi20_get_message() and converts the
+ * CAPI message * to a _cmsg with capi_message2cmsg().
+ * Possible errors from capi20_get_message() will be returned.
+ */
+
+#define CAPI_GET_CMSG	capi_get_cmsg
+#define capi_get_cmsg	capi_get_cmsg
+unsigned capi_get_cmsg(_cmsg *cmsg, unsigned applid);
+
+/*
+ * capi_put_cmsg() works like capi20_put_message() but it converts the
+ * _cmsg * first with capi_cmsg2message(). Possible errors from
+ * capi_put_message() will be returned.
+ */
+
+#define CAPI_PUT_CMSG	capi_put_cmsg
+#define capi20_put_cmsg	capi_put_cmsg
+unsigned capi_put_cmsg(_cmsg *cmsg);
+
+/*-----------------------------------------------------------------------*/
+
+/*
+ * Debugging / Tracing functions
+ */
+
+/*
+ * capi_info2str generated a readable string for Capi2.0 reasons.
+ */
+#define capi20_info2str	capi_info2str
+char *capi_info2str(_cword reason);
+
+#define capi20_cmd2str	capi_cmd2str
+char *capi_cmd2str(_cbyte cmd, _cbyte subcmd);
+
+#define capi20_cmsg2str	capi_cmsg2str
+char *capi_cmsg2str(_cmsg * cmsg);
+
+#define capi20_message2str capi_message2str
+char *capi_message2str(_cbyte * msg);
+
+/*-----------------------------------------------------------------------*/
 
 #define ALERT_REQ_PLCI(x) ((x)->adr.adrPLCI)
 		 /* Physical Link Connection Identifier */
@@ -960,9 +1039,325 @@ unsigned MANUFACTURER_RESP (_cmsg *cmsg, _cword ApplId, _cword Messagenumber
 unsigned RESET_B3_RESP (_cmsg *cmsg, _cword ApplId, _cword Messagenumber
 		,_cdword adr);
 
+/*-----------------------------------------------------------------------*/
+
+static inline void capi_fill_CONNECT_B3_REQ(_cmsg * cmsg, _cword ApplId, _cword Messagenumber,
+					    _cdword adr,
+					    _cstruct NCPI)
+{
+	capi_cmsg_header(cmsg, ApplId, 0x82, 0x80, Messagenumber, adr);
+	cmsg->NCPI = NCPI;
+}
+
+static inline void capi_fill_FACILITY_REQ(_cmsg * cmsg, _cword ApplId, _cword Messagenumber,
+					  _cdword adr,
+					  _cword FacilitySelector,
+				       _cstruct FacilityRequestParameter)
+{
+	capi_cmsg_header(cmsg, ApplId, 0x80, 0x80, Messagenumber, adr);
+	cmsg->FacilitySelector = FacilitySelector;
+	cmsg->FacilityRequestParameter = FacilityRequestParameter;
+}
+
+static inline void capi_fill_INFO_REQ(_cmsg * cmsg, _cword ApplId, _cword Messagenumber,
+				      _cdword adr,
+				      _cstruct CalledPartyNumber,
+				      _cstruct BChannelinformation,
+				      _cstruct Keypadfacility,
+				      _cstruct Useruserdata,
+				      _cstruct Facilitydataarray)
+{
+	capi_cmsg_header(cmsg, ApplId, 0x08, 0x80, Messagenumber, adr);
+	cmsg->CalledPartyNumber = CalledPartyNumber;
+	cmsg->BChannelinformation = BChannelinformation;
+	cmsg->Keypadfacility = Keypadfacility;
+	cmsg->Useruserdata = Useruserdata;
+	cmsg->Facilitydataarray = Facilitydataarray;
+}
+
+static inline void capi_fill_LISTEN_REQ(_cmsg * cmsg, _cword ApplId, _cword Messagenumber,
+					_cdword adr,
+					_cdword InfoMask,
+					_cdword CIPmask,
+					_cdword CIPmask2,
+					_cstruct CallingPartyNumber,
+					_cstruct CallingPartySubaddress)
+{
+	capi_cmsg_header(cmsg, ApplId, 0x05, 0x80, Messagenumber, adr);
+	cmsg->InfoMask = InfoMask;
+	cmsg->CIPmask = CIPmask;
+	cmsg->CIPmask2 = CIPmask2;
+	cmsg->CallingPartyNumber = CallingPartyNumber;
+	cmsg->CallingPartySubaddress = CallingPartySubaddress;
+}
+
+static inline void capi_fill_ALERT_REQ(_cmsg * cmsg, _cword ApplId, _cword Messagenumber,
+				       _cdword adr,
+				       _cstruct BChannelinformation,
+				       _cstruct Keypadfacility,
+				       _cstruct Useruserdata,
+				       _cstruct Facilitydataarray)
+{
+	capi_cmsg_header(cmsg, ApplId, 0x01, 0x80, Messagenumber, adr);
+	cmsg->BChannelinformation = BChannelinformation;
+	cmsg->Keypadfacility = Keypadfacility;
+	cmsg->Useruserdata = Useruserdata;
+	cmsg->Facilitydataarray = Facilitydataarray;
+}
+
+static inline void capi_fill_CONNECT_REQ(_cmsg * cmsg, _cword ApplId, _cword Messagenumber,
+					 _cdword adr,
+					 _cword CIPValue,
+					 _cstruct CalledPartyNumber,
+					 _cstruct CallingPartyNumber,
+					 _cstruct CalledPartySubaddress,
+					 _cstruct CallingPartySubaddress,
+					 _cword B1protocol,
+					 _cword B2protocol,
+					 _cword B3protocol,
+					 _cstruct B1configuration,
+					 _cstruct B2configuration,
+					 _cstruct B3configuration,
+					 _cstruct BC,
+					 _cstruct LLC,
+					 _cstruct HLC,
+					 _cstruct BChannelinformation,
+					 _cstruct Keypadfacility,
+					 _cstruct Useruserdata,
+					 _cstruct Facilitydataarray)
+{
+
+	capi_cmsg_header(cmsg, ApplId, 0x02, 0x80, Messagenumber, adr);
+	cmsg->CIPValue = CIPValue;
+	cmsg->CalledPartyNumber = CalledPartyNumber;
+	cmsg->CallingPartyNumber = CallingPartyNumber;
+	cmsg->CalledPartySubaddress = CalledPartySubaddress;
+	cmsg->CallingPartySubaddress = CallingPartySubaddress;
+	cmsg->B1protocol = B1protocol;
+	cmsg->B2protocol = B2protocol;
+	cmsg->B3protocol = B3protocol;
+	cmsg->B1configuration = B1configuration;
+	cmsg->B2configuration = B2configuration;
+	cmsg->B3configuration = B3configuration;
+	cmsg->BC = BC;
+	cmsg->LLC = LLC;
+	cmsg->HLC = HLC;
+	cmsg->BChannelinformation = BChannelinformation;
+	cmsg->Keypadfacility = Keypadfacility;
+	cmsg->Useruserdata = Useruserdata;
+	cmsg->Facilitydataarray = Facilitydataarray;
+}
+
+static inline void capi_fill_DATA_B3_REQ(_cmsg * cmsg, _cword ApplId, _cword Messagenumber,
+					 _cdword adr,
+					 unsigned char *Data,
+					 _cword DataLength,
+					 _cword DataHandle,
+					 _cword Flags)
+{
+
+	capi_cmsg_header(cmsg, ApplId, 0x86, 0x80, Messagenumber, adr);
+	cmsg->Data = Data;
+	cmsg->DataLength = DataLength;
+	cmsg->DataHandle = DataHandle;
+	cmsg->Flags = Flags;
+}
+
+static inline void capi_fill_DISCONNECT_REQ(_cmsg * cmsg, _cword ApplId, _cword Messagenumber,
+					    _cdword adr,
+					    _cstruct BChannelinformation,
+					    _cstruct Keypadfacility,
+					    _cstruct Useruserdata,
+					    _cstruct Facilitydataarray)
+{
+
+	capi_cmsg_header(cmsg, ApplId, 0x04, 0x80, Messagenumber, adr);
+	cmsg->BChannelinformation = BChannelinformation;
+	cmsg->Keypadfacility = Keypadfacility;
+	cmsg->Useruserdata = Useruserdata;
+	cmsg->Facilitydataarray = Facilitydataarray;
+}
+
+static inline void capi_fill_DISCONNECT_B3_REQ(_cmsg * cmsg, _cword ApplId, _cword Messagenumber,
+					       _cdword adr,
+					       _cstruct NCPI)
+{
+
+	capi_cmsg_header(cmsg, ApplId, 0x84, 0x80, Messagenumber, adr);
+	cmsg->NCPI = NCPI;
+}
+
+static inline void capi_fill_MANUFACTURER_REQ(_cmsg * cmsg, _cword ApplId, _cword Messagenumber,
+					      _cdword adr,
+					      _cdword ManuID,
+					      _cdword Class,
+					      _cdword Function,
+					      _cstruct ManuData)
+{
+
+	capi_cmsg_header(cmsg, ApplId, 0xff, 0x80, Messagenumber, adr);
+	cmsg->ManuID = ManuID;
+	cmsg->Class = Class;
+	cmsg->Function = Function;
+	cmsg->ManuData = ManuData;
+}
+
+static inline void capi_fill_RESET_B3_REQ(_cmsg * cmsg, _cword ApplId, _cword Messagenumber,
+					  _cdword adr,
+					  _cstruct NCPI)
+{
+
+	capi_cmsg_header(cmsg, ApplId, 0x87, 0x80, Messagenumber, adr);
+	cmsg->NCPI = NCPI;
+}
+
+static inline void capi_fill_SELECT_B_PROTOCOL_REQ(_cmsg * cmsg, _cword ApplId, _cword Messagenumber,
+						   _cdword adr,
+						   _cword B1protocol,
+						   _cword B2protocol,
+						   _cword B3protocol,
+						_cstruct B1configuration,
+						_cstruct B2configuration,
+						_cstruct B3configuration)
+{
+
+	capi_cmsg_header(cmsg, ApplId, 0x41, 0x80, Messagenumber, adr);
+	cmsg->B1protocol = B1protocol;
+	cmsg->B2protocol = B2protocol;
+	cmsg->B3protocol = B3protocol;
+	cmsg->B1configuration = B1configuration;
+	cmsg->B2configuration = B2configuration;
+	cmsg->B3configuration = B3configuration;
+}
+
+static inline void capi_fill_CONNECT_RESP(_cmsg * cmsg, _cword ApplId, _cword Messagenumber,
+					  _cdword adr,
+					  _cword Reject,
+					  _cword B1protocol,
+					  _cword B2protocol,
+					  _cword B3protocol,
+					  _cstruct B1configuration,
+					  _cstruct B2configuration,
+					  _cstruct B3configuration,
+					  _cstruct ConnectedNumber,
+					  _cstruct ConnectedSubaddress,
+					  _cstruct LLC,
+					  _cstruct BChannelinformation,
+					  _cstruct Keypadfacility,
+					  _cstruct Useruserdata,
+					  _cstruct Facilitydataarray)
+{
+	capi_cmsg_header(cmsg, ApplId, 0x02, 0x83, Messagenumber, adr);
+	cmsg->Reject = Reject;
+	cmsg->B1protocol = B1protocol;
+	cmsg->B2protocol = B2protocol;
+	cmsg->B3protocol = B3protocol;
+	cmsg->B1configuration = B1configuration;
+	cmsg->B2configuration = B2configuration;
+	cmsg->B3configuration = B3configuration;
+	cmsg->ConnectedNumber = ConnectedNumber;
+	cmsg->ConnectedSubaddress = ConnectedSubaddress;
+	cmsg->LLC = LLC;
+	cmsg->BChannelinformation = BChannelinformation;
+	cmsg->Keypadfacility = Keypadfacility;
+	cmsg->Useruserdata = Useruserdata;
+	cmsg->Facilitydataarray = Facilitydataarray;
+}
+
+static inline void capi_fill_CONNECT_ACTIVE_RESP(_cmsg * cmsg, _cword ApplId, _cword Messagenumber,
+						 _cdword adr)
+{
+
+	capi_cmsg_header(cmsg, ApplId, 0x03, 0x83, Messagenumber, adr);
+}
+
+static inline void capi_fill_CONNECT_B3_ACTIVE_RESP(_cmsg * cmsg, _cword ApplId, _cword Messagenumber,
+						    _cdword adr)
+{
+
+	capi_cmsg_header(cmsg, ApplId, 0x83, 0x83, Messagenumber, adr);
+}
+
+static inline void capi_fill_CONNECT_B3_RESP(_cmsg * cmsg, _cword ApplId, _cword Messagenumber,
+					     _cdword adr,
+					     _cword Reject,
+					     _cstruct NCPI)
+{
+	capi_cmsg_header(cmsg, ApplId, 0x82, 0x83, Messagenumber, adr);
+	cmsg->Reject = Reject;
+	cmsg->NCPI = NCPI;
+}
+
+static inline void capi_fill_CONNECT_B3_T90_ACTIVE_RESP(_cmsg * cmsg, _cword ApplId, _cword Messagenumber,
+							_cdword adr)
+{
+
+	capi_cmsg_header(cmsg, ApplId, 0x88, 0x83, Messagenumber, adr);
+}
+
+static inline void capi_fill_DATA_B3_RESP(_cmsg * cmsg, _cword ApplId, _cword Messagenumber,
+					  _cdword adr,
+					  _cword DataHandle)
+{
+
+	capi_cmsg_header(cmsg, ApplId, 0x86, 0x83, Messagenumber, adr);
+	cmsg->DataHandle = DataHandle;
+}
+
+static inline void capi_fill_DISCONNECT_B3_RESP(_cmsg * cmsg, _cword ApplId, _cword Messagenumber,
+						_cdword adr)
+{
+
+	capi_cmsg_header(cmsg, ApplId, 0x84, 0x83, Messagenumber, adr);
+}
+
+static inline void capi_fill_DISCONNECT_RESP(_cmsg * cmsg, _cword ApplId, _cword Messagenumber,
+					     _cdword adr)
+{
+
+	capi_cmsg_header(cmsg, ApplId, 0x04, 0x83, Messagenumber, adr);
+}
+
+static inline void capi_fill_FACILITY_RESP(_cmsg * cmsg, _cword ApplId, _cword Messagenumber,
+					   _cdword adr,
+					   _cword FacilitySelector)
+{
+
+	capi_cmsg_header(cmsg, ApplId, 0x80, 0x83, Messagenumber, adr);
+	cmsg->FacilitySelector = FacilitySelector;
+}
+
+static inline void capi_fill_INFO_RESP(_cmsg * cmsg, _cword ApplId, _cword Messagenumber,
+				       _cdword adr)
+{
+
+	capi_cmsg_header(cmsg, ApplId, 0x08, 0x83, Messagenumber, adr);
+}
+
+static inline void capi_fill_MANUFACTURER_RESP(_cmsg * cmsg, _cword ApplId, _cword Messagenumber,
+					       _cdword adr,
+					       _cdword ManuID,
+					       _cdword Class,
+					       _cdword Function,
+					       _cstruct ManuData)
+{
+
+	capi_cmsg_header(cmsg, ApplId, 0xff, 0x83, Messagenumber, adr);
+	cmsg->ManuID = ManuID;
+	cmsg->Class = Class;
+	cmsg->Function = Function;
+	cmsg->ManuData = ManuData;
+}
+
+static inline void capi_fill_RESET_B3_RESP(_cmsg * cmsg, _cword ApplId, _cword Messagenumber,
+					   _cdword adr)
+{
+
+	capi_cmsg_header(cmsg, ApplId, 0x87, 0x83, Messagenumber, adr);
+}
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* __CAPIUTIL_H__ */
+#endif /* __CAPIUTILS_H__ */
