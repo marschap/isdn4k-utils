@@ -75,7 +75,7 @@ N:02290*	# Wildcard after special
 P: [-01.09.1999] 01,1              Telekom Austria Alt
 B:1001
 C:Maintainer:                      Michael Reinelt <reinelt@eunet.at>
-C:Zone:                            Die Regionalzone geht bis zu einer Entfernung von 50 Km,
+C:Zone:                            Die Regionalzone geht bis zu einer Entfernung von 50 Km, 
 C:Zone:                            Fernzone 1 bis 200 Km, Fernzone 2 darüber.
 C:Special:                         Variable Taktung, abhängig von Zone und Tageszeit.
 C:Name:                            Telekom Austria
@@ -143,7 +143,7 @@ T:W/08-18=1.116/9                  Tageszeit
 T:W/18-8=1.116/12                  Sparzeit
 T:E,H/*=1.116/12                   Sparzeit
 A:AL,AD,BY,BE,BA,BG
-A:DK,FI,FR,UK,_UKIR,IE
+A:DK,FI,FR,UK,_NIRE,IE
 A:YU,YU,YU,HR,LU,MT,MK
 A:MC,NL,NO,RO,SM,SE,ES
 A:UA,VA,CY
@@ -168,13 +168,13 @@ T:W/08-18=1.116/4.2353             Tageszeit
 T:W/18-8=1.116/4.8                 Sparzeit
 T:E,H/*=1.116/4.8                  Sparzeit
 A:CL,GF,GP,HK,LY,MQ
-A:YT,MD,NZ,RE,PM,ZA
+A:YT,MD,NZ,RE,HT,
 
 Z:11                               Ausland Zone 6
 T:W/08-18=1.116/3.6                Tageszeit
 T:W/18-8=1.116/4.2353              Sparzeit
 T:E,H/*=1.116/4.2353               Sparzeit
-A:JP,KR,MY,AN,PH,MP
+A:JP,KR,AU,AN,_NZMF,MP
 
 Z:12                               Ausland Zone 7
 T:W/08-18=1.116/3.1304             Tageszeit
@@ -189,7 +189,7 @@ T:W/18-8=1.116/3                   Sparzeit
 T:E,H/*=1.116/3                    Sparzeit
 A:EG,GQ,AW,BS,BB,BZ,BW
 A:BN,BI,DO,GA,GH,GL
-A:GW,GY,JO,KG,CO,KW,LB
+A:GW,EC,JO,KG,CO,KW,LB
 A:PA,SG,ST,VC
 A:TT,AE
 
@@ -262,7 +262,7 @@ T:W/18-8=1.116/10.795              Sparzeit
 T:E,H/*=1.116/10.795               Sparzeit
 A:+434570
 
-Z:24                               Teleinfo 04500
+Z:24                               Teleinfo 04500 
 T:W/08-18=1.116/7.2                Tageszeit
 T:W/18-8=1.116/7.2                 Sparzeit
 T:E,H/*=1.116/7.2                  Sparzeit
@@ -312,7 +312,7 @@ A:+43717
 P: [-01.09.1999] 01,2              Telekom Austria Alt
 B:1001
 C:Maintainer:                      Michael Reinelt <reinelt@eunet.at>
-C:Zone:                            Die Regionalzone geht bis zu einer Entfernung von 50 Km,
+C:Zone:                            Die Regionalzone geht bis zu einer Entfernung von 50 Km, 
 C:Zone:                            Fernzone 1 bis 200 Km, Fernzone 2 darüber.
 C:Special:                         Variable Taktung, abhängig von Zone und Tageszeit.
 C:Name:                            Telekom Austria
@@ -380,7 +380,7 @@ T:W/08-18=1.056/9                  Tageszeit
 T:W/18-8=1.056/12                  Sparzeit
 T:E,H/*=1.056/12                   Sparzeit
 A:AL,AD,BY,BE,BA,BG
-A:DK,FI,FR,UK,_UKIR,IE
+A:DK,FI,FR,UK,_NIRE,IE
 A:YU,YU,YU,HR,LU,MT,MK
 A:MC,NL,NO,RO,SM,SE,ES
 A:UA,VA,CY
@@ -405,13 +405,13 @@ T:W/08-18=1.056/4.2353             Tageszeit
 T:W/18-8=1.056/4.8                 Sparzeit
 T:E,H/*=1.056/4.8                  Sparzeit
 A:CL,GF,GP,HK,LY,MQ
-A:YT,MD,NZ,RE,PM,ZA
+A:YT,MD,NZ,RE,HT,
 
 Z:11                               Ausland Zone 6
 T:W/08-18=1.056/3.6                Tageszeit
 T:W/18-8=1.056/4.2353              Sparzeit
 T:E,H/*=1.056/4.2353               Sparzeit
-A:JP,KR,MY,AN,PH,MP
+A:JP,KR,AU,AN,_NZMF,MP
 
 Z:12                               Ausland Zone 7
 T:W/08-18=1.056/3.1304             Tageszeit
@@ -426,7 +426,7 @@ T:W/18-8=1.056/3                   Sparzeit
 T:E,H/*=1.056/3                    Sparzeit
 A:EG,GQ,AW,BS,BB,BZ,BW
 A:BN,BI,DO,GA,GH,GL
-A:GW,GY,JO,KG,CO,KW,LB
+A:GW,EC,JO,KG,CO,KW,LB
 A:PA,SG,ST,VC
 A:TT,AE
 
@@ -499,7 +499,7 @@ T:W/18-8=1.056/10.795              Sparzeit
 T:E,H/*=1.056/10.795               Sparzeit
 A:+434570
 
-Z:24                               Teleinfo 04500
+Z:24                               Teleinfo 04500 
 T:W/08-18=1.056/7.2                Tageszeit
 T:W/18-8=1.056/7.2                 Sparzeit
 T:E,H/*=1.056/7.2                  Sparzeit
@@ -549,7 +549,7 @@ A:+43717
 P: [-01.09.1999] 01,3              Telekom Austria Alt
 B:1001
 C:Maintainer:                      Michael Reinelt <reinelt@eunet.at>
-C:Zone:                            Die Regionalzone geht bis zu einer Entfernung von 50 Km,
+C:Zone:                            Die Regionalzone geht bis zu einer Entfernung von 50 Km, 
 C:Zone:                            Fernzone 1 bis 200 Km, Fernzone 2 darüber.
 C:Special:                         Variable Taktung, abhängig von Zone und Tageszeit.
 C:Name:                            Telekom Austria
@@ -617,7 +617,7 @@ T:W/08-18=0.996/9                  Tageszeit
 T:W/18-8=0.996/12                  Sparzeit
 T:E,H/*=0.996/12                   Sparzeit
 A:AL,AD,BY,BE,BA,BG
-A:DK,FI,FR,UK,_UKIR,IE
+A:DK,FI,FR,UK,_NIRE,IE
 A:YU,YU,YU,HR,LU,MT,MK
 A:MC,NL,NO,RO,SM,SE,ES
 A:UA,VA,CY
@@ -642,13 +642,13 @@ T:W/08-18=0.996/4.2353             Tageszeit
 T:W/18-8=0.996/4.8                 Sparzeit
 T:E,H/*=0.996/4.8                  Sparzeit
 A:CL,GF,GP,HK,LY,MQ
-A:YT,MD,NZ,RE,PM,ZA
+A:YT,MD,NZ,RE,HT,
 
 Z:11                               Ausland Zone 6
 T:W/08-18=0.996/3.6                Tageszeit
 T:W/18-8=0.996/4.2353              Sparzeit
 T:E,H/*=0.996/4.2353               Sparzeit
-A:JP,KR,MY,AN,PH,MP
+A:JP,KR,AU,AN,_NZMF,MP
 
 Z:12                               Ausland Zone 7
 T:W/08-18=0.996/3.1304             Tageszeit
@@ -663,7 +663,7 @@ T:W/18-8=0.996/3                   Sparzeit
 T:E,H/*=0.996/3                    Sparzeit
 A:EG,GQ,AW,BS,BB,BZ,BW
 A:BN,BI,DO,GA,GH,GL
-A:GW,GY,JO,KG,CO,KW,LB
+A:GW,EC,JO,KG,CO,KW,LB
 A:PA,SG,ST,VC
 A:TT,AE
 
@@ -736,7 +736,7 @@ T:W/18-8=0.996/10.795              Sparzeit
 T:E,H/*=0.996/10.795               Sparzeit
 A:+434570
 
-Z:24                               Teleinfo 04500
+Z:24                               Teleinfo 04500 
 T:W/08-18=0.996/7.2                Tageszeit
 T:W/18-8=0.996/7.2                 Sparzeit
 T:E,H/*=0.996/7.2                  Sparzeit
@@ -786,7 +786,7 @@ A:+43717
 P: [-01.09.1999] 01,4              Telekom Austria Alt
 B:1001
 C:Maintainer:                      Michael Reinelt <reinelt@eunet.at>
-C:Zone:                            Die Regionalzone geht bis zu einer Entfernung von 50 Km,
+C:Zone:                            Die Regionalzone geht bis zu einer Entfernung von 50 Km, 
 C:Zone:                            Fernzone 1 bis 200 Km, Fernzone 2 darüber.
 C:Special:                         Variable Taktung, abhängig von Zone und Tageszeit.
 C:Name:                            Telekom Austria
@@ -854,7 +854,7 @@ T:W/08-18=0.936/9                  Tageszeit
 T:W/18-8=0.936/12                  Sparzeit
 T:E,H/*=0.936/12                   Sparzeit
 A:AL,AD,BY,BE,BA,BG
-A:DK,FI,FR,UK,_UKIR,IE
+A:DK,FI,FR,UK,_NIRE,IE
 A:YU,YU,YU,HR,LU,MT,MK
 A:MC,NL,NO,RO,SM,SE,ES
 A:UA,VA,CY
@@ -879,13 +879,13 @@ T:W/08-18=0.936/4.2353             Tageszeit
 T:W/18-8=0.936/4.8                 Sparzeit
 T:E,H/*=0.936/4.8                  Sparzeit
 A:CL,GF,GP,HK,LY,MQ
-A:YT,MD,NZ,RE,PM,ZA
+A:YT,MD,NZ,RE,HT,
 
 Z:11                               Ausland Zone 6
 T:W/08-18=0.936/3.6                Tageszeit
 T:W/18-8=0.936/4.2353              Sparzeit
 T:E,H/*=0.936/4.2353               Sparzeit
-A:JP,KR,MY,AN,PH,MP
+A:JP,KR,AU,AN,_NZMF,MP
 
 Z:12                               Ausland Zone 7
 T:W/08-18=0.936/3.1304             Tageszeit
@@ -900,7 +900,7 @@ T:W/18-8=0.936/3                   Sparzeit
 T:E,H/*=0.936/3                    Sparzeit
 A:EG,GQ,AW,BS,BB,BZ,BW
 A:BN,BI,DO,GA,GH,GL
-A:GW,GY,JO,KG,CO,KW,LB
+A:GW,EC,JO,KG,CO,KW,LB
 A:PA,SG,ST,VC
 A:TT,AE
 
@@ -973,7 +973,7 @@ T:W/18-8=0.936/10.795              Sparzeit
 T:E,H/*=0.936/10.795               Sparzeit
 A:+434570
 
-Z:24                               Teleinfo 04500
+Z:24                               Teleinfo 04500 
 T:W/08-18=0.936/7.2                Tageszeit
 T:W/18-8=0.936/7.2                 Sparzeit
 T:E,H/*=0.936/7.2                  Sparzeit
@@ -1095,7 +1095,7 @@ T:W/08-18=1.116/12                 Geschäftszeit
 T:W/18-08=1.116/14.4               Freizeit
 T:E,H/*=1.116/14.4                 Freizeit
 A:AL,AD,BY,BE,BA,BG
-A:DK,FI,FR,UK,_UKIR,IE
+A:DK,FI,FR,UK,_NIRE,IE
 A:YU,HR,LU,MT,MK,MC,NL
 A:NO,RO,SM,SE,ES,UA,VA
 A:CY
@@ -1120,13 +1120,13 @@ T:W/08-18=1.116/6                  Geschäftszeit
 T:W/18-08=1.116/6.5455             Freizeit
 T:E,H/*=1.116/6.5455               Freizeit
 A:CL,GF,GP,HK,LY,MQ
-A:YT,MD,NZ,RE,PM,ZA
+A:YT,MD,NZ,RE,HT,
 
 Z:13                               Ausland Zone 6
 T:W/08-18=1.116/4.8                Geschäftszeit
 T:W/18-08=1.116/5.1429             Freizeit
 T:E,H/*=1.116/5.1429               Freizeit
-A:JP,KR,MY,AN,PH,MP
+A:JP,KR,AU,AN,_NZMF,MP
 
 Z:14                               Ausland Zone 7
 T:W/08-18=1.116/4.2353             Geschäftszeit
@@ -1141,7 +1141,7 @@ T:W/18-08=1.116/4.2353             Freizeit
 T:E,H/*=1.116/4.2353               Freizeit
 A:EG,GQ,AW,BS,BB,BZ,BW
 A:BN,BI,DO,GA,GH,GL
-A:GW,GY,JO,KG,CO,KW,LB
+A:GW,EC,JO,KG,CO,KW,LB
 A:PA,SG,ST,VC
 A:TT,AE
 
@@ -1314,7 +1314,7 @@ T:W/08-18=1.056/12                 Geschäftszeit
 T:W/18-08=1.056/14.4               Freizeit
 T:E,H/*=1.056/14.4                 Freizeit
 A:AL,AD,BY,BE,BA,BG
-A:DK,FI,FR,UK,_UKIR,IE
+A:DK,FI,FR,UK,_NIRE,IE
 A:YU,HR,LU,MT,MK,MC,NL
 A:NO,RO,SM,SE,ES,UA,VA
 A:CY
@@ -1339,13 +1339,13 @@ T:W/08-18=1.056/6                  Geschäftszeit
 T:W/18-08=1.056/6.5455             Freizeit
 T:E,H/*=1.056/6.5455               Freizeit
 A:CL,GF,GP,HK,LY,MQ
-A:YT,MD,NZ,RE,PM,ZA
+A:YT,MD,NZ,RE,HT,
 
 Z:13                               Ausland Zone 6
 T:W/08-18=1.056/4.8                Geschäftszeit
 T:W/18-08=1.056/5.1429             Freizeit
 T:E,H/*=1.056/5.1429               Freizeit
-A:JP,KR,MY,AN,PH,MP
+A:JP,KR,AU,AN,_NZMF,MP
 
 Z:14                               Ausland Zone 7
 T:W/08-18=1.056/4.2353             Geschäftszeit
@@ -1360,7 +1360,7 @@ T:W/18-08=1.056/4.2353             Freizeit
 T:E,H/*=1.056/4.2353               Freizeit
 A:EG,GQ,AW,BS,BB,BZ,BW
 A:BN,BI,DO,GA,GH,GL
-A:GW,GY,JO,KG,CO,KW,LB
+A:GW,EC,JO,KG,CO,KW,LB
 A:PA,SG,ST,VC
 A:TT,AE
 
@@ -1533,7 +1533,7 @@ T:W/08-18=0.996/12                 Geschäftszeit
 T:W/18-08=0.996/14.4               Freizeit
 T:E,H/*=0.996/14.4                 Freizeit
 A:AL,AD,BY,BE,BA,BG
-A:DK,FI,FR,UK,_UKIR,IE
+A:DK,FI,FR,UK,_NIRE,IE
 A:YU,HR,LU,MT,MK,MC,NL
 A:NO,RO,SM,SE,ES,UA,VA
 A:CY
@@ -1558,13 +1558,13 @@ T:W/08-18=0.996/6                  Geschäftszeit
 T:W/18-08=0.996/6.5455             Freizeit
 T:E,H/*=0.996/6.5455               Freizeit
 A:CL,GF,GP,HK,LY,MQ
-A:YT,MD,NZ,RE,PM,ZA
+A:YT,MD,NZ,RE,HT,
 
 Z:13                               Ausland Zone 6
 T:W/08-18=0.996/4.8                Geschäftszeit
 T:W/18-08=0.996/5.1429             Freizeit
 T:E,H/*=0.996/5.1429               Freizeit
-A:JP,KR,MY,AN,PH,MP
+A:JP,KR,AU,AN,_NZMF,MP
 
 Z:14                               Ausland Zone 7
 T:W/08-18=0.996/4.2353             Geschäftszeit
@@ -1579,7 +1579,7 @@ T:W/18-08=0.996/4.2353             Freizeit
 T:E,H/*=0.996/4.2353               Freizeit
 A:EG,GQ,AW,BS,BB,BZ,BW
 A:BN,BI,DO,GA,GH,GL
-A:GW,GY,JO,KG,CO,KW,LB
+A:GW,EC,JO,KG,CO,KW,LB
 A:PA,SG,ST,VC
 A:TT,AE
 
@@ -1752,7 +1752,7 @@ T:W/08-18=0.936/12                 Geschäftszeit
 T:W/18-08=0.936/14.4               Freizeit
 T:E,H/*=0.936/14.4                 Freizeit
 A:AL,AD,BY,BE,BA,BG
-A:DK,FI,FR,UK,_UKIR,IE
+A:DK,FI,FR,UK,_NIRE,IE
 A:YU,HR,LU,MT,MK,MC,NL
 A:NO,RO,SM,SE,ES,UA,VA
 A:CY
@@ -1777,13 +1777,13 @@ T:W/08-18=0.936/6                  Geschäftszeit
 T:W/18-08=0.936/6.5455             Freizeit
 T:E,H/*=0.936/6.5455               Freizeit
 A:CL,GF,GP,HK,LY,MQ
-A:YT,MD,NZ,RE,PM,ZA
+A:YT,MD,NZ,RE,HT,
 
 Z:13                               Ausland Zone 6
 T:W/08-18=0.936/4.8                Geschäftszeit
 T:W/18-08=0.936/5.1429             Freizeit
 T:E,H/*=0.936/5.1429               Freizeit
-A:JP,KR,MY,AN,PH,MP
+A:JP,KR,AU,AN,_NZMF,MP
 
 Z:14                               Ausland Zone 7
 T:W/08-18=0.936/4.2353             Geschäftszeit
@@ -1798,7 +1798,7 @@ T:W/18-08=0.936/4.2353             Freizeit
 T:E,H/*=0.936/4.2353               Freizeit
 A:EG,GQ,AW,BS,BB,BZ,BW
 A:BN,BI,DO,GA,GH,GL
-A:GW,GY,JO,KG,CO,KW,LB
+A:GW,EC,JO,KG,CO,KW,LB
 A:PA,SG,ST,VC
 A:TT,AE
 
@@ -1971,7 +1971,7 @@ T:W/08-18=0.816/12                 Geschäftszeit
 T:W/18-08=0.816/14.4               Freizeit
 T:E,H/*=0.816/14.4                 Freizeit
 A:AL,AD,BY,BE,BA,BG
-A:DK,FI,FR,UK,_UKIR,IE
+A:DK,FI,FR,UK,_NIRE,IE
 A:YU,HR,LU,MT,MK,MC,NL
 A:NO,RO,SM,SE,ES,UA,VA
 A:CY
@@ -1996,13 +1996,13 @@ T:W/08-18=0.816/6                  Geschäftszeit
 T:W/18-08=0.816/6.5455             Freizeit
 T:E,H/*=0.816/6.5455               Freizeit
 A:CL,GF,GP,HK,LY,MQ
-A:YT,MD,NZ,RE,PM,ZA
+A:YT,MD,NZ,RE,HT,
 
 Z:13                               Ausland Zone 6
 T:W/08-18=0.816/4.8                Geschäftszeit
 T:W/18-08=0.816/5.1429             Freizeit
 T:E,H/*=0.816/5.1429               Freizeit
-A:JP,KR,MY,AN,PH,MP
+A:JP,KR,AU,AN,_NZMF,MP
 
 Z:14                               Ausland Zone 7
 T:W/08-18=0.816/4.2353             Geschäftszeit
@@ -2017,7 +2017,7 @@ T:W/18-08=0.816/4.2353             Freizeit
 T:E,H/*=0.816/4.2353               Freizeit
 A:EG,GQ,AW,BS,BB,BZ,BW
 A:BN,BI,DO,GA,GH,GL
-A:GW,GY,JO,KG,CO,KW,LB
+A:GW,EC,JO,KG,CO,KW,LB
 A:PA,SG,ST,VC
 A:TT,AE
 
@@ -2178,7 +2178,7 @@ Z:9                                Preiszone 5
 T:*/*=7.80(60)/1                   0-24h
 A:DZ,FO,GE,GI,IS,IL,LT
 A:EH,SU,TJ,TM,UZ,AU
-A:HK,JP,CC,NZ,SG,ZA,KR
+A:HK,JP,CC,NZ,SG,,KR
 A:CX
 
 Z:10                               Preiszone 6
@@ -2189,15 +2189,15 @@ A:MQ,RE
 Z:11                               Preiszone 7
 T:*/*=14.00(60)/1                  0-24h
 A:AO,AQ,BM,BT,BR,CN,EC,IR,KW
-A:MO,MY,MX,MD,AN,PH
-A:MP,SA,PM,VE
+A:MO,AU,MX,MD,AN,_NZMF
+A:MP,SA,HT,VE
 
 Z:12                               Preiszone 8
 T:*/*=18.00(60)/1                  0-24h
 A:EG,GQ,AW,BS,BH,BB,BZ
 A:BW,BN,BI,DM,DO
 A:CI,GA,GH,GD,GL,GN,GW
-A:GY,JO,VG,KZ,QA
+A:EC,JO,VG,KZ,QA
 A:KG,CO,KM,LA,LS,LB,LR,MW
 A:YT,NA,NR,NP,NC,KN,NG
 A:NF,PA,PE,ZM,ST,ZW,SH
@@ -2278,7 +2278,7 @@ Z:10                               Fernost, Südafrika (Z7)
 T:W/8-18=9.80(60)/1                Geschäftszeit
 T:W/18-8=9.60(60)/1                Freizeit
 T:E,H/*=9.60(60)/1                 Freizeit
-A:AU,HK,JP,CC,NZ,SG,ZA
+A:AU,HK,JP,CC,NZ,SG,
 A:KR,CX
 
 Z:11                               Welt 1 (Z8)
@@ -2293,8 +2293,8 @@ T:W/8-18=14.40(60)/1               Geschäftszeit
 T:W/18-8=14.20(60)/1               Freizeit
 T:E,H/*=14.20(60)/1                Freizeit
 A:AO,AQ,BM,BT,BR,CN,EC,IR,KW
-A:MO,MY,MX,PM,MD
-A:AN,PH,MP,SA,VE
+A:MO,AU,MX,HT,MD
+A:AN,_NZMF,MP,SA,VE
 
 Z:13                               Welt 3 (Z10)
 T:W/8-18=18.70(60)/1               Geschäftszeit
@@ -2303,7 +2303,7 @@ T:E,H/*=18.50(60)/1                Freizeit
 A:EG,GQ,AW,BS,BH,BB,BZ
 A:BW,BN,BI,DM,DO
 A:CI,GA,GH,GD,GL,GN,GW
-A:GY,JO,VG,KZ,QA,KG
+A:EC,JO,VG,KZ,QA,KG
 A:CO,KM,LA,LS,LB,LR,MW,YT
 A:NA,NR,NP,NC,KN,NG
 A:NF,PA,PE,ZM,ST,ZW
@@ -2389,71 +2389,71 @@ A:SU,SM,TR,BY,EH,CY
 
 Z:10                               Australien ...
 T:*/*=7.00(60)/60/1                0-24h
-A:AU,_GRMF,HK,_PTMF
+A:AU,,HK,
 A:UA
 
 Z:11                               Israel - Mobilfunk ...
 T:*/*=8.00(60)/60/1                0-24h
-A:_ILMF,JP,KR,MY,MD,NZ
-A:PN,ZA,TK
+A:_ILMF,JP,KR,AU,MD,NZ
+A:PN,,TK
 
 Z:12                               Türkei - Mobilfunk
 T:*/*=9.00(60)/60/1                0-24h
-A:_TRMF
+A:_TKMF
 
 Z:13                               Argentinien ...
 T:*/*=13.00(60)/60/1               0-24h
 A:AR,_AUMF,BS,BM,BO,BR
-A:CL,_CLMF,CN,CR,DM
-A:DO,_DOMF,EC
-A:SV,GP,GT,_GTMF,HT,HN
+A:CL,,CN,CR,DM
+A:DO,,EC
+A:SV,GP,GT,,HT,HN
 A:_HKMF,IN,ID,JM,_JPMF
-A:CO,_KRMF,MX,_NZMF,NI
-A:CL,PA,PY,PE,PH,PR,SG
+A:CO,,MX,_NZMF,NI
+A:CL,PA,PY,PE,_NZMF,PR,SG
 A:TW,_TWMF,TH,TN,UY,VE
 
 Z:14                               Afghanistan ...
 T:*/*=18.00(60)/60/1               0-24h
 A:AF,AO,AI,AQ,AG
 A:_ARMF,AM,AW,ASI,AZ
-A:BH,BD,_BDMF,BB,BZ,BJ
+A:BH,BD,,BB,BZ,BJ
 A:BT,BW,_BRMF,VG,BN
 A:BF,BI,KY,_CNMF,CX
-A:CC,CK,_CRMF,NKW,DJ
+A:CC,CK,,NKW,DJ
 A:_ECMF,_SVMF,ER,FK
 A:FJ,GF,PF,MQ
 A:GA,GM,GE,GH,GD,GL,GU,_GUAN,GN
-A:GW,GY,_INMF,IQ,IR
-A:CI,YE,JO,_JOMF
+A:GW,EC,,IQ,IR
+A:CI,YE,JO,
 A:KH,CM,CV,KZ,QA,KE,KG
-A:_KGMF,KI,_COMF,KM
-A:ZR,KP,CU,KW,_KWMF,LA,LS
+A:,KI,_COMF,KM
+A:ZR,KP,CU,KW,,LA,LS
 A:LB,_LBMF,LR,LY,MO,MG,MW
 A:MV,ML,MH,MQ,MR,MU
 A:YT,FM,MN,MS,MZ,MM
-A:NA,NR,NP,NC,KN,_NIMF
+A:NA,NR,NP,NC,KN,
 A:AN,NGR,NG,NU,OM,PK,PW
 A:_PAMF,PG,_PEMF
-A:_PHMF,RE,RW,MP,SB,AS
+A:,RE,RW,MP,SB,AS
 A:WS,ST,SA,SN,SC
 A:SL,SO,LK,SH,KN,LC
-A:PM,VC,SD,SR,SZ,SY
+A:HT,VC,SD,SR,SZ,SY
 A:TJ,TZ,TG,TO,TT,TD
 A:TM,TC,TV,UG,UZ,VU
 A:_VEMF,AE,VN
-A:WF,ZR,_ZRMF,ZM
-A:CF,ZW,EG,_EGMF
+A:WF,ZR,,ZM
+A:CF,ZW,EG,
 A:GQ,ET
 
 Z:15                               INMARSAT-Mm AE ...
 T:*/*=40.00(60)/60/1               0-24h
-A:_INMMAE,_INMMAW,_INMMIO,_INMMPO
-A:_INMMWW
+A:_INM_,_INM_,_INMM,_INM_
+A:_INM_
 
 Z:16                               INMARSAT-B AE ...
 T:*/*=60.00(60)/60/1               0-24h
-A:_INBAE,_INBAW,_INBIO,_INBPO,_INMAE
-A:_INMAW,_INMIO,_INMPO
+A:_INB_,_INB_,_INB_,_INB_,_INM_
+A:_INM_,_INM_,_INM_
 
 Z:17                               IRIDIUM 8817
 T:*/*=70.00(60)/60/1               0-24h
@@ -2461,7 +2461,7 @@ A:_IR17
 
 Z:18                               INMARSAT-A AE ...
 T:*/*=80.00(60)/60/1               0-24h
-A:_INAAE,_INAAW,_INAIO,_INAPO
+A:_INA_,_INA_,_INAE,_INAE
 
 Z:19                               IRIDIUM 8816
 T:*/*=130.00(60)/60/1              0-24h
@@ -2475,8 +2475,8 @@ C:Address:                         Print Eugen-Str. 8-10, A-1040
 C:Homepage:                        http://www.globalone.at
 C:TarifURL:                        http://www.globalone.at/tele_assi_national.html
 C:EMail:                           info.at@globalone.at
-C:Zone:                            Regionalzone sind Gespräche innerhalb W/NÖ/B, OÖ/St/K und S/T/V,
-C:Zone:                            Gespräche zwischen diesen 3 Gebieten sind Fernzone
+C:Zone:                            Regionalzone sind Gespräche innerhalb W/NÖ/B, OÖ/St/K und S/T/V, 
+C:Zone:                            Gespräche zwischen diesen 3 Gebieten sind Fernzone 
 D:1004                             # Verzonung
 # Fixme:                           Ausland nicht implemtiert
 C:Special:                         Ausland nicht implemtiert
@@ -2506,8 +2506,8 @@ C:Address:
 C:TarifChanged:                    01.09.1999
 C:Homepage:                        http://www.globalone.at
 C:TarifURL:                        http://www.globalone.at/tele_assi_national.html
-C:Zone:                            Regionalzone sind Gespräche innerhalb Wien/NÖ/B, OÖ/St/K und S/T/V,
-C:Zone:                            Gespräche zwischen diesen 3 Gebieten sind Fernzone
+C:Zone:                            Regionalzone sind Gespräche innerhalb Wien/NÖ/B, OÖ/St/K und S/T/V, 
+C:Zone:                            Gespräche zwischen diesen 3 Gebieten sind Fernzone 
 D:1004                             # Verzonung
 # Fixme:                           Ausland nicht implemtiert
 C:Special:                         Ausland nicht implemtiert
@@ -2554,7 +2554,7 @@ A:DE,IT,CH
 Z:4                                Europa 1 / USA
 T:*/*=3.50(60)/60/1                0-24h
 A:BE,DK,FI,FR,GR,UK
-A:IE,LI,LU,MC,NL,_UKIR,NO
+A:IE,LI,LU,MC,NL,_NIRE,NO
 A:SE,SK,SI,ES,CZ,HU,US,_HAWA
 A:CA
 
@@ -2583,7 +2583,7 @@ P:07                               European Telecom Fairtel
 B:1007
 C:TarifChanged:                    14.09.1999
 C:Name:                            European Telecom
-C:Zone:                            Vorwahlen 1XXX und 2XXX, bzw. mit gleicher Anfangsziffer liegen in der
+C:Zone:                            Vorwahlen 1XXX und 2XXX, bzw. mit gleicher Anfangsziffer liegen in der 
 C:Zone:                            Nahzone sonst in der Fernzone.
 C:Address:                         Florag. 7, A-1040 Wien
 C:Homepage:                        http://www.europeantelecom.at
@@ -2628,8 +2628,8 @@ C:TarifChanged:                    15.09.1999
 C:GF:                              Cost = 480/12
 C:Name:                            TELEforum Telekommunikations GmbH
 C:Address:                         Sporg. 32, A-8010 Graz
-C:Telefon:                         0316 9166
-C:Telefax:                         0316 9166-8
+C:Telefon:                         0316 9166 
+C:Telefax:                         0316 9166-8 
 C:Homepage:                        http://www.teleforum.at
 C:TarifURL:                        http://www.teleforum.at/fpreise.htm
 C:EMail:                           office@teleforum.at
@@ -2679,7 +2679,7 @@ A:UA,VA,CY
 Z:9                                Hongkong ...
 T:*/*=6.58(60)/1                   0-24h
 A:HK,JP,DZ,_AZOR,GE,GI,IS
-A:_ILMF,EH,_MADE,PS
+A:_ILMF,EH,_MADE,PP
 A:SU,SG,TJ,TM
 A:UZ
 
@@ -2687,14 +2687,14 @@ Z:10                               Antarktis ...
 T:*/*=9.46(60)/1                   0-24h
 A:AQ,AM,AZ,_AUMF,CL
 A:CX,CC,_HKMF,_JPMF,LY
-A:NZ,ZA
+A:NZ,
 
 Z:11                               Bahamas ...
 T:*/*=11.62(60)/1                  0-24h
 A:BS,BM,BR,CN,GF,GP
-A:KR,MO,MY,MQ,YT,MX
-A:MD,AN,PH,RE
-A:MP,SA,PM,TK
+A:KR,MO,AU,MQ,YT,MX
+A:MD,AN,_NZMF,RE
+A:MP,SA,HT,TK
 A:VE,AE
 
 Z:12                               Argentinien ...
@@ -2707,7 +2707,7 @@ A:TW,TT
 Z:13                               Ägypten Mobilfunk ...
 T:*/*=17.98(60)/1                  0-24h
 A:GQ,BH,BB,BZ,BW,BI
-A:GA,GL,GN,GW,GY,HT,KG
+A:GA,GL,GN,GW,EC,HT,KG
 A:_COMF,LS,LB,_LBMF,LR,MW
 A:NA,PA,_PAMF,PE,ZM,TZ,ZW
 A:SH,LC,ST,SD,SZ,SY
@@ -2866,7 +2866,7 @@ A:EH
 
 Z:27                               Malaysia ...
 T:*/*=0.34/0,8.36(60)/1            0-24h
-A:MY,MX,PH,PM,ZA
+A:AU,MX,_NZMF,HT,
 A:TJ
 
 Z:28                               Chile ...
@@ -2935,7 +2935,7 @@ A:BH,LA,NG,SH,LC
 Z:42                               Ascension ...
 T:*/*=0.34/0,16.76(60)/1           0-24h
 A:ASI,BZ,BO,BI,DM,SV,FJ
-A:GD,GT,GY,JM,KE,MV,MR
+A:GD,GT,EC,JM,KE,MV,MR
 A:MU,MS,NI,SO,UY,VN
 
 Z:43                               Komoren ...
@@ -2964,7 +2964,7 @@ C:Address:                         Marktstr. 3, A-7000 Eisenstadt
 C:Homepage:                        http://www.rslcom.at
 C:EMail:                           info@rslcom.at
 C:Telefon:                         0800 008000
-C:Zone:                            Vorwahlen 1XXX und 2XXX, bzw. mit gleicher Anfangsziffer liegen in der
+C:Zone:                            Vorwahlen 1XXX und 2XXX, bzw. mit gleicher Anfangsziffer liegen in der 
 C:Zone:                            Bundelandzone sonst in der Zone Österreich.
 C:Special:                         Für TNC-Kunden nicht verwendbar
 
@@ -3011,7 +3011,7 @@ A:TR,UA
 Z:9                                Ausland 5
 T:*/*=6.00(60)/1                   0-24h
 A:AL,DZ,AQ,AU,EE,LV,MW
-A:MY,EH,MD
+A:AU,EH,MD
 
 Z:10                               Ausland 6
 T:*/*=6.60(60)/1                   0-24h
@@ -3033,7 +3033,7 @@ A:AM,AZ,CX,CC,MU,MX
 Z:14                               Ausland 10
 T:*/*=9.60(60)/1                   0-24h
 A:CL,GF,GP,LY,PE,RE
-A:PM,ZA
+A:HT,
 
 Z:15                               Ausland 11
 T:*/*=12.00(60)/1                  0-24h
@@ -3051,7 +3051,7 @@ A:BS,DO,MG,EG
 Z:18                               Ausland 14
 T:*/*=15.60(60)/1                  0-24h
 A:AW,BB,BZ,BW,BN,BI,SV,GA
-A:GH,GL,GW,GY,JO,QA,KG
+A:GH,GL,GW,EC,JO,QA,KG
 A:CO,LB,MQ,YT,ST
 A:VC,TW,TT
 A:GQ
@@ -3071,7 +3071,7 @@ A:FM,ET
 Z:21                               Ausland 17
 T:*/*=20.40(60)/1                  0-24h
 A:CR,FJ,PF,GM,ID,IQ
-A:JM,KI,NI,NU,OM,PA,PH,RW
+A:JM,KI,NI,NU,OM,PA,_NZMF,RW
 A:AS,SR,TH,TG,UG,VU
 A:CF
 
@@ -3129,7 +3129,7 @@ A:CA,US
 
 Z:7                                TransPazifik
 T:*/*=8.00(60)/1                   0-24h
-A:AU,HK,JP,KR,MY,NZ,SG
+A:AU,HK,JP,KR,AU,NZ,SG
 
 Z:8                                TransWelt
 T:*/*=20.00(60)/1                  0-24h
@@ -3267,8 +3267,8 @@ Z:7                                 Armenien ...
 T:*/*=9.00(60)/1                   0-24h
 A:AM,AZ,AU,BS,BM,BR,CL
 A:CN,DO,GF,GE,GP
-A:HK,JP,CC,KR,LY,MY,EH
-A:MQ,MX,NZ,PH,RE,SG,ZA
+A:HK,JP,CC,KR,LY,AU,EH
+A:MQ,MX,NZ,_NZMF,RE,SG,
 A:TJ,TM,UZ,CX
 
 Z:8                                 Angola ...
@@ -3279,21 +3279,354 @@ A:BO,BW,BN,BF,MM,BI,KY
 A:CK,CR,NKW,DM,DJ,EC
 A:SV,CI,ER,FK,FJ
 A:PF,GA,GM,GH,GD,GL,GU,GT
-A:GN,GW,GY,HT,HN,IN,ID,IQ
+A:GN,GW,EC,HT,HN,IN,ID,IQ
 A:IR,JM,YE,JO,KH,CM,CV,KZ
 A:QA,KE,KG,KI,CO,KM,CG,KP
 A:CU,KW,LA,LS,LB,LR,MO,MG,MW
-A:MV,ML,MR,MU,YT,PM,MD
+A:MV,ML,MR,MU,YT,HT,MD
 A:MN,MS,MZ,NA,NR,NP,NC
 A:NI,AN,NGR,NG,NU,NF,OM
 A:PK,PA,PG,PY,PE,RW,MP
 A:SB,ZM,ST,SA,SN,SC
 A:SL,ZW,SO,LK,SH,KN
-A:LC,PM,VC,SD,SR,SZ,SY
+A:LC,HT,VC,SD,SR,SZ,SY
 A:TW,TZ,TH,TG,TK,TO,TT,TD
 A:TC,UG,UY,VU,VE
 A:AE,VN,_WAKE,WF,WS
 A:ZR,CF,EG,GQ,ET
+
+###########################
+P:22                               3U
+B:1022
+C:Name:                            3U TELECOM GmbH
+C:Address:                         A-1060 Wien, Mariahilferstr. 123/3
+C:Homepage:                        http://www.3U.net/at/
+C:TarifURL:                        http://www.3u.net/download/Preisliste.PDF
+C:Telefon:                         01 369 53 61
+C:Telefax:                         01 369 53 62
+C:Special:                         CbC
+
+Z:1                                Inland
+T:W/8-18=0.65(60)/1                Tag
+T:W/6-8,18-20=0.29(60)/1           Nebenzeit
+T:W/20-6=0.28(60)/1                Nacht
+T:E,H/*=0.28(60)/1                 Wochenende
+A:AT
+
+Z:2                                Mobilfunk
+T:*/*=3.99(60)/1                   0-24h
+A:+43663,+43664,+43676,+43699
+
+Z:3                                Australien ...
+T:*/*=1.19(60)/1                   0-24h
+A:AU,BE,DE,DK,FR,UK
+A:IE,IT,CA,NL,SE,CH,ES
+A:PLP,US,VA
+
+Z:4                                Alaska ...
+T:*/*=1.39(60)/1                   0-24h
+A:_ALAS,_HAWA
+
+Z:5                                Finnland ...
+T:*/*=1.55(60)/1                   0-24h
+A:FI,LI,LU,NZ,NO
+
+Z:6                                Israel ...
+T:*/*=1.66(60)/1                   0-24h
+A:IL,PT,_AZOR,_MADE
+
+Z:7                                Finnland Mobilfunk
+T:*/*=1.77(60)/1                   0-24h
+A:_FIMF
+
+Z:8                                Amerikan. Jungferninseln
+T:*/*=1.87(60)/1                   0-24h
+A:VI
+
+Z:9                                Puerto Rico
+T:*/*=1.89(60)/1                   0-24h
+A:PR
+
+Z:10                               Griechenland
+T:*/*=1.91(60)/1                   0-24h
+A:GR
+
+Z:11                               Japan
+T:*/*=1.94(60)/1                   0-24h
+A:JP
+
+Z:12                               Dänemark Mobilfunk ...
+T:*/*=1.99(60)/1                   0-24h
+A:_DKMF,_LUMF,SG
+
+Z:13                               Monaco
+T:*/*=2.29(60)/1                   0-24h
+A:MC
+
+Z:14                               Rußland Moskau
+T:*/*=2.49(60)/1                   0-24h
+A:MOW
+
+Z:15                               Chile
+T:*/*=2.59(60)/1                   0-24h
+A:CL
+
+Z:16                               Hongkong
+T:*/*=2.75(60)/1                   0-24h
+A:HK
+
+Z:17                               Island ...
+T:*/*=2.79(60)/1                   0-24h
+A:IS,
+
+Z:18                               Korea  Süd ...
+T:*/*=2.89(60)/1                   0-24h
+A:KR,TW,HU
+
+Z:19                               Griechenland Mobilfunk ...
+T:*/*=2.97(60)/1                   0-24h
+A:,_NZMF,SK,SI
+A:CZ
+
+Z:20                               Andorra ...
+T:*/*=2.99(60)/1                   0-24h
+A:AD,BM,GI,_NOMF,SM
+A:_SEMF
+
+Z:21                               Bahamas
+T:*/*=3.09(60)/1                   0-24h
+A:BS
+
+Z:22                               Norfolk Inseln
+T:*/*=3.29(60)/1                   0-24h
+A:NF
+
+Z:23                               Argentinien ...
+T:*/*=3.35(60)/1                   0-24h
+A:AR,BR,BG,CN,EE,CO,HR
+A:MT,MX,PE,_NZMF,PL,SU,TR,UA
+A:CY,CY
+
+Z:24                               Niederländische Antillen
+T:*/*=3.47(60)/1                   0-24h
+A:AN
+
+Z:25                               Australien Mobilfunk ...
+T:*/*=3.49(60)/1                   0-24h
+A:_AUMF,AU
+
+Z:26                               Antarktis
+T:*/*=3.53(60)/1                   0-24h
+A:AQ
+
+Z:27                               Dominikanische Republik
+T:*/*=3.69(60)/1                   0-24h
+A:DO
+
+Z:28                               Färöer Inseln ...
+T:*/*=3.79(60)/1                   0-24h
+A:FO,GU
+
+Z:29                               Israel Mobilfunk
+T:*/*=3.95(60)/1                   0-24h
+A:_ILMF
+
+Z:30                               Amerikanisch Samoa ...
+T:*/*=3.99(60)/1                   0-24h
+A:AS,BA,BG,CR
+A:_DEMF,_IEMF,_ITMF,_JPMF
+A:_NLMF,_PEMF,_CHMF,_TKMF
+
+Z:31                               Botswana ...
+T:*/*=4.49(60)/1                   0-24h
+A:BW,KY,
+
+Z:32                               Mazedonien
+T:*/*=4.59(60)/1                   0-24h
+A:MK
+
+Z:33                               Albanien ...
+T:*/*=4.67(60)/1                   0-24h
+A:AL,LV,RO
+
+Z:34                               Britische Jungferninseln
+T:*/*=4.75(60)/1                   0-24h
+A:VG
+
+Z:35                               Jugoslawien ...
+T:*/*=4.77(60)/1                   0-24h
+A:YU,,TH,TN,BY
+
+Z:36                               Indonesien
+T:*/*=4.89(60)/1                   0-24h
+A:ID
+
+Z:37                               Algerien ...
+T:*/*=4.99(60)/1                   0-24h
+A:DZ,AO,AW,_BEMF,
+A:_FRMF,_UKMF,MO,EH
+A:_ESMF,HT,SZ
+
+Z:38                               Litauen
+T:*/*=5.39(60)/1                   0-24h
+A:LT
+
+Z:39                               El Salvador ...
+T:*/*=5.49(60)/1                   0-24h
+A:SV,VE
+
+Z:40                               Georgien ...
+T:*/*=5.69(60)/1                   0-24h
+A:GE,MW
+
+Z:41                               Guadeloupe
+T:*/*=5.79(60)/1                   0-24h
+A:GP
+
+Z:42                               Aserbaidschan ...
+T:*/*=5.89(60)/1                   0-24h
+A:AZ,CX,CC
+
+Z:43                               Tadschikistan
+T:*/*=5.93(60)/1                   0-24h
+A:TJ
+
+Z:44                               Libyen ...
+T:*/*=5.95(60)/1                   0-24h
+A:LY,PW,_VEMF,WS
+
+Z:45                               Nördliche Marianen ...
+T:*/*=5.97(60)/1                   0-24h
+A:MP,MP
+
+Z:46                               Anguilla ...
+T:*/*=5.99(60)/1                   0-24h
+A:AI,AG,AM,BH,BT,EC
+A:FK,GF,GA,EH,MQ
+A:MD,TZ,ZW
+
+Z:47                               Mayotte
+T:*/*=6.19(60)/1                   0-24h
+A:YT
+
+Z:48                               El Salvador Mobilfunk
+T:*/*=6.39(60)/1                   0-24h
+A:_SVMF
+
+Z:49                               Französisch Polynesien ...
+T:*/*=6.49(60)/1                   0-24h
+A:PF,GH,GT,LS,PG
+A:UZ
+
+Z:50                               Vereinigte Arab. Emirate
+T:*/*=6.59(60)/1                   0-24h
+A:AE
+
+Z:51                               Guinea
+T:*/*=6.89(60)/1                   0-24h
+A:GN
+
+Z:52                               Brunei ...
+T:*/*=6.99(60)/1                   0-24h
+A:BN,_GUAB,KZ,LR,MV,RE,LC
+A:UG
+
+Z:53                               Barbados ...
+T:*/*=7.15(60)/1                   0-24h
+A:BB,BO,NKW,DM,GM,GL
+A:,GW,KW,MR,NA
+A:NC,PA,TM,UY,CF
+
+Z:54                               Tansania
+T:*/*=7.49(60)/1                   0-24h
+A:TZ
+
+Z:55                               Nigeria
+T:*/*=7.53(60)/1                   0-24h
+A:NG
+
+Z:56                               Kongo ...
+T:*/*=7.99(60)/1                   0-24h
+A:CG,LB,MZ,NI,_PAMF
+A:VC,SD,TC
+
+Z:57                               Katar ...
+T:*/*=8.35(60)/1                   0-24h
+A:QA,KE,KM,_LBMF,MG,MH
+A:FM,NGR,OM,PY,ZM,SA,SC
+A:LK,KN,SH,TT,TV
+A:WF
+
+Z:58                               Honduras
+T:*/*=8.59(60)/1                   0-24h
+A:HN
+
+Z:59                               Benin ...
+T:*/*=8.99(60)/1                   0-24h
+A:BJ,KG
+
+Z:60                               Chatham Inseln
+T:*/*=9.09(60)/1                   0-24h
+A:_CHAT
+
+Z:61                               Guinea ...
+T:*/*=9.49(60)/1                   0-24h
+A:GN,JO
+
+Z:62                               Senegal
+T:*/*=9.59(60)/1                   0-24h
+A:SN
+
+Z:63                               Belize ...
+T:*/*=9.99(60)/1                   0-24h
+A:BZ,HT,JM,CV,KP,ZR
+
+Z:64                               Grenada
+T:*/*=10.39(60)/1                  0-24h
+A:GD
+
+Z:65                               Burkina Faso
+T:*/*=10.49(60)/1                  0-24h
+A:BF
+
+Z:66                               Mali
+T:*/*=10.89(60)/1                  0-24h
+A:ML
+
+Z:67                               Indien ...
+T:*/*=10.99(60)/1                  0-24h
+A:IN,CM,MS,RW,SR,TD
+
+Z:68                               Pakistan
+T:*/*=11.95(60)/1                  0-24h
+A:PK
+
+Z:69                               Iran ...
+T:*/*=11.97(60)/1                  0-24h
+A:IR,CU,SY
+
+Z:70                               Birma ...
+T:*/*=11.99(60)/1                  0-24h
+A:MM,NU,SL
+
+Z:71                               Mauritius ...
+T:*/*=12.49(60)/1                  0-24h
+A:MU,NR,NP,SB,SO
+
+Z:72                               Ascension ...
+T:*/*=12.95(60)/1                  0-24h
+A:ASI,BD,CK,DJ,CI,ER
+A:FJ,EC,IQ,YE,KH,KI,LA,MN
+A:ST,TG,TO,VU,VN
+
+Z:73                               Afghanistan
+T:*/*=15.99(60)/1                  0-24h
+A:AF
+
+Z:74                               Inmarsat A ...
+T:*/*=99.99(60)/1                  0-24h
+A:_INA_,_INA_,_INAE,_INB_,_INM_
+A:_INMM,_INM_
 
 ###########################
 P:24                               Telepassport
@@ -3339,12 +3672,12 @@ A:NZ,VI
 Z:6                                Euro 3
 T:*/*=7.38(60)/1                   0-24h
 A:+7505,AL,GI,TN,UA,BY,DZ
-A:HK,JP,KR,EH,PH,SG
+A:HK,JP,KR,EH,_NZMF,SG
 
 Z:7                                Welt 1
 T:*/*=12.98(60)/1                  0-24h
-A:EG,ZA,AZ,AM,CN,GE,LY
-A:MY,MD,TW,TM,UZ,AR
+A:EG,,AZ,AM,CN,GE,LY
+A:AU,MD,TW,TM,UZ,AR
 A:BR,CL,CR,DO,EC,SV
 A:GT,CO,MX,NI,PA,PE,VE
 
@@ -3368,7 +3701,7 @@ C:Address:                         Davidstr. 79, A-1100 Wien
 C:Homepage:                        http://www.cybertron.at
 C:TarifURL:                        http://www.cybertron.at/html/easy.prod_1.html
 C:Telefon:                         0800 400 400, 1029 1029
-C:Zone:                            Die Regionalzone geht bis zu einer Entfernung von 50 Km, die Fernzone 1 bis
+C:Zone:                            Die Regionalzone geht bis zu einer Entfernung von 50 Km, die Fernzone 1 bis 
 C:Zone:                            200 Km alles andere ist Fernzone 2.
 C:Special:                         Variable Taktung.
 D:pta                              # Verzonung
@@ -3435,15 +3768,15 @@ A:PR,SU,TN,TR
 Z:11                               International 4
 T:*/*=13.10(60)/5                  0-24h
 A:AO,BM,BR,CL,GF,GP,HK
-A:JP,LY,MO,_MADE,MY,MQ,YT,MX
-A:MD,NZ,AN,PH,RE,MP
-A:SG,PM,ZA,KR,VE
+A:JP,LY,MO,_MADE,AU,MQ,YT,MX
+A:MD,NZ,AN,_NZMF,RE,MP
+A:SG,HT,,KR,VE
 
 Z:12                               International 5
 T:*/*=17.50(60)/4                  0-24h
 A:EG,AW,BS,BB,BZ,BT,BW,BN
 A:BI,CN,DO,EC,GA,GH,GL
-A:GY,IR,JO,KG,CO,KW,LB,PA
+A:EC,IR,JO,KG,CO,KW,LB,PA
 A:SA,VC,TT
 A:AE
 
@@ -3493,7 +3826,7 @@ C:Address:
 C:Homepage:                        http://www.cybertron.at
 C:TarifURL:                        http://www.cybertron.at/html/easy.prod_0.html
 C:Telefon:                         0800 400 400, 1029 1029
-C:Zone:                            Die Regionalzone geht bis zu einer Entfernung von 100 Km, die Fernzone
+C:Zone:                            Die Regionalzone geht bis zu einer Entfernung von 100 Km, die Fernzone 
 C:Zone:                            darüber - Die Regionalzone ist nicht implementiert
 #Fixme: +-100Km nicht implemtiert  # Verzonung
 
@@ -3631,7 +3964,7 @@ A:GE,TJ,TM,UZ
 
 Z:34                               Südafrika
 T:*/*=9.48(60)/60/1                0-24h
-A:ZA
+A:
 
 Z:35                               Libyen ...
 T:*/*=9.54(60)/60/1                0-24h
@@ -3640,7 +3973,7 @@ A:LY,NZ
 Z:36                               Chile ...
 T:*/*=9.66(60)/60/1                0-24h
 A:CL,MQ,MD
-A:PM
+A:HT
 
 Z:37                               Französisch-Guayana ...
 T:*/*=9.72(60)/60/1                0-24h
@@ -3656,7 +3989,7 @@ A:AZ
 
 Z:40                               Malaysia ...
 T:*/*=11.16(60)/60/1               0-24h
-A:MY,AN,PH,KR
+A:AU,AN,_NZMF,KR
 
 Z:41                               Marianen (SaipanNord-)
 T:*/*=11.28(60)/60/1               0-24h
@@ -3728,7 +4061,7 @@ A:NP,SY
 
 Z:57                               Guyana
 T:*/*=17.28(60)/60/1               0-24h
-A:GY
+A:EC
 
 Z:58                               Guinea-Bissau ...
 T:*/*=18.12(60)/60/1               0-24h
@@ -3956,11 +4289,11 @@ A:AZ
 
 Z:33                               Georgien ...
 T:*/*=9.35(60)/30/6                0-24h
-A:GE,PH
+A:GE,_NZMF
 
 Z:34                               Bahamas ...
 T:*/*=9.90(60)/30/6                0-24h
-A:BS,CL,CN,GY,LR,NZ
+A:BS,CL,CN,EC,LR,NZ
 
 Z:35                               Südkorea
 T:*/*=10.12(60)/30/6               0-24h
@@ -3972,7 +4305,7 @@ A:MP
 
 Z:37                               Armenien ...
 T:*/*=10.45(60)/30/6               0-24h
-A:AM,ZA
+A:AM,
 
 Z:38                               Venezuela
 T:*/*=10.89(60)/30/6               0-24h
@@ -3980,7 +4313,7 @@ A:VE
 
 Z:39                               Brasilien ...
 T:*/*=11.00(60)/30/6               0-24h
-A:BR,MY,MD,NI
+A:BR,AU,MD,NI
 
 Z:40                               Botsuana Botswana ...
 T:*/*=11.33(60)/30/6               0-24h
@@ -3988,7 +4321,7 @@ A:BW,KY
 
 Z:41                               St. Pierre und Miquelon
 T:*/*=11.44(60)/30/6               0-24h
-A:PM
+A:HT
 
 Z:42                               Guadeloupe
 T:*/*=11.50(60)/30/6               0-24h
@@ -4294,16 +4627,16 @@ A:AM,AZ,CX,CC
 Z:11                               Angola ...
 T:*/*=12.50(60)/60/1               0-24h
 A:AO,BM,BR,CL,GF,GP
-A:HK,JP,LY,MO,_MADE,MY
+A:HK,JP,LY,MO,_MADE,AU
 A:MQ,YT,MX,MD
-A:NZ,AN,PH,RE,MP
-A:SG,PM,ZA,KR,VE
+A:NZ,AN,_NZMF,RE,MP
+A:SG,HT,,KR,VE
 
 Z:12                               Ägypten ...
 T:*/*=17.50(60)/60/1               0-24h
 A:EG,AW,BS,BB,BZ,BT,BW
 A:BN,BI,CN,DO,EC,GA,GH
-A:GL,GY,IR,JO,KG,CO,KW,LB
+A:GL,EC,IR,JO,KG,CO,KW,LB
 A:PA,SA,VC,TT
 A:AE
 
@@ -4412,7 +4745,7 @@ C:TarifChanged:                    27.05.2000
 C:Name:                            Mobilkom Austria
 C:Homepage:                        http://www.mobilkom.at
 C:TarifURL:                        http://www.mobilkom.at/deutsch/frames/fset_we4n3/fset.html
-C:Telefon:                         0800
+C:Telefon:                         0800 
 C:Special:                         Nur für Kunden von A1-Mobil
 
 Z:1                                Inland
@@ -4453,7 +4786,7 @@ A:PR,RO,SU,SG,TN,TR,UA,CY
 Z:8                                Auslandszone 4
 T:*/*=15.00(60)/30                 0-24h
 A:AM,AZ,BB,BM,BR,CL,GE
-A:JM,LY,MY,MQ,PH,ZA,KR
+A:JM,LY,AU,MQ,_NZMF,,KR
 A:TJ,TW,UZ,VE
 
 Z:9                                Immarsat A
@@ -4559,7 +4892,7 @@ A:DZ,EE,MK
 
 Z:19                               Island ...
 T:*/*=7.08(60)/1                   0-24h
-A:IS,IL,PS
+A:IS,IL,PP
 
 Z:20                               Gibraltar ...
 T:*/*=7.20(60)/1                   0-24h
@@ -4596,11 +4929,11 @@ A:CL,MQ
 
 Z:28                               Moldavien Moldau (Republik) ...
 T:*/*=10.20(60)/1                  0-24h
-A:MD,ZA
+A:MD,
 
 Z:29                               Guadeloupe ...
 T:*/*=10.68(60)/1                  0-24h
-A:GP,AN,KR,RE,_CYTK
+A:GP,AN,KR,RE,CY
 
 Z:30                               Französisch-Guayana
 T:*/*=10.92(60)/1                  0-24h
@@ -4612,7 +4945,7 @@ A:TM
 
 Z:32                               Malaysia
 T:*/*=11.88(60)/1                  0-24h
-A:MY
+A:AU
 
 Z:33                               Ägypten ...
 T:*/*=12.60(60)/1                  0-24h
@@ -4628,7 +4961,7 @@ A:DO,EC
 
 Z:36                               Macao ...
 T:*/*=14.28(60)/1                  0-24h
-A:MO,PH,TW
+A:MO,_NZMF,TW
 
 Z:37                               Aruba ...
 T:*/*=14.40(60)/1                  0-24h
@@ -4680,7 +5013,7 @@ A:BH,BJ,KY
 
 Z:49                               Dominica ...
 T:*/*=17.88(60)/1                  0-24h
-A:DM,CO,MW,PM,SD
+A:DM,CO,MW,HT,SD
 
 Z:50                               Äquatorial-Guinea ...
 T:*/*=18.00(60)/1                  0-24h
@@ -4688,7 +5021,7 @@ A:GQ,CI,PF
 
 Z:51                               Fidschi ...
 T:*/*=19.08(60)/1                  0-24h
-A:FJ,GY,KM,KE,NA,NR,NP,NG
+A:FJ,EC,KM,KE,NA,NR,NP,NG
 A:NC,ST,SH,KN
 A:LC,ZW,WS
 
@@ -4750,7 +5083,7 @@ C:Name:                            M.I.T Multi Media Informations Technologies G
 C:Address:                         Modecenterstrr. 14/5, A-1030 Wien
 C:Homepage:                        http://www.mit.co.at
 C:Telefon:                         01 79040 1500
-C:Zone:                            Die Regionalzone geht bis zu einer Entfernung von 50 Km, alles andere ist
+C:Zone:                            Die Regionalzone geht bis zu einer Entfernung von 50 Km, alles andere ist 
 C:Zone:                            Österreichzone.
 C:Special:                         0.30 ATS Mindestentgelt pro Verbindung
 D:1066                             # Verzonung
@@ -4777,7 +5110,7 @@ Z:4                                Euro 1
 T:W/8-18=0.30|4.00(60)/1           Tag
 T:W/18-8=0.30|3.66(60)/1           Nacht
 T:E,H/*=0.30|3.66(60)/1            Weekend
-A:DE,FR,UK,_UKIR,IT,LI
+A:DE,FR,UK,_NIRE,IT,LI
 A:CH,SK,SI,CZ,HU
 
 Z:5                                Euro 2
@@ -4791,7 +5124,7 @@ Z:6                                Euro City
 T:W/8-18=0.30|3.76(60)/1           Tag
 T:W/18-8=0.30|3.46(60)/1           Nacht
 T:E,H/*=0.30|3.46(60)/1            Weekend
-A:_AMS,BRU,_FRA,LON,MIL,PAR,ZRH
+A:_AMS,,_FRA,LON,MIL,PAR,ZRH
 
 Z:7                                Welt 1
 T:*/*=0.30|6.66(60)/1              0-24h
@@ -4803,9 +5136,9 @@ T:*/*=0.30|11.66(60)/1             0-24h
 A:AL,AQ,AM,AZ,AU,BS,CL
 A:CX,CC,DO,GE,GI
 A:GP,GF,HK,IS,IL,JP,LV
-A:LY,LT,MK,MY,MT,EH,MQ,YT
-A:MD,NZ,AN,PH
-A:SU,RE,PM,SG,ZA
+A:LY,LT,MK,AU,MT,EH,MQ,YT
+A:MD,NZ,AN,_NZMF
+A:SU,RE,HT,SG,
 A:KR,MP
 
 Z:9                                Welt 3
@@ -4829,7 +5162,7 @@ Z:10                               Welt 4
 T:*/*=0.30|26.66(60)/1             0-24h
 A:AF,DZ,AI,AG,GQ
 A:ET,BD,CK,CI,NKW,ER
-A:GU,_GUAN,GN,GW,GY,IQ,YE,KH
+A:GU,_GUAN,GN,GW,EC,IQ,YE,KH
 A:CM,CV,KZ,KI,KM,MG,ML
 A:_MIDW,FM,MN,MZ,MM,NA,NR
 A:NGR,NU,OM,PK,PW,PG,PN
@@ -4884,7 +5217,7 @@ A:IT,LI,CH,SK,SI,CZ,HU
 Z:8                                EU
 T:*/*=3.50(60)/30                  0-24h
 A:BE,DK,FI,FR,UK,GR
-A:IE,LU,NL,PT,ES,SE,_UKIR
+A:IE,LU,NL,PT,ES,SE,_NIRE
 
 Z:9                                Weltzone 1
 T:*/*=5.50(60)/30                  0-24h
@@ -4903,8 +5236,8 @@ Z:11                               Weltzone 3
 T:*/*=15.00(60)/30                 0-24h
 A:BM,BR,BN,CL,CX,CC
 A:DO,GE,GH,GL,IL,JM
-A:KZ,KR,KG,LY,MO,MY,MX
-A:ZA,TW,TJ
+A:KZ,KR,KG,LY,MO,AU,MX
+A:,TW,TJ
 
 Z:12                               Weltzone 4
 T:*/*=22.00(60)/30                 0-24h
@@ -4926,7 +5259,7 @@ A:_IR17
 P:[-01.12.1999] 69                 ONE
 B:1069
 C:Name:                            Connect Austria Gesellschaft für Telekommunikation GmbH
-C:Address:                         Brünner Straße 52, A-1210 Wien
+C:Address:                         Brünner Straße 52, A-1210 Wien 
 C:Homepage:                        http://www.one.at
 C:Telefon:                         0800 1069 3000
 
@@ -4964,8 +5297,8 @@ Z:7                                Internationale Zone 4
 T:*/*=15.00(60)/30                 0-24h
 A:AZ,AS,AM,BS,BM,BR
 A:BN,CL,DO,FK,GE,GH
-A:GL,JM,KZ,CC,LY,MO,MX,MY
-A:MD,OM,KR,ZA,TJ,TW,UZ
+A:GL,JM,KZ,CC,LY,MO,MX,AU
+A:MD,OM,KR,,TJ,TW,UZ
 A:VE,AE,CX
 
 Z:8                                Internationale Zone 5
@@ -4981,7 +5314,7 @@ A:+
 P:[01.12.1999] 69                  ONE
 B:1069
 C:Name:                            Connect Austria Gesellschaft für Telekommunikation GmbH
-C:Address:                         Brünner Straße 52, A-1210 Wien
+C:Address:                         Brünner Straße 52, A-1210 Wien 
 C:Homepage:                        http://www.one.at
 C:Telefon:                         0800 1069 3000
 
@@ -5023,8 +5356,8 @@ Z:8                                Internationale Zone 5
 T:*/*=15.00(60)/30                 0-24h
 A:AZ,AS,AM,BS,BM,BR
 A:BN,CL,DO,FK,GE,GH
-A:GL,JM,KZ,CC,LY,MO,MX,MY
-A:MD,OM,KR,ZA,TJ,TW,UZ
+A:GL,JM,KZ,CC,LY,MO,MX,AU
+A:MD,OM,KR,,TJ,TW,UZ
 A:VE,AE,CX
 
 Z:9                                Internationale Zone 6

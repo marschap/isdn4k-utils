@@ -1324,6 +1324,185 @@ void rate_1014(void) {
   }
 }
 
+void rate_1022(void) {
+
+  char *Zone[][2] = {
+    { "Inland", "Österreich" },
+    { "Mobilfunk", "+43663,+43664,+43676,+43699" },
+/* 1.19 */	{"Australien ...", "Australien, Belgien, Deutschland, Dänemark, Frankreich, Großbritannien, Irland, Italien, Kanada, Niederlande, Schweden, Schweiz, Spanien, Spanien Kanarische Ins., USA, Vatikanstadt"},
+/* 1.39 */	{"Alaska ...", "Alaska, Hawaii"},
+/* 1.55 */	{"Finnland ...", "Finnland, Liechtenstein, Luxemburg, Neuseeland, Norwegen"},
+/* 1.66 */	{"Israel ...", "Israel, Portugal, Portugal Azoren, Portugal Madeira"},
+/* 1.77 */	{"Finnland Mobilfunk", "Finnland Mobilfunk"},
+/* 1.87 */	{"Amerikan. Jungferninseln", "Amerikan. Jungferninseln"},
+/* 1.89 */	{"Puerto Rico", "Puerto Rico"},
+/* 1.91 */	{"Griechenland", "Griechenland"},
+/* 1.94 */	{"Japan", "Japan"},
+/* 1.99 */	{"Dänemark Mobilfunk ...", "Dänemark Mobilfunk, Luxemburg Mobilfunk, Singapur"},
+/* 2.29 */	{"Monaco", "Monaco"},
+/* 2.49 */	{"Rußland Moskau", "Rußland Moskau"},
+/* 2.59 */	{"Chile", "Chile"},
+/* 2.75 */	{"Hongkong", "Hongkong"},
+/* 2.79 */	{"Island ...", "Island, Portugal Mobilfunk"},
+/* 2.89 */	{"Korea  Süd ...", "Korea  Süd, Taiwan, Ungarn"},
+/* 2.97 */	{"Griechenland Mobilfunk ...", "Griechenland Mobilfunk, Neuseeland Mobilfunk, Slowakei, Slowenien, Tschechische Republik"},
+/* 2.99 */	{"Andorra ...", "Andorra, Bermuda, Gibraltar, Norwegen Mobilfunk, San Marino, Schweden Mobilfunk"},
+/* 3.09 */	{"Bahamas", "Bahamas"},
+/* 3.29 */	{"Norfolk Inseln", "Norfolk Inseln"},
+/* 3.35 */	{"Argentinien ...", "Argentinien, Brasilien, Bulgarien, China, Estland, Kolumbien, Kroatien, Malta, Mexico, Peru, Philippinen, Polen, Rußland, Türkei, Ukraine, Zypern  griechisch, Zypern  türkisch"},
+/* 3.47 */	{"Niederländische Antillen", "Niederländische Antillen"},
+/* 3.49 */	{"Australien Mobilfunk ...", "Australien Mobilfunk, Malaysia"},
+/* 3.53 */	{"Antarktis", "Antarktis"},
+/* 3.69 */	{"Dominikanische Republik", "Dominikanische Republik"},
+/* 3.79 */	{"Färöer Inseln ...", "Färöer Inseln, Guam"},
+/* 3.95 */	{"Israel Mobilfunk", "Israel Mobilfunk"},
+/* 3.99 */	{"Amerikanisch Samoa ...", "Amerikanisch Samoa, Bosnien-Herzegowina, Bulgarien Mobilfunk, Costa Rica, Deutschland Mobilfunk, Irland Mobilfunk, Italien Mobilfunk, Japan Mobilfunk, Niederlande Mobilfunk, Peru Mobilfunk, Schweiz Mobilfunk, Türkei Mobilfunk"},
+/* 4.49 */	{"Botswana ...", "Botswana, Kaiman Inseln, Rußland Mobilfunk"},
+/* 4.59 */	{"Mazedonien", "Mazedonien"},
+/* 4.67 */	{"Albanien ...", "Albanien, Lettland, Rumänien"},
+/* 4.75 */	{"Britische Jungferninseln", "Britische Jungferninseln"},
+/* 4.77 */	{"Jugoslawien ...", "Jugoslawien, Südafrika, Thailand, Tunesien, Weißrußland"},
+/* 4.89 */	{"Indonesien", "Indonesien"},
+/* 4.99 */	{"Algerien ...", "Algerien, Angola, Aruba, Belgien Mobilfunk, Costa Rica Mobilfunk, Frankreich Mobilfunk, Großbritannien Mobilfunk, Macao, Marokko, Spanien Mobilfunk, St. Pierre und Miquelon, Swasiland"},
+/* 5.39 */	{"Litauen", "Litauen"},
+/* 5.49 */	{"El Salvador ...", "El Salvador, Venezuela"},
+/* 5.69 */	{"Georgien ...", "Georgien, Malawi"},
+/* 5.79 */	{"Guadeloupe", "Guadeloupe"},
+/* 5.89 */	{"Aserbaidschan ...", "Aserbaidschan, Christmas Inseln, Cokos Inseln"},
+/* 5.93 */	{"Tadschikistan", "Tadschikistan"},
+/* 5.95 */	{"Libyen ...", "Libyen, Palau, Venezuela Mobilfunk, West Samoa"},
+/* 5.97 */	{"Nördliche Marianen ...", "Nördliche Marianen, Saipan"},
+/* 5.99 */	{"Anguilla ...", "Anguilla, Antigua und Barbuda, Armenien, Bahrain, Bhutan, Ecuador, Falkland Inseln, Französisch Guayana, Gabun, Marokko Mobilfunk, Martinique, Moldavien, Sansibar, Simbabwe"},
+/* 6.19 */	{"Mayotte", "Mayotte"},
+/* 6.39 */	{"El Salvador Mobilfunk", "El Salvador Mobilfunk"},
+/* 6.49 */	{"Französisch Polynesien ...", "Französisch Polynesien, Ghana, Guatemala, Lesotho, Papua-Neuguinea, Usbekistan"},
+/* 6.59 */	{"Vereinigte Arab. Emirate", "Vereinigte Arab. Emirate"},
+/* 6.89 */	{"Guinea", "Guinea"},
+/* 6.99 */	{"Brunei ...", "Brunei, Guantanamo Bay, Kasachstan, Liberia, Malediven, Reunion, St. Lucia, Uganda"},
+/* 7.15 */	{"Barbados ...", "Barbados, Bolivien, Diego Garcia, Dominica, Gambia, Grönland, Guatemala Mobilfunk, Guinea-Bissau, Kuwait, Mauretanien, Namibia, Neukaledonien, Panama, Turkmenistan, Uruguay, Zentralafrikanische Republik"},
+/* 7.49 */	{"Tansania", "Tansania"},
+/* 7.53 */	{"Nigeria", "Nigeria"},
+/* 7.99 */	{"Kongo ...", "Kongo, Libanon, Mosambik, Nicaragua, Panama Mobilfunk, St. Vincent und Grenadin, Sudan, Turks and Caicos Islands"},
+/* 8.35 */	{"Katar ...", "Katar, Kenia, Komoren, Libanon Mobilfunk, Madagaskar, Marshall Inseln, Mikronesien, Niger, Oman, Paraguay, Sambia, Saudi Arabien, Seychellen, Sri Lanka, St Kitts und Nevis, St. Helena, Trinidad und Tobago, Tuvalu, Wallis und Futuna"},
+/* 8.59 */	{"Honduras", "Honduras"},
+/* 8.99 */	{"Benin ...", "Benin, Kirgisien"},
+/* 9.09 */	{"Chatham Inseln", "Chatham Inseln"},
+/* 9.49 */	{"Guinea ...", "Guinea, Jordanien"},
+/* 9.59 */	{"Senegal", "Senegal"},
+/* 9.99 */	{"Belize ...", "Belize, Haiti, Jamaica, Kap Verde, Korea  Nord, Zaire"},
+/* 10.39 */	{"Grenada", "Grenada"},
+/* 10.49 */	{"Burkina Faso", "Burkina Faso"},
+/* 10.89 */	{"Mali", "Mali"},
+/* 10.99 */	{"Indien ...", "Indien, Kamerun, Montserrat, Ruanda, Surinam, Tschad"},
+/* 11.95 */	{"Pakistan", "Pakistan"},
+/* 11.97 */	{"Iran ...", "Iran, Kuba, Syrien"},
+/* 11.99 */	{"Birma ...", "Birma, Niue, Sierra Leone"},
+/* 12.49 */	{"Mauritius ...", "Mauritius, Nauru, Nepal, Salomonen, Somalia"},
+/* 12.95 */	{"Ascension ...", "Ascension, Bangladesh, Cook Inseln, Dschibuti, Elfenbeinküste, Eritrea, Fidschi, Guyana, Irak, Jemen, Kambodscha, Kiribati, Laos, Mongolei, Sao Tome und Principe, Togo, Tonga, Vanuatu, Vietnam"},
+/* 15.99 */	{"Afghanistan", "Afghanistan"},
+/* 99.99 */	{"Inmarsat A ...", "Inmarsat A, Inmarsat A Fax, Inmarsat Aero, Inmarsat B, Inmarsat M, Inmarsat Mini M, Inmarsat SNAC"},
+     
+  };
+  double Tarif[][3] = {
+    { 0.649, 0.289, 0.279},
+    { 3.99},
+{1.19},  /* Australien ... */
+{1.39},  /* Alaska ... */
+{1.55},  /* Finnland ... */
+{1.66},  /* Israel ... */
+{1.77},  /* Finnland Mobilfunk ... */
+{1.87},  /* Amerikan. Jungferninseln ... */
+{1.89},  /* Puerto Rico ... */
+{1.91},  /* Griechenland ... */
+{1.94},  /* Japan ... */
+{1.99},  /* Dänemark Mobilfunk ... */
+{2.29},  /* Monaco ... */
+{2.49},  /* Rußland Moskau ... */
+{2.59},  /* Chile ... */
+{2.75},  /* Hongkong ... */
+{2.79},  /* Island ... */
+{2.89},  /* Korea  Süd ... */
+{2.97},  /* Griechenland Mobilfunk ... */
+{2.99},  /* Andorra ... */
+{3.09},  /* Bahamas ... */
+{3.29},  /* Norfolk Inseln ... */
+{3.35},  /* Argentinien ... */
+{3.47},  /* Niederländische Antillen ... */
+{3.49},  /* Australien Mobilfunk ... */
+{3.53},  /* Antarktis ... */
+{3.69},  /* Dominikanische Republik ... */
+{3.79},  /* Färöer Inseln ... */
+{3.95},  /* Israel Mobilfunk ... */
+{3.99},  /* Amerikanisch Samoa ... */
+{4.49},  /* Botswana ... */
+{4.59},  /* Mazedonien ... */
+{4.67},  /* Albanien ... */
+{4.75},  /* Britische Jungferninseln ... */
+{4.77},  /* Jugoslawien ... */
+{4.89},  /* Indonesien ... */
+{4.99},  /* Algerien ... */
+{5.39},  /* Litauen ... */
+{5.49},  /* El Salvador ... */
+{5.69},  /* Georgien ... */
+{5.79},  /* Guadeloupe ... */
+{5.89},  /* Aserbaidschan ... */
+{5.93},  /* Tadschikistan ... */
+{5.95},  /* Libyen ... */
+{5.97},  /* Nördliche Marianen ... */
+{5.99},  /* Anguilla ... */
+{6.19},  /* Mayotte ... */
+{6.39},  /* El Salvador Mobilfunk ... */
+{6.49},  /* Französisch Polynesien ... */
+{6.59},  /* Vereinigte Arab. Emirate ... */
+{6.89},  /* Guinea ... */
+{6.99},  /* Brunei ... */
+{7.15},  /* Barbados ... */
+{7.49},  /* Tansania ... */
+{7.53},  /* Nigeria ... */
+{7.99},  /* Kongo ... */
+{8.35},  /* Katar ... */
+{8.59},  /* Honduras ... */
+{8.99},  /* Benin ... */
+{9.09},  /* Chatham Inseln ... */
+{9.49},  /* Guinea ... */
+{9.59},  /* Senegal ... */
+{9.99},  /* Belize ... */
+{10.39},  /* Grenada ... */
+{10.49},  /* Burkina Faso ... */
+{10.89},  /* Mali ... */
+{10.99},  /* Indien ... */
+{11.95},  /* Pakistan ... */
+{11.97},  /* Iran ... */
+{11.99},  /* Birma ... */
+{12.49},  /* Mauritius ... */
+{12.95},  /* Ascension ... */
+{15.99},  /* Afghanistan ... */
+{99.99},  /* Inmarsat A ... */
+  };
+  int z;
+
+  rprintf ("P:22", "3U" );
+  rprintf ("C:Name:", "3U TELECOM GmbH" );
+  rprintf ("C:Address:", "A-1060 Wien, Mariahilferstr. 123/3" );
+  rprintf ("C:Homepage:", "http://www.3U.net/at/" );
+  rprintf ("C:TarifURL:", "http://www.3u.net/download/Preisliste.PDF" );
+  rprintf ("C:Telefon:", "01 369 53 61" );
+  rprintf ("C:Telefax:", "01 369 53 62" );
+  rprintf ("C:Special:", "CbC" );
+  for (z=0; z<COUNT(Zone); z++) {
+    rprintf ("Z:%d", Zone[z][0] , z+1);
+    if (Tarif[z][0]==Tarif[z][1] || Tarif[z][1]==0) {
+      rprintf ("T:*/*=%.2f(60)/1", "0-24h" , Tarif[z][0]);
+    } else {
+      rprintf ("T:W/8-18=%.2f(60)/1", "Tag" , Tarif[z][0], Tarif[z][0]);
+      rprintf ("T:W/6-8,18-20=%.2f(60)/1", "Nebenzeit" , Tarif[z][1], Tarif[z][1]);
+      rprintf ("T:W/20-6=%.2f(60)/1", "Nacht" , Tarif[z][2], Tarif[z][2]);
+      rprintf ("T:E,H/*=%.2f(60)/1", "Wochenende" , Tarif[z][2], Tarif[z][2]);
+    }
+    print_area(Zone[z][1]);
+  }
+}
+
 void rate_1024(void) {
 
   char *Zone[][2] = {
@@ -2578,6 +2757,7 @@ int main (int argc, char *argv[])
   rate_1012(1012);
   rate_1013();
   rate_1014();
+   rate_1022();
   rate_1024();
   rate_1029_privat();
   rate_1029_business();
