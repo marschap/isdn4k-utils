@@ -1,0 +1,13 @@
+debug
+sync
+noauth
+plugin /etc/ppp/plugins/userpass.so
+username talknet
+password talknet
+defaultroute
+plugin /etc/ppp/plugins/capiplugin.so
+#controller 1
+#numberprefix 0
+number 01050019251
+protocol hdlc
+/dev/null
