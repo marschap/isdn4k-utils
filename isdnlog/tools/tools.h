@@ -1,4 +1,4 @@
-/* $Id: tools.h,v 1.63 2004/09/29 21:02:02 tobiasb Exp $
+/* $Id: tools.h,v 1.64 2005/02/23 14:33:40 tobiasb Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,15 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools.h,v $
+ * Revision 1.64  2005/02/23 14:33:40  tobiasb
+ * New feature: provider skipping.
+ * Certain providers can be completely ignored (skipped) when loading the
+ * rate-file.  The selection is done by Q: tags in rate.conf or by skipProv=
+ * in the parameter file.  The syntax is explained in the new manual page
+ * rate.conf(5).  Absurd settings for provider skipping may cause trouble.
+ * The version number will change to 4.70 in a few days after an update
+ * of the rate-de.dat.
+ *
  * Revision 1.63  2004/09/29 21:02:02  tobiasb
  * Changed handling of multiple "calling party number" information elements.
  * The network provided number is now preferred in any case.  The other
@@ -910,6 +919,8 @@
 #define CONF_ENT_PROVIDERCHANGE "PROVIDERCHANGE"
 #define CONF_ENT_CLOSEFDS  "CLOSEFDS"
 #define CONF_ENT_IGNOREUPD "IGNOREUPD"
+#define CONF_ENT_SKIPPROV  "SKIPPROV"
+
 /****************************************************************************/
 
 /* Keywords for isdn.conf */

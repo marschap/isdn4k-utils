@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.217 2004/12/10 18:26:10 tobiasb Exp $
+## $Id: Makefile.in,v 1.218 2005/02/23 14:33:38 tobiasb Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,15 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.218  2005/02/23 14:33:38  tobiasb
+## New feature: provider skipping.
+## Certain providers can be completely ignored (skipped) when loading the
+## rate-file.  The selection is done by Q: tags in rate.conf or by skipProv=
+## in the parameter file.  The syntax is explained in the new manual page
+## rate.conf(5).  Absurd settings for provider skipping may cause trouble.
+## The version number will change to 4.70 in a few days after an update
+## of the rate-de.dat.
+##
 ## Revision 1.217  2004/12/10 18:26:10  tobiasb
 ## Let "make all" in the isdnlog directory create the necessary zone files.
 ##
@@ -1694,6 +1703,8 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
+# next line must match basic regexp "^VERSION \+= \+" and contain only
+# the isdnlog version number after it. 
 VERSION     = 4.69
 
 # fallback to I4L-Version as set at configure time
@@ -1706,7 +1717,7 @@ endif
 MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 \
 	      isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 \
 	      isdnlog/isdnlog.users.5 isdnrep/isdnrep.1 isdnconf/isdnconf.1 \
-	      tools/isdnrate.1 tools/rate-files.5 \
+	      tools/isdnrate.1 tools/rate-files.5 tools/rate.conf.5 \
 	      isdnrep/isdnbill.1
 MANPAGES   += samples/isdn.conf \
 	      samples/isdn.conf.at samples/isdn.conf.de samples/isdn.conf.lu \
@@ -1798,7 +1809,8 @@ ISDNLOG_OBJS =  isdnlog/isdnlog.o isdnlog/processor.o isdnlog/functions.o \
                 connect/connect.o connect/socket.o tools/tools.o      	  \
                 connect/conv_address.o isdnlog/user_access.o 		  \
                 tools/isdnconf.o tools/telnum.o tools/dest.o		  \
-		tools/rate.o tools/zone.o tools/holiday.o tools/zone/upack.o \
+		tools/rate.o tools/rate_skip.o                            \
+		tools/zone.o tools/holiday.o tools/zone/upack.o           \
 		isdnlog/asn1.o isdnlog/asn1_generic.o isdnlog/asn1_aoc.o  \
 		isdnlog/asn1_address.o isdnlog/asn1_diversion.o           \
 		isdnlog/asn1_basic_service.o isdnlog/asn1_comp.o          \
@@ -1828,24 +1840,28 @@ endif
 
 ISDNREP_OBJS =  isdnrep/rep_main.o tools/tools.o tools/isdnconf.o         \
                 isdnlog/messages.o isdnrep/isdnrep.o isdnrep/opt_time.o   \
-		tools/rate.o tools/zone.o tools/holiday.o tools/dest.o \
-		tools/telnum.o tools/zone/upack.o		  \
+		tools/rate.o tools/rate_skip.o                            \
+		tools/zone.o tools/holiday.o tools/dest.o                 \
+		tools/telnum.o tools/zone/upack.o		          \
                 $(LIBISDNDIR)/libisdn.a $(CDBEXTRALIBS)
 
 ISDNBILL_OBJS = isdnrep/isdnbill.o tools/tools.o tools/isdnconf.o         \
                 isdnlog/messages.o					  \
-		tools/rate.o tools/zone.o tools/holiday.o tools/dest.o	  \
+		tools/rate.o tools/rate_skip.o                            \
+		tools/zone.o tools/holiday.o tools/dest.o	          \
 		tools/telnum.o tools/zone/upack.o			  \
                 $(LIBISDNDIR)/libisdn.a $(CDBEXTRALIBS)
 
+# Are these all necessary?  I believe they are not.  (tobiasb, 2005-02-05)
 ISDNCONF_OBJS=  isdnconf/isdnconf.o tools/tools.o tools/isdnconf.o        \
-		tools/rate.o tools/zone.o tools/holiday.o \
+		tools/rate.o tools/rate_skip.o                            \
+		tools/zone.o tools/holiday.o                              \
 		tools/telnum.o	tools/dest.o tools/zone/upack.o		  \
                 $(LIBISDNDIR)/libisdn.a $(CDBEXTRALIBS)
 
 ISDNRATE_OBJS=  tools/isdnrate.o tools/isdnconf.o tools/tools.o           \
-		tools/rate.o tools/zone.o tools/dest.o \
-		tools/holiday.o \
+		tools/rate.o tools/rate_skip.o                            \
+		tools/zone.o tools/dest.o tools/holiday.o                 \
 		tools/telnum.o tools/zone/upack.o			  \
                 $(LIBISDNDIR)/libisdn.a $(CDBEXTRALIBS)
 
@@ -2030,6 +2046,7 @@ install-data:
 		$(INSTALL_DATA) isdnlog/isdnformat.5 $(DESTDIR)$(MAN5DIR)/isdnformat$(MAN5EXT)
 		$(INSTALL_DATA) tools/isdnrate.1     $(DESTDIR)$(MAN1DIR)/isdnrate$(MAN1EXT)
 		$(INSTALL_DATA) tools/rate-files.5     $(DESTDIR)$(MAN5DIR)/rate-files$(MAN5EXT)
+		$(INSTALL_DATA) tools/rate.conf.5     $(DESTDIR)$(MAN5DIR)/rate.conf$(MAN5EXT)
 		$(INSTALL_DATA) country-de.dat	$(DESTDIR)$(DATADIR)/country.dat
 		$(INSTALL_DATA) rate-$(NATION).dat      $(DESTDIR)$(DATADIR)
 		$(INSTALL_DATA) holiday-$(NATION).dat   $(DESTDIR)$(DATADIR)

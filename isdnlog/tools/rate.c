@@ -1,6 +1,6 @@
 /* #define DEBUG_REDIRZ */
 
-/* $Id: rate.c,v 1.89 2005/01/02 16:37:21 tobiasb Exp $
+/* $Id: rate.c,v 1.90 2005/02/23 14:33:40 tobiasb Exp $
  *
  * Tarifdatenbank
  *
@@ -21,6 +21,15 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rate.c,v $
+ * Revision 1.90  2005/02/23 14:33:40  tobiasb
+ * New feature: provider skipping.
+ * Certain providers can be completely ignored (skipped) when loading the
+ * rate-file.  The selection is done by Q: tags in rate.conf or by skipProv=
+ * in the parameter file.  The syntax is explained in the new manual page
+ * rate.conf(5).  Absurd settings for provider skipping may cause trouble.
+ * The version number will change to 4.70 in a few days after an update
+ * of the rate-de.dat.
+ *
  * Revision 1.89  2005/01/02 16:37:21  tobiasb
  * Improved utilization of special number information from ratefile.
  *
@@ -765,6 +774,7 @@ extern const char *basename (const char *name);
 #include "zone.h"
 #include "dest.h"
 #include "rate.h"
+#include "rate_skip.h"
 
 #define LENGTH 1024            /* max length of lines in data file */
 #define STRINGS 8              /* number of buffers for printRate() */
@@ -866,6 +876,16 @@ typedef struct {
   int _area;	/* internal area */
   int _zone;	/* internal zone */
 } PRSEL;
+
+/* takes parsing result for P:[\[daterange\]]nn[,v] description */
+typedef struct {
+  int    prefix;  /* nn -- provider number, not internal prefix */
+  int    variant; /*  v -- provider variant or UNKNOWN if missing */
+  time_t from_d;  /* begin of daterange or 0 if not given */
+  time_t to_d;    /*   end of daterange or 0 if not given */
+  char  *name;    /* description/name for provider or NULL if missing */
+  int    booked;  /* is this provider booked by a rate-conf P: entry? */
+} PLINE;          /* in case of syntax errors, prefix will be UNKNOWN */
 
 static char      Format[STRINGL]="";
 static PROVIDER *Provider=NULL;
@@ -1297,6 +1317,54 @@ static char * epnum(int prefix) {
 }
 
 
+/* parse s="P:[\[daterange\]]nn[,v] description" from file *dat into *res */
+static void parse_P(char *s, char *dat, PLINE *res) {
+  int i;
+
+  /* set default values */
+  res->prefix = res->variant = UNKNOWN;
+  res->from_d = res->to_d = 0;
+  res->name = NULL;
+  res->booked = 0;
+
+  /* parsing code taken from initRate */
+  s+=2;
+  while (isblank(*s))
+    s++;
+  if (*s == '[')
+    if (!parse2dates(dat, &s, &res->from_d, &res->to_d))
+      return;
+  if (!isdigit(*s)) {
+    warning (dat, "Invalid provider-number '%c'", *s);
+    return;
+  }
+  res->prefix = strtol(s, &s ,10);
+  while (isblank(*s))
+    s++;
+  if (*s == ',') {
+    s++;
+    while (isblank(*s))
+      s++;
+    if (!isdigit(*s)) {
+      warning (dat, "Invalid variant '%c'", *s);
+      res->prefix = UNKNOWN;
+      return;
+    }
+    res->variant = strtol(s, &s, 10);
+  }
+  while (isblank(*s))
+    s++;
+  res->name = *s ? strdup(s) : NULL;
+
+  /* booked search also taken from initRate */
+  for (i = 0; i < nBooked; i++)
+    if (Booked[i]._variant == res->variant &&
+        Booked[i]._prefix  == res->prefix) {
+          res->booked = 1;
+          break;
+     }
+}
+
 void parse_X(char *s, char *dat)
 {
    char *c;
@@ -1443,18 +1511,19 @@ int initRate(char *conf, char *dat, char *dom, char **msg)
   char     buffer[LENGTH], path[LENGTH], Version[LENGTH]="";
   char     *c, *s;
   int      Comments=0;
-  int      Areas=0, Zones=0, Hours=0;
+  int      Areas=0, Zones=0, Hours=0, Skipped = 0;
   int      where=DOMESTIC, prefix=UNKNOWN;
   int      zone, zone1, zone2, day1, day2, hour1, hour2, freeze, delay;
   int     *number, numbers;
   int      i, n, t, u, v, z;
   int      any;
+  PLINE    prov;
   time_t   from_d, to_d;
 #define  MAX_INCLUDE 3
   int	lines[MAX_INCLUDE];
   FILE  *streams[MAX_INCLUDE];
   char  *files[MAX_INCLUDE];
-  int include = 0;
+  int include = 0, skip = 0;
 
   initTelNum(); /* we need defnum */
   mytld = getMynum()->tld;
@@ -1525,6 +1594,12 @@ int initRate(char *conf, char *dat, char *dom, char **msg)
 	 parse_X(s, conf);
         break;
 
+      case 'Q': /* skipped providers list, see rate.conf(5) */
+        i = add_skipped_provider(s+2, &c);
+        if (i)
+          warning(conf, "error in contents of Q: %s", c);
+        break;
+
       default:
 	warning(conf, "Unknown tag '%c'", *s);
       }
@@ -1565,6 +1640,11 @@ again:
       warning (dat, "expected ':', got '%s'!", s+1);;
       continue;
     }
+
+    /* When skipping provider, ignore all lines until next P:-Tag,
+     * includes and exceptions are ignored too */
+    if (skip && *s != 'P')
+      continue;
 
     switch (*s) {
     case 'I': /* I:file include */
@@ -1608,7 +1688,20 @@ again:
       parse_X(s, dat);
       break;
 
-    case 'P': /* P:\[daterange\]nn[,v] Bezeichnung */
+    case 'P': /* P:[\[daterange\]]nn[,v] description */
+      /* At first parse the entire line in order to check for a skipped
+       * provider.  In case of skipping, nothing further happens */
+      parse_P(s, dat, &prov);
+      skip = 0;
+      if (prov.prefix != UNKNOWN &&
+          is_skipped_provider(prov.prefix, prov.variant, prov.booked)) {
+	skip = 1;
+        Skipped++;
+	if (prov.name)
+          free(prov.name);
+        continue; /* try to read next line */
+      }
+
       /* the "end of provider" code below also occurs after the input loop */
       if (zone!=UNKNOWN) {
 	Provider[prefix].Zone[zone].Domestic = (where & DOMESTIC) == DOMESTIC;
@@ -1622,7 +1715,8 @@ again:
 #endif
 	line++;
       }
-      else if(nProvider && !Provider[prefix].nRedir) { /* silently ignore empty providers */
+      /* silently ignore empty providers, may be also useful when skipping */
+      else if(nProvider && !Provider[prefix].nRedir) {
 	free_provider(prefix);
 	nProvider--;
       }
@@ -1637,44 +1731,24 @@ again:
       zone = UNKNOWN;
       where = DOMESTIC;
 
-      s+=2; while (isblank(*s)) s++;
-      from_d = to_d = 0;
-      if (*s == '[')
-        if (!parse2dates(dat, &s, &from_d, &to_d))
-	  continue;
-      if (!isdigit(*s)) {
-	warning (dat, "Invalid provider-number '%c'", *s);
-	prefix=UNKNOWN;
-	continue;
+      /* almost the old (before provider skipping) syntax error handling */
+      if (prov.prefix == UNKNOWN) {
+        prefix = UNKNOWN;
+        continue;
       }
-      prefix = strtol(s, &s ,10);
+
+      prefix = prov.prefix;
       Provider=realloc(Provider, (nProvider+1)*sizeof(PROVIDER));
       memset(&Provider[nProvider], 0, sizeof(PROVIDER));
       Provider[nProvider]._provider._prefix=prefix;
       prefix=nProvider; /* the internal prefix */
       nProvider++;
-      Provider[prefix]._provider._variant=UNKNOWN;
-      Provider[prefix].FromDate = from_d;
-      Provider[prefix].ToDate = to_d;
-      while (isblank(*s)) s++;
-      if (*s == ',') {
-	s++; while (isblank(*s)) s++;
-	if (!isdigit(*s)) {
-	  warning (dat, "Invalid variant '%c'", *s);
-	  prefix=UNKNOWN;
-	  continue;
-	}
-	v=strtol(s, &s, 10);
-	Provider[prefix]._provider._variant=v;
-      }
-      while (isblank(*s)) s++;
-      Provider[prefix].Name=*s?strdup(s):NULL;
-      for (i = 0; i < nBooked; i++)
-        if (Booked[i]._variant==Provider[prefix]._provider._variant &&
-	    Booked[i]._prefix==Provider[prefix]._provider._prefix) {
-          Provider[prefix].booked=1;
-	  break;
-        }
+      Provider[prefix]._provider._variant = prov.variant;
+      Provider[prefix].FromDate = prov.from_d;
+      Provider[prefix].ToDate = prov.to_d;
+      Provider[prefix].Name = prov.name;
+      Provider[prefix].booked = prov.booked;
+
       break;
 
     case 'B':  /* B: VBN */
@@ -2170,8 +2244,8 @@ again:
     default:
       warning (dat, "Unknown tag '%c'", *s);
       break;
-    }
-  }
+    } /* /switch tag */
+  } /* /while read from current ratefile sucessful */
   fclose(stream);
   if (include) {
     free(files[include]);
@@ -2213,13 +2287,18 @@ again:
   prsel_find_zone_area();
   fix_redirz(dat);
 
-  if (msg) snprintf (message, LENGTH,
-		     "Rates   Version %s loaded [%d Providers, %d Zones, %d Areas, %d Services, %d Comments, %d eXceptions, %d Redirects, %d Rates from %s]",
-		     Version, nProvider, Zones, Areas, nService, Comments, nPrsel, nRedir, Hours, dat);
+  if (msg)
+    snprintf(message, LENGTH,
+             "Rates   Version %s loaded [%d Providers, %d skipped, %d Zones, "
+             "%d Areas, %d Services, %d Comments, %d eXceptions, %d Redirects, "
+             "%d Rates from %s]",
+             Version, nProvider, Skipped, Zones,
+             Areas, nService, Comments, nPrsel, nRedir,
+             Hours, dat);
   free(files[0]);
 
   return 0;
-}
+} /* /initRate */
 
 char *getProvider (int prefix)
 {

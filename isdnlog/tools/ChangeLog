@@ -1,3 +1,16 @@
+2005-02-23  Tobias Becker  <tobiasb@isdn4linux.de>
+
+	* rate_skip.c, rate_skip.h: This implements the new feature of
+	provider skipping.  For end user information there is a new
+	manual page rate.conf(5), the interface is described in rate_skip.c.
+
+	* rate.c (initRate): Call add_skipped_provider for Q: tags in
+	rate.conf.  Moved parsing of P: tag from rate-file to new function
+	parse_P.  Added provider skipping for rate-file reading and parsing.
+
+	* tools.h (CONF_ENT_SKIPPROV): New constant for name of skipProv
+	entry in parameter file.
+
 2005-01-12  Tobias Becker  <tobiasb@isdn4linux.de>
 
 	* dest.c (getDest): Do not shorten the given number to less than one

@@ -63,6 +63,7 @@ DATADIR=`eval echo $datadir`
 DOCDIR=`eval echo $DOCDIR`
 MANDATE_CALLERID=`grep CHECKIN isdnlog/callerid.conf.5.in | awk '{print $4}'`
 MANDATE_ISDN_CONF=`grep CHECKIN isdnlog/isdn.conf.5.in | awk '{print $4}'`
+MANDATE_RATE_CONF=`grep CHECKIN tools/rate.conf.5.in | awk '{print $4}'`
 MANDATE_ISDNFORMAT=`grep CHECKIN isdnlog/isdnformat.5.in | awk '{print $4}'`
 MANDATE_ISDNLOG5=`grep CHECKIN isdnlog/isdnlog.5.in | awk '{print $4}'`
 MANDATE_ISDNLOG8=`grep CHECKIN isdnlog/isdnlog.8.in | awk '{print $4}'`
@@ -70,6 +71,7 @@ MANDATE_ISDNLOG_USERS=`grep CHECKIN isdnlog/isdnlog.users.5.in | awk '{print $4}
 MANDATE_ISDNREP=`grep CHECKIN isdnrep/isdnrep.1.in | awk '{print $4}'`
 MANDATE_ISDNBILL=`grep CHECKIN isdnrep/isdnbill.1.in | awk '{print $4}'`
 MANDATE_ISDNCONF=`grep CHECKIN isdnconf/isdnconf.1.in | awk '{print $4}'`
+ISDNLOG_VERSION=`grep "^VERSION \+= \+" Makefile.in | awk '{print $3}'`
 
 if test "$CONFIG_LIB_AREACODE" = "y" ; then
 	ALIB=area
@@ -240,6 +242,7 @@ AC_SUBST(AREAPREFIX)
 AC_SUBST(NATION)
 AC_SUBST(NATION_MACRO)
 AC_SUBST(I4LVERSION)
+AC_SUBST(ISDNLOG_VERSION)
 AC_SUBST(DATADIR)
 AC_SUBST(DOCDIR)
 AC_SUBST(RELOADCMD)
@@ -247,6 +250,7 @@ AC_SUBST(STOPCMD)
 AC_SUBST(REBOOTCMD)
 AC_SUBST(MANDATE_CALLERID)
 AC_SUBST(MANDATE_ISDN_CONF)
+AC_SUBST(MANDATE_RATE_CONF)
 AC_SUBST(MANDATE_ISDNFORMAT)
 AC_SUBST(MANDATE_ISDNLOG5)
 AC_SUBST(MANDATE_ISDNLOG8)
@@ -255,4 +259,4 @@ AC_SUBST(MANDATE_ISDNREP)
 AC_SUBST(MANDATE_ISDNBILL)
 AC_SUBST(MANDATE_ISDNCONF)
 AC_SUBST(CDBEXTRALIBS)
-AC_OUTPUT(Makefile isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 isdnlog/isdnlog.users.5 isdnrep/isdnrep.1 isdnrep/isdnbill.1 isdnconf/isdnconf.1 samples/isdn.conf samples/isdn.conf.at samples/isdn.conf.de samples/isdn.conf.lu samples/isdn.conf.nl samples/isdn.conf.no samples/isdn.conf.pl)
+AC_OUTPUT(Makefile isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 tools/rate.conf.5 isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 isdnlog/isdnlog.users.5 isdnrep/isdnrep.1 isdnrep/isdnbill.1 isdnconf/isdnconf.1 samples/isdn.conf samples/isdn.conf.at samples/isdn.conf.de samples/isdn.conf.lu samples/isdn.conf.nl samples/isdn.conf.no samples/isdn.conf.pl)

@@ -1,5 +1,5 @@
-.\" $Id: isdnlog.8.in,v 1.16 2004/12/16 22:40:30 tobiasb Exp $
-.\" CHECKIN $Date: 2004/12/16 22:40:30 $
+.\" $Id: isdnlog.8.in,v 1.17 2005/02/23 14:33:39 tobiasb Exp $
+.\" CHECKIN $Date: 2005/02/23 14:33:39 $
 .TH isdnlog 8 "@MANDATE_ISDNLOG8@" "ISDN 4 Linux @I4LVERSION@" "Linux System Administration"
 .PD 0
 .SH NAME
@@ -33,6 +33,7 @@ show version information and exit.
 .BI \-f FILE
 read options from the config file
 .IR FILE .
+This file is also called the parameter file of isdnlog.
 The first line should be
 "[options]". You may use blank lines and comments (starting with a #).
 All config files for isdnlog have the format described in isdn.conf(5).
@@ -72,6 +73,13 @@ Values are e.g. "010" for DE, "10" for AT, "16:17" for NL, "9" for FR.
 .B \-R\fIprefix\fB	preselected="value"
 Set the preselected (i.e the provider choosen, if no prefix is dialed)
 provider to value. Value should be without \fIvbn\fR.
+
+.TP
+.BI	 skipProv= skiplist
+(There is no commandline option for this.)
+Ignore certain providers from the rate-file.  The format of
+.I skiplist
+is the same as for Q: tags in rate.conf and described in rate.conf(5).
 
 .TP
 .B \-0\fIx:y\fB	trim="value[:value]"
@@ -579,7 +587,9 @@ start=yes       # enable starting programs
 .SH SEE ALSO
 .B isdnconf(1) isdn.conf(5) callerid.conf(5)
 .br
-.B isdnlog(5) isdnrep(1) rate-files(5) isdnrate(1)
+.B rate-files(5) rate.conf(5)
+.br
+.B isdnlog(5) isdnrep(1) isdnrate(1)
 
 .SH AUTHOR
 This manual page was written by Andreas Jellinghaus <aj@dungeon.inka.de>,

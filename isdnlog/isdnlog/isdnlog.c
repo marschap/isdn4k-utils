@@ -1,4 +1,4 @@
-/* $Id: isdnlog.c,v 1.75 2004/12/16 22:40:30 tobiasb Exp $
+/* $Id: isdnlog.c,v 1.76 2005/02/23 14:33:39 tobiasb Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,15 @@
  * along with this program; if not, write to the Free Software
  *
  * $Log: isdnlog.c,v $
+ * Revision 1.76  2005/02/23 14:33:39  tobiasb
+ * New feature: provider skipping.
+ * Certain providers can be completely ignored (skipped) when loading the
+ * rate-file.  The selection is done by Q: tags in rate.conf or by skipProv=
+ * in the parameter file.  The syntax is explained in the new manual page
+ * rate.conf(5).  Absurd settings for provider skipping may cause trouble.
+ * The version number will change to 4.70 in a few days after an update
+ * of the rate-de.dat.
+ *
  * Revision 1.75  2004/12/16 22:40:30  tobiasb
  * Fix for rate computation of outgoing calls from other devices and for logging
  * of calls from and to the observed card (simultaneous SETUP messages).
@@ -541,6 +550,7 @@
 
 #include "isdnlog.h"
 #include "dest.h"
+#include "rate_skip.h"
 #ifdef POSTGRES
 #include "postgres.h"
 #endif
@@ -591,6 +601,7 @@ static char	**hup_argv;	/* args to restart with */
 static int      sqldump = 0;
 
 static char    *param_myarea = NULL;
+static char    *param_skipprov = NULL;
 
 /*****************************************************************************/
 
@@ -1327,6 +1338,9 @@ static int read_param_file(char *FileName)
 						param_myarea = p;
 				}
 				else
+				if (!strcmp(Ptr->name,CONF_ENT_SKIPPROV))
+					param_skipprov = strdup(Ptr->value);
+				else
 					print_msg(PRT_ERR,"Error: Invalid entry `%s'!\n",Ptr->name);
 
 				Ptr = Ptr->next;
@@ -1718,20 +1732,45 @@ int main(int argc, char *argv[], char *envp[])
 
       	    if (!Q931dmp) {
 	    initHoliday(holifile, &version);
-
 	    if (*version)
 	      print_msg(PRT_NORMAL, "%s\n", version);
 
 	    initDest(destfile, &version);
-
 	    if (*version)
 	      print_msg(PRT_NORMAL, "%s\n", version);
 
-	    initRate(rateconf, ratefile, zonefile, &version);
+			if (param_skipprov) {
+				i = add_skipped_provider(param_skipprov, &version);
+				if (i)
+					print_msg(PRT_WARN, "%s in parameter file contains an error: %s\n",
+					          CONF_ENT_SKIPPROV, version);
+				i = dump_skipped_provider(s, sizeof s);
+				if (i > -1)
+					print_msg(PRT_DEBUG_GENERAL, "dump_skipped_provider after "
+				  	        "add_skipped_provider for parameter file: >%s< (%i).\n",
+				    	      s, i);
+				else
+					print_msg(PRT_DEBUG_GENERAL, "dump_skipped_provider after "
+				  	        "add_skipped_provider for parameter file: FAILED.\n");
+				free(param_skipprov);
+				param_skipprov = NULL;
+			}
 
+	    initRate(rateconf, ratefile, zonefile, &version);
 	    if (*version)
 	      print_msg(PRT_NORMAL, "%s\n", version);
 	    } /* if */
+
+
+			i = dump_skipped_provider(s, sizeof s);
+			if (i > -1) 
+				print_msg(PRT_DEBUG_GENERAL, "dump_skipped_provider after initRate:"
+			  	        " >%s< (%i).\n", s, i);
+			else
+				print_msg(PRT_DEBUG_GENERAL, "dump_skipped_provider after initRate:"
+				          "FAILED.\n");
+			i = clear_skipped_provider();
+			print_msg(PRT_DEBUG_GENERAL, "clear_skipped_provider: %i freed.\n", i);
 
 	    if (sqldump) {
 	      auto     FILE *fo = fopen(((sqldump == 2) ? "/tmp/isdnconf.csv" : "/tmp/isdn.conf.sql"), "w");

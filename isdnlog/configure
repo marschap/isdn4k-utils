@@ -1250,6 +1250,7 @@ DATADIR=`eval echo $datadir`
 DOCDIR=`eval echo $DOCDIR`
 MANDATE_CALLERID=`grep CHECKIN isdnlog/callerid.conf.5.in | awk '{print $4}'`
 MANDATE_ISDN_CONF=`grep CHECKIN isdnlog/isdn.conf.5.in | awk '{print $4}'`
+MANDATE_RATE_CONF=`grep CHECKIN tools/rate.conf.5.in | awk '{print $4}'`
 MANDATE_ISDNFORMAT=`grep CHECKIN isdnlog/isdnformat.5.in | awk '{print $4}'`
 MANDATE_ISDNLOG5=`grep CHECKIN isdnlog/isdnlog.5.in | awk '{print $4}'`
 MANDATE_ISDNLOG8=`grep CHECKIN isdnlog/isdnlog.8.in | awk '{print $4}'`
@@ -1257,6 +1258,7 @@ MANDATE_ISDNLOG_USERS=`grep CHECKIN isdnlog/isdnlog.users.5.in | awk '{print $4}
 MANDATE_ISDNREP=`grep CHECKIN isdnrep/isdnrep.1.in | awk '{print $4}'`
 MANDATE_ISDNBILL=`grep CHECKIN isdnrep/isdnbill.1.in | awk '{print $4}'`
 MANDATE_ISDNCONF=`grep CHECKIN isdnconf/isdnconf.1.in | awk '{print $4}'`
+ISDNLOG_VERSION=`grep "^VERSION \+= \+" Makefile.in | awk '{print $3}'`
 
 if test "$CONFIG_LIB_AREACODE" = "y" ; then
 	ALIB=area
@@ -4337,7 +4339,9 @@ esac
 
 
 
-ac_config_files="$ac_config_files Makefile isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 isdnlog/isdnlog.users.5 isdnrep/isdnrep.1 isdnrep/isdnbill.1 isdnconf/isdnconf.1 samples/isdn.conf samples/isdn.conf.at samples/isdn.conf.de samples/isdn.conf.lu samples/isdn.conf.nl samples/isdn.conf.no samples/isdn.conf.pl"
+
+
+ac_config_files="$ac_config_files Makefile isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 tools/rate.conf.5 isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 isdnlog/isdnlog.users.5 isdnrep/isdnrep.1 isdnrep/isdnbill.1 isdnconf/isdnconf.1 samples/isdn.conf samples/isdn.conf.at samples/isdn.conf.de samples/isdn.conf.lu samples/isdn.conf.nl samples/isdn.conf.no samples/isdn.conf.pl"
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
 # tests run on this system so they can be shared between configure
@@ -4812,6 +4816,7 @@ do
   "Makefile" ) CONFIG_FILES="$CONFIG_FILES Makefile" ;;
   "isdnlog/callerid.conf.5" ) CONFIG_FILES="$CONFIG_FILES isdnlog/callerid.conf.5" ;;
   "isdnlog/isdn.conf.5" ) CONFIG_FILES="$CONFIG_FILES isdnlog/isdn.conf.5" ;;
+  "tools/rate.conf.5" ) CONFIG_FILES="$CONFIG_FILES tools/rate.conf.5" ;;
   "isdnlog/isdnformat.5" ) CONFIG_FILES="$CONFIG_FILES isdnlog/isdnformat.5" ;;
   "isdnlog/isdnlog.5" ) CONFIG_FILES="$CONFIG_FILES isdnlog/isdnlog.5" ;;
   "isdnlog/isdnlog.8" ) CONFIG_FILES="$CONFIG_FILES isdnlog/isdnlog.8" ;;
@@ -4948,6 +4953,7 @@ s,@AREAPREFIX@,$AREAPREFIX,;t t
 s,@NATION@,$NATION,;t t
 s,@NATION_MACRO@,$NATION_MACRO,;t t
 s,@I4LVERSION@,$I4LVERSION,;t t
+s,@ISDNLOG_VERSION@,$ISDNLOG_VERSION,;t t
 s,@DATADIR@,$DATADIR,;t t
 s,@DOCDIR@,$DOCDIR,;t t
 s,@RELOADCMD@,$RELOADCMD,;t t
@@ -4955,6 +4961,7 @@ s,@STOPCMD@,$STOPCMD,;t t
 s,@REBOOTCMD@,$REBOOTCMD,;t t
 s,@MANDATE_CALLERID@,$MANDATE_CALLERID,;t t
 s,@MANDATE_ISDN_CONF@,$MANDATE_ISDN_CONF,;t t
+s,@MANDATE_RATE_CONF@,$MANDATE_RATE_CONF,;t t
 s,@MANDATE_ISDNFORMAT@,$MANDATE_ISDNFORMAT,;t t
 s,@MANDATE_ISDNLOG5@,$MANDATE_ISDNLOG5,;t t
 s,@MANDATE_ISDNLOG8@,$MANDATE_ISDNLOG8,;t t

@@ -1,6 +1,6 @@
 '\" t
 '\" ** above should format a table **
-.\" CHECKIN $Date: 2004/10/04 14:50:41 $
+.\" CHECKIN $Date: 2005/02/23 14:33:40 $
 .TH rate-files 5 "@MANDATE@" -lt-
 .SH NAME
 rate-files \- Format of rate-files
@@ -469,6 +469,7 @@ T:[01.01.2004]E,H/*=0.06/60 weekend
 .SH SEE ALSO
 .IR isdnlog(8) ,
 .IR isdnrate(1) ,
+.IR rate.conf(5) ,
 isdnlog/README, rate-at.dat
 .SH AUTHOR
 Leopold Toetsch <lt@toetsch.at> (of this man page of course).
