@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.5 1999/06/30 21:51:54 he Exp $
+# $Id: Makefile,v 1.6 1999/06/30 21:59:53 he Exp $
 
 SHELL = /bin/sh
 
@@ -70,6 +70,8 @@ release: new_version commit
 	echo '===============' >> CHANGES.tmp
 	cat xx[0-9][0-9] >> CHANGES.tmp
 	rm -f xx[0-9][0-9]
+	mv -f CHANGES CHANGES.old
+	mv CHANGES.tmp CHANGES
 	$(CVS) commit -m "Version $(NEW_VERSION)" .
 	$(CVS) tag `echo eftp4linux-$(NEW_VERSION)|sed s/\\\\./_/g` .
 	tar -czf ../eftp4linux-$(NEW_VERSION).tar.gz .
