@@ -1,5 +1,5 @@
-.\" $Id: vboxgetty.conf.man,v 1.2 2000/09/15 09:10:10 paul Exp $
-.\" CHECKIN $Date: 2000/09/15 09:10:10 $
+.\" $Id: vboxgetty.conf.man,v 1.3 2000/09/15 09:19:50 paul Exp $
+.\" CHECKIN $Date: 2000/09/15 09:19:50 $
 .TH vboxgetty.conf 5 "@MANDATE@" "ISDN 4 Linux @I4LVERSION@" "Linux System Administration"
 .PD 0
 .SH NAME
@@ -103,9 +103,6 @@ directory, so that a call may be taken. Default is 0.
 .TP
 .B @I4LCONFDIR@/vboxgetty.conf
 this configuration file
-.TP
-.B /usr/doc/isdnutils/examples/vboxgetty.conf
-an example
 
 .SH SEE ALSO
 .B vboxgetty(8), vbox(5), vboxtcl(5)
