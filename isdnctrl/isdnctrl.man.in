@@ -1,6 +1,6 @@
-.\" $Id: isdnctrl.man.in,v 1.10 1998/06/09 18:11:36 cal Exp $
+.\" $Id: isdnctrl.man.in,v 1.11 1998/10/21 16:18:49 paul Exp $
 .\"
-.\" CHECKIN $Date: 1998/06/09 18:11:36 $
+.\" CHECKIN $Date: 1998/10/21 16:18:49 $
 .\"
 .\" Process this file with
 .\" groff -man -Tascii isdnctrl.8 for ASCII output, or
@@ -77,6 +77,53 @@ before removing an interface.
 resets the interface
 .IR name
 to some reasonable defaults.
+.TP
+.BI dialmode " name " [ off | manual | auto ]
+Sets the dial mode of the interface to one of:
+.LP
+.RS
+.B manual
+.br
+manual dialing / hangup;
+a connection will only be made after
+.B isdnctrl dial
+.I name
+and only an explicit
+.B isdnctrl hangup
+.I name
+will cause the connection to be dropped.
+.br
+Incoming connections are possible; however, if this interface is configured in
+.BR "callback in"
+mode, the callback dial will not happen (as this is actually an outgoing
+connection, not an incoming one).
+.LP
+.B off
+.br
+no connection can be made; an existing connection is terminated immediately.
+Incoming connections are also not possible.
+.LP
+.B auto
+.br
+autodial mode; an outgoing packet will trigger a dialout, and a hangup will
+occur after the huptimeout value specified (see below).
+.br
+An interface in
+.BR auto
+dial mode will call another system back (if configured in
+.BR "callback in"
+mode).
+.LP
+.br
+.B auto
+was the "old" behaviour (as it was before
+.BR dialmode
+was implemented).
+.br
+.LP
+.br
+If no argument is given, the current dialmode value is displayed.
+.RE
 .TP
 .BI addphone " name " out " num"
 Adds the phone number

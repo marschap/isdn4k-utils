@@ -1,4 +1,4 @@
-/* $Id: isdnctrl.h,v 1.11 1998/06/09 18:11:33 cal Exp $
+/* $Id: isdnctrl.h,v 1.12 1998/10/21 16:18:48 paul Exp $
  * ISDN driver for Linux. (Control-Utility)
  *
  * Copyright 1994,95 by Fritz Elfert (fritz@wuemaus.franken.de)
@@ -21,6 +21,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnctrl.h,v $
+ * Revision 1.12  1998/10/21 16:18:48  paul
+ * Implementation of "dialmode" (successor of "status")
+ *
  * Revision 1.11  1998/06/09 18:11:33  cal
  * added the command "isdnctrl name ifdefaults": the named device is reset
  * to some reasonable defaults.
@@ -97,7 +100,7 @@ enum {
         CBHUP, IHUP, SECURE, CALLBACK,
         L2_PROT, L3_PROT, ADDLINK, REMOVELINK,
         ENCAP, TRIGGER, RESET,
-        DIALTIMEOUT, DIALWAIT, STATUS,
+        DIALTIMEOUT, DIALWAIT, DIALMODE,
 #ifdef I4L_CTRL_TIMRU
         ADDRULE, INSRULE, DELRULE, SHOWRULES,
         FLUSHRULES, FLUSHALLRULES, DEFAULT,
@@ -158,7 +161,7 @@ cmd_struct cmds[] =
         {"reset", "01"},
         {"dialtimeout", "12"},
         {"dialwait", "12"},
-        {"status", "12"},
+        {"dialmode", "12"},
 #ifdef I4L_CTRL_TIMRU
         {"addrule", "12"},
         {"insrule", "1"},
