@@ -142,7 +142,7 @@ website. Have a look at <url url="http://www.isdn4linux.de/contacts">.
 
 <!-- Who are the developers? -->  
 
-<sect1> distrib_getlatest: How can I get the latest isdn4linux stuff?  
+<sect1> distrib_getlatest: How can I get the latest isdn4linux?  
 <label id="distrib_getlatest">
 <p>
 There are different ways, depending on your kernel. Unless you are an
@@ -212,7 +212,7 @@ WARNING!! THE NEWEST STUFF SOMETIMES IS VERY INSTABLE OR MAY NOT EVEN
 COMPILE WITHOUT PROGRAMMING KNOWLEDGE -
 No newbie questions on this PLEASE! Use the source, Luke!
 
-People who want to <em>continuously</em> help developing isdn4linux by writing
+People who want to <em>continuously</em> help develop isdn4linux by writing
 new drivers etc. can get a real account for full access. In this case write
 an email to Fritz Elfert <tt><htmlurl url="mailto:fritz@isdn4linux.de"
 name="fritz@isdn4linux.de"></tt>
@@ -264,7 +264,7 @@ These encapsulations are possible:
 <sect1> feature_voice: Can I use isdn4linux as an answering machine?  
 <label id="feature_voice">
 <p>
-Yes, voice support is possible with the current version of isdn4linux.
+Yes, voice support is included in the current version of isdn4linux.
 You can either use &dquot;vgetty&dquot; from Gert Doerings
 &dquot;mgetty+sendfax&dquot;, or &dquot;vboxgetty&dquot; from Michael Herold,
 which is made especially for isdn4linux.
@@ -292,10 +292,11 @@ along with your ISDN card.
 <sect1> feature_divert: Is it possible to initiate call forwarding with i4l?  
 <label id="feature_divert">
 <p>
-Call diversion features are have been implemented recently. Use the new
-program <tt/divertctrl/. So far no howto and little documentation exists for
-it, therefore currently this is something for the more experienced user. In
-the Netherlands, the keypad protocol can be used alternatively.
+Call diversion features have been implemented recently. Use the new
+program <tt/divertctrl/. So far there is no howto and only little
+documentation, so for now this is something only for the more 
+experienced user. In the Netherlands, the keypad protocol can be used 
+as an alternative.
 
 <sect1> feature_ipx: Can I route ipx/spx over ISDN with Linux?  
 <label id="feature_ipx">
@@ -316,8 +317,8 @@ bundling:
 </itemize>
 Both variants have their own advantages and disadvantages. See section
 <ref id="2channel" name="2channel">.
-Warning: Channel bundling saves time, but not any telephone charges.
-Only if you really need the extra bandwidth is it useful.
+Warning: Channel bundling saves time, but not telephone charges.
+It is useful only if you really need the extra bandwidth.
 
 <sect1> feature_diald: Can I combine isdn4linux with diald?  
 <label id="feature_diald">
@@ -335,7 +336,7 @@ up when no data was been transferred over the interface for &dquot;time&dquot;
 seconds. However, with syncPPP there are problems (see the syncPPP section).
 Also look at the dialmode description (see question
 <ref id="config_dialmode" name="config_dialmode">).
-You should definitely be very interested in the big part of this FAQ that
+You should definitely be very interested in the large section of this FAQ that
 talks about the dangers of unwanted dialouts: (<ref id="dod" name="dod">).
 
 <sect1> feature_sms: Can I send SMS (short messages) to my handy via ISDN?  
@@ -371,7 +372,7 @@ can be found in Cologne: time.rrz.uni-koeln.de, but there are many more.
 <sect1> feature_dosemu: Can I use isdn4linux under dosemu?  
 <label id="feature_dosemu">
 <p>
-Yes, you really can! Steffan Henke
+Yes, you can! Steffan Henke
 <tt><htmlurl url="mailto:henker@informatik.uni-bremen.de"
 	     name="henker@informatik.uni-bremen.de"></tt> wrote on 25 Oct 96:
 <quote>
@@ -426,7 +427,7 @@ other cards. However, there are no plans to implement a CAPI 1.1 interface.
 <sect1> feature_uus: Is UUS (user to user signaling) supported?  
 <label id="feature_uus">
 <p>
-Yes, isdn4linux does support sending and receiving it. However, you should
+Yes, isdn4linux does support both sending and receiving. However, you should
 know that sending it is not a free service, at least in Germany you have to
 pay extra for it (also have a close look on the usage conditions).
 Additionally, please note that if you are connected through a PBX, it will
@@ -446,7 +447,7 @@ to isdn4linux?
 <label id="feature_gmsv110">
 <p>
 Yes, if the provider of the cellular phone has a GSM to ISDN/V.110 gateway.
-Has been reported to work from a PalmPilot to isdn4linux with V.110.
+This has been reported to work from a PalmPilot to isdn4linux with V.110.
 
 <!-- Feature reversed card -->
 
@@ -469,7 +470,7 @@ the ISDN connection and change by software). Also, it is possible to give
 up one B-channel in exchange for reading the complete D-channel, which would
 be great for isdnlog.
 Another thing might be Least-Cost Routing, though that seems to be very
-tricky, as well as timing and hardware dependent. We'll see...
+tricky, as well as being timing and hardware dependent. We'll see...
 
 
 <!-- Helpful docu, links, mailing list, config examples, howto's -->
@@ -526,7 +527,7 @@ The offical website can be found at:
 The newsgroup is <tt/de.alt.comm.isdn4linux/. Most isdn4linux developers are
 present, and many other knowledgeable people. Don't be confused by the many
 German messages on it. <bf>English postings are very welcome, and will be
-answered in english!</bf>
+answered in English!</bf>
 
 <sect1> docu_mailinglist: Where is the mailing list for isdn4linux?  
 <label id="docu_mailinglist">
@@ -559,7 +560,7 @@ for unsubscription.
 <sect1> docu_mailarchive: Is there an archive of the isdn4linux mailing list?  
 <label id="docu_mailarchive">
 <p>
-To quickly search for keywords, you can make use of
+To quickly search for keywords, you can use
 <tt><url url="http://www.deja.com"></tt>. Make sure to also select older
 archive to do a complete search.
 
@@ -671,9 +672,9 @@ output of <tt>cat /proc/pci</tt>. You have HFC-PCI if you have a line
 saying "Master capable" for your card.
 </itemize>
 
-The following cards are definitly not supported and will probably never,
-since the producer does not give out the specifications for their very
-proprietary hardware/protocol:
+The following cards are definitely not supported and will probably
+never be supported, since the manufacturers have not released the
+specifications for their very proprietary hardware/protocols:
 <itemize>
 <item>Fritz!X
 <item>Eumex 404
@@ -688,11 +689,13 @@ An active ISDN card handles most of the ISDN connection protocols
 of minicomputer with its own software (firmware). With a passive card, the
 computer in which the card is installed has to perform these functions.
 
-In principle, both types are supported by isdn4linux. However, since active
-cards have non-standard interfaces, a driver can only be made when the producer
-publishes the interface. Also, the card's firmware needs to be made freely
-available. In contrast, many passive cards share the same chipset. Therefore
-many passive cards can be supported once a driver supports this one chipset.
+In principle, both types are supported by isdn4linux. However, since
+active cards have non-standard interfaces, a driver can only be made
+when the producer publishes the specifications for the
+interface. Also, the card's firmware needs to be made freely
+available. In contrast, many passive cards share the same
+chipset. Therefore many passive cards can be supported once a driver
+supports this one chipset.
 
 These active cards are currently supported by an individual driver:
 <itemize>
@@ -706,7 +709,7 @@ These active cards are currently supported by an individual driver:
 <sect1> hardware_recommend: Which card is recommended by the developers?  
 <label id="hardware_recommend">
 <p>
-The developers suggest to use ELSA cards. ELSA has made their specifications
+The developers suggest using ELSA cards. ELSA has made their specifications
 available to the developers, and provided a lot of support, resulting in an
 excellent driver. Also, their cards are certified for usage in Germany, see
 question <ref id="country_certified" name="country_certified">.
@@ -805,7 +808,7 @@ The latest Teles PCI card needs the <tt/netjet/ driver, the teles driver
 will NOT work (that card identifies itself as 'TigerJet Tiger300' when doing a 
 <tt>cat /proc/pci</tt>).
 
-Now some comments about Teles in general (these are the personal opinion of
+Now some comments about Teles in general (these are the personal opinions of
 the author of this FAQ, please blame nobody else than me):
 
 Teles' business practices are very customer- and developer-unfriendly when
@@ -916,7 +919,7 @@ so the order of the sending/receiving pairs is maintained), then
 you just need a new plug and of course pliers for the RJ45, old
 plug off, and new plug (in the right direction) on.
 
-<sect1> hardware_pbx: i4l is working on the internal bus of a PBX. Any problem?  
+<sect1> hardware_pbx: i4l is connected to the internal bus of a PBX. Any problem?  
 <label id="hardware_pbx">
 <p>
 Many PBX run non-standard ISDN protocolls on their internal bus. This may cause
@@ -931,7 +934,7 @@ Also the MSN may be different than you expect. Check several versions, no
 digit (then use <tt/0/, which i4l will require in such a case), one digit, or
 two digits, or the whole MSN. Best is you call some device (e.g. ISDN
 telephone) on the internal bus and check what i4l writes into the log file.
-Last, be reminded that you may have to configure your PBX to 'route' incoming
+Last, remember that you may have to configure your PBX to 'route' incoming
 calls onto the internal ISDN bus.
 
 <sect1> hardware_telestrouble: The PNP tools done work with my Teles 16.3 PNP 
