@@ -97,7 +97,7 @@ clean:
 	fi
 
 dataclean: clean
-	rm -f *.db *.gdbm ../../zone*.{gdbm,db,cdb}
+	rm -f *.db *.gdbm *.cdb ../../zone*.{gdbm,db,cdb}
 
 distclean: clean
 	rm -f config.h config.status config.cache config.log *.man Makefile
@@ -105,9 +105,9 @@ distclean: clean
 	    $(MAKE) -C ../cdb distclean ; \
 	fi
 
-test:
-	$(BZIP2) -d at/pta/zred.pta.bz2
-	$(BZIP2) -d at/pta/zoneall.pta.bz2
+test: zone mkzonedb
+	-$(BZIP2) -d at/pta/zred.pta.bz2
+	-$(BZIP2) -d at/pta/zoneall.pta.bz2
 	./$(PROGRAM) -d zone-at-pta$(DBEXT) -r at/pta/zred.pta -v
 	./zone -d zone-at-pta$(RDBEXT)  -z at/pta/zoneall.pta -v
 	$(BZIP2) -9 at/pta/zred.pta

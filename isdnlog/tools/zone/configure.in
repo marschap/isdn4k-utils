@@ -16,7 +16,7 @@ fi
 
 if test -e ../cdb/i4l_cdb.c  ; then
     AC_DEFINE(USE_CDB)
-    CDBEXTRALIBS="../cdb/i4l_cdb.a ../cdb/cdb.a ../cdb/buffer.a ../cdb/unix.a ../cdb/byte.a ../cdb/alloc.a"
+    CDBEXTRALIBS="../cdb/i4l_cdb.a"
     DBEXT=".cdb"
     RDBEXT=".cdb"
     AC_MSG_RESULT(Using 'cdb' as database)

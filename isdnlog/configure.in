@@ -130,7 +130,7 @@ AC_PATH_PROGS(BZIP2, bzip2, /usr/bin/bzip2, $PATH:/bin:/usr/bin:/usr/local/bin)
 dnl Checks for libraries.
 if test -e tools/cdb/i4l_cdb.c  ; then
     AC_DEFINE(USE_CDB)
-    CDBEXTRALIBS="tools/cdb/i4l_cdb.a tools/cdb/cdb.a tools/cdb/buffer.a tools/cdb/unix.a tools/cdb/byte.a tools/cdb/alloc.a"
+    CDBEXTRALIBS="tools/cdb/i4l_cdb.a"
     DBEXT=".cdb"
     RDBEXT=".cdb"
     AC_MSG_RESULT(Using 'cdb' as database)

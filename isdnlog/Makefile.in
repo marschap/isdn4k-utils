@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.177 2000/08/06 13:06:52 akool Exp $
+## $Id: Makefile.in,v 1.178 2000/08/14 18:41:43 akool Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,11 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.178  2000/08/14 18:41:43  akool
+## isdnlog-4.39
+##  - fixed 2 segfaults in processor.c
+##  - replaced non-GPL "cdb" with "freecdb_0.61.tar.gz"
+##
 ## Revision 1.177  2000/08/06 13:06:52  akool
 ## isdnlog-4.38
 ##  - isdnlog now uses ioctl(IIOCNETGPN) to associate phone numbers, interfaces
@@ -1352,7 +1357,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 4.38
+VERSION     = 4.39
 
 MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 \
 	      isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 \

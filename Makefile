@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.46 2000/06/20 12:51:56 paul Exp $
+# $Id: Makefile,v 1.47 2000/08/14 18:41:42 akool Exp $
 #
 # Toplevel Makefile for isdn4k-utils
 #
@@ -24,7 +24,7 @@ CONFIGURATION = config
 do-it-all:      config
 endif
 
-EXTRADIRS = isdnlog/tools/zone isdnlog/tools/dest
+EXTRADIRS = isdnlog/tools/zone isdnlog/tools/dest isdnlog/tools/cdb
 
 SUBDIRS :=
 ifeq ($(CONFIG_ISDNLOG),y)

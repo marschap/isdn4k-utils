@@ -1081,7 +1081,7 @@ if test -e tools/cdb/i4l_cdb.c  ; then
 #define USE_CDB 1
 EOF
 
-    CDBEXTRALIBS="tools/cdb/i4l_cdb.a tools/cdb/cdb.a tools/cdb/buffer.a tools/cdb/unix.a tools/cdb/byte.a tools/cdb/alloc.a"
+    CDBEXTRALIBS="tools/cdb/i4l_cdb.a"
     DBEXT=".cdb"
     RDBEXT=".cdb"
     echo "$ac_t""Using 'cdb' as database" 1>&6

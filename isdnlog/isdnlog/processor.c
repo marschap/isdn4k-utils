@@ -1,4 +1,4 @@
-/* $Id: processor.c,v 1.111 2000/08/06 13:06:53 akool Exp $
+/* $Id: processor.c,v 1.112 2000/08/14 18:41:43 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,11 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.112  2000/08/14 18:41:43  akool
+ * isdnlog-4.39
+ *  - fixed 2 segfaults in processor.c
+ *  - replaced non-GPL "cdb" with "freecdb_0.61.tar.gz"
+ *
  * Revision 1.111  2000/08/06 13:06:53  akool
  * isdnlog-4.38
  *  - isdnlog now uses ioctl(IIOCNETGPN) to associate phone numbers, interfaces
@@ -3588,11 +3593,6 @@ static void processinfo(char *s)
           else
             print_msg(PRT_NORMAL, "(watching \"%s\" and \"%s\")\n", isdnctrl, isdnctrl2);
         } /* if */
-
-        if (IIOCNETGPNavailable)
-          print_msg(PRT_NORMAL, "Everything is fine, isdnlog-%s is running in full featured mode.\n", VERSION);
-        else
-          print_msg(PRT_NORMAL, "HINT: Please upgrade to Linux-2.2.12 or higher for all features of isdnlog-%s\n", VERSION);
       } /* if */
 
       /*
@@ -3601,7 +3601,7 @@ static void processinfo(char *s)
        * Letzte Version davor war "ISDN subsystem Rev: 1.18/1.18/1.13/1.9/1.6"
        */
 
-      if (!replay)
+      if (!replay) {
         if ((version = ioctl(sockets[ISDNINFO].descriptor, IIOCGETDVR)) != -EINVAL) {
 #ifdef NET_DV
           int my_net_dv = NET_DV;
@@ -3616,18 +3616,25 @@ static void processinfo(char *s)
           inf_dv = version & 0xff;
 
           print_msg(PRT_NORMAL, "(Data versions: iprofd=0x%02x  net_cfg=0x%02x  /dev/isdninfo=0x%02x)\n", tty_dv, net_dv, inf_dv);
+
           if (/* Abort if kernel version is greater, since struct has probably
                * become larger and would overwrite our stack */
               net_dv > my_net_dv ||
               /* version 0x03 is special, because it changed a field in the
                * middle of the struct and thus is compatible only to itself */
               ((my_net_dv == 0x03 || net_dv == 0x03) && my_net_dv != net_dv)) {
-            print_msg(PRT_ERR, "isdn_net_ioctl_cfg version mismatch "
-                      "(kernel 0x%02x, isdnlog 0x%02x)\n",
+            print_msg(PRT_ERR, "FATAL: isdn_net_ioctl_cfg version mismatch "
+                      "(kernel 0x%02x, isdnlog 0x%02x). Please upgrade your Linux-Kernel and/or your I4L-utils.\n",
                       net_dv, my_net_dv);
             Exit(99);
-          }
+          } /* if */
         } /* if */
+
+        if (IIOCNETGPNavailable)
+          print_msg(PRT_NORMAL, "Everything is fine, isdnlog-%s is running in full featured mode.\n", VERSION);
+        else
+          print_msg(PRT_NORMAL, "HINT: Please upgrade to Linux-2.2.12 or higher for all features of isdnlog-%s\n", VERSION);
+      } /* if */
 
       if (chans > 2) /* coming soon ;-) */
         chans = 2;
@@ -3897,7 +3904,9 @@ void processRate(int chan)
   call[chan].Rate.start  = call[chan].connect;
   call[chan].Rate.now    = call[chan].disconnect = cur_time;
 
-  if (getRate(&call[chan].Rate, NULL) == UNKNOWN)
+  if (call[chan].Rate.prefix == UNKNOWN)
+    call[chan].tarifknown = 0;
+  else if (getRate(&call[chan].Rate, NULL) == UNKNOWN)
     call[chan].tarifknown = 0;
   else {
     call[chan].tarifknown = 1;
@@ -4046,6 +4055,9 @@ static void prepareRate(int chan, char **msg, char **tip, int viarep)
     call[chan].Rate.dst[1] = call[chan].vorwahl[CALLED];
     call[chan].Rate.dst[2] = call[chan].rufnummer[CALLED];
   } /* else */
+
+  if (call[chan].provider == UNKNOWN)
+    return;
 
   if (getRate(&call[chan].Rate, msg) == UNKNOWN)
     return;
