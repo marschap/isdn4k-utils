@@ -1,4 +1,4 @@
-# exapmle of /etc/isdn/isdn.conf
+# example of /etc/isdn/isdn.conf
 # copy this file to /etc/isdn/isdn.conf and edit
 #
 # More information: /usr/doc/packages/i4l/isdnlog/README
@@ -24,7 +24,7 @@ REPFMTSHORT     = "%X%D %8.8H %T %-14.14F%U%I %O"
 REPFMT  = "  %X %D %15.15H %T %-15.15F %7u %U %I %O"
 CHARGEMAX       = 50.00
 
-CURRENCY = 1,LUF
+CURRENCY = 1,EUR
 
 COUNTRYFILE = /usr/lib/isdn/country.dat
 # RATECONF= /etc/isdn/rate.conf.lu
