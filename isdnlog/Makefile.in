@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.160 2000/05/07 11:29:31 akool Exp $
+## $Id: Makefile.in,v 1.161 2000/05/13 14:22:15 akool Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,14 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.161  2000/05/13 14:22:15  akool
+## isdnlog-4.22
+##  - isdnlog/country-de.dat  ... Patch from Andreas Barth
+##  - isdnlog/rate-at.dat  ... 1001, 1012
+##  - isdnlog/tools/rate.c ... 1001, 1012
+##
+##  - rate-de.dat : added "CompuServeOffice"
+##
 ## Revision 1.160  2000/05/07 11:29:31  akool
 ## isdnlog-4.21
 ##  - isdnlog/tools/rate.{c,h} ...     new X:tag for exclusions
@@ -1199,7 +1207,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 4.21
+VERSION     = 4.22
 
 MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 \
 	      isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 \

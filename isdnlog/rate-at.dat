@@ -1023,7 +1023,7 @@ A:+43717
 P: [01.09.1999] 01,1               Telekom Austria Min.tarif
 B:1001
 C:Maintainer:                      Michael Reinelt <reinelt@eunet.at>
-C:TarifChanged:                    01.09.1999
+C:TarifChanged:                    01.05.2000
 C:Zone:                            Die Regionalzone geht bis zu einer Entfernung von 50 Km, alles andere ist Österreichzone.
 C:Special:                         Variable Taktung, abhängig von Zone und Tageszeit.
 C:Name:                            Telekom Austria
@@ -1052,36 +1052,42 @@ T:W/18-08=1.116/72                 Freizeit
 T:E,H/*=1.116/72                   Freizeit
 A:AT
 
-Z:3                                Mobilfunk 1
+Z:3                                Mobilfunk A1/D
+T:W/08-18=1.116/20                 Geschäftszeit
+T:W/18-08=1.116/24                 Freizeit
+T:E,H/*=1.116/24                   Freizeit
+A:+43663,+43664
+
+Z:4                                Mobilfunk Max
 T:W/08-18=1.116/14.4               Geschäftszeit
 T:W/18-08=1.116/19.2               Freizeit
 T:E,H/*=1.116/19.2                 Freizeit
-A:+43663,+43664,+43676
+A:+43676
 
-Z:4                                Mobilfunk 2
-T:W/08-18=1.116/12.88              Geschäftszeit
-T:W/18-08=1.116/16.18              Freizeit
-T:E,H/*=1.116/16.18                Freizeit
+Z:5                                Mobilfunk One
+T:W/08-18=1.116/15                 Geschäftszeit
+T:W/18-08=1.116/18                 Freizeit
+T:E,H/*=1.116/18                   Freizeit
 A:+43699
 
-Z:5                                Online
+Z:6                                Online
 T:W/08-18=1.116/120                Geschäftszeit
 T:W/18-08=1.116/360                Freizeit
 T:E,H/*=1.116/360                  Freizeit
 A:07189,194
 
-Z:6                                AON Complete
+Z:7                                AON Complete
 T:*/*=0/60                         0-24h
 A:194040
 
-Z:7                                Ausland Zone 1
+Z:8                                Ausland Zone 1
 T:W/08-18=1.116/15                 Geschäftszeit
 T:W/18-08=1.116/18                 Freizeit
 T:E,H/*=1.116/18                   Freizeit
 A:DE,IT,LI,CH,SK,SI
 A:CZ,HU
 
-Z:8                                Ausland Zone 2
+Z:9                                Ausland Zone 2
 T:W/08-18=1.116/12                 Geschäftszeit
 T:W/18-08=1.116/14.4               Freizeit
 T:E,H/*=1.116/14.4                 Freizeit
@@ -1091,7 +1097,7 @@ A:YU,HR,LU,MT,MK,MC,NL
 A:NO,RO,SM,SE,ES,UA,VA
 A:CY
 
-Z:9                                Ausland Zone 3
+Z:10                               Ausland Zone 3
 T:W/08-18=1.116/10.667             Geschäftszeit
 T:W/18-08=1.116/12                 Freizeit
 T:E,H/*=1.116/12                   Freizeit
@@ -1099,34 +1105,34 @@ A:DZ,EE,FO,GE,GI,IS,IL
 A:LV,LT,EH,PT,SU,TJ
 A:TM,UZ
 
-Z:10                               Ausland Zone 4
+Z:11                               Ausland Zone 4
 T:W/08-18=1.116/7.2                Geschäftszeit
 T:W/18-08=1.116/8                  Freizeit
 T:E,H/*=1.116/8                    Freizeit
 A:AQ,AM,AU,AZ,CX
 A:CC
 
-Z:11                               Ausland Zone 5
+Z:12                               Ausland Zone 5
 T:W/08-18=1.116/6                  Geschäftszeit
 T:W/18-08=1.116/6.5455             Freizeit
 T:E,H/*=1.116/6.5455               Freizeit
 A:CL,GF,GP,HK,LY,MQ
 A:YT,MD,NZ,RE,PM,ZA
 
-Z:12                               Ausland Zone 6
+Z:13                               Ausland Zone 6
 T:W/08-18=1.116/4.8                Geschäftszeit
 T:W/18-08=1.116/5.1429             Freizeit
 T:E,H/*=1.116/5.1429               Freizeit
 A:JP,KR,MY,AN,PH,MP
 
-Z:13                               Ausland Zone 7
+Z:14                               Ausland Zone 7
 T:W/08-18=1.116/4.2353             Geschäftszeit
 T:W/18-08=1.116/4.8                Freizeit
 T:E,H/*=1.116/4.8                  Freizeit
 A:AO,BM,BT,BR,CN,EC,IR,MO,MX
 A:SA,VE
 
-Z:14                               Ausland Zone 8
+Z:15                               Ausland Zone 8
 T:W/08-18=1.116/3.6                Geschäftszeit
 T:W/18-08=1.116/4.2353             Freizeit
 T:E,H/*=1.116/4.2353               Freizeit
@@ -1136,7 +1142,7 @@ A:GW,GY,JO,KG,CO,KW,LB
 A:PA,SG,ST,VC
 A:TT,AE
 
-Z:15                               Ausland Zone 9
+Z:16                               Ausland Zone 9
 T:W/08-18=1.116/3.1304             Geschäftszeit
 T:W/18-08=1.116/3.6                Freizeit
 T:E,H/*=1.116/3.6                  Freizeit
@@ -1145,7 +1151,7 @@ A:MW,NA,NR,NP,NC,NG,NF,PE
 A:SH,LC,WS,SD,SZ,SY,TZ
 A:TO,TC,ZM,ZW
 
-Z:16                               Ausland Zone 10
+Z:17                               Ausland Zone 10
 T:W/08-18=1.116/3                  Geschäftszeit
 T:W/18-08=1.116/3.1304             Freizeit
 T:E,H/*=1.116/3.1304               Freizeit
@@ -1154,7 +1160,7 @@ A:GM,IQ,JM,KE,KI,KM,MV,MR
 A:MN,MZ,MM,NI,NU,OM,RW,SR
 A:TW,TH,TG,UG,VU,CF
 
-Z:17                               Ausland Zone 11
+Z:18                               Ausland Zone 11
 T:W/08-18=1.116/2.5714             Geschäftszeit
 T:W/18-08=1.116/2.7692             Freizeit
 T:E,H/*=1.116/2.7692               Freizeit
@@ -1162,7 +1168,7 @@ A:BO,KY,DJ,IN,ID
 A:VG,KP,CU,MU,NGR
 A:PG,PY,SL,LK,UY
 
-Z:18                               Ausland Zone 12
+Z:19                               Ausland Zone 12
 T:W/08-18=1.116/2.4                Geschäftszeit
 T:W/18-08=1.116/2.5                Freizeit
 T:E,H/*=1.116/2.5                  Freizeit
@@ -1172,60 +1178,60 @@ A:HT,HN,YE,CM,CV,KH,CG,ML
 A:MS,PK,KN,SN,SC,SB
 A:SO,TD,VN,ZR
 
-Z:19                               Ausland Zone 13
+Z:20                               Ausland Zone 13
 T:W/08-18=1.116/2                  Geschäftszeit
 T:W/18-08=1.116/2.1176             Freizeit
 T:E,H/*=1.116/2.1176               Freizeit
 A:CK,MG
 
-Z:20                               Ausland Zone 14
+Z:21                               Ausland Zone 14
 T:W/08-18=1.116/10.667             Geschäftszeit
 T:W/18-08=1.116/12                 Freizeit
 T:E,H/*=1.116/12                   Freizeit
 A:VI,CA,PR,US
 
-Z:21                               Ausland Zone 15
+Z:22                               Ausland Zone 15
 T:*/*=1.116/10.667                 0-24h
 A:GR,PL,TN,TR
 
-Z:22                               Handvermittelter Verkehr
+Z:23                               Handvermittelter Verkehr
 T:*/*=0/60                         0-24h
 A:AF,AS,_GUAN,MH,_MIDW
 A:FM,PW,PN,TV,_WAKE
 
-Z:23                               Grenznahverkehr
+Z:24                               Grenznahverkehr
 T:W/08-18=1.116/18                 Geschäftszeit
 T:W/18-08=1.116/24                 Freizeit
 T:E,H/*=1.116/24                   Freizeit
 
-Z:24                               Inmarsat-A
+Z:25                               Inmarsat-A
 T:*/*=1.116/0.72727                0-24h
 A:_INA_
 
-Z:25                               Inmarsat-B/M
+Z:26                               Inmarsat-B/M
 T:*/*=1.116/1.0746                 0-24h
 A:_INB_,_INM_
 
-Z:26                               Inmarsat-Mini-M
+Z:27                               Inmarsat-Mini-M
 T:*/*=1.116/1.5                    0-24h
 A:_INMM
 
-Z:27                               Iridium 008816
+Z:28                               Iridium 008816
 T:*/*=1.116/0.48                   0-24h
 A:_IR16
 
-Z:28                               Iridium 008817
+Z:29                               Iridium 008817
 T:*/*=1.116/1.0746                 0-24h
 A:_IR17
 
-Z:29                               EMSAT
+Z:30                               EMSAT
 T:*/*=1.116/1.5                    0-24h
 
-Z:30                               0711-5,6,7
+Z:31                               0711-5,6,7
 T:*/*=1.116/32                     0-24h
 A:+437115,+437116,+437117
 
-Z:31                               0711-8,9,0
+Z:32                               0711-8,9,0
 T:*/*=1.116/15                     0-24h
 A:+437118,+437119,+437110
 
@@ -1233,7 +1239,7 @@ A:+437118,+437119,+437110
 P: [01.09.1999] 01,2               Telekom Austria Std.tarif
 B:1001
 C:Maintainer:                      Michael Reinelt <reinelt@eunet.at>
-C:TarifChanged:                    01.09.1999
+C:TarifChanged:                    01.05.2000
 C:Zone:                            Die Regionalzone geht bis zu einer Entfernung von 50 Km, alles andere ist Österreichzone.
 C:Special:                         Variable Taktung, abhängig von Zone und Tageszeit.
 C:Name:                            Telekom Austria
@@ -1262,36 +1268,42 @@ T:W/18-08=1.056/72                 Freizeit
 T:E,H/*=1.056/72                   Freizeit
 A:AT
 
-Z:3                                Mobilfunk 1
+Z:3                                Mobilfunk A1/D
+T:W/08-18=1.056/20                 Geschäftszeit
+T:W/18-08=1.056/24                 Freizeit
+T:E,H/*=1.056/24                   Freizeit
+A:+43663,+43664
+
+Z:4                                Mobilfunk Max
 T:W/08-18=1.056/14.4               Geschäftszeit
 T:W/18-08=1.056/19.2               Freizeit
 T:E,H/*=1.056/19.2                 Freizeit
-A:+43663,+43664,+43676
+A:+43676
 
-Z:4                                Mobilfunk 2
-T:W/08-18=1.056/12.88              Geschäftszeit
-T:W/18-08=1.056/16.18              Freizeit
-T:E,H/*=1.056/16.18                Freizeit
+Z:5                                Mobilfunk One
+T:W/08-18=1.056/15                 Geschäftszeit
+T:W/18-08=1.056/18                 Freizeit
+T:E,H/*=1.056/18                   Freizeit
 A:+43699
 
-Z:5                                Online
+Z:6                                Online
 T:W/08-18=1.056/120                Geschäftszeit
 T:W/18-08=1.056/360                Freizeit
 T:E,H/*=1.056/360                  Freizeit
 A:07189,194
 
-Z:6                                AON Complete
+Z:7                                AON Complete
 T:*/*=0/60                         0-24h
 A:194040
 
-Z:7                                Ausland Zone 1
+Z:8                                Ausland Zone 1
 T:W/08-18=1.056/15                 Geschäftszeit
 T:W/18-08=1.056/18                 Freizeit
 T:E,H/*=1.056/18                   Freizeit
 A:DE,IT,LI,CH,SK,SI
 A:CZ,HU
 
-Z:8                                Ausland Zone 2
+Z:9                                Ausland Zone 2
 T:W/08-18=1.056/12                 Geschäftszeit
 T:W/18-08=1.056/14.4               Freizeit
 T:E,H/*=1.056/14.4                 Freizeit
@@ -1301,7 +1313,7 @@ A:YU,HR,LU,MT,MK,MC,NL
 A:NO,RO,SM,SE,ES,UA,VA
 A:CY
 
-Z:9                                Ausland Zone 3
+Z:10                               Ausland Zone 3
 T:W/08-18=1.056/10.667             Geschäftszeit
 T:W/18-08=1.056/12                 Freizeit
 T:E,H/*=1.056/12                   Freizeit
@@ -1309,34 +1321,34 @@ A:DZ,EE,FO,GE,GI,IS,IL
 A:LV,LT,EH,PT,SU,TJ
 A:TM,UZ
 
-Z:10                               Ausland Zone 4
+Z:11                               Ausland Zone 4
 T:W/08-18=1.056/7.2                Geschäftszeit
 T:W/18-08=1.056/8                  Freizeit
 T:E,H/*=1.056/8                    Freizeit
 A:AQ,AM,AU,AZ,CX
 A:CC
 
-Z:11                               Ausland Zone 5
+Z:12                               Ausland Zone 5
 T:W/08-18=1.056/6                  Geschäftszeit
 T:W/18-08=1.056/6.5455             Freizeit
 T:E,H/*=1.056/6.5455               Freizeit
 A:CL,GF,GP,HK,LY,MQ
 A:YT,MD,NZ,RE,PM,ZA
 
-Z:12                               Ausland Zone 6
+Z:13                               Ausland Zone 6
 T:W/08-18=1.056/4.8                Geschäftszeit
 T:W/18-08=1.056/5.1429             Freizeit
 T:E,H/*=1.056/5.1429               Freizeit
 A:JP,KR,MY,AN,PH,MP
 
-Z:13                               Ausland Zone 7
+Z:14                               Ausland Zone 7
 T:W/08-18=1.056/4.2353             Geschäftszeit
 T:W/18-08=1.056/4.8                Freizeit
 T:E,H/*=1.056/4.8                  Freizeit
 A:AO,BM,BT,BR,CN,EC,IR,MO,MX
 A:SA,VE
 
-Z:14                               Ausland Zone 8
+Z:15                               Ausland Zone 8
 T:W/08-18=1.056/3.6                Geschäftszeit
 T:W/18-08=1.056/4.2353             Freizeit
 T:E,H/*=1.056/4.2353               Freizeit
@@ -1346,7 +1358,7 @@ A:GW,GY,JO,KG,CO,KW,LB
 A:PA,SG,ST,VC
 A:TT,AE
 
-Z:15                               Ausland Zone 9
+Z:16                               Ausland Zone 9
 T:W/08-18=1.056/3.1304             Geschäftszeit
 T:W/18-08=1.056/3.6                Freizeit
 T:E,H/*=1.056/3.6                  Freizeit
@@ -1355,7 +1367,7 @@ A:MW,NA,NR,NP,NC,NG,NF,PE
 A:SH,LC,WS,SD,SZ,SY,TZ
 A:TO,TC,ZM,ZW
 
-Z:16                               Ausland Zone 10
+Z:17                               Ausland Zone 10
 T:W/08-18=1.056/3                  Geschäftszeit
 T:W/18-08=1.056/3.1304             Freizeit
 T:E,H/*=1.056/3.1304               Freizeit
@@ -1364,7 +1376,7 @@ A:GM,IQ,JM,KE,KI,KM,MV,MR
 A:MN,MZ,MM,NI,NU,OM,RW,SR
 A:TW,TH,TG,UG,VU,CF
 
-Z:17                               Ausland Zone 11
+Z:18                               Ausland Zone 11
 T:W/08-18=1.056/2.5714             Geschäftszeit
 T:W/18-08=1.056/2.7692             Freizeit
 T:E,H/*=1.056/2.7692               Freizeit
@@ -1372,7 +1384,7 @@ A:BO,KY,DJ,IN,ID
 A:VG,KP,CU,MU,NGR
 A:PG,PY,SL,LK,UY
 
-Z:18                               Ausland Zone 12
+Z:19                               Ausland Zone 12
 T:W/08-18=1.056/2.4                Geschäftszeit
 T:W/18-08=1.056/2.5                Freizeit
 T:E,H/*=1.056/2.5                  Freizeit
@@ -1382,60 +1394,60 @@ A:HT,HN,YE,CM,CV,KH,CG,ML
 A:MS,PK,KN,SN,SC,SB
 A:SO,TD,VN,ZR
 
-Z:19                               Ausland Zone 13
+Z:20                               Ausland Zone 13
 T:W/08-18=1.056/2                  Geschäftszeit
 T:W/18-08=1.056/2.1176             Freizeit
 T:E,H/*=1.056/2.1176               Freizeit
 A:CK,MG
 
-Z:20                               Ausland Zone 14
+Z:21                               Ausland Zone 14
 T:W/08-18=1.056/10.667             Geschäftszeit
 T:W/18-08=1.056/12                 Freizeit
 T:E,H/*=1.056/12                   Freizeit
 A:VI,CA,PR,US
 
-Z:21                               Ausland Zone 15
+Z:22                               Ausland Zone 15
 T:*/*=1.056/10.667                 0-24h
 A:GR,PL,TN,TR
 
-Z:22                               Handvermittelter Verkehr
+Z:23                               Handvermittelter Verkehr
 T:*/*=0/60                         0-24h
 A:AF,AS,_GUAN,MH,_MIDW
 A:FM,PW,PN,TV,_WAKE
 
-Z:23                               Grenznahverkehr
+Z:24                               Grenznahverkehr
 T:W/08-18=1.056/18                 Geschäftszeit
 T:W/18-08=1.056/24                 Freizeit
 T:E,H/*=1.056/24                   Freizeit
 
-Z:24                               Inmarsat-A
+Z:25                               Inmarsat-A
 T:*/*=1.056/0.72727                0-24h
 A:_INA_
 
-Z:25                               Inmarsat-B/M
+Z:26                               Inmarsat-B/M
 T:*/*=1.056/1.0746                 0-24h
 A:_INB_,_INM_
 
-Z:26                               Inmarsat-Mini-M
+Z:27                               Inmarsat-Mini-M
 T:*/*=1.056/1.5                    0-24h
 A:_INMM
 
-Z:27                               Iridium 008816
+Z:28                               Iridium 008816
 T:*/*=1.056/0.48                   0-24h
 A:_IR16
 
-Z:28                               Iridium 008817
+Z:29                               Iridium 008817
 T:*/*=1.056/1.0746                 0-24h
 A:_IR17
 
-Z:29                               EMSAT
+Z:30                               EMSAT
 T:*/*=1.056/1.5                    0-24h
 
-Z:30                               0711-5,6,7
+Z:31                               0711-5,6,7
 T:*/*=1.056/32                     0-24h
 A:+437115,+437116,+437117
 
-Z:31                               0711-8,9,0
+Z:32                               0711-8,9,0
 T:*/*=1.056/15                     0-24h
 A:+437118,+437119,+437110
 
@@ -1443,7 +1455,7 @@ A:+437118,+437119,+437110
 P: [01.09.1999] 01,3               Telekom Austria Ges.tarif 1
 B:1001
 C:Maintainer:                      Michael Reinelt <reinelt@eunet.at>
-C:TarifChanged:                    01.09.1999
+C:TarifChanged:                    01.05.2000
 C:Zone:                            Die Regionalzone geht bis zu einer Entfernung von 50 Km, alles andere ist Österreichzone.
 C:Special:                         Variable Taktung, abhängig von Zone und Tageszeit.
 C:Name:                            Telekom Austria
@@ -1472,36 +1484,42 @@ T:W/18-08=0.996/72                 Freizeit
 T:E,H/*=0.996/72                   Freizeit
 A:AT
 
-Z:3                                Mobilfunk 1
+Z:3                                Mobilfunk A1/D
+T:W/08-18=0.996/20                 Geschäftszeit
+T:W/18-08=0.996/24                 Freizeit
+T:E,H/*=0.996/24                   Freizeit
+A:+43663,+43664
+
+Z:4                                Mobilfunk Max
 T:W/08-18=0.996/14.4               Geschäftszeit
 T:W/18-08=0.996/19.2               Freizeit
 T:E,H/*=0.996/19.2                 Freizeit
-A:+43663,+43664,+43676
+A:+43676
 
-Z:4                                Mobilfunk 2
-T:W/08-18=0.996/12.88              Geschäftszeit
-T:W/18-08=0.996/16.18              Freizeit
-T:E,H/*=0.996/16.18                Freizeit
+Z:5                                Mobilfunk One
+T:W/08-18=0.996/15                 Geschäftszeit
+T:W/18-08=0.996/18                 Freizeit
+T:E,H/*=0.996/18                   Freizeit
 A:+43699
 
-Z:5                                Online
+Z:6                                Online
 T:W/08-18=0.996/120                Geschäftszeit
 T:W/18-08=0.996/360                Freizeit
 T:E,H/*=0.996/360                  Freizeit
 A:07189,194
 
-Z:6                                AON Complete
+Z:7                                AON Complete
 T:*/*=0/60                         0-24h
 A:194040
 
-Z:7                                Ausland Zone 1
+Z:8                                Ausland Zone 1
 T:W/08-18=0.996/15                 Geschäftszeit
 T:W/18-08=0.996/18                 Freizeit
 T:E,H/*=0.996/18                   Freizeit
 A:DE,IT,LI,CH,SK,SI
 A:CZ,HU
 
-Z:8                                Ausland Zone 2
+Z:9                                Ausland Zone 2
 T:W/08-18=0.996/12                 Geschäftszeit
 T:W/18-08=0.996/14.4               Freizeit
 T:E,H/*=0.996/14.4                 Freizeit
@@ -1511,7 +1529,7 @@ A:YU,HR,LU,MT,MK,MC,NL
 A:NO,RO,SM,SE,ES,UA,VA
 A:CY
 
-Z:9                                Ausland Zone 3
+Z:10                               Ausland Zone 3
 T:W/08-18=0.996/10.667             Geschäftszeit
 T:W/18-08=0.996/12                 Freizeit
 T:E,H/*=0.996/12                   Freizeit
@@ -1519,34 +1537,34 @@ A:DZ,EE,FO,GE,GI,IS,IL
 A:LV,LT,EH,PT,SU,TJ
 A:TM,UZ
 
-Z:10                               Ausland Zone 4
+Z:11                               Ausland Zone 4
 T:W/08-18=0.996/7.2                Geschäftszeit
 T:W/18-08=0.996/8                  Freizeit
 T:E,H/*=0.996/8                    Freizeit
 A:AQ,AM,AU,AZ,CX
 A:CC
 
-Z:11                               Ausland Zone 5
+Z:12                               Ausland Zone 5
 T:W/08-18=0.996/6                  Geschäftszeit
 T:W/18-08=0.996/6.5455             Freizeit
 T:E,H/*=0.996/6.5455               Freizeit
 A:CL,GF,GP,HK,LY,MQ
 A:YT,MD,NZ,RE,PM,ZA
 
-Z:12                               Ausland Zone 6
+Z:13                               Ausland Zone 6
 T:W/08-18=0.996/4.8                Geschäftszeit
 T:W/18-08=0.996/5.1429             Freizeit
 T:E,H/*=0.996/5.1429               Freizeit
 A:JP,KR,MY,AN,PH,MP
 
-Z:13                               Ausland Zone 7
+Z:14                               Ausland Zone 7
 T:W/08-18=0.996/4.2353             Geschäftszeit
 T:W/18-08=0.996/4.8                Freizeit
 T:E,H/*=0.996/4.8                  Freizeit
 A:AO,BM,BT,BR,CN,EC,IR,MO,MX
 A:SA,VE
 
-Z:14                               Ausland Zone 8
+Z:15                               Ausland Zone 8
 T:W/08-18=0.996/3.6                Geschäftszeit
 T:W/18-08=0.996/4.2353             Freizeit
 T:E,H/*=0.996/4.2353               Freizeit
@@ -1556,7 +1574,7 @@ A:GW,GY,JO,KG,CO,KW,LB
 A:PA,SG,ST,VC
 A:TT,AE
 
-Z:15                               Ausland Zone 9
+Z:16                               Ausland Zone 9
 T:W/08-18=0.996/3.1304             Geschäftszeit
 T:W/18-08=0.996/3.6                Freizeit
 T:E,H/*=0.996/3.6                  Freizeit
@@ -1565,7 +1583,7 @@ A:MW,NA,NR,NP,NC,NG,NF,PE
 A:SH,LC,WS,SD,SZ,SY,TZ
 A:TO,TC,ZM,ZW
 
-Z:16                               Ausland Zone 10
+Z:17                               Ausland Zone 10
 T:W/08-18=0.996/3                  Geschäftszeit
 T:W/18-08=0.996/3.1304             Freizeit
 T:E,H/*=0.996/3.1304               Freizeit
@@ -1574,7 +1592,7 @@ A:GM,IQ,JM,KE,KI,KM,MV,MR
 A:MN,MZ,MM,NI,NU,OM,RW,SR
 A:TW,TH,TG,UG,VU,CF
 
-Z:17                               Ausland Zone 11
+Z:18                               Ausland Zone 11
 T:W/08-18=0.996/2.5714             Geschäftszeit
 T:W/18-08=0.996/2.7692             Freizeit
 T:E,H/*=0.996/2.7692               Freizeit
@@ -1582,7 +1600,7 @@ A:BO,KY,DJ,IN,ID
 A:VG,KP,CU,MU,NGR
 A:PG,PY,SL,LK,UY
 
-Z:18                               Ausland Zone 12
+Z:19                               Ausland Zone 12
 T:W/08-18=0.996/2.4                Geschäftszeit
 T:W/18-08=0.996/2.5                Freizeit
 T:E,H/*=0.996/2.5                  Freizeit
@@ -1592,60 +1610,60 @@ A:HT,HN,YE,CM,CV,KH,CG,ML
 A:MS,PK,KN,SN,SC,SB
 A:SO,TD,VN,ZR
 
-Z:19                               Ausland Zone 13
+Z:20                               Ausland Zone 13
 T:W/08-18=0.996/2                  Geschäftszeit
 T:W/18-08=0.996/2.1176             Freizeit
 T:E,H/*=0.996/2.1176               Freizeit
 A:CK,MG
 
-Z:20                               Ausland Zone 14
+Z:21                               Ausland Zone 14
 T:W/08-18=0.996/10.667             Geschäftszeit
 T:W/18-08=0.996/12                 Freizeit
 T:E,H/*=0.996/12                   Freizeit
 A:VI,CA,PR,US
 
-Z:21                               Ausland Zone 15
+Z:22                               Ausland Zone 15
 T:*/*=0.996/10.667                 0-24h
 A:GR,PL,TN,TR
 
-Z:22                               Handvermittelter Verkehr
+Z:23                               Handvermittelter Verkehr
 T:*/*=0/60                         0-24h
 A:AF,AS,_GUAN,MH,_MIDW
 A:FM,PW,PN,TV,_WAKE
 
-Z:23                               Grenznahverkehr
+Z:24                               Grenznahverkehr
 T:W/08-18=0.996/18                 Geschäftszeit
 T:W/18-08=0.996/24                 Freizeit
 T:E,H/*=0.996/24                   Freizeit
 
-Z:24                               Inmarsat-A
+Z:25                               Inmarsat-A
 T:*/*=0.996/0.72727                0-24h
 A:_INA_
 
-Z:25                               Inmarsat-B/M
+Z:26                               Inmarsat-B/M
 T:*/*=0.996/1.0746                 0-24h
 A:_INB_,_INM_
 
-Z:26                               Inmarsat-Mini-M
+Z:27                               Inmarsat-Mini-M
 T:*/*=0.996/1.5                    0-24h
 A:_INMM
 
-Z:27                               Iridium 008816
+Z:28                               Iridium 008816
 T:*/*=0.996/0.48                   0-24h
 A:_IR16
 
-Z:28                               Iridium 008817
+Z:29                               Iridium 008817
 T:*/*=0.996/1.0746                 0-24h
 A:_IR17
 
-Z:29                               EMSAT
+Z:30                               EMSAT
 T:*/*=0.996/1.5                    0-24h
 
-Z:30                               0711-5,6,7
+Z:31                               0711-5,6,7
 T:*/*=0.996/32                     0-24h
 A:+437115,+437116,+437117
 
-Z:31                               0711-8,9,0
+Z:32                               0711-8,9,0
 T:*/*=0.996/15                     0-24h
 A:+437118,+437119,+437110
 
@@ -1653,7 +1671,7 @@ A:+437118,+437119,+437110
 P: [01.09.1999] 01,4               Telekom Austria Ges.tarif 2
 B:1001
 C:Maintainer:                      Michael Reinelt <reinelt@eunet.at>
-C:TarifChanged:                    01.09.1999
+C:TarifChanged:                    01.05.2000
 C:Zone:                            Die Regionalzone geht bis zu einer Entfernung von 50 Km, alles andere ist Österreichzone.
 C:Special:                         Variable Taktung, abhängig von Zone und Tageszeit.
 C:Name:                            Telekom Austria
@@ -1682,36 +1700,42 @@ T:W/18-08=0.936/72                 Freizeit
 T:E,H/*=0.936/72                   Freizeit
 A:AT
 
-Z:3                                Mobilfunk 1
+Z:3                                Mobilfunk A1/D
+T:W/08-18=0.936/20                 Geschäftszeit
+T:W/18-08=0.936/24                 Freizeit
+T:E,H/*=0.936/24                   Freizeit
+A:+43663,+43664
+
+Z:4                                Mobilfunk Max
 T:W/08-18=0.936/14.4               Geschäftszeit
 T:W/18-08=0.936/19.2               Freizeit
 T:E,H/*=0.936/19.2                 Freizeit
-A:+43663,+43664,+43676
+A:+43676
 
-Z:4                                Mobilfunk 2
-T:W/08-18=0.936/12.88              Geschäftszeit
-T:W/18-08=0.936/16.18              Freizeit
-T:E,H/*=0.936/16.18                Freizeit
+Z:5                                Mobilfunk One
+T:W/08-18=0.936/15                 Geschäftszeit
+T:W/18-08=0.936/18                 Freizeit
+T:E,H/*=0.936/18                   Freizeit
 A:+43699
 
-Z:5                                Online
+Z:6                                Online
 T:W/08-18=0.936/120                Geschäftszeit
 T:W/18-08=0.936/360                Freizeit
 T:E,H/*=0.936/360                  Freizeit
 A:07189,194
 
-Z:6                                AON Complete
+Z:7                                AON Complete
 T:*/*=0/60                         0-24h
 A:194040
 
-Z:7                                Ausland Zone 1
+Z:8                                Ausland Zone 1
 T:W/08-18=0.936/15                 Geschäftszeit
 T:W/18-08=0.936/18                 Freizeit
 T:E,H/*=0.936/18                   Freizeit
 A:DE,IT,LI,CH,SK,SI
 A:CZ,HU
 
-Z:8                                Ausland Zone 2
+Z:9                                Ausland Zone 2
 T:W/08-18=0.936/12                 Geschäftszeit
 T:W/18-08=0.936/14.4               Freizeit
 T:E,H/*=0.936/14.4                 Freizeit
@@ -1721,7 +1745,7 @@ A:YU,HR,LU,MT,MK,MC,NL
 A:NO,RO,SM,SE,ES,UA,VA
 A:CY
 
-Z:9                                Ausland Zone 3
+Z:10                               Ausland Zone 3
 T:W/08-18=0.936/10.667             Geschäftszeit
 T:W/18-08=0.936/12                 Freizeit
 T:E,H/*=0.936/12                   Freizeit
@@ -1729,34 +1753,34 @@ A:DZ,EE,FO,GE,GI,IS,IL
 A:LV,LT,EH,PT,SU,TJ
 A:TM,UZ
 
-Z:10                               Ausland Zone 4
+Z:11                               Ausland Zone 4
 T:W/08-18=0.936/7.2                Geschäftszeit
 T:W/18-08=0.936/8                  Freizeit
 T:E,H/*=0.936/8                    Freizeit
 A:AQ,AM,AU,AZ,CX
 A:CC
 
-Z:11                               Ausland Zone 5
+Z:12                               Ausland Zone 5
 T:W/08-18=0.936/6                  Geschäftszeit
 T:W/18-08=0.936/6.5455             Freizeit
 T:E,H/*=0.936/6.5455               Freizeit
 A:CL,GF,GP,HK,LY,MQ
 A:YT,MD,NZ,RE,PM,ZA
 
-Z:12                               Ausland Zone 6
+Z:13                               Ausland Zone 6
 T:W/08-18=0.936/4.8                Geschäftszeit
 T:W/18-08=0.936/5.1429             Freizeit
 T:E,H/*=0.936/5.1429               Freizeit
 A:JP,KR,MY,AN,PH,MP
 
-Z:13                               Ausland Zone 7
+Z:14                               Ausland Zone 7
 T:W/08-18=0.936/4.2353             Geschäftszeit
 T:W/18-08=0.936/4.8                Freizeit
 T:E,H/*=0.936/4.8                  Freizeit
 A:AO,BM,BT,BR,CN,EC,IR,MO,MX
 A:SA,VE
 
-Z:14                               Ausland Zone 8
+Z:15                               Ausland Zone 8
 T:W/08-18=0.936/3.6                Geschäftszeit
 T:W/18-08=0.936/4.2353             Freizeit
 T:E,H/*=0.936/4.2353               Freizeit
@@ -1766,7 +1790,7 @@ A:GW,GY,JO,KG,CO,KW,LB
 A:PA,SG,ST,VC
 A:TT,AE
 
-Z:15                               Ausland Zone 9
+Z:16                               Ausland Zone 9
 T:W/08-18=0.936/3.1304             Geschäftszeit
 T:W/18-08=0.936/3.6                Freizeit
 T:E,H/*=0.936/3.6                  Freizeit
@@ -1775,7 +1799,7 @@ A:MW,NA,NR,NP,NC,NG,NF,PE
 A:SH,LC,WS,SD,SZ,SY,TZ
 A:TO,TC,ZM,ZW
 
-Z:16                               Ausland Zone 10
+Z:17                               Ausland Zone 10
 T:W/08-18=0.936/3                  Geschäftszeit
 T:W/18-08=0.936/3.1304             Freizeit
 T:E,H/*=0.936/3.1304               Freizeit
@@ -1784,7 +1808,7 @@ A:GM,IQ,JM,KE,KI,KM,MV,MR
 A:MN,MZ,MM,NI,NU,OM,RW,SR
 A:TW,TH,TG,UG,VU,CF
 
-Z:17                               Ausland Zone 11
+Z:18                               Ausland Zone 11
 T:W/08-18=0.936/2.5714             Geschäftszeit
 T:W/18-08=0.936/2.7692             Freizeit
 T:E,H/*=0.936/2.7692               Freizeit
@@ -1792,7 +1816,7 @@ A:BO,KY,DJ,IN,ID
 A:VG,KP,CU,MU,NGR
 A:PG,PY,SL,LK,UY
 
-Z:18                               Ausland Zone 12
+Z:19                               Ausland Zone 12
 T:W/08-18=0.936/2.4                Geschäftszeit
 T:W/18-08=0.936/2.5                Freizeit
 T:E,H/*=0.936/2.5                  Freizeit
@@ -1802,60 +1826,60 @@ A:HT,HN,YE,CM,CV,KH,CG,ML
 A:MS,PK,KN,SN,SC,SB
 A:SO,TD,VN,ZR
 
-Z:19                               Ausland Zone 13
+Z:20                               Ausland Zone 13
 T:W/08-18=0.936/2                  Geschäftszeit
 T:W/18-08=0.936/2.1176             Freizeit
 T:E,H/*=0.936/2.1176               Freizeit
 A:CK,MG
 
-Z:20                               Ausland Zone 14
+Z:21                               Ausland Zone 14
 T:W/08-18=0.936/10.667             Geschäftszeit
 T:W/18-08=0.936/12                 Freizeit
 T:E,H/*=0.936/12                   Freizeit
 A:VI,CA,PR,US
 
-Z:21                               Ausland Zone 15
+Z:22                               Ausland Zone 15
 T:*/*=0.936/10.667                 0-24h
 A:GR,PL,TN,TR
 
-Z:22                               Handvermittelter Verkehr
+Z:23                               Handvermittelter Verkehr
 T:*/*=0/60                         0-24h
 A:AF,AS,_GUAN,MH,_MIDW
 A:FM,PW,PN,TV,_WAKE
 
-Z:23                               Grenznahverkehr
+Z:24                               Grenznahverkehr
 T:W/08-18=0.936/18                 Geschäftszeit
 T:W/18-08=0.936/24                 Freizeit
 T:E,H/*=0.936/24                   Freizeit
 
-Z:24                               Inmarsat-A
+Z:25                               Inmarsat-A
 T:*/*=0.936/0.72727                0-24h
 A:_INA_
 
-Z:25                               Inmarsat-B/M
+Z:26                               Inmarsat-B/M
 T:*/*=0.936/1.0746                 0-24h
 A:_INB_,_INM_
 
-Z:26                               Inmarsat-Mini-M
+Z:27                               Inmarsat-Mini-M
 T:*/*=0.936/1.5                    0-24h
 A:_INMM
 
-Z:27                               Iridium 008816
+Z:28                               Iridium 008816
 T:*/*=0.936/0.48                   0-24h
 A:_IR16
 
-Z:28                               Iridium 008817
+Z:29                               Iridium 008817
 T:*/*=0.936/1.0746                 0-24h
 A:_IR17
 
-Z:29                               EMSAT
+Z:30                               EMSAT
 T:*/*=0.936/1.5                    0-24h
 
-Z:30                               0711-5,6,7
+Z:31                               0711-5,6,7
 T:*/*=0.936/32                     0-24h
 A:+437115,+437116,+437117
 
-Z:31                               0711-8,9,0
+Z:32                               0711-8,9,0
 T:*/*=0.936/15                     0-24h
 A:+437118,+437119,+437110
 
@@ -1863,7 +1887,7 @@ A:+437118,+437119,+437110
 P: [01.09.1999] 01,5               Telekom Austria Ges.tarif 3
 B:1001
 C:Maintainer:                      Michael Reinelt <reinelt@eunet.at>
-C:TarifChanged:                    01.09.1999
+C:TarifChanged:                    01.05.2000
 C:Zone:                            Die Regionalzone geht bis zu einer Entfernung von 50 Km, alles andere ist Österreichzone.
 C:Special:                         Variable Taktung, abhängig von Zone und Tageszeit.
 C:Name:                            Telekom Austria
@@ -1892,36 +1916,42 @@ T:W/18-08=0.816/72                 Freizeit
 T:E,H/*=0.816/72                   Freizeit
 A:AT
 
-Z:3                                Mobilfunk 1
+Z:3                                Mobilfunk A1/D
+T:W/08-18=0.816/20                 Geschäftszeit
+T:W/18-08=0.816/24                 Freizeit
+T:E,H/*=0.816/24                   Freizeit
+A:+43663,+43664
+
+Z:4                                Mobilfunk Max
 T:W/08-18=0.816/14.4               Geschäftszeit
 T:W/18-08=0.816/19.2               Freizeit
 T:E,H/*=0.816/19.2                 Freizeit
-A:+43663,+43664,+43676
+A:+43676
 
-Z:4                                Mobilfunk 2
-T:W/08-18=0.816/12.88              Geschäftszeit
-T:W/18-08=0.816/16.18              Freizeit
-T:E,H/*=0.816/16.18                Freizeit
+Z:5                                Mobilfunk One
+T:W/08-18=0.816/15                 Geschäftszeit
+T:W/18-08=0.816/18                 Freizeit
+T:E,H/*=0.816/18                   Freizeit
 A:+43699
 
-Z:5                                Online
+Z:6                                Online
 T:W/08-18=0.816/120                Geschäftszeit
 T:W/18-08=0.816/360                Freizeit
 T:E,H/*=0.816/360                  Freizeit
 A:07189,194
 
-Z:6                                AON Complete
+Z:7                                AON Complete
 T:*/*=0/60                         0-24h
 A:194040
 
-Z:7                                Ausland Zone 1
+Z:8                                Ausland Zone 1
 T:W/08-18=0.816/15                 Geschäftszeit
 T:W/18-08=0.816/18                 Freizeit
 T:E,H/*=0.816/18                   Freizeit
 A:DE,IT,LI,CH,SK,SI
 A:CZ,HU
 
-Z:8                                Ausland Zone 2
+Z:9                                Ausland Zone 2
 T:W/08-18=0.816/12                 Geschäftszeit
 T:W/18-08=0.816/14.4               Freizeit
 T:E,H/*=0.816/14.4                 Freizeit
@@ -1931,7 +1961,7 @@ A:YU,HR,LU,MT,MK,MC,NL
 A:NO,RO,SM,SE,ES,UA,VA
 A:CY
 
-Z:9                                Ausland Zone 3
+Z:10                               Ausland Zone 3
 T:W/08-18=0.816/10.667             Geschäftszeit
 T:W/18-08=0.816/12                 Freizeit
 T:E,H/*=0.816/12                   Freizeit
@@ -1939,34 +1969,34 @@ A:DZ,EE,FO,GE,GI,IS,IL
 A:LV,LT,EH,PT,SU,TJ
 A:TM,UZ
 
-Z:10                               Ausland Zone 4
+Z:11                               Ausland Zone 4
 T:W/08-18=0.816/7.2                Geschäftszeit
 T:W/18-08=0.816/8                  Freizeit
 T:E,H/*=0.816/8                    Freizeit
 A:AQ,AM,AU,AZ,CX
 A:CC
 
-Z:11                               Ausland Zone 5
+Z:12                               Ausland Zone 5
 T:W/08-18=0.816/6                  Geschäftszeit
 T:W/18-08=0.816/6.5455             Freizeit
 T:E,H/*=0.816/6.5455               Freizeit
 A:CL,GF,GP,HK,LY,MQ
 A:YT,MD,NZ,RE,PM,ZA
 
-Z:12                               Ausland Zone 6
+Z:13                               Ausland Zone 6
 T:W/08-18=0.816/4.8                Geschäftszeit
 T:W/18-08=0.816/5.1429             Freizeit
 T:E,H/*=0.816/5.1429               Freizeit
 A:JP,KR,MY,AN,PH,MP
 
-Z:13                               Ausland Zone 7
+Z:14                               Ausland Zone 7
 T:W/08-18=0.816/4.2353             Geschäftszeit
 T:W/18-08=0.816/4.8                Freizeit
 T:E,H/*=0.816/4.8                  Freizeit
 A:AO,BM,BT,BR,CN,EC,IR,MO,MX
 A:SA,VE
 
-Z:14                               Ausland Zone 8
+Z:15                               Ausland Zone 8
 T:W/08-18=0.816/3.6                Geschäftszeit
 T:W/18-08=0.816/4.2353             Freizeit
 T:E,H/*=0.816/4.2353               Freizeit
@@ -1976,7 +2006,7 @@ A:GW,GY,JO,KG,CO,KW,LB
 A:PA,SG,ST,VC
 A:TT,AE
 
-Z:15                               Ausland Zone 9
+Z:16                               Ausland Zone 9
 T:W/08-18=0.816/3.1304             Geschäftszeit
 T:W/18-08=0.816/3.6                Freizeit
 T:E,H/*=0.816/3.6                  Freizeit
@@ -1985,7 +2015,7 @@ A:MW,NA,NR,NP,NC,NG,NF,PE
 A:SH,LC,WS,SD,SZ,SY,TZ
 A:TO,TC,ZM,ZW
 
-Z:16                               Ausland Zone 10
+Z:17                               Ausland Zone 10
 T:W/08-18=0.816/3                  Geschäftszeit
 T:W/18-08=0.816/3.1304             Freizeit
 T:E,H/*=0.816/3.1304               Freizeit
@@ -1994,7 +2024,7 @@ A:GM,IQ,JM,KE,KI,KM,MV,MR
 A:MN,MZ,MM,NI,NU,OM,RW,SR
 A:TW,TH,TG,UG,VU,CF
 
-Z:17                               Ausland Zone 11
+Z:18                               Ausland Zone 11
 T:W/08-18=0.816/2.5714             Geschäftszeit
 T:W/18-08=0.816/2.7692             Freizeit
 T:E,H/*=0.816/2.7692               Freizeit
@@ -2002,7 +2032,7 @@ A:BO,KY,DJ,IN,ID
 A:VG,KP,CU,MU,NGR
 A:PG,PY,SL,LK,UY
 
-Z:18                               Ausland Zone 12
+Z:19                               Ausland Zone 12
 T:W/08-18=0.816/2.4                Geschäftszeit
 T:W/18-08=0.816/2.5                Freizeit
 T:E,H/*=0.816/2.5                  Freizeit
@@ -2012,60 +2042,60 @@ A:HT,HN,YE,CM,CV,KH,CG,ML
 A:MS,PK,KN,SN,SC,SB
 A:SO,TD,VN,ZR
 
-Z:19                               Ausland Zone 13
+Z:20                               Ausland Zone 13
 T:W/08-18=0.816/2                  Geschäftszeit
 T:W/18-08=0.816/2.1176             Freizeit
 T:E,H/*=0.816/2.1176               Freizeit
 A:CK,MG
 
-Z:20                               Ausland Zone 14
+Z:21                               Ausland Zone 14
 T:W/08-18=0.816/10.667             Geschäftszeit
 T:W/18-08=0.816/12                 Freizeit
 T:E,H/*=0.816/12                   Freizeit
 A:VI,CA,PR,US
 
-Z:21                               Ausland Zone 15
+Z:22                               Ausland Zone 15
 T:*/*=0.816/10.667                 0-24h
 A:GR,PL,TN,TR
 
-Z:22                               Handvermittelter Verkehr
+Z:23                               Handvermittelter Verkehr
 T:*/*=0/60                         0-24h
 A:AF,AS,_GUAN,MH,_MIDW
 A:FM,PW,PN,TV,_WAKE
 
-Z:23                               Grenznahverkehr
+Z:24                               Grenznahverkehr
 T:W/08-18=0.816/18                 Geschäftszeit
 T:W/18-08=0.816/24                 Freizeit
 T:E,H/*=0.816/24                   Freizeit
 
-Z:24                               Inmarsat-A
+Z:25                               Inmarsat-A
 T:*/*=0.816/0.72727                0-24h
 A:_INA_
 
-Z:25                               Inmarsat-B/M
+Z:26                               Inmarsat-B/M
 T:*/*=0.816/1.0746                 0-24h
 A:_INB_,_INM_
 
-Z:26                               Inmarsat-Mini-M
+Z:27                               Inmarsat-Mini-M
 T:*/*=0.816/1.5                    0-24h
 A:_INMM
 
-Z:27                               Iridium 008816
+Z:28                               Iridium 008816
 T:*/*=0.816/0.48                   0-24h
 A:_IR16
 
-Z:28                               Iridium 008817
+Z:29                               Iridium 008817
 T:*/*=0.816/1.0746                 0-24h
 A:_IR17
 
-Z:29                               EMSAT
+Z:30                               EMSAT
 T:*/*=0.816/1.5                    0-24h
 
-Z:30                               0711-5,6,7
+Z:31                               0711-5,6,7
 T:*/*=0.816/32                     0-24h
 A:+437115,+437116,+437117
 
-Z:31                               0711-8,9,0
+Z:32                               0711-8,9,0
 T:*/*=0.816/15                     0-24h
 A:+437118,+437119,+437110
 
@@ -3002,60 +3032,69 @@ A:+
 ###########################
 P:12                               1012
 B:1012
-C:TarifChanged:                    21.12.1999
-C:Name:                            1012 privat
+C:TarifChanged:                    12.05.2000
+C:Name:                            Tele.Ring
 C:Address:                         Linzer Str. 221, A-1140 Wien
-C:Homepage:                        http://www.1012privat.at
+C:Homepage:                        http://www.telering.at
+C:TarifURL:                        http://www.telering.at/produkte/privat/fest/alles.php?path=prod-1-1-1-1-1-1
 C:Telefon:                         0800 1012 1012
 
 Z:1                                Österreich
-T: [15.11.1999-01.02.2000] */17-19=0.79(60)/60/1 Happy Hour
-T: [15.11.1999-01.02.2000] */19-17=0.90(60)/60/1 0-24h o.HH
-T:*/*=0.90(60)/60/1                0-24h
+T:W/8-18=0.85(60)/60/1             Tag
+T:W/18-8=0.50(60)/60/1             Nacht
+T:E,H/*=0.50(60)/60/1              Weekend
 A:AT
 
-Z:2                                Mobilfunk
-T:*/*=4.00(60)/60/1                0-24h
-A:+43663,+43664,+43676,+43699
+Z:2                                A1/D
+T:W/8-18=4.00(60)/60/1             Tag
+T:W/18-8=2.80(60)/60/1             Nacht
+T:E,H/*=2.80(60)/60/1              Weekend
+A:+43663,+43664
 
-Z:3                                Deutschland spezial
-T:*/*=2.90(60)/60/1                0-24h
+Z:3                                Max
+T:W/8-18=3.90(60)/60/1             Tag
+T:W/18-8=3.70(60)/60/1             Nacht
+T:E,H/*=3.70(60)/60/1              Weekend
+A:+43676
+
+Z:4                                One
+T:W/8-18=3.90(60)/60/1             Tag
+T:W/18-8=3.70(60)/60/1             Nacht
+T:E,H/*=3.70(60)/60/1              Weekend
+A:+43699
+
+Z:5                                Deutschland
+T:*/*=1.90(60)/60/1                0-24h
 A:DE
 
-Z:4                                Nachbarn
-T:*/*=3.70(60)/60/1                0-24h
-A:FR,IT,CH,LI,SK,SI
-A:CZ,HU
+Z:6                                Schweiz ...
+T:*/*=2.30(60)/60/1                0-24h
+A:CH,IT,FR,LI
 
-Z:5                                Europa 1 + USA
-T:*/*=4.40(60)/60/1                0-24h
-A:BE,DK,FI,UK,IE,CA,LU
-A:NL,NO,SE,ES,US
+Z:7                                Belgien ...
+T:*/*=3.50(60)/60/1                0-24h
+A:BE,DK,FI,IE,CA,LU,NL
+A:NO,PR,SE,ES,US
+A:SK,SI,CZ,HU
 
-Z:6                                Europa 2
-T:*/*=5.60(60)/60/1                0-24h
+Z:8                                Andorra ...
+T:*/*=4.90(60)/60/1                0-24h
 A:AD,BA,FO,YU,HR,MT
-A:MC
+A:MC,YU
 
-Z:7                                Europa 3
-T:*/*=6.10(60)/60/1                0-24h
+Z:9                                Albanien ...
+T:*/*=5.90(60)/60/1                0-24h
 A:AL,BG,EE,GR,MK,PL,PT
-A:RO,SM,TN,UA,BY,CY
+A:RO,SM,TN,UA,CY
 
-Z:8                                Welt 1
+Z:10                               Algerien ...
 T:*/*=7.90(60)/60/1                0-24h
 A:DZ,AU,GI,HK,IS,IL,JP,LV
 A:LT,EH,NZ,SU,SG,KR
 A:TR
 
-Z:9                                Welt 2
-T:*/*=24.90(60)/60/1               0-24h
-A:BM,AG,LC,DO,DM
-A:VG,TC,PR,AI
-A:BS,JM,VC,MS
-A:KN,GD,TT,_HAWA
-A:MP,KY,VI
-A:BB
+Z:11                               Alle übrigen Länder
+T:*/*=22.00(60)/60/1               0-24h
 A:+
 
 ###########################
@@ -4214,7 +4253,7 @@ A:_WAKE,WF
 ###########################
 P:44                               Citykom
 B:1044
-C:TarifChanged:                    15.09.1999
+C:TarifChanged:                    11.05.2000
 C:Name:                            Citykom Austria Telekommunikations GmbH
 C:Address:                         Alserbachstr. 144-16, A-1090 Wien
 C:Homepage:                        http://www.citykom.at
@@ -4223,51 +4262,61 @@ C:Telefon:                         0800 201 301
 C:Special:                         Mit 1012privat verschmolzen
 
 Z:1                                Österreich
-T:*/*=0.90(60)/60/1                0-24h
+T:W/8-18=0.85(60)/60/1             Tag
+T:W/18-8=0.50(60)/60/1             Nacht
+T:E,H/*=0.50(60)/60/1              Weekend
 A:AT
 
-Z:2                                Mobilfunk
-T:*/*=4.00(60)/60/1                0-24h
-A:+43663,+43664,+43676,+43699
+Z:2                                A1/D
+T:W/8-18=4.00(60)/60/1             Tag
+T:W/18-8=2.80(60)/60/1             Nacht
+T:E,H/*=2.80(60)/60/1              Weekend
+A:+43663,+43664
 
-Z:3                                Deutschland spezial
-T:*/*=2.90(60)/60/1                0-24h
+Z:3                                Max
+T:W/8-18=3.90(60)/60/1             Tag
+T:W/18-8=3.70(60)/60/1             Nacht
+T:E,H/*=3.70(60)/60/1              Weekend
+A:+43676
+
+Z:4                                One
+T:W/8-18=3.90(60)/60/1             Tag
+T:W/18-8=3.70(60)/60/1             Nacht
+T:E,H/*=3.70(60)/60/1              Weekend
+A:+43699
+
+Z:5                                Deutschland
+T:*/*=1.90(60)/60/1                0-24h
 A:DE
 
-Z:4                                Nachbarn
-T:*/*=3.70(60)/60/1                0-24h
-A:FR,IT,CH,LI,SK,SI
-A:CZ,HU
+Z:6                                Schweiz ...
+T:*/*=2.30(60)/60/1                0-24h
+A:CH,IT,FR,LI
 
-Z:5                                Europa 1 + USA
-T:*/*=4.40(60)/60/1                0-24h
-A:BE,DK,FI,UK,IE,CA,LU
-A:NL,NO,SE,ES,US
+Z:7                                Belgien ...
+T:*/*=3.50(60)/60/1                0-24h
+A:BE,DK,FI,IE,CA,LU,NL
+A:NO,PR,SE,ES,US
+A:SK,SI,CZ,HU
 
-Z:6                                Europa 2
-T:*/*=5.60(60)/60/1                0-24h
+Z:8                                Andorra ...
+T:*/*=4.90(60)/60/1                0-24h
 A:AD,BA,FO,YU,HR,MT
-A:MC
+A:MC,YU
 
-Z:7                                Europa 3
-T:*/*=6.10(60)/60/1                0-24h
+Z:9                                Albanien ...
+T:*/*=5.90(60)/60/1                0-24h
 A:AL,BG,EE,GR,MK,PL,PT
-A:RO,SM,TN,UA,BY,CY
+A:RO,SM,TN,UA,CY
 
-Z:8                                Welt 1
+Z:10                               Algerien ...
 T:*/*=7.90(60)/60/1                0-24h
 A:DZ,AU,GI,HK,IS,IL,JP,LV
 A:LT,EH,NZ,SU,SG,KR
 A:TR
 
-Z:9                                Welt 2
-T:*/*=24.90(60)/60/1               0-24h
-A:BM,AG,LC,DO,DM
-A:VG,TC,PR,AI
-A:BS,JM,VC,MS
-A:KN,GD,TT,_HAWA
-A:MP,KY,VI
-A:BB
+Z:11                               Alle übrigen Länder
+T:*/*=22.00(60)/60/1               0-24h
 A:+
 
 ###########################

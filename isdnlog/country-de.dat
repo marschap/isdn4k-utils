@@ -1,4 +1,4 @@
-V:1.04 Int [16-Feb-2000 10:11:00]
+V:1.10 Int [10-May-2000 12:21:00]
 # ISO 3166 Countrycodes ( ftp://sunsite.unc.edu/pub/Linux/apps/misc/
 #	countrycodes.1.0.2.tar.gz
 # Airportcodes: http://www.TravelDesk.com/airports.html
@@ -6,6 +6,7 @@ V:1.04 Int [16-Feb-2000 10:11:00]
 # Countries have a 2 letter ISO-Code
 # Towns have a 3 letter airportcode or
 #  a _XXXX code, where XXXX is a (uniq) abbrev of town
+# all the codes have to be uppercase
 #
 # Country Mobilfunk : _ccMF
 # Freephone : _ccFF
@@ -90,10 +91,15 @@ A:Palästina, Palestinensisches Autonomiegebiet
 C:+972777
 T:PS # since 11.10.1999
 
+N:Vereinigte Arabische Emirate Mobilfunk
+# fixme
+R:AE
+T:_AEMF
+
 N:Ver. Arabische Emirate
 A:Vereinigte Arabische Emirate, Ver.Arab. Emirate, Vereinigte Arab. Emirate, VAE
 E:United Arab Emirates
-A:Vereinte Arabische Emirate
+A:Vereinte Arabische Emirate, V. Arabische Emirate
 C:+971
 T:AE
 
@@ -104,6 +110,7 @@ C:+969, +967
 T:YE
 
 N:Oman
+A:Oman (Sultanat)
 C:+968
 T:OM
 
@@ -211,12 +218,12 @@ C:+886
 T:TW
 
 N:Iridium 008817
-A:Iridium GSM-Homed
+A:Iridium GSM-Homed, Iridium-8817
 C:+8817
 T:_IR17
 
 N:Iridium 008816
-A:Iridium Iridium-Homed
+A:Iridium Iridium-Homed, Iridium-8816
 C:+8816
 T:_IR16
 
@@ -439,7 +446,7 @@ T:HK
 
 N:Nordkorea
 A:Korea (Dem. Republik), Korea (Demokratische Republik), Korea (North), Korea (DVR), Nordkorea (DVR), Korea (Nord)
-A:V.R. Korea, Korea Democratic Republic (north)
+A:V.R. Korea, Korea Democratic Republic (north), Korea Dem. Volksrepublik
 E:North Korea
 C:+850
 T:KP
@@ -457,6 +464,7 @@ T:_KRMF
 
 N:Südkorea
 A:Korea (Süd), Korea Rep. (South), Korea (Republik), Südkorea (Republik), Republik Korea, Korea Republic (south)
+A:Korea Republik (Süd)
 E:South Korea
 C:+82
 T:KR
@@ -486,8 +494,9 @@ C:+7901, +7902
 T:_RUMF
 
 N:Russische Föderat. (westl.)
-A:Russische Foderat. (westl.)
+A:Russische Foderat. (westl.), Russische Föderation (westl.)
 A:Rußland (westl.), GUS (Russische Föderation), GUS, Russische Förderation West
+A:Russland (westl.), Russland (westlich)
 C:+7863, +7862, +7861, +7820, +7817, +7816, +7815, +7814
 C:+7811, +7543, +7517, +75112, +75110, +7510, +7505, +7503, +7501, +709246
 C:+709245, +709244, +709243, +709237, +7091, +7087, +7086, +7085, +7084
@@ -515,7 +524,8 @@ R:RU
 T:MOW
 
 N:Russische Forderation (ostl.)
-A:Rußland, Rußland (östl.), Russische Föderation, Russian Federation, Russische Förderation Ost
+A:Rußland, Russland, Rußland (östl.), Russische Föderation, Russian Federation, Russische Förderation Ost
+A:Russland (östl.), Russland (östlich)
 E:Russian Federation (east)
 C:+7
 T:SU
@@ -586,6 +596,7 @@ T:KI
 
 N:West-Samoa
 A:Samoa (West), Western Samoa, Samoa W., Samoa, Westl. Samoa
+A:Samoa (Western), Western Samoa (Independent State of)
 C:+685
 T:WS
 
@@ -614,6 +625,7 @@ C:+681
 T:WF
 
 N:Palau /Belau
+A:Palau-Inseln
 E:Palau
 C:+680
 T:PW
@@ -679,7 +691,7 @@ R:AU
 T:CC
 
 N:Antarktis
-A:Antarctica
+A:Antarctica, Antarktis-Casey Base
 C:+6721
 T:AQ
 
@@ -767,7 +779,7 @@ R:MY
 T:_MYMF
 
 N:Malaysia
-A:Malaysien
+A:Malaysien, Malayisa
 C:+60
 T:MY
 
@@ -1169,18 +1181,18 @@ C:+44345, +44645, +44704, +44990
 T:_UKSO
 
 N:London
-C:+44171, +44181
+C:+44171, +44181	# fixme: new numbers from 15.5.00?
 R:UK
 T:LON
 
 N:Edinburgh
-C:+44131
+C:+441310	# fixme: new numbers from 15.5.00?
 R:UK
 T:EDI
 
 N:Großbritannien
 A:Großbritannien Insel Man Kanalinseln, Great Britain,Großbritanien
-A:Großbritannien und Nordirland
+A:Großbritannien und Nordirland, England
 E:United Kingdom
 C:+44
 T:UK
@@ -1193,7 +1205,7 @@ C:+44999 # Fixme
 T:_UKIM
 
 N:Kanalinseln (Großbritannien)
-A:Kanalinseln
+A:Kanalinseln, Kanalinseln (GB)
 E:Channel Islands
 R:UK
 C:+44998 # Fixme
@@ -1454,12 +1466,13 @@ T:_CYMF
 
 N:Zypern
 E:Cyprus
-A:Zypern (Griechisch),Zypern (griech.)
+A:Zypern (Griechisch), Zypern (griech.), Zypern Süd
 C:+357
 T:CY
 
 N:Zypern (Türkisch)
 A:Zypern (Nord), Zypern (Nordzypern), Cyprus (north), Cyprus (turk)
+A:Zypern (Türk.), Nordzypern
 E:Turk Cyprus
 C:+90392
 R:TK
@@ -1475,9 +1488,10 @@ C:+355
 T:AL
 
 # FIXME!
-# N:Island Mobilfunk
+N:Island Mobilfunk
 # C:+354
-# T:_ISMF
+R:IS
+T:_ISMF
 
 N:Island
 E:Iceland
@@ -1513,7 +1527,7 @@ R:PT
 T:_AZOR
 
 N:Madeira
-A:Portugal-Madeira
+A:Portugal-Madeira, Maderia
 C:+35191
 R:PT
 T:_MADE
@@ -1574,6 +1588,7 @@ R:ES
 T:BCN
 
 N:Kanarische Inseln
+A:Spanien Kanarische Inseln
 E:Canary Islands
 C:+34928
 R:ES
@@ -1676,6 +1691,7 @@ R:NL
 T:RTM
 
 N:Niederlande
+A:Holland
 E:the Netherlands
 C:+31
 T:NL
@@ -1697,7 +1713,7 @@ T:GL
 R:DK
 
 N:Färöer-Inseln
-A:Färöer, Faröer, Faröer Inseln, Faroer Inseln
+A:Färöer, Faröer, Faröer Inseln, Faroer Inseln, Fäeroer
 E:Faeroe Islands
 C:+298
 T:FO
@@ -1739,7 +1755,7 @@ C:+269
 T:KM
 
 N:Mayotte
-A:Mayotte Inseln
+A:Mayotte Inseln, Mayotte Island
 C:+26960,+26961,+26962
 T:YT
 R:KM
@@ -1844,7 +1860,7 @@ C:+248
 T:SC
 
 N:Ascension
-A:Ascension Isle, Ascension Island, Ascension Inseln
+A:Ascension Isle, Ascension Island, Ascension Inseln, Ascension Inseln (GB)
 C:+247
 R:SH
 T:ASI
@@ -1895,7 +1911,7 @@ C:+239
 T:ST
 
 N:Cape Verde
-A:Kap Verde, Cap Verde
+A:Kap Verde, Cap Verde, Kapverdische Inseln, Kap Verde Inseln
 C:+238
 T:CV
 
@@ -1905,7 +1921,7 @@ C:+237
 T:CM
 
 N:Zentralafrikanische Republik
-A:Zentral Afrika (Rep.)
+A:Zentral Afrika (Rep.), Zentralafrika
 E:Central African Republic
 C:+236
 T:CF
@@ -1958,6 +1974,7 @@ T:BF
 N:Elfenbeinküste Cote de Ivoire
 A:Cote d'Ivoire (Elfenbeinküste), Cote d'Ivoire, Elfenbeinküste
 A:Cote DIvoire (Ivory Coast)
+A:Cote d'Ivoiry
 E:Ivory Coast
 C:+225
 T:CI
@@ -1968,6 +1985,7 @@ C:+224
 T:GN
 
 N:Mali
+A:Mali Rep.
 E:Mali Republic
 C:+223
 T:ML
@@ -1998,6 +2016,12 @@ E:Tunisia
 A:Tunesia
 C:+216
 T:TN
+
+N:Algerien Mobilfunk
+E:Algeria cellphone
+# C:+213 fixme
+R:DZ
+T:_DZMF
 
 N:Algerien
 E:Algeria
@@ -2057,7 +2081,7 @@ C:+1868, +1809680, +180967, +180966, +180965, +180964, +180963, +180962, +180961
 T:TT
 
 N:Dominikanische Rep. Mobilfunk
-A:Domin. Rep.-Mobilfunk
+A:Domin. Rep.-Mobilfunk, Dominikanische Republik Mobilfunk
 E:Dominican Republic cellphone
 C:+18092, +1809227, +1809241, +1809474, +1809537, +1809540, +1809563, +1809683, +1809695
 T:_DOMF
@@ -2071,7 +2095,7 @@ T:DO
 N:Turks- und Caicosinseln
 E:Turks and Caicos Islands
 A:Turks & Caicos Islands, Turks- & Caicosins.
-A:Turks und Caicos,Turks and Caicos Inseln
+A:Turks und Caicos, Turks and Caicos Inseln, Turks u. Caicosinseln
 C:+1809946, +1809941, +1649
 T:TC
 
@@ -2085,13 +2109,14 @@ T:VI
 N:Britische Jungferninseln
 A:Jungferninseln (GB), Jungferninseln (britisch), British Virgin Isles
 A:Brit. Jungferninseln, Britisch Jungferninseln
-E:Virgin Islands (British)
+E:Virgin Islands (British), Virgin Islands (UK)
 C:+1809499, +1809496, +1809495, +1809494, +1809, +1284
 T:VG
 
 N:St. Vincent und Grenadinen
 A:St. Vincent and the Grenadines, Saint Vincent und die Grenadinen, St. Vincent and Grenadines, St. Vincent und die Grenadien, St. Vincent Und Die Grenadinen
 A:St. Vincent & Greens.,St. Vincent,St. Vincent & Grenadinen
+A:Saint Vincent und Grenadinen, St. Vincent und Grenada
 E:Saint Vincent and the Grenadines
 C:+1809493, +1809490, +1809485, +1809458, +1809457, +1809456, +1784
 T:VC
@@ -2107,21 +2132,28 @@ C:+1809444, +1809443, +1809442, +1809441, +1809440, +1809408, +1809407, +1473
 T:GD
 
 N:Hawaii
-A:Hawai
+A:Hawai, Hawaii-Inseln
 C:+1808
 R:US
 T:_HAWA
+
+N:Puerto Rico Mobilfunk
+R:PR
+T:_PRMF
+# fixme
 
 N:Puerto Rico
 C:+1787
 T:PR
 
 N:St. Lucia
+A:Saint Lucia
 C:+1758
 T:LC
 
 N:Marianen (SaipanNord-)
 A:Nördliche Marianen, Marianen, Marianen (Saipan), Saipan, Salpan
+A:Marianen (Nördliche)
 A:Westl. Marianen
 E:Northern Mariana Islands
 C:+1670, +1671
@@ -2131,13 +2163,18 @@ N:Montserrat
 C:+1664
 T:MS
 
+N:Bermuda Mobilfunk
+# fixme
+R:BM
+T:_BMMF
+
 N:Bermuda
 A:Bermudas
 C:+1441
 T:BM
 
 N:Kaimaninseln
-A:Cayman-Inseln
+A:Cayman-Inseln, Cayman
 E:Cayman Islands
 A:Kayman Inseln
 C:+1345
@@ -2145,7 +2182,7 @@ T:KY
 R:UK
 
 N:Antigua und Barbuda
-A:Antigua & Barbuda, Antigua & Barbadu, Antigua
+A:Antigua & Barbuda, Antigua & Barbadu, Antigua, Antigua und Barbadu
 E:Antigua and Barbuda
 A:Barbuda
 C:+1268

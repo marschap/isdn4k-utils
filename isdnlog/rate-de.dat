@@ -1,4 +1,4 @@
-V:1.10-Germany [05-May-2000 18:49:26]
+V:1.10-Germany [13-May-2000 16:19:23]
 
 # Währungsformat
 U:%.3f DM
@@ -8,7 +8,7 @@ U:%.3f DM
 #
 # (C) Copyright 1999, 2000 by Andreas Kool (akool@isdn4linux.de)
 #
-# $Id: rate-de.dat,v 1.90 2000/05/07 11:29:31 akool Exp $
+# $Id: rate-de.dat,v 1.91 2000/05/13 14:22:15 akool Exp $
 #
 #
 # Das "A:" Tag muß folgendermaßen gefüllt werden:
@@ -200,6 +200,7 @@ N:0192300  # Call.Callino
 N:0191955  # knuut (Worldcom/UUnet)
 N:0192658  # MSN Easysurfer (Worldcom/UUnet)
 N:0192361  # Lübecker Nachrichten
+N:019160   # CompuServeOffice
 #
 # S:T-VoteCall
 # N:01371, 01372, 01373, 01374, 0138
@@ -1270,7 +1271,7 @@ Z:281 Island
 A:IS
 T:*/*=0.28/60
 Z:282 Island Mobilfunk
-A:_IEMF
+A:_ISMF
 T:*/*=0.45/60
 Z:283 Israel
 A:IL
@@ -10984,6 +10985,10 @@ T:*/*=0.05(60)/60 T-Online eco
 Z:120 Surf 1
 A:019107873
 T:*/*=0.045/60
+Z:121 CompuServeOffice
+A:019160
+T:*/09-18=0.019(60)/180 CompuServeOffice
+T:*/18-09=0.049(60)/180 CompuServeOffice
 Z:162 T-VoteCall
 A:01371
 T:*/*=0.24/0,0/1
@@ -11241,6 +11246,10 @@ T:*/*=0.12/2
 Z:100 T-Online
 A:0191011
 T:*/*=0.05(60)/60 T-Online eco
+Z:121 CompuServeOffice
+A:019160
+T:*/09-18=0.019(60)/180 CompuServeOffice
+T:*/18-09=0.049(60)/180 CompuServeOffice
 Z:162 T-VoteCall
 A:01371
 T:*/*=0.24/0,0/1
@@ -11494,6 +11503,10 @@ T:*/*=0.12/2
 Z:100 T-Online
 A:0191011
 T:*/*=0.05(60)/60 T-Online eco
+Z:121 CompuServeOffice
+A:019160
+T:*/09-18=0.019(60)/180 CompuServeOffice
+T:*/18-09=0.049(60)/180 CompuServeOffice
 Z:162 T-VoteCall
 A:01371
 T:*/*=0.24/0,0/1
@@ -11753,6 +11766,10 @@ T:*/*=0.12/2
 Z:100 T-Online
 A:0191011
 T:*/*=0.05(60)/60 T-Online eco
+Z:121 CompuServeOffice
+A:019160
+T:*/09-18=0.019(60)/180 CompuServeOffice
+T:*/18-09=0.049(60)/180 CompuServeOffice
 Z:162 T-VoteCall
 A:01371
 T:*/*=0.24/0,0/1
@@ -11987,6 +12004,10 @@ Z:100 T-Online
 A:0191011
 C:Dies ist *kein* All-in-One Zugang, es werden zusätzliche Gebühren erhoben!
 T:*/*=0.05(60)/60 T-Online eco
+Z:121 CompuServeOffice
+A:019160
+T:*/09-18=0.019(60)/180 CompuServeOffice
+T:*/18-09=0.049(60)/180 CompuServeOffice
 Z:162 T-VoteCall
 A:01371
 T:*/*=0.24/0,0/1
@@ -12122,7 +12143,7 @@ Z:5 Select 5/30 City
 #Hinter A: die Rufnummer(n) eintragen und das »#« vor A: entfernen!
 T:W/07-18=0.084/90 Wochentag
 T:W/18-07=0.084/240 Abend
-T:E,H/*=0.085/240 Wochenende
+T:E,H/*=0.084/240 Wochenende
 Z:6 Select 5/30 Deutschland
 #A:
 #Hinter A: die Rufnummer(n) eintragen und das »#« vor A: entfernen!
@@ -12252,6 +12273,10 @@ T:*/*=0.05(60)/60 T-Online eco
 Z:120 Surf 1
 A:019107873
 T:*/*=0.045/60
+Z:121 CompuServeOffice
+A:019160
+T:*/09-18=0.019(60)/180 CompuServeOffice
+T:*/18-09=0.049(60)/180 CompuServeOffice
 Z:162 T-VoteCall
 A:01371
 T:*/*=0.24/0,0/1
@@ -12734,7 +12759,7 @@ Z:296 Kanarische Inseln
 A:PLP
 T:*/*=0.759/60
 Z:297 Kap Verde Inseln
-A:FO
+A:CV
 T:*/*=1.759/60
 Z:298 Kasachstan
 A:KZ
@@ -13127,7 +13152,7 @@ Z:427 Vietnam
 A:VN
 T:*/*=2.469/60
 Z:428 Virgin Islands UK
-A:VI
+A:VG
 T:*/*=1.089/60
 Z:429 Virgin Island US
 A:VI
@@ -13151,7 +13176,7 @@ Z:435 Zypern Nord
 A:_CYTK
 T:*/*=0.899/60
 Z:436 Zypern Süd
-A:_CYTK
+A:CY
 T:*/*=1.119/60
 Z:437 Rest
 A:+
@@ -13486,7 +13511,7 @@ Z:296 Kanarische Inseln
 A:PLP
 T:*/*=0.759(60)/1
 Z:297 Kap Verde Inseln
-A:FO
+A:CV
 T:*/*=1.759(60)/1
 Z:298 Kasachstan
 A:KZ
@@ -13879,7 +13904,7 @@ Z:427 Vietnam
 A:VN
 T:*/*=2.469(60)/1
 Z:428 Virgin Islands UK
-A:VI
+A:VG
 T:*/*=1.089(60)/1
 Z:429 Virgin Island US
 A:VI
@@ -13903,7 +13928,7 @@ Z:435 Zypern Nord
 A:_CYTK
 T:*/*=0.899(60)/1
 Z:436 Zypern Süd
-A:_CYTK
+A:CY
 T:*/*=1.119(60)/1
 Z:500 Rest
 A:+
@@ -14234,7 +14259,7 @@ Z:296 Kanarische Inseln
 A:PLP
 T:*/*=0.759/60
 Z:297 Kap Verde Inseln
-A:FO
+A:CV
 T:*/*=1.759/60
 Z:298 Kasachstan
 A:KZ
@@ -14627,7 +14652,7 @@ Z:427 Vietnam
 A:VN
 T:*/*=2.469/60
 Z:428 Virgin Islands UK
-A:VI
+A:VG
 T:*/*=1.089/60
 Z:429 Virgin Island US
 A:VI
@@ -14651,7 +14676,7 @@ Z:435 Zypern Nord
 A:_CYTK
 T:*/*=0.899/60
 Z:436 Zypern Süd
-A:_CYTK
+A:CY
 T:*/*=1.119/60
 Z:500 Rest
 A:+
@@ -14983,7 +15008,7 @@ Z:296 Kanarische Inseln
 A:PLP
 T:*/*=0.759(60)/1
 Z:297 Kap Verde Inseln
-A:FO
+A:CV
 T:*/*=1.759(60)/1
 Z:298 Kasachstan
 A:KZ
@@ -15376,7 +15401,7 @@ Z:427 Vietnam
 A:VN
 T:*/*=2.469(60)/1
 Z:428 Virgin Islands UK
-A:VI
+A:VG
 T:*/*=1.089(60)/1
 Z:429 Virgin Island US
 A:VI
@@ -15400,7 +15425,7 @@ Z:435 Zypern Nord
 A:_CYTK
 T:*/*=0.899(60)/1
 Z:436 Zypern Süd
-A:_CYTK
+A:CY
 T:*/*=1.119(60)/1
 Z:500 Rest
 A:+
@@ -15728,7 +15753,7 @@ Z:296 Kanarische Inseln
 A:PLP
 T:*/*=0.759/60
 Z:297 Kap Verde Inseln
-A:FO
+A:CV
 T:*/*=1.759/60
 Z:298 Kasachstan
 A:KZ
@@ -16121,7 +16146,7 @@ Z:427 Vietnam
 A:VN
 T:*/*=2.469/60
 Z:428 Virgin Islands UK
-A:VI
+A:VG
 T:*/*=1.089/60
 Z:429 Virgin Island US
 A:VI
@@ -16145,7 +16170,7 @@ Z:435 Zypern Nord
 A:_CYTK
 T:*/*=0.899/60
 Z:436 Zypern Süd
-A:_CYTK
+A:CY
 T:*/*=1.119/60
 Z:500 Rest
 A:+
@@ -16475,7 +16500,7 @@ Z:296 Kanarische Inseln
 A:PLP
 T:*/*=0.759(60)/1
 Z:297 Kap Verde Inseln
-A:FO
+A:CV
 T:*/*=1.759(60)/1
 Z:298 Kasachstan
 A:KZ
@@ -16868,7 +16893,7 @@ Z:427 Vietnam
 A:VN
 T:*/*=2.469(60)/1
 Z:428 Virgin Islands UK
-A:VI
+A:VG
 T:*/*=1.089(60)/1
 Z:429 Virgin Island US
 A:VI
@@ -16892,7 +16917,7 @@ Z:435 Zypern Nord
 A:_CYTK
 T:*/*=0.899(60)/1
 Z:436 Zypern Süd
-A:_CYTK
+A:CY
 T:*/*=1.119(60)/1
 Z:500 Rest
 A:+
@@ -17222,7 +17247,7 @@ Z:296 Kanarische Inseln
 A:PLP
 T:*/*=0.759/60
 Z:297 Kap Verde Inseln
-A:FO
+A:CV
 T:*/*=1.759/60
 Z:298 Kasachstan
 A:KZ
@@ -17615,7 +17640,7 @@ Z:427 Vietnam
 A:VN
 T:*/*=2.469/60
 Z:428 Virgin Islands UK
-A:VI
+A:VG
 T:*/*=1.089/60
 Z:429 Virgin Island US
 A:VI
@@ -17639,7 +17664,7 @@ Z:435 Zypern Nord
 A:_CYTK
 T:*/*=0.899/60
 Z:436 Zypern Süd
-A:_CYTK
+A:CY
 T:*/*=1.119/60
 Z:500 Rest
 A:+
@@ -17970,7 +17995,7 @@ Z:296 Kanarische Inseln
 A:PLP
 T:*/*=0.759(60)/1
 Z:297 Kap Verde Inseln
-A:FO
+A:CV
 T:*/*=1.759(60)/1
 Z:298 Kasachstan
 A:KZ
@@ -18363,7 +18388,7 @@ Z:427 Vietnam
 A:VN
 T:*/*=2.469(60)/1
 Z:428 Virgin Islands UK
-A:VI
+A:VG
 T:*/*=1.089(60)/1
 Z:429 Virgin Island US
 A:VI
@@ -18387,7 +18412,7 @@ Z:435 Zypern Nord
 A:_CYTK
 T:*/*=0.899(60)/1
 Z:436 Zypern Süd
-A:_CYTK
+A:CY
 T:*/*=1.119(60)/1
 Z:500 Rest
 A:+
@@ -21528,10 +21553,10 @@ A:_EEMF
 # A:Tunesien Mobilfunk
 A:_DOMF
 A:_COMF
-A:_PEMF
-A:_TRMF
-A:_BEMF
-A:AE
+A:_BMMF
+A:_PRMF
+A:_DZMF
+A:_AEMF
 #####################################################################
 #
 #
@@ -23373,7 +23398,7 @@ Z:318 Island
 A:IS
 T:*/*=0.269(60)/1
 Z:319 Island Mobilfunk
-A:_IEMF
+A:_ISMF
 T:*/*=0.329(60)/1
 Z:320 Israel
 A:IL
@@ -23529,7 +23554,7 @@ Z:370 Malediven
 A:MV
 T:*/*=1.35(60)/1
 Z:371 Mali Rep.
-A:MV
+A:ML
 T:*/*=1.49(60)/1
 Z:372 Malta
 A:MT
@@ -24477,7 +24502,7 @@ T:*/09-21=0.055/60
 T:*/21-09=0.049/60
 Z:102 MSN Easysurfer
 A:0192658
-T:*/*=0.033(60)/1 msn
+T:*/*=0.033(60)/1 MSN Easysurfer
 #####################################################################
 P:[-01.11.1999]88,0 WorldCom
 B:01088
