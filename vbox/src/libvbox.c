@@ -1,5 +1,5 @@
 /*
-** $Id: libvbox.c,v 1.12 2001/03/01 14:59:16 paul Exp $
+** $Id: libvbox.c,v 1.13 2003/02/24 17:27:32 keil Exp $
 **
 ** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
 */
@@ -198,7 +198,7 @@ char *vboxd_get_message(void)
 	fd_set         rmask;
 	char          *stop;
 	int            p;
-	int            c;
+	char           c;
 	int            rc;
 
 	*vboxd_message = '\0';
