@@ -1,4 +1,4 @@
-/* $Id: isdnctrl.c,v 1.16 1998/03/12 15:10:11 hipp Exp $
+/* $Id: isdnctrl.c,v 1.17 1998/03/19 15:39:02 detabc Exp $
  * ISDN driver for Linux. (Control-Utility)
  *
  * Copyright 1994,95 by Fritz Elfert (fritz@wuemaus.franken.de)
@@ -21,6 +21,13 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnctrl.c,v $
+ * Revision 1.17  1998/03/19 15:39:02  detabc
+ * change define CONFIG_ISDN_WITH_ABC to HAVE_ABCEXT.
+ * HAVE_ABCEXT will be set with the configure utility.
+ * to enable isdnctrl with ABC-Extension-support please make
+ * first a kernelconfig with ABC-Extension enabled.
+ * Thanks
+ *
  * Revision 1.16  1998/03/12 15:10:11  hipp
  * Cosmetic. Changed 'addlink' error message.
  *
@@ -175,11 +182,13 @@ void usage(void)
         fprintf(stderr, "    callback name [in|outon|off]\n");
         fprintf(stderr, "                               get/set active callback-feature for interface\n");
         fprintf(stderr, "    cbhup name [on|off]        get/set reject-before-callback for interface\n");
-        fprintf(stderr, "    cbdelay name [seconds]     get/set delay before callback for interface\n");
+#ifdef HAVE_ABCEXT
+        fprintf(stderr, "    cbdelay name [200 milli-seconds]     get/set delay before callback for interface\n");
+#endif
         fprintf(stderr, "    dialmax name [num]         get/set number of dial-atempts for interface\n");
         fprintf(stderr, "    dialtimeout name [seconds] get/set timeout for successful dial-attempt\n");
         fprintf(stderr, "    dialwait name [seconds]    get/set waittime after failed dial-attempt\n");
-#ifdef CONFIG_ISDN_WITH_ABC
+#ifdef HAVE_ABCEXT
         fprintf(stderr, "    encap name [-UTA][encapname]     (get/set packet-encapsulation for interface)\n");
 #else
         fprintf(stderr, "    encap name [encapname]     get/set packet-encapsulation for interface\n");
@@ -218,7 +227,21 @@ void usage(void)
         fprintf(stderr, "    writeconf [file]           write the settings to file\n");
         fprintf(stderr, "    readconf [file]            read the settings from file\n");
 #endif /* I4L_CTRL_CONF */
-
+#ifdef HAVE_ABCEXT
+		fprintf(stderr,"Note: ABC   Ctrl   Extension-Support enabled\n");
+#else
+		fprintf(stderr,"Note: ABC   Ctrl   Extension-Support disabled\n");
+#endif
+#ifdef I4L_CTRL_TIMRU
+		fprintf(stderr,"Note: TIMRU Ctrl   Extension-Support enabled\n");
+#else
+		fprintf(stderr,"Note: TIMRU Ctrl   Extension-Support disabled\n");
+#endif
+#ifdef HAVE_TIMRU
+		fprintf(stderr,"Note: TIMRU Kernel Support enabled\n");
+#else
+		fprintf(stderr,"Note: TIMRU Kernel Support disabled\n");
+#endif
         exit(-2);
 }
 
@@ -363,7 +386,7 @@ static void listif(int isdnctrl, char *name, int errexit)
         	printf("Charge-Interval:        %d\n", cfg.chargeint);
         printf("Layer-2-Protocol:       %s\n", num2key(cfg.l2_proto, l2protostr, l2protoval));
         printf("Layer-3-Protocol:       %s\n", num2key(cfg.l3_proto, l3protostr, l3protoval));
-#ifdef CONFIG_ISDN_WITH_ABC
+#ifdef HAVE_ABCEXT
 		{
 			int i = cfg.p_encap / 1000;
 			char buf[8];
@@ -1108,7 +1131,7 @@ int exec_args(int fd, int argc, char **argv)
 			        	return -1;
 			        }
 			        if (args == 2) {
-#ifdef CONFIG_ISDN_WITH_ABC
+#ifdef HAVE_ABCEXT
 						int abc_encap = 0;
 						char *xx = arg1;
 						char *yy = arg1;
@@ -1139,7 +1162,7 @@ int exec_args(int fd, int argc, char **argv)
 			        			fprintf(stderr, "\t\"%s\"\n", pencapstr[i++]);
 			        		return -1;
 			        	}
-#ifdef CONFIG_ISDN_WITH_ABC
+#ifdef HAVE_ABCEXT
 						if(i != ISDN_NET_ENCAP_RAWIP)
 							abc_encap &= ~(15);
 
@@ -1151,7 +1174,7 @@ int exec_args(int fd, int argc, char **argv)
 			        		return -1;
 			        	}
 			        }
-#ifdef CONFIG_ISDN_WITH_ABC
+#ifdef HAVE_ABCEXT
 					{
 						int i = cfg.p_encap / 1000;
 						char buf[8];
