@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.2 1999/06/29 18:37:12 he Exp $
+# $Id: Makefile,v 1.3 1999/06/30 21:05:14 he Exp $
 
 SHELL = /bin/sh
 
@@ -13,9 +13,13 @@ SCRIPTS = scripts/eftd.sh scripts/eftp.sh scripts/eftp_setup
 E4L_EXTRA_VERSION_DEP := $(shell pwd)/CHANGES
 export E4L_EXTRA_VERSION_DEP
 
+CONF_DEPS = ./configure scripts/eftd.sh scripts/eftp.sh scripts/eftp_setup src/config.h Rules.make
 
+#this target is requested from isdn4k-utils default target
+all: $(CONF_DEPS)
+	make -C src
 
-all:	./configure scripts/eftd.sh scripts/eftp.sh scripts/eftp_setup src/config.h Rules.make
+really_all:	$(CONF_DEPS)
 	make -C src all
 
 config src/config.h  Rules.make $(SCRIPTS): configure 
@@ -52,15 +56,15 @@ update:
 	$(CVS) update -dP .
 
 new_version:
-	echo "Please create the file new_version and fill in the new version number!"
-	exit 1  
+	@echo current version is `grep E4L_VERSION src/eft/include/tdu_user.h|sed 's/^.*VERSION//'`
+	@if [ -z "$(NEW_VERSION)" ]; then echo "You must define the variable NEW_VERSION when making a new version!"; exit 1; fi
+	@echo new version is $(NEW_VERSION)
 
 # Make a new release. The variable NEW_VERSION must be set in the
 # make command's arguments or environment.
 # : update
-release: distclean
-	# $(CVS) commit .
-	@if [ -z "$(NEW_VERSION)" ]; then echo "You must define the variable NEW_VERSION when making a new version!"; exit 1; fi
+release: new_version commit
+	$(CVS) commit .
 	make -C src new_version
 	rm -f xx[0-9][0-9]
 	csplit CHANGES '/$$Log:/+1'
@@ -68,8 +72,9 @@ release: distclean
 	echo '===============' >> CHANGES.tmp
 	cat xx[0-9][0-9] >> CHANGES.tmp
 	rm -f xx[0-9][0-9]
-#	$(CVS) commit -m "Version $(NEW_VERSION)" .
-#	$(CVS) tag `echo Version_$(NEW_VERSION)|sed s/\\./_/g` .
-#	tar -czf ../eftp4linux-$(NEW_VERSION).tar.gz .
+	$(CVS) commit -m "Version $(NEW_VERSION)" .
+	$(CVS) tag `echo Version_$(NEW_VERSION)|sed s/\\./_/g` .
+	tar -czf ../eftp4linux-$(NEW_VERSION).tar.gz .
 
-.PHONY: all config permissions clean distclean release configureclean commit update
+.PHONY: all config permissions clean distclean release configureclean commit update default
+
