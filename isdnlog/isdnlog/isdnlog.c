@@ -1,4 +1,4 @@
-/* $Id: isdnlog.c,v 1.4 1997/04/03 22:34:49 luethje Exp $
+/* $Id: isdnlog.c,v 1.5 1997/04/06 22:04:22 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -742,19 +742,6 @@ int main(int argc, char *argv[], char *envp[])
 
     if (replay)
       strcat((char *)logfile, ".rep");
-		else
-			if (access(logfile,W_OK) && errno == ENOENT)
-			{
-				if ((flog = fopen(logfile, "w")) == NULL)
-				{
-			    print_msg(PRT_ERR,"Can not write file `%s' (%s)!\n", logfile, strerror(errno));
-			    Exit(43);
-				}
-				else
-					fclose(flog);
-
-				flog = NULL;
-			}
 
     openlog(myshortname, LOG_NDELAY, LOG_DAEMON);
 

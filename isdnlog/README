@@ -472,6 +472,10 @@ Die Konfigurationsdatei wird im Verzeichnis "/etc/isdn" erwartet (wenn die
 Variable I4LCONFDIR im Makefile so gesetzt ist), und enthaelt alle fuer isdnlog
 relevanten Steuerungsparameter.
 
+Diese Datei muss dem User root gehoeren (auch die Gruppe). Auch nur dieser
+darf Schreibrechte an dieser Datei haben. Diese Datei wird auch vom isdnlog
+gelesen.
+
 Wenn man dem compilierten den Pfad aendern will, muss man die
 Umgebungsvariable "ISDN_CONF_PATH" setzen.
 
@@ -553,6 +557,21 @@ ACHTUNG: "MYPATH  =  /home/fred" wird als Variable zu "MYPATH=/home/fred".
 
 Die dritte Sektion beschreibt spezifische Angaben fuer den isdnlog. Diese
 Sektion wird durch [ISDNLOG] eingeleitet.
+
+LOGFILE   = /var/log/isdn.log
+
+Dieses ist das Logfile in dem isdnlog alle Gespraeche ablegt, und isdnrep
+sie anschliessend anzeigt. Wenn diese sich in einem anderen Platz befindet,
+als zur Compilationszeitpinkt (in der Regel /var/log/isdn.log), dann kann
+dieses hier passieren.
+Die Option  "-f" vom isdnrep ueberschreibt diesen Wert dann allerdings wieder.
+
+Zusatzinformation:
+Diese Datei wird seit der Version 3.0 vom isdnlog nicht mehr staendig offen
+gehalten, sondern nur noch nach Beendigung eines Gespraeches wird die Datei
+geoeffnet, der Eintrag ergaenzt und anschliessend wieder geschlossen.
+Dadurch ist es jetzt moeglich diese Datei zu verschieben, wenn der isdnlog
+laeuft.
 
 RELOADCMD = reload
 
@@ -704,15 +723,88 @@ zu finden.
 4.2 Die Dateien "callerid.conf" und "~/.isdn"
 ---------------------------------------------
 
-*************** Unterschied der beiden Dateien ***************
 Hier koennen eine beliebige Anzahl von Telefonnummer nebst einigen
 zusaetzlichen Parametern angegeben werden.
 Die Angabe _aller_ eigenen Telefonnummern ist zwingend, alle weiteren
 Partner-Telefonnummern koennen eingeben werden.
 
+Die Datei "callerid.conf" liegt im Verzeichnis /etc/isdn und muss dem User
+root gehoeren (auch die Gruppe). Auch nur dieser darf Schreibrechte an dieser
+Datei haben. Diese Datei wird auch vom isdnlog gelesen.
+
+Die Datei "~/.isdn" kann jeder Benutzer haben, der den isdnrep und den isdnconf
+verwendet. Hier sind die Rechte der Datei voellig egal. Diese Datei ist
+dafuer bestimmt, dass ein Benutzer soetwas wie ein eigenes Telefonverzeichnis
+anlegen kann, wo auch die Nummer nur beim isdnrep angezeigt werden.
+
+Es gibt bestimmte Regeln, nachdem Eintraege aus der Datei "~/.isdn" die
+Eintraege der "callerid.conf" ueberschreiben:
+
+
+Der Sektionsname ist in "callerid.conf" und "~/.isdn" gleich (entweder
+[MSN] oder [NUMBER]).
+
+Wenn die Eintraege NUMBER und SI in beiden Dateien vorkommen und identisch sind,
+dann wird der Eintrag aus der der Datei "callerid.conf" ueberschrieben durch
+den Eintrag "~/.isdn".
+
+Wenn nur die Eintrag NUMBER (und _nicht_ SI) in beiden Dateien vorkommen und
+identisch sind, dann wird der Eintrag aus der der Datei "callerid.conf"
+ueberschrieben durch den Eintrag "~/.isdn".
+Unter Identisch ist du verstehen, wenn beide Strings absolut identisch sind:
+NUMBER=+49 7531/21103
+NUMBER=753121103
+sind nicht identisch!!!!
+
+Beispiele:
+
+Eintrag in "callerid.conf":
+[NUMBER]
+NUMBER=753121103
+ALIAS=MSN\#1
+
+Eintrag in "~/.isdn":
+[NUMBER]
+NUMBER=753121103
+ALIAS=Fred's Number
+
+Im obigen Fall wird der zweite Eintrag genommen.
+
+Eintrag in "callerid.conf":
+[NUMBER]
+NUMBER=753121103
+SI=7
+ALIAS=Internet
+
+Eintrag in "~/.isdn":
+[NUMBER]
+NUMBER=753121103
+SI=6
+ALIAS=Fred's Number
+
+Im obigen Fall werden beide Eintrage uebernommen. Wenn nun eine Datenverbindung
+auf der 753121103 stattfindet, dann wird "Internet" angezeigt, wenn jemand z.B.
+eine Video-Konfernzschaltung oder einen normalen Telefonanruf taetigt, dann
+wird "Fred's Number" angezeigt. Dieses gilt natuerlich nur beim isdnrep
+und isdnconf.
+
+Eintrag in "callerid.conf":
+[NUMBER]
+NUMBER=753121103
+SI=7
+ALIAS=MSN\#1
+
+Eintrag in "~/.isdn":
+[NUMBER]
+NUMBER=753121103
+ALIAS=Fred's Number
+
+Im obigen Fall gilt das gleiche wie beim vorherigen Beispiel.
+
 Jede Sektion (Nummer) kann eine Dienstekennung enthalten. Dieses wird durch
 einen Eintrag in der Form
 
+****************************gestern*****************************************
 SI=4 # Video
 
 realisiert.
