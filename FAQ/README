@@ -1,0 +1,20 @@
+In this directory you find the FAQ for isdn4linux.
+It contains answers for those questions that are frequently asked in the
+mailing list/news group for isdn4linux (and some more).
+
+The FAQ is available in a German and an English version (the German one being
+the most current), as well as in a 7bit and a html version.
+
+"de-i4l-faq" and "eng-i4l-faq" are the source code for all versions of the FAQ.
+"bin" contains all perl scripts for generating the FAQ.
+In "out" you will find the generated versions of the FAQ.
+"doc" has some documentation about the syntax of the FAQ (only interesting if
+you want to help working on the FAQ).
+
+"_example" and "_howto" contain postings from the mailing list/news group that
+appeared helpful/interesting to me. They may be helpful to you, but be careful:
+THEY MAY BE OUTDATED BY NOW!
+
+See the FAQ for more information about the authors of the FAQ.
+
+Matthias Hessler
