@@ -4,7 +4,7 @@
 
 <title>FAQ for isdn4linux
 <author>Matthias Hessler (<tt><htmlurl url="mailto:hessler@isdn4linux.de" name="hessler@isdn4linux.de"></tt>)
-<date>v2.0.36, 28. February 2000
+<date>v2.0.37, 3. April 2000
 <abstract>
 If you are reading this FAQ online, you may consider downloading the whole
 thing, and reading it offline (much cheaper). To download the latest
@@ -294,6 +294,7 @@ on this rather complicated problem. For more info on its status have a look at:
 <item><bf>For the active card AVM B1: Yes</bf> (its firmware has implemented
 fax as one of its features). Get the newest stuff from:
 <tt><url url="ftp://ftp.aeccom.com/pub/fax4i4l/howto/current/"></tt>
+However, it has been reported that setting it up properly is very tricky.
 <item><bf>For the active Eicon Diva Server cards (except Diva 2.0Pro):
 Yes</bf>. Have a look at README.fax and README.eicon in the
 <tt>isdn/Documentation/isdn</tt> directory, as well as:
@@ -874,7 +875,8 @@ here any further.
 It depends on the availability of slots, interrupts/IO addresses in your
 computer as well as the possibilities of the ISDN card. Most passive cards
 are limited by the supported IO addresses (e.g.: Teles 16.x: only 3 addresses
-are legally possible), and the total usage of interrupts (every card needs one).
+are legally possible: 0xf80, 0xd80, 0xe80), and the total usage of interrupts
+(every card needs one).
 
 To use more cards, the ICN card may be your choice. It has no interrupts, a
 more flexible port configuration and the driver places the shared memory area
@@ -1304,6 +1306,8 @@ isdn4linux:
 <item>Suse Support database:
 <url url="http://sdb.suse.de/sdb/en/html/index.html">; there is also an ISDN
 howto (isdn.html) and a ISDN quick-install guide (isdnquick.html).
+<item>Tips to configure Suse (and about offline reading):
+<url url="http://www.schlenn.de/linux.html">
 <item>Tips to configure Red Hat:
 <url url="http://www.webideal.de/rh-isdn/">
 <item>Scripts and installation tips from several people:
@@ -4241,9 +4245,12 @@ integrated NT-1.
 
 There are also other differences; e.g. in Europe a PRI (Primary
 Rate Interface) has 30 B channels, in North America only 23. Also the
-C channel protocol NI-1 is used. NI-1 is related to DSS1 (both are Q.931
-Protocols), but both have totally different groups of functions and are
-therefore not compatible to one other.    
+channel protocols NI-1 and 5ESS are used. NI-1 is related to DSS1 (both
+are Q.931 Protocols), but both have totally different groups of functions
+and are therefore not compatible to one other.
+
+Unfortunately, neither the NI-1 nor the 5ESS protocol have so far been
+implemented for isdn4linux.
 
 However, the firm &dquot;Spellcaster&dquot; has written an isdn4linux driver
 for its own (active) cards. More information is available from:
@@ -4370,18 +4377,28 @@ In Europe, a BRI includes 2 B-channels for data communication, and 1
 D-channel for administration of the data communication. The alternative
 is a PRI interface.
 
+<tag/CLIP/
+CLIP (Calling Line Identification Presentation) can be offered
+by the ISDN provider. When you call somebody, then your telephone number
+will be transmitted to the other phone.
+The opposite of CLIP is CLIR.
+In Germany, CLIP is the default.
+
 <tag/CLIR/
 CLIR (Calling Line Identification Restriction) can be offered by
 the ISDN provider: one can (from call to call) restrict the
-identification of one's own caller ID to the other party. In Germany,
-this must be applied for but is without charge (however call by call
-transmission of the caller ID costs extra).
+identification of one's own caller ID to the other party.
+The opposite of CLIR is CLIP.
+In Germany, this must be applied for but is without charge (however
+call by call transmission of the caller ID costs extra).
 
 <tag/COLP/
 COLP (Connected Line Identification Presentation) can also be offered
 by the ISDN provider. If you've applied for COLP, you get an extended
 dialing protocol. You will receive feedback from your telecommunication
-company who picked up your outgoing call.
+company who picked up your outgoing call. Normally, you will get the
+same number as you dialed beforehand; however, with call diversion this
+could also be a different number.
 In Germany, it must be applied for, and costs extra. More information
 than COLP can be obtained with the help of a reverse-connected ISDN
 card.
