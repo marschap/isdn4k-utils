@@ -17,7 +17,7 @@
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-char upap_rcsid[] = "$Id: upap.c,v 1.6 1999/11/10 08:01:33 werner Exp $";
+char upap_rcsid[] = "$Id: upap.c,v 1.7 2004/02/12 11:27:39 keil Exp $";
 
 /*
  * TODO:
@@ -113,9 +113,9 @@ void set_userip(char *ruser,int ruserlen)
 			ofs = strcspn(lip, " \n\t\r\n");
 			lip[ofs] = '\0';
 			if (!strcmp(name, lname)) {
-				unsigned long int ip;
-				if (inet_aton(lip, (struct in_addr *)&ip)) {
-					wo->hisaddr = ip;
+				struct in_addr ip;
+				if (inet_aton(lip, &ip)) {
+					wo->hisaddr = ip.s_addr;
 					UPAPDEBUG((LOG_INFO, "set_userip: found users(%s) ip(%s).",lname, lip)); 
 				}
 				break;
