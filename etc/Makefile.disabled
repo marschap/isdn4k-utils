@@ -14,7 +14,7 @@ config: warn
 clean:
 
 distclean:
-	rm -f Makefile
+	rm -f Makefile config.log confdefs.h
 
 warn:
 	@echo ""
