@@ -1,7 +1,11 @@
 /*
- * $Id: capiinit.c,v 1.16 2004/01/19 09:15:57 calle Exp $
+ * $Id: capiinit.c,v 1.17 2005/02/21 17:52:00 keil Exp $
  *
  * $Log: capiinit.c,v $
+ * Revision 1.17  2005/02/21 17:52:00  keil
+ * * have a seperate config directory for firmware
+ * * have a seperate config directory for card tools
+ *
  * Revision 1.16  2004/01/19 09:15:57  calle
  * Always use capifs, don't trust devfs.
  *
@@ -90,6 +94,7 @@ static char capidevnamenew[] = "/dev/isdn/capi20";
 static char *capidevname = capidevnameold;
 
 static char *firmwarepath[] = {
+	"/lib/firmware/isdn",
 	"/usr/share/isdn",
 	"/usr/lib/isdn",
 	"/lib/isdn",

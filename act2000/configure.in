@@ -4,9 +4,9 @@ AC_PREFIX_DEFAULT(/usr)
 
 I4LCONFDIR=${I4LCONFDIR:-"/etc/isdn"}
 I4LVERSION=${I4LVERSION:-"?.?"}
-CONFIG_DATADIR=${CONFIG_DATADIR:-"/usr/lib/isdn"}
+CONFIG_DATADIR=${CONFIG_FIRMWAREDIR:-"/usr/lib/isdn"}
 CONFIG_MANDIR=`eval echo ${CONFIG_MANDIR:-"/usr/man"}`
-CONFIG_SBINDIR=`eval echo ${CONFIG_SBINDIR:-"/sbin"}`
+CONFIG_SBINDIR=`eval echo ${CONFIG_CARD_SBINDIR:-"/sbin"}`
 MANDATE=`grep CHECKIN actctrl.man.in | awk '{print $4}'`
 
 dnl Checks for programs.

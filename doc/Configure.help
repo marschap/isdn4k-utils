@@ -44,12 +44,23 @@ CONFIG_SBINDIR
   administrative programs. All other programs are installed in
   another directory, configurable in the previous option.
 
+Directory to install card configuration tools
+CONFIG_CARD_SBINDIR
+  This option tess the installation process, where to put the
+  card configurationtools. All other programs are installed in
+  another directories, configurable in the previous options.
+
 Directory to install man pages
 CONFIG_MANDIR
   This option tells the installation process, where to put the
   man pages. This is usually /usr/man or /usr/local/man. The
   man pages go into some subdirectory below this directory
   depending on the section they belong to.
+
+Directory to install firmware
+CONFIG_FIRMWAREDIR
+  With this option, the directory for the firmware images of
+  the various active cards can be selected.
 
 CONFIG_RUNDIR
   Some applications create special files for managing their
@@ -110,7 +121,7 @@ CONFIG_LIB_AREACODE
 
 CONFIG_DATADIR
   With this option, the directory for the areacode database and
-  the firmware images of the various active cards can be selected.
+  other databases can be selected.
 
 Build isdnctrl tool
 CONFIG_ISDNCTRL

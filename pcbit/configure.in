@@ -3,7 +3,7 @@ AC_INIT(convhexbin.c)
 AC_PREFIX_DEFAULT(/usr)
 
 I4LVERSION=${I4LVERSION:-"?.?"}
-CONFIG_SBINDIR=${CONFIG_SBINDIR:-"/sbin"}
+CONFIG_SBINDIR=${CONFIG_CARD_SBINDIR:-"/sbin"}
 CONFIG_MANDIR=${CONFIG_MANDIR:-"/usr/man"}
 MANDATE=`grep CHECKIN pcbitctl.man.in | awk '{print $4}'`
 dnl Checks for programs.

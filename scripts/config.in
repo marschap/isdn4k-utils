@@ -1,5 +1,5 @@
 #
-# $Id: config.in,v 1.36 2000/06/20 10:16:16 keil Exp $
+# $Id: config.in,v 1.37 2005/02/21 17:52:08 keil Exp $
 #
 # The whole configuration stuff is borrowed from the kernel
 # configuration.
@@ -25,7 +25,9 @@ string 'Kernel source directory' CONFIG_KERNELDIR
 comment 'Destination directories'
 string 'Directory to install binaries' CONFIG_BINDIR
 string 'Directory to install admin binaries' CONFIG_SBINDIR
+string 'Directory to install card configuration tools' CONFIG_CARD_SBINDIR
 string 'Directory to install man pages' CONFIG_MANDIR
+string 'Directory to install firmware' CONFIG_FIRMWAREDIR
 comment 'Runtime defaults'
 string 'Write .pid files here' CONFIG_RUNDIR
 string 'Write lock files here' CONFIG_LOCKDIR
@@ -68,6 +70,7 @@ bool 'icnctrl' CONFIG_ICNCTRL
 if [ "$CONFIG_ICNCTRL" = "y" ]; then
 	bool 'Enable icnctrl debug-option' CONFIG_ICNCTRL_DEBUG
 fi
+bool 'actctrl' CONFIG_ACTCTRL
 bool 'pcbitctl' CONFIG_PCBITCTL
 bool 'avmcapictrl / capiinit' CONFIG_AVMCAPICTRL
 if [ -f $CONFIG_KERNELDIR/drivers/isdn/act2000/act2000.h ] ; then
