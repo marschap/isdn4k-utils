@@ -1,7 +1,11 @@
 /*
- * $Id: capi20.h,v 1.8 1999/12/06 17:08:30 calle Exp $
+ * $Id: capi20.h,v 1.9 2000/03/03 15:56:14 calle Exp $
  *
  * $Log: capi20.h,v $
+ * Revision 1.9  2000/03/03 15:56:14  calle
+ * - now uses cloning device /dev/capi20.
+ * - middleware extentions prepared.
+ *
  * Revision 1.8  1999/12/06 17:08:30  calle
  * - Splitted capi20.h into capi20.h and capiutils.h.
  *   - capi20.h: the functions from the CAPI-2.0 Spec
@@ -46,6 +50,17 @@ unsigned capi20_isinstalled (void);
 int capi20_fileno(unsigned ApplID);
 
 /* end standard CAPI2.0 functions */
+
+int capi20_get_flags(unsigned ApplID, unsigned *flagsptr);
+int capi20_set_flags(unsigned ApplID, unsigned flags);
+int capi20_clr_flags(unsigned ApplID, unsigned flags);
+
+char *capi20_get_tty_devname(unsigned applid, unsigned ncci,
+				char *buf, size_t size);
+char *capi20_get_raw_devname(unsigned applid, unsigned ncci,
+				char *buf, size_t size);
+
+int capi20_ncci_opencount(unsigned applid, unsigned ncci);
 
 #ifdef __cplusplus
 }
