@@ -1,4 +1,4 @@
-/* $Id: zone.c,v 1.21 2001/06/12 14:24:17 paul Exp $
+/* $Id: zone.c,v 1.22 2001/10/15 11:35:46 leo Exp $
  *
  * Zonenberechnung
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: zone.c,v $
+ * Revision 1.22  2001/10/15 11:35:46  leo
+ * fixed cdb zonefiles
+ *
  * Revision 1.21  2001/06/12 14:24:17  paul
  * zone.c and mkzonedb.c now understand filename "-" to mean stdin.
  *
@@ -130,13 +133,16 @@
 #ifdef STANDALONE
 #include <stdlib.h>
 #include <stdio.h>
+#ifdef __GLIBC__
+# define __USE_GNU  /* for declaration of basename() */
+#endif
 #include <string.h>
 #include <ctype.h>
 #include <stdarg.h>
 #include <time.h>
 #include <unistd.h>
 #include <errno.h>
-#ifndef __GLIBC__
+#if !defined(__GLIBC__) && !defined(basename)
 extern const char *basename (const char *name);
 #endif
 #else

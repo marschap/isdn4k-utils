@@ -5,6 +5,6 @@ uint32 h;
 unsigned int c;
 {
   h += (h << 5);
-  h ^= (uint32)c;
+  h ^= (uint32) (unsigned char)c;
   return h;
 }
