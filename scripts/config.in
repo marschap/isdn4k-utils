@@ -18,12 +18,15 @@ string 'General configuration directory' CONFIG_I4LCONFDIR /etc/isdn
 string 'Directory to install binaries' CONFIG_BINDIR /usr/bin
 string 'Directory to install admin binaries' CONFIG_SBINDIR /sbin
 string 'Directory to install man pages' CONFIG_MANDIR /usr/man
+mainmenu_option nextcomment
 comment 'General configuration tools'
 bool 'isdnctrl' CONFIG_ISDNCTRL
 if [ "$CONFIG_ISDNCTRL" = "y" ]; then
   bool 'Enable isdnctrl debug-option' CONFIG_ISDNCTRL_DEBUG
 fi
 bool 'iprofd' CONFIG_IPROFD
+endmenu
+mainmenu_option nextcomment
 comment 'Card configuration tools'
 bool 'telesctrl' CONFIG_TELESCTRL
 bool 'hisaxctrl' CONFIG_HISAXCTRL
@@ -32,6 +35,8 @@ if [ "$CONFIG_ICNCTRL" = "y" ]; then
   bool 'Enable icnctl debug-option' CONFIG_ICNCTRL_DEBUG
 fi
 bool 'pcbitctl' CONFIG_PCBITCTL
+endmenu
+mainmenu_option nextcomment
 comment 'Tools for monitoring activity'
 bool 'imon' CONFIG_IMON
 bool 'isdnlog' CONFIG_ISDNLOG
@@ -44,14 +49,19 @@ if [ "$CONFIG_XMONISDN" = "y" ] && [ "$CONFIG_HASX11" = "y" ]; then
 	string 'NetDOWN command for xmonisdn' CONFIG_XMONISDN_DOWNCMD '/sbin/netdown'
 fi
 dep_bool 'xisdnload' CONFIG_XISDNLOAD CONFIG_HASX11
+endmenu
+mainmenu_option nextcomment
 comment 'Applications'
 bool 'vbox' CONFIG_VBOX
 if [ "$CONFIG_VBOX" = "y" ]; then
   source vbox/.Config.in
 fi
+endmenu
+mainmenu_option nextcomment
 comment 'General documentation'
 bool 'Install generic pages' CONFIG_GENMAN
 bool 'Generate FAQ' CONFIG_FAQ
 if [ "$CONFIG_FAQ" = "y" ]; then
   string 'Directory to install FAQ' CONFIG_FAQDIR /usr/doc/faq/isdn4linux
 fi
+endmenu
