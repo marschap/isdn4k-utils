@@ -1,16 +1,14 @@
 Installation instructions for eftp4linux
 
-First, you need to compile 2.2.x kernel with x25 support enabled.
-You also need a recent version of the isdn4k-utils compiled against
-2.2.x kernel header files and the x25 utility programmes.
-
-
 Kernel
 ======
 
 You need a recent kernel 2.2.x kernel that supports some special
-features.  2.0.x kernels won't work. When configuring the kernel for
-compilation, (i.e. by `make menuconfig') enable the following:
+features.  2.0.x kernels won't work. As erly 2.2.x kernels contain
+outdated isdn code, it is recommended to use kernel 2.2.12 or newer.
+
+When configuring the kernel for compilation, (i.e. by `make
+menuconfig') enable the following:
 
 
 Code maturity level options  --->
@@ -59,14 +57,12 @@ ix25-2.1.128.patch	fixes a bug in the Linus X.25 PLP layer. This is
 			at the very end of include/net/x25.h
 			before compiling the kernel.
 
-isdn4linux CVS snapshot has been reported to work more reliably with
-			2.2.x-kernels. It also provides for a
-			feature useful for eftd to reliably determine
-			the peer's isdn No.
-			
-			Kernels 2.3.4 and newer now contain the new
-			isdn4linux-code. You can try this (but be
-			aware that 2.3.x are the non-stable kernels).
+isdn4linux CVS snapshot can be used to replace your kernel's isdn
+			subsystem whith a more recent versions.
+
+			As Kernels 2.2.12 and 2.3.14 now contain
+			up-to-date isdn versions, this should no longer
+			be necessary.
 	
 
 isdn4k-utils

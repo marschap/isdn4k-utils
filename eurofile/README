@@ -1,4 +1,4 @@
-$Id: README,v 1.3 1999/07/26 22:04:26 he Exp $
+$Id: README,v 1.4 1999/08/28 16:34:53 he Exp $
 
 README file for eftp4linux
 ==========================
@@ -94,17 +94,9 @@ Details on this test distribution
 
 In addition to the files contained in this distribution, you will need
 
-- A recent Linux 2.2.x kernel (2.2.1 or newer is recommended).
+- A recent Linux 2.2.x kernel (2.2.12 or newer is recommended).
 
-  It is also possible to replace the isdn subsystem by a recent snapshot
-  from the isdn4linux CVS server. This is not necessary, but the
-  CVS version has been reported to work more reliably with recent
-  kernels. The CVS versions as well as kernels >= 2.3.4 also supports
-  a new IOCTL which can be used
-  by eftd for reliably identifying the isdn peer by means of the
-  remote phone number.
-
-  There is also a patch ix25-2.1.128.diff that deals with a low layer
+- There is also a patch ix25-2.1.128.diff that deals with a low layer
   (X.25) interworking problem observed with some clients
   (CSD isdn toolbox and maybe also some RVS clients). They send
   misformatted X.25 call request packets that confuse the linux X.25 layer.
