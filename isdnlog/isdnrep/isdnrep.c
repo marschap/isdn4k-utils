@@ -1,4 +1,4 @@
-/* $Id: isdnrep.c,v 1.31 1997/09/07 00:43:22 luethje Exp $
+/* $Id: isdnrep.c,v 1.32 1998/02/13 07:01:49 calle Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -20,6 +20,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnrep.c,v $
+ * Revision 1.32  1998/02/13 07:01:49  calle
+ * small fix inside ISDN_NL.
+ *
  * Revision 1.31  1997/09/07 00:43:22  luethje
  * create new error messages for isdnrep
  *
@@ -859,7 +862,7 @@ static int print_bottom(double unit, char *start, char *stop)
 		          'x', S_UNKNOWN,
 		          known[knowns-1]->usage[DIALOUT], double2clock(known[knowns-1]->dur[DIALOUT]),
 #ifdef ISDN_NL
-		          print_currency(known[knowns-1]->eh * unit + known[knowns-1]->usage * 0.0825,0));
+		          print_currency(known[knowns-1]->eh * unit + known[knowns-1]->usage[DIALOUT] * 0.0825,0));
 #else
 		          print_currency(known[knowns-1]->eh * unit, 0));
 #endif
