@@ -502,6 +502,115 @@ Wie <em/vboxgetty/ selbst gestartet werden kann, lesen Sie bitte unter
 <sect1>vboxgetty.conf<label id="id-config-vboxgetty-conf">
 
 <p>
+Die Datei ``<em><file>&lt;sysconfdir&gt;/vboxgetty.conf</file></em>''
+dient zur globalen Einstellung eines <em/vboxgetty/.
+</p>
+
+<p>
+Die Einstellungen können wie folgt angegeben werden:
+<tscreen><verb>
+name = value
+</verb></tscreen>
+</p>
+
+<p>
+Wobei ``<bf/name/'' für die zu setzende Variable und ``<bf/value/''
+für den zu setzenden Wert steht. Vor und nach dem ``<tt/=/'' kann mit
+Leerzeichen oder Tabulatoren getrennt werden. Kommentare am Ende einer
+Zeile sind nicht möglich!.
+</p>
+
+<p>
+Leere Zeilen und solche die mit einem ``<tt/#/'' beginnen werden
+überlesen. Eine Zeile darf nicht länger als 200 Zeichen werden!
+</p>
+
+<p>
+Für ``<bf/name/'' können folgende Schlüsselworte verwendet werden:
+
+<descrip>
+
+<tag/init/
+Kommando mit dem das Modem initialisiert werden soll. Voreinstellung
+ist <bf/<tt/ATZ&amp;B512//.
+
+<tag/initnumber/
+Kommando mit dem die Nummern eingestellt werden sollen auf die
+<em/vboxgetty/ reagieren soll. Hierzu kann der neue AT-Befehl
+``<tt/AT&amp;L/'' verwendet werden. Bei diesem Befehl können mehrere
+Nummern durch ``<tt/;/'' getrennt angegeben werden. Zudem sind
+einfache Musterangaben wie ``<tt/*/'' und ``<tt/?/'' möglich. Der in
+früheren Versionen benutzte Befehl ``<tt/AT&amp;E/'' kann ebenfalls
+wieder verwendet werden. Es existiert keine Voreinstellung!
+
+<tag/badinitsexit/
+Gibt an, nach wievielen fehlerhaften Modeminitalisierungen sich
+<em/vboxgetty/ beenden soll. Voreinstellung ist <bf/<tt/10// mal.
+
+<tag/commandtimeout/
+Anzahl Sekunden die maximal auf die Antwort eines Modemkommandos
+gewartet werden soll. Voreinstellung ist <bf/<tt/4// Sekunden.
+
+<tag/echotimeout/
+Anzahl Sekunden die maximal auf das Echo eines Modemkommandos gewartet
+werden soll. Voreinstellung ist <bf/<tt/4// Sekunden.
+
+<tag/ringtimeout/
+Anzahl der Sekunden die maximal auf einen RING gewartet werden
+soll. Voreinstellung ist <bf/<tt/6// Sekunden.
+
+<tag/alivetimeout/
+Anzahl der Sekunden nach denen überprüft werden soll ob das Modem noch
+antwortet. Die Überprüfung erfolgt nur, wenn innerhalb dieser Zeit
+keine Aktivität vom Modem festgestellt wurde. Voreinstellung ist
+<bf/<tt/1800// Sekunden.
+
+<tag/toggledtrtime/
+Anzahl der Millisekunden die die <tt/DTR/-Leitung auf Low gelegt
+werden soll um das Modem aufzulegen. Voreinstellung ist <bf/<tt/400//
+Millisekunden.
+
+<tag/spooldir/
+Angabe wo sich die Spoolverzeichnisse der Benutzer
+befinden. Voreinstellung ist <bf><tt>/var/spool/vbox</tt></bf>.
+
+</descrip>
+</p>
+
+<p>
+Die Datei ``<em/vboxgetty.conf/'' wird von <bf/jedem/ <em/vboxgetty/
+eingelesen.
+</p>
+
+<p>
+Nach abarbeitung dieser Datei wird versucht
+``<em/vboxgetty.conf.&lt;tty&gt;/'' zu laden (wobei <em/&lt;tty&gt;/
+für den Namen des von <em/vboxgetty/ verwendeten tty's
+steht). Existiert diese Datei, können damit die Einstellungen aus
+``<em/vboxgetty.conf/'' überschrieben werden!
+</p>
+
+<p>
+Beispiel der Datei ``<em/vboxgetty.conf/'':
+
+<tscreen><verb>
+# Global vboxgetty configuration. Please take a look at the documentation
+# to learn how the configuration work!
+
+init            AT&amp;B512
+spooldir        /var/spool/vbox
+</verb></tscreen>
+</p>
+
+<p>
+Beispiel der Datei ``<em/vboxgetty.conf.ttyI0/'':
+
+<tscreen><verb>
+# vboxgetty configuration for ttyI0. Please take a look at the
+# documentation to learn how the configuration work!
+
+initnumber      AT&amp;L784711;784712;78471[34];78472?
+</verb></tscreen>
 </p>
 
 <!-- #===================================================================# -->
@@ -586,7 +695,7 @@ konnte!
 </p>
 
 <p>
-<bf/Beispiel der Datei ``<em/vboxgetty.user/'':/
+Beispiel der Datei ``<em/vboxgetty.user/'':
 
 <tscreen><verb>
 # Number to user mapping. Please read the documentation to learn how this
@@ -603,13 +712,468 @@ konnte!
 </verb></tscreen>
 </p>
 
+<!-- #===================================================================# -->
+<!-- #                               VBOXRC                              # -->
+<!-- #===================================================================# -->
+
+<sect1>vboxrc<label id="id-config-vboxrc">
+
+<p>
+Die Datei ``<em/vboxrc/'' muß für jeden Benutzer existieren (ansonsten
+wird der Anruf nicht angenommen) und befindet sich im Spoolverzeichnis
+des Benutzers (<em>&lt;spooldir&gt;/&lt;username&gt;</em>).
+</p>
+
+<p>
+Die Datei setzt sich aus mehreren Sektionen zusammen. Eine Sektion
+beginnt mit dem Zeichen ``<tt/[/'' gefolgt vom Sekionsnamen und wird
+mit dem Zeichen ``<tt/]/'' abgeschlossen. Die Sektion zählt bis zum
+nächsten Sektionsbeginn oder dem Ende der Datei.
+</p>
+
+<p>
+Leere Zeilen oder solche die mit einem ``<tt/#/'' beginnen werden
+überlesen. Eine Zeile darf nicht länger als 200 Zeichen werden!
+</p>
+
+<p>
+Mit dem Kommando ``<em/<file/mkvboxuserspool//'' (siehe <ref
+id="id-mkvboxuserspool" name="mkvboxuserspool">) können
+Spoolverzeichnisse für einzelne Benutzer angelegt werden. Der Befehl
+erzeugt zudem ein Beispiel der Datei ``<em/vboxrx/''. Die Datei wird
+dabei so angelegt, das jeder Anruf nach 5x Klingeln beantwortet wird.
+</p>
+
+<p>
+Hier ein Beispiel der Datei ``<em/vboxrc/'':
+
+<tscreen><verb>
+[CALLERID]
+
+931784711      -         Michael 'Ghandi' Herold
+93178471?      -         Nicole Sauvage
+*              *         *** Unknown ***
+
+[Michael 'Ghandi' Herold]
+*               *       answercall.tcl    240      4       0
+
+[Nicole Sauvage]
+*               *       answercall.tcl    120      4       0
+
+[DEFAULT]
+
+00:00-09:59     *       answercall.tcl    120      1       0
+*               *       answercall.tcl     90      6       4
+</verb></tscreen>
+</p>
+
+<p>
+Bevor die Datei ``<em/vboxrc/'' geladen wird, wird nach der Datei
+``<em/vboxrc.&lt;localphone&gt;/'' gesucht (<em/&lt;localphone&gt;/
+entspricht dabei der lokalen Telefonnummer die angerufen wurde).
+</p>
+
+<p>
+Existiert diese Datei, wie sie anstelle von ``<em/vboxrc/'' benutzt!
+</p>
+
+<p>
+Im weiteren werden hier die einzelnen möglichen Sektionen beschrieben.
+</p>
+
+<!-- #===================================================================# -->
+<!-- #                         SECTION CALLERID                          # -->
+<!-- #===================================================================# -->
+
+<sect2>CALLERID<label id="id-config-vboxrc-callerid">
+
+<p>
+In der Sektion ``<tt/[CALLERID]/'' wird festgelegt, welche Nummer
+welcher Person zugeordnet wird und welche Einstellungen benutzt werden
+sollen wenn ein Anruf von dieser Person eingeht.
+</p>
+
+<p>
+Einträge in dieser Sektion beginnen jeweils in einer neuen Zeile und
+werden wie folgt angegeben:
+
+<tscreen><verb>
+number section name
+</verb></tscreen>
+
+Die einzelnen Angaben müssen mit Leerzeichen oder Tabulator
+voneinander getrennt werden. Die Felder ``<em/number/'' und
+``<em/section/'' dürfen selbst keine Leerzeichen oder Tabulatoren
+enthalten!
+</p>
+
+<p>
+<descrip>
+
+<tag/number/
+Nummer der jeweiligen Person. Es können einfache Muster angegeben
+werden (siehe <em/fnmatch(3)/). Die Nummer muß jeweils so angegeben
+werden wie sie von <em/isdn4linux/ übermittelt wird.
+
+<tag/section/
+Name der Benutzersektion die bei einem Anruf dieser Person verwendet
+werden soll. Wird hier ein ``<tt/*/'' angegeben, wird die Sektion
+``<tt/[DEFAULT]/'' benutzt; bei einem ``<tt/-/'' wird ``<em/name/''
+als Name der Benutzersektion verwendet. Alle anderen Angaben werden
+als Name der Benutzersektion gewertet.
+
+<tag/name/
+Name der jeweiligen Person. Dieser Name wird z.B. in die von
+<em/vboxgetty/ erzeugten ``.vbox'' Dateien geschrieben.
+
+</descrip>
+</p>
+
+<!-- #===================================================================# -->
+<!-- #                           USER SECTIONS                           # -->
+<!-- #===================================================================# -->
+
+<sect2>Benutzersektionen<label id="id-config-vboxrc-user">
+
+<p>
+Benutzersektionen werden auf die gleiche Art definiert wie die fest
+von <em/vboxgetty/ benutzen Sektionen. Sie beginnen mit einem
+``<tt/[/'' gefolgt von einem frei wählbaren Namen und werden mit einem
+``<tt/]/'' abgeschlossen.
+</p>
+
+<p>
+Einträge in dieser Sektion beginnen jeweils in einer neuen Zeile und
+werden wie folgt angegeben:
+
+<tscreen><verb>
+time day scriptname savetime ringring tollring
+</verb></tscreen>
+
+Die einzelnen Angaben müssen mit Leerzeichen oder Tabulator
+voneinander getrennt werden.
+</p>
+
+<p>
+<descrip>
+
+<tag/time/
+Zeiten zu denen diese Einstellungen benutzt werden sollen. Das genaue
+Format einer Zeitangabe kann unter <ref id="id-config-time"
+name="Zeitangaben"> nachgelesen werden.
+
+<tag/day/
+Tage an denen diese Einstellungen benutzt werden sollen. Das genaue
+Format einer Tagesangabe kann unter <ref id="id-config-days"
+name="Tagesangaben"> nachgelesen werden.
+
+<tag/scriptname/
+Name des <em/Tcl/-Skriptes das zum beantworten dieses Anrufes benutzt
+werden soll. Pfadangaben im Skriptnamen werden automatisch
+entfernt. Das Skript wird zuerst im Verzeichnis
+``<em>&lt;spooldir&gt;/&lt;username&gt;/tscripts</em>'' und danach in
+``<em>&lt;pkgdatadir&gt;</em>'' gesucht (siehe auch <ref
+id="id-tcl-script-answercall" name="answercall.tcl">).
+
+<tag/savetime/
+Maximale Aufzeichnungszeit in Sekunden. Die Angabe wird dem Skript
+``<em/scriptname/'' als Variable übergeben und kann dort benutzt
+werden.
+
+<tag/ringring/
+Anzahl der Klingelzeichen nach denen der Anruf beantwortet werden
+soll. Wird hier <bf/<tt/0// angegeben, wird der Anruf ignoriert.
+
+<tag/tollring/
+Anzahl der Klingelzeichen nach denen der Anruf beantwortet werden
+soll, wenn im Spoolverzeichnis des jeweiligen Benutzers noch neue
+Nachrichten liegen. Wenn hier <bf/<tt/0// angegeben wird, wird nicht
+geprüft ob neue Nachrichten vorhanden sind; es gelten dann die Angaben
+von ``<em/ringring/''.
+
+</descrip>
+</p>
+
+<!-- #===================================================================# -->
+<!-- #                            TIME FORMAT                            # -->
+<!-- #===================================================================# -->
+
+<sect1>Zeitangaben<label id="id-config-time">
+
+<p>
+Einzelne Zeitangaben werden durch Kommata getrennt, Angaben von Start-
+und Endzeit durch ein Minuszeichen. Die Stundenangaben müssen im
+24-Stunden-Format - also von 0 Uhr bis 23 Uhr - gemacht werden.
+</p>
+
+<p>
+Die Zeitangaben werden intern immer in Start- und Endzeit umgerechnet,
+auch dann, wenn nur eine Startzeit angegeben ist.
+</p>
+
+<p>
+Nehmen wir zum Beispiel folgende Zeitangaben:
+
+<verb>
+20:15-21:14
+</verb>
+</p>
+
+<p>
+Diese Zeit wird intern in 20:15:00-21:14:59 umgerechnet, d.h. Start-
+und Endzeit sind <bf/inklusive/!
+</p>
+
+<p>
+Wenn bei einer Zeitangabe keine Minuten angebenen sind, wird bei der
+Startzeit 0 Minuten und bei der Endzeit 59 Minuten benutzt. Intern
+werden die Sekunden - die nicht einstellbar sind - nach dem gleichen
+Schema behandelt.
+</p>
+
+<p>
+<descrip>
+<tag>Beispiel:</tag>
+<itemize>
+<item><tt>20          -</tt> Umrechnung nach 20:00:00-20:59:59</item>
+<item><tt>20:15-21:14 -</tt> Umrechnung nach 20:15:00-21:14:59</item>
+<item><tt>08-11       -</tt> Umrechnung nach 08:00:00-11:59:59</item>
+<item><tt>12-15:30    -</tt> Umrechnung nach 12:00:00-15:30:59</item>
+</itemize>
+</descrip>
+</p>
+
+<p>
+Eine Zeitzone zählt als zutreffend (match) wenn die aktuelle Zeit
+größer/gleich der Startzeit <bf>und</bf> kleiner/gleich der Endzeit ist.
+</p>
+
+<p>
+Ein ``<tt>*</tt>'' als <bf>einzige</bf> Zeitangabe wird als
+<bf>immer</bf> behandelt, ein ``<tt>-</tt>'' als <bf>einzige</bf>
+Zeitangabe als <bf>nie</bf>.
+</p>
+
+<!-- #===================================================================# -->
+<!-- #                             DAY FORMAT                            # -->
+<!-- #===================================================================# -->
+
+<sect1>Tagesangaben<label id="id-config-days">
+
+<p>
+Einzelne Tagesangaben werden durch Kommanta getrennt. Eine Angabe von
+Start- und Ende ist hier nicht möglich.
+</p>
+
+<p>
+Folgende Tageskürzel können angegeben werden:
+
+<itemize>
+<item><tt>MO, MON</tt> - für Montag    </item>
+<item><tt>DI, TUE</tt> - für Dienstag  </item>
+<item><tt>MI, WED</tt> - für Mittwoch  </item>
+<item><tt>DO, THU</tt> - für Donnerstag</item>
+<item><tt>FR, FRI</tt> - für Freitag   </item>
+<item><tt>SA, SAT</tt> - für Samstag   </item>
+<item><tt>SO, SUN</tt> - für Sonntag   </item>
+</itemize>
+</p>
+
+<p>
+Eine Angabe von ``<tt/*/'' als <bf/einzige/ Tagesangabe heißt
+<bf/immer/, ein ``<tt/-/'' als <bf/einzige/ Tagesangabe <bf/nie/.
+</p>
+
+<!-- ********************************************************************* -->
+<!-- **                                                                 ** -->
+<!-- **                    K O N F I G U R A T I O N                    ** -->
+<!-- **                                                                 ** -->
+<!-- ********************************************************************* -->
+
+<sect>Tcl<label id="id-tcl">
+
+<!-- #===================================================================# -->
+<!-- #                              SCRIPTS                              # -->
+<!-- #===================================================================# -->
+
+<sect1>Skripte
+
+<p>
+Seit Version 2 unterstützt <em/vboxgetty/ die Verwendung von
+<em/Tcl/-Skripten, die während der Laufzeit ausgeführt werden können.
+</p>
+
+<p>
+Die Standard-Skripte von <em/vboxgetty/ befinden sich im Verzeichnis
+``<em/&lt;pkgdatadir&gt;/''.
+</p>
+
+<!-- #===================================================================# -->
+<!-- #                           INITMODEM.TCL                           # -->
+<!-- #===================================================================# -->
+
+<sect2>initmodem.tcl<label id="id-tcl-script-initmodem">
+
+<p>
+Das Skript ``<em/initmodem.tcl/'' wird jedesmal gestartet, wenn das
+Modem initialisiert werden soll.
+</p>
+
+<p>
+Liefert die Ausführung des Skripts einen Fehler zurück, gilt die
+Initialisierung als Fehlgeschlagen.
+</p>
+
+<p>
+Das Skript wird nur in ``<em/&lt;pkgdatadir&gt;/'' gesucht.
+</p>
+
+<p>
+Folgende Variablen werden von <em/vboxgetty/ definiert und können
+verwendet werden:
+
+<descrip>
+
+<tag/vbxv_init/
+Das in ``<em/vboxgetty.conf/'' eingestellte Initkommando
+``<em/init/''.
+
+<tag/vbxv_initnumber/
+Das in ``<em/vboxgetty.conf/'' eingestellte Initkommando
+``<em/initnumber/''.
+
+</descrip>
+</p>
+
+<p>
+<bf/Achtung:/ Das Skript wird unter <bf/root/-Rechten ausgeführt und
+sollte daher nicht von normalen Benutzern änderbar sein!
+</p>
+
+<!-- #===================================================================# -->
+<!-- #                           ANSWERCALL.TCL                          # -->
+<!-- #===================================================================# -->
+
+<sect2>answercall.tcl<label id="id-tcl-script-answercall">
+
+<p>
+Das Skript ``<em/answercall.tcl/'' (der Name kann sich je nach
+``<em/vboxrc/'' ändern) wird aufgerufen, nachdem der eingegangene
+Anruf beantwortet wurde.
+</p>
+
+<p>
+Das Skript wird zuerst im Verzeichnis
+``<em>&lt;spooldir&gt;/&lt;username&gt;/tscripts</em>'' und danach in
+``<em>&lt;pkgdatadir&gt;</em>'' gesucht.
+</p>
+
+<p>
+In diesem Skript werden die Ansagetexte abgespielt, Nachrichten
+aufgezeichnet und die Touchtones ausgewertet.
+</p>
+
+<p>
+Folgende Variablen werden von <em/vboxgetty/ definiert und können
+verwendet werden:
+
+<descrip>
+
+<tag/vbxv_savetime/
+Anzahl Sekunden die maximal aufgezeichnet werden soll (aus
+``<em/vboxrc/'').
+
+<tag/vbxv_callerid/
+Die <tt/CallerID/ des aktuellen Anrufers. Wenn die Variable
+<bf/<tt/0// enthält, verfügt der Anrufer nicht über eine CallerID.
+
+<tag/vbxv_callername/
+Der Name des aktuellen Anrufers (aus ``<em/vboxrc/'').
+
+<tag/vbxv_localphone/
+Die lokale Telefonnummer die angerufen wurde.
+
+<tag/vbxv_username/
+Der Name des aktuellen Benutzers (aus ``<em>/etc/passwd</em>'').
+
+<tag/vbxv_userhome/
+Das Spoolverzeichnis des aktuellen Benutzers.
+
+<tag/vbxv_usedscript/
+Der Name unter dem dieses Skript aufgerufen wurde.
+
+<tag/vbxv_saveulaw/
+Der Name der Datei unter dem die aufgezeichnete Nachricht gespeichert
+wird.
+
+<tag/vbxv_savevbox/
+Der Name der Datei unter dem Informationen zur aufgezeichneten
+Nachricht gespeichert werden.
+
+</descrip>
+</p>
+
+<p>
+Das Skript wird unter den Rechten des jeweiligen Benutzers ausgeführt.
+</p>
+
+<!-- #===================================================================# -->
+<!-- #                             DAY FORMAT                            # -->
+<!-- #===================================================================# -->
+
+<!-- #===================================================================# -->
+<!-- #                             DAY FORMAT                            # -->
+<!-- #===================================================================# -->
+
+<sect1>Neue Kommandos
 
 
+
+
+<!-- ********************************************************************* -->
+<!-- **                                                                 ** -->
+<!-- **                    K O N F I G U R A T I O N                    ** -->
+<!-- **                                                                 ** -->
+<!-- ********************************************************************* -->
 
 
 
 
 <sect>vboxgetty<label id="id-vboxgetty">
+
+<p>
+</p>
+
+<sect>mkvboxuserspool<label id="id-mkvboxuserspool">
+
+<p>
+</p>
+
+<sect>TODO
+
+<p>
+
+Hinweis zu:
+- SAFT (http://www.belwue.de/BelWue/software/saft/)
+- Sox
+- Rplay
+- NAS
+- isdn4linux
+- i4l FAQ's
+
+
+
+
+</p>
+
+
+
+
+
+
+
+
+
 
 <p>xxx</p>
 

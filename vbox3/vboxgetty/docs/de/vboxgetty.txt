@@ -36,8 +36,24 @@
 
      5.1 vboxgetty.conf
      5.2 vboxgetty.user
+     5.3 vboxrc
+        5.3.1 CALLERID
+        5.3.2 Benutzersektionen
+     5.4 Zeitangaben
+     5.5 Tagesangaben
 
-  6. vboxgetty
+  6. Tcl
+
+     6.1 Skripte
+        6.1.1 initmodem.tcl
+        6.1.2 answercall.tcl
+     6.2 Neue Kommandos
+
+  7. vboxgetty
+
+  8. mkvboxuserspool
+
+  9. TODO
 
   ______________________________________________________________________
 
@@ -324,6 +340,89 @@
 
   55..11..  vvbbooxxggeettttyy..ccoonnff
 
+  Die Datei ``_<_s_y_s_c_o_n_f_d_i_r_>_/_v_b_o_x_g_e_t_t_y_._c_o_n_f'' dient zur globalen
+  Einstellung eines _v_b_o_x_g_e_t_t_y.
+
+  Die Einstellungen können wie folgt angegeben werden:
+
+       name = value
+
+  Wobei ``nnaammee'' für die zu setzende Variable und ``vvaalluuee'' für den zu
+  setzenden Wert steht. Vor und nach dem ``='' kann mit Leerzeichen oder
+  Tabulatoren getrennt werden. Kommentare am Ende einer Zeile sind nicht
+  möglich!.
+
+  Leere Zeilen und solche die mit einem ``#'' beginnen werden überlesen.
+  Eine Zeile darf nicht länger als 200 Zeichen werden!
+
+  Für ``nnaammee'' können folgende Schlüsselworte verwendet werden:
+
+     iinniitt
+        Kommando mit dem das Modem initialisiert werden soll.
+        Voreinstellung ist ATZ&B512.
+
+     iinniittnnuummbbeerr
+        Kommando mit dem die Nummern eingestellt werden sollen auf die
+        _v_b_o_x_g_e_t_t_y reagieren soll. Hierzu kann der neue AT-Befehl
+        ``AT&L'' verwendet werden. Bei diesem Befehl können mehrere
+        Nummern durch ``;'' getrennt angegeben werden. Zudem sind
+        einfache Musterangaben wie ``*'' und ``?'' möglich. Der in
+        früheren Versionen benutzte Befehl ``AT&E'' kann ebenfalls
+        wieder verwendet werden. Es existiert keine Voreinstellung!
+
+     bbaaddiinniittsseexxiitt
+        Gibt an, nach wievielen fehlerhaften Modeminitalisierungen sich
+        _v_b_o_x_g_e_t_t_y beenden soll. Voreinstellung ist 10 mal.
+
+     ccoommmmaannddttiimmeeoouutt
+        Anzahl Sekunden die maximal auf die Antwort eines Modemkommandos
+        gewartet werden soll. Voreinstellung ist 4 Sekunden.
+
+     eecchhoottiimmeeoouutt
+        Anzahl Sekunden die maximal auf das Echo eines Modemkommandos
+        gewartet werden soll. Voreinstellung ist 4 Sekunden.
+
+     rriinnggttiimmeeoouutt
+        Anzahl der Sekunden die maximal auf einen RING gewartet werden
+        soll. Voreinstellung ist 6 Sekunden.
+
+     aalliivveettiimmeeoouutt
+        Anzahl der Sekunden nach denen überprüft werden soll ob das
+        Modem noch antwortet. Die Überprüfung erfolgt nur, wenn
+        innerhalb dieser Zeit keine Aktivität vom Modem festgestellt
+        wurde. Voreinstellung ist 1800 Sekunden.
+
+     ttoogggglleeddttrrttiimmee
+        Anzahl der Millisekunden die die DTR-Leitung auf Low gelegt
+        werden soll um das Modem aufzulegen. Voreinstellung ist 400
+        Millisekunden.
+
+     ssppoooollddiirr
+        Angabe wo sich die Spoolverzeichnisse der Benutzer befinden.
+        Voreinstellung ist /var/spool/vbox.
+
+  Die Datei ``_v_b_o_x_g_e_t_t_y_._c_o_n_f'' wird von jjeeddeemm _v_b_o_x_g_e_t_t_y eingelesen.
+
+  Nach abarbeitung dieser Datei wird versucht ``_v_b_o_x_g_e_t_t_y_._c_o_n_f_._<_t_t_y_>''
+  zu laden (wobei _<_t_t_y_> für den Namen des von _v_b_o_x_g_e_t_t_y verwendeten
+  tty's steht). Existiert diese Datei, können damit die Einstellungen
+  aus ``_v_b_o_x_g_e_t_t_y_._c_o_n_f'' überschrieben werden!
+
+  Beispiel der Datei ``_v_b_o_x_g_e_t_t_y_._c_o_n_f'':
+
+  # Global vboxgetty configuration. Please take a look at the documentation
+  # to learn how the configuration work!
+
+  init            AT&B512
+  spooldir        /var/spool/vbox
+
+  Beispiel der Datei ``_v_b_o_x_g_e_t_t_y_._c_o_n_f_._t_t_y_I_0'':
+
+       # vboxgetty configuration for ttyI0. Please take a look at the
+       # documentation to learn how the configuration work!
+
+       initnumber      AT&L784711;784712;78471[34];78472?
+
   55..22..  vvbbooxxggeettttyy..uusseerr
 
   Ab Version 3 von _v_b_o_x kann ein _v_b_o_x_g_e_t_t_y mittels des Kommandos AT&L
@@ -361,7 +460,6 @@
         namentlich oder als GID (eingeleitet mit einem ``#'') angegeben
         werden.  Bei einem leeren Feld wird keine Gruppe gesetzt. Das
         Feld ist optional und muß nicht angegeben werden.
-
      uummaasskk
         Die Maske die zum anlegen von neuen Dateien oder Verzeichnissen
         benutzt werden soll. Bei einem leeren Feld wird die Maske
@@ -379,7 +477,7 @@
   existiert oder der angerufenen Nummer kein Benutzer zugeordnet werden
   konnte!
 
-  BBeeiissppiieell ddeerr DDaatteeii ````_v_b_o_x_g_e_t_t_y_._u_s_e_r''''::
+  Beispiel der Datei ``_v_b_o_x_g_e_t_t_y_._u_s_e_r'':
 
        # Number to user mapping. Please read the documentation to learn how this
        # configuration file work!
@@ -393,7 +491,284 @@
        78471?:firma:firma:0007:4000000
        *:#100:#500:0077:
 
-  66..  vvbbooxxggeettttyy
+  55..33..  vvbbooxxrrcc
+
+  Die Datei ``_v_b_o_x_r_c'' muß für jeden Benutzer existieren (ansonsten wird
+  der Anruf nicht angenommen) und befindet sich im Spoolverzeichnis des
+  Benutzers (_<_s_p_o_o_l_d_i_r_>_/_<_u_s_e_r_n_a_m_e_>).
+
+  Die Datei setzt sich aus mehreren Sektionen zusammen. Eine Sektion
+  beginnt mit dem Zeichen ``['' gefolgt vom Sekionsnamen und wird mit
+  dem Zeichen ``]'' abgeschlossen. Die Sektion zählt bis zum nächsten
+  Sektionsbeginn oder dem Ende der Datei.
+
+  Leere Zeilen oder solche die mit einem ``#'' beginnen werden
+  überlesen. Eine Zeile darf nicht länger als 200 Zeichen werden!
+
+  Mit dem Kommando ``_m_k_v_b_o_x_u_s_e_r_s_p_o_o_l'' (siehe ``mkvboxuserspool'')
+  können Spoolverzeichnisse für einzelne Benutzer angelegt werden. Der
+  Befehl erzeugt zudem ein Beispiel der Datei ``_v_b_o_x_r_x''. Die Datei wird
+  dabei so angelegt, das jeder Anruf nach 5x Klingeln beantwortet wird.
+
+  Hier ein Beispiel der Datei ``_v_b_o_x_r_c'':
+
+  [CALLERID]
+
+  931784711      -         Michael 'Ghandi' Herold
+  93178471?      -         Nicole Sauvage
+  *              *         *** Unknown ***
+
+  [Michael 'Ghandi' Herold]
+  *               *       answercall.tcl    240      4       0
+
+  [Nicole Sauvage]
+  *               *       answercall.tcl    120      4       0
+
+  [DEFAULT]
+
+  00:00-09:59     *       answercall.tcl    120      1       0
+  *               *       answercall.tcl     90      6       4
+
+  Bevor die Datei ``_v_b_o_x_r_c'' geladen wird, wird nach der Datei
+  ``_v_b_o_x_r_c_._<_l_o_c_a_l_p_h_o_n_e_>'' gesucht (_<_l_o_c_a_l_p_h_o_n_e_> entspricht dabei der
+  lokalen Telefonnummer die angerufen wurde).
+
+  Existiert diese Datei, wie sie anstelle von ``_v_b_o_x_r_c'' benutzt!
+
+  Im weiteren werden hier die einzelnen möglichen Sektionen beschrieben.
+
+  55..33..11..  CCAALLLLEERRIIDD
+
+  In der Sektion ``[CALLERID]'' wird festgelegt, welche Nummer welcher
+  Person zugeordnet wird und welche Einstellungen benutzt werden sollen
+  wenn ein Anruf von dieser Person eingeht.
+
+  Einträge in dieser Sektion beginnen jeweils in einer neuen Zeile und
+  werden wie folgt angegeben:
+
+       number section name
+
+  Die einzelnen Angaben müssen mit Leerzeichen oder Tabulator
+  voneinander getrennt werden. Die Felder ``_n_u_m_b_e_r'' und ``_s_e_c_t_i_o_n''
+  dürfen selbst keine Leerzeichen oder Tabulatoren enthalten!
+
+     nnuummbbeerr
+        Nummer der jeweiligen Person. Es können einfache Muster
+        angegeben werden (siehe _f_n_m_a_t_c_h_(_3_)). Die Nummer muß jeweils so
+        angegeben werden wie sie von _i_s_d_n_4_l_i_n_u_x übermittelt wird.
+
+     sseeccttiioonn
+        Name der Benutzersektion die bei einem Anruf dieser Person
+        verwendet werden soll. Wird hier ein ``*'' angegeben, wird die
+        Sektion ``[DEFAULT]'' benutzt; bei einem ``-'' wird ``_n_a_m_e'' als
+        Name der Benutzersektion verwendet. Alle anderen Angaben werden
+        als Name der Benutzersektion gewertet.
+
+     nnaammee
+        Name der jeweiligen Person. Dieser Name wird z.B. in die von
+        _v_b_o_x_g_e_t_t_y erzeugten ``.vbox'' Dateien geschrieben.
+
+  55..33..22..  BBeennuuttzzeerrsseekkttiioonneenn
+
+  Benutzersektionen werden auf die gleiche Art definiert wie die fest
+  von _v_b_o_x_g_e_t_t_y benutzen Sektionen. Sie beginnen mit einem ``['' gefolgt
+  von einem frei wählbaren Namen und werden mit einem ``]''
+  abgeschlossen.
+
+  Einträge in dieser Sektion beginnen jeweils in einer neuen Zeile und
+  werden wie folgt angegeben:
+
+       time day scriptname savetime ringring tollring
+
+  Die einzelnen Angaben müssen mit Leerzeichen oder Tabulator
+  voneinander getrennt werden.
+
+     ttiimmee
+        Zeiten zu denen diese Einstellungen benutzt werden sollen. Das
+        genaue Format einer Zeitangabe kann unter ``Zeitangaben''
+        nachgelesen werden.
+
+     ddaayy
+        Tage an denen diese Einstellungen benutzt werden sollen. Das
+        genaue Format einer Tagesangabe kann unter ``Tagesangaben''
+        nachgelesen werden.
+
+     ssccrriippttnnaammee
+        Name des _T_c_l-Skriptes das zum beantworten dieses Anrufes benutzt
+        werden soll. Pfadangaben im Skriptnamen werden automatisch
+        entfernt. Das Skript wird zuerst im Verzeichnis
+        ``_<_s_p_o_o_l_d_i_r_>_/_<_u_s_e_r_n_a_m_e_>_/_t_s_c_r_i_p_t_s'' und danach in
+        ``_<_p_k_g_d_a_t_a_d_i_r_>'' gesucht (siehe auch ``answercall.tcl'').
+
+     ssaavveettiimmee
+        Maximale Aufzeichnungszeit in Sekunden. Die Angabe wird dem
+        Skript ``_s_c_r_i_p_t_n_a_m_e'' als Variable übergeben und kann dort
+        benutzt werden.
+
+     rriinnggrriinngg
+        Anzahl der Klingelzeichen nach denen der Anruf beantwortet
+        werden soll. Wird hier 0 angegeben, wird der Anruf ignoriert.
+
+     ttoollllrriinngg
+        Anzahl der Klingelzeichen nach denen der Anruf beantwortet
+        werden soll, wenn im Spoolverzeichnis des jeweiligen Benutzers
+        noch neue Nachrichten liegen. Wenn hier 0 angegeben wird, wird
+        nicht geprüft ob neue Nachrichten vorhanden sind; es gelten dann
+        die Angaben von ``_r_i_n_g_r_i_n_g''.
+
+  55..44..  ZZeeiittaannggaabbeenn
+
+  Einzelne Zeitangaben werden durch Kommata getrennt, Angaben von Start-
+  und Endzeit durch ein Minuszeichen. Die Stundenangaben müssen im
+  24-Stunden-Format - also von 0 Uhr bis 23 Uhr - gemacht werden.
+
+  Die Zeitangaben werden intern immer in Start- und Endzeit umgerechnet,
+  auch dann, wenn nur eine Startzeit angegeben ist.
+
+  Nehmen wir zum Beispiel folgende Zeitangaben:
+
+  20:15-21:14
+
+  Diese Zeit wird intern in 20:15:00-21:14:59 umgerechnet, d.h. Start-
+  und Endzeit sind iinnkklluussiivvee!
+
+  Wenn bei einer Zeitangabe keine Minuten angebenen sind, wird bei der
+  Startzeit 0 Minuten und bei der Endzeit 59 Minuten benutzt. Intern
+  werden die Sekunden - die nicht einstellbar sind - nach dem gleichen
+  Schema behandelt.
+
+     BBeeiissppiieell::
+
+     ·  20          - Umrechnung nach 20:00:00-20:59:59
+
+     ·  20:15-21:14 - Umrechnung nach 20:15:00-21:14:59
+
+     ·  08-11       - Umrechnung nach 08:00:00-11:59:59
+
+     ·  12-15:30    - Umrechnung nach 12:00:00-15:30:59
+
+  Eine Zeitzone zählt als zutreffend (match) wenn die aktuelle Zeit
+  größer/gleich der Startzeit uunndd kleiner/gleich der Endzeit ist.
+
+  Ein ``*'' als eeiinnzziiggee Zeitangabe wird als iimmmmeerr behandelt, ein ``-''
+  als eeiinnzziiggee Zeitangabe als nniiee.
+
+  55..55..  TTaaggeessaannggaabbeenn
+
+  Einzelne Tagesangaben werden durch Kommanta getrennt. Eine Angabe von
+  Start- und Ende ist hier nicht möglich.
+
+  Folgende Tageskürzel können angegeben werden:
+
+  ·  MO, MON - für Montag
+
+  ·  DI, TUE - für Dienstag
+
+  ·  MI, WED - für Mittwoch
+
+  ·  DO, THU - für Donnerstag
+
+  ·  FR, FRI - für Freitag
+
+  ·  SA, SAT - für Samstag
+
+  ·  SO, SUN - für Sonntag
+
+  Eine Angabe von ``*'' als eeiinnzziiggee Tagesangabe heißt iimmmmeerr, ein ``-''
+  als eeiinnzziiggee Tagesangabe nniiee.
+
+  66..  TTccll
+
+  66..11..  SSkkrriippttee
+
+  Seit Version 2 unterstützt _v_b_o_x_g_e_t_t_y die Verwendung von _T_c_l-Skripten,
+  die während der Laufzeit ausgeführt werden können.
+
+  Die Standard-Skripte von _v_b_o_x_g_e_t_t_y befinden sich im Verzeichnis
+  ``_<_p_k_g_d_a_t_a_d_i_r_>''.
+
+  66..11..11..  iinniittmmooddeemm..ttccll
+
+  Das Skript ``_i_n_i_t_m_o_d_e_m_._t_c_l'' wird jedesmal gestartet, wenn das Modem
+  initialisiert werden soll.
+
+  Liefert die Ausführung des Skripts einen Fehler zurück, gilt die
+  Initialisierung als Fehlgeschlagen.
+
+  Das Skript wird nur in ``_<_p_k_g_d_a_t_a_d_i_r_>'' gesucht.
+
+  Folgende Variablen werden von _v_b_o_x_g_e_t_t_y definiert und können verwendet
+  werden:
+
+     vvbbxxvv__iinniitt
+        Das in ``_v_b_o_x_g_e_t_t_y_._c_o_n_f'' eingestellte Initkommando ``_i_n_i_t''.
+
+     vvbbxxvv__iinniittnnuummbbeerr
+        Das in ``_v_b_o_x_g_e_t_t_y_._c_o_n_f'' eingestellte Initkommando
+        ``_i_n_i_t_n_u_m_b_e_r''.
+
+  AAcchhttuunngg:: Das Skript wird unter rroooott-Rechten ausgeführt und sollte
+  daher nicht von normalen Benutzern änderbar sein!
+
+  66..11..22..  aannsswweerrccaallll..ttccll
+
+  Das Skript ``_a_n_s_w_e_r_c_a_l_l_._t_c_l'' (der Name kann sich je nach ``_v_b_o_x_r_c''
+  ändern) wird aufgerufen, nachdem der eingegangene Anruf beantwortet
+  wurde.
+
+  Das Skript wird zuerst im Verzeichnis
+  ``_<_s_p_o_o_l_d_i_r_>_/_<_u_s_e_r_n_a_m_e_>_/_t_s_c_r_i_p_t_s'' und danach in ``_<_p_k_g_d_a_t_a_d_i_r_>''
+  gesucht.
+
+  In diesem Skript werden die Ansagetexte abgespielt, Nachrichten
+  aufgezeichnet und die Touchtones ausgewertet.
+
+  Folgende Variablen werden von _v_b_o_x_g_e_t_t_y definiert und können verwendet
+  werden:
+
+     vvbbxxvv__ssaavveettiimmee
+        Anzahl Sekunden die maximal aufgezeichnet werden soll (aus
+        ``_v_b_o_x_r_c'').
+
+     vvbbxxvv__ccaalllleerriidd
+        Die CallerID des aktuellen Anrufers. Wenn die Variable 0
+        enthält, verfügt der Anrufer nicht über eine CallerID.
+
+     vvbbxxvv__ccaalllleerrnnaammee
+        Der Name des aktuellen Anrufers (aus ``_v_b_o_x_r_c'').
+
+     vvbbxxvv__llooccaallpphhoonnee
+        Die lokale Telefonnummer die angerufen wurde.
+
+     vvbbxxvv__uusseerrnnaammee
+        Der Name des aktuellen Benutzers (aus ``_/_e_t_c_/_p_a_s_s_w_d'').
+
+     vvbbxxvv__uusseerrhhoommee
+        Das Spoolverzeichnis des aktuellen Benutzers.
+
+     vvbbxxvv__uusseeddssccrriipptt
+        Der Name unter dem dieses Skript aufgerufen wurde.
+
+     vvbbxxvv__ssaavveeuullaaww
+        Der Name der Datei unter dem die aufgezeichnete Nachricht
+        gespeichert wird.
+
+     vvbbxxvv__ssaavveevvbbooxx
+        Der Name der Datei unter dem Informationen zur aufgezeichneten
+        Nachricht gespeichert werden.
+
+  Das Skript wird unter den Rechten des jeweiligen Benutzers ausgeführt.
+
+  66..22..  NNeeuuee KKoommmmaannddooss
+
+  77..  vvbbooxxggeettttyy
+
+  88..  mmkkvvbbooxxuusseerrssppooooll
+
+  99..  TTOODDOO
+
+  Hinweis zu: - SAFT (http://www.belwue.de/BelWue/software/saft/) - Sox
+  - Rplay - NAS - isdn4linux - i4l FAQ's
 
   xxx
 
