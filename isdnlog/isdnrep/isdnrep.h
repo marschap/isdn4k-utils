@@ -1,4 +1,4 @@
-/* $Id: isdnrep.h,v 1.14 1999/05/04 19:33:19 akool Exp $
+/* $Id: isdnrep.h,v 1.15 1999/07/12 11:37:37 calle Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,15 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnrep.h,v $
+ * Revision 1.15  1999/07/12 11:37:37  calle
+ * Bugfix: isdnrep defined print_msg as function pointer, the object files
+ *         in tools directory, declare it as external function.
+ * 	compiler and linker did not detect the problem.
+ * 	Now print_msg is a function in rep_main.c and I copied
+ * 	print_in_modules from isdnconf. Also set_print_fct_for_isdnrep
+ * 	is removed from isdnrep.c. isdnrep didn´t crash now, but throw
+ * 	out warning messages about rate.dat and did´t generate output.
+ *
  * Revision 1.14  1999/05/04 19:33:19  akool
  * isdnlog Version 3.24
  *
@@ -125,13 +134,12 @@
 #endif
 
 _EXTERN int read_logfile(char *myname);
-_EXTERN void set_print_fct_for_isdnrep(int (*new_print_msg)(int Level, const char *, ...));
 _EXTERN int get_term (char *String, time_t *Begin, time_t *End,int delentries);
 _EXTERN int set_msnlist(char *String);
 _EXTERN int send_html_request(char *myname, char *option);
 _EXTERN int new_args(int *nargc, char ***nargv);
 
-_EXTERN int     (*print_msg)(int Level, const char *, ...) _SET_NULL;
+_EXTERN int     print_msg(int Level, const char *, ...);
 _EXTERN int     incomingonly    _SET_0;
 _EXTERN int     outgoingonly    _SET_0;
 _EXTERN int     verbose         _SET_0;

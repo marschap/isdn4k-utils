@@ -1,4 +1,4 @@
-/* $Id: isdnrep.c,v 1.69 1999/06/16 19:12:42 akool Exp $
+/* $Id: isdnrep.c,v 1.70 1999/07/12 11:37:34 calle Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -24,6 +24,15 @@
  *
  *
  * $Log: isdnrep.c,v $
+ * Revision 1.70  1999/07/12 11:37:34  calle
+ * Bugfix: isdnrep defined print_msg as function pointer, the object files
+ *         in tools directory, declare it as external function.
+ * 	compiler and linker did not detect the problem.
+ * 	Now print_msg is a function in rep_main.c and I copied
+ * 	print_in_modules from isdnconf. Also set_print_fct_for_isdnrep
+ * 	is removed from isdnrep.c. isdnrep didn´t crash now, but throw
+ * 	out warning messages about rate.dat and did´t generate output.
+ *
  * Revision 1.69  1999/06/16 19:12:42  akool
  * isdnlog Version 3.34
  *   fixed some memory faults
@@ -786,13 +795,6 @@ void info(int chan, int reason, int state, char *msg)
 {
   /* DUMMY - dont needed here! */
 } /* info */
-
-/*****************************************************************************/
-
-void set_print_fct_for_isdnrep(int (*new_print_msg)(int Level, const char *, ...))
-{
-  print_msg = new_print_msg;
-}
 
 /*****************************************************************************/
 
