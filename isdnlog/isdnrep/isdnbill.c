@@ -1,4 +1,4 @@
-/* $Id: isdnbill.c,v 1.2 1999/11/27 19:24:19 akool Exp $
+/* $Id: isdnbill.c,v 1.3 1999/11/28 11:15:42 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Billing-module)
  *
@@ -359,7 +359,7 @@ static void justify(char *fromnum, char *tonum, int dialout, TELNUM number)
 int main(int argc, char *argv[], char *envp[])
 {
   register char    *pl, *pr, *p;
-  auto     FILE    *f = fopen("/www/log/isdn.log", "r");
+  auto     FILE    *f = fopen("/var/log/isdn.log", "r");
   auto     char     s[BUFSIZ], sx[BUFSIZ], home[BUFSIZ];
   auto     int      z, i, l, col, homei, month = -1;
   auto     TELNUM   number[2];

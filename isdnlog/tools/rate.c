@@ -1,4 +1,4 @@
-/* $Id: rate.c,v 1.62 1999/11/25 22:58:40 akool Exp $
+/* $Id: rate.c,v 1.63 1999/11/28 11:15:42 akool Exp $
  *
  * Tarifdatenbank
  *
@@ -19,6 +19,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rate.c,v $
+ * Revision 1.63  1999/11/28 11:15:42  akool
+ * isdnlog-3.70
+ *   - patch from Jochen Erwied (j.erwied@gmx.de)
+ *
  * Revision 1.62  1999/11/25 22:58:40  akool
  * isdnlog-3.68
  *  - new utility "isdnbill" added
@@ -529,7 +533,7 @@ typedef struct {
   int      booked;
 //  int      used;
   BOOKED _provider;
-  char    *Vbn; /* B:-Tag */
+  char    Vbn[TN_MAX_VBN_LEN+1]; /* B:-Tag */
   time_t  FromDate; /* N/Y */
   time_t  ToDate;   /* N/Y */
   char    *Name;
@@ -732,7 +736,6 @@ static void free_provider(i) {
   }
   if(Provider[i].Comment) free (Provider[i].Comment);
   if (Provider[i].Name) free (Provider[i].Name);
-  if (Provider[i].Vbn) free (Provider[i].Vbn);
 }
 
 void exitRate(void)
@@ -836,7 +839,7 @@ int pnum2prefix_variant(char * pnum, time_t when) {
 int vbn2prefix(char *vbn, int *len) {
   int i;
   for(i=0;i<nProvider;i++)
-    if(Provider[i].Vbn && *Provider[i].Vbn) {
+    if(*Provider[i].Vbn) {
       if(strncmp(Provider[i].Vbn, vbn, strlen(Provider[i].Vbn))==0 &&
           (Provider[i]._provider._variant == UNKNOWN ||
            Provider[i].booked==1) ) {
@@ -998,7 +1001,7 @@ int initRate(char *conf, char *dat, char *dom, char **msg)
 	nProvider--;
       }
       if(nProvider) {
-	if(!Provider[prefix].Vbn || !*Provider[prefix].Vbn) {
+	if(!*Provider[prefix].Vbn) {
 	  error(dat, "Provider %s has no valid B:-Tag - ignored", getProvider(prefix));
 	  free_provider(prefix);
 	  nProvider--;
@@ -1044,7 +1047,8 @@ int initRate(char *conf, char *dat, char *dom, char **msg)
 
     case 'B':  /* B: VBN */
       s += 2;
-      Provider[prefix].Vbn = strdup(strip(s));
+      strncpy(Provider[prefix].Vbn, strip(s), TN_MAX_VBN_LEN);
+      Provider[prefix].Vbn[TN_MAX_VBN_LEN] = '\0'; // safety
       break;
 
     case 'C':  /* C:Comment */
@@ -1515,7 +1519,7 @@ int initRate(char *conf, char *dat, char *dom, char **msg)
     nProvider--;
   }
   if(nProvider)
-    if(!Provider[prefix].Vbn || !*Provider[prefix].Vbn) {
+    if(!*Provider[prefix].Vbn) {
       error(dat, "Provider %s has no valid B:-Tag - ignored", getProvider(prefix));
       free_provider(prefix);
       nProvider--;
