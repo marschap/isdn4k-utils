@@ -1,8 +1,8 @@
-/* $Id: processor.c,v 1.35 1998/12/09 20:39:36 akool Exp $
+/* $Id: processor.c,v 1.36 1999/01/10 15:23:23 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
- * Copyright 1995, 1998 by Andreas Kool (akool@isdn4linux.de)
+ * Copyright 1995, 1999 by Andreas Kool (akool@isdn4linux.de)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +19,18 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.36  1999/01/10 15:23:23  akool
+ *  - "message = 0" bug fixed (many thanks to
+ *    Sebastian Kanthak <sebastian.kanthak@muehlheim.de>)
+ *  - CITYWEEKEND via config-file possible
+ *  - fixes from Michael Reinelt <reinelt@eunet.at>
+ *  - fix a typo in the README from Sascha Ziemann <szi@aibon.ping.de>
+ *  - Charge for .at optimized by Michael Reinelt <reinelt@eunet.at>
+ *  - first alpha-Version of the new chargeinfo-Database
+ *    ATTENTION: This version requires the following manual steps:
+ *      cp /usr/src/isdn4k-utils/isdnlog/tarif.dat /usr/lib/isdn
+ *      cp /usr/src/isdn4k-utils/isdnlog/samples/tarif.conf /etc/isdn
+ *
  * Revision 1.35  1998/12/09 20:39:36  akool
  *  - new option "-0x:y" for leading zero stripping on internal S0-Bus
  *  - new option "-o" to suppress causes of other ISDN-Equipment
@@ -445,12 +457,6 @@
 
 #define _PROCESSOR_C_
 #include "isdnlog.h"
-
-#define OUTGOING  !call[chan].dialin
-
-
-extern double cheap96(time_t when, int zone, int *zeit);
-extern double taktlaenge(int chan, char *description);
 
 static int    HiSax = 0, hexSeen = 0, uid = -1;
 static char  *asnp, *asnm;
@@ -1791,8 +1797,8 @@ static void decode(int chan, register char *p, int type, int version, int tei)
 {
   register char     *pd, *px, *py;
   register int       i, element, l, l1, c, oc3, oc3a, n, sxp = 0, warn;
-  auto	   int	     zeit, loc, cause;
-  auto     char      s[BUFSIZ], s1[BUFSIZ];
+  auto	   int	     loc, cause;
+  auto     char      s[BUFSIZ], s1[BUFSIZ], why[BUFSIZ];
   auto     char      sx[10][BUFSIZ];
   auto     int       sn[10];
   auto     struct tm tm;
@@ -2142,14 +2148,15 @@ static void decode(int chan, register char *p, int type, int version, int tei)
                           sprintf(s, "aOC-E=%d", n);
                         aoc_debug(-1, s);
 
-                        if (!n)
+                        if (!n) {
+                          if (call[chan].provider == 33) /* Only DTAG send's AOCD */
                           info(chan, PRT_SHOWAOCD, STATE_AOCD, "Free of charge");
+                        }
                         else if (n < 0) {
                           tx = cur_time - call[chan].connect;
 
                           if ((c = call[chan].confentry[OTHER]) > -1) {
-                            /* tack = cheap96(cur_time, known[c]->zone, &zeit); */
-			    tack = taktlaenge (chan, NULL);
+			    tack = (double)taktlaenge(chan, why);
                             err  = call[chan].tick - tx;
                             call[chan].tick += tack;
 
@@ -2224,7 +2231,7 @@ static void decode(int chan, register char *p, int type, int version, int tei)
 			    err=60*60*24*365; /* sehr gross */
 			    for (c = 1; c < 31; c++) {
 			      call[chan].zone=c;
-			      tack = (-n-1) * taktlaenge (chan, NULL);
+			      tack = (-n -1) * (double)taktlaenge(chan, why);
 			      if ((tack > 0) && (abs(tack - tx)<err)) {
 				call[chan].tick = tack;
 				err = abs(tack) - tx;
@@ -2241,7 +2248,7 @@ static void decode(int chan, register char *p, int type, int version, int tei)
                               call[chan].tick = 0;
 
                               for (i = 0; i < -n - 1; i++) {
-                                tack = cheap96(cur_time, c, &zeit);
+                                tack = (double)taktlaenge(chan, why);
                                 call[chan].tick += tack;
                               } /* for */
 
@@ -2614,6 +2621,7 @@ static void decode(int chan, register char *p, int type, int version, int tei)
 
                     if (dual && ((type == INFORMATION) || ((type == SETUP) && OUTGOING))) { /* Digit's beim waehlen mit ISDN-Telefon */
                       strcat(call[chan].digits, s);
+                      strcpy(call[chan].onum[CALLED], s);
                       call[chan].oc3 = oc3;
 #ifdef Q931
                       if (q931dmp)
@@ -3183,6 +3191,7 @@ escape:             for (c = 0; c <= sxp; c++)
                         case 0xf1 : px += sprintf(px, "Eigendef"); break;
                       } /* switch */
 
+#if 0 /* alles in eine Zeile */
                       px = sx[++sxp];
                       *px = 0;
 
@@ -3190,31 +3199,33 @@ escape:             for (c = 0; c <= sxp; c++)
                       if (!q931dmp)
 #endif
                         px += sprintf(px, "HLC: ");
+#endif
 
                       c = strtol(p + 6, NIL, 16);
                       sn[sxp] = c;
 
                       switch (c) {
-                        case 0x81 : px += sprintf(px, "Telefonie");                                        break;
-                        case 0x84 : px += sprintf(px, "Fax Gr.2/3 (F.182)");                               break;
-                        case 0xa1 : px += sprintf(px, "Fax Gr.4 (F.184)");                                 break;
-                        case 0xa4 : px += sprintf(px, "Teletex service,basic and mixed-mode");             break;
-                        case 0xa8 : px += sprintf(px, "Teletex service,basic and processab.-mode of Op."); break;
-                        case 0xb1 : px += sprintf(px, "Teletex service,basic mode of operation");          break;
-                        case 0xb2 : px += sprintf(px, "Syntax based Videotex");                            break;
-                        case 0xb3 : px += sprintf(px, "International Videotex interworking via gateway");  break;
-                        case 0xb5 : px += sprintf(px, "Telex service");                                    break;
-                        case 0xb8 : px += sprintf(px, "Message Handling Systems (MHS)(X.400)");            break;
-                        case 0xc1 : px += sprintf(px, "OSI application (X.200)");                          break;
+                        case 0x81 : px += sprintf(px, ", Telefonie");                                        break;
+                        case 0x84 : px += sprintf(px, ", Fax Gr.2/3 (F.182)");                               break;
+                        case 0xa1 : px += sprintf(px, ", Fax Gr.4 (F.184)");                                 break;
+                        case 0xa4 : px += sprintf(px, ", Teletex service,basic and mixed-mode");             break;
+                        case 0xa8 : px += sprintf(px, ", Teletex service,basic and processab.-mode of Op."); break;
+                        case 0xb1 : px += sprintf(px, ", Teletex service,basic mode of operation");          break;
+                        case 0xb2 : px += sprintf(px, ", Syntax based Videotex");                            break;
+                        case 0xb3 : px += sprintf(px, ", International Videotex interworking via gateway");  break;
+                        case 0xb5 : px += sprintf(px, ", Telex service");                                    break;
+                        case 0xb8 : px += sprintf(px, ", Message Handling Systems (MHS)(X.400)");            break;
+                        case 0xc1 : px += sprintf(px, ", OSI application (X.200)");                          break;
                         case 0xde :
-                        case 0x5e : px += sprintf(px, "Reserviert fuer Wartung");                          break;
+                        case 0x5e : px += sprintf(px, ", Reserviert fuer Wartung");                          break;
                         case 0xdf :
-                        case 0x5f : px += sprintf(px, "Reserviert fuer Management");                       break;
-                        case 0xe0 : px += sprintf(px, "Audio visual");                                     break;
-                          default : px += sprintf(px, "unknown: %d", c);                                   break;
+                        case 0x5f : px += sprintf(px, ", Reserviert fuer Management");                       break;
+                        case 0xe0 : px += sprintf(px, ", Audio visual");                                     break;
+                          default : px += sprintf(px, ", unknown: %d", c);                                   break;
                       } /* switch */
 
                       if ((c == 0x5e) || (c == 0x5f)) {
+#if 0 /* alles in eine Zeile */
                         px = sx[++sxp];
                         *px = 0;
 
@@ -3222,21 +3233,22 @@ escape:             for (c = 0; c <= sxp; c++)
                         if (!q931dmp)
 #endif
                           px += sprintf(px, "HLC: ");
+#endif
 
                         c = strtol(p + 9, NIL, 16);
                         sn[sxp] = c;
 
                         switch (c) {
-                          case 0x81 : px += sprintf(px, "Telefonie G.711");                                                  break;
-                          case 0x84 : px += sprintf(px, "Fax Gr.4 (T.62)");                                                  break;
-                          case 0xa1 : px += sprintf(px, "Document Appl. Profile for Fax Gr4 (T.503)");                       break;
-                          case 0xa4 : px += sprintf(px, "Doc.Appl.Prof.for formatted Mixed-Mode(T501)");                     break;
-                          case 0xa8 : px += sprintf(px, "Doc.Appl.Prof.for Processable-form (T.502)");                       break;
-                          case 0xb1 : px += sprintf(px, "Teletex (T.62)");                                                   break;
-                          case 0xb2 : px += sprintf(px, "Doc.App.Prof. for Videotex interworking between Gateways (T.504)"); break;
-                          case 0xb5 : px += sprintf(px, "Telex");                                                            break;
-                          case 0xb8 : px += sprintf(px, "Message Handling Systems (MHS)(X.400)");                            break;
-                          case 0xc1 : px += sprintf(px, "OSI application (X.200)");                                          break;
+                          case 0x81 : px += sprintf(px, ", Telefonie G.711");                                                  break;
+                          case 0x84 : px += sprintf(px, ", Fax Gr.4 (T.62)");                                                  break;
+                          case 0xa1 : px += sprintf(px, ", Document Appl. Profile for Fax Gr4 (T.503)");                       break;
+                          case 0xa4 : px += sprintf(px, ", Doc.Appl.Prof.for formatted Mixed-Mode(T501)");                     break;
+                          case 0xa8 : px += sprintf(px, ", Doc.Appl.Prof.for Processable-form (T.502)");                       break;
+                          case 0xb1 : px += sprintf(px, ", Teletex (T.62)");                                                   break;
+                          case 0xb2 : px += sprintf(px, ", Doc.App.Prof. for Videotex interworking between Gateways (T.504)"); break;
+                          case 0xb5 : px += sprintf(px, ", Telex");                                                            break;
+                          case 0xb8 : px += sprintf(px, ", Message Handling Systems (MHS)(X.400)");                            break;
+                          case 0xc1 : px += sprintf(px, ", OSI application (X.200)");                                          break;
                         } /* case */
                       } /* if */
 
@@ -3982,151 +3994,6 @@ void clearchan(int chan, int total)
 } /* clearchan */
 
 
-static void how_expensive(int chan)
-{
-  register int    c, zone = -1, zone2 = -1, pro = -1, pro2 = -1;
-  auto	   int	  dur = (int)(call[chan].disconnect - call[chan].connect);
-  auto     double pay2 = -1.0, pay3, onesec, cheap;
-  auto     char   sx[BUFSIZ];
-  extern   double pay(time_t ts, int dauer, int tarifz, int pro);
-  auto 	   struct tm *tm;
-
-
-  if (OUTGOING && (dur > 0) && *call[chan].num[CALLED]) {
-
-    tm = localtime(&call[chan].connect);
-
-    if (call[chan].sondernummer[CALLED] != -1) {
-      switch (SN[call[chan].sondernummer[CALLED]].tarif) {
-        case -1 :
-#ifdef ISDN_DE
-	          if (!strcmp(call[chan].num[CALLED] + 3, "11833")) /* Sonderbedingung Auskunft Inland */
-                    dur -= 30;
-#endif
-                  pay2 = SN[call[chan].sondernummer[CALLED]].grund1 * currency_factor;
-                  pay2 += (dur / SN[call[chan].sondernummer[CALLED]].takt1) * currency_factor;
-                  break;
-
-        case  0 : pay2 = 0.0;
-                  break;
-
-        case  1 : zone = 1;
-                  break;
-      } /* switch */
-    } /* if */
-
-    if (zone == -1) {
-      zone2 = area_diff(NULL, call[chan].num[CALLED]);
-
-      if ((c = call[chan].confentry[OTHER]) > -1)
-        zone = known[c]->zone;
-
-      if ((zone == -1) && (zone2 > 0)) {
-        sprintf(sx, "WARNING: Assuming ZONE %d", zone2);
-        zone = zone2;
-        info(chan, PRT_SHOWHANGUP, STATE_HANGUP, sx);
-      } /* if */
-
-      if ((zone != -1) && (zone2 != -1) && (zone != zone2)) {
-        sprintf(sx, "WARNING: Wrong ZONE (%d), assuming %d", zone, zone2);
-        zone = zone2;
-
-        if (call[chan].sondernummer[CALLED] == -1)
-          info(chan, PRT_SHOWHANGUP, STATE_HANGUP, sx);
-      } /* if */
-    } /* if */
-
-    if (pay2 == -1.0) {
-      if (call[chan].aoce > 0) /* Gebuehrentakt AOC-E kam (Komfortanschluss, via Telekom */
-        call[chan].pay = call[chan].aoce * currency_factor;
-      else {
-        if (zone > 0) {
-#ifdef ISDN_DE
-          if (zone == 1)
-            pro2 = 33;           /* CityCall :: Telekom */
-          else if (zone == 2)
-            pro2 = 70;	   	 /* RegioCall :: Arcor */
-          else if (zone == 3) {
-#if 0
-    	    if ((tm->tm_wday > 0) && (tm->tm_wday < 6))
-    	      wochentag;
-    	    else
-              wochenende;
-#endif
-            if ((tm->tm_hour > 20) || (tm->tm_hour < 5))
-              pro2 = 30;         /* zw. 21:00 Uhr und 5:00 Uhr TelDaFax */
-            else
-              pro2 = 19;	 /* Mobilcom */
-          } /* else */
-
-          switch (zone) { /* map "isdnlog" to "gebuehr.c" Zones */
-            case 2 : zone = 3;
-                     break;
-            case 3 : zone = 4;
-                     break;
-          } /* switch */
-
-          pro = call[chan].provider;
-
-          if (pro == -1)
-            pro = preselect;
-
-          if (pro) {
-            call[chan].pay = pay(call[chan].connect, dur, zone, pro);
-
-	    if (call[chan].pay == -1.0) { /* Unknown Tarif */
-              if (pro == 23) { /* tesion )) -- quick hack for SL "Baden-Württemberg Tarif" */
-                if ((tm->tm_hour > 20) || (tm->tm_hour < 9))
-                  pay3 = 0.14;
-                else
-                  pay3 = 0.21;
-
-            	call[chan].pay = (pay3 / 60.0) * dur;
-              }
-              else
-            	call[chan].pay = 0;
-
-            } /* if */
-          } /* if */
-
-          if (pro != pro2) {
-            pay3 = pay(call[chan].connect, dur, zone, pro2);
-
-            cheap = call[chan].pay - pay3;
-
-            if (cheap > 0) {
-              sprintf(sx, "WARNING: Provider %s DM %s cheaper!",
-                Providername(pro2),
-              	double2str(cheap, 5, 2, DEB));
-              	info(chan, PRT_SHOWHANGUP, STATE_HANGUP, sx);
-            } /* if */
-          } /* if */
-#endif
-        } /* if */
-      } /* else */
-
-#ifdef ISDN_DE
-      if ((dur > 600) && (zone > 1) && ((call[chan].aoce > 0) || (pro == 33))) {
-        onesec = call[chan].pay / dur;
-        pay2 = (dur - 600) * onesec * 0.30;
-
-        sprintf(sx, "10plus DM %s - DM %s = DM %s",
-          double2str(call[chan].pay, 6, 2, DEB),
-          double2str(pay2, 6, 2, DEB),
-          double2str(call[chan].pay - pay2, 6, 2, DEB));
-
-        call[chan].pay -= pay2;
-
-        info(chan, PRT_SHOWHANGUP, STATE_HANGUP, sx);
-      } /* if */
-#endif
-    }
-    else
-      call[chan].pay = pay2;
-  } /* if */
-} /* how_expensive */
-
-
 static void dumpme()
 {
   register int  chan;
@@ -4237,7 +4104,7 @@ static void processctrl(int card, char *s)
   register int         wegchan; /* fuer gemakelte */
   auto     int         dialin, type = 0, cref = -1, creflen, version;
   static   int         tei = BROADCAST, sapi = 0, net = 1, firsttime = 1;
-  auto     char        sx[BUFSIZ], s2[BUFSIZ];
+  auto     char        sx[BUFSIZ], s2[BUFSIZ], why[BUFSIZ], hint[BUFSIZ];
   static   char        last[BUFSIZ];
   auto     int         isAVMB1 = 0;
 
@@ -4720,22 +4587,27 @@ static void processctrl(int card, char *s)
         call[chan].duration = tt;
       	call[chan].card = card;
 
-        if (message & PRT_SHOWNUMBERS)
-          info(chan, PRT_SHOWCONNECT, STATE_CONNECT, "CONNECT");
-        else {
+        if (*call[chan].service) {
           sprintf(sx, "CONNECT (%s)", call[chan].service);
           info(chan, PRT_SHOWCONNECT, STATE_CONNECT, sx);
-        } /* else */
+        }
+        else
+          info(chan, PRT_SHOWCONNECT, STATE_CONNECT, "CONNECT");
 
-        if (OUTGOING) {
-          auto	 char s[BUFSIZ], sx[BUFSIZ];
+        if (OUTGOING && *call[chan].num[CALLED]) {
 
-      	  if ((call[chan].cint = taktlaenge(chan, s)) > 1) {
+	  preparecint(chan, why, hint);
+	  info(chan, PRT_SHOWCONNECT, STATE_CONNECT, why);
+
+          if (*hint)
+	    info(chan, PRT_SHOWCONNECT, STATE_CONNECT, hint);
+
+      	  if ((call[chan].cint = taktlaenge(chan, why)) > 0) {
             call[chan].cinth    = hour;
             call[chan].nextcint = call[chan].connect + (int)call[chan].cint;
             call[chan].ctakt    = 1;
 
-            sprintf(sx, "NEXT CHARGEINT IN %s (%s)", double2clock(call[chan].cint), s);
+            sprintf(sx, "NEXT CHARGEINT IN %s (%s)", double2clock(call[chan].cint), why);
           info(chan, PRT_SHOWCONNECT, STATE_CONNECT, sx);
         } /* if */
         } /* if */
@@ -4861,7 +4733,10 @@ doppelt:break;
             qmsg(TYPE_CAUSE, version, call[chan].cause));
         } /* if */
 
-        how_expensive(chan);
+        price(chan, hint);
+
+        if (*hint)
+          info(chan, PRT_SHOWHANGUP, STATE_HANGUP, hint);
 
 #ifdef Q931
        	if (!q931dmp)
@@ -5213,11 +5088,9 @@ void morekbd()
 void processcint()
 {
   register int    chan;
-  auto	   char   s[BUFSIZ], sx[BUFSIZ];
+  auto	   char   sx[BUFSIZ], why[BUFSIZ];
   auto	   double  newcint;
-  auto	   double exp;
   auto	   int	  dur;
-  extern   double pay(time_t ts, int dauer, int tarifz, int pro);
 
 
   for (chan = 0; chan < 2; chan++) {
@@ -5228,36 +5101,23 @@ void processcint()
 
         if (call[chan].cinth != hour) { /* Moeglicherweise Taktwechsel */
 
-      	  newcint = taktlaenge(chan, s);
+      	  newcint = taktlaenge(chan, why);
+
 	  if (newcint != call[chan].cint) {
           call[chan].cint = newcint;
-	    sprintf(sx, "NEXT CHARGEINT IN %s (%s)", double2clock((double)call[chan].cint), s);
+	    sprintf(sx, "NEXT CHARGEINT IN %s (%s)", double2clock((double)call[chan].cint), why);
           info(chan, PRT_SHOWCONNECT, STATE_CONNECT, sx);
-	  }
+	  } /* if */
         } /* if */
 
         call[chan].cinth = hour;
         call[chan].ctakt++;
 
-        if (1 /* message & PRT_SHOWTICKS */) {
-
-#ifdef ISDN_DE
-          if ((call[chan].provider == -1) || (call[chan].provider == 33))
-            exp = call[chan].ctakt * currency_factor;
-          else
-            /* call pay() with duration + 1 to get the charge for the _next_ chargeint! */
-            exp = pay(call[chan].connect, dur + 1, call[chan].zone, call[chan].provider);
-#else
-	  exp = call[chan].ctakt * currency_factor;
-#endif
-          sprintf(sx, "START %d.CHARGEINT %s %s (%s)",
+        sprintf(sx, "START %d.CHARGEINT (%s)",
             call[chan].ctakt,
-            currency,
-            double2str(exp, 6, 2, DEB),
             double2clock((double)dur));
 
           info(chan, PRT_SHOWCONNECT, STATE_CONNECT, sx);
-        } /* if */
 
         call[chan].nextcint += (int)call[chan].cint;
       } /* if */

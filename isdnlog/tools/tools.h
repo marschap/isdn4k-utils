@@ -1,8 +1,8 @@
-/* $Id: tools.h,v 1.24 1998/12/09 20:40:27 akool Exp $
+/* $Id: tools.h,v 1.25 1999/01/10 15:24:36 akool Exp $
  *
  * ISDN accounting for isdn4linux.
  *
- * Copyright 1995, 1998 by Andreas Kool (akool@isdn4linux.de)
+ * Copyright 1995, 1999 by Andreas Kool (akool@isdn4linux.de)
  *                     and Stefan Luethje (luethje@sl-gw.lake.de)
  *
  * This program is free software; you can redistribute it and/or modify
@@ -20,6 +20,18 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools.h,v $
+ * Revision 1.25  1999/01/10 15:24:36  akool
+ *  - "message = 0" bug fixed (many thanks to
+ *    Sebastian Kanthak <sebastian.kanthak@muehlheim.de>)
+ *  - CITYWEEKEND via config-file possible
+ *  - fixes from Michael Reinelt <reinelt@eunet.at>
+ *  - fix a typo in the README from Sascha Ziemann <szi@aibon.ping.de>
+ *  - Charge for .at optimized by Michael Reinelt <reinelt@eunet.at>
+ *  - first alpha-Version of the new chargeinfo-Database
+ *    ATTENTION: This version requires the following manual steps:
+ *      cp /usr/src/isdn4k-utils/isdnlog/tarif.dat /usr/lib/isdn
+ *      cp /usr/src/isdn4k-utils/isdnlog/samples/tarif.conf /etc/isdn
+ *
  * Revision 1.24  1998/12/09 20:40:27  akool
  *  - new option "-0x:y" for leading zero stripping on internal S0-Bus
  *  - new option "-o" to suppress causes of other ISDN-Equipment
@@ -632,6 +644,8 @@ typedef struct {
   int	  ctakt;
   int	  zone;
   int	  uid;
+  int	  tip;
+  int	  tz;
 } CALL;
 
 /****************************************************************************/
@@ -779,6 +793,7 @@ _EXTERN CALL    	call[MAXCHAN];
 _EXTERN int     	q931dmp;
 #endif
 _EXTERN int     	CityWeekend;
+_EXTERN	int	 preselect;
 _EXTERN int	dual;
 _EXTERN char    	mlabel[BUFSIZ];
 _EXTERN char    *amtsholung;

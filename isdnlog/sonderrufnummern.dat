@@ -1,3 +1,4 @@
+# Copyright 1995, 1999 by Andreas Kool (akool@isdn4linux.de)
 0010    |free|       |     |      |      | Operator Service                                 | Handvermittlung Inland und Ausland. Eine T-Net-Verbindung zu dieser RufNr. ist kostenlos. Nach erfolgreicher Vermittlung werden die fuer das Gesprach geltenden Verbindungstarife erhoben.
 0031800 |free|       |     |      |      | Plus Freephone Service (Niederl.)                | Plus Freephone Service (Niederlande). Eine T-Net-Verbindung zu dieser Rufnummer ist kostenfrei.
 0041800 |free|       |     |      |      | Plus Freephone Service (Schweiz)                 | Plus Freephone Service (Schweiz). Eine T-Net-Verbindung zu dieser Rufnummer ist kostenfrei.
@@ -71,9 +72,9 @@
 01141   |City|       |     |      |      | Auftrags-und Ansagedienst                        | Auftrags- und Ansagedienst. Sie erreichen diesen Dienst zum Citytarif. Weitere Informationen erhalten Sie unter dieser RufNr. oder der RufNr. 0 11 14 (zum Nulltarif).
 0115    |City|       |     |      |      | Ansagen (regional)                               | Regionale Ansagedienste.  Sie erreichen diesen Dienst zum Citytarif.
 0116    |City|       |     |      |      | Ansagen (bundesweit)                             | Bundesweite Ansagedienste.  Sie erreichen diesen Dienst zum Citytarif.
-01171   |free|       |     |      |      | Stîrungsannahme PK                               | Privatkundenservice der Deutschen Telekom. Eine T-Net-Verbindung zu dieser Rufnummer ist kostenfrei.
-01172   |free|       |     |      |      | Stîrungsannahme GK                               | Geschaftskundenservice der Deutschen Telekom. Eine T-Net-Verbindung zu dieser Rufnummer ist kostenfrei.
-01174   |free|       |     |      |      | Stîrungsannahme Kabelfernsehen Deutsche Telekom. | Stîrungsstelle fuer Kabelfernsehen. Eine T-Net-Verbindung zu dieser Rufnummer ist kostenfrei.
+01171   |free|       |     |      |      | alte Stîrungsannahme PK                          | Privatkundenservice der Deutschen Telekom. Eine T-Net-Verbindung zu dieser Rufnummer ist kostenfrei.
+01172   |free|       |     |      |      | alte Stîrungsannahme GK                          | Geschaftskundenservice der Deutschen Telekom. Eine T-Net-Verbindung zu dieser Rufnummer ist kostenfrei.
+01174   |free|       |     |      |      | alte Stîrungsannahme Kabelfernsehen DTAG         | Stîrungsstelle fuer Kabelfernsehen. Eine T-Net-Verbindung zu dieser Rufnummer ist kostenfrei.
 01189   |    |       |     |  3.8 | 3.8  | Auskunft T-Komfort                               | Komfortauskunft Inland.
 01191   |City|       |     |      |      | Zeitansage                                       | Zeitansage.Sie erreichen diesen Dienst zum Citytarif.
 0130    |free|       |     |      |      | freecall 0130                                    | freecall 0130. Eine T-Net-Verbindung zu dieser Rufnummer ist kostenfrei.
@@ -162,6 +163,7 @@
 0191011 |City|       |     |      |      | Online-Dienste Zugang PPP                        | Selbstwahlverbindungen zum Zugang Online-Dienste. Sie erreichen diesen Dienst zum Citytarif.
 01914   |City|       |     |      |      | Online-Dienste AOL Zugang                        | Selbstwahlverbindungen zum Zugang Online-Dienst von AOL Es gelten die Preise fÅr CityCall Verbindungen
 0191023 |City|       |     |      |      | Online-Dienste 1&1                               |
+0191501	|?   |	     |	   |	  |	 | o.tel.o Online Zugang PPP                        |
 02000   |?   |       |     |      |      | Expo 2000 Hotline                                | Expo 2000 Hotline. Eine T-Net-Verbindung kostet 5 TE inkl. 60 Sek. + nach 60 Sek. 1 TE je angefangene 12 Sek. 12 12
 0800    |free|       |     |      |      | freecall 0800                                    | freecall 0800. Eine T-Net-Verbindung zu dieser Rufnummer ist kostenfrei.
 110     |free|       |     |      |      | Polizei/Notruf                                   | Polizeinotruf. Eine T-Net-Verbindung zu dieser Rufnummer ist kostenfrei.
@@ -213,6 +215,10 @@
 11814   |?   |       |     |      |      | Auskunft Ausland Teleglobe 			    | GmbH
 11889   |?   |       |     |      |      | Auskunft Ausland VIAG INTERKOM 		    | GmbH & Co. KG, M¸nchen
 11856   |?   |       |     |      |      | Auskunft Ausland WorldCom 			    | Telecommunication Services GmbH, Frankfurt
-#QUELLE: Programm "t-tarife.exe" Version: 1.16  Stand: 07.1998
+0800 33 02000 |free|       |     |      |      |Stîrungsannahme PK			    |
+0800 33 01172 |free|       |     |      |      |Stîrungsannahme GK                          |
+0800 33 01174 |free|       |     |      |      |Stîrungsannahme Kabelfernsehen DTAG         |
+# QUELLE: Programm "t-tarife.exe" Version: 1.16  Stand: 07.1998
+# 	  http://www.telekom.de
 #	 http://www.regtp.de
-#        sowie eigene Recherchen, Stand: 22-Nov-98
+#         sowie eigene Recherchen, Stand: 06-Jan-99

@@ -1,8 +1,8 @@
-/* $Id: isdnrep.c,v 1.52 1998/12/09 20:39:54 akool Exp $
+/* $Id: isdnrep.c,v 1.53 1999/01/10 15:24:09 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
- * Copyright 1995, 1998 by Andreas Kool (akool@isdn4linux.de)
+ * Copyright 1995, 1999 by Andreas Kool (akool@isdn4linux.de)
  *                     and Stefan Luethje (luethje@sl-gw.lake.de)
  *
  * This program is free software; you can redistribute it and/or modify
@@ -24,6 +24,18 @@
  *
  *
  * $Log: isdnrep.c,v $
+ * Revision 1.53  1999/01/10 15:24:09  akool
+ *  - "message = 0" bug fixed (many thanks to
+ *    Sebastian Kanthak <sebastian.kanthak@muehlheim.de>)
+ *  - CITYWEEKEND via config-file possible
+ *  - fixes from Michael Reinelt <reinelt@eunet.at>
+ *  - fix a typo in the README from Sascha Ziemann <szi@aibon.ping.de>
+ *  - Charge for .at optimized by Michael Reinelt <reinelt@eunet.at>
+ *  - first alpha-Version of the new chargeinfo-Database
+ *    ATTENTION: This version requires the following manual steps:
+ *      cp /usr/src/isdn4k-utils/isdnlog/tarif.dat /usr/lib/isdn
+ *      cp /usr/src/isdn4k-utils/isdnlog/samples/tarif.conf /etc/isdn
+ *
  * Revision 1.52  1998/12/09 20:39:54  akool
  *  - new option "-0x:y" for leading zero stripping on internal S0-Bus
  *  - new option "-o" to suppress causes of other ISDN-Equipment
@@ -2050,7 +2062,9 @@ static void how_expensive(one_call *cur_call)
 {
   register int    zone = -1, zone2 = -1, pro = -1, dur = (int)cur_call->duration;
   auto	   double pay2, onesec;
+#if OLD
   extern   double pay(time_t ts, int dauer, int tarifz, int pro);
+#endif
 
 
   if (!cur_call->dir && (dur > 0) && (cur_call->dm <= 0.0)) {
@@ -2095,10 +2109,14 @@ static void how_expensive(one_call *cur_call)
           pro = preselect;
 
         if (pro) {
+#if OLD
           cur_call->dm = pay(cur_call->t, (int)cur_call->duration, zone, pro);
+#endif
 
           if (cur_call->dm <= 0.0) { /* ooops - not supported by that provider ... retry with Telekom */
+#if OLD
             cur_call->dm = pay(cur_call->t, (int)cur_call->duration, zone, pro = 33);
+#endif
             cur_call->provider = 0;
           } /* if */
         } /* if */
@@ -2121,7 +2139,9 @@ static int print_entries(one_call *cur_call, double unit, int *nx, char *myname)
 {
 	register int i, pro;
   auto int     computed = 0;
+#if OLD
 	extern double pay(time_t ts, int dauer, int tarifz, int pro);
+#endif
 #if 0
 	register int tarifz;
 	auto double  takt;
@@ -2169,10 +2189,10 @@ static int print_entries(one_call *cur_call, double unit, int *nx, char *myname)
         	      case 3 : tarifz = 4;
                       	       break;
       		    } /* switch */
-
+#if OLD
 	            unit = cur_call->dm = cur_call->dm =
 	              pay(cur_call->t, (int)cur_call->duration, tarifz, pro);
-
+#endif
                     cur_call->eh = 0;
 		  } /* if */
 		  usage_provider[pro]++;

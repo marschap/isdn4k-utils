@@ -1,8 +1,8 @@
-/* $Id: tools_de.c,v 1.6 1998/12/09 20:40:30 akool Exp $
+/* $Id: tools_de.c,v 1.7 1999/01/10 15:24:38 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
- * Copyright 1995, 1998 by Andreas Kool (akool@isdn4linux.de)
+ * Copyright 1995, 1999 by Andreas Kool (akool@isdn4linux.de)
  *
  * splitting into nations 1998 by Michael Reinelt (reinelt@eunet.at)
  *
@@ -21,6 +21,18 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools_de.c,v $
+ * Revision 1.7  1999/01/10 15:24:38  akool
+ *  - "message = 0" bug fixed (many thanks to
+ *    Sebastian Kanthak <sebastian.kanthak@muehlheim.de>)
+ *  - CITYWEEKEND via config-file possible
+ *  - fixes from Michael Reinelt <reinelt@eunet.at>
+ *  - fix a typo in the README from Sascha Ziemann <szi@aibon.ping.de>
+ *  - Charge for .at optimized by Michael Reinelt <reinelt@eunet.at>
+ *  - first alpha-Version of the new chargeinfo-Database
+ *    ATTENTION: This version requires the following manual steps:
+ *      cp /usr/src/isdn4k-utils/isdnlog/tarif.dat /usr/lib/isdn
+ *      cp /usr/src/isdn4k-utils/isdnlog/samples/tarif.conf /etc/isdn
+ *
  * Revision 1.6  1998/12/09 20:40:30  akool
  *  - new option "-0x:y" for leading zero stripping on internal S0-Bus
  *  - new option "-o" to suppress causes of other ISDN-Equipment
@@ -96,17 +108,24 @@
 
 char *Providername(int number)
 {
+  register char *p;
+  extern   char *realProvidername(int prefix);
+
+
+  if ((p = realProvidername(number)) != (char *)NULL)
+    return(p);
+
   switch (number) {
     case  10 : return("Teleglobe");                                /* GmbH, Gutleutstraße 85, 60329 Frankfurt 01010 */
     case  11 : return("o.tel.o");                                  /* communications GmbH, Am Bonneshof 35, 40474 Düsseldorf 01011 */
     case  12 : return("Tele Danmark");                             /* Internetz GmbH, Süderstraße 75, 20097 Hamburg 01012 */
-    case  13 : return("Kinnevik");                                 /* Telecommunciations International S.A., 75, route de Longwy, L-8080 Bertrange, Luxembourg 01013 */
+    case  13 : return("Tele 2 (Kinnevik)");                        /* Telecommunciations International S.A., 75, route de Longwy, L-8080 Bertrange, Luxembourg 01013 */
     case  14 : return("EWE TEL");                                  /* GmbH, Donnerschweer Straße 22-26, 26123 Oldenburg 01014 */
     case  15 : return("RSL COM");                                  /* Deutschland GmbH, Lyoner Straße 36, 60528 Frankfurt/Main 01015 */
     case  16 : return("LausitzNet");                               /* Telekommunikationsgesellschaft mbH, Lausitzer Straße 1-7, 03046 Cottbus 01016 */
     case  17 : return("SEC");                                      /* Service AG, Dieskaustraße 246, 04249 Leipzig 01017 */
     case  18 : return("debitel");                                  /* Kommunikationstechnik GmbH & Co KG, Schelmenwasenstr. 37 - 39, 70567 Stuttgart 01018 */
-    case  19 : return("CityLine (Mobilcom)");                      /* Telefondienste GmbH, Schwarzer Weg 13, 24837 Schleswig 01019 */
+    case  19 : return("Mobilcom (CityLine)");                      /* Telefondienste GmbH, Schwarzer Weg 13, 24837 Schleswig 01019 */
     case  20 : return("ISIS");                                     /* Multimedia Net GmbH, Kaistraße 6, 40221 Düsseldorf 01020 */
     case  21 : return("QS");                                       /* Communication Service GmbH, Oberländer Ufer 180-182, 50968 Köln 01021 */
     case  22 : return("NetCologne");                               /* GmbH, Maarweg 163, 50825 Köln 01022 */
@@ -167,11 +186,11 @@ char *Providername(int number)
     case  76 : return("QuickNet");                                 /* Telenetworks & Service AG, Else-Lasker-Schüler-Straße 47, 42107 Wuppertal 01076 */
     case  77 : return("E-Plus");                                   /* Mobilfunk GmbH, E-Plus-Platz 1, 40468 Düsseldorf 01077 */
     case  78 : return("3U");                                       /* Telekommunikation GmbH, Äußere Zittauer Straße 51, 02708 Löbau 01078 */
-    case  79 : return("VIAPHONE");                                 /* GmbH, Hanauer Landstraße 187, 60314 Frankfurt 01079 */
+    case  79 : return("Viatel (VIAPHONE)");                        /* GmbH, Hanauer Landstraße 187, 60314 Frankfurt 01079 */
     case  80 : return("Telegate");                                 /* Aktiengesellschaft für telefonische Informationsdienste, Bahnhofstraße 26, 82211 Herrsching 01080 */
     case  81 : return("Infotel");                                  /* bV, Onderlangs 120, 6812 CJ Arnhem, Niederlande 01081 */
     case  82 : return("AugustaKom");                               /* Telekommunikation GmbH & Co.KG Hoher Weg 1 86152 Augsburg 01082 */
-    case  83 : return("Würzburger");                               /* Telekommunikationsgesellschaft mbH, Bahnhofstraße 12-18, 97070 Würzburg 01083 */
+    case  83 : return("Wuerzburger");                              /* Telekommunikationsgesellschaft mbH, Bahnhofstraße 12-18, 97070 Würzburg 01083 */
     case  84 : return("Telegroup");                                /* Network Services GmbH, Grossenbaumer Weg 6, 40472 Düsseldorf 01084 */
     case  85 : return("WESTCom");                                  /* GmbH, Hebelstraße 22 c, 69115 Heidelberg 01085 */
     case  86 : return("ONE.TEL");                                  /* Limited (UK), Clements House, 14-18 Gresham Street, London, EC2V 7JE, England 01086 */
@@ -187,7 +206,7 @@ char *Providername(int number)
     case  96 : return("GELSEN-NET");                               /* Kommunikationsgesellschaft mbH, Munscheidstraße 14, 45886 Gelsenkirchen 01096 */
     case  97 : return("AT & T-Unisource");                         /* Communication Services (Deutschland) GmbH, Lyoner Str. 15, 60528 Frankfurt 01097 */
     case  98 : return("STAR");                                     /* Telecommunications Deutschland GmbH, Voltastraße 1a, 60486 Frankfurt 01098 */
-               /* Reseller von STAR : C@llas, Mox */
+               /* Reseller von STAR : C@llas, Mox, Nikoma */
     case  99 : return("ECONOPHONE");                               /* GmbH, Flughafenstraße 54b, 22335 Hamburg 01099 */
                /* Reseller von ECONOPHONE : Telco */
     case 100 : return("TELELEV");                                  /* Telekommunikation GmbH, Dönhoffstraße 39, 51373 Leverkusen 010000 */

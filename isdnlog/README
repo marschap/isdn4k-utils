@@ -1,10 +1,10 @@
-ISDNLOG - Version 3.0 -  				09-Dec-98  21:36
+ISDNLOG - Version 3.01 -  				10-Jan-99  16:06
 
 
 isdnlog ist ein Utility zur Auswertung des D-Kanals eines
 ISDN-BRI Anschlusses.
 
-isdnlog-3.0 wurde ausgiebig mit Linux-2.0.36 getestet.
+isdnlog-3.01 wurde ausgiebig mit Linux-2.0.36 getestet.
 
 
 Fuer alle, die es nun ueberhaupt nicht mehr abwarten koennen, hier das
@@ -62,7 +62,7 @@ Quick-Installation-Guide
 
 5. isdnlog starten:
 
-     /sbin/isdnlog -nsS -v1 w1 -m0x5f7 /dev/isdnctrl
+     /sbin/isdnlog -nsS -v1 -w1 -m0x5f7 /dev/isdnctrl
 
 6. Jede Menge rumtelefonieren
 
@@ -110,11 +110,12 @@ Inhalt:
 16.     SQL-Anbindung
 16.1.   Postgres95
 16.2.   MySQL
-17.    	Probleme?
-18.     Verwendete Dateien
-19.     Verwendete Environment-Variablen
-20.     Verwendete Abkuerzungen
-21.     Danksagung
+17.	Tarifdatenbank
+18.    	Probleme?
+19.     Verwendete Dateien
+20.     Verwendete Environment-Variablen
+21.     Verwendete Abkuerzungen
+22.     Danksagung
 
 
 Vorwort
@@ -3724,7 +3725,202 @@ CREATE TABLE isdnlog (
 
 --
 
-17. Probleme?
+
+17. Tarifdatenbank
+------------------
+
+Die Tarifdatenbank fuer isdnlog wird bei jedem Neustart von isdnlog aus
+der ASCII-Datei "/usr/lib/isdn/tarif.dat" neu generiert.
+
+Benutzerbezogene Einstellungen an der Tarifdatenbank (wie Auswahl
+eines bestimmten Tarifes eines Providers (z.b. Sekundentakt oder Minutentakt),
+oder auch der konkrete Provider bei Kennzahlen, die von mehreren Providern
+vergeben werden (z.b. 01098 wird von Star, Nikoma, Mox sowie C@llas verwendet)
+werden in der Datei "/etc/isdn/tarif.conf" vorgenommen.
+
+Die Datei "tarif.dat" wird in einem Durchgang von oben nach unten eingelesen,
+und muss folgenden Aufbau (als Beispiel hier nun Mobilcom) haben:
+
+P:19,0=MobilCom
+G:01.01.1999
+C:MobilCom AG
+C:Homepage: http://www.mobilcom.de
+C:Hotline:  01805/191919
+C:Adresse:  Postfach 1249, 24822 Schleswig
+A:60/60
+I:0101901929 # (Benutzername: mobilcom; Passwort: mobilcom)
+Z:1-2
+T:*=0.19
+Z:3-8
+T:*=0.99
+Z:G
+T:*=0.19
+
+Leerzeilen, sowie Kommentare mittels "#" sind zulaessig.
+
+Die Reihenfolge der Eintraege muss zwingend so wie angegeben sein.
+Es ist auch nicht erlaubt, irgend welche Leerzeichen, Tabs o.ae.
+einzufuegen, als Dezimalkomma muss der "." (Punkt) verwendet werden,
+Uhrzeiten sind stets 5-stellig (05:15) anzugeben.
+
+
+Nun die Eintraege im einzelnen:
+
+-> P:
+
+Hiermit beginnt die Definition des naechsten Providers.
+Es wird die Kennzahl, evtl. eine laufende Nummer sowie die
+Bezeichnung des Providers definiert.
+Beispiel:
+
+P:19,0=MobilCom AG
+
+Gibt es fuer eine Kennzahl mehrere Alternativen (wie verschiedene Provider
+oder verschiedene Tarife), werden diese hierueber auseinander gehalten.
+Der erste Tarif bekommt "P:xx,0", der naechste "P:xx,1" usw.
+Gibt es keine Alternativen, darf das ",0" entfallen.
+
+-> G:
+
+Hier wird (im Format tt.mm.jjjj) angegeben, ab wann dieser Tarif gueltig ist.
+Beispiel:
+
+G:01.01.1999
+
+-> C:
+
+Hiermit koennen beliebig viele Kommentare eingefuegt werden, Beispiel:
+
+C:Homepage: http://www.mobilcom.de
+C:Hotline:  01805/191919
+C:Adresse:  Postfach 1249, 24822 Schleswig
+
+Im Gegensatz zu den "#" Kommentaren koennten diese in spaeteren Versionen
+von isdnlog noch gesondert verwendet werden, und sollten daher zumindest
+genug Informationen enthalten, um eine Kontaktaufnahme mit der jeweiligen
+Telefongesellschaft zu ermoeglichen.
+
+-> A:
+
+Hiermit wird angegeben, nach welchem Takt abgerechnet wird. Z.Zt. werden
+zwei grundsaetzlich verschiedene Modelle unterstuetzt:
+  1. Abrechnung nach Takten (soweit mir bekannt, nur noch bei der
+     Deutschen Telekom ueblich)
+     In diesem Fall wird unter A: angegeben, was ein Takt kostet, also
+       A:0.12
+     und weiter unten (im Kapitel T:) die Laenge eines Taktes in Sekunden
+
+  2. Abrechnung in Minutenpreisen. Dies ist heutzutage die uebliche Notation
+     in den einschlägigen Preislisten der Provider.
+     In diesem Fall kommt die Notation "A:30/1" zum Zuge. Dies
+     bedeutet: Mindestdauer einer Verbindung 30 Sekunden, Abrechnung
+     Sekundengenau. Anderes Beispiel: A:60/60 bedeutet: Mindestdauer
+     60 Sekunden, Abrechnung Minutengenau.
+     In diesem Fall wird im folgenden Kapitel T: der Preis pro
+     Minute angegeben.
+
+-> I:
+
+Bietet dieser Provider einen eigenen Internet-Zugang an (wie z.b. o.tel.o,
+Mobilcom, Arcor, VIAG), wird hier die komplette Zugangsnummer hinterlegt.
+Beispiel:
+
+I:0101901929 # (Benutzername: mobilcom; Passwort: mobilcom)
+
+Nun folgen die eigentlichen Tarifinformationen. Es wird zuerst die
+Zone, und danach die Kosten innerhalb dieser Zone angegeben. Es koennen
+beliebig viele Zonen, jeweils gefolgt von beliebig vielen Kosten
+angegeben werden.
+
+-> Z:
+
+Gibt die Zone an. isdnlog kennt per heute folgende Zonen:
+
+   0=City           8=E2-Netz      G=Internet
+   1=Region 50      9=Euro City
+   2=Fern           A=Euro 1
+   3=C-Netz         B=Euro 2
+   4=C-Mobilbox     C=Welt 1
+   5=D1-Netz        D=Welt 2
+   6=D2-Netz        E=Welt 3
+   7=E-plus-Netz    F=Welt 4
+
+Falls ein Provider in mehreren Zonen denselben Tarif anbietet, kann das
+durch die Notation Z:1-2 (bedeutet: Gilt sowohl für die Regional- als die
+Fernzone) oder auch Z:3-8 (bedeutet: Gilt fuer alle Funknetze) angegeben
+werden. Beispiel:
+
+Z:1-2
+
+-> T:
+
+Hiermit wird letztendlich der eigentliche Tarif angegeben.
+Es sind folgende Notationen zulaessig:
+
+T:W09-18=0.29
+
+Meint: Werktags, 09:00 Uhr bis 18:00 Uhr (genaugenommen bis 17:59 Uhr, isdnlog
+beruecksichtigt dies automatisch) kostet 1 Minute DM 0,29
+
+T:E08-21=0.13
+
+Meint: Wochenende sowie Feiertags, 08:00 Uhr bis 21:00 Uhr kostet eine
+Minute DM 0,13
+
+Also: "W" = Werktag, "E" = Wochenende/Feiertag, oder auch "*" = alle Tage
+
+Danach die Uhrzeit von/bis dieser Tarif gilt, gefolgt von einem "="
+Zeichen, danach der Minutenpreis in DM
+
+Wird keine Uhrzeit angegeben, also z.b. "E=0.10" bedeutet dies: Den ganzen
+Tag ueber, 24 Stunden (sog. "flat rate")
+
+
+Es folgen in beliebig vielen weiteren "T:" Zeilen alle weiteren Tarife
+für die darueber definierte Zone.
+
+Danach wird mittels "Z:" die naechste Zone begonnen, wiederum gefolgt von
+beliebig vielen "T:" Tarifen.
+
+
+Sind alle Tarife eines Anbieters definiert, folgt mittels "P:"
+der naechste Provider usw.
+
+
+
+In der Datei "/etc/isdn/tarif.conf" werden die Benutzerabhaengigen
+Einstellungen an der Tarifdatenbank vorgenommen.
+Beispiel:
+
+# Kennzahl 98, moegliche Varianten:
+#   0=Nikoma Minutentakt
+#   1=Nikoma Sekundentakt
+#   2=Nikocity Minutentakt
+#   3=Nikocity Sekundentakt
+#   4=Mox Telecom AG
+#   5=C@llas Clever Communications
+P:98=4
+
+Hier wird definiert, das der konkrete Anwender bei einer Verbindung ueber
+die Kennzahl "98" den Tarif der Fa. Mox Telecom AG meint.
+
+: Folgende Dinge sind mir bereits als hiermit noch nicht machbar bekannt:
+:
+:  - die erste Minute kostenlos, wenn Gespraechsdauer < 1 Minute
+:  - die ersten 5 Sekunden kostenlos
+:  - 10plus, CityPlus, usw. der DTAG
+:  - Preise fuer die Sondernnummern (112 ..., 0191011 ...)
+:  - Talkline's Internet-Zugang wird im 3 Minuten-Takt abgerechnet
+:  - Viatel berechnet an Feiertagen nicht wie Wochenende, sondern wie normale Tage
+:  - Rabatte
+:  - feinere Unterscheidung nach Laendern (Euro 1, Welt 1 ...)
+:  - einige Provider "vergessen", bei laufenden Gespaechen einen evtl.
+:    Tarifwechsel abzurechnen
+:  - Unterscheidung zwischen Wochenend- sowie Feiertagstarifen
+:  - Sonderbehandlung von 24. Dezember bis 31. Dezember (Telekom)
+
+
+18. Probleme?
 -------------
 
 Sollte isdnlog nicht wie beschrieben arbeiten, muessen folgende Punkte
@@ -3850,7 +4046,7 @@ gdb bin/isdnlog
 Den _gesamten_ Output an die oben angegebene Adresse senden.
 
 
-18. Verwendete Dateien
+19. Verwendete Dateien
 ----------------------
 
 Folgende Files werden von diesem System verwendet:
@@ -3880,7 +4076,7 @@ Folgende Files werden von diesem System verwendet:
   /usr/X11R6/lib/X11/app-defaults/Isdn - Resourcefile fuer xisdn
 
 
-19. Verwendete Environment-Variablen
+20. Verwendete Environment-Variablen
 ------------------------------------
 
 Folgende Environment-Variablen werden von diesem System verwendet:
@@ -3892,7 +4088,7 @@ Folgende Environment-Variablen werden von diesem System verwendet:
   		  X-Client "xisdn"
 
 
-20. Verwendete Abkuerzungen
+21. Verwendete Abkuerzungen
 ---------------------------
 
   VSt     = Vermittlungsstelle (das Amt)
@@ -3934,7 +4130,7 @@ Folgende Environment-Variablen werden von diesem System verwendet:
   PRI	  = Primary rate interface (30 B-Kanaele)
 
 
-21. Danksagung
+22. Danksagung
 --------------
 
 Bedanken moechte ich mich vor allem bei

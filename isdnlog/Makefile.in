@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.51 1998/12/29 14:51:37 paul Exp $
+## $Id: Makefile.in,v 1.52 1999/01/10 15:22:43 akool Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,18 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.52  1999/01/10 15:22:43  akool
+##  - "message = 0" bug fixed (many thanks to
+##    Sebastian Kanthak <sebastian.kanthak@muehlheim.de>)
+##  - CITYWEEKEND via config-file possible
+##  - fixes from Michael Reinelt <reinelt@eunet.at>
+##  - fix a typo in the README from Sascha Ziemann <szi@aibon.ping.de>
+##  - Charge for .at optimized by Michael Reinelt <reinelt@eunet.at>
+##  - first alpha-Version of the new chargeinfo-Database
+##    ATTENTION: This version requires the following manual steps:
+##      cp /usr/src/isdn4k-utils/isdnlog/tarif.dat /usr/lib/isdn
+##      cp /usr/src/isdn4k-utils/isdnlog/samples/tarif.conf /etc/isdn
+##
 ## Revision 1.51  1998/12/29 14:51:37  paul
 ## added isdnconf manpage
 ##
@@ -392,7 +404,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 3.00
+VERSION     = 3.01
 
 MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 isdnlog/isdnlog.users.5 isdnrep/isdnrep.1 isdnconf/isdnconf.1
 
@@ -426,8 +438,8 @@ ISDNLOG_OBJS =  isdnlog/isdnlog.o isdnlog/processor.o isdnlog/functions.o \
                 isdnlog/server.o isdnlog/start_prog.o isdnlog/messages.o  \
                 connect/connect.o connect/socket.o tools/tools.o      	  \
                 connect/conv_address.o isdnlog/user_access.o 		  \
-                isdnrep/cheap.o isdnrep/gebuehr.o tools/isdnconf.o        \
-		tools/tools_$(NATION).o isdnlog/takt_$(NATION).o          \
+                tools/isdnconf.o tools/tools_$(NATION).o		  \
+		isdnlog/takt_$(NATION).o				  \
 		$(LIBISDNDIR)/libisdn.a
 
 
@@ -443,14 +455,13 @@ ifdef TESTCENTER
 ISDNLOG_OBJS += isdnlog/test_center.o
 endif
 
-ISDNREP_OBJS =  isdnrep/rep_main.o isdnrep/cheap.o tools/tools.o          \
-                tools/isdnconf.o isdnlog/messages.o isdnrep/isdnrep.o     \
-				isdnrep/gebuehr.o											  \
-		tools/tools_$(NATION).o                                   \
+ISDNREP_OBJS =  isdnrep/rep_main.o tools/tools.o tools/isdnconf.o         \
+                isdnlog/messages.o isdnrep/isdnrep.o     		  \
+		tools/tools_$(NATION).o isdnlog/takt_$(NATION).o          \
                 $(LIBISDNDIR)/libisdn.a
 
 ISDNCONF_OBJS=  isdnconf/isdnconf.o tools/tools.o tools/isdnconf.o        \
-		tools/tools_$(NATION).o                                   \
+		tools/tools_$(NATION).o isdnlog/takt_$(NATION).o          \
                 $(LIBISDNDIR)/libisdn.a
 
 ISDNLOG      =  bin/isdnlog

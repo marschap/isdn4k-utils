@@ -1,8 +1,8 @@
-/* $Id: isdnlog.c,v 1.32 1998/12/31 09:58:50 paul Exp $
+/* $Id: isdnlog.c,v 1.33 1999/01/10 15:23:13 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
- * Copyright 1995, 1998 by Andreas Kool (akool@isdn4linux.de)
+ * Copyright 1995, 1999 by Andreas Kool (akool@isdn4linux.de)
  *                     and Stefan Luethje (luethje@sl-gw.lake.de)
  *
  * This program is free software; you can redistribute it and/or modify
@@ -19,6 +19,18 @@
  * along with this program; if not, write to the Free Software
  *
  * $Log: isdnlog.c,v $
+ * Revision 1.33  1999/01/10 15:23:13  akool
+ *  - "message = 0" bug fixed (many thanks to
+ *    Sebastian Kanthak <sebastian.kanthak@muehlheim.de>)
+ *  - CITYWEEKEND via config-file possible
+ *  - fixes from Michael Reinelt <reinelt@eunet.at>
+ *  - fix a typo in the README from Sascha Ziemann <szi@aibon.ping.de>
+ *  - Charge for .at optimized by Michael Reinelt <reinelt@eunet.at>
+ *  - first alpha-Version of the new chargeinfo-Database
+ *    ATTENTION: This version requires the following manual steps:
+ *      cp /usr/src/isdn4k-utils/isdnlog/tarif.dat /usr/lib/isdn
+ *      cp /usr/src/isdn4k-utils/isdnlog/samples/tarif.conf /etc/isdn
+ *
  * Revision 1.32  1998/12/31 09:58:50  paul
  * converted termio calls to termios
  *
@@ -696,9 +708,7 @@ int set_options(int argc, char* argv[])
     /* Wenn message nicht explixit gesetzt wurde, dann gibt es beim daemon auch
        kein Output auf der Console/ttyx                                   */
 
-    /* if (!newmessage && ptty == NULL)  -> FIXME: so geht das nicht, Stefan, wenn
-       	  	       	       	  	 -> "message" ueber das config-File
-                                         -> (CONF_ENT_STDOUT) gefuellt wird! */
+    if (!outfile && !newmessage && (ptty == NULL))
       message = 0;
   } /* if */
 
@@ -847,6 +857,9 @@ static int read_param_file(char *FileName)
                                 if (!strcmp(Ptr->name,CONF_ENT_OTHER))
 				        other = toupper(*(Ptr->value)) == 'Y'?1:0;
                                 else
+				if (!strcmp(Ptr->name,CONF_ENT_CW))
+				  CityWeekend++;
+                                else
 					print_msg(PRT_ERR,"Error: Invalid entry `%s'!\n",Ptr->name);
 
 				Ptr = Ptr->next;
@@ -963,6 +976,7 @@ int main(int argc, char *argv[], char *envp[])
   register int    i, res = 0;
   auto     int    lastarg;
   auto     char   rlogfile[PATH_MAX];
+  auto	   char	  msg[BUFSIZ];
   auto     char **devices = NULL;
   sigset_t        unblock_set;
 #ifdef TESTCENTER
@@ -1183,6 +1197,10 @@ int main(int argc, char *argv[], char *envp[])
 #endif
 
 	    initSondernummern();
+            initTarife(msg);
+
+            if (*msg)
+              print_msg(PRT_NORMAL, "%s\n", msg);
 
             loop();
 

@@ -1,8 +1,8 @@
-/* $Id: isdnlog.h,v 1.14 1998/12/09 20:39:30 akool Exp $
+/* $Id: isdnlog.h,v 1.15 1999/01/10 15:23:16 akool Exp $
  *
  * ISDN accounting for isdn4linux.
  *
- * Copyright 1995, 1998 by Andreas Kool (akool@isdn4linux.de)
+ * Copyright 1995, 1999 by Andreas Kool (akool@isdn4linux.de)
  *                     and Stefan Luethje (luethje@sl-gw.lake.de)
  *
  * This program is free software; you can redistribute it and/or modify
@@ -20,6 +20,18 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnlog.h,v $
+ * Revision 1.15  1999/01/10 15:23:16  akool
+ *  - "message = 0" bug fixed (many thanks to
+ *    Sebastian Kanthak <sebastian.kanthak@muehlheim.de>)
+ *  - CITYWEEKEND via config-file possible
+ *  - fixes from Michael Reinelt <reinelt@eunet.at>
+ *  - fix a typo in the README from Sascha Ziemann <szi@aibon.ping.de>
+ *  - Charge for .at optimized by Michael Reinelt <reinelt@eunet.at>
+ *  - first alpha-Version of the new chargeinfo-Database
+ *    ATTENTION: This version requires the following manual steps:
+ *      cp /usr/src/isdn4k-utils/isdnlog/tarif.dat /usr/lib/isdn
+ *      cp /usr/src/isdn4k-utils/isdnlog/samples/tarif.conf /etc/isdn
+ *
  * Revision 1.14  1998/12/09 20:39:30  akool
  *  - new option "-0x:y" for leading zero stripping on internal S0-Bus
  *  - new option "-o" to suppress causes of other ISDN-Equipment
@@ -201,6 +213,7 @@
 /****************************************************************************/
 
 #define BROADCAST   0x7f
+#define OUTGOING    !call[chan].dialin
 
 /****************************************************************************/
 
@@ -345,7 +358,6 @@ _EXTERN	char   *outfile;
 _EXTERN	char    tmpout[PATH_MAX];
 _EXTERN int     readkeyboard;
 _EXTERN	int     interns0;
-_EXTERN	int	preselect;
 _EXTERN	int	other;
 _EXTERN IFO     ifo[ISDN_MAX_CHANNELS];
 _EXTERN IO      io[ISDN_MAX_CHANNELS];
@@ -389,7 +401,12 @@ _EXTERN void logger(int chan);
 _EXTERN int  ringer(int chan, int event);
 _EXTERN void initSondernummern(void);
 _EXTERN int  is_sondernummer(char *num);
-
+_EXTERN void initTarife(char *msg);
+_EXTERN void exitTarife(void);
+_EXTERN void price(int chan, char *hint);
+_EXTERN char *realProvidername(int prefix);
+_EXTERN void preparecint(int chan, char *msg, char *hint);
+_EXTERN int  taktlaenge(int chan, char *why);
 #undef _EXTERN
 
 /****************************************************************************/
