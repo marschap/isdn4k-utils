@@ -1,4 +1,4 @@
-/* $Id: isdnlog.c,v 1.12 1997/05/25 19:40:58 luethje Exp $
+/* $Id: isdnlog.c,v 1.13 1997/06/22 23:03:23 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,11 @@
  * along with this program; if not, write to the Free Software
  *
  * $Log: isdnlog.c,v $
+ * Revision 1.13  1997/06/22 23:03:23  luethje
+ * In subsection FLAGS it will be checked if the section name FLAG is korrect
+ * isdnlog recognize calls abroad
+ * bugfix for program starts
+ *
  * Revision 1.12  1997/05/25 19:40:58  luethje
  * isdnlog:  close all files and open again after kill -HUP
  * isdnrep:  support vbox version 2.0
@@ -874,8 +879,8 @@ int main(int argc, char *argv[], char *envp[])
 
         if (!verbose || ((fprot = fopen(tmpout, "a")) != (FILE *)NULL)) {
 
-          for (i = 0; i < MAXCHAN; i++)
-	    clearchan(i, 1);
+      for (i = 0; i < MAXCHAN; i++)
+				clearchan(i, 1);
 
 #ifdef Q931
           if (q931dmp) {
