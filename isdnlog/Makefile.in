@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.45 1998/10/16 12:38:04 keil Exp $
+## $Id: Makefile.in,v 1.46 1998/11/01 08:49:22 akool Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,16 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.46  1998/11/01 08:49:22  akool
+##  - fixed "configure.in" problem with NATION_*
+##  - DESTDIR fixes (many thanks to Michael Reinelt <reinelt@eunet.at>)
+##  - isdnrep: Outgoing calls ordered by Zone/Provider/MSN corrected
+##  - new Switch "-i" -> running on internal S0-Bus
+##  - more providers
+##  - "sonderrufnummern.dat" extended (Frag Fred, Telegate ...)
+##  - added AVM-B1 to the documentation
+##  - removed the word "Teles" from the whole documentation ;-)
+##
 ## Revision 1.45  1998/10/16 12:38:04  keil
 ## fixes to compile and install under 2.0.36
 ##
@@ -351,7 +361,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 2.99.34
+VERSION     = 2.99.35
 
 ifeq ($(POSTGRES),1)
 DEFS       += -DPOSTGRES
@@ -373,7 +383,7 @@ endif
 DEFS       += \
                -DVERSION=\"$(VERSION)\"   \
                -DI4LVERSION=\"$(I4LVERSION)\"   \
-	       -DISDN_DE=1			\
+	       -D@NATION_MACRO@=1		\
                 $(INCLUDE)
 
 %.o: %.c

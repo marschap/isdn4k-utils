@@ -1,4 +1,4 @@
-/* $Id: isdnlog.c,v 1.26 1998/10/26 20:21:14 paul Exp $
+/* $Id: isdnlog.c,v 1.27 1998/11/01 08:49:43 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,16 @@
  * along with this program; if not, write to the Free Software
  *
  * $Log: isdnlog.c,v $
+ * Revision 1.27  1998/11/01 08:49:43  akool
+ *  - fixed "configure.in" problem with NATION_*
+ *  - DESTDIR fixes (many thanks to Michael Reinelt <reinelt@eunet.at>)
+ *  - isdnrep: Outgoing calls ordered by Zone/Provider/MSN corrected
+ *  - new Switch "-i" -> running on internal S0-Bus
+ *  - more providers
+ *  - "sonderrufnummern.dat" extended (Frag Fred, Telegate ...)
+ *  - added AVM-B1 to the documentation
+ *  - removed the word "Teles" from the whole documentation ;-)
+ *
  * Revision 1.26  1998/10/26 20:21:14  paul
  * thinko in check for symlink in /tmp
  *
@@ -190,9 +200,9 @@ static int read_param_file(char *FileName);
 
 static char     usage[]   = "%s: usage: %s [ -%s ] file\n";
 #ifdef Q931
-static char     options[] = "av:sp:x:m:l:rt:c:C:w:SVTDPMh:nW:H:f:bL:NqFA:2:O:K";
+static char     options[] = "av:sp:x:m:l:rt:c:C:w:SVTDPMh:nW:H:f:bL:NqFA:2:O:Ki";
 #else
-static char     options[] = "av:sp:x:m:l:rt:c:C:w:SVTDPMh:nW:H:f:bL:NFA:2:O:K";
+static char     options[] = "av:sp:x:m:l:rt:c:C:w:SVTDPMh:nW:H:f:bL:NFA:2:O:Ki";
 #endif
 static char     msg1[]    = "%s: Can't open %s (%s)\n";
 static char    *ptty = NULL;
@@ -594,6 +604,9 @@ int set_options(int argc, char* argv[])
       case 'K' : readkeyboard++;
       	       	 break;
 
+      case 'i' : interns0++;
+      	       	 break;
+
       case '?' : printf(usage, myshortname, myshortname, options);
 	         exit(1);
     } /* switch */
@@ -760,6 +773,9 @@ static int read_param_file(char *FileName)
 				else
 				if (!strcmp(Ptr->name,CONF_ENT_KEYBOARD))
 					readkeyboard = toupper(*(Ptr->value)) == 'Y'?1:0;
+				else
+				if (!strcmp(Ptr->name,CONF_ENT_INTERNS0))
+					interns0 = toupper(*(Ptr->value)) == 'Y'?1:0;
 				else
 					print_msg(PRT_ERR,"Error: Invalid entry `%s'!\n",Ptr->name);
 

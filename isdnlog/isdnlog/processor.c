@@ -1,4 +1,4 @@
-/* $Id: processor.c,v 1.28 1998/10/04 12:04:05 akool Exp $
+/* $Id: processor.c,v 1.29 1998/11/01 08:49:52 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,16 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.29  1998/11/01 08:49:52  akool
+ *  - fixed "configure.in" problem with NATION_*
+ *  - DESTDIR fixes (many thanks to Michael Reinelt <reinelt@eunet.at>)
+ *  - isdnrep: Outgoing calls ordered by Zone/Provider/MSN corrected
+ *  - new Switch "-i" -> running on internal S0-Bus
+ *  - more providers
+ *  - "sonderrufnummern.dat" extended (Frag Fred, Telegate ...)
+ *  - added AVM-B1 to the documentation
+ *  - removed the word "Teles" from the whole documentation ;-)
+ *
  * Revision 1.28  1998/10/04 12:04:05  akool
  *  - README
  *      New entries "CALLFILE" and "CALLFMT" documented
@@ -667,8 +677,13 @@ static void buildnumber(char *num, int oc3, int oc3a, char *result, int version,
                   strcpy(result, countryprefix);  /* 001 International */
                 break;
 
-    case 0x20 : if (version != VERSION_1TR6)
+    case 0x20 : if (version != VERSION_1TR6) {
                   strcpy(result, mycountry);    /* 010 National */
+
+		  if (interns0)
+                    while (*num == '0')
+                      num++;
+    		} /* if */
                 break;
 
     case 0x30 : break;                       /* 011 Network specific number */

@@ -1,4 +1,4 @@
-/* $Id: isdnlog.h,v 1.11 1998/10/18 20:13:37 luethje Exp $
+/* $Id: isdnlog.h,v 1.12 1998/11/01 08:49:47 akool Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,16 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnlog.h,v $
+ * Revision 1.12  1998/11/01 08:49:47  akool
+ *  - fixed "configure.in" problem with NATION_*
+ *  - DESTDIR fixes (many thanks to Michael Reinelt <reinelt@eunet.at>)
+ *  - isdnrep: Outgoing calls ordered by Zone/Provider/MSN corrected
+ *  - new Switch "-i" -> running on internal S0-Bus
+ *  - more providers
+ *  - "sonderrufnummern.dat" extended (Frag Fred, Telegate ...)
+ *  - added AVM-B1 to the documentation
+ *  - removed the word "Teles" from the whole documentation ;-)
+ *
  * Revision 1.11  1998/10/18 20:13:37  luethje
  * isdnlog: Added the switch -K
  *
@@ -311,6 +321,7 @@ _EXTERN	char    isdnctrl2[FNSIZE];
 _EXTERN	char   *outfile;
 _EXTERN	char    tmpout[PATH_MAX];
 _EXTERN int     readkeyboard;
+_EXTERN	int     interns0;
 
 _EXTERN IFO     ifo[ISDN_MAX_CHANNELS];
 _EXTERN IO      io[ISDN_MAX_CHANNELS];

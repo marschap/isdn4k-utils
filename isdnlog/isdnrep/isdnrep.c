@@ -1,4 +1,4 @@
-/* $Id: isdnrep.c,v 1.48 1998/10/22 18:22:49 luethje Exp $
+/* $Id: isdnrep.c,v 1.49 1998/11/01 08:50:11 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -24,6 +24,16 @@
  *
  *
  * $Log: isdnrep.c,v $
+ * Revision 1.49  1998/11/01 08:50:11  akool
+ *  - fixed "configure.in" problem with NATION_*
+ *  - DESTDIR fixes (many thanks to Michael Reinelt <reinelt@eunet.at>)
+ *  - isdnrep: Outgoing calls ordered by Zone/Provider/MSN corrected
+ *  - new Switch "-i" -> running on internal S0-Bus
+ *  - more providers
+ *  - "sonderrufnummern.dat" extended (Frag Fred, Telegate ...)
+ *  - added AVM-B1 to the documentation
+ *  - removed the word "Teles" from the whole documentation ;-)
+ *
  * Revision 1.48  1998/10/22 18:22:49  luethje
  * isdnrep: suppress some messages
  * isdnlog: remove function Pathfind()
@@ -1067,6 +1077,7 @@ static int print_bottom(double unit, char *start, char *stop)
 			} /* if */
 
 /* Was soll das werden, Andreas ? */
+#if 0 /* War Quatsch - vergiss es ... */
 		if (known[knowns-1]->eh > 0)
 		{
 			print_line3(NULL,
@@ -1078,6 +1089,7 @@ static int print_bottom(double unit, char *start, char *stop)
 			          print_currency(known[knowns-1]->eh * unit, 0));
 #endif
 		}
+#endif
 
 		print_line2(F_BODY_BOTTOM2,"");
 
@@ -2081,6 +2093,7 @@ static int print_entries(one_call *cur_call, double unit, int *nx, char *myname)
   auto int     go, zone = 1, zeit = -1;
 	auto time_t  t1, t2;
 #endif
+	auto int     zone;
 
 
 #if 0
@@ -2096,20 +2109,21 @@ static int print_entries(one_call *cur_call, double unit, int *nx, char *myname)
         how_expensive(cur_call);
 
 #if 0
-#	if 0
+#if 0
 	if (compute && !currency_factor &&
 	    !cur_call->dir && ((cur_call->eh == -1) ||
 	    (!cur_call->eh && cur_call->duration && cur_call->cause == -1))) { /* DIALOUT, keine AOCE Meldung */
-#	else
+#else
 	go = 0;
 
 	if ((cur_call->eh == -1) && !cur_call->dir) { /* Rauswahl, Gebuehr unbekannt */
 
                 pro = cur_call->provider;
+
                 if (pro == -1)
                   pro = 33; /* Telekom */
 
-                if (pro && (nx[1] != -1)) {
+                if (nx[CALLED] != -1) {
 		  if (!cur_call->dm) {
 
                     tarifz = known[nx[CALLED]]->zone;
@@ -2132,7 +2146,7 @@ static int print_entries(one_call *cur_call, double unit, int *nx, char *myname)
 		  computed = 1;
                   go = 0;
                 }
-		else if (nx[1] == -1) {       		      	/* Gegner unbekannt! */
+		else if (nx[CALLED] == -1) {       		      	/* Gegner unbekannt! */
 			if (compute) {
 				zone = compute;                       /* in "-c x" Zone vermuten */
 				go = 1;
@@ -2144,7 +2158,7 @@ static int print_entries(one_call *cur_call, double unit, int *nx, char *myname)
 		}
 		else {
 			go = 1;
-			if (!(zone = known[nx[1]]->zone))
+			if (!(zone = known[nx[CALLED]]->zone))
 				go = cur_call->eh = 0;
 		} /* else */
         }
@@ -2163,7 +2177,7 @@ static int print_entries(one_call *cur_call, double unit, int *nx, char *myname)
 	} /* if */
 
 	if (go) {
-#	endif
+#endif
 		t1 = cur_call->t;
 		t2 = cur_call->t + cur_call->duration;
 
@@ -2192,8 +2206,21 @@ static int print_entries(one_call *cur_call, double unit, int *nx, char *myname)
 	if (pro == -1)
 		pro = 33; /* Telekom */
 
-	if (cur_call->duration || (cur_call->eh > 0))
-	{
+	if (cur_call->duration || (cur_call->eh > 0)) {
+
+#if 1 /* AK:07-Oct-98 */
+		if ((cur_call->dir == DIALOUT) && (nx[CALLED] == -1)) {
+      		  zone = area_diff(NULL, cur_call->num[CALLED]);
+
+		  zones[zone] += cur_call->eh;
+		  zones_dm[zone] += cur_call->dm;
+
+		  if (cur_call->duration > 0)
+		    zones_dur[zone] += cur_call->duration;
+
+		  zones_usage[zone]++;
+                } /* if */
+#endif
 		add_one_call(computed?&day_com_sum:&day_sum,cur_call,unit);
 
 		if (cur_call->dir) {
@@ -2204,7 +2231,7 @@ static int print_entries(one_call *cur_call, double unit, int *nx, char *myname)
 
 				if (cur_call->duration > 0)
 					known[knowns-1]->dur[DIALIN] += cur_call->duration;
-			} /* if */
+			}
 			else
 			{
 				known[nx[CALLING]]->usage[cur_call->dir]++;
@@ -2245,7 +2272,14 @@ static int print_entries(one_call *cur_call, double unit, int *nx, char *myname)
 
 				zones_usage[known[nx[CALLED]]->zone]++;
 
-#if 1 /* AK:05-May-98 */
+			} /* if */
+		} /* else */
+	}
+	else {
+		if (cur_call->cause != -1)
+			day_sum.err++;
+	} /* else */
+
       	 	      		if (cur_call->dir == DIALOUT) {
                                   for (i = 0; i < mymsns; i++) {
                                     if (!n_match(known[i]->num, cur_call->num[0], cur_call->version) && (known[i]->si == cur_call->si)) {
@@ -2263,14 +2297,6 @@ static int print_entries(one_call *cur_call, double unit, int *nx, char *myname)
                                   } /* if */
 
       	 	      		} /* if */
-#endif
-			} /* if */
-		} /* else */
-	}
-	else {
-		if (cur_call->cause != -1)
-			day_sum.err++;
-	} /* else */
 
 	print_line(F_BODY_LINE,cur_call,computed,NULL);
 	return 0;

@@ -1,10 +1,10 @@
-ISDNLOG - Version pre3.0 -  				04-Oct-98  12:33
+ISDNLOG - Version pre3.0 -  				01-Nov-98  09:26
 
 
-isdnlog ist ein Utility zur Auswertung des D-Kanal eines ISDN-BRI Anschlusses.
+isdnlog ist ein Utility zur Auswertung des D-Kanals eines
+ISDN-BRI Anschlusses.
 
-isdnlog-3.0 wurde ausgiebig mit Linux-2.0.35 / isdn4kernel-2.0.30
-getestet.
+isdnlog-3.0 wurde ausgiebig mit Linux-2.0.36 getestet.
 
 
 Fuer alle, die es nun ueberhaupt nicht mehr abwarten koennen, hier das
@@ -12,7 +12,7 @@ Fuer alle, die es nun ueberhaupt nicht mehr abwarten koennen, hier das
 Quick-Installation-Guide
 ------------------------
 
-1. Linux-2.0.35 + isdn4kernel-2.0.30 verwenden:
+1. Linux-2.0.36 verwenden:
      CONFIG_ISDN=m
      CONFIG_ISDN_DRV_HISAX=m
 
@@ -55,9 +55,9 @@ Quick-Installation-Guide
 
 4. isdn4linux das D-Kanal-Protokoll entlocken:
 
-     hisaxctrl <myTeles> 1 4
+     hisaxctrl <DriverID> 1 4
 
-   mit <myTeles> entsprechend Driver-ID, wie beim "insmod" des HiSax-Treibers
+   mit <DriverID> entsprechend Driver-ID, wie beim "insmod" des HiSax-Treibers
    angegeben, oder "line0", falls der HiSax-Treiber im Kern enthalten ist.
 
 5. isdnlog starten:
@@ -138,6 +138,11 @@ Anmerkung:
 Es wurden folgende Dinge geaendert, die vor dem ersten Start
 dieser neuen Version unbedingt angepasst werden muessen!
 
+Aenderungen seit Version 2.60:
+
+    - Unterstuetzung fuer die seit 1.1.1998 moeglichen privaten
+      Telefongesellschaften
+
 Aenderungen seit Version 2.50:
 
     - Konfigurationsdateien heissen jetzt isdn.conf, callerid.conf und
@@ -188,7 +193,7 @@ sondern an
 
      i4l-isdnlog@franken.de
 
-Bitte auch nicht mehr die alte Adresse isdnlog@Kool.f.UUnet.de verwenden.
+Bitte auch nicht mehr die alte Adresse isdnlog@Kool.f.EUnet.de verwenden.
 
 So bekommen alle Entwickler die Anfragen direkt mit, und muessen nicht
 von mir extra weitergeleitet werden. Dadurch wird die Anfrage mit
@@ -216,7 +221,7 @@ sowie "/dev/isdninfo" lauscht, und saemtliche Vorgaenge auf dem eigenen
 ISDN-Anschluss anzeigt.
 
 Dazu liest es aus "/dev/isdnctrl0" (resp. "/dev/isdnctrl2", falls eine
-2. Teles-Karte im Rechner steckt) das gesamte D-Kanal Protokoll, sowie aus
+2. ISDN-Karte im Rechner steckt) das gesamte D-Kanal Protokoll, sowie aus
 "/dev/isdninfo" alle internen Meldungen von isdn4linux.
 
 isdnlog sammelt all diese Informationen, und gestattet damit folgendes:
@@ -224,7 +229,7 @@ isdnlog sammelt all diese Informationen, und gestattet damit folgendes:
  - der gesamte Verkehr kann auf einer Linux-Console, oder einem xterm
    angezeigt werden. Dies sieht etwa so aus:
 
-   Beispiel #1 : Ein Raus-Ruf mit der Teles-Karte:
+   Beispiel #1 : Ein Raus-Ruf mit der ISDN-Karte:
     13 21:16:31 * tei 104 calling UUnet with Phone  Digital
     13 21:16:33 tei 104 calling UUnet with ISDN  Time:Wed Mar 13 21:17:00 1996
     13 21:16:33 tei 104 calling UUnet with ISDN  CONNECT
@@ -303,12 +308,12 @@ isdnlog sammelt all diese Informationen, und gestattet damit folgendes:
 2. Was kann isdnlog nicht?
 --------------------------
 
-Z.Zt. arbeitet isdnlog _nur_ mit dem HiSax-Treiber (und damit mit einer
-Teles- od. compatiblen Karte) zusammen, die ICN-Karte wird
-leider noch nicht unterstuetzt.
+Z.Zt. arbeitet isdnlog _nur_ mit dem HiSax-Treiber (d.h. allen passiven
+Karten) sowie der AVM-B1 zusammen, die ICN-Karte wird leider noch nicht
+unterstuetzt.
 
 Weiterhin kann isdnlog bei allen rausgehenden Verbindungen, die nicht
-mit der Teles-Karte entstanden sind (ISDN-Telefon, Modem/Fax etc. am
+mit der ISDN-Karte entstanden sind (ISDN-Telefon, Modem/Fax etc. am
 a/b Adapter oder einer Telefonanlage) die entsprechenden Telefonnummern
 leider nicht anzeigen. Dazu Gernot Zander:
 
@@ -317,15 +322,15 @@ leider nicht anzeigen. Dazu Gernot Zander:
 : geschickt, aber nicht _zurueckgeschickt_ wird. Bei eigenen Anrufen weiss der
 : Treiber die Nummer zwangslaeufig:-), bei ankommenden wird sie _vom_ Amt
 : mitgeteilt.
-: Die Karte (und damit teles0.4d) kann nur das mitschreiben, was _vom_
+: Die Karte (und damit HiSax) kann nur das mitschreiben, was _vom_
 : Amt kommt oder was sie selber _zum_ Amt schickt. Nicht aber, was Fremd-
 : geraete _zum_ Amt senden.
 
 : Die Karte bekommt immer nur eine Richtung mit, naemlich Amt->User.
 : Sie kann von den User->Amt nur die _eigenen_ Meldungen
-: ausgeben (also die der Teles selbst).
+: ausgeben (also die der ISDN-Karte selbst).
 : Wenn man mit seiner TK-Anlage rauswaehlt, geht die Zielnummer
-: aber User->Amt, und genau das wird von einer Teles
+: aber User->Amt, und genau das wird von einer ISDN-Karte
 : nicht mitgeschnitten (kann sie nicht!), es passiert auf dem falschen Bus!
 : Der S.0 ist ja deshalb 4adrig, weil 2 Adern von den Endgeraeten _zum_
 : und zwei _vom_ NT gehen. Und jedes normale Endgeraet sendet auf
@@ -1032,7 +1037,7 @@ dort verwendet wird, reagiert z.B. das Telefon nicht (es klingelt nicht!),
 wenn ein Teilnehmer sich mit einem PC an dieser Nummer anwaehlt.
 Beispiel:
 
-Auf der MSN 4711 lauscht sowohl die Teles-Karte auf X.75 Anrufe, als auch
+Auf der MSN 4711 lauscht sowohl die ISDN-Karte auf X.75 Anrufe, als auch
 ein Analoges Telefon ueber eine Telefonanlage.
 
 Hier wuerden folgende Eintraege in der "callerid.conf" passen:
@@ -1062,7 +1067,7 @@ Die genaue Syntax wird weiter unten beschrieben.
 Ruft nun jemand die 4711 mit einem Telefon an, wird das als Anruf auf
 "Phone" angezeigt, und mit "auplay" das Soundfile "ring.au" abgespielt.
 
-Waehlt jemand hingehen die 4711 mit einer Teles-Karte an, wird das als
+Waehlt jemand hingehen die 4711 mit einer ISDN-Karte an, wird das als
 "X.75" angezeigt, und mit "auplay" das Soundfile "computer.au" abgespielt.
 
 Startet hingegen jemand eine Video-Uebertragung auf die 4711, wird auch
@@ -2058,7 +2063,7 @@ isdnlog benoetigt allerdings auf jeden Fall die "4"
 
 Nun kann isdnlog mittels:
 
-  isdnlog [ -avsx:m:l:rt:cC:w:SVTRDPeMh: ] [ /dev/isdnctrl0 | - ]
+  isdnlog [ -av:sp:x:m:l:rt:c:C:w:SVTDPMh:nW:H:f:bL:NFA:2:O:Ki ] [ /dev/isdnctrl0 | - ]
 
 gestartet werden. Der isdnlog kann nur als root gestartet werden!
 
@@ -2305,14 +2310,18 @@ angegeben werden.
 
  -2x Dual-Mode. isdnlog empfaengt die D-Kanal-Frames der anderen
      Geraete auf dem S0-Bus ueber eine zweite, falsch angeschlossene
-     Teles-Karte.
+     ISDN-Karte.
      Mit x = 2 zeigt isdnlog auch jede Kleinigkeit - wie z.b. jedes
      einzelne gewaehlte Digit beim Telefonieren direkt an.
      (dual="value")
 
- -K  Schreibt bei jedem Tastendruck einen Datendurchsatz. Kann nicht zusammen
-     mit Option -d verwendet werden!
+ -K  isdnlog zeigt bei Betaetigung der Taste <l> eine Liste der letzten
+     Anrufer an. (History)
+     Kann nicht zusammen mit Option -d verwendet werden!
      (keyboard={yes|no})
+
+ -i  isdnlog laeuft an einem internen S0-Bus (*FUTURE*EXPANSION*)
+     (interns0={yes|no})
 
 
 Bei den Optionen -mX, -lX -xX sind folgende Flags moeglich:
@@ -3571,12 +3580,12 @@ gesaugten Byte zaehlen.
 -------------
 
 Wie eingangs erwaehnt, kann isdnlog bei allen rausgehenden Verbindungen,
-die nicht mit der Teles-Karte entstanden sind (ISDN-Telefon, Modem/Fax)
+die nicht mit der ISDN-Karte entstanden sind (ISDN-Telefon, Modem/Fax)
 die entsprechenden Telefonnummern leider nicht anzeigen.
 
 Mit dem Dual-Mode ist genau dies jedoch moeglich.
 
-Dazu muss der Rechner mit einer zweiten Teles-Karte ausgestattet, und
+Dazu muss der Rechner mit einer zweiten ISDN-Karte ausgestattet, und
 darauf ein HiSax-Treiber installiert werden.
 
 Bei mir sieht das so aus:
@@ -3755,7 +3764,7 @@ Diese Fehlermeldung sollte bitte an "i4l-isdnlog@franken.de" geschickt
 werden.
 
 
- - Bei jeder Anwahl von draussen an meine Teles-Karte meldet mir isdnlog
+ - Bei jeder Anwahl von draussen an meine ISDN-Karte meldet mir isdnlog
    2 HANGUP's?
 
    Bei einem eingehenden Ruf melden alle Geraete, die sich zustaendig
@@ -3767,14 +3776,14 @@ werden.
    dem Klingeln wieder aufhoeren. Dasselbe passiert natuerlich auch,
    wenn der Anrufer vor dem Abnehmen schon auflegt.
 
-   D.h. der erste HANGUP stammt vom 2. B-Kanal der Teles-Karte, der den
+   D.h. der erste HANGUP stammt vom 2. B-Kanal der ISDN-Karte, der den
    Anruf ablehnt!
 
-   Die Teles-Karte spielt die Rolle von zwei Geraeten, wohl weil ein
+   Die ISDN-Karte spielt die Rolle von zwei Geraeten, wohl weil ein
    Geraet zu einer Zeit immer nur eine Dienstkennung haben kann,
-   die Teles koennte aber gleichzeitig eine Voice- und eine Data-
+   die ISDN-Karte koennte aber gleichzeitig eine Voice- und eine Data-
    Verbindung fahren (nur (noch?) nicht unter i4l).
-   Fehlt also nach dem CONNECT der Teles der HANGUP des zweiten
+   Fehlt also nach dem CONNECT der ISDN-Karte der HANGUP des zweiten
    Kanals, ist das ein Indiz dafuer, dass dieser haengt.
 
  - Es wird bei isdnlog, isdnrep und xisdn immer nur die letzte Ziffer der
@@ -3851,8 +3860,8 @@ Den _gesamten_ Output an die oben angegebene Adresse senden.
 Folgende Files werden von diesem System verwendet:
 
   /sbin/isdnlog              - Das Protokoll-Programm
-  /usr/sbin/isdnrep          - Das Report-Programm
-  /usr/sbin/isdnconf         - Das Konfigurationstool
+  /usr/bin/isdnrep          	       - Das Report-Programm
+  /usr/bin/isdnconf         	       - Das Konfigurationstool
   /etc/isdn/isdnlog.conf     - Die alte Config-Datei
   /etc/isdn/isdn.conf        - Die neue Config-Datei
   ~/.isdn                    - Die Config-Datei des Benutzers
@@ -3863,7 +3872,10 @@ Folgende Files werden von diesem System verwendet:
   /etc/isdn/charge.dat       - Zwischenspeicher fuer die ChargeMax-Funktion
   /etc/isdn/reload           - Script zum Wiederanfahren eines verklemmten i4l
   /etc/isdn/stop    	     - Script zum Stoppen bei erreichen von CHARGEMAX
-  /usr/lib/areacode          - Neues Vorwahl-Verzeichnis
+  /etc/isdn/dontstop		       - verhindert temporaer die CHARGEMAX-Funktion
+  /usr/lib/isdn/areacodes    	       - Neues Vorwahl-Verzeichnis
+  /usr/lib/isdn/sonderrufnummern.dat   - Verzeichnis aller Sonderrufnummern (110, 112 ...)
+  /usr/lib/isdn/vorwahl.dat	       - Verzonungstabelle
   /var/log/isdn.log	     - Das Logbuch
   /var/run/isdnlog.pid	     - Enthaelt die PID des laufenden isdnlog
   /dev/isdnctrl0	     - Gibt das Q.931 Protokoll des HiSax-Treibers aus
@@ -3933,13 +3945,13 @@ Bedanken moechte ich mich vor allem bei
   Fritz Elfert (fritz@wuemaus.franken.de)
 fuer isdn4linux, sowie
   Jan den Ouden (denouden@groovin.xs4all.nl)
-fuer den Teles-Treiber.
+fuer den ISDN-Treiber.
 
 Bei
   Beat Doebeli (doebeli@vptt.ch)
 fuer den Einbau jeglicher D-Channel Messages, sowie
   Michael Bongartz (micha@mubo.saar.de)
-fuer die Entdeckung der AOC-D sowie AOC-E Bytes im D-Kannel-Protokoll
+fuer die Entdeckung der AOC-D sowie AOC-E Bytes im D-Kanal-Protokoll
 
 Bei
   Kai Voelcker (kai@fantaghiro.deceiver.org)
@@ -3971,6 +3983,10 @@ Bei
 der die Gebuehrenauswertung fuer die Schweiz korrigiert hat
 
 Bei
+  Michael Reinelt <reinelt@eunet.at>
+der die gesamte Anpassung fuer Oesterreich implementiert hat
+
+Bei
   Markus Leist (markus@hal.dirnet.com)
 fuer die Anbindung an postgres95
 
@@ -3989,13 +4005,13 @@ Gar nicht genug danken kann ich Dr.-Ing. Joachim Goeller sowie
 Sebastian Goeller, die mir unzaehlige Informationen zum D-Kanal
 Protokoll geliefert haben.
 
-Und natuerlich bei der deutschen Telekom, die mir seit nunmehr zwei Jahren
-falsche (aber von isdnlog erkannte) AOC-E Elemente schickt ;-)
-
 Aber ganz besonders bei
   Stefan Luethje (luethje@sl-gw.lake.de)
 von dem sicherlich mittlerweile 50% des isdnlog-Codes bestehen.
 
+Mein groesster Dank gilt natuerlich meiner Frau Claudia (clw@Kool.f.UUnet.de),
+die die ganze Geduld aufgebracht hat, waerend ich am isdnlog
+rumgeschraubt habe!
 
 Viel Spass mit isdnlog wuenscht
 

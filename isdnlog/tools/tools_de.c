@@ -1,4 +1,4 @@
-/* $Id: tools_de.c,v 1.1 1998/09/26 18:30:24 akool Exp $
+/* $Id: tools_de.c,v 1.2 1998/11/01 08:50:41 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -21,6 +21,16 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools_de.c,v $
+ * Revision 1.2  1998/11/01 08:50:41  akool
+ *  - fixed "configure.in" problem with NATION_*
+ *  - DESTDIR fixes (many thanks to Michael Reinelt <reinelt@eunet.at>)
+ *  - isdnrep: Outgoing calls ordered by Zone/Provider/MSN corrected
+ *  - new Switch "-i" -> running on internal S0-Bus
+ *  - more providers
+ *  - "sonderrufnummern.dat" extended (Frag Fred, Telegate ...)
+ *  - added AVM-B1 to the documentation
+ *  - removed the word "Teles" from the whole documentation ;-)
+ *
  * Revision 1.1  1998/09/26 18:30:24  akool
  *  - quick and dirty Call-History in "-m" Mode (press "h" for more info) added
  *    - eat's one more socket, Stefan: sockets[3] now is STDIN, FIRST_DESCR=4 !!
@@ -59,7 +69,7 @@ char *Providername(int number)
     case 15 : return("RSL COM");
     case 18 : return("Debitel");
     case 19 : return("MobilCom");
-    case 20 : return("Isis");
+    case 20 : return("ISIS");
     case 22 : return("NetCologne");
     case 23 : return("tesion ))");
     case 24 : return("TelePassport");
@@ -72,11 +82,11 @@ char *Providername(int number)
     case 40 : return("Plusnet");
     case 41 : return("HanseNet");
     case 43 : return("KielNet");
-    case 44 : return("VEW TELNET");
+    case 44 : return("VEW Telnet");
     case 46 : return("KomTel");
     case 49 : return("ACC Telecom");
     case 50 : return("Talkline");
-    case 55 : return("Esprit");
+    case 55 : return("Esprit Telecom");
     case 57 : return("Mox");
     case 63 : return("KDD-Conos");
     case 66 : return("Interoute");
@@ -84,6 +94,7 @@ char *Providername(int number)
     case 72 : return("d2privat");
     case 79 : return("Viatel");
     case 85 : return("WESTCom");
+    case 87 : return("HamCom");
     case 88 : return("WorldCom");
     case 90 : return("VIAG Interkom");
     case 98 : return("STAR Telecom");

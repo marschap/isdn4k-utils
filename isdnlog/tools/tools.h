@@ -1,4 +1,4 @@
-/* $Id: tools.h,v 1.21 1998/10/18 20:13:44 luethje Exp $
+/* $Id: tools.h,v 1.22 1998/11/01 08:50:35 akool Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,16 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools.h,v $
+ * Revision 1.22  1998/11/01 08:50:35  akool
+ *  - fixed "configure.in" problem with NATION_*
+ *  - DESTDIR fixes (many thanks to Michael Reinelt <reinelt@eunet.at>)
+ *  - isdnrep: Outgoing calls ordered by Zone/Provider/MSN corrected
+ *  - new Switch "-i" -> running on internal S0-Bus
+ *  - more providers
+ *  - "sonderrufnummern.dat" extended (Frag Fred, Telegate ...)
+ *  - added AVM-B1 to the documentation
+ *  - removed the word "Teles" from the whole documentation ;-)
+ *
  * Revision 1.21  1998/10/18 20:13:44  luethje
  * isdnlog: Added the switch -K
  *
@@ -460,6 +470,7 @@
 #define CONF_ENT_Q931		 "Q931DUMP"
 #define CONF_ENT_OUTFILE "OUTFILE"
 #define CONF_ENT_KEYBOARD "KEYBOARD"
+#define CONF_ENT_INTERNS0 "INTERNS0"
 
 /****************************************************************************/
 
