@@ -4,8 +4,6 @@
 # Generate FAQ, support FAQ development
 
 # Directories
-# All Perl scripts for generation of FAQ are in BIN
-BIN = ./bin
 # All output files are generated in GEN_DIR
 GEN_DIR = ./out
 # After generation, install files in TARGET_DIR (if different from GEN_DIR)
@@ -14,161 +12,66 @@ TARGET_DIR = @TARGET_DIR@
 # Program file names
 ZIP     = @C_ZIP@
 GZIP    = @C_GZIP@
-PERL    = @C_PERL@
+SGML2HTML = @C_SGML2HTML@
+SGML2TXT = @C_SGML2TXT@
 INSTALL = @INSTALL@
-HTML    = $(PERL) $(BIN)/html.pl
-7BIT    = $(PERL) $(BIN)/7bit.pl
-OLD     = $(PERL) $(BIN)/old.pl
-NEW     = $(PERL) $(BIN)/new.pl
 
 # Source file names
-SRC = de-i4l-faq
-OLD_SRC = $(SRC).old
-SRC_DIFF = $(SRC).diff
-
-SRC_ENG = eng-i4l-faq
-OLD_SRC_ENG = $(SRC_ENG).old
-SRC_ENG_DIFF = $(SRC_ENG).diff
-
-# Output file names
-OUT_7BIT = $(SRC).asc
-OUT_HTML = $(SRC).html
-
-OUT_ENG_7BIT = $(SRC_ENG).asc
-OUT_ENG_HTML = $(SRC_ENG).html
+SRC = i4lfaq.sgml
+OUT_NAME = i4lfaq
+OUT_HTML = $(OUT_NAME).html
+# please note that also files like i4lfaq-1.html, i4lfaq-11.html,...
+# will be generated...
+OUT_TXT = $(OUT_NAME).txt
 
 
 # *** Generate FAQ ***
 
 # Generate all FAQ versions
-#all: Makefile $(GEN_DIR) 7bit html e7bit ehtml
-all: Makefile
+all: Makefile $(GEN_DIR) html txt
 
 $(GEN_DIR):
 	-mkdir -p $(GEN_DIR)
 
-# Generate 7bit version of German FAQ
-7bit: $(GEN_DIR)/$(OUT_7BIT)
 
-$(GEN_DIR)/$(OUT_7BIT): $(SRC)
-	$(7BIT) $(SRC) $(GEN_DIR)/$(OUT_7BIT)
-
-
-# Generate html version of German FAQ
+# Generate html version of FAQ
 html: $(GEN_DIR)/$(OUT_HTML)
 
-$(GEN_DIR)/$(OUT_HTML): $(SRC)
-	$(HTML) $(SRC) $(GEN_DIR)/$(OUT_HTML)
-
-# Generate 7bit version of English FAQ
-e7bit: $(GEN_DIR)/$(OUT_ENG_7BIT)
-
-$(GEN_DIR)/$(OUT_ENG_7BIT): $(SRC)
-	$(7BIT) $(SRC_ENG) $(GEN_DIR)/$(OUT_ENG_7BIT)
+$(GEN_DIR)/$(OUT_HTML):
+	cp $(SRC) $(GEN_DIR); cd $(GEN_DIR); $(SGML2HTML) $(SRC); rm $(SRC)
 
 
-# Generate html version of English FAQ
-ehtml: $(GEN_DIR)/$(OUT_ENG_HTML)
+# Generate text version of FAQ
+txt: $(GEN_DIR)/$(OUT_TXT)
 
-$(GEN_DIR)/$(OUT_ENG_HTML): $(SRC)
-	$(HTML) $(SRC_ENG) $(GEN_DIR)/$(OUT_ENG_HTML)
-
-
-# *** Develop FAQ ***
-
-# Generate zip-compressed versions of FAQ
-zip: 7bit.zip html.zip e7bit.zip ehtml.zip
-
-# Generate gz-compressed versions of FAQ
-gz: 7bit.gz html.gz e7bit.gz ehtml.gz
+$(GEN_DIR)/$(OUT_TXT):
+	cp $(SRC) $(GEN_DIR); cd $(GEN_DIR); $(SGML2TXT) $(SRC); rm $(SRC)
 
 
-# Compress 7bit version of German FAQ
-7bit.zip: $(GEN_DIR)/$(OUT_7BIT).zip
-7bit.gz: $(GEN_DIR)/$(OUT_7BIT).gz
-
-$(GEN_DIR)/$(OUT_7BIT).zip: $(GEN_DIR)/$(OUT_7BIT)
-	$(ZIP) -l $(GEN_DIR)/$(OUT_7BIT).zip $(GEN_DIR)/$(OUT_7BIT)
-$(GEN_DIR)/$(OUT_7BIT).gz: $(GEN_DIR)/$(OUT_7BIT)
-	$(GZIP) -cf $(GEN_DIR)/$(OUT_7BIT) > $(GEN_DIR)/$(OUT_7BIT).gz
+# Generate all zip versions
+zip: $(GEN_DIR)/$(OUT_NAME)-sgml.zip $(GEN_DIR)/$(OUT_NAME)-html.zip $(GEN_DIR)/$(OUT_NAME)-txt.zip 
+gz: $(GEN_DIR)/$(OUT_NAME)-sgml.gz $(GEN_DIR)/$(OUT_NAME)-html.gz $(GEN_DIR)/$(OUT_NAME)-txt.gz 
 
 
-# Compress html version of German FAQ
-html.zip: $(GEN_DIR)/$(OUT_HTML).zip
-html.gz: $(GEN_DIR)/$(OUT_HTML).gz
+# Compress sgml
+$(GEN_DIR)/$(OUT_NAME)-sgml.zip: $(SRC)
+	$(ZIP) -l $(GEN_DIR)/$(OUT_NAME)-sgml.zip $(SRC)
+$(GEN_DIR)/$(OUT_NAME)-sgml.gz: $(SRC)
+	$(GZIP) -cf $(SRC) > $(GEN_DIR)/$(OUT_NAME)-sgml.gz
 
-$(GEN_DIR)/$(OUT_HTML).zip: $(GEN_DIR)/$(OUT_HTML)
-	$(ZIP) -l $(GEN_DIR)/$(OUT_HTML).zip $(GEN_DIR)/$(OUT_HTML)
-$(GEN_DIR)/$(OUT_HTML).gz: $(GEN_DIR)/$(OUT_HTML)
-	$(GZIP) -cf $(GEN_DIR)/$(OUT_HTML) > $(GEN_DIR)/$(OUT_HTML).gz
+# Compress html
+# Please note, that all html files will be compressed under $(GEN_DIR)
+$(GEN_DIR)/$(OUT_NAME)-html.zip: $(GEN_DIR)/$(OUT_NAME).html
+	$(ZIP) -l $(GEN_DIR)/$(OUT_NAME)-html.zip $(GEN_DIR)/$(OUT_NAME)*.html
+$(GEN_DIR)/$(OUT_NAME)-html.gz: $(GEN_DIR)/$(OUT_NAME).html
+	$(GZIP) -cf $(GEN_DIR)/$(OUT_NAME)*.html > $(GEN_DIR)/$(OUT_NAME)-html.gz
 
-
-# Compress 7bit version of English FAQ
-e7bit.zip: $(GEN_DIR)/$(OUT_ENG_7BIT).zip
-e7bit.gz: $(GEN_DIR)/$(OUT_ENG_7BIT).gz
-
-$(GEN_DIR)/$(OUT_ENG_7BIT).zip: $(GEN_DIR)/$(OUT_ENG_7BIT)
-	$(ZIP) -l $(GEN_DIR)/$(OUT_ENG_7BIT).zip $(GEN_DIR)/$(OUT_ENG_7BIT)
-$(GEN_DIR)/$(OUT_ENG_7BIT).gz: $(GEN_DIR)/$(OUT_ENG_7BIT)
-	$(GZIP) -cf $(GEN_DIR)/$(OUT_ENG_7BIT) > $(GEN_DIR)/$(OUT_ENG_7BIT).gz
-
-
-# Compress html version of English FAQ
-ehtml.zip: $(GEN_DIR)/$(OUT_ENG_HTML).zip
-ehtml.gz: $(GEN_DIR)/$(OUT_ENG_HTML).gz
-
-$(GEN_DIR)/$(OUT_ENG_HTML).zip: $(GEN_DIR)/$(OUT_ENG_HTML)
-	$(ZIP) -l $(GEN_DIR)/$(OUT_ENG_HTML).zip $(GEN_DIR)/$(OUT_ENG_HTML)
-$(GEN_DIR)/$(OUT_ENG_HTML).gz: $(GEN_DIR)/$(OUT_ENG_HTML)
-	$(GZIP) -cf $(GEN_DIR)/$(OUT_ENG_HTML) > $(GEN_DIR)/$(OUT_ENG_HTML).gz
-
-
-
-# create German diff of German FAQ
-dif:
-	[ ! -e $(SRC_DIFF) ] # Only create diff if there is no diff already!
-	diff -u $(OLD_SRC) $(SRC) > $(SRC_DIFF); echo -n
-
-
-# patch German FAQ with German diff
-pat:
-	[ -e $(SRC_DIFF) ] # Only patch if there is a diff for it!
-	patch $(SRC) < $(SRC_DIFF)
-	if [ -e $(SRC).orig ]; then mv $(SRC).orig $(OLD_SRC); fi
-
-# Declare all questions in German FAQ as OLD (and store as OLD version)
-old:
-	$(OLD) $(SRC); \
-	if [ -e $(OLD_SRC) ]; then rm $(OLD_SRC); fi; \
-	mv $(SRC) $(OLD_SRC); \
-	cp $(OLD_SRC) $(SRC)
-
-# Declare all questions in German FAQ as NEW
-new:
-	$(NEW) $(SRC)
-
-
-# Create English diff of English FAQ
-edif:
-	[ ! -e $(SRC_ENG_DIFF) ] # Only create diff if there is no diff already!
-	diff -u $(OLD_SRC_ENG) $(SRC_ENG) > $(SRC_ENG_DIFF); echo -n
-
-# Patch English FAQ with English diff
-epat:
-	[ -e $(SRC_ENG_DIFF) ] # Only patch if there is a diff for it!
-	patch $(SRC_ENG) < $(SRC_ENG_DIFF)
-	if [ -e $(SRC_ENG).orig ]; then mv $(SRC_ENG).orig $(OLD_SRC_ENG); fi
-
-# Declare all questions in English FAQ as OLD (and store as OLD version)
-eold:
-	$(OLD) $(SRC_ENG); \
-	if [ -e $(OLD_SRC_ENG) ]; then rm $(OLD_SRC_ENG); fi; \
-	mv $(SRC_ENG) $(OLD_SRC_ENG); \
-	cp $(OLD_SRC_ENG) $(SRC_ENG)
-
-# Declare all questions in English FAQ as NEW
-enew:
-	$(NEW) $(SRC_ENG)
+# Compress txt
+# Please note, that txt file will be compressed under $(GEN_DIR)
+$(GEN_DIR)/$(OUT_NAME)-txt.zip: $(GEN_DIR)/$(OUT_TXT)
+	$(ZIP) -l $(GEN_DIR)/$(OUT_NAME)-txt.zip $(GEN_DIR)/$(OUT_TXT)
+$(GEN_DIR)/$(OUT_NAME)-txt.gz: $(GEN_DIR)/$(OUT_TXT)
+	$(GZIP) -cf $(GEN_DIR)/$(OUT_TXT) > $(GEN_DIR)/$(OUT_NAME)-txt.gz
 
 
 # *** General Stuff ***
@@ -185,9 +88,10 @@ uninstall:
 	set -e; \
 	if [ $(TARGET_DIR) != $(GEN_DIR) ]; then \
 		cd $(DESTDIR)$(TARGET_DIR); \
-		for i in $(OUT_7BIT) $(OUT_HTML) $(OUT_ENG_7BIT) $(OUT_ENG_HTML) ; do \
-			rm -f $$i $$i.zip $$i.gz ; \
-		done; \
+		for i in $(OUT_NAME)*.html ; do \
+			rm -f $$i ; \
+		done ; \
+		rm -f $(OUT_TXT) ; \
 	fi
 
 # Cleanup
@@ -197,8 +101,15 @@ clean:
 	if [ -e *.orig ]; then rm *.orig; fi
 	set -e; \
 	cd $(GEN_DIR); \
-	for i in $(OUT_7BIT) $(OUT_HTML) $(OUT_ENG_7BIT) $(OUT_ENG_HTML) ; do \
-		rm -f $$i $$i.zip $$i.gz ; \
+	if [ -e $(OUT_TXT) ]; then rm -f $(OUT_TXT); fi; \
+	if [ -e $(OUT_NAME)-sgml.zip ]; then rm -f $(OUT_NAME)-sgml.zip; fi; \
+	if [ -e $(OUT_NAME)-sgml.gz ]; then rm -f $(OUT_NAME)-sgml.gz; fi; \
+	if [ -e $(OUT_NAME)-html.zip ]; then rm -f $(OUT_NAME)-html.zip; fi; \
+	if [ -e $(OUT_NAME)-html.gz ]; then rm -f $(OUT_NAME)-html.gz; fi; \
+	if [ -e $(OUT_NAME)-txt.zip ]; then rm -f $(OUT_NAME)-txt.zip; fi; \
+	if [ -e $(OUT_NAME)-txt.gz ]; then rm -f $(OUT_NAME)-txt.gz; fi; \
+	for i in $(OUT_NAME)*.html ; do \
+		rm -f $$i ; \
 	done
 
 config:
