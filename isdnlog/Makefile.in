@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.195 2001/06/12 13:56:47 paul Exp $
+## $Id: Makefile.in,v 1.196 2001/10/15 19:51:47 akool Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,13 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.196  2001/10/15 19:51:47  akool
+## isdnlog-4.53
+##  - verified Leo's correction of Paul's byte-order independent Patch to the CDB
+##    (now it's Ok, Leo, and *many* thanks to Paul!)
+##  - "rate-de.dat" updated
+##  - added "-Q" option to isdnlog
+##
 ## Revision 1.195  2001/06/12 13:56:47  paul
 ## zone files are now created byte-order independent, so:
 ## - creating the zone files works on sparc
@@ -1456,7 +1463,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 4.52
+VERSION     = 4.53
 
 MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 \
 	      isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 \
@@ -1472,7 +1479,7 @@ endif
 ifeq ($(MYSQLDB),1)
 DEFS 	   += -DMYSQLDB
 INCLUDE    += -I$(MYSQLDIR)/include
-LIB        += -L$(MYSQLDIR)/lib -lmysqlclient -lm
+LIB        += -L$(MYSQLDIR)/lib/mysql -L$(MYSQLDIR)/lib -lmysqlclient -lm
 endif
 
 ifeq ($(ORACLE),1)

@@ -1,4 +1,4 @@
-/* $Id: isdnlog.c,v 1.67 2001/08/18 12:01:25 paul Exp $
+/* $Id: isdnlog.c,v 1.68 2001/10/15 19:51:48 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,13 @@
  * along with this program; if not, write to the Free Software
  *
  * $Log: isdnlog.c,v $
+ * Revision 1.68  2001/10/15 19:51:48  akool
+ * isdnlog-4.53
+ *  - verified Leo's correction of Paul's byte-order independent Patch to the CDB
+ *    (now it's Ok, Leo, and *many* thanks to Paul!)
+ *  - "rate-de.dat" updated
+ *  - added "-Q" option to isdnlog
+ *
  * Revision 1.67  2001/08/18 12:01:25  paul
  * Close stdout and stderr if we're becoming a daemon.
  *
@@ -505,9 +512,9 @@ static int read_param_file(char *FileName);
 
 static char     usage[]   = "%s: usage: %s [ -%s ] file\n";
 #ifdef Q931
-static char     options[] = "qav:sp:x:m:l:rt:c:C:w:SVTDPMh:nW:H:f:bL:NFA:2:O:Ki:R:0:ou:B:U:1d:I:Q";
+static char     options[] = "qav:sp:x:m:l:rt:c:C:w:SVTDPMh:nW:H:f:bL:NFA:2:O:Ki:R:0:ou:B:U:1d:I:Q:";
 #else
-static char     options[] =  "av:sp:x:m:l:rt:c:C:w:SVTDPMh:nW:H:f:bL:NFA:2:O:Ki:R:0:ou:B:U:1d:I:Q";
+static char     options[] =  "av:sp:x:m:l:rt:c:C:w:SVTDPMh:nW:H:f:bL:NFA:2:O:Ki:R:0:ou:B:U:1d:I:Q:";
 #endif
 static char     msg1[]    = "%s: Can't open %s (%s)\n";
 static char    *ptty = NULL;
@@ -977,7 +984,7 @@ int set_options(int argc, char* argv[])
                    ciInterval = ehInterval = atoi(optarg);
       	       	 break;
 
-      case 'Q' : sqldump++;
+      case 'Q' : sqldump = atoi(optarg);
       	       	 break;
 
       case '?' : printf(usage, myshortname, myshortname, options);
@@ -1595,34 +1602,50 @@ int main(int argc, char *argv[], char *envp[])
 	    } /* if */
 
 	    if (sqldump) {
-	      auto     FILE *fo = fopen("/tmp/isdn.conf.sql", "w");
+	      auto     FILE *fo = fopen(((sqldump == 2) ? "/tmp/isdnconf.csv" : "/tmp/isdn.conf.sql"), "w");
               register int   i;
 	      register char *p1, *p2;
 
 
               if (fo != (FILE *)NULL) {
-                fprintf(fo, "USE isdn;\n");
-                fprintf(fo, "DROP TABLE IF EXISTS conf;\n");
-                fprintf(fo, "CREATE TABLE conf (\n");
-                fprintf(fo, "   MSN char(32) NOT NULL,\n");
-                fprintf(fo, "   SI tinyint(1) DEFAULT '1' NOT NULL,\n");
-                fprintf(fo, "   ALIAS char(64) NOT NULL,\n");
-                fprintf(fo, "   KEY MSN (MSN)\n");
-                fprintf(fo, ");\n");
+                if (sqldump == 1) {
+                  fprintf(fo, "USE isdn;\n");
+                  fprintf(fo, "DROP TABLE IF EXISTS conf;\n");
+                  fprintf(fo, "CREATE TABLE conf (\n");
+                  fprintf(fo, "   MSN char(32) NOT NULL,\n");
+                  fprintf(fo, "   SI tinyint(1) DEFAULT '1' NOT NULL,\n");
+                  fprintf(fo, "   ALIAS char(64) NOT NULL,\n");
+                  fprintf(fo, "   KEY MSN (MSN)\n");
+                  fprintf(fo, ");\n");
+                }
+                else
+		  fprintf(fo, "\"Vorname\",\"Nachname\",\"Firma\",\"Straﬂe gesch‰ftlich\",\"Ort gesch‰ftlich\",\"Postleitzahl gesch‰ftlich\",\"Fax gesch‰ftlich\",\"Telefon gesch‰ftlich\",\"Mobiltelefon\",\"E-Mail-Adresse\",\"E-Mail: Angezeigter Name\",\"Geburtstag\",\"Webseite\"\n");
 
       	        for (i = 0; i < knowns; i++) {
                   p1 = known[i]->num;
                   while ((p2 = strchr(p1, ','))) {
                     *p2 = 0;
-              	    fprintf(fo, "INSERT INTO conf VALUES('%s',%d,'%s');\n",
-  		      p1, known[i]->si, known[i]->who);
+
+                    if (sqldump == 1)
+              	      fprintf(fo, "INSERT INTO conf VALUES('%s',%d,'%s');\n",
+  		        p1, known[i]->si, known[i]->who);
+                    else
+		      fprintf(fo, "\"\",\"%s\",\"\",\"\",\"\",\"\",\"\",\"%s\",\"\",\"\",\"\",\"\",\"\"\n",
+		        known[i]->who, p1);
+
               	    *p2 = ',';
               	    p1 = p2 + 1;
+
                     while (*p1 == ' ')
                       p1++;
                   } /* while */
-                  fprintf(fo, "INSERT INTO conf VALUES('%s',%d,'%s');\n",
-                    p1, known[i]->si, known[i]->who);
+
+                  if (sqldump == 1)
+                    fprintf(fo, "INSERT INTO conf VALUES('%s',%d,'%s');\n",
+                      p1, known[i]->si, known[i]->who);
+                    else
+		      fprintf(fo, "\"\",\"%s\",\"\",\"\",\"\",\"\",\"\",\"%s\",\"\",\"\",\"\",\"\",\"\"\n",
+		        known[i]->who, p1);
 		} /* for */
               } /* if */
 

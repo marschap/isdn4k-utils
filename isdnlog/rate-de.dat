@@ -1,4 +1,4 @@
-V:1.10-Germany [26-Feb-2001 20:12:21]
+V:1.10-Germany [13-Oct-2001 17:49:12]
 
 # W‰hrungsformat
 U:%.3f DM
@@ -8,7 +8,7 @@ U:%.3f DM
 #
 # (C) Copyright 1999, 2000 by Andreas Kool (akool@isdn4linux.de)
 #
-# $Id: rate-de.dat,v 1.110 2001/04/03 19:15:28 akool Exp $
+# $Id: rate-de.dat,v 1.111 2001/10/15 19:51:47 akool Exp $
 #
 #
 # Das "A:" Tag muﬂ folgendermaﬂen gef¸llt werden:
@@ -1084,7 +1084,7 @@ T:*/*=0
 #
 P:150,0 ElisaNet
 B:010050
-# G:01-Nov-2000
+# G:28-Apr-2001
 D:dtag
 C:Address:ElisaNet GmbH, Horbeller Straﬂe 33, 50858 Kˆln
 C:Name:ElisaNet
@@ -1099,10 +1099,10 @@ A:112
 T:*/*=0
 Z:1-4 Deutschland
 A:+49
-T:W/08-18=0.09/60
-T:W/18-22=0.06/60
-T:W/22-08=0.04/60
-T:E,H/*=0.04/60
+T:W/08-18=0.099/60
+T:W/18-22=0.066/60
+T:W/22-08=0.043/60
+T:E,H/*=0.043/60
 Z:10 Mobilfunk
 A:_DEMF
 T:*/*=0.48/60
@@ -2049,7 +2049,7 @@ T:*/*=0
 # NEU
 P:11,0 o.tel.o CbC
 B:01011
-# G:01-Jan-2000
+# G:01-Jul-2001
 D:dtag
 C:Name:o.tel.o CbC
 C:Address:Mannesmann Zwˆlfte Verwaltungsgesellschaft mbH, Mannesmannufer 2, 40213 D¸sseldorf
@@ -2082,10 +2082,9 @@ A:_F800
 T:*/*=0
 Z:1-4 Inlandsverbindungen
 A:DE
-T:W/07-19=0.15/60 Geschaeftszeit
-T:W/19-21=0.08/60 Freizeit
-T:*/21-07=0.04/60 Nacht
-T:E,H/07-21=0.08/60 Wochenende
+T:W/07-18=0.18/60 Geschaeftszeit
+T:W/18-07=0.043/60 Freizeit
+T:E,H/*=0.043/60 Wochenende
 Z:10 Mobilfunk C/E
 A:_DEMCM
 A:_DEMC
@@ -3339,7 +3338,7 @@ C:Erfasste Zonen:
 C:2	-   4	Deutschland
 C:10		Mobilfunk
 C:200	-	Ausland
-# G:15-Jun-2000
+# G:22-Nov-2000
 D:dtag
 Z:0 FreeCall
 A:011*
@@ -3350,20 +3349,12 @@ A:112
 T:*/*=0
 Z:1-4 National
 A:+49
-T:[11.06.2000-12.06.2000]*/*=0 Pfingstangebot
-T:[02.07.2000-03.07.2000]*/*=0 Sonderangebot
-T:[16.07.2000-17.07.2000]*/*=0 Sonderangebot
-T:[12.08.2000-14.08.2000]*/*=0 Sonderangebot
-T:[02.09.2000-04.09.2000]*/*=0 Sonderangebot
-T:[-01.09.2000]W/06-18=0.06/60
-T:[-01.09.2000]W/18-06=0.04/60
-T:[-01.09.2000]E,H/*=0.04/60
-T:[04.09.2000-]W/06-18=0.06/60
-T:[04.09.2000-]W/18-06=0.04/60
-T:[04.09.2000-]E,H/*=0.04/60
+T:W/06-18=0.06/60
+T:W/18-06=0.04/60
+T:E,H/*=0.04/60
 Z:10 Mobilfunknetz
 A:_DEMF
-T:*/*=0.38/60
+T:*/*=0.44/60
 Z:200 Euro 1 / USA, Kanada # gilt *NICHT* f¸r Mobilfunknetze in diese L‰nder!
 A:US,CA,NL,BE,FR,ES
 A:LU,FI,IT,CH,AT,VA
@@ -8296,7 +8287,7 @@ C:2	-   4	Deutschland
 C:10		Mobilfunk
 C:102		SUPER24 Internet
 C:200	-	Ausland
-# G:13.06.2000
+# G:16-Jul-2001
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -8304,19 +8295,12 @@ A:031*
 A:110
 A:112
 T:*/*=0
-Z:1-4 SUPER24
+Z:1-4 Fern
 A:+49
-T:W/08-09=0.044/60
-T:W/09-10=0.064/60
-T:W/10-18=0.066/60
-T:W/18-21=0.042/60
-T:W/21-08=0.033/60
-T:E,H/08-18=0.044/60
-T:E,H/18-21=0.042/60
-T:E,H/21-08=0.033/60
+T:*/*=0.059/60
 Z:10 Mobilfunk
 A:_DEMF
-T:*/*=0.379/60
+T:*/*=0.37/60
 Z:200 Australien
 A:AU
 T:*/*=0.149/60
@@ -12534,7 +12518,7 @@ T:*/*=0 T-Online flatrate
 #####################################################################
 P:33,7 DTAG AktivPlus xxl
 B:01033
-# G:01-Jun-2000
+# G:01-Oct-2000
 D:dtag
 C:Name:Deutsche Telekom AG AktivPlus xxl
 C:Address:Deutsche Telekom AG, Friedrich-Ebert-Allee 140, 53113 Bonn
@@ -12560,7 +12544,7 @@ Z:3-4 GermanCall
 A:+49
 T:W/09-18=0.09/60 Sunshine
 T:W/18-09=0.05/60 Moonshine
-T:6/*=0.06/60 Spar
+T:6/*=0.05/60 Spar
 T:7,H/*=0 xxl unentgeltlich
 #####################################################################
 #
@@ -18939,13 +18923,13 @@ T:*/*=0.14/60
 #####################################################################
 #
 #
-P:40,0 GTS
+P:40,0 ventelo
 B:01040
 # Call by Night
 C:beim RegTP eingetragen als:
 C:PLUSNET
 C:Address:Gesellschaft f¸r Netzwerk Services mbH, August-Thyssen-Straﬂe 1, 40211 D¸sseldorf
-# G:14-Feb-2000
+# G:18-Aug-2001
 D:dtag
 C:Telecom Deutschland GmbH, Kaistraﬂe 16 A, 40221 D¸sseldorf 01055
 C:Name:  Esprit Telecom
@@ -18972,20 +18956,14 @@ A:112
 T:*/*=0
 Z:1-4 Deutschland
 A:+49
-T:[12.02.2000-14.02.2000] 1-7/*=0.039/60 Sonderangebot
 T:W/07-19=0.15/60 Standard
 T:W/19-21=0.09/60 Abend
-T:W/21-07=0.039/60 Nacht
-T:E,H/07-21=0.09/60 Abend
-T:E,H/21-07=0.039/60 Nacht
+T:W/21-07=0.041/60 Nacht
+T:E,H/07-21=0.08/60 Abend
+T:E,H/21-07=0.041/60 Nacht
 Z:10 Mobilfunk
-A:_DEMCM
-A:_DEMC
-A:_DEMD1
-A:_DEMD2
-A:_DEME1
-A:_DEME2
-T:W/07-19=0.64/60
+A:_DEMF
+T:W/07-19=0.61/60
 T:W/19-07=0.48/60
 T:E,H/*=0.48/60
 Z:102 Internet
@@ -21116,6 +21094,7 @@ C:  40		Talkline Auskunft
 C: 102		Internet Talkline By Call
 C: 200 - 	Ausland
 D:dtag
+# G:06-Aug-2001
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -21125,12 +21104,12 @@ A:112
 T:*/*=0
 Z:1-4 Fern
 A:+49
-T:W/07-18=0.15/60
-T:W/18-22=0.069/60
-T:W/22-07=0.039/60
-T:E,H/07-18=0.11/60
-T:E,H/18-22=0.069/60
-T:E,H/22-07=0.039/60
+T:W/07-18=0.159/60
+T:W/18-22=0.043/60
+T:W/22-07=0.037/60
+T:E,H/07-18=0.099/60
+T:E,H/18-22=0.043/60
+T:E,H/22-07=0.037/60
 Z:10-15 Mobil
 A:_DEMF
 T:*/*=0.59/60
@@ -21526,7 +21505,7 @@ T:*/*=2.3084(60)/1
 P:51,0 01051
 B:01051
 C:ID-Switch GmbH, Graf-Adolf-Straﬂe, 40210 D¸sseldorf
-# G:18-Feb-2000
+# G:01-Mai-2000
 C:Homepage: http://www.01051.com
 C:Adresse:  ID-Switch GmbH, Koenigsallee 60f, 40210 Duesseldorf
 C:Name:01051
@@ -21542,12 +21521,10 @@ A:112
 T:*/*=0
 Z:2-4 Ferngespr‰che
 A:DE
-# T:[01.10.2000-07.10.2000]*/*=0.05/60 Oktoberfest
-T:[01.02.2001-07.02.2001]*/*=0.05/60 Oktoberfest
+T:[15.05.2001-17.05.2001]*/*=0.05/60 Sonderangebot
 T:*/*=0.07/60
 Z:10 Mobilfunk
 A:_DEMF
-T:[19.08.2000-30.09.2000]*/*=0.39/60 Sonderangebot
 T:*/*=0.40/60
 Z:40 Telefonauskunft Inland (Austria, dial 01051004366211811)
 A:+4366211811
@@ -22085,7 +22062,7 @@ T:*/*=0
 #
 P:55,0 prompt
 B:01055
-# G:29-Feb-2000
+# G:20-Mar-2001
 C:Address:prompt GmbH & C0. KG
 C:Name:prompt
 C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
@@ -22099,24 +22076,21 @@ A:112
 T:*/*=0
 Z:1-4 Fern
 A:+49
-T:W/09-18=0.10/60 Standard
-T:W/18-09=0.05/60 Standard
-T:E,H/*=0.05/60 Spar
+T:W/09-18=0.09/60 Standard
+T:W/18-09=0.047/60 Standard
+T:E,H/*=0.047/60 Spar
 Z:10
-A:_DEMC,_DEMCM
-T:*/*=0.55/60
-Z:11
 A:_DEMD1
-T:*/*=0.55/60
+T:*/*=0.378/60
 Z:12
 A:_DEMD2
-T:*/*=0.88/60
+T:*/*=0.378/60
 Z:13
 A:_DEME1
-T:*/*=1.11/60
+T:*/*=0.42/60
 Z:14
 A:_DEME2
-T:*/*=0.88/60
+T:*/*=0.42/60
 #####################################################################
 #
 #
@@ -22493,7 +22467,7 @@ C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Bei Preselection sekundengenaue Taktung
 D:dtag
-# G:01-Nov-2000
+# G:15-Mar-2001
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -22505,8 +22479,7 @@ Z:1-4 National
 A:+49
 T:W/08-17=0.063/60
 T:W/17-18=0.058/60
-T:W/18-21=0.044/60
-T:W/21-22=0.032/60
+T:W/18-22=0.044/60
 T:W/22-08=0.038/60
 T:E,H/08-22=0.044/60
 T:E,H/22-08=0.038/60
@@ -24735,7 +24708,7 @@ C:Address:ONE.TEL Limited (UK), Clements House, 14-18 Gresham Street, London, EC
 C:Name:ONE.TEL
 C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
-# G:21-Nov-2000
+# G:27-Apr-2001
 D:dtag
 Z:0 FreeCall
 A:011*
@@ -24746,7 +24719,7 @@ A:112
 T:*/*=0
 Z:1-4 National
 A:+49
-T:*/*=0.09/60
+T:*/*=0.065/60
 Z:10 Mobilfunknetz
 A:_DEMF
 T:*/*=0.60/60
@@ -24932,9 +24905,9 @@ T:*/*=0
 #####################################################################
 #
 #
-P:90,0 Viag Interkom
+P:90,0 BT Ignite
 B:01090
-# G:01-Oct-2000
+# G:15-Mai-2001
 C:Address:Viag Interkom GmbH & Co. KG, Elsenheimer Straﬂe 11, 81927 M¸nchen
 C:Name:Viag Interkom
 C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
@@ -24949,21 +24922,21 @@ A:112
 T:*/*=0
 Z:1-4 Fern
 A:+49
-T:[01.03.2000-31.03.2000]7/*=0.029/60 Maerz-Spezial
-T:[15.07.2000-28.08.2000]*/21-06=0.033/60 Sonderangebot
+T:[14.05.2001-17.06.2001]*/21-06=0.033/60 Sonderangebot
 T:W/06-08=0.08/60 Sparzeit
 T:W/08-18=0.12/60 Hauptzeit
 T:W/18-21=0.08/60 Freizeit
-# T:W/21-06=0.05/60 Traumzeit
-T:W/21-06=0.033/60 Sonderangebot # gÅltig bis 31.12.2000
+T:W/21-06=0.05/60 Traumzeit
 T:E,H/06-21=0.08/60 Freizeit
-# T:E,H/21-06=0.05/60 Nacht
-T:E,H/21-06=0.033/60 Sonderangebot # gÅltig bis 31.12.2000
-Z:10-15 Mobil
-A:_DEMF
-T:W/08-18=0.89/60
+T:E,H/21-06=0.05/60 Nacht
+Z:10 Mobilfunk
+A:_DEMD2
+T:W/08-18=0.79/60
 T:W/18-08=0.49/60 Freizeit
 T:E,H/*=0.49/60 Traumzeit
+Z:11 E2 Mobil
+A:_DEME2
+T:*/*=0.45/60
 Z:21 Telefonauskunft
 A:11881
 T:*/*=1.59/0,0.22(60)/10
