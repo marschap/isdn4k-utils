@@ -4,7 +4,7 @@
 
 <title>FAQ for isdn4linux
 <author>Matthias Hessler (<tt><htmlurl url="mailto:hessler@isdn4linux.de" name="hessler@isdn4linux.de"></tt>)
-<date>v2.0.44, 2. July 2000
+<date>v2.0.45, 23. July 2000
 <abstract>
 If you are reading this FAQ online, you may consider downloading the whole
 thing, and reading it offline (much cheaper). To download the latest
@@ -393,6 +393,10 @@ Yes, you can use the program <tt/yaps/ to do this. However, due to some
 pecularities in the SMS-callcenter's ISDN connection, you have to compile the
 kernel with the options <tt/Disable send complete/ and
 <tt/Disable sending llc/.
+Please note that mainly German providers support sending SMS via ISDN
+connection, in other countries this might not work. Dutch as well as UK
+SMS callcenters seem to not support this feature. Please let me know if
+you have additional information on this.
 
 Another program to send SMS is <tt/smsclient/. You can find it on:
 <url url="http://www.styx.demon.co.uk">.
@@ -1380,7 +1384,7 @@ isdn4linux:
 <itemize>
 <item>English: <url url="http://www.wurtel.demon.nl/i4l-howto-uk.html">
 <item>German: <url url="http://www.franken.de/users/klaus/">
-<item>French: <url url="http://www.perso.wanadoo.fr/philippe.latu/">
+<item>French: <url url="http://www.linux-france.org/article/connex/ISDN/">
 <item>Suse Support database:
 <url url="http://sdb.suse.de/sdb/en/html/index.html">; there is also an ISDN
 howto (isdn.html) and a ISDN quick-install guide (isdnquick.html).
