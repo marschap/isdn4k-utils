@@ -1,5 +1,5 @@
 ##
-## $Id: Makefile.am,v 1.4 1998/07/06 09:05:49 michael Exp $
+## $Id: Makefile.am,v 1.5 1998/09/18 15:01:31 michael Exp $
 ##
 
 ## Other directories #####################################################
@@ -8,7 +8,7 @@ SUBDIRS = scripts
 
 ## Configuration to install ##############################################
 
-sysconf_DATA	= vboxgetty.conf vboxgetty.user
+sysconf_DATA	= vboxgetty.conf
 
 EXTRA_DIST	= $(sysconf_DATA)
 
