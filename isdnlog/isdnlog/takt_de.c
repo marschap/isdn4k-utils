@@ -1,4 +1,4 @@
-/* $Id: takt_de.c,v 1.11 1999/03/10 08:35:59 paul Exp $
+/* $Id: takt_de.c,v 1.12 1999/03/14 14:27:12 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,13 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: takt_de.c,v $
+ * Revision 1.12  1999/03/14 14:27:12  akool
+ * - isdnlog Version 3.05
+ * - new Option "-u1" (or "ignoreRR=1")
+ * - added version information to "sonderrufnummern.dat"
+ * - added debug messages if sonderrufnummern.dat or tarif.dat could not be opened
+ * - sonderrufnummern.dat V 1.01 - new 01805 rates
+ *
  * Revision 1.11  1999/03/10 08:35:59  paul
  * use DATADIR from "make config" phase instead of hardcoded /usr/lib/isdn
  *
@@ -1154,7 +1161,10 @@ void initTarife(char *msg)
     fclose(fi);
     sprintf(msg, "Tarife Version %s loaded [%d Provider (%s), %d Tarife]",
       Version, nprovider, infos, nprovider * MAXZONES * MAXDAYS * MAXSTUNDEN);
-  } /* if */
+  }
+  else
+    sprintf(msg, "*** Cannot load Tarife (%s : %d)", fn, errno);
+
 } /* initTarife */
 
 

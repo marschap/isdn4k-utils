@@ -1,4 +1,4 @@
-/* $Id: processor.c,v 1.40 1999/03/14 12:16:08 akool Exp $
+/* $Id: processor.c,v 1.41 1999/03/14 14:26:38 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,13 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.41  1999/03/14 14:26:38  akool
+ * - isdnlog Version 3.05
+ * - new Option "-u1" (or "ignoreRR=1")
+ * - added version information to "sonderrufnummern.dat"
+ * - added debug messages if sonderrufnummern.dat or tarif.dat could not be opened
+ * - sonderrufnummern.dat V 1.01 - new 01805 rates
+ *
  * Revision 1.40  1999/03/14 12:16:08  akool
  * - isdnlog Version 3.04
  * - general cleanup
@@ -4854,8 +4861,12 @@ retry:
                  !memcmp(p3, "D3<: ", 5) ||
                  !memcmp(p3, "D3>: ", 5))
           processctrl(0, p3);
-        else if (!memcmp(p3 + 3, "HEX: ", 5))
+        else if (!memcmp(p3 + 3, "HEX: ", 5)) {
+          if (ignoreRR && (strlen(p3 + 8) < 13))
+            ;
+          else
           processctrl(atoi(p3), p3 + 3);
+        }
       }
       else
         processctrl(card, p1);

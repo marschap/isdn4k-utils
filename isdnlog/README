@@ -1,10 +1,10 @@
-ISDNLOG - Version 3.03 -  				07-Mar-99  17:57
+ISDNLOG - Version 3.05 -  				14-Mar-99  14:11
 
 
 isdnlog ist ein Utility zur Auswertung des D-Kanals eines
 ISDN-BRI Anschlusses.
 
-isdnlog-3.03 wurde ausgiebig mit Linux-2.0.36 getestet.
+isdnlog-3.05 wurde ausgiebig mit Linux-2.0.36 getestet.
 
 
 Fuer alle, die es nun ueberhaupt nicht mehr abwarten koennen, hier das
@@ -2402,6 +2402,9 @@ angegeben werden.
      anderer Geraete werden angezeigt. Ohne diese Option werden nur
      die causes der an der Verbindung beteiligten Geraete angezeigt.
      (other={yes|no})
+
+ -ux Unterdruecken der RR Frames. Z.Zt. wird als value nur "1" erkannt.
+     (ignorerr="value")
 
 
 Bei den Optionen -mX, -lX -xX sind folgende Flags moeglich:

@@ -1,4 +1,4 @@
-/* $Id: sondernummern.c,v 1.3 1999/03/10 08:35:57 paul Exp $
+/* $Id: sondernummern.c,v 1.4 1999/03/14 14:26:51 akool Exp $
  *
  * Gebuehrenberechnung fuer Sonderrufnummern
  *
@@ -19,6 +19,13 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: sondernummern.c,v $
+ * Revision 1.4  1999/03/14 14:26:51  akool
+ * - isdnlog Version 3.05
+ * - new Option "-u1" (or "ignoreRR=1")
+ * - added version information to "sonderrufnummern.dat"
+ * - added debug messages if sonderrufnummern.dat or tarif.dat could not be opened
+ * - sonderrufnummern.dat V 1.01 - new 01805 rates
+ *
  * Revision 1.3  1999/03/10 08:35:57  paul
  * use DATADIR from "make config" phase instead of hardcoded /usr/lib/isdn
  *
@@ -53,9 +60,10 @@
 /*
  * Schnittstelle:
  *
- * int initSondernummern()
+ * int initSondernummern(char *info)
  *   initialisiert die Sonderrufnummerndatenbank, liefert die Anzahl der
  *   eingelesenen Datensaetze zurueck oder im Fehlerfall -1
+ *   liefert Versionsinfo in `info' zurueck
  *
  * void exitSondernummern()
  *   deinitialisiert die Sonderrufnummerndatenbank
@@ -143,9 +151,9 @@ char *strip(char *s)
   return s;
 }
 
-int initSondernummern()
+int initSondernummern(char *msg)
 {
-  char   *s, *t, *pos, *number, *info, fn[BUFSIZ];
+  char   *s, *t, *pos, *number, *info, fn[BUFSIZ], version[BUFSIZ];
   int     provider, tarif, tday, tbegin, tend;
   FILE   *f;
   char    buf[BUFSIZ];
@@ -159,7 +167,13 @@ int initSondernummern()
 
   if (f != (FILE *)NULL) {
     while ((pos = fgets(buf, BUFSIZ, f)))
-      if (*pos != '#') {
+      if (!memcmp(buf, "V:", 2)) {
+        strcpy(version, buf + 2);
+
+      	if ((pos = strchr(version, '\n')))
+          *pos = 0;
+      }
+      else if (*pos != '#') {
         if ((s = strsep(&pos, "|"))) {
           provider = strtol(s, (char **)NULL, 10);
           if ((s = strsep(&pos, "|"))) {
@@ -217,9 +231,11 @@ int initSondernummern()
         }
       }
     fclose(f);
+    sprintf(msg, "Sonderrufnummern Version %s loaded [%d entries]", version, nSN);
     return(nSN);
   }
   else {
+    sprintf(msg, "*** Cannot load Sonderrufnummern (%s : %d)", fn, errno);
     return(-1);
   }
 }

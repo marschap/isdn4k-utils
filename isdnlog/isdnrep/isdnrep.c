@@ -1,4 +1,4 @@
-/* $Id: isdnrep.c,v 1.56 1999/03/07 18:19:56 akool Exp $
+/* $Id: isdnrep.c,v 1.57 1999/03/14 14:27:25 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -24,6 +24,13 @@
  *
  *
  * $Log: isdnrep.c,v $
+ * Revision 1.57  1999/03/14 14:27:25  akool
+ * - isdnlog Version 3.05
+ * - new Option "-u1" (or "ignoreRR=1")
+ * - added version information to "sonderrufnummern.dat"
+ * - added debug messages if sonderrufnummern.dat or tarif.dat could not be opened
+ * - sonderrufnummern.dat V 1.01 - new 01805 rates
+ *
  * Revision 1.56  1999/03/07 18:19:56  akool
  * - new 01805 tarif of DTAG
  * - new March 1999 tarife
@@ -808,7 +815,7 @@ int read_logfile(char *myname)
 
 
   initTarife(msg);
-  initSondernummern();
+  (void)initSondernummern(msg);
   interns0 = 3; /* FIXME */
 
   msn_sum = calloc(mymsns + 1, sizeof(double));

@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.57 1999/03/14 12:15:56 akool Exp $
+## $Id: Makefile.in,v 1.58 1999/03/14 14:26:10 akool Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,13 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.58  1999/03/14 14:26:10  akool
+## - isdnlog Version 3.05
+## - new Option "-u1" (or "ignoreRR=1")
+## - added version information to "sonderrufnummern.dat"
+## - added debug messages if sonderrufnummern.dat or tarif.dat could not be opened
+## - sonderrufnummern.dat V 1.01 - new 01805 rates
+##
 ## Revision 1.57  1999/03/14 12:15:56  akool
 ## - isdnlog Version 3.04
 ## - general cleanup
@@ -448,7 +455,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 3.04
+VERSION     = 3.05
 
 MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 isdnlog/isdnlog.users.5 isdnrep/isdnrep.1 isdnconf/isdnconf.1
 

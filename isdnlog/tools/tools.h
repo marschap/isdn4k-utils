@@ -1,4 +1,4 @@
-/* $Id: tools.h,v 1.28 1999/03/07 18:20:11 akool Exp $
+/* $Id: tools.h,v 1.29 1999/03/14 14:27:37 akool Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,13 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools.h,v $
+ * Revision 1.29  1999/03/14 14:27:37  akool
+ * - isdnlog Version 3.05
+ * - new Option "-u1" (or "ignoreRR=1")
+ * - added version information to "sonderrufnummern.dat"
+ * - added debug messages if sonderrufnummern.dat or tarif.dat could not be opened
+ * - sonderrufnummern.dat V 1.01 - new 01805 rates
+ *
  * Revision 1.28  1999/03/07 18:20:11  akool
  * - new 01805 tarif of DTAG
  * - new March 1999 tarife
@@ -569,6 +576,7 @@
 #define CONF_ENT_PRESELECT "PRESELECTED"
 #define	CONF_ENT_TRIM	   "TRIM"
 #define	CONF_ENT_OTHER	   "OTHER"
+#define CONF_ENT_IGNORERR  "IGNORERR"
 
 /****************************************************************************/
 
@@ -873,6 +881,7 @@ _EXTERN char    *amtsholung;
 _EXTERN SonderNummern *SN;
 _EXTERN int	      nSN;
 _EXTERN	int     interns0;
+_EXTERN int	ignoreRR;
 #undef _EXTERN
 
 /****************************************************************************/
@@ -940,7 +949,7 @@ _EXTERN void   price(int chan, char *hint, int viarep);
 _EXTERN char  *realProvidername(int prefix);
 _EXTERN void   preparecint(int chan, char *msg, char *hint, int viarep);
 _EXTERN int    taktlaenge(int chan, char *why);
-_EXTERN int    initSondernummern(void);
+_EXTERN int    initSondernummern(char *msg);
 _EXTERN int    is_sondernummer(char *num, int provider);
 _EXTERN char  *sondernummername(char *number, int provider);
 _EXTERN	char  *zonen[MAXZONES];
