@@ -12,7 +12,7 @@ Posting-frequency: monthly
 Last-modified: 18-Mar-97
 URL: http://www.lrz-muenchen.de/~ui161ab/www/isdn/
 
-!1FAQ for isdn4linux - Version 1.3.2!br (translation in progress 29-Apr-97)
+!1FAQ for isdn4linux - Version 1.3.2!br (translation complete 6-May-97)
 
 [Translator's notes]!br
 --31-Mar-97: First step in updating the FAQ from 1.0.5
@@ -20,9 +20,7 @@ URL: http://www.lrz-muenchen.de/~ui161ab/www/isdn/
 but many questions are missing or are still in German!!br
 --14-Apr-97: Questions complete in all sections (but not all updated or 
 translated)!br
---26-Apr-97: Sections 1, 2, 4 and 5 complete!br
---29-Apr-97: Section 3 done except 3.7, 3.9 and 3.13!br
-!br
+--5-May-97: Translation complete (except for the proofreading)! !br
 
 This FAQ is protected by the GNU General Public License (GPL) Version 2;
 (C) 1996 Volker Götz, Bernhard Hailer, Matthias Heßler, Michael Hipp and
@@ -2246,8 +2244,9 @@ A: Because the ISDN card, like all ISDN device, has separate lines for
 !verboff
    See the next questions for a possible solution.
 
-Q: Wie kann ich trotzdem isdnlog dazu bringen, die Telefonnummer auch von
-   anderen ISDN-Geräten mitzubekommen?
+Q: How can I get isdnlog to also show the telephone numbers for other
+   isdn devices?
+
 A: Es gibt zwei Möglichkeiten. Zum einen gibt es von der Deutschen Telekom die
    kostenpflichtige Möglichkeit, alle Daten nochmal zurückschicken zu lassen
    (COLP = Connected Line Identification Presentation, ca. DM 10,- pro Monat
@@ -3792,53 +3791,52 @@ A: Emil Stephan <ste@esqhen.su.eunet.de> wrote on 13 Oct 1996:
      terminal. You may have to kill them with kill.
 !verboff
 
-Q: Ich bekomme während einer tty-Verbindung vom Kernel die Meldung
-   "teles_writebuf: channel not open". Es werden dann keine Eingaben mehr
-   für diese Verbindung angenommen.
-A: Fritz Elfert <fritz@wuemaus.franken.de> schrieb dazu am 18. Nov 1996:!br
-   Meist verträgt dann die Gegenseite die grossen Frames von i4l nicht und
-   macht mitten im Transfer den B-Kanal dicht. Probier mal mit AT&B512 vor
-   dem Wählen die Frames kleiner zu machen.
+Q: During a tty connection, I get a message from the kernel
+   "teles_writebuf: channel not open". Then no more input is accepted
+   for this connection.
+A: Fritz Elfert <fritz@wuemaus.franken.de> wrote on 18 Nov 1996:!br
+   Usually the partner cannot handle the large frames from i4l and
+   simply closes the B channel during the transfer. Try making the
+   frames smaller with AT&B512.
 
-Q: Wenn ich uucp mit X.75 mache, bekomme ich laufend Übertragungsfehler!
-A: Andreas Gutzwiller <andy@hippo.proxyon.imp.com> schrieb dazu am 5. Dez 1996:
+Q: When I use uucp with X.75, I always get transer errors!
+A: Andreas Gutzwiller <andy@hippo.proxyon.imp.com> wrote on 5 Dec 1996:
 !verbon
-        Ich mußte das bei mir folgendermassen einstellen. Sonst bekam ich auch
-        nur Fehler.
-          # Prot
+        I had to use the following settings, otherwise I only had errors.
+        # Prot
           protocol-parameter g packet-size 512
           protocol-parameter g short-packets y
           protocol-parameter g window 7
           protocol-parameter g remote-window 7
           protocol-parameter v packet-size 512
-        Damit komme ich bei großen Paketen auf ca 7300 cps
+        Now with large packets I can get ca 7300 cps.
 !verboff
-   Holger Burbach <holly@cthulhu.pfalz.de> kam am 5. Feb 1997 zu einer anderen
-   Lösung:
+   Holger Burbach <holly@cthulhu.pfalz.de> on 5 Feb 1997 had another
+   solution:
 !verbon
-        Bei mir pollen auch einige XP-Benutzer, wohl auch ohne Probleme. Ich
-        habe folgendes gemacht: Zum einen habe ich die Send-Packetsize vom
-        ttyI? auf 1024 gesetzt ("AT&B1024") und zum setze ich die
-        Paketgrößen für das g-Protokoll beim UUCP:
+        I have several XP users who poll without any problems. I did
+        the following: First I set the send packet size for ttyI?
+        to 1024 ("AT&B1024") and then set the packet sige for the
+        g protocol in UUCP:
           protocol-parameter g packet-size 2048
           protocol-parameter g remote-packet-size 0
-        Wie gesagt, damit läuft hier alles prima.
+        As I said, it works fine..
 !verboff
 
-Q: Mein iprofd läuft nicht mehr mit HiSax 2.0. Ich bekomme die Fehlermeldung
+Q: My iprofd doesn't work any more with HiSax 2.0. I get the error message 
    "Version of kernel modem-profile (3) does NOT match version of iprofd (1)".
-   Wie bekomme ich iprofd wieder zum Laufen?
-A: Fritz Elfert <fritz@wuemaus.franken.de> schrieb dazu am 17. Feb 1997:
-   In iprofd.c die Zeile mit!br
+   How can I get iprofd to work again? 
+A: Fritz Elfert <fritz@wuemaus.franken.de> wrote on 17 Feb 1997:
+   In iprofd.c, change the line with!br
 !verbon
        #define DATA_VERSION 1
 !verboff
-   in 
+   to 
 !verbon
        #define DATA_VERSION 2
 !verboff
-   ändern, den iprofd neu compileren, und (WICHTIG) die gespeicherte
-   profile Datei löschen.
+   compile iprofd again, and (IMPORTANT) delete the saved profile
+   file.
 
 !3Async PPP
 
@@ -3889,7 +3887,7 @@ A: Ari Biel <aribiel@sun14.hrz.th-darmstadt.de> wrote on 3 Oct 1996:
 
 
 !commenton
-(Die folgende Frage entstammt der syncPPP-FAQ.)
+(The following questions are from the sync PPP FAQ.)
 !commentoff
 !old
 Q: Starting ipppd I get the error message "this systems lacks ppp support".
@@ -3903,8 +3901,8 @@ A: Check whether the device "ippp0" exists (i.e. with the program "ifconfig").
 !verboff
    Maybe you compiled ipppd with the source of another kernel that you are not
    using...
-   Siehe auch die Frage "Wie soll ich mein Netzinterface benennen?"
-   im Abschnitt "Sync-PPP" im Kapitel "Konfiguration".
+   See alsp the question "How should I name my network interface?"
+   under "Sync PPP" in the "Configuration" section.
 
 !old
 Q: How can I switch on ppp support for my kernel 1.2.13 (needed for ipppd)?
@@ -3921,15 +3919,15 @@ A: Stefan A. Muehlenweg <Stefan.A.Muehlenweg@samhh.hanse.de> wrote:
      (modules-1.2.8.tar.gz).
 !verboff
 
-Q: Mein ipppd will nicht, er bringt immer die Fehlermeldung "PPP driver 0.0.0
-   is out of date".
-A: Ari Biel <aribiel@sun14.hrz.th-darmstadt.de> schrieb hierzu am 3. Okt 1996:
-!verbon
-        Das hatte ich auch! (S.u.S.E. 4.2 Kernel 2.0.0, isdn4k-utils 3.91 mit
-        patch). Als ich dann den Kernel neu kompilierte u. ppp als Modul
-        konfiguriert hatte, konnte ich ipppd starten. Da gibt's wohl
-        Versionsprobleme. 
-!verboff
+
+!old
+Q: When I start ipppd, I only get error messages from the i4l driver.
+A: When ipppd is started, it calls functions that can trigger a network
+   packet (e.g. gethostbyname()). Without ipppd (since at this time, ipppd
+   it has not been fully started), this network access cannot be processed,
+   You should try to put the needed hostnames in the local /etc/hosts or
+   in some way define the name so that it can be resolved without having
+   the access the ISDN/ippp interface. 
 
 !old
 Q: When I try to start ipppd it says "Can't find usable ippp device"
@@ -4038,37 +4036,37 @@ A: It's the kernel's fault. Newer kernels (>= 2.0) have some changes in the
      esac
 !verboff
 
-Q: Beim Rauswählen des pppd bekomme ich die Meldung "pppd: peer authentication
-   required but no authentication files accessible." - was heißt das?
-A: Wahrscheinlich wurde irrtümlich die Option "auth" angegeben. Damit
-   wird von der !u1anderen!u0 Stelle verlangt, sich zu authentifiziert.
+Q: When dialing out, I get the message "pppd: peer authentication
+   required but no authentication files accessible." What does this mean?
+A: Most likely the option "auth" was set by mistake. Then the !u1other!u0 
+   side is required to be authorized.
 
-Q: Ich bekomme keine Verbindung aufgebaut - diese wird von der Gegenstelle
-   abgelehnt. In den Log-Files finde ich eine Meldung, die ungefähr so
-   aussieht: "sent [0][LCP ConfReq id=0x1 <mru 1500> <auth pap>
-   <magic 0xcd12e9c4>"
-A: Wie bei der letzten Frage wurde eine Option angegeben, die von der
-   !u1anderen!u0 Stelle verlangt, sich zu authentifiziert. Diese Option
-   darf nicht angegeben werden. Kandidaten hierfür: "+pap" sowie "+chap".
+Q: I cannot establish a connection -  it's rejected by the other side.
+   In the log file I find a message that's something like: "sent [0]
+   [LCP ConfReq id=0x1 <mru 1500> <auth pap> <magic 0xcd12e9c4>"
+A: Like in the last question, an option was been set that requires the
+   !u1other!u0 side to be authorized. These options shouldn't be set.
+   Possible candidates are: "+pap" as well as "+chap".
 
-Q: Ich bekomme keine Verbindung aufgebaut - diese wird von der Gegenstelle
-   abgelehnt. In den Log-Files findet sich eine Meldung, die ungefähr so
-   aussieht: "sent [0][LCP ConfRej id=0x1 <auth pap>"
-A: Dein Rechner lehnt ab, sich per Username (z.B. XXX) und Paßwort (z.B. YYY)
-   auszuweisen. Das klappt nur mit den Authorisierungsoptionen "user XXX" und
-   "remotename YYY" in Verbindung mit einer korrekten (!) /etc/ppp/pap-secrets
-   Letztere sollte bei einem Paßwort von ZZZ idealerweise so aussehen:
+Q: I cannot establish a connection -  it's rejected by the other side.
+   In the log file I find a message that's something like:  "sent [0]
+   [LCP ConfRej id=0x1 <auth pap>"
+A: Your computer is refusing to identify itself with user name (e.g. XXX) 
+   and password (e.g. YYY). That only works the the authorization options
+   "user XXX" and "remotename YYY" together with a correct (!)
+   /etc/ppp/pap-secrets. With a password of ZZZ it should ideally look
+   like this:
 !verbon
         XXX YYY ZZZ
 !verboff
-   Wenn's nicht gleich klappt, kann man auch Wildcards einsetzen, etwa:
+   If that doesn't you, you can use wild cards, something like:
 !verbon
         * * ZZZ
 !verboff
-   Dann bekommt !u1jede!u0 Gegenstelle das Paßwort ZZZ vorgesetzt. Wird
-   chap zur Authorisierung verlangt, muß /etc/ppp/chap-secrets korrekt
-   eingerichtet werden. Achtung: das Format weicht von dem der pap-secrets ab!
-   Unbedingt die entsprechenden README's konsultieren, oder auch:
+   Then !u1every!u0 partner has the password ZZZ. If chap is required
+   for authorization, then /etc/ppp/chap-secrets mut be set up correctly.
+   Important : the format is different from that of pap-secrets!
+   Make sure to consult the README's, or check out:
      !link http://www.lrz-muenchen.de/~ui161ab/www/isdn/;
 
 !old
@@ -4081,12 +4079,12 @@ A: Stefan A. Muehlenweg <Stefan.A.Muehlenweg@samhh.Hanse.DE> wrote on
      was that I had three entries in chap-secrets/pap-secrets (for client,
      server, secret), but not a fourth one (ip adresses). BUT: after the third
      entry were some BLANKs. After removing the trailing BLANKs and/or TABs
-     (i)pppd now lives very satisfied with my auth-files.
+     (i)pppd is now very satisfied with my auth-files.
 !verboff
-   Eine weitere Fehlerquelle kann das Paßwort selbst sein. Enthält
-   es das Zeichen "#", dann wird alles, was danach kommt, als Kommentar
-   verstanden. Analog gibt es natürlich Probleme, wenn es ein Leerzeichen oder
-   einen Tabulator enthält (geht das?). Abhilfe: Paßwort in Hochkommas setzen!
+   A further source of problems can be the password itself. If it contains
+   the "#" character, then everything after than is understood as a
+   comment. Spaces or tabs can cause similar probems. Solution: put
+   the password in quotes!
 
 !old
 Q: I often get the error message "hscx_empty_fifo: incoming packet too large"
@@ -4094,12 +4092,12 @@ A: Probably one of the compressions is activated (i4l can't handle those very
    well). See also next question.
    Another possible reason could be an IRQ problem - see question "Why should
    I avoid IRQ 12 and 15 for my ISDN card?" in section "Teles" further down.!br
-   Eine weitere Fehlerquelle berichtete Immanuel Derks <broedtsk@xs4all.nl>
-   am 3. Jan 1997:
+   A further source of errors was reported by Immanuel Derks 
+   <broedtsk@xs4all.nl> on  3 Jan 1997:
 !verbon
-        Mein PAP Skript war verkrüppelt, da ich ein "#" in meinem Paßwort
-        hatte! Nachdem ich das Paßwort sauber gequotet hatte (z.B. mit
-        Anführungszeichen) war das Problem gelöst.
+        My PAP script was broken because I had a "#" in my password!
+        After I had quoted the password cleanly (e.g. with quotation
+        marks), the problem was solved.
 !verboff
 
 !old
@@ -4110,51 +4108,50 @@ A: It could be that some compression is activated (that i4l can't handle
    with ipppd don't have that option included already.
    Other compression modes (bsd, pccomp) can cause trouble, too.
 
-Q: Der ipppd macht (erst dann) Schwierigkeiten, wenn die Verbindung stark
-   belastet wird. Dann hängt alles. Woran kann das liegen?
-A: Hierzu schrieb Sven Engelhardt <sven@sik.de> am 12. Dez 1996:
+Q: I only have problems with ipppd when the connection is being heavily 
+   burdened. Then everythig stops. What could be causing this?
+A: Sven Engelhardt <sven@sik.de> wrote on 12 Dec 1996:
 !verbon
-          Wir sind ISP hier in Dresden und setzen u.a. Linux für unsere Zugänge
-        ein (sowohl I4L mit hisax als auch externe Terminaladapter) Wir haben
-        das Problem vor allem mit Windows-95 und NT-Kunden, die die
-        "eingebaute" (DFÜ-Netzwerk)-Software benutzen. Dabei ist es völlig
-        egal, ob sich der Kunde mit async oder sync-PPP einwaehlt. Auch ist
-        egal, welche Modememulation er auf seiner Seite benutzt. Allen Fällen
-        ist gemein, daß die Einbindung über Microsoft-DFÜ-Adapter+Microsoft-
-        PPP erfolgt. (ein Kollege erzählte mir neulich von einem ähnlichen
-        Problem mit einem Macintosh-Kunden)
-          Da es bei PPP ziemlich egal ist, wer Server ist und wer Client, frag
-        mal deinen ISP über welche Technik Du dich einwählst. (mit
-        Linux-Kunden und Trumpet-Winsock-Nutzern z.B. haben wir >>null<<
-        Probleme (Ich schließe daraus einen Bug in MS-PPP)
-          Folgender Workaround hilft bei uns aber in der Regel: (ist kein
-        Heilmittel, hilft aber die Schmerzen zu lindern...)
-          * Verringern der Max-MTU auf 576 oder gar (296)
-          * Verringern des DefaultRcvWindow auf 2144
-         Auf der Windows-95-Seite sind das zwei Registry-Einträge, auf der
-        Linux-Seite kannst Du mal "mtu 576" und "mru 576" in den ppp-Optionen
-        eingeben.
-        (ffs. !link http://www.windows95.com/connect/trouble.html;)
+           We are an ISP here in Dresden and use Linux (among other systems)
+        for our access (with I4L as well as with external terminal adapters).
+        We have this problem mostly with Windows 95 and NT customers who
+        are using the "included" (modem network) software. It doesn't make
+        any difference whether the customer is dialing with async or sync PPP.
+        It also doesn't matter which modem emulation he is using on his side.
+        What they have in  is that the connection is made with Microwoft
+        modem adapter + Microsoft PPP (although a colleague recently told me
+        about a similar problem with a Macintosh customer).
+           Since it doesn't matter to PPP who is the server and who is the
+        clinet, ask your ISP what kind of hardware you are dialing into (we
+        have had >>no<< problems with Linux customers and Trumpet Winsock
+        users, therefore I suspect a bug in MS-PPP).
+           The following workaround usually works for us: (it's not a cure,
+        but helps to reduce the pain...)
+          * Reduce the Max MTU to 576 or even (296)
+          * Reduce the  DefaultRcvWindow to 2144
+        On the Windows 95 side these are 2 Registry entries; on the Linux
+        side tou can set "mtu 576" and "mru 576" in the  ppp options.
+        (see also !link http://www.windows95.com/connect/trouble.html;)
 !verboff
-   Erik Corry <ec@sign-tronic.dk> ergänzt am 16. Dez 1996:
+   Erik Corry <ec@sign-tronic.dk> added on 16 Dec 1996:
 !verbon
-        Also, bei mir haben weder PPP-compressions-options geholfen, noch
-       mru/mtu auf 296. Was aber gut geholfen hat, war der AT-Befehl:
+       For me, niether PPP compression option nor mru/mtu 296 helped.
+       What did help was the AT command:
          AT&B512
-       der die maximal verschickten Pakete auf 512 Bytes begrenzt.
+       that limits the sent packets to 512 bytes.
 !verboff
 
-Q: Mein ipppd funktioniert, aber ich bekomme immer wieder die Meldung
-   "pppd[104]: ioctl(SIOCSIFMTU): Invalid argument"?
-A: Andreas Steffan <deas@rrz.uni-hamburg.de> schrieb hierzu am 11. Dez 1996:!br
-   Lange habe ich rumspielen muessen bevor ichs schließlich gefunden habe.
-   Ich mußte in /etc/ppp/options.ippp0 noch eine Zeile
+Q: My ipppd works, but I keep getting the message pppd[104]: 
+   ioctl(SIOCSIFMTU): Invalid argument"?
+A: Andreas Steffan <deas@rrz.uni-hamburg.de> wrote on 11 Dec 1996:!br
+   I had to play around quite a bit before I found the answer. I had to
+   add a line to /etc/ppp/options.ippp0:
 !verbon
         mtu 1024
 !verboff
-   einfuegen. Komisch ist es allemal, aber jetzt habe ich endlich Ruhe.
-   [wird mtu nicht angegeben, dann wird als default-Wert u.U. "0" angenommen -
-   was natürlich nicht funktionieren kann... - die Red.]
+   It's strange, but now I finally have peace and quiet.
+   [if mtu is not set, then a default value is assumed - possibly "0" -
+   which of course cannot be correct - Ed.]
 
 !old
 Q: The first ip packet gets lost on automatic dialout with dynamic ip address
@@ -4182,32 +4179,33 @@ A: There are some dialout problems in connection with sync ppp and dynamic ip
      Also diald has to get that functionality to control when the connection
      goes up or down.
 !verboff     
-   Ein Lösungsvorschlag kam am 5. Jan 1997 von Erik Corry <erik@arbat.com>:
+   A suggested solution came from Erik Corry <erik@arbat.com> on 
+   5 Jan 1997:
 !verbon
-        1) Keine lokale Name-Server/Name-Server-Cache
-        2) Lokale Squid Proxy-WWW-Server (und Netscape muss ihn benutzen).
-        3) positive_dns_ttl auf 1 setzen in /usr/local/squid/etc/squid.conf
-           damit Squid nicht die IP-Adressen cachet
-          Jetzt wird die Verbindung immer gestartet mit der DNS-
-        Anfrage, der immun ist gegen IP-Adresse-Änderungen (weil er
-        mit UDP und nicht TCP laueft?). Wenn du andere Programme
-        hast, die IP-Adressen cachen, musst du dir ueberlegen wie
-        das umgangen werden kann. Normalerweise wird ein Program
-        die IP-Adresse chachen, wenn es 2 mal zur selben Server
-        connectet. Das ist natürlich kein Problem, wenn die
-        beiden Verbindungen so kurz nacheinander erfolgen, daß
-        die Dial-On-Demand-Verbindung noch die selbe ist.
+        1) No local name server/name server cache
+        2) Local squid proxy WWW server (and Netscape must use it).
+        3) set positive_dns_ttl to 1 in /usr/local/squid/etc/squid.conf
+           so squid doesn't cache IP asdresses
+          Now the connection will always start with a DNS lookup,
+        which is immune to IP address changes (because it runs on
+        UDP and not TCP?). If you have other programs that cache
+        IP addresses, you'll have to figure you how to get around
+        them. Normally a program caches an IP address when it
+        has to connect twice to the same server. That isn't a
+        problem, of course, when the second connection occurs so
+        quickly after the first that the dial-on-demand connection
+        is still the same.
 !verboff
-   [Der pppd soll ab Version ebenfalls dial-on-demand unterstützen - vielleicht
-   wird es dann besser - die Red.]
+   [pppd should support dial-on-deman in the next version -
+   maybe then things will be better - Ed.]
 
-Q: Beim Ausführen von "isdnctrl mapping <line> <MSN>,..." kommt es zum Fehler
+Q: When calling "isdnctrl mapping <line> <MSN>,..." I get the error 
    "bad address".
-A: Bernd Oerding <erni@nukleus.escape.de> schrieb dazu am 9. Nov 1996:!br
-   Grund für den Fehler: im Kernel wird ein 255 Byte grosser Block aus dem
-   Userspace erwartet, dieser muß jedoch nicht vorhanden sein, wenn der
-   Pointer auf argv0 zeigt. Der angehängte Patch fixed das Problem auf
-   USER-Ebene, nicht schön aber tut.
+A: Bernd Oerding <erni@nukleus.escape.de> wrote on 9 Nov 1996:!br
+   The reason for this error is that the kernel expects a 255 byte block
+   from the user space, however it may not be there when the pointer 
+   point to  argv0. This following patch fixed the problem at the user
+   level; not pretty but it works.
 !verbon
         *** 1.14        1996/06/06 22:08:46
         --- isdnctrl.c        1996/09/04 19:13:39
@@ -4230,23 +4228,22 @@ A: Bernd Oerding <erni@nukleus.escape.de> schrieb dazu am 9. Nov 1996:!br
                   if ((result=ioctl(fd,IIOCSETMAP,&iocts))<0) {
                     perror(argv[2]);
 !verboff
-   [Es wurde auch schon berichtet, daß das Anhängen von "/sbin" an den Pfad
-   (Environment) geholfen hat. Zum Debuggen von cron-Skripten läßt sich
-   übrigens vortrefflich "set -x" einsetzen - die Red.]
+   [It's also been reported that adding "/sbin" to the path (environment)
+   helps. When debugging cron scripts, you can set this with "set -X" - Ed.]
 
-Q: Was hat es mit der Meldung "No phone number, packet dropped" auf sich?
-A: Michael Engert <michi@bello.wor.de> schrieb dazu im Nov/Dez 1996:!br
-   Das bedeutet, daß Dein Computer ein IP-Paket für jemanden hat, der vor
-   einigen Sekunden eingeloggt war, aber mittlerweile die Verbindung
-   beendet hat. Dein Computer versucht nun dieses Packet weiterzuleiten und
-   findet die geeignete Route. Das Interface isdn[0|1|...] kann jedoch nicht
-   die Gegenstelle erreichen, weil es keine Telefonnummer zum Wählen hat.
+Q: What does the message "No phone number, packet dropped" mean?
+A: Michael Engert <michi@bello.wor.de> wrote in Nov/Dec 1996:!br
+   That means that your computer has an IP packet from somewhat who was
+   logged on a few seconds before, but has since broken the connection.
+   Your computer tries to send this packet on and finds an appropriate 
+   route. But the interface isdn[0|1|...] can't reach the other computer,
+   since it has no telephone number to dial.
 
-Q: Warum wählt mein ipppd eine Null zuviel ("isdn0: dialing 0 089XXXXXX...")?
-   Ich habe doch gar keine Nebenstellenanlage!
-A: Die erste Null wird gar nicht gewählt. Sie zeigt lediglich an, welcher
-   Kanal zum Wählen verwendet wurde.
-
+Q: Why does my ipppd dial one too many zeros ("isdn0: dialing 0 089XXXXXX...")?
+   I don't have any extensions!
+A: The first zero is not dialed. It only shows which channel is used for
+   dialing.
+   
 !commenton
 (The following question was taken from the syncPPP FAQ)
 !commentoff
@@ -4498,224 +4495,209 @@ A: This is a known bug that occurs when switching between the playing of
 
 !3Dialout on demand
 
-Q: Wie kommt es zum Gebühren-GAU?
-A: Dazu gibt es mehrere Möglichkeiten.!br
-   1. Es wurde "Bridging" ins Kernel eincompiliert (siehe dazu die
-   entsprechende Frage weiter unten).!br
-   2. Broadcasts der Interfaces werden per ISDN weitergeleitet (siehe dazu die
-   entsprechende Frage weiter unten).!br
-   3. Sind noch IP-Verbindungen beim Schließen der Leitung offen, dann ist bei
-   dynamischer Vergabe der IP-Adressen der Gebühren-GAU vorprogrammiert. Es
-   wird eine neue Leitung aufgebaut mit dem Ziel, die noch offenen
-   IP-Verbindungen abzubauen. Wegen der unterschiedlichen IP-Adressen können
-   diese jedoch nicht abgebaut werden - die Leitung wird wieder geschlossen.
-   Dann sind die IP-Verbindungen immer noch offen, es wird wieder neu
-   gewählt... usw. (siehe dazu die entsprechende Frage weiter unten).
+Q: What can cause a charge unit disaster?
+A: There are several possibilites.!br
+   1. "Bridging" was compiled into the kernel (see the appropriate question
+   below).!br
+   2. Broadcasts from the interfaces ware being forwarded by ISDN (see 
+   the appropriate question below).!br
+   3. If IP connections are still open with the line is disconnected and
+   IP addresses are dynamically assigned, then the disaster is inevitable.
+   Then a new connection is started to bring down the open IP connections,
+   which fails because the IP address is now different. The line is hung up,
+   but the IP connections are still open, the line is dialed again, and
+   so on... (see the appropriate question below).
 
-Q: Seitdem ich einen neuen Kernel installiert habe, baut mein Rechner dauernd
-   ISDN-Verbindungen auf, ohne Daten zu übertragen (Kosten!).
-A: Vielleicht wurde versehentlich die Kerneloption "Bridging" aktiviert?
+Q: Ever since I installed a new kernel, my computer constantly open ISDN
+   connections without transferring any data (expensive!).
+A: Maybe the kernel option "bridging" was mistakenly activated?
 
-Q: Mein Router möchte ständig rauswählen (tut er auch) aber es werden
-   !u1KEINE!u0 Daten übertragen, weder ipfwadm -Al noch tcpdump -i isdn0
-   zeigen etwas an.
-A: Michael Pieper <michael@nexus1.tng.oche.de> schrieb hierzu am 10. Nov 1996:!br
-   ARP-Requests oder Broadcasts? Du solltest das ifconfig für die
-   ISDN-Devices mit den Optionen -arp und -broadcast durchführen, um
-   Verbindungsaufbauten dadurch zu vermeiden.
+Q: My router wants to constanly dial out (and does it too) but !u1NO!u0
+   data is tranferred, niether ipfwadm -A! nor tcpdump -i isdn0 show
+   anything.
+A: Michael Pieper <michael@nexus1.tng.oche.de> wrote on 10 Nov 1996:!br
+   ARP requests or broadcasts? You should run ifconfig with the options
+   -arp and -broadcast to keep from opening connections in this way.
 
-Q: Nach dem Schließen der Leitung entdecke ich per "netstat -nt", daß noch
-   IP-Verbindungen offen sind. Wie kann ich diese manuell schließen?
-A: Gernot Zander <hifi@scorpio.in-berlin.de> schrieb hierzu am 18. Jan 1997:!br
-   Du kannst das Interface erst "down" und dann wieder "up" setzen. Wenn Du das
-   tust, wird es versuchen hinauszuwählen. Wenn Du dann die ausgehende
-   Telefonnummer entfernt hast, dann wird "no outgoing number..." in syslog
-   angezeigt, und sobald das interface "up" ist, scheinen alle Verbindungen
-   geschlossen zu sein.
+Q: After closing the line, I discover with "netstat -nt" that IP connections
+   are still open. How can I close these manually?
+A: Gernot Zander <hifi@scorpio.in-berlin.de> wrote on 18 Jan 1997:!br
+   You can bring the interface "down" then back "up". When you do this, it
+   will try to dial out. But if you have removed the outgoing telephone
+   number, then "no outgoing number..." appears in the syslog, and as soon
+   as the interface is "up", all connections will be closed.
 
-Q: Wie kann ich Dialout on Demand sicher abstellen?
-A: Gernot Zander <hifi@scorpio.in-berlin.de> schrieb hierzu am 10. Jan 1997:!br
-   Ich lösche die Telefonnummer des Interface [bzw. setze eine ungültige - die
-   Red.]. Dann sehe ich an der Beschwerde im Syslog auch gleich noch, ob und
-   wann ein Prozeß Pakete in die Welt schicken wollte.!br
-   Sascha Ottolski <sascha@alzhimer.isdn.cs.tu-berlin.de> ergänzte
-   am 28. Okt 1996:!br
-   Also bei mir passiert genau das, was Du möchtest: Wenn das ISDN-System
-   "down" ist, meldet Netscape sofort einen Fehler a la "the Server doesn't
-   have a DNS entry" oder ähnlich. Vermutlich mußt Du die route löschen, damit
-   das passiert. Bei mir läuft das so:
+Q: How can I safely turn off dialout on demand?
+A: Gernot Zander <hifi@scorpio.in-berlin.de> wrote on 10 Jan 1997:!br
+   I delete the telephone number of the interface [or set an invalid one - Ed.]
+   Then I can see right away from the complaints in the syslog whether a 
+   process wants to send packets out to the world.!br
+   Sascha Ottolski <sascha@alzhimer.isdn.cs.tu-berlin.de> added on
+   28 Oct 1996:!br 
+   For me, what is happening is what you want: the the ISDN system is 
+   "down", Netscape immediately shows an error message a la: "the Server 
+   doesn't have a DNS entry" or something similar. You probably have to
+   delete the route so that this will happen. I do it like this:
 !verbon
         /sbin/route del default
         /sbin/isdnctrl system off
         /sbin/ifconfig ippp0 down
 !verboff
-   Und damit's dann wieder läuft:
+   An to get things running again:
 !verbon
         /sbin/isdnctrl system on
         /sbin/ifconfig ippp0 up 
         /sbin/route add $GATE-IP dev ippp0
         /sbin/route add default ippp0
 !verboff
-   [Die letzte Methode hat jedoch den Nachteil, daß kein Dial-In mehr möglich
-   ist! - die Red.]
+   [The latter method has the disadvantage that dial-in is then no longer 
+   possible - Ed.]
 
-Q: Wie kann ich sonst noch den Gebühren-GAU verhindern?
-A: In der nächsten Version kann isdnlog (>2.52) als Watchdog fungieren und
-   solche Dialouts abwürgen (notfalls über ein Reboot des Rechners).
+Q: How else can I prevent the charge unit disaster?
+A: In the next version of isdnlog (>2.52) it will be able to work as a
+   watchdog and prevent such dial-outs (with a reboot, if necessary).
 
-Q: Kann es passieren, daß trotz abgestürztem Rechner eine ISDN-Verbindung
-   aufrechterhalten wird (und damit Gebühren kostet)?
-A: Karsten Keil <keil@temic-ech.spacenet.de> schrieb dazu am 11. Feb 1997:
-   Ich vermute, man will mit diesen Status enquiry [in der Schweiz - die Red.]
-   einfach sicherstellen, daß wenn was auf der Userseite abgestürzt ist, die
-   Verbindung getrennt wird. Das ist zusätzlich zur Layer 2 Ueberwachung und
-   nicht ganz sinnlos, da bei vielen Karten/Endgeräten der ISAC im Automodus
-   gefahren wird und damit ein Rechnerabsturz die Verbindung aufrechterhalten
-   würde.!br
-   Bei i4l wird der ISAC allerdings im nonauto Mode betrieben, d.h. wenn keine 
-   Interrupts mehr bearbeitet werden, wird die Verbindung spätestens nach ca.
-   1/2 Minute getrennt. Der NonAuto Mode hat zwar einen anderen Grund, ist aber
-   auch ein Sicherheitsfeature ;-), was aber nicht heißt, daß ein Gebühren-Gau
-   unmöglich ist.
+Q: Is it possible that even with a crashed computer a ISDN connection
+   remains open (and the charge units accumulate)?
+A: Karsten Keil <keil@temic-ech.spacenet.de> wrote on 11 Feb 1997:
+   I'm guessing, that with the status enquiry [in Switzerland - Ed.] you
+   simply want to make sure then then the user side has crash, the connection
+   is broken. This is in addition to the Layer 2 monitoring and is not
+   totally senseless, dince with many cards/end devices the ISAC is run in 
+   auto mode and therefore a crash would keep the connection open.!br
+   However, i4l runs the ISAC in nonauto mode, meaning that when interrupts
+   are no longer being process, the connection is broken after a maximum
+   of about 1/2 a minute. This is not the reason for using nonauto mode, but
+   this is a safety feature ;-), but doesn't mean the the charge unit 
+   disaster is impossible.
 
-Q: Wie komme ich unerklärlichen dialouts auf die Spur?
-A: Dirk Lutzebaeck <lutzeb@wadk-berlin.de> schrieb dazu am 5. Nov 1996:
+Q: How can track down unexplainable dialouts?
+A: Dirk Lutzebaeck <lutzeb@wadk-berlin.de> wrote on 5 Nov 1996:
 !verbon
-        Leider gibts meines Wissens nach für tcpdump noch keinen patch für sync
-        ppp encapsulation. Wenn du ipppd benutzt bleibt Dir deshalb nur die
-        Möglichkeit, konsequent einen daemon nach dem anderen abzuschalten und
-        sehen ob Ruhe im Karton ist. Insbesondere named, sendmail aber auch
-        smbd (Samba) sind Kandidaten, die gerne Verbindungen aufbauen.!br
+        Unfortunately, I know know of any sync ppp encapsulation patch for
+        tcpdump. If you use ipppd, then your only chance is to turn off
+        one daemon after the other and see if things have finally quieted
+        down. Likely candidates are named, sendmail, and also smbd (Samba)
+        that are likely to open connections.
 !verboff
-   [Zu tcpdump siehe die entsprechende Frage im Abschnitt "Allgemein" im
-   Kapitel "Konfiguration". Zu named und sendmail siehe die nachfolgenden
-   Fragen - die Red.].!br
-   Christoph Trautwein <trautw@fzi.de> schrieb weiterhin am 5. Nov 1996:
+   [On tcpdump see the appropriate question under "General" in the 
+   "Configuration"section. On named and sendmaiil see the following
+   questions - Ed.]
+   Christoph Trautwein <trautw@fzi.de> added on 5 Nov 1996:
 !verbon
-        Ich habs auch nur durch Killen verdächtiger Prozesse rausgefunden.
-        Genaueres zum Suchen der Prozesse und wie man sie still bekommt gibts
-        unter:
+        I too was only able to find this out by killing suspicious processes.
+        More information on the search for these processes and how to make
+        them quited can be found at:
           !link http://www.fzi.de/sim/people/trautw/i4l/index.html;
 !verboff
-   Herbert Rosmanith <herp@wildsau.idv.uni-linz.ac.at> schrieb noch am
-   24. Nov 1996:
+   Herbert Rosmanith <herp@wildsau.idv.uni-linz.ac.at> added on
+   24 Nov 1996:
 !verbon
-        Probier mal rauszufinden, welche Anfrage das auslöst, und zwar mit
-        "isdnctrl verbose 3". dann sollte in der kernel-message-queue (siehst
-        Du wenn Du "dmesg" tippst) ein Eintrag a'la:
+        Try to find out which lookup triggers the connection with
+        "isdnctrl verbose 3". Then a message should appear in
+        the kernel message quere (visible with "dmesg") a'la:
           OPEN: 141.76.60.54 -> 193.171.67.253 TCP, port: 1686 -> 540
-        aufscheinen. das obige beispiel heisst, dass unser rechner auf port 540
-        post abholen will (uucp over tcp/ip over isdn).
+        In this example, our computer is trying to pick up mail on
+        port 540 (uucp over tcp/ip over isdn).
 !verboff
-   [geloggt wird aber immer nur das auslösende Packet - die Red.]!br
-   Stefan Luethje <luethje@sl-gw.lake.de> schrieb weiterhin am 27. Nov 1996:
+   [only the triggering packet will be logged - Ed.]!br
+   Stefan Luethje <luethje@sl-gw.lake.de> wrote further on 27 Nov 1996:
 !verbon
-        Ein kleiner Tip noch. Es gibt viele Daemons auf der Linux-Seite, die
-        Broadcast auf allen Interfaces versenden. Das führt auch häufig zum
-        Autodial.
-        Da kann man die broadcast-Adresse auf das dummy0-Interface umlenken.
-        Ist zwar nicht sauber, aber tut.
+        Another tip. There are a lot of daemons on the Linux side that
+        broadcasts on all interfaces. This leads to frequent autodials. 
+        In this case you can redirected the broadcast address to the
+        dummy0 interface. It's not clean, but it works.
 !verboff
-   Siehe zu diesem Thema auch die letzte Frage.
-
-Q: Kann es sein, daß mein am Netz angeschlossenes Win95 irgendwie die
-   unmotivierten Herauswahlen verursacht?
-A: Stefan Luethje <luethje@sl-gw.lake.de> schrieb dazu am 27. Nov 1996:
+   See all the last question in this section.
+   
+Q: Can it be that the Win95 machine on my LAN is causing automatic
+   dialouts?
+A: Stefan Luethje <luethje@sl-gw.lake.de> wrote on 27 Nov 1996:
 !verbon
-        Wenn beim Wintel der Nameserver des Providers eingetragen ist, und
-        Sinnlos3.11/95 gestartet wird, muß (warum weiß nur Bill Gates) er
-        sich unbedingt mit dem Nameserver unterhalten.
+        Whin in Wintel the name server of your provider is given, and
+        Windows 3.11/95 is started, then it has to talk to the name
+        server (only Bill Gates knows why).
 !verboff
 
-Q: Ich habe einen lokalen DNS-Nameserver eingerichtet. Warum kommt es immer
-   noch zu unerwünschten Herauswahlen durch den Nameserver? Wie finde ich den
-   Übeltäter?
-A: Jens Ey <jens@jeyhh.shnet.org> schrieb dazu am 29. Nov 1996:!br
-   Schalte mal Debug-level 1 beim named ein und schau Dir das Logfile
-   in /var/tmp an.!br
-   Bei mir finden sich da regelmäßig DNS-Anfragen von Windoof-Mühlen.
-   Problem dabei ist, daß gerne nach so Sachen wie WORKGROUP.domain.de gefragt
-   wird u.ä. Es werden also Namen gefragt, die der DNS beim besten Willen
-   nicht kennen kann. Ich nehme mal an, dass der Sinnlos-Rechner auf der Suche
-   nach seinem Masterbrowser ist oder einen Domainen Controller finden will.!br
-   Das ganze hat mich in einem Netzwerk mit Internet-Zugang bei Linux mal so
-   genervt, dass ich einen externen Terminaladapter eingesetzt habe, einen
-   Proxy-Server eingerichtet habe und diald dann so konfiguriert, dass
-   DNS-Anfragen nur noch vom Linux-Rechner durchgeführt werden dürfen.
-   Damit wird die Verbindung dann nur noch aufgebaut, wenn sie wirklich
-   gebraucht wird. Der (cachende) lokale DNS kommt dann nur noch zum Einsatz,
-   wenn die Verbindung schon oben ist.
+Q: I have set up a local DNS name server. Why does it cause unwanted 
+   dialouts? How can I find the cause?
+A: Jens Ey <jens@jeyhh.shnet.org> wrote on 29 Nov 1996:!br
+   Turn on debug level 1 in named and look at the logfile
+   in /var/tmp.!br
+   In my case, I found regular DNS requests from Windows machines. The
+   the problems was that names like WORKGROUP.domain.de were requested,
+   i.e. names that the DNS could not know. I'm assuming that the Windows
+   machine was looking for its master browser or a domain controller.!br
+   This was causing me so many problems for my Internet connection with
+   Linux in a LAN that I installed an external terminal adapter, set up
+   a proxy server, and set up daild that only DNS requests from the Linux
+   machine were allowed to be carried out. Then the connections are 
+   established only when they are actually needed. The (cached) local DNS
+   is only used after the connection has been established. 
 
-Q: Wie kann ich die DNS-Anfragen meines Win95-Rechners nach WORKGROUP.xxx
-   abschalten?
-A: Eike Stepper <isdn@esc-net.de> schrieb dazu am 30. Nov 1996:
+Q: How can I turn off the DNS requests for WORKGROUP.xxx from my
+   Win95 machine?
+A: Eike Stepper <isdn@esc-net.de> wrote on 30 Nov 1996:
 !verbon
-        Warum stellst du nicht einfach das Windows-Setting im Netzwerksetup:
-          "Use DNS for Windows Names Resolution"    (oder ähnlich)
-        auf No?
-        Dann müßte Ruhe sein, zumindest bei mir ist es so.
+        Why not simply set the "Use DNS for Windows Names Resolution"   
+        (or similar) to No? Then it should be quiet, at least it
+        is for me.
 !verboff
 
-Q: Wie bringe ich sendmail dazu, von sich aus keine Verbindungen mehr
-   aufzubauen, ohne daß lokale Mail liegenbleibt?
-A: Zunächst muß man sendmail dazu bringen, keine DNS-Verbindungen mehr
-   aufzubauen. Dazu sollte man folgende Features angeben: "nodns",
-   "nocanonify".!br
-   Falls man einen Rechner als smarthost einträgt, muß man dafür sorgen, daß
-   dieser Name nicht zu einem Aufruf des Nameservers führt. Dazu trägt man
-   entweder nur die IP-Adresse direkt ein, oder man ergänzt den Namen in
-   /etc/hosts (/etc/host.conf sollte entsprechend "order hosts bind"
-   enthalten)!br
-   Weiterhin erklärt man alle nicht lokalen Mailer als teuer/expensive
-   ("define(SMTP_MAILER_FLAGS, e)"), und verbietet sendmail mit
-   "define(`confCON_EXPENSIVE', `True')", teure Mailer von sich aus
-   anzuwählen. Der Aufruf von Sendmail darf für die Option "-q" keine
-   Zeitangabe mehr enthalten (z.B. also nur "-bd -os -q"). "-os" bedeutet,
-   daß alle Mail gequeued wird (was nicht verhindert, daß lokale nicht
-   auch sofort zugestellt wird). Einziger Haken: beim Booten will sendmail
-   evtl. vorhandene Mail versenden, obwohl das Netzwerk noch nicht oben ist.
-   Dazu sollte man beim Booten vor dem Start alle zuzustellende Mail aus
-   /var/mqueue entfernen - um diese nach dem Start von sendmail wieder
-   zurückzuschieben.!br
-   Mail an teure=entfernte Mailer wird nun nur noch beim expliziten Aufruf
-   von "sendmail -q" zugestellt.
+Q: How can I get sendmail to not initiate any connections without local
+   mail being left undelivered?
+A: First you have to get sendmail to no long open any DNS connections.
+   You need to activate the following features: "nodns", "nocanonify".!br
+   If you have a smarthost, you need to make sure that this name does not
+   call the name server. You can either set it directly as an IP address,
+   or add the name to /etc/hosts (/etc/host.conf should then contain
+   "order hosts bind")!br
+   You should set all non-local mailers as "expensive"
+   ("define(SMTP_MAILER_FLAGS, e)"), and then forbid sendmail with
+   "define(`confCON_EXPENSIVE', `True')" from automatically connection
+   to expensive mailers. The call to sendmail should no longer include
+   a time for the "-q" option (e.g. only "-bd -os -q"). "-os" means that
+   all mail will be queued (which won't prevent local mail from being
+   delivered immediately). The only catch is that when booting, mail that
+   might still be in the queze will be sent by sendmail, even though the
+   network is not yet up. Therefore, when booting you should remove 
+   all mail from /var/mquere before starting sendmail, and then return it 
+   once sendmail has been started.!br
+   Mail to expensive mailers will now only be send with the explicit
+   call "sendmail -q".
 
-Q: Das Samba-Paket löst bei mir dauernd Herauswahlen aus. Wie kann ich das
-   unterbinden?
-A: Andreas Glahn <andreas@tao.westfalen.de> schrieb dazu am 31. Jan 1997:
-   Hatte ich auch mal. Bei mir habe ich dann beim Aufruf des Samberdämons
-   die interne IP-Adresse, welche ich nur zu Hause verwende, mitübergeben.
-   Seitdem wird ein SambaRequest nicht mehr auf default geschickt, sondern
-   bleibt im Haus.!br
-   Mal die Konfiguration mit netstat und TCPDUMP ansehen. Mit TCPDUMP bekommt
-   man schnell heraus, mit welcher IP Samba versucht, eine Verbindung
-   aufzubauen.!br
-   Bei mir hat mein InternerLinuxRechner z.B.: 192.168.99.99!br
-   Mein Win95-Rechner:                         192.168.99.88!br
-   Auf dem Linuxrechner habe ich dann Samba mit:
+Q: The samba package always triggers dialouts for me. How can I prevent
+   this?
+A: Andreas Glahn <andreas@tao.westfalen.de> wrote on 31 Jan 1997:
+   I had this problems too. Then when starting the samba daemon I gave
+   it the internal IP address I use here at home. Since then a samba
+   request is no longer sent to default, but stays here.!br
+   Take a look at the configuration with netstat and tcpdump. With tcpdump
+   you can quickly find out to which IP address samba is trying to
+   connect.!br
+   My internal Linux computer has, e.g.: 192.168.99.99!br
+   My Win95 computer:        n           192.168.99.88!br
+   On the Linux computer I started samba with:
 !verbon
        nmdb -S -B 192.168.99.255 -I 192.168.99.99
 !verboff
-   gestartet.!br
-   Siehe auch die Frage oben: -broadcast und evtl. -arp bei der Definition der
-   Interfaces angeben!
+   See also the above question:  se -broadcast and possibly -arp 
+   when defining the interfaces!
 
-Q: Wie gewöhne ich Netscape ab, beim Start eine Herauswahl zu initiieren?
-A: Wahrscheinlich wurde in den Einstellungen eine Homepage eingetragen, die
-   nicht lokal vorliegt. Nur eine, die Netscape sofort laden kann, (z.B.
-   "file://localhost/xxx") verursacht keine sofortige Herauswahl. Alternativ
-   kann man auch einen Cache-Daemon einrichten, der haeufig benoetigte Seiten
-   speichert.!br
-   Ein angegebener Proxy sollte keine Herauswahl verursachen, auch wenn der
-   komplette Rechnername eingetragen ist. Lediglich bei der Neueintragung
-   versucht Netscape, die IP-Adresse einmalig via DNS abzufragen (und kann in
-   diesem Sonderfall eine Herauswahl verursachen).
-   Am 17.Mar.97 schrieb uns Steffan Henke <henker@Informatik.Uni-Bremen.DE>
-   hierzu aber:
+Q: How can I get Netscape to quit initiating dial-outs when starting?
+A: Most likely in the preferences a non-local home page has been listed.
+   Only a home page that Netscape is able to load immediately (e.g.
+   "file://localhost/xxx") won't cause an immediately dial-out. Alternatively
+   you can also set up a cache daemon that saves pages that are often needed.!br
+   A proxy should not cause a dial out, even when the complete name is 
+   entered. Only when a new proxy is given does Netscape do a DNS
+   lookup (and in this special case cause a dial-out.
+   However, on 17 Mar 97 Steffan Henke <henker@Informatik.Uni-Bremen.DE>
+   wrote:
 !verbon
-        Leider hat uns die Realität überholt - soweit ich gehört habe,
-        baut Netscape z.B. jetzt in der Version 4.02 tatsächlich eine 
-        Verbindung auf...
+        Unfortunately reality has caught up with us. I've heard that
+        Netscape now in version.4.02 really does establish a
+        connection...
 !verboff
 
 
