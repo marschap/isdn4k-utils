@@ -158,7 +158,7 @@ insmod x25
 or
 modprobe x25
 
-Copy the file eft.msn present in the sample directory to the
+Copy the file eft.conf present in the examples directory to the
 I4LCONFDIR (probably /etc/isdn) and edit it in order to configure
 the MSNs to be used by the EUROFILE client and server.
 

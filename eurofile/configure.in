@@ -1,5 +1,5 @@
 dnl Process this file with autoconf to produce a configure script.
-dnl $Id: configure.in,v 1.1 1999/06/29 16:22:42 he Exp $
+dnl $Id: configure.in,v 1.2 1999/06/29 18:37:15 he Exp $
 
 AC_INIT(COPYING.authlib)
 

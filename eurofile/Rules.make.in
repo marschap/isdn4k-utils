@@ -1,5 +1,5 @@
 @EFT_AUTOCONF_WARNING@
-# generated from $Id: Rules.make.in,v 1.1 1999/06/29 16:22:39 he Exp $ 
+# generated from $Id: Rules.make.in,v 1.2 1999/06/29 18:37:14 he Exp $ 
 CRYPTLIB = @CONFIG_LIBCRYPT@
 CONFIG_EFTD_WUAUTH = @CONFIG_EFTD_WUAUTH@
 CONFIG_EFTP_READLINE = @CONFIG_EFTP_READLINE@

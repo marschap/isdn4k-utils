@@ -1,4 +1,4 @@
-/* $Id: CHANGES,v 1.1 1999/06/29 16:22:34 he Exp $
+/* $Id: CHANGES,v 1.2 1999/06/29 18:37:10 he Exp $
 #  Change log for eftp4Linux
 #
 # [new] means 'new feature added'
@@ -18,18 +18,17 @@
 #
 
 $Log: CHANGES,v $
-Revision 1.1  1999/06/29 16:22:34  he
-eftp4linux EUROFILE implementation initial check in.
-Not yet fully integrated in isdn4k-utils build procedure (menu config) yet.
+Revision 1.2  1999/06/29 18:37:10  he
+Were initially missing or wrong
 
-
---------------
-Version 0.0.11
---------------
 - [new] doc/design.txt added (needs completion)
-- [chg] src/* changed directory names and structure which also affects
+- [chg] src/*: changed directory names and structure which also affects
 	#include directives and Makefiles.
-- [chg] Support CVS in built procedure.
+- [chg] The config file (former /etc/isdn/eft.msn) has been renamed to
+	eft.conf. If you want want to re-use an already installed
+	config file, you also need to rename it. Otherwise, the new
+	script files won't find it.
+- [chg] Support for CVS in build procedure.
 
 --------------
 Version 0.0.10

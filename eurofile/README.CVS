@@ -1,4 +1,4 @@
-$Id: README.CVS,v 1.1 1999/06/29 16:22:38 he Exp $
+$Id: README.CVS,v 1.2 1999/06/29 18:37:13 he Exp $
 
 From version 0.0.11, eftp4linux is added to the isdn4linux cvs
 repository. This will allow bug fixes to be faster distributed. It
