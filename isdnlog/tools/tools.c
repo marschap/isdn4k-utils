@@ -1,4 +1,4 @@
-/* $Id: tools.c,v 1.15 1998/11/24 20:53:07 akool Exp $
+/* $Id: tools.c,v 1.16 1998/12/09 20:40:19 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -19,6 +19,15 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools.c,v $
+ * Revision 1.16  1998/12/09 20:40:19  akool
+ *  - new option "-0x:y" for leading zero stripping on internal S0-Bus
+ *  - new option "-o" to suppress causes of other ISDN-Equipment
+ *  - more support for the internal S0-bus
+ *  - Patches from Jochen Erwied <mack@Joker.E.Ruhr.DE>, fixes TelDaFax Tarif
+ *  - workaround from Sebastian Kanthak <sebastian.kanthak@muehlheim.de>
+ *  - new CHARGEINT chapter in the README from
+ *    "Georg v.Zezschwitz" <gvz@popocate.hamburg.pop.de>
+ *
  * Revision 1.15  1998/11/24 20:53:07  akool
  *  - changed my email-adress
  *  - new Option "-R" to supply the preselected provider (-R24 -> Telepassport)
@@ -864,8 +873,13 @@ go:   	         if (!ndigit)
 		 break;
 
       case 'p' : s = sx;
-      	         if (call[chan].provider != -1)
+      	         if (call[chan].provider != -1) {
+
+      		   if (call[chan].provider < 100)
       	       	   sprintf(sx, "010%02d", call[chan].provider);
+      		   else
+		     sprintf(sx, "010%03d", call[chan].provider - 100);
+      	         }
       		 else
                    *sx = 0;
                  p = s + strlen(s);

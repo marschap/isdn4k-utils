@@ -212,7 +212,11 @@ struct ttable tt[] = {
       {  6,      3,      BFW4 },
 /* TelDaFax */
       {  7,      0,      BFNH|BFR5 },
+#ifdef ISDNLOG
+      {  7,      1,      BFR2|BFFN },
+#else
       {  7,      1,      BFR5|BFFN },
+#endif
       {  7,      2,      BFMC|BFD1|BFD2|BFME },
       {  7,      3,      BFEY },
       {  7,      4,      BFE1 },

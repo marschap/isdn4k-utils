@@ -1,4 +1,4 @@
-/* $Id: isdnlog.c,v 1.30 1998/11/24 20:51:31 akool Exp $
+/* $Id: isdnlog.c,v 1.31 1998/12/09 20:39:28 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,15 @@
  * along with this program; if not, write to the Free Software
  *
  * $Log: isdnlog.c,v $
+ * Revision 1.31  1998/12/09 20:39:28  akool
+ *  - new option "-0x:y" for leading zero stripping on internal S0-Bus
+ *  - new option "-o" to suppress causes of other ISDN-Equipment
+ *  - more support for the internal S0-bus
+ *  - Patches from Jochen Erwied <mack@Joker.E.Ruhr.DE>, fixes TelDaFax Tarif
+ *  - workaround from Sebastian Kanthak <sebastian.kanthak@muehlheim.de>
+ *  - new CHARGEINT chapter in the README from
+ *    "Georg v.Zezschwitz" <gvz@popocate.hamburg.pop.de>
+ *
  * Revision 1.30  1998/11/24 20:51:31  akool
  *  - changed my email-adress
  *  - new Option "-R" to supply the preselected provider (-R24 -> Telepassport)
@@ -220,9 +229,9 @@ static int read_param_file(char *FileName);
 
 static char     usage[]   = "%s: usage: %s [ -%s ] file\n";
 #ifdef Q931
-static char     options[] = "av:sp:x:m:l:rt:c:C:w:SVTDPMh:nW:H:f:bL:NqFA:2:O:Ki:R:";
+static char     options[] = "av:sp:x:m:l:rt:c:C:w:SVTDPMh:nW:H:f:bL:NqFA:2:O:Ki:R:0:o";
 #else
-static char     options[] = "av:sp:x:m:l:rt:c:C:w:SVTDPMh:nW:H:f:bL:NFA:2:O:Ki:R:";
+static char     options[] = "av:sp:x:m:l:rt:c:C:w:SVTDPMh:nW:H:f:bL:NFA:2:O:Ki:R:0:o";
 #endif
 static char     msg1[]    = "%s: Can't open %s (%s)\n";
 static char    *ptty = NULL;
@@ -443,9 +452,10 @@ static void init_variables(int argc, char* argv[])
   allflags = 0;
   newcps = 0;
   chans = 2;
-  hupctrl = 0;
-  hup1 = hup2 = 0;
+  hupctrl = hup1 = hup2 = 0;
+  trim = trimi = trimo = 0;
   bilingual = 0;
+  other = 0;
   mcalls = MAX_CALLS_IN_QUEUE;
   xlog = MAX_PRINTS_IN_QUEUE;
   outfile = NULL;
@@ -631,6 +641,20 @@ int set_options(int argc, char* argv[])
       case 'R' : preselect = (int)strtol(optarg, NIL, 0);
       	       	 break;
 
+      case '0' : trim++;
+
+      	       	 if ((p = strchr(optarg, ':'))) {
+                   *p = 0;
+                   trimi = atoi(optarg);
+                   trimo = atoi(p + 1);
+      	       	 }
+                 else
+                   trimi = trimo = atoi(optarg);
+      	       	 break;
+
+      case 'o' : other++;
+      	       	 break;
+
       case '?' : printf(usage, myshortname, myshortname, options);
 	         exit(1);
     } /* switch */
@@ -669,7 +693,9 @@ int set_options(int argc, char* argv[])
     /* Wenn message nicht explixit gesetzt wurde, dann gibt es beim daemon auch
        kein Output auf der Console/ttyx                                   */
 
-    if (!newmessage && ptty == NULL)
+    /* if (!newmessage && ptty == NULL)  -> FIXME: so geht das nicht, Stefan, wenn
+       	  	       	       	  	 -> "message" ueber das config-File
+                                         -> (CONF_ENT_STDOUT) gefuellt wird! */
       message = 0;
   } /* if */
 
@@ -760,6 +786,17 @@ static int read_param_file(char *FileName)
       	       	 		  } /* if */
 				}
 				else
+                                if (!strcmp(Ptr->name, CONF_ENT_TRIM)) {
+                                  trim++;
+                                  if ((p = strchr(Ptr->value, ':'))) {
+                                    *p = 0;
+                                    trimi = atoi(Ptr->value);
+                                    trimo = atoi(p + 1);
+                                  }
+                                  else
+                                    trimi = trimo = atoi(Ptr->value);
+                                }
+                                else
 				if (!strcmp(Ptr->name,CONF_ENT_BI))
 					bilingual = toupper(*(Ptr->value)) == 'Y'?1:0;
 				else
@@ -803,6 +840,9 @@ static int read_param_file(char *FileName)
 				else
                                 if (!strcmp(Ptr->name,CONF_ENT_PRESELECT))
 				        preselect = (int)strtol(Ptr->value, NIL, 0);
+                                else
+                                if (!strcmp(Ptr->name,CONF_ENT_OTHER))
+				        other = toupper(*(Ptr->value)) == 'Y'?1:0;
                                 else
 					print_msg(PRT_ERR,"Error: Invalid entry `%s'!\n",Ptr->name);
 

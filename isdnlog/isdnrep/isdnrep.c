@@ -1,4 +1,4 @@
-/* $Id: isdnrep.c,v 1.51 1998/11/24 20:52:41 akool Exp $
+/* $Id: isdnrep.c,v 1.52 1998/12/09 20:39:54 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -24,6 +24,15 @@
  *
  *
  * $Log: isdnrep.c,v $
+ * Revision 1.52  1998/12/09 20:39:54  akool
+ *  - new option "-0x:y" for leading zero stripping on internal S0-Bus
+ *  - new option "-o" to suppress causes of other ISDN-Equipment
+ *  - more support for the internal S0-bus
+ *  - Patches from Jochen Erwied <mack@Joker.E.Ruhr.DE>, fixes TelDaFax Tarif
+ *  - workaround from Sebastian Kanthak <sebastian.kanthak@muehlheim.de>
+ *  - new CHARGEINT chapter in the README from
+ *    "Georg v.Zezschwitz" <gvz@popocate.hamburg.pop.de>
+ *
  * Revision 1.51  1998/11/24 20:52:41  akool
  *  - changed my email-adress
  *  - new Option "-R" to supply the preselected provider (-R24 -> Telepassport)
@@ -2044,7 +2053,7 @@ static void how_expensive(one_call *cur_call)
   extern   double pay(time_t ts, int dauer, int tarifz, int pro);
 
 
-  if (!cur_call->dir && (dur > 0) && !cur_call->dm) {
+  if (!cur_call->dir && (dur > 0) && (cur_call->dm <= 0.0)) {
 
     if (*cur_call->num[1] && memcmp(cur_call->num[1] + 3, "19", 2))
       zone2 = area_diff(NULL, cur_call->num[1]);
@@ -2088,7 +2097,7 @@ static void how_expensive(one_call *cur_call)
         if (pro) {
           cur_call->dm = pay(cur_call->t, (int)cur_call->duration, zone, pro);
 
-          if (!cur_call->dm) { /* ooops - not supported by that provider ... retry with Telekom */
+          if (cur_call->dm <= 0.0) { /* ooops - not supported by that provider ... retry with Telekom */
             cur_call->dm = pay(cur_call->t, (int)cur_call->duration, zone, pro = 33);
             cur_call->provider = 0;
           } /* if */
@@ -2150,7 +2159,7 @@ static int print_entries(one_call *cur_call, double unit, int *nx, char *myname)
                   pro = preselect;
 
                 if (nx[CALLED] != -1) {
-		  if (!cur_call->dm) {
+		  if (cur_call->dm <= 0.0) {
 
                     tarifz = known[nx[CALLED]]->zone;
 

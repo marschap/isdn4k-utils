@@ -1,4 +1,4 @@
-/* $Id: isdnlog.h,v 1.13 1998/11/24 20:51:35 akool Exp $
+/* $Id: isdnlog.h,v 1.14 1998/12/09 20:39:30 akool Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,15 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnlog.h,v $
+ * Revision 1.14  1998/12/09 20:39:30  akool
+ *  - new option "-0x:y" for leading zero stripping on internal S0-Bus
+ *  - new option "-o" to suppress causes of other ISDN-Equipment
+ *  - more support for the internal S0-bus
+ *  - Patches from Jochen Erwied <mack@Joker.E.Ruhr.DE>, fixes TelDaFax Tarif
+ *  - workaround from Sebastian Kanthak <sebastian.kanthak@muehlheim.de>
+ *  - new CHARGEINT chapter in the README from
+ *    "Georg v.Zezschwitz" <gvz@popocate.hamburg.pop.de>
+ *
  * Revision 1.13  1998/11/24 20:51:35  akool
  *  - changed my email-adress
  *  - new Option "-R" to supply the preselected provider (-R24 -> Telepassport)
@@ -321,6 +330,9 @@ _EXTERN int     bilingual;
 _EXTERN int  	hupctrl;
 _EXTERN int  	hup1;
 _EXTERN int  	hup2;
+_EXTERN int     trim;
+_EXTERN int     trimi;
+_EXTERN int     trimo;
 _EXTERN int     mcalls;
 _EXTERN int     xlog;
 _EXTERN char   *myname, *myshortname;
@@ -334,6 +346,7 @@ _EXTERN	char    tmpout[PATH_MAX];
 _EXTERN int     readkeyboard;
 _EXTERN	int     interns0;
 _EXTERN	int	preselect;
+_EXTERN	int	other;
 _EXTERN IFO     ifo[ISDN_MAX_CHANNELS];
 _EXTERN IO      io[ISDN_MAX_CHANNELS];
 

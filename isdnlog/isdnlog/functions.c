@@ -1,4 +1,4 @@
-/* $Id: functions.c,v 1.15 1998/11/24 20:51:26 akool Exp $
+/* $Id: functions.c,v 1.16 1998/12/09 20:39:24 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,15 @@
  * along with this program; if not, write to the Free Software
  *
  * $Log: functions.c,v $
+ * Revision 1.16  1998/12/09 20:39:24  akool
+ *  - new option "-0x:y" for leading zero stripping on internal S0-Bus
+ *  - new option "-o" to suppress causes of other ISDN-Equipment
+ *  - more support for the internal S0-bus
+ *  - Patches from Jochen Erwied <mack@Joker.E.Ruhr.DE>, fixes TelDaFax Tarif
+ *  - workaround from Sebastian Kanthak <sebastian.kanthak@muehlheim.de>
+ *  - new CHARGEINT chapter in the README from
+ *    "Georg v.Zezschwitz" <gvz@popocate.hamburg.pop.de>
+ *
  * Revision 1.15  1998/11/24 20:51:26  akool
  *  - changed my email-adress
  *  - new Option "-R" to supply the preselected provider (-R24 -> Telepassport)
@@ -552,7 +561,7 @@ int is_sondernummer(char *num)
   register int i;
 
 
-  if (strlen(num) >= interns0)
+  if ((strlen(num) >= interns0) && ((*num == '0') || (*num == '1')))
     for (i = 0; i < nSN; i++)
       if (!strncmp(num, SN[i].msn, strlen(SN[i].msn)))
         return(i);

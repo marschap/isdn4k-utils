@@ -1,4 +1,4 @@
-/* $Id: tools_de.c,v 1.5 1998/11/24 20:53:18 akool Exp $
+/* $Id: tools_de.c,v 1.6 1998/12/09 20:40:30 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -21,6 +21,15 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools_de.c,v $
+ * Revision 1.6  1998/12/09 20:40:30  akool
+ *  - new option "-0x:y" for leading zero stripping on internal S0-Bus
+ *  - new option "-o" to suppress causes of other ISDN-Equipment
+ *  - more support for the internal S0-bus
+ *  - Patches from Jochen Erwied <mack@Joker.E.Ruhr.DE>, fixes TelDaFax Tarif
+ *  - workaround from Sebastian Kanthak <sebastian.kanthak@muehlheim.de>
+ *  - new CHARGEINT chapter in the README from
+ *    "Georg v.Zezschwitz" <gvz@popocate.hamburg.pop.de>
+ *
  * Revision 1.5  1998/11/24 20:53:18  akool
  *  - changed my email-adress
  *  - new Option "-R" to supply the preselected provider (-R24 -> Telepassport)
@@ -97,7 +106,7 @@ char *Providername(int number)
     case  16 : return("LausitzNet");                               /* Telekommunikationsgesellschaft mbH, Lausitzer Straße 1-7, 03046 Cottbus 01016 */
     case  17 : return("SEC");                                      /* Service AG, Dieskaustraße 246, 04249 Leipzig 01017 */
     case  18 : return("debitel");                                  /* Kommunikationstechnik GmbH & Co KG, Schelmenwasenstr. 37 - 39, 70567 Stuttgart 01018 */
-    case  19 : return("CityLine");                                 /* Telefondienste GmbH, Schwarzer Weg 13, 24837 Schleswig 01019 */
+    case  19 : return("CityLine (Mobilcom)");                      /* Telefondienste GmbH, Schwarzer Weg 13, 24837 Schleswig 01019 */
     case  20 : return("ISIS");                                     /* Multimedia Net GmbH, Kaistraße 6, 40221 Düsseldorf 01020 */
     case  21 : return("QS");                                       /* Communication Service GmbH, Oberländer Ufer 180-182, 50968 Köln 01021 */
     case  22 : return("NetCologne");                               /* GmbH, Maarweg 163, 50825 Köln 01022 */

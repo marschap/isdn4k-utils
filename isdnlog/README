@@ -1,4 +1,4 @@
-ISDNLOG - Version 3.0 -  				19-Nov-98  12:14
+ISDNLOG - Version 3.0 -  				09-Dec-98  21:36
 
 
 isdnlog ist ein Utility zur Auswertung des D-Kanals eines
@@ -2224,13 +2224,23 @@ angegeben werden.
      (monitor={yes|no})
 
  -hX Zeitabhaengige Hangup-Timeout Steuerung
-     Wird dieses Flag angegeben, berechnet isdnlog bei jedem rausgehenden
+     Der normale Hangup einer aufgebauten Verbindung erfolgt, wenn
+     eine bestimmte Anzahl Sekunden kein Traffic auf der Leitung
+     stattfand. (Der Parameter dafuer ist "huptimeout").
+     Viele Telefonanbieter rechnen aber in variablen (Deutsche
+     Telekom) oder anderen Zeitintervallen (Minuten) ab. In diesen
+     Faellen ist es sinnvoller, die angefangene Einheit oder Minute
+     voll auszuschoepfen. Diese Moeglichkeit wird mit dem
+     "chargeint" (Gebuehrenintervall)-Parameter von isdnctrl
+     angeboten (Siehe auch Abschnitt 13: Chargeint)
+
+     Mit dem Parameter -h berechnet isdnlog bei jedem rausgehenden
      Verbindungsaufbau die aktuelle Dauer einer Gebuehreneinheit
      entsprechend der Tageszeit (nebst Wochentag/Feiertag etc.) sowie
      der Gebuehrenzone des Gegners, und programmiert - falls erforderlich -
      die neue Dauer in das entsprechende IP-Interface.
 
-     Beispiel:
+     Beispiel
        Mein Internet-Provider steht folgendermassen in der "isdn.conf" :
 
          [NUMBER]
@@ -2238,31 +2248,25 @@ angegeben werden.
          ALIAS     = UUnet
          ZONE      = 3
          INTERFACE = isdn0
-         START = {
-
-           [FLAG]
-           FLAGS     = OC
-           PROGRAM   = $CMD ${SOUNDS}/dial.au
-         }
-
-       Konfiguriert wurde dessen IP-Interface "isdn0" in der "rc.isdn" so:
-         isdnctrl huptimeout isdn0 12
 
      Erfolgt nun ein Verbindungsaufbau Richtung UUnet, berechnet isdnlog
      die aktuell gueltige Dauer einer Gebuehreneinheit
      (da mein Provider in "Regio 200" liegt, also 12.0, 13.5, 21.5, 30.0
       oder 120.0 Sekunden)
      und setzt intern die Befehle
-         isdnctrl chargeint isdn0 X
-         isdnctrl huptimeout isdn0 Y
-     ab, wobei fuer "X" die berechnete Zeit, und fuer Y je nachdem, ob
-     X groesser oder kleiner 20 Sekunden ist, den linken oder rechten
-     Parameter der -h Option.
+         isdnctrl huptimeout isdn0 X
+         isdnctrl chargeint isdn0 Y
+     ab. Das Gebuehrenintervall ("Y") wird automatisch berechnet.
+     Mit X ist gemeint, wie lange vor Ablauf des aktuellen Taktes
+     kein Traffic auf der Leitung gewesen sein darf, damit
+     aufgelegt wird. Je niedriger dieser Wert ist, desto eher wird bei
+     kurzen Pausen aufgelegt. Der -h Parameter laesst sich mit zwei Werten
+     angeben: Einem fuer Taktzeiten unter 20 Sekunden, einem fuer
+     Taktzeiten ueber 20 Sekunden.
 
      Dauert z.b. eine aktuelle Gebuehreneinheit 12 Sekunden, und wurde
      isdnlog mit "-h5:3" gestartet, wird also der ChargeInt-Counter auf
      12 Sekunden, und der huptimeout-Counter auf 5 Sekunden gestellt.
-
 
      Das Nachjustieren des Hangup-Timers geschieht sowohl bei jedem
      Verbindungsaufbau, als auch bei jedem Uebergang in einen anderen
@@ -2281,7 +2285,6 @@ angegeben werden.
 
      Fuer diese Funktionalitaet benoetigt isdnlog das Programm "isdnctrl"
      nicht, da es direkt mit isdn4linux komuniziert.
-     (hangup="value")
 
  -cX Nur in Verbindung mit -xX. Es werden die X letzten Gespreache vom isdnlog
      gespeichert, die vom xisdn abgerufen werden, wenn der xisdn gestartet wird.
@@ -2331,6 +2334,45 @@ angegeben werden.
      bei Arcor ist -R70 anzugeben.
      Fehlt diese Angabe, wird 33, d.h. die Deutsche Telekom angenommen.
      (preselected="value")
+
+ -0x Beliebiges Unterdruecken vorlaufender Nullen. Haengt isdnlog an dem
+     internen S0-Bus einer TK-Anlage, und ist es nicht moeglich, isdnlog
+     mit seiner internen Logik sowie der "-A" Option dazu zu ueberreden,
+     Deutschland und Ausland auseinanderzuhalten, kann hiermit die
+     gesamte interne Logik uebersteuert werden.
+
+     Der Option "-0" sind zwei, durch ein ":" getrennte Ziffern zu
+     uebergeben. Diese geben an, wieviele vorlaufende "0" von der TK-
+     Anlage isdnlog bei rein- sowie rausgehenden Gespraechen entfernen
+     soll.
+
+     Beispiel:
+
+       Meine TK-Anlage signalisiert bei einem reinkommenden Gespraech
+       aus Hamburg diese Nummer als "00040..." Bei einem rausgehenden
+       Gespr„ch nach Hamburg wird die Nummer als "0040..." signalisiert.
+
+       Da eine Nummer innerhalb Deutschlands ohne fuehrende "0"
+       weiterverarbeitet wird (bei einer Nummer im Ausland muá eine
+       fuehrende "0" uebrigbleiben), muessen dementsprechend bei
+       reinkommenden Gespaechen 3, bei rausgehenden Gespraechen 2
+       vorlaufende "0" entfernt werden, um die Normalform zu erreichen.
+
+       Somit waere in diesem Fall die Option "-03:2" korrekt. Links
+       vom ":" wird die Anzahl Ziffern fuer reinkommende, rechts vom
+       ":" die Anzahl Ziffern fuer rausgehende Gespaeche angegeben.
+       Wird nur ein Argument angegeben, wird fuer reinkommende wie
+       rausgehende Verbindungen diese Anzahl verwendet, d.h. "-01"
+       bedeutet dasselbe wie "-01:1".
+
+     Wird die Option "-0" verwendet, darf die "-A" Option nicht verwendet
+     werden, da auch diese ja vorlaufende "0" entfernt!
+     (trim="value:value")
+
+ -o  Auch die causes (Hinweise, wie z.b. "non-selected user clearing")
+     anderer Geraete werden angezeigt. Ohne diese Option werden nur
+     die causes der an der Verbindung beteiligten Geraete angezeigt.
+     (other={yes|no})
 
 
 Bei den Optionen -mX, -lX -xX sind folgende Flags moeglich:
@@ -3311,21 +3353,22 @@ im Verzeichnis "client/Xmt" zu entnehmen.
 13. ChargeInt
 -------------
 
-Die folgenden Seiten zum ChargeInt-Patch im contrib-Verzeichnis wurden
-von Georg v.Zezschwitz (gvz@pop.de) geschrieben, der den ChargeInt-Patch
-entwickelt hat. Der Patch haengt nicht direkt mit isdnlog zusammen, ist
-aber im Zusammenspiel mit isdnlog sehr hilfreich, um ohne Leistungs-
-Einbussen der Telekom ein paar Mark weniger ueberweisen zu muessen.
+Die folgenden Seiten zum ChargeInt wurden von Georg v.Zezschwitz
+(gvz@pop.de) geschrieben, der "ChargeInt" entwickelt hat. "ChargeInt"
+war lange ein Patch fuer Linux, ist aber mittlerweile voll in
+isdn4linux integriert und wird von isdnlog unterstuetzt (siehe
+Option -h)
 
 
 Was ist ChargeInt?
 ------------------
 
-ChargeInt besteht aus einem Patch fuer den ISDN-Teil der Linux-Kernels und
-einem Patch fuer isdn4kutils. Er fuehrt einen weiteren Parameter fuer
-isdnctrl ein: den ChargeInt-Parameter. Mit dem ChargeInt-Parameter wird das
-aktuelle Gebuehrenintervall einer bestimmten Verbindung angegeben, z.b.
-90 Sekunden.
+ChargeInt ist ein Feature von isdn4linux. Damit wird eine Taktzeit
+fuer ein ISDN-Interface angegeben, die moeglichst voll ausgenutzt
+werden soll. Ohne isdnlog wird ChargeInt ueber einen Parameter
+von isdnctrl angesprochen: den ChargeInt-Parameter.
+Mit dem ChargeInt-Parameter wird das aktuelle Gebuehrenintervall
+einer bestimmten Verbindung angegeben, z.b.  90 Sekunden.
 
 Wie wirkt ChargeInt?
 
@@ -3334,7 +3377,7 @@ huptimeout konfiguriert) die bestehende Verbindung nicht genutzt wurde.
 Ist diese Zeit abgelaufen, wird aufgelegt.
 Demgegenueber verhaelt sich die kostenbewusste Nutzerin natuerlich so, dass
 sie die fuer 12 Pf bezahlte Leistung der Telekom auch gerne bis zur letzten
-Sekunde ausschoepfen wuerde, also erst dann auflegt, wenn in den naechsten
+ekunde ausschoepfen wuerde, also erst dann auflegt, wenn in den naechsten
 1-2 Sekunden die naechste Einheit anstehen wuerde.
 ChargeInt macht eigentlich nichts weiter, als die Pruefung, ob in den
 letzten Sekunden kein Traffic angefallen ist, nur dann durchzufuehren,
@@ -3359,15 +3402,11 @@ Kriterium abzupruefen.
 Pro und Kontra von ChargeInt
 ----------------------------
 
-Generell spricht nichts dagegen, ChargeInt einzukompilieren. Der Patch
-ist "abwaertskompatibel", d.h., wer nicht explizit per Hand oder Programm
-ein
+Chargeint wird nur dann aktiv, wenn es manuell mit
 
   isdnctrl chargeint device Takt
 
-gibt, wird keinerlei Aenderungen feststellen. Zudem enthaelt der Patch
-fuer isdnctrl die nette Moeglichkeit, mit einem einzigen isdnctrl-Befehl
-gleich etliche Parameter auf einmal setzen zu koennen. (s.u.)
+aufgerufen wird, oder isdnlog mit der Option -h aufgerufen wird.
 
 
 Wann sollte ich ChargeInt (nicht) aktivieren?
@@ -3379,17 +3418,17 @@ Zum einen kann etwa eine FTP-Session nicht ohne weiteres bei dynamischer
 IP-Vergabe fortgesetzt werden, da sich die einem selbst zugewiesene
 IP-Adresse bei einer erneuten Anwahl aendert. Dies gilt fuer alle
 TCP-Verbindungen (z.b. Telnet, rlogin). Wer mit dynamischer IP-Adressvergabe
-leben muss, wird grundsaetzlich seine Verbindung waehrend einer Sitzung
+leben muss, wird eher seine Verbindung waehrend einer Sitzung
 stehen lassen wollen und eher noch einen ping starten, damit auch die
 Gegenseite nicht auflegt. Fuer diese User/innen ist ChargeInt also
 ueberfluessig.
 
+Ueberfluessig ist ChargeInt, wenn man nicht bei der Telekom oder
+gar Mobilcom, sondern einem Anbieter mit sekundengenauer Abrechnung
+telefoniert.
+
 Ueberfluessig ist ChargeInt auch, wenn z.b. Daten im Batch-Betrieb (UUCP
 ueber TCP/IP) abgeholt werden und anschliessend explizit aufgelegt wird.
-
-Falsch ist ChargeInt dann, wenn eine Wiederanwahl so zeitaufwendig waere,
-dass sie in keiner Relation zu den Mehrkosten fuer eine kontinuierliche
-Verbindung steht.
 
 ChargeInt ist ideal fuer Leute, die
  - eine feste IP-Adresse haben
@@ -3397,51 +3436,20 @@ ChargeInt ist ideal fuer Leute, die
    haben, auch lesen.
  - oder z.b. Heimarbeit betreiben und ihr Trommelfeuer auf die Tastatur
    auch mal kurz unterbrechen, um Nachzudenken oder Tee zu kochen oder...
-
-
-Wie patche ich ChargeInt ein?
------------------------------
-
-ChargeInt ist im isdnlog-Tarfile bereits enthalten. Historisch ist ChargeInt
-unabhaengig von isdnlog entwickelt worden und beide koennen nach wie vor
-unabhaengig von einander betrieben werden, aber die eleganteste und einfachste
-Methode ist, ChargeInt ueber isdnlog zu steuern (siehe Konfiguration).
-
-ChargeInt befindet sich innerhalb von isdnlog in folgendem Verzeichnis:
-
-contrib/chargeint/patch-chargeint-2.04
-contrib/chargeint/patch-chargeint-kutils
-
-Die Primary-Site ist
-
-  ftp://ftp.pop.de/pub/linux/isdn4linux/LOCAL/chargeint.tar.gz
-
-, allerdings ist der Patch seit Linux 2.04 (Juli 1996) unveraendert geblieben.
-Eine etwas ausfuehrlichere HTML-Doku ist unter
-
-  http://www.provi.de/~gvz/chargeint.html
-
-abrufbar.
-
-
-Angenommen, der Kernel liegt in /usr/src/linux und isdn4kutils in
-/usr/src/isdn4k-utils-2.0, die Patche selbst im Home-Verzeichnis,
-dann reichen folgende Befehle:
-
-cd /usr/src
-patch -p0 -l -F10 < ~/patch-chargeint-2.04
-rm -rf isdn4k-utils-2.0/isdn/RCS
-patch -p0 -l ~/patch-chargeint-kutils
-
-Der patch-chargeint-2.04 wurde urspruenglich gegen Linux 2.0.4 erzeugt,
-klappt aber mit der -F10 Option auch bei neueren Kerneln.
-
-Wer bei dieser Gelegenheit den Kernel zum ersten Mal kompiliert, mache
-bitte nicht ChargeInt verantwortlich, wenn es nicht klappt!
+ - generell lieber kurz auflegen wuerden, wenn die Verbindung 1-2
+   Minuten nicht gebraucht wird.
 
 
 Wie konfiguriere ich ChargeInt?
 -------------------------------
+
+Eine manuelle Konfiguration von ChargeInt ist nur noetig, wenn
+isdnlog nicht die Steuerung uebernehmen kann, weil z.B. der Anbieter
+mit seinen Gebuehrenintervallen nicht unterstuetzt wird.
+
+Wer z.B. grundsaetzlich im Minutenintervall (z.B. Viag-Interkom) oder
+gar 2 Minuten-Intervall (Mobilcom) zahlt, braucht die intelligente
+Steuerung von isdnlog nicht.
 
 Parameter fuer die Hangup-Kontrolle
 
@@ -3454,39 +3462,6 @@ huptimeout-Parameter nur kurz vor Ablauf der Gebuehreneinheit abgefragt.
 
 Ich setze bei CityCall's huptimeout auf 5 Sekunden, bei GermanCall's
 auf 3 Sekunden.
-
-Im Juli 96 wurde isdnlog so modifiziert, dass isdnlog selbstaendig beim
-Aufbau einer Verbindung berechnet, welche Taktzeit zur Zeit von der
-Telekom vorgegeben wird und diese setzt. Otto Normaluserin muss sich also
-nur noch darum kuemmern, dass
- - die Systemuhr halbwegs richtig geht
- - die Tarif-Zonen fuer die einzelnen Leitungen in der
-   /etc/isdn/isdn.conf korrekt angegeben sind.
-
-
-Flexible Syntax fuer isdnctrl
------------------------------
-Als ich den chargeint-Parameter in isdnctrl einbauen wollte, juckte es
-mich in den Fingern, das Ding gleich ein bisschen umzuschreiben. Mein
-ISDN-Router daheim ist ein 386DX40, und die endlos vielen isdnctrl-Befehle
-beim Booten, die die 5 ISDN-Verbindungen eintragen, brauchten ihre Zeit.
-Daher habe ich eine Moeglichkeit eingebaut, mehrere Parameter auf einmal
-setzen zu koennen. Auch hier gilt die Abwaertskompatibilitaet, wer also
-nur einen Parameter aendern will, schreibt weiterhin:
-
-   isdnctrl chargeint isdn 90
-
-Z.b. beim Booten sind aber auch solche Anweisungen moeglich:
-
-   isdnctrl l2_prot isdn0 hdlc eaz 232282 addphone in 40110 40112 \
-            out 2519612 huptimeout 5
-
-Waehrend also die Syntax fuer das erste Kommando unveraendert
-
-   Kommando isdn-device [Parameter 1] (Parameter 2)
-
-lautet, wird bei folgenden Kommandos im Aufruf von isdnctrl das Isdn-Device
-weggelassen.
 
 
 14. Gebuehren-GAU Begrenzer

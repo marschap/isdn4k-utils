@@ -1,4 +1,4 @@
-/* $Id: tools.h,v 1.23 1998/11/24 20:53:10 akool Exp $
+/* $Id: tools.h,v 1.24 1998/12/09 20:40:27 akool Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,15 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools.h,v $
+ * Revision 1.24  1998/12/09 20:40:27  akool
+ *  - new option "-0x:y" for leading zero stripping on internal S0-Bus
+ *  - new option "-o" to suppress causes of other ISDN-Equipment
+ *  - more support for the internal S0-bus
+ *  - Patches from Jochen Erwied <mack@Joker.E.Ruhr.DE>, fixes TelDaFax Tarif
+ *  - workaround from Sebastian Kanthak <sebastian.kanthak@muehlheim.de>
+ *  - new CHARGEINT chapter in the README from
+ *    "Georg v.Zezschwitz" <gvz@popocate.hamburg.pop.de>
+ *
  * Revision 1.23  1998/11/24 20:53:10  akool
  *  - changed my email-adress
  *  - new Option "-R" to supply the preselected provider (-R24 -> Telepassport)
@@ -485,6 +494,8 @@
 #define CONF_ENT_KEYBOARD "KEYBOARD"
 #define CONF_ENT_INTERNS0 "INTERNS0"
 #define CONF_ENT_PRESELECT "PRESELECTED"
+#define	CONF_ENT_TRIM	   "TRIM"
+#define	CONF_ENT_OTHER	   "OTHER"
 
 /****************************************************************************/
 
