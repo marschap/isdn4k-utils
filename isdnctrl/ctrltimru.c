@@ -32,12 +32,12 @@
 #include <netinet/in.h>
 #include <linux/isdn.h>
 #include <netdb.h>
+#include "config.h"
 #ifdef HAVE_TIMRU
 #include <linux/isdn_timru.h>
 #include <linux/isdn_budget.h>
 #endif
 
-#include "config.h"
 #include "isdnctrl.h"
 #include "ctrlconf.h"
 
