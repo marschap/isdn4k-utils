@@ -1,10 +1,10 @@
-ISDNLOG - Version 3.46 -  				24-Aug-99  19:25
+ISDNLOG - Version 3.47 -  				27-Aug-99  22:13
 
 
 isdnlog ist ein Utility zur Auswertung des D-Kanals eines
 ISDN-BRI Anschlusses.
 
-isdnlog-3.46 wurde ausgiebig mit Linux-2.0.37 getestet.
+isdnlog-3.47 wurde ausgiebig mit Linux-2.0.37 getestet.
 
 
 Fuer alle, die es nun ueberhaupt nicht mehr abwarten koennen, hier das
@@ -4297,7 +4297,7 @@ ISDN-Komfort-Anschluss zu beantragen! Das dort enthaltene "Leitungsmerkmal"
 Gebuehreninformationen waehrend der Verbindung wird sowieso nur noch bei
 Verbindungen ueber die DTAG erbracht (da die DTAG meistens die teuerste
 Gesellschaft ist, kommt das also praktisch nie mehr vor ...)
-Wer den isdnlog (und eine up-to-date "tarif.dat") verwendet, bekommt jedoch
+Wer den isdnlog (und eine up-to-date "rate-xx.dat") verwendet, bekommt jedoch
 bei *allen* Gesellschaften - incl. der DTAG - Gebuehreninformationen geliefert,
 in Bezug auf AOCD (waehrend der Verbindung) sogar genauer, als die
 von der DTAG!
@@ -4315,7 +4315,7 @@ Was kann nun isdnlog (ab der Version 3.x) mit dieser neuen Situation anstellen?
        noch bei weitem nicht alle wirklich Telefondienste an.
 
      - zum zweiten besitzt isdnlog eine Tarif-Datenbank, die Datei
-       "/usr/lib/isdn/tarif.dat"
+       "/usr/lib/isdn/rate-xx.dat"
        Dort sind die Tarife der diversen Telefongesellschaften hinterlegt.
 
        Da sich die Tarife haeufig sogar taeglich aendern, kann diese
@@ -4420,6 +4420,20 @@ Was kann nun isdnlog (ab der Version 3.x) mit dieser neuen Situation anstellen?
    Dummerweise kosten diese Sondernummern bei jedem Provider etwas anderes,
    oder werden Fallweise von dem einen oder anderen Provider gar nicht
    unterstuetzt.
+
+   Da sich die Tarife manchmal sogar taeglich aendern, lebt isdnlog
+   natuerlich von einer stets aktuellen "rate-de.dat". Diese Datei
+   wird z.Zt. von der Rate-Crew in einem CVS gepflegt, und taeglich
+   aktuell unter folgender Adresse zur Verfuegung gestellt:
+
+      http://www.digitalprojects.com/rates
+
+
+   Wer Fehler in der Tarifdatenbank findet, oder gar Verbesserungen oder
+   neue Anbieter dafuer zusammengestellt hat, schickt diese bitte an
+   folgende Adresse:
+
+      rates@gmx.de
 
 
 19. Probleme?
@@ -4570,7 +4584,7 @@ Folgende Files werden von diesem System verwendet:
   /usr/lib/isdn/areacodes    	       - Neues Vorwahl-Verzeichnis
   /usr/lib/isdn/sonderrufnummern.dat   - Verzeichnis aller Sonderrufnummern (110, 112 ...)
   /usr/lib/isdn/vorwahl.dat	       - Verzonungstabelle
-  /usr/lib/isdn/tarif.dat	       - Tarifdatenbank
+  /usr/lib/isdn/rate-xx.dat  - Tarifdatenbank
   /var/log/isdn.log	     - Das Logbuch
   /var/run/isdnlog.pid	     - Enthaelt die PID des laufenden isdnlog
   /dev/isdnctrl0	     - Gibt das Q.931 Protokoll des HiSax-Treibers aus
@@ -4678,8 +4692,16 @@ Bei
 der die Gebuehrenauswertung fuer die Schweiz korrigiert hat
 
 Bei
+  Paul Slootman <paul@wau.mis.ah.nl>
+der die Gebuehrenauswertung fuer die Niederlande korrigiert,
+sowie unzaehlige Fehler beseitigt hat. Daneben verdankt isdnlog
+Paul die schoenen man-Pages sowie die Debian Distribution.
+
+Bei
   Michael Reinelt <reinelt@eunet.at>
-der die gesamte Anpassung fuer Oesterreich implementiert hat
+sowie
+  Leopold Toetsch <lt@toetsch.at>
+die die gesamte Anpassung fuer Oesterreich implementiert haben
 
 Bei
   Markus Leist (markus@hal.dirnet.com)
@@ -4692,6 +4714,12 @@ fuer die Idee und das Design des HTML-Formats des isdnrep
 Sowie bei
   Ullrich von Bassewitz (uz@musoftware.com)
 fuer die "AreaCode" Library (AVON-Verzeichnis)
+
+Weiterer Dank gebuehrt der Rate-Crew
+  Jochen Erwied <j.erwied@gmx.de>
+  Alexander Werner Skwar <askwar@digitalprojects.com>
+  Ingo Richter <ingo.richter@gmx.de>
+die die Tariftabellen staendig aktuell halten.
 
 Last but not least bei Sabine Nagel (snagel@hlzm.de) fuer das
 Korrekturlesen dieser Dokumentation.

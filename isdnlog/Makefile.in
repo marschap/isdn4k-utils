@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.100 1999/08/25 17:05:57 akool Exp $
+## $Id: Makefile.in,v 1.101 1999/08/27 20:56:28 akool Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,9 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.101  1999/08/27 20:56:28  akool
+## Patch from Kai
+##
 ## Revision 1.100  1999/08/25 17:05:57  akool
 ## isdnlog-3.46
 ##
@@ -742,7 +745,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 3.46
+VERSION     = 3.47
 
 MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 \
 	      isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 \
@@ -865,7 +868,6 @@ uninstall: rootperm
 			$(DESTDIR)$(MAN5DIR)/isdnlog.users$(MAN5EXT)    \
 			$(DESTDIR)$(DATADIR)/country-$(NATION).dat	\
 			$(DESTDIR)$(DATADIR)/rate-$(NATION).dat         \
-			$(DESTDIR)$(DATADIR)/vorwahl.dat                \
 
 installdirs: rootperm
 		$(INSTALL_DIR) $(DESTDIR)$(I4LCONFDIR)
@@ -904,8 +906,6 @@ install: all rootperm installdirs
 		$(INSTALL_DATA) rate-$(NATION).dat      $(DESTDIR)$(DATADIR)
 		$(INSTALL_DATA) holiday-$(NATION).dat   $(DESTDIR)$(DATADIR)
 		$(INSTALL_DATA) zone-$(NATION)-dtag.gdbm $(DESTDIR)$(DATADIR)
-		$(INSTALL_DATA) vorwahl.dat.bz2         $(DESTDIR)$(DATADIR)
-		$(BUNZIP2) $(DESTDIR)$(DATADIR)/vorwahl.dat.bz2
 		@if [ ! -f "$(DESTDIR)$(I4LCONFDIR)/rate.conf" ]; then \
 			$(INSTALL_DATA) samples/rate.conf.$(NATION) $(DESTDIR)$(I4LCONFDIR)/rate.conf ; \
 		else \
