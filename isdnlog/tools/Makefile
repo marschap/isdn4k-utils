@@ -1,4 +1,4 @@
-CC=gcc -m486 -O2 -pg -Wall -DSTANDALONE -I. -I.. -I../isdnlog
+CC=gcc -m486 -O0 -g -pg -Wall -DSTANDALONE -I. -I.. -I../isdnlog
 
 all: rate zone.exe country holiday rate-at
 

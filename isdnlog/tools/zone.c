@@ -1,4 +1,4 @@
-/* $Id: zone.c,v 1.11 1999/07/01 20:44:07 akool Exp $
+/* $Id: zone.c,v 1.12 1999/07/07 19:44:20 akool Exp $
  *
  * Zonenberechnung
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: zone.c,v $
+ * Revision 1.12  1999/07/07 19:44:20  akool
+ * patches from Michael and Leo
+ *
  * Revision 1.11  1999/07/01 20:44:07  akool
  * zone-1.12
  *
@@ -116,7 +119,7 @@ struct sth {
 
 static struct sth *sthp;
 static int count;
-static char version[] = "1.12";
+static char version[] = "1.13";
 static bool area_read = false;
 
 #define LINK 127
@@ -575,16 +578,23 @@ int getZone(int provider, char *from, char *to)
 static int _getAreacode(struct sth *sthp, char *from, char **text) {
 	_DB fh = sthp->fh;
 	datum key, value;
-	static char newfrom[LENGTH];
+	char newfrom[LENGTH];
 	int len;
+	UL lifrom; /* keys could be long */
+	US ifrom;
+	int dummy1; /* if these are not here 2.7.2.3 destroys ifrom !§@$%&@ */
+	int dummy2; 
+	char *p;
+	dummy1 = dummy2 = 0; /* keep the compiler happy */
 	strncpy(newfrom, from, sthp->numlen);
 	newfrom[sthp->numlen] = '\0';
-	while ((len=strlen(newfrom))) {
-		UL lifrom = (UL) atol(newfrom); /* keys could be long */
-		US ifrom = (US) lifrom;
+	len=strlen(newfrom);
+	while (len) {
+		lifrom = (UL) strtoul(newfrom, &p, 10); /* keys could be long */
+		ifrom = (US) lifrom;
 		if (sthp->pack_key == 2) {
 			if (lifrom >= 0x10000) {  /* can't be, so cut a dig */
-				newfrom[strlen(newfrom)-1] = '\0';
+				newfrom[--len] = '\0';
 				continue;
 			}
 			key.dptr = (char *) &ifrom;
@@ -592,7 +602,7 @@ static int _getAreacode(struct sth *sthp, char *from, char **text) {
 		}
 		else {
 			if (lifrom >= 0x10000000L) { /* can't be, so cut a dig */
-				newfrom[strlen(newfrom)-1] = '\0';
+				newfrom[--len] = '\0';
 				continue;
 			}
 			key.dptr = (char *) &lifrom;
@@ -611,7 +621,7 @@ static int _getAreacode(struct sth *sthp, char *from, char **text) {
 				*text = strdup(value.dptr);
 			return len;
 		} /* if dptr */
-		newfrom[strlen(newfrom)-1] = '\0';
+		newfrom[--len] = '\0';
 	}
 	return UNKNOWN;
 }

@@ -1,4 +1,4 @@
-/* $Id: isdnrate.c,v 1.9 1999/07/04 20:47:05 akool Exp $
+/* $Id: isdnrate.c,v 1.10 1999/07/07 19:44:07 akool Exp $
  *
  * ISDN accounting for isdn4linux. (rate evaluation)
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnrate.c,v $
+ * Revision 1.10  1999/07/07 19:44:07  akool
+ * patches from Michael and Leo
+ *
  * Revision 1.9  1999/07/04 20:47:05  akool
  * rate-de.dat V:1.02-Germany [04-Jul-1999 22:56:37]
  *
@@ -226,25 +229,25 @@ static int compare2(const void *s1, const void *s2)
 } /* compare2 */
 
 
-static char *printrate(RATE Rate)
+static char *printrate(RATE *Rate)
 {
   static char message[BUFSIZ];
 
 
-  if (Rate.Basic > 0)
+  if (Rate->Basic > 0)
     sprintf(message, "%s + %s/%3.1fs = %s + %s/Min (%s)",
-      printRate(Rate.Basic),
-      printRate(Rate.Price),
-      Rate.Duration,
-      printRate(Rate.Basic),
-      printRate(60 * Rate.Price / Rate.Duration),
-      explainRate(&Rate));
+      printRate(Rate->Basic),
+      printRate(Rate->Price),
+      Rate->Duration,
+      printRate(Rate->Basic),
+      printRate(60 * Rate->Price / Rate->Duration),
+      explainRate(Rate));
   else
     sprintf(message, "%s/%3.1fs = %s/Min (%s)",
-      printRate(Rate.Price),
-      Rate.Duration,
-      printRate(60 * Rate.Price / Rate.Duration),
-      explainRate(&Rate));
+      printRate(Rate->Price),
+      Rate->Duration,
+      printRate(60 * Rate->Price / Rate->Duration),
+      explainRate(Rate));
 
   return(message);
 } /* printrate */
@@ -307,11 +310,13 @@ static char *Provider(int prefix)
 
 static void numsplit(char *num)
 {
-  register int   l1, l3;
+  register int   l1, l3, zone;
   auto	   int	 l2;
   register char *p;
   auto	   char *s;
 
+
+  print_msg(PRT_NORMAL, "NUMSPLIT(%s)\n", num);
 
   *country = *area = *msn = 0;
 
@@ -332,7 +337,7 @@ static void numsplit(char *num)
 
       strcpy(msn, num + l2);
 
-      if (verbose)
+      if (verbose && *msn)
         print_msg(PRT_NORMAL, " Number %s\n", msn);
     } /* if */
 
@@ -343,12 +348,32 @@ static void numsplit(char *num)
 
     l3 = getAreacode(atoi(p), num + l1, &s);
 
+    if (1 /* l3 != UNKNOWN */) {
+      print_msg(PRT_NORMAL, "getAreacode(%d, %s, %s)=%d\n", atoi(p), num + l1, s, l3);
+      free(s);
+      zone = getZone(DTAG, myarea, num + l1);
+      print_msg(PRT_NORMAL, "getZone(%d,%s,%s)=%d\n", DTAG, myarea, num + l1, zone);
+
+      switch (zone) {
+         case 1 : print_msg(PRT_NORMAL, "Ortszone\n");     break;
+         case 2 : print_msg(PRT_NORMAL, "Cityzone\n");     break;
+         case 3 : print_msg(PRT_NORMAL, "Regionalzone\n"); break;
+         case 4 : print_msg(PRT_NORMAL, "Fernzone\n");    break;
+        default : print_msg(PRT_NORMAL, "*** BUG ***\n");  break;
+      } /* switch */
+    } /* if */
+  }
+  else {
+    l3 = getAreacode(49, num, &s);
+
     if (l3 != UNKNOWN) {
       print_msg(PRT_NORMAL, "getAreacode(%d, %s, %s)=%d\n", atoi(p), num + l1, s, l3);
       free(s);
-    } /* if */
-  } /* if */
 
+      zone = getZone(DTAG, mynum, num);
+      print_msg(PRT_NORMAL, "getZone=%d\n", zone);
+    } /* if */
+  } /* else */
 } /* numsplit */
 
 
@@ -453,7 +478,7 @@ static int compute()
       sort[n].rate = Rate.Charge;
 
       if (explain) {
-        sprintf(s, " (%s)", printrate(Rate));
+        sprintf(s, " (%s)", printrate(&Rate));
         sort[n].explain = strdup(s);
       }
       else

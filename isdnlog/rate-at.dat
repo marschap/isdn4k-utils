@@ -4,18 +4,19 @@
 # so do not contribute patches to this file.
 
 # Please contact Michael Reinelt <reinelt@eunet.at>
-# or Leo Tötsch <lt@toetsch.at> if you have
-# any corrections or additions.
+# or Leo Tötsch <lt@toetsch.at> if you have any
+# corrections or additions.
 
 # Many thanks to Daniela Bruder <dbruder@sime.com>
 # for collecting and preparing most of the call charges.
 
 
-V:1.70-Austria [27-Jun-1999]
+V:1.80-Austria [06-Jul-1999]
 
 U:%.3f öS
 
 P:01,1                             Telekom Austria
+C:maintained by:                   Michael Reinelt <reinelt@eunet.at>
 C:Tarif:                           Minimumtarif (ATS 1.116 pro Einheit)
 D:pta                              # Verzonung
 
@@ -1573,32 +1574,35 @@ T:1-5/8-18=1.98(60)/1              Tag
 T:1-5/18-8=1.18(60)/1              Nacht
 T:E,H/*=1.18(60)/1                 Weekend
 A:Österreich
-Z:4                                Deutschland, Schweiz
+Z:4                                Mobilfunk
 T:*/*=3.98(60)/1                   rund um die Uhr
-A:Deutschland, Schweiz
-Z:5                                International A
+A:+43663, +43664, +43676, +43699
+Z:5                                Deutschland, Schweiz
 T:*/*=3.48(60)/1                   rund um die Uhr
+A:Deutschland, Schweiz
+Z:6                                International A
+T:*/*=3.98(60)/1                   rund um die Uhr
 A:Belgien, Dänemark, Finnland, Frankreich, Großbritannien, Irland, Italien
 A:Liechtenstein, Luxemburg, Monaco, Niederlande, Norwegen, Schweden
 A:Slowenien, Slowakei, Spanien, Tschechien, Ungarn, Vatikan
 A:Vereinigte Staaten (USA), Puerto Rico, Alaska, Hawaii, Kanada
-Z:6                                International B
-T:*/*=3.98(60)/1                   rund um die Uhr
+Z:7                                International B
+T:*/*=5.98(60)/1                   rund um die Uhr
 A:Andorra, Bosnien-Herzegowina, Bulgarien, Estland, Griechenland, Island
 A:Kroatien, Lettland, Litauen, Malta, Mazedonien, Polen, Portugal, Rumänien
 A:Serbien, Montenegro, Zypern, Australien, Färöer, Israel, Neuseeland
 A:Amerikanische Jungferninseln
-Z:7                                International C
-T:*/*=5.98(60)/1                   rund um die Uhr
+Z:8                                International C
+T:*/*=7.38(60)/1                   rund um die Uhr
 A:Albanien, Weihnachtsinseln, Gibraltar, Kokosinseln, Rußland, San Marino
 A:Türkei, Tunesien, Ukraine, Weißrußland, Algerien, Hongkong, Japan, Südkorea
 A:Marokko, Philippinen, Russische Föderation, Singapur
-Z:8                                International D
-T:*/*=7.38(60)/1                   rund um die Uhr
+Z:9                                International D
+T:*/*=12.98(60)/1                  rund um die Uhr
 A:Ägypten, Südafrika, Aserbaidschan, Armenien, China, Georgien, Libyen
 A:Malaysia, Moldau, Tadschikistan, Taiwan, Turkmenistan, Usbekistan
-Z:9                                International E
-T:*/*=12.98(60)/1                  rund um die Uhr
+Z:10                               International E
+T:*/*=14.98(60)/1                  rund um die Uhr
 A:Angola, Aruba, Bahamas, Bahrain, Barbados, Bermuda, Bhutan, Bolivien
 A:Botswana, Brunei, Burundi, Ghana, Grönland, Guadeloupe, Guam, Guinea
 A:Martinique, Französisch-Guayana, Honduras, Indien, Indonesien, Iran
@@ -1608,8 +1612,8 @@ A:Nigeria, Paraguay, Reunion, Saipan, Saudi-Arabien, St. Lucia
 A:St. Pierre und Miquelon, Saint Vincent und die Grenadinen, Sudan, Syrien
 A:Swasiland, Tansania, Thailand, Trinidad und Tobago, Uruguay
 A:Vereinigte Arabische Emirate
-Z:10                               International F
-T:*/*=14.98(60)/1                  rund um die Uhr
+Z:11                               International F
+T:*/*=19.98(60)/1                  rund um die Uhr
 A:+                                alle übrigen Länder
 
 P:29,1                             CyberTron
@@ -1788,6 +1792,7 @@ A:Turks- und Caicos-Inseln, Tuvalu, Uganda, Vietnam, Wake-Inseln, Zaire
 A:Zentralafrikanische Republik
 
 P:67                               max.plus
+C:maintained by:                   Michael Reinelt <reinelt@eunet.at>
 C:Fixme:                           Taktung unbekannt
 Z:1                                Festnetz
 T:*/*=1.00(60)/1                   rund um die Uhr
