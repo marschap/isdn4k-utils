@@ -1,4 +1,4 @@
-/* $Id: isdnconf.c,v 1.30 1999/06/09 19:58:12 akool Exp $
+/* $Id: isdnconf.c,v 1.31 1999/06/13 14:07:28 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -20,6 +20,12 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnconf.c,v $
+ * Revision 1.31  1999/06/13 14:07:28  akool
+ * isdnlog Version 3.32
+ *
+ *  - new option "-U1" (or "ignoreCOLP=1") to ignore CLIP/COLP Frames
+ *  - TEI management decoded
+ *
  * Revision 1.30  1999/06/09 19:58:12  akool
  * isdnlog Version 3.31
  *  - Release 0.91 of zone-Database (aka "Verzonungstabelle")
@@ -987,7 +993,9 @@ static void showWorld(int duration)
 {
   auto     FILE *f = fopen("/usr/lib/isdn/countries.dat", "r");
   auto     char  s[BUFSIZ], areacode[BUFSIZ];
+#if 0
   auto	   int	 provider;
+#endif
   register int   n;
   register char *p;
   auto	   RATE  Rate;
@@ -997,7 +1005,7 @@ static void showWorld(int duration)
   if (f != (FILE *)NULL) {
     while (fgets(s, BUFSIZ, f)) {
 
-      if (p = strchr(s, '\n'))
+      if ((p = strchr(s, '\n')))
         *p = 0;
 
       if (abroad(s, areacode)) {

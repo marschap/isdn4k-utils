@@ -1,4 +1,4 @@
-/* $Id: rep_main.c,v 1.7 1999/01/24 19:02:33 akool Exp $
+/* $Id: rep_main.c,v 1.8 1999/06/13 14:08:08 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -20,6 +20,12 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rep_main.c,v $
+ * Revision 1.8  1999/06/13 14:08:08  akool
+ * isdnlog Version 3.32
+ *
+ *  - new option "-U1" (or "ignoreCOLP=1") to ignore CLIP/COLP Frames
+ *  - TEI management decoded
+ *
  * Revision 1.7  1999/01/24 19:02:33  akool
  *  - second version of the new chargeint database
  *  - isdnrep reanimated
@@ -314,7 +320,7 @@ static int print_in_modules(int Level, const char *fmt, ...)
 
 
 	va_start(ap, fmt);
-		(void)vsnprintf(String, BUFSIZ*3, fmt, ap);
+	(void)vsnprintf(String, BUFSIZ*3, fmt, ap);
 	va_end(ap);
 
 	return fprintf(Level == PRT_ERR?stderr:stdout, "%s", String);

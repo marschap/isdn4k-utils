@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.84 1999/06/09 19:57:22 akool Exp $
+## $Id: Makefile.in,v 1.85 1999/06/13 14:06:53 akool Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,12 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.85  1999/06/13 14:06:53  akool
+## isdnlog Version 3.32
+##
+##  - new option "-U1" (or "ignoreCOLP=1") to ignore CLIP/COLP Frames
+##  - TEI management decoded
+##
 ## Revision 1.84  1999/06/09 19:57:22  akool
 ## isdnlog Version 3.31
 ##  - Release 0.91 of zone-Database (aka "Verzonungstabelle")
@@ -670,7 +676,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 3.31
+VERSION     = 3.32
 
 MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 \
 	      isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 \

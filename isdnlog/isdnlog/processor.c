@@ -1,4 +1,4 @@
-/* $Id: processor.c,v 1.65 1999/06/09 19:58:26 akool Exp $
+/* $Id: processor.c,v 1.66 1999/06/13 14:07:50 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,12 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.66  1999/06/13 14:07:50  akool
+ * isdnlog Version 3.32
+ *
+ *  - new option "-U1" (or "ignoreCOLP=1") to ignore CLIP/COLP Frames
+ *  - TEI management decoded
+ *
  * Revision 1.65  1999/06/09 19:58:26  akool
  * isdnlog Version 3.31
  *  - Release 0.91 of zone-Database (aka "Verzonungstabelle")
@@ -1862,6 +1868,9 @@ static void decode(int chan, register char *p, int type, int version, int tei)
 
                     *pd = 0;
 
+                    if (ignoreCOLP && !Q931dmp) /* FIXME */
+                      break;
+
                     if (!*s) {
                       info(chan, PRT_SHOWNUMBERS, STATE_RING, "COLP *INVALID* -- ignored!");
                       break;
@@ -1931,6 +1940,10 @@ static void decode(int chan, register char *p, int type, int version, int tei)
 
                     if (*call[chan].onum[CALLING]) { /* another Calling-party? */
                       if (strcmp(call[chan].onum[CALLING], s)) { /* different! */
+
+                        if (ignoreCOLP && !Q931dmp) /* FIXME */
+                          break;
+
                         if ((call[chan].screening == 3) && ((oc3a & 3) < 3)) { /* we believe the first one! */
                           strcpy(call[chan].onum[CLIP], s);
                           buildnumber(s, oc3, oc3a, call[chan].num[CLIP], version, &call[chan].provider, &call[chan].sondernummer[CLIP], &call[chan].intern[CLIP], &call[chan].local[CLIP], 0, 0);
@@ -2466,8 +2479,10 @@ escape:             for (c = 0; c <= sxp; c++)
                     c = strtol(p + 3, NIL, 16);
                     sn[sxp] = c;
 
-                    if (!Q931dmp)
-                      px += sprintf(px, "PROGRESS: %s", location(c & 0x80));
+                    if (Q931dmp)
+                      px += sprintf(px, "%s", location(c & 0x0f));
+        	    else
+                      px += sprintf(px, "PROGRESS: %s", location(c & 0x0f));
 
                     if (l > 1) {
                       px = sx[++sxp];
@@ -2491,8 +2506,7 @@ escape:             for (c = 0; c <= sxp; c++)
                     for (c = 0; c <= sxp; c++)
                       if (Q931dmp)
                         Q931dump(TYPE_STRING, sn[c], sx[c], version);
-                      else
-                      if (*sx[c])
+                      else if (*sx[c])
                         info(chan, PRT_SHOWBEARER, STATE_RING, sx[c]);
 
                     p += (l * 3);
@@ -2564,68 +2578,67 @@ escape:             for (c = 0; c <= sxp; c++)
                         case 0xf1 : px += sprintf(px, "Eigendef"); break;
                       } /* switch */
 
-#if 0 /* alles in eine Zeile */
-                      px = sx[++sxp];
-                      *px = 0;
-
-                      if (!Q931dmp)
-                        px += sprintf(px, "HLC: ");
-#endif
+                      if (Q931dmp) {
+                        px = sx[++sxp];
+                      	*px = 0;
+                      } /* if */
 
                       c = strtol(p + 6, NIL, 16);
                       sn[sxp] = c;
 
+                      if (strlen(sx[sxp]))
+                        px += sprintf(px, ", ");
+
                       switch (c) {
-                        case 0x81 : px += sprintf(px, ", Telefonie");                                        break;
-                        case 0x84 : px += sprintf(px, ", Fax Gr.2/3 (F.182)");                               break;
-                        case 0xa1 : px += sprintf(px, ", Fax Gr.4 (F.184)");                                 break;
-                        case 0xa4 : px += sprintf(px, ", Teletex service,basic and mixed-mode");             break;
-                        case 0xa8 : px += sprintf(px, ", Teletex service,basic and processab.-mode of Op."); break;
-                        case 0xb1 : px += sprintf(px, ", Teletex service,basic mode of operation");          break;
-                        case 0xb2 : px += sprintf(px, ", Syntax based Videotex");                            break;
-                        case 0xb3 : px += sprintf(px, ", International Videotex interworking via gateway");  break;
-                        case 0xb5 : px += sprintf(px, ", Telex service");                                    break;
-                        case 0xb8 : px += sprintf(px, ", Message Handling Systems (MHS)(X.400)");            break;
-                        case 0xc1 : px += sprintf(px, ", OSI application (X.200)");                          break;
+                        case 0x81 : px += sprintf(px, "Telefonie");                                        break;
+                        case 0x84 : px += sprintf(px, "Fax Gr.2/3 (F.182)");                               break;
+                        case 0xa1 : px += sprintf(px, "Fax Gr.4 (F.184)");                                 break;
+                        case 0xa4 : px += sprintf(px, "Teletex service,basic and mixed-mode");             break;
+                        case 0xa8 : px += sprintf(px, "Teletex service,basic and processab.-mode of Op."); break;
+                        case 0xb1 : px += sprintf(px, "Teletex service,basic mode of operation");          break;
+                        case 0xb2 : px += sprintf(px, "Syntax based Videotex");                            break;
+                        case 0xb3 : px += sprintf(px, "International Videotex interworking via gateway");  break;
+                        case 0xb5 : px += sprintf(px, "Telex service");                                    break;
+                        case 0xb8 : px += sprintf(px, "Message Handling Systems (MHS)(X.400)");            break;
+                        case 0xc1 : px += sprintf(px, "OSI application (X.200)");                          break;
                         case 0xde :
-                        case 0x5e : px += sprintf(px, ", Reserviert fuer Wartung");                          break;
+                        case 0x5e : px += sprintf(px, "Reserviert fuer Wartung");                          break;
                         case 0xdf :
-                        case 0x5f : px += sprintf(px, ", Reserviert fuer Management");                       break;
-                        case 0xe0 : px += sprintf(px, ", Audio visual");                                     break;
-                          default : px += sprintf(px, ", unknown: %d", c);                                   break;
+                        case 0x5f : px += sprintf(px, "Reserviert fuer Management");                       break;
+                        case 0xe0 : px += sprintf(px, "Audio visual");                                     break;
+                          default : px += sprintf(px, "unknown: %d", c);                                   break;
                       } /* switch */
 
                       if ((c == 0x5e) || (c == 0x5f)) {
-#if 0 /* alles in eine Zeile */
-                        px = sx[++sxp];
-                        *px = 0;
-
-                        if (!Q931dmp)
-                          px += sprintf(px, "HLC: ");
-#endif
+		        if (Q931dmp) {
+                          px = sx[++sxp];
+                          *px = 0;
+                        } /* if */
 
                         c = strtol(p + 9, NIL, 16);
                         sn[sxp] = c;
 
+                        if (strlen(sx[sxp]))
+                          px += sprintf(px, ", ");
+
                         switch (c) {
-                          case 0x81 : px += sprintf(px, ", Telefonie G.711");                                                  break;
-                          case 0x84 : px += sprintf(px, ", Fax Gr.4 (T.62)");                                                  break;
-                          case 0xa1 : px += sprintf(px, ", Document Appl. Profile for Fax Gr4 (T.503)");                       break;
-                          case 0xa4 : px += sprintf(px, ", Doc.Appl.Prof.for formatted Mixed-Mode(T501)");                     break;
-                          case 0xa8 : px += sprintf(px, ", Doc.Appl.Prof.for Processable-form (T.502)");                       break;
-                          case 0xb1 : px += sprintf(px, ", Teletex (T.62)");                                                   break;
-                          case 0xb2 : px += sprintf(px, ", Doc.App.Prof. for Videotex interworking between Gateways (T.504)"); break;
-                          case 0xb5 : px += sprintf(px, ", Telex");                                                            break;
-                          case 0xb8 : px += sprintf(px, ", Message Handling Systems (MHS)(X.400)");                            break;
-                          case 0xc1 : px += sprintf(px, ", OSI application (X.200)");                                          break;
+                          case 0x81 : px += sprintf(px, "Telefonie G.711");                                                  break;
+                          case 0x84 : px += sprintf(px, "Fax Gr.4 (T.62)");                                                  break;
+                          case 0xa1 : px += sprintf(px, "Document Appl. Profile for Fax Gr4 (T.503)");                       break;
+                          case 0xa4 : px += sprintf(px, "Doc.Appl.Prof.for formatted Mixed-Mode(T501)");                     break;
+                          case 0xa8 : px += sprintf(px, "Doc.Appl.Prof.for Processable-form (T.502)");                       break;
+                          case 0xb1 : px += sprintf(px, "Teletex (T.62)");                                                   break;
+                          case 0xb2 : px += sprintf(px, "Doc.App.Prof. for Videotex interworking between Gateways (T.504)"); break;
+                          case 0xb5 : px += sprintf(px, "Telex");                                                            break;
+                          case 0xb8 : px += sprintf(px, "Message Handling Systems (MHS)(X.400)");                            break;
+                          case 0xc1 : px += sprintf(px, "OSI application (X.200)");                                          break;
                         } /* case */
                       } /* if */
 
                       for (c = 0; c <= sxp; c++)
                         if (Q931dmp)
                           Q931dump(TYPE_STRING, sn[c], sx[c], version);
-                        else
-                        if (*sx[c])
+                        else if (*sx[c])
                           info(chan, PRT_SHOWNUMBERS, STATE_RING, sx[c]);
 
                     } /* if */
@@ -3705,28 +3718,20 @@ static void processctrl(int card, char *s)
 
   if (Q931dmp) {
     register int bcast = (strtol(ps + 8, NIL, 16) >> 1) == 0x7f;
+    register int sr = strtol(ps + (bcast ? 20 : 23), NIL, 16);
 
     if (replaydev)
-      fprintf(stdout, "\n\n-----[ %d ]-------------------------------------------------------------------\n\n", ++lfd);
+      fprintf(stdout, "\n\n-----[ %d ]---[ %c ]---[ %d.card ]-------------------------------------------------------------------\n\n", ++lfd, (sr > 127 ? 'S' : 'R'), card + 1);
     else
-      fprintf(stdout, "\n\n-----[ %d ]------[ %s ]------------------------------------------\n\n", ++lfd, st + 4);
+      fprintf(stdout, "\n\n-----[ %d ]---[ %c ]---[ %d.card ]---[ %s ]------------------------------------------\n\n", ++lfd, (sr > 127 ? 'S' : 'R'), card + 1, st + 4);
 
     if (bcast) {
       s[13] = 0;
-
-      if (replaydev)
-        fprintf(stdout, "r[%d]: %s    %s\n\n", card, s + 5, s + 14);
-      else
-        fprintf(stdout, "[%s] r[%d]: %s    %s\n\n", st + 4, card, s + 5, s + 14);
-
+      fprintf(stdout, "%s    %s\n\n", s + 5, s + 14);
       s[13] = ' ';
     }
-    else {
-      if (replaydev)
-        fprintf(stdout, "r[%d]: %s\n\n", card, s + 5);
-      else
-        fprintf(stdout, "[%s] r[%d]: %s\n\n", st + 4, card, s + 5);
-    } /* else */
+    else
+      fprintf(stdout, "%s\n\n", s + 5);
   } /* if */
 
   if (verbose & VERBOSE_CTRL)
@@ -3757,7 +3762,7 @@ static void processctrl(int card, char *s)
     else {
       if (!strcmp(last, s)) {
         if (!Q931dmp)
-        return;
+          return;
       }
       else
         strcpy(last, s);
@@ -3804,50 +3809,81 @@ static void processctrl(int card, char *s)
 #else
       fprintf(stdout, "%02x  SAPI=%d    C/R=%d  E/A=%d\n",
         i, sapi, cr, ea2);
-      fprintf(stdout, "%02x  TEI=%d     E/A=%d\n",
-        j, tei, ea3);
+
+      if (sapi == 63) {
+        fprintf(stdout, "%02x  TEI Vergabe\n", j);
+
+        if (k == 3)
+          fprintf(stdout, "%02x  UI\n", k);
+
+      	switch (l = strtol(ps + 14, NIL, 16)) {
+          case 0x0f : fprintf(stdout, "%02x  Management Entity Identifier\n", l); break;
+        } /* switch */
+
+        l = strtol(ps + 17, NIL, 16);
+        fprintf(stdout, "%02x  Referenz Indikator\n", l);
+
+        l = strtol(ps + 20, NIL, 16);
+        fprintf(stdout, "  %02x  Referenz Indikator\n", l);
+
+      	switch (l = strtol(ps + 23, NIL, 16)) {
+          case 1 : fprintf(stdout, "  %02x  TEI ANFORDERUNG\n", l);   break;
+          case 2 : fprintf(stdout, "  %02x  TEI ZUWEISUNG\n", l);     break;
+          case 4 : fprintf(stdout, "  %02x  TEI BITTE PRUEFEN\n", l); break;
+      	} /* switch */
+
+        k = strtol(ps + 26, NIL, 16);
+
+        if (l == 2)
+          fprintf(stdout, "  %02x  ZUGEWIESENER TEI=%d\n", k, k >> 1);
+        else
+          fprintf(stdout, "  %02x  AKTIONS INDIKATOR\n", k);
+      }
+      else
+        fprintf(stdout, "%02x  TEI=%d     E/A=%d\n", j, tei, ea3);
 #endif
 
-      if (!(k & 1)) { /* I-Block */
-        if (bcast)
-          fprintf(stdout, "%02x  I-B  N=%d\n", k, k >> 1);
-        else
-          fprintf(stdout, "%02x  I-B  N=%d  %02x: N(R)=%d  P=%d\n",
-            k, k >> 1, l, l >> 1, l & 1);
-      }
-      else if ((k & 3) == 1) { /* S-Block */
-        switch (k) {
-          case 01 : s1 = "RR";              break;
-          case 05 : s1 = "RNR";             break;
-          case 07 : s1 = "REJ";             break;
-          default : s1 = "UNKNOWN S-Block"; break;
-        } /* switch */
+      if (sapi != 63) /* keine TEI Vergabe */
+        if (!(k & 1)) { /* I-Block */
+          if (bcast)
+            fprintf(stdout, "%02x  I-B  N=%d\n", k, k >> 1);
+          else
+            fprintf(stdout, "%02x  I-B  N=%d  %02x: N(R)=%d  P=%d\n",
+              k, k >> 1, l, l >> 1, l & 1);
+        }
+        else if ((k & 3) == 1) { /* S-Block */
+          switch (k) {
+            case 01 : s1 = "RR";              break;
+            case 05 : s1 = "RNR";             break;
+            case 07 : s1 = "REJ";             break;
+            default : s1 = "UNKNOWN S-Block"; break;
+          } /* switch */
 
-        if (bcast)
+          if (bcast)
+            fprintf(stdout, "%02x  %s\n", k, s1);
+          else
+            fprintf(stdout, "%02x  %s  %02x: N(R)=%d  P/F=%d\n",
+              k, s1, l, l >> 1, l & 1);
+        }
+        else { /* U-Format */
+          switch (k) {
+            case 0x7f : s1 = "SABME P=1"; break;
+            case 0x6f : s1 = "SABME P=0"; break;
+            case 0x0f : s1 = "DM    F=0"; break;
+            case 0x1f : s1 = "DM    F=1"; break;
+            case 0x53 : s1 = "DISC  P=1"; break;
+            case 0x43 : s1 = "DISC  P=0"; break;
+            case 0x73 : s1 = "UA    F=1"; break;
+            case 0x63 : s1 = "UA    F=0"; break;
+            case 0x93 : s1 = "FRMR  F=1"; break;
+            case 0x83 : s1 = "FRMR  F=0"; break;
+            case 0x13 : s1 = "UI    P=1"; break;
+            case 0x03 : s1 = "UI    P=0"; break;
+            default   : s1 = "UNKNOWN U-Block"; break;
+          } /* switch */
+
           fprintf(stdout, "%02x  %s\n", k, s1);
-        else
-          fprintf(stdout, "%02x  %s  %02x: N(R)=%d  P/F=%d\n",
-            k, s1, l, l >> 1, l & 1);
-      }
-      else { /* U-Format */
-        switch (k) {
-          case 0x7f : s1 = "SABME P=1"; break;
-          case 0x6f : s1 = "SABME P=0"; break;
-          case 0x0f : s1 = "DM    F=0"; break;
-          case 0x1f : s1 = "DM    F=1"; break;
-          case 0x53 : s1 = "DISC  P=1"; break;
-          case 0x43 : s1 = "DISC  P=0"; break;
-          case 0x73 : s1 = "UA    F=1"; break;
-          case 0x63 : s1 = "UA    F=0"; break;
-          case 0x93 : s1 = "FRMR  F=1"; break;
-          case 0x83 : s1 = "FRMR  F=0"; break;
-          case 0x13 : s1 = "UI    P=1"; break;
-          case 0x03 : s1 = "UI    P=0"; break;
-          default   : s1 = "UNKNOWN U-Block"; break;
-        } /* switch */
-
-        fprintf(stdout, "%02x  %s\n", k, s1);
-      } /* else */
+        } /* else */
     } /* if */
 #if 0 /* wird so ins syslog eingetragen :-( */
     if (!replay)

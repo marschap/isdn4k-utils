@@ -1,4 +1,4 @@
-/* $Id: isdnlog.c,v 1.43 1999/05/22 10:18:28 akool Exp $
+/* $Id: isdnlog.c,v 1.44 1999/06/13 14:07:44 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,12 @@
  * along with this program; if not, write to the Free Software
  *
  * $Log: isdnlog.c,v $
+ * Revision 1.44  1999/06/13 14:07:44  akool
+ * isdnlog Version 3.32
+ *
+ *  - new option "-U1" (or "ignoreCOLP=1") to ignore CLIP/COLP Frames
+ *  - TEI management decoded
+ *
  * Revision 1.43  1999/05/22 10:18:28  akool
  * isdnlog Version 3.29
  *
@@ -351,9 +357,9 @@ static int read_param_file(char *FileName);
 
 static char     usage[]   = "%s: usage: %s [ -%s ] file\n";
 #ifdef Q931
-static char     options[] = "av:sp:x:m:l:rt:c:C:w:SVTDPMh:nW:H:f:bL:NqFA:2:O:Ki:R:0:ou:B:";
+static char     options[] = "av:sp:x:m:l:rt:c:C:w:SVTDPMh:nW:H:f:bL:NqFA:2:O:Ki:R:0:ou:B:U:";
 #else
-static char     options[] = "av:sp:x:m:l:rt:c:C:w:SVTDPMh:nW:H:f:bL:NFA:2:O:Ki:R:0:ou:B:";
+static char     options[] = "av:sp:x:m:l:rt:c:C:w:SVTDPMh:nW:H:f:bL:NFA:2:O:Ki:R:0:ou:B:U:";
 #endif
 static char     msg1[]    = "%s: Can't open %s (%s)\n";
 static char    *ptty = NULL;
@@ -593,6 +599,9 @@ static void init_variables(int argc, char* argv[])
   width = 0;
   watchdog = 0;
   use_new_config = 1;
+
+  ignoreRR = ignoreCOLP = 0;
+
 #ifdef Q931
   q931dmp = 0;
 #endif
@@ -602,8 +611,8 @@ static void init_variables(int argc, char* argv[])
   amtsholung = NULL;
   dual = 0;
 
-  preselect = 33;      /* Telekomik */
-  vbn = strdup("010"); /* Germany */
+  preselect = DTAG;      /* Telekomik */
+  vbn = strdup("010"); 	 /* Germany */
 
   myname = argv[0];
   myshortname = basename(myname);
@@ -782,6 +791,9 @@ int set_options(int argc, char* argv[])
       	       	 break;
 
       case 'u' : ignoreRR = atoi(optarg);
+      	       	 break;
+
+      case 'U' : ignoreCOLP = atoi(optarg);
       	       	 break;
 
       case 'B' : free(vbn);
@@ -980,6 +992,9 @@ static int read_param_file(char *FileName)
                                 else
                                 if (!strcmp(Ptr->name,CONF_ENT_IGNORERR))
 				        ignoreRR = (int)strtol(Ptr->value, NIL, 0);
+                                else
+                                if (!strcmp(Ptr->name,CONF_ENT_IGNORECOLP))
+				        ignoreCOLP = (int)strtol(Ptr->value, NIL, 0);
                                 else
                                 if (!strcmp(Ptr->name,CONF_ENT_VBN)) {
                                         free(vbn);
