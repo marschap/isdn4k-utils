@@ -1,7 +1,7 @@
 #! /usr/bin/perl
 
 # This version of pp_rate originates from rates4linux:
-# $Id: pp_rate,v 1.9 2003/11/22 17:25:50 tobiasb Exp $
+# $Id: pp_rate,v 1.10 2004/09/29 21:13:32 tobiasb Exp $
 # The rates4linux homepage: http://www.sourceforge.net/projects/rates4linux/
 # It bases on Rev. 1.5 of isdn4k-utils/isdnlog/tools/dest/pp_rate
 # in the CVS at http://www.isdn4linux.de.
@@ -157,6 +157,7 @@ ragain:
 		$acmt = '' unless ( $acmt =~/#\s*\S/ ); 	# only non-empty
 	    }
 	    $a =~ s/[,\s]+$//;
+	    $a =~ s/^\s+//;
 	    @a=split(/\s*,\s*/, $a);
 	    foreach $c (@a) {
 		next if ($c eq '');
@@ -189,6 +190,9 @@ again:
 				print "\r'$c' searching (d<$m) ..";
 			    	last if($m==0);
 			    }
+			}
+			if (length($tf) < 16) { 	# erase "searching ..."
+			     print "\r'$c'                    ";
 			}
 			print "\r'$c'";
 		    }
