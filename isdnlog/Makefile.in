@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.148 2000/02/12 16:40:21 akool Exp $
+## $Id: Makefile.in,v 1.149 2000/02/12 23:50:12 keil Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,9 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.149  2000/02/12 23:50:12  keil
+## Fix some syntax error in install
+##
 ## Revision 1.148  2000/02/12 16:40:21  akool
 ## isdnlog-4.11
 ##  - isdnlog/Makefile.in ... sep install-targets, installs samples, no isdnconf
@@ -1289,11 +1292,7 @@ installdirs: rootperm
 		$(INSTALL_DIR) $(DESTDIR)$(MAN8DIR)
 		$(INSTALL_DIR) $(DESTDIR)$(DATADIR)
 
-install: all rootperm installdirs
-#	install-old-conf
-	install-conf
-	install-progs
-	install-data
+install: all rootperm installdirs install-conf install-progs install-data
 
 install-old-conf:
 		@if [ -n "$(DESTDIR)$(OLDCONFDIR)" -a "$(DESTDIR)$(OLDCONFDIR)" != '/' ] ; then \
@@ -1339,9 +1338,9 @@ install-progs:
 		$(INSTALL_BIN) $(ISDNREP)  $(DESTDIR)$(BINDIR)
 		$(INSTALL_BIN) $(ISDNCONF) $(DESTDIR)$(BINDIR)
 		$(INSTALL_BIN) $(ISDNRATE) $(DESTDIR)$(BINDIR)
-		-@if ps x | fgrep $(ISDNLOG) >/dev/null; then ; \
+		-@if (ps x | fgrep $(ISDNLOG) | grep -v grep) >/dev/null; then \
 			kill -HUP `cat $(RUNDIR)/isdnlog.isdnctrl0.pid 2>/dev/null`; \
-			@echo "Restarting running isdnlog!" ; \
+			echo "Restarting running isdnlog!" ; \
 		fi
 
 install-data:
