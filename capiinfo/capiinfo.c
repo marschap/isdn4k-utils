@@ -1,4 +1,4 @@
-/* $Id: capiinfo.c,v 1.6 2002/07/11 09:29:53 armin Exp $
+/* $Id: capiinfo.c,v 1.7 2003/01/14 13:56:47 calle Exp $
  *
  * A CAPI application to get infomation about installed controllers
  *
@@ -14,6 +14,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: capiinfo.c,v $
+ * Revision 1.7  2003/01/14 13:56:47  calle
+ * bugfix in output of manufacturer version.
+ *
  * Revision 1.6  2002/07/11 09:29:53  armin
  * sync with new cvs server.
  *
@@ -155,10 +158,11 @@ int main(int argc, char **argv)
        vbuf = (unsigned long *)buf;
        printf("CAPI Version: %lu.%lu\n",vbuf[0], vbuf[1]);
        if (isAVM) {
-          printf("Manufacturer Version: %lu.%02lu-%02lu  (%lu.%lu)\n",
+          printf("Manufacturer Version: %lu.%01lx%01lx-%02lu  (%lu.%lu)\n",
                   (vbuf[2]>>4) & 0x0f,
-                  (((vbuf[2]<<4) & 0xf0) | ((vbuf[3]>>4) & 0x0f)),
-                  vbuf[3] & 0x0f,
+                  ((vbuf[2]<<4) & 0xf0),
+		  ((vbuf[3]>>4) & 0x0f),
+                  (vbuf[3] & 0x0f),
                   vbuf[2], vbuf[3] );
        } else {
           printf("Manufacturer Version: %lu.%lu\n",vbuf[2], vbuf[3]);
