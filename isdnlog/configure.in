@@ -108,6 +108,11 @@ if test "$CONFIG_ISDN_LOG_NL" = "y" ; then
 	NATION_MACRO="ISDN_NL"
 	AC_DEFINE(ISDN_NL)
 fi
+if test "$CONFIG_ISDN_LOG_LU" = "y" ; then
+	NATION="lu"
+	NATION_MACRO="ISDN_LU"
+	AC_DEFINE(ISDN_LU)
+fi
 
 dnl Checks for programs.
 AC_PROG_CC

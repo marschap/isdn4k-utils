@@ -1,4 +1,4 @@
-/* $Id: postgres.c,v 1.1 1997/03/16 20:58:45 luethje Exp $
+/* $Id: postgres.c,v 1.2 2000/01/23 22:31:13 akool Exp $
  *
  * Interface for Postgres95-Database for isdn4linux. (db-module)
  *
@@ -19,6 +19,28 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: postgres.c,v $
+ * Revision 1.2  2000/01/23 22:31:13  akool
+ * isdnlog-4.04
+ *  - Support for Luxemburg added:
+ *   - isdnlog/country-de.dat ... no +352 1 luxemburg city
+ *   - isdnlog/rate-lu.dat ... initial LU version NEW
+ *   - isdnlog/holiday-lu.dat ... NEW - FIXME
+ *   - isdnlog/.Config.in  ... LU support
+ *   - isdnlog/configure.in ... LU support
+ *   - isdnlog/samples/isdn.conf.lu ... LU support NEW
+ *
+ *  - German zone-table enhanced
+ *   - isdnlog/tools/zone/de/01033/mk ...fixed, with verify now
+ *   - isdnlog/tools/zone/redzone ... fixed
+ *   - isdnlog/tools/zone/de/01033/mzoneall ... fixed, faster
+ *   - isdnlog/tools/zone/mkzonedb.c .... data Version 1.21
+ *
+ *  - Patch from Philipp Matthias Hahn <pmhahn@titan.lahn.de>
+ *   - PostgreSQL SEGV solved
+ *
+ *  - Patch from Armin Schindler <mac@melware.de>
+ *   - Eicon-Driver Support for isdnlog
+ *
  * Revision 1.1  1997/03/16 20:58:45  luethje
  * Added the source code isdnlog. isdnlog is not working yet.
  * A workaround for that problem:
@@ -39,8 +61,12 @@
 
 #include "postgres.h"
 
-
-
+void _PQfinish(void)
+{
+  if ( db_Conn )
+    PQfinish( db_Conn);
+  db_Conn = NULL;
+}
 
 
 int dbOpen(void)
@@ -100,7 +126,7 @@ int dbOpen(void)
     {
     syslog( LOG_ERR, "%s", "Connection to ISDN-database failed.");
     syslog( LOG_ERR, "%s", PQerrorMessage( db_Conn));
-    PQfinish( db_Conn);
+    _PQfinish();
     return( -1);
     }
 
@@ -109,7 +135,7 @@ int dbOpen(void)
 
 int dbClose(void)
 {
-  PQfinish( db_Conn);
+  _PQfinish();
 
   if ( db_Host)
     free( db_Host);
@@ -150,7 +176,7 @@ int dbAdd( DbStrIn *in)
     {
       syslog( LOG_ERR, "%s", "Connection to ISDN-database failed.");
       syslog( LOG_ERR, "%s", PQerrorMessage( db_Conn));
-      PQfinish( db_Conn);
+      _PQfinish();
       return( -1);
     }
 
@@ -187,7 +213,7 @@ int dbAdd( DbStrIn *in)
     {
       syslog( LOG_ERR, "%s", "Connection to ISDN-database failed.");
       syslog( LOG_ERR, "%s", PQerrorMessage( db_Conn));
-      PQfinish( db_Conn);
+      _PQfinish();
       return( -1);
     }
 
@@ -201,7 +227,7 @@ int dbAdd( DbStrIn *in)
     {
       syslog( LOG_ERR, "%s", "Connection to ISDN-database failed.");
       syslog( LOG_ERR, "%s", PQerrorMessage( db_Conn));
-      PQfinish( db_Conn);
+      _PQfinish();
       return( -1);
     }
 

@@ -25,7 +25,7 @@ my($i, $num, @all, %all, @ax);
 		push(@all, $num);
 		push(@{$ax[substr($num,0,1)]}, $num);
     		$all{$num}=1;
-	}	
+	}
 	close(IN);
 
 open(IN, $in) || die("Can't read $in");
@@ -47,18 +47,18 @@ while(<IN>) {
 	if ($fields[4] eq 'R') {
 	    (@rnum) = split(/ /,$fields[5]);
 	}
-    }	
+    }
     elsif ($fields[2] eq 'R') {
         (@rnum) = split(/ /,$fields[3]);
     }
     foreach $f (@cnum) {
 	print1($num, $f, $CITY);
 	$first{substr($f,0,1)}=1;
-    }	
+    }
     foreach $f (@rnum) {
 	print1($num, $f, $REGIO);
 	$first{substr($f,0,1)}=1;
-    }	
+    }
     if ($expand_all) {
         foreach $f (@all) {
 	    next if ($done{"$num $f"});
@@ -66,25 +66,33 @@ while(<IN>) {
 	    if (defined $first{substr($f,0,1)}) {
 	    	print1($num, $f, $FERN);
 	    }
-	    else {		
+	    else {
 	    	print1($num, substr($f,0,1), $FERN);
-	    }	
-	}    
-    }	
+	    }
+	}
+    }
     else {
 	print OZ "$num XXXXX $FERN\n";
-    }	
-}    
+    }
+}
 close(IN);
 close(OZ);
 print "\Sorting...\n";
 system("export TMPDIR=.;sort <$outz.temp|uniq>$outz");
 unlink("$outz.temp");
-    
+
 sub print1 {
     my($from, $to, $z) = @_;
     return if($from eq $to);
+    if($all{$to}) {
 	print OZ "$from $to $z\n";
 	$done{"$from $to"}=1;
-	grep { $done{"$from $_"}=1 if(/^$to/) } @{$ax[substr($to,0,1)]};
-}    
+    }
+    elsif (length($to)==1) {
+	print OZ "$from $to $z\n";
+	$done{"$from $to"}=1;
+    }
+    else {
+	grep { print1($from,$_,$z) if(/^$to/) } @{$ax[substr($to,0,1)]};
+    }
+}

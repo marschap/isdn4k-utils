@@ -35,7 +35,7 @@ static char progversion[] = "1.24";
  *      in this case \tLEN is appended to text
  *
  */
- 
+
 #define STANDALONE
 
 #define _MKZONEDB_C_
@@ -130,7 +130,7 @@ static void read_rzfile(char *rf) {
 		if (to > keylen)
 			keylen=to;
 		if(to>maxnum) {
-			maxnum=to;  
+			maxnum=to;
 			if ((numbers = realloc(numbers,(maxnum+1)*sizeof(int))) == 0) {
 				fprintf(stderr, "Out of mem\n");
 				exit(EXIT_FAILURE);
@@ -204,7 +204,7 @@ static void write_db(char * df) {
 	key.dptr = "vErSiO";
 	key.dsize = 7;
 	/* version of zone.c must be not smaller than dataversion */
-	sprintf(version,"V1.20 K%c C%c N%d T%d O%d L%d",
+	sprintf(version,"V1.21 K%c C%c N%d T%d O%d L%d",
 		keylen==2?'S':'L',tablelen==1?'C':tablelen==2?'S':'L',
 		nn,n, ortszone, numlen?numlen:keydigs);
 	value.dptr = version;

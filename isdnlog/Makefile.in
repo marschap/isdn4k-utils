@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.140 2000/01/16 12:36:58 akool Exp $
+## $Id: Makefile.in,v 1.141 2000/01/23 22:31:13 akool Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,28 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.141  2000/01/23 22:31:13  akool
+## isdnlog-4.04
+##  - Support for Luxemburg added:
+##   - isdnlog/country-de.dat ... no +352 1 luxemburg city
+##   - isdnlog/rate-lu.dat ... initial LU version NEW
+##   - isdnlog/holiday-lu.dat ... NEW - FIXME
+##   - isdnlog/.Config.in  ... LU support
+##   - isdnlog/configure.in ... LU support
+##   - isdnlog/samples/isdn.conf.lu ... LU support NEW
+##
+##  - German zone-table enhanced
+##   - isdnlog/tools/zone/de/01033/mk ...fixed, with verify now
+##   - isdnlog/tools/zone/redzone ... fixed
+##   - isdnlog/tools/zone/de/01033/mzoneall ... fixed, faster
+##   - isdnlog/tools/zone/mkzonedb.c .... data Version 1.21
+##
+##  - Patch from Philipp Matthias Hahn <pmhahn@titan.lahn.de>
+##   - PostgreSQL SEGV solved
+##
+##  - Patch from Armin Schindler <mac@melware.de>
+##   - Eicon-Driver Support for isdnlog
+##
 ## Revision 1.140  2000/01/16 12:36:58  akool
 ## isdnlog-4.03
 ##  - Patch from Gerrit Pape <pape@innominate.de>
@@ -1003,7 +1025,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 4.03
+VERSION     = 4.04
 
 MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 \
 	      isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 \

@@ -2,22 +2,34 @@
 
 # This job fully generates a new "zone-de-dtag.gdbm"
 #
-# Be warned: This job runs about 2 day's, and requires more than
-# 100 Mb of free disk space!
+# Be warned: This job runs several hours, and requires more than
+# 300 Mb of free disk space!
 
-cd /usr/src/isdn4k-utils/isdnlog/tools/zone/de/01033
+#cd /usr/src/isdn4k-utils/isdnlog/tools/zone/de/01033
+
+# code contains 1xx numbers
+
+mv ../code ../code1
+grep ^[^1] ../code1 > ../code
 
 bzip2 -d zneu.de9.bz2
 ./mzoneall
 bzip2 -9 zneu.de9
+
+# restore code
+mv ../code1 ../code
 
 ../../redzone -zzoneall -rzred.dtag -l5 -v2 -n
 
 rm -f zred.dtag.bz2
 bzip2 -9 zred.dtag
 
-rm zoneall
 
 cd ../..
 rm ../../zone-de-dtag.gdbm
 make DE
+
+# verify it
+./zone -d ../../zone-de-dtag.gdbm -z de/01033/zoneall -v
+
+rm de/01033/zoneall

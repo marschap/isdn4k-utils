@@ -7,7 +7,7 @@ string 'Log file' CONFIG_ISDNLOG_LOGFILE
 string 'Reload command' CONFIG_ISDNLOG_RELOADCMD
 string 'Stop command' CONFIG_ISDNLOG_STOPCMD
 string 'Reboot command' CONFIG_ISDNLOG_REBOOTCMD
-string 'Old config directory' CONFIG_ISDNLOG_OLDI4LCONFDIR 
+string 'Old config directory' CONFIG_ISDNLOG_OLDI4LCONFDIR
 string 'Old config file' CONFIG_ISDNLOG_OLDI4LCONFFILE
 bool 'Support postgres95 SQL-Database' CONFIG_ISDNLOG_POSTGRES
 if [ "$CONFIG_ISDNLOG_POSTGRES" = "y" ]; then
@@ -22,22 +22,23 @@ choice 'Country specific chargeinfo support' \
 	"DE CONFIG_ISDN_LOG_DE \
 	 AT CONFIG_ISDN_LOG_AT \
 	 NL CONFIG_ISDN_LOG_NL \
+	 LU CONFIG_ISDN_LOG_LU \
 	 CH CONFIG_ISDN_LOG_CH" DE
 if [ "$CONFIG_ISDN_LOG_DE" = "y" ]; then
 	CONFIG_ISDN_LOG_DEST_DE="y"
-fi	
+fi
 if [ "$CONFIG_ISDN_LOG_AT" = "y" ]; then
 	CONFIG_ISDN_LOG_DEST_AT="y"
-fi	
+fi
 if [ "$CONFIG_ISDN_LOG_NL" = "y" ]; then
 	CONFIG_ISDN_LOG_DEST_NL="y"
-fi	
+fi
 if [ "$CONFIG_ISDN_LOG_CH" = "y" ]; then
 	CONFIG_ISDN_LOG_DEST_CH="y"
-fi	
+fi
 choice 'Primary language for country names' \
 	"DE CONFIG_ISDN_LOG_CC_DE \
-	 EN CONFIG_ISDN_LOG_CC_EN" DE 
+	 EN CONFIG_ISDN_LOG_CC_EN" DE
 bool 'Include German cities in destination database' CONFIG_ISDN_LOG_DEST_DE y
 bool 'Include Austrian cities in destination database' CONFIG_ISDN_LOG_DEST_AT y
 bool 'Include Dutch cities in destination database' CONFIG_ISDN_LOG_DEST_NL y

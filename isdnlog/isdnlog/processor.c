@@ -1,4 +1,4 @@
-/* $Id: processor.c,v 1.96 2000/01/20 07:30:09 kai Exp $
+/* $Id: processor.c,v 1.97 2000/01/23 22:31:13 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,28 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.97  2000/01/23 22:31:13  akool
+ * isdnlog-4.04
+ *  - Support for Luxemburg added:
+ *   - isdnlog/country-de.dat ... no +352 1 luxemburg city
+ *   - isdnlog/rate-lu.dat ... initial LU version NEW
+ *   - isdnlog/holiday-lu.dat ... NEW - FIXME
+ *   - isdnlog/.Config.in  ... LU support
+ *   - isdnlog/configure.in ... LU support
+ *   - isdnlog/samples/isdn.conf.lu ... LU support NEW
+ *
+ *  - German zone-table enhanced
+ *   - isdnlog/tools/zone/de/01033/mk ...fixed, with verify now
+ *   - isdnlog/tools/zone/redzone ... fixed
+ *   - isdnlog/tools/zone/de/01033/mzoneall ... fixed, faster
+ *   - isdnlog/tools/zone/mkzonedb.c .... data Version 1.21
+ *
+ *  - Patch from Philipp Matthias Hahn <pmhahn@titan.lahn.de>
+ *   - PostgreSQL SEGV solved
+ *
+ *  - Patch from Armin Schindler <mac@melware.de>
+ *   - Eicon-Driver Support for isdnlog
+ *
  * Revision 1.96  2000/01/20 07:30:09  kai
  * rewrote the ASN.1 parsing stuff. No known problems so far, apart from the
  * following:
@@ -3880,6 +3902,14 @@ static void processctrl(int card, char *s)
     if (firsttime) {
       firsttime = 0;
       print_msg (PRT_NORMAL, "(AVM B1 driver detected (D2))\n");
+    } /* if */
+    memcpy(ps, "HEX: ", 5);
+  } /* if */
+
+  if (!memcmp(ps, "DTRC:", 5)) { /* Eicon Driver */
+    if (firsttime) {
+      firsttime = 0;
+      print_msg (PRT_NORMAL, "(Eicon active driver detected)\n");
     } /* if */
     memcpy(ps, "HEX: ", 5);
   } /* if */
