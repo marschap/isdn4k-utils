@@ -1,3 +1,8 @@
+/*
+** $Id: vboxconvert.h,v 1.2 1997/05/10 10:58:55 michael Exp $
+**
+** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
+*/
 
 #ifndef _VBOX_CONVERT
 #define _VBOX_CONVERT 1

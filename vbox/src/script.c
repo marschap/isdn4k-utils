@@ -1,5 +1,5 @@
 /*
-** $Id: script.c,v 1.7 1997/04/28 16:52:01 michael Exp $
+** $Id: script.c,v 1.8 1997/05/10 10:58:48 michael Exp $
 **
 ** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
 */
@@ -58,7 +58,7 @@ int script_run(char *script)
 	int		havecreated;
 	int		result;
 
-	log(L_INFO, gettext("Running tcl script \"%s\"...\n"), script);
+	log(L_INFO, "Running tcl script \"%s\"...\n", script);
 
 	breaklist_init();
 
@@ -118,27 +118,27 @@ int script_run(char *script)
 
 					if (Tcl_EvalFile(interpreter, script) != TCL_OK)
 					{
-						log(L_ERROR, gettext("In \"%s\": %s (line %d).\n"), script, interpreter->result, interpreter->errorLine);
+						log(L_ERROR, "In \"%s\": %s (line %d).\n", script, interpreter->result, interpreter->errorLine);
 					}
 					else
 					{
-						log(L_DEBUG, gettext("Back from tcl script...\n"));
+						log(L_DEBUG, "Back from tcl script...\n");
 
 						result = TRUE;
 					}
 				}
-				else log(L_ERROR, gettext("In \"%s\": %s (line %d).\n"), script, interpreter->result, interpreter->errorLine);
+				else log(L_ERROR, "In \"%s\": %s (line %d).\n", script, interpreter->result, interpreter->errorLine);
 			}
-			else log(L_FATAL, gettext("Can't create all new tcl commands.\n"));
+			else log(L_FATAL, "Can't create all new tcl commands.\n");
 
 			if (Tcl_InterpDeleted(interpreter) == 0)
 			{
 				Tcl_DeleteInterp(interpreter);
 			}
 		}
-		else log(L_FATAL, gettext("Can't initialize tcl interpreter.\n"));
+		else log(L_FATAL, "Can't initialize tcl interpreter.\n");
 	}
-	else log(L_FATAL, gettext("Can't create tcl interpreter.\n"));
+	else log(L_FATAL, "Can't create tcl interpreter.\n");
 
 	breaklist_exit();
 
@@ -151,7 +151,7 @@ int script_run(char *script)
 
 int script_check_interpreter(void)
 {
-	log(L_INFO, gettext("Tcl interpreter version %s...\n"), TCL_VERSION);
+	log(L_INFO, "Tcl interpreter version %s...\n", TCL_VERSION);
 
 	returnok();
 }
@@ -165,54 +165,53 @@ int vbox_breaklist(ClientData cd, Tcl_Interp *ip, int argc, char *argv[])
 	int   i;
 	char *line;
 
-	if (argc < 3)
+	if (argc == 2)
 	{
-		log(L_ERROR, gettext("[vbox_breaklist] usage: vbox_breaklist <rem|add> <sequence> [sequence] [...]\n"));
+		if (strcasecmp(argv[1], "list") == 0)
+		{
+			for (i = 0; i < VBOX_MAX_BREAKLIST; i++)
+			{
+				if ((line = breaklist_nr(i)))
+				{
+					log(L_DEBUG, "[vbox_breaklist] %s\n", line);
+				}
+			}
 
-		return(TCL_OK);
+			return(TCL_OK);
+		}
 	}
 
-	if (strcasecmp(argv[1], "add") == 0)
+	if (argc >= 3)
 	{
-		for (i = 2; i < argc; i++)
+		if (strcasecmp(argv[1], "add") == 0)
 		{
-			if (!breaklist_add(argv[i]))
+			for (i = 2; i < argc; i++)
 			{
-				log(L_ERROR, gettext("[vbox_breaklist] can't add \"%s\".\n"), argv[i]);
+				if (!breaklist_add(argv[i]))
+				{
+					log(L_ERROR, "[vbox_breaklist] can't add \"%s\".\n", argv[i]);
+				}
 			}
+
+			return(TCL_OK);
 		}
 
-		return(TCL_OK);
-	}
-
-	if (strcasecmp(argv[1], "rem") == 0)
-	{
-		for (i = 2; i < argc; i++)
+		if (strcasecmp(argv[1], "rem") == 0)
 		{
-			if (strcasecmp(argv[i], "all") == 0)
+			for (i = 2; i < argc; i++)
 			{
-				breaklist_exit();
+				if (strcasecmp(argv[i], "all") == 0)
+				{
+					breaklist_exit();
+				}
+				else breaklist_rem(argv[i]);
 			}
-			else breaklist_rem(argv[i]);
-		}
 
-		return(TCL_OK);
+			return(TCL_OK);
+		}
 	}
 
-	if (strcasecmp(argv[1], "list") == 0)
-	{
-		for (i = 0; i < VBOX_MAX_BREAKLIST; i++)
-		{
-			if ((line = breaklist_nr(i)))
-			{
-				log(L_DEBUG, "[vbox_breaklist] %s\n", line);
-			}
-		}
-
-		return(TCL_OK);
-	}
-
-	log(L_ERROR, gettext("[vbox_breaklist] usage: vbox_breaklist <rem|add> <sequence> [sequence] [...]\n"));
+	log(L_ERROR, "[vbox_breaklist] usage: vbox_breaklist <rem|add> <sequence> [sequence] [...]\n");
 
 	return(TCL_OK);
 }
@@ -227,7 +226,7 @@ int vbox_put_message(ClientData cd, Tcl_Interp *ip, int argc, char *argv[])
 
 	if (argc != 2)
 	{
-		log(L_ERROR, gettext("[vbox_put_message] usage: vbox_put_message <messagename>\n"));
+		log(L_ERROR, "[vbox_put_message] usage: vbox_put_message <messagename>\n");
 
 		printstring(ip->result, "ERROR");
 	}
@@ -256,7 +255,7 @@ int vbox_put_message(ClientData cd, Tcl_Interp *ip, int argc, char *argv[])
 				break;
 		}
 
-		log(L_DEBUG, gettext("[vbox_put_message] result \"%s\".\n"), ip->result);
+		log(L_DEBUG, "[vbox_put_message] result \"%s\".\n", ip->result);
 	}
 
 	return(TCL_OK);
@@ -272,7 +271,7 @@ int vbox_get_message(ClientData cd, Tcl_Interp *ip, int argc, char *argv[])
 
 	if (argc != 3)
 	{
-		log(L_ERROR, gettext("[vbox_get_message] usage: vbox_get_message <messagename> <recordtime>\n"));
+		log(L_ERROR, "[vbox_get_message] usage: vbox_get_message <messagename> <recordtime>\n");
 
 		printstring(ip->result, "ERROR");
 	}
@@ -305,7 +304,7 @@ int vbox_get_message(ClientData cd, Tcl_Interp *ip, int argc, char *argv[])
 				break;
 		}
 
-		log(L_DEBUG, gettext("[vbox_get_message] result \"%s\".\n"), ip->result);
+		log(L_DEBUG, "[vbox_get_message] result \"%s\".\n", ip->result);
 	}
 
 	return(TCL_OK);
@@ -321,7 +320,7 @@ int vbox_wait(ClientData cd, Tcl_Interp *ip, int argc, char *argv[])
 
 	if (argc != 2)
 	{
-		log(L_ERROR, gettext("[vbox_wait] usage: vbox_wait <seconds>\n"));
+		log(L_ERROR, "[vbox_wait] usage: vbox_wait <seconds>\n");
 
 		printstring(ip->result, "ERROR");
 	}
@@ -354,7 +353,7 @@ int vbox_wait(ClientData cd, Tcl_Interp *ip, int argc, char *argv[])
 				break;
 		}
 
-		log(L_DEBUG, gettext("[vbox_wait] result \"%s\".\n"), ip->result);
+		log(L_DEBUG, "[vbox_wait] result \"%s\".\n", ip->result);
 	}
 
 	return(TCL_OK);
@@ -370,7 +369,7 @@ int vbox_pause(ClientData cd, Tcl_Interp *ip, int argc, char *argv[])
 
 	if (argc != 2)
 	{
-		log(L_ERROR, gettext("[vbox_pause] usage: vbox_pause <ms>\n"));
+		log(L_ERROR, "[vbox_pause] usage: vbox_pause <ms>\n");
 
 		printstring(ip->result, "ERROR");
 	}
@@ -378,7 +377,7 @@ int vbox_pause(ClientData cd, Tcl_Interp *ip, int argc, char *argv[])
 	{
 		p = xstrtol(argv[1], 800);
 
-		log(L_JUNK, gettext("[vbox_pause] waiting %lu ms...\n"), p);
+		log(L_JUNK, "[vbox_pause] waiting %lu ms...\n", p);
 
 		xpause(p);
 
@@ -411,17 +410,17 @@ int vbox_get_nr_new_messages(ClientData cd, Tcl_Interp *ip, int argc, char *argv
 
 	if (argc != 2)
 	{
-		log(L_ERROR, gettext("[vbox_get_nr_new_messages] usage: vbox_get_nr_new_messages <path>\n"));
+		log(L_ERROR, "[vbox_get_nr_new_messages] usage: vbox_get_nr_new_messages <path>\n");
 
 		printstring(ip->result, "0");
 	}
 	else
 	{
-		log(L_JUNK, gettext("[vbox_get_nr_new_messages] counting new messages in \"%s\"...\n"), argv[1]);
+		log(L_JUNK, "[vbox_get_nr_new_messages] counting new messages in \"%s\"...\n", argv[1]);
 
 		n = get_nr_messages(argv[1], TRUE);
 
-		log(L_DEBUG, gettext("[vbox_get_nr_new_messages] result \"%d\".\n"), n);
+		log(L_DEBUG, "[vbox_get_nr_new_messages] result \"%d\".\n", n);
 
 		printstring(ip->result, "%d", n);
 	}
@@ -439,17 +438,17 @@ int vbox_get_nr_all_messages(ClientData cd, Tcl_Interp *ip, int argc, char *argv
 
 	if (argc != 2)
 	{
-		log(L_ERROR, gettext("[vbox_get_nr_all_messages] usage: vbox_get_nr_all_messages <path>\n"));
+		log(L_ERROR, "[vbox_get_nr_all_messages] usage: vbox_get_nr_all_messages <path>\n");
 
 		printstring(ip->result, "0");
 	}
 	else
 	{
-		log(L_JUNK, gettext("[vbox_get_nr_all_messages] counting all messages in \"%s\"...\n"), argv[1]);
+		log(L_JUNK, "[vbox_get_nr_all_messages] counting all messages in \"%s\"...\n", argv[1]);
 
 		n = get_nr_messages(argv[1], FALSE);
 
-		log(L_DEBUG, gettext("[vbox_get_nr_all_messages] result \"%d\".\n"), n);
+		log(L_DEBUG, "[vbox_get_nr_all_messages] result \"%d\".\n", n);
 
 		printstring(ip->result, "%d", n);
 	}

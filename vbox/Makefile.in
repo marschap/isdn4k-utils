@@ -1,5 +1,5 @@
 #
-# $Id: Makefile.in,v 1.12 1997/04/28 16:51:14 michael Exp $
+# $Id: Makefile.in,v 1.13 1997/05/10 10:58:11 michael Exp $
 
 #----------------------------------------------------------------------------#
 # Things you can change to personalize the Makefile for your own site. Some  #
@@ -55,15 +55,6 @@ INSTALL_LOCALE	= @INSTALL@ -m 644 -o root -g root
 INSTALL_DIRS	= @INSTALL@ -d
 
 #----------------------------------------------------------------------------#
-# [*] Message catalogs to create. The catalogs must be seperated with space  #
-#     (eg: de en fr):                                                        #
-#                                                                            #
-#     Available catalogs are: de                                             #
-#----------------------------------------------------------------------------#
-
-CATALOGS	= @CATALOGS_TO_INSTALL@
-
-#----------------------------------------------------------------------------#
 # [*] Compiler to use and flags for the compiler & linker:                   #
 #----------------------------------------------------------------------------#
 
@@ -101,7 +92,6 @@ LOGFILEDIR	= @VBOX_LOGDIR@
 PIDFILEDIR	= @VBOX_PIDDIR@
 LCKFILEDIR	= @VBOX_LCKDIR@
 SPOOLDIR	= @VBOX_SPOOLDIR@
-LOCALEDIR	= @VBOX_LOCALE_DIR@
 
 #----------------------------------------------------------------------------#
 # The information below should be usable as is. The configure script won't   #
@@ -113,7 +103,6 @@ VPATH		= @srcdir@
 
 HAVE_NCURSES	= @HAVE_NCURSES_LIBS@
 HAVE_TCL        = @HAVE_TCL_LIBS@
-HAVE_INTL	= @HAVE_INTL_LIBS@
 
 VBOX_GETTYCONF	= $(sysconfdir)/vboxgetty.conf
 VBOX_VBOXDCONF	= $(sysconfdir)/vboxd.conf
@@ -124,12 +113,10 @@ VBOX_PACKAGE	= @PACKAGE@
 VBOX_VERSION	= @VERSION@
 VBOX_VERDATE	= @VERDATE@
 VBOX_TOPDIR	= $(TOPDIR)
-VBOX_CATALOGS	= $(CATALOGS)
 VBOX_LOGFILEDIR	= $(LOGFILEDIR)
 VBOX_PIDFILEDIR	= $(PIDFILEDIR)
 VBOX_LCKFILEDIR	= $(LCKFILEDIR)
 VBOX_SPOOLDIR	= $(SPOOLDIR)
-VBOX_LOCALEDIR	= $(LOCALEDIR)
 
 #----------------------------------------------------------------------------#
 # Export variables needed by the other utilities...                          #
@@ -146,7 +133,6 @@ export VBOX_VBOXDCONF
 export VBOX_BINDIR
 export VBOX_SBINDIR
 export VBOX_TOPDIR
-export VBOX_CATALOGS
 export VBOX_PACKAGE
 export VBOX_VERSION
 export VBOX_VERDATE
@@ -154,7 +140,6 @@ export VBOX_LOGFILEDIR
 export VBOX_PIDFILEDIR
 export VBOX_LCKFILEDIR
 export VBOX_SPOOLDIR
-export VBOX_LOCALEDIR
 export VBOX_SYSCONFDIR
 
 #----------------------------------------------------------------------------#
@@ -163,9 +148,9 @@ export VBOX_SYSCONFDIR
 #                                                                            #
 #----------------------------------------------------------------------------#
 
-all:		  directories-b programs-b scripts-b manuals-b catalogs-b
+all:		  directories-b programs-b scripts-b manuals-b
 
-install:	  directories-i programs-i scripts-i manuals-i catalogs-i
+install:	  directories-i programs-i scripts-i manuals-i
 
 #----------------------------------------------------------------------------#
 #                                                                            #
@@ -244,34 +229,10 @@ directories-i:	  ignore
 				$(INSTALL_DIRS) $$i; \
 			fi; \
 		  done
-		  @set -e; for i in `echo $(CATALOGS)`; do \
-			if [ ! -d $(LOCALEDIR)/$$i/LC_MESSAGES ]; then \
-				$(INSTALL_DIRS) $(LOCALEDIR)/$$i/LC_MESSAGES; \
-			fi; \
-		  done
 
 directories-b:	  ignore
 
 directories-d:	  ignore
-
-#----------------------------------------------------------------------------#
-#                                                                            #
-#                               CATALOG SECTION                              #
-#                                                                            #
-#----------------------------------------------------------------------------#
-
-catalogs-i:	  ignore
-		  @set -e; for i in `echo $(CATALOGS)`; do \
-			echo "Installing '$(LOCALEDIR)/$$i/LC_MESSAGES/$(VBOX_PACKAGE).mo'..."; \
-			$(INSTALL_LOCALE) $(TOPDIR)/messages/$$i.mo $(LOCALEDIR)/$$i/LC_MESSAGES/$(VBOX_PACKAGE).mo; \
-		  done
-
-catalogs-b:	  ignore
-
-catalogs-d:	  ignore
-
-catalogs-v:	  ignore
-		  @$(TOPDIR)/utils/mkpos
 
 #----------------------------------------------------------------------------#
 #                                                                            #
@@ -343,13 +304,12 @@ DISTCLEANOBJS	= $(TOPDIR)/Makefile \
 
 clean:		  ignore
 		  @find $(TOPDIR)/ -name '*~' -exec $(RM) {} ';'
+		  @find $(TOPDIR)/ -name '*.o' -exec $(RM) -f {} ';'
 
 distclean:	  clean programs-d scripts-d manuals-d
 		  @set -e; for i in `echo $(DISTCLEANOBJS)`; do \
 		     $(RM) -f $$i; \
 		  done
-		  @find $(TOPDIR)/ -name '*.o' -exec $(RM) -f {} ';'
-		  @find $(TOPDIR)/ -name 'backup-*' -exec $(RM) -f {} ';'
 
 #----------------------------------------------------------------------------#
 #                                                                            #
@@ -357,11 +317,9 @@ distclean:	  clean programs-d scripts-d manuals-d
 #                                                                            #
 #----------------------------------------------------------------------------#
 
-release:	  catalogs-v manuals-v distclean
+release:	  manuals-v distclean
 
 manuals:	  manuals-v
-
-catalogs:	  catalogs-v
 
 mantest:	  ignore
 		  @$(TOPDIR)/utils/mkdev

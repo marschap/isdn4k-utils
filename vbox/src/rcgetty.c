@@ -1,5 +1,5 @@
 /*
-** $Id: rcgetty.c,v 1.7 1997/04/28 16:52:00 michael Exp $
+** $Id: rcgetty.c,v 1.8 1997/05/10 10:58:47 michael Exp $
 **
 ** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
 */
@@ -81,7 +81,7 @@ int getty_get_settings(char *rcname)
 	int			 result;
 	int			 i;
 
-	log(L_DEBUG, gettext("Parsing settings in \"%s\" for port \"%s\"...\n"), rcname, setup.modem.device);
+	log(L_DEBUG, "Parsing settings in \"%s\" for port \"%s\"...\n", rcname, setup.modem.device);
 
 	xstrncpy(setup.modem.interninita	, "AT+FCLASS=8"	  , MODEM_MAX_INITSTRING);
 	xstrncpy(setup.modem.interninitb	, "ATS13.2=1S13.4=1", MODEM_MAX_INITSTRING);
@@ -118,7 +118,7 @@ int getty_get_settings(char *rcname)
 			{
 				xstrncpy(parsedevice, arg, MODEM_MAX_TTYNAME);
 
-				log(L_DEBUG, gettext("Found command '%s = %s'...\n"), cmd, arg);
+				log(L_DEBUG, "Found command '%s = %s'...\n", cmd, arg);
 
 				continue;
 			}
@@ -133,12 +133,12 @@ int getty_get_settings(char *rcname)
 					{
 						if (!(msg = rct[i].parsefunction(cmd, arg, rct[i].ptr, rct[i].min, rct[i].max)))
 						{
-							log(L_DEBUG, gettext("Found command '%s = %s' (%s)...\n"), cmd, arg, parsedevice);
+							log(L_DEBUG, "Found command '%s = %s' (%s)...\n", cmd, arg, parsedevice);
 						}
 						else
 						{
-							log(L_ERROR, gettext("Bad value \"%s\" for command \"%s\" ignored (%s)...\n"), arg, cmd, parsedevice);
-							log(L_ERROR, gettext("Parser returns \"%s\" (min %d; max %d).\n"), msg, rct[i].min, rct[i].max);
+							log(L_ERROR, "Bad value \"%s\" for command \"%s\" ignored (%s)...\n", arg, cmd, parsedevice);
+							log(L_ERROR, "Parser returns \"%s\" (min %d; max %d).\n", msg, rct[i].min, rct[i].max);
 						}
 
 						break;
@@ -149,7 +149,7 @@ int getty_get_settings(char *rcname)
 
 				if (!rct[i].name)
 				{
-					log(L_WARN, gettext("Unknown command \"%s\" ignored (%s)...\n"), cmd, parsedevice);
+					log(L_WARN, "Unknown command \"%s\" ignored (%s)...\n", cmd, parsedevice);
 				}
 			}
 		}
@@ -158,15 +158,15 @@ int getty_get_settings(char *rcname)
 
 		if (!result)
 		{
-			if (!*cmd) log(L_ERROR, gettext("Error in \"%s\": Missing command.\n"), rcname);
-			if (!*arg) log(L_ERROR, gettext("Error in \"%s\": Missing argument (%s).\n"), rcname, cmd);
+			if (!*cmd) log(L_ERROR, "Error in \"%s\": Missing command.\n", rcname);
+			if (!*arg) log(L_ERROR, "Error in \"%s\": Missing argument (%s).\n", rcname, cmd);
 
 			returnerror();
 		}
 	}
 	else
 	{
-		log(L_ERROR, gettext("Can't open \"%s\".\n"), rcname);
+		log(L_ERROR, "Can't open \"%s\".\n", rcname);
 		
 		returnerror();
 	}
@@ -229,9 +229,9 @@ static char *parse_cmp(char *cmd, char *arg, void *ptr, int min, int max)
 	if (strcasecmp(arg, "alaw"   ) == 0) cmp = 5;
 	if (strcasecmp(arg, "ulaw"   ) == 0) cmp = 6;
 
-	if ((cmp < min) || (cmp > max)) return(gettext("unknown compression"));
+	if ((cmp < min) || (cmp > max)) return("unknown compression");
 
-	if (cmp == 5) return(gettext("alaw not longer supported"));
+	if (cmp == 5) return("alaw not longer supported");
 
 	(*(int *)ptr) = cmp;
 
@@ -256,10 +256,10 @@ static char *parse_int(char *cmd, char *arg, void *ptr, int min, int max)
 		return(NULL);
 	}
 
-	if (nr < min) return(gettext("value too small"));
-	if (nr > max) return(gettext("value too big"));
+	if (nr < min) return("value too small");
+	if (nr > max) return("value too big");
 
-	return(gettext("can't convert value to integer"));
+	return("can't convert value to integer");
 }
 
 /*************************************************************************/
@@ -277,7 +277,7 @@ static char *parse_gid(char *cmd, char *arg, void *ptr, int min, int max)
 		return(NULL);
 	}
 
-	return(gettext("unknown groupname"));
+	return("unknown groupname");
 }
 
 /*************************************************************************/
@@ -295,7 +295,7 @@ static char *parse_uid(char *cmd, char *arg, void *ptr, int min, int max)
 		return(NULL);
 	}
 	
-	return(gettext("unknown username"));
+	return("unknown username");
 }
 
 /*************************************************************************/
@@ -327,5 +327,5 @@ static char *parse_msk(char *cmd, char *arg, void *ptr, int min, int max)
 		return(NULL);
 	}
 
-	return(gettext("unknown umask"));
+	return("unknown umask");
 }

@@ -1,5 +1,5 @@
 /*
-** $Id: vbox.h,v 1.1 1997/04/28 16:52:05 michael Exp $
+** $Id: vbox.h,v 1.2 1997/05/10 10:58:52 michael Exp $
 **
 ** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
 */
@@ -51,6 +51,7 @@ struct statusled
 {
 	int   x;
    char *name;
+	int   status;
 	char *desc;
 };
 

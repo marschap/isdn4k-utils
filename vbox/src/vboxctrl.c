@@ -1,5 +1,5 @@
 /*
-** $Id: vboxctrl.c,v 1.4 1997/03/18 12:36:55 michael Exp $
+** $Id: vboxctrl.c,v 1.5 1997/05/10 10:58:56 michael Exp $
 **
 ** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
 */
@@ -60,17 +60,9 @@ int main(int argc, char **argv)
 	else
 		vbasename++;
 
-#ifdef HAVE_LOCALE_H
-	setlocale(LC_MESSAGES, "");
-#endif
-
-#ifdef HAVE_LIBINTL_H
-	textdomain(PACKAGE);
-#endif
-
 	if (!(passwd = getpwuid(getuid())))
 	{
-		fprintf(stderr, gettext("%s: can't get passwd entry for uid %d.\n"), vbasename, getuid());
+		fprintf(stderr, "%s: can't get passwd entry for uid %d.\n", vbasename, getuid());
 		
 		exit(5);
 	}
@@ -129,7 +121,7 @@ int main(int argc, char **argv)
 
 	if (!*todo)
 	{
-		fprintf(stderr, gettext("%s: you must specify a control name to create/remove.\n"), vbasename);
+		fprintf(stderr, "%s: you must specify a control name to create/remove.\n", vbasename);
 		
 		exit(5);
 	}
@@ -138,19 +130,19 @@ int main(int argc, char **argv)
 	{
 		if (ctrl_ishere(usespool, todo))
 		{
-			fprintf(stderr, gettext("%s: control file \"%s\" allready exists.\n"), vbasename, todo);
+			fprintf(stderr, "%s: control file \"%s\" allready exists.\n", vbasename, todo);
 			
 			exit(5);
 		}
 
 		if (!ctrl_create(usespool, todo))
 		{
-			fprintf(stderr, gettext("%s: can't create control file \"%s\".\n"), vbasename, todo);
+			fprintf(stderr, "%s: can't create control file \"%s\".\n", vbasename, todo);
 			
 			exit(5);
 		}
 
-		fprintf(stderr, gettext("%s: control file \"%s\" created.\n"), vbasename, todo);
+		fprintf(stderr, "%s: control file \"%s\" created.\n", vbasename, todo);
 		
 		exit(0);
 	}
@@ -159,24 +151,24 @@ int main(int argc, char **argv)
 	{
 		if (!ctrl_ishere(usespool, todo))
 		{
-			fprintf(stderr, gettext("%s: control file \"%s\" doesn't exist.\n"), vbasename, todo);
+			fprintf(stderr, "%s: control file \"%s\" doesn't exist.\n", vbasename, todo);
 			
 			exit(5);
 		}
 
 		if (!ctrl_remove(usespool, todo))
 		{
-			fprintf(stderr, gettext("%s: can't remove control file \"%s\".\n"), vbasename, todo);
+			fprintf(stderr, "%s: can't remove control file \"%s\".\n", vbasename, todo);
 			
 			exit(5);
 		}
 
-		fprintf(stderr, gettext("%s: control file \"%s\" removed.\n"), vbasename, todo);
+		fprintf(stderr, "%s: control file \"%s\" removed.\n", vbasename, todo);
 		
 		exit(0);
 	}
 
-	fprintf(stderr, gettext("%s: oops - don't know what I should do!\n"), vbasename);
+	fprintf(stderr, "%s: oops - don't know what I should do!\n", vbasename);
 
 	exit(5);
 }
@@ -187,9 +179,9 @@ int main(int argc, char **argv)
 
 static void version(void)
 {
-	fprintf(stderr, gettext("\n"));
-	fprintf(stderr, gettext("%s version %s (%s)\n"), vbasename, VERSION, VERDATE);
-	fprintf(stderr, gettext("\n"));
+	fprintf(stderr, "\n");
+	fprintf(stderr, "%s version %s (%s)\n", vbasename, VERSION, VERDATE);
+	fprintf(stderr, "\n");
 	
 	exit(1);
 }
@@ -200,25 +192,25 @@ static void version(void)
 
 static void usage(void)
 {
-	fprintf(stderr, gettext("\n"));
-	fprintf(stderr, gettext("Usage: %s OPTION [ OPTION ] [ ... ]\n"), vbasename);
-	fprintf(stderr, gettext("\n"));
-	fprintf(stderr, gettext("-c, --create      Removes a control file (default).\n"));
-	fprintf(stderr, gettext("-r, --remove      Creates a control file.\n"));
-	fprintf(stderr, gettext("-n, --answernow   Control file \"vboxctrl-answernow\".\n"));
-	fprintf(stderr, gettext("-a, --answerall   Control file \"vboxctrl-answerall\".\n"));
-	fprintf(stderr, gettext("-p, --stop        Control file \"vboxctrl-stop\".\n"));
-	fprintf(stderr, gettext("-j, --reject      Control file \"vboxctrl-reject\".\n"));
-	fprintf(stderr, gettext("-s, --spooldir    Spooldirectory to create/remove control files.\n"));
-	fprintf(stderr, gettext("-v, --version     Displays package version.\n"));
-	fprintf(stderr, gettext("-h, --help        Displays this usage message.\n"));
-	fprintf(stderr, gettext("\n"));
-	fprintf(stderr, gettext("The spool directory is taken from one of the following:\n"));
-	fprintf(stderr, gettext("\n"));
-	fprintf(stderr, gettext("   1) The default (buildin) value (%s).\n"), spooldir);
-	fprintf(stderr, gettext("   2) The value of the environment variable VBOXSPOOL (if set).\n"));
-	fprintf(stderr, gettext("   3) The directory of the command line option \"--spooldir\".\n"));
-	fprintf(stderr, gettext("\n"));
+	fprintf(stderr, "\n");
+	fprintf(stderr, "Usage: %s OPTION [ OPTION ] [ ... ]\n", vbasename);
+	fprintf(stderr, "\n");
+	fprintf(stderr, "-c, --create      Removes a control file (default).\n");
+	fprintf(stderr, "-r, --remove      Creates a control file.\n");
+	fprintf(stderr, "-n, --answernow   Control file \"vboxctrl-answernow\".\n");
+	fprintf(stderr, "-a, --answerall   Control file \"vboxctrl-answerall\".\n");
+	fprintf(stderr, "-p, --stop        Control file \"vboxctrl-stop\".\n");
+	fprintf(stderr, "-j, --reject      Control file \"vboxctrl-reject\".\n");
+	fprintf(stderr, "-s, --spooldir    Spooldirectory to create/remove control files.\n");
+	fprintf(stderr, "-v, --version     Displays package version.\n");
+	fprintf(stderr, "-h, --help        Displays this usage message.\n");
+	fprintf(stderr, "\n");
+	fprintf(stderr, "The spool directory is taken from one of the following:\n");
+	fprintf(stderr, "\n");
+	fprintf(stderr, "   1) The default (buildin) value (%s).\n", spooldir);
+	fprintf(stderr, "   2) The value of the environment variable VBOXSPOOL (if set).\n");
+	fprintf(stderr, "   3) The directory of the command line option \"--spooldir\".\n");
+	fprintf(stderr, "\n");
 
 	exit(1);
 }

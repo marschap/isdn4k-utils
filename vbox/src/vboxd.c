@@ -1,5 +1,5 @@
 /*
-** $Id: vboxd.c,v 1.3 1997/04/28 16:52:08 michael Exp $
+** $Id: vboxd.c,v 1.4 1997/05/10 10:58:57 michael Exp $
 **
 ** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
 */
@@ -84,6 +84,8 @@ static void srv_message(int, char **);
 static void srv_toggle(int, char **);
 static void srv_delete(int, char **);
 static void srv_statusctrl(int, char **);
+static void srv_createctrl(int, char **);
+static void srv_removectrl(int, char **);
 
 /** Structures ************************************************************/
 
@@ -100,6 +102,8 @@ static struct servercmds commands[] =
 	{ "toggle"    , srv_toggle     },
 	{ "delete"    , srv_delete     },
 	{ "statusctrl", srv_statusctrl },
+	{ "createctrl", srv_createctrl },
+	{ "removectrl", srv_removectrl },
 	{ NULL        , NULL           }
 };
 
@@ -718,12 +722,12 @@ static void message(char *fmt, ...)
 /**                                                                      **/
 /**************************************************************************/
 /** login      <username> [password]                                     **/
-/** count      <messagebox>                                              **/
 /** delete     <message>                                                 **/
 /** toggle     <message>                                                 **/
 /** message    <message>                                                 **/
 /** header     <message>                                                 **/
 /** statusctrl <control>                                                 **/
+/** count                                                                **/
 /** noop                                                                 **/
 /** list                                                                 **/
 /** help                                                                 **/
@@ -744,8 +748,9 @@ static void srv_noop(int argc, char **argv)
 
 static void srv_header(int argc, char **argv)
 {
-	vaheader_t header;
-	int        fd;
+	vaheader_t  header;
+	int         fd;
+	char       *msgname;
 
 	if ((!client_spool) || (!client_user) || (!(client_access & VBOXD_ACC_READ)))
 	{
@@ -767,8 +772,14 @@ static void srv_header(int argc, char **argv)
 
 		return;
 	}
+
+	if (!(msgname = rindex(argv[1], '/')))
+	{
+		msgname = argv[1];
+	}
+	else msgname++;
 	
-	if ((fd = open(argv[1], O_RDONLY)) != -1)
+	if ((fd = open(msgname, O_RDONLY)) != -1)
 	{
 		if (header_get(fd, &header))
 		{
@@ -794,6 +805,7 @@ static void srv_message(int argc, char **argv)
 	struct stat  status;
 	vaheader_t   header;
 	char        *block;
+	char        *msgname;
 	int          fd;
 
 	if ((!client_spool) || (!client_user) || (!(client_access & VBOXD_ACC_READ)))
@@ -816,8 +828,14 @@ static void srv_message(int argc, char **argv)
 
 		return;
 	}
+
+	if (!(msgname = rindex(argv[1], '/')))
+	{
+		msgname = argv[1];
+	}
+	else msgname++;
 	
-	if ((fd = open(argv[1], O_RDONLY)) != -1)
+	if ((fd = open(msgname, O_RDONLY)) != -1)
 	{
 		if (fstat(fd, &status) == 0)
 		{
@@ -956,6 +974,7 @@ static void srv_help(int argc, char **argv)
    message("%s Commands require special access:\r\n"                                , VBOXD_VAL_HELP);
    message("%s \r\n"                                                                , VBOXD_VAL_HELP);
 	message("%s LIST                               List all messages.\r\n"           , VBOXD_VAL_HELP);
+	message("%s COUNT                              Count new messages.\r\n"          , VBOXD_VAL_HELP);
    message("%s DELETE     <message>               Delete a message.\r\n"            , VBOXD_VAL_HELP);
 	message("%s MESSAGE    <message>               Get a message.\r\n"               , VBOXD_VAL_HELP);
    message("%s HEADER     <message>               Get a message header.\r\n"        , VBOXD_VAL_HELP);
@@ -966,7 +985,6 @@ static void srv_help(int argc, char **argv)
    message("%s \r\n"                                                                , VBOXD_VAL_HELP);
    message("%s Commands available for all clients:\r\n"                             , VBOXD_VAL_HELP);
    message("%s \r\n"                                                                , VBOXD_VAL_HELP);
-	message("%s COUNT      <messagebox>            Count new messages.\r\n"          , VBOXD_VAL_HELP);
 	message("%s LOGIN      <username> [password]   Login as user (gives access).\r\n", VBOXD_VAL_HELP);
 	message("%s NOOP                               Does nothing.\r\n"                , VBOXD_VAL_HELP);
 	message("%s HELP                               Display command list.\r\n"        , VBOXD_VAL_HELP);
@@ -986,21 +1004,14 @@ static void srv_count(int argc, char **argv)
 	int            mcount;
 	DIR           *dir;
 
-	if (!(client_access & VBOXD_ACC_COUNT))
+	if ((!client_spool) || (!client_user) || (!(client_access & VBOXD_ACC_READ)))
 	{
-		message("%s Access denied (no count access).\r\n", VBOXD_VAL_ACCESSDENIED);
+		message("%s Access denied (no read access).\r\n", VBOXD_VAL_ACCESSDENIED);
 
 		return;
 	}
 
-	if (argc != 2)
-	{
-		message("%s usage: %s <messagebox>.\r\n", VBOXD_VAL_BADARGS, argv[0]);
-
-		return;
-	}
-
-	if (chdir(argv[1]) != 0)
+	if (chdir(client_spool) != 0)
 	{
 		message("%s Access denied (messagebox unaccessable).\r\n", VBOXD_VAL_ACCESSDENIED);
 
@@ -1044,8 +1055,9 @@ static void srv_count(int argc, char **argv)
 
 static void srv_toggle(int argc, char **argv)
 {
-	struct utimbuf utimeb;
-	struct stat    status;
+	struct utimbuf  utimeb;
+	struct stat     status;
+	char           *msgname;
 
 	if ((!client_spool) || (!client_user) || (!(client_access & VBOXD_ACC_WRITE)))
 	{
@@ -1068,12 +1080,18 @@ static void srv_toggle(int argc, char **argv)
 		return;
 	}
 
-	if (stat(argv[1], &status) == 0)
+	if (!(msgname = rindex(argv[1], '/')))
+	{
+		msgname = argv[1];
+	}
+	else msgname++;
+
+	if (stat(msgname, &status) == 0)
 	{
 		utimeb.actime  = status.st_atime;
 		utimeb.modtime = (status.st_mtime > 0 ? 0 : status.st_ctime);
 			
-		if (utime(argv[1], &utimeb) != 0)
+		if (utime(msgname, &utimeb) != 0)
 		{
 			message("%s Can't set new modification time.\r\n", VBOXD_VAL_TEMPERROR);
 		}
@@ -1088,6 +1106,8 @@ static void srv_toggle(int argc, char **argv)
 
 static void srv_delete(int argc, char **argv)
 {
+	char *msgname;
+
 	if ((!client_spool) || (!client_user) || (!(client_access & VBOXD_ACC_WRITE)))
 	{
 		message("%s Access denied (no write access).\r\n", VBOXD_VAL_ACCESSDENIED);
@@ -1109,7 +1129,13 @@ static void srv_delete(int argc, char **argv)
 		return;
 	}
 
-	if (unlink(argv[1]) != 0)
+	if (!(msgname = rindex(argv[1], '/')))
+	{
+		msgname = argv[1];
+	}
+	else msgname++;
+
+	if (unlink(msgname) != 0)
 	{
 		message("%s: Can't delete message.\r\n", VBOXD_VAL_TEMPERROR);
 	}
@@ -1122,6 +1148,8 @@ static void srv_delete(int argc, char **argv)
 
 static void srv_statusctrl(int argc, char **argv)
 {
+	char *msgname;
+
 	if ((!client_home) || (!client_user) || (!(client_access & VBOXD_ACC_READ)))
 	{
 		message("%s Access denied (no read access).\r\n", VBOXD_VAL_ACCESSDENIED);
@@ -1136,7 +1164,87 @@ static void srv_statusctrl(int argc, char **argv)
 		return;
 	}
 
-	message("%s %d\r\n", VBOXD_VAL_STATUSCTRLOK, ctrl_ishere(client_home, argv[1]));
+	if (!(msgname = rindex(argv[1], '/')))
+	{
+		msgname = argv[1];
+	}
+	else msgname++;
+
+	if (strncmp(msgname, CTRL_NAME_MAGIC, strlen(CTRL_NAME_MAGIC)) == 0)
+	{
+		message("%s %d\r\n", VBOXD_VAL_STATUSCTRLOK, ctrl_ishere(client_home, msgname));
+	}
+	else message("%s bad control name.\r\n", VBOXD_VAL_BADARGS);
+}
+
+/**************************************************************************/
+/** srv_createctrl(): Create control file.                      [server] **/
+/**************************************************************************/
+
+static void srv_createctrl(int argc, char **argv)
+{
+	char *msgname;
+
+	if ((!client_home) || (!client_user) || (!(client_access & VBOXD_ACC_WRITE)))
+	{
+		message("%s Access denied (no write access).\r\n", VBOXD_VAL_ACCESSDENIED);
+
+		return;
+	}
+
+	if (argc != 2)
+	{
+		message("%s usage: %s <control>.\r\n", VBOXD_VAL_BADARGS, argv[0]);
+
+		return;
+	}
+
+	if (!(msgname = rindex(argv[1], '/')))
+	{
+		msgname = argv[1];
+	}
+	else msgname++;
+
+	if (strncmp(msgname, CTRL_NAME_MAGIC, strlen(CTRL_NAME_MAGIC)) == 0)
+	{
+		message("%s %d\r\n", VBOXD_VAL_CREATECTRLOK, ctrl_create(client_home, msgname));
+	}
+	else message("%s bad control name.\r\n", VBOXD_VAL_BADARGS);
+}
+
+/**************************************************************************/
+/** srv_removectrl(): Remove control file.                      [server] **/
+/**************************************************************************/
+
+static void srv_removectrl(int argc, char **argv)
+{
+	char *msgname;
+
+	if ((!client_home) || (!client_user) || (!(client_access & VBOXD_ACC_WRITE)))
+	{
+		message("%s Access denied (no write access).\r\n", VBOXD_VAL_ACCESSDENIED);
+
+		return;
+	}
+
+	if (argc != 2)
+	{
+		message("%s usage: %s <control>.\r\n", VBOXD_VAL_BADARGS, argv[0]);
+
+		return;
+	}
+
+	if (!(msgname = rindex(argv[1], '/')))
+	{
+		msgname = argv[1];
+	}
+	else msgname++;
+
+	if (strncmp(msgname, CTRL_NAME_MAGIC, strlen(CTRL_NAME_MAGIC)) == 0)
+	{
+		message("%s %d\r\n", VBOXD_VAL_REMOVECTRLOK, ctrl_remove(client_home, msgname));
+	}
+	else message("%s bad control name.\r\n", VBOXD_VAL_BADARGS);
 }
 
 /**************************************************************************/

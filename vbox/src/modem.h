@@ -1,5 +1,5 @@
 /*
-** $Id: modem.h,v 1.4 1997/02/27 15:43:50 michael Exp $
+** $Id: modem.h,v 1.5 1997/05/10 10:58:45 michael Exp $
 **
 ** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
 */
@@ -20,8 +20,8 @@
 
 #define MODEM_TOGGLETIME			800
 #define MODEM_RINGTIMEOUT			5
-#define MODEM_ECHOTIMEOUT			2
-#define MODEM_CMDTIMEOUT			2
+#define MODEM_ECHOTIMEOUT			3
+#define MODEM_CMDTIMEOUT			3
 #define MODEM_TIMEOUT				1800
 #define MODEM_SPEED					38400
 

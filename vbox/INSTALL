@@ -55,7 +55,7 @@ default settings are specified in [] brackets):
 			installed in this place (see --sysconfdir)
 			[/etc/isdn].
 
---with-tcldir=LIB	Tcl library to use. Normaly, the configure script
+--with-tcllib=LIB	Tcl library to use. Normaly, the configure script
 			scans for tcl8.0, then tcl7.6 and last for tcl. If
 			it can't find your tcl library you can use this
 			option to specify the name of the library [tcl].

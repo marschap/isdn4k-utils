@@ -1,3 +1,8 @@
+/*
+** $Id: voice.h,v 1.4 1997/05/10 10:59:02 michael Exp $
+**
+** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
+*/
 
 #ifndef _VBOX_VOICE_H
 #define _VBOX_VOICE_H 1

@@ -1,5 +1,5 @@
 /*
-** $Id: init.c,v 1.6 1997/04/04 09:32:37 michael Exp $
+** $Id: init.c,v 1.7 1997/05/10 10:58:41 michael Exp $
 **
 ** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
 */
@@ -52,8 +52,8 @@ int init_program(char *device, char *gettyrc)
 
 	if (!log_init()) returnerror();
 
-	log(L_INFO, gettext("-----------------------[Begin session]----------------------\n"));
-	log(L_INFO, gettext("Running vbox version %s...\n"), VERSION);
+	log(L_INFO, "-----------------------[Begin session]----------------------\n");
+	log(L_INFO, "Running vbox version %s...\n", VERSION);
 
 	/*
 	 * Check the version of the tcl interpreter. On bad version only
@@ -76,7 +76,7 @@ int init_program(char *device, char *gettyrc)
 
 	if ((setup.users.uid == 0) || (setup.users.gid == 0))
 	{
-		log(L_FATAL, gettext("You *must* set a user/group (not root)!\n"));
+		log(L_FATAL, "You *must* set a user/group (not root)!\n");
 
 		returnerror();
 	}
@@ -88,7 +88,7 @@ int init_program(char *device, char *gettyrc)
 
 	if (!(passwd = getpwuid(setup.users.uid)))
 	{
-		log(L_FATAL, gettext("Can't get passwd entry for userid %d.\n"), setup.users.uid);
+		log(L_FATAL, "Can't get passwd entry for userid %d.\n", setup.users.uid);
 
 		returnerror();
 	}
@@ -109,8 +109,8 @@ int init_program(char *device, char *gettyrc)
 		xstrncat(setup.vboxrcname, "/vbox.conf", SETUP_MAX_VBOXRC);
 	}
 
-	log(L_INFO, gettext("User %s's messagebox is \"%s\"...\n"), setup.users.name, setup.spool);
-	log(L_INFO, gettext("User %s's vbox.conf is \"%s\"...\n"), setup.users.name, setup.vboxrcname);
+	log(L_INFO, "User %s's messagebox is \"%s\"...\n", setup.users.name, setup.spool);
+	log(L_INFO, "User %s's vbox.conf is \"%s\"...\n", setup.users.name, setup.vboxrcname);
 
 	/*
 	 * Create the spool directory and set the permissions to the current
@@ -119,7 +119,7 @@ int init_program(char *device, char *gettyrc)
 
 	if ((mkdir(setup.spool, S_IRWXU) == -1) && (errno != EEXIST))
 	{
-		log(L_FATAL, gettext("Can't create \"%s\" (%s).\n"), setup.spool, strerror(errno));
+		log(L_FATAL, "Can't create \"%s\" (%s).\n", setup.spool, strerror(errno));
 
 		returnerror();
 	}
@@ -136,23 +136,23 @@ int init_program(char *device, char *gettyrc)
 
 	if (ctrl_ishere(setup.spool, CTRL_NAME_STOP))
 	{
-		log(L_INFO, gettext("Control file \"%s\" exists - waiting...\n"), CTRL_NAME_STOP);
+		log(L_INFO, "Control file \"%s\" exists - waiting...\n", CTRL_NAME_STOP);
 
 		while (ctrl_ishere(setup.spool, CTRL_NAME_STOP))
 		{
-			log(L_JUNK, gettext("Control file \"%s\" exists - waiting...\n"), CTRL_NAME_STOP);
+			log(L_JUNK, "Control file \"%s\" exists - waiting...\n", CTRL_NAME_STOP);
 
 			xpause(5000);
 		}
 
-		log(L_INFO, gettext("Control file deleted - back in business...\n"));
+		log(L_INFO, "Control file deleted - back in business...\n");
 	}
 
 	if (ctrl_ishere(setup.spool, CTRL_NAME_ANSWERNOW))
 	{
 		if (!ctrl_remove(setup.spool, CTRL_NAME_ANSWERNOW))
 		{
-			log(L_WARN, gettext("Can't remove control file \"%s\"!\n"), CTRL_NAME_ANSWERNOW);
+			log(L_WARN, "Can't remove control file \"%s\"!\n", CTRL_NAME_ANSWERNOW);
 		}
 	}
 
@@ -160,7 +160,7 @@ int init_program(char *device, char *gettyrc)
 	{
 		if (!ctrl_remove(setup.spool, CTRL_NAME_REJECT))
 		{
-			log(L_WARN, gettext("Can't remove control file \"%s\"!\n"), CTRL_NAME_REJECT);
+			log(L_WARN, "Can't remove control file \"%s\"!\n", CTRL_NAME_REJECT);
 		}
 	}
 
@@ -199,7 +199,7 @@ int init_program(char *device, char *gettyrc)
 
 	if (!(setup.vboxrc = streamio_open(setup.vboxrcname)))
 	{
-		log(L_FATAL, gettext("Can't open \"%s\".\n"), setup.vboxrcname);
+		log(L_FATAL, "Can't open \"%s\".\n", setup.vboxrcname);
 
 		returnerror();
 	}
@@ -222,14 +222,14 @@ void exit_program(int s)
 {
 	block_all_signals();
 
-	log(L_INFO, gettext("Exit program on signal %d...\n"), s);
+	log(L_INFO, "Exit program on signal %d...\n", s);
 
 	modem_close_port();
 	streamio_close(setup.vboxrc);
 	lock_type_unlock(LCK_PID);
 	lock_type_unlock(LCK_MODEM);
 
-	log(L_INFO, gettext("------------------------[End session]-----------------------\n"));
+	log(L_INFO, "------------------------[End session]-----------------------\n");
 
 	log_exit();
 

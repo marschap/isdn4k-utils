@@ -1,5 +1,5 @@
 /*
-** $Id: vboxconvert.c,v 1.7 1997/04/28 16:52:07 michael Exp $
+** $Id: vboxconvert.c,v 1.8 1997/05/10 10:58:54 michael Exp $
 **
 ** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
 **
@@ -172,14 +172,6 @@ int main(int argc, char **argv)
 	else
 		vbasename++;
 
-#ifdef HAVE_LOCALE_H
-	setlocale(LC_ALL, "");
-#endif
-
-#ifdef HAVE_LIBINTL_H
-	textdomain(PACKAGE);
-#endif
-
 		/* Called as 'vboxtoau' converts a messages saved with vbox to	*/
 		/* sun's au format.															*/
 
@@ -334,13 +326,13 @@ int main(int argc, char **argv)
 		exit(start_vboxmode(name, mode));
 	};
 
-	fprintf(stderr, gettext("\n"));
-	fprintf(stderr, gettext("The vbox converter can be called as:\n"));
-	fprintf(stderr, gettext("\n"));
-	fprintf(stderr, gettext("vboxtoau - to convert vbox messages to au format.\n"));
-	fprintf(stderr, gettext("autovbox - to convert au format samples to vbox messages.\n"));
-	fprintf(stderr, gettext("vboxmode - to display message information (works also with au).\n"));
-	fprintf(stderr, gettext("\n"));
+	fprintf(stderr, "\n");
+	fprintf(stderr, "The vbox converter can be called as:\n");
+	fprintf(stderr, "\n");
+	fprintf(stderr, "vboxtoau - to convert vbox messages to au format.\n");
+	fprintf(stderr, "autovbox - to convert au format samples to vbox messages.\n");
+	fprintf(stderr, "vboxmode - to display message information (works also with au).\n");
+	fprintf(stderr, "\n");
 
 	exit(255);
 }
@@ -366,28 +358,28 @@ static void start_vboxtoau(int samplemode, int samplerate)
 	
 	if (!(vboxtmpname = tempnam("/tmp", "vbox")))
 	{
-		fprintf(stderr, gettext("%s: can't create a temporary file.\n"), vbasename);
+		fprintf(stderr, "%s: can't create a temporary file.\n", vbasename);
 		
 		leave_vboxtoau(255);
 	}
 
 	if (!(vboxtmpfile = fopen(vboxtmpname, "w+")))
 	{
-		fprintf(stderr, gettext("%s: can't create \"%s\".\n"), vbasename, vboxtmpname);
+		fprintf(stderr, "%s: can't create \"%s\".\n", vbasename, vboxtmpname);
 		
 		leave_vboxtoau(255);
 	}
 
 	if (fread(&header, sizeof(vaheader_t), 1, stdin) != 1)
 	{
-		fprintf(stderr, gettext("%s: can't read vbox audio header.\n"), vbasename);
+		fprintf(stderr, "%s: can't read vbox audio header.\n", vbasename);
 
 		leave_vboxtoau(255);
 	}
 
 	if (strncmp(header.magic, VAH_MAGIC, VAH_MAX_MAGIC) != 0)
 	{
-		fprintf(stderr, gettext("%s: sample contains no vbox audio header.\n"), vbasename);
+		fprintf(stderr, "%s: sample contains no vbox audio header.\n", vbasename);
 		
 		leave_vboxtoau(255);
 	}
@@ -409,7 +401,7 @@ static void start_vboxtoau(int samplemode, int samplerate)
 			break;
 
 		default:
-			fprintf(stderr, gettext("%s: unknown/unsupported compression %d.\n"), vbasename, compression);
+			fprintf(stderr, "%s: unknown/unsupported compression %d.\n", vbasename, compression);
 			break;
 	}
 
@@ -446,18 +438,18 @@ fprintf(stderr, "sig: %d\n", sig);
 
 static void usage_vboxtoau(void)
 {
-	fprintf(stderr, gettext("\n"));
-	fprintf(stderr, gettext("Usage: %s OPTION [ OPTION ] [ ... ] <INFILE >OUTFILE\n"), vbasename);
-	fprintf(stderr, gettext("\n"));
-	fprintf(stderr, gettext("-r, --samplerate RATE   Header sampling rate (default 8000).\n"));
-	fprintf(stderr, gettext("-u, --ulaw              Use 8-bit uLaw output.\n"));
-	fprintf(stderr, gettext("-1, --linear8           Use 8-bit linear output.\n"));
-	fprintf(stderr, gettext("-2, --linear16          Use 16-Bit linear output (default).\n"));
-	fprintf(stderr, gettext("-h, --help              Prints this usage message.\n"));
-	fprintf(stderr, gettext("-v, --version           Prints the package version.\n"));
-	fprintf(stderr, gettext("\n"));
-	fprintf(stderr, gettext("Note: The sampling rate is written into the file header only, it\n      doesn't do any sampling rate conversion!\n"));
-	fprintf(stderr, gettext("\n"));
+	fprintf(stderr, "\n");
+	fprintf(stderr, "Usage: %s OPTION [ OPTION ] [ ... ] <INFILE >OUTFILE\n", vbasename);
+	fprintf(stderr, "\n");
+	fprintf(stderr, "-r, --samplerate RATE   Header sampling rate (default 8000).\n");
+	fprintf(stderr, "-u, --ulaw              Use 8-bit uLaw output.\n");
+	fprintf(stderr, "-1, --linear8           Use 8-bit linear output.\n");
+	fprintf(stderr, "-2, --linear16          Use 16-Bit linear output (default).\n");
+	fprintf(stderr, "-h, --help              Prints this usage message.\n");
+	fprintf(stderr, "-v, --version           Prints the package version.\n");
+	fprintf(stderr, "\n");
+	fprintf(stderr, "Note: The sampling rate is written into the file header only, it\n      doesn't do any sampling rate conversion!\n");
+	fprintf(stderr, "\n");
 
 	exit(255);
 }
@@ -479,7 +471,7 @@ static int start_vboxmode(char *name, int quiet)
 
 	if (result == 255)
 	{
-		fprintf(stderr, gettext("%s: sample contains no vbox or sun au header.\n"), vbasename);
+		fprintf(stderr, "%s: sample contains no vbox or sun au header.\n", vbasename);
 	}
 
 	return(result);
@@ -491,19 +483,19 @@ static int start_vboxmode(char *name, int quiet)
 
 static void usage_vboxmode(void)
 {
-	fprintf(stderr, gettext("\n"));
-	fprintf(stderr, gettext("Usage: %s OPTION [ OPTION ] [ ... ] SAMPLENAME\n"), vbasename);
-	fprintf(stderr, gettext("\n"));
-	fprintf(stderr, gettext("-q, --quiet             Returns only the errorcode (no descriptions).\n"));
-	fprintf(stderr, gettext("-h, --help              Prints this usage message.\n"));
-	fprintf(stderr, gettext("-v, --version           Prints the package version.\n"));
-	fprintf(stderr, gettext("\n"));
-	fprintf(stderr, gettext("The program returns the sample format as errorcode:\n"));
-	fprintf(stderr, gettext("\n"));
-	fprintf(stderr, gettext("- For au samples it returns %d-%d,\n"), SUN_FORMAT_MIN + 128, SUN_FORMAT_MAX + 128);
-	fprintf(stderr, gettext("- For vbox messages it returns 2-6,\n"));
-	fprintf(stderr, gettext("- For unknown formats or on errors it returns 255.\n"));
-	fprintf(stderr, gettext("\n"));
+	fprintf(stderr, "\n");
+	fprintf(stderr, "Usage: %s OPTION [ OPTION ] [ ... ] SAMPLENAME\n", vbasename);
+	fprintf(stderr, "\n");
+	fprintf(stderr, "-q, --quiet             Returns only the errorcode (no descriptions).\n");
+	fprintf(stderr, "-h, --help              Prints this usage message.\n");
+	fprintf(stderr, "-v, --version           Prints the package version.\n");
+	fprintf(stderr, "\n");
+	fprintf(stderr, "The program returns the sample format as errorcode:\n");
+	fprintf(stderr, "\n");
+	fprintf(stderr, "- For au samples it returns %d-%d,\n", SUN_FORMAT_MIN + 128, SUN_FORMAT_MAX + 128);
+	fprintf(stderr, "- For vbox messages it returns 2-6,\n");
+	fprintf(stderr, "- For unknown formats or on errors it returns 255.\n");
+	fprintf(stderr, "\n");
 
 	exit(255);
 }
@@ -528,14 +520,14 @@ static void start_autovbox(int compression, char *name, char *id, char *phone, c
 	
 	if (!(vboxtmpname = tempnam("/tmp", "vbox")))
 	{
-		fprintf(stderr, gettext("%s: can't create a temporary file.\n"), vbasename);
+		fprintf(stderr, "%s: can't create a temporary file.\n", vbasename);
 		
 		leave_autovbox(255);
 	}
 
 	if (!(vboxtmpfile = fopen(vboxtmpname, "w+")))
 	{
-		fprintf(stderr, gettext("%s: can't create \"%s\".\n"), vbasename, vboxtmpname);
+		fprintf(stderr, "%s: can't create \"%s\".\n", vbasename, vboxtmpname);
 		
 		leave_autovbox(255);
 	}
@@ -551,7 +543,7 @@ static void start_autovbox(int compression, char *name, char *id, char *phone, c
 	
 	if (fwrite(&header, sizeof(vaheader_t), 1, stdout) != 1)
 	{
-		fprintf(stderr, gettext("%s: can't write vbox audio header.\n"), vbasename);
+		fprintf(stderr, "%s: can't write vbox audio header.\n", vbasename);
 		
 		leave_autovbox(255);
 	}
@@ -575,7 +567,7 @@ static void start_autovbox(int compression, char *name, char *id, char *phone, c
 				break;
 				
 			default:
-				fprintf(stderr, gettext("%s: unsupported compression type.\n"), vbasename);
+				fprintf(stderr, "%s: unsupported compression type.\n", vbasename);
 				break;
 
 		}
@@ -607,19 +599,19 @@ static void leave_autovbox(int sig)
 
 static void usage_autovbox(void)
 {
-	fprintf(stderr, gettext("\n"));
-	fprintf(stderr, gettext("Usage: %s OPTION [ OPTION ] [ ... ] <INFILE >OUTFILE\n"), vbasename);
-	fprintf(stderr, gettext("\n"));
-	fprintf(stderr, gettext("-2, --adpcm-2             Converts sample to adpcm-2.\n"));
-	fprintf(stderr, gettext("-3, --adpcm-3             Converts sample to adpcm-3.\n"));
-	fprintf(stderr, gettext("-4, --adpcm-4             Converts sample to adpcm-4 (default).\n"));
-	fprintf(stderr, gettext("-u, --ulaw                Converts sample to ulaw.\n"));
-	fprintf(stderr, gettext("-n, --name NAME           Sets header information.\n"));
-	fprintf(stderr, gettext("-p, --phone PHONE         Sets header information.\n"));
-	fprintf(stderr, gettext("-l, --location LOCATION   Sets header information.\n"));
-	fprintf(stderr, gettext("-h, --help                Prints this usage message.\n"));
-	fprintf(stderr, gettext("-v, --version             Prints the package version.\n"));
-	fprintf(stderr, gettext("\n"));
+	fprintf(stderr, "\n");
+	fprintf(stderr, "Usage: %s OPTION [ OPTION ] [ ... ] <INFILE >OUTFILE\n", vbasename);
+	fprintf(stderr, "\n");
+	fprintf(stderr, "-2, --adpcm-2             Converts sample to adpcm-2.\n");
+	fprintf(stderr, "-3, --adpcm-3             Converts sample to adpcm-3.\n");
+	fprintf(stderr, "-4, --adpcm-4             Converts sample to adpcm-4 (default).\n");
+	fprintf(stderr, "-u, --ulaw                Converts sample to ulaw.\n");
+	fprintf(stderr, "-n, --name NAME           Sets header information.\n");
+	fprintf(stderr, "-p, --phone PHONE         Sets header information.\n");
+	fprintf(stderr, "-l, --location LOCATION   Sets header information.\n");
+	fprintf(stderr, "-h, --help                Prints this usage message.\n");
+	fprintf(stderr, "-v, --version             Prints the package version.\n");
+	fprintf(stderr, "\n");
 
 	exit(255);
 }
@@ -760,14 +752,14 @@ static int convert_au_to_pvf(FILE *in, FILE *out)
     
 	if (hdr.magic != SND_MAGIC)
 	{
-		fprintf(stderr, gettext("%s: illegal magic number for an au file.\n"), vbasename);
+		fprintf(stderr, "%s: illegal magic number for an au file.\n", vbasename);
 		
 		return(255);
 	}
 
 	if (hdr.channelCount != 1)
 	{
-		fprintf(stderr, gettext("%s: number of channels != 1 (only mono supported).\n"), vbasename);
+		fprintf(stderr, "%s: number of channels != 1 (only mono supported).\n", vbasename);
 		
 		return(255);
 	}
@@ -776,7 +768,7 @@ static int convert_au_to_pvf(FILE *in, FILE *out)
 	{
 		if (getc(in) == EOF)
 		{
-			fprintf(stderr, gettext("%s: unexpected EOF.\n"), vbasename);
+			fprintf(stderr, "%s: unexpected EOF.\n", vbasename);
 			
 			return(255);
 		}
@@ -813,7 +805,7 @@ static int convert_au_to_pvf(FILE *in, FILE *out)
 				break;
 
 			default:
-				fprintf(stderr, gettext("%s: unsupported or illegal sound encoding.\n"), vbasename);
+				fprintf(stderr, "%s: unsupported or illegal sound encoding.\n", vbasename);
 				return(255);
 	}
 
@@ -1128,22 +1120,22 @@ static int test_sample_is_vbox(char *name, int quiet)
 
 				if (!quiet)
 				{
-					fprintf(stdout, gettext("\n"));
-					fprintf(stdout, gettext("Creation time...........: %s"), timestring);
-					fprintf(stdout, gettext("Compression.............: %s\n"), compressions[compression]);
-					fprintf(stdout, gettext("Length..................: %d seconds\n"), get_message_ptime(compression, (status.st_size - sizeof(vaheader_t))));
-					fprintf(stdout, gettext("Speaker name............: %s\n"), header.name);
-					fprintf(stdout, gettext("Speaker caller number...: %s\n"), header.callerid);
-					fprintf(stdout, gettext("Speaker phone number....: %s\n"), header.phone);
-					fprintf(stdout, gettext("Speaker location........: %s\n"), header.location);
-					fprintf(stdout, gettext("\n"));
+					fprintf(stdout, "\n");
+					fprintf(stdout, "Creation time...........: %s", timestring);
+					fprintf(stdout, "Compression.............: %s\n", compressions[compression]);
+					fprintf(stdout, "Length..................: %d seconds\n", get_message_ptime(compression, (status.st_size - sizeof(vaheader_t))));
+					fprintf(stdout, "Speaker name............: %s\n", header.name);
+					fprintf(stdout, "Speaker caller number...: %s\n", header.callerid);
+					fprintf(stdout, "Speaker phone number....: %s\n", header.phone);
+					fprintf(stdout, "Speaker location........: %s\n", header.location);
+					fprintf(stdout, "\n");
 				}
 			}
 		}
 
 		close(fd);
 	}
-	else fprintf(stderr, gettext("%s: can't open \"%s\" (vbox sample test).\n"), vbasename, name);
+	else fprintf(stderr, "%s: can't open \"%s\" (vbox sample test).\n", vbasename, name);
 
 	return(compression);
 }
@@ -1160,7 +1152,7 @@ static int test_sample_is_au(char *name, int quiet)
 
 	if (!(in = fopen(name, "r")))
 	{
-		fprintf(stderr, gettext("%s: can't open \"%s\" (au sample test).\n"), vbasename, name);
+		fprintf(stderr, "%s: can't open \"%s\" (au sample test).\n", vbasename, name);
 		
 		return(255);
 	}
@@ -1189,13 +1181,13 @@ static int test_sample_is_au(char *name, int quiet)
 
 	if (!quiet)
 	{
-		fprintf(stdout, gettext("\n"));
-		fprintf(stdout, gettext("Format..........: %s\n"), sun_format_names[snd.dataFormat]);
-		fprintf(stdout, gettext("Sampling rate...: %d\n"), snd.samplingRate);
-		fprintf(stdout, gettext("Channels........: %d\n"), snd.channelCount);
-		fprintf(stdout, gettext("Size............: %d %s\n"), snd.dataSize, snd.dataSize == -1 ? "(unknown size)" : "bytes");
-		fprintf(stdout, gettext("Data location...: %d\n"), snd.dataLocation);
-		fprintf(stdout, gettext("\n"));
+		fprintf(stdout, "\n");
+		fprintf(stdout, "Format..........: %s\n", sun_format_names[snd.dataFormat]);
+		fprintf(stdout, "Sampling rate...: %d\n", snd.samplingRate);
+		fprintf(stdout, "Channels........: %d\n", snd.channelCount);
+		fprintf(stdout, "Size............: %d %s\n", snd.dataSize, snd.dataSize == -1 ? "(unknown size)" : "bytes");
+		fprintf(stdout, "Data location...: %d\n", snd.dataLocation);
+		fprintf(stdout, "\n");
 	}
 
 	return(128 + snd.dataFormat);
@@ -1207,9 +1199,9 @@ static int test_sample_is_au(char *name, int quiet)
 
 static void version(void)
 {
-	fprintf(stderr, gettext("\n"));
-	fprintf(stderr, gettext("%s version %s (%s)\n"), vbasename, VERSION, VERDATE);
-	fprintf(stderr, gettext("\n"));
+	fprintf(stderr, "\n");
+	fprintf(stderr, "%s version %s (%s)\n", vbasename, VERSION, VERDATE);
+	fprintf(stderr, "\n");
 	
 	exit(255);
 }
@@ -1222,14 +1214,14 @@ static int check_io_error(FILE *in, FILE *out)
 {
 	if (ferror(in) != 0)
 	{
-		fprintf(stderr, gettext("%s: can't read input.\n"), vbasename);
+		fprintf(stderr, "%s: can't read input.\n", vbasename);
 		
 		return(255);
 	}
 
 	if (ferror(out) != 0)
 	{
-		fprintf(stderr, gettext("%s: can't write output.\n"), vbasename);
+		fprintf(stderr, "%s: can't write output.\n", vbasename);
 		
 		return(255);
 	}

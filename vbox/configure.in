@@ -6,12 +6,6 @@ AC_INIT(src/vboxgetty.h)
 AC_CONFIG_HEADER(src/config.h)
 
 dnl #------------------------------------------------------------------------#
-dnl # Set of available languages:                                            #
-dnl #------------------------------------------------------------------------#
-
-ALL_LINGUAS="de"
-
-dnl #------------------------------------------------------------------------#
 dnl # Some defaults:                                                         #
 dnl #------------------------------------------------------------------------#
 
@@ -22,8 +16,8 @@ dnl # Version of the vbox package. Theres no need to change this ;-)         #
 dnl #------------------------------------------------------------------------#
 
 PACKAGE="vbox"
-VERSION="2.0.0 BETA 2"
-VERDATE="24-Apr-97"
+VERSION="2.0.0 BETA 3"
+VERDATE="01-May-97"
 
 AC_DEFINE_UNQUOTED(PACKAGE, "${PACKAGE}")
 AC_DEFINE_UNQUOTED(VERSION, "${VERSION}")
@@ -76,7 +70,6 @@ dnl #------------------------------------------------------------------------#
 dnl # Checks for needed external packages:                                   #
 dnl #------------------------------------------------------------------------#
 
-GND_PACKAGE_GETTEXT
 GND_PACKAGE_NCURSES
 GND_PACKAGE_TCL
 
@@ -195,23 +188,6 @@ AC_MSG_RESULT(${ISDN_GLOBAL_CONFIG})
 
 AC_DEFINE_UNQUOTED(I4LCONFDIR, "${ISDN_GLOBAL_CONFIG}")
 
-   dnl #==================#
-   dnl # --with-localedir #
-   dnl #==================#
-
-AC_MSG_CHECKING(where the message catalogs are stored)
-
-VBOX_LOCALE_DIR="/usr/share/locale"
-
-AC_ARG_WITH(modir,
-	[  --with-localedir=DIR     directory to install catalogs [/usr/share/locale] ],
-	VBOX_LOCALE_DIR=${withval}
-)
-
-AC_MSG_RESULT(${VBOX_LOCALE_DIR})
-
-AC_SUBST(VBOX_LOCALE_DIR)
-
 dnl #------------------------------------------------------------------------#
 dnl # Check and optimize compiler flags:                                     #
 dnl #------------------------------------------------------------------------#
@@ -253,7 +229,3 @@ dnl # Creates output files:                                                  #
 dnl #------------------------------------------------------------------------#
 
 AC_OUTPUT(Makefile src/Makefile)
-
-
-
-

@@ -1,5 +1,5 @@
 /*
-** $Id: rcvbox.c,v 1.4 1997/03/18 12:36:50 michael Exp $
+** $Id: rcvbox.c,v 1.5 1997/05/10 10:58:47 michael Exp $
 **
 ** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
 */
@@ -120,7 +120,7 @@ static int vboxrc_parse_time(char *timestr)
 	time_t	timesecsbeg;
 	time_t	timesecsend;
 
-	log(L_DEBUG, gettext("Parsing time(s) \"%s\"...\n"), timestr);
+	log(L_DEBUG, "Parsing time(s) \"%s\"...\n", timestr);
 
 	xstrncpy(timestring, timestr, VBOXRC_MAX_RCLINE);
 
@@ -131,14 +131,14 @@ static int vboxrc_parse_time(char *timestr)
 
 	if (strcmp(timestring, "*") == 0)
 	{
-		log(L_DEBUG, gettext("Range **:**:** - **:**:** (%s): match.\n"), timevaluenow);
+		log(L_DEBUG, "Range **:**:** - **:**:** (%s): match.\n", timevaluenow);
 		
 		returnok();
 	}
 	
 	if ((strcmp(timestring, "!") == 0) || (strcmp(timestring, "-") == 0))
 	{
-		log(L_DEBUG, gettext("Range --:--:-- - --:--:-- (%s): don't match.\n"), timevaluenow);
+		log(L_DEBUG, "Range --:--:-- - --:--:-- (%s): don't match.\n", timevaluenow);
 		
 		returnerror();
 	}
@@ -168,24 +168,24 @@ static int vboxrc_parse_time(char *timestr)
 				vboxrc_return_timestr(timesecsend, timevalueend);
 				vboxrc_return_timestr(timenow    , timevaluenow);
 			
-				log_line(L_DEBUG, gettext("Range %s - %s (%s): "), timevaluebeg, timevalueend, timevaluenow);
+				log_line(L_DEBUG, "Range %s - %s (%s): ", timevaluebeg, timevalueend, timevaluenow);
 
 				if ((timenow >= timesecsbeg) && (timenow <= timesecsend))
 				{
-					log_text(L_DEBUG, gettext("match.\n"));
+					log_text(L_DEBUG, "match.\n");
 				
 					returnok();
 				}
-				else log_text(L_DEBUG, gettext("don't match.\n"));
+				else log_text(L_DEBUG, "don't match.\n");
 			}
-			else log(L_WARN, gettext("Bad time; start greater than end (%s-%s) - ignored...\n"), timebeg, timeend);
+			else log(L_WARN, "Bad time; start greater than end (%s-%s) - ignored...\n", timebeg, timeend);
 		}
-		else log(L_WARN, gettext("Bad time; can't convert timestring (%s-%s) - ignored...\n"), timebeg, timeend);
+		else log(L_WARN, "Bad time; can't convert timestring (%s-%s) - ignored...\n", timebeg, timeend);
 
 		timeptr = timenxt;
 	}
 
-	log(L_JUNK, gettext("String contains no matching time!\n"));
+	log(L_JUNK, "String contains no matching time!\n");
 
 	returnerror();
 }
@@ -207,18 +207,18 @@ static int vboxrc_parse_days(char *strdays)
 
 	xstrncpy(days, strdays, VBOXRC_MAX_RCLINE);
 
-	log(L_DEBUG, gettext("Parsing day(s) \"%s\"...\n"), days);
+	log(L_DEBUG, "Parsing day(s) \"%s\"...\n", days);
 
 	if (strcmp(days, "*") == 0)
 	{
-		log(L_DEBUG, gettext("Range *: match.\n"));
+		log(L_DEBUG, "Range *: match.\n");
 	
 		returnok();
 	}
 
 	if ((strcmp(days, "-") == 0) || (strcmp(days, "!") == 0))
 	{
-		log(L_DEBUG, gettext("Range -: don't match.\n"));
+		log(L_DEBUG, "Range -: don't match.\n");
 
 		returnerror();
 	}
@@ -227,7 +227,7 @@ static int vboxrc_parse_days(char *strdays)
 
 	if (!(timelocal = localtime(&currenttime)))
 	{
-		log(L_ERROR, gettext("Can't get local time (don't match)...\n"));
+		log(L_ERROR, "Can't get local time (don't match)...\n");
 		
 		returnerror();
 	}
@@ -236,7 +236,7 @@ static int vboxrc_parse_days(char *strdays)
 	{
 		if ((!isalpha(days[i])) && (days[i] != ','))
 		{
-			log(L_ERROR, gettext("Error in day string \"%s\" in line #%ld (don't match).\n"), days, setup.vboxrc->line);
+			log(L_ERROR, "Error in day string \"%s\" in line #%ld (don't match).\n", days, setup.vboxrc->line);
 
 			returnerror();
 		}
@@ -257,11 +257,11 @@ static int vboxrc_parse_days(char *strdays)
 			{
 				if (d == timelocal->tm_wday)
 				{
-					log(L_DEBUG, gettext("Range %s: match.\n"), beg);
+					log(L_DEBUG, "Range %s: match.\n", beg);
 
 					returnok();
 				}
-				else log(L_DEBUG, gettext("Range %s: don't match.\n"), beg);
+				else log(L_DEBUG, "Range %s: don't match.\n", beg);
 			}
 
 			d++;
@@ -273,7 +273,7 @@ static int vboxrc_parse_days(char *strdays)
 		beg = nxt;
 	}
 
-	log(L_JUNK, gettext("String contains no matching day!\n"));
+	log(L_JUNK, "String contains no matching day!\n");
 
 	returnerror();
 }
@@ -286,7 +286,7 @@ static int vboxrc_goto_section(char *section)
 {
 	char line[VBOXRC_MAX_RCLINE + 1];
 
-	log(L_JUNK, gettext("Jumping to section \"%s\"...\n"), section);
+	log(L_JUNK, "Jumping to section \"%s\"...\n", section);
 
 	setup.vboxrc = streamio_reopen(setup.vboxrc);
    
@@ -312,7 +312,7 @@ int vboxrc_get_rings_to_wait(void)
 	char *stop;
 	int	need;
                
-	log(L_DEBUG, gettext("Getting number of rings to wait before answer call...\n"));
+	log(L_DEBUG, "Getting number of rings to wait before answer call...\n");
 
 	need = VBOXRC_DEF_RINGS;
 
@@ -328,7 +328,7 @@ int vboxrc_get_rings_to_wait(void)
 
 			if ((!time) || (!ring) || (!days))
 			{
-				log(L_ERROR, gettext("Error in vboxrc line #%ld (ignored).\n"), setup.vboxrc->line);
+				log(L_ERROR, "Error in vboxrc line #%ld (ignored).\n", setup.vboxrc->line);
 
 				continue;
 			}
@@ -339,22 +339,22 @@ int vboxrc_get_rings_to_wait(void)
 
 				if (*stop != 0)
 				{
-					log(L_ERROR, gettext("Bad number of rings in line #%ld (ignored).\n"), setup.vboxrc->line);
+					log(L_ERROR, "Bad number of rings in line #%ld (ignored).\n", setup.vboxrc->line);
 
 					need = VBOXRC_DEF_RINGS;
 				}
 				else
 				{
-					log(L_DEBUG, gettext("Call will be answered after %ld rings...\n"), need);
+					log(L_DEBUG, "Call will be answered after %ld rings...\n", need);
 
 					return(need);
 				}
 			}
 		}
 	}
-	else log(L_WARN, gettext("Unable to locate section \"[RINGS]\" (useing defaults)...\n"));
+	else log(L_WARN, "Unable to locate section \"[RINGS]\" (useing defaults)...\n");
 
-	log(L_WARN, gettext("Call will be answered after %ld rings (default)...\n"), need);
+	log(L_WARN, "Call will be answered after %ld rings (default)...\n", need);
 
 	return(need);
 }
@@ -372,7 +372,7 @@ void vboxrc_find_user_from_id(char *id)
 	char *owner;
 	char *dummy;
 
-	log(L_DEBUG, gettext("Searching user with caller number \"%s\"...\n"), id);
+	log(L_DEBUG, "Searching user with caller number \"%s\"...\n", id);
 
 	if (vboxrc_goto_section("[CALLERIDS]"))
 	{
@@ -399,7 +399,7 @@ void vboxrc_find_user_from_id(char *id)
 
 			if ((!owner) || (!phone) || (!table))
 			{
-				log(L_ERROR, gettext("Error in vboxrc line #%ld (ignored).\n"), setup.vboxrc->line);
+				log(L_ERROR, "Error in vboxrc line #%ld (ignored).\n", setup.vboxrc->line);
 
 				continue;
 			}
@@ -415,16 +415,16 @@ void vboxrc_find_user_from_id(char *id)
 
 				xstrncpy(setup.voice.name, owner, VOICE_MAX_NAME);
 
-				log(L_DEBUG, gettext("Caller number match user \"%s\"...\n"), setup.voice.name);
-				log(L_DEBUG, gettext("Section \"[%s]\" will be used...\n"), setup.voice.section);
+				log(L_DEBUG, "Caller number match user \"%s\"...\n", setup.voice.name);
+				log(L_DEBUG, "Section \"[%s]\" will be used...\n", setup.voice.section);
 
 				return;
 			}
 		}
 	}
-	else log(L_WARN, gettext("Unable to locate section \"[CALLERIDS]\" (useing defaults)...\n"));
+	else log(L_WARN, "Unable to locate section \"[CALLERIDS]\" (useing defaults)...\n");
 
-	log(L_WARN, gettext("Section \"[%s]\" will be used (default)...\n"), setup.voice.section);
+	log(L_WARN, "Section \"[%s]\" will be used (default)...\n", setup.voice.section);
 }
 
 /*************************************************************************/
@@ -444,7 +444,7 @@ void vboxrc_find_user_section(char *section)
 
 	sprintf(line, "[%s]", section);
 
-	log(L_DEBUG, gettext("Parsing settings from section \"%s\"...\n"), line);
+	log(L_DEBUG, "Parsing settings from section \"%s\"...\n", line);
 
 	correct = FALSE;
 
@@ -461,7 +461,7 @@ void vboxrc_find_user_section(char *section)
 
 			if ((!time) || (!text) || (!strg) || (!days))
 			{
-				log(L_ERROR, gettext("Error in vboxrc line #%ld (ignored).\n"), setup.vboxrc->line);
+				log(L_ERROR, "Error in vboxrc line #%ld (ignored).\n", setup.vboxrc->line);
 
 				continue;
 			}
@@ -472,7 +472,7 @@ void vboxrc_find_user_section(char *section)
 
 				if ((*stop != 0) || (setup.voice.recordtime < 0))
 				{
-					log(L_ERROR, gettext("Bad record time in line #%ld (using defaults).\n"), setup.vboxrc->line);
+					log(L_ERROR, "Bad record time in line #%ld (using defaults).\n", setup.vboxrc->line);
 
 					setup.voice.recordtime = 60;
 				}
@@ -487,7 +487,7 @@ void vboxrc_find_user_section(char *section)
 
 				while ((text = strtok(NULL, "\t ")))
 				{
-					log(L_JUNK, gettext("Found Flag \"%s\"...\n"), text);
+					log(L_JUNK, "Found Flag \"%s\"...\n", text);
 
 					if (strcasecmp(text, "NOANSWER"    ) == 0) setup.voice.doanswer	= FALSE;
 					if (strcasecmp(text, "NORECORD"    ) == 0) setup.voice.dorecord	= FALSE;
@@ -505,7 +505,7 @@ void vboxrc_find_user_section(char *section)
 
 							if ((*stop != 0) || (setup.voice.rings < 0))
 							{
-								log(L_ERROR, gettext("Bad flag RINGS in line #%ld (ignored).\n"), setup.vboxrc->line);
+								log(L_ERROR, "Bad flag RINGS in line #%ld (ignored).\n", setup.vboxrc->line);
 
 								setup.voice.rings = -1;
 							}
@@ -522,7 +522,7 @@ void vboxrc_find_user_section(char *section)
 
 							if ((*stop != 0) || (setup.voice.ringsonnew < 0))
 							{
-								log(L_ERROR, gettext("Bad flag TOLLRINGS in line #%ld (ignored).\n"), setup.vboxrc->line);
+								log(L_ERROR, "Bad flag TOLLRINGS in line #%ld (ignored).\n", setup.vboxrc->line);
 
 								setup.voice.ringsonnew = -1;
 							}
@@ -562,34 +562,34 @@ void vboxrc_find_user_section(char *section)
 			}
 		}
 	}
-	else log(L_WARN, gettext("Unable to locate section \"%s\" (useing defaults)...\n"), line);
+	else log(L_WARN, "Unable to locate section \"%s\" (useing defaults)...\n", line);
 
 	if (!correct)
 	{
-		log(L_WARN, gettext("No (or not all) settings found (using defaults)...\n"));
+		log(L_WARN, "No (or not all) settings found (using defaults)...\n");
 	}
 
-	log(L_JUNK, gettext("Settings: Message \"%s\".\n"), setup.voice.standardmsg);
-	log(L_JUNK, gettext("Settings: Beep \"%s\".\n"), setup.voice.beepmsg);
-	log(L_JUNK, gettext("Settings: Timeout \"%s\".\n"), setup.voice.timeoutmsg);
-	log(L_JUNK, gettext("Settings: Script \"%s\".\n"), setup.voice.tclscriptname);
+	log(L_JUNK, "Settings: Message \"%s\".\n", setup.voice.standardmsg);
+	log(L_JUNK, "Settings: Beep \"%s\".\n", setup.voice.beepmsg);
+	log(L_JUNK, "Settings: Timeout \"%s\".\n", setup.voice.timeoutmsg);
+	log(L_JUNK, "Settings: Script \"%s\".\n", setup.voice.tclscriptname);
 	
 	if (setup.voice.rings > 0)
 	{
-		log(L_JUNK, gettext("Settings: Rings changed to %d.\n"), setup.voice.rings);
+		log(L_JUNK, "Settings: Rings changed to %d.\n", setup.voice.rings);
 	}
-	else log(L_JUNK, gettext("Settings: Rings not changed.\n"));
+	else log(L_JUNK, "Settings: Rings not changed.\n");
 
 	if (setup.voice.ringsonnew > 0)
 	{
-		log(L_JUNK, gettext("Settings: Rings changed to %d if new message exist.\n"), setup.voice.ringsonnew);
-		log(L_JUNK, gettext("Settings: Check for new messages in \"%s\".\n"), setup.voice.checknewpath);
+		log(L_JUNK, "Settings: Rings changed to %d if new message exist.\n", setup.voice.ringsonnew);
+		log(L_JUNK, "Settings: Check for new messages in \"%s\".\n", setup.voice.checknewpath);
 	}
 
-	log(L_JUNK, gettext("Settings: %d secs record time.\n"), setup.voice.recordtime);
-	log(L_JUNK, gettext("Settings: %s.\n"), setup.voice.doanswer ? gettext("Answer call") : gettext("Don't answer call"));
-	log(L_JUNK, gettext("Settings: %s.\n"), setup.voice.dorecord ? gettext("Record a message") : gettext("Don't record a message"));
-	log(L_JUNK, gettext("Settings: %s.\n"), setup.voice.domessage ? gettext("Play standard message") : gettext("Don't play standard message"));
-	log(L_JUNK, gettext("Settings: %s.\n"), setup.voice.dobeep ? gettext("Play beep message") : gettext("Don't play beep message"));
-	log(L_JUNK, gettext("Settings: %s.\n"), setup.voice.dotimeout ? gettext("Play timeout message") : gettext("Don't play timeout message"));
+	log(L_JUNK, "Settings: %d secs record time.\n", setup.voice.recordtime);
+	log(L_JUNK, "Settings: %s.\n", setup.voice.doanswer ? "Answer call" : "Don't answer call");
+	log(L_JUNK, "Settings: %s.\n", setup.voice.dorecord ? "Record a message" : "Don't record a message");
+	log(L_JUNK, "Settings: %s.\n", setup.voice.domessage ? "Play standard message" : "Don't play standard message");
+	log(L_JUNK, "Settings: %s.\n", setup.voice.dobeep ? "Play beep message" : "Don't play beep message");
+	log(L_JUNK, "Settings: %s.\n", setup.voice.dotimeout ? "Play timeout message" : "Don't play timeout message");
 }

@@ -1,5 +1,5 @@
 /*
-** $Id: vboxgetty.c,v 1.5 1997/03/18 12:36:55 michael Exp $
+** $Id: vboxgetty.c,v 1.6 1997/05/10 10:58:59 michael Exp $
 **
 ** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
 */
@@ -97,31 +97,23 @@ void main(int argc, char **argv)
 
 	if (language) setenv("LANG", language, 1);
 
-#if HAVE_LOCALE_H
-	setlocale(LC_ALL, "");
-#endif
-
-#if ENABLE_NLS
-	textdomain(PACKAGE);
-#endif
-
 	if (getuid() != 0)
 	{
-		log(L_STDERR, gettext("%s: must be run by root!\n"), vbasename);
+		log(L_STDERR, "%s: must be run by root!\n", vbasename);
 
 		exit(5);
 	}
 
 	if (access(device, W_OK|R_OK|F_OK) != 0)
 	{
-		log(L_STDERR, gettext("%s: device \"%s\" is not accessable.\n"), vbasename, device);
+		log(L_STDERR, "%s: device \"%s\" is not accessable.\n", vbasename, device);
 
 		exit(5);
 	}
 
 	if (access(usevrc, R_OK|F_OK) != 0)
 	{
-		log(L_STDERR, gettext("%s: Setup \"%s\" doesn't exist.\n"), vbasename, usevrc);
+		log(L_STDERR, "%s: Setup \"%s\" doesn't exist.\n", vbasename, usevrc);
 
 		exit(5);
 	}
@@ -142,17 +134,9 @@ void main(int argc, char **argv)
 
 static void version(void)
 {
-#if HAVE_LOCALE_H
-	setlocale(LC_ALL, "");
-#endif
-
-#if ENABLE_NLS
-	textdomain(PACKAGE);
-#endif
-
-	fprintf(stderr, gettext("\n"));
-	fprintf(stderr, gettext("%s version %s (%s)\n"), vbasename, VERSION, VERDATE);
-	fprintf(stderr, gettext("\n"));
+	fprintf(stderr, "\n");
+	fprintf(stderr, "%s version %s (%s)\n", vbasename, VERSION, VERDATE);
+	fprintf(stderr, "\n");
 	
 	exit(1);
 }
@@ -163,23 +147,14 @@ static void version(void)
 
 static void usage(void)
 {
-#if HAVE_LOCALE_H
-	setlocale(LC_ALL, "");
-#endif
-
-#if ENABLE_NLS
-	textdomain(PACKAGE);
-#endif
-
-	fprintf(stderr, gettext("\n"));
-	fprintf(stderr, gettext("Usage: %s OPTION [ OPTION ] [ ... ]\n"), vbasename);
-	fprintf(stderr, gettext("\n"));
-	fprintf(stderr, gettext("-f, --file FILE    Overwrites \"%s\".\n"), GETTYRC);
-	fprintf(stderr, gettext("-d, --device TTY   Use device TTY for modem operations [required].\n"));
-	fprintf(stderr, gettext("-l, --language     Overwrites environment LANG.\n"));
-	fprintf(stderr, gettext("-h, --help         Displays this short help.\n"));
-	fprintf(stderr, gettext("-v, --version      Displays the package version.\n"));
-	fprintf(stderr, gettext("\n"));
+	fprintf(stderr, "\n");
+	fprintf(stderr, "Usage: %s OPTION [ OPTION ] [ ... ]\n", vbasename);
+	fprintf(stderr, "\n");
+	fprintf(stderr, "-f, --file FILE    Overwrites \"%s\".\n", GETTYRC);
+	fprintf(stderr, "-d, --device TTY   Use device TTY for modem operations [required].\n");
+	fprintf(stderr, "-h, --help         Displays this short help.\n");
+	fprintf(stderr, "-v, --version      Displays the package version.\n");
+	fprintf(stderr, "\n");
 	
 	exit(1);
 }
@@ -212,9 +187,9 @@ static void main_program(void)
 							modemstate = MODEM_STATE_EXIT;
 							modeminits = 0;
 
-							log(L_FATAL, gettext("Exit program while bad init limit are reached.\n"));
+							log(L_FATAL, "Exit program while bad init limit are reached.\n");
 						}
-						else log(L_WARN, gettext("Bad initialization - Program will exist on %d trys!\n"), (setup.modem.badinitsexit - modeminits));
+						else log(L_WARN, "Bad initialization - Program will exist on %d trys!\n", (setup.modem.badinitsexit - modeminits));
 					}
 				}
 				else
@@ -240,7 +215,7 @@ static void main_program(void)
 
 			case MODEM_STATE_CHECK:
 			
-				log(L_DEBUG, gettext("Checking if modem is still alive...\n"));
+				log(L_DEBUG, "Checking if modem is still alive...\n");
 
 				if (!ctrl_ishere(setup.spool, CTRL_NAME_STOP))
 				{
@@ -253,7 +228,7 @@ static void main_program(void)
 				}
 				else
 				{
-					log(L_INFO, gettext("Control file \"%s\" exists - program will quit...\n"), CTRL_NAME_STOP);
+					log(L_INFO, "Control file \"%s\" exists - program will quit...\n", CTRL_NAME_STOP);
 
 					modemstate = MODEM_STATE_EXIT;
 				}
@@ -291,11 +266,11 @@ static void answer_call(void)
 {
 	char run[PATH_MAX + 1];
 
-	log(L_INFO, gettext("Answering call...\n"));
+	log(L_INFO, "Answering call...\n");
 
 	if (modem_command("ATA", "VCON|CONNECT") <= 0)
 	{
-		log(L_ERROR, gettext("Can't answer call -- hanging up...\n"));
+		log(L_ERROR, "Can't answer call -- hanging up...\n");
 		
 		return;
 	}
@@ -320,11 +295,11 @@ static int check_spool_space(unsigned long need)
 	struct statfs stat;
 	unsigned long have;
 
-	log(L_DEBUG, gettext("Checking free space on \"%s\"...\n"), setup.spool);
+	log(L_DEBUG, "Checking free space on \"%s\"...\n", setup.spool);
 
 	if (need <= 0)
 	{
-		log(L_WARN, gettext("Free disc space check disabled!\n"));
+		log(L_WARN, "Free disc space check disabled!\n");
 
 		returnok();
 	}
@@ -333,18 +308,18 @@ static int check_spool_space(unsigned long need)
 	{
 		have = (stat.f_bfree * stat.f_bsize);
 
-		log_line(L_JUNK, gettext("%ld bytes available; %ld bytes needed... "), have, need);
+		log_line(L_JUNK, "%ld bytes available; %ld bytes needed... ", have, need);
 
 		if (have >= need)
 		{
-			log_text(L_JUNK, gettext("enough.\n"));
+			log_text(L_JUNK, "enough.\n");
 
 			returnok();
 		}
 
-		log_text(L_JUNK, gettext("not enough!\n"));
+		log_text(L_JUNK, "not enough!\n");
 	}
-	else log(L_ERROR, gettext("Can't get statistic about disc space!"));
+	else log(L_ERROR, "Can't get statistic about disc space!");
 
 	returnerror();
 }
@@ -357,7 +332,7 @@ void block_all_signals(void)
 {
 	int i;
 
-	log(L_DEBUG, gettext("Blocking all signals (0-%d)...\n"), NSIG);
+	log(L_DEBUG, "Blocking all signals (0-%d)...\n", NSIG);
 	
 	for (i = 0; i < NSIG; i++) signal(i, SIG_IGN);
 }

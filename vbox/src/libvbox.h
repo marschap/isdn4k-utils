@@ -1,5 +1,5 @@
 /*
-** $Id: libvbox.h,v 1.6 1997/04/28 16:51:57 michael Exp $
+** $Id: libvbox.h,v 1.7 1997/05/10 10:58:43 michael Exp $
 **
 ** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
 */
@@ -23,19 +23,19 @@
 #define VBOXD_VAL_MESSAGE        "182"                   /* Get a message */
 #define VBOXD_VAL_HEADER         "183"            /* Get a message header */
 #define VBOXD_VAL_LIST           "184"                   /* List messages */
-#define VBOXD_VAL_STATUSCTRL     "185"
-#define VBOXD_VAL_CREATECTRL     "186"
-#define VBOXD_VAL_REMOVECTRL     "187"
-#define VBOXD_VAL_TOGGLE         "188"
+#define VBOXD_VAL_STATUSCTRL     "185"                  /* Control status */
+#define VBOXD_VAL_CREATECTRL     "186"                  /* Create control */
+#define VBOXD_VAL_REMOVECTRL     "187"                  /* Remove control */
+#define VBOXD_VAL_TOGGLE         "188"         /* Toggle message new flag */
 
 #define VBOXD_VAL_SERVEROK       "280"                    /* Server ready */
 #define VBOXD_VAL_SERVERQUIT     "281"                     /* Server quit */
 #define VBOXD_VAL_ACCESSOK       "282"                       /* Access ok */
 #define VBOXD_VAL_LOGINOK        "283"                   /* User login ok */
-#define VBOXD_VAL_STATUSCTRLOK   "284"
-#define VBOXD_VAL_CREATECTRLOK   "285"
-#define VBOXD_VAL_REMOVEVTRLOK   "286"
-#define VBOXD_VAL_DELETEOK       "287"
+#define VBOXD_VAL_STATUSCTRLOK   "284"               /* Control status ok */
+#define VBOXD_VAL_CREATECTRLOK   "285"               /* Create control ok */
+#define VBOXD_VAL_REMOVECTRLOK   "286"               /* Remove control ok */
+#define VBOXD_VAL_DELETEOK       "287"               /* Delete message ok */
 
 #define VBOXD_VAL_ACCESSDENIED   "580"                       /* No access */
 #define VBOXD_VAL_BADARGS        "583"     /* Not enough or too many args */
@@ -72,10 +72,13 @@ extern char *vboxd_get_message(void);
 
 /** Defines ***************************************************************/
 
-#define CTRL_NAME_STOP			"vboxctrl-stop"
-#define CTRL_NAME_ANSWERNOW	"vboxctrl-answernow"
-#define CTRL_NAME_ANSWERALL	"vboxctrl-answerall"
-#define CTRL_NAME_REJECT		"vboxctrl-reject"
+#define CTRL_NAME_MAGIC       "vboxctrl-"
+
+#define CTRL_NAME_STOP			CTRL_NAME_MAGIC "stop"
+#define CTRL_NAME_ANSWERNOW	CTRL_NAME_MAGIC "answernow"
+#define CTRL_NAME_ANSWERALL	CTRL_NAME_MAGIC "answerall"
+#define CTRL_NAME_REJECT		CTRL_NAME_MAGIC "reject"
+#define CTRL_NAME_AUDIO       CTRL_NAME_MAGIC "audio"
 
 #define CTRL_MODE_REMOVE		(0)
 #define CTRL_MODE_CREATE		(1)
@@ -128,7 +131,6 @@ typedef struct
 
 extern int header_put(int, vaheader_t *);
 extern int header_get(int, vaheader_t *);
-
 extern int get_nr_messages(char *, int);
 extern int get_message_ptime(int, int);
 
@@ -136,7 +138,7 @@ extern int get_message_ptime(int, int);
 /** MISC UTILS                                                           **/
 /**************************************************************************/
 
-/** Defines **************************************************************/
+/** Defines ***************************************************************/
 
 #ifdef TRUE
 #undef TRUE

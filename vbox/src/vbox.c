@@ -1,5 +1,5 @@
 /*
-** $Id: vbox.c,v 1.4 1997/04/28 16:52:02 michael Exp $
+** $Id: vbox.c,v 1.5 1997/05/10 10:58:50 michael Exp $
 **
 ** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
 */
@@ -63,11 +63,12 @@ static int   forcepass  = FALSE;
 
 static struct statusled statusleds[] =
 {
-	{  1, CTRL_NAME_STOP     , NULL },
-   {  5, CTRL_NAME_REJECT   , NULL },
-	{  7, CTRL_NAME_ANSWERNOW, NULL },
-	{  9, CTRL_NAME_ANSWERALL, NULL },
-   { 11, NULL               , NULL }
+	{  1, CTRL_NAME_STOP     , 0, "" },
+   {  5, CTRL_NAME_REJECT   , 0, "" },
+	{  7, CTRL_NAME_ANSWERNOW, 0, "" },
+	{  9, CTRL_NAME_ANSWERALL, 0, "" },
+	{ 11, CTRL_NAME_AUDIO    , 0, "" },
+   { -1, NULL               , 0, "" }
 };
 
 static struct colortable colortable[] =
@@ -83,6 +84,10 @@ static struct colortable colortable[] =
    { "C_LIST"         ,  8, COLOR_WHITE , COLOR_BLACK, A_NORMAL, A_NORMAL         },
 	{ "C_LIST_SELECTED",  9, COLOR_WHITE , COLOR_RED  , A_NORMAL, A_REVERSE        },
 	{ "C_INFOTEXT"     , 10, COLOR_GREEN , COLOR_BLACK, A_NORMAL, A_NORMAL         },
+	{ "C_HELP"         , 11, COLOR_WHITE , COLOR_BLUE , A_NORMAL, A_REVERSE        },
+   { "C_HELP_BORDER"  , 12, COLOR_YELLOW, COLOR_BLUE , A_BOLD  , A_REVERSE|A_BOLD },
+	{ "C_STATUS"       , 13, COLOR_WHITE , COLOR_RED  , A_NORMAL, A_REVERSE        },
+	{ "C_STATUS_BORDER", 14, COLOR_YELLOW, COLOR_RED  , A_BOLD  , A_REVERSE|A_BOLD },
    { NULL             , -1, 0           , 0          , 0       , 0                }
 };
 
@@ -141,6 +146,9 @@ static void   parse_vboxrc(void);
 static void   parse_colors(char *, char *);
 static void   usage(void);
 static void   version(void);
+static void   help(void);
+static void   status(void);
+static void   statuscontrol(int);
 static chtype color(int);
 
 /**************************************************************************/
@@ -221,21 +229,21 @@ void main(int argc, char **argv)
 	}
 
 	/*
-	 * Check if login and password are given. If now, we prompt for user
+	 * Check if login and password are given. If not, we prompt for user
 	 * input.
 	 */
 
 	if ((!*loginname) || (!*loginpass) || (forcepass))
 	{
-		printf(gettext("\n"));
-		printf(gettext("Username: "));
+		printf("\n");
+		printf("Username: ");
 		fflush(stdout);
 
 		fgets(loginname, VBOX_MAX_USERNAME, stdin);
 
 		loginname[strlen(loginname) - 1] = '\0';
 
-		if ((pass = getpass(gettext("Password: "))))
+		if ((pass = getpass("Password: ")))
 		{
 			xstrncpy(loginpass, pass, VBOX_MAX_PASSWORD);
 
@@ -243,13 +251,13 @@ void main(int argc, char **argv)
 		}
 		else *loginpass = '\0';
 
-		printf(gettext("\n"));
+		printf("\n");
 		fflush(stdout);
 	}
 
 	if ((!loginname) || (!*loginname) || (!loginpass) || (!*loginpass))
 	{
-		fprintf(stderr, gettext("%s: you must enter a login name and a password.\n"), vbasename);
+		fprintf(stderr, "%s: you must enter a login name and a password.\n", vbasename);
 
 		exit(5);
 	}
@@ -263,7 +271,7 @@ void main(int argc, char **argv)
 	{
 		if (!(vboxdserv = getservbyname("vboxd", "tcp")))
 		{
-			fprintf(stderr, gettext("%s: can't get service 'vboxd/tcp' - please read the manual.\n"), vbasename);
+			fprintf(stderr, "%s: can't get service 'vboxd/tcp' - please read the manual.\n", vbasename);
 
 			exit(5);
 		}
@@ -271,11 +279,11 @@ void main(int argc, char **argv)
 		vboxdport = ntohs(vboxdserv->s_port);
 	}
 
-	fprintf(stderr, gettext("Connecting to '%s'...\n"), vboxdname);
+	fprintf(stderr, "Connecting to '%s:%d'...\n", vboxdname, vboxdport);
 
 	if (vboxd_connect(vboxdname, vboxdport) != VBOXC_ERR_OK)
 	{
-		fprintf(stderr, gettext("%s: can't connect to '%s'.\n"), vbasename, vboxdname);
+		fprintf(stderr, "%s: can't connect to '%s:%d'.\n", vbasename, vboxdname, vboxdport);
 
 		exit(5);
 	}
@@ -284,7 +292,7 @@ void main(int argc, char **argv)
 	{
 		memset(loginpass, '\0', VBOX_MAX_PASSWORD);
 
-		fprintf(stderr, gettext("%s: can't login as '%s'.\n"), vbasename, loginname);
+		fprintf(stderr, "%s: can't login as '%s'.\n", vbasename, loginname);
 
 		vboxd_disconnect();
 		exit(5);
@@ -292,8 +300,7 @@ void main(int argc, char **argv)
 
 	memset(loginpass, '\0', VBOX_MAX_PASSWORD);
 
-	fprintf(stderr, gettext("Transfering message list..."));
-	fprintf(stderr, gettext("\n"));
+	fprintf(stderr, "Transfering message list...\n");
 
 	get_message_list();
 
@@ -324,11 +331,11 @@ void main(int argc, char **argv)
 
 		exit_screen();
 	}
-	else fprintf(stderr, gettext("%s: can't initialize screen.\n"), vbasename);
+	else fprintf(stderr, "%s: can't initialize screen.\n", vbasename);
 
 	if (!dimension)
 	{
-		fprintf(stderr, gettext("%s: screen dimensions too small - need 80x24 or greater.\n"), vbasename);
+		fprintf(stderr, "%s: screen dimensions too small - need 80x24 or greater.\n", vbasename);
 	}
 
 	vboxd_disconnect();
@@ -342,19 +349,19 @@ void main(int argc, char **argv)
 
 static void usage(void)
 {
-	fprintf(stderr, gettext("\n"));
-	fprintf(stderr, gettext("Usage: %s OPTION [ OPTION ] [ ... ]\n"), vbasename);
-	fprintf(stderr, gettext("\n"));
-	fprintf(stderr, gettext("-m, --hostname NAME   Connect to host NAME (localhost).\n"));
-	fprintf(stderr, gettext("-p, --port PORT       Connect to port PORT (vboxd/tcp).\n"));
-	fprintf(stderr, gettext("-c, --playcmd PROG    Use PROG to play messages (%s).\n"), playerbin);
-	fprintf(stderr, gettext("-r, --reload SECS     Reload message list all SECS seconds (%d).\n"), rloadtime);
-	fprintf(stderr, gettext("-o, --mono            Force mono color (color if terminal have).\n"));
-	fprintf(stderr, gettext("-f, --force           Force login prompt.\n"));
-	fprintf(stderr, gettext("-s, --noledstatus     Don't get led status from server (get status).\n"));
-	fprintf(stderr, gettext("-v, --version         Display program version.\n"));
-	fprintf(stderr, gettext("-h, --help            Display usage message.\n"));
-	fprintf(stderr, gettext("\n"));
+	fprintf(stderr, "\n");
+	fprintf(stderr, "Usage: %s OPTION [ OPTION ] [ ... ]\n", vbasename);
+	fprintf(stderr, "\n");
+	fprintf(stderr, "-m, --hostname NAME   Connect to host NAME (localhost).\n");
+	fprintf(stderr, "-p, --port PORT       Connect to port PORT (vboxd/tcp).\n");
+	fprintf(stderr, "-c, --playcmd PROG    Use PROG to play messages (%s).\n", playerbin);
+	fprintf(stderr, "-r, --reload SECS     Reload message list all SECS seconds (%d).\n", rloadtime);
+	fprintf(stderr, "-o, --mono            Force mono color (color if terminal have).\n");
+	fprintf(stderr, "-f, --force           Force login prompt.\n");
+	fprintf(stderr, "-s, --noledstatus     Don't get led status from server (get status).\n");
+	fprintf(stderr, "-v, --version         Display program version.\n");
+	fprintf(stderr, "-h, --help            Display usage message.\n");
+	fprintf(stderr, "\n");
 
 	exit(1);
 }
@@ -365,9 +372,9 @@ static void usage(void)
 
 static void version(void)
 {
-	fprintf(stderr, gettext("\n"));
-	fprintf(stderr, gettext("%s version %s (%s)\n"), vbasename, VERSION, VERDATE);
-	fprintf(stderr, gettext("\n"));
+	fprintf(stderr, "\n");
+	fprintf(stderr, "%s version %s (%s)\n", vbasename, VERSION, VERDATE);
+	fprintf(stderr, "\n");
 
 	exit(1);
 }
@@ -493,12 +500,272 @@ static void process_input(void)
 				draw_bottom_bar();
 				break;
 
+			case 'H':
+			case 'h':
+				help();
+				break;
+
+			case 'S':
+			case 's':
+				status();
+				break;
+
 			default:
 				beep();
 				break;
 		}
 	}
 }
+
+/**************************************************************************/
+/** status(): Displays status window.                                    **/
+/**************************************************************************/
+
+static void status(void)
+{
+	WINDOW *win;
+	PANEL  *pan;
+	int     c;
+	int     noop;
+	int     done;
+	int     max;
+   int     led;
+	int     w;
+	int     h;
+	char   *b;
+
+	if (ledstatus)
+	{
+		led = 0;
+
+		while (statusleds[led].name) led++;
+
+		h = (4 + led);
+		w = 48;
+		b = " Press 'Q' to quit ";
+
+		if ((win = newwin(h, w, 1, 0)))
+		{
+			if ((pan = new_panel(win)))
+			{
+				wbkgdset(win, color(13));
+				wclear(win);
+				wattrset(win, color(14));
+				box(win, ACS_VLINE, ACS_HLINE);
+
+				mvwprintw(win, (h - 1), ((w - strlen(b)) / 2), "%s", b);
+
+				wattrset(win, color(13));
+
+				max = 0;
+				led = 0;
+
+				while (statusleds[led].name)
+				{
+					max = led;
+
+					mvwprintw(win, 0, statusleds[led].x, "%d", led);
+					mvwprintw(win, (2 + led), 3, "%d) %s '%s' control...", led, (statusleds[led].status ? "Remove" : "Create"), statusleds[led].name);
+
+					led++;
+				}
+
+				wmove(win, (h - 2), (w - 2));
+				update_panels();
+				wrefresh(win);
+
+				done = FALSE;
+				noop = 0;
+
+				cbreak();
+				noecho();
+				wtimeout(win, 1000);
+
+				while (!done)
+				{
+					switch ((c = wgetch(win)))
+					{
+						case ERR:
+							if (++noop > 30)
+							{
+								vboxd_put_message("NOOP");
+
+								noop = 0;
+							}
+							break;
+
+						case '0':
+						case '1':
+						case '2':
+						case '3':
+						case '4':
+						case '5':
+						case '6':
+						case '7':
+						case '8':
+						case '9':
+							c -= 48;
+
+							if ((c >= 0) && (c <= max))
+							{
+								statuscontrol(c);
+
+								done = TRUE;
+							}
+
+							break;
+
+						case 'Q':
+						case 'q':
+							done = TRUE;
+							break;
+					}
+				}
+
+				del_panel(pan);
+			}
+
+			delwin(win);
+		}
+	}
+	else message("\r\n", "You must enable 'ledstatus' first!%s", " [RETURN]");
+}
+
+/**************************************************************************/
+/** statuscontrol(): Removes or creates a control file.                  **/
+/**************************************************************************/
+
+static void statuscontrol(int nr)
+{
+	char *resp;
+	char *todo;
+	char *answer;
+	int   status;
+
+	status = statusleds[nr].status;
+
+	message("", "%s '%s'...", (status ? "Removing" : "Creating"), statusleds[nr].name);
+
+	if (status)
+	{
+		todo = "removectrl";
+		resp = VBOXD_VAL_REMOVECTRLOK;
+	}
+	else
+	{
+		todo = "createctrl";
+		resp = VBOXD_VAL_CREATECTRLOK;
+	}
+
+	vboxd_put_message("%s %s", todo, statusleds[nr].name);
+
+	if ((answer = vboxd_get_message()))
+	{
+		if (vboxd_test_response(resp))
+		{
+			if (answer[4] != '1') message("\r\n", "Can't %s '%s'! [RETURN]", (status ? "remove" : "create"), statusleds[nr].name);
+
+			draw_ctrl_status();
+		}
+	}
+
+	draw_bottom_bar();
+}
+
+/**************************************************************************/
+/** help(): Displays the help window.                                    **/
+/**************************************************************************/
+
+static void help(void)
+{
+	WINDOW *win;
+	PANEL  *pan;
+	int     h;
+   int     w;
+	char   *t;
+	char   *b;
+	int     n;
+	int     done;
+
+   w = 37;
+   h = 12;
+	n = 0;
+	t = " HELP ";
+   b = " Press 'Q' to quit ";
+
+	if ((win = newwin(h, w, ((LINES - h) / 2), ((COLS - w) / 2))))
+	{
+		if ((pan = new_panel(win)))
+		{
+			wbkgdset(win, color(11));
+			wclear(win);
+			wattrset(win, color(12));
+			box(win, ACS_VLINE, ACS_HLINE);
+
+			mvwprintw(win,       0, ((w - strlen(t)) / 2), "%s", t);
+			mvwprintw(win, (h - 1), ((w - strlen(b)) / 2), "%s", b);
+
+			wattrset(win, color(11));
+
+			mvwprintw(win,  2, 3, "RETURN             Play message");
+			mvwprintw(win,  3, 3, "R           Reload message list");
+			mvwprintw(win,  4, 3, "N            Toggle read/unread");
+			mvwprintw(win,  5, 3, "D        Toggle delete/undelete");
+			mvwprintw(win,  6, 3, "S                Status control");
+			mvwprintw(win,  7, 3, "I           Message information");
+			mvwprintw(win,  8, 3, "+/-                  Volume +/-");
+			mvwprintw(win,  9, 3, "Q                     Quit vbox");
+
+			update_panels();
+			wrefresh(win);
+			move((LINES - 2), 0);
+
+			cbreak();
+			noecho();
+			wtimeout(win, 1000);
+
+			done = FALSE;
+
+			while (!done)
+			{
+				switch (wgetch(win))
+				{
+					case ERR:
+						if (++n > 30)
+						{
+							vboxd_put_message("NOOP");
+
+							n = 0;
+						}
+						break;
+
+					case 'Q':
+					case 'q':
+						done = TRUE;
+						break;
+				}
+			}
+
+			del_panel(pan);
+		}
+
+		delwin(win);
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /**************************************************************************/
 /** parse_vboxrc(): Reads and parse ~/.vboxrc.                           **/
@@ -638,7 +905,7 @@ static void delete_selected_messages(void)
 
 		if (s > 0)
 		{
-			i = message("yn", gettext("Really delete all marked messages (y/n)? "));
+			i = message("yn", "Really delete all marked messages (y/n)? ");
 
 			if (i == 'y')
 			{
@@ -648,7 +915,7 @@ static void delete_selected_messages(void)
 
 					if (msgline->delete)
 					{
-						message("", gettext("Removing message #%d..."), i);
+						message("", "Removing message #%d...", i);
 
 						if (!delete_message(msgline->messagename)) break;
 					}
@@ -670,9 +937,9 @@ static int delete_message(char *name)
 	{
 		if (vboxd_test_response(VBOXD_VAL_DELETEOK)) returnok();
 
-		message("\r\n", gettext("Can't delete; invalid server response! %s"), gettext("[RETURN]"));
+		message("\r\n", "Can't delete; invalid server response! %s", "[RETURN]");
 	}
-	else message("\r\n", gettext("Can't delete; no server response! %s"), gettext("[RETURN]"));
+	else message("\r\n", "Can't delete; no server response! %s", "[RETURN]");
 
 	returnerror();
 }
@@ -688,7 +955,7 @@ static void toggle_new_flag(int nr)
 
 	if ((messagesmp) && (messagesnr > 0))
 	{
-		message("", gettext("Toggle message new flag..."));
+		message("", "Toggle message new flag...");
 
 		msgline = (struct messageline *)(messagesmp + (sizeof(struct messageline) * nr));
 
@@ -703,9 +970,9 @@ static void toggle_new_flag(int nr)
 
 				draw_message_line(messageyp, messagenr, TRUE);
 			}
-			else message("\r\n", gettext("Can't toggle; invalid server response! %s"), gettext("[RETURN]"));
+			else message("\r\n", "Can't toggle; invalid server response! %s", "[RETURN]");
 		}
-		else message("\r\n", gettext("Can't toggle; no answer from server! %s"), gettext("[RETURN]"));
+		else message("\r\n", "Can't toggle; no answer from server! %s", "[RETURN]");
 	}
 }
 
@@ -722,6 +989,8 @@ static void toggle_delete_flag(int nr)
 		msgline = (struct messageline *)(messagesmp + (sizeof(struct messageline) * nr));
 
 		msgline->delete = msgline->delete ? FALSE : TRUE;
+
+		draw_message_line(messageyp, messagenr, TRUE);
 	}
 }
 
@@ -731,7 +1000,7 @@ static void toggle_delete_flag(int nr)
 
 static void transfer_message_list(void)
 {
-	message("", gettext("Transfering message list..."));
+	message("", "Transfering message list...");
 
 	get_message_list();
 
@@ -1035,13 +1304,6 @@ static int sort_message_list(const void *a, const void *b)
 
 static void init_locale(void)
 {
-#if HAVE_LOCALE_H
-	setlocale(LC_ALL, "");
-#endif
-
-#if ENABLE_NLS
-	textdomain(PACKAGE);
-#endif
 }
 
 /**************************************************************************/
@@ -1169,9 +1431,11 @@ static void draw_ctrl_status(void)
 
 		if (ledstatus)
 		{
-			if (i == 0) message("", gettext("Getting control status..."));
+			if (i == 0) message("", "Getting control status...");
 
 			vboxd_put_message("statusctrl %s", statusleds[i].name);
+
+			statusleds[i].status = TRUE;
 
 			if ((answer = vboxd_get_message()))
 			{
@@ -1180,9 +1444,15 @@ static void draw_ctrl_status(void)
 					statuschar = ACS_DIAMOND;
 
 					if (answer[4] == '1')
+					{
+						statusleds[i].status = TRUE;
 						statusattr = i ? COLTAB(6) : COLTAB(5);
+					}
 					else
+					{
+						statusleds[i].status = FALSE;
 						statusattr = i ? COLTAB(7) : COLTAB(4);
+					}
 				}
 			}
 		}
@@ -1205,7 +1475,7 @@ static void draw_ctrl_status(void)
 
 static void draw_status_bar(void)
 {
-	char *helpmsg = gettext("HELP");
+	char *helpmsg = "HELP";
 	int   i;
    int   x;
 
@@ -1247,12 +1517,12 @@ static void draw_message_list(void)
 	int m;
 	int y;
 
-	printstring(phone, "%28.28s", gettext("Number"));
+	printstring(phone, "%28.28s", "Number");
 
 	wattrset(stdscr, COLTAB(10));
-	mvprintw(2, 1, "* %-20.20s", gettext("Incoming date"));
-	mvprintw(2, 25, "%5.5s", gettext("Len"));
-	mvprintw(2, 32, "%-28.28s", gettext("Name"));
+	mvprintw(2, 1, "* %-20.20s", "Incoming date");
+	mvprintw(2, 25, "%5.5s", "Len");
+	mvprintw(2, 32, "%-28.28s", "Name");
 	mvprintw(2, COLS - 1 - strlen(phone), "%s", phone);
 
 	mvhline(3, 1, ACS_HLINE, (COLS - 2));
@@ -1292,19 +1562,19 @@ static void play_message(int msg)
 
 	if ((!msgline) || (!msgname))
 	{
-		message("\r\n", gettext("Can't create temporary file! %s"), gettext("[RETURN]"));
+		message("\r\n", "Can't create temporary file! %s", "[RETURN]");
 
 		return;
 	}
 
 	if ((fd = open(msgname, O_WRONLY|O_CREAT|O_TRUNC, S_IWUSR|S_IRUSR)) == -1)
 	{
-		message("\r\n", gettext("Can't open temporary file! %s"), gettext("[RETURN]"));
+		message("\r\n", "Can't open temporary file! %s", "[RETURN]");
 
 		return;
 	}
 
-	message("", gettext("Searching message..."));
+	message("", "Searching message...");
 
 	vboxd_put_message("message %s", msgline->messagename);
 
@@ -1314,20 +1584,20 @@ static void play_message(int msg)
 		{
 			if ((size = (int)xstrtol(&answer[4], 0)) > 0)
 			{
-				message("", gettext("Transfering message (%d bytes)..."), size);
+				message("", "Transfering message (%d bytes)...", size);
 
 				if ((have = load_message(fd, size)) == size)
 				{
-					message("", gettext("Searching end sequence..."));
+					message("", "Searching end sequence...");
 
 					if ((answer = vboxd_get_message()))
 					{
 						if (!vboxd_test_response(VBOXD_VAL_MESSAGE))
 						{
-							message("\r\n", gettext("Can't get end sequence (bad response)! %s"), gettext("[RETURN]"));
+							message("\r\n", "Can't get end sequence (bad response)! %s", "[RETURN]");
 						}
 					}
-					else message("\r\n", gettext("Can't get end sequence! %s"), gettext("[RETURN]"));
+					else message("\r\n", "Can't get end sequence! %s", "[RETURN]");
 
 					close_and_mone(fd);
 
@@ -1335,7 +1605,7 @@ static void play_message(int msg)
 
 					if ((command = malloc(size)))
 					{
-						message("", gettext("Playing message..."));
+						message("", "Playing message...");
 
 						printstring(command, "%s %s %d 1>/dev/null 2>/dev/null", playerbin, msgname, sndvolume);
 						system(command);
@@ -1344,13 +1614,13 @@ static void play_message(int msg)
 						if (msgline->new) toggle_new_flag(msg);
 					}
 				}
-				else message("\n\r", gettext("Can only get %d of %d bytes! %s"), have, size, gettext("[RETURN]"));
+				else message("\n\r", "Can only get %d of %d bytes! %s", have, size, "[RETURN]");
 			}
-			else message("\r\n", gettext("Message size is zero! %s"), gettext("[RETURN]"));
+			else message("\r\n", "Message size is zero! %s", "[RETURN]");
 		}
-		else message("\r\n", gettext("Can't get init sequence (bad response)! %s"), gettext("[RETURN]"));
+		else message("\r\n", "Can't get init sequence (bad response)! %s", "[RETURN]");
 	}
-	else message("\r\n", gettext("Can't get init sequence! %s"), gettext("[RETURN]"));
+	else message("\r\n", "Can't get init sequence! %s", "[RETURN]");
 
 	if (fd != -1) close(fd);
 

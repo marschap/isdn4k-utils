@@ -1,5 +1,5 @@
 /*
-** $Id: voice.c,v 1.10 1997/04/28 16:52:10 michael Exp $
+** $Id: voice.c,v 1.11 1997/05/10 10:59:01 michael Exp $
 **
 ** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
 */
@@ -106,12 +106,12 @@ static int voice_set_compression(short c)
 	{
 		printstring(command, "AT+VSM=%d+VLS=2", c);
 
-		log(L_DEBUG, gettext("Setting voice compression \"%s\"...\n"), compressions[c]);
+		log(L_DEBUG, "Setting voice compression \"%s\"...\n", compressions[c]);
 
 		return(modem_command(command, "OK|VCON"));
 	}
 
-	log(L_FATAL, gettext("Unknown compression %d - can't set.\n"), c);
+	log(L_FATAL, "Unknown compression %d - can't set.\n", c);
 	
 	returnerror();
 }
@@ -149,18 +149,18 @@ int voice_put_message(char *message)
 	int	     bytetotal;
 	int	     secstotal;
 
-	log(L_INFO, gettext("Playing \"%s\"...\n"), message);
+	log(L_INFO, "Playing \"%s\"...\n", message);
 
 	if ((fd = open(message, O_RDONLY)) == -1)
 	{
-		log(L_ERROR, gettext("Can't open \"%s\".\n"), message);
+		log(L_ERROR, "Can't open \"%s\".\n", message);
 
 		return(VOICE_ACTION_ERROR);
 	}
 
 	if (!header_get(fd, &header))
 	{
-		log(L_ERROR, gettext("Can't read vbox audio header from message.\n"));
+		log(L_ERROR, "Can't read vbox audio header from message.\n");
 
 		voice_close_or_unlink(fd, NULL);
 
@@ -171,7 +171,7 @@ int voice_put_message(char *message)
 
 	if (!voice_set_compression(compression))
 	{
-		log(L_ERROR, gettext("Can't set voice audio compression or line mode.\n"));
+		log(L_ERROR, "Can't set voice audio compression or line mode.\n");
 		
 		voice_close_or_unlink(fd, NULL);
 
@@ -187,7 +187,7 @@ int voice_put_message(char *message)
 
 	if (modem_command("AT+VTX", "CONNECT") == 0)
 	{
-		log(L_ERROR, gettext("Can't start voice play mode.\n"));
+		log(L_ERROR, "Can't start voice play mode.\n");
 		
 		voice_close_or_unlink(fd, NULL);
 
@@ -205,7 +205,7 @@ int voice_put_message(char *message)
 	{
 		if ((byte_i = read(fd, line_i, MODEM_BUFFER_LEN)) <= 0)
 		{
-			log(L_DEBUG, gettext("End of audio data (%s).\n"), strerror(errno));
+			log(L_DEBUG, "End of audio data (%s).\n", strerror(errno));
 
 			break;
 		}
@@ -221,7 +221,7 @@ int voice_put_message(char *message)
 
 		bytetotal += byte_o;
 
-		log(L_JUNK, gettext("Play: <DATA %d incoming; %d outgoing>\n"), byte_i, byte_o);
+		log(L_JUNK, "Play: <DATA %d incoming; %d outgoing>\n", byte_i, byte_o);
 
 		if (!modem_get_nocarrier_state())
 		{
@@ -237,7 +237,7 @@ int voice_put_message(char *message)
 
 			if ((written != byte_o) || (errno != 0))
 			{
-				log(L_ERROR, gettext("Could only write %d of %d bytes (%s).\n"), written, byte_o, strerror(errno));
+				log(L_ERROR, "Could only write %d of %d bytes (%s).\n", written, byte_o, strerror(errno));
 
 				voicestatus = VOICE_ACTION_ERROR;
 			}
@@ -246,7 +246,7 @@ int voice_put_message(char *message)
 
 		while ((modem_check_input()) && (voicestatus == VOICE_ACTION_OK))
 		{
-			log(L_JUNK, gettext("Have input...\n"));
+			log(L_JUNK, "Have input...\n");
 
 			if (modem_raw_read(line_i, 1) == 1)
 			{
@@ -261,13 +261,13 @@ int voice_put_message(char *message)
 						case 'd':
 						case 'q':
 						case 's':
-							log_line(L_DEBUG, gettext("Found sequence \"<DLE>"));
+							log_line(L_DEBUG, "Found sequence \"<DLE>");
 							log_char(L_DEBUG, *line_i);
-							log_text(L_DEBUG, gettext("\" (ignored)...\n"));
+							log_text(L_DEBUG, "\" (ignored)...\n");
 							break;
 
 						case DC4:
-							log(L_DEBUG, gettext("Found sequence \"<DLE><DC4>\" (remote hangup)...\n"));
+							log(L_DEBUG, "Found sequence \"<DLE><DC4>\" (remote hangup)...\n");
 							voicestatus = VOICE_ACTION_REMOTEHANGUP;
 							break;
 							
@@ -282,9 +282,9 @@ int voice_put_message(char *message)
 				{
 					if (*line_i != DLE)
 					{
-						log_line(L_DEBUG, gettext("Got unneeded character \""));
+						log_line(L_DEBUG, "Got unneeded character \"");
 						log_char(L_DEBUG, *line_i);
-						log_text(L_DEBUG, gettext("\" (need a \"<DLE>\").\n"));
+						log_text(L_DEBUG, "\" (need a \"<DLE>\").\n");
 					}
 					else havedle = TRUE;
 				}
@@ -293,24 +293,24 @@ int voice_put_message(char *message)
 				{
 					if ((index(touchtones, '#')) && (index(touchtones, '*')))
 					{
-						log(L_DEBUG, gettext("Touchtone sequence \"%s\" found.\n"), touchtones);
+						log(L_DEBUG, "Touchtone sequence \"%s\" found.\n", touchtones);
 
 						if (breaklist_search(touchtones))
 						{
-							log(L_INFO, gettext("Sequence \"%s\" found in breaklist...\n"), touchtones);
+							log(L_INFO, "Sequence \"%s\" found in breaklist...\n", touchtones);
 
 							voicestatus = VOICE_ACTION_TOUCHTONES;
 						}
 						else
 						{
-							log(L_DEBUG, gettext("Sequence \"%s\" not in breaklist (ignored)...\n"), touchtones);
+							log(L_DEBUG, "Sequence \"%s\" not in breaklist (ignored)...\n", touchtones);
 
 							*touchtones = '\0';
 						}
 					}
 				}
 			}
-			else log(L_ERROR, gettext("Can't read input from modem.\n"));
+			else log(L_ERROR, "Can't read input from modem.\n");
 		}
 	}
 
@@ -321,16 +321,16 @@ int voice_put_message(char *message)
 		secstotal = (timeend - timebeg);
 		bytetotal = get_message_ptime(compression, bytetotal);
 
-		log(L_JUNK, gettext("Function play %d secs (kernel needs %d secs)...\n"), secstotal, bytetotal);
+		log(L_JUNK, "Function play %d secs (kernel needs %d secs)...\n", secstotal, bytetotal);
 
 		if (secstotal < bytetotal)
 		{
-			log(L_JUNK, gettext("Waiting %d secs to complete playing...\n"), (bytetotal - secstotal));
+			log(L_JUNK, "Waiting %d secs to complete playing...\n", (bytetotal - secstotal));
 
 			xpause((bytetotal - secstotal) * 1000);
 		}
 	}
-	else log(L_WARN, gettext("Oops - can't calculate time to wait!\n"));
+	else log(L_WARN, "Oops - can't calculate time to wait!\n");
 
 	voice_close_or_unlink(fd, NULL);
 
@@ -350,7 +350,7 @@ int voice_put_message(char *message)
 			 * result VCON...
 			 */
 
-		log(L_JUNK, gettext("Sending \"<DLE><ETX>\"...\n"));
+		log(L_JUNK, "Sending \"<DLE><ETX>\"...\n");
 
 		printstring(line_o, "%c%c", DLE, ETX);
                     
@@ -385,13 +385,13 @@ int voice_get_message(char *name, char *timestr, int save)
 	savetimeout = xstrtol(timestr, 90);
 
 	if (save)
-		log(L_INFO, gettext("Recording \"%s\" (%d secs)...\n"), name, savetimeout);
+		log(L_INFO, "Recording \"%s\" (%d secs)...\n", name, savetimeout);
 	else
-		log(L_INFO, gettext("Waiting %d secs for input...\n"), savetimeout);
+		log(L_INFO, "Waiting %d secs for input...\n", savetimeout);
 
 	if (!voice_set_compression(setup.modem.compression))
 	{
-		log(L_ERROR, gettext("Can't set voice audio compressen.\n"));
+		log(L_ERROR, "Can't set voice audio compressen.\n");
 
 		return(VOICE_ACTION_ERROR);
 	}
@@ -400,7 +400,7 @@ int voice_get_message(char *name, char *timestr, int save)
 	{
 		if ((fd = open(name, O_WRONLY|O_CREAT|O_TRUNC, S_IWUSR|S_IWGRP|S_IWOTH)) == -1)
 	   {
-	   	log(L_ERROR, gettext("Can't create \"%s\".\n"), name);
+	   	log(L_ERROR, "Can't create \"%s\".\n", name);
 
 			return(VOICE_ACTION_ERROR);
 		}
@@ -411,7 +411,7 @@ int voice_get_message(char *name, char *timestr, int save)
 
 		if (!header_put(fd, &header))
 		{
-	      log(L_ERROR, gettext("Can't write vbox audio header.\n"));
+	      log(L_ERROR, "Can't write vbox audio header.\n");
       
 			voice_close_or_unlink(fd, name);
 
@@ -429,7 +429,7 @@ int voice_get_message(char *name, char *timestr, int save)
 
 	if (modem_command("AT+VRX", "CONNECT") == 0)
 	{
-		log(L_ERROR, gettext("Can't start record mode.\n"));
+		log(L_ERROR, "Can't start record mode.\n");
 
 		if (save) voice_close_or_unlink(fd, name);
 
@@ -463,7 +463,7 @@ int voice_get_message(char *name, char *timestr, int save)
 							break;
 
 						case ETX:
-							log(L_DEBUG, gettext("Found sequence \"<DLE><ETX>\" (remote hangup)...\n"));
+							log(L_DEBUG, "Found sequence \"<DLE><ETX>\" (remote hangup)...\n");
 							voicestatus = VOICE_ACTION_REMOTEHANGUP;
 							break;
 
@@ -490,18 +490,18 @@ int voice_get_message(char *name, char *timestr, int save)
 		{
 			if (save)
 			{
-				log(L_JUNK, gettext("Record: <DATA %d incoming; %d outgoing>\n"), byte_i, byte_o);
+				log(L_JUNK, "Record: <DATA %d incoming; %d outgoing>\n", byte_i, byte_o);
                          
 				write(fd, line_o, byte_o);
 			}
-			else log(L_JUNK, gettext("Wait: <DATA %d incoming>\n"), byte_i);
+			else log(L_JUNK, "Wait: <DATA %d incoming>\n", byte_i);
 		}
 
 		if ((result != 1) || (modem_get_timeout()))
 		{
 			if (!modem_get_timeout())
 			{
-				log(L_ERROR, gettext("Can't read incoming data (%s).\n"), strerror(errno));
+				log(L_ERROR, "Can't read incoming data (%s).\n", strerror(errno));
 				
 				voicestatus = VOICE_ACTION_ERROR;
 			}
@@ -512,17 +512,17 @@ int voice_get_message(char *name, char *timestr, int save)
 		{
 			if ((index(touchtones, '#')) && (index(touchtones, '*')))
 			{
-				log(L_DEBUG, gettext("Touchtone sequence \"%s\" found.\n"), touchtones);
+				log(L_DEBUG, "Touchtone sequence \"%s\" found.\n", touchtones);
 
 				if (breaklist_search(touchtones))
 				{
-					log(L_INFO, gettext("Sequence \"%s\" found in breaklist...\n"), touchtones);
+					log(L_INFO, "Sequence \"%s\" found in breaklist...\n", touchtones);
 
 					voicestatus = VOICE_ACTION_TOUCHTONES;
 				}
 				else
 				{
-					log(L_DEBUG, gettext("Sequence \"%s\" not in breaklist (ignored)...\n"), touchtones);
+					log(L_DEBUG, "Sequence \"%s\" not in breaklist (ignored)...\n", touchtones);
 
 					*touchtones = '\0';
 				}
@@ -558,7 +558,7 @@ int voice_get_message(char *name, char *timestr, int save)
 		printstring(line_o, "%c%c", DLE, DC4);
 		printstring(line_i, "%c%c", DLE, ETX);
 
-		log(L_JUNK, gettext("Sending \"<DLE><DC4>\"...\n"));
+		log(L_JUNK, "Sending \"<DLE><DC4>\"...\n");
 
 		modem_raw_write(line_o, strlen(line_o));
 
@@ -619,9 +619,9 @@ static void voice_handle_touchtone_dle(int byte)
 			break;
 
 		default:
-			log_line(L_ERROR, gettext("Illeagal \"<DLE>\" shielded code \""));
+			log_line(L_ERROR, "Illeagal \"<DLE>\" shielded code \"");
 			log_char(L_ERROR, byte);
-			log_text(L_ERROR, gettext("\" (ignored)...\n"));
+			log_text(L_ERROR, "\" (ignored)...\n");
 			break;
 	}
 }
@@ -634,7 +634,7 @@ static void voice_handle_touchtone(char Tone)
 {
 	char Temp[2];
 
-	log(L_DEBUG, gettext("Found touchtone \"%c\"...\n"), Tone);
+	log(L_DEBUG, "Found touchtone \"%c\"...\n", Tone);
 
 	if (Tone == '*')
 	{

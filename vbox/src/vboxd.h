@@ -1,3 +1,8 @@
+/*
+** $Id: vboxd.h,v 1.4 1997/05/10 10:58:58 michael Exp $
+**
+** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
+*/
 
 #ifndef _VBOXD_H
 #define _VBOXD_H 1

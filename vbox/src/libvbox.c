@@ -1,5 +1,5 @@
 /*
-** $Id: libvbox.c,v 1.8 1997/04/28 16:51:56 michael Exp $
+** $Id: libvbox.c,v 1.9 1997/05/10 10:58:42 michael Exp $
 **
 ** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
 */
@@ -247,7 +247,10 @@ char *vboxd_get_message(void)
 }
 
 /**************************************************************************/
-/** vboxd_test_response():  **/
+/** vboxd_test_response(): Test response of a vboxd message.             **/
+/**************************************************************************/
+/** response               Needed response code to check.                **/
+/** <return>               TRUE (1) on success, FALSE (0) on error.      **/
 /**************************************************************************/
 
 int vboxd_test_response(char *response)
@@ -263,38 +266,6 @@ int vboxd_test_response(char *response)
 	returnerror();
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /*************************************************************************/
 /** get_message_ptime():	Returns the vbox message length in seconds.	**/
 /**								The length is calculated from the size & the	**/
@@ -307,7 +278,8 @@ int vboxd_test_response(char *response)
 
 int get_message_ptime(int compression, int size)
 {
-	if ((compression >= 2) && (compression <= 4)) {
+	if ((compression >= 2) && (compression <= 4))
+	{
 		size = ((size * 8) / compression);
 	}
                            
@@ -336,9 +308,12 @@ int get_nr_messages(char *path, int countnew)
 
 	messages = 0;
 
-	if ((dir = opendir(path))) {
-		while ((entry = readdir(dir))) {
-			if (countnew) {
+	if ((dir = opendir(path)))
+	{
+		while ((entry = readdir(dir)))
+		{
+			if (countnew)
+			{
 				if (strcmp(entry->d_name, "." ) == 0) continue;
 				if (strcmp(entry->d_name, "..") == 0) continue;
 
@@ -346,10 +321,12 @@ int get_nr_messages(char *path, int countnew)
 				xstrncat(temp, "/"			 , PATH_MAX);
 				xstrncat(temp, entry->d_name, PATH_MAX);
 
-				if (stat(temp, &status) == 0) {
+				if (stat(temp, &status) == 0)
+				{
 					if (status.st_mtime > 0) messages++;
 				}
-			} else messages++;
+			}
+			else messages++;
 		}
 		
 		closedir(dir);
@@ -364,7 +341,7 @@ int get_nr_messages(char *path, int countnew)
 /*************************************************************************/
 /** path					Path to the spool directory of the current user.	**/
 /** file					Name of the control file to create.						**/
-/** <return>			0 on error; 1 on success.									**/
+/** <return>			FALSE (0) on error; TRUE (1) on success.           **/
 /*************************************************************************/
 
 int ctrl_create(char *path, char *file)
@@ -376,11 +353,17 @@ int ctrl_create(char *path, char *file)
 	xstrncat(location, "/" , PATH_MAX);
 	xstrncat(location, file, PATH_MAX);
 
-	if ((fd = open(location, O_CREAT|O_TRUNC, S_IRUSR|S_IWUSR|S_IRGRP|S_IWGRP|S_IROTH|S_IWOTH)) != -1) {
-		chmod(location, S_IRUSR|S_IWUSR|S_IRGRP|S_IWGRP|S_IROTH|S_IWOTH);
-		chmod(location, S_IRUSR|S_IWUSR|S_IRGRP|S_IWGRP|S_IROTH|S_IWOTH);
-		close(fd);
-		returnok();
+	if (strncmp(file, CTRL_NAME_MAGIC, strlen(CTRL_NAME_MAGIC)) == 0)
+	{
+		if ((fd = open(location, O_CREAT|O_TRUNC, S_IRUSR|S_IWUSR|S_IRGRP|S_IWGRP|S_IROTH|S_IWOTH)) != -1)
+		{
+			chmod(location, S_IRUSR|S_IWUSR|S_IRGRP|S_IWGRP|S_IROTH|S_IWOTH);
+			chmod(location, S_IRUSR|S_IWUSR|S_IRGRP|S_IWGRP|S_IROTH|S_IWOTH);
+
+			close(fd);
+
+			returnok();
+		}
 	}
 
 	returnerror();
@@ -391,7 +374,7 @@ int ctrl_create(char *path, char *file)
 /*************************************************************************/
 /** path					Path to the spool directory of the current user.	**/
 /** file					Name of the control file to remove.						**/
-/** <return>			0 on error; 1 on success.									**/
+/** <return>			FALSE (0) on error; TRUE (1) on success.		 	   **/
 /*************************************************************************/
 
 int ctrl_remove(char *path, char *file)
@@ -403,17 +386,21 @@ int ctrl_remove(char *path, char *file)
 	xstrncat(location, "/" , PATH_MAX);
 	xstrncat(location, file, PATH_MAX);
 
-	loop = 5;
+	if (strncmp(file, CTRL_NAME_MAGIC, strlen(CTRL_NAME_MAGIC)) == 0)
+	{
+		loop = 5;
 
-	while (loop > 0) {
-		unlink(location);
-		unlink(location);
+		while (loop > 0)
+		{
+			unlink(location);
+			unlink(location);
 		
-		if (!ctrl_ishere(path, file)) returnok();
+			if (!ctrl_ishere(path, file)) returnok();
 
-		xpause(1000);
+			xpause(1000);
 		
-		loop--;
+			loop--;
+		}
 	}
 
 	returnerror();
@@ -424,7 +411,7 @@ int ctrl_remove(char *path, char *file)
 /*************************************************************************/
 /** path					Path to the spool directory of the current user.	**/
 /** file					Name of the control file to check.						**/
-/** <return>			0 don't exists; 1 exists.									**/
+/** <return>			FALSE (0) doesn't exist; TRUE (1) exists.			   **/
 /*************************************************************************/
 
 int ctrl_ishere(char *path, char *file)
@@ -435,7 +422,10 @@ int ctrl_ishere(char *path, char *file)
 	xstrncat(location, "/" , PATH_MAX);
 	xstrncat(location, file, PATH_MAX);
 
-	if (access(location, F_OK) == 0) returnok();
+	if (strncmp(file, CTRL_NAME_MAGIC, strlen(CTRL_NAME_MAGIC)) == 0)
+	{
+		if (access(location, F_OK) == 0) returnok();
+	}
 
 	returnerror();
 }
@@ -465,8 +455,7 @@ void xstrncpy(char *dest, char *source, int max)
 
 void xstrncat(char *dest, char *source, int max)
 {
-	if ((max - strlen(dest)) > 0)
-		strncat(dest, source, max - strlen(dest));
+	if ((max - strlen(dest)) > 0) strncat(dest, source, max - strlen(dest));
 
 	dest[max] = '\0';
 }
@@ -507,9 +496,9 @@ long xstrtol(char *str, long use)
 /** xstrtoul(): Converts a string to a unsigned long number, using a    **/
 /**             default on error.                                       **/
 /*************************************************************************/
-/** str			String to convert to long.											**/
-/** use			Default value if string can't converted.						**/
-/** <return>	Converted string value on success; default on error.		**/
+/** str			 String to convert to unsigned long.							**/
+/** use			 Default value if string can't converted.						**/
+/** <return>	 Converted string value on success; default on error.		**/
 /*************************************************************************/
 
 unsigned long xstrtoul(char *str, unsigned long use)
@@ -534,7 +523,8 @@ unsigned long xstrtoul(char *str, unsigned long use)
 
 int header_put(int fd, vaheader_t *header)
 {
-	if (write(fd, header, sizeof(vaheader_t)) != sizeof(vaheader_t)) {
+	if (write(fd, header, sizeof(vaheader_t)) != sizeof(vaheader_t))
+	{
 		returnerror();
 	}
 
@@ -553,10 +543,14 @@ int header_get(int fd, vaheader_t *header)
 {
 	vaheader_t dummy;
 
-	if (read(fd, &dummy, VAH_MAX_MAGIC) == VAH_MAX_MAGIC) {
-		if (strncmp(dummy.magic, VAH_MAGIC, VAH_MAX_MAGIC) == 0) {
-			if (lseek(fd, 0, SEEK_SET) == 0) {
-				if (read(fd, header, sizeof(vaheader_t)) == sizeof(vaheader_t)) {
+	if (read(fd, &dummy, VAH_MAX_MAGIC) == VAH_MAX_MAGIC)
+	{
+		if (strncmp(dummy.magic, VAH_MAGIC, VAH_MAX_MAGIC) == 0)
+		{
+			if (lseek(fd, 0, SEEK_SET) == 0)
+			{
+				if (read(fd, header, sizeof(vaheader_t)) == sizeof(vaheader_t))
+				{
 					returnok();
 				}
 			}

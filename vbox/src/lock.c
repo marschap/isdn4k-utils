@@ -1,5 +1,5 @@
 /*
-** $Id: lock.c,v 1.4 1997/03/18 12:36:46 michael Exp $
+** $Id: lock.c,v 1.5 1997/05/10 10:58:43 michael Exp $
 **
 ** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
 */
@@ -44,8 +44,8 @@ static void lock_init_locknames(void);
 
 static void lock_init_locknames(void)
 {
-	locks[0].desc = gettext("modem port");
-	locks[1].desc = gettext("vboxgetty");
+	locks[0].desc = "modem port";
+	locks[1].desc = "vboxgetty";
 }
 
 /*************************************************************************/
@@ -73,7 +73,7 @@ int lock_type_lock(int type)
 	{
 		if (locks[i].file == NULL)
 		{
-			log(L_WARN, gettext("Lock setup for type %d not found.\n"), type);
+			log(L_WARN, "Lock setup for type %d not found.\n", type);
 
 			returnerror();
 		}
@@ -89,7 +89,7 @@ int lock_type_lock(int type)
 	{
 		printstring(name, locks[i].file, device);
 
-		log(L_DEBUG, gettext("Locking %s (%s)...\n"), locks[i].desc, name);
+		log(L_DEBUG, "Locking %s (%s)...\n", locks[i].desc, name);
 
 		if (*(locks[i].fd) == -1)
 		{
@@ -111,19 +111,19 @@ int lock_type_lock(int type)
 					free(name);
 					returnok();
 				}
-				else log(L_FATAL, gettext("Can't lock \"%s\".\n"), name);
+				else log(L_FATAL, "Can't lock \"%s\".\n", name);
 			}
-			else log(L_FATAL, gettext("Can't create \"%s\".\n"), name);
+			else log(L_FATAL, "Can't create \"%s\".\n", name);
 		}
 		else
 		{
-			log(L_WARN, gettext("Use existing lock for \"%s\" (%d).\n"), name, *(locks[i].fd));
+			log(L_WARN, "Use existing lock for \"%s\" (%d).\n", name, *(locks[i].fd));
 					
 			free(name);
 			returnok();
 		}
 	}
-	else log(L_FATAL, gettext("Not enough memory to allocate lockname.\n"));
+	else log(L_FATAL, "Not enough memory to allocate lockname.\n");
 				
 	returnerror();
 }
@@ -152,7 +152,7 @@ int lock_type_unlock(int type)
 	{
 		if (locks[i].file == NULL)
 		{
-			log(L_WARN, gettext("Lock setup for type %d not found.\n"), type);
+			log(L_WARN, "Lock setup for type %d not found.\n", type);
 
 			returnerror();
 		}
@@ -168,7 +168,7 @@ int lock_type_unlock(int type)
 	{
 		printstring(name, locks[i].file, device);
 
-		log(L_DEBUG, gettext("Unlocking %s (%s)...\n"), locks[i].desc, name);
+		log(L_DEBUG, "Unlocking %s (%s)...\n", locks[i].desc, name);
 
 		if (*(locks[i].fd) != -1)
 		{
@@ -181,14 +181,14 @@ int lock_type_unlock(int type)
 
 		if (unlink(name) != 0)
 		{
-			log(L_WARN, gettext("Can't remove lock \"%s\".\n"), name);
+			log(L_WARN, "Can't remove lock \"%s\".\n", name);
 		}
 
 		free(name);
 
 		returnok();
 	}
-	else log(L_FATAL, gettext("Not enough memory to allocate lockname.\n"));
+	else log(L_FATAL, "Not enough memory to allocate lockname.\n");
 				
 	returnerror();
 }

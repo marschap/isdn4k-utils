@@ -1,5 +1,5 @@
 /*
-** $Id: vboxbeep.c,v 1.4 1997/04/28 16:52:06 michael Exp $
+** $Id: vboxbeep.c,v 1.5 1997/05/10 10:58:53 michael Exp $
 **
 ** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
 */
@@ -50,8 +50,6 @@ static char	  *pidname		= NULL;
 static int	 	killmode		= 0;
 static time_t	starttime	= 0;
 static int     dodebug     = FALSE;
-static int     haveconnect = FALSE;
-static int     downconnect = FALSE;
 
 static struct option arguments[] =
 {
@@ -60,8 +58,6 @@ static struct option arguments[] =
 	{ "kill"			, no_argument			, NULL, 'k' },
 	{ "sound" 		, required_argument	, NULL, 's' },
 	{ "messagebox" , required_argument  , NULL, 'm' },
-	{ "machine"    , required_argument  , NULL, 'i' },
-	{ "port"       , required_argument  , NULL, 'o' },
 	{ "pause"      , required_argument  , NULL, 'p' },
 	{ "debug"      , no_argument        , NULL, 'x' },
 	{ NULL			, 0						, NULL, 0   }
@@ -92,27 +88,17 @@ static void   usage(void);
 
 int main(int argc, char **argv)
 {
-	struct servent *vboxdserv;
-	char            timestrings[32];
-	int             i;
-	int             b;
-	int             opts;
-	int             checkpause;
-	int             port;
-	char           *machine;
-
-#if HAVE_LOCALE_H
-	setlocale(LC_ALL, "");
-#endif
-
-#if ENABLE_NLS
-	textdomain(PACKAGE);
-#endif
+	char timestrings[32];
+	int  i;
+	int  b;
+	int  opts;
+	int  checkpause;
 
 	if (!(vbasename = rindex(argv[0], '/')))
+	{
 		vbasename = argv[0];
-	else
-		vbasename++;
+	}
+	else vbasename++;
 
 	for (i = 0; i < MAX_MESSAGE_BOXES; i++)
 	{
@@ -124,22 +110,20 @@ int main(int argc, char **argv)
 
 	if (!(pidname = malloc(strlen(PIDFILEDIR) + strlen("/vboxbeep.pid") + 1)))
 	{
-		log(LOG_ERR, gettext("not enough memory to create pid name.\n"), vbasename);
+		log(LOG_ERR, "not enough memory to create pid name.\n", vbasename);
 		
 		exit(5);
 	}
 
 	printstring(pidname, "%s/vboxbeep.pid", PIDFILEDIR);
 
-	killmode		= 0;
-	starttime	= 0;
-	checkpause  = 5;
-	port        = -1;
-	machine     = "localhost";
+	killmode	  = 0;
+	starttime  = 0;
+	checkpause = 5;
 	
 	b = 0;
 
-	while ((opts = getopt_long(argc, argv, "vhko:i:s:m:p:x", arguments, (int *)0)) != EOF)
+	while ((opts = getopt_long(argc, argv, "vhks:m:p:x", arguments, (int *)0)) != EOF)
 	{
 		switch (opts)
 		{
@@ -163,14 +147,6 @@ int main(int argc, char **argv)
 				parse_sound_times(strdup(optarg), 0, 23);
 				break;
 
-			case 'o':
-				port = (int)xstrtol(optarg, -1);
-				break;
-
-			case 'i':
-				machine = optarg;
-				break;
-
 			case 'v':
 				version();
 				break;
@@ -190,27 +166,27 @@ int main(int argc, char **argv)
 	{
 		if (killmode == 0)
 		{
-			fprintf(stderr, gettext("%s: sending signal to stop beep's to process %d...\n"), vbasename, i);
+			fprintf(stderr, "%s: sending signal to stop beep's to process %d...\n", vbasename, i);
 
 			if (kill(i, SIGUSR1) != 0)
 			{
-				fprintf(stderr, gettext("%s: error sending signal (%s).\n"), vbasename, strerror(errno));
+				fprintf(stderr, "%s: error sending signal (%s).\n", vbasename, strerror(errno));
 			}
 		}
 		else
 		{
 			if (getuid() == 0)
 			{
-				fprintf(stderr, gettext("%s: sending terminate signal to process %d...\n"), vbasename, i);
+				fprintf(stderr, "%s: sending terminate signal to process %d...\n", vbasename, i);
 
 				if (kill(i, SIGTERM) != 0)
 				{
-					fprintf(stderr, gettext("%s: error sending signal (%s).\n"), vbasename, strerror(errno));
+					fprintf(stderr, "%s: error sending signal (%s).\n", vbasename, strerror(errno));
 				}
 			}
 			else
 			{
-				fprintf(stderr, gettext("%s: you must be *root* to kill a running %s.\n"), vbasename, vbasename);
+				fprintf(stderr, "%s: you must be *root* to kill a running %s.\n", vbasename, vbasename);
 			}
 		}
 
@@ -221,7 +197,7 @@ int main(int argc, char **argv)
 
 	if (killmode == 1)
 	{
-		fprintf(stderr, gettext("%s: can't find running %s process.\n"), vbasename, vbasename);
+		fprintf(stderr, "%s: can't find running %s process.\n", vbasename, vbasename);
 
 		free_resources();
 		
@@ -230,7 +206,7 @@ int main(int argc, char **argv)
 
 	if (getuid() != 0)
 	{
-		fprintf(stderr, gettext("%s: you must be *root* to start %s.\n"), vbasename, vbasename);
+		fprintf(stderr, "%s: you must be *root* to start %s.\n", vbasename, vbasename);
 
 		free_resources();
 		
@@ -239,25 +215,11 @@ int main(int argc, char **argv)
 	
 	if (!b)
 	{
-		log(LOG_CRIT, gettext("there are no directories to watch."));
+		log(LOG_CRIT, "there are no directories to watch.");
 		
 		free_resources();
 
 		exit(5);
-	}
-
-	if (port == -1)
-	{
-		if (!(vboxdserv = getservbyname("vboxd", "tcp")))
-		{
-			log(LOG_CRIT, gettext("can't get service vboxd/tcp."));
-
-			free_resources();
-
-			exit(5);
-		}
-
-		port = ntohs(vboxdserv->s_port);
 	}
 
 	create_pid_file();
@@ -269,50 +231,23 @@ int main(int argc, char **argv)
 	
 	if (dodebug)
 	{
-		log(LOG_DEBUG, gettext("time range \"%s\"."), timestrings);
+		log(LOG_DEBUG, "time range \"%s\".", timestrings);
 	}
-
-	haveconnect = FALSE;
 
 	while (TRUE)
 	{
-		downconnect = FALSE;
-
-		if (!haveconnect)
+		for (i = 0; i < MAX_MESSAGE_BOXES; i++)
 		{
-			if (vboxd_connect(machine, port) == VBOXC_ERR_OK)
+			if (messageboxes[i].name)
 			{
-				if (dodebug) log(LOG_DEBUG, gettext("connected to vbox message server."));
-
-				haveconnect = TRUE;
-			}
-			else log(LOG_ERR, gettext("can't connect to vbox message server."));
-		}
-
-		if (haveconnect)
-		{
-			for (i = 0; i < MAX_MESSAGE_BOXES; i++)
-			{
-				if (messageboxes[i].name)
+				messageboxes[i].time = get_newest_message_time(messageboxes[i].name);
+				
+				if (messageboxes[i].time > starttime)
 				{
-					messageboxes[i].time = get_newest_message_time(messageboxes[i].name);
+					lets_hear_the_sound();
 					
-					if (messageboxes[i].time > starttime)
-					{
-						lets_hear_the_sound();
-					
-						break;
-					}
+					break;
 				}
-			}
-
-			if (downconnect)
-			{
-				vboxd_disconnect();
-
-				if (dodebug) log(LOG_DEBUG, gettext("server connection canceled."));
-
-				haveconnect = FALSE;
 			}
 		}
 
@@ -328,9 +263,9 @@ int main(int argc, char **argv)
 
 static void version(void)
 {
-	fprintf(stderr, gettext("\n"));
-	fprintf(stderr, gettext("%s version %s (%s)\n"), vbasename, VERSION, VERDATE);
-	fprintf(stderr, gettext("\n"));
+	fprintf(stderr, "\n");
+	fprintf(stderr, "%s version %s (%s)\n", vbasename, VERSION, VERDATE);
+	fprintf(stderr, "\n");
 	
 	free_resources();
 	exit(1);
@@ -342,19 +277,17 @@ static void version(void)
 
 static void usage(void)
 {
-	fprintf(stderr, gettext("\n"));
-	fprintf(stderr, gettext("Usage: %s OPTION [ OPTION ] [ ... ]\n"), vbasename);
-	fprintf(stderr, gettext("\n"));
-	fprintf(stderr, gettext("-s, --sound HOURS      Hours to signal with sound (default: no time)\n"));
-	fprintf(stderr, gettext("-m, --messagebox DIR   Watch directory DIR for new messages.\n"));
-	fprintf(stderr, gettext("-p, --pause SECONDS    Pause in seconds to sleep between checks (default: 5).\n"));
-	fprintf(stderr, gettext("-i, --machine HOST     Connect to message server on HOST (default: localhost).\n"));
-	fprintf(stderr, gettext("-o, --port PORT        Connect to message server on PORT (default: vboxd/tcp).\n"));
-	fprintf(stderr, gettext("-h, --help             Displays this help text.\n"));
-	fprintf(stderr, gettext("-v, --version          Displays program version.\n"));
-	fprintf(stderr, gettext("\n"));
-	fprintf(stderr, gettext("Hours to play sound with the pc speaker must be specified in 24-hour-format.\nyou can use ',' or '-' to seperate hours or specify time ranges (eg 9,17-22).\nA '--sound=\"*\"' means at every time and '--sound=\"-\"' means at no time.\n\nThe option '--messagebox' can be used more than one time, so you can watch\nmax. %d seperate directories.\n"), MAX_MESSAGE_BOXES);
-	fprintf(stderr, gettext("\n"));
+	fprintf(stderr, "\n");
+	fprintf(stderr, "Usage: %s OPTION [ OPTION ] [ ... ]\n", vbasename);
+	fprintf(stderr, "\n");
+	fprintf(stderr, "-s, --sound HOURS      Hours to signal with sound (default: no time)\n");
+	fprintf(stderr, "-m, --messagebox DIR   Watch directory DIR for new messages.\n");
+	fprintf(stderr, "-p, --pause SECONDS    Pause in seconds to sleep between checks (default: 5).\n");
+	fprintf(stderr, "-h, --help             Displays this help text.\n");
+	fprintf(stderr, "-v, --version          Displays program version.\n");
+	fprintf(stderr, "\n");
+	fprintf(stderr, "Hours to play sound with the pc speaker must be specified in 24-hour-format.\nyou can use ',' or '-' to seperate hours or specify time ranges (eg 9,17-22).\nA '--sound=\"*\"' means at every time and '--sound=\"-\"' means at no time.\n\nThe option '--messagebox' can be used more than one time, so you can watch\nmax. %d seperate directories.\n", MAX_MESSAGE_BOXES);
+	fprintf(stderr, "\n");
 
 	free_resources();
 	exit(1);
@@ -403,14 +336,7 @@ static void leave_program(int sig)
 	remove_pid_file();
 	free_resources();
 
-	if (haveconnect)
-	{
-		if (dodebug) log(LOG_DEBUG, gettext("disconnecting from server..."));
-
-		vboxd_disconnect();
-	}
-
-	if (dodebug) log(LOG_DEBUG, gettext("terminate..."));
+	if (dodebug) log(LOG_DEBUG, "terminate...");
 
 	exit(0);
 }
@@ -425,7 +351,7 @@ static void set_new_starttime(int sig)
 
 	starttime = time(NULL);
 
-	if (dodebug) log(LOG_DEBUG, gettext("new starttime is %ld."), starttime);
+	if (dodebug) log(LOG_DEBUG, "new starttime is %ld.", starttime);
 }
 
 /**************************************************************************/
@@ -442,14 +368,14 @@ static void lets_hear_the_sound(void)
 
 	if (!(timel = localtime(&timec)))
 	{
-		log(LOG_CRIT, gettext("can't get current local time (%s)."), strerror(errno));
+		log(LOG_CRIT, "can't get current local time (%s).", strerror(errno));
 		
 		return;
 	}
 
 	if ((timel->tm_hour < 0) || (timel->tm_hour > 23))
 	{
-		log(LOG_CRIT, gettext("bad hour in local time structure (%d)."), timel->tm_hour);
+		log(LOG_CRIT, "bad hour in local time structure (%d).", timel->tm_hour);
 		
 		return;
 	}
@@ -458,7 +384,7 @@ static void lets_hear_the_sound(void)
 	{
 		if ((vt = open("/dev/console", O_RDWR)) == -1)
 		{
-			log(LOG_CRIT, gettext("can't open \"/dev/console\" (%s)."), strerror(errno));
+			log(LOG_CRIT, "can't open \"/dev/console\" (%s).", strerror(errno));
 		
 			return;
 		}
@@ -505,7 +431,7 @@ static int add_dir_to_messagebox(int nr, char *box)
 		}
 	}
 
-	log(LOG_ERR, gettext("can't add \"%s\" to watchlist."), box);
+	log(LOG_ERR, "can't add \"%s\" to watchlist.", box);
 
 	returnerror();
 }
@@ -533,47 +459,34 @@ static void free_all_messageboxes(void)
 
 static time_t get_newest_message_time(char *box)
 {
-	time_t  newest;
-	char    response[128 + 1];
-	char   *msg;
-	char   *respcode;
-	char   *respmsgs;
-	char   *resptime;
+	struct stat    status;
+	struct dirent *one;
+	time_t         newest;
+	DIR           *dir;
 
-	if (haveconnect)
+
+	newest = 0;
+
+	if (chdir(box) == 0)
 	{
-		newest = 0;
-
-		vboxd_put_message("count %s", box);
-
-		if ((msg = vboxd_get_message()))
+		if ((dir = opendir(".")))
 		{
-			if (!vboxd_test_response(VBOXD_VAL_SERVERQUIT))
+			while ((one = readdir(dir)))
 			{
-				if (vboxd_test_response(VBOXD_VAL_COUNT))
+				if (stat(one->d_name, &status) == 0)
 				{
-					xstrncpy(response, msg, 128);
-
-					respcode = strtok(response, "\t ");
-					respmsgs = strtok(NULL    , "\t ");
-					resptime = strtok(NULL    , "\t ");
-
-					if ((respcode) && (respmsgs) && (resptime))
-					{
-						return(xstrtol(resptime, 0));
-					}
-					else log(LOG_ERR, gettext("bad server response \"%s\"."), msg);
+					if (status.st_mtime > newest) newest = status.st_mtime;
 				}
-				else log(LOG_ERR, gettext("bad server response \"%s\"."), msg);
 			}
-			else log(LOG_ERR, gettext("server connection lost!"));
+
+			closedir(dir);
 		}
-		else log(LOG_ERR, gettext("can't get server response."));
+		else log(LOG_ERR, "can't open '%s'.", box);
 
-		downconnect = TRUE;
 	}
+	else log(LOG_ERR, "can't change to '%s'.", box);
 
-	return(0);
+	return(newest);
 }
 
 /**************************************************************************/
@@ -586,7 +499,7 @@ static void create_pid_file(void)
 
 	if (!(pid = fopen(pidname, "w")))
 	{
-		log(LOG_CRIT, gettext("could not create PID file \"%s\" (%s)."), pidname, strerror(errno));
+		log(LOG_CRIT, "could not create PID file \"%s\" (%s).", pidname, strerror(errno));
 
 		leave_program(0);
 	}
@@ -604,7 +517,7 @@ static void remove_pid_file(void)
 {
 	if (unlink(pidname) != 0)
 	{
-		log(LOG_CRIT, gettext("can't remove PID file \"%s\" (%s)."), pidname, strerror(errno));
+		log(LOG_CRIT, "can't remove PID file \"%s\" (%s).", pidname, strerror(errno));
 	}
 }
 
@@ -687,9 +600,9 @@ static void parse_sound_times(char *string, int min, int max)
 					sound_available_hours[i] = TRUE;
 				}
 			}
-			else log(LOG_ERR, gettext("starttime must be lower than endtime."));
+			else log(LOG_ERR, "starttime must be lower than endtime.");
 		}
-		else log(LOG_ERR, gettext("start- or endtime out of range."));
+		else log(LOG_ERR, "start- or endtime out of range.");
 
 		number = strtok(NULL, ",;:");
 	}

@@ -1,8 +1,0 @@
-
-If you want to install vbox into the new "Filesystem Hierarchy Standard"
-use the following options to configure:
-
-./configure --prefix=/opt/vbox \
-            --sysconfdir=/etc/opt/vbox \
-            --sbindir=/usr/local/libexec
-

@@ -1,37 +1,171 @@
-# $Id: CHANGES,v 1.11 1997/04/28 16:51:11 michael Exp $
+# $Id: CHANGES,v 1.12 1997/05/10 10:58:08 michael Exp $
 #
-# To describe the news & fixes better (my english is not the best :-) the
-# changelog is only available in german.
+# [New] - Means news or changes
+# [Fix] - Means bug fix
+# [Rel] - Means new release
+
+
+**************************
+Changes since 2.0.0 Beta 2
+**************************
+
+10-May-97
+=========
+
+[Rel] 2.0.0 Beta 3 released.
+
+
+09-May-97
+=========
+
+[New] src/vbox.c:
+	Function to create/delete control files implemented.
+
+[New] src/vbox.c:
+	Help function added.
+
+
+08-May-97
+=========
+
+[New] doc/de/vbox.sgml.in:
+	Section "Bezugsquellen" written.
+
+[New] doc/de/vbox.sgml.in:
+	Section "Danksagungen" written.
+
+[New] doc/de/vbox.sgml.in:
+	Section "Programme/vboxbeep" written.
+
+[New] doc/de/vbox.sgml.in:
+	Section "Programme/vboxtoau" written.
+
+[New] doc/de/vbox.sgml.in:
+	Section "Programme/autovbox" written.
+
+[New] doc/de/vbox.sgml.in:
+	Section "Programme/vboxmode" written.
+
+
+07-May-97
+=========
+
+[New] src/vboxbeep.c
+	Support for vboxd removed. Since the COUNT command in vboxd needs
+	a login, it's not a good idea to use this function :-) vboxbeep now
+	can only check spools on local machine.
+
+[New] doc/de/vbox.sgml.in
+	Section "Programme/vbox" written.
+
+[New] doc/de/vbox.sgml.in
+	Section "Programme/vboxgetty" written.
+
+[New] doc/de/vbox.sgml.in
+	Section "Programme/vboxd" written.
+
+[New] src/vboxd.c:
+	Functions REMOVECTRL and CREATECTRL implemented.
+
+[New] src/vboxd.c:
+	Control functions now check if the name begins with CTRL_NAME_MAGIC.
+
+[New] src/libvbox.c:
+	Control functions now check if the name begins with CTRL_NAME_MAGIC.
+
+[New] doc/de/vbox.sgml.in:
+	Section "Skriptsprache" updated.
+
+[New] src/vboxd.c:
+	Now the command COUNT needs a successful login and counts only
+	message into the users incoming directory. I think vboxbeep
+	must be rewritten to operate only local and not over the daemon.
+
+[Fix] src/vboxd.c:
+	All server commands now remove the path in a message name.
+
+
+06-May-97
+=========
+
+[New] doc/de/vbox.sgml.in
+	Section "Konfiguration/.vboxrc" written.
+
+[New] doc/de/vbox.sgml.in
+	Section "Konfiguration/vbox.conf" written.
+
+[New] doc/de/vbox.sgml.in
+	Section "Vorwort" written.
+
+[New] CHANGES:
+	Many people ask me if I can write the CHANGES in english, so I will
+	try it. My english is not the best, but I hope all can understand
+	what is changed :-)
+
+[New] doc/de/vbox.sgml.in:
+	Section "Konfiguration/vboxd.conf" written.
+
+
+01-May-97
+=========
+
+[Fix] src/vbox.c:
+	If the cursor was on the last message and the user press 'D' to
+	delete/undelete a message, the line was not updated.
+
+[Fix] *:
+	GNU's gettext support *totally* removed. Some programs killed with
+	SIGSEGV on random positions. Since gettext is remove there are no
+	problems :-/
+
 
 27-Apr-97
 =========
 
-o [Neu] vboxd macht Fehlerausgaben jetzt im syslog.
+[New] src/vboxd.c:
+	Errors are now reported via the syslog() function.
 
-o [Neu] Lautstärkenregler eingebaut. Die Lautstärke wird jetzt wieder
-	vboxplay als 2. Argument übergeben.
+[New] utils/vboxplay.in:
+	Support for the volumecontrol added.
 
-o [Neu] Deutsche Übersetzung für vbox gemacht.
+[New] src/vbox.c:
+	Volumecontrol implemented. The volume is passed as 2nd argument to
+	the play command.
 
-o [Neu] Nachrichten löschen funktioniert.
+[New] src/vbox.c:
+	Functions to toggle read/unread and delete/undelete added.
 
-o [Neu] Nachrichten als gelesen/ungelesen markieren funktioniert.
+[New] src/vboxd.c:
+	Functions TOGGLE and DELETE implemented.
 
-o [Neu] Funktion TOGGLE in vboxd implementiert.
+[New] src/vbox.c:
+	Now with ~/.vboxrc the display of vbox can be changed. This file also
+	holds the username and password for vboxd.
 
-o [Neu] Funktion DELETE in vboxd implementiert.
 
-o [Neu] vbox (viewer) benutzt jetzt ~/.vboxrc um Farbeinstellungen zu
-	machen. Ein Beispiel ist unter ./examples/vboxrc.example.
-
-o [Fix] Speicherverwaltung in den breaklist-Funktionen hat
-	gesponnen. Jetzt wird ein fixes Feld benutzt.
+**************************
+Changes since 2.0.0 Beta 1
+**************************
 
 
 26-Apr-97
 =========
 
-o [Neu] Dokumentation: Erste Schritte.
+[Rel] 2.0.0 Beta 2 released.
+
+[Fix] src/lists.c:
+	List functions to hold the break touchtones are broken. For the
+	first time vboxgetty use a fixed array. Later I will replace this
+	with dynamicaly allocation.
+
+[New] doc/de/vbox.sgml.in:
+	Section "Erste Schritte" written.
+
+
+
+
+
+
 
 o [Neu] vbox kann jetzt Nachrichten vom Server holen und spielen :-)
 
