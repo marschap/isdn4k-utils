@@ -1,4 +1,4 @@
-/* $Id: processor.c,v 1.2 1997/03/20 22:42:33 akool Exp $
+/* $Id: processor.c,v 1.3 1997/03/29 09:24:25 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.3  1997/03/29 09:24:25  akool
+ * CLIP presentation enhanced, new ILABEL/OLABEL operators
+ *
  * Revision 1.2  1997/03/20 22:42:33  akool
  * Some minor enhancements.
  *
@@ -376,7 +379,7 @@ static int facility(int type, int l)
 
   switch(type) {
     case AOC_INITIAL          : ID = OP = EH = MP = 0;
-#if 0                                
+#if 0
                                 if (asnp == NULL)
                                   return(AOC_OTHER);
 #endif
@@ -386,7 +389,7 @@ static int facility(int type, int l)
                                   case 0x91 : aoc_debug(c, "Remote Operation Protocol"); break;
                                   case 0x92 : aoc_debug(c, "CMIP Protocol");             break;
                                   case 0x93 : aoc_debug(c, "ACSE Protocol");             break;
-                                    default : aoc_debug(c, "UNKNOWN Protocol");		  
+                                    default : aoc_debug(c, "UNKNOWN Protocol");
                                               return(AOC_OTHER);
                                 } /* switch */
 
@@ -520,7 +523,7 @@ static int facility(int type, int l)
                                               } /* switch */
 
                                 	      aoc_debug(c, px1);
-                                              
+
                                               c = strtol(asnp += 3, NIL, 16);
                                        	      sprintf(s, "Enumeration type BasicService=%d", c);
                                 	      aoc_debug(c, s);
@@ -543,7 +546,7 @@ static int facility(int type, int l)
                                               } /* switch */
 
                                 	      aoc_debug(c, px2);
-                                              
+
                                               c = strtol(asnp += 3, NIL, 16);
                                        	      sprintf(s, "SEQUENCE, Address (Zieladresse)=%d", c);
                                 	      aoc_debug(c, s);
@@ -564,7 +567,7 @@ static int facility(int type, int l)
                                               	       	    aoc_debug(l, s);
 
                                               	       	    c = strtol(asnp += 3, NIL, 16);
-                                       	      	       	    sprintf(s, "AufzÑhlungstyp, PublicTypeOfNumber=%d", c);
+                                       	      	       	    sprintf(s, "Aufzaehlungstyp, PublicTypeOfNumber=%d", c);
                                 	      		    aoc_debug(c, s);
 
                                               	       	    l = strtol(asnp += 3, NIL, 16);
@@ -580,7 +583,7 @@ static int facility(int type, int l)
                     					      case 0x05 : px3 = "abbreviated Number";         break;
                                                                 default : px3 = "UNKNOWN PublicTypeOfNumber"; break;
                                                             } /* switch */
-                                	      		    
+
                                 	      		    aoc_debug(c, px3);
                                                             break;
 
@@ -692,7 +695,7 @@ static int facility(int type, int l)
                                               c = strtol(asnp += 3, NIL, 16);
                                        	      sprintf(s, "ServedUserNr=%d", c);
                                 	      aoc_debug(c, s);
-                                              
+
                                               l = strtol(asnp += 3, NIL, 16);
                                               sprintf(s, "length=%d", l);
                                               aoc_debug(l, s);
@@ -1183,7 +1186,7 @@ static void buildnumber(char *num, int oc3, int oc3a, char *result, int version)
   switch (oc3 & 0x70) { /* Calling party number Information element, Octet 3 - Table 4-11/Q.931 */
     case 0x00 : if (*num) {                  /* 000 Unknown */
                   char *amt = amtsholung;
-                  
+
                   while (amt && *amt) {
                     int len = strchr(amt, ':') ? strchr(amt, ':') - amt : strlen(amt);
 
@@ -1200,7 +1203,7 @@ static void buildnumber(char *num, int oc3, int oc3a, char *result, int version)
 #endif
                       break;
 		    } /* if */
-                    
+
                     amt += len + (strchr(amt, ':') ? 1 : 0);
                   } /* while */
 
@@ -1301,7 +1304,7 @@ static void chargemaxAction(int chan, double charge_overflow)
 
 
   sprintf(cmd, "%s/dontstop", confdir());
-  
+
   if (access(cmd, F_OK)) {
     sprintf(cmd, "%s/%s", confdir(), STOPCMD);
 
@@ -1518,14 +1521,14 @@ static void decode(int chan, register char *p, int type, int version)
 
                         switch (c & 0xf0) {
                           case 0x00 :
-                          case 0x80 : sprintf(ps, "CCITT standartisierte Codierung");    break;
+                          case 0x80 : sprintf(ps, "CCITT standartisierte Codierung");     break;
                           case 0x20 :
-                          case 0xa0 : sprintf(ps, "Reserve");                            break;
+                          case 0xa0 : sprintf(ps, "Reserve");                             break;
                           case 0x40 :
-                          case 0xc0 : sprintf(ps, "reserviert fÅr nationale Standards"); break;
+                          case 0xc0 : sprintf(ps, "reserviert fuer nationale Standards"); break;
                           case 0x60 :
-                          case 0xe0 : sprintf(ps, "Standard bzgl. Localierung");         break;
-                            default : sprintf(ps, "UNKNOWN #%d", c & 0xf0);              break;
+                          case 0xe0 : sprintf(ps, "Standard bzgl. Localierung");          break;
+                            default : sprintf(ps, "UNKNOWN #%d", c & 0xf0);               break;
                         } /* switch */
 
                         Q931dump(TYPE_STRING, c, s, version);
@@ -1559,7 +1562,7 @@ static void decode(int chan, register char *p, int type, int version)
                         case 0x0a : py = "Network beyond inter-working point";  break;
                           default : py = "";             	       	     	break;
                       } /* switch */
-                      
+
                       c = strtol(p + 6, NIL, 16);
                       call[chan].cause = c & 0x7f;
 
@@ -1972,31 +1975,41 @@ static void decode(int chan, register char *p, int type, int version)
                     if (*call[chan].onum[CALLING]) /* another Calling-party? */
                       if (strcmp(call[chan].onum[CALLING], s)) /* different! */
                         if ((call[chan].screening == 3) && ((oc3a & 3) < 3)) { /* we believe the first one! */
-                          strcpy(call[6].onum[CALLING], s);
-                          buildnumber(s, oc3, oc3a, call[6].num[CALLING], version);
-                          strcpy(call[6].vnum[CALLING], vnum(6, CALLING));
+                          strcpy(call[chan].onum[CLIP], s);
+                          buildnumber(s, oc3, oc3a, call[chan].num[CLIP], version);
+                          strcpy(call[chan].vnum[CLIP], vnum(6, CLIP));
 #ifdef Q931
-                          if (q931dmp && (*call[chan].vnum[CALLING] != '?') && *call[chan].vorwahl[CALLING] && oc3 && ((oc3 & 0x70) != 0x40)) {
+                          if (q931dmp && (*call[chan].vnum[CLIP] != '?') && *call[chan].vorwahl[CLIP] && oc3 && ((oc3 & 0x70) != 0x40)) {
                             auto char s[BUFSIZ];
 
                             sprintf(s, "%s %s/%s, %s",
-                              call[6].areacode[CALLING],
-                              call[6].vorwahl[CALLING],
-                              call[6].rufnummer[CALLING],
-                              call[6].area[CALLING]);
+                              call[chan].areacode[CLIP],
+                              call[chan].vorwahl[CLIP],
+                              call[chan].rufnummer[CLIP],
+                              call[chan].area[CLIP]);
 
                             Q931dump(TYPE_STRING, -2, s, version);
                           } /* if */
 #endif
 
-                          sprintf(s1, "CLIP %s", call[6].vnum[CALLING]);
+                          sprintf(s1, "CLIP %s", call[chan].vnum[CLIP]);
                           info(chan, PRT_SHOWNUMBERS, STATE_RING, s1);
 
                           break;
                         }
                         else {
                           warn = 1;
-                          strcpy(call[6].vnum[CALLING], call[chan].vnum[CALLING]);
+
+			  strcpy(call[chan].onum[CLIP],      call[chan].onum[CALLING]);
+			  strcpy(call[chan].num[CLIP],       call[chan].num[CALLING]);
+			  strcpy(call[chan].vnum[CLIP],      call[chan].vnum[CALLING]);
+			  call[chan].confentry[CLIP] = call[chan].confentry[CALLING];
+			  strcpy(call[chan].areacode[CLIP],  call[chan].areacode[CALLING]);
+			  strcpy(call[chan].vorwahl[CLIP],   call[chan].vorwahl[CALLING]);
+			  strcpy(call[chan].rufnummer[CLIP], call[chan].rufnummer[CALLING]);
+			  strcpy(call[chan].alias[CLIP],     call[chan].alias[CALLING]);
+			  strcpy(call[chan].area[CLIP],      call[chan].area[CALLING]);
+
                           /* fall thru, and overwrite ... */
                         } /* else */
 
@@ -2021,9 +2034,10 @@ static void decode(int chan, register char *p, int type, int version)
 #endif
 
                     if (warn) {
-                      sprintf(s1, "CLIP %s", call[6].vnum[CALLING]);
+                      sprintf(s1, "CLIP %s", call[chan].vnum[CLIP]);
                       info(chan, PRT_SHOWNUMBERS, STATE_RING, s1);
                     } /* if */
+
                     break;
 
 
@@ -2093,7 +2107,7 @@ static void decode(int chan, register char *p, int type, int version)
                       if (version != VERSION_1TR6) {
                         if (call[chan].knock)
                       	  info(chan, PRT_SHOWNUMBERS, STATE_RING, "********************");
-                        
+
                         sprintf(s, "RING (%s)", call[chan].service);
                       	info(chan, PRT_SHOWNUMBERS, STATE_RING, s);
 
@@ -2101,7 +2115,7 @@ static void decode(int chan, register char *p, int type, int version)
                       	  info(chan, PRT_SHOWNUMBERS, STATE_RING, "NO FREE B-CHANNEL !!");
                       	  info(chan, PRT_SHOWNUMBERS, STATE_RING, "********************");
                         } /* if */
-                      	
+
                       	if (sound)
                           ringer(chan, RING_RING);
                       } /* if */
@@ -2402,7 +2416,7 @@ escape:             for (c = 0; c <= sxp; c++)
                       px += sprintf(px, "CHANNEL: ");
 
                     switch (c) {
-                      case 0x80 : px += sprintf(px, "BRI, kein Kanal");                      
+                      case 0x80 : px += sprintf(px, "BRI, kein Kanal");
                       	   	  call[chan].knock = 1;
                       	   	  break;
                       case 0x81 : px += sprintf(px, "BRI, B1 bevorzugt");                    break;

@@ -1,4 +1,4 @@
-/* $Id: tools.h,v 1.6 1997/03/23 23:12:05 luethje Exp $
+/* $Id: tools.h,v 1.7 1997/03/29 09:24:34 akool Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools.h,v $
+ * Revision 1.7  1997/03/29 09:24:34  akool
+ * CLIP presentation enhanced, new ILABEL/OLABEL operators
+ *
  * Revision 1.6  1997/03/23 23:12:05  luethje
  * improved performance
  *
@@ -299,6 +302,7 @@
 
 #define  OTHER (call[chan].dialin ? CALLING : CALLED)
 #define  ME    (call[chan].dialin ? CALLED : CALLING)
+#define	 CLIP  2
 #define  _OTHER(call) (call->dialin ? CALLING : CALLED)
 #define  _ME(call)    (call->dialin ? CALLED : CALLING)
 
@@ -410,13 +414,13 @@ typedef struct {
   int     bearer;
   int	  si1;     /* Service Indicator entsprechend i4l convention */
   int	  si11;	   /* if (si1 == 1) :: 0 = Telefon analog / 1 = Telefon digital */
-  char    onum[2][NUMSIZE];
+  char    onum[3][NUMSIZE];
   int	  screening;
-  char    num[2][NUMSIZE];
-  char    vnum[2][256];
+  char    num[3][NUMSIZE];
+  char    vnum[3][256];
   char    id[32];
   char	  usage[16];
-  int	  confentry[2];
+  int	  confentry[3];
   time_t  time;
   time_t  connect;
   time_t  t_duration;
@@ -429,11 +433,11 @@ typedef struct {
   long	  lobytes;
   double  ibps;
   double  obps;
-  char	  areacode[2][NUMSIZE];
-  char	  vorwahl[2][NUMSIZE];
-  char	  rufnummer[2][NUMSIZE];
-  char	  alias[2][NUMSIZE];
-  char	  area[2][128];
+  char	  areacode[3][NUMSIZE];
+  char	  vorwahl[3][NUMSIZE];
+  char	  rufnummer[3][NUMSIZE];
+  char	  alias[3][NUMSIZE];
+  char	  area[3][128];
   char	  money[64];
   char	  currency[32];
   char    msg[128];

@@ -1,4 +1,4 @@
-ISDNLOG - Version 3.0 -  				20-Mar-97  23:29
+ISDNLOG - Version 3.0 -  				28-Mar-97  20:49
 
 
 isdnlog ist ein Tool zur Auswertung der Info's vom ISDN-S0-Bus sowie
@@ -13,7 +13,7 @@ Fuer alle, die es nun ueberhaupt nicht mehr abwarten koennen, hier das
 Quick-Installation-Guide
 ------------------------
 
-1. Linux-2.0.29 + isdn4liunx-Patches (oder 2.0.30???) verwenden:
+1. Linux-2.0.29 + isdn4kernel-2.0.29.5 verwenden:
      CONFIG_ISDN=m
      CONFIG_ISDN_DRV_TELES=m
 
@@ -552,12 +552,40 @@ ACHTUNG: "MYPATH  =  /home/fred" wird als Variable zu "MYPATH=/home/fred".
 
 
 Die dritte Sektion beschreibt spezifische Angaben fuer den isdnlog. Diese
-Sektion wird durch [ISDNLOG] eingeleitet:
+Sektion wird durch [ISDNLOG] eingeleitet.
 
-Andreas, die folgenden Zeilen muss du noch dokumentieren:
-RELOADCMD
-STOPCMD
-RELOADCMD
+RELOADCMD = reload
+
+Hiermit wird ein ausfuehrbares Programm (z.b. Shell-Script) angegeben,
+mit dem isdnlog ein evtl. wildgewordenes isdn4linux reanimieren kann.
+(Ein Beispiel findet sich im Kapitel 14.1 Watchdog)
+
+STOPCMD = stop
+
+Hiermit wird ein ausfuehrbares Programm (z.b. Shell-Script) angegeben,
+mit dem isdnlog isdn4linux terminieren kann.
+(Ein Beispiel findet sich im Kapitel 14.2 CHARGEMAX)
+
+REBOOTCMD = /sbin/reboot
+
+Hiermit wird ein ausfuehrbares Programm (z.b. Shell-Script) angegeben,
+mit dem isdnlog Linux herunterfahren kann.
+(Ein Beispiel findet sich im Kapitel 14.2 CHARGEMAX)
+
+CHARGEMAX = 15.00
+
+Hiermit wird (in DM) angegeben, wieviel Geld man pro Tag maximal
+mit isdn4linux vertelefonieren moechte.
+
+CONNECTMAX = 18000,0
+
+Hiermit wird (in Sekunden) angegeben, wieviel Zeit man pro Monat
+maximal Online sein moechte.
+
+BYTEMAX = 67108864,0
+
+Hiermit wird (in Byte) angegeben, wieviel Byte man maximal pro
+Monat saugen moechte.
 
 CURRENCY=factor,currency
 
@@ -585,7 +613,7 @@ OLABEL=xxxxx
 Hiermit kann definiert werden, wie die Console-Ausgaben aussehen sollen.
 Fehlen diese Eintraege, wird
   ILABEL=%b %e %T %ICall to tei %t from %N2 on %n2
-  OLABEL=%b %e %T %ICall to tei %t from %N2 on %n2
+  OLABEL=%b %e %T %Itei %t calling %N2 with %n2
 angenommen (die bislang bekannte Optik)
 
 Bei reinkommenden Verbindungen wird das "ILABEL", und bei rausgehenden
@@ -601,21 +629,39 @@ koennen folgende Platzhalter angegeben werden:
  %C   Call reference
  %Nx  MSN (Telefonnummer) des Gegner's (siehe *1)
  %nx  Eigene MSN (Telefonnummer)       (siehe *1)
+ %cx  Via CLIP vermeldete MSN	       (siehe *1)
+ %A   der Text " alias <MSN>", falls
+      CLIP-Meldung, sonst leer
  %I   Tabulation 		       (siehe *2)
  %a   Wochentag (-> "Fri")
  %b   Monat (-> "Aug")
  %e   Tag im Monat (-> " 8")
  %T   Uhrzeit (-> "13:17:11")
  %B   B-Kanal (0, oder 1)
+ %k   Nummer der ISDN-Karte, von der die Meldung kam (0 = 1. Karte)
 
-*1 Bei %N sowie %n muss angegeben werden, wie die Telefonnummer ausgegeben
+ %/
+ %
+ %(
+ %)   Falls die Nummer des Gegners bekannt, entsprechendes Zeichen,
+      sonst Leerstring
+
+
+*1 Bei %N, %n sowie %c muss angegeben werden, wie die Telefonnummer ausgegeben
    werden soll:
 
     %N0  - Telefonnummer exakt so, wie von der VSt gemeldet
+    	   (z.b. "8989810530")
     %N1  - Telefonnummer, von isdnlog um Vorwahl, vorlaufende "0" etc.
-    	   ergaenzt
+    	   ergaenzt (z.b. "+498989810530")
     %N2  - Von isdnlog optimal "verschoenerte" Nummer, also Alias
-    	   aus "isdn.conf", mit Ortsnetz etc.
+    	   aus "isdn.conf" oder mit Ortsnetz etc.
+    	   (z.b. "+49 89/89810530, Muenchen")
+    %N3  - Vorwahl (z.b. "89")
+    %N4  - Rufnummer (z.b. "89810530")
+    %N5  - Alias
+    %N6  - Ortsnetz (z.b. "Muenchen")
+    %N7  - Areacode (z.b. "+49")
 
 *2 Dieser Platzhalter wird von isdnlog folgendermassen aufgeloest:
 

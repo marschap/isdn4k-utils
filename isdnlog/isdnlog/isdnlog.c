@@ -1,4 +1,4 @@
-/* $Id: isdnlog.c,v 1.2 1997/03/20 22:42:31 akool Exp $
+/* $Id: isdnlog.c,v 1.3 1997/03/29 09:24:23 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -436,7 +436,7 @@ int set_options(int argc, char* argv[])
     message = newmessage;
 
   if (trace && isdaemon) {
-    printf("%s","Can not trace and daemon together!\n");
+    printf("%s","Can not trace daemonized!\n");
     exit(20);
   } /* if */
 
@@ -450,7 +450,7 @@ int set_options(int argc, char* argv[])
       syslogmessage = defaultmsg;
 
     switch (fork()) {
-      case -1 : print_msg(PRT_ERR,"%s","Can not start fork()!\n");
+      case -1 : print_msg(PRT_ERR,"%s","Can not fork()!\n");
                 Exit(18);
                 break;
       case 0  : break;
@@ -481,7 +481,7 @@ static int read_param_file(char *FileName)
 
 	if (opt_dat != NULL)
 	{
-    print_msg(PRT_ERR,"Can not more than one option file (file %s)!\n", FileName);
+    print_msg(PRT_ERR, "Only one option file allowed (file %s)!\n", FileName);
 		return -1;
 	}
 

@@ -1,4 +1,4 @@
-/* $Id: tools.c,v 1.1 1997/03/16 20:59:24 luethje Exp $
+/* $Id: tools.c,v 1.2 1997/03/29 09:24:33 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools.c,v $
+ * Revision 1.2  1997/03/29 09:24:33  akool
+ * CLIP presentation enhanced, new ILABEL/OLABEL operators
+ *
  * Revision 1.1  1997/03/16 20:59:24  luethje
  * Added the source code isdnlog. isdnlog is not working yet.
  * A workaround for that problem:
@@ -189,7 +192,7 @@ char *num2nam(char *num, int si)
 
 /****************************************************************************/
 
-#ifdef _GNU_SOURCE
+#ifdef GLIBC /* _GNU_SOURCE */
 char *double2str(double n, int l, int d, int flags)
 {
   if (++retnum == MAXRET)
@@ -548,12 +551,10 @@ int iprintf(char *obuf, int chan, register char *fmt, ...)
   register int       c, i, who;
   register short int width, ndigit;
   register int       ndfnd, ljust, zfill, lflag;
-  register long      l;
+  register int	     unknown = !*call[chan].digits && !*call[chan].onum[OTHER];
   register char     *op = obuf;
-#if 0
-  auto     int       decpt, sign;
-#endif
   auto     char      buf[MAXDIG + 1]; /* +1 for sign */
+  auto	   char	     sx[BUFSIZ];
   static   char      nul[] = "(null)";
   auto     va_list   ap;
 
@@ -637,64 +638,6 @@ int iprintf(char *obuf, int chan, register char *fmt, ...)
     who = OTHER;
 
     switch (c) {
-      case 'X' : lflag++;
-      case 'x' : c = 16;
-	         goto oxu;
-
-      case 'U' : lflag++;
-      case 'u' : c = 10;
-	         goto oxu;
-
-      case 'O' : lflag++;
-      case 'o' : c = 8;
-oxu:
-	         if (lflag)
-	           p = ltoa((unsigned long)GETARG(long), p, c, 0);
-                 else
-	           p = itoa((unsigned int)GETARG(int), p, c, 0);
-	         break;
-
-      case 'D' : lflag++;
-      case 'd' : if (lflag) {
-	           if ((l = GETARG(long)) < 0) {
-	             *p++ = '-';
-	             l = -l;
-	           } /* if */
-
-	           p = ltoa((unsigned long)l, p, 10, 0);
-	         }
-                 else {
-	           if ((i = GETARG(int)) < 0) {
-	             *p++ = '-';
-	             i = -i;
-	           } /* if */
-
-	           p = itoa((unsigned int)i, p, 10, 0);
-                 } /* else */
-	         break;
-#if 0
-      case 'e' : if (!ndfnd)
-	           ndigit = 6;
-
-	         ndigit++;
-	         p = ecvt(GETARG(double), ndigit, &decpt, &sign) + ndigit;
-	         break;
-
-      case 'f' : if (!ndfnd)
-	           ndigit = 6;
-	         p = fcvt(GETARG(double), ndigit, &decpt, &sign) + ndigit;
-	         break;
-
-      case 'g' : if (!ndfnd)
-	           ndigit = 6;
-	         p = gcvt(GETARG(double), ndigit, p) + ndigit;
-	         break;
-#endif
-
-      case 'c' : zfill = ' ';
-	         *p++ = GETARG(int);
-	         break;
-
       case 's' : zfill = ' ';
 
 	         if ((s = GETARG(char *)) == NULL)
@@ -719,8 +662,18 @@ oxu:
       case 'B' : p = itoa(chan, p, 10, 0);
       	       	 break;
 
-      case 'n' : who = ME;
-      case 'N' : if (!ndigit)
+      case 'A' : s = sx;
+      	         if (*call[chan].onum[CLIP])
+      	       	   sprintf(sx, " alias %s", call[chan].vnum[CLIP]);
+      		 else
+                   *sx = 0;
+                 p = s + strlen(s);
+                 break;
+
+      case 'n' : who = ME;    goto go;
+      case 'c' : who = CLIP;  goto go;
+      case 'N' :
+go:   	         if (!ndigit)
 	           ndigit = 32767;
 
       		 if (*fmt) {
@@ -732,6 +685,7 @@ oxu:
                      case '4' : s = call[chan].rufnummer[who]; break;
                      case '5' : s = call[chan].alias[who];     break;
                      case '6' : s = call[chan].area[who];      break;
+                     case '7' : s = call[chan].areacode[who];  break;
                       default : s = nul; 		       break;
                    } /* switch */
 
@@ -757,6 +711,14 @@ oxu:
 
       case 'T' : s = idate + 8; p = s + 8;
                  break;
+
+      case ' ' :
+      case '(' :
+      case ')' :
+      case '/' : sprintf(sx, "%c", unknown ? 0 : c);
+      		 s = sx;
+      	       	 p = s + strlen(s);
+		 break;
 
       default  : *p++ = c;
 	         break;
