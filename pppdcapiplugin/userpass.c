@@ -1,6 +1,6 @@
 /*
  *
- * $Id: userpass.c,v 1.2 2001/05/01 12:43:49 calle Exp $
+ * $Id: userpass.c,v 1.3 2001/11/07 14:38:17 calle Exp $
  *
  * userpass.c - pppd plugin to provide username password
  *
@@ -12,6 +12,9 @@
  *  2 of the License, or (at your option) any later version.
  *
  * $Log: userpass.c,v $
+ * Revision 1.3  2001/11/07 14:38:17  calle
+ * show version info.
+ *
  * Revision 1.2  2001/05/01 12:43:49  calle
  * - new pppd 2.4.1 looks in /usr/lib/pppd/VERSION for plugins
  * - now depends on pppd version
@@ -30,6 +33,8 @@
 #ifdef VERSION
 char pppd_version[] = VERSION;
 #endif
+
+static char *revision = "$Revision: 1.3 $";
 
 static char username[MAXNAMELEN+1];
 static char password[MAXSECRETLEN+1];
@@ -56,6 +61,7 @@ static int userpass(char *user, char *passwd)
 
 void plugin_init(void)
 {
+    info("userpass: %s", revision);
     add_options(options);
     pap_passwd_hook = userpass;
 }
