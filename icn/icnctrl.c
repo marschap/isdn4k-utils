@@ -1,4 +1,4 @@
-/* $Id: icnctrl.c,v 1.2 1997/05/17 12:23:29 fritz Exp $
+/* $Id: icnctrl.c,v 1.3 1997/06/21 14:38:22 fritz Exp $
 
  * ICN-ISDN driver for Linux. (Control-Utility)
  *
@@ -22,6 +22,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: icnctrl.c,v $
+ * Revision 1.3  1997/06/21 14:38:22  fritz
+ * Added option for enabling only one channel in leased mode.
+ *
  * Revision 1.2  1997/05/17 12:23:29  fritz
  * Corrected some Copyright notes to refer to GPL.
  *
@@ -95,7 +98,7 @@ usage()
 #endif
 	fprintf(stderr, "   or: %s [-d driverId] add <portbase> [id1 [id2]] (Add a new card\n", cmd);
 	fprintf(stderr, "   or: %s [-d driverId] load <bootcode> <protocol> (load firmware)\n", cmd);
-	fprintf(stderr, "   or: %s [-d driverId] leased <on|off>            (Switch interface,\n",cmd);
+	fprintf(stderr, "   or: %s [-d driverId] leased <1|2|on|off>         (Switch interface,\n",cmd);
     fprintf(stderr, "                                                    Channel n\n");
 	fprintf(stderr, "                                                    into Leased-Line-Mode)\n");
 	exit(-1);
@@ -250,7 +253,10 @@ main(int argc, char **argv)
 		if (ac == 3) {
 			ioctl_s.arg = 0;
 			if ((!strcmp(argv[arg_ofs + 1], "on")) ||
+			    (!strcmp(argv[arg_ofs + 1], "2"))  ||
 			    (!strcmp(argv[arg_ofs + 1], "yes")))
+				ioctl_s.arg = 3;
+			if (!strcmp(argv[arg_ofs + 1], "1"))
 				ioctl_s.arg = 1;
 			if ((ioctl(fd, ICN_IOCTL_LEASEDCFG + IIOCDRVCTL, &ioctl_s)) < 0) {
 				perror("ioctl LEASEDCFG");

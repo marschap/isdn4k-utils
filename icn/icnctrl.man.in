@@ -1,6 +1,6 @@
-.\" $Id: icnctrl.man.in,v 1.4 1997/03/02 19:42:07 fritz Exp $
+.\" $Id: icnctrl.man.in,v 1.5 1997/06/21 14:38:25 fritz Exp $
 .\"
-.\" CHECKIN $Date: 1997/03/02 19:42:07 $
+.\" CHECKIN $Date: 1997/06/21 14:38:25 $
 .\"
 .\" Process this file with
 .\" groff -man -Tascii icnctrl.1 for ASCII output, or
@@ -93,12 +93,18 @@ for all cards (cards are mapped on demand), while each card has its
 own port range. Memory range is
 .IR 16k .
 .TP
-.B leased on|off
+.B leased on|1|2|off
 switches between normal (dialup) and leased-line mode. Leased-line mode
 is intended for usage with S64K-lines or - if both channels are used -
-for S02. These lines do not have a D-channel. When leased-line mode is
-enabled, the driver simulates incoming calls using special "phone-numbers"
-for calling and called address which are generated as follows:
+for S02. If the second parameter is
+.B 1
+, only one channel is enabled.
+If the second parameter is
+.BR 2 " or " on
+both channels are enabled. Leased lines do not have a D-channel. When
+leased-line mode is enabled, the driver simulates incoming calls using
+special "phone-numbers" for calling and called address which are generated
+as follows:
 .ie 1
 .RS
 Calling number:
