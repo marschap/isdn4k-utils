@@ -12,14 +12,14 @@ Posting-frequency: monthly
 Last-modified: 18-Mar-97
 URL: http://www.lrz-muenchen.de/~ui161ab/www/isdn/
 
-!1FAQ for isdn4linux - Version 1.3.2!br (translation in progress 13-Apr-97)
+!1FAQ for isdn4linux - Version 1.3.2!br (translation in progress 14-Apr-97)
 
 [Translator's notes!br
 --31-Mar-97: First step in updating the FAQ from 1.0.5
 (6-Jan-97) to 1.3.2 (18-Mar-97). Headings are now complete and in the right order,
 but many questions are missing or are still in German!!br
---13-Apr-97: Questions complete (but not all updated or translated) in 
-Sections 1, 2, 4, and 5]!br
+--14-Apr-97: Questions complete in all section (but not all updated or 
+translated)!br
 !br
 
 This FAQ is protected by the GNU General Public License (GPL) Version 2;
@@ -995,6 +995,49 @@ A: See the question in the chapter on dialin.
 Q: How do I set the MSN in a Cisco?
 A: With "isdn answer1 :<msn>" (or answer2). Eg. "isdn answer1 :12345" will
    set the MSN to 12345.
+
+Q: Warum bekomme ich von der deutschen Telekom nicht immer die Telefonnummer
+   eines Anrufers ("Caller Id") übermittelt?
+A: Aus Datenschutzgründen wird die Telefonnummer nicht bei Anrufen aus dem
+   analogen Netz übermittelt. Es sei denn, Sie erlauben der Telekom
+   ausdrücklich die Übermittlung Ihrer Nummer (kostet nichts) und sind an
+   einer digitalen Vermittlungstelle angeschlossen.!br
+   Wer einen ISDN-Anschluß hat, muß dagegen der Übermittlung seiner Nummer
+   ausdrücklich widersprechen - oder beantragen, daß er über die Übermittlung
+   seiner Nummer fallweise entscheiden kann (per ISDN-Telefon; fallweise
+   Unterdrückung [CLIR] ist inzwischen kostenlos, fallweise Übermittlung kostet
+   extra). Es fällt der Telekom jedoch offenbar !u1sehr!u0 schwer, das schon
+   im ersten Anlauf richtig zu konfigurieren. Wer auf die Übermittlung der
+   Caller Id angewiesen ist, sollte genau überprüfen, ob auch alles korrekt
+   eingestellt wurde.
+
+Q: Bekomme ich die Caller Id bei Anrufen aus dem Ausland übermittelt
+   (deutsche Telekom)?
+A: Ja, bei Anrufen aus Ländern, die es mit der Rufnummerübermittlung nicht so
+   eng sehen wie wir in Deutschland (z.B. USA, Kanada).
+
+Q: Ich habe gehört, es werden eigentlich zwei Caller Id's übermittelt?
+A: Das stimmt, es wird sowohl eine "User-Provided, not screened", als auch
+   eine "Network-Provided" (die ist von der Telefongesellschaft)
+   übermittelt.!br
+   Gernot Zander <hifi@scorpio.in-berlin.de> schrieb dazu am 15. Dez 1996:
+!verbon
+        Die erste ist von der Anlage mitgegeben und ungeprüft.
+        Die zweite ist die von der Telekom vergebene.
+        Ich hatte hier auch schon solche Anrufe, wo ein Siemens-
+        Mitabeiter aus München hier anrief und mit einer ellenlangen
+        Nummer kam, deren Vorwahl 030 (Berlin) war.
+        Ich rief daraufhin die Telekom an, was das denn solle, und
+        die wußten auch erst nichts, dann fanden sie wen kompetentes,
+        der sagte, daß das ginge.
+!verboff
+   Zum "no screening" schrieb noch Ralf G. R. Bergs
+   <rabe@Informatik.RWTH-Aachen.de> am 16. Dez 1996:
+!verbon
+        "CLIP no screening". Der Anrufer hat das (kostenpflichtige und nur am 
+        Komfort-Anlagenanschluss(!) verfügbare) Feature, welches ihm die 
+        Übertragung einer beliebigen Caller ID erlaubt.
+!verboff
 
 
 !3Teles driver
@@ -3157,38 +3200,41 @@ A: Szemethy Tivadar <tiv@sch.bme.hu> wrote 11.10.1996:
 
 Q: My isdn4linux doesn't work! How do I best go about finding the problem?
 A: The following steps are recommended:!br!br
-   First, check everything is working when booting.
-   Are there unusual error messages in /var/log/messages?
-   Are all programs active that should be started at boot (check with
-   ps, or fuser /dev/xxx)? HiSax won't start if something isn't right.
-   The old Teles driver, on the other hand, will appear to start even if
-   it is not working. See the questions under Troubleshooting!Teles.!br!br
-   Second, try calling with a telephone. The number should be shown in
-   /var/log/messages. Otherwise, perhaps the driver was incorrectly 
-   started?!br!br
-   Third, continue experimenting using modem emulation. Because of the 
-   differently service recognition, you can't get the telephone or fax to
-   ring, so we have to try something else. Open 2 different consoles as 
-   root, and on each run "minicom -s"... in the first set "Serial Port
-   Setup!Serial Device" to /dev/ttyI0, and the other to /dev/ttyI1. Then 
-   choose "Exit" and start the modem emulation with "ATZ" and "AT&Exxxxxx"
-   (where xxxxxx is your own MSN without the area code). Then you can start
-   On the first console you can dial your own number with ATDxxxxxx. On the
-   second console you should now see "CALLER NUMBER: xxxxxxx" and "RING".
-   Accept the call on the second console with "ATA", and you should then 
-   see the message "CONNECT 64000/X.75" on both consoles. You can then send
-   characters to the other console by typing (to see the characters on your
-   own console, turn on local echo).!br!br
-   Fourth, try calling a known ISDN BBS. If you don't know of any, try 
-   Gernot (see "Are there sites that offer guest access where I can test my
-   isdn4linux setup?"). If you have problems with the modem emulation, see
-   "Troubleshooting!Modem Emulation"!br!br
-   Fifth, try configuring the network interface or ipppd. Experience shows 
-   that they cause beginners (and not only beginners!) the most problems.
-   To make things easier and you're happy with asyncPPP (to see what 
-   asyncPPP means, see the question "pppd, ipppd, syncPPP, asyncPPP - 
-   what is that? What should I use?"), you can use the normal pppd with
-   modem emulation (i.e. /dev/ttyI*). Otherwise, it is highly recommended
+!verbon
+   1. First, check everything is working when booting.
+      Are there unusual error messages in /var/log/messages?
+      Are all programs active that should be started at boot (check with
+      ps, or fuser /dev/xxx)? HiSax won't start if something isn't right.
+      The old Teles driver, on the other hand, will appear to start even if
+      it is not working. See the questions under Troubleshooting!Teles.
+   2. Second, try calling with a telephone. The number should be shown in
+      /var/log/messages. Otherwise, perhaps the driver was incorrectly 
+      started?!
+   3. Third, continue experimenting using modem emulation. Because of the 
+      differently service recognition, you can't get the telephone or fax to
+      ring, so we have to try something else. Open 2 different consoles as 
+      root, and on each run "minicom -s"... in the first set "Serial Port
+      Setup!Serial Device" to /dev/ttyI0, and the other to /dev/ttyI1. Then 
+      choose "Exit" and start the modem emulation with "ATZ" and "AT&Exxxxxx"
+      (where xxxxxx is your own MSN without the area code). Then you can start
+      On the first console you can dial your own number with ATDxxxxxx. On the
+      second console you should now see "CALLER NUMBER: xxxxxxx" and "RING".
+      Accept the call on the second console with "ATA", and you should then 
+      see the message "CONNECT 64000/X.75" on both consoles. You can then send
+      characters to the other console by typing (to see the characters on your
+      own console, turn on local echo).!br!br
+   4. Fourth, try calling a known ISDN BBS. If you don't know of any, try 
+      Gernot (see "Are there sites that offer guest access where I can test my
+      isdn4linux setup?"). If you have problems with the modem emulation, see
+      "Troubleshooting!Modem Emulation"!br!br
+   5. Fifth, try configuring the network interface or ipppd. Experience shows 
+      that they cause beginners (and not only beginners!) the most problems.
+      To make things easier and you're happy with asyncPPP (to see what 
+      asyncPPP means, see the question "pppd, ipppd, syncPPP, asyncPPP - 
+      what is that? What should I use?"), you can use the normal pppd with
+      modem emulation (i.e. /dev/ttyI*). 
+!verboff      
+   Otherwise, it is highly recommended
    that use an example script form the Howto (see the question "Where can 
    I find scripts and other information on configuring i4l?"). For testing
    you can try your own provider or of the guest accounts (see "Are there 
@@ -3200,8 +3246,8 @@ A: The following steps are recommended:!br!br
    cooperative.... :-)
 
 !old
-Q: I have problems compiling isdn4k-utils-2.0. ncurses.h is not found. But
-   curses.h exists.
+Q: I have problems compiling isdn4k-utils-2.0. "ncurses.h" or "panel.h"
+   is not found. But curses.h does exist.
 A: You need to set a link:
 !verbon
      ln -s /usr/include/curses.h /usr/include/ncurses.h
@@ -3223,6 +3269,12 @@ A: You need to set a link:
 !verboff
 
 
+Q: Warum klingeln weder mein Telefon, noch mein Fax, wenn ich sie mit
+   isdn4linux anwähle?
+A: Isdn4linux setzt "digitale Daten" als eigene Dienstekennung, wenn es
+   irgendwo anruft. Die Vermittlungsstelle wird solche Anrufe nicht auf analoge
+   Geräte wie Telefon oder Fax weiterleiten.
+
 !old
 Q: If i4l uses one B-channel then the other one will be blocked (incoming as
    well as outgoing)
@@ -3231,6 +3283,49 @@ A: This behavior is typical for a cable with confused a/b wiring. Some NT from
    the PBX was connected to the plug of the NT and the ISDN card to the pins
    of the NT. As soon as some device activates the bus the other one can no
    longer get through.
+
+Q: In der Anleitung zu meinem NTBA steht ein vertauschtes a/b-Kabeladernpärchen
+   hätte keinen Einfluß auf die Funktionsweise?
+A: Dazu schrieb Gernot Zander <hifi@scorpio.in-berlin.de> am 21. Jan 1997:
+   Aber nur, wenn bei allen Geräten a/b oder a2/b2 vertauscht sind.
+   Wenn die Geräte jeweils einzeln gehen, ist die Zuordnung von
+   Sende- und Empfangs-Pärchen schonmal richtig.
+
+Q: Wie kann ich austesten, ob bei mir ein a/b Kabeladernpärchen vertauscht ist?
+A: Dazu schrieb Karsten Keil <keil@temic-ech.spacenet.de> am 21. Jan 1997:!br
+   Ganz einfach ich gehe vom Westernstecker aus:
+   4 adern sind belegt:
+!verbon
+       | | | | 
+       | | | |
+       1 2 3 4
+!verboff
+   Dann kanst Du versuchen 1<>4 oder 2<>3  oder beides zu vertauschen..
+   Nie aeussere mit inneren vertauschen. [Dabei würden RX und TX Leitungen
+   vertauscht, und nichts ginge mehr - die Red.]!br
+   Gernot Zander <hifi@scorpio.in-berlin.de> schrieb zum gleichen Thema
+   am 21. Jan 1997:!br
+   Ich gehe mal davon aus, daß du die Teles nicht über die RJ45,
+   sondern über eine am NT angeklemmte Busleitung angeschlossen
+   hast. (?). Dann mach die Klappe auf, tausche a1 gegen b1.
+   Probieren. Geht's nicht, zurück, und a2 gegen b2 tauschen.
+   Geht auch das nicht, beide tauschen, wobei ich dann eher
+   den Verdacht hätte, daß das RJ45-Kabel vom Telefon verdreht
+   ist (das tauscht dann nämlich _beide_). Solange {a|b}1 und
+   {a|b}2 dabei erhalten bleibt, kann auch nichts kaputt gehen.
+   Willst du sichergehen, dann vor dem Anstecken der Geräte
+   zwischen Pin 4 und 5 bzw. 3 und 6 der Dose messen, dort
+   darf keine Spannung liegen, zwischen 3 und 4 bzw. 6 und 5
+   je 40 V, Plus an 6 bzw. 3.!br
+   Waren doch beide Geräte per RJ45 angestöpselt, dann ist eins
+   der Kabel verdreht. Das passiert in der Regel dann, wenn einer
+   der RJ45-Stecker verkehrtrum angequetscht wurde (a1/b1 liegen
+   innen, a2/b2 außen, die Zuordnung Sende-/Empfangspärchen bleibt
+   also erhalten), dann brauchst du nur einen neuen Stecker und
+   natürlich die Quetschzange für RJ45, alten ab, neuen andersrum
+   drauf.!br
+   Selbstverfreilich kannst du mit der Kabel-FAQ auch einfach
+   alles mit einem Multimeter durchprüfen.
 
 !old
 Q: Even though I deactivated the signalling for incoming calls, an incoming
@@ -3291,17 +3386,10 @@ Q: I'm now certain I've closed all ISDN applications. I still sometimes
 A: Sporadic errors of this type can be fixed by inserting sleep commands
    between the unloading commands.
 
-
-!old
-Q: isdnctrl returns a "bus error" when I do a "isdnctrl list"?
-A: Christian Kratzer <ck@toplink1.toplink.net> gave the patch:
-!verbon
-     diff isdnctrl.c.dist isdnctrl.c
-     240c240
-     <   if (strlen(cfg.slave))
-     ---
-     >   if (cfg.slave && strlen(cfg.slave))
-!verboff
+Q: Es klappt immer noch nicht mit dem Entladen. Ich setzt Callbacks ein.
+A: Siehe dazu die Frage "Irgendwie kommt der Module-Count bei Callbacks
+   durcheinander. Wie kann ich jetzt meine ISDN-Modul entladen?" im Abschnitt
+   "Callback" im Kapitel "Troubleshooting".
 
 !old
 Q: My charge "impuls typ A" [German charge impuls at the end of a connection]
@@ -3313,6 +3401,10 @@ A: Peter Gramlich <peter.gramlich@wiwi.uni-karlsruhe.de>:
      services. It seems they have to activate it seperately for each service
      (voice, data, G4-fax,...).
 !verboff
+
+Q: Meine TK-Anlage erzeugt etwa jede Stunde einen Bus-Reset des internen
+   S0-Busses, danach nimmt isdn4linux nicht mehr ab?
+A: Ab HiSax 1.5 übersteht auch isdn4linux den Bus-Reset.
 
 !old
 Q: My Ascotel PBX crashes i4l (connected on my internal bus).
@@ -3335,6 +3427,17 @@ A: Herbert Rosmanith <herp@wildsau.idv.uni-linz.ac.at> wrote:
      Remark: the patch mentioned here has a bug: X.75 won't work anymore.
 !verboff
 
+Q: Meine Teles 16.3 funktioniert hinter einer Quante IS-2 (baugleich
+   zur Ackermann Euracom 181) nach einem Reset nur, wenn ich:
+!verbon
+        1. TK-Anlage ausstecken
+        2. PC abschalten
+        3. TK-Anlage einstecken
+        4. PC anschalten
+!verboff
+A: Karsten Keil <keil@temic-ech.spacenet.de> schrieb dazu am 13. Jan 1997:!br
+   Das sollte ab HiSax 1.5 weg sein. (Tei remove Problem).
+
 !old
 Q: I'm connected through an old PBX. Any attempt to dial out is refused with
    cause 64?
@@ -3345,6 +3448,33 @@ A: Wolfgang Hamburg <wh@jumping.baltic.de> wrote on 8 Oct 1996:
      12TR7 includes 1TR6. I don't know more about it. My source was a nice
      guy from the Telekom. They have "Richtlinien" (guidelines) that describe
      the protocols.
+!verboff
+
+Q: Ich bekomme meine TK-Anlage, eine proprietäre Siemens Hicom, nicht zum
+   Laufen?
+A: Sven Engelhardt <sven@sik.de> schrieb hierzu am 20. Jan 1997:!br
+   Die Techniker haben an digitalen Nebenstellen immer etwas länger zu
+   basteln. Tip: Es gibt eine Einstellung fuer die Nebenstelle, nennt sich
+   "DSS1 mit EAZ", die kann aber nur ein Techniker einstellen. Damit
+   funktioniert ISDN meistens mit geladenem DSS1-Treiber. Zumindest unter
+   WIN/DOS. Die Defaulteinstellung der Anlage ist meist "1TR6 mit MSN" (don't
+   flame me, it's real).!br
+   (Meine letzten Erfahrungen mit SIE* TA sind allerdings schon ein gutes Jahr
+   alt, seitdem mach' ich um die Dinger einen Bogen. Laß Dich trotzdem nicht
+   unterkriegen, es gibt ein paar tausend Software-Patches fuer die HiComs,
+   die Techniker müssen nur wollen. Manchmal hilft's, mit dem Techniker
+   zusammen ins Programmierhandbuch zu schauen und ihm die Seite mit den
+   Einstellungen für digitale Nebenstellen rauszusuchen.)
+
+!old
+Q: isdnctrl returns a "bus error" when I do a "isdnctrl list"?
+A: Christian Kratzer <ck@toplink1.toplink.net> gave the patch:
+!verbon
+     diff isdnctrl.c.dist isdnctrl.c
+     240c240
+     <   if (strlen(cfg.slave))
+     ---
+     >   if (cfg.slave && strlen(cfg.slave))
 !verboff
 
 !old
@@ -3379,36 +3509,55 @@ A: Answer by Jan den Ouden <denouden@groovin.xs4all.nl>:
      limit, there is no buffer allocation when they are not needed.
 
 
-!old
-Q: I have problems with PAP or CHAP authentication. It does not work although
-   I'm sure I entered passwords etc. correctly.
-A: Stefan A. Muehlenweg <Stefan.A.Muehlenweg@samhh.Hanse.DE> wrote on
-   4 Oct 1996:
-!verbon
-     I had exactly the same problem/the same error message. The cause for it
-     was that I had three entries in chap-secrets/pap-secrets (for client,
-     server, secret), but not a fourth one (ip adresses). BUT: after the third
-     entry were some BLANKs. After removing the trailing BLANKs and/or TABs
-     (i)pppd now lives very satisfied with my auth-files.
-!verboff
+Q: Mein pppd bzw. ipppd hat Probleme mit der PAP bzw. der CHAP
+   authentification.
+A: Siehe dazu die entsprechenden Fragen im Abschnitt "Sync-PPP".
 
 !old
-Q: I get the error "SIOCADDRT: Invalid argument" when telling route to route
-   to isdn0.
-A: <tpo@spin.ch> wrote on  8 Oct 1996:
+Q: Ich bekomme den Fehler "SIOCADDRT: Invalid argument", wenn ich route
+   mitteile, daß es auf isdn0 weiterrouten soll.
+A: <tpo@spin.ch> schrieb dazu am 8. Okt 1996:
 !verbon
-     I had the same error until using the correct netmask.
+        Ich hatte den gleichen Fehler, bis ich die korrekte Netmask angab.
 !verboff
-     
-!old
-Q: My i4l doesn't work with kernel 2.1.x.
-A: Andi Kleen <andi@mlm.extern.lrz-muenchen.de> has written a patch.
-   It also includes a patch from Markus Gutschke <gutschk@uni-muenster.de>
-   for the Teles driver. It can be found at
+
+Q: Wo finde ich eine Übersicht aller causes?
+A: Klaus Kämpf <kkaempf@progis.de> schrieb hierzu:
+   Spontan fällt mir da die ISPA Dokumentation ein. Schau doch mal in
+   !link ftp://ftp.biochem.mpg.de//pc/isdn;.
+
+Q: Bei meiner ELSA-Karte blinkt öfters die LED, die den Verlust der TEI
+   anzeigt. Meine Verbindungen sind leider auch öfter gestört...
+A: Jens Ey <jens@jeyhh.shnet.org> schrieb am 29 Dec 1996:!br
+   Diese blinkende LED wird oft verursacht durch schlechte Kabel oder einen
+   zu langen oder unterminierten S0 Bus. Das hat mir ELSA mitgeteilt nachdem
+   ich mich bei denen über das gleiche Problem beschwert hatte. Ein neues
+   Kabel - und schon lief alles wunderbar.!br
+   Paul Slootman <paul@wau.mis.ah.nl> schrieb dazu am 2. Jan 1997:!br
+   Jan den Ouden vermutete (in einer niederländischen Newsgruppe), daß die
+   niederländische Telefongesellschaft manchmal nachts "ein TEI wegwirft".
+
+Q: Mein ISDN-Treiber stürzt mir ab! Da ich es als Modul konfiguriert habe,
+   ändern sich die Adressen bei jedem Laden. Wie finde ich heraus, wo der
+   Treiber abstürzt?
+A: Der Treiber wird dazu mit dem Befehl "insmod -m" geladen. Die Ausgabe wird
+   muß noch etwas bearbeitet werden, um ihn in eine Form analog zu System.map
+   umzuwandeln.!br
+   Fritz Elfert <fritz@wuemaus.franken.de> schrieb dazu am 17. Okt 1996:
 !verbon
-   !link ftp://maja.mlm.extern.lrz-muenchen.de/pub/i4l-2.1-fix.gz;
+        insmod -m isdn.o | sort | sed -e 's/   / T /g' |
+            egrep '.* T [a-z,A-Z,_]+' > /etc/isdn/isdn.map
+        cat /System.map /etc/isdn/isdn.map > /iSystem.map
 !verboff
-   In the meantime, there's now HiSax 1.3 for 2.1.x kernels.
+   [Die Zeile, die mit "|" endet, muß mit der nachfolgenden zusammengefaßt
+   werden!]!br
+   iSystem.map sollte nun anstelle von System.map zur Fehlersuche verwendet
+   werden.
+
+Q: Meine Festplatte wird sehr aktiv, wenn isdn4linux läuft. Wie kann ich das
+   abschalten?
+A: Mit "isdnctrl verbose 0", sowie Entfernen der "debug"-Option für den ipppd.
+
 
 !3Teles driver
 
@@ -3419,6 +3568,15 @@ A: On bootup there has to be a message like "kernel: HSCX version A:5 B:5" as
    well as "kernel: channels 2" in /var/log/messages. "A:4 B:4" is also o.k.
    All other values (especially "A:0 B:0" or "A:f B:f") show that the card
    is not used correctly.
+
+Q: Welches ist der Name meines Teles-Treibers (insbesondere wenn eincompiliert
+   im Kernel)?
+A: Der Name ist das, was (beim Laden als Modul) mit "teles_id" angegeben wurde.
+   Wurde lilo verwendet, dann ist der Name ebenfalls das, was mit "teles_id"
+   angegeben wurde. Wurde der Teles-Treiber in den Kernel fest eincompiliert,
+   dann ist der Name ein einfaches "" (zwei mal Anführungsstriche oben).
+   Der Name kann auch durch ein "cat /dev/isdninfo" herausgefunden werden,
+   er wird bei "idmap" angezeigt.
 
 !old
 Q: On bootup I get "HSCX version A:5 B:5" but I still have the impression that
@@ -3546,9 +3704,38 @@ A: Christian Kratzer <ck@toplink.net> wrote about this on 6 Oct 1996:
      also try 4 and 3. That even works on very exotic boards.
 !verboff
 
+Q: Beim Kompilieren des Teles-Treibers gibt es einige undefinierte Symbole
+   (nur Kernel 2.0.26)?
+A: Beim Patch ging leider die Datei proto.h verloren. Das muß drin stehen:
+!verbon
+        #ifndef PROTO_H
+        #define PROTO_H
+        #define PROTO_EURO      0x08
+        #define PROTO_DIS_N0    0x40
+        #define PROTO_DIS_N1    0x41
+        #endif
+!verboff
+
+
 
 !3HiSax driver
 
+
+Q: Woran erkenne ich, daß meine ISDN-Karte vom HiSax-Treiber korrekt erkannt
+   wurde?
+A: Beim Booten erscheint im Log-File eine Meldung in z.B. folgender Form:
+!verbon
+        HiSax: Teles 16.3 found,irq:5 isac:a80 cfg:e80
+        HiSax: hscx A:280 hscx B:680
+        Teles3: HSCX version A: V2.1 B: V2.1
+!verboff
+   Karsten Keil <keil@temic-ech.spacenet.de> schrieb dazu am 12. Dez 1996:!br
+   Beim HiSax brauchst Du Dir auch keine Gedanken darüber machen, wenn er
+   geladen wird, kann die Hardware angesprochen werden und generiert auch
+   entsprechende Interrupts, wenn nicht wird das Modul nicht geladen.
+   Das heist zwar nicht, daß dann auch alles funkt (z.B Kabeldreher,
+   Kabelunterbrechung, Terminierung), aber die Karte ist richtig im Rechner
+   installiert, keine Hardware-Konflikte.
 
 !old
 Q: The Teles crashes again and again with the follwing error message
@@ -3560,6 +3747,24 @@ Q: The Teles crashes again and again with the follwing error message
 A: The CPU isn't able to empty the FIFO. Is a sound card installed that
    keeps the interrupts for itself for too long?
    
+Q: Meine AVM-Karte erzeugt extrem viele Interrupts mit dem HiSax-Treiber. Ist
+   das normal oder ein Problem mit dem HiSax-Treiber?
+A: Karsten Keil <keil@temic-ech.spacenet.de> schrieb dazu am 12. Nov 1996:!br
+   Das ist normal. AVM (und auch ELSA) haben einen Timer auf der Karte.
+   Da AVM nicht koorperiert weiss ich nicht wie der abzustellen ist.
+   Bei Elsa weiss ich es zwar, mache es im Moment aber nicht, da hier kaum was
+   an Performance verloren geht und ich die Interrupts momentan bei der ELSA
+   fuer die Statusanzeige nutze (war vor allem bei der Entwicklung sehr
+   hilfreich, sobald der Treiber stand, blinkte nichts mehr ;-) ).
+   Spaeter werd ich ihn wahrscheinlich abschalten oder nur bei Verbindung
+   benutzen.
+
+Q: Die PNP-Tools funktionieren nicht mit meiner Teles-16.3-PNP-Karte!
+A: Wahrscheinlich ist es gar keine Plug'n Play-Karte - obwohl Teles 
+   mittlerweile auf alle Karten/Verpackung PNP draufschreibt. Der Unterschied
+   ist einfach zu erkennen: eine echte Teles PNP-Karte hat nicht mehr die
+   (winzigen) DIP-Schalter auf der Karte, mit der man die IO-Adresse einstellen
+   kann.
 
 !3ICN driver
 
@@ -3570,6 +3775,48 @@ A: Torsten Hentschel <Torsten.Hentschel@DInet.de> has a patch for kernel 2.0.21
    which definetly does not loose any more packets. Contact Torsten.
 
 !3Working together with other ISDN devices 
+
+!old
+Q: Ich habe Probleme, mit einem ELink Verbindungen aufzubauen.
+A: Daniel Moeller (danny@rsun.lfn.unterland.de) schrieb dazu 1996 in der
+   Mailingliste:
+!verbon
+        Ich hatte schon vor einigen Wochen über meine Probleme, mit einem
+        EL 310 zu connecten berichtet. Es kam keine Connect-Meldung für den
+        Daten-Kanal vom ISDN. Das problematische Elink hängt an einem 1TR6
+        Anschluß und hat identische Settings wie ein anderes Elink an einem
+        Euro-ISDN Anschluß, mit dem ich nie Probleme hatte. Seit ca. 2
+        Wochen funktioniert das jetzt plötzlich einwandfrei, ohne daß lokal
+        oder remote etwas geändert wurde.
+        Schlußfolgerung: Die Software in den Vermittlungsstellen scheint da
+        eine Rolle zu spielen....
+!verboff
+
+Q: Ich habe Probleme, eine Verbindung zu einem Netblazer Router aufzubauen.
+A: Michael Hipp <Michael.Hipp@student.uni-tuebingen.de> schrieb dazu im
+   Okt 1996:!br
+   deine Gegenseite meint wohl, sie dürfe komprimierte Pakete schicken
+   (obwohl kein Kompressionsverfahren ausgewählt wurde). Schmeiß mal in
+   main.c die Zeilen:
+!verbon
+        { PPP_CCP, ccp_init, ccp_input, ccp_protrej,
+          ccp_printpkt, ccp_datainput, "CCP" }
+!verboff
+   raus und kompilier' den ipppd neu durch. Dann müßte er das ganze CCP
+   Protokoll ablehnen und das versteht dann hoffentlich auch der Netblazer..
+   (ist nicht der erste Bug des Netblazers.. das Teil scheint generell nicht
+   sonderlich conform zu sein .. komischerweise haben andere diese Problem
+   nicht, eventuell sollte man mal eine neue Softwarerelease einspielen)!br
+   [Dasselbe Problem kann auch bei asyncPPP auftreten. Es funktioniert dort
+   dieselbe Methode (evtl. ist sogar eine Kompilieroption für das
+   Entfernen des CCP-Protokolls vorhanden). Ab pppd 2.3 beta 3 soll es die
+   Option "noccp" geben, die ohne Neukompilation dasselbe bewirkt - die Red.]
+
+
+!commenton
+Weitere Hinweise finden sich im gleichnamigen Abschnitt im Kapitel
+"Konfiguration"!
+!commentoff
 
 !3Raw IP
 
@@ -3652,35 +3899,71 @@ A: Emil Stephan <ste@esqhen.su.eunet.de> wrote on 13 Oct 1996:
      terminal. You may have to kill them with kill.
 !verboff
 
+Q: Ich bekomme während einer tty-Verbindung vom Kernel die Meldung
+   "teles_writebuf: channel not open". Es werden dann keine Eingaben mehr
+   für diese Verbindung angenommen.
+A: Fritz Elfert <fritz@wuemaus.franken.de> schrieb dazu am 18. Nov 1996:!br
+   Meist verträgt dann die Gegenseite die grossen Frames von i4l nicht und
+   macht mitten im Transfer den B-Kanal dicht. Probier mal mit AT&B512 vor
+   dem Wählen die Frames kleiner zu machen.
+
+Q: Wenn ich uucp mit X.75 mache, bekomme ich laufend Übertragungsfehler!
+A: Andreas Gutzwiller <andy@hippo.proxyon.imp.com> schrieb dazu am 5. Dez 1996:
+!verbon
+        Ich mußte das bei mir folgendermassen einstellen. Sonst bekam ich auch
+        nur Fehler.
+          # Prot
+          protocol-parameter g packet-size 512
+          protocol-parameter g short-packets y
+          protocol-parameter g window 7
+          protocol-parameter g remote-window 7
+          protocol-parameter v packet-size 512
+        Damit komme ich bei großen Paketen auf ca 7300 cps
+!verboff
+   Holger Burbach <holly@cthulhu.pfalz.de> kam am 5. Feb 1997 zu einer anderen
+   Lösung:
+!verbon
+        Bei mir pollen auch einige XP-Benutzer, wohl auch ohne Probleme. Ich
+        habe folgendes gemacht: Zum einen habe ich die Send-Packetsize vom
+        ttyI? auf 1024 gesetzt ("AT&B1024") und zum setze ich die
+        Paketgrößen für das g-Protokoll beim UUCP:
+          protocol-parameter g packet-size 2048
+          protocol-parameter g remote-packet-size 0
+        Wie gesagt, damit läuft hier alles prima.
+!verboff
+
+Q: Mein iprofd läuft nicht mehr mit HiSax 2.0. Ich bekomme die Fehlermeldung
+   "Version of kernel modem-profile (3) does NOT match version of iprofd (1)".
+   Wie bekomme ich iprofd wieder zum Laufen?
+A: Fritz Elfert <fritz@wuemaus.franken.de> schrieb dazu am 17. Feb 1997:
+   In iprofd.c die Zeile mit!br
+!verbon
+       #define DATA_VERSION 1
+!verboff
+   in 
+!verbon
+       #define DATA_VERSION 2
+!verboff
+   ändern, den iprofd neu compileren, und (WICHTIG) die gespeicherte
+   profile Datei löschen.
+
 !3Async PPP
+
+Q: How can I get a log for pppd?
+A: See this question for Sync PPP, it works the same way for pppd.
+
+Q: Der Verbindungsaufbau klappt wunderbar, leider hängt sich der pppd nach
+   kurzer Zeit auf (d.h. die ersten Bytes gehen durch, danach steht jedoch
+   alles)?
+A: Joachim Gassen <joachim@fb4-1112.uni-muenster.de> schrieb dazu am 8. Jan
+   1997:!br
+   Das Problem hatte ich auch mal. Es liegt höchstwahrscheinlich an einer
+   falschen Blockgröße auf Deiner Seite. Versuch mal, ein &B512 im
+   "Init-String" Deiner isdn-Karte einzufügen. Dann dürfte es klappen.
+
 
 !3Sync PPP
 
-
-!old
-Q: My ipppd won't work, it gives the error message "PPP driver 0.0.0 is out of
-   date".
-A: Ari Biel <aribiel@sun14.hrz.th-darmstadt.de> wrote on 3 Oct 1996:
-!verbon
-     I had the same thing! (S.u.S.E. 4.2 Kernel 2.0.0, isdn4k-utils 3.91 with
-     patch). After recompiling the kernel and configuring ppp as module I could
-     start ipppd. Looks like version problems.
-!verboff
-
-!old
-Q: How can I switch on ppp support for my kernel 1.2.13 (needed for ipppd)?
-A: Stefan A. Muehlenweg <Stefan.A.Muehlenweg@samhh.hanse.de> wrote:
-!verbon
-     In 1.2.13 you tell the kernel *not* to include ppp support, then compile
-     the kernel, *after that* do a 'make modules' and a 'make modules_install'.
-     This way everything that's not compiled into the kernel, but that can be
-     loaded as modules is prepared for loading via insmod. 'modprobe ppp' on
-     bootup (in the rc.xxx script) will load the ppp module and all
-     additionally needed modules (slhc etc).
-     Prerequisite for ipppd with 1.2.13: install ppp version 2.2.0c. Also in
-     the kernel sources (ppp-2.2.0c.tar.gz). And you need modutils 1.2.8
-     (modules-1.2.8.tar.gz).
-!verboff
 
 !old
 Q: How can I get a log for ipppd?
@@ -3701,76 +3984,60 @@ A: For debugging purposes you can redirect the ppp log into a separate file.
      ppp options.
 !verboff
 
-!old
-Q: I cannot dial out with "isdnctrl dial ippp0". It seems as if the route to
-   ipppd is missing although I *did* set it ("network unreachable"). With my
-   old kernel < 2.0 everything works fine!
-A: In the newer kernels you have to place "route" as the very last command
-   before the dialout command. Otherwise the kernel will delete the route.
 
 !old
-Q: After ipppd dials out my default route is gone.
-A: It's the kernel's fault. Newer kernels (>= 2.0) have some changes in the
-   routing. Workaround: install a script /etc/ppp/ip-up like this:
+Q: My ipppd won't work, it gives the error message "PPP driver 0.0.0 is out of
+   date".
+A: Ari Biel <aribiel@sun14.hrz.th-darmstadt.de> wrote on 3 Oct 1996:
 !verbon
-     #!/bin/sh
-     /sbin/route add default ippp*
-!verboff
-   If you make your connections manually, can use something like this script:
-!verbon
-   /sbin/isdn
-     #! /bin/sh
-     case $1 in
-       on)
-         /sbin/isdnctrl dial ippp0       #  build up connection
-         sleep 5                         #  wait until line open
-         /sbin/route add default ippp0   #  set route
-         ;;
-       off)
-         /sbin/isdnctrl hangup ippp0     #  hangup connection
-         /sbin/route del default         #  and delete route again
-         ;;
-       *)
-         echo -e "\a Usage: 'isdn on' or 'isdn off'"
-         ;;
-     esac
+     I had the same thing! (S.u.S.E. 4.2 Kernel 2.0.0, isdn4k-utils 3.91 with
+     patch). After recompiling the kernel and configuring ppp as module I could
+     start ipppd. Looks like version problems.
 !verboff
 
 
-
+!commenton
+(Die folgende Frage entstammt der syncPPP-FAQ.)
+!commentoff
+!old
+Q: Starting ipppd I get the error message "this systems lacks ppp support".
+A: Check whether the device "ippp0" exists (i.e. with the program "ifconfig").
+   The ipppd *needs* this device with exactly *that* name. If it doesn't exist
+   one has to define it:
+!verbon
+     isdnctrl addif ippp0
+     isdnctrl encap ippp0 syncppp
+     ... (see i4l documentation for more information) ...
+!verboff
+   Maybe you compiled ipppd with the source of another kernel that you are not
+   using...
+   Siehe auch die Frage "Wie soll ich mein Netzinterface benennen?"
+   im Abschnitt "Sync-PPP" im Kapitel "Konfiguration".
 
 !old
-Q: The first ip packet gets lost on automatic dialout with dynamic ip address
-   allocation.
-A: There are some dialout problems in connection with sync ppp and dynamic ip
-   address allocation. In this case your ip address will change while packets
-   are waiting to be sent. All packets that should be sent before the change
-   in ip address are "hung".
-   Workaround:
-   Before connecting with telnet, ping, or the like dial out manuelly with
-   "isdnctrl dial ippp*".
-   Stefan A. Muehlenweg <Stefan.A.Muehlenweg@samhh.Hanse.DE> wrote:
+Q: How can I switch on ppp support for my kernel 1.2.13 (needed for ipppd)?
+A: Stefan A. Muehlenweg <Stefan.A.Muehlenweg@samhh.hanse.de> wrote:
 !verbon
-     Yesterday I got a permanent ip address and since then the automatic dial-
-     out via ipppd works beautifully. The same goes for the serial interface
-     with async ppp over V.120 and diald (per ELSA Microlink ISDN/TLpro ---
-     also over the V.34 modem). I had the same symptoms there in the past.
-     Summary: When using automatic (!) dialout you definitely need a permanent
-     ip address. If you start and end your connection manually (!) then you can
-     live with dynamic address allocation.
-     It surely is time to extend ppp's functionality to not only hold outgoing
-     packets that initiate a connection, but also correct the ip address to the
-     new address before sending it out. The same goes for other packets that
-     arrive before the connection is up.
-     Also diald has to get that functionality to control when the connection
-     goes up or down.
+     In 1.2.13 you tell the kernel *not* to include ppp support, then compile
+     the kernel, *after that* do a 'make modules' and a 'make modules_install'.
+     This way everything that's not compiled into the kernel, but that can be
+     loaded as modules is prepared for loading via insmod. 'modprobe ppp' on
+     bootup (in the rc.xxx script) will load the ppp module and all
+     additionally needed modules (slhc etc).
+     Prerequisite for ipppd with 1.2.13: install ppp version 2.2.0c. Also in
+     the kernel sources (ppp-2.2.0c.tar.gz). And you need modutils 1.2.8
+     (modules-1.2.8.tar.gz).
 !verboff
 
-!old
-Q: I get the message "IP frames delayed" - and I don't get a connection.
-A: See last question:
-   You may have forgotten to use "isdnctrl dial ippp*" before using a net
-   command like telnet, ping, or the like.
+Q: Mein ipppd will nicht, er bringt immer die Fehlermeldung "PPP driver 0.0.0
+   is out of date".
+A: Ari Biel <aribiel@sun14.hrz.th-darmstadt.de> schrieb hierzu am 3. Okt 1996:
+!verbon
+        Das hatte ich auch! (S.u.S.E. 4.2 Kernel 2.0.0, isdn4k-utils 3.91 mit
+        patch). Als ich dann den Kernel neu kompilierte u. ppp als Modul
+        konfiguriert hatte, konnte ich ipppd starten. Da gibt's wohl
+        Versionsprobleme. 
+!verboff
 
 !old
 Q: When I try to start ipppd it says "Can't find usable ippp device"
@@ -3827,22 +4094,7 @@ A: The output of ipppd is very helpful... Check whether you can find:
 !verboff
 
 !old
-Q: I often get the error message "hscx_empty_fifo: incoming packet too large"
-A: Probably one of the compressions is activated (i4l can't handle those very
-   well). See also next question.
-   Another possible reason could be an IRQ problem - see question "Why should
-   I avoid IRQ 12 and 15 for my ISDN card?" in section "Teles" further down.
-
-!old
-Q: The connection with ipppd seems to works, but eventually it crashes.
-A: It could be that some compression is activated (that i4l can't handle
-   properly). Common error: "-vj" has to be used *additionally* to "-vjccomp"
-   (it completly switchs off the VJ compression) - the example scripts coming
-   with ipppd don't have that option included already.
-   Other compression modes (bsd, pccomp) can cause trouble, too.
-
-!old
-Q: ipppd sometimes crashes (kernel > 2.0.14)
+Q: ipppd sometimes crashes (kernel 2.0.14...2.0.25)
 A: Michael Hipp <Michael.Hipp@student.uni-tuebingen.de> wrote about this:
 !verbon
      Please downgrade to 2.0.14... In later version (since 2.0.16) there is a
@@ -3851,101 +4103,267 @@ A: Michael Hipp <Michael.Hipp@student.uni-tuebingen.de> wrote about this:
      hack" is possible by removing some lines in ipppd, but better stay with
      2.0.14 until the bugfix finds its way into the new kernels.
 !verboff
-   (Remark: should be the case with 2.0.26)
+   (Remark: this is the case with 2.0.26)
 
 !old
-Q: I've configured several ippp* devices. Each incoming call "uses up" one
-   device, until there is no device available any more.
-A: That's a known bug. There is a patch available to fix it.
-   Manfred.Dill <manfred.dill@bmw.de> wrote about this:
+Q: I get the message "IP frames delayed" - and I don't get a connection.
+A: See last question:
+   You may have forgotten to use "isdnctrl dial ippp*" before using a net
+   command like telnet, ping, or the like.
+
+!old
+Q: I cannot dial out with "isdnctrl dial ippp0". It seems as if the route to
+   ipppd is missing although I *did* set it ("network unreachable"). With my
+   old kernel < 2.0 everything works fine!
+A: In the newer kernels you have to place "route" as the very last command
+   before the dialout command. Otherwise the kernel will delete the route.
+
+!old
+Q: After ipppd dials out my default route is gone.
+A: It's the kernel's fault. Newer kernels (>= 2.0) have some changes in the
+   routing. Workaround: install a script /etc/ppp/ip-up like this:
 !verbon
-     In the module isdn_net.c (line 1720) there is a comment "/* if this
-     interface is dialing, it does it probably on a different device, so free
-     this device */" and function isdn_free_channel is called.
-     [...]
-     It looks now like this:
-       #ifdef CONFIG_ISDN_PPP
-       if (p->local.p_encap == ISDN_NET_ENCAP_SYNCPPP)
-       ippp_table[lp->ppp_minor]->state = IPPP_OPEN;
-       #endif
+     #!/bin/sh
+     /sbin/route add default ippp*
 !verboff
-   It can be assumed that this will be fixed in an improved ipppd.
+   If you make your connections manually, can use something like this script:
+!verbon
+   /sbin/isdn
+     #! /bin/sh
+     case $1 in
+       on)
+         /sbin/isdnctrl dial ippp0       #  build up connection
+         sleep 5                         #  wait until line open
+         /sbin/route add default ippp0   #  set route
+         ;;
+       off)
+         /sbin/isdnctrl hangup ippp0     #  hangup connection
+         /sbin/route del default         #  and delete route again
+         ;;
+       *)
+         echo -e "\a Usage: 'isdn on' or 'isdn off'"
+         ;;
+     esac
+!verboff
 
-!commenton
-(The following question was taken from the syncPPP FAQ)  
-!commentoff
+Q: Beim Rauswählen des pppd bekomme ich die Meldung "pppd: peer authentication
+   required but no authentication files accessible." - was heißt das?
+A: Wahrscheinlich wurde irrtümlich die Option "auth" angegeben. Damit
+   wird von der !u1anderen!u0 Stelle verlangt, sich zu authentifiziert.
+
+Q: Ich bekomme keine Verbindung aufgebaut - diese wird von der Gegenstelle
+   abgelehnt. In den Log-Files finde ich eine Meldung, die ungefähr so
+   aussieht: "sent [0][LCP ConfReq id=0x1 <mru 1500> <auth pap>
+   <magic 0xcd12e9c4>"
+A: Wie bei der letzten Frage wurde eine Option angegeben, die von der
+   !u1anderen!u0 Stelle verlangt, sich zu authentifiziert. Diese Option
+   darf nicht angegeben werden. Kandidaten hierfür: "+pap" sowie "+chap".
+
+Q: Ich bekomme keine Verbindung aufgebaut - diese wird von der Gegenstelle
+   abgelehnt. In den Log-Files findet sich eine Meldung, die ungefähr so
+   aussieht: "sent [0][LCP ConfRej id=0x1 <auth pap>"
+A: Dein Rechner lehnt ab, sich per Username (z.B. XXX) und Paßwort (z.B. YYY)
+   auszuweisen. Das klappt nur mit den Authorisierungsoptionen "user XXX" und
+   "remotename YYY" in Verbindung mit einer korrekten (!) /etc/ppp/pap-secrets
+   Letztere sollte bei einem Paßwort von ZZZ idealerweise so aussehen:
+!verbon
+        XXX YYY ZZZ
+!verboff
+   Wenn's nicht gleich klappt, kann man auch Wildcards einsetzen, etwa:
+!verbon
+        * * ZZZ
+!verboff
+   Dann bekommt !u1jede!u0 Gegenstelle das Paßwort ZZZ vorgesetzt. Wird
+   chap zur Authorisierung verlangt, muß /etc/ppp/chap-secrets korrekt
+   eingerichtet werden. Achtung: das Format weicht von dem der pap-secrets ab!
+   Unbedingt die entsprechenden README's konsultieren, oder auch:
+     !link http://www.lrz-muenchen.de/~ui161ab/www/isdn/;
 
 !old
-Q: A SunISDN tries to dial into my i4l system.
-A: The Sun tries to communicate with async ppp. ipppd can't handle this, you
-   have to use the ttyI* devices and the standard pppd.
+Q: I have problems with PAP or CHAP authentication. It does not work although
+   I'm sure I entered passwords etc. correctly.
+A: Stefan A. Muehlenweg <Stefan.A.Muehlenweg@samhh.Hanse.DE> wrote on
+   4 Oct 1996:
+!verbon
+     I had exactly the same problem/the same error message. The cause for it
+     was that I had three entries in chap-secrets/pap-secrets (for client,
+     server, secret), but not a fourth one (ip adresses). BUT: after the third
+     entry were some BLANKs. After removing the trailing BLANKs and/or TABs
+     (i)pppd now lives very satisfied with my auth-files.
+!verboff
+   Eine weitere Fehlerquelle kann das Paßwort selbst sein. Enthält
+   es das Zeichen "#", dann wird alles, was danach kommt, als Kommentar
+   verstanden. Analog gibt es natürlich Probleme, wenn es ein Leerzeichen oder
+   einen Tabulator enthält (geht das?). Abhilfe: Paßwort in Hochkommas setzen!
+
+!old
+Q: I often get the error message "hscx_empty_fifo: incoming packet too large"
+A: Probably one of the compressions is activated (i4l can't handle those very
+   well). See also next question.
+   Another possible reason could be an IRQ problem - see question "Why should
+   I avoid IRQ 12 and 15 for my ISDN card?" in section "Teles" further down.!br
+   Eine weitere Fehlerquelle berichtete Immanuel Derks <broedtsk@xs4all.nl>
+   am 3. Jan 1997:
+!verbon
+        Mein PAP Skript war verkrüppelt, da ich ein "#" in meinem Paßwort
+        hatte! Nachdem ich das Paßwort sauber gequotet hatte (z.B. mit
+        Anführungszeichen) war das Problem gelöst.
+!verboff
+
+!old
+Q: The connection with ipppd seems to work, but eventually it crashes.
+A: It could be that some compression is activated (that i4l can't handle
+   properly). Common error: "-vj" has to be used *additionally* to "-vjccomp"
+   (it completly switchs off the VJ compression) - the example scripts coming
+   with ipppd don't have that option included already.
+   Other compression modes (bsd, pccomp) can cause trouble, too.
+
+Q: Der ipppd macht (erst dann) Schwierigkeiten, wenn die Verbindung stark
+   belastet wird. Dann hängt alles. Woran kann das liegen?
+A: Hierzu schrieb Sven Engelhardt <sven@sik.de> am 12. Dez 1996:
+!verbon
+          Wir sind ISP hier in Dresden und setzen u.a. Linux für unsere Zugänge
+        ein (sowohl I4L mit hisax als auch externe Terminaladapter) Wir haben
+        das Problem vor allem mit Windows-95 und NT-Kunden, die die
+        "eingebaute" (DFÜ-Netzwerk)-Software benutzen. Dabei ist es völlig
+        egal, ob sich der Kunde mit async oder sync-PPP einwaehlt. Auch ist
+        egal, welche Modememulation er auf seiner Seite benutzt. Allen Fällen
+        ist gemein, daß die Einbindung über Microsoft-DFÜ-Adapter+Microsoft-
+        PPP erfolgt. (ein Kollege erzählte mir neulich von einem ähnlichen
+        Problem mit einem Macintosh-Kunden)
+          Da es bei PPP ziemlich egal ist, wer Server ist und wer Client, frag
+        mal deinen ISP über welche Technik Du dich einwählst. (mit
+        Linux-Kunden und Trumpet-Winsock-Nutzern z.B. haben wir >>null<<
+        Probleme (Ich schließe daraus einen Bug in MS-PPP)
+          Folgender Workaround hilft bei uns aber in der Regel: (ist kein
+        Heilmittel, hilft aber die Schmerzen zu lindern...)
+          * Verringern der Max-MTU auf 576 oder gar (296)
+          * Verringern des DefaultRcvWindow auf 2144
+         Auf der Windows-95-Seite sind das zwei Registry-Einträge, auf der
+        Linux-Seite kannst Du mal "mtu 576" und "mru 576" in den ppp-Optionen
+        eingeben.
+        (ffs. !link http://www.windows95.com/connect/trouble.html;)
+!verboff
+   Erik Corry <ec@sign-tronic.dk> ergänzt am 16. Dez 1996:
+!verbon
+        Also, bei mir haben weder PPP-compressions-options geholfen, noch
+       mru/mtu auf 296. Was aber gut geholfen hat, war der AT-Befehl:
+         AT&B512
+       der die maximal verschickten Pakete auf 512 Bytes begrenzt.
+!verboff
+
+Q: Mein ipppd funktioniert, aber ich bekomme immer wieder die Meldung
+   "pppd[104]: ioctl(SIOCSIFMTU): Invalid argument"?
+A: Andreas Steffan <deas@rrz.uni-hamburg.de> schrieb hierzu am 11. Dez 1996:!br
+   Lange habe ich rumspielen muessen bevor ichs schließlich gefunden habe.
+   Ich mußte in /etc/ppp/options.ippp0 noch eine Zeile
+!verbon
+        mtu 1024
+!verboff
+   einfuegen. Komisch ist es allemal, aber jetzt habe ich endlich Ruhe.
+   [wird mtu nicht angegeben, dann wird als default-Wert u.U. "0" angenommen -
+   was natürlich nicht funktionieren kann... - die Red.]
+
+!old
+Q: The first ip packet gets lost on automatic dialout with dynamic ip address
+   allocation.
+A: There are some dialout problems in connection with sync ppp and dynamic ip
+   address allocation. In this case your ip address will change while packets
+   are waiting to be sent. All packets that should be sent before the change
+   in ip address are "hung".
+   Workaround:
+   Before connecting with telnet, ping, or the like dial out manuelly with
+   "isdnctrl dial ippp*".
+   Stefan A. Muehlenweg <Stefan.A.Muehlenweg@samhh.Hanse.DE> wrote:
+!verbon
+     Yesterday I got a permanent ip address and since then the automatic dial-
+     out via ipppd works beautifully. The same goes for the serial interface
+     with async ppp over V.120 and diald (per ELSA Microlink ISDN/TLpro ---
+     also over the V.34 modem). I had the same symptoms there in the past.
+     Summary: When using automatic (!) dialout you definitely need a permanent
+     ip address. If you start and end your connection manually (!) then you can
+     live with dynamic address allocation.
+     It surely is time to extend ppp's functionality to not only hold outgoing
+     packets that initiate a connection, but also correct the ip address to the
+     new address before sending it out. The same goes for other packets that
+     arrive before the connection is up.
+     Also diald has to get that functionality to control when the connection
+     goes up or down.
+!verboff     
+   Ein Lösungsvorschlag kam am 5. Jan 1997 von Erik Corry <erik@arbat.com>:
+!verbon
+        1) Keine lokale Name-Server/Name-Server-Cache
+        2) Lokale Squid Proxy-WWW-Server (und Netscape muss ihn benutzen).
+        3) positive_dns_ttl auf 1 setzen in /usr/local/squid/etc/squid.conf
+           damit Squid nicht die IP-Adressen cachet
+          Jetzt wird die Verbindung immer gestartet mit der DNS-
+        Anfrage, der immun ist gegen IP-Adresse-Änderungen (weil er
+        mit UDP und nicht TCP laueft?). Wenn du andere Programme
+        hast, die IP-Adressen cachen, musst du dir ueberlegen wie
+        das umgangen werden kann. Normalerweise wird ein Program
+        die IP-Adresse chachen, wenn es 2 mal zur selben Server
+        connectet. Das ist natürlich kein Problem, wenn die
+        beiden Verbindungen so kurz nacheinander erfolgen, daß
+        die Dial-On-Demand-Verbindung noch die selbe ist.
+!verboff
+   [Der pppd soll ab Version ebenfalls dial-on-demand unterstützen - vielleicht
+   wird es dann besser - die Red.]
+
+Q: Beim Ausführen von "isdnctrl mapping <line> <MSN>,..." kommt es zum Fehler
+   "bad address".
+A: Bernd Oerding <erni@nukleus.escape.de> schrieb dazu am 9. Nov 1996:!br
+   Grund für den Fehler: im Kernel wird ein 255 Byte grosser Block aus dem
+   Userspace erwartet, dieser muß jedoch nicht vorhanden sein, wenn der
+   Pointer auf argv0 zeigt. Der angehängte Patch fixed das Problem auf
+   USER-Ebene, nicht schön aber tut.
+!verbon
+        *** 1.14        1996/06/06 22:08:46
+        --- isdnctrl.c        1996/09/04 19:13:39
+        ***************
+        *** 498,504 ****
+                  }
+                  printf("MSN/EAZ-mapping for %s:\n%s\n",argv[2],nstring);
+                } else {
+        !         iocts.arg = (unsigned long)argv[3];
+                  if ((result=ioctl(fd,IIOCSETMAP,&iocts))<0) {
+                    perror(argv[2]);
+                    exit(-1);
+        --- 498,506 ----
+                  }
+                  printf("MSN/EAZ-mapping for %s:\n%s\n",argv[2],nstring);
+                } else {
+        !         char buf[400];
+        !         strncpy(buf, argv[3], sizeof(buf)-1);
+        !         iocts.arg = (unsigned long)buf;
+                  if ((result=ioctl(fd,IIOCSETMAP,&iocts))<0) {
+                    perror(argv[2]);
+!verboff
+   [Es wurde auch schon berichtet, daß das Anhängen von "/sbin" an den Pfad
+   (Environment) geholfen hat. Zum Debuggen von cron-Skripten läßt sich
+   übrigens vortrefflich "set -x" einsetzen - die Red.]
+
+Q: Was hat es mit der Meldung "No phone number, packet dropped" auf sich?
+A: Michael Engert <michi@bello.wor.de> schrieb dazu im Nov/Dez 1996:!br
+   Das bedeutet, daß Dein Computer ein IP-Paket für jemanden hat, der vor
+   einigen Sekunden eingeloggt war, aber mittlerweile die Verbindung
+   beendet hat. Dein Computer versucht nun dieses Packet weiterzuleiten und
+   findet die geeignete Route. Das Interface isdn[0|1|...] kann jedoch nicht
+   die Gegenstelle erreichen, weil es keine Telefonnummer zum Wählen hat.
+
+Q: Warum wählt mein ipppd eine Null zuviel ("isdn0: dialing 0 089XXXXXX...")?
+   Ich habe doch gar keine Nebenstellenanlage!
+A: Die erste Null wird gar nicht gewählt. Sie zeigt lediglich an, welcher
+   Kanal zum Wählen verwendet wurde.
 
 !commenton
 (The following question was taken from the syncPPP FAQ)
 !commentoff
-
-!old
-Q: Starting ipppd I get the error message "this systems lacks ppp support".
-A: Check whether the device "ippp0" exists (i.e. with the program "ifconfig").
-   The ipppd *needs* this device with exactly *that* name. If it doesn't exist
-   one has to define it:
-!verbon
-     isdnctrl addif ippp0
-     isdnctrl encap ippp0 syncppp
-     ... (see i4l documentation for more information) ...
-!verboff
-   Maybe you compiled ipppd with the source of another kernel that you are not
-   using...
-!commenton
-(The following question was taken from the syncPPP FAQ)
-!commentoff
-
 !old
 Q: My ISDN device is shown with HWaddr and IRQ=0 and base address = 0 when I
    list it with ifconfig
 A: The ISDN device fakes an ethernet device. It ignores IRQ and baseaddr and
    just needs the HWaddr for the ethernet encapsulation.
 
-!old
-Q: The connection doesn't end with timeout. Possible reason: my service
-   provider uses a Cisco router which sends a "keep alive" packet every ten
-   seconds.
-A: Winfried Haug <haug@seicom.net> wrote:
-!verbon
-     If the Cisco doesn't get an answer for its keep alive packets then it will
-     stop routing! That normally happens after the 4. or 5. keep alive packet.
-     The best solution is to tell the provider not to use keep alive packets
-     ("no keepalive" in the Cisco configuration).
-     There is NO REASON to use keep alive packets, especially between two Cisco
-     routers and on leased lines.
-!verboff
-
-!old
-Q: My Internet provider won't switch off keep alive packets so ipppd never hangs
-   up.
-A: Dirk Melchers <dirk@merlin.nbg.sub.org> wrote about this:
-!verbon
-     LCP messages are considered traffic and keep the line open. There was a
-     little patch for kernel 2.0.21 in relation with the patch chargeint-2.04
-     for isdnlog-2.50. This patch ignores *all* syncPPP LCP data for the
-     calculation of the hangup timer, so hangup works even with LCP-echo-
-     requests.
-     Warning: The code works for *me* and my provider. I don't know if it will
-     work for *you*. Just try it!
-!verboff
-    If you need the patch, mail Dirk Melchers.
-
-!old
-Q: SyncPPP works without problems on one channel. Unfortunately MPPP won't work
-   due to communication problems between ipppd and the other side.
-A: Michael Hipp <Michael.Hipp@student.uni-tuebingen.de> wrote on 11 Oct 1996:
-!verbon
-     At first about your bug: the other side does not like the MP-MRU (0x5dc)
-     but wants a smaller one (0x5d7) ... which is what ipppd doesn't like (bug)
-     ... Just try 0x5d7 as MP-MRU.
-     Without a MP-MRU agreed about MPPP won't switch on .. which is why it is
-     not working.
-!verboff
 
 !3ISDN in a network
 
@@ -3989,15 +4407,74 @@ A: Please check:
      computers
 !verboff
 
+Q: Nach dem Booten ist mein lokales Netzwerk nicht mehr erreichbar. Ich
+   verwende das Netzinterface ippp0 mit ifconfig 0.0.0.0; die Defaultroute
+   zeigt auf ippp0.
+A: Wolfgang Barth schrieb dazu am 5. Jan 1997:
+!verbon
+          Mir ist dabei aufgefallen, dass nach dem ersten Verbindungsaufbau via
+        ippp0 das lokale Netzwerk wieder erreichbar ist. Dann steht auch in
+        ifconfig ippp0 nicht mehr die 0.0.0.0 drin, sondern eine zugewiesene
+        IP-Adresse aus dem Pool der Gegenstelle, die bei einem neuen
+        Verbindungsaufbau neu gesetzt wird.
+          In de.comp.os.linux.networking wurde der Thread bereits diskutiert,
+        und es kam eine Lösungsmöglichkeit:
+          Einfach auf ippp0 eine Dummy-IP-Nummer aus dem Pool setzen. Das
+        lokale Netzwerk hat auch direkt nach dem Booten trotz default route
+        keine Probleme mehr, und die IP-Nummer in ifconfig ippp0 wird sowieso
+        überschrieben.
+!verboff
+
 
 !3Isdnlog
 
-!old
-Q: Die telecom is paying me (according to isdnlog/isdnrp) 12 pfennigs 
-   (1 unit) for each connection...
-A: You wish... Christian Bruehe <oblomow@cs.tu-berlin.de> wrote:
+Q: My isdnlog 2.50 doesn't work since I installed HiSax 1.2.
+A: Isdnlog needs to be patched... you can find the patch everywhere where 
+   HiSax is found.
+
+Q: Ich habe isdnlog gepatcht, aber es funktioniert trotzdem nicht mit HiSax
+   zusammen (Isdnlog startet mit den üblichen Meldungen, es passiert aber
+   nichts)?
+A: Andreas Kool <akool@Kool.f.EUnet.de> schrieb dazu am 6. Jan 1997:
 !verbon
-     I recently had the same effect when I mistakenly started isdnlog twice
+        Ist bei den "üblichen Meldungen" auch ein
+          "(HiSax driver detected)"
+        dabei?
+        Falls nein:
+        - hast du die Version 2.52 auch gestartet - nicht nur compiliert?
+        - hast du das "telesctrl <DriverID> 1 4" auch nicht vergessen?
+        - ISDN-Verbindungen funzen ansonsten schon?
+        Falls ja: Melde dich mal bei mir (isdnlog@Kool.f.EUnet.de) mit
+        den entsprechenden Log-Files (mit "isdnlog -v7" erstellt).
+!verboff
+
+Q: Isdnlog (>=2.52) zeigt mir für einem Anrufer !u1zwei!u0 Telefonnummern an!
+   Welche gilt denn jetzt?
+A: Der Anrufer hat wahrscheinlich das (kostenpflichtige) Feature CLIP
+   (= Calling Line Identification Presentation, no screening) aktiviert, mit
+   dem er eine beliebige Telefonnummer übermitteln kann. Siehe dazu die Frage
+   "Ich habe gehört, es werden eigentlich zwei Caller Id's übermittelt?".!br
+   Andreas Kool <akool@Kool.f.EUnet.de> schrieb weiterhin am 26. Jan 1997:!br
+   Reinlegen kann man damit allerdings nur Software/Telefonanlagen,
+   die den Screening-Indicator nicht auswerten - isdnlog ab Version 2.52
+   zeigt die richtige, *und* die gefakte Telefonnummer an.!br
+   ...eigentlich gedacht ist CLIP, no screening z.B. für die Übergänge von
+   firmeneigenen Telefonnetzen in das öffentliche Netz.
+
+!old
+Q: Bei Anrufen erhalte ich einen "Internal error: wrong structure".
+A: Wahrscheinlich stimmt die Konfiguration in isdnlog.cf nicht. Auch gleiche
+   MSNs mit unterschiedlicher Dienstekennung müssen separat gezählt werden
+   (für den Eintrag unter MYMSN).
+   Steffan Henke <henker@Informatik.Uni-Bremen.de> schrieb dazu auch:
+!verbon
+        Mein Problem mit isdnlog 2.50 und dem "wrong structure error" lag nur 
+        darin, daß ich keine führende 0 bei den Aliases angegeben habe. 
+        Beispiel:
+          017201234567     Handy           1 -
+        Bei mir sah es vorher so aus:
+          *17201234567     Handy           1 -
+        Damit scheint alles behoben zu sein.
 !verboff
 
 !old
@@ -4008,6 +4485,33 @@ A: Dirk Lutzebaeck <lutzeb@wadk-berlin.de> wrote:
 !verboff
 
      
+Q: Ich habe mir Skript angelegt, das Sounds per cat auf /dev/sound oder
+   ein anderes Device abspielt. Wenn mehrere Ereignisse eintreten, dann gibt es
+   einen Fehler: "Can't open output file '/dev/sound': Device or resource busy"
+A: Andreas Kool <akool@Kool.f.EUnet.de> schrieb dazu am 6. Nov 1996:!br
+   Dagegen hilft nur, eine obere Instanz zu schaffen, die das koordiniert.
+   Ich persönlich verwende NAS (Network-audio-system), das "rplay" Zeuch
+   sollte jedoch genauso gut verwendbar sein!
+
+Q: Isdnlog soll ein Programm mit Ausgabeumleitung ausführen (z.B.
+   "play anruf.au 2>/dev/null" ). Warum meldet isdnlog "Can't start
+   '/usr/local/bin/play anruf.au 2>/dev/null' with execvp()"?
+A: Andreas Kool <akool@Kool.f.EUnet.de> schrieb dazu am 6. Nov 1996:!br
+   Weil isdnlog keine (Bourne) Shell ist ;-) isdnlog kann nur "echte"
+   Programme starten.!br
+   Kurz und knapp: Obiges Beispiel muß als ausführbare Datei (-> chmod +x)
+   mit folgendem Kontext abgespeichert werden:
+!verbon
+        #!/bin/sh
+        /usr/local/bin/play anruf.au 2>/dev/null
+!verboff
+
+Q: Warum beendet sich isdnlog bei einem "kill -1", laut Doku sollte nur die
+   isdnlog.conf neu eingelesen werden.
+A: Andreas Kool <akool@Kool.f.EUnet.de> schrieb dazu am 6. Nov 1996:!br
+   Ist ein echter Bug in isdnlog-2.5x, der schon behoben wurde.
+   isdnlog-2.60 (comming soon ;-) kann das besser!
+
 !commenton
 (The following question and answer is from Andreas Kool
 <akool@Kool.f.EUnet.de>)
@@ -4041,27 +4545,388 @@ A: isdnlog-2.4x has 2 possibilites to take the entire CPU time or even
      in isdnlog-2.50.
 !verboff
 
-Q: My isdnlog 2.50 doesn't work since I installed HiSax 1.2.
-A: Isdnlog needs to be patched... you can find the patch everywhere where 
-   you HiSax is found.
+!old
+Q: The telecom is paying me (according to isdnlog/isdnrp) 12 pfennigs 
+   (1 unit) for each connection...
+A: You wish... Christian Bruehe <oblomow@cs.tu-berlin.de> wrote:
+!verbon
+     I recently had the same effect when I mistakenly started isdnlog twice
+!verboff
+
+Q: Laut isdnlog kostet mich jedes "Besetzt" 45 Einheiten?
+A: Das ist ein Bug der älteren isdnlog-Versionen (z.B. 2.41) im Zusammenhang
+   mit dem ISDN-Merkmal Rückruf bei Besetzt. Natürlich kostet dieses Besetzt
+   nicht wirklich 45 Einheiten.
+
+Q: Ich habe Probleme, isdnlog mit libc 5.4.7 zum Laufen zu bekommen!
+A: Christian Schlittchen <corwin@amber.hb.north.de / corwin@zfn.uni-bremen.de>
+   schrieb am 8. Okt 1996:
+!verbon
+        Isdnlog habe ich inzwischen gepatcht. Das Problem ist der strftime()-
+        Aufruf in Zeile 264 in isdnlog.c. Dort muß das "%e" durch ein "%d"
+        ersetzt werden, dann geht wieder alles.
+!verboff
+
+Q: Beim Rauswählen wird immer kurz der Bildschirm schwarz?
+A: Roger F. Brand <roger@rz.uni-frankfurt.de> schrieb dazu am 12. Feb 1997:
+   Ich denke, das liegt am isdnlog. Wenn Du ihn mit der Option -t 1 
+   oder -t 2 gestartet hast, wird eine Synchronisation mit der Uhrzeit
+   der digitalen Vermittlungsstelle durchgeführt. Dabei kommt es
+   zur kurzfristigen Ausblendung des Bildschirms.
+
 
 
 !3Audio
-
-!old
-Q: My vbox 1.1 does not work together with HiSax.
-A: Use HiSax 1.2. This version includes correct alerting.
 
 !old
 Q: My vboxgetty does not answer any incoming calls.
 A: vboxgetty needs ".vboxrc" in the home directory of the user for which
    vboxgetty is configured. The number of rings is taken from this file.
 
+!old
+Q: Mein vboxgetty hebt schon beim ersten Klingeln ab, obwohl ich die Anzahl
+   der Rings auf 4 gesetzt habe.
+A: Die RINGS werden von einem Timer im isdn-modul erzeugt, der nicht unbedingt
+   akkurat verzögert.
+   Konfiguriert man vboxgetty für 30 Rings, wird etwa zum 5. Klingeln abge-
+   hoben.
+
+!old
+Q: My vbox 1.1 does not work together with HiSax.
+A: Use HiSax >=1.2. This version includes correct alerting.
+
+!old
+Q: Ich vboxgetty hat eine Nachricht für mich in einem Format aufgezeichnet,
+   das ich nicht mit "cat xxx>/dev/audio" abspielen kann. Wie kann ich die
+   Nachricht doch noch abhören?
+A: vboxgetty kann alle Formate abspielen. Hilfsweise kann man daher einfach 
+   die eingegangene Nachricht als Ansagetext verwenden, und sich selbst 
+   anrufen... :-) (und hinterher nicht vergessen, wieder auf den originalen 
+   Ansagetext umzustellen :-) ).
+
+Q: Am Anfang einer von vboxgetty aufgezeichneten Nachricht befindet sich
+   oft noch ein Teil meiner Ansage?
+A: Das ist ein bekannter Bug, der irgendwie beim Umschalten zwischen Abspielen
+   der Ansage und Aufzeichnung des Anrufers sein Unwesen treibt. Bisher ist
+   noch kein echter Workaround bekannt.
+
 !3Dialout on demand
+
+Q: Wie kommt es zum Gebühren-GAU?
+A: Dazu gibt es mehrere Möglichkeiten.!br
+   1. Es wurde "Bridging" ins Kernel eincompiliert (siehe dazu die
+   entsprechende Frage weiter unten).!br
+   2. Broadcasts der Interfaces werden per ISDN weitergeleitet (siehe dazu die
+   entsprechende Frage weiter unten).!br
+   3. Sind noch IP-Verbindungen beim Schließen der Leitung offen, dann ist bei
+   dynamischer Vergabe der IP-Adressen der Gebühren-GAU vorprogrammiert. Es
+   wird eine neue Leitung aufgebaut mit dem Ziel, die noch offenen
+   IP-Verbindungen abzubauen. Wegen der unterschiedlichen IP-Adressen können
+   diese jedoch nicht abgebaut werden - die Leitung wird wieder geschlossen.
+   Dann sind die IP-Verbindungen immer noch offen, es wird wieder neu
+   gewählt... usw. (siehe dazu die entsprechende Frage weiter unten).
+
+Q: Seitdem ich einen neuen Kernel installiert habe, baut mein Rechner dauernd
+   ISDN-Verbindungen auf, ohne Daten zu übertragen (Kosten!).
+A: Vielleicht wurde versehentlich die Kerneloption "Bridging" aktiviert?
+
+Q: Mein Router möchte ständig rauswählen (tut er auch) aber es werden
+   !u1KEINE!u0 Daten übertragen, weder ipfwadm -Al noch tcpdump -i isdn0
+   zeigen etwas an.
+A: Michael Pieper <michael@nexus1.tng.oche.de> schrieb hierzu am 10. Nov 1996:!br
+   ARP-Requests oder Broadcasts? Du solltest das ifconfig für die
+   ISDN-Devices mit den Optionen -arp und -broadcast durchführen, um
+   Verbindungsaufbauten dadurch zu vermeiden.
+
+Q: Nach dem Schließen der Leitung entdecke ich per "netstat -nt", daß noch
+   IP-Verbindungen offen sind. Wie kann ich diese manuell schließen?
+A: Gernot Zander <hifi@scorpio.in-berlin.de> schrieb hierzu am 18. Jan 1997:!br
+   Du kannst das Interface erst "down" und dann wieder "up" setzen. Wenn Du das
+   tust, wird es versuchen hinauszuwählen. Wenn Du dann die ausgehende
+   Telefonnummer entfernt hast, dann wird "no outgoing number..." in syslog
+   angezeigt, und sobald das interface "up" ist, scheinen alle Verbindungen
+   geschlossen zu sein.
+
+Q: Wie kann ich Dialout on Demand sicher abstellen?
+A: Gernot Zander <hifi@scorpio.in-berlin.de> schrieb hierzu am 10. Jan 1997:!br
+   Ich lösche die Telefonnummer des Interface [bzw. setze eine ungültige - die
+   Red.]. Dann sehe ich an der Beschwerde im Syslog auch gleich noch, ob und
+   wann ein Prozeß Pakete in die Welt schicken wollte.!br
+   Sascha Ottolski <sascha@alzhimer.isdn.cs.tu-berlin.de> ergänzte
+   am 28. Okt 1996:!br
+   Also bei mir passiert genau das, was Du möchtest: Wenn das ISDN-System
+   "down" ist, meldet Netscape sofort einen Fehler a la "the Server doesn't
+   have a DNS entry" oder ähnlich. Vermutlich mußt Du die route löschen, damit
+   das passiert. Bei mir läuft das so:
+!verbon
+        /sbin/route del default
+        /sbin/isdnctrl system off
+        /sbin/ifconfig ippp0 down
+!verboff
+   Und damit's dann wieder läuft:
+!verbon
+        /sbin/isdnctrl system on
+        /sbin/ifconfig ippp0 up 
+        /sbin/route add $GATE-IP dev ippp0
+        /sbin/route add default ippp0
+!verboff
+   [Die letzte Methode hat jedoch den Nachteil, daß kein Dial-In mehr möglich
+   ist! - die Red.]
+
+Q: Wie kann ich sonst noch den Gebühren-GAU verhindern?
+A: In der nächsten Version kann isdnlog (>2.52) als Watchdog fungieren und
+   solche Dialouts abwürgen (notfalls über ein Reboot des Rechners).
+
+Q: Kann es passieren, daß trotz abgestürztem Rechner eine ISDN-Verbindung
+   aufrechterhalten wird (und damit Gebühren kostet)?
+A: Karsten Keil <keil@temic-ech.spacenet.de> schrieb dazu am 11. Feb 1997:
+   Ich vermute, man will mit diesen Status enquiry [in der Schweiz - die Red.]
+   einfach sicherstellen, daß wenn was auf der Userseite abgestürzt ist, die
+   Verbindung getrennt wird. Das ist zusätzlich zur Layer 2 Ueberwachung und
+   nicht ganz sinnlos, da bei vielen Karten/Endgeräten der ISAC im Automodus
+   gefahren wird und damit ein Rechnerabsturz die Verbindung aufrechterhalten
+   würde.!br
+   Bei i4l wird der ISAC allerdings im nonauto Mode betrieben, d.h. wenn keine 
+   Interrupts mehr bearbeitet werden, wird die Verbindung spätestens nach ca.
+   1/2 Minute getrennt. Der NonAuto Mode hat zwar einen anderen Grund, ist aber
+   auch ein Sicherheitsfeature ;-), was aber nicht heißt, daß ein Gebühren-Gau
+   unmöglich ist.
+
+Q: Wie komme ich unerklärlichen dialouts auf die Spur?
+A: Dirk Lutzebaeck <lutzeb@wadk-berlin.de> schrieb dazu am 5. Nov 1996:
+!verbon
+        Leider gibts meines Wissens nach für tcpdump noch keinen patch für sync
+        ppp encapsulation. Wenn du ipppd benutzt bleibt Dir deshalb nur die
+        Möglichkeit, konsequent einen daemon nach dem anderen abzuschalten und
+        sehen ob Ruhe im Karton ist. Insbesondere named, sendmail aber auch
+        smbd (Samba) sind Kandidaten, die gerne Verbindungen aufbauen.!br
+!verboff
+   [Zu tcpdump siehe die entsprechende Frage im Abschnitt "Allgemein" im
+   Kapitel "Konfiguration". Zu named und sendmail siehe die nachfolgenden
+   Fragen - die Red.].!br
+   Christoph Trautwein <trautw@fzi.de> schrieb weiterhin am 5. Nov 1996:
+!verbon
+        Ich habs auch nur durch Killen verdächtiger Prozesse rausgefunden.
+        Genaueres zum Suchen der Prozesse und wie man sie still bekommt gibts
+        unter:
+          !link http://www.fzi.de/sim/people/trautw/i4l/index.html;
+!verboff
+   Herbert Rosmanith <herp@wildsau.idv.uni-linz.ac.at> schrieb noch am
+   24. Nov 1996:
+!verbon
+        Probier mal rauszufinden, welche Anfrage das auslöst, und zwar mit
+        "isdnctrl verbose 3". dann sollte in der kernel-message-queue (siehst
+        Du wenn Du "dmesg" tippst) ein Eintrag a'la:
+          OPEN: 141.76.60.54 -> 193.171.67.253 TCP, port: 1686 -> 540
+        aufscheinen. das obige beispiel heisst, dass unser rechner auf port 540
+        post abholen will (uucp over tcp/ip over isdn).
+!verboff
+   [geloggt wird aber immer nur das auslösende Packet - die Red.]!br
+   Stefan Luethje <luethje@sl-gw.lake.de> schrieb weiterhin am 27. Nov 1996:
+!verbon
+        Ein kleiner Tip noch. Es gibt viele Daemons auf der Linux-Seite, die
+        Broadcast auf allen Interfaces versenden. Das führt auch häufig zum
+        Autodial.
+        Da kann man die broadcast-Adresse auf das dummy0-Interface umlenken.
+        Ist zwar nicht sauber, aber tut.
+!verboff
+   Siehe zu diesem Thema auch die letzte Frage.
+
+Q: Kann es sein, daß mein am Netz angeschlossenes Win95 irgendwie die
+   unmotivierten Herauswahlen verursacht?
+A: Stefan Luethje <luethje@sl-gw.lake.de> schrieb dazu am 27. Nov 1996:
+!verbon
+        Wenn beim Wintel der Nameserver des Providers eingetragen ist, und
+        Sinnlos3.11/95 gestartet wird, muß (warum weiß nur Bill Gates) er
+        sich unbedingt mit dem Nameserver unterhalten.
+!verboff
+
+Q: Ich habe einen lokalen DNS-Nameserver eingerichtet. Warum kommt es immer
+   noch zu unerwünschten Herauswahlen durch den Nameserver? Wie finde ich den
+   Übeltäter?
+A: Jens Ey <jens@jeyhh.shnet.org> schrieb dazu am 29. Nov 1996:!br
+   Schalte mal Debug-level 1 beim named ein und schau Dir das Logfile
+   in /var/tmp an.!br
+   Bei mir finden sich da regelmäßig DNS-Anfragen von Windoof-Mühlen.
+   Problem dabei ist, daß gerne nach so Sachen wie WORKGROUP.domain.de gefragt
+   wird u.ä. Es werden also Namen gefragt, die der DNS beim besten Willen
+   nicht kennen kann. Ich nehme mal an, dass der Sinnlos-Rechner auf der Suche
+   nach seinem Masterbrowser ist oder einen Domainen Controller finden will.!br
+   Das ganze hat mich in einem Netzwerk mit Internet-Zugang bei Linux mal so
+   genervt, dass ich einen externen Terminaladapter eingesetzt habe, einen
+   Proxy-Server eingerichtet habe und diald dann so konfiguriert, dass
+   DNS-Anfragen nur noch vom Linux-Rechner durchgeführt werden dürfen.
+   Damit wird die Verbindung dann nur noch aufgebaut, wenn sie wirklich
+   gebraucht wird. Der (cachende) lokale DNS kommt dann nur noch zum Einsatz,
+   wenn die Verbindung schon oben ist.
+
+Q: Wie kann ich die DNS-Anfragen meines Win95-Rechners nach WORKGROUP.xxx
+   abschalten?
+A: Eike Stepper <isdn@esc-net.de> schrieb dazu am 30. Nov 1996:
+!verbon
+        Warum stellst du nicht einfach das Windows-Setting im Netzwerksetup:
+          "Use DNS for Windows Names Resolution"    (oder ähnlich)
+        auf No?
+        Dann müßte Ruhe sein, zumindest bei mir ist es so.
+!verboff
+
+Q: Wie bringe ich sendmail dazu, von sich aus keine Verbindungen mehr
+   aufzubauen, ohne daß lokale Mail liegenbleibt?
+A: Zunächst muß man sendmail dazu bringen, keine DNS-Verbindungen mehr
+   aufzubauen. Dazu sollte man folgende Features angeben: "nodns",
+   "nocanonify".!br
+   Falls man einen Rechner als smarthost einträgt, muß man dafür sorgen, daß
+   dieser Name nicht zu einem Aufruf des Nameservers führt. Dazu trägt man
+   entweder nur die IP-Adresse direkt ein, oder man ergänzt den Namen in
+   /etc/hosts (/etc/host.conf sollte entsprechend "order hosts bind"
+   enthalten)!br
+   Weiterhin erklärt man alle nicht lokalen Mailer als teuer/expensive
+   ("define(SMTP_MAILER_FLAGS, e)"), und verbietet sendmail mit
+   "define(`confCON_EXPENSIVE', `True')", teure Mailer von sich aus
+   anzuwählen. Der Aufruf von Sendmail darf für die Option "-q" keine
+   Zeitangabe mehr enthalten (z.B. also nur "-bd -os -q"). "-os" bedeutet,
+   daß alle Mail gequeued wird (was nicht verhindert, daß lokale nicht
+   auch sofort zugestellt wird). Einziger Haken: beim Booten will sendmail
+   evtl. vorhandene Mail versenden, obwohl das Netzwerk noch nicht oben ist.
+   Dazu sollte man beim Booten vor dem Start alle zuzustellende Mail aus
+   /var/mqueue entfernen - um diese nach dem Start von sendmail wieder
+   zurückzuschieben.!br
+   Mail an teure=entfernte Mailer wird nun nur noch beim expliziten Aufruf
+   von "sendmail -q" zugestellt.
+
+Q: Das Samba-Paket löst bei mir dauernd Herauswahlen aus. Wie kann ich das
+   unterbinden?
+A: Andreas Glahn <andreas@tao.westfalen.de> schrieb dazu am 31. Jan 1997:
+   Hatte ich auch mal. Bei mir habe ich dann beim Aufruf des Samberdämons
+   die interne IP-Adresse, welche ich nur zu Hause verwende, mitübergeben.
+   Seitdem wird ein SambaRequest nicht mehr auf default geschickt, sondern
+   bleibt im Haus.!br
+   Mal die Konfiguration mit netstat und TCPDUMP ansehen. Mit TCPDUMP bekommt
+   man schnell heraus, mit welcher IP Samba versucht, eine Verbindung
+   aufzubauen.!br
+   Bei mir hat mein InternerLinuxRechner z.B.: 192.168.99.99!br
+   Mein Win95-Rechner:                         192.168.99.88!br
+   Auf dem Linuxrechner habe ich dann Samba mit:
+!verbon
+       nmdb -S -B 192.168.99.255 -I 192.168.99.99
+!verboff
+   gestartet.!br
+   Siehe auch die Frage oben: -broadcast und evtl. -arp bei der Definition der
+   Interfaces angeben!
+
+Q: Wie gewöhne ich Netscape ab, beim Start eine Herauswahl zu initiieren?
+A: Wahrscheinlich wurde in den Einstellungen eine Homepage eingetragen, die
+   nicht lokal vorliegt. Nur eine, die Netscape sofort laden kann, (z.B.
+   "file://localhost/xxx") verursacht keine sofortige Herauswahl. Alternativ
+   kann man auch einen Cache-Daemon einrichten, der haeufig benoetigte Seiten
+   speichert.!br
+   Ein angegebener Proxy sollte keine Herauswahl verursachen, auch wenn der
+   komplette Rechnername eingetragen ist. Lediglich bei der Neueintragung
+   versucht Netscape, die IP-Adresse einmalig via DNS abzufragen (und kann in
+   diesem Sonderfall eine Herauswahl verursachen).
+   Am 17.Mar.97 schrieb uns Steffan Henke <henker@Informatik.Uni-Bremen.DE>
+   hierzu aber:
+!verbon
+        Leider hat uns die Realität überholt - soweit ich gehört habe,
+        baut Netscape z.B. jetzt in der Version 4.02 tatsächlich eine 
+        Verbindung auf...
+!verboff
+
 
 !3Chargeint
 
+!old
+Q: The connection doesn't end with timeout. Possible reason: my service
+   provider uses a Cisco router which sends a "keep alive" packet every ten
+   seconds.
+A: Winfried Haug <haug@seicom.net> wrote:
+!verbon
+     If the Cisco doesn't get an answer for its keep alive packets then it will
+     stop routing! That normally happens after the 4. or 5. keep alive packet.
+     The best solution is to tell the provider not to use keep alive packets
+     ("no keepalive" in the Cisco configuration).
+     There is NO REASON to use keep alive packets, especially between two Cisco
+     routers and on leased lines.
+!verboff
+
+
+!old
+Q: My Internet provider won't switch off keep alive packets so ipppd never hangs
+   up.
+A: Dirk Melchers <dirk@merlin.nbg.sub.org> wrote about this:
+!verbon
+     LCP messages are considered traffic and keep the line open. There was a
+     little patch for kernel 2.0.21 in relation with the patch chargeint-2.04
+     for isdnlog-2.50. This patch ignores *all* syncPPP LCP data for the
+     calculation of the hangup timer, so hangup works even with LCP-echo-
+     requests.
+     Warning: The code works for *me* and my provider. I don't know if it will
+     work for *you*. Just try it!
+!verboff
+    If you need the patch, mail Dirk Melchers.
+
+Q: Der "lcp-keep-alive"-Patch klappt nicht - ipppd hängt immer noch nicht auf.
+A: Es kann sein, daß nicht die LCP-Pakete eine Verbindung offenhalten, sondern
+   OSPF-Routing Updates. Das Verschicken dieser Updates kann entsprechend nur
+   auf der Cisco ausgeschaltet werden. Eddy PE1CIG <eddy@sys2.pe1cig.ampr.org>
+   schrieb dazu folgenden Tip am 27 Dez 1996:
+!verbon
+        Nach einigen Experimenten kam ich zu einer Lösung auf der Cisco
+        (IOS 11.0.7), das "snapshot routing" genannt wird. Ich konfigurierte
+        "snapshot server" auf dem BRI-Interface. Das bedeutet es wird nur dann
+        Routing Updates verschicken, wenn es diese auch durch dieses Interface
+        empfängt.
+!verboff
+
+
 !3Dial-in
+
+Q: Ich bekomme immer wieder die Meldung "isdn_tty: call from XXX -> YYY
+   ignored". Warum ignoriert isdn4linux (syncPPP) den Einwahlversuch?
+A: Dafür kann es zwei Erklärungen geben. Entweder wurde die eigene MSN (hier:
+   YYY) nicht richtig per "isdnctrl eaz <interface> YYY" gesetzt. Oder es
+   wurde "isdnctrl secure <interface> on" gesetzt, ohne die hereinkommende
+   Nummer (hier: XXX) mit "isdnctrl addphone <interface> in XXX" zu erlauben.
+
+!old
+Q: I've configured several ippp* devices. Each incoming call "uses up" one
+   device, until there is no device available any more.
+A: That's a known bug. There is a patch available to fix it.
+   Manfred.Dill <manfred.dill@bmw.de> wrote about this:
+!verbon
+     In the module isdn_net.c (line 1720) there is a comment "/* if this
+     interface is dialing, it does it probably on a different device, so free
+     this device */" and function isdn_free_channel is called.
+     [...]
+     It looks now like this:
+       #ifdef CONFIG_ISDN_PPP
+       if (p->local.p_encap == ISDN_NET_ENCAP_SYNCPPP)
+       ippp_table[lp->ppp_minor]->state = IPPP_OPEN;
+       #endif
+!verboff
+   It can be assumed that this will be fixed in an improved ipppd.
+
+Q: Ich habe mit "isdnctl pppbind" eine exklusive Bindung hergestellt. Leider
+   löscht sich diese bei einem hereinkommenden Anruf.
+A: G. Richter <richter@ecos.de> schrieb dazu an Michael Hipp
+   <Michael.Hipp@student.uni-tuebingen.de> am 2. Nov 1996:
+!verbon
+        > ... ich habe den Code mal durchsucht und tatsaechlich
+        > eine moegliche Fehlerquelle bei reinkommenden Anrufen
+        > ausgemacht. Trifft das auf dein Szenario zu?
+        > Wenn ja, mal die Zeile: (isdn_net.c, etwa Zeile 1730)
+        >   p->local.pppbind = -1;
+        > in der Funktion isdn_net_find_icall() rauswerfen.
+       Ich habe die Zeile rausgeschiessen und siehe da es geht.
+!verboff
+
+!commenton
+(The following question was taken from the syncPPP FAQ)  
+!commentoff
+Q: A SunISDN tries to dial into my i4l system.
+A: The Sun tries to communicate with async ppp. ipppd can't handle this, you
+   have to use the ttyI* devices and the standard pppd.
+
 
 !3Callback
 
@@ -4070,6 +4935,21 @@ Q: An incoming call is rejected by i4l. i4l then calls back. The reject is not
    recognized by the other side which keeps on dialing to i4l.
 A: Most problems with callback can be solved by adjusting the callback delay
    with "isdnctrl cbdelay". One second has been successful in many cases.
+
+Q: Der Callback klappt nicht recht, wieviele ippp*-Devices benötige ich
+   mindestens?
+A: Manfred Dill <manfred.dill@bmw.de> schrieb dazu am 18. Dez 1996:!br
+   Man sollte ein zweites Device ippp1 verwenden, das für den Callback
+   benutzt werden kann. Wegen eines Fehlers in i4l wird das erste Device
+   benutzt für den Callback und nicht wieder freigegeben. Wenn die Verbindung
+   beendet ist wird das dritte Device (falls es existiert) geöffnet und damit
+   schließt sich der Kreis. Zum Devices-Verbrauch siehe auch die entsprechende
+   Frage im Kapitel Dial-In.
+
+Q: Callback klappt immer noch nicht recht, kann es am Telestreiber liegen?
+A: Karsten Keil <isdn4@temic-ech.spacenet.de> schrieb dazu am 10. Jan 1997:
+   Beim Teles-Treiber gibt es Probleme mit Callback. Nimm HiSax 1.5 (1.4 hat
+   bei Callback auch einen Bug).
 
 !old
 Q: When trying callback with Euro-ISDN the call never gets rejected.
@@ -4105,8 +4985,52 @@ A: Torsten Hentschel <Torsten.Hentschel@DInet.de> wrote on 3 Oct 1996:
      id could in doubt be considered as a transmission of information).
 !verboff
 
+Q: Callback von Ascend aus klappt nur wenn ich im Ascendmenue "Active=Yes"
+   setze; dann ruft der Ascend mich jedoch dauernd an, selbst wenn meine
+   Maschine abgeschaltet ist.
+A: Ulrich Klein <ulik@hprc.tandem.com> schrieb dazu am 14. Dez 1996:!br
+   Irgendwo in den Ascend-Menus kann man "dial broadcast" auf "no" oder "off"
+   setzen. Ansonsten waehlt das Ding bei jedem Broadcast. Das hat zumindest bei
+   mir damals geholfen. Falls tatsaechlich jemand aus dem Netz, in dem die
+   Ascend haengt, eine Verbindung aufbauen will, helfen nur die merkwuerdigen
+   Filter. Ich glaube da gab es einen, mit dem man erreichen kann, dass die 
+   Kiste nur fuer Callback rauswaehlt. 
+
+Q: Wie kann ich einen Banzai! per Callback zurückrufen?
+A: Jan-Olaf Droese <jano@layla.RoBIN.de> schrieb dazu am 31. Jan 1997:!br
+   Auf Banzai-Seite sollte ein `c' an die ausgehende Nummer angehängt
+   werden, damit das Teil auf den Rückruf vorbereitet ist. Zur
+   Sicherheit kannst Du noch die Anwahlversuche beim Banzai auf 1
+   stellen, damit es nicht zu call-collisions kommt.
+   Auf i4l-Seite habe ich folgendes eingestellt:
+!verbon
+       isdnctrl callback isdn0 in
+       isdnctrl cbdelay isdn0 1
+!verboff
+
+Q: Irgendwie kommt der Module-Count bei Callbacks durcheinander. Wie kann ich
+   jetzt meine ISDN-Modul entladen?
+A: Karsten Keil <keil@temic-ech.spacenet.de> hat als vorläufigen Workaround
+   zwei "geheime" telesctrl-Kommandos eingeführt:
+!verbon
+        telesctrl <id> 3 1  ---> dec module_count
+        telesctrl <id> 4 1  ---> inc module_count
+!verboff
+   Bitte mit entsprechender Vorsicht handhaben!
+
 !3MPPP
 
+!old
+Q: SyncPPP works without problems on one channel. Unfortunately MPPP won't work
+   due to communication problems between ipppd and the other side.
+A: Michael Hipp <Michael.Hipp@student.uni-tuebingen.de> wrote on 11 Oct 1996:
+!verbon
+     At first about your bug: the other side does not like the MP-MRU (0x5dc)
+     but wants a smaller one (0x5d7) ... which is what ipppd doesn't like (bug)
+     ... Just try 0x5d7 as MP-MRU.
+     Without a MP-MRU agreed about MPPP won't switch on .. which is why it is
+     not working.
+!verboff
 
 !2National Peculiarities
 
