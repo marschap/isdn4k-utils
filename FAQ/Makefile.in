@@ -26,20 +26,20 @@ OUT_TXT = $(OUT_NAME).txt
 # *** Generate FAQ ***
 
 # Generate all FAQ versions
-all: Makefile html txt
+all: Makefile $(OUT_HTML) $(OUT_TXT)
 
 
 # Generate html version of FAQ
 html: $(OUT_HTML)
 
-$(OUT_HTML):
+$(OUT_HTML): $(SRC)
 	$(SGML2HTML) $(SRC)
 
 
 # Generate text version of FAQ
 txt: $(OUT_TXT)
 
-$(OUT_TXT):
+$(OUT_TXT): $(SRC)
 	$(SGML2TXT) -f $(SRC)
 
 

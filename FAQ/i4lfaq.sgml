@@ -4,7 +4,7 @@
 
 <title>FAQ for isdn4linux
 <author>Matthias Hessler (<tt><htmlurl url="mailto:hessler@isdn4linux.de" name="hessler@isdn4linux.de"></tt>)
-<date>v2.0.10, 5. September 1999
+<date>v2.0.12, 17. September 1999
 <abstract>
 If you are reading this FAQ online, you may consider downloading the whole
 thing, and reading it offline (much cheaper). To download the latest
@@ -13,8 +13,8 @@ version of this FAQ in TXT/HTML/SGML format, go to the homepage of this FAQ:
 
 This FAQ answers questions that were frequently asked in the newsgroup
 de.alt.comm.isdn4linux. It contains questions any user should
-know about ISDN under Linux using isdn4linux, as well as hints on how to
-best make use of all the features isdn4linux provides.  
+know about ISDN under Linux using isdn4linux, as well as hints on how
+to best make use of all the features isdn4linux provides.  
 
 Version 2 of the FAQ is derived from an earlier version which had become
 outdated at the time of this writing. To obtain information on old versions
@@ -186,6 +186,8 @@ latest kernel, then you have to give the additional option `-r':
 changing into <tt>isdn</tt> or <tt>isdn4k-utils</tt> subdirectory and
 running
 <code>cvs update -P -d</code>
+Tip: since cvs stores the password on your first login, you don't need to login
+again when updating.
 </enum>
 
 WATCH OUT!!! THE NEWEST STUFF SOMETIMES IS REALLY INSTABLE OR EVEN
@@ -317,6 +319,14 @@ Also look at the dialmode description (see question
 You may also be very interested in the big part of this FAQ that handles
 unwanted dialouts... (<ref id="dod" name="dod">)
 
+<sect1> feature_sms: Can I send SMS (short messages) to my handy via ISDN?  
+<label id="feature_sms">
+<p>
+Yes, you can use the program <tt/yaps/ to do this. However, due to some
+pecularities in the SMS-callcenter's ISDN connection, you have to compile the
+kernel with the options <tt/Disable send complete/ and
+<tt/Disable sending llc/.
+
 <sect1> feature_btx: Is the German videotex/Btx/Datex-J possible with  
 isdn4linux?  
 <label id="feature_btx">
@@ -408,6 +418,13 @@ To configure it, give HiSax the number in this format:
 <tt>&lt;number&gt;.&lt;subaddress&gt;</tt>.
 Additionally, please note that if you are connected through a PBX, it will
 most likely filter out all the subaddressing stuff.
+
+<sect1> feature_gmsv110: Can I connect from my PDA via GMS cellular phone  
+to isdn4linux?  
+<label id="feature_gmsv110">
+<p>
+Yes, if the provider of the cellular phone has a GSM to ISDN/V.110 gateway.
+Has been reported to work from a PalmPilot to isdn4linux with V.110.
 
 <!-- Feature reversed card -->
 
@@ -538,7 +555,7 @@ url="ftp://ftp.uni-oldenburg.de/pub/unix/linux/isdn/isdn4linux/Mailing-List"></t
 problems  
 <label id="hardware">
 
-<sect1> hardware_support: What hardware is supported?  
+<sect1> hardware_support: Which hardware is supported?  
 <label id="hardware_support">
 <p>
 Only internal cards that plug into an ISA or PCI slot are
@@ -612,6 +629,14 @@ Note:
 <item>Eicon.Diehl Diva U interface not tested
 </itemize>
 
+The following cards are definitly not supported and will probably never,
+since the producer does not give out the specifications for their very
+proprietary hardware/protocol:
+<itemize>
+<item>Fritz!X
+<item>Eumex 404
+</itemize>
+
 <sect1> hardware_activepassive: What is the difference between an active and a 
 passive ISDN card?  
 <label id="hardware_activepassive">
@@ -672,6 +697,13 @@ At least these S2M cards have been reported to work:
 <url url="http://www.melware.de/">)
 </itemize>
 
+<sect1> hardware_smp: Can I run isdn4linux on my multi-CPU board?  
+<label id="hardware_smp">
+<p>
+Yes, this works nicely. However, make sure to compile the kernel and all
+modules with option <tt/SMP/. If you run into problems when both CPUs try to
+handle the same IRQ, try to boot with <tt/noapic/.
+
 <sect1> hardware_alpha: Can I run isdn4linux on a DEC Alpha with Linux?  
 <label id="hardware_alpha">
 <p>
@@ -711,7 +743,8 @@ it is required to use <tt/AT&amp;B1024/ when using the ttyI* devices (if the
 remote side still send packets with more than 1024 bytes it will not work
 - unfortunately many CAPIs use 2048 bytes as default).
 The latest Teles PCI card needs the <tt/netjet/ driver, the teles driver
-will NOT work.
+will NOT work (that card identifies itself as 'TigerJet Tiger300' when doing a 
+<tt>cat /proc/pci</tt>).
 
 Now some comments about Teles in general (these is the personal opinion of
 the author of this FAQ, please blame nobody else than me):
@@ -866,6 +899,14 @@ special I should know about my ISDN card?
 <p>
 Have a look in section <ref id="hardware" name="hardware">.
 
+<sect1> config_suse: I can not select my card in yast?  
+<label id="config_suse">
+<p>
+If you have a SuSE distribution, and you can not find your card in yast,
+then select card <tt/generic/ and enter the exact parameters in the
+special case line, like: <tt>type=27 protocol=2</tt> for Fritz!PCI and
+Euro ISDN. Get a newer kernel if the desired type is not yet supported.
+
 <sect1> config_dialmode: When an IP packet should go over the link (which  
 usually triggers a dialout), all I see in the log is: &dquot;dial rejected:  
 interface not in dialmode `auto'&dquot;?  
@@ -1008,6 +1049,17 @@ Increase the parameter ISDN_MAX_CHANNELS in
 forget to create the additional devices with makedev.sh (part of isdn4k-utils)
 or by hand.
 
+<sect1> config_gsmv110: How do I connect my PalmPilot via GSM over V.110  
+to my computer?  
+<label id="config_gsmv110">
+<p>
+Set up async PPP with a normal pppd on a ttyI* device. Additionally to setting
+the msn, you have to initialize the ttyI* device with <tt/ATS19=0/ for V.110.
+The rate should be set to 9600 with <tt/AT&amp;R9600/. pppd needs to be
+called with <tt/noccp/ and <tt/require-pap/. For a mini-howto see:
+<url url="http://www.oltom.com/Linux/Docs/GSM%20over%20V.110%20Mini-HOWTO.txt">
+
+
 <!-- links outdated? - may need to be reworked! -->
 
 <sect1> config_links: What helpful links are there about isdn4linux?  
@@ -1051,7 +1103,7 @@ Usenet News, answering machine, and more:
 <item>Further FAQs with example scripts:
 <tt><url url="http://www.fzi.de/sim/people/trautw/i4l/index.html"></tt>
 <item>Eurofile client + server software (alpha):
-<tt><url url="ftp://ftp.hamburg.pop.de/pub/LOCAL/linux/i4l-eft/"></tt>
+<tt><url url="ftp://ftp.hamburg.pop.de/pap/LOCAL/linux/i4l-eft/"></tt>
 </itemize>
 
 <sect1> trouble_tcpdump: Why does my tcpdump not work for ip packets going over  
@@ -1215,19 +1267,24 @@ Germany it is called a bundled line (`B&uuml;ndelanschlu&szlig;').
 <!-- Config Win95  
 -->  
 
-<sect1> remote_w95: What do I have to watch out for to connect to Windows95?  
-<label id="remote_w95">
+<sect1> remote_win95: How do I configure Windows95 to dial successfully into  
+my isdn4linux computer?  
+<label id="remote_win95">
 <p>
-VJ (i.e. header) compression should be turned off on both sides, at least for
-the beginning (for more details on compression with ipppd see question
-<ref id="syncppp_compression" name="syncppp_compression">). Windows95 is very
-touchy if this option is rejected by isdn4linux.
+Configure your dialout network like this:
+<itemize>
+<item>Type of server: PPP:Windows 95, Windows NT 3.5, Internet
+<item>Extended options: unselect all options
+<item>Network protocolls: only select TCP/IP
+<item>Standard gateway
+<item>Switch off IP header compression for the beginning
+(for more details on compression with ipppd see question
+<ref id="syncppp_compression" name="syncppp_compression">).
+<item>Remainder of TCP/IP stuff (ip address, nameserver,...) as applies to you.
+</itemize>
 
-<!-- Config Mac
--->
-
-<sect1> remote_mac: I'd like to exchange data with a Macintosh (Leonardo card),  
-what do I or the Mac user have to watch out for?  
+<sect1> remote_mac: I'd like to exchange data with a Macintosh (Leonardo  
+card), what do I or the Mac user have to watch out for?  
 <label id="remote_mac">
 <p>
 Currently, the Leonardo protocol is not supported by i4l. When you call the
@@ -1244,8 +1301,8 @@ switch the CTB port to the ISDN card. Then with FreePPP 2.5v2
 <tt><url url="http://www.rockstar.com"></tt> set the Leo as the modem and
 configure FreePPP as usual. Then PAP/CHAP can be set.
 
-<sect1> remote_cisco: How does isdn4linux work with a Cisco (HDLC) on the other  
-side?  
+<sect1> remote_cisco: How does isdn4linux work with a Cisco (HDLC) on the  
+other side?  
 <label id="remote_cisco">
 <p>
 On the Cisco router the &dquot;keep alive&dquot; packets have to be turned off.
@@ -1472,7 +1529,8 @@ see &dquot;How to I create a log for ipppd&dquot;.
 <sect1> asyncppp_fast: How can I increase my transfer rates with PPP?  
 <label id="asyncppp_fast">
 <p>
-You can add more channels with MPPP (see the appropriate section).
+You can add more channels with MPPP (see question
+<ref id="2channel_mppp" name="2channel_mppp">).
 For everyone for whom that's to expensive and who use <em>async PPP</em>,
 there's a little trick. With the option &dquot;asyncmap 0&dquot; you can avoid
 escaping all control characters (ASCII32). If the other side goes 
@@ -1890,7 +1948,13 @@ receive an answer. Possible solutions:
 <item>Dial out manually with &dquot;isdnctrl dial ippp*&dquot;
 <item>Use diald to control when the connection goes up or down.
 <item>Get a permanent IP address
-<item>May be fixed in newer kernels.
+<item>A workaround is included in the newest kernels, which can be
+activated like this:
+<code>
+echo 7 > /proc/sys/net/ipv4/ip_dynaddr
+</code>
+If you have a SuSE distribution, this workaround can also be configured by
+setting <tt/IP_DYNIP=&dquot;yes&dquot;/ in <tt>/etc/rc.config</tt>.
 </itemize>
 
 <sect1> syncppp_droppacket: What does the message &dquot;No phone number, packet  
@@ -2422,20 +2486,20 @@ line?
 A later version of the new HiSax driver supports D64. Configuration is normal
 with the following specialities. HiSax has to be run in leased mode:
 <code>
-/sbin/hisaxctrl HiSax 5 0
+/sbin/hisaxctrl HiSax 5 &lt;channel&gt;
 </code>
-in case HiSax was loaded with &dquot;id=HiSax&dquot;. Additionally to the normal
-configuration, the following commands are important:
+in case HiSax was loaded with &dquot;id=HiSax&dquot;, where &lt;channel&gt;
+can be 0 or 1. Additionally to the normal configuration, the following
+commands are important:
 <code>
-&num; bind interface on first BChannel (,1 for 2nd)
-/sbin/isdnctrl bind HiSax,0
+/sbin/isdnctrl bind HiSax,&lt;channel&gt
 /sbin/isdnctrl eaz isdn0 1
 /sbin/isdnctrl addphone isdn0 out 2
 /sbin/isdnctrl addphone isdn0 in  3
 </code>
-if &dquot;isdn0&dquot; was used as interface name. The interface has to be set to
-&dquot;up&dquot; and a route associated with it. See the Readme's in the HiSax
-package.
+if &dquot;isdn0&dquot; was used as interface name. The interface has to be
+set to &dquot;up&dquot; and a route associated with it. See the Readme's
+in the HiSax package.
 
 <sect1> leased_x75: How do I configure X.75 on a D64 leased line?  
 <label id="leased_x75">
@@ -2444,12 +2508,13 @@ Use a later HiSax version. First initialize the ttyI* device you want to use
 with &dquot;AT&amp;E0&dquot; (set usage of first B-channel) and
 &dquot;ATS0=1&dquot; (autoanswer on first ring). Then set HiSax in leased mode:
 <code>
-/sbin/hisaxctrl HiSax 5 1
+/sbin/hisaxctrl HiSax 5 &lt;channel&gt;
 </code>
-This will simulate a call on MSN1 (incoming = LEASED0).
+This will simulate a call for MSN1 on the configured channel (0 or 1)
+(incoming number = LEASED0).
 
-<sect1> leased_splitline: With ISDN, can I use one channel as a leased line and  
-other as a dialup line?  
+<sect1> leased_splitline: With ISDN, can I use one channel as a leased line  
+and other as a dialup line?  
 <label id="leased_splitline">
 <p>
 Yes, you can. But you have to make sure that you use the correct channel!
@@ -3044,7 +3109,8 @@ question below).
 <p>
 <enum>
 <item>Set your dialmode properly (see question
-<ref id="config_dialmode" name="config_dialmode">).
+<ref id="config_dialmode" name="config_dialmode">). For example, set
+dialmode to <tt/manual/ in <tt/ip-down/.
 Alternatively you can use the dialmode feature (see question
 <ref id="config_dialmode" name="config_dialmode">.
 <item>Delete the telephone number of the interface, or set an invalid one. Then you
@@ -3143,9 +3209,9 @@ machine were allowed to be carried out. Then the connections are
 established only when they are actually needed. The (caching) local DNS
 is only used after the connection has been established. 
 
-<sect1> dod_win95: How can I turn off the DNS requests for WORKGROUP.xxx from my  
+<sect1> dod_win95b: How can I turn off the DNS requests for WORKGROUP.xxx from my  
 Win95 machine?  
-<label id="dod_win95">
+<label id="dod_win95b">
 <p>
 Eike Stepper <tt><htmlurl url="mailto:isdn@esc-net.de"
 name="isdn@esc-net.de"></tt> wrote on 30 Nov 1996:
@@ -3425,17 +3491,18 @@ list for other users from your country.
 telecommunications authorities?  
 <label id="country_certified">
 <p>
-<descrip>
-<tag/Germany/
-That depends on the driver used. For active cards, the approval 
-covers the entire card including its firmware. Thus the approval 
-also covers the use of these cards with isdn4linux. The Elsa Quickstep 1000 PCI
-driver is currently certified in Germany (and hence in most european
-countries). This applies to the 2.0.36 kernel version.
-<tag/Other countries/
-Besides those countries that accept a german certification,
-we don't have any information... does anyone know more?
-</descrip>
+That depends on the driver used, and your country. We only have information
+about Germany (send me information if you have information about other
+countries). However, that covers most other European countries as well,
+since a certification in one EC country has to be accepted in all others.
+These drivers are certified for use in Germany:
+<itemize>
+<item>Active cards: the approval covers the entire card including its
+firmware. Thus the approval also covers the use of these cards with
+isdn4linux.
+<item>Elsa Quickstep 1000 PCI (new name Microlink PCI)
+<item>Eicon Diva 2.01 PCI
+</itemize>
 
 <sect> 1tr6: German Pecularities (1TR6)  
 <label id="1tr6">
@@ -3594,13 +3661,25 @@ number as your MSN/EAZ (&dquot;6&dquot; if you have the telephone number
 <sect1> country_uk: UK: What should we use as MSN?  
 <label id="country_uk">
 <p>
-There are no normal MSNs in UK. Each MSN is actually a single digit, 0 - 9,
-corresponding to the last digit of the actual phone number. Apparently in the
-UK you either have *no* MSNs, or 10 MSNs; you then always get a block of 10
-sequential numbers. It was said that BT was going to offer &dquot;normal&dquot;
-EuroISDN, which they wanted to call ISDN-2e (their current offering is
-ISDN-2). However, so far I have not received any feedback on this.
-
+It depends on your ISDN option.
+<itemize>
+<item> ISDN: Does not allow normal MSNs in UK. Each MSN is actually a single
+digit, 0 - 9, corresponding to the last digit of the actual phone number.
+You either have *no* MSNs (then configure isdn4linux to use '0' as MSN), or
+10 MSNs; you then always get a block of 10 sequential numbers (?).
+<item> ISDN2e: Seems to be normal EuroISDN. You are assigned MSNs which you
+can use and configure for isdn4linux (?).
+<item> BTHH (BT HomeHighway): additionally to 2 ISDN ports it includes two
+analog lines with separate telephone number - but calls to and fro for those
+won't be signalled on the ISDN line, even so they use up a B-channel.
+Additional MSN are NOT available (therefore use '0' as MSN to configure
+isdn4linux). Charge info is possible for extra cost. Configure isdn4linux
+only with your 'digital number' as MSN.
+<item> BTBH (BT BusinessHighway): The additional paperwork including a
+credit-check enables you to get MSNs and other extras for extra cost.
+Otherwise pretty much like BTHH. Configure isdn4linux to use your 'digital
+number' and/or your MSNs.
+</itemize>
 
 <sect> misc: Miscellaneous  
 <label id="misc">
