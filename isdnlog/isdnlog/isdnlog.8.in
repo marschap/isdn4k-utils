@@ -1,5 +1,5 @@
-.\" $Id: isdnlog.8.in,v 1.7 2000/04/02 17:35:07 akool Exp $
-.\" CHECKIN $Date: 2000/04/02 17:35:07 $
+.\" $Id: isdnlog.8.in,v 1.8 2000/09/07 07:24:37 paul Exp $
+.\" CHECKIN $Date: 2000/09/07 07:24:37 $
 .TH isdnlog 8 "@MANDATE_ISDNLOG8@" "ISDN 4 Linux @I4LVERSION@" "Linux System Administration"
 .PD 0
 .SH NAME
@@ -111,7 +111,11 @@ may be 1 (ignore RR=Receiver ready) or 2 (ignore EMP=Euracom Management Protokol
 
 .TP
 .B \-U\fIx\fB	ignoreCOLP="value"
-Ignore COLP/CLIP frames.
+Ignore COLP/CLIP frames when value is 1.
+Value 0 is default, and tells isdnlog to not ignore COLP/CLIP frames.
+.br
+Sometimes the COLP number is a number in a different areacode to the
+number that was dialled, and then the cost calculation would be wrong.
 
 .TP
 .B \-2\fIx\fB	dual="value"
