@@ -422,8 +422,8 @@ int main( int argc, char *argv[] )
         {
 /*			announce_card(card_i, cards[card_i]);*/
 			fprintf(stderr, "divaload: Loading %s with %s firmware\n", card_desc[new_cards[card_i]], afname + 3);
-				
-			options.card_id = card_i - 1;
+			
+			options.card_id = real_card_id[card_i];
 
 			if (card_list[options.card_id].state == DIA_RUNNING)
 			{
