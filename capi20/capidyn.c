@@ -1,7 +1,10 @@
 /*
- * $Id: capidyn.c,v 1.3 2004/01/16 14:57:22 calle Exp $
+ * $Id: capidyn.c,v 1.4 2004/01/16 15:27:11 calle Exp $
  * 
  * $Log: capidyn.c,v $
+ * Revision 1.4  2004/01/16 15:27:11  calle
+ * remove several warnings.
+ *
  * Revision 1.3  2004/01/16 14:57:22  calle
  * gcc warning removed.
  *
@@ -16,6 +19,7 @@
  */
 
 #include <sys/types.h>
+#define _LINUX_LIST_H
 #include <linux/capi.h>
 #include <string.h>
 #include "capi20.h"

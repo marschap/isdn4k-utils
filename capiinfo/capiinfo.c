@@ -1,4 +1,4 @@
-/* $Id: capiinfo.c,v 1.10 2003/08/16 16:56:02 keil Exp $
+/* $Id: capiinfo.c,v 1.11 2004/01/16 15:27:12 calle Exp $
  *
  * A CAPI application to get infomation about installed controllers
  *
@@ -17,6 +17,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: capiinfo.c,v $
+ * Revision 1.11  2004/01/16 15:27:12  calle
+ * remove several warnings.
+ *
  * Revision 1.10  2003/08/16 16:56:02  keil
  * fix some typos
  *
@@ -54,6 +57,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <errno.h>
+#define _LINUX_LIST_H
 #include <capi20.h>
 #include <linux/capi.h>
 

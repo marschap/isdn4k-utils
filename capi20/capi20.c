@@ -1,7 +1,10 @@
 /*
- * $Id: capi20.c,v 1.19 2001/03/01 14:59:11 paul Exp $
+ * $Id: capi20.c,v 1.20 2004/01/16 15:27:11 calle Exp $
  * 
  * $Log: capi20.c,v $
+ * Revision 1.20  2004/01/16 15:27:11  calle
+ * remove several warnings.
+ *
  * Revision 1.19  2001/03/01 14:59:11  paul
  * Various patches to fix errors when using the newest glibc,
  * replaced use of insecure tempnam() function
@@ -78,6 +81,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <stdio.h>
+#define _LINUX_LIST_H
 #include <linux/capi.h>
 #include "capi20.h"
 

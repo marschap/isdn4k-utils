@@ -1,7 +1,10 @@
 /*
- * $Id: capiinit.c,v 1.14 2004/01/16 12:33:16 calle Exp $
+ * $Id: capiinit.c,v 1.15 2004/01/16 15:27:12 calle Exp $
  *
  * $Log: capiinit.c,v $
+ * Revision 1.15  2004/01/16 15:27:12  calle
+ * remove several warnings.
+ *
  * Revision 1.14  2004/01/16 12:33:16  calle
  * Modifications to let ist run with patched 2.6 kernel.
  * Pure 2.6.0/2.6.1 is not working.
@@ -57,6 +60,8 @@
  *
  */
 
+#include <sys/types.h>
+#include <sys/signal.h>
 #include <stdio.h>
 #include <stddef.h>
 #include <stdlib.h>
@@ -70,7 +75,7 @@
 #include <sys/mman.h>
 #include <sys/stat.h>
 #include <sys/ioctl.h>
-#include <signal.h>
+#define _LINUX_LIST_H
 #include <linux/b1lli.h>
 #include <linux/capi.h>
 #include <linux/kernelcapi.h>

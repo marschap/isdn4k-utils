@@ -23,10 +23,11 @@
 #include <string.h>
 #include <dlfcn.h>
 #include <errno.h>
+#include <netinet/in.h>
 #include <linux/if.h>
-#include <linux/in.h>
 
-static char *revision = "$Revision: 1.32 $";
+
+static char *revision = "$Revision: 1.33 $";
 
 /* -------------------------------------------------------------------- */
 
@@ -904,6 +905,7 @@ static void setup_timeout(void)
 		_timeout (timeoutfunc, 0, 1);
 }
 
+#if PPPVER >= PPPVersion(2,4,0,0)
 static void unsetup_timeout(void)
 {
 	timeoutshouldrun = 0;
@@ -911,6 +913,7 @@ static void unsetup_timeout(void)
 		untimeout (timeoutfunc, 0);
 	timeoutrunning = 0;
 }
+#endif
 
 /* -------------------------------------------------------------------- */
 /* -------- demand & wakeup pppd -------------------------------------- */
@@ -1475,9 +1478,9 @@ capiconn_callbacks callbacks = {
 
 	capi_put_message: put_message,
 
-	debugmsg: dbglog,
-	infomsg: info,
-	errmsg: error
+	debugmsg: (void (*)(const char *, ...))dbglog,
+	infomsg: (void (*)(const char *, ...))info,
+	errmsg: (void (*)(const char *, ...))error
 };
 
 /* -------------------------------------------------------------------- */
