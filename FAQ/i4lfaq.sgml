@@ -4,7 +4,7 @@
 
 <title>FAQ for isdn4linux
 <author>Matthias Hessler (<tt><htmlurl url="mailto:hessler@isdn4linux.de" name="hessler@isdn4linux.de"></tt>)
-<date>v2.0.18, 14. October 1999
+<date>v2.0.20, 30. October 1999
 <abstract>
 If you are reading this FAQ online, you may consider downloading the whole
 thing, and reading it offline (much cheaper). To download the latest
@@ -281,8 +281,10 @@ on this rather complicated problem. For more info on its status have a look at:
 <item><bf>For the active card AVM B1: Yes</bf> (its firmware has implemented
 fax as one of its features). Get the newest stuff from:
 <tt><url url="ftp://ftp.aeccom.com/pub/fax4i4l/howto/current/"></tt>
-<item><bf>For the active Eicon Diva Server cards: Yes</bf>. Have a look at
-README.fax and README.eicon in the <tt>isdn/Documentation/isdn</tt> directory.
+<item><bf>For the active Eicon Diva Server cards (except Diva 2.0Pro):
+Yes</bf>. Have a look at README.fax and README.eicon in the
+<tt>isdn/Documentation/isdn</tt> directory, as well as:
+<tt><url url="http://www.melware.de/"></tt>.
 <item><bf>For semiactive cards Sedlbauer Speedfax+ and Siemens ISURF 1.0: Yes</bf>
 But currently this requires some manual work. Check the mailing list on how
 to do it (special patch needed).
@@ -317,7 +319,9 @@ bundling:
 <item><bf>Raw bundling</bf> (configured by so-called slave channels)
 </itemize>
 Both variants have their own advantages and disadvantages. See section
-<ref id="2channel" name="2channel">.
+<ref id="2channel" name="2channel">. Bonding (16bit channel) is not supported,
+since it can not work reliably when the dialup connections have deviating
+latency.
 Warning: Channel bundling saves time, but not telephone charges.
 It is useful only if you really need the extra bandwidth.
 
@@ -400,7 +404,6 @@ other cards. However, there are no plans to implement a CAPI 1.1 interface.
 <sect1> feature_uus: Is UUS (user to user signaling) supported?  
 <label id="feature_uus">
 <p>
-
 Yes, isdn4linux does support both sending and receiving. However, you
 should know that sending it is not a free service, at least with some
 German phone providers you have to pay extra for it (also have a close
@@ -488,7 +491,8 @@ helpful articles at least in these issues:
 </itemize>
 
 Also have a look at question <ref id="config_links" name="config_links"> for
-helpful links on how to configure i4l.
+helpful links on how to configure i4l (e.g. special help for SuSE or
+Red Hat users).
 
 <sect1> docu_website: Where is the official website for isdn4linux? 
 <label id="docu_website">
@@ -597,13 +601,13 @@ Here the status from 4th September 1999 (constantly improving):
 <item>Creatix S0Box
 <item>Creatix PnP S0
 <item>Compaq ISDN S0 ISA card
-<item>AVM A1 (Fritz, Teledat 150)
+<item>AVM A1 (Fritz, Teledat 150 ISA)
 <item>AVM Fritz PCMCIA
 <item>AVM Fritz PnP
 <item>AVM Fritz PCI
 <item>ELSA Microlink PCC-16, PCF, PCF-Pro, PCC-8
 <item>ELSA Quickstep 1000
-<item>ELSA Quickstep 1000PCI
+<item>ELSA Quickstep 1000PCI (new name: ELSA Microlink PCI)
 <item>ELSA Quickstep 3000 (same settings as QS1000)
 <item>ELSA Quickstep 3000PCI
 <item>ELSA PCMCIA
@@ -751,7 +755,8 @@ work, due to the different Endian format for 32bit B-channel data on the PPC.
 
 In any case, you may also get a terminal adapter (= external ISDN "modem").
 Since then you don't need isdn4linux (see question
-<ref id="hardware_external" name="hardware_external">), this is not covered here any further.
+<ref id="hardware_external" name="hardware_external">), this is not covered
+here any further.
 
 <sect1> hardware_maxcards: How many ISDN cards can I put into my computer?  
 <label id="hardware_maxcards">
@@ -1114,6 +1119,8 @@ isdn4linux:
 <item>Suse Support database:
 <url url="http://www.suse.de/Support/sdb_e/index.html">; there is also an ISDN
 howto (isdn.html) and a ISDN quick-install guide (isdnquick.html).
+<item>Tips to configure Red Hat:
+<url url="http://www.webideal.de/rh-isdn/">
 </itemize>
 
 Please note: the following link list may be outdated, they have not been
@@ -1612,6 +1619,9 @@ Yes, but you need the cooperation of your telecommunication company. They
 can set up several BRIs in Point-to-point mode that have the same MSN. In
 Germany it is called a bundled line (`B&uuml;ndelanschlu&szlig;').
 
+Please note that in such a case the MSN may not be transmitted to you. Just
+use the default MSN 0 then.
+
 
 <sect> lan: ISDN4LINUX in a LAN  
 <label id="lan">
@@ -1818,10 +1828,9 @@ invalid MSN with the correct one. Use <tt/isdnctrl mapping/ to configure the
 correct MSNs (see item 'dialout on one specific card').
 <item>Dialout on one specific channel: Use the <tt/isdnctrl bind/
 (not pppbind) command to specify which channel should be used.
-<item>Dialout on one specific card: after installing a patch that was posted
-by Karsten Keil on the mailing list against 2.2.12, you can configure this
-by using the <tt/isdnctrl mappping/ functionality. Just map MSNs on the
-letters 0 to 9, like this:
+<item> Dialout with different MSN on each card:
+You can configure this by using the <tt/isdnctrl mappping/ functionality.
+Just map MSNs on the letters 0 to 9, like this:
 <code>
 isdnctrl mapping &lt;carddriver1&gt; 111,222,333,,
 isdnctrl mapping &lt;carddriver2&gt; 999,888,,777
@@ -1832,9 +1841,21 @@ MSN 111 on &lt;carddriver1&gt; or 999 on &lt;carddriver2&gt; (however, since
 number 1 when you really want to use MSN 222 on &lt;carddriver1&gt; or 888
 on &lt;carddriver2&gt;. Configure to use telephone number 2 when you really
 want to use only MSN 333 on &lt;carddriver1&gt; (&lt;carddriver2&gt; will
-never be used). Configure to use telephone number 3 when you really want to
-use only MSN 777 on &lt;carddriver2&gt; (&lt;carddriver1&gt; will never
-be used).
+use the default MSN when used). Configure to use telephone number 3 when you
+really want to use only MSN 777 on &lt;carddriver2&gt; (&lt;carddriver1&gt;
+will use the default MSN when used).
+<item>Dialout on one specific card: 
+After installing a patch that was posted by Karsten Keil on the mailing
+list against 2.2.12, you can disallow calls on some cards by using the
+<tt/isdnctrl mapping/ functionality.
+<code>
+isdnctrl mapping &lt;carddriver1&gt; 111,222,333,-,
+isdnctrl mapping &lt;carddriver2&gt; 999,888,-,777
+</code>
+It works as discribed for "Dialout with different MSN on each card", except
+that the "-" means dialing is disallowed. Dialout on telephone number 2 will
+now only dial out with MSN 333 on &lt;carddriver1&gt;, while dialout on 3 will
+now only dial out with MSN 777 on &lt;carddriver2&gt;.
 </itemize>
 
 
@@ -2118,7 +2139,8 @@ your dialin computer tries to communicate. Maybe the pap/chap authentication
 doesn't work (see question <ref id="pap" name="pap">). Check the ipppd
 configuration!
 <item>The message that ipppd was exited for some reason: not so good!
-Check /var/log/messages and /var/adm/daemon. Could be a bug in ipppd.
+Check <tt>/var/log/messages</tt>, <tt>/var/log/debug</tt>, and
+<tt>/var/adm/daemon</tt> (if existing). Could be a bug in ipppd.
 <item>The error/cause E0010 is <bf/NOT/ an error! It is just the informal
 message that the call has ended.
 </itemize>
@@ -2126,9 +2148,13 @@ message that the call has ended.
 <sect1> syncppp_log: How can I get a log for ipppd?  
 <label id="syncppp_log">
 <p>
+Normally when giving the option "debug" to ipppd, the debbuging output
+may be logged in <tt>/var/log/messages</tt>, <tt>/var/log/debug</tt>, or
+<tt>/var/adm/daemon</tt> (depends on your distribution, look around).
+
 For debugging purposes you can redirect the PPP log into a separate file.
-Just edit /etc/syslog.conf and add the following line (caution: do NOT use
-blanks or tabs):
+Just edit <tt>/etc/syslog.conf</tt> and add the following line (caution:
+do NOT use blanks or tabs - check "man syslog.conf(5)" for more details):
 <code>
 daemon.*                      /var/log/ppp-log
 </code>
@@ -3550,10 +3576,11 @@ COLP (Connected Line Identification Presentation, ca. DM 10 per month per
 basic line) that returns all data sent. This can then be read by isdnlog
 (=2.52) from the TX line.
 
-Alternatively, the next version of isdnlog (currently 2.52) will offer
-the possibility to work with a second &dquot;re-poled&dquot; Teles card, i.e. the 
-RX line is connected to the TX connection of the card. The RX line of the
-card should not be connected to any line! Because of this setup, the Teles
+Alternatively, isdnlog offers the possibility to work with a second
+&dquot;re-poled&dquot; ISDN card. &dquot;re-poled&dquot; means that the
+RX line is connected to the TX connection of the card; the RX line of the
+card should not be connected to any line!
+ Because of this setup, this ISDN
 card cannot be used for anything else. The whole thing looks something like
 this:
 <verb>
@@ -3562,6 +3589,14 @@ ISDN  4 -- TX+ 1a -- open         ------------  ISDN
 bus   5 -- TX- 1b -- open         ------------  card
       6 -- RX- 2b ---------------/ 
 </verb>
+Please note that this only works when the second card is an ISAC based cards
+(e.g. old Teles cards, Fritz! classic), since it requires a special
+bug/feature of that chip. All other cards, like IPAC based cards (e.g. ELSA
+QS1000pro) will not work in the role of a re-poled card.
+HFC-PCI based cards allow a special feature where one of the B channels can be
+sacrificed in exchange for reading the complete D channel protocol - with
+just one single card. This is also supported by ISDN4LINUX.
+
 A third (theoretical) possibility exists for those who have their own
 PBX to which the other devices are connected. If the PBX can protocol
 all outgoing calls, this can be read (usually over a serial port).
@@ -3873,9 +3908,9 @@ normal plain telephone number. What do we have to use for i4l?
 <p>
 In Austria ISDN lines are by standard installed <em>without</em> MSN (which is
 different from Germany). That means when somebody calls the installed ISDN
-number the called party gets signalled a &dquot;global call&dquot;. i4l then says
-&dquot;incoming call without CPN&dquot; - &dquot;CPN&dquot; means called party
-number. Solution: Set the incoming &dquot;MSN&dquot; (in reality: none) to
+number the called party gets signalled a &dquot;global call&dquot;. i4l then
+says &dquot;incoming call without CPN&dquot; - &dquot;CPN&dquot; means called
+party number. Solution: Set the incoming &dquot;MSN&dquot; (in reality: none) to
 &dquot;0&dquot;, then i4l responds to the global call. Otherwise it waits for
 the signalling of the number you told i4l, and that won't happen (happens only
 for *additional* MSN). The same applies to the setup of your getty.
@@ -3963,7 +3998,9 @@ It depends on your ISDN option.
 <item> ISDN: Does not allow normal MSNs in UK. Each MSN is actually a single
 digit, 0 - 9, corresponding to the last digit of the actual phone number.
 You either have *no* MSNs (then configure isdn4linux to use '0' as MSN), or
-10 MSNs; you then always get a block of 10 sequential numbers (?).
+10 MSNs; you then always get a block of 10 sequential telephone numbers
+(xxx0-xxx9), of which the last digit (0-9) is your MSN (0 is used in case
+you use an invalid number).
 <item> ISDN2e: Seems to be normal EuroISDN. You are assigned MSNs which you
 can use and configure for isdn4linux (?).
 <item> BTHH (BT HomeHighway): additionally to 2 ISDN ports it includes two
@@ -4148,10 +4185,12 @@ UUS is user to user signalling. It means, that when placing a call,
 a few bytes of user-specific data can be transmitted along with the call
 setup frame. This feature has been abused in the past in Germany, causing
 the local exchanges to run out of available channels (the call setup causes
-them to reserve a B-channel). Since then, this feature costs extra and there
-is a data limit on it. Have a look at the usage condition, in short it's only
-allowed to use this feature, if indeed you want to setup a call.
-
+them to reserve a B-channel). Since then, this feature usually costs extra
+and there is a data limit on it (depends on your ISDN provider). Have a look at
+the usage condition, in short it's only allowed to use this feature, if
+indeed you want to setup a call. Please note that it has been reported that
+some buggy PBX (like ISTEC 1003) may refuse a connection when support of UUS is
+signalled to them.
 </descrip>
 
 </article>
