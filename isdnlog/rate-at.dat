@@ -31,7 +31,7 @@ C:Telefon:                         0800 100 100
 C:GT:                              Grundgebühr ATS 198
 C:GF:
 # Tarif:                           Minimumtarif (ATS 1.116 pro Einheit)
-D:pta                              # Verzonung
+D:1001                             # Verzonung
 
 Z:0                                FreePhone
 T:*/*=0/72
@@ -238,7 +238,7 @@ C:Telefon:                         0800 100 100
 C:GT:                              Grundgebühr ATS 240
 C:GF:                              Cost=240-198
 # Tarif:                           Standardtarif (ATS 1.056 pro Einheit)
-D:pta                              # Verzonung
+D:1001                             # Verzonung
 
 Z:0                                FreePhone
 T:*/*=0/72
@@ -445,7 +445,7 @@ C:Telefon:                         0800 100 100
 C:GT:                              Grundgebühr ATS 288
 C:GF:                              Cost=288-198
 # Tarif:                           Geschäftstarif 1 (ATS 0.996 pro Einheit)
-D:pta                              # Verzonung
+D:1001                             # Verzonung
 
 Z:0                                FreePhone
 T:*/*=0/72
@@ -652,7 +652,7 @@ C:Telefon:                         0800 100 100
 C:GT:                              Grundgebühr ATS 468
 C:GF:                              Cost=468-198
 # Tarif:                           Geschäftstarif 2 (ATS 0.936 pro Einheit)
-D:pta                              # Verzonung
+D:1001                             # Verzonung
 
 Z:0                                FreePhone
 T:*/*=0/72
@@ -859,7 +859,7 @@ C:Telefon:                         0800 100 100
 C:GT:                              Grundgebühr ATS 1788
 C:GF:                              Cost=1788-198
 # Tarif:                           Geschäftstarif 3 (ATS 0.816 pro Einheit)
-D:pta                              # Verzonung
+D:1001                             # Verzonung
 
 Z:0                                FreePhone
 T:*/*=0/72
@@ -3142,7 +3142,7 @@ P:49                               Pegasus Telekom
 B:1049
 C:NR:1049
 C:TarifChanged:                    01.09.1999
-D:pta                              # Verzonung
+D:1001                             # Verzonung
 C:Name:                            Pegasus Telekom Netzwerkdienste AG
 C:Address:                         Serrravag. 10-12, A-1140 Wien
 C:Homepage:                        http://www.ptag.net
@@ -3153,262 +3153,259 @@ C:Telefon:                         01 9150 0
 Z:1                                Regionalzone
 T:*/*=0.96(60)/1                   0-24h
 
-Z:2                                Fernzone 1
-T:*/*=1.74(60)/1                   0-24h
-
-Z:3                                Fernzone 2
+Z:2                                Österreich
 T:*/*=1.74(60)/1                   0-24h
 A:Österreich
 
-Z:4                                Mobilfunk
+Z:3                                Mobilfunk
 T:*/*=3.60(60)/1                   0-24h
 A:+43663, +43664, +43676, +43699
 
-Z:5                                Deutschland
+Z:4                                Deutschland
 T:*/*=3.00(60)/1                   0-24h
 A:Deutschland
 
-Z:6                                Italien ...
+Z:5                                Italien ...
 T:*/*=3.60(60)/1                   0-24h
 A:Italien, Liechtenstein, Schweiz
 
-Z:7                                Dänemark ...
+Z:6                                Dänemark ...
 T:*/*=3.96(60)/1                   0-24h
 A:Dänemark, Frankreich, Finnland, Großbritannien, Niederlande, Schweden
 A:Ungarn
 
-Z:8                                Belgien
+Z:7                                Belgien
 T:*/*=4.08(60)/1                   0-24h
 A:Belgien
 
-Z:9                                Kanada ...
+Z:8                                Kanada ...
 T:*/*=4.20(60)/1                   0-24h
 A:Kanada, Norwegen, Slowenien, USA
 
-Z:10                               Spanien
+Z:9                                Spanien
 T:*/*=4.56(60)/1                   0-24h
 A:Spanien
 
-Z:11                               Irland ...
+Z:10                               Irland ...
 T:*/*=4.68(60)/1                   0-24h
 A:Irland, Luxemburg, Slowakische Republik, Tschechische Republik
 
-Z:12                               Polen
+Z:11                               Polen
 T:*/*=4.80(60)/1                   0-24h
 A:Polen
 
-Z:13                               Amerikanische Jungferninseln ...
+Z:12                               Amerikanische Jungferninseln ...
 T:*/*=5.28(60)/1                   0-24h
 A:Amerikanische Jungferninseln, Andorra, Azoren, Griechenland, Monaco, Malta
 A:Jugoslawien, Ukraine
 
-Z:14                               Kroatien
+Z:13                               Kroatien
 T:*/*=5.52(60)/1                   0-24h
 A:Kroatien
 
-Z:15                               Portugal
+Z:14                               Portugal
 T:*/*=5.64(60)/1                   0-24h
 A:Portugal
 
-Z:16                               Albanien ...
+Z:15                               Albanien ...
 T:*/*=5.88(60)/1                   0-24h
 A:Albanien, Bosnien-Herzegowina, Bulgarien, Rumänien, Zypern (Griechisch)
 
-Z:17                               Puerto Rico ...
+Z:16                               Puerto Rico ...
 T:*/*=6.00(60)/1                   0-24h
 A:Puerto Rico, San Marino
 
-Z:18                               Australien ...
+Z:17                               Australien ...
 T:*/*=6.24(60)/1                   0-24h
 A:Australien, Türkei
 
-Z:19                               Algerien ...
+Z:18                               Algerien ...
 T:*/*=6.60(60)/1                   0-24h
 A:Algerien, Estland, Mazedonien
 
-Z:20                               Island ...
+Z:19                               Island ...
 T:*/*=7.08(60)/1                   0-24h
 A:Island, Israel, Palestina
 
-Z:21                               Gibraltar ...
+Z:20                               Gibraltar ...
 T:*/*=7.20(60)/1                   0-24h
 A:Gibraltar, Lettland, Litauen, Russische Förderation (östl.), Tadschikistan
 A:Weissrussland
 
-Z:22                               Weihnachtsinseln ...
+Z:21                               Weihnachtsinseln ...
 T:*/*=7.44(60)/1                   0-24h
 A:Weihnachtsinseln, Tunesien
 
-Z:23                               Färöer-Inseln ...
+Z:22                               Färöer-Inseln ...
 T:*/*=7.92(60)/1                   0-24h
 A:Färöer-Inseln, Kanarische Inseln, Madeira, Marokko
 
-Z:24                               Georgien ...
+Z:23                               Georgien ...
 T:*/*=8.28(60)/1                   0-24h
 A:Georgien, Japan, Singapur
 
-Z:25                               Hongkong ...
+Z:24                               Hongkong ...
 T:*/*=9.00(60)/1                   0-24h
 A:Hongkong, Usbekistan
 
-Z:26                               Armenien ...
+Z:25                               Armenien ...
 T:*/*=9.24(60)/1                   0-24h
 A:Armenien, Aserbaidschan, Antarktis
 
-Z:27                               Libyen ...
+Z:26                               Libyen ...
 T:*/*=9.48(60)/1                   0-24h
 A:Libyen, Neuseeland
 
-Z:28                               Chile ...
+Z:27                               Chile ...
 T:*/*=9.60(60)/1                   0-24h
 A:Chile, Martinique / Franz. Antillen
 
-Z:29                               Moldavien Moldau (Republik) ...
+Z:28                               Moldavien Moldau (Republik) ...
 T:*/*=10.20(60)/1                  0-24h
 A:Moldavien Moldau (Republik), Südafrika
 
-Z:30                               Guadeloupe ...
+Z:29                               Guadeloupe ...
 T:*/*=10.68(60)/1                  0-24h
 A:Guadeloupe, Niederl. Antillen, Südkorea, Reunion, Zypern (Türkisch)
 
-Z:31                               Französisch-Guayana
+Z:30                               Französisch-Guayana
 T:*/*=10.92(60)/1                  0-24h
 A:Französisch-Guayana
 
-Z:32                               Turkmenistan
+Z:31                               Turkmenistan
 T:*/*=11.40(60)/1                  0-24h
 A:Turkmenistan
 
-Z:33                               Malaysia
+Z:32                               Malaysia
 T:*/*=11.88(60)/1                  0-24h
 A:Malaysia
 
-Z:34                               Ägypten ...
+Z:33                               Ägypten ...
 T:*/*=12.60(60)/1                  0-24h
 A:Ägypten, Angola, Brasilien, Bermuda, Bhutan
 
-Z:35                               China ...
+Z:34                               China ...
 T:*/*=13.08(60)/1                  0-24h
 A:China, Venezuela
 
-Z:36                               Dominikanische Republik ...
+Z:35                               Dominikanische Republik ...
 T:*/*=13.80(60)/1                  0-24h
 A:Dominikanische Republik, Ecuador
 
-Z:37                               Macao ...
+Z:36                               Macao ...
 T:*/*=14.28(60)/1                  0-24h
 A:Macao, Philippinen, Taiwan
 
-Z:38                               Aruba ...
+Z:37                               Aruba ...
 T:*/*=14.40(60)/1                  0-24h
 A:Aruba, Bahamas, Bolivien, Ver. Arabische Emirate
 
-Z:39                               Jordanien
+Z:38                               Jordanien
 T:*/*=14.64(60)/1                  0-24h
 A:Jordanien
 
-Z:40                               Barbados ...
+Z:39                               Barbados ...
 T:*/*=15.00(60)/1                  0-24h
 A:Barbados, Belize, El Salvador, Ghana, Grönland, Mayotte
 
-Z:41                               Saudi Arabien
+Z:40                               Saudi Arabien
 T:*/*=15.24(60)/1                  0-24h
 A:Saudi Arabien
 
-Z:42                               Iran ...
+Z:41                               Iran ...
 T:*/*=15.48(60)/1                  0-24h
 A:Iran, Kuwait, Kirgistan, St. Vincent und Grenadinen
 
-Z:43                               Argentinien
+Z:42                               Argentinien
 T:*/*=15.60(60)/1                  0-24h
 A:Argentinien
 
-Z:44                               Liberia
+Z:43                               Liberia
 T:*/*=15.84(60)/1                  0-24h
 A:Liberia
 
-Z:45                               Burkina Faso Obervolta ...
+Z:44                               Burkina Faso Obervolta ...
 T:*/*=16.20(60)/1                  0-24h
 A:Burkina Faso Obervolta, Burundi, Trinidad und Tobago
 
-Z:46                               Libanon
+Z:45                               Libanon
 T:*/*=16.44(60)/1                  0-24h
 A:Libanon
 
-Z:47                               Diego Garcia ...
+Z:46                               Diego Garcia ...
 T:*/*=16.68(60)/1                  0-24h
 A:Diego Garcia, Gabun, Guinea, Peru, Panama, Swasiland, Syrien, Tansania
 
-Z:48                               Kasachstan ...
+Z:47                               Kasachstan ...
 T:*/*=17.28(60)/1                  0-24h
 A:Kasachstan
 
-Z:49                               Bahrain ...
+Z:48                               Bahrain ...
 T:*/*=17.40(60)/1                  0-24h
 A:Bahrain, Benin, Kaimaninseln
 
-Z:50                               Dominica ...
+Z:49                               Dominica ...
 T:*/*=17.88(60)/1                  0-24h
 A:Dominica, Kolumbien, Malawi, St. Pierre und Miquelon, Sudan
 
-Z:51                               Äquatorial-Guinea ...
+Z:50                               Äquatorial-Guinea ...
 T:*/*=18.00(60)/1                  0-24h
 A:Äquatorial-Guinea, Elfenbeinküste Cote de Ivoire, Französisch-Polynesien
 
-Z:52                               Fidschi ...
+Z:51                               Fidschi ...
 T:*/*=19.08(60)/1                  0-24h
 A:Fidschi, Guyana, Komoren, Kenia, Namibia, Nauru, Nepal, Nigeria
 A:Neukaledonien, Sao Tome und Principe, St. Helena, St. Kitts und Nevis
 A:St. Lucia, Simbabwe, West-Samoa
 
-Z:53                               Ascension ...
+Z:52                               Ascension ...
 T:*/*=19.20(60)/1                  0-24h
 A:Ascension, Britische Jungferninseln, Brunei
 
-Z:54                               Botsuana Botswana
+Z:53                               Botsuana Botswana
 T:*/*=19.56(60)/1                  0-24h
 A:Botsuana Botswana
 
-Z:55                               Äthiopien ...
+Z:54                               Äthiopien ...
 T:*/*=19.80(60)/1                  0-24h
 A:Äthiopien, Anguilla, Gambia, Grenada, Norfolkinseln, Sambia
 
-Z:56                               Cookinseln ...
+Z:55                               Cookinseln ...
 T:*/*=20.28(60)/1                  0-24h
 A:Cookinseln, Costa Rica, Dschibuti, Guam, Guatemala, Guinea-Bissau, Kiribati
 A:Cape Verde, Laos, Lesotho, Mikronesien, Mongolei, Montserrat, Mosambik
 A:Nicaragua, Oman, Papua-Neuguinea, Paraguay, Sri Lanka, Thailand, Tonga
 A:Uganda, Uruguay
 
-Z:57                               Honduras ...
+Z:56                               Honduras ...
 T:*/*=21.48(60)/1                  0-24h
 A:Honduras, Indien, Indonesien, Irak, Jamaika, Mauritius, Malediven
 A:Mauretanien, Niger, Pakistan, Palau /Belau, Ruanda, Somalia
 A:Amerikanisch-Samoa, Sierra Leone, Togo, Tuvalu, Vanuatu
 
-Z:58                               Antigua und Barbuda
+Z:57                               Antigua und Barbuda
 T:*/*=21.60(60)/1                  0-24h
 A:Antigua und Barbuda
 
-Z:59                               Eritrea
+Z:58                               Eritrea
 T:*/*=22.20(60)/1                  0-24h
 A:Eritrea
 
-Z:60                               Niue-Inseln ...
+Z:59                               Niue-Inseln ...
 T:*/*=22.68(60)/1                  0-24h
 A:Niue-Inseln, Jemen (Arab. Republik), Senegal, Seyschellen
 A:Wallis und Futuna, Zentralafrikanische Republik
 
-Z:61                               Afghanistan ...
+Z:60                               Afghanistan ...
 T:*/*=23.40(60)/1                  0-24h
 A:Afghanistan, Falklandinseln, Kuba, Madagaskar
 
-Z:62                               Haiti ...
+Z:61                               Haiti ...
 T:*/*=23.88(60)/1                  0-24h
 A:Haiti, Kambodscha, Kamerun, Kongo, Nordkorea, Mali, Marshallinseln
 A:Myanmar Burma, Pitcairn Inseln, Salomonen, Suriname, Tschad, Vietnam
 
-Z:63                               Wake Inseln
+Z:62                               Wake Inseln
 T:*/*=35.88(60)/1                  0-24h
 A:Wake Inseln
 

@@ -372,7 +372,7 @@ void rate_1001(void) {
     rprintf (gf[t], "C:GF:");
     sprintf (s, "%s (ATS %.3f pro Einheit)", Name[t], Tarif[t]);
     rprintf (s, "# Tarif:");
-    rprintf ("# Verzonung", "D:pta");
+    rprintf ("# Verzonung", "D:1001");
     for (z=0; z<COUNT(Zone); z++) {
       rprintf (Zone[z][0], "Z:%d", z);
       if (z==0) { /* Freephone */
@@ -1529,8 +1529,7 @@ void rate_1044_old(void) {
 void rate_1049(void) {
 
   char *Zone[][2] = {{ "Regionalzone", ""},
-		     { "Fernzone 1", "" },
-		     { "Fernzone 2", "Österreich" },
+		     { "Österreich", "Österreich" },
 		     { "Mobilfunk", "+43663,+43664,+43676,+43699" },
 /* 3.00 */	{"Deutschland", "Deutschland"},
 /* 3.60 */	{"Italien ...", "Italien, Liechtenstein, Schweiz"},
@@ -1594,7 +1593,6 @@ void rate_1049(void) {
 };
 
   double Tarif[] = { 0.96, /* W,N,B 50 km */
-		     1.74,
 		     1.74,
 		     3.60,
 3.00,  /* Deutschland ... */
@@ -1662,7 +1660,7 @@ void rate_1049(void) {
   
   rprintf ("Pegasus Telekom", "P:49");
   rprintf ("01.09.1999","C:TarifChanged:");
-  rprintf ("# Verzonung", "D:pta");
+  rprintf ("# Verzonung", "D:1001");
   rprintf ("Pegasus Telekom Netzwerkdienste AG","C:Name:");
   rprintf ("Serrravag. 10-12, A-1140 Wien","C:Address:");
   rprintf ("http://www.ptag.net","C:Homepage:"); 

@@ -94,14 +94,18 @@ test:
 #	
 zonefiles:	AT DE NL
 
-AT: AT-pta AT-1002 AT-1007 AT-1012 AT-1024 AT-1066 AT-1004
-.PHONY: AT-pta AT-1002 AT-1007 AT-1012 AT-1024 AT-1066 AT-1004
+AT: AT-pta AT-1002 AT-1007 AT-1012 AT-1024 AT-1066 AT-1004 AT-1001
+.PHONY: AT-pta AT-1002 AT-1007 AT-1012 AT-1024 AT-1066 AT-1004 AT-1001
 
 AT-pta:
 	$(BZIP2) -d at/pta/zred.pta.bz2
 	./$(PROGRAM) -d ../../zone-at-pta$(DBEXT) -r at/pta/zred.pta -c at/code -a43 -v
 	$(BZIP2) -9 at/pta/zred.pta
 
+AT-1001:	
+	$(BZIP2) -d at/1001/zred.bz2
+	./$(PROGRAM) -d ../../zone-at-1001$(DBEXT) -r at/1001/zred -c at/code -v
+	$(BZIP2) -9 at/1001/zred
 AT-1002:	
 	$(BZIP2) -d at/uta/zred.uta.bz2
 	./$(PROGRAM) -d ../../zone-at-uta$(DBEXT) -r at/uta/zred.uta  -c at/code -v
