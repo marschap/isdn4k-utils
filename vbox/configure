@@ -1387,7 +1387,7 @@ if eval "test \"`echo '$''{'ac_cv_lib_$ac_lib_var'+set}'`\" = set"; then
 else
   ac_save_LIBS="$LIBS"
 LIBS="-lncurses  $LIBS"
-  cat > conftest.$ac_ext <<EOF
+cat > conftest.$ac_ext <<EOF
 #line 1392 "configure"
 #include "confdefs.h"
 /* Override any gcc2 internal prototype to avoid an error.  */
@@ -1430,7 +1430,7 @@ if eval "test \"`echo '$''{'ac_cv_lib_$ac_lib_var'+set}'`\" = set"; then
 else
   ac_save_LIBS="$LIBS"
 LIBS="-lpanel -lncurses
-          $LIBS"
+                $LIBS"
 cat > conftest.$ac_ext <<EOF
 #line 1436 "configure"
 #include "confdefs.h"
@@ -1509,13 +1509,13 @@ if eval "test \"`echo '$ac_cv_lib_'$ac_lib_var`\" = yes"; then
 #define HAVE_RESIZETERM 1
 EOF
 
-         
+
 else
   echo "$ac_t""no" 1>&6
 fi
 
       fi
-            
+
                            
       ac_safe=`echo "ncurses.h" | sed 'y%./+-%__p_%'`
 echo $ac_n "checking for ncurses.h""... $ac_c" 1>&6
@@ -1550,7 +1550,7 @@ else
   echo "$ac_t""no" 1>&6
 fi
 
-         
+
       if (test "${HAVE_NCURSES_INCL}" = "y")
       then
          ac_safe=`echo "panel.h" | sed 'y%./+-%__p_%'`
@@ -1585,11 +1585,11 @@ if eval "test \"`echo '$ac_cv_header_'$ac_safe`\" = yes"; then
 else
   echo "$ac_t""no" 1>&6
 HAVE_NCURSES_INCL="n"
-         
+      
 fi
 
       fi
-      
+
                            
       if (test "${HAVE_NCURSES_INCL}" = "n")
       then
@@ -1599,7 +1599,7 @@ echo "configure:1598: checking for ncurses headers in some other places" >&5
          for I in /usr/local/include /usr/local/include/ncurses /usr/include /usr/include/ncurses
          do
             if (test -e "${I}/ncurses.h")
-            then
+         then
                if (test -e "${I}/panel.h")
                then
                   echo "$ac_t"""${I}"" 1>&6
@@ -1608,20 +1608,20 @@ echo "configure:1598: checking for ncurses headers in some other places" >&5
                   HAVE_NCURSES_INCL="y"
 
                   break;
-               fi
-fi
+            fi
+            fi
          done
 
          if (test "${HAVE_NCURSES_INCL}" = "n")
-         then
+               then
             echo "$ac_t"""not here"" 1>&6;
          fi
-      fi
+               fi
 
       if (test "${HAVE_NCURSES_LIBS}" = "y")
-      then
+               then
          if (test "${HAVE_NCURSES_INCL}" = "y")
-         then
+                  then
             HAVE_NCURSES_PACK="y"
          fi
       fi
@@ -1654,6 +1654,8 @@ fi
 if test "${with_tcllib+set}" = set; then
   withval="$with_tcllib"
   gnd_use_tcl_lib="${withval}"
+else
+  gnd_use_tcl_lib="`eval echo ${VBOX_TCL:-""}`"
       
 fi
 
@@ -1687,7 +1689,7 @@ fi
       fi
 
       echo $ac_n "checking for cos in -lm""... $ac_c" 1>&6
-echo "configure:1691: checking for cos in -lm" >&5
+echo "configure:1693: checking for cos in -lm" >&5
 ac_lib_var=`echo m'_'cos | sed 'y%./+-%__p_%'`
 if eval "test \"`echo '$''{'ac_cv_lib_$ac_lib_var'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
@@ -1695,7 +1697,7 @@ else
   ac_save_LIBS="$LIBS"
 LIBS="-lm  $LIBS"
 cat > conftest.$ac_ext <<EOF
-#line 1699 "configure"
+#line 1701 "configure"
 #include "confdefs.h"
 /* Override any gcc2 internal prototype to avoid an error.  */
 /* We use char because int might match the return type of a gcc2
@@ -1706,7 +1708,7 @@ int main() {
 cos()
 ; return 0; }
 EOF
-if { (eval echo configure:1710: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest; then
+if { (eval echo configure:1712: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest; then
   rm -rf conftest*
   eval "ac_cv_lib_$ac_lib_var=yes"
 else
@@ -1722,7 +1724,7 @@ fi
 if eval "test \"`echo '$ac_cv_lib_'$ac_lib_var`\" = yes"; then
   echo "$ac_t""yes" 1>&6
   echo $ac_n "checking for dlerror in -ldl""... $ac_c" 1>&6
-echo "configure:1726: checking for dlerror in -ldl" >&5
+echo "configure:1728: checking for dlerror in -ldl" >&5
 ac_lib_var=`echo dl'_'dlerror | sed 'y%./+-%__p_%'`
 if eval "test \"`echo '$''{'ac_cv_lib_$ac_lib_var'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
@@ -1730,7 +1732,7 @@ else
   ac_save_LIBS="$LIBS"
 LIBS="-ldl  $LIBS"
 cat > conftest.$ac_ext <<EOF
-#line 1734 "configure"
+#line 1736 "configure"
 #include "confdefs.h"
 /* Override any gcc2 internal prototype to avoid an error.  */
 /* We use char because int might match the return type of a gcc2
@@ -1741,7 +1743,7 @@ int main() {
 dlerror()
 ; return 0; }
 EOF
-if { (eval echo configure:1745: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest; then
+if { (eval echo configure:1747: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest; then
   rm -rf conftest*
   eval "ac_cv_lib_$ac_lib_var=yes"
 else
@@ -1757,7 +1759,7 @@ fi
 if eval "test \"`echo '$ac_cv_lib_'$ac_lib_var`\" = yes"; then
   echo "$ac_t""yes" 1>&6
   echo $ac_n "checking for Tcl_CreateInterp in -l${gnd_1st_tcl_lib_test}""... $ac_c" 1>&6
-echo "configure:1761: checking for Tcl_CreateInterp in -l${gnd_1st_tcl_lib_test}" >&5
+echo "configure:1763: checking for Tcl_CreateInterp in -l${gnd_1st_tcl_lib_test}" >&5
 ac_lib_var=`echo ${gnd_1st_tcl_lib_test}'_'Tcl_CreateInterp | sed 'y%./+-%__p_%'`
 if eval "test \"`echo '$''{'ac_cv_lib_$ac_lib_var'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
@@ -1766,7 +1768,7 @@ else
 LIBS="-l${gnd_1st_tcl_lib_test} ${gnd_tcl_lib_dir} -lm -ldl
              $LIBS"
 cat > conftest.$ac_ext <<EOF
-#line 1770 "configure"
+#line 1772 "configure"
 #include "confdefs.h"
 /* Override any gcc2 internal prototype to avoid an error.  */
 /* We use char because int might match the return type of a gcc2
@@ -1777,7 +1779,7 @@ int main() {
 Tcl_CreateInterp()
 ; return 0; }
 EOF
-if { (eval echo configure:1781: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest; then
+if { (eval echo configure:1783: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest; then
   rm -rf conftest*
   eval "ac_cv_lib_$ac_lib_var=yes"
 else
@@ -1796,7 +1798,7 @@ if eval "test \"`echo '$ac_cv_lib_'$ac_lib_var`\" = yes"; then
 else
   echo "$ac_t""no" 1>&6
 echo $ac_n "checking for Tcl_CreateInterp in -l${gnd_2nd_tcl_lib_test}""... $ac_c" 1>&6
-echo "configure:1800: checking for Tcl_CreateInterp in -l${gnd_2nd_tcl_lib_test}" >&5
+echo "configure:1802: checking for Tcl_CreateInterp in -l${gnd_2nd_tcl_lib_test}" >&5
 ac_lib_var=`echo ${gnd_2nd_tcl_lib_test}'_'Tcl_CreateInterp | sed 'y%./+-%__p_%'`
 if eval "test \"`echo '$''{'ac_cv_lib_$ac_lib_var'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
@@ -1805,7 +1807,7 @@ else
 LIBS="-l${gnd_2nd_tcl_lib_test} ${gnd_tcl_lib_dir} -lm -ldl
                 $LIBS"
 cat > conftest.$ac_ext <<EOF
-#line 1809 "configure"
+#line 1811 "configure"
 #include "confdefs.h"
 /* Override any gcc2 internal prototype to avoid an error.  */
 /* We use char because int might match the return type of a gcc2
@@ -1816,7 +1818,7 @@ int main() {
 Tcl_CreateInterp()
 ; return 0; }
 EOF
-if { (eval echo configure:1820: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest; then
+if { (eval echo configure:1822: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest; then
   rm -rf conftest*
   eval "ac_cv_lib_$ac_lib_var=yes"
 else
@@ -1835,7 +1837,7 @@ if eval "test \"`echo '$ac_cv_lib_'$ac_lib_var`\" = yes"; then
 else
   echo "$ac_t""no" 1>&6
 echo $ac_n "checking for Tcl_CreateInterp in -l${gnd_3rd_tcl_lib_test}""... $ac_c" 1>&6
-echo "configure:1839: checking for Tcl_CreateInterp in -l${gnd_3rd_tcl_lib_test}" >&5
+echo "configure:1841: checking for Tcl_CreateInterp in -l${gnd_3rd_tcl_lib_test}" >&5
 ac_lib_var=`echo ${gnd_3rd_tcl_lib_test}'_'Tcl_CreateInterp | sed 'y%./+-%__p_%'`
 if eval "test \"`echo '$''{'ac_cv_lib_$ac_lib_var'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
@@ -1844,7 +1846,7 @@ else
 LIBS="-l${gnd_3rd_tcl_lib_test} ${gnd_tcl_lib_dir} -lm -ldl
                    $LIBS"
 cat > conftest.$ac_ext <<EOF
-#line 1848 "configure"
+#line 1850 "configure"
 #include "confdefs.h"
 /* Override any gcc2 internal prototype to avoid an error.  */
 /* We use char because int might match the return type of a gcc2
@@ -1855,7 +1857,7 @@ int main() {
 Tcl_CreateInterp()
 ; return 0; }
 EOF
-if { (eval echo configure:1859: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest; then
+if { (eval echo configure:1861: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest; then
   rm -rf conftest*
   eval "ac_cv_lib_$ac_lib_var=yes"
 else
@@ -1896,17 +1898,17 @@ fi
                            
       ac_safe=`echo "tcl.h" | sed 'y%./+-%__p_%'`
 echo $ac_n "checking for tcl.h""... $ac_c" 1>&6
-echo "configure:1900: checking for tcl.h" >&5
+echo "configure:1902: checking for tcl.h" >&5
 if eval "test \"`echo '$''{'ac_cv_header_$ac_safe'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
   cat > conftest.$ac_ext <<EOF
-#line 1905 "configure"
+#line 1907 "configure"
 #include "confdefs.h"
 #include <tcl.h>
 EOF
 ac_try="$ac_cpp conftest.$ac_ext >/dev/null 2>conftest.out"
-{ (eval echo configure:1910: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }
+{ (eval echo configure:1912: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }
 ac_err=`grep -v '^ *+' conftest.out`
 if test -z "$ac_err"; then
   rm -rf conftest*
@@ -1933,10 +1935,10 @@ fi
          if (test "${gnd_use_tcl_dir}" != "")
          then
             echo $ac_n "checking "for tcl header in ${gnd_use_tcl_dir}/include"""... $ac_c" 1>&6
-echo "configure:1937: checking "for tcl header in ${gnd_use_tcl_dir}/include"" >&5
+echo "configure:1939: checking "for tcl header in ${gnd_use_tcl_dir}/include"" >&5
 
             if (test -e "${gnd_use_tcl_dir}/include/tcl.h")
-      then
+            then
                echo "$ac_t"""yes"" 1>&6
 
                HAVE_TCL_INCL="y"
@@ -1952,7 +1954,7 @@ echo "configure:1937: checking "for tcl header in ${gnd_use_tcl_dir}/include"" >
          if (test "${HAVE_TCL_INCL}" = "y")
          then
             HAVE_TCL_PACK="y"
-      fi
+         fi
       fi
 
       if (test "${HAVE_TCL_PACK}" = "n")
@@ -1964,7 +1966,7 @@ echo "configure:1937: checking "for tcl header in ${gnd_use_tcl_dir}/include"" >
          { echo "configure: error: "stop"" 1>&2; exit 1; }
       fi
 
-
+      
       
       
    
@@ -1973,7 +1975,7 @@ echo "configure:1937: checking "for tcl header in ${gnd_use_tcl_dir}/include"" >
 
          
 echo $ac_n "checking for prefix""... $ac_c" 1>&6
-echo "configure:1977: checking for prefix" >&5
+echo "configure:1979: checking for prefix" >&5
 
 if (test "${prefix}" = "NONE")
 then
@@ -1988,9 +1990,9 @@ echo "$ac_t""${VBOX_PREFIX}" 1>&6
 
          
 echo $ac_n "checking where the messages are stored""... $ac_c" 1>&6
-echo "configure:1992: checking where the messages are stored" >&5
+echo "configure:1994: checking where the messages are stored" >&5
 
-VBOX_SPOOLDIR="/var/spool/vbox"
+VBOX_SPOOLDIR="`eval echo ${VBOX_SPOOLDIR:-"/var/spool/vbox"}`"
 
 # Check whether --with-spooldir or --without-spooldir was given.
 if test "${with_spooldir+set}" = set; then
@@ -2010,9 +2012,9 @@ EOF
 
          
 echo $ac_n "checking where the logs are stored""... $ac_c" 1>&6
-echo "configure:2014: checking where the logs are stored" >&5
+echo "configure:2016: checking where the logs are stored" >&5
 
-VBOX_LOGDIR="/var/log/vbox"
+VBOX_LOGDIR="`eval echo ${VBOX_LOGDIR:-"/var/log/vbox"}`"
 
 # Check whether --with-logdir or --without-logdir was given.
 if test "${with_logdir+set}" = set; then
@@ -2032,9 +2034,9 @@ EOF
 
          
 echo $ac_n "checking where the pids are stored""... $ac_c" 1>&6
-echo "configure:2036: checking where the pids are stored" >&5
+echo "configure:2038: checking where the pids are stored" >&5
 
-VBOX_PIDDIR="/var/run"
+VBOX_PIDDIR="`eval echo ${VBOX_PIDDIR:-"/var/run"}`"
 
 # Check whether --with-piddir or --without-piddir was given.
 if test "${with_piddir+set}" = set; then
@@ -2054,9 +2056,9 @@ EOF
 
          
 echo $ac_n "checking where the locks are made""... $ac_c" 1>&6
-echo "configure:2058: checking where the locks are made" >&5
+echo "configure:2060: checking where the locks are made" >&5
 
-VBOX_LCKDIR="/var/lock"
+VBOX_LCKDIR="`eval echo ${VBOX_LOCKDIR:-"/var/lock"}`"
 
 # Check whether --with-lockdir or --without-lockdir was given.
 if test "${with_lockdir+set}" = set; then
@@ -2076,14 +2078,9 @@ EOF
 
          
 echo $ac_n "checking where the isdn configuration is stored""... $ac_c" 1>&6
-echo "configure:2080: checking where the isdn configuration is stored" >&5
+echo "configure:2082: checking where the isdn configuration is stored" >&5
 
-if (test "$I4LCONFDIR" = "")
-then
-   ISDN_GLOBAL_CONFIG="/etc/isdn"
-else
-   ISDN_GLOBAL_CONFIG="${I4LCONFDIR}"
-fi
+ISDN_GLOBAL_CONFIG="`eval echo ${CONFIG_I4lCONFDIR:-"/etc/isdn"}`"
 
 # Check whether --with-confdir or --without-confdir was given.
 if test "${with_confdir+set}" = set; then

@@ -16,7 +16,8 @@ AC_DEFUN(GND_PACKAGE_TCL,
 
       AC_ARG_WITH(tcllib,
          [  --with-tcllib=LIB       use tcl library LIB to link [tcl]],
-         gnd_use_tcl_lib="${withval}"
+         gnd_use_tcl_lib="${withval}",
+         gnd_use_tcl_lib="`eval echo ${VBOX_TCL:-""}`"
       )
 
       AC_ARG_WITH(tcldir,

@@ -100,7 +100,7 @@ AC_SUBST(VBOX_PREFIX)
 
 AC_MSG_CHECKING(where the messages are stored)
 
-VBOX_SPOOLDIR="/var/spool/vbox"
+VBOX_SPOOLDIR="`eval echo ${VBOX_SPOOLDIR:-"/var/spool/vbox"}`"
 
 AC_ARG_WITH(spooldir,
 	[  --with-spooldir=DIR     vbox's stores messages in DIR [/var/spool/vbox]],
@@ -118,7 +118,7 @@ AC_SUBST(VBOX_SPOOLDIR)
 
 AC_MSG_CHECKING(where the logs are stored)
 
-VBOX_LOGDIR="/var/log/vbox"
+VBOX_LOGDIR="`eval echo ${VBOX_LOGDIR:-"/var/log/vbox"}`"
 
 AC_ARG_WITH(logdir,
 	[  --with-logdir=DIR       logs are stored in DIR [/var/log/vbox]],
@@ -136,7 +136,7 @@ AC_SUBST(VBOX_LOGDIR)
 
 AC_MSG_CHECKING(where the pids are stored)
 
-VBOX_PIDDIR="/var/run"
+VBOX_PIDDIR="`eval echo ${VBOX_PIDDIR:-"/var/run"}`"
 
 AC_ARG_WITH(piddir,
 	[  --with-piddir=DIR       pids are stored in DIR [/var/run]],
@@ -154,7 +154,7 @@ AC_SUBST(VBOX_PIDDIR)
 
 AC_MSG_CHECKING(where the locks are made)
 
-VBOX_LCKDIR="/var/lock"
+VBOX_LCKDIR="`eval echo ${VBOX_LOCKDIR:-"/var/lock"}`"
 
 AC_ARG_WITH(lockdir,
 	[  --with-lockdir=DIR      locks are made in DIR [/var/lock]],
@@ -172,12 +172,7 @@ AC_SUBST(VBOX_LCKDIR)
 
 AC_MSG_CHECKING(where the isdn configuration is stored)
 
-if (test "$I4LCONFDIR" = "")
-then
-   ISDN_GLOBAL_CONFIG="/etc/isdn"
-else
-   ISDN_GLOBAL_CONFIG="${I4LCONFDIR}"
-fi
+ISDN_GLOBAL_CONFIG="`eval echo ${CONFIG_I4lCONFDIR:-"/etc/isdn"}`"
 
 AC_ARG_WITH(confdir,
 	[  --with-i4lconfdir=DIR   global isdn configuration directory [\$I4LCONFDIR] ],
