@@ -1,4 +1,4 @@
-/* $Id: functions.c,v 1.24 1999/06/15 20:04:01 akool Exp $
+/* $Id: functions.c,v 1.25 1999/09/13 09:09:43 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,12 @@
  * along with this program; if not, write to the Free Software
  *
  * $Log: functions.c,v $
+ * Revision 1.25  1999/09/13 09:09:43  akool
+ * isdnlog-3.51
+ *   - changed getProvider() to not return NULL on unknown providers
+ *     many thanks to Matthias Eder <mateder@netway.at>
+ *   - corrected zone-processing when doing a internal -> world call
+ *
  * Revision 1.24  1999/06/15 20:04:01  akool
  * isdnlog Version 3.33
  *   - big step in using the new zone files
@@ -423,7 +429,6 @@ void logger(int chan)
   mysql_db_set.currency_factor = currency_factor;
   strcpy(mysql_db_set.currency, currency);
   mysql_db_set.pay = call[chan].pay;
-  /* Fixme: getProvider() should be changed to call[chan].Rate.Provider */
   strcpy(mysql_db_set.provider, getProvider(call[chan].provider));
   mysql_dbAdd(&mysql_db_set);
 #endif

@@ -1,4 +1,4 @@
-/* $Id: isdnrep.c,v 1.78 1999/09/11 22:28:25 akool Exp $
+/* $Id: isdnrep.c,v 1.79 1999/09/13 09:09:43 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -24,6 +24,12 @@
  *
  *
  * $Log: isdnrep.c,v $
+ * Revision 1.79  1999/09/13 09:09:43  akool
+ * isdnlog-3.51
+ *   - changed getProvider() to not return NULL on unknown providers
+ *     many thanks to Matthias Eder <mateder@netway.at>
+ *   - corrected zone-processing when doing a internal -> world call
+ *
  * Revision 1.78  1999/09/11 22:28:25  akool
  * isdnlog-3.50
  *   added 3. parameter to "-h" Option: Controls CHARGEHUP for providers like
@@ -1287,14 +1293,14 @@ static int print_bottom(double unit, char *start, char *stop)
 
 
                     switch (i) {
-		      case  0 : p = "FreeCall";            break;
-		      case  1 : p = "Ortszone";		   break;
+		      case  0 : p = "Internal-/FreeCall";  break;
+		      case  1 : p = "Ortszone";	           break;
 		      case  2 : p = "CityCall (< 20 km)";  break;
 		      case  3 : p = "RegioCall (< 50 km)"; break;
-		      case  4 : p = "Fernzone";		   break;
+		      case  4 : p = "GermanCall";     	   break;
                     } /* case */
 
-                    sprintf(s, "Zone %1d:%s", i, p);
+                    sprintf(s, "%1d:%s", i, p);
 
                     print_line3(NULL, s, zones_usage[i],
                       double2clock(zones_dur[i]),
@@ -1329,10 +1335,7 @@ static int print_bottom(double unit, char *start, char *stop)
                     else
                       *sx = 0;
 
-                    if ((p = getProvider(i)) == NULL)
-                      p = "UNKNOWN";
-
-		    print_line3(NULL, "Provider", string, p,
+		    print_line3(NULL, "Provider", string, getProvider(i),
 		      usage_provider[i],
 		      double2clock(duration_provider[i]),
                       print_currency(pay_provider[i], 0), sx);
@@ -1799,22 +1802,10 @@ static int print_line(int status, one_call *cur_call, int computed, char *overla
 				          	if (!numbers)
 				          	{
                                                         register char *p;
-							auto	 char  s[BUFSIZ];
 
 
-                                                        if ((cur_call->dir == DIALOUT) && (cur_call->provider > 0)) {
+                                                        if ((cur_call->dir == DIALOUT) && (cur_call->provider > 0))
                                                           p = getProvider(cur_call->provider);
-
-                                                          if (p == NULL) {
-      		   					    if (cur_call->provider < 100)
-      	       	     					      sprintf(s, "%s%02d", vbn, cur_call->provider);
-      		   					    else
-		     					      sprintf(s, "%s%03d", vbn, cur_call->provider - 100);
-
-      		   					    p = s;
-
-                                                          } /* if */
-                                                        }
                                                         else
                                                           p = "";
 

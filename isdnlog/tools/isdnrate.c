@@ -1,4 +1,4 @@
-/* $Id: isdnrate.c,v 1.17 1999/09/09 11:21:05 akool Exp $
+/* $Id: isdnrate.c,v 1.18 1999/09/13 09:09:44 akool Exp $
 
  * ISDN accounting for isdn4linux. (rate evaluation)
  *
@@ -19,6 +19,12 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnrate.c,v $
+ * Revision 1.18  1999/09/13 09:09:44  akool
+ * isdnlog-3.51
+ *   - changed getProvider() to not return NULL on unknown providers
+ *     many thanks to Matthias Eder <mateder@netway.at>
+ *   - corrected zone-processing when doing a internal -> world call
+ *
  * Revision 1.17  1999/09/09 11:21:05  akool
  * isdnlog-3.49
  *
@@ -202,7 +208,7 @@ static void get_day(char d)
 
   tm = localtime(&start);	/* now */
   switch (d) {
-  case 'W':			/* we need a normal weekday, so we take 
+  case 'W':			/* we need a normal weekday, so we take
 
 				   today and inc. day if today is
 				   holiday */
@@ -353,7 +359,7 @@ static int opts(int argc, char *argv[])
       break;
     case 'S':
       sortby = *optarg;
-      break;  
+      break;
     case 'T':
       table++;
       break;
@@ -371,7 +377,7 @@ static int opts(int argc, char *argv[])
 	explain++;
 	if (optarg && isdigit(*optarg) && (x = atoi(optarg)))
 	  explain = x;
-	else if(optarg) { 
+	else if(optarg) {
 	  comment = strdup(optarg);
           explain = 8;
 	}
@@ -507,7 +513,7 @@ static void splittime()
 
 static char *Provider(int prefix)
 {
-  register char *p;
+  register char *p, *p1;
   register int l;
   static char s[BUFSIZ];
   char    prov[TN_MAX_PROVIDER_LEN];
@@ -519,7 +525,11 @@ static char *Provider(int prefix)
 
   l = max(WIDTH, strlen(p)) - strlen(p);
 
-  sprintf(s, "%s:%s%*s", prefix2provider(prefix, prov, &destnum), p, l, "");
+  p1 = prefix2provider(prefix, prov, &destnum);
+
+  l += (6 - strlen(p1));
+
+  sprintf(s, "%s:%s%*s", p1, p, l, "");
 
   return (s);
 }				/* Provider */
@@ -539,7 +549,7 @@ static char *takt_str(RATE * Rate)
   return s;
 }
 
-static inline char * P_EMPTY(char *s) 
+static inline char * P_EMPTY(char *s)
 {
  char *p = s;
  return p ? p : "";
@@ -584,10 +594,12 @@ static int compute(char *num)
   }
   for (i = low; i <= high; i++) {
     int     found, p;
+    char   *px;
 
     if (ignore[i])
       continue;
-    if (!getProvider(i))
+    px = getProvider(i);
+    if (px[strlen(px) - 1] == '?') /* UNKNOWN Provider */
       continue;
     found = 0;
     if (n_providers) {
@@ -1098,7 +1110,7 @@ static void do_reinit(void)
   init();
   reinit=0;
 }
-      
+
 
 static void setup_daemon()
 {
@@ -1128,7 +1140,7 @@ static void setup_daemon()
     else if (pid > 0)
       exit(EXIT_SUCCESS);
   }
-  if ((sock = socket(PF_UNIX, SOCK_STREAM, 0)) < 0) 
+  if ((sock = socket(PF_UNIX, SOCK_STREAM, 0)) < 0)
     err("Can't open socket");
   sa.sun_family = AF_UNIX;
   strcpy(sa.sun_path, sock_name);
@@ -1216,7 +1228,7 @@ static int connect_2_daemon(int argc, char *argv[])
     case 'C':
       break;
     case 'D':
-      if (optarg && atoi(optarg) == 3) ;	/* goon, kill a running 
+      if (optarg && atoi(optarg) == 3) ;	/* goon, kill a running
 
 						   daemon */
       else

@@ -1,4 +1,4 @@
-/* $Id: tools.c,v 1.34 1999/08/29 10:29:15 akool Exp $
+/* $Id: tools.c,v 1.35 1999/09/13 09:09:44 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -19,6 +19,12 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools.c,v $
+ * Revision 1.35  1999/09/13 09:09:44  akool
+ * isdnlog-3.51
+ *   - changed getProvider() to not return NULL on unknown providers
+ *     many thanks to Matthias Eder <mateder@netway.at>
+ *   - corrected zone-processing when doing a internal -> world call
+ *
  * Revision 1.34  1999/08/29 10:29:15  akool
  * isdnlog-3.48
  *   cosmetics
@@ -1113,7 +1119,7 @@ go:   	         if (!ndigit)
                  break;
 
       case 'P' : s = sx;
-      	         if (call[chan].provider != -1)
+      	         if (call[chan].provider != UNKNOWN)
       	       	   sprintf(sx, " via %s", getProvider(call[chan].provider));
       		 else
                    *sx = 0;

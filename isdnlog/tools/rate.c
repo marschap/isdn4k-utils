@@ -1,4 +1,4 @@
-/* $Id: rate.c,v 1.42 1999/09/09 11:21:05 akool Exp $
+/* $Id: rate.c,v 1.43 1999/09/13 09:09:44 akool Exp $
  *
  * Tarifdatenbank
  *
@@ -19,6 +19,12 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rate.c,v $
+ * Revision 1.43  1999/09/13 09:09:44  akool
+ * isdnlog-3.51
+ *   - changed getProvider() to not return NULL on unknown providers
+ *     many thanks to Matthias Eder <mateder@netway.at>
+ *   - corrected zone-processing when doing a internal -> world call
+ *
  * Revision 1.42  1999/09/09 11:21:05  akool
  * isdnlog-3.49
  *
@@ -283,7 +289,7 @@
  *   initialisiert die Tarifdatenbank
  *
  * char* getProvider (int prefix)
- *   liefert den Namen des Providers oder NULL wenn unbekannt
+ *   liefert den Namen des Providers oder dessen Prefix wenn unbekannt
  *
  * char* getComment(int prefix, char *key)
  *   liefert einen C:-Eintrag
@@ -1200,8 +1206,16 @@ int initRate(char *conf, char *dat, char *dom, char **msg)
 
 char *getProvider (int prefix)
 {
+  static char s[BUFSIZ];
+
+
   if (prefix<0 || prefix>=nProvider || !Provider[prefix].used) {
-    return NULL;
+    if (prefix < 100)
+      sprintf(s, "%s%02d ???", vbn, prefix);
+    else
+      sprintf(s, "%s%03d ???", vbn, prefix - 100);
+
+    return(s);
   }
   return Provider[prefix].Name;
 }

@@ -1,4 +1,4 @@
-/* $Id: processor.c,v 1.82 1999/09/11 22:28:24 akool Exp $
+/* $Id: processor.c,v 1.83 1999/09/13 09:09:43 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,12 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.83  1999/09/13 09:09:43  akool
+ * isdnlog-3.51
+ *   - changed getProvider() to not return NULL on unknown providers
+ *     many thanks to Matthias Eder <mateder@netway.at>
+ *   - corrected zone-processing when doing a internal -> world call
+ *
  * Revision 1.82  1999/09/11 22:28:24  akool
  * isdnlog-3.50
  *   added 3. parameter to "-h" Option: Controls CHARGEHUP for providers like
@@ -3647,9 +3653,9 @@ static void prepareRate(int chan, char **msg, char **tip, int viarep)
   call[chan].Rate.prefix = call[chan].provider;
 
   if (call[chan].intern[CALLING]) {
-    call[chan].Rate.src[0] = "";
-    call[chan].Rate.src[1] = "";
-    call[chan].Rate.src[2] = mynum;
+    call[chan].Rate.src[0] = mycountry;
+    call[chan].Rate.src[1] = myarea;
+    call[chan].Rate.src[2] = "";
   }
   else {
     call[chan].Rate.src[0] = call[chan].areacode[CALLING];
