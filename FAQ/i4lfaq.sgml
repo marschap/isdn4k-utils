@@ -4,7 +4,7 @@
 
 <title>FAQ for isdn4linux
 <author>Matthias Hessler (<tt><htmlurl url="mailto:hessler@isdn4linux.de" name="hessler@isdn4linux.de"></tt>)
-<date>v2.0.65, 6. December 2001
+<date>v2.0.66, 25. May 2002
 <abstract>
 If you are reading this FAQ online, you may consider downloading the whole
 thing, and reading it offline (much cheaper). To download the latest
@@ -12,7 +12,7 @@ version of this FAQ in TXT/HTML/SGML format, go to the homepage of this FAQ:
 <url url="http://www.mhessler.de/i4lfaq/">.
 
 A German translation of the FAQ is available at:
-<url url="http://www.wolf-b.de/i4l/i4lfaq-de.html">.
+<url url="http://www.wolf-b.de">.
 
 This FAQ answers questions that were frequently asked in the newsgroup
 de.alt.comm.isdn4linux. It contains questions any user should
@@ -55,7 +55,7 @@ or:
 <tt><url url="http://www.isdn4linux.de/faq/"></tt>.
 
 This FAQ is protected by the GNU General Public License (GPL) Version 2;
-(C) 1999 Matthias Hessler (for version 2.0)
+(C) 1999-2002 Matthias Hessler (for version 2.0)
 Distribution under the terms of the GPL is welcome. However,
 we offer NO GUARANTEES for the information herein. Please read the GNU
 General Public License for further details. A printed version is available
@@ -299,6 +299,10 @@ its status have a look at:
 binary CAPI 2.0 driver which supports faxing. However, the setup is rather
 complicated. Get a start on:
 <url url="http://www.avm.de/ftp/cardware/fritzcrd/linux/index.htm">.
+Here is a German website which has some nice installation instructions:
+<tt><url url="http://ixi.thepenguin.de"></tt> or
+<tt><url url="http://capi4linux.thepenguin.de"></tt> or
+<tt><url url="http://www.thepenguin.de"></tt>
 Please also have a look on the mailing list for tips how to do it,
 and what the consequences/disadvantages are.
 <item><bf>For the active card AVM B1: Yes</bf> (its firmware has implemented
@@ -496,6 +500,10 @@ have to download and manually install the binary drivers for this from
 AVMs ftp server. See the following web site for a nice howto:
 <url url="http://www.topf-sicret.de/help/capi20.html">. There was also
 lots of stuff written in the mailing list on this.
+Here is a German website which has some nice installation instructions:
+<tt><url url="http://ixi.thepenguin.de"></tt> or
+<tt><url url="http://capi4linux.thepenguin.de"></tt> or
+<tt><url url="http://www.thepenguin.de"></tt>
 </itemize>
 
 This interface follows the official CAPI 2.0 standard that was established
@@ -805,7 +813,7 @@ Right now there is a driver for all passive card with certain Siemens
 chipsets (HiSax driver). Have a look at the <tt/README.HiSax/ that comes with
 the driver for the most up to date information on supported cards and which
 parameter to pass to Hisax.
-Here the status from 4th September 1999 (constantly improving):
+Here the status from 1st February 2002 (constantly improving):
 <itemize>
 <item>Teles 8.0/16.0/16.3 and compatible ones (like: Dr. Neuhaus Niccy
 1016, Creatix 16/S0)
@@ -820,6 +828,7 @@ Here the status from 4th September 1999 (constantly improving):
 <item>AVM Fritz PCMCIA
 <item>AVM Fritz PnP
 <item>AVM Fritz PCI (Teledat 150 PCI)
+<item>AVM Fritz PCI v2
 <item>ELSA Microlink PCC-16, PCF, PCF-Pro, PCC-8
 <item>ELSA Quickstep 1000
 <item>ELSA Quickstep 1000PCI (new name: ELSA Microlink PCI)
@@ -828,6 +837,7 @@ Here the status from 4th September 1999 (constantly improving):
 <item>ELSA PCMCIA
 <item>ITK ix1-micro Rev.2 (also: ITK colombus card)
 <item>Eicon DIVA 2.0 ISA and PCI (S0 and U interface, no PRO version)
+<item>Eicon.Diehl Diva 2.01 ISA and PCI
 <item>Eicon DIVA Piccola
 <item>ASUSCOM NETWORK INC. ISDNLink 128K PC adapter (order code I-IN100-ST-D)
 <item>Dynalink IS64PH (OEM version of ASUSCOM NETWORK INC. ISDNLink 128K
@@ -841,7 +851,7 @@ than 50 card versions)
 <item>Sedlbauer ISDN-Controller PC/104
 <item>USR Sportster internal TA (compatible Stollmann tina-pp V3)
 <item>ith Kommunikationstechnik GmbH MIC 16 ISA card
-<item>Traverse Technologie NETjet PCI S0 card
+<item>Traverse Technologie NETjet PCI S0 card and NETspider U card
 <item>Dr. Neuhaus Niccy PnP/PCI
 <item>Siemens I-Surf 1.x (with ISAR =&lt; try type 29)
 <item>Siemens I-Surf 2.x (with IPAC =&gt; try type 12 asuscom)
@@ -854,6 +864,8 @@ the one called 'Wisecom' in NL does not work)
 <item>Gazel ISDN cards
 <item>HFC-PCI based cards
 <item>PCI/Winbond W6692 based cards
+<item>HFC-S+, HFC-SP/PCMCIA cards
+<item>HFC-USB ISDN TAs
 <item>ST5481 based USB ISDN adapters, e.g. BeWan Gazel 128 USB
 </itemize>
 Note:
@@ -870,6 +882,9 @@ loaded as modules.
 output of <tt>cat /proc/pci</tt>. You have HFC-PCI if you have a line
 saying "Master capable" for your card.
 <item>DataFire Micro V PCI = HFC-based card (type 35)
+<item>Xircom Cardbus Eth10/100+ (PCMCIA) is not supported by isdn4linux,
+but you can use it like an active external ISDN terminal adapter
+(requires the xircom and serial driver).
 </itemize>
 
 In Germany: every ISDN card which German Telekom distributed in the past is
@@ -1251,10 +1266,12 @@ not work, then there could be an issue with the motherboard. See question
 <ref id="hardware_irqsharing" name="hardware_irqsharing"> for this.
 
 One very interesting thing: the Fritz! card is currently the only passive card
-for which a capi driver exists. As a result, it can be configured to fax.
-See question <ref id="feature_capi" name="feature_capi"> and 
+for which a capi driver exists. As a result, it can be configured to
+fax. See question <ref id="feature_capi" name="feature_capi"> and 
 <url url="http://www.avm.de/ftp/cardware/fritzcrd/linux/index.htm">
-for more information on this.
+for more information on this. Usage of the capi driver is completely optional,
+you might as well stay with the standard driver if you do not need capi
+support.
 
 <sect1> hardware_avmb1: What is special about the AVM B1 card?  
 <label id="hardware_avmb1">
@@ -1713,6 +1730,10 @@ howto (isdn.html) and a ISDN quick-install guide (isdnquick.html).
 <tt><url url="http://www.rosat.mpe-garching.mpg.de/&tilde;web/ISDN.html"></tt>
 <item>Documentation on abc extensions:
 <tt><url url="http://i4l.mediatronix.de/"></tt>
+<item>Installation of CAPI4LINUX, CAPI4LINUX, and CAPI4Hylafax (in German):
+<tt><url url="http://ixi.thepenguin.de"></tt> or
+<tt><url url="http://capi4linux.thepenguin.de"></tt> or
+<tt><url url="http://www.thepenguin.de"></tt>
 <item>Vbox development:
 <tt><url url="http://innominate.org/projects/vbox/index.php3"></tt>
 <item>Michael Hipp's page (general informations):
@@ -2238,6 +2259,23 @@ message, then either you have changed the source code yourself, or the
 author did not update the checksum when changing the source code (reason
 could be that the complete certification tests have not yet been run on 
 the changed code).
+
+
+<sect1> trouble_crcerror: How can I see the number of packets for HiSax with  
+invalid CRC?  
+<label id="trouble_crcerror">
+<p>
+With HiSax you can view the accumulated number of hardware CRC errors with:
+<code>
+hisaxctrl &lt;id&gt; 0 0
+</code>
+and reset them with:
+<code>
+hisaxctrl &lt;id&gt; 0 99
+</code>
+It is ok if you have the occasional CRC error, but if you see a lot of
+errors then check your cable termination & connectivity.
+
 
 
 <!-- Config MSN
@@ -3771,24 +3809,20 @@ call &dquot;sendmail -q&dquot;.
 prevent this?  
 <label id="dod_samba">
 <p>
-Andreas Glahn <tt><htmlurl url="mailto:andreas@tao.westfalen.de"
-name="andreas@tao.westfalen.de"></tt> wrote on 31 Jan 1997:
-I had this problems too. Then when starting the samba daemon I gave
-it the internal IP address I use here at home. Since then a samba
-request is no longer sent to default, but stays here.
-
-Take a look at the configuration with netstat and tcpdump. With tcpdump
-you can quickly find out to which IP address samba is trying to
-connect.
-
-My internal Linux computer has, e.g.: 192.168.99.99
-
-My Win95 computer:        n           192.168.99.88
-
-On the Linux computer I started samba with:
+When nmbd starts up it tries to bind to 0.0.0.0 or all interfaces, which
+is what triggers the ISDN dialup.
+The best way to solve this is to set "bind interfaces only = yes" and
+"interfaces = eth0" in smb.conf (in case you want to use Samba only in
+your LAN).
+Alternatively, you can give the samba daemon an internal ip address upon
+startup. First find out which ip address samba is trying to connect to
+(e.g. with netstat or tcpdump). Then start samba with:
 <code>
 nmdb -S -B 192.168.99.255 -I 192.168.99.99
 </code>
+if your Linux computer has 192.168.99.99 as ip address, and all users
+are in the same subnet (192.168.99.255).
+
 See also the above question:  set -broadcast and possibly -arp 
 when defining the interfaces!
 
@@ -4515,7 +4549,7 @@ implement, there are currently no plans to implement it.
 <label id="isdnlog_rates">
 <p>
 This is the homepage of the rate data crew:
-<tt><url url="http://rates4linux.sourceforge.net/"></tt>. There you
+<tt><url url="http://sourceforge.net/projects/rates4linux"></tt>. There you
 can download the latest rate files (which change very frequently),
 or have a look at the latest rate news.
 
@@ -4623,6 +4657,9 @@ Please note that this only works when the second card is an ISAC based cards
 (e.g. old Teles cards, Fritz! classic), since it requires a special
 bug/feature of that chip. All other cards, like IPAC based cards (e.g. ELSA
 QS1000pro) will not work in the role of a re-poled card.
+Please note that this will only work on the standard BRI interface,
+since for the more expensive PRI interface no card is available which
+can be used (PRI is a point-to-point connection anyway).
 
 <item> HFC cards: some HFC-PCI based cards allow a special feature where one
 of the B channels can be sacrificed in exchange for reading the complete
@@ -4639,6 +4676,11 @@ makes use of the HFC option.
 Please note that a plain HFC-S does not work for hardware reasons, it has
 to be a newer one. If your card works with Hisax type 35 or 37, then it
 should work.
+
+Please also note that there is no known card for logging on a PRI interface
+in this way (also, the PRI interface is point-to-point, therefore only
+one device can be connected).
+
 
 <item> PBX: A third (theoretical) possibility exists for those who have
 their own PBX to which the other devices are connected. If the PBX can
