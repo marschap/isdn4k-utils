@@ -1,9 +1,9 @@
 #!/bin/sh
-## $Id: genconf,v 1.1 1997/04/08 21:18:50 luethje Exp $
+## $Id: genconf,v 1.2 1997/04/08 21:20:02 luethje Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
-## Copyright 1995, 1997 by Andreas Kool (akool@Kool.f.EUnet.de)
+## Copyright 1997 by Stefan Luethje (luethje@sl-gw.lake.de)
 ##
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -20,6 +20,9 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: genconf,v $
+## Revision 1.2  1997/04/08 21:20:02  luethje
+## primitive changes
+##
 ## Revision 1.1  1997/04/08 21:18:50  luethje
 ## File to generate the config file `isdn.conf'
 ##
