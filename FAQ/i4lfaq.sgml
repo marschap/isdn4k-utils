@@ -4,7 +4,7 @@
 
 <title>FAQ for isdn4linux
 <author>Matthias Hessler (<tt><htmlurl url="mailto:hessler@isdn4linux.de" name="hessler@isdn4linux.de"></tt>)
-<date>v2.0.71, 29. September 2002
+<date>v2.0.72, 6. October 2002
 <abstract>
 If you are reading this FAQ online, you may consider downloading the whole
 thing, and reading it offline (much cheaper). To download the latest
@@ -4594,8 +4594,10 @@ isdnctrl cbdelay isdn0 1
 <label id="callback_microsoft">
 <p>
 Yes, this is implemented in ipppd. To enable it you have to set the
-parameter &dquot;callback 6&dquot; as an ipppd option. To start the callback
-trigger it from the client via:
+parameter &dquot;callback 6&dquot; as an ipppd option on the client side
+(server side not tested so far - please let me know if you have some feedback
+on using CBCP as a server).
+To start the callback trigger it from the client via:
 <code>
 isdnctrl cbdelay &lt;device&gt; 5
 isdnctrl callback &lt;device&gt; out
@@ -4612,7 +4614,7 @@ ipppd. Please note these hints from NOTES.IPPPD:
   it's not possible to set any options in this case. The ipppd accepts
   everything from the remote side.
 </verb>
-If you have a Red Hat distributions, setting the following parameters in
+If you have a Red Hat distribution, setting the following parameters in
 ifcfg-ippp0 might do the trick:
 <code>
 CALLBACK=out
