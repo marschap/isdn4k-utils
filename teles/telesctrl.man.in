@@ -1,0 +1,120 @@
+.\" $Id: telesctrl.man.in,v 1.1 1997/10/23 22:43:25 fritz Exp $
+.\"
+.\" CHECKIN $Date: 1997/10/23 22:43:25 $
+.\"
+.\" Process this file with
+.\" groff -man -Tascii telesctrl.1 for ASCII output, or
+.\" groff -man -Tps telesctrl.1 for PostScript output
+.\"
+.TH TELESCTRL 8 "@MANDATE@" isdn4k-utils-@I4LVERSION@ "Linux System Administration"
+.SH NAME
+telesctrl \- configure HiSax-Module-logging
+.SH SYNOPSIS
+.B telesctrl
+.I DriverId DebugCmd DebugFlags
+.SH DESCRIPTION
+.B telesctrl
+is used to setup the logging-level of the HiSax-ISDN devicedriver. All
+logging-output is sent to the device /dev/isdnctrl. So you can show it
+by executing
+.BR "cat /dev/isdnctrl" .
+.LP
+The use of
+.I telesctrl
+makes sense, if you are using the HiSax driver only.
+.LP
+.SH OPTIONS
+.TP
+.I DriverId
+is used to identify the card when using more than one passive card. While
+loading the hisax module with
+.IR insmod ", or " modprobe
+the DriverId is set by appending
+.BI id= idstring1 % idstring2 %...
+to the commandline.
+.LP
+.TP
+.I DebugCmd
+is an integer selecting the debug category. The following values are
+defined:
+.LP
+.RS
+.BR " 1" " selects generic debugging."
+.br
+.BR 11 " selects layer 1 developement debugging."
+.br
+.BR 13 " selects layer 3 developement debugging."
+.br
+.RE
+.TP
+.I DebugFlag
+is an integer representing a bitmask. Every bit in this mask switches
+a debug facility on or off. Depending on the selected category,
+the following values are defined:
+.LP
+.RS
+.RB With " generic debugging " selected:
+.LP
+.BR 0x001 " Link-level <--> hardware-level communication"
+.br
+.BR 0x002 " Top state machine"
+.br
+.BR 0x004 " D-Channel Q.931 (call control messages)"
+.br
+.BR 0x008 " D-Channel Q.921"
+.br
+.BR 0x010 " B-Channel X.75"
+.br
+.BR 0x020 " D-Channel l2"
+.br
+.BR 0x040 " B-Channel l2"
+.br
+.BR 0x080 " D-Channel link state debugging"
+.br
+.BR 0x100 " B-Channel link state debugging"
+.br
+.BR 0x200 " TEI debug"
+.br
+.BR 0x400 " LOCK debug in callc.c"
+.br
+.BR 0x800 " More debug in callc.c (not for normal use)"
+.br
+.LP
+.RB With " layer 1 developement debugging " selected:
+.LP
+.BR 0x001 " Warnings (default: on)"
+.br
+.BR 0x002 " IRQ status"
+.br
+.BR 0x004 " ISAC"
+.br
+.BR 0x008 " ISAC FIFO"
+.br
+.BR 0x010 " HSCX"
+.br
+.BR 0x020 " HSCX FIFO (attention: full B-Channel output!)"
+.br
+.BR 0x040 " D-Channel LAPD frame types"
+.br
+.LP
+.RB With " layer 3 developement debugging " selected:
+.LP
+.BR 0x001 " Warnings (default: on)"
+.br
+.BR 0x002 " l3 protocol discriptor errors"
+.br
+.BR 0x004 " l3 state machine"
+.br
+.BR 0x008 " charge info debugging (1TR6)"
+.br
+.RE
+.LP
+.SH EXAMPLE
+.TP
+.BI telesctrl " HiSax 1 0x3ff"
+enables full generic debugging.
+.SH AUTHOR
+\(co 1997 by Karten Keil <keil@temic-ech.spacenet.de>
+.LP
+.SH SEE ALSO
+.BR isdnctrl "(8), " hisaxctrl "(8), " isdn_cause "(7), " isdninfo (4).
