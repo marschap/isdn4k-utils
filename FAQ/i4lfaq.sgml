@@ -4,12 +4,15 @@
 
 <title>FAQ for isdn4linux
 <author>Matthias Hessler (<tt><htmlurl url="mailto:hessler@isdn4linux.de" name="hessler@isdn4linux.de"></tt>)
-<date>v2.0.35, 14. February 2000
+<date>v2.0.36, 28. February 2000
 <abstract>
 If you are reading this FAQ online, you may consider downloading the whole
 thing, and reading it offline (much cheaper). To download the latest
 version of this FAQ in TXT/HTML/SGML format, go to the homepage of this FAQ:
 <url url="http://www.mhessler.de/i4lfaq.html">.
+
+A German translation of the FAQ is available at:
+<url url="http://www.wolf-b.de/i4l/i4lfaq-de.html">.
 
 This FAQ answers questions that were frequently asked in the newsgroup
 de.alt.comm.isdn4linux. It contains questions any user should
@@ -263,22 +266,23 @@ These encapsulations are possible:
 </itemize>
 
 Please note that X.31a is supported as X.25 on top of ISDN, while X.31b
-is not supported (neither in the B channel, nor in the D channel
-variation).
+is not supported (neither in the B channel, nor in the D channel variation).
 
-<sect1> feature_voice: Can I use isdn4linux as an answering machine?  
+<sect1> feature_voice: Has isdn4linux voice support (e.g. answering  
+machine, voice-over-ip gateway for H.323 clients)?  
 <label id="feature_voice">
 <p>
 Yes, voice support is included in the current version of isdn4linux.
-You can either use &dquot;vgetty&dquot; from Gert Doerings
-&dquot;mgetty+sendfax&dquot;, or &dquot;vboxgetty&dquot; from Michael Herold,
-which is made especially for isdn4linux.
+For an answering machine you can either use &dquot;vgetty&dquot; from Gert
+Doerings &dquot;mgetty+sendfax&dquot;, or &dquot;vboxgetty&dquot; from
+Michael Herold, which is made especially for isdn4linux.
 The latter is part of the isdn4k-utils package, which can be found on:
 <tt><url url="ftp://ftp.isdn4linux.de/pub/"></tt>
 
-Full duplex voice was supported at some point in time, but at some point
-in time the implementation got broken since not too many people used it.
-If you find some bugs - please let us know so that we can fix it.
+Also, you can use isdn4linux as a voice-over-ip gateway to let
+H.323 clients (like Voxilla, Netmeeting) call normal telephones, and/or
+the other way around. For configuration see question
+<ref id="config_h323" name="config_h323">.
 
 <sect1> feature_fax: Can I fax with isdn4linux?  
 <label id="feature_fax">
@@ -475,13 +479,24 @@ See question <ref id="config_gsmv110" name="config_gsmv110"> for details on how 
 
 <!-- Eurofile -->
 
+<sect1> feature_lcr: Can isdn4linux do least cost routing (LCR)?  
+<label id="feature_lcr">
+<p>
+Yes, this feature is now being supported by isdnlog. What it does is that
+it allows isdnlog to choose your telephone provider when placing a call
+through your ISDN card, depending on the time of day and the current rate
+information.
+Please note, that it does not make much sense to choose a call-by-call
+Internet Provider this way, since more things would have to be adjusted
+to make it work (e.g. DNS lookup, proxy setup,...). Also, isdnlog should
+always be running (otherwise your dialout may be delayed by 3 seconds).
+
 <sect1> feature_future: Which features are planned for the future?  
 <label id="feature_future">
 <p>
 Actually, most features have been implemented and are now being improved.
-The only new feature that may be coming is Least-Cost Routing, though that
-seems to be very tricky, as well as being timing and hardware dependent.
-Watch out for new isdnlog features. We'll see...
+But, who knows what other interesting stuff the developers may come up.
+We'll see...
 
 
 <!-- Helpful docu, links, mailing list, config examples, howto's -->
@@ -688,6 +703,7 @@ than 50 card versions)
 <item>Dr. Neuhaus Niccy PnP/PCI
 <item>Siemens I-Surf 1.0
 <item>Siemens I-Surf 2.x (with IPAC =&gt; try type 12 asuscom)
+<item>Trust PCI
 <item>ACER P10
 <item>HSR Saphir
 <item>Berkom Telekom A4T
@@ -924,6 +940,19 @@ cabling scheme:
 pins      1234       12345678
 Cable     abcd       --abcd--
 </verb>
+
+<sect1> hardware_sedlbauer: What is special about the Sedlbauer card?  
+<label id="hardware_sedlbauer">
+<p>
+It is a semiactive card based on the ISAR chipset which supports
+sending/receiving faxes. It is special in that you use it with HiSax which
+normally works only for passive cards. However, as all active card you have
+to load its firmware (in this case after loading HiSax) from the file
+ISAR.BIN, which is part of the isdn4k-utils.
+
+Please note that compression (V42bis, MNP) are not implemented in firmware,
+and therefore not supported. The ideal init string for the card to allow
+modem dialin is <tt>AT&percnt;C0&bsol;N0</tt>.
 
 <sect1> hardware_teles: What should I know about before buying an ISDN card 
 from Teles?  
@@ -1242,6 +1271,17 @@ The rate should be set to 9600 with <tt/AT&amp;R9600/. pppd needs to be
 called with <tt/noccp/ and <tt/require-pap/. For a mini-howto see:
 <url url="http://www.oltom.com/Linux/Docs/GSM%20over%20V.110%20Mini-HOWTO.txt">
 
+<sect1> config_h323: How do I configure isdn4linux to act as a voice-over-ip  
+gateway for H.323 clients?  
+<label id="config_h323">
+<p>
+You have to install the Linux H.323 - ISDN Gateway, which can be found on
+<url url="http://www.telos.de/linux/H323/">.
+Please note that not all ISDN hardware supports full duplex audio. Depending
+on your hardware you may end up with uni-directional voice. Unfortunately,
+the author of the FAQ does not have a list of ISDN cards which support full
+duplex audio. Please contact the mailing list for this.
+
 <sect1> config_point2point: How do I configure a point-to-point connection?  
 <label id="config_point2point">
 <p>
@@ -1327,13 +1367,14 @@ finding the problem?
 <p>
 The following steps are recommended:
 <enum>
-
 <item>Check everything is working when booting.
 Are there unusual error messages in /var/log/messages?
 Are all programs active that should be started at boot (check with
 ps, or fuser /dev/xxx)? HiSax won't start if something isn't right.
 The old Teles driver, on the other hand, will appear to start even if
 it is not working. See the questions under Troubleshooting Teles.
+<item>Make sure you configured the ISDN driver either as modules, or you
+compiled them in - never both.
 <item>Try calling with a telephone. The number should be shown in
 /var/log/messages. Otherwise, perhaps the driver was incorrectly 
 started?!
@@ -3296,11 +3337,15 @@ cover ISDN channels.
 <label id="2channel_mpppconfig">
 <p>
 First you define a (normal) interface for ipppd (e.g. &dquot;isdnctrl addif
-ippp0&dquot;, etc). To enable MPPP negotiation you must call the ipppd with
-the &dquot;+mp&dquot; option. You must also configure a slave device for every
-additional channel (see the i4l manual for more). To use channel bundling
-you must first activate the 'master' or initial call. Now you can add the
-slave channels with the command:
+ippp0&dquot;, etc). This interface will be used as your master interface.
+Then you must configure a slave device for every additional channel (e.g.
+&dquot;isdnctrl addslave ippp0 &lt;slave_interface&gt;&dquot;, configure
+slave_interface, etc - see the i4l manual for more).
+To enable MPPP negotiation, ipppd must be called with the &dquot;+mp&dquot;
+option.
+
+To use channel bundling you must first activate the 'master' or initial
+call. Now you can add the slave channels with the command:
 <code>
 isdnctrl addlink device
 </code>
@@ -4058,7 +4103,9 @@ We are aware of at least the following countries:
 <item>Japan
 <item>Luxemburg
 <item>Norway
+<item>Pakistan (see question <ref id="country_pakistan" name="country_pakistan">)
 <item>Peru
+<item>Poland
 <item>Portugal (see question <ref id="country_portugal" name="country_portugal">)
 <item>Singapore
 <item>Spain
@@ -4172,7 +4219,7 @@ sub-address 02, then configure the local phone number of the HiSax driver as
 <label id="country_italy">
 <p>
 isdn4linux also works in Italy (ICN card). The MSN must be the phone number
-with the Italian area code  but without the leading 0. For example, if my phone
+with the Italian area code but without the leading 0. For example, if my phone
 number is 72004681 and my area code is 045, my MSN is 4572004681.
 Now with the setting AT&amp;E4572004681 isdn4linux works fine.
 
@@ -4215,6 +4262,12 @@ name="ipj@spellcast.com"></tt> or <tt><htmlurl url="mailto:sales@spellcast.com"
 name="sales@spellcast.com"></tt>
 <tt><url url="http://www.spellcast.com"></tt>
 
+<sect1> country_pakistan: Pakistan: What should we use as MSN?  
+<label id="country_pakistan">
+<p>
+It seems that no MSN functionality is supported. Therefore the MSN should be
+set to &dquot;0&dquot;.
+
 <sect1> country_portugal: Portugal: What should we use as MSN?  
 <label id="country_portugal">
 <p>
@@ -4237,8 +4290,9 @@ It depends on your ISDN option.
 <itemize>
 <item> ISDN: Does not allow normal MSNs in UK. Each MSN is actually a single
 digit, 0 - 9, corresponding to the last digit of the actual phone number.
-You either have *no* MSNs (then configure isdn4linux to use '0' as MSN), or
-10 MSNs; you then always get a block of 10 sequential telephone numbers
+You either have *no* MSNs (then configure isdn4linux to use '0' as MSN,
+e.g. with <tt>AT&amp;E0</tt>), or 10 MSNs; you then always get a block of
+10 sequential telephone numbers
 (xxx0-xxx9), of which the last digit (0-9) is your MSN (0 is used in case
 you use an invalid number).
 <item> ISDN2e: Seems to be normal EuroISDN. You are assigned MSNs which you
@@ -4261,6 +4315,8 @@ international calls. For international data calls you have to dial
 
 By the way: for a BT Speedway card try to select AVM Fritz card (either
 ISA or PCI - depends on what you got).
+
+Also, check out <url url="http://www.wurtel.demon.nl/i4l-howto-uk.html">.
 
 <sect> misc: Miscellaneous  
 <label id="misc">
