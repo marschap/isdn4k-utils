@@ -1,6 +1,6 @@
-.\" $Id: isdnlog.8,v 1.4 1998/11/12 08:44:43 paul Exp $
-.\" CHECKIN $Date: 1998/11/12 08:44:43 $
-.TH isdnlog 8 "@MANDATE@" "ISDN 4 Linux @I4LVERSION@" "Linux System Administration"
+.\" $Id: isdnlog.8.in,v 1.1 1998/12/01 16:48:26 paul Exp $
+.\" CHECKIN $Date: 1998/12/01 16:48:26 $
+.TH isdnlog 8 "@MANDATE_ISDNLOG8@" "ISDN 4 Linux @I4LVERSION@" "Linux System Administration"
 .PD 0
 .SH NAME
 isdnlog \- isdn log system (and more)
@@ -315,7 +315,7 @@ information.
 
 .SH "CONNECTION LOG MODULE"
 
-isdnlog will log all connections in /var/log/isdn.log. isdnrep can parse
+isdnlog will log all connections in @LOGFILE@. isdnrep can parse
 this file and calculate costs.
 
 .SH "SEVERAL ISDN CARDS"
@@ -327,7 +327,7 @@ second card.
 .SH "UNLOADING KERNEL MODULES"
 You cannot unload isdn kernel modules while an isdn device is in use,
 e.g. a PPP interface is defined or isdnlog is running. Look at
-/var/run for a file isdnlog.DEVICE.pid with the process id of isdnlog,
+@RUNDIR@ for a file isdnlog.DEVICE.pid with the process id of isdnlog,
 and kill that. After that you should be able to unload your isdn kernel modules.
 
 .SH "FILES"
@@ -342,7 +342,7 @@ isdnlog can copy everything it reads to this file as debug information
 (e.g. /tmp/isdnctrl0 if you started isdnlog with /dev/isdnctrl0).
 
 .TP
-.B /var/run/isdnlog.DEVICE.pid
+.B @RUNDIR@/isdnlog.DEVICE.pid
 isdnlog creates this file with its process id. Useful to see if
 isdnlog is running.
 
@@ -352,15 +352,15 @@ isdnlog creates a lock file for the device, so no other processes will
 access that device.
 
 .TP
-.B /etc/isdn/isdn.conf
+.B @I4LCONFDIR@/@CONFFILE@
 isdnlog config file. Options to isdnlog can be given on the command line, can
 be stored in this file in [options] (with command line option 
--f/etc/isdn/isdn.conf), or in a different config file, but isdnlog will
+-f@I4LCONFDIR@/@CONFFILE@), or in a different config file, but isdnlog will
 look at this file for sections [global] [variables] [isdnlog].
 
 .SH EXAMPLE
 
-I start isdnlog with "isdnlog -f/etc/isdn/isdn.conf /dev/isdnctrl0".
+I start isdnlog with "isdnlog -f@I4LCONFDIR@/@CONFFILE@ /dev/isdnctrl0".
 This file contains a [options] section:
 
 .nf
@@ -373,7 +373,7 @@ flush=no        # flush logfile after every write
 pipe=no         # pipe log messages to stderr
 daemon=yes      # run isdnlog as daemon
 stdout=0x1ff7   # stderr logging level
-outfile=+/var/log/isdn/log               # log to file
+outfile=+/var/log/isdn.log               # log to file
 #console=       # log to a console
 monitor=yes     # emulate output for  imon/imontty/...
 syslog=0x1ff7   # syslog logging level
@@ -387,7 +387,7 @@ start=yes       # enable starting programs
 
 .SH SEE ALSO
 .B isdnconf(8) isdn.conf(5) callerid.conf(5)
-.B isdn.log(5) isdnrep(8)
+.B isdnlog(5) isdnrep(8)
 
 .SH AUTHOR
 This manual page was written by Andreas Jellinghaus <aj@debian.org>,

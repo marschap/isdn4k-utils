@@ -1,10 +1,10 @@
-.\" $Id: isdnlog.users.5,v 1.1 1998/06/18 14:29:49 paul Exp $
-.\" CHECKIN $Date: 1998/06/18 14:29:49 $
-.TH isdnlog.users 5 "@MANDATE@" "ISDN 4 Linux @I4LVERSION@" "Linux System Administration"
+.\" $Id: isdnlog.users.5.in,v 1.1 1998/12/01 16:48:27 paul Exp $
+.\" CHECKIN $Date: 1998/12/01 16:48:27 $
+.TH isdnlog.users 5 "@MANDATE_ISDNLOG_USERS@" "ISDN 4 Linux @I4LVERSION@" "Linux System Administration"
 
 .PD 0
 .SH NAME
-/etc/isdn/isdnlog.users \- user base isdnlog config file
+@I4LCONFDIR@/@USERFILE@ \- user base isdnlog config file
 
 .SH DESCRIPTION
 This file is only needed if isdnlog is started with the "-xX" / "xisdn="
@@ -121,7 +121,7 @@ the following line into the file "isdnlog.users":
 
 .SH FILES
 .TP
-.B /etc/isdn/isdnlog.users
+.B @I4LCONFDIR@/@USERFILE@
 This file.                                                       
 
 .SH SEE ALSO

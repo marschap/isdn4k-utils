@@ -1,10 +1,10 @@
-.\" $Id: callerid.conf.5,v 1.1 1998/06/18 14:29:47 paul Exp $
-.\" CHECKIN $Date: 1998/06/18 14:29:47 $
-.TH callerid.conf 5 "@MANDATE@" "ISDN 4 Linux @I4LVERSION@" "Linux System Administration"
+.\" $Id: callerid.conf.5.in,v 1.1 1998/12/01 16:48:24 paul Exp $
+.\" CHECKIN $Date: 1998/12/01 16:48:24 $
+.TH callerid.conf 5 "@MANDATE_CALLERID@" "ISDN 4 Linux @I4LVERSION@" "Linux System Administration"
 .PD 0
 
 .SH NAME
-/etc/isdn/callerid.conf \- config file for isdn tools
+@I4LCONFDIR@/@CALLERIDFILE@ \- config file for isdn tools
 
 .SH FORMAT
 This file has the format described in isdnformat(5). It must be owned by
@@ -234,7 +234,7 @@ Note: within a string you must use \\${1} \\${2} ...
 
 .SH FILES
 .TP
-.B /etc/isdn/callerid.conf
+.B @I4LCONFDIR@/@CALLERIDFILE@
 This file.                                                       
 
 .TP
@@ -242,7 +242,7 @@ This file.
 Per user telephone book.
 
 .SH SEE ALSO
-.B isdnlog(1) isdnformat(5) callerid.conf(5) isdntime(5)
+.B isdnlog(8) isdnformat(5) isdntime(5)
 .SH AUTHOR
 This manual page was written by Andreas Jellinghaus <aj@debian.org>,
 for Debian GNU/Linux and isdn4linux.

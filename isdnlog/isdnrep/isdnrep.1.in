@@ -1,6 +1,6 @@
-.\" $Id: isdnrep.1,v 1.2 1998/06/18 14:30:28 paul Exp $
-.\" CHECKIN $Date: 1998/06/18 14:30:28 $
-.TH isdnrep 8 "@MANDATE@" "ISDN 4 Linux @I4LVERSION@" "Linux System Administration"
+.\" $Id: isdnrep.1.in,v 1.1 1998/12/01 16:48:14 paul Exp $
+.\" CHECKIN $Date: 1998/12/01 16:48:14 $
+.TH isdnrep 8 "@MANDATE_ISDNREP@" "ISDN 4 Linux @I4LVERSION@" "Linux System Administration"
 
 .PD 0
 .SH NAME
@@ -65,9 +65,9 @@ assume long distance
 .TP
 .B \-fFILE
 The file from which to generate the report. This is usually
-/var/log/isdn.log, or whatever is configured in /etc/isdn/isdn.conf as
+@LOGFILE@, or whatever is configured in @I4LCONFDIR@/@CONFFILE@ as
 .B LOGFILE = .
-The -f option will override the setting in /etc/isdn/isdn.conf.
+The -f option will override the setting in @I4LCONFDIR@/@CONFFILE@.
 
 .TP
 .B \-t time span	time="time span"
@@ -271,7 +271,7 @@ keeping the total length to 80:
 "%X%D %10.10H%T%-14.14F%U%I %O"
 .in -4
 
-The above string is put into /etc/isdn/isdn.conf at installation as
+The above string is put into @CONFFILE@ at installation as
 .B REPFMTSHORT
 and can be used with
 .B -Fshort.
@@ -279,7 +279,7 @@ and can be used with
 .in -7
 .TP
 .B \-FX	format
-format strings can be specified in /etc/isdn/isdn.conf; this option
+format strings can be specified in @CONFFILE@; this option
 is used to select one of these. Entries can be defined in the
 section [ISDNLOG] with names beginning with "REPFMT". The string after
 the -F option is added to REPFMT to find the correct entry. Case is
@@ -668,15 +668,15 @@ third day of the current month
 
 .SH "FILES"
 .TP
-\fB/var/log/isdn.log\fR or \fB/var/lib/isdn/calls\fR
+\fB@LOGFILE@\fR or \fB/var/lib/isdn/calls\fR
 isdnlog log file with information about all calls.
 
 .TP
-\fB/etc/isdn/isdn.conf\fR
+\fB@I4LCONFDIR@/@CONFFILE@\fR
 general configuration
 
 .TP
-\fB/etc/isdn/callerid.conf\fR
+\fB@I4LCONFDIR@/@CALLERIDFILE@\fR
 aliases for telephone numbers
 
 .SH SEE ALSO
