@@ -1,4 +1,4 @@
-/* $Id: rate.c,v 1.56 1999/11/03 16:02:33 paul Exp $
+/* $Id: rate.c,v 1.57 1999/11/05 20:22:01 akool Exp $
  *
  * Tarifdatenbank
  *
@@ -19,6 +19,11 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rate.c,v $
+ * Revision 1.57  1999/11/05 20:22:01  akool
+ * isdnlog-3.63
+ *  - many new rates
+ *  - cosmetics
+ *
  * Revision 1.56  1999/11/03 16:02:33  paul
  * snprintf call had too many arguments for the format string.
  *
@@ -742,7 +747,7 @@ int initRate(char *conf, char *dat, char *dom, char **msg)
 	    warning (conf, "Invalid variant %s", s);
 	    continue;
 	  }
-	  if ((v=strtol(s, &s, 10))<1) {
+	  if ((v=strtol(s, &s, 10))<0) {
 	    warning (conf, "Invalid variant %s", s);
 	    continue;
 	  }

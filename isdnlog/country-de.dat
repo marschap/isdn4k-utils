@@ -12,7 +12,6 @@ V:0.92 Int based on 1.03-Germany [25-Oct-1999 20:00:00]
 # Auskunft :  _ccAK
 # Sonderrufnummern : _ccSO
 
-
 N:Usbekistan
 E:Uzbekistan
 C:+998, +7590, +7436, +743, +7375, +7374, +7373, +7372, +7371, +737, +7369, +7367, +7366, +7365, +7362, +7361
@@ -90,7 +89,7 @@ C:+972777
 T:PS # since 11.10.1999
 
 N:Ver. Arabische Emirate
-A:Vereinigte Arabische Emirate, Ver.Arab. Emirate, Vereinigte Arab. Emirate
+A:Vereinigte Arabische Emirate, Ver.Arab. Emirate, Vereinigte Arab. Emirate, VAE
 E:United Arab Emirates
 A:Vereinte Arabische Emirate
 C:+971
@@ -370,7 +369,7 @@ T:_RUMF
 N:Russische Föderat. (westl.)
 A:Russische Foderat. (westl.)
 A:Rußland (westl.), GUS (Russische Föderation), GUS
-C:+7902, +7901, +7863, +7862, +7861, +7820, +7817, +7816, +7815, +7814
+C:+7863, +7862, +7861, +7820, +7817, +7816, +7815, +7814
 C:+7811, +7543, +7517, +75112, +75110, +7510, +7505, +7503, +7501, +709246
 C:+709245, +709244, +709243, +709237, +7091, +7087, +7086, +7085, +7084
 C:+7083, +7082, +7081, +7074, +7073, +7072, +7071, +7011
@@ -846,6 +845,84 @@ C:+49176,+49179		# E2
 R:DE
 T:_DEMF
 
+N:Deutschland Mobilfunk C-Tel Voice Mail
+A:C-Tel Voice Mail
+C:+491618
+R:DE
+T:_DEMCM
+
+N:Deutschland Mobilfunk C-Netz
+A:C-Netz
+C:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619
+R:DE
+T:_DEMC
+
+N:Deutschland Mobilfunk D1
+A:D1
+C:+49170,+49171,+49175
+R:DE
+T:_DEMD1
+
+N:Deutschland Mobilfunk D2
+A:D2
+C:+49172,+49173,+49174	# D2
+R:DE
+T:_DEMD2
+
+N:Deutschland Mobilfunk E1
+A:E1, Eplus
+C:+49177,+49178
+R:DE
+T:_DEME1
+
+N:Deutschland Mobilfunk
+A:E2
+C:+49176,+49179
+R:DE
+T:_DEME2
+
+N:Deutschland Cityruf
+A:Cityruf, Cityruf Voicebox, Cityruf automatic, Cityruf Operator
+A:Cityruf Auftragsdienst
+C:+491640, +491641, +491642, +491643, +491644, +491645, +491646, +491647
+C:+491648, +491649, +491682, +491683, +491684, +491685, +491686, +491687
+C:+491688, +491689, +491690, +491691, +4916951, +4916952
+R:DE
+T:_DECR
+
+N:Deutschland Scall
+A:Scall, Scall (Modemzugang), Scall (Operatorzugang), Scall 1680, Scall 1681
+A:Scall Operator, Scall Modem
+C:+491680, +491681, +491696, +491699
+R:DE
+T:_DESC
+
+N:Deutschland TeLMI
+A:TeLMI, TeLMI automatic, TeLMI Operator, TeLMI Operatorzugang
+C:+491660, +491661, +491665, +491669
+R:DE
+T:_DETM
+
+N:Deutschland Skyper
+A:Skyper, Skyper Operatorzugang, Skyper Operator
+C:+491692, +491693, +4916953
+R:DE
+T:_DESK
+
+N:Deutschland Quix
+A:Quix, Quix Service, Quix DTMF
+C:+4916500, +4916501, +4916502, +4916503, +4916504, +4916505, +4916506
+C:+4916507, +4916508, +491651, +491653, +491654, +491655, +491656
+C:+4916591, +4916592, +4916593
+R:DE
+T:_DEQX
+
+N:Deutschland T-VoteCall
+A:Televotecall
+C:+491371, +491372, +491373, +491374, +49138
+R:DE
+T:_DETV
+
 N:Frankfurt
 C:+4969
 R:DE
@@ -1194,9 +1271,10 @@ E:Albania
 C:+355
 T:AL
 
-N:Island Mobilfunk
-C:+354
-T:_ISMF
+# FIXME!
+# N:Island Mobilfunk
+# C:+354
+# T:_ISMF
 
 N:Island
 E:Iceland
@@ -1695,7 +1773,7 @@ C:+220
 T:GM
 
 N:Libyen
-A:Libysch-Arabische Dschamahirija, Lybien
+A:Libysch-Arabische Dschamahirija, Lybien, Lybisch-Arabische Dschamahija
 A:Libysch-Arabische-Republik
 E:Libya
 C:+218
@@ -1737,9 +1815,10 @@ N:Kanada Mobilfunk
 C:+1204, +1250, +1306, +1403, +1416, +1418, +1450, +1506, +1514, +1519, +1600, +1604, +1613, +1705, +1709, +1780, +1807, +1819, +1867, +1902, +1905
 T:_CAMF
 
+# Quelle: http://www.teltronics.com/beyond.html
 N:Kanada
 E:Canada
-C:+1905, +1902, +1867, +1819, +1807, +1709, +1705, +1613, +1604, +1600, +1519, +1514, +1506, +1418, +1416, +1403, +1306, +1250, +1204
+C:+1647
 T:CA
 
 N:Jamaika
@@ -1766,7 +1845,7 @@ T:_DOMF
 
 N:Dominikanische Republik
 E:Dominican Republic
-A:Dominikanische Rep.
+A:Dominikanische Rep., Dom Rep
 C:+184, +1809971, +1809970, +1809908, +1809818, +1809814, +1809813, +1809810, +1809808, +1809807, +1809806, +1809710, +1809707, +1809701, +1809699, +1809698, +1809697, +1809696, +1809694, +1809689, +1809688, +1809687, +1809686, +1809685, +1809684, +1809682, +1809681, +1809616, +1809615, +1809612, +1809606, +1809604, +180959, +180958, +180957, +180956, +1809559, +1809558, +1809557, +1809556, +1809554, +1809553, +1809552, +1809551, +1809550, +180954, +180953, +180952, +1809519, +1809518, +1809512, +1809508, +1809506, +1809504, +1809481, +180947, +1809414, +1809412, +1809350, +1809343, +1809320, +1809310, +1809301, +1809299, +1809295, +1809293, +1809292, +1809291, +1809290, +1809282, +1809281, +1809280, +1809279, +1809278, +1809277, +1809276, +1809275, +1809274, +1809273, +1809248, +1809247, +1809246, +1809245, +1809244, +1809243, +1809242, +1809240, +1809239, +1809238, +1809237, +1809236, +1809234, +1809233, +1809231, +1809226, +1809225, +1809224, +1809223, +1809222, +1809221, +1809220, +1809209, +1809208, +1809204, +1809188
 T:DO
 
@@ -1865,6 +1944,10 @@ T:BB
 N:Bahamas
 C:+1242
 T:BS
+
+N:USA toll free
+C:+1800, +1866*, +1877, +1888
+T:_USTF
 
 N:USA
 A:Vereinigte Staaten (USA), United States of America, United States of America & Canada

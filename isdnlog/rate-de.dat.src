@@ -1,4 +1,4 @@
-V:1.10-Germany [02-Nov-1999 21:54:18]
+V:1.10-Germany [05-Nov-1999 21:11:20]
 
 # Währungsformat
 U:%.3f DM
@@ -8,7 +8,7 @@ U:%.3f DM
 #
 # (C) Copyright 1999 by Andreas Kool (akool@isdn4linux.de)
 #
-# $Id: rate-de.dat.src,v 1.7 1999/11/02 21:01:57 akool Exp $
+# $Id: rate-de.dat.src,v 1.8 1999/11/05 20:21:59 akool Exp $
 #
 #
 # Das "A:" Tag muß folgendermaßen gefüllt werden:
@@ -176,7 +176,7 @@ C:GmbH, Gutleutstraße 85, 60329 Frankfurt 01010
 #####################################################################
 #
 #
-P:11 o.tel.o Call-By-Call
+P:11 o.tel.o CbC
 # G:01-Aug-1999
 C:Mannesmann Zwölfte Verwaltungsgesellschaft mbH, Mannesmannufer 2, 40213 Düsseldorf
 C:Homepage: http://www.o-tel-o.de
@@ -6487,7 +6487,8 @@ A:Ägypten, Albanien, Algerien, Belarus (Weißrußland), Bosnien-Herzegowina
 A:Bulgarien, Estland, Gibraltar, Israel, Jordanien, Jugoslawien
 A:Kroatien, Lettland, Libanon, Libyen, Litauen, Malta, Marokko
 A:Mazedonien, Moldawien, Rumänien, Russische Föderation (westl.)
-A:Sahara, Slowenien, Syrien, Tunesien, Türkei, Ukraine
+A:Slowenien, Syrien, Tunesien, Türkei, Ukraine
+# FIXME: Sahara ??
 A:Ungarn, Zypern
 T:*/*=0.07/4.7
 Z:204 CITYMS Nordamerika
@@ -9619,7 +9620,7 @@ T:W/08-18=0.04(60)/1 Hauptzeit
 T:W/18-08=0/60,0.03(60)/1 Nebenzeit
 T:E,H/*=0/60,0.03(60)/1 Wochenende
 Z:10 Mobilfunk
-A:C-Tel Voice Mail, C-Netz, D1, D2, E1, E2
+A:C-Tel Voice Mail, C-Netz, D1, D2, E2
 T:W/08-18=0.78(60)/1 Hauptzeit
 T:W/18-08=0.45(60)/1 Nebenzeit
 T:E,H/*=0.45(60)/1 Wochenende
@@ -9633,8 +9634,8 @@ T:*/*=0.04/60
 Z:200 EuroNah
 A:Andorra, Belgien, Dänemark, Färöer, Finnland, Frankreich, Gibraltar
 A:Griechenland, Großbritannien, Irland, Island, Italien, Luxemburg, Monaco,
-A:Niederlande, Norwegen, Österreich, Polen, Portugal, Azoren, Madeira, San
-A:San Marino, Schweden, Schweiz, Slowakische Republik, Spanien, 
+A:Niederlande, Norwegen, Österreich, Polen, Portugal, Azoren, Madeira
+A:San Marino, Schweden, Schweiz, Slowakische Republik, Spanien,
 A:Tschechische Republik, Ungarn, Zypern
 T:*/*=0.45(60)/1
 Z:201 EuroFern
@@ -10474,7 +10475,7 @@ T:*/*=2.55(60)/1
 #####################################################################
 #
 #
-P:43 KielNet Call-By-Call
+P:43 KielNet CbC
 C:GmbH, Postfach 41 60, 24100 Kiel 01043
 C:Homepage: http://www.kielnet.de
 C:Erfasste Zonene
@@ -10488,31 +10489,31 @@ Z:1-4 Deutschland
 A:Deutschland
 T:*/*=0.19/60
 Z:5 S-H Region
-A: +494101, +494102, +494103, +494104, +494106, +494107, +494109, +494120, +494121, +494122
-A: +494123, +494124, +494125, +494126, +494127, +494128, +494129, +494151, +494152, +494153
-A: +494154, +494155, +494156, +494158, +494159, +494191, +494192, +494193, +494194, +494195
-A: +494302, +494303, +494305, +494307, +494308, +49431, +494320, +494321, +494322, +494323
-A: +494324, +494326, +494327, +494328, +494329, +494330, +494331, +494332, +494333, +494334
-A: +494335, +494336, +494337, +494338, +494339, +494340, +494342, +494343, +494344, +494346
-A: +494347, +494348, +494349, +494351, +494352, +494353, +494354, +494355, +494356, +494357
-A: +494358, +494361, +494362, +494363, +494364, +494365, +494366, +494367, +494371, +494372
-A: +494381, +494382, +494383, +494384, +494385, +494392, +494393, +494394, +494502, +494503
-A: +494504, +494505, +494506, +494508, +494509, +49451, +494521, +494522, +494523, +494524
-A: +494525, +494526, +494527, +494528, +494529, +494531, +494532, +494533, +494534, +494535
-A: +494536, +494537, +494539, +494541, +494542, +494543, +494544, +494545, +494546, +494547
-A: +494550, +494551, +494552, +494553, +494554, +494555, +494556, +494557, +494558, +494559
-A: +494561, +494562, +494563, +494564, +494602, +494603, +494604, +494605, +494606, +494607
-A: +494608, +494609, +49461, +494621, +494622, +494623, +494624, +494625, +494626, +494627
-A: +494630, +494631, +494632, +494633, +494634, +494635, +494636, +494637, +494638, +494639
-A: +494641, +494642, +494643, +494644, +494646, +494651, +494661, +494662, +494663, +494664
-A: +494665, +494666, +494667, +494668, +494671, +494672, +494673, +494674, +494681, +494682
-A: +494683, +494684, +494802, +494803, +494804, +494805, +494806, +49481, +494821, +494822
-A: +494823, +494824, +494825, +494826, +494827, +494828, +494829, +494830, +494832, +494833
-A: +494834, +494835, +494836, +494837, +494838, +494839, +494841, +494842, +494843, +494844
-A: +494845, +494846, +494847, +494848, +494849, +494851, +494852, +494853, +494854, +494855
-A: +494857, +494858, +494859, +494861, +494862, +494863, +494864, +494865, +494871, +494872
-A: +494873, +494874, +494875, +494876, +494877, +494881, +494882, +494883, +494884
-A: +494885, +494892, +494893, +494856
+A:+494101, +494102, +494103, +494104, +494106, +494107, +494109, +494120, +494121, +494122
+A:+494123, +494124, +494125, +494126, +494127, +494128, +494129, +494151, +494152, +494153
+A:+494154, +494155, +494156, +494158, +494159, +494191, +494192, +494193, +494194, +494195
+A:+494302, +494303, +494305, +494307, +494308, +49431, +494320, +494321, +494322, +494323
+A:+494324, +494326, +494327, +494328, +494329, +494330, +494331, +494332, +494333, +494334
+A:+494335, +494336, +494337, +494338, +494339, +494340, +494342, +494343, +494344, +494346
+A:+494347, +494348, +494349, +494351, +494352, +494353, +494354, +494355, +494356, +494357
+A:+494358, +494361, +494362, +494363, +494364, +494365, +494366, +494367, +494371, +494372
+A:+494381, +494382, +494383, +494384, +494385, +494392, +494393, +494394, +494502, +494503
+A:+494504, +494505, +494506, +494508, +494509, +49451, +494521, +494522, +494523, +494524
+A:+494525, +494526, +494527, +494528, +494529, +494531, +494532, +494533, +494534, +494535
+A:+494536, +494537, +494539, +494541, +494542, +494543, +494544, +494545, +494546, +494547
+A:+494550, +494551, +494552, +494553, +494554, +494555, +494556, +494557, +494558, +494559
+A:+494561, +494562, +494563, +494564, +494602, +494603, +494604, +494605, +494606, +494607
+A:+494608, +494609, +49461, +494621, +494622, +494623, +494624, +494625, +494626, +494627
+A:+494630, +494631, +494632, +494633, +494634, +494635, +494636, +494637, +494638, +494639
+A:+494641, +494642, +494643, +494644, +494646, +494651, +494661, +494662, +494663, +494664
+A:+494665, +494666, +494667, +494668, +494671, +494672, +494673, +494674, +494681, +494682
+A:+494683, +494684, +494802, +494803, +494804, +494805, +494806, +49481, +494821, +494822
+A:+494823, +494824, +494825, +494826, +494827, +494828, +494829, +494830, +494832, +494833
+A:+494834, +494835, +494836, +494837, +494838, +494839, +494841, +494842, +494843, +494844
+A:+494845, +494846, +494847, +494848, +494849, +494851, +494852, +494853, +494854, +494855
+A:+494857, +494858, +494859, +494861, +494862, +494863, +494864, +494865, +494871, +494872
+A:+494873, +494874, +494875, +494876, +494877, +494881, +494882, +494883, +494884
+A:+494885, +494892, +494893, +494856
 T:*/*=0.09/60
 Z:10 Mobilfunk
 A:C-Tel Voice Mail, C-Netz, D1, D2, E1, E2
@@ -10542,31 +10543,31 @@ Z:1-4 Deutschland
 A:Deutschland
 T:*/*=0.19/60
 Z:5 S-H Region
-A: +494101, +494102, +494103, +494104, +494106, +494107, +494109, +494120, +494121, +494122
-A: +494123, +494124, +494125, +494126, +494127, +494128, +494129, +494151, +494152, +494153
-A: +494154, +494155, +494156, +494158, +494159, +494191, +494192, +494193, +494194, +494195
-A: +494302, +494303, +494305, +494307, +494308, +49431, +494320, +494321, +494322, +494323
-A: +494324, +494326, +494327, +494328, +494329, +494330, +494331, +494332, +494333, +494334
-A: +494335, +494336, +494337, +494338, +494339, +494340, +494342, +494343, +494344, +494346
-A: +494347, +494348, +494349, +494351, +494352, +494353, +494354, +494355, +494356, +494357
-A: +494358, +494361, +494362, +494363, +494364, +494365, +494366, +494367, +494371, +494372
-A: +494381, +494382, +494383, +494384, +494385, +494392, +494393, +494394, +494502, +494503
-A: +494504, +494505, +494506, +494508, +494509, +49451, +494521, +494522, +494523, +494524
-A: +494525, +494526, +494527, +494528, +494529, +494531, +494532, +494533, +494534, +494535
-A: +494536, +494537, +494539, +494541, +494542, +494543, +494544, +494545, +494546, +494547
-A: +494550, +494551, +494552, +494553, +494554, +494555, +494556, +494557, +494558, +494559
-A: +494561, +494562, +494563, +494564, +494602, +494603, +494604, +494605, +494606, +494607
-A: +494608, +494609, +49461, +494621, +494622, +494623, +494624, +494625, +494626, +494627
-A: +494630, +494631, +494632, +494633, +494634, +494635, +494636, +494637, +494638, +494639
-A: +494641, +494642, +494643, +494644, +494646, +494651, +494661, +494662, +494663, +494664
-A: +494665, +494666, +494667, +494668, +494671, +494672, +494673, +494674, +494681, +494682
-A: +494683, +494684, +494802, +494803, +494804, +494805, +494806, +49481, +494821, +494822
-A: +494823, +494824, +494825, +494826, +494827, +494828, +494829, +494830, +494832, +494833
-A: +494834, +494835, +494836, +494837, +494838, +494839, +494841, +494842, +494843, +494844
-A: +494845, +494846, +494847, +494848, +494849, +494851, +494852, +494853, +494854, +494855
-A: +494857, +494858, +494859, +494861, +494862, +494863, +494864, +494865, +494871, +494872
-A: +494873, +494874, +494875, +494876, +494877, +494881, +494882, +494883, +494884
-A: +494885, +494892, +494893, +494856
+A:+494101, +494102, +494103, +494104, +494106, +494107, +494109, +494120, +494121, +494122
+A:+494123, +494124, +494125, +494126, +494127, +494128, +494129, +494151, +494152, +494153
+A:+494154, +494155, +494156, +494158, +494159, +494191, +494192, +494193, +494194, +494195
+A:+494302, +494303, +494305, +494307, +494308, +49431, +494320, +494321, +494322, +494323
+A:+494324, +494326, +494327, +494328, +494329, +494330, +494331, +494332, +494333, +494334
+A:+494335, +494336, +494337, +494338, +494339, +494340, +494342, +494343, +494344, +494346
+A:+494347, +494348, +494349, +494351, +494352, +494353, +494354, +494355, +494356, +494357
+A:+494358, +494361, +494362, +494363, +494364, +494365, +494366, +494367, +494371, +494372
+A:+494381, +494382, +494383, +494384, +494385, +494392, +494393, +494394, +494502, +494503
+A:+494504, +494505, +494506, +494508, +494509, +49451, +494521, +494522, +494523, +494524
+A:+494525, +494526, +494527, +494528, +494529, +494531, +494532, +494533, +494534, +494535
+A:+494536, +494537, +494539, +494541, +494542, +494543, +494544, +494545, +494546, +494547
+A:+494550, +494551, +494552, +494553, +494554, +494555, +494556, +494557, +494558, +494559
+A:+494561, +494562, +494563, +494564, +494602, +494603, +494604, +494605, +494606, +494607
+A:+494608, +494609, +49461, +494621, +494622, +494623, +494624, +494625, +494626, +494627
+A:+494630, +494631, +494632, +494633, +494634, +494635, +494636, +494637, +494638, +494639
+A:+494641, +494642, +494643, +494644, +494646, +494651, +494661, +494662, +494663, +494664
+A:+494665, +494666, +494667, +494668, +494671, +494672, +494673, +494674, +494681, +494682
+A:+494683, +494684, +494802, +494803, +494804, +494805, +494806, +49481, +494821, +494822
+A:+494823, +494824, +494825, +494826, +494827, +494828, +494829, +494830, +494832, +494833
+A:+494834, +494835, +494836, +494837, +494838, +494839, +494841, +494842, +494843, +494844
+A:+494845, +494846, +494847, +494848, +494849, +494851, +494852, +494853, +494854, +494855
+A:+494857, +494858, +494859, +494861, +494862, +494863, +494864, +494865, +494871, +494872
+A:+494873, +494874, +494875, +494876, +494877, +494881, +494882, +494883, +494884
+A:+494885, +494892, +494893, +494856
 T:*/*=0.09/60
 Z:10 Mobilfunk
 A:C-Tel Voice Mail, C-Netz, D1, D2, E1, E2
@@ -10619,31 +10620,31 @@ Z:4 Deutschland
 A:Deutschland
 T:*/*=0.19/60
 Z:5 S-H Region
-A: +494101, +494102, +494103, +494104, +494106, +494107, +494109, +494120, +494121, +494122
-A: +494123, +494124, +494125, +494126, +494127, +494128, +494129, +494151, +494152, +494153
-A: +494154, +494155, +494156, +494158, +494159, +494191, +494192, +494193, +494194, +494195
-A: +494302, +494303, +494305, +494307, +494308, +49431, +494320, +494321, +494322, +494323
-A: +494324, +494326, +494327, +494328, +494329, +494330, +494331, +494332, +494333, +494334
-A: +494335, +494336, +494337, +494338, +494339, +494340, +494342, +494343, +494344, +494346
-A: +494347, +494348, +494349, +494351, +494352, +494353, +494354, +494355, +494356, +494357
-A: +494358, +494361, +494362, +494363, +494364, +494365, +494366, +494367, +494371, +494372
-A: +494381, +494382, +494383, +494384, +494385, +494392, +494393, +494394, +494502, +494503
-A: +494504, +494505, +494506, +494508, +494509, +49451, +494521, +494522, +494523, +494524
-A: +494525, +494526, +494527, +494528, +494529, +494531, +494532, +494533, +494534, +494535
-A: +494536, +494537, +494539, +494541, +494542, +494543, +494544, +494545, +494546, +494547
-A: +494550, +494551, +494552, +494553, +494554, +494555, +494556, +494557, +494558, +494559
-A: +494561, +494562, +494563, +494564, +494602, +494603, +494604, +494605, +494606, +494607
-A: +494608, +494609, +49461, +494621, +494622, +494623, +494624, +494625, +494626, +494627
-A: +494630, +494631, +494632, +494633, +494634, +494635, +494636, +494637, +494638, +494639
-A: +494641, +494642, +494643, +494644, +494646, +494651, +494661, +494662, +494663, +494664
-A: +494665, +494666, +494667, +494668, +494671, +494672, +494673, +494674, +494681, +494682
-A: +494683, +494684, +494802, +494803, +494804, +494805, +494806, +49481, +494821, +494822
-A: +494823, +494824, +494825, +494826, +494827, +494828, +494829, +494830, +494832, +494833
-A: +494834, +494835, +494836, +494837, +494838, +494839, +494841, +494842, +494843, +494844
-A: +494845, +494846, +494847, +494848, +494849, +494851, +494852, +494853, +494854, +494855
-A: +494857, +494858, +494859, +494861, +494862, +494863, +494864, +494865, +494871, +494872
-A: +494873, +494874, +494875, +494876, +494877, +494881, +494882, +494883, +494884
-A: +494885, +494892, +494893, +494856
+A:+494101, +494102, +494103, +494104, +494106, +494107, +494109, +494120, +494121, +494122
+A:+494123, +494124, +494125, +494126, +494127, +494128, +494129, +494151, +494152, +494153
+A:+494154, +494155, +494156, +494158, +494159, +494191, +494192, +494193, +494194, +494195
+A:+494302, +494303, +494305, +494307, +494308, +49431, +494320, +494321, +494322, +494323
+A:+494324, +494326, +494327, +494328, +494329, +494330, +494331, +494332, +494333, +494334
+A:+494335, +494336, +494337, +494338, +494339, +494340, +494342, +494343, +494344, +494346
+A:+494347, +494348, +494349, +494351, +494352, +494353, +494354, +494355, +494356, +494357
+A:+494358, +494361, +494362, +494363, +494364, +494365, +494366, +494367, +494371, +494372
+A:+494381, +494382, +494383, +494384, +494385, +494392, +494393, +494394, +494502, +494503
+A:+494504, +494505, +494506, +494508, +494509, +49451, +494521, +494522, +494523, +494524
+A:+494525, +494526, +494527, +494528, +494529, +494531, +494532, +494533, +494534, +494535
+A:+494536, +494537, +494539, +494541, +494542, +494543, +494544, +494545, +494546, +494547
+A:+494550, +494551, +494552, +494553, +494554, +494555, +494556, +494557, +494558, +494559
+A:+494561, +494562, +494563, +494564, +494602, +494603, +494604, +494605, +494606, +494607
+A:+494608, +494609, +49461, +494621, +494622, +494623, +494624, +494625, +494626, +494627
+A:+494630, +494631, +494632, +494633, +494634, +494635, +494636, +494637, +494638, +494639
+A:+494641, +494642, +494643, +494644, +494646, +494651, +494661, +494662, +494663, +494664
+A:+494665, +494666, +494667, +494668, +494671, +494672, +494673, +494674, +494681, +494682
+A:+494683, +494684, +494802, +494803, +494804, +494805, +494806, +49481, +494821, +494822
+A:+494823, +494824, +494825, +494826, +494827, +494828, +494829, +494830, +494832, +494833
+A:+494834, +494835, +494836, +494837, +494838, +494839, +494841, +494842, +494843, +494844
+A:+494845, +494846, +494847, +494848, +494849, +494851, +494852, +494853, +494854, +494855
+A:+494857, +494858, +494859, +494861, +494862, +494863, +494864, +494865, +494871, +494872
+A:+494873, +494874, +494875, +494876, +494877, +494881, +494882, +494883, +494884
+A:+494885, +494892, +494893, +494856
 T:*/*=0.09/60
 Z:6 KielNet
 T:*/*=0/60
@@ -11932,10 +11933,18 @@ T:*/*=2.35(60)/1
 P:50 Talkline
 # G:12-Aug-1999
 C:PS PhoneServices GmbH, Adenauer Damm 1, 25337 Elmshorn 01050
-C:Homepage: http://www.null1050.de
+C:Homepage:	http://www.null1050.de (??)
+C:oder:  	http://www.talkline.de
 C:Hotline:  01802/2002
 C:Faxabruf: 01802/2001
+#####################################################################
 P:50,1 Talkline CbC
+C:Erfasste Zonen:
+C:   1 -   4	Deutschland
+C:  10 -  15	Mobilfunk
+C:  40		Talkline Auskunft
+C: 102		Internet Talkline By Call
+C: 200 - 	Ausland
 D:dtag
 Z:1-4 Fern
 A:+49
@@ -11945,79 +11954,336 @@ T:W/22-07=0.039/60
 T:E,H/07-22=0.11/60
 T:E,H/22-07=0.039/60
 Z:10-15 Mobil
-A:+491618		# T-C-Tel Voice Mail
-A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
-A:+49170,+49171,+49175	# D1
-A:+49172,+49173,+49174	# D2
-A:+49177,+49178		# Eplus
-A:+49176,+49179		# E2
+A:C-Tel Voice Mail, C-Netz, D1, D2, E1, E2
 T:*/*=0.69/60
-Z:100 Talknet by call
-A:019251 # Proxy: proxy.tli.de:8080; DNS: 195.252.128.53 und 195.252.128.54; User: talknet; Passwort: talknet
-S:Internet by call
-T:W/07-19=0.09(60)/180
-T:W/19-22=0.07(60)/180
-T:W/22-07=0.05(60)/180
-T:E,H/*=0.06(60)/180
 Z:40 Telefonauskunft
 A:11850
 T:*/*=0.968/0,0.12/7.5
-#TODO: Erweitern
-Z:200 Ausland
+Z:102 Talknet by call
+A:019251 # Proxy: proxy.tli.de:8080; DNS: 195.252.128.53 und 195.252.128.54; User: talknet; Passwort: talknet
+S:Internet by call
+T:*/*=0.144/180		# 4.8 Pf / Min, 180s Takt
+Z:200 Private World Special
 A:Andorra,Australien,Belgien,Dänemark,Finnland,Frankreich,Großbritannien
 A:Italien,Kanada,Lichtenstein,Luxemburg,Monaco,Niederlande,Norwegen
 A:Österreich,Schweden,Schweiz,Spanien,USA
 T:*/*=0.45/60
+Z:201 World 1
+A:Irland, Nordirland, Vatikanstadt
+T:*/*=0.68/60
+Z:202 World 2
+A:Island, Polen, Portugal, Slowakei, Tschechische Republik, Ungarn
+T:*/*=0.79/60
+Z:203 World 3
+A:Bulgarien, Griechenland, Rumänien, Türkei
+T:*/*=0.99/60
+Z:204 World 4
+A:Bosnien-Herzegowina, Kroatien, Mazedonien, Slowenien
+T:*/*=1.99/60
+Z:205 World 5
+A:Japan
+T:*/*=1.49/60
+Z:206 World 6
+A:Hongkong, Singapur, Südkorea
+T:*/*=1.85/60
+Z:207 World 7
+A:Brasilien
+T:*/*=1.99/60
+Z:208 World 8
+A:Südafrika, Taiwan
+T:*/*=2.15/60
+Z:209 World 9
+A:China, Indien, Thailand
+T:*/*=2.40/60
+Z:210 World 10
+A:+	# alle übrigen
+T:*/*=3.00/60
+#####################################################################
 P:50,2 Talkline EasyLine
+C:Preselection
+C:Erfasste Zonen:
+C:   1 -   4	Deutschland
+C:   5		Sondertarif
+C:  10 -  15	Mobilfunk
+C:  40		Talkline Auskunft
+C: 102		Internet Talkline By Call
+C: 200 - 	Ausland
+C:Sondertarif 5: Mobiloption: nur für Talkline Mobilfunkkunden
+C:                   bei Gesprächen zum eigenen Talkline-Handy.
 D:dtag
 F:P
 Z:1-4 Inland
+A:Deutschland
 T:W/7-19=0.15/60
 T:W/19-22=0.08/60
 T:W/22-7=0.039/60
-T:E,H/7-22=0.06/60
+T:E,H/7-22=0.08/60
 T:E,H/22-7=0.039/60
-A:+49
+C:5 Mobiloption
+T:*/*=0.39/60
 Z:10-15 Mobil
+A:C-Tel Voice Mail, C-Netz, D1, D2, E1, E2
 T:*/*=0.49/60
-#T:*/*=0.39/60 bei Telefonaten zu Talkline-Handies
-A:+491618		# T-C-Tel Voice Mail
-A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
-A:+49170,+49171		# D1
-A:+49172,+49173		# D2
-A:+49177,+49178		# Eplus
-A:+49176,+49179		# E2
-#TODO: Ausland
-#P:50,3 Talkline BusinessLine Basic
-P:50,4 Talkline BusinessLine Classic
+Z:40 Telefonauskunft
+A:11850
+T:*/*=0.968/0,0.12/7.5
+Z:102 Talknet by call
+A:019251 # Proxy: proxy.tli.de:8080; DNS: 195.252.128.53 und 195.252.128.54; User: talknet; Passwort: talknet
+S:Internet by call
+T:*/*=0.144/180	# 4.8 Pf / Min, 180s Takt
+Z:200 Private World Special
+A:Andorra,Australien,Belgien,Dänemark,Finnland,Frankreich,Großbritannien
+A:Italien,Kanada,Lichtenstein,Luxemburg,Monaco,Niederlande,Norwegen
+A:Österreich,Schweden,Schweiz,Spanien,USA
+T:*/*=0.45/60
+Z:201 World 1
+A:Irland, Nordirland, Vatikanstadt
+T:*/*=0.68/60
+Z:202 World 2
+A:Island, Polen, Portugal, Slowakei, Tschechische Republik, Ungarn
+T:*/*=0.79/60
+Z:203 World 3
+A:Bulgarien, Griechenland, Rumänien, Türkei
+T:*/*=0.99/60
+Z:204 World 4
+A:Bosnien-Herzegowina, Kroatien, Mazedonien, Slowenien
+T:*/*=1.99/60
+Z:205 World 5
+A:Japan
+T:*/*=1.49/60
+Z:206 World 6
+A:Hongkong, Singapur, Südkorea
+T:*/*=1.85/60
+Z:207 World 7
+A:Brasilien
+T:*/*=1.99/60
+Z:208 World 8
+A:Südafrika, Taiwan
+T:*/*=2.15/60
+Z:209 World 9
+A:China, Indien, Thailand
+T:*/*=2.40/60
+Z:210 World 10
+A:+	# alle übrigen
+T:*/*=3.00/60
+#####################################################################
+P:50,3 Talkline talkmax
+C:Preselection
+C:Erfasste Zonen:
+C:   1 -   4	Deutschland
+C:  10 -  15	Mobilfunk
+C:  40		Talkline Auskunft
+C: 102		Internet Talkline By Call
+C: 200 - 	Ausland
 D:dtag
-F:P100
-Z:1-2
-T:*/8-18=0.07(60)/90
-T:*/18-8=0.035(60)/90
-Z:3,4
-T:*/8-18=0.12(60)/1
-T:*/18-2,6-8=0.09(60)/1
-T:*/2-6=0.065(60)/1 Data
-A:+49
-Z:10-15
-T:*/8-18=0.59(60)/1
-T:*/18-8=0.49(60)/1
-A:+491618		# T-C-Tel Voice Mail
-A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
-A:+49170,+49171		# D1
-A:+49172,+49173		# D2
-A:+49177,+49178		# Eplus
-A:+49176,+49179		# E2
-#T:*/*=0.49(60)/1 # für Talkline<->Talkline
-#T:*/2-6=0.065(60)/1	# für Data-Calls
-#TODO: Ausland
+F:P
+Z:1-4 Inland
+A:Deutschland
+T:W/8-18=0.18/60
+T:W/18-21=0.18/60
+T:W/21-8=0.09/60
+T:E,H/*=0.09/60
+Z:10-15 Mobil
+A:C-Tel Voice Mail, C-Netz, D1, D2, E1, E2
+T:*/*=0.49/60
+Z:40 Telefonauskunft
+A:11850
+T:*/*=0.968/0,0.12/7.5
+Z:102 Talknet by call
+A:019251 # Proxy: proxy.tli.de:8080; DNS: 195.252.128.53 und 195.252.128.54; User: talknet; Passwort: talknet
+S:Internet by call
+T:*/*=0.12/180	# 4 Pf / Min Onlinegebühr + 8 Pf / Min Telefongebühren
+Z:200 Private World Special
+A:Andorra,Australien,Belgien,Dänemark,Finnland,Frankreich,Großbritannien
+A:Italien,Kanada,Lichtenstein,Luxemburg,Monaco,Niederlande,Norwegen
+A:Österreich,Schweden,Schweiz,Spanien,USA
+T:*/*=0.45/60
+Z:201 World 1
+A:Irland, Nordirland, Vatikanstadt
+T:*/*=0.68/60
+Z:202 World 2
+A:Island, Polen, Portugal, Slowakei, Tschechische Republik, Ungarn
+T:*/*=0.79/60
+Z:203 World 3
+A:Bulgarien, Griechenland, Rumänien, Türkei
+T:*/*=0.99/60
+Z:204 World 4
+A:Bosnien-Herzegowina, Kroatien, Mazedonien, Slowenien
+T:*/*=1.99/60
+Z:205 World 5
+A:Japan
+T:*/*=1.49/60
+Z:206 World 6
+A:Hongkong, Singapur, Südkorea
+T:*/*=1.85/60
+Z:207 World 7
+A:Brasilien
+T:*/*=1.99/60
+Z:208 World 8
+A:Südafrika, Taiwan
+T:*/*=2.15/60
+Z:209 World 9
+A:China, Indien, Thailand
+T:*/*=2.40/60
+Z:210 World 10
+A:+	# alle übrigen
+T:*/*=3.00/60
+#####################################################################
+P:50,5 Talkline BusinessLine Classic
+C:Preselection
+C:Mindestumsatz: DM 116,- / Monat
+C:Erfasste Zonen:
+C:   1 -   4	Deutschland
+C:   5		Sondertarif
+C:   6		Sondertarif Data
+C:  10 -  15	Mobilfunk
+C:  40		Talkline Auskunft
+C: 200 - 	Ausland
+C:Sondertarif 5: Mobiloption: nur für Talkline Mobilfunkkunden
+C:                   bei Gesprächen zum eigenen Talkline-Handy.
+C:Sondertarif 6: Data (national) ??? von 02:00h bis 06:00h
+D:dtag
+F:P
+Z:1-4 Inland
+A:Deutschland
+T:W/08-18=0.0812/60 Hauptzeit
+T:W/18-08=0.0406/60 Nebenzeit
+T:E,H/*=0.0406/60 Nebenzeit
+Z:5 Mobile Talkline
+T:*/*=0.4872(60)/1
+Z:6 Data (national)
+T:*/02-06=0.04176(60)/1
+Z:10-15 Mobil
+A:C-Tel Voice Mail, C-Netz, D1, D2, E1, E2
+T:*/*=0.5568(60)/1
+Z:40 Telefonauskunft
+A:11850
+T:*/*=0.968/0,0.12/7.5
+Z:201 Business World 1
+A:Andorra, Belgien, Dänemark, Färöer, Frankreich, Griechenland
+A:Großbritannien, Insel Man, Irland, Italien, Kanada, Kanalinseln
+A:Liechtenstein, Monaco, Niederlande, Nordirland, Österreich
+A:San Marino, Spanien, USA, Vatikanstadt
+T:*/*=0.3364(60)/1
+Z:202 Business World 2
+A:Finnland, Island, Norwegen, Polen, Portugal, Schweden, Schweiz
+A:Slowakei, Tschechische Republik
+T:*/*=0.4524(60)/1
+Z:203 Business World 3
+A:Kroatien, Türkei, Ungarn, Zypern
+T:*/*=0.6844(60)/1
+Z:204 Business World 4
+A:Ägypten, Albanien, Algerien, Bosnien-Herzegowina, Bulgarien
+A:Estland, Gibraltar, Israel, Jordanien, Jugoslawien, Lettland
+A:Libanon, Libyien, Litauen, Malta, Marokko, Mazedonien, Moldau
+A:Rumänien, Russische Föderation, Syrien, Tunesien, Ukraine
+T:*/*=1.0324(60)/1
+Z:205 Business World 5
+A:Australien, Hongkong, Japan, Südkorea, Neuseeland, Singapur
+T:*/*=1.3804(60)/1
+Z:206 Business World 6
+A:Chile, China
+T:*/*=1.4964(60)/1
+Z:207 Business World 7
+A:Brasilien, Südafrika
+T:*/*=1.6124(60)/1
+Z:208 Business World 8
+A:Argentinien, Dom Rep, Iran, Kasachstan
+A:Kolumbien, Niederl. Antillen, Saudi Arabien
+T:*/*=1.7284(60)/1
+Z:209 Business World 9
+A:Malaysia, Mexiko
+T:*/*=1.8444(60)/1
+Z:210 Business World 10
+A:Indien
+A:+	# alle übrigen
+T:*/*=2.3084(60)/1
+#####################################################################
+P:50,6 Talkline BusinessLine Local
+C:Preselection
+C:Mindestumsatz: DM 116,- / Monat
+C:Gilt nur in folgenden Großräumen: Berlin, Düsseldorf, Frankfurt
+C:Hamburg, München, Stuttgart
+C:Erfasste Zonen:
+C:   1 -   4	Deutschland
+C:   5		Sondertarif
+C:   6		Sondertarif Data
+C:  10 -  15	Mobilfunk
+C:  40		Talkline Auskunft
+C: 200 - 	Ausland
+C:Sondertarif 5: Mobiloption: nur für Talkline Mobilfunkkunden
+C:                   bei Gesprächen zum eigenen Talkline-Handy.
+C:Sondertarif 6: Data (national) ??? von 02:00h bis 06:00h
+D:dtag
+F:P
+Z:1-2 City
+T:W/08-18=0.06844(60)/1 Hauptzeit
+T:W/18-08=0.04060(60)/1 Nebenzeit
+T:E,H/*=0.04060(60)/1 Nebenzeit
+Z:3 Local
+T:W/08-18=0.10324(60)/1 Hauptzeit
+T:W/18-08=0.06844(60)/1 Nebenzeit
+T:E,H/*=0.06844(60)/1 Nebenzeit
+Z:4 National
+A:Deutschland
+T:W/08-18=0.11020(60)/1 Hauptzeit
+T:W/18-08=0.09164(60)/1 Nebenzeit
+T:E,H/*=0.09164(60)/1 Nebenzeit
+Z:5 Mobile Talkline
+T:*/*=0.46284(60)/1
+Z:6 Data (national)
+T:*/02-06=0.04176(60)/1
+Z:10-15 Mobil
+A:C-Tel Voice Mail, C-Netz, D1, D2, E1, E2
+T:*/*=0.5336(60)/1
+Z:40 Telefonauskunft
+A:11850
+T:*/*=0.968/0,0.12/7.5
+Z:201 Business World 1
+A:Andorra, Belgien, Dänemark, Färöer, Frankreich, Griechenland
+A:Großbritannien, Insel Man, Irland, Italien, Kanada, Kanalinseln
+A:Liechtenstein, Monaco, Niederlande, Nordirland, Österreich
+A:San Marino, Spanien, USA, Vatikanstadt
+T:*/*=0.3364(60)/1
+Z:202 Business World 2
+A:Finnland, Island, Norwegen, Polen, Portugal, Schweden, Schweiz
+A:Slowakei, Tschechische Republik
+T:*/*=0.4524(60)/1
+Z:203 Business World 3
+A:Kroatien, Türkei, Ungarn, Zypern
+T:*/*=0.6844(60)/1
+Z:204 Business World 4
+A:Ägypten, Albanien, Algerien, Bosnien-Herzegowina, Bulgarien
+A:Estland, Gibraltar, Israel, Jordanien, Jugoslawien, Lettland
+A:Libanon, Libyien, Litauen, Malta, Marokko, Mazedonien, Moldau
+A:Rumänien, Russische Föderation, Syrien, Tunesien, Ukraine
+T:*/*=1.0324(60)/1
+Z:205 Business World 5
+A:Australien, Hongkong, Japan, Südkorea, Neuseeland, Singapur
+T:*/*=1.3804(60)/1
+Z:206 Business World 6
+A:Chile, China
+T:*/*=1.4964(60)/1
+Z:207 Business World 7
+A:Brasilien, Südafrika
+T:*/*=1.6124(60)/1
+Z:208 Business World 8
+A:Argentinien, Dom Rep, Iran, Kasachstan
+A:Kolumbien, Niederl. Antillen, Saudi Arabien
+T:*/*=1.7284(60)/1
+Z:209 Business World 9
+A:Malaysia, Mexiko
+T:*/*=1.8444(60)/1
+Z:210 Business World 10
+A:Indien
+A:+	# alle übrigen
+T:*/*=2.3084(60)/1
 #####################################################################
 #
 #
 P:51 01051
 C:ID-Switch GmbH, Graf-Adolf-Straße, 40210 Düsseldorf 01051
-# G:11-Oct-1999
+# G:14-Oct-1999
 C:Homepage: http://www.01051.com
 C:Adresse:  Koenigsallee 60f
 C:	    40210 Duesseldorf
@@ -12026,12 +12292,7 @@ Z:2-4 Ferngespräche
 A:+49
 T:*/*=0.09/60
 Z:10 Mobilfunk
-A:+491618		# T-C-Tel Voice Mail
-A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
-A:+49170,+49171,+49175	# D1
-A:+49172,+49173,+49174	# D2
-A:+49177,+49178		# Eplus
-A:+49176,+49179		# E2
+A:C-Tel Voice Mail, C-Netz, D1, D2, E1, E2
 T:*/*=0.40/60
 Z:40 Telefonauskunft Inland (Austria, dial 01051004366211811)
 A:+4366211811
@@ -12050,7 +12311,7 @@ A:Australien
 T:*/*=0.19/60
 Z:203 Belgien
 A:Belgien
-T:*/*=0.18/60
+T:*/*=0.16/60
 Z:204 Bosnien
 A:Bosnien
 T:*/*=0.62/60
@@ -12163,10 +12424,10 @@ Z:241 Taiwan
 A:Taiwan
 T:*/*=0.36/60
 Z:242 USA,Alaska,Hawaii
-A:USA,Alaska,Hawaii
+A:USA, Alaska, Hawaii
 T:*/*=0.14/60
 Z:243 USA toll free
-A:+1800, +1877, +1880, +1881, +1882, +1888 # USA toll free
+A:USA toll free
 T:*/*=0.15/60
 Z:244 Venezuela
 A:Venezuela
@@ -12490,9 +12751,9 @@ C:GmbH i.G. Grimmstraße 4 80336 München 01062
 #####################################################################
 #
 #
-P:63 KDD-Conos PrivateCall easy
+P:63,1 KDD-Conos PrivateCall easy
 C:Corporate Network & Services Aktiengesellschaft Lievelingsweg 125
-A:52119 Bonn 01063
+C:52119 Bonn 01063
 C:URL: http://www.kdd-conos.de
 C:Preselection
 C:Erfasste Zonen:
@@ -12505,22 +12766,23 @@ C:Sondertarif 5: Gespräche zu KDD-Conos Mobilfunkteilnehmern
 Z:1-2 Lokal
 T:W/08-18=0.09/60
 T:W/18-08=0.06/60
-T:E,H/0.06/60
+T:E,H/*=0.06/60
 Z:3-4 Deutschland
 T:W/08-18=0.14/60
 T:W/18-21=0.09/60
 T:W/21-08=0.06/60
 T:E,H/*=0.06/60
-Z:5 KDD-Conos Mobilfunk
-A:C-Tel Voice Mail, C-Netz, D1, D2, E1, E2
-T:W/08-18=0.44/60
-T:W/18-08=0.35/60
-T:E,H/0.35/60
+# FIXME: Wie wollen wir KDD-Conos-Kunden erkennen?
+# Z:5 KDD-Conos Mobilfunk
+# A:C-Tel Voice Mail, C-Netz, D1, D2, E1, E2
+# T:W/08-18=0.44/60
+# T:W/18-08=0.35/60
+# T:E,H/*=0.35/60
 Z:10 Mobilfunk
 A:C-Tel Voice Mail, C-Netz, D1, D2, E1, E2
 T:W/08-18=0.49/60
 T:W/18-08=0.39/60
-T:E,H/0.39/60
+T:E,H/*=0.39/60
 Z:200 EuroCenter
 A:Andorra, Belgien, Dänemark, Frankreich, Großbritannien
 A:Italien, Liechtenstein, Luxemburg, Monaco, Niederlande
@@ -12564,7 +12826,7 @@ Z:209 Welt IV
 A:+	# alle übrigen
 T:*/*=1.99/60
 #####################################################################
-P:63 KDD-Conos PrivateCall genau
+P:63,2 KDD-Conos PrivateCall genau
 C:Corporate Network & Services Aktiengesellschaft Lievelingsweg 125 52119 Bonn 01063
 C:URL: http://www.kdd-conos.de
 C:Preselection
@@ -12585,16 +12847,17 @@ T:W/08-18=0.16(60)/1
 T:W/18-21=0.11(60)/1
 T:W/21-08=0.08(60)/1
 T:E,H/*=0.08(60)/1
-Z:5 KDD-Conos Mobilfunk
-A:C-Tel Voice Mail, C-Netz, D1, D2, E1, E2
-T:W/08-18=0.54(60)/1
-T:W/18-08=0.39(60)/1
-T:E,H/0.35(60)/1
+# FIXME: Wie wollen wir KDD-Conos-Kunden erkennen?
+# Z:5 KDD-Conos Mobilfunk
+# A:C-Tel Voice Mail, C-Netz, D1, D2, E1, E2
+# T:W/08-18=0.54(60)/1
+# T:W/18-08=0.39(60)/1
+# T:E,H/0.35(60)/1
 Z:10 Mobilfunk
 A:C-Tel Voice Mail, C-Netz, D1, D2, E1, E2
 T:W/08-18=0.59(60)/1
 T:W/18-08=0.45(60)/1
-T:E,H/0.45(60)/1
+T:E,H/*=0.45(60)/1
 Z:200 EuroCenter
 A:Andorra, Belgien, Dänemark, Frankreich, Großbritannien
 A:Italien, Liechtenstein, Luxemburg, Monaco, Niederlande
@@ -13638,9 +13901,10 @@ T:*/*=0.409(60)/1
 Z:318 Island
 A:Island # +354
 T:*/*=0.269(60)/1
-Z:319 Island Mobilfunk
-A:Island Mobilfunk # +354
-T:*/*=0.329(60)/1
+# FIXME: Rufnummer?
+# Z:319 Island Mobilfunk
+# A:Island Mobilfunk # +354
+# T:*/*=0.329(60)/1
 Z:320 Israel
 A:Israel # +972
 T:*/*=0.309(60)/1

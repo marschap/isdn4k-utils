@@ -1,4 +1,4 @@
-/* $Id: processor.c,v 1.87 1999/10/30 14:38:47 akool Exp $
+/* $Id: processor.c,v 1.88 1999/11/05 20:22:01 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,11 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.88  1999/11/05 20:22:01  akool
+ * isdnlog-3.63
+ *  - many new rates
+ *  - cosmetics
+ *
  * Revision 1.87  1999/10/30 14:38:47  akool
  * isdnlog-3.61
  *
@@ -815,6 +820,7 @@
 #include "sys/times.h"
 #include "asn1.h"
 #include "zone.h"
+#include "telnum.h"
 
 static int    HiSax = 0, hexSeen = 0, uid = UNKNOWN, lfd = 0;
 static char  *asnp, *asnm;
@@ -1013,6 +1019,7 @@ void buildnumber(char *num, int oc3, int oc3a, char *result, int version,
     } /* while */
   } /* if */
 
+#if  0  
   if (!dir && (who == CALLED) && !memcmp(num, vbn, strlen(vbn))) { /* Provider */
     register int l, c;
 
@@ -1039,18 +1046,30 @@ void buildnumber(char *num, int oc3, int oc3a, char *result, int version,
 
     num[l] = c;
     num += l;
-
     if (Q931dmp) {
       auto char s[BUFSIZ];
-
       if (*provider < 100)
         sprintf(s, "Via provider \"%s%02d\", %s", vbn, *provider, getProvider(*provider));
       else
 	sprintf(s, "Via provider \"%s%03d\", %s", vbn, *provider - 100, getProvider(*provider));
-
       Q931dump(TYPE_STRING, -1, s, version);
     } /* if */
   } /* if */
+#else
+  if (!dir && (who == CALLED) && !*intern) { /* split Provider */
+    int l;
+    /* cool Kool :-) */
+    num += (l=provider2prefix(num, provider));
+
+    if (l && Q931dmp) {
+      auto char s[BUFSIZ];
+      auto char prov[TN_MAX_PROVIDER_LEN];
+      prefix2provider(*provider, prov);
+      sprintf(s, "Via provider \"%s\", %s", prov, getProvider(*provider));
+      Q931dump(TYPE_STRING, -1, s, version);
+    } /* if */
+  } /* if */
+#endif    
 
   if (!*intern) {
     if (*provider == UNKNOWN)
@@ -3585,7 +3604,8 @@ static void processLCR(int chan, char *hint)
 {
   auto   RATE   bestRate, bookRate, pselRate, hintRate;
   auto   char   buffer[BUFSIZ], *p;
-  auto	 double pselpreis = -1.0, hintpreis = -1.0;
+  auto	 double pselpreis = -1.0, hintpreis = -1.0, diff;
+  char   prov[TN_MAX_PROVIDER_LEN];
 
   *hint='\0';
   *(p=buffer)='\0';
@@ -3609,30 +3629,38 @@ static void processLCR(int chan, char *hint)
   if (getRate(&hintRate, NULL) != UNKNOWN)
     hintpreis = hintRate.Charge;
 
-  if ((bestRate.prefix != UNKNOWN) && (bestRate.prefix != call[chan].provider))
-    p+=sprintf(p, "\nHINT: Cheapest booked %s%02d:%s %s (saving %s)",
-      vbn, bestRate.prefix, bestRate.Provider,
+  diff = call[chan].pay - bestRate.Charge;
+  if (diff > 0 && (bestRate.prefix != UNKNOWN) && (bestRate.prefix != call[chan].provider)) {
+    prefix2provider(bestRate.prefix, prov);
+    p+=sprintf(p, "\nHINT: Cheapest booked %s:%s %s (would save %s)",
+      prov, bestRate.Provider,
       printRate (bestRate.Charge),
-      printRate(call[chan].pay - bestRate.Charge));
-
-  if ((bookRate.prefix != UNKNOWN) && (bookRate.prefix != bestRate.prefix))
-    p+=sprintf(p, "\nHINT: Overall cheapest %s%02d:%s %s (saving %s)",
-      vbn, bookRate.prefix, bookRate.Provider,
+      printRate(diff));
+  }
+  diff = call[chan].pay - bookRate.Charge;
+  if (diff > 0 && (bookRate.prefix != UNKNOWN) && (bookRate.prefix != bestRate.prefix)) {
+    prefix2provider(bookRate.prefix, prov);
+    p+=sprintf(p, "\nHINT: Overall cheapest %s:%s %s (would save %s)",
+      prov, bookRate.Provider,
       printRate (bookRate.Charge),
-      printRate(call[chan].pay - bookRate.Charge));
-
-  if ((call[chan].provider != preselect) && (pselpreis != -1.00) && (pselpreis != call[chan].pay))
-    p+=sprintf(p, "\nHINT: Preselect %s%02d:%s %s (saving %s)",
-      vbn, preselect, getProvider(preselect),
+      printRate(diff));
+  }
+  diff = pselpreis - call[chan].pay;
+  if (diff > 0 && (call[chan].provider != preselect) && (pselpreis != -1.00) && (pselpreis != call[chan].pay)) {
+    prefix2provider(preselect, prov);
+    p+=sprintf(p, "\nHINT: Preselect %s:%s %s (you saved %s)",
+      prov, getProvider(preselect),
       printRate (pselpreis),
-      printRate(pselpreis - call[chan].pay));
-
-  if ((call[chan].hint != UNKNOWN) && (call[chan].hint != bestRate.prefix))
-    p+=sprintf(p, "\nHINT:  Hinted %s%02d:%s %s (saving %s)",
-      vbn, call[chan].hint, getProvider(call[chan].hint),
+      printRate(diff));
+  }
+  diff = hintpreis - call[chan].pay;
+  if (diff > 0 && (call[chan].hint != UNKNOWN) && (call[chan].hint != bestRate.prefix)) {
+    prefix2provider(call[chan].hint, prov);
+    p+=sprintf(p, "\nHINT:  Hinted %s:%s %s (saving %s)",
+      prov, getProvider(call[chan].hint),
       printRate (hintpreis),
-      printRate(hintpreis - call[chan].pay));
-
+      printRate(diff));
+  }
   if (*buffer) {
     p+=sprintf(p, "\nHINT: LCR:%s", (bestRate.prefix == call[chan].provider) ? "OK" : "FAILED");
     sprintf (hint, "%s", buffer+1);
@@ -3734,18 +3762,23 @@ static void prepareRate(int chan, char **msg, char **tip, int viarep)
 
   if ((call[chan].hint = getLeastCost(&call[chan].Rate, &lcRate, 1, -1)) != UNKNOWN) {
     if (tip) {
-
+      double diff;
+      char prov[TN_MAX_PROVIDER_LEN];
       /* compute charge for LCR_DURATION seconds for used provider */
       ckRate = call[chan].Rate;
       ckRate.now = ckRate.start + LCR_DURATION;
       getRate(&ckRate, NULL);
-
-      sprintf(lcrhint, "HINT: Better use %s%02d:%s, %s/%ds = %s/Min, saving %s/Min",
-	vbn, lcRate.prefix, lcRate.Provider,
-	printRate(lcRate.Price),
-	(int)(lcRate.Duration + 0.5),
-	printRate(60 * lcRate.Price / lcRate.Duration),
-	printRate(60*(ckRate.Charge - lcRate.Charge)/lcRate.Time));
+      
+      diff = ckRate.Charge - lcRate.Charge;
+      if(diff > 0) {
+        prefix2provider(lcRate.prefix, prov);
+        sprintf(lcrhint, "HINT: Better use %s:%s, %s/%ds = %s/Min, saving %s/Min",
+	  prov, lcRate.Provider,
+	  printRate(lcRate.Price),
+	  (int)(lcRate.Duration + 0.5),
+	  printRate(60 * lcRate.Price / lcRate.Duration),
+	  printRate(60*(diff)/lcRate.Time));
+      }	  
     } /* if */
   } /* if */
 } /* prepareRate */
@@ -4649,8 +4682,10 @@ doppelt:break;
  	    prepareRate(chan, NULL, NULL, 0);
 
  	    if (getLeastCost(&call[chan].Rate, &Other, 1, call[chan].provider) != UNKNOWN) {
+	      char prov[TN_MAX_PROVIDER_LEN];
+	      prefix2provider(Other.prefix, prov);
       	      showRates(&Other, s1);
- 	      sprintf(s, "OVERLOAD? Try %s%02d:%s (%s)", vbn, Other.prefix, Other.Provider, s1);
+ 	      sprintf(s, "OVERLOAD? Try %s:%s (%s)", prov, Other.Provider, s1);
 
               info(chan, PRT_SHOWHANGUP, STATE_HANGUP, s);
  	    } /* if */
