@@ -25,7 +25,7 @@
  * OR MODIFICATIONS.
  */
 
-char ccp_rcsid[] = "$Id: ccp.c,v 1.9 1998/10/29 17:28:45 hipp Exp $";
+char ccp_rcsid[] = "$Id: ccp.c,v 1.10 1998/12/01 12:59:38 hipp Exp $";
 
 #include <string.h>
 #include <syslog.h>
@@ -448,7 +448,7 @@ static void ccp_resetci(fsm *f)
 	opt_buf[4] = LZS_CMODE_SEQNO;
 	if(ccp_test(unit, opt_buf, CILEN_LZS_COMPRESS, 0) <= 0) {
 	    go->lzs = 0;
-	    fprintf(stderr, "kernel check for LZS failed\n");
+	    syslog(LOG_NOTICE,"Kernel check for LZS failed\n");
 	}
     }
 }
