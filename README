@@ -1,22 +1,40 @@
 #
-# $Id: README,v 1.3 1997/03/02 19:41:57 fritz Exp $
+# $Id: README,v 1.4 1997/03/24 23:38:38 fritz Exp $
 #
 This is the README file for the "isdn4k-utils" package from "The i4l-crew".
 
 This package contains the following stuff:
 
-  isdnctrl,  general link-level setup utility.
-  icnctrl,   setup utility for the icn driver.
-  telesctrl, setup utility for the teles driver.
-  hisaxctrl, setup utility for the HiSax driver.
-  pcbitctl,  setup utility for the pcbit driver.
-  imon,      a ncurses based utility for monitoring ISDN-activities.
-  imontty,   a tty based utility for monitoring ISDN-activities.
-  isdnlog,   a set of utilities for connection logging.
-  xmonisdn,  a utility for monitoring and controlling ISDN-activity.
-  xisdnload, an xload-like meter.
-  isdnmon,   a Tcl/Tk based utility for monitoring ISDN-activities.
-  
+1. Runtime configuration tools:
+  isdnctrl,   general link-level setup utility.
+  iprofd,     daemon for realizing AT&W0 on ttyI's.
+  icnctrl,    setup utility for the icn driver.
+  telesctrl,  setup utility for the teles driver.
+  hisaxctrl,  setup utility for the HiSax driver.
+  pcbitctl,   setup utility for the pcbit driver.
+  avmcapictrl setup utility for the avmb1 driver.
+
+2. Tools for monitoring activity:
+  imon,       a ncurses based utility for monitoring ISDN-activities.
+  imontty,    a tty based utility for monitoring ISDN-activities.
+  isdnlog,    a set of utilities for connection logging.
+  ipppstats   a utility for showing syncPPP statistics.
+  xisdnload,  an xload-like meter.
+  xmonisdn,   a utility for monitoring and controlling ISDN-activity.
+  isdnmon,    a Tcl/Tk based utility for monitoring ISDN-activities.
+
+3. Applications:
+  vbox,       an answering machine/voice mailbox.
+  ipppd,      daemon need for syncPPP and MPP.
+
+4. Documentation:
+  A very detailed FAQ and the generic manpages ttyI.4, isdninfo.4,
+  isdn_audio.4 and isdn_cause.7.
+  Manpages for the above utilities:
+  avmcapictrl.8, hisaxctrl.8 icnctrl.8, imon.8, ipppd.8, ipppstats.8,
+  iprofd.8, isdnctrl.8, isdnlog.8, isdnrep.1, telesctrl.8, xisdnload.1x
+  and xmonisdn.1x
+
 System prerequisites:
 
   To use this package, you need a kernel with an ISDN-subsystem configured.
@@ -70,8 +88,7 @@ System prerequisites:
    Documentation/isdn subdirectory of your kernel-source-tree for
    more information on configuring Lowlevel drivers.
 
-   For the utilities "isdnctrl", "icnctrl" "telesctrl" and "imon" refer to
-   the man pages. For the other contributed utilities, look into their
+   For the utilities refer to the man pages or look into their
    subdirectories for Documentation.
 
    For tips, troubleshooting etc. look into the FAQ subdirectory

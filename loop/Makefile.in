@@ -1,0 +1,72 @@
+# $Id: Makefile.in,v 1.1 1997/03/24 23:38:43 fritz Exp $
+#
+# Makefile for loopctrl
+# (C) 1997 Fritz Elfert
+#
+#
+SHELL			= /bin/sh
+CFLAGS			= -Wall -O2
+INCLUDES		= -I. @DEBUGVAR@
+DEFS			=
+LDFLAGS			= -L../lib @LIBS@
+PROGRAM			= loopctrl
+MODULES			= loopctrl.o
+MANPAGE			= loopctrl.8
+INSTALL			= @INSTALL@
+INSTALL_PROGRAM	= $(INSTALL) -o 0 -g 0 -m 0750
+INSTALL_MAN		= $(INSTALL) -o 0 -g 0 -m 0644
+prefix			= @prefix@
+exec_prefix		= @exec_prefix@
+ifeq (../.config,$(wildcard ../.config))
+	include ../.config
+	INCLUDES += -I$(shell eval echo $(CONFIG_LOOPCTRL_LOOPDIR))
+	ifeq ($(CONFIG_LOOPCTRL_DEBUG),y)
+		DEFS += -DDEBUGVAR
+	endif
+	SBINDIR			= $(CONFIG_SBINDIR)
+	mandir			= $(CONFIG_MANDIR)
+else
+	SBINDIR			= /sbin
+	mandir			= @mandir@
+endif
+MAN8DIR			= $(mandir)/man8
+CC				= @CC@
+
+.SUFFIXES:
+.SUFFIXES: .c .o
+
+%.o: %.c
+	$(CC) $(CFLAGS) $(INCLUDES) $(DEFS) -c -o $@ $<
+
+all: $(PROGRAM)
+
+config:
+	@./configure
+
+Makefile: Makefile.in config.status
+	./config.status
+
+config.status: configure
+	./config.status --recheck
+
+$(PROGRAM):	$(MODULES)
+	$(CC) $(CFLAGS) $(INCLUDES) $(DEFS) $? $(LDFLAGS) -o $@
+
+install-man: $(PROGRAM).man
+	mkdir -p $(MAN8DIR)
+	$(INSTALL_MAN) $< $(MAN8DIR)/$(MANPAGE)
+
+install: $(PROGRAM) install-man
+	$(INSTALL_PROGRAM) $(PROGRAM) $(SBINDIR)/$(PROGRAM)
+
+install-strip: $(PROGRAM)
+	$(INSTALL_PROGRAM) -s $(PROGRAM) $(SBINDIR)/$(PROGRAM)
+
+uninstall:
+	rm -f $(SBINDIR)/$(PROGRAM) $(MAN8DIR)/$(MANPAGE)
+
+clean:
+	rm -f *.o *~ $(PROGRAM)
+
+distclean: clean
+	rm -f config.status config.cache config.log Makefile loopctrl.man

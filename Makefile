@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.11 1997/03/24 04:00:04 fritz Exp $
+# $Id: Makefile,v 1.12 1997/03/24 23:38:37 fritz Exp $
 #
 # Toplevel Makefile for isdn4k-utils
 #
@@ -43,6 +43,9 @@ else
 endif
 ifeq ($(CONFIG_AVMCAPICTRL),y)
 	SUBDIRS := $(SUBDIRS) avmb1
+endif
+ifeq ($(CONFIG_LOOPCTRL),y)
+	SUBDIRS := $(SUBDIRS) loop
 endif
 ifeq ($(CONFIG_IMON),y)
 	SUBDIRS := $(SUBDIRS) imon
