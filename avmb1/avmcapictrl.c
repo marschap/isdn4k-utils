@@ -1,11 +1,14 @@
 /*
- * $Id: avmcapictrl.c,v 1.12 1999/07/01 16:37:53 calle Exp $
+ * $Id: avmcapictrl.c,v 1.13 1999/12/06 17:01:51 calle Exp $
  * 
  * AVM-B1-ISDN driver for Linux. (Control-Utility)
  * 
  * Copyright 1996 by Carsten Paeth (calle@calle.in-berlin.de)
  * 
  * $Log: avmcapictrl.c,v $
+ * Revision 1.13  1999/12/06 17:01:51  calle
+ * more documentation and possible errors explained.
+ *
  * Revision 1.12  1999/07/01 16:37:53  calle
  * New command with new driver
  *    avmcapictrl trace [contrnr] [off|short|on|full|shortnodate|nodata]
@@ -418,6 +421,7 @@ int main(int argc, char **argv)
 			ioctl_s.data = &newcard;
 			if ((ioctl(fd, CAPI_MANUFACTURER_CMD, &ioctl_s)) < 0) {
 				perror("ioctl ADDCARD");
+				fprintf(stderr, "%s: please also look at the kernel message, call command dmesg(8)\n", cmd);
 				exit(-1);
 			}
 			close(fd);
@@ -523,6 +527,7 @@ int main(int argc, char **argv)
 		ioctl_s.data = &ldef;
 		if ((ioctl(fd, CAPI_MANUFACTURER_CMD, &ioctl_s)) < 0) {
 			perror("\nioctl LOAD");
+			fprintf(stderr, "%s: please also look at the kernel message, call command dmesg(8)\n", cmd);
 			exit(2);
 		}
 		munmap(ldef.t4file.data, ldef.t4file.len);
@@ -541,6 +546,7 @@ int main(int argc, char **argv)
 		ioctl_s.cmd = AVMB1_RESETCARD;
 		ioctl_s.data = &rdef;
 		if ((ioctl(fd, CAPI_MANUFACTURER_CMD, &ioctl_s)) < 0) {
+			fprintf(stderr, "%s: please also look at the kernel message, call command dmesg(8)\n", cmd);
 			perror("\nioctl RESETCARD");
 			exit(2);
 		}
@@ -559,6 +565,7 @@ int main(int argc, char **argv)
 		ioctl_s.cmd = AVMB1_REMOVECARD;
 		ioctl_s.data = &rdef;
 		if ((ioctl(fd, CAPI_MANUFACTURER_CMD, &ioctl_s)) < 0) {
+			fprintf(stderr, "%s: please also look at the kernel message, call command dmesg(8)\n", cmd);
 			perror("\nioctl REMOVECARD");
 			exit(2);
 		}
@@ -606,6 +613,9 @@ int main(int argc, char **argv)
 			exit(2);
 		}
 		close(fd);
+		if (fdef.flag != KCAPI_TRACE_OFF)
+		    printf("%s: trace switched on, look at the kernel messages, check dmesg(8)\n", cmd);
+	        else printf("%s: trace switched off\n", cmd);
 		return 0;
 	}
 #endif

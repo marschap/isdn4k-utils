@@ -1,11 +1,11 @@
-.\" $Id: avmcapictrl.man.in,v 1.2 1998/02/07 20:32:02 calle Exp $
+.\" $Id: avmcapictrl.man.in,v 1.3 1999/12/06 17:01:51 calle Exp $
 .\"
-.\" CHECKIN $Date: 1998/02/07 20:32:02 $
+.\" CHECKIN $Date: 1999/12/06 17:01:51 $
 .\"
 .TH AVMCAPICTRL 8 "@MANDATE@" isdn4k-utils-@I4LVERSION@ "Linux System Administration"
 .UC 4
 .SH NAME
-avmcapictrl \- Add AVM-B1 cards and load firmware
+avmcapictrl \- Add, reset or remove active AVM cards and load firmware
 .SH SYNOPSIS
 avmcapictrl add <portbase> <irq> <type>
 .br
@@ -14,11 +14,16 @@ avmcapictrl load <bootcode> [<contrnr> [<protocol>
     [P2P | <dn1>:<spid1> [<dn2>:<spid2>]]]]
 .br
 avmcapictrl reset [contrnr]
+.br
+avmcapictrl remove [contrnr]
+.br
+avmcapictrl trace [contrnr] [off|short|on|full|shortnodata|nodata]
 .SH DESCRIPTION
 .I avmcapictrl
-is used to register AVM-B1 ISA cards to the
-kernelcapi system and therewith to the isdn system.
-You need it also to upload the firmware to any AVM-B1 card.
+is used to register active AVM ISA cards kernelcapi system and
+therewith to the isdn system. You need it also to upload the
+firmware to any active AVM card. If an error occure please also
+check the kernel error messages by using the command dmesg(8).
 .LP
 The use of
 .I avmcapictrl
@@ -27,12 +32,13 @@ makes sense, if you are using an AVM-B1-card only.
 .SH COMMANDS
 .TP 5
 .B add <portbase> <irq> <type>
-is used to add a card to the kernel-capi2.0 system.
+is used to add a ISA card to the kernel-capi2.0 system.
 The
 .I portbase
-can have the values 0x150, 0x250, 0x300 and 0x340,
-look at the jumper on the card.
-The
+can have the values 0x150, 0x250, 0x300 and 0x340 for
+the B1 ISA cards, look at the jumper on the card.
+For a T1-ISA (HEMA) card you can select an wide range
+of ports.
 .I irq
 can be selected from the following values:
 3, 4, 5, 6, 7, 9, 10, 11, 12 and 15.
@@ -46,16 +52,16 @@ is used to load the firmware to a card
 .I bootcode
 is a t4-file. The actual versions of the t4-files for the different
 d-channel protocols can be found at
-ftp://calle.in-berlin.de/pub/linux/avmb1/firmware.
+ftp://ftp.avm.de/cardware/b1/linux/firmware.
 you need different t4-files for different d channel protocols:
-b1-1tr6.t4 for 1TR6, b1.t4 for DSS1, D64S, D64S2, D64SD, DS01, DS02, CT1,
-VN3 or AUSTEL and b1-usa.t4 for 5ESS and NI1 (DSS1 is also supported).
+b1-1tr6.t4 for 1TR6, b1.t4 for DSS1, CT1, VN3 or AUSTEL and b1-usa.t4
+for 5ESS and NI1 (DSS1 is also supported).
 For M1/M2 PCMCIA cards you need m1-s10.t4 or m1-s4.t4 depending on the
 handy type used.
 .I contrnr
 is the number of the controller (card) starting from 1.
 .I protocol
-can be DSS1, D64S, D64S2, D64SD, DS01, DS02, CT1, VN3, AUSTEL, 5ESS or NI1.
+can be DSS1, CT1, VN3, AUSTEL, 5ESS or NI1.
 .I P2P
 point to point
 .I DN1:SPID1 DN2:SPID2
@@ -67,6 +73,32 @@ is used to reset a card if loading has failed.
 This function only make sence if card is not successfully loaded.
 .I contrnr
 is the number of the controller (card) starting from 1.
+.LP
+.TP 5
+.B remove [contrnr]
+is used to remove a card previous added. You can also remove
+automatic added cards (for example a B1-PCI card)
+.I contrnr
+is the number of the controller (card) starting from 1.
+.LP
+.TP 5
+.B trace [contrnr] [off|short|on|full|shortnodata|nodata]
+is used to trace CAPI2.0 messages. The trace will be done
+as kernel messages, see dmesg(8).
+.I contrnr
+is the number of the controller (card) starting from 1.
+.I off
+switch traceing off
+.I short
+switch one line per CAPI2.0 message tracing on
+.I on | full
+switch on full decode tracing
+.I shortnodata
+switch on line per CAPI2.0 message tracing on, but exclude
+DATA_B3_IND and DATA_B3_REQ messages.
+.I on | full
+switch on full decode tracing, but exclude
+DATA_B3_IND and DATA_B3_REQ messages.
 
 .SH AUTHOR
 Carsten Paeth <calle@calle.in-berlin.de>
@@ -78,3 +110,7 @@ Carsten Paeth <calle@calle.in-berlin.de>
 \&(8),
 .I isdninfo\c
 \&(4).
+.I dmesg\c
+\&(8).
+.I syslogd\c
+\&(8).
