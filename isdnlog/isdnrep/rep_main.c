@@ -1,4 +1,4 @@
-/* $Id: rep_main.c,v 1.15 2002/03/11 16:17:11 paul Exp $
+/* $Id: rep_main.c,v 1.16 2003/07/25 22:18:03 tobiasb Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -20,6 +20,31 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rep_main.c,v $
+ * Revision 1.16  2003/07/25 22:18:03  tobiasb
+ * isdnlog-4.65:
+ *  - New values for isdnlog option -2x / dual=x with enable certain
+ *    workarounds for correct logging in dualmode in case of prior
+ *    errors.  See `man isdnlog' and isdnlog/processor.c for details.
+ *  - New isdnlog option -U2 / ignoreCOLP=2 for displaying ignored
+ *    COLP information.
+ *  - Improved handling of incomplete D-channel frames.
+ *  - Increased length of number aliases shown immediately by isdnlog.
+ *    Now 127 instead of 32 chars are possible. (Patch by Jochen Erwied.)
+ *  - The zone number for an outgoing call as defined in the rate-file
+ *    is written to the logfile again and used by isdnrep
+ *  - Improved zone summary of isdnrep.  Now the real zone numbers as
+ *    defined in the rate-file are shown.  The zone number is taken
+ *    from the logfile as mentioned before or computed from the current
+ *    rate-file.  Missmatches are indicated with the chars ~,+ and *,
+ *    isdnrep -v ... explains the meanings.
+ *  - Fixed provider summary of isdnrep. Calls should no longer be
+ *    treated wrongly as done via the default (preselected) provider.
+ *  - Fixed the -pmx command line option of isdnrep, where x is the xth
+ *    defined [MSN].
+ *  - `make install' restarts isdnlog after installing the data files.
+ *  - A new version number generates new binaries.
+ *  - `make clean' removes isdnlog/isdnlog/ilp.o when called with ILP=1.
+ *
  * Revision 1.15  2002/03/11 16:17:11  paul
  * DM -> EUR
  *
@@ -248,6 +273,7 @@ int main(int argc, char *argv[], char *envp[])
 	auto char *ptr         = NULL;
 	auto char *linefmt     = "";
 	auto char *htmlreq     = NULL;
+	auto char *phonenumberarg = NULL;
 
 
 	set_print_fct_for_tools(print_in_modules);
@@ -255,6 +281,14 @@ int main(int argc, char *argv[], char *envp[])
 	/* we don't need this at the moment:
 	new_args(&argc,&argv);
 	*/
+
+	/* readconfig should be done before option parsing.  At least -pmx
+	 * needs access to known in set_msnlist.  Otherwise no selection of
+	 * configured MSNs via their index (x=1..) is possible.  By the other
+	 * hand this order can cause problems.  A corrupt config can block
+	 * the simple `isdnrep -V'.  Resolution: parse options first but call
+	 * set_msnlist after readconfig.
+	 */
 
   while ((c = getopt(argc, argv, options)) != EOF)
     switch (c) {
@@ -298,7 +332,7 @@ int main(int argc, char *argv[], char *envp[])
       case 'f' : strcpy(fnbuff, optarg);
                  break;
 
-      case 'p' : if (!phonenumberonly) set_msnlist(optarg);
+      case 'p' : if (!phonenumberonly) phonenumberarg = strdup(optarg);
       	       	 phonenumberonly++;
       	       	 break;
 
@@ -336,6 +370,11 @@ int main(int argc, char *argv[], char *envp[])
 
   if (readconfig(myname) != 0)
   	return 1;
+
+	if (phonenumberonly && phonenumberarg != NULL) {
+		set_msnlist(phonenumberarg);
+		free(phonenumberarg);
+	}
 
   if (htmlreq)
   {

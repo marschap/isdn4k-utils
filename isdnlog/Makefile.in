@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.208 2002/09/09 06:56:38 akool Exp $
+## $Id: Makefile.in,v 1.209 2003/07/25 22:18:02 tobiasb Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,31 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.209  2003/07/25 22:18:02  tobiasb
+## isdnlog-4.65:
+##  - New values for isdnlog option -2x / dual=x with enable certain
+##    workarounds for correct logging in dualmode in case of prior
+##    errors.  See `man isdnlog' and isdnlog/processor.c for details.
+##  - New isdnlog option -U2 / ignoreCOLP=2 for displaying ignored
+##    COLP information.
+##  - Improved handling of incomplete D-channel frames.
+##  - Increased length of number aliases shown immediately by isdnlog.
+##    Now 127 instead of 32 chars are possible. (Patch by Jochen Erwied.)
+##  - The zone number for an outgoing call as defined in the rate-file
+##    is written to the logfile again and used by isdnrep
+##  - Improved zone summary of isdnrep.  Now the real zone numbers as
+##    defined in the rate-file are shown.  The zone number is taken
+##    from the logfile as mentioned before or computed from the current
+##    rate-file.  Missmatches are indicated with the chars ~,+ and *,
+##    isdnrep -v ... explains the meanings.
+##  - Fixed provider summary of isdnrep. Calls should no longer be
+##    treated wrongly as done via the default (preselected) provider.
+##  - Fixed the -pmx command line option of isdnrep, where x is the xth
+##    defined [MSN].
+##  - `make install' restarts isdnlog after installing the data files.
+##  - A new version number generates new binaries.
+##  - `make clean' removes isdnlog/isdnlog/ilp.o when called with ILP=1.
+##
 ## Revision 1.208  2002/09/09 06:56:38  akool
 ## isdnlog-4.64:
 ##   - new rates
@@ -1565,7 +1590,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 4.64
+VERSION     = 4.65
 
 MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 \
 	      isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 \
@@ -1706,6 +1731,9 @@ ISDNRATE     =  bin/isdnrate
 ORA_LOAD     =  bin/ora_load
 
 MODS         =  *.o */*.o
+ifdef ILP
+MODS        +=  isdnlog/ilp/ilp.o 
+endif
 
 PROGS        =  $(ISDNLOG) $(ISDNREP) $(ISDNBILL) $(ISDNCONF) $(ISDNRATE)
 
@@ -1726,6 +1754,10 @@ Makefile: Makefile.in config.status
 
 config.status: configure
 	./config.status --recheck
+
+# recompile when VERSION in Makefile changes for binaries with new version:
+FILES_USING_VERSION = isdnlog/isdnlog.o isdnlog/processor.o isdnlog/user_access.o isdnrep/isdnrep.o isdnconf/isdnconf.o tools/isdnconf.o tools/tools.o
+$(FILES_USING_VERSION): Makefile
 
 options:
 	@echo Making $< with
@@ -1794,7 +1826,7 @@ installdirs: rootperm
 		$(INSTALL_DIR) $(DESTDIR)$(MAN8DIR)
 		$(INSTALL_DIR) $(DESTDIR)$(DATADIR)
 
-install: all rootperm installdirs install-conf install-progs install-data
+install: all rootperm installdirs install-conf install-data install-progs
 
 install-old-conf:
 		@if [ -n "$(DESTDIR)$(OLDCONFDIR)" -a "$(DESTDIR)$(OLDCONFDIR)" != '/' ] ; then \

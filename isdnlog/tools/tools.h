@@ -1,4 +1,4 @@
-/* $Id: tools.h,v 1.57 2000/09/05 08:05:03 paul Exp $
+/* $Id: tools.h,v 1.58 2003/07/25 22:18:04 tobiasb Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,31 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools.h,v $
+ * Revision 1.58  2003/07/25 22:18:04  tobiasb
+ * isdnlog-4.65:
+ *  - New values for isdnlog option -2x / dual=x with enable certain
+ *    workarounds for correct logging in dualmode in case of prior
+ *    errors.  See `man isdnlog' and isdnlog/processor.c for details.
+ *  - New isdnlog option -U2 / ignoreCOLP=2 for displaying ignored
+ *    COLP information.
+ *  - Improved handling of incomplete D-channel frames.
+ *  - Increased length of number aliases shown immediately by isdnlog.
+ *    Now 127 instead of 32 chars are possible. (Patch by Jochen Erwied.)
+ *  - The zone number for an outgoing call as defined in the rate-file
+ *    is written to the logfile again and used by isdnrep
+ *  - Improved zone summary of isdnrep.  Now the real zone numbers as
+ *    defined in the rate-file are shown.  The zone number is taken
+ *    from the logfile as mentioned before or computed from the current
+ *    rate-file.  Missmatches are indicated with the chars ~,+ and *,
+ *    isdnrep -v ... explains the meanings.
+ *  - Fixed provider summary of isdnrep. Calls should no longer be
+ *    treated wrongly as done via the default (preselected) provider.
+ *  - Fixed the -pmx command line option of isdnrep, where x is the xth
+ *    defined [MSN].
+ *  - `make install' restarts isdnlog after installing the data files.
+ *  - A new version number generates new binaries.
+ *  - `make clean' removes isdnlog/isdnlog/ilp.o when called with ILP=1.
+ *
  * Revision 1.57  2000/09/05 08:05:03  paul
  * Now isdnlog doesn't use any more ISDN_XX defines to determine the way it works.
  * It now uses the value of "COUNTRYCODE = 999" to determine the country, and sets
@@ -914,6 +939,12 @@
 
 /****************************************************************************/
 
+#define DUALFIX_DESTNUM    0x100
+#define DUALFIX_SRCNUM     0x200
+#define DUALFIX_MULTLOG    0x400
+
+/****************************************************************************/
+
 typedef struct {
   int	  state;
   int     cref;
@@ -928,6 +959,7 @@ typedef struct {
   int     bearer;
   int	  si1;     /* Service Indicator entsprechend i4l convention */
   int	  si11;	   /* if (si1 == 1) :: 0 = Telefon analog / 1 = Telefon digital */
+  int     logcount; /* number of writen logfile entries (for DUALFIX_MULTLOG) */
   char    onum[MAXMSNS][NUMSIZE];
   int	  screening;
   char    num[MAXMSNS][NUMSIZE];
@@ -954,7 +986,7 @@ typedef struct {
   char	  areacode[MAXMSNS][NUMSIZE];
   char	  vorwahl[MAXMSNS][NUMSIZE];
   char	  rufnummer[MAXMSNS][NUMSIZE];
-  char	  alias[MAXMSNS][NUMSIZE];
+  char	  alias[MAXMSNS][RETSIZE];
   char	  area[MAXMSNS][128];
   char	  money[64];
   char	  currency[32];
@@ -1092,6 +1124,12 @@ _EXTERN int     	CityWeekend;
 #endif
 _EXTERN	int	 preselect;
 _EXTERN int	dual;
+/* Bitvalues 0x100 and greater in dual are used for activation of workarounds
+ * in isdnlog/processor.c.  The input value for -2 (commandline) or dual
+ * (parameterfile) is splitted between dual and dualfix. Bitvalues less than
+ * 0x100 remain unchanged in dual, greater values are copied to dualfix and
+ * removed from dual to maintain backward compatibility.  |TB| */
+_EXTERN int	dualfix;
 _EXTERN int	hfcdual;
 _EXTERN int	abclcr;
 _EXTERN char  * providerchange;

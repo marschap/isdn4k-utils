@@ -1,5 +1,5 @@
-.\" $Id: isdnlog.8.in,v 1.10 2002/03/11 16:13:38 paul Exp $
-.\" CHECKIN $Date: 2002/03/11 16:13:38 $
+.\" $Id: isdnlog.8.in,v 1.11 2003/07/25 22:18:03 tobiasb Exp $
+.\" CHECKIN $Date: 2003/07/25 22:18:03 $
 .TH isdnlog 8 "@MANDATE_ISDNLOG8@" "ISDN 4 Linux @I4LVERSION@" "Linux System Administration"
 .PD 0
 .SH NAME
@@ -111,11 +111,13 @@ may be 1 (ignore RR=Receiver ready) or 2 (ignore EMP=Euracom Management Protokol
 
 .TP
 .B \-U\fIx\fB	ignoreCOLP="value"
-Ignore COLP/CLIP frames when value is 1.
+Ignore COLP/CLIP frames when value is 1 or greater.
 Value 0 is default, and tells isdnlog to not ignore COLP/CLIP frames.
 .br
 Sometimes the COLP number is a number in a different areacode to the
 number that was dialled, and then the cost calculation would be wrong.
+.br
+With value 2 the ignored COLP number is displayed.
 
 .TP
 .B \-2\fIx\fB	dual="value"
@@ -123,6 +125,29 @@ Enable dual mode. You need this if you have a second isdn card attached with
 crossed lines so it can listen to what other isdn devices like telephones
 are doing. With \fIx\fR=2 you can increase the debug output - every single
 digit will be displayed.
+
+Some setups may require workarounds for reliable logging.  These workarounds
+are enabled by addition of the following numbers to the dual value.  It is
+also possible but untested to use the workarounds without dualmode.
+In this case, specify only the sum of the following numbers without
+1 or 2 for the dual mode. 
+
+.RS
+.TP
+0x100
+Enable this when the destination number of an outgoing call
+contains the number of the previous call, e.g. calling 222
+after calling 111 before results in 111222 for the second call.
+
+.TP
+0x200
+Enable this when outgoing call are logged without a source number (own MSN).
+
+.TP
+0x400
+Enable this when unanswered incoming calls are logged multiple times
+(revealed by isdnrep -E).
+.RE
 
 .TP
 .B \-1

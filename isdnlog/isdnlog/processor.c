@@ -1,4 +1,4 @@
-/* $Id: processor.c,v 1.123 2002/03/11 16:18:43 paul Exp $
+/* $Id: processor.c,v 1.124 2003/07/25 22:18:03 tobiasb Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,31 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.124  2003/07/25 22:18:03  tobiasb
+ * isdnlog-4.65:
+ *  - New values for isdnlog option -2x / dual=x with enable certain
+ *    workarounds for correct logging in dualmode in case of prior
+ *    errors.  See `man isdnlog' and isdnlog/processor.c for details.
+ *  - New isdnlog option -U2 / ignoreCOLP=2 for displaying ignored
+ *    COLP information.
+ *  - Improved handling of incomplete D-channel frames.
+ *  - Increased length of number aliases shown immediately by isdnlog.
+ *    Now 127 instead of 32 chars are possible. (Patch by Jochen Erwied.)
+ *  - The zone number for an outgoing call as defined in the rate-file
+ *    is written to the logfile again and used by isdnrep
+ *  - Improved zone summary of isdnrep.  Now the real zone numbers as
+ *    defined in the rate-file are shown.  The zone number is taken
+ *    from the logfile as mentioned before or computed from the current
+ *    rate-file.  Missmatches are indicated with the chars ~,+ and *,
+ *    isdnrep -v ... explains the meanings.
+ *  - Fixed provider summary of isdnrep. Calls should no longer be
+ *    treated wrongly as done via the default (preselected) provider.
+ *  - Fixed the -pmx command line option of isdnrep, where x is the xth
+ *    defined [MSN].
+ *  - `make install' restarts isdnlog after installing the data files.
+ *  - A new version number generates new binaries.
+ *  - `make clean' removes isdnlog/isdnlog/ilp.o when called with ILP=1.
+ *
  * Revision 1.123  2002/03/11 16:18:43  paul
  * DM -> EUR; and only test for IIOCNETGPN on i386 systems
  *
@@ -1183,7 +1208,7 @@ static void processlcr(char *p);
 
 static int    HiSax = 0, hexSeen = 0, uid = UNKNOWN, lfd = 0;
 static char  *asnp, *asnm = NULL;
-static int    chanused[2] = { 0, 0 };
+static int    chanused[MAXCHAN] = { 0, 0 }; /* chan < MAXCHAN, not < 2  */
 static int    IIOCNETGPNavailable = -1; /* -1 = unknown, 0 = no, 1 = yes */
 
 #ifdef Q931
@@ -1899,6 +1924,13 @@ static void decode(int chan, register char *p, int type, int version, int tei)
 
       l = strtol(p += 3, NIL, 16);
 
+      l1 = strlen(p+2); /* *(p+2) is ' ' before first digit of first contents byte */
+      if (l1 < 3*l) { /* not enouph input to for l bytes of element contents */
+	sprintf(s, "Not enough raw input from isdnctrl? for contents of element 0x%X: %d raw bytes (length=%d) needed but only %d raw bytes present --  ignoring this element!", element, 3*l, l, l1);
+        info(chan, PRT_SHOWNUMBERS, STATE_RING, s);
+        return;
+      }
+
       if (Q931dmp) {
         auto char s[BUFSIZ];
 
@@ -2396,8 +2428,13 @@ static void decode(int chan, register char *p, int type, int version, int tei)
 
                     *pd = 0;
 
-                    if (ignoreCOLP && !Q931dmp) /* FIXME */
+                    if (ignoreCOLP && !Q931dmp) { /* FIXME */
+                      if (ignoreCOLP & 0x02) { /* show ignored info */
+                        sprintf(s1, "COLP %s -- ignored", s);
+                        info(chan, PRT_SHOWNUMBERS, STATE_RING, s1);
+                      }
                       break;
+                    }
 
                     if (!*s) {
                       info(chan, PRT_SHOWNUMBERS, STATE_RING, "COLP *INVALID* -- ignored!");
@@ -4098,6 +4135,13 @@ void processRate(int chan)
   else {
     call[chan].tarifknown = 1;
     call[chan].pay = call[chan].Rate.Charge;
+		if (call[chan].zone == UNKNOWN) {
+			if ( call[chan].Rate.z > 0 && call[chan].Rate.domestic
+		       && call[chan].sondernummer[CALLED] == UNKNOWN )
+				call[chan].zone = call[chan].Rate.z; /* store exact zone DE:[1234] */
+			else
+				call[chan].zone = call[chan].Rate.zone; /* store for logfile entry */
+		}	
   } /* else */
 } /* processRate */
 
@@ -4357,6 +4401,7 @@ static void processctrl(int card, char *s)
   static   char        last[BUFSIZ];
   auto     int         isAVMB1 = 0;
   auto     double      tx;
+  auto     int         origchan = -1; /* sourcechan for RELEASE in chan 4 */
 
 
   hexSeen = 1;
@@ -4385,7 +4430,7 @@ static void processctrl(int card, char *s)
   if (!memcmp(ps, "D2", 2)) { /* AVMB1 */
     if (firsttime) {
       firsttime = 0;
-      print_msg (PRT_NORMAL, "(AVM B1 driver detected (D2))");
+      print_msg (PRT_NORMAL, "(AVM B1 driver detected (D2))\n");
     } /* if */
     memcpy(ps, "HEX: ", 5);
   } /* if */
@@ -4393,7 +4438,7 @@ static void processctrl(int card, char *s)
   if (!memcmp(ps, "DTRC:", 5)) { /* Eicon Driver */
     if (firsttime) {
       firsttime = 0;
-      print_msg (PRT_NORMAL, "(Eicon active driver detected)");
+      print_msg (PRT_NORMAL, "(Eicon active driver detected)\n");
     } /* if */
     memcpy(ps, "HEX: ", 5);
   } /* if */
@@ -4407,7 +4452,7 @@ static void processctrl(int card, char *s)
       firsttime = 0;
 
       if (!Q931dmp)
-        print_msg(PRT_NORMAL, "(HiSax driver detected)");
+        print_msg(PRT_NORMAL, "(HiSax driver detected)\n");
 
       HiSax = 1;
       strcpy(last, s);
@@ -4687,10 +4732,38 @@ static void processctrl(int card, char *s)
        innerhalb von SETUP/A_ACK aufgerufen werden muss, sonst
        aber erst nach feststellen von chan
        Daher GOTO (urgs...) an das Ende vom if hex:.. */
-
+    /* Tobias Becker, 2003-02-25:
+       Using dualmode and a HFC card, an outgoing call from an a/b adapter
+       (labelled `1&1', dating from 1996) produced the following messages
+       recognized by isdnlog:
+       (1) NET -> SETUP ACK.. with CHANNEL: BRI, B1 needed
+       (2) USR -> SETUP with BEARER, CHANNEL: any channel, and Calling
+                        party number
+       No further CHANNEL messages occur for this call.  Prior to (1)
+       there may be lost messages as isdnctrl0 states:
+       `03:09.16 Card1 empty_fifo hfcpci paket inv. len 2 or crc 255'
+       (1) is decoded in chan 5, sets channel=1 and triggers the move
+       from chan 5 to chan 0.
+       (2) is decoded in chan 5 (SETUP overrides chan 0 before) but
+       does not set channel, so the information in call[5] is not
+       moved to call[0].
+       Work-around: decode SETUP in chan 0/1 when cref match
+       This workaround requires the value of DUALFIX_SRCNUM in dualfix,
+       which is set with -2.. or dual=.. at command line or parameter file. 
+    */
     if (type == SETUP) { /* neuen Kanal, ev. dummy, wenn keiner da ist */
       chan = 5; /* den nehmen wir _nur_ dafuer! */
-      clearchan(chan, 1);
+      if (dualfix & DUALFIX_SRCNUM) {
+        for (i=0; i<2; i++) /* look for already allocated chan 0 or 1 */
+          if (cref>=0 && cref==call[i].cref && !dialin
+              && !call[i].dialin && call[i].tei==tei && call[i].channel==i+1) {
+	    chan = i;
+            print_msg(PRT_DEBUG_BUGS, " DEBUG> %s: Decoding SETUP in chan %d (cref=%d tei=%d)\n", st + 4, chan, cref, tei);
+	    break;
+	  }
+      }  
+      if (chan == 5) /* do not clear other chans */
+        clearchan(chan, 1);
       call[chan].dialin = dialin;
       call[chan].tei = tei;
       call[chan].card = card;
@@ -4702,7 +4775,10 @@ static void processctrl(int card, char *s)
         LCR(chan, s);
 #endif
 
-      if (call[chan].channel) { /* Aha, Kanal war dabei, dann nehmen wir den gleich */
+      if (chan != 5 && call[chan].channel && call[chan].channel != chan+1)
+        print_msg(PRT_WARN, "Warning: SETUP assumed for channel B%d lead to channel B%d.\n", chan+1, call[chan].channel);
+	
+      if (chan == 5 && call[chan].channel) { /* Aha, Kanal war dabei, dann nehmen wir den gleich */
         chan = call[chan].channel - 1;
 
         if (chanused[chan])
@@ -4773,8 +4849,23 @@ static void processctrl(int card, char *s)
 
         chan = call[chan].channel - 1;
 
-        if (!chanused[chan]) {
+        /* a previous unanswered incomming or outgoing call may have left
+         * chanused[chan] != 0  so that the old if (!chanused[chan]) does
+         * not the needed copy.
+         * Hopefully the second line does it right:
+         * - !call[chan].dialog && call[chan].dialin && call[chan].cause!=-1
+         *   turned out to be to restrictive,
+         * - !call[chan].dialog turned out to be to generally. |TB|
+         * This workaround requires the value of DUALFIX_DESTNUM in dualfix,
+         * which is set with -2.. or dual=.. at command line or parameter file. 
+         */
+        if (!chanused[chan] || (dualfix & DUALFIX_DESTNUM &&
+            !call[chan].dialog && !call[5].dialin && type==SETUP_ACKNOWLEDGE)) {
           /* nicht --channel, channel muss unveraendert bleiben! */
+          if (chanused[chan]) { /* catch second line condition */
+            print_msg(PRT_DEBUG_BUGS, " DEBUG> %s: %s contained channel B%d which is marked as in use -- overwriting anyway.\n", st+4, (type==SETUP_ACKNOWLEDGE)?"S_ACK":"C_PROC", call[5].channel);
+            chanused[chan] = 0;
+          }
           memcpy((char *)&call[chan], (char *)&call[5], sizeof(CALL));
           Change_Channel(5, chan);
 	  addlist(chan, type, 1);
@@ -5030,10 +5121,19 @@ doppelt:break;
            CONNECT noch folgt, wird dafuer jetzt chan auf
            4 gepackt, um die schoenen Daten in 0/1/ev.4 nicht
            zu zerstoeren. Wir erkennen das an fehlender tei. */
-
+        /* The above strategy leaves chan 0/1 uncleared since it seems
+         * unknown whether this is the last RELEASE with an unanswered
+         * call or not. */
         if (call[chan].tei == BROADCAST) {
           memcpy((char *)&call[4], (char *)&call[chan], sizeof(CALL));
           Change_Channel(chan, 4);
+          /* The following proofed to be not clever, since chan 4 is also
+           * cleared later.  For a cleared status for the next call another
+           * idea is needed.
+            clearchan(chan, 1);
+            chanused[chan] = 0;
+           */
+          origchan = chan; /* save number of persistent channel */
           chan = 4;
 	  addlist(chan, type, 1);
           call[chan].tei = tei;
@@ -5092,8 +5192,24 @@ doppelt:break;
 	  } /* if */
 	} /* if */
 
-	if (!Q931dmp)
-	  logger(chan);
+	if (!Q931dmp) {
+          /* An unanswered incoming calls can cause multiple logfile-entries,
+           * because there is a RELEASE message for each 'ringing' terminal
+           * and this messages are decoded independly from each other using
+           * chan 4.  With DUALFIX_MULTLOG only the first entry should be
+           * written.  |TB| */
+	  if (dualfix & DUALFIX_MULTLOG
+              && chan==4 && !call[4].dialog && call[4].dialin
+              && origchan > -1 && call[4].cref==call[origchan].cref
+              && call[origchan].logcount)
+            print_msg(PRT_DEBUG_BUGS, " DEBUG> %s: No logfile-entry for cref=%d, tei=%d, origchan=%d -- unanswered incoming call already logged %d time(s).\n",
+              st+4, call[chan].cref, call[chan].tei, origchan,
+              call[origchan].logcount);
+          else {
+	    logger(chan);
+            call[origchan>-1?origchan:chan].logcount++; /* remember logentry */
+          }
+        }
 
 	chanused[chan] = 0;
 	addlist(chan, type, 2);

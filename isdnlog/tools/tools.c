@@ -1,4 +1,4 @@
-/* $Id: tools.c,v 1.51 2001/12/30 17:17:41 akool Exp $
+/* $Id: tools.c,v 1.52 2003/07/25 22:18:03 tobiasb Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -19,6 +19,31 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools.c,v $
+ * Revision 1.52  2003/07/25 22:18:03  tobiasb
+ * isdnlog-4.65:
+ *  - New values for isdnlog option -2x / dual=x with enable certain
+ *    workarounds for correct logging in dualmode in case of prior
+ *    errors.  See `man isdnlog' and isdnlog/processor.c for details.
+ *  - New isdnlog option -U2 / ignoreCOLP=2 for displaying ignored
+ *    COLP information.
+ *  - Improved handling of incomplete D-channel frames.
+ *  - Increased length of number aliases shown immediately by isdnlog.
+ *    Now 127 instead of 32 chars are possible. (Patch by Jochen Erwied.)
+ *  - The zone number for an outgoing call as defined in the rate-file
+ *    is written to the logfile again and used by isdnrep
+ *  - Improved zone summary of isdnrep.  Now the real zone numbers as
+ *    defined in the rate-file are shown.  The zone number is taken
+ *    from the logfile as mentioned before or computed from the current
+ *    rate-file.  Missmatches are indicated with the chars ~,+ and *,
+ *    isdnrep -v ... explains the meanings.
+ *  - Fixed provider summary of isdnrep. Calls should no longer be
+ *    treated wrongly as done via the default (preselected) provider.
+ *  - Fixed the -pmx command line option of isdnrep, where x is the xth
+ *    defined [MSN].
+ *  - `make install' restarts isdnlog after installing the data files.
+ *  - A new version number generates new binaries.
+ *  - `make clean' removes isdnlog/isdnlog/ilp.o when called with ILP=1.
+ *
  * Revision 1.51  2001/12/30 17:17:41  akool
  * isdnlog-4.55:
  *   Tatahhh: isdnlog speaks Euro :-)
@@ -851,7 +876,8 @@ char *vnum(int chan, int who)
     } /* else */
   } /* if */
 
-  strcpy(call[chan].alias[who], num2nam(call[chan].num[who], call[chan].si1));
+  strncpy(call[chan].alias[who], num2nam(call[chan].num[who], call[chan].si1), RETSIZE);
+  call[chan].alias[who][sizeof(call[chan].alias[who])-1] = '\0';
 
   if (cnf > UNKNOWN) {                    /* Alias gefunden! */
     call[chan].confentry[who] = cnf;
