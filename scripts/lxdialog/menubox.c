@@ -21,7 +21,39 @@
 
 #include "dialog.h"
 
+#define MCUT 16 /* Max Strinwidth to display */
 static int menu_width, item_x;
+
+/*
+ * Check, if item is a string-item (starts with ").
+ * If so, return its length with value field limited to 12.
+ */
+static int
+itemlen(const char * item)
+{
+	if (*item != '"')
+		return (strlen(item));
+	else {
+		const char *p = item;
+		int l = strlen(item);
+		int sl = 0;
+		int flag = 0;
+
+		while (*p) {
+			if (flag || (sl == 0))
+				sl++;
+			if (*p++ == '"') {
+				flag = !flag;
+				if (!flag) {
+					if (sl <= MCUT)
+						return l;
+					return (l - sl + MCUT);
+				}
+			}
+		}
+	}
+	return 0;
+}
 
 /*
  * Print menu item
@@ -29,10 +61,14 @@ static int menu_width, item_x;
 static void
 print_item (WINDOW * win, const char *item, int choice, int selected, int hotkey)
 {
-    int i, j;
+    int i, j, ls, li;
     char menu_item[menu_width+1];
 
     strncpy(menu_item, item, menu_width);
+	if ((ls = strlen(item)) != (li = itemlen(item))) {
+		memset(&menu_item[MCUT-2],'.',3);
+		memmove(&menu_item[MCUT+1],&menu_item[ls-(li-MCUT)], li-MCUT+1);
+	}
     menu_item[menu_width] = 0;
     j = first_alpha(menu_item, "YyNnMm");
 
@@ -172,7 +208,7 @@ dialog_menu (const char *title, const char *prompt, int height, int width,
      */
     item_x = 0;
     for (i = 0; i < item_no; i++) {
-	item_x = MAX (item_x, MIN(menu_width, strlen (items[i * 2 + 1]) + 2));
+	item_x = MAX (item_x, MIN(menu_width, itemlen (items[i * 2 + 1]) + 2));
 	if (strcmp(current, items[i*2]) == 0) choice = i;
     }
 
