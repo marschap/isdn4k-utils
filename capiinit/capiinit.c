@@ -1,7 +1,10 @@
 /*
- * $Id: capiinit.c,v 1.7 2000/08/31 08:23:35 calle Exp $
+ * $Id: capiinit.c,v 1.8 2001/04/18 10:21:42 calle Exp $
  *
  * $Log: capiinit.c,v $
+ * Revision 1.8  2001/04/18 10:21:42  calle
+ * support for "AVM ISDN Controller C2" added.
+ *
  * Revision 1.7  2000/08/31 08:23:35  calle
  * - produce an error message, if a driver could not be loaded.
  *
@@ -136,7 +139,7 @@ struct cardstatemap {
 { "detected",	CARD_DETECTED },
 { "loading",	CARD_LOADING },
 { "running",	CARD_RUNNING },
-{ NULL }
+{ 0 }
 };
 
 static char *cardstate2str(int state)
@@ -299,6 +302,8 @@ static int load_driver(char *driver)
 {
 	if (strcmp(driver, "b1pciv4") == 0)
 		driver = "b1pci";
+	if (strcmp(driver, "c2") == 0)
+		driver = "c4";
 	return load_module(driver);
 }
 
@@ -306,6 +311,8 @@ static int unload_driver(char *driver)
 {
 	if (strcmp(driver, "b1pciv4") == 0)
 		driver = "b1pci";
+	if (strcmp(driver, "c2") == 0)
+		driver = "c4";
 	return unload_module(driver);
 }
 
@@ -447,6 +454,7 @@ struct patchinfo {
 
 struct capicard {
 	struct capicard  *next;
+	int               found;
 	int               line;
 	char             *driver;
 	char             *firmware;
@@ -671,24 +679,59 @@ error:
 	return 0;
 }
 
+static void mark_unfound(struct capicard *cards) 
+{
+	struct capicard *card = cards;
+	for (card = cards; card; card = card->next)
+		card->found = 0;
+}
+
 static struct capicard *find_config(struct capicard *cards, char *driver)
 {
 	struct capicard *card;
-	for (card = cards; card; card = card->next)
+
+	for (card = cards; card; card = card->next) {
+		if (card->found)
+			continue;
 		if (strcmp(card->driver,driver) == 0)
 			break;
-	if (card)
+	}
+	if (card) {
+		card->found = 1;
 		return card;
+	}
 
 	if (strcmp(driver, "b1pci") == 0) {
-		for (card = cards; card; card = card->next)
+		for (card = cards; card; card = card->next) {
+			if (card->found)
+				continue;
 			if (strcmp(card->driver, "b1pciv4") == 0)
 				break;
+		}
 	} else if (strcmp(driver, "b1pciv4") == 0) {
-		for (card = cards; card; card = card->next)
+		for (card = cards; card; card = card->next) {
+			if (card->found)
+				continue;
 			if (strcmp(card->driver, "b1pci") == 0)
 				break;
+		}
+	} else if (strcmp(driver, "c4") == 0) {
+		for (card = cards; card; card = card->next) {
+			if (card->found)
+				continue;
+			if (strcmp(card->driver, "c2") == 0)
+				break;
+		}
+	} else if (strcmp(driver, "c2") == 0) {
+		for (card = cards; card; card = card->next) {
+			if (card->found)
+				continue;
+			if (strcmp(card->driver, "c4") == 0)
+				break;
+		}
 	}
+
+	if (card) card->found = 1;
 	return card;
 }
 
@@ -1147,6 +1190,22 @@ static int prestopcheck(void)
 
 /* ------------------------------------------------------------------- */
 
+static int card_exists(const char * driver, int ioaddr)
+{
+	static char buf[64];
+	struct contrprocinfo *cp, *cpinfo;
+
+	snprintf (buf, sizeof (buf), "%s-%x", driver, ioaddr);
+	buf[sizeof (buf) - 1] = (char) 0;
+	for (cp = cpinfo = load_contrprocinfo(0); cp; cp = cp->next) {
+		if (strcmp (cp->name, buf) == 0)
+			break;
+	}
+	free_contrprocinfo (&cpinfo);
+	return cp != 0;
+}
+
+
 int main_start(void)
 {
 	struct capicard *cards, *card;
@@ -1164,22 +1223,22 @@ int main_start(void)
 	for (card = cards; card; card = card->next) {
 		if (!driver_loaded(card->driver))
 			load_driver(card->driver);
-		if (!driver_loaded(card->driver)) {
+                if (!driver_loaded(card->driver)) {
 			fprintf(stderr,"ERROR: failed to load driver %s\n",
-					card->driver);
-		} else {
-			if (card->ioaddr)
-				add_card(card);
+                                       card->driver);
+			continue;
 		}
+		if (card->ioaddr && !card_exists(card->driver, card->ioaddr)) 
+			add_card(card);
 	}
 
-	card = cards;
+	mark_unfound(cards); 
 	cpinfo = load_contrprocinfo(&lastcontr);
 	for (contr = 1; contr <= lastcontr; contr++) {
 		struct capicard *thiscard;
-		cpinfo = load_contrprocinfo(NULL);
+		cpinfo = load_contrprocinfo(0);
 		p = find_contrprocinfo(cpinfo, contr);
-		thiscard = find_config(card, p->driver);
+		thiscard = find_config(cards, p->driver);
 		if (p->state ==	CARD_LOADING)
 			reset_controller(contr);
 		if (p->state == CARD_DETECTED) {
@@ -1191,25 +1250,23 @@ int main_start(void)
 			}
 		}
 		free_contrprocinfo(&cpinfo);
-		if (thiscard) card = thiscard->next;
 	}
-	card = cards;
+	mark_unfound(cards); 
 	cpinfo = load_contrprocinfo(&lastcontr);
 	for (contr = 1; contr <= lastcontr; contr++) {
 		struct capicard *thiscard;
-		cpinfo = load_contrprocinfo(NULL);
+		cpinfo = load_contrprocinfo(0);
 		p = find_contrprocinfo(cpinfo, contr);
-		thiscard = find_config(card, p->driver);
+		thiscard = find_config(cards, p->driver);
 		if (p->state == CARD_DETECTED && thiscard) {
 			fprintf(stderr,"ERROR: failed to load firmware for controller %d driver %s name %s\n",
 					p->contr, p->driver, p->name);
 			ret = 3;
 		}
 		free_contrprocinfo(&cpinfo);
-		if (thiscard) card = thiscard->next;
 	}
 
-	cpinfo = load_contrprocinfo(NULL);
+	cpinfo = load_contrprocinfo(0);
 	show_contrprocinfo(cpinfo);
 
 	free_contrprocinfo(&cpinfo);
@@ -1236,7 +1293,7 @@ int main_stop(void)
 
 	cpinfo = load_contrprocinfo(&lastcontr);
 	for (contr = lastcontr; contr > 0; contr--) {
-		cpinfo = load_contrprocinfo(NULL);
+		cpinfo = load_contrprocinfo(0);
 		p = find_contrprocinfo(cpinfo, contr);
 		if (p && p->state == CARD_RUNNING)
 			reset_controller(contr);
@@ -1244,14 +1301,14 @@ int main_stop(void)
 	}
 	cpinfo = load_contrprocinfo(&lastcontr);
 	for (contr = lastcontr; contr > 0; contr--) {
-		cpinfo = load_contrprocinfo(NULL);
+		cpinfo = load_contrprocinfo(0);
 		p = find_contrprocinfo(cpinfo, contr);
 		if (p)
 			remove_controller(contr);
 		free_contrprocinfo(&cpinfo);
 	}
 
-	cpinfo = load_contrprocinfo(NULL);
+	cpinfo = load_contrprocinfo(0);
 	show_contrprocinfo(cpinfo);
 	free_contrprocinfo(&cpinfo);
 	close(capifd);
