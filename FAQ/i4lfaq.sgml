@@ -4,7 +4,7 @@
 
 <title>FAQ for isdn4linux
 <author>Matthias Hessler (<tt><htmlurl url="mailto:hessler@isdn4linux.de" name="hessler@isdn4linux.de"></tt>)
-<date>v2.0.26, 5. December 1999
+<date>v2.0.27, 8. December 1999
 <abstract>
 If you are reading this FAQ online, you may consider downloading the whole
 thing, and reading it offline (much cheaper). To download the latest
@@ -411,12 +411,18 @@ other cards. However, there are no plans to implement a CAPI 1.1 interface.
 <sect1> feature_uus: Is UUS (user to user signaling) supported?  
 <label id="feature_uus">
 <p>
-Yes, isdn4linux does support both sending and receiving. However, you
-should know that sending it is not a free service, at least with some
-German phone providers you have to pay extra for it (also have a close
-look on the usage conditions). Additionally, please note that if you are
-connected through a PBX, it will most likely filter out all the
-subaddressing stuff.
+Yes, isdn4linux could support both sending and receiving, but the
+implementation is currently rather incomplete due to the unclear legal
+situation for using this facility. Receiving UUS is only possible through
+the debug interfaces. Sending is supported in connection with the diversion
+services (when rejecting a call or announcing a busy condition), but not
+on an ordinary call. It is recommended to use subaddressing (see question
+<ref id="feature_subaddressing" name="feature_subaddressing">) instead.
+Please note that sending UUS it is not a free service (receiving is free),
+at least with some German phone providers you have to pay extra for it
+(also have a close look on the usage conditions). Additionally, please note
+that if you are connected through a PBX, it may filter out all the UUS
+stuff.
 
 <sect1> feature_subaddressing: Is subaddressing supported?  
 <label id="feature_subaddressing">
@@ -424,7 +430,8 @@ subaddressing stuff.
 Yes, isdn4linux does support subaddressing (available in France).
 To configure it, give HiSax the number in this format:
 <tt>&lt;number&gt;.&lt;subaddress&gt;</tt>. However, you may have to order
-it seperately and pay extra for it, depeding on your ISDN provider.
+it seperately and pay extra for receiving it (sending is free), depeding
+on your ISDN provider.
 Additionally, please note that if you are connected through a PBX, it will
 most likely filter out all the subaddressing stuff.
 
@@ -505,6 +512,12 @@ Red Hat users).
 <p>
 The offical website can be found at:
 <url url="http://www.isdn4linux.de">.
+
+<sect1> docu_abc: Where do I find documentation on the abc extensions?  
+<label id="docu_abc">
+<p>
+You can find it on:
+<url url="http://i4l.mediatronix.de/">
 
 <sect1> docu_newsgroup: Where is the newsgroup for isdn4linux? 
 <label id="docu_newsgroup">
@@ -629,7 +642,7 @@ Here the status from 4th September 1999 (constantly improving):
 <item>AVM A1 (Fritz, Teledat 150 ISA)
 <item>AVM Fritz PCMCIA
 <item>AVM Fritz PnP
-<item>AVM Fritz PCI
+<item>AVM Fritz PCI (Teledat 150 PCI)
 <item>ELSA Microlink PCC-16, PCF, PCF-Pro, PCC-8
 <item>ELSA Quickstep 1000
 <item>ELSA Quickstep 1000PCI (new name: ELSA Microlink PCI)
@@ -1202,7 +1215,7 @@ howto (isdn.html) and a ISDN quick-install guide (isdnquick.html).
 <item>Scripts and installation tips from several people:
 <tt><url url="http://www.rosat.mpe-garching.mpg.de/&tilde;web/ISDN.html"></tt>
 <item>Documentation on abc extensions:
-<tt><url url="http://www.mediatronix.de/i4l/index.html"></tt>
+<tt><url url="http://i4l.mediatronix.de/"></tt>
 <item>Michael Hipp's page (general informations):
 <tt><url url="http://www-ti.informatik.uni-tuebingen.de/~hippm/isdn.html"></tt>
 <item>Chargeint tips:
