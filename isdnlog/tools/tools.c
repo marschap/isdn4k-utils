@@ -1,4 +1,4 @@
-/* $Id: tools.c,v 1.17 1999/01/10 15:24:31 akool Exp $
+/* $Id: tools.c,v 1.18 1999/02/28 19:33:48 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -19,6 +19,15 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools.c,v $
+ * Revision 1.18  1999/02/28 19:33:48  akool
+ * Fixed a typo in isdnconf.c from Andreas Jaeger <aj@arthur.rhein-neckar.de>
+ * CHARGEMAX fix from Oliver Lauer <Oliver.Lauer@coburg.baynet.de>
+ * isdnrep fix from reinhard.karcher@dpk.berlin.fido.de (Reinhard Karcher)
+ * "takt_at.c" fixes from Ulrich Leodolter <u.leodolter@xpoint.at>
+ * sondernummern.c from Mario Joussen <mario.joussen@post.rwth-aachen.de>
+ * Reenable usage of the ZONE entry from Schlottmann-Goedde@t-online.de
+ * Fixed a typo in callerid.conf.5
+ *
  * Revision 1.17  1999/01/10 15:24:31  akool
  *  - "message = 0" bug fixed (many thanks to
  *    Sebastian Kanthak <sebastian.kanthak@muehlheim.de>)
@@ -542,7 +551,7 @@ char *vnum(int chan, int who)
     if (cnf > -1)
       strcpy(retstr[retnum], call[chan].alias[who]);
     else if (call[chan].sondernummer[who] != -1)
-      strcpy(retstr[retnum], SN[call[chan].sondernummer[who]].sinfo);
+      strcpy(retstr[retnum], SN[call[chan].sondernummer[who]].info);
     else
       sprintf(retstr[retnum], "TN %s", call[chan].num[who]);
 

@@ -1,4 +1,4 @@
-/* $Id: tools.h,v 1.26 1999/01/24 19:02:51 akool Exp $
+/* $Id: tools.h,v 1.27 1999/02/28 19:33:52 akool Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,15 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools.h,v $
+ * Revision 1.27  1999/02/28 19:33:52  akool
+ * Fixed a typo in isdnconf.c from Andreas Jaeger <aj@arthur.rhein-neckar.de>
+ * CHARGEMAX fix from Oliver Lauer <Oliver.Lauer@coburg.baynet.de>
+ * isdnrep fix from reinhard.karcher@dpk.berlin.fido.de (Reinhard Karcher)
+ * "takt_at.c" fixes from Ulrich Leodolter <u.leodolter@xpoint.at>
+ * sondernummern.c from Mario Joussen <mario.joussen@post.rwth-aachen.de>
+ * Reenable usage of the ZONE entry from Schlottmann-Goedde@t-online.de
+ * Fixed a typo in callerid.conf.5
+ *
  * Revision 1.26  1999/01/24 19:02:51  akool
  *  - second version of the new chargeint database
  *  - isdnrep reanimated
@@ -360,6 +369,7 @@
 
 /****************************************************************************/
 
+#define SONDERNUMMER -2 /* FIXME: set by readconfig(), but unused by now */
 #define INTERN	      0
 #define CITYCALL      1
 #define REGIOCALL     2
@@ -777,6 +787,7 @@ typedef struct {
 /****************************************************************************/
 
 typedef struct {
+#if V1
   char  *msn;      /* Telefonnummer */
   char  *sinfo;    /* Kurzbeschreibung */
   int    tarif;    /* 0 = free, 1 = CityCall, -1 = see grund1 .. takt2 */
@@ -784,6 +795,16 @@ typedef struct {
   double grund2;   /* Grundtarif uebrige Zeit */
   double takt1;	   /* Zeittakt Werktage 9-18 Uhr */
   double takt2;	   /* Zeittakt uebrige Zeit */
+#endif
+  int    provider; /* Provider */
+  char  *number;   /* Telefonnummer */
+  int    tarif;    /* 0 = free, -1 = CityCall, -2 = unknown, 1 = calculate*/
+  int    tday;     /* 0 = alle Tage, 1 = Wochentag, 2 = Wochenende */
+  int    tbegin;   /* Tarifanfang */
+  int    tend;     /* Tarifende */
+  double grund;    /* Grundtarif */
+  double takt;     /* Zeittakt */
+  char  *info;     /* Kurzbeschreibung */
 } SonderNummern;
 
 /****************************************************************************/
@@ -895,12 +916,13 @@ _EXTERN char  *qmsg(int type, int version, int val);
 _EXTERN char  *Myname;
 _EXTERN void   initTarife(char *msg);
 _EXTERN void   exitTarife(void);
-_EXTERN void   price(int chan, char *hint);
+_EXTERN void   price(int chan, char *hint, int viarep);
 _EXTERN char  *realProvidername(int prefix);
-_EXTERN void   preparecint(int chan, char *msg, char *hint);
+_EXTERN void   preparecint(int chan, char *msg, char *hint, int viarep);
 _EXTERN int    taktlaenge(int chan, char *why);
-_EXTERN void   initSondernummern(void);
-_EXTERN int    is_sondernummer(char *num);
+_EXTERN int    initSondernummern(void);
+_EXTERN int    is_sondernummer(char *num, int provider);
+_EXTERN char  *sondernummername(char *number, int provider);
 _EXTERN	char  *zonen[MAXZONES];
 #undef _EXTERN
 
@@ -915,8 +937,6 @@ _EXTERN	char  *zonen[MAXZONES];
 _EXTERN int    readconfig(char *myname);
 _EXTERN void   setDefaults(void);
 _EXTERN void   discardconfig(void);
-_EXTERN char  *t2tz(int zeit);
-_EXTERN char  *z2s(int zone);
 _EXTERN section *read_isdnconf(section **_conf_dat);
 
 #undef _EXTERN
@@ -924,4 +944,3 @@ _EXTERN section *read_isdnconf(section **_conf_dat);
 /****************************************************************************/
 
 #endif /* _TOOLS_H_ */
-

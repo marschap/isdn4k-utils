@@ -1,5 +1,5 @@
-.\" $Id: callerid.conf.5.in,v 1.1 1998/12/01 16:48:24 paul Exp $
-.\" CHECKIN $Date: 1998/12/01 16:48:24 $
+.\" $Id: callerid.conf.5.in,v 1.2 1999/02/28 19:32:35 akool Exp $
+.\" CHECKIN $Date: 1999/02/28 19:32:35 $
 .TH callerid.conf 5 "@MANDATE_CALLERID@" "ISDN 4 Linux @I4LVERSION@" "Linux System Administration"
 .PD 0
 
@@ -74,7 +74,7 @@ Isdn network interface. This information is required with the
 .B START
 You can define a subsection here. The whole section is ignored unless you
 gave the "-S" / start=yes option. Each subsection should have the name
-[FLAGS]. It may hold these values:
+[FLAG]. It may hold these values:
 
 .RS
 .TP 4

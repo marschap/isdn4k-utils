@@ -1,4 +1,4 @@
-/* $Id: tools_de.c,v 1.7 1999/01/10 15:24:38 akool Exp $
+/* $Id: tools_de.c,v 1.8 1999/02/28 19:33:55 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -21,6 +21,15 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools_de.c,v $
+ * Revision 1.8  1999/02/28 19:33:55  akool
+ * Fixed a typo in isdnconf.c from Andreas Jaeger <aj@arthur.rhein-neckar.de>
+ * CHARGEMAX fix from Oliver Lauer <Oliver.Lauer@coburg.baynet.de>
+ * isdnrep fix from reinhard.karcher@dpk.berlin.fido.de (Reinhard Karcher)
+ * "takt_at.c" fixes from Ulrich Leodolter <u.leodolter@xpoint.at>
+ * sondernummern.c from Mario Joussen <mario.joussen@post.rwth-aachen.de>
+ * Reenable usage of the ZONE entry from Schlottmann-Goedde@t-online.de
+ * Fixed a typo in callerid.conf.5
+ *
  * Revision 1.7  1999/01/10 15:24:38  akool
  *  - "message = 0" bug fixed (many thanks to
  *    Sebastian Kanthak <sebastian.kanthak@muehlheim.de>)
@@ -246,49 +255,3 @@ char *Providername(int number)
 } /* Providername */
 
 /****************************************************************************/
-
-char *t2tz(int zeit)
-{
-  switch (zeit) {
-    case  0 : return("Vormittag");    break;
-    case  1 : return("Nachmittag");   break;
-    case  2 : return("Freizeit");     break;
-    case  3 : return("Mondschein");   break;
-    case  4 : return("Nacht");        break;
-    case  5 : return("Standard");     break;
-    case  6 : return("Spartarif");    break;
-    case  7 : return("City Weekend"); break;
-    case  8 : return("City Plus");    break;
-    case  9 : return("Feiertag");     break;
-    default : return("");             break;
-  } /* switch */
-} /* t2tz */
-
-/****************************************************************************/
-
-char *z2s(int zone)
-{
-  switch (zone) {
-    case  1 : return("CityCall");     break;
-    case  2 : return("RegioCall");    break;
-    case  3 : return("GermanCall");   break;
-    case  4 : return("GermanCall");   break;
-    case  5 : return("GlobalCall");   break;
-    case  6 : return("Vis1");         break;
-    case  7 : return("Vis2");         break;
-    case  8 : return("Vis3");         break;
-    case  9 : return("Welt1");        break;
-    case 10 : return("Welt2");        break;
-    case 11 : return("Welt3");        break;
-    case 12 : return("T-Online");     break;
-    case 13 : return("KONF");         break;
-    case 14 : return("Inmar");        break;
-    case 15 : return("C-Box");        break;
-    case 16 : return("T-Box");        break;
-    case 21 : return("City");         break; /* City Plus */
-    default : return("");             break;
-  } /* switch */
-} /* z2s */
-
-/****************************************************************************/
-

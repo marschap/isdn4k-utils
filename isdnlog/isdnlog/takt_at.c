@@ -1,4 +1,4 @@
-/* $Id: takt_at.c,v 1.4 1999/01/10 15:23:30 akool Exp $
+/* $Id: takt_at.c,v 1.5 1999/02/28 19:33:11 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,15 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: takt_at.c,v $
+ * Revision 1.5  1999/02/28 19:33:11  akool
+ * Fixed a typo in isdnconf.c from Andreas Jaeger <aj@arthur.rhein-neckar.de>
+ * CHARGEMAX fix from Oliver Lauer <Oliver.Lauer@coburg.baynet.de>
+ * isdnrep fix from reinhard.karcher@dpk.berlin.fido.de (Reinhard Karcher)
+ * "takt_at.c" fixes from Ulrich Leodolter <u.leodolter@xpoint.at>
+ * sondernummern.c from Mario Joussen <mario.joussen@post.rwth-aachen.de>
+ * Reenable usage of the ZONE entry from Schlottmann-Goedde@t-online.de
+ * Fixed a typo in callerid.conf.5
+ *
  * Revision 1.4  1999/01/10 15:23:30  akool
  *  - "message = 0" bug fixed (many thanks to
  *    Sebastian Kanthak <sebastian.kanthak@muehlheim.de>)
@@ -76,6 +85,37 @@
 #define _TAKT_C_
 #include "isdnlog.h"
 
+#define Z_REGIONAL	1
+#define Z_FERN_1	2
+#define Z_FERN_2	3
+#define Z_ONLINE	4
+#define Z_MOBILFUNK	5
+#define Z_AUSLAND_1	6
+#define Z_AUSLAND_2	7
+#define Z_AUSLAND_3	8
+#define Z_AUSLAND_4	9
+#define Z_AUSLAND_5	10
+#define Z_AUSLAND_6	11
+#define Z_AUSLAND_7	12
+#define Z_AUSLAND_8	13
+#define Z_AUSLAND_9	14
+#define Z_AUSLAND_10	15
+#define Z_AUSLAND_11	16
+#define Z_AUSLAND_12	17
+#define Z_AUSLAND_13	18
+#define Z_AUSLAND_14	19
+#define Z_AUSLAND_15	20
+#define Z_HANDVERMITTLUNG	21
+#define Z_GRENZNAHVERKEHR	22
+#define Z_TELEINFO_04570	23
+#define Z_TELEINFO_04500	24
+#define Z_TELEINFO_04590	25
+#define Z_TELEINFO_04580	26
+#define Z_BUSINESSLINE_0711X	27
+#define Z_BUSINESSLINE_0713X	28
+#define Z_BUSINESSLINE_0714X	29
+#define Z_VOTINGLINE_0717X	30
+
 #define KARF      4
 #define OST1      5
 #define OST2      6
@@ -84,7 +124,7 @@
 #define PFI2      9
 #define FRON     10
 
-#define A_FEI 	 16
+#define A_FEI 	 17
 
 struct w_ftag {
   char  tag;
@@ -312,7 +352,7 @@ static double faktor [30][4] = {{  1.25,  1.00,  0.66,  0.45 },  /* Regionalzone
 
 
 
-double taktlaenge(int chan, char *description)
+int taktlaenge(int chan, char *description)
 {
   int         c;
   struct tm  *tm;
@@ -354,5 +394,132 @@ double taktlaenge(int chan, char *description)
   
   if (description) sprintf(description, "%s, %s, %s", z2s(zone), why, t2tz(fenster));
   
-  return (takt);
+  return (int) (takt + 0.5);
 }
+
+char *realProvidername(int prefix)
+{
+  return(NULL);
+} /* realProvidername */
+
+void preparecint(int chan, char *msg, char *hint)
+{
+  int	zone = UNKNOWN, chargeint;
+  struct tm *tm;
+  char	why[BUFSIZ];
+
+  *hint = 0;
+  tm = localtime(&call[chan].connect);
+
+  if (call[chan].intern[CALLED]) {
+    call[chan].zone = INTERN;
+    call[chan].tarifknown = 0;
+    sprintf(msg, "CHARGE: free of charge - internal call");
+    return;
+  } /* if */
+
+  if (!strncmp(call[chan].num[CALLED], mycountry, strlen(mycountry))) {		/* "+43" */
+    char *num_area = call[chan].num[CALLED] + strlen(mycountry);
+    if (!strncmp (num_area, myarea, strlen(myarea)))
+      zone = Z_REGIONAL;
+    if (!memcmp(num_area, "7189", 4))
+      zone = Z_ONLINE;
+    else  if (!memcmp(num_area, "646", 3) ||	/* A1 */
+	      !memcmp(num_area, "676", 3) ||	/* Max */
+	      !memcmp(num_area, "699", 3))	/* One */
+      zone = Z_MOBILFUNK;
+    else if (!memcmp(num_area, "4570", 4))
+      zone = Z_TELEINFO_04570;
+    else if (!memcmp(num_area, "4500", 4))
+      zone = Z_TELEINFO_04500;
+    else if (!memcmp(num_area, "4590", 4))
+      zone = Z_TELEINFO_04590;
+    else if (!memcmp(num_area, "4580", 4))
+      zone = Z_TELEINFO_04580;
+    else if (!memcmp(num_area, "711", 3))
+      zone = Z_BUSINESSLINE_0711X;
+    else if (!memcmp(num_area, "713", 3))
+      zone = Z_BUSINESSLINE_0713X;
+    else if (!memcmp(num_area, "714", 3))
+      zone = Z_BUSINESSLINE_0714X;
+    else if (!memcmp(num_area, "717", 3))
+      zone = Z_VOTINGLINE_0717X;
+  }
+  if (zone == UNKNOWN) {
+    /* area_diff funktioniert noch nicht für AT!, Sat Feb  6 09:59:21 1999 */
+    zone = area_diff(NULL, call[chan].num[CALLED]);
+    if ((zone == AREA_ERROR) || (zone == AREA_UNKNOWN))
+      zone = UNKNOWN;
+  }
+
+  call[chan].zone = zone;
+  call[chan].provider = 1;	/* PTA */
+
+  if ((chargeint = taktlaenge (chan, why)) != -1) {
+    sprintf (msg, "CHARGE: %s, %s %f/Min", why,
+	     call[chan].currency, (currency_factor * 60) / chargeint);
+    call[chan].tarifknown = 1;
+    call[chan].chargeint = chargeint;
+  }
+  else {
+    sprintf (msg, "CHARGE: Oppps: No charge infos for provider %d, Zone %d %s",
+	     call[chan].provider, call[chan].zone, call[chan].num[CALLED]);
+    call[chan].tarifknown = 0;
+    call[chan].chargeint = 0;
+  }
+  call[chan].hint = UNKNOWN;
+
+} /* preparecint */
+
+void price(int chan, char *hint)
+{
+  int	duration = (int)(call[chan].disconnect - call[chan].connect);
+  int	chargeint = call[chan].chargeint;
+  int	takte;
+
+  *hint = 0;
+
+  if (call[chan].zone == INTERN) {
+    call[chan].pay = 0.0;
+    return;
+  } /* if */
+
+  if (OUTGOING && (duration > 0) && *call[chan].num[CALLED]) {
+
+    /* bug: if chargeint changes between connect and disconnect */
+    if (chargeint > 0)
+      takte = (duration + chargeint - 1) / chargeint;
+    else
+      takte = 0;
+    call[chan].pay = takte * currency_factor;
+
+  } /* if */
+
+} /* price */
+
+void initTarife(char *msg)
+{
+  if (msg) *msg = 0;
+} /* initTarife */
+
+void exitTarife()
+{
+} /* exitTarife */
+
+void initSondernummern()
+{
+} /* initSondernummern */
+
+int is_sondernummer(char *num)
+{
+#if 0
+  register int i;
+
+
+  if ((strlen(num) >= interns0) && ((*num == '0') || (*num == '1')))
+    for (i = 0; i < nSN; i++)
+      if (!strncmp(num, SN[i].msn, strlen(SN[i].msn)))
+        return(i);
+#endif
+  return(-1);
+} /* sondernummer */

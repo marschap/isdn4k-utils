@@ -1,4 +1,4 @@
-/* $Id: isdnconf.c,v 1.21 1999/01/24 19:02:45 akool Exp $
+/* $Id: isdnconf.c,v 1.22 1999/02/28 19:33:39 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -20,6 +20,15 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnconf.c,v $
+ * Revision 1.22  1999/02/28 19:33:39  akool
+ * Fixed a typo in isdnconf.c from Andreas Jaeger <aj@arthur.rhein-neckar.de>
+ * CHARGEMAX fix from Oliver Lauer <Oliver.Lauer@coburg.baynet.de>
+ * isdnrep fix from reinhard.karcher@dpk.berlin.fido.de (Reinhard Karcher)
+ * "takt_at.c" fixes from Ulrich Leodolter <u.leodolter@xpoint.at>
+ * sondernummern.c from Mario Joussen <mario.joussen@post.rwth-aachen.de>
+ * Reenable usage of the ZONE entry from Schlottmann-Goedde@t-online.de
+ * Fixed a typo in callerid.conf.5
+ *
  * Revision 1.21  1999/01/24 19:02:45  akool
  *  - second version of the new chargeint database
  *  - isdnrep reanimated
@@ -1168,7 +1177,7 @@ static int Set_Globals(section *SPtr)
 		if ((CEPtr = Get_Entry(Ptr->entries,CONF_ENT_BYTE)) != NULL)
 	  {
 	    if (sscanf(CEPtr->value,"%lg,%d", &bytemax, &bytemaxmode) != 2)
-	      _print_msg("%s: WARNING: Syntax error in `%s' in Line %d, ignored\n", Myname, CONF_ENT_CONNECT, ln);
+	      _print_msg("%s: WARNING: Syntax error in `%s' in Line %d, ignored\n", Myname, CONF_ENT_BYTE, ln);
 	  }
 
 		if ((CEPtr = Get_Entry(Ptr->entries,CONF_ENT_CURR)) != NULL)
@@ -1420,18 +1429,19 @@ static int Set_Numbers(section *SPtr, char *Section, int msn)
 
 			if ((CEPtr = Get_Entry(SPtr->entries,CONF_ENT_ZONE)) != NULL)
 				known[Index]->zone = atoi(CEPtr->value);
-			else
-			{
-				if (msn < 0)
-				{
-                                       if((known[Index]->zone=area_diff(NULL, num))<1)
-                                       {
-					_print_msg("%s: WARNING: There is no variable `%s' for number `%s'!\n", Myname, CONF_ENT_ZONE, num);
-					known[Index]->zone = 4;
-                                       }
+			else {
+			  if (msn < 0) {
+                            if ((known[Index]->zone = area_diff(NULL, num)) < 1) {
+                              if (is_sondernummer(num, DTAG))
+			        known[Index]->zone = SONDERNUMMER;
+                              else {
+			        _print_msg("%s: WARNING: There is no variable `%s' for number `%s' -- assuming GermanCall!\n", Myname, CONF_ENT_ZONE, num);
+			      	known[Index]->zone = GERMANCALL;
+                              } /* else */
+                            } /* if */
 				}
 				else
-					known[Index]->zone = 1;
+			    known[Index]->zone = CITYCALL; /* sich selbst anrufen kostet CityCall */
 			}
 
 			if ((CEPtr = Get_Entry(SPtr->entries,CONF_ENT_INTFAC)) != NULL)

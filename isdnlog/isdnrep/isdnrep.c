@@ -1,4 +1,4 @@
-/* $Id: isdnrep.c,v 1.54 1999/01/24 19:02:19 akool Exp $
+/* $Id: isdnrep.c,v 1.55 1999/02/28 19:33:30 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -24,6 +24,15 @@
  *
  *
  * $Log: isdnrep.c,v $
+ * Revision 1.55  1999/02/28 19:33:30  akool
+ * Fixed a typo in isdnconf.c from Andreas Jaeger <aj@arthur.rhein-neckar.de>
+ * CHARGEMAX fix from Oliver Lauer <Oliver.Lauer@coburg.baynet.de>
+ * isdnrep fix from reinhard.karcher@dpk.berlin.fido.de (Reinhard Karcher)
+ * "takt_at.c" fixes from Ulrich Leodolter <u.leodolter@xpoint.at>
+ * sondernummern.c from Mario Joussen <mario.joussen@post.rwth-aachen.de>
+ * Reenable usage of the ZONE entry from Schlottmann-Goedde@t-online.de
+ * Fixed a typo in callerid.conf.5
+ *
  * Revision 1.54  1999/01/24 19:02:19  akool
  *  - second version of the new chargeint database
  *  - isdnrep reanimated
@@ -639,6 +648,7 @@ static int    *usage_sum;
 static double *dur_sum;
 
 static int    usage_provider[MAXPROVIDER];
+static int    provider_failed[MAXPROVIDER];
 static double duration_provider[MAXPROVIDER];
 static double pay_provider[MAXPROVIDER];
 static char   unknownzones[4096];
@@ -1009,7 +1019,7 @@ int read_logfile(char *myname)
 
 static int print_bottom(double unit, char *start, char *stop)
 {
-  auto     char       string[BUFSIZ];
+  auto     char       string[BUFSIZ], sx[BUFSIZ];
   register int	      i, j, k;
   register char      *p = NULL;
   sum_calls           tmp_sum;
@@ -1113,7 +1123,7 @@ static int print_bottom(double unit, char *start, char *stop)
 
 		h_percent = 60.0;
 		h_table_color = H_TABLE_COLOR4;
-		get_format("%-8.8s %05s %-15.15s %4d call(s) %10.10s  %12s");
+                get_format("%-8.8s %05s %-15.15s %4d call(s) %10.10s  %12s %s");
 		print_line2(F_BODY_HEADER,"");
 		print_line2(F_BODY_HEADERL,"Outgoing calls ordered by Provider");
 		strich(1);
@@ -1125,10 +1135,16 @@ static int print_bottom(double unit, char *start, char *stop)
 		    sprintf(string, "010%03d", i - 100);
 
 		  if (usage_provider[i]) {
+                    if (duration_provider[i])
+                      sprintf(sx, "%5.1f%% avail.",
+                        100.0 * (usage_provider[i] - provider_failed[i]) / usage_provider[i]);
+                    else
+                      *sx = 0;
+
 		    print_line3(NULL, "Provider", string, Providername(i),
 		      usage_provider[i],
 		      double2clock(duration_provider[i]),
-		      print_currency(pay_provider[i], 0));
+                      print_currency(pay_provider[i], 0), sx);
        } /* if */
     } /* for */
 
@@ -1185,7 +1201,7 @@ static int print_bottom(double unit, char *start, char *stop)
 
                        print_msg(PRT_NORMAL,"%s ", unknown[i].called ? "Called by" : "  Calling");
 
-		       if (is_sondernummer(unknown[i].num) > 0)
+                       if (is_sondernummer(unknown[i].num, DTAG) > 0)
                          ;
 		       else
                        if ((p = get_areacode(unknown[i].num, &l, flag)) != 0) {
@@ -1578,7 +1594,14 @@ static int print_line(int status, one_call *cur_call, int computed, char *overla
 				          {
 				          	if (!numbers)
 				          	{
-				          		colsize[i] = append_string(&string,*fmtstring, (cur_call->provider > 0 ? Providername(cur_call->provider) : ""));
+                                                        register char *p;
+
+                                                        p = (cur_call->provider > 0) ? Providername(cur_call->provider) : "";
+
+                                                        if (cur_call->dir == DIALIN)
+                                                          p = "";
+
+                                                        colsize[i] = append_string(&string,*fmtstring, p);
 				          		break;
 				          	}
 				          }
@@ -2076,6 +2099,11 @@ static int print_entries(one_call *cur_call, double unit, int *nx, char *myname)
 		}
 		else {
       usage_provider[cur_call->provider]++;
+
+      if ((cur_call->cause == 0x22) || /* No circuit/channel available */
+          (cur_call->cause == 0x2a))   /* Switching equipment congestion */
+        provider_failed[cur_call->provider]++;
+
       duration_provider[cur_call->provider] += cur_call->duration;
       pay_provider[cur_call->provider] += cur_call->pay;
 
@@ -2100,8 +2128,7 @@ static int print_entries(one_call *cur_call, double unit, int *nx, char *myname)
 		} /* else */
 	}
 	else {
-    if (cur_call->cause != UNKNOWN)
-			day_sum.err++;
+    add_one_call(computed ? &day_com_sum : &day_sum, cur_call, unit);
 	} /* else */
 
       	 	      		if (cur_call->dir == DIALOUT) {
@@ -2355,13 +2382,13 @@ static void repair(one_call *cur_call)
   call[0].disconnect = cur_call->t + cur_call->duration;
   call[0].intern[CALLED] = strlen(cur_call->num[CALLED]) < interns0;
   call[0].provider = cur_call->provider;
-  call[0].sondernummer[CALLED] = is_sondernummer(cur_call->num[CALLED]);
+  call[0].sondernummer[CALLED] = is_sondernummer(cur_call->num[CALLED], DTAG);
   call[0].aoce = cur_call->eh;
   call[0].dialin = 0;
   strcpy(call[0].num[CALLED], cur_call->num[CALLED]);
   strcpy(call[0].onum[CALLED], cur_call->num[CALLED]);
 
-  preparecint(0, why, hint);
+  preparecint(0, why, hint, 1);
 
   if (call[0].zone == GLOBALCALL) {
 #if DEBUG
@@ -2371,7 +2398,7 @@ static void repair(one_call *cur_call)
     call[0].zone = WELT_4;
   } /* if */
 
-  price(0, why);
+  price(0, why, 1);
 
 #if DEBUG
   if (fabs(cur_call->pay - call[0].pay) > 0.01)

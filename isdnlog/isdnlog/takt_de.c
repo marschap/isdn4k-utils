@@ -1,4 +1,4 @@
-/* $Id:
+/* $Id: takt_de.c,v 1.9 1999/02/28 19:33:14 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -18,7 +18,18 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
- * $Log:
+ * $Log: takt_de.c,v $
+ * Revision 1.9  1999/02/28 19:33:14  akool
+ * Fixed a typo in isdnconf.c from Andreas Jaeger <aj@arthur.rhein-neckar.de>
+ * CHARGEMAX fix from Oliver Lauer <Oliver.Lauer@coburg.baynet.de>
+ * isdnrep fix from reinhard.karcher@dpk.berlin.fido.de (Reinhard Karcher)
+ * "takt_at.c" fixes from Ulrich Leodolter <u.leodolter@xpoint.at>
+ * sondernummern.c from Mario Joussen <mario.joussen@post.rwth-aachen.de>
+ * Reenable usage of the ZONE entry from Schlottmann-Goedde@t-online.de
+ * Fixed a typo in callerid.conf.5
+ *
+ * Revision 1.1  1999/02/09 18:49:31  akool
+ * Initial revision
  */
 
 /*
@@ -515,7 +526,7 @@ char *realProvidername(int prefix)
 } /* realProvidername */
 
 
-void preparecint(int chan, char *msg, char *hint)
+void preparecint(int chan, char *msg, char *hint, int viarep)
 {
   register int    zone = UNKNOWN, provider = UNKNOWN, tz, i, cheapest = UNKNOWN;
   auto 	   struct tm *tm;
@@ -536,7 +547,7 @@ void preparecint(int chan, char *msg, char *hint)
   provider = ((call[chan].provider == UNKNOWN) ? preselect : call[chan].provider);
 
   if ((call[chan].sondernummer[CALLED] != UNKNOWN) &&      /* Sonderrufnummer, Abrechnung zum CityCall-Tarif */
-      (SN[call[chan].sondernummer[CALLED]].tarif == 1) &&
+      (SN[call[chan].sondernummer[CALLED]].tarif == -1) &&
       (provider == DTAG))
     zone = CITYCALL;
   else if ((call[chan].sondernummer[CALLED] != UNKNOWN) && /* Sonderrufnummer, kostenlos */
@@ -568,6 +579,9 @@ void preparecint(int chan, char *msg, char *hint)
   else if (t[provider].used && (t[provider].InternetZugang != NULL) && !strcmp(call[chan].onum[CALLED], t[provider].InternetZugang))
     zone = INTERNET;
   else {
+    if ((i = call[chan].confentry[OTHER]) > UNKNOWN)
+      zone = known[i]->zone;
+    if (zone == UNKNOWN)
     zone = area_diff(NULL, call[chan].num[CALLED]);
 
     if ((zone == AREA_ERROR) || (zone == AREA_UNKNOWN))
@@ -588,6 +602,9 @@ void preparecint(int chan, char *msg, char *hint)
   call[chan].provider = provider;
   call[chan].tz = tz;
 
+  if (viarep)
+    return;
+
   if (zoneknown(provider, zone)) {
     if (t[provider].takt1[zone] == UNKNOWN)
       sprintf(s, "%s %s/%ss", WAEHRUNG,
@@ -603,7 +620,7 @@ void preparecint(int chan, char *msg, char *hint)
   else {
     sprintf(msg, "CHARGE: Oppps: No charge infos for provider %d, Zone %d %s",
       provider, zone,
-      ((call[chan].sondernummer[CALLED] != UNKNOWN) ? SN[call[chan].sondernummer[CALLED]].sinfo : ""));
+      ((call[chan].sondernummer[CALLED] != UNKNOWN) ? SN[call[chan].sondernummer[CALLED]].info : ""));
 
     call[chan].tarifknown = 0;
   } /* else */
@@ -648,7 +665,7 @@ void preparecint(int chan, char *msg, char *hint)
 } /* preparecint */
 
 
-void price(int chan, char *hint)
+void price(int chan, char *hint, int viarep)
 {
   auto	   int	  duration = (int)(call[chan].disconnect - call[chan].connect);
   auto     double pay2 = -1.0, onesec;
@@ -680,8 +697,8 @@ void price(int chan, char *hint)
         case -1 : if (!strcmp(call[chan].num[CALLED] + 3, "11833")) /* Sonderbedingung Auskunft Inland */
                     duration -= 30;
 
-                  pay2 = SN[call[chan].sondernummer[CALLED]].grund1 * currency_factor;
-                  pay2 += (duration / SN[call[chan].sondernummer[CALLED]].takt1) * currency_factor;
+                  pay2 = SN[call[chan].sondernummer[CALLED]].grund * currency_factor;
+                  pay2 += (duration / SN[call[chan].sondernummer[CALLED]].takt) * currency_factor;
                   break;
 
         case  0 : pay2 = 0.0;
@@ -712,14 +729,15 @@ void price(int chan, char *hint)
 
         call[chan].pay -= pay2;
 
-        /* print_msg(PRT_NORMAL, sx); FIXME */
+        if (!viarep)
+          print_msg(PRT_NORMAL, sx);
       } /* if */
     }
     else
       call[chan].pay = pay2;
 
 
-    if (call[chan].tarifknown) {
+    if (call[chan].tarifknown && !viarep) {
     cheapest = UNKNOWN;
     payx = 99999.9;
 
@@ -1109,6 +1127,7 @@ void exitTarife()
 } /* exitTarife */
 
 
+#if V1
 void initSondernummern()
 {
   register char  *p1, *p2, *p3;
@@ -1220,6 +1239,7 @@ int is_sondernummer(char *num)
 
   return(-1);
 } /* sondernummer */
+#endif /* V1 */
 
 
 #ifdef STANDALONE

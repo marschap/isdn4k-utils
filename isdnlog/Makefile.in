@@ -1,8 +1,8 @@
-## $Id: Makefile.in,v 1.52 1999/01/10 15:22:43 akool Exp $
+## $Id: Makefile.in,v 1.53 1999/02/28 19:32:17 akool Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
-## Copyright 1995, 1998 by Andreas Kool (akool@isdn4linux.de)
+## Copyright 1995, 1999 by Andreas Kool (akool@isdn4linux.de)
 ##
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -19,6 +19,15 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.53  1999/02/28 19:32:17  akool
+## Fixed a typo in isdnconf.c from Andreas Jaeger <aj@arthur.rhein-neckar.de>
+## CHARGEMAX fix from Oliver Lauer <Oliver.Lauer@coburg.baynet.de>
+## isdnrep fix from reinhard.karcher@dpk.berlin.fido.de (Reinhard Karcher)
+## "takt_at.c" fixes from Ulrich Leodolter <u.leodolter@xpoint.at>
+## sondernummern.c from Mario Joussen <mario.joussen@post.rwth-aachen.de>
+## Reenable usage of the ZONE entry from Schlottmann-Goedde@t-online.de
+## Fixed a typo in callerid.conf.5
+##
 ## Revision 1.52  1999/01/10 15:22:43  akool
 ##  - "message = 0" bug fixed (many thanks to
 ##    Sebastian Kanthak <sebastian.kanthak@muehlheim.de>)
@@ -392,7 +401,7 @@ CC          = $(_CC)
 
 INCLUDE     = -I./isdnlog -I./connect -I./tools -I$(PREFIXDIR) -I$(LIBISDNDIR) -I@CONFIG_KERNELDIR@/include
 
-LIB         = $(DBMLIB)
+LIB         = $(DBMLIB) -lm
 
 
 
@@ -404,7 +413,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 3.01
+VERSION     = 3.02
 
 MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 isdnlog/isdnlog.users.5 isdnrep/isdnrep.1 isdnconf/isdnconf.1
 
@@ -439,7 +448,7 @@ ISDNLOG_OBJS =  isdnlog/isdnlog.o isdnlog/processor.o isdnlog/functions.o \
                 connect/connect.o connect/socket.o tools/tools.o      	  \
                 connect/conv_address.o isdnlog/user_access.o 		  \
                 tools/isdnconf.o tools/tools_$(NATION).o		  \
-		isdnlog/takt_$(NATION).o				  \
+		isdnlog/takt_$(NATION).o isdnlog/sondernummern.o	  \
 		$(LIBISDNDIR)/libisdn.a
 
 
@@ -458,10 +467,12 @@ endif
 ISDNREP_OBJS =  isdnrep/rep_main.o tools/tools.o tools/isdnconf.o         \
                 isdnlog/messages.o isdnrep/isdnrep.o     		  \
 		tools/tools_$(NATION).o isdnlog/takt_$(NATION).o          \
+		isdnlog/sondernummern.o					  \
                 $(LIBISDNDIR)/libisdn.a
 
 ISDNCONF_OBJS=  isdnconf/isdnconf.o tools/tools.o tools/isdnconf.o        \
 		tools/tools_$(NATION).o isdnlog/takt_$(NATION).o          \
+		isdnlog/sondernummern.o					  \
                 $(LIBISDNDIR)/libisdn.a
 
 ISDNLOG      =  bin/isdnlog

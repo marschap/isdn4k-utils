@@ -1,4 +1,4 @@
-/* $Id: processor.c,v 1.37 1999/01/24 19:01:40 akool Exp $
+/* $Id: processor.c,v 1.38 1999/02/28 19:32:42 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,15 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.38  1999/02/28 19:32:42  akool
+ * Fixed a typo in isdnconf.c from Andreas Jaeger <aj@arthur.rhein-neckar.de>
+ * CHARGEMAX fix from Oliver Lauer <Oliver.Lauer@coburg.baynet.de>
+ * isdnrep fix from reinhard.karcher@dpk.berlin.fido.de (Reinhard Karcher)
+ * "takt_at.c" fixes from Ulrich Leodolter <u.leodolter@xpoint.at>
+ * sondernummern.c from Mario Joussen <mario.joussen@post.rwth-aachen.de>
+ * Reenable usage of the ZONE entry from Schlottmann-Goedde@t-online.de
+ * Fixed a typo in callerid.conf.5
+ *
  * Revision 1.37  1999/01/24 19:01:40  akool
  *  - second version of the new chargeint database
  *  - isdnrep reanimated
@@ -750,7 +759,7 @@ static void buildnumber(char *num, int oc3, int oc3a, char *result, int version,
 #endif
 
   if (!dir && (who == CALLED))
-    *sondernummer = is_sondernummer(num);
+    *sondernummer = is_sondernummer(num, DTAG); /* try with DTAG, these provider must support them all (i think) */
   else if ((dir && (who == CALLED)) || (!dir && (who == CALLING)))
     *intern = strlen(num) < interns0;
 
@@ -759,7 +768,7 @@ static void buildnumber(char *num, int oc3, int oc3a, char *result, int version,
     if (*sondernummer != -1) {
       auto char s[256];
 
-      sprintf(s, "(Sonderrufnummer %s : %s)", num, SN[*sondernummer].sinfo);
+      sprintf(s, "(Sonderrufnummer %s : %s)", num, sondernummername(num, DTAG));
       Q931dump(TYPE_STRING, -1, s, version);
     } /* if */
 
@@ -2271,8 +2280,6 @@ static void decode(int chan, register char *p, int type, int version, int tei)
                         }
                         else { /* AOC-E */
                           if ((c = call[chan].confentry[OTHER]) > -1) {
-                            known[c]->charge -= known[c]->rcharge;
-                            known[c]->charge += pay;
 
                             if (!replay && (chargemax != 0.0)) { /* only used here if no AOC-D */
                               if (day != known[c]->day) {
@@ -2302,6 +2309,9 @@ static void decode(int chan, register char *p, int type, int version, int tei)
                                 known[c]->bytes = 0.0;
                               } /* if */
                             } /* if */
+
+                            known[c]->charge -= known[c]->rcharge;
+                            known[c]->charge += pay;
                           } /* if */
                         } /* else */
                       } /* if */
@@ -4055,9 +4065,10 @@ static void processctrl(int card, char *s)
     if (firsttime) {
       firsttime = 0;
       print_msg (PRT_NORMAL, "(AVM B1 driver detected (D2))\n");
-    }
+    } /* if */
     memcpy(ps, "HEX: ", 5);
-  }
+  } /* if */
+
   if (!memcmp(ps, "HEX: ", 5)) { /* new HiSax Driver */
 
     if (((verbose & VERBOSE_HEX) && !(verbose & VERBOSE_CTRL)) || stdoutput)
@@ -4173,7 +4184,11 @@ static void processctrl(int card, char *s)
       } /* else */
     } /* if */
 #endif
-
+#if 0 /* wird so ins syslog eingetragen :-( */
+    if (!replay)
+      if (strtol(ps + 11, NIL, 16) == 1)
+        print_msg(PRT_NORMAL, "%c\b", (strtol(ps + 5, NIL, 16) == 2) ? '>' : '<');
+#endif
     if (!*(ps + 13) || !*(ps + 16))
       return;
 
@@ -4188,13 +4203,12 @@ static void processctrl(int card, char *s)
 
     ps += (tei == BROADCAST) ? 1 : 4;
   }
-
   else  if (!memcmp(ps, "D3", 2)) { /* AVMB1 */
 
     if (firsttime) {
       firsttime = 0;
-      print_msg (PRT_NORMAL, "(AVM B1 driver detected (D3))\n");
-    }
+      print_msg(PRT_NORMAL, "(AVM B1 driver detected (D3))\n");
+    } /* if */
 
     if (*(ps + 2) == '<')  /* this is our "direction flag" */
       net = 1;
@@ -4205,7 +4219,7 @@ static void processctrl(int card, char *s)
     isAVMB1 = 1;
 
     ps[0] = 'h'; ps[1] = 'e'; ps[2] = 'x';  /* rewrite for the others */
-  } /* AVM B1 */
+  }
   else { /* Old Teles Driver */
 
     /* Tei wird gelesen und bleibt bis zum Ende des naechsten hex: stehen.
@@ -4503,7 +4517,7 @@ static void processctrl(int card, char *s)
 
         if (OUTGOING && *call[chan].num[CALLED]) {
 
-	  preparecint(chan, why, hint);
+	  preparecint(chan, why, hint, 0);
 	  info(chan, PRT_SHOWCONNECT, STATE_CONNECT, why);
 
           if (*hint)
@@ -4518,7 +4532,7 @@ static void processctrl(int card, char *s)
           info(chan, PRT_SHOWCONNECT, STATE_CONNECT, sx);
 
             call[chan].disconnect = cur_time + 1;
-            price(chan, why);
+            price(chan, why, 0);
 
             sprintf(sx, "1.CI %s %s (now)", currency, double2str(call[chan].pay, 6, 3, DEB));
 
@@ -4647,7 +4661,7 @@ doppelt:break;
             qmsg(TYPE_CAUSE, version, call[chan].cause));
         } /* if */
 
-        price(chan, hint);
+        price(chan, hint, 0);
 
         if (*hint)
           info(chan, PRT_SHOWHANGUP, STATE_HANGUP, hint);
@@ -5030,7 +5044,7 @@ void processcint()
         call[chan].ctakt++;
 
         call[chan].disconnect = cur_time;
-        price(chan, why);
+        price(chan, why, 0);
 
         sprintf(sx, "%d.CI %s %s (after %s) ",
             call[chan].ctakt,

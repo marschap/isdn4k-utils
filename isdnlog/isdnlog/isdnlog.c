@@ -1,4 +1,4 @@
-/* $Id: isdnlog.c,v 1.34 1999/01/24 19:01:31 akool Exp $
+/* $Id: isdnlog.c,v 1.35 1999/02/28 19:32:38 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,15 @@
  * along with this program; if not, write to the Free Software
  *
  * $Log: isdnlog.c,v $
+ * Revision 1.35  1999/02/28 19:32:38  akool
+ * Fixed a typo in isdnconf.c from Andreas Jaeger <aj@arthur.rhein-neckar.de>
+ * CHARGEMAX fix from Oliver Lauer <Oliver.Lauer@coburg.baynet.de>
+ * isdnrep fix from reinhard.karcher@dpk.berlin.fido.de (Reinhard Karcher)
+ * "takt_at.c" fixes from Ulrich Leodolter <u.leodolter@xpoint.at>
+ * sondernummern.c from Mario Joussen <mario.joussen@post.rwth-aachen.de>
+ * Reenable usage of the ZONE entry from Schlottmann-Goedde@t-online.de
+ * Fixed a typo in callerid.conf.5
+ *
  * Revision 1.34  1999/01/24 19:01:31  akool
  *  - second version of the new chargeint database
  *  - isdnrep reanimated
@@ -1154,19 +1163,34 @@ int main(int argc, char *argv[], char *envp[])
           else
 #endif
           {
+#ifdef Q931
+      	    if (!q931dmp)
+#endif
+    	      print_msg(PRT_NORMAL, "%s Version %s starting\n", myshortname, VERSION);
+
+	    if ((i = initSondernummern()) > -1) {
+#ifdef Q931
+      	      if (!q931dmp) {
+#endif
+    	        sprintf(msg, "Sonderrufnummern Version 1/99 loaded [%d entries]", i);
+              	  print_msg(PRT_NORMAL, "%s\n", msg);
+
+#ifdef Q931
+       	      } /* if */
+#endif
+            } /* if */
+
             if (readconfig(myshortname) < 0)
               Exit(30);
 
             restoreCharge();
           } /* if */
 
-    			if (replay)
-					{
+    	  if (replay) {
 						sprintf(rlogfile, "%s.rep", logfile);
 			      logfile = rlogfile;
 					}
-					else
-          {
+	  else {
           	append_element(&devices,isdnctrl);
 
             switch (i = handle_runfiles(myshortname,devices,START_PROG)) {
@@ -1188,11 +1212,6 @@ int main(int argc, char *argv[], char *envp[])
 
             now();
 
-#ifdef Q931
-      	    if (!q931dmp)
-#endif
-    	      print_msg(PRT_NORMAL, "%s Version %s loaded\n", myshortname, VERSION);
-
 #ifdef POSTGRES
             dbOpen();
 #endif
@@ -1200,7 +1219,6 @@ int main(int argc, char *argv[], char *envp[])
 	    mysql_dbOpen();
 #endif
 
-	    initSondernummern();
             initTarife(msg);
 
 #ifdef Q931

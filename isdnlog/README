@@ -1,10 +1,10 @@
-ISDNLOG - Version 3.01 -  				10-Jan-99  16:06
+ISDNLOG - Version 3.02 -  				01-Feb-99  00:51
 
 
 isdnlog ist ein Utility zur Auswertung des D-Kanals eines
 ISDN-BRI Anschlusses.
 
-isdnlog-3.01 wurde ausgiebig mit Linux-2.0.36 getestet.
+isdnlog-3.02 wurde ausgiebig mit Linux-2.0.36 getestet.
 
 
 Fuer alle, die es nun ueberhaupt nicht mehr abwarten koennen, hier das
@@ -23,6 +23,16 @@ Quick-Installation-Guide
      make config
      make
      make install
+
+2.1 manuelle Nacharbeiten durchfuehren:
+     cd /usr/src/isdn4k-utils/isdnlog
+     cp -p sonderrufnummern.dat /usr/lib/isdn
+     cp -p tarif.dat /usr/lib/isdn
+     bzip2 -d vorwahl.dat.bz2
+     cp -p vorwahl.dat /usr/lib/isdn
+     cp -p samples/tarif.conf /etc/isdn
+
+
 
 3. Konfigurationsdatei fuer isdnlog fuellen:
 
@@ -52,6 +62,12 @@ Quick-Installation-Guide
      SI = <Dienstkennung>
      ALIAS = <Alias>
      ZONE = 1
+
+
+3.1
+   [GLOBAL]
+   AREADIFF = /usr/lib/isdn/vorwahl.dat
+
 
 4. isdn4linux das D-Kanal-Protokoll entlocken:
 
@@ -256,7 +272,7 @@ isdnlog sammelt all diese Informationen, und gestattet damit folgendes:
 
  - isdnlog decodiert (im Gegensatz zum aktuellen HiSax-Treiber) die
    von der VSt uebermittelten Gebuehreninformationen, und zeigt diese
-   sowohl am Ende einer Verbinung (== Gesamtkosten fuer diese Verbindung)
+   sowohl am Ende einer Verbindung (== Gesamtkosten fuer diese Verbindung)
    als auch waehrend der Verbindung staendig an.
 
 
@@ -275,7 +291,11 @@ isdnlog sammelt all diese Informationen, und gestattet damit folgendes:
    die angefallenen Gebuehren aufgrund Uhrzeit/Datum sowie Ortsnetz/Zone
    des Gegners selbst, und gibt also auch in diesem Fall die aufgelaufenen
    Gebuehren aus.
-
+   Da auch _alle_ alternativen Carrier (die neuen, "privaten"
+   Telefongesellschaften, die seit dem 1.1.1998 neben der Deutschen Telekom
+   verfuegbar sind) keine Gebuehreninformationen uebermitteln, ist isdnlog
+   in diesem Fall besonders hilfreich, da es Mithilfe einer umfangreichen
+   Tarifdatenbank die entstandenen Gebuehren selbststaendig berechnet.
 
  - Pro Gegner kann ein externes Programm definiert werden, das isdnlog
    startet, sobald dieser Gegner anruft, oder dieser angerufen wird.
@@ -304,6 +324,10 @@ isdnlog sammelt all diese Informationen, und gestattet damit folgendes:
    Allerdings befindet sich der xisdn noch im Entwicklungstand, so dass
    sich mit Sicherheit noch einige Aenderungen an der Oberflaeche und an
    den Funktionalitaeten abzeichnen lassen.
+
+ - Da die grafische Oberflaeche KDE mehr und mehr zum Standard aller Linux-
+   Rechner wird, gibt es natuerlich auch schon eine KDE-Oberflaeche zum
+   isdnlog: kisdnlog!
 
 
 2. Was kann isdnlog nicht?
@@ -412,10 +436,10 @@ und die ueber das Menue konfiguriert werden:
     aendern)
 
   LOCKDIR  (/var/lock/)
-  	Wol liegen die lock files (lock-Dateien).
+  	Wo liegen die lock files (lock-Dateien).
 
   RUNDIR  (/var/run/)
-  	Wol liegen die pid files (pid-Dateien).
+  	Wo liegen die pid files (pid-Dateien).
 
   SBINDIR   (/sbin)
     Wohin soll "isdnlog" installiert werden
@@ -633,7 +657,7 @@ CHARGEMAX = 15.00
 
 Hiermit wird (in DM) angegeben, wieviel Geld man pro Tag maximal
 mit isdn4linux vertelefonieren moechte.
-Dieser Eintrag ist Pflicht!
+Dieser Eintrag ist optional.
 
 CONNECTMAX = 18000,0
 
@@ -1076,7 +1100,7 @@ dies als "Phone" angezeigt, da in obigem Beispiel die Dienstkennung "4"
 nicht gesondert definiert wurde.
 
 
-Es gibt zwei verschienden Sektionen in diesen Dateien:
+Es gibt zwei verschiedene Sektionen in diesen Dateien:
 
 [MSN]
 [NUMBER]
@@ -1171,18 +1195,25 @@ ALIAS = helmut kohl
 Ein weiterer Eintrag ist die Tarifzone, in der sich von uns aus gesehen
 diese Nummer befindet:
 
- 0 = Verbindung am internen S0-Bus
+ 0 = Verbindung am internen S0-Bus (eigene TK-Anlage)
  1 = CityCall (bis 31.12.1997 City, bis 31.12.1995 "Ortszone/Nahzone", bis 20 km)
  2 = RegioCall (bis 31.12.1997 Region 50, bis 31.12.1995 "Regionalzone", bis 50 km)
  3 = GermanCall (bis 31.12.1998 Region 200, bis 31.12.1995 "Weitzone", dann bis 200 km)
- 4 = Fernzone (bis 31.12.1995 "Weitzone", dann alles ueber 200 km)
- 5 = Euro
- 6 = Vis-'a-vis 1
- 7 = Vis-'a-vis 2
- 8 = Vis-'a-vis 3
- 9 = Welt1
-10 = Welt2
-11 = Welt3
+ 4 = C-Netz
+ 5 = C-Mobilbox
+ 6 = D1-Netz
+ 7 = D2-Netz
+ 8 = E-plus-Netz
+ 9 = E2-Netz
+10 = Euro City
+11 = Euro 1
+12 = Euro 2
+13 = Welt 1
+14 = Welt 2
+15 = Welt 3
+16 = Welt 4
+17 = Internet (Internet-Zugang des jeweiligen Carriers)
+
 
 Dieser Eintrag wird wie folgt dargestellt:
 
@@ -1191,6 +1222,12 @@ ZONE = 1
 oder
 
 ZONE = 5
+
+
+Dieser Eintrag kann seit der Version 3.0 ersatzlos entfallen, da isdnlog
+seitdem eine eigene Verzonungstabelle enth„lt, d.h. selbststaendig in der
+Lage ist, die Zone des Gegners zu ermitteln.
+
 
 4.2.4 4. Eintrag: IP-Interface
 ------------------------------

@@ -1,226 +1,503 @@
-# Copyright 1995, 1999 by Andreas Kool (akool@isdn4linux.de)
-0010    |free|       |     |      |      | Operator Service                                 | Handvermittlung Inland und Ausland. Eine T-Net-Verbindung zu dieser RufNr. ist kostenlos. Nach erfolgreicher Vermittlung werden die fuer das Gesprach geltenden Verbindungstarife erhoben.
-0031800 |free|       |     |      |      | Plus Freephone Service (Niederl.)                | Plus Freephone Service (Niederlande). Eine T-Net-Verbindung zu dieser Rufnummer ist kostenfrei.
-0041800 |free|       |     |      |      | Plus Freephone Service (Schweiz)                 | Plus Freephone Service (Schweiz). Eine T-Net-Verbindung zu dieser Rufnummer ist kostenfrei.
-00800   |    |       |     |      |      | Freephone Service 800                            | Universal International Freephone Service 800.
-008711  |    |       |     |  0.7 | 0.7  | Inmarsat A (Atl. Ozean Ost)                      | Satelliten-Mobilfunksystem (analog),  Ausleuchtbereich Atlant. Ozean  Ost. Weitere Auskuenfte zum Inmarsatdienst erhalten Sie unter (02 28) 9 36-65 11
-0087130 |    |       |     |  0.8 | 0.8  | Inmarsat B (Atl. Ozean Ost)                      | Satelliten-Mobilfunksystem (digital),  Ausleuchtbereich Atlant. Ozean Ost. Weitere Auskuenfte zum Inmarsatdienst erhalten Sie unter (02 28) 9 36-65 11
-0087131 |    |       |     |  0.8 | 0.8  | Inmarsat B (Atl. Ozean Ost)                      | Satelliten-Mobilfunksystem (digital),  Ausleuchtbereich Atlant. Ozean  Ost. Weitere Auskuenfte zum Inmarsatdienst erhalten Sie unter (02 28) 9 36-65 11
-0087132 |    |       |     |  0.8 | 0.8  | Inmarsat B (Atl. Ozean Ost)                      | Satelliten-Mobilfunksystem (digital),  Ausleuchtbereich Atlant. Ozean  Ost. Weitere Auskuenfte zum Inmarsatdienst erhalten Sie unter (02 28) 9 36-65 11
-0087133 |    |       |     |  0.8 | 0.8  | Inmarsat B (Atl. Ozean Ost)                      | Satelliten-Mobilfunksystem (digital),  Ausleuchtbereich Atlant. Ozean  Ost. Weitere Auskuenfte zum Inmarsatdienst erhalten Sie unter (02 28) 9 36-65 11
-0087134 |    |       |     |  0.8 | 0.8  | Inmarsat B (Atl. Ozean Ost)                      | Satelliten-Mobilfunksystem (digital),  Ausleuchtbereich Atlant. Ozean  Ost. Weitere Auskuenfte zum Inmarsatdienst erhalten Sie unter (02 28) 9 36-65 11
-0087135 |    |       |     |  0.8 | 0.8  | Inmarsat B (Atl. Ozean Ost)                      | Satelliten-Mobilfunksystem (digital),  Ausleuchtbereich Atlant. Ozean  Ost. Weitere Auskuenfte zum Inmarsatdienst erhalten Sie unter (02 28) 9 36-65 11
-0087136 |    |       |     |  0.8 | 0.8  | Inmarsat B (Atl. Ozean Ost)                      | Satelliten-Mobilfunksystem (digital),  Ausleuchtbereich Atlant. Ozean  Ost. Weitere Auskuenfte zum Inmarsatdienst erhalten Sie unter (02 28) 9 36-65 11
-0087137 |    |       |     |  0.8 | 0.8  | Inmarsat B (Atl. Ozean Ost)                      | Satelliten-Mobilfunksystem (digital),  Ausleuchtbereich Atlant. Ozean  Ost. Weitere Auskuenfte zum Inmarsatdienst erhalten Sie unter (02 28) 9 36-65 11
-0087138 |    |       |     |  0.8 | 0.8  | Inmarsat B (Atl. Ozean Ost)                      | Satelliten-Mobilfunksystem (digital),  Ausleuchtbereich Atlant. Ozean  Ost. Weitere Auskuenfte zum Inmarsatdienst erhalten Sie unter (02 28) 9 36-65 11
-0087139 |    |       |     |  0.3 | 0.3  | Inmarsat B HS. (Atl. Ozean Ost)                  | Satelliten-Mobilfunksystem High Speed (digital, nur ISDN),  Ausleuchtbereich Atlant. Ozean  Ost. Weitere Auskuenfte zum Inmarsatdienst erhalten Sie unter (02 28) 9 36-65 11
-008715  |    |       |     |  0.7 | 0.7  | Inmarsat Aero (Atl. Ozean Ost)                   | Satelliten-Mobilfunksystem (digital),  Ausleuchtbereich Atlant. Ozean  Ost. Weitere Auskuenfte zum Inmarsatdienst erhalten Sie unter (02 28) 9 36-65 11
-008716  |    |       |     |  0.8 | 0.8  | Inmarsat M (Atl. Ozean Ost)                      | Satelliten-Mobilfunksystem (digital),  Ausleuchtbereich Atlant. Ozean  Ost. Weitere Auskuenfte zum Inmarsatdienst erhalten Sie unter (02 28) 9 36-65 11
-0087176 |    |       |     |  1   | 1    | Inmarsat-Phone (Mini-M) (Atl. Ozean Ost)         | Satelliten-Mobilfunksystem (digital),  Ausleuchtbereich Atlant. Ozean  Ost. Einschaltung: 01.08.96. Weitere Auskuenfte zum Inmarsatdienst erhalten Sie unter (02 28) 9 36-65 11
-008718  |    |       |     |  0.7 | 0.7  | Inmarsat A (Atl. Ozean Ost)                      | Satelliten-Mobilfunksystem (analog),  Ausleuchtbereich Atlant. Ozean  Ost. Weitere Auskuenfte zum Inmarsatdienst erhalten Sie unter (02 28) 9 36-65 11
-008721  |    |       |     |  0.7 | 0.7  | Inmarsat A (Pazif. Ozean)                        | Satelliten-Mobilfunksystem (analog),  Ausleuchtbereich Pazif. Ozean. Weitere Auskuenfte zum Inmarsatdienst erhalten Sie unter (02 28) 9 36-65 11.
-0087230 |    |       |     |  0.8 | 0.8  | Inmarsat B (Pazif. Ozean)                        | Satelliten-Mobilfunksystem (digital),  Ausleuchtbereich Pazif. Ozean. Weitere Auskuenfte zum Inmarsatdienst erhalten Sie unter (02 28) 9 36-65 11
-0087231 |    |       |     |  0.8 | 0.8  | Inmarsat B (Pazif. Ozean)                        | Satelliten-Mobilfunksystem (digital),  Ausleuchtbereich Pazif. Ozean. Weitere Auskuenfte zum Inmarsatdienst erhalten Sie unter (02 28) 9 36-65 11
-0087232 |    |       |     |  0.8 | 0.8  | Inmarsat B (Pazif. Ozean)                        | Satelliten-Mobilfunksystem (digital),  Ausleuchtbereich Pazif. Ozean. Weitere Auskuenfte zum Inmarsatdienst erhalten Sie unter (02 28) 9 36-65 11
-0087233 |    |       |     |  0.8 | 0.8  | Inmarsat B (Pazif. Ozean)                        | Satelliten-Mobilfunksystem (digital),  Ausleuchtbereich Pazif. Ozean. Weitere Auskuenfte zum Inmarsatdienst erhalten Sie unter (02 28) 9 36-65 11
-0087234 |    |       |     |  0.8 | 0.8  | Inmarsat B (Pazif. Ozean)                        | Satelliten-Mobilfunksystem (digital),  Ausleuchtbereich Pazif. Ozean. Weitere Auskuenfte zum Inmarsatdienst erhalten Sie unter (02 28) 9 36-65 11
-0087235 |    |       |     |  0.8 | 0.8  | Inmarsat B (Pazif. Ozean)                        | Satelliten-Mobilfunksystem (digital),  Ausleuchtbereich Pazif. Ozean. Weitere Auskuenfte zum Inmarsatdienst erhalten Sie unter (02 28) 9 36-65 11
-0087236 |    |       |     |  0.8 | 0.8  | Inmarsat B (Pazif. Ozean)                        | Satelliten-Mobilfunksystem (digital),  Ausleuchtbereich Pazif. Ozean. Weitere Auskuenfte zum Inmarsatdienst erhalten Sie unter (02 28) 9 36-65 11
-0087237 |    |       |     |  0.8 | 0.8  | Inmarsat B (Pazif. Ozean)                        | Satelliten-Mobilfunksystem (digital),  Ausleuchtbereich Pazif. Ozean. Weitere Auskuenfte zum Inmarsatdienst erhalten Sie unter (02 28) 9 36-65 11
-0087238 |    |       |     |  0.8 | 0.8  | Inmarsat B (Pazif. Ozean)                        | Satelliten-Mobilfunksystem (digital),  Ausleuchtbereich Pazif. Ozean. Weitere Auskuenfte zum Inmarsatdienst erhalten Sie unter (02 28) 9 36-65 11
-0087239 |    |       |     |  0.3 | 0.3  | Inmarsat B HS (Pazif. Ozean)                     | Satelliten-Mobilfunksystem High Speed (digital, nur ISDN),  Ausleuchtbereich Pazif. Ozean. Weitere Auskuenfte zum Inmarsatdienst erhalten Sie unter (02 28) 9 36-65 11
-008725  |    |       |     |  0.7 | 0.7  | Inmarsat Aero (Pazif. Ozean)                     | Satelliten-Mobilfunksystem (digital),  Ausleuchtbereich Pazif. Ozean. Weitere Auskuenfte zum Inmarsatdienst erhalten Sie unter (02 28) 9 36-65 11
-008726  |    |       |     |  0.8 | 0.8  | Inmarsat M (Pazif. Ozean)                        | Satelliten-Mobilfunksystem (digital),  Ausleuchtbereich Pazif. Ozean. Weitere Auskuenfte zum Inmarsatdienst erhalten Sie unter (02 28) 9 36-65 11
-0087276 |    |       |     |  1   | 1    | Inmarsat-Phone (Mini-M) (Pazif. Ozean)           | Satelliten-Mobilfunksystem (digital),  Ausleuchtbereich Pazif. Ozean. Einschaltung: 01.08.96. Weitere Auskuenfte zum Inmarsatdienst erhalten Sie unter (02 28) 9 36-65 11
-008728  |    |       |     |  0.7 | 0.7  | Inmarsat A (Pazif. Ozean)                        | Satelliten-Mobilfunksystem (digital),  Ausleuchtbereich Pazif. Ozean. Weitere Auskuenfte zum Inmarsatdienst erhalten Sie unter (02 28) 9 36-65 11
-008731  |    |       |     |  0.7 | 0.7  | Inmarsat A (Ind. Ozean)                          | Satelliten-Mobilfunksystem (analog),  Ausleuchtbereich Ind. Ozean. Weitere Auskuenfte zum Inmarsatdienst erhalten Sie unter (02 28) 9 36-65 11
-0087330 |    |       |     |  0.8 | 0.8  | Inmarsat B (Ind. Ozean)                          | Satelliten-Mobilfunksystem (digital),  Ausleuchtbereich Ind. Ozean. Weitere Auskuenfte zum Inmarsatdienst erhalten Sie unter (02 28) 9 36-65 11
-0087331 |    |       |     |  0.8 | 0.8  | Inmarsat B (Ind. Ozean)                          | Satelliten-Mobilfunksystem (digital),  Ausleuchtbereich Ind. Ozean. Weitere Auskuenfte zum Inmarsatdienst erhalten Sie unter (02 28) 9 36-65 11
-0087332 |    |       |     |  0.8 | 0.8  | Inmarsat B (Ind. Ozean)                          | Satelliten-Mobilfunksystem (digital),  Ausleuchtbereich Ind. Ozean. Weitere Auskuenfte zum Inmarsatdienst erhalten Sie unter (02 28) 9 36-65 11
-0087333 |    |       |     |  0.8 | 0.8  | Inmarsat B (Ind. Ozean)                          | Satelliten-Mobilfunksystem (digital),  Ausleuchtbereich Ind. Ozean. Weitere Auskuenfte zum Inmarsatdienst erhalten Sie unter (02 28) 9 36-65 11
-0087334 |    |       |     |  0.8 | 0.8  | Inmarsat B (Ind. Ozean)                          | Satelliten-Mobilfunksystem (digital),  Ausleuchtbereich Ind. Ozean. Weitere Auskuenfte zum Inmarsatdienst erhalten Sie unter (02 28) 9 36-65 11
-0087335 |    |       |     |  0.8 | 0.8  | Inmarsat B (Ind. Ozean)                          | Satelliten-Mobilfunksystem (digital),  Ausleuchtbereich Ind. Ozean. Weitere Auskuenfte zum Inmarsatdienst erhalten Sie unter (02 28) 9 36-65 11
-0087336 |    |       |     |  0.8 | 0.8  | Inmarsat B (Ind. Ozean)                          | Satelliten-Mobilfunksystem (digital),  Ausleuchtbereich Ind. Ozean. Weitere Auskuenfte zum Inmarsatdienst erhalten Sie unter (02 28) 9 36-65 11
-0087337 |    |       |     |  0.8 | 0.8  | Inmarsat B (Ind. Ozean)                          | Satelliten-Mobilfunksystem (digital),  Ausleuchtbereich Ind. Ozean. Weitere Auskuenfte zum Inmarsatdienst erhalten Sie unter (02 28) 9 36-65 11
-0087338 |    |       |     |  0.8 | 0.8  | Inmarsat B (Ind. Ozean)                          | Satelliten-Mobilfunksystem (digital),  Ausleuchtbereich Ind. Ozean. Weitere Auskuenfte zum Inmarsatdienst erhalten Sie unter (02 28) 9 36-65 11
-0087339 |    |       |     |  0.3 | 0.3  | Inmarsat B HS (Ind. Ozean)                       | Satelliten-Mobilfunksystem High Speed(digital, nur ISDN),  Ausleuchtbereich Ind. Ozean. Weitere Auskuenfte zum Inmarsatdienst erhalten Sie unter (02 28) 9 36-65 11
-008735  |    |       |     |  0.7 | 0.7  | Inmarsat Aero (Ind. Ozean)                       | Satelliten-Mobilfunksystem (digital),  Ausleuchtbereich Ind. Ozean. Weitere Auskuenfte zum Inmarsatdienst erhalten Sie unter (02 28) 9 36-65 11
-008736  |    |       |     |  0.8 | 0.8  | Inmarsat M (Ind. Ozean)                          | Satelliten-Mobilfunksystem (digital),  Ausleuchtbereich Ind. Ozean. Weitere Auskuenfte zum Inmarsatdienst erhalten Sie unter (02 28) 9 36-65 11
-0087376 |    |       |     |  1   | 1    | Inmarsat-Phone (Mini-M) (Ind. Ozean)             | Satelliten-Mobilfunksystem (digital),  Ausleuchtbereich Ind. Ozean. Einschaltung: 01.08.96. Weitere Auskuenfte zum Inmarsatdienst erhalten Sie unter (02 28) 9 36-65 11
-008738  |    |       |     |  0.7 | 0.7  | Inmarsat A (Ind. Ozean)                          | Satelliten-Mobilfunksystem (analog),  Ausleuchtbereich Ind. Ozean.Weitere Auskuenfte zum Inmarsatdienst erhalten Sie unter (02 28) 9 36-65 11
-008741  |    |       |     |  0.7 | 0.7  | Inmarsat A (Atl. Ozean West)                     | Satelliten-Mobilfunksystem (analog),  Ausleuchtbereich Atlant. Ozean  West. Weitere Auskuenfte zum Inmarsatdienst erhalten Sie unter (02 28) 9 36-65 11
-0087430 |    |       |     |  0.8 | 0.8  | Inmarsat B (Atl. Ozean West)                     | Satelliten-Mobilfunksystem (digital),  Ausleuchtbereich Atlant. Ozean West. Weitere Auskuenfte zum Inmarsatdienst erhalten Sie unter (02 28) 9 36-65 11
-0087431 |    |       |     |  0.8 | 0.8  | Inmarsat B (Atl. Ozean West)                     | Satelliten-Mobilfunksystem (digital),  Ausleuchtbereich Atlant. Ozean  West. Weitere Auskuenfte zum Inmarsatdienst erhalten Sie unter (02 28) 9 36-65 11
-0087432 |    |       |     |  0.8 | 0.8  | Inmarsat B (Atl. Ozean West)                     | Satelliten-Mobilfunksystem (digital),  Ausleuchtbereich Atlant. Ozean  West. Weitere Auskuenfte zum Inmarsatdienst erhalten Sie unter (02 28) 9 36-65 11
-0087433 |    |       |     |  0.8 | 0.8  | Inmarsat B (Atl. Ozean West)                     | Satelliten-Mobilfunksystem (digital),  Ausleuchtbereich Atlant. Ozean  West. Weitere Auskuenfte zum Inmarsatdienst erhalten Sie unter (02 28) 9 36-65 11
-0087434 |    |       |     |  0.8 | 0.8  | Inmarsat B (Atl. Ozean West)                     | Satelliten-Mobilfunksystem (digital),  Ausleuchtbereich Atlant. Ozean West. Weitere Auskuenfte zum Inmarsatdienst erhalten Sie unter (02 28) 9 36-65 11
-0087435 |    |       |     |  0.8 | 0.8  | Inmarsat B (Atl. Ozean West)                     | Satelliten-Mobilfunksystem (digital),  Ausleuchtbereich Atlant. Ozean  West. Weitere Auskuenfte zum Inmarsatdienst erhalten Sie unter (02 28) 9 36-65 11
-0087436 |    |       |     |  0.8 | 0.8  | Inmarsat B (Atl. Ozean West)                     | Satelliten-Mobilfunksystem (digital),  Ausleuchtbereich Atlant. Ozean  West. Weitere Auskuenfte zum Inmarsatdienst erhalten Sie unter (02 28) 9 36-65 11
-0087437 |    |       |     |  0.8 | 0.8  | Inmarsat B (Atl. Ozean West)                     | Satelliten-Mobilfunksystem (digital),  Ausleuchtbereich Atlant. Ozean  West. Weitere Auskuenfte zum Inmarsatdienst erhalten Sie unter (02 28) 9 36-65 11
-0087438 |    |       |     |  0.8 | 0.8  | Inmarsat B (Atl. Ozean West)                     | Satelliten-Mobilfunksystem (digital),  Ausleuchtbereich Atlant. Ozean  West. Weitere Auskuenfte zum Inmarsatdienst erhalten Sie unter (02 28) 9 36-65 11
-0087439 |    |       |     |  0.3 | 0.3  | Inmarsat B HS (Atl. Ozean West)                  | Satelliten-Mobilfunksystem High Speed (digital, nur ISDN),  Ausleuchtbereich Atlant. Ozean  West. Weitere Auskuenfte zum Inmarsatdienst erhalten Sie unter (02 28) 9 36-65 11
-008745  |    |       |     |  0.7 | 0.7  | Inmarsat Aero (Atl. Ozean West)                  | Satelliten-Mobilfunksystem (digital),  Ausleuchtbereich Atlant. Ozean  West. Weitere Auskuenfte zum Inmarsatdienst erhalten Sie unter (02 28) 9 36-65 11
-008746  |    |       |     |  0.8 | 0.8  | Inmarsat M (Atl. Ozean West)                     | Satelliten-Mobilfunksystem (digital),  Ausleuchtbereich Atlant. Ozean  West. Weitere Auskuenfte zum Inmarsatdienst erhalten Sie unter (02 28) 9 36-65 11
-0087476 |    |       |     |  1   | 1    | Inmarsat-Phone (Mini-M) (Atl. Ozean West)        | Satelliten-Mobilfunksystem (digital),  Ausleuchtbereich Atlant. Ozean West. Einschaltung: 01.08.96. Weitere Auskuenfte zum Inmarsatdienst erhalten Sie unter (02 28) 9 36-65 11
-008748  |    |       |     |  0.7 | 0.7  | Inmarsat A (Atl. Ozean West)                     | Satelliten-Mobilfunksystem (digital),  Ausleuchtbereich Atlant. Ozean West. Weitere Auskuenfte zum Inmarsatdienst erhalten Sie unter (02 28) 9 36-65 11
-010     |free|       |     |      |      | Verbindungsnetzbetreiberauswahl                  | Auswahl des Verbindungsnetzbetreibers. Nach Wahl der 01033 wird eine T-Net-Verbindung mit den T-Net-Tarifen hergestellt.
-01113   |free|       |     |      |      | Telekom Direkt                                   | Telekom Direkt. Eine T-Net-Verbindung zu dieser Rufnummer ist kostenfrei.
-01114   |free|       |     |      |      | Telekom Privatkundenvertrieb                     | Telefonische Auftragsannahme Privatkundenvertrieb. Eine T-Net-Verbindung zu dieser Rufnummer ist kostenfrei.
-01115   |free|       |     |      |      | Telekom Geschaftskundenvertrieb                  | Telefonische Auftragsannahme Geschaftskundenvertrieb. Eine T-Net-Verbindung zu dieser Rufnummer ist kostenfrei.
-01131   |free|       |     |      |      | Telegrammaufnahme per Telefon                    | Telegrammaufnahme. Eine T-Net-Verbindung zu dieser Rufnummer ist kostenfrei. Zusatzlich werden die Kosten des Telegramms berechnet.
-01136   |free|       |     |      |      | Telegrammaufnahme per Telefax                    | Telegrammaufnahme per Telefax. Eine T-Net-Verbindung zu dieser Rufnummer ist kostenfrei. Zusatzlich werden die Kosten des Telegramms berechnet.
-01141   |City|       |     |      |      | Auftrags-und Ansagedienst                        | Auftrags- und Ansagedienst. Sie erreichen diesen Dienst zum Citytarif. Weitere Informationen erhalten Sie unter dieser RufNr. oder der RufNr. 0 11 14 (zum Nulltarif).
-0115    |City|       |     |      |      | Ansagen (regional)                               | Regionale Ansagedienste.  Sie erreichen diesen Dienst zum Citytarif.
-0116    |City|       |     |      |      | Ansagen (bundesweit)                             | Bundesweite Ansagedienste.  Sie erreichen diesen Dienst zum Citytarif.
-01171   |free|       |     |      |      | alte Stîrungsannahme PK                          | Privatkundenservice der Deutschen Telekom. Eine T-Net-Verbindung zu dieser Rufnummer ist kostenfrei.
-01172   |free|       |     |      |      | alte Stîrungsannahme GK                          | Geschaftskundenservice der Deutschen Telekom. Eine T-Net-Verbindung zu dieser Rufnummer ist kostenfrei.
-01174   |free|       |     |      |      | alte Stîrungsannahme Kabelfernsehen DTAG         | Stîrungsstelle fuer Kabelfernsehen. Eine T-Net-Verbindung zu dieser Rufnummer ist kostenfrei.
-01189   |    |       |     |  3.8 | 3.8  | Auskunft T-Komfort                               | Komfortauskunft Inland.
-01191   |City|       |     |      |      | Zeitansage                                       | Zeitansage.Sie erreichen diesen Dienst zum Citytarif.
-0130    |free|       |     |      |      | freecall 0130                                    | freecall 0130. Eine T-Net-Verbindung zu dieser Rufnummer ist kostenfrei.
-01370   |    |     1 |   1 |  20  |   20 | Televotum                                        | Televotumdienst. Eine T-Net-Verbindung kostet 12,1 Pfg. + 12,1 Pfg. je angefangene 20 sec.je 0,12 DM.
-01371   |    |     2 |   2 |      |      | T-VoteCall                                       | T-VoteCall. Eine T-Net-Verbindung kostet  0,24 DM.
-01372   |    |     1 |   1 |  20  |   20 | T-VoteCall                                       | T-VoteCall. Eine T-Net-Verbindung kostet 12,1 Pfg. + 12,1 Pfg. je angefangene 20 sec.
-01373   |    |     1 |   1 |  20  |   20 | Televotum                                        | Televotumdienst. Eine T-Net-Verbindung kostet 12,1 Pfg. + 12,1 Pfg. je angefangene 20 sec.
-01374   |    |     1 |   1 |  20  |   20 | Televotum                                        | Televotumdienst. Eine T-Net-Verbindung kostet 12,1 Pfg. + 12,1 Pfg. je angefangene 20 sec.je 0,12 DM.
-01375   |    |     1 |   1 |  20  |   20 | Televotum                                        | Televotumdienst. Eine T-Net-Verbindung kostet 12,1 Pfg. + 12,1 Pfg. je angefangene 20 sec. je 0,12 DM.
-01376   |    |     1 |   1 |  20  |   20 | Televotum                                        | Televotumdienst. Eine T-Net-Verbindung kostet 12,1 Pfg. + 12,1 Pfg. je angefangene 20 sec.DM.
-01377   |    |     1 |   1 |  20  |   20 | Televotum                                        | Televotumdienst. Eine T-Net-Verbindung kostet 12,1 Pfg. + 12,1 Pfg. je angefangene 20 sec.
-01378   |    |     1 |   1 |  20  |   20 | Televotum                                        | Televotumdienst. Eine T-Net-Verbindung kostet 12,1 Pfg. + 12,1 Pfg. je angefangene 20 sec.
-01379   |    |     1 |   1 |  20  |   20 | Televotum                                        | Televotumdienst. Eine T-Net-Verbindung kostet 12,1 Pfg. + 12,1 Pfg. je angefangene 20 sec.
-0138    |    |     1 |   1 |  20  |   20 | Teledialog                                       | Teledialog. Eine T-Net-Verbindung kostet 12,1 Pfg. + 12,1 Pfg. je angefangene 20 sec.
-01610   |    |       |     | 7.5  |  15  | Mobilfunk C                                      | Verbindungen vom Festnetz zum Mobilfunknetz C.
-01617   |    |       |     | 7.5  |  15  | Mobilfunk C                                      | Verbindungen vom Festnetz zum Mobilfunknetz C.
-01618   |    |       |     |11.4  | 16.7 | C-Mobilboxen                                     | Verbindungen vom Festnetz zur C-Netz-Mobilbox.
-01619   |    |       |     |  7.5 | 15   | Mobilfunk C                                      | Verbindungen vom Festnetz zum Mobilfunknetz C.
-01640   |    |       |     |  20  | 30   | Cityruf Voicebox                                 | Verbindungen vom Festnetz zum Funkrufdienst Cityruf.
-01641   |    |       |     |  20  | 30   | Cityruf                                          | Verbindungen vom Festnetz zum Funkrufdienst Cityruf (Ton).
-01642   |    |       |     |  20  | 30   | Cityruf                                          | Verbindungen vom Festnetz zum Funkrufdienst Cityruf (Ton).
-01643   |    |       |     |  20  | 30   | Cityruf                                          | Verbindungen vom Festnetz zum Funkrufdienst Cityruf (Ton).
-01644   |    |       |     |  20  | 30   | Cityruf                                          | Verbindungen vom Festnetz zum Funkrufdienst Cityruf (Ton).
-01645   |    |       |     |  20  | 30   | Cityruf                                          | Verbindungen vom Festnetz zum Funkrufdienst Cityruf (Ton).
-01646   |    |       |     |  20  | 30   | Cityruf                                          | Verbindungen vom Festnetz zum Funkrufdienst Cityruf (Ton).
-01647   |    |       |     |  20  | 30   | Cityruf                                          | Verbindungen vom Festnetz zum Funkrufdienst Cityruf (Ton).
-01648   |    |       |     |  20  | 30   | Cityruf                                          | Verbindungen vom Festnetz zum Funkrufdienst Cityruf (Ton).
-01649   |    |       |     |  20  | 30   | Cityruf                                          | Verbindungen vom Festnetz zum Funkrufdienst Cityruf (Ton).
-016500  |    |       |     |  12  | 24   | Quix                                             | Verbindungen vom Festnetz zum Funkrufdienst Quix.
-016501  |    |       |     |  12  | 24   | Quix                                             | Verbindungen vom Festnetz zum Funkrufdienst Quix.
-016502  |    |       |     |  12  | 24   | Quix                                             | Verbindungen vom Festnetz zum Funkrufdienst Quix.
-016503  |    |       |     |  12  | 24   | Quix                                             | Verbindungen vom Festnetz zum Funkrufdienst Quix.
-016504  |    |       |     |  12  | 24   | Quix                                             | Verbindungen vom Festnetz zum Funkrufdienst Quix.
-016505  |    |       |     |  12  | 24   | Quix                                             | Verbindungen vom Festnetz zum Funkrufdienst Quix.
-016506  |    |       |     |  12  | 24   | Quix                                             | Verbindungen vom Festnetz zum Funkrufdienst Quix.
-016507  |    |       |     |  12  | 24   | Quix                                             | Verbindungen vom Festnetz zum Funkrufdienst Quix.
-016508  |    |       |     |  12  | 24   | Quix                                             | Verbindungen vom Festnetz zum Funkrufdienst Quix.
-01651   |    |     2 | 2   |      |      | Quix                                             | Verbindungen vom Festnetz zum Funkrufdienst Quix. Ein Anruf kostet 24,1 Pfg.
-01652   |    |       |     |  10  | 20   | Quix                                             | Verbindungen vom Festnetz zum Funkrufdienst Quix.
-01653   |    |   10  |  8  |      |      | Quix                                             | Verbindungen vom Festnetz zum Funkrufdienst Quix. Blocktarif.
-01654   |    |   10  |  8  |      |      | Quix                                             | Verbindungen vom Festnetz zum Funkrufdienst Quix. Blocktarif.
-01655   |    |       |     |  12  | 24   | Quix                                             | Verbindungen vom Festnetz zum Funkrufdienst Quix.
-01656   |    |   20  | 20  |      |      | Quix                                             | Verbindungen vom Festnetz zum Funkrufdienst Quix. Ein Anruf kostet 2,42 DM.
-016591  |    |   10  |  8  |      |      | Quix                                             | Verbindungen vom Festnetz zum Funkrufdienst Quix. Blocktarif.
-016592  |    |   10  |  8  |      |      | Quix                                             | Verbindungen vom Festnetz zum Funkrufdienst Quix. Blocktarif.
-016593  |    |   10  |  8  |      |      | Quix                                             | Verbindungen vom Festnetz zum Funkrufdienst Quix. Blocktarif.
-01660   |    |       |     |  5.2 | 5.2  | TeLMI                                            | Verbindungen vom Festnetz zum Funkrufdienst TeLMi.
-01661   |    |       |     |  1.3 | 1.3  | TeLMI                                            | Verbindungen vom Festnetz zum Funkrufdienst TeLMi.
-01665   |    |       |     |  5.2 | 5.2  | TeLMI                                            | Verbindungen vom Festnetz zum Funkrufdienst TeLMi.
-01669   |    |       |     |  5.2 | 5.2  | TeLMI                                            | Verbindungen vom Festnetz zum Funkrufdienst TeLMi.
-01680   |    |   5   | 5   |      |      | Scall                                            | Verbindungen vom Festnetz zum Funkrufdienst Scall. Ein Anruf kostet  0,60 DM.
-01681   |    |   12  |  8  |      |      | Scall                                            | Verbindungen vom Festnetz zum Funkrufdienst Scall. Mo-Fr 9-18h 12 TE, ubrige Zeit 8 TE!
-01682   |    |       |     |  20  | 30   | Cityruf                                          | Verbindungen vom Festnetz zum Funkrufdienst Cityruf. Numerik
-01683   |    |       |     |  20  | 30   | Cityruf                                          | Verbindungen vom Festnetz zum Funkrufdienst Cityruf. Numerik
-01684   |    |       |     |  20  | 30   | Cityruf                                          | Verbindungen vom Festnetz zum Funkrufdienst Cityruf. Numerik
-01685   |    |       |     |  20  | 30   | Cityruf                                          | Verbindungen vom Festnetz zum Funkrufdienst Cityruf. Numerik
-01686   |    |       |     |  20  | 30   | Cityruf                                          | Verbindungen vom Festnetz zum Funkrufdienst Cityruf. Numerik
-01687   |    |       |     |  20  | 30   | Cityruf                                          | Verbindungen vom Festnetz zum Funkrufdienst Cityruf. Numerik
-01688   |    |       |     |  20  | 30   | Cityruf                                          | Verbindungen vom Festnetz zum Funkrufdienst Cityruf. Numerik
-01689   |    |       |     |  20  | 30   | Cityruf                                          | Verbindungen vom Festnetz zum Funkrufdienst Cityruf. Numerik
-01690   |    |       |     |  20  | 30   | Cityruf                                          | Verbindungen vom Festnetz zum Funkrufdienst Cityruf. Modem
-01691   |    |       |     |  20  | 30   | Cityruf                                          | Verbindungen vom Festnetz zum Funkrufdienst Cityruf, Alphanumerik
-01692   |    |   8   | 8   |      |      | Skyper                                           | Verbindung vom Festnetz zum Funkrufdienst Skyper (Modem). Eine T-Net-Verbindung kostet  0,97 DM.
-01693   |    |   8   | 8   |      |      | Skyper                                           | Verbindung vom Festnetz zum Funkrufdienst Skyper (MFV). Eine T-Net-Verbindung kostet  0,97 DM.
-016951  |    |       |     |  5   | 5    | Cityruf                                          | Verbindungen vom Festnetz zum Funkrufdienst Cityruf,  Auftragsdienst Plus.
-016952  |    |       |     |  5   | 5    | Cityruf                                          | Verbindungen vom Festnetz zum Funkrufdienst Cityruf,  Euromessage.
-016953  |    |   20  | 20  |      |      | Skyper                                           | Verbindung vom Festnetz zum Funkrufdienst Skyper (Operator Service). Eine T-Net-Verbindung kostet  2,42 DM.
-01696   |    |   8   | 8   |      |      | Scall (Modemzugang)                              | Verbindungen vom Festnetz zum Funkrufdienst Scall. Eine T-Net-Verbindung kostet  0,97 DM.
-01699   |    |   20  | 20  |      |      | Scall (Operatorzugang)                           | Verbindungen vom Festnetz zum Funkrufdienst Scall. Eine T-Net-Verbindung kostet  2,42 DM.
-0171    |    |       |     |  7.5 | 15   | Mobilfunknetz D1                                 | Verbindungen vom Festnetz zum Mobilfunknetz D1.
-0172    |    |       |     |  5.4 | 13   | Mobilfunknetz D2                                 | Verbindungen vom Festnetz zum Mobilfunknetz D2, Teilnehmer.
-0177    |    |       |     |  5.3 |12.8  | Mobilfunknetz E-Plus                             | Verbindungen vom Festnetz zum Mobilfunknetz E Plus.
-01802   |    |   1   | 1   |      |      | Shared Cost Service 01802                        | Shared Cost Service 0180-2. Eine T-Net-Verbindung zu diesem Dienst kostet unabhangig von der Tages-oder Wochenzeit nur 12,1 Pfg.
-01803   |    |       |     |  30  | 30   | Shared Cost Service 01803                        | Shared Cost Service 0180-3.
-01805   |    |       |     |  15  | 15   | Shared Cost Service 01805                        | Shared Cost Service 0180-5.
-01901   |    |       |     |  6   | 6    | Service 0190                                     | Service 0190 . Mit dem Entgelt werden auch die Aufwendungen des Informationsanbieters abgegolten.
-01902   |    |       |     |  6   | 6    | Service 0190                                     | Service 0190 . Mit dem Entgelt werden auch die Aufwendungen des Informationsanbieters abgegolten.
-01903   |    |       |     |  6   | 6    | Service 0190                                     | Service 0190 . Mit dem Entgelt werden auch die Aufwendungen des Informationsanbieters abgegolten.
-01904   |    |       |     |  9   | 9    | Service 0190                                     | Service 0190 . Mit dem Entgelt werden auch die Aufwendungen des Informationsanbieters abgegolten.
-01905   |    |       |     |  6   | 6    | Service 0190                                     | Service 0190 . Mit dem Entgelt werden auch die Aufwendungen des Informationsanbieters abgegolten.
-01906   |    |       |     |  9   | 9    | Service 0190                                     | Service 0190 . Mit dem Entgelt werden auch die Aufwendungen des Informationsanbieters abgegolten.
-01907   |    |       |     |  3   | 3    | Service 0190                                     | Service 0190 . Mit dem Entgelt werden auch die Aufwendungen des Informationsanbieters abgegolten.
-01908   |    |       |     |  2   | 2    | Service 0190                                     | Service 0190 . Mit dem Entgelt werden auch die Aufwendungen des Informationsanbieters abgegolten.
-01909   |    |       |     |  3   | 3    | Service 0190                                     | Service 0190 . Mit dem Entgelt werden auch die Aufwendungen des Informationsanbieters abgegolten.
-01910   |City|       |     |      |      | Online-Dienste Zugang SLIP                       | Selbstwahlverbindungen zum Zugang Online-Dienste. Sie erreichen diesen Dienst zum Citytarif.
-0191011 |City|       |     |      |      | Online-Dienste Zugang PPP                        | Selbstwahlverbindungen zum Zugang Online-Dienste. Sie erreichen diesen Dienst zum Citytarif.
-01914   |City|       |     |      |      | Online-Dienste AOL Zugang                        | Selbstwahlverbindungen zum Zugang Online-Dienst von AOL Es gelten die Preise fÅr CityCall Verbindungen
-0191023 |City|       |     |      |      | Online-Dienste 1&1                               |
-0191501	|?   |	     |	   |	  |	 | o.tel.o Online Zugang PPP                        |
-01928	|?   |	     |	   |	  |	 | Mobilcom Online Zugang, Tomorrow-Tarif	    |
-01929	|?   |	     |	   |	  |	 | Mobilcom Online Zugang, Freenet-Tarif	    |
-02000   |?   |       |     |      |      | Expo 2000 Hotline                                | Expo 2000 Hotline. Eine T-Net-Verbindung kostet 5 TE inkl. 60 Sek. + nach 60 Sek. 1 TE je angefangene 12 Sek. 12 12
-0800    |free|       |     |      |      | freecall 0800                                    | freecall 0800. Eine T-Net-Verbindung zu dieser Rufnummer ist kostenfrei.
-110     |free|       |     |      |      | Polizei/Notruf                                   | Polizeinotruf. Eine T-Net-Verbindung zu dieser Rufnummer ist kostenfrei.
-11101   |    |   1   | 1   |      |      | Telefonseelsorge                                 | Telefonseelsorge und soziale Beratungsdienste der freien Wohlfahrtspflege. Eine T-Net-Verbindung zu diesem Dienst kostet unabhangig von der Tages-oder Wochenzeit nur 12,1 Pfg.
-11102   |    |   1   | 1   |      |      | Telefonseelsorge                                 | Telefonseelsorge und soziale Beratungsdienste der freien Wohlfahrtspflege. Eine T-Net-Verbindung zu diesem Dienst kostet unabhangig von der Tages-oder Wochenzeit nur 12,1 Pfg.
-11103   |    |   1   | 1   |      |      | Telefonseelsorge                                 | Telefonseelsorge und soziale Beratungsdienste der freien Wohlfahrtspflege. Eine T-Net-Verbindung zu diesem Dienst kostet unabhangig von der Tages-oder Wochenzeit nur 12,1 Pfg.
-112     |free|       |     |      |      | Feuerwehr / Rettungsleitstelle                   | Feuerwehrnotruf. Eine T-Net-Verbindung zu dieser Rufnummer ist kostenfrei.
-11811   |?   |       |     |      |      | Frag Fred Telefonauskunft                        |
-11818   |?   |       |     |      |      | Debitel Telefonauskunft                          |
-11833   |    |     8 | 8   |  3.8 | 3.8  | Auskunft T-Inland                                | Telefonauskunft Inland. Die ersten 30 Sek. kosten 0,97 DM. Danach alle 3,8 Sek. 1 TE.
-11834   |    |     8 | 8   |  3.8 | 3.8  | Auskunft T-Ausland                               | Telefonauskunft Ausland. Einmalig 0,97 DM und alle 3,8 Sek. 1 TE.
-11870   |?   |       |     |      |      | Arcor Telefonauskunft Inland                     |
-11871   |?   |       |     |      |      | Arcor Telefonauskunft Ausland                    |
-11880   |?   |       |     |      |      | Telegate Telefonauskunft Inland                  |
-11890   |?   |       |     |      |      | Telegate Telefonauskunft Ausland                 |
-11875   |?   |       |     |      |      | Auskunft Inland ARCIS Media∑COM Management GmbH  |
-11815   |?   |       |     |      |      | Auskunft Inland Bayerische Telefonbuch-Verlags   | GmbH i. Gr., Ingolstadt
-11823   |?   |       |     |      |      | Auskunft Inland Communikationsnetze S¸d-West     | GmbH & Co. KG, Stuttgart
-11882   |?   |       |     |      |      | Auskunft Inland City Com Netze      		    | GmbH i. Gr., N¸rnberg
-11819   |?   |       |     |      |      | Auskunft Inland CityLine Telefondienste 	    | GmbH, Schleswig
-11885   |?   |       |     |      |      | Auskunft Inland Deutsche Telekom Medien 	    | GmbH, Frankfurt
-11877   |?   |       |     |      |      | Auskunft Inland E-Plus Mobilfunk 		    | GmbH, D¸sseldorf
-11816   |?   |       |     |      |      | Auskunft Inland EWE TEL 			    | GmbH, Oldenburg
-11858   |?   |       |     |      |      | Auskunft Inland KaTel 			    | Gesellschaft f¸r Telekommunikation mbH, Kˆln
-11843   |?   |       |     |      |      | Auskunft Inland KielNet 			    | GmbH
-11872   |?   |       |     |      |      | Auskunft Inland Mannesmann Mobilfunk 	    | GmbH, D¸sseldorf
-11883   |?   |       |     |      |      | Auskunft Inland Mega Satellitenfernsehen 	    | GmbH, Kaarst
-11888   |?   |       |     |      |      | Auskunft Inland o.tel.o 			    | communications GmbH, D¸sseldorf
-11844   |?   |       |     |      |      | Auskunft Inland pc-plus Connect 		    | GmbH, M¸nchen
-11822   |?   |       |     |      |      | Auskunft Inland PLUSNET 			    | Gesellschaft f¸r Netzwerk Services mbH, D¸sseldorf
-11850   |?   |       |     |      |      | Auskunft Inland Talkline 			    | PS PhoneService GmbH
-11861   |?   |       |     |      |      | Auskunft Inland Telecom-Infoservice 		    | GmbH, Wien (A)
-11812   |?   |       |     |      |      | Auskunft Inland Telefonbuch-Verlag 		    | Sachsen GmbH, Dresden
-11810   |?   |       |     |      |      | Auskunft Inland Teleglobe 			    | GmbH
-11881   |?   |       |     |      |      | Auskunft Inland VIAG INTERKOM 		    | GmbH & Co. KG, M¸nchen
-11855   |?   |       |     |      |      | Auskunft Inland WorldCom 			    | Telecommunication Services GmbH, Frankfurt
-11829   |?   |       |     |      |      | Auskunft Ausland CityLine 			    | Telefondienste GmbH, Schleswig
-11824   |?   |       |     |      |      | Auskunft Ausland Communikationsnetze S¸d-West    | GmbH & Co. KG, Stuttgart
-11828   |?   |       |     |      |      | Auskunft Ausland Debitel 			    | Kommunikationstechnik GmbH & Co. KG, Stuttgart
-11886   |?   |       |     |      |      | Auskunft Ausland Deutsche Telekom Medien 	    | GmbH, Frankfurt
-11878   |?   |       |     |      |      | Auskunft Ausland E-Plus Mobilfunk 		    | GmbH, D¸sseldorf
-11817   |?   |       |     |      |      | Auskunft Ausland EWE TEL 			    | GmbH, Oldenburg
-11873   |?   |       |     |      |      | Auskunft Ausland Mannesmann Mobilfunk 	    | GmbH
-11898   |?   |       |     |      |      | Auskunft Ausland o.tel.o    			    | communications GmbH, D¸sseldorf
-11866   |?   |       |     |      |      | Auskunft Ausland pc-plus Connect 		    | GmbH, M¸nchen
-11851   |?   |       |     |      |      | Auskunft Ausland Talkline 			    | PS PhoneService GmbH
-11860   |?   |       |     |      |      | Auskunft Ausland Telecom-Infoservice 	    | GmbH, Wien (A)
-11887   |?   |       |     |      |      | Auskunft Ausland Telegate Anklam		    |
-11814   |?   |       |     |      |      | Auskunft Ausland Teleglobe 			    | GmbH
-11889   |?   |       |     |      |      | Auskunft Ausland VIAG INTERKOM 		    | GmbH & Co. KG, M¸nchen
-11856   |?   |       |     |      |      | Auskunft Ausland WorldCom 			    | Telecommunication Services GmbH, Frankfurt
-0800 33 02000 |free|       |     |      |      |Stîrungsannahme PK			    |
-0800 33 01172 |free|       |     |      |      |Stîrungsannahme GK                          |
-0800 33 01174 |free|       |     |      |      |Stîrungsannahme Kabelfernsehen DTAG         |
-# QUELLE: Programm "t-tarife.exe" Version: 1.16  Stand: 07.1998
-# 	  http://www.telekom.de
-#	 http://www.regtp.de
-#         sowie eigene Recherchen, Stand: 14-Jan-99
+# $Id: sonderrufnummern.dat,v 1.5 1999/02/28 19:32:24 akool Exp $
+#
+# Sonderrufnummerndatenbank
+#
+# Copyright 1999 by Mario Jou/3en (mario.joussen@post.rwth-aachen.de)
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2, or (at your option)
+# any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+#
+# $Log: sonderrufnummern.dat,v $
+# Revision 1.5  1999/02/28 19:32:24  akool
+# Fixed a typo in isdnconf.c from Andreas Jaeger <aj@arthur.rhein-neckar.de>
+# CHARGEMAX fix from Oliver Lauer <Oliver.Lauer@coburg.baynet.de>
+# isdnrep fix from reinhard.karcher@dpk.berlin.fido.de (Reinhard Karcher)
+# "takt_at.c" fixes from Ulrich Leodolter <u.leodolter@xpoint.at>
+# sondernummern.c from Mario Joussen <mario.joussen@post.rwth-aachen.de>
+# Reenable usage of the ZONE entry from Schlottmann-Goedde@t-online.de
+# Fixed a typo in callerid.conf.5
+#
+# Revision 1.1  1999/01/31 17:00:07  mario
+# Initial revision
+#
+#
+# Quellen:
+# Telekom: Tarife im T-Net V1.19
+# Arcor: http://www.arcor.de/tarif/sonderrufnummer.html
+#
+# Stand: 1/99
+#
+33|0010    |free|  |     |     |     |Operator Service
+33|0031800 |free|  |     |     |     |Plus Freephone Service (Niederl.)
+33|0041800 |free|  |     |     |     |Plus Freephone Service (Schweiz)
+33|00800   |free|  |     |     |     |Freephone Service 800
+33|0087030 |    |  |     |     | 0.8 |Inmarsat B
+33|0087031 |    |  |     |     | 0.8 |Inmarsat B
+33|0087032 |    |  |     |     | 0.8 |Inmarsat B
+33|0087033 |    |  |     |     | 0.8 |Inmarsat B
+33|0087034 |    |  |     |     | 0.8 |Inmarsat B
+33|0087035 |    |  |     |     | 0.8 |Inmarsat B
+33|0087036 |    |  |     |     | 0.8 |Inmarsat B
+33|0087037 |    |  |     |     | 0.8 |Inmarsat B
+33|0087038 |    |  |     |     | 0.8 |Inmarsat B
+33|0087039 |    |  |     |     | 0.3 |Inmarsat B HS.
+33|008706  |    |  |     |     | 0.8 |Inmarsat M
+33|0087076 |    |  |     |     | 1   |Inmarsat-Phone.
+33|008711  |    |  |     |     | 0.7 |Inmarsat A (Atl. Ozean Ost)
+33|0087130 |    |  |     |     | 0.8 |Inmarsat B (Atl. Ozean Ost)
+33|0087131 |    |  |     |     | 0.8 |Inmarsat B (Atl. Ozean Ost)
+33|0087132 |    |  |     |     | 0.8 |Inmarsat B (Atl. Ozean Ost)
+33|0087133 |    |  |     |     | 0.8 |Inmarsat B (Atl. Ozean Ost)
+33|0087134 |    |  |     |     | 0.8 |Inmarsat B (Atl. Ozean Ost)
+33|0087135 |    |  |     |     | 0.8 |Inmarsat B (Atl. Ozean Ost)
+33|0087136 |    |  |     |     | 0.8 |Inmarsat B (Atl. Ozean Ost)
+33|0087137 |    |  |     |     | 0.8 |Inmarsat B (Atl. Ozean Ost)
+33|0087138 |    |  |     |     | 0.8 |Inmarsat B (Atl. Ozean Ost)
+33|0087139 |    |  |     |     | 0.3 |Inmarsat B HS. (Atl. Ozean Ost)
+33|008715  |    |  |     |     | 0.7 |Inmarsat Aero (Atl. Ozean Ost)
+33|008716  |    |  |     |     | 0.8 |Inmarsat M (Atl. Ozean Ost)
+33|0087176 |    |  |     |     | 1   |Inmarsat-Phone (Mini-M) (Atl. Ozean Ost)
+33|008718  |    |  |     |     | 0.7 |Inmarsat A (Atl. Ozean Ost)
+33|008721  |    |  |     |     | 0.7 |Inmarsat A (Pazif. Ozean)
+33|0087230 |    |  |     |     | 0.8 |Inmarsat B (Pazif. Ozean)
+33|0087231 |    |  |     |     | 0.8 |Inmarsat B (Pazif. Ozean)
+33|0087232 |    |  |     |     | 0.8 |Inmarsat B (Pazif. Ozean)
+33|0087233 |    |  |     |     | 0.8 |Inmarsat B (Pazif. Ozean)
+33|0087234 |    |  |     |     | 0.8 |Inmarsat B (Pazif. Ozean)
+33|0087235 |    |  |     |     | 0.8 |Inmarsat B (Pazif. Ozean)
+33|0087236 |    |  |     |     | 0.8 |Inmarsat B (Pazif. Ozean)
+33|0087237 |    |  |     |     | 0.8 |Inmarsat B (Pazif. Ozean)
+33|0087238 |    |  |     |     | 0.8 |Inmarsat B (Pazif. Ozean)
+33|0087239 |    |  |     |     | 0.3 |Inmarsat B HS (Pazif. Ozean)
+33|008725  |    |  |     |     | 0.7 |Inmarsat Aero (Pazif. Ozean)
+33|008726  |    |  |     |     | 0.8 |Inmarsat M (Pazif. Ozean)
+33|0087276 |    |  |     |     | 1   |Inmarsat-Phone (Mini-M) (Pazif. Ozean)
+33|008728  |    |  |     |     | 0.7 |Inmarsat A (Pazif. Ozean)
+33|008731  |    |  |     |     | 0.7 |Inmarsat A (Ind. Ozean)
+33|0087330 |    |  |     |     | 0.8 |Inmarsat B (Ind. Ozean)
+33|0087331 |    |  |     |     | 0.8 |Inmarsat B (Ind. Ozean)
+33|0087332 |    |  |     |     | 0.8 |Inmarsat B (Ind. Ozean)
+33|0087333 |    |  |     |     | 0.8 |Inmarsat B (Ind. Ozean)
+33|0087334 |    |  |     |     | 0.8 |Inmarsat B (Ind. Ozean)
+33|0087335 |    |  |     |     | 0.8 |Inmarsat B (Ind. Ozean)
+33|0087336 |    |  |     |     | 0.8 |Inmarsat B (Ind. Ozean)
+33|0087337 |    |  |     |     | 0.8 |Inmarsat B (Ind. Ozean)
+33|0087338 |    |  |     |     | 0.8 |Inmarsat B (Ind. Ozean)
+33|0087339 |    |  |     |     | 0.3 |Inmarsat B HS (Ind. Ozean)
+33|008735  |    |  |     |     | 0.7 |Inmarsat Aero (Ind. Ozean)
+33|008736  |    |  |     |     | 0.8 |Inmarsat M (Ind. Ozean)
+33|0087376 |    |  |     |     | 1   |Inmarsat-Phone (Mini-M) (Ind. Ozean)
+33|008738  |    |  |     |     | 0.7 |Inmarsat A (Ind. Ozean)
+33|008741  |    |  |     |     | 0.7 |Inmarsat A (Atl. Ozean West)
+33|0087430 |    |  |     |     | 0.8 |Inmarsat B (Atl. Ozean West)
+33|0087431 |    |  |     |     | 0.8 |Inmarsat B (Atl. Ozean West)
+33|0087432 |    |  |     |     | 0.8 |Inmarsat B (Atl. Ozean West)
+33|0087433 |    |  |     |     | 0.8 |Inmarsat B (Atl. Ozean West)
+33|0087434 |    |  |     |     | 0.8 |Inmarsat B (Atl. Ozean West)
+33|0087435 |    |  |     |     | 0.8 |Inmarsat B (Atl. Ozean West)
+33|0087436 |    |  |     |     | 0.8 |Inmarsat B (Atl. Ozean West)
+33|0087437 |    |  |     |     | 0.8 |Inmarsat B (Atl. Ozean West)
+33|0087438 |    |  |     |     | 0.8 |Inmarsat B (Atl. Ozean West)
+33|0087439 |    |  |     |     | 0.3 |Inmarsat B HS (Atl. Ozean West)
+33|008745  |    |  |     |     | 0.7 |Inmarsat Aero (Atl. Ozean West)
+33|008746  |    |  |     |     | 0.8 |Inmarsat M (Atl. Ozean West)
+33|0087476 |    |  |     |     | 1   |Inmarsat-Phone (Mini-M) (Atl. Ozean West)
+33|008748  |    |  |     |     | 0.7 |Inmarsat A (Atl. Ozean West)
+33|008816  |    |  |     |     |0.509|Iridium
+33|008817  |    |  |     |     |0.938|Iridium
+33|010     |free|  |     |     |     |Verbindungsnetzbetreiberauswahl
+33|01113   |free|  |     |     |     |Telekom Direkt
+33|01114   |free|  |     |     |     |Telekom Privatkundenvertrieb
+33|01115   |free|  |     |     |     |Telekom Geschaftskundenvertrieb
+33|01136   |free|  |     |     |     |Telegrammaufnahme per Telefax
+33|01141   |City|  |     |     |     |Auftrags-und Ansagedienst
+33|0115    |City|  |     |     |     |Ansagen (regional)
+33|0116    |City|  |     |     |     |Ansagen (bundesweit)
+33|01171   |free|  |     |     |     |Stˆrungsannahme PK
+33|01172   |free|  |     |     |     |Stˆrungsannahme GK
+33|01174   |free|  |     |     |     |Stˆrungsannahme Kabelfernsehen
+33|01191   |City|  |     |     |     |Zeitansage
+33|0130    |free|  |     |     |     |freecall 0130
+33|01371   |    |  |     |   2 |     |T-VoteCall
+33|01372   |    |  |     |   1 |20   |T-VoteCall
+33|01373   |    |  |     |   1 |20   |T-VoteCall
+33|01374   |    |  |     |   1 |20   |T-VoteCall
+33|0138    |    |  |     |   1 |20   |T-VoteCall
+33|01610   |    |WT|9-18 |     | 7.5 |Mobilfunk C
+33|01610   |    |  |     |     |15   |Mobilfunk C
+33|01617   |    |WT|9-18 |     | 7.5 |Mobilfunk C
+33|01617   |    |  |     |     |15   |Mobilfunk C
+33|01618   |    |WT|9-18 |     |11.4 |C-Mobilboxen
+33|01618   |    |  |     |     |16.7 |C-Mobilboxen
+33|01619   |    |WT|9-18 |     | 7.5 |Mobilfunk C
+33|01619   |    |  |     |     |15   |Mobilfunk C
+33|01640   |    |WT|9-18 |     |20   |Cityruf Voicebox
+33|01640   |    |  |     |     |30   |Cityruf Voicebox
+33|01641   |    |WT|9-18 |     |20   |Cityruf
+33|01641   |    |  |     |     |30   |Cityruf
+33|01642   |    |WT|9-18 |     |20   |Cityruf
+33|01642   |    |  |     |     |30   |Cityruf
+33|01643   |    |WT|9-18 |     |20   |Cityruf
+33|01643   |    |  |     |     |30   |Cityruf
+33|01644   |    |WT|9-18 |     |20   |Cityruf
+33|01644   |    |  |     |     |30   |Cityruf
+33|01645   |    |WT|9-18 |     |20   |Cityruf
+33|01645   |    |  |     |     |30   |Cityruf
+33|01646   |    |WT|9-18 |     |20   |Cityruf
+33|01646   |    |  |     |     |30   |Cityruf
+33|01647   |    |WT|9-18 |     |20   |Cityruf
+33|01647   |    |  |     |     |30   |Cityruf
+33|01648   |    |WT|9-18 |     |20   |Cityruf
+33|01648   |    |  |     |     |30   |Cityruf
+33|01649   |    |WT|9-18 |     |20   |Cityruf
+33|01649   |    |  |     |     |30   |Cityruf
+33|016500  |    |WT|9-18 |     |12   |Quix
+33|016500  |    |  |     |     |24   |Quix
+33|016501  |    |WT|9-18 |     |12   |Quix
+33|016501  |    |  |     |     |24   |Quix
+33|016502  |    |WT|9-18 |     |12   |Quix
+33|016502  |    |  |     |     |24   |Quix
+33|016503  |    |WT|9-18 |     |12   |Quix
+33|016503  |    |  |     |     |24   |Quix
+33|016504  |    |WT|9-18 |     |12   |Quix
+33|016504  |    |  |     |     |24   |Quix
+33|016505  |    |WT|9-18 |     |12   |Quix
+33|016505  |    |  |     |     |24   |Quix
+33|016506  |    |WT|9-18 |     |12   |Quix
+33|016506  |    |  |     |     |24   |Quix
+33|016507  |    |WT|9-18 |     |12   |Quix
+33|016507  |    |  |     |     |24   |Quix
+33|016508  |    |WT|9-18 |     |12   |Quix
+33|016508  |    |  |     |     |24   |Quix
+33|01651   |    |  |     |   2 |     |Quix
+33|01653   |    |WT|9-18 |  10 |     |Quix
+33|01653   |    |  |     |   8 |     |Quix
+33|01654   |    |WT|9-18 |  10 |     |Quix
+33|01654   |    |  |     |   8 |     |Quix
+33|01655   |    |WT|9-18 |     |12   |Quix
+33|01655   |    |  |     |     |24   |Quix
+33|01656   |    |  |     | 20  |     |Quix
+33|016591  |    |WT|9-18 |  10 |     |Quix
+33|016591  |    |  |     |   8 |     |Quix
+33|016592  |    |WT|9-18 |  10 |     |Quix
+33|016592  |    |  |     |   8 |     |Quix
+33|016593  |    |WT|9-18 |  10 |     |Quix
+33|016593  |    |  |     |   8 |     |Quix
+33|01660   |    |  |     |     | 5.2 |TeLMI
+33|01661   |    |  |     |     | 1.3 |TeLMI
+33|01665   |    |  |     |     | 5.2 |TeLMI
+33|01669   |    |  |     |     | 5.2 |TeLMI
+33|01680   |    |  |     |   5 |     |Scall
+33|01681   |    |WT|9-18 |  12 |     |Scall
+33|01681   |    |  |     |   8 |     |Scall
+33|01682   |    |WT|9-18 |     |20   |Cityruf
+33|01682   |    |  |     |     |30   |Cityruf
+33|01683   |    |WT|9-18 |     |20   |Cityruf
+33|01683   |    |  |     |     |30   |Cityruf
+33|01684   |    |WT|9-18 |     |20   |Cityruf
+33|01684   |    |  |     |     |30   |Cityruf
+33|01685   |    |WT|9-18 |     |20   |Cityruf
+33|01685   |    |  |     |     |30   |Cityruf
+33|01686   |    |WT|9-18 |     |20   |Cityruf
+33|01686   |    |  |     |     |30   |Cityruf
+33|01687   |    |WT|9-18 |     |20   |Cityruf
+33|01687   |    |  |     |     |30   |Cityruf
+33|01688   |    |WT|9-18 |     |20   |Cityruf
+33|01688   |    |  |     |     |30   |Cityruf
+33|01689   |    |WT|9-18 |     |20   |Cityruf
+33|01689   |    |  |     |     |30   |Cityruf
+33|01690   |    |WT|9-18 |     |20   |Cityruf
+33|01690   |    |  |     |     |30   |Cityruf
+33|01691   |    |WT|9-18 |     |20   |Cityruf
+33|01691   |    |  |     |     |30   |Cityruf
+33|01692   |    |  |     |   8 |     |Skyper
+33|01693   |    |  |     |   8 |     |Skyper
+33|016951  |    |  |     |     | 5   |Cityruf
+33|016952  |    |  |     |     | 5   |Cityruf
+33|016953  |    |  |     |  20 |     |Skyper
+33|01696   |    |  |     |   8 |     |Scall (Modemzugang)
+33|01699   |    |  |     |  20 |     |Scall (Operatorzugang)
+33|0170    |    |WT|9-18 |     | 7.5 |Mobilfunknetz D1
+33|0170    |    |  |     |     |15   |Mobilfunknetz D1
+33|0171    |    |WT|9-18 |     | 7.5 |Mobilfunknetz D1
+33|0171    |    |  |     |     |15   |Mobilfunknetz D1
+33|0172    |    |WT|9-18 |     | 5.4 |Mobilfunknetz D2
+33|0172    |    |  |     |     |13   |Mobilfunknetz D2
+33|0173    |    |WT|9-18 |     | 5.4 |Mobilfunknetz D2
+33|0173    |    |  |     |     |13   |Mobilfunknetz D2
+33|0176    |    |WT|9-18 |     | 5.4 |Mobilfunknetz Viag Interkom
+33|0176    |    |  |     |     |13   |Mobilfunknetz Viag Interkom
+33|0177    |    |WT|9-18 |     | 5.3 |Mobilfunknetz E-Plus
+33|0177    |    |  |     |     |12.8 |Mobilfunknetz E-Plus
+33|0178    |    |WT|9-18 |     | 5.3 |Mobilfunknetz E-Plus
+33|0178    |    |  |     |     |12.8 |Mobilfunknetz E-Plus
+33|0179    |    |WT|9-18 |     | 5.4 |Mobilfunknetz Viag Interkom
+33|0179    |    |  |     |     |13   |Mobilfunknetz Viag Interkom
+33|01801   |City|  |     |     |     |Shared Cost Service 01801
+33|01802   |    |  |     |   1 |     |Shared Cost Service 01802
+33|01803   |    |  |     |     |30   |Shared Cost Service 01803
+33|01804   |    |  |     |   4 |     |Shared Cost Service 01804
+33|01805   |    |  |     |     |15   |Shared Cost Service 01805
+33|01901   |    |  |     |     | 6   |Service 0190
+33|01902   |    |  |     |     | 6   |Service 0190
+33|01903   |    |  |     |     | 6   |Service 0190
+33|01904   |    |  |     |     | 9   |Service 0190
+33|01905   |    |  |     |     | 6   |Service 0190
+33|01906   |    |  |     |     | 9   |Service 0190
+33|01907   |    |  |     |     | 3   |Service 0190
+33|01908   |    |  |     |     | 2   |Service 0190
+33|01909   |    |  |     |     | 3   |Service 0190
+33|01910   |City|  |     |     |     |Online-Dienste Zugang SLIP
+33|0191011 |City|  |     |     |     |Online-Dienste Zugang PPP
+33|01914   |City|  |     |     |     |Online-Dienste AOL Zugang
+33|019161  |City|  |     |     |     |Online-Dienste AOL Zugang
+33|02000   |?   |  |     |     |     |Expo 2000 Hotline
+33|0700    |    |  |9-18 |     |15   |0700 Persˆnliche Rufnummer
+33|0700    |    |  |     |     |30   |0700 Persˆnliche Rufnummer
+33|0800    |free|  |     |     |     |freecall 0800
+33|110     |free|  |     |     |     |Polizei / Notruf
+33|112     |free|  |     |     |     |Feuerwehr / Rettungsleitstelle
+33|11811   |?   |  |     |     |     |Auskunft DTV
+33|11818   |?   |  |     |     |     |Auskunft Debitel
+33|11833   |?   |  |     |     |     |Auskunft Inland
+33|11834   |    |  |     |   8 | 3.8 |Auskunft Ausland
+33|11850   |?   |  |     |     |     |Auskunft Talkline
+33|11870   |?   |  |     |     |     |Auskunft Mannesmann Arcor
+33|11871   |?   |  |     |     |     |Auskunft Mannesmann Arcor
+33|11880   |?   |  |     |     |     |Auskunft Telegate
+33|11890   |?   |  |     |     |     |Auskunft Telegate
+70|11870   |?   |  |     |     |     |Auskunft
+70|01640   |    |WT|9-18 |     |20   |Cityruf
+70|01640   |    |  |     |     |30   |Cityruf
+70|01641   |    |WT|9-18 |     |20   |Cityruf
+70|01641   |    |  |     |     |30   |Cityruf
+70|01642   |    |WT|9-18 |     |20   |Cityruf
+70|01642   |    |  |     |     |30   |Cityruf
+70|01643   |    |WT|9-18 |     |20   |Cityruf
+70|01643   |    |  |     |     |30   |Cityruf
+70|01644   |    |WT|9-18 |     |20   |Cityruf
+70|01644   |    |  |     |     |30   |Cityruf
+70|01645   |    |WT|9-18 |     |20   |Cityruf
+70|01645   |    |  |     |     |30   |Cityruf
+70|01646   |    |WT|9-18 |     |20   |Cityruf
+70|01646   |    |  |     |     |30   |Cityruf
+70|01647   |    |WT|9-18 |     |20   |Cityruf
+70|01647   |    |  |     |     |30   |Cityruf
+70|01648   |    |WT|9-18 |     |20   |Cityruf
+70|01648   |    |  |     |     |30   |Cityruf
+70|01649   |    |WT|9-18 |     |20   |Cityruf
+70|01649   |    |  |     |     |30   |Cityruf
+70|01682   |    |WT|9-18 |     |20   |Cityruf
+70|01682   |    |  |     |     |30   |Cityruf
+70|01683   |    |WT|9-18 |     |20   |Cityruf
+70|01683   |    |  |     |     |30   |Cityruf
+70|01684   |    |WT|9-18 |     |20   |Cityruf
+70|01684   |    |  |     |     |30   |Cityruf
+70|01685   |    |WT|9-18 |     |20   |Cityruf
+70|01685   |    |  |     |     |30   |Cityruf
+70|01686   |    |WT|9-18 |     |20   |Cityruf
+70|01686   |    |  |     |     |30   |Cityruf
+70|01687   |    |WT|9-18 |     |20   |Cityruf
+70|01687   |    |  |     |     |30   |Cityruf
+70|01688   |    |WT|9-18 |     |20   |Cityruf
+70|01688   |    |  |     |     |30   |Cityruf
+70|01689   |    |WT|9-18 |     |20   |Cityruf
+70|01689   |    |  |     |     |30   |Cityruf
+70|01690   |    |WT|9-18 |     |20   |Cityruf
+70|01690   |    |  |     |     |30   |Cityruf
+70|01691   |    |WT|9-18 |     |20   |Cityruf
+70|01691   |    |  |     |     |30   |Cityruf
+70|016951  |    |  |     |     | 5   |Cityruf Auftragsdienst
+70|016952  |    |  |     |     | 5   |Cityruf Auftragsdienst
+70|016500  |    |WT|9-18 |     |12   |Quix
+70|016500  |    |  |     |     |24   |Quix
+70|016501  |    |WT|9-18 |     |12   |Quix
+70|016501  |    |  |     |     |24   |Quix
+70|016502  |    |WT|9-18 |     |12   |Quix
+70|016502  |    |  |     |     |24   |Quix
+70|016503  |    |WT|9-18 |     |12   |Quix
+70|016503  |    |  |     |     |24   |Quix
+70|016504  |    |WT|9-18 |     |12   |Quix
+70|016504  |    |  |     |     |24   |Quix
+70|016505  |    |WT|9-18 |     |12   |Quix
+70|016505  |    |  |     |     |24   |Quix
+70|016506  |    |WT|9-18 |     |12   |Quix
+70|016506  |    |  |     |     |24   |Quix
+70|016507  |    |WT|9-18 |     |12   |Quix
+70|016507  |    |  |     |     |24   |Quix
+70|016508  |    |WT|9-18 |     |12   |Quix
+70|016508  |    |  |     |     |24   |Quix
+70|01655   |    |WT|9-18 |     |12   |Quix
+70|01655   |    |  |     |     |24   |Quix
+70|01651   |    |  |     |   2 |     |Quix
+70|01653   |    |WT|9-18 |  10 |     |Quix
+70|01653   |    |  |     |   8 |     |Quix
+70|01654   |    |WT|9-18 |  10 |     |Quix
+70|01654   |    |  |     |   8 |     |Quix
+70|016591  |    |WT|9-18 |  10 |     |Quix
+70|016591  |    |  |     |   8 |     |Quix
+70|016592  |    |WT|9-18 |  10 |     |Quix
+70|016592  |    |  |     |   8 |     |Quix
+70|016593  |    |WT|9-18 |  10 |     |Quix
+70|016593  |    |  |     |   8 |     |Quix
+70|01656   |    |  |     |  20 |     |Quix Auftragsdienst
+70|01688   |    |  |     |   5 |     |Scall
+70|01681   |    |WT|9-18 |  12 |     |Scall
+70|01681   |    |  |     |   8 |     |Scall
+70|01696   |    |  |     |   8 |     |Scall
+70|01699   |    |  |     |  20 |     |Scall Operatorzugang
+70|01660   |    |  |     |     | 5.2 |TeLMI
+70|01665   |    |  |     |     | 5.2 |TeLMI
+70|01669   |    |  |     |     | 5.2 |TeLMI
+70|01661   |    |  |     |     | 1.3 |TeLMI
+70|01692   |    |  |     |   8 |     |Skyper
+70|01693   |    |  |     |   8 |     |Skyper
+70|016953  |    |  |     |  20 |     |Skyper Operatorzugang
+70|0087139 |    |  |     |     | 0.3 |Inmarsat-B-HSD
+70|0087239 |    |  |     |     | 0.3 |Inmarsat-B-HSD
+70|0087339 |    |  |     |     | 0.3 |Inmarsat-B-HSD
+70|0087439 |    |  |     |     | 0.3 |Inmarsat-B-HSD
+70|008711  |    |  |     |     | 0.7 |Inmarsat-A, Inmarsat-Aero
+70|008715  |    |  |     |     | 0.7 |Inmarsat-A, Inmarsat-Aero
+70|008718  |    |  |     |     | 0.7 |Inmarsat-A, Inmarsat-Aero
+70|008721  |    |  |     |     | 0.7 |Inmarsat-A, Inmarsat-Aero
+70|008725  |    |  |     |     | 0.7 |Inmarsat-A, Inmarsat-Aero
+70|008728  |    |  |     |     | 0.7 |Inmarsat-A, Inmarsat-Aero
+70|008731  |    |  |     |     | 0.7 |Inmarsat-A, Inmarsat-Aero
+70|008735  |    |  |     |     | 0.7 |Inmarsat-A, Inmarsat-Aero
+70|008738  |    |  |     |     | 0.7 |Inmarsat-A, Inmarsat-Aero
+70|008741  |    |  |     |     | 0.7 |Inmarsat-A, Inmarsat-Aero
+70|008745  |    |  |     |     | 0.7 |Inmarsat-A, Inmarsat-Aero
+70|008748  |    |  |     |     | 0.7 |Inmarsat-A, Inmarsat-Aero
+70|0087130 |    |  |     |     | 0.8 |Inmarsat-B, Inmarsat-M
+70|0087131 |    |  |     |     | 0.8 |Inmarsat-B, Inmarsat-M
+70|0087132 |    |  |     |     | 0.8 |Inmarsat-B, Inmarsat-M
+70|0087133 |    |  |     |     | 0.8 |Inmarsat-B, Inmarsat-M
+70|0087134 |    |  |     |     | 0.8 |Inmarsat-B, Inmarsat-M
+70|0087135 |    |  |     |     | 0.8 |Inmarsat-B, Inmarsat-M
+70|0087136 |    |  |     |     | 0.8 |Inmarsat-B, Inmarsat-M
+70|0087137 |    |  |     |     | 0.8 |Inmarsat-B, Inmarsat-M
+70|0087138 |    |  |     |     | 0.8 |Inmarsat-B, Inmarsat-M
+70|0087230 |    |  |     |     | 0.8 |Inmarsat-B, Inmarsat-M
+70|0087231 |    |  |     |     | 0.8 |Inmarsat-B, Inmarsat-M
+70|0087232 |    |  |     |     | 0.8 |Inmarsat-B, Inmarsat-M
+70|0087233 |    |  |     |     | 0.8 |Inmarsat-B, Inmarsat-M
+70|0087234 |    |  |     |     | 0.8 |Inmarsat-B, Inmarsat-M
+70|0087235 |    |  |     |     | 0.8 |Inmarsat-B, Inmarsat-M
+70|0087236 |    |  |     |     | 0.8 |Inmarsat-B, Inmarsat-M
+70|0087237 |    |  |     |     | 0.8 |Inmarsat-B, Inmarsat-M
+70|0087238 |    |  |     |     | 0.8 |Inmarsat-B, Inmarsat-M
+70|0087330 |    |  |     |     | 0.8 |Inmarsat-B, Inmarsat-M
+70|0087331 |    |  |     |     | 0.8 |Inmarsat-B, Inmarsat-M
+70|0087332 |    |  |     |     | 0.8 |Inmarsat-B, Inmarsat-M
+70|0087333 |    |  |     |     | 0.8 |Inmarsat-B, Inmarsat-M
+70|0087334 |    |  |     |     | 0.8 |Inmarsat-B, Inmarsat-M
+70|0087335 |    |  |     |     | 0.8 |Inmarsat-B, Inmarsat-M
+70|0087336 |    |  |     |     | 0.8 |Inmarsat-B, Inmarsat-M
+70|0087337 |    |  |     |     | 0.8 |Inmarsat-B, Inmarsat-M
+70|0087338 |    |  |     |     | 0.8 |Inmarsat-B, Inmarsat-M
+70|0087430 |    |  |     |     | 0.8 |Inmarsat-B, Inmarsat-M
+70|0087431 |    |  |     |     | 0.8 |Inmarsat-B, Inmarsat-M
+70|0087432 |    |  |     |     | 0.8 |Inmarsat-B, Inmarsat-M
+70|0087433 |    |  |     |     | 0.8 |Inmarsat-B, Inmarsat-M
+70|0087434 |    |  |     |     | 0.8 |Inmarsat-B, Inmarsat-M
+70|0087435 |    |  |     |     | 0.8 |Inmarsat-B, Inmarsat-M
+70|0087436 |    |  |     |     | 0.8 |Inmarsat-B, Inmarsat-M
+70|0087437 |    |  |     |     | 0.8 |Inmarsat-B, Inmarsat-M
+70|0087438 |    |  |     |     | 0.8 |Inmarsat-B, Inmarsat-M
+70|008716  |    |  |     |     | 0.8 |Inmarsat-B, Inmarsat-M
+70|008726  |    |  |     |     | 0.8 |Inmarsat-B, Inmarsat-M
+70|008736  |    |  |     |     | 0.8 |Inmarsat-B, Inmarsat-M
+70|008746  |    |  |     |     | 0.8 |Inmarsat-B, Inmarsat-M
+70|0087076 |    |  |     |     | 1   |Inmarsat-Phone
+70|0087176 |    |  |     |     | 1   |Inmarsat-Phone
+70|0087276 |    |  |     |     | 1   |Inmarsat-Phone
+70|0087376 |    |  |     |     | 1   |Inmarsat-Phone
+70|0087476 |    |  |     |     | 1   |Inmarsat-Phone
+70|008816  |    |  |     |     |0.509|Iridium
+70|008817  |    |  |     |     |0.938|Iridium
+70|110     |free|  |     |     |     |Notruf
+70|112     |free|  |     |     |     |Notruf
+70|0700    |    |WT|9-18 |     |15   |0700 Die Nummer
+70|0700    |    |  |     |     |30   |0700 Die Nummer
+70|0010    |free|  |     |     |     |Zugang zu Operatordiensten der DTAG
+70|01300161|free|  |     |     |     |Zugang zu Operatordiensten der DTAG
+70|01300162|free|  |     |     |     |Zugang zu Operatordiensten der DTAG
+70|01300116|free|  |     |     |     |Zugang zu Operatordiensten der DTAG
+70|01300117|free|  |     |     |     |Zugang zu Operatordiensten der DTAG
+70|01131   |free|  |     |     |     |Zugang zum Telegrammdienst DTAG
+70|01136   |free|  |     |     |     |Zugang zum Telegrammdienst DTAG
+70|0130    |free|  |     |     |     |0800 Nulltarif
+70|0800    |free|  |     |     |     |0800 Nulltarif
+70|01801   |    |WT|5-9  |     |150  |0180 Serviceruf
+70|01801   |    |WT|9-18 |     |90   |0180 Serviceruf
+70|01801   |    |WT|18-21|     |150  |0180 Serviceruf
+70|01801   |    |WE|5-21 |     |150  |0180 Serviceruf
+70|01801   |    |  |     |     |240  |0180 Serviceruf
+70|01802   |    |  |     |   1 |     |0180 Serviceruf
+70|01803   |    |  |     |     |30   |0180 Serviceruf
+70|01804   |    |  |     |   4 |     |0180 Serviceruf
+70|01805   |    |  |     |     |15   |0180 Serviceruf
+70|01901   |    |  |     |     | 6   |0190 Premium
+70|01902   |    |  |     |     | 6   |0190 Premium
+70|01903   |    |  |     |     | 6   |0190 Premium
+70|01905   |    |  |     |     | 6   |0190 Premium
+70|01904   |    |  |     |     | 9   |0190 Premium
+70|01906   |    |  |     |     | 9   |0190 Premium
+70|01907   |    |  |     |     | 3   |0190 Premium
+70|01909   |    |  |     |     | 3   |0190 Premium
+70|01908   |    |  |     |     | 2   |0190 Premium
+70|00800   |free|  |     |     |     |Universal Internationale 0800 Nulltarif
+70|11833   |?   |  |     |     |     |Inlandsauskunft DTAG
+70|11834   |    |  |     |   8 | 3.8 |Auslandsauskunft DTAG
+70|11880   |    |  |     |   8 | 7.5 |Auskunft Telegate
+70|01371   |    |  |     |   2 |     |T-VoteCall
+70|01372   |    |  |     |   1 |20   |T-VoteCall
+70|01373   |    |  |     |   1 |20   |T-VoteCall
+70|01374   |    |  |     |   1 |20   |T-VoteCall
+70|0138    |    |  |     |   1 |20   |Teledialog
+70|01914   |    |WT|5-9  |     |150  |Zugang zu AOL
+70|01914   |    |WT|9-18 |     |90   |Zugang zu AOL
+70|01914   |    |WT|18-21|     |150  |Zugang zu AOL
+70|01914   |    |WE|5-21 |     |150  |Zugang zu AOL
+70|01914   |    |  |     |     |240  |Zugang zu AOL
+70|01910   |    |WT|5-9  |     |150  |Zugang zu T-Online
+70|01910   |    |WT|9-18 |     |90   |Zugang zu T-Online
+70|01910   |    |WT|18-21|     |150  |Zugang zu T-Online
+70|01910   |    |WE|5-21 |     |150  |Zugang zu T-Online
+70|01910   |    |  |     |     |240  |Zugang zu T-Online
+70|01141   |    |WT|5-9  |     |150  |Zugang zum DTAG-Auftragsdienst
+70|01141   |    |WT|9-18 |     |90   |Zugang zum DTAG-Auftragsdienst
+70|01141   |    |WT|18-21|     |150  |Zugang zum DTAG-Auftragsdienst
+70|01141   |    |WE|5-21 |     |150  |Zugang zum DTAG-Auftragsdienst
+70|01141   |    |  |     |     |240  |Zugang zum DTAG-Auftragsdienst
+70|0115    |    |WT|5-9  |     |150  |Ansagedienst DTAG
+70|0115    |    |WT|9-18 |     |90   |Ansagedienst DTAG
+70|0115    |    |WT|18-21|     |150  |Ansagedienst DTAG
+70|0115    |    |WE|5-21 |     |150  |Ansagedienst DTAG
+70|0115    |    |  |     |     |240  |Ansagedienst DTAG
+70|0116    |    |WT|5-9  |     |150  |Ansagedienst DTAG
+70|0116    |    |WT|9-18 |     |90   |Ansagedienst DTAG
+70|0116    |    |WT|18-21|     |150  |Ansagedienst DTAG
+70|0116    |    |WE|5-21 |     |150  |Ansagedienst DTAG
+70|0116    |    |  |     |     |240  |Ansagedienst DTAG
+70|01191   |    |WT|5-9  |     |150  |Ansagedienst DTAG
+70|01191   |    |WT|9-18 |     |90   |Ansagedienst DTAG
+70|01191   |    |WT|18-21|     |150  |Ansagedienst DTAG
+70|01191   |    |WE|5-21 |     |150  |Ansagedienst DTAG
+70|01191   |    |  |     |     |240  |Ansagedienst DTAG
+70|01171   |free|  |     |     |     |DTAG-Stˆrungsannahme
+70|01172   |free|  |     |     |     |DTAG-Stˆrungsannahme
+70|01174   |free|  |     |     |     |DTAG-Stˆrungsannahme
+70|2000    |?   |  |     |     |     |EXPO-Hotline
