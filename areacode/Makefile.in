@@ -6,7 +6,7 @@
 
 ifeq (../.config,$(wildcard ../.config))
 	include ../.config
-	DATAOPTS := DATATARGET=$(shell echo $(CONFIG_DATADIR))/areacodes
+	DATAOPTS := DATATARGET=$(shell echo $(DESTDIR)$(CONFIG_DATADIR))/areacodes
 	#
 	# Install as root with numeric Id's, since these are the
 	# only ones that _really_ exist on _every_ system.

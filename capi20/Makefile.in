@@ -1,9 +1,12 @@
-# $Id: Makefile.in,v 1.3 1998/08/30 09:57:13 calle Exp $
+# $Id: Makefile.in,v 1.4 1998/11/09 12:40:13 paul Exp $
 #
 # Makefile for libcapi20
 # (C) 1998 Carsten Paeth
 #
 # $Log: Makefile.in,v $
+# Revision 1.4  1998/11/09 12:40:13  paul
+# Some fixes for DESTDIR install support. From Jos Vos <jos@xos.nl>
+#
 # Revision 1.3  1998/08/30 09:57:13  calle
 # I hope it is know readable for everybody.
 #
@@ -23,8 +26,10 @@ INSTALL_DATA		:= $(INSTALL) -m 0644 -o 0 -g 0
 all: libcapi20.a
 
 install: all
-	$(INSTALL_DATA) libcapi20.a $(LIBDIR)
-	$(INSTALL_DATA) capi20.h $(INCLUDEDIR)
+	[ -d $(DESTDIR)$(LIBDIR)     ] || mkdir -p $(DESTDIR)$(LIBDIR)
+	[ -d $(DESTDIR)$(INCLUDEDIR) ] || mkdir -p $(DESTDIR)$(INCLUDEDIR)
+	$(INSTALL_DATA) libcapi20.a $(DESTDIR)$(LIBDIR)
+	$(INSTALL_DATA) capi20.h $(DESTDIR)$(INCLUDEDIR)
 
 ifeq (.depend,$(wildcard .depend))
 include .depend

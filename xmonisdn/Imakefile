@@ -12,6 +12,8 @@ LOCAL_LIBRARIES = XawClientLibs
 ComplexProgramTarget(xmonisdn)
 
 install.bitmap:
+	[ -d $(DESTDIR)$(INCROOT)/X11/bitmaps ] ||
+		mkdir -p $(DESTDIR)$(INCROOT)/X11/bitmaps
 	$(INSTALL) $(INSTALLFLAGS) -m 644 netinactive netwaiting netactive netactiveout netstart netstop $(DESTDIR)$(INCROOT)/X11/bitmaps/
 
 install.all: install 	install.man 	install.bitmap

@@ -1,5 +1,5 @@
 #
-# $Id: Makefile.in,v 1.16 1998/09/26 18:31:03 akool Exp $
+# $Id: Makefile.in,v 1.17 1998/11/09 12:40:19 paul Exp $
 
 #----------------------------------------------------------------------------#
 # Things you can change to personalize the Makefile for your own site. Some  #
@@ -212,7 +212,7 @@ DIRECTORIES_I	= $(prefix) \
 
 directories-i:	  ignore
 		  @set -e; for i in `echo $(DIRECTORIES_I)`; do \
-			if [ ! -d $$i ]; then \
+			if [ ! -d $(DESTDIR)$$i ]; then \
 				$(INSTALL_DIRS) $(DESTDIR)$$i; \
 			fi; \
 		  done
