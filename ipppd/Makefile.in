@@ -1,9 +1,8 @@
 #
 # ipppd makefile for Linux
-# $Id: Makefile.in,v 1.3 1997/05/19 10:15:24 hipp Exp $
+# $Id: Makefile.in,v 1.4 1997/05/28 10:07:25 hipp Exp $
 #
 
-HAVE_LIBBSD   := @HAVE_LIBBSD@
 HAVE_LIBDES   := @HAVE_LIBDES@
 HAVE_LIBCRYPT := @HAVE_LIBCRYPT@
 HAVE_SHADOW_H := @HAVE_SHADOW_H@
@@ -35,7 +34,6 @@ MANPAGES = pppd.8
 PPPDOBJS = main.o magic.o fsm.o lcp.o ipcp.o upap.o chap.o md5.o ccp.o \
 		auth.o options.o sys-linux.o cbcp.o ipxcp.o
 
-ifeq ($(HAVE_LIBBSD),1)
 all: ipppd
 
 uninstall:
@@ -47,16 +45,6 @@ install: ipppd
 	$(INSTALL_SBIN) ipppd $(SBINDIR)/ipppd
 	$(INSTALL_DATA) ipppd.8 $(MANDIR)/man8/ipppd.8
 
-else
-all:
-	@echo -n "\n\nLibrary libbsd not found, ipppd NOT built\n\n"
-
-install:
-	@echo -n "\n\nLibrary libbsd not found, ipppd NOT installed\n\n"
-
-endif
-#
-# include dependancies if present and backup if as a header file
 ifeq (.depend,$(wildcard .depend))
 include .depend
 HEADERS := $(HEADERS) .depend
@@ -67,7 +55,12 @@ COMPILE_FLAGS =
 COPTS         =
 CFLAGS        = -O2 -fomit-frame-pointer -m486 -Wall
 VER           = 2.2.0
-LIBS          = -lbsd
+
+# it's a hack
+ifeq ($(HAVE_LIBCRYPT),1)
+LIBS        = -lcrypt -lutil
+endif
+
 
 SOURCE = RELNOTES configure *.in $(PPPDSRCS) $(HEADERS) $(MANPAGES)
 

@@ -36,7 +36,7 @@
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-char auth_rcsid[] = "$Id: auth.c,v 1.6 1997/05/19 10:15:28 hipp Exp $";
+char auth_rcsid[] = "$Id: auth.c,v 1.7 1997/05/28 10:07:27 hipp Exp $";
 
 #include <stdio.h>
 #include <stddef.h>
@@ -51,6 +51,10 @@ char auth_rcsid[] = "$Id: auth.c,v 1.6 1997/05/19 10:15:28 hipp Exp $";
 #include <netdb.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+
+#if defined __GLIBC__ && __GLIBC__ >= 2
+# include <crypt.h>
+#endif
 
 #include "config.h"
 #ifdef HAVE_SHADOW_H
@@ -97,8 +101,8 @@ void check_access __P((FILE *, char *));
 static void network_phase __P((int));
 static void callback_phase __P((int));
 static int  link_lastlink(int);
-static int  login __P((char *, char *, char **, int *,int));
-static void logout __P((int));
+static int  check_login __P((char *, char *, char **, int *,int));
+static void do_logout __P((int));
 static int  null_login __P((int));
 static int  get_upap_passwd __P((void));
 static int  have_upap_secret __P((void));
@@ -128,7 +132,7 @@ void link_terminated(int linkunit)
 	if (lns[linkunit].phase == PHASE_DEAD)
 		return;
 	if (lns[linkunit].logged_in) {
-		logout(linkunit);
+		do_logout(linkunit);
 		lns[linkunit].logged_in = 0;
 	}
 	lns[linkunit].phase = PHASE_DEAD;
@@ -583,7 +587,7 @@ int check_passwd(int linkunit,char *auser,int userlen,char *apasswd,int passwdle
 		}
 
 		if (uselogin && ret == UPAP_AUTHACK) {
-				ret = login(user, passwd, msg, msglen,linkunit);
+				ret = check_login(user, passwd, msg, msglen,linkunit);
 				if (ret == UPAP_AUTHNAK) {
 						syslog(LOG_WARNING, "PAP login failure for %s", user);
 				}
@@ -622,7 +626,7 @@ int check_passwd(int linkunit,char *auser,int userlen,char *apasswd,int passwdle
 
 
 /*
- * login - Check the user name and password against the system
+ * check_login - Check the user name and password against the system
  * password database, and login the user if OK.
  *
  * returns:
@@ -630,7 +634,7 @@ int check_passwd(int linkunit,char *auser,int userlen,char *apasswd,int passwdle
  *        UPAP_AUTHACK: Login succeeded.
  * In either case, msg points to an appropriate message.
  */
-static int login(char *user,char *passwd,char **msg,int *msglen,int unit)
+static int check_login(char *user,char *passwd,char **msg,int *msglen,int unit)
 {
 	struct passwd *pw;
 	char *epasswd;
@@ -679,7 +683,7 @@ static int login(char *user,char *passwd,char **msg,int *msglen,int unit)
 	tty = lns[unit].devnam;
 	if (strncmp(tty, "/dev/", 5) == 0)
 		tty += 5;
-	logwtmp(unit, tty, user, "");                /* Add wtmp login entry */
+	logwtmputmp(unit, tty, user, "");                /* Add wtmp login entry */
 
 	return (UPAP_AUTHACK);
 }
@@ -687,14 +691,14 @@ static int login(char *user,char *passwd,char **msg,int *msglen,int unit)
 /*
  * logout - Logout the user.
  */
-static void logout(int unit)
+static void do_logout(int unit)
 {
 	char *tty;
 
 	tty = lns[unit].devnam;
 	if (strncmp(tty, "/dev/", 5) == 0)
 		tty += 5;
-	logwtmp(unit, tty, "", "");                /* Wipe out wtmp logout entry */
+	logwtmputmp(unit, tty, "", "");                /* Wipe out wtmp logout entry */
 }
 
 

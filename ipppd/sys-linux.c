@@ -22,7 +22,7 @@
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-char sys_rcsid[] = "$Id: sys-linux.c,v 1.3 1997/05/19 10:16:26 hipp Exp $";
+char sys_rcsid[] = "$Id: sys-linux.c,v 1.4 1997/05/28 10:07:40 hipp Exp $";
 
 #define _LINUX_STRING_H_
 
@@ -34,6 +34,7 @@ char sys_rcsid[] = "$Id: sys-linux.c,v 1.3 1997/05/19 10:16:26 hipp Exp $";
 #include <sys/errno.h>
 #include <sys/stat.h>
 #include <sys/file.h>
+#include <sys/utsname.h>
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -50,11 +51,17 @@ char sys_rcsid[] = "$Id: sys-linux.c,v 1.3 1997/05/19 10:16:26 hipp Exp $";
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <net/if.h>
-#include <linux/ppp_defs.h>
-#include <linux/if_ppp.h>
 #include <net/if_arp.h>
 #include <net/route.h>
-#include <linux/if_ether.h>
+#if defined __GLIBC__ && __GLIBC__ >= 2
+# include <net/ppp_defs.h>
+# include <net/if_ppp.h>
+# include <net/ethernet.h>
+#else
+# include <linux/ppp_defs.h>
+# include <linux/if_ppp.h>
+# include <linux/if_ether.h>
+#endif
 
 #include "fsm.h"
 #include "ipppd.h"
@@ -68,9 +75,12 @@ static int has_default_route   = 0;
 static int driver_version      = 0;
 static int driver_modification = 0;
 static int driver_patch        = 0;
+static int devroute            = -1;    /* 0 for Linux >= 2.1.x */
+static int last_net_mask       = 0;   /* Ugly! */
 
 int get_ether_addr (u_int32_t ipaddr, struct sockaddr *hwaddr, char *name);
-
+static void decode_version (char *buf, int *version,
+		 int *modification, int *patch);
 int sockfd;			/* socket for doing interface ioctls */
 
 static char *lock_file;
@@ -160,6 +170,9 @@ static void set_flags (int flags,int tu)
  */
 void sys_init(void)
 {
+	struct utsname uts;
+	int maj, min, pat;
+
 	openlog("ipppd", LOG_PID | LOG_NDELAY, LOG_PPP);
 	setlogmask(LOG_UPTO(LOG_INFO));
     if (debug)
@@ -170,6 +183,15 @@ void sys_init(void)
     if (sockfd < 0) {
 		syslog(LOG_ERR, "Couldn't create IP socket: %m");
 		die(1);
+	}
+	if (devroute < 0) {
+		uname(&uts);
+		maj = min = pat = 0;
+		decode_version(uts.release, &maj, &min, &pat);
+		if (maj >= 2 && min >= 1) /* Linux >= 2.1.x */
+			devroute = 0;
+		else
+			devroute = 1;
 	}
 }
 
@@ -532,66 +554,69 @@ int sifaddr (int unit, int our_adr, int his_adr, int net_mask)
 	 *  Set our IP address
 	 */
     ((struct sockaddr_in *) &ifr.ifr_addr)->sin_addr.s_addr = our_adr;
-    if (ioctl(sockfd, SIOCSIFADDR, (caddr_t) &ifr) < 0)
-      {
-	if (errno != EEXIST)
-	  {
-	    syslog (LOG_ERR, "ioctl(SIOCAIFADDR): %m");
-	  }
-        else
-	  {
-	    syslog (LOG_WARNING, "ioctl(SIOCAIFADDR): Address already exists");
-	  }
-        return (0);
-      } 
+    if (ioctl(sockfd, SIOCSIFADDR, (caddr_t) &ifr) < 0) {
+		if (errno != EEXIST) {
+			syslog (LOG_ERR, "ioctl(SIOCAIFADDR): %m");
+		} else {
+			syslog (LOG_WARNING, "ioctl(SIOCAIFADDR): Address already exists");
+		}
+		return (0);
+	} 
 
 	/*
 	 *  Set the gateway address
 	 */
     ((struct sockaddr_in *) &ifr.ifr_dstaddr)->sin_addr.s_addr = his_adr;
-    if (ioctl(sockfd, SIOCSIFDSTADDR, (caddr_t) &ifr) < 0)
-      {
-	syslog (LOG_ERR, "ioctl(SIOCSIFDSTADDR): %m"); 
-	return (0);
-      } 
+    if (ioctl(sockfd, SIOCSIFDSTADDR, (caddr_t) &ifr) < 0) {
+		syslog (LOG_ERR, "ioctl(SIOCSIFDSTADDR): %m"); 
+		return (0);
+	} 
 
-#if 0
 /*
  *  Set the netmask
  */
-    if (net_mask != 0)
-      {
-	((struct sockaddr_in *) &ifr.ifr_netmask)->sin_addr.s_addr = net_mask;
-	if (ioctl(sockfd, SIOCSIFNETMASK, (caddr_t) &ifr) < 0)
-	  {
-	    syslog (LOG_ERR, "ioctl(SIOCSIFNETMASK): %m"); 
-	    return (0);
-	  } 
-      }
-#endif
+    if (net_mask != 0) {
+		((struct sockaddr_in *) &ifr.ifr_netmask)->sin_addr.s_addr = net_mask;
+		if (ioctl(sockfd, SIOCSIFNETMASK, (caddr_t) &ifr) < 0) {
+			syslog (LOG_ERR, "ioctl(SIOCSIFNETMASK): %m"); 
+			return (0);
+		} 
+	}
+	last_net_mask = net_mask;
 
 /*
  *  Add the device route
  */
-    if (hostroute)
-      {
-        SET_SA_FAMILY (rt.rt_dst,     AF_INET);
-        SET_SA_FAMILY (rt.rt_gateway, AF_INET);
-        rt.rt_dev = lns[unit].ifname;  /* MJC */
+	if (!devroute)
+		return 1;
 
-        ((struct sockaddr_in *) &rt.rt_gateway)->sin_addr.s_addr = 0L;
-        ((struct sockaddr_in *) &rt.rt_dst)->sin_addr.s_addr     = his_adr;
-        rt.rt_flags = RTF_UP | RTF_HOST;
+	if (hostroute) {
+		SET_SA_FAMILY (rt.rt_dst,     AF_INET);
+		SET_SA_FAMILY (rt.rt_gateway, AF_INET);
+		SET_SA_FAMILY (rt.rt_genmask, AF_INET);
+		rt.rt_dev = lns[unit].ifname;  /* MJC */
 
-        if (ioctl(sockfd, SIOCADDRT, &rt) < 0)
-          {
-            syslog (LOG_ERR, "ioctl(SIOCADDRT) device route: %m");
+		if (net_mask)
+			his_adr &= net_mask;
+
+		((struct sockaddr_in *) &rt.rt_gateway)->sin_addr.s_addr = 0L;
+		((struct sockaddr_in *) &rt.rt_dst)->sin_addr.s_addr     = his_adr;
+		((struct sockaddr_in *) &rt.rt_genmask)->sin_addr.s_addr = net_mask;
+		rt.rt_flags = RTF_UP;
+		if (net_mask == 0)
+			rt.rt_flags |= RTF_HOST;
+
+		if (ioctl(sockfd, SIOCADDRT, &rt) < 0) {
+			syslog (LOG_ERR, "ioctl(SIOCADDRT) device route (%s/%s/%08x): %m",
+				rt.rt_dev,
+				inet_ntoa(((struct sockaddr_in *)&rt.rt_dst)->sin_addr),
+				ntohl(net_mask));
             return (0);
-          }
+		}
 
-      }
-    return 1;
-  }
+	}
+	return 1;
+}
 
 /*
  * cifaddr - Clear the interface IP addresses, and delete routes
@@ -599,32 +624,40 @@ int sifaddr (int unit, int our_adr, int his_adr, int net_mask)
  */
 
 int cifaddr (int unit, int our_adr, int his_adr)
-  {
+{
     struct rtentry rt;
+
 /*
  *  Delete the route through the device
  */
+
+	if (!devroute)
+		return 1;
+
     memset (&rt, '\0', sizeof (rt));
 
     SET_SA_FAMILY (rt.rt_dst,     AF_INET);
     SET_SA_FAMILY (rt.rt_gateway, AF_INET);
+	SET_SA_FAMILY (rt.rt_genmask, AF_INET);
     rt.rt_dev = lns[unit].ifname;  /* MJC */
 
+	if (last_net_mask)
+		his_adr &= last_net_mask;
     ((struct sockaddr_in *) &rt.rt_gateway)->sin_addr.s_addr = 0;
     ((struct sockaddr_in *) &rt.rt_dst)->sin_addr.s_addr     = his_adr;
-    rt.rt_flags = RTF_UP | RTF_HOST;
+	((struct sockaddr_in *) &rt.rt_genmask)->sin_addr.s_addr = last_net_mask;
+	rt.rt_flags = RTF_UP;
+	if (last_net_mask == 0)
+		rt.rt_flags |= RTF_HOST;
 
-
-    if (ioctl(sockfd, SIOCDELRT, &rt) < 0 && errno != ESRCH)
-       {
-	if (still_ppp(unit))
-	  {
-	    syslog (LOG_ERR, "ioctl(SIOCDELRT) device route: %m");
-	    return (0);
-	  }
-       }
-    return 1;
-  }
+	if (ioctl(sockfd, SIOCDELRT, &rt) < 0 && errno != ESRCH) {
+		if (still_ppp(unit)) {
+			syslog (LOG_ERR, "ioctl(SIOCDELRT) device route: %m");
+			return (0);
+		}
+	}
+	return 1;
+}
 
 /*
  * path_to_proc - determine the path to the proc file system data
@@ -679,13 +712,12 @@ static char *path_to_proc (void)
  */
 
 static void close_route_table (void)
-  {
-    if (route_fd != (FILE *) 0)
-      {
-        fclose (route_fd);
-        route_fd = (FILE *) 0;
-      }
-  }
+{
+	if (route_fd != (FILE *) 0) {
+		fclose (route_fd);
+		route_fd = (FILE *) 0;
+	}
+}
 
 /*
  * open_route_table - open the interface to the route table
@@ -1023,6 +1055,11 @@ int get_ether_addr (u_int32_t ipaddr, struct sockaddr *hwaddr, char *name)
  * any non-point-to-point interfaces which might appear to be on the same
  * network as `addr'.  If we find any, we OR in their netmask to the
  * user-specified netmask.
+ *
+ * If our address happens to be in the same network/subnet as one of
+ * the other interfaces, set the netmask to 255.255.255.255
+ *
+ * FIXME: This stuff is OLD and should be rewritten (we now use CIDR remember).
  */
 
 static u_int32_t local_GetMask (u_int32_t addr, struct ifreq *ifs, int ifs_len)
@@ -1031,80 +1068,74 @@ static u_int32_t local_GetMask (u_int32_t addr, struct ifreq *ifs, int ifs_len)
     struct ifreq *ifr, *ifend, ifreq;
     struct ifconf ifc;
 
-    addr = ntohl(addr);
+    ina = ntohl(addr);
     
-    if (IN_CLASSA(addr))	/* determine network mask for address class */
-      {
-	nmask = IN_CLASSA_NET;
-      }
-    else
-      {
-	if (IN_CLASSB(addr))
-	  {
-	    nmask = IN_CLASSB_NET;
-	  }
-	else
-	  {
-	    nmask = IN_CLASSC_NET;
-	  }
-      }
-    
-    /* class D nets are disallowed by bad_ip_adrs */
-    mask = netmask | htonl(nmask);
+    if (IN_CLASSA(ina)) {	/* determine network mask for address class */
+		nmask = IN_CLASSA_NET;
+	} else {
+		if (IN_CLASSB(ina)) {
+			nmask = IN_CLASSB_NET;
+		} else {
+			nmask = IN_CLASSC_NET;
+		}
+	}
+	nmask = htonl(nmask);
 
-    if (ifs == (void *) 0)
-      {
-       return mask;
-      }
+	/* class D nets are disallowed by bad_ip_adrs */
+	mask = netmask | nmask;
+
+	if (ifs == (void *) 0) {
+		return mask;
+	}
 /*
  * Scan through the system's network interfaces.
  */
-    ifc.ifc_len = ifs_len;
-    ifc.ifc_req = ifs;
-    if (ioctl(sockfd, SIOCGIFCONF, &ifc) < 0)
-      {
-	syslog(LOG_WARNING, "ioctl(SIOCGIFCONF): %m");
-	return mask;
-      }
+	ifc.ifc_len = ifs_len;
+	ifc.ifc_req = ifs;
+	if (ioctl(sockfd, SIOCGIFCONF, &ifc) < 0) {
+		syslog(LOG_WARNING, "ioctl(SIOCGIFCONF): %m");
+		return mask;
+	}
     
-    ifend = (struct ifreq *) (ifc.ifc_buf + ifc.ifc_len);
-    for (ifr = ifc.ifc_req; ifr < ifend; ifr++)
-      {
-/*
- * Check the interface's internet address.
- */
-	if (ifr->ifr_addr.sa_family != AF_INET)
-	  {
-	    continue;
-	  }
-	ina = ((struct sockaddr_in *) &ifr->ifr_addr)->sin_addr.s_addr;
-	if (((ntohl(ina) ^ addr) & nmask) != 0)
-	  {
-	    continue;
-	  }
+	ifend = (struct ifreq *) (ifc.ifc_buf + ifc.ifc_len);
+	for (ifr = ifc.ifc_req; ifr < ifend; ifr++) {
+		if (ifr->ifr_addr.sa_family != AF_INET) {
+			continue;
+		}
 /*
  * Check that the interface is up, and not point-to-point nor loopback.
  */
-	strncpy(ifreq.ifr_name, ifr->ifr_name, sizeof(ifreq.ifr_name));
-	if (ioctl(sockfd, SIOCGIFFLAGS, &ifreq) < 0)
-	  {
-	    continue;
-	  }
+		strncpy(ifreq.ifr_name, ifr->ifr_name, sizeof(ifreq.ifr_name));
+		if (ioctl(sockfd, SIOCGIFFLAGS, &ifreq) < 0)
+			continue;
 	
-	if (((ifreq.ifr_flags ^ FLAGS_GOOD) & FLAGS_MASK) != 0)
-	  {
-	    continue;
-	  }
+		if (((ifreq.ifr_flags ^ FLAGS_GOOD) & FLAGS_MASK) != 0)
+			continue;
+/*
+ * See if our IP address is part of this subnet.
+ */
+		ina = ((struct sockaddr_in *) &ifr->ifr_addr)->sin_addr.s_addr;
+		if (ina == addr)
+			continue;
+		if ((ina & nmask) == (addr & nmask)) {
+			mask = 0xFFFFFFFF;
+			break;
+		}
+/*
+ * Check the interface's internet address.
+ */
+		if (((ina ^ addr) & nmask) != 0)
+			continue;
 /*
  * Get its netmask and OR it into our mask.
  */
-	if (ioctl(sockfd, SIOCGIFNETMASK, &ifreq) < 0)
-	  {
-	    continue;
-	  }
-	mask |= ((struct sockaddr_in *)&ifreq.ifr_addr)->sin_addr.s_addr;
-	break;
-      }
+		if (ioctl(sockfd, SIOCGIFNETMASK, &ifreq) < 0)
+			continue;
+
+		mask |= ((struct sockaddr_in *)&ifreq.ifr_addr)->sin_addr.s_addr;
+		break;
+	}
+
     return mask;
 }
 
@@ -1113,6 +1144,12 @@ u_int32_t GetMask (u_int32_t addr)
     int ifs_len;
     u_int32_t answer;
     void *base_addr;
+
+/*
+ * If user set netmask assume he knows what he's doing.
+ */
+    if (netmask) return netmask;
+
 /*
  * Allocate memory to hold the request.
  */
@@ -1216,11 +1253,10 @@ int ppp_available(void)
     return 1;
   }
 
-
 /*
  * Update the wtmp file with the appropriate user name and tty device.
  */
-int logwtmp (int unit,char *line, char *name, char *host)
+int logwtmputmp (int unit,char *line, char *name, char *host)
   {
     int    wtmp;
     struct utmp ut, *utp;
@@ -1285,6 +1321,9 @@ int logwtmp (int unit,char *line, char *name, char *host)
 /*
  * Update the wtmp file.
  */
+#if (defined __GLIBC__ && __GLIBC__ >= 2)
+    updwtmp (_PATH_WTMP, &ut);
+#else    
     wtmp = open(_PATH_WTMP, O_APPEND|O_WRONLY);
     if (wtmp >= 0)
       {
@@ -1296,9 +1335,9 @@ int logwtmp (int unit,char *line, char *name, char *host)
 
        flock(wtmp, LOCK_UN);
       }
+#endif    
     return 0;
   }
-
 
 /*
  * Code for locking/unlocking the serial device.

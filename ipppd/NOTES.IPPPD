@@ -19,7 +19,7 @@ removed checking of ~/.ppprc file ('options from user' feature)
 
 ------------------------------------------------------------
 
-I added a few new options:
+CHANGELOG:
  - 'useifip' will get (if not set to 0.0.0.0) the IP address
    for the negotiation from the attached network-interface.
    (also: ipppd will try to negotiate 'pointopoint' IP as remote IP)
@@ -52,6 +52,8 @@ I added a few new options:
  - added 'pidfile <own pidfilename>' option .. 
  - added 'set_userip'  .. you may define valid IPs in /etc/ppp/useriptab
    (it's a patch from: Meno Abels <Meno.Abels@Technical.Adviser.com>)
+ - added glibc-2 patches from: Andreas Jaeger <aj@arthur.rhein-neckar.de>
+ - added 2.1.X patches by Miquel van Smoorenburg <miquels@cistron.nl>
 
 The ipppd can handle multiple devices. This is necessary to
 link several connections together to one bundle.

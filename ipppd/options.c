@@ -17,7 +17,7 @@
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-char options_rcsid[] = "$Id: options.c,v 1.4 1997/05/19 10:16:18 hipp Exp $";
+char options_rcsid[] = "$Id: options.c,v 1.5 1997/05/28 10:07:36 hipp Exp $";
 
 #include <stdio.h>
 #include <errno.h>
@@ -1552,6 +1552,11 @@ void setipdefault(void)
 static int setnetmask(int slot,char **argv)
 {
     u_int32_t mask;
+
+	if (strcmp(*argv, "255.255.255.255") == 0) {
+		netmask = 0xffffffff;
+		return 1;
+	}
 
     if ((mask = inet_addr(*argv)) == -1 || (netmask & ~mask) != 0) {
 	fprintf(stderr, "Invalid netmask %s\n", *argv);
