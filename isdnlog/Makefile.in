@@ -1,8 +1,8 @@
-## $Id: Makefile.in,v 1.205 2002/07/26 22:14:19 akool Exp $
+## $Id: Makefile.in,v 1.206 2002/08/10 16:32:03 akool Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
-## Copyright 1995 .. 2000 by Andreas Kool (akool@isdn4linux.de)
+## Copyright 1995 .. 2002 by Andreas Kool (akool@isdn4linux.de)
 ##
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -19,6 +19,11 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.206  2002/08/10 16:32:03  akool
+## isdnlog-4.62
+##  - new rates/provider (0190028, Tele2 Ortstarif)
+##  - display in EuroCent now the default
+##
 ## Revision 1.205  2002/07/26 22:14:19  akool
 ## isdnlog-4.61:
 ##   - Support for mysql-4.0alpha -- many thanks to Jochen Erwied (jochen@erwied.de)!
@@ -1548,7 +1553,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 4.61
+VERSION     = 4.62
 
 MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 \
 	      isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 \
@@ -1830,6 +1835,7 @@ install-progs:
 		$(INSTALL_BIN) $(ISDNREP)  $(DESTDIR)$(BINDIR)
 		$(INSTALL_BIN) $(ISDNCONF) $(DESTDIR)$(BINDIR)
 		$(INSTALL_BIN) $(ISDNRATE) $(DESTDIR)$(BINDIR)
+		$(INSTALL_BIN) $(ISDNBILL) $(DESTDIR)$(BINDIR)
 		-@if (ps x | fgrep $(ISDNLOG) | grep -v grep) >/dev/null; then \
 			kill -HUP `cat $(RUNDIR)/isdnlog.isdnctrl0.pid 2>/dev/null`; \
 			echo "Restarting running isdnlog!" ; \
