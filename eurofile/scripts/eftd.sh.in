@@ -1,11 +1,14 @@
 #!/bin/sh
 # @configure_input@
 #
-# generated from $Id: eftd.sh.in,v 1.7 2000/01/26 20:11:34 he Exp $
+# generated from $Id: eftd.sh.in,v 1.8 2002/01/31 18:54:38 paul Exp $
 #
 #  Henner Eisen 1998
 #
 #  Enhancements by Matthias Stolte (MSDatec@msdatec.de)
+#
+#  Debian "restart" and "force-reload" options added
+#  by Paul Slootman <paul@debian.org>
 #
 #
 # This starts or stops eurofile service.
@@ -272,6 +275,12 @@ case "$1" in
       echo "EUROFile daemon started, pid=$td_pid"
 
     fi
+    ;;
+
+  restart|force-reload)
+    # I know, trivial, but debian policy demands it
+    $0 stop || true
+    $1 start
     ;;
 
   stop)
