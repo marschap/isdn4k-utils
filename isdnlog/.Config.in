@@ -47,4 +47,5 @@ bool 'Include German cities in destination database' CONFIG_ISDN_LOG_DEST_DE y
 bool 'Include Austrian cities in destination database' CONFIG_ISDN_LOG_DEST_AT y
 bool 'Include Dutch cities in destination database' CONFIG_ISDN_LOG_DEST_NL y
 bool 'Include Swiss cities in destination database' CONFIG_ISDN_LOG_DEST_CH y
+bool 'Include Belgian cities in destination database' CONFIG_ISDN_LOG_DEST_BE y
 endmenu
