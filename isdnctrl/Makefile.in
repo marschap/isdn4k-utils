@@ -1,4 +1,4 @@
-# $Id: Makefile.in,v 1.14 1998/12/18 13:19:45 paul Exp $
+# $Id: Makefile.in,v 1.15 1999/11/07 22:04:05 detabc Exp $
 #
 # Makefile for isdnctrl
 # (C) 1997 Fritz Elfert
@@ -35,10 +35,26 @@ MODULES		+= ctrltimru.o
 MANPAGES    += .isdnctrl_timru.8
 endif
 
+ifeq (@CONFIG_ISDNCTRL_DWABC_UDP_INFO@,y)
+COPTS		+= -DI4L_DWABC_UDPINFO
+ABCLIBDIR   = /usr/lib
+ABCICLDIR   = /usr/include
+endif
+
 .SUFFIXES:
 .SUFFIXES: .c .o
 
+ifeq (@CONFIG_ISDNCTRL_DWABC_UDP_INFO@,y)
+all: libisdnudp.a $(PROGRAMM)
+
+LDFLAGS 	+= libisdnudp.a
+
+libisdnudp.a: isdn_dwabclib.o
+		ar rs libisdnudp.a isdn_dwabclib.o
+		ranlib libisdnudp.a
+else
 all: $(PROGRAM)
+endif
 
 %.o: %.c Makefile
 	$(CC) $(CFLAGS) $(INCLUDES) $(DEFS) $(COPTS) -c -o $@ $<
@@ -80,6 +96,12 @@ install-man: $(MANPAGES)
 install: $(PROGRAM) install-man
 	$(INSTALL) -d $(DESTDIR)$(SBINDIR)
 	$(INSTALL_PROGRAM) $(PROGRAM) $(DESTDIR)$(SBINDIR)/$(PROGRAM)
+ifeq (@CONFIG_ISDNCTRL_DWABC_UDP_INFO@,y)
+	$(INSTALL) -d $(ABCLIBDIR)
+	$(INSTALL) -d $(ABCICLDIR)
+	$(INSTALL_MAN) libisdnudp.a $(ABCLIBDIR)/libisdnudp.a
+	$(INSTALL_MAN) isdn_dwabclib.h $(ABCICLDIR)/isdn_dwabclib.h 
+endif
 
 install-strip: $(PROGRAM)
 	$(INSTALL) -d $(DESTDIR)$(SBINDIR)
@@ -88,6 +110,9 @@ install-strip: $(PROGRAM)
 uninstall:
 	rm -f $(DESTDIR)$(SBINDIR)/$(PROGRAM)
 	for i in $(MANPAGES) ; do rm $(DESTDIR)$(MAN8DIR)/$$i ; done
+ifeq (@CONFIG_ISDNCTRL_DWABC_UDP_INFO@,y)
+	rm -f $(ABCLIBDIR)/libisdnudp.a $(ABCICLDIR)/isdn_dwabclib.h
+endif
 
 clean:
 	rm -f *.o *~ $(PROGRAM) *.man *.8 .*.man .*.8

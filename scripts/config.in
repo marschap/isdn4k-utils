@@ -1,5 +1,5 @@
 #
-# $Id: config.in,v 1.31 1999/10/26 18:17:19 akool Exp $
+# $Id: config.in,v 1.32 1999/11/07 22:04:05 detabc Exp $
 #
 # The whole configuration stuff is borrowed from the kernel
 # configuration.
@@ -54,6 +54,9 @@ if [ "$CONFIG_ISDNCTRL" = "y" ]; then
 #	bool 'Enable isdnctrl debug-option' CONFIG_ISDNCTRL_DEBUG
 	bool 'Enable configfile-option (uses dbm lib)' CONFIG_ISDNCTRL_CONF
 	bool 'Enable timru-controls' CONFIG_ISDNCTRL_TIMRU
+	if [ "$CONFIG_EXPERIMENTAL" = "y" ]; then
+		bool 'Enable udp-info-controls' CONFIG_ISDNCTRL_DWABC_UDP_INFO
+	fi
 fi
 bool 'iprofd' CONFIG_IPROFD
 bool 'divertctrl' CONFIG_DIVERTCTRL
