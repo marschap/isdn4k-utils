@@ -75,6 +75,13 @@ stripchart. A typical command might be something like
 `sudo /etc/init.d/isdn stop' to shut down your connection.
 .PP
 .TP 8
+.B \-manual
+With this option the interface is assumed to be active and in manual dial
+mode.  The activate/deactive commands are selected depending on the
+connection state.  A typical activate command might be `isdnctrl dial
+ippp0', and to deactivate `isdnctrl hangup ippp0'.
+.PP
+.TP 8
 .B \-number \fIregexp\fP
 The supplied regular expression is used to limit the set numbers
 to be observed by \fIxisdnload\fP.

@@ -71,6 +71,7 @@ static void quit();
 
 typedef struct _XISDNLoadResources {
   Boolean show_label;
+  Boolean manual_mode;
   char *online_color;
   char *active_color;
   char *trying_color;
@@ -97,6 +98,7 @@ static XrmOptionDescRec options[] = {
  {"-online",		"*onlineColor",         XrmoptionSepArg,	NULL},
  {"-trying",		"*tryingColor",         XrmoptionSepArg,	NULL},
  {"-active",		"*activeColor",         XrmoptionSepArg,	NULL},
+ {"-manual",            "*ManualMode",          XrmoptionNoArg,       "True"},
  {"-activate",		"*activate",		XrmoptionSepArg,	NULL},
  {"-deactivate",	"*deactivate",		XrmoptionSepArg,	NULL},
 #ifdef REGEX_NUMBER
@@ -114,6 +116,8 @@ static XrmOptionDescRec options[] = {
 static XtResource my_resources[] = {
   {"showLabel", XtCBoolean, XtRBoolean, sizeof(Boolean),
      Offset(show_label), XtRImmediate, (XtPointer) TRUE},
+  {"ManualMode", XtCBoolean, XtRBoolean, sizeof(Boolean),
+     Offset(manual_mode), XtRImmediate, (XtPointer) FALSE},
   {"onlineColor", "OnlineColor", XtRString, sizeof(char *),
      Offset(online_color), XtRString, NULL},
   {"activeColor", "ActiveColor", XtRString, sizeof(char *),
@@ -201,6 +205,8 @@ void usage()
       "    -activate string        exec this to activate demand dialing\n");
     fprintf (stderr,
       "    -deactivate string      exec this to deactivate demand dialing\n");
+    fprintf (stderr,
+      "    -manual                 manual dialing mode\n");
 #ifdef REGEX_NUMBER
     fprintf (stderr,
       "    -number string          regexp to match against number to watch\n");
@@ -439,7 +445,9 @@ XtPointer call_data;	/* pointer to (double) return value */
 void ToggleActive(Widget w, XtPointer p, XEvent *e, Boolean *c)
 {
   if (e->type == ButtonPress) {
-    if (get_active()) {
+    if (!resources.manual_mode 
+	  ? get_active()
+          : (trying_last > 0 || online_last > 0)) { 
       system(resources.deactivate);
     } else {
       system(resources.activate);
