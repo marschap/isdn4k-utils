@@ -1,4 +1,4 @@
-# $Id: Makefile.in,v 1.1 1999/05/07 21:32:55 werner Exp $
+# $Id: Makefile.in,v 1.2 2002/07/06 00:24:53 keil Exp $
 #
 # Makefile for divertctrl (Werner Cornelius 1999)
 # Modified from loopctrl Makefile made by Fritz Elfert
@@ -6,7 +6,7 @@
 #
 SHELL			= /bin/sh
 CFLAGS			= -Wall -O2
-INCLUDES		= -I. -I@CONFIG_KERNELDIR@/include -I@CONFIG_KERNELDIR@/drivers/isdn/divert
+INCLUDES		= -I. -I@CONFIG_KERNELDIR@/include
 DEFS			=
 LDFLAGS			= -L../lib @LIBS@
 PROGRAM			= divertctrl
