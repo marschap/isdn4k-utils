@@ -1,7 +1,10 @@
 /*
- * $Id: capi20.c,v 1.9 1999/10/20 16:43:17 calle Exp $
+ * $Id: capi20.c,v 1.10 1999/11/11 09:24:07 calle Exp $
  * 
  * $Log: capi20.c,v $
+ * Revision 1.10  1999/11/11 09:24:07  calle
+ * add shared lib destructor, to close "capi_fd" on unload with dlclose ..
+ *
  * Revision 1.9  1999/10/20 16:43:17  calle
  * - The CAPI20 library is now a shared library.
  * - Arguments of function capi20_put_message swapped, to match capi spec.
@@ -400,3 +403,12 @@ capi20_fileno(unsigned ApplID)
    return applid2fd(ApplID);
 }
 
+static void exitlib(void) __attribute__((destructor));
+
+static void exitlib(void)
+{
+    if (capi_fd >= 0) {
+       close(capi_fd);
+       capi_fd = -1;
+    }
+}
