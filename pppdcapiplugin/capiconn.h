@@ -1,5 +1,5 @@
 /*
- * $Id: capiconn.h,v 1.3 2001/01/25 14:45:41 calle Exp $
+ * $Id: capiconn.h,v 1.4 2004/06/14 11:33:07 calle Exp $
  *
  * Copyright 2000 Carsten Paeth (calle@calle.in-berlin.de)
  * Copyright 2000 AVM GmbH Berlin (info@avm.de)
@@ -10,6 +10,9 @@
  *  2 of the License, or (at your option) any later version.
  *
  * $Log: capiconn.h,v $
+ * Revision 1.4  2004/06/14 11:33:07  calle
+ * New version of capiconn.
+ *
  * Revision 1.3  2001/01/25 14:45:41  calle
  * - listen always (for info messages)
  * - show versions on startup
@@ -22,7 +25,6 @@
  * Plugin for pppd to support PPP over CAPI2.0.
  *
  */
-
 #ifndef __CAPICONN_H__
 #define __CAPICONN_H__
 
@@ -65,6 +67,7 @@
 #define CAPICONN_OK			0
 #define CAPICONN_NO_CONTROLLER		-1
 #define	CAPICONN_NO_MEMORY		-2
+#define	CAPICONN_NOT_SUPPORTED		-3
 #define CAPICONN_WRONG_STATE		1
 #define CAPICONN_NOT_SENT		2
 #define CAPICONN_ALREADY_DISCONNECTING	3
@@ -258,10 +261,18 @@ struct capiconn_callbacks
 	void (*chargeinfo)(capi_connection *,
 			   unsigned long charge,
 			   int inunits);
+
+	/*
+	 * DTMF received
+	 */
+	void (*dtmf_received)(capi_connection *,
+			      unsigned char *data,
+			      unsigned datalen);
+
 	/*
 	 * capi functions
 	 */
-	void (*capi_put_message) (unsigned appid, unsigned char *msg);
+	int (*capi_put_message) (unsigned appid, unsigned char *msg);
 
 	/*
 	 * message functions
@@ -415,6 +426,12 @@ typedef struct capi_conninfo capi_conninfo;
 capi_conninfo *capiconn_getinfo(capi_connection *p);
 
 /*
+ * userdata per connection
+ */
+void capiconn_set_userdata(capi_connection *plcip, void *userdata);
+void *capiconn_get_userdata(capi_connection *plcip);
+
+/*
  * returncodes:
  *	CAPICONN_OK		- Listen request sent
  * 	CAPICONN_NO_CONTROLLER	- Controller "contr" not added with
@@ -431,5 +448,21 @@ int capiconn_listen(capiconn_context *ctx,
  * 	CAPICONN_WRONG_STATE	- got no ack for listen request
  */
 int capiconn_listenstate(capiconn_context *ctx, unsigned contr);
+
+/*
+ * returncode:
+ *	CAPICONN_OK		- request sent to CAPI
+ *      CAPICONN_NOT_SUPPORTED	- DTMF not supported
+ *	CAPICONN_WRONG_STATE	- Connection is not connected
+ */
+int capiconn_dtmf_setstate(capi_connection *, int on);
+
+/*
+ * returncode:
+ *	CAPICONN_OK		- request sent to CAPI
+ *      CAPICONN_NOT_SUPPORTED	- DTMF not supported
+ *	CAPICONN_WRONG_STATE	- Connection is not connected
+ */
+int capiconn_dtmf_send(capi_connection *, char *digits);
 
 #endif /* __CAPICONN_H__ */

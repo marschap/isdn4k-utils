@@ -1,5 +1,5 @@
 /*
- * $Id: capiconn.c,v 1.8 2004/01/16 15:27:13 calle Exp $
+ * $Id: capiconn.c,v 1.9 2004/06/14 11:33:07 calle Exp $
  *
  * Copyright 2000 Carsten Paeth (calle@calle.in-berlin.de)
  * Copyright 2000 AVM GmbH Berlin (info@avm.de)
@@ -10,6 +10,9 @@
  *  2 of the License, or (at your option) any later version.
  *
  * $Log: capiconn.c,v $
+ * Revision 1.9  2004/06/14 11:33:07  calle
+ * New version of capiconn.
+ *
  * Revision 1.8  2004/01/16 15:27:13  calle
  * remove several warnings.
  *
@@ -37,15 +40,11 @@
  * Plugin for pppd to support PPP over CAPI2.0.
  *
  */
-
-#include <stdio.h> /* snprintf */
-#include <stdlib.h>
 #include <string.h>
 #include "capiconn.h"
 
-static char *revision = "$Revision: 1.8 $";
+static char *revision = "$Revision: 1.9 $";
 
-/* xxxxxxxxxxxxxxxxxx */
 static _cmsg cmdcmsg;
 static _cmsg cmsg;
 
@@ -54,6 +53,37 @@ static _cmsg cmsg;
 #ifndef CAPI_MAXDATAWINDOW
 #define	CAPI_MAXDATAWINDOW	8
 #endif
+
+/* -------- util functions ------------------------------------------- */
+
+static inline int capimsg_addu8(void *m, int off, _cbyte val)
+{
+	((_cbyte *)m)[off] = val;
+	return off+1;
+}
+
+static inline int capimsg_addu16(void *m, int off, _cword val)
+{
+	((_cbyte *)m)[off] = val & 0xff;
+	((_cbyte *)m)[off+1] = (val >> 8) & 0xff;
+	return off+2;
+}
+
+static inline int capimsg_addu32(void *m, int off, _cdword val)
+{
+	((_cbyte *)m)[off] = val & 0xff;
+	((_cbyte *)m)[off+1] = (val >> 8) & 0xff;
+	((_cbyte *)m)[off+2] = (val >> 16) & 0xff;
+	((_cbyte *)m)[off+3] = (val >> 24) & 0xff;
+	return off+4;
+}
+
+static inline int capimsg_addcstruct(void *m, int off, _cbyte len, _cbyte *val)
+{
+   if (len == 0 || val == 0) return capimsg_addu8(m, off, 0);
+   memcpy(m+off, val, len);
+   return off+len;
+}
 
 /* -------- type definitions ----------------------------------------- */
 
@@ -108,8 +138,7 @@ struct capi_contr {
 
 		unsigned incoming:1,
 			 disconnecting:1,
-			 localdisconnect:1,
-	                 callednumbercomplete:1;
+			 localdisconnect:1;
 
 		_cword disconnectreason;
 		_cword disconnectreason_b3;
@@ -134,6 +163,7 @@ struct capi_contr {
 			} *ackqueue;
 			int ackqueuelen;
 		} *nccip;
+	    void *userdata;
 	} *connections;
 };
 
@@ -429,15 +459,16 @@ static int set_conninfo1a(capiconn_context *ctx,
 		if (callednumber[0] & 0x80) {
 			memcpy(p->callednumber+1, callednumber, len);
 			p->callednumber[0] = len;
-	                p->callednumber[len+1] = 0;
+	        p->callednumber[len+1] = 0;
 		} else {
 			memcpy(p->callednumber+2, callednumber, len);
 			p->callednumber[0] = len+1;
 			p->callednumber[1] = 0x81;
-	                p->callednumber[len+2] = 0;
+	        p->callednumber[len+2] = 0;
 		}
 	} else {
-			p->callednumber[0] = 0;
+	    p->callednumber[0] = 0;
+		p->callednumber[1] = 0;
 	}
 	if ((p->callingnumber = (*cb->malloc)(128)) == 0)
 		goto fail;
@@ -446,10 +477,13 @@ static int set_conninfo1a(capiconn_context *ctx,
 		memcpy(p->callingnumber+3, callingnumber, len);
 		p->callingnumber[0] = len+2;
 		p->callingnumber[1] = 0x00;
-	        p->callingnumber[2] = 0x80;
+	    p->callingnumber[2] = 0x80;
 		p->callingnumber[len+3] = 0;
 	} else {
-		p->callingnumber[0] = 0;
+		p->callingnumber[0] = 2;
+		p->callingnumber[1] = 0x00;
+	    p->callingnumber[2] = 0x80;
+		p->callingnumber[3] = 0;
 	}
 	return 0;
 fail:
@@ -468,21 +502,33 @@ static int set_conninfo1b(capiconn_context *ctx,
 
 	p->cipvalue = cipvalue;
 
-	if ((p->callednumber = (*cb->malloc)(128)) == 0)
+   if ((p->callednumber = (*cb->malloc)(128)) == 0)
 		goto fail;
-	len = callednumber[0];
-	memcpy(p->callednumber, callednumber, len+1);
-	p->callednumber[len+1] = 0;
-
-	if ((p->callingnumber = (*cb->malloc)(128)) == 0)
-		goto fail;
-	len = callingnumber[0];
-	memcpy(p->callingnumber, callingnumber, len+1);
-	p->callingnumber[len+1] = 0;
-	return 0;
+   if (callednumber && callednumber[0] >= 2) {
+	  len = callednumber[0];
+	  memcpy(p->callednumber, callednumber, len+1);
+	  p->callednumber[len+1] = 0;
+   } else {
+	  p->callednumber[0] = 1;
+      p->callednumber[1] = 0x81;
+      p->callednumber[2] = 0;
+   }
+   if ((p->callingnumber = (*cb->malloc)(128)) == 0)
+      goto fail;
+   if (callingnumber && callingnumber[0] >= 3) {
+	  len = callingnumber[0];
+	  memcpy(p->callingnumber, callingnumber, len+1);
+	  p->callingnumber[len+1] = 0;
+   } else {
+	  p->callingnumber[0] = 2;
+	  p->callingnumber[1] = 0x00;
+	  p->callingnumber[2] = 0x80;
+	  p->callingnumber[3] = 0;
+   }
+   return 0;
 fail:
-	clr_conninfo1(ctx, p);
-	return -1;
+   clr_conninfo1(ctx, p);
+   return -1;
 }
 
 static void extend_callednumber(capiconn_context *ctx, capi_conninfo *p,
@@ -573,7 +619,7 @@ static int capi_add_ack(capi_ncci *nccip,
 	ncci_datahandle_queue *n, **pp;
 
 	if (nccip->ackqueuelen >= CAPI_MAXDATAWINDOW)
-		return 0;
+		return 1;
 	n = (ncci_datahandle_queue *)
 		(*cb->malloc)(sizeof(ncci_datahandle_queue));
 	if (!n) {
@@ -606,6 +652,7 @@ static unsigned char *capi_del_ack(capi_ncci *nccip, _cword datahandle)
 			return data;
 		}
 	}
+        (*cb->errmsg)("datahandle %u not found", datahandle);
 	return 0;
 }
 
@@ -951,6 +998,8 @@ static void handle_controller(capiconn_context *ctx, _cmsg * cmsg)
 	       cmsg->adr.adrController);
 }
 
+static unsigned char SendingComplete[5] = { 4, 1, 0, 0, 0 };
+
 static void check_incoming_complete(capi_connection *plcip)
 {
 	capi_contr *card = plcip->contr;
@@ -974,12 +1023,6 @@ static void check_incoming_complete(capi_connection *plcip)
 			return;
 		}
 	}
-
-	if (plcip->callednumbercomplete)
-	   return;
-
-	plcip->callednumbercomplete = 1;
-
 	if (*cb->incoming)
 		(*cb->incoming)(plcip,
 				plcip->contr->contrnr,
@@ -996,7 +1039,8 @@ static void check_incoming_complete(capi_connection *plcip)
 			    	0,	/* BChannelinformation */
 			    	0,	/* Keypadfacility */
 			    	0,	/* Useruserdata */
-			    	0	/* Facilitydataarray */
+			    	0,	/* Facilitydataarray */
+				SendingComplete
 				);
 		plcip->msgid = cmsg.Messagenumber;
 		send_message(card, &cmsg);
@@ -1026,8 +1070,8 @@ static void handle_incoming_call(capi_contr * card, _cmsg * cmsg)
 	(*cb->debugmsg)("incoming call contr=%d cip=%d %s -> %s", 
 			card->contrnr,
 			cmsg->CIPValue,
-			plcip->conninfo.callingnumber + 3,
-			plcip->conninfo.callednumber + 2);
+			plcip->conninfo.callingnumber+2,
+			plcip->conninfo.callednumber+3);
 
 	if (cb->incoming == 0)
 		goto ignore;
@@ -1123,24 +1167,17 @@ static int handle_callednumber_info(capi_connection *plcip, _cmsg *cmsg)
 	return 0;
 }
 
-static int handle_cause_info(capi_connection *plcip, _cmsg *cmsg)
+static int handle_dtmf_info(capi_connection *plcip, _cmsg *cmsg)
 {
 	capiconn_context *ctx = plcip->ctx;
 	capiconn_callbacks *cb = ctx->cb;
 
-	unsigned char *p = cmsg->InfoElement;
-	if (cmsg->InfoNumber == 0x0008) {
-           char buf[128];
-	   char *s, *end;
-	   int i;
-	   s = buf; end = s + sizeof(buf)-1;
-	   *end = 0;
-	   for (i=0; i < p[0]; i++) {
-	      snprintf(s, end-s, " %02x", p[i+1]);
-	      s += strlen(s);
-	   }
-           (*cb->debugmsg)("cause bytes for plci 0x%x:%s", cmsg->adr.adrPLCI, buf);
-	   return 1;
+	if (cmsg->InfoNumber == 0x002c) {
+		if (cb->dtmf_received)
+			(*cb->dtmf_received)(plcip,
+				     cmsg->InfoElement+1,
+				     cmsg->InfoElement[0]);
+		return 1;
 	}
 	return 0;
 }
@@ -1265,7 +1302,7 @@ static void handle_plci(capiconn_context *ctx, _cmsg * cmsg)
 		} else if (handle_callednumber_info(plcip, cmsg)) {
 			capi_cmsg_answer(cmsg);
 			send_message(card, cmsg);
-		} else if (handle_cause_info(plcip, cmsg)) {
+		} else if (handle_dtmf_info(plcip, cmsg)) {
 			capi_cmsg_answer(cmsg);
 			send_message(card, cmsg);
 		} else {
@@ -1279,6 +1316,16 @@ static void handle_plci(capiconn_context *ctx, _cmsg * cmsg)
 	case CAPI_SELECT_B_PROTOCOL_CONF:	/* plci */
 		goto ignored;
 	case CAPI_FACILITY_IND:	/* Controller/plci/ncci */
+		if (!(plcip = find_plci_by_plci(card, cmsg->adr.adrPLCI)))
+			goto notfound;
+		if (cmsg->FacilitySelector == 1) { /* DTMF */
+		   (*cb->dtmf_received)(plcip,
+					cmsg->FacilityIndicationParameter+1,
+					cmsg->FacilityIndicationParameter[0]);
+		   capi_cmsg_answer(cmsg);
+		   send_message(card, cmsg);
+		   break;
+		}
 		goto ignored;
 	case CAPI_FACILITY_CONF:	/* Controller/plci/ncci */
 		goto ignored;
@@ -1451,8 +1498,40 @@ static void handle_ncci(capiconn_context *ctx, _cmsg * cmsg)
 
 	case CAPI_FACILITY_IND:	/* Controller/plci/ncci */
 		goto ignored;
+
 	case CAPI_FACILITY_CONF:	/* Controller/plci/ncci */
-		goto ignored;
+		if (!(nccip = find_ncci(card, cmsg->adr.adrNCCI)))
+			goto notfound;
+		if (cmsg->Info) {
+		   (*cb->infomsg)("%s info 0x%x (%s) for ncci 0x%x",
+			   capi_cmd2str(cmsg->Command, cmsg->Subcommand),
+			       cmsg->Info, capi_info2str(cmsg->Info), 
+			       cmsg->adr.adrNCCI);
+		} else if (   cmsg->FacilitySelector == 1
+		           && cmsg->FacilityConfirmationParameter[0] > 0
+			   && cmsg->FacilityConfirmationParameter[1]) {
+		   switch (cmsg->FacilityConfirmationParameter[1]) {
+		      case 0:
+			 break;
+		      case 1: 
+		         (*cb->infomsg)("%s incorrect DTMF digit for ncci 0x%x",
+			       capi_cmd2str(cmsg->Command, cmsg->Subcommand),
+			       cmsg->adr.adrNCCI);
+			 break;
+		      case 2: 
+		         (*cb->infomsg)("%s Unknown DTMF request for ncci 0x%x",
+			       capi_cmd2str(cmsg->Command, cmsg->Subcommand),
+			       cmsg->adr.adrNCCI);
+			 break;
+		      default:
+		         (*cb->infomsg)("%s DTMF errcode %d for ncci 0x%x",
+			       capi_cmd2str(cmsg->Command, cmsg->Subcommand),
+			       cmsg->FacilityConfirmationParameter[1],
+			       cmsg->adr.adrNCCI);
+			 break;
+		   }
+		}
+		break;
 
 	default:
 		(*cb->errmsg)("capidrv-%d: got %s for ncci 0x%x ???",
@@ -1774,6 +1853,53 @@ int capiconn_disconnect(capi_connection *plcip, _cstruct ncpi)
 
 static _cmsg sendcmsg;
 
+
+// #define TX_STATS
+
+
+#ifdef TX_STATS
+
+
+static FILE *dump_open(void)
+{
+	struct stat sb;
+
+	if (0 == stat("/var/tmp/voipd.txt", &sb) 
+		&& sb.st_size > 60000) {
+		unlink("/var/tmp/voipd.txt");
+	}
+
+	FILE *fp = fopen("/var/tmp/voipd.txt", "a");
+
+	return fp;
+}
+
+static void ncci_dump(capi_ncci *nccip, char *header)
+{
+	FILE *fp = dump_open();
+
+	if (fp) {
+		time_t t = time(0);
+		fprintf(fp, "\n%02u:%02u:%02u  %s\n", t / (60*60), (t / 60) % 60, t % 60, header); 
+//		txstat_dump(&nccip->txstats, fp);
+//		fprintf(fp, "Tx Packet Time Distribution:\n");
+//		timedist_dump(&nccip->txpackettdist, fp);
+//		fprintf(fp, "Tx DATA B3 CONF Time Distribution:\n");
+//		timedist_dump(&nccip->txconftdist, fp);
+//		fprintf(fp, "Tx Underrun Time Distribution:\n");
+//		timedist_dump(&nccip->txUnderruntdist, fp);
+
+		rtp_stats_display_fp(ortp_get_global_stats(), "RTP Global", fp);
+
+//		fprintf(fp, "*** Mediastraemer Fifos:\n");
+//		ms_fifo_dump(fp);
+
+		fclose(fp);
+	}
+}
+#endif
+
+
 int capiconn_send(capi_connection *plcip,
 		  unsigned char *data,
 		  unsigned len)
@@ -1789,6 +1915,25 @@ int capiconn_send(capi_connection *plcip,
 	if (!nccip || nccip->state != ST_NCCI_ACTIVE)
 		return CAPICONN_WRONG_STATE;
 
+#ifdef TX_STATS
+	{
+	struct timeval tv;
+	struct timezone tz;
+	unsigned tstamp;
+	static unsigned next_dump_tstamp = 0;
+
+	tstamp = gettimeofday(&tv, &tz);
+	tstamp = tv.tv_sec * 1000 + (tv.tv_usec/1000);
+//	timedist_event(&nccip->txpackettdist, tstamp);
+
+	if (tstamp >= next_dump_tstamp) {
+		next_dump_tstamp = tstamp + 120*1000;
+		ncci_dump(nccip, "ncci periodic");
+	}
+	}
+#endif // TX_STATS
+
+
 	datahandle = nccip->datahandle;
 	capi_fill_DATA_B3_REQ(&sendcmsg, ctx->appid, card->msgid++,
 			      nccip->ncci,	/* adr */
@@ -1798,16 +1943,91 @@ int capiconn_send(capi_connection *plcip,
 			      0	/* Flags */
 	    		);
 
-	if (capi_add_ack(nccip, datahandle, data) < 0)
+	if (capi_add_ack(nccip, datahandle, data) != 0)
 	   return CAPICONN_NOT_SENT;
 
 	capi_cmsg2message(&sendcmsg, sendcmsg.buf);
-	(*cb->capi_put_message) (ctx->appid, sendcmsg.buf);
+	if((*cb->capi_put_message) (ctx->appid, sendcmsg.buf) < 0) {
+	   capi_del_ack(nccip, datahandle);
+	   return CAPICONN_NOT_SENT;
+	}
 	nccip->datahandle++;
 	ctx->nsentdatapkt++;
 	return CAPICONN_OK;
 }
 
+int capiconn_dtmf_setstate(capi_connection *plcip, int on)
+{
+	_cbyte fparam[32];
+	int off;
+	capi_contr *card = plcip->contr;
+	capiconn_context *ctx = card->ctx;
+	capiconn_callbacks *cb = ctx->cb;
+
+	capi_ncci *nccip;
+
+	nccip = plcip->nccip;
+	if (!nccip || nccip->state != ST_NCCI_ACTIVE)
+		return CAPICONN_WRONG_STATE;
+
+        if (cb->dtmf_received == 0)
+		return CAPICONN_NOT_SUPPORTED;
+
+	capi_cmsg_header(&sendcmsg, ctx->appid,
+			 CAPI_FACILITY, CAPI_REQ, card->msgid++, nccip->ncci);
+	sendcmsg.FacilitySelector = 1;
+	off = 1;
+        off = capimsg_addu16(fparam, off, on ? 1 : 2); /* Function */
+        off = capimsg_addu16(fparam, off, 40);    /* Tone-duration */
+        off = capimsg_addu16(fparam, off, 40); 	  /* Gap-dureation */ 
+        off = capimsg_addcstruct(fparam, off, 0, 0); /* DTMF-digits */
+        off = capimsg_addcstruct(fparam, off, 0, 0); /* DTMF-characteristics */
+	fparam[0] = off;
+	sendcmsg.FacilityRequestParameter = fparam;
+	capi_cmsg2message(&sendcmsg, sendcmsg.buf);
+	(*cb->capi_put_message) (ctx->appid, sendcmsg.buf);
+	return CAPICONN_OK;
+}
+
+int capiconn_dtmf_send(capi_connection *plcip, char *digits)
+{
+	_cbyte fparam[256];
+	int off;
+	capi_contr *card = plcip->contr;
+	capiconn_context *ctx = card->ctx;
+	capiconn_callbacks *cb = ctx->cb;
+
+	capi_ncci *nccip;
+
+	nccip = plcip->nccip;
+	if (!nccip || nccip->state != ST_NCCI_ACTIVE)
+		return CAPICONN_WRONG_STATE;
+
+	capi_cmsg_header(&sendcmsg, ctx->appid,
+			 CAPI_FACILITY, CAPI_REQ, card->msgid++, nccip->ncci);
+	sendcmsg.FacilitySelector = 1;
+	off = 1;
+        off = capimsg_addu16(fparam, off, 4); /* Function */
+        off = capimsg_addu16(fparam, off, 40);    /* Tone-duration */
+        off = capimsg_addu16(fparam, off, 40); 	  /* Gap-dureation */ 
+        off = capimsg_addcstruct(fparam, off, strlen(digits), digits);
+        off = capimsg_addcstruct(fparam, off, 0, 0); /* DTMF-characteristics */
+	fparam[0] = off;
+	sendcmsg.FacilityRequestParameter = fparam;
+	capi_cmsg2message(&sendcmsg, sendcmsg.buf);
+	(*cb->capi_put_message) (ctx->appid, sendcmsg.buf);
+	return CAPICONN_OK;
+}
+
+void capiconn_set_userdata(capi_connection *plcip, void *userdata)
+{
+   plcip->userdata = userdata;
+}
+
+void *capiconn_get_userdata(capi_connection *plcip)
+{
+   return plcip->userdata;
+}
 
 /* -------- listen handling ------------------------------------------ */
 
@@ -1816,7 +2036,6 @@ static void send_listen(capi_contr *card)
 	capiconn_context *ctx = card->ctx;
 
 	card->infomask = 0;
-	card->infomask |= (1<<0); /* cause information */
 	card->infomask |= (1<<2); /* Display */
 	card->infomask |= (1<<6); /* Charge Info */
 	if (card->ddilen) card->infomask |= (1<<7); /* Called Party Number */
