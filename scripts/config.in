@@ -1,5 +1,5 @@
 #
-# $Id: config.in,v 1.6 1997/03/03 12:59:13 fritz Exp $
+# $Id: config.in,v 1.7 1997/03/03 22:05:47 luethje Exp $
 #
 # The whole configuration stuff is borrowed from the kernel
 # configuration.
@@ -28,7 +28,8 @@ comment 'Runtime defaults'
 string 'Write .pid files here' CONFIG_RUNDIR /var/run
 string 'General configuration directory' CONFIG_I4LCONFDIR /etc/isdn
 string 'Global configuration file' CONFIG_CONFFILE isdn.conf
-string 'User configuration file' CONFIG_USERCONFFILE .isdn
+string 'Global phone number file file' CONFIG_CALLERIDFILE callerid.conf
+string 'User configuration file' CONFIG_USERCONFFILE ~/.isdn
 comment 'Configuration library options'
 string 'Default country prefix' CONFIG_COUNTRY_PREFIX +
 string 'Default area prefix' CONFIG_AREA_PREFIX 0

@@ -1,5 +1,5 @@
 
-/* $Id: libisdn.h,v 1.1 1997/03/03 04:23:16 fritz Exp $
+/* $Id: libisdn.h,v 1.2 1997/03/03 22:05:41 luethje Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -41,7 +41,8 @@ extern char *basename __P((__const char *__name));
 
 /****************************************************************************/
 
-#define CONFDIR_VAR "ISDN"
+#define CONFDIR_VAR "ISDN_CONF_PATH"
+
 #define C_SLASH '/'
 /* #define C_SLASH '\\' */
 
@@ -59,6 +60,10 @@ extern char *basename __P((__const char *__name));
 
 #ifndef CONFFILE
 # define CONFFILE "isdn.conf"
+#endif
+
+#ifndef CALLERIDFILE
+# define CALLERIDFILE "callerid.conf"
 #endif
 
 #ifndef USERCONFFILE
@@ -85,19 +90,20 @@ extern char *basename __P((__const char *__name));
 #define CONF_ENT_AREALIB "AREALIB"
 #define CONF_ENT_AVONLIB "AVON"
 
+#define CONF_SEC_VAR    "VARIABLES"
+
+#define CONF_SEC_NUM    "NUMBER"
+#define CONF_SEC_MSN    "MSN"
+#define CONF_ENT_NUM    "NUMBER"
+#define CONF_ENT_ALIAS  "ALIAS"
+#define CONF_ENT_ZONE   "ZONE"
+#define CONF_ENT_INTFAC "INTERFACE"
+#define CONF_ENT_SI     "SI"
+#define CONF_ENT_START  "START"
+
 /****************************************************************************/
 
 #define C_NUM_DELIM  ','
-
-/****************************************************************************/
-
-#define SHORT_STRING_SIZE      256
-#define LONG_STRING_SIZE      1024
-#define BUF_SIZE              4096
-
-/****************************************************************************/
-
-#define F_IGNORE_CASE		1024
 
 /****************************************************************************/
 
@@ -118,7 +124,7 @@ extern char *basename __P((__const char *__name));
 _EXTERN char    *mycountry SET_NULL;
 _EXTERN char    *myarea    SET_NULL;
 
-_EXTERN void set_print_fkt_for_lib(int (*new_print_msg)(const char *, ...));
+_EXTERN void set_print_fct_for_lib(int (*new_print_msg)(const char *, ...));
 _EXTERN int num_match(char *Pattern, char *number);
 _EXTERN char *expand_number(char *s);
 _EXTERN char *expand_file(char *s);
@@ -127,6 +133,7 @@ _EXTERN int create_runfile(const char* progname);
 _EXTERN int delete_runfile(const char* progname);
 _EXTERN int Set_Codes(section* Section);
 _EXTERN char *get_areacode(char *code, int *Len, int flag);
+_EXTERN int read_conffiles(section **Section, char *groupfile);
 
 #undef SET_NULL
 #undef _EXTERN

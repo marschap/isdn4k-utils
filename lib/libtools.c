@@ -37,7 +37,7 @@ static int  (*print_msg)(const char *, ...) = printf;
 
 /****************************************************************************/
 
-void set_print_fkt_for_libtools(int (*new_print_msg)(const char *, ...))
+void set_print_fct_for_libtools(int (*new_print_msg)(const char *, ...))
 {
 	print_msg = new_print_msg;
 }
@@ -413,8 +413,18 @@ int match(register char *p, register char *s, int flags)
 		if (!strcmp(p,s))
 			return 0;
 
+#ifdef OWN_MATCH
+	return _match(p,s);
+#else
 	return fnmatch(p,s,flags);
-/*
+#endif
+} /* match */
+
+/****************************************************************************/
+
+#ifdef OWN_MATCH
+int _match(char* p,char* s)
+{
   register int sc, pcc;
 
 
@@ -435,7 +445,7 @@ int match(register char *p, register char *s, int flags)
 
       case '*' : s--;
 	         do {
-	           if (!*p || !match(p, s))
+	           if (!*p || !_match(p, s))
 	             return(0);
 	         } while (*s++);
 	         return(-1);
@@ -446,8 +456,8 @@ int match(register char *p, register char *s, int flags)
   }
 
   return(*s);
-*/
-} /* match */
+} /* _match */
+#endif
 
 /****************************************************************************/
 

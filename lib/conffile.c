@@ -1,3 +1,4 @@
+
 /*
  * ISDN accounting for isdn4linux.
  *
@@ -17,7 +18,6 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
- *
  */
 
 #define _CONFFILE_C_
@@ -31,6 +31,11 @@
 #include <unistd.h>
 
 #include "conffile.h"
+
+/****************************************************************************/
+
+#define F_TAG   1
+#define F_UNTAG 2
 
 /****************************************************************************/
 
@@ -49,16 +54,17 @@ static const char *Pre_String(int Level);
 static int Compare_Sections(section* sec1, section *sec2, char ***variables);
 static section *Insert_Section(section **main_sec, section **ins_sec, char ***variables, int flags);
 static int Merge_Sections(section **main_sec, section **ins_sec, char ***variables, int flags);
-static int Find_Include(section **Section, char* String, int Flags);
-static section* _Get_Section_From_Path(char **array, section* Section, section **RetSection, entry **RetEntry);
-static entry* _Get_Entry_From_Path(char **array, entry* Entry, section **RetSection, entry **RetEntry);
+static int Find_Include(section **Section, char* String, const char *FileName, int Flags);
+static section* _Get_Section_From_Path(char **array, section* Section, section **RetSection, entry **RetEntry, int flags);
+static entry* _Get_Entry_From_Path(char **array, entry* Entry, section **RetSection, entry **RetEntry, int flags);
 static section* Get_Section_From_Path(section* NewSection, char *Path, entry **RetEntry);
 static char* Delete_Chars(char *String, char *Quote);
 static int Set_Ret_Code(char *Value, int Type, void **Pointer);
+static int del_untagged_items(section **sec);
 
 /****************************************************************************/
 
-void set_print_fkt_for_conffile(int (*new_print_msg)(const char *, ...))
+void set_print_fct_for_conffile(int (*new_print_msg)(const char *, ...))
 {
 	print_msg = new_print_msg;
 }
@@ -177,11 +183,14 @@ static section *Read_Lines(section *Section, FILE *fp, const char *FileName, int
 	char  String[BUFSIZ];
 	char *Sectionname, *Variable, *Value;
 	int   Res;
+	int   InSubSection = 0;
 	section *Ptr = Section;
 
 
 	while (FGets(String, BUFSIZ, fp, Line) != NULL)
 	{
+		InSubSection = 0;
+
 		if ((Sectionname = Find_Section(String)) != NULL)
 		{
 			if ((Ptr = Set_Section(&Section,Sectionname,C_OVERWRITE | C_WARN | Flags)) == NULL)
@@ -191,9 +200,16 @@ static section *Read_Lines(section *Section, FILE *fp, const char *FileName, int
 			}
 		}
 		else
-		if (Find_Include(&Section,String,Flags) == 0)
+		if (Find_Include(&Section,String,FileName,Flags) == 0)
 		{
+			Ptr = Section;
+
+			if (Ptr != NULL)
+				while (Ptr->next != NULL)
+					Ptr = Ptr->next;
+		/*
 			Ptr = NULL;
+		*/
 		}
 		else
 		if ((Res = Find_Entry(FileName,*Line,String,&Variable,&Value)) == 0)
@@ -206,6 +222,7 @@ static section *Read_Lines(section *Section, FILE *fp, const char *FileName, int
 			{
 				if (*Value == C_BEGIN_SUBSECTION && Not_Space(Value+1) == NULL)
 				{
+					InSubSection = 1;
 					if (Set_SubSection(Ptr,Variable,Read_Lines(NULL,fp,FileName,Line,Flags),C_OVERWRITE | C_WARN) == NULL)
 					{
 						free_section(Section);
@@ -226,6 +243,12 @@ static section *Read_Lines(section *Section, FILE *fp, const char *FileName, int
 		else
 		if (Res == -1)
 			print_msg("Error in file `%s', line %d: there is no valid token!\n",FileName,*Line);
+	}
+
+	if (InSubSection == 1)
+	{
+		print_msg("Error in file `%s': Missing a `%c'!\n",FileName,C_END_SUBSECTION);
+		return NULL;
 	}
 
 	return Section;
@@ -298,10 +321,12 @@ static int Find_Entry(const char *FileName, int Line, char* String, char** Varia
 
 /****************************************************************************/
 
-static int Find_Include(section **Section, char* String, int Flags)
+static int Find_Include(section **Section, char* String, const char *FileName, int Flags)
 {
+	char *sPtr;
 	section *Ptr = NULL;
 	char Help1[SHORT_STRING_SIZE];
+	char Help2[SHORT_STRING_SIZE] = "";
 
 	strcpy(Help1,String);
 	Kill_Blanks(Help1);
@@ -310,11 +335,29 @@ static int Find_Include(section **Section, char* String, int Flags)
 	    Help1[strlen(S_KEY_INCLUDE)] == C_BEGIN_INCLUDE         &&
 	    Help1[strlen(Help1)-1]       == C_END_INCLUDE             )
 	{
+		Ptr = *Section;
+
+		if (Ptr != NULL)
+			while (Ptr->next != NULL)
+				Ptr = Ptr->next;
+
+		if (*(Help1+strlen(S_KEY_INCLUDE)+1) != C_SLASH)
+		{
+			if ((sPtr = strrchr(Help2,C_SLASH)) != NULL)
+			{
+				strcpy(Help2,FileName);
+				sPtr[1] = '\0';
+			}
+		}
+
 		Help1[strlen(Help1)-1] = '\0';
-		if ((Ptr = read_file(*Section,Help1+strlen(S_KEY_INCLUDE)+1,Flags)) == NULL)
+		strcat(Help2,Help1+strlen(S_KEY_INCLUDE)+1);
+
+		if ((Ptr = read_file(Ptr,Help2,Flags & ~C_NO_WARN_FILE)) == NULL)
 			return -1;
 		else
-			*Section = Ptr;
+			if (*Section == NULL)
+				*Section = Ptr;
 
 		return 0;
 	}
@@ -641,8 +684,8 @@ static int Compare_Sections(section* sec1, section *sec2, char ***variables)
 	{
 		for (i=0; variables[i] != NULL && variables[i][0] != NULL && variables[i][1] != NULL; i++)
 		{
-			if (!strcmp(sec1->name,sec2->name)                               &&
-			    !strcmp(sec1->name,variables[i][0])                          &&
+			if (!strcmp(sec1->name,variables[i][0])                          &&
+			    !strcmp(sec1->name,sec2->name)                               &&
 			    (Entry1 = Get_Entry(sec1->entries,variables[i][1])) != NULL  &&
 			    Entry1->value != NULL                                        &&
 			    (Entry2 = Get_Entry(sec2->entries,variables[i][1])) != NULL  &&
@@ -734,7 +777,7 @@ static void free_cfile(cfile **cfiles)
    enthlten!!!!
 */
 
-section *read_files(section **main_sec, char** files, char ***variables, int flags)
+int read_files(section **main_sec, char** files, char ***variables, int flags)
 {
 	int newread = 0;
 	static cfile **cfiles = NULL;
@@ -754,13 +797,13 @@ section *read_files(section **main_sec, char** files, char ***variables, int fla
 			if ((cfiles = (cfile**) realloc(cfiles,sizeof(cfile*)*(i+2))) == NULL)
 			{
 				print_msg("%s","Can not allocate memory!\n");
-				return NULL;
+				return -1;
 			}
 
 			if ((cfiles[i] = (cfile*) calloc(1,sizeof(cfile))) == NULL)
 			{
 				print_msg("%s","Can not allocate memory!\n");
-				return NULL;
+				return -1;
 			}
 
 			cfiles[i+1] = NULL;
@@ -768,7 +811,7 @@ section *read_files(section **main_sec, char** files, char ***variables, int fla
 			if (stat(files[i],&FileStat) != 0 && !(flags & C_NO_WARN_FILE))
 			{
 				print_msg("Can not open file `%s': %s!\n",files[i],strerror(errno));
-				return NULL;
+				return -1;
 			}
 
 			cfiles[i]->name = strdup(files[i]);
@@ -781,7 +824,7 @@ section *read_files(section **main_sec, char** files, char ***variables, int fla
 		if (cfiles == NULL)
 		{
 			print_msg("%s","There is no file!\n");
-			return NULL;
+			return -1;
 		}
 		else
 		{
@@ -792,7 +835,7 @@ section *read_files(section **main_sec, char** files, char ***variables, int fla
 					if (!(flags & C_NO_WARN_FILE))
 					{
 						print_msg("Can not open file `%s': %s!\n",cfiles[i]->name,strerror(errno));
-						return NULL;
+						return -1;
 					}
 				}
 				else
@@ -827,70 +870,18 @@ section *read_files(section **main_sec, char** files, char ***variables, int fla
 		}
 	}
 
-	return *main_sec;
+	return ((*main_sec != NULL && newread)?1:(*main_sec == NULL?-1:0));
 }
 
 /****************************************************************************/
 
-#if 0
-/* Filtert aus den gesamten Sectionen die heraus, die in secnames
-   enthalten sind. Wenn also nur die Sectionen [MSN] und [NUMBER] benoetigt
-   werden, dann werden diese hier uebergeben("MSN","NUMBER"), und secnum
-   auf 2 gesetzt. secnum hat die gleich Bedeutung wie filenum in
-   read_files().
-*/
-
-int Filter_Sections(section **sec, char** secnames)
-{
-	int i;
-	int del;
-	section *Ptr;
-
-
-	if (sec == NULL)
-	{
-		print_msg("%s","Section is emtpy!\n");
-		return -1;
-	}
-
-	while(*sec != NULL)
-	{
-		del = 1;
-
-		for (i=0; secnames[i] != NULL && *sec != NULL; i++)
-		{
-			if (!strcmp(secnames[i],(*sec)->name))
-				del = 0;
-		}
-
-		if (del == 1)
-		{
-			Ptr = *sec;
-			*sec = (*sec)->next;
-			Ptr->next = NULL;
-			free_section(Ptr);
-		}
-
-		if (*sec != NULL && del == 0)
-			sec = &((*sec)->next);
-	}
-
-	return 0;
-}
-#endif
-
-/****************************************************************************/
-
-#if 0 /* AK:24-Feb-97 */
 int Filter_Sections(section **sec, char** path)
 {
-	int j,i = 0;
-	int del;
-	section *Ptr;
-	section *retsec;
-	entry   *retent;
+	int i;
 	char   **array;
-	char   **array2;
+	section *secptr;
+	section *retsec = NULL;
+	entry   *retent = NULL;
 
 
 	if (path == NULL || path[0] == NULL)
@@ -902,56 +893,26 @@ int Filter_Sections(section **sec, char** path)
 		return -1;
 	}
 
-	while(*sec != NULL)
+	for (i=0; path[i] != NULL; i++)
 	{
-		del = 1;
+		if ((array = String_to_Array(path[i],C_SLASH)) == NULL)
+			return -1;
 
-		for (i=0; path[i] != NULL && *sec != NULL && del == 1; i++)
-		{
-			if (_Get_Section_From_Path(sec,path[i],&retsec,&retent) == sec)
-			{
-				if ((array = String_to_Array(path,C_SLASH)) == NULL)
-					return NULL;
+		secptr = *sec;
 
-				j=0;
-				while(array[j] != NULL);
+		while ((secptr = _Get_Section_From_Path(array,secptr,&retsec,&retent,F_TAG)) != NULL);
 
-				del_Array(array);
-				
-				del = 0;
-			}
-		}
-
-		if (del == 1)
-		{
-			Ptr = *sec;
-			*sec = (*sec)->next;
-			Ptr->next = NULL;
-			free_section(Ptr);
-		}
-
-		if (*sec != NULL && del == 0)
-			sec = &((*sec)->next);
+		del_Array(array);
 	}
 
-	return 0;
+	return del_untagged_items(sec);
 }
-#endif
 
 /****************************************************************************/
 
-/* Nur die erlaubten Entries sind in entnames enthalten */
-/* Filter aus _allen_  Sections die Eintraege heraus, die in entnames
-   enthalten sind. So kann man in alles Sections z.B. nur die Entries
-   NUMBER=blabla und ALIAS=blabla behalten ("NUMBER","ALIAS")
-   uebergeben. entnum hat die gleiche Bedeutung wie filenum in
-   read_files().
-*/
-
-int Filter_Entries(section **sec, char ** entnames)
+static int del_untagged_items(section **sec)
 {
-	int i;
-	int del;
+	int del = 0;
 	entry **ent;
 	entry *Ptr;
 	section *Ptr2;
@@ -961,31 +922,7 @@ int Filter_Entries(section **sec, char ** entnames)
 
 	while (*sec != NULL)
 	{
-		ent = &((*sec)->entries);
-
-		while(*ent != NULL)
-		{
-			del = 1;
-
-			for (i=0; entnames[i] != NULL && *ent != NULL; i++)
-			{
-				if ((*ent)->name != NULL && !strcmp(entnames[i],(*ent)->name))
-					del = 0;
-			}
-
-			if (del == 1)
-			{
-				Ptr = *ent;
-				*ent = (*ent)->next;
-				Ptr->next = NULL;
-				free_entry(Ptr);
-			}
-
-			if (*ent != NULL && del == 0)
-				ent = &((*ent)->next);
-		}
-
-		if ((*sec)->entries == NULL)
+		if ((*sec)->flag != F_TAGGED)
 		{
 			Ptr2 = *sec;
 			*sec = (*sec)->next;
@@ -993,7 +930,47 @@ int Filter_Entries(section **sec, char ** entnames)
 			free_section(Ptr2);
 		}
 		else
-			sec = &((*sec)->next);
+		{
+			(*sec)->flag = F_NOT_TAGGED;
+
+			ent = &((*sec)->entries);
+
+			while(*ent != NULL)
+			{
+				del = 0;
+
+				if ((*ent)->flag == F_TAGGED && (*ent)->subsection != NULL)
+				{
+					del_untagged_items(&((*ent)->subsection));
+
+					if ((*ent)->subsection == NULL)
+						del = 1;
+				}
+
+				if ((*ent)->flag != F_TAGGED || del == 1)
+				{
+					Ptr = *ent;
+					*ent = (*ent)->next;
+					Ptr->next = NULL;
+					free_entry(Ptr);
+				}
+				else
+				{
+					(*ent)->flag = F_NOT_TAGGED;
+					ent = &((*ent)->next);
+				}
+			}
+
+			if ((*sec)->entries == NULL)
+			{
+				Ptr2 = *sec;
+				*sec = (*sec)->next;
+				Ptr2->next = NULL;
+				free_section(Ptr2);
+			}
+			else
+				sec = &((*sec)->next);
+		}
 	}
 
 	return 0;
@@ -1031,7 +1008,7 @@ static section* Get_Section_From_Path(section* NewSection, char *Path, entry **E
 		return NULL;
 
 	
-	if ((RootSection = _Get_Section_From_Path(array,RootSection,&RetSection,&RetEntry)) == NULL)
+	if ((RootSection = _Get_Section_From_Path(array,RootSection,&RetSection,&RetEntry,0)) == NULL)
 		RetSection = NULL;
 
 	if (Entry != NULL)
@@ -1042,7 +1019,7 @@ static section* Get_Section_From_Path(section* NewSection, char *Path, entry **E
 
 /****************************************************************************/
 
-static entry* _Get_Entry_From_Path(char **array, entry* Entry, section **RetSection, entry **RetEntry)
+static entry* _Get_Entry_From_Path(char **array, entry* Entry, section **RetSection, entry **RetEntry, int flags)
 {
 	int index;
 	int found = 0;
@@ -1050,7 +1027,7 @@ static entry* _Get_Entry_From_Path(char **array, entry* Entry, section **RetSect
 	char **array2 = NULL;
 
 
-	if (array[0] == NULL)
+	if (array != NULL && array[0] == NULL)
 		return NULL;
 
 	if ((array2 = String_to_Array(array[0],C_OR)) == NULL)
@@ -1072,6 +1049,10 @@ static entry* _Get_Entry_From_Path(char **array, entry* Entry, section **RetSect
 						    (*RetEntry == NULL || found_first != 0)      )
 						{
 							found = 1;
+							
+							if (flags == F_TAG)
+								Entry->flag = F_TAGGED;
+
 							*RetEntry = Entry;
 						}
 						else
@@ -1080,9 +1061,12 @@ static entry* _Get_Entry_From_Path(char **array, entry* Entry, section **RetSect
 					}
 					else
 					{
-						if (_Get_Section_From_Path(array+1,Entry->subsection,RetSection,RetEntry) != NULL)
+						if (_Get_Section_From_Path(array+1,Entry->subsection,RetSection,RetEntry,flags) != NULL)
 						{
 							found = 1;
+
+							if (flags == F_TAG)
+								Entry->flag = F_TAGGED;
 
 							if (array[2] == NULL)
 								*RetEntry = Entry;
@@ -1107,7 +1091,7 @@ static entry* _Get_Entry_From_Path(char **array, entry* Entry, section **RetSect
 
 /****************************************************************************/
 
-static section* _Get_Section_From_Path(char **array, section* Section, section **RetSection, entry **RetEntry)
+static section* _Get_Section_From_Path(char **array, section* Section, section **RetSection, entry **RetEntry, int flags)
 {
 	int index;
 	int found = 0;
@@ -1115,7 +1099,7 @@ static section* _Get_Section_From_Path(char **array, section* Section, section *
 	char **array2 = NULL;
 
 
-	if (array[0] == NULL)
+	if (array != NULL && array[0] == NULL)
 		return NULL;
 
 	if ((array2 = String_to_Array(array[0],C_OR)) == NULL)
@@ -1136,6 +1120,10 @@ static section* _Get_Section_From_Path(char **array, section* Section, section *
 						if (*RetSection != Section && (*RetSection == NULL || found_first != 0))
 						{
 							found = 1;
+
+							if (flags == F_TAG)
+								Section->flag = F_TAGGED;
+
 							*RetSection = Section;
 						}
 						else
@@ -1144,9 +1132,12 @@ static section* _Get_Section_From_Path(char **array, section* Section, section *
 					}
 					else
 					{
-						if (_Get_Entry_From_Path(array+1,Section->entries,RetSection,RetEntry) != NULL)
+						if (_Get_Entry_From_Path(array+1,Section->entries,RetSection,RetEntry,flags) != NULL)
 						{
 							found = 1;
+
+							if (flags == F_TAG)
+								Section->flag = F_TAGGED;
 
 							if (array[2] == NULL)
 								*RetSection = Section;
@@ -1180,12 +1171,17 @@ section* Get_Section_Match(section* Section, char *Path,
 	while ((Section = Get_Section_From_Path(Section,Path,&Entry)) != NULL)
 	{
 		if (RetEntry != NULL)
-			*RetEntry = Entry;
+			*RetEntry = NULL;
 
 		if (Entry->subsection != NULL)
 		{
 			if (Value == NULL)
+			{
+				if (RetEntry != NULL)
+					*RetEntry = Entry;
+
 				return Entry->subsection;
+			}
 /* Die naechsten Zeilen sind fuer Syntax-DAU's auskommentiert: 
    NUMBER={
      [blabla]
@@ -1204,7 +1200,12 @@ section* Get_Section_Match(section* Section, char *Path,
 			{
 				if ((_match == NULL && !strcmp(Entry->value,Value)) ||
 				    !_match(Entry->value,Value)                       )
+				{
+					if (RetEntry != NULL)
+						*RetEntry = Entry;
+
 					return Section;
+				}
 			}
 		}
 
