@@ -4,10 +4,16 @@
 
 #----------------------------------------------------------------------------#
 # Script to notify a user about new incoming voice message. This is only a   #
-# *example* - you can modify it if you like!                                 #
+# *example* - you can modify it if you like! If you do, copy it to           #
+#             /etc/isdn/vboxmail and edit it there.                          #
 #                                                                            #
 # Usage: vboxmail MESSAGENAME CALLERNAME CALLERID MAIL-TO-ADDRESS            #
 #----------------------------------------------------------------------------#
+
+if [ "$0" != /etc/isdn/vboxmail -a -x /etc/isdn/vboxmail ]; then
+	exec /etc/isdn/vboxmail "$@"
+	echo "Can't execute /etc/isdn/vboxmail"
+fi
 
 MSNAME="${1}"
 CALLER="${2}"
@@ -17,7 +23,11 @@ MAILTO="${4}"
 if (test -f "${MSNAME}")
 then
    (
+      echo "From: vboxmail <`/usr/bin/id -un`>"
+      echo "To: ${MAILTO}"
+      echo "Subject: New message from ${CALLER} (${CALLID})"
+      echo ""
       @BINDIR@/vboxmode $MSNAME
 
-   ) | @MAILCMD@ -s "New message from ${CALLER} (${CALLID})" ${MAILTO}
+   ) | /usr/sbin/sendmail -oi -t
 fi
