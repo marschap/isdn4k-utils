@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.45 2000/06/20 10:16:16 keil Exp $
+# $Id: Makefile,v 1.46 2000/06/20 12:51:56 paul Exp $
 #
 # Toplevel Makefile for isdn4k-utils
 #
@@ -236,12 +236,14 @@ mrproper: distclean
 archive: distclean
 	@(cd .. ;\
 	ln -nfs isdn4k-utils isdn4k-utils-$(I4LVERSION) ;\
+	mkdir -p distisdn ;\
 	tar cvhzf distisdn/isdn4k-utils-$(I4LVERSION).tar.gz isdn4k-utils-$(I4LVERSION) ;\
 	rm isdn4k-utils-$(I4LVERSION) )
 
 distarch: distclean
 	(cd .. ;\
 	ln -nfs isdn4k-utils isdn4k-utils-$(I4LVERSION) ;\
+	mkdir -p distisdn ;\
 	tar -cvhz -X isdn4k-utils/distexclude -f distisdn/isdn4k-utils-$(I4LVERSION).tar.gz \
 	isdn4k-utils-$(I4LVERSION) ;\
 	rm isdn4k-utils-$(I4LVERSION) )
