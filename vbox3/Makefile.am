@@ -1,16 +1,16 @@
-## vboxgetty/Makefile.am
-## (C) 1998 Michael Herold
+##
+## Makefile.am - (C) 1998 Michael Herold
+##
+
+## GNU automake options ##################################################
 
 AUTOMAKE_OPTIONS	= foreign
 
+## Other directories #####################################################
+
 SUBDIRS			= vboxgetty
 
-## Delete all backups ##
+## Clean & Maintenance ###################################################
 
 CLEANFILES              = *~
-
-## Delete all files created by external programs (eg autoconf parts) ##
-## and not a part of the cvs tree.                                   ##
-
-MAINTAINERCLEANFILES    = configure aclocal.m4 Makefile.in
-
+MAINTAINERCLEANFILES    = configure aclocal.m4 Makefile.in config.h.in

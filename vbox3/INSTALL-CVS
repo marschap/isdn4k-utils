@@ -5,6 +5,7 @@ complete the package.
 
 Before you compile do the following steps from the main directory:
 
+% autoheader
 % aclocal
 % autoconf
 % automake

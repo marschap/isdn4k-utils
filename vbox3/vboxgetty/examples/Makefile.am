@@ -2,11 +2,17 @@
 ## vboxgetty/examples/Makefile.am - (C) 1997-1998 Michael Herold
 ##
 
-SUBDIRS			= scripts
+## Other directories #####################################################
 
-CLEANFILES              = *~
-MAINTAINERCLEANFILES    = Makefile.in
+SUBDIRS = scripts
 
-## Configuration files to install
+## Configuration to install ##############################################
 
-sysconf_DATA		= vboxgetty.conf vboxgetty.user
+sysconf_DATA	= vboxgetty.conf vboxgetty.user
+
+EXTRA_DIST	= $(sysconf_DATA)
+
+## Clean & Maintenance ###################################################
+
+CLEANFILES = *~
+MAINTAINERCLEANFILES = Makefile.in
