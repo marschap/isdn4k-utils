@@ -37,7 +37,7 @@
  */
 
 #ifndef lint
-static char rcsid[] = "$Id: auth.c,v 1.4 1997/05/06 13:04:01 hipp Exp $";
+static char rcsid[] = "$Id: auth.c,v 1.5 1997/05/07 14:51:34 hipp Exp $";
 #endif
 
 #include <stdio.h>
@@ -549,7 +549,6 @@ int check_passwd(int linkunit,char *auser,int userlen,char *apasswd,int passwdle
 		struct wordlist *addrs;
 		char passwd[256], user[256];
 		char secret[MAXWORDLEN];
-		static int attempts = 0;
 
 		/*
 		 * Make copies of apasswd and auser, then null-terminate them.
@@ -597,23 +596,20 @@ int check_passwd(int linkunit,char *auser,int userlen,char *apasswd,int passwdle
 		if (ret == UPAP_AUTHNAK) {
 				*msg = "Login incorrect";
 				*msglen = strlen(*msg);
-				/*
-				 * Frustrate passwd stealer programs.
-				 * Allow 10 tries, but start backing off after 3 (stolen from login).
-				 * On 10'th, drop the connection.
-				 */
-				if (attempts++ >= 10) {
+				if (lns[linkunit].attempts++ >= 10) {
 					syslog(LOG_WARNING, "%d LOGIN FAILURES ON %s, %s",
-								attempts, lns[linkunit].devnam, user);
+						lns[linkunit].attempts, lns[linkunit].devnam, user);
 						lcp_close(lns[linkunit].lcp_unit,"max auth exceed");
 						lns[linkunit].phase = PHASE_TERMINATE;
 				}
+#if 0
 				if (attempts > 3)
 					sleep((u_int) (attempts - 3) * 5);
+#endif
 				if (addrs != NULL)
 					free_wordlist(addrs);
 		} else {
-				attempts = 0;                        /* Reset count */
+			lns[linkunit].attempts = 0;                        /* Reset count */
 				*msg = "Login ok";
 				*msglen = strlen(*msg);
 				if (lns[linkunit].addresses != NULL)
@@ -663,7 +659,7 @@ static int login(char *user,char *passwd,char **msg,int *msglen,int unit)
 	   pw->pw_passwd = spwd->sp_pwdp;
 	}
 	endspent();
- #endif
+#endif
 
 	 /*
 	  * XXX If no passwd, let them login without one.

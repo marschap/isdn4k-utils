@@ -25,10 +25,8 @@
  * PATCHLEVEL 9
  */
 
-#if 0
 #ifndef lint
-static char rcsid[] = "$Id: main.c,v 1.3 1997/05/06 13:04:04 hipp Exp $";
-#endif
+static char rcsid[] = "$Id: main.c,v 1.4 1997/05/07 14:51:36 hipp Exp $";
 #endif
 
 #include <stdio.h>
@@ -167,6 +165,7 @@ void main(int argc,char **argv)
 		lns[i].unit = i;
 		lns[i].chap_unit = lns[i].upap_unit = -1;
 		lns[i].auth_up_script = 0;
+		lns[i].attempts = 0;
 	}
 
 	if (gethostname(hostname, MAXNAMELEN) < 0 ) {
@@ -330,14 +329,8 @@ void main(int argc,char **argv)
           if(lns[i].fd == -1)
           {
             syslog(LOG_NOTICE,"init_unit: %d\n",i);
-            if(!init_unit(i)) /* start this unit */
-            {
-              lns[i].hungup = 1;
-              lns[i].lcp_unit = lcp_getunit(i);
-/* give the same unit number to chap,upap */
-              lns[i].upap_unit = lns[i].chap_unit = lns[i].lcp_unit; 
-              upap[lns[i].upap_unit].us_unit = chap[lns[i].chap_unit].unit = i; 
-              lcp_lowerup(lns[i].lcp_unit);
+            if(init_unit(i) < 0) {
+				/* Error */
             }
           }
         }
@@ -415,11 +408,8 @@ void main(int argc,char **argv)
               if(lns[i].fd == -1)
               {
                 syslog(LOG_NOTICE,"reinit_unit: %d\n",i);
-                if(!init_unit(i)) /* protokolle hier neu initialisieren?? */
-                {
-                  lns[i].lcp_unit = lcp_getunit(i);
-                  upap[i].us_unit = chap[i].unit = lns[i].lcp_unit; /* test */
-                  lcp_lowerup(lns[i].lcp_unit);
+                if(init_unit(i) < 0) { /* protokolle hier neu initialisieren?? */
+					/* error */
                 }
               }
           }
@@ -436,54 +426,57 @@ void main(int argc,char **argv)
  * initialize unit
  */
 
-static int init_unit(int the_unit)
+static int init_unit(int linkunit)
 {
-  if ((lns[the_unit].fd = open(lns[the_unit].devnam, O_NONBLOCK | O_RDWR, 0)) < 0) {
-    if(errno == ENOENT)
-    {
-      syslog(LOG_ERR, "[%d] Failed to open %s: %m -> Disabling this unit",the_unit,lns[the_unit].devnam);
-      syslog(LOG_NOTICE, "[%d] Failed to open %s: %m -> Disabling this unit",the_unit,lns[the_unit].devnam);
-      lns[the_unit].fd = -2;
-    }
-    else 
-    {
-      syslog(LOG_ERR, "[%d] Failed to open %s: %m",the_unit,lns[the_unit].devnam);
-      syslog(LOG_NOTICE, "[%d] Failed to open %s: %m",the_unit,lns[the_unit].devnam);
-      lns[the_unit].fd = -1;
-    }
-    /* die(1); */
-/* maybe we should start a callout here to retry the open after a few seconds */
-    lns[the_unit].openfails++;
-    if(lns[the_unit].openfails >= 16)
-    {
-      syslog(LOG_ERR, "Too much open fails on %s: %m", lns[the_unit].devnam);
-      die(1);
-    }
-    return -1;
-  }
-  lns[the_unit].openfails = 0;
-  if ((lns[the_unit].initfdflags = fcntl(lns[the_unit].fd, F_GETFL)) == -1) {
-    syslog(LOG_ERR, "Couldn't get device fd flags: %m");
-    die(1);
-  }
+	if ((lns[linkunit].fd = open(lns[linkunit].devnam, O_NONBLOCK | O_RDWR, 0)) < 0) {
+		if(errno == ENOENT) {
+			syslog(LOG_ERR, "[%d] Failed to open %s: %m -> Disabling this unit",linkunit,lns[linkunit].devnam);
+			syslog(LOG_NOTICE, "[%d] Failed to open %s: %m -> Disabling this unit",linkunit,lns[linkunit].devnam);
+			lns[linkunit].fd = -2;
+		} else {
+			syslog(LOG_ERR, "[%d] Failed to open %s: %m",linkunit,lns[linkunit].devnam);
+			syslog(LOG_NOTICE, "[%d] Failed to open %s: %m",linkunit,lns[linkunit].devnam);
+			lns[linkunit].fd = -1;
+		}
+/* maybe we should start a timer here to retry the open after a few seconds */
 
-#if 0
-        lns[the_unit].initfdflags &= ~O_NONBLOCK;
-        fcntl(lns[the_unit].fd, F_SETFL, lns[the_unit].initfdflags);
+		lns[linkunit].openfails++;
+		if(lns[linkunit].openfails >= 16) {
+			syslog(LOG_ERR, "Too much open fails on %s: %m", lns[linkunit].devnam);
+			lns[linkunit].fd = -2;
+		}
+		return -1;
+	}
 
-	/* set up the serial device as a ppp interface */
-	establish_ppp(the_unit);
-#endif
+	if ((lns[linkunit].initfdflags = fcntl(lns[linkunit].fd, F_GETFL)) == -1) {
+		syslog(LOG_ERR, "Couldn't get device fd flags: %m");
+		lns[linkunit].fd = -2;
+		return -1;
+	}
 
 	/*
 	 * Set device for non-blocking reads.
 	 */
-	if (fcntl(lns[the_unit].fd, F_SETFL, lns[the_unit].initfdflags | O_NONBLOCK) == -1) {
-	    syslog(LOG_ERR, "Couldn't set device to non-blocking mode: %m");
-	    die(1);
+	if (fcntl(lns[linkunit].fd, F_SETFL, lns[linkunit].initfdflags | O_NONBLOCK) == -1) {
+		syslog(LOG_ERR, "Couldn't set device to non-blocking mode: %m");
+		lns[linkunit].fd = -2;
+		return -1;
 	}
-	syslog(LOG_NOTICE, "Connect[%d]: %s, fd: %d",the_unit, lns[the_unit].devnam,lns[the_unit].fd);
-  return 0;
+	syslog(LOG_NOTICE, "Connect[%d]: %s, fd: %d",linkunit, lns[linkunit].devnam,lns[linkunit].fd);
+
+	lns[linkunit].openfails = 0;
+	lns[linkunit].auth_up_script = 0;
+	lns[linkunit].attempts = 0;
+	lns[linkunit].hungup = 1;
+	lns[linkunit].lcp_unit = lcp_getunit(linkunit);
+	/*
+	 * give the same unit number to chap,upap 
+	 */
+	lns[linkunit].upap_unit = lns[linkunit].chap_unit = lns[linkunit].lcp_unit;
+	upap[lns[linkunit].upap_unit].us_unit = chap[lns[linkunit].chap_unit].unit = linkunit;
+	lcp_lowerup(lns[linkunit].lcp_unit);
+
+	return 0;
 }
 
 
@@ -508,7 +501,6 @@ static void connect_time_expired(caddr_t arg)
     syslog(LOG_INFO, "Connect time expired");
     lcp_close(linkunit, "Connect time expired");       /* Close connection */
 }
-
 
 char *protocol2name(int p)
 {
