@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.213 2004/07/13 21:44:19 tobiasb Exp $
+## $Id: Makefile.in,v 1.214 2004/07/24 12:03:36 tobiasb Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,10 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.214  2004/07/24 12:03:36  tobiasb
+## Increased version number from 4.68 to 4.69.  It is planned to collect
+## changes with this odd version number for a longer period of time.
+##
 ## Revision 1.213  2004/07/13 21:44:19  tobiasb
 ## Patch to isdnlog manpages by Matthias Klose <doko@cs.tu-berlin.de>,
 ## a maintainer of Debian's isdnutils source package:
@@ -1678,7 +1682,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 4.68
+VERSION     = 4.69
 
 # fallback to I4L-Version as set at configure time
 ifndef (I4LVERSION)

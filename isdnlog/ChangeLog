@@ -1,0 +1,5 @@
+2004-07-24  Tobias Becker  <tobiasb@isdn4linux.de>
+
+	* Makefile.in: Set version number to 4.69. 
+
+	* ChangeLog: Started this file.  Subdirectories will have their own.
