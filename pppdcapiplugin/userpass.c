@@ -1,6 +1,6 @@
 /*
  *
- * $Id: userpass.c,v 1.3 2001/11/07 14:38:17 calle Exp $
+ * $Id: userpass.c,v 1.4 2003/05/19 06:57:22 calle Exp $
  *
  * userpass.c - pppd plugin to provide username password
  *
@@ -12,6 +12,9 @@
  *  2 of the License, or (at your option) any later version.
  *
  * $Log: userpass.c,v $
+ * Revision 1.4  2003/05/19 06:57:22  calle
+ * Now with support for chap with pppd >= 2.4.2b3
+ *
  * Revision 1.3  2001/11/07 14:38:17  calle
  * show version info.
  *
@@ -34,13 +37,13 @@
 char pppd_version[] = VERSION;
 #endif
 
-static char *revision = "$Revision: 1.3 $";
+#define PPPVersion(v1,v2,v3,v4) ((v1)*1000000+(v2)*10000+(v3)*100+(v4))
 
-static char username[MAXNAMELEN+1];
+static char *revision = "$Revision: 1.4 $";
+
 static char password[MAXSECRETLEN+1];
 
 static option_t options[] = {
-{ "username", o_string, username, "username", OPT_STATIC, 0, MAXNAMELEN },
 { "password", o_string, password, "password", OPT_STATIC, 0, MAXSECRETLEN },
 { 0 }
 };
@@ -52,9 +55,8 @@ static void copystr(char *to, char *from)
 	*to = 0;
 }
 
-static int userpass(char *user, char *passwd)
+static int getpass(char *user, char *passwd)
 {
-    if (username) copystr(user, username);
     if (passwd) copystr(passwd, password);
     return 1;
 }
@@ -63,5 +65,8 @@ void plugin_init(void)
 {
     info("userpass: %s", revision);
     add_options(options);
-    pap_passwd_hook = userpass;
+    pap_passwd_hook = getpass;
+#if PPPVER >= PPPVersion(2,4,2,3)
+    chap_passwd_hook = getpass;
+#endif
 }
