@@ -1,6 +1,6 @@
 '\" t
 '\" ** above should format a table **
-.\" CHECKIN $Date: 2000/02/28 19:53:56 $
+.\" CHECKIN $Date: 2000/07/17 16:34:23 $
 .TH rate-files 5 "@MANDATE@" -lt-
 .SH NAME
 rate-files \- Format of rate-files
@@ -175,12 +175,35 @@ A zone is a region of areas, for which the same rates apply. Interior and
 foreign zones should not be mixed and all foreign zones should follow
 domestic zones.
 .P
+.B R:prov, sub ; zonelist
+.P
+Read zones from provider
+.I prov
+subprovider number
+.IR sub .
+A
+.I zonelist
+is defined below.
+If the referenced provider doesn't have a subprovider number, the
+.I sub
+must be -1. The referenced provider
+may be defined before or after the R:-tag. The referenced zones must be real
+Z:-entries, not references themself. The zone numbers and names are taken from
+the referenced provider. The last
+.I to_zone
+may be missing then all zones from the start zone are used.
+.br
+e.g.
+.br
+R:1,1 ; 1-4,6, 10-
+.br
+.P
 .B Z:zonelist zonename
 .P
 where
 .I zonelist
 is
-.BR zone [ -zone ][ ,... ]
+.BR zone [ -to_zone ][ ,... ]
 .IP
 e.g.
 Z:1-2,4 Interior

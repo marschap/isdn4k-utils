@@ -1,4 +1,4 @@
-/* $Id: isdnrate.c,v 1.36 2000/03/09 18:50:03 akool Exp $
+/* $Id: isdnrate.c,v 1.37 2000/07/17 16:34:23 akool Exp $
 
  * ISDN accounting for isdn4linux. (rate evaluation)
  *
@@ -19,6 +19,18 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnrate.c,v $
+ * Revision 1.37  2000/07/17 16:34:23  akool
+ * isdnlog-4.32
+ *  - added new Prefixes 0160 (D1) and 0162 (D2) to "country-de.dat"
+ *  - corrected all german mobil phone numbers (many thank's to
+ *    Tobias Becker <i4l-projects@talypso.de> for the tool "fix_rates.pl")
+ *  - isdnlog/tools/rate.c ... New R:-tag
+ *  - isdnlog/tools/isdnrate.c ... print warnings from getRate if verbose
+ *  - isdnlog/tools/rate-files.man ... New R:-tag
+ *  - isdnlog/tools/NEWS ... New R:-tag
+ *  - isdnlog/README ... New R:-tag
+ *  - isdnlog/samples/rtest.dat ... example rate-file for testing R:
+ *
  * Revision 1.36  2000/03/09 18:50:03  akool
  * isdnlog-4.16
  *  - isdnlog/samples/isdn.conf.no ... changed VBN
@@ -1008,7 +1020,12 @@ static int compute(char *num)
       }
       else {
 	/* kludge to suppress "impossible" Rates */
-	if (!getRate(&Rate, NULL) && (Rate.Price != 99.99)) {
+	char **message, *msg;
+	if(verbose)
+	  message = &msg;
+	else
+	  message = NULL;
+	if (!getRate(&Rate, message) && (Rate.Price != 99.99)) {
 	  if (!(Rate.Duration <= takt))
 	    continue;
 	  sort[n].prefix = Rate.prefix;
@@ -1057,6 +1074,9 @@ static int compute(char *num)
 
 	  n++;
 	}			/* if */
+	else if(verbose && *msg)
+          print_msg(PRT_V, "%s\n", msg);
+
       }				/* else 99 */
     }				/* for i */
     if (service)
@@ -1374,7 +1394,7 @@ static char * sub_sp(char *p)
   char *o = p;
   int allupper=1;
   for (; *p; p++)
-    if(!isupper(*p) && *p != '_') {
+    if(!isupper(*p) && *p != '_' && !isdigit(*p)) { /* e.g. _DEMD1 */
       allupper = 0;
       break;
   }

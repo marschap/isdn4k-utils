@@ -4055,11 +4055,27 @@ Tarifzone, und danach die Kosten innerhalb dieser Zone angegeben. Es koennen
 beliebig viele Zonen, jeweils gefolgt von beliebig vielen Kosten
 angegeben werden.
 
+-> R: Provider, Subnummer ; Zonenliste
+
+Liest Zoneneintraege (Z: s. unten) vom angegebenen 'Provider,Subprovider'.
+Ist der Subprovider nicht definiert, muss -1 angegeben werden.
+Zonenliste ist eine Zonenummer oder Von_Zone - Bis_Zone, mehrere Eintraege,
+durch Beistrich getrennt, sind moeglich. Der letze Eintrag 'Bis_Zone' kann
+auch entfallen, dann werden von 'Von_Zone' bis zum Ende alle Zonen vom
+referenzierten Provider uebernommen.
+Die referenzierten Zoneneintraege koennen vor oder nach dem R:-Tag definiert
+sein, muessen aber echte Zoneneintrage sein, d.h. mit Z;/A:/T: definierte
+Zonen.
+
+z.B.
+ R:1,0; 4-6,8,200-
+
 -> Z:
 
 Gibt die Zone an. Grundsaetzlich koennen die Zonen vollkommen willkuerlich
 vergeben werden. Dies haengt vom jeweiligen Land und/oder
-Telefondienstprovider ab.
+Telefondienstprovider ab. Aber prinzipiell sollten zuerst die Inlands-
+und dann die Auslandszonen definiert werden.
 
 Fuer Deutschland habe ich folgende Zonenzuordnung getroffen:
 

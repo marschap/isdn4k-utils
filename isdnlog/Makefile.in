@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.169 2000/07/16 00:46:00 akool Exp $
+## $Id: Makefile.in,v 1.170 2000/07/17 16:34:20 akool Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,18 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.170  2000/07/17 16:34:20  akool
+## isdnlog-4.32
+##  - added new Prefixes 0160 (D1) and 0162 (D2) to "country-de.dat"
+##  - corrected all german mobil phone numbers (many thank's to
+##    Tobias Becker <i4l-projects@talypso.de> for the tool "fix_rates.pl")
+##  - isdnlog/tools/rate.c ... New R:-tag
+##  - isdnlog/tools/isdnrate.c ... print warnings from getRate if verbose
+##  - isdnlog/tools/rate-files.man ... New R:-tag
+##  - isdnlog/tools/NEWS ... New R:-tag
+##  - isdnlog/README ... New R:-tag
+##  - isdnlog/samples/rtest.dat ... example rate-file for testing R:
+##
 ## Revision 1.169  2000/07/16 00:46:00  akool
 ## isdnlog-4.31
 ##  - isdnlog/rate-pl.dat ... changed charges
@@ -1258,7 +1270,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 4.31
+VERSION     = 4.32
 
 MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 \
 	      isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 \

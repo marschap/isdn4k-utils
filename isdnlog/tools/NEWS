@@ -1,5 +1,16 @@
 NEWS for tools: (rate, isdnrate, isdnrep)
 
+2000.07.17
+  all tools and rate-files
+
+  R:prov, sub ; zonelist
+
+  defines zone references. Zones are read from provider 'prov', subnummer
+  'sub' (which has to be -1, if there is no subnumber). The referenced zones
+  must be real zones (Z:-entries) not references themself.
+  s. samples/rtest.dat for an example.
+  --lt
+
 2000.05.06
   all tools and rate-files
 

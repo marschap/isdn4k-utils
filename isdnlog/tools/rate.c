@@ -1,4 +1,6 @@
-/* $Id: rate.c,v 1.78 2000/06/02 12:14:28 akool Exp $
+/* #define DEBUG_REDIRZ */
+
+/* $Id: rate.c,v 1.79 2000/07/17 16:34:23 akool Exp $
  *
  * Tarifdatenbank
  *
@@ -19,6 +21,18 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rate.c,v $
+ * Revision 1.79  2000/07/17 16:34:23  akool
+ * isdnlog-4.32
+ *  - added new Prefixes 0160 (D1) and 0162 (D2) to "country-de.dat"
+ *  - corrected all german mobil phone numbers (many thank's to
+ *    Tobias Becker <i4l-projects@talypso.de> for the tool "fix_rates.pl")
+ *  - isdnlog/tools/rate.c ... New R:-tag
+ *  - isdnlog/tools/isdnrate.c ... print warnings from getRate if verbose
+ *  - isdnlog/tools/rate-files.man ... New R:-tag
+ *  - isdnlog/tools/NEWS ... New R:-tag
+ *  - isdnlog/README ... New R:-tag
+ *  - isdnlog/samples/rtest.dat ... example rate-file for testing R:
+ *
  * Revision 1.78  2000/06/02 12:14:28  akool
  * isdnlog-4.28
  *  - isdnlog/tools/rate.c ... patch by Hans Klein, unknown provider
@@ -702,6 +716,13 @@ typedef struct {
 } BOOKED;
 
 typedef struct {
+  BOOKED p;
+  int	 start_zone;
+  int    end_zone;
+  int    line;
+} REDIRZ;
+
+typedef struct {
   int      booked;
 //  int      used;
   BOOKED _provider;
@@ -715,6 +736,8 @@ typedef struct {
   AREA    *Area;
   int      nComment;
   COMMENT *Comment;
+  int	   nRedir;
+  REDIRZ   *Redir;
 } PROVIDER;
 
 typedef struct {
@@ -736,6 +759,7 @@ static int      nBooked=0;
 static int      line=0;
 static SERVICE * Service=NULL;
 static int nService=0;
+static int nRedir=0;
 static char * mytld=0;
 
 static void notice (char *fmt, ...)
@@ -1197,6 +1221,100 @@ void parse_X(char *s, char *dat)
    /* while 1 */
 }
 
+static void fix_redirz(char *dat) { /* from 'R'-Tag */
+  int i, r, j, p,v, found, z, n, a, b, s, k;
+  int oline = line;
+  for (i=0; i<nProvider; i++) {
+    if(Provider[i].nRedir) {
+      for (r=0; r<Provider[i].nRedir; r++) {
+        p = Provider[i].Redir[r].p._prefix;	/* external yet */
+	v = Provider[i].Redir[r].p._variant;
+	line = Provider[i].Redir[r].line;
+	/* 1. find internal provider prefix */
+        for (j=found=0; j<nProvider; j++)
+          if (Provider[j]._provider._prefix == p &&
+	      Provider[j]._provider._variant == v) {
+	    found++;
+	    Provider[i].Redir[r].p._prefix = j; /* now internal index */
+	    break;
+          }
+        if(!found) {
+          warning(dat, "Couldn't find provider %d_%d for redir #%d pnum %s",
+	    p,v,r,epnum(i));
+	  break;
+        } /* if found */
+	/* 2. convert external start_zone numbers to internal _zone-entries
+	   i ... provider with the redirz
+	   j ... internal provider, where we read zones
+	*/
+	for (z=found=0; !found && z<Provider[j].nZone; z++)
+	  for (n=0; n<Provider[j].Zone[z].nNumber; n++)
+	    if (Provider[j].Zone[z].Number[n]==Provider[i].Redir[r].start_zone) {
+	      Provider[i].Redir[r].start_zone = z;
+	      found++;
+	      ;
+	    }
+        if(!found) {
+          warning(dat, "Couldn't find start_zone %d for redir #%d pnum %s",
+	    Provider[i].Redir[r].start_zone,r,epnum(i));
+	  break;
+        } /* if found */
+	/* 3. convert external end_zone numbers to internal _zone-entries */
+	if(Provider[i].Redir[r].end_zone == 9999) {
+	  Provider[i].Redir[r].end_zone = Provider[j].nZone-1;
+	}
+	else {
+	  if(z) /* could be same zone */
+	    z--;
+	  for (found=0; !found && z<Provider[j].nZone; z++)
+	    for (n=0; n<Provider[j].Zone[z].nNumber; n++)
+	      if (Provider[j].Zone[z].Number[n]==Provider[i].Redir[r].end_zone) {
+	        Provider[i].Redir[r].end_zone = z;
+	        found++;
+	        break;
+	      }
+          if(!found) {
+            warning(dat, "Couldn't find end_zone %d for redir #%d pnum %s",
+	      Provider[i].Redir[r].end_zone,r,epnum(i));
+	    break;
+          } /* if found */
+	} /* else */
+#ifdef DEBUG_REDIRZ
+	printf("RealRedirz %d,%d,%d-%d\n",j,Provider[i].Redir[r].p._variant,
+	    Provider[i].Redir[r].start_zone, Provider[i].Redir[r].end_zone);
+#endif
+	/* 4. check for duplicate areas: area <-> redirect */
+        for (b=0; b<Provider[j].nArea; b++) {
+	  if (Provider[j].Area[b].Zone >= Provider[i].Redir[r].start_zone &&
+	      Provider[j].Area[b].Zone <= Provider[i].Redir[r].end_zone) {
+            for (a=0; a<Provider[i].nArea; a++) {
+	      char *code = Provider[j].Area[b].Code;
+              if (strcmp (Provider[i].Area[a].Code,code)==0 && dat)
+	        warning (dat, "Duplicate area in R:%d %s", r, code);
+	    }
+	  }
+        } /* for b */
+	/* check for duplicate areas: redirect <-> redirect */
+        for (s=0; s < r; s++) {
+	  k = Provider[i].Redir[s].p._prefix;
+          for (b=0; b<Provider[k].nArea; b++) {
+	    if (Provider[k].Area[b].Zone >= Provider[i].Redir[s].start_zone &&
+	        Provider[k].Area[b].Zone <= Provider[i].Redir[s].end_zone)
+              for (a=0; a<Provider[j].nArea; a++)
+	        if (Provider[j].Area[a].Zone >= Provider[i].Redir[r].start_zone &&
+	            Provider[j].Area[a].Zone <= Provider[i].Redir[r].end_zone &&
+		    strcmp (Provider[j].Area[a].Code, Provider[k].Area[b].Code) == 0)
+	          warning (dat, "Duplicate area in R:%d %s already R:%d @%d",
+		           r, Provider[j].Area[a].Code, s,
+			   Provider[i].Redir[s].line);
+	   }
+        } /* for s */
+      } /* for r */
+    } /* if nRedir */
+  } /* for i */
+  line = oline;
+}
+
 int initRate(char *conf, char *dat, char *dom, char **msg)
 {
   static char message[LENGTH];
@@ -1206,7 +1324,7 @@ int initRate(char *conf, char *dat, char *dom, char **msg)
   char     buffer[LENGTH], path[LENGTH], Version[LENGTH]="";
   char     *c, *s;
   int      Comments=0;
-  int      Areas=0, Specials=0, Zones=0, Hours=0;
+  int      Areas=0, Zones=0, Hours=0;
   int      where=DOMESTIC, prefix=UNKNOWN;
   int      zone, zone1, zone2, day1, day2, hour1, hour2, freeze, delay;
   int     *number, numbers;
@@ -1384,7 +1502,7 @@ again:
 #endif
 	line++;
       }
-      else if(nProvider) { /* silently ignore empty providers */
+      else if(nProvider && !Provider[prefix].nRedir) { /* silently ignore empty providers */
 	free_provider(prefix);
 	nProvider--;
       }
@@ -1483,6 +1601,56 @@ again:
       } else {
 	error (dat, c);
       }
+      break;
+
+    case 'R': /* R:prov,var,zone[-zone],... Read zone(s) from prov,var */
+      if (prefix == UNKNOWN) {
+	warning (dat, "Unexpected tag '%c'", *s);
+	break;
+      }
+      s += 2;
+      while (isblank(*s)) s++;
+      u=strtol(s,&s,10); /* prov */
+      while (isblank(*s)) s++;
+      if(*s++ != ',') {
+	warning (dat, "Expected ',' - got '%c'", *s);
+        break;
+      }
+      v=strtol(s,&s,10); /* var */
+      while (isblank(*s)) s++;
+      if(*s++ != ';') {
+	warning (dat, "Expected ';' - got '%c'", *s);
+        break;
+      }
+      do {
+        while (isblank(*s)) s++;
+        zone1=zone2=strtol(s,&s,10); /* zone1 */
+        while (isblank(*s)) s++;
+	if (*s == '-') {
+	  s++;
+          zone2=strtol(s,&s,10); /* zone2 */
+          while (isblank(*s)) s++;
+	  if(zone2==0)
+	    zone2=9999;
+	}
+	Provider[prefix].Redir = realloc(Provider[prefix].Redir,
+	    sizeof(REDIRZ) * ++Provider[prefix].nRedir);
+        nRedir++;
+	Provider[prefix].Redir[Provider[prefix].nRedir-1].p._prefix = u;
+	Provider[prefix].Redir[Provider[prefix].nRedir-1].p._variant = v;
+	Provider[prefix].Redir[Provider[prefix].nRedir-1].line = line;
+	if (zone2<zone1) {
+	  i=zone2; zone2=zone1; zone1=i;
+	}
+    	Provider[prefix].Redir[Provider[prefix].nRedir-1].start_zone = zone1;
+	Provider[prefix].Redir[Provider[prefix].nRedir-1].end_zone = zone2;
+#ifdef DEBUG_REDIRZ
+	printf("Redirz %d,%d,%d-%d\n",u,v,zone1,zone2);
+#endif
+	if (*s++ == ',')
+	  continue;
+	break;
+      } while(1);
       break;
 
     case 'Z': /* Z:n[-n][,n] Bezeichnung */
@@ -1584,7 +1752,6 @@ again:
 	if (*(c=strip(str2list(&s)))) {
 /* append areas as they are -lt- */
 	    Areas += appendArea (prefix, c, NULL, zone, &where, dat);
-	    Specials++;
 	} else {
 	  warning (dat, "Ignoring empty areacode");
 	}
@@ -1880,9 +2047,6 @@ again:
       Hours++;
       break;
 
-    case 'G': /* obsolete */
-      break;
-
     default:
       warning (dat, "Unknown tag '%c'", *s);
       break;
@@ -1931,10 +2095,11 @@ again:
   }
 
   prsel_find_zone_area();
+  fix_redirz(dat);
 
   if (msg) snprintf (message, LENGTH,
-		     "Rates   Version %s loaded [%d Providers, %d Zones, %d Areas, %d Specials, %d Services, %d Comments, %d eXceptions, %d Rates from %s]",
-		     Version, nProvider, Zones, Areas, Specials, nService, Comments, nPrsel, Hours, dat);
+		     "Rates   Version %s loaded [%d Providers, %d Zones, %d Areas, %d Services, %d Comments, %d eXceptions, %d Redirects, %d Rates from %s]",
+		     Version, nProvider, Zones, Areas, nService, Comments, nPrsel, nRedir, Hours, dat);
   free(files[0]);
 
   return 0;
@@ -2042,6 +2207,138 @@ static int leo (int a, int b, double c, double d)
   return x < 1 ? 1 : x;
 }
 
+static int get_area1(int prefix, RATE *Rate, char *number, TELNUM *num,
+                     int x, REDIRZ *rz) {
+  int i,j;
+  if (Rate->_area==UNKNOWN) {
+    int a;
+    if (*Rate->dst[0] && num->keys && *num->keys) {
+      char *p;
+#if 0
+    printf("%s(%d) %s(%s) %s - %s\n",
+	   num->country, num->ncountry, num->sarea, num->area,
+	   num->msn, num->keys);
+#endif
+      p=strtok(num->keys, "/");
+      while (p) {
+        for (a=0; a<Provider[prefix].nArea; a++) {
+	  if (Provider[prefix].Area[a].Zone < rz->start_zone)
+	    continue;
+	  if (Provider[prefix].Area[a].Zone > rz->end_zone)
+	    break;
+	  if (isdigit(*Provider[prefix].Area[a].Code) ||
+	    *Provider[prefix].Area[a].Code == '+')
+	      continue;
+          if (strcmp(Provider[prefix].Area[a].Code, p)==0) {
+	    Rate->_area=a;
+	    x=strlen(Provider[prefix].Area[a].Code);
+	    Rate->domestic=atoi(mycountry+1)==num->ncountry;
+	    break;
+	  }
+        }
+	if(Rate->_area!=UNKNOWN)
+	  break;
+        p=strtok(0, "/");
+      }
+    }
+    /* try find a longer match in codes e.g. for mobil phone nums */
+    for (a=0; a<Provider[prefix].nArea; a++) {
+      int m;
+      if (Provider[prefix].Area[a].Zone < rz->start_zone)
+	continue;
+      if (Provider[prefix].Area[a].Zone > rz->end_zone)
+        break;
+
+      if (!(isdigit(*Provider[prefix].Area[a].Code) ||
+	*Provider[prefix].Area[a].Code == '+'))
+	continue;
+      m=strmatch(Provider[prefix].Area[a].Code, number);
+      if (m>x) {
+  	x=m;
+	Rate->_area = a;
+	Rate->domestic = strcmp(Provider[prefix].Area[a].Code, mycountry)==0 || *(Rate->dst[0])=='\0';
+      }
+    }
+    if (Rate->_area==UNKNOWN) {
+      return UNKNOWN;
+    }
+  }
+
+  if (Rate->_zone==UNKNOWN) {
+    Rate->_zone=Provider[prefix].Area[Rate->_area].Zone;
+    if (Rate->domestic && *(Rate->dst[0])) {
+      int z=getZone(prefix, Rate->src[1], Rate->dst[1]);
+      Rate->z = z;
+      if (z!=UNKNOWN) {
+	for (i=0; i<Provider[prefix].nZone; i++) {
+	  for (j=0; j<Provider[prefix].Zone[i].nNumber; j++) {
+	    if (Provider[prefix].Zone[i].Number[j]==z) {
+	      Rate->_zone=i;
+	      goto done;
+	    }
+	  }
+	}
+	return UNKNOWN;
+      done:
+      }
+    }
+  }
+
+  if (Rate->_zone<0 || Rate->_zone>=Provider[prefix].nZone) {
+    return UNKNOWN;
+  }
+  return x; /* the len of the match */
+}
+
+static int get_area(int *prefix, RATE *Rate, char *number,
+                    char **msg, char *message) {
+  int r, ret, p, ret1;
+  REDIRZ rz;
+  TELNUM num, onum;
+  int oprefix = *prefix;
+  int area, zone;
+
+  rz.start_zone=0;
+  rz.end_zone=9999;
+  number=strcat3(Rate->dst);
+  if (Rate->_area==UNKNOWN) {
+    if (*Rate->dst[0]) {
+      if(getDest(number, &onum))
+        Rate->_area=-2;
+    }
+    else
+      Rate->_area=-2;
+  }
+  num = onum;
+  ret = get_area1(oprefix, Rate, number, &num, 0, &rz);
+  area = Rate->_area;
+  zone = Rate->_zone;
+  if (Provider[oprefix].nRedir) {
+    for(r = 0; r<Provider[oprefix].nRedir; r++) {
+      p = Provider[oprefix].Redir[r].p._prefix;
+      num = onum;	/* num get's destroyed below */
+      Rate->_area = Rate->_zone = UNKNOWN;
+      ret1 = get_area1(p, Rate, number, &num, ret, &Provider[oprefix].Redir[r]);
+      if(ret1 > ret) {  /* longer match ? */
+        ret = ret1;
+	*prefix = p; /* than remember provider */
+        area = Rate->_area;
+        zone = Rate->_zone;
+      }
+    }
+  }
+  Rate->_area = area;
+  Rate->_zone = zone;
+
+  if (Rate->_area<0) {
+    Rate->_area = UNKNOWN;
+    if (msg) snprintf (message, LENGTH,
+      	"No area info for provider %s, destination %s",	epnum(oprefix), number);
+    Rate->_zone=UNZONE;
+    ret= UNKNOWN;
+  }
+  return ret;
+}
 
 int getRate(RATE *Rate, char **msg)
 {
@@ -2050,7 +2347,7 @@ int getRate(RATE *Rate, char **msg)
   ZONE  *Zone;
   HOUR  *Hour;
   UNIT  *Unit;
-  int    prefix, freeze, cur, max, i, j, n;
+  int    prefix, freeze, cur, max, i, n;
   double now, end, jmp, leap;
   char  *day;
   time_t time;
@@ -2085,6 +2382,8 @@ int getRate(RATE *Rate, char **msg)
     number=strcat3(Rate->dst);
 
   getPrsel(number, &prefix, &Rate->_zone, &Rate->_area);	/* X:ception */
+  Rate->Provider = Provider[prefix].Name;
+
 #if 0
   print_msg(PRT_V, "P:%s Rate dst0='%s' dst1='%s' dst2='%s' _zone %d _area %d\n",
   	epnum(prefix),Rate->dst[0], Rate->dst[1], Rate->dst[2], Rate->_zone, Rate->_area);
@@ -2093,79 +2392,10 @@ int getRate(RATE *Rate, char **msg)
     if (msg) snprintf(message, LENGTH, "Unknown provider %s",epnum(prefix));
     return UNKNOWN;
   }
-
-  if (Rate->_area==UNKNOWN) {
-    int a, x=0;
-    TELNUM num;
-    number=strcat3(Rate->dst);
-    if (*Rate->dst[0] && getDest(number, &num) == 0 && num.keys && *num.keys) {
-      char *p;
-#if 0
-    printf("%s(%d) %s(%s) %s - %s\n",
-	   num.country, num.ncountry, num.sarea, num.area,
-	   num.msn, num.keys);
-#endif
-      p=strtok(num.keys, "/");
-      while (p) {
-        for (a=0; a<Provider[prefix].nArea; a++) {
-          if (strcmp(Provider[prefix].Area[a].Code, p)==0) {
-	    Rate->_area=a;
-	    x=strlen(Provider[prefix].Area[a].Code);
-	    Rate->domestic=atoi(mycountry+1)==num.ncountry;
-	    break;
-	  }
-        }
-	if(Rate->_area!=UNKNOWN)
-	  break;
-        p=strtok(0, "/");
-      }
-    }
-    /* try find a longer match in codes e.g. for mobil phone nums */
-    for (a=0; a<Provider[prefix].nArea; a++) {
-      int m=strmatch(Provider[prefix].Area[a].Code, number);
-      if (m>x) {
-  	x=m;
-	Rate->_area = a;
-	Rate->domestic = strcmp(Provider[prefix].Area[a].Code, mycountry)==0 || *(Rate->dst[0])=='\0';
-      }
-    }
-    if (Rate->_area==UNKNOWN) {
-      if (msg) snprintf (message, LENGTH,
-      	"No area info for provider %s, destination %s",	epnum(prefix), number);
-      Rate->_zone=UNZONE;
-      return UNKNOWN;
-    }
-  }
-
-  if (Rate->_zone==UNKNOWN) {
-    Rate->_zone=Provider[prefix].Area[Rate->_area].Zone;
-    if (Rate->domestic && *(Rate->dst[0])) {
-      int z=getZone(prefix, Rate->src[1], Rate->dst[1]);
-      Rate->z = z;
-      if (z!=UNKNOWN) {
-	for (i=0; i<Provider[prefix].nZone; i++) {
-	  for (j=0; j<Provider[prefix].Zone[i].nNumber; j++) {
-	    if (Provider[prefix].Zone[i].Number[j]==z) {
-	      Rate->_zone=i;
-	      goto done;
-	    }
-	  }
-	}
-	if (msg) snprintf (message, LENGTH, "Provider %s domestic zone %d not found in rate database",
-	  epnum(prefix), z);
-	Rate->_zone=UNZONE;
-	return UNKNOWN;
-      done:
-      }
-    }
-  }
-
-  if (Rate->_zone<0 || Rate->_zone>=Provider[prefix].nZone) {
-    if (msg) snprintf(message, LENGTH, "Invalid zone %d", Rate->_zone);
+  if(get_area(&prefix, Rate, number, msg, message) == UNKNOWN)
     return UNKNOWN;
-  }
 
-  Rate->Provider = Provider[prefix].Name;
+
   Rate->Country  = Provider[prefix].Area[Rate->_area].Name;
   if (Rate->dst[0] && *Rate->dst[0])
     Rate->Zone     = Provider[prefix].Zone[Rate->_zone].Name;
@@ -2331,30 +2561,89 @@ int getLeastCost (RATE *Current, RATE *Cheapest, int booked, int skip)
   return (Cheapest->prefix==Current->prefix ? UNKNOWN : cheapest);
 }
 
+
+static void xprintf (char *fmt, ...)
+{
+#ifdef DEBUG_REDIRZ
+  va_list ap;
+  char msg[BUFSIZ];
+
+  va_start (ap, fmt);
+  vsnprintf (msg, BUFSIZ, fmt, ap);
+  va_end (ap);
+  fprintf(stderr, msg);
+#endif
+}
+
 int getZoneRate(RATE* Rate, int domestic, int first)
 {
-  static int z;
-  static int lasta;
-  int prefix,i,a;
+  static int z, rz;
+  static int lasta, lasti;
+  int prefix,i,a, oprefix;
   char * countries = 0;
-  char *area, *olda;
+  char *area;
   int zone, found, res;
+  int *zp;
   TELNUM Num;
 
   if (first)
-    lasta=z=0;
-  prefix=Rate->prefix;
+    lasti=lasta=z=rz=0;
+  prefix=oprefix=Rate->prefix;
+
   while (1) {
     found=0;
-    if (z >= Provider[prefix].nZone)
+    /* look if we have redirects for z */
+    prefix = oprefix; // restore
+    zp = &z;
+ xprintf("whi z=%d, rz=%d\n", z,rz);
+    if (lasti < Provider[oprefix].nRedir) {
+      if (rz < Provider[oprefix].Redir[lasti].start_zone) {
+        rz++;
+ xprintf("cont 1\n");
+	continue;
+      }
+      else if(rz <= Provider[oprefix].Redir[lasti].end_zone) {
+        int pr = Provider[oprefix].Redir[lasti].p._prefix;
+        if (rz < Provider[pr].nZone) {
+          if (z >= Provider[oprefix].nZone ||
+	      Provider[pr].Zone[rz].Number[0] <
+	      Provider[oprefix].Zone[z].Number[0]) {
+            lasta=0;
+	    prefix=pr;
+	    zp = &rz;
+          }
+	}
+	else {
+	  lasti++;
+ xprintf("cont 2\n");
+	  continue;
+	}
+      }
+      else {
+        lasti++;
+ xprintf("cont 3\n");
+	continue;
+      }
+    }
+    else if(z >= Provider[oprefix].nZone) {
+ xprintf("ret -2\n");
       return -2;
-    if (Provider[prefix].Zone[z].Domestic != domestic ||
-	Provider[prefix].Zone[z].Number[0] == 0) {
+    }
+    if (*zp >= Provider[prefix].nZone) {
       z++;
+      rz++;
+ xprintf("cont 4\n");
       continue;
     }
-    for (a=lasta; a<Provider[prefix].nArea; a++)  {
-      if (Provider[prefix].Area[a].Zone == z) {
+ xprintf("try z=%d, rz=%d pref=%d\n", z,rz,prefix);
+    if (Provider[prefix].Zone[*zp].Domestic != domestic ||
+	Provider[prefix].Zone[*zp].Number[0] == 0) {
+      (*zp)++;
+ xprintf("cont 5\n");
+      continue;
+    }
+    for (a=0; a<Provider[prefix].nArea; a++)  {
+      if (Provider[prefix].Area[a].Zone == *zp) {
         found++;
         break;
       }
@@ -2365,17 +2654,21 @@ int getZoneRate(RATE* Rate, int domestic, int first)
       a=0;
       break;
     }
-    z++;
+    (*zp)++;
   }
   Rate->_area=a;
-  Rate->_zone=z;
-  if (getRate(Rate, 0) == UNKNOWN)
+  Rate->_zone=(*zp);
+  Rate->prefix=prefix;
+  if (getRate(Rate, 0) == UNKNOWN) {
+    Rate->prefix=oprefix;
     return UNKNOWN;
+  }
+  Rate->prefix=oprefix;
+  Rate->Provider = Provider[oprefix].Name;
   Rate->Country=0;
-  olda="#";
   if (domestic) {
-    if (Provider[prefix].Zone[z].Name)
-      countries = strdup(Provider[prefix].Zone[z].Name);
+    if (Provider[prefix].Zone[*zp].Name)
+      countries = strdup(Provider[prefix].Zone[*zp].Name);
     else
       countries=strdup("");
   }
@@ -2387,12 +2680,11 @@ int getZoneRate(RATE* Rate, int domestic, int first)
       res=getDest(area, &Num);
       if(res!=UNKNOWN)
         area=Num.scountry;
-      if (res!=UNKNOWN && zone==z && area && *area) {
+      if (res!=UNKNOWN && zone==*zp && area && *area) {
 	countries = realloc(countries,strlen(countries)+strlen(area)+2);
 	if(*countries)
           strcat(countries, ",");
         strcat(countries, area);
-	olda=area;
       }
       else if(strcmp(Provider[prefix].Area[i].Code,"+")==0) {
 	countries = realloc(countries,strlen(countries)+2);
@@ -2400,14 +2692,14 @@ int getZoneRate(RATE* Rate, int domestic, int first)
           strcat(countries, ",");
         strcat(countries, "+");
       }
-      else if(zone > z)
+      else if(zone > *zp)
         break;
     }
     lasta=a;
   }
   if (countries && *countries)
     Rate->Country=countries;
-  z++;
+  (*zp)++;
   return 0;
 }
 
