@@ -4,7 +4,7 @@
 
 <title>FAQ for isdn4linux
 <author>Matthias Hessler (<tt><htmlurl url="mailto:hessler@isdn4linux.de" name="hessler@isdn4linux.de"></tt>)
-<date>v2.0.73, 23. November 2002
+<date>v2.0.74, 15. December 2002
 <abstract>
 If you are reading this FAQ online, you may consider downloading the whole
 thing, and reading it offline (much cheaper). To download the latest
@@ -957,10 +957,14 @@ question <ref id="country_certified" name="country_certified">.
 If you want to buy an active card, then the developers would recommend
 the PCI Server from Eicon. The reason is that it can fax on both channels
 with AT class 2 commands, and includes a V.90 modem.
-The AVM B1 works also very well, but can only fax on one channel.
+The AVM B1 works also very well, and is likewise recommended. Old versions
+(up to 3.0) could receive faxes only on one channel, but since AVM B1 PCI V4
+all channels can be used simulateously for sending and receiving faxes.
+See also question <ref id="hardware_avmb1" name="hardware_avmb1"> for more details about this card.
 The Hypercope cards have also been reported to work very well, servicing
 all available channels for faxing. However, they require a hardware update
-for faxing and their linux driver is fairly new.
+for faxing and their linux driver is fairly new. See also question
+<ref id="hardware_hypercope" name="hardware_hypercope"> for more details about this card.
 
 If faxing is important for you, but you don't want to spent the money for an
 active card, then a card with ISAR chipset may work well for you, e.g.
