@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.2 1999/06/30 22:56:46 he Exp $
+# $Id: Makefile,v 1.3 2002/01/31 18:55:23 paul Exp $
 
 TDU_M_OBJ = master.o
 TDU_S_OBJ = slave.o echo_pos.o
@@ -33,7 +33,7 @@ extra_version_.h: make_extra_version.sh $(E4L_EXTRA_VERSION_DEP)
 	./make_extra_version.sh $(E4L_EXTRA_VERSION_DEP) > extra_version_.h
 
 clean:
-	rm -f *.o *~ libeft.a #*# extra_version_.h
+	rm -f *.o *~ libeft.a extra_version_.h
 
 new_version:
 	sed 's/^#define[ 	]*E4L_VERSION.*/#define E4L_VERSION "$(NEW_VERSION)"/' < include/tdu_user.h > tmp.h
