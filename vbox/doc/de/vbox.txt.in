@@ -1,0 +1,830 @@
+  VBOX
+  Michael 'Ghandi' Herold <michael@abadonna.franken.de>
+  Version @VERSION@ (@VERDATE@)
+
+  Diese Dokumentation beschreibt die Konfiguration und Installation von
+  _v_b_o_x Version @VERSION@, einem Softwarepaket zum Betrieb eines Anruf­
+  beantworters mit _i_s_d_n_4_l_i_n_u_x.
+  ______________________________________________________________________
+
+  Table of Contents:
+
+  1.      Copyright
+
+  2.      Vorwort
+
+  3.      Erste Schritte
+
+  3.1.    vboxgetty
+
+  3.2.    vboxd
+
+  4.      Konfiguration
+
+  4.1.    vboxgetty.conf
+
+  4.2.    vboxd.conf
+
+  5.      Skriptsprache
+
+  6.      Programme
+
+  6.1.    vboxgetty
+
+  6.2.    vboxd
+
+  6.3.    vbox
+
+  6.4.    vboxbeep
+
+  6.5.    vboxtoau
+
+  6.6.    autovbox
+
+  6.7.    vboxmode
+
+  7.      Verschiedenes
+
+  7.1.    Format der vbox Dateien
+
+  7.2.    Die Library libvbox.a
+
+  7.3.    Neue Dokumentation erzeugen
+
+  8.      Bezugsquellen
+
+  9.      Danksagungen
+  ______________________________________________________________________
+
+  11..  CCooppyyrriigghhtt
+
+  Copyright © 1996, 1997 Michael 'Ghandi' Herold
+
+  Das Paket _v_b_o_x ist freie Software und kann unter den Bedingungen der
+  _G_N_U _G_e_n_e_r_a_l _P_u_b_l_i_c _L_i_c_e_n_s_e veröffentlicht oder verändert werden.
+
+  Die Dokumentation sowie alle Programme von _v_b_o_x wurden mit großer
+  Sorgfalt erstellt. Dennoch sind Fehler nicht ganz auszuschließen. Aus
+  diesem Grund sind die in der vorliegenden Dokumentation enthaltenen
+  Angaben mit keiner Verpflichtung oder Garantie irgendeiner Art
+  verbunden. Sowohl Michael Herold als auch die in Kapitel
+  ``Danksagungen'' genannten Personen übernehmen keine Verantwortung
+  oder sonstige Haftung für Schäden, die auf irgendeine Art aus der
+  Benutzung der Dokumentation oder den darin beschriebenen Programmen
+  entstehen oder entstanden sind.
+
+  22..  VVoorrwwoorrtt
+
+  33..  EErrssttee SScchhrriittttee
+
+  Das Kapitel EErrssttee SScchhrriittttee beschreibt die Einbindung der einzelnen
+  Programme in das System. Ich möchte jeden bitten, wenigstens ddiieesseess
+  Kapitel aufmerksam zu lesen, um spätere Probleme zu vermeiden!
+
+  33..11..  vvbbooxxggeettttyy
+
+  Das Programm _v_b_o_x_g_e_t_t_y ist das eigentliche Herz von _v_b_o_x.  Es
+  überwacht die Leitung, nimmt eingehende Anrufe entgegen, spielt
+  Ansagetexte ab und zeichnet die Nachrichten auf.
+
+  _v_b_o_x_g_e_t_t_y sollte am besten aus der '/etc/inittab' gestartet werden.
+  Wenn lieber ein Startskript verwenden werden soll ist darauf achten,
+  daß es völlig normal ist, daß _v_b_o_x_g_e_t_t_y sich während der Laufzeit von
+  alleine beendet; z.B. dann, wenn das Modemdevice nicht initialisiert
+  werden konnte.
+
+  _v_b_o_x_g_e_t_t_y mmuußß vom Benutzer _r_o_o_t gestartet werden!
+
+     BBeeiissppiieell ffüürr eeiinneenn EEiinnttrraagg iinn ''/etc/inittab':
+
+        I6:2345:respawn:@SBINDIR@/vboxgetty -d /dev/ttyI6
+        I7:2345:respawn:@SBINDIR@/vboxgetty -d /dev/ttyI7
+
+  Das Argument -d oder --device mmuußß angegeben werden (siehe Kapitel
+  ``Programme'' unter ``vboxgetty''). Es gibt an welches Modemdevice und
+  welcher Teil von '@SYSCONFDIR@/vboxgetty.conf' für diesen _v_b_o_x_g_e_t_t_y
+  verwendet werden soll.
+
+  Für jeden Benutzer oder jede Benutzergruppe muß in '@SPOOLDIR@' ein
+  Verzeichnis angelegt werden, in welches die Konfigurationsdatei
+  'vbox.conf' kopiert werden muß.
+
+  Das angelegte Verzeichnis und alle sich darin befindlichen
+  Unterverzeichnisse oder Dateien müssen mit den richtigen Rechten
+  versehen werden, sodaß der Benutzer oder die Gruppe, die in
+  '@SYSCONFDIR@/vboxgetty.conf' eingestellt wurden diese benutzen
+  dürfen!
+  Für die weitere Einrichtung und Konfiguration von _v_b_o_x_g_e_t_t_y kann im
+  Kapitel ``Konfiguration'' unter ``vboxgetty'' nachgeschlagen werden.
+
+     BBeeiissppiieell::
+
+        Dieses Beispiel zeigt die Einrichtung eines einzelnen Benutzers
+        Namens _m_i_c_h_a_e_l.
+
+        $ mkdir @SPOOLDIR@/michael
+        $ mkdir @SPOOLDIR@/michael/incoming
+        $ mkdir @SPOOLDIR@/michael/messages
+        $ cp ./examples/vbox.conf.example @SPOOLDIR@/michael/vbox.conf
+        $ cp ./examples/standard.tcl.example @SPOOLDIR@/michael/standard.tcl
+        $ cp ./examples/standard.msg.example @SPOOLDIR@/michael/messages/standard.msg
+        $ cp ./examples/beep.msg.example @SPOOLDIR@/michael/messages/beep.msg
+        $ cp ./examples/timeout.msg.example @SPOOLDIR@/michael/messages/timeout.msg
+        $ chown michael.users @SPOOLDIR@/michael -Rv
+        $ chmod o-rwx,g-rwx @SPOOLDIR@/michael -Rv
+
+     Die Dateien '@SPOOLDIR@/michael/vbox.conf' und
+     '@SPOOLDIR@/michael/standard.tcl' müssen jetzt nur noch auf die
+     eigenen Bedürfnisse angepasst werden...
+
+  33..22..  vvbbooxxdd
+
+  _v_b_o_x_d ist der zweitwichtigste Teil von _v_b_o_x. Mit diesem Daemon ist es
+  möglich, Nachrichten über Netzwerk zu manipulieren und zu laden.  Die
+  Programme _v_b_o_x und _v_b_o_x_b_e_e_p benötigen _v_b_o_x_d.
+
+  Bevor der Daemon gestartet werden kann, muß in der Datei
+  '/etc/services' ein neuer Service eingetragen werden (nur falls dieser
+  noch nicht enthalten ist).
+
+     BBeeiissppiieell ffüürr ''/etc/services':
+
+        20012    vboxd/tcp
+        20012    vboxd/udp
+
+  Danach muß _v_b_o_x_d in der '/etc/inetd.conf' eingetragen werden, damit
+  dieser bei Bedarf gestartet wird. _v_b_o_x_d kann nnuurr mit _i_n_e_t_d benutzt
+  werden, er ist alleine nicht lauffähig!
+
+     BBeeiissppiieell ffüürr ''/etc/inetd.conf':
+
+        vboxd  stream  tcp  nowait  root  /usr/sbin/tcpd  @SBINDIR@/vboxd
+
+  Wenn jetzt _i_n_e_t_d mit einem SIGHUP dazu veranlaßt wurde seine
+  Konfiguration neu einzulesen, kann mit
+
+  $ telnet localhost vboxd
+
+  getestet werden, ob _v_b_o_x_d reagiert.
+
+  Auf manchen Systemen ist es evtl. noch nötig, die Dateien
+  '/etc/hosts.deny' und '/etc/hosts.allow' sowie die Firewall-Rules
+  anzupassen :-)
+
+  _v_b_o_x_d benutzt die Konfigurationsdatei '@SYSCONFDIR@/vboxd.conf', die
+  noch an die lokalen Gegebenheiten angepaßt werden muß (siehe Kapitel
+  ``Konfiguration'' unter ``vboxd'').
+
+  44..  KKoonnffiigguurraattiioonn
+
+  Dieses Kapitel beschäftigt sich mit der Konfiguration der einzelnen
+  Komponenten von _v_b_o_x. Es ist ratsam, dieses Kapitel aufmerksam zu
+  lesen, da sehr viele Änderungen seit den letzten Versionen gemacht
+  wurden.
+
+  44..11..  vvbbooxxggeettttyy..ccoonnff
+
+  44..22..  vvbbooxxdd..ccoonnff
+
+  55..  SSkkrriippttsspprraacchhee
+
+  Ab Version 2.0.0 von _v_b_o_x wird _t_c_l als Skriptsprache benutzt, um
+  eingegangene Anrufe zu bearbeiten. Eine genaue Beschreibung der
+  allgemeinen Funktionen von _t_c_l kann der _t_c_l beiliegenden Dokumentation
+  entnommen werden.
+
+  Die Anrufe werden auch weiterhin von _v_b_o_x_g_e_t_t_y entgegengenommen. Die
+  weitere Bearbeitung nach der Entgegennahme erfolgt dann über das _t_c_l
+  Skript.
+
+  Zusätzlich zu den von _t_c_l bereitgestellten Variablen stehen noch
+  einige neue zur Verfügung, die von _v_b_o_x_g_e_t_t_y initialisiert werden (die
+  Angaben in Klammern entsprechen der Voreinstellung):
+
+     vbox_var_bindir
+
+        @DOTS@enthält das Verzeichnis, in welches die Programme
+        installiert wurden, die von normalen Benutzern ausgeführt werden
+        dürfen ('@BINDIR@').
+
+     vbox_var_savename
+
+        @DOTS@enthält den Dateinamen unter dem die Nachricht gespeichert
+        werden sollte. Der Name errechnet sich aus dem aktuellen Datum
+        und der Prozeß-ID.  Der vorgegebene Name muß nicht benutzt
+        werden!
+
+     vbox_var_rectime
+
+        @DOTS@enthält die Anzahl der Sekunden die maximal aufgezeichnet
+        werden soll. Dieser Wert entspricht der Konfiguration des
+        aktuellen Anrufers.
+
+     vbox_var_spooldir
+
+        @DOTS@enthält den Pfad zum Spoolverzeichnis des jeweiligen
+        Benutzers ('@SPOOLDIR@/<username>').
+
+     vbox_var_checknew
+
+        @DOTS@enthält den Pfad in dem nach neuen Nachrichten gesucht
+        werden soll ('@SPOOLDIR@/<username>/incoming').
+
+     vbox_msg_standard
+
+        @DOTS@enthält den Namen der Datei die als Ansage gespielt werden
+        soll ('@SPOOLDIR@/<username>/messages/standard.msg').
+
+     vbox_msg_beep
+
+        @DOTS@enthält den Namen der Datei die als Beep gespielt werden
+        soll ('@SPOOLDIR@/<username>/messages/beep.msg').
+
+     vbox_msg_timeout
+
+        @DOTS@enthält den Namen der Datei die bei einem Timeout gespielt
+        werden soll ('@SPOOLDIR@/<username>/messages/timeout.msg').
+
+     vbox_caller_id
+
+        @DOTS@enthält die CALLER ID des aktuellen Anrufers. Ist diese
+        nicht bekannt, wird 0 eingetragen.
+
+     vbox_caller_phone
+
+        @DOTS@enthält die vollständige Telefonnummer des aktuellen
+        Anrufers. Ist diese nicht bekannt, wird "*** Unknown ***"
+        eingetragen.
+
+     vbox_caller_name
+
+        @DOTS@enthält den Namen des aktuellen Anrufers. Ist dieser nicht
+        bekannt, wird "*** Unknown ***" eingetragen.
+
+     vbox_user_name
+
+        @DOTS@enthält den Namen des Benutzers, unter dessen Rechte der
+        aktuelle _v_b_o_x_g_e_t_t_y läuft.
+
+     vbox_user_home
+
+        @DOTS@enthält das Heimatverzeichnis des Benutzers, unter dessen
+        Rechte der aktuelle _v_b_o_x_g_e_t_t_y läuft.
+
+     vbox_flag_standard
+
+        @DOTS@enthält TRUE wenn der Ansagetext gespielt werden soll,
+        oder FALSE wenn nicht. Der Wert entspricht der Konfiguration des
+        aktuellen Anrufers.
+
+     vbox_flag_beep
+
+        @DOTS@enthält TRUE wenn der Beep gespielt werden soll, oder
+        FALSE wenn nicht. Der Wert entspricht der Konfiguration des
+        aktuellen Anrufers.
+
+     vbox_flag_timeout
+
+        @DOTS@enthält TRUE wenn die Timeout-Nachricht gespielt werden
+        soll, oder FALSE wenn nicht. Der Wert entspricht der
+        Konfiguration des aktuellen Benutzers.
+
+     vbox_flag_record
+
+        @DOTS@enthält TRUE wenn eine Nachricht aufgezeichnet werden
+        soll, oder FALSE wenn nicht. Der Wert entspricht der
+        Konfiguration des aktuellen Benutzers.
+
+  Zusätzlich zu den von _t_c_l bereitgestellten Funktionen stehen noch
+  einige neue zur Verfügung, mit denen _v_b_o_x_g_e_t_t_y gesteuert werden kann:
+
+     vbox_breaklist <add|rem> <sequence|all>
+
+        Mit diesem Befehl kann gesteuert werden, bei welchen Touchtone-
+        Sequenzen _v_b_o_x_g_e_t_t_y das Abspielen, Aufzeichnen oder Warten
+        abbricht.
+
+        Touchtone-Sequenzen müssen immer in der Form *NUMMER# angegeben
+        werden, wobei NUMMER einer Folge von Zeichen der Form 0-9 und A-
+        D enspricht.
+
+        add <sequence>
+
+           Fügt die Touchtone-Sequenz sequence zur Abbruchliste hinzu.
+
+        rem <sequence|all>
+
+           Entfernt die Touchtone-Sequenz sequence aus der Abbruchliste.
+           Wenn als sequence das Schlüsselwort all angegeben wird, wird
+           die komplette Abbruchliste gelöscht.
+
+        BBeeiissppiieell::
+
+           vbox_breaklist rem all
+           vbox_breaklist add "*08154711#"
+
+     vbox_put_message <message>
+
+        Mit dieser Funktion kann eine Nachricht abgespielt werden. Die
+        Art des Abbruchs wird als Rückgabewert gesetzt.
+
+        message
+
+           Vollständiger Name der Datei (inkl. Verzeichnis) die gespielt
+           werden soll.
+
+        Folgende Rückgabewerte sind möglich:
+
+        ERROR
+
+           Das Abspielen wurde wegen eines Fehlers abgebrochen.
+
+        HANGUP
+
+           Die Verbindung wurde beendet. Das Skript sollte sich bei
+           dieser Rückgabe beenden.
+
+        OK
+
+           Die Datei wurde vollständig gespielt und durch kein Ereignis
+           abgebrochen.
+
+        Enthält die Rückgabe einen anderen Wert, handelt es sich um eine
+        Touchtone-Sequenz, die während des Abspielens erkannt wurde.
+
+        BBeeiissppiieell::
+
+           set RC { vbox_put_message /var/spool/vbox/michael/messages/standard.msg }
+
+     vbox_get_message <savename> <timelimit>
+
+        Zeichnet eine Nachricht auf. Die Art des Abbruchs wird als
+        Rückgabewert gesetzt.
+
+        savename
+
+           Vollständiger Name der Datei (inkl. Verzeichnis) unter der
+           die Nachricht gespeichert werden soll.
+
+        timelimit
+
+           Maximale Anzahl Sekunden die Aufgezeichnet werden soll.
+
+        Folgende Rückgabewerte sind möglich:
+
+        ERROR
+
+           Das Aufzeichnen wurde wegen eines Fehlers abgebrochen.
+
+        TIMEOUT
+
+           Die maximale Aufzeichnungszeit wurde erreicht.
+
+        HANGUP
+
+           Die Verbindung wurde beendet. Das Skript sollte sich bei
+           dieser Rückgabe beenden.
+
+        OK
+
+           Die Datei wurde vollständig aufgezeichnet und durch kein
+           Ereignis abgebrochen.
+
+        Enthält die Rückgabe einen anderen Wert, handelt es sich um eine
+        Touchtone-Sequenz, die während des Aufzeichnens erkannt wurde.
+
+        BBeeiissppiieell::
+
+           set RC { vbox_get_message /var/spool/vbox/michael/incoming/00000858611291-00022795 90 }
+
+     vbox_wait <seconds>
+
+        Wartet eine bestimmte Anzahl von Sekunden auf Eingaben vom
+        Anrufer. Die Art des Abbruchs wird als Rückgabewert gesetzt.
+
+        seconds
+
+           Anzahl der Sekunden die gewartet werden sollen.
+
+        Folgende Rückgabewerte sind möglich:
+
+        ERROR
+
+           Das Warten wurde wegen eines Fehlers abgebrochen.
+
+        TIMEOUT
+
+           Die angegebene Anzahl Sekunden ist abgelaufen.
+
+        HANGUP
+
+           Die Verbindung wurde beendet. Das Skript sollte sich bei
+           dieser Rückgabe beenden.
+
+        OK
+
+           Die angegebene Anzahl Sekunden ist abgelaufen.
+
+        Enthält die Rückgabe einen anderen Wert, handelt es sich um eine
+        Touchtone-Sequenz, die während des Aufzeichnens erkannt wurde.
+
+        BBeeiissppiieell::
+
+           set RC { vbox_wait 120 }
+
+     vbox_init_touchtones
+
+        Dieses Kommando löscht die interne Touchtone-Sequenz.
+
+        Normalerweise werden alle erkannten Touchtones an die interne
+        Touchtone-Sequenz angehängt und auch bei einem Wechsel vom
+        Abspiel- in den Aufnahmemodus nicht gelöscht. Gelöscht wird
+        diese nur bei Eingabe von '*', da dieser Touchtone eine neue
+        Sequenz einleitet.
+
+        BBeeiissppiieell::
+
+           vbox_init_touchtones
+
+     vbox_pause <ms>
+
+        Wartet eine bestimmte Anzahl von Millisekunden.
+
+        ms
+
+           Anzahl der Millisekunden die gewartet werden soll.
+
+        BBeeiissppiieell::
+
+           vbox_pause 1500
+
+     vbox_get_nr_new_messages <messagebox>
+
+        Ermittelt die Anzahl der neuen Nachrichten in einem Verzeichnis.
+        Das Ergebnis wird als Rückgabewert gesetzt.
+
+        messagebox
+
+           Verzeichnis welches untersucht werden soll.
+
+        BBeeiissppiieell::
+
+           set RC { vbox_get_nr_new_messages /var/spool/vbox/michael/incoming }
+
+     vbox_get_nr_all_messages <messagebox>
+
+        Ermittelt die Anzahl aller Nachrichten in einem Verzeichnis. Das
+        Ergebnis wird als Rückgabewert gesetzt.
+
+        messagebox
+
+           Verzeichnis welches untersucht werden soll.
+
+        BBeeiissppiieell::
+
+           set RC { vbox_get_nr_all_messages /var/spool/vbox/michael/incoming }
+
+  66..  PPrrooggrraammmmee
+
+  66..11..  vvbbooxxggeettttyy
+
+  66..22..  vvbbooxxdd
+
+  Der _v_b_o_x_d ist ein Daemon, der über Netzwerk (TCP/IP oder Sockets)
+  angesprochen werden und die mit _v_b_o_x aufgezeichneten Nachrichten
+  abrufen oder ändern kann.
+
+  Für Programmautoren existieren in der ``libvbox.a'' bereits einige
+  Funktionen um mit _v_b_o_x_d zu kommunizieren.
+
+  Die genaue Installation von _v_b_o_x_d kann im Kapitel ``Erste Schritte''
+  unter ``vboxd'' nachgelesen werden.
+
+  Dem Daemon können beim Start folgende Argumente übergeben werden:
+
+     -f, --file FILE
+
+        Konfigurationsdatei die benutzt werden soll. Voreingestellt
+        liest _v_b_o_x_d die Einstellungen aus der Datei
+        '@SYSCONFDIR@/vboxd.conf'.
+
+     -t, --timeout SECS
+
+        Anzahl der Sekunden die _v_b_o_x_d auf ein Kommando vom Client
+        wartet. Wird in diesem Zeitraum kein Kommando empfangen, beendet
+        sich das Programm.
+
+     -v, --version
+
+        Zeigt die Versionsnummer an.
+
+     -h, --help
+
+        Zeigt den Hilfstext an.
+
+  Nach dem Start steht der Timeout auf 3300 SSeekkuunnddeenn. Dieser wird erst auf
+  den mit --timeout eingestellten Wert geändert, nachdem das eerrssttee
+  KKoommmmaannddoo von einem Client empfangen wurde!
+
+  Die nachfolgende Beschreibung befaßt sich mit den internen Kommandos
+  des Daemons und ist eigentlich nur für Programmautoren von Interesse,
+  die in ihren eigenen Programmen mit dem _v_b_o_x_d kommunizieren möchten.
+
+  Der Daemon kann mit einer Reihe von Kommandos gesteuert werden, die
+  alle mit einem Text der Form
+
+  NUMMER BESCHREIBUNG
+
+  beantwortet werden. Einige Kommandos liefern mehrere Antworten
+  hintereinander, jede Antwort beginnt in einer neuen Zeile. Es werden
+  nur Zeichen mit maximal 7 Bit übermittelt.
+
+  Der Client sollte die aktuelle Verbindung schließen (und evtl. neu
+  aufbauen), sobald vom Server der Text "228811 .." übermittelt wurde.
+  Dieser gibt an, daß der Server die Verbindung beendet hat!
+
+  Folgende Kommandos werden vom _v_b_o_x_d unterstützt:
+
+     LOGIN <USERNAME> {PASSWORD}
+
+        Mit diesem Kommando können sich Clients als reguläre Benutzer
+        beim Daemon anmelden. Einige Kommandos sind nur nach einem
+        erfolgreichen Login möglich!
+
+        USERNAME
+
+           Name des Benutzers der angemeldet werden soll.
+
+        PASSWORD
+
+           Passwort des Benutzers.
+
+        Bei erfolgreicher Anmeldung enthält die Anwort des Daemons den
+        Rückgabewert 228833, gefolgt von einem kurzen Willkommenstext.
+
+     LIST
+
+        Zeigt eine Liste aller Nachrichten an, die sich im
+        Spoolverzeichnis des Benutzers befinden. Dieses Kommando ist nur
+        nach einem erfolgreichen Login möglich.
+
+        Die Antwort des Daemons ist wie folgt aufgebaut:
+
+        184 +
+        184 F 00000858611291-00022795
+        184 T 858611305
+        184 M 858611305
+        184 C 6
+        184 S 84752
+        184 N Michael Herold
+        184 I 9317850413
+        184 P *** Unknown ***
+        184 L *** Unknown ***
+        184 .
+
+        184 +
+
+           Leitet den Beginn eeiinneerr nneeuueenn Nachricht ein. Eine Liste kann
+           mehrere Nachrichten enthalten - zu Beginn einer jeden
+           Nachricht wird diese Zeile gesendet.
+
+        184 F
+
+           @DOTS@gefolgt vom Namen der Datei.
+
+        184 T
+
+           @DOTS@gefolgt vom Erzeugungsdatum der Datei. Das Datum wird
+           als Anzahl der Sekunden seit dem 1.1.1970 angegeben.
+
+        184 M
+
+           @DOTS@gefolgt vom Datum der letzten Änderung. Das Datum wird
+           als Anzahl der Sekunden seit dem 1.1.1970 angegeben. Ist
+           dieses 0, wurde die Datei als gelesen markiert.
+
+        184 C
+
+           @DOTS@gefolgt von der Kompression. Die Kompression wird als
+           Wert zwischen 2 und 6 angegeben.
+
+        184 S
+
+           @DOTS@gefolgt von der größe der Datei in Bytes.
+
+        184 N
+
+           @DOTS@gefolgt vom Namen der Person, welche die Nachricht
+           aufgesprochen hat. Konnte diese nicht ermittelt werden, wird
+           "*** Unknown ***" angegeben.
+
+        184 I
+
+           @DOTS@gefolgt von der CALLER ID der Person, welche die
+           Nachricht aufgesprochen hat. Konnte diese nicht ermittelt
+           werden, wird 0 angegeben.
+
+        184 P
+
+           @DOTS@gefolgt von der Telefonnummer der Person, welche die
+           Nachricht aufgesprochen hat. Konnte diese nicht ermittelt
+           werden, wird "*** Unknown ***" angegeben.
+
+        184 F
+
+           @DOTS@gefolgt vom Wohnort der Person, welche die Nachricht
+           aufgesprochen hat.  Konnte diese nicht ermittelt werden, wird
+           "*** Unknown ***" angegeben.
+
+        184 .
+
+           Dieser Text wird am Ende aalllleerr Nachrichten gesendet. Er gibt
+           an, daß die komplette Liste übermittelt wurde und kein
+           weiterer Eintrag mehr folgt.
+
+     MESSAGE <MESSAGENAME>
+
+        Übermittelt eine Nachricht als Hexdump. Dieses Kommando ist nur
+        nach einem erfolgreichen Login möglich.
+
+        MESSAGENAME
+
+           Name der Datei die übermittelt werden soll. Pfadangaben
+           werden abgeschnitten - die Datei muß sich im Spoolverzeichnis
+           des eingeloggten Benutzers befinden.
+        Die Antwort des Daemons schaut in etwa wie folgt aus:
+
+        182 FE FE FE FE FE FE FE FE FE FE FE FE FE FE FE FE FE FE FE FE FE FE FE FE
+        182 FE FE FE FE FE FE FE FE 7E 7E 7A 6D 61 59 53 51 56 65 E0 C9 BC B4 AF AE
+        182 AE B2 BE 7E 3B 2C 22 1E
+        182 .
+
+        182
+
+           @DOTS@gefolgt von einer oder mehreren zweistelligen
+           Hexzahlen. Diese Zahlen stellen den Inhalt der Datei dar.
+
+        182 .
+
+           Kennzeichnet das Ende der Übermittlung.
+
+     HEADER <MESSAGENAME>
+
+        Übermittelt einen Nachrichtheader als Hexdump. Dieses Kommando
+        ist nur nach einem erfolgreichen Login möglich.
+
+        MESSAGENAME
+
+           Name der Datei die übermittelt werden soll. Pfadangaben
+           werden abgeschnitten - die Datei muß sich im Spoolverzeichnis
+           des eingeloggten Benutzers befinden.
+
+        Die Antwort des Daemons schaut in etwa wie folgt aus:
+
+        183 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 3C 6E 6F 74 20 73 75 70 70
+        183 6F 72 74 65 64 3E 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+        183 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+        183 .
+
+        183
+
+           @DOTS@gefolgt von einer oder mehreren zweistelligen
+           Hexzahlen. Diese Zahlen stellen den Inhalt der Datei dar.
+
+        183 .
+
+           Kennzeichnet das Ende der Übermittlung.
+
+     COUNT <MESSAGEBOX>
+
+        Dieses Kommando gibt aus, wieviele neue Dateien sich in einem
+        Verzeichnis befinden. Ein Login ist hierfür nicht nötig. Da ohne
+        Login noch kein Spoolverzeichnis zugewiesen wurde, kann mit
+        diesem Befehl jjeeddeess beliebige Verzeichnis untersucht werden -
+        Die Funktion ermittelt nnuurr die Anzahl der Dateien und das Datum
+        der neusten Datei!
+
+        MESSAGEBOX
+
+           Verzeichnis in dem nach Nachrichten gesucht werden soll. Es
+           muß der komplette Pfad angegeben werden.
+
+        Die Ausgabe des Daemons ist in etwa wie folgt:
+
+        181 100 859281096
+
+     Nach der Nummer 118811 wird die Anzahl der neuen Nachrichten gefolgt
+     vom Datum der neusten Nachricht ausgegeben. Das Datum wird in
+     Anzahl der Sekunden seit dem 1.1.1970 dargestellt.
+
+  66..33..  vvbbooxx
+
+  66..44..  vvbbooxxbbeeeepp
+
+  66..55..  vvbbooxxttooaauu
+
+  Mit _v_b_o_x_t_o_a_u können _v_b_o_x Dateien (vbox audio header) in .au Dateien
+  (sun audio format) gewandelt werden.
+
+  66..66..  aauuttoovvbbooxx
+
+  66..77..  vvbbooxxmmooddee
+
+  Das Programm _v_b_o_x_m_o_d_e dient zum ermitteln des Formats einer Audio-
+  Datei. Es werden Dateien von _v_b_o_x (vbox audio header) und .au Dateien
+  (sun audio format) erkannt.
+
+  Der Aufruf von _v_b_o_x_m_o_d_e ist wie folgt:
+
+  _v_b_o_x_m_o_d_e {OPTION} {OPTION} {@DOTS@} DATEINAME
+
+     DATEINAME
+
+        Name der Datei deren Format ermittelt werden soll.
+
+     OPTION
+
+        Eine oder mehrere der folgenden Optionen:
+
+        -q, --quiet
+
+           Normalerweise werden noch Informationen über die Datei
+           ausgegeben. Bei Angabe dieser Option werden diese
+           unterdrückt.
+
+        -v, --version
+
+           Zeigt die Versionsnummer an.
+
+        -h, --help
+
+           Zeigt den Hilfstext an.
+
+  Das Format der Datei wird immer als Fehlernummer zurückgegeben:
+
+  ·  für .au Dateien ein Wert zwischen 128 und 150,
+
+  ·  für _v_b_o_x Dateien ein Wert zwischen 2 und 6,
+
+  ·  für unbekannte Formate oder bei einem Fehler der Wert 255.
+
+  77..  VVeerrsscchhiieeddeenneess
+
+  77..11..  FFoorrmmaatt ddeerr vvbbooxx DDaatteeiieenn
+
+  Ab Version 2.0.0 von _v_b_o_x enthalten die aufgezeichneten Dateien einen
+  neuen Header, der außer der Kompression und den Verbindungsdaten auch
+  noch Informationen über denjenigen enthält, der die Nachricht erzeugt
+  - sprich gesprochen - hat.
+
+  Zur Zeit enthält der Header folgende Informationen:
+
+  ·  die Aufzeichnungszeit,
+
+  ·  die Kompression,
+
+  ·  die CALLER ID,
+
+  ·  den Namen,
+
+  ·  die Telefonnummer,
+
+  ·  den Wohnort.
+
+  Mit diesen Angaben ist es anderen Programmen (z.B. _m_a_m) möglich, oohhnnee
+  zusätzlichen Aufwand (in früheren Versionen mußte die Konfiguration
+  von _v_b_o_x nach der passenden Telefonnummer durchsucht werden) die Daten
+  einer Nachricht zu ermitteln.
+
+  Das genaue Format des Headers ist in der Datei 'libvbox.h' als
+  Struktur vaheader_t definiert.
+
+  77..22..  DDiiee LLiibbrraarryy lliibbvvbbooxx..aa
+
+  Die Library 'libvbox.a' und die dazugehörige Include-Datei 'libvbox.h'
+  enthalten kleinere Funktionen, um es anderen Programmen leichter zu
+  machen, mit _v_b_o_x zu kommunizieren.
+
+  77..33..  NNeeuuee DDookkuummeennttaattiioonn eerrzzeeuuggeenn
+
+  Wer auf seinem Rechner selbst _l_i_n_u_x_d_o_c_-_s_g_m_l installiert hat und die
+  Dokumentation in andere Formate wandeln möchte, kann das mit einem der
+  folgenden Kommandos tun:
+
+  $ make create-de-sgml
+
+  Durch jeden dieser Befehle wird im Hauptverzeichnis ein konvertierter
+  _s_g_m_l Source abgelegt, der zum weiteren Umwandeln mit _l_i_n_u_x_d_o_c_-_s_g_m_l
+  benutzt werden kann. Diese vorherige Konvertierung ist notwendig, da
+  sich in der Dokumentation Steuerzeichen befinden, die erst durch ihre
+  richtigen Werte ersetzt werden müssen.
+
+  88..  BBeezzuuggssqquueelllleenn
+
+  mgetty 0.98 (mit pvftools) neuer mgetty sgml-0.99 isdn4linux hisax mam
+  gettext tcl ld-so
+
+  99..  DDaannkkssaagguunnggeenn
+
+  Fritz Elfert Carsten Keil Andreas Kool Stefan Lüthje Autor: mam
+

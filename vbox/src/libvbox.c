@@ -1,5 +1,5 @@
 /*
-** $Id: libvbox.c,v 1.7 1997/04/04 09:32:40 michael Exp $
+** $Id: libvbox.c,v 1.8 1997/04/28 16:51:56 michael Exp $
 **
 ** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
 */
@@ -29,13 +29,10 @@ char *compressions[] = {
    "?", "?", "ADPCM-2", "ADPCM-3", "ADPCM-4", "ALAW", "ULAW"
 };
 
+static char  vboxd_message[VBOXD_MAX_LINE + 1];
 
-static char  vboxd_message[128 + 1];
-
-FILE *vboxd_r_stream = NULL;
-FILE *vboxd_w_stream = NULL;
-int   vboxd_r_fd     = -1;
-int   vboxd_w_fd     = -1;
+int vboxd_r_fd = -1;
+int vboxd_w_fd = -1;
 
 /**************************************************************************/
 /** vboxd_connect(): Connect to the vbox message server. After connect   **/
@@ -89,6 +86,8 @@ int vboxd_connect(char *machine, int port)
 	c = -1;
 	s = -1;
 
+	errno = 0;
+
    for (p = hostp->h_addr_list; ((p) && (*p)); p++)
 	{
       s = socket(hostp->h_addrtype, SOCK_STREAM, 0);
@@ -110,16 +109,6 @@ int vboxd_connect(char *machine, int port)
 	vboxd_w_fd = dup(vboxd_r_fd);
 
 	if ((vboxd_w_fd < 0) || (vboxd_r_fd < 0))
-	{
-		vboxd_disconnect();
-
-		return(VBOXC_ERR_NOFILEIO);
-	}
-
-	vboxd_r_stream = fdopen(vboxd_r_fd, "r");
-	vboxd_w_stream = fdopen(vboxd_w_fd, "w");
-
-	if ((!vboxd_r_stream) || (!vboxd_w_stream))
 	{
 		vboxd_disconnect();
 
@@ -149,81 +138,110 @@ int vboxd_connect(char *machine, int port)
 
 void vboxd_disconnect(void)
 {
-	if (vboxd_w_stream) vboxd_put_message("quit");
-
-	if (vboxd_r_stream) close_and_null(vboxd_r_stream);
-	if (vboxd_w_stream) close_and_null(vboxd_w_stream);
+	if (vboxd_w_fd) vboxd_put_message("quit");
 
 	if (vboxd_r_fd != -1) close_and_mone(vboxd_r_fd);
 	if (vboxd_w_fd != -1) close_and_mone(vboxd_w_fd);
 }
 
 /**************************************************************************/
-/** vboxd_put_message():  **/
+/** vboxd_login(): Login to the vboxd server.                            **/
+/**************************************************************************/
+/** username       Username to login.                                    **/
+/** password       Password to login.                                    **/
+/** <return>       0 on success; < 0 on error.                           **/
+/**************************************************************************/
+
+int vboxd_login(char *username, char *password)
+{
+	vboxd_put_message("login %s %s", username, password);
+
+	if (vboxd_get_message())
+	{
+		if (vboxd_test_response(VBOXD_VAL_LOGINOK)) return(VBOXC_ERR_OK);
+	}
+
+	return(VBOXC_ERR_LOGIN);
+}
+
+/**************************************************************************/
+/** vboxd_put_message(): Puts a message to the server.                   **/
 /**************************************************************************/
 
 void vboxd_put_message(char *fmt, ...)
 {
    va_list arg;
+	char    msgline[VBOXD_MAX_LINE + 1];
 
-	if (vboxd_w_stream)
-	{
-		va_start(arg, fmt);
+	va_start(arg, fmt);
+	vnprintstring(msgline, VBOXD_MAX_LINE, fmt, arg);
+	va_end(arg);
 
-		fprintf(stderr, "[put] ");
-		vfprintf(stderr        , fmt, arg);
-		fprintf(stderr, "\n");
-		vfprintf(vboxd_w_stream, fmt, arg);
-		fprintf(vboxd_w_stream, "\r\n");
-		fflush(vboxd_w_stream);
-
-		va_end(Arg);
-	}
+	write(vboxd_w_fd, msgline, strlen(msgline));
+	write(vboxd_w_fd, "\r\n", 2);
 }
 
 /**************************************************************************/
 /** vboxd_get_message(): Try to get a message from the server. The func- **/
-/**                      tion us a timeout of 5 seconds to get the mess- **/
-/**                      age.                                            **/
+/**                      tion us a timeout of VBOXD_GET_MSG_TIMEOUT sec- **/
+/**                      ends to get the message.                        **/
 /**************************************************************************/
-/** <return>             Pointer to the message or NULL.                 **/
+/** <return>             Pointer to the message or NULL on error.        **/
 /**************************************************************************/
 
 char *vboxd_get_message(void)
 {
 	struct timeval timeval;
 	fd_set         rmask;
+	char          *stop;
+	int            p;
+	int            c;
+	int            rc;
 
 	*vboxd_message = '\0';
 
-	if (vboxd_r_stream)
-	{
-		FD_ZERO(&rmask);
-		FD_SET(vboxd_r_fd, &rmask);
+	p = 0;
+	c = 0;
 
-		timeval.tv_sec  = 5;
+	while (TRUE)
+	{
+		VBOX_ONE_FD_MASK(&rmask, vboxd_r_fd);
+
+		timeval.tv_sec  = VBOXD_GET_MSG_TIMEOUT;
 		timeval.tv_usec = 0;
 
-		if (select((vboxd_r_fd + 1), &rmask, NULL, NULL, &timeval) > 0)
+		rc = select((vboxd_r_fd + 1), &rmask, NULL, NULL, &timeval);
+
+		if (rc <= 0)
 		{
-			if (FD_ISSET(vboxd_r_fd, &rmask))
-			{
-				fprintf(stderr, "[get] select has data for me...\n");
+			if ((rc < 0) && (errno == EINTR)) continue;
 
-				if (fgets(vboxd_message, 128, vboxd_r_stream))
-				{
-					vboxd_message[strlen(vboxd_message) - 1] = '\0';
-					vboxd_message[strlen(vboxd_message) - 1] = '\0';
-
-					fprintf(stderr, "[get] %s\n", vboxd_message);
-
-					return(vboxd_message);
-				}
-			}
+			break;
 		}
-	}
 
-	fprintf(stderr, "[get] FAILED!\n");
+		if (!FD_ISSET(vboxd_r_fd, &rmask)) break;
+
+		rc = read(vboxd_r_fd, &c, 1);
+
+		if (rc <= 0)
+		{
+			if ((rc < 0) && (errno == EINTR)) continue;
+
+			break;
+		}
+
+		if (c == '\n')
+		{
+			if ((stop = rindex(vboxd_message, '\r'))) *stop = '\0';
+
+			return(vboxd_message);
+		}
+
+		vboxd_message[p + 0] = c;
+		vboxd_message[p + 1] = '\0';
+
+		if (p++ >= VBOXD_MAX_LINE) break;
+	}
 
 	return(NULL);
 }
@@ -479,6 +497,27 @@ long xstrtol(char *str, long use)
 	long	line;
 
 	line = strtol(str, &stop, 10);
+	
+	if ((line < 0) || (*stop != 0)) line = use;
+
+	return(line);
+}
+
+/*************************************************************************/
+/** xstrtoul(): Converts a string to a unsigned long number, using a    **/
+/**             default on error.                                       **/
+/*************************************************************************/
+/** str			String to convert to long.											**/
+/** use			Default value if string can't converted.						**/
+/** <return>	Converted string value on success; default on error.		**/
+/*************************************************************************/
+
+unsigned long xstrtoul(char *str, unsigned long use)
+{
+	char          *stop;
+	unsigned long  line;
+
+	line = strtoul(str, &stop, 10);
 	
 	if ((line < 0) || (*stop != 0)) line = use;
 

@@ -5,7 +5,7 @@
 # login (server startup) time. If access is 'yes' the host can login
 # and count messages without special access.
 
-L:abadonna.franken.de:Y
+L:localhost:Y
 L:*:N
 
 # Full access list
@@ -13,6 +13,7 @@ L:*:N
 # All hosts in the full access list (begins with 'A') are checked if the
 # server gets the 'login' command.
 
-A:abadonna.franken.de:RW:michael:123:/var/spool/vbox/michael/incoming
-A:abadonna.franken.de:RW:nicole:123:/var/spool/vbox/nicole/incoming
-A:*:-:-:-:-
+A:localhost:RW:michael:xxx:/var/spool/vbox/michael:incoming
+A:localhost:RW:nicole:xxx:/var/spool/vbox/nicole:incoming
+
+A:*:!:!:!:!:!

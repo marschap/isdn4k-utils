@@ -1,5 +1,5 @@
 /*
-** $Id: lists.c,v 1.3 1997/02/26 13:10:39 michael Exp $
+** $Id: lists.c,v 1.4 1997/04/28 16:51:58 michael Exp $
 **
 ** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
 */
@@ -10,162 +10,115 @@
 #include "lists.h"
 #include "libvbox.h"
 
-/*************************************************************************
- ** list_init():	Initialize a minlist structure.								**
- *************************************************************************/
+/** Variables *************************************************************/
 
-void list_init(struct minlist *list)
+static char *breaklist[VBOX_MAX_BREAKLIST];
+
+/**************************************************************************/
+/** breaklist_init(): Initialize the breaklist.                          **/
+/**************************************************************************/
+
+void breaklist_init(void)
 {
-	if (list)
-	{
-		list->lh_beg = NULL;
-		list->lh_end = NULL;
-	}
+	int i;
+
+	for (i = 0; i < VBOX_MAX_BREAKLIST; i++) breaklist[i] = NULL;
 }
 
-/*************************************************************************
- ** list_exit():	Frees all nodes and initialize the minlist structure.	**
- *************************************************************************/
+/**************************************************************************/
+/** breaklist_exit(): Frees all breaklist resources.                     **/
+/**************************************************************************/
 
-void list_exit(struct minlist *list)
+void breaklist_exit(void)
 {
-	struct minnode *node;
-	struct minnode *kill;
+	int i;
 
-	if (list)
+	for (i = 0; i < VBOX_MAX_BREAKLIST; i++)
 	{
-		node = list->lh_beg;
-		
-		while (node)
-		{
-			kill = node;
-			node = node->ln_next;
-			
-			free(kill);
-		}
-
-		list_init(list);
+		if (breaklist[i]) free(breaklist[i]);
 	}
+
+	breaklist_init();
 }
 
-/*************************************************************************
- ** list_add_node():	Adds a node to a minlist structure.						**
- *************************************************************************/
+/**************************************************************************/
+/** breaklist_add(): Adds one entry to the breaklist.                    **/
+/**************************************************************************/
 
-void list_add_node(struct minlist *list, struct minnode *node)
+int breaklist_add(char *line)
 {
-	if ((list) && (node))
+	int i;
+
+	if ((line) && (*line))
 	{
-		if (list->lh_end)
+		for (i = 0; i < VBOX_MAX_BREAKLIST; i++)
 		{
-			list->lh_end->ln_next = node;
-
-			node->ln_next = NULL;
-			node->ln_prev = list->lh_end;
-
-			list->lh_end = node;
-		}
-		else
-		{
-			node->ln_next = NULL;
-			node->ln_prev = NULL;
-		
-			list->lh_beg = node;
-			list->lh_end = node;
-		}
-	}
-}
-
-/*************************************************************************
- ** list_find_node():	Searchs a node in a minlist structure.				**
- *************************************************************************/
-
-struct minnode *list_find_node(struct minlist *list, char *name)
-{
-	struct minnode *node;
-
-	if ((list) && (name))
-	{
-		if (list->lh_beg)
-		{
-			node = list->lh_beg;
-
-			while (node)
+			if (!breaklist[i])
 			{
-				if (strcmp(node->ln_name, name) == 0) return(node);
-				
-				node = node->ln_next;
+				breaklist[i] = strdup(line);
+
+				if (breaklist[i]) returnok();
 			}
 		}
 	}
+
+	returnerror();
+}
+
+/**************************************************************************/
+/** breaklist_rem(): Removes entry from the breaklist (all matches).     **/
+/**************************************************************************/
+
+void breaklist_rem(char *line)
+{
+	int i;
+
+	if ((line) && (*line))
+	{
+		for (i = 0; i < VBOX_MAX_BREAKLIST; i++)
+		{
+			if (breaklist[i])
+			{
+				if (strcasecmp(breaklist[i], line) == 0)
+				{
+					free(breaklist[i]);
+
+					breaklist[i] = NULL;
+				}
+			}
+		}
+	}
+}
+
+/**************************************************************************/
+/** breaklist_search(): Searchs entry in the breaklist.                  **/
+/**************************************************************************/
+
+int breaklist_search(char *line)
+{
+	int i;
+
+	if ((line) && (*line))
+	{
+		for (i = 0; i < VBOX_MAX_BREAKLIST; i++)
+		{
+			if (breaklist[i])
+			{
+				if (strcasecmp(breaklist[i], line) == 0) returnok();
+			}
+		}
+	}
+
+	returnerror();
+}
+
+/**************************************************************************/
+/**   **/
+/**************************************************************************/
+
+char *breaklist_nr(int nr)
+{
+	if ((nr >= 0) && (nr < VBOX_MAX_BREAKLIST)) return(breaklist[nr]);
 
 	return(NULL);
-}
-
-/*************************************************************************
- ** list_rem_node():	Removes a node from a minlist structure.				**
- *************************************************************************/
-
-void list_rem_node(struct minlist *list, struct minnode *kill)
-{
-	struct minnode *node;
-	struct minnode *next;
-	struct minnode *prev;
-
-	if ((list) && (kill))
-	{
-		if (list->lh_beg)
-		{
-			node = list->lh_beg;
-
-			while (node)
-			{
-				if (node == kill)
-				{
-					next = node->ln_next;
-					prev = node->ln_prev;
-
-					if (next) next->ln_prev = prev;
-					if (prev) prev->ln_next = next;
-
-					if (node == list->lh_beg) list->lh_beg = node->ln_next;
-					if (node == list->lh_end) list->lh_end = node->ln_prev;
-
-					free(node);
-
-					return;
-				}
-
-				node = node->ln_next;
-			}
-		}
-	}
-}
-
-/*************************************************************************
- ** list_make_node():	Creates a new node filled with the <name>.		**
- *************************************************************************/
-
-struct minnode *list_make_node(char *name)
-{
-	struct minnode *node = NULL;
-	char				*temp = NULL;
-	
-	if (name)
-	{
-		if ((node = malloc(sizeof(node))))
-		{
-			if ((temp = malloc(strlen(name))))
-			{
-				strcpy(temp, name);
-			
-				node->ln_next = NULL;
-				node->ln_prev = NULL;
-				node->ln_name = temp;
-			}
-			else free(node);
-		}
-	}
-
-	return(node);
 }

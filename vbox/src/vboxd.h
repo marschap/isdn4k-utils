@@ -6,7 +6,7 @@
 
 /** Defines ***************************************************************/
 
-#define VBOXD_LEN_ACCESSLINE     256
+#define VBOXD_LEN_ACCESSLINE     512
 #define VBOXD_LEN_CMDLINE        128
 #define VBOXD_LEN_ARGLIST        10
 
@@ -19,6 +19,8 @@
 #define VBOXD_ERR_TIMEOUT        1
 #define VBOXD_ERR_EOF            2
 #define VBOXD_ERR_TOOLONG        3
+
+#define pullmsg fflush
 
 /** Structures ************************************************************/
 

@@ -22,8 +22,8 @@ dnl # Version of the vbox package. Theres no need to change this ;-)         #
 dnl #------------------------------------------------------------------------#
 
 PACKAGE="vbox"
-VERSION="2.0.0"
-VERDATE="12-Mar-97"
+VERSION="2.0.0 BETA 2"
+VERDATE="24-Apr-97"
 
 AC_DEFINE_UNQUOTED(PACKAGE, "${PACKAGE}")
 AC_DEFINE_UNQUOTED(VERSION, "${VERSION}")
@@ -42,7 +42,6 @@ AC_PROG_INSTALL
 AC_PROG_MAKE_SET
 AC_PROG_LN_S
 
-AC_PATH_PROG(VBOX_ECHO, echo, "echo")
 AC_PATH_PROG(VBOX_RM, rm, "rm")
 AC_PATH_PROG(VBOX_MV, mv, "mv")
 AC_PATH_PROG(VBOX_SED, sed, "sed")
@@ -50,7 +49,6 @@ AC_PATH_PROG(VBOX_MAIL, mail, "mail")
 AC_PATH_PROG(VBOX_AR, ar, "ar")
 AC_PATH_PROG(VBOX_RANLIB, ranlib, "ranlib")
 
-AC_SUBST(VBOX_ECHO)
 AC_SUBST(VBOX_RM)
 AC_SUBST(VBOX_MV)
 AC_SUBST(VBOX_SED)
@@ -71,6 +69,8 @@ dnl #------------------------------------------------------------------------#
 
 AC_C_CONST
 AC_C_INLINE
+
+AC_CHECK_FUNCS(vsnprintf)
 
 dnl #------------------------------------------------------------------------#
 dnl # Checks for needed external packages:                                   #

@@ -1,0 +1,12 @@
+#! /bin/sh
+##
+## $Id: mkdev,v 1.1 1997/04/28 16:55:00 michael Exp $
+
+CURRLANG="de"
+
+./utils/mksed <./doc/$CURRLANG/vbox.sgml.in >/home/www/userspace/michael/vbox.sgml
+
+cd /home/www/userspace/michael
+
+sgml2html -l vbox.sgml
+sgml2txt -l vbox.sgml

@@ -1,5 +1,5 @@
 /*
-** $Id: script.c,v 1.6 1997/03/18 12:36:50 michael Exp $
+** $Id: script.c,v 1.7 1997/04/28 16:52:01 michael Exp $
 **
 ** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
 */
@@ -44,10 +44,6 @@ int vbox_get_nr_all_messages(ClientData, Tcl_Interp *, int, char *[]);
 #define TCLCREATECMD(N, P, X, Y) { needcreated++; if (Tcl_CreateCommand(interpreter, N, P, X, Y)) havecreated++; }
 #define TCLCREATEVAR(C, A)			{ needcreated++; if (Tcl_VarEval(interpreter, "set ", C, " \"", A, "\"", NULL) == TCL_OK) havecreated++; }
 
-/** Variables ************************************************************/
-
-struct minlist breaklist;
-
 /*************************************************************************/
 /** script_run():	Starts a external tcl script.									**/
 /*************************************************************************/
@@ -64,7 +60,7 @@ int script_run(char *script)
 
 	log(L_INFO, gettext("Running tcl script \"%s\"...\n"), script);
 
-	list_init(&breaklist);
+	breaklist_init();
 
 	result = FALSE;
 
@@ -144,7 +140,7 @@ int script_run(char *script)
 	}
 	else log(L_FATAL, gettext("Can't create tcl interpreter.\n"));
 
-	list_exit(&breaklist);
+	breaklist_exit();
 
 	return(result);
 }
@@ -166,56 +162,57 @@ int script_check_interpreter(void)
 
 int vbox_breaklist(ClientData cd, Tcl_Interp *ip, int argc, char *argv[])
 {
-	struct minnode *node;
+	int   i;
+	char *line;
 
-	if (argc == 3)
+	if (argc < 3)
 	{
-		if ((strcasecmp(argv[1], "ADD") == 0) || (strcasecmp(argv[1], "REM") == 0))
+		log(L_ERROR, gettext("[vbox_breaklist] usage: vbox_breaklist <rem|add> <sequence> [sequence] [...]\n"));
+
+		return(TCL_OK);
+	}
+
+	if (strcasecmp(argv[1], "add") == 0)
+	{
+		for (i = 2; i < argc; i++)
 		{
-			if (strcasecmp(argv[1], "ADD") == 0)
+			if (!breaklist_add(argv[i]))
 			{
-				if ((node = list_make_node(argv[2])))
-				{
-					list_add_node(&breaklist, node);
-					
-					return(TCL_OK);
-				}
-			}
-
-			if (strcasecmp(argv[1], "REM") == 0)
-			{
-				if (strcasecmp(argv[2], "ALL") != 0)
-				{
-					list_rem_node(&breaklist, list_find_node(&breaklist, argv[2]));
-				}
-				else list_exit(&breaklist);
-
-				return(TCL_OK);
+				log(L_ERROR, gettext("[vbox_breaklist] can't add \"%s\".\n"), argv[i]);
 			}
 		}
-		else log(L_ERROR, gettext("[vbox_breaklist] unsupported argument \"%s\"."), argv[1]);
+
+		return(TCL_OK);
 	}
-	else
+
+	if (strcasecmp(argv[1], "rem") == 0)
 	{
-		if (argc == 2)
+		for (i = 2; i < argc; i++)
 		{
-			if (strcasecmp(argv[1], "LIST") == 0)
+			if (strcasecmp(argv[i], "all") == 0)
 			{
-				node = breaklist.lh_beg;
-
-				while (node)
-				{
-					log(L_INFO, gettext("[vbox_breaklist] %s\n"), node->ln_name);
-			
-					node = node->ln_next;
-				}
-
-				return(TCL_OK);
+				breaklist_exit();
 			}
-			else log(L_ERROR, gettext("[vbox_breaklist] unsupported argument \"%s\"."), argv[1]);
+			else breaklist_rem(argv[i]);
 		}
-		else log(L_ERROR, gettext("[vbox_breaklist] usage: vbox_breaklist <rem|add> <sequence>\n"));
+
+		return(TCL_OK);
 	}
+
+	if (strcasecmp(argv[1], "list") == 0)
+	{
+		for (i = 0; i < VBOX_MAX_BREAKLIST; i++)
+		{
+			if ((line = breaklist_nr(i)))
+			{
+				log(L_DEBUG, "[vbox_breaklist] %s\n", line);
+			}
+		}
+
+		return(TCL_OK);
+	}
+
+	log(L_ERROR, gettext("[vbox_breaklist] usage: vbox_breaklist <rem|add> <sequence> [sequence] [...]\n"));
 
 	return(TCL_OK);
 }

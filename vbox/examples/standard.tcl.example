@@ -8,31 +8,31 @@ vbox_breaklist rem all
 
 # If variable VBOX_FLAG_STANDARD is TRUE we must play the standard
 # message...
-#
-#if { "$vbox_flag_standard" == "TRUE" } {
-#
-#   set RC [ vbox_put_message $VBOX_MSG_STANDARD ]
-#
-#   vbox_pause 500
-#
-#   if { "$RC" == "HANGUP" } {
-#      return
-#   }
-#}
+
+if { "$vbox_flag_standard" == "TRUE" } {
+
+   set RC [ vbox_put_message $vbox_msg_standard ]
+
+   vbox_pause 500
+
+   if { "$RC" == "HANGUP" } {
+      return
+   }
+}
 
 # If variable VBOX_FLAG_BEEP is TRUE we must play the beep
 # message...
-#
-#if { "$VBOX_FLAG_BEEP" == "TRUE" } {
-#
-#   set RC [ VBoxPutMessage $VBOX_MSG_BEEP ]
-#
-#   VBoxPause 500
-#
-#   if { "$RC" == "HANGUP" } {
-#      return
-#   }
-#}
+
+if { "$vbox_flag_beep" == "TRUE" } {
+
+   set RC [ vbox_put_message $vbox_msg_beep ]
+
+   vbox_pause 500
+
+   if { "$RC" == "HANGUP" } {
+      return
+   }
+}
 
 # If variable VBOX_FLAG_RECORD is TRUE we must record a new
 # message...
@@ -45,16 +45,16 @@ if { "$vbox_flag_record" == "TRUE" } {
 
    vbox_pause 1000
 
-   exec -- $vbox_var_bindir/vboxmail "$VBOX_NEW_MESSAGE" "$vbox_caller_name" "$vbox_caller_od" "$vbox_user_name"
+   exec -- $vbox_var_bindir/vboxmail "$VBOX_NEW_MESSAGE" "$vbox_caller_name" "$vbox_caller_id" "$vbox_user_name"
 
    if { "$RC" == "HANGUP" } {
       return
    }
 
-#   if { "$RC" == "TIMEOUT" } {
-#
-#      VBoxPutMessage $VBOX_MSG_TIMEOUT
-#
-#      VBoxPause 1000
-#   }
+   if { "$RC" == "TIMEOUT" } {
+
+      vbox_put_message $vbox_msg_timeout
+
+      vbox_pause 500
+   }
 }

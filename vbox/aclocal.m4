@@ -120,13 +120,11 @@ AC_DEFUN(GND_PACKAGE_GETTEXT,
 
       AC_MSG_RESULT("${nls_cv_use_nls}")
 
-      AC_CHECK_HEADERS(locale.h)
+      AC_CHECK_HEADERS(libintl.h locale.h)
 
       if (test "${nls_cv_use_nls}" = "yes")
       then
          nls_cv_use_nls="no"
-
-         AC_CHECK_HEADERS(libintl.h)
 
          if (test "${ac_cv_header_locale_h}" = "yes")
          then

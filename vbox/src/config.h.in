@@ -33,6 +33,12 @@
 #undef HAVE_LC_MESSAGES
 
 /*
+ * Define if you have the vsnprintf() function:
+ */
+
+#undef HAVE_VSNPRINTF
+
+/*
  * Define if you have the gettext() function:
  */
 

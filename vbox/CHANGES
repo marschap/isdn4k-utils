@@ -1,7 +1,77 @@
-# $Id: CHANGES,v 1.10 1997/04/04 09:31:49 michael Exp $
+# $Id: CHANGES,v 1.11 1997/04/28 16:51:11 michael Exp $
 #
 # To describe the news & fixes better (my english is not the best :-) the
 # changelog is only available in german.
+
+27-Apr-97
+=========
+
+o [Neu] vboxd macht Fehlerausgaben jetzt im syslog.
+
+o [Neu] Lautstärkenregler eingebaut. Die Lautstärke wird jetzt wieder
+	vboxplay als 2. Argument übergeben.
+
+o [Neu] Deutsche Übersetzung für vbox gemacht.
+
+o [Neu] Nachrichten löschen funktioniert.
+
+o [Neu] Nachrichten als gelesen/ungelesen markieren funktioniert.
+
+o [Neu] Funktion TOGGLE in vboxd implementiert.
+
+o [Neu] Funktion DELETE in vboxd implementiert.
+
+o [Neu] vbox (viewer) benutzt jetzt ~/.vboxrc um Farbeinstellungen zu
+	machen. Ein Beispiel ist unter ./examples/vboxrc.example.
+
+o [Fix] Speicherverwaltung in den breaklist-Funktionen hat
+	gesponnen. Jetzt wird ein fixes Feld benutzt.
+
+
+26-Apr-97
+=========
+
+o [Neu] Dokumentation: Erste Schritte.
+
+o [Neu] vbox kann jetzt Nachrichten vom Server holen und spielen :-)
+
+o [Neu] Funktion MESSAGE und HEADER in vboxd so umgeschrieben, das die
+	Daten binär und nicht mehr Zeilenweise übertragen werden (das
+	zeilenweise Lesen hat *lokal* mehrere Sekunden benötigt).
+
+o [Fix] In vboxcnvt fehlte der Signalhändler für SIGPIPE.
+
+
+25-Apr-97
+=========
+
+o [Neu] Neue Zeile bei LIST in vboxd: M <Zeit> gibt die mtime der
+	Nachricht an.
+
+o [Neu] Mit vbox begonnen :-)
+
+
+24-Apr-97
+=========
+
+o [Fix] vboxd hat sich nicht beendet wenn er ein EOF gelesen hat.
+
+o [Neu] Der voreingestellte Port von vboxbeep und vbox ist jetzt nicht
+	mehr eincompiliert, sondern wird mit getservbyname() geholt.
+
+o [Fix] Einlesen der Kommandozeile von vboxd geändert.
+
+o [Fix] Komisches Verhalten von configure behoben, der libintl.h nicht
+        finden wollte, wenn vorher nach locale.h gesucht wurde?!
+
+o [Fix] Variablen in standard.tcl.example angepasst.
+
+o [Fix] Vergessenes AT in interninitb hinzugefügt.
+
+o [Fix] For-Schleifen im Makefile angepasst.
+
+o [Fix] Änderungen in INSTALL bezüglich der Mailingliste.
+
 
 04-Apr-97
 =========

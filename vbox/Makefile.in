@@ -1,5 +1,5 @@
 #
-# $Id: Makefile.in,v 1.11 1997/04/04 09:31:50 michael Exp $
+# $Id: Makefile.in,v 1.12 1997/04/28 16:51:14 michael Exp $
 
 #----------------------------------------------------------------------------#
 # Things you can change to personalize the Makefile for your own site. Some  #
@@ -76,7 +76,6 @@ LDFLAGS		= @LDFLAGS@
 #----------------------------------------------------------------------------#
 
 LN		= @LN_S@
-ECHO		= @VBOX_ECHO@
 MV		= @VBOX_MV@
 RM		= @VBOX_RM@
 SED		= @VBOX_SED@
@@ -159,224 +158,221 @@ export VBOX_LOCALEDIR
 export VBOX_SYSCONFDIR
 
 #----------------------------------------------------------------------------#
-# All action we must do...                                                   #
+#                                                                            #
+#                                MAIN SECTION                                #
+#                                                                            #
 #----------------------------------------------------------------------------#
 
-all:		  vbox-apps vbox-seds
+all:		  directories-b programs-b scripts-b manuals-b catalogs-b
+
+install:	  directories-i programs-i scripts-i manuals-i catalogs-i
 
 #----------------------------------------------------------------------------#
-# Build...                                                                   #
+#                                                                            #
+#                               PROGRAM SECTION                              #
+#                                                                            #
 #----------------------------------------------------------------------------#
 
-vbox-apps:	  ignore
-		  @$(ECHO)
-		  @$(ECHO) "Building vbox $(VBOX_VERSION) ($(VBOX_VERDATE))..."
-		  @$(ECHO)
+PROGRAMS_D	= $(TOPDIR)/src/vboxgetty \
+		  $(TOPDIR)/src/vboxd \
+		  $(TOPDIR)/src/vboxconvert \
+		  $(TOPDIR)/src/vboxctrl \
+		  $(TOPDIR)/src/vboxbeep \
+		  $(TOPDIR)/src/vbox
+
+programs-b:	  ignore
 		  @$(MAKE) -C $(TOPDIR)/src all
 
-#----------------------------------------------------------------------------#
-
-SEDCONVERTOBJS	= $(TOPDIR)/utils/vboxmail $(TOPDIR)/utils/vboxplay \
-		  $(TOPDIR)/doc/de/txt/vbox.txt \
-		  $(TOPDIR)/doc/de/html/vbox.html \
-		  $(TOPDIR)/doc/de/html/vbox-1.html \
-		  $(TOPDIR)/doc/de/html/vbox-2.html \
-		  $(TOPDIR)/doc/de/html/vbox-3.html \
-		  $(TOPDIR)/doc/de/html/vbox-4.html \
-		  $(TOPDIR)/doc/de/html/vbox-5.html \
-		  $(TOPDIR)/doc/de/html/vbox-6.html \
-		  $(TOPDIR)/doc/de/html/vbox-7.html \
-		  $(TOPDIR)/doc/de/html/vbox-8.html \
-		  $(TOPDIR)/doc/de/html/vbox-9.html
-
-vbox-seds:	  ignore
-		  @set -e; for i in $(SEDCONVERTOBJS); do \
-		     $(TOPDIR)/utils/mksed <$$i.in >$$i; \
+programs-d:	  ignore
+		  @set -e; for i in `echo $(PROGRAMS_D)`; do \
+			$(RM) -f $$i; \
 		  done
 
-#----------------------------------------------------------------------------#
-# Install program & settings...                                              #
-#----------------------------------------------------------------------------#
-
-install:	  inst-message \
-		  inst-vboxdirs inst-vboxgetty inst-vboxd inst-vbox \
-		  inst-vboxcnvt inst-vboxctrl inst-vboxbeep inst-vboxmail \
-		  inst-vboxplay inst-vboxmsgs
-
-inst-message:	  ignore
-		  @$(ECHO)
-		  @$(ECHO) "Installing vbox $(VBOX_VERSION) ($(VBOX_VERDATE))..."
-		  @$(ECHO)
-
-#----------------------------------------------------------------------------#
-
-inst-vboxgetty:	  ignore
-		  @$(ECHO) "Installing '$(sbindir)/vboxgetty'..."
+programs-i:	  ignore
+		  @echo "Installing '$(sbindir)/vboxgetty'..."
 		  @$(INSTALL_SBIN) $(TOPDIR)/src/vboxgetty $(sbindir)/vboxgetty
-
-		  @$(ECHO) "Installing '$(sysconfdir)/vboxgetty.conf.example'..."
-		  @$(INSTALL_SYSCONF) $(TOPDIR)/examples/vboxgetty.conf.example $(sysconfdir)
-
-#----------------------------------------------------------------------------#
-
-inst-vboxd:	  ignore
-		  @$(ECHO) "Installing '$(sbindir)/vboxd'..."
+		  @echo "Installing '$(sbindir)/vboxd'..."
 		  @$(INSTALL_SBIN) $(TOPDIR)/src/vboxd $(sbindir)/vboxd
-
-		  @$(ECHO) "Installing '$(sysconfdir)/vboxd.conf.example'..."
-		  @$(INSTALL_SYSCONF) $(TOPDIR)/examples/vboxd.conf.example $(sysconfdir)
-
-#----------------------------------------------------------------------------#
-
-inst-vboxcnvt:	  ignore
-		  @$(ECHO) "Installing '$(bindir)/vboxcnvt'..."
+		  @echo "Installing '$(bindir)/vboxcnvt'..."
 		  @$(INSTALL_BIN) $(TOPDIR)/src/vboxconvert $(bindir)/vboxcnvt
 		  @cd $(bindir); \
 		  $(LN) -f vboxcnvt vboxtoau; \
 		  $(LN) -f vboxcnvt autovbox; \
-		  $(LN) -f vboxcnvt vboxmode;
-
-#----------------------------------------------------------------------------#
-
-inst-vboxctrl:	  ignore
-		  @$(ECHO) "Installing '$(bindir)/vboxctrl'..."
-		  @$(INSTALL_BIN) $(TOPDIR)/src/vboxctrl $(bindir)
-
-#----------------------------------------------------------------------------#
-
-inst-vboxbeep:	  ignore
-		  @$(ECHO) "Installing '$(bindir)/vboxbeep'..."
-		  @$(INSTALL_UBIN) $(TOPDIR)/src/vboxbeep $(bindir)
-
-#----------------------------------------------------------------------------#
-
-inst-vboxmail:	  ignore
-		  @$(ECHO) "Installing '$(bindir)/vboxmail'..."
-		  @$(INSTALL_SHBIN) $(TOPDIR)/utils/vboxmail $(bindir)
-
-#----------------------------------------------------------------------------#
-
-inst-vboxplay:	  ignore
-		  @$(ECHO) "Installing '$(bindir)/vboxplay'..."
-		  @$(INSTALL_SHBIN) $(TOPDIR)/utils/vboxplay $(bindir)
-
-#----------------------------------------------------------------------------#
-
-inst-vbox:	  ignore
+		  $(LN) -f vboxcnvt vboxmode
+		  @echo "Installing '$(bindir)/vboxctrl'..."
+		  @$(INSTALL_BIN) $(TOPDIR)/src/vboxctrl $(bindir)/vboxctrl
+		  @echo "Installing '$(bindir)/vboxbeep'..."
+		  @$(INSTALL_UBIN) $(TOPDIR)/src/vboxbeep $(bindir)/vboxbeep
 ifeq ($(HAVE_NCURSES),y)
-		  @$(ECHO) "Installing '$(bindir)/vbox'..."
-		  @$(INSTALL_BIN) $(TOPDIR)/src/vbox $(bindir)
+		  @echo "Installing '$(bindir)/vbox'..."
+		  @$(INSTALL_BIN) $(TOPDIR)/src/vbox $(bindir)/vbox
 endif
-
-#----------------------------------------------------------------------------#
-
-inst-vboxmsgs:	  ignore
-		  @set -e; \
-		  if [ "$(CATALOGS)" != "" ]; then \
-		     for i in $(CATALOGS); do \
-		        $(ECHO) "Installing '$(LOCALEDIR)/$$i/LC_MESSAGES/$(VBOX_PACKAGE).mo'..."; \
-		        $(INSTALL_LOCALE) $(TOPDIR)/messages/$$i.mo $(LOCALEDIR)/$$i/LC_MESSAGES/$(VBOX_PACKAGE).mo; \
-		     done; \
+		  @set -e; if [ -f $(sysconfdir)/vboxgetty.conf ]; then \
+			  echo "Installing '$(sysconfdir)/vboxgetty.conf.new'..."; \
+			  $(INSTALL_SYSCONF) $(TOPDIR)/examples/vboxgetty.conf.example $(sysconfdir)/vboxgetty.conf.new; \
+		  else \
+			  echo "Installing '$(sysconfdir)/vboxgetty.conf'..."; \
+			  $(INSTALL_SYSCONF) $(TOPDIR)/examples/vboxgetty.conf.example $(sysconfdir)/vboxgetty.conf; \
+		  fi
+		  @set -e; if [ -f $(sysconfdir)/vboxd.conf ]; then \
+			  echo "Installing '$(sysconfdir)/vboxd.conf.new'..."; \
+			  $(INSTALL_SYSCONF) $(TOPDIR)/examples/vboxd.conf.example $(sysconfdir)/vboxd.conf.new; \
+		  else \
+			  echo "Installing '$(sysconfdir)/vboxd.conf'..."; \
+			  $(INSTALL_SYSCONF) $(TOPDIR)/examples/vboxd.conf.example $(sysconfdir)/vboxd.conf; \
 		  fi
 
 #----------------------------------------------------------------------------#
-# Uninstall...                                                               #
+#                                                                            #
+#                              DIRECTORY SECTION                             #
+#                                                                            #
 #----------------------------------------------------------------------------#
 
-uninstall:	  ignore
-
-#----------------------------------------------------------------------------#
-# Install directories...                                                     #
-#----------------------------------------------------------------------------#
-
-MAKETHISDIRS	= $(prefix) $(exec_prefix) $(sbindir) $(bindir) \
-		  $(sysconfdir) $(SPOOLDIR) $(LOGFILEDIR) $(PIDFILEDIR) \
+DIRECTORIES_I	= $(prefix) \
+		  $(exec_prefix) \
+		  $(sbindir) \
+		  $(bindir) \
+		  $(sysconfdir) \
+		  $(SPOOLDIR) \
+		  $(LOGFILEDIR) \
+		  $(PIDFILEDIR) \
 		  $(LCKFILEDIR)
 
-inst-vboxdirs:	  ignore
-		  @set -e; \
-		  for i in $(MAKETHISDIRS); do \
-		     $(ECHO) -n "Checking '$$i'... "; \
-		     if [ -d $$i ]; then \
-		        $(ECHO) "it's here."; \
-		     else \
-		        $(ECHO) "creating..."; \
-		        $(INSTALL_DIRS) $$i; \
-		     fi; \
+directories-i:	  ignore
+		  @set -e; for i in `echo $(DIRECTORIES_I)`; do \
+			if [ ! -d $$i ]; then \
+				$(INSTALL_DIRS) $$i; \
+			fi; \
 		  done
-		  @set -e; \
-		  if [ "$(CATALOGS)" != "" ]; then \
-		     for i in $(CATALOGS); do \
-		        $(ECHO) -n "Checking '$(LOCALEDIR)/$$i/LC_MESSAGES'... "; \
-		        if [ -d $(LOCALEDIR)/$$i/LC_MESSAGES ]; then \
-		           $(ECHO) "it's here."; \
-		        else \
-		           $(ECHO) "creating..."; \
-		           $(INSTALL_DIRS) $(LOCALEDIR)/$$i/LC_MESSAGES; \
-		        fi; \
-		     done; \
-		  fi
+		  @set -e; for i in `echo $(CATALOGS)`; do \
+			if [ ! -d $(LOCALEDIR)/$$i/LC_MESSAGES ]; then \
+				$(INSTALL_DIRS) $(LOCALEDIR)/$$i/LC_MESSAGES; \
+			fi; \
+		  done
+
+directories-b:	  ignore
+
+directories-d:	  ignore
 
 #----------------------------------------------------------------------------#
-# Create sgml source...                                                      #
+#                                                                            #
+#                               CATALOG SECTION                              #
+#                                                                            #
 #----------------------------------------------------------------------------#
 
-create-de-sgml:	  ignore
-		  @$(TOPDIR)/utils/mksed <$(TOPDIR)/doc/de/vbox.sgml >$(TOPDIR)/vbox-de.sgml
+catalogs-i:	  ignore
+		  @set -e; for i in `echo $(CATALOGS)`; do \
+			echo "Installing '$(LOCALEDIR)/$$i/LC_MESSAGES/$(VBOX_PACKAGE).mo'..."; \
+			$(INSTALL_LOCALE) $(TOPDIR)/messages/$$i.mo $(LOCALEDIR)/$$i/LC_MESSAGES/$(VBOX_PACKAGE).mo; \
+		  done
 
-#----------------------------------------------------------------------------#
-# Create po und mo messages (only for development)...                        #
-#----------------------------------------------------------------------------#
+catalogs-b:	  ignore
 
-messages:	  ignore
+catalogs-d:	  ignore
+
+catalogs-v:	  ignore
 		  @$(TOPDIR)/utils/mkpos
 
 #----------------------------------------------------------------------------#
-# Create documentation (only for development)...                             #
+#                                                                            #
+#                                MANUAL SECTION                              #
+#                                                                            #
 #----------------------------------------------------------------------------#
 
-documents:	  ignore
-		  @$(TOPDIR)/utils/mkdoc
+MANUALS_B	= de
+MANUALS_D	= $(MANUALS_B)
+MANUALS_V       = $(MANUALS_B)
 
-#----------------------------------------------------------------------------#
-# Create release version (only for development)...                           #
-#----------------------------------------------------------------------------#
-
-release:	  distclean messages documents
-
-#----------------------------------------------------------------------------#
-# Cleaning...                                                                #
-#----------------------------------------------------------------------------#
-
-CLEANSUBDIRS	= $(TOPDIR) $(TOPDIR)/src $(TOPDIR)/doc $(TOPDIR)/utils \
-		  $(TOPDIR)/examples $(TOPDIR)/messages \
-		  $(TOPDIR)/doc/de $(TOPDIR)/doc/de/html $(TOPDIR)/doc/txt
-
-CLEANOBJS	= $(TOPDIR)/src/vboxgetty $(TOPDIR)/src/vboxd \
-		  $(TOPDIR)/src/vboxconvert $(TOPDIR)/src/vboxbeep \
-		  $(TOPDIR)/src/vboxctrl $(TOPDIR)/src/vbox
-
-DISTCLEANOBJS	= $(SEDCONVERTOBJS) $(TOPDIR)/Makefile \
-		  $(TOPDIR)/src/Makefile $(TOPDIR)/src/config.h \
-		  $(TOPDIR)/.Config $(TOPDIR)/config.cache \
-		  $(TOPDIR)/config.log $(TOPDIR)/config.status
-
-distclean:	  clean
-		  @set -e; for i in $(DISTCLEANOBJS); do \
-		     $(RM) -f $$i; \
+manuals-b:	  ignore
+		  @set -e; for i in `echo $(MANUALS_B)`; do \
+			$(TOPDIR)/utils/mksed <$(TOPDIR)/doc/$$i/vbox.sgml.in >$(TOPDIR)/doc/$$i/vbox.sgml; \
+			$(TOPDIR)/utils/mksed <$(TOPDIR)/doc/$$i/vbox.txt.in >$(TOPDIR)/doc/$$i/vbox.txt; \
 		  done
+
+manuals-d:	  ignore
+		  @set -e; for i in `echo $(MANUALS_D)`; do \
+			$(RM) -f $(TOPDIR)/doc/$$i/vbox.sgml $(TOPDIR)/doc/$$i/vbox.txt; \
+		  done
+
+manuals-i:	  ignore
+
+manuals-v:	  ignore
+		  @set -e; for i in `echo $(MANUALS_V)`; do \
+			$(TOPDIR)/utils/mkdoc $(TOPDIR)/doc/$$i; \
+		  done
+
+#----------------------------------------------------------------------------#
+#                                                                            #
+#                                SCRIPT SECTION                              #
+#                                                                            #
+#----------------------------------------------------------------------------#
+
+SCRIPTS_B	= $(TOPDIR)/utils/vboxmail $(TOPDIR)/utils/vboxplay
+
+SCRIPTS_D	= $(SCRIPTS_B)
+
+scripts-b:	  ignore
+		  @set -e; for i in `echo $(SCRIPTS_B)`; do \
+			$(TOPDIR)/utils/mksed <$$i.in >$$i; \
+		  done
+
+scripts-d:	  ignore
+		  @set -e; for i in `echo $(SCRIPTS_D)`; do \
+			$(RM) -f $$i; \
+		  done
+
+scripts-i:	  ignore
+		  @echo "Installing '$(bindir)/vboxmail'..."
+		  @$(INSTALL_SHBIN) $(TOPDIR)/utils/vboxmail $(bindir)/vboxmail
+		  @echo "Installing '$(bindir)/vboxplay'..."
+		  @$(INSTALL_SHBIN) $(TOPDIR)/utils/vboxplay $(bindir)/vboxplay
+
+#----------------------------------------------------------------------------#
+#                                                                            #
+#                               CLEANING SECTION                             #
+#                                                                            #
+#----------------------------------------------------------------------------#
+
+DISTCLEANOBJS	= $(TOPDIR)/Makefile \
+		  $(TOPDIR)/.Config \
+		  $(TOPDIR)/config.cache \
+		  $(TOPDIR)/config.log \
+		  $(TOPDIR)/config.status \
+		  $(TOPDIR)/src/Makefile \
+		  $(TOPDIR)/src/config.h \
 
 clean:		  ignore
-		  @set -e; for i in $(CLEANSUBDIRS); do \
-		     $(RM) -f $$i/*~ $$i/*.[oas] $$i/backup-*; \
-		  done
-		  @set -e; for i in $(CLEANOBJS); do \
+		  @find $(TOPDIR)/ -name '*~' -exec $(RM) {} ';'
+
+distclean:	  clean programs-d scripts-d manuals-d
+		  @set -e; for i in `echo $(DISTCLEANOBJS)`; do \
 		     $(RM) -f $$i; \
 		  done
+		  @find $(TOPDIR)/ -name '*.o' -exec $(RM) -f {} ';'
+		  @find $(TOPDIR)/ -name 'backup-*' -exec $(RM) -f {} ';'
 
 #----------------------------------------------------------------------------#
-# For isdn4k-utils package compatibility...                                  #
+#                                                                            #
+#                               DEVELOPMENT ONLY                             #
+#                                                                            #
 #----------------------------------------------------------------------------#
+
+release:	  catalogs-v manuals-v distclean
+
+manuals:	  manuals-v
+
+catalogs:	  catalogs-v
+
+mantest:	  ignore
+		  @$(TOPDIR)/utils/mkdev
+
+#----------------------------------------------------------------------------#
+#                                                                            #
+#                                 MISC SECTION                               #
+#                                                                            #
+#----------------------------------------------------------------------------#
+
+uninstall:	  ignore
 
 config:		  ignore
 		  @./configure

@@ -1,5 +1,5 @@
 /*
-** $Id: rcgetty.c,v 1.6 1997/04/04 09:32:41 michael Exp $
+** $Id: rcgetty.c,v 1.7 1997/04/28 16:52:00 michael Exp $
 **
 ** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
 */
@@ -83,9 +83,9 @@ int getty_get_settings(char *rcname)
 
 	log(L_DEBUG, gettext("Parsing settings in \"%s\" for port \"%s\"...\n"), rcname, setup.modem.device);
 
-	xstrncpy(setup.modem.interninita	, "AT+FCLASS=8"	, MODEM_MAX_INITSTRING);
-	xstrncpy(setup.modem.interninitb	, "S13.2=1S13.4=1", MODEM_MAX_INITSTRING);
-	xstrncpy(setup.modem.init			, "ATZ"				, MODEM_MAX_INITSTRING);
+	xstrncpy(setup.modem.interninita	, "AT+FCLASS=8"	  , MODEM_MAX_INITSTRING);
+	xstrncpy(setup.modem.interninitb	, "ATS13.2=1S13.4=1", MODEM_MAX_INITSTRING);
+	xstrncpy(setup.modem.init			, "ATZ"				  , MODEM_MAX_INITSTRING);
 
 	setup.modem.toggle_dtr_time	= MODEM_TOGGLETIME;
 	setup.modem.timeout_ring		= MODEM_RINGTIMEOUT;

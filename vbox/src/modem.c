@@ -1,5 +1,5 @@
 /*
-** $Id: modem.c,v 1.8 1997/03/18 12:36:47 michael Exp $
+** $Id: modem.c,v 1.9 1997/04/28 16:51:59 michael Exp $
 **
 ** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
 */
@@ -35,7 +35,7 @@
 /** Defines **************************************************************/
 
 #define USE_NEW_MODEM_READER	  /* Define to use new modem read command	*/
-#undef  DBG_NEW_MODEM_READER	/* Define to debug new modem read command	*/
+#define DBG_NEW_MODEM_READER	/* Define to debug new modem read command	*/
 #undef  DBG_OLD_MODEM_READER	/* Define to debug old modem read command	*/
 
 /** Variables ************************************************************/

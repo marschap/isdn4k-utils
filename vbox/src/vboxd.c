@@ -1,5 +1,5 @@
 /*
-** $Id: vboxd.c,v 1.2 1997/04/04 09:32:43 michael Exp $
+** $Id: vboxd.c,v 1.3 1997/04/28 16:52:08 michael Exp $
 **
 ** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
 */
@@ -29,6 +29,7 @@
 #include <syslog.h>
 #include <fcntl.h>
 #include <getopt.h>
+#include <utime.h>
 #include <netdb.h>
 #include <sys/socket.h>
 #include <sys/types.h>
@@ -49,6 +50,7 @@ static char *client_hostaddr    = NULL;
 static char *client_hostname    = NULL;
 static char *client_user        = NULL;
 static char *client_spool       = NULL;
+static char *client_home        = NULL;
 static char *server_vboxdrc     = NULL;
 static int   client_access      = VBOXD_ACC_NOTHING;    /* Default no access */
 static int   client_1st_timeout = 30;
@@ -65,7 +67,6 @@ static int  check_client_access_start(char *, char *);
 static int  get_next_command(char *, int, int);
 static void handle_client_input(void);
 static void handle_commands(char *);
-static void print_hex_block(char *, char *, size_t);
 static void usage(void);
 static void version(void);
 static void exit_on_signal(int);
@@ -80,20 +81,26 @@ static void srv_count(int, char **);
 static void srv_login(int, char **);
 static void srv_header(int, char **);
 static void srv_message(int, char **);
+static void srv_toggle(int, char **);
+static void srv_delete(int, char **);
+static void srv_statusctrl(int, char **);
 
 /** Structures ************************************************************/
 
 static struct servercmds commands[] =
 {
-	{ "help"   , srv_help    },
-	{ "quit"   , srv_quit    },
-	{ "list"   , srv_list    },
-	{ "noop"   , srv_noop    },
-	{ "count"  , srv_count   },
-   { "login"  , srv_login   },
-	{ "header" , srv_header  },
-	{ "message", srv_message },
-	{ NULL     , NULL        }
+	{ "help"      , srv_help       },
+	{ "quit"      , srv_quit       },
+	{ "list"      , srv_list       },
+	{ "noop"      , srv_noop       },
+	{ "count"     , srv_count      },
+   { "login"     , srv_login      },
+	{ "header"    , srv_header     },
+	{ "message"   , srv_message    },
+	{ "toggle"    , srv_toggle     },
+	{ "delete"    , srv_delete     },
+	{ "statusctrl", srv_statusctrl },
+	{ NULL        , NULL           }
 };
 
 static struct option arguments[] =
@@ -159,6 +166,8 @@ void main(int argc, char **argv)
 	signal(SIGHUP , exit_on_signal);
 	signal(SIGTERM, exit_on_signal);
 
+	openlog("vboxd", LOG_CONS|LOG_PID, LOG_DAEMON); 
+
 	/*
 	 * Read the access list into memory. If we can't get it, we exit with
 	 * error.
@@ -166,6 +175,8 @@ void main(int argc, char **argv)
 
 	if (!(accesslist = streamio_open(server_vboxdrc)))
 	{
+		syslog(LOG_ERR, "can't read access list (%s).", strerror(errno));
+
 		message("%s Can't read access list (%s). Goodbye!\r\n", VBOXD_VAL_TEMPERROR, strerror(errno));
 
 		leave_program(1);
@@ -195,6 +206,8 @@ void main(int argc, char **argv)
 
 static void leave_program(int status)
 {
+	syslog(LOG_INFO, "connection closed.");
+
 	if (client_hostaddr) free(client_hostaddr);
 	if (client_hostname) free(client_hostname);
 	if (client_spool   ) free(client_spool   );
@@ -204,6 +217,8 @@ static void leave_program(int status)
 
 	message("%s .\r\n", VBOXD_VAL_SERVERQUIT);
 	fflush(stdout);
+
+	closelog();
 
 	exit(status);
 }
@@ -245,6 +260,8 @@ static void usage(void)
 
 static void exit_on_signal(int s)
 {
+	syslog(LOG_INFO, "server dies on signal %d.", s);
+
 	message("%s Server dies on signal %d.\r\n", VBOXD_VAL_TEMPERROR, s);
 
 	leave_program(s);
@@ -273,10 +290,14 @@ static void handle_client_input(void)
 				break;
 
 			case VBOXD_ERR_TOOLONG:
+				syslog(LOG_WARNING, "line too long.");
 				message("%s Line too long.\r\n", VBOXD_VAL_BADCOMMAND);
-				continue;
+				break;
 
 			case VBOXD_ERR_EOF:
+				syslog(LOG_WARNING, "receive EOF - pipe broken.");
+				message("%s Receive EOF - I think the pipe is broken.\r\n", VBOXD_VAL_TEMPERROR);
+				leave_program(1);
 				break;
 
 			case VBOXD_ERR_OK:
@@ -346,37 +367,9 @@ static void handle_commands(char *line)
 	 * message (nothing else is done).
 	 */
 
+	syslog(LOG_INFO, "unknown command \"%s\" requested.", av[0]);
+
 	message("%s Unknown (or not yet implemented) command \"%s\".\r\n", VBOXD_VAL_BADCOMMAND, av[0]);
-}
-
-/**************************************************************************/
-/** print_hex_block(): Memory hex dump.                                  **/
-/**************************************************************************/
-
-static void print_hex_block(char *id, char *block, size_t size)
-{
-	size_t todo;
-	int    loop;
-	int    i;
-
-	todo = size;
-
-	while (todo > 0)
-	{
-		loop = 24;
-
-		if (todo < 24) loop = todo;
-
-		message("%s", id);
-
-		for (i = 0; i < loop; i++) message(" %02X", (unsigned char)*block++);
-
-		message("\r\n");
-
-		todo -= loop;
-	}
-
-	message("%s .\r\n", id);
 }
 
 /**************************************************************************/
@@ -385,74 +378,67 @@ static void print_hex_block(char *id, char *block, size_t size)
 
 static int get_next_command(char *line, int linelen, int timeout)
 {
-	char           temp[64 + 1];
 	struct timeval timeval;
 	fd_set         rmask;
-	int            count;
+	char          *stop;
+	int            p;
+	int            c;
 	int            rc;
-	char           *e;
-   char           *p;
-	char           *t;
-	char            c;
 
-	count = 0;
+	*line = '\0';
 
-	for (t = temp, p = line, e = &line[linelen - 1];;)
+	p = 0;
+	c = 0;
+
+	while (TRUE)
 	{
-		if (count == 0)
+		VBOX_ONE_FD_MASK(&rmask, STDIN_FILENO);
+
+		timeval.tv_sec  = timeout;
+		timeval.tv_usec = 0;
+
+		rc = select((STDIN_FILENO + 1), &rmask, NULL, NULL, &timeval);
+
+		if (rc < 0)
 		{
-			while (TRUE)
-			{
-				FD_ZERO(&rmask);
-				FD_SET(STDIN_FILENO, &rmask);
+			if (errno == EINTR) continue;
 
-				timeval.tv_sec  = timeout;
-				timeval.tv_usec = 0;
+			syslog(LOG_ERR, "can't select (%s).", strerror(errno));
 
-				rc = select((STDIN_FILENO + 1), &rmask, NULL, NULL, &timeval);
+			message("%s can't select (%s).\r\n", VBOXD_VAL_TEMPERROR, strerror(errno));
 
-				if (rc < 0)
-				{
-					if (errno == EINTR) continue;
-
-					message("%s can't select (%s).\r\n", VBOXD_VAL_TEMPERROR, strerror(errno));
-
-					return(VBOXD_ERR_TIMEOUT);
-				}
-				else break;
-			}
-
-			if ((rc == 0) || (!FD_ISSET(STDIN_FILENO, &rmask)))
-			{
-				return(VBOXD_ERR_TIMEOUT);
-			}
-
-         count = read(STDIN_FILENO, temp, 64);
-
-         if (count < 0)
-         {
-            message("%s can't read (%s).\r\n", VBOXD_VAL_TEMPERROR, strerror(errno));
-
-				return(VBOXD_ERR_TIMEOUT);
-         }
-
-         if (count == 0) return(VBOXD_ERR_EOF);
-
-			t = temp;
+			return(VBOXD_ERR_TIMEOUT);
 		}
 
-		count--;
+		if ((rc == 0) || (!FD_ISSET(STDIN_FILENO, &rmask))) return(VBOXD_ERR_TIMEOUT);
 
-		if ((c = *t++) == '\n') break;
+		rc = read(STDIN_FILENO, &c, 1);
 
-		if (p < e) *p++ = c;
+		if (rc == 0) return(VBOXD_ERR_EOF);
+
+		if (rc < 0)
+		{
+			syslog(LOG_ERR, "can't read (%s).", strerror(errno));
+
+         message("%s can't read (%s).\r\n", VBOXD_VAL_TEMPERROR, strerror(errno));
+
+			return(VBOXD_ERR_TIMEOUT);
+		}
+
+		if (c == '\n')
+		{
+			if ((stop = rindex(line, '\r'))) *stop = '\0';
+
+			return(VBOXD_ERR_OK);
+		}
+
+		line[p + 0] = c;
+		line[p + 1] = '\0';
+
+		if (p++ >= linelen) return(VBOXD_ERR_TOOLONG);
 	}
 
-   if ((p > line) && (p < e) && (p[-1] == '\r')) p--;
-
-   *p = '\0';
-
-   return((p == e ? VBOXD_ERR_TOOLONG : VBOXD_ERR_OK));
+	return(VBOXD_ERR_TIMEOUT);
 }
 
 /**************************************************************************/
@@ -469,6 +455,8 @@ static void start_connection(void)
 
 	if (getpeername(STDIN_FILENO, (struct sockaddr *)&sockptr, &socklen) < 0)
 	{
+		syslog(LOG_ERR, "can't get peername (%s).", strerror(errno));
+
 		message("%s I can't get your name (%s). Goodbye!\r\n", VBOXD_VAL_ACCESSDENIED, strerror(errno));
 
 		leave_program(1);
@@ -476,6 +464,8 @@ static void start_connection(void)
 
 	if (sockptr.sin_family != AF_INET)
 	{
+		syslog(LOG_ERR, "bad address family.");
+
 		message("%s Bad address family. Goodbye!\r\n", VBOXD_VAL_ACCESSDENIED);
 
 		leave_program(1);
@@ -492,6 +482,8 @@ static void start_connection(void)
 
 	if ((!client_hostaddr) || (!client_hostname))
 	{
+		syslog(LOG_ERR, "out of memory (%s).", strerror(errno));
+
 		message("%s Out of memory (%s). Goodbye!\r\n", VBOXD_VAL_TEMPERROR, strerror(errno));
 
 		leave_program(1);
@@ -501,6 +493,8 @@ static void start_connection(void)
 
 	if (!check_client_access_start(client_hostname, client_hostaddr))
 	{
+		syslog(LOG_INFO, "host %s not in access list.", client_hostname);
+
 		message("%s You are not in my access list. Goodbye!\r\n", VBOXD_VAL_ACCESSDENIED);
 
 		leave_program(1);
@@ -576,8 +570,9 @@ static int check_client_access_start(char *name, char *addr)
 
 static int check_client_access_login(char *name, char *addr, char *user, char *pass)
 {
+	char  temp[PATH_MAX + 1];
 	char  line[VBOXD_LEN_ACCESSLINE + 1];
-	char *list[6];
+	char *list[7];
 	char *p;
 	int   i;
 
@@ -587,6 +582,7 @@ static int check_client_access_login(char *name, char *addr, char *user, char *p
 	if (client_user ) free(client_user );
 
 	client_spool  = NULL;
+	client_home   = NULL;
 	client_user   = NULL;
 	client_access = VBOXD_ACC_COUNT;
 
@@ -608,7 +604,7 @@ static int check_client_access_login(char *name, char *addr, char *user, char *p
 			}
 		}
 
-		if (i != 5) continue;
+		if (i != 6) continue;
 
 		/*
 		 * Check if the hostname or the hosts ip address matchs the current
@@ -642,12 +638,28 @@ static int check_client_access_login(char *name, char *addr, char *user, char *p
 		 */
 
 		client_user  = strdup(list[3]);
-		client_spool = strdup(list[5]);
+		client_home  = strdup(list[5]);
+		client_spool = strdup(list[6]);
 
-		if ((!client_user) || (!client_spool))
+		if ((client_home) && (client_spool))
+		{
+			if (*client_spool != '/')
+			{
+				xstrncpy(temp, client_home , PATH_MAX);
+				xstrncat(temp, "/"         , PATH_MAX);
+				xstrncat(temp, client_spool, PATH_MAX);
+
+				free(client_spool);
+
+				client_spool = strdup(temp);
+			}
+		}
+
+		if ((!client_user) || (!client_spool) || (!client_home))
 		{
 			if (client_spool) free(client_spool);
 			if (client_user ) free(client_user );
+			if (client_home ) free(client_home );
 
 			returnerror();
 		}
@@ -705,10 +717,13 @@ static void message(char *fmt, ...)
 /**                                                                      **/
 /**                                                                      **/
 /**************************************************************************/
-/** login   <username> [password]                                        **/
-/** count   <messagebox>                                                 **/
-/** message <message>                                                    **/
-/** header  <message>                                                    **/
+/** login      <username> [password]                                     **/
+/** count      <messagebox>                                              **/
+/** delete     <message>                                                 **/
+/** toggle     <message>                                                 **/
+/** message    <message>                                                 **/
+/** header     <message>                                                 **/
+/** statusctrl <control>                                                 **/
 /** noop                                                                 **/
 /** list                                                                 **/
 /** help                                                                 **/
@@ -757,7 +772,13 @@ static void srv_header(int argc, char **argv)
 	{
 		if (header_get(fd, &header))
 		{
-			print_hex_block(VBOXD_VAL_HEADER, (char *)&header, sizeof(vaheader_t));
+			message("%s %d\r\n", VBOXD_VAL_HEADER, sizeof(vaheader_t));
+			pullmsg(stdout);
+
+			write(STDOUT_FILENO, (char *)&header, sizeof(vaheader_t));
+
+			message("%s .\r\n", VBOXD_VAL_HEADER);
+			pullmsg(stdout);
 		}
 		else message("%s Not a vbox message.\r\n", VBOXD_VAL_BADMESSAGE);
 	}
@@ -808,7 +829,13 @@ static void srv_message(int argc, char **argv)
 					{
 						if (read(fd, block, status.st_size) == status.st_size)
 						{
-							print_hex_block(VBOXD_VAL_MESSAGE, block, status.st_size);
+							message("%s %d\r\n", VBOXD_VAL_MESSAGE, status.st_size);
+                     pullmsg(stdout);
+
+							write(STDOUT_FILENO, block, status.st_size);
+
+							message("%s .\r\n", VBOXD_VAL_MESSAGE);
+							pullmsg(stdout);
 
 							free(block);
 						}
@@ -871,15 +898,16 @@ static void srv_list(int argc, char **argv)
 			{
 				if (header_get(fd, &header))
 				{
-					message("%s +\r\n"   , VBOXD_VAL_LIST);
-					message("%s F %s\r\n", VBOXD_VAL_LIST, tmp->d_name);
-					message("%s T %d\r\n", VBOXD_VAL_LIST, ntohl(header.time));
-					message("%s C %d\r\n", VBOXD_VAL_LIST, ntohl(header.compression));
-					message("%s S %d\r\n", VBOXD_VAL_LIST, status.st_size);
-					message("%s N %s\r\n", VBOXD_VAL_LIST, header.name);
-					message("%s I %s\r\n", VBOXD_VAL_LIST, header.callerid);
-					message("%s P %s\r\n", VBOXD_VAL_LIST, header.phone);
-					message("%s L %s\r\n", VBOXD_VAL_LIST, header.location);
+					message("%s +\r\n"    , VBOXD_VAL_LIST);
+					message("%s F %s\r\n" , VBOXD_VAL_LIST, tmp->d_name);
+					message("%s T %lu\r\n", VBOXD_VAL_LIST, ntohl(header.time));
+					message("%s M %lu\r\n", VBOXD_VAL_LIST, status.st_mtime);
+					message("%s C %d\r\n" , VBOXD_VAL_LIST, ntohl(header.compression));
+					message("%s S %d\r\n" , VBOXD_VAL_LIST, status.st_size);
+					message("%s N %s\r\n" , VBOXD_VAL_LIST, header.name);
+					message("%s I %s\r\n" , VBOXD_VAL_LIST, header.callerid);
+					message("%s P %s\r\n" , VBOXD_VAL_LIST, header.phone);
+					message("%s L %s\r\n" , VBOXD_VAL_LIST, header.location);
 				}
 			}
 
@@ -925,22 +953,25 @@ static void srv_login(int argc, char **argv)
 
 static void srv_help(int argc, char **argv)
 {
-   message("%s Commands require special access:\r\n"                             , VBOXD_VAL_HELP);
-   message("%s \r\n"                                                             , VBOXD_VAL_HELP);
-	message("%s LIST                            List all messages.\r\n"           , VBOXD_VAL_HELP);
-   message("%s DELETE  <message>               Delete a message.\r\n"            , VBOXD_VAL_HELP);
-	message("%s MESSAGE <message>               Get a message.\r\n"               , VBOXD_VAL_HELP);
-   message("%s HEADER  <message>               Get a message header.\r\n"        , VBOXD_VAL_HELP);
-   message("%s TOGGLE  <message>               Toggle message new flag.\r\n"     , VBOXD_VAL_HELP);
-   message("%s \r\n"                                                             , VBOXD_VAL_HELP);
-   message("%s Commands available for all clients:\r\n"                          , VBOXD_VAL_HELP);
-   message("%s \r\n"                                                             , VBOXD_VAL_HELP);
-	message("%s COUNT   <messagebox>            Count new messages.\r\n"          , VBOXD_VAL_HELP);
-	message("%s LOGIN   <username> [password]   Login as user (gives access).\r\n", VBOXD_VAL_HELP);
-	message("%s NOOP                            Does nothing.\r\n"                , VBOXD_VAL_HELP);
-	message("%s HELP                            Display command list.\r\n"        , VBOXD_VAL_HELP);
-	message("%s QUIT                            Quit.\r\n"                        , VBOXD_VAL_HELP);
-	message("%s .\r\n"                                                            , VBOXD_VAL_HELP);
+   message("%s Commands require special access:\r\n"                                , VBOXD_VAL_HELP);
+   message("%s \r\n"                                                                , VBOXD_VAL_HELP);
+	message("%s LIST                               List all messages.\r\n"           , VBOXD_VAL_HELP);
+   message("%s DELETE     <message>               Delete a message.\r\n"            , VBOXD_VAL_HELP);
+	message("%s MESSAGE    <message>               Get a message.\r\n"               , VBOXD_VAL_HELP);
+   message("%s HEADER     <message>               Get a message header.\r\n"        , VBOXD_VAL_HELP);
+   message("%s TOGGLE     <message>               Toggle message new flag.\r\n"     , VBOXD_VAL_HELP);
+   message("%s STATUSCTRL <control>               Check if control exists.\r\n"     , VBOXD_VAL_HELP);
+   message("%s CREATECTRL <control>               Create a control file.\r\n"       , VBOXD_VAL_HELP);
+   message("%s REMOVECTRL <control>               Remove a control file.\r\n"       , VBOXD_VAL_HELP);
+   message("%s \r\n"                                                                , VBOXD_VAL_HELP);
+   message("%s Commands available for all clients:\r\n"                             , VBOXD_VAL_HELP);
+   message("%s \r\n"                                                                , VBOXD_VAL_HELP);
+	message("%s COUNT      <messagebox>            Count new messages.\r\n"          , VBOXD_VAL_HELP);
+	message("%s LOGIN      <username> [password]   Login as user (gives access).\r\n", VBOXD_VAL_HELP);
+	message("%s NOOP                               Does nothing.\r\n"                , VBOXD_VAL_HELP);
+	message("%s HELP                               Display command list.\r\n"        , VBOXD_VAL_HELP);
+	message("%s QUIT                               Quit.\r\n"                        , VBOXD_VAL_HELP);
+	message("%s .\r\n"                                                               , VBOXD_VAL_HELP);
 }
 
 /**************************************************************************/
@@ -1005,6 +1036,107 @@ static void srv_count(int argc, char **argv)
 	closedir(dir);
 
 	message("%s %d %ld\r\n", VBOXD_VAL_COUNT, mcount, newest);
+}
+
+/**************************************************************************/
+/** srv_toggle(): Toggle message new flag.                      [server] **/
+/**************************************************************************/
+
+static void srv_toggle(int argc, char **argv)
+{
+	struct utimbuf utimeb;
+	struct stat    status;
+
+	if ((!client_spool) || (!client_user) || (!(client_access & VBOXD_ACC_WRITE)))
+	{
+		message("%s Access denied (no write access).\r\n", VBOXD_VAL_ACCESSDENIED);
+
+		return;
+	}
+
+	if (chdir(client_spool) != 0)
+	{
+		message("%s Access denied (messagebox unaccessable).\r\n", VBOXD_VAL_ACCESSDENIED);
+
+		return;
+	}
+
+	if (argc != 2)
+	{
+		message("%s usage: %s <message>.\r\n", VBOXD_VAL_BADARGS, argv[0]);
+
+		return;
+	}
+
+	if (stat(argv[1], &status) == 0)
+	{
+		utimeb.actime  = status.st_atime;
+		utimeb.modtime = (status.st_mtime > 0 ? 0 : status.st_ctime);
+			
+		if (utime(argv[1], &utimeb) != 0)
+		{
+			message("%s Can't set new modification time.\r\n", VBOXD_VAL_TEMPERROR);
+		}
+		else message("%s %lu\r\n", VBOXD_VAL_TOGGLE, utimeb.modtime);
+	}
+	else message("%s: Can't get file status.\r\n", VBOXD_VAL_TEMPERROR);
+}
+
+/**************************************************************************/
+/** srv_delete(): Delete a message.                             [server] **/
+/**************************************************************************/
+
+static void srv_delete(int argc, char **argv)
+{
+	if ((!client_spool) || (!client_user) || (!(client_access & VBOXD_ACC_WRITE)))
+	{
+		message("%s Access denied (no write access).\r\n", VBOXD_VAL_ACCESSDENIED);
+
+		return;
+	}
+
+	if (chdir(client_spool) != 0)
+	{
+		message("%s Access denied (messagebox unaccessable).\r\n", VBOXD_VAL_ACCESSDENIED);
+
+		return;
+	}
+
+	if (argc != 2)
+	{
+		message("%s usage: %s <message>.\r\n", VBOXD_VAL_BADARGS, argv[0]);
+
+		return;
+	}
+
+	if (unlink(argv[1]) != 0)
+	{
+		message("%s: Can't delete message.\r\n", VBOXD_VAL_TEMPERROR);
+	}
+	else message("%s .\r\n", VBOXD_VAL_DELETEOK);
+}
+
+/**************************************************************************/
+/** srv_statusctrl(): Check if control file exists.             [server] **/
+/**************************************************************************/
+
+static void srv_statusctrl(int argc, char **argv)
+{
+	if ((!client_home) || (!client_user) || (!(client_access & VBOXD_ACC_READ)))
+	{
+		message("%s Access denied (no read access).\r\n", VBOXD_VAL_ACCESSDENIED);
+
+		return;
+	}
+
+	if (argc != 2)
+	{
+		message("%s usage: %s <control>.\r\n", VBOXD_VAL_BADARGS, argv[0]);
+
+		return;
+	}
+
+	message("%s %d\r\n", VBOXD_VAL_STATUSCTRLOK, ctrl_ishere(client_home, argv[1]));
 }
 
 /**************************************************************************/

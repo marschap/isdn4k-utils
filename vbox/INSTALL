@@ -84,11 +84,9 @@ the .au format, and afterwards converted to the new vbox format using
 There's a mailing list available for support, discussions and suggestions
 about vbox. To suscribe to the vbox mailing list, send an e-mail to:
 
-   majordomo@abadonna.franken.de
+   vbox@abadonna.franken.de
 
-The message *body* must contain the following line:
-
-   subscribe vbox <your_email_address>
+with the subject "subscribe" (without the quotes).
 
 Postings to this list are mainly German, although English letters are
 welcome and will be answered so good as I can ;-)

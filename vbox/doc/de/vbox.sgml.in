@@ -8,7 +8,7 @@
      **									**
      ********************************************************************* -->
 
-<title>V B O X
+<title>VBOX
 <author>Michael 'Ghandi' Herold <tt>&lt;michael@abadonna.franken.de&gt;</tt>
 <date>Version @VERSION@ (@VERDATE@)
 <abstract>
@@ -63,8 +63,90 @@ darin beschriebenen Programmen entstehen oder entstanden sind.
      **									**
      ********************************************************************* -->
 
-<sect>Installation<label id="id-installation">
+<sect>Erste Schritte<label id="id-firststeps">
 <p>
+
+Das Kapitel <bf>Erste Schritte</bf> beschreibt die Einbindung der einzelnen
+Programme in das System. Ich möchte jeden bitten, wenigstens <bf>dieses</bf>
+Kapitel aufmerksam zu lesen, um spätere Probleme zu vermeiden!
+
+<!-- *********************************************************************
+     **                           VBOXGETTY                             **
+     ********************************************************************* -->
+
+<sect1>vboxgetty<label id="id-firststeps-vboxgetty">
+<p>
+
+Das Programm <em>vboxgetty</em> ist das eigentliche Herz von <em>vbox</em>.
+Es überwacht die Leitung, nimmt eingehende Anrufe entgegen, spielt Ansagetexte
+ab und zeichnet die Nachrichten auf.
+
+<em>vboxgetty</em> sollte am besten aus der '<tt>/etc/inittab</tt>' gestartet
+werden. Wenn lieber ein Startskript verwenden werden soll ist darauf achten,
+daß es völlig normal ist, daß <em>vboxgetty</em> sich während der Laufzeit von
+alleine beendet; z.B. dann, wenn das Modemdevice nicht initialisiert werden
+konnte.
+
+<em>vboxgetty</em> <bf>muß</bf> vom Benutzer <em>root</em> gestartet werden!
+
+<descrip>
+
+<tag>Beispiel für einen Eintrag in '<tt>/etc/inittab</tt>':</tag>
+<p>
+
+<verb>
+I6:2345:respawn:@SBINDIR@/vboxgetty -d /dev/ttyI6
+I7:2345:respawn:@SBINDIR@/vboxgetty -d /dev/ttyI7
+</verb>
+
+</descrip>
+
+Das Argument <tt>-d</tt> oder <tt>--device</tt> <bf>muß</bf> angegeben werden
+(siehe Kapitel <ref id="id-programs" name="Programme"> unter
+<ref id="id-programs-vboxgetty" name="vboxgetty">). Es gibt an welches
+Modemdevice und welcher Teil von '<tt>@SYSCONFDIR@/vboxgetty.conf</tt>'
+für diesen <em>vboxgetty</em> verwendet werden soll.
+
+Für jeden Benutzer oder jede Benutzergruppe muß in '<tt>@SPOOLDIR@</tt>'
+ein Verzeichnis angelegt werden, in welches die
+Konfigurationsdatei '<tt>vbox.conf</tt>' kopiert werden muß.
+
+Das angelegte Verzeichnis und alle sich darin befindlichen Unterverzeichnisse
+oder Dateien müssen mit den richtigen Rechten versehen werden, sodaß der
+Benutzer oder die Gruppe, die in '<tt>@SYSCONFDIR@/vboxgetty.conf</tt>'
+eingestellt wurden diese benutzen dürfen!
+
+Für die weitere Einrichtung und Konfiguration von <em>vboxgetty</em> kann im
+Kapitel <ref id="id-configuration" name="Konfiguration"> unter
+<ref id="id-configuration-vboxgetty" name="vboxgetty"> nachgeschlagen
+werden.
+
+<descrip>
+
+<tag>Beispiel:</tag>
+<p>
+
+Dieses Beispiel zeigt die Einrichtung eines einzelnen Benutzers Namens
+<em>michael</em>.
+
+<verb>
+&dollar; mkdir @SPOOLDIR@/michael
+&dollar; mkdir @SPOOLDIR@/michael/incoming
+&dollar; mkdir @SPOOLDIR@/michael/messages
+&dollar; cp ./examples/vbox.conf.example @SPOOLDIR@/michael/vbox.conf
+&dollar; cp ./examples/standard.tcl.example @SPOOLDIR@/michael/standard.tcl
+&dollar; cp ./examples/standard.msg.example @SPOOLDIR@/michael/messages/standard.msg
+&dollar; cp ./examples/beep.msg.example @SPOOLDIR@/michael/messages/beep.msg
+&dollar; cp ./examples/timeout.msg.example @SPOOLDIR@/michael/messages/timeout.msg
+&dollar; chown michael.users @SPOOLDIR@/michael -Rv
+&dollar; chmod o-rwx,g-rwx @SPOOLDIR@/michael -Rv
+</verb>
+
+Die Dateien '<tt>@SPOOLDIR@/michael/vbox.conf</tt>'
+und '<tt>@SPOOLDIR@/michael/standard.tcl</tt>' müssen jetzt nur noch auf die
+eigenen Bedürfnisse angepasst werden...
+
+</descrip>
 
 <!-- *********************************************************************
      **                             VBOXD                               **
@@ -73,6 +155,60 @@ darin beschriebenen Programmen entstehen oder entstanden sind.
 <sect1>vboxd<label id="id-installation-vboxd">
 <p>
 
+<em>vboxd</em> ist der zweitwichtigste Teil von <em>vbox</em>. Mit diesem
+Daemon ist es möglich, Nachrichten über Netzwerk zu manipulieren und zu laden.
+Die Programme <em>vbox</em> und <em>vboxbeep</em> benötigen <em>vboxd</em>.
+
+Bevor der Daemon gestartet werden kann, muß in der
+Datei '<tt>/etc/services</tt>' ein neuer Service eingetragen werden (nur falls
+dieser noch nicht enthalten ist).
+
+<descrip>
+
+<tag>Beispiel für '<tt>/etc/services</tt>':</tag>
+<p>
+
+<verb>
+20012    vboxd/tcp
+20012    vboxd/udp
+</verb>
+
+</descrip>
+
+Danach muß <em>vboxd</em> in der '<tt>/etc/inetd.conf</tt>' eingetragen werden,
+damit dieser bei Bedarf gestartet wird. <em>vboxd</em> kann <bf>nur</bf> mit
+<em>inetd</em> benutzt werden, er ist alleine nicht lauffähig!
+
+<descrip>
+
+<tag>Beispiel für '<tt>/etc/inetd.conf</tt>':
+<p>
+
+<verb>
+vboxd  stream  tcp  nowait  root  /usr/sbin/tcpd  @SBINDIR@/vboxd
+</verb>
+
+</descrip>
+
+Wenn jetzt <em>inetd</em> mit einem <tt>SIGHUP</tt> dazu veranlaßt wurde
+seine Konfiguration neu einzulesen, kann mit
+
+<verb>
+&dollar; telnet localhost vboxd
+</verb>
+
+getestet werden, ob <em>vboxd</em> reagiert.
+
+Auf manchen Systemen ist es evtl. noch nötig, die
+Dateien '<tt>/etc/hosts.deny</tt>' und '<tt>/etc/hosts.allow</tt>' sowie die
+Firewall-Rules anzupassen :-)
+
+<em>vboxd</em> benutzt die
+Konfigurationsdatei '<tt>@SYSCONFDIR@/vboxd.conf</tt>', die noch an die
+lokalen Gegebenheiten angepaßt werden muß (siehe Kapitel
+<ref id="id-configuration" name="Konfiguration"> unter
+<ref id="id-configuration-vboxd" name="vboxd">).
+
 
 <!-- *********************************************************************
      **									**
@@ -80,14 +216,25 @@ darin beschriebenen Programmen entstehen oder entstanden sind.
      **									**
      ********************************************************************* -->
 
-<sect>Konfiguration<label id="id-konfiguration">
+<sect>Konfiguration<label id="id-configuration">
+<p>
+
+Dieses Kapitel beschäftigt sich mit der Konfiguration der einzelnen Komponenten
+von <em>vbox</em>. Es ist ratsam, dieses Kapitel aufmerksam zu lesen, da sehr
+viele Änderungen seit den letzten Versionen gemacht wurden.
+
+<!-- *********************************************************************
+     **                         VBOXGETTY.CONF                          **
+     ********************************************************************* -->
+
+<sect1>vboxgetty.conf<label id="id-configuration-vboxgetty">
 <p>
 
 <!-- *********************************************************************
      **                           VBOXD.CONF                            **
      ********************************************************************* -->
 
-<sect1>vboxd.conf<label id="id-konfiguration-vboxdconf">
+<sect1>vboxd.conf<label id="id-configuration-vboxd">
 <p>
 
 <!-- *********************************************************************
@@ -525,14 +672,14 @@ set RC { vbox_get_nr_all_messages /var/spool/vbox/michael/incoming }
      **									**
      ********************************************************************* -->
 
-<sect>Programme<label id="id-programme">
+<sect>Programme<label id="id-programs">
 <p>
 
 <!-- *********************************************************************
      **                            VBOXGETTY                            **
      ********************************************************************* -->
 
-<sect1>vboxgetty<label id="id-programme-vboxgetty">
+<sect1>vboxgetty<label id="id-programs-vboxgetty">
 <p>
 
 <!-- *********************************************************************
@@ -551,7 +698,7 @@ name="libvbox.a"> bereits einige Funktionen um mit <em>vboxd</em> zu
 kommunizieren.
 
 Die genaue Installation von <em>vboxd</em> kann im Kapitel <ref
-id="id-installation" name="Installation"> unter <ref
+id="id-firststeps" name="Erste Schritte"> unter <ref
 id="id-installation-vboxd" name="vboxd"> nachgelesen werden.
 
 Dem Daemon können beim Start folgende Argumente übergeben werden:
@@ -1020,7 +1167,7 @@ ihre richtigen Werte ersetzt werden müssen.
 
 mgetty 0.98 (mit pvftools)
 neuer mgetty
-linuxdoc-sgml
+sgml-0.99
 isdn4linux
 hisax
 mam

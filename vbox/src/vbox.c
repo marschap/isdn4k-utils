@@ -1,1880 +1,1526 @@
+/*
+** $Id: vbox.c,v 1.4 1997/04/28 16:52:02 michael Exp $
+**
+** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
+*/
+
+#include "config.h"
+
+#if TIME_WITH_SYS_TIME
+#   include <sys/time.h>
+#   include <time.h>
+#else
+#   if HAVE_SYS_TIME_H
+#      include <sys/time.h>
+#   else
+#      include <time.h>
+#   endif
+#endif
 
 #include <ncurses.h>
 #include <panel.h>
-#include <sys/types.h>
-#include <sys/stat.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <netdb.h>
+#include <signal.h>
+#include <termios.h>
 #include <fcntl.h>
 #include <unistd.h>
-#include <getopt.h>
-#include <stdarg.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <limits.h>
 #include <pwd.h>
-#include <dirent.h>
-#include <string.h>
-#include <ctype.h>
-#include <time.h>
-#include <signal.h>
+#include <getopt.h>
+#include <sys/ioctl.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 #include <netinet/in.h>
-#include <fnmatch.h>
-#include <utime.h>
 
-#include "parserc.h"
-#include "voice.h"
 #include "libvbox.h"
+#include "vbox.h"
+#include "streamio.h"
 
-/** Definitionen *********************************************************/
+/** Variables *************************************************************/
 
-#define VOICE_COMPRESSION_BASE   963.75        /* Basis für Kompression */
-#define VOICE_COMPRESSION_RATE   8000            /* Basis bei ULAW/ALAW */
+static char loginname[VBOX_MAX_USERNAME + 1];
+static char loginpass[VBOX_MAX_PASSWORD + 1];
 
-#define VBOXRC_MAX_RCLINE			(512)
-#define VBOX_MAX_CALLERNAME		(32)
-#define MAX_OPEN_PANELS				(10)
-#define VBOX_MODE_LIST           (0)
-#define VBOX_MODE_TIMER          (1)
-#define MAXNAMELEN               (20)
-#define MAXCALLERIDLEN           (20)
-#define MAXUSERNAMELEN           (32)
-#define MAXCOMMANDLEN            (PATH_MAX * 5)
+static char *messagesmp = NULL;
+static int   messagesnr = 0;
+static char *vbasename  = NULL;
+static char *vboxdname  = NULL;
+static char *playerbin  = NULL;
+static int   vboxdport  = -1;
+static int   usecolors  = FALSE;
+static int   leaveloop  = FALSE;
+static int   leavevbox  = FALSE;
+static int   monocolor  = FALSE;
+static int   ledstatus  = TRUE;
+static int   rloadtime  = 0;
+static int   messagenr  = 0;
+static int   messageyp  = 0;
+static int   sndvolume  = 10;
+static int   newmessys  = FALSE;
+static int   forcepass  = FALSE;
 
-#define AttrSet                  wattrset
-#define Print                    mvwprintw
-#define Update                   wrefresh
-#define HidePanel                hide_panel
-#define ShowPanel                show_panel
-#define Keypress                 ungetch
-#define FPrintF						fprintf
-
-#define Clear(X)                 { wclear(X); wrefresh(X); }
-
-/** Strukturen ***********************************************************/
-
-struct MessageLine
+static struct statusled statusleds[] =
 {
-	char		New;													/* Neue Nachricht	*/
-	char		Del;															/* Gelöscht	*/
-	char		Date[14];									/* Datum (YYMMDDMMHHSS)	*/
-	char		Time[6];									/* Aufgezeichnete Sekunden	*/
-	char		Name[MAXNAMELEN + 1];						/* Name des Anrufers	*/
-	char		ID[MAXCALLERIDLEN + 1];						  /* ID des Anrufers	*/
-	char		Filename[NAME_MAX + 1];				/* Dateiname der Nachricht	*/
+	{  1, CTRL_NAME_STOP     , NULL },
+   {  5, CTRL_NAME_REJECT   , NULL },
+	{  7, CTRL_NAME_ANSWERNOW, NULL },
+	{  9, CTRL_NAME_ANSWERALL, NULL },
+   { 11, NULL               , NULL }
 };
 
-/** Variablen ************************************************************/
-
-static struct FileIO *VBoxRC;
-
-static char		 CallerName[VBOX_MAX_CALLERNAME + 1];
-static char		 MessageDir[PATH_MAX + 1];
-static char		 SpoolingDir[PATH_MAX + 1];
-static char		 PlayCommand[PATH_MAX + 1];
-static char		 UserName[MAXUSERNAMELEN + 1];
-static char		 Device[NAME_MAX + 1];
-static PANEL	*Panels[MAX_OPEN_PANELS];
-
-static char		*MessageList			= NULL;
-static long		 NumMessages			= 0;
-static char		 RedrawMessageList	= FALSE;
-static char		*Basename				= NULL;
-static char		 Mono						= FALSE;
-static int		 RescanTimer			= 0;
-static int		 VBoxMode				= VBOX_MODE_LIST;
-static int		 CurrListPosY			= 0;
-static long		 CurrListLine			= 0;
-static float	 ListviewPointPosY	= 0;
-static int		 Volume					= 10;
-static time_t   IncomingTimeM       = 0;
-static time_t   IncomingTimeC       = 0;
-static FILE		*NCursesO	= NULL;
-static FILE		*NCursesI	= NULL;
-static SCREEN	*Init			= NULL;
-
-static char *MonthNames[] =
+static struct colortable colortable[] =
 {
-	"???", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug",
-	"Sep", "Oct", "Nov", "Dec"
+	{ NULL             ,  0, 0           , 0          , A_NORMAL, A_REVERSE        },
+	{ "C_BACKGROUND"   ,  1, COLOR_WHITE , COLOR_BLACK, A_NORMAL, A_NORMAL         },
+	{ "C_STATUSBAR"    ,  2, COLOR_WHITE , COLOR_BLUE , A_NORMAL, A_REVERSE        },
+	{ "C_STATUSBAR_HL" ,  3, COLOR_YELLOW, COLOR_BLUE , A_BOLD  , A_REVERSE|A_BOLD },
+   { "C_POWERLED_ON"  ,  4, COLOR_GREEN , COLOR_BLUE , A_NORMAL, A_REVERSE|A_BOLD },
+	{ "C_POWERLED_OFF" ,  5, COLOR_RED   , COLOR_BLUE , A_NORMAL, A_REVERSE        },
+	{ "C_STATUSLED_ON" ,  6, COLOR_YELLOW, COLOR_BLUE , A_BOLD  , A_REVERSE|A_BOLD },
+	{ "C_STATUSLED_OFF",  7, COLOR_BLACK , COLOR_BLUE , A_NORMAL, A_REVERSE        },
+   { "C_LIST"         ,  8, COLOR_WHITE , COLOR_BLACK, A_NORMAL, A_NORMAL         },
+	{ "C_LIST_SELECTED",  9, COLOR_WHITE , COLOR_RED  , A_NORMAL, A_REVERSE        },
+	{ "C_INFOTEXT"     , 10, COLOR_GREEN , COLOR_BLACK, A_NORMAL, A_NORMAL         },
+   { NULL             , -1, 0           , 0          , 0       , 0                }
 };
 
-static char *NumberTable[] =
+static char *colornames[] =
 {
-	"1-34567", "----5-7", "123-56-", "123-5-7", "-2-45-7",
-	"1234--7", "1234-67", "1---5-7", "1234567", "12345-7"
+	"BLACK", "RED", "GREEN", "BROWN", "BLUE", "MAGENTA", "CYAN", "GRAY",
+	"DARKGRAY", "LIGHTRED", "LIGHTGREEN", "YELLOW", "LIGHTBLUE", "LIGHTMAGENTA",
+	"LIGHTCYAN", "WHITE",
+	NULL
 };
 
-static struct option Arguments[] =
+static struct option arguments[] =
 {
-	{ "device"		, required_argument, NULL, 'd' },
-	{ "update"		, required_argument, NULL, 'r' },
-	{ "volume"		, required_argument, NULL, 'v' },
-	{ "incoming"	, required_argument, NULL, 'i' },
-	{ "play"			, required_argument, NULL, 'p' },
-	{ "mono"			, no_argument		 , NULL, 'm' },
-	{ "timer"		, no_argument		 , NULL, 't' },
-	{ "help"			, no_argument		 , NULL, 'h' },
-	{ NULL			, 0					 , NULL,  0  }
+	{ "version"	   , no_argument		  , NULL, 'v' },
+	{ "help"		   , no_argument		  , NULL, 'h' },
+	{ "mono"		   , no_argument		  , NULL, 'o' },
+	{ "force"	   , no_argument		  , NULL, 'f' },
+	{ "noledstatus", no_argument		  , NULL, 's' },
+	{ "hostname"   , required_argument , NULL, 'm' },
+	{ "reload"     , required_argument , NULL, 'r' },
+	{ "port"       , required_argument , NULL, 'p' },
+	{ "playcmd"    , required_argument , NULL, 'c' },
+	{ NULL		   , 0					  , NULL,  0  }
 };
 
-/** Prototypen ***********************************************************/
+/** Prototypes ************************************************************/
 
-static void		FindUserFromID(char *);
-static int		GotoSection(char *);
-static int		InitNCurses(char *);
-static void		ExitNCurses(void);
-static void		ClosePanel(PANEL *);
-static void		FreeMessageList(void);
-static void		CalculateTime(char *, size_t, char *);
-static int		SortMessageList(const void *, const void *);
-static chtype 	Color(int);
-static void		HLine(WINDOW *, int, int, chtype, int);
-static void		VLine(WINDOW *, int, int, chtype, int);
-static void		DrawMainScreen(void);
-static char	  *GetMessageList(void);
-static void		Button(WINDOW *, int, int, char *);
-static void		Window(WINDOW *, int, int, int, int, chtype, chtype);
-static PANEL  *OpenPanel(int, int, int, int, chtype, chtype);
-static void		PrintMessageList(WINDOW *, int, int);
-static void		PrintMessageLine(WINDOW *, int, long, char);
-static void		ListviewPoint(void);
-static void		PrintStatus(void);
-static int		Main(void);
-static void		Scroll(WINDOW *, int);
-static void		Beep(void);
-static void		StopFunc(int Sig);
-static void		UserFunc(int Sig);
-static void		Information(struct MessageLine *);
-static void		Help(void);
-static void		PlayMessage(struct MessageLine *);
-static void		HelpTimeout(WINDOW *, int, int);
-static void		TogglePower(void);
-static void		TimerTogglePower(WINDOW *, int);
-static void		SetVolume(int);
-static void		DeleteMessages(void);
-static long		GetNumMessages(void);
-static int		TimerMain(void);
-static void		PrintNumMessages(WINDOW *);
-static void		DrawDigit(WINDOW *, int, unsigned char);
-static void		HelpTimer(void);
-static void		Usage(void);
+static int    message(char *, char *, ...);
+static int    sort_message_list(const void *, const void *);
+static int    count_new_messages(void);
+static int    delete_message(char *);
+static int    get_color_nr(char *);
+static int    load_message(int, int);
+static int    init_screen(void);
+static void   exit_screen(void);
+static void   draw_main_screen(void);
+static void   draw_status_bar(void);
+static void   draw_bottom_bar(void);
+static void   draw_ctrl_status(void);
+static void   draw_message_list(void);
+static void   draw_message_line(int, int, int);
+static void   clear_screen(void);
+static void   process_input(void);
+static void   get_message_list(void);
+static void   sig_handling_resize(int);
+static void   sig_handling_interrupt(int);
+static void   one_line_down(void);
+static void   one_line_up(void);
+static void   init_locale(void);
+static void   play_message(int);
+static void   toggle_new_flag(int);
+static void   toggle_delete_flag(int);
+static void   transfer_message_list(void);
+static void   delete_selected_messages(void);
+static void   parse_vboxrc(void);
+static void   parse_colors(char *, char *);
+static void   usage(void);
+static void   version(void);
+static chtype color(int);
 
-/*************************************************************************
- ** The magic main...																	**
- *************************************************************************/
+/**************************************************************************/
+/** The magic main...                                                    **/
+/**************************************************************************/
 
 void main(int argc, char **argv)
 {
-	struct passwd *PWD;
+	struct servent *vboxdserv;
+	int             dimension;
+	char           *pass;
+	int             opts;
 
-	char	NameRC[PATH_MAX + 1];
-	int	Opts;
-
-	Basename = argv[0];
-
-	if (!(PWD = getpwuid(getuid())))
+	if (!(vbasename = rindex(argv[0], '/')))
 	{
-		FPrintF(stderr, "%s: can't get your passwd entry.\n", Basename);
-
-		Exit(5);
+		vbasename = argv[0];
 	}
+	else vbasename++;
 
-	StringCpy(SpoolingDir, SPOOLDIR		, PATH_MAX);
-	StringCat(SpoolingDir, "/"          , PATH_MAX);
-	StringCat(SpoolingDir, PWD->pw_name	, PATH_MAX);
+	init_locale();
 
-	StringCpy(MessageDir, SpoolingDir, PATH_MAX);
-	StringCat(MessageDir, "/incoming", PATH_MAX);
+	signal(SIGPIPE, SIG_IGN);
+	signal(SIGINT , SIG_IGN);
 
-	StringCpy(UserName, PWD->pw_name, MAXUSERNAMELEN);
+	vboxdname = "localhost";
+	vboxdport = -1;
+	rloadtime = 60;
+	monocolor = FALSE;
+	ledstatus = TRUE;
+	playerbin = PLAY;
+	forcepass = FALSE;
 
-	StringCpy(PlayCommand, BINDIR		 , PATH_MAX);
-	StringCat(PlayCommand, "/vboxplay", PATH_MAX);
+	*loginname = '\0';
+	*loginpass = '\0';
 
-	StringCpy(Device, "/dev/tty", NAME_MAX);
+	parse_vboxrc();
 
-	StringCpy(NameRC, SpoolingDir, PATH_MAX);
-	StringCat(NameRC, "/vboxrc"  , PATH_MAX);
-
-
-	while ((Opts = getopt_long(argc, argv, "p:d:r:v:i:mth", Arguments, (int *)0)) != EOF)
+	while ((opts = getopt_long(argc, argv, "vhofsm:r:p:c:", arguments, (int *)0)) != EOF)
 	{
-		switch (Opts)
+		switch (opts)
 		{
-			case 't':
-				VBoxMode = VBOX_MODE_TIMER;
+			case 'o':
+				monocolor = TRUE;
 				break;
 
-			case 'r':
-				RescanTimer = atoi(optarg);
+			case 'f':
+				forcepass = TRUE;
 				break;
 
-			case 'v':
-				Volume = atoi(optarg);
+			case 's':
+				ledstatus = FALSE;
 				break;
 
 			case 'm':
-				Mono = TRUE;
-				break;
-
-			case 'd':
-				StringCpy(Device, optarg, NAME_MAX);
-				break;
-
-			case 'i':
-				StringCpy(MessageDir, optarg, NAME_MAX);
+				vboxdname = optarg;
 				break;
 
 			case 'p':
-				StringCpy(PlayCommand, optarg, PATH_MAX);
+				vboxdport = xstrtol(optarg, -1);
+				break;
+
+			case 'r':
+				rloadtime = xstrtol(optarg, 60);
+				break;
+
+			case 'c':
+				playerbin = optarg;
 				break;
 
 			case 'h':
-			default:
-				Usage();
+				usage();
+				break;
+
+			case 'v':
+				version();
 				break;
 		}
 	}
 
-	if (Volume <   1) Volume = 1;
-	if (Volume > 100) Volume = 100;
+	/*
+	 * Check if login and password are given. If now, we prompt for user
+	 * input.
+	 */
 
-	if (chdir(MessageDir) != 0)
+	if ((!*loginname) || (!*loginpass) || (forcepass))
 	{
-		FPrintF(stderr, "%s: can't cd to \"%s\".\n", Basename, MessageDir);
+		printf(gettext("\n"));
+		printf(gettext("Username: "));
+		fflush(stdout);
 
-		Exit(5);
-	}
+		fgets(loginname, VBOX_MAX_USERNAME, stdin);
 
-	if (!(VBoxRC = FOpen(NameRC)))
-	{
-		FPrintF(stderr, "%s: can't read \"%s\".\n", Basename, NameRC);
-		
-		Exit(5);
-	}
+		loginname[strlen(loginname) - 1] = '\0';
 
-	if (InitNCurses("/dev/tty"))
-	{
-		signal(SIGQUIT, SIG_IGN);
-		signal(SIGINT , SIG_IGN);
-
-		while (TRUE)
+		if ((pass = getpass(gettext("Password: "))))
 		{
-			if (VBoxMode == VBOX_MODE_LIST)
+			xstrncpy(loginpass, pass, VBOX_MAX_PASSWORD);
+
+			memset(pass, '\0', strlen(pass));
+		}
+		else *loginpass = '\0';
+
+		printf(gettext("\n"));
+		fflush(stdout);
+	}
+
+	if ((!loginname) || (!*loginname) || (!loginpass) || (!*loginpass))
+	{
+		fprintf(stderr, gettext("%s: you must enter a login name and a password.\n"), vbasename);
+
+		exit(5);
+	}
+
+	/*
+	 * Connect to the server, login and get the list with all messages
+	 * for the user.
+	 */
+
+	if (vboxdport == -1)
+	{
+		if (!(vboxdserv = getservbyname("vboxd", "tcp")))
+		{
+			fprintf(stderr, gettext("%s: can't get service 'vboxd/tcp' - please read the manual.\n"), vbasename);
+
+			exit(5);
+		}
+
+		vboxdport = ntohs(vboxdserv->s_port);
+	}
+
+	fprintf(stderr, gettext("Connecting to '%s'...\n"), vboxdname);
+
+	if (vboxd_connect(vboxdname, vboxdport) != VBOXC_ERR_OK)
+	{
+		fprintf(stderr, gettext("%s: can't connect to '%s'.\n"), vbasename, vboxdname);
+
+		exit(5);
+	}
+
+	if (vboxd_login(loginname, loginpass) != VBOXC_ERR_OK)
+	{
+		memset(loginpass, '\0', VBOX_MAX_PASSWORD);
+
+		fprintf(stderr, gettext("%s: can't login as '%s'.\n"), vbasename, loginname);
+
+		vboxd_disconnect();
+		exit(5);
+	}
+
+	memset(loginpass, '\0', VBOX_MAX_PASSWORD);
+
+	fprintf(stderr, gettext("Transfering message list..."));
+	fprintf(stderr, gettext("\n"));
+
+	get_message_list();
+
+	/*
+	 * Do a endless loop: initialize ncurses, draw the screen, process user
+	 * action & exit ncurses. This loop will only end if the variable leave-
+	 * vbox is true.
+	 */
+
+	leavevbox = FALSE;
+	dimension = TRUE;
+
+	if (init_screen())
+	{
+		while (!leavevbox)
+		{
+			if ((LINES >= 24) && (COLS >= 80))
 			{
-				FreeMessageList();
-				DrawMainScreen();
-				GetMessageList();
-
-				if (Main() == -1) break;
-
-				VBoxMode = VBOX_MODE_TIMER;
+				draw_main_screen();
+				process_input();
 			}
 			else
 			{
-				FreeMessageList();
-				GetNumMessages();
-
-				if (TimerMain() == -1) break;
-
-				VBoxMode = VBOX_MODE_LIST;
+				dimension = FALSE;
+				leavevbox = TRUE;
 			}
 		}
+
+		exit_screen();
+	}
+	else fprintf(stderr, gettext("%s: can't initialize screen.\n"), vbasename);
+
+	if (!dimension)
+	{
+		fprintf(stderr, gettext("%s: screen dimensions too small - need 80x24 or greater.\n"), vbasename);
 	}
 
-	ExitNCurses();
-	FreeMessageList();
-	FClose(VBoxRC);
-	Exit(0);
+	vboxd_disconnect();
+
+	if (messagesmp) free(messagesmp);
 }
 
-/*************************************************************************
- ** 
- *************************************************************************/
+/**************************************************************************/
+/** usage(): Displays usage message.                                     **/
+/**************************************************************************/
 
-static void Usage(void)
+static void usage(void)
 {
-	FPrintF(stderr, "\n");
-	FPrintF(stderr, "Usage: %s [ OPTION ] [ OPTION ] [ ... ]\n", Basename);
-	FPrintF(stderr, "\n");
-	FPrintF(stderr, "-d, --device NAME     Device NAME for input/output [/dev/tty].\n");
-	FPrintF(stderr, "-r, --update SECS     Updates the display of messages all SECS seconds.\n");
-	FPrintF(stderr, "-m, --mono            Switchs to mono display.\n");
-	FPrintF(stderr, "-t, --timer           Forces timer (digi numbers) display.\n");
-	FPrintF(stderr, "-v, --volume VOL      Sets default volume to VOL (1-100) [10].\n");
-	FPrintF(stderr, "-p, --play PROG       Program to play messages [%s].\n", PlayCommand);
-	FPrintF(stderr, "-i, --incoming PATH   Directory where the messages are stored\n");
-	FPrintF(stderr, "                      [%s].\n", MessageDir);
-	FPrintF(stderr, "\n");
+	fprintf(stderr, gettext("\n"));
+	fprintf(stderr, gettext("Usage: %s OPTION [ OPTION ] [ ... ]\n"), vbasename);
+	fprintf(stderr, gettext("\n"));
+	fprintf(stderr, gettext("-m, --hostname NAME   Connect to host NAME (localhost).\n"));
+	fprintf(stderr, gettext("-p, --port PORT       Connect to port PORT (vboxd/tcp).\n"));
+	fprintf(stderr, gettext("-c, --playcmd PROG    Use PROG to play messages (%s).\n"), playerbin);
+	fprintf(stderr, gettext("-r, --reload SECS     Reload message list all SECS seconds (%d).\n"), rloadtime);
+	fprintf(stderr, gettext("-o, --mono            Force mono color (color if terminal have).\n"));
+	fprintf(stderr, gettext("-f, --force           Force login prompt.\n"));
+	fprintf(stderr, gettext("-s, --noledstatus     Don't get led status from server (get status).\n"));
+	fprintf(stderr, gettext("-v, --version         Display program version.\n"));
+	fprintf(stderr, gettext("-h, --help            Display usage message.\n"));
+	fprintf(stderr, gettext("\n"));
 
-	Exit(1);
+	exit(1);
 }
 
-/*************************************************************************
- ** Main():	Hauptschleife für die normale Nachrichtenliste.					**
- *************************************************************************/
+/**************************************************************************/
+/** version(): Displays program version.                                 **/
+/**************************************************************************/
 
-static int Main(void)
+static void version(void)
 {
-	struct MessageLine *Line;
-	struct utimbuf UTime;
+	fprintf(stderr, gettext("\n"));
+	fprintf(stderr, gettext("%s version %s (%s)\n"), vbasename, VERSION, VERDATE);
+	fprintf(stderr, gettext("\n"));
 
-	PANEL *Panel;
-	int	 K;
-	int	 W;
-	int	 H;
-	int	 Done = 0;
-	
-	H = LINES - 9;
-	W = COLS - 10;
+	exit(1);
+}
 
-	if (!(Panel = OpenPanel(4, 5, W, H, 0, 0))) return(-1);
+/**************************************************************************/
+/** process_input(): Main input loop.                                    **/
+/**************************************************************************/
 
-	cbreak();
+static void process_input(void)
+{
+	int timerreload;
+	int timerstatus;
+	int c;
+
+	signal(SIGWINCH, sig_handling_resize);
+	signal(SIGINT  , sig_handling_interrupt);
+	signal(SIGTERM , sig_handling_interrupt);
+	signal(SIGHUP  , sig_handling_interrupt);
+	signal(SIGQUIT , SIG_IGN);
+
+	timerstatus = 0;
+	timerreload = 0;
+	messageyp   = 4;
+   messagenr   = 0;
+	leaveloop   = FALSE;
+
 	noecho();
-	wsetscrreg(Panel->win, 1, H);
-	scrollok(Panel->win, FALSE);
-	keypad(Panel->win, TRUE);
-	curs_set(0);
+	cbreak();
+	setscrreg(4, LINES - 3);
+	scrollok(stdscr, FALSE);
+	keypad(stdscr, TRUE);
 
-	CurrListPosY = 0;
-	CurrListLine = 0;
+	draw_message_line(messageyp, messagenr, TRUE);
 
-	HidePanel(Panel);
-	PrintMessageList(Panel->win, W, H);
-	ShowPanel(Panel);
-	Update(stdscr);
-
-	if (RescanTimer > 0) wtimeout(Panel->win, RescanTimer * 1000);
-
-	StopFunc(-1);
-	UserFunc(-1);
-
-	while (Done == 0)
+	while (!leaveloop)
 	{
-		PrintMessageList(Panel->win, W, H);
+		timeout(1000);
+		curs_set(0);
+		move((LINES - 2), 0);
 
-		Line = (struct MessageLine *)(MessageList + (sizeof(struct MessageLine) * CurrListLine));
+		c = wgetch(stdscr);
 
-		switch ((K = wgetch(Panel->win)))
+		if (c != ERR) timerreload = 0;
+
+		switch (c)
 		{
 			case 27:
-				K = wgetch(Panel->win);
+				c = wgetch(stdscr);
 				break;
 
-			case 'H':
-			case 'h':
-				Help();
-				break;
-				
-			case 'I':
-			case 'i':
-				if ((NumMessages > 0) && (MessageList)) Information(Line);
-				break;
-
-			case KEY_DOWN:
-				if (CurrListLine < (NumMessages - 1))
+			case ERR:
+				if (++timerstatus > 30)
 				{
-					if (CurrListPosY < H - 1)
-					{
-						PrintMessageLine(Panel->win, CurrListPosY++, CurrListLine++, FALSE);
-						PrintMessageLine(Panel->win, CurrListPosY  , CurrListLine  , TRUE );
-					}
-					else
-					{
-						PrintMessageLine(Panel->win, CurrListPosY, CurrListLine++, FALSE);
-						Scroll(Panel->win, 1);
-						PrintMessageLine(Panel->win, CurrListPosY, CurrListLine, TRUE);
-					}
+					timerstatus = 0;
+
+					draw_ctrl_status();
+				}
+				if (++timerreload > rloadtime)
+				{
+					timerreload = 0;
+
+					transfer_message_list();
 				}
 				break;
 
-			case KEY_UP:
-				if (CurrListLine > 0)
-				{
-					if (CurrListPosY > 0)
-					{
-						PrintMessageLine(Panel->win, CurrListPosY--, CurrListLine--, FALSE);
-						PrintMessageLine(Panel->win, CurrListPosY  , CurrListLine  , TRUE );
-					}
-					else
-					{
-						PrintMessageLine(Panel->win, CurrListPosY, CurrListLine--, FALSE);
-						Scroll(Panel->win, -1);
-						PrintMessageLine(Panel->win, CurrListPosY, CurrListLine, TRUE);
-					}
-				}
+			case 'Q':
+			case 'q':
+				delete_selected_messages();
+				leavevbox = TRUE;
+				leaveloop = TRUE;
 				break;
 
 			case 'R':
 			case 'r':
-			case ERR:
-				GetMessageList();
+				transfer_message_list();
+				break;
+
+			case KEY_DOWN:
+				one_line_down();
+				break;
+
+			case KEY_UP:
+				one_line_up();
 				break;
 
 			case '+':
-			case '-':
-				SetVolume(K);
-				break;
-
-			case 'S':
-			case 's':
-				TogglePower();
-				break;
-
-			case '\r':
-			case '\n':
-				if ((NumMessages > 0) && (MessageList))
+				if (sndvolume < 1000)
 				{
-					PlayMessage(Line);
-					PrintMessageLine(Panel->win, CurrListPosY, CurrListLine, TRUE);
+					sndvolume++;
+
+					draw_bottom_bar();
 				}
 				break;
 
-			case 'T':
-			case 't':
-			case 'L':
-			case 'l':
-				Done = 1;
-				break;
-			
-			case 'Q':
-			case 'q':
-				DeleteMessages();
-				Done = -1;
+			case '-':
+				if (sndvolume > 0)
+				{
+					sndvolume--;
 
+					draw_bottom_bar();
+				}
 				break;
 
 			case 'D':
 			case 'd':
-				if ((NumMessages > 0) && (MessageList))
-				{
-					Line->Del = (Line->Del ? FALSE : TRUE);
-
-					PrintMessageLine(Panel->win, CurrListPosY, CurrListLine, TRUE);
-					Keypress(KEY_DOWN);
-				}
+				toggle_delete_flag(messagenr);
+				one_line_down();
 				break;
 
+			case 'T':
+			case 't':
 			case 'N':
 			case 'n':
-				if ((NumMessages > 0) && (MessageList))
-				{
-					if (Line->New)
-					{
-						UTime.actime	= 0;
-						UTime.modtime	= 0;
-
-						utime(Line->Filename, &UTime);
-
-						Line->New = FALSE;
-					}
-					else
-					{
-						utime(Line->Filename, NULL);
-
-						Line->New = TRUE;
-					}
-
-					PrintMessageLine(Panel->win, CurrListPosY, CurrListLine, TRUE);
-					Keypress(KEY_DOWN);
-				}
-				break;
-		}
-	}
-
-	ClosePanel(Panel);
-
-	return(Done);
-}
-
-/*************************************************************************
- ** TimerMain():	Hauptschleife für die Digi-Nachrichtenliste.				**
- *************************************************************************/
-
-static int TimerMain(void)
-{
-	PANEL *Panel;
-	int	 Done;
-	int	 K;
-	int	 W = 26;
-
-	Clear(stdscr);
-
-	if (!(Panel = OpenPanel(-1, -1, W, 14, Color(1) | A_BOLD, Color(1) | A_BOLD))) return(-1);
-
-	cbreak();
-	noecho();
-	scrollok(Panel->win, FALSE);
-	keypad(Panel->win, TRUE);
-	curs_set(0);
-
-	if (RescanTimer > 0) wtimeout(Panel->win, RescanTimer * 1000);
-
-	if ((strlen(UserName) + 2) <= W)
-	{
-		AttrSet(Panel->win, Color(1) | A_BOLD);
-
-		Print(Panel->win, 0, ((W - 2 - strlen(UserName)) / 2), " %s ", UserName);
-	}
-
-	TimerTogglePower(Panel->win, FALSE);
-
-	Done = 0;
-
-	while (Done == 0)
-	{
-		PrintNumMessages(Panel->win);
-
-		switch ((K = wgetch(Panel->win)))
-		{
-			case 'S':
-			case 's':
-				TimerTogglePower(Panel->win, TRUE);
+				toggle_new_flag(messagenr);
+				draw_bottom_bar();
+				one_line_down();
 				break;
 
-			case 'H':
-			case 'h':
-				HelpTimer();
-				break;
-				
-			case 27:
-				K = wgetch(Panel->win);
-				break;
-
-			case 'R':
-			case 'r':
-			case ERR:
-				GetNumMessages();
-				break;
-
-			case 'Q':
-			case 'q':
-				Done = -1;
-				break;
-
-			case 'L':
-			case 'l':
-				Done = 1;
-				break;
-		}
-	}
-
-	ClosePanel(Panel);
-
-	return(Done);
-}
-
-/*************************************************************************
- ** Help():	Hilfsfenster für die normale Nachrichtenliste.					**
- *************************************************************************/
-
-static void Help(void)
-{
-	PANEL *Panel;
-
-	int W = 46;
-	int H = 15;
-	
-	if ((Panel = OpenPanel(-1, -1, W, H, Color(4) | A_BOLD, Color(5) | A_BOLD)))
-	{
-		AttrSet(Panel->win, Color(4) | A_BOLD);
-
-		Print(Panel->win,  1, 2, "RETURN .................... Play message");
-		Print(Panel->win,  2, 2, "D ...... Mark message as delete/undelete");
-		Print(Panel->win,  3, 2, "N .......... Mark message as read/unread");
-		Print(Panel->win,  4, 2, "R .................. Rescan message list");
-		Print(Panel->win,  5, 2, "+/- ..................... Volume up/down");
-		Print(Panel->win,  6, 2, "S .................. Answer calls on/off");
-		Print(Panel->win,  7, 2, "I .................. Message information");
-		Print(Panel->win,  8, 2, "T/L ...................... Timer display");
-		Print(Panel->win,  9, 2, "H ................................. Help");
-		Print(Panel->win, 10, 2, "Q ................................. Quit");
-
-		Button(Panel->win, 20, H - 3, "  _Ok  ");
-
-		HelpTimeout(Panel->win, W, H);
-		ClosePanel(Panel);
-	}
-}
-
-/*************************************************************************
- ** HelpTimer():	Hilfsfenster für die Digi-Nachrichtenliste.				**
- *************************************************************************/
-
-static void HelpTimer(void)
-{
-	PANEL *Panel;
-
-	int W = 35;
-	int H = 10;
-	
-	if ((Panel = OpenPanel(-1, -1, W, H, Color(4) | A_BOLD, Color(5) | A_BOLD)))
-	{
-		AttrSet(Panel->win, Color(4) | A_BOLD);
-
-		Print(Panel->win, 1, 2, "R ....... Rescan message list");
-		Print(Panel->win, 2, 2, "S ....... Answer calls on/off");
-		Print(Panel->win, 3, 2, "L .............. List display");
-		Print(Panel->win, 4, 2, "H ...................... Help");
-		Print(Panel->win, 5, 2, "Q ...................... Quit");
-
-		Button(Panel->win, 14, H - 3, "  _Ok  ");
-
-		HelpTimeout(Panel->win, W, H);
-		ClosePanel(Panel);
-	}
-}
-
-/*************************************************************************
- ** HelpTimeout():	Timeoutfunktion für die Hilfsfenster.					**
- *************************************************************************/
-
-static void HelpTimeout(WINDOW *Win, int W, int H)
-{
-	int Timer;
-	int K;
-
-	cbreak();
-	noecho();
-	scrollok(Win, FALSE);
-	keypad(Win, TRUE);
-	wtimeout(Win, 1000);
-	curs_set(0);
-
-	AttrSet(Win, Color(4) | A_BOLD);
-	Update(Win);
-
-	Timer = 90;
-
-	while (Timer > 0)
-	{
-		switch ((K = wgetch(Win)))
-		{
-			case ERR:
-				Print(Win, H - 2, W - 6, "%2d", Timer--);
-				Update(Win);
-				break;
-
-			case 'O':
-			case 'o':
 			case '\r':
 			case '\n':
-				Timer = 0;
+				play_message(messagenr);
+				draw_message_line(messageyp, messagenr, TRUE);
+				draw_bottom_bar();
 				break;
 
 			default:
-				Timer = 90;
+				beep();
 				break;
 		}
 	}
 }
 
-/*************************************************************************
- ** Information():	Zeigt Informationen über die aktuelle Nachticht		**
- **						an.																**
- *************************************************************************/
+/**************************************************************************/
+/** parse_vboxrc(): Reads and parse ~/.vboxrc.                           **/
+/**************************************************************************/
 
-static void Information(struct MessageLine *Line)
+void parse_vboxrc(void)
 {
-	struct VoiceHeader Header;
-	struct stat Status;
+	struct passwd *userpw;
+	streamio_t    *vboxrc;
+	char           rcname[PATH_MAX + 1];
+	char           rcline[128 + 1];
+	char          *cmd;
+	char          *arg;
 
-	char *CompressionName[] =
+	if ((userpw = getpwuid(getuid())))
 	{
-		"Unknown", "Unknown", "ADPCM-2", "ADPCM-3", "ADPCM-4", "ALAW", "ULAW"
-	};
+		xstrncpy(rcname, userpw->pw_dir, PATH_MAX);
+		xstrncat(rcname, "/.vboxrc"    , PATH_MAX);
 
-	PANEL *Panel;
-	int	 FD;
-	int	 Compression;
+		if ((vboxrc = streamio_open(rcname)))
+		{
+			while (streamio_gets(rcline, 128, vboxrc))
+			{
+				cmd = strtok(rcline, "\t ");
+				arg = strtok(NULL  , "\t ");
 
-	int W = 49;
-	int H = 13;
+				if ((cmd) && (arg))
+				{
+					if (strncasecmp(cmd, "C_", 2) == 0)
+					{
+						parse_colors(cmd, arg);
+					}
+					else
+					{
+						if (strcasecmp(cmd, "USERNAME") == 0)
+						{
+							xstrncpy(loginname, arg, VBOX_MAX_USERNAME);
 
-	if (stat(Line->Filename, &Status) != 0) return;
-	
-	if ((FD = open(Line->Filename, O_RDONLY)) == -1) return;
+							continue;
+						}
 
-	if (read(FD, &Header, sizeof(struct VoiceHeader)) != sizeof(struct VoiceHeader))
+						if (strcasecmp(cmd, "PASSWORD") == 0)
+						{
+							xstrncpy(loginpass, arg, VBOX_MAX_PASSWORD);
+
+							continue;
+						}
+
+						if (strcasecmp(cmd, "VOLUME") == 0)
+						{
+							sndvolume = atoi(arg);
+
+							if (sndvolume < 0  ) sndvolume = 0;
+							if (sndvolume > 999) sndvolume = 999;
+						}
+					}
+				}
+			}
+
+			streamio_close(vboxrc);
+		}
+	}
+}
+
+/**************************************************************************/
+/** parse_colors(): Parse a colorname.                                   **/
+/**************************************************************************/
+
+static void parse_colors(char *cmd, char *arg)
+{
+	char *ctext;
+	char *cback;
+	int   i;
+
+	ctext = arg;
+
+	if ((cback = index(ctext, ':'))) *cback++ = '\0';
+
+	i = 1;
+
+	while (colortable[i].pair > 0)
 	{
-		Close(FD);
+		if (strcasecmp(colortable[i].name, cmd) == 0)
+		{
+			colortable[i].fg = get_color_nr(ctext);
+			colortable[i].bg = get_color_nr(cback);
+
+			colortable[i].cattr = (colortable[i].fg > 7 ? A_BOLD : A_NORMAL);
+
+			while (colortable[i].bg > 7) colortable[i].bg -= 8;
+			while (colortable[i].fg > 7) colortable[i].fg -= 8;
+
+			break;
+		}
+
+		i++;
+	}
+}
+
+/**************************************************************************/
+/** get_color_nr(): Returns the color number of a color in colortable.   **/
+/**************************************************************************/
+
+static int get_color_nr(char *cname)
+{
+	int i;
+
+	if ((cname) && (*cname))
+	{
+		for (i = 0; i < 16; i++)
+		{
+			if (strcasecmp(colornames[i], cname) == 0) return(i);
+		}
+	}
+
+	return(0);
+}
+
+/**************************************************************************/
+/** delete_selected_messages(): Deletes all selected messages.           **/
+/**************************************************************************/
+
+static void delete_selected_messages(void)
+{
+	struct messageline *msgline;
+	int                 i;
+	int                 s;
+
+	if ((messagesmp) && (messagesnr > 0))
+	{
+		for (s = 0, i = 0; i < messagesnr; i++)
+		{
+			msgline = (struct messageline *)(messagesmp + (sizeof(struct messageline) * i));
+
+			if (msgline->delete) s++;
+		}
+
+		if (s > 0)
+		{
+			i = message("yn", gettext("Really delete all marked messages (y/n)? "));
+
+			if (i == 'y')
+			{
+				for (i = 0; i < messagesnr; i++)
+				{
+					msgline = (struct messageline *)(messagesmp + (sizeof(struct messageline) * i));
+
+					if (msgline->delete)
+					{
+						message("", gettext("Removing message #%d..."), i);
+
+						if (!delete_message(msgline->messagename)) break;
+					}
+				}
+			}
+		}
+	}
+}
+
+/**************************************************************************/
+/** delete_message(): Deletes one message.                               **/
+/**************************************************************************/
+
+static int delete_message(char *name)
+{
+	vboxd_put_message("delete %s", name);
+
+	if (vboxd_get_message())
+	{
+		if (vboxd_test_response(VBOXD_VAL_DELETEOK)) returnok();
+
+		message("\r\n", gettext("Can't delete; invalid server response! %s"), gettext("[RETURN]"));
+	}
+	else message("\r\n", gettext("Can't delete; no server response! %s"), gettext("[RETURN]"));
+
+	returnerror();
+}
+
+/**************************************************************************/
+/** toggle_new_flag(): Toggles the message new flag.                     **/
+/**************************************************************************/
+
+static void toggle_new_flag(int nr)
+{
+	struct messageline *msgline;
+	char               *answer;
+
+	if ((messagesmp) && (messagesnr > 0))
+	{
+		message("", gettext("Toggle message new flag..."));
+
+		msgline = (struct messageline *)(messagesmp + (sizeof(struct messageline) * nr));
+
+		vboxd_put_message("toggle %s", msgline->messagename);
+
+		if ((answer = vboxd_get_message()))
+		{
+			if (vboxd_test_response(VBOXD_VAL_TOGGLE))
+			{
+				msgline->mtime = xstrtoul(&answer[4], 0);
+				msgline->new   = msgline->mtime > 0 ? TRUE : FALSE;
+
+				draw_message_line(messageyp, messagenr, TRUE);
+			}
+			else message("\r\n", gettext("Can't toggle; invalid server response! %s"), gettext("[RETURN]"));
+		}
+		else message("\r\n", gettext("Can't toggle; no answer from server! %s"), gettext("[RETURN]"));
+	}
+}
+
+/**************************************************************************/
+/** toggle_delete_flag(): Toggles the message delete flag.               **/
+/**************************************************************************/
+
+static void toggle_delete_flag(int nr)
+{
+	struct messageline *msgline;
+
+	if ((messagesmp) && (messagesnr > 0))
+	{
+		msgline = (struct messageline *)(messagesmp + (sizeof(struct messageline) * nr));
+
+		msgline->delete = msgline->delete ? FALSE : TRUE;
+	}
+}
+
+/**************************************************************************/
+/** transfer_message_list(): Transfers the message list.                 **/
+/**************************************************************************/
+
+static void transfer_message_list(void)
+{
+	message("", gettext("Transfering message list..."));
+
+	get_message_list();
+
+	if (newmessys)
+	{
+		draw_message_list();
+		messagenr = 0;
+		messageyp = 4;
+		draw_message_line(messageyp, messagenr, TRUE);
+	}
+
+	draw_bottom_bar();
+}
+
+/**************************************************************************/
+/** color(): Returns the attributes for a given color.                   **/
+/**************************************************************************/
+
+static chtype color(int c)
+{
+	if ((usecolors) && (!monocolor))
+	{
+		return(COLOR_PAIR(colortable[c].pair) | colortable[c].cattr);
+	}
+	else return(COLOR_PAIR(0) | colortable[c].mattr);
+}
+
+/**************************************************************************/
+/** draw_main_screen(): Draw the hole main screen.                       **/
+/**************************************************************************/
+
+static void draw_main_screen(void)
+{
+	clear_screen();
+	draw_bottom_bar();
+	draw_status_bar();
+	draw_message_list();
+}
+
+/**************************************************************************/
+/** clear_screen(): Clears screen and set background.                    **/
+/**************************************************************************/
+
+static void clear_screen(void)
+{
+	bkgdset(COLTAB(1));
+	wclear(stdscr);
+}
+
+/**************************************************************************/
+/** init_screen(): Initialize the ncurses screen and the colors.         **/
+/**************************************************************************/
+
+static int init_screen(void)
+{
+	int i;
+
+	if (initscr())
+	{
+		if (start_color() != ERR)
+		{
+			if ((has_colors()) && (!monocolor))
+			{
+				if ((COLORS >= 8) && (COLOR_PAIRS >= 64))
+				{
+					i = 1;
+
+					while (colortable[i].pair > 0)
+					{
+						init_pair(colortable[i].pair, colortable[i].fg, colortable[i].bg);
+
+						i++;
+					}
+
+					usecolors = TRUE;
+				}
+			}
+		}
+
+		returnok();
+	}
+
+	returnerror();
+}
+
+/**************************************************************************/
+/** exit_screen(): Exit ncurses screen management.                       **/
+/**************************************************************************/
+
+static void exit_screen(void)
+{
+	endwin();
+	printf("%c%c%c\n", 27, 'c', 12);
+	fflush(stdout);
+}
+
+/**************************************************************************/
+/** sig_handling_resize(): Signal handler for screen resizing.           **/
+/**************************************************************************/
+
+static void sig_handling_resize(int s)
+{
+	struct winsize win;
+	int            newsizec;
+	int            newsizel;
+
+	newsizel = LINES;
+	newsizec = COLS;
+
+   if (ioctl(0, TIOCGWINSZ, &win) == 0)
+	{
+      if (win.ws_row != 0) newsizel = win.ws_row;
+      if (win.ws_col != 0) newsizec = win.ws_col;
+   }
+
+	if (resizeterm(newsizel, newsizec) == ERR) leavevbox = TRUE;
+
+	leaveloop = TRUE;
+}
+
+/**************************************************************************/
+/** sig_handling_interrupt(): Signal handler for ctrl-c or other breaks. **/
+/**************************************************************************/
+
+static void sig_handling_interrupt(int s)
+{
+	leaveloop = TRUE;
+	leavevbox = TRUE;
+
+	/*
+	 * We *not* re-set the interrupt handler, so a 2nd control-c will
+	 * break the program!
+	 */
+}
+
+/**************************************************************************/
+/** get_message_list(): Get the list with all messages. The list replace **/
+/**                     any old messages. If the function can't get the  **/
+/**                     new list, the old one is not touched.            **/
+/**************************************************************************/
+
+static void get_message_list(void)
+{
+	struct messageline *mrgline;
+	struct messageline *msgline;
+	char               *newline;
+	char               *tmpmessagesmp;
+	char               *newmessagesmp;
+	int                 newmessagesnr;
+	int                 o;
+	int                 n;
+
+	newmessagesmp = NULL;
+	newmessagesnr = 0;
+	newmessys     = FALSE;
+
+	vboxd_put_message("list");
+
+	while ((newline = vboxd_get_message()))
+	{
+		if ((!vboxd_test_response(VBOXD_VAL_LIST)) || (strlen(newline) < 5))
+		{
+			if (newmessagesmp) free(newmessagesmp);
+
+			return;
+		}
+
+		if (newline[4] == '.') break;
+
+		if (newline[4] == '+')
+		{
+			newmessagesnr++;
+
+			if ((tmpmessagesmp = realloc(newmessagesmp, (sizeof(struct messageline) * newmessagesnr))))
+			{
+				newmessagesmp = tmpmessagesmp;
+
+				msgline = (struct messageline *)(newmessagesmp + (sizeof(struct messageline) * (newmessagesnr - 1)));
+
+				msgline->ctime        = 0;
+				msgline->mtime        = 0;
+				msgline->compression  = 0;
+				msgline->size         = 0;
+				msgline->new          = FALSE;
+				msgline->delete       = FALSE;
+
+				strcpy(msgline->messagename, "");
+				strcpy(msgline->name       , "");
+				strcpy(msgline->callerid   , "");
+				strcpy(msgline->phone      , "");
+				strcpy(msgline->location   , "");
+			}
+			else newmessagesnr--;
+
+			continue;
+		}
+
+		if (newmessagesnr > 0)
+		{
+			msgline = (struct messageline *)(newmessagesmp + (sizeof(struct messageline) * (newmessagesnr - 1)));
+
+			switch (newline[4])
+			{
+				case 'F':
+					xstrncpy(msgline->messagename, &newline[6], NAME_MAX);
+					break;
+
+				case 'N':
+					xstrncpy(msgline->name, &newline[6], VAH_MAX_NAME);
+					break;
+
+				case 'I':
+					xstrncpy(msgline->callerid, &newline[6], VAH_MAX_CALLERID);
+					break;
+
+				case 'P':
+					xstrncpy(msgline->phone, &newline[6], VAH_MAX_PHONE);
+					break;
+
+				case 'L':
+					xstrncpy(msgline->location, &newline[6], VAH_MAX_LOCATION);
+					break;
+
+				case 'T':
+					msgline->ctime = (time_t)xstrtoul(&newline[6], 0);
+					break;
+
+				case 'M':
+					msgline->mtime = (time_t)xstrtoul(&newline[6], 0);
+					msgline->new = msgline->mtime > 0 ? TRUE : FALSE;
+					break;
+
+				case 'C':
+					msgline->compression = (int)xstrtol(&newline[6], 6);
+					break;
+
+				case 'S':
+					msgline->size = (int)xstrtol(&newline[6], 0);
+					break;
+			}
+		}
+	}
+
+	if (newmessagesnr > 0)
+	{
+		if (messagesmp)
+		{
+			if (messagesnr > 0)
+			{
+				/*
+				 * Try to merge the old and the new message list, so no status
+				 * flags are lost.
+				 */
+
+				for (n = 0; n < newmessagesnr; n++)
+				{
+					msgline = (struct messageline *)(newmessagesmp + (sizeof(struct messageline) * n));
+
+					for (o = 0; o < messagesnr; o++)
+					{
+						mrgline = (struct messageline *)(messagesmp + (sizeof(struct messageline) * o));
+
+						if (strcmp(mrgline->messagename, msgline->messagename) == 0)
+						{
+							msgline->delete = mrgline->delete;
+						}
+					}
+				}
+			}
+
+			free(messagesmp);
+		}
+
+		if (newmessagesnr != messagesnr) newmessys = TRUE;
+
+		messagesmp = newmessagesmp;
+		messagesnr = newmessagesnr;
+
+		qsort(messagesmp, messagesnr, sizeof(struct messageline), sort_message_list);
+	}
+}
+
+/**************************************************************************/
+/** sort_message_list(): Sorts the message list.                         **/
+/**************************************************************************/
+
+static int sort_message_list(const void *a, const void *b)
+{
+	struct messageline *linea = (struct messageline *)a;
+	struct messageline *lineb = (struct messageline *)b;
+
+	if (lineb->ctime == linea->ctime) return( 0);
+	if (lineb->ctime  < linea->ctime) return(-1);
+
+	return(1);
+}
+
+/**************************************************************************/
+/** init_locale(): Starts and initialize the locale functions.           **/
+/**************************************************************************/
+
+static void init_locale(void)
+{
+#if HAVE_LOCALE_H
+	setlocale(LC_ALL, "");
+#endif
+
+#if ENABLE_NLS
+	textdomain(PACKAGE);
+#endif
+}
+
+/**************************************************************************/
+/** one_line_down(): Moves cursor in message list one line down.         **/
+/**************************************************************************/
+
+static void one_line_down(void)
+{
+	if ((messagesnr > 0) && (messagesmp) && (messagenr < (messagesnr - 1)))
+	{
+		draw_message_line(messageyp, messagenr, FALSE);
+
+		messagenr++;
+
+		if (messageyp >= (LINES - 3))
+		{
+			wrefresh(stdscr);
+			scrollok(stdscr, TRUE);
+			wscrl(stdscr, 1);
+			scrollok(stdscr, FALSE);
+		}
+		else messageyp++;
+
+		draw_message_line(messageyp, messagenr, TRUE);
+	}
+	else beep();
+}
+
+/**************************************************************************/
+/** one_line_up(): Moves cursor in message list one line up.             **/
+/**************************************************************************/
+
+static void one_line_up(void)
+{
+	if ((messagesnr > 0) && (messagesmp) && (messagenr > 0))
+	{
+		draw_message_line(messageyp, messagenr, FALSE);
+
+		messagenr--;
+
+		if (messageyp <= 4)
+		{
+			wrefresh(stdscr);
+			scrollok(stdscr, TRUE);
+			wscrl(stdscr, -1);
+			scrollok(stdscr, FALSE);
+		}
+		else messageyp--;
+
+		draw_message_line(messageyp, messagenr, TRUE);
+	}
+	else beep();
+}
+
+/**************************************************************************/
+/** draw_message_line(): Draws one message line.                         **/
+/**************************************************************************/
+
+static void draw_message_line(int y, int nr, int selected)
+{
+	struct tm          *msgtime;
+	char                strtime[32];
+	struct messageline *msgline;
+	chtype              msgattr;
+	int                 secs;
+	int                 mins;
+
+	if ((messagesmp) && (messagesnr >= nr))
+	{
+		msgline = (struct messageline *)(messagesmp + (sizeof(struct messageline) * nr));
+		msgattr = (selected ? COLTAB(9) : COLTAB(8));
+
+		attrset(msgattr);
+		mvhline(y, 0, ' ', COLS);
+
+		mvprintw(y, 1, "%s", msgline->mtime > 0 ? "+" : "");
+		mvprintw(y, 1, "%s", msgline->delete ? "-" : "");
 		
+		strcpy(strtime, "??-???-???? ??:??:??");
+
+		if ((msgtime = localtime(&msgline->ctime)))
+		{
+			strftime(strtime, 30, "%d-%b-%Y %H:%M:%S", msgtime);
+		}
+
+		secs = get_message_ptime(msgline->compression, msgline->size);
+		mins = (secs / 60);
+		secs = (secs - (mins * 60));
+
+		mvprintw(y, 3, "%s", strtime);
+		mvprintw(y, 25, "%02d:%02d", mins, secs), 
+		mvprintw(y, 32, "%s", msgline->name);
+
+		if ((strcmp(msgline->phone, "*** Unknown ***")) != 0 && (strcmp(msgline->phone, "<not supported>") != 0) && (strcmp(msgline->phone, "") != 0))
+		{
+			mvprintw(y, COLS - 3 - strlen(msgline->phone), "%s P", msgline->phone);
+		}
+		else mvprintw(y, COLS - 3 - strlen(msgline->callerid), "%s I", msgline->callerid);
+
+		move(LINES - 2, 0);
+
+		if (selected) wrefresh(stdscr);
+	}
+}
+
+/**************************************************************************/
+/** draw_ctrl_status(): Gets and draws the control status leds.          **/
+/**************************************************************************/
+
+static void draw_ctrl_status(void)
+{
+	char   *answer;
+	int     i;
+	int     x;
+	chtype  statuschar;
+	chtype  statusattr;
+
+	i = 0;
+	x = 0;
+
+	while (statusleds[i].name)
+	{
+		statuschar = '-';
+		statusattr = COLTAB(7);
+
+		if (ledstatus)
+		{
+			if (i == 0) message("", gettext("Getting control status..."));
+
+			vboxd_put_message("statusctrl %s", statusleds[i].name);
+
+			if ((answer = vboxd_get_message()))
+			{
+				if (vboxd_test_response(VBOXD_VAL_STATUSCTRLOK))
+				{
+					statuschar = ACS_DIAMOND;
+
+					if (answer[4] == '1')
+						statusattr = i ? COLTAB(6) : COLTAB(5);
+					else
+						statusattr = i ? COLTAB(7) : COLTAB(4);
+				}
+			}
+		}
+
+		attrset(statusattr);
+		mvaddch(0, statusleds[i].x, statuschar);
+
+		x = statusleds[i].x;
+
+		i++;
+	}
+
+	draw_bottom_bar();
+}
+
+/**************************************************************************/
+/** draw_status_bar(): Draws the top status bar. This function also get  **/
+/**                    the control status information.                   **/
+/**************************************************************************/
+
+static void draw_status_bar(void)
+{
+	char *helpmsg = gettext("HELP");
+	int   i;
+   int   x;
+
+	attrset(COLTAB(2));
+
+	mvhline(0, 0, ' ', COLS);
+	mvvline(0, 3, ACS_VLINE, 1);
+	mvvline(0, (COLS - strlen(helpmsg) - 7), ACS_VLINE, 1);
+
+	wattrset(stdscr, COLTAB(2));
+	mvprintw(0, COLS - strlen(helpmsg) - 5, "( ) %s", helpmsg);
+	wattrset(stdscr, COLTAB(3));
+	mvprintw(0, COLS - strlen(helpmsg) - 4, "H");
+
+	i = 0;
+	x = 0;
+
+	while (statusleds[i].name)
+	{
+		x = statusleds[i].x;
+
+		i++;
+	}
+
+	attrset(COLTAB(2));
+	mvaddch(0, (x + 2), ACS_VLINE);
+	printw(" %s %s", PACKAGE, VERSION);
+
+	draw_ctrl_status();
+}
+
+/**************************************************************************/
+/** draw_message_list(): Draws the message list.                         **/
+/**************************************************************************/
+
+static void draw_message_list(void)
+{
+	char phone[30];
+	int m;
+	int y;
+
+	printstring(phone, "%28.28s", gettext("Number"));
+
+	wattrset(stdscr, COLTAB(10));
+	mvprintw(2, 1, "* %-20.20s", gettext("Incoming date"));
+	mvprintw(2, 25, "%5.5s", gettext("Len"));
+	mvprintw(2, 32, "%-28.28s", gettext("Name"));
+	mvprintw(2, COLS - 1 - strlen(phone), "%s", phone);
+
+	mvhline(3, 1, ACS_HLINE, (COLS - 2));
+
+	y = 4;
+	m = 0;
+
+	while (m < messagesnr)
+	{
+		draw_message_line(y, m, FALSE);
+
+		y++;
+		m++;
+
+		if (y >= (LINES - 2)) break;
+	}
+}
+
+/**************************************************************************/
+/** play_message(): Play the selected message.                           **/
+/**************************************************************************/
+
+static void play_message(int msg)
+{
+	struct messageline *msgline;
+	char               *msgname;
+	char               *command;
+	char               *answer;
+	int                 size;
+	int                 have;
+	int                 fd;
+
+	if ((!messagesmp) || (messagesnr < 1)) return;
+
+	msgline = (struct messageline *)(messagesmp + (sizeof(struct messageline) * msg));
+	msgname = tmpnam(NULL);
+
+	if ((!msgline) || (!msgname))
+	{
+		message("\r\n", gettext("Can't create temporary file! %s"), gettext("[RETURN]"));
+
 		return;
 	}
 
-	Close(FD);
-
-	Compression = (int)ntohs(Header.Compression);
-
-	if ((Compression < 2) || (Compression > 6)) Compression = 0;
-
-	if ((Panel = OpenPanel(-1, -1, W, H, Color(4) | A_BOLD, Color(5) | A_BOLD)))
+	if ((fd = open(msgname, O_WRONLY|O_CREAT|O_TRUNC, S_IWUSR|S_IRUSR)) == -1)
 	{
-		AttrSet(Panel->win, Color(4) | A_BOLD);
+		message("\r\n", gettext("Can't open temporary file! %s"), gettext("[RETURN]"));
 
-		Print(Panel->win, 1, 2, "Number     : %-30.30s", Line->ID);
-		Print(Panel->win, 2, 2, "Caller     : %-30.30s", Line->Name);
-		Print(Panel->win, 3, 2, "Date       : %2.2s-%2.2s-%2.2s %2.2s:%2.2s:%2.2s", &Line->Date[4], &Line->Date[2], &Line->Date[0], &Line->Date[6], &Line->Date[8], &Line->Date[10]);
-		Print(Panel->win, 4, 2, "Record time: %5.5s", Line->Time);
-		Print(Panel->win, 5, 2, "Filename   : %-30.30s", Line->Filename);
-		Print(Panel->win, 6, 2, "Compression: %s", CompressionName[Compression]);
-		Print(Panel->win, 7, 2, "Type       : %-30.30s", Header.Modem);
-		Print(Panel->win, 8, 2, "Size       : %ld", Status.st_size);
-
-		Button(Panel->win, 21, H - 3, "  _Ok  ");
-
-		HelpTimeout(Panel->win, W, H);
-		ClosePanel(Panel);
+		return;
 	}
-}
 
-/*************************************************************************
- ** DeleteMessages():	Löscht alle markierten Nachrichten.					**
- *************************************************************************/
+	message("", gettext("Searching message..."));
 
-static void DeleteMessages(void)
-{
-	struct MessageLine *Line;
+	vboxd_put_message("message %s", msgline->messagename);
 
-	PANEL *Panel;
-	long	 i;
-	long	 j;
-	int	 K;
-	int	 Timer;
-
-	for (i = 0, j = 0; i < NumMessages; i++)
+	if ((answer = vboxd_get_message()))
 	{
-		Line = (struct MessageLine *)(MessageList + (sizeof(struct MessageLine) * i));
-
-		if (Line->Del) j++;
-	}
-	
-	if (!j) return;
-
-	Panel = OpenPanel(-1, -1, 32, 6, Color(4) | A_BOLD, Color(5) | A_BOLD);
-
-	if (!Panel) return;
-
-	cbreak();
-	noecho();
-	scrollok(Panel->win, FALSE);
-	keypad(Panel->win, TRUE);
-	wtimeout(Panel->win, 1000);
-	curs_set(0);
-
-	Button(Panel->win,  3, 3, "  _Yes  ");
-	Button(Panel->win, 21, 3, "  _No  ");
-
-	AttrSet(Panel->win, Color(4) | A_BOLD);
-
-	Print(Panel->win, 1, 2, "Delete all marked entries?");
-
-	Update(Panel->win);
-
-	Timer	= 90;
-
-	while (Timer > 0)
-	{
-		switch ((K = wgetch(Panel->win)))
+		if (vboxd_test_response(VBOXD_VAL_MESSAGE))
 		{
-			case ERR:
-				Print(Panel->win, 4, 26, "%2d", Timer--);
-				Update(Panel->win);
-				break;
-
-			case 'N':
-			case 'n':
-			case '\r':
-			case '\n':
-				Timer = 0;
-				break;
-
-			case 'Y':
-			case 'y':
-				for (i = 0; i < NumMessages; i++)
-				{
-					Line = (struct MessageLine *)(MessageList + (sizeof(struct MessageLine) * i));
-
-					if (Line->Del) DeleteFile(Line->Filename, NULL);
-				}
-
-				Timer = 0;
-
-				break;
-		}
-	}
-
-	ClosePanel(Panel);
-}
-
-/*************************************************************************
- ** PlayMessage():	Spielt die aktuelle Nachricht und löscht den Neu-	**
- **						status.															**
- *************************************************************************/
-
-static void PlayMessage(struct MessageLine *Line)
-{
-	struct utimbuf UTime;
-
-	PANEL	*Panel;
-	char	 Command[MAXCOMMANDLEN + 1];
-
-	if ((MessageList) && (NumMessages > 0))
-	{
-		SPrintF(Command, "%s \"%s/%s\" \"%d\"", PlayCommand, MessageDir, Line->Filename, Volume);
-
-		Panel = OpenPanel(-1, -1, 27, 6, Color(4) | A_BOLD, Color(5) | A_BOLD);
-
-		if (Panel)
-		{
-			AttrSet(Panel->win, Color(4) | A_BOLD);
-		
-			Print(Panel->win, 1, 2, "       PLAYING       ");
-			Print(Panel->win, 3, 2, "Press CTRL-C to stop!");
-
-			Update(Panel->win);
-		}
-
-		signal(SIGINT, SIG_DFL);
-		system(Command);
-
-		if (Panel) ClosePanel(Panel);
-
-		StopFunc(-1);
-
-		Line->New = FALSE;
-
-		UTime.actime	= 0;
-		UTime.modtime	= 0;
-
-		utime(Line->Filename, &UTime);
-	}
-	else Beep();
-}
-
-/*************************************************************************
- ** GetMessageList():	Läd die Liste der Nachrichten in den Speicher.	**
- *************************************************************************/
-
-static char *GetMessageList(void)
-{
-	struct dirent *DirEnt;
-	struct stat Status;
-	struct MessageLine *Line;
-
-	char	*List			= NULL;
-	char	*Temp			= NULL;
-	char	*Name			= NULL;
-	DIR	*Dir			= NULL;
-	long   Messages	= 0;
-
-		/* Untersuchen, ob sich seit dem letzten Zugriff auf das	*/
-		/* Verzeichniss etwas geändert hat.								*/
-
-	if (stat(MessageDir, &Status) != 0) return(MessageList);
-
-	if (Status.st_mtime == IncomingTimeM)
-	{
-		if (Status.st_ctime == IncomingTimeC) return(MessageList);
-	}
-
-	IncomingTimeM = Status.st_mtime;
-	IncomingTimeC = Status.st_ctime;
-
-		/* Incoming-Verzeichnis durchsuchen und alle passenden Nach-	*/
-		/* richten in die neue Liste eintragen.								*/
-
-	if (!(Dir = opendir(MessageDir))) return(MessageList);
-
-	while ((DirEnt = readdir(Dir)))
-	{
-		Name = DirEnt->d_name;
-
-		if ((strcmp(Name, ".") != 0) && (strcmp(Name, "..") != 0))
-		{
-			if ((isdigit(*Name)) && (Name[12] == '-'))
+			if ((size = (int)xstrtol(&answer[4], 0)) > 0)
 			{
-				if (stat(Name, &Status) == 0)
+				message("", gettext("Transfering message (%d bytes)..."), size);
+
+				if ((have = load_message(fd, size)) == size)
 				{
-					if (access(Name, R_OK) == 0)
+					message("", gettext("Searching end sequence..."));
+
+					if ((answer = vboxd_get_message()))
 					{
-						if ((Temp = realloc(List, (sizeof(struct MessageLine) * (Messages + 1)))))
+						if (!vboxd_test_response(VBOXD_VAL_MESSAGE))
 						{
-							List = Temp;
-							Line = (struct MessageLine *)(List + (sizeof(struct MessageLine) * Messages));
-
-							strncpy(Line->Date, Name, 12);
-							strncpy(Line->ID, &Name[13], MAXCALLERIDLEN);
-							strncpy(Line->Filename, Name, NAME_MAX);
-
-							Line->New = TRUE;
-							Line->Del = FALSE;
-							
-							if (Status.st_mtime == 0) Line->New = FALSE;
-
-							FindUserFromID(Line->ID);
-
-							strncpy(Line->Name, CallerName, MAXNAMELEN);
-
-							CalculateTime(Line->Filename, Status.st_size, Line->Time);
-
-							Messages++;
+							message("\r\n", gettext("Can't get end sequence (bad response)! %s"), gettext("[RETURN]"));
 						}
 					}
-					else
+					else message("\r\n", gettext("Can't get end sequence! %s"), gettext("[RETURN]"));
+
+					close_and_mone(fd);
+
+					size = 100 + strlen(msgname) + strlen(playerbin);
+
+					if ((command = malloc(size)))
 					{
-						IncomingTimeM = 0;
-						IncomingTimeC = 0;
+						message("", gettext("Playing message..."));
+
+						printstring(command, "%s %s %d 1>/dev/null 2>/dev/null", playerbin, msgname, sndvolume);
+						system(command);
+						free(command);
+
+						if (msgline->new) toggle_new_flag(msg);
 					}
 				}
+				else message("\n\r", gettext("Can only get %d of %d bytes! %s"), have, size, gettext("[RETURN]"));
 			}
+			else message("\r\n", gettext("Message size is zero! %s"), gettext("[RETURN]"));
 		}
+		else message("\r\n", gettext("Can't get init sequence (bad response)! %s"), gettext("[RETURN]"));
 	}
+	else message("\r\n", gettext("Can't get init sequence! %s"), gettext("[RETURN]"));
 
-	closedir(Dir);
+	if (fd != -1) close(fd);
 
-		/* Wenn die neue Liste erzeugt werden konnte, wird die alte	*/
-		/* freigegeben und durch die neue ersetzt.						*/
-
-	if (MessageList) Free(MessageList);
-
-	MessageList			= List;
-	NumMessages			= Messages;
-	RedrawMessageList	= TRUE;
-
-	qsort(List, Messages, sizeof(struct MessageLine), SortMessageList);
-
-	return(MessageList);
+	unlink(msgname);
 }
 
-/*************************************************************************
- ** FreeMessageList():	Gibt den Speicher der Nachrichtenliste wieder	**
- **							frei.															**
- *************************************************************************/
+/**************************************************************************/
+/** load_message(): Loads the message from server.                       **/
+/**************************************************************************/
 
-static void FreeMessageList(void)
+static int load_message(int fd, int size)
 {
-	if (MessageList) Free(MessageList);
-	
-	MessageList			= NULL;
-	NumMessages			= 0;
-	IncomingTimeM		= 0;
-	IncomingTimeC		= 0;
-	RedrawMessageList	= TRUE;
-}
+   struct timeval timeval;
+   fd_set         rmask;
 
-/*************************************************************************
- ** SortMessageList():	Sortiert die Nachrichtenliste.						**
- *************************************************************************/
+	unsigned char temp[256];
+	int  have;
+	int  take;
+   int  rc;
 
-static int SortMessageList(const void *A, const void *B)
-{
-	struct MessageLine *LineA = (struct MessageLine *)A;
-	struct MessageLine *LineB = (struct MessageLine *)B;
+	have = 0;
 
-	return(strcmp(LineB->Date, LineA->Date));
-}
-
-/*************************************************************************
- ** GotoSection():	Springt zu einer Sektion im vboxrc.						**
- *************************************************************************/
-
-static int GotoSection(char *Section)
-{
-	char Line[VBOXRC_MAX_RCLINE + 1];
-
-	VBoxRC = FReOpen(VBoxRC);
-   
-	while (FGetS(Line, VBOXRC_MAX_RCLINE, VBoxRC))
+	while (have < size)
 	{
-		if (strcasecmp(Line, Section) == 0) ReturnTrue();
-	}
-                  
-	ReturnFalse();
-}
+      VBOX_ONE_FD_MASK(&rmask, vboxd_r_fd);
 
-/*************************************************************************
- ** FindUserFromID():	Ermittelt den Namen eines Anrufers anhand der	**
- **							CallerID.													**
- *************************************************************************/
+      timeval.tv_sec  = VBOXD_GET_MSG_TIMEOUT;
+      timeval.tv_usec = 0;
 
-static void FindUserFromID(char *ID)
-{
-	char	Line[VBOXRC_MAX_RCLINE + 1];
-	char *Phone;
-	char *Table;
-	char *Owner;
-	char *Dummy;
+      rc = select((vboxd_r_fd + 1), &rmask, NULL, NULL, &timeval);
 
-	StringCpy(CallerName, "*** Unknown ***", VBOX_MAX_CALLERNAME);
-
-	if (GotoSection("[CALLERIDS]"))
-	{
-		while (FGetS(Line, VBOXRC_MAX_RCLINE, VBoxRC))
+		if (rc <= 0)
 		{
-			if ((*Line == '[') || (*Line == ']')) break;
+			if ((rc < 0) && (errno == EINTR)) continue;
 
-			Dummy = Line;
-			Owner = NULL;
-			Table = NULL;
-			Phone = NULL;
-                                                
-			while (isspace(*Dummy)) Dummy++;
-
-			if ((*Dummy) && (Dummy)) Phone = strsep(&Dummy, "\t ");
-
-			while (isspace(*Dummy)) Dummy++;
-
-			if ((*Dummy) && (Phone)) Table = strsep(&Dummy, "\t ");
-
-			while (isspace(*Dummy)) Dummy++;
-
-			if ((*Dummy) && (Table)) Owner = Dummy;
-
-			if ((!Owner) || (!Phone) || (!Table)) continue;
-
-			if (fnmatch(Phone, ID, FNM_NOESCAPE | FNM_PERIOD) == 0)
-			{
-				StringCpy(CallerName, Owner, VBOX_MAX_CALLERNAME);
-
-				break;
-			}
+			break;
 		}
-	}
-}
 
-/*************************************************************************
- ** GetNumMessages():	Gibt die Anzahl der neuen Nachrichten zurück.	**
- *************************************************************************/
+		if (!FD_ISSET(vboxd_r_fd, &rmask)) break;
 
-static long GetNumMessages(void)
-{
-	struct dirent *DirEnt;
-	struct stat Status;
+		if ((take = (size - have)) > 255) take = 255;
 
-	char *Name		= NULL;
-	DIR  *Dir		= NULL;
-	long	Messages = 0;
+		rc = read(vboxd_r_fd, temp, take);
 
-		/* Untersuchen, ob sich seit dem letzten Zugriff auf das	*/
-		/* Verzeichniss etwas geändert hat.								*/
-
-	if (stat(MessageDir, &Status) != 0) return(NumMessages);
-
-	if (Status.st_mtime == IncomingTimeM)
-	{
-		if (Status.st_ctime == IncomingTimeC) return(NumMessages);
-	}
-
-	IncomingTimeM = Status.st_mtime;
-	IncomingTimeC = Status.st_ctime;
-
-		/* Incoming-Verzeichnis durchsuchen und alle passenden Nach-	*/
-		/* richten in die neue Liste eintragen.								*/
-
-	if (!(Dir = opendir(MessageDir))) return(NumMessages);
-
-	while ((DirEnt = readdir(Dir)))
-	{
-		Name = DirEnt->d_name;
-
-		if ((strcmp(Name, ".") != 0) && (strcmp(Name, "..") != 0))
+		if (rc <= 0)
 		{
-			if ((isdigit(*Name)) && (Name[12] == '-'))
-			{
-				if (stat(Name, &Status) == 0)
-				{
-					if (Status.st_mtime > 0) Messages++;
-					else
-					{
-						IncomingTimeM = 0;
-						IncomingTimeC = 0;
-					}
-				}
-			}
-		}
-	}
+			if ((rc < 0) && (errno == EINTR)) continue;
 
-	closedir(Dir);
-
-	NumMessages			= Messages;
-	RedrawMessageList	= TRUE;
-
-	return(Messages);
-}
-
-/*************************************************************************
- ** SetVolume():	Setzt die Lautstärke mit der gespielt wird.				**
- *************************************************************************/
-
-static void SetVolume(int K)
-{
-	if ((K == '+') && (Volume < 100))
-	{
-		Volume++;
-			
-		PrintStatus();
-	}
-
-	if ((K == '-') && (Volume > 1))
-	{
-		Volume--;
-		
-		PrintStatus();
-	}
-}
-
-/*************************************************************************
- ** TogglePower():	Schaltet VBox ein/aus.										**
- *************************************************************************/
-
-static void TogglePower(void)
-{
-	if (FileExist(SpoolingDir, VBOX_CTL_STOP))
-	{
-		DeleteFile(SpoolingDir, VBOX_CTL_STOP);
-	}
-	else TouchFile(SpoolingDir, VBOX_CTL_STOP);
-
-	PrintStatus();
-}
-
-/*************************************************************************
- ** TimerTogglePower():	Timerfunktion für TogglePower().						**
- *************************************************************************/
-
-static void TimerTogglePower(WINDOW *Win, int Toggle)
-{
-	if (Toggle) TogglePower();
-
-	if (FileExist(SpoolingDir, VBOX_CTL_STOP))
-	{
-		AttrSet(Win, Color(10) | A_REVERSE | A_BOLD);
-
-		Print(Win, 12, 2, " OFF ");
-	}
-	else
-	{
-		AttrSet(Win, Color(1) | A_BOLD);
-
-		HLine(Win, 2, 12, ACS_HLINE, 5);
-	}
-
-	Update(Win);
-}
-
-/*************************************************************************
- ** StopFunc():																			**
- *************************************************************************/
-
-static void StopFunc(int Sig)
-{
-	if (Sig != -1)
-	{
-		ExitNCurses();
-		FreeMessageList();
-		FClose(VBoxRC);
-		Exit(Sig);
-	}
-
-	alarm(0);
-	signal(SIGALRM , SIG_IGN);
-	signal(SIGINT	, SIG_IGN);
-	signal(SIGQUIT	, SIG_IGN);
-	signal(SIGHUP	, StopFunc);
-	signal(SIGTERM	, StopFunc);
-}
-
-/*************************************************************************
- ** UserFunc():																			**
- *************************************************************************/
-
-static void UserFunc(int Nr)
-{
-	if (Nr != -1)
-	{
-		signal(SIGUSR1	, SIG_IGN);
-		signal(SIGUSR2 , SIG_IGN);
-		signal(SIGHUP	, SIG_IGN);
-
-		PrintStatus();
-	}
-
-	signal(SIGUSR1	, UserFunc);
-	signal(SIGUSR2 , UserFunc);
-	signal(SIGHUP	, UserFunc);
-}
-
-/*************************************************************************
- ** PrintNumMessages():	Gibt die Anzahl der neuen Nachrichten als Digi-	**
- **							zahl aus.													**
- *************************************************************************/
-
-static void PrintNumMessages(WINDOW *Win)
-{
-	int	Messages;
-	char	Number[4];
-
-	if (RedrawMessageList)
-	{
-		Messages = NumMessages;
-
-		if (Messages <  0) Messages = 0;
-		if (Messages > 99) Messages = 99;
-
-		SPrintF(Number, "%02d", Messages);
-
-		if (!Mono)
-		{
-			AttrSet(Win, Color(3) | A_BOLD);
-		
-			DrawDigit(Win, 02, '8');
-			DrawDigit(Win, 13, '8');
+			break;
 		}
 
-		AttrSet(Win, Color(6) | A_BOLD);
-		
-		if (Number[0] != '0') DrawDigit(Win, 02, Number[0]);
-		if (Number[1] != '*') DrawDigit(Win, 13, Number[1]);
+		have += rc;
 
-		Update(Win);
+		write(fd, temp, rc);
 	}
 
-	RedrawMessageList = FALSE;
+	return(have);
 }
 
-/*************************************************************************
- ** DrawDigit():	Malt eine einzelne Digizahl.									**
- *************************************************************************/
+/**************************************************************************/
+/** message(): Prints a message into the bottom bar. The function can    **/
+/**            also wait for a special keypress. While waiting, a NOOP   **/
+/**            message is send all 10 seconds.                           **/
+/**************************************************************************/
 
-static void DrawDigit(WINDOW *Win, int X, unsigned char Number)
+static int message(char *keys, char *fmt, ...)
 {
-	char *Table	= NULL;
-	int	Digit;
-	int	Y;
-	int	i;
+	char    message[256];
+	va_list arg;
+	int     k;
+	int     timernoop;
+	int     returnkey;
 
-	Digit = (int)(Number - '0');
-	
-	if ((Digit < 0) || (Digit > 9)) Digit = 0;
+	va_start(arg, fmt);
+	vnprintstring(message, 255, fmt, arg);
+	va_end(arg);
 
-	Table = NumberTable[Digit];
-
-	for (i = 0; i < strlen(Table); i++)
-	{
-		Y = 1;
-
-		switch (Table[i])
-		{
-			case '1':	HLine(Win, X + 2, Y     , ACS_BLOCK, 5);
-							break;
-
-			case '2':	HLine(Win, X + 2, Y +  5, ACS_BLOCK, 5);
-							break;
-
-			case '3':	HLine(Win, X + 2, Y + 10, ACS_BLOCK, 5);
-							break;
-					
-			case '4':	VLine(Win, X    , Y + 1, ACS_BLOCK, 4);
-							VLine(Win, X + 1, Y + 1, ACS_BLOCK, 4);
-							break;
-
-			case '5':	VLine(Win, X + 7, Y + 1, ACS_BLOCK, 4);
-							VLine(Win, X + 8, Y + 1, ACS_BLOCK, 4);
-							break;
-
-			case '6':	VLine(Win, X    , Y + 6, ACS_BLOCK, 4);
-							VLine(Win, X + 1, Y + 6, ACS_BLOCK, 4);
-							break;
-
-			case '7':	VLine(Win, X + 7, Y + 6, ACS_BLOCK, 4);
-							VLine(Win, X + 8, Y + 6, ACS_BLOCK, 4);
-							break;
-		}
-	}
-}
-
-/*************************************************************************
- ** Beep():																					**
- *************************************************************************/
-
-static void Beep(void)
-{
-	beep();
+	attrset(COLTAB(2));
+	mvhline(LINES - 1, 0, ' ', COLS);
+	mvprintw(LINES - 1, 1, "%s", message);
 	wrefresh(stdscr);
-}
 
-/*************************************************************************
- ** Scroll():																				**
- *************************************************************************/
+	returnkey = -1;
 
-static void Scroll(WINDOW *Win, int N)
-{
-	scrollok(Win, TRUE);
-	wscrl(Win, N);
-	scrollok(Win, FALSE);
-}
-
-/*************************************************************************
- ** PrintStatus():	Gibt die Statuszeile aus.									**
- *************************************************************************/
-
-static void PrintStatus(void)
-{
-	char Temp[80];
-
-	if (VBoxMode != VBOX_MODE_LIST) return;
-
-	AttrSet(stdscr, Color(9) | A_BOLD);
-	
-	HLine(stdscr, 3, LINES - 2, ACS_HLINE, COLS - 6);
-	HLine(stdscr, 3, 2, ACS_HLINE, COLS - 6);
-
-	if (FileExist(SpoolingDir, VBOX_CTL_STOP))
+	if ((keys) && (*keys))
 	{
-		AttrSet(stdscr, Color(10) | A_REVERSE | A_BOLD);
+		timeout(1000);
+		noecho();
+		cbreak();
+		beep();
+		refresh();
 
-		Print(stdscr, 2, COLS - 9, " OFF ");
-	}
+		timernoop = 0;
 
-	AttrSet(stdscr, Color(11) | A_BOLD);
-
-	HLine(stdscr, 4, LINES - 3, ' ', COLS - 8);
-
-	sprintf(Temp, "MESSAGES: %ld", NumMessages);
-
-	Print(stdscr, LINES - 3, COLS - 4 - strlen(Temp), "%s", Temp);
-
-	Print(stdscr, LINES - 3, 4, "VOLUME:            %d", Volume);
-
-	AttrSet(stdscr, Color(1) | A_REVERSE);
-	
-	HLine(stdscr, 12, LINES - 3, ACS_BOARD, 10);
-
-	AttrSet(stdscr, Color(10) | A_BOLD);
-
-	HLine(stdscr, 12, LINES - 3, ACS_BLOCK, (Volume / 10));
-
-	Update(stdscr);
-}
-
-/*************************************************************************
- ** PrintMessageList():	Gibt die Liste mit Nachrichten aus.					**
- *************************************************************************/
-
-static void PrintMessageList(WINDOW *Win, int W, int H)
-{
-	int i;
-
-	if (RedrawMessageList)
-	{
-		AttrSet(Win, Color(8));
-
-		for (i = 0; i < H; i++) HLine(Win, 0, i, ' ', COLS - 10);
-
-		if ((MessageList) && (NumMessages > 0))
+		while (returnkey == -1)
 		{
-			for (i = 0; i < NumMessages; i++)
+			k = wgetch(stdscr);
+
+			if (k == ERR)
 			{
-				if (i >= H) break;
-
-				PrintMessageLine(Win, i, i, FALSE);
-			}
-
-			CurrListPosY = 0;
-			CurrListLine = 0;
-
-			PrintMessageLine(Win, CurrListPosY, CurrListLine, TRUE);
-		}
-
-		PrintStatus();
-	}
-
-	RedrawMessageList = FALSE;
-}
-
-/*************************************************************************
- ** PrintMessageList():	Gibt eine einzelne Nachrichtenzeile aus.			**
- *************************************************************************/
-
-static void PrintMessageLine(WINDOW *Win, int Y, long E, char Selected)
-{
-	struct MessageLine *Line;
-
-	char	MS[4];
-	int	MN;
-
-	AttrSet(Win, (Selected ? (Color(10) | A_REVERSE) : Color(8)) | A_BOLD);
-
-	HLine(Win, 0, Y, ' ', COLS - 10);
-
-	Line = (struct MessageLine *)(MessageList + (sizeof(struct MessageLine) * E));
-
-	sprintf(MS, "%2.2s", &Line->Date[2]);
-	
-	MN = atoi(MS);
-	
-	if ((MN < 1) || (MN > 12)) MN = 0;
-
-	if (Line->New) Print(Win, Y, 0, "N");
-	if (Line->Del) Print(Win, Y, 0, "D");
-
-	Print(Win, Y,  2, "%2.2s-%3.3s-%2.2s", &Line->Date[4], MonthNames[MN], &Line->Date[ 0]);
-	Print(Win, Y, 12, "%2.2s:%2.2s:%2.2s", &Line->Date[6], &Line->Date[8], &Line->Date[10]);
-
-	Print(Win, Y, 22, "%5.5s", Line->Time);
-	Print(Win, Y, 29, "%-20.20s", Line->Name);
-	Print(Win, Y, 50, "%20.20s", Line->ID);
-
-	if (Selected)
-	{
-		ListviewPoint();
-
-		Update(Win);
-	}
-}
-
-/*************************************************************************
- ** ListviewPoint():																		**
- ** ListViewPoint():																		**
- *************************************************************************/
-
-static void ListviewPoint(void)
-{
-	float	H;
-	float P;
-	float E;
-	int	Y;
-
-	H = (float) LINES - 11;
-	P = (float) CurrListLine;
-	E = (float) NumMessages;
-
-	if ((MessageList) && (NumMessages > 1))
-	{
-		AttrSet(stdscr, Color(1) | A_REVERSE);
-
-		HLine(stdscr, COLS - 5, ListviewPointPosY + 6, ACS_BOARD, 1);
-
-		Y = (int)((P / (E / H)));
-
-		if (CurrListLine == (NumMessages - 1)) Y = LINES - 12;
-
-		AttrSet(stdscr, Color(10) | A_BOLD);
-
-		HLine(stdscr, COLS - 5, Y + 6, ACS_BLOCK, 1);
-
-		ListviewPointPosY = Y;
-
-		Update(stdscr);
-	}
-	else ListviewPointPosY = 0;
-}
-
-/*************************************************************************
- ** DrawMainScreen():																	**
- *************************************************************************/
-
-static void DrawMainScreen(void)
-{
-	int	i;
-	char	Title[74];
-
-	wclear(stdscr);
-
-	AttrSet(stdscr, Color(2));
-
-	for (i = 0; i < LINES; i++) HLine(stdscr, 0, i, ACS_BOARD, COLS);
-
-	AttrSet(stdscr, Color(1) | A_REVERSE);
-	
-	HLine(stdscr, 0, 0, ' ', COLS);
-
-	if (strlen(MessageDir) > 49)
-	{
-		strcpy(Title, "...");
-		strcat(Title, &MessageDir[(strlen(MessageDir) - 46)]);
-	}
-	else strcpy(Title, MessageDir);
-
-	Print(stdscr, 0, 1, "VBox Version %s", VERSION);
-	Print(stdscr, 0, COLS - 8 - strlen(Title), "%s", Title);
-
-	HLine(stdscr, COLS - 7, 0, ACS_VLINE, 1);
-	HLine(stdscr, COLS - 10 - strlen(Title), 0, ACS_VLINE, 1);
-
-	Button(stdscr, COLS - 5, 0, "_Help");
-
-	Window(stdscr, 2, 2, COLS - 2, LINES - 2, Color(8) | A_BOLD, Color(9) | A_BOLD);
-
-	AttrSet(stdscr, Color(11) | A_BOLD);
-
-	Print(stdscr, 3, 4, "* DATE                 TIME  CALLER");
-	Print(stdscr, 3, COLS - 12, "NUMBER %%");
-
-	HLine(stdscr, 4, 4, ACS_HLINE, COLS - 8);
-	HLine(stdscr, 4, LINES - 4, ACS_HLINE, COLS - 8);
-
-	AttrSet(stdscr, Color(1) | A_REVERSE);
-
-	VLine(stdscr, COLS - 5, 5, ACS_BOARD, LINES - 9);
-	HLine(stdscr, COLS - 5, 5, ACS_UARROW, 1);
-	HLine(stdscr, COLS - 5, LINES - 5, ACS_DARROW, 1);
-}
-
-/*************************************************************************
- ** Button():																				**
- *************************************************************************/
-
-static void Button(WINDOW *Win, int X, int Y, char *Text)
-{
-	chtype Attr;
-	int	 i;
-
-	wmove(Win, Y, X);
-	
-	for (i = 0; i < strlen(Text); i++)
-	{
-		if (Text[i] == '_')
-		{
-			Attr = (Color(4) | A_REVERSE);
-
-			if (Mono) Attr |= A_UNDERLINE;
-
-			i++;
-		}
-		else Attr = (Color(1) | A_REVERSE);
-
-		AttrSet(Win, Attr);
-
-		wprintw(Win, "%c", Text[i]);
-	}
-}
-
-/*************************************************************************
- ** Window():																				**
- *************************************************************************/
-
-static void Window(WINDOW *Window, int X, int Y, int W, int H, chtype B, chtype R)
-{
-	int i;
-	chtype s;
-
-		/* Fenster mit stdscr und allen Panels in der globalen Liste	*/
-		/* überschreiben.																*/
-
-	overwrite(stdscr, Window);
-
-	for (i = 0; i < MAX_OPEN_PANELS; i++)
-	{
-		if ((Panels[i]) && (Panels[i]->win != Window))
-		{
-			overwrite(Panels[i]->win, Window);
-		}
-	}
-
-		/* Hintergrund */
-
-	if (B != 0)
-	{
-		AttrSet(Window, B);
-
-		for (i = 0; i < H - 2; i++) HLine(Window, X, Y + i, ' ', W - 2);
-	}
-
-		/* Rahmen */
-	
-	if (R != 0)
-	{
-		AttrSet(Window, R);
-	
-		HLine(Window, X, Y, ACS_HLINE, W - 2);
-		HLine(Window, X, Y + H - 2, ACS_HLINE, W - 2);
-		VLine(Window, X, Y, ACS_VLINE, H - 1);
-		VLine(Window, X + W - 3, Y, ACS_VLINE, H - 1);
-		HLine(Window, X, Y, ACS_ULCORNER, 1);
-		HLine(Window, X + W - 3, Y, ACS_URCORNER, 1);
-		HLine(Window, X, Y + H - 2, ACS_LLCORNER, 1);
-		HLine(Window, X + W - 3, Y + H - 2, ACS_LRCORNER, 1);
-
-			/* Schatten: Hoffen wir mal, das es in neueren ncurses	*/
-			/* Versionen noch funktioniert :-)								*/
-
-		AttrSet(Window, Color(3) | A_BOLD);
-
-		for (i = 0; i < W - 2; i++)
-		{
-			wmove(Window, Y + H - 1, X + 2 + i);
-			s = (winch(Window) & ~A_COLOR);
-			whline(Window, s, 1);
-		}
-
-		for (i = 0; i < H - 2; i++)
-		{
-			wmove(Window, Y + 1 + i, X + W - 2 + 0);
-			s = (winch(Window) & ~A_COLOR);
-			whline(Window, s, 1);
-			wmove(Window, Y + 1 + i, X + W - 2 + 1);
-			s = (winch(Window) & ~A_COLOR);
-			whline(Window, s, 1);
-		}
-	}
-}
-
-/*************************************************************************
- ** OpenPanel():	Öffnet ein Window als Panel.									**
- *************************************************************************/
-
-static PANEL *OpenPanel(int X, int Y, int W, int H, chtype B, chtype R)
-{
-	WINDOW	*Win = NULL;
-	PANEL		*Pan = NULL;
-	int		 i;
-
-	if ((W > COLS) || (H > LINES)) return(NULL);
-
-	if (X == -1)
-	{
-		X = ((COLS - W) / 2);
-		
-		if ((X + W + 2) < COLS) X += 2;
-	}
-	
-	if (Y == -1)
-	{
-		Y = ((LINES - H) / 2);
-		
-		if ((Y + H + 2) < LINES) Y++;
-	}
-
-	if ((Win = newwin(H, W, Y, X)))
-	{
-		if ((Pan = new_panel(Win)))
-		{
-			top_panel(Pan);
-			update_panels();
-
-			Window(Pan->win, 0, 0, W, H, B, R);
-
-			for (i = 0; i < MAX_OPEN_PANELS; i++)
-			{
-				if (Panels[i] == NULL)
+				if (timernoop++ > 10)
 				{
-					Panels[i] = Pan;
-					
-					break;
+					vboxd_put_message("noop");
+
+					timernoop = 0;
 				}
+
+				continue;
 			}
 
-			return(Pan);
+			if (index(keys, k)) returnkey = k;
 		}
 
-		delwin(Win);
+		draw_bottom_bar();
 	}
 
-	return(NULL);
+	return(returnkey);
 }
 
-/*************************************************************************
- ** HLine():																				**
- *************************************************************************/
+/**************************************************************************/
+/** draw_bottom_bar(): Draws the bottom bar.                             **/
+/**************************************************************************/
 
-static void HLine(WINDOW *Window, int X, int Y, chtype C, int Len)
+static void draw_bottom_bar(void)
 {
-	if ((X != -1) && (Y != -1)) wmove(Window, Y, X);
+	struct passwd *pass;
+	char           temp[32];
+	char           svol[16];
 
-	whline(Window, C, Len);
-}
+   attrset(COLTAB(2));
+   mvhline(LINES - 1, 0, ' ', COLS);
 
-/*************************************************************************
- ** VLine():																				**
- *************************************************************************/
+	printstring(temp, "%d/%d", messagesnr, count_new_messages());
+	printstring(svol, "%d", sndvolume);
 
-static void VLine(WINDOW *Window, int X, int Y, chtype C, int Len)
-{
-	if ((X != -1) && (Y != -1)) wmove(Window, Y, X);
+	mvhline(LINES - 1, COLS - strlen(temp) - 3, ACS_VLINE, 1);
+	mvhline(LINES - 1, COLS - strlen(temp) - strlen(svol) - 6, ACS_VLINE, 1);
 
-	wvline(Window, C, Len);
-}
+	mvprintw(LINES - 1, COLS - strlen(temp) - 1, "%s", temp);
+	mvprintw(LINES - 1, COLS - strlen(temp) - strlen(svol) - 4, "%s", svol);
 
-/*************************************************************************
- ** Color():																				**
- *************************************************************************/
+	mvprintw(LINES - 1, 1, "%s", loginname);
 
-static chtype Color(int Pair)
-{
-	if (!Mono) return(COLOR_PAIR(Pair));
-
-	return(COLOR_PAIR(0));
-}
-
-/*************************************************************************
- ** CalculateTime():	Berechnet die Aufnahmezeit anhand der Dateilänge.	**
- *************************************************************************
- ** Bei der Kalkulation wird davon ausgegangen, daß ca. jedes 257. Byte	**
- ** ein DLE ist. Das ergibt eine Basis von 963.75 für die kleinste Kom-	**
- ** pression (CELP).																		**
- *************************************************************************/
-
-static void CalculateTime(char *Name, size_t Size, char *Time)
-{
-	struct VoiceHeader Header;
-
-	int	FD;
-	short Compression;
-	float MsgBase;
-	int	Secs;
-	int	Hour;
-	int	Mins;
-
-	strcpy(Time, "??:??");
-
-	if ((FD = open(Name, O_RDONLY)))
+	if ((pass = getpwuid(getuid())))
 	{
-		if (read(FD, &Header, sizeof(struct VoiceHeader)) == sizeof(struct VoiceHeader))
+		mvprintw(LINES - 1, 2 + strlen(loginname), "[%s]", pass->pw_name);
+	}
+}
+
+/**************************************************************************/
+/** count_new_messages(): Counts new messages in the message list.       **/
+/**************************************************************************/
+
+static int count_new_messages(void)
+{
+	struct messageline *msgline;
+	int                 newmsgs;
+	int                 i;
+
+	newmsgs = 0;
+
+	if ((messagesmp) && (messagesnr > 0))
+	{
+		for (i = 0; i < messagesnr; i++)
 		{
-			Compression = ntohs(Header.Compression);
+			msgline = (struct messageline *)(messagesmp + (sizeof(struct messageline) * i));
 
-			switch (Compression)
-			{
-				case 2:
-					MsgBase = VOICE_COMPRESSION_BASE * 2;			 /* ADPCM-2	*/
-					break;
-					
-				case 3:
-					MsgBase = VOICE_COMPRESSION_BASE * 3;			 /* ADPCM-3	*/
-					break;
-				
-				case 4:
-					MsgBase = VOICE_COMPRESSION_BASE * 4;			 /* ADPCM-4	*/
-					break;
-				
-				default:
-					MsgBase = VOICE_COMPRESSION_RATE;			/* ULAW & ALAW	*/
-					break;
-			}
-
-			Secs = (int)(Size / MsgBase);
-
-			if (Secs <    0) Secs = 0;							 /* 00:00 Minuten	*/
-			if (Secs > 5999) Secs = 5999;						 /* 99:59 Minuten	*/
-
-			Hour = (Secs / 60);
-			Mins = Secs - (Hour * 60);
-
-			sprintf(Time, "%02d:%02d", Hour, Mins);
+			if (msgline->new) newmsgs++;
 		}
-
-		close(FD);
-	}
-}
-
-/*************************************************************************
- ** InitNCurses():																		**
- *************************************************************************/
-
-static int InitNCurses(char *Device)
-{
-	int i;
-
-	for (i = 0; i < MAX_OPEN_PANELS; i++) Panels[i] = NULL;
-
-	if ((NCursesI = fopen(Device, "r")))
-	{
-		if ((NCursesO = fopen(Device, "w")))
-		{
-			if ((Init = newterm(NULL, NCursesO, NCursesI)))
-			{
-				if (set_term(Init))
-				{
-					if ((LINES >= 24) && (COLS >= 80))
-					{
-						if ((start_color() != ERR) && (!Mono))
-						{
-							init_pair(1 , COLOR_WHITE , COLOR_BLACK );
-							init_pair(2 , COLOR_WHITE , COLOR_BLUE  );
-							init_pair(3 , COLOR_BLACK , COLOR_BLACK );
-							init_pair(4 , COLOR_WHITE , COLOR_RED   );
-							init_pair(5 , COLOR_YELLOW, COLOR_RED   );
-							init_pair(6 , COLOR_GREEN , COLOR_BLACK );
-							init_pair(8 , COLOR_YELLOW, COLOR_BLUE  );
-							init_pair(9 , COLOR_WHITE , COLOR_BLUE  );
-							init_pair(10, COLOR_RED   , COLOR_YELLOW);
-							init_pair(11, COLOR_CYAN  , COLOR_BLUE  );
-						}
-					
-						ReturnTrue();
-					}
-					else fprintf(stderr, "%s: minimal terminal dimensions must be 80x24.\n", Basename);
-				}
-				else fprintf(stderr, "%s: can't setup default screen.\n", Basename);
-
-				delscreen(Init);
-				
-				Init = NULL;
-			}
-			else fprintf(stderr, "%s: can't initialize screen.\n", Basename);
-
-			fclose(NCursesO);
-		}
-		else fprintf(stderr, "%s: can't open '%s' for output.\n", Basename, Device);
-
-		fclose(NCursesI);
-	}
-	else fprintf(stderr, "%s: can't open '%s' for input.\n", Basename, Device);
-
-	ReturnFalse();
-}
-
-/*************************************************************************
- ** ExitNCurses(): Beendet NCurses-Initialisierung.							**
- *************************************************************************/
-
-static void ExitNCurses(void)
-{
-	int i;
-	
-	for (i = 0; i < MAX_OPEN_PANELS; i++)
-	{
-		if (Panels[i] != NULL) ClosePanel(Panels[i]);
 	}
 
-	wclear(stdscr);
-	wrefresh(stdscr);
-	endwin();
-
-	if (Init) delscreen(Init);
-
-	if (NCursesI) fclose(NCursesI);
-	if (NCursesO) fclose(NCursesI);
-}
-
-/*************************************************************************
- ** ClosePanel():	Schließt ein Panel und sein Window.							**
- *************************************************************************/
-
-static void ClosePanel(PANEL *Panel)
-{
-	WINDOW *Win;
-	int	  i;
-
-	if (Panel)
-	{
-		for (i = 0; i < MAX_OPEN_PANELS; i++)
-		{
-			if (Panels[i] == Panel)
-			{
-				Panels[i] = NULL;
-				
-				break;
-			}
-		}
-
-		Win = Panel->win;
-		
-		del_panel(Panel);
-		delwin(Win);
-		update_panels();
-		wrefresh(stdscr);
-	}
+	return(newmsgs);
 }

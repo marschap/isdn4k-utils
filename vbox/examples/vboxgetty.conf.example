@@ -11,9 +11,9 @@ umask			077
 badinitsexit		10
 dropdtrtime		400
 initpause		2500
-commandtimeout		2
-echotimeout		2
-ringtimeout		3
+commandtimeout		4
+echotimeout		4
+ringtimeout		5
 alivetimeout		300
 freespace		2000000
 

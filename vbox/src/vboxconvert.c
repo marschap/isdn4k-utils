@@ -1,5 +1,5 @@
 /*
-** $Id: vboxconvert.c,v 1.6 1997/03/18 12:36:53 michael Exp $
+** $Id: vboxconvert.c,v 1.7 1997/04/28 16:52:07 michael Exp $
 **
 ** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
 **
@@ -120,15 +120,14 @@ static char *vboxtmpname   = NULL;
 
 /** Prototypes ***********************************************************/
 
-static int				start_vboxtoau(int, int);
 static int				start_vboxmode(char *, int);
-static int				start_autovbox(int, char *, char *, char *, char *);
+static void			   start_vboxtoau(int, int);
+static void				start_autovbox(int, char *, char *, char *, char *);
 static void				usage_vboxtoau(void);
 static void				usage_vboxmode(void);
 static void				usage_autovbox(void);
 static void          leave_vboxtoau(int);
 static void          leave_autovbox(int);
-static void          leave_vboxmode(int);
 static void				version(void);
 
 static int				convert_adpcm_to_pvf(int, FILE *, FILE *);
@@ -220,7 +219,7 @@ int main(int argc, char **argv)
 			}
 		}
 
-		exit(start_vboxtoau(mode, rate));
+		start_vboxtoau(mode, rate);
 	}
 
 		/* Called as 'autovbox' converts a sun au sample to any of the	*/
@@ -295,7 +294,7 @@ int main(int argc, char **argv)
 			}
 		}
 
-		exit(start_autovbox(mode, name, "0", phone, location));
+		start_autovbox(mode, name, "0", phone, location);
 	}
 
 		/* Called as 'vboxmode' displays information about the sample	*/
@@ -350,7 +349,7 @@ int main(int argc, char **argv)
 /** start_vboxtoau(): Converts vbox messages to sun's au format.		   **/
 /*************************************************************************/
 
-static int start_vboxtoau(int samplemode, int samplerate)
+static void start_vboxtoau(int samplemode, int samplerate)
 {
 	vaheader_t	header;
 	int	      compression;
@@ -363,6 +362,7 @@ static int start_vboxtoau(int samplemode, int samplerate)
 	signal(SIGQUIT, leave_vboxtoau);
 	signal(SIGTERM, leave_vboxtoau);
 	signal(SIGHUP , leave_vboxtoau);
+	signal(SIGPIPE, leave_vboxtoau);
 	
 	if (!(vboxtmpname = tempnam("/tmp", "vbox")))
 	{
@@ -427,6 +427,8 @@ static int start_vboxtoau(int samplemode, int samplerate)
 
 static void leave_vboxtoau(int sig)
 {
+fprintf(stderr, "sig: %d\n", sig);
+
 	if (vboxtmpfile) fclose(vboxtmpfile);
 	
 	if (vboxtmpname)
@@ -510,7 +512,7 @@ static void usage_vboxmode(void)
 /** start_autovbox(): Converts au samples to vbox messages.				   **/
 /*************************************************************************/
 
-static int start_autovbox(int compression, char *name, char *id, char *phone, char *location)
+static void start_autovbox(int compression, char *name, char *id, char *phone, char *location)
 {
 	vaheader_t	header;
 	int	      result;
@@ -522,21 +524,20 @@ static int start_autovbox(int compression, char *name, char *id, char *phone, ch
 	signal(SIGQUIT, leave_autovbox);
 	signal(SIGTERM, leave_autovbox);
 	signal(SIGHUP , leave_autovbox);
+	signal(SIGPIPE, leave_autovbox);
 	
 	if (!(vboxtmpname = tempnam("/tmp", "vbox")))
 	{
 		fprintf(stderr, gettext("%s: can't create a temporary file.\n"), vbasename);
 		
-		return(255);
+		leave_autovbox(255);
 	}
 
 	if (!(vboxtmpfile = fopen(vboxtmpname, "w+")))
 	{
 		fprintf(stderr, gettext("%s: can't create \"%s\".\n"), vbasename, vboxtmpname);
 		
-		free(vboxtmpname);
-
-		return(255);
+		leave_autovbox(255);
 	}
 
 	xstrncpy(header.magic	, VAH_MAGIC	, VAH_MAX_MAGIC	);
@@ -552,7 +553,7 @@ static int start_autovbox(int compression, char *name, char *id, char *phone, ch
 	{
 		fprintf(stderr, gettext("%s: can't write vbox audio header.\n"), vbasename);
 		
-		return(255);
+		leave_autovbox(255);
 	}
 
 	result = convert_au_to_pvf(stdin, vboxtmpfile);
@@ -580,11 +581,7 @@ static int start_autovbox(int compression, char *name, char *id, char *phone, ch
 		}
 	}
 
-	fclose(vboxtmpfile);
-	unlink(vboxtmpname);
-	free(vboxtmpname);
-
-	return(result);
+	leave_autovbox(result);
 }
 
 /**************************************************************************/

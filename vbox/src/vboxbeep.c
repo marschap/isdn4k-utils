@@ -1,5 +1,5 @@
 /*
-** $Id: vboxbeep.c,v 1.3 1997/04/04 09:32:42 michael Exp $
+** $Id: vboxbeep.c,v 1.4 1997/04/28 16:52:06 michael Exp $
 **
 ** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
 */
@@ -33,6 +33,8 @@
 #include <string.h>
 #include <dirent.h>
 #include <syslog.h>
+#include <netdb.h>
+#include <netinet/in.h>
 
 #include "vboxbeep.h"
 #include "libvbox.h"
@@ -90,13 +92,14 @@ static void   usage(void);
 
 int main(int argc, char **argv)
 {
-	char  timestrings[32];
-	int   i;
-	int   b;
-	int   opts;
-	int   checkpause;
-	int   port;
-	char *machine;
+	struct servent *vboxdserv;
+	char            timestrings[32];
+	int             i;
+	int             b;
+	int             opts;
+	int             checkpause;
+	int             port;
+	char           *machine;
 
 #if HAVE_LOCALE_H
 	setlocale(LC_ALL, "");
@@ -131,7 +134,7 @@ int main(int argc, char **argv)
 	killmode		= 0;
 	starttime	= 0;
 	checkpause  = 5;
-	port        = VBOXD_DEF_PORT;
+	port        = -1;
 	machine     = "localhost";
 	
 	b = 0;
@@ -161,7 +164,7 @@ int main(int argc, char **argv)
 				break;
 
 			case 'o':
-				port = (int)xstrtol(optarg, VBOXD_DEF_PORT);
+				port = (int)xstrtol(optarg, -1);
 				break;
 
 			case 'i':
@@ -241,6 +244,20 @@ int main(int argc, char **argv)
 		free_resources();
 
 		exit(5);
+	}
+
+	if (port == -1)
+	{
+		if (!(vboxdserv = getservbyname("vboxd", "tcp")))
+		{
+			log(LOG_CRIT, gettext("can't get service vboxd/tcp."));
+
+			free_resources();
+
+			exit(5);
+		}
+
+		port = ntohs(vboxdserv->s_port);
 	}
 
 	create_pid_file();
@@ -332,7 +349,7 @@ static void usage(void)
 	fprintf(stderr, gettext("-m, --messagebox DIR   Watch directory DIR for new messages.\n"));
 	fprintf(stderr, gettext("-p, --pause SECONDS    Pause in seconds to sleep between checks (default: 5).\n"));
 	fprintf(stderr, gettext("-i, --machine HOST     Connect to message server on HOST (default: localhost).\n"));
-	fprintf(stderr, gettext("-o, --port PORT        Connect to message server on PORT (default: %d).\n"), VBOXD_DEF_PORT);
+	fprintf(stderr, gettext("-o, --port PORT        Connect to message server on PORT (default: vboxd/tcp).\n"));
 	fprintf(stderr, gettext("-h, --help             Displays this help text.\n"));
 	fprintf(stderr, gettext("-v, --version          Displays program version.\n"));
 	fprintf(stderr, gettext("\n"));
