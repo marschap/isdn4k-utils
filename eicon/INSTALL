@@ -21,7 +21,7 @@ The following options can be used with ./configure
 
    --with-firmware=DIR
 where DIR is the directory to install the firmware binaries.
-(default: /usr/lib/isdn)
+(default: /usr/lib/isdn/eicon)
 
    --with-sbin=DIR
 where DIR is the directory to install the utility binaries.
@@ -40,4 +40,5 @@ If you want to re-configure and re-compile, use
 
     make distclean
 
-to set all to default. 
+to set all to default.
+ 
