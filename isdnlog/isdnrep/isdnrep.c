@@ -1,4 +1,4 @@
-/* $Id: isdnrep.c,v 1.62 1999/04/14 13:16:42 akool Exp $
+/* $Id: isdnrep.c,v 1.63 1999/04/16 14:39:31 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -24,6 +24,12 @@
  *
  *
  * $Log: isdnrep.c,v $
+ * Revision 1.63  1999/04/16 14:39:31  akool
+ * isdnlog Version 3.16
+ *
+ * - more syntax checks for "rate-xx.dat"
+ * - isdnrep fixed
+ *
  * Revision 1.62  1999/04/14 13:16:42  akool
  * isdnlog Version 3.14
  *
@@ -499,6 +505,8 @@
 #include "libisdn.h"
 
 /*****************************************************************************/
+#define getProvidername(x)  "" /* FIXME */
+/*****************************************************************************/
 
 #define END_TIME    1
 
@@ -602,7 +610,6 @@
 
 /*****************************************************************************/
 
-#define MAXPROVIDER  199
 #define	UNKNOWNZONE  MAXZONES
 
 /*****************************************************************************/
@@ -870,15 +877,11 @@ int read_logfile(char *myname)
   auto     FILE      *fi, *ftmp = NULL;
   auto     char       string[BUFSIZ], s[BUFSIZ];
   one_call            cur_call;
-#if 0 /* FIXME */
-  auto     char       msg[BUFSIZ];
-#endif
 
 
-  initSondernummern(snfile, NULL);
-  initHoliday(holifile, NULL);
-  initRate(rateconf, ratefile, NULL);
-  /* initTarife(msg); FIXME */
+  /* initSondernummern(snfile, NULL); FIXME */
+  /* initHoliday(holifile, NULL); FIXME */
+  /* initRate(rateconf, ratefile, NULL); FIXME */
   interns0 = 3; /* FIXME */
 
   msn_sum = calloc(mymsns + 1, sizeof(double));
@@ -1186,16 +1189,45 @@ static int print_bottom(double unit, char *start, char *stop)
 	{
 		h_percent = 60.0;
 		h_table_color = H_TABLE_COLOR3;
-		get_format("%-4.4s %c : %-21.21s %4d call(s) %10.10s  %12s");
+		get_format("%-21.21s %4d call(s) %10.10s  %12s");
 		print_line2(F_BODY_HEADER,"");
 		print_line2(F_BODY_HEADERL,"Outgoing calls ordered by Zone");
 		strich(1);
 
                 for (i = 0; i < MAXZONES + 1; i++)
                   if (zones_usage[i]) {
-                    print_line3(NULL, "Zone", (char)((i > 9) ? (i + '7') : (i + '0')),
-                    ((i == UNKNOWNZONE) ? S_UNKNOWN : zonen[i]), zones_usage[i],
-                                double2clock(zones_dur[i]), print_currency(zones_dm[i], 0));
+                    register char *p;
+                    auto     char  s[BUFSIZ];
+
+
+                    switch (i) {
+		      case  0 : p = "Internal/FreeCall"; break;
+		      case  1 : p = "Ortszone";		 break;
+		      case  2 : p = "Cityzone";		 break;
+		      case  3 : p = "Region 50";	 break;
+		      case  4 : p = "Fernzone";		 break;
+		      case  5 : p = "C-Mobilbox";	 break;
+		      case  6 : p = "C-Netz"; 		 break;
+		      case  7 : p = "D1-Netz"; 		 break;
+		      case  8 : p = "D2-Netz"; 		 break;
+		      case  9 : p = "E-plus-Netz"; 	 break;
+		      case 10 : p = "E2-Netz"; 		 break;
+		      case 11 : p = "Euro City"; 	 break;
+		      case 12 : p = "Euro 1"; 		 break;
+		      case 13 : p = "Euro 2"; 		 break;
+		      case 14 : p = "Welt 1"; 		 break;
+		      case 15 : p = "Welt 2"; 		 break;
+		      case 16 : p = "Welt 3"; 		 break;
+		      case 17 : p = "Welt 4"; 		 break;
+		      case 20 : p = "Internet"; 	 break;
+		      default : p = S_UNKNOWN; 		 break;
+                    } /* case */
+
+                    sprintf(s, "Zone %3d:%s", i, p);
+
+                    print_line3(NULL, s, zones_usage[i],
+                      double2clock(zones_dur[i]),
+                      print_currency(zones_dm[i], 0));
 			} /* if */
 
 #if DEBUG
@@ -2452,6 +2484,7 @@ static int set_alias(one_call *cur_call, int *nx, char *myname)
 	return 0;
 }
 
+#if 0 /* FIXME */
 static void repair(one_call *cur_call)
 {
 #if 0 /* FIXME */
@@ -2502,6 +2535,7 @@ static void repair(one_call *cur_call)
   cur_call->pay = call[0].pay;
   cur_call->zone = call[0].zone;
 } /* repair */
+#endif
 
 /*****************************************************************************/
 
@@ -2644,11 +2678,13 @@ static int set_caller_infos(one_call *cur_call, char *string, time_t from)
 
   }
 
+#if 0 /* FIXME */
   if ((cur_call->dir == DIALOUT) &&
       (cur_call->duration > 0) &&
       *cur_call->num[1] &&
       strcmp(cur_call->version, LOG_VERSION))
     repair(cur_call);
+#endif
 
   return(0);
 }

@@ -1,4 +1,4 @@
- /* $Id: holiday.c,v 1.5 1999/04/14 13:17:15 akool Exp $
+ /* $Id: holiday.c,v 1.6 1999/04/16 14:39:58 akool Exp $
  *
  * Feiertagsberechnung
  *
@@ -19,6 +19,12 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: holiday.c,v $
+ * Revision 1.6  1999/04/16 14:39:58  akool
+ * isdnlog Version 3.16
+ *
+ * - more syntax checks for "rate-xx.dat"
+ * - isdnrep fixed
+ *
  * Revision 1.5  1999/04/14 13:17:15  akool
  * isdnlog Version 3.14
  *
@@ -102,6 +108,8 @@
 #include <ctype.h>
 #include <stdarg.h>
 #include <time.h>
+#include <unistd.h>
+extern const char *basename (const char *name);
 #else
 #include "isdnlog.h"
 #include "tools.h"
@@ -138,7 +146,7 @@ static char      *Weekday[COUNT(defaultWeekday)] = { NULL, };
 static int        nHoliday = 0;
 static HOLIDATE  *Holiday = NULL;
 
-static void warning (char *fmt, ...)
+static void warning (char *file, char *fmt, ...)
 {
   va_list ap;
   char msg[BUFSIZ];
@@ -147,9 +155,9 @@ static void warning (char *fmt, ...)
   vsnprintf (msg, BUFSIZ, fmt, ap);
   va_end (ap);
 #ifdef STANDALONE
-  fprintf(stderr, "WARNING: line %3d: %s\n", line, msg);
+  fprintf(stderr, "WARNING: %s line %3d: %s\n", basename(file), line, msg);
 #else
-  print_msg(PRT_NORMAL, "WARNING: line %3d: %s\n", line, msg);
+  print_msg(PRT_NORMAL, "WARNING: %s line %3d: %s\n", basename(file), line, msg);
 #endif
 }
 
@@ -267,7 +275,7 @@ int initHoliday(char *path, char **msg)
     if (*(s=strip(s))=='\0')
       continue;
     if (s[1]!=':') {
-      warning ("expected ':', got '%s'!", s+1);;
+      warning (path, "expected ':', got '%s'!", s+1);;
       continue;
     }
     switch (*s) {
@@ -276,7 +284,7 @@ int initHoliday(char *path, char **msg)
       if (isdigit(*s)) {
 	d=strtol(s,&s,10);
       if (d<1 || d>7) {
-	warning("invalid weekday %d", d);
+	warning(path, "invalid weekday %d", d);
 	  continue;
 	}
       } else if (*s=='W') {
@@ -289,7 +297,7 @@ int initHoliday(char *path, char **msg)
 	d=HOLIDAY;
 	s++;
       } else {
-	warning("invalid weekday %c", *s);
+	warning(path, "invalid weekday %c", *s);
 	continue;
       }
       if (!isblank(*s)) {
@@ -297,7 +305,7 @@ int initHoliday(char *path, char **msg)
 	continue;
       }
       if (*(name=strip(s))=='\0') {
-	warning("empty weekday %d", d);
+	warning(path, "empty weekday %d", d);
 	continue;
       }
       if (Weekday[d]) free(Weekday[d]);
@@ -307,7 +315,7 @@ int initHoliday(char *path, char **msg)
     case 'D':
       name=s+2;
       if ((date=strsep(&name," \t"))==NULL) {
-	warning("Syntax error");
+	warning(path, "Syntax error");
 	continue;
       }
       if (strncmp(date,"easter",6)==0) {
@@ -329,7 +337,7 @@ int initHoliday(char *path, char **msg)
       break;
 
     default:
-      warning("Unknown tag '%c'", *s);
+      warning(path, "Unknown tag '%c'", *s);
     }
   }
   fclose(stream);

@@ -1,4 +1,4 @@
-/* $Id: tools.h,v 1.36 1999/04/14 13:17:30 akool Exp $
+/* $Id: tools.h,v 1.37 1999/04/16 14:40:07 akool Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,12 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools.h,v $
+ * Revision 1.37  1999/04/16 14:40:07  akool
+ * isdnlog Version 3.16
+ *
+ * - more syntax checks for "rate-xx.dat"
+ * - isdnrep fixed
+ *
  * Revision 1.36  1999/04/14 13:17:30  akool
  * isdnlog Version 3.14
  *
@@ -452,13 +458,14 @@
 
 /****************************************************************************/
 
-#define NUMSIZE      30
-#define	FNSIZE	     64
-#define RETSIZE     128
-#define MAXRET	      5
-#define MAXZONES     19
-#define MAXCHAN       7
-#define MAXCARDS      2
+#define NUMSIZE       30
+#define	FNSIZE	      64
+#define RETSIZE      128
+#define MAXRET	       5
+#define MAXPROVIDER 1000
+#define MAXZONES     500
+#define MAXCHAN        7
+#define MAXCARDS       2
 
 #define DIGITS 	     17
 #define DEB           1
