@@ -23,6 +23,7 @@ INSTALL_PROGRAM		= $(INSTALL) -o 0 -g 0 -m 0750
 INSTALL_MAN		= $(INSTALL) -o 0 -g 0 -m 0644
 prefix			= @prefix@
 exec_prefix		= @exec_prefix@
+#CC			= @CC@ -V2.7.2.3
 CC			= @CC@
 ifeq ($(BIGENDIAN), yes)
 ZONEFILES=zonefiles
@@ -133,5 +134,5 @@ NL:	NL-kpn
 
 NL-kpn:
 	$(BZIP2) -d nl/kpn/zred.bz2
-	./$(PROGRAM) -d ../../zone-nl-kpn$(DBEXT) -r nl/kpn/zred -c nl/code -a31 -v -o3
+	./$(PROGRAM) -d ../../zone-nl-kpn$(DBEXT) -r nl/kpn/zred -c nl/code -a31 -v -o3 -l7
 	$(BZIP2) -9 nl/kpn/zred

@@ -1,4 +1,4 @@
-V:1.02-Germany [04-Jul-1999 22:56:37]
+V:1.02-Germany [10-Jul-1999 23:32:27]
 
 # Währungsformat
 U:%.3f DM
@@ -8,7 +8,7 @@ U:%.3f DM
 #
 # (C) Copyright 1999 by Andreas Kool (akool@isdn4linux.de)
 #
-# $Id: rate-de.dat,v 1.29 1999/07/07 19:43:45 akool Exp $
+# $Id: rate-de.dat,v 1.30 1999/07/10 21:37:42 akool Exp $
 #
 # Zonenzuordnung für Deutschland
 #
@@ -211,7 +211,7 @@ T:W/08-18=0.94/60 Geschaeftszeit
 T:W/18-08=0.47/60 Freizeit
 T:E,H/*=0.47/60 Freizeit
 Z:31 Iridium A GSM-homed
-A:Iridium 00816
+A:Iridium 008816
 T:*/*=14.259996/60
 Z:32 Iridium B Iridium-homed
 A:Iridium 008817
@@ -462,7 +462,7 @@ T:W/08-18=0.05/0,0.94(60)/1 Geschaeftszeit
 T:W/18-08=0.05/0,0.47(60)/1 Freizeit
 T:E,H/*=0.05/0,0.47(60)/1 Freizeit
 Z:31 Iridium A GSM-homed
-A:Iridium 00816
+A:Iridium 008816
 T:*/*=0.05/0,14.259996(60)/1
 Z:32 Iridium B Iridium-homed
 A:Iridium 008817
@@ -723,7 +723,7 @@ A:Belize, Guatemala, El Salvador, Honduras, Nicaragua, Costa Rica, Panama
 A:Saint Pierre und Miquelon, Haiti, Peru, Mexiko, Kuba, Argentinien, Brasilien
 A:Chile, Kolumbien, Venezuela, Guadeloupe, Bolivien, Guyana, Ecuador, Paraguay
 A:Martinique, Suriname, Uruguay, Niederländische Antillen, Malaysia, Indonesien
-A:Philippinen, Thailand, Marianen, Guam, Davis (Antarktis)
+A:Philippinen, Thailand, Marianen, Guam, Antarktis
 A:Norfolkinseln (Australien), Brunei Darussalam, Nauru, Papua-Neuguinea, Tonga
 A:Salomonen, Vanuatu, Fidschi, Palau, Cook-Inseln, Amerikanisch-Samoa, Kiribati
 A:Neukaledonien, Tuvalu, Französisch-Polynesien, Mikronesien, Marshallinseln
@@ -11622,8 +11622,8 @@ Z:205
 T:*/*=0.29/60
 A:Neuseeland, Hongkong, Japan
 Z:206
-T:*/*=.32/60
-A:Italien, Sapnien
+T:*/*=0.32/60
+A:Italien, Spanien
 Z:207
 T:*/*=0.34/60
 A:Luxembourg
@@ -12305,10 +12305,7 @@ A:Indonesien
 A:Thailand
 A:Marianen
 A:Guam
-A:Davis (Antarktis)
-A:Mawson (Antarktis)
-A:Casey (Antarktis)
-A:Macquarrie Island (Antarktis)
+A:Antarktis
 A:Kokosinseln (Australien)
 A:Norfolkinseln (Australien)
 A:Weihnachtsinsel (Australien)
@@ -12658,75 +12655,23 @@ Z:234 Bangladesh
 A:Bangladesh # +880
 T:*/08-20=1.489(60)/1
 T:*/20-08=1.469(60)/1
-Z:235 Inmarsat Mini-M (W.Atlantic)
-A:Inmarsat Mini-M (W.Atlantic) # +87476
-T:*/08-20=4.219(60)/1
-T:*/20-08=4.199(60)/1
-Z:236 Inmarsat M (W.Atlantic)
-A:Inmarsat M (W.Atlantic) # +8746
-T:*/08-20=6.219(60)/1
-T:*/20-08=6.199(60)/1
-Z:237 Inmarsat B (W.Atlantic)
-A:Inmarsat B (W.Atlantic) # +8743
-T:*/08-20=6.219(60)/1
-T:*/20-08=6.199(60)/1
-Z:238 Inmarsat A (W.Atlantic)
-A:Inmarsat A (W.Atlantic) # +8741
+Z:235 Inmarsat A
+A:Inmarsat A
 T:*/08-20=9.969(60)/1
 T:*/20-08=9.949(60)/1
-Z:239 Inmarsat Mini-M (Indien)
-A:Inmarsat Mini-M (Indien) # +87376
+Z:236 Inmarsat B
+A:Inmarsat B
+T:*/08-20=6.219(60)/1
+T:*/20-08=6.199(60)/1
+Z:237 Inmarsat M
+A:Inmarsat M
+T:*/08-20=6.219(60)/1
+T:*/20-08=6.199(60)/1
+Z:238 Inmarsat Mini-M
+A:Inmarsat Mini-M
 T:*/08-20=4.219(60)/1
 T:*/20-08=4.199(60)/1
-Z:240 Inmarsat M (Indien)
-A:Inmarsat M (Indien) # +8736
-T:*/08-20=6.219(60)/1
-T:*/20-08=6.199(60)/1
-Z:241 Inmarsat B (Indien)
-A:Inmarsat B (Indien) # +8733
-T:*/08-20=6.219(60)/1
-T:*/20-08=6.199(60)/1
-Z:242 Inmarsat A (Indien)
-A:Inmarsat A (Indien) # +8731
-T:*/08-20=9.969(60)/1
-T:*/20-08=9.949(60)/1
-Z:243 Inmarsat Mini-M (Pacific)
-A:Inmarsat Mini-M (Pacific) # +87276
-T:*/08-20=4.219(60)/1
-T:*/20-08=4.199(60)/1
-Z:244 Inmarsat M (Pacific)
-A:Inmarsat M (Pacific) # +8726
-T:*/08-20=6.219(60)/1
-T:*/20-08=6.199(60)/1
-Z:245 Inmarsat B (Pacific)
-A:Inmarsat B (Pacific) # +8723
-T:*/08-20=6.219(60)/1
-T:*/20-08=6.199(60)/1
-Z:246 Inmarsat A (Pacific)
-A:Inmarsat A (Pacific) # +8721
-T:*/08-20=9.969(60)/1
-T:*/20-08=9.949(60)/1
-Z:247 Inmarsat Mini-M (E.Atlantic)
-A:Inmarsat Mini-M (E.Atlantic) # +87176
-T:*/08-20=4.219(60)/1
-T:*/20-08=4.199(60)/1
-Z:248 Inmarsat M (E.Atlantic)
-A:Inmarsat M (E.Atlantic) # +8716
-T:*/08-20=6.219(60)/1
-T:*/20-08=6.199(60)/1
-Z:249 Inmarsat B (E.Atlantic)
-A:Inmarsat B (E.Atlantic) # +8713
-T:*/08-20=6.219(60)/1
-T:*/20-08=6.199(60)/1
-Z:250 Inmarsat A (E.Atlantic)
-A:Inmarsat A (E.Atlantic) # +8711
-T:*/08-20=9.969(60)/1
-T:*/20-08=9.949(60)/1
-Z:251 Inmarsat Mini-M (Worldwide)
-A:Inmarsat Mini-M (Worldwide) # +87076
-T:*/08-20=4.219(60)/1
-T:*/20-08=4.199(60)/1
-Z:252 China Mobilfunk
+Z:252
 A:China Mobilfunk # +86886
 T:*/08-20=1.329(60)/1
 T:*/20-08=1.309(60)/1
@@ -12783,7 +12728,7 @@ A:Rußland St. Petersburg # +7812
 T:*/08-20=0.429(60)/1
 T:*/20-08=0.409(60)/1
 Z:266 Rußland Moskau Overlay
-A:Rußland Moskau Overlay # +7502
+A:+7502 Rußland Moskau Overlay
 T:*/08-20=0.859(60)/1
 T:*/20-08=0.839(60)/1
 Z:267 Kasachstan
@@ -13689,12 +13634,12 @@ A:Afganistan,Amerikanisch Samoa,Angola,Antigua,Aquatorial Guinea,Anguilla
 A:Armenien,Aruba,Ascension,Aserbaidschan,Athiopien,Bahamas,Bahrain
 A:Bangladesch,Barbados,Belize,Benin,Bermuda,Bhutan,Botswana
 A:Britisch Jungferninseln,Brunei,Burkina Faso,Burma,Burundi,Cap Verde
-A:Cayman Inseln,Christmas & Cocos Inseln,Cook Inseln,Diego Garcia
+A:Cayman Inseln,Christmas Inseln,Cocos Inseln,Cook Inseln,Diego Garcia
 A:Dominica,Dschibuti,Elfenbeinküste,Eritrea,Falkland Inseln,Fidschi Inseln
-A:Franz. Antillen,Guadeloup,Franz. Guinea,Franz. Polynesion,Gabun
+A:Franz. Antillen,Guadeloup,Franz. Guyana,Franz. Polynesien,Gabun
 A:Gambia,Ghana,Grenada,Carriacou,Grönland,Guam,Guantanamo Bay,Guinea
 A:Guinea Bissau,Guayana,Haiti,Indien,Irak,Iran,Jamaika,Jemen,Kambodscha
-A:Kamerun,Kasachstan,Katar,Kenia,Kirgisien,Kiribati,Kommoren,Kongo
+A:Kamerun,Kasachstan,Katar,Kenia,Kirgisien,Kiribati,Komoren,Kongo
 A:Korea Nord,Kuba,Kuwait,Laos,Lesotho,Liberia,Macao,Madagaskar
 A:Madeira,Malawi,Malediven,Mali,Marshall Inseln,Mauretanien,Mauritius
 A:Mayotte Inseln,Mikronesien,Mongolei,Montserrat,Mozambik,Namibia
@@ -13705,7 +13650,7 @@ A:Seychellen,Somalia,Sri Lanka,St. Helena,St. Lucia,St. Kitts
 A:St. Pierre & Miquelon,St. Vincent & Greens.,Sudan,Surinam,Swaziland
 A:Tadschikistan,Tansania,Togo,Tonga,Trinidad & Tobago,Tschad,Turkmenistan
 A:Turks and Caicos Inseln,Tuvalu,US Jungferninseln,Uganda,Usbekistan
-A:Vanuatu,Vereinte Arabische Emirate,Vienam,Wallis & Futuna, Westl. Marianen
+A:Vanuatu,Vereinte Arabische Emirate,Vietnam,Wallis & Futuna, Westl. Marianen
 A:Westl. Samoa,Zaire,Zentral. Afrika. Rep.,Zimbabwe
 T:W/9-18=1.065/30,2.13(60)/1
 T:W/18-9=0.937/30,1.874(60)/1
@@ -13831,7 +13776,7 @@ T:W/9-18=0.8185/30,1.637(60)/1
 T:W/18-9=0.54/30,1.08(60)/1
 T:E/*=0.54/30,1.08(60)/1
 Z:225
-A:Kroatien,Ungarn.Zypern
+A:Kroatien,Ungarn,Zypern
 T:W/9-18=0.4635/30,0.927(60)/1
 T:W/18-9=0.4125/30,0.825(60)/1
 T:E/*=0.4125/30,0.825(60)/1
@@ -14224,7 +14169,7 @@ T:*/*=1.20(60)/1
 A:Ägypten,Jordanien,Libanon,Syrien
 Z:202
 T:*/*=0.69(60)/1
-A:Alaska,Island,Bosnien,Herzegowina,Estland,Färöer Inseln,Griechenland
+A:Alaska,Island,Bosnien-Herzegowina,Estland,Färöer Inseln,Griechenland
 A:Jugoslawien,Kroatien,Polen,Slowakische Republik,Ungarn,Portugal,Slowenien
 Z:203
 T:*/*=0.89(60)/1
@@ -14236,7 +14181,7 @@ A:Algerien,Bahamas,Bermudas,Dominikanische Republik,Libyen
 Z:205
 T:*/8-18=1.99(60)/1
 T:*/18-8=1.69(60)/1
-A:Amer,Angola,Anguilla,Antigua,Barbuda,Aruba,Honduras,Benin
+A:Angola,Anguilla,Antigua,Barbuda,Aruba,Honduras,Benin
 A:Franz. Antillen,Franz. Guyana,Malawi,Marshallinseln,Namibia,Taiwan
 A:Ver. Arabische Emirate
 Z:206
@@ -14277,10 +14222,7 @@ T:*/18-8=1.89(60)/1
 A:Indonesien,Diego Garcia,Nordkorea,St. Helena
 Z:215
 T:*/*=10.32(60)/1
-A:Inmarsat - Atlantik Ost
-A:Inmarsat - Atlantik West
-A:Inmarsat - Ind. Ozean
-A:Inmarsat - Paz. Ozean
+A:Inmarsat A,Inmarsat B,Inmarsat M,Inmarsat Mini-M
 Z:216
 T:*/*=1.80(60)/1
 A:Iran
@@ -14325,7 +14267,7 @@ T:*/8-18=2.19(60)/1
 T:*/18-8=1.99(60)/1
 A:Bahrain,Belize,Burkina Faso,Burundi,Kamerun,Kolumbien,Mauretanien
 A:Mauritius,Mayotte Inseln,Neukaledonien,Saudi - Arabien,Tansania
-A:Thailand,Turks,Caicos,Uganda,Uruguay,Vanuatu,Zaire,Trinidad & Tobago
+A:Thailand,Turks und Caicos,Uganda,Uruguay,Vanuatu,Zaire,Trinidad & Tobago
 Z:228
 T:*/*=1.49(60)/1
 A:China
@@ -14335,7 +14277,7 @@ A:Dänemark Mobile,Liechtenstein,Luxemburg,Vatikanstadt,Monaco
 Z:230
 T:*/8-18=1.99(60)/1
 T:*/18-8=1.59(60)/1
-A:El Salvador,Gambia,Liberia,Macau,Mexiko,Venezuela,Wallis,Futuna
+A:El Salvador,Gambia,Liberia,Macau,Mexiko,Venezuela,Wallis und Futuna
 Z:231
 T:*/*=2.79(60)/1
 A:Eritrea,Myamar,Guinea - Bissau
@@ -14394,7 +14336,7 @@ T:*/18-8=0.72(60)/1
 A:San Marino
 Z:247
 T:*/*=2.99(60)/1
-A:Sao Tome,Principe
+A:Sao Tome und Principe
 Z:248
 T:*/*=0.58(60)/1
 A:Spanien

@@ -77,6 +77,8 @@ compzone { -z<CITE>Zonefile</CITE> | -r<CITE>Reducedfile</CITE> } -c<CITE>Codefi
 
 <P>or</P>
 <PRE>zone -d <CITE>Datafile</CITE> [ -v ] [ -V ] -a CC num1 </PRE>
+<P>or</P>
+<PRE>zone -d <CITE>Datafile</CITE> [ -v ] [ -V ] -a CC -c codefile </PRE>
 
 <H3>Options</H3>
 <PRE>-v ... verbose
@@ -87,7 +89,7 @@ compzone { -z<CITE>Zonefile</CITE> | -r<CITE>Reducedfile</CITE> } -c<CITE>Codefi
 
 <H3>I4L-Interface:</H3>
 <PRE>int initZone(int provider, char *datapath, char **msg)<BR>	returns -1 on error, 0 if ok<BR>void exitZone(int provider)<BR>int getZone(int provider, char *from, char *to)<BR>	returns -2 on error, UNKNOWN on not found, zone if ok<BR>int getAreacode(int country, char *num, char **text)<BR>	returns UNKNOWN if not found, or len of areacode<BR>	text is a malloced string containing the name of the area
-	the caller should free this text.</PRE>
+	the caller should free this text if returnvalue != UNKNOWN.</PRE>
 
 <H2>Glossary</H2>
 <H4><A NAME="zonef">Zonefile</A></H4>

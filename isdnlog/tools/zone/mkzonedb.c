@@ -22,9 +22,18 @@
  *
  */
 
-static char progversion[] = "1.10";
-/* first 3 chars must match dataversion */
+static char progversion[] = "1.11";
 
+/*
+ * Changes:
+ *
+ * 1.11 1999.07.08 lt added support for NL
+ *
+ *      in NL areacode may be shorter than actual aeracodenumber
+ *      in this case \tLEN is appended to text
+ *
+ */
+ 
 #define STANDALONE
 
 #define _MKZONEDB_C_
@@ -191,10 +200,12 @@ static void make_table() {
 	if (verbose)
 		printf("%d\nSorting\n", n);
 	nn = maxnum;
+	if (keylen < nn)
+		nn = keylen;
 	for (j=0; j<256; j++) {
 		int max = 0;
 		k = -1;
-		for (i=0; i<=maxnum; i++) {
+		for (i=0; i<=nn; i++) {
 			if (numbers[i] > max) {
 				k = i;
 				max = numbers[i];
@@ -298,13 +309,16 @@ static void write_db(char * df) {
 	}
 	/* tablelen .. len of table entries */
 	/* keylen = keysize */
+	if (maxnum > keylen)
+		keylen=maxnum;
 	keylen = keylen > 0xffff ? 4 : 2;
 	tablelen = tablelen > 0xffff ? 4 : tablelen > 0xff ? 2 : 1;
 
 	/* write version & table */
 	key.dptr = "vErSiO";
 	key.dsize = 7;
-	sprintf(version,"V1.10 K%c C%c N%d T%d O%d L%d A%d",
+	/* version of zone.c must be not smaller than dataversion */
+	sprintf(version,"V1.20 K%c C%c N%d T%d O%d L%d A%d",
 		keylen==2?'S':'L',tablelen==1?'C':tablelen==2?'S':'L',
 		nn,n, ortszone, numlen?numlen:keydigs, country);
 	value.dptr = version;

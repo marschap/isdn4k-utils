@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.93 1999/07/03 10:23:55 akool Exp $
+## $Id: Makefile.in,v 1.94 1999/07/10 21:37:36 akool Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,12 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.94  1999/07/10 21:37:36  akool
+## isdnlog-3.41
+##   rate-de.dat V:1.02-Germany [10-Jul-1999 23:32:27]
+##   country-de.dat V:1.02-Germany [10-Jul-1999 23:32:36]
+##   added all "zone-*" files in binary mode
+##
 ## Revision 1.93  1999/07/03 10:23:55  akool
 ## fixed Makefile
 ##
@@ -711,7 +717,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 3.40
+VERSION     = 3.41
 
 MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 \
 	      isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 \
