@@ -1,5 +1,5 @@
 /*
-** $Id: vboxbeep.c,v 1.7 2001/03/01 14:52:58 paul Exp $
+** $Id: vboxbeep.c,v 1.8 2002/01/31 20:11:07 paul Exp $
 **
 ** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
 */
@@ -477,9 +477,13 @@ static time_t get_newest_message_time(char *box)
 		{
 			while ((one = readdir(dir)))
 			{
-				if (stat(one->d_name, &status) == 0 && S_ISREG(status.st_mode))
+                                /* ignore filenames starting with '.' */
+				if ((one->d_name[0] != '.')
+                                    && (stat(one->d_name, &status) == 0)
+                                    && S_ISREG(status.st_mode))
 				{
-					if (status.st_mtime > newest) newest = status.st_mtime;
+					if (status.st_mtime > newest)
+                                            newest = status.st_mtime;
 				}
 			}
 
