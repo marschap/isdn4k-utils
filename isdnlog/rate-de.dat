@@ -1,4 +1,4 @@
-V:1.10-Germany [17-Jul-2000 19:30:51]
+V:1.10-Germany [21-Jul-2000 20:37:16]
 
 # Währungsformat
 U:%.3f DM
@@ -8,7 +8,7 @@ U:%.3f DM
 #
 # (C) Copyright 1999, 2000 by Andreas Kool (akool@isdn4linux.de)
 #
-# $Id: rate-de.dat,v 1.100 2000/07/19 19:41:32 akool Exp $
+# $Id: rate-de.dat,v 1.101 2000/07/21 18:46:24 akool Exp $
 #
 #
 # Das "A:" Tag muß folgendermaßen gefüllt werden:
@@ -183,6 +183,8 @@ S:T-Online SLIP
 N:01910
 S:T-Online
 N:0191011
+S:T-Online by call
+N:019104981
 S:AOL
 N:01914, 019161
 S:CompuServe PPP Access
@@ -894,9 +896,7 @@ C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.
 # G:04-Jul-2000
 D:dtag
 Z:0 FreeCall
-A:011*
-A:0130*,0800*,0801*
-A:031*
+A:_DEFF
 A:110
 A:112
 T:*/*=0
@@ -929,7 +929,7 @@ T:*/*=0.17/60
 Z:204 USA
 A:US
 T:*/*=0.14/60
-Z:204 Schweiz
+Z:205 Schweiz
 A:CH
 T:*/*=0.15/60
 #####################################################################
@@ -3418,7 +3418,7 @@ T:*/*=0.38/60
 Z:200 Euro 1 / USA, Kanada # gilt *NICHT* für Mobilfunknetze in diese Länder!
 A:US,CA,NL,BE,FR,ES
 A:LU,FI,IT,CH,AT,VA
-A:UK,DK,SE,NO
+A:UK,_UKIR,DK,SE,NO
 T:*/*=0.10/60
 Z:201 Euro 2
 A:AD,FO,IE,IS,LI,MC
@@ -11428,6 +11428,9 @@ Z:100 T-Online
 A:0191011
 C:Dies ist *kein* All-in-One Zugang, es werden zusätzliche Gebühren erhoben!
 T:*/*=0.029(60)/60 T-Online eco
+Z:101 T-Online by call
+A:019104981
+T:*/*=0.039(60)/60 T-Online by call
 Z:120 Surf 1
 A:019107873
 T:*/*=0.045/60
@@ -11692,6 +11695,9 @@ T:*/*=0.12/2
 Z:100 T-Online
 A:0191011
 T:*/*=0.029(60)/60 T-Online eco
+Z:101 T-Online by call
+A:019104981
+T:*/*=0.039(60)/60 T-Online by call
 Z:121 CompuServeOffice
 A:019160
 T:*/09-18=0.019(60)/180 CompuServeOffice
@@ -11949,6 +11955,9 @@ T:*/*=0.12/2
 Z:100 T-Online
 A:0191011
 T:*/*=0.029(60)/60 T-Online eco
+Z:101 T-Online by call
+A:019104981
+T:*/*=0.039(60)/60 T-Online by call
 Z:121 CompuServeOffice
 A:019160
 T:*/09-18=0.019(60)/180 CompuServeOffice
@@ -12212,6 +12221,9 @@ T:*/*=0.12/2
 Z:100 T-Online
 A:0191011
 T:*/*=0.029(60)/60 T-Online eco
+Z:101 T-Online by call
+A:019104981
+T:*/*=0.039(60)/60 T-Online by call
 Z:121 CompuServeOffice
 A:019160
 T:*/09-18=0.019(60)/180 CompuServeOffice
@@ -12270,7 +12282,7 @@ T:*/*=0.12/2.31
 P:33,4 DTAG AktivPlus
 # Dieser Tarif gilt auch bei T-ISDN 300
 B:01033
-# G:01-Mar-2000
+# G:01-Jul-2000
 D:dtag
 C:Name:Deutsche Telekom AG AktivPlus
 C:Address:Deutsche Telekom AG, Friedrich-Ebert-Allee 140, 53113 Bonn
@@ -12279,6 +12291,8 @@ C:Hotline:0800/33-01000, T-Online Tarifhotline: 0800/33-03333
 C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Quelle: http://www.telekom.de/untern/tarife/aktivplus_tarif/index2.htm
+C:Quelle: Preisliste Telefondienst (Inlandsverbindungen), Stand 1. Juli 2000
+C:http://www.telekom.de/dtag/agb/produkte?nr=ISDN300c
 C:Grundgebühr zusätzlich für diesen Tarif: 9,90 DM / Monat
 C:Erfasste Zonen:
 C:0	-   4	Deutschland
@@ -12335,27 +12349,24 @@ A:DE
 T:W/09-18=0.12/60 Sunshine
 T:W/18-09=0.06/60 Moonshine
 T:E,H/*=0.06/60 Spar
-Z:10 Mobilfunknetz C
-A:_DEMCM,_DEMC
+Z:10 C-Mobilboxen
+A:_DEMCM
+T:*/*=0.12/16.7
+Z:11 Mobilfunknetz C
+A:_DEMC
 T:*/*=0.39/60 Standard
 Z:12 Mobilfunknetz D1
 A:_DEMD1
 T:*/*=0.39/60
 Z:13 Mobilfunknetz D2
 A:_DEMD2
-T:W/09-18=0.12/7.5 Standard
-T:W/18-09=0.12/15 Nacht
-T:E,H/*=0.12/15 Wochenende
+T:*/*=0.39/60
 Z:14 Mobilfunknetz E-Plus
 A:_DEME1
-T:W/09-18=0.12/5.3 Standard
-T:W/18-09=0.12/12.8 Nacht
-T:E,H/*=0.12/12.8 Wochenende
+T:*/*=0.45/60
 Z:15 Mobilfunknetz Viag Interkom
 A:_DEME2
-T:W/09-18=0.12/7.5 Standard
-T:W/18-09=0.12/15 Nacht
-T:E,H/*=0.12/15 Wochenende
+T:*/*=0.48/60
 Z:31 Iridium GSM
 A:_IR17
 T:*/*=0.12/0.509
@@ -12450,6 +12461,9 @@ Z:100 T-Online
 A:0191011
 C:Dies ist *kein* All-in-One Zugang, es werden zusätzliche Gebühren erhoben!
 T:*/*=0.029(60)/60 T-Online eco
+Z:101 T-Online by call
+A:019104981
+T:*/*=0.039(60)/60 T-Online by call
 Z:121 CompuServeOffice
 A:019160
 T:*/09-18=0.019(60)/180 CompuServeOffice
@@ -12488,19 +12502,19 @@ A:CZ,HU,TR
 T:*/*=0.39/60
 Z:202 Euro 1
 A:FO,FI,GR,IE,IS
-A:NO,AT,PL,PT,SM,SK
+A:NO,PL,PT,SM,SK
 T:*/*=0.39/60
 Z:203 Euro 2
 A:EG,AL,BA,BG,EE,GI
 A:IL,JO,YU,HR,LV,LB,LY
 A:LT,MT,EH,MK,MD,RO,SU
-A:SI,SY,TR,TN,UA
-A:HU,BY,CY
+A:SI,SY,TN,UA
+A:BY,CY
 T:*/*=0.12/6
-Z:203 Welt 2
+Z:204 Welt 2
 A:AU,HK,JP,KR,NZ,SG
 T:*/*=0.12/3.34
-Z:204 Welt 3
+Z:205 Welt 3
 A:AR,BR,CL,DO,IR,KZ,CO
 A:AN,PH,SA,ZA,TW
 A:AE
@@ -12717,6 +12731,9 @@ Z:100 T-Online
 A:0191011
 C:Dies ist *kein* All-in-One Zugang, es werden zusätzliche Gebühren erhoben!
 T:*/*=0.029(60)/60 T-Online eco
+Z:101 T-Online by call
+A:019104981
+T:*/*=0.039(60)/60 T-Online by call
 Z:120 Surf 1
 A:019107873
 T:*/*=0.045/60
@@ -12961,6 +12978,9 @@ A:0191011
 C:Dies ist *kein* All-in-One Zugang, es werden zusätzliche Gebühren erhoben!
 C:Hier im Falle der Flatrate DM 79,00
 T:*/*=0 T-Online flatrate
+Z:101 T-Online by call
+A:019104981
+T:*/*=0.039(60)/60 T-Online by call
 Z:120 Surf 1
 A:019107873
 T:*/*=0.045/60
@@ -13020,6 +13040,34 @@ T:*/*=0.12/2.61
 Z:205 Welt 4
 A:+
 T:*/*=0.12/2.31
+#####################################################################
+P:33,7 DTAG AktivPlus xxl
+B:01033
+# G:01-Jun-2000
+D:dtag
+C:Name:Deutsche Telekom AG AktivPlus xxl
+C:Address:Deutsche Telekom AG, Friedrich-Ebert-Allee 140, 53113 Bonn
+C:Homepage:http://www.dtag.de
+C:Hotline:0800/33-01000, T-Online Tarifhotline: 0800/33-03333
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
+C:Quelle:Preisliste T-ISDN xxl, 1. Juni 2000; zus. Tarif AktivPlus hier
+C:Tarif gilt nur in Verbindung mit T-ISDN xxl Anschluss fuer 59,90 DM/Monat.
+C:Erfasste Zonen:
+C:1	-   4	Deutschland
+C: ** Zonen 0 und 10- werden von P:33,4 DTAG AktivPlus ?bernommen **
+R:33,4;0,10-
+Z:1-2 CityCall
+T:W/09-18=0.06/60 Sunshine
+T:W/18-09=0.03/60 Moonshine
+T:6/*=0.03/60 Spar
+T:7,H/*=0 xxl unentgeldlich
+Z:3-4 GermanCall
+A:+49
+T:W/09-18=0.12/60 Sunshine
+T:W/18-09=0.06/60 Moonshine
+T:6/*=0.06/60 Spar
+T:7,H/*=0 xxl unentgeldlich
 #####################################################################
 #
 #
@@ -25153,12 +25201,14 @@ A:+
 #####################################################################
 #
 #
-P:86,0 ONE.TEL
+P:86,0 One.Tel
 B:01086
 C:Address:ONE.TEL Limited (UK), Clements House, 14-18 Gresham Street, London, EC2V 7JE, England
 C:Name:ONE.TEL
 C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
+# G:22-Jul-2000
+D:dtag
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -25166,6 +25216,15 @@ A:031*
 A:110
 A:112
 T:*/*=0
+Z:1-4 National
+A:+49
+T:W/06-20=0.063/60
+T:W/20-06=0.033/60
+T:E,H/*=0.003/60
+Z:200 Euro 1 / USA, Kanada # gilt *NICHT* für Mobilfunknetze in diese Länder!
+A:DK,FR,UK,CA,NL,SE
+A:CH,US
+T:*/*=0.089
 #####################################################################
 #
 #

@@ -95,7 +95,7 @@ AC_DEFUN(AC_CHECK_MYSQLDB, [
 		if test "$mydir" = "no" ; then
 			AC_MSG_RESULT("$mydir")
 			AC_MSG_CHECKING([for mysql in /usr/local/mysql])
-			AC_EGREP_HEADER(MYSQL,/usr/local/postgre95/include/mysql.h,
+			AC_EGREP_HEADER(MYSQL,/usr/local/mysql/include/mysql.h,
 			mydir=/usr/local/mysql)
 		fi
 		if test "$mydir" = "no" ; then

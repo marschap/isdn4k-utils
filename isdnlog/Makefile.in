@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.172 2000/07/19 19:41:32 akool Exp $
+## $Id: Makefile.in,v 1.173 2000/07/21 18:46:24 akool Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,13 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.173  2000/07/21 18:46:24  akool
+## isdnlog-4.35
+##  - isdnlog/aclocal.m4 ... postgre95 in mysql, thx Daniel Pluta
+##  - isdnlog/configure  ... -""-
+##  - country-de.dat enhanced
+##  - new provider One.Tel added (starts next week)
+##
 ## Revision 1.172  2000/07/19 19:41:32  akool
 ## isdnlog-4.34
 ##   - since around Linux-2.2.16 signals are *not* reset to their default
@@ -1283,7 +1290,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 4.34
+VERSION     = 4.35
 
 MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 \
 	      isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 \

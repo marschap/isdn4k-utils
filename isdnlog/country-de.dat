@@ -1,4 +1,4 @@
-V:1.20 Int [16-Jul-2000 20:23:00]
+V:1.30 Int [20-Jul-2000 19:32:00]
 # ISO 3166 Countrycodes ( ftp://sunsite.unc.edu/pub/Linux/apps/misc/
 #	countrycodes.1.0.2.tar.gz
 # Airportcodes: http://www.TravelDesk.com/airports.html
@@ -1066,6 +1066,15 @@ A:E2
 C:+49176,+49179
 R:_DEMF
 T:_DEME2
+
+N:Deutschland Freecall
+E:Germany Freephone
+C:+4911		 # netzinterne Nutzung
+C:+49130         # Freephone
+C:+4931 	 # Testrufnummern
+C:+49800, +49801 # Freephone
+R:DE
+T:_DEFF
 
 N:Deutschland Cityruf
 A:Cityruf, Cityruf Voicebox, Cityruf automatic, Cityruf Operator
