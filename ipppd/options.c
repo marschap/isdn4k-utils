@@ -17,7 +17,7 @@
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-char options_rcsid[] = "$Id: options.c,v 1.19 2000/12/07 07:53:19 paul Exp $";
+char options_rcsid[] = "$Id: options.c,v 1.20 2000/12/07 12:46:49 paul Exp $";
 
 #include <stdio.h>
 #include <errno.h>
@@ -458,6 +458,7 @@ static struct cmd {
 #ifdef __linux__
     {"hostroute", 0, sethostroute}, /* Add host route (default) */
     {"-hostroute", 0, setnohostroute}, /* Don't add host route */
+    {"nohostroute", 0, setnohostroute}, /* Don't add host route */
 #endif
     {"+force-driver",0,setforcedriver},
 
