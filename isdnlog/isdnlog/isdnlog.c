@@ -1,4 +1,4 @@
-/* $Id: isdnlog.c,v 1.19 1998/05/19 15:55:51 paul Exp $
+/* $Id: isdnlog.c,v 1.20 1998/06/07 21:08:31 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,41 @@
  * along with this program; if not, write to the Free Software
  *
  * $Log: isdnlog.c,v $
+ * Revision 1.20  1998/06/07 21:08:31  akool
+ * - Accounting for the following new providers implemented:
+ *     o.tel.o, Tele2, EWE TEL, Debitel, Mobilcom, Isis, NetCologne,
+ *     TelePassport, Citykom Muenster, TelDaFax, Telekom, Hutchison Telekom,
+ *     tesion)), HanseNet, KomTel, ACC, Talkline, Esprit, Interoute, Arcor,
+ *     WESTCom, WorldCom, Viag Interkom
+ *
+ *     Code shamelessly stolen from G.Glendown's (garry@insider.regio.net)
+ *     program http://www.insider.org/tarif/gebuehr.c
+ *
+ * - Telekom's 10plus implemented
+ *
+ * - Berechnung der Gebuehrenzone implementiert
+ *   (CityCall, RegioCall, GermanCall, GlobalCall)
+ *   The entry "ZONE" is not needed anymore in the config-files
+ *
+ *   you need the file
+ *     http://swt.wi-inf.uni-essen.de/~omatthes/tgeb/vorwahl2.exe
+ *   and the new entry
+ *     [GLOBAL]
+ *       AREADIFF = /usr/lib/isdn/vorwahl.dat
+ *   for that feature.
+ *
+ *   Many thanks to Olaf Matthes (olaf.matthes@uni-essen.de) for the
+ *   Data-File and Harald Milz for his first Perl-Implementation!
+ *
+ * - Accounting for all "Sonderrufnummern" (0010 .. 11834) implemented
+ *
+ *   You must install the file
+ *     "isdn4k-utils/isdnlog/sonderrufnummern.dat.bz2"
+ *   as "/usr/lib/isdn/sonderrufnummern.dat"
+ *   for that feature.
+ *
+ * ATTENTION: This is *NO* production-code! Please test it carefully!
+ *
  * Revision 1.19  1998/05/19 15:55:51  paul
  * Moved config stuff for City Weekend from isdnlog.c to tools/isdnconf.c, so
  * that isdnrep also understands a "cityweekend=y" line in isdn.conf.
@@ -897,7 +932,7 @@ int main(int argc, char *argv[], char *envp[])
           if (q931dmp) {
   	    mymsns         = 3;
   	    mycountry      = "+49";
-  	    myarea   	     = "6408";
+  	    myarea   	   = "6171";
         currency   	   = NULL;
         dual	         = 1;
   	    chargemax  	   = 0.0;
@@ -955,6 +990,9 @@ int main(int argc, char *argv[], char *envp[])
 #ifdef MYSQLDB
 	    mysql_dbOpen();
 #endif
+
+	    initSondernummern();
+
             loop();
 
             if (sockets[ISDNINFO].descriptor >= 0)

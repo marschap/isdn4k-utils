@@ -1,8 +1,8 @@
-/* $Id: processor.c,v 1.18 1998/04/09 19:15:07 akool Exp $
+/* $Id: processor.c,v 1.19 1998/06/07 21:08:43 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
- * Copyright 1995, 1998 by Andreas Kool (akool@Kool.f.EUnet.de)
+ * Copyright 1995, 1998 by Andreas Kool (akool@Kool.f.UUnet.de)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +19,41 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.19  1998/06/07 21:08:43  akool
+ * - Accounting for the following new providers implemented:
+ *     o.tel.o, Tele2, EWE TEL, Debitel, Mobilcom, Isis, NetCologne,
+ *     TelePassport, Citykom Muenster, TelDaFax, Telekom, Hutchison Telekom,
+ *     tesion)), HanseNet, KomTel, ACC, Talkline, Esprit, Interoute, Arcor,
+ *     WESTCom, WorldCom, Viag Interkom
+ *
+ *     Code shamelessly stolen from G.Glendown's (garry@insider.regio.net)
+ *     program http://www.insider.org/tarif/gebuehr.c
+ *
+ * - Telekom's 10plus implemented
+ *
+ * - Berechnung der Gebuehrenzone implementiert
+ *   (CityCall, RegioCall, GermanCall, GlobalCall)
+ *   The entry "ZONE" is not needed anymore in the config-files
+ *
+ *   you need the file
+ *     http://swt.wi-inf.uni-essen.de/~omatthes/tgeb/vorwahl2.exe
+ *   and the new entry
+ *     [GLOBAL]
+ *       AREADIFF = /usr/lib/isdn/vorwahl.dat
+ *   for that feature.
+ *
+ *   Many thanks to Olaf Matthes (olaf.matthes@uni-essen.de) for the
+ *   Data-File and Harald Milz for his first Perl-Implementation!
+ *
+ * - Accounting for all "Sonderrufnummern" (0010 .. 11834) implemented
+ *
+ *   You must install the file
+ *     "isdn4k-utils/isdnlog/sonderrufnummern.dat.bz2"
+ *   as "/usr/lib/isdn/sonderrufnummern.dat"
+ *   for that feature.
+ *
+ * ATTENTION: This is *NO* production-code! Please test it carefully!
+ *
  * Revision 1.18  1998/04/09 19:15:07  akool
  *  - CityPlus Implementation from Oliver Lauer <Oliver.Lauer@coburg.baynet.de>
  *  - dont change huptimeout, if disabled (via isdnctrl huptimeout isdnX 0)
@@ -356,6 +391,22 @@ static void diag(int cref, int tei, int sapi, int dialin, int net, int type, int
 } /* diag */
 
 
+static char *location(int loc)
+{
+  switch (loc) {
+    case 0x00 : return("User");                                break;
+    case 0x01 : return("Private network serving local user");  break;
+    case 0x02 : return("Public network serving local user");   break;
+    case 0x03 : return("Transit network");                     break;
+    case 0x04 : return("Public network serving remote user");  break;
+    case 0x05 : return("Private network serving remote user"); break;
+    case 0x07 : return("International network");               break;
+    case 0x0a : return("Network beyond inter-working point");  break;
+      default : return("");             	       	       break;
+  } /* switch */
+} /* location */
+
+
 static void info(int chan, int reason, int state, char *msg)
 {
   auto   char   s[BUFSIZ], *left = "", *right = "\n";
@@ -409,6 +460,167 @@ static void info(int chan, int reason, int state, char *msg)
 } /* info */
 
 
+static void buildnumber(char *num, int oc3, int oc3a, char *result, int version, int *provider, int *sondernummer)
+{
+  auto char n[BUFSIZ];
+
+
+#ifdef Q931
+  if (q931dmp) {
+    register char *ps;
+    auto     char  s[BUFSIZ];
+
+
+    ps = s + sprintf(s, "Type of number: ");
+
+    switch (oc3 & 0x70) {
+      case 0x00 : sprintf(ps, "Unknown");                break;
+      case 0x10 : sprintf(ps, "International");          break;
+      case 0x20 : sprintf(ps, "National");               break;
+      case 0x30 : sprintf(ps, "Network specific");       break;
+      case 0x40 : sprintf(ps, "Subscriber");             break;
+      case 0x60 : sprintf(ps, "Abbreviated");            break;
+      case 0x70 : sprintf(ps, "Reserved for extension"); break;
+    } /* switch */
+
+    Q931dump(TYPE_STRING, oc3, s, version);
+
+    ps = s + sprintf(s, "Numbering plan: ");
+
+    switch (oc3 & 0x0f) {
+      case 0x00 : sprintf(ps, "Unknown");                break;
+      case 0x01 : sprintf(ps, "ISDN/telephony");         break;
+      case 0x03 : sprintf(ps, "Data");                   break;
+      case 0x04 : sprintf(ps, "Telex");                  break;
+      case 0x08 : sprintf(ps, "National standard");      break;
+      case 0x09 : sprintf(ps, "Private");                break;
+      case 0x0f : sprintf(ps, "Reserved for extension"); break;
+    } /* switch */
+
+    Q931dump(TYPE_STRING, -1, s, version);
+
+    if (oc3a != -1) {
+      ps = s + sprintf(s, "Presentation: ");
+
+      switch (oc3a & 0x60) {
+        case 0x00 : sprintf(ps, "allowed");                                     break;
+        case 0x20 : sprintf(ps, "restricted");                                  break;
+        case 0x40 : sprintf(ps, "Number not available due to internetworking"); break;
+        case 0x60 : sprintf(ps, "Reserved for extension");                      break;
+      } /* switch */
+
+      Q931dump(TYPE_STRING, oc3a, s, version);
+
+      ps = s + sprintf(s, "Screening indicator: ");
+
+      switch (oc3a & 0x03) {
+        case 0x00 : sprintf(ps, "User provided, not screened");        break;
+        case 0x01 : sprintf(ps, "User provided, verified and passed"); break;
+        case 0x02 : sprintf(ps, "User provided, verified and failed"); break;
+        case 0x03 : sprintf(ps, "Network provided");                   break;
+      } /* switch */
+
+      Q931dump(TYPE_STRING, -1, s, version);
+
+    } /* if */
+
+    sprintf(s, "\"%s\"", num);
+    Q931dump(TYPE_STRING, -2, s, version);
+  } /* if */
+#endif
+
+  strcpy(n, num);
+  strcpy(result, "");
+
+  if (!memcmp(num, "010", 3)) { /* Provider */
+    char c = num[5];
+    num[5] = 0;
+    *provider = atoi(num + 3);
+    num[5] = c;
+    num += 5;
+
+#ifdef Q931
+    if (q931dmp) {
+      auto char s[BUFSIZ];
+
+      sprintf(s, "Via provider \"010%02d\", %s", *provider, Providername(*provider));
+      Q931dump(TYPE_STRING, -1, s, version);
+    } /* if */
+#endif
+  } /* if */
+
+  if ((*sondernummer = is_sondernummer(num)) == -1)
+
+  switch (oc3 & 0x70) { /* Calling party number Information element, Octet 3 - Table 4-11/Q.931 */
+    case 0x00 : if (*num) {                  /* 000 Unknown */
+                  char *amt = amtsholung;
+
+                  while (amt && *amt) {
+                    int len = strchr(amt, ':') ? strchr(amt, ':') - amt : strlen(amt);
+
+                    if (len && !strncmp(num, amt, len)) {
+                      num += len;
+#ifdef Q931
+                      if (q931dmp) {
+                        auto char s[BUFSIZ], s1[BUFSIZ];
+
+                        strncpy(s1, amt, len);
+                      	sprintf(s, "Amtsholung: %s", s1);
+                      	Q931dump(TYPE_STRING, -2, s, version);
+                      } /* if */
+#endif
+                      break;
+		    } /* if */
+
+                    amt += len + (strchr(amt, ':') ? 1 : 0);
+                  } /* while */
+
+                  if (*num != '0')
+                    sprintf(result, "%s%s", mycountry, myarea);
+                  else {
+                  	if (num[1] != '0') /* Falls es doch Ausland ist -> nichts machen!!! */
+                    	strcpy(result, mycountry);
+                    else
+                    	strcpy(result, countryprefix);
+
+                   	while (*num && (*num == '0'))
+                   		num++;
+                  } /* else */
+                } /* if */
+                break;
+
+    case 0x10 : if (version != VERSION_1TR6)
+                  strcpy(result, "00");      /* 001 International */
+                break;
+
+    case 0x20 : if (version != VERSION_1TR6)
+                  strcpy(result, mycountry);    /* 010 National */
+                break;
+
+    case 0x30 : break;                       /* 011 Network specific number */
+
+    case 0x40 : if (*num != '0')             /* 100 Subscriber number */
+                  sprintf(result, "%s%s", mycountry, myarea);
+                else {
+                  strcpy(result, mycountry);
+
+                  while (*num && (*num == '0'))
+                    num++;
+                } /* else */
+                break;
+
+    case 0x60 : break;                       /* 110 Abbreviated number */
+
+    case 0x70 : break;                       /* 111 Reserved for extension */
+  } /* switch */
+
+  strcat(result, num);
+
+  print_msg(PRT_DEBUG_DECODE, " DEBUG> %s: num=\"%s\", oc3=%s(%02x), result=\"%s\"\n",
+    st + 4, n, i2a(oc3, 8, 2), oc3 & 0x70, result);
+} /* buildnumber */
+
+
 static void aoc_debug(int val, char *s)
 {
   print_msg(PRT_DEBUG_DECODE, " DEBUG> %s: %s\n", st + 4, s);
@@ -428,12 +640,13 @@ static void aoc_debug(int val, char *s)
 
 static int facility(int type, int l)
 {
-  register int   ls;
+  register int   ls, i, ServedUserNr;
   register char *px, *px1, *px2, *px3;
-  auto     int   c, result = 0;
+  auto     int   c, result = 0, a1, a2, oc3 = 0;
   static   int   ID = 0, OP = 0, EH = 0, MP = 0;
   static   char  curr[64];
   auto     char  s[BUFSIZ], s1[BUFSIZ], dst[BUFSIZ], src[BUFSIZ];
+  auto	   char  vdst[BUFSIZ], vsrc[BUFSIZ];
 
 
   switch(type) {
@@ -633,7 +846,7 @@ static int facility(int type, int l)
                                               	       	    sprintf(s, "length=%d", l);
                                               	       	    aoc_debug(l, s);
 
-                                              	       	    switch (c = strtol(asnp += 3, NIL, 16)) {
+                                              	       	    switch (oc3 = strtol(asnp += 3, NIL, 16)) {
 						              case 0x00 : px3 = "Unknown Number";             break;
                     					      case 0x01 : px3 = "International Number";       break;
                     					      case 0x02 : px3 = "National Number"; 	      break;
@@ -643,7 +856,7 @@ static int facility(int type, int l)
                                                                 default : px3 = "UNKNOWN PublicTypeOfNumber"; break;
                                                             } /* switch */
 
-                                	      		    aoc_debug(c, px3);
+                                	      		    aoc_debug(oc3, px3);
                                                             break;
 
                                                   default : px3 = "UNKNOWN PublicTypeOfNumber";
@@ -675,6 +888,12 @@ static int facility(int type, int l)
                                               sprintf(px, "%02x ", c);
                                               aoc_debug(-4, s);
 
+                                              for (i = 0; i < 5; i++) {
+                                                c = strtol(asnp += 3, NIL, 16);
+                                              	sprintf(px, "%02x ", c);
+                                              	aoc_debug(-4, s);
+                                              } /* for */
+
                                               ls = strtol(asnp += 3, NIL, 16);
                                               sprintf(s, "length=%d", ls);
                                               aoc_debug(l, s);
@@ -691,7 +910,13 @@ static int facility(int type, int l)
                                               sprintf(s1, "\"%s\"", src);
                                               aoc_debug(-2, s1);
 
-                                              sprintf(s, "%s %s/%s -> %s (%s)", px1, src, px2, dst, px3);
+                    			      buildnumber(src, 0, 0, call[6].num[CLIP], VERSION_EDSS1, &a1, &a2);
+                          		      strcpy(vsrc, vnum(6, CLIP));
+                    			      buildnumber(dst, oc3 * 16, 0, call[6].num[CLIP], VERSION_EDSS1, &a1, &a2);
+                          		      strcpy(vdst, vnum(6, CLIP));
+
+                                              /* sprintf(s, "%s %s/%s -> %s (%s)", px1, src, px2, dst, px3); */
+                                              sprintf(s, "%s %s/%s -> %s", px1, vsrc, px2, vdst);
                                               aoc_debug(-2, s);
 
                                               (void)iprintf(s1, -1, mlabel, "", s, "\n");
@@ -751,9 +976,16 @@ static int facility(int type, int l)
 
                                 	      aoc_debug(c, px2);
 
-                                              c = strtol(asnp += 3, NIL, 16);
-                                       	      sprintf(s, "ServedUserNr=%d", c);
+                                              ServedUserNr = strtol(asnp += 3, NIL, 16);
+                                       	      sprintf(s, "ServedUserNr=%d", ServedUserNr);
                                 	      aoc_debug(c, s);
+
+                                              if (ServedUserNr == 161)
+                                                for (i = 0; i < 5; i++) {
+                                                  l = strtol(asnp += 3, NIL, 16);
+                                              	  sprintf(s, "%02x ", l);
+                                              	  aoc_debug(-4, s);
+                                                } /* for */
 
                                               l = strtol(asnp += 3, NIL, 16);
                                               sprintf(s, "length=%d", l);
@@ -768,7 +1000,10 @@ static int facility(int type, int l)
                                               sprintf(s1, "\"%s\"", dst);
                                               aoc_debug(-2, s1);
 
-                                              sprintf(s, "deactivate %s %s/%s", px1, dst, px2);
+                    			      buildnumber(dst, 0, 0, call[6].num[CLIP], VERSION_EDSS1, &a1, &a2);
+                          		      strcpy(vdst, vnum(6, CLIP));
+
+                                              sprintf(s, "deactivate %s %s/%s", px1, vdst, px2);
 
                                               (void)iprintf(s1, -1, mlabel, "", s, "\n");
                                               print_msg(PRT_SHOWNUMBERS, "%s", s1);
@@ -1170,163 +1405,6 @@ static int AOC_1TR6(int l, char *p)
 } /* AOC_1TR6 */
 
 
-static void buildnumber(char *num, int oc3, int oc3a, char *result, int version, char *provider)
-{
-  auto char n[BUFSIZ];
-
-
-#ifdef Q931
-  if (q931dmp) {
-    register char *ps;
-    auto     char  s[BUFSIZ];
-
-
-    ps = s + sprintf(s, "Type of number: ");
-
-    switch (oc3 & 0x70) {
-      case 0x00 : sprintf(ps, "Unknown");                break;
-      case 0x10 : sprintf(ps, "International");          break;
-      case 0x20 : sprintf(ps, "National");               break;
-      case 0x30 : sprintf(ps, "Network specific");       break;
-      case 0x40 : sprintf(ps, "Subscriber");             break;
-      case 0x60 : sprintf(ps, "Abbreviated");            break;
-      case 0x70 : sprintf(ps, "Reserved for extension"); break;
-    } /* switch */
-
-    Q931dump(TYPE_STRING, oc3, s, version);
-
-    ps = s + sprintf(s, "Numbering plan: ");
-
-    switch (oc3 & 0x0f) {
-      case 0x00 : sprintf(ps, "Unknown");                break;
-      case 0x01 : sprintf(ps, "ISDN/telephony");         break;
-      case 0x03 : sprintf(ps, "Data");                   break;
-      case 0x04 : sprintf(ps, "Telex");                  break;
-      case 0x08 : sprintf(ps, "National standard");      break;
-      case 0x09 : sprintf(ps, "Private");                break;
-      case 0x0f : sprintf(ps, "Reserved for extension"); break;
-    } /* switch */
-
-    Q931dump(TYPE_STRING, -1, s, version);
-
-    if (oc3a != -1) {
-      ps = s + sprintf(s, "Presentation: ");
-
-      switch (oc3a & 0x60) {
-        case 0x00 : sprintf(ps, "allowed");                                     break;
-        case 0x20 : sprintf(ps, "restricted");                                  break;
-        case 0x40 : sprintf(ps, "Number not available due to internetworking"); break;
-        case 0x60 : sprintf(ps, "Reserved for extension");                      break;
-      } /* switch */
-
-      Q931dump(TYPE_STRING, oc3a, s, version);
-
-      ps = s + sprintf(s, "Screening indicator: ");
-
-      switch (oc3a & 0x03) {
-        case 0x00 : sprintf(ps, "User provided, not screened");        break;
-        case 0x01 : sprintf(ps, "User provided, verified and passed"); break;
-        case 0x02 : sprintf(ps, "User provided, verified and failed"); break;
-        case 0x03 : sprintf(ps, "Network provided");                   break;
-      } /* switch */
-
-      Q931dump(TYPE_STRING, -1, s, version);
-
-    } /* if */
-
-    sprintf(s, "\"%s\"", num);
-    Q931dump(TYPE_STRING, -2, s, version);
-  } /* if */
-#endif
-
-  strcpy(n, num);
-  strcpy(result, "");
-
-  if (!memcmp(num, "010", 3)) { /* Provider */
-    strncpy(provider, num, 5);
-    num += 5;
-    provider[5] = 0; 
-  
-#ifdef Q931
-    if (q931dmp) {
-      auto char s[BUFSIZ];
-    
-      sprintf(s, "Via provider \"%s\", %s", provider, Providername(provider));
-      Q931dump(TYPE_STRING, -1, s, version);
-    } /* if */
-#endif
-  } /* if */
-
-  switch (oc3 & 0x70) { /* Calling party number Information element, Octet 3 - Table 4-11/Q.931 */
-    case 0x00 : if (*num) {                  /* 000 Unknown */
-                  char *amt = amtsholung;
-
-                  while (amt && *amt) {
-                    int len = strchr(amt, ':') ? strchr(amt, ':') - amt : strlen(amt);
-
-                    if (len && !strncmp(num, amt, len)) {
-                      num += len;
-#ifdef Q931
-                      if (q931dmp) {
-                        auto char s[BUFSIZ], s1[BUFSIZ];
-
-                        strncpy(s1, amt, len);
-                      	sprintf(s, "Amtsholung: %s", s1);
-                      	Q931dump(TYPE_STRING, -2, s, version);
-                      } /* if */
-#endif
-                      break;
-		    } /* if */
-
-                    amt += len + (strchr(amt, ':') ? 1 : 0);
-                  } /* while */
-
-                  if (*num != '0')
-                    sprintf(result, "%s%s", mycountry, myarea);
-                  else {
-                  	if (num[1] != '0') /* Falls es doch Ausland ist -> nichts machen!!! */
-                    	strcpy(result, mycountry);
-                    else
-                    	strcpy(result, countryprefix);
-
-                   	while (*num && (*num == '0'))
-                   		num++;
-                  } /* else */
-                } /* if */
-                break;
-
-    case 0x10 : if (version != VERSION_1TR6)
-                  strcpy(result, "00");      /* 001 International */
-                break;
-
-    case 0x20 : if (version != VERSION_1TR6)
-                  strcpy(result, mycountry);    /* 010 National */
-                break;
-
-    case 0x30 : break;                       /* 011 Network specific number */
-
-    case 0x40 : if (*num != '0')             /* 100 Subscriber number */
-                  sprintf(result, "%s%s", mycountry, myarea);
-                else {
-                  strcpy(result, mycountry);
-                  
-                  while (*num && (*num == '0')) 
-                    num++;
-                } /* else */
-                break;
-
-    case 0x60 : break;                       /* 110 Abbreviated number */
-
-    case 0x70 : break;                       /* 111 Reserved for extension */
-  } /* switch */
-
-  strcat(result, num);
-
-  print_msg(PRT_DEBUG_DECODE, " DEBUG> %s: num=\"%s\", oc3=%s(%02x), result=\"%s\"\n",
-    st + 4, n, i2a(oc3, 8, 2), oc3 & 0x70, result);
-} /* buildnumber */
-
-
 static int detach()
 {
   if (replay)
@@ -1511,7 +1589,7 @@ static void decode(int chan, register char *p, int type, int version)
 {
   register char     *pd, *px, *py;
   register int       i, element, l, l1, c, oc3, oc3a, n, sxp = 0, warn;
-  auto	   int	     zeit;
+  auto	   int	     zeit, loc, cause;
   auto     char      s[BUFSIZ], s1[BUFSIZ];
   auto     char      sx[10][BUFSIZ];
   auto     int       sn[10];
@@ -1641,7 +1719,7 @@ static void decode(int chan, register char *p, int type, int version)
                       } /* if */
 #endif
 
-		      switch (c & 0x0f) {
+		      switch ((loc = (c & 0x0f))) {
                         case 0x00 : py = "User";                                break;
                         case 0x01 : py = "Private network serving local user";  break;
                         case 0x02 : py = "Public network serving local user";   break;
@@ -1654,7 +1732,42 @@ static void decode(int chan, register char *p, int type, int version)
                       } /* switch */
 
                       c = strtol(p + 6, NIL, 16);
-                      call[chan].cause = c & 0x7f;
+		      cause = c & 0x7f;
+
+                      /* Remember only the _first_ cause
+                      	 except this was "Normal call clearing", "No user responding"
+                         or "non-selected user clearing"
+                      */
+
+                      if ((call[chan].cause == -1) || /* The first cause */
+                          (call[chan].cause == 16) || /* "Normal call clearing" */
+                          (call[chan].cause == 18) || /* "No user responding" */
+                          (call[chan].cause == 26)) { /* "non-selected user clearing" */
+
+#if 0
+                        auto char sx[200];
+
+                        if ((call[chan].cause != -1) && (call[chan].cause != cause)) {
+                          sprintf(sx, "USING cause %d:%s (%s),\nOVERWRITING cause %d:%s (%s)",
+                            cause, qmsg(TYPE_CAUSE, version, cause), location(loc),
+                            call[chan].cause, qmsg(TYPE_CAUSE, version, call[chan].cause), location(call[chan].loc));
+                          info(chan, PRT_SHOWHANGUP, STATE_HANGUP, sx);
+                        } /* if */
+#endif
+
+                        call[chan].cause = cause;
+                        call[chan].loc = loc;
+                      }
+#if 0
+                      else {
+                        auto char sx[200];
+
+                        sprintf(sx, "IGNORING cause %d:%s (%s),\nLEAVING cause %d:%s (%s)",
+                          cause, qmsg(TYPE_CAUSE, version, cause), location(loc),
+                          call[chan].cause, qmsg(TYPE_CAUSE, version, call[chan].cause), location(call[chan].loc));
+                        info(chan, PRT_SHOWHANGUP, STATE_HANGUP, sx);
+                      } /* else */
+#endif
 
 #ifdef Q931
                       if (q931dmp)
@@ -1744,6 +1857,7 @@ static void decode(int chan, register char *p, int type, int version)
 
                       if (n == AOC_OTHER)
                         ; /* info(chan, PRT_SHOWAOCD, STATE_AOCD, asnm); */
+#if 0
                       else if (!memcmp(call[chan].provider, "01019", 5) ||
                       	       !memcmp(call[chan].provider, "01070", 5)) { 
 		        
@@ -1751,7 +1865,6 @@ static void decode(int chan, register char *p, int type, int version)
 			  if (!memcmp(call[chan].provider, "01019", 5)) { /* Mobilcom */
                             tx = cur_time - call[chan].connect;
                             
-                            call[chan].aoc = 1;
                             call[chan].aoce = (int)((tx + 59) / 60);
                             call[chan].pay = call[chan].aoce * 0.19;
                               
@@ -1769,9 +1882,8 @@ static void decode(int chan, register char *p, int type, int version)
                           } /* if */
                         } /* if */
                       }
+#endif
                       else {
-
-                        call[chan].aoc = 1;
 
                         /* Dirty-Hack: Falls auch AOC-E als AOC-D gemeldet wird:
 
@@ -1796,6 +1908,7 @@ static void decode(int chan, register char *p, int type, int version)
                           call[chan].aoce++;
 
                         call[chan].pay = pay;
+                        call[chan].aoce = n;  /* AK:08-May-98 */
 
                         if (n < 0)
                           sprintf(s, "aOC-D=%d", -n);
@@ -1841,7 +1954,7 @@ static void decode(int chan, register char *p, int type, int version)
                                 sprintf(s1, "CHARGEMAX resetting %s's charge (day %d->%d)",
                                   known[c]->who, (known[c]->day == -1) ? 0 : known[c]->day, day);
 
-                                info(chan, PRT_SHOWAOCD, STATE_AOCD, s1);
+                                info(chan, PRT_SHOWCHARGEMAX, STATE_AOCD, s1);
 
                                 known[c]->scharge += known[c]->charge;
                                 known[c]->charge = known[c]->rcharge = 0.0;
@@ -1858,7 +1971,7 @@ static void decode(int chan, register char *p, int type, int version)
                                 (bytemax == 0.0) ? "" : double2byte((double)(bytemax - known[c]->bytes)));
 
 
-                              info(chan, PRT_SHOWAOCD, STATE_AOCD, s1);
+                              info(chan, PRT_SHOWCHARGEMAX, STATE_AOCD, s1);
 
                               if ((known[c]->charge >= chargemax) && (*known[c]->interface > '@'))
                                 chargemaxAction(chan, (known[c]->charge - chargemax));
@@ -1869,7 +1982,7 @@ static void decode(int chan, register char *p, int type, int version)
                                 sprintf(s1, "CONNECTMAX resetting %s's online (month %d->%d)",
                                   known[c]->who, (known[c]->month == -1) ? 0 : known[c]->month, month);
 
-                                info(chan, PRT_SHOWAOCD, STATE_AOCD, s1);
+                                info(chan, PRT_SHOWCHARGEMAX, STATE_AOCD, s1);
 
                                 known[c]->sonline += known[c]->online;
                                 known[c]->online = 0.0;
@@ -2079,9 +2192,16 @@ static void decode(int chan, register char *p, int type, int version)
 
                     *pd = 0;
 
+                    if (dual && !*s)
+                      strcpy(s, call[chan].onum[CALLED]);
+                    else
                     strcpy(call[chan].onum[CALLED], s);
-                    buildnumber(s, oc3, oc3a, call[chan].num[CALLED], version, call[chan].provider);
+
+                    buildnumber(s, oc3, oc3a, call[chan].num[CALLED], version, &call[chan].provider, &call[chan].sondernummer);
+
+                    if (!dual)
                     strcpy(call[chan].vnum[CALLED], vnum(chan, CALLED));
+
 #ifdef Q931
                     if (q931dmp && (*call[chan].vnum[CALLED] != '?') && *call[chan].vorwahl[CALLED] && oc3 && ((oc3 & 0x70) != 0x40)) {
                       auto char s[BUFSIZ];
@@ -2133,7 +2253,7 @@ static void decode(int chan, register char *p, int type, int version)
                       if (strcmp(call[chan].onum[CALLING], s)) /* different! */
                         if ((call[chan].screening == 3) && ((oc3a & 3) < 3)) { /* we believe the first one! */
                           strcpy(call[chan].onum[CLIP], s);
-                          buildnumber(s, oc3, oc3a, call[chan].num[CLIP], version, call[chan].provider);
+                          buildnumber(s, oc3, oc3a, call[chan].num[CLIP], version, &call[chan].provider, &call[chan].sondernummer);
                           strcpy(call[chan].vnum[CLIP], vnum(6, CLIP));
 #ifdef Q931
                           if (q931dmp && (*call[chan].vnum[CLIP] != '?') && *call[chan].vorwahl[CLIP] && oc3 && ((oc3 & 0x70) != 0x40)) {
@@ -2173,7 +2293,7 @@ static void decode(int chan, register char *p, int type, int version)
                     call[chan].screening = (oc3a & 3);
 
                     strcpy(call[chan].onum[CALLING], s);
-                    buildnumber(s, oc3, oc3a, call[chan].num[CALLING], version, call[chan].provider);
+                    buildnumber(s, oc3, oc3a, call[chan].num[CALLING], version, &call[chan].provider, &call[chan].sondernummer);
 
                     strcpy(call[chan].vnum[CALLING], vnum(chan, CALLING));
 #ifdef Q931
@@ -2213,15 +2333,15 @@ static void decode(int chan, register char *p, int type, int version)
                       call[chan].oc3 = oc3;
 #ifdef Q931
                       if (q931dmp)
-                        buildnumber(s, oc3, -1, call[chan].num[CALLED], version, call[chan].provider);
+                        buildnumber(s, oc3, -1, call[chan].num[CALLED], version, &call[chan].provider, &call[chan].sondernummer);
 #endif
-                      if (dual > 1) {
-                        auto char sx[BUFSIZ];
 
-
-                      	buildnumber(call[chan].digits, oc3, -1, call[chan].num[CALLED], version, call[chan].provider);
+                      buildnumber(call[chan].digits, oc3, -1, call[chan].num[CALLED], version, &call[chan].provider, &call[chan].sondernummer);
 
                       	strcpy(call[chan].vnum[CALLED], vnum(chan, CALLED));
+
+                      if (dual > 1) {
+                        auto char sx[BUFSIZ];
 
                         if (*call[chan].vorwahl[CALLED])
                       	  sprintf(sx, "DIALING %s [%s] %s %s/%s, %s",
@@ -2238,7 +2358,7 @@ static void decode(int chan, register char *p, int type, int version)
 		    }
                     else {
                       strcpy(call[chan].onum[CALLED], s);
-                      buildnumber(s, oc3, -1, call[chan].num[CALLED], version, call[chan].provider);
+                      buildnumber(s, oc3, -1, call[chan].num[CALLED], version, &call[chan].provider, &call[chan].sondernummer);
 
                       strcpy(call[chan].vnum[CALLED], vnum(chan, CALLED));
 #ifdef Q931
@@ -2293,7 +2413,7 @@ static void decode(int chan, register char *p, int type, int version)
                     *pd = 0;
 
                     strcpy(call[chan].onum[REDIR], s);
-                    buildnumber(s, oc3, -1, call[chan].num[REDIR], version, call[chan].provider);
+                    buildnumber(s, oc3, -1, call[chan].num[REDIR], version, &call[chan].provider, &call[chan].sondernummer);
 
                     strcpy(call[chan].vnum[REDIR], vnum(chan, REDIR));
 #ifdef Q931
@@ -3036,7 +3156,7 @@ static void huptime(int chan, int bchan)
       call[chan].huptimeout = oldhuptimeout = cfg.onhtime;
 
       if (!oldhuptimeout) {
-        sprintf(sx, "HUPTIMEOUT %s is *disabled* - unchanged", known[c]->interface, oldhuptimeout);
+        sprintf(sx, "HUPTIMEOUT %s is *disabled* - unchanged", known[c]->interface);
         info(chan, PRT_SHOWNUMBERS, STATE_HUPTIMEOUT, sx);
       	return; 
       } /* if */
@@ -3045,27 +3165,27 @@ static void huptime(int chan, int bchan)
       
       sprintf(why, "%s, %s", z2s(known[c]->zone), t2tz(zeit));
 
-      if (!memcmp(call[chan].provider + 3, "19", 2)) { /* Mobilcom 60/60 Takt */
+      if (call[chan].provider == 19) { /* Mobilcom 60/60 Takt */
         newchargeint = 60;
       	sprintf(why, "via %s", Providername(call[chan].provider));
       }
-      else if (!memcmp(call[chan].provider + 3, "24", 2)) { /* TelePasswort 1s Takt */
+      else if (call[chan].provider == 24) { /* TelePasswort 1s Takt */
         newchargeint = 1;
       	sprintf(why, "via %s", Providername(call[chan].provider));
       }
-      else if (!memcmp(call[chan].provider + 3, "70", 2)) { /* Arcor 1s Takt */
+      else if (call[chan].provider == 70) { /* Arcor 1s Takt */
         newchargeint = 1;
       	sprintf(why, "via %s", Providername(call[chan].provider));
       }
-      else if (!memcmp(call[chan].provider + 3, "30", 2)) { /* TelDaFax 1s Takt */
+      else if (call[chan].provider == 30) { /* TelDaFax 1s Takt */
         newchargeint = 1;
       	sprintf(why, "via %s", Providername(call[chan].provider));
       }
-      else if (!memcmp(call[chan].provider + 3, "13", 2)) { /* Tele 2 1s Takt */
+      else if (call[chan].provider == 13) { /* Tele 2 1s Takt */
         newchargeint = 1;
       	sprintf(why, "via %s", Providername(call[chan].provider));
       }
-      else if (!memcmp(call[chan].provider + 3, "24", 2)) { /* TelePassport 1/1 Takt */
+      else if (call[chan].provider == 24) { /* TelePassport 1/1 Takt */
         newchargeint = 1;
       	sprintf(why, "via %s", Providername(call[chan].provider));
       } /* else */
@@ -3500,8 +3620,7 @@ void clearchan(int chan, int total)
     *call[chan].onum[0] =
     *call[chan].onum[1] =
     *call[chan].num[0] =
-    *call[chan].num[1] = 
-    *call[chan].provider = 0;
+    *call[chan].num[1] = 0;
 
   strcpy(call[chan].vnum[0], "?");
   strcpy(call[chan].vnum[1], "?");
@@ -3510,12 +3629,140 @@ void clearchan(int chan, int total)
   call[chan].bchan = -1;
 
   call[chan].cause = -1;
+  call[chan].loc = -1;
+  call[chan].aoce = -1;
+
+  call[chan].provider = -1;
+  call[chan].sondernummer = -1;
 } /* clearchan */
+
+
+static void how_expensive(int chan)
+{
+  register int    c, zone = -1, zone2 = -1, pro = -1, pro2 = -1;
+  auto	   int	  dur = (int)(call[chan].disconnect - call[chan].connect);
+  auto     double pay2 = -1.0, pay3, onesec, cheap;
+  auto     char   sx[BUFSIZ];
+  extern   double pay(time_t ts, int dauer, int tarifz, int pro);
+  auto 	   struct tm *tm;
+
+
+  if (!call[chan].dialin && (dur > 0) && *call[chan].num[1]) {
+
+    if (call[chan].sondernummer != -1) {
+      switch (SN[call[chan].sondernummer].tarif) {
+        case -1 : if (!strcmp(call[chan].num[1] + 3, "11833")) /* Sonderbedingung Auskunft Inland */
+                    dur -= 30;
+                  pay2 = SN[call[chan].sondernummer].grund1 * currency_factor;
+                  pay2 += (dur / SN[call[chan].sondernummer].takt1) * currency_factor;
+                  break;
+
+        case  0 : pay2 = 0.0;
+                  break;
+
+        case  1 : zone = 1;
+                  break;
+      } /* switch */
+    } /* if */
+
+    if (zone == -1) {
+      zone2 = area_diff(NULL, call[chan].num[1]);
+
+      if ((c = call[chan].confentry[OTHER]) > -1)
+        zone = known[c]->zone;
+
+      if ((zone == -1) && (zone2 > 0)) {
+        sprintf(sx, "WARNING: Assuming ZONE %d", zone2);
+        zone = zone2;
+        info(chan, PRT_SHOWHANGUP, STATE_HANGUP, sx);
+      } /* if */
+
+      if ((zone != -1) && (zone2 != -1) && (zone != zone2)) {
+        sprintf(sx, "WARNING: Wrong ZONE (%d), assuming %d", zone, zone2);
+        zone = zone2;
+
+        if (call[chan].sondernummer != -1)
+          info(chan, PRT_SHOWHANGUP, STATE_HANGUP, sx);
+      } /* if */
+    } /* if */
+
+    if (pay2 == -1.0) {
+      if (call[chan].aoce > 0) /* Gebuehrentakt AOC-E kam (Komfortanschluss, via Telekom */
+        call[chan].pay = call[chan].aoce * currency_factor;
+      else {
+        if (zone > 0) {
+
+          if (zone == 1)
+            pro2 = 33;           /* CityCall :: Telekom */
+          else if (zone == 2)
+            pro2 = 70;	   	 /* RegioCall :: Arcor */
+          else if (zone == 3) {
+    	    tm = localtime(&call[chan].connect);
+#if 0
+    	    if ((tm->tm_wday > 0) && (tm->tm_wday < 6))
+    	      wochentag;
+    	    else
+              wochenende;
+#endif
+            if ((tm->tm_hour > 20) || (tm->tm_hour < 5))
+              pro2 = 30;         /* zw. 21:00 Uhr und 5:00 Uhr TelDaFax */
+            else
+              pro2 = 19;	 /* Mobilcom */
+          } /* else */
+
+          switch (zone) { /* map "isdnlog" to "gebuehr.c" Zones */
+            case 2 : zone = 3;
+                     break;
+            case 3 : zone = 4;
+                     break;
+          } /* switch */
+
+          pro = call[chan].provider;
+
+          if (pro == -1)
+            pro = 33; /* Telekom */
+
+          if (pro)
+            call[chan].pay = pay(call[chan].connect, dur, zone, pro);
+
+          if (pro != pro2) {
+            pay3 = pay(call[chan].connect, dur, zone, pro2);
+
+            cheap = call[chan].pay - pay3;
+
+            if (cheap > 0) {
+              sprintf(sx, "WARNING: Provider %s DM %s cheaper!",
+                Providername(pro2),
+              	double2str(cheap, 5, 2, DEB));
+              	info(chan, PRT_SHOWHANGUP, STATE_HANGUP, sx);
+            } /* if */
+          } /* if */
+        } /* if */
+      } /* else */
+
+      if ((dur > 600) && (zone > 1) && ((call[chan].aoce > 0) || (pro == 33))) {
+        onesec = call[chan].pay / dur;
+        pay2 = (dur - 600) * onesec * 0.30;
+
+        sprintf(sx, "10plus DM %s - DM %s = DM %s",
+          double2str(call[chan].pay, 6, 2, DEB),
+          double2str(pay2, 6, 2, DEB),
+          double2str(call[chan].pay - pay2, 6, 2, DEB));
+
+        call[chan].pay -= pay2;
+
+        info(chan, PRT_SHOWHANGUP, STATE_HANGUP, sx);
+      } /* if */
+    }
+    else
+      call[chan].pay = pay2;
+  } /* if */
+} /* how_expensive */
 
 
 static void processctrl(int card, char *s)
 {
-  register char       *ps = s;
+  register char       *ps = s, *p;
   register int         i, c;
   register int         wegchan; /* fuer gemakelte */
   auto     int         dialin, type = 0, cref = -1, creflen, version;
@@ -3959,7 +4206,7 @@ static void processctrl(int card, char *s)
 #endif
       	   		         if (dual && *call[chan].digits) {
                       	       	   strcpy(call[chan].onum[CALLED], call[chan].digits);
-                      		   buildnumber(call[chan].digits, call[chan].oc3, -1, call[chan].num[CALLED], version, call[chan].provider);
+                                   buildnumber(call[chan].digits, call[chan].oc3, -1, call[chan].num[CALLED], version, &call[chan].provider, &call[chan].sondernummer);
 
                       		   strcpy(call[chan].vnum[CALLED], vnum(chan, CALLED));
       	   		       	 } /* if */
@@ -3985,6 +4232,17 @@ static void processctrl(int card, char *s)
           sprintf(sx, "CONNECT (%s)", call[chan].service);
           info(chan, PRT_SHOWCONNECT, STATE_CONNECT, sx);
         } /* else */
+
+        if (!call[chan].dialin) {
+          auto   int  l;
+          auto	 char s[BUFSIZ], sx[BUFSIZ];
+  	  extern int  taktlaenge(int provider, time_t connect, int zone, char *description);
+
+
+      	  l = taktlaenge(call[chan].provider, call[chan].connect, area_diff(NULL, call[chan].num[1]), s);
+          sprintf(sx, "NEXT CHARGEINT %d s (%s)", l, s);
+          info(chan, PRT_SHOWCONNECT, STATE_CONNECT, sx);
+        } /* if */
 
         if (sound)
           ringer(chan, RING_CONNECT);
@@ -4084,8 +4342,7 @@ doppelt:break;
           print_msg(PRT_DEBUG_BUGS, " DEBUG> %s: OOPS! DURATION=0\n", st + 4);
 
           if (!call[chan].dialin) {
-            print_msg(PRT_DEBUG_BUGS, " DEBUG> %s: OOPS! AOCE=0 (was %d)\n", st + 4, call[chan].aoc);
-            call[chan].aoc = 0;
+            print_msg(PRT_DEBUG_BUGS, " DEBUG> %s: OOPS! AOCE=0\n", st + 4);
           } /* if */
         } /* if kein connect */
 
@@ -4105,6 +4362,8 @@ doppelt:break;
             qmsg(TYPE_CAUSE, version, call[chan].cause));
         } /* if */
 
+        how_expensive(chan);
+
 #ifdef Q931
        	if (!q931dmp)
 #endif
@@ -4120,27 +4379,38 @@ doppelt:break;
             *s2 = 0;
 
           if (call[chan].dialin)
-            sprintf(sx, "HANGUP (%s %s)",
+            sprintf(sx, "HANGUP (%s%s)",
               double2clock((double)(call[chan].disconnect - call[chan].connect)), s2);
           else {
-            if (call[chan].aoc)
-              sprintf(sx, "HANGUP (%d EH %s %s %s %s)",
+            if (call[chan].aoce > 0)
+              sprintf(sx, "HANGUP (%d EH %s %s %s%s)",
                 call[chan].aoce,
                 currency,
                 double2str(call[chan].pay, 6, 2, DEB),
                 double2clock((double)(call[chan].disconnect - call[chan].connect)), s2);
+            else if (call[chan].pay)
+              sprintf(sx, "HANGUP (%s %s %s%s)",
+                currency,
+                double2str(call[chan].pay, 6, 2, DEB),
+                double2clock((double)(call[chan].disconnect - call[chan].connect)), s2);
             else
-              sprintf(sx, "HANGUP (%s %s) %s",
+              sprintf(sx, "HANGUP (%s%s) %s (%s)",
                 double2clock((double)(call[chan].disconnect - call[chan].connect)), s2,
-                qmsg(TYPE_CAUSE, version, call[chan].cause));
+                qmsg(TYPE_CAUSE, version, call[chan].cause),
+            	location(call[chan].loc));
           } /* else */
 
-          if (!memcmp(sx, "HANGUP (         )", 18))
+          if (!memcmp(sx, "HANGUP (        )", 17))
             sx[6] = 0;
 
           if ((call[chan].cause != 0x10) && (call[chan].cause != 0x1f)) { /* "Normal call clearing", "Normal, unspecified" */
             strcat(sx, " ");
             strcat(sx, qmsg(TYPE_CAUSE, version, call[chan].cause));
+            if ((p = location(call[chan].loc))) {
+              strcat(sx, " (");
+              strcat(sx, location(call[chan].loc));
+              strcat(sx, ")");
+            } /* if */
           } /* if */
 
           info(chan, PRT_SHOWHANGUP, STATE_HANGUP, sx);
@@ -4153,7 +4423,7 @@ doppelt:break;
               double2str(known[c]->charge, 6, 2, DEB),
               currency,
               double2str((chargemax - known[c]->charge), 6, 2, DEB));
-            info(chan, PRT_SHOWHANGUP, STATE_HANGUP, sx);
+            info(chan, PRT_SHOWCHARGEMAX, STATE_HANGUP, sx);
 
             if (connectmax != 0.0) {
               if (connectmaxmode == 1)
@@ -4165,7 +4435,7 @@ doppelt:break;
                 double2clock(known[c]->sonline + known[c]->online),
                 double2clock(known[c]->online),
                 double2clock(connectmax - known[c]->online));
-              info(chan, PRT_SHOWHANGUP, STATE_HANGUP, sx);
+              info(chan, PRT_SHOWCHARGEMAX, STATE_HANGUP, sx);
             } /* if */
 
             if (bytemax != 0.0) {
@@ -4195,7 +4465,7 @@ doppelt:break;
                 double2byte((double)(known[c]->sbytes + known[c]->bytes)),
                 double2byte((double)(known[c]->bytes)),
                 double2byte((double)(bytemax - known[c]->bytes)));
-              info(chan, PRT_SHOWHANGUP, STATE_HANGUP, sx);
+              info(chan, PRT_SHOWCHARGEMAX, STATE_HANGUP, sx);
             } /* if */
           } /* if */
 

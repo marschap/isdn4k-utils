@@ -1,4 +1,4 @@
-/* $Id: isdnlog.h,v 1.7 1997/05/25 19:41:02 luethje Exp $
+/* $Id: isdnlog.h,v 1.8 1998/06/07 21:08:34 akool Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,41 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnlog.h,v $
+ * Revision 1.8  1998/06/07 21:08:34  akool
+ * - Accounting for the following new providers implemented:
+ *     o.tel.o, Tele2, EWE TEL, Debitel, Mobilcom, Isis, NetCologne,
+ *     TelePassport, Citykom Muenster, TelDaFax, Telekom, Hutchison Telekom,
+ *     tesion)), HanseNet, KomTel, ACC, Talkline, Esprit, Interoute, Arcor,
+ *     WESTCom, WorldCom, Viag Interkom
+ *
+ *     Code shamelessly stolen from G.Glendown's (garry@insider.regio.net)
+ *     program http://www.insider.org/tarif/gebuehr.c
+ *
+ * - Telekom's 10plus implemented
+ *
+ * - Berechnung der Gebuehrenzone implementiert
+ *   (CityCall, RegioCall, GermanCall, GlobalCall)
+ *   The entry "ZONE" is not needed anymore in the config-files
+ *
+ *   you need the file
+ *     http://swt.wi-inf.uni-essen.de/~omatthes/tgeb/vorwahl2.exe
+ *   and the new entry
+ *     [GLOBAL]
+ *       AREADIFF = /usr/lib/isdn/vorwahl.dat
+ *   for that feature.
+ *
+ *   Many thanks to Olaf Matthes (olaf.matthes@uni-essen.de) for the
+ *   Data-File and Harald Milz for his first Perl-Implementation!
+ *
+ * - Accounting for all "Sonderrufnummern" (0010 .. 11834) implemented
+ *
+ *   You must install the file
+ *     "isdn4k-utils/isdnlog/sonderrufnummern.dat.bz2"
+ *   as "/usr/lib/isdn/sonderrufnummern.dat"
+ *   for that feature.
+ *
+ * ATTENTION: This is *NO* production-code! Please test it carefully!
+ *
  * Revision 1.7  1997/05/25 19:41:02  luethje
  * isdnlog:  close all files and open again after kill -HUP
  * isdnrep:  support vbox version 2.0
@@ -129,16 +164,17 @@
 #define	PRT_SHOWIMON	       0x800
 #define PRT_SHOWBEARER	      0x1000
 #define	PRT_SHOWTICKS	      0x2000
-#define PRT_DEBUG_GENERAL     0x4000
-#define PRT_DEBUG_DIAG 	      0x8000
-#define PRT_DEBUG_INFO 	     0x10000
-#define PRT_DEBUG_EXEC 	     0x20000
-#define PRT_DEBUG_BUGS 	     0x40000
-#define PRT_DEBUG_DECODE     0x80000
-#define PRT_DEBUG_RING	    0x100000
+#define PRT_SHOWCHARGEMAX     0x4000
+#define PRT_DEBUG_GENERAL     0x8000
+#define PRT_DEBUG_DIAG       0x10000
+#define PRT_DEBUG_INFO       0x20000
+#define PRT_DEBUG_EXEC       0x40000
+#define PRT_DEBUG_BUGS       0x80000
+#define PRT_DEBUG_DECODE    0x100000
+#define PRT_DEBUG_RING      0x200000
 #define PRT_DEBUG_CS	    0x200000
-#define PRT_DEBUG_PROT	    0x400000
-#define PRT_NOTHING   	    0x800000
+#define PRT_DEBUG_PROT      0x800000
+#define PRT_NOTHING        0x1000000
 
 #define IS_DEBUG(VALUE) (VALUE >= PRT_DEBUG_GENERAL && VALUE < PRT_NOTHING)
 
@@ -283,6 +319,8 @@ _EXTERN void set_time_str(void);
 _EXTERN void now(void);
 _EXTERN void logger(int chan);
 _EXTERN int  ringer(int chan, int event);
+_EXTERN void initSondernummern(void);
+_EXTERN int  is_sondernummer(char *num);
 
 #undef _EXTERN
 

@@ -1,0 +1,115 @@
+--- orig/gebuehr.c	Fri May  8 11:24:39 1998
++++ ./gebuehr.c	Sat May 16 09:17:04 1998
+@@ -1,3 +1,11 @@
++#define ISDNLOG 1
++#ifdef ISDNLOG
++/*
++    1. "http://www.insider.org/tarif/gebuehr.c" saugen
++    2. patch -s -p0 < gebuehr.patch
++*/
++#endif
++
+ /*
+   Gebührenberechnung - Berechnung der jeweils aktuellen Gebühren für Telefon-
+                        anrufe über die verschiedenen auf dem deutschen Markt
+@@ -132,7 +140,12 @@
+ 	unsigned long tarber;		/* Bit-Feld Tarifbereiche */
+ };
+ 
++
++#ifdef ISDNLOG
++static struct ttable tt[] = {
++#else
+ struct ttable tt[] = {
++#endif
+ /* Arcor */
+ 	0,	0,	BFNH|BFR5,
+ 	0,	1,	BFR2|BFFN,
+@@ -553,13 +566,16 @@
+ {	18,	BFW4|BWA,		100,	2340,	0,	0,23},*/
+ {	-1,	0,			0,	0,	0,0}};
+ 
++#ifndef ISDNLOG
+ int tarifz;
+ unsigned char wt; 
+ char tmp[10];
+ int dauer;
++#endif
+ 
+ unsigned long ftage[] = {19980410,19980413,19980501,19980521, 19980601,0};
+ 
++#ifndef ISDNLOG
+ main(argc,argv)
+ int argc;
+ char *argv[];
+@@ -573,15 +589,28 @@
+ 	    dauer=atoi(argv[2]);
+ 	UpdateList();
+ }
++#endif
+ 
++#ifdef ISDNLOG
++double pay(time_t ts, int dauer, int tarifz, int pro)
++#else
+ void UpdateList()
++#endif
+ {
+ long  t,z,g,r,s,ft;
+ unsigned char tarnum;
+ struct tm *dt;
++#ifndef ISDNLOG
+ time_t ts;
++#endif
+ unsigned long tarbit;
++#ifndef ISDNLOG
+     ts=time(NULL);
++#endif
++#ifdef ISDNLOG
++unsigned char wt;
++int      e = -1;
++#endif
+ /*    ts-=3600; */
+     dt=localtime(&ts);
+     ft=(1900+dt->tm_year)*10000+(1+dt->tm_mon)*100+dt->tm_mday;
+@@ -589,15 +618,24 @@
+     else wt=BWE;
+     t=0;
+     while (ftage[t]) {if (ftage[t]==ft) wt=BWE; t++;}
++#ifndef ISDNLOG
+ 	printf("%d\n",wt);
++#endif
+     for (t=0;t<NUMPROV;t++) prov[t].flag&=0x7f,prov[t].minpr=0;
+     tarbit=1;
+     t=tarifz;
+     while (t>1) tarbit<<=1,t--;
++#ifndef ISDNLOG
+     printf("Tarifbits: %lx\n",tarbit);
++#endif
+     t=0;
+     while (tt[t].prov>=0) {
++#ifdef ISDNLOG
++        if (!(prov[tt[t].prov].flag&0x80) && (prov[tt[t].prov].prefix == pro)) {
++          e = tt[t].prov;
++#else
+ 	if (!(prov[tt[t].prov].flag&0x80)) {
++#endif
+ 	    if (tt[t].tarber&tarbit) {
+ 	    	tarnum=tt[t].tar;
+ 		z=t;
+@@ -635,6 +673,7 @@
+ 	}
+ 	t++;
+     }
++#ifndef ISDNLOG
+     printf("Tarife für %d:%02d Minuten in Tarifzone %s um %d:%02d\n\n",dauer/60, dauer%60,tarnam[tarifz-1],dt->tm_hour, dt->tm_min);
+     for (t=0;t<NUMPROV;t++) srt[t]=t;
+     for (t=0;t<NUMPROV-1;t++) {
+@@ -654,5 +693,8 @@
+ 		prov[srt[t]].minpr%100);
+ 	}
+     }
++#else
++  return((e == -1) ? -1.0 : (prov[e].minpr / 100.0));
++#endif
+ }
+ 

@@ -1,8 +1,8 @@
-/* $Id: functions.c,v 1.10 1998/03/29 23:18:03 luethje Exp $
+/* $Id: functions.c,v 1.11 1998/06/07 21:08:26 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
- * Copyright 1995, 1998 by Andreas Kool (akool@Kool.f.EUnet.de)
+ * Copyright 1995, 1998 by Andreas Kool (akool@Kool.f.UUnet.de)
  *                     and Stefan Luethje (luethje@sl-gw.lake.de)
  *
  * This program is free software; you can redistribute it and/or modify
@@ -19,6 +19,41 @@
  * along with this program; if not, write to the Free Software
  *
  * $Log: functions.c,v $
+ * Revision 1.11  1998/06/07 21:08:26  akool
+ * - Accounting for the following new providers implemented:
+ *     o.tel.o, Tele2, EWE TEL, Debitel, Mobilcom, Isis, NetCologne,
+ *     TelePassport, Citykom Muenster, TelDaFax, Telekom, Hutchison Telekom,
+ *     tesion)), HanseNet, KomTel, ACC, Talkline, Esprit, Interoute, Arcor,
+ *     WESTCom, WorldCom, Viag Interkom
+ *
+ *     Code shamelessly stolen from G.Glendown's (garry@insider.regio.net)
+ *     program http://www.insider.org/tarif/gebuehr.c
+ *
+ * - Telekom's 10plus implemented
+ *
+ * - Berechnung der Gebuehrenzone implementiert
+ *   (CityCall, RegioCall, GermanCall, GlobalCall)
+ *   The entry "ZONE" is not needed anymore in the config-files
+ *
+ *   you need the file
+ *     http://swt.wi-inf.uni-essen.de/~omatthes/tgeb/vorwahl2.exe
+ *   and the new entry
+ *     [GLOBAL]
+ *       AREADIFF = /usr/lib/isdn/vorwahl.dat
+ *   for that feature.
+ *
+ *   Many thanks to Olaf Matthes (olaf.matthes@uni-essen.de) for the
+ *   Data-File and Harald Milz for his first Perl-Implementation!
+ *
+ * - Accounting for all "Sonderrufnummern" (0010 .. 11834) implemented
+ *
+ *   You must install the file
+ *     "isdn4k-utils/isdnlog/sonderrufnummern.dat.bz2"
+ *   as "/usr/lib/isdn/sonderrufnummern.dat"
+ *   for that feature.
+ *
+ * ATTENTION: This is *NO* production-code! Please test it carefully!
+ *
  * Revision 1.10  1998/03/29 23:18:03  luethje
  * mySQL-Patch of Sascha Matzke
  *
@@ -193,13 +228,6 @@ void logger(int chan)
               >0 -> #of Units
   */
 
-  if (!call[chan].aoc) {
-    if (!call[chan].dialin)
-      call[chan].aoce = -1;
-
-    call[chan].pay = 0.0;
-  } /* if */
-
 	tries = 0;
 
 	if (access(logfile,W_OK) && errno == ENOENT)
@@ -222,7 +250,7 @@ void logger(int chan)
 			print_msg(PRT_ERR, "Can not open file `%s': %s!\n", logfile, strerror(errno));
 		else
 		{
-			fprintf(flog, "%s|%-16s|%-16s|%5d|%10d|%10d|%5d|%c|%3d|%10ld|%10ld|%s|%d|%d|%g|%s|%8.2f|%-5s|\n",
+			fprintf(flog, "%s|%-16s|%-16s|%5d|%10d|%10d|%5d|%c|%3d|%10ld|%10ld|%s|%d|%d|%g|%s|%8.2f|%02d|\n",
 			              s + 4, call[chan].num[CALLING], call[chan].num[CALLED],
 			              (int)(call[chan].disconnect - call[chan].connect),
 			              (int)call[chan].duration, (int)call[chan].connect,
@@ -397,3 +425,113 @@ int ringer(int chan, int event)
 } /* ringer */
 
 /*****************************************************************************/
+
+void initSondernummern()
+{
+  register char  *p1, *p2, *p3;
+  register int    tarif;
+  auto 	   FILE  *f = fopen("/usr/lib/isdn/sonderrufnummern.dat", "r");
+  auto	   char   s[BUFSIZ], msn[128], sinfo[256], linfo[256];
+  auto	   double grund1, grund2, takt1, takt2;
+
+
+  if (f != (FILE *)NULL) {
+    while ((p1 = fgets(s, BUFSIZ, f))) {
+      if (*p1 != '#') {
+        if ((p2 = strchr(p1, '|'))) {
+          *p2 = 0;
+
+          p3 = p2 - 1;
+          while (*p3 == ' ')
+            *p3-- = 0;
+
+          strcpy(msn, p1);
+          p1 = p2 + 1;
+          if ((p2 = strchr(p1, '|'))) {
+            *p2 = 0;
+
+            if (!strcmp(p1, "City"))
+              tarif = 1;
+            else if (!strcmp(p1, "free"))
+              tarif = 0;
+            else
+              tarif = -1;
+
+            p1 = p2 + 1;
+            if ((p2 = strchr(p1, '|'))) {
+              *p2 = 0;
+              grund1 = atof(p1);
+              p1 = p2 + 1;
+              if ((p2 = strchr(p1, '|'))) {
+                *p2 = 0;
+                grund2 = atof(p1);
+                p1 = p2 + 1;
+                if ((p2 = strchr(p1, '|'))) {
+                  *p2 = 0;
+                  takt1 = atof(p1);
+                  p1 = p2 + 1;
+                  if ((p2 = strchr(p1, '|'))) {
+                    *p2 = 0;
+              	    takt2 = atof(p1);
+              	    p1 = p2 + 1;
+              	    if ((p2 = strchr(p1, '|'))) {
+                      *p2 = 0;
+
+        	      p3 = p2 - 1;
+        	      while (*p3 == ' ')
+          	        *p3-- = 0;
+
+        	      while (*p1 == ' ')
+                        p1++;
+
+        	      strcpy(sinfo, p1);
+                      p1 = p2 + 1;
+                      if ((p2 = strchr(p1, '\n'))) {
+                        *p2 = 0;
+
+        	        p3 = p2 - 1;
+        	        while (*p3 == ' ')
+          	          *p3-- = 0;
+
+        	        while (*p1 == ' ')
+                          p1++;
+
+                        strcpy(linfo, p1);
+
+		        nSN++;
+                        SN = realloc(SN, sizeof(SonderNummern) * nSN);
+                        SN[nSN - 1].msn = strdup(msn);
+                        SN[nSN - 1].sinfo = strdup(sinfo);
+        	        SN[nSN - 1].tarif = tarif;
+                        SN[nSN - 1].grund1 = grund1;
+                        SN[nSN - 1].grund2 = grund2;
+                        SN[nSN - 1].takt1  = takt1;
+                        SN[nSN - 1].takt2  = takt2;
+                      } /* if */
+              	    } /* if */
+                  } /* if */
+                } /* if */
+              } /* if */
+            } /* if */
+          } /* if */
+        } /* if */
+      } /* if */
+    } /* while */
+
+    fclose(f);
+  } /* if */
+} /* initSondernummern */
+
+
+int is_sondernummer(char *num)
+{
+  register int i;
+
+
+  if (*num)
+    for (i = 0; i < nSN; i++)
+      if (!strcmp(num, SN[i].msn))
+        return(i);
+
+  return(-1);
+} /* sondernummer */

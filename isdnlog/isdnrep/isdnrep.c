@@ -1,8 +1,8 @@
-/* $Id: isdnrep.c,v 1.38 1998/05/20 12:23:57 paul Exp $
+/* $Id: isdnrep.c,v 1.39 1998/06/07 21:09:43 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
- * Copyright 1995, 1998 by Andreas Kool (akool@Kool.f.EUnet.de)
+ * Copyright 1995, 1998 by Andreas Kool (akool@Kool.f.UUnet.de)
  *                     and Stefan Luethje (luethje@sl-gw.lake.de)
  *
  * This program is free software; you can redistribute it and/or modify
@@ -24,6 +24,41 @@
  *
  *
  * $Log: isdnrep.c,v $
+ * Revision 1.39  1998/06/07 21:09:43  akool
+ * - Accounting for the following new providers implemented:
+ *     o.tel.o, Tele2, EWE TEL, Debitel, Mobilcom, Isis, NetCologne,
+ *     TelePassport, Citykom Muenster, TelDaFax, Telekom, Hutchison Telekom,
+ *     tesion)), HanseNet, KomTel, ACC, Talkline, Esprit, Interoute, Arcor,
+ *     WESTCom, WorldCom, Viag Interkom
+ *
+ *     Code shamelessly stolen from G.Glendown's (garry@insider.regio.net)
+ *     program http://www.insider.org/tarif/gebuehr.c
+ *
+ * - Telekom's 10plus implemented
+ *
+ * - Berechnung der Gebuehrenzone implementiert
+ *   (CityCall, RegioCall, GermanCall, GlobalCall)
+ *   The entry "ZONE" is not needed anymore in the config-files
+ *
+ *   you need the file
+ *     http://swt.wi-inf.uni-essen.de/~omatthes/tgeb/vorwahl2.exe
+ *   and the new entry
+ *     [GLOBAL]
+ *       AREADIFF = /usr/lib/isdn/vorwahl.dat
+ *   for that feature.
+ *
+ *   Many thanks to Olaf Matthes (olaf.matthes@uni-essen.de) for the
+ *   Data-File and Harald Milz for his first Perl-Implementation!
+ *
+ * - Accounting for all "Sonderrufnummern" (0010 .. 11834) implemented
+ *
+ *   You must install the file
+ *     "isdn4k-utils/isdnlog/sonderrufnummern.dat.bz2"
+ *   as "/usr/lib/isdn/sonderrufnummern.dat"
+ *   for that feature.
+ *
+ * ATTENTION: This is *NO* production-code! Please test it carefully!
+ *
  * Revision 1.38  1998/05/20 12:23:57  paul
  * Duration divide by 100 replaced by divide by HZ (HZ is 1024 on Alpha).
  * Y2K compliancy hopefully more robust.
@@ -467,6 +502,16 @@ static sum_calls all_com_sum;
   
 /*****************************************************************************/
 
+static double msn_sum[11];
+static int    usage_sum[11];
+static double dur_sum[11];
+
+static int    usage_provider[100];
+static double duration_provider[100];
+static double pay_provider[100];
+
+/*****************************************************************************/
+
 void set_print_fct_for_isdnrep(int (*new_print_msg)(int Level, const char *, ...))
 {
   print_msg = new_print_msg;
@@ -817,12 +862,29 @@ int read_logfile(char *myname)
 
 /*****************************************************************************/
 
+int is_sondernummer(char *num)
+{
+  register int i;
+
+
+  if (*num)
+    for (i = 0; i < nSN; i++)
+      if (!strcmp(num, SN[i].msn))
+        return(i);
+
+  return(-1);
+} /* sondernummer */
+
+/*****************************************************************************/
+
 static int print_bottom(double unit, char *start, char *stop)
 {
   auto     char       string[BUFSIZ];
-  register int	      i, j, k;
+  register int	      i, j, k, firsttime = 1;
   register char      *p = NULL;
   sum_calls           tmp_sum;
+  auto     double     s = 0.0, s2 = 0.0;
+  auto	   int	      s1 = 0;
 
 
 	if (timearea) {
@@ -879,7 +941,7 @@ static int print_bottom(double unit, char *start, char *stop)
 			print_line2(F_BODY_HEADERL,"%s",string);
 			strich(3);
 
-			for (i = mymsns; i < knowns; i++) {
+			for (i = 0 /* mymsns */; i < knowns; i++) {
 				if (known[i]->usage[j]) {
 					print_line3(NULL,
 					          /*!numbers?*/known[i]->who/*:known[i]->num*/,
@@ -907,10 +969,11 @@ static int print_bottom(double unit, char *start, char *stop)
 			p = "";
 
 			switch (i) {
-				case 1 : p = "City";       break;
-				case 2 : p = "Region 50";  break;
-				case 3 : p = "Region 200"; break;
-				case 4 : p = "Fernzone";   break;
+				case 1 : p = "CityCall";   break;
+				case 2 : p = "RegioCall";  break;
+				case 3 :
+				case 4 : p = "GermanCall"; break;
+			       default : p = "GlobalCall"; break;
 			} /* switch */
 
 			print_line3(NULL,
@@ -918,7 +981,7 @@ static int print_bottom(double unit, char *start, char *stop)
 			          print_currency(zones_dm[i],0));
 		} /* if */
 
-	if (known[knowns-1]->eh)
+	if (known[knowns-1]->eh > 0)
 	{
 		print_line3(NULL,
 		          'x', S_UNKNOWN,
@@ -932,6 +995,19 @@ static int print_bottom(double unit, char *start, char *stop)
 
 	print_line2(F_BODY_BOTTOM2,"");
 
+	print_msg(PRT_NORMAL,"\n");
+
+	get_format("Provider 010%02d %-15.15s %4d call(s) %10.10s  %s");
+
+	for (i = 1; i < 100; i++) {
+	  if (usage_provider[i]) {
+	    print_line3(NULL, i, Providername(i),
+	      usage_provider[i],
+	      double2clock(duration_provider[i]),
+	      print_currency(pay_provider[i], 0));
+          } /* if */
+        } /* for */
+
 	if (seeunknowns && unknowns) {
 		print_msg(PRT_NORMAL,"\n\nUnknown caller(s)\n");
 		strich(3);
@@ -940,7 +1016,9 @@ static int print_bottom(double unit, char *start, char *stop)
 #if 0
 			print_msg(PRT_NORMAL,"%s %-14s ", unknown[i].called ? "called by" : "  calling", unknown[i].num);
 #else
-                  if (unknown[i].cause != 1) { /* Unallocated (unassigned) number */
+                  if ((unknown[i].cause != 1) &&  /* Unallocated (unassigned) number */
+                      (unknown[i].cause != 3) &&  /* No route to destination */
+                      (unknown[i].cause != 28)) { /* Invalid number format (address incomplete) */
                         auto     char *p;
                         auto     int   l;
                        register int   flag = C_NO_WARN | C_NO_EXPAND;
@@ -950,11 +1028,18 @@ static int print_bottom(double unit, char *start, char *stop)
 
                        print_msg(PRT_NORMAL,"%s ", unknown[i].called ? "Called by" : "  Calling");
 
+		       if (is_sondernummer(unknown[i].num) > 0)
+                         ;
+		       else
                        if ((p = get_areacode(unknown[i].num, &l, flag)) != 0) {
                          if (l > 1) {
                            strncpy(areacode, unknown[i].num, 2 + prefix);
+                           if ((l - (2 + prefix)) > 0) {
                            strncpy(vorwahl,  unknown[i].num + 2 + prefix, l - (2 + prefix));
                             vorwahl[l - (2 + prefix)] = 0;
+                           }
+                           else
+                             *vorwahl = 0;
                            strcpy(rufnummer, unknown[i].num + l);
 
                            strcpy(iam, num2nam(unknown[i].mynum, unknown[i].si1));
@@ -991,6 +1076,34 @@ static int print_bottom(double unit, char *start, char *stop)
 		} /* for */
 	} /* if */
 
+#if 1 /* AK:05-May-98 */
+        for (k = 0; k <= mymsns; k++) {
+          if (msn_sum[k]) {
+
+            if (firsttime) {
+              firsttime = 0;
+              print_msg(PRT_NORMAL,"\n");
+	      print_msg(PRT_NORMAL,"\n");
+            } /* if */
+
+            print_msg(PRT_NORMAL, "%s\t\t%s %6d call(s)  %s\n",
+              ((k == mymsns) ? "UNKNOWN" : known[k]->who),
+              print_currency(msn_sum[k], 0),
+              usage_sum[k],
+              double2clock(dur_sum[k]));
+
+            s += msn_sum[k];
+            s1 += usage_sum[k];
+            s2 += dur_sum[k];
+          } /* if */
+        } /* for */
+
+        if (s) {
+          print_msg(PRT_NORMAL, "--------------------\n");
+          print_msg(PRT_NORMAL, "%s\t\t%s %6d call(s)  %s\n",
+            "TOTAL", print_currency(s, 0), s1, double2clock(s2));
+        } /* if */
+#endif
 	return 0;
 }
 
@@ -1300,7 +1413,10 @@ static int print_line(int status, one_call *cur_call, int computed, char *overla
 				          		colsize[i] = append_string(&string,*fmtstring,print_currency(cur_call->dm,computed));
 				          }
 				          else
-				          if (status == F_BODY_LINE && cur_call->cause != -1)
+				          if ((status == F_BODY_LINE) &&
+				              (cur_call->cause != -1) &&
+				              (cur_call->cause != 0x10) &&  /* Normal call clearing */
+                                              (cur_call->cause != 0x1f))    /* Normal, unspecified */
 				          	colsize[i] = append_string(&string,*fmtstring,qmsg(TYPE_CAUSE, VERSION_EDSS1, cur_call->cause));
 				          else
 				          	colsize[i] = append_string(&string,NULL,"            ");
@@ -1332,7 +1448,7 @@ static int print_line(int status, one_call *cur_call, int computed, char *overla
 				          {
 				          	if (!numbers)
 				          	{
-				          		colsize[i] = append_string(&string,*fmtstring, cur_call->provider);
+				          		colsize[i] = append_string(&string,*fmtstring, (cur_call->provider > 0 ? Providername(cur_call->provider) : ""));
 				          		break;
 				          	}
 				          }
@@ -1786,22 +1902,99 @@ static prt_fmt** get_format(const char *format)
 
 /*****************************************************************************/
 
+static void how_expensive(one_call *cur_call)
+{
+  register int    zone = -1, zone2 = -1, pro = -1, dur = (int)cur_call->duration;
+  auto	   double pay2, onesec;
+  extern   double pay(time_t ts, int dauer, int tarifz, int pro);
+
+
+  if (!cur_call->dir && (dur > 0) && !cur_call->dm) {
+
+    if (*cur_call->num[1] && memcmp(cur_call->num[1] + 3, "19", 2))
+      zone2 = area_diff(NULL, cur_call->num[1]);
+
+#if 0
+    if ((c = call[chan].confentry[OTHER]) > -1)
+      zone = known[c]->zone;
+
+    if ((zone == -1) && (zone2 > 0)) {
+      sprintf(sx, "WARNING: Assuming ZONE %d", zone2);
+      zone = zone2;
+      info(chan, PRT_SHOWHANGUP, STATE_HANGUP, sx);
+    } /* if */
+
+    if ((zone != -1) && (zone2 != -1) && (zone != zone2)) {
+      sprintf(sx, "WARNING: Wrong ZONE (%d), assuming %d", zone, zone2);
+      zone = zone2;
+
+      info(chan, PRT_SHOWHANGUP, STATE_HANGUP, sx);
+    } /* if */
+#else
+    zone = zone2;
+#endif
+
+    if (cur_call->eh > 0) /* Gebuehrentakt AOC-E kam (Komfortanschluss, via Telekom */
+      cur_call->dm = cur_call->eh * currency_factor;
+    else {
+      if (zone > 0) {
+        switch (zone) { /* map "isdnlog" to "gebuehr.c" Zones */
+          case 2 : zone = 3;
+                   break;
+          case 3 : zone = 4;
+                   break;
+        } /* switch */
+
+        pro = cur_call->provider;
+
+        if (pro == -1)
+          pro = 33; /* Telekom */
+
+        if (pro) {
+          cur_call->dm = pay(cur_call->t, (int)cur_call->duration, zone, pro);
+
+          if (!cur_call->dm) { /* ooops - not supported by that provider ... retry with Telekom */
+            cur_call->dm = pay(cur_call->t, (int)cur_call->duration, zone, pro = 33);
+            cur_call->provider = 0;
+          } /* if */
+        } /* if */
+      } /* if */
+    } /* else */
+
+    if ((dur > 600) && (zone > 1) && ((cur_call->eh > 0) || (pro == 33))) {
+      onesec = cur_call->dm / dur;
+      pay2 = (dur - 600) * onesec * 0.30;
+      cur_call->dm -= pay2;
+    } /* if */
+
+  } /* if */
+
+} /* how_expensive */
+
+/*****************************************************************************/
+
 static int print_entries(one_call *cur_call, double unit, int *nx, char *myname)
 {
+        register int i, pro, tarifz;
 	auto time_t  t1, t2;
 	auto double  takt;
   auto int     computed = 0, go, zone = 1, zeit = -1;
+	extern double pay(time_t ts, int dauer, int tarifz, int pro);
 
 
-	if (cur_call->pay && !cur_call->eh)
+#if 0
+	if (cur_call->dm && !(cur_call->eh > 0))
 	/* Falls Betrag vorhanden und Einheiten nicht, Einheiten berechnen */
-		cur_call->eh = cur_call->pay/unit;
+		cur_call->eh = cur_call->dm/unit;
 	else if (cur_call->currency_factor                          &&
 		       cur_call->currency_factor != unit && cur_call->eh>0  )
 		/* Falls Einheiten sich auf anderen Einheiten-Faktor beziehen, Einheiten korrigieren */
 		cur_call->eh /= unit / cur_call->currency_factor;
+#endif
 
+        how_expensive(cur_call);
 
+#if 0
 #if 0
 	if (compute && !currency_factor &&
 	    !cur_call->dir && ((cur_call->eh == -1) ||
@@ -1810,7 +2003,35 @@ static int print_entries(one_call *cur_call, double unit, int *nx, char *myname)
 	go = 0;
 
 	if ((cur_call->eh == -1) && !cur_call->dir) { /* Rauswahl, Gebuehr unbekannt */
-		if (nx[1] == -1) {       		      	/* Gegner unbekannt! */
+
+                pro = cur_call->provider;
+                if (pro == -1)
+                  pro = 33; /* Telekom */
+
+                if (pro && (nx[1] != -1)) {
+		  if (!cur_call->dm) {
+
+                    tarifz = known[nx[CALLED]]->zone;
+
+      		    switch (tarifz) { /* map "isdnlog" to "gebuehr.c" Zones */
+        	      case 2 : tarifz = 3;
+                      	       break;
+        	      case 3 : tarifz = 4;
+                      	       break;
+      		    } /* switch */
+
+	            unit = cur_call->dm = cur_call->dm =
+	              pay(cur_call->t, (int)cur_call->duration, tarifz, pro);
+
+                    cur_call->eh = 0;
+		  } /* if */
+		  usage_provider[pro]++;
+		  duration_provider[pro] += cur_call->duration;
+		  pay_provider[pro] += cur_call->dm;
+		  computed = 1;
+                  go = 0;
+                }
+		else if (nx[1] == -1) {       		      	/* Gegner unbekannt! */
 			if (compute) {
 				zone = compute;                       /* in "-c x" Zone vermuten */
 				go = 1;
@@ -1825,6 +2046,19 @@ static int print_entries(one_call *cur_call, double unit, int *nx, char *myname)
 			if (!(zone = known[nx[1]]->zone))
 				go = cur_call->eh = 0;
 		} /* else */
+        }
+        else if (!cur_call->dir) { /* Rauswahl, evtl. != Telebums */
+          pro = cur_call->provider;
+
+          if (pro == -1)
+            pro = 33; /* Telekom */
+
+          computed = 1;
+          go = 0;
+
+          usage_provider[pro]++;
+	  duration_provider[pro] += cur_call->duration;
+	  pay_provider[pro] += cur_call->dm;
 	} /* if */
 
 	if (go) {
@@ -1851,6 +2085,15 @@ static int print_entries(one_call *cur_call, double unit, int *nx, char *myname)
 
 		} /* while */
 	} /* if */
+#endif
+        pro = cur_call->provider;
+
+	if (pro == -1)
+          pro = 33; /* Telekom */
+
+        usage_provider[pro]++;
+	duration_provider[pro] += cur_call->duration;
+	pay_provider[pro] += cur_call->dm;
 
 	if (cur_call->duration || (cur_call->eh > 0))
 	{
@@ -1900,6 +2143,26 @@ static int print_entries(one_call *cur_call, double unit, int *nx, char *myname)
 					zones_dur[known[nx[CALLED]]->zone] += cur_call->duration;
 
 				zones_usage[known[nx[CALLED]]->zone]++;
+
+#if 1 /* AK:05-May-98 */
+      	 	      		if (cur_call->dir == DIALOUT) {
+                                  for (i = 0; i < mymsns; i++) {
+                                    if (!n_match(known[i]->num, cur_call->num[0], cur_call->version) && (known[i]->si == cur_call->si)) {
+				      msn_sum[i] += cur_call->dm;
+                                      usage_sum[i]++;
+                                      dur_sum[i] += cur_call->duration;
+                                      break;
+                                    } /* if */
+                                  } /* for */
+
+                                  if (i == mymsns) {
+                                    msn_sum[10] += cur_call->dm;
+                                    usage_sum[10]++;
+                                    dur_sum[10] += cur_call->duration;
+                                  } /* if */
+
+      	 	      		} /* if */
+#endif
 			} /* if */
 		} /* else */
 	}
@@ -2141,12 +2404,11 @@ static int set_caller_infos(one_call *cur_call, char *string, time_t from)
 	cur_call->ibytes = cur_call->obytes = 0L;
 	cur_call->dm    = 0.0;
 	cur_call->version[0] = '\0';
-	cur_call->pay = 0.0;
 	cur_call->si = cur_call->si1 = 0;
 	cur_call->dir = DIALOUT;
 	cur_call->who[0][0] = '\0';
 	cur_call->who[1][0] = '\0';
-	*cur_call->provider = 0;
+	cur_call->provider = 0;
 
 	for (i = 1; array[i] != NULL; i++)
 	{
@@ -2160,17 +2422,17 @@ static int set_caller_infos(one_call *cur_call, char *string, time_t from)
 
                               	  /* Korrektur der falschen Eintraege aus den ersten Januar-Tagen 1998 */
                               	  if (!memcmp(cur_call->num[1], "+491019", 7)) {
-                                    strcpy(cur_call->provider, "01019");
+                                    cur_call->provider = 19;
                                     memmove(cur_call->num[1] + 3, cur_call->num[1] + 8, strlen(cur_call->num[1]) - 7);
                               	    adapt++; 
 				  }
 				  else if (!memcmp(cur_call->num[1], "+491033", 7)) {
-                                    strcpy(cur_call->provider, "01033");
+                                    cur_call->provider = 33;
                                     memmove(cur_call->num[1] + 3, cur_call->num[1] + 8, strlen(cur_call->num[1]) - 7);
                               	    adapt++; 
 			          }
 				  else if (!memcmp(cur_call->num[1], "+491070", 7)) {
-                                    strcpy(cur_call->provider, "01070");
+                                    cur_call->provider = 70;
                                     memmove(cur_call->num[1] + 3, cur_call->num[1] + 8, strlen(cur_call->num[1]) - 7);
                               	    adapt++; 
 			          } /* else */
@@ -2206,11 +2468,11 @@ static int set_caller_infos(one_call *cur_call, char *string, time_t from)
 			          break;
 			case  15: strncpy(cur_call->currency, array[i], 3);
 			          break;
-			case  16: cur_call->pay = atof(array[i]);
+			case  16: cur_call->dm = atof(array[i]);
 			          break;
 
 			case  17: if (!adapt)
-			      	    strcpy(cur_call->provider, Kill_Blanks(array[i]));
+			      	    cur_call->provider = atoi(array[i]);
 			      	  break;
 
 			default : print_msg(PRT_ERR,"Unknown element found `%s'!\n",array[i]); 
@@ -2558,7 +2820,7 @@ static int add_one_call(sum_calls *s1, one_call *s2, double units)
   }
   else
   {
-    s2->dm = s2->eh * units;
+    /* s2->dm = s2->eh * units;   AK:15-May-98 */
 
     s1->out++;
     s1->dout   += s2->duration > 0?s2->duration:0;

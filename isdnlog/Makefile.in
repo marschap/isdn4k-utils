@@ -1,8 +1,8 @@
-## $Id: Makefile.in,v 1.38 1998/05/10 22:11:47 luethje Exp $
+## $Id: Makefile.in,v 1.39 1998/06/07 21:07:50 akool Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
-## Copyright 1995, 1997 by Andreas Kool (akool@Kool.f.EUnet.de)
+## Copyright 1995, 1998 by Andreas Kool (akool@Kool.f.UUnet.de)
 ##
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -19,6 +19,41 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.39  1998/06/07 21:07:50  akool
+## - Accounting for the following new providers implemented:
+##     o.tel.o, Tele2, EWE TEL, Debitel, Mobilcom, Isis, NetCologne,
+##     TelePassport, Citykom Muenster, TelDaFax, Telekom, Hutchison Telekom,
+##     tesion)), HanseNet, KomTel, ACC, Talkline, Esprit, Interoute, Arcor,
+##     WESTCom, WorldCom, Viag Interkom
+##
+##     Code shamelessly stolen from G.Glendown's (garry@insider.regio.net)
+##     program http://www.insider.org/tarif/gebuehr.c
+##
+## - Telekom's 10plus implemented
+##
+## - Berechnung der Gebuehrenzone implementiert
+##   (CityCall, RegioCall, GermanCall, GlobalCall)
+##   The entry "ZONE" is not needed anymore in the config-files
+##
+##   you need the file
+##     http://swt.wi-inf.uni-essen.de/~omatthes/tgeb/vorwahl2.exe
+##   and the new entry
+##     [GLOBAL]
+##       AREADIFF = /usr/lib/isdn/vorwahl.dat
+##   for that feature.
+##
+##   Many thanks to Olaf Matthes (olaf.matthes@uni-essen.de) for the
+##   Data-File and Harald Milz for his first Perl-Implementation!
+##
+## - Accounting for all "Sonderrufnummern" (0010 .. 11834) implemented
+##
+##   You must install the file
+##     "isdn4k-utils/isdnlog/sonderrufnummern.dat.bz2"
+##   as "/usr/lib/isdn/sonderrufnummern.dat"
+##   for that feature.
+##
+## ATTENTION: This is *NO* production-code! Please test it carefully!
+##
 ## Revision 1.38  1998/05/10 22:11:47  luethje
 ## Added support for VORWAHLEN2.EXE
 ##
@@ -270,7 +305,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 2.99.28
+VERSION     = 2.99.29
 
 ifeq ($(POSTGRES),1)
 DEFS       += -DPOSTGRES
@@ -301,7 +336,8 @@ ISDNLOG_OBJS =  isdnlog/isdnlog.o isdnlog/processor.o isdnlog/functions.o \
                 isdnlog/server.o isdnlog/start_prog.o isdnlog/messages.o  \
                 connect/connect.o connect/socket.o tools/tools.o      	  \
                 connect/conv_address.o isdnlog/user_access.o 		  \
-                isdnrep/cheap.o tools/isdnconf.o $(LIBISDNDIR)/libisdn.a
+                isdnrep/cheap.o isdnrep/gebuehr.o tools/isdnconf.o isdnlog/takt.o \
+		$(LIBISDNDIR)/libisdn.a
 
 
 ifeq ($(POSTGRES),1)
@@ -318,6 +354,7 @@ endif
 
 ISDNREP_OBJS =  isdnrep/rep_main.o isdnrep/cheap.o tools/tools.o          \
                 tools/isdnconf.o isdnlog/messages.o isdnrep/isdnrep.o     \
+				isdnrep/gebuehr.o											  \
                 $(LIBISDNDIR)/libisdn.a
 
 ISDNCONF_OBJS=  isdnconf/isdnconf.o tools/tools.o tools/isdnconf.o        \

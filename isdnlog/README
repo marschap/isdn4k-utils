@@ -1,9 +1,9 @@
-ISDNLOG - Version 3.0 -  				27-May-97  23:14
+ISDNLOG - Version pre3.0 -  				07-Jun-98  21:40
 
 
 isdnlog ist ein Utility zur Auswertung des D-Kanal eines ISDN-BRI Anschlusses.
 
-isdnlog-3.0 wurde ausgiebig mit Linux-2.0.29 / isdn4kernel-2.0.30
+isdnlog-3.0 wurde ausgiebig mit Linux-2.0.33 / isdn4kernel-2.0.30
 getestet.
 
 
@@ -12,7 +12,7 @@ Fuer alle, die es nun ueberhaupt nicht mehr abwarten koennen, hier das
 Quick-Installation-Guide
 ------------------------
 
-1. Linux-2.0.29 + isdn4kernel-2.0.30 verwenden:
+1. Linux-2.0.33 + isdn4kernel-2.0.30 verwenden:
      CONFIG_ISDN=m
      CONFIG_ISDN_DRV_HISAX=m
 
@@ -188,7 +188,7 @@ sondern an
 
      i4l-isdnlog@franken.de
 
-Bitte auch nicht mehr die alte Adresse isdnlog@Kool.f.EUnet.de verwenden.
+Bitte auch nicht mehr die alte Adresse isdnlog@Kool.f.UUnet.de verwenden.
 
 So bekommen alle Entwickler die Anfragen direkt mit, und muessen nicht
 von mir extra weitergeleitet werden. Dadurch wird die Anfrage mit
@@ -225,12 +225,12 @@ isdnlog sammelt all diese Informationen, und gestattet damit folgendes:
    angezeigt werden. Dies sieht etwa so aus:
 
    Beispiel #1 : Ein Raus-Ruf mit der Teles-Karte:
-    13 21:16:31 * tei 104 calling EUnet with Phone  Digital
-    13 21:16:33 tei 104 calling EUnet with ISDN  Time:Wed Mar 13 21:17:00 1996
-    13 21:16:33 tei 104 calling EUnet with ISDN  CONNECT
-    13 21:16:33 tei 104 calling EUnet with ISDN  0,12 DM (0 s)
-    13 21:16:40 tei 104 calling EUnet with ISDN        5,63 kB /   823,43 bps
-    13 21:16:51 tei 104 calling EUnet with ISDN  HANGUP (0,12 DM = 18 s)
+    13 21:16:31 * tei 104 calling UUnet with Phone  Digital
+    13 21:16:33 tei 104 calling UUnet with ISDN  Time:Wed Mar 13 21:17:00 1996
+    13 21:16:33 tei 104 calling UUnet with ISDN  CONNECT
+    13 21:16:33 tei 104 calling UUnet with ISDN  0,12 DM (0 s)
+    13 21:16:40 tei 104 calling UUnet with ISDN        5,63 kB /   823,43 bps
+    13 21:16:51 tei 104 calling UUnet with ISDN  HANGUP (0,12 DM = 18 s)
 
    Der gesamte Ablauf der Verbindung wird also mit allen verfuegbaren
    Details (wann passierte das, wer hat wen angerufen, was hat's gekostet,
@@ -758,7 +758,9 @@ koennen folgende Platzhalter angegeben werden:
  %B   B-Kanal (0, oder 1)
  %k   Nummer der ISDN-Karte, von der die Meldung kam (0 = 1. Karte)
  %p   Nummer des Provider's
- %P   "via <Providerbezeichnung>" 
+ %P   "via <Providerbezeichnung>"
+ %Z   Gebuehrenzone des Gegners ("CityCall", "RegioCall", "GermanCall", "GlobalCall")
+ %z   Gebuehrenzone des Gegners (1, 2, 3, 4)
 
  %/
  %
@@ -1125,7 +1127,7 @@ Die einzelnen Nummern werden dann durch ein Komma getrennt.
 -------------------------------
 
 In diesem Entrag steht eine beliebige Symbolische Beschreibung fuer
-diese Nummer ("Mausi", "EUnet" usw.). Diese darf Blanks enthalten!
+diese Nummer ("Mausi", "UUnet" usw.). Diese darf Blanks enthalten!
 Wenn hier das Zeichen '#' verwendet werden soll, muss dieses gequotet
 werden mit "\#".
 
@@ -1153,9 +1155,9 @@ Ein weiterer Eintrag ist die Tarifzone, in der sich von uns aus gesehen
 diese Nummer befindet:
 
  0 = Verbindung am internen S0-Bus
- 1 = City (bis 31.12.1995 "Ortszone/Nahzone", bis 20 km)
- 2 = Region 50 (bis 31.12.1995 "Regionalzone", bis 50 km)
- 3 = Region 200 (bis 31.12.1995 "Weitzone", dann bis 200 km)
+ 1 = CityCall (bis 31.12.1997 City, bis 31.12.1995 "Ortszone/Nahzone", bis 20 km)
+ 2 = RegioCall (bis 31.12.1997 Region 50, bis 31.12.1995 "Regionalzone", bis 50 km)
+ 3 = GermanCall (bis 31.12.1998 Region 200, bis 31.12.1995 "Weitzone", dann bis 200 km)
  4 = Fernzone (bis 31.12.1995 "Weitzone", dann alles ueber 200 km)
  5 = Euro
  6 = Vis-'a-vis 1
@@ -1375,7 +1377,7 @@ Wenn die folgenden Eintraege nicht vorhanden sind und diese Dateien nicht
 dem User root gehoeren, dann setzt isdnlog die Rechte so, wie sie der
 Datei mitgegeben sind auf dem Dateisystem. Beispiel:
 
-luethje@bundy:bin$ ls -l 
+luethje@bundy:bin$ ls -l
 total 3
 -rwxr-xr-x   1 luethje  users         315 Mar  9 16:15 deloldmails*
 
@@ -1483,9 +1485,9 @@ Es gibt aber 10 zusaetzliche Variablen, die verwendet werden duerfen:
         Sekunden.
 \$6   : Enthaelt die Zeit des Gespraechsendes. Beipiel:
         "Wed May 28 23:07:49 1997"
-\$7   : Die Input-Bytes 
+\$7   : Die Input-Bytes
 \$8   : Die Output-Bytes
-\$9   : Die Input-Bytes pro Sekunde 
+\$9   : Die Input-Bytes pro Sekunde
 \$10  : Die Output-Bytes pro Sekunde
 \$11  : Die Dienstekenung
 \$12  : Die Gebuehren
@@ -2217,7 +2219,7 @@ angegeben werden.
 
          [NUMBER]
          NUMBER    = 4711
-         ALIAS     = EUnet
+         ALIAS     = UUnet
          ZONE      = 3
          INTERFACE = isdn0
          START = {
@@ -2230,7 +2232,7 @@ angegeben werden.
        Konfiguriert wurde dessen IP-Interface "isdn0" in der "rc.isdn" so:
          isdnctrl huptimeout isdn0 12
 
-     Erfolgt nun ein Verbindungsaufbau Richtung EUnet, berechnet isdnlog
+     Erfolgt nun ein Verbindungsaufbau Richtung UUnet, berechnet isdnlog
      die aktuell gueltige Dauer einer Gebuehreneinheit
      (da mein Provider in "Regio 200" liegt, also 12.0, 13.5, 21.5, 30.0
       oder 120.0 Sekunden)
@@ -2319,7 +2321,7 @@ Bei den Optionen -mX, -lX -xX sind folgende Flags moeglich:
       Sofort, wenn Telefonnummern auf dem S0-Bus auftauchen,
       werden diese angezeigt:
 
-       Feb 17 19:10:11 * tei 123 calling EUnet with ISDN  Digital
+       Feb 17 19:10:11 * tei 123 calling UUnet with ISDN  Digital
 
       ACHTUNG: fruehere Versionen: -m1
 
@@ -2328,7 +2330,7 @@ Bei den Optionen -mX, -lX -xX sind folgende Flags moeglich:
       aufgelaufenen Gebuehreneinheiten fuer die aktuelle Verbindung
       angezeigt:
 
-       Feb 17 19:09:29 tei 123 calling EUnet with ISDN  2.EH = DM 0,24 (20 s)
+       Feb 17 19:09:29 tei 123 calling UUnet with ISDN  2.EH = DM 0,24 (20 s)
 
       ## Dies funktioniert natuerlich nur, wenn auf der aktiven
       ## ISDN-Leitung Gebuehreninfo "A" (Charging-Info's during call's -
@@ -2347,7 +2349,7 @@ Bei den Optionen -mX, -lX -xX sind folgende Flags moeglich:
       Kommt eine Verbindung zustande (Telefon wird abgenommen,
       ISDN-Karte akzeptiert den Call etc.) wird dies angezeigt:
 
-       Feb 17 19:11:11 tei 123 calling EUnet with ISDN  CONNECTED
+       Feb 17 19:11:11 tei 123 calling UUnet with ISDN  CONNECTED
 
       ACHTUNG: fruehere Versionen: -m4
 
@@ -2358,7 +2360,7 @@ Bei den Optionen -mX, -lX -xX sind folgende Flags moeglich:
       Gesamtdauer der Verbindung. Die Anzahl Einheiten stammt hier
       jedoch aus der AOC-E Meldung der VSt)
 
-       Feb 17 19:14:13 tei 123 calling EUnet with ISDN  HANGUP (15 EH = DM 1,80 = 148 s)
+       Feb 17 19:14:13 tei 123 calling UUnet with ISDN  HANGUP (15 EH = DM 1,80 = 148 s)
 
       ACHTUNG: fruehere Versionen: -m8
 
@@ -2373,7 +2375,7 @@ Bei den Optionen -mX, -lX -xX sind folgende Flags moeglich:
  512  Show Time
       Die von der VSt uebermittelte Uhrzeit wird angezeigt
 
-       Feb 17 19:11:11 tei 123 calling EUnet with ISDN  Time:Sat Feb 17 19:09:00 1996
+       Feb 17 19:11:11 tei 123 calling UUnet with ISDN  Time:Sat Feb 17 19:09:00 1996
 
       ACHTUNG: fruehere Versionen: -m32
 
@@ -2496,9 +2498,9 @@ Die Optionen von isdnrep haben im einzelnen folgende Funktion:
                       ist ("calling ?"), kann hiermit angegeben werden, in
                       welcher Gebuehrenzone isdnrep den Gegner "vermuten" soll:
                        -c 0 : nicht's berechnen, sondern mit DM 0,00 abrechnen
-                       -c 1 : in der City-Zone vermuten
-                       -c 2 : in der Regio-50 Zone vermuten
-                       -c 3 : in der Regio-200 Zone vermuten
+                       -c 1 : als CityCall vermuten
+                       -c 2 : als RegioCall vermuten
+                       -c 3 : als GermanCall vermuten
                        -c 4 : in der Fernzone vermuten
 
   -f file   "file"    Es kann ein anderes Logfile anstelle von /var/log/isdn.log
@@ -2992,13 +2994,13 @@ DIALIN Summary for Sat Jan  6 1996                                          (12)
 UNKNOWN          1 call(s)  0:02:37
 
 
-Zone 1 : City              2 call(s)  2:23:13     50 EH    6,00 DM          (13)
+Zone 1 : CityCall          2 call(s)  2:23:13     50 EH    6,00 DM          (13)
 Zone x : UNKNOWN          11 call(s)  0:17:00     20 EH    2,40 DM
 
 Fussnoten:
   (1)  "xxx <- xxx" war ein eingehender Anruf, kostet also nix
   (2)  "xxx -> xxx" ist ein rausgehender Ruf, macht also bei 203 sec,
-       Cityzone, Freizeittarif (da Samstag) 3 Gebuehreneinheiten = DM 0,36 ;-)
+       CityCall, Freizeittarif (da Samstag) 3 Gebuehreneinheiten = DM 0,36 ;-)
   (3)  Das Telefonat kam nicht zustande, da der angewaehlte Teilnehmer
        besetzt war.
   (4)  Der angwaehlte Teilnehmer hat den Hoerer nicht abgenommen.
@@ -3409,8 +3411,8 @@ huptimeout Sekunden kein Traffic war. Bei "Stille" wird aufgelegt, sonst
 weitergemacht. Man koennte auch anders sagen: Durch Chargeint wird der
 huptimeout-Parameter nur kurz vor Ablauf der Gebuehreneinheit abgefragt.
 
-Ich setze bei Cityverbindungen huptimeout auf 5 Sekunden, bei Fernver-
-bindungen auf 3 Sekunden.
+Ich setze bei CityCall's huptimeout auf 5 Sekunden, bei GermanCall's
+auf 3 Sekunden.
 
 Im Juli 96 wurde isdnlog so modifiziert, dass isdnlog selbstaendig beim
 Aufbau einer Verbindung berechnet, welche Taktzeit zur Zeit von der
@@ -3643,11 +3645,11 @@ auch ein postmaster auf einem anderen Host angesprochen werden.
 -----------
 
 Wenn im Konfigurationmenue mysql ausgewaehlt wird, werden alle
-Verbindungsdaten zusaetzlich zur Datei isdn.log in eine Tabelle in der 
+Verbindungsdaten zusaetzlich zur Datei isdn.log in eine Tabelle in der
 Datenbank geschrieben.
 
 Der Name der Datenbank, die Tabelle, der SQL-Host, der Username und
-das Passwort werden in der Datei ./isdnlog/mysqldb.h definiert. 
+das Passwort werden in der Datei ./isdnlog/mysqldb.h definiert.
 Standardmaessig enthalten sie folgende Werte.
 
 DB_HOST = localhost
@@ -3927,7 +3929,7 @@ fuer die Entdeckung der AOC-D sowie AOC-E Bytes im D-Kannel-Protokoll
 Bei
   Kai Voelcker (kai@fantaghiro.deceiver.org)
 sowie
-  Martin Stover (mstover@Stover.f.EUnet.de)
+  Martin Stover (mstover@Stover.f.UUnet.de)
 und vielen anderen aus der isdn4linux Mailing-Liste fuer ihre Muehen
 beim Testen von isdnlog, staendigen neuen Ideen dafuer sowie
 fuer die unzaehligen Testdaten.
@@ -3942,7 +3944,7 @@ Bei
 fuer seinen Kampf mit den neuen Tarifen der Telekom
 
 Bei
- Hardy Buchholz (hardy@Kool.f.EUnet.de)
+ Hardy Buchholz (hardy@Kool.f.UUnet.de)
 der viele Ideen zum CHARGEMAX beigetragen hat
 
 Bei
@@ -3982,4 +3984,4 @@ von dem sicherlich mittlerweile 50% des isdnlog-Codes bestehen.
 
 Viel Spass mit isdnlog wuenscht
 
-Andreas Kool (akool@Kool.f.EUnet.de)
+Andreas Kool (akool@Kool.f.UUnet.de)
