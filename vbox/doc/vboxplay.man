@@ -1,6 +1,6 @@
-.\" $Id: vboxplay.man,v 1.1 1998/11/17 18:23:01 paul Exp $
-.\" CHECKIN $Date: 1998/11/17 18:23:01 $
-.TH vboxplay 1 "@MANDATE@" "ISDN 4 Linux @I4LVERSION@"
+.\" $Id: vboxplay.man,v 1.2 1998/12/02 16:54:26 paul Exp $
+.\" CHECKIN $Date: 1998/12/02 16:54:26 $
+.TH vboxplay 1 "@MANDATE@" "ISDN 4 Linux @I4LVERSION@" "Linux System Administration"
 
 .SH NAME
 vboxplay \- play vbox sound files

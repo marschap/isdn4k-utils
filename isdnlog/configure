@@ -594,10 +594,10 @@ bindir=`eval echo $bindir`
 sbindir=`eval echo $sbindir`
 mandir=`eval echo $mandir`
 MANDATE_CALLERID=`grep CHECKIN isdnlog/callerid.conf.5.in | awk '{print $4}'`
-MANDATE_ISDNLOG5=`grep CHECKIN isdnlog/isdnlog.5x.in | awk '{print $4}'`
-MANDATE_ISDNLOG8=`grep CHECKIN isdnlog/isdnlog.8x.in | awk '{print $4}'`
-MANDATE_ISDNLOG_USERS=`grep CHECKIN isdnlog/isdnlog.users.5x.in | awk '{print $4}'`
-MANDATE_ISDNREP=`grep CHECKIN isdnrep/isdnrep.1x.in | awk '{print $4}'`
+MANDATE_ISDNLOG5=`grep CHECKIN isdnlog/isdnlog.5.in | awk '{print $4}'`
+MANDATE_ISDNLOG8=`grep CHECKIN isdnlog/isdnlog.8.in | awk '{print $4}'`
+MANDATE_ISDNLOG_USERS=`grep CHECKIN isdnlog/isdnlog.users.5.in | awk '{print $4}'`
+MANDATE_ISDNREP=`grep CHECKIN isdnrep/isdnrep.1.in | awk '{print $4}'`
 
 if test "$CONFIG_LIB_AREACODE" = "y" ; then
 	ALIB=area

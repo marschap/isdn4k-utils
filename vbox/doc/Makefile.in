@@ -60,6 +60,7 @@ POST_UNINSTALL = :
 CC = @CC@
 CONFIG_BINDIR = @CONFIG_BINDIR@
 CONFIG_I4LCONFDIR = @CONFIG_I4LCONFDIR@
+CONFIG_MANDIR = @CONFIG_MANDIR@
 CONFIG_SBINDIR = @CONFIG_SBINDIR@
 HAVE_NCURSES_PACK = @HAVE_NCURSES_PACK@
 HAVE_TCL_PACK = @HAVE_TCL_PACK@
@@ -385,10 +386,10 @@ mostlyclean distclean maintainer-clean
 
 
 %.1 %.5 %.8: %.man
-	MANDATE=`grep CHECKIN $< | awk '{print $4}'`    
+	MANDATE=`grep CHECKIN $< | awk '{print $$4}'`; \
 	sed \
-		-e "s#\@MANDATE\@#${MANDATE}#g" \
-		-e "s#\@I4LVERSION\@#@VERSION@#g" \
+		-e "s#\@MANDATE\@#$${MANDATE}#g" \
+		-e "s#\@I4LVERSION\@#$${I4LVERSION}#g" \
         	-e "s#\@BINDIR\@#@CONFIG_BINDIR@#g" \
         	-e "s#\@SBINDIR\@#@CONFIG_SBINDIR@#g" \
         	-e "s#\@VERSION\@#@VERSION@#g" \

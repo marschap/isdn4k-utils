@@ -1,11 +1,12 @@
 .\" manual page [] for ipppd 2.0
-.\" $Id: ipppd.man.in,v 1.2 1998/10/12 11:54:42 paul Exp $
+.\" $Id: ipppd.man.in,v 1.3 1998/12/02 16:53:44 paul Exp $
+.\" CHECKIN $Date: 1998/12/02 16:53:44 $
 .\" SH section heading
 .\" SS subsection heading
 .\" LP paragraph
 .\" IP indented paragraph
 .\" TP hanging label
-.TH IPPPD 8
+.TH IPPPD 8 "@MANDATE@" isdn4k-utils-@I4LVERSION@ "Linux System Administration"
 .SH NAME
 ipppd \- (ISDN) Point to Point Protocol daemon (Version i2.2.9)
 .SH SYNOPSIS

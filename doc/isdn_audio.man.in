@@ -1,12 +1,12 @@
-.\" $Id: isdn_audio.man.in,v 1.2 1998/05/25 11:32:48 paul Exp $
+.\" $Id: isdn_audio.man.in,v 1.3 1998/12/02 16:53:27 paul Exp $
 .\"
-.\" CHECKIN $Date: 1998/05/25 11:32:48 $
+.\" CHECKIN $Date: 1998/12/02 16:53:27 $
 .\"
 .\" Process this file with
 .\" groff -man -Tascii isdn_audio.4 for ASCII output, or
 .\" groff -man -Tps isdn_audio.4 for PostScript output
 .\"
-.TH ISDN_AUDIO 4 "@MANDATE@" Linux "Special files"
+.TH isdn_audio 4 "@MANDATE@" "ISDN 4 Linux @I4LVERSION@" "Special files"
 .SH NAME
 isdn_audio \- audio extension of ttyI ISDN character devices
 .SH DESCRIPTION

@@ -5,10 +5,10 @@ DISTCLEANFILES=${man_MANS}
 EXTRA_DIST=autovbox.man rmdtovbox.man vbox.conf.man vbox.man vboxbeep.man vboxconvert.man vboxd.conf.man vboxd.man vboxgetty.conf.man vboxgetty.man vboxmode.man vboxrc.man vboxtcl.man vboxtoau.man vboxctrl.man vboxmail.man vboxplay.man
 
 %.1 %.5 %.8: %.man
-	MANDATE=`grep CHECKIN $< | awk '{print $4}'`    
+	MANDATE=`grep CHECKIN $< | awk '{print $$4}'`; \
 	sed \
-		-e "s#\@MANDATE\@#${MANDATE}#g" \
-		-e "s#\@I4LVERSION\@#@VERSION@#g" \
+		-e "s#\@MANDATE\@#$${MANDATE}#g" \
+		-e "s#\@I4LVERSION\@#$${I4LVERSION}#g" \
         	-e "s#\@BINDIR\@#@CONFIG_BINDIR@#g" \
         	-e "s#\@SBINDIR\@#@CONFIG_SBINDIR@#g" \
         	-e "s#\@VERSION\@#@VERSION@#g" \

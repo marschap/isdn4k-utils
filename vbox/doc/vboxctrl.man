@@ -1,6 +1,6 @@
-.\" $Id: vboxctrl.man,v 1.1 1998/11/17 18:22:56 paul Exp $
-.\" CHECKIN $Date: 1998/11/17 18:22:56 $
-.TH vboxctrl 1 "@MANDATE@" "ISDN 4 Linux @I4LVERSION@"
+.\" $Id: vboxctrl.man,v 1.2 1998/12/02 16:54:25 paul Exp $
+.\" CHECKIN $Date: 1998/12/02 16:54:25 $
+.TH vboxctrl 1 "@MANDATE@" "ISDN 4 Linux @I4LVERSION@" "Linux System Administration"
 
 .SH NAME
 vboxctrl \- control vbox functions

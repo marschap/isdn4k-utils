@@ -1,12 +1,12 @@
-.\" $Id: isdnctrl.man.in,v 1.14 1998/12/01 13:13:30 paul Exp $
+.\" $Id: isdnctrl.man.in,v 1.15 1998/12/02 16:53:57 paul Exp $
 .\"
-.\" CHECKIN $Date: 1998/12/01 13:13:30 $
+.\" CHECKIN $Date: 1998/12/02 16:53:57 $
 .\"
 .\" Process this file with
 .\" groff -man -Tascii isdnctrl.8 for ASCII output, or
 .\" groff -man -Tps isdnctrl.8 for PostScript output
 .\"
-.TH ISDNCTRL 8 "@MANDATE@" isdn4k-utils-@I4LVERSION@ "Linux System Administration"
+.TH isdnctrl 8 "@MANDATE@" isdn4k-utils-@I4LVERSION@ "Linux System Administration"
 .SH NAME
 isdnctrl \- get/set ISDN device information
 .SH SYNOPSIS
