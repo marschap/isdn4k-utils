@@ -1,0 +1,36 @@
+# $Id: Makefile.in,v 1.1 1997/02/17 00:08:41 fritz Exp $
+#
+# Makefile for ISDN manpages
+# (C) 1997 Fritz Elfert
+#
+#
+SHELL			= /bin/sh
+MANPAGES		= ttyI.4
+INSTALL_MAN		= @INSTALL@ -o 0 -g 0 -m 0644
+prefix			= @prefix@
+mandir			= @mandir@
+
+all: $(MANPAGES)
+
+config:
+	@./configure
+
+install:
+	@for i in $(MANPAGES) ; do \
+		MANSECT=`echo $$i | cut -d. -f2` ;\
+		MANDIR=$(mandir)/man$$MANSECT ;\
+		mkdir -p $$MANDIR ;\
+		$(INSTALL_MAN) $$i $$MANDIR/$$i ;\
+	done
+
+uninstall:
+	@for i in $(MANPAGES) ; do ;\
+		MANSECT=`echo $i | cut -d. -f2` ;\
+		MANDIR=$(mandir)man$$MANSECT ;\
+		rm -f $$MANDIR/$$i ;\
+	done
+
+clean:
+
+distclean:
+	rm -f config.status config.cache config.log Makefile

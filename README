@@ -1,0 +1,70 @@
+#
+# $Id: README,v 1.1 1997/02/17 00:08:37 fritz Exp $
+#
+This is the README file for the "isdn4k-utils" package from "The i4l-crew".
+
+This package contains the following utilities:
+
+  isdnctrl, general linklevel setup utility.
+  icnctrl, setup utility for the icn driver.
+  telesctrl, setup utility for the teles and HiSax driver.
+  pcbitctrl, setup utility for the pcbit driver.
+  imon, a tty based utility for monitoring ISDN-activities.
+  isdnlog, a set of utilities for connection logging.
+  isdnmon, a TclTk based utility for monitoring ISDN-activities.
+  
+System prerequisites:
+
+  To use this package, you need a kernel with an ISDN-subsystem configured.
+  To get a such a kernel, take a clean standard-kernel (> Version 2.0.29 or
+  > 2.1.26 resp.) enable the isdn-related features you want and build the
+  kernel as usual. If applicable some patches may be needed
+
+  isdn-patches are available at
+
+     ftp.franken.de:/pub/isdn4linux
+
+  For using modularized parts of the ISDN-subsystem, newest modutils
+  are strongly recommended.
+
+3. Configuration, Compilation.
+
+   Run "make config"
+
+   This will run various configuration-scripts for each sub-package.
+   
+   Run "make"
+
+   This builds all utilities except the TclTk-script "isdnmon"
+
+4. Installation
+
+   For the following steps, root permissions are necessary
+
+   a) Create the device-inodes:
+
+     make devices
+
+   b) Install the utilities, the manpages and config-files:
+
+     make install
+
+   The config files usually are installed in /etc/isdn/
+
+5. Application
+
+   The directory ./etc contains an example startup-script which gets
+   not installed automatically, because it MUST BE CONFIGURED IN ANY
+   CASE! Please don't try to connect to the Internet without setting
+   your own IP-addresses. This script is intended to be used with
+   the modularized version of the ISDN-subsystem. Refer to the
+   Documentation/isdn subdirectory of your kernel-sourcetree for
+   more information on configuring Lowlevel drivers.
+
+   For the utilities "isdnctrl", "icnctrl" "telesctrl" and "imon" refer to
+   the manpages. For the other contributed utilities, look into their
+   subdirectories for Documentation.
+
+   For tips, troubleshooting etc. look into the FAQ subdirectory
+
+ -Fritz

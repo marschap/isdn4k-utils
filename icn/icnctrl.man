@@ -1,0 +1,84 @@
+.TH ICNCTRL 8 "3. September 1995"
+.UC 4
+.SH NAME
+icnctrl \- configure ICN-ISDN-adaptor
+.SH SYNOPSIS
+icnctrl [-d DriverId] action options ...
+.br
+.SH DESCRIPTION
+.I icnctrl
+is used to setup the ICN-ISDN devicedriver and for downloading the
+firmware into the ISDN-card.
+.LP
+The use of
+.I icnctrl
+makes sense, if you are using an ICN-card only.
+.LP
+.SH OPTIONS
+.TP 5
+.B -d DriverId
+is used to identify the driver when using more than one ICN-card. For every
+card, a icn-moudule has to be loaded into the kernel-space. While loading
+the module with
+.I insmod,
+the driverId is set by appending
+.I id=MyId
+to the normal insmod-commandline. For this feature insmod from the package
+.I modules-1.2.8
+or newer should be used as it supports string-initializations.
+.LP
+The following 
+.I actions
+may be given to
+.I icnctrl.
+.TP 5
+.B add port [id1 [id2]]
+Enables support for an additional card in the driver. If id1 and id2
+are missing, adds an ICN-2B with an id given by the system. with id2
+missing, adds an ICN-2B with an id given by the user. With both ids
+given, adds an ICN-4B with both ids given by the user. There is
+no checking against port-conflicts. Ports are checked at first activation
+while downloading the firmware and can be changed at runtime. Ids are
+checked against conflicts, and if a conflict happens, replaced by the
+system in the same manner as if no id was given.
+.TP 5
+.B io [baseadress port]
+Sets the adress of the Memory-mapped IO-region and the port-base.
+After loading the icn-module into kernel-space, this command
+should be used as the very first setup, if the hardware settings are
+different from the default settings below.
+If both parameters are omitted, prints out current settings. The
+default memory-adress is 0xD0000, the default port-base is 0x320.
+The ICN-Card uses 4 port-adresses.
+.TP 5
+.B leased <on|off>
+Switches between normal (dialup) and leased-line mode. Leased-line-mode
+is intended for usage with S64K-lines. These lines do not have a D-Channel.
+.TP 5
+.B load <bootcode> <firmware>
+Downloads the firmware into the card and starts operation. Using this
+command, after loading the icn-module into kernel-space the first real
+access to the hardware is done. Therefore the
+.I io
+-command above, should be used before, if the hardware settings are different
+from the default settings.
+Usually the bootcode is called
+.I loadpg.bin.
+The firmware depends on the type of ISDN-line. For german 1TR6-lines, the
+firmware is called
+.I pc_1t_ca.bin.
+For Euro-ISDN-lines, it is called
+.I pc_eu_ca.bin.
+.LP
+.SH AUTHOR
+Fritz Elfert <fritz@wuemaus.franken.de>
+.LP
+.SH SEE ALSO
+.I ttyI\c
+\&(4),
+.I isdnctrl\c
+\&(8),
+.I telesctrl\c
+\&(8),
+.I isdninfo\c
+\&(4).

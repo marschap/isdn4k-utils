@@ -1,0 +1,30 @@
+.TH IPROFD 8 "2. April 1996"
+.UC 4
+.SH NAME
+iprofd \- Modem-register daemon
+.SH SYNOPSIS
+iprofd <registerfile>
+.br
+.SH DESCRIPTION
+.I iprofd
+is used to make the modem-register settings of the isdn-ttys AT-emulator
+permanent and restore them during boot-time. It is usually started from within
+a rc-script and puts itself into background. If the file given as parameter
+already exists, all registers are restored from it's contents. After that,
+it waits until getting a signal from the isdn-subsystem. Every time, a 'AT&W0'
+command is given at a isdn-tty, it reads the current register-settings and
+stores them into the registerfile.
+.LP
+.SH AUTHOR
+Fritz Elfert <fritz@wuemaus.franken.de>
+.LP
+.SH SEE ALSO
+.I ttyI\c
+\&(4),
+.I isdnctrl\c
+\&(8),
+.I telesctrl\c
+\&(8),
+.I isdninfo\c
+\&(4).
+

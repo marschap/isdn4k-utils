@@ -1,0 +1,61 @@
+.TH TELESCTRL 8 "3. December 1995"
+.UC 4
+.SH NAME
+telesctrl \- configure Teles-Module-logging
+.SH SYNOPSIS
+telesctrl [-d DriverId] 1 <LogFlags>
+.br
+.SH DESCRIPTION
+.I telesctrl
+is used to setup the logging-level of the Teles-ISDN devicedriver. All
+logging-output is sent to the device /dev/isdnctrl. So you can show it
+by executing "cat /dev/isdnctrl".
+.LP
+The use of
+.I telesctrl
+makes sense, if you are using an Teles-card only.
+.LP
+.SH OPTIONS
+.TP 5
+.B -d DriverId
+is used to identify the driver when using more than one Teles-card. While
+loading the module with
+.I insmod,
+the driverId is set by appending
+.I id=MyId
+to the normal insmod-commandline. For this feature insmod from the package
+.I modules-1.2.8
+or newer should be used as it supports string-initializations.
+.LP
+The
+.I LogFlags
+are given as a bit-coded integer with the following values:
+.TP 5
+.B 1 Link-level <--> Hardware-level communication.
+If this bit is set all communication between the isdn-module and the
+teles-module is logged.
+.TP 5
+.B 2 Top statemachine
+If this bit is set, all state-changes of the top statemachine are logged.
+.TP 5
+.B 4 D-channel Q.931
+If this bit is set, all Q.931-messages (call-control) are logged.
+.TP 5
+.B 8 D-channel Q.921
+If this bit is set, all Q.921-messages are logged.
+.TP 5
+.B 16 B-channel X.75
+If this bit is set, all B-channel X.75 events are logged.
+.LP
+.SH AUTHOR
+Fritz Elfert <fritz@wuemaus.franken.de>
+.LP
+.SH SEE ALSO
+.I ttyI\c
+\&(4),
+.I isdnctrl\c
+\&(8),
+.I telesctrl\c
+\&(8),
+.I isdninfo\c
+\&(4).

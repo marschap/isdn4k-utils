@@ -1,0 +1,268 @@
+.TH ISDNCTRL 8 "02. April 1996"
+.UC 4
+.SH NAME
+isdnctrl \- get/set ISDN device information
+.SH SYNOPSIS
+isdnctrl action device ...
+.br
+.SH DESCRIPTION
+.I isdnctrl
+is used to create and delete network interfaces for ISDN, set up
+the various parameters and phone numbers for dial in and dial
+out. It is also used to list the current paramteters of an
+already configured interface.
+.LP
+The use of
+.I isdnctrl
+is independent of the hardware driver.
+.LP
+.SH OPTIONS
+The following 
+.I actions
+may be given to
+.I isdnctrl.
+.TP 5
+.B addif [name]
+Adds a new ISDN IP-interface "name" to the kernel. If "name" is
+omitted, the kernel will use "ethX", while X is an increasing
+number starting from 0.
+.TP 5
+.B delif name
+Removes the ISDN IP-interface "name" from the kernel.
+.TP 5
+.B addphone name out num
+Set the phone number(s) of the remote site for the IP-interface
+"name". More than one number can be set by calling
+.I isdnctrl addphone
+repeatedly. If more than one number is set these will be tried
+one after another. When using an german SPV-type connection,
+with a ICN-card, the number has to be preceeded by a capital S. 
+.TP 5
+.B addphone name in num
+Set the phone number(s) that the IP-interface "name" is supposed
+to accept for incoming calls. If no number is given incoming
+calls are disabled. More than one number can be set by calling
+.I isdnctrl addphone
+repeatedly. Also wildcards can be used (see below).
+.TP 5
+.B delphone name in|out num
+Remove phone number "num" from the incoming or outgoing phone list.
+.TP 5
+.B eaz name [num]
+Set the EAZ (German 1TR6 protocol) or MSN (Euro-ISDN E-DSS1) for
+interface "name" to "num". For an EAZ this is only one digit, for
+a MSN "num" is the whole MSN. If "num" is omitted
+.I isdnctrl eaz name
+prints the current setting for interface "name".
+.TP 5
+.B huptimeout name [seconds]
+Set the hangup timeout for interface "name" to "seconds". If
+there is inactivity (i.e. no traffic on the interface) for the
+given time the driver automatically shuts down the connection.
+If "seconds" is omitted
+.I isdnctrl huptimeout name
+prints the current setting for interface "name".
+.TP 5
+.B cbdelay name [seconds]
+Set the callback delay for interface "name" to "seconds". If
+callback mode for this interface is
+.I in
+, dialing is delayed the given time. If the callback mode is
+.I out
+, after dialing out and waiting the given time, a hangup is
+issued to free the line for the incoming callback from the remote
+machine. This hangup-after-dial is disabled by setting cbdelay to
+0.
+If "seconds" is omitted
+.I isdnctrl cbdelay name
+prints the current setting for interface "name".
+.TP 5
+.B dialmax name [num]
+Set the number of dial atempts for interface "name" to "num". If
+dialing, each phonenumber is tried this many times before giving up.
+If "num" is omitted
+.I isdnctrl dialmax name
+prints the current setting for interface "name".
+.TP 5
+.B ihup name [on|off]
+Turn on or off the hangup timeout for incoming calls on
+interface "name". If none of on or off is given the current
+setting is printed.
+.TP 5
+.B chargehup name [on|off]
+Turn on or off hangup before next charge info for interface
+name. This can only be used if the ISDN provider transmits
+charge info during and after the connection. If set to on, the
+driver will close the connection just before the next charge
+info will be received if the interface is inactive. If none of
+on or off is given the current setting is printed.
+.TP 5
+.B chargeint name [seconds]
+When "seconds" are given, the charge interval for the given
+interface is set. This may be of use on ISDN lines with no
+chargeinfo or no online chargeinfo. The connection will only
+be closed 2 seconds before the end of the next charge interval
+and only, if 
+.I huptimeout
+seconds of inactivity have been reached. If 
+.I ihup 
+is on, also incomming connections are closed by this mechanism.
+On lines with online charge info you also might ask by 
+.I chargeint name 
+for the current charge interval as delivered from the
+telecom on a given interface.
+.TP 5
+.B secure name [on|off]
+Turns on or off the security feature for interface "name". If
+set to on, incoming calls will only be accepted if the calling
+number has been added to the access list with
+.I isdnctrl addphone name in.
+If none of on or off is given the current setting is printed.
+.TP 5
+.B callback name [on|off|in|out]
+Selects callback mode for interface "name". If callback mode is
+.I in
+, then after getting an incoming call, a callback is triggered. If
+callback mode is
+.I out
+, then this system does the initial call, then waiting for callback of
+the remote machine. The option
+.I on
+is available only for compatibility with older versions. Its meaning is
+the same like
+.I in.
+.TP 5
+.B cbhup name [on|off]
+Turns on or off Hangup (Reject) for interface "name" before starting Callback.
+
+If none of on or off is given the current
+setting is printed.
+.TP 5
+.B encap name [encapname]
+Set the encapsulation mode for interface "name". Possible modes
+for encapname are:
+
+.B rawip
+raw ip encapsulation (default)
+
+.B ip
+ip + typefield encapsulation
+
+.B cisco_h
+Special mode for communicating with a Cisco in HDLC-mode.
+
+.B ethernet
+ethernet over ISDN
+
+.B syncppp
+Synchronous PPP over ISDN
+
+.B uihdlc
+raw ip with additional ui-header
+
+If encapname is omitted the current setting is printed.
+
+.TP 5
+.B l2_prot name [protocol]
+Set the layer-2 protocol for interface "name". Possible values
+for "protocol" are
+.B x75i, x75ui, x75bui
+and
+.B hdlc
+
+If protocol is omitted the current setting is printed.
+.TP 5
+.B l3_prot name [protocol]
+Set the layer-3 protocol for interface "name". At the moment only
+.B trans
+is supported.
+If protocol is omitted the current setting is printed.
+.TP 5
+.B list name
+List all parameters and the charge info for interface "name".
+.TP 5
+.B verbose <num>
+Set verbosity level to <num>.
+.TP 5
+.B hangup name
+The connection of interface "name" is cloes immediately. 
+.TP 5
+.B bind name driverId channel [exclusive]
+Binds an interface "name" to specific physical channel.
+The driverId identifies the desired driver. The channels of a card start
+counting with zero. If "exclusive" is given, other
+interfaces cannot use that interface anymore.
+.TP 5
+.B unbind name
+Unbinds a the previously bound interface "name".
+.TP 5
+.B busreject driverId [on|off]
+If switched on, isdn4linux replies a REJECT to incoming calls, it
+cannot match to any configured interface. If switched off, nothing
+happens in this case.
+.I You normally should NOT enable this feature, if the ISDN-adaptor is not the only device, connected to the S0-bus. Otherwise it could happen, that isdn4linux rejects an incoming call, which belongs to another device on the bus.
+.TP 5
+.B addslave name slavename
+Adds a slave interface to interface "name" for channel-bundling. For bundling
+of more than two channels, any number of slaves can be added to an interface.
+"name"must refer to an existing "real" interface (not a slave). Slaves are
+not visible to the kernel, however all usual ISDN-settings can be configured.
+.B It is important
+that slave interfaces are added
+.B before
+the corresponding master is started by
+.B ifconfig.
+If the master is already up, it has to be shutdown with
+.B ifconfig down ...
+otherwise the addslave command will be rejected.
+.TP 5
+.B sdelay name <num>
+Set delay for slave-dialing.
+An interface has to have a load of more than 7000 cps for at least this time
+(in seconds), before it's slave is started.
+.TP 5
+.B dial name
+Force dialing of interface "name".
+.TP 5
+.B mapping driverId MSN0[,MSN1[,MSN2]] ... [,MSN9]
+Installs a mapping-table for MSN<->EAZ-mapping. See README for details.
+
+.SH WILDCARDS
+For matching incoming calls phone numbers can be be set by
+.I isdnctrl addphone name in num
+using pattern matching like the regular expressions in shells.
+The following wildcards are supported:
+
+.TP 7
+.I ?
+one arbitrary digit
+.TP 7
+.I *
+zero or arbitrary many digits
+.TP 7
+.I [123]
+one of the digits in the list
+.TP 7
+.I [1-5]
+one digit between '1' and '5'
+.TP 7
+.I ^
+as the first character in a list inverts the
+list
+.LP
+.SH BUGS
+This man page is not complete.
+.LP
+.SH AUTHOR
+Volker Goetz <volker@oops.franken.de>
+.LP
+.SH SEE ALSO
+.I ttyI\c
+\&(4),
+.I icnctrl\c
+\&(8),
+.I telesctrl\c
+\&(8),
+.I isdninfo\c
+\&(4).
+
