@@ -29,11 +29,12 @@ unsigned char dialog_input_result[MAX_LEN + 1];
 static void
 print_buttons(WINDOW *dialog, int height, int width, int selected)
 {
-    int x = width / 2 - 11;
+    int x = width / 2 - 17;
     int y = height - 2;
 
     print_button (dialog, "  Ok  ", y, x, selected==0);
-    print_button (dialog, " Help ", y, x + 14, selected==1);
+    print_button (dialog, "Cancel", y, x + 14, selected==1);
+    print_button (dialog, " Help ", y, x + 28, selected==2);
 
     wmove(dialog, y, x+1+14*selected);
     wrefresh(dialog);
@@ -180,8 +181,8 @@ dialog_inputbox (const char *title, const char *prompt, int height, int width,
 	case KEY_LEFT:
 	    switch (button) {
 	    case -1:
-		button = 1;	/* Indicates "Cancel" button is selected */
-		print_buttons(dialog, height, width, 1);
+		button = 2;	/* Indicates "Help" button is selected */
+		print_buttons(dialog, height, width, 2);
 		break;
 	    case 0:
 		button = -1;	/* Indicates input box is selected */
@@ -192,6 +193,10 @@ dialog_inputbox (const char *title, const char *prompt, int height, int width,
 	    case 1:
 		button = 0;	/* Indicates "OK" button is selected */
 		print_buttons(dialog, height, width, 0);
+		break;
+	    case 2:
+		button = 1;	/* Indicates "Cancel" button is selected */
+		print_buttons(dialog, height, width, 1);
 		break;
 	    }
 	    break;
@@ -208,6 +213,10 @@ dialog_inputbox (const char *title, const char *prompt, int height, int width,
 		print_buttons(dialog, height, width, 1);
 		break;
 	    case 1:
+		button = 2;	/* Indicates "Help" button is selected */
+		print_buttons(dialog, height, width, 2);
+		break;
+	    case 2:
 		button = -1;	/* Indicates input box is selected */
 		print_buttons(dialog, height, width, 0);
 		wmove (dialog, box_y, box_x + input_x);
@@ -218,6 +227,13 @@ dialog_inputbox (const char *title, const char *prompt, int height, int width,
 	case ' ':
 	case '\n':
 	    delwin (dialog);
+        if (button == 1) {
+        	if (!init)
+	    		instr[0] = '\0';
+        	else
+	    		strcpy (instr, init);
+			button = 0;
+		}
 	    return (button == -1 ? 0 : button);
 	case 'X':
 	case 'x':

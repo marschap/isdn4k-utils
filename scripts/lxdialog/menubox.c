@@ -68,9 +68,9 @@ print_item (WINDOW * win, const char *item, int choice, int selected, int hotkey
 	if ((ls = strlen(item)) != (li = itemlen(item))) {
 		memset(&menu_item[MCUT-2],'.',3);
 		memmove(&menu_item[MCUT+1],&menu_item[ls-(li-MCUT)], li-MCUT+1);
-	}
+	} else
     menu_item[menu_width] = 0;
-    j = first_alpha(menu_item, "YyNnMm");
+   	j = first_alpha(menu_item, "YyNn");
 
     /* Clear 'residue' of last item */
     wattrset (win, menubox_attr);
@@ -237,20 +237,22 @@ dialog_menu (const char *title, const char *prompt, int height, int width,
 
 	if (key < 256 && isalpha(key)) key = tolower(key);
 
-	if (strchr("ynm", key))
+	if (strchr("yn", key))
 		i = max_choice;
 	else {
         for (i = choice+1; i < max_choice; i++) {
-		j = first_alpha(items[(scroll+i)*2+1], "YyNnMm");
-		if (key == tolower(items[(scroll+i)*2+1][j]))
-                	break;
-	}
-	if (i == max_choice)
-       		for (i = 0; i < max_choice; i++) {
-			j = first_alpha(items[(scroll+i)*2+1], "YyNnMm");
-			if (key == tolower(items[(scroll+i)*2+1][j]))
-                		break;
+			j = first_alpha(items[(scroll+i)*2+1], "YyNn");
+			if ((key == tolower(items[(scroll+i)*2+1][j])) &&
+					(strncmp(items[(scroll+i)*2+1], "---", 3)))
+               	break;
 		}
+		if (i == max_choice)
+       		for (i = 0; i < max_choice; i++) {
+				j = first_alpha(items[(scroll+i)*2+1], "YyNn");
+				if ((key == tolower(items[(scroll+i)*2+1][j])) &&
+					(strncmp(items[(scroll+i)*2+1], "---", 3)))
+               		break;
+			}
 	}
 
 	if (i < max_choice || 
@@ -348,14 +350,12 @@ dialog_menu (const char *title, const char *prompt, int height, int width,
 	case 's':
 	case 'y':
 	case 'n':
-	case 'm':
 	    delwin (dialog);
             fprintf(stderr, "%s\n", items[(scroll + choice) * 2]);
             switch (key) {
             case 's': return 3;
             case 'y': return 3;
             case 'n': return 4;
-            case 'm': return 5;
             case ' ': return 6;
             }
 	    return 0;
