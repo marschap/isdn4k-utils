@@ -1,6 +1,6 @@
-.\" $Id: isdnctrl.man.in,v 1.22 2002/02/07 10:43:24 paul Exp $
+.\" $Id: isdnctrl.man.in,v 1.23 2003/03/11 13:49:28 paul Exp $
 .\"
-.\" CHECKIN $Date: 2002/02/07 10:43:24 $
+.\" CHECKIN $Date: 2003/03/11 13:49:28 $
 .\"
 .\" Process this file with
 .\" groff -man -Tascii isdnctrl.8 for ASCII output, or
@@ -417,6 +417,13 @@ If
 is
 .BR all ,
 then the connection status for all interfaces is shown. The exit status is
+always true in this case.
+.br
+If
+.I name
+is
+.BR active ,
+then only those interfaces that are currently connected are shown. The exit status is
 always true in this case.
 .TP
 .BI verbose " num"
