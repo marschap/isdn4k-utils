@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.6 1997/03/03 04:06:41 fritz Exp $
+# $Id: Makefile,v 1.7 1997/03/05 21:33:34 calle Exp $
 #
 # Toplevel Makefile for isdn4k-utils
 #
@@ -40,6 +40,9 @@ else
 	ifeq ($(CONFIG_HISAXCTRL),y)
 		SUBDIRS := $(SUBDIRS) teles
 	endif
+endif
+ifeq ($(CONFIG_AVMCAPICTRL),y)
+	SUBDIRS := $(SUBDIRS) avmb1
 endif
 ifeq ($(CONFIG_IMON),y)
 	SUBDIRS := $(SUBDIRS) imon
