@@ -40,7 +40,7 @@ config.status: configure
 	./config.status --recheck
 
 distclean: clean 
-	-rm config.{status,log,h,cache} Makefile configure .depend
+	-rm config.{status,log,h,cache} Makefile .depend
 
 install-dirs:
 	install -d -m0755 $(MAN1DIR) $(MAN3DIR) $(LIBDIR) $(BINDIR) \
