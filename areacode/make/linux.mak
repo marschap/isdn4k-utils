@@ -11,9 +11,15 @@
 
 
 
-# $Id: linux.mak,v 1.1 1997/03/03 04:21:46 fritz Exp $
+# $Id: linux.mak,v 1.2 1998/12/09 19:21:16 akool Exp $
 #
 # $Log: linux.mak,v $
+# Revision 1.2  1998/12/09 19:21:16  akool
+# new "Areacode" lib version 2.0
+# from Ullrich von Bassewitz (uz@wuschel.musoftware.de)
+# now we are supporting .at .ch .de .nl .uk and .us
+# ATTENTION: The database-format has changed!
+#
 # Revision 1.1  1997/03/03 04:21:46  fritz
 # Added files in areacode/make
 #
@@ -71,7 +77,7 @@ acvers:		acvers.o
 
 areacode.o:	areacode.h areacode.c
 		gcc $(CFLAGS) -DDATA_FILENAME="\"$(DATATARGET)\"" \
-		-DCHARSET_ISO -c -o areacode.o areacode.c
+		-c -o areacode.o areacode.c
 
 install:	areacode.o acvers
 		@if [ `id -u` != 0 ]; then				      \

@@ -6,13 +6,13 @@
 /*                                                                           */
 /*                                                                           */
 /*                                                                           */
-/* (C) 1996,97  Ullrich von Bassewitz                                        */
+/* (C) 1996-98  Ullrich von Bassewitz                                        */
 /*              Wacholderweg 14                                              */
 /*              D-70597 Stuttgart                                            */
-/* EMail:       uz@musoftware.com                                            */
+/* EMail:       uz@musoftware.de                                             */
 /*                                                                           */
 /*                                                                           */
-/* This software is provided 'as-is', without any express or implied         */
+/* This software is provided 'as-is', without any expressed or implied       */
 /* warranty.  In no event will the authors be held liable for any damages    */
 /* arising from the use of this software.                                    */
 /*                                                                           */
@@ -49,8 +49,8 @@
 
 
 
-#ifndef _AREACODE_H
-#define _AREACODE_H
+#ifndef AREACODE_H
+#define AREACODE_H
 
 
 
@@ -85,6 +85,7 @@ extern unsigned long acMaxMem;
 #define acFileError     1       /* Cannot open/read file */
 #define acInvalidFile   2       /* The file exists but is no area code data file */
 #define acWrongVersion  3       /* Wrong version of data file */
+#define acInvalidInput	4	/* Input string is not a number or empty */
 
 /* The result of an area code search */
 typedef struct {
@@ -121,3 +122,4 @@ unsigned GetAreaCodeInfo (acInfo* /*AC*/ , const char* /*PhoneNumber*/);
 
 #endif
 
+	

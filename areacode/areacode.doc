@@ -4,10 +4,10 @@
 
        Portable library module to search for an area code in a database.
 
-				 Version 1.02
+				 Version 2.00
 
-		(C) Copyright 1996,97 by Ullrich von Bassewitz
-			      <uz@musoftware.com>
+		(C) Copyright 1996-98 by Ullrich von Bassewitz
+			      <uz@musoftware.de>
 
 
 
@@ -53,8 +53,8 @@ characteristics:
     Vaxes?) code has to be added.
 
   * Systems with CP437, CP850 or ISO-8859-1 character sets. The "native"
-    format is CP850/CP437, for ISO-8859-1, the #define CHARSET_ISO has to
-    be added when compiling the module.
+    format is ISO-8859-1, for the DOS codepages the #define CHARSET_CP850has 
+    to be added when compiling the module.
 
 The code has been tested under
 
@@ -64,7 +64,7 @@ The code has been tested under
 
   * OS/2 2.x (Watcom C/C++ 10.6)
 
-  * i386-Linux (gcc 2.7.2)
+  * i386-Linux (egcs 1.03)
 
 For these environments makefiles can be found in the make subdirectory.
 
@@ -72,8 +72,8 @@ The package has some limits as stated below:
 
   * Current language is german.
 
-  * The data file contains area codes for germany, austria, switzerland
-    and the netherlands.
+  * The data file contains area codes for germany, austria, switzerland,
+    the netherlands, and some codes for the UK and US.
 
   * The area code including the country code (but not including the
     international prefix, often 00) may not exceed 8 digits. This may be
@@ -90,7 +90,7 @@ The package has some limits as stated below:
 You may get the source for the package itself, for the datafile builder and
 for new datafiles from
 
-	ftp://ftp.musoftware.com/pub/areacode
+	ftp://ftp.musoftware.de/pub/uz/areacode/
 
 Note: Please do not distribute modified data files. The data files contain
 a version stamp to make shure, users don't overwrite newer versions with
@@ -100,7 +100,7 @@ by third parties.
 Note: The datafile builder needs spunk, a C++ class library to compile.
 You may want to have a look in
 
-	ftp://ftp.musoftware.com/pub/spunk
+       	ftp://ftp.musoftware.de/pub/uz/spunk/
 
 for the current spunk version.
 
@@ -123,10 +123,31 @@ version numbers that - hopefully - will not change).
 
 
 
-6. Copying
+6. Some notes on version 2.0
+----------------------------
+
+Unfortunately, I was not able to keep binary compatibility for version 2.0.
+After realizing that, I used the opportunity to change more things that were
+due for some time (ISO-8859-1 as a native format is an example).
+
+New in version 2.0:
+
+  * Source character set is now ISO-8859-1.
+
+  * Areacodes may be extensions of other codes. This leads to somewhat more
+    overhead when searching (now using a modified binary search), but the
+    feature was too useful to omit it.
+
+  * Detection of duplicate descriptions and partial duplicate descriptions.
+
+  * The string pool may now be compressed.
+
+
+
+7. Copying
 ----------
 
-This software is provided 'as-is', without any express or implied
+This software is provided 'as-is', without any expressed or implied
 warranty.  In no event will the authors be held liable for any damages
 arising from the use of this software.
 
@@ -145,7 +166,7 @@ freely, subject to the following restrictions:
 
 
 
-7. Credits
+8. Credits
 ----------
 
 Many thanks to all people that helped developing the module:
@@ -165,6 +186,8 @@ Many thanks to all people that helped developing the module:
 
     Paul Slootman (paul@wurtel.demon.nl),
     for the two versions of the area codes for the netherlands
-    and for his patience:-)
+    and for his patience:-)				      
 
-			
+    Michael Reinelt (reinelt@eunet.at),
+    for kicking me until version 2.0 was finished.
+

@@ -45,6 +45,7 @@ int main (int argc, char* argv [])
 {
     acInfo AC;
     char Buf [256];
+    int Len;
     unsigned RC;
     acMaxMem = 0;
 
@@ -54,14 +55,32 @@ int main (int argc, char* argv [])
     if (argc >= 2) {
         acFileName = argv [1];
     }
-    
+
+    /* If we have an additional argument, use it as the phone number to look
+     * up.
+     */
+    if (argc >= 3) {
+	RC = GetAreaCodeInfo (&AC, argv [2]);
+	if (RC == acOk) {
+	    printf ("%u %s\n", AC.AreaCodeLen, AC.Info);
+	}
+	return RC;
+    }
+
     /* Test loop */
     while (1) {
 
         printf ("Enter phone number: ");
         fflush (stdout);
-        gets (Buf);
-        if (strlen (Buf) == 0) {
+        if (fgets (Buf, sizeof (Buf), stdin) == 0) {
+	    /* EOF on stdin */
+	    break;
+	}
+	Len = strlen (Buf);
+	while (Len > 0 && Buf [Len-1] == '\n') {
+	    Buf [--Len] = '\0';
+	}
+        if (Len == 0) {
             break;
         }
 
@@ -69,7 +88,7 @@ int main (int argc, char* argv [])
 
             case acOk:
                 printf ("acOK:\n"
-                        "  PrefixLen = %d\n"
+                        "  Length    = %d\n"
                         "  Info      = %s\n",
                         AC.AreaCodeLen, AC.Info);
                 break;
@@ -85,6 +104,10 @@ int main (int argc, char* argv [])
             case acWrongVersion:
                 printf ("acWrongVersion\n");
                 break;
+
+	    case acInvalidInput:
+	    	printf ("acInvalidInput\n");
+		break;
 
             default:
                 printf ("Unknown return: %u\n", RC);
