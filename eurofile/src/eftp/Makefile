@@ -1,4 +1,4 @@
-#$Id: Makefile,v 1.3 1999/10/08 00:31:06 he Exp $
+#$Id: Makefile,v 1.4 2000/06/08 10:06:02 keil Exp $
 # This Makefile uses GNU-make extensions
 
 default: eftp
@@ -35,9 +35,9 @@ eftp: eftp.o $(READLINE_O)
 	$(LINK.C) eftp.o $(EFT_LIBDIR_FLAGS) $(READLINE_LDFLAGS) -left -o eftp
 
 install: eftp
-	$(INSTALL_PROGRAM) eftp $(BINDIR)/
+	$(INSTALL_PROGRAM) eftp $(DESTDIR)$(BINDIR)/
 ifeq ($(CONFIG_EFTP_SETUID),y)
-	chmod u+s $(BINDIR)/eftp 
+	chmod u+s $(DESTDIR)$(BINDIR)/eftp 
 endif	
 
 clean:

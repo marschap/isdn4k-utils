@@ -1,9 +1,9 @@
 CC	= gcc
-CFLAGS	= -O2 -Wall -fPIC -L../capi20
-LDFLAGS	= -shared
+CFLAGS	= -O2 -Wall -fPIC -I../capi20 -L../capi20
+LDFLAGS	= -shared -L../capi20
 
-PLUGINDIR=/etc/ppp/plugins
-PEERDIR=/etc/ppp/peers/isdn
+PLUGINDIR=${DESTDIR}/etc/ppp/plugins
+PEERDIR=${DESTDIR}/etc/ppp/peers/isdn
 PEERS= arcor otelo talkline avm avm-ml
 INSTALL=./install-sh -c
 

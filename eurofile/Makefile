@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.13 1999/10/15 11:12:00 keil Exp $
+# $Id: Makefile,v 1.14 2000/06/08 10:06:01 keil Exp $
 
 -include Rules.make
 
@@ -57,13 +57,13 @@ configureclean: distclean
 install: 
 	make -C src install
 ifeq ($(CONFIG_EFT_INSTALL_EFTD_SH),y)
-	cd scripts  &&  $(INSTALL_SCRIPT) eftd.sh $(SYSVINIT_RC_DIR)/
+	cd scripts  &&  $(INSTALL_SCRIPT) eftd.sh $(DESTDIR)$(SYSVINIT_RC_DIR)/
 endif
 ifeq ($(CONFIG_EFT_INSTALL_CONF),y)
-	cd examples  &&  $(INSTALL_DATA) eft.conf $(I4LCONFDIR)/	
+	cd examples  &&  $(INSTALL_DATA) eft.conf $(DESTDIR)$(I4LCONFDIR)/	
 endif
-	@if test -f /etc/ftpaccess; then test -e $(I4LCONFDIR)/eftaccess || ln -s /etc/ftpaccess $(I4LCONFDIR)/eftaccess; fi
-	@if test -f /etc/ftpusers; then test -e $(I4LCONFDIR)/eftusers || ln -s /etc/ftpusers $(I4LCONFDIR)/eftusers; fi
+	@if test -f /etc/ftpaccess; then test -e $(DESTDIR)$(I4LCONFDIR)/eftaccess || ln -sf /etc/ftpaccess $(DESTDIR)$(I4LCONFDIR)/eftaccess; fi
+	@if test -f /etc/ftpusers; then test -e $(DESTDIR)$(I4LCONFDIR)/eftusers || ln -sf /etc/ftpusers $(DESTDIR)$(I4LCONFDIR)/eftusers; fi
 
 commit: distclean configure
 	$(CVS) commit .

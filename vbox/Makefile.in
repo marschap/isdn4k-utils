@@ -1,5 +1,5 @@
 #
-# $Id: Makefile.in,v 1.21 1999/10/15 15:43:27 keil Exp $
+# $Id: Makefile.in,v 1.22 2000/06/08 10:06:03 keil Exp $
 
 #----------------------------------------------------------------------------#
 # Things you can change to personalize the Makefile for your own site. Some  #
@@ -186,14 +186,14 @@ programs-i:	  ignore
 		  @$(INSTALL_UBIN) $(TOPDIR)/src/vboxbeep $(DESTDIR)$(bindir)/vboxbeep
 		  @echo "Installing '$(DESTDIR)$(bindir)/vbox'..."
 		  @$(INSTALL_BIN) $(TOPDIR)/src/vbox $(DESTDIR)$(bindir)/vbox
-		  @set -e; if [ -n "$(DESTDIR)" -o -f $(DESTDIR)$(sysconfdir)/vboxgetty.conf ]; then \
+		  @set -e; if [ -z "$(DESTDIR)" -a -f $(DESTDIR)$(sysconfdir)/vboxgetty.conf ]; then \
 			  echo "Installing '$(DESTDIR)$(sysconfdir)/vboxgetty.conf.new'..."; \
 			  $(INSTALL_SYSCONF) $(TOPDIR)/examples/vboxgetty.conf.example $(DESTDIR)$(sysconfdir)/vboxgetty.conf.new; \
 		  else \
 			  echo "Installing '$(DESTDIR)$(sysconfdir)/vboxgetty.conf'..."; \
 			  $(INSTALL_SYSCONF) $(TOPDIR)/examples/vboxgetty.conf.example $(DESTDIR)$(sysconfdir)/vboxgetty.conf; \
 		  fi
-		  @set -e; if [ -n "$(DESTDIR)" -o -f $(DESTDIR)$(sysconfdir)/vboxd.conf ]; then \
+		  @set -e; if [ -z "$(DESTDIR)" -a -f $(DESTDIR)$(sysconfdir)/vboxd.conf ]; then \
 			  echo "Installing '$(DESTDIR)$(sysconfdir)/vboxd.conf.new'..."; \
 			  $(INSTALL_SYSCONF) $(TOPDIR)/examples/vboxd.conf.example $(DESTDIR)$(sysconfdir)/vboxd.conf.new; \
 		  else \

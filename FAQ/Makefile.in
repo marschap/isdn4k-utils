@@ -125,7 +125,7 @@ $(DE_OUT_NAME).txt.gz: $(DE_OUT_TXT)
 
 # Install output files
 install: all
-	if [ -n "$(TARGET_DIR)" ]; then \
+	if [ -n "$(DESTDIR)$(TARGET_DIR)" ]; then \
 		$(INSTALL) -m 0755 -d $(DESTDIR)$(TARGET_DIR); \
 		$(INSTALL) -m 0644 $(SRC) $(DESTDIR)$(TARGET_DIR); \
 		$(INSTALL) -m 0644 $(OUT_TXT) $(DESTDIR)$(TARGET_DIR); \
