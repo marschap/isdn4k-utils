@@ -1,6 +1,6 @@
-.\" $Id: isdnctrl.man.in,v 1.12 1998/10/27 19:56:51 he Exp $
+.\" $Id: isdnctrl.man.in,v 1.13 1998/10/28 16:12:20 paul Exp $
 .\"
-.\" CHECKIN $Date: 1998/10/27 19:56:51 $
+.\" CHECKIN $Date: 1998/10/28 16:12:20 $
 .\"
 .\" Process this file with
 .\" groff -man -Tascii isdnctrl.8 for ASCII output, or
@@ -82,6 +82,11 @@ to some reasonable defaults.
 Sets the dial mode of the interface to one of:
 .LP
 .RS
+.B off
+.br
+no connection can be made; an existing connection is terminated immediately.
+Incoming connections are also not possible.
+.LP
 .B manual
 .br
 manual dialing / hangup;
@@ -97,11 +102,6 @@ Incoming connections are possible; however, if this interface is configured in
 .BR "callback in"
 mode, the callback dial will not happen (as this is actually an outgoing
 connection, not an incoming one).
-.LP
-.B off
-.br
-no connection can be made; an existing connection is terminated immediately.
-Incoming connections are also not possible.
 .LP
 .B auto
 .br
@@ -123,6 +123,12 @@ was implemented).
 .LP
 .br
 If no argument is given, the current dialmode value is displayed.
+.br
+.LP
+.br
+You can give
+.BR all
+as the interface name; the command will then be executed for all interfaces.
 .RE
 .TP
 .BI addphone " name " out " num"

@@ -1,4 +1,4 @@
-/* $Id: isdnctrl.c,v 1.26 1998/10/21 16:18:45 paul Exp $
+/* $Id: isdnctrl.c,v 1.27 1998/10/28 16:12:18 paul Exp $
  * ISDN driver for Linux. (Control-Utility)
  *
  * Copyright 1994,95 by Fritz Elfert (fritz@wuemaus.franken.de)
@@ -21,6 +21,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnctrl.c,v $
+ * Revision 1.27  1998/10/28 16:12:18  paul
+ * Implemented "dialmode all" mode.
+ *
  * Revision 1.26  1998/10/21 16:18:45  paul
  * Implementation of "dialmode" (successor of "status")
  *
@@ -194,6 +197,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <ctype.h>
 
 #include <linux/isdn.h>
 #include <linux/isdnif.h>
@@ -234,7 +238,7 @@ defs_fcn_t defs_fcns [] = {
 };
 
 
-char nextlistif[10];
+char nextslaveif[10];
 
 int exec_args(int fd, int argc, char **argv);
 
@@ -479,10 +483,12 @@ static void listif(int isdnctrl, char *name, int errexit)
         else
         	printf("Nothing\n");
 
-        if (cfg.slave && strlen(cfg.slave))
-                strcpy(nextlistif, cfg.slave);
+        if (cfg.slave && *cfg.slave) {
+                strncpy(nextslaveif, cfg.slave, 9);
+		nextslaveif[9] = 0;
+	}
         else
-                nextlistif[0] = '\0';
+                nextslaveif[0] = 0;
 }
 
 int findcmd(char *str)
@@ -496,6 +502,68 @@ int findcmd(char *str)
 
 	return -1;
 }
+
+
+/*
+ * do_dialmode() - handle dialmode settings
+ *		   parameters:
+ *			args	 - number of args given
+ *			dialmode - what to set it to
+ *			fd	 - fd for ioctl
+ *			id	 - name of interface
+ *			errexit  - exit if error (useful for nonisdn interfaces)
+ * 
+ * If called with args == 2, set the value of interface id,
+ * else show the setting.
+ */
+
+static void
+do_dialmode(int args, int dialmode, int fd, char *id, int errexit)
+{
+	isdn_net_ioctl_cfg cfg;
+
+	/* first get settings */
+	strcpy(cfg.name, id);
+	if (ioctl(fd, IIOCNETGCF, &cfg) < 0) {
+		if (!errexit)
+			return;
+		perror(id);
+		exit(-1);
+	}
+	/* hack for following a chain of interfaces */
+	if (cfg.slave && *cfg.slave) {
+		strncpy(nextslaveif, cfg.slave, 9);
+		nextslaveif[9] = 0;
+	}
+	else
+		nextslaveif[0] = 0;
+
+	if (args == 2) {	/* set a value */
+		cfg.dialmode = dialmode;
+		if (ioctl(fd, IIOCNETSCF, &cfg) < 0) {
+			perror(id);
+			exit(-1);
+		}
+		return;
+	}
+
+	printf("Dial mode for %s: ", id);
+	/* no args specified, so show dialmode */
+#ifdef ISDN_NET_DM_OFF
+	if      (cfg.dialmode == ISDN_NET_DM_OFF)
+		puts("off");
+	else if (cfg.dialmode == ISDN_NET_DM_AUTO)
+		puts("auto");
+	else if (cfg.dialmode == ISDN_NET_DM_MANUAL)
+		puts("manual");
+	else
+		puts("illegal value (wrong kernel version?)");
+#else	/* not in kernel include file */
+	fprintf(stderr, "No 'dialmode' field in kernel source when compiled, old isdn4kernel?\n");
+	exit(-1);
+#endif
+}
+
 
 int exec_args(int fd, int argc, char **argv)
 {
@@ -805,8 +873,8 @@ int exec_args(int fd, int argc, char **argv)
 			        			*p = 0;
 			        			sscanf(s, "%s", name);
 			        			listif(fd, name, 0);
-			        			while (strlen(nextlistif))
-			        				listif(fd, nextlistif, 0);
+			        			while (*nextslaveif)
+			        				listif(fd, nextslaveif, 0);
 			        		}
 			        	}
 			        	fclose(iflst);
@@ -1200,41 +1268,42 @@ int exec_args(int fd, int argc, char **argv)
 
                 	case DIALMODE:
 #ifdef ISDN_NET_DM_OFF
-                        	strcpy(cfg.name, id);
-                        	if ((result = ioctl(fd, IIOCNETGCF, &cfg)) < 0) {
-                                	perror(id);
-                               		exit(-1);
-                        	}
 				if(args == 2) {
-                        		if (strcmp(arg1, "manual") &&
-					    /* also "on" */
-					    strcmp(arg1, "on") &&
-					    /* also automatic, autodial, ... */
-					    strncmp(arg1, "auto", 4) &&
-					    strcmp(arg1, "off")) {
-                                		fprintf(stderr, "dialmode must be 'off', 'manual' or 'auto'\n");
-                                		exit(-1);
-                        		}
 					if (!strcmp(arg1, "on") || !strcmp(arg1, "manual"))
 						cfg.dialmode = ISDN_NET_DM_MANUAL;
 					else if (!strcmp(arg1, "off"))
 						cfg.dialmode = ISDN_NET_DM_OFF;
-					else
+					else if (!strncmp(arg1, "auto", 4))
+					    /* also automatic, autodial, ... */
 						cfg.dialmode = ISDN_NET_DM_AUTO;
-                            		if ((result = ioctl(fd, IIOCNETSCF, &cfg)) < 0) {
-                                		perror(id);
-                                		exit(-1);
-                            		}
+					else {
+						fprintf(stderr, "dialmode must be 'off', 'manual' or 'auto'\n");
+						exit(-1);
+					}
 				}
-				else {	/* no args specified, so show dialmode */
-					printf("Dial mode: ");
-					if (cfg.dialmode == ISDN_NET_DM_OFF)
-						puts("off");
-					else if (cfg.dialmode == ISDN_NET_DM_AUTO)
-						puts("auto");
-					else
-						puts("manual");
+				if (!strcmp(id, "all")) { /* do all interfaces*/
+					if ((iflst = fopen(FILE_PROC, "r")) == NULL) {
+						perror(FILE_PROC);
+						return -1;
+					}
+					while (!feof(iflst)) {
+						fgets(s, sizeof(s), iflst);
+						if ((p = strchr(s, ':'))) {
+							*p = 0;
+							p = s;
+							while (*p && isspace(*p))
+								p++;
+							do_dialmode(args, cfg.dialmode, fd, p, 0);
+							while (*nextslaveif)
+								do_dialmode(args, cfg.dialmode, fd, nextslaveif, 0);
+						}
+					}
+					fclose(iflst);
 				}
+				else {
+					do_dialmode(args, cfg.dialmode, fd, id, 1);
+				}
+
 #else	/* not in kernel include file */
 				fprintf(stderr, "No 'dialmode' field in kernel source when compiled, old isdn4kernel?\n");
 				exit(-1);
