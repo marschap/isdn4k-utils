@@ -26,7 +26,7 @@
 #include <linux/if.h>
 #include <linux/in.h>
 
-static char *revision = "$Revision: 1.16 $";
+static char *revision = "$Revision: 1.17 $";
 
 /* -------------------------------------------------------------------- */
 
@@ -1341,8 +1341,10 @@ static void makeleasedline(void)
 	t = time(0)+opt_dialtimeout;
 	do {
 		handlemessages();
-		if (status != EXIT_OK && conn_find(cp))
+		if (status != EXIT_OK && conn_find(cp)) {
+			info("capiplugin: pppd status %d, disconnecting ...", status);
  			dodisconnect(cp);
+		}
 	} while (time(0) < t && conn_inprogress(cp));
 
 	if (status != EXIT_OK)
@@ -1389,8 +1391,10 @@ static void makeconnection(STRINGLIST *numbers)
 		   t = time(0)+opt_dialtimeout;
 		   do {
 		      handlemessages();
-		      if (status != EXIT_OK && conn_find(cp))
+		      if (status != EXIT_OK && conn_find(cp)) {
+			info("capiplugin: pppd status %d, disconnecting ...", status);
 			 dodisconnect(cp);
+		      }
 		   } while (time(0) < t && conn_inprogress(cp));
 
 		   if (conn_isconnected(cp))
@@ -1556,6 +1560,7 @@ static int capi_new_phase_hook(int phase)
 			info("capiplugin: phase initialize");
 			break;
 		case PHASE_DORMANT:
+			status = EXIT_OK;
 			wakeupneeded = 1;
 			plugin_check_options();
 			init_capiconn();
@@ -1564,6 +1569,7 @@ static int capi_new_phase_hook(int phase)
 			   setupincoming_for_demand();
 			break;
 		case PHASE_SERIALCONN:
+			status = EXIT_OK;
 		        info("capiplugin: phase serialconn");
 	                if (conn_isconnected(0))
 			   break;
