@@ -1,15 +1,12 @@
 /*
-** $Id: libvboxmodem.c,v 1.1 1998/06/17 16:38:45 michael Exp $
+** $Id: libvboxmodem.c,v 1.2 1998/06/17 17:01:19 michael Exp $
 **
 ** Copyright 1997-1998 by Michael Herold <michael@abadonna.mayn.de>
 **
 ** $Log: libvboxmodem.c,v $
-** Revision 1.1  1998/06/17 16:38:45  michael
+** Revision 1.2  1998/06/17 17:01:19  michael
 ** - First part of the automake/autoconf implementation. Currently vbox will
 **   *not* compile!
-**
-** Revision 1.1  1998/06/10 13:31:50  michael
-** Source added.
 **
 */
 

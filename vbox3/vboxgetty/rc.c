@@ -1,15 +1,12 @@
 /*
-** $Id: rc.c,v 1.1 1998/06/17 16:38:49 michael Exp $
+** $Id: rc.c,v 1.2 1998/06/17 17:01:22 michael Exp $
 **
 ** Copyright 1997-1998 by Michael Herold <michael@abadonna.mayn.de>
 **
 ** $Log: rc.c,v $
-** Revision 1.1  1998/06/17 16:38:49  michael
+** Revision 1.2  1998/06/17 17:01:22  michael
 ** - First part of the automake/autoconf implementation. Currently vbox will
 **   *not* compile!
-**
-** Revision 1.1  1998/06/10 13:31:55  michael
-** Source added.
 **
 */
 

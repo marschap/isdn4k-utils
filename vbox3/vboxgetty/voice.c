@@ -1,15 +1,12 @@
 /*
-** $Id: voice.c,v 1.1 1998/06/17 16:38:55 michael Exp $
+** $Id: voice.c,v 1.2 1998/06/17 17:01:26 michael Exp $
 **
 ** Copyright 1997-1998 by Michael Herold <michael@abadonna.mayn.de>
 **
 ** $Log: voice.c,v $
-** Revision 1.1  1998/06/17 16:38:55  michael
+** Revision 1.2  1998/06/17 17:01:26  michael
 ** - First part of the automake/autoconf implementation. Currently vbox will
 **   *not* compile!
-**
-** Revision 1.1  1998/06/10 13:31:59  michael
-** Source added.
 **
 */
 

@@ -1,18 +1,12 @@
 /*
-** $Id: vboxgetty.c,v 1.1 1998/06/17 16:38:53 michael Exp $
+** $Id: vboxgetty.c,v 1.2 1998/06/17 17:01:24 michael Exp $
 **
 ** Copyright 1997-1998 by Michael Herold <michael@abadonna.mayn.de>
 **
 ** $Log: vboxgetty.c,v $
-** Revision 1.1  1998/06/17 16:38:53  michael
+** Revision 1.2  1998/06/17 17:01:24  michael
 ** - First part of the automake/autoconf implementation. Currently vbox will
 **   *not* compile!
-**
-** Revision 1.2  1998/06/17 12:20:37  michael
-** - Changes for automake/autoconf added.
-**
-** Revision 1.1  1998/06/10 13:31:58  michael
-** Source added.
 **
 */
 

@@ -1,3 +1,14 @@
+/*
+** $Id: stringutils.c,v 1.2 1998/06/17 17:01:23 michael Exp $
+**
+** Copyright 1997-1998 by Michael Herold <michael@abadonna.mayn.de>
+**
+** $Log: stringutils.c,v $
+** Revision 1.2  1998/06/17 17:01:23  michael
+** - First part of the automake/autoconf implementation. Currently vbox will
+**   *not* compile!
+**
+*/
 
 #include <string.h>
 

@@ -1,15 +1,12 @@
 /*
-** $Id: tclscript.c,v 1.1 1998/06/17 16:38:51 michael Exp $
+** $Id: tclscript.c,v 1.2 1998/06/17 17:01:24 michael Exp $
 **
 ** Copyright 1997-1998 by Michael Herold <michael@abadonna.mayn.de>
 **
 ** $Log: tclscript.c,v $
-** Revision 1.1  1998/06/17 16:38:51  michael
+** Revision 1.2  1998/06/17 17:01:24  michael
 ** - First part of the automake/autoconf implementation. Currently vbox will
 **   *not* compile!
-**
-** Revision 1.1  1998/06/10 13:31:56  michael
-** Source added.
 **
 */
 
