@@ -4,7 +4,7 @@
 
 <title>FAQ for isdn4linux
 <author>Matthias Hessler (<tt><htmlurl url="mailto:hessler@isdn4linux.de" name="hessler@isdn4linux.de"></tt>)
-<date>v2.0.82, 22. November 2003
+<date>v2.0.83, 4. December 2003
 <abstract>
 If you are reading this FAQ online, you may consider downloading the whole
 thing, and reading it offline (much cheaper). To download the latest
@@ -1750,7 +1750,8 @@ isdn4linux?
 These are helpful links that are currently available on how to configure
 isdn4linux:
 <itemize>
-<item>English: <url url="http://www.wurtel.demon.nl/i4l-howto-uk.html">
+<item>English: <url url="http://www.wurtel.cistron.nl/i4l-howto-uk.html">
+<item>Dutch: <url url="http://www.wurtel.cistron.nl/i4l-howto-nl.html">
 <item>German: <url url="http://www.franken.de/users/klaus/">
 <item>French: <url url="http://www.linux-france.org/article/connex/ISDN/">
 and <url url="http://www.linux-france.org/prj/inetdoc/guides/rnis/">
