@@ -807,6 +807,30 @@ eine Variable verwendet werden soll, so muss diese mit "\$" geqoutet werden:
 ALIAS = \$PATH # -> "$PATH"
 ...
 
+Wenn eine Variable mehrfach gesetzt wird, so wird sie ueberschrieben. Die
+Regel fuer das ueberschreiben entspricht der Reihenfolge, in der die 
+Konfigurationsdateien gelesen werden:
+
+1. isdn.conf
+2. callerid.conf
+3. ~/.isdn
+
+Wenn eine Variable "FRED" in "isdn.conf" und "~/.isdn" gesetzt werden, so wird
+der Wert von "isdn.conf" durch den Wert der zweiten Datei ueberschrieben.
+
+Die Variablen werden zuerst aus allen drei Dateien gelesen, bevor die
+Ersetzung stattfindet. Das bedeutet also, das z. B. eine Variable, die
+in "~/.isdn" gesetzt wurde, in der isdn.conf verwendet werden kann.
+
+Dieses mag im ersten Augenblick als ein Sicherheitsloch erscheinen, aber
+wenn als root ein Programm gestartet wurde, muessen alle drei Dateien
+auf readonly fuer group und world gesetzt sein. Andersherum kann ein Benutzer,
+der ein Programm startet auf diese Dateien nur lesend zugreifen.
+
+ACHTUNG:
+Es ist allerdings davon abzuraten, weder den isdnlog, noch den isdnrep oder den
+isdnconf mit dem sticky-Bit auszustatten!!!!
+
 Es gibt bestimmte Regeln, nachdem Eintraege aus der Datei "~/.isdn" die
 Eintraege der "callerid.conf" ueberschreiben:
 

@@ -1,4 +1,4 @@
-/* $Id: conffile.c,v 1.14 1997/04/15 00:20:13 luethje Exp $
+/* $Id: conffile.c,v 1.15 1997/04/15 22:37:20 luethje Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -19,6 +19,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: conffile.c,v $
+ * Revision 1.15  1997/04/15 22:37:20  luethje
+ * allows the character `"' in the program argument like the shell.
+ * some bugfixes.
+ *
  * Revision 1.14  1997/04/15 00:20:13  luethje
  * replace variables: some bugfixes, README comleted
  *
@@ -1547,17 +1551,24 @@ int Replace_Variables(section *Section)
 
 		while(Entry != NULL)
 		{
-			if (Entry->value != NULL && (Ptr = Replace_Variable(Entry->value)) != NULL)
+			if (Entry->value != NULL)
 			{
-				if ((Ptr = strdup(Ptr)) == NULL)
+				if ((Ptr = Replace_Variable(Entry->value)) != NULL)
 				{
-					print_msg("%s","Can not allocate memory!\n");
-					return -1;
-				}
+					if ((Ptr = strdup(Ptr)) == NULL)
+					{
+						print_msg("%s","Can not allocate memory!\n");
+						return -1;
+					}
 
-				free(Entry->value);
-				Entry->value = Ptr;
+					free(Entry->value);
+					Entry->value = Ptr;
+				}
 			}
+			else
+				if (Entry->subsection != NULL)
+					if (Replace_Variables(Entry->subsection) != 0)
+						return -1;
 
 			Entry = Entry->next;
 		}

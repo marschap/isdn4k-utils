@@ -1,4 +1,4 @@
-/* $Id: start_prog.c,v 1.3 1997/04/10 23:32:19 luethje Exp $
+/* $Id: start_prog.c,v 1.4 1997/04/15 22:37:10 luethje Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: start_prog.c,v $
+ * Revision 1.4  1997/04/15 22:37:10  luethje
+ * allows the character `"' in the program argument like the shell.
+ * some bugfixes.
+ *
  * Revision 1.3  1997/04/10 23:32:19  luethje
  * Added the feature, that environment variables are allowed in the config files.
  *
@@ -45,6 +49,18 @@
 
 /*************************************************************************/
 
+#define C_SET_TAB   1
+#define C_SET_SPACE 2
+
+#define SET_BEGIN_VAR 1
+
+/*************************************************************************/
+
+#define C_TAB   '\t'
+#define C_SPACE ' '
+
+/*************************************************************************/
+
 static interval *RootIntervall = NULL;
 
 /** Prototypes ***********************************************************/
@@ -54,6 +70,8 @@ static int		GetArgs(char *, char *[], char *[], int);
 static interval *Next_Interval(void);
 static int set_user(char *User);
 static int set_group(char *Group);
+static char *StrToArg(char* string);
+static char *Replace_Opts(char *String, char *Opts[], int MaxOpts);
 
 /****************************************************************************/
 
@@ -149,10 +167,7 @@ int Ring(info_args *Cmd, char *Opts[], int Die, int Async)
 			case -1: print_msg(PRT_ERR, "%s\n", "Can't start fork()!");
 			         return 0;
 			         break;
-			case  0: if (paranoia_check(Args[0]) < 0)
-			           exit(-1);
-
-			         if (set_group(Cmd->group) < 0)
+			case  0: if (set_group(Cmd->group) < 0)
 			         {
 			           print_msg(PRT_ERR, "Can not set group %s: %s\n",Cmd->group,strerror(errno));
 			           exit(-1);
@@ -163,6 +178,9 @@ int Ring(info_args *Cmd, char *Opts[], int Die, int Async)
 			           print_msg(PRT_ERR, "Can not set user %s: %s\n",Cmd->user,strerror(errno));
 			           exit(-1);
 			         }
+
+			         if (paranoia_check(Args[0]) < 0)
+			           exit(-1);
 
 			         dup2(filedes[1],STDOUT_FILENO);
 			         dup2(filedes[1],STDERR_FILENO);
@@ -224,7 +242,6 @@ static int GetArgs(char *Line, char *Args[], char *Opts[], int MaxArgs)
 	int	 MaxOpts= 0;
 	int	 i		= 0;
 	int	 j		= 0;
-	int	 Num  = 0;
 	char HelpString[SHORT_STRING_SIZE];
 	static char **MemPtr = NULL;
 
@@ -241,9 +258,18 @@ static int GetArgs(char *Line, char *Args[], char *Opts[], int MaxArgs)
 	while (Opts[MaxOpts] != NULL)
 		MaxOpts++;
 
-	while ((Org_Arg = Arg = strtok(Use, " \t")))
+	while ((Org_Arg = Arg = StrToArg(Use)))
 	{
 		Use = NULL;
+
+		if ((Ptr = Replace_Opts(Arg,Opts,MaxOpts)) != NULL)
+		{
+			Arg = strdup(Ptr);
+
+			MemPtr = (char**) realloc(MemPtr,sizeof(char*)*(j+2));
+			MemPtr[j++] = Arg;
+			MemPtr[j] = NULL;
+		}
 
 		if (*Arg == '@')
 		{
@@ -266,9 +292,6 @@ static int GetArgs(char *Line, char *Args[], char *Opts[], int MaxArgs)
 			else
 				Arg = NULL;
 		}
-		else
-		if (*Arg == '$' && Opts != NULL && (Num = atoi(Arg+1)) > 0 && Num <= MaxOpts)
-				Arg = Opts[Num-1];
 
 		if (Arg == NULL || *Arg == '\0')
 		{
@@ -278,9 +301,11 @@ static int GetArgs(char *Line, char *Args[], char *Opts[], int MaxArgs)
 			Arg = "?";
 		}
 
+/*
 		Ptr = Arg;
 		while((Ptr = Check_Quote(Ptr, S_QUOTES, QUOTE_DELETE)) != NULL && Ptr[0] != '\0')
 			Ptr++;
+*/
 
 		if (i < MaxArgs) Args[i++] = Arg;
 	}
@@ -288,6 +313,180 @@ static int GetArgs(char *Line, char *Args[], char *Opts[], int MaxArgs)
 	Args[i] = NULL;
 
 	return(i);
+}
+
+/*************************************************************************/
+
+static char *StrToArg(char* string)
+{
+	static char *Ptr = NULL;
+	int in = 0;
+	int begin = 1;
+	char *Start;
+
+	if (string != NULL)
+	{
+		Ptr = string;
+		begin = 1;
+	}
+
+	Start = Ptr;
+
+	if (Ptr == NULL)
+		return NULL;
+
+	while(*Ptr != '\0')
+	{
+		if (*Ptr == '\"')
+		{
+			if (begin != 1 && Ptr[-1] == C_QUOTE_CHAR)
+			{
+				memmove(Ptr-1,Ptr,strlen(Ptr)+1);
+				Ptr--;
+			}
+			else
+			{
+				in = !in;
+				memmove(Ptr,Ptr+1,strlen(Ptr));
+				Ptr--;
+			}
+		}
+		else
+		if (!in && isspace(*Ptr))
+		{
+			*Ptr++ = '\0';
+			break;
+		}
+
+		begin = 0;
+		Ptr++;
+	}
+
+	if (in)
+		print_msg(PRT_WARN,"Warning: Missing second char `\"'! in string `%s'!\n",Start);
+
+	if (*Start == '\0')
+		Start = NULL;
+
+	return Start;
+}
+
+/****************************************************************************/
+
+static char *Replace_Opts(char *String, char *Opts[], int MaxOpts)
+{
+	static char *RetCode = NULL;
+	char *Begin = NULL;
+	char *Var = NULL;
+	char *End = NULL;
+	char *Value = NULL;
+	char *Ptr = String;
+	int cnt = 0;
+	int num = 0;
+	int Num = 0;
+
+
+	if (Opts == NULL)
+		return String;
+
+	while ((Ptr = strchr(Ptr,C_BEGIN_VAR)) != NULL)
+	{
+		cnt++;
+		Ptr++;
+	}
+
+	if (!cnt)
+		return String;
+
+	if (RetCode != NULL)
+		free(RetCode);
+
+	if ((RetCode = strdup(String))  == NULL ||
+	    (Var     = strdup(RetCode)) == NULL ||
+	    (End     = strdup(RetCode)) == NULL   )
+	{
+		print_msg(PRT_ERR,"%s!\n","Error: Can not allocate memory!\n");
+		return NULL;
+	}
+
+	while ((Ptr = strchr(RetCode,C_BEGIN_VAR)) != NULL)
+	{
+		if (Ptr != RetCode && Ptr[-1] == C_QUOTE_CHAR)
+		{
+			*Ptr = SET_BEGIN_VAR;
+			memmove(Ptr-1,Ptr,strlen(RetCode)-(Ptr-RetCode-1));
+			cnt--;
+		}
+		else
+		if ((num = sscanf(Ptr+1,"%[0-9]%[^\n]",Var,End))   >= 1 ||
+		    (num = sscanf(Ptr+1,"{%[0-9]}%[^\n]",Var,End)) >= 1   )
+		{
+			if ((Num = atoi(Var)) > 0 && Num <= MaxOpts)
+			{
+				free(Begin);
+
+				if ((Begin = strdup(RetCode)) == NULL)
+				{
+					print_msg(PRT_ERR,"%s!\n","Error: Can not allocate memory!\n");
+					return NULL;
+				}
+
+				Begin[Ptr-RetCode] = '\0';
+
+				if ((RetCode = (char*) realloc(RetCode,sizeof(char)*strlen(RetCode)+strlen(Value)-strlen(Var))) == NULL)
+				{
+					print_msg(PRT_ERR,"%s!\n","Error: Can not allocate memory!\n");
+					return NULL;
+				}
+
+				if (num == 1)
+					*End = '\0';
+
+				sprintf(RetCode,"%s%s%s",Begin,Opts[Num-1],End);
+
+				free(Var);
+				free(End);
+
+				if ((Var   = strdup(RetCode)) == NULL ||
+				    (End   = strdup(RetCode)) == NULL   )
+				{
+					print_msg(PRT_ERR,"%s!\n","Error: Can not allocate memory!\n");
+					return NULL;
+				}
+
+				cnt--;
+			}
+			else
+			{
+				*Ptr = SET_BEGIN_VAR;
+				cnt--;
+
+				print_msg(PRT_WARN,"Warning: Unknown variable `%s'!\n",Var);
+			}
+		}
+		else
+			*Ptr = SET_BEGIN_VAR;
+	}
+
+	if (cnt)
+		print_msg(PRT_WARN,"Warning: Invalid token in string `%s'!\n",String);
+
+	free(Begin);
+	free(Var);
+	free(End);
+
+	if ((Ptr = RetCode) != NULL)
+	{
+		while (*Ptr != '\0')
+		{
+			if (*Ptr == SET_BEGIN_VAR)
+				*Ptr = C_BEGIN_VAR;
+
+			Ptr++;
+		}
+	}
+
+	return RetCode;
 }
 
 /*************************************************************************

@@ -1,4 +1,4 @@
-/* $Id: tools.h,v 1.9 1997/04/03 22:40:21 luethje Exp $
+/* $Id: tools.h,v 1.10 1997/04/15 22:37:13 luethje Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools.h,v $
+ * Revision 1.10  1997/04/15 22:37:13  luethje
+ * allows the character `"' in the program argument like the shell.
+ * some bugfixes.
+ *
  * Revision 1.9  1997/04/03 22:40:21  luethje
  * some bugfixes.
  *
@@ -531,6 +535,7 @@ typedef struct {
   double duration;
   double dm;
   char   num[2][NUMSIZE];
+  char   who[2][NUMSIZE];
   long	 ibytes;
   long	 obytes;
   char   version[10];
