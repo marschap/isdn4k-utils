@@ -1,4 +1,4 @@
-/* $Id: isdnrep.c,v 1.47 1998/10/13 21:53:17 luethje Exp $
+/* $Id: isdnrep.c,v 1.48 1998/10/22 18:22:49 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -24,6 +24,10 @@
  *
  *
  * $Log: isdnrep.c,v $
+ * Revision 1.48  1998/10/22 18:22:49  luethje
+ * isdnrep: suppress some messages
+ * isdnlog: remove function Pathfind()
+ *
  * Revision 1.47  1998/10/13 21:53:17  luethje
  * isdnrep and lib: bugfixes
  *
@@ -1436,7 +1440,7 @@ static int print_line(int status, one_call *cur_call, int computed, char *overla
 				            dir = cur_call->dir?CALLED:CALLING;
 				          	if (cur_call->num[dir][0] != C_UNKNOWN &&
 				          	    cur_call->num[dir][0] != '\0'      &&
-				          	    (Ptr = get_areacode(cur_call->num[dir],NULL,C_NO_ERROR)) != NULL)
+				          	    (Ptr = get_areacode(cur_call->num[dir],NULL,C_NO_WARN | C_NO_ERROR)) != NULL)
 				          		colsize[i] = append_string(&string,*fmtstring, Ptr);
 				          	else
 				          		colsize[i] = append_string(&string,*fmtstring, "");
@@ -1455,7 +1459,7 @@ static int print_line(int status, one_call *cur_call, int computed, char *overla
 				            dir = cur_call->dir?CALLING:CALLED;
 				          	if (cur_call->num[dir][0] != C_UNKNOWN &&
 				          	    cur_call->num[dir][0] != '\0'      &&
-				          	    (Ptr = get_areacode(cur_call->num[dir],NULL,C_NO_ERROR)) != NULL)
+				          	    (Ptr = get_areacode(cur_call->num[dir],NULL,C_NO_WARN | C_NO_ERROR)) != NULL)
 				          		colsize[i] = append_string(&string,*fmtstring, Ptr);
 				          	else
 				          		colsize[i] = append_string(&string,*fmtstring, "");
