@@ -1,6 +1,6 @@
-.\" $Id: isdnctrl.man.in,v 1.18 1999/09/06 08:03:26 fritz Exp $
+.\" $Id: isdnctrl.man.in,v 1.19 2000/01/27 15:07:31 paul Exp $
 .\"
-.\" CHECKIN $Date: 1999/09/06 08:03:26 $
+.\" CHECKIN $Date: 2000/01/27 15:07:31 $
 .\"
 .\" Process this file with
 .\" groff -man -Tascii isdnctrl.8 for ASCII output, or
@@ -462,6 +462,7 @@ is called
 .BI pppunbind " name"
 Unbinds the previously bound interface
 .IR name .
+
 .TP
 .BI busreject " driverId " [on|off]
 If switched
@@ -480,6 +481,7 @@ enable this feature, if the
 adaptor is not the only device connected to the S0-bus.
 Otherwise it could happen, that isdn4linux rejects an incoming call
 which belongs to another device on the bus.
+
 .TP
 .BI addslave " name slave"
 Adds a slave interface named
@@ -504,6 +506,7 @@ If the "master" is already up, it has to be shutdown with
 otherwise the
 .B addslave
 command will be rejected.
+
 .TP
 .BI sdelay " name num"
 Set delay for slave-dialing.
@@ -513,7 +516,10 @@ has to have a load of more than
 .B trigger
 cps for at least
 .I num
-seconds, before it's slave starts dialing.
+seconds, before its slave starts dialing.
+.br
+Note that this only works for rawIP, not MPPP!
+
 .TP
 .BI trigger " name num"
 Set trigger level for slave-dialing.
@@ -524,6 +530,29 @@ has to have a load of more than
 cps for at least
 .B sdelay
 seconds, before its slave starts dialing.
+.br
+Note that this only works for rawIP, not MPPP!
+
+.TP
+.BI addlink " name"
+For MPPP, this adds a slave interface to the existing connection,
+i.e. connect the extra channel now. It is like a
+.B dial
+command for the extra channel.
+.br
+This also means that
+.B addlink
+will only work if the master interface
+.I name
+must already be connected! Also, the
+.B dialmode
+for the slave interface must be \fIauto\fR.
+
+.TP
+.BI removelink " name"
+For MPPP, this removes a slave interface from the existing connection,
+i.e. hangup the extra channel now.
+
 .TP
 .BI dial " name"
 Force dialing of interface
