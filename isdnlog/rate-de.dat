@@ -1,4 +1,4 @@
-V:2.02 [01-Mar-2002 20:15:23]
+V:2.02 [10-Mar-2002 19:03:33]
 
 # Währungsformat
 U:%.3f EUR
@@ -8,7 +8,7 @@ U:%.3f EUR
 #
 # (C) Copyright 1999, 2001 by Andreas Kool (akool@isdn4linux.de)
 #
-# $Id: rate-de.dat,v 1.115 2002/03/01 19:33:52 akool Exp $
+# $Id: rate-de.dat,v 1.116 2002/03/10 20:32:18 akool Exp $
 #
 #
 # Das "A:" Tag muß folgendermaßen gefüllt werden:
@@ -627,6 +627,167 @@ T:*/*=0.04/0,0.23(60)/1
 #####################################################################
 #
 #
+P:19,0 Mobilcom CbC
+B:01019
+C:Name:01019 Telefondienste GmbH
+C:Address:01019 Telefondienste GmbH, Postfach 520, 24753 Rendsburg-Büdelsdorf
+C:Homepage:http://www.mobilcom.de
+C:Hotline:0800/01019-09
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
+C:Euro
+C:Erfasste Zonen:
+C:2	-   4	Deutschland
+C:10		Mobilfunk
+C:102		01019freenet
+# G:unknown
+D:dtag
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+Z:2-4 Ferngespräche bundesweit
+A:+49
+T:*/07-19=0.0613/60 Standard
+T:*/19-07=0.0409/60 Spar
+Z:10 Mobilfunk
+A:_DEMD1
+A:_DEMD2
+A:_DEME1
+A:_DEME2
+A:_DEMQ
+T:*/*=0.2454/60
+Z:102 01019freenet
+A:01929
+S:Internet by call
+T:*/*=0.0251/60 FreeNet
+#####################################################################
+P:19,1 Mobilcom Preselection/Profi
+B:01019
+C:Name:MobilCom Preselection/Profi
+C:Address:City LINE GmbH, Holler Str. 126, 24782 Büdelsdorf
+C:Homepage:http://www.mobilcom.de
+C:Hotline:01805/191919
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
+C:Erfasste Zonen:
+C:2	-   4	Deutschland
+C:10		Mobilfunk
+C:102		01019freenet
+C:200	-	Ausland
+# G:01.08.2001
+# FIXME Sekundentaktung? Aus Website nicht ganz klar ersichtlich
+C:MobilCom AG
+C:Homepage: http://www.mobilcom.de
+C:Hotline:  01805/191919
+C:Adresse:  Postfach 1249
+C:	    24822 Schleswig
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+Z:2 Orts-/Nahzone
+T:*/*=0.0455(60)/1
+Z:3-4 Fernzone
+A:+49
+T:*/*=0.0608(60)/1
+Z:10 Mobilfunk
+A:_DEMD1
+A:_DEMD2
+A:_DEME1
+A:_DEME2
+A:_DEMQ
+T:*/*=0.25(60)/1
+Z:102 01019freenet
+A:01929
+S:Internet by call
+T:*/*=0.0251(60)/1 FreeNet
+#####################################################################
+P:19,2 Mobilcom Preselection/Privat
+B:01019
+C:Name:MobilCom Preselection/Privat
+C:Address:City LINE GmbH, Holler Str. 126, 24782 Büdelsdorf
+C:Homepage:http://www.mobilcom.de
+C:Hotline:01805/191919
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
+C:Erfasste Zonen:
+C:2	-   4	Deutschland
+C:10		Mobilfunk
+C:102		01019freenet
+C:200	-	Ausland
+# G:01.08.2001
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+Z:1-4 Ferngespräche bundesweit
+A:+49
+T:*/07-19=0.0608/60 Standard
+T:*/19-22=0.0455/60 Spar
+T:*/22-07=0.0250/60 Nacht
+Z:10 Mobilfunk
+A:_DEMF
+T:*/*=0.2454/60
+Z:102 01019freenet
+A:01929
+S:Internet by call
+T:*/*=0.0251/60 FreeNet
+#####################################################################
+P:19,3 Mobilcom Aktiv 8
+B:01019
+C:Name:MobilCom CbC
+C:Address:City LINE GmbH, Holler Str. 126, 24782 Büdelsdorf
+C:Homepage:http://www.mobilcom.de
+C:Hotline:01805/191919
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
+C:Erfasste Zonen:
+C:2	-   4	Deutschland
+C:10		Mobilfunk
+C:102		01019freenet
+C:200		Ausland Gruppe A
+# G:01-Oct-2001
+D:dtag
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+Z:2-4 Ferngespräche bundesweit
+A:+49
+T:W/08-18=0.045/60 Standard
+T:W/18-08=0.0245/60 Spar
+T:E,H/*=0.0245/60 Spar
+Z:10 Mobilfunk D
+A:_DEMD1
+A:_DEMD2
+T:*/*=0.1984/60
+Z:11 Mobilfunk E
+A:_DEME1
+A:_DEME2
+T:*/*=0.2291/60
+Z:102 01019freenet
+A:01929
+S:Internet by call
+# eXpress Net: http://www.express-net.de
+A:01928120
+T:*/*=0.0250/60 FreeNet
+#####################################################################
+#####################################################################
+#
+#
 P:24,0 TelePassport
 B:01024
 C:Name:Telepassport 99 Plus
@@ -1241,7 +1402,7 @@ C:Quelle:"Preisliste Telefondienst (Inlandsverbindungen)", Stand 2002-01-01
 C:Quelle:http://www.telekom.de/dtag/agb/dokument/pdf/0,1384,225,00.pdf
 C:Quelle:"Preisliste Auskunftsdienst", Stand 2001-10-04
 C:Quelle:http://www.telekom.de/dtag/agb/dokument/pdf/0,1384,378,00.pdf
-C:Quelle:"Preisliste Telefondienst (Auslandsverbindungen)", Stand 2001-12-01
+C:Quelle:"Preisliste Telefondienst (Auslandsverbindungen)", Stand 2002-03-01
 C:Quelle:http://www.telekom.de/dtag/agb/dokument/pdf/0,1384,71,00.pdf
 C:Euro
 C:Erfasste Zonen:
@@ -1263,7 +1424,7 @@ C: 280 - 295 Ausland
 #   'Mobilfunk MobilCom'(?)
 # nach Auslandspreisliste:
 #   div. Satelliten- und ausländische Mobilfunknetze, Zonen sind auskommentiert
-#   Vis-à-Vis-Tarife in Grenzgebieten
+#   Vis-à-Vis-Tarife in Grenzgebieten, Global 269 (+269800)
 #
 Z:0 FreeCall
 A:08003301113
@@ -1487,7 +1648,7 @@ T:*/*=0.46516(60)/60	# 0.4010 +16%
 # A:Albanien Mobilfunk
 # T:*/*=0.526524(60)/60	# 0.4539 +16%
 Z:257 Welt Mobilfunk 8
-A:MOW
+A:_RUMF
 T:*/*=0.551232(60)/6.67	# 0.4752 +16%
 # Z:258 Welt Mobilfunk 9
 # A:Bulgarien Mobilfunk, Mazedonien (ehemalige jugoslawische Republik) Mobilfunk
@@ -1572,7 +1733,7 @@ Z:284 Welt 5
 A:BG,BY
 T:*/*=0.428736(60)/8.6	# 0.3696 +16%
 Z:285 Welt 6
-A:IL,KP
+A:IL,MK
 A:RO,UA
 T:*/*=0.489984(60)/7.5	# 0.4224 +16%
 Z:286 Welt 7
@@ -1582,7 +1743,7 @@ A:MD,SY
 A:TN
 T:*/*=0.61248(60)/6	# 0.5280 +16%
 Z:287 Welt 8
-A:AU,TW,_HKSO
+A:AU,TW,HK
 A:JP,KR
 A:AQ,NF
 T:*/*=0.796224(60)/4.62	# 0.6864 +16%
@@ -1603,7 +1764,7 @@ Z:292 Welt 13
 A:ZA
 T:*/*=1.347456(60)/2.73	# 1.1616 +16%
 Z:293 Welt 14
-A:DO,CO,PH
+A:IR,CO,PH
 A:SA,AE
 T:*/*=1.408704(60)/2.61	# 1.2144 +16%
 Z:294 Welt 15
@@ -1625,7 +1786,7 @@ C:Homepage:http://www.dtag.de
 C:Hotline:0800/33-01000, T-Online Tarifhotline: 0800/33-03333
 C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
-C:Quelle:"Preisliste T-ISDN 300", Stand 2002-01-01
+C:Quelle:"Preisliste T-ISDN 300", Stand 2002-02-25
 C:Quelle:http://www.telekom.de/dtag/agb/produkte?nr=ISDN300c
 # C:Quelle:http://www.telekom.de/dtag/agb/dokument/pdf/0,1384,107,00.pdf
 C:Grundgebühr zusätzlich für diesen Tarif: 9,90 DM / Monat
@@ -1715,7 +1876,7 @@ T:*/*=0.419224/60	# 0.1719+0.1895 +16%
 # A:Ukraine Mobilfunk
 # T:*/*=0.449848/60	# 0.2600+0.1278 +16%
 Z:208 Welt Mobilfunk AktivPlus 5.2
-A:MOW
+A:_RUMF
 # A: Weißrussland Mobilfunk
 T:*/*=0.52142/60	# 0.2600+0.1895 +16%
 # Z:209 Welt Mobilfunk AktivPlus 6.1
@@ -1815,7 +1976,7 @@ Z:284 Welt 5
 A:BG
 T:*/*=0.428736(60)/8.6	# 0.3696 +16%
 Z:285 Welt 6
-A:IL,KP
+A:IL,MK
 A:RO
 T:*/*=0.489984(60)/7.5	# 0.4224 +16%
 Z:286 Welt 7
@@ -1825,7 +1986,7 @@ A:MD,SY
 A:TN
 T:*/*=0.61248(60)/6	# 0.5280 +16%
 Z:287 Welt 8
-A:AU,TW,_HKSO
+A:AU,TW,HK
 A:JP,KR
 A:AQ,NF
 T:*/*=0.796224(60)/4.62	# 0.6864 +16%
@@ -1843,7 +2004,7 @@ Z:292 Welt 13
 A:ZA
 T:*/*=1.347456(60)/2.73	# 1.1616 +16%
 Z:293 Welt 14
-A:DO,CO,PH
+A:IR,CO,PH
 A:SA,AE
 T:*/*=1.408704(60)/2.61	# 1.2144 +16%
 Z:294 Welt 15
@@ -1864,9 +2025,10 @@ C:Homepage:http://www.dtag.de
 C:Hotline:0800/33-01000, T-Online Tarifhotline: 0800/33-03333
 C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
-C:Quelle:"Preisliste T-ISDN xxl", Stand 2002-01-01
+C:Quelle:"Preisliste T-ISDN xxl", Stand 2002-02-25
 C:Quelle:http://www.telekom.de/dtag/agb/dokument/pdf/0,1384,142,00.pdf
-C:Tarif gilt nur in Verbindung mit T-ISDN xxl Anschluss für min. 30,63 EUR/Monat.
+C:Tarif gilt nur in Verbindung mit T-ISDN xxl Anschluss für min. 30,63 EUR/Monat,
+C:ab dem 01.05.2002 min. 31,18 EUR/Monat.
 C:Euro
 C:Erfasste Zonen:
 C:   1 -   4 Deutschland
@@ -2719,7 +2881,7 @@ A:EG,DZ,EE,IL,JO,LB,LY,LV,LT
 A:EH,SY,TN
 T:*/*=0.60(60)/60
 Z:207 Welt 2
-A:AU,CN,HK,JP,KP,NZ,SG,TW
+A:AU,CN,HK,JP,KR,NZ,SG,TW
 T:*/*=0.80(60)/60
 Z:208 Welt 3
 A:BR,DO,MX
@@ -2822,13 +2984,38 @@ A:EG,DZ,EE,IL,JO,LB,LY,LV,LT
 A:EH,SY,TN
 T:*/*=0.60(60)/60
 Z:207 Welt 2
-A:AU,CN,HK,JP,KP,NZ,SG,TW
+A:AU,CN,HK,JP,KR,NZ,SG,TW
 T:*/*=0.80(60)/60
 Z:208 Welt 3
 A:BR,DO,MX
 T:*/*=1.00(60)/60
 Z:209 Welt 4 (restliche Laender)
 T:*/*=1.40(60)/60
+#####################################################################
+#
+#
+P:224,0 0190024
+B:0190024
+C:Address:
+C:Name:0190024 (01058)
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+Z:1-4 GermanCall
+A:+49
+T:*/*=0.018/60
+Z:10 Mobilfunk
+A:_DEMD1
+A:_DEMD2
+A:_DEME1
+A:_DEME2
+T:*/*=0.18/60
 #####################################################################
 #
 #
@@ -2913,9 +3100,12 @@ A:112
 T:*/*=0
 Z:1-4 GermanCall
 A:+49
-T:*/*=0.026/60
+T:*/*=0.021/60
 Z:10 Mobilfunk
-A:_DEMF
+A:_DEMD1
+A:_DEMD2
+A:_DEME1
+A:_DEME2
 T:*/*=0.179/60
 #####################################################################
 #
@@ -2939,7 +3129,10 @@ T:W/08-19=0.03/0,0.028/60
 T:W/19-08=0.03/0,0.018/60
 T:E,H/*=0.03/0,0.018/60
 Z:10 Mobilfunk
-A:_DEMF
+A:_DEMD1
+A:_DEMD2
+A:_DEME1
+A:_DEME2
 T:*/*=0.159/60
 #####################################################################
 #
@@ -2959,7 +3152,7 @@ A:112
 T:*/*=0
 Z:1-4 GermanCall
 A:+49
-T:*/*=0.018/60
+T:*/*=0.017/60
 Z:10 Mobilfunk
 A:_DEMF
 T:*/*=0.19/60
@@ -3010,6 +3203,9 @@ Z:1-4 GermanCall
 A:+49
 T:*/*=0.025/60
 Z:10 Mobilfunk
-A:_DEMF
+A:_DEMD1
+A:_DEMD2
+A:_DEME1
+A:_DEME2
 T:*/*=0.20/60
 #####################################################################
