@@ -4,7 +4,7 @@
 
 <title>FAQ for isdn4linux
 <author>Matthias Hessler (<tt><htmlurl url="mailto:hessler@isdn4linux.de" name="hessler@isdn4linux.de"></tt>)
-<date>v2.0.17, 11. October 1999
+<date>v2.0.18, 14. October 1999
 <abstract>
 If you are reading this FAQ online, you may consider downloading the whole
 thing, and reading it offline (much cheaper). To download the latest
@@ -400,11 +400,13 @@ other cards. However, there are no plans to implement a CAPI 1.1 interface.
 <sect1> feature_uus: Is UUS (user to user signaling) supported?  
 <label id="feature_uus">
 <p>
-Yes, isdn4linux does support both sending and receiving. However, you should
-know that sending it is not a free service, at least in Germany you have to
-pay extra for it (also have a close look on the usage conditions).
-Additionally, please note that if you are connected through a PBX, it will
-most likely filter out all the subaddressing stuff.
+
+Yes, isdn4linux does support both sending and receiving. However, you
+should know that sending it is not a free service, at least with some
+German phone providers you have to pay extra for it (also have a close
+look on the usage conditions). Additionally, please note that if you are
+connected through a PBX, it will most likely filter out all the
+subaddressing stuff.
 
 <sect1> feature_subaddressing: Is subaddressing supported?  
 <label id="feature_subaddressing">
@@ -488,8 +490,8 @@ helpful articles at least in these issues:
 Also have a look at question <ref id="config_links" name="config_links"> for
 helpful links on how to configure i4l.
 
-<sect1> docu_newsgroup: Where is the official website for isdn4linux? 
-<label id="docu_newsgroup">
+<sect1> docu_website: Where is the official website for isdn4linux? 
+<label id="docu_website">
 <p>
 The offical website can be found at:
 <url url="http://www.isdn4linux.de">.
@@ -700,6 +702,13 @@ either like a modem or like a network card. Linux already supports both
 modems and network cards without isdn4linux - so no special ISDN driver
 is necessary (which usually greatly simplifies the configuration).
 
+<sect1> hardware_cabeling: How should I wire my ISDN cables?  
+<label id="hardware_cabeling">
+<p>
+For any details in this direction have a look at the excellent cable FAQ,
+which can be found at least in a German version at:
+<url url="http://www.rvs.uni-bielefeld.de/~mek/tk/tae/kabelfaq.html">.
+
 <sect1> hardware_irq: Why should I avoid IRQ 12 and 15 for my ISDN card?  
 <label id="hardware_irq">
 <p>
@@ -740,6 +749,10 @@ reported to work.
 Yes, most cards should work. However, at least the AVMFritz!PCI card won't
 work, due to the different Endian format for 32bit B-channel data on the PPC.
 
+In any case, you may also get a terminal adapter (= external ISDN "modem").
+Since then you don't need isdn4linux (see question
+<ref id="hardware_external" name="hardware_external">), this is not covered here any further.
+
 <sect1> hardware_maxcards: How many ISDN cards can I put into my computer?  
 <label id="hardware_maxcards">
 <p>
@@ -765,7 +778,7 @@ the specialities for the configuration of more than one card.
 Generally, ELSA supports the ISDN4LINUX developers quite well with
 documentation on how to access their cards. Thus, these cards are well
 supported and very recommendable for use under ISDN4LINUX. Also, the 
-ELSA Quickstep 1000 PCI (new name Microlink PCI) is one of the only cards
+ELSA Quickstep 1000 PCI (new name Microlink PCI) the only brand of cards
 that are officially certified for use in Germany, and therefore in EC
 (see question <ref id="country_certified" name="country_certified"> for
 more information on certification).
@@ -779,6 +792,14 @@ is a Bios upgrade. If this is not feasible, you can get the module
 <tt/pcitest/ from Karsten Keil <tt><htmlurl url="mailto:keil@isdn4linux.de"
 name="keil@isdn4linux.de"></tt>. It will initialize the card correctly,
 then exit with an intentional error (thus not occupying any memory).
+
+To interface from ELSA's RJ11 plug to an RJ45 cable, use the following
+cabling scheme:
+<verb>
+          RJ11   -   RJ45
+pins      1234       12345678
+Cable     abcd       --abcd--
+</verb>
 
 <sect1> hardware_teles: What should I know about before buying an ISDN card 
 from Teles?  
@@ -817,6 +838,12 @@ From a customer point of view, check out the prices for their hotline before
 you buy any hardware from them! The author of the FAQ refuses to use any
 hotline that charges 216,- DM per hour. Reports about quality and waiting time
 have not always been favorable.
+
+And this company doesn't even give away drivers for other operating
+systems, like Windows, for free.  You have to dial up a very expensive
+number (0190) where you have to pay about DM 3,60 per minute in Germany
+to download the driver. Not that it's advisable to use Windows anyway,
+but just to let you know...
 
 Warning: Teles has often changed their cards without notice, while still
 using the same name. When you buy a Teles card, you may find out that your
@@ -1549,9 +1576,13 @@ to choose between both will have to use different outgoing MSNs to call you.
 <sect1> msn_onlyone: How can I use one MSN for everything?  
 <label id="msn_onlyone">
 <p>
-In Germany, this is not an issue any more since you can get the first 10 MSN
-for free, however minimizing MSN usage may still be very interesting for other
-countries.
+
+In Germany, this is not an issue any more since you can get the first 10
+MSN for free with Deutsche Telekom
+(<url url="http://www.telekom.de/english/index.html">),
+other phone providers may offer more or less MSN for free. In general,
+you can get at least 3 MSN. However, minimizing MSN usage may still be
+very interesting for other countries.
 
 Digital data dialin can easily be distinguished from voice/analog modem
 dialin by the 'Service Recognition' code (&dquot;digital, data&dquot;).
@@ -2253,9 +2284,9 @@ but helps to reduce the pain...)
 * Reduce the  DefaultRcvWindow to 2144
 On the Windows 95 side these are 2 Registry entries; on the Linux
 side you can set &dquot;mtu 576&dquot; and &dquot;mru 576&dquot; in the PPP
-options. (See also:
+options. (See also: <tt><url url="http://www.winfiles.com/connect/trouble.html"></tt>)
 </quote>
-<tt><url url="http://www.windows95.com/connect/trouble.html"></tt>)
+
 Erik Corry <tt><htmlurl url="mailto:ec@sign-tronic.dk"
 name="ec@sign-tronic.dk"></tt> added on 16 Dec 1996:
 <quote>
@@ -2658,7 +2689,7 @@ but the IP connections are still open, the line is dialed again, and
 so on... This can only be avoided with the RST-Revoking patch, which has found
 its way into the 2.0.x kernels, but not into 2.1/2.2/2.3. However, you can get
 an adjusted patch for 2.2.x kernels and some background information about it
-from: <url url="//www.another.de/linux/router/">. Make sure to use ipppd's
+from: <url url="http://www.another.de/linux/router/">. Make sure to use ipppd's
 "defaultroute" option rather than <tt>route add/del default</tt> in
 ip-up/ip-down with it.
 <item>Requests from your local DNS trigger a dialout: see question

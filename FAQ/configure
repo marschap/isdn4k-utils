@@ -600,6 +600,36 @@ test -z "$INSTALL_PROGRAM" && INSTALL_PROGRAM='${INSTALL}'
 
 test -z "$INSTALL_DATA" && INSTALL_DATA='${INSTALL} -m 644'
 
+# Extract the first word of "tar", so it can be a program name with args.
+set dummy tar; ac_word=$2
+echo $ac_n "checking for $ac_word""... $ac_c" 1>&6
+if eval "test \"`echo '$''{'ac_cv_path_C_TAR'+set}'`\" = set"; then
+  echo $ac_n "(cached) $ac_c" 1>&6
+else
+  case "$C_TAR" in
+  /*)
+  ac_cv_path_C_TAR="$C_TAR" # Let the user override the test with a path.
+  ;;
+  *)
+  IFS="${IFS= 	}"; ac_save_ifs="$IFS"; IFS="${IFS}:"
+  for ac_dir in $PATH:/usr/sbin:/sbin:/usr/local/bin; do
+    test -z "$ac_dir" && ac_dir=.
+    if test -f $ac_dir/$ac_word; then
+      ac_cv_path_C_TAR="$ac_dir/$ac_word"
+      break
+    fi
+  done
+  IFS="$ac_save_ifs"
+  ;;
+esac
+fi
+C_TAR="$ac_cv_path_C_TAR"
+if test -n "$C_TAR"; then
+  echo "$ac_t""$C_TAR" 1>&6
+else
+  echo "$ac_t""no" 1>&6
+fi
+
 # Extract the first word of "zip", so it can be a program name with args.
 set dummy zip; ac_word=$2
 echo $ac_n "checking for $ac_word""... $ac_c" 1>&6
@@ -861,6 +891,7 @@ s%@infodir@%$infodir%g
 s%@mandir@%$mandir%g
 s%@INSTALL_PROGRAM@%$INSTALL_PROGRAM%g
 s%@INSTALL_DATA@%$INSTALL_DATA%g
+s%@C_TAR@%$C_TAR%g
 s%@C_ZIP@%$C_ZIP%g
 s%@C_GZIP@%$C_GZIP%g
 s%@C_SGML2HTML@%$C_SGML2HTML%g
