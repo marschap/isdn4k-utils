@@ -1,4 +1,4 @@
-/* $Id: isdnctrl.c,v 1.4 1997/06/24 23:35:26 luethje Exp $
+/* $Id: isdnctrl.c,v 1.5 1997/07/20 16:36:26 calle Exp $
  * ISDN driver for Linux. (Control-Utility)
  *
  * Copyright 1994,95 by Fritz Elfert (fritz@wuemaus.franken.de)
@@ -21,6 +21,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnctrl.c,v $
+ * Revision 1.5  1997/07/20 16:36:26  calle
+ * isdnctrl trigger was not working.
+ *
  * Revision 1.4  1997/06/24 23:35:26  luethje
  * isdnctrl can use a config file
  *
@@ -778,11 +781,11 @@ int exec_args(int fd, int argc, char **argv)
 			        	perror(id);
 			        	exit(-1);
 			        }
-			        if (args) {
+			        if (args == 2) {
 			        	i = -1;
 			        	sscanf(arg1, "%d", &i);
 			        	if (i < 0) {
-			        		fprintf(stderr, "Slave triggerlevel must be >= 0\n");
+			        		fprintf(stderr, "Slave triggerlevel must be >= 0 (%s)\n", arg1);
 			        		exit(-1);
 			        	}
 			        	cfg.triggercps = i;

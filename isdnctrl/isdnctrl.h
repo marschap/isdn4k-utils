@@ -1,4 +1,4 @@
-/* $Id: isdnctrl.h,v 1.1 1997/06/24 23:35:28 luethje Exp $
+/* $Id: isdnctrl.h,v 1.2 1997/07/20 16:36:28 calle Exp $
  * ISDN driver for Linux. (Control-Utility)
  *
  * Copyright 1994,95 by Fritz Elfert (fritz@wuemaus.franken.de)
@@ -21,6 +21,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnctrl.h,v $
+ * Revision 1.2  1997/07/20 16:36:28  calle
+ * isdnctrl trigger was not working.
+ *
  * Revision 1.1  1997/06/24 23:35:28  luethje
  * isdnctrl can use a config file
  *
@@ -89,7 +92,7 @@ cmd_struct cmds[] =
         {"addlink", "1"},
         {"removelink", "1"},
         {"encap", "12"},
-        {"trigger", "01"},
+        {"trigger", "12"},
 #ifdef I4L_CTRL_CONF
         {"writeconf", "01"},
         {"readconf", "01"},
