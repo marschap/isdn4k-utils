@@ -26,7 +26,7 @@
 #include <linux/if.h>
 #include <linux/in.h>
 
-static char *revision = "$Revision: 1.21 $";
+static char *revision = "$Revision: 1.22 $";
 
 /* -------------------------------------------------------------------- */
 
@@ -107,18 +107,23 @@ static STRINGLIST *inmsns;
 /*
  * protocol
  */
-#define PROTO_HDLC	0
-#define PROTO_X75	1
-#define PROTO_V42BIS	2
-#define PROTO_MODEM	3
-#define PROTO_ADSLPPPOE	4
+#define PROTO_HDLC		0
+#define PROTO_X75		1
+#define PROTO_V42BIS		2
+#define PROTO_MODEM		3
+#define PROTO_ADSLPPPOE		4
+#define PROTO_ADSLPPPOA		5
+#define PROTO_ADSLPPPOALLC	6
 static char *opt_proto = "hdlc";
 static int proto = PROTO_HDLC;
+static int opt_vpi = -1; /* T-DSL: 1  */
+static int opt_vci = -1; /* T-DSL: 32 */
 /*
  * leased line
  */
 static char *opt_channels = 0;
 static unsigned char AdditionalInfo[1+2+2+31];
+static unsigned char B1Config[1+2+2+2];
 /*
  * redialing
  */
@@ -232,6 +237,14 @@ static option_t my_options[] = {
 	{
 		"voicecallwakeup", o_special_noarg, &optvoicecallwakeup,
 		"call number and wait for callback"
+	},
+	{
+		"vpi", o_int, &opt_vpi,
+		"VPI for Fritz!Card DSL"
+	},
+	{
+		"vci", o_int, &opt_vci,
+		"VCI for Fritz!Card DSL"
 	},
 	{ NULL }
 };
@@ -357,6 +370,12 @@ static void plugin_check_options(void)
 	   proto = PROTO_MODEM;
 	} else if (strcasecmp(opt_proto, "adslpppoe") == 0) {
 	   proto = PROTO_ADSLPPPOE;
+	   if (!opt_channels) opt_channels = "1";
+	} else if (strcasecmp(opt_proto, "adslpppoa") == 0) {
+	   proto = PROTO_ADSLPPPOA;
+	   if (!opt_channels) opt_channels = "1";
+	} else if (strcasecmp(opt_proto, "adslpppoallc") == 0) {
+	   proto = PROTO_ADSLPPPOALLC;
 	   if (!opt_channels) opt_channels = "1";
 	} else {
 	   option_error("capiplugin: unknown protocol \"%s\"", opt_proto);
@@ -495,7 +514,9 @@ static void plugin_check_options(void)
 	   opt_voicecallwakeup = 0;
 	}
 
-	if (proto == PROTO_ADSLPPPOE) {
+	if (   proto == PROTO_ADSLPPPOE
+	    || proto == PROTO_ADSLPPPOA
+	    || proto == PROTO_ADSLPPPOALLC) {
 	   if (opt_cbflag) {
 	      option_error("capiplugin: option cbflag not alloed with protocol adslpppoe");
 	      die(1);
@@ -519,6 +540,31 @@ static void plugin_check_options(void)
            if (opt_cli) {
 	      option_error("capiplugin: option cli ignored");
 	      opt_cli = 0;
+	   }
+           if (proto == PROTO_ADSLPPPOA || proto == PROTO_ADSLPPPOALLC) {
+	      if (opt_vpi == -1 || opt_vci == -1) {
+	         option_error("capiplugin: need options vci and vpi");
+		 die(1);
+	      }
+	   } else {
+	      if (   (opt_vpi == -1 && opt_vci != -1)
+		  || (opt_vpi != -1 && opt_vci == -1)) {
+	         option_error("capiplugin: need options vci and vpi");
+		 die(1);
+	      }
+	   }
+           B1Config[0] = 0;
+	   if (opt_vpi != -1) {
+		int vcctype = 1;
+	   	if (proto == PROTO_ADSLPPPOA) vcctype = 3;
+	   	else if (proto == PROTO_ADSLPPPOALLC) vcctype = 2;
+		B1Config[0] = 6;
+	        B1Config[1] = vcctype & 0xff;
+	        B1Config[2] = (vcctype >> 8) & 0xff;
+		B1Config[3] = opt_vpi & 0xff;
+		B1Config[4] = (opt_vpi >> 8) & 0xff;
+		B1Config[5] = opt_vci & 0xff;
+		B1Config[6] = (opt_vci >> 8) & 0xff;
 	   }
 	}
 
@@ -1384,7 +1430,21 @@ static capi_connection *setupconnection(char *num, int awaitingreject)
 				0,
 				0,
 				28, 30, 30,
-				0, 0, 0,
+				B1Config[0] ? B1Config : 0,
+				0, /* B2Config */
+				0, /* B3Config */
+				opt_channels ? AdditionalInfo : 0,
+				0);
+	} else if (proto == PROTO_ADSLPPPOA || proto == PROTO_ADSLPPPOALLC) {
+		cp = capiconn_connect(ctx,
+				controller, /* contr */
+				2, /* cipvalue */
+				0,
+				0,
+				28, 1, 0,
+				B1Config[0] ? B1Config : 0,
+				0, /* B2Config */
+				0, /* B3Config */
 				opt_channels ? AdditionalInfo : 0,
 				0);
 	} else {
