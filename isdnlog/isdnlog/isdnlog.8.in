@@ -1,5 +1,5 @@
-.\" $Id: isdnlog.8.in,v 1.8 2000/09/07 07:24:37 paul Exp $
-.\" CHECKIN $Date: 2000/09/07 07:24:37 $
+.\" $Id: isdnlog.8.in,v 1.9 2000/09/15 09:10:10 paul Exp $
+.\" CHECKIN $Date: 2000/09/15 09:10:10 $
 .TH isdnlog 8 "@MANDATE_ISDNLOG8@" "ISDN 4 Linux @I4LVERSION@" "Linux System Administration"
 .PD 0
 .SH NAME
@@ -528,6 +528,6 @@ start=yes       # enable starting programs
 .B isdnlog(5) isdnrep(1) rate-files(5) isdnrate(1)
 
 .SH AUTHOR
-This manual page was written by Andreas Jellinghaus <aj@debian.org>,
+This manual page was written by Andreas Jellinghaus <aj@dungeon.inka.de>,
 for Debian GNU/Linux and isdn4linux, updated by Leopold Toetsch
 <lt@toetsch.at>.

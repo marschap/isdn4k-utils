@@ -1,5 +1,5 @@
-.\" $Id: callerid.conf.5.in,v 1.3 1999/03/10 08:34:23 paul Exp $
-.\" CHECKIN $Date: 1999/03/10 08:34:23 $
+.\" $Id: callerid.conf.5.in,v 1.4 2000/09/15 09:10:10 paul Exp $
+.\" CHECKIN $Date: 2000/09/15 09:10:10 $
 .TH callerid.conf 5 "@MANDATE_CALLERID@" "ISDN 4 Linux @I4LVERSION@" "Linux System Administration"
 .PD 0
 
@@ -244,5 +244,5 @@ Per user telephone book.
 .SH SEE ALSO
 .B isdnlog(8) isdnformat(5) isdntime(5)
 .SH AUTHOR
-This manual page was written by Andreas Jellinghaus <aj@debian.org>,
+This manual page was written by Andreas Jellinghaus <aj@dungeon.inka.de>,
 for Debian GNU/Linux and isdn4linux.

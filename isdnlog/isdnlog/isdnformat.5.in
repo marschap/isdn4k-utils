@@ -1,5 +1,5 @@
-.\" $Id: isdnformat.5.in,v 1.1 1999/03/10 08:33:15 paul Exp $
-.\" CHECKIN $Date: 1999/03/10 08:33:15 $
+.\" $Id: isdnformat.5.in,v 1.2 2000/09/15 09:10:10 paul Exp $
+.\" CHECKIN $Date: 2000/09/15 09:10:10 $
 .TH isdnformat 5 "@MANDATE_ISDNFORMAT@" "ISDN 4 Linux @I4LVERSION@" "Linux System Administration"
 .PD 0
 .SH NAME
@@ -62,6 +62,6 @@ Beware: recursive including will cause the program to break. The
 library does not prevent this.
 
 .SH AUTHOR
-This manual page was written by Andreas Jellinghaus <aj@debian.org>,
+This manual page was written by Andreas Jellinghaus <aj@dungeon.inka.de>,
 for Debian GNU/Linux and isdn4linux.
 Now maintained by Paul Slootman <paul@isdn4linux.de>.

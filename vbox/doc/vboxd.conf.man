@@ -1,5 +1,5 @@
-.\" $Id: vboxd.conf.man,v 1.1 1998/11/17 18:22:56 paul Exp $
-.\" CHECKIN $Date: 1998/11/17 18:22:56 $
+.\" $Id: vboxd.conf.man,v 1.2 2000/09/15 09:10:10 paul Exp $
+.\" CHECKIN $Date: 2000/09/15 09:10:10 $
 .TH vboxd.conf 5 "@MANDATE@" "ISDN 4 Linux @I4LVERSION@" "Linux System Administration"
 .PD 0
 .SH NAME
@@ -71,5 +71,5 @@ this configuration file
 an example
 
 .SH AUTHOR
-This manual page was written by Andreas Jellinghaus <aj@debian.org>,
+This manual page was written by Andreas Jellinghaus <aj@dungeon.inka.de>,
 for Debian GNU/Linux and isdn4linux.

@@ -1,5 +1,5 @@
-.\" $Id: vboxtoau.man,v 1.1 1998/11/17 18:23:02 paul Exp $
-.\" CHECKIN $Date: 1998/11/17 18:23:02 $
+.\" $Id: vboxtoau.man,v 1.2 2000/09/15 09:10:10 paul Exp $
+.\" CHECKIN $Date: 2000/09/15 09:10:10 $
 .TH vboxtoau 1 "@MANDATE@" "ISDN 4 Linux @I4LVERSION@" "Linux System Administration"
 .SH NAME
 vboxtoau \- isdn voice box (sound converter)
@@ -33,5 +33,5 @@ Show version of program.
 .SH SEE ALSO
 .B autovbox(1), rmdtovbox(1), vboxmode(1), vboxcnvt(1), vbox(5)
 .SH AUTHOR
-This manual page was written by Andreas Jellinghaus <aj@debian.org>,
+This manual page was written by Andreas Jellinghaus <aj@dungeon.inka.de>,
 for Debian GNU/Linux and isdn4linux.

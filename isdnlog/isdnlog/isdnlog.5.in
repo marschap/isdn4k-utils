@@ -1,5 +1,5 @@
-.\" $Id: isdnlog.5.in,v 1.2 2000/03/09 18:50:02 akool Exp $
-.\" CHECKIN $Date: 2000/03/09 18:50:02 $
+.\" $Id: isdnlog.5.in,v 1.3 2000/09/15 09:10:10 paul Exp $
+.\" CHECKIN $Date: 2000/09/15 09:10:10 $
 .TH isdnlog 5 "@MANDATE_ISDNLOG5@" "ISDN 4 Linux @I4LVERSION@" "Linux System Administration"
 .SH NAME
 @LOGFILE@ \- isdn log file
@@ -78,5 +78,5 @@ This file: isdnlog log file.
 .B isdnlog(8)
 
 .SH AUTHOR
-This manual page was written by Andreas Jellinghaus <aj@debian.org>,
+This manual page was written by Andreas Jellinghaus <aj@dungeon.inka.de>,
 for Debian GNU/Linux and isdn4linux.

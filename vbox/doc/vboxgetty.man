@@ -1,5 +1,5 @@
-.\" $Id: vboxgetty.man,v 1.1 1998/11/17 18:22:59 paul Exp $
-.\" CHECKIN $Date: 1998/11/17 18:22:59 $
+.\" $Id: vboxgetty.man,v 1.2 2000/09/15 09:10:10 paul Exp $
+.\" CHECKIN $Date: 2000/09/15 09:10:10 $
 .TH vboxgetty 8 "@MANDATE@" "ISDN 4 Linux @I4LVERSION@" "Linux System Administration"
 .PD 0
 .SH NAME
@@ -108,5 +108,5 @@ logfile of the vboxgetty
 .B vboxgetty.conf(5), vbox.conf(5), vboxtcl(5), isdntime(5)
 
 .SH AUTHOR
-This manual page was written by Andreas Jellinghaus <aj@debian.org>,
+This manual page was written by Andreas Jellinghaus <aj@dungeon.inka.de>,
 for Debian GNU/Linux and isdn4linux.
