@@ -1,4 +1,4 @@
-/* $Id: processor.c,v 1.16 1998/03/08 12:37:58 luethje Exp $
+/* $Id: processor.c,v 1.17 1998/03/25 20:58:34 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.17  1998/03/25 20:58:34  luethje
+ * isdnrep: added html feature (verbose on/off)
+ * processor.c: Patch of Oliver Lauer
+ *
  * Revision 1.16  1998/03/08 12:37:58  luethje
  * last changes in Wuerzburg
  *
@@ -4126,7 +4130,7 @@ doppelt:break;
 
             if (connectmax != 0.0) {
               if (connectmaxmode == 1)
-                known[c]->online += ((int)(call[chan].disconnect - call[chan].connect + 59)) / 60.0 * 60.0;
+								known[c]->online += ((int)((call[chan].disconnect - call[chan].connect + 59) / 60.0)) * 60.0;
               else
                 known[c]->online += call[chan].disconnect - call[chan].connect;
 

@@ -1,4 +1,4 @@
-/* $Id: isdnrep.c,v 1.33 1998/03/08 11:43:04 luethje Exp $
+/* $Id: isdnrep.c,v 1.34 1998/03/25 20:58:46 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -20,6 +20,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnrep.c,v $
+ * Revision 1.34  1998/03/25 20:58:46  luethje
+ * isdnrep: added html feature (verbose on/off)
+ * processor.c: Patch of Oliver Lauer
+ *
  * Revision 1.33  1998/03/08 11:43:04  luethje
  * I4L-Meeting Wuerzburg final Edition, golden code - Service Pack number One
  *
@@ -308,7 +312,8 @@
 #define H_CENTER       "<TD align=center><TT>%s</TT></TD>"
 #define H_RIGHT        "<TD align=right><TT>%s</TT></TD>"
 #define H_LINK         "<A HREF=\"%s?-M+%c%d%s\">%s</A>"
-#define H_LINK_DAY     "<A HREF=\"%s?%s\">%s</A> "
+#define H_LINK_DAY     "<A HREF=\"%s?%s\">%s</A>&nbsp;"
+#define H_FORM_DAY     "<FORM METHOD=\"get\" ACTION=\"%s?%s\">%s<input name=\"%s\" maxlength=%d value=\"\" size=%d><INPUT TYPE=\"submit\" NAME=\"submit\" VALUE=\"go\"></FORM>"
 
 #define H_EMPTY        "&nbsp;"
 
@@ -384,6 +389,7 @@ static int time_in_interval(time_t t1, time_t t2, char type);
 static char *nam2html(char *file);
 static char *get_a_day(time_t t, int d_diff, int m_diff, int flag);
 static char *get_time_string(time_t begin, time_t end, int d_diff, int m_diff);
+static char *get_default_html_params(void);
 static char *create_vbox_file(char *file, int *compression);
 
 /*****************************************************************************/
@@ -2622,12 +2628,22 @@ static int html_header(void)
 
 static int html_bottom(char *_progname, char *start, char *stop)
 {
+	int old_verbose = verbose;
 	char *progname = strdup(_progname);
 	char *ptr      = strrchr(progname,'.');
 
 
 	if (ptr)
 		*ptr = '\0';
+
+/* later
+	print_msg(PRT_NORMAL,H_FORM_DAY,_myname,get_default_html_params(),"Date:","-w",40,10);
+*/
+
+	verbose = !verbose;
+	if ((ptr = get_time_string(_begintime,endtime,0,0)) != NULL)
+		print_msg(PRT_NORMAL,H_LINK_DAY,_myname,ptr,old_verbose?"verbose off":"verbose on");
+	verbose = old_verbose;
 
 	if ((ptr = get_time_string(_begintime,endtime,0,-1)) != NULL)
 		print_msg(PRT_NORMAL,H_LINK_DAY,_myname,ptr,"previous month");
@@ -3101,16 +3117,15 @@ static char *get_a_day(time_t t, int d_diff, int m_diff, int flag)
 
 static char *get_time_string(time_t begin, time_t end, int d_diff, int m_diff)
 {
-	static char string[40];
+	static char string[256];
 	char *ptr = NULL;
 
 
-	sprintf(string,"-w%d+",html-1);
-	/*                         ^^---sehr gefaehrlich, da eine UND-Verknuepfung!!! */
+	strcpy(string,get_default_html_params());
 
 	if ((ptr = get_a_day(begin,d_diff,m_diff,F_BEGIN)) != NULL)
 	{
-		strcat(string,"-t");
+		strcat(string,"+-t");
 		strcat(string,ptr);
 
 		if ((ptr = get_a_day(end,d_diff,m_diff,F_END)) != NULL)
@@ -3123,6 +3138,17 @@ static char *get_time_string(time_t begin, time_t end, int d_diff, int m_diff)
 	}
 
 	return NULL;
+}
+
+/*****************************************************************************/
+
+static char *get_default_html_params(void)
+{
+	static char string[50];
+
+	sprintf(string,"-w%d%s",html-1,verbose?"+-v":"");
+	/*                         ^^---sehr gefaehrlich, da eine UND-Verknuepfung!!! */
+	return string;
 }
 
 /*****************************************************************************/
