@@ -62,7 +62,7 @@
  *
  *  N is number of chars to skip in format if part is not present
  *  e.g. "%1c %1a %m"
- *      +4930123 => "+49 39 123"
+ *      +4930123 => "+49 30 123"
  *      123 => "123" not "  123"
  *
  *

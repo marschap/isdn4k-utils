@@ -1,4 +1,4 @@
-/* $Id: isdnrep.h,v 1.18 1999/12/31 13:57:19 akool Exp $
+/* $Id: isdnrep.h,v 1.19 2000/03/06 07:03:20 akool Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,21 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnrep.h,v $
+ * Revision 1.19  2000/03/06 07:03:20  akool
+ * isdnlog-4.15
+ *   - isdnlog/tools/tools.h ... moved one_call, sum_calls to isdnrep.h
+ *     ==> DO A 'make clean' PLEASE
+ *   - isdnlog/tools/telnum.c ... fixed a small typo
+ *   - isdnlog/isdnrep/rep_main.c ... incl. dest.h
+ *   - isdnlog/isdnrep/isdnrep.c ... fixed %l, %L
+ *   - isdnlog/isdnrep/isdnrep.h ... struct one_call, sum_calls are now here
+ *
+ *   Support for Norway added. Many thanks to Tore Ferner <torfer@pvv.org>
+ *     - isdnlog/rate-no.dat  ... NEW
+ *     - isdnlog/holiday-no.dat  ... NEW
+ *     - isdnlog/samples/isdn.conf.no ... NEW
+ *     - isdnlog/samples/rate.conf.no ... NEW
+ *
  * Revision 1.18  1999/12/31 13:57:19  akool
  * isdnlog-4.00 (Millenium-Edition)
  *  - Oracle support added by Jan Bolt (Jan.Bolt@t-online.de)
@@ -213,6 +228,43 @@ typedef struct {
   time_t connect[MAXCONNECTS];
   int    cause;
 } UNKNOWNS;
+
+/****************************************************************************/
+/* these were in tools.h, but are onyl used in isdnrep */
+typedef struct {
+  int    in;
+  int    out;
+  int    eh;
+  int    err;
+  double din;
+  double dout;
+  double pay;
+  long	 ibytes;
+  long	 obytes;
+} sum_calls;
+
+/****************************************************************************/
+
+typedef struct {
+  int    eh;
+  int    cause;
+  time_t t;
+  int    dir;
+  double duration;
+  char   num[2][NUMSIZE];
+  char   who[2][NUMSIZE];
+  char	 sarea[2][TN_MAX_SAREA_LEN]; /* lt */
+  long	 ibytes;
+  long	 obytes;
+  char   version[10];
+  int	 si;
+  int	 si1;
+  double currency_factor;
+  char	 currency[32];
+  double pay;
+  int	 provider;
+  int	 zone; /* fixme: zones may vary over time */
+} one_call;
 
 /*****************************************************************************/
 

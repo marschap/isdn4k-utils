@@ -1,4 +1,4 @@
-/* $Id: isdnrep.c,v 1.89 2000/02/28 19:53:55 akool Exp $
+/* $Id: isdnrep.c,v 1.90 2000/03/06 07:03:20 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -24,6 +24,21 @@
  *
  *
  * $Log: isdnrep.c,v $
+ * Revision 1.90  2000/03/06 07:03:20  akool
+ * isdnlog-4.15
+ *   - isdnlog/tools/tools.h ... moved one_call, sum_calls to isdnrep.h
+ *     ==> DO A 'make clean' PLEASE
+ *   - isdnlog/tools/telnum.c ... fixed a small typo
+ *   - isdnlog/isdnrep/rep_main.c ... incl. dest.h
+ *   - isdnlog/isdnrep/isdnrep.c ... fixed %l, %L
+ *   - isdnlog/isdnrep/isdnrep.h ... struct one_call, sum_calls are now here
+ *
+ *   Support for Norway added. Many thanks to Tore Ferner <torfer@pvv.org>
+ *     - isdnlog/rate-no.dat  ... NEW
+ *     - isdnlog/holiday-no.dat  ... NEW
+ *     - isdnlog/samples/isdn.conf.no ... NEW
+ *     - isdnlog/samples/rate.conf.no ... NEW
+ *
  * Revision 1.89  2000/02/28 19:53:55  akool
  * isdnlog-4.14
  *   - Patch from Roland Rosenfeld <roland@spinnaker.de> fix for isdnrep
@@ -75,10 +90,10 @@
 #include <search.h>
 #include <linux/limits.h>
 
+#include "dest.h"
 #include "isdnrep.h"
 #include "../../vbox/src/libvbox.h"
 #include "libisdn.h"
-#include "dest.h"
 
 #define END_TIME    1
 
@@ -1122,7 +1137,7 @@ static int print_line(int status, one_call *cur_call, int computed, char *overla
 				case 'L': if (status == F_BODY_LINE)
 				          {
 				            dir = cur_call->dir?CALLED:CALLING;
-		          		colsize[i] = append_string(&string,*fmtstring, "");
+		          		colsize[i] = append_string(&string,*fmtstring, cur_call->sarea[dir]);
 				          }
 				          else
 				          {
@@ -1131,12 +1146,12 @@ static int print_line(int status, one_call *cur_call, int computed, char *overla
 				          		colsize[i] = append_string(&string,*fmtstring, "");
 				          }
 				          break;
-				/* The home location: */
+				/* The remote location: */
 				/* Benoetigt Range! */
 				case 'l': if (status == F_BODY_LINE)
 				          {
 				            dir = cur_call->dir?CALLING:CALLED;
-			          		colsize[i] = append_string(&string,*fmtstring, "");
+			          		colsize[i] = append_string(&string,*fmtstring,  cur_call->sarea[dir]);
 				          }
 				          else
 				          {
@@ -2042,36 +2057,54 @@ static void repair(one_call *cur_call)
   RATE Rate;
   TELNUM srcnum, destnum;
 
-  call[0].connect = cur_call->t;
-  call[0].disconnect = cur_call->t + cur_call->duration;
-  call[0].intern[CALLED] = strlen(cur_call->num[CALLED]) < interns0;
-  call[0].provider = cur_call->provider;
-  call[0].aoce = cur_call->eh;
-  call[0].dialin = 0;
-  strcpy(call[0].num[CALLED], cur_call->num[CALLED]);
-  strcpy(call[0].onum[CALLED], cur_call->num[CALLED]);
+  if (*cur_call->num[CALLING]) {
+    normalizeNumber(cur_call->num[CALLING],&srcnum,TN_ALL);
+    strcpy(cur_call->sarea[CALLING], srcnum.sarea);
+  }
+  else
+    *cur_call->sarea[CALLING] = 0;
+  if (*cur_call->num[CALLED]) {
+    destnum.nprovider = cur_call->provider;
+    Strncpy(destnum.provider,getProvider(cur_call->provider), TN_MAX_PROVIDER_LEN);
+    normalizeNumber(cur_call->num[CALLED], &destnum, TN_NO_PROVIDER);
+    strcpy(cur_call->sarea[CALLED], destnum.sarea);
+  }
+  else
+    *cur_call->sarea[CALLED] = 0;
 
-  normalizeNumber("4321",&srcnum,TN_ALL); /* this is a local number */
-  destnum.nprovider = cur_call->provider;
-  Strncpy(destnum.provider,getProvider(cur_call->provider), TN_MAX_PROVIDER_LEN);
-  normalizeNumber(cur_call->num[CALLED], &destnum, TN_NO_PROVIDER);
-  call[0].sondernummer[CALLED] = destnum.ncountry==0;
+  if ((cur_call->dir == DIALOUT) &&
+      (cur_call->duration > 0) &&
+      *cur_call->num[CALLED]
+     ) {
 
-  clearRate(&Rate);
-  Rate.src[0] = srcnum.country;
-  Rate.src[1] = srcnum.area;
-  Rate.src[2] = "";
-  Rate.dst[0] = destnum.country;
-  Rate.dst[1] = destnum.area;
-  Rate.dst[2] = destnum.msn;
-  Rate.start = cur_call->t;
-  Rate.now = call[0].disconnect;
-  Rate.prefix = cur_call->provider;
-  if (!getRate(&Rate,0)) {
-    if(strcmp(cur_call->version, LOG_VERSION))
-       cur_call->pay = Rate.Charge; /* Fixme: is that ok, propably rates have changed */
-    cur_call->zone = Rate._zone;
-    zones_names[Rate._zone] = Rate.Zone ? strdup(Rate.Zone) : strdup("??");
+
+    call[0].connect = cur_call->t;
+    call[0].disconnect = cur_call->t + cur_call->duration;
+    call[0].intern[CALLED] = strlen(cur_call->num[CALLED]) < interns0;
+    call[0].provider = cur_call->provider;
+    call[0].aoce = cur_call->eh;
+    call[0].dialin = 0;
+    strcpy(call[0].num[CALLED], cur_call->num[CALLED]);
+    strcpy(call[0].onum[CALLED], cur_call->num[CALLED]);
+
+    call[0].sondernummer[CALLED] = destnum.ncountry==0;
+
+    clearRate(&Rate);
+    Rate.src[0] = srcnum.country;
+    Rate.src[1] = srcnum.area;
+    Rate.src[2] = "";
+    Rate.dst[0] = destnum.country;
+    Rate.dst[1] = destnum.area;
+    Rate.dst[2] = destnum.msn;
+    Rate.start = cur_call->t;
+    Rate.now = call[0].disconnect;
+    Rate.prefix = cur_call->provider;
+    if (!getRate(&Rate,0)) {
+      if(strcmp(cur_call->version, LOG_VERSION))
+         cur_call->pay = Rate.Charge; /* Fixme: is that ok, propably rates have changed */
+      cur_call->zone = Rate._zone;
+      zones_names[Rate._zone] = Rate.Zone ? strdup(Rate.Zone) : strdup("??");
+    }
   }
 } /* repair */
 
@@ -2218,11 +2251,7 @@ static int set_caller_infos(one_call *cur_call, char *string, time_t from)
 
   }
 
-  if ((cur_call->dir == DIALOUT) &&
-      (cur_call->duration > 0) &&
-      *cur_call->num[1]
-     )
-    repair(cur_call);
+  repair(cur_call);
 
   return(0);
 }

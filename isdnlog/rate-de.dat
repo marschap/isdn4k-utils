@@ -1,4 +1,4 @@
-V:1.10-Germany [27-Feb-2000 22:44:10]
+V:1.10-Germany [02-Mar-2000 19:29:56]
 
 # Währungsformat
 U:%.3f DM
@@ -8,7 +8,7 @@ U:%.3f DM
 #
 # (C) Copyright 1999, 2000 by Andreas Kool (akool@isdn4linux.de)
 #
-# $Id: rate-de.dat,v 1.83 2000/02/28 19:53:54 akool Exp $
+# $Id: rate-de.dat,v 1.84 2000/03/06 07:03:19 akool Exp $
 #
 #
 # Das "A:" Tag muß folgendermaßen gefüllt werden:
@@ -8167,7 +8167,7 @@ C:2	-   4	Deutschland
 C:10		Mobilfunk
 C:102		SUPER24 Internet
 C:200	-	Ausland
-# G:05.05.1999
+# G:01.03.2000
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -8175,17 +8175,12 @@ A:031*
 A:110
 A:112
 T:*/*=0
-Z:1-4 SUPER24 Phone
+Z:1-4 SUPER24
 A:+49
-T:*/*=0.11/60
-Z:10 SUPER24 Mobile
-A:01618
-A:01610,01611,01612,01613,01614,01615,01616,01617,01619
-A:0170,0171,0175
-A:0172,0173,0174
-A:0177,0178
-A:0176,0179
-T:*/*=0.45/60
+T:*/07-09=0.044/60
+T:*/09-18=0.066/60
+T:*/18-21=0.044/60
+T:*/21-07=0.033/60
 Z:102 SUPER24 Internet
 T:*/*=0.055/60
 Z:200 SUPER24 International A
@@ -10763,7 +10758,7 @@ T:*/*=0
 #
 P:33,0 DTAG
 B:01033
-# G:01-Feb-2000
+# G:01-Mar-2000
 D:dtag
 C:Name:Deutsche Telekom AG
 C:Address:Deutsche Telekom AG, Friedrich-Ebert-Allee 140, 53113 Bonn
@@ -11793,7 +11788,7 @@ T:*/*=0.12/2.31
 P:33,4 DTAG AktivPlus
 # Dieser Tarif gilt auch bei T-ISDN 300
 B:01033
-# G:01-Feb-2000
+# G:01-Mar-2000
 D:dtag
 C:Name:Deutsche Telekom AG AktivPlus
 C:Address:Deutsche Telekom AG, Friedrich-Ebert-Allee 140, 53113 Bonn
@@ -11852,18 +11847,18 @@ A:011*
 A:0130*,0800*,0801*
 A:031*
 T:*/*=0
-Z:1-2 Orts-/Cityzone
-T:W/09-18=0.06/60 Standard
-T:W/18-09=0.03/60 Spar
+Z:1-2 CityCall
+T:W/09-18=0.06/60 Sunshine
+T:W/18-09=0.03/60 Moonshine
 T:E,H/*=0.03/60 Spar
-Z:3-4 Regio-/Fernzone
+Z:3-4 GermanCall
 A:+49
-T:W/09-18=0.12/60 Standard
-T:W/18-09=0.06/60 Spar
+T:W/09-18=0.12/60 Sunshine
+T:W/18-09=0.06/60 Moonshine
 T:E,H/*=0.06/60 Spar
 Z:10 C-Mobilboxen
 A:01618
-T:*/*=0.39/60 Standard
+T:*/*=0.431/60 Standard
 Z:11 Mobilfunk C
 A:01610,01617,01619
 T:*/*=0.39/60 Standard
@@ -12428,7 +12423,7 @@ T:*/*=0.739/60
 Z:285 Israel
 A:IL
 T:*/*=0.709/60
-Z:286 Italien 
+Z:286 Italien
 A:IT
 T:*/*=0.539/60
 Z:287 Jamaika
@@ -12881,7 +12876,7 @@ T:*/*=0.899/60
 Z:436 Zypern Süd
 A:_CYTK
 T:*/*=1.119/60
-Z:Rest
+Z:437 Rest
 A:+
 T:*/*=99.99/1 Rest
 #####################################################################
@@ -13180,7 +13175,7 @@ T:*/*=0.739(60)/1
 Z:285 Israel
 A:IL
 T:*/*=0.709(60)/1
-Z:286 Italien 
+Z:286 Italien
 A:IT
 T:*/*=0.539(60)/1
 Z:287 Jamaika
@@ -13928,7 +13923,7 @@ T:*/*=0.739/60
 Z:285 Israel
 A:IL
 T:*/*=0.709/60
-Z:286 Italien 
+Z:286 Italien
 A:IT
 T:*/*=0.539/60
 Z:287 Jamaika
@@ -14677,7 +14672,7 @@ T:*/*=0.739(60)/1
 Z:285 Israel
 A:IL
 T:*/*=0.709(60)/1
-Z:286 Italien 
+Z:286 Italien
 A:IT
 T:*/*=0.539(60)/1
 Z:287 Jamaika
@@ -15422,7 +15417,7 @@ T:*/*=0.739/60
 Z:285 Israel
 A:IL
 T:*/*=0.709/60
-Z:286 Italien 
+Z:286 Italien
 A:IT
 T:*/*=0.539/60
 Z:287 Jamaika
@@ -16169,7 +16164,7 @@ T:*/*=0.739(60)/1
 Z:285 Israel
 A:IL
 T:*/*=0.709(60)/1
-Z:286 Italien 
+Z:286 Italien
 A:IT
 T:*/*=0.539(60)/1
 Z:287 Jamaika
@@ -16916,7 +16911,7 @@ T:*/*=0.739/60
 Z:285 Israel
 A:IL
 T:*/*=0.709/60
-Z:286 Italien 
+Z:286 Italien
 A:IT
 T:*/*=0.539/60
 Z:287 Jamaika
@@ -17664,7 +17659,7 @@ T:*/*=0.739(60)/1
 Z:285 Israel
 A:IL
 T:*/*=0.709(60)/1
-Z:286 Italien 
+Z:286 Italien
 A:IT
 T:*/*=0.539(60)/1
 Z:287 Jamaika
@@ -18155,12 +18150,12 @@ A:_DEMD1
 T:W/08-18=0.05/0,0.69(60)/1 Geschäftszeit
 T:E,H/08-18=0.05/0,0.43(60)/1 Wochenende
 T:*/18-08=0.05/0,0.43(60)/1 Freizeit
-Z:10 Mobilfunk D2
+Z:11 Mobilfunk D2
 A:_DEMD2
 T:W/08-18=0.05/0,0.67(60)/1 Geschäftszeit
 T:E,H/08-18=0.05/0,0.43(60)/1 Wochenende
 T:*/18-08=0.05/0,0.43(60)/1 Freizeit
-Z:10 Mobilfunk E und C
+Z:12 Mobilfunk E und C
 A:_DEMCM,_DEMC,_DEME1,_DEME2
 T:W/08-18=0.05/0,0.94(60)/1 Geschäftszeit
 T:E,H/08-18=0.05/0,0.43(60)/1 Wochenende
@@ -21206,7 +21201,7 @@ T:*/*=0.42/60
 Z:265 Puerto Rico (Festnetz)
 A:PR
 T:*/*=0.17/60
-Z:262 impossible
+Z:266 impossible
 A:_ARMF
 A:_AUMF
 A:_BEMF
