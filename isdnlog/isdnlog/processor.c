@@ -1,4 +1,4 @@
-/* $Id: processor.c,v 1.41 1999/03/14 14:26:38 akool Exp $
+/* $Id: processor.c,v 1.42 1999/03/14 18:47:44 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.42  1999/03/14 18:47:44  akool
+ * damn CLIP :-( Internal call's are free of charge!!
+ *
  * Revision 1.41  1999/03/14 14:26:38  akool
  * - isdnlog Version 3.05
  * - new Option "-u1" (or "ignoreRR=1")
@@ -740,7 +743,6 @@ static void buildnumber(char *num, int oc3, int oc3a, char *result, int version,
 
   if (!dir && (who == CALLED))
     *sondernummer = is_sondernummer(num, DTAG); /* try with DTAG, these provider must support them all (i think) */
-  else if ((dir && (who == CALLED)) || (!dir && (who == CALLING)))
     *intern = strlen(num) < interns0;
 
 #ifdef Q931
