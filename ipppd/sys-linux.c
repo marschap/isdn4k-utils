@@ -22,7 +22,7 @@
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-char sys_rcsid[] = "$Id: sys-linux.c,v 1.12 1998/04/28 08:34:05 paul Exp $";
+char sys_rcsid[] = "$Id: sys-linux.c,v 1.13 1998/04/29 14:29:48 hipp Exp $";
 
 #define _LINUX_STRING_H_
 
@@ -246,6 +246,9 @@ void establish_ppp (int linkunit)
 		struct pppcallinfo *pci = &lns[linkunit].pci;
 		syslog(LOG_NOTICE, "Local number: %s, Remote number: %s, Type: %s",
 			pci->local_num,pci->remote_num,pci->calltype & CALLTYPE_INCOMING ? "incoming" : "outgoing" );
+#ifdef RADIUS
+               strncpy ( lns[linkunit].remote_number, pci->remote_num, sizeof( lns[linkunit].remote_number ) ) ;
+#endif
 	}
 
 	if(useifmtu) {   

@@ -21,7 +21,7 @@
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-char lcp_rcsid[] = "$Id: lcp.c,v 1.6 1998/03/08 13:01:36 hipp Exp $";
+char lcp_rcsid[] = "$Id: lcp.c,v 1.7 1998/04/29 14:29:33 hipp Exp $";
 
 /*
  * TODO:
@@ -77,6 +77,10 @@ static u_char nak_buffer[PPP_MRU];	/* where we construct a nak packet */
 #ifdef __linux__
 u_int32_t idle_timer_running = 0;
 extern int idle_time_limit;
+#ifdef RADIUS
+u_int32_t session_timer_running = 0;
+extern int session_time_limit;
+#endif
 #endif
 
 /*
@@ -320,7 +324,7 @@ static void IdleTimeCheck __P((caddr_t));
  * Timer expired for the LCP echo requests from this process.
  */
 
-static void RestartIdleTimer(fsm *f)
+void RestartIdleTimer(fsm *f)
 {
   struct link_struct *tlns = &lns[f->unit];
     u_long             delta;
@@ -363,6 +367,47 @@ IdleTimeCheck (arg)
         RestartIdleTimer ((fsm *) arg);
     }
 }
+#ifdef RADIUS
+/***************************************************************************
+ *
+ * Name: StopSession 
+ *
+ * Purpose: Stops the session after session_time_limit seconds
+ *
+ ***************************************************************************/
+static void 
+StopSession (f)
+
+	fsm *f;
+
+{
+	lcp_close(f->unit,"session max time expired"); 	/* Reset connection */
+	lns[f->unit].phase = PHASE_TERMINATE;		/* Mark it down     */
+}
+
+/***************************************************************************
+ *
+ * Name: RestartSessionTimer
+ *
+ * Purpose: Restarts session timer
+ *
+ ***************************************************************************/
+      
+void
+RestartSessionTimer (f)
+	fsm *f;
+{
+	if (session_timer_running == 1) 
+	{
+		UNTIMEOUT (StopSession, (caddr_t) f);
+	}
+	
+        TIMEOUT (StopSession, (caddr_t) f, session_time_limit);
+        
+        session_timer_running = 1;
+}
+#endif
+
 #endif
 
 /*
@@ -2127,6 +2172,13 @@ static void lcp_echo_lowerup (int unit)
     /* If a idle time limit is given then start it */
     if (idle_time_limit != 0)
         RestartIdleTimer (f);
+#ifdef RADIUS
+	if ( session_time_limit != 0 ) 
+	{
+
+		RestartSessionTimer ( f );
+	}
+#endif
 #endif
 }
 
@@ -2148,6 +2200,13 @@ static void lcp_echo_lowerdown (int unit)
         UNTIMEOUT (IdleTimeCheck, (caddr_t) f);
         idle_timer_running = 0;
     }
+#ifdef RADIUS
+	if ( session_time_limit != 0 ) 
+	{
+		UNTIMEOUT (StopSession, (caddr_t) f );
+		session_timer_running = 0 ;
+	}
+#endif        
 #endif
 }
 

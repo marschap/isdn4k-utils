@@ -1,6 +1,6 @@
 #
 # ipppd makefile for Linux
-# $Id: Makefile.in,v 1.7 1998/03/15 22:34:57 tsbogend Exp $
+# $Id: Makefile.in,v 1.8 1998/04/29 14:29:25 hipp Exp $
 #
 
 HAVE_LIBDES   := @HAVE_LIBDES@
@@ -14,14 +14,23 @@ INSTALL_DIR   := $(INSTALL) -m 0755 -o 0 -g 0 -d
 INSTALL_SBIN  := $(INSTALL) -m 0700 -o 0 -g 0
 INSTALL_BIN   := $(INSTALL) -m 0755 -o 0 -g 0
 INSTALL_DATA  := $(INSTALL) -m 0644 -o 0 -g 0
+RADIUS_CLIENT_CONFIG_FILE := @RADIUS_CLIENT_CONFIG_FILE@
 
 ifeq (@CONFIG_IPPPD_MSCHAP@,y)
 USE_MSCHAP    := 1
 endif
-ifeq ($(CONFIG_IPPPD_RADIUS),y)
+
+ifeq (@CONFIG_IPPPD_RADIUS@,y)
 RADIUS :=1
 endif
 
+ifeq (@CONFIG_RADIUS_WTMP_LOGGING@,y)
+RADIUS_WTMP_LOGGING := 1
+endif
+
+ifeq (@CONFIG_OPTIONS_TTY_FIRST@,y)
+OPTIONS_TTY_FIRST := 1
+endif
 
 PPPDSRCS = main.c magic.c fsm.c lcp.c ipcp.c upap.c chap.c md5.c ccp.c \
 	   ipxcp.c auth.c options.c sys-linux.c cbcp.c
@@ -30,10 +39,6 @@ HEADERS =  callout.h pathnames.h patchlevel.h chap.h md5.h \
 MANPAGES = ipppd.8
 PPPDOBJS = main.o magic.o fsm.o lcp.o ipcp.o upap.o chap.o md5.o ccp.o \
 		auth.o options.o sys-linux.o cbcp.o ipxcp.o
-
-ifdef CONFIG_RADIUS_WTMP_LOGGING
-CFLAGS  += -DRADIUS_WTMP_LOGGING
-endif
 
 all: ipppd
 
@@ -93,14 +98,14 @@ ifdef USE_MSCHAP
 endif
 
 ifdef RADIUS
-       CFLAGS   += -DRADIUS -I/usr/local/radius/src
-       CFLAGS   += -D_PATH_ETC_RADIUSCLIENT_CONF=\"/usr/local/radius\"
-       LIBS     += -L/usr/local/lib -lradclient
-       PPPDOBJS += radius.o
-endif
-
-ifdef RADIUS_WTMP_LOGGING
-       CFLAGS   += -DRADIUS_WTMP_LOGGING
+	PPPDSRCS += radius.c
+	PPPDOBJS += radius.o
+	COPTS    += -DRADIUS -I/usr/local/include 
+	COPTS 	 += -DPATH_RADIUSCLIENT_CONF=\"$(RADIUS_CLIENT_CONFIG_FILE)\"
+	LIBS     += -L/usr/local/lib -lradiusclient
+	ifdef RADIUS_WTMP_LOGGING
+        	COPTS    += -DRADIUS_WTMP_LOGGING
+	endif
 endif
 
 ifdef OPTIONS_TTY_FIRST

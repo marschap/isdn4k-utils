@@ -36,7 +36,7 @@
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-char auth_rcsid[] = "$Id: auth.c,v 1.11 1998/03/25 13:13:33 hipp Exp $";
+char auth_rcsid[] = "$Id: auth.c,v 1.12 1998/04/29 14:29:26 hipp Exp $";
 
 #include <stdio.h>
 #include <stddef.h>
@@ -62,23 +62,14 @@ char auth_rcsid[] = "$Id: auth.c,v 1.11 1998/03/25 13:13:33 hipp Exp $";
 #endif
 
 #ifdef RADIUS
-#include <radius.h>
-
-int  radius_auth_order __P((void));
-int  radius_pap_auth __P((char *, char *, char **, int *, int));
-void radius_acct_stop __P((int));
-
-extern int radius_in;
+#include <radiusclient.h>
+int  radius_pap_auth __P((int, char *, char *, char **, int *));
+extern int auth_order ;
+extern int idle_time_limit ;
+extern int default_idle_time_limit ;
+extern int session_time_limit ;
+extern int default_session_time_limit ;
 #endif
-
-#ifndef PW_PPP
-#define PW_PPP PW_LOGIN
-#endif
-#ifndef PW_PPP
-#define PW_PPP PW_LOGIN
-#endif
-
-
 
 #include "fsm.h"
 #include "ipppd.h"
@@ -142,18 +133,48 @@ void link_required(int unit)
  */
 void link_terminated(int linkunit)
 {
+
+#ifdef RADIUS
+	extern u_int32_t	default_hisaddr;
+	extern u_int32_t	default_ouraddr;	
+	extern u_int32_t	default_netmask;
+	struct in_addr hisifaddr;
+	struct in_addr ourifaddr;
+#endif
+	
 	if(lns[linkunit].auth_up_script)
 		auth_script(linkunit,_PATH_AUTHDOWN);
-#ifdef RADIUS
-	if (radius_in)
-		radius_acct_stop(linkunit);
-#endif	
 	if (lns[linkunit].phase == PHASE_DEAD)
 		return;
 	if (lns[linkunit].logged_in) {
 		do_logout(linkunit);
 		lns[linkunit].logged_in = 0;
 	}
+#ifdef RADIUS
+	if (lns[linkunit].radius_in )
+	{
+		lns[linkunit].radius_in = FALSE ;
+		if ( useradacct ) 
+			radius_acct_stop(linkunit) ;
+	}
+	/* reset some parameters to their default (option-parsed) values */
+	session_time_limit = default_session_time_limit ;
+	idle_time_limit = default_idle_time_limit ;
+	/* and reset IP addresses to their default values */
+	hisifaddr.s_addr = default_hisaddr ? default_hisaddr : ipcp_wantoptions[linkunit].hisaddr ;
+	ourifaddr.s_addr = default_ouraddr ? default_ouraddr : ipcp_wantoptions[linkunit].ouraddr ;
+	syslog(LOG_DEBUG,
+		"reseting remote ippp interface addresses for linkunit %d [ifunit %d] to %s:%s\n",
+				linkunit,
+				lns[linkunit].ifunit,
+				inet_ntoa(ourifaddr),
+				inet_ntoa(hisifaddr)
+		);
+	sifaddr(linkunit,
+		default_ouraddr ? default_ouraddr :ipcp_wantoptions[linkunit].ouraddr,
+		default_hisaddr ? default_hisaddr : ipcp_wantoptions[linkunit].hisaddr,
+		default_netmask ? default_netmask : 0xffffffff);
+#endif
 	lns[linkunit].phase = PHASE_DEAD;
 	syslog(LOG_NOTICE, "Connection terminated.");
 }
@@ -242,9 +263,6 @@ void link_established(int linkunit)
 	lcp_options *go = &lcp_gotoptions[ lns[linkunit].lcp_unit ];
 	lcp_options *ho = &lcp_hisoptions[ lns[linkunit].lcp_unit ];
 	
-	fprintf(stderr,"@mla@: link_established\n");
-	fprintf(stderr,"@mla@: go->neg_chap = %d\n", go->neg_chap);
-	fprintf(stderr,"@mla@: go->neg_upap = %d\n", go->neg_upap);
 	if (auth_required && !(go->neg_chap || go->neg_upap)) {
 		/*
 		 * We wanted the peer to authenticate itself, and it refused:
@@ -261,30 +279,21 @@ void link_established(int linkunit)
 
 	lns[linkunit].phase = PHASE_AUTHENTICATE;
 	auth = 0;
-	fprintf(stderr,"@mla@: link_established: go->neg_chap = %d\n", go->neg_chap);
-	fprintf(stderr,"@mla@: link_established: go->neg_upap = %d\n", go->neg_upap);
-	fprintf(stderr,"@mla@: link_established: ho->neg_chap = %d\n", ho->neg_chap);
-	fprintf(stderr,"@mla@: link_established: ho->neg_upap = %d\n", ho->neg_upap);
 	if (go->neg_chap) {
-		fprintf(stderr,"@mla@: link_established: Calling ChapAuthPeer()\n");
 		ChapAuthPeer(lns[linkunit].chap_unit, our_name, go->chap_mdtype);
 		auth |= CHAP_PEER;
 	} else if (go->neg_upap) {
-		fprintf(stderr,"@mla@: link_established: Calling upap_authpeer()\n");
 		upap_authpeer(lns[linkunit].upap_unit);
 		auth |= UPAP_PEER;
 	}
 	if (ho->neg_chap) {
-		fprintf(stderr,"@mla@: link_established: Calling ChapAuthWithPeer()\n");
 		ChapAuthWithPeer(lns[linkunit].chap_unit, our_name, ho->chap_mdtype);
 		auth |= CHAP_WITHPEER;
 	} else if (ho->neg_upap) {
-		fprintf(stderr,"@mla@: link_established: Calling upap_authwithpeer()\n");
 		upap_authwithpeer(lns[linkunit].upap_unit, user, passwd);
 		auth |= UPAP_WITHPEER;
 	}
 	lns[linkunit].auth_pending = auth;
-	fprintf(stderr,"@mla@: link_established: at end, auth = %d\n", auth);
 	if (!auth)
 		callback_phase(linkunit);
 }
@@ -540,29 +549,14 @@ void check_auth_options()
 	lcp_options *wo = &lcp_wantoptions[0];
 	lcp_options *ao = &lcp_allowoptions[0];
 
-#ifdef RADIUS
-	fprintf(stderr,"@mla@: check_auth_options called\n");
-	fprintf(stderr,"@mla@: our_name = <%s>\n", our_name);
-	fprintf(stderr,"@mls@: remote_name = <%s>\n", remote_name);
-#endif
-
 	/* Default our_name to hostname, and user to our_name */
 	if (our_name[0] == 0 || usehostname)
 		strcpy(our_name, hostname);
 	if (user[0] == 0)
 		strcpy(user, our_name);
 
-#ifdef RADIUS
-	fprintf(stderr,"@mla@: auth_required = %d\n",auth_required);
-	fprintf(stderr,"@mla@: wo->neg_chap  = %d\n",wo->neg_chap);
-	fprintf(stderr,"@mls@: wo->neg_upap  = %d\n",wo->neg_upap);
-#endif
-
 	/* If authentication is required, ask peer for CHAP or PAP. */
 	if (auth_required && !wo->neg_chap && !wo->neg_upap) {
-#ifdef RADIUS
-		fprintf(stderr,"@mla@: Ask peer for CHAP or PAP\n");
-#endif
 		wo->neg_chap = 1;
 		wo->neg_upap = 1;
 	}
@@ -571,17 +565,37 @@ void check_auth_options()
 	 * Check whether we have appropriate secrets to use
 	 * to authenticate ourselves and/or the peer.
 	 */
-	if (ao->neg_upap && passwd[0] == 0 && !useradius && !get_upap_passwd()) {
+#ifdef RADIUS
+	if (ao->neg_upap && passwd[0] == 0 && !get_upap_passwd() 
+		&& !useradius ) {
+#else
+	if (ao->neg_upap && passwd[0] == 0 && !get_upap_passwd()) {
+#endif
 		syslog(LOG_INFO,"info: no PAP secret entry for this user!\n");
 		ao->neg_upap = 0;
 	}
-	if (wo->neg_upap && !uselogin && !useradius && !have_upap_secret())
+#ifdef RADIUS
+	if (wo->neg_upap && !uselogin && !have_upap_secret()
+		&& !useradius )
+#else
+	if (wo->neg_upap && !uselogin && !have_upap_secret())
+#endif
 		wo->neg_upap = 0;
-	if (ao->neg_chap && !useradius && !have_chap_secret(our_name, remote_name)) {
+#ifdef RADIUS
+	if (ao->neg_chap && !have_chap_secret(our_name, remote_name)
+		&& !useradius ) {
+#else
+	if (ao->neg_chap && !have_chap_secret(our_name, remote_name)) {
+#endif
 		syslog(LOG_INFO,"info: no CHAP secret entry for this user!\n");
 		ao->neg_chap = 0;
 	}
-	if (wo->neg_chap && !useradius && !have_chap_secret(remote_name, our_name))
+#ifdef RADIUS
+	if (wo->neg_chap && !have_chap_secret(remote_name, our_name)
+		&& !useradius )
+#else
+	if (wo->neg_chap && !have_chap_secret(remote_name, our_name))
+#endif
 		wo->neg_chap = 0;
 
 	if (auth_required && !wo->neg_chap && !wo->neg_upap) {
@@ -649,7 +663,7 @@ int check_passwd(int linkunit,char *auser,int userlen,char *apasswd,
 	ret = UPAP_AUTHACK;
 	f = fopen(filename, "r");
 	if (f == NULL) {
-		if (!uselogin && !useradius) {
+		if (!uselogin ) {
 			syslog(LOG_ERR, "Can't open PAP password file %s: %m", filename);
 			ret = UPAP_AUTHNAK;
 		}
@@ -664,7 +678,6 @@ int check_passwd(int linkunit,char *auser,int userlen,char *apasswd,
 		fclose(f);
 	}
 
-#ifndef RADIUS
 	if (uselogin && ret == UPAP_AUTHACK) {
 		ret = check_login(user, passwd, msg, msglen,linkunit);
 		if (ret == UPAP_AUTHNAK) {
@@ -673,39 +686,6 @@ int check_passwd(int linkunit,char *auser,int userlen,char *apasswd,
 		else
 			lns[linkunit].logged_in = TRUE;
 	}
-#else
-	{
-		int auth_order = radius_auth_order();
-		syslog(LOG_INFO,": auth_order = 0x%x\n", auth_order);
-		syslog(LOG_INFO,": AUTH_LOCAL_FST = 0x%x\n", AUTH_LOCAL_FST);
-		syslog(LOG_INFO,": AUTH_LOCAL_SND = 0x%x\n", AUTH_LOCAL_SND);
-		syslog(LOG_INFO,": AUTH_RADIUS_SND = 0x%x\n", AUTH_RADIUS_SND);
-		syslog(LOG_INFO,": AUTH_RADIUS_FST = 0x%x\n", AUTH_RADIUS_FST);
-		if (ret == UPAP_AUTHACK) {
-			if (uselogin && useradius) {
-				if (auth_order & AUTH_LOCAL_FST) {
-					ret = login(user, passwd, msg, msglen, linkunit);
-					if ((auth_order & AUTH_RADIUS_SND) && (ret == UPAP_AUTHNAK))
-					ret = radius_pap_auth( user, passwd, msg, msglen, linkunit);
-				} 
-				else if (auth_order & AUTH_RADIUS_FST) {
-					ret = radius_pap_auth( user, passwd, msg, msglen, linkunit );
-					if ((auth_order & AUTH_LOCAL_SND) && (ret == UPAP_AUTHNAK))
-						ret = login(user, passwd, msg, msglen, linkunit );
-				}
-			} 
-			else if (uselogin) {
-				ret = login(user, passwd, msg, msglen, linkunit);
-			} 
-			else if (useradius) {
-				ret = radius_pap_auth( user, passwd, msg, msglen, linkunit);
-			}
-		}
-		if (ret == UPAP_AUTHNAK) {
-			syslog(LOG_WARNING, "PAP login failure for %s", user);
-		}
-	}
-#endif
 
 	if (ret == UPAP_AUTHNAK) {
 		*msg = "Login incorrect";
@@ -735,6 +715,100 @@ int check_passwd(int linkunit,char *auser,int userlen,char *apasswd,
 	return ret;
 }
 
+#ifdef RADIUS
+/*
+ * Name: radius_check_passwd 
+ *
+ * Purpose: Check the user name and passwd against RADIUS server
+ * 	    and acording to configuration also perform standard check_passwd
+ *
+ * returns:
+ *        UPAP_AUTHNAK: Authentication failed.
+ *        UPAP_AUTHACK: Authentication succeeded.
+ * In either case, msg points to an appropriate message.
+ */
+int radius_check_passwd(linkunit,auser,userlen,apasswd,passwdlen,msg,msglen)
+	int linkunit ;
+	char *auser ;
+	int userlen ;
+	char *apasswd ;
+	int passwdlen ;
+	char **msg ;
+	int *msglen ;			
+{
+	int ret;
+	char passwd[256], user[256];
+
+	/*
+	* Make copies of apasswd and auser, then null-terminate them.
+	*/
+	BCOPY(apasswd, passwd, passwdlen);
+	passwd[passwdlen] = '\0';
+	BCOPY(auser, user, userlen);
+	user[userlen] = '\0';
+	strcpy(lns[linkunit].peer_authname,user);
+
+	ret = UPAP_AUTHACK;
+
+	if ( useradius )
+	{
+		if ( auth_order & AUTH_RADIUS_FST )
+		{
+			ret = radius_pap_auth( linkunit, user, passwd, msg, msglen );
+			if ((ret == UPAP_AUTHNAK) && (auth_order & AUTH_LOCAL_SND))
+			{
+				ret = check_passwd (linkunit,auser,userlen,apasswd,passwdlen,msg,msglen) ;
+			}
+		}
+		else if ( auth_order & AUTH_LOCAL_FST )
+		{
+			ret = check_passwd (linkunit,auser,userlen,apasswd,passwdlen,msg,msglen) ;
+			if ((auth_order & AUTH_RADIUS_SND) && (ret == UPAP_AUTHNAK))
+			{
+				ret = radius_pap_auth( linkunit, user, passwd, msg, msglen );
+			}
+		}
+	} 
+	else
+	{
+		ret = check_passwd (linkunit,auser,userlen,apasswd,passwdlen,msg,msglen) ;
+	}
+
+	if (ret == UPAP_AUTHNAK) 
+	{
+		*msg = "Login incorrect";
+		*msglen = strlen(*msg);
+		if (lns[linkunit].attempts++ >= 10)
+		{
+			syslog(LOG_WARNING, "%d LOGIN FAILURES ON %s, %s",
+				lns[linkunit].attempts, 
+				lns[linkunit].devnam, user);
+				lcp_close(lns[linkunit].lcp_unit,
+				"max auth exceed");
+			lns[linkunit].phase = PHASE_TERMINATE;
+/* should I die here it must be something wrong here then */
+/* then outside script can reestablish ipppd 		  */
+		}
+
+	} 
+	else 
+	{
+		lns[linkunit].attempts = 0;		/* Reset count */
+		*msg = "Login ok";
+		*msglen = strlen(*msg);
+		if ( useradacct )
+		{
+			if (radius_acct_start (linkunit) != OK_RC) 
+			{
+				syslog(LOG_WARNING, "RADIUS accounting failed for %s", user);
+				ret = UPAP_AUTHNAK ;
+			} ;
+		}
+	}
+
+	return ret;
+}
+#endif
 
 /*
  * check_login - Check the user name and password against the system
@@ -756,7 +830,6 @@ static int check_login(char *user,char *passwd,char **msg,int *msglen,int unit)
 	extern int isexpired (struct passwd *, struct spwd *);
 #endif
 
-	fprintf(stderr,"@mla@: login called\n");
 	if ((pw = getpwnam(user)) == NULL) {
 		return (UPAP_AUTHNAK);
 	 }
@@ -831,7 +904,6 @@ static int null_login(int unit)
 	 * Open the file of upap secrets and scan for a suitable secret.
 	 * We don't accept a wildcard client.
 	 */
-	fprintf(stderr,"@mla@: null_login called\n");
 	filename = _PATH_UPAPFILE;
 	addrs = NULL;
 	f = fopen(filename, "r");

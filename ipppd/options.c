@@ -17,7 +17,7 @@
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-char options_rcsid[] = "$Id: options.c,v 1.8 1998/04/28 08:34:00 paul Exp $";
+char options_rcsid[] = "$Id: options.c,v 1.9 1998/04/29 14:29:36 hipp Exp $";
 
 #include <stdio.h>
 #include <errno.h>
@@ -34,6 +34,10 @@ char options_rcsid[] = "$Id: options.c,v 1.8 1998/04/28 08:34:00 paul Exp $";
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <ctype.h>
+
+#ifdef RADIUS
+#include <radiusclient.h>
+#endif
 
 #include "fsm.h"
 #include "ipppd.h"
@@ -87,7 +91,14 @@ int	auth_required = 0;	/* Peer is required to authenticate */
 int	defaultroute = 0;	/* assign default route through interface */
 int hostroute = 1;
 int	uselogin = 0;		/* Use /etc/passwd for checking PAP */
+#ifdef RADIUS
 int     useradius = 0;          /* Use RADIUS server checking PAP */
+int     useradacct = 0;         /* Use RADIUS server accounting */
+extern char radius_user[] ;
+extern int called_radius_init ;
+extern int auth_order ;
+
+#endif
 int	lcp_echo_interval = 0; 	/* Interval between LCP echo-requests */
 int	lcp_echo_fails = 0;	/* Tolerance to unanswered echo-requests */
 char our_name[MAXNAMELEN];	/* Our name for authentication purposes */
@@ -101,6 +112,15 @@ int usefirstip=0;
 int useifmtu=0;		/* get MTU value from network device */
 
 int idle_time_limit = 0;    /* Disconnect if idle for this many seconds */
+#ifdef RADIUS
+int default_idle_time_limit = 0 ;
+int session_time_limit = 0;
+int default_session_time_limit = 0;
+extern u_int32_t default_hisaddr ;
+extern u_int32_t default_ouraddr ;
+extern u_int32_t default_netmask ;
+#endif
+
 int holdoff = 30;           /* # seconds to pause before reconnecting */
 int refuse_pap = 0;         /* Set to say we won't do PAP */
 int refuse_chap = 0;        /* Set to say we won't do CHAP */
@@ -175,7 +195,8 @@ static int setproxyarp __P((int));
 static int setnoproxyarp __P((int));
 static int setdologin __P((int));
 #ifdef RADIUS
-static int setdoradius __P((void));
+static int setdoradius __P((int));
+static int setdoradacct __P((int));
 #endif
 static int setusehostname __P((int));
 static int setnoipdflt __P((int));
@@ -207,6 +228,9 @@ static int setnopred1comp __P((int));
 static int setipparam __P((int,char **));
 static int setpapcrypt __P((int));
 static int setidle __P((int,char **));
+#ifdef RADIUS
+static int setsessionlimit __P((int,char **));
+#endif
 static int setholdoff __P((int,char **));
 static int setdnsaddr __P((int,char **));
 static int setwinsaddr __P((int,char **));
@@ -235,6 +259,10 @@ static int setnohostroute __P((int));
 static int number_option __P((char *, u_int32_t *, int));
 static int int_option __P((char *, int *));
 static int readable __P((int));
+#ifdef RADIUS
+char *make_username_realm ( char * );
+int __P (radius_init ( void ));
+#endif
 
 /*
  * Valid arguments.
@@ -320,6 +348,7 @@ static struct cmd {
     {"login", 0, setdologin},	/* Use system password database for UPAP */
 #ifdef RADIUS
     {"radius", 0, setdoradius},   /* Use RADIUS server for UPAP */
+    {"radacct", 0, setdoradacct}, /* Use RADIUS server for accounting */
 #endif
     {"noipdefault", 0, setnoipdflt}, /* Don't use name for default IP adrs */
     {"lcp-echo-failure", 1, setlcpechofails}, /* consecutive echo failures */
@@ -354,6 +383,9 @@ static struct cmd {
     {"ipparam", 1, setipparam},		/* set ip script parameter */
     {"papcrypt", 0, setpapcrypt},	/* PAP passwords encrypted */
     {"idle", 1, setidle},              /* idle time limit (seconds) */
+#ifdef RADIUS
+    {"session-limit", 1, setsessionlimit}, /* seconds for disconnect sessions */
+#endif    
     {"holdoff", 1, setholdoff},                /* set holdoff time (seconds) */
     {"ms-dns", 1, setdnsaddr},         /* DNS address for the peer's use */
     {"ms-wins", 1, setwinsaddr},         /* WINS address for the peer's use */
@@ -1426,6 +1458,9 @@ static int setipaddr(int slot,char *arg)
     u_int32_t local, remote;
     ipcp_options *wo = &ipcp_wantoptions[slot];
   
+    local = 0 ;
+    remote = 0 ;
+  
     /*
      * IP address pair separated by ":".
      */
@@ -1459,7 +1494,12 @@ static int setipaddr(int slot,char *arg)
 	    return -1;
 	}
 	if (local != 0)
+	{
 	    wo->ouraddr = local;
+#ifdef RADIUS
+	    default_ouraddr = local ;
+#endif
+	}
 	*colon = ':';
     }
   
@@ -1484,7 +1524,12 @@ static int setipaddr(int slot,char *arg)
 	    return -1;
 	}
 	if (remote != 0)
+	{
 	    wo->hisaddr = remote;
+#ifdef RADIUS
+	    default_hisaddr = remote ;
+#endif
+	}
     }
 
     return 1;
@@ -1558,6 +1603,9 @@ static int setnetmask(int slot,char **argv)
 
 	if (strcmp(*argv, "255.255.255.255") == 0) {
 		netmask = 0xffffffff;
+#ifdef RADIUS
+                default_netmask = netmask ;
+#endif
 		return 1;
 	}
 
@@ -1567,6 +1615,9 @@ static int setnetmask(int slot,char **argv)
     }
 
     netmask = mask;
+#ifdef RADIUS
+       default_netmask = netmask ;
+#endif
     return (1);
 }
 
@@ -1749,6 +1800,10 @@ static int setuser(int slot,char **argv)
 {
     strncpy(user, argv[0], MAXNAMELEN);
     user[MAXNAMELEN-1] = 0;
+#ifdef RADIUS
+       strncpy(radius_user, make_username_realm (argv[0]), MAXNAMELEN);
+	radius_user[MAXNAMELEN-1] = 0;
+#endif
     return 1;
 }
 
@@ -1812,13 +1867,39 @@ static int setdologin(int slot)
     return 1;
 }
 
-
 #ifdef RADIUS
-static int setdoradius()
+static int setdoradius(slot)
+	int slot ;
 {
-    useradius = 1;
-    fprintf(stderr,"@mla@: useradius called\n");
-    return 1;
+	static char *func = "setdoradius" ;
+	useradius = 1;
+	if(!called_radius_init && (radius_init() < 0))   
+	{
+		syslog(LOG_WARNING, "can't init radiusclient in %s", func);
+	} 
+	else
+	{
+		called_radius_init = 1 ;
+		auth_order = rc_conf_int("auth_order");
+	}
+	return 1;
+}
+
+static int setdoradacct(slot)
+	int slot ;
+{
+	static char *func = "setdoradacct" ;
+	useradacct = 1;
+	if(!called_radius_init && (radius_init() < 0))   
+	{
+		syslog(LOG_WARNING, "can't init radiusclient in %s", func);
+	} 
+	else
+	{
+		called_radius_init = 1 ;
+		auth_order = rc_conf_int("auth_order");
+	}
+	return 1;
 }
 #endif
 
@@ -2034,7 +2115,20 @@ static int setpapcrypt(int slot)
 static int setidle (int slot,char **argv)
 {
     return int_option(*argv, &idle_time_limit);
+#ifdef RADIUS
+    default_idle_time_limit = idle_time_limit ;
+#endif    
 }
+
+#ifdef RADIUS 
+static int setsessionlimit (slot, argv)
+	int 	slot ;
+	char 	**argv;
+{
+	return int_option(*argv, &session_time_limit);
+	default_session_time_limit = session_time_limit ;
+}
+#endif
 
 static int sethostroute(int slot)
 {

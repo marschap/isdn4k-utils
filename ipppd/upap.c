@@ -17,7 +17,7 @@
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-char upap_rcsid[] = "$Id: upap.c,v 1.4 1998/03/08 13:01:45 hipp Exp $";
+char upap_rcsid[] = "$Id: upap.c,v 1.5 1998/04/29 14:29:50 hipp Exp $";
 
 /*
  * TODO:
@@ -421,10 +421,13 @@ static void upap_rauthreq(upap_state *u,u_char *inp,int id,int len)
 	strncpy(u->us_rpasswd,rpasswd,(int)rpasswdlen);
 	u->us_rpasswdlen = rpasswdlen;
 	u->us_ruserlen = ruserlen;
-	fprintf(stderr,"\n***  @mla@:upap_rauthreq: Calling check_passwd\n");
+#ifdef RADIUS
+        retcode = radius_check_passwd(u->us_unit, ruser, ruserlen, rpasswd,
+                       rpasswdlen, &msg, &msglen);
+#else
 	retcode = check_passwd(u->us_unit, ruser, ruserlen, rpasswd,
 		rpasswdlen, &msg, &msglen);
-
+#endif
 	upap_sresp(u, retcode, id, msg, msglen);
 
 	if (retcode == UPAP_AUTHACK) {

@@ -16,7 +16,7 @@
  * IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Id: ipppd.h,v 1.14 1998/03/30 09:53:34 hipp Exp $
+ * $Id: ipppd.h,v 1.15 1998/04/29 14:29:31 hipp Exp $
  */
 
 /*
@@ -75,8 +75,13 @@ struct wordlist {
   char word[1];
 };
 
+#ifdef RADIUS
 #define MAXUSERNAME 255
 #define MAXSESSIONID 32
+#define MAXCID 17
+extern int	useradius;      /* Use RADIUS server for PAP authentication */
+extern int	useradacct;     /* Use RADIUS server for accounting         */
+#endif
 
 struct link_struct {
   struct link_struct *bundle_next;
@@ -109,11 +114,15 @@ struct link_struct {
   struct pppcallinfo pci;
   int has_proxy_arp;
   int attempts;
+#ifdef RADIUS
+  int radius_in ;
   int rx_bytes;
-  int tx_bytes;
-  char session_id[MAXSESSIONID+1];
-  char username[MAXUSERNAME+1];
+  int tx_bytes;  
   time_t start_time;
+  char radius_user [MAXUSERNAME+1];
+  char session_id[MAXSESSIONID+1];
+  char remote_number [MAXCID+1] ;
+#endif  
 };
 
 extern struct link_struct lns[NUM_PPP];
@@ -131,7 +140,6 @@ extern struct link_struct lns[NUM_PPP];
  * Global variables.
  */
 
-extern int      useradius;      /* Use RADIUS server for checking PAP */
 extern char	hostname[];	/* Our hostname */
 extern u_char	outpacket_buf[]; /* Buffer for outgoing packets */
 extern int	baud_rate;	/* Current link speed in bits/sec */
@@ -139,6 +147,10 @@ extern char	*progname;	/* Name of this program */
 extern char pidfilename[MAXPATHLEN];
 
 extern void set_userip(char *ruser,int ruserlen);
+#ifdef RADIUS
+int 	radius_acct_start() ;
+int 	radius_acct_stop() ;
+#endif
 
 extern char options_rcsid[];
 extern char auth_rcsid[];
@@ -237,6 +249,9 @@ void timeout(void (*)(), caddr_t, int); /* Look-alike of kernel's timeout() */
 void untimeout (void (*)(), caddr_t);   /* Look-alike of kernel's untimeout() */
 void demuxprotrej (int,u_short);        /* Demultiplex a Protocol-Reject */
 int  check_passwd (int, char *, int, char *, int, char **, int *); /* Check peer-supplied username/password */
+#ifdef RADIUS
+int  radius_check_passwd (int, char *, int, char *, int, char **, int *); /* Check peer-supplied username/password */
+#endif
 int  get_secret (int, char *, char *, char *, int *, int);    /* get "secret" for chap */
 u_int32_t GetMask (u_int32_t);          /* get netmask for address */
 void die (int);
