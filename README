@@ -1,17 +1,17 @@
 #
-# $Id: README,v 1.1 1997/02/17 00:08:37 fritz Exp $
+# $Id: README,v 1.2 1997/02/22 14:46:09 fritz Exp $
 #
 This is the README file for the "isdn4k-utils" package from "The i4l-crew".
 
 This package contains the following utilities:
 
-  isdnctrl, general linklevel setup utility.
+  isdnctrl, general link-level setup utility.
   icnctrl, setup utility for the icn driver.
   telesctrl, setup utility for the teles and HiSax driver.
-  pcbitctrl, setup utility for the pcbit driver.
+  pcbitctl, setup utility for the pcbit driver.
   imon, a tty based utility for monitoring ISDN-activities.
   isdnlog, a set of utilities for connection logging.
-  isdnmon, a TclTk based utility for monitoring ISDN-activities.
+  isdnmon, a Tcl/Tk based utility for monitoring ISDN-activities.
   
 System prerequisites:
 
@@ -24,7 +24,7 @@ System prerequisites:
 
      ftp.franken.de:/pub/isdn4linux
 
-  For using modularized parts of the ISDN-subsystem, newest modutils
+  For using modularised parts of the ISDN-subsystem, newest modutils
   are strongly recommended.
 
 3. Configuration, Compilation.
@@ -32,10 +32,17 @@ System prerequisites:
    Run "make config"
 
    This will run various configuration-scripts for each sub-package.
+   There is a global configuration directory, where most programs
+   expect their configuration files. The default is /etc/isdn. If
+   you prefer a different directory, run
+   
+   "make I4LCONFDIR=/what/ever/you/want config"
+
+   instead of the above.
    
    Run "make"
 
-   This builds all utilities except the TclTk-script "isdnmon"
+   This builds all utilities except the Tcl/Tk-script "isdnmon"
 
 4. Installation
 
@@ -45,11 +52,12 @@ System prerequisites:
 
      make devices
 
-   b) Install the utilities, the manpages and config-files:
+   b) Install the utilities, the man pages and config-files:
 
      make install
 
-   The config files usually are installed in /etc/isdn/
+   The config files usually are installed in /etc/isdn if not
+   specified otherwise during configuration.
 
 5. Application
 
@@ -57,12 +65,12 @@ System prerequisites:
    not installed automatically, because it MUST BE CONFIGURED IN ANY
    CASE! Please don't try to connect to the Internet without setting
    your own IP-addresses. This script is intended to be used with
-   the modularized version of the ISDN-subsystem. Refer to the
-   Documentation/isdn subdirectory of your kernel-sourcetree for
+   the modularised version of the ISDN-subsystem. Refer to the
+   Documentation/isdn subdirectory of your kernel-source-tree for
    more information on configuring Lowlevel drivers.
 
    For the utilities "isdnctrl", "icnctrl" "telesctrl" and "imon" refer to
-   the manpages. For the other contributed utilities, look into their
+   the man pages. For the other contributed utilities, look into their
    subdirectories for Documentation.
 
    For tips, troubleshooting etc. look into the FAQ subdirectory
