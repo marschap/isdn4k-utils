@@ -1,10 +1,9 @@
-ISDNLOG - Version 3.0 -  				4-Mai-97  22:09
+ISDNLOG - Version 3.0 -  				27-May-97  23:14
 
 
-isdnlog ist ein Tool zur Auswertung der Info's vom ISDN-S0-Bus sowie
-isdn4linux. isdn4linux ist seit Version 1.3.69 im Linux-Kernel enthalten.
+isdnlog ist ein Utility zur Auswertung des D-Kanal eines ISDN-BRI Anschlusses.
 
-isdnlog-3.0 wurde ausgiebig mit Linux-2.0.29 / isdn4kernel-2.0.29.5
+isdnlog-3.0 wurde ausgiebig mit Linux-2.0.29 / isdn4kernel-2.0.30
 getestet.
 
 
@@ -13,15 +12,16 @@ Fuer alle, die es nun ueberhaupt nicht mehr abwarten koennen, hier das
 Quick-Installation-Guide
 ------------------------
 
-1. Linux-2.0.29 + isdn4kernel-2.0.29.5 verwenden:
+1. Linux-2.0.29 + isdn4kernel-2.0.30 verwenden:
      CONFIG_ISDN=m
-******* Andreas, die folgende Zeile ist wohl ueberholt!!!
-     CONFIG_ISDN_DRV_TELES=m ????????????????????????????????????
+     CONFIG_ISDN_DRV_HISAX=m
 
-2. isdn4k-utils.2.1.tar.gz auspacken, erstellen und installieren:
+2. isdn4k-utils-2.1.tar.gz auspacken, erstellen und installieren:
      cd /usr/src
-     tar xzf isdn4k-utils.2.1.tar.gz
+     tar xzf isdn4k-utils-2.1.tar.gz
      cd isdn4k-utils
+     make config
+     make
      make install
 
 3. Konfigurationsdatei fuer isdnlog fuellen:
@@ -55,10 +55,10 @@ Quick-Installation-Guide
 
 4. isdn4linux das D-Kanal-Protokoll entlocken:
 
-     telesctrl <myTeles> 1 4
+     hisaxctrl <myTeles> 1 4
 
-   mit <myTeles> entsprechend Driver-ID, wie beim "insmod" des Teles-Treibers
-   angegeben, oder "line0", falls der Teles-Treiber im Kern enthalten ist.
+   mit <myTeles> entsprechend Driver-ID, wie beim "insmod" des HiSax-Treibers
+   angegeben, oder "line0", falls der HiSax-Treiber im Kern enthalten ist.
 
 5. isdnlog starten:
 
@@ -124,17 +124,17 @@ sondern im Verzeichnis "/var/log" zu Hause.
 Fuer die isdn4linux-Version ("ISDN subsystem Rev: 1.5/1.5/1.5/1.5")
 respektive Linux-1.3.93 _muss_ isdnlog mit "-DSELECT_FIX"
 erstellt werden. Dadurch wird ein kleiner Bug in dieser Version umgangen.
-Dadurch entfaellt leider auch die Durchsatz-Ermittlung!
+Dadurch entfaellt leider auch die Durchsatz-Raten-Ermittlung!
 
+Anmerkung:
+  Der X11-Version (isdnlog-X11-2.43.tar.gz) liegen einige Sound-Dateien
+  als Samples bei.
+  Diese Datei unterliegen _nicht_ dem GPL. Diese sind nur als Beigaben
+  der Autoren zu Betrachten und stehen in keinem Zusammenhang mit den
+  Sourcen.
 
 Es wurden folgende Dinge geaendert, die vor dem ersten Start
 dieser neuen Version unbedingt angepasst werden muessen!
-
-Der X11-Version (isdnlog-X11-2.43.tar.gz) liegen einige Sound-Dateien
-als Samples bei.
-Diese Datei unterliegen _nicht_ dem GPL. Diese sind nur als Beigaben
-der Autoren zu Betrachten und stehen in keinem Zusammenhang mit den
-Sourcen.
 
 Aenderungen seit Version 2.50:
 
@@ -151,7 +151,7 @@ Aenderungen seit Version 2.41:
 
 Aenderungen seit Version 2.30:
 
-    - Die "isdnlog.conf" hat fuer die Flags eine komlett neue
+    - Die "isdnlog.conf" hat fuer die Flags eine komplett neue
       Syntax erhalten.
 
     - Die Optionen -c und -i sind entfallen. Diese wurden durch die
@@ -181,7 +181,8 @@ Aenderungen seit Version 2.01:
 Ein Bitte noch:
 ===============
 
-Alle Anfragen zum isdnlog nicht an meine Email-Adresse senden, sondern an
+Alle Anfragen zum isdnlog bitte nicht an meine Email-Adresse senden,
+sondern an
 
      i4l-isdnlog@franken.de
 
@@ -213,7 +214,7 @@ sowie "/dev/isdninfo" lauscht, und saemtliche Vorgaenge auf dem eigenen
 ISDN-Anschluss anzeigt.
 
 Dazu liest es aus "/dev/isdnctrl0" (resp. "/dev/isdnctrl2", falls eine
-2. Teles-Karte im Rechner steckt) das gesamte Q.931 Protokoll, sowie aus
+2. Teles-Karte im Rechner steckt) das gesamte D-Kanal Protokoll, sowie aus
 "/dev/isdninfo" alle internen Meldungen von isdn4linux.
 
 isdnlog sammelt all diese Informationen, und gestattet damit folgendes:
@@ -245,16 +246,14 @@ isdnlog sammelt all diese Informationen, und gestattet damit folgendes:
    frei waehlbare Alias-Bezeichnungen fuer die Telefonnummern an.
 
 
- - isdnlog decodiert (im Gegensatz zum aktuellen Teles-Treiber) die
+ - isdnlog decodiert (im Gegensatz zum aktuellen HiSax-Treiber) die
    von der VSt uebermittelten Gebuehreninformationen, und zeigt diese
    sowohl am Ende einer Verbinung (== Gesamtkosten fuer diese Verbindung)
    als auch waehrend der Verbindung staendig an.
 
 
- - mit einem (beigefuegten) Patch fuer isdn4linux kann isdnlog pro aktivem
-   B-Kanal staendig die aktuelle Durchsatz-Rate (in Byte/s), sowie die
-   bislang komplett durchgerauschten Byte anzeigen.
-   Zur Zeit werden aber nur die ankommenden Bytes angezeigt.
+ - isdnlog kann pro aktivem B-Kanal staendig die aktuelle Durchsatz-Rate
+   (in Byte/s), sowie die bislang komplett durchgerauschten Byte anzeigen.
 
 
  - Alle Verbindungen (sowohl die zustande gekommenen, als auch die nicht
@@ -282,10 +281,8 @@ isdnlog sammelt all diese Informationen, und gestattet damit folgendes:
    (ergaenzt um Datum/Uhrzeit) fuer eine spaetere Analyse mitprotokollieren
    (in "/tmp/isdnctrl0").
 
-
  - isdnlog erzeugt auf Wunsch syslog-Eintraege mit selektierbaren
    Informationen
-
 
  - isdnlog erkennt selbststaendig 1TR6 oder E-DSS1 Frames, und decodiert
    entsprechend korrekt.
@@ -304,8 +301,8 @@ isdnlog sammelt all diese Informationen, und gestattet damit folgendes:
 2. Was kann isdnlog nicht?
 --------------------------
 
-Z.Zt. arbeitet isdnlog _nur_ mir dem Teles-Treiber (und damit mit einer
-Teles-ISDN-Karte od. compatiblen Karten) zusammen, die ICN-Karte wird
+Z.Zt. arbeitet isdnlog _nur_ mit dem HiSax-Treiber (und damit mit einer
+Teles- od. compatiblen Karte) zusammen, die ICN-Karte wird
 leider noch nicht unterstuetzt.
 
 Weiterhin kann isdnlog bei allen rausgehenden Verbindungen, die nicht
@@ -337,18 +334,18 @@ Dazu siehe jedoch Kapitel 15. Dual-Mode !
 3. Installation
 ---------------
 
-Da isdnlog seit der Version 3.0 nur noch im isdn4k-utils freigegeben wird,
-findet die Konfiguration ueber das Menu statt. Es darf also nicht mehr direkt
-in dem Makefile editiert werden.
+Da isdnlog seit der Version 3.0 nur noch als Bestandteil der isdn4k-utils
+freigegeben wird, findet die Konfiguration ueber das dortige Menu statt.
+Es darf also nicht mehr direkt in dem Makefile editiert werden.
 
-Die alte Datei isdnlog.conf wird, wenn vorhanden in die Dateien isdn.conf und
-callerid.conf umgesetzt. Dieses macht die Installation automatisch.
+Die alte Datei "isdnlog.conf" wird, wenn vorhanden, in die Dateien "isdn.conf"
+und "callerid.conf" umgesetzt. Dieses macht die Installation automatisch.
 
-Die alte Konfigurationsdatei isdnlog.conf wird ins neue Verzeichnis uebernommen.
-Allerdings traegt sie dann den Namen isdnlog.conf.old.
+Die alte Konfigurationsdatei "isdnlog.conf" wird in das neue Verzeichnis
+uebernommen. Allerdings traegt sie dann den Namen "isdnlog.conf.old".
 
-Es ist dabei zu beachten, dass bei allen Telefonnummern, die in der
-isdnlog.conf, die mit einem "*" oder einem "?" beginnen, dieses Zeichen
+Es ist dabei zu beachten, dass bei allen Telefonnummern in der
+isdn.conf, die mit einem "*" oder einem "?" beginnen, dieses Zeichen
 geloescht wird.
 
 Beispiel:
@@ -359,16 +356,16 @@ Beispiel:
 Wenn das Zeichen ("*" oder "?") nur als Platzhalter fuer eine "0" stand, kann
 man es lassen, andernfalls muss eine manuelle Nacheditierung stattfinden.
 
-Auch die Datei isdnlog.users wird uebernommen. Allerdings finden hier keine
+Auch die Datei "isdnlog.users" wird uebernommen. Allerdings finden hier keine
 Aenderungen statt.
 
-Das Vornummernverzeichnis AVON wird nicht uebernommen. Da sich die Syntax 
-etwas geaendert hat. Muss die alte Datei von Hand an die neue angefuegt werden.
+Das Vornummernverzeichnis AVON wird nicht uebernommen. Da sich die Syntax
+etwas geaendert hat, muss die alte Datei von Hand an die neue angefuegt werden.
 Aber normalerweise wird bei der Installation von isdnlog empfohlen die
-areacode-Library zu verwenden.
+neue areacode-Library zu verwenden.
 
 Hier sind nochmal alle Eintraege aufgefuehrt, die isdnlog im Makefile enthaelt,
-die ueber das Menue konfiguriert werden:
+und die ueber das Menue konfiguriert werden:
 
   COPTS
     Compiler-Optionen fuer den gcc
@@ -433,12 +430,12 @@ Folgende Programme und Dateien werden durch den "make install" erstellt:
   /usr/lib/areacodes (wenn LIBAREA definiert ist!)
 
 
-ACHTUNG: Durch die Syntaxandaerung und den Erweiterungen, muessen folgende
-         Anderungen _zuerst_ an der bestehenden isdnlog.conf durchgefuehrt
+ACHTUNG: Durch die Syntaxaenderung und den Erweiterungen muessen folgende
+         Anderungen _zuerst_ an der bestehenden "isdnlog.conf" durchgefuehrt
          werden:
 
          Bei der Installation von isdnlog werden automatisch die neuen
-         Konfigurationsdatei angelegt.
+         Konfigurationsdateien angelegt.
 
          Wenn isdnlog noch nie installiert war, muss noch die Datei
          callerid.conf editiert werden.
@@ -449,12 +446,7 @@ ACHTUNG: Durch die Syntaxandaerung und den Erweiterungen, muessen folgende
 
 Im Verzeichnis "xisdnload" befindet sich ein weiterer X11-Client von
 Frank Strauss (strauss@escape.de), der die Durchsatz-Rate pro B-Kanal
-auch grafisch darstellen kann. Dieser kann mittels
-
-  xmkmf
-  make
-
-erstellt werden.
+auch grafisch darstellen kann.
 
 
 4. Die Konfigurationsdatei "isdn.conf"
@@ -464,13 +456,13 @@ Die Konfigurationsdatei wird im Verzeichnis "/etc/isdn" erwartet (wenn die
 Variable I4LCONFDIR im Makefile so gesetzt ist), und enthaelt alle fuer isdnlog
 relevanten Steuerungsparameter.
 
-Diese Datei muss dem User root gehoeren (auch die Gruppe). Auch nur dieser
+Diese Datei muss dem User root gehoeren (auch die Gruppe). Nur dieser
 darf Schreibrechte an dieser Datei haben. Diese Datei wird auch vom isdnlog
 gelesen. Andernfalls beendet sich der isdnlog sofort wieder. Dieses ist ein
 Schutz, um Trojanische Pferde zu verhindern und kann auch nicht ausgeschaltet
 werden.
 
-Wenn man dem compilierten den Pfad aendern will, muss man die
+Wenn man in dem compilierten Programm den Pfad aendern will, muss man die
 Umgebungsvariable "ISDN_CONF_PATH" setzen.
 
 Die Syntax der Konfigurationsdateien ist ausfuehrlich in der Datei
@@ -478,6 +470,7 @@ Die Syntax der Konfigurationsdateien ist ausfuehrlich in der Datei
 ../lib/README.Syntax.conffile
 
 beschrieben.
+
 
 4.1 Grundeinstellungen
 ----------------------
@@ -490,35 +483,35 @@ Diese Sektionen koennen in einer beliebigen Reihenfolge in der Datei
 vorkommen.
 
 Die Sektion GLOBAL beinhaltet Eintraege, die fuer alle ISDN-Programme
-von Bedeutung sind. Hier sind folgende Eintrage zu finden:
+von Bedeutung sind. Hier sind folgende Eintraege zu finden:
 
 AREACODE:
   Beinhaltet die eigene Ortsvorwahl (mit oder ohne vorlaufender "0". Der
-	Prefix "0" wird in der Datei config.h durch das Macro S_AREA_PREFIX
-	oder durch den Eintrag AREAPREFIX representiert).  Dieser Eintrag ist
-	zwingend.
-	Wird isdnlog im 1TR6 eingesetzt, muss hier die _gesamte_ Telefonnummer
-	exclusive der EAZ eingetragen werden. Diese Variable ist absolute Pflicht!
-	Beispiel fuer Hamburg (Euro-ISDN !!!):
-	AREACODE = 040 # oder
-	AREACODE = 40
+  Prefix "0" wird in der Datei config.h durch das Macro S_AREA_PREFIX
+  oder durch den Eintrag AREAPREFIX representiert).  Dieser Eintrag ist
+  zwingend.
+  Wird isdnlog im 1TR6 eingesetzt, muss hier die _gesamte_ Telefonnummer
+  exclusive der EAZ eingetragen werden. Diese Variable ist absolute Pflicht!
+  Beispiel fuer Hamburg (Euro-ISDN !!!):
+    AREACODE = 040 # oder
+    AREACODE = 40
 
-	Wenn S_AREA_PREFIX den String "0815" enthaelt, dann ist auch folgende
-	Zeile erlaubt:
-	AREACODE = 081540
+  Wenn S_AREA_PREFIX den String "0815" enthaelt, dann ist auch folgende
+  Zeile erlaubt:
+    AREACODE = 081540
 
 COUNTRYCODE:
-	Hier wird die eigene Laenderkennung gesetzt (mit oder ohne vorlaufendem "+".
-	Der Prefix "+" wird in der Datei config.h durch das Macro S_COUNTRY_PREFIX
-	oder durch den Eintrag AREAPREFIX representiert). Dieser Eintrag ist
-	ebenfalls zwingend.
-	Beispiel fuer Deutschland:
-	COUNTRYCODE = +49 # oder
-	COUNTRYCODE = 49
+  Hier wird die eigene Laenderkennung gesetzt (mit oder ohne vorlaufendem "+".
+  Der Prefix "+" wird in der Datei config.h durch das Macro S_COUNTRY_PREFIX
+  oder durch den Eintrag AREAPREFIX representiert). Dieser Eintrag ist
+  ebenfalls zwingend.
+  Beispiel fuer Deutschland:
+    COUNTRYCODE = +49 # oder
+    COUNTRYCODE = 49
 
-	Wenn S_COUNTRY_PREFIX den String "0815" enthaelt, dann ist auch folgende
-	Zeile erlaubt:
-	COUNTRYCODE = 081549
+  Wenn S_COUNTRY_PREFIX den String "0815" enthaelt, dann ist auch folgende
+  Zeile erlaubt:
+    COUNTRYCODE = 081549
 
 AREAPREFIX:
   Es enthaelt den Prefix zur Ortsvorwahl. Beim Kompilieren ist dieser
@@ -529,58 +522,60 @@ COUNTRYPREFIX:
   Wert defaultmaessig auf "+" gesetzt. Dieser Eintrag ist optional.
 
 CODELIB:
-	Es kann nach dem Kompilieren eingestellt werden, welche Library verwendet
-	werden soll. Fuer AVON wird dort "AVON" eingetragen und fuer areacode
-	wird dort "AREACODE" eingetragen. Andere Werte sind dort zur Zeit nicht 
-	erlaubt. Es sollte dann aber zusaetzlich AREALIB bzw. AVONLIB eingetragen
-	werden.
-	Dieser Eintrag ist optional.
-	Beispiel:
-	CODELIB=avon
+  Es kann nach dem Kompilieren eingestellt werden, welche Library verwendet
+  werden soll. Fuer AVON wird dort "AVON" eingetragen und fuer areacode
+  wird dort "AREACODE" eingetragen. Andere Werte sind dort zur Zeit nicht
+  erlaubt. Es sollte dann aber zusaetzlich AREALIB bzw. AVONLIB eingetragen
+  werden.
+  Dieser Eintrag ist optional.
+  Beispiel:
+    CODELIB=avon
 
 AREALIB:
   Enthaelt den vollen Pfad zu der Datei "areacodes". Diese Angabe ist
-	optional und nur notwendig, wenn sich der Pfad nach der Compilation
-	geaendert hat.
-	Beispiel:
-	AREALIB=/usr/share/lib/areacodes
+  optional und nur notwendig, wenn sich der Pfad nach der Compilation
+  geaendert hat.
+  Beispiel:
+    AREALIB=/usr/share/lib/areacodes
 
 AVONLIB:
   Enthaelt den vollen Pfad zu der Datei "avon". Diese Angabe ist
-	optional und nur notwendig, wenn sich der Pfad nach der Compilation
-	geaendert hat.
-	Beispiel:
-	AREALIB=/usr/share/lib/avon
+  optional und nur notwendig, wenn sich der Pfad nach der Compilation
+  geaendert hat.
+  Beispiel:
+    AREALIB=/usr/share/lib/avon
 
-	Da aber defaultmaessig die Arealib verwendet wird, ist die Datei
-	avon obsolet.
+  Da aber defaultmaessig die Arealib verwendet wird, ist die Datei
+  avon obsolete.
 
 
-Die ISDN-Tools erlauben es, Umbebungsvariablen zu setzen und zu verwenden.
-Es gibt Variablen, die sollten in der isdn.conf (oder vorher) gesetzt
-sein. Diese werden in der Sektion [VARIABLES] zu setzen.
+Die ISDN-Tools erlauben es, Umgebungsvariablen zu setzen und zu verwenden.
+Es gibt Variablen, die in der isdn.conf (oder vorher) gesetzt werden sollten.
+Diese sind in der Sektion [VARIABLES] zu setzen.
 Beispiel:
 
-[VARIABLES]
-MYPATH = /home/fred
+  [VARIABLES]
+  MYPATH = /home/fred
 
 Es duerfen als Variablennamen nur noch gross geschriebene Woerter verwendet
 werden. Ein Eintrag der Form
 
-myPath = /home/fred
+  myPath = /home/fred
 
 oder
 
-mypath = /home/fred
+  mypath = /home/fred
 
-werden z.B. unter der /bin/sh mit "MYPATH=/home/fred" gesetzt.
-Hier gibt auch keine andere Möglichkeit das zu aendern. Wenn Kleinbuschstaben
-verwendet werden sollen, muessen diese vor dem Start von isdnlog mit
-export (sh, bash) oder setenv (csh) unter der Shell gesetzt werden.
+wird z.B. unter /bin/sh mit "MYPATH=/home/fred" gesetzt.
+Hier gibt es auch keine andere Moeglichkeit das zu aendern.
+
+Wenn Kleinbuchstaben verwendet werden sollen, muessen diese vor dem Start
+von isdnlog mit export (sh, bash) oder setenv (csh) unter der Shell gesetzt
+werden.
 
 ACHTUNG: "MYPATH  =  /home/fred" wird als Variable zu "MYPATH=/home/fred".
          Es fallen also alle Blanks und Tabulatoren vor und nach dem "="
-				 heraus.
+	 heraus.
 
 
 Die dritte Sektion beschreibt spezifische Angaben fuer den isdnlog. Diese
@@ -588,11 +583,11 @@ Sektion wird durch [ISDNLOG] eingeleitet.
 
 LOGFILE   = /var/log/isdn.log
 
-Dieses ist das Logfile in dem isdnlog alle Gespraeche ablegt, und isdnrep
-sie anschliessend anzeigt. Wenn diese sich in einem anderen Platz befindet,
-als zur Compilationszeitpunkt (in der Regel /var/log/isdn.log), dann kann
-dieses hier passieren.
-Die Option  "-f" vom isdnrep ueberschreibt diesen Wert dann allerdings wieder.
+Dies ist das Logfile, in dem isdnlog alle Gespraeche ablegt, und isdnrep
+sie anschliessend anzeigt. Wenn diese sich an einem anderen Platz befindet,
+als zur Compilationszeitpunkt (in der Regel "/var/log/isdn.log"), dann kann
+die Lokation hier angegeben werden.
+Die Option "-f" vom isdnrep ueberschreibt diesen Wert dann allerdings wieder.
 
 Zusatzinformation:
 Diese Datei wird seit der Version 3.0 vom isdnlog nicht mehr staendig offen
@@ -627,7 +622,7 @@ CHARGEMAX = 15.00
 
 Hiermit wird (in DM) angegeben, wieviel Geld man pro Tag maximal
 mit isdn4linux vertelefonieren moechte.
-Dieser Eintrag ist pflicht!
+Dieser Eintrag ist Pflicht!
 
 CONNECTMAX = 18000,0
 
@@ -655,14 +650,7 @@ In einigen europaeischen Laendern werden diese beiden Parameter bereits
 von der VSt uebertragen (z.b. Oesterreich), und brauchen daher nicht
 angegeben zu werden.
 
-**********Andreas, stimmt das noch??????????????????????????
-  ACHTUNG: In der vorliegenden Version werden diese beiden Parameter
-  noch nicht an isdnrep uebergeben, und muessen daher bei Einsatz des
-  "isdnrep" trotz Uebermittlung von der VSt eingetragen werden!
-  Defaultmaessig steht im isdnrep "0.12,DM". Daher entfaellt diese
-  Angabe fuer Deutschland.
-
-Wenn man zum Beispiel sich die Nettogebuehren (ohne MwSt.) anzeigen
+Wenn man sich zum Beispiel die Nettogebuehren (ohne MwSt.) anzeigen
 lassen will, kann man hier z.B. folgenden Wert setzen:
 
 CURRENCY=0.1043,DM
@@ -670,14 +658,14 @@ CURRENCY=0.1043,DM
 Dieser Eintrag ist optional.
 
 Wenn der isdnrep via HTML aufgezeichneten Anrufe abspielen soll, dann muss hier
-der Pfad eingetragen werden. Eine genaue Beschreibung findet man unter 
+der Pfad eingetragen werden. Eine genaue Beschreibung findet man unter
 dem Kapitel isdnrep.
 Dieser Eintrag ist optional.
 
 Beipiel:
 VBOXPATH = /var/spool/vbox/fred/incoming
 
-Der isdnrep kann fuer jeden aufgezeichneten Anruf ein Koonvertierungsprogramm
+Der isdnrep kann fuer jeden aufgezeichneten Anruf ein Konvertierungsprogramm
 starten.  Eine genaue Beschreibung findet man unter dem Kapitel isdnrep.
 Dieser Eintrag ist optional.
 
@@ -686,14 +674,14 @@ VBOXCMD1 = /usr/bin/zyxeltowav # Fuer Version vbox 0.x und 1.x
 VBOXCMD2 = /usr/bin/zyxeltowav # Fuer Version vbox 2.x
 
 Wenn der isdnrep via HTML angekommene Faxe anzeigen soll, dann muss hier
-der Pfad eingetragen werden. Eine genaue Beschreibung findet man unter 
+der Pfad eingetragen werden. Eine genaue Beschreibung findet man unter
 dem Kapitel isdnrep.
 Dieser Eintrag ist optional.
 
 Beipiel:
 MGETTYPATH = /var/spool/fax/incoming
 
-Der isdnrep kann fuer jedes Fax ein Koonvertierungsprogramm starten.
+Der isdnrep kann fuer jedes Fax ein Konvertierungsprogramm starten.
 Eine genaue Beschreibung findet man unter dem Kapitel isdnrep.
 Dieser Eintrag ist optional.
 
@@ -835,8 +823,8 @@ zusaetzlichen Parametern angegeben werden.
 Die Angabe _aller_ eigenen Telefonnummern ist zwingend, alle weiteren
 Partner-Telefonnummern koennen eingeben werden.
 
-Die Datei "callerid.conf" liegt im Verzeichnis /etc/isdn und muss dem User
-root gehoeren (auch die Gruppe). Auch nur dieser darf Schreibrechte an dieser
+Die Datei "callerid.conf" liegt im Verzeichnis "/etc/isdn" und muss dem User
+root gehoeren (auch die Gruppe). Nur dieser darf Schreibrechte an dieser
 Datei haben. Diese Datei wird auch vom isdnlog gelesen. Es ist die globale
 Datei fuer die Telefonnummern. Hier muessen auch die [MSN]-Eintraege
 untergebracht werden.
@@ -852,7 +840,7 @@ Es koennen hier Variablen verwendet werden, die entweder in der isdn.conf
 gesetzt wurden oder vorher (z.b. auf Shellebene).
 In den Dateien "callerid.conf" und "~/.isdn" koennen ebenfalls Variablen
 gesetzt werden. Das bedeutet also, dass es dort auch eine Sektion [VARIABLES]
-geben, wie in der "isdn.conf". Aber Achtung!! Hier koennen nur gross
+gibt, wie in der "isdn.conf". Aber Achtung!! Hier koennen nur gross
 geschriebene Variablennamen verwendet werden:
 
 [VARIABLES]
@@ -868,8 +856,8 @@ kommen.
 
 Beispiele:
 
-[$num]          # wobei num=NUMBER ist geht nicht!!!!
-$alias=fred     # wobei alias=ALIAS ist geht nicht!!!!
+[$num]          # wobei num=NUMBER nicht geht !!!!
+$alias=fred     # wobei alias=ALIAS nicht geht !!!!
 
 [NUMBER]
 NUMBER=$MSN1    # MSN1=1234 -> "1234"
@@ -898,14 +886,14 @@ ALIAS = \$PATH # -> "$PATH"
 ...
 
 Wenn eine Variable mehrfach gesetzt wird, so wird sie ueberschrieben. Die
-Regel fuer das ueberschreiben entspricht der Reihenfolge, in der die 
+Regel fuer das ueberschreiben entspricht der Reihenfolge, in der die
 Konfigurationsdateien gelesen werden:
 
 1. isdn.conf
 2. callerid.conf
 3. ~/.isdn
 
-Wenn eine Variable "FRED" in "isdn.conf" und "~/.isdn" gesetzt werden, so wird
+Wenn eine Variable "FRED" in "isdn.conf" und "~/.isdn" gesetzt wird, so wird
 der Wert von "isdn.conf" durch den Wert der zweiten Datei ueberschrieben.
 
 Die Variablen werden zuerst aus allen drei Dateien gelesen, bevor die
@@ -931,10 +919,10 @@ Wenn die Eintraege NUMBER und SI in beiden Dateien vorkommen und identisch sind,
 dann wird der Eintrag aus der der Datei "callerid.conf" ueberschrieben durch
 den Eintrag "~/.isdn".
 
-Wenn nur die Eintrag NUMBER (und _nicht_ SI) in beiden Dateien vorkommen und
-identisch sind, dann wird der Eintrag aus der der Datei "callerid.conf"
+Wenn nur der Eintrag NUMBER (und _nicht_ SI) in beiden Dateien vorkommt und
+identisch ist, dann wird der Eintrag aus der der Datei "callerid.conf"
 ueberschrieben durch den Eintrag "~/.isdn".
-Unter Identisch ist du verstehen, wenn beide Strings absolut identisch sind:
+Unter Identisch ist zu verstehen, wenn beide Strings absolut identisch sind:
 NUMBER=+49 7531/21103
 NUMBER=753121103
 sind nicht identisch!!!!
@@ -1091,18 +1079,18 @@ im 1TR6 muss unter [MSN] nur die EAZ eingetragen werden. Unter der Sektion
 die Vorwahl enthalten.
 
 Im DSS1 ist dieses ziemlich egal. Man kann die Nummern so eintragen, wie man
-sie vom eigenen Telefon waehlen wuerde. Es muss die Voreinstellungen der
+sie am eigenen Telefon waehlen wuerde. Es muss die Voreinstellungen der
 Installation beruecksichtigt werden. Die Werte von AREACODE
 und COUNTRYCODE, wie sie waehrend der Installation eingestellt wurden,
 werden so ueberall uebernommen.
 
 Es ist aber empfehlenswert ueberall die Vorwahl mit anzugeben (ist auch bei
 der MSN moeglich). Wenn man z.B. umzieht in eine andere Stadt,
-muss man sonst die gesamte Datei ueberarbeiten. Das entfallt, wenn
+muss man sonst die gesamte Datei ueberarbeiten. Das entfallt, wenn man
 ueberall die Vorwahl angibt.
 
-Die Syntax ist jetzt ziemlich frei. Es koennen dort angegeben werden,
-wie man sie ueblicherweise kennt:
+Die Syntax ist jetzt ziemlich frei. Es koennen dort Telefonnummern angegeben
+werden, wie man sie ueblicherweise kennt:
 
 NUMBER = 4711
 NUMBER = 0815/4711
@@ -1163,7 +1151,13 @@ diese Nummer befindet:
  2 = Region 50 (bis 31.12.1995 "Regionalzone", bis 50 km)
  3 = Region 200 (bis 31.12.1995 "Weitzone", dann bis 200 km)
  4 = Fernzone (bis 31.12.1995 "Weitzone", dann alles ueber 200 km)
- 5 = Vis-'a-vis 1
+ 5 = Euro
+ 6 = Vis-'a-vis 1
+ 7 = Vis-'a-vis 2
+ 8 = Vis-'a-vis 3
+ 9 = Welt1
+10 = Welt2
+11 = Welt3
 
 Dieser Eintrag wird wie folgt dargestellt:
 
@@ -1363,7 +1357,7 @@ User
 ----
 
 Wenn ein Programm gestartet wird, kann die User-ID umgestellt werden. Dieses
-ist sogar notwendig, wenn der Benutzer (nicht noetig fuer den Bernutzer root !!)
+ist sogar notwendig, wenn der Benutzer (nicht noetig fuer den Benutzer root !!)
 die Rechte an der Datei besitzt. isdnlog verbietet es seit der Version 3.0,
 dass das Programm als normaler Benutzer gestartet wird. Ebenso wird es
 unterbunden ein Programm zu starten, wo ein Benutzer Leserechte besitzt
@@ -1483,8 +1477,8 @@ Folgende Punkte sind zu beachten:
 Beispiele:
 
 PROGRAM=/bin/auplay "Arg 1" "Arg 2" Arg3 "Arg\"4"
-PROGRAM=/bin/auplay "Hier kommt der Anrufer:\${2}test" 
-PROGRAM=/bin/auplay "Der folgende Ausdruck wird nicht ausgewertet: \\$3" 
+PROGRAM=/bin/auplay "Hier kommt der Anrufer:\${2}test"
+PROGRAM=/bin/auplay "Der folgende Ausdruck wird nicht ausgewertet: \\$3"
 
 Eine (zwei) Section [NUMBER] (oder [MSN]) kann also wie folgt aussehen:
 
@@ -1709,8 +1703,8 @@ Wenn man "My_Provider" anwaehlt, dann erklingt einmal der Sound
 "provider_ring.au". Wenn die Verbindung zu stande gekommen ist, dann wird
 sofort "/usr/bin/get.mails.from.provider"  und "/usr/bin/get.news.from.provider"
 gestartet. Das Programm "mails.from.provider" wird dann alle 5 Minuten wieder
-gstartet. Das Programm "get.news.from.provider" wird alle 30 Minuten gestartet.
-Wenn eines Programm mal laenger als 5 bzw. 30 Minuten laeuft,
+gestartet. Das Programm "get.news.from.provider" wird alle 30 Minuten
+gestartet. Wenn ein Programm mal laenger als 5 bzw. 30 Minuten laeuft,
 wird der naechste Start so lange verschoben, bis sich das laufende beendet.
 Das wird durch "U" ausgedrueckt. Wenn die Verbindung zu "My_Provider" beendet
 wird, dann werden automatisch evtl. noch laufende Programme beendet (gekillt).
@@ -1741,10 +1735,11 @@ kommt. So wie "/usr/bin/auplay" beendet ist, wird es wieder neu gestartet.
 Die Flags "OR" haben allerdings keine Bedeutung fuer andere Geraete am S0-Bus,
 da die ISDN-Karte die Ring-Phase von anderen Geraeten am Bus nicht mitbekommt.
 
+
 Kommentare in den Konfigurationsdateien isdn.conf, callerid.conf und ~/.isdn:
 -----------------------------------------------------------------------------
 
-Es koennen koennen Kommentare an beliebiger Stelle beginnend mit de Zeichen
+Es koennen koennen Kommentare an beliebiger Stelle beginnend mit dem Zeichen
 '#' eingefuegt werden (siehe lib/README.Syntax.conffile).
 Diese Kommentare haben den Nachteil, dass sie verschwinden, wenn die Datei
 z.B. vom isdnconf (oder auch vom isdnlog selber) neu geschrieben werden.
@@ -1995,20 +1990,17 @@ Daneben bietet isdnlog noch folgende interessante Zusatz-Funktion:
 ACHTUNG: Ab der Version 3.0 kann der isdnlog nur noch als root gestartet werden!
 
 Vor dem Start von "isdnlog" muss das D-Channel Q.931 logging des
-Teles-Treiber eingeschaltet werden. Bis "isdn4linux0.6.6beta" ist dazu
+HiSax-Treiber eingeschaltet werden. Bis "isdn4linux0.6.6beta" ist dazu
 
-         telesctrl <DriverID> 1 4
+         hisaxctrl <DriverID> 1 4
 
-wobei "<DriverID>" mit dem String zu ersetzen ist, der beim "insmod teles.o"
+wobei "<DriverID>" mit dem String zu ersetzen ist, der beim "insmod hisax.o"
 als "id=<DriverID>" angegeben wurde.
 
-Die Kernel-Version von isdn4linux benoetigt anstelle von
-"id=" ein "teles_id=" !
-
-Wurde keine "id" angegeben, ist beim "telesctrl" stattdessen "line0"
+Wurde keine "id" angegeben, ist beim "hisaxctrl" stattdessen "line0"
 anzugeben.
 
-Beim "telesctrl" koennen auch noch weitere Debug-Flags eingeschaltet werden,
+Beim "hisaxctrl" koennen auch noch weitere Debug-Flags eingeschaltet werden,
 isdnlog benoetigt allerdings auf jeden Fall die "4"
 
 Nun kann isdnlog mittels:
@@ -2030,7 +2022,7 @@ Sobald isdnlog gestartet wird, erzeugt es eine Datei
 Process-ID hinein. "device" steht fuer entsprechende isdnctrl-Device,
 welches man gangesprochen hat. Somit kann isdnlog
 jederzeit mittels "kill `cat /var/run/isdnlog.'device'.pid`" terminiert werden.
-(Was z.b. zwingend ist, wenn man das teles- oder isdn-Modul entladen will!)
+(Was z.b. zwingend ist, wenn man das HiSax- oder isdn-Modul entladen will!)
 Wenn isdnlog ein zweites mal gestartet wird mit dem gleichen Device, beendet
 er sich sofort wieder, da nur ein isdnlog gleichzeitig auf einem
 device laufen kann.
@@ -2425,7 +2417,7 @@ Dieses kann ueber zwei Wege erreicht werden:
   entspricht der Option -w1. Man kann also z.B. einen Link auf
   den isdnrep machen: ln -s isdnrep isdnrep.cgi
 
-Wenn das Programm mit der Extension ".cgi" gestartet wird, koennen ihm 
+Wenn das Programm mit der Extension ".cgi" gestartet wird, koennen ihm
 Parameter mit der URL ueberreicht werden:
 
 http://localhost/isdnrep.cgi?-t8+-v
@@ -2588,9 +2580,9 @@ Die Optionen von isdnrep haben im einzelnen folgende Funktion:
                      Zeigt am Ende alle Nummern an, die nicht in der
                      callerid.conf oder ~/.isdn eingetragen sind.
                      Diese Option laeuft nicht bei der Ausgabe im HTML-Format.
-                     
+
 -wX         "WWW"    Der isdnrep kann die Ausgabe im HTML-Format erzeugen.
-                     dieses wird mit der Option -w erreicht. Es gibt dort zwei 
+                     dieses wird mit der Option -w erreicht. Es gibt dort zwei
                      Modi:
                      0  Es wird der HTML-Header unterdrueckt. Dieses ist
                         sinnvoll, wenn die Ausgabe der isdnrep in eine
@@ -2600,8 +2592,8 @@ Die Optionen von isdnrep haben im einzelnen folgende Funktion:
 
 -sX         "format string"
                      Die Ausgabe des isdnrep kann beeinflusst werden, indem
-                     ein Formatstring angegeben wird, welche Informationen
-                     Pro Verbindung gezeigt werden soll. Die Syntax
+                     im Formatstring angegeben wird, welche Informationen
+                     pro Verbindung angezeigt werden sollen. Die Syntax
                      entspricht dem printf. Folgende Platzhalter sind bekannt:
 
                      %X: Die Zeit ohne Datum (z.B. 23:54:06)
@@ -2628,10 +2620,10 @@ Die Optionen von isdnrep haben im einzelnen folgende Funktion:
                      %l: Gibt den Ort aus fuer den anderen Gesprachsteilnehmer
                          falls bekannt, sonst ein Leerstring.
                          Es sollte die Precision angegeben werden!
-                     %T: Gibt den Pfeil an zischen den Nummern ("->" oder "<-")
+                     %T: Gibt den Pfeil an zwischen den Nummern ("->" oder "<-")
                          fuer die Gespraechsrichtung. Die eigene MSN
                          sollte hierbei immer links vom Pfeil stehen.
-                     %t: Gibt den Pfeil an zischen den Nummern ("->" oder "<-")
+                     %t: Gibt den Pfeil an zwischen den Nummern ("->" oder "<-")
                          fuer die Gespraechsrichtung. Die eigene MSN
                          sollte hierbei immer rechts vom Pfeil stehen.
 
@@ -2653,7 +2645,7 @@ Die Optionen von isdnrep haben im einzelnen folgende Funktion:
                          Anruf vom vbox an.
                          Diese Option geht nur mit der Option -wx
                          Weitere Informationen weiter unten.
-                         
+
 
                      Defaultmaessig ist der folgende String fuer den isdnrep
                      (nicht HTML) eingestellt:
@@ -2685,7 +2677,7 @@ Abspielen von Anrufen vom vbox und Anzeigen von Faxen vom mgetty im HTML-Format
 Unter HTML kann der isdnrep die Dateien von den Programmen
 finden und sie dem entsprechenden Anruf zuordnen. Diese koennen dann via einem
 Link aufgerufen werden z.B. mit dem Netscape.
-Dazu sind allerdings noch einige Einstellung noetig.
+Dazu sind allerdings noch einige Einstellungen noetig.
 
 Anrufbeantworter abspielen
 --------------------------
@@ -2916,13 +2908,13 @@ i4l-isdnlog@franken.de
 senden, damit diese in der naechsten Version vom isdnlog aufgenommen werden
 koennen.
 
-Als Browser wurden von mir der netscape 3.0 gold und arena verwedet. Beide
-arbeiten mit der Ausgabe vom isdnrep. Allerdings, war die Ausgabe vom arena
+Als Browser wurden von mir der netscape 3.0 gold und arena verwendet. Beide
+arbeiten mit der Ausgabe vom isdnrep. Allerdings war die Ausgabe vom arena
 nicht so farbenpraechtig, wie die vom netscape.
 
 Bekannte und unloesbare Probleme sind die Zuordnung von einem Anruf zu einem
 Fax oder vbox-Call. Leider sind die Zeiten des Anrufsbeginn unterschiedlich
-zwischen isdnrep, mgetty und vbox. Daher versucht der isdnrep die beste 
+zwischen isdnrep, mgetty und vbox. Daher versucht der isdnrep die beste
 Annaeherung zu erreichen. Es kann aber immer passieren, dass z.B. ein Fax
 dem falschen Anruf zugeordnet wurde.
 
@@ -3151,7 +3143,7 @@ Kommentare werden geloescht.
                         Option angegeben werden. Gilt nur fuer die
                         Optionen -A und -D
 
-  -g          "global"  Hat nur Auswrikungen bei den Befehlen -A und -D. Es
+  -g          "global"  Hat nur Auswirkungen bei den Befehlen -A und -D. Es
                         wird dann anstatt der ~/.isdn die Datei
                         /etc/isdn/callerid.conf genommen zum editieren.
 
@@ -3443,7 +3435,7 @@ Dies wird in 4 Stufen versucht:
  1. Stufe: Es wird ein "isdnctrl hangup isdnX" ausgefuehrt
 
  2. Stufe: Es wird der Shell-Script "/etc/isdn/reload" ausgefuehrt
-    	   Dieser sollte das Teles-/HiSax-Modul ent- und wieder laden.
+    	   Dieser sollte das HiSax-Modul ent- und wieder laden.
            (Siehe "samples/reload")
 
  3. Stufe: Es wird ein "isdnctrl system off" ausgefuehrt
@@ -3529,7 +3521,7 @@ die entsprechenden Telefonnummern leider nicht anzeigen.
 Mit dem Dual-Mode ist genau dies jedoch moeglich.
 
 Dazu muss der Rechner mit einer zweiten Teles-Karte ausgestattet, und
-darauf ein Teles-/HiSax-Treiber installiert werden.
+darauf ein HiSax-Treiber installiert werden.
 
 Bei mir sieht das so aus:
 
@@ -3615,7 +3607,7 @@ geprueft werden:
  - Funktioniert isdn4linux ? D.h. kann eine ISDN-Verbindung zu einer
    Gegenstelle aufgebaut werden?
 
- - Wurde mittels "telesctrl <DriverID> 1 4" das D-Channel-Logging
+ - Wurde mittels "hisaxctrl <DriverID> 1 4" das D-Channel-Logging
    eingeschaltet?
 
 Als kostenlose Testmoeglichkeit fuer isdnlog bietet es sich an, den Hoerer
@@ -3635,9 +3627,10 @@ Das Protokoll sollte nur noch die
   "Q.931 frame ..."
 sowie
   "hex: ..."
-Zeilen enthalten, der Rest wird von isdnlog nicht benoetigt!
+Zeilen enthalten (resp. beim HiSax-Treiber nur noch die "HEX:" Zeilen),
+der Rest wird von isdnlog nicht benoetigt!
 
-Diese Fehlermeldung sollte bitte an "isdnlog@Kool.f.EUnet.de" geschickt
+Diese Fehlermeldung sollte bitte an "i4l-isdnlog@franken.de" geschickt
 werden.
 
 
@@ -3678,7 +3671,7 @@ werden.
    Der kann dieses aber nicht aufloesen. Also wird versucht das Programm
    "/usr/local/bin/myplayer zu starten.
    Auch der Parameter fuehrt zu Problemen. Das Hochkomma (') wird mit
-   uebergeben. Ausserdem wird ~fred NICH in /home/fred umgewandelt. Und auch
+   uebergeben. Ausserdem wird ~fred NICHT in /home/fred umgewandelt. Und auch
    *.au wird so uebergeben und es wird versucht vom Programm *.au  abzuspielen.
    Die Zeile sollte also richtig so aussehen:
    /usr/local/bin/myplayer /home/fred/telefon.au
@@ -3709,7 +3702,7 @@ entsprechenden Benutzers in der Datei /etc/isdn/isdnlog.users.
 Wenn der isdnlog mit einem Segmentation-fault oder mit der Meldung
 "Got signal 11" abbricht, dann sollten folgende Schritte durchgefuehrt
 werden, um Debuginformationen zu erlangen, die an die
-"isdnlog@Kool.f.EUnet.de" zu senden sind:
+"i4l-isdnlog@franken.de" zu senden sind:
 
 Im isdnlog-Verzeichnis
 
@@ -3743,18 +3736,18 @@ Folgende Files werden von diesem System verwendet:
   /etc/isdn/isdn.conf        - Die neue Config-Datei
   ~/.isdn                    - Die Config-Datei des Benutzers
   /etc/isdn/isdnlog.users    - Die User-Access-Datei
-  /etc/isdn/avon 	           - altes Vorwahl-Verzeichnis (ASCII)
-  /etc/isdn/avon.pag	       - altes Vorwahl-Verzeichnis (ISAM-Version)
-  /etc/isdn/avon.dir	       - altes Vorwahl-Verzeichnis (Index)
+  /etc/isdn/avon 	     - altes Vorwahl-Verzeichnis (ASCII)
+  /etc/isdn/avon.pag	     - altes Vorwahl-Verzeichnis (ISAM-Version)
+  /etc/isdn/avon.dir	     - altes Vorwahl-Verzeichnis (Index)
   /etc/isdn/charge.dat       - Zwischenspeicher fuer die ChargeMax-Funktion
   /etc/isdn/reload           - Script zum Wiederanfahren eines verklemmten i4l
-  /etc/isdn/stop    	       - Script zum Stoppen bei erreichen von CHARGEMAX
+  /etc/isdn/stop    	     - Script zum Stoppen bei erreichen von CHARGEMAX
   /usr/lib/areacode          - Neues Vorwahl-Verzeichnis
-  /var/log/isdn.log	         - Das Logbuch
+  /var/log/isdn.log	     - Das Logbuch
   /var/run/isdnlog.pid	     - Enthaelt die PID des laufenden isdnlog
-  /dev/isdnctrl0	           - Gibt das Q.931 Protokoll des Teles-Treibers aus
-  /dev/isdninfo		           - Interne Meldungen von isdn4linux
-  /tmp/isdnctrl0	           - Protokoll obiger Devices als ASCII-Datei
+  /dev/isdnctrl0	     - Gibt das Q.931 Protokoll des HiSax-Treibers aus
+  /dev/isdninfo		     - Interne Meldungen von isdn4linux
+  /tmp/isdnctrl0	     - Protokoll obiger Devices als ASCII-Datei
   /usr/X11R6/lib/X11/app-defaults/Isdn - Resourcefile fuer xisdn
 
 
@@ -3806,6 +3799,10 @@ Folgende Environment-Variablen werden von diesem System verwendet:
   COLP	  = Connected Line Identification Presentation
 
   COLR	  = Connected Line Identification Restriction
+
+  BRI	  = Basic rate interface (2 B-Kanaele)
+
+  PRI	  = Primary rate interface (30 B-Kanaele)
 
 
 21. Danksagung
@@ -3863,6 +3860,9 @@ fuer die Idee und das Design des HTML-Formats des isdnrep
 Sowie bei
   Ullrich von Bassewitz (uz@musoftware.com)
 fuer die "AreaCode" Library (AVON-Verzeichnis)
+
+Last but not least bei Sabine Nagel (snagel@hlzm.de) fuer das
+Korrekturlesen dieser Dokumentation.
 
 Gar nicht genug danken kann ich Dr.-Ing. Joachim Goeller sowie
 Sebastian Goeller, die mir unzaehlige Informationen zum D-Kanal
