@@ -127,11 +127,9 @@ void initTelNum(void)
   _init();
 } /* pre_init */
 
-#ifndef STANDALONE
 static inline int Isspace(c) {
   return isspace(c) || c == '_';
 }  
-#endif
 
 static int split_vbn(char **p, TELNUM *num) {
   int l;
@@ -329,13 +327,10 @@ int normalizeNumber(char *target, TELNUM *num, int flag) {
     /* subst '00' => '+' */
     if (p[0]=='0' && p[1]=='0')
       *++p='+';
-    if (getArea(num->nprovider, p)) { /* sondernummer */  
-      goto is_sonder;
-    }  
     if(!isdigit(*p)) {
       res=getDest(p, num);
-      /* isdnrate is coming with +4319430 but this may be a sondernummer */
-      if (atoi(mycountry+1) == num->ncountry && (*num->area || *num->msn)) {
+      /* isdnrate is coming with +4319430 but this is a sondernummer */
+      if (atoi(mycountry+1) == num->ncountry) {
         q = malloc(strlen(num->area)+strlen(num->msn)+1);
 	strcpy(q, num->area);
 	strcat(q, num->msn);
@@ -351,7 +346,6 @@ int normalizeNumber(char *target, TELNUM *num, int flag) {
     }  
     else {  
       if(getArea(num->nprovider, p)) { /* sondernummer */
-is_sonder:      
   	clearCountry(num, 0); 
 	*num->sarea='\0';
 	Strncpy(num->area, p, TN_MAX_AREA_LEN);
@@ -366,9 +360,6 @@ is_sonder:
 	  strcat(q, p+1);
 	  free(origp);
 	  origp=p=q;
-          if (getArea(num->nprovider, p)) { /* sondernummer */  
-            goto is_sonder;
-          }  
           res=getDest(p, num);
 	} 
 	else 

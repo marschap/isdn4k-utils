@@ -1,4 +1,4 @@
-/* $Id: rate.c,v 1.53 1999/10/30 18:03:31 akool Exp $
+/* $Id: rate.c,v 1.54 1999/10/31 11:19:11 akool Exp $
  *
  * Tarifdatenbank
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rate.c,v $
+ * Revision 1.54  1999/10/31 11:19:11  akool
+ * finally fixed a bug with "Sonderrufnummern"
+ *
  * Revision 1.53  1999/10/30 18:03:31  akool
  *  - fixed "-q" option
  *  - workaround for "Sonderrufnummern"
@@ -1392,21 +1395,6 @@ char *getComment (int prefix, char *key)
 int getArea (int prefix, char *number)
 {
   int l, i;
-
-
-  /* Im Moment weiá ich zwar noch nicht, warum, aber bei der
-     Sonderrufnummernerkennung ist seit Leo's vorletzter Lieferung
-     (vom 30-Oct-99) ein dicker Bug drin!
-
-     Z.b. wird die Rufnummer +49 7181/44204
-     nun als   	   	     +49718144
-
-     angezeigt!
-
-     Daher erst mal getArea() todgelegt!
-  */
-
-  return(0);
 
   if (prefix<0 || prefix>=nProvider || !Provider[prefix].used)
     return 0;
