@@ -1,4 +1,4 @@
-V:0.9-Netherlands [15-Mar-1999]
+V:0.91-Netherlands [12-Apr-1999]
 
 # Fixme: these need to be translated
 
@@ -9,6 +9,7 @@ W:4		Thursdag
 W:5		Fridag
 W:6		Saturdag
 W:7		Sundag
+W:W		Workday
 W:E		Weekend
 W:H		Holiday
 

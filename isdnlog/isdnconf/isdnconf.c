@@ -1,4 +1,4 @@
-/* $Id: isdnconf.c,v 1.18 1999/04/10 16:35:14 akool Exp $
+/* $Id: isdnconf.c,v 1.19 1999/04/14 13:16:18 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -20,6 +20,13 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnconf.c,v $
+ * Revision 1.19  1999/04/14 13:16:18  akool
+ * isdnlog Version 3.14
+ *
+ * - "make install" now install's "rate-xx.dat", "rate.conf" and "ausland.dat"
+ * - "holiday-xx.dat" Version 1.1
+ * - many rate fixes (Thanks again to Michael Reinelt <reinelt@eunet.at>)
+ *
  * Revision 1.18  1999/04/10 16:35:14  akool
  * isdnlog Version 3.13
  *
@@ -905,7 +912,7 @@ int main(int argc, char *argv[], char *envp[])
            			           !memcmp(areacode, "0179", 4))
   				    zone = E2_NETZ;
   				  else
-                                    zone = GLOBALCALL;
+                                    zone = WELT_4;
 				}
                                 else if (strlen(areacode) == 1) {
   				  switch (toupper(*areacode)) {
@@ -925,7 +932,6 @@ int main(int argc, char *argv[], char *envp[])
     				    case 'E' : zone = WELT_2;      break;
     				    case 'F' : zone = WELT_3;      break;
     				    case 'G' : zone = WELT_4;      break;
-    				    case 'H' : zone = INTERNET;    break;
                                     case '.' : showLCR();      	   exit(0);
      				     default : print_msg(PRT_NORMAL, "Unknown zone \"%c\", please use 1 .. H\n", *areacode);
                				       exit(0);

@@ -1,4 +1,4 @@
-V:1.0-Switzerland [15-Mar-1999]
+V:1.1-Switzerland [12-Apr-1999]
 
 W:1		Montag
 W:2		Dienstag
@@ -7,6 +7,7 @@ W:4		Donnerstag
 W:5		Freitag
 W:6		Samstag
 W:7		Sonntag
+W:W		Werktag
 W:E		Wochenende
 W:H		Feiertag
 

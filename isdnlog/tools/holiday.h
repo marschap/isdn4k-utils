@@ -1,4 +1,4 @@
-/* $Id: holiday.h,v 1.3 1999/04/10 16:36:35 akool Exp $
+/* $Id: holiday.h,v 1.4 1999/04/14 13:17:21 akool Exp $
  *
  * Feiertagsberechnung
  *
@@ -19,6 +19,13 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: holiday.h,v $
+ * Revision 1.4  1999/04/14 13:17:21  akool
+ * isdnlog Version 3.14
+ *
+ * - "make install" now install's "rate-xx.dat", "rate.conf" and "ausland.dat"
+ * - "holiday-xx.dat" Version 1.1
+ * - many rate fixes (Thanks again to Michael Reinelt <reinelt@eunet.at>)
+ *
  * Revision 1.3  1999/04/10 16:36:35  akool
  * isdnlog Version 3.13
  *
@@ -74,12 +81,15 @@
 #define FRIDAY    5
 #define SATURDAY  6
 #define SUNDAY    7
-#define WEEKEND   8
-#define HOLIDAY   9
+#define WORKDAY   8
+#define WEEKEND   9
+#define HOLIDAY  10
+#define EVERYDAY 11
+
+typedef unsigned long bitfield;
 
 int  initHoliday(char *path, char **msg);
 void exitHoliday(void);
-int  isHoliday(struct tm *tm, char **name);
-int  getDay(struct tm *tm, char **name);
+int  isDay(struct tm *tm, bitfield mask, char **name);
 
 #endif

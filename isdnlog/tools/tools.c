@@ -1,4 +1,4 @@
-/* $Id: tools.c,v 1.23 1999/04/10 16:36:46 akool Exp $
+/* $Id: tools.c,v 1.24 1999/04/14 13:17:28 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -19,6 +19,13 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools.c,v $
+ * Revision 1.24  1999/04/14 13:17:28  akool
+ * isdnlog Version 3.14
+ *
+ * - "make install" now install's "rate-xx.dat", "rate.conf" and "ausland.dat"
+ * - "holiday-xx.dat" Version 1.1
+ * - many rate fixes (Thanks again to Michael Reinelt <reinelt@eunet.at>)
+ *
  * Revision 1.23  1999/04/10 16:36:46  akool
  * isdnlog Version 3.13
  *
@@ -609,7 +616,7 @@ char *vnum(int chan, int who)
     flag |= C_NO_ERROR;
 #endif
 
-  if ((call[chan].sondernummer[who] != UNKNOWN) || call[chan].intern[who] || call[chan].internetnumber[who]) {
+  if ((call[chan].sondernummer[who] != UNKNOWN) || call[chan].intern[who]) {
     strcpy(call[chan].rufnummer[who], call[chan].num[who]);
 
     if (cnf > -1)
@@ -620,19 +627,52 @@ char *vnum(int chan, int who)
       else
         strcpy(retstr[retnum], sondernummername(call[chan].sondernummer[who]));
     }
-    else if (call[chan].internetnumber[who])
-      sprintf(retstr[retnum], "INTERNET %s", call[chan].num[who]);
     else
       sprintf(retstr[retnum], "TN %s", call[chan].num[who]);
 
     return(retstr[retnum]);
   }
   else {
-  if ((ptr = get_areacode(call[chan].num[who], &ll, flag)) != 0) {
-    strcpy(call[chan].area[who], ptr);
-    l = ll;
-    got++;
-  } /* if */
+    if (!memcmp(call[chan].num[who], countryprefix, strlen(countryprefix))) { /* Ausland */
+      auto     FILE *f = fopen("/usr/lib/isdn/ausland.dat", "r");
+      register char *p, *p1;
+      auto     char  s[BUFSIZ];
+
+
+      if (f != (FILE *)NULL) {
+        while (fgets(s, BUFSIZ, f)) {
+          if ((p = strchr(s, ':'))) {
+            *p = 0;
+
+            if (!memcmp(call[chan].num[who], s, strlen(s))) {
+              if ((p1 = strchr(p + 1, '\n')))
+                *p1 = 0;
+
+      	      strcpy(call[chan].areacode[who], s);
+	      strcpy(call[chan].rufnummer[who], call[chan].num[who] + strlen(s));
+	      *call[chan].vorwahl[who] = 0;
+              strcpy(call[chan].area[who], p + 1);
+
+              sprintf(retstr[retnum], "%s %s, %s",
+      	        call[chan].areacode[who],
+      		call[chan].rufnummer[who],
+      		call[chan].area[who]);
+
+              fclose(f);
+  	      return(retstr[retnum]);
+            } /* if */
+          } /* if */
+        } /* while */
+
+        fclose(f);
+      } /* if */
+    } /* if */
+
+    if ((ptr = get_areacode(call[chan].num[who], &ll, flag)) != 0) {
+      strcpy(call[chan].area[who], ptr);
+      l = ll;
+      got++;
+    } /* if */
   } /* else */
 
   if (l > 1) {

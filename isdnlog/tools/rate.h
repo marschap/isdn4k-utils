@@ -1,4 +1,4 @@
-/* $Id: rate.h,v 1.4 1999/04/10 16:36:42 akool Exp $
+/* $Id: rate.h,v 1.5 1999/04/14 13:17:26 akool Exp $
  *
  * Tarifdatenbank
  *
@@ -19,6 +19,13 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rate.h,v $
+ * Revision 1.5  1999/04/14 13:17:26  akool
+ * isdnlog Version 3.14
+ *
+ * - "make install" now install's "rate-xx.dat", "rate.conf" and "ausland.dat"
+ * - "holiday-xx.dat" Version 1.1
+ * - many rate fixes (Thanks again to Michael Reinelt <reinelt@eunet.at>)
+ *
  * Revision 1.4  1999/04/10 16:36:42  akool
  * isdnlog Version 3.13
  *
@@ -83,8 +90,9 @@ typedef struct {
   char      *Zone;     /* Name der Zone */
   char      *Day;      /* Wochen- oder Feiertag */
   char      *Hour;     /* Bezeichnung des Tarifs */
-  double     Duration; /* Länge eines Tarifimpulses */
+  double     Basic;    /* Grundpreis einer Verbindung */
   double     Price;    /* Preis eines Tarifimpulses */
+  double     Duration; /* Länge eines Tarifimpulses */
   int        Units;    /* verbrauchte Tarifimpulse */
   double     Charge;   /* gesamte Verbindungskosten */
   time_t     Time;     /* gesamte Verbindungszeit */
@@ -98,5 +106,6 @@ int   getZone(int prefix, char *num);
 int   getRate(RATE *Rate, char **msg);
 int   getLeastCost(RATE *Rate, int skip);
 int   guessZone (RATE *Rate, int units);
+char *explainRate (RATE *Rate);
 
 #endif

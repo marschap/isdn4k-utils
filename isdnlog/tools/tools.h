@@ -1,4 +1,4 @@
-/* $Id: tools.h,v 1.35 1999/04/10 16:36:48 akool Exp $
+/* $Id: tools.h,v 1.36 1999/04/14 13:17:30 akool Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,13 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools.h,v $
+ * Revision 1.36  1999/04/14 13:17:30  akool
+ * isdnlog Version 3.14
+ *
+ * - "make install" now install's "rate-xx.dat", "rate.conf" and "ausland.dat"
+ * - "holiday-xx.dat" Version 1.1
+ * - many rate fixes (Thanks again to Michael Reinelt <reinelt@eunet.at>)
+ *
  * Revision 1.35  1999/04/10 16:36:48  akool
  * isdnlog Version 3.13
  *
@@ -463,24 +470,24 @@
 
 #define SONDERNUMMER -2 /* FIXME: set by readconfig(), but unused by now */
 #define INTERN	      0
-#define CITYCALL      1
-#define REGIOCALL     2
-#define GERMANCALL    3
-#define C_NETZ        4
+#define FREECALL      0
+#define	LOCALCALL     1
+#define CITYCALL      2
+#define REGIOCALL     3
+#define GERMANCALL    4
 #define C_MOBILBOX    5
-#define D1_NETZ       6
-#define D2_NETZ       7
-#define E_PLUS_NETZ   8
-#define E2_NETZ       9
-#define EURO_CITY    10
-#define EURO_1       11
-#define EURO_2       12
-#define WELT_1       13
-#define WELT_2       14
-#define WELT_3       15
-#define WELT_4       16
-#define INTERNET     17
-#define	GLOBALCALL   18
+#define C_NETZ        6
+#define D1_NETZ       7
+#define D2_NETZ       8
+#define E_PLUS_NETZ   9
+#define E2_NETZ      10
+#define EURO_CITY    11
+#define EURO_1       12
+#define EURO_2       13
+#define WELT_1       14
+#define WELT_2       15
+#define WELT_3       16
+#define WELT_4       17
 
 /* Fixme: this is specific to Germany */
 #define	DTAG	     33
@@ -743,7 +750,7 @@ typedef struct {
   char    vnum[MAXMSNS][256];
   int	  provider;
   int	  sondernummer[MAXMSNS];
-  int	  internetnumber[MAXMSNS];
+  int	  local[MAXMSNS];
   int	  intern[MAXMSNS];
   char    id[32];
   char	  usage[16];

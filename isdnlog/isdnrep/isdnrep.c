@@ -1,4 +1,4 @@
-/* $Id: isdnrep.c,v 1.61 1999/04/10 16:36:00 akool Exp $
+/* $Id: isdnrep.c,v 1.62 1999/04/14 13:16:42 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -24,6 +24,13 @@
  *
  *
  * $Log: isdnrep.c,v $
+ * Revision 1.62  1999/04/14 13:16:42  akool
+ * isdnlog Version 3.14
+ *
+ * - "make install" now install's "rate-xx.dat", "rate.conf" and "ausland.dat"
+ * - "holiday-xx.dat" Version 1.1
+ * - many rate fixes (Thanks again to Michael Reinelt <reinelt@eunet.at>)
+ *
  * Revision 1.61  1999/04/10 16:36:00  akool
  * isdnlog Version 3.13
  *
@@ -2471,7 +2478,7 @@ static void repair(one_call *cur_call)
   preparecint(0, why, hint, 1);
 #endif
 
-  if (call[0].zone == GLOBALCALL) {
+  if (call[0].zone == UNKNOWN) {
 #if DEBUG
     print_msg(PRT_NORMAL, "Ooops: GlobalCall %s -- assuming \"Welt 4\"",
       cur_call->num[CALLED]);

@@ -13,6 +13,9 @@ P:28=99
 # Dont use ACC
 P:49=99
 
+# Use Arcor CbC
+P:70=0
+
 # Kennzahl 98, moegliche Varianten:
 #   0=Nikoma Minutentakt
 #   1=Nikoma Sekundentakt

@@ -1,8 +1,9 @@
-V:1.0-Germany [10-Apr-1999]
+V:1.0-Germany [14-Apr-1999]
 
 # Zonenvergabe:
 #
 #   0 : Verbindungen an der eigenen Tk-Anlage (zwangsläufig kostenlos)
+#     	sowie alle "FreeCall" (kostenlos) Nummern des jeweiligen Providers
 #   1 : Ortszone (alle Nummern, die ohne Vorwahl erreichbar sind.
 #     		  Z.Zt. nur über den preselected Provider erreichbar)
 #   2 : Cityzone (Nummern im Umkreis von max. 20 km)
@@ -38,10 +39,10 @@ V:1.0-Germany [10-Apr-1999]
 #  Inmarsat
 # werden z.Zt. nicht unterstützt
 #####################################################################
-P:10,0 Teleglobe
+P:10 Teleglobe
 C:GmbH, Gutleutstraße 85, 60329 Frankfurt 01010
 #####################################################################
-P:11,0 o.tel.o CbC
+P:11 o.tel.o CbC
 G:01.04.1999
 C:o.tel.o communications GmbH, Am Bonneshof 35, 40474 Düsseldorf 01011
 C:Homepage: http://www.o-tel-o.de
@@ -52,18 +53,11 @@ T:1-5/08-18=0.15/60
 T:1-5/18-08=0.10/60
 T:6-7,H/*=0.095
 Z:5-10 Mobil
-A:01610
-A:01617
-A:01619
-A:01618 # C
-A:0170
-A:0171  # D1
-A:0172
-A:0173	# D2
-A:0177
-A:0178	# Eplus
-A:0176
-A:0179  # E2
+A:01610,01617,01619,01618 # C
+A:0170,0171  		  # D1
+A:0172,0173		  # D2
+A:0177,0178		  # Eplus
+A:0176,0179  		  # E2
 T:1-5/08-18=0.94/60
 T:1-5/18-08=0.47/60
 T:6-7,H/*=0.47/60
@@ -73,10 +67,10 @@ T:1-5/09-22=0.059/60
 T:1-5/22-09=0.059/60:1800,0.03/60
 T:6-7,H/*=0.059/60:1800,0.03/60
 #####################################################################
-P:12,0 Tele Danmark
+P:12 Tele Danmark
 C:Internetz GmbH, Süderstraße 75, 20097 Hamburg 01012
 #####################################################################
-P:13,0 Tele 2
+P:13 Tele 2
 G:08.02.1999
 C:Tele 2 Kinnevik Telecommunciations International S.A., 75, route de Longwy, L-8080 Bertrange, Luxembourg 01013
 C:Homepage: http://www.tele2.de
@@ -91,18 +85,11 @@ T:6-7,H/07-19=0.10/60
 T:6-7,H/19-22=0.07/60
 T:6-7,H/22-07=0.05/60
 Z:5-10 Mobilfunknetz
-A:01610
-A:01617
-A:01619
-A:01618 # C
-A:0170
-A:0171  # D1
-A:0172
-A:0173	# D2
-A:0177
-A:0178	# Eplus
-A:0176
-A:0179  # E2
+A:01610,01617,01619,01618 # C
+A:0170,0171  		  # D1
+A:0172,0173		  # D2
+A:0177,0178		  # Eplus
+A:0176,0179  		  # E2
 T:*/*=0.79/60
 Z:12 Euro 1 / USA, Kanada
 A:+1     # Kanada
@@ -167,10 +154,10 @@ A:+852   # Hongkong
 A:+972   # Israel
 T:*/*=0.97/60
 Z:15 Welt 2
-# UNKNOWN: Diego Garcia
-# UNKNOWN: Guantanamo
+A:+246   # Diego Garcia
+A:+5321  # Guantanamo
 # UNKNOWN: Solomon Inseln
-# UNKNOWN: Wallis und Futuna Inseln
+A:+681   # Wallis und Futuna Inseln
 A:+1242  # Bahamas
 A:+1246  # Barbados
 A:+1264  # Anguilla
@@ -198,7 +185,7 @@ A:+224   # Guinea
 A:+225   # Cote d'Ivoire (Elfenbeinküste)
 A:+226   # Burkina Faso (Obervolta)
 A:+227   # Niger
-A:+227   # Niger (FUZZ 2:``Niue'' ~ ``Niger'')
+A:+683	 # Niue-Inseln
 A:+228   # Togo
 A:+229   # Benin
 A:+230   # Mauritius
@@ -337,22 +324,22 @@ A:+996   # Kirgisistan
 A:+998   # Usbekistan
 T:*/*=2.44/60
 #####################################################################
-P:14,0 EWE TEL
+P:14 EWE TEL
 C:GmbH, Donnerschweer Straße 22-26, 26123 Oldenburg 01014
 #####################################################################
-P:15,0 RSL COM
+P:15 RSL COM
 C:Deutschland GmbH, Lyoner Straße 36, 60528 Frankfurt/Main 01015
 #####################################################################
-P:16,0 LausitzNet
+P:16 LausitzNet
 C:Telekommunikationsgesellschaft mbH, Lausitzer Straße 1-7, 03046 Cottbus 01016
 #####################################################################
-P:17,0 SEC
+P:17 SEC
 C:Service AG, Dieskaustraße 246, 04249 Leipzig 01017
 #####################################################################
-P:18,0 debitel
+P:18 debitel
 C:Kommunikationstechnik GmbH & Co KG, Schelmenwasenstr. 37 - 39, 70567 Stuttgart 01018
 #####################################################################
-P:19,0 Mobilcom CbC
+P:19 Mobilcom CbC
 C:CityLine Telefondienste GmbH, Schwarzer Weg 13, 24837 Schleswig 01019
 G:06.04.1999
 C:MobilCom AG
@@ -366,42 +353,65 @@ T:*/19-22=0.08/60 Spar
 T:*/22-07=0.04/60 Nacht
 Z:6-10 Mobilfunk
 T:*/*=0.49/60
+Z:14 Gruppe A
+A:+1     # Vereinigte Staaten (USA)
+A:+30    # Griechenland
+A:+31    # Niederlande
+A:+32    # Belgien
+A:+33    # Frankreich
+A:+34    # Spanien
+A:+350   # Gibraltar
+A:+351   # Portugal
+A:+352   # Luxemburg
+A:+353   # Irland
+A:+356   # Malta
+A:+358   # Finnland
+A:+376   # Andorra
+A:+377   # Monaco
+A:+39    # Italien
+A:+41    # Schweiz
+A:+43    # Österreich
+A:+44    # Großbritannien und Nordirland
+A:+45    # Dänemark
+A:+46    # Schweden
+A:+47    # Norwegen
+T:*/*=0.49/60
 Z:20 Internet
 A:01929 # (Benutzername: mobilcom; Passwort: mobilcom)
 T:*/*=0.05/60 FreeNet
 #####################################################################
-P:20,0 ISIS
+P:20 ISIS
 C:Multimedia Net GmbH, Kaistraße 6, 40221 Düsseldorf 01020
 #####################################################################
-P:21,0 QS
+P:21 QS
 C:Communication Service GmbH, Oberländer Ufer 180-182, 50968 Köln 01021
 #####################################################################
-P:22,0 NetCologne
+P:22 NetCologne
 C:GmbH, Maarweg 163, 50825 Köln 01022
 #####################################################################
-P:23,0 tesion
+P:23 tesion
 C:Communikationsnetze Süd-West GmbH & Co. KG, Kriegsbergstr. 11, 70174 Stuttgart 01023
 #####################################################################
-P:24,0 Telepassport
+P:24 Telepassport
 C:GmbH, Schwindstraße 3, 60325 Frankfurt 01024
 #####################################################################
-P:25,0 CityKom
+P:25 CityKom
 C:Münster, Haferlandweg 8, 48155 Münster 01025
 #####################################################################
-P:26,0 ECN
+P:26 ECN
 C:Telekommunikation GmbH, Schmickstraße 38-40, 60314 Frankfurt 01026
 #####################################################################
-P:27,0 Communications Netzmanagement
+P:27 Communications Netzmanagement
 C:Bremen GmbH, Theodor-Heuss-Allee 20, 28215 Bremen 01027
 #####################################################################
-P:28,0 Colt
+P:28 Colt
 C:Telecom GmbH, Gervinusstraße 18-22, 60323 Frankfurt 01028
 C:Reseller von COLT : Telebridge, Global Communications, Nikoma
 #####################################################################
-P:29,0 Unisource
+P:29 Unisource
 C:Carrier Services, Industriestraße 21, CH-8304 Wallisellen/Schweiz 01029
 #####################################################################
-P:30,0 TelDaFax
+P:30 TelDaFax
 G:31.03.1999
 C:Telefon-, Daten- und Fax-Transfer GmbH & Co. KG, Schuppertsgasse 30, 35083 Wetter (Hessen) 01030
 C:Name:	    TeDaFax Telefon-, Daten- und Faxtransfer AG
@@ -418,13 +428,13 @@ T:6-7,H/*=0.09(60)/1
 Z:6-10 C/D/E-Netz
 T:*/*=0.48(60)/1
 #####################################################################
-P:31,0 HEAG
+P:31 HEAG
 C:MediaNet GmbH, Luisenplatz 6, 64283 Darmstadt 01031
 #####################################################################
-P:32,0 KDD
+P:32 KDD
 C:Deutschland GmbH, Immermannstraße 45, 40210 Düsseldorf 01032
 #####################################################################
-P:33,0 DTAG
+P:33 DTAG
 G:01.04.1999
 C:Deutsche Telekom AG, Friedrich-Ebert-Allee 140, 53113 Bonn 01033
 C:Name:     Deutsche Telekom AG
@@ -435,7 +445,15 @@ C:		   dort ist nur das Verbindungsentgeld faellig
 C:ISDN-Tarif
 C:FORMEL: 7,2 / Minutenpreis => Taktlaenge
 C:Quelle: http://www.telekom.de/untern/tarife/mobil/index.htm
-Z:1-2 CityCall
+# Fixme: Z:1-2 CityCall!
+Z:1 Ortszone
+T:1-5/09-18=0.12/90 Standard
+T:1-5/18-21=0.12/150 Spar
+T:1-5/21-05=0.12/240 Nacht
+T:1-5/05-09=0.12/150 Spar
+T:6-7,H/05-21=0.12/150 Spar
+T:6-7,H/21-05=0.12/240 Nacht
+Z:2 CityCall
 T:1-5/09-18=0.12/90 Standard
 T:1-5/18-21=0.12/150 Spar
 T:1-5/21-05=0.12/240 Nacht
@@ -457,67 +475,79 @@ T:1-5/06-09=0.12/60:600,0.1084/60 Spar
 T:6-7,H/06-21=0.12/60:600,0.1084/60 Spar
 T:6-7,H/21-06=0.06/60 Nacht
 Z:8 Mobilfunknetz D2
-A:0172
-A:0173
+A:0172,0173
 T:1-5/09-18=0.12/7.5
 T:1-5/18-09=0.12/15
 T:6-7,H/0-24=0.12/15
 Z:20 Internet
 A:0191011
 T:*/*=0.06/0,0.06/60 T-Online eco
+Z:0 FreeCall
+A:0010  # Operator Service
+A:0130  # freecall 0130
+A:0800  # freecall 0800
+A:01113 # Telekom Direkt
+A:01114 # Telekom Privatkundenvertrieb
+A:01115 # Telekom Geschaftskundenvertrieb
+A:01136 # Telegrammaufnahme per Telefax
+A:01171 # Störungsannahme PK
+A:01172 # Störungsannahme GK
+A:01174 # Störungsannahme Kabelfernsehen
+A:110   # Polizei / Notruf
+A:112   # Feuerwehr / Rettungsleitstelle
 #####################################################################
-P:34,0 NEFkom
+P:34 NEFkom
 C:Telekommunikation GmbH & Co. KG, Bärenschanzstraße 4, 90429 Nürnberg 01034
 #####################################################################
-P:35,0 interCOM
+P:35 interCOM
 C:GmbH, Hauptstraße 52a, 28876 Oyten 01035
 #####################################################################
-P:36,0 Hutchison
+P:36 Hutchison
 C:Münsterstraße 109, 48155 Münster 01036
 #####################################################################
-P:37,0 ETS
+P:37 ETS
 C:Verwaltung für Sprach- und Datennetze GmbH, Brunnenstraße 4, 61191 Rosbach 01037
 #####################################################################
-P:38,0 MediaWays
+P:38 MediaWays
 C:GmbH, An der Autobahn, 33311 Gütersloh 01038
 #####################################################################
-P:39,0 First Telecom
+P:39 First Telecom
 C:GmbH, Lyoner Straße 51, 60528 Frankfurt/Main 01039
 #####################################################################
-P:40,0 PLUSNET
+P:40 PLUSNET
 C:Gesellschaft für Netzwerk Services mbH, August-Thyssen-Straße 1, 40211 Düsseldorf 01040
 #####################################################################
-P:41,0 HanseNet
+P:41 HanseNet
 C:Telekommunikation GmbH, Hammerbrookstraße 63, 20097 Hamburg 01041
 #####################################################################
-P:42,0 TeleBeL
+P:42 TeleBeL
 C:Telekommunikation Bergisches Land GmbH, Johannisberg 7, 42103 Wuppertal 01042
 #####################################################################
-P:43,0 KielNet
+P:43 KielNet
 C:GmbH, Postfach 41 60, 24100 Kiel 01043
 #####################################################################
-P:44,0 VEW TELNET
+P:44 VEW TELNET
 C:Gesellschaft für Telekommunikation und Netzdienste mbH, Unterste-Wilms-Straße 29, 44143 Dortmund 01044
 #####################################################################
-P:45,0 Global Network
+P:45 Global Network
 C:Telephone Deutschland, Grosser Plan 8, 29221 Celle 01045
 #####################################################################
-P:46,0 KomTel
+P:46 KomTel
 C:Gesellschaft für Kommunikation und Informationsdienste GmbH, Batteriestraße 48, 24937 Flensburg 01046
 #####################################################################
-P:47,0 PrimeTec
+P:47 PrimeTec
 C:International Europe Ltd. 01047
 #####################################################################
-P:48,0 DOKOM
+P:48 DOKOM
 C:GmbH, Im Defdahl 5, 44141 Dortmund 01048
 #####################################################################
-P:49,0 ACC
+P:49 ACC
 C:Telekommunikation GmbH, Heinrich-Heine-Allee 53, 40213 Düsseldorf 01049
 #####################################################################
-P:50,0 TALKLINE
+P:50 TALKLINE
 C:PS PhoneServices GmbH, Adenauer Damm 1, 25337 Elmshorn 01050
 #####################################################################
-P:51,0 01051
+P:51 01051
 C:ID-Switch GmbH, Graf-Adolf-Straße, 40210 Düsseldorf 01051
 G:17.02.1999
 C:Homepage: http://www.01051.com
@@ -526,61 +556,61 @@ C:	    40210 Duesseldorf
 Z:2-4 Ferngespräche
 T:*/*=0.09/60
 #####################################################################
-P:52,0 Long Distance
+P:52 Long Distance
 C:International Ltd., 5 Duke's Gate Acton, London W 4 5 DX, GB 01052
 #####################################################################
-P:53,0 WOBCOM
+P:53 WOBCOM
 C:GmbH Wolfsburg, Heßlinger Str. 1-5, 38440 Wolfsburg 01053
 #####################################################################
-P:54,0 USFI
+P:54 USFI
 C:Global Network Services Germany GmbH, Kindsbacherstraße 41, 66877 Ramstein 01054
 #####################################################################
-P:55,0 ESPRIT
+P:55 ESPRIT
 C:Telecom Deutschland GmbH, Kaistraße 16 A, 40221 Düsseldorf 01055
 #####################################################################
-P:56,0 BITel
+P:56 BITel
 C:Gesellschaft für kommunale Telekommunikation mbh, Schildescher Straße 16, 33611 Bielefeld 01056
 #####################################################################
-P:57,0 Mox
+P:57 Mox
 C:Telecom GmbH, Industriestraße 3a, 40878 Ratingen 01057
 #####################################################################
-P:58,0 KaTel
+P:58 KaTel
 C:Gesellschaft für Telekommunikation mbH, Mathias-Brüggen-Straße 87-89, 50829 Köln 01058
 #####################################################################
-P:59,0 Pacific Gateway Exchange
+P:59 Pacific Gateway Exchange
 C:Inc., 533 Airport Boulevard, Suite 505, Burlingame, CA 94010, USA 01059
 #####################################################################
-P:60,0 Telecom-InfoService
+P:60 Telecom-InfoService
 C:GmbH, Postfach 174, A-1000 Wien (A) 01060
 #####################################################################
-P:61,0 TelSA
+P:61 TelSA
 C:Telekommunikationsgesellschaft mbH, Magdeburger Str. 51, 06112 Halle 01061
 #####################################################################
-P:62,0 DENTEL
+P:62 DENTEL
 C:GmbH i.G. Grimmstraße 4 80336 München 01062
 #####################################################################
-P:63,0 Conos
+P:63 Conos
 C:Corporate Network & Services Aktiengesellschaft Lievelingsweg 125 52119 Bonn 01063
 #####################################################################
-P:64,0 Hannoversche
+P:64 Hannoversche
 C:Telekommunikations- und Netzgesellschaft mbH, Glockseestraße 33, 30161 Hannover 01064
 #####################################################################
-P:65,0 Rapid Link
+P:65 Rapid Link
 C:Telecommunications GmbH, Donaustraße 68, 68199 Mannheim 01065
 #####################################################################
-P:66,0 Interoute
+P:66 Interoute
 C:Telecom Deutschland GmbH, Lyoner Str. 15, 60528 Frankfurt 01066
 #####################################################################
-P:67,0 RegioCom
+P:67 RegioCom
 C:GmbH, Steinfeldstraße 3, 39179 Barleben 01067
 #####################################################################
-P:68,0 Tele Media
+P:68 Tele Media
 C:International, Wilhelm-Leuschner-Strasse 23-25, 60329 Frankfurt/Main 01068
 #####################################################################
-P:69,0 Primus
+P:69 Primus
 C:Telecommunications Ltd. 01069
 #####################################################################
-P:70,0 Arcor CbC
+P:70 Arcor CbC
 G:01.04.99
 C:Mannesmann Arcor
 C:Mannesmann AG & Co., Kölner Str. 12, 65760 Eschborn 01070
@@ -611,8 +641,7 @@ T:1-5/09-18=0.96/60 Hauptzeit
 T:1-5/18-09=0.48/60 Nebenzeit
 T:6-7,H/*=0.48/60 Freizeit
 Z:8 D2
-A:0172
-A:0173
+A:0172,0173
 T:1-5/09-18=0.94/60 Hauptzeit
 T:1-5/18-09=0.46/60 Nebenzeit
 T:6-7,H/*=0.46/60 Freizeit
@@ -881,28 +910,80 @@ Z:20 Internet
 A:0192070 # (Benutzername: arcor; Passwort: internet; Proxy: proxy.arcor-ip.de:80; Startseite: http://www.call.arcor.net)
 T:*/*=0.06/60
 #####################################################################
-P:71,0 DeTeMobil
+P:70,1 Arcor Town to Town
+G:01.04.99
+C:Mannesmann Arcor
+C:Mannesmann AG & Co., Kölner Str. 12, 65760 Eschborn 01070
+Z:2 Nah
+T:1-5/06-09=0.05(60)/30 Freizeit
+T:1-5/09-18=0.09(60)/30 Hauptzeit
+T:1-5/18-21=0.05(60)/30 Freizeit
+T:1-5/21-06=0.04(60)/30 Nebenzeit
+T:6-7,H/06-21=0.05(60)/30 Freizeit
+T:6-7,H/21-06=0.04(60)/30 Nebenzeit
+Z:3 Regional
+T:1-5/06-09=0.075(60)/30 Freizeit
+T:1-5/09-18=0.14(60)/30 Hauptzeit
+T:1-5/18-21=0.075(60)/30 Freizeit
+T:1-5/21-06=0.04(60)/30 Nebenzeit
+T:6-7,H/06-21=0.075(60)/30 Freizeit
+T:6-7,H/21-06=0.04(60)/30 Nebenzeit
+Z:3 Fern
+T:1-5/06-09=0.095(60)/30 Freizeit
+T:1-5/09-18=0.18(60)/30 Hauptzeit
+T:1-5/18-21=0.095(60)/30 Freizeit
+T:1-5/21-06=0.06(60)/30 Nebenzeit
+T:6-7,H/06-21=0.095(60)/30 Freizeit
+T:6-7,H/21-06=0.06(60)/30 Nebenzeit
+#####################################################################
+P:70,2 Arcor Town to Town Sekunde
+G:01.04.99
+C:Mannesmann Arcor
+C:Mannesmann AG & Co., Kölner Str. 12, 65760 Eschborn 01070
+Z:2 Nah
+T:1-5/06-09=0.058/0,0.05(60)/1 Freizeit
+T:1-5/09-18=0.058/0,0.09(60)/1 Hauptzeit
+T:1-5/18-21=0.058/0,0.05(60)/1 Freizeit
+T:1-5/21-06=0.058/0,0.04(60)/1 Nebenzeit
+T:6-7,H/06-21=0.058/0,0.05(60)/1 Freizeit
+T:6-7,H/21-06=0.058/0,0.04(60)/1 Nebenzeit
+Z:3 Regional
+T:1-5/06-09=0.058/0,0.075(60)/1 Freizeit
+T:1-5/09-18=0.058/0,0.14(60)/1 Hauptzeit
+T:1-5/18-21=0.058/0,0.075(60)/1 Freizeit
+T:1-5/21-06=0.058/0,0.04(60)/1 Nebenzeit
+T:6-7,H/06-21=0.058/0,0.075(60)/1 Freizeit
+T:6-7,H/21-06=0.058/0,0.04(60)/1 Nebenzeit
+Z:3 Fern
+T:1-5/06-09=0.058/0,0.095(60)/1 Freizeit
+T:1-5/09-18=0.058/0,0.18(60)/1 Hauptzeit
+T:1-5/18-21=0.058/0,0.095(60)/1 Freizeit
+T:1-5/21-06=0.058/0,0.06(60)/1 Nebenzeit
+T:6-7,H/06-21=0.058/0,0.095(60)/1 Freizeit
+T:6-7,H/21-06=0.058/0,0.06(60)/1 Nebenzeit
+#####################################################################
+P:71 DeTeMobil
 C:Deutsche Telekom MobilNet GmbH, Landgrabenweg 151, 53227 Bonn 01071
 #####################################################################
-P:72,0 Mannesmann
+P:72 Mannesmann
 C:Mobilfunk GmbH, Am Seestern 1, 40547 Düsseldorf 01072
 #####################################################################
-P:73,0 AXXON
+P:73 AXXON
 C:Telecom GmbH, Am Seestern 24, 40547 Düsseldorf 01073
 #####################################################################
-P:74,0 Alpha
+P:74 Alpha
 C:Telecom GmbH, Beethovenstraße 1-3, 60325 Frankfurt/Main 01074
 #####################################################################
-P:75,0 ARCIS
+P:75 ARCIS
 C:Media Com Management GmbH, Maximilianstr. 14, 80539 München 01075
 #####################################################################
-P:76,0 QuickNet
+P:76 QuickNet
 C:Telenetworks & Service AG, Else-Lasker-Schüler-Straße 47, 42107 Wuppertal 01076
 #####################################################################
-P:77,0 E-Plus
+P:77 E-Plus
 C:Mobilfunk GmbH, E-Plus-Platz 1, 40468 Düsseldorf 01077
 #####################################################################
-P:78,0 3U
+P:78 3U
 G:01.04.1999
 C:Telekommunikation GmbH, Äußere Zittauer Straße 51, 02708 Löbau 01078
 C:3U Telekommunikation GmbH
@@ -916,18 +997,11 @@ T:1-5/20-08=0.059(60)/1
 T:6-7,H/08-20=0.139(60)/1
 T:6-7,H/20-08=0.059(60)/1
 Z:5-10
-A:01610
-A:01617
-A:01619
-A:01618 # C
-A:0170
-A:0171  # D1
-A:0172
-A:0173	# D2
-A:0177
-A:0178	# Eplus
-A:0176
-A:0179  # E2
+A:01610,01617,01619,01618 # C
+A:0170,0171  		  # D1
+A:0172,0173		  # D2
+A:0177,0178		  # Eplus
+A:0176,0179  		  # E2
 T:1-5/08-20=0.419(60)/1
 T:1-5/20-08=0.399(60)/1
 T:6-7,H/08-20=0.419(60)/1
@@ -1649,7 +1723,7 @@ A:+8741  # Inmarsat A (W.Atlantic)
 T:*/08-20=9.969(60)/1
 T:*/20-08=9.949(60)/1
 #####################################################################
-P:79,0 Viatel
+P:79 Viatel
 G:24.12.1998
 C:VIAPHONE GmbH, Hanauer Landstraße 187, 60314 Frankfurt 01079
 C:Homepage: http://www.viatel.de
@@ -1667,31 +1741,31 @@ T:1-5/09-18=0.73(60)/30,0.73(60)/1 Standard
 T:1-5/18-09=0.36(60)/30,0.36(60)/1 Spar
 T:6-7/*=0.36(60)/30,0.36(60)/1 Spar
 #####################################################################
-P:80,0 Telegate
+P:80 Telegate
 C:Aktiengesellschaft für telefonische Informationsdienste, Bahnhofstraße 26, 82211 Herrsching 01080
 #####################################################################
-P:81,0 Infotel
+P:81 Infotel
 C:bV, Onderlangs 120, 6812 CJ Arnhem, Niederlande 01081
 #####################################################################
-P:82,0 AugustaKom
+P:82 AugustaKom
 C:Telekommunikation GmbH & Co.KG Hoher Weg 1 86152 Augsburg 01082
 #####################################################################
-P:83,0 Wuerzburger
+P:83 Wuerzburger
 C:Telekommunikationsgesellschaft mbH, Bahnhofstraße 12-18, 97070 Würzburg 01083
 #####################################################################
-P:84,0 Telegroup
+P:84 Telegroup
 C:Network Services GmbH, Grossenbaumer Weg 6, 40472 Düsseldorf 01084
 #####################################################################
-P:85,0 WESTCom
+P:85 WESTCom
 C:GmbH, Hebelstraße 22 c, 69115 Heidelberg 01085
 #####################################################################
-P:86,0 ONE.TEL
+P:86 ONE.TEL
 C:Limited (UK), Clements House, 14-18 Gresham Street, London, EC2V 7JE, England 01086
 #####################################################################
-P:87,0 HAMCOM
+P:87 HAMCOM
 C:GmbH Telekommunikation, Südring 1-3, 59065 Hamm 01087
 #####################################################################
-P:88,0 WorldCom
+P:88 WorldCom
 C:Telecommunication Services GmbH, Brönnerstr. 15, 60313 Frankfurt 01088
 C:Dies sind *nicht* die korrekten Tarife von WorldCom, da WorldCom
 C:keine Tarifdaten veroeffentlicht!
@@ -1706,133 +1780,191 @@ T:1-5/21-05=0.03(60)/1 UUnet
 T:6-7,H/05-21=0.048(60)/1 UUnet
 T:6-7,H/21-05=0.03(60)/1 UUnet
 #####################################################################
-P:89,0 M'net
+P:89 M'net
 C:Telekommunikations GmbH, Corneliusstraße 10, 80469 München 01089
 #####################################################################
-P:90,0 VIAG INTERKOM
+P:90 VIAG INTERKOM
 C:GmbH & Co. KG, Elsenheimer Straße 11, 81927 München 01090
 #####################################################################
-P:91,0 IDT
+P:91 IDT
 C:Global Limited, London, United Kingdom 01091
 #####################################################################
-P:92,0 Hallo Telefon Service
+P:92 Hallo Telefon Service
 C:GmbH Dinkelbergstraße 6 76684 Östringen 01092
 #####################################################################
-P:93,0 Kray
+P:93 Kray
 C:Informationssysteme, Brüder-Grimm-Allee 73 A, 37085 Göttingen 01093
 #####################################################################
-P:94,0 Global Communications
+P:94 Global Communications
 C:GmbH, Eupener Straße 57 - 59, 50933 Köln 01094
 #####################################################################
-P:95,0 Teleos
+P:95 Teleos
 C:GmbH, Bielefelder Straße 3, 32051 Herford 01095
 #####################################################################
-P:96,0 GELSEN-NET
+P:96 GELSEN-NET
 C:Kommunikationsgesellschaft mbH, Munscheidstraße 14, 45886 Gelsenkirchen 01096
 #####################################################################
-P:97,0 AT & T-Unisource
+P:97 AT & T-Unisource
 C:Communication Services (Deutschland) GmbH, Lyoner Str. 15, 60528 Frankfurt 01097
 #####################################################################
-P:98,0 STAR
+P:98 STAR
 C:Telecommunications Deutschland GmbH, Voltastraße 1a, 60486 Frankfurt 01098
 C:Reseller von STAR : C@llas, Mox, Nikoma
 #####################################################################
-P:99,0 ECONOPHONE
+P:98,1 Mox
+G:01.04.1999
+C:Mox Telecom AG
+C:Reseller von Star Telecom
+Z:2-4 Deutschlandweit
+T:*/*=0.159(60)/1
+Z:5-10 Fest-zu-Mobil
+T:*/*=0.499(60)/1
+# Großbritannien, USA                             25,9 Pfg.
+#
+# Australien, Dänemark, Frankreich,
+# Kanada, Niederlande, Norwegen,                  35,9 Pfg.
+# Schweden, Schweiz
+#
+# Belgien, Finnland, Italien,
+# Luxemburg, Neuseeland,                          45,9 Pfg.
+# Österreich, Spanien
+#
+# Hong Kong, Israel,				55,9 Pfg.
+# Japan, Südkorea
+#
+# Griechenland, Island, Kroatien,
+# Moskau, Polen, Slovenien,                       65,9 Pfg.
+# Ungarn, Tschechien, Türkei
+#
+# Rußland*, Singapur                              95,9 Pfg.
+# und restliches Europa
+#
+# Aserbaidschan, Kasachstan, 		       125,9 Pfg.
+# Georgien, Usbekistan, Ukraine
+#
+# Indien, Iran, Sri Lanka                        175,9 Pfg.
+#
+# Restliche Welt                                 195,9 Pfg.
+#####################################################################
+P:99 ECONOPHONE
 C:GmbH, Flughafenstraße 54b, 22335 Hamburg 01099
 C:Reseller von ECONOPHONE : Telco
 #####################################################################
-P:100,0 TELELEV
+P:100 TELELEV
 C:Telekommunikation GmbH, Dönhoffstraße 39, 51373 Leverkusen 010000
 #####################################################################
-P:101,0 Netnet
+P:101 Netnet
 C:International AB, P.O. Box 6708, S-11385 Stockholm 010001
 #####################################################################
-P:102,0 EncoTel
+P:102 EncoTel
 C:GmbH & Co.KG, Leibnitzstraße 73, 07548 Gera 010002
 #####################################################################
-P:103,0 mevacom
+P:103 mevacom
 C:Telekommunikationsdienstleistungen GmbH, Posthofstraße 16, 14467 Potsdam 010003
 #####################################################################
-P:107,0 KPN
+P:107 KPN
 C:Telecom BV, Prinses Beatrixlaan 23, 2595 AK's Gravenhage, Niederlande 010007
 #####################################################################
-P:108,0 USA Global Link
+P:108 USA Global Link
 C:Deutschland GmbH, Theaterstraße 90, 52062 Aachen 010008
 #####################################################################
-P:110,0 Bertelsmann mediaSystems
+P:110 Bertelsmann mediaSystems
 C:GmbH, An der Autobahn, 33311 Gütersloh 010010
 #####################################################################
-P:111,0 RED LINE
+P:111 RED LINE
 C:Telekommunikationsgesellschaft mbH, Brückenstraße 17, 63897 Miltenberg 010011
 #####################################################################
-P:114,0 NordKom
+P:114 NordKom
 C:Weser-Elbe Telekommunikation GmbH, Stresemannstraße 48, 28207 Bremen 010014
 #####################################################################
-P:115,0 Delta Three
+P:115 Delta Three
 C:Inc., 430 Park Ave, New York 010015
 #####################################################################
-P:119,0 E.T.H.
+P:119 E.T.H.
 C:Telefondienste GmbH, Bettinastraße 25a, 60325 Frankfurt 010019
 #####################################################################
-P:120,0 Komm Consult
+P:120 Komm Consult
 C:Oberweg 15, 82024 Taufkirchen bei München 010020
 #####################################################################
-P:122,0 Motorola
+P:122 Motorola
 C:Electronic GmbH, Hagenauer Straße 47, 65203 Wiesbaden 010022
 #####################################################################
-P:130,0 tnp telenet
+P:130 tnp telenet
 C:potsdam, kommunikationsgesellschaft mbH, Erich-Weinert-Straße 100, 14478 Potsdam 010030
 #####################################################################
-P:131,0 accom
+P:131 accom
 C:Gesellschaft für Telekommunikationsnetze und -dienstleistungen GmbH & Co.KG, Borngasse 34, 52064 Aachen 010031
 #####################################################################
-P:133,0 Level 3
+P:133 Level 3
 C:Communications GmbH, Oberlindau 54 - 56, 60323 Frankfurt/Main 010033
 #####################################################################
-P:142,0 connection 42
+P:142 connection 42
 C:Ernst-Abbe-Straße 10, 25451 Quickborn 010042
 #####################################################################
-P:144,0 Carrier 1
+P:144 Carrier 1
 C:AG, Militärstraße 36, CH-8004 Zürich 010044
 #####################################################################
-P:150,0 Drillisch
+P:150 Drillisch
 C:AG, Horbeller Straße 33, 50858 Köln 010050
 #####################################################################
-P:155,0 Telia
+P:155 Telia
 C:Telekommunikation GmbH, Herrengraben 3, 20459 Hamburg 010055
 #####################################################################
-P:156,0 NETCOM
+P:156 NETCOM
 C:Kassel GmbH, Königstor 3 - 13, 34117 Kassel 010056
 #####################################################################
-P:160,0 JelloCom
+P:160 JelloCom
 C:GmbH & Co.KG, Prüssingstraße 41, 07745 Jena 010060
 #####################################################################
-P:166,0 InterCard
+P:166 InterCard
 C:GmbH, POS-Service, Mehlbeerenstraße 4, 82024 Taufkirchen bei München 010066
 #####################################################################
-P:170,0 Deutsche Telefon- und Marketing Services
+P:170 Deutsche Telefon- und Marketing Services
 C:GmbH, Isaac-Fulda-Allee 16, 55124 Mainz 010070
 #####################################################################
-P:173,0 TFN COM SA
+P:173 TFN COM SA
 C:World Of Communication, Via Greina 2 CP 2950, CH-6901 Lugano 010073
 #####################################################################
-P:177,0 WorldxChange
+P:177 WorldxChange
 C:Communications GmbH, Am Seedamm 44, 60489 Frankfurt 010077
 #####################################################################
-P:180,0 FaciliCom
+P:180 FaciliCom
 C:Telekommunikation GmbH; Windmühlstraße 1, 60329 Frankfurt/Main 010080
 #####################################################################
-P:184,0 Startec
+P:184 Startec
 C:Global Communications (Germany) GmbH, Broßstraße 6, 60487 Frankfurt 010084
 #####################################################################
-P:188,0 jk-tel
+P:188 jk-tel
 C:GmbH i.G., Hopfenplatz 5, 39120 Magdeburg 010088
 #####################################################################
-P:190,0 CNE
+P:190 CNE
 C:Corporate Network Essen Gesellschaft für Telekommunikation mbH, Kruppstraße 82 - 100, 45145 Essen 010090
 #####################################################################
-P:195,0 TeleNec
+P:195 TeleNec
 C:Telekommunikation Neustadt GmbH & Co.KG, Postfach 14 40, 96459 Neustadt 010095
 #####################################################################
-P:199,0 ESTel
+P:199 ESTel
 C:Energieversorgung Südsachsen Telekommunikationsgesellschaft mbH, Postfach 2 38, 09002 Chemnitz 010099
+#
+# Wichtige Provider:
+# 1. Echtes Call-by-call (per 1-Apr-99):
+#    11:o.tel.o
+#    15:Debitel
+#    19:MobilCom
+#    24:TelePassport
+#    30:TelDaFax
+#    33:Deutsche Telekom
+#    40:Esprit
+#    50:Talkline
+#    51:01051 Telecom
+#    70:Arcor
+#    78:3U
+#    79:Viatel
+#    85:GTS-WESTCom
+#    90:Viag Interkom
+#
+# 2. Angemeldet:
+#    13:Tele 2
+#    15:RSL COM
+#    88:UUnet
+#    98:Mox
