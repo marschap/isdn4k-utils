@@ -4,7 +4,7 @@
 
 <title>FAQ for isdn4linux
 <author>Matthias Hessler (<tt><htmlurl url="mailto:hessler@isdn4linux.de" name="hessler@isdn4linux.de"></tt>)
-<date>v2.0.24, 28. November 1999
+<date>v2.0.26, 5. December 1999
 <abstract>
 If you are reading this FAQ online, you may consider downloading the whole
 thing, and reading it offline (much cheaper). To download the latest
@@ -423,7 +423,8 @@ subaddressing stuff.
 <p>
 Yes, isdn4linux does support subaddressing (available in France).
 To configure it, give HiSax the number in this format:
-<tt>&lt;number&gt;.&lt;subaddress&gt;</tt>.
+<tt>&lt;number&gt;.&lt;subaddress&gt;</tt>. However, you may have to order
+it seperately and pay extra for it, depeding on your ISDN provider.
 Additionally, please note that if you are connected through a PBX, it will
 most likely filter out all the subaddressing stuff.
 
@@ -433,6 +434,7 @@ to isdn4linux?
 <p>
 Yes, if the provider of the cellular phone has a GSM to ISDN/V.110 gateway.
 This has been reported to work from a PalmPilot to isdn4linux with V.110.
+See question <ref id="config_gsmv110" name="config_gsmv110"> for details on how to configure it.
 
 <!-- Feature reversed card -->
 
@@ -449,13 +451,10 @@ This has been reported to work from a PalmPilot to isdn4linux with V.110.
 <sect1> feature_future: Which features are planned for the future?  
 <label id="feature_future">
 <p>
-Cards with an HFC-PCI chip allow specialities that may be supported in the
-future. So it is possible to run the card in NT mode (requires crossing
-the ISDN connection and change by software). Also, it is possible to give
-up one B-channel in exchange for reading the complete D-channel, which would
-be great for isdnlog.
-Another thing might be Least-Cost Routing, though that seems to be very
-tricky, as well as being timing and hardware dependent. We'll see...
+Actually, most features have been implemented and are now being improved.
+The only new feature that may be coming is Least-Cost Routing, though that
+seems to be very tricky, as well as being timing and hardware dependent.
+We'll see...
 
 
 <!-- Helpful docu, links, mailing list, config examples, howto's -->
@@ -621,7 +620,7 @@ Here the status from 4th September 1999 (constantly improving):
 <item>Teles 8.0/16.0/16.3 and compatible ones (like: Dr. Neuhaus Niccy
 1016, Creatix 16/S0)
 <item>Teles 16.3c (can not be used as reversed card)
-<item>Teles S0/PCMCIA
+<item>Teles S0/PCMCIA (old hardware)
 <item>Teles PCI
 <item>Teles S0Box
 <item>Creatix S0Box
@@ -637,7 +636,7 @@ Here the status from 4th September 1999 (constantly improving):
 <item>ELSA Quickstep 3000 (same settings as QS1000)
 <item>ELSA Quickstep 3000PCI
 <item>ELSA PCMCIA
-<item>ITK ix1-micro Rev.2
+<item>ITK ix1-micro Rev.2 (also: ITK colombus card)
 <item>Eicon.Diehl Diva 2.0 ISA and PCI (S0 and U interface, no PRO version)
 <item>Eicon.Diehl Diva Piccola
 <item>ASUSCOM NETWORK INC. ISDNLink 128K PC adapter (order code I-IN100-ST-D)
@@ -757,6 +756,19 @@ At least these S2M cards have been reported to work:
 <url url="http://www.melware.de/">)
 </itemize>
 
+<sect1> hardware_pcmcia: Which PCMCIA cards are supported?  
+<label id="hardware_pcmcia">
+<p>
+At least these PCMCIA cards have been reported to work:
+<itemize>
+<item>ELSA Microlink (NOT: ELSA Microlink/all)
+<item>Sedlbauer
+<item>AVM
+<item>Teles PCMCIA (old hardware) - deprecated, since Teles often changes
+hardware, and does not support the developers (see question
+<ref id="hardware_teles" name="hardware_teles">).
+</itemize>
+
 <sect1> hardware_smp: Can I run isdn4linux on my multi-CPU board?  
 <label id="hardware_smp">
 <p>
@@ -801,16 +813,41 @@ interesting for you, see question <ref id="hardware_s2m" name="hardware_s2m">.
 See question <ref id="config_manycards" name="config_manycards"> about
 the specialities for the configuration of more than one card.
 
+<sect1> hardware_hfc: What is special about card with an HFC chip?  
+<label id="hardware_hfc">
+<p>
+Cards with an HFC-PCI chip allow some specialities that are not possible with
+other ISDN cards. So it is possible to run the card in NT mode (requires
+crossing the ISDN connection and change by software) - this means you can
+simulate to another ISDN card that your card is an NTBA.
+Also, it is possible to give up one B-channel in exchange for reading the
+complete D-channel protocol, which is great for isdnlog. The later can
+also be done with a reversed card (see question
+<ref id="isdnlog_reversedcard" name="isdnlog_reversedcard">)
+but with HFC chips this works much more reliably and cleanly. You can
+activate this special echo mode by calling:
+<code>
+hisaxctrl &lt;driver_name&gt; 10 1
+hisaxctrl &lt;driver_name&gt; 12 1
+</code>
+You can deactivate it by calling:
+<code>
+hisaxctrl &lt;driver_name&gt; 12 0
+hisaxctrl &lt;driver_name&gt; 10 2
+</code>
+Parameter 10 changes the number of available channels, parameter 12 switches
+the echo mode.
+
 <sect1> hardware_elsa: What should I know about ISDN cards from ELSA?  
 <label id="hardware_elsa">
 <p>
 Generally, ELSA supports the ISDN4LINUX developers quite well with
 documentation on how to access their cards. Thus, these cards are well
 supported and very recommendable for use under ISDN4LINUX. Also, the 
-ELSA Quickstep 1000 PCI (new name Microlink PCI) the only brand of cards
-that are officially certified for use in Germany, and therefore in EC
-(see question <ref id="country_certified" name="country_certified"> for
-more information on certification).
+ELSA Quickstep 1000 PCI (new name Microlink PCI) is one of the only brands
+of cards that are officially certified for use in Germany, and therefore
+in EC (see question <ref id="country_certified" name="country_certified">
+for more information on certification).
 
 However, there is a speciality with some non-PCI-conformal mainboards and
 the ELSA Quickstep 1000pro-PCI. These mainboards set the IO address to
@@ -984,8 +1021,14 @@ Also the MSN may be different than you expect. Check several versions, no
 digit (then use <tt/0/, which i4l will require in such a case), one digit, or
 two digits, or the whole MSN. Best is you call some device (e.g. ISDN
 telephone) on the internal bus and check what i4l writes into the log file.
+
 Last, remember that you may have to configure your PBX to 'route' incoming
 calls onto the internal ISDN bus.
+
+If you have a point-to-point configuration ('Anlagenanschluss') then
+you cannot connect your card directly to the S0 bus (otherwise nothing will
+work). You have to connect to an internal ISDN bus. Your MSN is usually
+the extension at the end of your telefon number.
 
 <sect1> hardware_telestrouble: The PNP tools done work with my Teles 16.3 PNP 
 card!  
@@ -1067,21 +1110,24 @@ following kernel options:
 </itemize>
 <item>Compile and install kernel and modules, depmod. (Reboot!)
 <item>Read the configuration of the PNP card with:
-<code>pnpdump &gt; /etc/isapnp.conf</code>
-<item>The configuration file <tt>/etc/isapnp.conf</tt> has to be set by
-hand. Set the following values:
+<code>pnpdump -c &gt; /etc/isapnp.conf</code>
+<item>Verify whether pnpdump has prepared the configuration file
+<tt>/etc/isapnp.conf</tt> properly:
 <itemize>
-<item>INT0 - the interrupt used by the card (Default for Teles 16.3 PNP: 10)
+<item>INT0 - the interrupt used by the card (Default for Teles 16.3 PNP: 10).
+Make sure that interrupt 3 and 4 are not used, since they are reserved for
+the serial interface (which, unfortunately, the serial driver may have
+forgotten to reserve).
 <item>IO0, IO1 - the IO ports used by the card (Default for Teles 16.3 PNP:
 0x580 and 0x180) (Attention: these values must be 64-bit aligned (ending with
 0, 4, 8, or c)! Early versions of the PNP cards may suggest incorrect values!)
-<item><bf>Remove comment in front of ACT Y!</bf>
+<item>Comment removed in front of ACT Y!
 </itemize>
 <item>Activate the configuration with:
 <code>isapnp /etc/isapnp.conf</code> (must be started at every boot)
 <item>Now the HiSax module can be started for Euro-ISDN with:
 <code>modprobe hisax io=4,2,INT,IO0,IO1</code>
-(Replace INT, IO0, and IO1 with the your values in isapnp.conf.)
+(Replace INT, IO0, and IO1 with your values in isapnp.conf.)
 </enum>
 
 <sect1> config_kerneld: Why shouldn't I use <em>kerneld</em> to load the ISDN  
@@ -1155,6 +1201,8 @@ howto (isdn.html) and a ISDN quick-install guide (isdnquick.html).
 <url url="http://www.webideal.de/rh-isdn/">
 <item>Scripts and installation tips from several people:
 <tt><url url="http://www.rosat.mpe-garching.mpg.de/&tilde;web/ISDN.html"></tt>
+<item>Documentation on abc extensions:
+<tt><url url="http://www.mediatronix.de/i4l/index.html"></tt>
 <item>Michael Hipp's page (general informations):
 <tt><url url="http://www-ti.informatik.uni-tuebingen.de/~hippm/isdn.html"></tt>
 <item>Chargeint tips:
@@ -1176,10 +1224,28 @@ I get the error messages "init_module: Device or resource busy" and
 This seems to be a memory problem. While 2.0.x kernels may work on low
 memory/slow hardware (the author's answering machine is a 386 and used to
 run with 4MB of RAM), at least 16MB, if not more, seem to be required to run
-2.2.x kernels. You can try to reduce ISDN_MAX_DRIVERS, ISDN_MAX_CHANNELS
-in <tt>include/linux/isdn.h</tt>, compile ISDN4LINUX into the kernel, or
+2.2.x kernels. You can try to reduce the memory requirements (see question
+<ref id="trouble_littlememory" name="trouble_littlememory">), compile ISDN4LINUX into the kernel, or
 start and then exit a large program to ease those problems.
 
+<sect1> trouble_littlememory: How can I reduce isdn4linux's memory  
+requirements?  
+<label id="trouble_littlememory">
+<p>
+Try to do the following things:
+<itemize>
+<item> In <tt>/usr/src/linux/include/linux/isdn.h</tt>, change the line
+<code>
+#ifdef CONFIG_COBALT_MICRO_SERVER
+</code>
+into:
+<code>
+#if 1
+</code>
+and recompile kernel.
+<item> Reduce ISDN_MAX_DRIVERS, ISDN_MAX_CHANNELS in
+<tt>include/linux/isdn.h</tt>, then recompile kernel.
+</itemize>
 <sect1> trouble_strategy: My isdn4linux doesn't work! How do I best go about  
 finding the problem?  
 <label id="trouble_strategy">
@@ -1437,6 +1503,17 @@ output by:
 </code>
 and/or by removing the &dquot;debug&dquot; option for ipppd.
 
+<sect1> trouble_oldhardware: Maybe my hardware is too slow?  
+<label id="trouble_oldhardware">
+<p>
+Actually, properly configured, isdn4linux will on much smaller machines, than
+you might expect (still running an elder version on my 386-25, which used to
+have only 4MB RAM). However, newer isdn4linux/kernel versions need more
+memory, and may require some tweaking before they run on very old hardware.
+Have a look at question <ref id="trouble_outofbuffers" name="trouble_outofbuffers">
+when running out of buffers.
+See question <ref id="trouble_littlememory" name="trouble_littlememory"> on how to reduce the amount of
+memory needed.
 
 <sect1> trouble_outofbuffers: I get messages like &dquot;HSCX RME out of  
 buffers&dquot;, &dquot;HSCX RFP out of buffers&dquot;, &dquot;HSCX B EXIR  
@@ -1526,6 +1603,18 @@ local network will have problems after booting, even with the
 default route, and the IP number in ifconfig will be overwritten
 anyway.
 </quote>
+
+<sect1> trouble_unauthorizedcodechange: When HiSax starts, I get the  
+error messages 'Approval certification failed, unauthorized source code  
+changes'?  
+<label id="trouble_unauthorizedcodechange">
+<p>
+Since the certification of the HiSax driver is only valid for unchanged
+source code, the source code is protected by a checksum. When you get this
+message, then either you have changed the source code yourself, or the
+author did not update the checksum when changing the source code (reason
+could be that the complete certification tests have not yet been run on 
+the changed code).
 
 
 <!-- Config MSN
@@ -1789,6 +1878,8 @@ ISDN transactions.
 chgrp isdn /dev/ttyI* /dev/cui*
 chmod o-rw /dev/ttyI* /dev/cui*
 </code>
+It has been reported that you also may have to change group and
+permissions on the programs <tt/ipppd/ and <tt/isdnctrl/ to 'isdn'.
 Then all users not in the group 'isdn' have no reading or writing 
 privileges for the ISDN ttys. Those allowed to use ISDN have to be
 explicitly added to the group 'isdn'.
@@ -3286,8 +3377,11 @@ Yes, you can. But you have to make sure that you use the correct channel!
 <p>
 Some configuration examples can be found at:
 <url url="http://www.rosat.mpe-garching.mpg.de/~web/ISDN.html">.
-In general, there are several ways, depending on how you want others
-to dial in.
+If you have trouble setting it up, try to obtain the latest packages for
+isdn4linux (see question <ref id="distrib_getlatest" name="distrib_getlatest">).
+As usual, you can also ask in the mailing list.
+In general, there are several ways to configure dialin, depending
+on how you want others to dial in.
 <itemize>
 <item>Set up networking devices for dialin via syncppp, or rawip. Set option
 <tt/secure off/ to allow everybody to dial in, or set option <tt/secure on/
@@ -3803,27 +3897,27 @@ known workaround.
 <p>
 We are aware of at least the following countries:
 <itemize>
-<item>Austria
+<item>Austria (see question <ref id="country_austria" name="country_austria">)
 <item>Australia
 <item>Belgium
 <item>Denmark
 <item>Finland
-<item>France
+<item>France (see question <ref id="country_france" name="country_france">)
 <item>Germany
 <item>Hungary
 <item>Ireland
 <item>Israel
-<item>Italy
+<item>Italy (see question <ref id="country_italy" name="country_italy">)
 <item>Norway
 <item>Peru
-<item>Portugal
+<item>Portugal (see question <ref id="country_portugal" name="country_portugal">)
 <item>Singapore
 <item>Spain
 <item>Sweden
-<item>Switzerland
-<item>The Netherlands
-<item>United Kingdom
-<item>USA
+<item>Switzerland (see question <ref id="country_switherland" name="country_switherland">)
+<item>The Netherlands (see question <ref id="country_netherlands" name="country_netherlands">)
+<item>United Kingdom (see question <ref id="country_uk" name="country_uk">)
+<item>USA (see question <ref id="country_northamerica" name="country_northamerica">)
 </itemize>
 If your country is not on this list does not mean it is not supported. It just
 means we have not seen a confirmation about its usage there. Check the mailing
@@ -3872,7 +3966,7 @@ more than one digit (e.g. 206). What is my EAZ?
 Jens Ey <tt><htmlurl url="mailto:jens@jeyhh.shnet.org"
 name="jens@jeyhh.shnet.org"></tt> wrote on 10 Jan 1997:
 
-The EAZ for extensions is usually the last digit of the extension number.
+The EAZ for extensions is usuAlly the last digit of the extension number.
 As EAZ for the Linux computer you should then enter a '6'.
 
 <sect1> 1tr6_spv: What is a SPV?  
@@ -3946,8 +4040,8 @@ with the Italian area code  but without the leading 0. For example, if my phone
 number is 72004681 and my area code is 045, my MSN is 4572004681.
 Now with the setting AT&amp;E4572004681 isdn4linux works fine.
 
-<sect1> country_netherland: Netherlands: What does our MSN look like?  
-<label id="country_netherland">
+<sect1> country_netherlands: Netherlands: What does our MSN look like?  
+<label id="country_netherlands">
 <p>
 In The Netherlands the MSN includes (as opposed to the German 
 Telekom) <em>also the area code</em> - but without the leading zero. 
