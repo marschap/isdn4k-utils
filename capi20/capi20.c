@@ -1,7 +1,11 @@
 /*
- * $Id: capi20.c,v 1.4 1998/11/18 17:05:44 paul Exp $
+ * $Id: capi20.c,v 1.5 1999/04/20 19:52:19 calle Exp $
  * 
  * $Log: capi20.c,v $
+ * Revision 1.5  1999/04/20 19:52:19  calle
+ * Bugfix in capi20_get_profile: wrong size in memcpy from
+ * Kai Germaschewski <kai@thphy.uni-duesseldorf.de>
+ *
  * Revision 1.4  1998/11/18 17:05:44  paul
  * fixed a (harmless) warning
  *
@@ -285,7 +289,7 @@ capi20_get_profile(unsigned Controller, CAPI_MESSAGE LpBuffer)
         return (MESSAGE_EXCHANGE_ERROR)ioctl_data.errcode;
     }
     if (Controller)
-        memcpy(LpBuffer, &ioctl_data.profile, CAPI_SERIAL_LEN);
+        memcpy(LpBuffer, &ioctl_data.profile, sizeof(struct capi_profile));
     else
         memcpy(LpBuffer, &ioctl_data.profile.ncontroller,
                        sizeof(ioctl_data.profile.ncontroller));
