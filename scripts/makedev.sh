@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# $Id: makedev.sh,v 1.4 1999/01/09 13:21:10 paul Exp $
+# $Id: makedev.sh,v 1.5 2000/02/24 13:29:26 paul Exp $
 #
 # This script creates all ISDN devices under /dev .
 # Many/most distributions don't include these devices.
@@ -35,7 +35,7 @@ then	# Debian/SuSE standard
 fi
 rm -f $DEV/isdninfo
 mknod -m 444 $DEV/isdninfo c $MAJ 255
-ln -sf $DEV/isdnctrl0 $DEV/isdnctrl
+ln -sf isdnctrl0 $DEV/isdnctrl
 
 MAJ=43
 MIN=0
