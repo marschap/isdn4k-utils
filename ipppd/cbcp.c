@@ -42,7 +42,7 @@ in the developr/rfc directory.
 
 #define PPP_CBCP        0xc029  /* Callback Control Protocol */
 
-char cbcp_rcsid[] = "$Id: cbcp.c,v 1.5 1998/03/08 13:01:30 hipp Exp $";
+char cbcp_rcsid[] = "$Id: cbcp.c,v 1.6 2000/02/08 16:24:55 kai Exp $";
 
 #include <stdio.h>
 #include <string.h>
@@ -350,9 +350,7 @@ void cbcp_resp(cbcp_state *us)
 		PUTCHAR(len , bufp);
 		PUTCHAR(5, bufp); /* delay */
 		PUTCHAR(1, bufp);
-#if 0
-		BCOPY(strlen(cbcp->message), bufp, strlen(cbcp->message) + 1);
-#endif
+		BCOPY(cbcp->message, bufp, strlen(cbcp->message) + 1);
 		cbcp_send(us, CBCP_RESP, buf, len);
 		return;
 	}
