@@ -20,3 +20,5 @@
 /* Version number of package */
 #undef VERSION
 
+/* we have SENDING_COMPLETE in ALERT_REQ */
+#undef HAVE_ALERT_SENDING_COMPLETE

@@ -17,7 +17,7 @@
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-char options_rcsid[] = "$Id: options.c,v 1.25 2004/12/13 15:14:21 keil Exp $";
+char options_rcsid[] = "$Id: options.c,v 1.26 2004/12/13 22:06:52 keil Exp $";
 
 #include <stdio.h>
 #include <errno.h>
@@ -2635,7 +2635,7 @@ static int setforcedriver(int dummy)
 
 #ifndef DLT_PPP_WITHDIRECTION
 #define DLT_PPP_WITHDIRECTION	DLT_PPP
-#warning "please update your pcap version to support in/outbound DLT_PPP_WITHDIRECTION filter */
+#warning "please update your pcap version to support in/outbound DLT_PPP_WITHDIRECTION filter"
 #endif
 
 /*
