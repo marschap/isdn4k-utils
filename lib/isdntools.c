@@ -1,8 +1,8 @@
-/* $Id: isdntools.c,v 1.14 1997/05/19 23:37:05 luethje Exp $
+/* $Id: isdntools.c,v 1.15 1997/06/15 23:50:34 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
- * Copyright 1995, 1997 and Stefan Luethje (luethje@sl-gw.lake.de)
+ * Copyright 1995, 1997 by Stefan Luethje (luethje@sl-gw.lake.de)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdntools.c,v $
+ * Revision 1.15  1997/06/15 23:50:34  luethje
+ * some bugfixes
+ *
  * Revision 1.14  1997/05/19 23:37:05  luethje
  * bugfix for isdnconf
  *
@@ -394,7 +397,10 @@ int handle_runfiles(const char *_progname, char **_devices, int flag)
 		if ((RetCode = create_runfile(string,"%d\n")) != 0)
 		{
 			if (RetCode > 0)
+			{
 				print_msg("Another %s is running with pid %d!\n", progname, RetCode);
+				print_msg("If not delete the file `%s' nad try it again!\n", string);
+			}
 
 			return RetCode;
 		}
