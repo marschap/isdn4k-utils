@@ -1,4 +1,4 @@
-/* $Id: processor.c,v 1.31 1998/11/06 14:28:31 calle Exp $
+/* $Id: processor.c,v 1.32 1998/11/06 23:43:52 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.32  1998/11/06 23:43:52  akool
+ * for Paul
+ *
  * Revision 1.31  1998/11/06 14:28:31  calle
  * AVM-B1 d-channel trace level 2 (newer firmware) now running with isdnlog.
  *
@@ -4279,6 +4282,10 @@ static void processctrl(int card, char *s)
     i = strtol(ps += 5, NIL, 16) >> 1;
     net = i & 1;
     sapi = i >> 1;
+
+    if (sapi == 63) /* AK:07-Nov-98 -- future expansion */
+      return;
+
     tei = strtol(ps += 3, NIL, 16) >> 1;
 
     ps += (tei == BROADCAST) ? 1 : 4;
