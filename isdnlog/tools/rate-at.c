@@ -14,6 +14,32 @@
 */
 static int leo=0;
 
+void sv_printf(char *s, char *n) {
+  printf("S:%s\nN:%s\n\n",s,n);
+}  
+
+void  write_services(void) {
+  printf("\n# Service aka Sondernummern\n");
+  sv_printf("Euro-Notruf","112");
+  sv_printf("Feuerwehr","122");
+  sv_printf("Polizei","133");
+  sv_printf("Rettung","144");
+  sv_printf("Bergrettung","140");
+  sv_printf("Ärztenotdienst","141");
+  sv_printf("Xxxx","142");
+  sv_printf("Arbö","123");
+  sv_printf("Öamtc","120");
+  sv_printf("Internet","07189*,19411,19430,19440,019088333");
+  sv_printf("Störung","111*");
+  sv_printf("Auskuft AT,DE","11811");
+  sv_printf("Auskuft Int","11812");
+  sv_printf("Diverse Dienste","11820,15*,114,16*,190");
+  sv_printf("EMS","02290414");
+  sv_printf("Telegramm","022900");
+  sv_printf("Diverse Ortstarif","02290*\t# Wildcard after special");
+  printf("\n");
+}
+
 char *strip (char *s)
 {
   char *p;
@@ -70,7 +96,7 @@ void rprintf (char *fmt, char *name, ...)
       break;
     }	  
     printf ("%s%s\n", buf, name);
-    if (strcmp(name, "Online") == 0 || strcmp(name, "Internet") == 0)
+    if (0 && (strcmp(name, "Online") == 0 || strcmp(name, "Internet") == 0))
       printf("S:Internet by call\n");
   } else {
     printf ("%s\n", buf);
@@ -287,7 +313,7 @@ void rate_1001(void)
   double Tarif[] = { 1.116, 1.056, 0.996, 0.936, 0.816 };
   
   char *Zone[][2] = {{ "FreePhone", "112,122,133,141,142,144,+43800,+43801,+43802,+43803,+43804" },
-		     { "Regionalzone", "111*,11820,15*,+437111,+437112,+437113,+437114,+43810" }, 
+		     { "Regionalzone", "111*,11820,15*,+437111,+437112,+437113,+437114,+43810,02290" }, 
 		     { "Österreichzone", "Österreich" },
 		     { "Mobilfunk 1", "+43663,+43664,+43676" },
 		     { "Mobilfunk 2", "+43699" },
@@ -1023,10 +1049,10 @@ void rate_10elf(void) {
   char *Zone[][2] = {{ "Bundesland", "+43" }, 
 		     { "Mobilfunk", "+43663,+43664,+43676,+43699" },
 		     { "TransAlp", "Deutschland, Italien, Schweiz" },
-		     { "TransEuro1", "Andorra, Belgien, Dänemark, Deutschland Mobil, Färöer Inseln, Finnland, Frankreich, Gibraltar, Großbritannien, Irland, Island, Italien, Liechtenstein, Luxemburg, Monaco, Niederlande, Norwegen, Polen, San Marino, Schweden, Slowakei, Slowenien, Spanien (einschließlich Kanar. Inseln), Tschechische Rep., Ungarn, Zypern." },
-		     { "TransEuro2","Albanien, Bosnien-Herzegowina, Bulgarien, Estland, Griechenland, Israel, Jugoslawien, Kroatien, Lettland, Libyen, Litauen, Malta, Marokko, Mazedonien, Moldau, Portugal (einschließlich Azoren und Madeira), Rumänien, Rußland, Türkei, Ukraine, Weißrußland" },
+		     { "TransEuro1", "Andorra, Belgien, Dänemark, Deutschland Mobil, Färöer Inseln, Finnland, Frankreich, Gibraltar, Großbritannien, Irland, Island, Liechtenstein, Luxemburg, Monaco, Niederlande, Norwegen, Polen, San Marino, Schweden, Slowakei, Slowenien, Spanien (einschließlich Kanar. Inseln), Tschechische Rep., Ungarn, Zypern" },
+		     { "TransEuro2","Albanien, Bosnien-Herzegowina, Bulgarien, Estland, Griechenland, Israel, Jugoslawien, Kroatien, Lettland, Libyen, Litauen, Malta, Marokko, Mazedonien, Moldau, Portugal (einschließlich Azoren und Madeira), Rumänien, Rußland, Türkei, Ukraine, Weißrußland" },
 		     { "TransAmerika","Kanada, Vereinigte Staaten"},
-		     { "TransPazifik","Australien, Hong Kong, Japan, Korea (Süd), Malaysia, Neuseeland, Singapur"},
+		     { "TransPazifik","Australien, Hong Kong, Japan, Korea (Süd), Malaysia, Neuseeland, Singapur"},
 		     { "TransWelt","+"}};
 		     
   double Tarif[][2] = {{ 0.90, 0.90 },
@@ -2325,8 +2351,9 @@ int main (int argc, char *argv[])
   printf ("# Many thanks to Daniela Bruder <dbruder@sime.com>\n");
   printf ("# for collecting and preparing most of the call charges.\n\n\n");
   
-  printf ("V:1.89-Austria [02-Nov-1999]\n\n");
+  printf ("V:1.90-Austria [06-Nov-1999]\n\n");
   printf ("U:%%.3f öS\n");
+  write_services();
   
 #if 0
   rate_1066();

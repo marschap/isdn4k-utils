@@ -1,4 +1,4 @@
-/* $Id: rate.c,v 1.57 1999/11/05 20:22:01 akool Exp $
+/* $Id: rate.c,v 1.58 1999/11/07 13:29:29 akool Exp $
  *
  * Tarifdatenbank
  *
@@ -19,6 +19,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rate.c,v $
+ * Revision 1.58  1999/11/07 13:29:29  akool
+ * isdnlog-3.64
+ *  - new "Sonderrufnummern" handling
+ *
  * Revision 1.57  1999/11/05 20:22:01  akool
  * isdnlog-3.63
  *  - many new rates
@@ -352,9 +356,12 @@
  * char* getComment(int prefix, char *key)
  *   liefert einen C:-Eintrag
  *
- * int getArea (int prefix, char *number)
- *   überprüft, ob die Nummer einem A:-Tag entspricht
+ * int getSpecial (char *number)
+ *   überprüft, ob die Nummer einem N:-Tag = Service entspricht
  *   wird für die Sondernummern benötigt
+ *
+ * char *getSpecialName(char *number) 
+ *   get the Service Name of a special number
  *
  * void clearRate (RATE *Rate)
  *   setzt alle Felder von *Rate zurück
@@ -404,11 +411,7 @@ extern const char *basename (const char *name);
 
 #include "holiday.h"
 #include "zone.h"
-#ifdef USE_DESTINATION
 #include "dest.h"
-#else
-#include "telnum.h"
-#endif
 #include "rate.h"
 
 #define LENGTH 1024            /* max length of lines in data file */
@@ -463,7 +466,8 @@ typedef struct {
 
 typedef struct {
   char *Name;
-  int   Zone;
+  int   nCode;
+  char **Codes;
 } SERVICE;
 
 typedef struct {
@@ -479,17 +483,18 @@ typedef struct {
   ZONE    *Zone;
   int      nArea;
   AREA    *Area;
-  int      nService;
-  SERVICE *Service;
   int      nComment;
   COMMENT *Comment;
 } PROVIDER;
+
 
 static char      Format[STRINGL]="";
 static PROVIDER *Provider=NULL;
 static int      nProvider=0;
 static int      line=0;
 
+static SERVICE * Service=NULL;
+static int nService=0;
 
 static void notice (char *fmt, ...)
 {
@@ -502,7 +507,7 @@ static void notice (char *fmt, ...)
 #ifdef STANDALONE
   fprintf(stderr, "%s\n", msg);
 #else
-  print_msg(PRT_ERR, "%s\n", msg);
+  print_msg(PRT_INFO, "%s\n", msg);
 #endif
 }
 
@@ -668,9 +673,6 @@ void exitRate(void)
         if (Provider[i].Area[j].Name) free (Provider[i].Area[j].Name);
       } /* for */
       if(Provider[i].Area) free (Provider[i].Area);
-      for (j=0; j<Provider[i].nService; j++)
-	if (Provider[i].Service[j].Name) free (Provider[i].Service[j].Name);
-      if(Provider[i].Service) free (Provider[i].Service);
       for (j=0; j<Provider[i].nComment; j++) {
 	if (Provider[i].Comment[j].Key) free (Provider[i].Comment[j].Key);
 	if (Provider[i].Comment[j].Value) free (Provider[i].Comment[j].Value);
@@ -680,22 +682,28 @@ void exitRate(void)
       Provider[i].used=0;
     }
   }
+  for (i=0; i<nService; i++) {
+    for(j=0; j<Service[i].nCode; j++) 
+      free(Service[i].Codes[j]);
+    if(Service[i].Codes) free(Service[i].Codes);
+    if(Service[i].Name) free(Service[i].Name);
+  }
+/*  if(Service) free(Service);    this SIGSEGVs - why ??? */
+  Service=0;
+  nService=0;
 }
 
 int initRate(char *conf, char *dat, char *dom, char **msg)
 {
   static char message[LENGTH];
   FILE    *stream;
-#ifndef USE_DESTINATION
-  COUNTRY *Country;
-  int      d;
-#endif
   bitfield day, hour;
   double   price, divider, duration;
   char     buffer[LENGTH], path[LENGTH], Version[LENGTH]="";
   char     *c, *s;
   int      booked[MAXPROVIDER], variant[MAXPROVIDER];
-  int      Providers=0, Comments=0, Services=0, Areas=0, Specials=0, Zones=0, Hours=0;
+  int      Providers=0, Comments=0;
+  int      Areas=0, Specials=0, Zones=0, Hours=0;
   int      ignore=0, where=0, prefix=UNKNOWN;
   int      zone, zone1, zone2, day1, day2, hour1, hour2, freeze, delay;
   int     *number, numbers;
@@ -871,8 +879,6 @@ int initRate(char *conf, char *dat, char *dom, char **msg)
       Provider[prefix].Zone=NULL;
       Provider[prefix].nArea=0;
       Provider[prefix].Area=NULL;
-      Provider[prefix].nService=0;
-      Provider[prefix].Service=NULL;
       Provider[prefix].nComment=0;
       Provider[prefix].Comment=NULL;
       Providers++;
@@ -1024,26 +1030,9 @@ int initRate(char *conf, char *dat, char *dom, char **msg)
       s+=2;
       while(1) {
 	if (*(c=strip(str2list(&s)))) {
-#ifndef USE_DESTINATION
-	  if (!isdigit(*c) && (d=getCountry(c, &Country)) != UNKNOWN) {
-	    if (*c=='+') {
-	      Areas += appendArea (prefix, c, Country->Name, zone, &where, dat);
-	    } else if (d>2) {
-	      whimper (dat, "Unknown country '%s' (%s?), ignoring", c, Country->Name);
-	    } else {
-	      if (d>0)
-		whimper (dat, "Unknown country '%s', using '%s'", c, Country->Name);
-	      for (i=0; i<Country->nCode; i++)
-		Areas += appendArea (prefix, Country->Code[i], Country->Name, zone, &where, dat);
-	    }
-	  } else { /* unknown country or Sondernummer */
-#endif
 /* append areas as they are -lt- */
 	    Areas += appendArea (prefix, c, NULL, zone, &where, dat);
 	    Specials++;
-#ifndef USE_DESTINATION
-	  }
-#endif
 	} else {
 	  warning (dat, "Ignoring empty areacode");
 	}
@@ -1055,36 +1044,35 @@ int initRate(char *conf, char *dat, char *dom, char **msg)
       }
       break;
 
-    case 'N': /* N:Nirvana[,Nirvana...] */
+    case 'S': /* S:service */
       if (ignore) continue;
+/* S:Service
+   N:nn[,nn]
+   ...
+*/   
+      if (Providers) continue;
+      s+=2;
+      s=strip(s);
+      Service=realloc(Service, (++nService)*sizeof(SERVICE));
+      Service[nService-1].Name=strdup(s);
+      Service[nService-1].Codes=0;
+      Service[nService-1].nCode=0;
       break;
 
-    case 'S': /* S:service[,service...] */
+    case 'N': /* N:serviceNum[,serviceNum...] */
       if (ignore) continue;
-      if (zone==UNKNOWN) {
+      if (Providers) continue;
+      if (Service==NULL) {
 	warning (dat, "Unexpected tag '%c'", *s);
 	break;
       }
       s+=2;
       while(1) {
 	if (*(c=strip(str2list(&s)))) {
-	  for (i=0; i<Provider[prefix].nService; i++) {
-	    if (strcmp (Provider[prefix].Service[i].Name,c)==0) {
-	      warning (dat, "Duplicate Service %s", c);
-	      c=NULL;
-	      break;
-	    }
-	  }
-	  if (c) {
-	    Provider[prefix].Service=realloc(Provider[prefix].Service, (Provider[prefix].nService+1)*sizeof(SERVICE));
-	    Provider[prefix].Service[Provider[prefix].nService].Name=strdup(c);
-	    Provider[prefix].Service[Provider[prefix].nService].Zone=zone;
-	    Provider[prefix].nService++;
-	    Services++;
-	  }
-	} else {
-	  warning (dat, "Ignoring empty service");
-	}
+	  Service[nService-1].Codes=realloc(Service[nService-1].Codes,
+	  	++Service[nService-1].nCode * sizeof(char*));
+	  Service[nService-1].Codes[Service[nService-1].nCode-1]=strdup(c);
+	}  
 	if (*s==',') {
 	  s++;
 	  continue;
@@ -1373,7 +1361,7 @@ int initRate(char *conf, char *dat, char *dom, char **msg)
 
   if (msg) snprintf (message, LENGTH,
 		     "Rates   Version %s loaded [%d Providers, %d Zones, %d Areas, %d Specials, %d Services, %d Comments, %d Rates from %s]",
-		     Version, Providers, Zones, Areas, Specials, Services, Comments, Hours, dat);
+		     Version, Providers, Zones, Areas, Specials, nService, Comments, Hours, dat);
 
   return 0;
 }
@@ -1405,20 +1393,25 @@ char *getComment (int prefix, char *key)
   return NULL;
 }
 
-int getArea (int prefix, char *number)
-{
-  int l, i;
-
-  if (prefix<0 || prefix>=nProvider || !Provider[prefix].used)
-    return 0;
-
+int getSpecial (char *number) {
+  int i,j,l;
   l=strlen(number);
-  for (i=0; i<Provider[prefix].nArea; i++) {
-    if (strmatch(Provider[prefix].Area[i].Code, number)>=l)
-      return 1;
-  }
-  return 0;
-}
+  for (i=0; i<nService; i++) 
+    for(j=0; j<Service[i].nCode; j++) 
+      if(strmatch(Service[i].Codes[j], number)>=l)
+        return 1;
+  return 0;  
+}  
+
+char *getSpecialName(char *number) {
+  int i,j,l;
+  l=strlen(number);
+  for (i=0; i<nService; i++) 
+    for(j=0; j<Service[i].nCode; j++) 
+      if(strmatch(Service[i].Codes[j], number)>=l)
+        return Service[i].Name;
+  return 0;  
+}  
 
 void clearRate (RATE *Rate)
 {
@@ -1453,6 +1446,7 @@ int getRate(RATE *Rate, char **msg)
   char  *day;
   time_t time;
   struct tm tm;
+  char *number=0;
 
   if (msg)
     *(*msg=message)='\0';
@@ -1469,7 +1463,7 @@ int getRate(RATE *Rate, char **msg)
   if (Rate->_area==UNKNOWN) {
     int a, x=0;
     TELNUM num;
-    char *number=strcat3(Rate->dst);
+    number=strcat3(Rate->dst);
     if (*Rate->dst[0] && getDest(number, &num) == 0 && num.keys && *num.keys) {
       char *p;
 #if 0
@@ -1536,7 +1530,10 @@ int getRate(RATE *Rate, char **msg)
 
   Rate->Provider = Provider[prefix].Name;
   Rate->Country  = Provider[prefix].Area[Rate->_area].Name;
-  Rate->Zone     = Provider[prefix].Zone[Rate->_zone].Name;
+  if (Rate->dst[0] && *Rate->dst[0])
+    Rate->Zone     = Provider[prefix].Zone[Rate->_zone].Name;
+  else if(number && *number)
+    Rate->Zone = getSpecialName(number);
   Rate->zone     = Provider[prefix].Zone[Rate->_zone].Number[0];
 
   Rate->Basic=0;
@@ -1818,14 +1815,9 @@ int main (int argc, char *argv[])
   initHoliday ("../holiday-at.dat", &msg);
   printf ("%s\n", msg);
 
-#ifdef USE_DESTINATION
   initDest ("dest/dest.gdbm", &msg);
   printf ("%s\n", msg);
   initTelnum();
-#else
-  initCountry ("../country-de.dat", &msg);
-  printf ("%s\n", msg);
-#endif
   initRate ("/etc/isdn/rate.conf", "../rate-at.dat", "../zone-at-%s.gdbm", &msg);
   printf ("%s\n", msg);
 

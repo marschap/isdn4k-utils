@@ -29,14 +29,10 @@ typedef struct {
   char vbn[TN_MAX_VBN_LEN];		/* "10" */
   char provider[TN_MAX_PROVIDER_LEN];	/* "UTA" */
   int nprovider;			/* 2 */
-#ifdef USE_DESTINATION
   char scountry[TN_MAX_SCOUNTRY_LEN];	/* "Austria" */
   char country[TN_MAX_COUNTRY_LEN];	/* "+43" */
   char keys[TN_MAX_SCOUNTRY_LEN];	/* "VIA/AT" */
   char tld[3];				/* "AT" */
-#else  
-  COUNTRY *country;
-#endif  
   int ncountry;				/* 43 */
   char area[TN_MAX_AREA_LEN];		/* "1" */
   int narea;				/* 1 */

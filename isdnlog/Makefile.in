@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.118 1999/11/05 20:21:59 akool Exp $
+## $Id: Makefile.in,v 1.119 1999/11/07 13:29:25 akool Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,10 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.119  1999/11/07 13:29:25  akool
+## isdnlog-3.64
+##  - new "Sonderrufnummern" handling
+##
 ## Revision 1.118  1999/11/05 20:21:59  akool
 ## isdnlog-3.63
 ##  - many new rates
@@ -792,9 +796,6 @@ export ILABEL        := %b %e %T %ICall to tei %t from %N2 on %n2
 export OLABEL        := %b %e %T %Itei %t calling %N2 with %n2
 export CHARGEMAX     := 1000.00
 
-USE_DESTINATION =1
-
-
 ifndef ROOTDIR
 export ROOTDIR=$(shell pwd)
 MAKELIB  =1
@@ -821,10 +822,6 @@ INCLUDE     = -I./isdnlog -I./connect -I./tools -I$(PREFIXDIR) -I$(LIBISDNDIR) -
 
 LIB         = $(DBMLIB) -lm
 
-ifeq ($(USE_DESTINATION),1)
-DEFS +=  -DUSE_DESTINATION
-endif
-
 SERVICEFILE = /etc/services
 
 
@@ -832,7 +829,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 3.63
+VERSION     = 3.64
 
 MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 \
 	      isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 \
@@ -870,7 +867,7 @@ ISDNLOG_OBJS =  isdnlog/isdnlog.o isdnlog/processor.o isdnlog/functions.o \
                 isdnlog/server.o isdnlog/start_prog.o isdnlog/messages.o  \
                 connect/connect.o connect/socket.o tools/tools.o      	  \
                 connect/conv_address.o isdnlog/user_access.o 		  \
-                tools/isdnconf.o tools/telnum.o				  \
+                tools/isdnconf.o tools/telnum.o tools/dest.o		  \
 		tools/rate.o tools/zone.o tools/holiday.o \
 		isdnlog/asn1.o isdnlog/asn1_generic.o isdnlog/asn1_aoc.o  \
 		isdnlog/asn1_address.o isdnlog/asn1_diversion.o           \
@@ -892,32 +889,21 @@ endif
 
 ISDNREP_OBJS =  isdnrep/rep_main.o tools/tools.o tools/isdnconf.o         \
                 isdnlog/messages.o isdnrep/isdnrep.o     		  \
-		tools/rate.o tools/zone.o tools/holiday.o \
+		tools/rate.o tools/zone.o tools/holiday.o tools/dest.o \
 		tools/telnum.o						  \
                 $(LIBISDNDIR)/libisdn.a
 
 ISDNCONF_OBJS=  isdnconf/isdnconf.o tools/tools.o tools/isdnconf.o        \
 		tools/rate.o tools/zone.o tools/holiday.o \
-		tools/telnum.o						  \
+		tools/telnum.o	tools/dest.o				  \
                 $(LIBISDNDIR)/libisdn.a
 
 ISDNRATE_OBJS=  tools/isdnrate.o tools/isdnconf.o tools/tools.o           \
-		tools/rate.o tools/zone.o \
+		tools/rate.o tools/zone.o tools/dest.o \
 		tools/holiday.o \
 		tools/telnum.o						  \
                 $(LIBISDNDIR)/libisdn.a
 		
-ifeq ($(USE_DESTINATION),1)
-ISDNRATE_OBJS += tools/dest.o
-ISDNCONF_OBJS += tools/dest.o
-ISDNLOG_OBJS += tools/dest.o
-ISDNREP_OBJS += tools/dest.o
-else				
-ISDNRATE_OBJS += tools/country.o 
-ISDNCONF_OBJS += tools/country.o 
-ISDNLOG_OBJS += tools/country.o 
-ISDNREP_OBJS += tools/country.o 
-endif		
 
 ISDNLOG      =  bin/isdnlog
 ISDNCONF     =  bin/isdnconf

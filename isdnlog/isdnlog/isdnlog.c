@@ -1,4 +1,4 @@
-/* $Id: isdnlog.c,v 1.53 1999/10/30 18:03:31 akool Exp $
+/* $Id: isdnlog.c,v 1.54 1999/11/07 13:29:27 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,10 @@
  * along with this program; if not, write to the Free Software
  *
  * $Log: isdnlog.c,v $
+ * Revision 1.54  1999/11/07 13:29:27  akool
+ * isdnlog-3.64
+ *  - new "Sonderrufnummern" handling
+ *
  * Revision 1.53  1999/10/30 18:03:31  akool
  *  - fixed "-q" option
  *  - workaround for "Sonderrufnummern"
@@ -377,11 +381,7 @@
 #include <termios.h>
 
 #include "isdnlog.h"
-#ifdef USE_DESTINATION
 #include "dest.h"
-#else
-#include "telnum.h"
-#endif
 #ifdef POSTGRES
 #include "postgres.h"
 #endif
@@ -1427,11 +1427,7 @@ int main(int argc, char *argv[], char *envp[])
 	    if (!Q931dmp && *version)
 	      print_msg(PRT_NORMAL, "%s\n", version);
 
-#ifdef USE_DESTINATION
 	    initDest(destfile, &version);
-#else
-	    initCountry(countryfile, &version);
-#endif
 
 	    if (!Q931dmp && *version)
 	      print_msg(PRT_NORMAL, "%s\n", version);

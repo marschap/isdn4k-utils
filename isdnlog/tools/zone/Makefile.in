@@ -6,7 +6,6 @@
 BZIP2			= @BZIP2@
 SHELL			= /bin/sh
 CFLAGS			= -Wall -g 
-DEFS			= -DUSE_DESTINATION
 INCLUDES		= 
 LDFLAGS			= @DBMLIB@
 DBEXT			= @DBEXT@

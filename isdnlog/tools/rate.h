@@ -1,4 +1,4 @@
-/* $Id: rate.h,v 1.13 1999/09/26 10:55:20 akool Exp $
+/* $Id: rate.h,v 1.14 1999/11/07 13:29:29 akool Exp $
  *
  * Tarifdatenbank
  *
@@ -19,6 +19,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rate.h,v $
+ * Revision 1.14  1999/11/07 13:29:29  akool
+ * isdnlog-3.64
+ *  - new "Sonderrufnummern" handling
+ *
  * Revision 1.13  1999/09/26 10:55:20  akool
  * isdnlog-3.55
  *   - Patch from Oliver Lauer <Oliver.Lauer@coburg.baynet.de>
@@ -169,13 +173,13 @@ typedef struct {
 void  exitRate(void);
 int   initRate(char *conf, char *dat, char *dom, char **msg);
 char *getProvider(int prefix);
-int   getArea(int prefix, char *number);
+int   getSpecial(char *number);
+char* getSpecialName(char *number);
 char *getComment(int prefix, char *key);
 void  clearRate (RATE *Rate);
 int   getRate(RATE *Rate, char **msg);
 int   getLeastCost(RATE *Current, RATE *Cheapest, int booked, int skip);
 int   getZoneRate(RATE* Rate, int domestic, int first);
-int   guessZone (RATE *Rate, int aoc_units);
 char *explainRate (RATE *Rate);
 char *printRate (double value);
 

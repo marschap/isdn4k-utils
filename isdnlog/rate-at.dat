@@ -11,9 +11,63 @@
 # for collecting and preparing most of the call charges.
 
 
-V:1.88-Austria [27-Oct-1999]
+V:1.90-Austria [06-Nov-1999]
 
 U:%.3f öS
+
+# Service aka Sondernummern
+S:Euro-Notruf
+N:112
+
+S:Feuerwehr
+N:122
+
+S:Polizei
+N:133
+
+S:Rettung
+N:144
+
+S:Bergrettung
+N:140
+
+S:Ärztenotdienst
+N:141
+
+S:Xxxx
+N:142
+
+S:Arbö
+N:123
+
+S:Öamtc
+N:120
+
+S:Internet
+N:07189*,19411,19430,19440,019088333
+
+S:Störung
+N:111*
+
+S:Auskuft AT,DE
+N:11811
+
+S:Auskuft Int
+N:11812
+
+S:Diverse Dienste
+N:11820,15*,114,16*,190
+
+S:EMS
+N:02290414
+
+S:Telegramm
+N:022900
+
+S:Diverse Ortstarif
+N:02290*	# Wildcard after special
+
+
 
 ###########################
 P:01,1                             Telekom Austria Minimumtarif
@@ -41,7 +95,7 @@ Z:1                                Regionalzone
 T:W/08-18=1.116/72                 Geschäftszeit
 T:W/18-08=1.116/160                Freizeit
 T:E,H/*=1.116/160                  Freizeit
-A:111*,11820,15*,+437111,+437112,+437113,+437114,+43810
+A:111*,11820,15*,+437111,+437112,+437113,+437114,+43810,02290
 
 Z:2                                Österreichzone
 T:W/08-18=1.116/25                 Geschäftszeit
@@ -62,11 +116,10 @@ T:E,H/*=1.116/16.18                Freizeit
 A:+43699
 
 Z:5                                Online
-S:Internet by call
 T:W/08-18=1.116/120                Geschäftszeit
 T:W/18-08=1.116/360                Freizeit
 T:E,H/*=1.116/360                  Freizeit
-A:+437189,19411,19430,19440
+A:07189*,19411,19430,19440
 
 Z:6                                Ausland Zone 1
 T:W/08-18=1.116/15                 Geschäftszeit
@@ -248,7 +301,7 @@ Z:1                                Regionalzone
 T:W/08-18=1.056/72                 Geschäftszeit
 T:W/18-08=1.056/160                Freizeit
 T:E,H/*=1.056/160                  Freizeit
-A:111*,11820,15*,+437111,+437112,+437113,+437114,+43810
+A:111*,11820,15*,+437111,+437112,+437113,+437114,+43810,02290
 
 Z:2                                Österreichzone
 T:W/08-18=1.056/25                 Geschäftszeit
@@ -269,11 +322,10 @@ T:E,H/*=1.056/16.18                Freizeit
 A:+43699
 
 Z:5                                Online
-S:Internet by call
 T:W/08-18=1.056/120                Geschäftszeit
 T:W/18-08=1.056/360                Freizeit
 T:E,H/*=1.056/360                  Freizeit
-A:+437189,19411,19430,19440
+A:07189*,19411,19430,19440
 
 Z:6                                Ausland Zone 1
 T:W/08-18=1.056/15                 Geschäftszeit
@@ -455,7 +507,7 @@ Z:1                                Regionalzone
 T:W/08-18=0.996/72                 Geschäftszeit
 T:W/18-08=0.996/160                Freizeit
 T:E,H/*=0.996/160                  Freizeit
-A:111*,11820,15*,+437111,+437112,+437113,+437114,+43810
+A:111*,11820,15*,+437111,+437112,+437113,+437114,+43810,02290
 
 Z:2                                Österreichzone
 T:W/08-18=0.996/25                 Geschäftszeit
@@ -476,11 +528,10 @@ T:E,H/*=0.996/16.18                Freizeit
 A:+43699
 
 Z:5                                Online
-S:Internet by call
 T:W/08-18=0.996/120                Geschäftszeit
 T:W/18-08=0.996/360                Freizeit
 T:E,H/*=0.996/360                  Freizeit
-A:+437189,19411,19430,19440
+A:07189*,19411,19430,19440
 
 Z:6                                Ausland Zone 1
 T:W/08-18=0.996/15                 Geschäftszeit
@@ -662,7 +713,7 @@ Z:1                                Regionalzone
 T:W/08-18=0.936/72                 Geschäftszeit
 T:W/18-08=0.936/160                Freizeit
 T:E,H/*=0.936/160                  Freizeit
-A:111*,11820,15*,+437111,+437112,+437113,+437114,+43810
+A:111*,11820,15*,+437111,+437112,+437113,+437114,+43810,02290
 
 Z:2                                Österreichzone
 T:W/08-18=0.936/25                 Geschäftszeit
@@ -683,11 +734,10 @@ T:E,H/*=0.936/16.18                Freizeit
 A:+43699
 
 Z:5                                Online
-S:Internet by call
 T:W/08-18=0.936/120                Geschäftszeit
 T:W/18-08=0.936/360                Freizeit
 T:E,H/*=0.936/360                  Freizeit
-A:+437189,19411,19430,19440
+A:07189*,19411,19430,19440
 
 Z:6                                Ausland Zone 1
 T:W/08-18=0.936/15                 Geschäftszeit
@@ -869,7 +919,7 @@ Z:1                                Regionalzone
 T:W/08-18=0.816/72                 Geschäftszeit
 T:W/18-08=0.816/160                Freizeit
 T:E,H/*=0.816/160                  Freizeit
-A:111*,11820,15*,+437111,+437112,+437113,+437114,+43810
+A:111*,11820,15*,+437111,+437112,+437113,+437114,+43810,02290
 
 Z:2                                Österreichzone
 T:W/08-18=0.816/25                 Geschäftszeit
@@ -890,11 +940,10 @@ T:E,H/*=0.816/16.18                Freizeit
 A:+43699
 
 Z:5                                Online
-S:Internet by call
 T:W/08-18=0.816/120                Geschäftszeit
 T:W/18-08=0.816/360                Freizeit
 T:E,H/*=0.816/360                  Freizeit
-A:+437189,19411,19430,19440
+A:07189*,19411,19430,19440
 
 Z:6                                Ausland Zone 1
 T:W/08-18=0.816/15                 Geschäftszeit
@@ -1496,7 +1545,7 @@ A:MC,NO,SE
 
 Z:7                                Deutschland Mobilfunk ...
 T:*/*=4.78(60)/1                   0-24h
-A:_DEMF,_CHMF
+A:_DEME2,_CHMF
 
 Z:8                                Israel ...
 T:*/*=5.62(60)/1                   0-24h
@@ -1946,10 +1995,10 @@ A:DE,IT,CH
 
 Z:4                                TransEuro1
 T:*/*=3.50(60)/1                   0-24h
-A:AD,BE,DK,_DEMF,FO,FI
-A:FR,GI,UK,IE,IS,IT
-A:LI,LU,MC,NL,NO,PL,SM
-A:SE,SK,SI,ES
+A:AD,BE,DK,_DEME2,FO,FI
+A:FR,GI,UK,IE,IS,LI
+A:LU,MC,NL,NO,PL,SM,SE
+A:SK,SI,ES
 A:CZ,HU,CY
 
 Z:5                                TransEuro2
@@ -3048,7 +3097,6 @@ T:E,H/*=3.33(60)/60/1              Weekend
 A:+43663,+43664,+43676,+43699
 
 Z:3                                Internet
-S:Internet by call
 T:*/*=0.49(60)/60/1                0-24h
 A:0800400600
 

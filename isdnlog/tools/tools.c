@@ -1,4 +1,4 @@
-/* $Id: tools.c,v 1.40 1999/10/30 18:03:31 akool Exp $
+/* $Id: tools.c,v 1.41 1999/11/07 13:29:29 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -19,6 +19,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools.c,v $
+ * Revision 1.41  1999/11/07 13:29:29  akool
+ * isdnlog-3.64
+ *  - new "Sonderrufnummern" handling
+ *
  * Revision 1.40  1999/10/30 18:03:31  akool
  *  - fixed "-q" option
  *  - workaround for "Sonderrufnummern"
@@ -740,27 +744,6 @@ char *vnum(int chan, int who)
     return(retstr[retnum]);
   }
   else {
-#ifndef USE_DESTINATION
-    if (!memcmp(call[chan].num[who], countryprefix, strlen(countryprefix)) &&
-         memcmp(call[chan].num[who], mycountry, strlen(mycountry))) { /* Ausland */
-      register int   i;
-      auto     char *s;
-
-      if ((i = getCountrycode(call[chan].num[who], &s)) != UNKNOWN) {
-        Strncpy(call[chan].areacode[who], call[chan].num[who], i + 1);
-	strcpy(call[chan].rufnummer[who], call[chan].num[who] + i);
-	*call[chan].vorwahl[who] = 0;
-        strcpy(call[chan].area[who], s);
-
-        sprintf(retstr[retnum], "%s %s, %s",
-      	  call[chan].areacode[who],
-      	  call[chan].rufnummer[who],
-      	  call[chan].area[who]);
-
-  	  return(retstr[retnum]);
-      } /* if */
-    } /* if */
-#else
     if (!q931dmp) {
       normalizeNumber(call[chan].num[who], &number, TN_ALL);
 
@@ -770,34 +753,6 @@ char *vnum(int chan, int who)
 
       strcpy(s, formatNumber("%F", &number));
     } /* if */
-#endif
-#if 0
-    normalizeNumber(call[chan].num[who], &number, TN_ALL);
-    /* Fixme: use number fields directly, no need to format a string -lt- */
-    strcpy(s, formatNumber("%F", &number));
-
-    /* +49 6441/443431, Wetzlar */
-
-    if ((p1 = strchr(s, ' '))) {
-      *p1 = 0;
-      strcpy(call[chan].areacode[who], s);
-      *p1 = ' ';
-
-      if ((p2 = strchr(p1 + 1, '/'))) {
-        *p2 = 0;
-      	strcpy(call[chan].vorwahl[who], p1 + 1);
-        *p2 = '/';
-
-        if ((p1 = strchr(p2 + 1, ','))) {
-          *p1 = 0;
-      	  strcpy(call[chan].rufnummer[who], p2 + 1);
-          *p1 = ',';
-
-      	  strcpy(call[chan].area[who], p1 + 2);
-        } /* if */
-      } /* if */
-    } /* if */
-#endif
 
     if (cnf > -1)
       strcpy(retstr[retnum], call[chan].alias[who]);
@@ -806,7 +761,7 @@ char *vnum(int chan, int who)
 
     return(retstr[retnum]);
   } /* else */
-#if 0 /* -lt- dead code ??? */
+#if 0 /* -lt- dead code ??? Fixme: */
   if (l > 1) {
     if (call[chan].num[who][prefix] == '1')
       cc_len = 1; /* USA is only country with country code length 1 */

@@ -86,11 +86,7 @@
  *
  */
 
-#ifdef USE_DESTINATION
 #include "dest.h"
-#else
-#include "telnum.h"
-#endif
 
 #define DEFAULT (UNKNOWN-1)
 
@@ -150,160 +146,6 @@ static void clearArea(TELNUM *num, int a) {
   num->narea= a==DEFAULT?defnum.narea:a; 
 }
 
-#ifndef USE_DESTINATION
-static inline void clearCountry(TELNUM *num, int c) {
-  num->country=0;
-  num->ncountry=c;
-}
-
-static inline void setCountry(TELNUM *num) {
-  num->country=defnum.country;
-  num->ncountry=defnum.ncountry;
-}
-static int _getCountrycode(char *country, char ** t) {
-  char c[TN_MAX_COUNTRY_LEN];
-  int res, l, last;
-  if ((last=res = getCountrycode(country, t)) == UNKNOWN)
-	return UNKNOWN;
-  if(res>=TN_MAX_COUNTRY_LEN) {
-    print_msg(PRT_A, "Problem getCountrycode \"%s\" returned\n", country,res);
-	return UNKNOWN;
-  }	
-  if (country[1] == '1' || country[1] == '7') /* Fixme: quick hack fuer USA/GUS */
-    return last;
-  Strncpy(c, country, res); /* try shorter because of towns in country.dat */
-  l=strlen(c);
-  while(l>1) {	
-	if ((res = getCountrycode(c, t)) != UNKNOWN) 
-	  last=res;
-#if DEBUG
-  	print_msg(PRT_V, "_getCountrycode(%s)=%d  ", c,res);
-#endif
-	c[--l] = '\0'; /* try shorter */
-  }
-  return last;	
-}  	
-static int split_country(char **p, TELNUM *num) {
-  int res=0;
-  int len=0;
-  char *country=0;
-#if DEBUG
-  print_msg(PRT_V, "cou: '%s' ", *p);
-#endif
-  
-  if (!memcmp(*p,"00", 2) || !isdigit(**p)) {
-	res = 0; /* len of country known ? */
-	if (!isdigit(**p)) { /* alnum or + */
-	  if (**p == '+')	
-		country = strdup(*p);
-	  else {	/* alpha */  
-		while (!isdigit(**p) && **p)
-		  (*p)++, res++;
-	    while (Isspace(**p))
-		  (*p)--,res--;
-		country = malloc(res+1);
-		Strncpy(country, (*p)-res, res+1);	
-	  }	
-	}
-	else {
-	  country = malloc(strlen(*p)+2);
-	  sprintf(country, "+%s", (*p)+2);
-	  (*p)++;len++;
-	}	  
-	if (res == 0) {
-	  if((res = _getCountrycode(country, 0)) != UNKNOWN) {
-#if DEBUG
-    	print_msg(PRT_V, "getCountrycode(%s)= ", country);
-#endif
-		country[res]='\0';
-#if DEBUG
-    	print_msg(PRT_V, "\"%s\"  ", country);
-#endif
-		*p += res;
-	  }
-	  else {
-    	print_msg(PRT_A, "Unknown Country \"%s\"\n", *p);
-  	    clearCountry(num, UNKNOWN); 
-		res=-10;
-	  }	
-	}  	
-    if (getCountry(country, &num->country) != UNKNOWN) {
-#if DEBUG
-	  print_msg(PRT_V, "Country \"%s\"\n", num->country->Code[0]);
-#endif
-	  num->ncountry=atoi(num->country->Code[0]+1);
-	}  
-  	else {
-  	  clearCountry(num, UNKNOWN); 
-      print_msg(PRT_A, "Unknown Country \"%s\"\n", *p);
-  	  res=-10;
-	}	
-	free(country);
-  }
-  else {
-	int ga;
-#if DEBUG
-    print_msg(PRT_V, "getArea(%d,%s) => " ,num->nprovider, *p);
-#endif
-	if((ga=getArea(num->nprovider, *p))) /* sondernummer */
-  	  clearCountry(num, 0); 
-	else  
-  	  clearCountry(num, DEFAULT); 
-#if DEBUG
-	print_msg(PRT_V, "%d  ", ga);
-#endif
-  }  
-#if DEBUG
-  print_msg(PRT_V, "Country %d\n", num->ncountry);
-#endif
-  return res+len;
-}  
-
-
-static int split_area(char **p, TELNUM *num, int first) {
-  int res=0;
-  int len=0;
-  char *s;
-#if DEBUG
-  print_msg(PRT_V, "are: '%s' ", *p);
-#endif
-  if (num->ncountry == 0) {	/* sondernummer */
-	clearArea(num, 0);
-	return 0; 
-  }	
-  if (**p == '0' && first)
-	(*p)++, len++;
-  if (len || num->ncountry>0) {
-	if (num->ncountry == DEFAULT)
-	  setCountry(num);	
-	if((res=getAreacode(num->ncountry, *p, &s)) != UNKNOWN) {
-	  Strncpy(num->sarea, s, TN_MAX_SAREA_LEN);	 
-  	  Strncpy(num->area, *p, min(res+1, TN_MAX_AREA_LEN));	 
-	  (*p) += res;
-	  num->narea=atoi(num->area);
-#if DEBUG
-	  print_msg(PRT_V,"getAreacode(%d, %s)= '%s'\n",num->ncountry,num->area,num->sarea);
-#endif
-	}	
-	else {
-	  clearArea(num, UNKNOWN);
-#if DEBUG
-	  print_msg(PRT_V,"getAreacode(%d, %s)= 'UNKNOWN'\n",num->ncountry,*p);
-#endif
-	  return -1;
-	}
-  }		
-  else 
-	clearArea(num, DEFAULT);
-  if (num->ncountry == DEFAULT)
-	setCountry(num);	
-  return res+len;
-}  
-
-#endif
-
-#ifdef USE_DESTINATION
-
 static inline void clearCountry(TELNUM *num, int c) {
   *num->scountry='\0';
   *num->country='\0';
@@ -329,7 +171,7 @@ int normalizeNumber(char *target, TELNUM *num, int flag) {
     /* subst '00' => '+' */
     if (p[0]=='0' && p[1]=='0')
       *++p='+';
-    if (getArea(num->nprovider, p)) { /* sondernummer */  
+    if (getSpecial(p)) { /* sondernummer */  
       goto is_sonder;
     }  
     if(!isdigit(*p)) {
@@ -339,7 +181,7 @@ int normalizeNumber(char *target, TELNUM *num, int flag) {
         q = malloc(strlen(num->area)+strlen(num->msn)+1);
 	strcpy(q, num->area);
 	strcat(q, num->msn);
-        if(getArea(num->nprovider, q)) { /* sondernummer */
+        if(getSpecial(q)) { /* sondernummer */
   	  clearCountry(num, 0); 
 	  *num->sarea='\0';
 	  Strncpy(num->area, q, TN_MAX_AREA_LEN);
@@ -350,7 +192,7 @@ int normalizeNumber(char *target, TELNUM *num, int flag) {
       }	
     }  
     else {  
-      if(getArea(num->nprovider, p)) { /* sondernummer */
+      if(getSpecial(p)) { /* sondernummer */
 is_sonder:      
   	clearCountry(num, 0); 
 	*num->sarea='\0';
@@ -366,7 +208,7 @@ is_sonder:
 	  strcat(q, p+1);
 	  free(origp);
 	  origp=p=q;
-          if (getArea(num->nprovider, p)) { /* sondernummer */  
+          if (getSpecial(p)) { /* sondernummer */  
             goto is_sonder;
           }  
           res=getDest(p, num);
@@ -383,37 +225,6 @@ is_sonder:
   return(res);	
 }
 
-#else
-
-int normalizeNumber(char *target, TELNUM *num, int flag) {
-  int res=0;
-  int first=0;
-  char n[TN_MAX_NUM_LEN];
-  char *p, *q;
-  
-  for (p=target, q=n; *p; p++)
-	if (!Isspace(*p))
-	  *q++ = *p;
-  *q = '\0';
-  p = n;
-  clearNum(num);
-  if (flag & TN_PROVIDER)
-	split_vbn(&p, num);
-  if (flag & TN_COUNTRY) {	
-	res = split_country(&p, num);
-	if (res<0) 
-	  return UNKNOWN;
-	else if(res==0)
-	  first=1;		
-  }	  
-  if (flag & TN_AREA)	
-	res = split_area(&p, num, first);
-  Strncpy(num->msn, p, TN_MAX_MSN_LEN);
-  if (res<0)
-	return 1;
-  return(0);	
-}
-#endif
 
 #define VBN_LEN (*vbnlen-'0')
 char *prefix2provider(int prefix, char*s) {
@@ -456,7 +267,6 @@ void initNum(TELNUM *num) {
   if(!*num->area)
 	Strncpy(num->area, myarea, TN_MAX_AREA_LEN);
   num->ncountry=defnum.ncountry;
-#ifdef USE_DESTINATION  
   strcpy(num->scountry,defnum.scountry);
   strcpy(num->country,defnum.country);
   num->narea=atoi(num->area); /* 1.01 */
@@ -465,16 +275,6 @@ void initNum(TELNUM *num) {
   strcat(s,num->area);
   getDest(s, num);  
   free(s);
-#else  
-  num->country=defnum.country;
-  num->narea=atoi(num->area);
-  if (getAreacode(num->ncountry, num->area, &s) != UNKNOWN) {
-    Strncpy(num->sarea, s, TN_MAX_SAREA_LEN); 
-    free(s);
-  }	
-  else 
-      clearArea(num, UNKNOWN);
-#endif      
   strcpy(num->vbn, defnum.vbn);
 }
 
@@ -482,20 +282,10 @@ static void _init(void) {
   char *s;
   clearNum(&defnum);
   Strncpy(defnum.area, myarea, TN_MAX_AREA_LEN);
-#ifdef USE_DESTINATION
   s=malloc(strlen(mycountry)+strlen(myarea)+1);
   strcpy(s,mycountry);
   strcat(s,myarea);
   getDest(s, &defnum);  
-#else
-  if (getCountry(mycountry, &defnum.country) != UNKNOWN) {
-	defnum.ncountry=atoi(defnum.country->Code[0]+1);
-	if (getAreacode(defnum.ncountry, defnum.area, &s) != UNKNOWN) {
-	  Strncpy(defnum.sarea, s, TN_MAX_SAREA_LEN); 
-	  free(s);
-	}	
-  }	
-#endif  
   Strncpy(defnum.vbn, vbn, TN_MAX_VBN_LEN);
 }
 
@@ -548,24 +338,15 @@ again:
 		  break;
 		case 'c': 
 		  if(num->ncountry>0 && num->country) {
-#ifdef USE_DESTINATION
 		q=stpcpy(q,num->country); 
-#else			
-			q=stpcpy(q, num->country->Code[0]); 
-#endif			
 			first=0;
 		  }
 		  else 
 			SKIP;
 		  break;
 		case 'C': 
-#ifdef USE_DESTINATION
 		  if(num->ncountry>0) 
 			q=stpcpy(q, num->scountry);
-#else			
-		  if(num->ncountry>0 && num->country) 
-			q=stpcpy(q, num->country->Name);
-#endif			
 		  else 
 			SKIP;
 		  break;
@@ -648,11 +429,7 @@ static void init()
 
   if (verbose && *version)
     print_msg(PRT_V, "%s\n", version);
-#ifdef USE_DESTINATION
   initDest("/usr/lib/isdn/dest.gdbm", message); /* Fixme: */
-#else  
-  initCountry(countryfile, message);
-#endif
   if (verbose && *version)
     print_msg(PRT_V, "%s\n", version);
 
@@ -667,13 +444,10 @@ static void init()
 static void deinit(void)
 {
   exitRate();
-#ifdef USE_DESTINATION
   exitDest();
-#else  
-  exitCountry();
-#endif  
   exitHoliday();
 }
+
 int     main(int argc, char *argv[], char *envp[])
 {
   register int i;

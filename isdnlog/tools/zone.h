@@ -1,4 +1,4 @@
-/* $Id: zone.h,v 1.2 1999/06/26 12:26:35 akool Exp $
+/* $Id: zone.h,v 1.3 1999/11/07 13:29:29 akool Exp $
  *
  * Verzonungsberechnung
  *
@@ -19,6 +19,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: zone.h,v $
+ * Revision 1.3  1999/11/07 13:29:29  akool
+ * isdnlog-3.64
+ *  - new "Sonderrufnummern" handling
+ *
  * Revision 1.2  1999/06/26 12:26:35  akool
  * isdnlog Version 3.37
  *   fixed some warnings
@@ -37,6 +41,5 @@
 int  initZone (int provider, char *path, char **msg);
 void exitZone (int provider);
 int  getZone  (int provider, char *from, char *to);
-int getAreacode(int country, char *from, char **text);
 
 #endif

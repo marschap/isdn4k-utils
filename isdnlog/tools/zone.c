@@ -1,4 +1,4 @@
-/* $Id: zone.c,v 1.18 1999/10/25 18:30:04 akool Exp $
+/* $Id: zone.c,v 1.19 1999/11/07 13:29:29 akool Exp $
  *
  * Zonenberechnung
  *
@@ -19,6 +19,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: zone.c,v $
+ * Revision 1.19  1999/11/07 13:29:29  akool
+ * isdnlog-3.64
+ *  - new "Sonderrufnummern" handling
+ *
  * Revision 1.18  1999/10/25 18:30:04  akool
  * isdnlog-3.57
  *   WARNING: Experimental version!
@@ -92,11 +96,11 @@
  * int getZone(int provider, char *from, char *to)
  *	returns zone for provider, UNKNOWN on not found, -2 on error
  *
- * int getAreacode(int countrycode, char *num, char **text)
- *  returns len of areacode in num and in text a malloced string
- *  UNKNOWN on not found
- *
  * Changes:
+ *
+ * 1.24 1999.10.06 lt removed getAreacode
+ *
+ * 1.23 1999.10... lt switch to getDest
  *
  * 1.22 1999.07.26 lt bug fix, getZone returned junk, when diff. providers
  *                    used the same zone file
@@ -157,10 +161,7 @@ struct sth {
 
 static struct sth *sthp;
 static int count;
-static char version[] = "1.23";
-#ifndef USE_DESTINATION				
-static bool area_read = false;
-#endif
+static char version[] = "1.24";
 
 #define LINK 127
 #define INFO_LEN 80
@@ -240,72 +241,9 @@ int initZone(int provider, char *path, char **msg)
 {
 	static char message[LENGTH];
 	int res;
-#ifndef USE_DESTINATION	
-	char * dir;
-	char * file;
-	char *p;
-	DIR *dp;
-	struct dirent *ep;
-	int len, i;
-#endif
 	if (msg)
     	*(*msg=message)='\0';
 	res = _initZone(provider, path, msg, ZONES);
-#ifndef USE_DESTINATION	
-	if (area_read || res)
-		return res;
-	area_read = true;
-	if ((p = strrchr(path, '/')) == 0) {
-		dir = "./";
-		file = path;
-	}
-	else {
-		if ((dir = strdup(path)) == 0) {
-			if (msg)
-				snprintf (message, LENGTH,
-					"Zone V%s: Error: Out of mem 10", version);
-			return res;
-		}
-		p = strrchr(dir, '/');
-		if ((file = strdup(p+1)) == 0) {
-			if (msg)
-				snprintf (message, LENGTH,
-					"Zone V%s: Error: Out of mem 11", version);
-			return res;
-		}
-		p[1] = '\0';
-	}
-	if ((dp = opendir(dir)) == 0) {
-		if (msg)
-			snprintf (message, LENGTH,
-				"Zone V%s: Error: Out of mem 11", version);
-		return res;
-	}
-	len = strchr(file,'-')-file;
-	i = 0;
-	while ((ep = readdir(dp))) {	/* zone-cc-xx */
-		if (memcmp(ep->d_name, file, len) == 0 && memcmp(ep->d_name, file, len+3) != 0) {
-			int l=strlen(dir)+strlen(ep->d_name)+1;
-			char *npath=malloc(l);
-			strcpy(npath, dir);
-			strcat(npath, ep->d_name);
-			_initZone(10000+i, npath, 0, AREACODES);
-			i++;
-			free(npath);
-		}
-	}
-	closedir(dp);
-	if ((p = strrchr(path, '/')) != 0) {
-		free(dir);
-		free(file);
-	}
-	if (msg && strlen(message) < LENGTH-5) {
-		strcat(message, " - ");
-		for (i=0; i<count; i++)
-			if(sthp[i].provider>=10000 && sthp[i].cc && strlen(message) < LENGTH-5)
-				sprintf(message+strlen(message),"%d ",sthp[i].cc);
-	}
-#endif	
 	return res;
 }
 
@@ -454,13 +392,6 @@ static int _initZone(int provider, char *path, char **msg, bool area_only)
 				sthp[ocount].numlen = strtol(p, &p, 10);
 				p--; /* get's incr after, so we miss 0x0*/
 				break;
-#ifndef USE_DESTINATION				
-			case 'A' :	/* this provider has the areacodes for county A */
-				p++;
-				sthp[ocount].cc = strtol(p, &p, 10);
-				p--; /* get's incr after, so we miss 0x0*/
-				break;
-#endif				
 			}
 		} /* for */
 		if (*dbv == 'G')
@@ -518,21 +449,12 @@ static int _initZone(int provider, char *path, char **msg, bool area_only)
 		if (*dbv == 'G')
 			free(value.dptr);
 		if (msg) {
-#ifdef USE_DESTINATION				
 			snprintf (message, LENGTH,
 				"Zone V%s: Provider %d File '%s' opened fine - "
 				"V%s K%d C%d N%d T%d O%d L%d",
 				version, provider, path,
 				dversion, sthp[ocount].pack_key, sthp[ocount].pack_table,
 				csize, tsize, sthp[ocount].oz, sthp[ocount].numlen);
-#else				
-			snprintf (message, LENGTH,
-				"Zone V%s: Provider %d File '%s' opened fine - "
-				"V%s K%d C%d N%d T%d O%d L%d A%d",
-				version, provider, path,
-				dversion, sthp[ocount].pack_key, sthp[ocount].pack_table,
-				csize, tsize, sthp[ocount].oz, sthp[ocount].numlen, sthp[ocount].cc);
-#endif				
 		}
 	}
 	else {
@@ -635,85 +557,6 @@ int getZone(int provider, char *from, char *to)
 	return UNKNOWN;
 }
 
-#ifndef USE_DESTINATION				
-
-static int _getAreacode(struct sth *sthp, char *from, char **text) {
-	_DB fh = sthp->fh;
-	datum key, value;
-	char newfrom[LENGTH];
-	int len;
-	UL lifrom; /* keys could be long */
-	US ifrom;
-	int dummy1; /* if these are not here 2.7.2.3 destroys ifrom !§@$%&@ */
-	int dummy2; 
-	char *p;
-	dummy1 = dummy2 = 0; /* keep the compiler happy */
-	strncpy(newfrom, from, sthp->numlen);
-	newfrom[sthp->numlen] = '\0';
-	len=strlen(newfrom);
-	while (len) {
-		lifrom = (UL) strtoul(newfrom, &p, 10); /* keys could be long */
-		ifrom = (US) lifrom;
-		if (sthp->pack_key == 2) {
-			if (lifrom >= 0x10000) {  /* can't be, so cut a dig */
-				newfrom[--len] = '\0';
-				continue;
-			}
-			key.dptr = (char *) &ifrom;
-			key.dsize = sizeof(US);
-		}
-		else {
-			if (lifrom >= 0x10000000L) { /* can't be, so cut a dig */
-				newfrom[--len] = '\0';
-				continue;
-			}
-			key.dptr = (char *) &lifrom;
-			key.dsize = sizeof(UL);
-		}
-		value = FETCH(fh, key);
-		if (value.dptr) {
-			if (!*value.dptr) {/* found shortcut */
-				if (*dbv == 'G') 	/* GDBM has a malloced string in dptr */
-					free(value.dptr);
-				return UNKNOWN;
-			}
-			if ((p = strchr(value.dptr, '\t')) != 0) { /* NL */
-				*p = '\0';
-				len = p[1] - '0'; /* gcc2.7.2.3 segfaults here if strtoul ?? */
-				if (text)
-					*text = strdup(value.dptr);
-				if (*dbv == 'G')
-					free(value.dptr);
-			}
-			else {
-				if (*dbv == 'G')
-				  	if(text)
-						*text = value.dptr;
-				  	else	
-						free(value.dptr);
-				else if(text)
-					*text = strdup(value.dptr);
-			}		
-			return len;
-		} /* if dptr */
-		newfrom[--len] = '\0';
-	}
-	return UNKNOWN;
-}
-
-int getAreacode(int country, char *from, char **text)
-{
-	int i;
-	for (i=0; i<count; i++)
-		if (sthp[i].cc == country) {
-			if (sthp[i].fh == 0)
-				return UNKNOWN;
-			return _getAreacode(&sthp[i], from, text);
-		}
-	return UNKNOWN;
-}
-
-#endif
 
 #ifdef ZONETEST
 
@@ -732,27 +575,10 @@ static int checkZone(char *zf, char* df,int num1,int num2, bool verbose)
 	if(verbose)
 		printf("%s\n", msg);
 	if (num1 && num2) {
-#ifndef USE_DESTINATION				
-		char *ort1, *ort2;
-#endif		
 		snprintf(from, 9, "%d",num1);
 		snprintf(to, 9, "%d",num2);
 		ret = getZone(1, from, to);
-#ifndef USE_DESTINATION				
-		if (cc) {
-			if (getAreacode(cc, from, &ort1) >0 &&
-				getAreacode(cc, to, &ort2) >0) {
-				printf("%s(%s) %s(%s) = %d\n", from, ort1, to, ort2, ret);
-				free(ort1);
-				free(ort2);
-			}
-			else
-				goto no_ort;
-		}
-		else
-no_ort:
-#endif
-			printf("%s %s = %d\n", from, to, ret);
+		printf("%s %s = %d\n", from, to, ret);
 	}
 	else {
 		FILE *fp;
@@ -805,131 +631,21 @@ no_ort:
 	return ret;
 }
 
-#ifndef USE_DESTINATION				
-
-static int checkArea(char *df, int cc, char *from, int verbose) {
-	char *msg, *text;
-	int ret=0;
-
-	if (initZone(1, df, &msg)) {
-		fprintf(stderr,"%s\n", msg);
-		exit(1);
-	}
-	if(verbose)
-		printf("%s\n", msg);
-	ret = getAreacode(cc, from, &text);
-	if(ret != UNKNOWN) {
-		printf("%s:%d '%s'\n", from, ret, text);
-		free(text);
-	}
-	else
-		printf("%s - UNKNOWN\n", from);
-	exitZone(1);
-	return ret;
-}
-static int checkAllArea(char *df, char *cf, int cc, int verbose) {
-	char *msg;
-	int ret=0;
-	FILE *fp;
-	char line[BUFSIZ];
-	char from[20];
-	char *ort;
-	char *p, *q;
-	int i, n, len, olen;
-	int ifrom;
-
-	if (initZone(1, df, &msg)) {
-		fprintf(stderr,"%s\n", msg);
-		exit(1);
-	}
-	if(verbose)
-		printf("%s\n", msg);
-	if ((fp = fopen(cf, "r")) == 0) {
-		fprintf(stderr, "Can't read %s\n", cf);
-		exitZone(1);
-		exit(1);
-	}
-	n=0;
-	while (!feof(fp)) {
-		if (!fgets(line, BUFSIZ, fp))
-			break;
-		line[strlen(line)-1] = '\0';
-		p=line;
-		q=from;
-		if (!isdigit(*p))
-			continue;
-		i=0;
-		while (isdigit(*p) && ++i<9) {
-			*q++ = *p++;
-		}
-		*q = '\0';
-		p++;
-		/* NL */
-		if ((q = strchr(p, '\t'))) {
-			*q = '\0';
-			olen = strtoul(q+1,0, 10);
-		}	
-		else
-			olen = strlen(from);
-		ifrom=atol(from);
-		/* append some randoms - this doesn't in NL !!! */
-#ifdef APPEND_RANDS		
-		for (i=0; i< 20; i++) {
-			sprintf(from, "%d%d%d", ifrom, i, rand() % 999999);
-#endif			
-			if((++n % 1000) == 0 && verbose) {
-				fprintf(stderr,"%d\r",n);
-				fflush(stderr);
-			}
-			len = getAreacode(cc, from, &ort);
-			if (olen != len || strcmp(ort, p)) {
-				fprintf(stderr, "Err: %s:%s not %s Len %d\n", from, p, ort, len);
-				free(ort);
-				ret = 1;
-				break;
-			}
-			free(ort);
-#ifdef APPEND_RANDS		
-		}
-#endif		
-	}
-	fclose(fp);
-	exitZone(1);
-	if (verbose)
-		printf("'%s' verified %s.\n", df, ret==0? "Ok": "NoNo");
-	free(cf);
-	free(df);
-	return ret;
-}
-
-#endif
 
 int main (int argc, char *argv[])
 {
 	int verbose=false;
 	char *df=0;
 	char *zf=0;
-#ifndef USE_DESTINATION				
-	int cc=0;
-	char *cf=0;
-#endif
 	int c;
 	int num1=0, num2=0;
 	char snum1[LENGTH];
-#ifdef USE_DESTINATION				
 	while ( (c=getopt(argc, argv, "vVd:z:")) != EOF) {
-#else	
-	while ( (c=getopt(argc, argv, "vVd:z:a:c:")) != EOF) {
-#endif	
 		switch (c) {
 			case 'v' : verbose = true; break;
 			case 'V' : printf("%s: V%s\n", basename(argv[0]), version); exit(1);
 			case 'd' : df = strdup(optarg); break;
 			case 'z' : zf = strdup(optarg); break;
-#ifndef USE_DESTINATION				
-			case 'a' : cc = atoi(optarg); break;
-			case 'c' : cf = strdup(optarg); break;
-#endif			
 		}
 	}
 	while (optind < argc) {
@@ -948,19 +664,7 @@ int main (int argc, char *argv[])
 	}
 	if (df && (zf || (num1 && num2)))
 		return checkZone(zf, df, num1, num2, verbose);
-#ifndef USE_DESTINATION				
-	if (df && num1 && cc)
-		return checkArea(df, cc, snum1, verbose);
-	if (df && cf && cc)
-		return checkAllArea(df, cf, cc, verbose);
-#endif		
-#ifdef USE_DESTINATION				
 	fprintf(stderr, "Usage:\n%s -d DBfile -v -V { -z Zonefile | num1 num2 }\n", basename(argv[0]));
-#else	
-	fprintf(stderr, "Usage:\n%s -d DBfile -v -V { -z Zonefile | num1 num2 | -a cc num}\n", basename(argv[0]));
-	fprintf(stderr, "\t-d DBfile -v -V -a CC num1 \n");
-	fprintf(stderr, "\t-d DBfile -c Codefile -a CC -v -V\n");
-#endif	
 	return 0;
 }
 #endif

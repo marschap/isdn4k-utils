@@ -1,4 +1,4 @@
-CC=gcc -m486 -O2 -Wall -DSTANDALONE -I. -I.. -I../isdnlog -I../connect -I../../lib -DUSE_DESTINATION 
+CC=gcc -m486 -O2 -Wall -DSTANDALONE -I. -I.. -I../isdnlog -I../connect -I../../lib
 #CC=gcc -m486 -O2 -g -pg -Wall -DSTANDALONE -I. -I.. -I../isdnlog
 
 all: rate-at 

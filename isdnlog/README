@@ -1,10 +1,11 @@
-ISDNLOG - Version 3.60 -  				29-Oct-1999
+ISDNLOG - Version 3.64 -  				29-Oct-1999
 
 
 isdnlog ist ein Utility zur Auswertung des D-Kanals eines
 ISDN-BRI Anschlusses.
 
-isdnlog-3.60 wurde ausgiebig mit Linux-2.0.38 sowie Linux 2.3.24 getestet.
+isdnlog-3.64 wurde ausgiebig mit Linux-2.0.38, Linux-2.2.13 sowie
+Linux-2.3.25 getestet.
 
 
 Fuer alle, die es nun ueberhaupt nicht mehr abwarten koennen, hier das

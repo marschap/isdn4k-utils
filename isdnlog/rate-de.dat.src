@@ -1,4 +1,4 @@
-V:1.10-Germany [05-Nov-1999 21:11:20]
+V:1.10-Germany [07-Nov-1999 12:13:59]
 
 # Währungsformat
 U:%.3f DM
@@ -8,7 +8,7 @@ U:%.3f DM
 #
 # (C) Copyright 1999 by Andreas Kool (akool@isdn4linux.de)
 #
-# $Id: rate-de.dat.src,v 1.8 1999/11/05 20:21:59 akool Exp $
+# $Id: rate-de.dat.src,v 1.9 1999/11/07 13:29:26 akool Exp $
 #
 #
 # Das "A:" Tag muß folgendermaßen gefüllt werden:
@@ -168,6 +168,111 @@ U:%.3f DM
 #  Interntarif Draht-Draht
 #  D1Ext
 # werden z.Zt. nicht unterstützt
+#
+#####################################################################
+#
+#
+# Sonderrufnummern:
+S:Internet zzgl. Grundgebuehr
+N:0191999 # UUnet classic
+N:01910	  # T-Online SLIP
+N:0191011 # T-Online PPP
+N:01914   # AOL
+N:019161  # AOL
+
+S:Internet by call
+N:0191501, 01929, 01924924, 0192340, 0192343, 0192070, 0192340, 0191501, 01924924
+N:019251
+
+S:T-VoteCall
+N:01371, 01372, 01373, 01374, 0138
+
+S:Cityruf
+N:01640, 01641, 01642, 01643, 01644, 01645, 01646, 01647, 01648, 01649
+N:01682, 01683, 01684, 01685, 01686, 01687, 01688, 01689, 01690, 01691
+N:016951, 016952
+
+S:Quix
+N:016500, 016501, 016502, 016503, 016504, 016505, 016506, 016507
+N:016508, 01651, 01653, 01654, 01655, 01656, 016591, 016592, 016593
+
+S:TeLMI
+N:01660, 01661, 01665, 01669
+
+S:Scall
+N:01680, 01681, 01696, 01699
+
+S:Skyper
+N:01692, 01693, 016953
+
+S:Shared Cost Service 01801
+N:01801
+
+S:Shared Cost Service 01802
+N:01802
+
+S:Shared Cost Service 01803
+N:01803
+
+S:Shared Cost Service 01804
+N:01804
+
+S:Shared Cost Service 01805
+N:01805
+
+S:Service 01901
+N:01901
+
+S:Service 01902
+N:01902
+
+S:Service 01903
+N:01903
+
+S:Service 01904
+N:01904
+
+S:Service 01905
+N:01905
+
+S:Service 01906
+N:01906
+
+S:Service 01907
+N:01907
+
+S:Service 01908
+N:01908
+
+S:Service 01909
+N:01909
+
+S:Expo 2000 Hotline
+N:02000
+
+S:Persönliche Rufnummer
+N:0700
+
+S:freecall
+N:0130, 0800
+
+S:Polizei / Notruf
+N:110
+
+S:Feuerwehr / Rettungsleitstelle
+N:112
+
+S:Auskunft
+N:11811 # DTV
+N:11818 # Debitel
+N:11833 # DTAG Inland
+N:11834 # DTAG Ausland
+N:11850 # Talkline
+N:11870 # Mannesmann Arcor
+N:11871 # Mannesmann Arcor
+N:11880 # Telegate
+N:11890 # Telegate
+
 #####################################################################
 #
 #
