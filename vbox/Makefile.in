@@ -1,5 +1,5 @@
 #
-# $Id: Makefile.in,v 1.4 1997/02/26 20:33:42 michael Exp $
+# $Id: Makefile.in,v 1.5 1997/02/27 15:43:39 michael Exp $
 
 #----------------------------------------------------------------------------#
 # Things you can change to personalize the Makefile for your own site.       #
@@ -162,9 +162,7 @@ all:		  vbox sedconvert
 
 vbox:		  createconfig
 		  @$(ECHO) ""
-		  @$(ECHO) "        .+'''+.         .+'''"
 		  @$(ECHO) "Compiling vbox & utilities..."
-		  @$(ECHO) "'+...+'         '+...+'      '"
 		  @$(ECHO) ""
 		  @$(MAKE) -C $(TOPDIR)/src all
 
@@ -174,9 +172,7 @@ vbox:		  createconfig
 
 sedconvert:	  ignore
 		  @$(ECHO) ""
-		  @$(ECHO) "        .+'''+.         .+'''+.       "
-		  @$(ECHO) "Creating utilities & documentations..."
-		  @$(ECHO) "'+...+'         '+...+'         '+...+"
+		  @$(ECHO) "Creating scripts & documentations..."
 		  @$(ECHO) ""
 		  @$(TOPDIR)/utils/mksed <$(TOPDIR)/utils/vboxmail.in >$(TOPDIR)/utils/vboxmail
 		  @$(TOPDIR)/utils/mksed <$(TOPDIR)/utils/vboxplay.in >$(TOPDIR)/utils/vboxplay
@@ -188,9 +184,7 @@ sedconvert:	  ignore
 install:	  install-dirs
 
 		  @$(ECHO) ""
-		  @$(ECHO) "        .+'''+.         .+'''+.        "
 		  @$(ECHO) "Installing programs & configurations..."
-		  @$(ECHO) "'+...+'         '+...+'         '+...+'"
 		  @$(ECHO) ""
 
 		  @$(ECHO) "Installing '$(sbindir)/vboxgetty'..."
@@ -231,9 +225,7 @@ MAKETHISDIRS	= $(prefix) $(exec_prefix) $(sbindir) $(bindir) \
 install-dirs:	  ignore
 
 		  @$(ECHO) ""
-		  @$(ECHO) "        .+'''+.        "
 		  @$(ECHO) "Creating directories..."
-		  @$(ECHO) "'+...+'         '+...+'"
 		  @$(ECHO) ""
 
 		  @set -e; for i in $(MAKETHISDIRS); do \
@@ -266,23 +258,23 @@ createconfig:	ignore
 # misc                                                                       #
 #----------------------------------------------------------------------------#
 
-distclean:	  clear
+distclean:	  clean
 		  @$(RM) -f $(TOPDIR)/Makefile
 		  @$(RM) -f $(TOPDIR)/src/Makefile
-		  @$(RM) -f $(TOPDIR)/src/configs.h
 		  @$(RM) -f $(TOPDIR)/doc/Makefile
 		  @$(RM) -f $(TOPDIR)/utils/vboxmail
 		  @$(RM) -f $(TOPDIR)/utils/vboxplay
 		  @$(RM) -f config.cache config.log config.status
 
 clean:		  ignore
+		  @$(ECHO) ""
+		  @$(ECHO) "Cleaning source tree..."
+		  @$(ECHO) ""
 		  @$(RM) -f $(TOPDIR)/*~
 		  @$(RM) -f $(TOPDIR)/src/*~
 		  @$(RM) -f $(TOPDIR)/doc/*~
 		  @$(RM) -f $(TOPDIR)/examples/*~
 		  @$(RM) -f $(TOPDIR)/utils/*~
-
-clear:		  clean
 		  @$(RM) -f $(TOPDIR)/src/*.[oas]
 		  @$(RM) -f $(TOPDIR)/src/vboxgetty
 		  @$(RM) -f $(TOPDIR)/src/vbox

@@ -1,5 +1,5 @@
 /*
-** $Id: vboxgetty.c,v 1.3 1997/02/26 13:10:55 michael Exp $
+** $Id: vboxgetty.c,v 1.4 1997/02/27 15:43:53 michael Exp $
 **
 ** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
 */
@@ -32,7 +32,7 @@ static int	check_spool_space(unsigned long);
 
 /** Variables ************************************************************/
 
-char *basename;
+char *vbasename;
 
 static int modemstate;
 
@@ -57,11 +57,11 @@ void main(int argc, char **argv)
 	char *device;
 	int	opts;
 
-	if (!(basename = rindex(argv[0], '/')))
+	if (!(vbasename = rindex(argv[0], '/')))
 	{
-		basename = argv[0];
+		vbasename = argv[0];
 	}
-	else basename++;
+	else vbasename++;
 
 	usevrc = GETTYRC;
 	device = "";
@@ -91,21 +91,21 @@ void main(int argc, char **argv)
 
 	if (getuid() != 0)
 	{
-		log(L_STDERR, "%s: must be run by root!\n", basename);
+		log(L_STDERR, "%s: must be run by root!\n", vbasename);
 		
 		exit(5);
 	}
 
 	if (access(device, W_OK|R_OK|F_OK) != 0)
 	{
-		log(L_STDERR, "%s: device \"%s\" is not accessable.\n", basename, device);
+		log(L_STDERR, "%s: device \"%s\" is not accessable.\n", vbasename, device);
 		
 		exit(5);
 	}
 
 	if (access(usevrc, R_OK|F_OK) != 0)
 	{
-		log(L_STDERR, "%s: Setup \"%s\" doesn't exist.\n", basename, usevrc);
+		log(L_STDERR, "%s: Setup \"%s\" doesn't exist.\n", vbasename, usevrc);
 
 		exit(5);
 	}
@@ -127,7 +127,7 @@ void main(int argc, char **argv)
 static void version(void)
 {
 	fprintf(stderr, "\n");
-	fprintf(stderr, "%s version %s (%s)\n", basename, VERSION, VERDATE);
+	fprintf(stderr, "%s version %s (%s)\n", vbasename, VERSION, VERDATE);
 	fprintf(stderr, "\n");
 	
 	exit(1);
@@ -140,7 +140,7 @@ static void version(void)
 static void usage(void)
 {
 	fprintf(stderr, "\n");
-	fprintf(stderr, "Usage: %s OPTION [ OPTION ] [ ... ]\n", basename);
+	fprintf(stderr, "Usage: %s OPTION [ OPTION ] [ ... ]\n", vbasename);
 	fprintf(stderr, "\n");
 	fprintf(stderr, "-f, --file FILE    Overwrites \"%s\".\n", GETTYRC);
 	fprintf(stderr, "-d, --device TTY   Use device TTY for modem operations [required].\n");

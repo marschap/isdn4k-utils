@@ -267,7 +267,8 @@ int voice_put_message(char *message)
 
 		modem_command("", "NO CARRIER");	/* NO CARRIER */
 
-		modem_get_echo(linein);				/* <DLE><DC4> */
+/*		modem_get_echo(linein);*/
+						/* <DLE><DC4> */
 	}
 	else
 	{

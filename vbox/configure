@@ -21,6 +21,8 @@ ac_help="$ac_help
 ac_help="$ac_help
   --with-lockdir=DIR      locks are made in DIR [/var/lock]"
 ac_help="$ac_help
+  --with-tcllib=LIB       use tcl library LIB [tcl]"
+ac_help="$ac_help
   --with-i4lconfdir=DIR   global isdn configuration directory [\$I4LCONFDIR] "
 
 # Initialize some variables set by options.
@@ -629,7 +631,7 @@ else
   yes;
 #endif
 EOF
-if { ac_try='${CC-cc} -E conftest.c'; { (eval echo configure:633: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }; } | egrep yes >/dev/null 2>&1; then
+if { ac_try='${CC-cc} -E conftest.c'; { (eval echo configure:635: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }; } | egrep yes >/dev/null 2>&1; then
   ac_cv_prog_gcc=yes
 else
   ac_cv_prog_gcc=no
@@ -1129,6 +1131,22 @@ fi
 echo "$ac_t""$VBOX_LOCKDIR" 1>&6
 
 #--------------------------------------------------------------------------
+# Test where vbox made the locks.
+#--------------------------------------------------------------------------
+
+VBOX_TCL=""
+
+# Check whether --with-tcllib or --without-tcllib was given.
+if test "${with_tcllib+set}" = set; then
+  withval="$with_tcllib"
+  VBOX_TCL=${withval}
+
+fi
+
+
+
+
+#--------------------------------------------------------------------------
 # Test where the global isdn configuration is stored...
 #--------------------------------------------------------------------------
 
@@ -1167,7 +1185,7 @@ else
   ac_save_LIBS="$LIBS"
 LIBS="-lncurses  $LIBS"
 cat > conftest.$ac_ext <<EOF
-#line 1171 "configure"
+#line 1189 "configure"
 #include "confdefs.h"
 /* Override any gcc2 internal prototype to avoid an error.  */
 /* We use char because int might match the return type of a gcc2
@@ -1179,7 +1197,7 @@ int t() {
 initscr()
 ; return 0; }
 EOF
-if { (eval echo configure:1183: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; }; then
+if { (eval echo configure:1201: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; }; then
   rm -rf conftest*
   eval "ac_cv_lib_$ac_lib_var=yes"
 else
@@ -1199,9 +1217,9 @@ if eval "test \"`echo '$''{'ac_cv_lib_$ac_lib_var'+set}'`\" = set"; then
 else
   ac_save_LIBS="$LIBS"
 LIBS="-lpanel -lncurses
-	 $LIBS"
+    $LIBS"
 cat > conftest.$ac_ext <<EOF
-#line 1205 "configure"
+#line 1223 "configure"
 #include "confdefs.h"
 /* Override any gcc2 internal prototype to avoid an error.  */
 /* We use char because int might match the return type of a gcc2
@@ -1213,7 +1231,7 @@ int t() {
 update_panels()
 ; return 0; }
 EOF
-if { (eval echo configure:1217: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; }; then
+if { (eval echo configure:1235: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; }; then
   rm -rf conftest*
   eval "ac_cv_lib_$ac_lib_var=yes"
 else
@@ -1244,6 +1262,17 @@ fi
 # configure script if one is missing!
 #--------------------------------------------------------------------------
 
+if test "${VBOX_TCL}" = ""
+then
+   TST1_TCL_LIB="tcl8.0"
+   TST2_TCL_LIB="tcl7.6"
+   TST3_TCL_LIB="tcl"
+else
+   TST1_TCL_LIB="${VBOX_TCL}"
+   TST2_TCL_LIB="tcl8.0"
+   TST3_TCL_LIB="tcl7.6"
+fi
+
 echo $ac_n "checking for -lm""... $ac_c" 1>&6
 ac_lib_var=`echo m'_'cos | tr './+\055' '__p_'`
 if eval "test \"`echo '$''{'ac_cv_lib_$ac_lib_var'+set}'`\" = set"; then
@@ -1252,7 +1281,7 @@ else
   ac_save_LIBS="$LIBS"
 LIBS="-lm  $LIBS"
 cat > conftest.$ac_ext <<EOF
-#line 1256 "configure"
+#line 1285 "configure"
 #include "confdefs.h"
 /* Override any gcc2 internal prototype to avoid an error.  */
 /* We use char because int might match the return type of a gcc2
@@ -1264,7 +1293,7 @@ int t() {
 cos()
 ; return 0; }
 EOF
-if { (eval echo configure:1268: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; }; then
+if { (eval echo configure:1297: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; }; then
   rm -rf conftest*
   eval "ac_cv_lib_$ac_lib_var=yes"
 else
@@ -1285,7 +1314,7 @@ else
   ac_save_LIBS="$LIBS"
 LIBS="-ldl  $LIBS"
 cat > conftest.$ac_ext <<EOF
-#line 1289 "configure"
+#line 1318 "configure"
 #include "confdefs.h"
 /* Override any gcc2 internal prototype to avoid an error.  */
 /* We use char because int might match the return type of a gcc2
@@ -1297,7 +1326,7 @@ int t() {
 dlerror()
 ; return 0; }
 EOF
-if { (eval echo configure:1301: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; }; then
+if { (eval echo configure:1330: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; }; then
   rm -rf conftest*
   eval "ac_cv_lib_$ac_lib_var=yes"
 else
@@ -1310,16 +1339,16 @@ LIBS="$ac_save_LIBS"
 fi
 if eval "test \"`echo '$ac_cv_lib_'$ac_lib_var`\" = yes"; then
   echo "$ac_t""yes" 1>&6
-  echo $ac_n "checking for -ltcl""... $ac_c" 1>&6
-ac_lib_var=`echo tcl'_'Tcl_CreateInterp | tr './+\055' '__p_'`
+  echo $ac_n "checking for -l${TST1_TCL_LIB}""... $ac_c" 1>&6
+ac_lib_var=`echo ${TST1_TCL_LIB}'_'Tcl_CreateInterp | tr './+\055' '__p_'`
 if eval "test \"`echo '$''{'ac_cv_lib_$ac_lib_var'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
   ac_save_LIBS="$LIBS"
-LIBS="-ltcl -lm -ldl
-		 $LIBS"
+LIBS="-l${TST1_TCL_LIB} -lm -ldl
+       $LIBS"
 cat > conftest.$ac_ext <<EOF
-#line 1323 "configure"
+#line 1352 "configure"
 #include "confdefs.h"
 /* Override any gcc2 internal prototype to avoid an error.  */
 /* We use char because int might match the return type of a gcc2
@@ -1331,7 +1360,7 @@ int t() {
 Tcl_CreateInterp()
 ; return 0; }
 EOF
-if { (eval echo configure:1335: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; }; then
+if { (eval echo configure:1364: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; }; then
   rm -rf conftest*
   eval "ac_cv_lib_$ac_lib_var=yes"
 else
@@ -1344,16 +1373,94 @@ LIBS="$ac_save_LIBS"
 fi
 if eval "test \"`echo '$ac_cv_lib_'$ac_lib_var`\" = yes"; then
   echo "$ac_t""yes" 1>&6
-  VBOX_GETTY_LIBS="-ltcl -lm -ldl"
+  VBOX_GETTY_LIBS="-l${TST1_TCL_LIB} -lm -ldl"
 else
   echo "$ac_t""no" 1>&6
-{ echo "configure: error: vboxgetty needs the tcl package (7.6 or higher) to compile!" 1>&2; exit 1; }
+echo $ac_n "checking for -l${TST2_TCL_LIB}""... $ac_c" 1>&6
+ac_lib_var=`echo ${TST2_TCL_LIB}'_'Tcl_CreateInterp | tr './+\055' '__p_'`
+if eval "test \"`echo '$''{'ac_cv_lib_$ac_lib_var'+set}'`\" = set"; then
+  echo $ac_n "(cached) $ac_c" 1>&6
+else
+  ac_save_LIBS="$LIBS"
+LIBS="-l${TST2_TCL_LIB} -lm -ldl
+          $LIBS"
+cat > conftest.$ac_ext <<EOF
+#line 1389 "configure"
+#include "confdefs.h"
+/* Override any gcc2 internal prototype to avoid an error.  */
+/* We use char because int might match the return type of a gcc2
+    builtin and then its argument prototype would still apply.  */
+char Tcl_CreateInterp();
+
+int main() { return 0; }
+int t() {
+Tcl_CreateInterp()
+; return 0; }
+EOF
+if { (eval echo configure:1401: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; }; then
+  rm -rf conftest*
+  eval "ac_cv_lib_$ac_lib_var=yes"
+else
+  rm -rf conftest*
+  eval "ac_cv_lib_$ac_lib_var=no"
+fi
+rm -f conftest*
+LIBS="$ac_save_LIBS"
+
+fi
+if eval "test \"`echo '$ac_cv_lib_'$ac_lib_var`\" = yes"; then
+  echo "$ac_t""yes" 1>&6
+  VBOX_GETTY_LIBS="-l${TST2_TCL_LIB} -lm -ldl"
+else
+  echo "$ac_t""no" 1>&6
+echo $ac_n "checking for -l${TST3_TCL_LIB}""... $ac_c" 1>&6
+ac_lib_var=`echo ${TST3_TCL_LIB}'_'Tcl_CreateInterp | tr './+\055' '__p_'`
+if eval "test \"`echo '$''{'ac_cv_lib_$ac_lib_var'+set}'`\" = set"; then
+  echo $ac_n "(cached) $ac_c" 1>&6
+else
+  ac_save_LIBS="$LIBS"
+LIBS="-l${TST3_TCL_LIB} -lm -ldl
+             $LIBS"
+cat > conftest.$ac_ext <<EOF
+#line 1426 "configure"
+#include "confdefs.h"
+/* Override any gcc2 internal prototype to avoid an error.  */
+/* We use char because int might match the return type of a gcc2
+    builtin and then its argument prototype would still apply.  */
+char Tcl_CreateInterp();
+
+int main() { return 0; }
+int t() {
+Tcl_CreateInterp()
+; return 0; }
+EOF
+if { (eval echo configure:1438: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; }; then
+  rm -rf conftest*
+  eval "ac_cv_lib_$ac_lib_var=yes"
+else
+  rm -rf conftest*
+  eval "ac_cv_lib_$ac_lib_var=no"
+fi
+rm -f conftest*
+LIBS="$ac_save_LIBS"
+
+fi
+if eval "test \"`echo '$ac_cv_lib_'$ac_lib_var`\" = yes"; then
+  echo "$ac_t""yes" 1>&6
+  VBOX_GETTY_LIBS="-l${TST3_TCL_LIB} -lm -ldl"
+else
+  echo "$ac_t""no" 1>&6
+{ echo "configure: error: vboxgetty needs the tcl package (7.6 or higher) to compile!                     Use --with-tcllib to specify your tcl library!" 1>&2; exit 1; }
+fi
+
+fi
+
 fi
 
 else
   echo "$ac_t""no" 1>&6
 { echo "configure: error: vboxgetty needs the dynamic link library to compile!" 1>&2; exit 1; }
-	
+   
 fi
 
 else

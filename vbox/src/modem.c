@@ -1,5 +1,5 @@
 /*
-** $Id: modem.c,v 1.4 1997/02/26 20:33:53 michael Exp $
+** $Id: modem.c,v 1.5 1997/02/27 15:43:48 michael Exp $
 **
 ** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
 */
@@ -13,20 +13,30 @@
 #include <string.h>
 #include <fcntl.h>
 #include <signal.h>
+#include <time.h>
 
 #include "modem.h"
 #include "log.h"
 #include "voice.h"
 #include "libvbox.h"
 
+/** Defines **************************************************************/
+
+#define USE_NEW_MODEM_READER	  /* Define to use new modem read command	*/
+#define DBG_NEW_MODEM_READER	/* Define to debug new modem read command	*/
+#undef  DBG_OLD_MODEM_READER	/* Define to debug old modem read command	*/
+
 /** Variables ************************************************************/
 
-static int   timeoutstatus = FALSE;
-static int   nocarrier     = FALSE;
-static int   nocarrierpos  = 0;
-static char *nocarriertxt  = "NO CARRIER";
+static int   timeoutstatus		= FALSE;
+static int   nocarrier			= FALSE;
+static int   nocarrierpos		= 0;
+static char *nocarriertxt		= "NO CARRIER";
+static int	 modem_input_pos	= 0;
+static int	 modem_input_len	= 0;
 
-static char modem_store_result[MODEM_BUFFER_LEN + 1];
+static char	 modem_store_result[MODEM_BUFFER_LEN + 1];
+static char	 modem_input[MODEM_INPUT_LEN + 1];
 
 /** Prototypes ***********************************************************/
 
@@ -40,6 +50,7 @@ static void		modem_check_nocarrier(char);
 static int		modem_check_result(char *, char *);
 static void		modem_set_flowcontrol(TIO *);
 static int		modem_get_echo(char *);
+static int		modem_get_rawsequence(char *, int);
 
 /*************************************************************************
  ** modem_open_port():	Opens the modem port.									**
@@ -425,14 +436,37 @@ size_t modem_raw_write(char *string, int len)
 
 static int modem_get_echo(char *echo)
 {
+	return(modem_get_rawsequence(echo, TRUE));
+}
+
+/*************************************************************************
+ ** modem_get_sequence():	Reads a specified sequence from the modem.	**
+ *************************************************************************/
+
+int modem_get_sequence(char *seq)
+{
+	return(modem_get_rawsequence(seq, FALSE));
+}
+
+/*************************************************************************
+ ** modem_get_rawsequence():	Reads a raw sequence from modem. This is	**
+ **									ab subroutine for modem_get_sequence() &	**
+ **									modem_get_echo().									**
+ *************************************************************************/
+
+static int modem_get_rawsequence(char *line, int echo)
+{
 	char	c;
 	int	i;
+	int	timeout;
+	
+	timeout = (echo ? setup.modem.timeout_echo : setup.modem.timeout_cmd);
 
-	log(L_JUNK, "Reading modem echo (%d secs timeout)...\n", setup.modem.timeout_echo);
+	log(L_JUNK, "Reading modem %s (%d secs timeout)...\n", (echo ? "echo" : "sequence"), timeout);
 
-	modem_set_timeout(setup.modem.timeout_echo);
+	modem_set_timeout(timeout);
 
-	for (i = 0; i < strlen(echo); i++)
+	for (i = 0; i < strlen(line); i++)
 	{
 		if ((modem_raw_read(&c, 1) != 1) || (modem_get_timeout()))
 		{
@@ -440,23 +474,29 @@ static int modem_get_echo(char *echo)
 			returnerror();
 		}
 
-		if (echo[i] != c)
+		if (line[i] != c)
 		{
 			modem_set_timeout(0);
 			returnerror();
 		}
 	}
 
-	if ((modem_raw_read(&c, 1) != 1) || (modem_get_timeout()))
+	if (echo)
 	{
-		modem_set_timeout(0);
-		returnerror();
+		if ((modem_raw_read(&c, 1) != 1) || (modem_get_timeout()))
+		{
+			modem_set_timeout(0);
+			returnerror();
+		}
 	}
 
 	modem_set_timeout(0);
 
-	if (c != MODEM_COMMAND_SUFFIX) returnerror();
-
+	if (echo)
+	{
+		if (c != MODEM_COMMAND_SUFFIX) returnerror();
+	}
+	
 	returnok();
 }
 
@@ -510,11 +550,101 @@ static int modem_read(char *line, int readtimeout)
 }
 
 /*************************************************************************
- ** modem_raw_read():	Reads a string from modem.								**
+ ** modem_raw_read():	Reads a raw string from modem.						**
  *************************************************************************/
 
 int modem_raw_read(char *line, int len)
 {
+#ifdef USE_NEW_MODEM_READER
+
+	int use = 0;
+	int i;
+
+#ifdef DBG_NEW_MODEM_READER
+	log(L_JUNK, "[READ] Function request %d byte(s) (now pos %d; len %d).\n", len, modem_input_pos, modem_input_len);
+#endif
+
+	if (len > MODEM_INPUT_LEN)
+	{
+		log(L_FATAL, "Internal modem buffer overflow (size %d; request %d)!\n", MODEM_INPUT_LEN, len);
+		
+		return(-1);
+	}
+
+	if (modem_input_len >= len)
+	{
+		memcpy(line, &modem_input[modem_input_pos], len);
+
+		modem_input_len -= len;
+		modem_input_pos += len;
+
+#ifdef DBG_NEW_MODEM_READER
+		log(L_JUNK, "[READ] Return all %d bytes (now pos %d; len %d).\n", len, modem_input_pos, modem_input_len);
+#endif
+
+		return(len);
+	}
+
+	if (modem_input_len > 0)
+	{
+		memcpy(line, &modem_input[modem_input_pos], modem_input_len);
+
+#ifdef DBG_NEW_MODEM_READER
+		log(L_JUNK, "[READ] Store %d of %d bytes (now pos 0; len 0).\n", modem_input_len, len);
+#endif
+	}
+#ifdef DBG_NEW_MODEM_READER
+	else log(L_JUNK, "[READ] Store nothing (pos 0; len 0).\n");
+#endif
+	
+	len -= modem_input_len;
+	use += modem_input_len;
+	
+	modem_input_pos = 0;
+	modem_input_len = 0;
+
+	if ((modem_input_len = read(setup.modem.fd, modem_input, MODEM_INPUT_LEN)) < 0)
+	{
+		modem_input_pos = 0;
+		modem_input_len = 0;
+
+#ifdef DBG_NEW_MODEM_READER
+		log(L_JUNK, "[READ] Return only %d bytes (now pos %d; len %d).\n", use, modem_input_pos, modem_input_len);
+#endif
+
+		return(use);
+	}
+
+#ifdef DBG_NEW_MODEM_READER
+	log(L_JUNK, "[READ] Read %d bytes (now pos %d; len %d).\n", modem_input_len, modem_input_pos, modem_input_len);
+#endif
+
+	for (i = 0; i < modem_input_len; i++)
+	{
+#ifdef DBG_NEW_MODEM_READER
+		log_line(L_JUNK, "[READ] ");
+		log_char(L_JUNK, modem_input[i]);
+		log_text(L_JUNK, "\n");
+#endif
+
+		modem_check_nocarrier(modem_input[i]);
+	}
+
+	if (modem_input_len < len) len = modem_input_len;
+
+	memcpy(&line[use], &modem_input[modem_input_pos], len);
+
+	modem_input_len -= len;
+	modem_input_pos += len;
+
+#ifdef DBG_NEW_MODEM_READER
+	log(L_JUNK, "[READ] Return %d bytes (now pos %d; len %d.\n", use + len, modem_input_pos, modem_input_len);
+#endif
+
+	return(use + len);
+
+#else
+
 	int r;
 	int i;
 
@@ -522,15 +652,19 @@ int modem_raw_read(char *line, int len)
 	{
 		for (i = 0; i < r; i++)
 		{
-			log_line(L_JUNK, "[rawread] ");
+#ifdef DBG_OLD_MODEM_READER
+			log_line(L_JUNK, "[OLDREAD] ");
 			log_char(L_JUNK, line[i]);
 			log_text(L_JUNK, "\n");
+#endif
 
 			modem_check_nocarrier(line[i]);
 		}
 	}
 
 	return(r);
+
+#endif
 }
 
 /*************************************************************************

@@ -114,6 +114,19 @@ AC_ARG_WITH(lockdir,
 AC_MSG_RESULT($VBOX_LOCKDIR)
 
 #--------------------------------------------------------------------------
+# Test where vbox made the locks.
+#--------------------------------------------------------------------------
+
+VBOX_TCL=""
+
+AC_ARG_WITH(tcllib,
+	[  --with-tcllib=LIB       use tcl library LIB [tcl]],
+	VBOX_TCL=${withval}
+)
+
+
+
+#--------------------------------------------------------------------------
 # Test where the global isdn configuration is stored...
 #--------------------------------------------------------------------------
 
@@ -142,12 +155,12 @@ AC_MSG_RESULT($ISDN_GLOBAL_CONFIG)
 VBOX_LIB_NCURSES="n"
 
 AC_CHECK_LIB(ncurses, initscr,
-	AC_CHECK_LIB(panel, update_panels,
-		VBOX_LIB_NCURSES="y",
-		[AC_MSG_WARN(vbox needs ncurses (1.9.9g or higher) to compile!)],
-		-lncurses
-	),
-	[AC_MSG_WARN(vbox needs ncurses (1.9.9g or higher) to compile!)]
+   AC_CHECK_LIB(panel, update_panels,
+      VBOX_LIB_NCURSES="y",
+      [AC_MSG_WARN(vbox needs ncurses (1.9.9g or higher) to compile!)],
+      -lncurses
+   ),
+   [AC_MSG_WARN(vbox needs ncurses (1.9.9g or higher) to compile!)]
 )
 
 #--------------------------------------------------------------------------
@@ -155,16 +168,35 @@ AC_CHECK_LIB(ncurses, initscr,
 # configure script if one is missing!
 #--------------------------------------------------------------------------
 
+if test "${VBOX_TCL}" = ""
+then
+   TST1_TCL_LIB="tcl8.0"
+   TST2_TCL_LIB="tcl7.6"
+   TST3_TCL_LIB="tcl"
+else
+   TST1_TCL_LIB="${VBOX_TCL}"
+   TST2_TCL_LIB="tcl8.0"
+   TST3_TCL_LIB="tcl7.6"
+fi
+
 AC_CHECK_LIB(m, cos,
-	AC_CHECK_LIB(dl, dlerror,
-		AC_CHECK_LIB(tcl, Tcl_CreateInterp,
-			VBOX_GETTY_LIBS="-ltcl -lm -ldl",
-			[AC_MSG_ERROR(vboxgetty needs the tcl package (7.6 or higher) to compile!)],
-			-lm -ldl
-		),
-		[AC_MSG_ERROR(vboxgetty needs the dynamic link library to compile!)]
-	),
-	[AC_MSG_ERROR(vboxgetty needs the math library to compile!)]
+   AC_CHECK_LIB(dl, dlerror,
+      AC_CHECK_LIB(${TST1_TCL_LIB}, Tcl_CreateInterp,
+         VBOX_GETTY_LIBS="-l${TST1_TCL_LIB} -lm -ldl",
+         AC_CHECK_LIB(${TST2_TCL_LIB}, Tcl_CreateInterp,
+            VBOX_GETTY_LIBS="-l${TST2_TCL_LIB} -lm -ldl",
+            AC_CHECK_LIB(${TST3_TCL_LIB}, Tcl_CreateInterp,
+               VBOX_GETTY_LIBS="-l${TST3_TCL_LIB} -lm -ldl",
+               [AC_MSG_ERROR(vboxgetty needs the tcl package (7.6 or higher) to compile!                     Use --with-tcllib to specify your tcl library!)],
+               -lm -ldl
+            ),
+            -lm -ldl
+         ),
+         -lm -ldl
+      ),
+      [AC_MSG_ERROR(vboxgetty needs the dynamic link library to compile!)]
+   ),
+   [AC_MSG_ERROR(vboxgetty needs the math library to compile!)]
 )
 
 #--------------------------------------------------------------------------

@@ -1,5 +1,5 @@
 /*
-** $Id: log.c,v 1.3 1997/02/26 13:10:42 michael Exp $
+** $Id: log.c,v 1.4 1997/02/27 15:43:47 michael Exp $
 **
 ** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
 */
@@ -56,9 +56,9 @@ int log_init(void)
 
 			returnok();
 		}
-		else log(L_STDERR, "%s: Can't open log '%s'.\n", basename, setup.logname);
+		else log(L_STDERR, "%s: Can't open log '%s'.\n", vbasename, setup.logname);
 	}
-	else log(L_STDERR, "%s: Logname too long. Please set 'SETUP_MAX_LOGNAME' in 'setup.h' to a higher value!\n", basename);
+	else log(L_STDERR, "%s: Logname too long. Please set 'SETUP_MAX_LOGNAME' in 'setup.h' to a higher value!\n", vbasename);
 
 	returnerror();
 }

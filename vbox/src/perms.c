@@ -1,5 +1,5 @@
 /*
-** $Id: perms.c,v 1.3 1997/02/26 13:10:45 michael Exp $
+** $Id: perms.c,v 1.4 1997/02/27 15:43:51 michael Exp $
 **
 ** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
 */
@@ -9,6 +9,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <errno.h>
+#include <string.h>
 
 #include "log.h"
 #include "perms.h"

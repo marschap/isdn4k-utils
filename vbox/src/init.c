@@ -1,5 +1,5 @@
 /*
-** $Id: init.c,v 1.3 1997/02/26 13:10:35 michael Exp $
+** $Id: init.c,v 1.4 1997/02/27 15:43:46 michael Exp $
 **
 ** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
 */
@@ -198,7 +198,7 @@ void exit_program(int s)
 {
 	block_all_signals();
 
-	log(L_INFO, "Exit program on \"%s\" (signal %d)...\n", strsignal(s), s);
+	log(L_INFO, "Exit program on signal %d...\n", s);
 
 	modem_close_port();
 	streamio_close(setup.vboxrc);

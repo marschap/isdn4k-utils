@@ -1,5 +1,5 @@
 /*
-** $Id: vboxctrl.c,v 1.2 1997/02/26 20:33:55 michael Exp $
+** $Id: vboxctrl.c,v 1.3 1997/02/27 15:43:53 michael Exp $
 **
 ** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
 */
@@ -35,7 +35,7 @@ static struct option arguments[] =
 /** Variables ************************************************************/
 
 static char	 spooldir[PATH_MAX + 1];
-static char *basename;
+static char *vbasename;
 static char *usespool;
 
 /** Prototypes ***********************************************************/
@@ -55,15 +55,15 @@ int main(int argc, char **argv)
 	int	mode;
 	int	opts;
 
-	if (!(basename = rindex(argv[0], '/')))
+	if (!(vbasename = rindex(argv[0], '/')))
 	{
-		basename = argv[0];
+		vbasename = argv[0];
 	}
-	else basename++;
+	else vbasename++;
 
 	if (!(passwd = getpwuid(getuid())))
 	{
-		fprintf(stderr, "%s: can't get passwd entry for uid %d.\n", basename, getuid());
+		fprintf(stderr, "%s: can't get passwd entry for uid %d.\n", vbasename, getuid());
 		
 		exit(5);
 	}
@@ -122,7 +122,7 @@ int main(int argc, char **argv)
 
 	if (!*todo)
 	{
-		fprintf(stderr, "%s: you must specify a control name to create/remove.\n", basename);
+		fprintf(stderr, "%s: you must specify a control name to create/remove.\n", vbasename);
 		
 		exit(5);
 	}
@@ -131,19 +131,19 @@ int main(int argc, char **argv)
 	{
 		if (ctrl_ishere(usespool, todo))
 		{
-			fprintf(stderr, "%s: control file '%s' allready exists.\n", basename, todo);
+			fprintf(stderr, "%s: control file '%s' allready exists.\n", vbasename, todo);
 			
 			exit(5);
 		}
 
 		if (!ctrl_create(usespool, todo))
 		{
-			fprintf(stderr, "%s: can't create control file '%s'.\n", basename, todo);
+			fprintf(stderr, "%s: can't create control file '%s'.\n", vbasename, todo);
 			
 			exit(5);
 		}
 
-		fprintf(stderr, "%s: control file '%s' created.\n", basename, todo);
+		fprintf(stderr, "%s: control file '%s' created.\n", vbasename, todo);
 		
 		exit(0);
 	}
@@ -152,24 +152,24 @@ int main(int argc, char **argv)
 	{
 		if (!ctrl_ishere(usespool, todo))
 		{
-			fprintf(stderr, "%s: control file '%s' doesn't exist.\n", basename, todo);
+			fprintf(stderr, "%s: control file '%s' doesn't exist.\n", vbasename, todo);
 			
 			exit(5);
 		}
 
 		if (!ctrl_remove(usespool, todo))
 		{
-			fprintf(stderr, "%s: can't remove control file '%s'.\n", basename, todo);
+			fprintf(stderr, "%s: can't remove control file '%s'.\n", vbasename, todo);
 			
 			exit(5);
 		}
 
-		fprintf(stderr, "%s: control file '%s' removed.\n", basename, todo);
+		fprintf(stderr, "%s: control file '%s' removed.\n", vbasename, todo);
 		
 		exit(0);
 	}
 
-	fprintf(stderr, "%s: oops - don't know what I should do!\n", basename);
+	fprintf(stderr, "%s: oops - don't know what I should do!\n", vbasename);
 
 	exit(5);
 }
@@ -181,7 +181,7 @@ int main(int argc, char **argv)
 static void version(void)
 {
 	fprintf(stderr, "\n");
-	fprintf(stderr, "%s version %s (%s)\n", basename, VERSION, VERDATE);
+	fprintf(stderr, "%s version %s (%s)\n", vbasename, VERSION, VERDATE);
 	fprintf(stderr, "\n");
 	
 	exit(1);
@@ -194,7 +194,7 @@ static void version(void)
 static void usage(void)
 {
 	fprintf(stderr, "\n");
-	fprintf(stderr, "Usage: %s OPTION [ OPTION ] [ ... ]\n", basename);
+	fprintf(stderr, "Usage: %s OPTION [ OPTION ] [ ... ]\n", vbasename);
 	fprintf(stderr, "\n");
 	fprintf(stderr, "-c, --create      Removes a control file (default).\n");
 	fprintf(stderr, "-r, --remove      Creates a control file.\n");
