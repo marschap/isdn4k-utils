@@ -1,6 +1,6 @@
 '\" t
 '\" ** above should format a table **
-.\" CHECKIN $Date: 2002/06/25 08:01:43 $
+.\" CHECKIN $Date: 2003/09/22 19:46:01 $
 .TH rate-files 5 "@MANDATE@" -lt-
 .SH NAME
 rate-files \- Format of rate-files
@@ -212,6 +212,27 @@ e.g.
 R:1,1 ; 1-4,6, 10-
 .br
 .P
+.B r:prov, sub ; start_zone-
+.P
+This tag is related to the R:-tag.  It is interpreted by the rate-preprocessor
+.IR pp_rate .
+All providerzones with a zone number greater or equal
+.I start_zone
+are copied from provider
+.I prov[,sub]
+and replace the r:-tag. 
+If an
+.I area
+is already used in a previous providerzone of the current provider,
+it will not be copied.
+If all areas of a providerzone are already defined, the entire zone
+will not be copied.
+Lines that contain only comments are also not copied, but comments
+at the end of other lines are.
+.P
+This tag is designed for providers with a rate variant that offers
+different fees for some foreign destinations.
+.P
 .B Z:zonelist zonename
 .P
 where
@@ -347,9 +368,88 @@ T:[15.11.1999-01.02.2000]*/17-19=0.79(60)/60/1 HH
 .IP
 Like above, but a full date range is given.
 .P
+The next two t:-tags are interpreted by
+.I pp_rate
+and replaced by one or more T:-lines.
+Both methods can be used together.
+.P
+.B t:[daterange]?[H]=chargelist chargename
+.P
+This line is replaced by according T:-lines for not yet defined
+.I day/hour
+pairs.
+.P
+If a
+.I daterange
+is given, only previous T:-lines without a daterange or with the same daterange
+will be considered as earlier definitions. 
+If
+.I H
+is noted, definitions will also be added for holidays.
+.IP
+EXAMPLE
+.br
+T:W/08-18=0.10/60 normal time
+.br
+t:?H=0.04/60 save time
+.IP
+This lines will lead to the following lines after
+.IR pp_rate :
+.IP
+T:W/08-18=0.10/60 normal time
+.br
+T:W/18-08=0.04/60 save time
+.br
+T:E,H/*=0.04 save time
+.P
+.B t:daterange=srcrange [chargename]
+.P 
+Generates T:-lines for
+.I daterange
+by copying previous T:-lines with
+.I srcrange
+in the same zone.
+If a
+.I chargename
+is given, it will replace the chargename of the originating line.
+.I srcrange
+can be shortened as long as it remains definite.
+.IP
+EXAMPLE
+.br
+T:[-24.12.2003]W/*=0.08/60 weekdays
+.br
+T:[-24.12.2003]E,H/*=0.06 weekend
+.br
+T:[24.12.2003-25.12.2003]*/*=0.04 Christmas Eve
+.br
+t:[25.12.2003-31.12.2003]=[-24.12.2003]
+.br
+t:[31.12.2003-01.01.2004]=[24.12.] New Year's Eve
+.br
+t:[01.01.2004]=[-24.12.]
+.IP
+This will be transformed into:
+.IP
+T:[-24.12.2003]W/*=0.08/60 weekdays
+.br
+T:[-24.12.2003]E,H/*=0.06/60 weekend
+.br
+T:[24.12.2003-25.12.2003]*/*=0.04/60 Christmas Eve
+.br
+T:[25.12.2003-31.12.2003]W/*=0.08/60 weekdays
+.br
+T:[25.12.2003-31.12.2003]E,H/*=0.06/60 weekend
+.br
+T:[31.12.2003-01.01.2004]=0.04/60 New Years' Eve
+.br
+T:[01.01.2004]W/*=0.08/60 weekdays
+.br
+T:[01.01.2004]E,H/*=0.06/60 weekend
 .SH SEE ALSO
 .IR isdnlog(8) ,
 .IR isdnrate(1) ,
 isdnlog/README, rate-at.dat
 .SH AUTHOR
 Leopold Toetsch <lt@toetsch.at> (of this man page of course).
+Tobias Becker <tobiasb@isdn4linux.de> added the tags r: and t:.

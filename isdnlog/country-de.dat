@@ -1,7 +1,7 @@
-V:1.54 Int [21-Aug-2003 01:00:00]
+V:1.55 Int [21-Sep-2003 01:00:00]
 #
 # This version of country.dat originates from rates4linux:
-# $Id: country-de.dat,v 1.43 2003/08/26 19:46:12 tobiasb Exp $
+# $Id: country-de.dat,v 1.44 2003/09/22 19:46:01 tobiasb Exp $
 # The rates4linux homepage: http://www.sourceforge.net/projects/rates4linux/
 # It bases on Rev. 1.39 of isdn4k-utils/isdnlog/country-de.dat 
 # in the CVS at http://www.isdn4linux.de.
@@ -32,10 +32,18 @@ V:1.54 Int [21-Aug-2003 01:00:00]
 # in the file isdnlog/tools/cdb/i4l_cdb.c.  The value for _DOMF (N;C[,C][;R])
 # would be longer if fully noted.
 
+# Source (1998-05-19):
+# http://www.itu.int/itudoc/itu-t/number/u/uzb/81566_ww2.doc
 N:Usbekistan
 E:Uzbekistan
-C:+998, +7590, +7436, +743, +7375, +7374, +7373, +7372, +7371, +737, +7369, +7367, +7366, +7365, +7362, +7361
+C:+998			# +7ABC till 1999
 T:UZ
+
+N:Usbekistan Mobilfunk
+E:Uzbekistan cellphone
+C:+9989			# may be inaccurate
+R:UZ
+T:_UZMF
 
 N:Kirgisien Mobilfunk
 E:Kyrgyzstan cellphone
@@ -117,9 +125,17 @@ C:+97452, +97453, +97455, +97458
 R:QA
 T:_QAMF
 
+# Source (2003-07-05):
+# http://www.itu.int/itudoc/itu-t/number/b/bhr/84136_ww9.doc
 N:Bahrain
 C:+973
 T:BH
+
+N:Bahrain Mobilfunk
+E:Bahrain cellphone
+C:+9733			# to be implemented in 2003 or later
+R:BH
+T:_BHMF
 
 N:Israel Mobilfunk
 E:Israel cellphone
@@ -229,11 +245,19 @@ C:+9607
 R:MV
 T:_MVMF
 
+# Source (200-11-01):
+# http://www.itu.int/itudoc/itu-t/number/m/mmr/82387_ww2.doc
 N:Myanmar Burma
 A:Myanmar (Birma), Burma, Birma, Myanmar, Birma (Myanmar)
-E:Myamar
+E:Myanmar
 C:+95
 T:MM
+
+N:Myanmar Mobilfunk
+E:Myanmar cellphone
+C:+959			# may be inaccurate
+R:MM
+T:_MMMF
 
 N:Sri Lanka
 C:+94
@@ -323,6 +347,12 @@ N:Iridium 008816
 A:Iridium Iridium-Homed, Iridium-8816
 C:+8816
 T:_IR16
+
+# Source (2003-05-07):
+# http://www.itu.int/itudoc/itu-t/number/gn/ell/83701_ww9.doc
+N:Ellipso
+C:+8813
+T:_ELLI
 
 N:Bangladesh Mobilfunk
 E:Bangladesh cellphone
@@ -578,9 +608,18 @@ E:North Korea
 C:+850
 T:KP
 
+# Source (2001-03-05):
+# http://www.itu.int/itudoc/itu-t/number/v/vin/81524_ww2.doc
 N:Vietnam
+E:Viet Nam
 C:+84
 T:VN
+
+N:Vietnam Mobilfunk
+E:Viet Nam cellphone
+C:+8490, +8491
+R:VN
+T:_VNMF
 
 N:Korea (S¸d) Mobilfunk
 A:Korea Rep. (South) Mobilfunk
@@ -820,10 +859,20 @@ N:Nauru
 C:+674
 T:NR
 
-N:Brunei
+# Source (2003-09-20):
+# http://www.telecom.gov.bn/ne/7_Digit.htm
+N:Brunei Darussalam
 E:Brunei-Darussalam
+A:Brunei
 C:+673
 T:BN
+
+N:Brunei Darussalam Mobilfunk
+E:Brunei-Darussalam cellphone
+A:Brunei Mobilfunk, Brunei cellphone
+C:+67386, +67387, +67388
+R:BN
+T:_BNMF
 
 N:Weihnachtsinseln
 A:Weihnachtsinsel (Australien), Christmas Island, Christmas Island (Antarctica)
@@ -895,7 +944,7 @@ T:SG
 N:Pitcairn Inseln
 E:Pitcairn Islands
 A:Pitcairn
-C:+649
+C:+649			# +64 is New Zealand, ?
 T:PN
 R:UK
 
@@ -973,9 +1022,17 @@ C:+59978, +59970
 R:AN
 T:_ANMF
 
+# Source (2000-01-10):
+# http://www.itu.int/itudoc/itu-t/number/u/ury/82703_ww2.doc
 N:Uruguay
 C:+598
 T:UY
+
+N:Uruguay Mobilfunk
+E:Uruguay cellphone
+C:+5989
+R:UY
+T:_UYMF
 
 # Source (2000-09-04):
 # http://www.itu.int/itudoc/itu-t/number/s/sur/70766_ww9.doc
@@ -1469,28 +1526,45 @@ E:Denmark
 C:+45
 T:DK
 
+# +447[789] excluding Isle of Man and Channel Islands
 N:Groﬂbritannien Mobilfunk
 E:United Kingdom cellphone
 A:Groﬂbritannien Mobile
-C:+44991, +44979, +44976, +44973, +44966, +44961, +449589, +449587, +449586, +449585, +449584, +449583, +449582, +44941, +44930, +44918, +44910, +4489, +44881, +44860, +44853, +44850, +44839, +44836, +44831, +44802, +447, +44696, +4466, +44640, +44632, +44589, +44585, +44469, +44468, +44467, +444624, +44448, +44441, +444325, +44421, +44411, +44410, +44403, +44402, +44401, +44378, +443749, +443748, +443747, +443746, +443744, +443743, +443742, +443741, +443740, +44338, +44336, +44331, +441693, +441523, +441459, +441426, +44139
+C:+44770, +44771, +44772, +44773, +44774, +44775, +44776, +44777
+C:+447780
+C:+447782, +447783, +447784, +447785, +447786, +447787, +447788, +447789
+C:+447790, +447791, +447792, +447793, +447794, +447795, +447796
+C:+447798, +447799
+C:+4477970, +4477971, +4477972, +4477973, +4477974, +4477975, +4477976
+C:+4477979
+C:+44780, +44781, +44782, +44784, +44785, +44786, +44787, +44788, +44789
+C:+447830, +447831, +447832, +447833, +447834, +447835, +447836, +447837
+C:+447838
+C:+4478390, +4478391, +4478392, +4478393, +4478394, +4478395, +4478396
+C:+4478397, +4478399
+C:+4479
 R:UK
 T:_UKMF
 
 N:Groﬂbritannien Sondernummern
 E:United Kingdom special numbers
-C:+44345, +44645, +44704, +44990
+A:United Kingdom Premium Rate
+C:+4490
+R:UK
 T:_UKSO
 
 N:London
-C:+44171, +44181	# fixme: new numbers from 15.5.00?
+C:+4420
 R:UK
 T:LON
 
 N:Edinburgh
-C:+441310	# fixme: new numbers from 15.5.00?
+C:+44131
 R:UK
 T:EDI
 
+# Source (2003-07-22):
+# http://www.oftel.gov.uk/publications/numbering/2003/ntnp_final_c0703.pdf
 N:Groﬂbritannien
 A:Groﬂbritannien Insel Man Kanalinseln, Great Britain,Groﬂbritanien
 A:Groﬂbritannien und Nordirland, England
@@ -1528,14 +1602,14 @@ N:Kanalinseln (Groﬂbritannien)
 A:Kanalinseln, Kanalinseln (GB), Guernsey und Jersey
 E:Channel Islands
 R:UK
-C:+441481, +447781, +800976			# Guernsey
+C:+441481, +447781, +4478398, +800976		# Guernsey
 C:+441534, +4477977, +4477978, +44800735	# Jersey
 T:_UKIK
 
 N:Kanalinseln Mobilfunk
 E:Channel Islands cellphone
 A:Kanalinseln (Groﬂbritannien) Mobilfunk
-C:+447781, +4477977, +4477978
+C:+447781, +4477977, +4477978, +4478398
 R:_UKIK
 T:_GGMF
 
@@ -2045,10 +2119,24 @@ N:Portugal
 C:+351
 T:PT
 
+# Source (2003-09-20):
+# http://www.gra.gi/docs/Public_Numbering_Plan.xls 
 N:Gibraltar
 C:+350
 T:GI
 R:UK
+
+N:Gibraltar Mobilfunk
+E:Gibraltar cellphone
+C:+35054, +35056, +35057, +35058
+R:GI
+T:_GIMF
+
+N:Gibraltar Freephone
+E:Gibraltar freephone
+C:+35080
+R:GI
+T:_GIFF
 
 N:Tarragona
 A:Spanien - Tarragona
@@ -2394,10 +2482,18 @@ E:Madagascar
 C:+261
 T:MG
 
+# Source (1999-11-22):
+# http://www.caz.gov.zm/numbers_plan.html
 N:Sambia
 E:Zambia
 C:+260
 T:ZM
+
+N:Sambia Mobilfunk
+E:Zambia cellphone
+C:+26017
+R:ZM
+T:_ZMMF
 
 N:Mosambik
 A:Mozambik
@@ -2540,10 +2636,22 @@ E:Congo (Democratic Republic of the)
 C:+243
 T:ZR 	# internet cc-TLD may be .cd
 
+# Source (2002-12-11):
+# http://www.itu.int/itudoc/itu-t/number/g/gab/82836_ww2.doc
 N:Gabun
 E:Gabon
 C:+241
 T:GA
+
+N:Gabun Mobilfunk
+E:Gabon cellphone
+C:+24103, +24104, +24105, +24106, +24107, +24108, +24109
+C:+2412, +2413
+C:+24151, +24152, +24153, +24157
+C:+24161, +24163, +24168, +24175
+C:+24180, +24181, +24189, +24191, +24194
+R:GA
+T:_GAMF
 
 N:ƒquatorial-Guinea
 E:Equatorial Guinea

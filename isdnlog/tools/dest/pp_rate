@@ -1,7 +1,7 @@
 #! /usr/bin/perl
 
 # This version of pp_rate originates from rates4linux:
-# $Id: pp_rate,v 1.6 2003/07/25 21:23:15 tobiasb Exp $
+# $Id: pp_rate,v 1.7 2003/09/22 19:46:00 tobiasb Exp $
 # The rates4linux homepage: http://www.sourceforge.net/projects/rates4linux/
 # It bases on Rev. 1.5 of isdn4k-utils/isdnlog/tools/dest/pp_rate
 # in the CVS at http://www.isdn4linux.de.
@@ -12,6 +12,7 @@ use strict;
 use IO::File;
 $|=1;
 use vars qw( %names $COUNTRY %myalias $co_dat );
+use vars qw( $rtags_filename @rtags );
 $COUNTRY = '../country';
 $COUNTRY = '' unless (-x $COUNTRY); 	# disable country query if not available
 # unique global determination of countryfile to use:
@@ -25,6 +26,7 @@ unless ($co_dat) {		# old behaviour as last ressort
 &get_country;
 &get_alias;
 &prep_rate;
+&process_rtags;
 1;
 
 sub get_country {
@@ -72,15 +74,20 @@ sub get_alias {
     close(IN);
 }
 
+# prototypes for lower case tag processing
+sub complete_T ($\@);
+sub fill_T (\@$$$$);
+
 sub prep_rate {
     my ($l, $infile, $outfile);
-    my (@lines, @files, @ofiles, @streams, @outf);
+    my (@lines, @files, @ofiles, @streams, @outf, @Ttags);
     my ($include, $wrinclude);
     my $MAX_INCLUDE=3;
     $wrinclude = $include = 0;
     my $inc_mode;
     $infile = $ARGV[0] || '/usr/lib/isdn/rate-at.dat';
     $outfile = $ARGV[1] || "$infile.new";
+    $rtags_filename = $outfile;
     $files[$include]=$infile;
     $ofiles[$wrinclude]=$outfile;
 wopen:
@@ -237,10 +244,16 @@ choice:
 		    }
 		}   # else found
 	    } # foreach
-	    $outf[$wrinclude]->print ("A:", join(',',@keys),"$acmt\n") || die("can' write");
+	    $outf[$wrinclude]->print ("A:", join(',',@keys),"$acmt\n") || die("can't write");
 	} # if A
-	else {
+	elsif (/^t:(.*)/) {
+	    $outf[$wrinclude]->print( complete_T($1, @Ttags) );
+	}
+	else { # all other lines remain unchanged
 	    $outf[$wrinclude]->print( $_);
+	    push @Ttags, $_ if (/^T:/);
+	    @Ttags = () if (/^Z:/);
+	    push @rtags, $1 if (/^r:(.*)/ and $include==0); 
 	}
     } # while IN
     close($streams[$include]);
@@ -263,3 +276,395 @@ choice:
     `mv .country-alias ~/.country-alias`;
     print "\nOk.\n";
 } # prep_rate
+
+sub process_rtags { 		       # handle r: tags
+    return unless (@rtags);
+    print "\n$rtags_filename contains " . scalar(@rtags)
+          . " r: tags to process.\n"; 
+     
+    rename($rtags_filename, $rtags_filename . ".tmp")
+	or die "Can't generate temporary file $rtags_filename.tmp";
+    open(RIN, "<" . $rtags_filename . ".tmp")
+	or die "Can't open $rtags_filename.tmp for input";
+    open(ROUT, ">". $rtags_filename)
+	or die "Can't open $rtags_filename for output";
+
+    # step 1 - find out requested source data
+    my ($src, $i, $prov, $zone, @ignore, @zones, @provs);
+    foreach $i (0 .. $#rtags) {
+	if ( $rtags[$i] =~ /^\s*(\d+|\d+\s*,\s*\d+)\s*;\s*(\d+)-\s*(#.*)?$/ ) {
+	    $prov = $1;
+	    $zone = $2;
+	    $ignore[$i]=0;
+	}
+	else {
+	    print "Illegal r: tag format: $rtags[$i], this will be ignored and remain unaltered.";
+	    $ignore[$i]=1;
+	    next;
+	}
+	$prov =~ s/\s+//g;
+	$provs[$i] = $prov;
+	$zones[$i] = $zone;
+	if ( not defined $src->{$prov}->{start} or
+	     $zone < $src->{$prov}->{start} ) {
+	    $src->{$prov}->{start} = $zone;
+	}
+    }
+
+    # step 2 - get this source data
+    print "Fetching required source data from $rtags_filename.tmp:\n";
+    my ($line, $getP, $getZ);
+    $getP = $getZ = 0;
+    while ($line = <RIN>) {
+	if ($line =~ /^P:\s*(\d+(\s*,\s*\d+)?)/) {
+	    $prov = $1;
+	    $prov =~ s/\s+//g;
+	    if (defined $src->{$prov}) {
+	   	$getP = 1;
+		print "\t$prov: ";
+	    }
+	    else {
+		print "\n" if ($getP);
+		$getP = 0;
+	    }
+	    $getZ = 0;
+	    next;
+	}
+	next unless ($getP);
+	if ($line =~ /^Z:\s*(\d+)/) {
+	    $zone = $1;
+	    if ($zone >= $src->{$prov}->{start}) {
+		unless ($getZ) {
+		    $getZ = 1;
+		}
+		push @{$src->{$prov}->{$zone}}, $line;
+		print ".";
+	    }
+	    elsif ($getZ) {
+		$getZ = 0;
+	    }
+	    next;
+	}
+	next unless ($getZ);
+	if ($line =~ /^\s*#/) {        # comment only line
+	    next;
+	}
+	else {
+	    push @{$src->{$prov}->{$zone}}, $line;
+	}
+    }
+    print "\n" if ($getP);
+
+    # step 3 - copy entire file and replace r: tags
+    my $l = 0;
+    my ($sline, %seen, @szones, $watch_a);
+    $i = -1;
+    seek(RIN, 0, 0) or die "Can't seek to start of $rtags_filename.tmp";
+    print "Rewriting to $rtags_filename:\n";
+    while ($line = <RIN>) {
+	$l++;
+	print "$l\r";
+	# TODO: watch A: lines only for providers with r: tags
+	if ($line =~ /^P:\s*(\d+|\d+\s*,\s*\d+)/) {
+	    my $sprov = $1;
+	    $sprov =~ s/\s+//g;
+	    $rtags[$i+1] =~ /^\s*(\d+|\d+\s*,\s*\d+)/;
+	    my $dprov = $1;
+	    $dprov =~ s/\s+//g;
+	    $watch_a = ($sprov eq $dprov) ? 1 : 0; 
+	    undef %seen;
+	}
+	if ($watch_a and $line =~ /^A:\s*([^#]+)/) {
+	    my $a = $1;
+	    my $b;
+	    $a =~ s/\s+//g;
+	    foreach $b (split(/,/, $a)) {
+		$seen{$b}++;
+	    }
+	}
+	if ($line !~ /^r:/) {
+	    print ROUT $line;
+	    next;
+	}
+	# r: tag line
+	$i++;
+	if ($ignore[$i]) {
+	    print "ignoring illegal r: tag: $line";
+	    print ROUT $line;
+	    next;
+	}
+	print "Processing: $line";
+	print ROUT "# $line";
+	$prov = $provs[$i];
+	foreach $zone (keys %{$src->{$prov}}) {
+	    next unless ($zone =~ /^\d/);
+	    push @szones, $zone if ($zone >= $zones[$i]);
+	}
+	foreach $zone (sort {$a<=>$b} @szones) {
+	    my $have_a = 0;
+	    my (@zlines, $zline);
+	    foreach $zline (@{$src->{$prov}->{$zone}}) {
+		if ($zline !~ /^A:/) {
+		   push @zlines, $zline;
+		   next;
+		}
+		my $l = $zline;
+	    	my $right = "";
+		$right = $1 if ($l =~ s/(\s+#.*)$//);
+		chomp $l;
+		$right .= "\n";
+		$l =~ /^(A:\s*)(.*)$/;
+		my $left = $1;
+		my $dests = $2;
+		$dests =~ s/\s+//g;
+		my ($d, $nd);
+		foreach $d (split /,/, $dests) {
+		    $nd .= ",$d" if (not defined $seen{$d});
+		}
+		$nd =~ s/^,//;
+		if ($nd) {
+		    $have_a++;
+		    push @zlines, "$left$nd$right";
+		}
+	    }	
+	    if ($have_a) {             # zone has new destinations
+		print ROUT join("", @zlines);
+		$l += scalar( @zlines );
+		print "$l\r";
+	    }
+	}
+	print ROUT "# /$line";
+	print "$l\r";
+	
+    }
+
+    close(RIN);
+    close(ROUT);
+    unlink "$rtags_filename.tmp"
+	or warn "Can't remove temporary file $rtags_filename.tmp";
+    print "\nProcessing of r: tags completed.\n";
+}                                      # /process_rtags
+
+# handle lines with t: tag
+sub complete_T ($\@) {
+    my $tline = shift @_ or return ""; # all after t: from input line
+    my $Ttags = shift @_ or return ""; # ref to array with previous A: lines
+    my @addT;                          # additional T: lines
+    my $range = "";
+    if ($tline =~ s/^\s*(\[[^\]]+\])//) {
+	$range = $1;
+    }
+    if ($tline =~ /^\s*(\?H?)\s*=(.*)$/) {
+	fill_T(@addT, $range, $1, $2, $Ttags);
+    }
+    elsif ($range and $tline =~ s/^\s*=\s*\[([^\]]+)\]//) {
+	my $srcrange = $1;             # (start of) date range to copy from
+	my $re = quotemeta($srcrange);
+	my $newname = "";
+	if ( $tline =~ /^\s*([^#]+)/ ) {
+	    $newname = $1;
+	    $newname = "" unless ($newname =~ /\S/);
+	}    
+	$re = "^T:\\s*\\[" . $re;
+	$re = qr/$re/;
+	my ($Aline, $newline);
+	foreach $Aline (@$Ttags) {
+	    if ($Aline =~ $re) {
+	    	$newline = $Aline;
+		$newline =~ s/^(T:\s*)\[[^\]]+\]/$1.$range/e;
+		if ($newname) {
+		    $newline =~ s/^([^=]+=\S+\s+)[^#]+/$1.$newname/e;
+		    if ($newline =~ /#/) {
+			$Aline =~ /(\s*#)/;
+			my $cmtstart = $1;
+			$newline =~ s/(\s*#)/$cmtstart/e;
+		    }
+		}
+		push @addT, $newline;
+	    }
+	}
+    }
+    else {
+	print "unrecognized format for t: tag: $tline!\n";
+    }
+
+    push @$Ttags, @addT;               # save new T: lines for next t: line
+    return join("", @addT);
+}                                      # /sub complete_T
+
+sub fill_T (\@$$$$) {
+    my $addT = shift @_;               # ref to array for new T: lines
+    my $range = shift @_;              # date range [..] or empty
+    my $modus = shift @_;              # fill modus: ? or ?H
+    my $content = shift @_;            # chars right of =
+    my $Ttags = shift @_;              # ref to array with previous A: lines
+    my $holiday = 0;
+    $holiday = 1 if ($modus =~ /H/);
+    
+    # step 1 - get already definied day/hour sets.
+    my ($dh, $Tline, $numday);
+    $numday = 0;
+    foreach $Tline (@$Ttags) {
+	my ($day, $aday, @days, $hour, $ahour, @hours);
+    	if ($Tline =~ /^T:\s*(\[[^\]]+\])\s*([1-7WEH,*-]+)\s*\/\s*([0-9,*-]+)\s*=/ ) {
+	    next if ($range and $1 ne $range); # only T: for same date range
+	    $day = $2;
+	    $hour = $3;
+	}
+	elsif ($Tline =~ /^T:\s*([1-7WEH,*-]+)\s*\/\s*([0-9,*-]+)\s*=/ ) {
+	    $day = $1;
+	    $hour = $2;
+	}
+	else {
+	    print "Unrecognized T: format: $Tline";
+	    next;
+	}
+	$numday = 1 if ($day =~ /\d/); # use numbers (1-7) instead of W|E|H
+	foreach $aday (split(/,/, $day)) {
+	    if ($aday =~ /^(\d)-(\d)$/) {
+		push @days, ($1 .. $2);
+	    }
+	    elsif ($aday =~ /^([\dWEH*])$/) {
+	    	push @days, ($1);
+	    	if ($1 eq "*") {
+		    push @days, (1..7);
+		    push @days, ("H");
+		}
+		elsif ($1 eq "W") {
+		    push @days, (1..5);
+		}
+		elsif ($1 eq "E") {
+		    push @days, (6, 7);
+		}
+	    }
+	    else {
+	    	print "Unknown day part: $Tline";
+		next;
+	    }
+	}
+	foreach $ahour (split(/,/, $hour)) {
+	    if ($ahour eq "*") {
+	    	push @hours, (0 .. 23, "*");
+	    }
+	    elsif ($ahour =~ /^(\d+)-(\d+)$/) {
+	    	my $a = $1; my $b = $2-1; # 09-18 means 9 .. 17
+		$b = 23 if ($b == -1);
+		if ($a > $b) {
+		    push @hours, ($a .. 23);
+		    push @hours, (0  .. $b);
+		}
+		else {
+		    push @hours, ($a .. $b);
+		}
+	    }
+	    elsif ($ahour =~ /^(\d+)$/) {
+	    	push @hours, ($1);
+	    }
+	    else {
+	    	print "Unknown hour part: $Tline";
+		next
+	    }
+	}
+	foreach $aday (@days) {
+	    foreach $ahour (@hours) {
+	    	$dh->{$aday}->{$ahour}++;
+	    }
+	}
+    }                                  # /read all previous T: lines
+   
+    # step 2 - find missing day/hour pairs
+    my ($d, $h, $x, $y, @adays, @bdays, @hours, %hd);
+    # step 2.1 - find days with complete hours
+    foreach $d (keys %$dh) {
+	next if (defined $dh->{$d}->{"*"});
+	$x=1;
+	for $h (0..23) {
+	    $x = 0 unless (defined $dh->{$d}->{$h});
+	}
+	$dh->{$d}->{"*"}++ if ($x);
+    }	
+    # step 2.2 - find days with hour gaps
+    # priority for _partial_ W or E entries
+    if ( defined($dh->{W}) and scalar(%{$dh->{W}}) 
+         and not defined $dh->{W}-{"*"} ) {
+    	push @adays, ("W");
+	map { $dh->{$_}->{"*"}++} (1..5, "W");
+    }	
+    if ( defined($dh->{E}) and scalar(%{$dh->{E}})
+         and not defined $dh->{E}-{"*"} ) {
+    	push @adays, ("E");
+	map { $dh->{$_}->{"*"}++} (6, 7, "E");
+    }	
+    if ($numday) {
+	for $d (1..7) {
+	    push @adays, ($d) unless (defined $dh->{$d}->{"*"});
+	}
+    }
+    else {                             # only W|E(|H) as day
+	push @adays, ("W") unless (defined $dh->{W}->{"*"});
+	push @adays, ("E") unless (defined $dh->{E}->{"*"});
+    }
+    if ( ($holiday or defined($dh->{H}) and scalar %{$dh->{H}})
+         and not defined $dh->{H}->{"*"} ) {
+	push @adays, ("H");
+    }	
+    # step 2.3 - get hours for non empty days
+    foreach $d (@adays) {
+	unless( defined($dh->{$d}) and
+                scalar(%{$dh->{$d}}) ) { # hash $dh->{$d} exists at all cases 
+	    push @bdays, ($d);         # day complete empty
+	}
+	else {
+	    my $hlist="";
+	    $x = 0;                    # 0 = hour already there, 1 hour missing
+	    for $h (0..23) {
+	    	$y = not defined $dh->{$d}->{$h};
+		if ($x != $y) {        # change existing/missing hour
+		    if ($y) {          # now missing
+			push @hours, ($h);
+		    }
+		    else {
+		    	push @hours, ($h);
+		    }
+		    $x = $y;
+		}
+	    }
+	    push @hours, ("23") if ($x); # terminate last hour range
+	    if ($hours[0] == 0 and $hours[-1] == 23) {
+	    	$hours[0] = $hours[-2];
+		$#hours -= 2;
+	    }
+	    while (scalar @hours) {
+		$x = shift @hours;
+		$y = shift @hours;
+		if ($x == $y) {
+		    $hlist .= sprintf(",%02d", $x);
+		}
+		else {
+		    $hlist .= sprintf(",%02d-%02d", $x, $y);
+		}
+	    }
+	    $hlist =~ s/^,//;
+	    $hd{$hlist}.=",$d"
+	}                              # /day with some hours missing
+    }                                  # /foreach $d (@adays)
+    # step 2.4 generate T:-lines
+    foreach $h (sort keys %hd) {
+    	$hd{$h} =~ s/^,//;
+	push @$addT, "T:$range$hd{$h}/$h=$content\n";
+    }
+    @bdays = sort @bdays;              # generate dayranges (1-5) if possible
+    $x = -1;                           # previous day
+    foreach $d (@bdays) {
+	next if ($d !~ /^\d$/);
+	if ($x+1 == $d) {
+	    $d = "-$d";
+	}
+	$x = $d;
+    }	
+    $d = "," . join(",", @bdays);
+    while ($d =~ s/,-\d(,-\d)/$1/g) {};
+    $d =~ s/(,\d),(-\d)/$1$2/g;
+    $d =~ s/^,//;
+    push @$addT, "T:$range$d/*=$content\n" if ($d);
+}                                      # /sub fill_T
