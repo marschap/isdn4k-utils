@@ -1,6 +1,6 @@
 /* -*- mode: c; c-basic-offset: 1 -*-
  *
- * $Id: isdn_lzscomp.c,v 1.4 1999/06/21 13:28:33 hipp Exp $
+ * $Id: isdn_lzscomp.c,v 1.5 2002/02/24 00:00:37 keil Exp $
  *
  * PPP link compression code for Stac LZS (RFC1974) support
  *
@@ -26,7 +26,7 @@
 #endif
 
 static const char
-rcsid[] = "$Id: isdn_lzscomp.c,v 1.4 1999/06/21 13:28:33 hipp Exp $";
+rcsid[] = "$Id: isdn_lzscomp.c,v 1.5 2002/02/24 00:00:37 keil Exp $";
 
 /* Wow. No wonder this needs so long to compile. This include list
  * is a shameless rip from other compressor code. Hopefully no (C)
@@ -43,7 +43,11 @@ rcsid[] = "$Id: isdn_lzscomp.c,v 1.4 1999/06/21 13:28:33 hipp Exp $";
 #include <linux/ptrace.h>
 #include <linux/ioport.h>
 #include <linux/in.h>
+#if LINUX_VERSION_CODE < KERNEL_VERSION(2,4,15)
 #include <linux/malloc.h>
+#else
+#include <linux/slab.h>
+#endif
 #include <linux/tty.h>
 #include <linux/errno.h>
 #include <linux/sched.h>	/* to get the struct task_struct */
@@ -149,6 +153,9 @@ MODULE_DESCRIPTION("LZS Compression for I4L sync PPP");
 MODULE_PARM(debug, "i");
 MODULE_PARM(comp, "i");
 MODULE_PARM(tweak, "i");
+#if LINUX_VERSION_CODE > KERNEL_VERSION(2,4,11)
+MODULE_LICENSE("GPL");
+#endif
 
 /*
  * I _have_ read Documentation/CodingStyle. I ignored the section about
