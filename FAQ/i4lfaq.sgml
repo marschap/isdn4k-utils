@@ -4,7 +4,7 @@
 
 <title>FAQ for isdn4linux
 <author>Matthias Hessler (<tt><htmlurl url="mailto:hessler@isdn4linux.de" name="hessler@isdn4linux.de"></tt>)
-<date>v2.0.92, 9. January 2005
+<date>v2.0.93, 31. January 2005
 <abstract>
 If you are reading this FAQ online, you may consider downloading the whole
 thing, and reading it offline (much cheaper). To download the latest
@@ -293,14 +293,18 @@ the other way around. For configuration see question
 <label id="feature_fax">
 <p>
 <itemize>
-<item><bf>For all passive cards (except from AVM): NO</bf>. There
-was a project working on this rather complicated problem. For more info on
-its status have a look at:
+<item><bf>For passive cards: Yes</bf>. Since 2005 the GPL software ivcall
+is able to send and receive voice calls and faxes even via passive cards.
+It makes use of the spandsp library which is part of the Asterisk project.
+You can find it on:
+<tt><url url="http://0pointer.de/lennart/projects/ivcall/"></tt>
+An alternative project working on this problem existed (i4lfax) but has not
+made any progress since 1999. For more info on its status have a look at:
 <tt><url url="http://user.cs.tu-berlin.de/~ulfi/osvisions/i4lsoftfax/i4lfax/"></tt>
 Also, an idea exists to extend the new modular mISDN with layer 2 and layer 3
 protocols for fax. Once this works (e.g. with the Sedlbauer Speedfax card)
-then the layer 1 protocol (modulation/demodulation) could be implemented via
-the spandsp library which is part of the Asterisk project.
+then the layer 1 protocol (modulation/demodulation) could be also be
+implemented via the spandsp library.
 <item><bf>For passive cards from AVM: Yes</bf>. AVM recently released a
 binary CAPI 2.0 driver which supports faxing. However, the setup is rather
 complicated. Get a start on:
@@ -1864,6 +1868,8 @@ howto (isdn.html) and a ISDN quick-install guide (isdnquick.html).
 card): <tt><url url="http://krypt.cs.uni-sb.de/~osk/isdnosk.html"></tt>
 <item>Homepage of Asterisk (Open Source Linux PBX):
 <tt><url url="http://www.asterisk.org"></tt>
+<item>Homepage of ivcall (send and receive fax/voice calls):
+<tt><url url="http://0pointer.de/lennart/projects/ivcall/"></tt>
 <item>Configuration software maKs for Ackermann Euracom (not isdn4linux related):
 <tt><url url="http://www.ganzfix.de"></tt>
 </itemize>
