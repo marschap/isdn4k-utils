@@ -22,7 +22,7 @@
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-char sys_rcsid[] = "$Id: sys-linux.c,v 1.18 1999/06/01 13:02:20 paul Exp $";
+char sys_rcsid[] = "$Id: sys-linux.c,v 1.19 1999/06/07 11:26:50 paul Exp $";
 
 #define _LINUX_STRING_H_
 
@@ -93,7 +93,7 @@ int sockfd;			/* socket for doing interface ioctls */
 
 static char *lock_file;
 
-#define MAX_IFS		5000
+#define MAX_IFS		4096
 
 #define FLAGS_GOOD (IFF_UP          | IFF_BROADCAST)
 #define FLAGS_MASK (IFF_UP          | IFF_BROADCAST | \
