@@ -1,8 +1,9 @@
-/* $Id: isdnconf.c,v 1.1 1997/03/16 20:59:22 luethje Exp $
+/* $Id: isdnconf.c,v 1.2 1997/04/03 22:40:19 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
  * Copyright 1995, 1997 by Andreas Kool (akool@Kool.f.EUnet.de)
+ *                     and Stefan Luethje (luethje@sl-gw.lake.de)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -901,6 +902,7 @@ static int _readconfig(char *_myname)
   reloadcmd      = RELOADCMD;
   stopcmd        = STOPCMD;
   rebootcmd      = REBOOTCMD;
+  logfile        = LOGFILE;
   start_procs.infoargs = NULL;
   start_procs.flags    = 0;
   conf_dat       = NULL;
@@ -942,17 +944,6 @@ static int Set_Globals(section *SPtr)
   auto entry   *CEPtr;
 
 
-	if ((Ptr = Get_Section(SPtr,CONF_SEC_GLOBAL)) != NULL)
-	{
-		if ((CEPtr = Get_Entry(Ptr->entries,CONF_ENT_AREA)) != NULL && CEPtr->value != NULL)
-			myarea = CEPtr->value;
-
-		if ((CEPtr = Get_Entry(Ptr->entries,CONF_ENT_COUNTRY)) != NULL && CEPtr->value != NULL)
-			mycountry = CEPtr->value;
-	}
-	else
-		_print_msg("%s: WARNING: There is no section `%s'!\n", Myname, CONF_SEC_GLOBAL);
-
 	if ((Ptr = Get_Section(SPtr,CONF_SEC_ISDNLOG)) != NULL)
 	{
 		if ((CEPtr = Get_Entry(Ptr->entries,CONF_ENT_ILABEL)) != NULL)
@@ -976,6 +967,9 @@ static int Set_Globals(section *SPtr)
 
 		if ((CEPtr = Get_Entry(Ptr->entries,CONF_ENT_REBOOT)) != NULL)
 			rebootcmd = CEPtr->value;
+
+		if ((CEPtr = Get_Entry(Ptr->entries,CONF_ENT_LOGFILE)) != NULL)
+			logfile = CEPtr->value;
 
 		if ((CEPtr = Get_Entry(Ptr->entries,CONF_ENT_CHARGE)) != NULL)
 			chargemax = strtod(CEPtr->value,NULL);
