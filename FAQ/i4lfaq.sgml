@@ -4,7 +4,7 @@
 
 <title>FAQ for isdn4linux
 <author>Matthias Hessler (<tt><htmlurl url="mailto:hessler@isdn4linux.de" name="hessler@isdn4linux.de"></tt>)
-<date>v2.0.50, 19. November 2000
+<date>v2.0.51, 3. December 2000
 <abstract>
 If you are reading this FAQ online, you may consider downloading the whole
 thing, and reading it offline (much cheaper). To download the latest
@@ -297,8 +297,10 @@ its status have a look at:
 <tt><url url="http://home.enitel.no/Morten.Rolland/linux/i4lfax/index.html"></tt>
 <item><bf>For passive cards from AVM: Yes</bf>. AVM recently released a
 binary CAPI 2.0 driver which supports faxing. However, the setup is rather
-complicated. Please have a look on the mailing list for tips how to do it,
-and what the consequences/disadvantages are are.
+complicated. Get a start on:
+<url url="http://www.avm.de/ftp/cardware/fritzcrd/linux/index.htm">.
+Please also have a look on the mailing list for tips how to do it,
+and what the consequences/disadvantages are.
 <item><bf>For the active card AVM B1: Yes</bf> (its firmware has implemented
 fax as one of its features). Get the newest stuff from:
 <tt><url url="ftp://ftp.aeccom.com/pub/fax4i4l/howto/current/"></tt>
@@ -330,12 +332,17 @@ ATZ&amp;E&lt;your_msn&gt;S0=1S13=1+FCLASS=1
 </code>
 and use a normal Hylafax class 1 config file, where you've replaced
 non-supported commands (flow control,...) by dummies.
+For the I-Surf 1.0 also check question <ref id="hardware_isurf" name="hardware_isurf">.
 </itemize>
 
 If you do want to fax now, your best choice is to install an analog fax modem
 along with your ISDN card. For companies who want to set up a fax server
 servicing multiple connections you could also have a look at the active
 ISDN cards.
+
+More information for setting up a fax server with hylafax can be found on:
+on the web site for Hylafax: <url url="http://www.hylafax.org"> or on
+<url url="http://www.mnd.fh-wiesbaden.de/~dreymann/linux">.
 
 <sect1> feature_modem: Can isdn4linux connect to/be called by an analog  
 modem?  
@@ -360,10 +367,14 @@ as an alternative.
 <sect1> feature_ipx: Can I route ipx/spx over ISDN with Linux?  
 <label id="feature_ipx">
 <p>
-Yes, just set up an ISDN interface with encapsulation
-<tt/ethernet/. <em/mars_nwe/ can do the rest (e.g. routing). Also, you can
-route ipx with ipppd, see question <ref id="syncppp_ipx" name="syncppp_ipx">.
+Yes, set up an ISDN interface with encapsulation <tt/ethernet/, and use
+IPX framing ETHERNET_II. <em/mars_nwe/ can do the rest (e.g. routing).
+Also, you can route ipx with ipppd, see question
+<ref id="syncppp_ipx" name="syncppp_ipx">.
 To use pppd for ipx, you have to give it the compile option IPX_CHANGE.
+However, be careful when using dial out on demand (dod), since frequent ipx
+broadcasts may cause a dod disaster (see question
+<ref id="dod_disaster" name="dod_disaster">).
 
 <sect1> feature_2channel: Does isdn4linux support channel bundling?  
 <label id="feature_2channel">
@@ -374,8 +385,9 @@ bundling:
 <item><bf>MPPP</bf> (based on sync PPP)
 <item><bf>Raw bundling</bf> (configured by so-called slave channels)
 </itemize>
-Both variants have their own advantages and disadvantages. See section
-<ref id="2channel" name="2channel">. Bonding (16bit channel) is not supported,
+Both variants have their own advantages and disadvantages. 
+See section <ref id="2channel" name="2channel">.
+Bonding (16bit channel) is not supported,
 since it can not work reliably when the dialup connections have deviating
 latency.
 Warning: Channel bundling saves time, but not telephone charges.
@@ -390,6 +402,8 @@ out. E.g. like this:
 /usr/sbin/diald /dev/ttyI4 -m ppp [...]
 </code>
 where [...] stands for further dialout parameters.
+The recent diald releases contain configuration files for ISDN. See
+<url url="http://diald.sourceforge.net"> for details.
 
 <sect1> feature_dod: Does the driver support &dquot;dial on demand&dquot;?  
 <label id="feature_dod">
@@ -433,11 +447,11 @@ Warning! XCept (formerly Xbtx) has an ISDN configuration option. This
 should NOT be used. XCept should be configured as if a normal modem
 were being used.
 
-<sect1> feature_clock: How can I set the clock of my computer with ISDN?  
+<sect1> feature_clock: Can I set the clock of my computer with ISDN?  
 <label id="feature_clock">
 <p>
-Isdnlog offers this feature with option &dquot;-t&dquot;. Unfortunately, the
-seconds are not transmitted via ISDN, and the transmitted time is
+Yes. Isdnlog offers this feature with option &dquot;-t&dquot;. Unfortunately,
+the seconds are not transmitted via ISDN, and the transmitted time is
 not very accurate - depending on the ISDN equipment of your
 telephone company there may be a deviation of several minutes (!).
 It's better to get a PC clock that is set by radio signals and
@@ -522,17 +536,63 @@ Yes, if the provider of the cellular phone has a GSM to ISDN/V.110 gateway.
 This has been reported to work from a PalmPilot to isdn4linux with V.110.
 See question <ref id="config_gsmv110" name="config_gsmv110"> for details on how to configure it.
 
-<!-- Feature reversed card -->
+<sect1> feature_reversedcard: Can isdn4linux log ALL actions happening on the  
+ISDN bus (dual mode/reversed card/COLP/...)?  
+<label id="feature_reversedcard">
+<p>
+Yes, isdn4linux offers several possibilities to do this. Have a look at
+question <ref id="isdnlog_reversedcard" name="isdnlog_reversedcard">.
 
-<!-- Chargeint -->
+<sect1> feature_chargeint: Can isdn4linux hang up just before the ISDN  
+provider would charge me for another unit?  
+<label id="feature_chargeint">
+<p>
+Yes, isdn4linux can do this. Check out section <ref id="chargeint" name="chargeint">.
 
-<!-- Feature Raw-IP -->
+<sect1> feature_eurofile: Can isdn4linux download or offer files via EFT  
+(Eurofile transfer)?  
+<label id="feature_eurofile">
+<p>
+Yes, isdn4linux offers special tools for this which are part of the
+isdn4k-utils.
 
-<!-- Feature both caller ids -->
+<sect1> feature_leased: Can isdn4linux handle leased lines (e.g. D64S)?  
+<label id="feature_leased">
+<p>
+Yes, isdn4linux can handle leased lines (explained in the glossary:
+<ref id="glossary_leased" name="glossary_leased">). Have a look at section
+<ref id="leased" name="leased">.
 
-<!-- Feature leased line -->
+<sect1> feature_pointtopoint: Can isdn4linux work in point-to-point  
+mode as well as in multi-device mode?  
+<label id="feature_pointtopoint">
+<p>
+Yes, isdn4linux supports both. Check the glossary to understand the
+difference: <ref id="glossary_pointtopointmode" name="glossary_pointtopointmode"> and
+<ref id="glossary_multidevicemode" name="glossary_multidevicemode">.
 
-<!-- Eurofile -->
+<sect1> feature_ntmode: Does isdn4linux support running a card in NT mode?  
+<label id="feature_ntmode">
+<p>
+Yes, isdn4linux does support it, but only for a few special cards.
+See question <ref id="feature_crossedcable" name="feature_crossedcable"> for details. In the
+glossary there is more information on what the NT mode is:
+<ref id="glossary_ntmode" name="glossary_ntmode">.
+
+<sect1> feature_crossedcable: Can isdn4linux directly connect two  
+ISDN user devices (two ISDN cards) via a crossed cable?  
+<label id="feature_crossedcable">
+<p>
+Yes, isdn4linux can do this. However, this requires that the ISDN card
+can run in NT mode (for details on this mode see the glossary:
+<ref id="glossary_ntmode" name="glossary_ntmode">).
+Only very few cards (e.g. HFC chipset) are cable of doing this.
+Use the following command to start the ISDN card in NT mode:
+<code>
+hisaxctrl &lt;id&gt; 98 1
+</code>
+However, make sure that the crossed cable is terminated even if it is
+very short. Some HFC card already have jumpers for termination.
 
 <sect1> feature_lcr: Can isdn4linux do least cost routing (LCR)?  
 <label id="feature_lcr">
@@ -547,7 +607,6 @@ Note: the ABC-extensions (s. <ref id="docu_abc" name="docu_abc">) must be
 installed. Also, isdnlog should always be running (otherwise your dialout
 will be delayed by 3 seconds). If the ABC-extensions are not installed,
 isdnlog prints hints to the log file, which provider would have been chosen.
-
 
 <sect1> feature_future: Which features are planned for the future?  
 <label id="feature_future">
@@ -638,6 +697,13 @@ question has not been answered numerous times in the past (search
 isdn4linux,...). People on the mailing list get really annoyed when
 the question "can I fax with my card xxx" is asked yet another time
 (see question <ref id="feature_fax" name="feature_fax"> for the answer).
+
+When writing on the mailing list, please always provide:
+<itemize>
+<item> Your Kernel version
+<item> Your i4l/hisax version
+<item> Your card type
+</itemize>
 
 Most isdn4linux developers are present on the mailing list, and many
 other knowledgeable people. <bf>English postings are very welcome,
@@ -805,7 +871,7 @@ specifications for their very proprietary hardware/protocols:
 </itemize>
 
 As for the Eumex 404, there is an unofficial binary driver for isdn4linux
-in Suse 6.3, which may or may not help you. Use it at your own risk: 
+with Suse 6.3, which may or may not help you. Use it at your own risk: 
 <url url="http://home.t-online.de/home/MetalMilitia/eumex.htm">
 
 <sect1> hardware_activepassive: What is the difference between an active and a 
@@ -923,18 +989,41 @@ reported to work.
 <sect1> hardware_sun: Can I run isdn4linux on a Sun workstation?  
 <label id="hardware_sun">
 <p>
-In principle, hisax works with the built-in ISDN adapter of a
-Sparc-Station-LX and a Sparc-Station-10, with development
-kernels version 2.3.x. The code for Sun is only available there.
-Please be aware that the code of the latest developments can not be
-compiled for 32 bit machines like all sun-4m machines.
+Probably not. There are three options for (internal) isdn in the SUN
+enviroment:
+<enum>
+<item> SBUS ISDN adapter:
+Old SUN-workstations used to have a SBUS interface for additional
+peripheral boards.
+There exists an ISDN sbus board sold as "X1012". As no information is
+available for these boards, they are NOT supported!
 
-Audio works, but not well; ISDN works, but randomly
-crashes the machine. The author of dbri.c has stopped active work on it,
+<item> Built-in ISDN adapter:
+Sparc-Station-LX, Sparc-Station-10 and Sparc-Server-10 have a
+motherboard with build-in isdn-adapter.
+These machines were supported by HISAX (kernel 2.3.0) but the code has
+been left unsupported for very long (over nine months).
+All kinds of ancient hisax definitions are still left in these drivers.
+Much work is to be done to get it properly working again.
+Note from the original developer, not to expect too much: the dbri chip
+is not capable of buffering (irq for each byte) and raw-hdlc has to be
+done in software instead of hardware...
+The author of dbri.c has stopped active work on it,
 but made a copy of the DBRI data sheet available at:
 <url url="http://www.freesoft.org/Linux/DBRI">
 for anyone who wants to fix the remaining glitches (status as of Jan 10,
-2000).
+2000). Please be aware that the code of the latest developments can not be
+compiled for 32 bit machines like all sun-4m machines.
+
+<item> PCI ISDN adapter:
+Modern SUN-workstations and servers have a different busstructure
+nowadays. The ULTRA series uses the PCI-bus.
+Allthough some pc boards seem to be working in a SUN, there are NO
+reports (yet) of properly functioning ISDN-PCI-boards in the SUN 
+environment. Please write me if anyone ever succeeds.
+
+</enum>
+
 
 <sect1> hardware_ppc: Can I run isdn4linux on a PowerPC with Linux?  
 <label id="hardware_ppc">
@@ -1100,8 +1189,10 @@ if you pass an io address, and a PCI card if you do NOT pass an io address.
 Make sure to give the parameters properly.
 
 One very interesting thing: the Fritz! card is currently the only passive card
-for which a capi driver exists. See question <ref id="feature_capi" name="feature_capi"> for
-more information on this. As a result, it can be configured to fax.
+for which a capi driver exists. As a result, it can be configured to fax.
+See question <ref id="feature_capi" name="feature_capi"> and 
+<url url="http://www.avm.de/ftp/cardware/fritzcrd/linux/index.htm">
+for more information on this.
 
 <sect1> hardware_avmb1: What is special about the AVM B1 card?  
 <label id="hardware_avmb1">
@@ -1151,6 +1242,38 @@ with many of them without any interrupt conflicts. The newest firmware should
 be available at
 <tt><url url="ftp://ftp.think.de/pub/isdn4linux/icn/firmware/"></tt>.
 Unfortunately, the ICN is not produced any more.
+
+<sect1> hardware_isurf: What should I know about the Siemens I-Surf cards?  
+<label id="hardware_isurf">
+<p>
+There are several interesting things.
+<itemize>
+<item> Two Versions: There are two different versions (version 1.0 and
+version 2.0) with a different chipset. Both work fine, however you have
+to set the type properly (29 for version 1.0, 12 for version 2.0).
+<item> PnP bug: Due to a bug in the pnp chip it is very important for the
+I-Surf 1.0 to have the following PEEK and POKE lines in your isapnp file
+to properly initialize the PnP register:
+<code>
+(MEM 0 (BASE 0x0c8000) (MODE bu) (UPPER 0x0c8400))
+# (MEM 0 (BASE 0x0c8000) (MODE br) (UPPER 0x000400))
+(REG 0x31 (PEEK))
+(REG 0x31 (POKE 0))
+(REG 0x31 (PEEK))
+(ACT Y)
+))
+</code>
+<item> Memory mapping: Since the I-Surf 1.0 uses memory mapping for the
+ISA bus, ensure that the used memory area is not shadowed or cached
+(see BIOS setup).
+<item> Firmware loading: Before usage you have to load the firmware:
+<code>
+hisaxctrl &lt;id&gt; 9 ISAR.BIN
+</code>
+(You find the file ISAR.BIN in the isdn4k-utils or on the I-SURF cd.)
+<item> Fax: The I-Surf 1.0 can be setup to send and receive faxes (see
+question <ref id="feature_fax" name="feature_fax"> for details).
+</itemize>
 
 
 <!-- Trouble Hardware
@@ -1342,6 +1465,33 @@ forgotten to reserve).
 (Replace INT, IO0, and IO1 with your values in isapnp.conf.)
 </enum>
 
+<sect1> config_startstop: How can I start and stop the ISDN configuration?  
+<label id="config_startstop">
+<p>
+There are several options:
+<itemize>
+<item> Reboot: rebooting your computer always works. If you compiled i4l into
+the kernel, then this is actually your only chance. The remaining options
+only work if you configure i4l using modules.
+<item> Manual: Unload the modules used by i4l with rmmod, then reload them with
+modprobe.
+<item> Runlevel: use telinit to switch to a runlevel which does not contain
+ISDN, then switch back to the original runlevel. 
+<item> Scripts: most distributions come with start/stop scripts.
+For example, on a Suse 7.0 distribution, this will stop ISDN:
+<code>
+rcroute stop
+rci4l stop
+rci4l_hardware stop
+</code>
+This will restart ISDN:
+<code>
+rci4l_hardware start
+rci4l start
+rcroute start
+</code>
+</itemize>
+
 <sect1> config_kerneld: Why shouldn't I use <em>kerneld</em> to load the ISDN  
 modules in the kernel as needed?  
 <label id="config_kerneld">
@@ -1369,7 +1519,11 @@ correct configuration arguments.
 <item>To handle more than 1 card with the same driver (e.g. HiSax should
 handle an ELSA and an ASUS card), you have to pass the configuration arguments
 for all cards to this driver. Please note, that you'll have to use modules
-for more than two cards, to pass all arguments.
+for more than two cards, to pass all arguments. As an example, you can
+load HiSax for two Sedlbauer cards with the following command:
+<code>
+modprobe -v hisax protocol=2,2 type=28,28
+</code>
 <item>Dialin of many people at the same time: have a look at question
 <ref id="dialin_manyparallel" name="dialin_manyparallel">.
 <item>Dialout through several cards: have a look at question
@@ -1390,10 +1544,15 @@ to my computer?
 <label id="config_gsmv110">
 <p>
 Set up async PPP with a normal pppd on a ttyI* device (sync ppp will not work).
-Additionally to setting the msn, you have to initialize the ttyI* device
-with <tt/ATS19=0/ for V.110. The rate should be set to 9600 with
-<tt/AT&amp;R9600/. pppd needs to be called with <tt/noccp/ and
-<tt/require-pap/. For a mini-howto see:
+Additionally to setting the msn, you have to set the transmission rate to
+9600 with <tt/AT&amp;R9600/. Switch off autoanswer with <tt/ATS0=0/ if
+you use mgetty. pppd needs to be called with <tt/noccp/ and <tt/require-pap/.
+If the call is indicated with service indicator byte 2 = 0 and not accepted
+(happens with some wrongly configured PBX), then adjust with <tt/ATS19=0/.
+See <tt>/usr/src/linux/Documentation/isdn/README</tt> from line 130 for
+details on the V.110 bitrate adaption.
+
+For a mini-howto see:
 <url url="http://www.oltom.com/Linux/Docs/GSM%20over%20V.110%20Mini-HOWTO.txt">
 
 You also have to set up your GSM accordingly. As an example, to switch the
@@ -1508,6 +1667,18 @@ and recompile kernel.
 <tt>include/linux/isdn.h</tt>, then recompile kernel.
 </itemize>
 
+<sect1> trouble_debug: How do I get maximum debug output?  
+<label id="trouble_debug">
+<p>
+Execute the following commands to get maximum debug output:
+<code>
+hisaxctrl &lt;id&gt; 1 0x33ff
+hisaxctrl &lt;id&gt; 11 0xf4f
+killall isdnlog
+cat /dev/isdnctrl > /tmp/ilog
+</code>
+Be careful: this will generate a lot of output!
+
 <sect1> trouble_strategy: My isdn4linux doesn't work! How do I best go about  
 finding the problem?  
 <label id="trouble_strategy">
@@ -1518,10 +1689,11 @@ The following steps are recommended:
 Are there unusual error messages in /var/log/messages?
 Are all programs active that should be started at boot (check with
 ps, or fuser /dev/xxx)? HiSax won't start if something isn't right.
+Check question <ref id="trouble_boot" name="trouble_boot"> for what you can check.
 The old Teles driver, on the other hand, will appear to start even if
 it is not working. See the questions under Troubleshooting Teles.
 <item>Make sure you configured the ISDN driver either as modules, or you
-compiled them in - never both.
+compiled them into the kernel - never both.
 <item>Try calling with a telephone. The number should be shown in
 /var/log/messages. Otherwise, perhaps the driver was incorrectly 
 started?!
@@ -1565,7 +1737,7 @@ doesn't work, you can log in via modem or modem emulation to find
 out what happened on the other side. Not all providers are so
 cooperative.... :-)
 
-<sect1> trouble_boot: How can I tell whether my ISDN card has been corrected  
+<sect1> trouble_boot: How can I tell whether my ISDN card has been correctly  
 recognized?  
 <label id="trouble_boot">
 <p>
@@ -1581,6 +1753,14 @@ HiSax is only loaded if the hardware can be found and the appropriate
 interrupts can be generated. This means the card is installed correctly in the
 computer, and there are no hardware conflicts. It does not mean that everything
 will work (e.g. twisted cables, broken cables, terminators).
+
+<item> Check that your card got an interrupt assigned, e.g. with
+<code>
+lspci -v
+</code>
+A common problem is that your BIOS did not assign an interrupt to your
+card. HiSax will then complain with "No IRQ for PCI card found".
+To fix, set the BIOS option "PnP OS" to NO.
 
 <item>Check that the interrupts are registered correctly. Check with
 <code>
@@ -2345,7 +2525,11 @@ Bind will then retransmit the query every 15 seconds to your forwarder
 (here the forwarder is 10.0.0.40).
 The same principle applies to two or more forwarders.
 
+Another option are the programs <tt/ip_resend/ and <tt/ip_resend_wakeup/
+which you can find on:
+<url url="http://www.baty.hanse.de/ip_resend/">
  
+
 <!-- Authenticate properly
 -->
 <sect> pap: Authenticate properly (especially with PAP)  
@@ -2600,6 +2784,14 @@ remote address explicitly. Try these options, e.g.:
 where REMOTE must be the address of the remote machine (the machine giving 
 your address to you) 
 
+<sect1> syncppp_msgetdns: How do I configure ipppd to obtain or provide the  
+nameserver address at dial in?  
+<label id="syncppp_msgetdns">
+<p>
+Use the configuration option <tt/ms-get-dns/ to obtain the nameserver ip
+address when you dial up your internet provider. Use <tt/ms-dns/ to
+publish the nameserver ip address when someone dials up your ipppd.
+
 <sect1> syncppp_ipx: How can I do IPX over ipppd?  
 <label id="syncppp_ipx">
 <p>
@@ -2853,7 +3045,8 @@ There are some dialout problems in connection with syncPPP and dynamic IP
 address allocation. In this case your IP address will change while packets
 are waiting to be sent. All packets that should be sent before the change
 in IP address have the wrong response ip address and will therefore never
-receive an answer. Possible solutions:
+receive an answer. The problem is that this may cause multiple dialouts
+(see section <ref id="dod" name="dod">). Possible solutions:
 <itemize>
 <item>Dial out manually with &dquot;isdnctrl dial ippp*&dquot;
 <item>Use diald to control when the connection goes up or down.
@@ -2863,6 +3056,7 @@ activated like this:
 <code>
 echo 7 > /proc/sys/net/ipv4/ip_dynaddr
 </code>
+(use 5 instad of 7 to not get warnings into /var/log/messages)
 If you have a SuSE distribution, this workaround can also be configured by
 setting <tt/IP_DYNIP=&dquot;yes&dquot;/ in <tt>/etc/rc.config</tt>.
 <item>Increase the number of retries on your Windows machine for setting
@@ -3250,9 +3444,20 @@ but the IP connections are still open, the line is dialed again, and
 so on... This can only be avoided with the RST-Revoking patch, which has found
 its way into the 2.0.x kernels, but not into 2.1/2.2/2.3. However, you can get
 an adjusted patch for 2.2.x kernels and some background information about it
-from: <url url="http://www.another.de/linux/router/">. Make sure to use ipppd's
-"defaultroute" option rather than <tt>route add/del default</tt> in
-ip-up/ip-down with it.
+from: <url url="http://www.another.de/linux/router/">. See also question
+<ref id="syncppp_1stpacket" name="syncppp_1stpacket">.
+Also make sure to use ipppd's "defaultroute" option rather than
+<tt>route add/del default</tt> in ip-up/ip-down with it.
+<item>TCP retries trigger dialout: when the kernel tries to send tcp packets
+and does not receive any answer, then it will retry to send them (usually
+every 120 seconds). Check out whether you want to adjust the following
+parameters:
+<itemize>
+<item>/proc/sys/net/ipv4/tcp_syn_retries
+<item>/proc/sys/net/ipv4/tcp_retries1
+<item>/proc/sys/net/ipv4/tcp_retries2
+</itemize>
+Documentation can be found in <tt>/usr/src/linux/Documentation/proc.txt</tt>.
 <item>Requests from your local DNS trigger a dialout: see question
 <ref id="dod_localdns" name="dod_localdns">.
 <item>Sendmail triggers the dialout: see question
@@ -3568,7 +3773,9 @@ Channel bundling is currently supported by isdn4Linux in two variations:
 <item><bf>MPPP</bf> (based on syncPPP)
 </itemize>
 Both variations have their own advantages and disadvantages. See the following
-questions.
+questions. Dynamic adjustment is supported for MPPP by the program
+<tt>ibod</tt> - see question <ref id="2channel_mpppconfig" name="2channel_mpppconfig"> for more
+details.
 
 <sect1> 2channel_raw: What is raw bundling?  
 <label id="2channel_raw">
@@ -3799,14 +4006,14 @@ being online all the time, if this is what you desire.
 with D64S without signaling?  
 <label id="leased_nosignal">
 <p>
-The data are simply sent out! Other than a ping, there is no way to find out
+The data is simply sent out! Other than a ping, there is no way to find out
 whether the D64S or 2MB line is up or not. Only S01 or S02 lines have a D
 channel and have something to use with signaling, however the best
 known solutions also use this 16kb for data transfers to get 144kb
 instead of 128kb (i4l can only to 128kb).
 
-<sect1> leased_hisaxconfig: With i4l, how do I configure my card on a D64 leased  
-line?  
+<sect1> leased_hisaxconfig: With i4l, how do I configure my card on a D64  
+leased line?  
 <label id="leased_hisaxconfig">
 <p>
 A later version of the new HiSax driver supports D64. Configuration is normal
@@ -3839,11 +4046,11 @@ with &dquot;AT&amp;E0&dquot; (set usage of first B-channel) and
 This will simulate a call for MSN1 on the configured channel (0 or 1)
 (incoming number = LEASED0).
 
-<sect1> leased_splitline: With ISDN, can I use one channel as a leased line  
-and other as a dialup line?  
+<sect1> leased_splitline: With i4l, can I use one channel as a leased line  
+and the other as a dialup line?  
 <label id="leased_splitline">
 <p>
-Yes, you can. But you have to make sure that you use the correct channel!
+Yes, you can. But you have to make sure that you use the correct channel.
 
 
 <!-- Dialin
@@ -3978,8 +4185,17 @@ on dialing to i4l.
 <label id="callback_delay">
 <p>
 Most problems with callback can be solved by adjusting the callback
-delay with <tt>isdnctrl cbdelay</tt>. One second has been successful
-in many cases.
+delay with <tt>isdnctrl cbdelay</tt>. One second on the triggering side A
+(set callback mode to out) and two seconds on the triggered side B
+(set callback mode to in) has been successful in most cases.
+<p>
+The reason for the problem is a design bug in the link level driver.
+A calls B to trigger a callback. B rejects the call and calls back to A,
+establishing a working connection within less than 4 seconds.
+However, the triggering call from A to B will need 4 seconds to be
+terminated by the ISDN provider (giving other devices on B's
+side a chance to take the call). When it is finally terminated, the
+working connection from B to A is unfortunately also terminated.
 
 <sect1> callback_cisco: Somehow i4l can not callback a Cisco?  
 <label id="callback_cisco">
@@ -4165,18 +4381,19 @@ See the next questions for a possible solution.
 numbers for other ISDN devices?  
 <label id="isdnlog_reversedcard">
 <p>
-There are two possibilities. First, the German Telekom offers the service
+There are several possibilities.
+<itemize>
+<item> COLP: First, the German Telekom offers the service
 COLP (Connected Line Identification Presentation, ca. DM 10 per month per
 basic line) that returns all data sent. This can then be read by isdnlog
 (=2.52) from the TX line.
-
-Alternatively, isdnlog offers the possibility to work with a second
-&dquot;re-poled&dquot; ISDN card. &dquot;re-poled&dquot; means that the
-RX line is connected to the TX connection of the card; the RX line of the
-card should not be connected to any line!
- Because of this setup, this ISDN
-card cannot be used for anything else. The whole thing looks something like
-this:
+<item> Reversed card/dual mode: Alternatively, isdnlog offers the possibility to
+work with a second &dquot;re-poled&dquot; ISDN card. &dquot;re-poled&dquot;
+means that the RX line is connected to the TX connection of the card; the
+RX line of the card should not be connected to any line! (even if other
+documents might tell you something else).  Because of this setup, this ISDN
+card cannot be used for anything else. This is called a reversed card, or the
+dual mode. The whole thing looks something like this:
 <verb>
       3 -- RX+ 2a ---------------\
 ISDN  4 -- TX+ 1a -- open         ------------  ISDN
@@ -4187,15 +4404,23 @@ Please note that this only works when the second card is an ISAC based cards
 (e.g. old Teles cards, Fritz! classic), since it requires a special
 bug/feature of that chip. All other cards, like IPAC based cards (e.g. ELSA
 QS1000pro) will not work in the role of a re-poled card.
-HFC-PCI based cards allow a special feature where one of the B channels can be
-sacrificed in exchange for reading the complete D channel protocol - with
-just one single card. This is also supported by ISDN4LINUX.
 
-A third (theoretical) possibility exists for those who have their own
-PBX to which the other devices are connected. If the PBX can protocol
-all outgoing calls, this can be read (usually over a serial port).
+<item> HFC cards: HFC-PCI based cards allow a special feature where one
+of the B channels can be sacrificed in exchange for reading the complete
+D channel protocol - with just one single card. This is also supported
+by isdn4linux. Set the HFC card in the following way:
+<code>
+hisaxctrl &lt;driver_id&gt; 1 4
+hisaxctrl &lt;driver_id&gt; 10 1
+hisaxctrl &lt;driver_id&gt; 12 1
+</code>
+You have to give isdnlog the command line option '-1' so that it
+makes use of the HFC option.
 
-There is a reason why isdnlog has not support this until now. To evaluate
+<item> PBX: A third (theoretical) possibility exists for those who have
+their own PBX to which the other devices are connected. If the PBX can
+protocol all outgoing calls, this can be read (usually over a serial port).
+There is a reason why isdnlog has not support for this until now. To evaluate
 this data, isdnlog has to be able to access the date immediately after
 the RELEASE COMPLETE, before any new data is sent on the D channel. The
 PBXs tested up to now have all been too slow (in particular the widely
@@ -4205,6 +4430,7 @@ want to attempt to do this is welcome (I'll make the logs from my
 Ackermann Euracom available - Matthias Hessler
 <tt><htmlurl url="mailto:hessler@wi-inf.uni-essen.de"
 	     name="hessler@wi-inf.uni-essen.de"></tt>).
+</itemize>
 
 <sect1> isdnlog_rategraphic: How can I display the data transfer rates  
 graphically?  
@@ -4364,6 +4590,18 @@ cat file.ul  file.msg
 It could be that you have to give different parameters to sox.
 As a first test you can try file.msg  /dev/audio, you should
 be able to hear something.
+
+<sect1> audio_dtmf: How can I improve the recognition of (DTMF) dial tones?  
+<label id="audio_dtmf">
+<p>
+You can adjust the parameters DTMF_THRESH and H2_THRESH in file
+<tt>linux/drivers/isdn/isdn_audio.c</tt>. A DTMF tone is recognized
+if the amplitude of the correct frequency is larger than DTMF_THRESH
+and the amplitude of the second harmonian frequency is smaller than
+H2_THRESH.
+If a dial tone is recognized when no dialing took place, try to increase
+DTMF_THRESH and/or decrease H2_THRESH. However, test with many
+telephones - the current parameters were already set after some tuning.
 
 
 <!-- Audio Troubleshooting
@@ -4640,8 +4878,9 @@ e.g. with <tt>AT&amp;E0</tt>), or 10 MSNs; you then always get a block of
 (xxx0-xxx9), of which the last digit (0-9) is your MSN (0 is used in case
 you use an invalid number).
 <item> ISDN2e: Seems to be normal EuroISDN. You are assigned MSNs which you
-can use and configure for isdn4linux. The MSN is your telephone number
-without the area code.
+can use and configure for isdn4linux. The MSN is reported to consist of the
+last 6 digits of your telephone number (try to add digits from your area
+code, if the local number part is shorter than 6 digits).
 <item> BTHH (BT HomeHighway): additionally to 2 ISDN ports it includes two
 analog lines with separate telephone number - but calls to and fro for those
 won't be signalled on the ISDN line, even so they use up a B-channel.
@@ -4666,12 +4905,27 @@ Also, check out <url url="http://www.wurtel.demon.nl/i4l-howto-uk.html">.
 <sect> misc: Miscellaneous  
 <label id="misc">
 
+<sect1> misc_standards: Which standards apply to the ISDN protocol layers?  
+<label id="misc_standards">
+<p>
+These are the main standards:
+<itemize>
+<item> Layer 1: ITU I.430 and ETSI 300 012-1
+<item> Layer 2: ITU Q.921 and ETSI 300 125-1
+<item> Layer 3: ITU Q.931 and ETSI 300 102-1 (plus some changes and
+clarifications in ETSI 300 403)
+</itemize>
+All layers are also described in TBR3. For study, the standards are freely
+available from <url url="http://www.etsi.org">.
+
 <sect1> misc_nonullcable: Can I connect two ISDN devices directly with a kind  
 of &dquot;null modem cable&dquot;?  
 <label id="misc_nonullcable">
 <p>
-No, that's not possible. The concept of ISDN doesn't allow it. A NTBA or a
-PBX with an internal bus is required.
+This is only possible if one of the cable can run in NT mode (see glossary
+on what this is: <ref id="glossary_ntmode" name="glossary_ntmode">). Only a few cards allow it,
+all others need an NTBA or PBX with an internal bus to communicate with
+each other. See question <ref id="feature_crossedcable" name="feature_crossedcable">.
 
 <sect1> misc_uisdn: Can isdn4linux run in parallel to UISDN?  
 <label id="misc_uisdn">
@@ -4755,7 +5009,9 @@ protocol was called EAZ in the German 1TR6-ISDN protocol (a German
 predecessor to Euro-ISDN).
 
 <tag/HDLC/
-A widely used low-level protocol.
+A widely used low-level protocol, usually used to connect your computer
+with your internet provider. To connect to a computer mailbox, usually
+X.75 is being used.
 
 <tag/HSCX/
 A Siemens chip which is, similar to ISAC, on many passive cards.
@@ -4770,10 +5026,48 @@ the line. It handles the D channel protocol and sends the
 S0 data to a special serial bus (IOM). When sending it does the
 opposite.
 
+<tag/leased line/
+<label id="glossary_leased">
+Your telecommunication company can hardwire the connection between
+two of their ISDN users. Then these users are always connected to
+each other without dialing and can not dial out to someone else any more.
+
 <tag/MSN/
 Unlike a normal telephone connection, an ISDN connection can have more
 than one telephone number - each of these is called an MSN (Multiple
 Subscriber Number).
+
+<tag/NT/
+NT is the abbreviation of network terminator. This is the interface
+between an ISDN user and the ISDN provider. It is a small hardware box
+to which the user has to connect his ISDN devices via a so called S0
+interface.
+In most European countries, the ISDN provider supplies the NT. A user in
+North America usually has to buy one, therefore the NT is often integrated
+into the ISDN card there.
+
+<tag/NT mode/
+<label id="glossary_ntmode">
+When multiple devices are connected to the ISDN connection, then all
+user device behave as slaves, where the network terminator (NT) behaves
+as master and synchronizes the communication on the S0 bus. The special
+behavior of the network terminator is called NT mode. User devices are
+normally not capable of running in NT mode.
+As a result, user devices can not communicate with each other even when
+they are connected via a crossed cable.
+Only some special ISDN cards (HFC chipset) are capable of running in NT mode,
+and can directly communicate with other ISDN user devices via a crossed
+cable.
+
+<tag/multi-device mode/
+<label id="glossary_multidevicemode">
+Your ISDN interface can be configured either in multi-device mode
+(in German: Mehrgeraeteanschluss), or in point-to-point mode (in German:
+Anlagenanschluss).
+The multi-device mode is the normal connection mode for private ISDN users
+or very small business users. The user can attach multiple devices to the
+ISDN connection. The ISDN provider will assign a small number of fixed
+telephone numbers (usually up to 10 MSN), if any, to the ISDN connection.
 
 <tag/passive card/
 <label id="glossary_passive">
@@ -4794,17 +5088,18 @@ connected. This allows for local calls without using the switching
 station (thereby avoiding the charges from your telephone company).
 
 <tag/point-to-point mode/
-Your interface can be configured either in a multi-device mode
-(in German: Mehrgeraeteanschluss), or in a point-to-point mode (in German:
-Anlagenanschluss). In the multi-device mode, several ISDN devices can
-be attached to the ISDN bus at the same time. Usually a few (if any)
-numbers are related to this bus, and the devices can pick the call that
-they want to receive. In contrast, the point-to-point mode allows only
-one device to be connected which handles all calls. This is usually
-meant for at least small companies that want to attach their PBX and
-be able to handle the last digits of their telephone numbers by themselves,
-under their own control. The setup usually allows for additional features,
-but is also more expensive.
+<label id="glossary_pointtopointmode">
+Your ISDN interface can be configured either in multi-device mode
+(in German: Mehrgeraeteanschluss), or in point-to-point mode (in German:
+Anlagenanschluss).
+The point-to-point mode is the normal connection mode for business ISDN
+users. The user can attach only one single devices to the ISDN connection
+which will have to handle all calls (typically a PBX will be used). The
+ISDN provider will assign a range of numbers to the ISDN connection.
+Any call within this number range will be sent to the user. The ISDN
+provider will leave assignment of the last digits of the telephone number
+to the ISDN user.
+This setup usually allows for additional features, but is also more expensive.
 
 <tag/PRI/
 PRI means primary rate interface and is the used when a single or multiple
@@ -4849,6 +5144,12 @@ the usage condition, in short it's only allowed to use this feature, if
 indeed you want to setup a call. Please note that it has been reported that
 some buggy PBX (like ISTEC 1003) may refuse a connection when support of UUS is
 signalled to them.
+
+<tag/X.75/
+A widely used low-level protocol, usually used to connect your computer
+with a computer mailbox. For connections to the internet, HDLC is usually
+used.
+
 </descrip>
 
 </article>
