@@ -33,7 +33,7 @@ endif
 .SUFFIXES:
 .SUFFIXES: .c .o
 
-.PHONY: all config zonefiles AT DE NL distclean dist test install uninstall country
+.PHONY: all config zonefiles AT DE NL CH distclean dist test install uninstall country
 
 %.o: %.c Makefile
 	$(CC) $(CFLAGS) $(DEFS) $(INCLUDES) -c -o $@ $<
@@ -106,64 +106,46 @@ distclean: clean
 	fi
 
 test: zone mkzonedb
-	-$(BZIP2) -d at/pta/zred.pta.bz2
-	-$(BZIP2) -d at/pta/zoneall.pta.bz2
-	./$(PROGRAM) -d zone-at-pta$(DBEXT) -r at/pta/zred.pta -v
-	./zone -d zone-at-pta$(RDBEXT)  -z at/pta/zoneall.pta -v
-	$(BZIP2) -9 at/pta/zred.pta
-	$(BZIP2) -9 at/pta/zoneall.pta
+	$(BZIP2) -dc at/pta/zred.pta.bz2 | ./$(PROGRAM) -d zone-at-pta$(DBEXT) -r /dev/fd/0 -v
+	$(BZIP2) -dc at/pta/zoneall.pta.bz2 | ./zone -d zone-at-pta$(RDBEXT)  -z -v
 
 #
 # ATTENTION:
 # zonedatabasefilenames must be zone-CC-*
 #
-zonefiles:	AT DE NL
+zonefiles:	AT DE NL CH
 
-at:
-	AT
-
-de:
-	DE
-
-nl:
-	NL
+at: AT
+de: DE
+nl: NL
+ch: CH
 
 AT: AT-pta AT-1002 AT-1007 AT-1012 AT-1024 AT-1066 AT-1004 AT-1001
 .PHONY: AT-pta AT-1002 AT-1007 AT-1012 AT-1024 AT-1066 AT-1004 AT-1001
 
 AT-pta:
 	if [ ! -e ../../zone-at-pta$(DBEXT) ] ; then \
-	$(BZIP2) -d at/pta/zred.pta.bz2; \
-	./$(PROGRAM) -d ../../zone-at-pta$(DBEXT) -r at/pta/zred.pta -v; \
-	$(BZIP2) -9 at/pta/zred.pta; \
+	$(BZIP2) -dc at/pta/zred.pta.bz2 | ./$(PROGRAM) -d ../../zone-at-pta$(DBEXT) -r /dev/fd/0 -v; \
 	fi
 
 AT-1001:
 	if [ ! -e ../../zone-at-1001$(DBEXT) ] ; then \
-	$(BZIP2) -d at/1001/zred.bz2; \
-	./$(PROGRAM) -d ../../zone-at-1001$(DBEXT) -r at/1001/zred -v; \
-	$(BZIP2) -9 at/1001/zred; \
+	$(BZIP2) -dc at/1001/zred.bz2 | ./$(PROGRAM) -d ../../zone-at-1001$(DBEXT) -r /dev/fd/0 -v; \
 	fi
 
 AT-1002:
 	if [ ! -e ../../zone-at-uta$(DBEXT) ] ; then \
-	$(BZIP2) -d at/uta/zred.uta.bz2; \
-	./$(PROGRAM) -d ../../zone-at-uta$(DBEXT) -r at/uta/zred.uta -v; \
-	$(BZIP2) -9 at/uta/zred.uta; \
+	$(BZIP2) -dc at/uta/zred.uta.bz2 | ./$(PROGRAM) -d ../../zone-at-uta$(DBEXT) -r /dev/fd/0 -v; \
 	fi
 
 AT-1004:
 	if [ ! -e ../../zone-at-1004$(DBEXT) ] ; then \
-	$(BZIP2) -d at/1004/zred.bz2; \
-	./$(PROGRAM) -d ../../zone-at-1004$(DBEXT) -r at/1004/zred -v; \
-	$(BZIP2) -9 at/1004/zred; \
+	$(BZIP2) -dc at/1004/zred.bz2 | ./$(PROGRAM) -d ../../zone-at-1004$(DBEXT) -r /dev/fd/0 -v; \
 	fi
 
 AT-1007:
 	if [ ! -e ../../zone-at-1007$(DBEXT) ] ; then \
-	$(BZIP2) -d at/1007/zred.bz2; \
-	./$(PROGRAM) -d ../../zone-at-1007$(DBEXT) -r at/1007/zred -v; \
-	$(BZIP2) -9 at/1007/zred; \
+	$(BZIP2) -dc at/1007/zred.bz2 | ./$(PROGRAM) -d ../../zone-at-1007$(DBEXT) -r /dev/fd/0 -v; \
 	fi
 
 AT-1012:
@@ -173,16 +155,12 @@ AT-1012:
 
 AT-1024:
 	if [ ! -e ../../zone-at-1024$(DBEXT) ] ; then \
-	$(BZIP2) -d at/1024/zred.bz2; \
-	./$(PROGRAM) -d ../../zone-at-1024$(DBEXT) -r at/1024/zred -v -l4; \
-	$(BZIP2) -9 at/1024/zred; \
+	$(BZIP2) -dc at/1024/zred.bz2 | ./$(PROGRAM) -d ../../zone-at-1024$(DBEXT) -r /dev/fd/0 -v -l4; \
 	fi
 
 AT-1066:
 	if [ ! -e ../../zone-at-1066$(DBEXT) ] ; then \
-	$(BZIP2) -d at/1066/zred.bz2; \
-	./$(PROGRAM) -d ../../zone-at-1066$(DBEXT) -r at/1066/zred -v; \
-	$(BZIP2) -9 at/1066/zred; \
+	$(BZIP2) -dc at/1066/zred.bz2 | ./$(PROGRAM) -d ../../zone-at-1066$(DBEXT) -r /dev/fd/0 -v; \
 	fi
 
 DE:	DE-dtag
@@ -190,9 +168,7 @@ DE:	DE-dtag
 
 DE-dtag:
 	if [ ! -e ../../zone-de-dtag$(DBEXT) ] ; then \
-	$(BZIP2) -d de/01033/zred.dtag.bz2; \
-	./$(PROGRAM) -d ../../zone-de-dtag$(DBEXT) -r de/01033/zred.dtag -v; \
-	$(BZIP2) -9 de/01033/zred.dtag; \
+	$(BZIP2) -dc de/01033/zred.dtag.bz2 | ./$(PROGRAM) -d ../../zone-de-dtag$(DBEXT) -r /dev/fd/0 -v; \
 	fi
 
 NL:	NL-kpn
@@ -200,7 +176,13 @@ NL:	NL-kpn
 
 NL-kpn:
 	if [ ! -e ../../zone-nl-kpn$(DBEXT) ] ; then \
-	$(BZIP2) -d nl/kpn/zred.bz2; \
-	./$(PROGRAM) -d ../../zone-nl-kpn$(DBEXT) -r nl/kpn/zred -v -o3 -l7; \
-	$(BZIP2) -9 nl/kpn/zred; \
+	$(BZIP2) -dc nl/kpn/zred.bz2 | ./$(PROGRAM) -d ../../zone-nl-kpn$(DBEXT) -r /dev/fd/0 -v -o3 -l7; \
+	fi
+
+CH:	CH-10741
+.PHONY: CH-10741
+
+CH-10741:
+	if [ ! -e ../../zone-ch-10741$(DBEXT) ] ; then \
+	./$(PROGRAM) -d ../../zone-ch-10741$(DBEXT) -r ch/10741/zred -v; \
 	fi
