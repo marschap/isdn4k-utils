@@ -1,6 +1,6 @@
-V:1.02-Germany [22-May-1999 12:01:41]
+V:1.02-Germany [25-May-1999 08:27:45]
 
-# $Id: countries-de.dat,v 1.4 1999/05/22 10:17:59 akool Exp $
+# $Id: countries-de.dat,v 1.5 1999/05/27 18:21:25 akool Exp $
 #
 +998:Usbekistan
 +996:Kirgisien
@@ -427,13 +427,13 @@ V:1.02-Germany [22-May-1999 12:01:41]
 +43663:Österreich Mobilfunk
 +431:Wien
 +43:Österreich
-+423:Liechtenstein
++423:Liechtenstein:Lichtenstein
 +421:Slowakei, Slowakische Republik:Slowakische Rep.:Slowakei:Slowak. Rep.:Slowakische Republik
 +420:Tschechien, Tschechische Republik:Tschechische Rep.:Tschechische Republik:Tschechien:Tschech. Rep.
 +4179:Schweiz Mobilfunk
 +4178:Schweiz Mobilfunk
 +4176:Schweiz Mobilfunk
-+4175:Liechtenstein
++4175:Liechtenstein:Lichtenstein
 +4122:Genf
 +411:Zürich
 +41:Schweiz
@@ -451,7 +451,7 @@ V:1.02-Germany [22-May-1999 12:01:41]
 +39330:Italien Mobilfunk
 +39329:Italien Mobilfunk
 +39328:Italien Mobilfunk
-+3906:Vatikanstadt / Rom
++3906:Vatikanstadt / Rom:Vatikanstadt
 +3902:Mailand
 +39:Italien
 +389:Mazedonien
