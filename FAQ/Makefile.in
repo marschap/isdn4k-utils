@@ -41,7 +41,8 @@ OUT_ENG_HTML = $(SRC_ENG).html
 # *** Generate FAQ ***
 
 # Generate all FAQ versions
-all: Makefile $(GEN_DIR) 7bit html e7bit ehtml
+#all: Makefile $(GEN_DIR) 7bit html e7bit ehtml
+all: Makefile
 
 $(GEN_DIR):
 	-mkdir -p $(GEN_DIR)
