@@ -54,7 +54,7 @@ install-man: xmonisdn.man
 	$(MAKE) -f Makefile $(MANDIROPTS) install.man
 
 install: xmonisdn install-man
-	$(MAKE) -f Makefile $(BINDIROPT) install
+	$(MAKE) -f Makefile $(BINDIROPT) install.all
 
 uninstall:
 	rm -f $(CONFIG_BINDIR)/xmonisdn
