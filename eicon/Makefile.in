@@ -1,9 +1,9 @@
-# $Id: Makefile.in,v 1.4 1999/11/21 12:37:53 armin Exp $
+# $Id: Makefile.in,v 1.5 2000/01/24 19:57:37 armin Exp $
 #
 # Makefile for eiconctrl
 # (C) 1997 Fritz Elfert
-# (C) 1998,99 Armin Schindler
-# (C) 1999 Cytronics & Melware
+# (C) 1998-2000 Armin Schindler
+# (C) 1999,2000 Cytronics & Melware
 #
 #
 SHELL			= /bin/sh
