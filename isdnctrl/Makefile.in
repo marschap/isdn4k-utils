@@ -1,4 +1,4 @@
-# $Id: Makefile.in,v 1.13 1998/11/18 16:33:08 paul Exp $
+# $Id: Makefile.in,v 1.14 1998/12/18 13:19:45 paul Exp $
 #
 # Makefile for isdnctrl
 # (C) 1997 Fritz Elfert
@@ -55,11 +55,20 @@ config.status: configure
 	./config.status --recheck
 
 %.8: %.man
-ifdef CONFIG_ISDNCTRL_CONF
-	cat $< | sed -e 's%@MANINC@%.so%' -e "s%@MAN8DIR@%$(MAN8DIR)%" -e "/^\.so/s/'//g" > $@
+	rm -f $<.tmp
+	sed -e "s%@MAN8DIR@%$(MAN8DIR)%" -e "/@MANINC_/s/'//g" < $< > $<.tmp
+ifeq (@CONFIG_ISDNCTRL_CONF@,y)
+	sed -e 's%@MANINC_CONF@%.so%' < $<.tmp > $@
 else
-	cat $< | sed -e 's%@MANINC@%.\\\"%' -e "s%@MAN8DIR@%$(MAN8DIR)%" > $@
+	sed -e 's%@MANINC_CONF@%.\\\"%' < $<.tmp > $@
 endif
+	cp $@ $<.tmp
+ifeq (@CONFIG_ISDNCTRL_TIMRU@,y)
+	sed -e 's%@MANINC_TIMRU@%.so%' < $<.tmp > $@
+else
+	sed -e 's%@MANINC_TIMRU@%.\\\"%' < $<.tmp > $@
+endif
+	rm -f $<.tmp
 
 $(PROGRAM):	$(MODULES)
 	$(CC) $(CFLAGS) $(MODULES) $(LDFLAGS) -o $@
