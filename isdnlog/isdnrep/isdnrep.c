@@ -1,4 +1,4 @@
-/* $Id: isdnrep.c,v 1.14 1997/05/04 20:19:54 luethje Exp $
+/* $Id: isdnrep.c,v 1.15 1997/05/04 22:23:15 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -20,6 +20,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnrep.c,v $
+ * Revision 1.15  1997/05/04 22:23:15  luethje
+ * README completed
+ * new features of the format string
+ *
  * Revision 1.14  1997/05/04 20:19:54  luethje
  * README completed
  * isdnrep finished
@@ -164,6 +168,14 @@
 
 /*****************************************************************************/
 
+#define GET_OUT     0
+#define GET_IN      1
+
+#define GET_BYTES   0
+#define GET_BPS     2
+
+/*****************************************************************************/
+
 #define C_BEGIN_FMT '%'
 
 #define FMT_FMT 1
@@ -235,7 +247,7 @@ static int print_bottom(double unit, char *start, char *stop);
 static char *get_time_value(time_t t, int *day, int flag);
 static char **string_to_array(char *string);
 static prt_fmt** get_format(const char *format);
-static char *set_byte_string(char Direction, double Bytes);
+static char *set_byte_string(int flag, double Bytes);
 static int print_line(int status, one_call *cur_call, int computed, char *overlap);
 static int print_line2(int status, const char *, ...);
 static int print_line3(const char *fmt, ...);
@@ -569,8 +581,8 @@ static int print_bottom(double unit, char *start, char *stop)
 					          double2clock(known[i]->dur[j]),
 					          j==DIALOUT?print_currency(known[i]->dm,0):
 					                     fill_spaces(print_currency(known[i]->dm,0)),
-					          set_byte_string('I',known[i]->ibytes[j]),
-					          set_byte_string('O',known[i]->obytes[j]));
+					          set_byte_string(GET_IN|GET_BYTES,known[i]->ibytes[j]),
+					          set_byte_string(GET_OUT|GET_BYTES,known[i]->obytes[j]));
 				} /* if */
 			} /* for */
 
@@ -954,17 +966,19 @@ static int print_line(int status, one_call *cur_call, int computed, char *overla
 				          break;
 				/* In-Bytes: */
 				/* Benoetigt Range! */
-				case 'I': if (cur_call->ibytes)
-				          	colsize[i] = append_string(&string,*fmtstring,set_byte_string('I',(double)cur_call->ibytes));
-				          else
-				          	colsize[i] = append_string(&string,*fmtstring, "            ");
+				case 'I': colsize[i] = append_string(&string,*fmtstring,set_byte_string(GET_IN|GET_BYTES,(double)cur_call->ibytes));
 				          break;
 				/* Out-Bytes: */
 				/* Benoetigt Range! */
-				case 'O': if (cur_call->obytes)
-				          	colsize[i] = append_string(&string,*fmtstring,set_byte_string('O',(double)cur_call->obytes));
-				          else
-				          	colsize[i] = append_string(&string,*fmtstring, "            ");
+				case 'O': colsize[i] = append_string(&string,*fmtstring,set_byte_string(GET_OUT|GET_BYTES,(double)cur_call->obytes));
+				          break;
+				/* In-Bytes per second: */
+				/* Benoetigt Range! */
+				case 'P': colsize[i] = append_string(&string,*fmtstring,set_byte_string(GET_IN|GET_BPS,cur_call->duration?cur_call->ibytes/(double)cur_call->duration:0.0));
+				          break;
+				/* Out-Bytes per second: */
+				/* Benoetigt Range! */
+				case 'p': colsize[i] = append_string(&string,*fmtstring,set_byte_string(GET_OUT|GET_BPS,cur_call->duration?cur_call->obytes/(double)cur_call->duration:0.0));
 				          break;
 				/* there are dummy entries */
 				case 'c': 
@@ -1122,7 +1136,7 @@ static char *html_conv(char *string)
 
 /*****************************************************************************/
 
-static char *set_byte_string(char Direction, double Bytes)
+static char *set_byte_string(int flag, double Bytes)
 {
 	static char string[4][20];
 	static int num = 0;
@@ -1131,19 +1145,24 @@ static char *set_byte_string(char Direction, double Bytes)
 	num = (num+1)%4;
 
 	if (!Bytes)
-		strcpy(string[num],"            ");
+	{
+		if (flag & GET_BPS)
+			strcpy(string[num],"              ");
+		else
+			strcpy(string[num],"            ");
+	}
 	else
 	if (Bytes >= 9999999999.0)
- 		sprintf(string[num],"%c=%s GB",Direction,double2str(Bytes/1073741824,7,2,0));
+ 		sprintf(string[num],"%c=%s GB%s",flag&GET_IN?'I':'O',double2str(Bytes/1073741824,7,2,0),flag&GET_BPS?"/s":"");
 	else
 	if (Bytes >= 9999999)
-		sprintf(string[num],"%c=%s MB",Direction,double2str(Bytes/1048576,7,2,0));
+		sprintf(string[num],"%c=%s MB%s",flag&GET_IN?'I':'O',double2str(Bytes/1048576,7,2,0),flag&GET_BPS?"/s":"");
 	else
 	if (Bytes >= 9999)
-		sprintf(string[num],"%c=%s kB",Direction,double2str(Bytes/1024,7,2,0));
+		sprintf(string[num],"%c=%s kB%s",flag&GET_IN?'I':'O',double2str(Bytes/1024,7,2,0),flag&GET_BPS?"/s":"");
 	else
 	if (Bytes < 9999)
-		sprintf(string[num],"%c=%4ld,00  B",Direction,(long int) Bytes);
+		sprintf(string[num],"%c=%4ld,00  B%s",flag&GET_IN?'I':'O',(long int) Bytes,flag&GET_BPS?"/s":"");
 
 	return string[num];
 }
@@ -2173,16 +2192,6 @@ static void strich(int type)
 			string[--size] = type==2?'=':'-';
 
 		print_msg(PRT_NORMAL,"%s\n",string);
-		/*
-		switch (type) {
-			case 1 : print_msg(PRT_NORMAL,"----------------------------------------------------------------------------------------\n");
-			         break;
-			case 2 : print_msg(PRT_NORMAL,"========================================================================================\n");
-			         break;
-			case 3 : print_msg(PRT_NORMAL,"------------------------------------------------------------\n");
-			         break;
-		}
-		*/
 		
 		free(string);
   }

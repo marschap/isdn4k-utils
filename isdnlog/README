@@ -2495,16 +2495,22 @@ Die Optionen von isdnrep haben im einzelnen folgende Funktion:
                      %D: Gespraechsdauer (z.B. 00:03:34)
                      %H: Die eigene MSN, wenn ein Eintrag in der callerid.conf
                          gefunden wurde wird dort das Alias angezeigt.
+                         Es sollte die Precision angegeben werden!
                      %h: Die eigene MSN (kein Alias, nur die Nummer)
+                         Es sollte die Precision angegeben werden!
                      %F: Der andere Gesprachsteilnehmer, wenn ein Eintrag in
                          der callerid.conf gefunden wurde wird dort das Alias
                          angezeigt.
+                         Es sollte die Precision angegeben werden!
                      %f: Der andere Gesprachsteilnehmer (kein Alias, nur die
                          Nummer)
+                         Es sollte die Precision angegeben werden!
                      %L: Gibt den Ort aus fuer die eigene MSN falls bekannt,
                          sonst ein Leerstring.
+                         Es sollte die Precision angegeben werden!
                      %l: Gibt den Ort aus fuer den anderen Gesprachsteilnehmer
                          falls bekannt, sonst ein Leerstring.
+                         Es sollte die Precision angegeben werden!
                      %T: Gibt den Pfeil an zischen den Nummern ("->" oder "<-")
                          fuer die Gespraechsrichtung. Die eigene MSN
                          sollte hierbei immer links vom Pfeil stehen.
@@ -2513,14 +2519,22 @@ Die Optionen von isdnrep haben im einzelnen folgende Funktion:
                          sollte hierbei immer rechts vom Pfeil stehen.
 
                      %u: Gibt die Einheiten aus, falls vorhanden (z.B. 6 EH)
+                         Es sollte die Precision angegeben werden!
                      %U: Gibt die Gebuehren aus, falls vorhanden (z.B. 2,28 DM)
                      %I: Gibt den INPUT-Datendurchsatz an.
                      %O: Gibt den OUTPUT-Datendurchsatz an.
+                     %P: Gibt den INPUT-Datendurchsatz pro Sekunde an.
+                     %p: Gibt den OUTPUT-Datendurchsatz pro Sekunde an.
 
                      Defaultmaessig ist der folgende String fuer den isdnrep
                      (nicht HTML) eingestellt:
 
                      "  %X %D %15.15H %T %-15.15F %7u %U %I %O"
+
+                     Mit dem folgenden String hat man alle wichtigen Daten
+                     ueber 80 Zeichen pro Zeile:
+
+                     "%X%D %10.10H%T%-14.14F%U%I %O"
 
 -FX         "format" Es koennen in der Datei isdn.conf Format-Strings definiert
                      werden. Diese koennen mit Option -F verwendet werden.
@@ -2530,7 +2544,7 @@ Die Optionen von isdnrep haben im einzelnen folgende Funktion:
 
                      REPFMT1        = ... # -> isdnrep -F1
                      REPFMTMYSTRING = ... # -> isdnrep -Fmystring oder
-                                          #    isdnrep -FMYSTRING
+                                          #    isdnrep -F MYSTRING
 
 Es wird nun auf stdout eine Abrechnung mit folgender Default-Optik generiert:
 
