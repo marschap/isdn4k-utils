@@ -1,7 +1,10 @@
 /*
- * $Id: convert.c,v 1.6 1999/09/10 17:20:33 calle Exp $
+ * $Id: convert.c,v 1.7 1999/09/15 08:10:44 calle Exp $
  *
  * $Log: convert.c,v $
+ * Revision 1.7  1999/09/15 08:10:44  calle
+ * Bugfix: error in 64Bit extention.
+ *
  * Revision 1.6  1999/09/10 17:20:33  calle
  * Last changes for proposed standards (CAPI 2.0):
  * - AK1-148 "Linux Extention"
@@ -93,6 +96,7 @@ static _cdef cdef[] = {
     /*2e*/{_CWORD,      offsetof(_cmsg,Reason_B3)	},
     /*2f*/{_CWORD,      offsetof(_cmsg,Reject)	},
     /*30*/{_CSTRUCT,    offsetof(_cmsg,Useruserdata)	},
+    /*31*/{_CDWORD,     offsetof(_cmsg,Data64)	},
 };
 
 static unsigned char *cpars[] = {
