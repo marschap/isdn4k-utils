@@ -1,4 +1,4 @@
-/* $Id: isdnrep.c,v 1.5 1997/03/24 22:52:12 luethje Exp $
+/* $Id: isdnrep.c,v 1.6 1997/03/31 22:43:15 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -20,6 +20,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnrep.c,v $
+ * Revision 1.6  1997/03/31 22:43:15  luethje
+ * Improved performance of the isdnrep, made some changes of README
+ *
  * Revision 1.5  1997/03/24 22:52:12  luethje
  * isdnrep completed.
  *
@@ -139,9 +142,7 @@ int main(int argc, char *argv[], char *envp[])
 
 
 	set_print_fct_for_tools(printf);
-
-
-	use_new_config = 1;
+	set_print_fct_for_isdnrep(print_in_modules);
 
   if (!currency_factor)
     currency = "DM";
@@ -200,13 +201,10 @@ int main(int argc, char *argv[], char *envp[])
                  return(1);
     } /* switch */
 
-	set_print_fct_for_isdnrep(print_in_modules);
-	set_print_fct_for_tools(printf);
-
   if (readconfig(myname) != 0)
   	return 1;
 
-	return (!read_logfile(myname));
+	return (read_logfile(myname));
 }
 
 /*****************************************************************************/
@@ -222,6 +220,7 @@ static int print_in_modules(int Level, const char *fmt, ...)
 	va_end(ap);
 
 	return fprintf(Level == PRT_ERR?stderr:stdout, "%s", String);
-	} /* print_in_modules */
+} /* print_in_modules */
 
+/*****************************************************************************/
 

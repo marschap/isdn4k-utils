@@ -1,4 +1,4 @@
-/* $Id: tools.h,v 1.7 1997/03/29 09:24:34 akool Exp $
+/* $Id: tools.h,v 1.8 1997/03/31 22:43:18 luethje Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools.h,v $
+ * Revision 1.8  1997/03/31 22:43:18  luethje
+ * Improved performance of the isdnrep, made some changes of README
+ *
  * Revision 1.7  1997/03/29 09:24:34  akool
  * CLIP presentation enhanced, new ILABEL/OLABEL operators
  *
@@ -573,7 +576,6 @@ PUBLIC char     ilabel[256];
 PUBLIC char    	olabel[256];
 PUBLIC char    	idate[256];
 PUBLIC CALL    	call[MAXCHAN];
-PUBLIC int     	use_new_config;
 #ifdef Q931
 PUBLIC int     	q931dmp;
 #endif
@@ -591,11 +593,13 @@ extern char *optarg;
 
 #ifdef _TOOLS_C_
 #define _EXTERN
+#define _EXTERN
 
 _EXTERN char* reloadcmd = RELOADCMD;
 _EXTERN char* stopcmd   = STOPCMD;
 _EXTERN char* rebootcmd = REBOOTCMD;
 _EXTERN int  (*_print_msg)(const char *, ...) = printf;
+_EXTERN int   use_new_config = 1;
 
 #else
 #define _EXTERN extern
@@ -604,6 +608,7 @@ _EXTERN char* reloadcmd;
 _EXTERN char* stopcmd;
 _EXTERN char* rebootcmd;
 _EXTERN int  (*_print_msg)(const char *, ...);
+_EXTERN int   use_new_config;
 
 #endif
 

@@ -1,4 +1,4 @@
-/* $Id: function.c,v 1.1 1997/03/24 22:52:09 luethje Exp $
+/* $Id: function.c,v 1.2 1997/03/31 22:43:11 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -20,6 +20,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: function.c,v $
+ * Revision 1.2  1997/03/31 22:43:11  luethje
+ * Improved performance of the isdnrep, made some changes of README
+ *
  * Revision 1.1  1997/03/24 22:52:09  luethje
  * isdnrep completed.
  *
@@ -122,6 +125,11 @@
 
 #define END_TIME		1
 
+#define SET_TIME		1
+#define GET_TIME		2
+#define GET_DATE		4
+#define GET_YEAR		8
+
 /*****************************************************************************/
 
 static time_t get_month(char *String, int TimeStatus);
@@ -136,8 +144,11 @@ static void strich(int type);
 static int n_match(char *Pattern, char* Number, char* version);
 static int set_caller_infos(one_call *cur_call, char *string);
 static int set_alias(one_call *cur_call, int *nx, char *myname);
-static int print_header(int lday, char *time_string, sum_calls *day_sum, sum_calls *day_com_sum, sum_calls *all_sum, sum_calls *all_com_sum);
-static int print_entries(one_call *cur_call,  sum_calls *day_sum, sum_calls *day_com_sum, double unit, int Tarif96, int *nx, char *myname);
+static int print_header(int lday, sum_calls *day_sum, sum_calls *day_com_sum, sum_calls *all_sum, sum_calls *all_com_sum);
+static int print_entries(one_call *cur_call, sum_calls *day_sum, sum_calls *day_com_sum, double unit, int Tarif96, int *nx, char *myname);
+static int print_bottom(sum_calls *all_sum, sum_calls *all_com_sum, sum_calls *day_sum, sum_calls *day_com_sum, double unit, char *start, char *stop);
+static char *get_time_value(time_t t, int *day, int *Tarif96, int *Tarif962, int flag);
+static char **string_to_array(char *string);
 
 /*****************************************************************************/
 
@@ -196,17 +207,15 @@ int read_logfile(char *myname)
   auto	   int 	      Tarif96 = 0, Tarif962 = 0;
   auto	   double     einheit = 0.23;
   auto	   int	      nx[2];
-  auto	   time_t     now, from = (time_t)0;
+  auto	   time_t     now, from = 0;
   auto 	   struct tm *tm;
   auto	   int	      lday = -1;
   auto	   char	      start[20] = "", stop[20];
   auto	   char*      tmpfile = NULL;
   auto     FILE      *fi, *ftmp = NULL;
-  auto     char       string[BUFSIZ], s[BUFSIZ], s1[BUFSIZ];
-  register char      *p = NULL;
-  register int	      i, k;
+  auto     char       string[BUFSIZ], s[BUFSIZ];
   one_call            cur_call;
-  sum_calls           day_sum, day_com_sum, all_sum, all_com_sum, tmp_sum;
+  sum_calls           day_sum, day_com_sum, all_sum, all_com_sum;
 
 
   clear_sum(&day_sum);
@@ -215,6 +224,7 @@ int read_logfile(char *myname)
   clear_sum(&all_com_sum);
 
   if (delentries)
+  {
     if(begintime)
     {
       print_msg(PRT_ERR, wrongdate2, timestring);
@@ -231,6 +241,7 @@ int read_logfile(char *myname)
         return -1;
       }
     }
+  }
 
   if (!timearea) { /* from darf nicht gesetzt werden, wenn alle Telefonate angezeigt werden sollen */
     time(&now);
@@ -291,17 +302,7 @@ int read_logfile(char *myname)
 		if (outgoingonly && cur_call.dir == DIALIN)
 			continue;
 
-		tm = localtime(&(cur_call.t));
-		/* Zeit von 1970 nach Struktur */
- 		day = tm->tm_mday;
- 		month = tm->tm_mon;
-
-		Tarif96 = tm->tm_year > 95;
-
-		/* Ab Juli '96 gibt's noch mal eine Senkung in den Zonen 3 und 4
-		   genaue Preise sind jedoch noch nicht bekannt. FIX-ME */
-
-		Tarif962 = Tarif96 && (tm->tm_mon > 5);
+		get_time_value(cur_call.t,&day,&Tarif96,&Tarif962,SET_TIME);
 
 		/* Andreas, warum ist diese Abfrage hier drin, warum soll das nicht moeglich
 		   sein? */
@@ -310,26 +311,22 @@ int read_logfile(char *myname)
 
 		set_alias(&cur_call,nx,myname);
 
-		strcpy(s1, ctime(&cur_call.t));
-
-		if ((p = strchr(s1, '\n')))
-			*p = 0;
-
 		if (day != lday) {
-			*(s1 + 10) = 0;
-
 			if (header)
-				print_header(lday,s1,&day_sum,&day_com_sum,&all_sum,&day_com_sum);
+				print_header(lday,&day_sum,&day_com_sum,&all_sum,&day_com_sum);
 
 			lday = day;
 
 			if (!*start)
 			{
-				sprintf(start, "%s %s", s1, s1 + 20);
-				sprintf(stop, "%s %s", s1, s1 + 20);
+				sprintf(start, "%s %s", get_time_value(0,NULL,NULL,NULL,GET_DATE),
+				                        get_time_value(0,NULL,NULL,NULL,GET_YEAR));
+				sprintf(stop, "%s %s", get_time_value(0,NULL,NULL,NULL,GET_DATE),
+				                       get_time_value(0,NULL,NULL,NULL,GET_YEAR));
 			}
 			else
-				sprintf(stop, "%s %s", s1, s1 + 20);
+				sprintf(stop, "%s %s", get_time_value(0,NULL,NULL,NULL,GET_DATE),
+				                       get_time_value(0,NULL,NULL,NULL,GET_YEAR));
 		} /* if */
 
 		if (!currency_factor)
@@ -349,190 +346,196 @@ int read_logfile(char *myname)
 
 	fclose(fi);
 
-    if (delentries) /* Erzeugt neue verkuerzte Datei */
-      lday = -1;
+	if (delentries) /* Erzeugt neue verkuerzte Datei */
+		lday = -1;
 
-    if (lday != -1) {
+	if (lday != -1 && header)
+		print_bottom(&all_sum, &all_com_sum, &day_sum, &day_com_sum, einheit, start, stop);
 
-      if (timearea) {
-        strich(1);
-        print_sum_calls(&day_sum,0);
+	if (delentries) /* Erzeugt neue verkuerzte Datei */
+	{
+		fclose(ftmp);
 
-        if (day_com_sum.eh)
-        {
-          print_sum_calls(&day_com_sum,1);
+		if ((ftmp = fopen(tmpfile, "r")) == (FILE *)NULL)
+		{
+			print_msg(PRT_ERR, msg1, tmpfile, strerror(errno));
+			return -1;
+		}
+		if ((fi = fopen(lfnam, "w")) == (FILE *)NULL)
+		{
+			print_msg(PRT_ERR, msg1, lfnam, strerror(errno));
+			return -1;
+		}
 
-          clear_sum(&tmp_sum);
-          add_sum_calls(&tmp_sum,&day_sum);
-          add_sum_calls(&tmp_sum,&day_com_sum);
-          strich(1);
-          print_sum_calls(&tmp_sum,0);
-        }
-        else
-          print_msg(PRT_NORMAL,"\n");
-      } /* if */
+		while (fgets(s, BUFSIZ, ftmp))
+			fputs(s,fi);
 
-      add_sum_calls(&all_sum,&day_sum);
-      add_sum_calls(&all_com_sum,&day_com_sum);
+		fclose(fi);
+		fclose(ftmp);
 
-      strich(2);
-      print_sum_calls(&all_sum,0);
-
-      if (all_com_sum.eh)
-      {
-        print_sum_calls(&all_com_sum,1);
-
-        clear_sum(&tmp_sum);
-        add_sum_calls(&tmp_sum,&all_sum);
-        add_sum_calls(&tmp_sum,&all_com_sum);
-        strich(2);
-        print_sum_calls(&tmp_sum,0);
-      }
-      else
-        print_msg(PRT_NORMAL,"\n");
-
-      if (!incomingonly)
-      {
-        if (timearea)
-          print_msg(PRT_NORMAL,"\nDIALOUT Summary for %s .. %s\n", start, stop);
-        else
-          print_msg(PRT_NORMAL,"\nDIALOUT Summary for %s\n", start);
-
-        strich(3);
-
-        for (i = mymsns; i < knowns; i++) {
-          if (known[i]->usage[DIALOUT]) {
-            print_msg(PRT_NORMAL,"%-14s %4d call(s) %s  %s\n",
-              !numbers?known[i]->who:known[i]->num,
-              known[i]->usage[DIALOUT],
-              double2clock(known[i]->dur[DIALOUT]),
-              print_currency(known[i]->eh,known[i]->dm,7));
-          } /* if */
-        } /* for */
-
-        if (restusage) {
-          print_msg(PRT_NORMAL,"%-14s %4d call(s) %s  %s\n",
-            S_UNKNOWN,
-            restusage,
-            double2clock(restdur),
-            print_currency(resteh,restdm,7));
-        } /* if */
-
-        print_msg(PRT_NORMAL,"\n");
-      }
-
-      if (!outgoingonly)
-      {
-        if (timearea)
-          print_msg(PRT_NORMAL,"\nDIALIN Summary for %s .. %s\n", start, stop);
-        else
-          print_msg(PRT_NORMAL,"\nDIALIN Summary for %s\n", start);
-
-        strich(3);
-
-        for (i = mymsns; i < knowns; i++) {
-          if (known[i]->usage[DIALIN]) {
-            print_msg(PRT_NORMAL,"%-14s %4d call(s) %s\n",
-              !numbers?known[i]->who:known[i]->num,
-              known[i]->usage[DIALIN],
-              double2clock(known[i]->dur[CALLED]));
-          } /* if */
-        } /* for */
-
-        if (restiusage) {
-          print_msg(PRT_NORMAL,"%-14s %4d call(s) %s\n",
-            S_UNKNOWN,
-            restiusage,
-            double2clock(restidur));
-        } /* if */
-
-        print_msg(PRT_NORMAL,"\n\n");
-      }
-
-      for (i = 1; i < MAXZONES; i++)
-        if (zones[i]) {
-
-          p = "";
-
-          switch (i) {
-            case 1 : p = "City";       break;
-            case 2 : p = "Region 50";  break;
-            case 3 : p = "Region 200"; break;
-            case 4 : p = "Fernzone";   break;
-          } /* switch */
-
-          print_msg(PRT_NORMAL,"Zone %d : %-15s %4d call(s) %s  %s\n", i, p,
-            zones_usage[i],
-            double2clock(zones_dur[i]),
-            print_currency(zones[i],zones_dm[i],7));
-        } /* if */
-
-				if (resteh)
- 	    	{
- 	      	print_msg(PRT_NORMAL,"Zone x : %-15s %4d call(s) %s  %s\n", S_UNKNOWN,
-                    restusage,
-                    double2clock(restdur),
-#ifdef ISDN_NL
-                    print_currency(resteh, resteh * einheit + restusage * 0.0825,7));
-#else
-                    print_currency(resteh, resteh * einheit, 7));
-#endif
-	      }
-
- 	    if (unknowns) {
-       	print_msg(PRT_NORMAL,"\n\nUnknown caller(s)\n");
-        strich(3);
-
-       for (i = 0; i < unknowns; i++) {
-
-       print_msg(PRT_NORMAL,"%s %-14s ", unknown[i].called ? "called by" : "  calling", unknown[i].num);
-
-          for (k = 0; k < unknown[i].connects; k++) {
-            strcpy(s1, ctime(&unknown[i].connect[k]));
-
-            if ((p = strchr(s1, '\n')))
-              *p = 0;
-
-            *(s1 + 19) = 0;
-
-            if (k && (k + 1) % 2) {
-              print_msg(PRT_NORMAL,"\n\t\t\t ");
-            } /* if */
-
-            print_msg(PRT_NORMAL,"%s%s", k & 1 ? ", " : "", s1 + 4);
-          } /* for */
-
-          print_msg(PRT_NORMAL,"\n");
-        } /* for */
-      } /* if */
-    } /* if */
-
-  if (delentries) /* Erzeugt neue verkuerzte Datei */
-  {
-    fclose(ftmp);
-
- 		if ((ftmp = fopen(tmpfile, "r")) == (FILE *)NULL)
-    {
-      print_msg(PRT_ERR, msg1, tmpfile, strerror(errno));
-      return -1;
-    }
- 		if ((fi = fopen(lfnam, "w")) == (FILE *)NULL)
-    {
-      print_msg(PRT_ERR, msg1, lfnam, strerror(errno));
-      return -1;
-    }
-
-    while (fgets(s, BUFSIZ, ftmp))
-      fputs(s,fi);
-
-    fclose(fi);
-    fclose(ftmp);
-
-    unlink(tmpfile);
-  }
+		unlink(tmpfile);
+	}
 
 	return 0;
 } /* read_logfile */
+
+/*****************************************************************************/
+
+static int print_bottom(sum_calls *all_sum, sum_calls *all_com_sum, sum_calls *day_sum, sum_calls *day_com_sum, double unit, char *start, char *stop)
+{
+  auto     char       string[BUFSIZ];
+  register int	      i, k;
+  register char      *p = NULL;
+  sum_calls           tmp_sum;
+
+	if (timearea) {
+		strich(1);
+		print_sum_calls(day_sum,0);
+
+		if (day_com_sum->eh)
+		{
+			print_sum_calls(day_com_sum,1);
+
+			clear_sum(&tmp_sum);
+			add_sum_calls(&tmp_sum,day_sum);
+			add_sum_calls(&tmp_sum,day_com_sum);
+			strich(1);
+			print_sum_calls(&tmp_sum,0);
+		}
+		else
+			print_msg(PRT_NORMAL,"\n");
+	} /* if */
+
+	add_sum_calls(all_sum,day_sum);
+	add_sum_calls(all_com_sum,day_com_sum);
+
+	strich(2);
+	print_sum_calls(all_sum,0);
+
+	if (all_com_sum->eh)
+	{
+		print_sum_calls(all_com_sum,1);
+
+		clear_sum(&tmp_sum);
+		add_sum_calls(&tmp_sum,all_sum);
+		add_sum_calls(&tmp_sum,all_com_sum);
+		strich(2);
+		print_sum_calls(&tmp_sum,0);
+	}
+	else
+		print_msg(PRT_NORMAL,"\n");
+
+	if (!incomingonly)
+	{
+		if (timearea)
+			print_msg(PRT_NORMAL,"\nDIALOUT Summary for %s .. %s\n", start, stop);
+		else
+			print_msg(PRT_NORMAL,"\nDIALOUT Summary for %s\n", start);
+
+		strich(3);
+
+		for (i = mymsns; i < knowns; i++) {
+			if (known[i]->usage[DIALOUT]) {
+				print_msg(PRT_NORMAL,"%-14s %4d call(s) %s  %s\n",
+				          !numbers?known[i]->who:known[i]->num,
+				          known[i]->usage[DIALOUT],
+				          double2clock(known[i]->dur[DIALOUT]),
+				          print_currency(known[i]->eh,known[i]->dm,7));
+			} /* if */
+		} /* for */
+
+		if (restusage) {
+			print_msg(PRT_NORMAL,"%-14s %4d call(s) %s  %s\n",
+			          S_UNKNOWN, restusage, double2clock(restdur),
+			          print_currency(resteh,restdm,7));
+		} /* if */
+
+		print_msg(PRT_NORMAL,"\n");
+	}
+
+	if (!outgoingonly)
+	{
+		if (timearea)
+			print_msg(PRT_NORMAL,"\nDIALIN Summary for %s .. %s\n", start, stop);
+		else
+			print_msg(PRT_NORMAL,"\nDIALIN Summary for %s\n", start);
+
+		strich(3);
+
+		for (i = mymsns; i < knowns; i++) {
+			if (known[i]->usage[DIALIN]) {
+				print_msg(PRT_NORMAL,"%-14s %4d call(s) %s\n",
+				          !numbers?known[i]->who:known[i]->num,
+				          known[i]->usage[DIALIN],
+				          double2clock(known[i]->dur[CALLED]));
+			} /* if */
+		} /* for */
+
+		if (restiusage) {
+			print_msg(PRT_NORMAL,"%-14s %4d call(s) %s\n",
+			          S_UNKNOWN, restiusage, double2clock(restidur));
+		} /* if */
+
+		print_msg(PRT_NORMAL,"\n\n");
+	}
+
+	for (i = 1; i < MAXZONES; i++)
+		if (zones[i]) {
+
+			p = "";
+
+			switch (i) {
+				case 1 : p = "City";       break;
+				case 2 : p = "Region 50";  break;
+				case 3 : p = "Region 200"; break;
+				case 4 : p = "Fernzone";   break;
+			} /* switch */
+
+			print_msg(PRT_NORMAL,"Zone %d : %-15s %4d call(s) %s  %s\n", i, p,
+			          zones_usage[i], double2clock(zones_dur[i]),
+			          print_currency(zones[i],zones_dm[i],7));
+		} /* if */
+
+		if (resteh)
+		{
+			print_msg(PRT_NORMAL,"Zone x : %-15s %4d call(s) %s  %s\n", S_UNKNOWN,
+			          restusage, double2clock(restdur),
+#ifdef ISDN_NL
+			          print_currency(resteh, resteh * unit + restusage * 0.0825,7));
+#else
+			          print_currency(resteh, resteh * unit, 7));
+#endif
+		}
+
+		if (unknowns) {
+			print_msg(PRT_NORMAL,"\n\nUnknown caller(s)\n");
+			strich(3);
+
+			for (i = 0; i < unknowns; i++) {
+
+				print_msg(PRT_NORMAL,"%s %-14s ", unknown[i].called ? "called by" : "  calling", unknown[i].num);
+
+				for (k = 0; k < unknown[i].connects; k++) {
+					strcpy(string, ctime(&unknown[i].connect[k]));
+
+					if ((p = strchr(string, '\n')))
+						*p = 0;
+
+					*(string + 19) = 0;
+
+					if (k && (k + 1) % 2) {
+						print_msg(PRT_NORMAL,"\n\t\t\t ");
+				} /* if */
+
+				print_msg(PRT_NORMAL,"%s%s", k & 1 ? ", " : "", string + 4);
+			} /* for */
+
+			print_msg(PRT_NORMAL,"\n");
+		} /* for */
+	} /* if */
+
+	return 0;
+}
 
 /*****************************************************************************/
 
@@ -541,14 +544,9 @@ static int print_entries(one_call *cur_call, sum_calls *day_sum, sum_calls *day_
 	auto time_t  t1, t2;
 	auto double  takt;
   auto int     computed = 0, go, zone = 1, zeit = -1;
-	char         time_string[SHORT_STRING_SIZE];
-  auto struct tm *tm;
 
-
-  tm = localtime(&cur_call->t);
-	strftime(time_string,SHORT_STRING_SIZE,"%X",tm);
-
-	print_msg(PRT_NORMAL,"  %s %s", time_string, double2clock(cur_call->duration));
+	print_msg(PRT_NORMAL,"  %s %s", get_time_value(0,NULL,NULL,NULL,GET_TIME),
+	                                double2clock(cur_call->duration));
 
 	if (cur_call->dir)
 		print_msg(PRT_NORMAL," %14s <- %-14s", cur_call->num[CALLED], cur_call->num[CALLING]);
@@ -599,9 +597,9 @@ static int print_entries(one_call *cur_call, sum_calls *day_sum, sum_calls *day_
 
 		while (t1 < t2) {
 			if (Tarif96)
-				takt = cheap96((time_t)t1, zone, &zeit);
+				takt = cheap96(t1, zone, &zeit);
 			else
-				takt = cheap((time_t)t1, zone);
+				takt = cheap(t1, zone);
 
 			if (!takt) {
 				print_msg(PRT_ERR, "%s: OOPS! Abbruch: Zeittakt==0 ???\n", myname);
@@ -677,9 +675,8 @@ static int print_entries(one_call *cur_call, sum_calls *day_sum, sum_calls *day_
 
 /*****************************************************************************/
 
-static int print_header(int lday, char *time_string, sum_calls *day_sum,
-                        sum_calls *day_com_sum,sum_calls *all_sum,
-                        sum_calls *all_com_sum                          )
+static int print_header(int lday, sum_calls *day_sum, sum_calls *day_com_sum,
+                        sum_calls *all_sum, sum_calls *all_com_sum           )
 {
   sum_calls tmp_sum;
 	time_t now;
@@ -714,9 +711,63 @@ static int print_header(int lday, char *time_string, sum_calls *day_sum,
 		clear_sum(day_com_sum);
 	} /* if */
 
-	print_msg(PRT_NORMAL,"\n\n%s %s\n", time_string, time_string + 20);
+	print_msg(PRT_NORMAL,"\n\n%s %s\n", get_time_value(0,NULL,NULL,NULL,GET_DATE),
+	                                    get_time_value(0,NULL,NULL,NULL,GET_YEAR));
 
 	return 0;
+}
+
+/*****************************************************************************/
+
+static char *get_time_value(time_t t, int *day, int *Tarif96, int *Tarif962, int flag)
+{
+	static char time_string[3][18] = {"","",""};
+	static int  oldday = -1;
+	static int  oldyear = -1;
+	struct tm *tm;
+	
+
+	if (flag & SET_TIME)
+	{
+  	tm = localtime(&t);
+
+		/*sprintf(time_string[0],"%d:%d:%d",tm->tm_hour,tm->tm_min,tm->tm_sec);*/
+		strftime(time_string[0],17,"%X",tm);
+
+		if (oldday != tm->tm_yday || oldyear != tm->tm_year)
+		{
+	 		*day = tm->tm_mday;
+
+			*Tarif96 = tm->tm_year > 95;
+
+		/* Ab Juli '96 gibt's noch mal eine Senkung in den Zonen 3 und 4
+		   genaue Preise sind jedoch noch nicht bekannt. FIX-ME */
+
+			*Tarif962 = (Tarif96 && (tm->tm_mon > 5)) || (tm->tm_year > 96);
+
+			strftime(time_string[1],17,"%a %b %d",tm);
+			/*strftime(time_string[1],17,"%x",tm);*/
+			oldday  = tm->tm_yday;
+
+			if (oldyear != tm->tm_year)
+			{
+				sprintf(time_string[2],"%d",1900+tm->tm_year);
+				oldyear = tm->tm_year;
+			}
+		}
+	}
+
+	if (flag & GET_TIME)
+		return time_string[0];
+	else
+	if (flag & GET_DATE)
+		return time_string[1];
+	else
+	if (flag & GET_YEAR)
+		return time_string[2];
+
+	return NULL;
+
 }
 
 /*****************************************************************************/
@@ -826,23 +877,12 @@ static int set_caller_infos(one_call *cur_call, char *string)
 {
   register int    i = 0;
   auto     char **array;
-  auto     char  *ptr;
 
 
-	if ((ptr = strrchr(string,C_DELIM)) != NULL)
-		*ptr = '\0';
-
-	if ((array = String_to_Array(string,C_DELIM)) == NULL)
-	{
-		print_msg(PRT_ERR,"Can not allocate memory!\n");
-		return -1;
-	}
+	array = string_to_array(string);
 
 	if (array[0] == NULL)
-	{
-		del_Array(array);
 		return -1;
-	}
 
 	cur_call->eh = 0;
 	cur_call->dir = -1;
@@ -901,6 +941,29 @@ static int set_caller_infos(one_call *cur_call, char *string)
 		return -1;
 
 	return 0;
+}
+
+/*****************************************************************************/
+
+static char **string_to_array(char *string)
+{
+	static char *array[30];
+	auto   char *ptr;
+	auto   int   i = 0;
+
+	if ((ptr = strrchr(string,C_DELIM)) != NULL)
+		*ptr = '\0';
+
+	array[0] = string;
+
+	while((string = strchr(string,C_DELIM)) != NULL)
+	{
+		*string++ = '\0';
+		array[++i] = string;
+	}
+
+	array[++i] = NULL;
+	return array;
 }
 
 /*****************************************************************************/

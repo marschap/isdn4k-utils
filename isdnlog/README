@@ -538,7 +538,7 @@ AVONLIB:
 	avon obsolet.
 
 
-Die ISDN-Tools erlaubt es, Umbebungsvariablen zu setzen und zu verwenden.
+Die ISDN-Tools erlauben es, Umbebungsvariablen zu setzen und zu verwenden.
 Es gibt Variablen, die sollten in der isdn.conf (oder vorher) gesetzt
 sein. Diese werden in der Sektion [VARIABLES] zu setzen.
 Beispiel:
@@ -704,6 +704,7 @@ zu finden.
 4.2 Die Dateien "callerid.conf" und "~/.isdn"
 ---------------------------------------------
 
+*************** Unterschied der beiden Dateien ***************
 Hier koennen eine beliebige Anzahl von Telefonnummer nebst einigen
 zusaetzlichen Parametern angegeben werden.
 Die Angabe _aller_ eigenen Telefonnummern ist zwingend, alle weiteren
@@ -714,7 +715,7 @@ einen Eintrag in der Form
 
 SI=4 # Video
 
-relisiert.
+realisiert.
 
 isdnlog unterscheidet rein- und rausgehende Verbindungen nach der
 MSN (Telefonnummer), sowie dem Service Indicator ("Dienstkennung").
@@ -827,7 +828,7 @@ und S_PREFIX_COUNTRY, wie sie waehrend der Installation eingestellt wurden,
 werden so ueberall uebernommen.
 
 Es ist aber empfehlenswert ueberall die Vorwahl mit anzugeben (ist auch bei
-der MSN moeglich). Wenn man z.B. umzieht in eine ander Stadt,
+der MSN moeglich). Wenn man z.B. umzieht in eine andere Stadt,
 muss man sonst die gesamte Datei ueberarbeiten. Das entfallt, wenn
 ueberall die Vorwahl angibt.
 
@@ -841,6 +842,7 @@ NUMBER = +49 815/4711
 NUMBER = +49 815/471*
 NUMBER = +49 815/471?
 NUMBER = +49 815/47[!6]1
+NUMBER = 4711, 4712, +49 815/4713
 
 Es werden alle NICHT-Zahlen dort herausgefiltert, bis auf die Wildcards '?',
 '*' und "[]"
