@@ -1,19 +1,18 @@
-Binary files netfilter-1.1.2/userspace/extensions/.Makefile.swp and netfilter/userspace/extensions/.Makefile.swp differ
-diff -Nru --minimal --exclude-from=exclu-file netfilter-1.1.2/userspace/extensions/Makefile netfilter/userspace/extensions/Makefile
---- netfilter-1.1.2/userspace/extensions/Makefile	Wed Oct 18 22:02:18 2000
-+++ netfilter/userspace/extensions/Makefile	Sat Oct 28 17:08:53 2000
+diff -Nru --minimal isdn_userspace/extensions/Makefile userspace/extensions/Makefile
+--- isdn_userspace/extensions/Makefile	Mon Feb  5 10:52:17 2001
++++ userspace/extensions/Makefile	Mon Feb  5 10:53:27 2001
 @@ -3,6 +3,8 @@
  PF_EXT_SLIB:=tcp udp icmp mac limit standard REJECT LOG unclean state multiport tos TOS mark MARK owner SNAT DNAT MASQUERADE REDIRECT MIRROR
- PF6_EXT_SLIB:=tcp udp icmp standard 
+ PF6_EXT_SLIB:=tcp udp icmp standard MARK mark
  
-+PF_EXT_SLIB+= dwisdn DWSIDN ISDNDIAL
++PF_EXT_SLIB+= dwisdn DWISDN ISDNDIAL
 +
  # Optionals
  PF_EXT_SLIB_OPTS:=$(foreach T,$(wildcard extensions/.*-test),$(shell KERNEL_DIR=$(KERNEL_DIR) $(T)))
  PF6_EXT_SLIB_OPTS:=$(foreach T,$(wildcard extensions/.*-test6),$(shell KERNEL_DIR=$(KERNEL_DIR) $(T)))
-diff -Nru --minimal --exclude-from=exclu-file netfilter-1.1.2/userspace/extensions/libipt_DWISDN.c netfilter/userspace/extensions/libipt_DWISDN.c
---- netfilter-1.1.2/userspace/extensions/libipt_DWISDN.c	Thu Jan  1 00:00:00 1970
-+++ netfilter/userspace/extensions/libipt_DWISDN.c	Wed Oct 18 22:42:16 2000
+diff -Nru --minimal isdn_userspace/extensions/libipt_DWISDN.c userspace/extensions/libipt_DWISDN.c
+--- isdn_userspace/extensions/libipt_DWISDN.c	Thu Jan  1 00:00:00 1970
++++ userspace/extensions/libipt_DWISDN.c	Mon Feb  5 10:52:56 2001
 @@ -0,0 +1,336 @@
 +
 +/* 
@@ -351,9 +350,9 @@ diff -Nru --minimal --exclude-from=exclu-file netfilter-1.1.2/userspace/extensio
 +	register_target(&DWISDN);
 +}
 +
-diff -Nru --minimal --exclude-from=exclu-file netfilter-1.1.2/userspace/extensions/libipt_ISDNDIAL.c netfilter/userspace/extensions/libipt_ISDNDIAL.c
---- netfilter-1.1.2/userspace/extensions/libipt_ISDNDIAL.c	Thu Jan  1 00:00:00 1970
-+++ netfilter/userspace/extensions/libipt_ISDNDIAL.c	Wed Oct 18 22:42:16 2000
+diff -Nru --minimal isdn_userspace/extensions/libipt_ISDNDIAL.c userspace/extensions/libipt_ISDNDIAL.c
+--- isdn_userspace/extensions/libipt_ISDNDIAL.c	Thu Jan  1 00:00:00 1970
++++ userspace/extensions/libipt_ISDNDIAL.c	Mon Feb  5 10:52:56 2001
 @@ -0,0 +1,128 @@
 +
 +/* 
@@ -483,9 +482,9 @@ diff -Nru --minimal --exclude-from=exclu-file netfilter-1.1.2/userspace/extensio
 +	register_target(&ISDNDIAL);
 +}
 +
-diff -Nru --minimal --exclude-from=exclu-file netfilter-1.1.2/userspace/extensions/libipt_dwisdn.c netfilter/userspace/extensions/libipt_dwisdn.c
---- netfilter-1.1.2/userspace/extensions/libipt_dwisdn.c	Thu Jan  1 00:00:00 1970
-+++ netfilter/userspace/extensions/libipt_dwisdn.c	Sat Oct 28 14:15:01 2000
+diff -Nru --minimal isdn_userspace/extensions/libipt_dwisdn.c userspace/extensions/libipt_dwisdn.c
+--- isdn_userspace/extensions/libipt_dwisdn.c	Thu Jan  1 00:00:00 1970
++++ userspace/extensions/libipt_dwisdn.c	Mon Feb  5 10:52:56 2001
 @@ -0,0 +1,402 @@
 +
 +
@@ -886,6 +885,856 @@ diff -Nru --minimal --exclude-from=exclu-file netfilter-1.1.2/userspace/extensio
 +		dwisdn.version = xx;
 +	}
 +
++	register_match(&dwisdn);
++}
++
+diff -Nru --minimal isdn_userspace/libipt_DWISDN.c userspace/libipt_DWISDN.c
+--- isdn_userspace/libipt_DWISDN.c	Thu Jan  1 00:00:00 1970
++++ userspace/libipt_DWISDN.c	Mon Feb  5 10:55:26 2001
+@@ -0,0 +1,326 @@
++
++/* 
++** Shared library add-on to iptables to add dwisdn matching support. 
++** most parts are copied from libipt_mark.c 
++** thanks for this
++*/
++#include <stdio.h>
++#include <string.h>
++#include <stdlib.h>
++#include <getopt.h>
++
++#include <iptables.h>
++#include <linux/config.h>
++
++#if ((CONFIG_ISDN || CONFIG_ISDN_MODULE) &&  			\
++		CONFIG_ISDN_WITH_ABC_IPTABLES_NETFILTER)
++
++
++#define IPT_ISDN_DWISDN_TIPTH_NEED_OPTS 1
++#include <linux/isdn_dwabc.h>
++#define DWISDN_INSTALLED 1
++
++#else 
++#undef DWISDN_INSTALLED
++#endif
++
++
++
++/* Function which prints out usage message. */
++static void help(void)
++{
++	printf(
++	"DWISDN v%d options: (MAX %d option's per rule) iptables-vers. %s\n"
++	"\tThe options below will be parsed from left to right\n"
++
++	"--clear      no values\n"
++	"\tclear frame-bit's for dont reset huptimer and destination unreach\n"
++
++	"--huptimer   no values\n"
++	"\tset frame-bit for dont reset huptimer\n"
++
++	"--unreach    no values\n"
++	"\tset frame-bit for destination unreach in case of frames with\n"
++	"\tdont reset huptimer bit and interface not online\n"
++
++	"[!] --in_dev no values\n"
++	"\tuse in-interface for options follow this\n"
++	"\tdefault the kernel will use the out-interface\n"
++	"\twith ! --in_dev you can switch back to out-interface\n"
++	"\tthis is only usefull in a FORWARD or INPUT rule.\n"
++
++	"--dial       no values\n"
++	"\ttrigger dialing even of manual- or off-dialmode\n"
++
++	"--hangup     no values\n"
++	"\thangup the line immediately\n"
++
++	"--dialmode   auto | manual | off\n"
++	"\tset the interface dialmode to auto, manual or off\n"
++
++	"--hupreset   no values\n"
++	"\treset the interface huptimer. Note ! You must say which\n"
++	"\tinterface ? in or out. This depends on the hook you use.\n"
++	"\tonly --hupreset will use the out interface.\n"
++	"\t--in_dev --hupreset  use the in  interface.\n"
++
++	"\n",
++#ifdef DWISDN_INSTALLED
++	IPTDWISDN_REVISION,
++	IPTDWISDN_MAXOPS,
++#else
++	0,
++	0,
++#endif
++	NETFILTER_VERSION);
++}
++
++
++#ifdef DWISDN_INSTALLED
++
++/* Initialize the traget. */
++static void init(struct ipt_entry_target *m, unsigned int *nfcache)
++/************************************************************************
++*************************************************************************/
++{
++
++	if(m != NULL && m->data != NULL)
++		memset(m->data,0,sizeof(IPTDWISDN_INFO));
++
++	/* Can't cache this. */
++	*nfcache |= NFC_UNKNOWN;
++}
++
++
++
++/* Function which parses command options; returns true if it
++   ate an option */
++
++static int parse( 	int c,
++					char **argv,
++					int invert,
++					unsigned int *flags,
++      				const struct ipt_entry *entry,
++      				struct ipt_entry_target **target)
++/*************************************************************************
++**************************************************************************/
++{
++	IPTDWISDN_INFO 	*dw = (IPTDWISDN_INFO *)(*target)->data;
++	int idx;
++
++	if((idx = dw->parcount) >= IPTDWISDN_MAXOPS) {
++
++		exit_error( PARAMETER_PROBLEM,
++		   "DWISDN target: to many parameters.");
++	}
++
++	dw->revision = IPTDWISDN_REVISION;
++	dw->inst[idx] = c;
++	dw->value[idx] = 0;
++
++	switch ((enum iptdwisdn)c) {
++	default:
++	
++		exit_error( PARAMETER_PROBLEM,
++			"DWISDN target: unkown option <%s>",optarg);
++
++		return 0;
++
++	case TIPT_DWISDN_DIAL:
++	case TIPT_DWISDN_HANGUP:
++	case TIPT_DWISDN_CLEAR:
++	case TIPT_DWISDN_SET:
++	case TIPT_DWISDN_UNREACH:
++	case TIPT_DWISDN_HUPRESET:
++
++		if(check_inverse(optarg, &invert))
++			optind++;
++
++		if(invert) 
++			exit_error( PARAMETER_PROBLEM,
++				"DWISDN target --%s: ! not allowed",
++					TIPT_dwisdn_opts[c-1].name);
++
++		break;
++
++	case TIPT_DWISDN_DIALMODE:
++
++		if(check_inverse(optarg, &invert))
++			optind++;
++
++		if(invert) 
++			exit_error( PARAMETER_PROBLEM,
++				"DWISDN target --dialmode: ! not allowed");
++
++		if(!strcmp(optarg,"auto")) 
++			dw->value[idx] = 1;
++		else if(!strcmp(optarg,"manual")) 
++			dw->value[idx] = 2;
++		else if(!strcmp(optarg,"off")) 
++			dw->value[idx] = 3;
++		else {
++
++			exit_error( PARAMETER_PROBLEM,
++				"DWISDN target --dialmode usage: auto | manual | off");
++		}
++
++		break;
++	}
++
++	*flags = 1;
++
++	if(invert)
++		dw->inst[idx] |= TIPT_DWISDN_NOT;
++
++	dw->parcount++;
++
++	return(1);
++}
++
++static void final_check(unsigned int flags)
++/************************************************************************
++*************************************************************************/
++{ 
++
++	if(!flags)
++		exit_error( PARAMETER_PROBLEM,
++			"DWISDN target: without any option ? Why ?? :-(");
++}
++
++
++static void myprint(IPTDWISDN_INFO *p)
++/*************************************************************************
++*************************************************************************/
++{
++	int shl = 0;
++
++	for(;shl < IPTDWISDN_MAXOPS && shl < p->parcount;shl++) {
++
++		int inst = p->inst[shl];
++		u_long v = p->value[shl];
++
++		if(inst & TIPT_DWISDN_NOT) 
++			printf("! ");
++
++		inst &= ~TIPT_DWISDN_NOT;
++
++		printf("--%s ",TIPT_dwisdn_opts[inst-1].name);
++
++		if(!v)
++			continue;
++
++		switch(inst)  {
++
++		case TIPT_DWISDN_DIALMODE:
++
++			switch(v) {
++
++			case 1:		printf("auto");				break;
++			case 2:		printf("manual");			break;
++			case 3:		printf("off");				break;
++			}
++		}
++
++		printf(" ");
++	}
++}
++
++/* Prints out the matchinfo. */
++static void print(	const struct ipt_ip *ip,
++      				const struct ipt_entry_target *target,
++      				int numeric)
++/*************************************************************************
++**************************************************************************/
++{
++	IPTDWISDN_INFO *dw = (IPTDWISDN_INFO *)target->data;
++
++	printf("DWISDN ");
++	myprint(dw);
++}
++
++/* Saves the union ipt_dwisdninfo in parsable form to stdout. */
++static void save(const struct ipt_ip *ip, const struct ipt_entry_target *target)
++/***************************************************************************
++***************************************************************************/
++{
++	IPTDWISDN_INFO *dw = (IPTDWISDN_INFO *)target->data;
++	myprint(dw);
++}
++
++#else 
++
++typedef struct DUMMY_ISDN {
++
++	long dummy[10];
++
++} IPTDWISDN_INFO;
++
++
++static struct option TIPT_dwisdn_opts[] = {
++	 {0}
++};                                                                              
++
++static void init(struct ipt_entry_target *m, unsigned int *nfcache) {}
++
++static void final_check(unsigned int flags)
++/************************************************************************
++*************************************************************************/
++{ 
++	exit_error( PARAMETER_PROBLEM,
++		"DWISDN target: Kernel lacks ISDN- or ISDN-IPTABLES-SUPPORT");
++}
++
++
++static int parse( 	int c,
++					char **argv,
++					int invert,
++					unsigned int *flags,
++      				const struct ipt_entry *entry,
++      				struct ipt_entry_target **target)
++/*************************************************************************
++**************************************************************************/
++{
++	final_check(0);
++	return(0);
++}
++
++
++static void print(	const struct ipt_ip *ip,
++      				const struct ipt_entry_target *target,
++      				int numeric)
++/*************************************************************************
++**************************************************************************/
++{ }
++
++static void save(const struct ipt_ip *ip, const struct ipt_entry_target *target)
++/***************************************************************************
++***************************************************************************/
++{ }
++
++
++#endif
++
++static struct iptables_target DWISDN
++= { NULL,
++    "DWISDN",
++    NETFILTER_VERSION,
++    IPT_ALIGN(sizeof(IPTDWISDN_INFO)),
++    IPT_ALIGN(sizeof(IPTDWISDN_INFO)),
++    &help,
++    &init,
++    &parse,
++    &final_check,
++    &print,
++    &save,
++   	TIPT_dwisdn_opts,
++};
++
++
++
++void _init(void)
++/***************************************************************************
++***************************************************************************/
++{ 
++	register_target(&DWISDN);
++}
++
+diff -Nru --minimal isdn_userspace/libipt_ISDNDIAL.c userspace/libipt_ISDNDIAL.c
+--- isdn_userspace/libipt_ISDNDIAL.c	Thu Jan  1 00:00:00 1970
++++ userspace/libipt_ISDNDIAL.c	Mon Feb  5 10:56:15 2001
+@@ -0,0 +1,119 @@
++
++/* 
++** Shared library add-on to iptables to add dwisdn matching support. 
++** most parts are copied from libipt_mark.c 
++** thanks for this
++*/
++#include <stdio.h>
++#include <string.h>
++#include <stdlib.h>
++#include <getopt.h>
++
++#include <iptables.h>
++#include <linux/config.h>
++
++static struct option TIPT_ISDNDIAL_opts[] = { {0} };                                                                              
++
++
++/* Function which prints out usage message. */
++static void help(void)
++{
++	printf(
++	"ISDNDIAL v%d options: (MAX %d option's per rule) iptables-vers. %s\n"
++	"\tonly useable in nat filter on POSTROUTING hook.\n"
++	"\tit's support dynamic ip-addr's for syncppp interfaces.\n"
++	"\tfor all other interfaces this target is transparent.\n"
++	"\tif the interface is offline this target will trigger dialing\n"
++	"\tand save all frames that start a connection for later transmitt.\n"
++	"\tif the interface comes up and the new ip-addr ist set correctly,\n"
++	"\tthe save'd frames are send immediately.\n"
++	"\tNOTE:\n"
++	"\tthe best place for the ISDNDIAL target is before any\n"
++	"\tMASQUERADE target.\n"
++	"\n",
++#ifdef DWISDN_INSTALLED
++	IPTDWISDN_REVISION,
++	IPTDWISDN_MAXOPS,
++#else
++	0,
++	0,
++#endif
++	NETFILTER_VERSION);
++}
++
++
++/* Initialize the traget. */
++static void init(struct ipt_entry_target *m, unsigned int *nfcache)
++/************************************************************************
++*************************************************************************/
++{
++	*nfcache |= NFC_UNKNOWN;
++}
++
++
++
++/* Function which parses command options; returns true if it
++   ate an option */
++
++static int parse( 	int c,
++					char **argv,
++					int invert,
++					unsigned int *flags,
++      				const struct ipt_entry *entry,
++      				struct ipt_entry_target **target)
++/*************************************************************************
++**************************************************************************/
++{
++	exit_error( PARAMETER_PROBLEM,"ISDNDIAL target: No options allowed");
++	return(1);
++}
++
++static void final_check(unsigned int flags)
++/************************************************************************
++*************************************************************************/
++{ 
++}
++
++
++/* Prints out the matchinfo. */
++static void print(	const struct ipt_ip *ip,
++      				const struct ipt_entry_target *target,
++      				int numeric)
++/*************************************************************************
++**************************************************************************/
++{
++	printf("ISDNDIAL ");
++}
++
++/* Saves the union ipt_dwisdninfo in parsable form to stdout. */
++static void save(const struct ipt_ip *ip, const struct ipt_entry_target *target)
++/***************************************************************************
++***************************************************************************/
++{
++}
++
++
++static struct iptables_target ISDNDIAL
++= { NULL,
++    "ISDNDIAL",
++    NETFILTER_VERSION,
++    0,
++    0,
++    &help,
++    &init,
++    &parse,
++    &final_check,
++    &print,
++    &save,
++   	TIPT_ISDNDIAL_opts,
++};
++
++
++
++void _init(void)
++/***************************************************************************
++***************************************************************************/
++{ 
++	register_target(&ISDNDIAL);
++}
++
+diff -Nru --minimal isdn_userspace/libipt_dwisdn.c userspace/libipt_dwisdn.c
+--- isdn_userspace/libipt_dwisdn.c	Thu Jan  1 00:00:00 1970
++++ userspace/libipt_dwisdn.c	Mon Feb  5 10:56:33 2001
+@@ -0,0 +1,393 @@
++
++
++/* 
++** Shared library add-on to iptables to add dwisdn matching support. 
++** most parts are copied from libipt_mark.c 
++** thanks for this
++*/
++#include <stdio.h>
++#include <string.h>
++#include <stdlib.h>
++#include <getopt.h>
++
++#include <iptables.h>
++#include <linux/config.h>
++
++
++#if ((CONFIG_ISDN || CONFIG_ISDN_MODULE) &&  			\
++		CONFIG_ISDN_WITH_ABC_IPTABLES_NETFILTER)
++
++
++#define IPT_ISDN_DWISDN_H_NEED_OPTS 1
++#include <linux/isdn_dwabc.h>
++#define DWISDN_INSTALLED 1
++
++#else 
++#undef DWISDN_INSTALLED
++#endif
++
++
++
++/* Function which prints out usage message. */
++static void help(void)
++{
++	printf(
++	"dwisdn v%d options: (MAX %d option's per rule) iptables-vers. %s\n"
++	"\tThe options below will be parsed from left to right\n"
++
++	"[!] --con_stat    [ o | d | c ] \n"
++	"\to == offline (not connected or dialing)\n"
++	"\td == dialing (not connected or offline)\n"
++	"\tc == connect (not dialing or offline)\n"
++	"\todc as one option are ORE'd\n"
++	"\t--con_stat cd == connected or dialing\n"
++	"\tmultiple --con_stat are AND'ed\n"
++	"\t--con_stat d --con_stat o == dialing and offline\n"
++	"\tperhaps it's never true but  \n"
++	"\t--con_stat d ! --con_stat o \n"
++	"\tis sometimes true\n"
++
++	"[!] --in_dev     no values possible\n"
++	"\tuse in-interface for options follow this\n"
++	"\tdefault the kernel will use the out-interface\n"
++	"\twith ! --in_dev you can switch back to out-interface\n"
++	"\tthis is only usefull in a FORWARD or INPUT rule\n"
++
++	"[!] --charge     X ( X == numeric charge value )\n"
++	"\ttrue if the internal charge-counter >= X\n"
++	"\twith ! the rule is true if charge-counter < X\n"
++	"\ta range is possible with\n"
++	"\t--charge 25 ! --charge 50\n"
++	"\ttrue if the charge-counter >= 25 and < 50\n"
++
++	"[!] --outgoing   no values possible\n"
++	"\ttrue if the interface is dialing or connected as\n"
++	"\toutgoing call.\n"
++	"\twith ! true if the interface not dialing or \n"
++	"\tconnected as incoming call\n"
++
++	"[!] --cbout      no values possible\n"
++	"\ttrue if the interface configured for callback out\n"
++	"\twith ! the interface must be configured for callback in\n"
++
++	"[!] --dialmode   auto | manual | off\n"
++	"\ttrue if the interface configured with this dialmode\n"
++	"\t! is only the negation\n"
++
++	"[!] --addr_ok    no values possible\n"
++	"\tonly for dynip-interfaces.\n"
++	"\ttrue if the interface is online and the ip-addr is set.\n"
++	"\talways true for all other interfaces.\n"
++
++	"[!] --f_eq_iadr  no values possible\n"
++	"\tonly for dynip-interfaces.\n"
++	"\ttrue if the interface is online, ip-addr is set and\n"
++	"\tthe frame source-addr and interface-addr are equal.\n"
++	"\talways true for all other interfaces.\n"
++	"\n",
++#ifdef DWISDN_INSTALLED
++	IPTDWISDN_REVISION,
++	IPTDWISDN_MAXOPS,
++#else
++	0,
++	0,
++#endif
++	NETFILTER_VERSION);
++}
++
++
++#ifdef DWISDN_INSTALLED
++
++/* Initialize the match. */
++static void init(struct ipt_entry_match *m, unsigned int *nfcache)
++/************************************************************************
++*************************************************************************/
++{
++
++	if(m != NULL && m->data != NULL)
++		memset(m->data,0,sizeof(IPTDWISDN_INFO));
++
++	/* Can't cache this. */
++	*nfcache |= NFC_UNKNOWN;
++}
++
++
++
++/* Function which parses command options; returns true if it
++   ate an option */
++
++static int parse( 	int c,
++					char **argv,
++					int invert,
++					unsigned int *flags,
++      				const struct ipt_entry *entry,
++      				unsigned int *nfcache,
++      				struct ipt_entry_match **match)
++/*************************************************************************
++**************************************************************************/
++{
++	IPTDWISDN_INFO 	*dw = (IPTDWISDN_INFO *)(*match)->data;
++	char *p = NULL;
++	int idx;
++
++	if((idx = dw->parcount) >= IPTDWISDN_MAXOPS) {
++
++		exit_error( PARAMETER_PROBLEM,
++		   "dwisdn match: to many parameters.");
++	}
++
++	dw->revision = IPTDWISDN_REVISION;
++	dw->inst[idx] = c;
++	dw->value[idx] = 0;
++
++	switch ((enum iptdwisdn)c) {
++	default: return 0;
++
++	case IPT_DWISDN_DIALMODE:
++
++		if(check_inverse(optarg, &invert))
++			optind++;
++
++		if(!strcmp(optarg,"auto")) 
++			dw->value[idx] = 1;
++		else if(!strcmp(optarg,"manual")) 
++			dw->value[idx] = 2;
++		else if(!strcmp(optarg,"off")) 
++			dw->value[idx] = 3;
++		else {
++
++			exit_error( PARAMETER_PROBLEM,
++				"dwisdn match --dialmode usage: auto | manual | off");
++		}
++
++		break;
++		
++	case IPT_DWISDN_CBOUT:
++	case IPT_DWISDN_IDEV:
++	case IPT_DWISDN_ADDROK:
++	case IPT_DWISDN_OUTGOING:
++	case IPT_DWISDN_FEQIADR:
++
++		if(check_inverse(optarg, &invert))
++			optind++;
++
++		break;
++
++	case IPT_DWISDN_CHARGE:
++
++		if(check_inverse(optarg, &invert))
++			optind++;
++
++		for(p = (char *)optarg; *p; p++) {
++
++			if(*p < '0' || *p > '9') {
++
++				exit_error( PARAMETER_PROBLEM,
++					"dwisdn match --charge x ( x must be nemueric )");
++			}
++		}
++
++		dw->value[idx] = atol(optarg);
++		break;
++
++	case IPT_DWISDN_CON:
++
++		if(check_inverse(optarg, &invert))
++			optind++;
++
++		for(p = (char *)optarg; *p; p++) {
++
++			switch(*p) {
++
++			default:
++
++			exit_error( PARAMETER_PROBLEM,
++				"dwisdn match con_stat: Option %c unknown",*p);
++
++			case ' ':
++			case '\t':	continue;
++
++			case 'O':
++			case 'o':
++
++				dw->value[idx] |= IPTCS_DWISN_OFFL;
++				break;
++
++			case 'D':
++			case 'd':
++
++				dw->value[idx] |= IPTCS_DWISN_DIAL;
++				break;
++
++			case 'C':
++			case 'c':
++
++				dw->value[idx] |= IPTCS_DWISN_ONL;
++				break;
++			}
++		}
++	}
++
++	*flags = 1;
++
++	if(invert)
++		dw->inst[idx] |= IPT_DWISDN_NOT;
++
++	dw->parcount++;
++
++	return(1);
++}
++
++static void final_check(unsigned int flags)
++/************************************************************************
++*************************************************************************/
++{ }
++
++
++static void myprint(IPTDWISDN_INFO *p)
++/*************************************************************************
++*************************************************************************/
++{
++	int shl = 0;
++
++	for(;shl < IPTDWISDN_MAXOPS && shl < p->parcount;shl++) {
++
++		int inst = p->inst[shl];
++		u_long v = p->value[shl];
++
++		if(inst & IPT_DWISDN_NOT) 
++			printf("! ");
++
++		inst &= ~IPT_DWISDN_NOT;
++
++		printf("--%s ",IPT_dwisdn_opts[inst-1].name);
++
++		if(!v)
++			continue;
++
++		switch(inst)  {
++
++		case IPT_DWISDN_CHARGE:
++
++			printf("%lu",v);
++			break;
++
++		case IPT_DWISDN_CON:
++		
++			if(v & IPTCS_DWISN_OFFL)
++				printf("o");
++
++			if(v & IPTCS_DWISN_DIAL)
++				printf("d");
++
++			if(v & IPTCS_DWISN_ONL)
++				printf("c");
++
++			break;
++		}
++
++		printf(" ");
++	}
++}
++
++/* Prints out the matchinfo. */
++static void print(	const struct ipt_ip *ip,
++      				const struct ipt_entry_match *match,
++      				int numeric)
++/*************************************************************************
++**************************************************************************/
++{
++	IPTDWISDN_INFO *dw = (IPTDWISDN_INFO *)match->data;
++
++	printf("dwisdn ");
++	myprint(dw);
++}
++
++/* Saves the union ipt_dwisdninfo in parsable form to stdout. */
++static void save(const struct ipt_ip *ip, const struct ipt_entry_match *match)
++/***************************************************************************
++***************************************************************************/
++{
++	IPTDWISDN_INFO *dw = (IPTDWISDN_INFO *)match->data;
++	myprint(dw);
++}
++
++#else 
++
++typedef struct DUMMY_ISDN {
++
++	long dummy[10];
++
++} IPTDWISDN_INFO;
++
++
++static struct option IPT_dwisdn_opts[] = {
++	 {0}
++};                                                                              
++
++static void init(struct ipt_entry_match *m, unsigned int *nfcache) {}
++
++static void final_check(unsigned int flags)
++/************************************************************************
++*************************************************************************/
++{ 
++	exit_error( PARAMETER_PROBLEM,
++		"dwisdn: Kernel lacks ISDN- or ISDN-IPTABLES-SUPPORT");
++}
++
++
++static int parse( 	int c,
++					char **argv,
++					int invert,
++					unsigned int *flags,
++      				const struct ipt_entry *entry,
++      				unsigned int *nfcache,
++      				struct ipt_entry_match **match)
++/*************************************************************************
++**************************************************************************/
++{
++	final_check(0);
++	return(0);
++}
++
++
++static void print(	const struct ipt_ip *ip,
++      				const struct ipt_entry_match *match,
++      				int numeric)
++/*************************************************************************
++**************************************************************************/
++{ }
++
++static void save(const struct ipt_ip *ip, const struct ipt_entry_match *match)
++/***************************************************************************
++***************************************************************************/
++{ }
++
++
++#endif
++
++
++struct iptables_match dwisdn
++= { NULL,
++    "dwisdn",
++    NETFILTER_VERSION,
++    IPT_ALIGN(sizeof(IPTDWISDN_INFO)),
++    IPT_ALIGN(sizeof(IPTDWISDN_INFO)),
++    &help,
++    &init,
++    &parse,
++    &final_check,
++    &print,
++    &save,
++   	IPT_dwisdn_opts,
++};
++
++
++
++void _init(void)
++/***************************************************************************
++***************************************************************************/
++{ 
 +	register_match(&dwisdn);
 +}
 +

@@ -12,7 +12,6 @@
 #include <iptables.h>
 #include <linux/config.h>
 
-static const char *MY_NETFILTER_VERSION = NETFILTER_VERSION;
 static struct option TIPT_ISDNDIAL_opts[] = { {0} };                                                                              
 
 
@@ -39,7 +38,7 @@ static void help(void)
 	0,
 	0,
 #endif
-	MY_NETFILTER_VERSION);
+	NETFILTER_VERSION);
 }
 
 
@@ -115,14 +114,6 @@ void _init(void)
 /***************************************************************************
 ***************************************************************************/
 { 
-	char *xx = getenv("NETFILTER_VERSION");
-	
-	if(xx != NULL) {
-
-		MY_NETFILTER_VERSION = 
-		ISDNDIAL.version = xx;
-	}
-
 	register_target(&ISDNDIAL);
 }
 

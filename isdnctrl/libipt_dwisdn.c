@@ -13,7 +13,6 @@
 #include <iptables.h>
 #include <linux/config.h>
 
-static const char *MY_NETFILTER_VERSION = NETFILTER_VERSION;
 
 #if ((CONFIG_ISDN || CONFIG_ISDN_MODULE) &&  			\
 		CONFIG_ISDN_WITH_ABC_IPTABLES_NETFILTER)
@@ -93,7 +92,7 @@ static void help(void)
 	0,
 	0,
 #endif
-	MY_NETFILTER_VERSION);
+	NETFILTER_VERSION);
 }
 
 
@@ -389,14 +388,6 @@ void _init(void)
 /***************************************************************************
 ***************************************************************************/
 { 
-	char *xx = getenv("NETFILTER_VERSION");
-
-	if(xx != NULL) {
-
-		MY_NETFILTER_VERSION = 
-		dwisdn.version = xx;
-	}
-
 	register_match(&dwisdn);
 }
 
