@@ -76,11 +76,8 @@ static int numlen;
 static void read_codefile(char *cf) {
 	FILE *fp;
 	int l, llen = 0;
-#if 0
-	char *line, *p;
-#else
-	char line[BUFSIZ], *p;
-#endif
+	char *p;
+        auto char line[BUFSIZ];
 
 	nc = 0;
 	if (verbose)
@@ -95,11 +92,7 @@ static void read_codefile(char *cf) {
 			printf("%d\r", nc);
 			fflush(stdout);
 		}
-#if 0
-		l = getline(&line, &llen, fp);
-#else
 		fgets(line, BUFSIZ, fp);
-#endif
 		if (!isdigit(*line))
 			continue;
 		line[strlen(line)-1] = '\0';
@@ -133,24 +126,18 @@ static void read_codefile(char *cf) {
 	codes[nc].num=-1;
 	codes[nc].code=strdup("");
 	free(cf);
-#if 0
-	free(line);
-#endif
 }
 
 static void read_rzfile(char *rf) {
 	int i;
-	char *line, *p, *op;
+	char line[BUFSIZ], *p, *op;
+
 	size_t llen, l;
 	FILE *fp;
 	int from,to,z;
 
 	if ((fp=fopen(rf, "r")) == 0) {
 		fprintf(stderr, "Coudn't read '%s'\n", rf);
-		exit(EXIT_FAILURE);
-	}
-	if ((line = malloc(40)) == 0) {
-		fprintf(stderr, "Out of mem\n");
 		exit(EXIT_FAILURE);
 	}
 	llen=40;
@@ -169,12 +156,8 @@ static void read_rzfile(char *rf) {
 			printf("%d\r", n);
 			fflush(stdout);
 		}
-#if 0
-		l = getline(&line, &llen, fp);
-#else
 		fgets(line, BUFSIZ, fp);
                 l = strlen(line);
-#endif
 		if (!l || l == -1 || !*line)
 			break;
 		if (l>40)
@@ -208,7 +191,6 @@ static void read_rzfile(char *rf) {
 		numbers[to]++;
 		n++;
 	}
-	free(line);
 	free(rf);
 }
 

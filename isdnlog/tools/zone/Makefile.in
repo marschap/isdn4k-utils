@@ -4,7 +4,7 @@
 # (C) 1999 l.toetsch <lt@toetsch.at>
 #
 SHELL			= /bin/sh
-CFLAGS			= -Wall -O2
+CFLAGS			= -Wall -g
 INCLUDES		= 
 LDFLAGS			= @DBMLIB@
 DBEXT			= @DBEXT@
