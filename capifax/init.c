@@ -1,4 +1,4 @@
-/* $Id: init.c,v 1.2 1998/10/23 12:50:57 fritz Exp $
+/* $Id: init.c,v 1.3 1999/09/10 17:20:34 calle Exp $
  *
  * CAPI registration/deregistration.
  * This stuff is based heavily on AVM's CAPI-adk for linux.
@@ -15,6 +15,11 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: init.c,v $
+ * Revision 1.3  1999/09/10 17:20:34  calle
+ * Last changes for proposed standards (CAPI 2.0):
+ * - AK1-148 "Linux Extention"
+ * - AK1-155 "Support of 64-bit Applications"
+ *
  * Revision 1.2  1998/10/23 12:50:57  fritz
  * Added RCS keywords and GPL notice.
  *
@@ -32,7 +37,7 @@
 /*
  * defines needed by InitISDN
  */
-unsigned short Appl_Id = 0;
+unsigned Appl_Id = 0;
 
 #define MaxNumBChan        2    /* max. number of B-channels */
 #define MaxNumB3DataBlocks 7    /* max. number of unconfirmed B3-datablocks */
@@ -51,7 +56,7 @@ unsigned RegisterCAPI (void) {
 	CAPI_REGISTER_ERROR ErrorCode;
 	int numController;
 
-	if (!CAPI20_ISINSTALLED()) {
+	if (CAPI20_ISINSTALLED() != CapiNoError) {
 		fprintf(stderr, "No CAPI support on this system.\n");
 		return 0;
 	}
@@ -59,9 +64,9 @@ unsigned RegisterCAPI (void) {
 		fprintf(stderr, "RegisterCAPI: No ISDN-controller installed\n");
 		return 0;
 	}
-	Appl_Id = CAPI20_REGISTER(MaxNumBChan, MaxNumB3DataBlocks,
-				  MaxB3DataBlockSize, &ErrorCode);
-	if (!Appl_Id) {
+	ErrorCode = CAPI20_REGISTER(MaxNumBChan, MaxNumB3DataBlocks,
+				  MaxB3DataBlockSize, &Appl_Id);
+	if (ErrorCode != CapiNoError) {
 		fprintf(stderr, "RegisterCAPI: error: %04x\n", ErrorCode);
 		return 0;
 	}

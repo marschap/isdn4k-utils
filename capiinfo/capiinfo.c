@@ -1,4 +1,4 @@
-/* $Id: capiinfo.c,v 1.1 1999/04/16 15:40:48 calle Exp $
+/* $Id: capiinfo.c,v 1.2 1999/09/10 17:20:33 calle Exp $
  *
  * A CAPI application to get infomation about installed controllers
  *
@@ -14,6 +14,11 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: capiinfo.c,v $
+ * Revision 1.2  1999/09/10 17:20:33  calle
+ * Last changes for proposed standards (CAPI 2.0):
+ * - AK1-148 "Linux Extention"
+ * - AK1-155 "Support of 64-bit Applications"
+ *
  * Revision 1.1  1999/04/16 15:40:48  calle
  * Added first version of capiinfo.
  *
@@ -95,10 +100,11 @@ int main(int argc, char **argv)
    unsigned char buf[64];
    unsigned long *vbuf;
    unsigned char *s;
-   int ncontr, i, j;
+   int ncontr, i;
+   unsigned j;
    int isAVM;
 
-   if (!CAPI20_ISINSTALLED()) {
+   if (CAPI20_ISINSTALLED() != CapiNoError) {
       fprintf(stderr, "capi not installed - %s (%d)\n", strerror(errno), errno);
       return 2;
    }

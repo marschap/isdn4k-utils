@@ -1,4 +1,4 @@
-/* $Id: init.h,v 1.2 1998/10/23 12:50:58 fritz Exp $
+/* $Id: init.h,v 1.3 1999/09/10 17:20:34 calle Exp $
  *
  * CAPI registration/deregistration.
  * This stuff is based heavily on AVM's CAPI-adk for linux.
@@ -15,6 +15,11 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: init.h,v $
+ * Revision 1.3  1999/09/10 17:20:34  calle
+ * Last changes for proposed standards (CAPI 2.0):
+ * - AK1-148 "Linux Extention"
+ * - AK1-155 "Support of 64-bit Applications"
+ *
  * Revision 1.2  1998/10/23 12:50:58  fritz
  * Added RCS keywords and GPL notice.
  *
@@ -22,7 +27,7 @@
 #ifndef _init_h_
 #define _init_h_
 
-extern unsigned short Appl_Id;
+extern unsigned Appl_Id;
 
 /*
  * RegisterCAPI: Check for CAPI, allocate memory for CAPI-buffer and

@@ -1,7 +1,12 @@
 /*
- * $Id: convert.c,v 1.5 1999/09/06 17:40:07 calle Exp $
+ * $Id: convert.c,v 1.6 1999/09/10 17:20:33 calle Exp $
  *
  * $Log: convert.c,v $
+ * Revision 1.6  1999/09/10 17:20:33  calle
+ * Last changes for proposed standards (CAPI 2.0):
+ * - AK1-148 "Linux Extention"
+ * - AK1-155 "Support of 64-bit Applications"
+ *
  * Revision 1.5  1999/09/06 17:40:07  calle
  * Changes for CAPI 2.0 Spec.
  *
@@ -33,9 +38,10 @@ typedef struct {
 #define _CBYTE	       1
 #define _CWORD	       2
 #define _CDWORD        3
-#define _CSTRUCT       4
-#define _CMSTRUCT      5
-#define _CEND	       6
+#define _CQWORD        4
+#define _CSTRUCT       5
+#define _CMSTRUCT      6
+#define _CEND	       7
 
 static _cdef cdef[] = {
     /*00*/{_CEND},
@@ -62,7 +68,7 @@ static _cdef cdef[] = {
     /*15*/{_CDWORD,     offsetof(_cmsg,Class)	},
     /*16*/{_CSTRUCT,    offsetof(_cmsg,ConnectedNumber)	},
     /*17*/{_CSTRUCT,    offsetof(_cmsg,ConnectedSubaddress)	},
-    /*18*/{_CDWORD,     offsetof(_cmsg,Data)	},
+    /*18*/{_CDWORD,     offsetof(_cmsg,Data32)	},
     /*19*/{_CWORD,      offsetof(_cmsg,DataHandle)	},
     /*1a*/{_CWORD,      offsetof(_cmsg,DataLength)	},
     /*1b*/{_CSTRUCT,    offsetof(_cmsg,FacilityConfirmationParameter)	},
@@ -115,7 +121,7 @@ static unsigned char *cpars[] = {
           (unsigned char*)"\x03\x2c\x01",
     /*0e*/ 0,
     /*0f DATA_B3_REQ*/
-          (unsigned char*)"\x03\x18\x1a\x19\x21\x01",
+          (unsigned char*)"\x03\x18\x1a\x19\x21\x31\x01",
     /*10 RESET_B3_REQ*/
           (unsigned char*)"\x03\x2c\x01",
     /*11*/ 0,
@@ -174,7 +180,7 @@ static unsigned char *cpars[] = {
           (unsigned char*)"\x03\x2e\x2c\x01",
     /*32*/ 0,
     /*33 DATA_B3_IND*/
-          (unsigned char*)"\x03\x18\x1a\x19\x21\x01",
+          (unsigned char*)"\x03\x18\x1a\x19\x21\x31\x01",
     /*34 RESET_B3_IND*/ 
           (unsigned char*)"\x03\x2c\x01",
     /*35 CONNECT_B3_T90_ACTIVE_IND*/
@@ -224,12 +230,14 @@ static unsigned char *cpars[] = {
 #define byteTLcpy(x,y)        *(_cbyte *)(x)=*(_cbyte *)(y);
 #define wordTLcpy(x,y)        *(_cword *)(x)=*(_cword *)(y);
 #define dwordTLcpy(x,y)       memcpy(x,y,4);
+#define qwordTLcpy(x,y)       memcpy(x,y,8);
 #define structTLcpy(x,y,l)    memcpy (x,y,l)
 #define structTLcpyovl(x,y,l) memmove (x,y,l)
 
 #define byteTRcpy(x,y)        *(_cbyte *)(y)=*(_cbyte *)(x);
 #define wordTRcpy(x,y)        *(_cword *)(y)=*(_cword *)(x);
 #define dwordTRcpy(x,y)       memcpy(y,x,4);
+#define qwordTRcpy(x,y)       memcpy(y,x,8);
 #define structTRcpy(x,y,l)    memcpy (y,x,l)
 #define structTRcpyovl(x,y,l) memmove (y,x,l)
 
@@ -276,6 +284,10 @@ static void PARS_2_MESSAGE (_cmsg *cmsg) {
 		break;
 	    case _CDWORD:
 		dwordTLcpy (cmsg->m+cmsg->l, OFF);
+		cmsg->l+=4;
+		break;
+	    case _CQWORD:
+		qwordTLcpy (cmsg->m+cmsg->l, OFF);
 		cmsg->l+=4;
 		break;
 	    case _CSTRUCT:
@@ -330,6 +342,17 @@ unsigned capi_cmsg2message (_cmsg *cmsg, CAPI_MESSAGE msg)
     cmsg->p = 0;
     cmsg->par = cpars [command_2_index (cmsg->Command,cmsg->Subcommand)];
 
+    if (   cmsg->Command == CAPI_DATA_B3
+	&& (cmsg->Subcommand == CAPI_REQ || cmsg->Subcommand == CAPI_IND)) {
+       if (sizeof(void *) == 4) {
+	  cmsg->Data32 = (_cdword)cmsg->Data;
+	  cmsg->Data64 = 0;
+       } else {
+	  cmsg->Data32 = 0;
+	  cmsg->Data64 = (_cqword)cmsg->Data;
+       }
+    }
+
     PARS_2_MESSAGE (cmsg);
 
     wordTLcpy (msg+0, &cmsg->l);
@@ -357,6 +380,10 @@ static void MESSAGE_2_PARS (_cmsg *cmsg) {
 	    case _CDWORD:
 		dwordTRcpy (cmsg->m+cmsg->l, OFF);
 		cmsg->l+=4;
+		break;
+	    case _CQWORD:
+		qwordTRcpy (cmsg->m+cmsg->l, OFF);
+		cmsg->l+=8;
 		break;
 	    case _CSTRUCT:
 		*(CAPI_MESSAGE *)OFF = cmsg->m+cmsg->l;
@@ -398,9 +425,19 @@ unsigned capi_message2cmsg (_cmsg *cmsg, CAPI_MESSAGE msg)
 
     MESSAGE_2_PARS (cmsg);
 
+    if (   cmsg->Command == CAPI_DATA_B3
+	&& (cmsg->Subcommand == CAPI_REQ || cmsg->Subcommand == CAPI_IND)) {
+       if (sizeof(void *) == 4) {
+	  cmsg->Data = (void *)cmsg->Data32;
+       } else {
+	  cmsg->Data = (void *)cmsg->Data64;
+       }
+    }
+
     wordTRcpy (msg+0, &cmsg->l);
     wordTRcpy (cmsg->m+2, &cmsg->ApplId);
     wordTRcpy (cmsg->m+6, &cmsg->Messagenumber);
+
 
     return 0;
 }
@@ -426,7 +463,7 @@ unsigned capi20_cmsg_header (_cmsg *cmsg, unsigned _ApplId,
 }
 
 /*-------------------------------------------------------*/
-unsigned short capi20_put_cmsg (_cmsg *cmsg)
+unsigned capi20_put_cmsg (_cmsg *cmsg)
 {
     static unsigned char msg[2048];
 
@@ -435,7 +472,7 @@ unsigned short capi20_put_cmsg (_cmsg *cmsg)
 }
 
 /*-------------------------------------------------------*/
-unsigned short capi20_get_cmsg (_cmsg *cmsg, unsigned applid)
+unsigned capi20_get_cmsg (_cmsg *cmsg, unsigned applid)
 {
     MESSAGE_EXCHANGE_ERROR rtn;
     CAPI_MESSAGE msg;

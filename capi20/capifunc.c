@@ -1,7 +1,12 @@
 /*
- * $Id: capifunc.c,v 1.3 1998/08/30 09:57:17 calle Exp $
+ * $Id: capifunc.c,v 1.4 1999/09/10 17:20:33 calle Exp $
  *
  * $Log: capifunc.c,v $
+ * Revision 1.4  1999/09/10 17:20:33  calle
+ * Last changes for proposed standards (CAPI 2.0):
+ * - AK1-148 "Linux Extention"
+ * - AK1-155 "Support of 64-bit Applications"
+ *
  * Revision 1.3  1998/08/30 09:57:17  calle
  * I hope it is know readable for everybody.
  *
@@ -78,7 +83,7 @@ unsigned CONNECT_B3_REQ (_cmsg *cmsg, _cword ApplId, _cword Messagenumber,
 
 unsigned DATA_B3_REQ (_cmsg *cmsg, _cword ApplId, _cword Messagenumber,
                       _cdword adr,
-                      _cdword Data,
+                      void *Data,
                       _cword DataLength,
                       _cword DataHandle,
                       _cword Flags) {

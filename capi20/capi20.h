@@ -1,6 +1,7 @@
 #ifndef __CAPI20_H
 #define __CAPI20_H
 
+#include <sys/types.h>
 #include <sys/time.h>
 #include <time.h>
 
@@ -38,18 +39,18 @@ extern "C" {
 
 /* standard CAPI2.0 functions */
 
-unsigned short capi20_register (unsigned MaxLogicalConnection,
+unsigned capi20_register (unsigned MaxLogicalConnection,
 				unsigned MaxBDataBlocks,
 				unsigned MaxBDataLen,
-				unsigned short *ErrorCode);
+				unsigned *ApplIDp);
 
-unsigned short capi20_release (unsigned ApplID);
+unsigned capi20_release (unsigned ApplID);
 
-unsigned short capi20_put_message (unsigned char *Msg, unsigned ApplID);
+unsigned capi20_put_message (unsigned char *Msg, unsigned ApplID);
 
-unsigned short capi20_get_message (unsigned ApplID, unsigned char **Buf);
+unsigned capi20_get_message (unsigned ApplID, unsigned char **Buf);
 
-unsigned short capi20_waitformessage(unsigned ApplID, struct timeval *TimeOut);
+unsigned capi20_waitformessage(unsigned ApplID, struct timeval *TimeOut);
 
 unsigned char *capi20_get_manufacturer (unsigned Ctrl, unsigned char *Buf);
 
@@ -57,9 +58,9 @@ unsigned char *capi20_get_version (unsigned Ctrl, unsigned char *Buf);
 
 unsigned char *capi20_get_serial_number (unsigned Ctrl, unsigned char *Buf);
 
-unsigned short capi20_get_profile (unsigned Controller, unsigned char *Buf);
+unsigned capi20_get_profile (unsigned Controller, unsigned char *Buf);
 
-unsigned short capi20_isinstalled (void);
+unsigned capi20_isinstalled (void);
 
 int capi20_fileno(unsigned ApplID);
 
@@ -76,14 +77,15 @@ int capi20_fileno(unsigned ApplID);
 
 /* end standard CAPI2.0 functions */
 
-#define CAPI_REGISTER_ERROR	unsigned short
-#define MESSAGE_EXCHANGE_ERROR	unsigned short
+#define CAPI_REGISTER_ERROR	unsigned
+#define MESSAGE_EXCHANGE_ERROR	unsigned
 
 
 typedef unsigned char *CAPI_MESSAGE;
-typedef unsigned char  _cbyte;
-typedef unsigned short _cword;
-typedef unsigned long  _cdword;
+typedef __uint8_t _cbyte;
+typedef __uint16_t _cword;
+typedef __uint32_t  _cdword;
+typedef __uint64_t  _cqword;
 typedef CAPI_MESSAGE   _cstruct;
 typedef enum { CAPI_COMPOSE = 0, CAPI_DEFAULT = 1 } _cmstruct;
 
@@ -154,7 +156,8 @@ typedef struct {
     _cdword Class;
     _cstruct ConnectedNumber;
     _cstruct ConnectedSubaddress;
-    _cdword Data;
+    _cdword Data32;
+    _cqword Data64;
     _cword DataHandle;
     _cword DataLength;
     _cstruct FacilityConfirmationParameter;
@@ -179,6 +182,7 @@ typedef struct {
     _cword Reason_B3;
     _cword Reject;
     _cstruct Useruserdata;
+    unsigned char *Data;
 
     /* intern */
     unsigned l,p;
@@ -203,7 +207,7 @@ unsigned capi20_message2cmsg (_cmsg *cmsg, unsigned char *msg);
 #define CAPI_PUT_CMSG	capi20_put_cmsg
 #define capi_put_cmsg	capi20_put_cmsg
 
-unsigned short capi20_put_cmsg(_cmsg *cmsg);
+unsigned capi20_put_cmsg(_cmsg *cmsg);
 
 /*
  * capi20_get_cmsg() works like capi20_get_message() and converts the
@@ -214,7 +218,7 @@ unsigned short capi20_put_cmsg(_cmsg *cmsg);
 #define CAPI_GET_CMSG	capi20_get_cmsg
 #define capi_get_cmsg	capi20_get_cmsg
 
-unsigned short capi20_get_cmsg(_cmsg *cmsg, unsigned applid);
+unsigned capi20_get_cmsg(_cmsg *cmsg, unsigned applid);
 
 /*
  * capi20_cmsg_header() fills the _cmsg structure with default values,
@@ -872,7 +876,7 @@ unsigned CONNECT_B3_REQ (_cmsg *cmsg, _cword ApplId, _cword Messagenumber
 		,_cstruct NCPI);
 unsigned DATA_B3_REQ (_cmsg *cmsg, _cword ApplId, _cword Messagenumber
 		,_cdword adr
-		,_cdword Data
+		,void * Data
 		,_cword DataLength
 		,_cword DataHandle
 		,_cword Flags);
