@@ -1,4 +1,4 @@
-/* $Id: start_prog.c,v 1.15 1999/11/03 17:54:13 paul Exp $
+/* $Id: start_prog.c,v 1.16 2000/04/13 15:44:20 paul Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: start_prog.c,v $
+ * Revision 1.16  2000/04/13 15:44:20  paul
+ * Fix for $5, $7, $8, $9, $10, always having same value as $11
+ *
  * Revision 1.15  1999/11/03 17:54:13  paul
  * Fixed empty lines in syslog if program could not be started.
  *
@@ -999,7 +1002,7 @@ static char *ArgToChar(int type, void* Ptr)
 		                     break;
 	}
 
-	return RetCode[Cnt];
+	return RetCode[Cnt++];
 }
 
 /****************************************************************************/
