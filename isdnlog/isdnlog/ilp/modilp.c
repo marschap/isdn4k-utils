@@ -21,6 +21,7 @@
  * 0.10 15.12.2000 lt Initial Version
  * 0.11 21.12.2000 lt calculate duration
  * 0.12 05.04.2002 lt adapted for 2.4.x
+ * 0.13 05.04.2002 lt 2. try, thanks Achim Steinmetz
  */
 
 /* based on code found in lkmpg/node17.html, which is: */
@@ -36,7 +37,7 @@
 #include <linux/proc_fs.h>
 #include <linux/time.h>	/* get time */
 
-#define MODULE_VERSION "0.12"
+#define MODULE_VERSION "0.13"
 #define MODULE_NAME "modilp"
 
 /* In 2.2.3 /usr/include/linux/version.h includes a 
@@ -48,6 +49,7 @@
 
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(2,4,0)
 #include <linux/init.h>		/* __init macros */
+#define get_fast_time do_gettimeofday
 #endif
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(2,1,4)
 #include <asm/uaccess.h>	/* for copy_user */
@@ -286,6 +288,7 @@ module_init(init_modilp);
 module_exit(exit_modilp);
 MODULE_AUTHOR("Leopold Totsch");
 MODULE_DESCRIPTION("line status for isdnlog");
+MODULE_LICENSE("GPL");
 EXPORT_NO_SYMBOLS;
 
 #else
