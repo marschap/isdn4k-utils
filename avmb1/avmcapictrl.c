@@ -1,11 +1,14 @@
 /*
- * $Id: avmcapictrl.c,v 1.14 2000/01/28 16:36:19 calle Exp $
+ * $Id: avmcapictrl.c,v 1.15 2000/03/08 13:40:33 calle Exp $
  * 
  * AVM-B1-ISDN driver for Linux. (Control-Utility)
  * 
  * Copyright 1996 by Carsten Paeth (calle@calle.in-berlin.de)
  * 
  * $Log: avmcapictrl.c,v $
+ * Revision 1.15  2000/03/08 13:40:33  calle
+ * check for /dev/isdn/capi20 if /dev/capi20 doesn't exist.
+ *
  * Revision 1.14  2000/01/28 16:36:19  calle
  * generic addcard (call add_card function of named driver)
  *
@@ -77,6 +80,9 @@
 #include <linux/capi.h>
 /* new ioctls */
 #include <linux/kernelcapi.h>
+
+static char capidevname[] = "/dev/capi20";
+static char capidevnamenew[] = "/dev/isdn/capi20";
 
 char *cmd;
 char *ctrldev;
@@ -360,11 +366,12 @@ int main(int argc, char **argv)
 	} else
 		usage();
 	ac = argc - (arg_ofs - 1);
-	fd = open("/dev/capi20", O_RDWR);
+	if ((fd = open(capidevname, O_RDWR)) < 0 && errno == ENOENT)
+  	   fd = open(capidevnamenew, O_RDWR);
 	if (fd < 0) {
 		switch (errno) {
 		   case ENOENT:
-		      perror("Device file /dev/capi20 missing, use instdev");
+		      perror("Device file /dev/capi20 and /dev/isdn/capi20 missing, use instdev");
 		      exit(2);
 		   case ENODEV:
 		      perror("device capi20 not registered");
