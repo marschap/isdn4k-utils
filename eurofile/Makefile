@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.9 1999/07/25 21:55:27 he Exp $
+# $Id: Makefile,v 1.10 1999/10/05 21:57:26 he Exp $
 
 SHELL = /bin/sh
 
@@ -53,7 +53,7 @@ configureclean: distclean
 install:
 	@echo "NOTE: eurofile install not yet implemented. Install by hand for now!"
 
-commit: distclean
+commit: distclean configure
 	$(CVS) commit .
 
 update:
