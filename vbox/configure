@@ -540,8 +540,8 @@ fi
 
 
 PACKAGE="vbox"
-VERSION="2.0.0 BETA 4"
-VERDATE="02-Jun-97"
+VERSION="2.0.0 BETA 5"
+VERDATE="31-MAR-98"
 
 cat >> confdefs.h <<EOF
 #define PACKAGE "${PACKAGE}"

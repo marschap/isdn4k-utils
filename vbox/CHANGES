@@ -1,8 +1,30 @@
-# $Id: CHANGES,v 1.13 1997/10/22 20:46:37 fritz Exp $
+# $Id: CHANGES,v 1.14 1998/03/31 20:11:38 keil Exp $
 #
 # [New] - Means news or changes
 # [Fix] - Means bug fix
 # [Rel] - Means new release
+
+
+**************************
+Changes since 2.0.0 Beta 4
+**************************
+
+31-Mar-98
+=========
+
+[Rel] 2.0.0 beta 5 released.
+
+26-Mar-98
+=========
+
+[New] src/libvbox.h
+      src/modem.c
+      src/modem.h
+      src/voice.c
+      src/voice.h
+      src/vbox.c
+
+	SUSPEND support for newer Hisax (only 2.1.X kernel in the moment)
 
 
 **************************

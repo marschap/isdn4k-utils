@@ -16,8 +16,8 @@ dnl # Version of the vbox package. Theres no need to change this ;-)         #
 dnl #------------------------------------------------------------------------#
 
 PACKAGE="vbox"
-VERSION="2.0.0 BETA 4"
-VERDATE="02-Jun-97"
+VERSION="2.0.0 BETA 5"
+VERDATE="31-MAR-98"
 
 AC_DEFINE_UNQUOTED(PACKAGE, "${PACKAGE}")
 AC_DEFINE_UNQUOTED(VERSION, "${VERSION}")
