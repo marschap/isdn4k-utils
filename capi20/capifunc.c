@@ -1,7 +1,14 @@
 /*
- * $Id: capifunc.c,v 1.6 2004/10/06 15:24:43 calle Exp $
+ * $Id: capifunc.c,v 1.7 2005/02/21 17:37:06 keil Exp $
  *
  * $Log: capifunc.c,v $
+ * Revision 1.7  2005/02/21 17:37:06  keil
+ * libcapi20 version 3.0.0
+ *  - add SENDING COMPLETE in ALERT_REQ
+ *  - add Globalconfiguration to CONNECT_REQ/RESP and SELECT_B_PROTOCOL_REQ
+ *
+ * * NOTE: incompatible to 2.X.Y versions
+ *
  * Revision 1.6  2004/10/06 15:24:43  calle
  * - "SendingComplete"-Patch reverted => 2.0.8 was not binaer compartible
  * - Bugfix: capi20_register() with MaxB3Connection == 0 results in a
@@ -30,12 +37,14 @@ unsigned ALERT_REQ (_cmsg *cmsg, _cword ApplId, _cword Messagenumber,
                     _cstruct BChannelinformation,
                     _cstruct Keypadfacility,
                     _cstruct Useruserdata,
-                    _cstruct Facilitydataarray) {
+                    _cstruct Facilitydataarray,
+		    _cstruct SendingComplete) {
     capi_cmsg_header (cmsg,ApplId,0x01,0x80,Messagenumber,adr);
     cmsg->BChannelinformation = BChannelinformation;
     cmsg->Keypadfacility = Keypadfacility;
     cmsg->Useruserdata = Useruserdata;
     cmsg->Facilitydataarray = Facilitydataarray;
+    cmsg->SendingComplete = SendingComplete;
     return capi_put_cmsg (cmsg);
 }
 
@@ -52,6 +61,7 @@ unsigned CONNECT_REQ (_cmsg *cmsg, _cword ApplId, _cword Messagenumber,
                       _cstruct B1configuration,
                       _cstruct B2configuration,
                       _cstruct B3configuration,
+                      _cstruct Globalconfiguration,
                       _cstruct BC,
                       _cstruct LLC,
                       _cstruct HLC,
@@ -71,6 +81,7 @@ unsigned CONNECT_REQ (_cmsg *cmsg, _cword ApplId, _cword Messagenumber,
     cmsg->B1configuration = B1configuration;
     cmsg->B2configuration = B2configuration;
     cmsg->B3configuration = B3configuration;
+    cmsg->Globalconfiguration = Globalconfiguration;
     cmsg->BC = BC;
     cmsg->LLC = LLC;
     cmsg->HLC = HLC;
@@ -196,7 +207,8 @@ unsigned SELECT_B_PROTOCOL_REQ (_cmsg *cmsg, _cword ApplId, _cword Messagenumber
                                 _cword B3protocol,
                                 _cstruct B1configuration,
                                 _cstruct B2configuration,
-                                _cstruct B3configuration) {
+                                _cstruct B3configuration,
+                                _cstruct Globalconfiguration) {
     capi_cmsg_header (cmsg,ApplId,0x41,0x80,Messagenumber,adr);
     cmsg->B1protocol = B1protocol;
     cmsg->B2protocol = B2protocol;
@@ -204,6 +216,7 @@ unsigned SELECT_B_PROTOCOL_REQ (_cmsg *cmsg, _cword ApplId, _cword Messagenumber
     cmsg->B1configuration = B1configuration;
     cmsg->B2configuration = B2configuration;
     cmsg->B3configuration = B3configuration;
+    cmsg->Globalconfiguration = Globalconfiguration;
     return capi_put_cmsg (cmsg);
 }
 
@@ -216,6 +229,7 @@ unsigned CONNECT_RESP (_cmsg *cmsg, _cword ApplId, _cword Messagenumber,
                        _cstruct B1configuration,
                        _cstruct B2configuration,
                        _cstruct B3configuration,
+                       _cstruct Globalconfiguration,
                        _cstruct ConnectedNumber,
                        _cstruct ConnectedSubaddress,
                        _cstruct LLC,
@@ -231,6 +245,7 @@ unsigned CONNECT_RESP (_cmsg *cmsg, _cword ApplId, _cword Messagenumber,
     cmsg->B1configuration = B1configuration;
     cmsg->B2configuration = B2configuration;
     cmsg->B3configuration = B3configuration;
+    cmsg->Globalconfiguration = Globalconfiguration;
     cmsg->ConnectedNumber = ConnectedNumber;
     cmsg->ConnectedSubaddress = ConnectedSubaddress;
     cmsg->LLC = LLC;

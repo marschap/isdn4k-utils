@@ -1,4 +1,4 @@
-/* $Id: capi.c,v 1.4 2004/12/13 22:06:51 keil Exp $
+/* $Id: capi.c,v 1.5 2005/02/21 17:37:09 keil Exp $
  *
  * Implementation of CAPI state machine
  *
@@ -17,6 +17,13 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: capi.c,v $
+ * Revision 1.5  2005/02/21 17:37:09  keil
+ * libcapi20 version 3.0.0
+ *  - add SENDING COMPLETE in ALERT_REQ
+ *  - add Globalconfiguration to CONNECT_REQ/RESP and SELECT_B_PROTOCOL_REQ
+ *
+ * * NOTE: incompatible to 2.X.Y versions
+ *
  * Revision 1.4  2004/12/13 22:06:51  keil
  * fix ipppd/options.c
  * fix capifax to support ALERT_REQ with and without SENDINGCOMPLETE
@@ -71,6 +78,9 @@ void Handle_Indication(void) {
 					CONNECT_RESP(CMSG, Appl_Id, CMSG->Messagenumber,
 						     CONNECT_IND_PLCI(CMSG), REJECT,
 						     0, 0, 0, NULL, NULL, NULL,
+#ifdef HAVE_GLOBALCONFIGURATION
+						     NULL,
+#endif
 						     NULL, NULL, NULL,
 						     NULL, NULL, NULL, NULL);
 					return;

@@ -1,5 +1,5 @@
 /*
- * $Id: capiconn.c,v 1.10 2004/10/06 15:26:13 calle Exp $
+ * $Id: capiconn.c,v 1.11 2005/02/21 17:37:09 keil Exp $
  *
  * Copyright 2000 Carsten Paeth (calle@calle.in-berlin.de)
  * Copyright 2000 AVM GmbH Berlin (info@avm.de)
@@ -10,6 +10,13 @@
  *  2 of the License, or (at your option) any later version.
  *
  * $Log: capiconn.c,v $
+ * Revision 1.11  2005/02/21 17:37:09  keil
+ * libcapi20 version 3.0.0
+ *  - add SENDING COMPLETE in ALERT_REQ
+ *  - add Globalconfiguration to CONNECT_REQ/RESP and SELECT_B_PROTOCOL_REQ
+ *
+ * * NOTE: incompatible to 2.X.Y versions
+ *
  * Revision 1.10  2004/10/06 15:26:13  calle
  * - "SendingComplete-Patch" reverted.
  *
@@ -46,7 +53,7 @@
 #include <string.h>
 #include "capiconn.h"
 
-static char *revision = "$Revision: 1.10 $";
+static char *revision = "$Revision: 1.11 $";
 
 static _cmsg cmdcmsg;
 static _cmsg cmsg;
@@ -1040,7 +1047,8 @@ static void check_incoming_complete(capi_connection *plcip)
 			    	0,	/* BChannelinformation */
 			    	0,	/* Keypadfacility */
 			    	0,	/* Useruserdata */
-			    	0	/* Facilitydataarray */
+			    	0,	/* Facilitydataarray */
+			    	0	/* SendingComplete */
 				);
 		plcip->msgid = cmsg.Messagenumber;
 		send_message(card, &cmsg);
@@ -1086,6 +1094,7 @@ ignore:
 			       card->msgid++,
 			       cmsg->adr.adrPLCI,
 			       1,	/* ignore call */
+			       0,
 			       0,
 			       0,
 			       0,
@@ -1669,6 +1678,7 @@ capi_connection *capiconn_connect(
 			      plcip->conninfo.b1config,
 			      plcip->conninfo.b2config,
 			      plcip->conninfo.b3config,
+			      0,        /* Globalconfiguration */
 			      0,	/* BC */
 			      0,	/* LLC */
 			      0,	/* HLC */
@@ -1727,6 +1737,7 @@ int capiconn_accept(
 			       plcip->conninfo.b1config,
 			       plcip->conninfo.b2config,
 			       plcip->conninfo.b3config,
+			       0,       /* Globalconfiguration */
 			       0,	/* ConnectedNumber */
 			       0,	/* ConnectedSubaddress */
 			       0,	/* LLC */
@@ -1760,6 +1771,7 @@ int capiconn_ignore(capi_connection *plcip)
 			       0,
 			       0,
 			       0,
+			       0,       /* Globalconfiguration */
 			       0,	/* ConnectedNumber */
 			       0,	/* ConnectedSubaddress */
 			       0,	/* LLC */
@@ -1793,6 +1805,7 @@ int capiconn_reject(capi_connection *plcip)
 			       0,
 			       0,
 			       0,
+			       0,       /* Globalconfiguration */
 			       0,	/* ConnectedNumber */
 			       0,	/* ConnectedSubaddress */
 			       0,	/* LLC */

@@ -1,7 +1,14 @@
 /*
- * $Id: capi20.c,v 1.24 2004/12/15 14:27:54 calle Exp $
+ * $Id: capi20.c,v 1.25 2005/02/21 17:37:06 keil Exp $
  * 
  * $Log: capi20.c,v $
+ * Revision 1.25  2005/02/21 17:37:06  keil
+ * libcapi20 version 3.0.0
+ *  - add SENDING COMPLETE in ALERT_REQ
+ *  - add Globalconfiguration to CONNECT_REQ/RESP and SELECT_B_PROTOCOL_REQ
+ *
+ * * NOTE: incompatible to 2.X.Y versions
+ *
  * Revision 1.24  2004/12/15 14:27:54  calle
  * Bugfix: returncode of get_buffer() is now checked.
  *
@@ -492,7 +499,7 @@ capi20_get_message (unsigned ApplID, unsigned char **Buf)
     fd = applid2fd(ApplID);
 
     if ((*Buf = rcvbuf = get_buffer(ApplID, &bufsiz, &offset)) == 0)
-        return CapiMsgOSResourceError;
+        return CapiMsgOSResourceErr;
 
     if ((rc = read(fd, rcvbuf, bufsiz)) > 0) {
 	CAPIMSG_SETAPPID(rcvbuf, ApplID); // workaround for old driver
@@ -508,6 +515,7 @@ capi20_get_message (unsigned ApplID, unsigned char **Buf)
 	       rcvbuf[15] = (data >> 24) & 0xff;
            } else {
 	       u_int64_t data;
+	       ulong radr = (ulong)rcvbuf;
 	       if (CAPIMSG_LEN(rcvbuf) < 30) {
 		  /*
 		   * grr, 64bit arch, but no data64 included,
@@ -518,7 +526,7 @@ capi20_get_message (unsigned ApplID, unsigned char **Buf)
 	          rcvbuf[0] = 30;
 	          rcvbuf[1] = 0;
 	       }
-	       data = (u_int64_t)rcvbuf + CAPIMSG_LEN(rcvbuf);
+	       data = radr + CAPIMSG_LEN(rcvbuf);
 	       rcvbuf[12] = rcvbuf[13] = rcvbuf[14] = rcvbuf[15] = 0;
 	       rcvbuf[22] = data & 0xff;
 	       rcvbuf[23] = (data >> 8) & 0xff;
