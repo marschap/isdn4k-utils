@@ -3,6 +3,12 @@ AC_INIT(imon.c)
 AC_CONFIG_HEADER(config.h)
 AC_PREFIX_DEFAULT(/usr)
 
+I4LVERSION=${I4LVERSION:-"?.?"}
+CONFIG_MANDIR=`eval echo ${CONFIG_MANDIR:-"/usr/man"}`
+CONFIG_SBINDIR=`eval echo ${CONFIG_SBINDIR:-"/sbin"}`
+CONFIG_KERNELDIR=`eval echo ${CONFIG_KERNELDIR:-"/usr/src/linux"}`
+MANDATE=`grep CHECKIN imon.man.in | awk '{print $4}'`
+
 dnl Checks for programs.
 AC_PROG_INSTALL
 AC_PROG_CC
@@ -22,7 +28,10 @@ AC_CHECK_HEADERS(ncurses.h,,
 				AC_MSG_ERROR("Missing \(n\)curses.h")))))
 
 dnl Check for linux/isdn.h, give up if not found.
-AC_CHECK_HEADER(linux/isdn.h,,AC_MSG_ERROR("Missing linux/isdn.h. Kernel source installed?"))
+AC_FIND_KERNEL
+AC_CHECK_HEADER($CONFIG_KERNELDIR/include/linux/isdn.h,,
+	AC_MSG_ERROR("Missing $CONFIG_KERNELDIR/include/linux/isdn.h. Kernel source installed?")
+)
 
 dnl Checks for typedefs, structures, and compiler characteristics.
 AC_HEADER_TIME
@@ -32,5 +41,24 @@ dnl Checks for library functions.
 AC_TYPE_SIGNAL
 AC_CHECK_FUNCS(select)
 
+dnl Optional sbin directory
+AC_ARG_WITH(sbin,
+	[  --with-sbin=DIR         Set dir where binary is istalled. [/sbin]],
+	CONFIG_SBINDIR="${withval}"
+	AC_DEFINE(CONFIG_SBINDIR,"${withval}"),
+)
+
+dnl Optional man directory
+AC_ARG_WITH(man,
+	[  --with-man=DIR          Set manpage dir. [/usr/man]],
+	CONFIG_MANDIR="${withval}"
+	AC_DEFINE(CONFIG_MANDIR,"${withval}"),
+)
+
 AC_SUBST(INSTALL)
-AC_OUTPUT(Makefile)
+AC_SUBST(MANDATE)
+AC_SUBST(CONFIG_KERNELDIR)
+AC_SUBST(CONFIG_SBINDIR)
+AC_SUBST(CONFIG_MANDIR)
+AC_SUBST(I4LVERSION)
+AC_OUTPUT(Makefile imon.man)

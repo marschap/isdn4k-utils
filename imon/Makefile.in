@@ -1,4 +1,4 @@
-# $Id: Makefile.in,v 1.3 1997/03/24 01:34:43 fritz Exp $
+# $Id: Makefile.in,v 1.4 1997/10/26 23:02:52 fritz Exp $
 #
 # Makefile for iMON
 #
@@ -8,32 +8,26 @@
 #
 SHELL			= /bin/sh
 CFLAGS			= -Wall -O2
-INCLUDES		= -I. $(ISDN_INCLUDE)
+INCLUDES		= -I. -I@CONFIG_KERNELDIR@/include
 LDFLAGS			= -L../lib @LIBS@
 PROGRAM			= imon
 MODULES			= imon.o
 MANPAGE			= imon.8
 HEADERS			= config.h
+MANDIR			= @CONFIG_MANDIR@
+SBINDIR			= @CONFIG_SBINDIR@
+MAN8DIR			= $(MANDIR)/man8
 INSTALL			= @INSTALL@
 INSTALL_PROGRAM	= $(INSTALL) -o 0 -g 0 -m 0750
 INSTALL_MAN		= $(INSTALL) -o 0 -g 0 -m 0644
 prefix			= @prefix@
 exec_prefix		= @exec_prefix@
-ifeq (../.config,$(wildcard ../.config))
-	include ../.config
-	SBINDIR			= $(CONFIG_SBINDIR)
-	mandir			= $(CONFIG_MANDIR)
-else
-	SBINDIR			= /sbin
-	mandir			= @mandir@
-endif
-MAN8DIR			= $(mandir)/man8
 CC				= @CC@
 
 .SUFFIXES:
 .SUFFIXES: .c .o
 
-%.o: %.c
+%.o: %.c Makefile
 	$(CC) $(CFLAGS) $(INCLUDES) -c -o $@ $<
 
 all: $(PROGRAM)
@@ -43,6 +37,12 @@ config:
 
 config.h: config.h.in
 	@./configure
+
+Makefile: Makefile.in config.status
+	./config.status
+
+config.status: configure
+	./config.status --recheck
 
 $(MODULES): $(HEADERS)
 
@@ -66,4 +66,4 @@ clean:
 	rm -f *.o *~ $(PROGRAM)
 
 distclean: clean
-	rm -f config.h config.status config.cache config.log Makefile
+	rm -f config.h config.status config.cache config.log *.man Makefile
