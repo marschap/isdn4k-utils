@@ -1,3 +1,7 @@
+2004-12-10  Tobias Becker  <tobiasb@isdn4linux.de>
+	* Makefile.in (NATION): Export this variable to child processes, like
+	make in subdirectories.
+
 2004-07-24  Tobias Becker  <tobiasb@isdn4linux.de>
 
 	* Makefile.in: Set version number to 4.69. 

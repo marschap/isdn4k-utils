@@ -55,6 +55,12 @@ endif
 ifeq ($(CONFIG_ISDN_LOG_NL),y)
 	$(MAKE) NL
 endif
+# CONFIG_ISDN_LOG_CC is set at toplevel Makefile, NATION at isdnlog directory.
+ifneq ($(strip $(NATION)),)
+ifeq (,$(findstring y,$(CONFIG_ISDN_LOG_AT) $(CONFIG_ISDN_LOG_DE) $(CONFIG_ISDN_LOG_NL)))
+	$(MAKE) $(NATION)
+endif
+endif
 
 
 config:

@@ -1,0 +1,8 @@
+2004-12-10  Tobias Becker  <tobiasb@isdn4linux.de>
+
+	* Makefile.in:  Use NATION to select zone databases (zone-CC-PROV.cdb)
+	in target country if none of CONFIG_ISDN_LOG_(AT|DE|NL) is set to y.
+	This applies if make is started from the isdnlog and not the toplevel
+	directory.
+
+	* ChangeLog: Started this file.

@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.216 2004/10/28 15:10:34 tobiasb Exp $
+## $Id: Makefile.in,v 1.217 2004/12/10 18:26:10 tobiasb Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,9 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.217  2004/12/10 18:26:10  tobiasb
+## Let "make all" in the isdnlog directory create the necessary zone files.
+##
 ## Revision 1.216  2004/10/28 15:10:34  tobiasb
 ## Moved down the regular rule just added for samples/isdn.conf
 ## so that all is again the default target.
@@ -1642,7 +1645,7 @@ CDBEXTRALIBS		:= @CDBEXTRALIBS@
 DEFS			:=
 SUBDIRS			:= tools/zone tools/dest
 
-NATION			:= @NATION@
+export NATION		:= @NATION@
 
 export LOGFILE		:= @LOGFILE@
 export COUNTRYCODE	:= @COUNTRYCODE@
@@ -1651,7 +1654,7 @@ export AREAPREFIX	:= @AREAPREFIX@
 
 # store I4L-Version for make commands issued in the isdnlog subdirectory.
 # In this case the export of I4L-Version by the global makefile does not take
-# place because this makefile is not evaluted.
+# place because this makefile is not evaluated.
 STORED_I4LVERSION       := @I4LVERSION@
 
 export ILABEL        := %b %e %T %ICall to tei %t from %N2 on %n2
