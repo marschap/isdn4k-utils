@@ -1,3 +1,10 @@
+2004-07-25  Tobias Becker  <tobiasb@isdn4linux.de>
+
+	* rep_main.c (parse_options): New option `-m', multiplies or divides
+	connection costs before displaying
+	* isdnrep.h (modcost): New global variable for `-m' option.
+	* isdnrep.c (print_header, set_caller_infos): Apply `-m' option.
+
 2004-07-24  Tobias Becker  <tobiasb@isdn4linux.de>
 
 	* rep_main.c (parse_options): New option `-x', selects calls by hour

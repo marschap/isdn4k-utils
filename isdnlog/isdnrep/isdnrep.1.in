@@ -1,5 +1,5 @@
-.\" $Id: isdnrep.1.in,v 1.7 2004/07/24 17:58:06 tobiasb Exp $
-.\" CHECKIN $Date: 2004/07/24 17:58:06 $
+.\" $Id: isdnrep.1.in,v 1.8 2004/07/25 14:21:13 tobiasb Exp $
+.\" CHECKIN $Date: 2004/07/25 14:21:13 $
 .TH isdnrep 1 "@MANDATE_ISDNREP@" "ISDN 4 Linux @I4LVERSION@" "Linux System Commands"
 
 .PD 0
@@ -240,6 +240,12 @@ in rate.conf
 B
 Like b but allow all providers, not only the booked.
 .RE
+
+.TP
+\fB\-m\fR[\fB*\fR|\fB/\fR]\fInumber\fB  modify call costs\fR
+Multiply (*) or divide (/) the stored or recalculated call costs
+by number before displaying them.  If neither * nor / is given,
+multiply.
 
 .TP
 .B \-wX	WWW

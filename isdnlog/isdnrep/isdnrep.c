@@ -1,4 +1,4 @@
-/* $Id: isdnrep.c,v 1.100 2004/07/24 17:58:06 tobiasb Exp $
+/* $Id: isdnrep.c,v 1.101 2004/07/25 14:21:13 tobiasb Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -24,6 +24,11 @@
  *
  *
  * $Log: isdnrep.c,v $
+ * Revision 1.101  2004/07/25 14:21:13  tobiasb
+ * New isdnrep option -m [*|/]number.  It multiplies or divide the cost of
+ * each call by the given number.  `-m/1.16' for example displays the costs
+ * without the German `Umsatzsteuer'.
+ *
  * Revision 1.100  2004/07/24 17:58:06  tobiasb
  * New isdnrep options: `-L:' controls the displayed call summaries in the
  * report footer.  `-x' displays only call selected or not deselected by
@@ -2200,6 +2205,11 @@ static int print_header(int lday)
 			}
 			print_line2(F_TEXT_LINE, "%s", s);
 		}
+
+		/* TODO: consistent terminology. fees vs. costs (tobiasb|200407) */
+		if (modcost.mode)
+			print_line2(F_TEXT_LINE, "All displayed costs have been %s by %s.",
+			            modcost.mode == 2 ? "divided" : "multiplied", modcost.numstr);
 		
 	}
 	else
@@ -2723,6 +2733,14 @@ static int set_caller_infos(one_call *cur_call, char *string, time_t from)
    * the current rate-file.  The -r option is also handled there.
    */
   repair(cur_call);
+
+	if (cur_call->pay != 0.0 && modcost.mode)
+	{
+		if (modcost.mode == 1)
+			cur_call->pay *= modcost.number;
+		else if (modcost.mode == 2)
+			cur_call->pay /= modcost.number;
+	}
 
   return(rc);
 }

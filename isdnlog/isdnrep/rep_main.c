@@ -1,4 +1,4 @@
-/* $Id: rep_main.c,v 1.18 2004/07/24 17:58:06 tobiasb Exp $
+/* $Id: rep_main.c,v 1.19 2004/07/25 14:21:13 tobiasb Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -20,6 +20,11 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rep_main.c,v $
+ * Revision 1.19  2004/07/25 14:21:13  tobiasb
+ * New isdnrep option -m [*|/]number.  It multiplies or divide the cost of
+ * each call by the given number.  `-m/1.16' for example displays the costs
+ * without the German `Umsatzsteuer'.
+ *
  * Revision 1.18  2004/07/24 17:58:06  tobiasb
  * New isdnrep options: `-L:' controls the displayed call summaries in the
  * report footer.  `-x' displays only call selected or not deselected by
@@ -306,7 +311,7 @@ static char  fnbuff[512] = "";
 static char  usage[]     = "%s: usage: %s [ -%s ]\n";
 static char  wrongdate[] = "unknown date: %s\n";
 static char  wrongxopt[] = "error in -x option starting at: %s\n";
-static char  options[]   = "abcd:f:hinop:r:s:t:uvw:x:EF:L:M:NR:SV";
+static char  options[]   = "abcd:f:him:nop:r:s:t:uvw:x:EF:L:M:NR:SV";
 static char *linefmt     = "";
 static char *htmlreq     = NULL;
 static char *phonenumberarg = NULL;
@@ -326,6 +331,7 @@ int main(int argc, char *argv[], char *envp[])
 
 	recalc.mode = '\0'; recalc.prefix = UNKNOWN; recalc.input = NULL;
 	recalc.count = recalc.unknown = recalc.cheaper = 0;
+	modcost.mode = 0;
 	select_summaries(sel_sums, NULL); /* default: all summaries */
 
 	/* we don't need this at the moment:
@@ -340,6 +346,8 @@ int main(int argc, char *argv[], char *envp[])
 	 * set_msnlist after readconfig.
 	 */
 
+	/* TODO: parse_options may print to stdout regardless a missing
+	 * Content-Type header. (tobiasb|200407) */
 	if ((c=parse_options(argc, argv, myname) > 0))
 		return c;
 
@@ -530,6 +538,26 @@ static int parse_options(int argc, char *argv[], char *myname)
 			           break;
 
 			case 'c' : do_defopts = 0;
+			           break;
+
+			case 'm' : modcost.mode = (*optarg =='/') ? 2 : 1;
+			           modcost.numstr = strdup(optarg);
+			           if (*optarg == '*' || *optarg == '/')
+			             modcost.numstr++;
+			           ptr = NULL;
+			           modcost.number = strtod(modcost.numstr, &ptr);
+			           if (modcost.numstr == ptr)
+			           {
+			             printf("no number in -m option: %s\n", modcost.numstr);
+			             return 1;
+			           }
+			           if (modcost.mode == 2 && modcost.number == 0.0)
+			           {
+			             printf("division by 0 as requested in -m option not allowed.\n");
+			             return 1;
+			           }
+			           if (ptr && *ptr)
+			             *ptr = 0;		
 			           break;
 
       case '?' : printf(usage, argv[0], argv[0], options);
