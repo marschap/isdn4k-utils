@@ -15,7 +15,7 @@
 
 #define LIMIT(val,lim) ( (val) <= (lim) ? val : lim ) 
 
-#define E4L_VERSION "0.0.10"
+#define E4L_VERSION "0.0.11"
 extern const char e4l_version[];
 
 /*
