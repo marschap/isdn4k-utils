@@ -1,4 +1,4 @@
-/* $Id: takt_nl.c,v 1.4 1998/11/24 20:52:18 akool Exp $
+/* $Id: takt_nl.c,v 1.5 1998/12/10 11:08:39 paul Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -40,20 +40,21 @@
 #define ZJ 3 /* Werktag 27. .. 30.12. */
 
 
-#define MUTT      3
-#define KARF      4
-#define OST1      5
-#define OST2      6
-#define CHRI      7
-#define PFI1      8
-#define PFI2      9
-#define FRON     10
+#define KARF      0
+#define OST1      1
+#define OST2      2
+#define CHRI      3
+#define PFI1      4
+#define PFI2      5
+#ifndef ISDN_NL
+#define FRON      6
+#define MUTT      8
 #define EINH     11
 #define MARI     12
 #define ALLE     13
 #define BUSS     14
+#endif
 
-#define A_FEI 	 17
 
 struct w_ftag {
   char  tag;
@@ -74,24 +75,34 @@ static struct {
 static char tab_tage[2][12] = {{ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 },
 	                       { 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 }};
 
-static struct w_ftag t_ftag[A_FEI] = {
-  {  1,  1, 0, "Neujahr" },
-  {  6,  1, 0, "Erscheinungsfest" },          /* nur Baden-Wuerttemberg und Bayern */
+static struct w_ftag t_ftag[] = {
+/*
+ * these come first as they are not dependent on local feasts,
+ * and are calculated on the fly
+ */
+  {  0,  0, 0, "Goede Vrijdag" },
+  {  0,  0, 0, "Pasen" },
+  {  0,  0, 0, "tweede Paasdag" },
+  {  0,  0, 0, "Hemelvaart" },
+  {  0,  0, 0, "Pinksteren" },
+  {  0,  0, 0, "tweede Pinksterdag" },
+#ifndef ISDN_NL
+  {  0,  0, 0, "Fronleichnam" },         /* nur in Baden-Wuerttemberg, Bayern, Hessen, Nordrhein-Westfalen, Rheinland-Pfalz und im Saarland */
+#endif
+  {  1,  1, 0, "nieuwjaarsdag" },
+  {  4, 30, 0, "Koninginnedag" },
+  {  5,  5, 0, "Bevrijdingsdag" },
+#ifndef ISDN_NL
+  {  6,  1, 0, "Erscheinungsfest" },     /* nur Baden-Wuerttemberg und Bayern */
   {  1,  5, 0, "Maifeiertag" },
   {  0,  0, 0, "Muttertag" },
-  {  0,  0, 0, "Karfreitag" },
-  {  0,  0, 0, "Ostersonntag" },
-  {  0,  0, 0, "Ostermontag" },
-  {  0,  0, 0, "Christi Himmelfahrt" },
-  {  0,  0, 0, "Pfingstsonntag" },
-  {  0,  0, 0, "Pfingstmontag" },
-  {  0,  0, 0, "Fronleichnam" },              /* nur in Baden-Wuerttemberg, Bayern, Hessen, Nordrhein-Westfalen, Rheinland-Pfalz und im Saarland */
   {  3, 10, 0, "Tag der deutschen Einheit" }, /* vor 1990 am 17.6. */
   { 15,  8, 0, "Maria Himmelfahrt" }, 	      /* nur Saarland und ueberwiegend katholischen Gemeinden Bayerns */
   {  1, 11, 0, "Allerheiligen" },  	      /* nur Baden-Wuerttemberg, Bayern, Nordrhein-Westfalen, Rheinland-Pfalz und im Saarland */
   {  0,  0, 0, "Buss- und Bettag" }, 	      /* nur bis incl. 1994 (wg. Pflegeversicherung abgeschafft) */
-  { 25, 12, 0, "1. Weihnachtsfeiertag" },
-  { 26, 12, 0, "2. Weihnachtsfeiertag" }};
+#endif
+  { 25, 12, 0, "Kerstmis" },
+  { 26, 12, 0, "tweede Kerstdag" }};
 
 
 static int schalt(register int j)
@@ -135,9 +146,10 @@ static void num_tag(int jahr, int lfd)
 } /* num_tag */
 
 
+#if 0 /* not used: no special tariff on holidays in NL :-( */
 static void comp_feier_tage(int jj)
 {
-  static   struct w_ftag t_stag[A_FEI];
+  static   struct w_ftag t_stag[sizeof(t_ftag) / sizeof(struct w_ftag)];
   static   int 	  	 firsttime = 1;
   static   int		 l_jj = -1;
   register int 		 mm, tt, i, j, a, b;
@@ -149,14 +161,12 @@ static void comp_feier_tage(int jj)
   l_jj = jj;
 
   if (firsttime) {
-    for (i = 0; i < A_FEI; i++)
-      t_stag[i] = t_ftag[i];
+    memcpy(t_stag, t_ftag, sizeof(t_ftag));
 
     firsttime = 0;
   }
   else
-    for (i = 0; i < A_FEI; i++)
-      t_ftag[i] = t_stag[i];
+    memcpy(t_ftag, t_stag, sizeof(t_ftag));
 
 
   /* Berechnung von Ostern nach C.F.Gauss */
@@ -197,28 +207,29 @@ static void comp_feier_tage(int jj)
   num_tag(jj, -10 + tag_num(t_ftag[PFI1].tag, t_ftag[PFI1].monat, jj));
   t_ftag[CHRI].monat = _datum.monat; t_ftag[CHRI].tag = _datum.tag;
 
+#ifndef ISDN_NL
   /* Fronleichnam */
   num_tag(jj, 11 + tag_num(t_ftag[PFI1].tag, t_ftag[PFI1].monat, jj));
   t_ftag[FRON].monat = _datum.monat; t_ftag[FRON].tag = _datum.tag;
+#endif
 } /* comp_feier_tage */
+#endif /* not used */
 
 
 static int tarifzeit(struct tm *tm, char *why)
 {
-  register int i;
-
 
   if (tm->tm_wday == 6) {
-    strcpy(why, "Wochenende (Samstag)");
+    strcpy(why, "Weekend (zaterdag)");
     return(WE);
   } /* if */
 
   if (tm->tm_wday == 0) {
-    strcpy(why, "Wochenende (Sonntag)");
+    strcpy(why, "Weekend (zondag)");
     return(WE);
   } /* if */
 
-  strcpy(why, "Werktag");
+  strcpy(why, "werkdag");
   return(WT);
 } /* tarifzeit */
 
@@ -233,7 +244,7 @@ static int tarifzeit(struct tm *tm, char *why)
 */
 
 static int   zeit[24] = { 4, 4, 5, 5, 5, 0, 0, 0, 0, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 3, 4, 4, 4 };
-static char *zeiten[6] = { "Freizeit", "Vormittag", "Nachmittag", "Freizeit", "Mondschein", "Nacht" };
+static char *zeiten[6] = { "vrijetijd", "ochtend", "middag", "vrijetijd", "avond", "nacht" };
 static char *zonen[4] = { "CityCall", "RegioCall", "GermanCall", "GlobalCall" };
 
 
@@ -347,8 +358,8 @@ float taktlaenge(int chan, char *description)
 
   tm = localtime(&connect);
 
-    if (call[chan].sondernummer != -1) {
-      switch (SN[call[chan].sondernummer].tarif) {
+    if (call[chan].sondernummer[CALLED] != -1) {
+      switch (SN[call[chan].sondernummer[CALLED]].tarif) {
         case  0 : if (description) sprintf(description, "FreeCall");  /* Free of charge */
               	  return(60 * 60 * 24);              /* one day should be enough ;-) */
 
@@ -356,15 +367,15 @@ float taktlaenge(int chan, char *description)
                   break;
 
         case -1 : if ((tm->tm_wday > 0) && (tm->tm_wday < 6)) {
-              	    if ((tm->tm_hour > 8) && (tm->tm_hour < 18))
-                      takt = SN[call[chan].sondernummer].takt1;  /* Werktag 9-18 Uhr */
+              	    if ((tm->tm_hour > 8) && (tm->tm_hour < 20))
+                      takt = SN[call[chan].sondernummer[CALLED]].takt1;  /* Werktag 9-20 Uhr */
               	    else
-                      takt = SN[call[chan].sondernummer].takt2;  /* Restliche Zeit */
+                      takt = SN[call[chan].sondernummer[CALLED]].takt2;  /* Restliche Zeit */
         	  }
     	    	  else
-    	    	    takt = SN[call[chan].sondernummer].takt2;
+    	    	    takt = SN[call[chan].sondernummer[CALLED]].takt2;
 
-                  if (description) strcpy(description, SN[call[chan].sondernummer].sinfo);
+                  if (description) strcpy(description, SN[call[chan].sondernummer[CALLED]].sinfo);
 		  return(takt);
                   break;
 
@@ -372,7 +383,7 @@ float taktlaenge(int chan, char *description)
     } /* if */
 
     if (zone == -1) {
-      zone2 = area_diff(NULL, call[chan].num[1]);
+      zone2 = area_diff(NULL, call[chan].num[CALLED]);
 
       if ((zone2 == -1) && (c = call[chan].confentry[OTHER]) > -1)
         zone = known[c]->zone;
