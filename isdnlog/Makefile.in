@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.41 1998/09/26 18:28:32 akool Exp $
+## $Id: Makefile.in,v 1.42 1998/09/27 11:47:21 akool Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,9 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.42  1998/09/27 11:47:21  akool
+## fix segfault of isdnlog after each RELASE
+##
 ## Revision 1.41  1998/09/26 18:28:32  akool
 ##  - quick and dirty Call-History in "-m" Mode (press "h" for more info) added
 ##    - eat's one more socket, Stefan: sockets[3] now is STDIN, FIRST_DESCR=4 !!
@@ -336,7 +339,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 2.99.31
+VERSION     = 2.99.32
 
 ifeq ($(POSTGRES),1)
 DEFS       += -DPOSTGRES

@@ -1,4 +1,4 @@
-/* $Id: processor.c,v 1.25 1998/09/26 18:29:15 akool Exp $
+/* $Id: processor.c,v 1.26 1998/09/27 11:47:28 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.26  1998/09/27 11:47:28  akool
+ * fix segfault of isdnlog after each RELASE
+ *
  * Revision 1.25  1998/09/26 18:29:15  akool
  *  - quick and dirty Call-History in "-m" Mode (press "h" for more info) added
  *    - eat's one more socket, Stefan: sockets[3] now is STDIN, FIRST_DESCR=4 !!
@@ -4623,8 +4626,8 @@ doppelt:break;
 
           info(chan, PRT_SHOWHANGUP, STATE_HANGUP, sx);
 
-	  if (chargemax != 0.0) {
           if (!call[chan].dialin && ((c = call[chan].confentry[OTHER]) > -1)) {
+	    if (chargemax != 0.0) {
             sprintf(sx, "CHARGEMAX total=%s %s today=%s %s remaining=%s %s",
               currency,
               double2str(known[c]->scharge + known[c]->charge, 7, 2, DEB),
@@ -4633,7 +4636,7 @@ doppelt:break;
               currency,
               double2str((chargemax - known[c]->charge), 6, 2, DEB));
             info(chan, PRT_SHOWCHARGEMAX, STATE_HANGUP, sx);
-	  }
+	    } /* if */
 
             if (connectmax != 0.0) {
               if (connectmaxmode == 1)
