@@ -1,3 +1,0 @@
-#! /bin/sh
-
-../../redzone -zzoneall -rzred.dtag -l5 -v2 -n

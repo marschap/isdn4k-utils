@@ -1,0 +1,20 @@
+#! /bin/sh
+
+# This job fully generates a new "zone-de-dtag.gdbm"
+#
+# Be warned: This job runs about 2 day's, and requires more than
+# 100 Mb of free disk space!
+
+cd /usr/src/isdn4k-utils/isdnlog/tools/zone/de/01033
+
+bzip2 -d zneu.de9.bz2
+./mzoneall
+bzip2 -9 zneu.de9
+
+../../redzone -zzoneall -rzred.dtag -l5 -v2 -n
+bzip2 -9 zred.dtag
+rm zoneall
+
+cd ../..
+rm ../../zone-de-dtag.gdbm
+make DE

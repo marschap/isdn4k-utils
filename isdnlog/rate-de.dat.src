@@ -1,4 +1,4 @@
-V:1.10-Germany [09-Dec-1999 19:08:45]
+V:1.10-Germany [12-Dec-1999 18:42:00]
 
 # Währungsformat
 U:%.3f DM
@@ -8,7 +8,7 @@ U:%.3f DM
 #
 # (C) Copyright 1999 by Andreas Kool (akool@isdn4linux.de)
 #
-# $Id: rate-de.dat.src,v 1.17 1999/12/12 14:35:52 akool Exp $
+# $Id: rate-de.dat.src,v 1.18 1999/12/14 21:02:36 akool Exp $
 #
 #
 # Das "A:" Tag muß folgendermaßen gefüllt werden:
@@ -15357,6 +15357,12 @@ T:*/*=0.12/30,0.24(60)/1
 P:80 Telegate
 B:01080
 # G:01-Aug-1999
+#
+#                                ACHTUNG:
+#
+#	     Dieser Service (01080) läuft zum Jahresende 1999 aus!
+#
+#
 D:dtag
 C:Address:Aktiengesellschaft für telefonische Informationsdienste, Bahnhofstraße 26, 82211 Herrsching
 C:Name:Telegate
@@ -15434,6 +15440,12 @@ C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/
 P:85 GTS-WESTCom
 B:01085
 # G:01-Mai-1999
+#
+#                                ACHTUNG:
+#
+#	     Dieser Service (01085) läuft zum 27. Dezember 1999 aus!
+#
+#
 C:GmbH, Hebelstraße 22 c, 69115 Heidelberg 01085
 C:Homepage: http://www.westcom.de
 C:Hotline:  0800/937-8266
