@@ -1,4 +1,4 @@
-/* $Id: rep_main.c,v 1.13 2000/03/06 07:03:20 akool Exp $
+/* $Id: rep_main.c,v 1.14 2000/08/17 21:34:44 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -20,6 +20,20 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rep_main.c,v $
+ * Revision 1.14  2000/08/17 21:34:44  akool
+ * isdnlog-4.40
+ *  - README: explain possibility to open the "outfile=" in Append-Mode with "+"
+ *  - Fixed 2 typos in isdnlog/tools/zone/de - many thanks to
+ *      Tobias Becker <tobias@talypso.de>
+ *  - detect interface (via IIOCNETGPN) _before_ setting CHARGEINT/HUPTIMEOUT
+ *  - isdnlog/isdnlog/processor.c ... fixed wrong init of IIOCNETGPNavailable
+ *  - isdnlog/isdnrep/isdnrep.c ... new option -S summary
+ *  - isdnlog/isdnrep/rep_main.c
+ *  - isdnlog/isdnrep/isdnrep.1.in
+ *  - isdnlog/tools/NEWS
+ *  - isdnlog/tools/cdb/debian ... (NEW dir) copyright and such from orig
+ *  - new "rate-de.dat" from sourceforge (hi and welcome: Who is "roro"?)
+ *
  * Revision 1.13  2000/03/06 07:03:20  akool
  * isdnlog-4.15
  *   - isdnlog/tools/tools.h ... moved one_call, sum_calls to isdnrep.h
@@ -226,7 +240,7 @@ int main(int argc, char *argv[], char *envp[])
 	auto char  fnbuff[512] = "";
 	auto char  usage[]     = "%s: usage: %s [ -%s ]\n";
 	auto char  wrongdate[] = "unknown date: %s\n";
-	auto char  options[]   = "ad:f:hinop:s:t:uvw:NVF:M:R:bE";
+	auto char  options[]   = "ad:f:hinop:s:t:uvw:NVF:M:R:bES";
 	auto char *myname      = basename(argv[0]);
 	auto char *ptr         = NULL;
 	auto char *linefmt     = "";
@@ -309,6 +323,9 @@ int main(int argc, char *argv[], char *envp[])
 
       case 'V' : print_version(myname);
                  exit(0);
+
+      case 'S' : summary++;
+      	       	 break;
 
       case '?' : printf(usage, argv[0], argv[0], options);
                  return(1);

@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.178 2000/08/14 18:41:43 akool Exp $
+## $Id: Makefile.in,v 1.179 2000/08/17 21:34:42 akool Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,20 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.179  2000/08/17 21:34:42  akool
+## isdnlog-4.40
+##  - README: explain possibility to open the "outfile=" in Append-Mode with "+"
+##  - Fixed 2 typos in isdnlog/tools/zone/de - many thanks to
+##      Tobias Becker <tobias@talypso.de>
+##  - detect interface (via IIOCNETGPN) _before_ setting CHARGEINT/HUPTIMEOUT
+##  - isdnlog/isdnlog/processor.c ... fixed wrong init of IIOCNETGPNavailable
+##  - isdnlog/isdnrep/isdnrep.c ... new option -S summary
+##  - isdnlog/isdnrep/rep_main.c
+##  - isdnlog/isdnrep/isdnrep.1.in
+##  - isdnlog/tools/NEWS
+##  - isdnlog/tools/cdb/debian ... (NEW dir) copyright and such from orig
+##  - new "rate-de.dat" from sourceforge (hi and welcome: Who is "roro"?)
+##
 ## Revision 1.178  2000/08/14 18:41:43  akool
 ## isdnlog-4.39
 ##  - fixed 2 segfaults in processor.c
@@ -1357,7 +1371,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 4.39
+VERSION     = 4.40
 
 MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 \
 	      isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 \

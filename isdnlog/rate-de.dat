@@ -1,4 +1,4 @@
-V:1.10-Germany [06-Aug-2000 15:01:56]
+V:1.10-Germany [17-Aug-2000 23:28:02]
 
 # W‰hrungsformat
 U:%.3f DM
@@ -8,7 +8,7 @@ U:%.3f DM
 #
 # (C) Copyright 1999, 2000 by Andreas Kool (akool@isdn4linux.de)
 #
-# $Id: rate-de.dat,v 1.104 2000/08/06 13:06:52 akool Exp $
+# $Id: rate-de.dat,v 1.105 2000/08/17 21:34:42 akool Exp $
 #
 #
 # Das "A:" Tag muﬂ folgendermaﬂen gef¸llt werden:
@@ -214,6 +214,7 @@ N:01928150  # Corax Coraxline                          # 0101901928150  (User:be
 N:019282200 # X9MEDIA Internet by Call                 # 01019019282200 (User:beliebig; pw:beliebig)
 N:019282500 # surflos Internet by Call                 # 01019019282500 (User:beliebig; pw:beliebig)
 N:01929     # 01019Freenet (Mobilcom)                  # 0101901929     (User:beliebig; pw:beliebig)
+N:0193094100# clara.net Internet by Call               # 010880193094100(User:claranet; pw:claranet)
 #
 # S:T-VoteCall
 # N:01371, 01372, 01373, 01374, 0138
@@ -10867,40 +10868,6 @@ T:*/*=2.29332(60)/1
 Z:444 China
 A:CN
 T:*/*=2.57520(60)/1
-###########################################################################
-P:28,3 Nikoma by Call
-B:01028
-# G:01-Apr-2000
-C:Nikoma
-C:Name: nikoma MediaWorks GmbH
-C:Address: Amsinckstraﬂe 71, 20097 Hamburg, Tel: 040-80804-0, Fax: 040-80804-1998
-C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
-C:Homepage: http://www.nikoma.de/
-Z:0 FreeCall
-A:011*
-A:0130*,0800*,0801*
-A:031*
-A:110
-A:112
-T:*/*=0
-Z:3-4 Fern
-T:W/9-18=0.0989(60)/1
-T:W/18-9=0.0589(60)/1
-T:E/*=0.0589(60)/1
-A:+49
-Z:10-15 Mobil
-A:_DEMCM
-A:_DEMC
-A:_DEMD1
-A:_DEMD2
-A:_DEME1
-A:_DEME2
-T:*/*=0.46(60)/1
-Z:100 Internet
-A:0193033
-T:W/9-18=0.0349(60)/1
-T:W/18-9=0.0289(60)/1
-T:E/*=0.0289(60)/1
 ###########################################################################
 P:28,3 TiscaliNet
 B:01028
@@ -25328,6 +25295,12 @@ C:Homepage:http://www.ln-online.de/service/internet
 T:W/18-09=0.0399(60)/1
 T:W/09-18=0.0444(60)/1
 T:E,H/*=0.0399(60)/1
+Z:104 clara.net
+A:0193094100
+C:Homepage:http://www.claranet.de/dialup/index.html
+T:W/08-18=0.0379(60)/1
+T:W/18-08=0.0249(60)/1
+T:E,H/*=0.0249(60)/1
 #####################################################################
 P:[-01.11.1999]88,0 WorldCom
 B:01088

@@ -1,4 +1,4 @@
-/* $Id: processor.c,v 1.112 2000/08/14 18:41:43 akool Exp $
+/* $Id: processor.c,v 1.113 2000/08/17 21:34:43 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,20 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.113  2000/08/17 21:34:43  akool
+ * isdnlog-4.40
+ *  - README: explain possibility to open the "outfile=" in Append-Mode with "+"
+ *  - Fixed 2 typos in isdnlog/tools/zone/de - many thanks to
+ *      Tobias Becker <tobias@talypso.de>
+ *  - detect interface (via IIOCNETGPN) _before_ setting CHARGEINT/HUPTIMEOUT
+ *  - isdnlog/isdnlog/processor.c ... fixed wrong init of IIOCNETGPNavailable
+ *  - isdnlog/isdnrep/isdnrep.c ... new option -S summary
+ *  - isdnlog/isdnrep/rep_main.c
+ *  - isdnlog/isdnrep/isdnrep.1.in
+ *  - isdnlog/tools/NEWS
+ *  - isdnlog/tools/cdb/debian ... (NEW dir) copyright and such from orig
+ *  - new "rate-de.dat" from sourceforge (hi and welcome: Who is "roro"?)
+ *
  * Revision 1.112  2000/08/14 18:41:43  akool
  * isdnlog-4.39
  *  - fixed 2 segfaults in processor.c
@@ -1085,7 +1099,8 @@ static int    IIOCNETGPNavailable = -1; /* -1 = unknown, 0 = no, 1 = yes */
 #endif
 
 
-#define INTERFACE ((IIOCNETGPNavailable == 1) ? call[chan].interface : known[call[chan].confentry[OTHER]]->interface)
+// #define INTERFACE ((IIOCNETGPNavailable == 1) ? call[chan].interface : known[call[chan].confentry[OTHER]]->interface)
+#define INTERFACE call[chan].interface
 
 
 static void Q931dump(int mode, int val, char *msg, int version)
@@ -1793,6 +1808,12 @@ static void decode(int chan, register char *p, int type, int version, int tei)
         Q931dump(TYPE_STRING, l, s, version);
       } /* if */
 
+      if ((l > 50) || (l < 0)) {
+      	sprintf(sx, "Invalid length %d -- complete frame ignored!", l);
+        info(chan, PRT_SHOWNUMBERS, STATE_RING, sx);
+        return;
+      } /* if */
+
       pd = qmsg(TYPE_ELEMENT, version, element);
 
       if (strncmp(pd, "UNKNOWN", 7) == 0) {
@@ -1815,8 +1836,9 @@ static void decode(int chan, register char *p, int type, int version, int tei)
           p2 += sprintf(p2, "%c", isgraph(c) ? c : ' ');
         } /* for */
 
-        p2 += sprintf(p2, "], length=%d", l);
+        p2 += sprintf(p2, "], length=%d -- complete frame ignored!", l);
         info(chan, PRT_SHOWNUMBERS, STATE_RING, s);
+        return;
       }
       else
         print_msg(PRT_DEBUG_DECODE, " DEBUG> %s: ELEMENT %02x:%s (length=%d)\n", st + 4, element, pd, l);
@@ -3584,7 +3606,7 @@ static void processinfo(char *s)
 
       if (!Q931dmp) {
         print_msg(PRT_NORMAL, "(ISDN subsystem with ISDN_MAX_CHANNELS > 16 detected, ioctl(IIOCNETGPN) is %savailable)\n",
-          IIOCNETGPNavailable = findinterface() ? "" : "un");
+          (IIOCNETGPNavailable = findinterface()) ? "" : "un");
         print_msg(PRT_NORMAL, "isdn.conf:%d active channels, %d MSN/SI entries\n", chans, mymsns);
 
         if (dual) {
@@ -4581,7 +4603,7 @@ static void processctrl(int card, char *s)
 
         chan = call[chan].channel - 1;
 
-        if (!chanused[chan]) {
+        if (!chanused[chan] || interns0) {
           /* nicht --channel, channel muss unveraendert bleiben! */
           memcpy((char *)&call[chan], (char *)&call[5], sizeof(CALL));
           Change_Channel(5, chan);
@@ -4689,6 +4711,9 @@ static void processctrl(int card, char *s)
         else
           info(chan, PRT_SHOWCONNECT, STATE_CONNECT, "CONNECT");
 
+        if (IIOCNETGPNavailable)
+	  IIOCNETGPNavailable = findinterface();
+
         if (OUTGOING && *call[chan].num[CALLED]) {
 
  	  prepareRate(chan, &why, &hint, 0);
@@ -4760,9 +4785,6 @@ static void processctrl(int card, char *s)
             } /* if */
           } /* if */
         } /* if */
-
-        if (IIOCNETGPNavailable)
-	  IIOCNETGPNavailable = findinterface();
 
         if (sound)
           ringer(chan, RING_CONNECT);

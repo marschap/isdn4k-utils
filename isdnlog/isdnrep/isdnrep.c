@@ -1,4 +1,4 @@
-/* $Id: isdnrep.c,v 1.92 2000/06/22 16:08:24 keil Exp $
+/* $Id: isdnrep.c,v 1.93 2000/08/17 21:34:44 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -24,6 +24,20 @@
  *
  *
  * $Log: isdnrep.c,v $
+ * Revision 1.93  2000/08/17 21:34:44  akool
+ * isdnlog-4.40
+ *  - README: explain possibility to open the "outfile=" in Append-Mode with "+"
+ *  - Fixed 2 typos in isdnlog/tools/zone/de - many thanks to
+ *      Tobias Becker <tobias@talypso.de>
+ *  - detect interface (via IIOCNETGPN) _before_ setting CHARGEINT/HUPTIMEOUT
+ *  - isdnlog/isdnlog/processor.c ... fixed wrong init of IIOCNETGPNavailable
+ *  - isdnlog/isdnrep/isdnrep.c ... new option -S summary
+ *  - isdnlog/isdnrep/rep_main.c
+ *  - isdnlog/isdnrep/isdnrep.1.in
+ *  - isdnlog/tools/NEWS
+ *  - isdnlog/tools/cdb/debian ... (NEW dir) copyright and such from orig
+ *  - new "rate-de.dat" from sourceforge (hi and welcome: Who is "roro"?)
+ *
  * Revision 1.92  2000/06/22 16:08:24  keil
  * parameter in (...) are allways converted into int
  * newer gcc give an error using char here
@@ -715,7 +729,7 @@ static int print_bottom(double unit, char *start, char *stop)
   auto	   int	      s1 = 0;
 
 
-	if (timearea) {
+	if (timearea && summary < 2) {
 		strich(1);
 		print_sum_calls(&day_sum,0);
 
@@ -759,7 +773,7 @@ static int print_bottom(double unit, char *start, char *stop)
 
 	get_format("%-14.14s %4d call(s) %10.10s  %12s %-12s %-12s");
 
-	for (j = 0; j < 2; j++)
+	for (j = 0; summary < 2 && j < 2; j++)
 	{
 		if ((j == DIALOUT && !incomingonly) || (!outgoingonly && j == DIALIN))
 		{
@@ -772,7 +786,7 @@ static int print_bottom(double unit, char *start, char *stop)
 			print_line2(F_BODY_HEADERL,"%s",string);
 			strich(1);
 
-			for (i = 0 /* mymsns */; i < knowns; i++) {
+			for (i = 0 ; i < knowns; i++) {
 				if (known[i]->usage[j]) {
 					print_line3(NULL,
 					          /*!numbers?*/known[i]->who/*:known[i]->num*/,
@@ -1852,7 +1866,7 @@ static int print_entries(one_call *cur_call, double unit, int *nx, char *myname)
     if (cur_call->dir == DIALOUT)
     bprint(cur_call);
   }
-  else
+  else if(!summary)
     print_line(F_BODY_LINE,cur_call,computed,NULL);
 
   return(0);
@@ -1876,6 +1890,8 @@ static int print_header(int lday)
 	}
 	else
 	{
+	    if (summary >= 2)
+		return 0;
 		strich(1);
 		print_sum_calls(&day_sum,0);
 

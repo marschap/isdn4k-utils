@@ -1,4 +1,4 @@
-ISDNLOG - Version 4.38 -  				04-Aug-2000
+ISDNLOG - Version 4.40 -  				15-Aug-2000
 
 
 isdnlog ist ein Utility zur Auswertung des D-Kanals eines
@@ -2125,6 +2125,10 @@ angegeben werden.
      Es ist moeglich parallel die Option -C X zu setzen. Dann wird
      sowohl auf der Console als auch in der Datei die Ausgabe ausgegeben.
      Diese Datei wird bei einem "kill -HUP" geschlossen und wieder geoeffnet.
+
+     Beginnt der Name der Ausgabedatei mit einem "+", wird diese Datei
+     nicht bei jedem Neustart von isdnlog gel”scht, sondern es wird
+     an diese endlos angeh„ngt, also z.b. "outfile=+/tmp/logger"
      (outfile="value")
 
  -lX Angabe der gewuenschten Meldungen, die in's syslog eingetragen
