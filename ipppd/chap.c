@@ -18,7 +18,7 @@
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-char chap_rcsid[] = "$Id: chap.c,v 1.5 1998/05/05 08:51:19 hipp Exp $";
+char chap_rcsid[] = "$Id: chap.c,v 1.6 1999/11/10 08:01:32 werner Exp $";
 
 /*
  * TODO:
@@ -185,7 +185,7 @@ ChapChallengeTimeout(arg)
 	/* give up on peer */
 	syslog(LOG_ERR, "Peer failed to respond to CHAP challenge");
 	cstate->serverstate = CHAPSS_BADAUTH;
-	auth_peer_fail(cstate->unit, PPP_CHAP);
+	auth_peer_fail(cstate->unit, PPP_CHAP, AUTH_ERR_TIME | AUTH_ERR_CHAP);
 	return;
     }
 
@@ -291,10 +291,10 @@ void ChapProtocolReject(int linkunit)
 
     if (cstate->serverstate != CHAPSS_INITIAL &&
 	cstate->serverstate != CHAPSS_CLOSED)
-	auth_peer_fail(cstate->unit, PPP_CHAP);
+	auth_peer_fail(cstate->unit, PPP_CHAP, AUTH_ERR_PROT | AUTH_ERR_CHAP);
     if (cstate->clientstate != CHAPCS_INITIAL &&
 	cstate->clientstate != CHAPCS_CLOSED)
-	auth_withpeer_fail(cstate->unit, PPP_CHAP);
+	auth_withpeer_fail(cstate->unit, PPP_CHAP, AUTH_ERR_PROT | AUTH_ERR_CHAP);
     ChapLowerDown(unit);		/* shutdown chap */
 }
 
@@ -571,7 +571,7 @@ static void ChapReceiveResponse(chap_state *cstate,u_char *inp,int
 	} else {
 		syslog(LOG_ERR, "CHAP peer authentication failed");
 		cstate->serverstate = CHAPSS_BADAUTH;
-		auth_peer_fail(cstate->unit, PPP_CHAP);
+		auth_peer_fail(cstate->unit, PPP_CHAP, AUTH_ERR_USER | AUTH_ERR_CHAP);
 	}
 }
 
@@ -641,7 +641,7 @@ ChapReceiveFailure(cstate, inp, id, len)
 	PRINTMSG(inp, len);
 
     syslog(LOG_ERR, "CHAP authentication failed");
-    auth_withpeer_fail(cstate->unit, PPP_CHAP);
+    auth_withpeer_fail(cstate->unit, PPP_CHAP, AUTH_ERR_USER | AUTH_ERR_CHAP);
 }
 
 

@@ -16,7 +16,7 @@
  * IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Id: ipppd.h,v 1.17 1998/10/29 17:28:46 hipp Exp $
+ * $Id: ipppd.h,v 1.18 1999/11/10 08:01:32 werner Exp $
  */
 
 /*
@@ -272,8 +272,8 @@ int bad_ip_adrs(u_int32_t);
 int getword(FILE *,char *,int *,char *);
 void print_string(char *p,int len,void (*printer)(void *,char *,...),void *arg);
 int auth_ip_addr(int unit,u_int32_t addr);
-void auth_peer_fail(int,int);
-void auth_withpeer_fail(int unit,int protocol);
+void auth_peer_fail(int,int,int);
+void auth_withpeer_fail(int unit,int protocol,int reason);
 void auth_peer_success(int unit,int protocol);
 void auth_withpeer_success(int unit,int protocol);
 
@@ -498,6 +498,14 @@ extern struct option_info devnam_info;
 #ifndef MAX
 #define MAX(a, b)	((a) > (b)? (a): (b))
 #endif
+
+/* error values for auth-fail script */
+#define AUTH_ERR_TIME  1      /* timeout sending auth requests */
+#define AUTH_ERR_PROT  2      /* auth protocol rejected */
+#define AUTH_ERR_USER  3      /* user or password illegal */ 
+#define AUTH_ERR_PAP   0      /* error in PAP-handling ored with reason */
+#define AUTH_ERR_CHAP  8      /* error in CHAP-handling ored with reason */
+
 
 #endif /* __IPPP_H__ */
 

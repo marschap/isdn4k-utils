@@ -17,7 +17,7 @@
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-char upap_rcsid[] = "$Id: upap.c,v 1.5 1998/04/29 14:29:50 hipp Exp $";
+char upap_rcsid[] = "$Id: upap.c,v 1.6 1999/11/10 08:01:33 werner Exp $";
 
 /*
  * TODO:
@@ -213,7 +213,7 @@ static void upap_timeout(caddr_t arg)
 	/* give up in disgust */
 	syslog(LOG_ERR, "No response to PAP authenticate-requests");
 	u->us_clientstate = UPAPCS_BADAUTH;
-	auth_withpeer_fail(u->us_unit, PPP_PAP);
+	auth_withpeer_fail(u->us_unit, PPP_PAP, AUTH_ERR_TIME | AUTH_ERR_PAP);
 	return;
     }
 
@@ -233,7 +233,7 @@ upap_reqtimeout(arg)
     if (u->us_serverstate != UPAPSS_LISTEN)
 	return;			/* huh?? */
 
-    auth_peer_fail(u->us_unit, PPP_PAP);
+    auth_peer_fail(u->us_unit, PPP_PAP, AUTH_ERR_TIME | AUTH_ERR_PAP);
     u->us_serverstate = UPAPSS_BADAUTH;
 }
 
@@ -294,11 +294,11 @@ void upap_protrej(int linkunit)
 
     if (u->us_clientstate == UPAPCS_AUTHREQ) {
 	syslog(LOG_ERR, "PAP authentication failed due to protocol-reject");
-	auth_withpeer_fail(u->us_unit, PPP_PAP);
+	auth_withpeer_fail(u->us_unit, PPP_PAP, AUTH_ERR_PROT | AUTH_ERR_PAP);
     }
     if (u->us_serverstate == UPAPSS_LISTEN) {
 	syslog(LOG_ERR, "PAP authentication of peer failed (protocol-reject)");
-	auth_peer_fail(u->us_unit, PPP_PAP);
+	auth_peer_fail(u->us_unit, PPP_PAP, AUTH_ERR_PROT | AUTH_ERR_PAP);
     }
     upap_lowerdown(unit);
 }
@@ -436,7 +436,7 @@ static void upap_rauthreq(upap_state *u,u_char *inp,int id,int len)
 		auth_peer_success(u->us_unit, PPP_PAP);
 	} else {
 		u->us_serverstate = UPAPSS_BADAUTH;
-		auth_peer_fail(u->us_unit, PPP_PAP);
+		auth_peer_fail(u->us_unit, PPP_PAP, AUTH_ERR_USER | AUTH_ERR_PAP);
 	}
 
 	if (u->us_reqtimeout > 0)
@@ -519,7 +519,7 @@ upap_rauthnak(u, inp, id, len)
     u->us_clientstate = UPAPCS_BADAUTH;
 
     syslog(LOG_ERR, "PAP authentication failed");
-    auth_withpeer_fail(u->us_unit, PPP_PAP);
+    auth_withpeer_fail(u->us_unit, PPP_PAP, AUTH_ERR_USER | AUTH_ERR_PAP);
 }
 
 

@@ -69,6 +69,11 @@ CHANGELOG:
 21.Jun.99:
  - I got two different DNS patches. Applied one of them.
  - added changes from A. Beck to ccp.c
+07.Nov.99:
+ - Added auth-fail script call if authentication fails
+ - documented in man page. 
+ - Done by Werner Cornelius (werner@isdn4linux.de or werner@titro.de)
+ 
 
 
 -----------------------------------------------------------------

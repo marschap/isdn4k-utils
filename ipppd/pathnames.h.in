@@ -1,7 +1,7 @@
 /*
  * define path names
  *
- * $Id: pathnames.h.in,v 1.1 1997/10/26 23:06:25 fritz Exp $
+ * $Id: pathnames.h.in,v 1.2 1999/11/10 08:01:32 werner Exp $
  */
 
 #include "config.h"
@@ -20,7 +20,7 @@
 #define _PATH_UPAPFILE		"/etc/ppp/pap-secrets"
 #define _PATH_CHAPFILE		"/etc/ppp/chap-secrets"
 #define _PATH_SYSOPTIONS	"/etc/ppp/ioptions"
-#define _PATH_IPUP			"/etc/ppp/ip-up"
+#define _PATH_IPUP		"/etc/ppp/ip-up"
 #define _PATH_IPDOWN		"/etc/ppp/ip-down"
 #define _PATH_TTYOPT		"/etc/ppp/ioptions."
 #define _PATH_CONNERRS		"/etc/ppp/connect-errors"
@@ -30,6 +30,7 @@
 /* Programs for processing authenticated logins */
 #define _PATH_AUTHUP   "/etc/ppp/auth-up"
 #define _PATH_AUTHDOWN "/etc/ppp/auth-down"
+#define _PATH_AUTHFAIL "/etc/ppp/auth-fail"
 
 # define _PATH_IPXUP	"/etc/ppp/ipx-up"
 # define _PATH_IPXDOWN	"/etc/ppp/ipx-down"

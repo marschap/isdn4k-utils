@@ -36,7 +36,7 @@
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-char auth_rcsid[] = "$Id: auth.c,v 1.14 1998/11/05 09:42:36 hipp Exp $";
+char auth_rcsid[] = "$Id: auth.c,v 1.15 1999/11/10 08:01:32 werner Exp $";
 
 #include <stdio.h>
 #include <stddef.h>
@@ -117,7 +117,7 @@ static int  have_chap_secret __P((char *, char *));
 static int  scan_authfile __P((FILE *, char *, char *, char *,
 	  struct wordlist **, char *));
 static void free_wordlist __P((struct wordlist *));
-static void auth_script __P((int,char *));
+static void auth_script __P((int,char *,int));
 
 /*
  * An Open on LCP has requested a change from Dead to Establish phase.
@@ -143,7 +143,7 @@ void link_terminated(int linkunit)
 #endif
 	
 	if(lns[linkunit].auth_up_script)
-		auth_script(linkunit,_PATH_AUTHDOWN);
+		auth_script(linkunit,_PATH_AUTHDOWN,0);
 	if (lns[linkunit].phase == PHASE_DEAD)
 		return;
 	if (lns[linkunit].logged_in) {
@@ -461,13 +461,14 @@ static void callback_phase(int linkunit)
 /*
  * The peer has failed to authenticate himself using `protocol'.
  */
-void auth_peer_fail(int unit,int protocol)
+void auth_peer_fail(int unit,int protocol, int reason)
 {
 	/*
 	 * Authentication failure: take the link down
 	 */
 	lcp_close(lns[unit].lcp_unit,"auth failure");
 	lns[unit].phase = PHASE_TERMINATE;
+	auth_script(unit, _PATH_AUTHFAIL, reason);
 }
 
 /*
@@ -502,13 +503,14 @@ void auth_peer_success(int linkunit,int protocol)
 /*
  * We have failed to authenticate ourselves to the peer using `protocol'.
  */
-void auth_withpeer_fail(int unit,int protocol)
+void auth_withpeer_fail(int unit,int protocol,int reason)
 {
 	/*
 	 * We've failed to authenticate ourselves to our peer.
 	 * He'll probably take the link down, and there's not much
 	 * we can do except wait for that.
 	 */
+	auth_script(unit, _PATH_AUTHFAIL, reason);
 }
 
 /*
@@ -709,7 +711,7 @@ int check_passwd(int linkunit,char *auser,int userlen,char *apasswd,
 		if (lns[linkunit].addresses != NULL)
 			free_wordlist(lns[linkunit].addresses);
 		lns[linkunit].addresses = addrs;
-		auth_script(linkunit,_PATH_AUTHUP);
+		auth_script(linkunit,_PATH_AUTHUP,0);
 		lns[linkunit].auth_up_script = 1;
 	}
 	return ret;
@@ -1297,15 +1299,15 @@ static void free_wordlist(struct wordlist *wp)
 
 /*
  * auth_script - execute a script with arguments
- * interface-name peer-name real-user tty speed
+ * interface-name peer-name real-user tty speed remote-number [fail-reason]
  */
-static void auth_script(int linkunit,char *script)
+static void auth_script(int linkunit,char *script,int error_reason)
 {
 	char strspeed[32];
 	struct passwd *pw;
 	char struid[32];
 	char *user_name;
-	char *argv[8];
+	char *argv[9];
 
 	if ((pw = getpwuid(getuid())) != NULL && pw->pw_name != NULL)
 		user_name = pw->pw_name;
@@ -1323,7 +1325,11 @@ static void auth_script(int linkunit,char *script)
 	argv[5] = strspeed;
 	argv[6] = lns[linkunit].pci.remote_num;
 	argv[7] = NULL;
-
+	if (error_reason) {
+	  sprintf(struid,"%d",error_reason);
+	  argv[7] = struid;
+	  argv[8] = NULL;
+	}
 	run_program(script, argv, debug,linkunit);
 }
 

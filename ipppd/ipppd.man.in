@@ -1,6 +1,6 @@
 .\" manual page [] for ipppd 2.0
-.\" $Id: ipppd.man.in,v 1.5 1999/06/21 13:28:47 hipp Exp $
-.\" CHECKIN $Date: 1999/06/21 13:28:47 $
+.\" $Id: ipppd.man.in,v 1.6 1999/11/10 08:01:32 werner Exp $
+.\" CHECKIN $Date: 1999/11/10 08:01:32 $
 .\" SH section heading
 .\" SS subsection heading
 .\" LP paragraph
@@ -900,7 +900,8 @@ the following parameters:
 .I authentication user name,
 .I username of ipppd,
 .I devicename,
-.I speed
+.I speed,
+.I remote number
 .TP
 .B /etc/ppp/auth-down
 This program or script is executed after a disconnection with
@@ -909,7 +910,26 @@ the following parameters:
 .I authentication user name,
 .I username of ipppd,
 .I devicename,
-.I speed
+.I speed,
+.I remote number
+.TP
+.B /etc/ppp/auth-fail
+This program or script is executed after a authentication failure with
+the following parameters:
+.I interface name,
+.I authentication user name,
+.I username of ipppd,
+.I devicename,
+.I speed,
+.I remote number,
+.I failure reason
+ Valid reasons are: 
+  1 = Timeout during pap auth
+  2 = pap protocol rejected
+  3 = pap secrets invalid
+  9 = Timeout during chap auth
+ 10 = chap protocol rejected
+ 11 = chap secrets invalid
 .TP
 .B /etc/ppp/pap-secrets
 Usernames, passwords and IP addresses for PAP authentication.
