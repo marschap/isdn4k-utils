@@ -1,4 +1,4 @@
-/* $Id: isdnlog.h,v 1.10 1998/09/26 18:29:10 akool Exp $
+/* $Id: isdnlog.h,v 1.11 1998/10/18 20:13:37 luethje Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnlog.h,v $
+ * Revision 1.11  1998/10/18 20:13:37  luethje
+ * isdnlog: Added the switch -K
+ *
  * Revision 1.10  1998/09/26 18:29:10  akool
  *  - quick and dirty Call-History in "-m" Mode (press "h" for more info) added
  *    - eat's one more socket, Stefan: sockets[3] now is STDIN, FIRST_DESCR=4 !!
@@ -307,6 +310,7 @@ _EXTERN char   *isdnctrl;
 _EXTERN	char    isdnctrl2[FNSIZE];
 _EXTERN	char   *outfile;
 _EXTERN	char    tmpout[PATH_MAX];
+_EXTERN int     readkeyboard;
 
 _EXTERN IFO     ifo[ISDN_MAX_CHANNELS];
 _EXTERN IO      io[ISDN_MAX_CHANNELS];

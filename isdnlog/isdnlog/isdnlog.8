@@ -1,5 +1,5 @@
-.\" $Id: isdnlog.8,v 1.2 1998/06/18 14:27:19 paul Exp $
-.\" CHECKIN $Date: 1998/06/18 14:27:19 $
+.\" $Id: isdnlog.8,v 1.3 1998/10/18 20:13:30 luethje Exp $
+.\" CHECKIN $Date: 1998/10/18 20:13:30 $
 .TH isdnlog 8 "@MANDATE@" "ISDN 4 Linux @I4LVERSION@" "Linux System Administration"
 .PD 0
 .SH NAME
@@ -121,6 +121,10 @@ as the default logging method (if you did not specify -m).
 .B \-T
 Trace mode: isdnlog will wait for a key after processing a line from
 /dev/isdnctrl0 (or whatever device you specified).
+
+.TP
+.B \-K
+Print for every pressed key the thruput. Can not used together with option -d.
 
 .TP
 .B \-b

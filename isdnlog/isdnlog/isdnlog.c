@@ -1,4 +1,4 @@
-/* $Id: isdnlog.c,v 1.23 1998/10/06 12:50:57 paul Exp $
+/* $Id: isdnlog.c,v 1.24 1998/10/18 20:13:33 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,9 @@
  * along with this program; if not, write to the Free Software
  *
  * $Log: isdnlog.c,v $
+ * Revision 1.24  1998/10/18 20:13:33  luethje
+ * isdnlog: Added the switch -K
+ *
  * Revision 1.23  1998/10/06 12:50:57  paul
  * As the exec is done within the signal handler, SIGHUP was blocked after the
  * first time. Now SIGHUP is unblocked so that you can send SIGHUP more than once.
@@ -180,9 +183,9 @@ static int read_param_file(char *FileName);
 
 static char     usage[]   = "%s: usage: %s [ -%s ] file\n";
 #ifdef Q931
-static char     options[] = "av:sp:x:m:l:rt:c:C:w:SVTDPMh:nW:H:f:bL:NqFA:2:O:";
+static char     options[] = "av:sp:x:m:l:rt:c:C:w:SVTDPMh:nW:H:f:bL:NqFA:2:O:K";
 #else
-static char     options[] = "av:sp:x:m:l:rt:c:C:w:SVTDPMh:nW:H:f:bL:NFA:2:O:";
+static char     options[] = "av:sp:x:m:l:rt:c:C:w:SVTDPMh:nW:H:f:bL:NFA:2:O:K";
 #endif
 static char     msg1[]    = "%s: Can't open %s (%s)\n";
 static char    *ptty = NULL;
@@ -409,6 +412,7 @@ static void init_variables(int argc, char* argv[])
   mcalls = MAX_CALLS_IN_QUEUE;
   xlog = MAX_PRINTS_IN_QUEUE;
   outfile = NULL;
+  readkeyboard = 0;
 
   sockets = NULL;
   known = NULL;
@@ -580,12 +584,20 @@ int set_options(int argc, char* argv[])
       case 'O' : outfile = strdup(optarg);
       	       	 break;
 
+      case 'K' : readkeyboard++;
+      	       	 break;
+
       case '?' : printf(usage, myshortname, myshortname, options);
 	         exit(1);
     } /* switch */
 
   if (newmessage)
     message = newmessage;
+
+  if (readkeyboard && isdaemon) {
+    printf("%s","Can read from standard input daemonized!\n");
+    exit(20);
+  } /* if */
 
   if (trace && isdaemon) {
     printf("%s","Can not trace daemonized!\n");
@@ -738,6 +750,9 @@ static int read_param_file(char *FileName)
 				else
 				if (!strcmp(Ptr->name,CONF_ENT_OUTFILE))
 					outfile = Ptr->value;
+				else
+				if (!strcmp(Ptr->name,CONF_ENT_KEYBOARD))
+					readkeyboard = toupper(*(Ptr->value)) == 'Y'?1:0;
 				else
 					print_msg(PRT_ERR,"Error: Invalid entry `%s'!\n",Ptr->name);
 
@@ -1046,9 +1061,9 @@ int main(int argc, char *argv[], char *envp[])
 
           if (replay || ((sockets[ISDNINFO].descriptor = open(INFO, O_RDONLY | O_NONBLOCK)) >= 0)) {
 
-            if (!isdaemon) {
-              raw_mode(1);
-	      sockets[STDIN].descriptor = dup(fileno(stdin));
+            if (readkeyboard) {
+							raw_mode(1);
+							sockets[STDIN].descriptor = dup(fileno(stdin));
             } /* if */
 
             now();
@@ -1098,7 +1113,7 @@ int main(int argc, char *argv[], char *envp[])
       if (*isdnctrl2)
         close(sockets[ISDNCTRL2].descriptor);
 
-      if (!isdaemon) {
+      if (readkeyboard) {
         raw_mode(0);
       	close(sockets[STDIN].descriptor);
       } /* if */

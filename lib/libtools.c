@@ -1,4 +1,4 @@
-/* $Id: libtools.c,v 1.8 1998/10/13 22:17:22 luethje Exp $
+/* $Id: libtools.c,v 1.9 1998/10/18 20:13:51 luethje Exp $
  * ISDN accounting for isdn4linux.
  *
  * Copyright 1996 by Stefan Luethje (luethje@sl-gw.lake.de)
@@ -18,6 +18,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: libtools.c,v $
+ * Revision 1.9  1998/10/18 20:13:51  luethje
+ * isdnlog: Added the switch -K
+ *
  * Revision 1.8  1998/10/13 22:17:22  luethje
  * isdnlog: evaluate the variable PATH for program starts.
  *
@@ -693,18 +696,6 @@ const char *Pathfind(const char *path, const char *name, char *mode)
 	if (name == NULL)
 		return NULL;
 
-	if (path == NULL)
-	{
-		if ((ptr = getenv(PATH_ENV)) == NULL)
-			return NULL;
-
-		Strncpy(_path,ptr,PATH_MAX);
-		ptr = _path;
-		_mode = X_OK;
-	}
-	else
-		Strncpy(_path,path,PATH_MAX);
-
 	if (mode != NULL)
 		while (*mode)
 		{
@@ -720,12 +711,23 @@ const char *Pathfind(const char *path, const char *name, char *mode)
 			}
 		}
 
-
 	if (strchr(name,C_SLASH) != NULL)
 		if (!access(name,_mode))
 			return name;
 		else
 			return NULL;
+
+	if (path == NULL)
+	{
+		if ((ptr = getenv(PATH_ENV)) == NULL)
+			return NULL;
+
+		Strncpy(_path,ptr,PATH_MAX);
+		ptr = _path;
+		_mode |= X_OK;
+	}
+	else
+		Strncpy(_path,path,PATH_MAX);
 
 	while((ptr = strtok(ptr,":")) != NULL)
 	{

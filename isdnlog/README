@@ -2310,6 +2310,10 @@ angegeben werden.
      einzelne gewaehlte Digit beim Telefonieren direkt an.
      (dual="value")
 
+ -K  Schreibt bei jedem Tastendruck einen Datendurchsatz. Kann nicht zusammen
+     mit Option -d verwendet werden!
+     (keyboard={yes|no})
+
 
 Bei den Optionen -mX, -lX -xX sind folgende Flags moeglich:
 
