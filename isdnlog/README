@@ -1464,21 +1464,20 @@ Es gibt aber 10 zusaetzliche Variablen, die verwendet werden duerfen:
         Sekunden.
 \$6   : Enthaelt die Zeit des Gespraechsendes. Beipiel:
         "Wed May 28 23:07:49 1997"
-\$7   : Die Input-Bytes. 
-\$8   : Die Output-Bytes. 
-\$9   : Die Input-Bytes pro Sekunde. 
-\$10  : Die Output-Bytes pro Sekunde.  Diese Variable erhaelt man in
-        einem Shell-Skript erst nach einem "shift", da die Shell nur
-        die Variablen 0 - 9 kennt!
-
-Es ist zu beachten, dass hier das Zeichen "$" gequotet werden muss,
-da dieses sonst zu einem Warning fuehrt!
-
-Wenn eine Variable keinen gueltigen Wert hat, dann wird sie durch ein "?"
-ersetzt.
+\$7   : Die Input-Bytes 
+\$8   : Die Output-Bytes
+\$9   : Die Input-Bytes pro Sekunde 
+\$10  : Die Output-Bytes pro Sekunde
+\$11  : Die Dienstekenung
+\$12  : Die Gebuehren
 
 Folgende Punkte sind zu beachten:
 
+- Sollten mehr als zehn Variablen gleichzeitig verwendet werden, so kennt
+  die Shell nur die Variablen 0 - 9!
+- Das Zeichen "$" muss gequotet werden, da dieses sonst zu einer Warnung fuehrt!
+- Wenn eine Variable keinen gueltigen Wert hat, dann wird sie durch ein "?"
+  ersetzt.
 - Diese Variablen koennen auch innerhalb eines Argumentes stehen.
 - Wenn diese Variablen innerhalb eines Strings verwendet werden, muss der
   Name (hier z.B. "1", "2") in geschweiften Klammern gesetzt werden.
