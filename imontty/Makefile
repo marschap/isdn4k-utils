@@ -2,7 +2,7 @@
 #
 # (c) 1995-97 Volker Götz
 #
-# $Id: Makefile,v 1.5 1998/12/29 14:53:03 paul Exp $
+# $Id: Makefile,v 1.6 2002/01/31 18:58:56 paul Exp $
 
 ifeq (../.config,$(wildcard ../.config))
 	#
@@ -22,7 +22,7 @@ INSTALL=install
 INSTALL_MAN=$(INSTALL) -o 0 -g 0 -m 0644
 MANPAGE=imontty.8
 
-CCFLAGS=-O2
+CCFLAGS=-O2 -I$(CONFIG_KERNELDIR)/include
 #CCFLAGS=-I$(ISDN_INCLUDE) -g
 
 # nothing to change behind this line
