@@ -1,4 +1,4 @@
-/* $Id: isdnctrl.c,v 1.13 1998/03/07 18:25:57 cal Exp $
+/* $Id: isdnctrl.c,v 1.14 1998/03/08 00:18:25 detabc Exp $
  * ISDN driver for Linux. (Control-Utility)
  *
  * Copyright 1994,95 by Fritz Elfert (fritz@wuemaus.franken.de)
@@ -21,6 +21,11 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnctrl.c,v $
+ * Revision 1.14  1998/03/08 00:18:25  detabc
+ * include config-support for abc-extension
+ * only isdnctrl encap will be used and only use the options [-ATU]rawip
+ * thanks
+ *
  * Revision 1.13  1998/03/07 18:25:57  cal
  * added support for dynamic timeout-rules vs. 971110
  *
@@ -168,7 +173,11 @@ void usage(void)
         fprintf(stderr, "    dialmax name [num]         get/set number of dial-atempts for interface\n");
         fprintf(stderr, "    dialtimeout name [seconds] get/set timeout for successful dial-attempt\n");
         fprintf(stderr, "    dialwait name [seconds]    get/set waittime after failed dial-attempt\n");
+#ifdef CONFIG_ISDN_WITH_ABC
+        fprintf(stderr, "    encap name [-UTA][encapname]     (get/set packet-encapsulation for interface)\n");
+#else
         fprintf(stderr, "    encap name [encapname]     get/set packet-encapsulation for interface\n");
+#endif
         fprintf(stderr, "    l2_prot name [protocol]    get/set layer-2-protocol for interface\n");
         fprintf(stderr, "    l3_prot name [protocol]    get/set layer-3-protocol for interface\n");
         fprintf(stderr, "    bind name [drvId,channel [exclusive]]\n");
@@ -340,7 +349,38 @@ static void listif(int isdnctrl, char *name, int errexit)
         	printf("Charge-Interval:        %d\n", cfg.chargeint);
         printf("Layer-2-Protocol:       %s\n", num2key(cfg.l2_proto, l2protostr, l2protoval));
         printf("Layer-3-Protocol:       %s\n", num2key(cfg.l3_proto, l3protostr, l3protoval));
+#ifdef CONFIG_ISDN_WITH_ABC
+		{
+			int i = cfg.p_encap / 1000;
+			char buf[8];
+			char *xx = buf;
+
+			if(i) {
+
+				*(xx++) = '[';
+				*(xx++) = '-';
+			}
+
+			if(i & 1)
+				*(xx++) = 'A';
+
+			if(i & 2)
+				*(xx++) = 'U';
+
+			if(i & 4)
+				*(xx++) = 'T';
+
+			if(xx > buf)
+				*(xx++) = ']';
+
+			*xx = 0;
+
+			printf("Encapsulation:          %s%s\n", buf,
+				num2key(cfg.p_encap % 1000,pencapstr,pencapval));
+		}
+#else
         printf("Encapsulation:          %s\n", num2key(cfg.p_encap, pencapstr, pencapval));
+#endif
         printf("Slave Interface:        %s\n", strlen(cfg.slave) ? cfg.slave : "None");
         printf("Slave delay:            %d\n", cfg.slavedelay);
 		if (data_version < 3)
@@ -1054,6 +1094,29 @@ int exec_args(int fd, int argc, char **argv)
 			        	return -1;
 			        }
 			        if (args == 2) {
+#ifdef CONFIG_ISDN_WITH_ABC
+						int abc_encap = 0;
+						char *xx = arg1;
+						char *yy = arg1;
+
+						if(*xx == '-') {
+
+							for(xx++; *xx != 0 &&
+								(*xx == 'A' || *xx == 'T' || *xx == 'U');xx++) {
+
+								switch(*xx) {
+								case 'A':   abc_encap |= 1;     break;
+								case 'U':   abc_encap |= 2;     break;
+								case 'T':   abc_encap |= 4;     break;
+								}
+							}
+
+							while(*xx)
+								*(yy++) = *(xx++);
+
+							*yy = 0;
+						}
+#endif
 			        	i = key2num(arg1, pencapstr, pencapval);
 			        	if (i < 0) {
 			        		fprintf(stderr, "Encapsulation must be one of the following:\n");
@@ -1062,14 +1125,51 @@ int exec_args(int fd, int argc, char **argv)
 			        			fprintf(stderr, "\t\"%s\"\n", pencapstr[i++]);
 			        		return -1;
 			        	}
+#ifdef CONFIG_ISDN_WITH_ABC
+						if(i != ISDN_NET_ENCAP_RAWIP)
+							abc_encap &= ~(15);
+
+						i += abc_encap * 1000;
+#endif
 			        	cfg.p_encap = i;
 			        	if ((result = ioctl(fd, IIOCNETSCF, &cfg)) < 0) {
 			        		perror(id);
 			        		return -1;
 			        	}
 			        }
+#ifdef CONFIG_ISDN_WITH_ABC
+					{
+						int i = cfg.p_encap / 1000;
+						char buf[8];
+						char *xx = buf;
+
+						if(i) {
+
+							*(xx++) = '[';
+							*(xx++) = '-';
+						}
+
+						if(i & 1)
+							*(xx++) = 'A';
+
+						if(i & 2)
+							*(xx++) = 'U';
+
+						if(i & 4)
+							*(xx++) = 'T';
+
+						if(xx > buf)
+							*(xx++) = ']';
+
+						*xx = 0;
+
+						printf("Encapsulation:          %s%s\n", buf,
+							num2key(cfg.p_encap % 1000,pencapstr,pencapval));
+					}
+#else
 			        printf("Encapsulation for %s is %s\n", cfg.name,
 			             num2key(cfg.p_encap, pencapstr, pencapval));
+#endif
 			        break;
 
 			case RESET:
