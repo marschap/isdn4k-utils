@@ -1,4 +1,4 @@
-/* $Id: isdnlog.h,v 1.1 1997/03/16 20:58:43 luethje Exp $
+/* $Id: isdnlog.h,v 1.2 1997/03/23 20:55:41 luethje Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnlog.h,v $
+ * Revision 1.2  1997/03/23 20:55:41  luethje
+ * some bugfixes
+ *
  * Revision 1.1  1997/03/16 20:58:43  luethje
  * Added the source code isdnlog. isdnlog is not working yet.
  * A workaround for that problem:
@@ -96,12 +99,6 @@
 
 /****************************************************************************/
 
-#define PRT_ERR        	  	   1
-#define PRT_WARN       	  	   2
-#define PRT_INFO       	  	   4
-#define PRT_PROG_OUT   	  	   4
-#define PRT_NORMAL     	  	   4
-#define PRT_LOG        	  	   8
 #define PRT_SHOWNUMBERS	  	0x10
 #define PRT_SHOWAOCD   	  	0x20
 #define PRT_SHOWCONNECT	  	0x40

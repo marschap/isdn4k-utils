@@ -1,8 +1,4 @@
-/*
-Der SI muss auch als Eingabe (mit Hex) erlaubt sein
-MSNxx -> MSN
-*/
-/* $Id: isdnconf.c,v 1.1 1997/03/16 20:58:33 luethje Exp $
+/* $Id: isdnconf.c,v 1.2 1997/03/23 20:58:31 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -21,6 +17,10 @@ MSNxx -> MSN
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ *
+ * $Log: isdnconf.c,v $
+ * Revision 1.2  1997/03/23 20:58:31  luethje
+ * some bugfixes
  *
  */
 
