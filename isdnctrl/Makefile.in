@@ -1,4 +1,4 @@
-# $Id: Makefile.in,v 1.5 1997/08/27 21:39:08 luethje Exp $
+# $Id: Makefile.in,v 1.6 1997/09/26 09:07:13 fritz Exp $
 #
 # Makefile for iprofd
 # (C) 1997 Fritz Elfert
@@ -66,4 +66,4 @@ clean:
 	rm -f *.o *~ $(PROGRAM) isdnctrl.man
 
 distclean: clean
-	rm -f config.status config.cache config.log Makefile
+	rm -f config.status config.cache config.log config.h Makefile

@@ -20,7 +20,9 @@ dnl Checks for library functions.
 AC_CHECK_LIB(dbm, dbm_open, DBMLIB=-ldbm; AC_DEFINE(HAVE_LIBDBM),
   AC_CHECK_LIB(gdbm, gdbm_open, DBMLIB=-lgdbm; AC_DEFINE(HAVE_LIBGDBM)))
 AC_TYPE_SIGNAL
+AC_CHECK_TRIGGERCPS
 
 AC_SUBST(INSTALL)
 AC_SUBST(DBMLIB)
+AC_CONFIG_HEADER(config.h)
 AC_OUTPUT(Makefile)

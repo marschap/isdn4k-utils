@@ -1,4 +1,4 @@
-/* $Id: isdnctrl.c,v 1.10 1997/09/11 19:03:32 fritz Exp $
+/* $Id: isdnctrl.c,v 1.11 1997/09/26 09:07:18 fritz Exp $
  * ISDN driver for Linux. (Control-Utility)
  *
  * Copyright 1994,95 by Fritz Elfert (fritz@wuemaus.franken.de)
@@ -21,6 +21,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnctrl.c,v $
+ * Revision 1.11  1997/09/26 09:07:18  fritz
+ * Check for missing triggercps in configuration.
+ *
  * Revision 1.10  1997/09/11 19:03:32  fritz
  * Bugfix: Tried to get Version-Info on wrong device.
  *
@@ -116,6 +119,7 @@
 #include <linux/isdn.h>
 #include <linux/isdnif.h>
 
+#include "config.h"
 #define _ISDNCTRL_C_
 #include "isdnctrl.h"
 
@@ -317,8 +321,10 @@ static void listif(int isdnctrl, char *name, int errexit)
         printf("Slave delay:            %d\n", cfg.slavedelay);
 		if (data_version < 3)
         	printf("Slave trigger:          n.a.\n");
+#if HAVE_TRIGGERCPS
 		else
         	printf("Slave trigger:          %d cps\n", cfg.triggercps);
+#endif
         printf("Master Interface:       %s\n", strlen(cfg.master) ? cfg.master : "None");
         printf("Pre-Bound to:           ");
         listbind(cfg.drvid, cfg.exclusive);
@@ -820,17 +826,21 @@ int exec_args(int fd, int argc, char **argv)
 			        		fprintf(stderr, "Slave triggerlevel must be >= 0 (%s)\n", arg1);
 			        		exit(-1);
 			        	}
+#if HAVE_TRIGGERCPS
 			        	cfg.triggercps = i;
 			        	if ((result = ioctl(fd, IIOCNETSCF, &cfg)) < 0) {
 			        		perror(id);
 			        		exit(-1);
 			        	}
+#endif
 			        }
 					if (data_version < 3)
 						printf("Option 'trigger' IGNORED!\n");
+#if HAVE_TRIGGERCPS
 					else
 			        	printf("Slave triggerlevel for %s is %d cps.\n",
 								cfg.name, cfg.triggercps);
+#endif
 			        break;
 
 			case CHARGEHUP:
