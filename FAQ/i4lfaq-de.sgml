@@ -175,7 +175,7 @@ benutzen zu k&ouml;nnen.
 <p>
 Im Allgemeinen unterst&uuml;tzt ISDN4LINUX sowohl ISDN-Karten f&uuml;r
 den ISA- oder PCI-Bus als auch einige PCMCIA-Karten. Sogenannte
-'Terminal Adapter', d.h., Ger&auml;te am seriellen oder parallelen
+"Terminal Adapter", d.h., Ger&auml;te am seriellen oder parallelen
 Port k&ouml;nnen mit ISDN4LINUX jedoch <bf/nicht/ benutzt werden. Die
 einzige Ausnahme bildet derzeit die Creatix/Teles S0 Box mit
 Parallelport-Anschlu&szlig;. Weitere Details &uuml;ber
@@ -393,8 +393,8 @@ weder als B-Kanal- noch als D-Kanal-Version.
 <p>
 Ja, in der aktuellen Version von ISDN4LINUX ist die Unterst&uuml;tzung
 f&uuml;r Audio-Funktionen enthalten. Als Anrufbeantworter kannst Du
-entweder 'vgetty' aus Gert Doerings 'mgetty+sendfax' benutzen oder
-'vboxgetty' von Michael Herold, das speziell f&uuml;r ISDN4LINUX
+entweder "vgetty" aus Gert Doerings "mgetty+sendfax" benutzen oder
+"vboxgetty" von Michael Herold, das speziell f&uuml;r ISDN4LINUX
 geschrieben wurde. Das letztere ist Teil des Paketes isdn4k-utils, das
 Du auf <tt><url url="ftp://ftp.franken.de/pub/"></tt> findest.
 
@@ -1111,7 +1111,7 @@ unterschiedliches Endian-Format f&uuml;r die 32-Bit B-Kanal Daten
 benutzt.
 
 Auf jeden Fall kannst Du auch einen Terminaladapter (= externes ISDN
-"Modem") benutzen. Da Du dann kein ISDN4LINUX ben&ouml;tigst (siehe
+Modem) benutzen. Da Du dann kein ISDN4LINUX ben&ouml;tigst (siehe
 Frage <ref id="hardware_external" name="hardware_external">), wird
 dies hier nicht weiter behandelt.
 
@@ -1315,12 +1315,12 @@ Email Addresse&gt;</tt> im Text).
 Diese Karten bieten einige spezielle Eigenschaften in ihrer Firmware
 und werden neuerdings durch einen Linux-Treiber unterst&uuml;tzt. Sie
 geh&ouml;ren z.Zt. zu den wenigen ISDN-Karten, die das CAPI 2.0
-Interface unterst&uuml;tzen.  Zus%auml;tzlich lassen sie sich sehr gut
+Interface unterst&uuml;tzen.  Zus&auml;tzlich lassen sie sich sehr gut
 zum Faxen unter ISDN4LINUX nutzen (nach einem Upgrade durch eine
 Faxkarte - das gilt f&uuml;r die HYSDN Ergo2 und HYSDN Metro4).
 
-Weitere Informationen zum Hersteller und zur Hardware bekommt man auf:
-<url url="http://www.hypercope.de">
+Weitere Informationen zum Hersteller und zur Hardware bekommt man auf
+<url url="http://www.hypercope.de">.
 Die Konfiguration ist so &auml;hnlich wie bei der AVM B1.
 
 <sect1> hardware_icn: Was ist Besonderes an der ICN Karte?  
@@ -1660,7 +1660,7 @@ url="http://www-ti.informatik.uni-tuebingen.de/~hippm/isdn.html"></tt>
 <tt><url url="http://www.auf-der-er.de/chargeint.html"></tt>
 <item>Homepage von kISDN (l&auml;uft nur mit Qt/KDE):
 <tt><url url="http://www.millenniumx.de/kisdn.html"></tt>
-<item>Konfiguration nicht nur f&uuml; England (folge dem Link zum
+<item>Konfiguration nicht nur f&uuml;r England (folge dem Link zum
 Linux-Setup): <tt><url
 url="http://www.oakhaven-consultants.co.uk"></tt>
 </itemize>
@@ -1740,7 +1740,7 @@ Setup Serial Device' auf <tt>/dev/ttyI0</tt> und im zweiten auf
 die Modem-Emulation mit 'ATZ' und 'AT&amp;Exxxxxx' (wobei xxxxxx Deine
 eigene MSN ohne Vorwahl ist). Fertig. Im ersten Fenster w&auml;hlst Du
 Deine eigene Nummer mit ATDxxxxxx. Im zweiten Fenster solltest Du nun
-'CALLER NUMBER: xxxxxxx' und 'RING' sehen. Nimm den Ruf im zweiten
+"CALLER NUMBER: xxxxxxx" und "RING" sehen. Nimm den Ruf im zweiten
 Fenster mit 'ATA' an und es erscheint die Meldung 'CONNECT 64000/X.75'
 in beiden Fenstern. Du kannst jetzt Zeichen von einem zum anderen
 Fenster senden (schalte LOCAL ECHO ein um die Zeichen im sendenden
@@ -1828,7 +1828,7 @@ Layer 1 Verbindung herstellen kann (Kabelproblem, Hardwarefehler,
 verborgene Hardwarekonflikte - siehe Bereich <ref id="hardware"
 name="hardware">) oder er kann keine Layer 2 Verbindung bekommen
 (falsche Konfiguration: kein EuroISDN, kein automatisches TEI
-unterstÅtzt, Point-to-Point BRI anstelle von Multi-Device - siehe
+unterst&uuml;tzt, Point-to-Point BRI anstelle von Multi-Device - siehe
 Bereich <ref id="config" name="config">).
 
 <sect1> trouble_noprotocol: Beim Start von HiSax bekomme ich die Meldung &dquot;Warning - no protocol specified&dquot;?  
@@ -2114,7 +2114,7 @@ Computern des LAN der Nameserver des Providers eingetragen werden.
 Pr&uuml;fe nach:
 <itemize>
 <item>Ist der Linux-Computer als Gateway eingetragen? (Einige
-'Betriebssysteme' muss man neu starten bevor die &Auml;nderungen am
+"Betriebssysteme" muss man neu starten bevor die &Auml;nderungen am
 Netzwerk wirksam werden)
 <item>Hat der Router eine defaultroute vom eingerichteten Interface
 zum Provider (z.B. ippp0 mit syncPPP oder sl0 f&uuml;r diald (auch
@@ -2208,7 +2208,7 @@ Bei ausgehenden Rufen kann nur eine MSN benutzt werden. Nur bei
 ankommenden Rufen k&ouml;nnen mehrere MSNs benutzt werden.
 
 Bei ttyI* Devices kann man JEDE vorhandene MSN benutzen, indem man ein
-'*' als Platzhalter verwendet:
+"*" als Platzhalter verwendet:
 <code>
 at&amp;l*
 </code>
@@ -2297,7 +2297,7 @@ Dein Modem nur zum Faxempfang und/oder analogen Datenverkehr ein.
 Ja, Du brauchst dazu jedoch die Hilfe Deiner Telefongesellschaft. Sie
 kann mehrere BRIs mit gleicher MSN im Point-to-point-Modus
 einrichten. In Deutschland nennt man das einen
-'B&uuml;ndelanschlu&szlig;'.
+"B&uuml;ndelanschlu&szlig;".
 
 Beachte, da&szlig; in diesem Fall die MSN vielleicht nicht an Dich
 &uuml;bertragen wird. Benutze dann die vorgegebene MSN 0.
@@ -2503,8 +2503,8 @@ chmod o-rw /dev/ttyI* /dev/cui*
 eingeben.
 Es wird berichtet, da&szlig; Du ebenfalls bei den Programmen
 <tt/ipppd/ und <tt/isdnctrl/ die Gruppe und die Benutzerrechte auf
-'isdn' setzen musst. Dann haben alle Nutzer, die nicht in der Gruppe
-'isdn' sind, keine Schreib- oder Leserechte f&uuml;r die ISDN
+"isdn" setzen musst. Dann haben alle Nutzer, die nicht in der Gruppe
+"isdn" sind, keine Schreib- oder Leserechte f&uuml;r die ISDN
 ttys. Diejenigen, die ISDN benutzen d&uuml;rfen, m&uuml;ssen explizit
 in die Gruppe 'isdn' aufgenommen werden.
 <item>Du kannst festlegen, da&szlig; nur root hinausw&auml;hlen darf,
@@ -2549,7 +2549,7 @@ MSN zu benutzen, sogar auf den Karten, denen diese MSN nicht
 zugewiesen wurde! In diesem Fall wird die Telefongesellschaft diese
 ung&uuml;ltige MSN durch die korrekte MSN ersetzen. Mit dem Befehl
 <tt/isdnctrl mapping/ stellst Du die korrekten MSNs ein (siehe Punkt
-'Hinauswahl mit einer bestimmten Karte').
+"Hinauswahl mit einer bestimmten Karte").
 <item>Hinauswahl auf einem bestimmten Kanal: Zur Angabe, welcher Kanal
 benutzt werden soll, dient der Befehl <tt/isdnctrl bind/ (nicht
 pppbind).  Dieser Befehl sollte erst erfolgen, wenn die komplette
@@ -2610,7 +2610,7 @@ muss sich die <em>andere</em> Seite authentifizieren.
 Wie bei der letzten Frage wurde eine Option eingestellt, die verlangt,
 da&szlig; die <em>andere</em> Seite sich authentifiziert. Diese
 Optionen sollten vermieden werden. M&ouml;gliche Kandidaten sind:
-'+pap' und '+chap'.
+"+pap" und "+chap".
 
 <sect1> pap_rejectauth: Ich kann keine Verbindung aufbauen - sie wird von der Gegenseite abgewiesen. Im Logfile finde ich eine Meldung, &auml;hnlich wie: 'sent (0) (LCP ConfRej id=0x1 auth pap'  
 <label id="pap_rejectauth">
@@ -2774,8 +2774,8 @@ Wenn Du die Option <tt/defaultroute/ angegeben hast, wartest Du ein
 paar Sekunden und kannst dann pr&uuml;fen, ob die default route
 existiert. Eine weitere M&ouml;glichkeit besteht durch die Option
 <tt>useifip</tt>. Du findest dann im syslog Eintr&auml;ge wie
-<tt>'Local IP: x.y.z.a'</tt> und/oder <tt>'Remote IP:
-x.y.z.a'</tt>. In beiden F&auml;llen besteht eine Verbindung.
+<tt>"Local IP: x.y.z.a"</tt> und/oder <tt>"Remote IP:
+x.y.z.a"</tt>. In beiden F&auml;llen besteht eine Verbindung.
 
 <sect1> syncppp_logindelay: Wie kann ich das Login beschleunigen?  
 <label id="syncppp_logindelay">
@@ -2801,7 +2801,7 @@ isdnctrl pppbind &lt;interface&gt; &lt;Number&gt;
 kannst Du das Interface interface an das Device Number binden. Du
 l&ouml;st diese Bindung wieder mit 'pppunbind'.
 
-<sect1> syncppp_pppbind: Wie funktioniert der (wenig dokumentierte) Befehl 'pppbind' in isdnctrl?  
+<sect1> syncppp_pppbind: Wie funktioniert der (wenig dokumentierte) Befehl "pppbind" in isdnctrl?  
 <label id="syncppp_pppbind">
 <p>
 Zuerst musst Du wissen, wie ipppd seine Daten bekommt. Alle Daten, die
@@ -2819,7 +2819,7 @@ In der Praxis installierst Du normalerweise mehrere ipppds mit
 unterschiedlichen Einstellungen. Jeder davon sollte Daten
 <em>ausschlie&szlig;lich</em> von einem bestimmten Netzwerk-Interface
 empfangen, das ebenfalls speziell eingestellt wurde. Der Befehl
-'pppdbind' erf&uuml;llt genau diesen Zweck. Mit:
+"pppdbind" erf&uuml;llt genau diesen Zweck. Mit:
 <code>
 isdnctrl pppbind &lt;interface&gt; &lt;Number&gt;
 </code>
@@ -2859,7 +2859,7 @@ werden oder die entfernte Maschine muss sie in einem IPCP Request
 senden. Wenn Deine Seite die IP-Addresse nach der Verhandlung nicht
 kennt, wird sie die Verbindung abbrechen! Du musst das
 &Uuml;berschreiben der Addressen mit den Optionen
-'ipcp-accept-local/remote' erlauben wenn Du Deine eigene oder die
+"ipcp-accept-local/remote" erlauben wenn Du Deine eigene oder die
 entfernte Addresse ausdr&uuml;cklich gesetzt hast. Versuche als
 Beispiel diese Optionen:
 <code>
@@ -2891,7 +2891,7 @@ Sollte mit aktuellen Kerneln (neuer als 2.2.14) problemlos
 laufen. Dazu muss VJ in den Kernel kompiliert werden. Um Probleme mit
 dem automatischen Laden des VJ-Moduls zu vermeiden sollte man SLIP und
 CSLIP ebenfalls in den Kernel kompilieren. VJ wird mit den Optionen
-<tt>' -vj -vjccomp'</tt> deaktiviert.
+<tt>-vj -vjccomp</tt> deaktiviert.
 <item><em>BSD compression</em>:
 Wenn Dein Netzpartner das auch unterst&uuml;tzt l&auml;uft es gut. Da
 sie von VJ unabh&auml;ngig ist kann man auch beide zusammen benutzen.
@@ -2965,7 +2965,7 @@ zur Optimierung der PPP-Optionen genutzt werden.
 <label id="syncppp_nopppsupport">
 <p>
 Pr&uuml;fe, ob das Device 'ippp0' existiert (z.B. mit dem Programm
-'ifconfig'). Hinweise zur Benennung von Net-Interfaces bekommst Du bei
+"ifconfig"). Hinweise zur Benennung von Net-Interfaces bekommst Du bei
 Frage <ref id="syncppp_netinterface" name="syncppp_netinterface">.
 Der ipppd <em>braucht</em> dieses Device mit exakt <em>diesem</em>
 Namen. Wenn es nicht existiert, muss es definiert werden:
@@ -3074,7 +3074,7 @@ Option schon nicht mehr enthalten.  Auch andere Kompressionsmodi (bsd,
 pccomp) k&ouml;nnen Probleme verursachen. Daher solltest Du alle
 Kompressionsoptionen deaktivieren (siehe auch Frage <ref
 id="syncppp_compression" name="syncppp_compression">). Auch die Option
-'noccp' kann da helfen.
+"noccp" kann da helfen.
 
 <sect1> syncppp_loadproblem: Ich habe nur dann Probleme mit ipppd, wenn die Verbindung sehr stark belastet wird. Dann bleibt alles stehen. Wodurch kann das hervorgerufen werden?  
 <label id="syncppp_loadproblem">
@@ -3190,7 +3190,7 @@ Das bedeutet, da&szlig; ipppd versucht, die LZS-Kompression zu nutzen,
 aber kein kompiliertes Modul mit dem entsprechenden Code findet. Die
 Fehlermeldung hat nur kosmetische Bedeutung, da das System
 weiterarbeitet. Du kannst entweder die LZS-Kompression abstellen
-(setze <tt>noccp</tt> als Option fÅr ipppd) oder das LZS Modul
+(setze <tt>noccp</tt> als Option f&uuml;r ipppd) oder das LZS Modul
 kompilieren und laden.
 
 
@@ -3366,7 +3366,7 @@ angezeigt.
 <sect1> ttyI_max: Wieviele Devices werden maximal unterst&uuml;tzt?
 <label id="ttyI_max">
 <p>
-Die maximale Anzahl kann w&aumlhrend der Kompilierung mit einem Wert
+Die maximale Anzahl kann w&auml;hrend der Kompilierung mit einem Wert
 f&uuml;r ISDN_MAX gesetzt werden. Z.Zt. ist der Wert auf 64
 voreingestellt, d.h., es werden maximal 64 ttyI Devices
 unterst&uuml;tzt.
@@ -3720,7 +3720,7 @@ seiner IP-Addresse angeben oder seinen Namen in /etc/hosts eintragen
 Setze alle nicht lokalen Mailer auf 'expensive'
 ('define(SMTP_MAILER_FLAGS, e)') und verbiete dann sendmail,
 automatisch &uuml;ber diese <it>teueren</it> Wege zu verbinden (mit
-'define('confCON_EXPENSIVE', 'True')'). Der Aufruf von sendmail sollte
+einem 'define('confCON_EXPENSIVE", 'True')'). Der Aufruf von sendmail sollte
 keine Zeitangabe f&uuml;r die Option '-q' enthalten (d.h., nur '-bd
 -os -q'). '-os' bewirkt, da&szlig; alle Mails in die Warteschlange
 eingereiht werden (was nicht verhindert, da&szlig; lokale Mails sofort
@@ -3884,7 +3884,7 @@ au&szlig;erdem bei ISDN sowieso nur Minuten und keine Sekunden
 Chargeint legt nur auf, wenn es keine Aktivit&auml;t auf der Leitung
 gab. Vielleicht benutzt Dein ISP einen Router (z.B. Cisco), der alle
 zehn Sekunden ein 'keep alive' Paket sendet. Wenn die Cisco auf ihre
-'keep alive' Pakete keine Antwort bekommt, wird sie das Routing
+"keep alive" Pakete keine Antwort bekommt, wird sie das Routing
 einstellen. Das geschieht normalerweise nach dem 4. oder 5. Paket. Die
 beste L&ouml;sung besteht darin, den Provider zu bitten, keine 'keep
 alive' Pakete in der Cisco-Konfiguration einzustellen (<tt>'no
@@ -3957,7 +3957,7 @@ Transferraten. Siehe weiter unten.
 <label id="2channel_mppp">
 <p>
 MPPP oder MP oder MPP (Warnung: MP ist auch eine Abk&uuml;rzung von
-'Multi Processor') steht f&uuml;r Multi Point to Point und bedeutet
+"Multi Processor") steht f&uuml;r Multi Point to Point und bedeutet
 das B&uuml;ndeln von mehreren Kan&auml;len zu einem logischen
 Strom. Es ist eine Abart des normalen syncPPP. Deshalb erbt es auch
 dessen Vor- und Nachteile. Nur zur Information: ipppd betreibt MPPP
@@ -4182,7 +4182,7 @@ Konfiguration sind die folgenden Befehle wichtig:
 /sbin/isdnctrl addphone isdn0 in  3
 </code>
 wenn der Name des Interfaces 'isdn0' lautet. Das Interface muss auf
-'up' gesetzt werden und es muss eine Route auf das Interface gelegt
+"up" gesetzt werden und es muss eine Route auf das Interface gelegt
 werden. Schau Dir die Readmes im HiSax-Paket an.
 
 <sect1> leased_x75: Wie konfiguriere ich X.75 auf einer D64-Standleitung?  
@@ -4361,7 +4361,7 @@ ein einfaches 'ping RemoteIP' eingibt, wird die Cisco im schlimmsten
 Fall alle 8 B-Kan&auml;le zum Hinausw&auml;hlen
 benutzen. Nat&uuml;rlich kann sie nicht eine Telefonnummer
 gleichzeitig auf zwei B-Kan&auml;len w&auml;hlen (es w&auml;re sofort
-'besetzt'). Die Programmierung der Cisco ist nicht so dumm, sie
+"besetzt"). Die Programmierung der Cisco ist nicht so dumm, sie
 richtet den n&auml;chsten B-Kanal zum Hinausw&auml;hlen ein bevor sie
 annimmt, da&szlig; der vorherige B-Kanal versagt hat. Solch eine Cisco
 arbeitet wie ein Maschinengewehr was das Hinausw&auml;hlen
@@ -4418,8 +4418,8 @@ durchf&uuml;hren kann.
 Ulrich Klein <tt><htmlurl url="mailto:ulik@hprc.tandem.com"
 name="ulik@hprc.tandem.com"></tt> schrieb am 14. Dezember 1996:
 <quote>
-Irgendwo in den Ascend-Menues kannst Du 'dial broadcast' auf 'no' oder
-'off' setzen. Anderenfalls wird das Ding mit jedem Rundruf
+Irgendwo in den Ascend-Menues kannst Du 'dial broadcast' auf "no" oder
+"off" setzen. Anderenfalls wird das Ding mit jedem Rundruf
 w&auml;hlen. Zumindest mir half das. Falls jemand aus dem Netzwerk, an
 das die Ascend angeschlossen ist, wirklich eine Verbindung aufbauen
 will, musst Du die etwas seltsamen Filter benutzen. Ich glaube, es
@@ -4512,7 +4512,7 @@ Telefongesellschaft). Wie der Name schon sagt wird die erste Nummer
 vom Benutzer bereitgestellt w&auml;hrend die zweite vom Netzwerk
 &uuml;bertragen wird.  Die Bereitstellung einer Caller ID ist nur mit
 einer PBX &uuml;ber eine Point-to-Point Konfiguration mit dem Feature
-'CLIP no screening' m&ouml;glich.
+"CLIP no screening" m&ouml;glich.
 
 <sect1> isdnlog_betterlogging: Wieso zeichnet isdnlog die Nummern, die mit meinen anderen ISDN-Ger&auml;ten gew&auml;hlt werden, nicht auf, obwohl es die Kosten aufzeichnet?
 <label id="isdnlog_betterlogging">
@@ -4546,7 +4546,7 @@ sendet. Diese k&ouml;nnen dann von isdnlog von der TX-Leitung
 ausgelesen werden.
 
 Alternativ bietet isdnlog die M&ouml;glichkeit, mit einer zweiten,
-'umgepolten' ISDN-Karte zu arbeiten. 'Umgepolt' bedeutet in diesem
+"umgepolten" ISDN-Karte zu arbeiten. 'Umgepolt' bedeutet in diesem
 Fall, da&szlig; die RX-Leitung mit dem TX-Anschluss der Karte
 verbunden wird; die RX Leitung der Karte sollte nirgends angeschlossen
 (stillgelegt) werden!  Aufgrund dieser Schaltung kann diese ISDN-Karte
@@ -5006,7 +5006,7 @@ gibt 5ESS und NI Treiber, die z.Zt. auf UltraSparc portiert werden.
 <label id="country_pakistan">
 <p>
 Anscheinend gibt es dort keine MSN-Funktion. Daher sollte als MSN die
-'0' benutzt werden.
+"0" benutzt werden.
 
 <sect1> country_portugal: Portugal: Was sollten wir als MSN benutzen?
 <label id="country_portugal">
@@ -5020,8 +5020,8 @@ werden. Wenn mehr als eine MSN beantragt wurde, sollten diese wie
 <label id="country_switzerland">
 <p>
 In der Schweiz musst Du die <em>letzte Ziffer</em> Deiner
-Telefonnummer als MSN/EAZ nehmen ('6' wenn Deine Telefonnummer
-'123456' lautet).
+Telefonnummer als MSN/EAZ nehmen ("6" wenn Deine Telefonnummer
+"123456" lautet).
 
 <sect1> country_uk: Gro&szlig;britannien: Was sollen wir als MSN benutzen? 
 <label id="country_uk">
@@ -5107,11 +5107,11 @@ leicht zu implementieren.  Wenn Du diese Features brauchst, dann kaufe
 Dir eine aktive Karte.
 
 <tag/AOC-D/
-'Advice Of Charge During the Call' (Geb&uuml;hren&uuml;bermittlung
+"Advice Of Charge During the Call" (Geb&uuml;hren&uuml;bermittlung
 w&auml;hrend des Gespr&auml;ches).
 
 <tag/AOC-E/ 
-'Advice of Charge at the End of the Call'
+"Advice of Charge at the End of the Call"
 (Geb&uuml;hren&uuml;bermittlung am Ende des Gespr&auml;ches). In
 Deutschland ist dieser Service im 'Komfortanschlu&szlig;' enthalten.
 
