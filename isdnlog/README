@@ -1,10 +1,10 @@
-ISDNLOG - Version 4.01 -  				02-Jan-2000
+ISDNLOG - Version 4.10 -  				11-Feb-2000
 
 
 isdnlog ist ein Utility zur Auswertung des D-Kanals eines
 ISDN-BRI Anschlusses.
 
-isdnlog-4.00 wurde ausgiebig mit Linux-2.0.38, Linux-2.2.13 sowie
+isdnlog-4.10 wurde ausgiebig mit Linux-2.0.38, Linux-2.2.13 sowie
 Linux-2.3.35 getestet.
 
 
@@ -2500,6 +2500,35 @@ angegeben werden.
  -Ux Ignorieren der COLP/CLIP Frames.
      (ignoreCOLP="value")
 
+ -dx Aktives LCR durchfuehren.
+     Bei jedem Rausruf mit der eigenen ISDN-Karte berechnet isdnlog den
+     guenstigsten Provider (Telefondienst-, *nicht* Internet-Provider!)
+     und waehlt dann ueber diesen, und nicht den Default-, Preselected- oder
+     angegebenen Provider die gegebene Zielrufnummer an.
+
+     Dazu mu· bei der Kernel-Generierung isdn4linux mit der Option
+       CONFIG_ISDN_WITH_ABC_LCR_SUPPORT=y
+     erstellt worden sein!
+
+     Mit "x" kînnen folgende Manipulationen vorgenommen werden:
+
+       -d0 = LCR abschalten, isdnlog fuehrt _kein_ LCR durch
+       -d1 = LCR einschalten, aber nicht bei Sonderrufnummern
+       -d2 = LCR einschalten, aber nicht bei Ortsrufnummern
+
+     Wie immer wirkt dieser Schalter additiv, d.h. mit
+
+       -d3 wird LCR aktiviert, aber weder bei Sonder-, noch bei
+       	   Ortsrufnummern.
+
+     Zur Zeit (isdnlog-4.10 vom 11-Feb-2000) ist "-d3" auch die einzig
+     sinnvolle Einstellung, da
+
+      - isdnlog mangels Informationen noch nicht wirklich fÅr eine
+      	Sonderrufnummer den guenstigsten Provider ermitteln kann
+
+      - Call-by-Call im Ortsnetz (in Deutschland) noch nicht moeglich ist.
+
 
 Bei den Optionen -mX, -lX -xX sind folgende Flags moeglich:
 
@@ -3611,7 +3640,7 @@ huptimeout konfiguriert) die bestehende Verbindung nicht genutzt wurde.
 Ist diese Zeit abgelaufen, wird aufgelegt.
 Demgegenueber verhaelt sich die kostenbewusste Nutzerin natuerlich so, dass
 sie die fuer 12 Pf bezahlte Leistung der Telekom auch gerne bis zur letzten
-ekunde ausschoepfen wuerde, also erst dann auflegt, wenn in den naechsten
+Sekunde ausschoepfen wuerde, also erst dann auflegt, wenn in den naechsten
 1-2 Sekunden die naechste Einheit anstehen wuerde.
 ChargeInt macht eigentlich nichts weiter, als die Pruefung, ob in den
 letzten Sekunden kein Traffic angefallen ist, nur dann durchzufuehren,

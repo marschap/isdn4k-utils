@@ -1,4 +1,4 @@
-/* $Id: processor.c,v 1.98 2000/01/24 23:06:20 akool Exp $
+/* $Id: processor.c,v 1.99 2000/02/11 10:41:52 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,12 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.99  2000/02/11 10:41:52  akool
+ * isdnlog-4.10
+ *  - Set CHARGEINT to 11 if < 11
+ *  - new Option "-dx" controls ABC_LCR feature (see README for infos)
+ *  - new rates
+ *
  * Revision 1.98  2000/01/24 23:06:20  akool
  * isdnlog-4.05
  *  - ABC_LCR tested and fixed. It's really working now, Detlef!
@@ -3054,7 +3060,12 @@ static void huptime(int chan, int setup)
       } /* if */
 
       if (call[chan].tarifknown)
-	newchargeint = (int)(call[chan].Rate.Duration + 0.5);
+        /*
+         * The Linklevel dont like a CHARGEINT < 10
+         * so we (sadely) use 11 instead
+         *
+         */
+	newchargeint = max(11, (int)(call[chan].Rate.Duration + 0.5));
       else
         newchargeint = UNKNOWN;
 
@@ -4859,7 +4870,7 @@ static void processlcr(char *p)
   auto TELNUM  	 		   destnum;
   auto RATE    	 		   Rate, Cheap;
   auto struct ISDN_DWABC_LCR_IOCTL i;
-  auto int     	 		   prefix, cc;
+  auto int     	 		   prefix, cc, own_country;
   auto char    	 		   ji[20];
   auto char    	 		   kenn[40];
   auto char    	 		   cid[40];
@@ -4867,6 +4878,7 @@ static void processlcr(char *p)
   auto char    	 		   dst[40];
   auto char    	 		   prov[TN_MAX_PROVIDER_LEN];
   auto char    	 		   amtsholung[BUFSIZ];
+  auto int			   abort = 0;
 
 
   sscanf(p, "%s %s %s %s %s", ji, kenn, cid, eaz, dst);
@@ -4881,19 +4893,16 @@ static void processlcr(char *p)
   sprintf(s, "ABC_LCR: Request for number %s\n", formatNumber("%l via %p", &destnum));
   info(chan, PRT_SHOWNUMBERS, STATE_RING, s);
 
-  if (!*destnum.msn) { /* BUG: Leo: Bei Sonderrufnummern steht die ganze Nummer in destnum.area, die restlichen Felder sind "" */
-    memset(&i, 0, sizeof(i));
+  if (!abclcr) {
+    sprintf(s, "ABC_LCR: *Disabled* -- no action --\n");
+    abort = 1;
+    goto action;
+  } /* if */
 
-    i.lcr_ioctl_sizeof = sizeof(i);
-    i.lcr_ioctl_callid = atol(cid);
-    i.lcr_ioctl_flags = 0;
-
-    cc = ioctl(sockets[ISDNCTRL].descriptor, IIOCNETLCR, &i);
-
-    sprintf(s, "ABC_LCR: \"%s\" is a Sonderrufnummer -- no action -- RESULT=%d\n", destnum.area, cc);
-    info(chan, PRT_SHOWNUMBERS, STATE_RING, s);
-
-    return;
+  if (!*destnum.msn /* && ((abclcr & 1) == 1) */) { /* Future expansion, Sonderrufnummer? */
+    sprintf(s, "ABC_LCR: \"%s\" is a Sonderrufnummer -- no action --\n", destnum.area);
+    abort = 1;
+    goto action;
   } /* if */
 
   clearRate(&Rate);
@@ -4918,40 +4927,60 @@ static void processlcr(char *p)
 
     pres += sprintf(pres, "%s", prov);
 
+    own_country = 0;
+
     if (strcmp(mycountry, destnum.country))
       pres += sprintf(pres, "00%s", destnum.country + 1); /* skip "+" */
-    else
+    else {
       pres += sprintf(pres, "0");
+      own_country = 1;
+    } /* else */
 
-    if (strcmp(myarea, destnum.area))
-      pres += sprintf(pres, "%s", destnum.area);
+    if (strcmp(myarea, destnum.area) == 0 && own_country) {
+      if ((abclcr & 2) == 2) {
+        sprintf(s, "ABC_LCR: \"%s\" is a local number -- no action\n", destnum.msn);
+    	abort = 1;
+    	goto action;
+      } /* if */
+    } /* if */
 
+    /* always append area */
+    pres += sprintf(pres, "%s", destnum.area);
     pres += sprintf(pres, "%s", destnum.msn);
 
-
     if (strlen(res) < sizeof(i.lcr_ioctl_nr)) {
-      memset(&i, 0, sizeof(i));
-
-      i.lcr_ioctl_sizeof = sizeof(i);
-      i.lcr_ioctl_callid = atol(cid);
-      i.lcr_ioctl_flags = DWABC_LCR_FLG_NEWNUMBER;
-      strcpy(i.lcr_ioctl_nr, res);
-
-      cc = ioctl(sockets[ISDNCTRL].descriptor, IIOCNETLCR, &i);
-
-      sprintf(s, "ABC_LCR: New number \"%s\" (via %s:%s) -- RESULT=%d\n",
-        res, prov, getProvider(prefix), cc);
-      info(chan, PRT_SHOWNUMBERS, STATE_RING, s);
+      sprintf(s, "ABC_LCR: New number \"%s\" (via %s:%s)\n",
+        res, prov, getProvider(prefix));
     }
     else {
       sprintf(s, "ABC_LCR: Resulting new number \"%s\" too long -- aborting\n", res);
-      info(chan, PRT_SHOWNUMBERS, STATE_RING, s);
+      abort = 1;
     } /* else */
   }
   else {
     sprintf(s, "ABC_LCR: Can't find cheaper provider\n");
-    info(chan, PRT_SHOWNUMBERS, STATE_RING, s);
+    abort = 1;
   } /* else */
+
+action:
+  memset(&i, 0, sizeof(i));
+
+  i.lcr_ioctl_sizeof = sizeof(i);
+  i.lcr_ioctl_callid = atol(cid);
+
+  if (abort) { /* tell ABC_LCR to dial the *original* number (and _dont_ wait 3 seconds) */
+    i.lcr_ioctl_flags = 0;
+
+    cc = ioctl(sockets[ISDNCTRL].descriptor, IIOCNETLCR, &i);
+  }
+  else {
+    i.lcr_ioctl_flags = DWABC_LCR_FLG_NEWNUMBER;
+    strcpy(i.lcr_ioctl_nr, res);
+
+    cc = ioctl(sockets[ISDNCTRL].descriptor, IIOCNETLCR, &i);
+  } /* else */
+
+  info(chan, PRT_SHOWNUMBERS, STATE_RING, s);
 } /* processlcr */
 #endif
 

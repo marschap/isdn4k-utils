@@ -1,4 +1,4 @@
-/* $Id: tools.h,v 1.51 1999/12/31 13:57:20 akool Exp $
+/* $Id: tools.h,v 1.52 2000/02/11 10:41:53 akool Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,12 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools.h,v $
+ * Revision 1.52  2000/02/11 10:41:53  akool
+ * isdnlog-4.10
+ *  - Set CHARGEINT to 11 if < 11
+ *  - new Option "-dx" controls ABC_LCR feature (see README for infos)
+ *  - new rates
+ *
  * Revision 1.51  1999/12/31 13:57:20  akool
  * isdnlog-4.00 (Millenium-Edition)
  *  - Oracle support added by Jan Bolt (Jan.Bolt@t-online.de)
@@ -1058,7 +1064,8 @@ _EXTERN int     	CityWeekend;
 _EXTERN	int	 preselect;
 _EXTERN int	dual;
 _EXTERN int	hfcdual;
-_EXTERN char    	mlabel[BUFSIZ];
+_EXTERN int	abclcr;
+_EXTERN char    mlabel[BUFSIZ];
 _EXTERN char    *amtsholung;
 _EXTERN int	ignoreRR;
 _EXTERN int	ignoreCOLP;

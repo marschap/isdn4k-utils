@@ -1,4 +1,4 @@
-/* $Id: isdnlog.c,v 1.58 2000/02/03 18:24:50 akool Exp $
+/* $Id: isdnlog.c,v 1.59 2000/02/11 10:41:52 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,12 @@
  * along with this program; if not, write to the Free Software
  *
  * $Log: isdnlog.c,v $
+ * Revision 1.59  2000/02/11 10:41:52  akool
+ * isdnlog-4.10
+ *  - Set CHARGEINT to 11 if < 11
+ *  - new Option "-dx" controls ABC_LCR feature (see README for infos)
+ *  - new rates
+ *
  * Revision 1.58  2000/02/03 18:24:50  akool
  * isdnlog-4.08
  *   isdnlog/tools/rate.c ... LCR patch again
@@ -439,9 +445,9 @@ static int read_param_file(char *FileName);
 
 static char     usage[]   = "%s: usage: %s [ -%s ] file\n";
 #ifdef Q931
-static char     options[] = "av:sp:x:m:l:rt:c:C:w:SVTDPMh:nW:H:f:bL:NqFA:2:O:Ki:R:0:ou:B:U:1";
+static char     options[] = "av:sp:x:m:l:rt:c:C:w:SVTDPMh:nW:H:f:bL:NFA:2:O:Ki:R:0:ou:B:U:1d:q";
 #else
-static char     options[] = "av:sp:x:m:l:rt:c:C:w:SVTDPMh:nW:H:f:bL:NFA:2:O:Ki:R:0:ou:B:U:1";
+static char     options[] = "av:sp:x:m:l:rt:c:C:w:SVTDPMh:nW:H:f:bL:NFA:2:O:Ki:R:0:ou:B:U:1d:";
 #endif
 static char     msg1[]    = "%s: Can't open %s (%s)\n";
 static char    *ptty = NULL;
@@ -696,6 +702,7 @@ static void init_variables(int argc, char* argv[])
   dual = 0;
   hfcdual = 0;
   hup3 = 240;
+  abclcr = 0;
 
   myname = argv[0];
   myshortname = basename(myname);
@@ -889,6 +896,9 @@ int set_options(int argc, char* argv[])
 
       case 'B' : free(vbn);
       	         vbn = strdup(optarg);
+      	       	 break;
+
+      case 'd' : abclcr = atoi(optarg);
       	       	 break;
 
       case '?' : printf(usage, myshortname, myshortname, options);

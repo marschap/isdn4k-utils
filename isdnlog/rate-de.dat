@@ -1,4 +1,4 @@
-V:1.10-Germany [07-Feb-2000 20:49:15]
+V:1.10-Germany [09-Feb-2000 00:15:50]
 
 # Währungsformat
 U:%.3f DM
@@ -8,7 +8,7 @@ U:%.3f DM
 #
 # (C) Copyright 1999, 2000 by Andreas Kool (akool@isdn4linux.de)
 #
-# $Id: rate-de.dat,v 1.77 2000/02/07 20:32:38 akool Exp $
+# $Id: rate-de.dat,v 1.78 2000/02/11 10:41:51 akool Exp $
 #
 #
 # Das "A:" Tag muß folgendermaßen gefüllt werden:
@@ -15078,7 +15078,7 @@ T:*/*=2.3084(60)/1
 P:51,0 01051
 B:01051
 C:ID-Switch GmbH, Graf-Adolf-Straße, 40210 Düsseldorf
-# G:13-Jan-2000
+# G:09-Feb-2000
 C:Homepage: http://www.01051.com
 C:Adresse:  ID-Switch GmbH, Koenigsallee 60f, 40210 Duesseldorf
 C:Name:01051
@@ -15133,7 +15133,7 @@ A:CL
 T:*/*=0.35/60
 Z:207 China
 A:CN
-T:*/*=0.66/60
+T:*/*=0.61/60
 Z:208 Dänemark
 A:DK
 T:*/*=0.17/60
@@ -15163,7 +15163,7 @@ A:IL
 T:*/*=0.30/60
 Z:217 Japan (Festnetz)
 A:JP
-T:*/*=0.24/60
+T:*/*=0.21/60
 Z:218 Jugoslawien
 A:YU
 T:*/*=0.57/60
@@ -15217,7 +15217,7 @@ A:CH
 T:*/*=0.15/60
 Z:236 Singapore
 A:SG
-T:*/*=0.37/60
+T:*/*=0.31/60
 Z:237 Slowenien
 A:SI
 T:*/*=0.49/60
@@ -15229,10 +15229,10 @@ A:ZA
 T:*/*=0.66/60
 Z:240 Südkorea
 A:KR
-T:*/*=0.33/60
+T:*/*=0.27/60
 Z:241 Taiwan
 A:TW
-T:*/*=0.35/60
+T:*/*=0.31/60
 Z:242 USA,Alaska,Hawaii
 A:US,_ALAS,_HAWA
 T:*/*=0.14/60
@@ -15250,7 +15250,7 @@ A:PL
 T:*/*=0.43/60
 Z:247 Russische Förderation
 A:RU,SU
-T:*/*=0.55/60
+T:*/*=0.53/60
 Z:248 Bahamas
 A:BS
 T:*/*=0.37/60
@@ -15274,19 +15274,19 @@ A:MD
 T:*/*=0.79/60
 Z:255 Philippinen
 A:PH
-T:*/*=0.60/60
+T:*/*=0.54/60
 Z:256 Thailand
 A:TH
-T:*/*=0.75/60
+T:*/*=0.71/60
 Z:257 Ukraine (Festnetz)
 A:UA
-T:*/*=0.74/60
+T:*/*=0.64/60
 Z:258 Estland (Festnetz)
 A:EE
 T:*/*=0.52/60
 Z:259 Indonesien (Festnetz)
 A:ID
-T:*/*=0.75/60
+T:*/*=0.69/60
 Z:260 impossible
 A:_ARMF
 A:_AUMF
@@ -18265,7 +18265,7 @@ Z:101 knUUT
 A:0191955
 T:*/09-21=0.055/60
 T:*/21-09=0.049/60
-Z:102
+Z:102 
 C:Homepage:http://service.rhein-main.net/info.html
 C:Kosten: 13.99 DM/Monat für Abonnenten der RMN, 19.99/Monat ohne Abo
 A:0192353 rhein-main-net

@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.146 2000/02/07 20:32:38 akool Exp $
+## $Id: Makefile.in,v 1.147 2000/02/11 10:41:50 akool Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,12 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.147  2000/02/11 10:41:50  akool
+## isdnlog-4.10
+##  - Set CHARGEINT to 11 if < 11
+##  - new Option "-dx" controls ABC_LCR feature (see README for infos)
+##  - new rates
+##
 ## Revision 1.146  2000/02/07 20:32:38  akool
 ## isdnlog-4.09
 ##   - NEW: 01078:3U and 010050:Drillisch foreign countries
@@ -1058,7 +1064,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 4.09
+VERSION     = 4.10
 
 MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 \
 	      isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 \

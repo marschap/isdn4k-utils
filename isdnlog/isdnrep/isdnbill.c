@@ -1,4 +1,4 @@
-/* $Id: isdnbill.c,v 1.14 2000/02/03 18:24:50 akool Exp $
+/* $Id: isdnbill.c,v 1.15 2000/02/11 10:41:53 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Billing-module)
  *
@@ -139,7 +139,7 @@ typedef struct {
   int    si1;
 } PARTNER;
 
-static char  options[]   = "nv:VioeaN:mft";
+static char  options[]   = "nv:VioeaN:mftIE";
 static char  usage[]     = "%s: usage: %s [ -%s ]\n";
 
 
@@ -168,6 +168,8 @@ static char     onlythis[32] = { 0 }; /* -Nnnn -> nur Verbindungen mit _dieser_ 
        			       	      /* -vn   -> Verbose Level */
                                       /* -V    -> Version anzeigen */
                                       /* -a    -> alle Verbindungen anzeigen i.e. "-ioe"  */
+static int	onlyInternal = 0;     /* -I    -> nur Verbindungen am Internen S0-Bus anzeigen */
+static int	onlyExternal = 0;     /* -E    -> nur Verbindungen am Externen S0-Bus anzeigen */
 
 
 int print_msg(int Level, const char *fmt, ...)
@@ -677,7 +679,7 @@ static char *numtonam(int n, int other)
   register UC *p;
   register int i, j = UNKNOWN;
   static   UC  hash[32 * 255] = { 0 };
-  auto     UC  s[32];
+  auto     UC  s[64];
 
 
   if (onlynumbers || !*c.num[n]) {
@@ -686,11 +688,12 @@ static char *numtonam(int n, int other)
   } /* if */
 
   if (other) {
-    sprintf(s + 1, "%s,%d", c.num[n], c.si1);
+    sprintf(s + 2, "%s,%d", c.num[n], c.si1);
 
-    if ((p = strstr(hash, s + 1))) {
+    if ((p = strstr(hash, s + 2)) && (p[-2] == 0xff)) {
       i = p[-1];
       c.known[n] = i;
+
       return(known[i]->who);
     } /* if */
   } /* if */
@@ -704,8 +707,9 @@ static char *numtonam(int n, int other)
     } /* if */
   } /* for */
 
-  if (other && (j != UNKNOWN) && (j < 256)) {
-    s[0] = (UC)j;
+  if (other && (j != UNKNOWN) && (j < 255)) {
+    s[0] = (UC)0xff;
+    s[1] = (UC)j;
     strcat(hash, s);
   } /* if */
 
@@ -803,7 +807,7 @@ static void findme()
 
     i = c.si1;
 
-    for (c.si1 = 0; c.si1 < MAXSI; c.si1++) {
+    for (c.si1 = MAXSI; c.si1 >= 0; c.si1--) {
       strcpy(msnsum[SUBTOTAL][c.si1][c.ihome].msn, number[ME].msn);
       msnsum[SUBTOTAL][c.si1][c.ihome].alias = numtonam(ME, 0);
     } /* for */
@@ -871,7 +875,7 @@ int main(int argc, char *argv[], char *envp[])
   auto     double   dur;
   auto     char    *version;
   auto     char    *myname = basename(argv[0]);
-  auto     int      opt, go;
+  auto     int      opt, go, s0;
   auto	   time_t   now;
   auto 	   struct   tm *tm;
 
@@ -913,6 +917,12 @@ int main(int argc, char *argv[], char *envp[])
         case 't' : onlytoday++;
              	   break;
 
+        case 'I' : onlyInternal++;
+             	   break;
+
+        case 'E' : onlyExternal++;
+             	   break;
+
         case '?' : printf(usage, argv[0], argv[0], options);
                    return(1);
       } /* switch */
@@ -929,12 +939,16 @@ int main(int argc, char *argv[], char *envp[])
       printf("\t-t    -> nur die heutigen Verbindungen anzeigen\n");
       printf("\t-vn   -> Verbose Level\n");
       printf("\t-Nnnn -> nur Verbindungen mit _dieser_ Rufnummer anzeigen\n");
+      printf("\t-I    -> nur Verbindungen am Internen S0-Bus anzeigen\n");
+      printf("\t-E    -> nur Verbindungen am Externen S0-Bus anzeigen\n");
       printf("\t-V    -> Version anzeigen\n");
 
       return(1);
     } /* if */
 
     *home = 0;
+
+    interns0 = 3;
 
     set_print_fct_for_tools(print_in_modules);
 
@@ -1084,6 +1098,21 @@ int main(int argc, char *argv[], char *envp[])
 
         if (onlytoday && c.connect < now)
           go = 0;
+
+        s0 = 0; /* Externer S0 */
+
+        if (c.dialout && (strlen(c.num[CALLING]) < interns0))
+          s0 = 1; /* Interner S0-Bus */
+
+        if (!c.dialout && (strlen(c.num[CALLED]) < interns0))
+          s0 = 1; /* Interner S0-Bus */
+
+        if (onlyInternal && !s0)
+          go = 0;
+
+        if (onlyExternal && s0)
+          go = 0;
+
 
         if (go) {
           when(s, &day, &month);
