@@ -2676,7 +2676,7 @@ Die Optionen von isdnrep haben im einzelnen folgende Funktion:
 		 z.b. "isdnrep -d -" loescht ALLE Eintraege.
 
 
--v          "verbose" Zeigt alle Verbindungen und Verbindungsversuche auf.
+-E          "Errors"  Zeigt alle Verbindungen und Verbindungsversuche auf.
 	              Sonst werden nur die "wahren" Gespraeche angezeigt, die
 	              ohne Fehler zustande gekommen sind.
 
@@ -2706,6 +2706,10 @@ Die Optionen von isdnrep haben im einzelnen folgende Funktion:
                      Zeigt am Ende alle Nummern an, die nicht in der
                      callerid.conf oder ~/.isdn eingetragen sind.
                      Diese Option laeuft nicht bei der Ausgabe im HTML-Format.
+
+-v          "verbose"
+                     Zeigt Warnungen (-v) und Fehler (-vv) beim Starten
+		     des Programms.   		     
 
 -wX         "WWW"    Der isdnrep kann die Ausgabe im HTML-Format erzeugen.
                      dieses wird mit der Option -w erreicht. Es gibt dort zwei
