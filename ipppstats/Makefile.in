@@ -1,0 +1,47 @@
+#
+# pppstats makefile
+# $Id: Makefile.in,v 1.1 1997/03/24 03:58:43 fritz Exp $
+#
+ifeq (../.config,$(wildcard ../.config))
+	include ../.config
+	SBINDIR                 = $(CONFIG_SBINDIR)
+	MANDIR                  = $(CONFIG_MANDIR)
+else
+	SBINDIR                 = /sbin
+	MANDIR                  = /usr/man
+endif
+
+CC           = @CC@
+INSTALL      = @INSTALL@
+INSTALL_SBIN = $(INSTALL) -m 755 -o 0 -g 0
+INSTALL_DATA = $(INSTALL) -m 644 -o 0 -g 0
+INSTALL_DIR  = $(INSTALL) -m 755 -o 0 -g 0 -d
+
+PPPSTATSRCS  = ipppstats.c
+PPPSTATOBJS  = ipppstats.o
+
+CFLAGS       = -m486 -fomit-frame-pointer -O2
+
+all: ipppstats
+
+uninstall:
+	rm -f $(SBINDIR)/ipppstats $(MANDIR)/man8/ipppstats.8
+
+install: ipppstats
+	$(INSTALL_DIR) $(SBINDIR)
+	$(INSTALL_DIR) $(MANDIR)/man8
+	$(INSTALL_SBIN) ipppstats $(SBINDIR)/ipppstats
+	$(INSTALL_DATA) ipppstats.8 $(MANDIR)/man8/ipppstats.8
+
+ipppstats: $(PPPSTATSRCS)
+	$(CC) $(CFLAGS) -o ipppstats ipppstats.c
+
+clean:
+	rm -f ipppstats *~ *.o #* core
+
+distclean: clean
+	rm -f Makefile config.status config.cache config.log
+
+depend:
+	cpp -M $(CFLAGS) $(PPPSTATSRCS) >.depend
+#	makedepend $(CFLAGS) $(PPPSTATSRCS)
