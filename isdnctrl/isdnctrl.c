@@ -1,4 +1,4 @@
-/* $Id: isdnctrl.c,v 1.30 1998/11/18 13:20:07 fritz Exp $
+/* $Id: isdnctrl.c,v 1.31 1998/11/24 18:18:57 paul Exp $
  * ISDN driver for Linux. (Control-Utility)
  *
  * Copyright 1994,95 by Fritz Elfert (fritz@wuemaus.franken.de)
@@ -21,6 +21,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnctrl.c,v $
+ * Revision 1.31  1998/11/24 18:18:57  paul
+ * detect kernel < 2.0.36; warn if dialmode is accessed with older kernels
+ *
  * Revision 1.30  1998/11/18 13:20:07  fritz
  * Fixed display of dialmode.
  *
@@ -408,6 +411,7 @@ static void listif(int isdnctrl, char *name, int errexit)
         char nn[1024];
 
         memset(&cfg, 0, sizeof cfg);	/* clear in case of older kernel */
+	cfg.dialmode = 0xDEADBEEF;
         strcpy(cfg.name, name);
         if (ioctl(isdnctrl, IIOCNETGCF, &cfg) < 0) {
                 if (errexit) {
@@ -446,8 +450,12 @@ static void listif(int isdnctrl, char *name, int errexit)
 		puts("off");
 	else if (cfg.dialmode == ISDN_NET_DM_AUTO)
 		puts("auto");
-	else
+	else if (cfg.dialmode == ISDN_NET_DM_MANUAL)
 		puts("manual");
+	else if (cfg.dialmode == 0xDEADBEEF)
+		puts("not in kernel (please upgrade your kernel)");
+	else
+		printf("unknown value (0x%x)\n", cfg.dialmode);
 #else
 #warning ISDN_NET_DM_OFF not defined? Old isdn4kernel?
         printf("Dial mode:              not available at compilation\n");
@@ -532,6 +540,8 @@ do_dialmode(int args, int dialmode, int fd, char *id, int errexit)
 {
 	isdn_net_ioctl_cfg cfg;
 
+	memset(&cfg, 0, sizeof cfg);	/* clear in case of older kernel */
+	cfg.dialmode = 0xDEADBEEF;
 	/* first get settings */
 	strcpy(cfg.name, id);
 	if (ioctl(fd, IIOCNETGCF, &cfg) < 0) {
@@ -539,6 +549,16 @@ do_dialmode(int args, int dialmode, int fd, char *id, int errexit)
 			return;
 		perror(id);
 		exit(-1);
+	}
+	if (cfg.dialmode == 0xDEADBEEF) {
+		fputs("dialmode setting not in kernel\n", stderr);
+		/*
+		 * exit true if setting "auto"
+		 * I want to be able to "isdnctrl dialmode if auto" without
+		 * error if kernel has no dialmode, as then the behaviour is
+		 * equivalent to "auto".
+		 */
+		exit((args == 2 && dialmode == ISDN_NET_DM_AUTO) ? 0 : -1);
 	}
 	/* hack for following a chain of interfaces */
 	if (cfg.slave && *cfg.slave) {
