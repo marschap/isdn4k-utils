@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.25 1997/05/17 01:08:11 luethje Exp $
+## $Id: Makefile.in,v 1.26 1997/05/19 22:58:02 luethje Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,12 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.26  1997/05/19 22:58:02  luethje
+## - bugfix: it is possible to install isdnlog now
+## - improved performance for read files for vbox files and mgetty files.
+## - it is possible to decide via config if you want to use avon or
+##   areacode.
+##
 ## Revision 1.25  1997/05/17 01:08:11  luethje
 ## some bugfixes
 ##
@@ -159,6 +165,7 @@ INSTALL_DATA		:= $(INSTALL) -m 0644 -o 0 -g 0
 LIBISDNDIR		:= @LIBISDNDIR@
 I4LCONFDIR		:= @I4LCONFDIR@
 CONFFILE  		:= @CONFFILE@
+CALLERIDFILE  := @CALLERIDFILE@
 OLDCONFDIR		:= @OLDCONFDIR@
 OLDCONFFILE 	:= @OLDCONFFILE@
 LIBAREA				:= @LIBAREA@
@@ -183,11 +190,12 @@ export CHARGEMAX     := 1000.00
 
 ifndef ROOTDIR
 export ROOTDIR=$(shell pwd)
-PREFIXDIR=.
 MAKELIB  =1
 else
-PREFIXDIR=$(ROOTDIR)
+#PREFIXDIR=$(ROOTDIR)
 endif
+
+PREFIXDIR=.
 
 ifeq ($(MAKELIB),1)
 SUBDIRS     = $(LIBISDNDIR)
@@ -203,9 +211,7 @@ CC          = $(_CC)
 
 INCLUDE     = -I./connect -I./tools -I$(PREFIXDIR) -I$(LIBISDNDIR)
 
-ifneq ($(LIBAREA),1)
 LIB         = $(DBMLIB)
-endif
 
 
 
@@ -217,7 +223,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 2.99.19
+VERSION     = 2.99.20
 
 ifeq ($(POSTGRES),1)
 DEFS       += -DPOSTGRES
@@ -294,7 +300,7 @@ rootperm:
 	fi
 
 uninstall: rootperm
-		if ps -x | fgrep $(ISDNLOG) >/dev/null; then kill `cat $(RUNDIR)/isdnlog.pid`; fi
+		if ps -x | fgrep $(ISDNLOG) >/dev/null; then kill `cat $(RUNDIR)/isdnlog.pid` 2>/dev/null; fi
 		rm -f $(SBINDIR)/$(ISDNLOG) $(BINDIR)/$(ISDNREP) $(BINDIR)/$(ISDNCONF)
 		rm -f $(MAN8DIR)/isdnlog.8 $(MAN1DIR)/isdnrep.1
 
@@ -302,20 +308,24 @@ installdirs: rootperm
 		$(INSTALL_DIR) $(I4LCONFDIR)
 		$(INSTALL_DIR) $(BINDIR)
 		$(INSTALL_DIR) $(SBINDIR)
-		$(INSTALL_DIR) $(MAN1DIR)
-		$(INSTALL_DIR) $(MAN8DIR)
+#		$(INSTALL_DIR) $(MAN1DIR)
+#		$(INSTALL_DIR) $(MAN8DIR)
 
 install: depend all rootperm installdirs
-		if ps -x | fgrep $(ISDNLOG) >/dev/null; then kill `cat $(RUNDIR)/isdnlog.pid`; fi
-		-test ! -d $(OLDCONFDIR) || (cp -auv $(OLDCONFDIR)/* $(I4LCONFDIR) \
+		@echo "Killing running isdnlog!"
+		-@if ps -x | fgrep $(ISDNLOG) >/dev/null; then kill `cat $(RUNDIR)/isdnlog.pid 2>/dev/null`; fi
+		-@test ! -d $(OLDCONFDIR) || cp -auv $(OLDCONFDIR)/$(USERFILE) $(I4LCONFDIR)
+		-@test ! -d $(OLDCONFDIR) || (cp -auv $(OLDCONFDIR)/$(OLDCONFFILE) $(I4LCONFDIR) \
 		 && $(ISDNREP) 1>/dev/null 2>&1) \
 		 && mv $(I4LCONFDIR)/$(OLDCONFFILE) $(I4LCONFDIR)/$(OLDCONFFILE).old
-		$(GENCONF) $(I4LCONFDIR)/$(CONFFILE)
+		$(GENCONF) $(I4LCONFDIR)/$(CONFFILE) $(I4LCONFDIR)/$(CALLERIDFILE)
+		@echo "Generate config files. Wait a moment..."
+		@$(ISDNCONF) -c 040 1>/dev/null 2>&1
 		$(INSTALL_BIN) $(ISDNLOG)  $(SBINDIR)
 		$(INSTALL_BIN) $(ISDNREP)  $(BINDIR)
 		$(INSTALL_BIN) $(ISDNCONF) $(BINDIR)
-		$(INSTALL_DATA) isdnlog/isdnlog.8 $(MAN8DIR)
-		$(INSTALL_DATA) isdnrep/isdnrep.1 $(MAN1DIR)
+#		$(INSTALL_DATA) isdnlog/isdnlog.8 $(MAN8DIR)
+#		$(INSTALL_DATA) isdnrep/isdnrep.1 $(MAN1DIR)
 		@echo ""
 		@echo "Don't forget to create $(I4LCONFDIR)/$(USERFILE)"
 		@echo ""

@@ -1,4 +1,4 @@
-/* $Id: isdnrep.c,v 1.25 1997/05/17 14:58:28 luethje Exp $
+/* $Id: isdnrep.c,v 1.26 1997/05/19 22:58:18 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -20,6 +20,12 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnrep.c,v $
+ * Revision 1.26  1997/05/19 22:58:18  luethje
+ * - bugfix: it is possible to install isdnlog now
+ * - improved performance for read files for vbox files and mgetty files.
+ * - it is possible to decide via config if you want to use avon or
+ *   areacode.
+ *
  * Revision 1.25  1997/05/17 14:58:28  luethje
  * bug fix in HTML-Link
  *
@@ -223,6 +229,9 @@
 #define C_VBOX  'v'
 #define C_FAX   'f'
 
+#define F_VBOX  1
+#define F_FAX   2
+
 /*****************************************************************************/
 
 #define F_BEGIN 1
@@ -352,6 +361,7 @@ static int      file_root_size = 0;
 static int      file_root_member = 0;
 static char    *_myname;
 static time_t   _begintime;
+static int      read_path = 0;
 
 /*****************************************************************************/
 
@@ -471,9 +481,6 @@ int read_logfile(char *myname)
 	if (html & H_PRINT_HEADER)
 		html_header();
 
-	if (html)
-		get_file_list();
-
 	if (lineformat == NULL)
 	{
 		if (html)
@@ -484,6 +491,10 @@ int read_logfile(char *myname)
 			
 	if (get_format(lineformat) == NULL)
 		return -1;
+
+	/* following two lines must be after get_format()! */
+	if (html)
+		get_file_list();
 
   clear_sum(&day_sum);
   clear_sum(&day_com_sum);
@@ -1525,6 +1536,15 @@ static prt_fmt** get_format(const char *format)
 						return NULL;
 					}
 
+					switch (Type)
+					{
+						case 'C': read_path |= F_VBOX;
+						          break;
+						case 'G': read_path |= F_FAX;
+						          break;
+						default : break;
+					}
+
 					fmt->s_type= Type;
 					fmt->range = strdup(Range);
 					fmt->type  = FMT_FMT;
@@ -2485,8 +2505,11 @@ static char *print_diff_date(char *start, char *stop)
 
 static int get_file_list(void)
 {
-	set_dir_entries(vboxpath,set_vbox_entry);
-	set_dir_entries(mgettypath,set_mgetty_entry);
+	if (read_path & F_VBOX)
+		set_dir_entries(vboxpath,set_vbox_entry);
+
+	if (read_path & F_FAX)
+		set_dir_entries(mgettypath,set_mgetty_entry);
 
 	qsort(file_root,file_root_member,sizeof(file_list*),Compare_files);
 	return 0;

@@ -131,7 +131,7 @@ xisdn voruebergehend aus der Distribution genommen wurde!!!!
    Konfigurationsdatei "isdnlog.conf" in die neue Syntax umzuwandeln.
    Dieses passiert automatisch mit make install
    Es werden in dieser Version alle Telefonnummern in der Datei callerid.conf
-   ausgelagert, so dass die isdn.conf sehr klien wird.
+   ausgelagert, so dass die isdn.conf sehr klein wird.
 
 6. Erster Start des neuen isdnlog:
 

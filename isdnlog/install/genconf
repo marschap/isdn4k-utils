@@ -1,5 +1,5 @@
 #!/bin/sh
-## $Id: genconf,v 1.5 1997/05/10 01:21:00 luethje Exp $
+## $Id: genconf,v 1.6 1997/05/19 22:58:13 luethje Exp $
 ##
 ## installation script for the config file of isdnlog
 ##
@@ -20,6 +20,12 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: genconf,v $
+## Revision 1.6  1997/05/19 22:58:13  luethje
+## - bugfix: it is possible to install isdnlog now
+## - improved performance for read files for vbox files and mgetty files.
+## - it is possible to decide via config if you want to use avon or
+##   areacode.
+##
 ## Revision 1.5  1997/05/10 01:21:00  luethje
 ## some primitive changes
 ##
@@ -40,6 +46,8 @@
 ##
 
 CONFFILE=$1
+CALLERIDFILE=$2
+
 RESFILE=/tmp/`basename $0`.res.$$
 
 setentry() {
@@ -94,7 +102,7 @@ setentry "[GLOBAL]"  "COUNTRYCODE"   "$COUNTRYCODE"
 setentry "[GLOBAL]"  "COUNTRYPREFIX" "$COUNTRYPREFIX"
 setentry "[ISDNLOG]" "CHARGEMAX"     "$CHARGEMAX"
 setentry "[ISDNLOG]" "REPFMT"        '\"  %X %D %15.15H %T %-15.15F %7u %U %I %O\"'
-setentry "[ISDNLOG]" "REPFMTSHORT"   '\"%X%D %8.8H %T %-14.14F %U%I %O\"'
+setentry "[ISDNLOG]" "REPFMTSHORT"   '\"%X%D %8.8H %T %-14.14F%U%I %O\"'
 setentry "[ISDNLOG]" "REPFMTWWW"     '\"%X %D %17.17H %T %-17.17F %-20.20l SI: %S %9u %U %I %O\"'
 setentry "[ISDNLOG]" "OLABEL"        "$OLABEL"
 setentry "[ISDNLOG]" "ILABEL"        "$ILABEL"
@@ -102,9 +110,21 @@ setentry "[ISDNLOG]" "LOGFILE"       "$LOGFILE"
 
 
 # Change the variables $1 to \$1 and so one.
-sed -e "s/\([^\]\)\$\([0-9][ 	]\)/\1\\\\$\2/g" $CONFFILE >$RESFILE
+sed -e "s/\([^\]\)\$\([0-9][ 	]\)/\1\\\\$\2/g" $CONFFILE   |\
+sed -e "s/\([^\]\)\$\([0-9][  ]\)/\1\\\\$\2/g" >$RESFILE
 cp $RESFILE $CONFFILE
 
-rm -f $RESFILE
-
 echo "  Ready."
+
+if [ -f $USERFILE ]
+then
+	# Change the variables $1 to \$1 and so one.
+	echo -n "Adding some entries to the config file \"$CALLERIDFILE\"..."
+	sed -e "s/\([^\]\)\$\([0-9][ 	]\)/\1\\\\$\2/g" $CALLERIDFILE |\
+	sed -e "s/\(NUMBER[   ]*=[    ]*\)\*/\1/"                    |\
+	sed -e "s/\([^\]\)\$\([0-9][  ]\)/\1\\\\$\2/g" >$RESFILE
+	cp $RESFILE $CALLERIDFILE
+	echo "  Ready."
+fi
+
+rm -f $RESFILE

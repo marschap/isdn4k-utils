@@ -24,6 +24,7 @@ else
 PREFIXDIR =$(ROOTDIR)
 endif
 
+
 ######################################################################
 # USER CONFIGURATION AREA
 ######################################################################
@@ -36,6 +37,10 @@ CC         = $(_CC)
 ######################################################################
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
+
+INSTALL =install
+INSTALL_DIR     := $(INSTALL) -m 0755 -o 0 -g 0 -d
+INSTALL_AVON    := $(INSTALL) -m 0644 $(AVON) $(I4LCONFDIR)
 
 #CFLAGS   = -I$(PREFIXDIR)
 
@@ -53,12 +58,14 @@ distclean: clean
 		rm -f .depend
 
 install: depend all
-		-test $(AVON) -ot $(I4LCONFDIR)/$(AVON) || ( $(INSTALL) -m 644 $(AVON) $(I4LCONFDIR) )
-		# -rm -f $(I4LCONFDIR)/$(AVON).pag $(I4LCONFDIR)/$(AVON).dir
+  ifneq ($(CONFIG_LIB_AREACODE),y)
+		-$(INSTALL_DIR) $(I4LCONFDIR)
+		-test $(AVON) -ot $(I4LCONFDIR)/$(AVON) || ( $(INSTALL_AVON) )
+		-@rm -f $(I4LCONFDIR)/$(AVON).pag $(I4LCONFDIR)/$(AVON).dir
+  endif
 	        
 deinstall: distclean
 		-rm -f $(I4LCONFDIR)/$(AVON)*
-
 
 createDB.o:   createDB.c createDB.h
 

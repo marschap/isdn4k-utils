@@ -1,4 +1,3 @@
-# Lock und PID-Files
 ISDNLOG - Version 3.0 -  				4-Mai-97  22:09
 
 
@@ -338,17 +337,38 @@ Dazu siehe jedoch Kapitel 15. Dual-Mode !
 3. Installation
 ---------------
 
-Nun kann isdnlog ausgepackt (wohl bereits geschehen ;-) und erstellt
-sowie installiert werden:
+Da isdnlog seit der Version 3.0 nur noch im isdn4k-utils freigegeben wird,
+findet die Konfiguration ueber das Menu statt. Es darf also nicht mehr direkt
+in dem Makefile editiert werden.
 
-  cd /usr/src
-  tar xzf isdnlog.tar.gz
-  cd isdnlog-<Version>
-  make install
+Die alte Datei isdnlog.conf wird, wenn vorhanden in die Dateien isdn.conf und
+callerid.conf umgesetzt. Dieses macht die Installation automatisch.
 
-Vor dem "make" koennen folgende Eintraege koennen im Installationsmenue
-den eigenen Gegebenheiten angepasst werden. Bitte nicht mehr direkt im Makefile
-editieren, da diese Eintraege ueberschrieben werden.
+Die alte Konfigurationsdatei isdnlog.conf wird ins neue Verzeichnis uebernommen.
+Allerdings traegt sie dann den Namen isdnlog.conf.old.
+
+Es ist dabei zu beachten, dass bei allen Telefonnummern, die in der
+isdnlog.conf, die mit einem "*" oder einem "?" beginnen, dieses Zeichen
+geloescht wird.
+
+Beispiel:
+
+*8154711 -> 8154711
+081547*  -> 081547*
+
+Wenn das Zeichen ("*" oder "?") nur als Platzhalter fuer eine "0" stand, kann
+man es lassen, andernfalls muss eine manuelle Nacheditierung stattfinden.
+
+Auch die Datei isdnlog.users wird uebernommen. Allerdings finden hier keine
+Aenderungen statt.
+
+Das Vornummernverzeichnis AVON wird nicht uebernommen. Da sich die Syntax 
+etwas geaendert hat. Muss die alte Datei von Hand an die neue angefuegt werden.
+Aber normalerweise wird bei der Installation von isdnlog empfohlen die
+areacode-Library zu verwenden.
+
+Hier sind nochmal alle Eintraege aufgefuehrt, die isdnlog im Makefile enthaelt,
+die ueber das Menue konfiguriert werden:
 
   COPTS
     Compiler-Optionen fuer den gcc
@@ -508,6 +528,16 @@ COUNTRYPREFIX:
   Es enthaelt den Prefix zur Laenderkennung. Beim Kompilieren ist dieser
   Wert defaultmaessig auf "+" gesetzt. Dieser Eintrag ist optional.
 
+CODELIB:
+	Es kann nach dem Kompilieren eingestellt werden, welche Library verwendet
+	werden soll. Fuer AVON wird dort "AVON" eingetragen und fuer areacode
+	wird dort "AREACODE" eingetragen. Andere Werte sind dort zur Zeit nicht 
+	erlaubt. Es sollte dann aber zusaetzlich AREALIB bzw. AVONLIB eingetragen
+	werden.
+	Dieser Eintrag ist optional.
+	Beispiel:
+	CODELIB=avon
+
 AREALIB:
   Enthaelt den vollen Pfad zu der Datei "areacodes". Diese Angabe ist
 	optional und nur notwendig, wenn sich der Pfad nach der Compilation
@@ -570,39 +600,46 @@ gehalten, sondern nur noch nach Beendigung eines Gespraeches wird die Datei
 geoeffnet, der Eintrag ergaenzt und anschliessend wieder geschlossen.
 Dadurch ist es jetzt moeglich diese Datei zu verschieben, wenn der isdnlog
 laeuft und gerade kein Gespraech beendet wird.
+Dieser Eintrag ist optional.
 
 RELOADCMD = reload
 
 Hiermit wird ein ausfuehrbares Programm (z.b. Shell-Script) angegeben,
 mit dem isdnlog ein evtl. wildgewordenes isdn4linux reanimieren kann.
 (Ein Beispiel findet sich im Kapitel 14.1 Watchdog)
+Dieser Eintrag ist optional.
 
 STOPCMD = stop
 
 Hiermit wird ein ausfuehrbares Programm (z.b. Shell-Script) angegeben,
 mit dem isdnlog isdn4linux terminieren kann.
 (Ein Beispiel findet sich im Kapitel 14.2 CHARGEMAX)
+Dieser Eintrag ist optional.
 
 REBOOTCMD = /sbin/reboot
 
 Hiermit wird ein ausfuehrbares Programm (z.b. Shell-Script) angegeben,
 mit dem isdnlog Linux herunterfahren kann.
 (Ein Beispiel findet sich im Kapitel 14.2 CHARGEMAX)
+Dieser Eintrag ist optional.
 
 CHARGEMAX = 15.00
 
 Hiermit wird (in DM) angegeben, wieviel Geld man pro Tag maximal
 mit isdn4linux vertelefonieren moechte.
+Dieser Eintrag ist pflicht!
 
 CONNECTMAX = 18000,0
 
 Hiermit wird (in Sekunden) angegeben, wieviel Zeit man pro Monat
 maximal Online sein moechte.
+Dieser Eintrag ist optional.
 
 BYTEMAX = 67108864,0
 
 Hiermit wird (in Byte) angegeben, wieviel Byte man maximal pro
 Monat saugen moechte.
+Dieser Eintrag ist optional.
 
 CURRENCY=factor,currency
 
@@ -629,6 +666,38 @@ Wenn man zum Beispiel sich die Nettogebuehren (ohne MwSt.) anzeigen
 lassen will, kann man hier z.B. folgenden Wert setzen:
 
 CURRENCY=0.1043,DM
+
+Dieser Eintrag ist optional.
+
+Wenn der isdnrep via HTML aufgezeichneten Anrufe abspielen soll, dann muss hier
+der Pfad eingetragen werden. Eine genaue Beschreibung findet man unter 
+dem Kapitel isdnrep.
+Dieser Eintrag ist optional.
+
+Beipiel:
+VBOXPATH = /var/spool/vbox/fred/incoming
+
+Der isdnrep kann fuer jeden aufgezeichneten Anruf ein Koonvertierungsprogramm
+starten.  Eine genaue Beschreibung findet man unter dem Kapitel isdnrep.
+Dieser Eintrag ist optional.
+
+Beipiel:
+VBOXCMD = /usr/bin/zyxeltowav
+
+Wenn der isdnrep via HTML angekommene Faxe anzeigen soll, dann muss hier
+der Pfad eingetragen werden. Eine genaue Beschreibung findet man unter 
+dem Kapitel isdnrep.
+Dieser Eintrag ist optional.
+
+Beipiel:
+MGETTYPATH = /var/spool/fax/incoming
+
+Der isdnrep kann fuer jedes Fax ein Koonvertierungsprogramm starten.
+Eine genaue Beschreibung findet man unter dem Kapitel isdnrep.
+Dieser Eintrag ist optional.
+
+Beipiel:
+MGETTYCMD = /usr/bin/g3tojpg
 
 Fuer den isdnrep kann man einen oder mehrere Formatsstrings definieren,
 wie der isdnrep die einzelnen Gebuehren anzeigen soll. Die genaue Syntax

@@ -36,29 +36,31 @@ endif
 CC          = $(_CC)
 
 export AVON = avon
+export I4LCONFDIR
 
 ######################################################################
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-ifdef LIBAREA
-LIBDIR   = areacode
-LIB_AREA = $(LIBDIR)/areacode.o
-DEFS    += -DLIBAREA
-else
-LIBDIR   = avon
-LIB_AREA = $(LIBDIR)/createDB.o
-DEFS    += -DAVON=\"$(AVON)\"
+AREADIR   = ../areacode
+LIB_AREA  = $(AREADIR)/areacode.o
+
+ifeq ($(LIBAREA),1)
+DEFS     += -DLIBAREA
 endif
 
-SUBDIRS  = $(LIBDIR)
+AVONDIR   = avon
+LIB_AVON += $(AVONDIR)/createDB.o
+DEFS     += -DAVON=\"$(AVON)\"
+
+SUBDIRS  = $(AVONDIR) #$(AREADIR)
 
 DEFS    += -I$(PREFIXDIR)
 
 %.o: %.c
 	$(CC) $(CFLAGS) $(DEFS) -c -o $@ $<
 
-all: libs libisdn.a
+all: .depend libs libisdn.a
 
 libs:
 		set -e; for i in `echo $(SUBDIRS)`; do $(MAKE) -C $$i; done
@@ -80,14 +82,18 @@ distclean: clean
 install: depend all
 		set -e; for i in `echo $(SUBDIRS)`; do $(MAKE) -C $$i depend; done
 		set -e; for i in `echo $(SUBDIRS)`; do $(MAKE) -C $$i all; done
-		set -e; for i in `echo $(SUBDIRS)`; do $(MAKE) -C $$i install; done
+ifneq ($(CONFIG_LIB_AREACODE),y)
+		set -e; for i in `echo $(AVONDIR)`; do $(MAKE) -C $$i install; done
+#else
+#		set -e; for i in `echo $(AREADIR)`; do $(MAKE) -C $$i install; done
+endif
 
 deinstall: distclean
 		set -e; for i in `echo $(SUBDIRS)`; do $(MAKE) -C $$i deinstall; done
 
 
-libisdn.a: conffile.o isdntools.o libtools.o $(LIB_AREA)
-		ar rs libisdn.a isdntools.o conffile.o libtools.o $(LIB_AREA)
+libisdn.a: conffile.o isdntools.o libtools.o $(LIB_AREA) $(LIB_AVON)
+		ar rs libisdn.a isdntools.o conffile.o libtools.o $(LIB_AREA) $(LIB_AVON)
 
 ifeq (.depend,$(wildcard .depend))
 include .depend

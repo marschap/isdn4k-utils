@@ -1,4 +1,4 @@
-/* $Id: createDB.h,v 1.2 1997/04/17 23:29:51 luethje Exp $
+/* $Id: createDB.h,v 1.3 1997/05/19 22:58:36 luethje Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -19,6 +19,12 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: createDB.h,v $
+ * Revision 1.3  1997/05/19 22:58:36  luethje
+ * - bugfix: it is possible to install isdnlog now
+ * - improved performance for read files for vbox files and mgetty files.
+ * - it is possible to decide via config if you want to use avon or
+ *   areacode.
+ *
  * Revision 1.2  1997/04/17 23:29:51  luethje
  * new structure of isdnrep completed.
  *
@@ -49,9 +55,9 @@
 _EXTERN datum    key, data;
 _EXTERN DBM     *dbm SET_NULL;
 
-_EXTERN void set_print_fkt_for_avon(int (*new_print_msg)(const char *, ...));
+_EXTERN void set_print_fct_for_avon(int (*new_print_msg)(const char *, ...));
 _EXTERN int createDB(char *fn, int force);
-_EXTERN int openDB(char *fn);
+_EXTERN int openDB(char *fn, int flag);
 _EXTERN void closeDB();
 _EXTERN void insertDB(char *num, char *area);
 _EXTERN void readAVON(char *fn);

@@ -4,6 +4,10 @@
 # the original Makefile, it is called GNUmakefile.
 #
 
+#ifndef CONFIG_AREACODE_DATA
+#CONFIG_AREACODE_DATA=x
+#endif
+
 ifeq (../.config,$(wildcard ../.config))
 	include ../.config
 	DATAOPTS := DATATARGET=$(shell echo $(CONFIG_AREACODE_DATA))/areacodes
@@ -17,6 +21,8 @@ endif
 
 all: .depend
 	$(MAKE) -f make/linux.mak $(BUILDOPTS) all
+
+depend dep: .depend
 
 .depend:
 	$(MAKE) -f make/linux.mak $(BUILDOPTS) depend
@@ -33,9 +39,15 @@ distclean:
 
 install-man:
 
-install:
-	mkdir -p $(CONFIG_AREACODE_DATA)
-	$(MAKE) -f make/linux.mak $(INSTALLOPTS) install
+install: all
+ifeq ($(CONFIG_LIB_AREACODE),y)
+		mkdir -p $(CONFIG_AREACODE_DATA)
+		$(MAKE) -f make/linux.mak $(INSTALLOPTS) install
+endif
+
+#	-@test "$(CONFIG_AREACODE_DATA)" != "x" &&         \
+#		mkdir -p $(CONFIG_AREACODE_DATA)         &&      \
+#		$(MAKE) -f make/linux.mak $(INSTALLOPTS) install
 
 uninstall:
 	rm -f $(shell echo $(CONFIG_AREACODE_DATA))/areacodes

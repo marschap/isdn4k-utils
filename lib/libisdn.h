@@ -1,5 +1,5 @@
 
-/* $Id: libisdn.h,v 1.6 1997/04/08 21:57:07 luethje Exp $
+/* $Id: libisdn.h,v 1.7 1997/05/19 22:58:29 luethje Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,12 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: libisdn.h,v $
+ * Revision 1.7  1997/05/19 22:58:29  luethje
+ * - bugfix: it is possible to install isdnlog now
+ * - improved performance for read files for vbox files and mgetty files.
+ * - it is possible to decide via config if you want to use avon or
+ *   areacode.
+ *
  * Revision 1.6  1997/04/08 21:57:07  luethje
  * Create the file isdn.conf
  * some bug fixes for pid and lock file
@@ -45,11 +51,8 @@
 #include "policy.h"
 #include "conffile.h"
 
-#ifdef LIBAREA
-# include "areacode/areacode.h"
-#else
-# include "avon/createDB.h"
-#endif
+#include "areacode/areacode.h"
+#include "avon/createDB.h"
 
 /****************************************************************************/
 
@@ -115,6 +118,7 @@ extern char *basename __P((__const char *__name));
 #define CONF_ENT_AREA           "AREACODE"
 #define CONF_ENT_AREALIB        "AREALIB"
 #define CONF_ENT_AVONLIB        "AVON"
+#define CONF_ENT_CODELIB        "CODELIB"
 
 #define CONF_SEC_VAR    "VARIABLES"
 

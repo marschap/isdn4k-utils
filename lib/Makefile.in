@@ -57,13 +57,16 @@ distclean:
 # TODO: build a shared version and install it.
 #
 install-avon:
-	$(MAKE) -f Makefile I4LCONFDIR=$(LIB_AVON_DATA) install
+	$(MAKE) -f Makefile I4LCONFDIR=$(CONFIG_I4LCONFDIR) install
 
 uninstall-avon:
-	$(MAKE) -f Makefile I4LCONFDIR=$(LIB_AVON_DATA) deinstall
+	$(MAKE) -f Makefile I4LCONFDIR=$(CONFIG_I4LCONFDIR) deinstall
 
 ifeq ($(CONFIG_LIB_AREACODE),y)
+
 install:
+	$(MAKE) -f Makefile $(BUILDOPTS) all
+
 uninstall:
 else
 install: install-avon

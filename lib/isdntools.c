@@ -1,4 +1,4 @@
-/* $Id: isdntools.c,v 1.12 1997/05/09 23:31:06 luethje Exp $
+/* $Id: isdntools.c,v 1.13 1997/05/19 22:58:28 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -19,6 +19,12 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdntools.c,v $
+ * Revision 1.13  1997/05/19 22:58:28  luethje
+ * - bugfix: it is possible to install isdnlog now
+ * - improved performance for read files for vbox files and mgetty files.
+ * - it is possible to decide via config if you want to use avon or
+ *   areacode.
+ *
  * Revision 1.12  1997/05/09 23:31:06  luethje
  * isdnlog: new switch -O
  * isdnrep: new format %S
@@ -131,6 +137,7 @@
 /****************************************************************************/
 
 static int (*print_msg)(const char *, ...) = printf;
+static char *_get_avon(char *code, int *Len, int flag);
 static char *_get_areacode(char *code, int *Len, int flag);
 static int create_runfile(const char *file, const char *format);
 
@@ -178,7 +185,8 @@ static char countrycodes[][2][30] = {
 	{"", ""},
 };
 
-char *avonlib;
+static char *avonlib = NULL;
+static char *codelib = NULL;
 
 /****************************************************************************/
 
@@ -187,9 +195,7 @@ void set_print_fct_for_lib(int (*new_print_msg)(const char *, ...))
 	print_msg = new_print_msg;
 	set_print_fct_for_conffile(new_print_msg);
 	set_print_fct_for_libtools(new_print_msg);
-#ifndef LIBAREA
 	set_print_fct_for_avon(new_print_msg);
-#endif
 }
 
 /****************************************************************************/
@@ -498,11 +504,11 @@ static int create_runfile(const char *file, const char *format)
    muss von jedem Programm aufgerufen werden!!!
 */
 
-#define _MAX_VARS 5
+#define _MAX_VARS 7
 
 int Set_Codes(section* Section)
 {
-	static char *ptr[_MAX_VARS] = {NULL,NULL,NULL,NULL,NULL};
+	static char *ptr[_MAX_VARS] = {NULL,NULL,NULL,NULL,NULL,NULL,NULL};
 	int i;
 	int RetCode = 0;
 	entry *Entry;
@@ -520,28 +526,30 @@ int Set_Codes(section* Section)
 	if ((SPtr = Get_Section(Section,CONF_SEC_GLOBAL)) == NULL)
 		return -1;
 
-#ifdef LIBAREA
 	if ((Entry = Get_Entry(SPtr->entries,CONF_ENT_AREALIB)) != NULL &&
 	    Entry->value != NULL                                             )
 		ptr[0] = acFileName = strdup(Entry->value);
-#else
+
 	if ((Entry = Get_Entry(SPtr->entries,CONF_ENT_AVONLIB)) != NULL &&
 	    Entry->value != NULL                                             )
-		ptr[0] = avonlib = strdup(Entry->value);
+		ptr[1] = avonlib = strdup(Entry->value);
 	else
 	{
 		sprintf(s, "%s%c%s", confdir(), C_SLASH, AVON);
-		ptr[0] = avonlib = strdup(s);
+		ptr[1] = avonlib = strdup(s);
 	}
-#endif
 
 	if ((Entry = Get_Entry(SPtr->entries,CONF_ENT_COUNTRY_PREFIX)) != NULL &&
 	    Entry->value != NULL                                             )
-		ptr[1] = countryprefix = strdup(Entry->value);
+		ptr[2] = countryprefix = strdup(Entry->value);
 
 	if ((Entry = Get_Entry(SPtr->entries,CONF_ENT_AREA_PREFIX)) != NULL &&
 	    Entry->value != NULL                                             )
-		ptr[2] = areaprefix = strdup(Entry->value);
+		ptr[3] = areaprefix = strdup(Entry->value);
+
+	if ((Entry = Get_Entry(SPtr->entries,CONF_ENT_CODELIB)) != NULL &&
+	    Entry->value != NULL                                             )
+		ptr[4] = codelib = strdup(Entry->value);
 
 	if ((Entry = Get_Entry(SPtr->entries,CONF_ENT_AREA)) != NULL &&
 	    Entry->value != NULL                                          )
@@ -549,11 +557,11 @@ int Set_Codes(section* Section)
 		ptr2 = Entry->value;
 
 		if (strncmp(Entry->value,areaprefix,strlen(areaprefix)))
-			ptr[3] = myarea = strdup(ptr2);
+			ptr[5] = myarea = strdup(ptr2);
 		else
-			ptr[3] = myarea = strdup(ptr2+strlen(areaprefix));
+			ptr[5] = myarea = strdup(ptr2+strlen(areaprefix));
 
-		if (ptr[3] != NULL)
+		if (ptr[5] != NULL)
 			RetCode++;
 		else
 			print_msg("Error: Variable `%s' are not set!\n",CONF_ENT_AREA);
@@ -571,7 +579,7 @@ int Set_Codes(section* Section)
 			ptr2 = s;
 		}
 			
-		if ((ptr[4] = mycountry = strdup(ptr2)) != NULL)
+		if ((ptr[6] = mycountry = strdup(ptr2)) != NULL)
 			RetCode++;
 		else
 			print_msg("Error: Variable `%s' are not set!\n",CONF_ENT_COUNTRY);
@@ -635,7 +643,19 @@ char *get_areacode(char *code, int *Len, int flag)
 		i++;
 	}
 
-	if ((Ptr = _get_areacode(code,Len,flag)) != NULL)
+	if (codelib != NULL && !strcasecmp(codelib,"AVON"))
+		Ptr = _get_avon(code,Len,flag);
+	else
+	if (codelib != NULL && !strcasecmp(codelib,"AREACODE"))
+		Ptr = _get_areacode(code,Len,flag);
+	else
+#ifdef LIBAREA
+		Ptr = _get_areacode(code,Len,flag);
+#else
+		Ptr = _get_avon(code,Len,flag);
+#endif
+
+	if (Ptr != NULL)
 		return Ptr;
 
 	i=0;
@@ -661,8 +681,7 @@ char *get_areacode(char *code, int *Len, int flag)
 
 /****************************************************************************/
 
-#ifndef LIBAREA
-static char *_get_areacode(char *code, int *Len, int flag)
+static char *_get_avon(char *code, int *Len, int flag)
 {
 	static int opened = 0;
 	static char s[BUFSIZ];
@@ -680,18 +699,13 @@ static char *_get_areacode(char *code, int *Len, int flag)
 
 	if (!opened)
 	{
-		auto     char  s[BUFSIZ];
-
-
 		if (avonlib == NULL && !(flag & C_NO_ERROR))
 				print_msg("No path for AVON library defined!\n");
 
 		if (!access(avonlib, R_OK))
 		{
-			if (createDB(avonlib, 0) && !openDB(avonlib))
-				readAVON(avonlib);
-			else
-				(void)openDB(avonlib);
+			createDB(avonlib,0);
+			openDB(avonlib,O_WRONLY);
 		}
 
 		opened = 1;
@@ -723,11 +737,9 @@ static char *_get_areacode(char *code, int *Len, int flag)
 
 	return (s[0]?s:NULL);
 }
-#endif
 
 /****************************************************************************/
 
-#ifdef LIBAREA
 static char *_get_areacode(char *code, int *Len, int flag)
 {
 	auto     int    cc = 0;
@@ -767,7 +779,6 @@ static char *_get_areacode(char *code, int *Len, int flag)
 
 	return NULL;
 }
-#endif
 
 /****************************************************************************/
 

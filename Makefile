@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.14 1997/05/16 12:23:26 fritz Exp $
+# $Id: Makefile,v 1.15 1997/05/19 22:57:52 luethje Exp $
 #
 # Toplevel Makefile for isdn4k-utils
 #
@@ -10,6 +10,10 @@ all:	do-it-all
 #
 # Make "config" the default target if there is no configuration file.
 #
+
+# Following line is important for lib and isdnlog (sl).
+export ROOTDIR=$(shell pwd)
+
 ifeq (.config,$(wildcard .config))
 include .config
 do-it-all:      subtargets
@@ -19,9 +23,6 @@ do-it-all:      config
 endif
 
 SUBDIRS :=
-ifeq ($(CONFIG_LIB_AREACODE),y)
-	SUBDIRS := $(SUBDIRS) areacode lib
-endif
 ifeq ($(CONFIG_ISDNCTRL),y)
 	SUBDIRS := $(SUBDIRS) isdnctrl
 endif
@@ -54,7 +55,11 @@ ifeq ($(CONFIG_IMONTTY),y)
 	SUBDIRS := $(SUBDIRS) imontty
 endif
 ifeq ($(CONFIG_ISDNLOG),y)
-	SUBDIRS := $(SUBDIRS) isdnlog
+	SUBDIRS := $(SUBDIRS) areacode lib isdnlog
+else
+	ifeq ($(CONFIG_LIB_AREACODE),y)
+		SUBDIRS := $(SUBDIRS) areacode
+	endif
 endif
 ifeq ($(CONFIG_IPPPSTATS),y)
 	SUBDIRS := $(SUBDIRS) ipppstats
