@@ -17,7 +17,7 @@
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-char options_rcsid[] = "$Id: options.c,v 1.12 1998/10/16 12:37:53 keil Exp $";
+char options_rcsid[] = "$Id: options.c,v 1.13 1998/10/29 17:28:47 hipp Exp $";
 
 #include <stdio.h>
 #include <errno.h>
@@ -2463,6 +2463,7 @@ static int resetipxproto(int slot)
 static int setforcedriver(int dummy)
 {
   force_driver = 1;
+  return 1;
 }
 
 

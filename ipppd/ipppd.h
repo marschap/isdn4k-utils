@@ -16,7 +16,7 @@
  * IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Id: ipppd.h,v 1.16 1998/05/05 08:51:21 hipp Exp $
+ * $Id: ipppd.h,v 1.17 1998/10/29 17:28:46 hipp Exp $
  */
 
 /*
@@ -66,7 +66,12 @@ struct isdn_ppp_comp_data {
 #ifndef IPPP_COMP_FLAG_LINK
 #define IPPP_COMP_FLAG_LINK 0x2
 #endif
-
+/* Old Linux Kernels don't have VERSION defined */
+#ifndef IPPP_VERSION
+#define IPPP_VERSION "2.2.0"
+#else
+#define NEW_VERS
+#endif
 
 #define NUM_PPP	64		/* 64 PPP interface supported (per process) */
 

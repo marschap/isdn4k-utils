@@ -1,4 +1,7 @@
 Here are some notes about RADIUS extension to ipppd.
+Radius related stuff should be reported to 
+
+   Matjaz Godec <gody@master.slon.net>.
 
 1. Current extensions are based on Lars's radiusclient-0.3-alpha-4. Don't be
 scared because of aplha in the name. So before enabling RADIUS features in
