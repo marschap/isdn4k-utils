@@ -4,7 +4,7 @@
 
 <title>FAQ for isdn4linux
 <author>Matthias Hessler (<tt><htmlurl url="mailto:hessler@isdn4linux.de" name="hessler@isdn4linux.de"></tt>)
-<date>v2.0.34, 7. February 2000
+<date>v2.0.35, 14. February 2000
 <abstract>
 If you are reading this FAQ online, you may consider downloading the whole
 thing, and reading it offline (much cheaper). To download the latest
@@ -965,7 +965,7 @@ have not always been favorable.
 
 And this company doesn't even give away drivers for other operating
 systems, like Windows, for free.  You have to dial up a very expensive
-number (0190) where you have to pay about DM 3,60 per minute in Germany
+number (0190) where you have to pay about DM 1,20 per minute in Germany
 to download the driver. Not that it's advisable to use Windows anyway,
 but just to let you know...
 
@@ -1443,8 +1443,9 @@ when I call them with isdn4linux?
 <label id="trouble_notelrings">
 <p>
 Isdn4linux sets &dquot;digital data&dquot; as it's own service when it
-calls out. The switching station will not route such calls to analog
-devices like a telephone or a fax machine.
+calls out. The switching station does in fact route such calls to analog
+devices like a telephone or a fax machine. However, since the machine is
+analog, it will only answer analog call, and ignore the digital data call.
 
 <sect1> trouble_guestaccess: Are there sites that offer guest access where I  
 can test my isdn4linux setup?  
@@ -1775,12 +1776,14 @@ to choose between both will have to use different outgoing MSNs to call you.
 <label id="msn_onlyone">
 <p>
 
-In Germany, this is not an issue any more since you can get the first 10
-MSN for free with Deutsche Telekom
-(<url url="http://www.dtag.de/english/">),
-other phone providers may offer more or less MSN for free. In general,
-you can get at least 3 MSN. However, minimizing MSN usage may still be
-very interesting for other countries.
+In Germany, this is not much of an issue any more since you can get
+10 MSN for free with Deutsche Telekom
+(<url url="http://www.dtag.de/english/">). Other phone providers may offer
+less MSN for free. In general, you can get at least 3 MSN. However,
+minimizing MSN usage may still be very interesting for other countries
+or if you have a large demand for numbers. On a normal ISDN bus with MSNs,
+10 MSN per bus are the maximum. To get more numbers, your only alternative
+would be to get a usually more expensive point-to-point ISDN connection.
 
 Digital data dialin can easily be distinguished from voice/analog modem
 dialin by the 'Service Recognition' code (&dquot;digital, data&dquot;).
@@ -4048,6 +4051,7 @@ We are aware of at least the following countries:
 <item>France (see question <ref id="country_france" name="country_france">)
 <item>Germany
 <item>Hungary
+<item>India
 <item>Ireland
 <item>Israel
 <item>Italy (see question <ref id="country_italy" name="country_italy">)
