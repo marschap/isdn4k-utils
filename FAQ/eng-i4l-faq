@@ -12,13 +12,15 @@ Posting-frequency: monthly
 Last-modified: 18-Mar-97
 URL: http://www.lrz-muenchen.de/~ui161ab/www/isdn/
 
-!1FAQ for isdn4linux - Version 1.3.2!br (translation 27-May-97)
+!1FAQ for isdn4linux - Version 1.3.2!br (translation 27-Sep-97)
 
 [Translator's notes]!br
 --5-May-97: Translation complete for 1.3.2 (except for the proofreading)! !br
 --8-May-97: Added correction for Italy.!br
 --25-May-97: Numerous corrections submitted by Paul Slootman!br
---27-May-97: Minor cleanup, noted additional countries
+--27-May-97: Minor cleanup, noted additional countries!br
+--27-Sep-97: Added more translator's notes for various countries and 2.0.30!br
+
 This FAQ is protected by the GNU General Public License (GPL) Version 2;
 (C) 1996 Volker Götz, Bernhard Hailer, Matthias Heßler, Michael Hipp and
 Rainer May.!br
@@ -236,12 +238,15 @@ A: Yes, the messages are saved (unsorted) at hub-wue.franken.de.
 
 !old
 Q: In which countries does isdn4linux work?
-A: We are aware of the following countries:
+A: [Translator's note: I've made some additions to the original list.]!br
+We are aware of the following countries:
 !verbon
      Austria
+     Belgium
      Finland
      France
      Germany
+     Israel
      Italy
      Norway
      Peru
@@ -250,13 +255,14 @@ A: We are aware of the following countries:
      Sweden
      Switzerland
      The Netherlands
+     United Kingdom
      USA
 !verboff
+
 [Translator's note: I've also seen messages on the mailing list from
-isdn4linux users in Belgium, Canada, Denmark, Hungary, Slovenia and
-the United Kingdom. I've also seen mentions of isdn4linux from
-Australia, the Czech Republic and Poland, but I'm not sure if it is
-actually in use in those countries.]
+isdn4linux users in Canada, Denmark, Hungary and Slovenia . I've also
+seen mentions of isdn4linux from Australia, the Czech Republic and
+Poland, but I'm not sure if it is actually in use in those countries.]
 
 !old
 Q: Is isdn4linux approved for use by the telecommunications authorities?
@@ -288,7 +294,19 @@ A: Currently isdn4k-utils-2.0 is required in addition to the drivers
    kernel (no longer requires any patches!). Kernel >2.0.27 is the
    current standard.
 
-Q: What hardware is u1NOT!u0 supported?
+[Translator's note: Unfortunately the HiSax driver did not get
+included in kernel 2.0.30, and the Teles driver no longer works with
+this kernel. To use HiSax with 2.0.30, you need the patch 
+
+!link ftp://ftp.franken.de/pub/isdn4linux/v2.0/isdn4kernel-2.0.30A.gz; 
+
+(or from one of the many isdn4linux mirrors). This patch is also
+included in the kernel pre-patch-2.0.31 (which I've been using without
+problems). The kernels provided with some distributions have the patch
+already applied (for example Debian 1.3.x and Suse 5.0).]
+
+
+Q: What hardware is !u1NOT!u0 supported?
 A: For not (with the exception of ICN) no active ISDN cards are supported,
    except the AVM B1, for which there an alpha driver as binary only.  
 
@@ -530,8 +548,8 @@ A: CVS - Concurrent Version System!br
        exec rsh -l guest $*
 !verboff
    3. Set CVS_RSH to this script (e.g.: export CVS_RSH=~/.cvsrsh)!br
-   4. Set CVSROOT to oldhades.think.de:/i4ldev!br
-   (e.g.: export CVSROOT=oldhades.think.de:/i4ldev)!br
+   4. Set CVS_ROOT to oldhades.think.de:/i4ldev!br
+   (e.g.: export CVS_ROOT=oldhades.think.de:/i4ldev)!br
    5. Execute "cvs -z9 checkout isdn"!br
    -> This will create a directory tree isdn/ in your current directory.!br
    Below isdn/ you will find the same hierarchy like in the linux
@@ -4896,6 +4914,25 @@ A: Michael Hipp <Michael.Hipp@student.uni-tuebingen.de> wrote on 11 Oct 1996:
 
 !2National Peculiarities
 
+[Translator's note: Here are some notes we've received that are
+not yet in the main FAQ:!br
+
+-Elie Milgrom  <em@info.ucl.ac.be> reports that in Belgium the MSN is 
+"Nothing special: a MSN is just a 'regular' phone number here."!br
+
+-Sunny Marueli <sunnym@netvision.net.il> reports that "isdn4linux
+works in Israel as well (with Teles PnP)."!br
+
+-Jerome Lefranc <decision@calva.net> reports for France that:
+	"(1) if you don't have MSN, you need to specify
+	  as local number only the last 4 digits of you phone 
+	  number.
+		ex: 01 41 33 67 87, local phone number is 6787;
+
+	(2) you can use sub-address number (not MSN).
+		ex: 01 41 33 67 87   (phone number), 02 (sub-address),
+	then the local phone will be 6787.02 with the HiSax driver."]
+
 
 !3Germany (1TR6)
 
@@ -4926,7 +4963,7 @@ A: Karsten Keil <isdn4@temic-ech.spacenet.de> has fixed that with the new
 Q: What does our MSN look like?
 A: 
 !verbon
-[Translator's note: The German FAQ has the wrong paragraph here. 
+[Translator's note: The original FAQ seems to have the wrong paragraph here. 
 Paolo Sommaruga <psomma@portcros.garda-access.com> wrote on 7 May 1997:
 
 isdn4linux also works in Italy (ICN card). I accept Internet connections
@@ -5065,6 +5102,9 @@ Q: Which protocol is used in North America?
 A: NI-1 is used - it's related to DSS1. Both are Q.931 Protocols, but 
    have totally different groups of functions and are therefore not 
    compatible to one other.    
+
+
+
 
 !2Miscellaneous
 
