@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.3 1997/03/24 01:42:31 fritz Exp $
+## $Id: Makefile.in,v 1.4 1997/03/24 04:03:12 fritz Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,9 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.4  1997/03/24 04:03:12  fritz
+## Added uninstall target, changed rootperm target.
+##
 ## Revision 1.3  1997/03/24 01:42:31  fritz
 ## Added capbility to override CFLAGS from commandline.
 ##
@@ -187,9 +190,15 @@ HEADERS := $(HEADERS) .depend
 endif
 
 rootperm:
-		@if [ `id -u` != "0" ]; then \
-			echo ""; echo 'Do "make install" as root!' ;echo ""; false; \
-		fi
+	@echo 'main(int argc,char**argv){unlink(argv[0]);return(getuid()==0);}'>g
+	@if gcc -x c -o G g && rm -f g && ./G ; then \
+		echo ""; echo 'Do "make (un)install" as root!' ;echo ""; false; \
+	fi
+
+uninstall: rootperm
+		if ps -x | fgrep $(ISDNLOG) >/dev/null; then kill `cat $(RUNDIR)/isdnlog.pid`; fi
+		rm -f $(SBINDIR)/$(ISDNLOG) $(BINDIR)/$(ISDNREP) $(BINDIR)/$(ISDNCONF)
+		rm -f $(MAN8DIR)/isdnlog.8 $(MAN1DIR)/isdnrep.1
 
 installdirs: rootperm
 		$(INSTALL_DIR) $(I4LCONFDIR)
