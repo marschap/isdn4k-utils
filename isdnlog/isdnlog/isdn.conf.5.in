@@ -1,5 +1,5 @@
-.\" $Id: isdn.conf.5.in,v 1.6 2000/09/15 09:10:10 paul Exp $
-.\" CHECKIN $Date: 2000/09/15 09:10:10 $
+.\" $Id: isdn.conf.5.in,v 1.7 2002/02/03 14:37:53 paul Exp $
+.\" CHECKIN $Date: 2002/02/03 14:37:53 $
 .TH isdn.conf 5 "@MANDATE_ISDN_CONF@" "ISDN 4 Linux @I4LVERSION@" "Linux System Administration"
 .PD 0
 
@@ -48,19 +48,21 @@ Settings for isdnlog.
 
 .TP
 .B VBN
-The initial numbers of the dial prefix.
+The initial numbers of the alternate carrier prefix
+(to choose an alternate telephone provider).
 If there is more than one possible prefix,
-separate them by semicolons.
+separate them with colons.
 
 .TP
 .B VBNLEN
-The length of the
+The number of significant digits after the
 .I VBN
-prefix.
+prefix that identify the chosen carrier (provider).
+If there are different numbers possible, separate them with colons.
 
 .TP
 .B PRESELECTED
-The default telephone provider (carrier), if no dial prefix is dialed.
+The default telephone carrier (provider), if no alternate carrier prefix is dialed.
 
 .TP
 .B COUNTRYFILE
@@ -301,12 +303,12 @@ REPFMT  = "  %X %D %15.15H %T %-15.15F %7u %U %I %O"
 CHARGEMAX       = 50.00
 CURRENCY = 0.12,DEM
 
-COUNTRYFILE = /usr/lib/isdn/country.dat
+COUNTRYFILE = /usr/share/isdn/country.dat
 RATECONF= /etc/isdn/rate.conf
-RATEFILE= /usr/lib/isdn/rate-de.dat
-HOLIDAYS= /usr/lib/isdn/holiday-de.dat
-ZONEFILE= /usr/lib/isdn/zone-de-%s.cdb
-DESTFILE= /usr/lib/isdn/dest.cdb
+RATEFILE= /usr/share/isdn/rate-de.dat
+HOLIDAYS= /usr/share/isdn/holiday-de.dat
+ZONEFILE= /usr/share/isdn/zone-de-%s.cdb
+DESTFILE= /usr/share/isdn/dest.cdb
 
 .fi
 
