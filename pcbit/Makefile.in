@@ -1,4 +1,4 @@
-# $Id: Makefile.in,v 1.10 1998/10/16 12:38:11 keil Exp $
+# $Id: Makefile.in,v 1.11 2002/07/19 19:03:57 keil Exp $
 #
 # Makefile for pcbitctl
 # (C) 1997 Fritz Elfert
@@ -6,7 +6,7 @@
 #
 SHELL			= /bin/sh
 CFLAGS			= -Wall -Wstrict-prototypes -O2 -g
-INCLUDES		= -I. -DDEBUG -I@CONFIG_KERNELDIR@/drivers/isdn/pcbit
+INCLUDES		= -I. -DDEBUG 
 LDFLAGS			= -L../lib @LIBS@
 PROGRAM			= pcbitctl
 MODULES			= pcbitctl.o convhexbin.o

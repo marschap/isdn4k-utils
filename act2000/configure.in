@@ -7,7 +7,6 @@ I4LVERSION=${I4LVERSION:-"?.?"}
 CONFIG_DATADIR=${CONFIG_DATADIR:-"/usr/lib/isdn"}
 CONFIG_MANDIR=`eval echo ${CONFIG_MANDIR:-"/usr/man"}`
 CONFIG_SBINDIR=`eval echo ${CONFIG_SBINDIR:-"/sbin"}`
-CONFIG_KERNELDIR=`eval echo ${CONFIG_KERNELDIR:-"/usr/src/linux"}`
 MANDATE=`grep CHECKIN actctrl.man.in | awk '{print $4}'`
 
 dnl Checks for programs.
@@ -19,12 +18,6 @@ dnl Checks for libraries.
 dnl Checks for header files.
 AC_HEADER_STDC
 AC_CHECK_HEADERS(fcntl.h sys/ioctl.h unistd.h)
-
-dnl Find current kernel source
-AC_FIND_KERNEL
-AC_CHECK_HEADERS($CONFIG_KERNELDIR/drivers/isdn/act2000/act2000.h,,
-	[AC_MSG_ERROR([Not found. You MUST specify a correct path to linux source!])]
-)
 
 dnl Checks for typedefs, structures, and compiler characteristics.
 

@@ -1,13 +1,13 @@
-# $Id: Makefile.in,v 1.6 1998/09/26 18:27:40 akool Exp $
+# $Id: Makefile.in,v 1.7 2002/07/19 19:03:50 keil Exp $
 #
 # Makefile for avmcapictrl
 # (C) 1997 Carsten Paeth
 #
 #
 SHELL			= /bin/sh
-CFLAGS			= -Wall -O2 -I.
+CFLAGS			= -Wall -O2
 LDFLAGS			= -L../lib @LIBS@
-INCLUDES		= -I@CONFIG_KERNELDIR@/include
+INCLUDES		= -I.
 PROGRAMS		= avmcapictrl
 MODULES			= avmcapictrl.o
 MANPAGES		= avmcapictrl.8

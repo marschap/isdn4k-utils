@@ -4,7 +4,6 @@ AC_INIT(ipppstats.c)
 I4LVERSION=${I4LVERSION:-"?.?"}
 CONFIG_SBINDIR=${CONFIG_SBINDIR:-"/sbin"}
 CONFIG_MANDIR=${CONFIG_MANDIR:-"/usr/man"}
-CONFIG_KERNELDIR=`eval echo ${CONFIG_KERNELDIR:-"/usr/src/linux"}`
 MANDATE=`grep CHECKIN ipppstats.man.in | awk '{print $4}'`
 
 dnl Checks for programs.
@@ -16,8 +15,6 @@ dnl Checks for libraries.
 
 dnl Checks for header files.
 AC_CHECK_HEADERS(fcntl.h sys/ioctl.h)
-
-AC_FIND_KERNEL
 
 dnl Checks for typedefs, structures, and compiler characteristics.
 
@@ -45,5 +42,4 @@ AC_SUBST(I4LVERSION)
 AC_SUBST(MANDATE)
 AC_SUBST(CONFIG_SBINDIR)
 AC_SUBST(CONFIG_MANDIR)
-AC_SUBST(CONFIG_KERNELDIR)
 AC_OUTPUT(Makefile ipppstats.man)

@@ -1,4 +1,4 @@
-# $Id: Makefile.in,v 1.1 2000/06/20 10:16:16 keil Exp $
+# $Id: Makefile.in,v 1.2 2002/07/19 19:03:51 keil Exp $
 #
 # Makefile for hisaxctrl adapted from telesctrl
 # (C) 1997 Fritz Elfert
@@ -6,7 +6,7 @@
 #
 #
 SHELL			= /bin/sh
-CFLAGS			= -Wall -O2 -I. -I@CONFIG_KERNELDIR@/include
+CFLAGS			= -Wall -O2 -I.
 LDFLAGS			= -L../lib @LIBS@
 PROGRAMS		=
 MODULES			= hisaxctrl.o

@@ -7,7 +7,6 @@ I4LVERSION=${I4LVERSION:-"?.?"}
 CONFIG_SBINDIR=${CONFIG_SBINDIR:-"/sbin"}
 CONFIG_DATADIR=${CONFIG_DATADIR:-"/usr/lib/isdn"}
 CONFIG_MANDIR=${CONFIG_MANDIR:-"/usr/man"}
-CONFIG_KERNELDIR=`eval echo ${CONFIG_KERNELDIR:-"/usr/src/linux"}`
 CONFIG_TELESCTRL=${CONFIG_TELESCTRL:-"n"}
 CONFIG_HISAXCTRL=${CONFIG_HISAXCTRL:-"n"}
 MANDATE=`grep CHECKIN hisaxctrl.man.in | awk '{print $4}'`
@@ -23,10 +22,6 @@ AC_HEADER_STDC
 AC_CHECK_HEADERS(fcntl.h sys/ioctl.h unistd.h)
 
 dnl Find current kernel source
-AC_FIND_KERNEL
-AC_CHECK_FILE($CONFIG_KERNELDIR/include/linux/isdn.h,,
-	[AC_MSG_ERROR([$CONFIG_KERNELDIR/include/linux/isdn.h missing. Kernel installed?])]
-)
 
 dnl Checks for typedefs, structures, and compiler characteristics.
 
@@ -62,6 +57,5 @@ AC_SUBST(I4LVERSION)
 AC_SUBST(CONFIG_SBINDIR)
 AC_SUBST(CONFIG_DATADIR)
 AC_SUBST(CONFIG_MANDIR)
-AC_SUBST(CONFIG_KERNELDIR)
 AC_SUBST(CONFIG_HISAXCTRL)
 AC_OUTPUT(Makefile hisaxctrl.man)

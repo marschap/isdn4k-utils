@@ -1,4 +1,4 @@
-# $Id: Makefile.in,v 1.5 1998/09/26 18:28:00 akool Exp $
+# $Id: Makefile.in,v 1.6 2002/07/19 19:03:53 keil Exp $
 #
 # Makefile for iMON
 #
@@ -8,7 +8,7 @@
 #
 SHELL			= /bin/sh
 CFLAGS			= -Wall -O2
-INCLUDES		= -I. -I@CONFIG_KERNELDIR@/include
+INCLUDES		= -I.
 LDFLAGS			= -L../lib @LIBS@
 PROGRAM			= imon
 MODULES			= imon.o

@@ -11,7 +11,6 @@ I4LVERSION=${I4LVERSION:-"?.?"}
 CONFIG_DATADIR=${CONFIG_DATADIR:-"/usr/lib/isdn"}
 CONFIG_MANDIR=`eval echo ${CONFIG_MANDIR:-"/usr/man"}`
 CONFIG_SBINDIR=`eval echo ${CONFIG_SBINDIR:-"/sbin"}`
-CONFIG_KERNELDIR=`eval echo ${CONFIG_KERNELDIR:-"/usr/src/linux"}`
 MANDATE=`grep CHECKIN avmcapictrl.man.in | awk '{print $4}'`
 
 dnl Checks for libraries.
@@ -19,13 +18,6 @@ dnl Checks for libraries.
 dnl Checks for header files.
 AC_HEADER_STDC
 AC_CHECK_HEADERS(fcntl.h sys/ioctl.h unistd.h)
-dnl Check for kernel stuff
-AC_FIND_KERNEL
-OLD_CPPFLAGS="$CPPFLAGS"
-CPPFLAGS="-I$CONFIG_KERNELDIR/include $CPPFLAGS"
-AC_CHECK_HEADERS(linux/isdn.h linux/b1lli.h linux/capi.h linux/kernelcapi.h,,
-	[AC_MSG_ERROR([Missing $ac_hdr. Kernel source installed?])])
-CPPFLAGS="$OLD_CPPFLAGS"
 
 dnl Checks for typedefs, structures, and compiler characteristics.
 
@@ -60,5 +52,4 @@ AC_SUBST(I4LVERSION)
 AC_SUBST(CONFIG_SBINDIR)
 AC_SUBST(CONFIG_DATADIR)
 AC_SUBST(CONFIG_MANDIR)
-AC_SUBST(CONFIG_KERNELDIR)
 AC_OUTPUT(Makefile avmcapictrl.man)

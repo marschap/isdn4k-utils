@@ -141,4 +141,3 @@ AC_DEFUN(AC_CHECK_ORACLE, [
 	AC_SUBST(ORACLE)
 ])
 
-sinclude(../etc/ackernel.m4)dnl

@@ -1,4 +1,4 @@
-# $Id: Makefile.in,v 1.3 1998/09/26 18:30:42 akool Exp $
+# $Id: Makefile.in,v 1.4 2002/07/19 19:03:56 keil Exp $
 #
 # Makefile for loopctrl
 # (C) 1997 Fritz Elfert
@@ -6,7 +6,7 @@
 #
 SHELL			= /bin/sh
 CFLAGS			= -Wall -O2
-INCLUDES		= -I. -I@CONFIG_KERNELDIR@/include -I@CONFIG_KERNELDIR@/drivers/isdn/isdnloop
+INCLUDES		= -I.
 DEFS			=
 LDFLAGS			= -L../lib @LIBS@
 PROGRAM			= loopctrl

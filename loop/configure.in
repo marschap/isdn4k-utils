@@ -17,8 +17,6 @@ AC_HEADER_STDC
 AC_CHECK_HEADERS(fcntl.h sys/ioctl.h unistd.h)
 
 AC_CHECK_HEADERS(linux/isdn.h)
-dnl Find current kernel source
-AC_FIND_KERNEL
 
 dnl Checks for typedefs, structures, and compiler characteristics.
 
@@ -36,7 +34,6 @@ AC_SUBST(MANDATE)
 AC_SUBST(I4LCONFDIR)
 AC_SUBST(I4LVERSION)
 AC_SUBST(INSTALL)
-AC_SUBST(CONFIG_KERNELDIR)
 AC_SUBST(CONFIG_SBINDIR)
 AC_SUBST(CONFIG_MANDIR)
 AC_OUTPUT(Makefile loopctrl.man)

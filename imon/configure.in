@@ -6,7 +6,6 @@ AC_PREFIX_DEFAULT(/usr)
 I4LVERSION=${I4LVERSION:-"?.?"}
 CONFIG_MANDIR=`eval echo ${CONFIG_MANDIR:-"/usr/man"}`
 CONFIG_SBINDIR=`eval echo ${CONFIG_SBINDIR:-"/sbin"}`
-CONFIG_KERNELDIR=`eval echo ${CONFIG_KERNELDIR:-"/usr/src/linux"}`
 MANDATE=`grep CHECKIN imon.man.in | awk '{print $4}'`
 
 dnl Checks for programs.
@@ -26,12 +25,6 @@ AC_CHECK_HEADERS(ncurses.h,,
 		[AC_CHECK_HEADERS(curses/ncurses.h,,
 			[AC_CHECK_HEADERS(curses.h,,
 				[AC_MSG_ERROR([Missing \(n\)curses.h])])])])])
-
-dnl Check for linux/isdn.h, give up if not found.
-AC_FIND_KERNEL
-AC_CHECK_FILE($CONFIG_KERNELDIR/include/linux/isdn.h,,
-	[AC_MSG_ERROR([Missing $CONFIG_KERNELDIR/include/linux/isdn.h. Kernel source installed?])]
-)
 
 dnl Checks for typedefs, structures, and compiler characteristics.
 AC_HEADER_TIME
@@ -57,7 +50,6 @@ AC_ARG_WITH(man,
 
 AC_SUBST(INSTALL)
 AC_SUBST(MANDATE)
-AC_SUBST(CONFIG_KERNELDIR)
 AC_SUBST(CONFIG_SBINDIR)
 AC_SUBST(CONFIG_MANDIR)
 AC_SUBST(I4LVERSION)

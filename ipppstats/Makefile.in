@@ -1,6 +1,6 @@
 #
 # pppstats makefile
-# $Id: Makefile.in,v 1.4 1998/09/26 18:28:15 akool Exp $
+# $Id: Makefile.in,v 1.5 2002/07/19 19:03:54 keil Exp $
 #
 SBINDIR      = @CONFIG_SBINDIR@
 MANDIR       = @CONFIG_MANDIR@
@@ -13,7 +13,7 @@ INSTALL_DIR  = $(INSTALL) -m 755 -o 0 -g 0 -d
 PPPSTATSRCS  = ipppstats.c
 PPPSTATOBJS  = ipppstats.o
 
-CFLAGS       = -fomit-frame-pointer -O2 -I@CONFIG_KERNELDIR@/include
+CFLAGS       = -fomit-frame-pointer -O2
 
 all: ipppstats
 
