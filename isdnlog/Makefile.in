@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.201 2002/04/22 19:07:49 akool Exp $
+## $Id: Makefile.in,v 1.202 2002/06/07 15:39:23 akool Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,9 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.202  2002/06/07 15:39:23  akool
+## isdnlog-4.59: New TK-Providers added
+##
 ## Revision 1.201  2002/04/22 19:07:49  akool
 ## isdnlog-4.58:
 ##   - Patches from Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
@@ -1531,7 +1534,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 4.58
+VERSION     = 4.59
 
 MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 \
 	      isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 \

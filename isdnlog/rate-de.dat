@@ -1,4 +1,4 @@
-V:2.02 [23-Apr-2002 19:28:07]
+V:2.02 [07-Jun-2002 17:30:14]
 
 # Währungsformat
 U:%.3f EUR
@@ -8,7 +8,7 @@ U:%.3f EUR
 #
 # (C) Copyright 1999, 2001 by Andreas Kool (akool@isdn4linux.de)
 #
-# $Id: rate-de.dat,v 1.118 2002/04/23 17:31:35 akool Exp $
+# $Id: rate-de.dat,v 1.119 2002/06/07 15:39:23 akool Exp $
 #
 #
 # Das "A:" Tag muß folgendermaßen gefüllt werden:
@@ -1511,10 +1511,12 @@ C:Homepage:http://www.dtag.de
 C:Hotline:0800/33-01000, T-Online Tarifhotline: 0800/33-03333
 C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
-C:Quelle:"Preisliste Telefondienst (Inlandsverbindungen)", Stand 2002-01-01
+C:Quelle:"Preisliste Telefondienst (Inlandsverbindungen)", Stand 2002-05-01
 C:Quelle:http://www.telekom.de/dtag/agb/dokument/pdf/0,1384,225,00.pdf
-C:Quelle:"Preisliste Auskunftsdienst", Stand 2001-10-04
-C:Quelle:http://www.telekom.de/dtag/agb/dokument/pdf/0,1384,378,00.pdf
+C:Quelle:"Preisliste Auskunftsdienst", Stand 2002-06-03
+#C:Quelle:(derzeit offenbar nur auf Anfrage von info@telekom.de erhältlich)
+#C:Quelle:Pressemeldung "Neues Tarifmodell Inlandsauskunft", 2002-05-31
+#C:Quelle:http://www.telekom.de/dtag/presse/artikel/0,1018,x1641,00.html
 C:Quelle:"Preisliste Telefondienst (Auslandsverbindungen)", Stand 2002-03-01
 C:Quelle:http://www.telekom.de/dtag/agb/dokument/pdf/0,1384,71,00.pdf
 C:Euro
@@ -1529,12 +1531,12 @@ C:  90 -  94 Premium Rate 0190
 C: 100       T-Online
 C: 160 - 162 T-VoteCall 0137,0138
 C: 170       Persönliche Rufnummer 0700
+C: 171       Ansage Lotto (01162) und Zeit (01191)
 C: 250 - 271 Ausland Mobilfunk
 C: 280 - 295 Ausland
 # Auslandszonen 200-249 für AktivPlus in P:33,1 (vorrangig) freigehalten.
 # nicht erfasst nach Inlandspreisliste:
-#   01141, 0115, 0116, 01191, 012, 01672, 0181-0189, 0193066
-#   'Mobilfunk MobilCom'(?)
+#   012, 01672, 0181-0189, 'Mobilfunk MobilCom'
 # nach Auslandspreisliste:
 #   div. Satelliten- und ausländische Mobilfunknetze, Zonen sind auskommentiert
 #   Vis-à-Vis-Tarife in Grenzgebieten, Global 269 (+269800)
@@ -1555,28 +1557,29 @@ A:112
 A:0800
 A:_NLFF,_CHFF
 A:_F800
-A:011*
 A:0800*,0801*
 A:031*
 T:*/*=0
 #
 Z:1-2 City
-T:[-24.12.2002]W/07-18=0.061248/90 Tag	# 0.0528 +16%
-T:[-24.12.2002]W/18-07=0.061248/240 Spar	# 0.0528 +16%
-T:[-24.12.2002]E,H/*=0.061248/240 Spar	# 0.0528 +16%
-T:[24.12.2002-02.01.2003]*/*=0.061248/240 Weihnachten	# 0.0528 +16%
-T:[02.01.2003]W/07-18=0.061248/90 Tag	# 0.0528 +16%
-T:[02.01.2003]W/18-07=0.061248/240 Spar	# 0.0528 +16%
-T:[02.01.2003]E,H/*=0.061248/240 Spar	# 0.0528 +16%
+A:01141
+A:0193066
+T:[-24.12.2002]W/07-18=0.059972/90 Tag	# 0.0517 +16%
+T:[-24.12.2002]W/18-07=0.059972/240 Abend	# 0.0517 +16%
+T:[-24.12.2002]E,H/*=0.059972/240 Abend	# 0.0517 +16%
+T:[24.12.2002-02.01.2003]*/*=0.059972/240 Weihnachten	# 0.0517 +16%
+T:[02.01.2003]W/07-18=0.059972/90 Tag	# 0.0517 +16%
+T:[02.01.2003]W/18-07=0.059972/240 Abend	# 0.0517 +16%
+T:[02.01.2003]E,H/*=0.059972/240 Abend	# 0.0517 +16%
 Z:3-4 Deutschland
 A:DE
 T:[-24.12.2002]W/07-18=0.091988/60 Tag	# 0.0793 +16%
-T:[-24.12.2002]W/18-07=0.030624/60 Spar	# 0.0264 +16%
-T:[-24.12.2002]E,H/*=0.030624/60 Spar	# 0.0264 +16%
+T:[-24.12.2002]W/18-07=0.030624/60 Abend	# 0.0264 +16%
+T:[-24.12.2002]E,H/*=0.030624/60 Abend	# 0.0264 +16%
 T:[24.12.2002-02.01.2003]*/*=0.030624/60 Weihnachten	# 0.0264 +16%
 T:[02.01.2003]W/07-18=0.091988/60 Tag	# 0.0793 +16%
-T:[02.01.2003]W/18-07=0.030624/60 Spar	# 0.0264 +16%
-T:[02.01.2003]E,H/*=0.030624/60 Spar	# 0.0264 +16%
+T:[02.01.2003]W/18-07=0.030624/60 Abend	# 0.0264 +16%
+T:[02.01.2003]E,H/*=0.030624/60 Abend	# 0.0264 +16%
 #
 Z:10 Mobilfunknetz D1/D2
 A:_DEMD1
@@ -1629,7 +1632,7 @@ T:*/*=4.5936(60)/0.8	# 3.9600 +16%
 #
 Z:40 Auskunft DTAG Inland
 A:11833,11836,11837
-T:*/*=0.494624/30,0.061828/3.8	# 0.4264 0.0533 +16%
+T:*/*=0.24998/0,0.098948/6 	# 0.2155 0.0853 +16%  FIXME: nach Weitervermittlung falsch
 Z:41 Auskunft DTAG Ausland
 A:11834
 T:*/*=0.556452/20	# 0.4797 +16%
@@ -1722,6 +1725,10 @@ A:0700
 T:W/09-18=0.061248/30	# 0.0528 +16%
 T:W/18-09=0.061248/60	# 0.0528 +16%
 T:E,H/*=0.061248/60	# 0.0528 +16%
+#
+Z:171 Ansage Lotto/Zeit
+A:01162,01191
+T:*/*=0.061248/30	# 0.0528 +16%
 #
 Z:250 Welt Mobilfunk 1
 A:_ESMF
@@ -1915,10 +1922,12 @@ C: 282 - 295 Ausland
 # meldungen und R-Tag auf 200- bei xxl (33,2) ist moeglich
 C:Uebernommene Zonen von DTAG T-ISDN Standard (33,0):
 C:   0       Freecall
-C:  31 - 170 nationale Dienste + Satellitenfunk
-R:33,0;0,31-170
+C:  31 - 171 nationale Dienste + Satellitenfunk
+R:33,0;0,31-171
 #
 Z:1-2 City
+A:01141
+A:0193066
 T:[-24.12.2002]W/09-18=0.030624/60 Tag	# 0.0264 +16%
 T:[-24.12.2002]W/18-09=0.015312/60 Spar	# 0.0132 +16%
 T:[-24.12.2002]E,H/*=0.015312/60 Spar	# 0.0132 +16%
@@ -2140,22 +2149,22 @@ C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Quelle:"Preisliste T-ISDN xxl", Stand 2002-02-25
 C:Quelle:http://www.telekom.de/dtag/agb/dokument/pdf/0,1384,142,00.pdf
-C:Tarif gilt nur in Verbindung mit T-ISDN xxl Anschluss für min. 30,63 EUR/Monat,
-C:ab dem 01.05.2002 min. 31,18 EUR/Monat.
+C:Tarif gilt nur in Verbindung mit T-ISDN xxl Anschluss für min. 31,28 EUR/Monat.
 C:Euro
 C:Erfasste Zonen:
 C:   1 -   4 Deutschland
+C: 180       Auftragsdienst DTAG (01141)
 C:Uebernommene Zonen von DTAG T-ISDN Standard (33,0):
 C:   0       Freecall
-C:  31 - 170 nationale Dienste + Satellitenfunk
+C:  31 - 171 nationale Dienste + Satellitenfunk
 C:Uebernommene Zonen von DTAG T-ISDN 300 (33,1):
 C:  10 -  12 Mobilfunk
 C: 200 -     Ausland
-R:33,0;0,31-170
+R:33,0;0,31-171
 R:33,1;10-12,200-
-# nicht erfasst: Onlinedienst 0193066 (=City)
 #
 Z:1-2 City
+A:0193066
 T:[-24.12.2002]W/09-18=0.030624/60 Tag	# 0.0264 +16%
 T:[-24.12.2002]W/18-09=0.015312/60 Spar	# 0.0132 +16%
 T:[-24.12.2002]6/*=0.015312/60 Spar	# 0.0132 +16%
@@ -2179,6 +2188,12 @@ T:[02.01.2003-]W/18-09=0.02552/60 Spar	# 0.0220 +16%
 T:[02.01.2003-]6/*=0.02552/60 Spar	# 0.0220 +16%
 T:[02.01.2003-]7,H/*=0/60 xxl unentgeltlich
 #
+Z:180
+A:01141
+T:W/09-18=0.030624/60	# 0.0264 +16%
+T:W/18-09=0.015312/60	# 0.0132 +16%
+T:E,H/*=0.015312/60	# 0.0132 +16%
+#
 #####################################################################
 #
 #
@@ -2200,7 +2215,8 @@ A:+49
 T:W/08-19=0.08/60 Hauptzeit
 T:W/19-21=0.05/60 Freizeit
 T:W/21-08=0.0219/60 Nebenzeit
-T:E,H/*=0.041/60 Wochenende
+T:E,H/08-21=0.041/60 Wochenende
+T:E,H/21-08=0.0219/60 Wochenende
 Z:10 Mobilfunk
 A:_DEMD1
 A:_DEMD2
@@ -2277,7 +2293,8 @@ A:112
 T:*/*=0
 Z:2-4 Ferngespräche
 A:DE
-T:*/*=0.0358/60
+# T:*/*=0.0358/60
+T:*/*=0.01/60 # am 22-May-2002 angemeldetes Sonderangebot
 Z:10 Mobilfunk
 A:_DEMF
 T:*/*=0.2045/60
@@ -3127,7 +3144,7 @@ A:112
 T:*/*=0
 Z:1-4 GermanCall
 A:+49
-T:*/*=0.024/60
+T:*/*=0.026/60
 Z:10 Mobilfunk
 A:_DEMD1
 A:_DEMD2
@@ -3153,7 +3170,7 @@ A:112
 T:*/*=0
 Z:1-4 GermanCall
 A:+49
-T:*/*=0.028/60
+T:*/*=0.03/60
 Z:10 Mobilfunk
 A:_DEMF
 T:*/*=0.20/60
@@ -3183,6 +3200,32 @@ T:*/*=0.19/60
 #####################################################################
 #
 #
+P:232,0 Phonedump
+B:0190032
+C:Address:
+C:Name:Phonedump (01058)
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
+# G:07-Jun-2002
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+Z:1-4 GermanCall
+A:+49
+T:*/*=0.02/60
+Z:10 Mobilfunk
+A:_DEMD1
+A:_DEMD2
+A:_DEME1
+A:_DEME2
+T:*/*=0.169/60
+#####################################################################
+#
+#
 P:235,0 TeleDiscount
 B:0190035
 C:Address:
@@ -3198,10 +3241,10 @@ A:112
 T:*/*=0
 Z:1-4 GermanCall
 A:+49
-T:*/*=0.026/60
+T:*/*=0.019/60
 Z:10 Mobilfunk
 A:_DEMF
-T:*/*=0.185/60
+T:*/*=0.19/60
 #####################################################################
 #
 #
@@ -3254,7 +3297,7 @@ A:_DEMD1
 A:_DEMD2
 A:_DEME1
 A:_DEME2
-T:*/*=0.175/60
+T:*/*=0.185/60
 #####################################################################
 #
 #
@@ -3274,15 +3317,13 @@ A:112
 T:*/*=0
 Z:1-4 GermanCall
 A:+49
-T:W/08-19=0.24(60)/240 Hauptzeit
-T:W/19-08=0.19(60)/240 Nebenzeit
-T:E,H/*=0.19(60)/240 Freizeit
+T:*/*=0.019(60)/240 Freizeit
 Z:10 Mobilfunk
 A:_DEMD1
 A:_DEMD2
 A:_DEME1
 A:_DEME2
-T:*/*=0.19/60
+T:*/*=0.16(60)/240
 #####################################################################
 #
 #
@@ -3292,7 +3333,7 @@ C:Address:
 C:Name:Telestunt (01051)
 C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
-# G:02-Apr-2002
+# G:01-Mai-2002
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -3302,17 +3343,17 @@ A:112
 T:*/*=0
 Z:1-4 GermanCall
 A:+49
-T:*/*=0.024/60
+T:*/*=0.029/60
 Z:10 Mobilfunk
 A:_DEMF
 T:*/*=0.17/60
 #####################################################################
 #
 #
-P:282,0 Talk Light
+P:282,0 LightTALK
 B:0190082
 C:Address:
-C:Name:Talk Light (01058)
+C:Name:LightTALK (01058)
 C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
@@ -3333,6 +3374,32 @@ A:_DEMD2
 A:_DEME1
 A:_DEME2
 T:*/*=0.244(60)/1
+#####################################################################
+#
+#
+P:284,0 maxbell
+B:0190084
+C:Address:
+C:Name:maxbell (01058)
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
+# G:01-Mai-2002
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+Z:1-4 GermanCall
+A:+49
+T:*/*=0.027/60
+Z:10 Mobilfunk
+A:_DEMD1
+A:_DEMD2
+A:_DEME1
+A:_DEME2
+T:*/*=0.20/60
 #####################################################################
 #
 #
