@@ -1,4 +1,4 @@
-/* $Id: isdnrep.c,v 1.93 2000/08/17 21:34:44 akool Exp $
+/* $Id: isdnrep.c,v 1.94 2001/02/08 14:04:53 paul Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -24,6 +24,12 @@
  *
  *
  * $Log: isdnrep.c,v $
+ * Revision 1.94  2001/02/08 14:04:53  paul
+ * Fix bug where deleting up to 31/12/99 caused ALL entries to be deleted;
+ * now the entries being deleted are output (as usual with isdnrep), and
+ * the rest are preserved in the log.
+ * Also cleaned up error messages to be a bit more consistent.
+ *
  * Revision 1.93  2000/08/17 21:34:44  akool
  * isdnlog-4.40
  *  - README: explain possibility to open the "outfile=" in Append-Mode with "+"
@@ -116,6 +122,7 @@
 #include <dirent.h>
 #include <search.h>
 #include <linux/limits.h>
+#include <string.h>
 
 #include "dest.h"
 #include "isdnrep.h"
@@ -322,9 +329,9 @@ static int      read_path = 0;
 
 /*****************************************************************************/
 
-static char msg1[]    = "%s: Can't open %s (%s)\n";
-static char wrongdate2[]   = "wrong date for delete: %s\n";
-static char nomemory[]   = "Out of memory!\n";
+static char msg1[]    = "isdnrep: can't open %s (%s)\n";
+static char wrongdate2[]   = "isdnrep: wrong date for delete: %s\n";
+static char nomemory[]   = "isdnrep: out of memory!\n";
 
 static char htmlconv[][2][10] = {
 	{">", "&gt;"},
@@ -466,7 +473,7 @@ int send_html_request(char *myname, char *option)
 	{
 		if (unlink(vboxfile))
 		{
-			print_msg(PRT_ERR,"Can not delete file `%s': %s!\n",file, strerror(errno));
+			print_msg(PRT_ERR, "isdnrep: can't delete file `%s': %s!\n",file, strerror(errno));
                         return(UNKNOWN);
 		}
 	}
@@ -577,7 +584,7 @@ int read_logfile(char *myname)
   } /* if */
 
   if ((fi = fopen(logfile, "r")) == (FILE *)NULL){
-  	print_msg(PRT_ERR,"Can not open file `%s': %s!\n",logfile,strerror(errno));
+  	print_msg(PRT_ERR, msg1, logfile, strerror(errno));
         return(UNKNOWN);
   }
 
@@ -589,19 +596,19 @@ int read_logfile(char *myname)
 		if (*s == '#')
 			continue;
 
-		if (set_caller_infos(&cur_call,s,from) != 0)
+		if (set_caller_infos(&cur_call,s,from) != 0 && !timearea && !delentries)
 			continue;
 
 		if (!begintime)
 			begintime = cur_call.t;
 
-		if (timearea)
-		{
+                /* if delete entries, only list those that are being deleted */
+		if (timearea) {
 			if (delentries) {
-				if (cur_call.t > endtime)
+				if (cur_call.t > endtime) {
 					fputs(string,ftmp);
-				else
-					continue;
+                                        continue;
+                                }
 			}
 		}
 
@@ -968,7 +975,7 @@ static int print_line3(const char *fmt, ...)
 				case 'f' : sprintf(tmpstr,"%f",va_arg(ap,double));
 				           append_string(&string,*fmtstring,tmpstr);
 				           break;
-				default  : print_msg(PRT_ERR, "Internal Error: unknown format `%c'!\n",(*fmtstring)->s_type);
+                                default  : print_msg(PRT_ERR, "isdnrep: internal Error: unknown format `%c'!\n",(*fmtstring)->s_type);
 				           break;
 			}
 		}
@@ -978,7 +985,7 @@ static int print_line3(const char *fmt, ...)
 			append_string(&string,NULL,(*fmtstring)->string);
 		}
 		else
-			print_msg(PRT_ERR, "Internal Error: unknown format type `%d'!\n",(*fmtstring)->type);
+			print_msg(PRT_ERR, "isdnrep: internal Error: unknown format type `%d'!\n",(*fmtstring)->type);
 
 		fmtstring++;
 	}
@@ -1283,7 +1290,7 @@ static int print_line(int status, one_call *cur_call, int computed, char *overla
 				          		colsize[i] = append_string(&string,*fmtstring,"     ");
 				          }
 				          else
-				          	print_msg(PRT_ERR, "Unknown format %%C!\n");
+				          	print_msg(PRT_ERR, "isdnrep: unknown format %%C!\n");
 				          break;
 				/* Link for fax! */
 				case 'G': if (html)
@@ -1294,7 +1301,7 @@ static int print_line(int status, one_call *cur_call, int computed, char *overla
 				          		colsize[i] = append_string(&string,*fmtstring,"        ");
 				          }
 				          else
-				          	print_msg(PRT_ERR, "Unknown format %%G!\n");
+				          	print_msg(PRT_ERR, "isdnrep: unknown format %%G!\n");
 				          break;
 				/* there are dummy entries */
 				case 'c':
@@ -1304,7 +1311,7 @@ static int print_line(int status, one_call *cur_call, int computed, char *overla
 
 				          colsize[i] = append_string(&string,*fmtstring, " ");
 				          break;
-				default : print_msg(PRT_ERR, "Internal Error: unknown format `%c'!\n",(*fmtstring)->s_type);
+                                default : print_msg(PRT_ERR, "isdnrep: internal Error: unknown format `%c'!\n",(*fmtstring)->s_type);
 				          break;
 			}
 		}
@@ -1317,7 +1324,7 @@ static int print_line(int status, one_call *cur_call, int computed, char *overla
 				free_col = 1;
 		}
 		else
-			print_msg(PRT_ERR, "Internal Error: unknown format type `%d'!\n",(*fmtstring)->type);
+			print_msg(PRT_ERR, "isdnrep: internal Error: unknown format type `%d'!\n",(*fmtstring)->type);
 
 		if (html && status == F_BODY_BOTTOM1 && free_col && last_free_col == i-1)
 			last_free_col = i;
@@ -1692,7 +1699,7 @@ static prt_fmt** get_format(const char *format)
 				    (num = sscanf(Ptr+1,"%c%[^\n]",&Type,End))                 > 0   )
 				{
 					if (!isalpha(Type))
-    				print_msg(PRT_ERR, "Warning: Invalid token in format type `%c'!\n",Type);
+    				print_msg(PRT_ERR, "isdnrep: warning: invalid token in format type `%c'!\n",Type);
 
 					if ((fmt = (prt_fmt*) calloc(1,sizeof(prt_fmt))) == NULL)
 					{
@@ -1724,7 +1731,7 @@ static prt_fmt** get_format(const char *format)
 				}
 				else
 				{
-    			print_msg(PRT_ERR, "Error: Invalid token in format string `%s'!\n",format);
+    			print_msg(PRT_ERR, "isdnrep: error: invalid token in format string `%s'!\n",format);
     			return NULL;
     		}
 			}
@@ -2066,13 +2073,13 @@ static int set_alias(one_call *cur_call, int *nx, char *myname)
 				if (unknown[i].connects + 1 < MAXCONNECTS)
 					unknown[i].connects++;
 				else
-					print_msg(PRT_ERR, "%s: WARNING: Too many unknown connections from %s\n", myname, unknown[i].num);
+					print_msg(PRT_ERR, "%s: WARNING: too many unknown connections from %s\n", myname, unknown[i].num);
 
 				if (!hit) {
 					if (unknowns < MAXUNKNOWN)
 						unknowns++;
 					else
-						print_msg(PRT_ERR, "%s: WARNING: Too many unknown numbers\n", myname);
+						print_msg(PRT_ERR, "%s: WARNING: too many unknown numbers\n", myname);
 				} /* if */
 			} /* if */
 		} /* else */
@@ -2253,7 +2260,7 @@ static int set_caller_infos(one_call *cur_call, char *string, time_t from)
                         case  18: cur_call->zone = atoi(array[i]);
 			      	  break;
 
-			default : print_msg(PRT_ERR,"Unknown element found `%s'!\n",array[i]);
+                        default : print_msg(PRT_ERR, "isdnrep: unknown element found `%s'!\n",array[i]);
 			          break;
 		}
 	}
@@ -2541,7 +2548,7 @@ int set_msnlist(char *String)
       }
       else
       {
-        print_msg(PRT_ERR,"Invalid MSN %d!\n",Cnt);
+        print_msg(PRT_ERR, "isdnrep: invalid MSN %d!\n", Cnt);
       }
     }
     else
@@ -2687,7 +2694,7 @@ static void strich(int type)
 			         break;
 			case 2 : printf(H_LINE,get_format_size(),3);
 			         break;
-			default: print_msg(PRT_ERR,"Internal error: Invalid line flag!\n");
+                        default: print_msg(PRT_ERR, "isdnrep: internal error: invalid line flag!\n");
 			         break;
 		} /* switch */
   }
@@ -2739,7 +2746,7 @@ static int n_match(char *Pattern, char* Number, char* version)
 		}
 	}
 	else
-		print_msg(PRT_ERR,"Unknown Version of logfile entries!\n");
+		print_msg(PRT_ERR, "isdnrep: unknown version of logfile entries!\n");
 
 	return RetCode;
 }
@@ -2889,7 +2896,7 @@ static int set_dir_entries(char *directory, int (*set_fct)(const char *, const c
 		}
 		else
 		{
-			print_msg(PRT_ERR,"Can not open directory `%s': %s!\n", directory, strerror(errno));
+			print_msg(PRT_ERR, "isdnrep: can't open directory `%s': %s!\n", directory, strerror(errno));
                         return(UNKNOWN);
 		}
 	}
@@ -2914,7 +2921,7 @@ static int set_vbox_entry(const char *path, const char *file)
 
 	if ((fp = fopen(string,"r")) == NULL)
 	{
-		print_msg(PRT_ERR,"Can not open file `%s': %s!\n", string, strerror(errno));
+		print_msg(PRT_ERR, msg1, string, strerror(errno));
                 return(UNKNOWN);
 	}
 
@@ -2933,7 +2940,7 @@ static int set_vbox_entry(const char *path, const char *file)
 	 		            &(tm.tm_min),
 	 		            &(tm.tm_sec))) != 6)
 		{
-			print_msg(PRT_ERR,"invalid file name `%s'!\n",file);
+			print_msg(PRT_ERR, "isdnrep: invalid file name `%s'!\n",file);
                         return(UNKNOWN);
 		}
 
@@ -3000,7 +3007,7 @@ static int set_mgetty_entry(const char *path, const char *file)
 
 	if (access(string,R_OK))
 	{
-		print_msg(PRT_ERR,"Can not open file `%s': %s!\n", string, strerror(errno));
+		print_msg(PRT_ERR, msg1, string, strerror(errno));
                 return(UNKNOWN);
 	}
 
@@ -3161,7 +3168,7 @@ static char *get_links(time_t filetime, char type)
 	}
 	else
 	{
-		print_msg(PRT_ERR, "Internal error: Invalid type %d of file!\n",(int)type);
+		print_msg(PRT_ERR, "isdnrep: internal error: invalid type %d of file!\n", (int)type);
 		return NULL;
 	}
 
@@ -3337,7 +3344,7 @@ static char *create_vbox_file(char *file, int *compression)
 
 	if ((fdin = open(file,O_RDONLY)) == -1)
 	{
-		print_msg(PRT_ERR,"Can not open file `%s': %s!\n",file, strerror(errno));
+		print_msg(PRT_ERR, msg1, file, strerror(errno));
 		return NULL;
 	}
 
@@ -3348,7 +3355,7 @@ static char *create_vbox_file(char *file, int *compression)
 
 		if ((fileout = tmpnam(NULL)) == NULL || (fdout = open(fileout,O_WRONLY | O_CREAT,0444)) == -1)
 		{
-			print_msg(PRT_ERR,"Can not open file `%s': %s!\n",fileout, strerror(errno));
+			print_msg(PRT_ERR, msg1, fileout, strerror(errno));
 			close(fdin);
 			return NULL;
 		}
@@ -3357,7 +3364,7 @@ static char *create_vbox_file(char *file, int *compression)
 		{
 			if (write(fdout,string,len) != len)
 			{
-				print_msg(PRT_ERR,"Can not write to file `%s': %s!\n",fileout, strerror(errno));
+				print_msg(PRT_ERR, "isdnrep: can't write to file `%s': %s!\n", fileout, strerror(errno));
 				close(fdout);
 				close(fdin);
 				unlink(fileout);
@@ -3369,7 +3376,7 @@ static char *create_vbox_file(char *file, int *compression)
 
 		if (len < 0)
 		{
-			print_msg(PRT_ERR,"Can not read from file `%s': %s!\n",file, strerror(errno));
+			print_msg(PRT_ERR, "isdnrep: can't read from file `%s': %s!\n", file, strerror(errno));
 			close(fdin);
 			unlink(fileout);
 			return NULL;
@@ -3490,7 +3497,7 @@ static char **get_http_args(char *str, int *index)
 
 	if ((RetCode = (char**) calloc(20+(*index),sizeof(char*))) == NULL)
 	{
-		print_msg(PRT_ERR,"%s\n", strerror(errno));
+		print_msg(PRT_ERR, nomemory);
 		return NULL;
 	}
 
