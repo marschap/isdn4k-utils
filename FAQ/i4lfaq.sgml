@@ -4,7 +4,7 @@
 
 <title>FAQ for isdn4linux
 <author>Matthias Hessler (<tt><htmlurl url="mailto:hessler@isdn4linux.de" name="hessler@isdn4linux.de"></tt>)
-<date>v2.0.90, 24. October 2004
+<date>v2.0.91, 31. October 2004
 <abstract>
 If you are reading this FAQ online, you may consider downloading the whole
 thing, and reading it offline (much cheaper). To download the latest
@@ -1444,6 +1444,16 @@ hisaxctrl &lt;id&gt; 9 ISAR.BIN
 <item> Fax: The I-Surf 1.0 can be setup to send and receive faxes (see
 question <ref id="feature_fax" name="feature_fax"> for details).
 </itemize>
+
+<sect1> hardware_diva: What should I know about the Eicon Diva cards?  
+<label id="hardware_diva">
+<p>
+In general, a dedicated driver exists which supports the active Eicon
+Diva cards very well. The Pro series are not supported by isdn4linux
+since it is a semiactive card with a DSP as a B-channel controller.
+There is no code available in isdn4linux to dynamically load DSP
+programs into the card. However, check Eicon's website; maybe by now they
+provide pre-compiled driver for their cards not supported by isdn4linux.
 
 
 <!-- Trouble Hardware
