@@ -1,4 +1,4 @@
-/* $Id: takt.c,v 1.3 1998/06/21 11:52:57 akool Exp $
+/* $Id: takt.c,v 1.4 1998/09/22 20:59:42 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -25,6 +25,7 @@
 
 #define DTAG     0
 #define MOBILCOM 1
+#define TELE	  2
 
 #define CITYCALL   0
 #define REGIOCALL  1
@@ -453,3 +454,38 @@ float taktlaenge(int chan, char *description)
   else
     return(-1);
 } /* taktlaenge */
+
+
+float preis(int chan)
+{
+  auto int        duration;
+  auto float 	  pay, minpr;
+  auto char  	  why[BUFSIZ];
+  auto int        tz;
+  auto struct tm *tm;
+
+
+  if (call[chan].provider == 13) { /* Tele 2 */
+
+    if (call[chan].zone == CITYCALL) /* not possible with Tele 2 */
+      return(-1.0);
+
+    tm = localtime(&call[chan].connect);
+    tz = tarifzeit(tm, why);
+
+    if ((tz == WE) || (tz == FE))
+      minpr = 0.10;
+    else {
+      if ((tm->tm_hour > 8) && (tm->tm_hour < 18))
+        minpr = 0.20;
+      else
+        minpr = 0.15;
+    } /* else */
+
+    duration = call[chan].disconnect - call[chan].connect;
+    pay = minpr / 60 * duration;
+    return(pay);
+  } /* if */
+
+	return 0;
+} /* preis */

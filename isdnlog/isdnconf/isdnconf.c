@@ -1,4 +1,4 @@
-/* $Id: isdnconf.c,v 1.11 1998/05/11 19:43:43 luethje Exp $
+/* $Id: isdnconf.c,v 1.12 1998/09/22 20:59:08 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -19,6 +19,12 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnconf.c,v $
+ * Revision 1.12  1998/09/22 20:59:08  luethje
+ * isdnrep:  -fixed wrong provider report
+ *           -fixed wrong html output for provider report
+ *           -fixed strange html output
+ * kisdnlog: -fixed "1001 message window" bug ;-)
+ *
  * Revision 1.11  1998/05/11 19:43:43  luethje
  * Some changes for "vorwahlen.dat"
  *
@@ -262,7 +268,7 @@ int find_data(char *_alias, char *_number, section *conf_dat)
 			print_msg(PRT_NORMAL,"%s:\t\t%s\n",CONF_ENT_SI,ptr);
 
 			area = area_diff_string(NULL,_number);
-			ptr = area[0] != '\0'?area:(CEPtr = Get_Entry(conf_dat->entries,CONF_ENT_ZONE))?(CEPtr->value?CEPtr->value:""):"";
+			ptr = (char*)(const char*) (area[0] != '\0'?area:(CEPtr = Get_Entry(conf_dat->entries,CONF_ENT_ZONE))?(CEPtr->value?CEPtr->value:""):"");
 			print_msg(PRT_NORMAL,"%s:\t\t%s\n",make_word(CONF_ENT_ZONE),ptr);
 
 			ptr = (CEPtr = Get_Entry(conf_dat->entries,CONF_ENT_INTFAC))?(CEPtr->value?CEPtr->value:""):"";

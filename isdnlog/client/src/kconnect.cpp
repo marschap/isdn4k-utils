@@ -1,4 +1,4 @@
-/* $Id: kconnect.cpp,v 1.2 1998/05/10 23:40:04 luethje Exp $
+/* $Id: kconnect.cpp,v 1.3 1998/09/22 20:58:53 luethje Exp $
  *
  * kisdnog for ISDN accounting for isdn4linux. (Report-module)
  *
@@ -20,6 +20,12 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: kconnect.cpp,v $
+ * Revision 1.3  1998/09/22 20:58:53  luethje
+ * isdnrep:  -fixed wrong provider report
+ *           -fixed wrong html output for provider report
+ *           -fixed strange html output
+ * kisdnlog: -fixed "1001 message window" bug ;-)
+ *
  * Revision 1.2  1998/05/10 23:40:04  luethje
  * some changes
  *
@@ -739,9 +745,8 @@ bool KConnection::eval_message()
 	do
 	{
 		if   ((size = Read (socket)) <= 0) {
-			Messager->HandleMessage(TRUE,KI_CONN_BROKEN,0,(0));
-
 			Disconnect();
+			Messager->HandleMessage(TRUE,KI_CONN_BROKEN,0,(0));
 			return FALSE;
 		}
 

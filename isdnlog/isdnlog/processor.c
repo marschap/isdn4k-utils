@@ -1,4 +1,4 @@
-/* $Id: processor.c,v 1.23 1998/08/04 08:17:41 paul Exp $
+/* $Id: processor.c,v 1.24 1998/09/22 20:59:15 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,12 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.24  1998/09/22 20:59:15  luethje
+ * isdnrep:  -fixed wrong provider report
+ *           -fixed wrong html output for provider report
+ *           -fixed strange html output
+ * kisdnlog: -fixed "1001 message window" bug ;-)
+ *
  * Revision 1.23  1998/08/04 08:17:41  paul
  * Translated "CHANNEL: B1 gefordet" messages into English
  *
@@ -3670,6 +3676,8 @@ static void how_expensive(int chan)
 
   if (!call[chan].dialin && (dur > 0) && *call[chan].num[1]) {
 
+    tm = localtime(&call[chan].connect);
+
     if (call[chan].sondernummer != -1) {
       switch (SN[call[chan].sondernummer].tarif) {
         case -1 : if (!strcmp(call[chan].num[1] + 3, "11833")) /* Sonderbedingung Auskunft Inland */
@@ -3718,7 +3726,6 @@ static void how_expensive(int chan)
           else if (zone == 2)
             pro2 = 70;	   	 /* RegioCall :: Arcor */
           else if (zone == 3) {
-    	    tm = localtime(&call[chan].connect);
 #if 0
     	    if ((tm->tm_wday > 0) && (tm->tm_wday < 6))
     	      wochentag;
@@ -3743,8 +3750,23 @@ static void how_expensive(int chan)
           if (pro == -1)
             pro = 33; /* Telekom */
 
-          if (pro)
+          if (pro) {
             call[chan].pay = pay(call[chan].connect, dur, zone, pro);
+
+	    if (call[chan].pay == -1.0) { /* Unknown Tarif */
+              if (pro == 23) { /* tesion )) -- quick hack for SL "Baden-Württemberg Tarif" */
+                if ((tm->tm_hour > 20) || (tm->tm_hour < 9))
+                  pay3 = 0.14;
+                else
+                  pay3 = 0.21;
+
+            	call[chan].pay = (pay3 / 60.0) * dur;
+              }
+              else
+            	call[chan].pay = 0;
+
+            } /* if */
+          } /* if */
 
           if (pro != pro2) {
             pay3 = pay(call[chan].connect, dur, zone, pro2);

@@ -67,6 +67,7 @@
 #define MSG_CHANGE_CHAN  13  /* Vom Server: Kanal wurde gewechselt */
 #define MSG_VERSION      14  /* Vom Server: Version des Protokolls: "PROT_VERSION" */
 #define MSG_CLOSE				 15  /* Die Verbindung wird beendet ohne Parameter, Dummy-Message */
+#define MSG_ISDN_CMD		 16  /* Es kann ein Befehl vom Client ausgefuehrt werden */
 
 /****************************************************************************/
 
