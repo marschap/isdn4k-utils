@@ -1,4 +1,4 @@
-/* $Id: tools.c,v 1.4 1997/04/03 22:40:21 luethje Exp $
+/* $Id: tools.c,v 1.5 1997/04/06 21:17:46 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools.c,v $
+ * Revision 1.5  1997/04/06 21:17:46  luethje
+ * Bugfix von Andreas Jaeger.
+ *
  * Revision 1.4  1997/04/03 22:40:21  luethje
  * some bugfixes.
  *
@@ -198,7 +201,7 @@ char *num2nam(char *num, int si)
 
 /****************************************************************************/
 
-#if defined __GLIBC__ && __GLIBC__ > 2
+#if defined __GLIBC__ && __GLIBC__ >= 2
 char *double2str(double n, int l, int d, int flags)
 {
   if (++retnum == MAXRET)
