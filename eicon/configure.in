@@ -7,7 +7,6 @@ CONFIG_DATADIR=${CONFIG_DATADIR:-"/usr/lib/isdn/eicon"}
 CONFIG_SBINDIR=${CONFIG_SBINDIR:-"/sbin"}
 CONFIG_MANDIR=${CONFIG_MANDIR:-"/usr/man"}
 CONFIG_EICONCTRL_DEBUG=${CONFIG_EICONCTRL_DEBUG:-"n"}
-CONFIG_KERNELDIR=`eval echo ${CONFIG_KERNELDIR:-"/usr/src/linux"}`
 MANDATE=`grep CHECKIN eiconctrl.man.in | awk '{print $4}'`
 
 dnl Checks for programs.
@@ -27,21 +26,6 @@ AC_CHECK_HEADERS(ncurses.h,,
 		[AC_CHECK_HEADERS(curses/ncurses.h,,
 			[AC_CHECK_HEADERS(curses.h,,
 				[AC_MSG_ERROR([Missing \(n\)curses.h])])])])])
-
-dnl Find current kernel source
-AC_FIND_KERNEL
-AC_CHECK_HEADER(linux/isdn.h,,
-	[AC_CHECK_HEADER($CONFIG_KERNELDIR/include/linux/isdn.h,,
-		[AC_MSG_ERROR([$CONFIG_KERNELDIR/include/linux/isdn.h missing. Kernel installed?])]
-)])
-AC_CHECK_HEADER($CONFIG_KERNELDIR/drivers/isdn/eicon/eicon.h,,
-	[AC_MSG_ERROR([$CONFIG_KERNELDIR/drivers/isdn/eicon/eicon.h missing. Kernel installed?])]
-)
-
-dnl Checks for typedefs, structures, and compiler characteristics.
-AC_CHECK_XLOG
-AC_CHECK_NPCI
-AC_CHECK_TRACE
 
 dnl Checks for library functions.
 AC_PROG_GCC_TRADITIONAL
@@ -68,18 +52,22 @@ AC_ARG_WITH(man,
 	AC_DEFINE(CONFIG_MANDIR,"${withval}"),
 )
 
-dnl Optional kernel directory
-AC_ARG_WITH(kernel,
-	[  --with-kernel=DIR          Set kernel dir. [/usr/src/linux]],
-	CONFIG_KERNELDIR="${withval}"
-	AC_DEFINE(CONFIG_KERNELDIR,"${withval}"),
-)
-
 dnl Check, if user wants dump option for debugging
 AC_ARG_ENABLE(dump,
 	[  --enable-dump           Enable dump feature for debugging [no]],
 	CONFIG_EICONCTRL_DEBUG="y"
 )
+
+AC_DEFINE(HAVE_XLOG)
+AC_SUBST(HAVE_XLOG)
+
+AC_DEFINE(HAVE_TRACE)
+AC_SUBST(HAVE_TRACE)
+
+AC_SUBST(HAVE_NPCI)
+
+HAVE_NATIVE="n"
+AC_SUBST(HAVE_NATIVE)
 
 AC_SUBST(INSTALL)
 AC_SUBST(MANDATE)

@@ -1,4 +1,4 @@
-# $Id: Makefile.in,v 1.6 2000/03/25 12:56:40 armin Exp $
+# $Id: Makefile.in,v 1.7 2002/07/19 18:42:01 armin Exp $
 #
 # Makefile for eiconctrl
 # (C) 1997 Fritz Elfert
@@ -8,7 +8,7 @@
 
 SHELL			= /bin/sh
 CFLAGS			= -Wall -O2 -DUNIX -DLINUX
-INCLUDES		= -I. -I@CONFIG_KERNELDIR@/include -I@CONFIG_KERNELDIR@/drivers/isdn/eicon
+INCLUDES		= -I. -Iinclude
 LDFLAGS			= -L../lib @LIBS@
 PROGRAMS		= 
 PROGRAM			= eiconctrl
