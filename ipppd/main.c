@@ -25,7 +25,7 @@
  * PATCHLEVEL 9
  */
 
-char main_rcsid[] = "$Id: main.c,v 1.14 1998/05/05 08:51:24 hipp Exp $";
+char main_rcsid[] = "$Id: main.c,v 1.15 1998/12/29 15:21:53 paul Exp $";
 
 #include <stdio.h>
 #include <stdarg.h>
@@ -281,15 +281,17 @@ int main(int argc,char **argv)
 
 	/* write pid to file */
 	if(!strlen(pidfilename))
-#if 1
+#if 0 /* old style, default is to use same pidfile for all devices */
 		sprintf(pidfilename, "%s%s.pid", _PATH_VARRUN, "ipppd" );
-#else
+#else /* new style, incorporate device name into pidfile (like mgetty does) */
+	{
 		char *p;
 		if ((p = strrchr(lns[0].devnam, '/')))
 			p++;
 		else
 			p = lns[0].devnam;
 		sprintf(pidfilename, "%s%s.%s.pid", _PATH_VARRUN, "ipppd", p);
+	}
 #endif
 	
 	if ((pidfile = fopen(pidfilename, "w")) != NULL) {
