@@ -1,4 +1,4 @@
-/* $Id: ctrlconf.c,v 1.11 2001/05/23 14:48:23 kai Exp $
+/* $Id: ctrlconf.c,v 1.12 2003/03/11 14:01:55 paul Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: ctrlconf.c,v $
+ * Revision 1.12  2003/03/11 14:01:55  paul
+ * Added support for using "-" for stdin / stdout with readconf / writeconf
+ *
  * Revision 1.11  2001/05/23 14:48:23  kai
  * make isdnctrl independent of the version of installed kernel headers,
  * we have our own copy now.
@@ -91,7 +94,13 @@ int writeconfig(int fd, char *file)
 	section *PhoneSection;
 */
 
-	ConfigSection = read_file(NULL,file,C_NOT_UNIQUE|C_NO_WARN_FILE);
+	if (strcmp(file, "-")) {
+            ConfigSection = read_file(NULL,file,C_NOT_UNIQUE|C_NO_WARN_FILE);
+        }
+        else {
+            ConfigSection = NULL;
+            file = "/dev/fd/1"; /* stdout */
+        }
 /*
 	read_conffiles(&PhoneSection,NULL);
 */
@@ -322,9 +331,19 @@ int readconfig(int fd, char *file)
 	char    *argv[5];
 	char    *name;
 	int      cnt = 1;
+        int     use_stdin = 0;
 
-	if ((ConfigSection = read_file(NULL,file,C_NOT_UNIQUE|C_NO_WARN_FILE)) == NULL)
-		return -1;
+        if (!strcmp(file, "-")) {
+            use_stdin = 1;
+            file = "/dev/fd/0"; /* stdin */
+        }
+	if ((ConfigSection = read_file(NULL,file,C_NOT_UNIQUE|C_NO_WARN_FILE)) == NULL) {
+            if (use_stdin)
+		fprintf(stderr, "Can't read from stdin!\n");
+            else
+		fprintf(stderr,"Can't read from file `%s'!\n", file);
+            return -1;
+        }
 
 /*
 	read_conffiles(&PhoneSection,NULL);
@@ -332,6 +351,9 @@ int readconfig(int fd, char *file)
 
 	if ((Section = Get_Section(ConfigSection,CONF_SEC_ISDNCTRL)) == NULL)
 	{
+            if (use_stdin)
+		fprintf(stderr, "stdin has no section `%s'!\n", CONF_SEC_ISDNCTRL);
+            else
 		fprintf(stderr,"File `%s' has no section `%s'!\n",file,CONF_SEC_ISDNCTRL);
 		return -1;
 	}
