@@ -1,7 +1,7 @@
 #! /usr/bin/perl
 
 # This version of pp_rate originates from rates4linux:
-# $Id: pp_rate,v 1.10 2004/09/29 21:13:32 tobiasb Exp $
+# $Id: pp_rate,v 1.11 2004/10/23 17:40:21 tobiasb Exp $
 # The rates4linux homepage: http://www.sourceforge.net/projects/rates4linux/
 # It bases on Rev. 1.5 of isdn4k-utils/isdnlog/tools/dest/pp_rate
 # in the CVS at http://www.isdn4linux.de.
@@ -511,8 +511,26 @@ sub fill_T (\@$$$$) {
     
     # step 1 - get already definied day/hour sets.
     my ($dh, $Tline, $numday, $only_anyday);
+    # step 1.1 - scan for used day types
     $numday = 0;
     $only_anyday = 1;                 # only T: for day "*" present	
+    foreach $Tline (@$Ttags) {
+	my $day;         
+	if ($Tline =~ /^T:\s*(\[[^\]]+\])\s*([1-7WEH,*-]+)\s*\/\s*([0-9,*-]+)\s*=/ ) {
+	    next if ($range and $1 ne $range); # only T: for same date range
+	    $day = $2;
+	}
+	elsif ($Tline =~ /^T:\s*([1-7WEH,*-]+)\s*\/\s*([0-9,*-]+)\s*=/ ) {
+	    $day = $1;
+	}
+	else {
+	    next;
+	}
+	$only_anyday = 0 if ($day !~ /^\*$/);
+	$holiday     = 1 if ($day =~ /H/);
+	$numday      = 1 if ($day =~ /\d/); # use numbers (1-7) instead of WEH
+    }
+    # step 1.2 - store already defined day/hour sets.
     foreach $Tline (@$Ttags) {
 	my ($day, $aday, @days, $hour, $ahour, @hours);
     	if ($Tline =~ /^T:\s*(\[[^\]]+\])\s*([1-7WEH,*-]+)\s*\/\s*([0-9,*-]+)\s*=/ ) {
@@ -528,8 +546,6 @@ sub fill_T (\@$$$$) {
 	    print "Unrecognized T: format: $Tline";
 	    next;
 	}
-	$numday = 1 if ($day =~ /\d/); # use numbers (1-7) instead of W|E|H
-	$only_anyday = 0 if ($day ne "*");
 	foreach $aday (split(/,/, $day)) {
 	    if ($aday =~ /^(\d)-(\d)$/) {
 		push @days, ($1 .. $2);
@@ -538,7 +554,7 @@ sub fill_T (\@$$$$) {
 	    	push @days, ($1);
 	    	if ($1 eq "*") {
 		    push @days, (1..7);
-		    push @days, ("H");
+		    push @days, ("H") if ($holiday);
 		}
 		elsif ($1 eq "W") {
 		    push @days, (1..5);
