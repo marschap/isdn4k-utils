@@ -97,7 +97,7 @@ clean:
 	fi
 
 dataclean: clean
-	rm -f *.db *.gdbm *.cdb ../../zone*.{gdbm,db,cdb}
+	rm -f *.db *.gdbm *.cdb ../../zone*.gdbm ../../zone*.db ../../zone*.cdb
 
 distclean: clean
 	rm -f config.h config.status config.cache config.log *.man Makefile
