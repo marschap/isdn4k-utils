@@ -2,6 +2,9 @@ Recent changes made to the isdn4k-utils archive are listed here,
 most recent on top.
 ------------------
 
+2000/01/26 armin (Armin Schindler <mac@melware.de>)
+	eiconctrl - updates for isdnlog and V1.1 package.
+
 1999/10/12 lt   (Leopold Toetch <lt@toetsch.at>)
 	Destination database replaces country stuff and getAreacode
 	
