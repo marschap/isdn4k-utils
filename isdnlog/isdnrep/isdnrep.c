@@ -1,4 +1,4 @@
-/* $Id: isdnrep.c,v 1.18 1997/05/09 23:30:55 luethje Exp $
+/* $Id: isdnrep.c,v 1.19 1997/05/10 01:21:06 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -20,6 +20,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnrep.c,v $
+ * Revision 1.19  1997/05/10 01:21:06  luethje
+ * some primitive changes
+ *
  * Revision 1.18  1997/05/09 23:30:55  luethje
  * isdnlog: new switch -O
  * isdnrep: new format %S
@@ -196,7 +199,7 @@
 /*****************************************************************************/
 
 #define DEF_FMT "  %X %D %15.15H %T %-15.15F %7u %U %I %O"
-#define WWW_FMT "%X %D %17.17H %T %-17.17F %-20.20l %9u %U %I %O"
+#define WWW_FMT "%X %D %17.17H %T %-17.17F %-20.20l SI: %S %9u %U %I %O"
 
 /*****************************************************************************/
 
@@ -995,7 +998,10 @@ static int print_line(int status, one_call *cur_call, int computed, char *overla
 				case 'p': colsize[i] = append_string(&string,*fmtstring,set_byte_string(GET_OUT|GET_BPS,cur_call->duration?cur_call->obytes/(double)cur_call->duration:0.0));
 				          break;
 				/* SI: */
-				case 'S': colsize[i] = append_string(&string,*fmtstring,int2str(cur_call->si,2));
+				case 'S': if (status == F_BODY_LINE)
+				          	colsize[i] = append_string(&string,*fmtstring,int2str(cur_call->si,2));
+				          else
+				          	colsize[i] = append_string(&string,*fmtstring,"  ");
 				          break;
 				/* there are dummy entries */
 				case 'c': 
@@ -2272,7 +2278,10 @@ static int html_bottom(char *_progname, char *start, char *stop)
 		*ptr = '\0';
 
 	print_msg(PRT_NORMAL,"</BODY>\n");
-	print_msg(PRT_NORMAL,"<HEAD><TITLE>%s %s .. %s\n",progname,start,stop);
+	if (strcmp(start,stop))
+		print_msg(PRT_NORMAL,"<HEAD><TITLE>%s %s .. %s\n",progname,start,stop);
+	else
+		print_msg(PRT_NORMAL,"<HEAD><TITLE>%s %s\n",progname,start);
 	print_msg(PRT_NORMAL,"</TITLE>\n");
 	print_msg(PRT_NORMAL,"</HTML>\n");
 

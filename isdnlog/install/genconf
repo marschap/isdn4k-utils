@@ -1,7 +1,7 @@
 #!/bin/sh
-## $Id: genconf,v 1.4 1997/05/04 20:19:41 luethje Exp $
+## $Id: genconf,v 1.5 1997/05/10 01:21:00 luethje Exp $
 ##
-## ISDN accounting for isdn4linux.
+## installation script for the config file of isdnlog
 ##
 ## Copyright 1997 by Stefan Luethje (luethje@sl-gw.lake.de)
 ##
@@ -20,6 +20,9 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: genconf,v $
+## Revision 1.5  1997/05/10 01:21:00  luethje
+## some primitive changes
+##
 ## Revision 1.4  1997/05/04 20:19:41  luethje
 ## README completed
 ## isdnrep finished
@@ -91,14 +94,17 @@ setentry "[GLOBAL]"  "COUNTRYCODE"   "$COUNTRYCODE"
 setentry "[GLOBAL]"  "COUNTRYPREFIX" "$COUNTRYPREFIX"
 setentry "[ISDNLOG]" "CHARGEMAX"     "$CHARGEMAX"
 setentry "[ISDNLOG]" "REPFMT"        '\"  %X %D %15.15H %T %-15.15F %7u %U %I %O\"'
-setentry "[ISDNLOG]" "REPFMTWWW"     '\"%X %D %17.17H %T %-17.17F %-20.20l %9u %U %I %O\"'
+setentry "[ISDNLOG]" "REPFMTSHORT"   '\"%X%D %8.8H %T %-14.14F %U%I %O\"'
+setentry "[ISDNLOG]" "REPFMTWWW"     '\"%X %D %17.17H %T %-17.17F %-20.20l SI: %S %9u %U %I %O\"'
 setentry "[ISDNLOG]" "OLABEL"        "$OLABEL"
 setentry "[ISDNLOG]" "ILABEL"        "$ILABEL"
 setentry "[ISDNLOG]" "LOGFILE"       "$LOGFILE"
 
 
+# Change the variables $1 to \$1 and so one.
 sed -e "s/\([^\]\)\$\([0-9][ 	]\)/\1\\\\$\2/g" $CONFFILE >$RESFILE
 cp $RESFILE $CONFFILE
+
 rm -f $RESFILE
 
 echo "  Ready."

@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.21 1997/05/09 23:30:37 luethje Exp $
+## $Id: Makefile.in,v 1.22 1997/05/10 01:20:52 luethje Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,9 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.22  1997/05/10 01:20:52  luethje
+## some primitive changes
+##
 ## Revision 1.21  1997/05/09 23:30:37  luethje
 ## isdnlog: new switch -O
 ## isdnrep: new format %S
@@ -332,7 +335,7 @@ distrib: distclean
 		  isdnlog-$(I4LVERSION)/isdnrep        \
 		  isdnlog-$(I4LVERSION)/connect        \
 		  isdnlog-$(I4LVERSION)/lib            \
-		  isdnlog-$(I4LVERSION)/contrib	    \
+		  isdnlog-$(I4LVERSION)/contrib	       \
 		  isdnlog-$(I4LVERSION)/bin
 		gzip -f9 /tmp/isdnlog-$(I4LVERSION).tar
 #		uuencode /tmp/isdnlog-$(I4LVERSION).tar.gz isdnlog-$(I4LVERSION).tar.gz > /tmp/isdnlog-$(I4LVERSION).uue

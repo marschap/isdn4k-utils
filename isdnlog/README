@@ -650,7 +650,7 @@ allerdings erzeugt.
 Die folgenden beiden sind Standard-Eintraege, die der isdnrep sucht:
 
 REPFMT    = "  %X %D %15.15H %T %-15.15F %7u %U %I %O"
-REPFMTWWW = "%X %D %17.17H %T %-17.17F %-20.20l %9u %U %I %O"
+REPFMTWWW = "%X %D %17.17H %T %-17.17F %-20.20l SI: %S %9u %U %I %O"
 
 Der erste ist fuer den "normalen" Gebuehrenausdruck. Der zweite wird
 verwendet, falls die Ausgabe im HTML-Format erfolgen soll.
@@ -2352,6 +2352,16 @@ Dieses kann ueber zwei Wege erreicht werden:
 - Der Name des isdnrep hat die Endung ".cgi" (z.B. isdnrep.cgi). Diese
   entspricht der Option -w1. Man kann also z.B. einen Link auf
   den isdnrep machen: ln -s isdnrep isdnrep.cgi
+Wenn das Programm mit der Extension ".cgi" gestartet wird, kann ihm keine
+Parameter mit der URL ueberreicht werden (!?!). Dann kann man aber 
+ein Shelscript schreiben mit der Endung ".cgi", wo der isdnrep gestartet wird:
+
+Beispiel:
+
+----------------------------------------------
+#!/bin/sh
+isdnrep -w1 -t `date +%m` # Monatliche Anzeige
+----------------------------------------------
 
 Die Optionen von isdnrep haben im einzelnen folgende Funktion:
 
@@ -2563,6 +2573,10 @@ Die Optionen von isdnrep haben im einzelnen folgende Funktion:
                      ueber 80 Zeichen pro Zeile:
 
                      "%X%D %10.10H%T%-14.14F%U%I %O"
+
+                     Der oben genannte String wird bei der Installation
+                     in der isdn.conf unter REPFMTSHORT abgelegt und kann mit
+                     -Fshort verwendet werden.
 
 -FX         "format" Es koennen in der Datei isdn.conf Format-Strings definiert
                      werden. Diese koennen mit Option -F verwendet werden.
@@ -3500,6 +3514,10 @@ der die Gebuehrenauswertung fuer die Schweiz korrigiert hat
 Bei
   Markus Leist (markus@hal.dirnet.com)
 fuer die Anbindung an postgres95
+
+Bei
+  Dirk Staneker (dirk.staneker@student.uni-tuebingen.de)
+fuer die Idee und das Design des HTML-Formats des isdnrep
 
 Sowie bei
   Ullrich von Bassewitz (uz@musoftware.com)
