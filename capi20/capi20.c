@@ -1,7 +1,10 @@
 /*
- * $Id: capi20.c,v 1.5 1999/04/20 19:52:19 calle Exp $
+ * $Id: capi20.c,v 1.6 1999/09/06 17:40:07 calle Exp $
  * 
  * $Log: capi20.c,v $
+ * Revision 1.6  1999/09/06 17:40:07  calle
+ * Changes for CAPI 2.0 Spec.
+ *
  * Revision 1.5  1999/04/20 19:52:19  calle
  * Bugfix in capi20_get_profile: wrong size in memcpy from
  * Kai Germaschewski <kai@thphy.uni-duesseldorf.de>
@@ -27,12 +30,17 @@
 #include <linux/capi.h>
 #include "capi20.h"
 
+#define	CAPIMSG_LEN(m)		(m[0] | (m[1] << 8))
+#define	CAPIMSG_COMMAND(m)	(m[4])
+#define	CAPIMSG_SUBCOMMAND(m)	(m[5])
+
+
 static int                  capi_fd = -1;
 static capi_ioctl_struct    ioctl_data;
 static unsigned char        rcvbuf[128+2048];   /* message + data */
 static unsigned char        sndbuf[128+2048];   /* message + data */
 
-unsigned capi20_isinstalled (void)
+unsigned short capi20_isinstalled (void)
 {
     if (capi_fd >= 0)
         return 1;
@@ -53,9 +61,9 @@ static struct capi_applidmap {
     int fd;
 } capi_applidmap[CAPI_MAXAPPL] = {{0,0}};
 
-static inline _cword allocapplid(int fd)
+static inline unsigned short allocapplid(int fd)
 {
-   _cword i;
+   unsigned short i;
    for (i=0; i < CAPI_MAXAPPL; i++) {
       if (capi_applidmap[i].used == 0) {
          capi_applidmap[i].used = 1;
@@ -66,19 +74,19 @@ static inline _cword allocapplid(int fd)
    return 0;
 }
 
-static inline void freeapplid(_cword applid)
+static inline void freeapplid(unsigned short applid)
 {
     capi_applidmap[applid-1].used = 0;
     capi_applidmap[applid-1].fd = -1;
 }
 
-static inline int validapplid(_cword applid)
+static inline int validapplid(unsigned short applid)
 {
     return applid > 0 && applid <= CAPI_MAXAPPL
                       && capi_applidmap[applid-1].used;
 }
 
-static inline int applid2fd(_cword applid)
+static inline int applid2fd(unsigned short applid)
 {
     if (applid < CAPI_MAXAPPL)
 	    return capi_applidmap[applid-1].fd;
@@ -89,13 +97,13 @@ static inline int applid2fd(_cword applid)
  * CAPI2.0 functions
  */
 
-_cword
+unsigned short
 capi20_register (unsigned MaxB3Connection,
 		 unsigned MaxB3Blks,
 		 unsigned MaxSizeB3,
-		 CAPI_REGISTER_ERROR *ErrorCode)
+		 unsigned short *ErrorCode)
 {
-    _cword applid;
+    unsigned short applid;
     char buf[PATH_MAX];
     int i, fd = -1;
 
@@ -134,25 +142,26 @@ capi20_register (unsigned MaxB3Connection,
         }
         return 0;
     }
+    *ErrorCode = CapiNoError;
     return applid;
 }
 
-MESSAGE_EXCHANGE_ERROR
-capi20_release (unsigned Appl_Id)
+unsigned short
+capi20_release (unsigned ApplID)
 {
     if (!capi20_isinstalled())
         return CapiRegNotInstalled;
-    if (!validapplid(Appl_Id))
+    if (!validapplid(ApplID))
         return CapiIllAppNr;
-    (void)close(applid2fd(Appl_Id));
-    freeapplid(Appl_Id);
+    (void)close(applid2fd(ApplID));
+    freeapplid(ApplID);
     return CapiNoError;
 }
 
-MESSAGE_EXCHANGE_ERROR
-capi20_put_message (CAPI_MESSAGE Msg, unsigned Appl_Id)
+unsigned short
+capi20_put_message (unsigned char *Msg, unsigned ApplID)
 {
-    MESSAGE_EXCHANGE_ERROR ret;
+    unsigned short ret;
     int len = (Msg[0] | (Msg[1] << 8));
     int cmd = Msg[4];
     int subcmd = Msg[5];
@@ -162,16 +171,21 @@ capi20_put_message (CAPI_MESSAGE Msg, unsigned Appl_Id)
     if (!capi20_isinstalled())
         return CapiRegNotInstalled;
 
-    if (!validapplid(Appl_Id))
+    if (!validapplid(ApplID))
         return CapiIllAppNr;
 
-    fd = applid2fd(Appl_Id);
+    fd = applid2fd(ApplID);
 
     memcpy(sndbuf, Msg, len);
 
     if (cmd == CAPI_DATA_B3 && subcmd == CAPI_REQ) {
         int datalen = (Msg[16] | (Msg[17] << 8));
-        void *dataptr = (void *)(Msg[12]|(Msg[13]<<8)|(Msg[14]<<16)|(Msg[15]<<24));
+        void *dataptr;
+	if (sizeof(void *) > 4) {
+	    dataptr = Msg + len; /* Assume data after message */
+	} else {
+	    dataptr =(void *)(Msg[12]|(Msg[13]<<8)|(Msg[14]<<16)|(Msg[15]<<24));
+	}
         memcpy(sndbuf+len, dataptr, datalen);
         len += datalen;
     }
@@ -191,7 +205,7 @@ capi20_put_message (CAPI_MESSAGE Msg, unsigned Appl_Id)
             case EIO:
                 if (ioctl(fd, CAPI_GET_ERRCODE, &ioctl_data) < 0)
                     ret = CapiMsgOSResourceErr;
-                else ret = (MESSAGE_EXCHANGE_ERROR)ioctl_data.errcode;
+                else ret = (unsigned short)ioctl_data.errcode;
                 break;
           default:
                 ret = CapiMsgOSResourceErr;
@@ -202,22 +216,34 @@ capi20_put_message (CAPI_MESSAGE Msg, unsigned Appl_Id)
     return ret;
 }
 
-MESSAGE_EXCHANGE_ERROR
-capi20_get_message (unsigned Appl_Id, CAPI_MESSAGE  *ReturnMessage)
+unsigned short
+capi20_get_message (unsigned ApplID, unsigned char **Buf)
 {
-    MESSAGE_EXCHANGE_ERROR ret;
+    unsigned short ret;
     int rc, fd;
 
     if (!capi20_isinstalled())
         return CapiRegNotInstalled;
 
-    if (!validapplid(Appl_Id))
+    if (!validapplid(ApplID))
         return CapiIllAppNr;
 
-    fd = applid2fd(Appl_Id);
+    fd = applid2fd(ApplID);
 
-    *ReturnMessage = rcvbuf;
+    *Buf = rcvbuf;
     if ((rc = read(fd, rcvbuf, sizeof(rcvbuf))) > 0) {
+        if (   CAPIMSG_COMMAND(rcvbuf) == CAPI_DATA_B3
+	    && CAPIMSG_SUBCOMMAND(rcvbuf) == CAPI_IND) {
+	    if (sizeof(void *) == 4) {
+	       u_int32_t data = (u_int32_t)rcvbuf;
+	       rcvbuf[12] = data & 0xff;
+	       rcvbuf[13] = (data >> 8) & 0xff;
+	       rcvbuf[14] = (data >> 16) & 0xff;
+	       rcvbuf[15] = (data >> 24) & 0xff;
+	    } else {
+	       rcvbuf[12] = rcvbuf[13] = rcvbuf[14] = rcvbuf[15] = 0;
+	    }
+	}
         return CapiNoError;
     }
 
@@ -238,60 +264,60 @@ capi20_get_message (unsigned Appl_Id, CAPI_MESSAGE  *ReturnMessage)
     return ret;
 }
 
-CAPI_MESSAGE
-capi20_get_manufacturer(unsigned contr, CAPI_MESSAGE LpBuffer)
+unsigned char *
+capi20_get_manufacturer(unsigned Ctrl, unsigned char *Buf)
 {
     if (!capi20_isinstalled())
        return 0;
-    ioctl_data.contr = contr;
+    ioctl_data.contr = Ctrl;
     if (ioctl(capi_fd, CAPI_GET_MANUFACTURER, &ioctl_data) < 0)
        return 0;
-    strncpy(LpBuffer, ioctl_data.manufacturer, CAPI_MANUFACTURER_LEN);
-    return LpBuffer;
+    strncpy(Buf, ioctl_data.manufacturer, CAPI_MANUFACTURER_LEN);
+    return Buf;
 }
 
-CAPI_MESSAGE
-capi20_get_version(unsigned contr, CAPI_MESSAGE version)
+unsigned char *
+capi20_get_version(unsigned Ctrl, unsigned char *Buf)
 {
     if (!capi20_isinstalled())
         return 0;
-    ioctl_data.contr = contr;
+    ioctl_data.contr = Ctrl;
     if (ioctl(capi_fd, CAPI_GET_VERSION, &ioctl_data) < 0)
         return 0;
-    memcpy(version, &ioctl_data.version, sizeof(capi_version));
-    return version;
+    memcpy(Buf, &ioctl_data.version, sizeof(capi_version));
+    return Buf;
 }
 
-CAPI_MESSAGE 
-capi20_get_serial_number(unsigned contr, CAPI_MESSAGE LpBuffer)
+unsigned char * 
+capi20_get_serial_number(unsigned Ctrl, unsigned char *Buf)
 {
     if (!capi20_isinstalled())
         return 0;
-    ioctl_data.contr = contr;
+    ioctl_data.contr = Ctrl;
     if (ioctl(capi_fd, CAPI_GET_SERIAL, &ioctl_data) < 0)
         return 0;
-    memcpy(LpBuffer, &ioctl_data.serial, CAPI_SERIAL_LEN);
-    return LpBuffer;
+    memcpy(Buf, &ioctl_data.serial, CAPI_SERIAL_LEN);
+    return Buf;
 }
 
-MESSAGE_EXCHANGE_ERROR
-capi20_get_profile(unsigned Controller, CAPI_MESSAGE LpBuffer)
+unsigned short
+capi20_get_profile(unsigned Ctrl, unsigned char *Buf)
 {
     if (!capi20_isinstalled())
         return CapiMsgNotInstalled;
 
-    ioctl_data.contr = Controller;
+    ioctl_data.contr = Ctrl;
     if (ioctl(capi_fd, CAPI_GET_PROFILE, &ioctl_data) < 0) {
         if (errno != EIO)
             return CapiMsgOSResourceErr;
         if (ioctl(capi_fd, CAPI_GET_ERRCODE, &ioctl_data) < 0)
             return CapiMsgOSResourceErr;
-        return (MESSAGE_EXCHANGE_ERROR)ioctl_data.errcode;
+        return (unsigned short)ioctl_data.errcode;
     }
-    if (Controller)
-        memcpy(LpBuffer, &ioctl_data.profile, sizeof(struct capi_profile));
+    if (Ctrl)
+        memcpy(Buf, &ioctl_data.profile, sizeof(struct capi_profile));
     else
-        memcpy(LpBuffer, &ioctl_data.profile.ncontroller,
+        memcpy(Buf, &ioctl_data.profile.ncontroller,
                        sizeof(ioctl_data.profile.ncontroller));
     return CapiNoError;
 }
@@ -299,8 +325,8 @@ capi20_get_profile(unsigned Controller, CAPI_MESSAGE LpBuffer)
  * functions added to the CAPI2.0 spec
  */
 
-MESSAGE_EXCHANGE_ERROR
-capi20_waitformessage(_cword Appl_Id, struct timeval *tvp)
+unsigned short
+capi20_waitformessage(unsigned ApplID, struct timeval *TimeOut)
 {
   int fd;
   fd_set rfds;
@@ -311,23 +337,21 @@ capi20_waitformessage(_cword Appl_Id, struct timeval *tvp)
   if(!capi20_isinstalled())
     return CapiRegNotInstalled;
 
-  if(!validapplid(Appl_Id))
+  if(!validapplid(ApplID))
     return CapiIllAppNr;
   
-  fd = applid2fd(Appl_Id);
+  fd = applid2fd(ApplID);
 
   FD_SET(fd, &rfds);
   
-  fcntl(fd, F_SETFL, !O_NONBLOCK);
-  retval = select(fd + 1, &rfds, NULL, NULL, tvp);
-  fcntl(fd, F_SETFL, O_NONBLOCK);
+  retval = select(fd + 1, &rfds, NULL, NULL, TimeOut);
   
   return(CapiNoError);
 }
 
 int
-capi20_fileno(_cword applid)
+capi20_fileno(unsigned ApplID)
 {
-   return applid2fd(applid);
+   return applid2fd(ApplID);
 }
 

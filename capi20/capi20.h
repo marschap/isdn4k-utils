@@ -8,7 +8,77 @@
 extern "C" {
 #endif
 
-/*----- basic-type definitions -----*/
+/*----- errornumbers -----*/
+
+#define CapiToManyAppls				0x1001
+#define CapiLogBlkSizeToSmall			0x1002
+#define CapiBuffExeceeds64k			0x1003
+#define CapiMsgBufSizeToSmall			0x1004
+#define CapiAnzLogConnNotSupported		0x1005
+#define CapiRegReserved				0x1006
+#define CapiRegBusy				0x1007
+#define CapiRegOSResourceErr			0x1008
+#define CapiRegNotInstalled			0x1009
+#define CapiRegCtrlerNotSupportExtEquip		0x100a
+#define CapiRegCtrlerOnlySupportExtEquip	0x100b
+
+
+#define CapiNoError				0x0000
+#define CapiIllAppNr				0x1101
+#define CapiIllCmdOrSubcmdOrMsgToSmall		0x1102
+#define CapiSendQueueFull			0x1103
+#define CapiReceiveQueueEmpty			0x1104
+#define CapiReceiveOverflow			0x1105
+#define CapiUnknownNotPar			0x1106
+#define CapiMsgBusy				0x1107
+#define CapiMsgOSResourceErr			0x1108
+#define CapiMsgNotInstalled			0x1109
+#define CapiMsgCtrlerNotSupportExtEquip		0x110a
+#define CapiMsgCtrlerOnlySupportExtEquip	0x110b
+
+/* standard CAPI2.0 functions */
+
+unsigned short capi20_register (unsigned MaxLogicalConnection,
+				unsigned MaxBDataBlocks,
+				unsigned MaxBDataLen,
+				unsigned short *ErrorCode);
+
+unsigned short capi20_release (unsigned ApplID);
+
+unsigned short capi20_put_message (unsigned char *Msg, unsigned ApplID);
+
+unsigned short capi20_get_message (unsigned ApplID, unsigned char **Buf);
+
+unsigned short capi20_waitformessage(unsigned ApplID, struct timeval *TimeOut);
+
+unsigned char *capi20_get_manufacturer (unsigned Ctrl, unsigned char *Buf);
+
+unsigned char *capi20_get_version (unsigned Ctrl, unsigned char *Buf);
+
+unsigned char *capi20_get_serial_number (unsigned Ctrl, unsigned char *Buf);
+
+unsigned short capi20_get_profile (unsigned Controller, unsigned char *Buf);
+
+unsigned short capi20_isinstalled (void);
+
+int capi20_fileno(unsigned ApplID);
+
+#define CAPI20_REGISTER          capi20_register
+#define CAPI20_RELEASE           capi20_release
+#define CAPI20_PUT_MESSAGE       capi20_put_message
+#define CAPI20_GET_MESSAGE       capi20_get_message
+#define CAPI20_WaitforMessage	 capi20_waitformessage
+#define CAPI20_GET_MANUFACTURER  capi20_get_manufacturer
+#define CAPI20_GET_VERSION       capi20_get_version
+#define CAPI20_GET_SERIAL_NUMBER capi20_get_serial_number
+#define CAPI20_GET_PROFILE       capi20_get_profile
+#define CAPI20_ISINSTALLED       capi20_isinstalled
+
+/* end standard CAPI2.0 functions */
+
+#define CAPI_REGISTER_ERROR	unsigned short
+#define MESSAGE_EXCHANGE_ERROR	unsigned short
+
 
 typedef unsigned char *CAPI_MESSAGE;
 typedef unsigned char  _cbyte;
@@ -16,37 +86,6 @@ typedef unsigned short _cword;
 typedef unsigned long  _cdword;
 typedef CAPI_MESSAGE   _cstruct;
 typedef enum { CAPI_COMPOSE = 0, CAPI_DEFAULT = 1 } _cmstruct;
-
-/*----- errornumbers -----*/
-
-typedef enum {
-    CapiToManyAppls		     =0x1001,
-    CapiLogBlkSizeToSmall	     =0x1002,
-    CapiBuffExeceeds64k 	     =0x1003,
-    CapiMsgBufSizeToSmall	     =0x1004,
-    CapiAnzLogConnNotSupported	     =0x1005,
-    CapiRegReserved		     =0x1006,
-    CapiRegBusy 		     =0x1007,
-    CapiRegOSResourceErr	     =0x1008,
-    CapiRegNotInstalled 	     =0x1009,
-    CapiRegCtrlerNotSupportExtEquip  =0x100a,
-    CapiRegCtrlerOnlySupportExtEquip =0x100b
-} CAPI_REGISTER_ERROR;
-
-typedef enum {
-    CapiNoError                      =0x0000,
-    CapiIllAppNr		     =0x1101,
-    CapiIllCmdOrSubcmdOrMsgToSmall   =0x1102,
-    CapiSendQueueFull		     =0x1103,
-    CapiReceiveQueueEmpty	     =0x1104,
-    CapiReceiveOverflow 	     =0x1105,
-    CapiUnknownNotPar		     =0x1106,
-    CapiMsgBusy 		     =0x1107,
-    CapiMsgOSResourceErr	     =0x1108,
-    CapiMsgNotInstalled 	     =0x1109,
-    CapiMsgCtrlerNotSupportExtEquip  =0x110a,
-    CapiMsgCtrlerOnlySupportExtEquip =0x110b
-} MESSAGE_EXCHANGE_ERROR;
 
 /*----- CAPI commands -----*/
 
@@ -72,49 +111,6 @@ typedef enum {
 #define CAPI_CONF   0x81
 #define CAPI_IND    0x82
 #define CAPI_RESP   0x83
-
-/* standard CAPI2.0 functions */
-
-unsigned capi20_isinstalled (void);
-
-_cword capi20_register (unsigned MaxB3Connection,
-			unsigned MaxB3Blks,
-			unsigned MaxSizeB3,
-			CAPI_REGISTER_ERROR *ErrorCode);
-
-MESSAGE_EXCHANGE_ERROR capi20_release (unsigned Appl_Id);
-
-MESSAGE_EXCHANGE_ERROR capi20_put_message (CAPI_MESSAGE Msg, unsigned Appl_Id);
-
-MESSAGE_EXCHANGE_ERROR capi20_get_message (unsigned Appl_Id, CAPI_MESSAGE  *ReturnMessage);
-
-CAPI_MESSAGE capi20_get_manufacturer (unsigned contr, CAPI_MESSAGE LpBuffer);
-
-CAPI_MESSAGE capi20_get_version (unsigned contr, CAPI_MESSAGE version);
-
-CAPI_MESSAGE  capi20_get_serial_number (unsigned contr, CAPI_MESSAGE LpBuffer);
-
-MESSAGE_EXCHANGE_ERROR capi20_get_profile (unsigned Controller, CAPI_MESSAGE LpBuffer);
-
-/* CAPI2.0 Spec names */
-#define CAPI20_REGISTER          capi20_register
-#define CAPI20_RELEASE           capi20_release
-#define CAPI20_PUT_MESSAGE       capi20_put_message
-#define CAPI20_GET_MESSAGE       capi20_get_message
-#define CAPI20_GET_MANUFACTURER  capi20_get_manufacturer
-#define CAPI20_GET_VERSION       capi20_get_version
-#define CAPI20_GET_SERIAL_NUMBER capi20_get_serial_number
-#define CAPI20_GET_PROFILE       capi20_get_profile
-#define CAPI20_ISINSTALLED       capi20_isinstalled
-#define CAPI_CMSG_HEADER         capi_cmsg_header
-#define CAPI_GET_CMSG            capi_get_cmsg
-#define CAPI_PUT_CMSG            capi_put_cmsg
-
-/* extra functions */
-#define CAPI20_WaitforMessage	capi20_waitformessage
-MESSAGE_EXCHANGE_ERROR capi20_waitformessage(_cword Appl_Id, struct timeval *tvp);
-
-int capi20_fileno(_cword applid);
 
 /*
  * The _cmsg structure contains all possible CAPI 2.0 parameter.
@@ -187,40 +183,58 @@ typedef struct {
     /* intern */
     unsigned l,p;
     unsigned char *par;
-    CAPI_MESSAGE m;
+    unsigned char *m;
 } _cmsg;
 
-unsigned capi_cmsg2message(_cmsg *cmsg, CAPI_MESSAGE msg);
 
-unsigned capi_message2cmsg (_cmsg *cmsg, CAPI_MESSAGE msg);
+#define capi_cmsg2message	capi20_cmsg2message
+#define capi_message2cmsg	capi20_message2cmsg
+
+unsigned capi20_cmsg2message(_cmsg *cmsg, unsigned char *msg);
+
+unsigned capi20_message2cmsg (_cmsg *cmsg, unsigned char *msg);
 
 /*
- * capi_put_cmsg() works like capi_put_message() but it converts the _cmsg
- * first with capi_cmsg2message(). Possible errors from capi_put_message()
- * will be returned.
+ * capi20_put_cmsg() works like capi20_put_message() but it converts the
+ * _cmsg * first with capi20_cmsg2message(). Possible errors from
+ * capi20_put_message() will be returned.
  */
 
-unsigned capi_put_cmsg(_cmsg *cmsg);
+#define CAPI_PUT_CMSG	capi20_put_cmsg
+#define capi_put_cmsg	capi20_put_cmsg
+
+unsigned short capi20_put_cmsg(_cmsg *cmsg);
 
 /*
- * capi_get_cmsg() works like capi_get_message() and converts the CAPI message
- * to a _cmsg with capi_message2cmsg(). Possible errors from capi_get_message()
- * will be returned.
+ * capi20_get_cmsg() works like capi20_get_message() and converts the
+ * CAPI message * to a _cmsg with capi20_message2cmsg().
+ * Possible errors from capi20_get_message() will be returned.
  */
-unsigned capi_get_cmsg(_cmsg *cmsg, unsigned applid);
+
+#define CAPI_GET_CMSG	capi20_get_cmsg
+#define capi_get_cmsg	capi20_get_cmsg
+
+unsigned short capi20_get_cmsg(_cmsg *cmsg, unsigned applid);
 
 /*
- * capi_cmsg_header() fills the _cmsg structure with default values, so only
- * parameter with non default values must be changed before sending the
- * message.
+ * capi20_cmsg_header() fills the _cmsg structure with default values,
+ * so only parameter with non default values must be changed before
+ * sending the message.
  */
-unsigned capi_cmsg_header (_cmsg *cmsg, _cword _ApplId, _cbyte _Command, _cbyte _Subcommand, _cword _Messagenumber, _cdword _Controller);
+
+#define CAPI_CMSG_HEADER	capi20_cmsg_header
+#define capi_cmsg_header	capi20_cmsg_header
+
+unsigned capi20_cmsg_header (_cmsg *cmsg, unsigned _ApplId, _cbyte _Command, _cbyte _Subcommand, _cword _Messagenumber, _cdword _Controller);
 
 /*
- * capi_cmsg_answer() is used to answer indications. It changes the header
+ * capi20_cmsg_answer() is used to answer indications. It changes the header
  * of an indication to a response, and leaves all other parameters the same
  */
-unsigned capi_cmsg_answer (_cmsg *cmsg);
+
+#define capi_cmsg_answer	capi20_cmsg_answer
+
+unsigned capi20_cmsg_answer (_cmsg *cmsg);
 
 /*----- defines to access specific parameter -----*/
 
