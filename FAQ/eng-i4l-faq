@@ -12,7 +12,7 @@ Posting-frequency: monthly
 Last-modified: 18-Mar-97
 URL: http://www.lrz-muenchen.de/~ui161ab/www/isdn/
 
-!1FAQ for isdn4linux - Version 1.3.2!br (translation complete 6-May-97)
+!1FAQ for isdn4linux - Version 1.3.2!br (translation 8-May-97)
 
 [Translator's notes]!br
 --31-Mar-97: First step in updating the FAQ from 1.0.5
@@ -21,7 +21,7 @@ but many questions are missing or are still in German!!br
 --14-Apr-97: Questions complete in all sections (but not all updated or 
 translated)!br
 --5-May-97: Translation complete (except for the proofreading)! !br
-
+--8-May-97: Added correction for Italy.!br
 This FAQ is protected by the GNU General Public License (GPL) Version 2;
 (C) 1996 Volker Götz, Bernhard Hailer, Matthias Heßler, Michael Hipp and
 Rainer May.!br
@@ -4931,19 +4931,24 @@ A: Karsten Keil <isdn4@temic-ech.spacenet.de> has fixed that with the new
 !3Italy
 
 Q: What does our MSN look like?
-A: In The Netherlands the MSN includes (as opposed to the German 
-   Telekom) !u1also the area code!u0 - but without the leading zero. 
-   If your telephone number were 01234-56789, then it would be 
-   configured as follows:
+A: 
 !verbon
-        * Modem emulation:
-          "AT&e123456789" (without leading zero)
-        * Network interfaces:
-          "isdnctrl eaz <interface> 123456789" (without leading zero)
-          For test calls to yourself:
-          "isdnctrl addphone <interface> in 123456789" (without leading zero)
-          "isdnctrl addphone <interface> out 0123456789" (with leading zero)
+[Translator's note: The German FAQ has the wrong paragraph here. 
+Paolo Sommaruga <psomma@portcros.garda-access.com> wrote on 7 May 1997:
+
+isdn4linux also works in Italy (icn card). I accept internet connections
+from my customers with X.75 and asynchronous ppp.  I would like to
+migrate to synchronous ppp. For the FAQ, here is a problem that I found
+with Italian lines.                                            
+
+The MSN must be the phone number with the Italian area code  but without
+the leadning 0. For example, if my phone number  is 72004681 and my area
+code is 045, my MSN is 4572004681.                                                               
+
+Now with the setting AT&E4572004681 isdn4linux works fine. ]
 !verboff
+
+
 
 
 !3The Netherlands
