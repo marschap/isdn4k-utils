@@ -1,4 +1,4 @@
-/* $Id: isdnctrl.c,v 1.8 1997/07/30 20:09:24 luethje Exp $
+/* $Id: isdnctrl.c,v 1.9 1997/08/21 14:47:00 fritz Exp $
  * ISDN driver for Linux. (Control-Utility)
  *
  * Copyright 1994,95 by Fritz Elfert (fritz@wuemaus.franken.de)
@@ -21,6 +21,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnctrl.c,v $
+ * Revision 1.9  1997/08/21 14:47:00  fritz
+ * Added Version-Checking of NET_DV.
+ *
  * Revision 1.8  1997/07/30 20:09:24  luethje
  * the call "isdnctrl pppbind ipppX" will be bound the interface to X
  *
@@ -300,13 +303,19 @@ static void listif(int isdnctrl, char *name, int errexit)
         printf("Incoming-Hangup:        %s\n", cfg.ihup ? "on" : "off");
         printf("ChargeHangup:           %s\n", cfg.chargehup ? "on" : "off");
         printf("Charge-Units:           %d\n", cfg.charge);
-        printf("Charge-Interval:        %d\n", cfg.chargeint);
+		if (data_version < 2)
+        	printf("Charge-Interval:        n.a.\n");
+		else
+        	printf("Charge-Interval:        %d\n", cfg.chargeint);
         printf("Layer-2-Protocol:       %s\n", num2key(cfg.l2_proto, l2protostr, l2protoval));
         printf("Layer-3-Protocol:       %s\n", num2key(cfg.l3_proto, l3protostr, l3protoval));
         printf("Encapsulation:          %s\n", num2key(cfg.p_encap, pencapstr, pencapval));
         printf("Slave Interface:        %s\n", strlen(cfg.slave) ? cfg.slave : "None");
         printf("Slave delay:            %d\n", cfg.slavedelay);
-        printf("Slave trigger:          %d cps\n", cfg.triggercps);
+		if (data_version < 3)
+        	printf("Slave trigger:          n.a.\n");
+		else
+        	printf("Slave trigger:          %d cps\n", cfg.triggercps);
         printf("Master Interface:       %s\n", strlen(cfg.master) ? cfg.master : "None");
         printf("Pre-Bound to:           ");
         listbind(cfg.drvid, cfg.exclusive);
@@ -744,7 +753,10 @@ int exec_args(int fd, int argc, char **argv)
 			        		return -1;
 			        	}
 			        }
-			        printf("Charge Interval for %s is %d sec.\n", cfg.name, cfg.chargeint);
+					if (data_version < 2)
+						printf("Option 'chargeint' IGNORED!\n");
+					else
+			        	printf("Charge Interval for %s is %d sec.\n", cfg.name, cfg.chargeint);
 			        break;
 
 			case DIALMAX:
@@ -811,8 +823,11 @@ int exec_args(int fd, int argc, char **argv)
 			        		exit(-1);
 			        	}
 			        }
-			        printf("Slave triggerlevel for %s is %d cps.\n", cfg.name,
-			        cfg.triggercps);
+					if (data_version < 3)
+						printf("Option 'trigger' IGNORED!\n");
+					else
+			        	printf("Slave triggerlevel for %s is %d cps.\n",
+								cfg.name, cfg.triggercps);
 			        break;
 
 			case CHARGEHUP:
@@ -1060,6 +1075,43 @@ int exec_args(int fd, int argc, char **argv)
 	return 0;
 }
 
+void check_version(int fd) {
+	data_version = ioctl(fd, IIOCGETDVR, 0);
+	if (data_version < 0) {
+		fprintf(stderr, "Could not get version of kernel ioctl structs!\n");
+		fprintf(stderr, "Make sure, you are using the correct version.\n");
+		fprintf(stderr, "(Try recompiling isdnctrl).\n");
+		exit(-1);
+	}
+	data_version = (data_version >> 8) & 0xff;
+	if (data_version != NET_DV) {
+		fprintf(stderr, "Version of kernel ioctl structs (%d) does NOT match\n",
+			data_version);
+		fprintf(stderr, "version of isdnctrl (%d)!\n", NET_DV);
+		if (data_version < 1) {
+			fprintf(stderr, "Kernel-Version too old, terminating.\n");
+			fprintf(stderr, "UPDATE YOUR KERNEL.\n");
+			exit(-1);
+		}
+		if (data_version > NET_DV) {
+			fprintf(stderr, "Kernel-Version newer than isdnctrl-Version, terminating.\n");
+			fprintf(stderr, "GET A NEW VERSION OF isdn4k-utils.\n");
+			exit(-1);
+		}
+		if ((NET_DV == 3) || (data_version == 3)) {
+			fprintf(stderr, "Version 3 is an interim NOT compatible to others, terminating\n");
+			fprintf(stderr, "RECOMPILE isdnctrl!\n");
+			exit(-1);
+		}
+		if (data_version < 3)
+			fprintf(stderr, "- Option 'trigger' disabled.\n");
+		if (data_version < 2)
+			fprintf(stderr, "- Option 'chargeint' disabled.\n");
+		fprintf(stderr, "Make sure, you are using the correct version.\n");
+		fprintf(stderr, "Recompiling of isdnctrl is STRONGLY RECOMMENDED.\n");
+	}
+}
+
 void main(int argc, char **argv)
 {
 	int fd;
@@ -1079,6 +1131,7 @@ void main(int argc, char **argv)
 		usage();
 		exit(-1);
 	}
+	check_version(fd);
 
 	exec_args(fd,argc-1,argv+1);
 	close(fd);

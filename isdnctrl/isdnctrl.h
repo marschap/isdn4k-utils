@@ -1,4 +1,4 @@
-/* $Id: isdnctrl.h,v 1.5 1997/07/30 20:09:26 luethje Exp $
+/* $Id: isdnctrl.h,v 1.6 1997/08/21 14:47:02 fritz Exp $
  * ISDN driver for Linux. (Control-Utility)
  *
  * Copyright 1994,95 by Fritz Elfert (fritz@wuemaus.franken.de)
@@ -21,6 +21,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnctrl.h,v $
+ * Revision 1.6  1997/08/21 14:47:02  fritz
+ * Added Version-Checking of NET_DV.
+ *
  * Revision 1.5  1997/07/30 20:09:26  luethje
  * the call "isdnctrl pppbind ipppX" will be bound the interface to X
  *
@@ -159,6 +162,8 @@ _EXTERN int   pencapval[];
 _EXTERN char *num2callb[];
 
 #endif
+
+_EXTERN int data_version;
 
 _EXTERN char *cmd;
 

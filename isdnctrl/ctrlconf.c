@@ -1,4 +1,4 @@
-/* $Id: ctrlconf.c,v 1.4 1997/07/23 20:39:14 luethje Exp $
+/* $Id: ctrlconf.c,v 1.5 1997/08/21 14:46:58 fritz Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: ctrlconf.c,v $
+ * Revision 1.5  1997/08/21 14:46:58  fritz
+ * Added Version-Checking of NET_DV.
+ *
  * Revision 1.4  1997/07/23 20:39:14  luethje
  * added the option "force" for the commands delif and reset
  *
@@ -212,7 +215,7 @@ static char* readoptions(int fd, char *name, int is_master, section *CSec, secti
 
 	if (cfg.chargeint)
 	{
-		sprintf(string,"%d",cfg.chargeint);
+		sprintf(string,"%d",(data_version < 2)?0:cfg.chargeint);
 		if (Set_Entry(SubSec,interface,CONF_ENT_CHARGEINT, string, C_OVERWRITE | C_WARN) == NULL)
 			return NULL;
 	}
@@ -235,7 +238,7 @@ static char* readoptions(int fd, char *name, int is_master, section *CSec, secti
 		if (Set_Entry(SubSec,interface,CONF_ENT_SDELAY, string, C_OVERWRITE | C_WARN) == NULL)
 			return NULL;
 		
-		sprintf(string,"%d",cfg.triggercps);
+		sprintf(string,"%d",(data_version < 3)?6000:cfg.triggercps);
 		if (Set_Entry(SubSec,interface,CONF_ENT_TRIGGERCPS, string, C_OVERWRITE | C_WARN) == NULL)
 			return NULL;
 		
