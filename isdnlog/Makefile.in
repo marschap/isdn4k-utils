@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.9 1997/04/08 00:02:05 luethje Exp $
+## $Id: Makefile.in,v 1.10 1997/04/08 21:56:42 luethje Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,11 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.10  1997/04/08 21:56:42  luethje
+## Create the file isdn.conf
+## some bug fixes for pid and lock file
+## make the prefix of the code in `isdn.conf' variable
+##
 ## Revision 1.9  1997/04/08 00:02:05  luethje
 ## Bugfix: isdnlog is running again ;-)
 ## isdnlog creates now a file like /var/lock/LCK..isdnctrl0
@@ -59,6 +64,7 @@
 .SUFFIXES: .c .o
 
 SHELL			:= /bin/sh
+GENCONF   := install/genconf
 
 #
 # autoconf generic stuff
@@ -82,6 +88,7 @@ MAN8DIR			:= $(MANDIR)/man8
 MAN1EXT			:= .1
 MAN8EXT			:= .8
 SRCDIR			:= @srcdir@
+
 #
 # end of autoconf generic stuff
 #
@@ -89,22 +96,35 @@ SRCDIR			:= @srcdir@
 #
 # autoconf isdnlog specific stuff
 #
-INSTALL				:= @INSTALL@
+INSTALL					:= @INSTALL@
 INSTALL_DIR			:= $(INSTALL) -m 0755 -o 0 -g 0 -d
 INSTALL_SBIN		:= $(INSTALL) -m 0700 -o 0 -g 0
 INSTALL_BIN			:= $(INSTALL) -m 0755 -o 0 -g 0
 INSTALL_DATA		:= $(INSTALL) -m 0644 -o 0 -g 0
 
-LIBISDNDIR			:= @LIBISDNDIR@
-I4LCONFDIR			:= @I4LCONFDIR@
+LIBISDNDIR		:= @LIBISDNDIR@
+I4LCONFDIR		:= @I4LCONFDIR@
+CONFFILE  		:= @CONFFILE@
+OLDCONFDIR		:= @OLDCONFDIR@
 LIBAREA				:= @LIBAREA@
 RUNDIR				:= @RUNDIR@
 DBMLIB				:= @DBMLIB@
 POSTGRES			:= @POSTGRES@
-POSTGRESDIR			:= @POSTGRESDIR@
+POSTGRESDIR		:= @POSTGRESDIR@
 SERV_PORT			:= @SERV_PORT@
 USERFILE			:= @USERFILE@
-DEFS                :=
+DEFS          :=
+
+export LOGFILE       := @LOGFILE@
+export COUNTRYCODE   := @COUNTRYCODE@
+export COUNTRYPREFIX := @COUNTRYPREFIX@
+export AREACODE      := @AREACODE@
+export AREAPREFIX    := @AREAPREFIX@
+
+export ILABEL        := %b %e %T %ICall to tei %t from %N2 on %n2
+export OLABEL        := %b %e %T %Itei %t calling %N2 with %n2
+export CHARGEMAX     := 1000.00
+
 
 ifndef ROOTDIR
 export ROOTDIR=$(shell pwd)
@@ -142,7 +162,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 2.99.5
+VERSION     = 2.99.6
 
 ifeq ($(POSTGRES),1)
 DEFS       += -DPOSTGRES
@@ -232,8 +252,9 @@ installdirs: rootperm
 
 install: depend all rootperm installdirs
 		if ps -x | fgrep $(ISDNLOG) >/dev/null; then kill `cat $(RUNDIR)/isdnlog.pid`; fi
-		-test ! -d $(OLDCONFDIR) || cp -auv $(OLDCONFDIR)/* $(I4LCONFDIR) \
-		 && isdnlog/bin/isdnlog /dev/null 1>/dev/null 2>&1)
+		-test ! -d $(OLDCONFDIR) || (cp -auv $(OLDCONFDIR)/* $(I4LCONFDIR) \
+		 && $(ISDNREP) 1>/dev/null 2>&1)
+		$(GENCONF) $(I4LCONFDIR)/$(CONFFILE)
 		$(INSTALL_BIN) $(ISDNLOG)  $(SBINDIR)
 		$(INSTALL_BIN) $(ISDNREP)  $(BINDIR)
 		$(INSTALL_BIN) $(ISDNCONF) $(BINDIR)
@@ -283,36 +304,6 @@ $(ISDNCONF):    $(ISDNCONF_OBJS)
 
 tools/tools.h: $(LIBISDNDIR)/libisdn.h $(PREFIXDIR)/policy.h
 		touch tools/tools.h
-
-isdnlog/isdnlog.o:         isdnlog/isdnlog.c isdnlog/isdnlog.h tools/tools.h \
-			   connect/socket.h
-
-isdnlog/processor.o:       isdnlog/processor.c isdnlog/isdnlog.h tools/tools.h \
-			   connect/socket.h
-
-isdnlog/functions.o:       isdnlog/functions.c isdnlog/isdnlog.h tools/tools.h \
-			   connect/socket.h
-
-isdnlog/server.o:          isdnlog/server.c  isdnlog/isdnlog.h tools/tools.h \
-			   connect/socket.h
-
-isdnlog/start_prog.o:      isdnlog/start_prog.c isdnlog/isdnlog.h tools/tools.h
-
-isdnlog/user_access.o:     isdnlog/user_access.c isdnlog/isdnlog.h tools/tools.h
-
-tools/tools.o:             tools/tools.c     tools/tools.h
-
-tools/isdnconf.o:          tools/isdnconf.c  tools/tools.h
-
-isdnrep/rep_main.o:        isdnrep/rep_main.c isdnrep/isdnrep.h tools/tools.h
-
-isdnconf/isdnconf.o:       isdnconf/isdnconf.c isdnconf/isdnconf.h tools/tools.h
-
-isdnrep/cheap.o:           isdnrep/cheap.c   isdnrep/isdnrep.h tools/tools.h
-
-connect/conv_address.o:    connect/conv_address.c    connect/socket.h tools/tools.h
-connect/socket.o:          connect/socket.c          connect/socket.h tools/tools.h
-connect/connect.o:         connect/connect.c         connect/socket.h tools/tools.h
 
 depend: .depend
 

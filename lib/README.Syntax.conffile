@@ -120,6 +120,17 @@ Dann wird nach der Datei /etc/myinclude gesucht. Es ist voellig
 unabhaengig davon, in welchem Verzeichnis das Programm gestartet wurde,
 das die Konfigurationsdatei lesen soll.
 
+In der Include Datei muessen immer genau so viele gescheifte Klammern
+zugehen, wie aufgemacht worden sind. Eine Datei darf nich folgenden Inhalt
+haben:
+
+[TEST1]
+testinhalt = 5
+{
+
+Dieses wird leider nicht gut erkannt und kann zur Zeit noch zum Absturz fuehren.
+Auf jeden Fall wird so die Konfigurationsdatei nicht sauber eingelesen!!!
+
 ACHTUNG:
 Wenn Dateien rekursiv eingebunden werden, fuehrt dieses mit Sicherheit
 zum Absturz des Programmes. Dieses wird von der Library nicht verhindert.

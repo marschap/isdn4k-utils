@@ -1,4 +1,4 @@
-/* $Id: isdnrep.c,v 1.8 1997/04/06 21:03:37 luethje Exp $
+/* $Id: isdnrep.c,v 1.9 1997/04/08 21:56:53 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -20,6 +20,11 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnrep.c,v $
+ * Revision 1.9  1997/04/08 21:56:53  luethje
+ * Create the file isdn.conf
+ * some bug fixes for pid and lock file
+ * make the prefix of the code in `isdn.conf' variable
+ *
  * Revision 1.8  1997/04/06 21:03:37  luethje
  * switch -f is working again
  * currency_factor is float again ;-)
@@ -1352,9 +1357,9 @@ static int n_match(char *Pattern, char* Number, char* version)
 	if (!strcmp(version,LOG_VERSION_1))
 	{
 		if ((RetCode = match(Pattern, Number,0)) != 0            &&
-		    !strncmp(Pattern,S_AREA_PREFIX,strlen(S_AREA_PREFIX))  )
+		    !strncmp(Pattern,areaprefix,strlen(areaprefix))  )
 		{
-			sprintf(s,"*%s%s",myarea/*+strlen(S_AREA_PREFIX)*/,Pattern);
+			sprintf(s,"*%s%s",myarea/*+strlen(areaprefix)*/,Pattern);
 			RetCode = match(s,Number,0);
 		}
 	}

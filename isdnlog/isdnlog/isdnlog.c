@@ -1,4 +1,4 @@
-/* $Id: isdnlog.c,v 1.6 1997/04/08 00:02:14 luethje Exp $
+/* $Id: isdnlog.c,v 1.7 1997/04/08 21:56:48 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,11 @@
  * along with this program; if not, write to the Free Software
  *
  * $Log: isdnlog.c,v $
+ * Revision 1.7  1997/04/08 21:56:48  luethje
+ * Create the file isdn.conf
+ * some bug fixes for pid and lock file
+ * make the prefix of the code in `isdn.conf' variable
+ *
  * Revision 1.6  1997/04/08 00:02:14  luethje
  * Bugfix: isdnlog is running again ;-)
  * isdnlog creates now a file like /var/lock/LCK..isdnctrl0
@@ -132,15 +137,19 @@ static void loop(void)
       if (NewClient) {
         /* Damit sich der neue Client anmelden kann, ohne
            das was anderes dazwischen funkt ... */
-        FD_SET(sockets[NewClient].descriptor, &readmask);
+        if (sockets[NewClient].descriptor >= 0)
+	        FD_SET(sockets[NewClient].descriptor, &readmask);
+
       	NewClient = 0;
       }
       else {
         for (Cnt = 0; Cnt < queuenumber; Cnt++)
-	  FD_SET(sockets[Cnt].descriptor, &readmask);
+          if (sockets[Cnt].descriptor >= 0)
+            FD_SET(sockets[Cnt].descriptor, &readmask);
 
         for (Cnt = first_descr; Cnt < queuenumber; Cnt++)
-          FD_SET(sockets[Cnt].descriptor, &exceptmask);
+          if (sockets[Cnt].descriptor >= 0)
+            FD_SET(sockets[Cnt].descriptor, &exceptmask);
       } /* else */
 
       if (newcps && ((ifo[0].u & ISDN_USAGE_MASK) + (ifo[1].u & ISDN_USAGE_MASK)))

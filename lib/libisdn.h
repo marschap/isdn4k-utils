@@ -1,5 +1,5 @@
 
-/* $Id: libisdn.h,v 1.5 1997/04/08 00:02:25 luethje Exp $
+/* $Id: libisdn.h,v 1.6 1997/04/08 21:57:07 luethje Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,11 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: libisdn.h,v $
+ * Revision 1.6  1997/04/08 21:57:07  luethje
+ * Create the file isdn.conf
+ * some bug fixes for pid and lock file
+ * make the prefix of the code in `isdn.conf' variable
+ *
  * Revision 1.5  1997/04/08 00:02:25  luethje
  * Bugfix: isdnlog is running again ;-)
  * isdnlog creates now a file like /var/lock/LCK..isdnctrl0
@@ -103,11 +108,13 @@ extern char *basename __P((__const char *__name));
 
 /****************************************************************************/
 
-#define CONF_SEC_GLOBAL  "GLOBAL"
-#define CONF_ENT_COUNTRY "COUNTRYCODE"
-#define CONF_ENT_AREA    "AREACODE"
-#define CONF_ENT_AREALIB "AREALIB"
-#define CONF_ENT_AVONLIB "AVON"
+#define CONF_SEC_GLOBAL         "GLOBAL"
+#define CONF_ENT_COUNTRY_PREFIX "COUNTRYPREFIX"
+#define CONF_ENT_AREA_PREFIX    "AREAPREFIX"
+#define CONF_ENT_COUNTRY        "COUNTRYCODE"
+#define CONF_ENT_AREA           "AREACODE"
+#define CONF_ENT_AREALIB        "AREALIB"
+#define CONF_ENT_AVONLIB        "AVON"
 
 #define CONF_SEC_VAR    "VARIABLES"
 
@@ -139,14 +146,20 @@ extern char *basename __P((__const char *__name));
 
 #ifdef _ISDNTOOLS_C_
 #define _EXTERN
-#define SET_NULL = ""
+#define SET_NULL           = ""
+#define SET_AREA_PREFIX    = S_AREA_PREFIX
+#define SET_COUNTRY_PREFIX = S_COUNTRY_PREFIX
 #else
 #define _EXTERN extern
 #define SET_NULL
+#define SET_AREA_PREFIX
+#define SET_COUNTRY_PREFIX
 #endif
 
-_EXTERN char    *mycountry SET_NULL;
-_EXTERN char    *myarea    SET_NULL;
+_EXTERN char    *mycountry     SET_NULL;
+_EXTERN char    *myarea        SET_NULL;
+_EXTERN char    *areaprefix    SET_AREA_PREFIX;
+_EXTERN char    *countryprefix SET_COUNTRY_PREFIX;
 
 _EXTERN void set_print_fct_for_lib(int (*new_print_msg)(const char *, ...));
 _EXTERN int num_match(char *Pattern, char *number);
@@ -160,6 +173,8 @@ _EXTERN int read_conffiles(section **Section, char *groupfile);
 _EXTERN int paranoia_check(char *cmd);
 
 #undef SET_NULL
+#undef SET_AREA_PREFIX
+#undef SET_COUNTRY_PREFIX
 #undef _EXTERN
 
 /****************************************************************************/

@@ -1,4 +1,4 @@
-/* $Id: tools.c,v 1.5 1997/04/06 21:17:46 luethje Exp $
+/* $Id: tools.c,v 1.6 1997/04/08 21:56:59 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -19,6 +19,11 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools.c,v $
+ * Revision 1.6  1997/04/08 21:56:59  luethje
+ * Create the file isdn.conf
+ * some bug fixes for pid and lock file
+ * make the prefix of the code in `isdn.conf' variable
+ *
  * Revision 1.5  1997/04/06 21:17:46  luethje
  * Bugfix von Andreas Jaeger.
  *
@@ -389,7 +394,7 @@ char *vnum(int chan, int who)
   register int    flag = C_NO_WARN | C_NO_EXPAND;
   auto     char  *ptr;
   auto	   int    ll;
-  auto	   int 	  prefix = strlen(S_COUNTRY_PREFIX);
+  auto	   int 	  prefix = strlen(countryprefix);
 
 
   if (++retnum == MAXRET)
