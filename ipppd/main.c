@@ -25,7 +25,7 @@
  * PATCHLEVEL 9
  */
 
-char main_rcsid[] = "$Id: main.c,v 1.21 2002/07/06 00:11:18 keil Exp $";
+char main_rcsid[] = "$Id: main.c,v 1.22 2002/07/06 00:12:26 keil Exp $";
 
 #include <stdio.h>
 #include <stdarg.h>
@@ -253,16 +253,16 @@ int main(int argc,char **argv)
       die(1);
     }
     else {
-      char devstr[1024];
+      char devstr[128], devstr2[1024];
       sprintf(devstr,"Found %d device%s: ",numdev, numdev==1?"":"s");
       for(i=0;i<numdev;i++)
       {
-        /* strcat(devstr,lns[i].devnam); */
-        strcat(devstr,lns[i].ifname);
+        /* strcat(devstr,lns[i].ifname); */
+	snprintf(devstr2, sizeof(devstr2)-3, "%s%s", devstr, lns[i].ifname);
         if (i < numdev - 1)
-          strcat(devstr,", ");
+          strcat(devstr2,", ");
       }
-      syslog(LOG_NOTICE,devstr);
+      syslog(LOG_NOTICE,"%s", devstr2);
     }
 
     /*
@@ -305,7 +305,7 @@ int main(int argc,char **argv)
 			p++;
 		else
 			p = lns[0].devnam;
-		sprintf(pidfilename, "%s%s.%s.pid", _PATH_VARRUN, "ipppd", p);
+		snprintf(pidfilename, sizeof(pidfilename), "%s%s.%s.pid", _PATH_VARRUN, "ipppd", p);
 	}
 #endif
 	
@@ -929,6 +929,7 @@ int run_program(char *prog,char **args,int must_exist,int unit)
 		setsid();
 		umask (S_IRWXG|S_IRWXO);
 		chdir ("/");
+		/* AUD: full root privs? */
 		setuid(geteuid());
 		setgid(getegid());
 

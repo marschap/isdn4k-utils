@@ -17,7 +17,7 @@
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-char options_rcsid[] = "$Id: options.c,v 1.20 2000/12/07 12:46:49 paul Exp $";
+char options_rcsid[] = "$Id: options.c,v 1.21 2002/07/06 00:12:26 keil Exp $";
 
 #include <stdio.h>
 #include <errno.h>
@@ -1558,7 +1558,7 @@ static int setdevname(char *cp,int nd)
     if (stat(cp, &statbuf) < 0) {
 	if (errno == ENOENT)
 	    return 0;
-	syslog(LOG_ERR, cp);
+	syslog(LOG_ERR, "%s", cp);
 	return -1;
     }
 
