@@ -1,4 +1,4 @@
-/* $Id: tools.c,v 1.20 1999/03/20 14:34:10 akool Exp $
+/* $Id: tools.c,v 1.21 1999/03/20 16:55:22 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools.c,v $
+ * Revision 1.21  1999/03/20 16:55:22  akool
+ * isdnlog 3.09 : support for all Internet-by-call numbers
+ *
  * Revision 1.20  1999/03/20 14:34:10  akool
  * - isdnlog Version 3.08
  * - more tesion)) Tarife from Michael Graw <Michael.Graw@bartlmae.de>
@@ -569,17 +572,19 @@ char *vnum(int chan, int who)
     flag |= C_NO_ERROR;
 #endif
 
-  if ((call[chan].sondernummer[who] != -1) || call[chan].intern[who]) {
+  if ((call[chan].sondernummer[who] != UNKNOWN) || call[chan].intern[who] || call[chan].internetnumber[who]) {
     strcpy(call[chan].rufnummer[who], call[chan].num[who]);
 
     if (cnf > -1)
       strcpy(retstr[retnum], call[chan].alias[who]);
-    else if (call[chan].sondernummer[who] != -1) {
+    else if (call[chan].sondernummer[who] != UNKNOWN) {
       if ((l1 = strlen(sondernum(call[chan].sondernummer[who]))) < l)
         sprintf(retstr[retnum], "%s - %s", sondernummername(call[chan].sondernummer[who]), call[chan].num[who] + l1);
       else
-      strcpy(retstr[retnum], sondernummername(call[chan].sondernummer[who]));
+        strcpy(retstr[retnum], sondernummername(call[chan].sondernummer[who]));
     }
+    else if (call[chan].internetnumber[who])
+      sprintf(retstr[retnum], "INTERNET %s", call[chan].num[who]);
     else
       sprintf(retstr[retnum], "TN %s", call[chan].num[who]);
 
@@ -732,7 +737,7 @@ static char *ltoa(register unsigned long num, register char *p, register int rad
   while (--i);
 
   return(p);
-} 
+}
 */
 
 /****************************************************************************/

@@ -1,8 +1,8 @@
-# @(#)tarif.dat  1.10  17-Mar-99  22:09
+# @(#)tarif.dat  1.11  20-Mar-99  17:51
 #
 # Copyright 1995, 1999 by Andreas Kool (akool@isdn4linux.de)
 #
-V:1.10 [17-Mar-99]
+V:1.11 [20-Mar-99]
 #
 # P: Provider
 # G: tt.mm.jjjj Tarif gÅltig ab
@@ -33,7 +33,7 @@ G:01.03.1999
 C:Homepage: http://www.o-tel-o.de
 C:Hotline:  01803/1998 oder 0800/7370 (Geschaeftskunden)
 C:Adresse:  96038 Bamberg
-I:010110191501 # (Benutzername: otelo; Passwort: online)
+I:0191501 # (Benutzername: otelo; Passwort: online)
 Z:2-3,60/60
 T:W08-18=0.20
 T:W18-08=0.10
@@ -43,11 +43,7 @@ T:W08-18=0.94
 T:W18-08=0.47
 T:E=0.47
 Z:H,60/60
-T:W08-09=0.06
-T:W09-18=0.11
-T:W18-22=0.08
-T:W22-08=0.06
-T:E=0.06
+T:*=0.059
 ################################################################
 P:13=Tele 2
 G:08.02.1999
@@ -95,7 +91,7 @@ C:MobilCom AG
 C:Homepage: http://www.mobilcom.de
 C:Hotline:  01805/191919
 C:Adresse:  Postfach 1249, 24822 Schleswig
-I:0101901929 # (Benutzername: mobilcom; Passwort: mobilcom)
+I:01929 # (Benutzername: mobilcom; Passwort: mobilcom)
 Z:2-3,60/60
 T:*07-19=0.16
 T:*19-22=0.08
@@ -105,7 +101,7 @@ T:*=0.49
 Z:A-D,60/60
 T:*=0.49
 Z:H,60/60
-T:*=0.06
+T:*=0.05
 ################################################################
 P:23=tesion ))
 G:01.02.1999
@@ -248,7 +244,7 @@ G:03.03.1999
 C:Homepage: http://www.null1050.de
 C:Hotline:  01802/2002
 C:Faxabruf: 01802/2001
-I:01050/019251 # (Benutzername: talknet; Passwort: talknet; Nameserver: 195.252.128.53)
+I:019251 # (Benutzername: talknet; Passwort: talknet; Nameserver: 195.252.128.53)
 Z:2-3,60/60
 T:W08-21=0.18
 T:W21-08=0.09
@@ -273,7 +269,7 @@ T:*=0.09
 P:70=Arcor
 G:01.01.1999
 C:Mannesmann Arcor
-I:010700192070 # (Benutzername: arcor; Passwort: internet; Proxy: proxy.arcor-ip.de:80; Startseite: http://www.call.arcor.net)
+I:0192070 # (Benutzername: arcor; Passwort: internet; Proxy: proxy.arcor-ip.de:80; Startseite: http://www.call.arcor.net)
 Z:2-3,60/60
 T:W09-18=0.18 # Standard
 T:W18-09=0.10 # Spar
@@ -297,8 +293,7 @@ T:E=0.48
 Z:G,60/60
 T:*=2.72 # FIXME
 Z:H,60/60
-T:*09-18=0.14
-T:*18-09=0.10
+T:*=0.06
 ################################################################
 P:79=Viatel
 G:24.12.1999
@@ -340,7 +335,7 @@ C:keine Tarifdaten veroeffentlicht!
 C:Vielmehr handelt es sich hier nur um die Tarife fuer den
 C:UUnet Ortstarif-Zugang!
 I:0191999
-Z:1,0.12
+Z:H,0.12
 T:W02-05=240  # Nacht
 T:W05-09=150  # Spar
 T:W09-18=90   # Standard

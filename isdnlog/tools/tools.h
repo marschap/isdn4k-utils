@@ -1,4 +1,4 @@
-/* $Id: tools.h,v 1.31 1999/03/20 14:34:17 akool Exp $
+/* $Id: tools.h,v 1.32 1999/03/20 16:55:27 akool Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools.h,v $
+ * Revision 1.32  1999/03/20 16:55:27  akool
+ * isdnlog 3.09 : support for all Internet-by-call numbers
+ *
  * Revision 1.31  1999/03/20 14:34:17  akool
  * - isdnlog Version 3.08
  * - more tesion)) Tarife from Michael Graw <Michael.Graw@bartlmae.de>
@@ -691,6 +694,7 @@ typedef struct {
   char    vnum[MAXMSNS][256];
   int	  provider;
   int	  sondernummer[MAXMSNS];
+  int	  internetnumber[MAXMSNS];
   int	  intern[MAXMSNS];
   char    id[32];
   char	  usage[16];
@@ -970,6 +974,7 @@ _EXTERN void   showcheapest(int zone, int duration, int ignoreprovider, char *in
 _EXTERN void   price(int chan, char *hint, int viarep);
 _EXTERN char  *realProvidername(int prefix);
 _EXTERN void   preparecint(int chan, char *msg, char *hint, int viarep);
+_EXTERN	int    isInternetAccess(int provider, char *number);
 _EXTERN int    taktlaenge(int chan, char *why);
 _EXTERN void   initSondernummern(char *msg);
 _EXTERN int    is_sondernummer(char *number, int provider);
