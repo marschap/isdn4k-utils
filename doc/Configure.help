@@ -196,7 +196,7 @@ CONFIG_PCBITCTL
 
 Build eiconctrl
 CONFIG_EICONCTRL
-  This program is used to configure the Eicon.Diehl driver. With
+  This program is used to configure the Eicon driver. With
   this tool, you can add cards, download protocol firmware into cards
   and configure ports, irq, D-channel protocol etc.
   This program is documented in eiconctrl (8).
