@@ -98,7 +98,9 @@ data:
 alldata:
 	./makedest $(LANG) -v
 	./makedest $(LANG) -v -a -gcities.dat
-	./makedest -v -a at
-	./makedest -v -a de
-	./makedest -v -a nl
-	./makedest -v -a ch || true
+	@cd ../zone ; all=`ls -d ??` ; cd ../dest ; \
+	for cc in $$all ; do \
+	  	if [ -e ../zone/$$cc/code ] ; then \
+			./makedest -v -a $$cc ; \
+		fi ; \
+	done		

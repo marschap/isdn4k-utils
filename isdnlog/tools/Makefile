@@ -13,6 +13,11 @@ AT:	rate-at
 	./rate-at > rate-at.dat
 	(cd dest;pp_rate ../rate-at.dat  ../../rate-at.dat)
 	rm rate-at.dat
+AT-leo:	rate-at
+	./rate-at -leo > rate-at.dat
+	(cd dest;pp_rate ../rate-at.dat  ../../rate-at.dat)
+	cp ../rate-at.dat /usr/lib/isdn/rate-at.dat
+	rm rate-at.dat
 	
 #zone.exe: zone.c zone.h
 #	${CC} -DZONETEST -lgdbm -o zone.exe zone.c

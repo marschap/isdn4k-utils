@@ -550,7 +550,8 @@ void rate_1004_1(void) {
       rprintf ("T:*/*=%.2f(60)/1", "0-24h" , Tarif[z][0]*1.2);
     else {
       rprintf ("T:W/8-18=%.2f(60)/1", "Geschäftszeit" , Tarif[z][0]*1.2);
-      rprintf ("T:*/*=%.2f(60)/1", "Freizeit" , Tarif[z][1]*1.2);
+      rprintf ("T:W/18-8=%.2f(60)/1", "Nacht" , Tarif[z][1]*1.2);
+      rprintf ("T:E,H/*=%.2f(60)/1", "Weekend" , Tarif[z][1]*1.2);
     }
     print_area(Zone[z][1]);
   }
@@ -590,7 +591,8 @@ void rate_1004_2(void) {
       rprintf ("T:*/*=%.2f(60)/1", "0-24h" , Tarif[z][0]*1.2);
     else {
       rprintf ("T:W/8-18=%.2f(60)/1", "Geschäftszeit" , Tarif[z][0]*1.2);
-      rprintf ("T:*/*=%.2f(60)/1", "Freizeit" , Tarif[z][1]*1.2);
+      rprintf ("T:W/18-8=%.2f(60)/1", "Nacht" , Tarif[z][1]*1.2);
+      rprintf ("T:E,H/*=%.2f(60)/1", "Weekend" , Tarif[z][1]*1.2);
     }
     print_area(Zone[z][1]);
   }
@@ -999,8 +1001,52 @@ void rate_1011(void) {
   rprintf ("C:Telefon:", "0800 008000" );
   rprintf ("C:Zone:", "Vorwahlen 1XXX und 2XXX, bzw. mit gleicher Anfangsziffer liegen in der " );
   rprintf ("C:Zone:", "Bundelandzone sonst in der Zone Österreich." );
+  rprintf ("C:Special:", "Für TNC-Kunden nicht verwendbar" );
 /*  rprintf ("C:GT:", "Grundgebühr ATS 69, bei Rechnung < 200 ATS." );
   rprintf ("C:GF:", "Cost = Ch >= 200 ? 0 : 69" ); ab 1.10 nix */
+  
+  for (z=0; z<COUNT(Zone); z++) {
+    rprintf ("Z:%d", Zone[z][0] , z+1);
+    if (Tarif[z][0]==Tarif[z][1]) {
+      rprintf ("T:*/*=%.2f(60)/1", "0-24h" , Tarif[z][0]);
+    } else {
+      rprintf ("T:W/8-18=%.2f(60)/1", "Tag" , Tarif[z][0]);
+      rprintf ("T:W/18-8=%.2f(60)/1", "Nacht" , Tarif[z][1]);
+      rprintf ("T:E,H/*=%.2f(60)/1", "Weekend" , Tarif[z][1]);
+    }
+    print_area(Zone[z][1]);
+  }
+}
+
+void rate_10elf(void) {
+  
+  char *Zone[][2] = {{ "Bundesland", "+43" }, 
+		     { "Mobilfunk", "+43663,+43664,+43676,+43699" },
+		     { "TransAlp", "Deutschland, Italien, Schweiz" },
+		     { "TransEuro1", "Andorra, Belgien, Dänemark, Deutschland Mobil, Färöer Inseln, Finnland, Frankreich, Gibraltar, Großbritannien, Irland, Island, Italien, Liechtenstein, Luxemburg, Monaco, Niederlande, Norwegen, Polen, San Marino, Schweden, Slowakei, Slowenien, Spanien (einschließlich Kanar. Inseln), Tschechische Rep., Ungarn, Zypern." },
+		     { "TransEuro2","Albanien, Bosnien-Herzegowina, Bulgarien, Estland, Griechenland, Israel, Jugoslawien, Kroatien, Lettland, Libyen, Litauen, Malta, Marokko, Mazedonien, Moldau, Portugal (einschließlich Azoren und Madeira), Rumänien, Rußland, Türkei, Ukraine, Weißrußland" },
+		     { "TransAmerika","Kanada, Vereinigte Staaten"},
+		     { "TransPazifik","Australien, Hong Kong, Japan, Korea (Süd), Malaysia, Neuseeland, Singapur"},
+		     { "TransWelt","+"}};
+		     
+  double Tarif[][2] = {{ 0.90, 0.90 },
+		       { 4.00, 3.50 },
+		       { 2.75, 2.75 },
+		       { 3.50, 3.50 },
+		       { 6.50, 6.50 },
+		       { 3.00, 3.00 },
+		       { 8.00, 8.00 },
+		       { 20.00,20.00 }};
+  int z;
+  
+  rprintf ("P:11,1", "TNC 10elf" );
+  rprintf ("C:Name:", "Transnet Communications" );
+//  rprintf ("C:Address:", "" );
+  rprintf ("C:Homepage:", "http://www.10elf.at" );
+  rprintf ("C:TarifURL:", "http://www.10elf.at/deutsch/festnetzi.htm" );
+  rprintf ("C:EMail:", "info@10elf.at" );
+//  rprintf ("C:Telefon:", "" );
+  rprintf ("C:Special:", "Für RSL-COM-Kunden nicht verwendbar" );
   
   for (z=0; z<COUNT(Zone); z++) {
     rprintf ("Z:%d", Zone[z][0] , z+1);
@@ -2295,6 +2341,7 @@ int main (int argc, char *argv[])
   rate_1008();
   rate_1009();
   rate_1011();
+  rate_10elf();
   rate_1012(1012);
   rate_1013();
   rate_1014();

@@ -1,4 +1,4 @@
-/* $Id: rate.c,v 1.51 1999/10/28 18:36:48 akool Exp $
+/* $Id: rate.c,v 1.52 1999/10/30 13:42:37 akool Exp $
  *
  * Tarifdatenbank
  *
@@ -19,6 +19,12 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rate.c,v $
+ * Revision 1.52  1999/10/30 13:42:37  akool
+ * isdnlog-3.60
+ *   - many new rates
+ *   - compiler warnings resolved
+ *   - fixed "Sonderrufnummer" Handling
+ *
  * Revision 1.51  1999/10/28 18:36:48  akool
  * isdnlog-3.59
  *  - problems with gcc-2.7.2.3 fixed
@@ -1386,8 +1392,11 @@ int getArea (int prefix, char *number)
   if (prefix<0 || prefix>=nProvider || !Provider[prefix].used)
     return 0;
 
-  l=strlen(number);
+/*  l=strlen(number); +4371891234 !!! 
+  das hatten wir doch schon einmal oder
+*/
   for (i=0; i<Provider[prefix].nArea; i++) {
+    l=strlen(Provider[prefix].Area[i].Code);
     if (strmatch(Provider[prefix].Area[i].Code, number)>=l)
       return 1;
   }

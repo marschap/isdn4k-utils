@@ -1,4 +1,4 @@
-V:1.10-Germany [29-Oct-1999 10:14:07]
+V:1.10-Germany [30-Oct-1999 15:35:50]
 
 # Währungsformat
 U:%.3f DM
@@ -8,7 +8,7 @@ U:%.3f DM
 #
 # (C) Copyright 1999 by Andreas Kool (akool@isdn4linux.de)
 #
-# $Id: rate-de.dat,v 1.54 1999/10/29 08:17:01 akool Exp $
+# $Id: rate-de.dat,v 1.55 1999/10/30 13:42:35 akool Exp $
 #
 #
 # Das "A:" Tag muß folgendermaßen gefüllt werden:
@@ -204,9 +204,8 @@ Z:1-4 Inlandsverbindungen
 A:+49
 T:W/07-19=0.15/60 Geschaeftszeit
 T:W/19-21=0.08/60 Freizeit
-T:*/21-07=0.04/60 Happy Hour
+T:*/21-07=0.04/60 Nacht
 T:E,H/07-21=0.08/60 Wochenende
-T:E,H/21-07=0.04/60 Wochenende
 Z:10 Mobilfunk
 A:+491618
 A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619
@@ -214,9 +213,9 @@ A:+49170,+49171,+49175
 A:+49172,+49173,+49174
 A:+49177,+49178
 A:+49176,+49179
-T:W/08-18=0.94/60 Geschaeftszeit
-T:W/18-08=0.47/60 Freizeit
-T:E,H/*=0.47/60 Freizeit
+T:W/07-19=0.94/60 Geschaeftszeit
+T:W/19-07=0.47/60 Freizeit
+T:E,H/*=0.47/60 Wochenende
 Z:31 Iridium A GSM-homed
 A:_IR16
 T:*/*=14.259996/60
@@ -345,9 +344,7 @@ T:E,H/*=0.049996/60 Wochenende
 Z:102 o.tel.o online 01011
 A:0191501
 S:Internet by call
-T:W/09-21=0.059044/60 Geschaeftszeit
-T:W/21-09=0.059044/60
-T:E,H/*=0.059044/60
+T:*/*=0.059/60
 Z:160 Televotum
 A:01370,01373,01374,01375,01376,01377,01378,01379
 T:*/*=0.119712/0,0.359948/60
@@ -372,34 +369,32 @@ A:01888
 T:W/08-18=0.230028/60 Geschaeftszeit
 T:W/18-08=0.140012/60
 T:E,H/*=0.140012/60 Wochenende
-Z:200 Eurolaender
-A:NL,BE,FR,ES
-A:PT,FI,LU,IE,IT
-A:AT
-T:*/*=0.539980/60
-Z:201 Europa 1
+Z:200 Top-Länder
+A:BE,DK,FR,UK,IT,LU
+A:NL,_UKIR,AT,CH,ES,US,CA
+T:*/*=0.47/60
+Z:201 Europa A
+T:*/*=0.54/60
+Z:202 Europa B
 A:FO,GR,IS,CY,HU
 A:AD,MC,SM,VA
-A:YU,HR,CH,CZ
-A:SK,LI,UK
-A:DK,SE,NO,PL,TR
-T:*/*=0.689968/60
-Z:202 Europa 2
+A:YU,HR,CZ
+A:SK,LI
+A:SE,NO,PL,TR
+T:*/*=0.69/60
+Z:203 Europa C
 A:EG,EH,DZ,TN,LY
 A:GI,AL,MT,BG,LT
 A:LV,EE,MD,BY
 A:UA,SI,BA,MK
 A:RO,RU,LB
 A:JO,SY,IL
-T:*/*=0.989944/60
-Z:203 International 1
-A:US,CA
-T:*/*=0.689968/60
-Z:204 International 2
+T:*/*=0.99/60
+Z:204 Welt A
 A:AU,NZ,SG,JP
 A:KR,HK
-T:*/*=1.989980/60
-Z:205 International 3
+T:*/*=1.49/60
+Z:205 Welt B
 A:BS,BB,AI,AG
 A:VG,VI
 A:KY,BM,GD,TC
@@ -411,12 +406,12 @@ A:ZA,AR,BR,CL
 A:CO,AN,PH
 A:TW,SA,AE
 A:IR
-T:*/*=2.389948/60
-Z:206 International 4
+T:*/*=2.39/60
+Z:206 Welt C
 A:+
-T:*/*=2.790032/60
+T:*/*=2.79/60
 #####################################################################
-P:11,1 o.tel.o direct Preselection
+P:11,1 o.tel.o private Preselection
 C:Mannesmann Zwölfte Verwaltungsgesellschaft mbH, Mannesmannufer 2, 40213 Düsseldorf
 C:Homepage: http://www.o-tel-o.de
 C:Hotline:  01803/1998 oder 0800/7370 (Geschaeftskunden)
@@ -442,16 +437,13 @@ Z:0 Freephone
 A:0130,0800,_F800
 Z:1-2 Regional
 T:W/08-18=0.05/0,0.09(60)/1 Geschaeftszeit
-T:W/00-08,18-21=0.05/0,0.05(60)/1 Freizeit
-T:*/21-00=0.05/0,0.04(60)/1 Happy Hour
-T:E,H/00-21=0.05/0,0.095(60)/1 Wochenende
+T:W/18-08=0.05/0,0.05(60)/1
+T:E,H/*=0.05/0,0.05(60)/1 Wochenende
 Z:3-4 National
-T:W/08-18=0.05/0,0.20(60)/1 Geschaeftszeit
-T:W/18-21=0.05/0,0.10(60)/1 Freizeit
-T:W/00-08=0.05/0,0.06(60)/1 Nacht
-T:E,H/08-21=0.05/0,0.095(60)/1 Wochenende Tagsüber
-T:E,H/00-08=0.05/0,0.095(60)/1 Wochenende Nacht
-T:*/21-00=0.05/0,0.04(60)/1 Happy Hour
+T:W/08-18=0.05/0,0.18(60)/1 Geschaeftszeit
+T:W/05-08,18-21=0.05/0,0.08(60)/1 Freizeit
+T:*/21-05=0.05/0,0.05(60)/1 Nacht
+T:E,H/05-21=0.05/0,0.08(60)/1 Wochenende
 Z:10 Mobilfunk C Mobilbox
 A:+491618
 T:W/08-18=0.05/0,0.629996(60)/1 Geschaeftszeit
@@ -467,7 +459,7 @@ A:+49177,+49178
 A:+49176,+49179
 T:W/08-18=0.05/0,0.94(60)/1 Geschaeftszeit
 T:W/18-08=0.05/0,0.47(60)/1 Freizeit
-T:E,H/*=0.05/0,0.47(60)/1 Freizeit
+T:E,H/*=0.05/0,0.47(60)/1 Wochenende
 Z:31 Iridium A GSM-homed
 A:_IR16
 T:*/*=0.05/0,14.259996(60)/1
@@ -623,14 +615,20 @@ A:01888
 T:W/08-18=0.05/0,0.230028(60)/1 Geschaeftszeit
 T:W/18-08=0.05/0,0.140012(60)/1
 T:E,H/*=0.05/0,0.140012(60)/1 Wochenende
-Z:201 Europa 1
+Z:200 Top-Länder
+A:BE,DK,FR,UK,IT,LU
+A:NL,_UKIR,AT,CH,ES,CA,US
+T:*/*=0.05/0,0.47(60)/1
+Z:201 Europa A
 A:FO,GR,IS,CY,HU
 A:AD,MC,SM,VA
-A:YU,HR,CH,CZ
-A:SK,LI,UK
-A:DK,SE,NO,PL,TR
+A:YU,HR,CZ
+A:SK,LI
+A:SE,NO,PL,TR
+T:*/*=0.05/0,0.54(60)/1
+Z:202 Europa B
 T:*/*=0.05/0,0.69(60)/1
-Z:202 Europa 2
+Z:203 Europa C
 A:EG,EH,DZ,TN,LY
 A:GI,AL,MT,BG,LT
 A:LV,EE,MD,BY
@@ -638,14 +636,11 @@ A:UA,SI,BA,MK
 A:RO,RU,LB
 A:JO,SY,IL
 T:*/*=0.05/0,0.99(60)/1
-Z:203 International 1
-A:US,CA
-T:*/*=0.05/0,0.69(60)/1
-Z:204 International 2
+Z:204 Welt A
 A:AU,NZ,SG,JP
 A:KR,HK
-T:*/*=0.05/0,1.989980(60)/1
-Z:205 International 3
+T:*/*=0.05/0,1.69(60)/1
+Z:205 Welt B
 A:BS,BB,AI,AG
 A:VG,VI
 A:KY,BM,GD,TC
@@ -657,10 +652,734 @@ A:ZA,AR,BR,CL
 A:CO,AN,PH
 A:TW,SA,AE
 A:IR
-T:*/*=0.05/0,2.389948(60)/1
+T:*/*=0.05/0,2.39(60)/1
 A:206 international 4
 A:+
-T:*/*=0.05/0,2.790032(60)/1
+T:*/*=0.05/0,2.79(60)/1
+#####################################################################
+P:11,2 o.tel.o private plus Preselection
+C:DM 8,90 Grundgebühr / Monat
+C:Mannesmann Zwölfte Verwaltungsgesellschaft mbH, Mannesmannufer 2, 40213 Düsseldorf
+C:Homepage: http://www.o-tel-o.de
+C:Hotline:  01803/1998 oder 0800/7370 (Geschaeftskunden)
+C:Adresse:  96038 Bamberg
+C:Erfasste Zonen:
+C:0, 2	-   4	Deutschland
+C:10	-  11	Mobilfunk
+C:31	-  39	Satelitenfunk
+C:45		Auskunft o.tel.o
+C:60	-  75	Pieper
+C:81	-  85	Service 0180-x
+C:91	-  94	Service 0190-x
+C:100		T-Online
+C:101		AOL
+C:102		o.tel.o online
+C:160	- 164	DTAG Service Nummern
+C:171		Info Expo 2000
+C:172		IVBB
+C:201	-	Ausland
+# G:13.05.1999
+D:dtag
+Z:0 Freephone
+A:0130,0800,_F800
+Z:1-2 Regional
+T:W/08-18=0.05/0,0.07(60)/1 Geschaeftszeit
+T:W/05-08,18-21=0.05/0,0.05(60)/1 Freizeit
+T:*/21-05=0.05/0,0.04(60)/1 Nacht
+T:E,H/05-21=0.05/0,0.04(60)/1 Wochenende
+Z:3-4 National
+T:W/08-18=0.05/0,0.12(60)/1 Geschaeftszeit
+T:W/05-08,18-21=0.05/0,0.05(60)/1 Freizeit
+T:*/21-05=0.05/0,0.04(60)/1 Nacht
+T:E,H/05-21=0.05/0,0.05(60)/1 Wochenende
+Z:10 Mobilfunk C Mobilbox
+A:+491618
+T:W/08-18=0.05/0,0.629996(60)/1 Geschaeftszeit
+T:W/08-18=0.05/0,0.430012(60)/1 Freizeit
+T:W/18-21=0.05/0,0.430012(60)/1 Freizeit
+T:*/21-00=0.05/0,0.430012(60)/1 Happy Hour
+T:E,H/00-21=0.05/0,0.430012(60)/1 Wochenende
+Z:11 Mobilfunk
+A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619
+A:+49170,+49171
+A:+49172,+49173
+A:+49177,+49178
+A:+49176,+49179
+T:W/08-18=0.05/0,0.89(60)/1 Geschaeftszeit
+T:W/18-08=0.05/0,0.45(60)/1 Freizeit
+T:E,H/*=0.05/0,0.45(60)/1 Wochenende
+Z:31 Iridium A GSM-homed
+A:_IR16
+T:*/*=0.05/0,14.259996(60)/1
+Z:32 Iridium B Iridium-homed
+A:_IR17
+T:*/*=0.05/0,7.730008(60)/1
+Z:33 Inmarsat-A
+A:_INA_,_INDF
+T:*/*=0.05/0,10.280036(60)/1
+Z:35 Inmarsat-Aero
+A:_INAE
+T:*/*=0.05/0,10.280036(60)/1
+Z:36 Inmarsat-B
+A:_INB_
+T:*/*=0.05/0,8.999976
+Z:37 Inmarsat-B HSD
+A:_INBH
+T:*/*=0.05/0,24.000052(60)/1
+Z:38 Inmarsat-M
+A:_INM_
+T:*/*=0.05/0,8.999976
+Z:39 Inmarsat-Mini-M
+A:_INMM
+T:*/*=0.05/0,7.200004(60)/1
+Z:45 o.tel.o Auskunft
+A:11888
+T:*/*=0.05/0,1.5899888/0,0.489984(60)/1
+Z:60 Cityruf automatic
+A:+49164,+491682,+491683,+491684,+491685,+491686,+491687,+491688,+491689
+T:W/08-18=0.05/0,0.359948(60)/1 Geschaeftszeit
+T:W/00-08=0.05/0,0.240004(60)/1 Freizeit
+T:W/18-21=0.05/0,0.240004(60)/1 Freizeit
+T:*/21-00=0.05/0,0.240004(60)/1 Happy Hour
+T:E,H/00-21=0.05/0,0.240004(60)/1 Wochenende
+Z:61 Cityruf Operator
+A:+4916951,+4916952
+T:*/*=0.05/0,1.440024(60)/1
+Z:62 Scall IVR
+A:+491680
+T:*/*=0.05/0,0.5999984/0,0/1
+Z:63 Scall DTMF
+A:+491681
+T:W/08-18=0.05/0,1.4399892/0,0/1 Geschaeftszeit
+T:W/18-08=0.05/0,0.9599928/0,0/1 Freizeit und Wochenende
+T:E,H/*=0.05/0,0.9599928/0,0/1 Freizeit und Wochenende
+Z:64 Scall Operator
+A:+491699
+T:*/*=0.05/0,2.3999936/0,0/1
+Z:65 Scall Modem
+A:+491696
+T:*/*=0.05/0,0.9599928/0,0/1
+Z:66 TeLMI automatic
+A:+491660,+491665,+491669
+T:*/*=0.05/0,1.380052(60)/1
+Z:67 TeLMI Operator
+A:+491661
+T:*/*=0.05/0,5.529952(60)/1
+Z:68 Skyper Operator
+A:+4916953
+T:*/*=0.05/0,2.3999936/0,0/1
+Z:69 Skyper
+A:+491692,+491693
+T:*/*=0.05/0,0.9599928/0,0/1
+Z:70 Quix Service
+A:+4916500,+4916501,+4916502,+4916503,+4916504,+4916504,+4916505,+4916506,+4916507,+4916508,+491655
+T:W/08-18=0.05/0,0.539980(60)/1 Geschaeftszeit
+T:W/18-08=0.05/0,0.270048(60)/1
+T:E,H/*=0.05/0,0.270048(60)/1
+Z:71 Quix DTMF
+A:+491651
+T:*/*=0.05/0,0.219994/0,0/1
+Z:72 Quix Modem
+A:+4916591,+4916592,+4916593
+T:W/08-18=0.05/0,1.0799948/0,0/1 Geschaeftszeit
+T:W/18-08=0.05/0,0.8599892/0,0/1
+T:E,H/*=0.05/0,0.8599892/0,0/1
+Z:73 Quix Operator 1
+A:+491653
+T:W/08-18=0.05/0,1.0799948/0,0/1 Geschaeftszeit
+T:W/18-08=0.05/0,0.8599892/0,0/1
+T:E,H/*=0.05/0,0.8599892/0,0/1
+Z:74 Quix IVR
+A:+491654
+T:W/08-18=0.05/0,1.0799948/0,0/1 Geschaeftszeit
+T:W/18-08=0.05/0,0.8599892/0,0/1
+T:E,H/*=0.05/0,0.8599892/0,0/1
+Z:75 Quix Operator 2
+A:+491656
+T:*/*=0.05/0,2.1599896/0,0/1
+# FIXME: 01801 ????
+Z:81 Service 01801
+A:01801
+T:W/08-18=0.05/0,0.090016(60)/1 Geschaeftszeit
+T:W/18-08=0.05/0,0.049996(60)/1
+T:E,H/*=0.05/0,0.049996(60)/1
+Z:82 Service 01802
+A:01802
+T:*/*=0.05/0,0.119712/0,0/1
+Z:83 Service 01803
+# FIXME: 01803 ???? Telekom: 18(60)/1, o.tel.o 18/40 ?
+A:01803
+T:*/*=0.05/0,0.180032(60)/1
+Z:84 Servie 01804
+A:01804
+T:*/*=0.05/0,0.4799964
+Z:85 Service 01805
+A:01805
+# FIXME: 01805 ???? Telekom: 24/60, o.tel.o 24/30 ?
+T:*/*=0.05/0,0.240004(60)/1
+Z:91 Service 01901 3 5
+A:01901,01903,01905
+T:*/*=0.05/0,0.120988/6
+Z:92 Service 01904
+A:01904
+T:*/*=0.05/0,0.120988/9
+Z:100 T-Online
+A:01910
+T:W/08-18=0.05/0,0.090016(60)/1 Geschaeftszeit
+T:W/18-08=0.05/0,0.049996(60)/1
+T:E,H/*=0.05/0,0.049996(60)/1 Wochenende
+Z:101 AOL-Online
+A:01914
+T:W/08-18=0.05/0,0.090016(60)/1 Geschaeftszeit
+T:W/18-08=0.05/0,0.049996(60)/1
+T:E,H/*=0.05/0,0.049996(60)/1 Wochenende
+Z:102 o.tel.o online 01011
+A:0191501
+S:Internet by call
+T:W/09-21=0.05/0,0.059044(60)/1 Geschaeftszeit
+T:W/21-09=0.05/0,0.059044(60)/1
+T:E,H/*=0.05/0,0.059044(60)/1
+Z:160 Televotum
+A:01370,01373,01374,01375,01376,01377,01378,01379
+T:*/*=0.05/0,0.119712/0,0.359948(60)/1
+Z:161 Teledialog
+A:0138
+T:*/*=0.05/0,0.119712/0,0.359948(60)/1
+Z:162 T-VoteCall 1
+A:01371
+T:*/*=0.05/0,0.2399924/0,0/1
+Z:163 T-VoteCall 2
+A:01372
+T:*/*=0.05/0,0.119712/0,0.359948(60)/1
+Z:164 Ansagedienste
+T:W/08-18=0.05/0,0.090016(60)/1 Geschaeftszeit
+T:W/18-08=0.05/0,0.049996(60)/1
+T:E,H/*=0.05/0,0.049996(60)/1 Wochenende
+Z:171 Expo 2000
+A:02000
+T:*/*=0.05/0,0.5999984/0
+Z:172 Informationsverband Berlin-Bonn
+A:01888
+T:W/08-18=0.05/0,0.230028(60)/1 Geschaeftszeit
+T:W/18-08=0.05/0,0.140012(60)/1
+T:E,H/*=0.05/0,0.140012(60)/1 Wochenende
+Z:200 Top-Länder
+A:BE,DK,FR,UK,IT,LU
+A:NL,_UKIR,AT,CH,ES,CA,US
+T:*/*=0.05/0,0.39(60)/1
+Z:201 Europa A
+A:FO,GR,IS,CY,HU
+A:AD,MC,SM,VA
+A:YU,HR,CZ
+A:SK,LI
+A:SE,NO,PL,TR
+T:*/*=0.05/0,0.54(60)/1
+Z:202 Europa B
+T:*/*=0.05/0,0.69(60)/1
+Z:203 Europa C
+A:EG,EH,DZ,TN,LY
+A:GI,AL,MT,BG,LT
+A:LV,EE,MD,BY
+A:UA,SI,BA,MK
+A:RO,RU,LB
+A:JO,SY,IL
+T:*/*=0.05/0,0.99(60)/1
+Z:204 Welt A
+A:AU,NZ,SG,JP
+A:KR,HK
+T:*/*=0.05/0,1.69(60)/1
+Z:205 Welt B
+A:BS,BB,AI,AG
+A:VG,VI
+A:KY,BM,GD,TC
+A:MS,MP,GU,LC
+A:DM,VC,PR
+A:DO,TT
+A:KN,JM
+A:ZA,AR,BR,CL
+A:CO,AN,PH
+A:TW,SA,AE
+A:IR
+T:*/*=0.05/0,2.39(60)/1
+A:206 international 4
+A:+
+T:*/*=0.05/0,2.79(60)/1
+#####################################################################
+P:11,3 o.tel.o professional plus Preselection
+C:DM 8,90 Grundgebühr / Monat
+C:Mannesmann Zwölfte Verwaltungsgesellschaft mbH, Mannesmannufer 2, 40213 Düsseldorf
+C:Homepage: http://www.o-tel-o.de
+C:Hotline:  01803/1998 oder 0800/7370 (Geschaeftskunden)
+C:Adresse:  96038 Bamberg
+C:Erfasste Zonen:
+C:0, 2	-   4	Deutschland
+C:10	-  11	Mobilfunk
+C:31	-  39	Satelitenfunk
+C:45		Auskunft o.tel.o
+C:60	-  75	Pieper
+C:81	-  85	Service 0180-x
+C:91	-  94	Service 0190-x
+C:100		T-Online
+C:101		AOL
+C:102		o.tel.o online
+C:160	- 164	DTAG Service Nummern
+C:171		Info Expo 2000
+C:172		IVBB
+C:201	-	Ausland
+# G:13.05.1999
+D:dtag
+Z:0 Freephone
+A:0130,0800,_F800
+Z:1-2 Regional
+T:W/08-19=0.05/0,0.06(60)/1 Geschaeftszeit
+T:W/19-08=0.05/0,0.04(60)/1 Freizeit
+T:E,H/*=0.05/0,0.04(60)/1 Wochenende
+Z:3-4 National
+T:W/08-19=0.05/0,0.10(60)/1 Geschaeftszeit
+T:W/19-08=0.05/0,0.08(60)/1 Freizeit
+T:E,H/*=0.05/0,0.08(60)/1 Wochenende
+Z:10 Mobilfunk C Mobilbox
+A:+491618
+T:W/08-19=0.05/0,0.629996(60)/1 Geschaeftszeit
+T:W/19-08=0.05/0,0.430012(60)/1 Freizeit
+T:E,H/*=0.05/0,0.430012(60)/1 Wochenende
+Z:11 Mobilfunk
+A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619
+A:+49170,+49171
+A:+49172,+49173
+A:+49177,+49178
+A:+49176,+49179
+T:W/08-19=0.05/0,0.79(60)/1 Geschaeftszeit
+T:W/19-08=0.05/0,0.47(60)/1 Freizeit
+T:E,H/*=0.05/0,0.47(60)/1 Wochenende
+Z:31 Iridium A GSM-homed
+A:_IR16
+T:*/*=0.05/0,14.259996(60)/1
+Z:32 Iridium B Iridium-homed
+A:_IR17
+T:*/*=0.05/0,7.730008(60)/1
+Z:33 Inmarsat-A
+A:_INA_,_INDF
+T:*/*=0.05/0,10.280036(60)/1
+Z:35 Inmarsat-Aero
+A:_INAE
+T:*/*=0.05/0,10.280036(60)/1
+Z:36 Inmarsat-B
+A:_INB_
+T:*/*=0.05/0,8.999976
+Z:37 Inmarsat-B HSD
+A:_INBH
+T:*/*=0.05/0,24.000052(60)/1
+Z:38 Inmarsat-M
+A:_INM_
+T:*/*=0.05/0,8.999976
+Z:39 Inmarsat-Mini-M
+A:_INMM
+T:*/*=0.05/0,7.200004(60)/1
+Z:45 o.tel.o Auskunft
+A:11888
+T:*/*=0.05/0,1.5899888/0,0.489984(60)/1
+Z:60 Cityruf automatic
+A:+49164,+491682,+491683,+491684,+491685,+491686,+491687,+491688,+491689
+T:W/08-18=0.05/0,0.359948(60)/1 Geschaeftszeit
+T:W/00-08=0.05/0,0.240004(60)/1 Freizeit
+T:W/18-21=0.05/0,0.240004(60)/1 Freizeit
+T:*/21-00=0.05/0,0.240004(60)/1 Happy Hour
+T:E,H/00-21=0.05/0,0.240004(60)/1 Wochenende
+Z:61 Cityruf Operator
+A:+4916951,+4916952
+T:*/*=0.05/0,1.440024(60)/1
+Z:62 Scall IVR
+A:+491680
+T:*/*=0.05/0,0.5999984/0,0/1
+Z:63 Scall DTMF
+A:+491681
+T:W/08-18=0.05/0,1.4399892/0,0/1 Geschaeftszeit
+T:W/18-08=0.05/0,0.9599928/0,0/1 Freizeit und Wochenende
+T:E,H/*=0.05/0,0.9599928/0,0/1 Freizeit und Wochenende
+Z:64 Scall Operator
+A:+491699
+T:*/*=0.05/0,2.3999936/0,0/1
+Z:65 Scall Modem
+A:+491696
+T:*/*=0.05/0,0.9599928/0,0/1
+Z:66 TeLMI automatic
+A:+491660,+491665,+491669
+T:*/*=0.05/0,1.380052(60)/1
+Z:67 TeLMI Operator
+A:+491661
+T:*/*=0.05/0,5.529952(60)/1
+Z:68 Skyper Operator
+A:+4916953
+T:*/*=0.05/0,2.3999936/0,0/1
+Z:69 Skyper
+A:+491692,+491693
+T:*/*=0.05/0,0.9599928/0,0/1
+Z:70 Quix Service
+A:+4916500,+4916501,+4916502,+4916503,+4916504,+4916504,+4916505,+4916506,+4916507,+4916508,+491655
+T:W/08-18=0.05/0,0.539980(60)/1 Geschaeftszeit
+T:W/18-08=0.05/0,0.270048(60)/1
+T:E,H/*=0.05/0,0.270048(60)/1
+Z:71 Quix DTMF
+A:+491651
+T:*/*=0.05/0,0.219994/0,0/1
+Z:72 Quix Modem
+A:+4916591,+4916592,+4916593
+T:W/08-18=0.05/0,1.0799948/0,0/1 Geschaeftszeit
+T:W/18-08=0.05/0,0.8599892/0,0/1
+T:E,H/*=0.05/0,0.8599892/0,0/1
+Z:73 Quix Operator 1
+A:+491653
+T:W/08-18=0.05/0,1.0799948/0,0/1 Geschaeftszeit
+T:W/18-08=0.05/0,0.8599892/0,0/1
+T:E,H/*=0.05/0,0.8599892/0,0/1
+Z:74 Quix IVR
+A:+491654
+T:W/08-18=0.05/0,1.0799948/0,0/1 Geschaeftszeit
+T:W/18-08=0.05/0,0.8599892/0,0/1
+T:E,H/*=0.05/0,0.8599892/0,0/1
+Z:75 Quix Operator 2
+A:+491656
+T:*/*=0.05/0,2.1599896/0,0/1
+# FIXME: 01801 ????
+Z:81 Service 01801
+A:01801
+T:W/08-18=0.05/0,0.090016(60)/1 Geschaeftszeit
+T:W/18-08=0.05/0,0.049996(60)/1
+T:E,H/*=0.05/0,0.049996(60)/1
+Z:82 Service 01802
+A:01802
+T:*/*=0.05/0,0.119712/0,0/1
+Z:83 Service 01803
+# FIXME: 01803 ???? Telekom: 18(60)/1, o.tel.o 18/40 ?
+A:01803
+T:*/*=0.05/0,0.180032(60)/1
+Z:84 Servie 01804
+A:01804
+T:*/*=0.05/0,0.4799964
+Z:85 Service 01805
+A:01805
+# FIXME: 01805 ???? Telekom: 24/60, o.tel.o 24/30 ?
+T:*/*=0.05/0,0.240004(60)/1
+Z:91 Service 01901 3 5
+A:01901,01903,01905
+T:*/*=0.05/0,0.120988/6
+Z:92 Service 01904
+A:01904
+T:*/*=0.05/0,0.120988/9
+Z:100 T-Online
+A:01910
+T:W/08-18=0.05/0,0.090016(60)/1 Geschaeftszeit
+T:W/18-08=0.05/0,0.049996(60)/1
+T:E,H/*=0.05/0,0.049996(60)/1 Wochenende
+Z:101 AOL-Online
+A:01914
+T:W/08-18=0.05/0,0.090016(60)/1 Geschaeftszeit
+T:W/18-08=0.05/0,0.049996(60)/1
+T:E,H/*=0.05/0,0.049996(60)/1 Wochenende
+Z:102 o.tel.o online 01011
+A:0191501
+S:Internet by call
+T:W/09-21=0.05/0,0.059044(60)/1 Geschaeftszeit
+T:W/21-09=0.05/0,0.059044(60)/1
+T:E,H/*=0.05/0,0.059044(60)/1
+Z:160 Televotum
+A:01370,01373,01374,01375,01376,01377,01378,01379
+T:*/*=0.05/0,0.119712/0,0.359948(60)/1
+Z:161 Teledialog
+A:0138
+T:*/*=0.05/0,0.119712/0,0.359948(60)/1
+Z:162 T-VoteCall 1
+A:01371
+T:*/*=0.05/0,0.2399924/0,0/1
+Z:163 T-VoteCall 2
+A:01372
+T:*/*=0.05/0,0.119712/0,0.359948(60)/1
+Z:164 Ansagedienste
+T:W/08-18=0.05/0,0.090016(60)/1 Geschaeftszeit
+T:W/18-08=0.05/0,0.049996(60)/1
+T:E,H/*=0.05/0,0.049996(60)/1 Wochenende
+Z:171 Expo 2000
+A:02000
+T:*/*=0.05/0,0.5999984/0
+Z:172 Informationsverband Berlin-Bonn
+A:01888
+T:W/08-18=0.05/0,0.230028(60)/1 Geschaeftszeit
+T:W/18-08=0.05/0,0.140012(60)/1
+T:E,H/*=0.05/0,0.140012(60)/1 Wochenende
+Z:200 Top-Länder
+A:BE,DK,FR,UK,IT,LU
+A:NL,_UKIR,AT,CH,ES,CA,US
+T:*/*=0.05/0,0.39(60)/1
+Z:201 Europa A
+A:FO,GR,IS,CY,HU
+A:AD,MC,SM,VA
+A:YU,HR,CZ
+A:SK,LI
+A:SE,NO,PL,TR
+T:*/*=0.05/0,0.54(60)/1
+Z:202 Europa B
+T:*/*=0.05/0,0.69(60)/1
+Z:203 Europa C
+A:EG,EH,DZ,TN,LY
+A:GI,AL,MT,BG,LT
+A:LV,EE,MD,BY
+A:UA,SI,BA,MK
+A:RO,RU,LB
+A:JO,SY,IL
+T:*/*=0.05/0,0.99(60)/1
+Z:204 Welt A
+A:AU,NZ,SG,JP
+A:KR,HK
+T:*/*=0.05/0,1.49(60)/1
+Z:205 Welt B
+A:BS,BB,AI,AG
+A:VG,VI
+A:KY,BM,GD,TC
+A:MS,MP,GU,LC
+A:DM,VC,PR
+A:DO,TT
+A:KN,JM
+A:ZA,AR,BR,CL
+A:CO,AN,PH
+A:TW,SA,AE
+A:IR
+T:*/*=0.05/0,2.39(60)/1
+A:206 international 4
+A:+
+T:*/*=0.05/0,2.79(60)/1
+#####################################################################
+P:11,4 o.tel.o international plus Preselection
+C:DM 8,90 Grundgebühr / Monat
+C:Mannesmann Zwölfte Verwaltungsgesellschaft mbH, Mannesmannufer 2, 40213 Düsseldorf
+C:Homepage: http://www.o-tel-o.de
+C:Hotline:  01803/1998 oder 0800/7370 (Geschaeftskunden)
+C:Adresse:  96038 Bamberg
+C:Erfasste Zonen:
+C:0, 2	-   4	Deutschland
+C:10	-  11	Mobilfunk
+C:31	-  39	Satelitenfunk
+C:45		Auskunft o.tel.o
+C:60	-  75	Pieper
+C:81	-  85	Service 0180-x
+C:91	-  94	Service 0190-x
+C:100		T-Online
+C:101		AOL
+C:102		o.tel.o online
+C:160	- 164	DTAG Service Nummern
+C:171		Info Expo 2000
+C:172		IVBB
+C:201	-	Ausland
+# G:13.05.1999
+D:dtag
+Z:0 Freephone
+A:0130,0800,_F800
+Z:1-4 Inland
+T:*/*=0.12(60)/1
+Z:11 Mobilfunk
+A:+491618
+A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619
+A:+49170,+49171
+A:+49172,+49173
+A:+49177,+49178
+A:+49176,+49179
+T:*/*=0.75(60)/1
+Z:31 Iridium A GSM-homed
+A:_IR16
+T:*/*=0.05/0,14.259996(60)/1
+Z:32 Iridium B Iridium-homed
+A:_IR17
+T:*/*=0.05/0,7.730008(60)/1
+Z:33 Inmarsat-A
+A:_INA_,_INDF
+T:*/*=0.05/0,10.280036(60)/1
+Z:35 Inmarsat-Aero
+A:_INAE
+T:*/*=0.05/0,10.280036(60)/1
+Z:36 Inmarsat-B
+A:_INB_
+T:*/*=0.05/0,8.999976
+Z:37 Inmarsat-B HSD
+A:_INBH
+T:*/*=0.05/0,24.000052(60)/1
+Z:38 Inmarsat-M
+A:_INM_
+T:*/*=0.05/0,8.999976
+Z:39 Inmarsat-Mini-M
+A:_INMM
+T:*/*=0.05/0,7.200004(60)/1
+Z:45 o.tel.o Auskunft
+A:11888
+T:*/*=0.05/0,1.5899888/0,0.489984(60)/1
+Z:60 Cityruf automatic
+A:+49164,+491682,+491683,+491684,+491685,+491686,+491687,+491688,+491689
+T:W/08-18=0.05/0,0.359948(60)/1 Geschaeftszeit
+T:W/00-08=0.05/0,0.240004(60)/1 Freizeit
+T:W/18-21=0.05/0,0.240004(60)/1 Freizeit
+T:*/21-00=0.05/0,0.240004(60)/1 Happy Hour
+T:E,H/00-21=0.05/0,0.240004(60)/1 Wochenende
+Z:61 Cityruf Operator
+A:+4916951,+4916952
+T:*/*=0.05/0,1.440024(60)/1
+Z:62 Scall IVR
+A:+491680
+T:*/*=0.05/0,0.5999984/0,0/1
+Z:63 Scall DTMF
+A:+491681
+T:W/08-18=0.05/0,1.4399892/0,0/1 Geschaeftszeit
+T:W/18-08=0.05/0,0.9599928/0,0/1 Freizeit und Wochenende
+T:E,H/*=0.05/0,0.9599928/0,0/1 Freizeit und Wochenende
+Z:64 Scall Operator
+A:+491699
+T:*/*=0.05/0,2.3999936/0,0/1
+Z:65 Scall Modem
+A:+491696
+T:*/*=0.05/0,0.9599928/0,0/1
+Z:66 TeLMI automatic
+A:+491660,+491665,+491669
+T:*/*=0.05/0,1.380052(60)/1
+Z:67 TeLMI Operator
+A:+491661
+T:*/*=0.05/0,5.529952(60)/1
+Z:68 Skyper Operator
+A:+4916953
+T:*/*=0.05/0,2.3999936/0,0/1
+Z:69 Skyper
+A:+491692,+491693
+T:*/*=0.05/0,0.9599928/0,0/1
+Z:70 Quix Service
+A:+4916500,+4916501,+4916502,+4916503,+4916504,+4916504,+4916505,+4916506,+4916507,+4916508,+491655
+T:W/08-18=0.05/0,0.539980(60)/1 Geschaeftszeit
+T:W/18-08=0.05/0,0.270048(60)/1
+T:E,H/*=0.05/0,0.270048(60)/1
+Z:71 Quix DTMF
+A:+491651
+T:*/*=0.05/0,0.219994/0,0/1
+Z:72 Quix Modem
+A:+4916591,+4916592,+4916593
+T:W/08-18=0.05/0,1.0799948/0,0/1 Geschaeftszeit
+T:W/18-08=0.05/0,0.8599892/0,0/1
+T:E,H/*=0.05/0,0.8599892/0,0/1
+Z:73 Quix Operator 1
+A:+491653
+T:W/08-18=0.05/0,1.0799948/0,0/1 Geschaeftszeit
+T:W/18-08=0.05/0,0.8599892/0,0/1
+T:E,H/*=0.05/0,0.8599892/0,0/1
+Z:74 Quix IVR
+A:+491654
+T:W/08-18=0.05/0,1.0799948/0,0/1 Geschaeftszeit
+T:W/18-08=0.05/0,0.8599892/0,0/1
+T:E,H/*=0.05/0,0.8599892/0,0/1
+Z:75 Quix Operator 2
+A:+491656
+T:*/*=0.05/0,2.1599896/0,0/1
+# FIXME: 01801 ????
+Z:81 Service 01801
+A:01801
+T:W/08-18=0.05/0,0.090016(60)/1 Geschaeftszeit
+T:W/18-08=0.05/0,0.049996(60)/1
+T:E,H/*=0.05/0,0.049996(60)/1
+Z:82 Service 01802
+A:01802
+T:*/*=0.05/0,0.119712/0,0/1
+Z:83 Service 01803
+# FIXME: 01803 ???? Telekom: 18(60)/1, o.tel.o 18/40 ?
+A:01803
+T:*/*=0.05/0,0.180032(60)/1
+Z:84 Servie 01804
+A:01804
+T:*/*=0.05/0,0.4799964
+Z:85 Service 01805
+A:01805
+# FIXME: 01805 ???? Telekom: 24/60, o.tel.o 24/30 ?
+T:*/*=0.05/0,0.240004(60)/1
+Z:91 Service 01901 3 5
+A:01901,01903,01905
+T:*/*=0.05/0,0.120988/6
+Z:92 Service 01904
+A:01904
+T:*/*=0.05/0,0.120988/9
+Z:100 T-Online
+A:01910
+T:W/08-18=0.05/0,0.090016(60)/1 Geschaeftszeit
+T:W/18-08=0.05/0,0.049996(60)/1
+T:E,H/*=0.05/0,0.049996(60)/1 Wochenende
+Z:101 AOL-Online
+A:01914
+T:W/08-18=0.05/0,0.090016(60)/1 Geschaeftszeit
+T:W/18-08=0.05/0,0.049996(60)/1
+T:E,H/*=0.05/0,0.049996(60)/1 Wochenende
+Z:102 o.tel.o online 01011
+A:0191501
+S:Internet by call
+T:W/09-21=0.05/0,0.059044(60)/1 Geschaeftszeit
+T:W/21-09=0.05/0,0.059044(60)/1
+T:E,H/*=0.05/0,0.059044(60)/1
+Z:160 Televotum
+A:01370,01373,01374,01375,01376,01377,01378,01379
+T:*/*=0.05/0,0.119712/0,0.359948(60)/1
+Z:161 Teledialog
+A:0138
+T:*/*=0.05/0,0.119712/0,0.359948(60)/1
+Z:162 T-VoteCall 1
+A:01371
+T:*/*=0.05/0,0.2399924/0,0/1
+Z:163 T-VoteCall 2
+A:01372
+T:*/*=0.05/0,0.119712/0,0.359948(60)/1
+Z:164 Ansagedienste
+T:W/08-18=0.05/0,0.090016(60)/1 Geschaeftszeit
+T:W/18-08=0.05/0,0.049996(60)/1
+T:E,H/*=0.05/0,0.049996(60)/1 Wochenende
+Z:171 Expo 2000
+A:02000
+T:*/*=0.05/0,0.5999984/0
+Z:172 Informationsverband Berlin-Bonn
+A:01888
+T:W/08-18=0.05/0,0.230028(60)/1 Geschaeftszeit
+T:W/18-08=0.05/0,0.140012(60)/1
+T:E,H/*=0.05/0,0.140012(60)/1 Wochenende
+Z:200 Top-Länder
+A:BE,DK,FR,UK,IT,LU
+A:NL,_UKIR,AT,CH,ES,CA,US
+T:*/*=0.33(60)/1
+Z:201 Europa A
+A:FO,GR,IS,CY,HU
+A:AD,MC,SM,VA
+A:YU,HR,CZ
+A:SK,LI
+A:SE,NO,PL,TR
+T:*/*=0.49(60)/1
+Z:202 Europa B
+T:*/*=0.69(60)/1
+Z:203 Europa C
+A:EG,EH,DZ,TN,LY
+A:GI,AL,MT,BG,LT
+A:LV,EE,MD,BY
+A:UA,SI,BA,MK
+A:RO,RU,LB
+A:JO,SY,IL
+T:*/*=0.99(60)/1
+Z:204 Welt A
+A:AU,NZ,SG,JP
+A:KR,HK
+T:*/*=1.49(60)/1
+Z:205 Welt B
+A:BS,BB,AI,AG
+A:VG,VI
+A:KY,BM,GD,TC
+A:MS,MP,GU,LC
+A:DM,VC,PR
+A:DO,TT
+A:KN,JM
+A:ZA,AR,BR,CL
+A:CO,AN,PH
+A:TW,SA,AE
+A:IR
+T:*/*=1.99(60)/1
+A:206 international 4
+A:+
+T:*/*=2.49(60)/1
 #####################################################################
 #
 #
@@ -669,7 +1388,7 @@ C:Internetz GmbH, Süderstraße 75, 20097 Hamburg 01012
 #####################################################################
 #
 #
-P:13 Tele 2
+P:13,1 Tele 2 Privatkunden
 C:Telecommunications Services GmbH, Düsseldorf
 C:Homepage: http://www.tele2.de
 C:Hotline:  0800/24-01013
@@ -696,12 +1415,12 @@ A:+49176,+49179
 T:*/*=0.59/60
 Z:200 Euro 1 / USA, Kanada
 A:US,CA,NL,BE,FR,ES
-A:LU,FI,IT,CH,AT
+A:LU,FI,IT,CH,AT,VA
 A:UK,DK,SE,NO
-T:*/*=0.39/60
+T:*/*=0.35/60
 Z:201 Euro 2
-A:FO,IE,IS,AD,MC,SM,LI
-A:CZ,PL,TR
+A:AD,FO,IE,IS,LI,MC
+A:PL,SM,CZ,TR
 T:*/*=0.68/60
 Z:202 Welt 1
 A:EH,DZ,TN,LY,GR,GI,PT
@@ -724,7 +1443,81 @@ A:GQ,GA,CG,ZR,AO,GW,ASI
 A:SC,SD,RW,ET,SO,DJ,KE,TZ
 A:UG,BI,MZ,ZM,MG,RE,ZW,NA
 A:MW,LS,BW,SZ,YT,ZA
-A:SH,ER,AW,GL,AM,VA
+A:SH,ER,AW,GL,AM
+A:_UKIM,_UKIK,FK
+A:BZ,GT,SV,HN,NI,CR,PA
+A:PM,HT,PE,MX,CU,AR,BR
+A:CL,CO,VE,GP,BO,GY,EC,PY
+A:MQ,SR,UY,AN,MY,ID
+A:PH,TH,MP,GU,AQ
+A:NF,BN,NR,PG,TO
+A:SB,VU,FJ,PW,CK,AS,KI
+A:NC,TV,PF,FM,MH
+A:KZ,TJ,VN,KP
+A:MO,KH,LA,CN,BD,TW
+A:IN,PK,AF,LK,MM,MV
+A:LB,JO,SY,IQ,KW,SA
+A:YE,OM,AE,BH
+A:QA,BT,MN,NP,IR,TM,AZ
+A:GE,KG,UZ
+T:*/*=2.44/60
+#####################################################################
+P:13,2 Tele 2 Geschaeftskunden
+C:Telecommunications Services GmbH, Düsseldorf
+C:Homepage: http://www.tele2.de
+C:Hotline:  0800/24-01013
+C:Adresse:  Postfach 130840, 40558
+C:	    Duesseldorf
+C:Erfasste Zonen:
+C:2	-   4	Deutschland
+C:10		Mobilfunk
+C:200	-	Ausland
+# G:20-Sep-1999
+D:dtag
+Z:1-4 National
+A:+49
+T:*/07-19=0.09/60
+T:*/19-22=0.06/60
+T:*/22-07=0.04/60
+Z:10 Mobilfunknetz
+A:+491618
+A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619
+A:+49170,+49171,+49175
+A:+49172,+49173,+49174
+A:+49177,+49178
+A:+49176,+49179
+T:*/*=0.49/60
+Z:200 Euro 1 / USA, Kanada
+A:US,CA,NL,BE,FR,ES
+A:LU,FI,IT,CH,AT,VA
+A:UK,DK,SE,NO
+T:*/*=0.32/60
+Z:201 Euro 2
+A:AD,FO,IE,IS,LI,MC
+A:PL,SM,CZ,TR
+T:*/*=0.68/60
+Z:202 Welt 1
+A:EH,DZ,TN,LY,GR,GI,PT
+A:AL,MT,CY,BG,HU,LT,LV,EE
+A:MD,BY,UA,YU
+A:HR,SI,BA,MK,RO,SK
+A:AU,NZ,SG,JP,HK,IL
+T:*/*=0.97/60
+Z:203 Welt 2
+A:NKW,_GUAN,SB,WF
+A:BS,BB,AI,AG,VG
+A:VI,KY,BM,GD,MS
+A:LC,DM,VC,PR
+A:DO,TT,KN
+A:JM,EG,GM,SN,MR,ML,GN
+A:CI,BF,NGR,NU
+A:TG,BJ,MU,LR,SL,GH,NG,TD
+A:CF,CM,CV,ST
+A:GQ,GA,CG,ZR,AO,GW,ASI
+A:SC,SD,RW,ET,SO,DJ,KE,TZ
+A:UG,BI,MZ,ZM,MG,RE,ZW,NA
+A:MW,LS,BW,SZ,YT,ZA
+A:SH,ER,AW,GL,AM
 A:_UKIM,_UKIK,FK
 A:BZ,GT,SV,HN,NI,CR,PA
 A:PM,HT,PE,MX,CU,AR,BR
@@ -1012,8 +1805,8 @@ A:+49176,+49179
 T:W/08-21=0.69/60
 T:W/21-08=0.49/60
 T:E,H/*=0.49/60
-Z:33 Inmarsat A
-A:_INA_
+Z:33 Inmarsat A und B
+A:_INA_,_INB_
 T:*/*=13.39/60
 Z:34 Inmarsat A Daten/Fax & Aero
 A:_INDF,_INAE
@@ -1021,8 +1814,8 @@ T:*/*=14.55/60
 Z:37 Inmarsat B HSD
 A:_INBH
 T:*/*=28.47/60
-Z:38 Inmarsat B/M
-A:_INB_,_INM_,_INMM
+Z:38 Inmarsat M
+A:_INM_,_INMM
 T:*/*=8.75/60
 Z:60 Cityruf
 A:+49164,+491682,+491683,+491684,+491685,+491686,+491687,+491688,+491689
@@ -1076,10 +1869,10 @@ A:01801
 T:*/*=0.09/60
 Z:82 Service 0180-2
 A:01802
-T:*/*=0.09/60
+T:*/*=0.08/60
 Z:83 Service 0180-3
 A:01803
-T:*/*=0.12/60
+T:*/*=0.19/60
 Z:84 Service 0180-4
 A:01804
 T:*/*=0.20/60
@@ -8616,6 +9409,9 @@ Z:100 T-Online
 A:0191011
 C:Dies ist *kein* All-in-One Zugang, es werden zusätzliche Gebühren erhoben!
 T:*/*=0.05(60)/60 T-Online eco
+Z:120 Surf 1
+A:019107873
+T:*/*=0.045(60)/1
 Z:162 T-VoteCall
 A:01371
 T:*/*=0.24/0,0/1
@@ -10103,12 +10899,12 @@ T:*/*=2.80/60
 #####################################################################
 #
 #
-P:42 TeleBeL
+P:42 TeleBeL ISDN Plus
 C:Telekommunikation Bergisches Land GmbH, Johannisberg 7, 42103 Wuppertal 01042
 C:Hotline:	01802 / 244 544
 C:Homepage:	http://www.telebel.de
 C:nur Direct Access in der Region um Wuppertal
-C:Grundgebühr: ISDN 36,- DM, Analog 22,- DM
+C:Grundgebühr: ISDN 36,- DM
 C:Internetzugang: Grundgebühr im Anschluß enthalten
 C:Sondertarif "Unter Uns": Gespräche zwischen TeleBeL Kunden, 0.02(60)/1 !
 # G:01.05.1999
@@ -10123,14 +10919,14 @@ C:200	-	Ausland
 Z:0 Freecall
 A:110,112
 A:0800,0130,_F800
-Z:1-2 Bergisch City
+Z:1-2 City
 T:W/08-18=0.06(60)/1 Hauptzeit
 T:W/18-08=0.04(60)/1 Nebenzeit
 T:E,H/*=0.04(60)/1 Nebenzeit
-Z:3 Bergisch 50
-T:W/08-18=0.22(60)/1 Hauptzeit
-T:W/18-08=0.11(60)/1 Nebenzeit
-T:E,H/*=0.11(60)/1 Nebenzeit
+Z:3 Regio
+T:W/08-18=0.18(60)/1 Hauptzeit
+T:W/18-08=0.10(60)/1 Nebenzeit
+T:E,H/*=0.10(60)/1 Nebenzeit
 Z:4 Deutschland
 T:W/08-18=0.22(60)/1 Hauptzeit
 T:W/18-08=0.11(60)/1 Nebenzeit
@@ -10233,27 +11029,185 @@ T:*/*=0.05(60)/1
 Z:103 NGI
 A:019102384
 T:*/*=0.055(60)/1
-Z:200 Euro 1
-A:AD,BE,DK,FO,FI,FR,GR
-A:UK,IE,IS,IT,LI,LU,MT
-A:MC,NL,NO,AT,PL,PT,SM
-A:SE,CH,SK,ES,CZ
+Z:200 Europa 01
+A:BE,DK,FI,FR,UK,IE,IT
+A:LU,NL,NO,AT,SE,CH,ES
+T:*/*=0.55(60)/1
+Z:201 Europa 02
+A:AD,FO,GR,IS,LI,MT,MC
+A:PL,PT,SM,SK,CZ
 A:TR,HU,VA
-T:*/*=0.70(60)/1
-Z:201 Euro 2
-A:RU,AL,BA,BG,GI
-A:IL,YU,HR,LV,LT,MK,MD
-A:RO,SI,UA,BY,CY,EE
-T:*/*=0.95(60)/1
-Z:202 Nordamerika
+T:*/*=0.55(60)/1
+Z:202 Europa 03
+A:AL,BA,BG,EE,GI
+A:IL,YU,HR,LV,LT,MK
+A:MD,RO,RU,SI
+A:UA,BY,CY
+T:*/*=0.90(60)/1
+Z:203 Welt 01
 A:CA,US
-T:*/*=0.70(60)/1
-Z:203 Asien, Pazifik
-A:AU,HK,JP,KP,NZ,SG
-T:*/*=1.75(60)/1
-Z:204 Übrige Welt
+T:*/*=0.55(60)/1
+Z:204 Welt 02
+A:AU,HK,JP,KP,KR,NZ,SG
+T:*/*=1.50(60)/1
+Z:205 Welt 03
 A:+
-T:*/*=2.75(60)/1
+T:*/*=2.55(60)/1
+#####################################################################
+P:42,1 TeleBeL ISDN XL
+C:Telekommunikation Bergisches Land GmbH, Johannisberg 7, 42103 Wuppertal 01042
+C:Hotline:	01802 / 244 544
+C:Homepage:	http://www.telebel.de
+C:nur Direct Access in der Region um Wuppertal
+C:Grundgebühr: ISDN 45,- DM
+C:Internetzugang: Grundgebühr im Anschluß enthalten
+C:Sondertarif "Unter Uns": Gespräche zwischen TeleBeL Kunden, 0.02(60)/1 !
+# G:01.05.1999
+C:Erfasste Zonen:
+C:0	-   4	Deutschland
+C:5		Sondertarif
+C:10		Mobilfunk
+C:31	-  39	Satelitenfunk
+C:60	-  75	Pieper
+C:102		TeleBeL Internet
+C:200	-	Ausland
+Z:0 Freecall
+A:110,112
+A:0800,0130,_F800
+Z:1-2 City
+T:W/08-18=0.06(60)/1 Hauptzeit
+T:W/18-08=0.04(60)/1 Nebenzeit
+T:E,H/*=0.04(60)/1 Nebenzeit
+Z:3 Regio
+T:W/08-18=0.14(60)/1 Hauptzeit
+T:W/18-08=0.08(60)/1 Nebenzeit
+T:E,H/*=0.08(60)/1 Nebenzeit
+Z:4 Deutschland
+T:W/08-18=0.14(60)/1 Hauptzeit
+T:W/18-08=0.08(60)/1 Nebenzeit
+T:E,H/*=0.08(60)/1 Nebenzeit
+A:+49
+Z:5 Unter Uns
+T:*/*=0.02(60)/1
+Z:10 Mobilfunk
+A:+491618
+A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619
+A:+49170,+49171
+A:+49172,+49173
+A:+49177,+49178
+A:+49176,+49179
+T:W/08-18=0.90(60)/1 Hauptzeit
+T:W/18-08=0.48(60)/1 Nebenzeit
+T:E,H/*=0.48(60)/1 Nebenzeit
+Z:31 Iridium GSM
+A:_IR17
+T:*/*=0.12/0.509
+Z:32 Iridium
+A:_IR16
+T:*/*=0.12/0.938
+Z:33 Inmarsat A
+A:_INA_,_INDF
+T:*/*=0.1728571333/1
+Z:35 Inmarsat Aero
+A:_INAE
+T:*/*=0.1728571333/1
+Z:36 Inmarsat B
+A:_INB_
+T:*/*=0.15125/1
+Z:37 Inmarsat B HSD
+T:*/*=24.20(60)/1
+Z:38 Inmarsat M
+A:_INM_
+T:*/*=0.15125/1
+Z:39 Inmarsat Phone (Mini-M)
+A:_INMM
+T:*/*=0.121/1
+Z:60 Cityruf automatic
+A:+49164,+491682
+A:+491683,+491684,+491685,+491686,+491687,+491688,+491689
+A:+491690,+491691
+T:W/09-18=0.363(60)/1 Geschaeftszeit
+T:W/18-09=0.242(60)/1 Freizeit
+T:E,H/*=0.242(60)/1 Wochenende
+Z:61 Cityruf Operator
+A:+4916951,+4916952
+T:*/*=0.0242/1
+Z:62 Scall IVR
+A:+491680
+T:*/*=0.605/0,0/1
+Z:63 Scall DTMF
+A:+491681
+T:W/08-18=1.452/0,0/1 Geschaeftszeit
+T:W/18-09=0.968/0,0/1 Freizeit
+T:E,H/*=0.968/0,0/1 Wochenende
+Z:64 Scall Operator
+A:+491699
+T:*/*=2.42/0,0/1
+Z:65 Scall Modem
+A:+491696
+T:*/*=0.968/0,0/1
+Z:66 TeLMI automatic
+A:+491660,+491665,+491669
+T:*/*=0.02326922833/1
+Z:67 TeLMI Operator
+A:+491661
+T:*/*=0.09307692167/1
+Z:68 Skyper Operator
+A:+4916953
+T:*/*=2.42/0,0/1
+Z:69 Skyper
+A:+491692,+491693
+T:*/*=0.968/0,0/1
+Z:70 Quix Service
+A:+4916500,+4916501,+4916502,+4916503,+4916504,+4916505,+4916506,+4916507,+4916508,+491655
+T:W/09-18=0.605(60)/1 Geschaeftszeit
+T:W/18-09=0.3025(60)/1 Freizeit
+T:E,H/*=0.3025(60)/1 Wochenende
+Z:71 Quix DTMF
+A:+491651
+T:*/*=0.242/0,0/1
+Z:72 Quix Modem
+A:+491653,+491654
+A:+4916591,+4916592,+4916593
+T:W/09-18=1.21/0,0/1 Geschaeftszeit
+T:W/18-09=0.968/0,0/1 Freizeit
+T:E,H/*=0.968/0,0/1 Wochenende
+Z:75 Quix Operator 2
+A:+491656
+T:*/*=2.42/0,0/1
+# FIXME: Shared Cost, Premium Rate, T-Vote etc. einfügen
+# FIXME: identisch mit VEW-Telnet ?
+# http://www1.vew-telnet.de/extern/vewtelnet99/wwwablag.nsf/internetindex/Tarife-Sonderrufnummer-Teil2?opendocument
+Z:102 Internet
+A:+49202931080
+T:*/*=0.05(60)/1
+Z:103 NGI
+A:019102384
+T:*/*=0.055(60)/1
+Z:200 Europa 01
+A:BE,DK,FI,FR,UK,IE,IT
+A:LU,NL,NO,AT,SE,CH,ES
+T:*/*=0.55(60)/1
+Z:201 Europa 02
+A:AD,FO,GR,IS,LI,MT,MC
+A:PL,PT,SM,SK,CZ
+A:TR,HU,VA
+T:*/*=0.55(60)/1
+Z:202 Europa 03
+A:AL,BA,BG,EE,GI
+A:IL,YU,HR,LV,LT,MK
+A:MD,RO,RU,SI
+A:UA,BY,CY
+T:*/*=0.90(60)/1
+Z:203 Welt 01
+A:CA,US
+T:*/*=0.55(60)/1
+Z:204 Welt 02
+A:AU,HK,JP,KP,KR,NZ,SG
+T:*/*=1.50(60)/1
+Z:205 Welt 03
+A:+
+T:*/*=2.55(60)/1
 #####################################################################
 #
 #
