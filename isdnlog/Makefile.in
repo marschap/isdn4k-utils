@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.11 1997/04/10 23:32:04 luethje Exp $
+## $Id: Makefile.in,v 1.12 1997/04/15 00:19:53 luethje Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,9 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.12  1997/04/15 00:19:53  luethje
+## replace variables: some bugfixes, README comleted
+##
 ## Revision 1.11  1997/04/10 23:32:04  luethje
 ## Added the feature, that environment variables are allowed in the config files.
 ##
@@ -166,7 +169,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 2.99.7
+VERSION     = 2.99.8
 
 ifeq ($(POSTGRES),1)
 DEFS       += -DPOSTGRES

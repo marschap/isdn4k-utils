@@ -1,4 +1,4 @@
-/* $Id: libtools.h,v 1.4 1997/04/10 23:32:35 luethje Exp $
+/* $Id: libtools.h,v 1.5 1997/04/15 00:20:19 luethje Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: libtools.h,v $
+ * Revision 1.5  1997/04/15 00:20:19  luethje
+ * replace variables: some bugfixes, README comleted
+ *
  * Revision 1.4  1997/04/10 23:32:35  luethje
  * Added the feature, that environment variables are allowed in the config files.
  *
@@ -60,6 +63,7 @@ extern char *basename __P((__const char *__name));
 #define QUOTE_DELETE 1
 
 #define C_QUOTE_CHAR '\\'
+#define C_BEGIN_VAR  '$'
 
 /****************************************************************************/
 

@@ -1,4 +1,4 @@
-/* $Id: conffile.c,v 1.13 1997/04/10 23:41:26 luethje Exp $
+/* $Id: conffile.c,v 1.14 1997/04/15 00:20:13 luethje Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: conffile.c,v $
+ * Revision 1.14  1997/04/15 00:20:13  luethje
+ * replace variables: some bugfixes, README comleted
+ *
  * Revision 1.13  1997/04/10 23:41:26  luethje
  * some bug fixes
  *
@@ -580,7 +583,7 @@ static entry* Append_Entry(entry** Entry, char *Variable, char* Value, section *
 
 	if (Value != NULL)
 	{
-    if (((*Entry)->value = strdup(Value)) == NULL)
+		if (((*Entry)->value = strdup(Value)) == NULL)
 		{
 			free_entry(*Entry);
 			*Entry = NULL;
@@ -1546,13 +1549,14 @@ int Replace_Variables(section *Section)
 		{
 			if (Entry->value != NULL && (Ptr = Replace_Variable(Entry->value)) != NULL)
 			{
-				free(Entry->value);
-
-				if ((Entry->value = strdup(Ptr)) == NULL)
+				if ((Ptr = strdup(Ptr)) == NULL)
 				{
 					print_msg("%s","Can not allocate memory!\n");
 					return -1;
 				}
+
+				free(Entry->value);
+				Entry->value = Ptr;
 			}
 
 			Entry = Entry->next;

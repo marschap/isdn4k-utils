@@ -18,7 +18,8 @@ Quick-Installation-Guide
 
 1. Linux-2.0.29 + isdn4kernel-2.0.29.5 verwenden:
      CONFIG_ISDN=m
-     CONFIG_ISDN_DRV_TELES=m
+******* Andreas, die folgende Zeile ist wohl ueberholt!!!
+     CONFIG_ISDN_DRV_TELES=m ????????????????????????????????????
 
 2. isdn4k-utils.2.1.tar.gz auspacken, erstellen und installieren:
      cd /usr/src
@@ -28,7 +29,7 @@ Quick-Installation-Guide
 
 3. Konfigurationsdatei fuer isdnlog fuellen:
 
-     vi | emacs | vim | e | nedit | ... | /etc/isdn/isdn.conf
+     vi | emacs | vim | e | nedit | ... | /etc/isdn/callerid.conf
 
    -----------------------------------------------------
    [MSN]
@@ -759,9 +760,14 @@ beiden Programme isdnconf und isdnrep.
 
 Es koennen hier Variablen verwendet werden, die entweder in der isdn.conf
 gesetzt wurden oder vorher (z.b. auf Shellebene).
-In den Dateien "callerid.conf" und "~/.isdn" koennen keine Variablen mehr
-gesetzt werden. Das bedeutet also, dass es dort keine Sektion [VARIABLES]
-gibt.
+In den Dateien "callerid.conf" und "~/.isdn" koennen ebenfalls Variablen
+gesetzt werden. Das bedeutet also, dass es dort auch eine Sektion [VARIABLES]
+geben, wie in der "isdn.conf". Aber Achtung!! Hier koennen nur gross
+geschriebene Variablennamen verwendet werden:
+
+[VARIABLES]
+fred=fred1234 # -> "FRED=fred1234" !!!!
+FRED=fred1234 # -> "FRED=fred1234"
 
 Eine Variable wird allerdings nur ab dem Gleichheitszeichen ersetzt.
 
@@ -784,6 +790,21 @@ ALIAS=${PHONE}1 # PHONE=Telefon -> "Telefon1"
  PROGRAM= auplay $MY_PATHring.au    # geht nicht!!
  PROGRAM= auplay ${MY_PATH}ring.au ${SOUND_PATH}/$RING_FILE
  # SOUND_PATH=/home/sound RING_FILE=ring.au -> "/home/sound/ring.au"
+...
+
+Wenn eine Variable nicht ersetzt werden konnte, so wird dieses angemahnt,
+und die Variable bleibt so bestehen, im Gegensatz zur bash-Shell, wo
+dann ein Leerstring ausgegeben wird:
+
+...
+ALIAS = $FRED Feuerstein # -> "$FRED Feuerstein", wenn $FRED ungueltig ist.
+...
+
+Wenn das "$" nicht als Zeichen fuer
+eine Variable verwendet werden soll, so muss diese mit "\$" geqoutet werden:
+
+...
+ALIAS = \$PATH # -> "$PATH"
 ...
 
 Es gibt bestimmte Regeln, nachdem Eintraege aus der Datei "~/.isdn" die
@@ -1254,7 +1275,6 @@ GROUP=201
 
 Es kann also entweder der Gruppenname oder die Gruppen-ID verwendet werden.
 
-*************** Bis hier ist sl gekommen, die Doku zu ueberarbeiten ***********
 Time
 ----
 
@@ -1279,10 +1299,17 @@ Wenn Time ueberhaupt nicht angegeben wird, dann bedeutet dieses "immer".
 
 Beispiele:
 
-IOR=/usr/bin/auplay ring.au;
-IORK=/usr/bin/auplay ring.au,5;
-IORK=/usr/bin/auplay ring.au,5,;
+...
+START={
+	[FLAG]
+	FLAGS   = IOR
+	PROGRAM = /usr/bin/auplay ring.au
 
+	FLAGS   = IORK
+	PROGRAM = /usr/bin/auplay ring.au
+	INTERVAL= 5
+}
+...
 
 Intervall
 ---------
@@ -1304,32 +1331,61 @@ werden.
 Groessere Intervalle stellen kein Problem dar.
 
 
-Info-Arg
---------
+Das zu startende Programm
+-------------------------
 
 Hier wird das Info-Argument angegeben. Es steht dort der gesamte zu
 startende Befehl
 
 Es gibt aber drei zusaetzliche Variablen, die verwendet werden duerfen:
 
-$1   : Sind die Flags, die den Programmstart ausgeloest haben.
-       z.B. "IR", "OC", "IH"
-       Zuerst kommt die Gespraechs-Direktive und dann der Zustand
-       der Verbindung. Es kommen immer _genau_ zwei Zeichen.
-$2   : Gibt als String die Telefonnummer (mit Vorwahl) des Anrufenden an.
-$3   : Gibt als String die Telefonnummer (mit Vorwahl) des Angerufenden an.
+\$1   : Sind die Flags, die den Programmstart ausgeloest haben.
+        z.B. "IR", "OC", "IH"
+        Zuerst kommt die Gespraechs-Direktive und dann der Zustand
+        der Verbindung. Es kommen immer _genau_ zwei Zeichen.
+\$2   : Gibt als String die Telefonnummer (mit Vorwahl) des Anrufenden an.
+\$3   : Gibt als String die Telefonnummer (mit Vorwahl) des Angerufenden an.
 
-Wenn bei $2 und $3 die Telefonnummer nicht bekannt ist, dann wird dort
+
+Es ist zu beachten, dass hier das Zeichen "$" gequotet werden muss,
+da dieses sonst zu einem Warning fuehrt!
+
+Wenn bei "\$2" und "\$3" die Telefonnummer nicht bekannt ist, dann wird dort
 ein "?" eingesetzt.
 
 Es fallen also alle Blanks und Tabulatoren vor und nach dem "=" heraus.
 "IORK = /bin/auplay..." wird also zu "IORK=/bin/auplay...".
 
-Eine (zwei) Zeile in der Spalte Info-Agrs kann also wie folgt aussehen:
+Eine (zwei) Section [NUMBER] (oder [MSN]) kann also wie folgt aussehen:
 
-4711 Phone 1    IORK=  /bin/auplay  /sounds/ring.au,1,8-14,16-22;\
-                OA  =  /bin/auplay  /sounds/money.au,,8-14,16-22;
-0815 Provider 2 IOCK=  /bin/popclient_script $3,300;
+[MSN]
+NUMBER = 4711
+ALIAS  = Phone
+ZONE   = 1
+START={
+	[FLAG]
+	FLAGS   = IORK
+	PROGRAM = /bin/auplay  /sounds/ring.au
+	INTERVAL= 1
+	TIME    = 8-14,16-22
+
+	[FLAG]
+  FLAGS   = OA
+  PROGRAM = /bin/auplay  /sounds/money.au
+  TIME    = 8-14,16-22
+}
+
+[NUMBER]
+NUMBER = 0815/1234
+ALIAS  = Provider
+ZONE   = 2
+START={
+
+	[FLAG]
+	FLAGS   = IOCK
+	PROGRAM = /bin/popclient_script \$3
+	INTERVAL= 300
+}
 
 Angenommen 4711 ist die MSN meines Telefons, dann wird beim Rauswaehlen
 erst immer "/bin/auplay  /sounds/ring.au" abgespielt. Auch wenn das Telefon
@@ -1341,20 +1397,38 @@ Diese Sounds werden nur von 8Uhr bis 14Uhr und 16Uhr bis 22Uhr gespielt.
 
 Wenn man zum "Provider" verbunden ist, dann werden alle 5 Minuten Mails
 geholt. Da hier keine Zeitangabe gemacht wurde, wird das Script zu
-jeder Zeit ausgefuehrt. Das Script bekommt als Parameter "0815", wenn
+jeder Zeit ausgefuehrt. Das Script bekommt als Parameter "0815/1234", wenn
 man "Provider" angerufen hat, und wenn "Provider" einen anruft, seine
 eigene MSN.
 
 Wie unter "START=" beschrieben wurde, ist hier noch mal ein Beispiel
 zu finden:
 
+...
+[VARIABLES]
 CMD1=/bin/auplay
 CMD2=/bin/my_prog
 DIR = /sounds/
-START=IORK=$CMD1 ${DIR}ring.au,1,8-14,16-22;\
-      OA  =$CMD1 ${DIR}money.au,,8-14,16-22;\
-      IOC =$CMD2 $1 $2 $3,,8-14,16-22;
 
+START={
+	[FLAG]
+	FLAGS   = I|O|R|K
+	PROGRAM = $CMD1 ${DIR}ring.au
+	INTERVAL= 1
+	TIME    = 8-14,16-22
+
+	[FLAG]
+  FLAGS   = O|A
+	PROGRAM = $CMD1 ${DIR}money.au
+	TIME    = 8-14,16-22
+
+	[FLAG]
+  FLAGS   = I|O|C
+	PROGRAM = $CMD2 \$1 \$2 \$3
+  TIME    = 8-14,16-22
+}
+
+*************** Bis hier ist sl gekommen, die Doku zu ueberarbeiten ***********
 Die letzte Zeile wird also wie folgt expandiert als Kommando, wenn ich
 jemanden anrufe mit der Nummer 0815 (Meine MSN 040/1234):
 "/bin/auplay  OC 0401234 0815"

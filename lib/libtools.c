@@ -1,4 +1,4 @@
-/* $Id: libtools.c,v 1.4 1997/04/10 23:32:35 luethje Exp $
+/* $Id: libtools.c,v 1.5 1997/04/15 00:20:18 luethje Exp $
  * ISDN accounting for isdn4linux.
  *
  * Copyright 1996 by Stefan Luethje (luethje@sl-gw.lake.de)
@@ -18,6 +18,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: libtools.c,v $
+ * Revision 1.5  1997/04/15 00:20:18  luethje
+ * replace variables: some bugfixes, README comleted
+ *
  * Revision 1.4  1997/04/10 23:32:35  luethje
  * Added the feature, that environment variables are allowed in the config files.
  *
@@ -38,6 +41,10 @@
 #include <ctype.h>
 
 #include "libtools.h"
+
+/****************************************************************************/
+
+#define SET_BEGIN_VAR 1
 
 /****************************************************************************/
 
@@ -480,7 +487,7 @@ int is_double (char *string, double *value)
 	dummy = (char*) alloca((strlen(string)+1)*sizeof(char));
 
 	if (value == NULL)
-		*value = dummy2;
+		value = &dummy2;
 
 	return (sscanf(string,"%lf%s",value,dummy) == 1);
 }
@@ -498,7 +505,7 @@ int is_integer (char *string, long int *value)
 	dummy = (char*) alloca((strlen(string)+1)*sizeof(char));
 
 	if (value == NULL)
-		*value = dummy2;
+		value = &dummy2;
 
 	return (sscanf(string,"%ld%s",value,dummy) == 1);
 }
@@ -512,92 +519,105 @@ char *Replace_Variable(char *String)
 	char *Var = NULL;
 	char *End = NULL;
 	char *Value = NULL;
-	int num;
+	char *Ptr = String;
+	int cnt = 0;
+	int num = 0;
 
+
+	while ((Ptr = strchr(Ptr,C_BEGIN_VAR)) != NULL)
+	{
+		cnt++;
+		Ptr++;
+	}
+
+	if (!cnt)
+		return String;
 
 	if (RetCode != NULL)
 		free(RetCode);
 
 	if ((RetCode = strdup(String))  == NULL ||
 	    (Var     = strdup(RetCode)) == NULL ||
-	    (End     = strdup(RetCode)) == NULL ||
-	    (Begin   = strdup(RetCode)) == NULL   )
+	    (End     = strdup(RetCode)) == NULL   )
 	{
-		print_msg("%s!\n","Can not alllocate memory!\n");
+		print_msg("%s!\n","Error: Can not allocate memory!\n");
 		return NULL;
 	}
 
-	Begin[0] ='\0';
-
-	while ((num = sscanf(RetCode,"%[^$]$%[0-9a-zA-Z]%[^\n]",Begin,Var,End)+1)   > 2 ||
-			   (num = sscanf(RetCode,"%[^$]${%[0-9a-zA-Z]}%[^\n]",Begin,Var,End)+1) > 2 ||
-	       (num = sscanf(RetCode,"$%[0-9a-zA-Z]%[^\n]",Var,End))                > 0 ||
-			   (num = sscanf(RetCode,"${%[0-9a-zA-Z]}%[^\n]",Var,End))              > 0   )
+	while ((Ptr = strchr(RetCode,C_BEGIN_VAR)) != NULL)
 	{
-		if ((num > 2 && Begin[strlen(Begin)-1] == C_QUOTE_CHAR) || (Value = getenv(Var)) == NULL)
+		if (Ptr != RetCode && Ptr[-1] == C_QUOTE_CHAR)
 		{
-			RetCode[strlen(Begin)] = 1;
-
-			if (strlen(Begin) > 0)
-				memmove(RetCode+strlen(Begin)-1,RetCode+strlen(Begin),strlen(RetCode)-strlen(Begin)+1);
+			*Ptr = SET_BEGIN_VAR;
+			memmove(Ptr-1,Ptr,strlen(RetCode)-(Ptr-RetCode-1));
+			cnt--;
 		}
 		else
-		if (Value != NULL)
+		if ((num = sscanf(Ptr+1,"%[0-9a-zA-Z]%[^\n]",Var,End))   >= 1 ||
+		    (num = sscanf(Ptr+1,"{%[0-9a-zA-Z]}%[^\n]",Var,End)) >= 1   )
 		{
-			if ((RetCode = (char*) realloc(RetCode,sizeof(char)*(strlen(RetCode)+strlen(Value)-strlen(Var)))) == NULL)
+			if ((Value = getenv(Var)) != NULL)
 			{
-				print_msg("%s!\n","Can not alllocate memory!\n");
-				return NULL;
-			}
+				free(Begin);
 
-			switch(num)
+				if ((Begin = strdup(RetCode)) == NULL)
+				{
+					print_msg("%s!\n","Error: Can not allocate memory!\n");
+					return NULL;
+				}
+
+				Begin[Ptr-RetCode] = '\0';
+
+				if ((RetCode = (char*) realloc(RetCode,sizeof(char)*strlen(RetCode)+strlen(Value)-strlen(Var))) == NULL)
+				{
+					print_msg("%s!\n","Error: Can not allocate memory!\n");
+					return NULL;
+				}
+
+				if (num == 1)
+					*End = '\0';
+
+				sprintf(RetCode,"%s%s%s",Begin,Value,End);
+
+				free(Var);
+				free(End);
+
+				if ((Var   = strdup(RetCode)) == NULL ||
+				    (End   = strdup(RetCode)) == NULL   )
+				{
+					print_msg("%s!\n","Error: Can not allocate memory!\n");
+					return NULL;
+				}
+
+				cnt--;
+			}
+			else
 			{
-				case 1:  sprintf(RetCode,"%s",Value);
-				         break;
-				case 2:  sprintf(RetCode,"%s%s",Value,End);
-				         break;
-				case 3:  sprintf(RetCode,"%s%s",Begin,Value);
-				         break;
-				case 4:  sprintf(RetCode,"%s%s%s",Begin,Value,End);
-				         break;
-				default: break;
+				*Ptr = SET_BEGIN_VAR;
+				cnt--;
+
+				print_msg("Warning: Unknown variable `%s'!\n",Var);
 			}
-
-			free(Begin);
-			free(Var);
-			free(End);
-
-			if ((Var   = strdup(RetCode)) == NULL ||
-			    (End   = strdup(RetCode)) == NULL ||
-			    (Begin = strdup(RetCode)) == NULL   )
-			{
-				print_msg("%s!\n","Can not alllocate memory!\n");
-				return NULL;
-			}
-
-			Begin[0] ='\0';
 		}
 		else
-		{
-			print_msg("Invalid variable `%s'!\n",Var);
-			free(RetCode);
-			RetCode = NULL;
-			break;
-		}
+			*Ptr = SET_BEGIN_VAR;
 	}
+
+	if (cnt)
+		print_msg("Warning: Invalid token in string `%s'!\n",String);
 
 	free(Begin);
 	free(Var);
 	free(End);
 
-	if ((Begin = RetCode) != NULL)
+	if ((Ptr = RetCode) != NULL)
 	{
-		while (*Begin != '\0')
+		while (*Ptr != '\0')
 		{
-			if (*Begin == 1)
-				*Begin = '$';
+			if (*Ptr == SET_BEGIN_VAR)
+				*Ptr = C_BEGIN_VAR;
 
-			Begin++;
+			Ptr++;
 		}
 	}
 

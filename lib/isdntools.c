@@ -1,4 +1,4 @@
-/* $Id: isdntools.c,v 1.10 1997/04/08 21:57:04 luethje Exp $
+/* $Id: isdntools.c,v 1.11 1997/04/15 00:20:17 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdntools.c,v $
+ * Revision 1.11  1997/04/15 00:20:17  luethje
+ * replace variables: some bugfixes, README comleted
+ *
  * Revision 1.10  1997/04/08 21:57:04  luethje
  * Create the file isdn.conf
  * some bug fixes for pid and lock file
@@ -555,7 +558,9 @@ int Set_Codes(section* Section)
 			print_msg("Error: Variable `%s' are not set!\n",CONF_ENT_COUNTRY);
 	}
 
-	if ((SPtr = Get_Section(Section,CONF_SEC_VAR)) != NULL)
+	SPtr = Section;
+
+	while ((SPtr = Get_Section(SPtr,CONF_SEC_VAR)) != NULL)
 	{
 		Entry = SPtr->entries;
 
@@ -566,6 +571,8 @@ int Set_Codes(section* Section)
 
 			Entry = Entry->next;
 		}
+
+		SPtr = SPtr->next;
 	}
 
 	return (RetCode==2?0:-1);
