@@ -4,7 +4,7 @@
 
 <title>FAQ for isdn4linux
 <author>Matthias Hessler (<tt><htmlurl url="mailto:hessler@isdn4linux.de" name="hessler@isdn4linux.de"></tt>)
-<date>v2.0.39, 23. April 2000
+<date>v2.0.40, 13. May 2000
 <abstract>
 If you are reading this FAQ online, you may consider downloading the whole
 thing, and reading it offline (much cheaper). To download the latest
@@ -528,12 +528,16 @@ E.g.: /usr/src/linux/Documentation/isdn/README.HiSax
 </itemize>
 Many of the utilities also have man pages!
 
-For a Suse distribution the following information might also be helpful:
+For a Suse distribution the following information might be helpful:
 <itemize>
 <item><tt>/usr/doc/packages/i4l*</tt> (for i4l in general)
 <item><tt>/usr/doc/faq/faq/PPP-FAQ</tt> (for synchronous PPP)
 <item><tt>/usr/doc/howto/mini/Mail-Queue.gz</tt> (for email configuration)
 </itemize>
+Also, read the excellent manual!
+
+For a Debian distribution the following information might be helpful:
+<tt>/usr/share/doc/isdnutils/HOWTO.gz</tt>
 
 If you are reader of the German computer magazine <tt/ct/, they had very
 helpful articles at least in these issues:
@@ -544,8 +548,8 @@ helpful articles at least in these issues:
 </itemize>
 
 Also have a look at question <ref id="config_links" name="config_links"> for
-helpful links on how to configure i4l (e.g. special help for SuSE or
-Red Hat users).
+helpful links on how to configure i4l (e.g. special help for SuSE, Red
+Hat, or Mandrake users).
 
 <sect1> docu_website: Where is the official website for isdn4linux? 
 <label id="docu_website">
@@ -1028,6 +1032,12 @@ The firmware is available on:
 The latest firmware will also allow D channel traces with isdnlog without
 usage of a reversed card.
 
+To use the AVM on a point-to-point connection (&dquot;Anlagenanschluss&dquot;)
+add &dquot;DSS1 P2P&dquot; to the load command for the firmware, like:
+<code>
+avmcapictrl load /usr/lib/isdn/b1.t4 0 DSS1 P2P
+</code>
+
 There is also a mailing list for problems with the AVM B1 available on:
 linux-avmb1@calle.in-berlin.de (send an email to majordomo@calle.in-berlin.de
 with <tt>subscribe linux-avmb1 &lt;your email address&gt;</tt> in its body). 
@@ -1103,7 +1113,8 @@ even crash). This can increase your message file by as much as 1 MB in 3 days.
 The PBX <tt/Ackermann Euracom 181/ (discriminator 0xaa) as well as
 <tt/Ascom/ (discriminator 0x44/0x47) seem to be notorious for this.
 You can avoid the warning by adjusting the switch/case code for isdnlog in
-function <tt>processctrl()</tt> in <tt>processor.c</tt>.
+function <tt>processctrl(...)</tt> in <tt>processor.c</tt> and recompiling
+isdnlog.
 Please be aware, that the PBX may hang if the ISDN card does not respond to
 the PBX requests - bypass the PBX in such a case.
 
@@ -1314,6 +1325,8 @@ howto (isdn.html) and a ISDN quick-install guide (isdnquick.html).
 <url url="http://www.schlenn.de/linux.html">
 <item>Tips to configure Red Hat:
 <url url="http://www.webideal.de/rh-isdn/">
+<item>Tips to configure Mandrake:
+<url url="http://www.mandrakeuser.org/connect/cisdn.html">
 <item>Scripts and installation tips from several people:
 <tt><url url="http://www.rosat.mpe-garching.mpg.de/&tilde;web/ISDN.html"></tt>
 <item>Documentation on abc extensions:
@@ -1324,6 +1337,8 @@ howto (isdn.html) and a ISDN quick-install guide (isdnquick.html).
 <tt><url url="http://www.provi.de/&tilde;gvz/chargeint.html"></tt>
 <item>Homepage of kisdn (only works with Qt/KDE):
 <tt><url url="http://www.millenniumx.de/kisdn.html"></tt>
+<item>Configuration not only for UK (follow link to Linux Setup):
+<tt><url url="http://www.oakhaven-consultants.co.uk"></tt>
 </itemize>
 
 
@@ -1572,8 +1587,9 @@ telesctrl id 4 1  --- inc module_count
 Please use with appropriate caution and on your own risk!
 
 
-<sect1> trouble_tcpdump: Why does my tcpdump not work for ip packets going over  
-ISDN? How can I get a tcpdump patched for ISDN?  
+<sect1> trouble_tcpdump: Why does my tcpdump not work for ip packets going  
+over ISDN (&dquot;truncated ip&dquot; or so)? How can I get a tcpdump  
+patched for ISDN?  
 <label id="trouble_tcpdump">
 <p>
 The reason is that tcpdump does not always understand the special
@@ -4034,6 +4050,9 @@ information about:
 Please send me information if you know more helpful links, or howtos,
 or whatever useful...
 
+Also please note the documentation in the kernel source package:
+<tt>/usr/src/linux/Documentation/isdn/README.audio</tt>
+
 <sect1> audio_format: What is the format of the audio messages (.msg) vbox  
 plays when it answers a call?  
 <label id="audio_format">
@@ -4164,6 +4183,7 @@ We are aware of at least the following countries:
 <item>Sweden
 <item>Switzerland (see question <ref id="country_switherland" name="country_switherland">)
 <item>The Netherlands (see question <ref id="country_netherlands" name="country_netherlands">)
+<item>United Arab Emirates
 <item>United Kingdom (see question <ref id="country_uk" name="country_uk">)
 <item>USA (see question <ref id="country_northamerica" name="country_northamerica">)
 </itemize>
@@ -4298,10 +4318,11 @@ are Q.931 Protocols), but both have totally different groups of functions
 and are therefore not compatible to one other.
 
 Unfortunately, neither the NI-1 nor the 5ESS protocol have so far been
-implemented for isdn4linux.
+implemented for isdn4linux to work with passive cards.
 
 However, the firm &dquot;Spellcaster&dquot; has written an isdn4linux driver
-for its own (active) cards. More information is available from:
+for its own (active) cards. Both BRI and PRI cards are available. More
+information is available from:
 <verb>
 Ian James
 Customer Service Manager
@@ -4317,9 +4338,8 @@ name="ipj@spellcast.com"></tt> or <tt><htmlurl url="mailto:sales@spellcast.com"
 name="sales@spellcast.com"></tt>
 <tt><url url="http://www.spellcast.com"></tt>
 
-Unfortunately, the latest news is that production of this cards has now been
-discontinued. We will keep you informed if we find another source of ISDN
-cards for North America.
+Also, the active Eicon DIVA cards work fine in North America and have
+5ESS and NI drivers, which are currently ported to UltraSparc.
 
 
 <sect1> country_pakistan: Pakistan: What should we use as MSN?  
