@@ -25,7 +25,7 @@ ifeq (../.config,$(wildcard ../.config))
 	BINDIROPT  = BINDIR=$(CONFIG_BINDIR)
 endif
 
-all: xmonisdn
+all: xmonisdn xmonisdn.man
 
 #
 # Bug in original Makefile:
@@ -39,6 +39,15 @@ xmonisdn:
 		netactiveout netstart netstop X11/bitmaps
 	CFLAGS= ; MAKEFLAGS= ; $(MAKE) -f Makefile EXTRA_DEFINES="$(I4LU_DEFINES)"
 	rm -rf X11
+
+xmonisdn.man: xmonisdn.man.in Makefile
+	MANDATE=`grep CHECKIN $< | awk '{print $4}'`
+	sed \
+	   -e "s#\@MANDATE\@#${MANDATE}#g" \
+	   -e "s#\@I4LVERSION\@#${I4LVERSION}#g" \
+           -e s,\@CONFIG_XMONISDN_UPCMD\@,${CONFIG_XMONISDN_UPCMD},g \
+           -e s,\@CONFIG_XMONISDN_DOWNCMD\@,${CONFIG_XMONISDN_DOWNCMD},g \
+	   < $< > $@
 
 config:
 	@cp Makefile.in GNUmakefile
