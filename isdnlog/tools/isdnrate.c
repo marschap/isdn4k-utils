@@ -1,4 +1,4 @@
-/* $Id: isdnrate.c,v 1.32 2000/02/03 18:24:51 akool Exp $
+/* $Id: isdnrate.c,v 1.33 2000/02/12 16:40:24 akool Exp $
 
  * ISDN accounting for isdn4linux. (rate evaluation)
  *
@@ -19,6 +19,25 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnrate.c,v $
+ * Revision 1.33  2000/02/12 16:40:24  akool
+ * isdnlog-4.11
+ *  - isdnlog/Makefile.in ... sep install-targets, installs samples, no isdnconf
+ *  - isdnlog/samples/rate.conf.{lu,nl} ... NEW
+ *  - isdnlog/samples/isdn.conf.lu ... chg provider
+ *  - isdnlog/samples/stop ... chg \d,\d => \d.\d
+ *  - isdnlog/samples/isdnlog.isdnctrl0.options ... NEW
+ *  - isdnlog/samples/isdnlog.users ... NEW
+ *  - isdnlog/country-de.dat ... _DEMF again
+ *  - isdnlog/isdnlog/processor.c ... LCR
+ *  - isdnlog/tools/isdnrate.c ... fmt of s
+ *
+ *    Old config is not installed anymore, to acomplish this do
+ *
+ *    make install-old-conf
+ *    make install
+ *
+ *    A running isdnlog is now HUP-ed not KILL-ed
+ *
  * Revision 1.32  2000/02/03 18:24:51  akool
  * isdnlog-4.08
  *   isdnlog/tools/rate.c ... LCR patch again
@@ -670,7 +689,7 @@ static char *printrate(RATE * Rate)
   static char message[BUFSIZ];
 
   if (Rate->Basic > 0)
-    sprintf(message, "%s + %s/%.4fs = %s + %s/Min (%s)",
+    sprintf(message, "%s + %s/%.1fs = %s + %s/Min (%s)",
 	    printRate(Rate->Basic),
 	    printRate(Rate->Price),
 	    Rate->Duration,
@@ -678,7 +697,7 @@ static char *printrate(RATE * Rate)
 	    printRate(60 * Rate->Price / Rate->Duration),
 	    short_explainRate(Rate));
   else
-    sprintf(message, "%s/%.4fs = %s/Min (%s)",
+    sprintf(message, "%s/%.1fs = %s/Min (%s)",
 	    printRate(Rate->Price),
 	    Rate->Duration,
 	    printRate(60 * Rate->Price / Rate->Duration),

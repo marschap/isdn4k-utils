@@ -34,7 +34,7 @@ HOLIDAYS= /usr/lib/isdn/holiday-lu.dat
 DESTFILE= /usr/lib/isdn/dest.gdbm
 
 # providerselect
-VBN = 10 #?
-VBNLEN = 2 #?
-PRESELECTED=1 #?
+VBN = 2 #?
+VBNLEN = 1 #?
+PRESELECTED=26 #?
 

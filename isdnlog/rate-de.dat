@@ -1,4 +1,4 @@
-V:1.10-Germany [11-Feb-2000 14:51:45]
+V:1.10-Germany [12-Feb-2000 17:35:37]
 
 # Währungsformat
 U:%.3f DM
@@ -8,7 +8,7 @@ U:%.3f DM
 #
 # (C) Copyright 1999, 2000 by Andreas Kool (akool@isdn4linux.de)
 #
-# $Id: rate-de.dat,v 1.79 2000/02/11 15:16:31 akool Exp $
+# $Id: rate-de.dat,v 1.80 2000/02/12 16:40:21 akool Exp $
 #
 #
 # Das "A:" Tag muß folgendermaßen gefüllt werden:
