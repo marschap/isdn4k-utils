@@ -1,0 +1,13 @@
+
+
+
+2.1.99
+******
+
+18-Sep-1998
+
+	o New setup parsing added. vboxgetty now use only one config file
+          named "vboxgetty.conf" who looks like the isdnlog config (see
+          vboxgetty/examples).
+          
+	o userrc.c & userrc.h removed.
