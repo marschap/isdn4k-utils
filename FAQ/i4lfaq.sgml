@@ -4,7 +4,7 @@
 
 <title>FAQ for isdn4linux
 <author>Matthias Hessler (<tt><htmlurl url="mailto:hessler@isdn4linux.de" name="hessler@isdn4linux.de"></tt>)
-<date>v2.0.88, 14. July 2004
+<date>v2.0.89, 16. August 2004
 <abstract>
 If you are reading this FAQ online, you may consider downloading the whole
 thing, and reading it offline (much cheaper). To download the latest
@@ -1174,7 +1174,7 @@ You may want to have a look at the German article in ct 9/2004 on how to use
 PBX4Linux.
 
 Another alternative for emulation of a PBX is Asterisk, to be found on:
-<tt><url url="www.asterisk.org"></tt>
+<tt><url url="http://www.asterisk.org"></tt>
 
 Also, it is possible to give up one B-channel in exchange for reading the
 complete D-channel protocol, which is great for isdnlog. The later can
@@ -2839,7 +2839,9 @@ this:
 <code>
 isdnctrl addphone &lt;device&gt; out P1&lt;your_out_number&gt;
 </code>
-Please note that then a dialout will fail when another device already uses
+This will indicate the preferred B channel in the outgoing SETUP message.
+Please note that some PBX may not like this.
+Obviously, a dialout will fail when another device already uses
 the second B channel.
 
 <sect1> dialout_dynip: On dynamic ip assignment, how do I find out which ip  
@@ -4590,6 +4592,17 @@ number of people allowed to call in at one time. These gettys or network
 interfaces can be set to the same MSN, since several people can be 
 connected to a MSN at the same time (as long as there are B channels free).
 However, not more than one getty can be assigned to a single ttyI* device. 
+
+<sect1> dialin_manycards: When using several ISDN cards, how can I react  
+upon on a call received via a specific ISDN card?  
+<label id="dialin_manycards">
+<p>
+You can use the EAZ mapping feature for this to map incoming MSN numbers
+to new internal MSN numbers, in the same way as described for question
+<ref id="dialout_manycards" name="dialout_manycards">. Usage of a card can be prevented by
+using the dash during the mapping. Please note that it is not possible to
+have any limitations based upon the B channel, since channel assignment
+is normally done by the exchange.
 
 <sect1> dialin_analogditalsamettyi: Can I configure a ttyI* device to  
 accept both digital and analog modem dialins?  
