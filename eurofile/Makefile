@@ -1,8 +1,8 @@
-# $Id: Makefile,v 1.3 1999/06/30 21:05:14 he Exp $
+# $Id: Makefile,v 1.4 1999/06/30 21:48:26 he Exp $
 
 SHELL = /bin/sh
 
-CVS = cvs 
+CVS = cvs -z 4
 
 SCRIPTS = scripts/eftd.sh scripts/eftp.sh scripts/eftp_setup
 
@@ -59,12 +59,10 @@ new_version:
 	@echo current version is `grep E4L_VERSION src/eft/include/tdu_user.h|sed 's/^.*VERSION//'`
 	@if [ -z "$(NEW_VERSION)" ]; then echo "You must define the variable NEW_VERSION when making a new version!"; exit 1; fi
 	@echo new version is $(NEW_VERSION)
-
 # Make a new release. The variable NEW_VERSION must be set in the
 # make command's arguments or environment.
 # : update
 release: new_version commit
-	$(CVS) commit .
 	make -C src new_version
 	rm -f xx[0-9][0-9]
 	csplit CHANGES '/$$Log:/+1'
@@ -72,8 +70,8 @@ release: new_version commit
 	echo '===============' >> CHANGES.tmp
 	cat xx[0-9][0-9] >> CHANGES.tmp
 	rm -f xx[0-9][0-9]
-	$(CVS) commit -m "Version $(NEW_VERSION)" .
-	$(CVS) tag `echo Version_$(NEW_VERSION)|sed s/\\./_/g` .
+	$(CVS) commit -I CHANGES.tmp -m "Version $(NEW_VERSION)" .
+	$(CVS) tag `echo eftp4linux-$(NEW_VERSION)|sed s/\\\\./_/g` .
 	tar -czf ../eftp4linux-$(NEW_VERSION).tar.gz .
 
 .PHONY: all config permissions clean distclean release configureclean commit update default
