@@ -12,7 +12,7 @@ Posting-frequency: monthly
 Last-modified: 18-Mar-97
 URL: http://www.lrz-muenchen.de/~ui161ab/www/isdn/
 
-!1FAQ for isdn4linux - Version 1.3.2!br (translation in progress 16-Apr-97)
+!1FAQ for isdn4linux - Version 1.3.2!br (translation in progress 26-Apr-97)
 
 [Translator's notes]!br
 --31-Mar-97: First step in updating the FAQ from 1.0.5
@@ -20,7 +20,7 @@ URL: http://www.lrz-muenchen.de/~ui161ab/www/isdn/
 but many questions are missing or are still in German!!br
 --14-Apr-97: Questions complete in all sections (but not all updated or 
 translated)!br
---19-Apr-97: Translated through Section 2.11, as well as Sections 4 and 5.!br
+--26-Apr-97: Sections 1, 2, 4 and 5 complete (except 2.18.3)!br
 !br
 
 This FAQ is protected by the GNU General Public License (GPL) Version 2;
@@ -2219,31 +2219,31 @@ Q: isdnlog doesn't always show the High Layer Compatibility (Speech, Video,...)
 A: Gernot Zander <hifi@scorpio.in-berlin.de> posted a patch on 6.10.1996
    to the mailing list that adjusts isdnlog
 
-Q: Kann man in der Ausgabe von isdnrep die Dienstekennung eines eingehenden
-   Anrufes sehen?
-A: Andreas Kool <akool@Kool.f.EUnet.de> schrieb hierzu am 3. Dez 1996:!br
-   Im isdnrep indirekt schon -- sofern du alle von isdnlog ausdekodierten
-   Dienstkennungen in deiner "isdnlog.conf" als Alias eingetragen hast ...
+Q: Can I see the service type from an incoming call in the output
+   from isdnrep?
+A: Andreas Kool <akool@Kool.f.EUnet.de> wrote on 3 Dec 1996:!br
+   Indirectly in isdnrep, yes -- as soon as you enter an alias for the
+   decoded service types in your "isdnlog.conf" ...
 
-Q: Warum erfaßt isdnlog neben den Gebühren nicht auch die Telefonnummer, die
-   meine anderen ISDN-Geräte (z.B. ISDN-Telefon) anrufen?
-A: Weil die ISDN-Karte wie alle ISDN-Geräte getrennte Sende- und
-   Empfangsleitungen (RX bzw. TX Leitung) hat. Isdnlog müßte die auf der
-   Sendeleitung übermittelten Daten belauschen, um die Telefonnummer zu
-   erfahren. Zumindestens bei der Teleskarte ist das jedoch nicht möglich, wie
-   Karsten Keil <keil@temic-ech.spacenet.de> am 12. Feb 1997 schrieb:
+Q: Why doesn't isdnlog record the number dialed by my other ISDN devices,
+    since it records the charges?
+
+A: Because the ISDN card, like all ISDN device, has separate lines for
+   sending and receieving (RX and TX lines). Isdnlog has to read data
+   from the receiving line to learn the number dialed. This isn't possible,
+   at least for the Teles cards, as Karsten Keil <keil@temic-ech.spacenet.de> 
+   wrote on 12 Feb 1997:
 !verbon
-       Das ist bei allen Karten mit 1 Siemens ISAC so, der hat (und braucht)
-       nur 1 Empfaenger und 1 Sender.
-       Theoretisch besteht eine Moeglichkeit, mit nur einem Empfaenger den
-       kompletten D-Kanal zu belauschen (das macht der ISAC sogar) und zwar
-       werden die auf der RX Leitung empfangenden D-Bits auf sogenannte Echo
-       Bits zeitversetzt auf die TX Leitung kopiert, darueber erfolgt die
-       Access Kontrolle (Kollisionserkennung) des S0 Busses.
-       Leider gibt es im ISAC im TA Mode keine Moeglichkeit die ECHO Bits aus
-       einem Register zu lesen.
+       This is the case for all cards with 1 Siemans ISAX; it has (and needs)
+       only 1 sender and 1 receiver.
+       Theoretically, it's possible to read the entire D channel with just one
+       receiver (even with the ISAC); the D bits from the RX line are copied 
+       (somewhat delayed) to the TX line, over which the access control 
+       (collision recognition) of the SO bus takes place.
+       Unfortunately with the ISAC it's not possible to read the echo bits 
+       in TA mode from a register.
 !verboff
-   Zu möglichen Lösungen siehe nächste Frage.
+   See the next questions for a possible solution.
 
 Q: Wie kann ich trotzdem isdnlog dazu bringen, die Telefonnummer auch von
    anderen ISDN-Geräten mitzubekommen?
@@ -2310,10 +2310,10 @@ A: Dazu gibt's "xisdnload". Clemens Perz <listperz@gwsnet.ttt.de> wußte am
 
 
 !3Isdnbutton
-Q: Welche Skripte sollte ich nutzen, um isdnbutton herunterzufahren?
-A: Markus Gutschke <gutschk@uni-muenster.de> (der Autor) schrieb dazu
-   am 21. Dez 1996:!br
-   Ich benutze hier so etwas wie:
+Q: What script should I use to bring down isdnbutton?
+A: Markus Gutschke <gutschk@uni-muenster.de> (the author) wrote
+   on 21 Dec 1996:!br
+   Here I use something like:
 !verbon
         #!/bin/bash
         #ISDNBUTTON: Disconnect ISDN
@@ -2322,9 +2322,8 @@ A: Markus Gutschke <gutschk@uni-muenster.de> (der Autor) schrieb dazu
         /sbin/isdnctrl hangup isdn0
         exit 0
 !verboff
-   [An die Zeile, die mit "&&" endet, muß noch die nachfolgende angehängt
-   werden!]!br
-   und
+   [At the line ending with  "&&", the next line must be continued!]!br
+   and
 !verbon
         #!/bin/bash
         #ISDNBUTTON: Connect ISDN
@@ -2332,29 +2331,26 @@ A: Markus Gutschke <gutschk@uni-muenster.de> (der Autor) schrieb dazu
              /sbin/isdnctrl addphone isdn0 out 0251925020
         exit 0
 !verboff
-   [An die Zeile, die mit "||" endet, muß noch die nachfolgende angehängt
-   werden!]
+   [At the line ending with  "||", the next line must be continued!]
 
-Q: Was bedeuten die einzelnen Zustände von isdnbutton (grün, gelb, rot)?
-A: Markus Gutschke <gutschk@uni-muenster.de> schrieb dazu am 21. Dez 1996:!br
-   "isdnbutton" überprüft folgende Zustaende:
+Q: What do the different states of isdnbutton mean (green, yellow, red)?
+A: Markus Gutschke <gutschk@uni-muenster.de> wrote on  21 Dec 1996:!br
+   "isdnbutton" checks the following conditions:
 !verbon
-        GRÜN - mindestens eine ISDN Verbindung ist zur Zeit aktiv. Leider
-                kann ich nicht überprüfen, womit diese Verbindung aktiv
-                ist (siehe andere Mail in die Liste). Es muß sich also
-                nicht unbedingt um eine Netzwerkverbindung handeln und es
-                werden auch eingehende Verbindungen angezeigt (was ich in
-                meinem Fall aber auch ganz gut brauchen kann).
-        GELB  - keine aktive ISDN Verbindung wurde entdeckt, aber
-                mindestens eines der ISDN Interfaces hat eine ausgehende
-                Telephonnummer fuer Demand-Dialing. Es besteht also die
-                "Gefahr", dass automatisch eine Verbindung aufgebaut
+        GREEN - at least one ISDN connection is active. Unfortunately 
+                I'm unable to check how the connection was activated.
+                It doesn't have to be a network connection, and can 
+                also be an incoming connection (at least for me, it would
+                be useful to distinguish these).
+        YELLOW- no active ISDN connection was found, but at least one
+                ISDN interface has an outgoing telephone number for
+                deman dialing. There is therefore the "danger" that
+                a connection will occur automatically.
                 werden kann.
-        ROT   - Keine der oben genannten Punkte trifft zu. In der Regel
-                bedeutet das, daß
-                a) der Kernel gar kein ISDN kennt, oder das ISDN
-                   Subsystem nicht aktiv ist, oder
-                b) ISDN Auswahlverbindungen deaktiviert sind.
+        RED   - Neither of the above is true. This usually means that
+                a) the kernel doesn't recognize ISDN, or the ISDN
+                   subsystem is not active, or
+                b) the outgoing ISDN connections are deactivated.
 !verboff
 
 
@@ -2408,28 +2404,28 @@ A: The standard tool for converting all sound formats is SOX. SOX is
    !link http://www.powerweb.de/mpeg/util/msdos/sox10c.zip;!br 
    (including sources that compile under Linux).
 
-Q: Wie kann ich WAV nach ulaw formatieren (für meine vbox-Ansagetexte)?
-A: Dazu gab uns gab Christian Stueble <stueble@ls6.informatik.uni-dortmund.de>
-   am 15 Jan 1997 folgenden Tip:!br
-   Bei mir funktioniert folgende (wenn auch etwas umstaendliche) Methode:
+Q: How can I format WAV for ulaw (for my vbox announcement message)?
+A: We receive the following tip form Christian Stueble 
+   <stueble@ls6.informatik.uni-dortmund.de> on 15 Jan 1997:!br
+   For me, the following (somewhat indirect) method works:   
 !verbon
        sox <file>.wav -r 8000 <file>.ul rate
        rmdcatheader -u <file.ul> > <file>.msg
        cat <file>.ul >> <file>.msg
 !verboff
-   Kann sein, dass man bei sox etwas andere Parameter angeben muß.
-   Als ersten Test kann man cat <file>.msg > /dev/audio probieren,
-   da müßte etwas zu hören sein.
+   It could be that you have to give different parameters to sox.
+   As a first test you can try <file>.msg > /dev/audio, you should
+   be able to hear something.
 
 !3Diald
 
 !old
-Q: Wie kann ich i4l mit dem diald kombinieren?
-A: Wim Bonis <bonis@kiss.de> schrieb:!br
-   Die Patches für daild sind hier zu finden:!br
+Q: How can I combine i4l with diald?
+A: Wim Bonis <bonis@kiss.de> wrote:!br
+   The patches for daild can be found at:!br
      !link ftp://ftp.kiss.de/pub/linux/isdn4linux/diald-0.13-device-patch;!br
-   Sie laufen auch mit dem diald-0.14. Wenn's einen neueren Diald gibt,
-   passe ich es gerne an...
+   They work with diald-0.14. When a newer diald comes out, I'll adjust 
+   the patches accordingly...
 
 !old
 Q:  Are there any example scripts for diald?
@@ -2448,190 +2444,180 @@ A:  Yes, by Rainer May <r_may@khavi.desaster.heide.de>:
 
 !3Chargeint
 
-[Achtung! Nur in älteren Konfigurationen muß der Chargeint-Patch ins Kernel
-gepatcht werden. Ab Kernel 2.0.30 bzw. HiSax 2.0 ist der Chargeint-Patch
-automatisch im Kernel integriert - die Red.]
+[Attention! Chargeint only needs to be patched in the kernel for older
+configurations. Starting with kernel 2.0.30/HiSax 2.0, chargeint is
+automatically integrated into the kernel. Ed.]
 
 !old
-Q: Wie kann die ich den "chargeint"-Patch verwenden, damit i4l rechtzeitig
-   vor der nächsten Gebühreneinheit auflegt?
-A: Sascha Ottolski <sascha@alzhimer.isdn.cs.tu-berlin.de> schrieb: 
+Q: How can I use the "chargeint" patch, so i4l will hang up before the next 
+   charge unit begins?
+A: Sascha Ottolski <sascha@alzhimer.isdn.cs.tu-berlin.de> wrote: 
 !verbon
-        Ich benutze den chargeint, das klappt hervorragend; Gebühren kommen
-        bei mir während der Verbindung, aber ich glaube, man kann das auch per
-        Hand justieren. Du mußt mit den beiden in
-        isdnlog-2.50/contrib/chargeint zum einen die Kernel-Sourcen, zum
-        anderen die isdn4k-utils-2.0 patchen; dann den isdnlog mit dem Flag
-        -Dchargeint compilieren (siehe Makefile). Kernel und isdnctrl
-        natürlich auch neu kompilieren.
-        Dann den isdnlog mit der option -hx starten, wobei x die Anzahl der
-        Sekunden ist, die noch zum Gebührenimpuls fehlen. Da legt der chargeint
-        dann auf. Im start-script für isdn wie gewohnt einen huptimeout
-        definieren, zusätzlich den chargeint scharf machen:
-        /sbin/isdnctrl huptimeout ippp0 80  # in sec;
-        nach Bedarf /sbin/isdnctrl chargeint ippp0
+     I use chargeint, it works great; for me charge units come during the
+     connections, but I think that can be adjusted by hand. The two patches in
+     isdnlog-2.50/contrib/chargeint are for the kernel sources and for 
+     isdn4k-utils-2.0; then compile isdn with the -Dchargeint flag (see
+     Makefile). The kernel and isdnctrl of course also have to be recompiled.
+     Then start isdnlog with the -hx option, where x is the number of seconds
+     left until the next charge unit. Then chargeint will hang up. In the
+     start script for isdn, define a huptimeout as usual to activiate the
+     chargeint:
+     /sbin/isdnctrl huptimeout ippp0 80  # in sec;
+     if needed /sbin/isdnctrl chargeint ippp0
 !verboff
-   Olav Brinkmann <olav@max.north.de> schrieb: 
+   Olav Brinkmann <olav@max.north.de> wrote: 
 !verbon
-        Der chargeint legt immer zwei Sekunden vor dem Ende der
-        Gebühreneinheit auf. Der isdnlog setzt, wenn er mit -Dchargeint
-        compiliert wurde, mit "-h" die Dauer der Einheit (i.e. Charge
-        Interval) abhängig von der Tageszeit und des Datums. Ein zusätzlicher
-        Parameter für "-h" verkürzt diese Dauer um den angegeben Wert.
-        Letzteres darf man bei Verwendung des chargeint aber nicht verwenden,
-        da sonst der chargeint die Verbindung zu früh beendet. Der Fehler
-        vergrößert sich mit der Anzahl der Gebührentakte. Also: "-h0" angeben,
-        um das Problem zu vermeiden.
-          > /sbin/isdnctrl huptimeout ippp0 80  # in sec;
-        In diesem Anwendungsfall ruhig kürzer, ich habe 5 Sekunden angegeben.
-        Dann kann ich die letzte Einheit bis auf 7 Sekunden (huptimeout + 2
-        Sekunden "chargeint-reserve") ausnutzen.
-          > /sbin/isdnctrl chargeint ippp0
-        Nicht nötig, wird von isdnlog mit "-h" erledigt.
+     The chargeint always hangs up two seconds before the end of the charge
+     unit. isdnlog, if compiled with -Dchargeint, sets the length of the
+     charge unit (i.e. Charge Interval) according to the time of day and the
+     date. An additional parameter for "-h" will reduce this length of time by
+     the given value. This additional paramet should not be used wotj
+     chargeint, otherwise chargein will end the connection too early. This
+     error increases with the number of charge units. Therefore: "-h0" to
+     aboid this problem. 
+       > /sbin/isdnctrl huptimeout ippp0 80  # in sec;
+     In this example is can be much short; I use 5 seconds. Then I can use the
+     last chage unit up th the last 7 seconds (huptimeout + 2 seconds
+     "chargeint reserve").
+       > /sbin/isdnctrl chargeint ippp0
+     Not needed; taken care of with by isdnlog with "-h".
 !verboff
 
-Q: Für welche Treiber kann ich den Chargeint-Patch verwenden?
-A: Sowohl der Teles-, als auch der HiSax-Treiber können verwendet werden.
-   Natürlich muß auch isdnlog einwandfrei laufen (isdnlog 2.50 muß auf 2.51
-   gepatcht werden, um mit dem HiSax-Treiber zu laufen).
+Q: With which drivers can I use the chargeint patch?
+A: You can use the Teles or the HiSax driver. Of course, isdnlog must
+   be running correctly (isdnlog 2.50 has to be patched to 2.51
+   to run with the HiSax driver).
 
-Q: Wann es unsinnig, den Chargeint-Patch zu verwenden?
-A: Es gibt vor allem dann Schwierigkeiten, wenn die IP dynamisch zugewiesen
-   wird. Denn eine einmal unterbrochene Verbindung kann nicht wieder
-   aufgenommen werden (die IP-Adresse hat sich ja geändert). Die unterbrochene
-   FTP-, Telnet- oder WWW-Verbindung muß dann komplett neu aufgebaut werden.
+Q: When does it not make sense to use the chargeint patch?
+A: There are problems when the IP is assigned dynamically. Then a broken
+   connection cannot simply be restarted (since the IP address has changed).
+   The interrupted FTP, telnet or WWW connection must then be newly
+   established.
 
 !old
-Q: Wie funktioniert der Chargeint-Patch?
-A: isdnctrl kann man mit dem Parameter "chargeint" mitteilen, wieviele
-   Sekunden eine Gebühreneinheit dauert, damit rechtzeitig aufgelegt werden 
-   kann. Da die Länge der Gebühreneinheit von Uhrzeit, Wochentag, Feiertag
-   etc. abhängt, macht ein fester Parameter keinen Sinn.
-   Hier springt isdnlog ein. Es stellt fest, ab wann eine Verbindung
-   steht und rechnet abhängig von Uhrzeit, Wochentag, Feiertag aus, wie
-   lange eine Gebührenimpuls dauert. Diese Zeit teilt es isdnctrl mit,
-   damit dieses genau rechtzeitig auflegen kann. Isdnlog "justiert"
-   isdnctrl damit bei jedem Connect und auch während einer Verbindung
-   (wenn isdnlog mit dem Parameter "-w x" gestartet wurde).
-   isdnlog veranlaßt isdnctrl, genau 2 Sekunden vor dem Start der
-   nächsten Gebühreneinheit aufzulegen, solange mindestens die isdnctrl
-   mit dem Parameter "huptimeout" angegebenene Zeit verstrichen ist, ohne
-   daß Daten übertragen worden wären.
-   Die Übermittlung von Gebührenimpulsen wird nicht benötigt, da die
-   Zeitsteuerung genau genug ist. Die Gebührenimpulse während eines
-   Gespräches werden zudem in so schwankenden Intervallen übermittelt,
-   daß man sich danach nicht richten kann.
+Q: How does the chargeint patch work?
+A: With the isdnctrl parameter "chargeset" you can set the length of a charge
+   unit, so that it can hang up at the correct time. However, since the length
+   of a charge unit depends on the time of day, day of week, holiday, etc., it
+   makes no sense to use a set value. Here's where isdnlog comes in. It
+   notices when a connection is established and calculates the length of a
+   charge unit depending on the time of day, day of week, holiday. This is
+   then given to isdnctrl, so it can hang up at the right time. isdnlog
+   "tunes" isdnctrl at each connection, and also during a connection (when
+   isdnlog is run with the "-w x" parameter). isdnlog allows isdnctrl exactly
+   2 seconds before the next charge unit to hang up, as long as the time
+   entered with "huptimeout" has elapsed with no data being transferred. The
+   transmission of a charge unit impulse is not necessary, since the times are
+   calculated closely enough. The charge unit impulse is sent a varying
+   intervals, so it cannot be relied upon
 
-Q: Wie konfiguriere ich den Chargeint-Patch?
-A: Andreas Kool <akool@Kool.f.EUnet.de> schrieb hierzu am 3. Jan 1997:
+Q: How do I configure the chargeint patch?
+A: Andreas Kool <akool@Kool.f.EUnet.de> wrote on 3 Jan 1997:
 !verbon
-        1. Den Kernel mit "isdnlog-2.50/contrib/chargeint/patch-chargeint-2.04"
-           patchen, neuen Kernel backen und booten
-        2. Die isdn4k-utils-2.0 mit
-           "isdnlog-2.50/contrib/chargeint/patch-chargeint-kutils"
-           patchen, make clean; make install
-        3. In der "/etc/isdnlog/isdnlog.conf" bei den gewuenschten Gegnern
-           das jeweilige Interface in Spalte 4 eintragen, und noch mal
-           die Korrektheit der Zone-Eintraege pruefen
-        4. Im "Makefile" von isdnlog "-DCHARGEINT" bei "COPTS" anfuegen,
+        1. Apply the patch "isdnlog-2.50/contrib/chargeint/patch-chargeint-2.04"
+           to the kernel, rebuild the kernel and reboot.
+        2. Patch isdn4k-utils-2.0 with
+           "isdnlog-2.50/contrib/chargeint/patch-chargeint-kutils",
            make clean; make install
-        5. isdnlog mit der weiteren Option "-h0" starten, fertig!
+        3. In etc/isdnlog/isdnlog.conf" enter the appropriate interface 
+           in column 4 for those partners you wish to add, and double check
+           the the zone entries are correct.
+        4. In the "Makefile" for isdnlog, insert "-DCHARGEINT" for "COPTS",
+           make clean; make install
+        5. start isdnlog the additional option "-h0", done!
 !verboff
 
-Q: Wo finde ich eine ausführlichere Anleitung zum Chargeint-Patch?
-A: Georg v. Zezschwitz <gvz@hamburg.pop.de> schrieb hierzu am 29. Nov 1996:!br
-  Quick und Dirty habe ich jetzt endlich eine Doku fuer den ChargeInt-
-  Patch geschrieben:
-  - Fuer wen eignet er sich?
-  - Wie kriegt man ihn eingebunden?
-  - Was macht er?
-  - Wie konfiguriere ich ihn gut?
-  Default-URL: !link http://www.provi.de/~gvz/chargeint.html;
+Q: Where can I find more detailed instructions for the chargeint patch?
+A: Georg v. Zezschwitz <gvz@hamburg.pop.de> wrote on 29 Nov 1996:!br
+  I've finally written some quick and dirty docs for the chargeint patch:
+  - For whom is it appropriate?
+  - How do I apply it?
+  - What does it do?
+  - How can it be best configured?
+  Default URL: !link http://www.provi.de/~gvz/chargeint.html;
 
-Q: Wie kann ich sicher sein, daß der Chargeint-Patch mit der richtigen Uhrzeit
-   arbeitet?
-A: Dazu stellt man am besten mit "isdnlog -t2" die Uhr im eigenen Computer
-   nach der Uhr in der Vermittlungsstelle. Zum Stellen der Uhr siehe auch im
-   Kapitel "Verschiedenes" die Frage: "Wie kann ich meine Rechneruhr nach ISDN
-   stellen".
+Q: How can I be sure that the chargeint patch is using the correct time?
+A: It's best to synchronize the clock in your own computer with that of
+   the switching office with "isdnlog -t2". For setting the clock, see the
+   "Miscellaneous" section, the question: "How can I set the clock of my 
+   computer with ISDN?"
 
 
 !3Dial-In
 
-!old
-Q: Wie ermögliche ich anderen, über ISDN bei mir einzuloggen?
-A: Genauso, wie bei einer normalen seriellen Schnittstelle auch. Man startet
-   einen getty (sehr empfehlenswert ist mgetty von Gert Doering) auf einem
-   der ISDN-Devices, die eine Modememulation ermöglichen (/dev/ttyI*). Der
-   entsprechende Eintrag in der /etc/inittab sieht so aus:
+Q: How can I enable others to login via ISDN?
+A: The same way as via a normal serial port. Start a getty (mgetty from Gert
+   Doering is highly recommended) on one of the ISDN devices with modem 
+   emulation (/dev/ttyI*). The entry in /etc/inittab looks like this:
 !verbon
-        #
-        # ISDN Lines
-        #
-        I0:56:respawn:/usr/local/sbin/mgetty ttyI0
-        I1:56:respawn:/usr/local/sbin/mgetty ttyI1
+     #
+     # ISDN Lines
+     #
+     I0:56:respawn:/usr/local/sbin/mgetty ttyI0
+     I1:56:respawn:/usr/local/sbin/mgetty ttyI1
 !verboff
-   in der mgetty.config Datei müssen nun noch der Init-String eingetragen
-   werden, damit der mgetty weiß, auf welcher MSN oder EAZ er "horchen"
-   soll. Hier ein Beispiel für Port /dev/ttyI0
+   Then the init string needs to be entered in the mgetty.config, since
+   mgetty needs to know which MSN or EAZ to "listen" to. Here is an example
+   for /dev/ttyI0
 !verbon
-        port ttyI0
-        modem-type data
-        speed 38400
-        init-chat "" ATZ OK AT&E0 OK AT&B512 OK
+     port ttyI0
+     modem-type data
+     speed 38400
+     init-chat "" ATZ OK AT&E0 OK AT&B512 OK
 !verboff
-   Das Beispiel setzt die EAZ (bei 1TR6-ISDN) auf 0. Für Euro-ISDN muß die
-   jeweilige MSN (ohne Vorwahl) statt der 0 in "AT&E0" eingesetzt werden.
-   Für X.75 wird die Blockgröße auf 512 Byte gesetzt.
-   Alternativ kann die gesamte Konfiguration auch in einer einzigen Zeile in
-   die /etc/initab geschrieben werden (hier in zwei Zeilen abgedruckt!):
+   The example sets the EAZ (with 1TR6-ISDN) to 0. For Euro ISDN, the MSN
+   (without area code) would be given instead of the 0 in "AT&E0". 
+   For X.75 the block size is set to 512 bytes.
+   Alternatively you can enter the entire configuration onto a single line
+   in /etc/initab (here printed on two lines!):
 !verbon
-        i0:45:respawn:/sbin/mgetty -D -m '"" ATZ OK AT&E0 OK AT&B512 OK'
-            -s 38400 ttyI0
+     i0:45:respawn:/sbin/mgetty -D -m '"" ATZ OK AT&E0 OK AT&B512 OK'
+       -s 38400 ttyI0
 !verboff
-   Am elegantesten ist jedoch die Verwendung von iprofd. Dieser Dämon
-   realisiert den AT&W0 Befehl der i4l-Modememulation. Man startet ihn
-   mit einem Dateipfad als Parameter also z.B. "iprofd /etc/i4lprofile"
-   Danach kann man mit minicom oder einem anderen Terminalprogramm
-   ein ISDN-tty öffnen und die nötigen AT-Befehle von Hand eingeben.
-   Gibt man nun zum Schluß den Befehl AT&W0 ein, so wird iprofd vom
-   Kernel benachrichtigt, und schreibt die aktuelle Konfiguration
-   in die Datei. Von nun an genügt es, den iprofd im ISDN initscript zu
-   starten und das jeweilige ISDN-tty mit allein ATZ zu initialisieren.
+   The most elegant way is to use iprofd. This daemon takes advantage of
+   the AT&W0 command in the i4l modem emulation. You start iprofd
+   with a path as parameter, e.g. "iprofd /etc/i4lprofile"
+   Then with minicom or another terminal program, open an ISDN tty
+   device and enter the necessary AT commander by hand. 
+   When finished, enter the command AT&W0, then the kernel notifies iprofd 
+   to write the current configuration to the file. From now it it is enough
+   to start iprofd in you isdn init script, and to initialize the appropriate
+   ISDN tty devices with ATZ
+
 
 !old
-Q: Jemand will sich bei mir mit HDLC auf mgetty einwählen. Ist hier ttyI1
-   richtig, oder muß ich da bei ttyI0 anfangen ?
-A: Nein, ist egal, hat auch nichts mit der Nummer des B-Kanals (0 oder 1) 
-   zu tun. Man muß nur im Initstring das HDLC aktivieren (ATS14=3).
+Q: Someone would like to dial in to my mgetty with HDLC. Is ttyI1 correct,
+   or do I have to start with ttyI0?  
+A: No, it doesn't matter. It also has nothing to do with the number of the
+   B channel (0 or 1). You just have to activate HDLC in the init string 
+   (ATS14=3).
 
 !old
-Q: Gibt es mittels mgetty die Möglichkeit, automatisch beim Empfang von 
-   LCP-Frames den pppd starten zu lassen?
-A: Ja, das geht. Man muß den mgetty mit "-DAUTO_PPP" compilieren und dann
-   in /usr/local/etc/mgetty+sendfax/login.config entsprechend den
-   Erfordernissen die Zeile 
+Q: Is it possible with mgetty to automatically start pppd when LCP frames
+   are received?
+A: Yes, it is. You have to compile mgetty with "-DAUTO_PPP" and then
+   in the file /usr/local/etc/mgetty+sendfax/login.config, the line  
 !verbon
-        #/AutoPPP/ - ppp /usr/sbin/pppd auth -chap +pap login kdebug 7 debug
+#/AutoPPP/ -    ppp     /usr/sbin/pppd auth -chap +pap login kdebug 7 debug
 !verboff
-   vom Kommentarzeichen "#" befreien und editieren.
+   should be uncommented and edited. 
 
-Q: Wie kann ich erreichen, daß (i)pppd die Paßwortüberprüfung bei einer
-   Einwahl anhand von /etc/passwd anstelle von /etc/ppp/pap-secrets durchführt?
-A: G. Richter <richter@ecos.de> schrieb dazu am 17. Dez 1996:!br
-   In /etc/ppp/pap-secrets muß für jeden User folgende Zeile eingetragen
-   werden, wenn Du nur bestimmte User zulassen willst:
+Q: How can I have (i)pppd check passwords from /etc/passwd instead of
+   /etc/ppp/pap-secrets when someone dials in?
+A: G. Richter <richter@ecos.de> wrote on 17 Dec 1996:!br
+   In /etc/ppp/pap-secrets, each user must have the following line, if you
+   want to allow in only certain users:
 !verbon
         <login-name> * ""
 !verboff
-   oder, wenn alle User dürfen, einfach:
+   or to allow all users simply:
 !verbon
         * * ""
 !verboff
-   [Letzteres kann auch erreicht werden, wenn die Datei pap-secrets gar nicht
-   existiert - die Red.]!br
-   Der ipppd sollten in beiden Fällen u.a. mit den Optionen "login" und
-   "auth" gestartet werden.
+   [The latter can also be acheived when the file pap-secrets does not
+   exist - Ed.]!br
+   In either case, ipppd should be started with the options "login" and
+   "auth".
 
 Q: Wie erreiche ich, daß sich mehrere Personen gleichzeitig bei mir einwählen
    können?
@@ -2666,161 +2652,153 @@ A: Karsten Keil <keil@temic-ech.spacenet.de> schrieb dazu am 7. Nov 1996:!br
    [Das nennt sich dann !u1Bündelanschluß!u0 - Red.]
 
 !old
-Q: Wenn eine Fritz!-Card bei mir mit X.75 anruft, stürzt Linux ab. Was
-   kann man tun?
-A: Karsten Keil <keil@temic-ech.spacenet.de> hat einen neuen Treiber (den 
-   "HiSax-Treiber") geschrieben. Der enthält einen entsprechenden Bugfix.
-   Siehe auch Frage Allgemeines|HiSax und Abschnitt HiSax-Treiber.
+Q: When a Fritz! card calls with X.75, Linux crashes. What can I do?
+A: Karsten Keil <isdn4@temic-ech.spacenet.de> has written a new driver (the 
+   "HiSax driver"). It includes a bug fix for this.
+   Also see the questions Gerneral|HiSax and the section HiSax driver in this
+   FAQ.
 
 !old
-Q: Eine AVM (A1 oder B1) kann sich nicht mit X.75 bei mir einwählen, weder
-   unter Win95 noch unter OS/2?
-A: Mit der alten Version des Teles-Treibers ist dies ein bekanntes Problem,
-   siehe letzte Frage. Das ist jedoch mittlerweile im HiSax-Treiber gelöst.
-   Von Karsten Keil <keil@temic-ech.spacenet.de> wurde schon ein Patch für
-   den alten Teles-Treiber gepostet.
+Q: An AVM (A1 or B1) cannot call in to me with X.75, either
+   under Win95 or under OS/2?
+A: This is a known problem, see the last question. This has now been
+   solved in the HiSax driver, and Karsten Keil <keil@temic-ech.spacenet.de>
+   has posted a patch for the Teles driver as well.
 
 !old
-Q: Wie kann ich eine Fritz!-Karte bei mir anrufen lassen?
-A: Solange weder einer der neueren HiSax-Treiber verwendet noch der Patch von
-   Karsten Keil <keil@temic-ech.spacenet.de> für den Teles-Treiber
-   eingespielt wurde: nur per hdlc - versucht die Karte, sich per X.75
-   einzuwählen, bleibt isdn4linux gerne hängen. Deshalb sollte man für
-   Fritz!-Karten auch eine eigene MSN mit hdlc bereitstellen.
-   Hinweis von Roland Rosenfeld <roland@spinnaker.rhein.de>: Wer seine drei
-   MSNs verplant hat, kann mit den Dienstekennungen tricksen, z.B. so:
+Q: How can enable a Fritz! card to call in to me?
+A: As long as the patch form Karsten Keil <isdn4@temic-ech.spacenet.de> is not
+   applied: only with hdlc - if the card tries to call in with X.75
+   isdn4linux likes to hang. Therefore you should set up a separate
+   MSN for Fritz! cards with hdlc. The HiSax driver also has the same
+   problem.  Note from Roland Rosenfeld <roland@spinnaker.rhein.de>:
+   If you've used up your three MSNs, you can play tricks with the
+   service recognition, e.g.
 !verbon
-        MSN     Analog                          Digital
-        ===     ======                          =======
-        1       Voice + ISDN-Anrufbeantworter   HDLC-PPP
-        2       Voice (Mutter)                  Netz-Interface
-        3       Modem/Fax                       X.75
+     MSN     Analog                          Digital
+     ===     ======                          =======
+     1       Voice + ISDN answering machine  HDLC, PPP
+     2       Voice (Mother)                  Net interface
+     3       Modem/Fax                       X.75
 !verboff
-   Wer Lust hat, kann bei MSN 2 auch noch einen weiteren ISDN-Anrufbeantworter 
-   aufschalten, der einen anderen Text bringt...
-
+   If you want, you can install another answering machine on MSN 2 that play a totally
+   differeng message...
+   
 !old
-Q: Welche Betriebssystem-unabhängige ISDN-Router gibt es?
-A: Sakari Aaltonen <sakari@picea.hut.fi>:
+Q: Which ISDN routers are there that are OS-independent?
+A: Sakari Aaltonen <sakari@picea.hut.fi>: 
 !verbon
-        Von Routern mit 1 BRI scheint es jede Menge zu geben, die wenigen mit 
-        mehr sind recht teuer (Cisco 4000 mit vier Anschlüssen etwa DM
-        15000.--, Ascend Pipeline 400: ?). 
+     There seems to be a lot of routers with 1 BRI, those that have more 
+     are expensive (Cisco 4000 with four connection about DM 15000.--,
+     Ascend Pipeline 400: ?). 
 !verboff
-   Jürgen Goeritz <juergen@bart.simpson.inka.de>:
+   Jürgen Goeritz <juergen@bart.simpson.inka.de>: 
 !verbon
-        ISDN-Router mit 4xBRI gibt es auch noch preiswerter von einem
-        deutschen Hersteller - siehe !link http://www.conware.de/;
+     ISDN routers with 4xBRI are less expensive from a German  
+     manufacturer - see !link http://www.conware.de/;
 !verboff
-   Jochen Wiedmann <Jochen.Wiedmann@Neckar-Alb.de>:
+   Jochen Wiedmann <Jochen.Wiedmann@Neckar-Alb.DE>: 
 !verbon
-        Ein Banzai! könnte auch helfen. Als Hardware tut's jeder beliebige PC 
-        mit (z.B.) teles-Karten, die Software kostet so um die 800-1000 DM.
-        Ich persönlich mag Banzai!-Router überhaupt nicht wegen Ihrer 
-        schlechten Diagnosemöglichkeiten, insbesondere ist Fernwartung so gut 
-        wie nicht möglich (es sei denn, man hat die SNMP-fähige Version, aber 
-        die kostet dann gleich einiges mehr). Aber wenn sie laufen, laufen sie 
-        stabil und im Unterschied zu Cisco's können sie einen echten Callback.
-        Von Cisco gibt es als Alternative noch die Cisco 2503 für etwa 5000
-        DM, die zwar nur einen BRI-Port hat, aber dafür zwei serielle 
-        Schnittstellen, an die man einen TA (je etwa 800 DM) hängen kann. 
-        Schließlich kann man last, not least in den saueren Apfel beißen und 
-        sich mehrere Cisco 1003 antun (ca. 2000DM pro Stück). Falls Geld keine 
-        gar so dringende Rolle spielt, würde ich persönlich die letztere 
-        Variante bevorzugen: Ich mag Cisco's einfach. :-)
+     A Banzai! might also help. As hardware any PC with (e.g.) Teles
+     cards would work, the software costs around 800-1000 DM.  I
+     personally don't like Banzai! routers at all because of their
+     poor diagnostic capabilities, in particular remote maintenance as
+     pretty much impossible (unless you have the SNMP capable version,
+     but it costs somewhat more). But when they run, they run stable
+     and as opposed to Ciscos they are capalbe of real callback.  From
+     Cisco as an alternative there is the Cisco 2503 for about 5000
+     DM, that has only one Port, but two serial interfaces, on which
+     you can connect a TA (each about 800 DM).  Finally, last, not
+     least you can bit the bullet and get several Cisco 1003s
+     (ca. 2000DM each). In case the price does not play such a bit
+     role, I would take this variation. I simply like Ciscos. :-)
 !verboff
    Winfried Haug <haug@seicom.net>: 
 !verbon
-        Also du solltest dir eben überlegen, WAS dir am wichtigsten ist:
-          (1) Geld sparen
-          (2) Zeit sparen
-        Für (1) gibt es 2 Lösungen:
-        - Banzai! (heißt jetzt übigens Flux oder Concorde..)   
-          -> !link http://www.concorde.de/; (von cls: !link http://www.cls.de/;)
-          -> !link http://www.flux.de/; (von INS: !link http://www.ins.de/;).
-          Basiert auf mind. einem 386er und routet eben Ethernet -> ISDN,
-          tut mit vielen Karten, die Programmierer arbeiten m.w mit Teles.   
-          Nachteil: nicht sauber fern-konfigurierbar, außer du kauft die SNMP 
-          Option dazu, was die Sache aber teurer und entsprechend
-          unattraktiver macht..
-        - ISPA + PCROUTE   
-          -> !link http://www.biochem.mpg.de/~heha/;
-          benötigt auch einen PC (tut auch schon mit einem 286er). Hat deutlich
-          weniger Optionen wie Banzei, Flux, Concorde etc. ist ebenfalls gar 
-          nicht fernbedienbar, läuft dafür aber bombenstabil. 
-          PCROUTE kostet gar nix, ISPA inzwischen 70.-, ggf. findest du auch
-          noch die Version 2.41 die auch ohne key unlimited läuft.
-        Beide Lösungen unterstützen so ziemlich alle ISDN Protokolle (u.a 
-        diverse HDLC Varianten etc..). Unterstützung für SPVs (bald eh
-        obsolet) und D64S ist zumindest f. Teles-Karten da (kommt auch die
-        CAPI drauf an, nicht auf die Software). Alte PCs kriegst du ja schon
-        für <1.000 DM, die Teleskarte kostet nicht die Welt nur die Flux,
-        Concorde Software wird doch recht teuer wenn man da SNMP dazu kauft
-        -> du bist dann auch bald bei 2.000.- und dann kann du lieber gleich
-        'ne cisco1003 kaufen..
-        (2)
-        Wenn du nicht basteln willst, nimmst du entweder 4 einnzelne
-        Cisco1003 Router, die gibts so ab 2300.- und du bist mehr oder weniger
-        alle Sorgen los (mal von diverse IOS-Bugs abgesehen..). Dummerweise
-        können CISCO Router kein "richtiges" Callback... Und als Protokoll nur
-        PPP (wobei es IOS-Versionen gibt, die daß nicht sauber machen!) und
-        CISCO-HDLC.
-        Wenn du 4 BRI brauchst -> CISCO 4000, dann solltest du aber gleich
-        das 8-fach BRI kaufen, kostet nur knapp 2.000 DM weniger. Dann mußt
-        du aber deutlich mehr als 10.000.- investieren..:-(
-        Andere Variante: ELSA LANCOM MPR, kostet auch < 2.000 DM, kann
-        Callback, diverse Protokolle (HDLC, X.75, PPP) und ist recht nett zu
-        konfigurieren. Auf der Interop wurde ein Shiva ISDN Router mit a/b
-        Wandler für 1600 DM vorgestellt, damit wärst du bei 4 BRI Ports bei
-        etwas über 6000 DM...
-        Dann gibts noch etliche Hersteller die einfach BRI-Router im Programm 
-        haben (Preistendenz unter 2.000 stark fallend..), z.B ASCEND, MIRO
-        usw.. Wenn du unbedingt 4fach BRI haben willst, gibts eigentlich nur
-        die Wahl zwischen Cisco und Ascend..
-        äh.. und weil du nach Ascend gefragt hast, hier habe ich noch ne 
-        Preisliste von ascend gefunden (juli96), der max400  OHNE  BRI Port 
-        kostet schon mal 15.750.-, das 4-fach BRI schlägt dann nochmal mit
-        11.250 DM zu Buche... ich denke damit erübrigt sich ascend..:-( 
-        Falls dir eine PC-Lösung nicht widerstrebt, könntest du noch netGW von 
-        netcs verwenden (!link http://www.netcs.com;). Das ist eine Software
-        für SCO, AIX, Sun u.a und basiert bei PCs z.B auf den Karten von Diehl
-        ISDN. netGW dürfte mit weitem Abstand die meisten Protokolle und
-        Optionen bieten, dafür mußt du dich mit einem PC und den damit
-        verbundenen Probleme anfreunden. So ein SCO-Lösung mit 4fach ISDN
-        Karte + Software kostet aber auch so an die 10.000 DM.
-        Wir haben inzwischen fast alle Banzai! und Co rausgerümpelt, weil sie
-        auf Dauer schlecht fern-administrierbar sind und eben bei weitem nicht
-        die Stabilität von Cisco oder anderen Stand-alone Routern haben..
-        Letztendlich ist es eben eine Entscheidung ob die lieber etwas mehr
-        Geld ausgeben willst, und dann läuft es auf Anhieb, oder du baust dir
-        so einen PC Router zusammen und bastelst eben rum... daß muß jeder für
-        sich selber entscheiden... Wobei Teles einen echt an den Rand der
-        Verzweiflung treiben kann, da die CAPI Versionen oft massive Probleme
-        haben und man als 08/15 User an alte CAPI-Versionen nicht ohne
-        Probleme ran kommt. Der Support bei Teles ist nicht gerade berauschend
-        (0190-8er Nummer!). Dann kann man ruck-zuck 20-30 DM vertelefonieren
-        ohne eine Lösung des Problemes erhalten zu haben...
+     You need to decide, which is more important to you:
+       (1) saving money
+       (2) saving time
+     For (1) there are two solutions:
+     - Banzai! (now called Flux or Concorde..)   
+       -> !link http://www.concorde.de/; (from cls, www.cls.de)
+       -> !link http://www.flux.de/;  (from INS, www.ins.de).  
+       Based on at least a 386 and routes Ethernet -> ISDN, works with
+       many cards, the programmers themselves work with Teles.
+       Disadvantates: not cleanly remotely configurable, unless you
+       buy the SNMP option, which makes it more expensive and
+       therefore more unattractive...
+     - ISPA + PCROUTE   
+       -> !link http://www.biochem.mpg.de/~heha/;   
+       also requires a PC (also works with 286). Has much 
+       fewer options than Banzei, Flux, Concorde etc., and is not at all 
+       remotely configurable, but runs totally stable. 
+       PCROUTE costs nothing, ISPA now costs 70.-, perhaps you can still find 
+       version 2.41 that runs unlimited even without a key.
+     Both solutions support pretty much all ISDN protokols (including
+     the diverse HDLC variantions etc..). Support for SPVs (soon
+     obsolete) and D64S is there at least for Teles cards (depends on
+     the CAPI, not the software). You can get old PCs for <1.000 DM,
+     the Teles card also doesn't cost much but die Flux, Concorde
+     software is expensive if you get SNMP as well -> you are then at
+     2.000.- and you could just as well buy a cisco1003...  (2) IF you
+     don't want to assemble anything yourself, you can take with 4
+     individual Cisco1003 routers, at around 2300.- and all of your
+     problems are more or les solved (other than the diverse IOS
+     bugs...). But CISCO router can't do "correct" callback... and as
+     protocol only PPP (although there are IOS versions, that don't do
+     it cleanly) und CISCO-HDLC.  If you need 4 BRIs -> CISCO 4000,
+     but then you should get the 8 BRIs, costs just under 2.000 DM
+     less. But then you have to invest somewhat more than
+     10.000.-...:-( Another varition: ELSA LANCOM MPR, also costs <
+     2.000 DM, can do callback, various protocols (HDLC, X.75, PPP)
+     and is really nice to configure.  At the Interop, a Shiva ISDN
+     Router with a/b switch for 1600 DM was exhibited, but with 4 BRI
+     ports bei you'd be somewhat over 6000 DM...  Then there are
+     several manufacturers that offer simple BRI routers (prices
+     tending to fall well under 2.000), e.g. ASCEND, MIRO etc...  But
+     if you must have 4 BRIs, there's only the choice between Cisco
+     and Ascend..  uh... and since you asked about Ascend, I have a
+     price list here from Ascend (july 96), the max400 WITHOUT BRI
+     port already costs 15.750.-, the 4-way BRI is then an additional
+     11.250 DM... I think that's enough about Ascend...:-(
+     In case you have nothing against a PC solution, you could also
+     use netGW from netcs (!link http://www.netcs.com;). This ia a software
+     for SCO, AIX, Sun etc. and is based on PCs e.g. the cards from
+     Diehl ISDN. netGW should offer by far the most protocols and
+     options, but then you have to become familiar with a PC the
+     problems that come along with it.  A SCO solution with 4- ISDN
+     cards + Software costs also around 10.000 DM, however.  We have
+     now retirned almost all of our Banzai! and Co, since in the long
+     run they are only poorly remotely aministerable are are nowhere
+     near as stable as Cisco or other stand-alone routers...  In the
+     end, it is a decsion of you would rather spend more money, and it
+     runs right awwy, or you build your own PC router and have to play
+     to get it going.  You have to decide for yourself, although Teles
+     can drive you to desparation since the CAPI versions often have
+     huge problems as as normal user can't get any older
+     versions. Support at Teles is not that great (toll 0190-8 phone
+     number), and you can easily spend 20-30 DM on support call
+     without getting an solution to your problem...
 !verboff
-    Christian Kratzer <ck@toplink.net> ergänzte am 19. Okt 1996:
+    Christian Kratzer <ck@toplink.net> added on 19 Oct 1996:
 !verbon
-        Cisco ist sogar billiger als Linux wenns um PRI geht. Oder schon mal
-        geguckt was PRI Karten für PC's kosten. ;)  Dann brauchte mann auch
-        noch Treiber dafür etc...  Da ist mann schnell deutlich über 20k.
-        Eine 4000'er mit PRI bekommt man schon für 12-15kDM.  Und wenn man
-        versucht die Sache mit einzelnen S0's zu lösen wird's erst recht
-        teuer...
-        Für Dialup bis 4 x BRI (was halt in eine kiste geht) ist Linux
-        allerdings vom Preis/Leistung her unschlagbar.  Auch eine 2'te Kiste
-        macht noch Sinn.
-        Dann sollte man sich langsam mal nach einer PRI Lösung umsehen.
-        Beides läuft bei uns stabil und problemlos.
+        Cisco is even cheaper than Linux for PRI. Or have you checked what
+        PRI cards for PCs cost. ;) Then you need the right drivers etc...
+        Then you'll quickly be well over 20k. You can get a 4000 with PRI 
+        for 12-15kDM. And if you try to it with individual SOs, then it really
+        gets expensive...
+        For dialup up to 4 x BRI (which is what fits into one case), Linux
+        is unbeatable for price/performace. Even a second machine still
+        makes sense.
+        But then you need to start thinking about a PRI solution. Both
+        run stable and with not problems for us.
 !verboff
 
 !3Leased lines 
 
 
 !old
-Q: How does establishing and ending a connections work with D64S 
+Q: How does establishing and ending a connection work with D64S 
    without signaling?
 A: The data are simply sent out! If you at the end of the D64S or 2MB
    line, you tell your router that the line itself is "up". You have -
@@ -2857,9 +2835,11 @@ A: A later version of the new HiSax driver will support
      this driver.
 !verboff
 
-Q: Kann ich zwei Kisten mit einer ICN-Karte über eine D64s-Standleitung
-   verbinden? Wie? Wo gibt's Dokumentation?
-A: Torsten Hentschel <Torsten.Hentschel@DInet.de> schrieb dazu am 2. Jan 1997:
+Q: Can I connedt two computers with ICN cards over a D64s leased line?
+   How? Where can I find documentation?
+A: [I'm saving the translation of this long answer for later... let me
+    know if you desparately need this in English. -  Scott ]
+   Torsten Hentschel <Torsten.Hentschel@DInet.de> schrieb dazu am 2. Jan 1997:
 !verbon
           Das geht sicher. Haben wir hier so im Einsatz. Funktioniert
         auch stabil (Kernel >2.0.26 ist notwendig, da sonst ggf.
@@ -2962,76 +2942,74 @@ A: Fritz Elfert <fritz@wuemaus.franken.de> wrote:
 
 !3SPV
 
-Q: Was ist eine SPV?
-A: SPV steht für "semipermanente Verbindung" und ist eine (auslaufende)
-   Spezialität der deutschen Telekom. Es ist ein Zwischending zwischen
-   Standleitung und Wählleitung. Wie bei einer Standleitung wird die
-   Gegenstelle fest eingestellt. Im Gegensatz zur Standleitung wird die
-   Verbindung jedoch nur bei Bedarf aufgebaut (was sehr schnell geht, viel
-   schneller als bei einer Wählleitung). Da die Telekom die Leitung
-   anderweitig verwenden kann, solange sie nicht benötigt wird, ist es
-   billiger als eine Standleitung.
+Q: What is a SPV?
+A: SPV stands for "semipermanente Verbindung" (semi-permanent connection)
+   and is a (soon to be obsolete) specialty of the German Telekom. Like
+   a leased line, the calling partner is fixed, however the connection
+   is only established as needed (which occurs very quickly, much quicker
+   that a dial connection). Since the Telekom can use the line for other 
+   things when it's not needed, the SPV is cheaper than a leased line.
 
-Q: Wie lange wird es noch SPVs geben?
-A: Steffen Sledz <sledz@dgroup.de> schrieb dazu am 5. Dez 1996:
+Q: How long will there still be SPVs?
+A: Steffen Sledz <sledz@dgroup.de> wrote on 5 Dec 1996:
 !verbon
-        Wegen ein paar Klagen vor dem Europäischen Gerichtshof gegen 
-        die Telekom wohl bis Ende 1997. Wurde in den ensprechenden 
-        Newsgroups gepostet und es könnte vielleicht auch was bei 
-        !link http://www.birch.de; zu finden sein (der klagte nämlich).
+        Due to a couple of lawsuits against the Telekom before the 
+        European Court of Justice, most likely until the end of
+        1997. This will be posted in the approproate news groups
+        and probably also at !link http://www.birch.de
+        (who is suing).
 !verboff
 
-Q: Unterstützt isdn4linux SPVs? Wie?
-A: Um die Unterstützung für SPVs einzuschalten, muß vor die gewählte Nummer
-   ein "S" gesetzt werden. Das funktioniert (recht gut) sowohl in der
-   Modememulation als auch bei der Definition von Netzinterfaces.
+Q: Does isdn4linux support SPVs? How?
+A: To switch on the support for SPVs, add an "S" before the number
+   to be dialed. This works (quite well) for modem emulations as well
+   as for defined network interfaces.
 
 
-!3Channel Bundling
+!3Channel bundling
 
-Q: Channel Bundling? Was ist das und wie kann ich es einsetzen?
-A: Isdn4Linux unterstützt in der aktuellen Version zwei Varianten für
-   Channel Bundling:!br
-     * !b1Raw Bundling!b0 (Konfiguration von sogenannten Slave-Kanälen)!br
-     * !b1MPPP!b0 (basiert auf syncPPP)!br
-   Beide Varianten haben z.Zt. eigene Vor- und Nachteile. Siehe dazu die
-   nachfolgenden Fragen.
+Q: What is channel bundling and how can I use it?
+A: Channel bundling is currently supported by isdn4Linux in two variations:!br
+     * !b1Raw Bundling!b0 (configuration of so-called slave channels)!br
+     * !b1MPPP!b0 (based on syncPPP)!br
+   Both variantions have their own advantages and disadvantages. See the following
+   questions.
 
-Q: Was ist Raw Bundling?
-A: Raw Bundling funktioniert wie Raw-IP, nur eben mit mehreren Kanälen.
-   Entsprechend erbt es alle prinzipbedingten Vor- und Nachteile von Raw-IP.
-   Raw Bundling benötigt für jeden benötigten Kanal ein eigenes Netzinterface.
-   Ein Netzinterface, das sog. Master-Interface, steuert den Verbindungsauf-
-   und -abbau. Für jeden weiteren Kanal wird ein weiteres, sog.
-   Slave-Interface konfiguriert, das bei Bedarf automatisch vom
-   Master-Interface dazugeschaltet wird.
+Q: What is raw bundling?
+A: Raw bundling works similarly to raw IP, only with several channels.
+   Therefore, it has the theoretical advantages and disadvantages of 
+   raw IP. Raw bundling requires a network interface for each channel 
+   that is used. One network interface, the so-called master interface,
+   controls the establishment and breaking of connections. For each 
+   further channel, an additional so-called slave interface is configured, 
+   that is automatically switched on by the master interface.
 
-Q: Wie verwende ich Raw Bundling?
-A: Das Master-Interface wird wie normal mit
+Q: How do I use raw bundling?
+A: The master interface is created as usual with 
 !verbon
-       isdnctrl addif <master-interface>
+       isdnctrl addif <master interface>
 !verboff
-   erzeugt und entsprechend konfiguriert. Für alle benötigten Slave-Kanäle
-   werden nun entsprechende Slave-Interfaces erzeugt mit dem Kommando
+   and configured. For all required slave channels, slave interfaces 
+   are created with the command:
 !verbon
-       isdnctrl addslave <master-interface> <slave-interface>
+       isdnctrl addslave <master interface> <slave interface>
 !verboff
-   und normal konfiguriert (z.B. "isdnctrl sdelay <slave-interface> <delay>").
+   and configuriert as usual (e.g. "isdnctrl sdelay <slave interface> <delay>").
 
-Q: Welche Vor- und Nachteile hat die Verwendung von Raw Bundling?
-A: Raw Bundling hat zunächst alle Vor- und Nachteile von Raw-IP.
-   Im Vergleich zu MPPP hat Raw Bundling darüber hinaus den Vorteil, daß
-   isdn4linux je nach Last selbsttätig die benötigten Slave-Kanäle auf- und
-   wieder zumacht. Leider gibt es mit Raw Bundling z.Zt. noch erhebliche
-   Durchsatzprobleme. Siehe dazu die ergänzenden Fragen weiter unten.
+Q: What are the advantages and disadvantages of raw bundling?
+A: Raw bundling has all the advantages and disadvantages of raw IP.
+   Compared to MPPP, raw bundling has the advantage that isdn4linux
+   itself can open and close the needed slave channels. Unfortunately
+   raw bundling still has problems with transfer rates. See the further
+   questions below.
    
-Q: Gibt es ein funktionierendes Beispielskript für Raw Bundling?
-A: Ja, der FAQ-Redaktion liegt ein entsprechendes Skript von Robert O'Kane
-   <okane@em.uni-frankfurt.de> vor. Es kann entweder von Robert oder von uns
-   bezogen werden.
+Q: Is there are working example script for raw bundling?
+A: Ja, the FAQ editors have such a script from Robert O'Kane
+   <okane@em.uni-frankfurt.de>. Es can be obtained either from Robert 
+   or from us.
 
-Q: Wie ist der aktuelle Stand mit Raw Bundling?
-A: Robert O'Kane <okane@em.uni-frankfurt.de> schrieb dazu am 27. Dez 1996:!br
+Q: What's the current situation with raw bundling?
+A: Robert O'Kane <okane@em.uni-frankfurt.de> wrote on 27 Dec 1996:!br
    After starting up 2.0.27 I have started again with channel
    bundeling with a bit more success than before.
 !verbon
@@ -3099,13 +3077,13 @@ A: To use the MPPP material, you have to configure a slave device with
    command. In the file etc/rc.isdn.syncppp.MPPP in the isdn4kernel-util
    Package you can find an example script.
 
-Q: Welche Vor- und Nachteile hat die Verwendung von MPPP?
-A: Nachteilig ist, daß die Slave-Kanäle "manuell" aktiviert werden müssen. Der
-   ipppd kann nicht lastabhängig selbst Slave-Kanäle auf- bzw. wieder zumachen.
-   Die normalen automatischen Funktionen des ipppd funktionieren teilweise
-   unzuverlässig (auto hangup) oder gar nicht (auto dial).
-   Dies ist anders bei anderen Einbettungsverfahren (encapsulations). Dafür
-   ist der Durchsatz recht gut (ca. 30 KB/s bei 4 Kanäle).
+Q: What are the advantages and disadvatages of MPPP?
+A: A disadvantage is that the slave channel has to be activated 
+   "manually". ipppd cannot by itself turn the slave channel on and
+   off as it needs to. The normal automatic functions of ipppd are 
+   either unreliable (auto hangup) don't work at all (auto dial).
+   This is not true for the other encapsulations. The transfers
+   rates are very good (ca. 30 KB/s with 4 channels).
 
 !old
 Q: I tried MPPP but it doesn't work. The ipppd writes in the debug log
@@ -3121,7 +3099,7 @@ A: You forgot to compile MPPP/RFC1717 support into the ISDN Subsystem.
    Recompile with this option enabled.
 
 !old
-Q: I use MPP. Unfortunately it hangs, when just one packet is lost.
+Q: I use MPP. Unfortunately it hangs when just one packet is lost.
 A: Szemethy Tivadar <tiv@sch.bme.hu> wrote 11.10.1996:
 !verbon
      I found a typo in kernel 2.0.20, that also exists in newer kernels.
@@ -5150,7 +5128,7 @@ A: NI-1 is used - it's related to DSS1. Both are Q.931 Protocols, but
 
 
 !old
-Q: Why not adjust the clock of my computer with ISDN?
+Q: How can I set the clock of my computer with ISDN?
 A: Isdnlog offers this feature with option "-t". Unfortunately, the seconds are
    not transmitted via ISDN, and the transmitted time is not very accurate -
    depending on the ISDN equipment of your telephone company there may be a
