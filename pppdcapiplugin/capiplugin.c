@@ -14,14 +14,41 @@
 #include <stdlib.h>
 #include <time.h>
 #include <ctype.h>
+#include <sys/ioctl.h>
+#include <sys/types.h>
+#include <sys/socket.h>
 #include "pppd.h"
 #include "capiconn.h"
 #include <malloc.h>
 #include <string.h>
 #include <dlfcn.h>
 #include <errno.h>
+#include <linux/if.h>
+#include <linux/in.h>
 
-static char *revision = "$Revision: 1.13 $";
+static char *revision = "$Revision: 1.14 $";
+
+/* -------------------------------------------------------------------- */
+
+#include "patchlevel.h"
+#ifdef VERSION
+char pppd_version[] = VERSION;
+#endif
+
+#define PPPVersion(v1,v2,v3,v4) ((v1)*1000000+(v2)*10000+(v3)*100+(v4))
+
+#if PPPVER >= PPPVersion(2,4,1,0)
+#define _timeout(a,b,c) timeout(a, b, c, 0);
+#else
+#define _timeout(a,b,c) timeout(a, b, c);
+#endif
+#if PPPVER >= PPPVersion(2,4,0,0)
+#define _script_setenv(a,b) script_setenv(a,b,0)
+#else
+#define _script_setenv(a,b) script_setenv(a,b)
+#endif
+
+/* -------------------------------------------------------------------- */
 
 static capiconn_context *ctx;
 static capi_connection *conn = 0;
@@ -43,6 +70,11 @@ static char *opt_callbacknumber = 0;
 static char *opt_msn = 0;
 static char *opt_inmsn = 0;
 static char *opt_proto = 0;
+static int proto = 0;
+#define PROTO_HDLC	0
+#define PROTO_X75	1
+#define PROTO_V42BIS	2
+#define PROTO_MODEM	3
 static char *opt_channels = 0;
 static unsigned char AdditionalInfo[1+2+2+31];
 static int opt_dialtimeout = 60;
@@ -55,6 +87,12 @@ static char *opt_cli = 0;
 static int opt_cbflag  = 0;
 static int opt_cbwait = 60;
 static int opt_acceptdelayflag  = 0;
+static int opt_voicecallwakeup  = 0;
+static char *opt_coso;
+static int coso;
+#define COSO_CALLER	0
+#define COSO_LOCAL	1
+#define COSO_REMOTE	2
 
 typedef struct stringlist {
     struct stringlist *next;
@@ -67,14 +105,9 @@ static STRINGLIST *clis;
 static STRINGLIST *parsed_controller;
 static STRINGLIST *inmsns;
 
-static int optcb(void)
-{
-	return opt_cbflag = 1;
-}
-static int optacceptdelay(void)
-{
-	return opt_acceptdelayflag = 1;
-}
+static int optcb(void) { return opt_cbflag = 1; }
+static int optacceptdelay(void) { return opt_acceptdelayflag = 1; }
+static int optvoicecallwakeup(void) { return opt_voicecallwakeup = 1; }
 
 static option_t my_options[] = {
 	{
@@ -146,6 +179,14 @@ static option_t my_options[] = {
 		"acceptdelay", o_special_noarg, &optacceptdelay,
 		"wait 1 second before accept incoming call"
 	},
+	{
+		"coso", o_string, &opt_coso,
+		"COSO: caller,local or remote"
+        },
+	{
+		"voicecallwakeup", o_special_noarg, &optvoicecallwakeup,
+		"call number and wait for callback"
+	},
 	{ NULL }
 };
 
@@ -211,14 +252,14 @@ static void timeoutfunc(void *arg)
 	while (capi20_get_message (applid, &msg) == 0)
 		capiconn_inject(applid, msg);
 	if (timeoutshouldrun)
-		timeout (timeoutfunc, 0, 1);
+		_timeout (timeoutfunc, 0, 1);
 }
 
 static void setup_timeout(void)
 {
 	timeoutshouldrun = 1;
 	if (!timeoutrunning)
-		timeout (timeoutfunc, 0, 1);
+		_timeout (timeoutfunc, 0, 1);
 }
 
 static void unsetup_timeout(void)
@@ -227,6 +268,101 @@ static void unsetup_timeout(void)
 	if (timeoutrunning)
 		untimeout (timeoutfunc, 0);
 	timeoutrunning = 0;
+}
+
+/* -------------------------------------------------------------------- */
+
+static u_int32_t ouripaddr;
+static u_int32_t gwipaddr;
+static int wakeupneeded = 0;
+static int nwakeuppackets = 0;
+
+static void setupincoming_for_demand(void)
+{
+    struct ifreq ifr; 
+    int serrno;
+    int sock_fd;
+
+    nwakeuppackets = 0;
+    if ((sock_fd = socket(AF_INET, SOCK_DGRAM, 0)) < 0) {
+       serrno = errno;
+       fatal("capiplugin: socket(AF_INET,SOCK_DRAM): failed - %s (%d)",
+			      strerror(serrno), serrno);
+       return;
+    }
+    
+    memset (&ifr, '\0', sizeof (ifr));
+    strlcpy (ifr.ifr_name, ifname, sizeof (ifr.ifr_name));
+    if (ioctl(sock_fd, SIOCGIFADDR, (caddr_t) &ifr) < 0) {
+       serrno = errno;
+       close(sock_fd);
+       fatal("capiplugin: ioctl(SIOCGIFADDR): failed - %s (%d)",
+			      strerror(serrno), serrno);
+       return;
+    }
+    ouripaddr = ((struct sockaddr_in *) &ifr.ifr_addr)->sin_addr.s_addr;
+
+    memset (&ifr, '\0', sizeof (ifr));
+    strlcpy (ifr.ifr_name, ifname, sizeof (ifr.ifr_name));
+    if (ioctl(sock_fd, SIOCGIFDSTADDR, (caddr_t) &ifr) < 0) {
+       serrno = errno;
+       close(sock_fd);
+       fatal("capiplugin: ioctl(SIOCGIFDSTADDR): failed - %s (%d)",
+			      strerror(serrno), serrno);
+       return;
+    } 
+    gwipaddr = ((struct sockaddr_in *) &ifr.ifr_addr)->sin_addr.s_addr;
+
+    close(sock_fd);
+    (void) capiconn_listen(ctx, controller, cipmask, 0);
+    info("capiplugin: waiting for demand wakeup ...");
+}
+
+static void wakeupdemand(void)
+{
+    char data[] = "Ignore, is for demand wakeup";
+    struct sockaddr_in addr;
+    int sock_fd;
+    int serrno;
+
+    if ((sock_fd = socket(AF_INET, SOCK_DGRAM, 0)) < 0) {
+       serrno = errno;
+       fatal("capiplugin: socket(AF_INET,SOCK_DRAM): failed - %s (%d)",
+			      strerror(serrno), serrno);
+       return;
+    }
+    memset (&addr, '\0', sizeof(addr));
+    addr.sin_family = AF_INET;
+    addr.sin_addr.s_addr = ouripaddr;
+    addr.sin_port = 0;
+    if (bind(sock_fd, (struct sockaddr *)&addr, sizeof(addr)) != 0) {
+       serrno = errno;
+       close(sock_fd);
+       fatal("capiplugin: bind(%I): failed - %s (%d)",
+			      ouripaddr, strerror(serrno), serrno);
+       return;
+    }
+    memset (&addr, '\0', sizeof(addr));
+    addr.sin_family = AF_INET;
+    addr.sin_addr.s_addr = gwipaddr;
+    addr.sin_port = htons(9); /* discard */
+    if (connect(sock_fd, (struct sockaddr *)&addr, sizeof(addr)) != 0) {
+       serrno = errno;
+       close(sock_fd);
+       fatal("capiplugin: connect(%I): failed - %s (%d)",
+			      gwipaddr, strerror(serrno), serrno);
+       return;
+    }
+    notice("capiplugin: sending wakup packet (%I -> %I)", ouripaddr, gwipaddr);
+    if (send(sock_fd, data, sizeof(data), 0) < 0) {
+       serrno = errno;
+       close(sock_fd);
+       fatal("capiplugin: send wakup packet failed - %s (%d)",
+			      gwipaddr, strerror(serrno), serrno);
+       return;
+    }
+    close(sock_fd);
+    nwakeuppackets++;
 }
 
 /* -------------------------------------------------------------------- */
@@ -258,224 +394,6 @@ static void dodisconnect(void)
 		fatal("capiplugin: timeout while waiting for disconnect");
 }
 
-static void setupconnection(char *num)
-{
-	char number[256];
-
-	snprintf(number, sizeof(number), "%s%s", 
-			opt_numberprefix ? opt_numberprefix : "", num);
-
-	if (opt_proto == 0 || strcasecmp(opt_proto, "hdlc") == 0) {
-		conn = capiconn_connect(ctx,
-				controller, /* contr */
-				2, /* cipvalue */
-				opt_channels ? 0 : number, 
-				opt_channels ? 0 : opt_msn,
-				0, 1, 0,
-				0, 0, 0,
-				opt_channels ? AdditionalInfo : 0,
-				0);
-	} else if (strcasecmp(opt_proto, "x75") == 0) {
-		conn = capiconn_connect(ctx,
-				controller, /* contr */
-				2, /* cipvalue */
-				opt_channels ? 0 : number, 
-				opt_channels ? 0 : opt_msn,
-				0, 0, 0,
-				0, 0, 0,
-				opt_channels ? AdditionalInfo : 0,
-				0);
-	} else if (strcasecmp(opt_proto, "v42bis") == 0) {
-		conn = capiconn_connect(ctx,
-				controller, /* contr */
-				2, /* cipvalue */
-				opt_channels ? 0 : number, 
-				opt_channels ? 0 : opt_msn,
-				0, 8, 0,
-				0, 0, 0,
-				opt_channels ? AdditionalInfo : 0,
-				0);
-	} else if (strcasecmp(opt_proto, "modem") == 0) {
-		conn = capiconn_connect(ctx,
-				controller, /* contr */
-				1, /* cipvalue */
-				opt_channels ? 0 : number, 
-				opt_channels ? 0 : opt_msn,
-				8, 1, 0,
-				0, 0, 0,
-				opt_channels ? AdditionalInfo : 0,
-				0);
-	} else {
-		fatal("capiplugin: unknown protocol \"%s\"", opt_proto);
-		return;
-	}
-	if (opt_channels) {
-		info("capiplugin: leased line (%s)",
-				opt_proto ? opt_proto : "hdlc");
-	} else {
-		info("capiplugin: dial %s (%s)",
-				number, opt_proto ? opt_proto : "hdlc");
-	}
-}
-
-static void makeleasedline(void)
-{
-	time_t t;
-
-	setupconnection("");
-
-	t = time(0)+opt_dialtimeout;
-	do {
-		handlemessages();
-		if (status != EXIT_OK && conn)
- 			dodisconnect();
-	} while (time(0) < t && conn && !isconnected);
-
-	if (status != EXIT_OK)
-		die(status);
-
-        if (conn && isconnected) {
-		t = time(0)+opt_connectdelay;
-		do {
-			handlemessages();
-		} while (time(0) < t);
-	}
-
-	if (status != EXIT_OK)
-		die(status);
-
-	if (!conn) 
-	   fatal("capiplugin: couldn't make connection");
-}
-
-static void makeconnection(STRINGLIST *numbers)
-{
-	time_t t;
-	STRINGLIST *p;
-	int retry = 0;
-
-	do {
-	   for (p = numbers; p; p = p->next) {
-		   if (retry || p != numbers) {
-		      t = time(0)+opt_redialdelay;
-		      do {
-			 handlemessages();
-			 if (status != EXIT_OK)
-			    die(status);
-		      } while (time(0) < t);
-		   }
-
-		   setupconnection(p->s);
-
-		   t = time(0)+opt_dialtimeout;
-		   do {
-		      handlemessages();
-		      if (status != EXIT_OK && conn)
-			 dodisconnect();
-		   } while (time(0) < t && conn && !isconnected);
-
-		   if (conn && isconnected)
-		      goto connected;
-
-		   if (status != EXIT_OK)
-		      die(status);
-	   }
-	} while (++retry < opt_dialmax);
-connected:
-
-        if (!conn)
-	   fatal("capiplugin: couldn't make connection after %d retries",
-			retry);
-}
-
-static void makeconnection_with_callback(void)
-{
-	STRINGLIST *p;
-	time_t t;
-
-   	for (p = numbers; p; p = p->next) {
-
-		setupconnection(p->s);
-
-		info("capiplugin: wait for call reject");
-		/* Wait specific time for the server rejecting the call */
-		t = time(0)+opt_dialtimeout;
-		do {
-		      handlemessages();
-		      if (status != EXIT_OK)
-			 die(status);
-		} while (time(0) < t && conn && !isconnected);
-
-		if (!conn) {	/* Call has been rejected */
-		
-			(void) capiconn_listen(ctx, controller, cipmask, 0);
-			info("capiplugin: waiting for callback...");
-
-			/* Wait for server calling back */
-			t = time(0)+opt_cbwait;
-			do {
-				handlemessages();
-				if (status != EXIT_OK) {
-				   (void) capiconn_listen(ctx, controller, 0, 0);
-				   die(status);
-				}
-			} while (!isconnected && time(0) < t);
-
-			if (isconnected) {
-				add_fd(capi20_fileno(applid));
-				setup_timeout();
-				return;
-			}
-			if (p->next == 0)
-				fatal("capiplugin: callback failed (no call)");
-			else
-				info("capiplugin: callback failed (no call)");
-		} else {
-			dodisconnect();
-			fatal("capiplugin: callback failed - other side answers the call (no reject)");
-		}
-	}
-}
-
-static void makecallback(void)
-{
-	time_t t;
-
-	t = time(0)+opt_cbdelay;
-	do {
-	      handlemessages();
-	      if (status != EXIT_OK)
-		 die(status);
-	} while (time(0) < t);
-
-	makeconnection(callbacknumbers);
-}
-
-static void waitforcall(void)
-{
-	int try = 0;
-	(void) capiconn_listen(ctx, controller, cipmask, 0);
-	info("capiplugin: waiting for incoming call ...");
-
-	do {
-		handlemessages();
-		if (status != EXIT_OK) {
-		   (void) capiconn_listen(ctx, controller, 0, 0);
-		   die(status);
-		}
-	        if (connectinprogress) try=1;
-		if (try && !connectinprogress) {
-		   try = 0;
-		   if (!isconnected) {
-		      (void) capiconn_listen(ctx, controller, cipmask, 0);
-		      info("capiplugin: waiting for incoming call ...");
-		   }
-		}
-	} while (!isconnected);
-
-	add_fd(capi20_fileno(applid));
-	setup_timeout();
-}
 
 static void init_capiconn(void)
 {
@@ -599,7 +517,7 @@ static int channels2capi20(char *teln, unsigned char *AdditionalInfo)
 	return 0;
 }
 
-static void check_options(void)
+static void plugin_check_options(void)
 {
 	static int init = 0;
 
@@ -607,18 +525,49 @@ static void check_options(void)
 		return;
 	init = 1;
 
-	if (   opt_proto
-	    && strcasecmp(opt_proto, "hdlc")
-	    && strcasecmp(opt_proto, "x75")
-	    && strcasecmp(opt_proto, "v42bis")
-	    && strcasecmp(opt_proto, "modem")) {
-		option_error("capiplugin: unknown protocol \"%s\"", opt_proto);
-		die(1);
+	/*
+	 * protocol
+	 */
+	if (opt_proto == 0) {
+	   proto = PROTO_HDLC;
+	} else if (strcasecmp(opt_proto, "hdlc") == 0) {
+	   proto = PROTO_HDLC;
+	} else if (strcasecmp(opt_proto, "x75") == 0) {
+	   proto = PROTO_X75;
+	} else if (strcasecmp(opt_proto, "v42bis") == 0) {
+	   proto = PROTO_V42BIS;
+	} else if (strcasecmp(opt_proto, "modem") == 0) {
+	   proto = PROTO_V42BIS;
+	} else {
+	   option_error("capiplugin: unknown protocol \"%s\"", opt_proto);
+	   die(1);
 	}
         if (strcasecmp(opt_proto, "modem") == 0)
 		cipmask = CIPMASK_VOICE;
 	else cipmask = CIPMASK_DATA;
 
+	/*
+	 * coso
+	 */
+	if (opt_coso == 0) {
+	   if (opt_cbflag) coso = COSO_LOCAL;
+	   else coso = COSO_CALLER;
+	} else if (strcasecmp(opt_coso, "caller") == 0) {
+	   coso = COSO_CALLER;
+	} else if (strcasecmp(opt_coso, "local") == 0) {
+	   coso = COSO_LOCAL;
+	} else if (strcasecmp(opt_coso, "remote") == 0) {
+	   coso = COSO_REMOTE;
+	} else {
+	    option_error("capiplugin: wrong value for option coso");
+	    die(1);
+	}
+	if (opt_cbflag || coso != COSO_LOCAL)
+	   option_error("capiplugin: option cbflag ignore");
+
+	/*
+	 * leased line
+	 */
 	if (opt_channels) {
 		channels2capi20(opt_channels, AdditionalInfo);
 		if (opt_number)
@@ -631,33 +580,32 @@ static void check_options(void)
 			option_error("capiplugin: option msn ignored");
 		if (opt_inmsn)
 			option_error("capiplugin: option inmsn ignored");
+	/*
+	 * dialout
+	 */
 	} else if (opt_number) {
 		stringlist_free(&numbers);
 		numbers = stringlist_split(opt_number, " \t,");
-		if (opt_callbacknumber)
-			option_error("capiplugin: option callbacknumber ignored");
-	} else if (opt_cbflag) {
-		if (opt_callbacknumber == 0) {
-			option_error("capiplugin: option callbacknumber missing");
-			die(1);
-		}
-		stringlist_free(&callbacknumbers);
-		callbacknumbers = stringlist_split(opt_callbacknumber, " \t,");
+	/*
+	 * dialin
+	 */
 	} else {
-		if (opt_callbacknumber) {
-			opt_cbflag = 1;
-			stringlist_free(&callbacknumbers);
-			callbacknumbers = stringlist_split(opt_callbacknumber, " \t,");
-		}
+	   if (coso == COSO_LOCAL) {
+	      if (opt_callbacknumber == 0) {
+		 option_error("capiplugin: option callbacknumber missing");
+		 die(1);
+	       }
+	   }
 	}
-	if (opt_cli) {
-		stringlist_free(&clis);
-		clis = stringlist_split(opt_cli, " \t,");
+
+	if (opt_callbacknumber) {
+	   stringlist_free(&callbacknumbers);
+	   callbacknumbers = stringlist_split(opt_callbacknumber, " \t,");
 	}
-	if (opt_inmsn) {
-		stringlist_free(&inmsns);
-		inmsns = stringlist_split(opt_inmsn, " \t,");
-	}
+
+	/*
+	 * controller
+	 */
 	if (opt_controller) {
 		STRINGLIST *sl;
 		char *tmp;
@@ -682,6 +630,33 @@ static void check_options(void)
 		memset(&cinfo, 0, sizeof(cinfo));
 		controller = 1;
 	}
+
+	/*
+	 * cli & inmsn
+	 */
+	if (opt_cli) {
+		stringlist_free(&clis);
+		clis = stringlist_split(opt_cli, " \t,");
+	}
+	if (opt_inmsn) {
+		stringlist_free(&inmsns);
+		inmsns = stringlist_split(opt_inmsn, " \t,");
+	}
+
+	/*
+	 * dial on demand
+	 */
+	if (demand) {
+	   if (!opt_number && !opt_channels) {
+	       option_error("capiplugin: number or channels missing for demand");
+	       die(1);
+	   }
+	   if (opt_voicecallwakeup)
+	      cipmask |= CIPMASK_VOICE;
+	} else if (opt_voicecallwakeup) {
+	   option_error("capiplugin: option voicecallwakeup ignored");
+	   opt_voicecallwakeup = 0;
+	}
 	return;
 
 illcontr:
@@ -690,69 +665,6 @@ illcontr:
 	die(1);
 }
 
-static int capi_new_phase_hook(int phase)
-{
-	int fd;
-	switch (phase) {
-		case PHASE_DEAD:
-			info("capiplugin: phase dead");
-			if ((fd = capi20_fileno(applid)) >= 0)
-			   remove_fd(fd);
-			unsetup_timeout();
-			dodisconnect();
-			break;
-		case PHASE_INITIALIZE:
-			info("capiplugin: phase initialize");
-			break;
-		case PHASE_SERIALCONN:
-			info("capiplugin: phase serialconn%s",
-					opt_cbflag ? " (callback)" : "");
-			check_options();
-			init_capiconn();
-			if (opt_number) {
-				if (opt_cbflag) {
-					makeconnection_with_callback();
-				} else {
-					makeconnection(numbers);
-				}
-			} else if (opt_channels) {
-				makeleasedline();
-			} else {
-				waitforcall();
-			}
-			break;
-		case PHASE_DORMANT:
-			check_options();
-			init_capiconn();
-			info("capiplugin: phase dormant");
-			break;
-		case PHASE_ESTABLISH:
-			info("capiplugin: phase establish");
-			break;
-		case PHASE_AUTHENTICATE:
-			info("capiplugin: phase authenticate");
-			break;
-		case PHASE_CALLBACK:
-			info("capiplugin: phase callback");
-			break;
-		case PHASE_NETWORK:
-			info("capiplugin: phase network");
-			break;
-		case PHASE_RUNNING:
-			info("capiplugin: phase running");
-			break;
-		case PHASE_TERMINATE:
-			info("capiplugin: phase terminate");
-			break;
-		case PHASE_DISCONNECT:
-			info("capiplugin: phase disconnect");
-			break;
-		case PHASE_HOLDOFF:
-			info("capiplugin: phase holdoff");
-			break;
-	}
-	return 0;
-}
 
 /* -------------------------------------------------------------------- */
 
@@ -785,20 +697,41 @@ static char *conninfo(capi_connection *p)
 	return buf;
 }
 
+static unsigned dreason = 0;
+
+static int was_no_reject(void)
+{
+      if ((dreason & 0xff00) != 0x3400)
+	 return 1;
+      switch (dreason) {
+	 case 0x34a2: /* No circuit / channel available */
+	    return 1;
+      }
+      return 0;
+}
+
+
 static void disconnected(capi_connection *cp,
 				int localdisconnect,
 				unsigned reason,
 				unsigned reason_b3)
 {
+	if (conn != cp) {
+	   dbglog("capiplugin: ignored/rejected call disconnected");
+	   return;
+	}
+	conn = 0;
+	connectinprogress = 0;
+	isconnected = 0;
+        dreason = reason;
 	if (reason != 0x3304 || debug) /* Another Applikation got the call */
 		info("capiplugin: disconnect(%s): %s 0x%04x (0x%04x) - %s", 
 			localdisconnect ? "local" : "remote",
 			conninfo(cp),
 			reason, reason_b3, capi_info2str(reason));
-	conn = 0;
-	isconnected = 0;
-	connectinprogress = 0;
 }
+
+static void makecallback(void);
 
 static void incoming(capi_connection *cp,
 				unsigned contr,
@@ -810,6 +743,12 @@ static void incoming(capi_connection *cp,
         char *s;
 
 	info("capiplugin: incoming call: %s (0x%x)", conninfo(cp), cipvalue);
+
+	if (conn) {
+	   info("capiplugin: ignoring call, conn != NULL");
+	   (void) capiconn_ignore(cp);
+           return;
+	}
 	
 	if (opt_inmsn) {
 	   for (p = inmsns; p; p = p->next) {
@@ -872,10 +811,12 @@ static void incoming(capi_connection *cp,
 		case 5:  /* 7 kHz audio */
 		case 16: /* Telephony */
 		case 26: /* 7 kHz telephony */
-	                if (opt_proto && strcasecmp(opt_proto, "modem") == 0) {
-			   if (opt_cbflag) goto callback;
-		           (void) capiconn_accept(cp, 8, 1, 0, 0, 0, 0, 0);
-			   goto accepted;
+	                if (proto == PROTO_MODEM) {
+			   if (demand) goto wakeupmatch;
+			   if (coso == COSO_LOCAL) goto callback;
+			   goto accept;
+                        } else if (opt_voicecallwakeup) {
+			   goto wakeupdemand;
                         } else {
 	                   info("capiplugin: ignoring speech call from %s",
 			   		callingnumber);
@@ -884,19 +825,18 @@ static void incoming(capi_connection *cp,
 			break;
 		case 2:  /* Unrestricted digital information */
 		case 3:  /* Restricted digital information */
-	                if (opt_proto == 0
-			    || strcasecmp(opt_proto, "hdlc") == 0) {
-			   if (opt_cbflag) goto callback;
-			   (void) capiconn_accept(cp, 0, 1, 0, 0, 0, 0, 0);
-			   goto accepted;
-			} else if (strcasecmp(opt_proto, "x75") == 0) {
-			   if (opt_cbflag) goto callback;
-			   (void) capiconn_accept(cp, 0, 0, 0, 0, 0, 0, 0);
-			   goto accepted;
-			} else if (strcasecmp(opt_proto, "v42bis") == 0) {
-			   if (opt_cbflag) goto callback;
-			   (void) capiconn_accept(cp, 0, 8, 0, 0, 0, 0, 0);
-			   goto accepted;
+	                if (proto == PROTO_HDLC) {
+			   if (demand) goto wakeupmatch;
+			   if (coso == COSO_LOCAL) goto callback;
+			   goto accept;
+	                } else if (proto == PROTO_X75) {
+			   if (demand) goto wakeupmatch;
+			   if (coso == COSO_LOCAL) goto callback;
+			   goto accept;
+	                } else if (proto == PROTO_V42BIS) {
+			   if (demand) goto wakeupmatch;
+			   if (coso == COSO_LOCAL) goto callback;
+			   goto accept;
 			} else {
 	                   info("capiplugin: ignoring digital call from %s",
 			   		callingnumber);
@@ -915,15 +855,41 @@ static void incoming(capi_connection *cp,
 			break;
 	}
 	return;
-accepted:
-	connectinprogress = 1;
-	(void) capiconn_listen(ctx, controller, 0, 0);
-	return;
+
 callback:
 	(void) capiconn_listen(ctx, controller, 0, 0);
-	info("capiplugin: rejecting call: %s (0x%x)", conninfo(cp), cipvalue);
+	dbglog("capiplugin: rejecting call: %s (0x%x)", conninfo(cp), cipvalue);
 	capiconn_reject(cp);
         makecallback();
+	return;
+
+wakeupdemand:
+	dbglog("capiplugin: rejecting call: %s (0x%x)", conninfo(cp), cipvalue);
+	capiconn_reject(cp);
+        wakeupdemand();
+	return;
+
+wakeupmatch:
+	if (coso == COSO_LOCAL)
+	   goto wakeupdemand;
+
+accept:
+        if (!opt_proto) { /* hdlc */
+	   (void) capiconn_accept(cp, 0, 1, 0, 0, 0, 0, 0);
+	} else if (strcasecmp(opt_proto, "hdlc") == 0) {
+	   (void) capiconn_accept(cp, 0, 1, 0, 0, 0, 0, 0);
+	} else if (strcasecmp(opt_proto, "x75") == 0) {
+	   (void) capiconn_accept(cp, 0, 0, 0, 0, 0, 0, 0);
+	} else if (strcasecmp(opt_proto, "v42bis") == 0) {
+	   (void) capiconn_accept(cp, 0, 8, 0, 0, 0, 0, 0);
+	} else if (strcasecmp(opt_proto, "modem") == 0) {
+	   (void) capiconn_accept(cp, 8, 1, 0, 0, 0, 0, 0);
+	} else { /* hdlc */
+	   (void) capiconn_accept(cp, 0, 1, 0, 0, 0, 0, 0);
+	}
+	conn = cp;
+	connectinprogress = 1;
+	(void) capiconn_listen(ctx, controller, 0, 0);
 	return;
 }
 
@@ -944,7 +910,7 @@ static void connected(capi_connection *cp, _cstruct NCPI)
 	while (tty == 0 && serrno == ESRCH) {
 	   if (++retry > 4) 
 	      break;
-	   info("capiplugin: capitty not ready, waiting for driver ...");
+	   dbglog("capiplugin: capitty not ready, waiting for driver ...");
 	   sleep(1);
 	   tty = capi20ext_get_tty_devname(p->appid, p->ncci, buf, sizeof(buf));
 	   serrno = errno;
@@ -961,22 +927,22 @@ static void connected(capi_connection *cp, _cstruct NCPI)
 	}
 	info("capiplugin: using %s: %s", tty, conninfo(cp));
 	strcpy(devnam, tty);
-	if (opt_connectdelay)
-		sleep(opt_connectdelay);
 
 	if (p->callingnumber && p->callingnumber[0] > 2)
 		callingnumber = p->callingnumber+3;
 	if (p->callednumber && p->callednumber[0] > 1)
 		callednumber = p->callednumber+2;
-        script_setenv("CALLEDNUMBER", callednumber, 0);
-        script_setenv("CALLINGNUMBER", callingnumber, 0);
-	sprintf(buf, "%d", p->cipvalue); script_setenv("CIPVALUE", buf, 0);
-	sprintf(buf, "%d", p->b1proto); script_setenv("B1PROTOCOL", buf, 0);
-	sprintf(buf, "%d", p->b2proto); script_setenv("B2PROTOCOL", buf, 0);
-	sprintf(buf, "%d", p->b3proto); script_setenv("B3PROTOCOL", buf, 0);
+        _script_setenv("CALLEDNUMBER", callednumber);
+        _script_setenv("CALLINGNUMBER", callingnumber);
+	sprintf(buf, "%d", p->cipvalue); _script_setenv("CIPVALUE", buf);
+	sprintf(buf, "%d", p->b1proto); _script_setenv("B1PROTOCOL", buf);
+	sprintf(buf, "%d", p->b2proto); _script_setenv("B2PROTOCOL", buf);
+	sprintf(buf, "%d", p->b3proto); _script_setenv("B3PROTOCOL", buf);
 
 	isconnected = 1;
 	connectinprogress = 0;
+	if (wakeupneeded)
+           wakeupdemand();
 }
 
 void chargeinfo(capi_connection *cp, unsigned long charge, int inunits)
@@ -1015,6 +981,330 @@ capiconn_callbacks callbacks = {
 	infomsg: info,
 	errmsg: error
 };
+
+/* -------------------------------------------------------------------- */
+
+static void setupconnection(char *num, int awaitingreject)
+{
+	char number[256];
+
+	snprintf(number, sizeof(number), "%s%s", 
+			opt_numberprefix ? opt_numberprefix : "", num);
+
+	if (proto == PROTO_HDLC) {
+		conn = capiconn_connect(ctx,
+				controller, /* contr */
+				2, /* cipvalue */
+				opt_channels ? 0 : number, 
+				opt_channels ? 0 : opt_msn,
+				0, 1, 0,
+				0, 0, 0,
+				opt_channels ? AdditionalInfo : 0,
+				0);
+	} else if (proto == PROTO_X75) {
+		conn = capiconn_connect(ctx,
+				controller, /* contr */
+				2, /* cipvalue */
+				opt_channels ? 0 : number, 
+				opt_channels ? 0 : opt_msn,
+				0, 0, 0,
+				0, 0, 0,
+				opt_channels ? AdditionalInfo : 0,
+				0);
+	} else if (proto == PROTO_V42BIS) {
+		conn = capiconn_connect(ctx,
+				controller, /* contr */
+				2, /* cipvalue */
+				opt_channels ? 0 : number, 
+				opt_channels ? 0 : opt_msn,
+				0, 8, 0,
+				0, 0, 0,
+				opt_channels ? AdditionalInfo : 0,
+				0);
+	} else if (proto == PROTO_MODEM) {
+		conn = capiconn_connect(ctx,
+				controller, /* contr */
+				1, /* cipvalue */
+				opt_channels ? 0 : number, 
+				opt_channels ? 0 : opt_msn,
+				8, 1, 0,
+				0, 0, 0,
+				opt_channels ? AdditionalInfo : 0,
+				0);
+	} else {
+		fatal("capiplugin: unknown protocol \"%s\"", opt_proto);
+		return;
+	}
+	if (opt_channels) {
+		info("capiplugin: leased line (%s)",
+				opt_proto ? opt_proto : "hdlc");
+	} else if (awaitingreject) {
+		info("capiplugin: dialing %s (awaiting reject)", number);
+	} else {
+		info("capiplugin: dialing %s (%s)",
+				number, opt_proto ? opt_proto : "hdlc");
+	}
+	connectinprogress = 1;
+}
+
+static void makeleasedline(void)
+{
+	time_t t;
+
+	setupconnection("", 0);
+
+	t = time(0)+opt_dialtimeout;
+	do {
+		handlemessages();
+		if (status != EXIT_OK && conn)
+ 			dodisconnect();
+	} while (time(0) < t && conn && !isconnected);
+
+	if (status != EXIT_OK)
+		die(status);
+
+        if (conn && isconnected) {
+		t = time(0)+opt_connectdelay;
+		do {
+			handlemessages();
+		} while (time(0) < t);
+	}
+
+	if (status != EXIT_OK)
+		die(status);
+
+	if (!conn) 
+	   fatal("capiplugin: couldn't make connection");
+}
+
+static void makeconnection(STRINGLIST *numbers)
+{
+	time_t t;
+	STRINGLIST *p;
+	int retry = 0;
+
+	do {
+	   for (p = numbers; p; p = p->next) {
+		   if (retry || p != numbers) {
+		      t = time(0)+opt_redialdelay;
+		      do {
+			 handlemessages();
+			 if (status != EXIT_OK)
+			    die(status);
+		      } while (time(0) < t);
+		   }
+
+		   setupconnection(p->s, 0);
+
+		   t = time(0)+opt_dialtimeout;
+		   do {
+		      handlemessages();
+		      if (status != EXIT_OK && conn)
+			 dodisconnect();
+		   } while (time(0) < t && conn && !isconnected);
+
+		   if (conn && isconnected)
+		      goto connected;
+
+		   if (status != EXIT_OK)
+		      die(status);
+	   }
+	} while (++retry < opt_dialmax);
+connected:
+        if (conn && isconnected) {
+		t = time(0)+opt_connectdelay;
+		do {
+			handlemessages();
+		} while (time(0) < t);
+	}
+
+        if (!conn)
+	   fatal("capiplugin: couldn't make connection after %d retries",
+			retry);
+}
+
+static void makeconnection_with_callback(void)
+{
+	STRINGLIST *p;
+	time_t t;
+	int retry = 0;
+
+	do {
+   	   for (p = numbers; p; p = p->next) {
+
+		if (retry || p != numbers) {
+again:
+		   t = time(0)+opt_redialdelay;
+		   do {
+		      handlemessages();
+		      if (status != EXIT_OK)
+			 die(status);
+		   } while (time(0) < t);
+		}
+
+		setupconnection(p->s, 1);
+
+		/* Wait specific time for the server rejecting the call */
+		t = time(0)+opt_dialtimeout;
+		do {
+		      handlemessages();
+		      if (status != EXIT_OK)
+			 die(status);
+		} while (time(0) < t && conn && !isconnected);
+
+		if (conn) {
+			dodisconnect();
+			fatal("capiplugin: callback failed - other side answers the call (no reject)");
+	        } else if (was_no_reject()) {
+	        	goto again;
+		} else {
+			(void) capiconn_listen(ctx, controller, cipmask, 0);
+			info("capiplugin: waiting for callback...");
+
+			/* Wait for server calling back */
+			t = time(0)+opt_cbwait;
+			do {
+				handlemessages();
+				if (status != EXIT_OK) {
+				   (void) capiconn_listen(ctx, controller, 0, 0);
+				   die(status);
+				}
+			} while (!isconnected && time(0) < t);
+
+			if (isconnected) {
+				add_fd(capi20_fileno(applid));
+				setup_timeout();
+				return;
+			}
+			info("capiplugin: callback failed (no call)");
+		}
+	   }
+	} while (++retry < opt_dialmax);
+
+	fatal("capiplugin: callback failed (no call)");
+}
+
+static void makecallback(void)
+{
+	time_t t;
+
+	t = time(0)+opt_cbdelay;
+	do {
+	      handlemessages();
+	      if (status != EXIT_OK)
+		 die(status);
+	} while (time(0) < t);
+
+	if (callbacknumbers) 
+	   makeconnection(callbacknumbers);
+	else makeconnection(numbers);
+}
+
+static void waitforcall(void)
+{
+	int try = 0;
+	(void) capiconn_listen(ctx, controller, cipmask, 0);
+	info("capiplugin: waiting for incoming call ...");
+
+	do {
+		handlemessages();
+		if (status != EXIT_OK) {
+		   (void) capiconn_listen(ctx, controller, 0, 0);
+		   die(status);
+		}
+	        if (connectinprogress) try=1;
+		if (try && !connectinprogress) {
+		   try = 0;
+		   if (!isconnected) {
+		      (void) capiconn_listen(ctx, controller, cipmask, 0);
+		      info("capiplugin: waiting for incoming call ...");
+		   }
+		}
+	} while (!isconnected);
+
+        if (conn && isconnected) {
+		time_t t = time(0)+opt_connectdelay;
+		do {
+			handlemessages();
+		} while (time(0) < t);
+	}
+	add_fd(capi20_fileno(applid));
+	setup_timeout();
+}
+
+/* -------------------------------------------------------------------- */
+
+static int capi_new_phase_hook(int phase)
+{
+	int fd;
+	wakeupneeded = 0;
+	switch (phase) {
+		case PHASE_DEAD:
+			info("capiplugin: phase dead");
+			if ((fd = capi20_fileno(applid)) >= 0)
+			   remove_fd(fd);
+			unsetup_timeout();
+			dodisconnect();
+			break;
+		case PHASE_INITIALIZE:
+			info("capiplugin: phase initialize");
+			break;
+		case PHASE_DORMANT:
+			wakeupneeded = 1;
+			plugin_check_options();
+			init_capiconn();
+			info("capiplugin: phase dormant");
+			if (opt_inmsn || opt_cli)
+			   setupincoming_for_demand();
+			break;
+		case PHASE_SERIALCONN:
+			info("capiplugin: phase serialconn%s",
+					opt_cbflag ? " (callback)" : "");
+	                if (isconnected)
+			   break;
+			plugin_check_options();
+			init_capiconn();
+			if (opt_number) {
+			     if (coso == COSO_REMOTE) {
+				     makeconnection_with_callback();
+			     } else {
+				     makeconnection(numbers);
+			     }
+			} else if (opt_channels) {
+			     makeleasedline();
+			} else {
+			     waitforcall();
+			}
+			break;
+		case PHASE_ESTABLISH:
+			info("capiplugin: phase establish");
+			break;
+		case PHASE_AUTHENTICATE:
+			info("capiplugin: phase authenticate");
+			break;
+		case PHASE_CALLBACK:
+			info("capiplugin: phase callback");
+			break;
+		case PHASE_NETWORK:
+			info("capiplugin: phase network");
+			break;
+		case PHASE_RUNNING:
+			info("capiplugin: phase running");
+			break;
+		case PHASE_TERMINATE:
+			info("capiplugin: phase terminate");
+			break;
+		case PHASE_DISCONNECT:
+			info("capiplugin: phase disconnect");
+			break;
+		case PHASE_HOLDOFF:
+			info("capiplugin: phase holdoff");
+			break;
+	}
+	return 0;
+}
+
+/* -------------------------------------------------------------------- */
 
 void plugin_init(void)
 {

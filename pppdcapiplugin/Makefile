@@ -8,46 +8,68 @@
 #  as published by the Free Software Foundation; either version
 #  2 of the License, or (at your option) any later version.
 
-CC	= gcc
-CFLAGS	= -O2 -Wall -fPIC -I../capi20 -L../capi20
-LDFLAGS	= -shared -L../capi20
+export TOPDIR=$(shell pwd)
+export CAPIINC=$(TOPDIR)/../capi20
+export CAPILIB=$(TOPDIR)/../capi20
+export INSTALL=$(TOPDIR)/install-sh -c
+export MKDIR=$(TOPDIR)/mkinstalldirs
 
-PLUGINDIR=${DESTDIR}/etc/ppp/plugins
+PPPSRCDIRS=/src/isdn/pppd
+
+PPPVERSIONS = 2.3.11 2.4.0 2.4.1 2.4.1b1 2.4.1b2
+
 PEERDIR=${DESTDIR}/etc/ppp/peers/isdn
 PEERS= arcor otelo talkline avm avm-ml leased
-INSTALL=./install-sh -c
 
 ALL = capiplugin.so userpass.so
 
-all:	$(ALL)
-
-capiplugin.so: capiplugin.o capiconn.o
-	$(CC) -o $@ $(LDFLAGS) capiplugin.o capiconn.o -lcapi20dyn
-
-userpass.so: userpass.c
-	$(CC) -o $@ $(LDFLAGS) $(CFLAGS) -nostdlib userpass.c
+all: pversion
+	@for i in $(PPPVERSIONS) ; do \
+	    echo $(MAKE) -C ppp-$$i PPPVERSION=$$i $@ ; \
+	    $(MAKE) -C ppp-$$i PPPVERSION=$$i $@ ; \
+	done
 
 distclean: clean
 
 clean:
-	$(RM) *.so *.o comperr
-
-install: $(ALL)
-	./mkinstalldirs $(PLUGINDIR)
-	@for i in $(ALL); do \
-		echo $(INSTALL) $$i $(PLUGINDIR); \
-		$(INSTALL) $$i $(PLUGINDIR); \
+	@for i in $(PPPVERSIONS) ; do \
+	    echo $(MAKE) -C ppp-$$i PPPVERSION=$$i $@ ; \
+	    $(MAKE) -C ppp-$$i PPPVERSION=$$i $@ ; \
 	done
-	./mkinstalldirs $(PEERDIR)
+	$(RM) comperr pversion
+
+install-peers:
+	$(MKDIR) $(PEERDIR)
 	@for i in $(PEERS); do \
 		echo $(INSTALL) peers/$$i $(PEERDIR); \
 		$(INSTALL) peers/$$i $(PEERDIR); \
 	done
+
+install-man:
 	for i in /usr/share/man /usr/man; do \
 		if [ -d $$i/man8 ] ; then \
 			echo $(INSTALL) capiplugin.8 $$i/man8; \
 			$(INSTALL) capiplugin.8 $$i/man8; \
 		fi ; \
+	done
+
+install: pversion
+	@for i in $(PPPVERSIONS) ; do \
+	    echo $(MAKE) -C ppp-$$i PPPVERSION=$$i $@ ; \
+	    $(MAKE) -C ppp-$$i PPPVERSION=$$i $@ ; \
+	done
+	$(MAKE) install-peers
+	$(MAKE) install-man
+
+srcsetup:
+	@for v in $(PPPVERSIONS) ; do \
+	    $(MKDIR) ppp-$$v/pppd ; \
+	    echo $(INSTALL) Makefile.template ppp-$$v/Makefile ; \
+	    $(INSTALL) Makefile.template ppp-$$v/Makefile ; \
+	    for h in pppd.h patchlevel.h ; do \
+	        echo $(INSTALL) $(PPPSRCDIRS)/ppp-$$v/pppd/$$h ppp-$$v/pppd ; \
+	        $(INSTALL) $(PPPSRCDIRS)/ppp-$$v/pppd/$$h ppp-$$v/pppd ; \
+	    done \
 	done
 
 config:
