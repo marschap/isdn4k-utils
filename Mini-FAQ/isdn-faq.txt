@@ -25,7 +25,7 @@ germantoc
 3.   Wo gibt es die SuSE Support-Datenbank, wo viele Fragen zu ISDN4Linux
      beantwortet werden?
 
-     http://www.suse.de/sdb/de/html/katlist.ISDN.html
+     http://sdb.suse.de/sdb/de/html/katlist.ISDN.html
 
 4.   Was gibt es sonst für Dokumentationen?
 
@@ -49,13 +49,13 @@ germantoc
        echo 5 > /proc/sys/net/ipv4/ip_dynaddr
      Das kannst du z.B. auch in /etc/rc.d/rc.local schreiben.  Siehe
      /usr/src/Linux/Documentation/networking/ip_dynaddr.txt und
-     http://www.suse.de/Support/sdb/dynippatch.html
+     http://sdb.suse.de/sdb/de/html/dynippatch.html
 
 7.   Es wird immer wieder gewählt, besonders wenn ich hart auflege (ohne auf
      Timeout zu warten).
 
      Starte den RST-Provoking-Mode.  Zum Aktivieren siehe Frage 6 und siehe
-     auch http://www.suse.de/sdb/de/html/katlist.ISDN.html  Wenn du Kernel
+     auch http://sdb.suse.de/sdb/de/html/katlist.ISDN.html  Wenn du Kernel
      2.2 verwendest, siehe auch
      http://www-users.rwth-aachen.de/Michael.Mueller4/dynip.html  Dieser Patch
      geht mit neueren Kernels nicht mehr sauber rein, und ist deshalb nicht
@@ -236,7 +236,7 @@ englishtoc
 3.   Where is the SuSE Support Database, where many of my questions are
      answered?
 
-     http://www.suse.de/sdb/en/html/katlist.ISDN.html
+     http://sdb.suse.de/sdb/en/html/katlist.ISDN.html
 
 4.   What other documentation is available?
 
@@ -260,13 +260,13 @@ englishtoc
        echo 5 > /proc/sys/net/ipv4/ip_dynaddr
      You can put that in /etc/rc.d/rc.local See
      /usr/src/Linux/Documentation/networking/ip_dynaddr.txt and
-     http://www.suse.de/Support/sdb_e/dynippatch.html
+     http://sdb.suse.de/sdb/en/html/dynippatch.html
 
 7.   ISDN4Linux keeps redialling, especially if I do a hard hangup (without
      waiting for timeout).
 
      This can be alleviated with RST-provoking.  Activate this as in question
-     6 and see also http://www.suse.de/sdb/en/html/katlist.ISDN.html  If you
+     6 and see also http://sdb.suse.de/sdb/en/html/katlist.ISDN.html  If you
      use kernel 2.2 see also
      http://www-users.rwth-aachen.de/Michael.Mueller4/dynip.html  This patch
      does not go cleanly into newer 2.2 kernels, so it is only usable by C
