@@ -4,7 +4,7 @@
 
 <title>FAQ for isdn4linux
 <author>Matthias Hessler (<tt><htmlurl url="mailto:hessler@isdn4linux.de" name="hessler@isdn4linux.de"></tt>)
-<date>v2.0.66, 25. May 2002
+<date>v2.0.67, 14. July 2002
 <abstract>
 If you are reading this FAQ online, you may consider downloading the whole
 thing, and reading it offline (much cheaper). To download the latest
@@ -1120,6 +1120,14 @@ hisaxctrl &lt;driver_name&gt; 10 2
 </code>
 Parameter 10 changes the number of available channels, parameter 12 switches
 the echo mode.
+
+Cards with HFC chips may be difficult to run on older mainboards.
+Ensure with <tt>lspci -v</tt> that an IRQ has been assigned to the card
+(if not check the PnP bios settings). Verify that the card is
+located in a slot with busmaster DMA capabilities. Verify whether the
+kernel is compiled such that it will run on your CPU (newer
+distributions may not run on CPUs like 486 or Pentium; Suse provides
+the kernel 'k_i386' to run with older hardware).
 
 <sect1> hardware_elsa: What should I know about ISDN cards from ELSA?  
 <label id="hardware_elsa">
@@ -3628,7 +3636,9 @@ IP addresses are dynamically assigned, then the disaster is inevitable.
 Then a new connection is started to bring down the open IP connections,
 which fails because the IP address is now different. The line is hung up,
 but the IP connections are still open, the line is dialed again, and
-so on... This can only be avoided with the RST-Revoking patch, which has found
+so on... This can only be avoided with the RST-provoking mode (see question
+<ref id="dod_rstprovoking" name="dod_rstprovoking">. A patch for it may be
+needed if it is not included in your distribution. The patch had found
 its way into the 2.0.x kernels, but not into 2.1/2.2/2.3. However, you can get
 an adjusted patch for 2.2.x kernels and some background information about it
 from: <url url="http://www.another.de/linux/router/">. See also question
@@ -3849,12 +3859,38 @@ want to use this feature then you can enter the name Netscape uses for lookup
 (probably 'news') in your local DNS or in your /etc/hosts, and let it point
 to localhost.
 
+<sect1> dod_rstprovoking: Why should I use the RST-provoking mode/patch?  
+<label id="dod_rstprovoking">
+<p>
+If on every dialup (in auto dialout mode) you get a different ip address
+(dynamic ip), and the dialup connection gets terminated (e.g due to
+inactivity) while some ip connections have not yet been closed, then the
+following problem will occur:
+when the program tries to close the connection this will trigger a new dialout.
+Since this will yield in a new ip address, the closing attempt will fail.
+After the timeout period another dialout will be attempted, with the same
+result, leading to a dial on demand disaster.
+To prevent this problem the RST-provoking mode has been invented.
+If on the closing attempt a new dialout is opened and the ip address changes,
+then the kernel will send a ip packet with the reset flag on. This will close
+down the open connection, preventing the dial on demand disaster.
+To activate the RST-provoking mode use the command 
+<code>
+echo 7 > /proc/sys/net/ipv4/ip_dynaddr
+</code>
+Use 5 instead of 7 to prevent syslog warnings. Check the current status with:
+<code>
+cat /proc/sys/net/ipv4/ip_dynaddr
+</code>
+Your distribution may or may not have the patch for this rst-provoking mode
+included, it was not liked in the kernel code for kernels newer than 2.0.x.
+
 <sect1> dod_closeipconnect: After closing the line, I discover with 
 <tt>netstat -nt</tt> that IP connections are still open. How can I close 
 these manually?  
 <label id="dod_closeipconnect">
 <p>
-This may only work with the RST-Revoking patch (mentioned in question
+This may only work with the RST-provoking mode (mentioned in question
 <ref id="dod_causes" name="dod_causes">): You can bring the interface
 &dquot;down&dquot; then back &dquot;up&dquot;. When you do this, it will
 try to dial out. But if you have removed the outgoing telephone number,
