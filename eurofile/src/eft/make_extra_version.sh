@@ -12,8 +12,9 @@ elif [ x"$1" = x"-" ]; then
 else
 #
 #retrieve CVS revision number from first RCS Id Keyword in file
+#(take care that keyword substitution does not take place here) 
 #
-    revision_string='+'`grep '\$Id: make_extra_version.sh,v 1.1 1999/06/30 17:18:32 he Exp $' < $1 | head -1 | sed 's/^.*,v //
+    revision_string='+'`grep '\$''Id:' < $1 | head -1 | sed 's/^.*,v //
 s/ .*$//'`
 #
 # we should additionally determine whether the file has been changed since
