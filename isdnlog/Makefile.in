@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.49 1998/11/24 20:50:59 akool Exp $
+## $Id: Makefile.in,v 1.50 1998/12/01 16:57:09 paul Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,9 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.50  1998/12/01 16:57:09  paul
+## support for .in manpages
+##
 ## Revision 1.49  1998/11/24 20:50:59  akool
 ##  - changed my email-adress
 ##  - new Option "-R" to supply the preselected provider (-R24 -> Telepassport)
@@ -300,8 +303,10 @@ INCLUDEDIR		:= @includedir@
 OLDINCLUDEDIR		:= @oldincludedir@
 MANDIR			:= @mandir@
 MAN1DIR			:= $(MANDIR)/man1
+MAN5DIR			:= $(MANDIR)/man5
 MAN8DIR			:= $(MANDIR)/man8
 MAN1EXT			:= .1
+MAN5EXT			:= .5
 MAN8EXT			:= .8
 SRCDIR			:= @srcdir@
 
@@ -386,6 +391,8 @@ SERVICEFILE = /etc/services
 
 VERSION     = 3.00
 
+MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 isdnlog/isdnlog.users.5 isdnrep/isdnrep.1
+
 ifeq ($(POSTGRES),1)
 DEFS       += -DPOSTGRES
 INCLUDE    += -I$(POSTGRESDIR)/include
@@ -451,7 +458,7 @@ MODS         =  *.o */*.o
 
 PROGS        =  $(ISDNLOG) $(ISDNREP) $(ISDNCONF)
 
-all:            depend libs mybin $(PROGS)
+all:            depend libs mybin $(PROGS) $(MANPAGES)
 
 mybin:
 		-mkdir -p bin
@@ -464,6 +471,7 @@ clean:
 		set -e; for i in `echo $(SUBDIRS)`; do $(MAKE) -C $$i clean; done
 
 distclean:      clean
+		-rm -f $(MANPAGES)
 		-rm -f $(PROGS) .depend config.h config.status config.cache \
 		config.log Makefile confdefs.h policy.h *~
 		set -e; for i in `echo $(SUBDIRS)`; do $(MAKE) -C $$i distclean; done
@@ -481,14 +489,21 @@ rootperm:
 
 uninstall: rootperm
 		if ps x | fgrep $(ISDNLOG) >/dev/null; then kill `cat $(RUNDIR)/isdnlog.isdnctrl0.pid` 2>/dev/null; fi
-		rm -f $(DESTDIR)$(SBINDIR)/$(ISDNLOG) $(DESTDIR)$(BINDIR)/$(ISDNREP) $(DESTDIR)$(BINDIR)/$(ISDNCONF)
-		rm -f $(DESTDIR)$(MAN8DIR)/isdnlog.8 $(DESTDIR)$(MAN1DIR)/isdnrep.1
+		rm -f	$(DESTDIR)$(SBINDIR)/$(ISDNLOG) \
+			$(DESTDIR)$(BINDIR)/$(ISDNREP)	\
+			$(DESTDIR)$(BINDIR)/$(ISDNCONF)
+		rm -f	$(DESTDIR)$(MAN8DIR)/isdnlog$(MAN8EXT)		\
+			$(DESTDIR)$(MAN1DIR)/isdnrep$(MAN1EXT)		\
+			$(DESTDIR)$(MAN5DIR)/callerid.conf$(MAN5EXT)	\
+			$(DESTDIR)$(MAN5DIR)/isdnlog$(MAN5EXT)		\
+			$(DESTDIR)$(MAN5DIR)/isdnlog.users$(MAN5EXT)
 
 installdirs: rootperm
 		$(INSTALL_DIR) $(DESTDIR)$(I4LCONFDIR)
 		$(INSTALL_DIR) $(DESTDIR)$(BINDIR)
 		$(INSTALL_DIR) $(DESTDIR)$(SBINDIR)
 		$(INSTALL_DIR) $(DESTDIR)$(MAN1DIR)
+		$(INSTALL_DIR) $(DESTDIR)$(MAN5DIR)
 		$(INSTALL_DIR) $(DESTDIR)$(MAN8DIR)
 
 install: all rootperm installdirs
@@ -508,8 +523,11 @@ install: all rootperm installdirs
 		$(INSTALL_BIN) $(ISDNLOG)  $(DESTDIR)$(SBINDIR)
 		$(INSTALL_BIN) $(ISDNREP)  $(DESTDIR)$(BINDIR)
 		$(INSTALL_BIN) $(ISDNCONF) $(DESTDIR)$(BINDIR)
-		$(INSTALL_DATA) isdnlog/isdnlog.8 $(DESTDIR)$(MAN8DIR)
-		$(INSTALL_DATA) isdnrep/isdnrep.1 $(DESTDIR)$(MAN1DIR)
+		$(INSTALL_DATA) isdnlog/isdnlog.8       $(DESTDIR)$(MAN8DIR)/isdnlog$(MAN8EXT)
+		$(INSTALL_DATA) isdnrep/isdnrep.1       $(DESTDIR)$(MAN1DIR)/isdnrep$(MAN1EXT)
+		$(INSTALL_DATA) isdnlog/callerid.conf.5 $(DESTDIR)$(MAN5DIR)/callerid.conf$(MAN5EXT)
+		$(INSTALL_DATA) isdnlog/isdnlog.5       $(DESTDIR)$(MAN5DIR)/isdnlog$(MAN5EXT)
+		$(INSTALL_DATA) isdnlog/isdnlog.users.5 $(DESTDIR)$(MAN5DIR)/isdnlog.users$(MAN5EXT)
 		@echo ""
 		@echo "Don't forget to create $(I4LCONFDIR)/$(USERFILE)"
 		@echo ""

@@ -8,6 +8,7 @@ dnl i4l package setup, get variables from Environment
 dnl If a variable is not set, set default also.
 dnl
 
+I4LVERSION=${I4LVERSION:-"?.?"}
 I4LCONFDIR=${CONFIG_I4LCONFDIR:-"/etc/isdn"}
 OLDCONFDIR=${CONFIG_ISDNLOG_OLDI4LCONFDIR:-"/etc/isdnlog"}
 OLDCONFFILE=${CONFIG_ISDNLOG_OLDI4LCONFFILE:-"isdnlog.conf"}
@@ -57,6 +58,11 @@ CONFIG_KERNELDIR=`eval echo $CONFIG_KERNELDIR`
 bindir=`eval echo $bindir`
 sbindir=`eval echo $sbindir`
 mandir=`eval echo $mandir`
+MANDATE_CALLERID=`grep CHECKIN isdnlog/callerid.conf.5.in | awk '{print $4}'`
+MANDATE_ISDNLOG5=`grep CHECKIN isdnlog/isdnlog.5x.in | awk '{print $4}'`
+MANDATE_ISDNLOG8=`grep CHECKIN isdnlog/isdnlog.8x.in | awk '{print $4}'`
+MANDATE_ISDNLOG_USERS=`grep CHECKIN isdnlog/isdnlog.users.5x.in | awk '{print $4}'`
+MANDATE_ISDNREP=`grep CHECKIN isdnrep/isdnrep.1x.in | awk '{print $4}'`
 
 if test "$CONFIG_LIB_AREACODE" = "y" ; then
 	ALIB=area
@@ -204,4 +210,10 @@ AC_SUBST(AREACODE)
 AC_SUBST(NATION)
 AC_SUBST(NATION_MACRO)
 AC_SUBST(CONFIG_KERNELDIR)
-AC_OUTPUT(Makefile)
+AC_SUBST(I4LVERSION)
+AC_SUBST(MANDATE_CALLERID)
+AC_SUBST(MANDATE_ISDNLOG5)
+AC_SUBST(MANDATE_ISDNLOG8)
+AC_SUBST(MANDATE_ISDNLOG_USERS)
+AC_SUBST(MANDATE_ISDNREP)
+AC_OUTPUT(Makefile isdnlog/callerid.conf.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 isdnlog/isdnlog.users.5 isdnrep/isdnrep.1)
