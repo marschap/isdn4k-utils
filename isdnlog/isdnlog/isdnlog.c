@@ -1,4 +1,4 @@
-/* $Id: isdnlog.c,v 1.63 2000/06/29 17:38:27 akool Exp $
+/* $Id: isdnlog.c,v 1.64 2000/07/18 22:26:05 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,12 @@
  * along with this program; if not, write to the Free Software
  *
  * $Log: isdnlog.c,v $
+ * Revision 1.64  2000/07/18 22:26:05  akool
+ * isdnlog-4.33
+ *   - isdnlog/tools/rate.c ... Bug fixed
+ *   - isdnlog/isdnlog/isdnlog.c ... check for callfmt
+ *   - "rate-de.dat" corrected (duplicates removed)
+ *
  * Revision 1.63  2000/06/29 17:38:27  akool
  *  - Ported "imontty", "isdnctrl", "isdnlog", "xmonisdn" and "hisaxctrl" to
  *    Linux-2.4 "devfs" ("/dev/isdnctrl" -> "/dev/isdn/isdnctrl")
@@ -1289,6 +1295,15 @@ void raw_mode(int state)
     tcsetattr(fileno(stdin), TCSANOW, &oldterminfo);
 } /* raw_mode */
 
+static int checkconfig(void) {
+  if (callfile && (!callfmt || !*callfmt)) {
+    print_msg(PRT_ERR, "No CALLFMT given.");
+    return -1;
+  }
+  /* there shold propably be more checks here */
+
+  return 0;
+}
 /*****************************************************************************/
 
 int main(int argc, char *argv[], char *envp[])
@@ -1480,6 +1495,8 @@ int main(int argc, char *argv[], char *envp[])
 
             if (readconfig(myshortname) < 0)
               Exit(30);
+	    if (checkconfig() < 0)
+	      Exit(30);
 
             restoreCharge();
           } /* if */
@@ -1507,7 +1524,7 @@ int main(int argc, char *argv[], char *envp[])
 	    if (sockets[ISDNINFO].descriptor<0)
 	      sockets[ISDNINFO].descriptor = open("/dev/isdninfo", O_RDONLY | O_NONBLOCK);
 	  }
-	  
+
           if (replay || (sockets[ISDNINFO].descriptor >= 0)) {
 
             if (readkeyboard) {

@@ -1,6 +1,6 @@
 /* #define DEBUG_REDIRZ */
 
-/* $Id: rate.c,v 1.79 2000/07/17 16:34:23 akool Exp $
+/* $Id: rate.c,v 1.80 2000/07/18 22:26:05 akool Exp $
  *
  * Tarifdatenbank
  *
@@ -21,6 +21,12 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rate.c,v $
+ * Revision 1.80  2000/07/18 22:26:05  akool
+ * isdnlog-4.33
+ *   - isdnlog/tools/rate.c ... Bug fixed
+ *   - isdnlog/isdnlog/isdnlog.c ... check for callfmt
+ *   - "rate-de.dat" corrected (duplicates removed)
+ *
  * Revision 1.79  2000/07/17 16:34:23  akool
  * isdnlog-4.32
  *  - added new Prefixes 0160 (D1) and 0162 (D2) to "country-de.dat"
@@ -2304,10 +2310,8 @@ static int get_area(int *prefix, RATE *Rate, char *number,
   if (Rate->_area==UNKNOWN) {
     if (*Rate->dst[0]) {
       if(getDest(number, &onum))
-        Rate->_area=-2;
+        *onum.keys = '\0';
     }
-    else
-      Rate->_area=-2;
   }
   num = onum;
   ret = get_area1(oprefix, Rate, number, &num, 0, &rz);

@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.170 2000/07/17 16:34:20 akool Exp $
+## $Id: Makefile.in,v 1.171 2000/07/18 22:26:02 akool Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,12 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.171  2000/07/18 22:26:02  akool
+## isdnlog-4.33
+##   - isdnlog/tools/rate.c ... Bug fixed
+##   - isdnlog/isdnlog/isdnlog.c ... check for callfmt
+##   - "rate-de.dat" corrected (duplicates removed)
+##
 ## Revision 1.170  2000/07/17 16:34:20  akool
 ## isdnlog-4.32
 ##  - added new Prefixes 0160 (D1) and 0162 (D2) to "country-de.dat"
@@ -1270,7 +1276,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 4.32
+VERSION     = 4.33
 
 MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 \
 	      isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 \
