@@ -8,8 +8,11 @@ FLAGS := -Wall -DMODULE -D__KERNEL__ -DLINUX -O2
 modilp.o:	modilp.c /usr/include/linux/version.h Makefile
 	$(CC) $(FLAGS) -c modilp.c
 
+ilp:	ilp.c
+	$(CC) -Wall -g -DSTANDALONE ilp.c -o ilp
+
 clean:
-	rm *.o *~
+	rm *.o *~ ilp
 
 distlean:
 	clean

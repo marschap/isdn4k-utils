@@ -1,4 +1,4 @@
-/* $Id: processor.c,v 1.119 2000/12/15 14:36:05 leo Exp $
+/* $Id: processor.c,v 1.120 2000/12/21 09:56:47 leo Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.120  2000/12/21 09:56:47  leo
+ * modilp, ilp - show duration, bugfix
+ * s. isdnlog/ilp/README for more information isdnlog 4.48
+ *
  * Revision 1.119  2000/12/15 14:36:05  leo
  * modilp, ilp - B-chan usage in /proc/isdnlog
  * s. isdnlog/ilp/README for more information
@@ -4279,7 +4283,11 @@ static void LCR(int chan, char *s)
 } /* LCR */
 #endif
 
+#ifdef ILP
 extern void procinfo(int channel, CALL * cp, int state);
+#else
+void procinfo(int channel, CALL * cp, int state) {}
+#endif
 
 static void processctrl(int card, char *s)
 {

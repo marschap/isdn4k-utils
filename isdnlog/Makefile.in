@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.188 2000/12/15 14:36:04 leo Exp $
+## $Id: Makefile.in,v 1.189 2000/12/21 09:56:46 leo Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,10 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.189  2000/12/21 09:56:46  leo
+## modilp, ilp - show duration, bugfix
+## s. isdnlog/ilp/README for more information isdnlog 4.48
+##
 ## Revision 1.188  2000/12/15 14:36:04  leo
 ## modilp, ilp - B-chan usage in /proc/isdnlog
 ## s. isdnlog/ilp/README for more information
@@ -1420,7 +1424,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 4.47
+VERSION     = 4.48
 
 MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 \
 	      isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 \

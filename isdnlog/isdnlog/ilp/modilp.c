@@ -19,6 +19,7 @@
  * Changes:
  *
  * 0.10 15.12.2000 lt Initial Version
+ * 0.11 21.12.2000 lt calculate duration
  */
 
 /* based on code found in lkmpg/node17.html, which is: */
@@ -39,6 +40,7 @@
 
 /* Necessary because we use proc fs */
 #include <linux/proc_fs.h>
+#include <linux/time.h>	/* get time */
 
 
 /* In 2.2.3 /usr/include/linux/version.h includes a 
@@ -72,21 +74,46 @@ copy_to_user (void *to, const void *from, unsigned long n)
   return 0;
 }
 
+#define get_fast_time do_gettimeofday
 #endif
-
-/* The module's file functions ********************** */
 
 
 /* Here we keep the last message received */
 
 #define MESSAGE_LENGTH 80
 #define N_CHANS 2
-static char Message[N_CHANS][MESSAGE_LENGTH];
+
+static struct mes_t {
+  char text[MESSAGE_LENGTH];
+  time_t start;
+} message[N_CHANS];
+
+/* string in Connect-messages */
+#define Connect "CON"
+
+/* store duration d as text at p */
+
+static void calc_diff(ulong d, char *p) {
+  int h,m;
+  char s[10];
+
+  h = d / 3600;
+  d %= 3600;
+  m = d / 60;
+  d %= 60;
+  if (h > 99) /* forgotten connection ? */
+    h = 99;
+  sprintf(s, "%02d:%02d:%02d", h, m, (int)d);
+  memcpy(p, s, 8);
+}
+
+/* The module's file functions ********************** */
 
 
 /* Since we use the file operations struct, we can't 
  * use the special proc output provisions - we have to 
  * use a standard read function, which is this function */
+
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(2,2,0)
 static ssize_t 
 module_output (
@@ -107,8 +134,9 @@ module_output (
 {
   static int finished = 0;
   int i;
-  char message[MESSAGE_LENGTH * (N_CHANS + 1)];
+  char output[MESSAGE_LENGTH * (N_CHANS + 1)];
   char *p;
+  struct timeval tv;
 
   /* We return 0 to indicate end of file, that we have 
    * no more information. Otherwise, processes will 
@@ -118,15 +146,22 @@ module_output (
       finished = 0;
       return 0;
     }
+  get_fast_time(&tv);
+  for (i=0 ; i<N_CHANS; i++)
+    if (message[i].text && 
+	strlen(message[i].text) >= 70 && 
+	strstr(message[i].text, Connect))
+      calc_diff(tv.tv_sec-message[i].start, message[i].text+62);
 
-  sprintf (message,
+  sprintf (output,
 /*2345678901234567890123456789012345678901234567890123456789012345678901234567890 */
 /*        1         2         3         4         5         6         7          */
-"Ch State   Msn - Number                    Alias              Time     Cost\n%s%s",
-	   Message[0], Message[1]);
-  for (p = message, i = 1; *p && i < len; p++, i++)
+"Ch State   Msn - Number                    Alias              Duration Cost\n%s%s",
+	   message[0].text, message[1].text);
+  for (p = output, i = 1; *p && i < len; p++, i++)
     ;
-  copy_to_user (buf, message, i);
+  len = i;
+  copy_to_user (buf, output, len);
 
   /* Notice, we assume here that the size of the message 
    * is below len, or it will be received cut. In a real 
@@ -136,7 +171,7 @@ module_output (
    * the message. */
   finished = 1;
 
-  return i;			/* Return the number of bytes "read" */
+  return len;			/* Return the number of bytes "read" */
 }
 
 
@@ -160,7 +195,8 @@ module_input (
 {
   int n;
   char c;
-
+  struct timeval tv;
+  
   /* get prefix "1" or "2" */
   copy_from_user (&c, buf, 1);
   length--;
@@ -171,8 +207,13 @@ module_input (
        * will later be able to use it */
       if (length > MESSAGE_LENGTH - 1)
 	length = MESSAGE_LENGTH - 1;
-      copy_from_user (Message[n], buf+1, length);
-      Message[n][length] = '\0';
+      copy_from_user (message[n].text, buf+1, length);
+      message[n].text[length] = '\0';
+      /* remember connect time */
+      if (strstr(message[n].text, Connect)) {
+	get_fast_time(&tv);
+	message[n].start = tv.tv_sec;
+      }
       return length + 1;
     }
   return 0;

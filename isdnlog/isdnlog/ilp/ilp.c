@@ -19,9 +19,47 @@
  * Changes:
  *
  * 0.10 15.12.2000 lt Initial Version
+ * 0.11 21.12.2000 lt STANDALONE test mode, bug fixes
  */
 
+#ifdef STANDALONE
+#define print_msg(l,f,x,y) printf(f,x,y)
+#include <sys/types.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <errno.h>
+
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <time.h>
+#include <string.h>
+
+struct callt {
+	char num[2][30];
+	char area[2][30];
+	char alias[2][30];
+	char vorwahl[2][30];
+  	int dialin;
+  	double pay;
+  	time_t connect;
+} call;
+
+typedef struct callt CALL;
+
+#define _ME(call)  (call->dialin ? 1 : 0)
+#define _OTHER(call)  (call->dialin ? 0 : 1)
+#define CONNECT 7
+#define RELEASE 0x77
+
+time_t cur_time;
+
+char *double2clock(double d) {
+  return " 0:01:23";
+}
+
+#else
 #include "isdnlog.h"
+#endif
 
 #define PROC_ISDNLOG "/proc/isdnlog"
 
@@ -29,14 +67,14 @@
 
 void procinfo(int chan, CALL *call, int state) 
 {
-    static FILE *fp = NULL;
+    static int fd = -1;
     static int errcount = 0;
-    int c;
-    char s[80];
+    char s[82];
     char *msn;
     char *alias;
     char *st;
     char *p;
+    size_t len;
 
     print_msg(PRT_INFO, "procinfo: chan %d, state %d\n", chan, state);
         
@@ -46,16 +84,16 @@ void procinfo(int chan, CALL *call, int state)
 	
     /* special state to clean up */	
     if (state == -1) {
-	if (fp)
-	    fclose(fp);
-	fp = NULL;
+	if (fd != -1)
+	    close(fd);
+	fd = -1;
 	return;
     }	
     
     /* open /proc/isdnlog for writing */
-    if (fp == NULL) {
-	fp = fopen(PROC_ISDNLOG, "w");
-	if (fp == NULL) {
+    if (fd == -1) {
+	fd = open(PROC_ISDNLOG, O_WRONLY|O_NONBLOCK, O_FSYNC);
+	if (fd == -1) {
 	    print_msg(PRT_ERR, "Failed to open '%s' for writing: %s\n", 
 		PROC_ISDNLOG, strerror(errno));
 	    errcount++;
@@ -69,9 +107,8 @@ void procinfo(int chan, CALL *call, int state)
 	msn = call->num[_ME(call)] + strlen(call->num[_ME(call)]) - 3;
 	
     /* alias is alias | area | country */
-    c = call->confentry[_OTHER(call)];
-    alias = c >= 0 ? known[c]->who :
-	    call->area[_OTHER(call)] ? call->area[_OTHER(call)] :
+    alias = *call->alias[_OTHER(call)] ? call->alias[_OTHER(call)] :
+	    *call->area[_OTHER(call)] ? call->area[_OTHER(call)] :
 	    call->vorwahl[_OTHER(call)]; /* FIXME no country in call? */
 	    
     /* format message for channel */
@@ -97,8 +134,32 @@ void procinfo(int chan, CALL *call, int state)
 	double2clock((double) (cur_time - call->connect)));
     if (!call->dialin) 
 	p += sprintf(p, " %7.3f", call->pay);
-    strcpy(p, "\n");	
-    fputs(s, fp);
-    fflush(fp);
+    strcpy(p, "\n");
+    len = strlen(s);
+    if (write(fd, s, len) != len) {
+	    print_msg(PRT_ERR, "Write error '%s': %s\n", 
+		PROC_ISDNLOG, strerror(errno));
+	    errcount++;
+    }
 }
 
+#ifdef STANDALONE
+
+int main(int argc, char *argv[]) {
+  time_t now;
+  call.dialin = 1;
+  strcpy(call.num[0], "41");
+  strcpy(call.num[1], argc > 1 ? argv[1] : "1234567");
+  strcpy(call.alias[0], "");
+  strcpy(call.alias[1], "");
+  strcpy(call.area[0], "Hbgtn");
+  strcpy(call.area[1], "Wien");
+  time(&now);
+  call.connect = now;
+  call.pay = 1.23;
+  procinfo(2, &call, CONNECT);
+
+  return 0;
+}
+
+#endif
