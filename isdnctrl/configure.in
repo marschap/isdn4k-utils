@@ -43,8 +43,8 @@ dnl Check for triggercps and ciscok depend on CONFIG_KERNELDIR,
 dnl so AC_FIND_KERNEL must be called before.
 dnl
 
-AC_CHECK_HEADERS($CONFIG_KERNELDIR/include/linux/isdn.h,
-                 $CONFIG_KERNELDIR/include/linux/isdnif.h,,
+AC_CHECK_HEADERS($CONFIG_KERNELDIR/include/linux/isdn.h $CONFIG_KERNELDIR/include/linux/isdnif.h,
+		 ,
 	         AC_MSG_ERROR(Isdn header files not found. Kernel installed?))
 
 AC_CHECK_TRIGGERCPS
