@@ -1,8 +1,9 @@
 /* tty line ISDN status monitor
  *
  * (c) 1995-97 Volker Götz
+ * (c) 2000 Paul Slootman <paul@isdn4linux.de>
  *
- * $Id: imontty.c,v 1.3 1998/04/28 08:33:52 paul Exp $
+ * $Id: imontty.c,v 1.4 2000/03/13 16:31:49 paul Exp $
  */
 
 #include <stdlib.h>
@@ -17,8 +18,7 @@ struct phone_entry {
    char name[30];
 };
 
-static struct phone_entry *phones;
-static char *phonebook;
+static struct phone_entry *phones = NULL;
 static int show_names = 1;
 
 static int Star(char *, char *);
@@ -74,7 +74,7 @@ static int Star(char *s, char *p) {
  * Read phonebook file and create a linked
  * list of phone entries.
  */
-static void readphonebook() {
+static void readphonebook(char *phonebook) {
   FILE *f;
   struct phone_entry *p;
   struct phone_entry *q;
@@ -82,7 +82,9 @@ static void readphonebook() {
   char *s;
 
   if (!(f = fopen(phonebook, "r"))) {
-    fprintf(stderr, "Can't open %s\n",phonebook);
+    sprintf(line, "Can't open `%.200s'", phonebook);
+    perror(line);
+    return;
   }
   p = phones;
   while (p) {
@@ -101,8 +103,10 @@ static void readphonebook() {
     if (strlen(line) && strlen(s)) {
       q = malloc(sizeof(struct phone_entry));
       q->next = phones;
-      strcpy(q->phone,line);
-      strcpy(q->name,s);
+      strncpy(q->phone, line, sizeof(q->phone)-1);
+      q->phone[sizeof(q->phone)-1] = 0;
+      strncpy(q->name, s, sizeof(q->name)-1);
+      q->name[sizeof(q->name)-1] = 0;
       phones = q;
     }
   }
@@ -118,14 +122,14 @@ static void readphonebook() {
  */
 char *find_name(char *num) {
   struct phone_entry *p = phones;
-  static char tmp[100];
+  static char tmp[30];
 
-  sprintf(tmp, "%-28s", num);
+  sprintf(tmp, "%-.28s", num);
   if (!show_names)
 	return(tmp);
   while (p) {
     if (wildmat(num, p->phone)) {
-      sprintf(tmp, "%-28s", p->name);
+      sprintf(tmp, "%-.28s", p->name);
       break;
     }
     p = p->next;
@@ -140,8 +144,10 @@ void scan_str(char * buffer, char * field[], int max) {
 
     for(i=0; i < max; i++) {
         token = strtok(NULL, " ");
-        if ((field[i] = malloc(strlen(token) * sizeof(char))) != NULL)
-            strcpy(field[i], token);
+	if (token)
+	    field[i] = strdup(token);
+	else
+	    field[i] = "";
     }
 }
 
@@ -153,11 +159,14 @@ void scan_int(char * buffer, int (*field)[], int max) {
 
     for(i=0; i < max; i++) {
         token = strtok(NULL, " ");
-        (*field)[i] = atoi(token);
+        if (token)
+	    (*field)[i] = atoi(token);
+	else
+	    (*field)[i] = -1;
     }
 }
 
-int main(int ac, char **argv) {
+int main(int argc, char **argv) {
 
     FILE * isdninfo;
     char buf[IM_BUFSIZE];
@@ -172,14 +181,19 @@ int main(int ac, char **argv) {
     int i, lines;
 
     if (!(isdninfo = fopen(PATH_ISDNINFO, "r"))) {
-        fprintf(stderr, "ERROR: Can't open '%s'\n", PATH_ISDNINFO);
+	char tmp[200];
+        sprintf(tmp, "imontty: can't open `%.170s'", PATH_ISDNINFO);
+	perror(tmp);
         exit(1);
     }
 
-    phonebook = argv[1];
-
-    if (phonebook)
-       readphonebook();
+    if (argc == 2)
+       readphonebook(argv[1]);
+    /* if too many args, OR phonebookarg and no phonenumbers found, give error*/
+    if (argc > 2 || argc == 2 && phones == NULL) {
+	fprintf(stderr, "imontty: usage:\n\timontty [phonebookfilename]\n\t\tdisplay ISDN channel usage\n");
+	exit(2);
+    }
 
     fgets(buf, IM_BUFSIZE, isdninfo);
     scan_str(buf, idmap, ISDN_MAX_CHANNELS);
