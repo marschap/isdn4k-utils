@@ -421,7 +421,7 @@ int main( int argc, char *argv[] )
         for (card_i = 1 ; card_i <= num_cards; card_i++)
         {
 /*			announce_card(card_i, cards[card_i]);*/
-			fprintf(stderr, "divaload: Loading %s with %s firmware\n", card_desc[cards[card_i]], afname + 3);
+			fprintf(stderr, "divaload: Loading %s with %s firmware\n", card_desc[new_cards[card_i]], afname + 3);
 				
 			options.card_id = card_i - 1;
 
@@ -531,7 +531,7 @@ int main( int argc, char *argv[] )
 			return -1;
 		}
 
-		fprintf(stderr, "divaload: Loading %s with %s firmware\n", card_desc[cards[adapter_no]], afname + 3);
+		fprintf(stderr, "divaload: Loading %s with %s firmware\n", card_desc[new_cards[adapter_no]], afname + 3);
 		
 		options.card_id = real_card_id[adapter_no];
 
