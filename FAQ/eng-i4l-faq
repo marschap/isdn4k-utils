@@ -12,7 +12,7 @@ Posting-frequency: monthly
 Last-modified: 18-Mar-97
 URL: http://www.lrz-muenchen.de/~ui161ab/www/isdn/
 
-!1FAQ for isdn4linux - Version 1.3.2!br (translation in progress 26-Apr-97)
+!1FAQ for isdn4linux - Version 1.3.2!br (translation in progress 29-Apr-97)
 
 [Translator's notes]!br
 --31-Mar-97: First step in updating the FAQ from 1.0.5
@@ -21,7 +21,7 @@ but many questions are missing or are still in German!!br
 --14-Apr-97: Questions complete in all sections (but not all updated or 
 translated)!br
 --26-Apr-97: Sections 1, 2, 4 and 5 complete!br
---28-Apr-97: Section 3 done through 3.2!br
+--29-Apr-97: Section 3 done except 3.7, 3.9 and 3.13!br
 !br
 
 This FAQ is protected by the GNU General Public License (GPL) Version 2;
@@ -648,7 +648,7 @@ A: Here is a small glossary:!br
 !verboff
 !b1TEI!b0 (Terminal End Identifier)
 !verbon
-        The local switching office, or with an internal S0 the PBX, automatically 
+        The local switching station, or with an internal S0 the PBX, automatically 
         or permanently assigns each end device a TEI. This simply allows 
         the addessing of the D channels. TEIs have the following values:
          0- 63   permanent TEIs (e.g. 0 is used for PBX connections)
@@ -2539,7 +2539,7 @@ A: Georg v. Zezschwitz <gvz@hamburg.pop.de> wrote on 29 Nov 1996:!br
 
 Q: How can I be sure that the chargeint patch is using the correct time?
 A: It's best to synchronize the clock in your own computer with that of
-   the switching office with "isdnlog -t2". For setting the clock, see the
+   the switching station with "isdnlog -t2". For setting the clock, see the
    "Miscellaneous" section, the question: "How can I set the clock of my 
    computer with ISDN?"
 
@@ -2806,10 +2806,10 @@ A: The data are simply sent out! If you at the end of the D64S or 2MB
    other than with ping etc. - NO possibility to recognize whether the
    connection is there or not.  (with ISPA for example, the out-going
    wheels turn...)  The only thing that you can measure on your site
-   is the loop to the next switching office. If you used Bchan2
+   is the loop to the next switching station. If you used Bchan2
    instead of Bchan1 and send out data, they have to come back. Then
    you can take your statistics. The assumes that the Telekom has the
-   unused Bchan setup this way at the switching office. This way we
+   unused Bchan setup this way at the switching station. This way we
    once proved to the Telekom the line itself had a broken cable...
    What can happen, if you don't autuomattically assume that the line
    is there, that no data will flow if the other side is not yet
@@ -3182,7 +3182,7 @@ A: You need to set a link:
 Q: Why does niether my telephone nor my fax machine ring when I call 
    them with isdn4linux?
 A: Isdn4linux sets "digital data" as it's own service when it calls out.
-   The switching office will not route such calls to analog devices like
+   The switching station will not route such calls to analog devices like
    a telephone or a fax machine.
 
 !old
@@ -3618,21 +3618,21 @@ A: The file proto.h was not included in the patch. It should read::
 !3HiSax driver
 
 
-Q: Woran erkenne ich, daß meine ISDN-Karte vom HiSax-Treiber korrekt erkannt
-   wurde?
-A: Beim Booten erscheint im Log-File eine Meldung in z.B. folgender Form:
+Q: How can I tell whether my ISDN card has been corrected recognized by
+   the HiSax driver?
+A: When booting, a message like this will appear in the log file:
 !verbon
         HiSax: Teles 16.3 found,irq:5 isac:a80 cfg:e80
         HiSax: hscx A:280 hscx B:680
         Teles3: HSCX version A: V2.1 B: V2.1
 !verboff
-   Karsten Keil <keil@temic-ech.spacenet.de> schrieb dazu am 12. Dez 1996:!br
-   Beim HiSax brauchst Du Dir auch keine Gedanken darüber machen, wenn er
-   geladen wird, kann die Hardware angesprochen werden und generiert auch
-   entsprechende Interrupts, wenn nicht wird das Modul nicht geladen.
-   Das heist zwar nicht, daß dann auch alles funkt (z.B Kabeldreher,
-   Kabelunterbrechung, Terminierung), aber die Karte ist richtig im Rechner
-   installiert, keine Hardware-Konflikte.
+   Karsten Keil <keil@temic-ech.spacenet.de> wrote on 12 Dec 1996:!br
+   With HiSax you don't need to worry: it's loaded if the hardware
+   can be found and the appropriate interrupts can be generated. If
+   not, the module is not loaded. That doesn't mean that everything
+   will then work (e.g. twisted cables, broken cables, terminators),
+   but that card is installed correctly in the computer and there
+   are no hardware conflicts.
 
 !old
 Q: The Teles crashes again and again with the follwing error message
@@ -3644,24 +3644,22 @@ Q: The Teles crashes again and again with the follwing error message
 A: The CPU isn't able to empty the FIFO. Is a sound card installed that
    keeps the interrupts for itself for too long?
    
-Q: Meine AVM-Karte erzeugt extrem viele Interrupts mit dem HiSax-Treiber. Ist
-   das normal oder ein Problem mit dem HiSax-Treiber?
-A: Karsten Keil <keil@temic-ech.spacenet.de> schrieb dazu am 12. Nov 1996:!br
-   Das ist normal. AVM (und auch ELSA) haben einen Timer auf der Karte.
-   Da AVM nicht koorperiert weiss ich nicht wie der abzustellen ist.
-   Bei Elsa weiss ich es zwar, mache es im Moment aber nicht, da hier kaum was
-   an Performance verloren geht und ich die Interrupts momentan bei der ELSA
-   fuer die Statusanzeige nutze (war vor allem bei der Entwicklung sehr
-   hilfreich, sobald der Treiber stand, blinkte nichts mehr ;-) ).
-   Spaeter werd ich ihn wahrscheinlich abschalten oder nur bei Verbindung
-   benutzen.
+Q: My AVM card produces very many interrupts with the HiSax driver. Is this
+   normal or a problem with the HiSax driver?
+A: Karsten Keil <keil@temic-ech.spacenet.de> wrote on 12 Nov 1996:!br
+   This is normal. AVM (and ELSA as well) have a timer on the card.
+   Since AVM doesn't cooperate, I don't know how to turn it off. With
+   the Elsa I know how, but don't do it since here hardly any performance
+   is lost and I use the interrupts for status reports (which is very
+   handy for development; as soon the the driver was ready, nothing blinked
+   anymore ;-) ). Later I'll proababy turn them off or only use them
+   during connections.
 
-Q: Die PNP-Tools funktionieren nicht mit meiner Teles-16.3-PNP-Karte!
-A: Wahrscheinlich ist es gar keine Plug'n Play-Karte - obwohl Teles 
-   mittlerweile auf alle Karten/Verpackung PNP draufschreibt. Der Unterschied
-   ist einfach zu erkennen: eine echte Teles PNP-Karte hat nicht mehr die
-   (winzigen) DIP-Schalter auf der Karte, mit der man die IO-Adresse einstellen
-   kann.
+Q: The PNP tools done work with my Teles 16.3 PNP card!
+A: It's probably not a Plug 'n Play card at all - even though Teles
+   now prints PNP on all their card and packaging. The difference is easy
+   to recognize: a real Teles PNP card no longer has the (tiny) Dip switches
+   on the card to set the IO addresses.
 
 !3ICN driver
 
@@ -3674,45 +3672,43 @@ A: Torsten Hentschel <Torsten.Hentschel@DInet.de> has a patch for kernel 2.0.21
 !3Working together with other ISDN devices 
 
 !old
-Q: Ich habe Probleme, mit einem ELink Verbindungen aufzubauen.
-A: Daniel Moeller (danny@rsun.lfn.unterland.de) schrieb dazu 1996 in der
-   Mailingliste:
+Q: I have problems connecting to an ELink.
+A: Daniel Moeller (danny@rsun.lfn.unterland.de) wrote in 1996 to the
+   mailing list:
 !verbon
-        Ich hatte schon vor einigen Wochen über meine Probleme, mit einem
-        EL 310 zu connecten berichtet. Es kam keine Connect-Meldung für den
-        Daten-Kanal vom ISDN. Das problematische Elink hängt an einem 1TR6
-        Anschluß und hat identische Settings wie ein anderes Elink an einem
-        Euro-ISDN Anschluß, mit dem ich nie Probleme hatte. Seit ca. 2
-        Wochen funktioniert das jetzt plötzlich einwandfrei, ohne daß lokal
-        oder remote etwas geändert wurde.
-        Schlußfolgerung: Die Software in den Vermittlungsstellen scheint da
-        eine Rolle zu spielen....
+        A few weeks ago I reported on my problems connecting to a EL 310.
+        No connect message came for the data channel from ISDN. The
+        Elink was connected to 1TR6 and had identical settings to another
+        Elink on Euro-ISDN, with which I've never had problems. But now
+        for the past 2 weeks everything suddenly works fine, without
+        having changed anythign locally.
+        Conclusion: The software at the switching station seems to play
+        a role...
 !verboff
 
-Q: Ich habe Probleme, eine Verbindung zu einem Netblazer Router aufzubauen.
-A: Michael Hipp <Michael.Hipp@student.uni-tuebingen.de> schrieb dazu im
-   Okt 1996:!br
-   deine Gegenseite meint wohl, sie dürfe komprimierte Pakete schicken
-   (obwohl kein Kompressionsverfahren ausgewählt wurde). Schmeiß mal in
-   main.c die Zeilen:
+Q: I have problems connecting to a Netblazer router.
+A: Michael Hipp <Michael.Hipp@student.uni-tuebingen.de> wrote in
+   Oct 1996:!br
+   Your partner probably thinks it can send compressed packets (even
+   though no compression method was chosen). Try removing these lines
+   from main.c:
 !verbon
         { PPP_CCP, ccp_init, ccp_input, ccp_protrej,
           ccp_printpkt, ccp_datainput, "CCP" }
 !verboff
-   raus und kompilier' den ipppd neu durch. Dann müßte er das ganze CCP
-   Protokoll ablehnen und das versteht dann hoffentlich auch der Netblazer..
-   (ist nicht der erste Bug des Netblazers.. das Teil scheint generell nicht
-   sonderlich conform zu sein .. komischerweise haben andere diese Problem
-   nicht, eventuell sollte man mal eine neue Softwarerelease einspielen)!br
-   [Dasselbe Problem kann auch bei asyncPPP auftreten. Es funktioniert dort
-   dieselbe Methode (evtl. ist sogar eine Kompilieroption für das
-   Entfernen des CCP-Protokolls vorhanden). Ab pppd 2.3 beta 3 soll es die
-   Option "noccp" geben, die ohne Neukompilation dasselbe bewirkt - die Red.]
-
+   and recompile ipppd. Then it should reject the whole CCP protocol
+   and hopefully the Netblazer will understand that as well... (this 
+   wouldn't be the first bug in the Netblazer... the thing doesn't seem
+   to be especially conformat. Funny that others don't seem to have this
+   problem; maybe it's time for a new software lease)!br
+   [The same problem can also crop up with asyncPPP. This same method
+   will also work (maybe there's even a compiler option to remove
+   the CCP protocol). With pppd 2.3 beta 3 theere should be a "noccp"
+   option, that accomplishes this without recompiling. Ed.]
 
 !commenton
-Weitere Hinweise finden sich im gleichnamigen Abschnitt im Kapitel
-"Konfiguration"!
+More information can be found in the "Configuration" section under this same
+title!
 !commentoff
 
 !3Raw IP
@@ -3849,14 +3845,13 @@ A: Fritz Elfert <fritz@wuemaus.franken.de> schrieb dazu am 17. Feb 1997:
 Q: How can I get a log for pppd?
 A: See this question for Sync PPP, it works the same way for pppd.
 
-Q: Der Verbindungsaufbau klappt wunderbar, leider hängt sich der pppd nach
-   kurzer Zeit auf (d.h. die ersten Bytes gehen durch, danach steht jedoch
-   alles)?
-A: Joachim Gassen <joachim@fb4-1112.uni-muenster.de> schrieb dazu am 8. Jan
+Q: Establishing the connection works fine, but pppd crashes just after
+   that (i.e. the first bytes get through, but then everything stops)
+A: Joachim Gassen <joachim@fb4-1112.uni-muenster.de> wrote on 8 Jan
    1997:!br
-   Das Problem hatte ich auch mal. Es liegt höchstwahrscheinlich an einer
-   falschen Blockgröße auf Deiner Seite. Versuch mal, ein &B512 im
-   "Init-String" Deiner isdn-Karte einzufügen. Dann dürfte es klappen.
+   I had this problem as well. It's probably du to an incorrect block
+   size on your side. Try inserting a &B512 in the "init scring" for 
+   your isdn card. Then it should work.
 
 
 !3Sync PPP
@@ -4304,22 +4299,21 @@ A: Please check:
      computers
 !verboff
 
-Q: Nach dem Booten ist mein lokales Netzwerk nicht mehr erreichbar. Ich
-   verwende das Netzinterface ippp0 mit ifconfig 0.0.0.0; die Defaultroute
-   zeigt auf ippp0.
-A: Wolfgang Barth schrieb dazu am 5. Jan 1997:
+Q: After booting, my local network can no longer be reached. I use the
+   network interface ippp0 with ifconfig 0.0.0.0; the default route 
+   points to ippp0.
+A: Wolfgang Barth wrote on 5 Jan 1997:
 !verbon
-          Mir ist dabei aufgefallen, dass nach dem ersten Verbindungsaufbau via
-        ippp0 das lokale Netzwerk wieder erreichbar ist. Dann steht auch in
-        ifconfig ippp0 nicht mehr die 0.0.0.0 drin, sondern eine zugewiesene
-        IP-Adresse aus dem Pool der Gegenstelle, die bei einem neuen
-        Verbindungsaufbau neu gesetzt wird.
-          In de.comp.os.linux.networking wurde der Thread bereits diskutiert,
-        und es kam eine Lösungsmöglichkeit:
-          Einfach auf ippp0 eine Dummy-IP-Nummer aus dem Pool setzen. Das
-        lokale Netzwerk hat auch direkt nach dem Booten trotz default route
-        keine Probleme mehr, und die IP-Nummer in ifconfig ippp0 wird sowieso
-        überschrieben.
+           I've noticed that after the first connection via ippp0 that the local
+        network can again be reached. Then the address 0.0.0.0 is no longer
+        listed in ifconfig for ippp0, but instead the address assigned from
+        the pool by the ppp parter. 
+           This was alreeady discussed in de.comp.os.linux.networking, along
+        this possible solution: 
+           Simply set ippp0 to a dummy IP number from the pool. Then the 
+        local network will have problems after booting, even with the 
+        default route, and the IP number in ifconfig will be overwritten
+        anyway.
 !verboff
 
 
@@ -4329,49 +4323,47 @@ Q: My isdnlog 2.50 doesn't work since I installed HiSax 1.2.
 A: Isdnlog needs to be patched... you can find the patch everywhere where 
    HiSax is found.
 
-Q: Ich habe isdnlog gepatcht, aber es funktioniert trotzdem nicht mit HiSax
-   zusammen (Isdnlog startet mit den üblichen Meldungen, es passiert aber
-   nichts)?
-A: Andreas Kool <akool@Kool.f.EUnet.de> schrieb dazu am 6. Jan 1997:
+Q: I've patched isdnlog, but it still won't work together with HiSax
+   (isdnlog starts with the usual messages, but nothing happens)?
+A: Andreas Kool <akool@Kool.f.EUnet.de> wrote on 6 Jan 1997:
 !verbon
-        Ist bei den "üblichen Meldungen" auch ein
-          "(HiSax driver detected)"
-        dabei?
-        Falls nein:
-        - hast du die Version 2.52 auch gestartet - nicht nur compiliert?
-        - hast du das "telesctrl <DriverID> 1 4" auch nicht vergessen?
-        - ISDN-Verbindungen funzen ansonsten schon?
-        Falls ja: Melde dich mal bei mir (isdnlog@Kool.f.EUnet.de) mit
-        den entsprechenden Log-Files (mit "isdnlog -v7" erstellt).
+        Is one of the "usual messages":
+          "(HiSax driver detected)"?
+        If not:
+        - have you started version 2.52 - not just compiled?
+        - have you remembered  "telesctrl <DriverID> 1 4" ?
+        - ISDN connections are working otherwise?
+        If so: Contact me (isdnlog@Kool.f.EUnet.de) with the 
+        appropriate log files (created with "isdnlog -v7").
 !verboff
 
-Q: Isdnlog (>=2.52) zeigt mir für einem Anrufer !u1zwei!u0 Telefonnummern an!
-   Welche gilt denn jetzt?
-A: Der Anrufer hat wahrscheinlich das (kostenpflichtige) Feature CLIP
-   (= Calling Line Identification Presentation, no screening) aktiviert, mit
-   dem er eine beliebige Telefonnummer übermitteln kann. Siehe dazu die Frage
-   "Ich habe gehört, es werden eigentlich zwei Caller Id's übermittelt?".!br
-   Andreas Kool <akool@Kool.f.EUnet.de> schrieb weiterhin am 26. Jan 1997:!br
-   Reinlegen kann man damit allerdings nur Software/Telefonanlagen,
-   die den Screening-Indicator nicht auswerten - isdnlog ab Version 2.52
-   zeigt die richtige, *und* die gefakte Telefonnummer an.!br
-   ...eigentlich gedacht ist CLIP, no screening z.B. für die Übergänge von
-   firmeneigenen Telefonnetzen in das öffentliche Netz.
+Q: Isdnlog (>=2.52) shows for a caller !u1two!u0 telephone numbers!
+   Which one is correct?
+A: The caller has most likely activated the (costly) feature CLIP
+   (= Calling Line Identification Presentation, no screening), which 
+   which any telephone number can be transmitted. See the question "I've heard
+   that actually two Caller IDs are transmitted?".!br 
+   Andreas Kool <akool@Kool.f.EUnet.de> wrote on 26 Jan 1997:!br
+   In any case, you can only fool software/PBXs that do not evaluate
+   the screening indicator - isdnlog with version 2.52 shows both the
+   correct *and* the faked telphone number.!br
+   ...CLIP was actually designed for transmitting internal company
+   numbers in the public network.
 
 !old
-Q: Bei Anrufen erhalte ich einen "Internal error: wrong structure".
-A: Wahrscheinlich stimmt die Konfiguration in isdnlog.cf nicht. Auch gleiche
-   MSNs mit unterschiedlicher Dienstekennung müssen separat gezählt werden
-   (für den Eintrag unter MYMSN).
-   Steffan Henke <henker@Informatik.Uni-Bremen.de> schrieb dazu auch:
+Q: When calling I receive a "Internal error: wrong structure".
+A: Most likely something is wrong with the configuration in isdnlog.cf. 
+   Even the same MSNs with different services have to be counted separately.
+   (for the entries under MYMSN).
+   Steffan Henke <henker@Informatik.Uni-Bremen.DE> also wrote:
 !verbon
-        Mein Problem mit isdnlog 2.50 und dem "wrong structure error" lag nur 
-        darin, daß ich keine führende 0 bei den Aliases angegeben habe. 
-        Beispiel:
-          017201234567     Handy           1 -
-        Bei mir sah es vorher so aus:
-          *17201234567     Handy           1 -
-        Damit scheint alles behoben zu sein.
+     My problem with isdnlog 2.50 and  "wrong structure error" was caused 
+     only by leaving out the leading zero. 
+     Example:
+       017201234567     Handy           1 -
+     Previously I had it so:
+       *17201234567     Handy           1 -
+     This seems to have fixed everything.
 !verboff
 
 !old
@@ -4382,32 +4374,32 @@ A: Dirk Lutzebaeck <lutzeb@wadk-berlin.de> wrote:
 !verboff
 
      
-Q: Ich habe mir Skript angelegt, das Sounds per cat auf /dev/sound oder
-   ein anderes Device abspielt. Wenn mehrere Ereignisse eintreten, dann gibt es
-   einen Fehler: "Can't open output file '/dev/sound': Device or resource busy"
-A: Andreas Kool <akool@Kool.f.EUnet.de> schrieb dazu am 6. Nov 1996:!br
-   Dagegen hilft nur, eine obere Instanz zu schaffen, die das koordiniert.
-   Ich persönlich verwende NAS (Network-audio-system), das "rplay" Zeuch
-   sollte jedoch genauso gut verwendbar sein!
+Q: I've set up a script to play sound per cat on /dev/sound or some
+   other device. When several events occur, then there is an error:
+   "Can't open output file '/dev/sound': Device or resource busy"
+A: Andreas Kool <akool@Kool.f.EUnet.de> wrote on 6 Nov 1996:!br
+   The only thing you can do is to create an upper instance that
+   coordinates this. I personally use NAS (network audio system),
+   but "rplay" should be just as good!
 
-Q: Isdnlog soll ein Programm mit Ausgabeumleitung ausführen (z.B.
-   "play anruf.au 2>/dev/null" ). Warum meldet isdnlog "Can't start
+Q: Isdnlog should call a program with redirected output (e.g.
+   "play anruf.au 2>/dev/null" ). Why does isdn tell me "Can't start
    '/usr/local/bin/play anruf.au 2>/dev/null' with execvp()"?
-A: Andreas Kool <akool@Kool.f.EUnet.de> schrieb dazu am 6. Nov 1996:!br
-   Weil isdnlog keine (Bourne) Shell ist ;-) isdnlog kann nur "echte"
-   Programme starten.!br
-   Kurz und knapp: Obiges Beispiel muß als ausführbare Datei (-> chmod +x)
-   mit folgendem Kontext abgespeichert werden:
+A: Andreas Kool <akool@Kool.f.EUnet.de> wrote on 6 Nov 1996:!br
+   Because isdnlog is not a (Bourne) shell ;-) isdnlog can only start
+   "real" programs.!br
+   Short and sweet: this example has to be saved as an executable
+   (-> chmod +x) file in the following way:
 !verbon
         #!/bin/sh
         /usr/local/bin/play anruf.au 2>/dev/null
 !verboff
 
-Q: Warum beendet sich isdnlog bei einem "kill -1", laut Doku sollte nur die
-   isdnlog.conf neu eingelesen werden.
-A: Andreas Kool <akool@Kool.f.EUnet.de> schrieb dazu am 6. Nov 1996:!br
-   Ist ein echter Bug in isdnlog-2.5x, der schon behoben wurde.
-   isdnlog-2.60 (comming soon ;-) kann das besser!
+Q: Why does isdnlog quit with  "kill -1", according to the docs it
+   should only reread isdnlog.conf. 
+A: Andreas Kool <akool@Kool.f.EUnet.de> wrote on 6 Nov 1996:!br
+   This is a bug isdnlog-2.5x, but it's been fixed already.
+   isdnlog-2.60 (coming soon ;-) can do this better!
 
 !commenton
 (The following question and answer is from Andreas Kool
@@ -4450,27 +4442,26 @@ A: You wish... Christian Bruehe <oblomow@cs.tu-berlin.de> wrote:
      I recently had the same effect when I mistakenly started isdnlog twice
 !verboff
 
-Q: Laut isdnlog kostet mich jedes "Besetzt" 45 Einheiten?
-A: Das ist ein Bug der älteren isdnlog-Versionen (z.B. 2.41) im Zusammenhang
-   mit dem ISDN-Merkmal Rückruf bei Besetzt. Natürlich kostet dieses Besetzt
-   nicht wirklich 45 Einheiten.
+Q: According to isdnlog every "busy" costs me 45 units?
+A: This is a bug in older isdnlog versions (e.g. 2.41) with regards to 
+   the ISDN feature callback when busy. Of course, this busy doesn't really
+   cost 45 units.
 
-Q: Ich habe Probleme, isdnlog mit libc 5.4.7 zum Laufen zu bekommen!
+Q: I'm having problems getting isdnlog to run with libc 5.4.7!
 A: Christian Schlittchen <corwin@amber.hb.north.de / corwin@zfn.uni-bremen.de>
-   schrieb am 8. Okt 1996:
+   wrote on 8 Oct 1996:
 !verbon
-        Isdnlog habe ich inzwischen gepatcht. Das Problem ist der strftime()-
-        Aufruf in Zeile 264 in isdnlog.c. Dort muß das "%e" durch ein "%d"
-        ersetzt werden, dann geht wieder alles.
+        In the meantime I've patched isdnlog. The problem is the 
+        strftime() call in line 264 of isdnlog.c. There the "%e" 
+        should be replaced with a "%d", then everything works again.
 !verboff
 
-Q: Beim Rauswählen wird immer kurz der Bildschirm schwarz?
-A: Roger F. Brand <roger@rz.uni-frankfurt.de> schrieb dazu am 12. Feb 1997:
-   Ich denke, das liegt am isdnlog. Wenn Du ihn mit der Option -t 1 
-   oder -t 2 gestartet hast, wird eine Synchronisation mit der Uhrzeit
-   der digitalen Vermittlungsstelle durchgeführt. Dabei kommt es
-   zur kurzfristigen Ausblendung des Bildschirms.
-
+Q: When dialing out, the screen goes momentarily black?
+A: Roger F. Brand <roger@rz.uni-frankfurt.de> wrote on 12 Feb 1997:
+   I think that's the fault of isdnlog. If you've started it with
+   the option -t 1 or -t 2, then the time is syncronized with the
+   digital switching station. That causes a short black-out of the
+   screen. 
 
 
 !3Audio
@@ -4481,31 +4472,29 @@ A: vboxgetty needs ".vboxrc" in the home directory of the user for which
    vboxgetty is configured. The number of rings is taken from this file.
 
 !old
-Q: Mein vboxgetty hebt schon beim ersten Klingeln ab, obwohl ich die Anzahl
-   der Rings auf 4 gesetzt habe.
-A: Die RINGS werden von einem Timer im isdn-modul erzeugt, der nicht unbedingt
-   akkurat verzögert.
-   Konfiguriert man vboxgetty für 30 Rings, wird etwa zum 5. Klingeln abge-
-   hoben.
+Q: My vboxgetty answers at the first ring but the number of rings is set to 4.
+A: The rings are created by a timer in the isdn module that doesn't 
+   necessarily set the delay accurately. If you configure vboxgetty with 
+   30 rings, vboxgetty will wait about 5 rings before it picks up the line.
+
 
 !old
 Q: My vbox 1.1 does not work together with HiSax.
 A: Use HiSax >=1.2. This version includes correct alerting.
 
 !old
-Q: Ich vboxgetty hat eine Nachricht für mich in einem Format aufgezeichnet,
-   das ich nicht mit "cat xxx>/dev/audio" abspielen kann. Wie kann ich die
-   Nachricht doch noch abhören?
-A: vboxgetty kann alle Formate abspielen. Hilfsweise kann man daher einfach 
-   die eingegangene Nachricht als Ansagetext verwenden, und sich selbst 
-   anrufen... :-) (und hinterher nicht vergessen, wieder auf den originalen 
-   Ansagetext umzustellen :-) ).
+Q: If vboxgetty has recorded a message in a format which can not be played
+   using "cat xxx>/dev/audio" how can I still hear the message?
+A: Vboxgetty can play all formats. You could also copy the message as the
+   standard message (standard.msg in the messages directory) and call
+   yourself, the message will be played then. (Don't forget to copy back the
+   original message when you are done :-) ).
 
-Q: Am Anfang einer von vboxgetty aufgezeichneten Nachricht befindet sich
-   oft noch ein Teil meiner Ansage?
-A: Das ist ein bekannter Bug, der irgendwie beim Umschalten zwischen Abspielen
-   der Ansage und Aufzeichnung des Anrufers sein Unwesen treibt. Bisher ist
-   noch kein echter Workaround bekannt.
+Q: At the beginning of a message recorded by vboxgetty, there's often a
+   part of my own announcement?
+A: This is a known bug that occurs when switching between the playing of
+   the announcement and recording the message. Up to now there is no
+   known workaround.
 
 !3Dialout on demand
 
@@ -4762,28 +4751,28 @@ A: Dirk Melchers <dirk@merlin.nbg.sub.org> wrote about this:
 !verboff
     If you need the patch, mail Dirk Melchers.
 
-Q: Der "lcp-keep-alive"-Patch klappt nicht - ipppd hängt immer noch nicht auf.
-A: Es kann sein, daß nicht die LCP-Pakete eine Verbindung offenhalten, sondern
-   OSPF-Routing Updates. Das Verschicken dieser Updates kann entsprechend nur
-   auf der Cisco ausgeschaltet werden. Eddy PE1CIG <eddy@sys2.pe1cig.ampr.org>
-   schrieb dazu folgenden Tip am 27 Dez 1996:
+Q: The "lcp-keep-alive" patch doesn't work - ipppd still doesn't hang up.
+A: It could be that it's not the LCP packets that are keeping the 
+   connection open, but rather OSPF routing updates. The sending of these
+   updattes can only be switched off on the Cisco. Eddy PE1CIG 
+   <eddy@sys2.pe1cig.ampr.org> gave this tip on 27 Dec 1996:
 !verbon
-        Nach einigen Experimenten kam ich zu einer Lösung auf der Cisco
-        (IOS 11.0.7), das "snapshot routing" genannt wird. Ich konfigurierte
-        "snapshot server" auf dem BRI-Interface. Das bedeutet es wird nur dann
-        Routing Updates verschicken, wenn es diese auch durch dieses Interface
-        empfängt.
+        After some experimenting, I found a solution on the Cisco
+        (IOS 11.0.7), that's called "snapshot routing". I configured
+        "snapshot server" on the BRI interface. That means it will
+        send out routing updates only when they are received through
+        this interface.
 !verboff
 
 
 !3Dial-in
 
-Q: Ich bekomme immer wieder die Meldung "isdn_tty: call from XXX -> YYY
-   ignored". Warum ignoriert isdn4linux (syncPPP) den Einwahlversuch?
-A: Dafür kann es zwei Erklärungen geben. Entweder wurde die eigene MSN (hier:
-   YYY) nicht richtig per "isdnctrl eaz <interface> YYY" gesetzt. Oder es
-   wurde "isdnctrl secure <interface> on" gesetzt, ohne die hereinkommende
-   Nummer (hier: XXX) mit "isdnctrl addphone <interface> in XXX" zu erlauben.
+Q: I keep getting the message "isdn_tty: call from XXX -> YYY
+   ignored". Why does isdn4linux (syncPPP) ignnore this dialin attempt?
+A: There are two possible explanations. Either your own MSN (here: YYY)
+   is not correctly set with "isdnctrl eaz <interface> YYY". Or 
+    "isdnctrl secure <interface> on" was set, without allowing calls from
+    the incoming number (here: XXX) with "isdnctrl addphone <interface> in XXX".
 
 !old
 Q: I've configured several ippp* devices. Each incoming call "uses up" one
@@ -4803,18 +4792,18 @@ A: That's a known bug. There is a patch available to fix it.
 !verboff
    It can be assumed that this will be fixed in an improved ipppd.
 
-Q: Ich habe mit "isdnctl pppbind" eine exklusive Bindung hergestellt. Leider
-   löscht sich diese bei einem hereinkommenden Anruf.
-A: G. Richter <richter@ecos.de> schrieb dazu an Michael Hipp
-   <Michael.Hipp@student.uni-tuebingen.de> am 2. Nov 1996:
+Q: With "isdnctl pppbind" I've establish an exclusive connection.
+    But this is removed with an incoming call.
+A: G. Richter <richter@ecos.de> wrote to Michael Hipp
+   <Michael.Hipp@student.uni-tuebingen.de> on  2 Nov 1996:
 !verbon
-        > ... ich habe den Code mal durchsucht und tatsaechlich
-        > eine moegliche Fehlerquelle bei reinkommenden Anrufen
-        > ausgemacht. Trifft das auf dein Szenario zu?
-        > Wenn ja, mal die Zeile: (isdn_net.c, etwa Zeile 1730)
+        > ... I've looked through the code an found
+        > a possible error triggered by incoming calls. bei reinkommenden Anrufen
+        > Is this the case for your scenario? If so,
+        > try removing: (isdn_net.c, around line 1730)
         >   p->local.pppbind = -1;
-        > in der Funktion isdn_net_find_icall() rauswerfen.
-       Ich habe die Zeile rausgeschiessen und siehe da es geht.
+        > in the function isdn_net_find_icall().
+       I took out this line and now it works.
 !verboff
 
 !commenton
@@ -4882,38 +4871,39 @@ A: Torsten Hentschel <Torsten.Hentschel@DInet.de> wrote on 3 Oct 1996:
      id could in doubt be considered as a transmission of information).
 !verboff
 
-Q: Callback von Ascend aus klappt nur wenn ich im Ascendmenue "Active=Yes"
-   setze; dann ruft der Ascend mich jedoch dauernd an, selbst wenn meine
+Q: Callback from an Ascend works only when I set "Active=Yes" in the
+   Ascend menu; but then the Ascend keeps calling me, even when my
+   machine is off.
    Maschine abgeschaltet ist.
-A: Ulrich Klein <ulik@hprc.tandem.com> schrieb dazu am 14. Dez 1996:!br
-   Irgendwo in den Ascend-Menus kann man "dial broadcast" auf "no" oder "off"
-   setzen. Ansonsten waehlt das Ding bei jedem Broadcast. Das hat zumindest bei
-   mir damals geholfen. Falls tatsaechlich jemand aus dem Netz, in dem die
-   Ascend haengt, eine Verbindung aufbauen will, helfen nur die merkwuerdigen
-   Filter. Ich glaube da gab es einen, mit dem man erreichen kann, dass die 
-   Kiste nur fuer Callback rauswaehlt. 
+A: Ulrich Klein <ulik@hprc.tandem.com> wrote on 14 Dec 1996:!br
+   Somewhere in the Ascend menus you can set "dial broadcast" to "no"
+   or "off". Otherwise the thing will dial with every broadcase. At
+   least that helped me. In case anyone from the network on which the
+   Ascend is attached really wants to establish a connection, then you
+   have to use the strange filters. I believe there's one that will
+   dial out only for callback.
 
-Q: Wie kann ich einen Banzai! per Callback zurückrufen?
-A: Jan-Olaf Droese <jano@layla.RoBIN.de> schrieb dazu am 31. Jan 1997:!br
-   Auf Banzai-Seite sollte ein `c' an die ausgehende Nummer angehängt
-   werden, damit das Teil auf den Rückruf vorbereitet ist. Zur
-   Sicherheit kannst Du noch die Anwahlversuche beim Banzai auf 1
-   stellen, damit es nicht zu call-collisions kommt.
-   Auf i4l-Seite habe ich folgendes eingestellt:
+Q: How can I callback a Banzai!? 
+A: Jan-Olaf Droese <jano@layla.RoBIN.de> wrote on 31 Jan 1997:!br
+   On the Banzaiside, a  `c' should be added to the outgoing number,
+   so it will be ready for the return call. Just to be sagfe, you can
+   the the dial-out attempts on the Banzai to 1, so there won't be any
+   call-collisions.
+   On the i4l I've set the following:
 !verbon
        isdnctrl callback isdn0 in
        isdnctrl cbdelay isdn0 1
 !verboff
 
-Q: Irgendwie kommt der Module-Count bei Callbacks durcheinander. Wie kann ich
-   jetzt meine ISDN-Modul entladen?
-A: Karsten Keil <keil@temic-ech.spacenet.de> hat als vorläufigen Workaround
-   zwei "geheime" telesctrl-Kommandos eingeführt:
+Q: Some the callbacks confuse the module count. How can I now unload 
+   my ISDN modules?
+A: Karsten Keil <keil@temic-ech.spacenet.de> has as a temporary workaround
+   added two "secret" telesctrl commands:
 !verbon
         telesctrl <id> 3 1  ---> dec module_count
         telesctrl <id> 4 1  ---> inc module_count
 !verboff
-   Bitte mit entsprechender Vorsicht handhaben!
+   Please use with appropriate caution! 
 
 !3MPPP
 
