@@ -1,4 +1,4 @@
-/* $Id: rate.c,v 1.67 1999/12/17 22:51:55 akool Exp $
+/* $Id: rate.c,v 1.68 1999/12/19 20:24:46 akool Exp $
  *
  * Tarifdatenbank
  *
@@ -19,6 +19,11 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rate.c,v $
+ * Revision 1.68  1999/12/19 20:24:46  akool
+ * isdnlog-3.80
+ *   - resolved most of the Warnings
+ *   - enhanced "isdnbill"
+ *
  * Revision 1.67  1999/12/17 22:51:55  akool
  * isdnlog-3.79
  *  - isdnlog/isdnrep/isdnrep.{c,h} ... error -handling, print_msg
@@ -1063,7 +1068,7 @@ int initRate(char *conf, char *dat, char *dom, char **msg)
 	  if (zone) /* AK:17Dec99 Zone=0 is per definition free of charge */
 	    whimper (dat, "Zone %d has no 'T:' Entries", zone);
 	if (!(where & FEDERAL))
-	  whimper (dat, "Provider %d has no default domestic zone (missing 'A:%s')", prefix, mycountry);
+	  whimper (dat, "Provider %d has no default domestic zone #1 (missing 'A:%s')", prefix, mycountry);
 	line++;
       }
       else if(nProvider) { /* silently ignore empty providers */
@@ -1582,7 +1587,7 @@ int initRate(char *conf, char *dat, char *dom, char **msg)
       if (zone) /* AK:17Dec99 Zone=0 is per definition free of charge */
         whimper (dat, "Zone %d has no 'T:' Entries", zone);
     if (!(where & FEDERAL))
-      whimper (dat, "Provider %d has no default domestic zone (missing 'A:%s')", prefix, mycountry);
+      whimper (dat, "Provider %d has no default domestic zone #2 (missing 'A:%s')", prefix, mycountry);
     line++;
   }
   else if(nProvider) { /* silently ignore empty providers */

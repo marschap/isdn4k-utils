@@ -1,4 +1,4 @@
-V:1.10-Germany [17-Dec-1999 23:02:52]
+V:1.10-Germany [19-Dec-1999 00:35:55]
 
 # Währungsformat
 U:%.3f DM
@@ -8,7 +8,7 @@ U:%.3f DM
 #
 # (C) Copyright 1999 by Andreas Kool (akool@isdn4linux.de)
 #
-# $Id: rate-de.dat.src,v 1.20 1999/12/17 22:51:53 akool Exp $
+# $Id: rate-de.dat.src,v 1.21 1999/12/19 20:24:45 akool Exp $
 #
 #
 # Das "A:" Tag muß folgendermaßen gefüllt werden:
@@ -4876,6 +4876,7 @@ A:Japan, Jugoslawien, Korea (Süd), Kroatien, Lettland, Litauen, Malaysia
 A:Marokko, Mazedonien, Moldavien, Polen, Rumänien, San Marino, Singapur
 A:Slowakische Republik, Slowenien, Tschechische Republik, Türkei, Tunesien
 A:Ukraine, Zypern (griech.), Zypern (türk.)
+T:*/*=0.99(60)/1 # FIXME: Tarif geraten ...
 Z:202 Gruppe C
 A:Amerikanische Jungferninseln, Argentinien, Ascension, Aserbaidschan
 A:Bahamas, Bahrein, Bangladesh, Bermuda, Bhutan, Brasilien, Chile
@@ -4932,6 +4933,7 @@ A:Japan, Jugoslawien, Korea (Süd), Kroatien, Lettland, Litauen, Malaysia
 A:Marokko, Mazedonien, Moldavien, Polen, Rumänien, San Marino, Singapur
 A:Slowakische Republik, Slowenien, Tschechische Republik, Türkei, Tunesien
 A:Ukraine, Zypern (griech.), Zypern (türk.)
+T:*/*=0.99(60)/1 # FIXME: Tarif geraten ...
 Z:202 Gruppe C
 A:Argentinien, Ascension, Aserbaidschan, Australien
 A:Bahamas, Bahrein, Bangladesh, Bermuda, Bhutan, Brasilien, Chile
@@ -5004,49 +5006,51 @@ Z:47 Telegate Auskunft
 A:11880
 T:*/*=0.96/0,0.12/7.5
 Z:60 Cityruf
-A:Cityruf
+A:01640, 01641, 01642, 01643, 01644, 01645, 01646, 01647, 01648, 01649
+A:01682, 01683, 01684, 01685, 01686, 01687, 01688, 01689, 01690, 01691
 T:W/09-18=0.12/20 Tag
 T:W/18-09=0.12/30 Nebenzeit
 T:E,H/*=0.12/30 Wochenende
 Z:61 Cityruf Auftragsdienst
-A:Cityruf Auftragsdienst
+A:016951, 016952
 T:*/*=0.12/5
 Z:62 Scall IVR
-A:Scall 1680
+A:01680
 T:*/*=0.60/0,0/1
 Z:63 Scall DTMF
-A:Scall 1681
+A:01681
 T:W/09-18=1.44/0,0/1 Tag
 T:W/18-09=0.96/0,0/1 Nebenzeit
 T:E,H/*=0.96/0,0/1 Wochenende
 Z:64 Scall Operator
-A:Scall Operator
+A:01699
 T:*/*=2.40/0,0/1
 Z:65 Scall Modem
-A:Scall Modem
+A:01696
 T:*/*=0.96/0,0/1
 Z:66 TeLMI automatic
-A:TelMI automatic
+A:01660, 01665, 01669
 T:*/*=0.12/5.2
 Z:67 TeLMI Operator
-A:TelMI Operatorzugang
+A:01661
 T:*/*=0.12/1.3
 Z:68 Skyper
-A:Skyper
+A:01692, 01693
 T:*/*=0.96/0,0/1
 Z:69 Skyper Operator
-A:Skyper Operator
+A:016953
 T:*/*=2.40/0,0/1
 Z:70 Quix Service
-A:Quix Service
+A:01656
 T:W/09-18=0.12/12 Hauptzeit
 T:W/18-09=0.12/24 Nebenzeit
 T:E,H/*=0.12/24 Wochenende
 Z:71 Quix DTMF
-A:Quix DTMF
+A:016500, 016501, 016502, 016503, 016504
+A:016505, 016506, 016507, 016508, 01655
 T:*/*=0.24/0,0/1
 Z:72 Quix
-A:Quix
+A:01651, 01653, 01654, 016591, 016592, 016593
 T:W/09-18=1.20/0,0/1 Hauptzeit
 T:W/18-09=0.96/0,0/1 Nebenzeit
 T:E,H/*=0.96/0,0/1 Wochenende
@@ -5177,49 +5181,51 @@ Z:47 Telegate Auskunft
 A:11880
 T:*/*=0.96/0,0.12/7.5
 Z:60 Cityruf
-A:Cityruf
+A:01640, 01641, 01642, 01643, 01644, 01645, 01646, 01647, 01648, 01649
+A:01682, 01683, 01684, 01685, 01686, 01687, 01688, 01689, 01690, 01691
 T:W/09-18=0.12/20 Tag
 T:W/18-09=0.12/30 Nebenzeit
 T:E,H/*=0.12/30 Wochenende
 Z:61 Cityruf Auftragsdienst
-A:Cityruf Auftragsdienst
+A:016951, 016952
 T:*/*=0.12/5
 Z:62 Scall IVR
-A:Scall 1680
+A:01680
 T:*/*=0.60/0,0/1
 Z:63 Scall DTMF
-A:Scall 1681
+A:01681
 T:W/09-18=1.44/0,0/1 Tag
 T:W/18-09=0.96/0,0/1 Nebenzeit
 T:E,H/*=0.96/0,0/1 Wochenende
 Z:64 Scall Operator
-A:Scall Operator
+A:01699
 T:*/*=2.40/0,0/1
 Z:65 Scall Modem
-A:Scall Modem
+A:01696
 T:*/*=0.96/0,0/1
 Z:66 TeLMI automatic
-A:TelMI automatic
+A:01660, 01665, 01669
 T:*/*=0.12/5.2
 Z:67 TeLMI Operator
-A:TelMI Operatorzugang
+A:01661
 T:*/*=0.12/1.3
 Z:68 Skyper
-A:Skyper
+A:01692, 01693
 T:*/*=0.96/0,0/1
 Z:69 Skyper Operator
-A:Skyper Operator
+A:016953
 T:*/*=2.40/0,0/1
 Z:70 Quix Service
-A:Quix Service
+A:01656
 T:W/09-18=0.12/12 Hauptzeit
 T:W/18-09=0.12/24 Nebenzeit
 T:E,H/*=0.12/24 Wochenende
 Z:71 Quix DTMF
-A:Quix DTMF
+A:016500, 016501, 016502, 016503, 016504
+A:016505, 016506, 016507, 016508, 01655
 T:*/*=0.24/0,0/1
 Z:72 Quix
-A:Quix
+A:01651, 01653, 01654, 016591, 016592, 016593
 T:W/09-18=1.20/0,0/1 Hauptzeit
 T:W/18-09=0.96/0,0/1 Nebenzeit
 T:E,H/*=0.96/0,0/1 Wochenende
@@ -5344,49 +5350,51 @@ Z:47 Telegate Auskunft
 A:11880
 T:*/*=0.96/0,0.12/7.5
 Z:60 Cityruf
-A:Cityruf
+A:01640, 01641, 01642, 01643, 01644, 01645, 01646, 01647, 01648, 01649
+A:01682, 01683, 01684, 01685, 01686, 01687, 01688, 01689, 01690, 01691
 T:W/09-18=0.12/20 Tag
 T:W/18-09=0.12/30 Nebenzeit
 T:E,H/*=0.12/30 Wochenende
 Z:61 Cityruf Auftragsdienst
-A:Cityruf Auftragsdienst
+A:016951, 016952
 T:*/*=0.12/5
 Z:62 Scall IVR
-A:Scall 1680
+A:01680
 T:*/*=0.60/0,0/1
 Z:63 Scall DTMF
-A:Scall 1681
+A:01681
 T:W/09-18=1.44/0,0/1 Tag
 T:W/18-09=0.96/0,0/1 Nebenzeit
 T:E,H/*=0.96/0,0/1 Wochenende
 Z:64 Scall Operator
-A:Scall Operator
+A:01699
 T:*/*=2.40/0,0/1
 Z:65 Scall Modem
-A:Scall Modem
+A:01696
 T:*/*=0.96/0,0/1
 Z:66 TeLMI automatic
-A:TelMI automatic
+A:01660, 01665, 01669
 T:*/*=0.12/5.2
 Z:67 TeLMI Operator
-A:TelMI Operatorzugang
+A:01661
 T:*/*=0.12/1.3
 Z:68 Skyper
-A:Skyper
+A:01692, 01693
 T:*/*=0.96/0,0/1
 Z:69 Skyper Operator
-A:Skyper Operator
+A:016953
 T:*/*=2.40/0,0/1
 Z:70 Quix Service
-A:Quix Service
+A:01656
 T:W/09-18=0.12/12 Hauptzeit
 T:W/18-09=0.12/24 Nebenzeit
 T:E,H/*=0.12/24 Wochenende
 Z:71 Quix DTMF
-A:Quix DTMF
+A:016500, 016501, 016502, 016503, 016504
+A:016505, 016506, 016507, 016508, 01655
 T:*/*=0.24/0,0/1
 Z:72 Quix
-A:Quix
+A:01651, 01653, 01654, 016591, 016592, 016593
 T:W/09-18=1.20/0,0/1 Hauptzeit
 T:W/18-09=0.96/0,0/1 Nebenzeit
 T:E,H/*=0.96/0,0/1 Wochenende
@@ -5541,7 +5549,7 @@ A:Andorra, Belgien
 A:Griechenland, Irland, Israel
 A:Luxemburg, Monaco, Norwegen, Österreich
 A:Slowakei
-A:Spanien, Tschechien, Türkei
+A:Tschechien, Türkei
 T:*/*=0.65(60)/1
 Z:202 Euro 2
 A:Albanien, Algerien, Bosnien-Herzegowina, Bulgarien, Estland
@@ -5611,6 +5619,7 @@ T:*/*=2.75(60)/1
 #
 P:23 tesion connectClassic
 B:01023
+D:dtag # FIXME: falsch!
 C:Name:tesion connectClassic
 C:Address:Communikationsnetze Süd-West GmbH & Co. KG, Kriegsbergstr. 11, 70174 Stuttgart
 C:Homepage:http://www.tesion.de
@@ -7938,8 +7947,9 @@ T:*/*=0.34568(60)/1
 Z:223 Australien
 A:Australien
 T:*/*=0.34684(60)/1
-Z:224 Dublin
-A:Dublin
+# FIXME: Dublin / Nordirland sind z.Zt. identisch ...
+# Z:224 Dublin
+# A:Dublin
 T:*/*=0.34684(60)/1
 Z:225 Liechtenstein
 A:Liechtenstein
@@ -8607,6 +8617,7 @@ T:*/*=2.57520(60)/1
 #
 P:29 Unisource
 B:01029
+D:dtag
 C:Name:Unisource
 C:Address:Unisource Carrier Services, Industriestraße 21, CH-8304 Wallisellen/Schweiz
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
@@ -8948,19 +8959,33 @@ T:W/05-09,18-21=0.12/150 Spar
 T:E,H/05-21=0.12/150 Spar
 T:*/21-05=0.12/240 Nacht
 Z:200 Euro 1
-A:Dänemark
-T:*/*=0.12/10
+A:Andorra, Belgien, Dänemark, Färoer, Finnland, Frankreich, Griechenland
+A:Großbritannien, Insel Man, Irland, Island, Italien, Kanalinseln, Liechtenstein
+A:Luxemburg, Monaco, Niederlande, Nordirland, Norwegen, Österreich, Polen, Portugal
+A:San Marino, Schweden, Schweiz, Slowakei, Spanien, Tschechische Republik
+A:Vatikanstadt
+T:*/*=0.48/60
 Z:201 Euro 2
-A:Großbritannien, Irland, USA
-T:W/08-18=0.12/8.6
-T:W/18-08=0.12/10
-T:E,H/*=0.12/10
-Z:202 Welt 1
-A:Estland
+A:Ägypten, Albanien, Bosnien-Herzegowina, Bulgarien, Estland, Gibraltar
+A:Israel, Jordanien, Jugoslawien, Kroatien, Lettland, Libanon, Libysch-Arabische Dschamahrija
+A:Litauen, Malta, Marokko, Mazedonien, Moldau, Rumänien, Russische Förderation
+A:Slowenien, Syrien, Türkei, Tunesien, Ukraine
+A:Ungarn, Weißrußland, Zypern
 T:*/*=0.12/6
+Z:202 Welt 1
+A:USA, Kanada
+T:*/*=0.48/60
 Z:203 Welt 2
+A:Australien, Hongkong, Japan, Korea, Neuseeland, Singapur
+T:*/*=0.12/3.34
+Z:204 Welt 3
+A:Argentinien, Brasilien, Chile, Dominikanische Republik, Iran, Kasachstan, Kolumbien
+A:Niederländische Antillen, Philippinen, Saudi Arabien, Südafrika, Taiwan
 A:Vereinigte Arabische Emirate
 T:*/*=0.12/2.61
+Z:206 Welt 4
+A:+
+T:*/*=0.12/2.31
 #####################################################################
 P:33,1 DTAG CityPlus
 B:01033
@@ -9183,19 +9208,33 @@ A:019102345 # Online-Dienste 1&1 Zugang
 T:*/05-21=0.06/90 CityPlus
 T:*/21-05=0.12/240 Nacht
 Z:200 Euro 1
-A:Dänemark
-T:*/*=0.12/10
+A:Andorra, Belgien, Dänemark, Färoer, Finnland, Frankreich, Griechenland
+A:Großbritannien, Insel Man, Irland, Island, Italien, Kanalinseln, Liechtenstein
+A:Luxemburg, Monaco, Niederlande, Nordirland, Norwegen, Österreich, Polen, Portugal
+A:San Marino, Schweden, Schweiz, Slowakei, Spanien, Tschechische Republik
+A:Vatikanstadt
+T:*/*=0.48/60
 Z:201 Euro 2
-A:Großbritannien, Irland, USA
-T:W/08-18=0.12/8.6
-T:W/18-08=0.12/10
-T:E,H/*=0.12/10
-Z:202 Welt 1
-A:Estland
+A:Ägypten, Albanien, Bosnien-Herzegowina, Bulgarien, Estland, Gibraltar
+A:Israel, Jordanien, Jugoslawien, Kroatien, Lettland, Libanon, Libysch-Arabische Dschamahrija
+A:Litauen, Malta, Marokko, Mazedonien, Moldau, Rumänien, Russische Förderation
+A:Slowenien, Syrien, Türkei, Tunesien, Ukraine
+A:Ungarn, Weißrußland, Zypern
 T:*/*=0.12/6
+Z:202 Welt 1
+A:USA, Kanada
+T:*/*=0.48/60
 Z:203 Welt 2
+A:Australien, Hongkong, Japan, Korea, Neuseeland, Singapur
+T:*/*=0.12/3.34
+Z:204 Welt 3
+A:Argentinien, Brasilien, Chile, Dominikanische Republik, Iran, Kasachstan, Kolumbien
+A:Niederländische Antillen, Philippinen, Saudi Arabien, Südafrika, Taiwan
 A:Vereinigte Arabische Emirate
 T:*/*=0.12/2.61
+Z:206 Welt 4
+A:+
+T:*/*=0.12/2.31
 #####################################################################
 P:33,2 DTAG CityWeekend
 B:01033
@@ -9417,19 +9456,33 @@ T:W/05-09,18-21=0.12/150 Spar
 T:E,H/05-21=0.12/240 CityWeekend
 T:*/21-05=0.12/240 Nacht
 Z:200 Euro 1
-A:Dänemark
-T:*/*=0.12/10
+A:Andorra, Belgien, Dänemark, Färoer, Finnland, Frankreich, Griechenland
+A:Großbritannien, Insel Man, Irland, Island, Italien, Kanalinseln, Liechtenstein
+A:Luxemburg, Monaco, Niederlande, Nordirland, Norwegen, Österreich, Polen, Portugal
+A:San Marino, Schweden, Schweiz, Slowakei, Spanien, Tschechische Republik
+A:Vatikanstadt
+T:*/*=0.48/60
 Z:201 Euro 2
-A:Großbritannien, Irland, USA
-T:W/08-18=0.12/8.6
-T:W/18-08=0.12/10
-T:E,H/*=0.12/10
-Z:202 Welt 1
-A:Estland
+A:Ägypten, Albanien, Bosnien-Herzegowina, Bulgarien, Estland, Gibraltar
+A:Israel, Jordanien, Jugoslawien, Kroatien, Lettland, Libanon, Libysch-Arabische Dschamahrija
+A:Litauen, Malta, Marokko, Mazedonien, Moldau, Rumänien, Russische Förderation
+A:Slowenien, Syrien, Türkei, Tunesien, Ukraine
+A:Ungarn, Weißrußland, Zypern
 T:*/*=0.12/6
+Z:202 Welt 1
+A:USA, Kanada
+T:*/*=0.48/60
 Z:203 Welt 2
+A:Australien, Hongkong, Japan, Korea, Neuseeland, Singapur
+T:*/*=0.12/3.34
+Z:204 Welt 3
+A:Argentinien, Brasilien, Chile, Dominikanische Republik, Iran, Kasachstan, Kolumbien
+A:Niederländische Antillen, Philippinen, Saudi Arabien, Südafrika, Taiwan
 A:Vereinigte Arabische Emirate
 T:*/*=0.12/2.61
+Z:206 Welt 4
+A:+
+T:*/*=0.12/2.31
 #####################################################################
 P:33,3 DTAG CityWeekend & CityPlus
 B:01033
@@ -9654,19 +9707,33 @@ T:W/05-21=0.06/90 CityPlus
 T:E,H/05-21=0.12/240 CityWeekend
 T:*/21-05=0.12/240 Nacht
 Z:200 Euro 1
-A:Dänemark
-T:*/*=0.12/10
+A:Andorra, Belgien, Dänemark, Färoer, Finnland, Frankreich, Griechenland
+A:Großbritannien, Insel Man, Irland, Island, Italien, Kanalinseln, Liechtenstein
+A:Luxemburg, Monaco, Niederlande, Nordirland, Norwegen, Österreich, Polen, Portugal
+A:San Marino, Schweden, Schweiz, Slowakei, Spanien, Tschechische Republik
+A:Vatikanstadt
+T:*/*=0.48/60
 Z:201 Euro 2
-A:Großbritannien, Irland, USA
-T:W/08-18=0.12/8.6
-T:W/18-08=0.12/10
-T:E,H/*=0.12/10
-Z:202 Welt 1
-A:Estland
+A:Ägypten, Albanien, Bosnien-Herzegowina, Bulgarien, Estland, Gibraltar
+A:Israel, Jordanien, Jugoslawien, Kroatien, Lettland, Libanon, Libysch-Arabische Dschamahrija
+A:Litauen, Malta, Marokko, Mazedonien, Moldau, Rumänien, Russische Förderation
+A:Slowenien, Syrien, Türkei, Tunesien, Ukraine
+A:Ungarn, Weißrußland, Zypern
 T:*/*=0.12/6
+Z:202 Welt 1
+A:USA, Kanada
+T:*/*=0.48/60
 Z:203 Welt 2
+A:Australien, Hongkong, Japan, Korea, Neuseeland, Singapur
+T:*/*=0.12/3.34
+Z:204 Welt 3
+A:Argentinien, Brasilien, Chile, Dominikanische Republik, Iran, Kasachstan, Kolumbien
+A:Niederländische Antillen, Philippinen, Saudi Arabien, Südafrika, Taiwan
 A:Vereinigte Arabische Emirate
 T:*/*=0.12/2.61
+Z:206 Welt 4
+A:+
+T:*/*=0.12/2.31
 #####################################################################
 P:33,4 DTAG AktivPlus
 B:01033
@@ -9883,19 +9950,33 @@ T:W/05-09,18-21=0.12/150 Spar
 T:E,H/05-21=0.12/150 Spar
 T:*/21-05=0.12/240 Nacht
 Z:200 Euro 1
-A:Dänemark
-T:*/*=0.12/10
+A:Andorra, Belgien, Dänemark, Färoer, Finnland, Frankreich, Griechenland
+A:Großbritannien, Insel Man, Irland, Island, Italien, Kanalinseln, Liechtenstein
+A:Luxemburg, Monaco, Niederlande, Nordirland, Norwegen, Österreich, Polen, Portugal
+A:San Marino, Schweden, Schweiz, Slowakei, Spanien, Tschechische Republik
+A:Vatikanstadt
+T:*/*=0.39/60
 Z:201 Euro 2
-A:Großbritannien, Irland, USA
-T:W/08-18=0.12/8.6
-T:W/18-08=0.12/10
-T:E,H/*=0.12/10
-Z:202 Welt 1
-A:Estland
+A:Ägypten, Albanien, Bosnien-Herzegowina, Bulgarien, Estland, Gibraltar
+A:Israel, Jordanien, Jugoslawien, Kroatien, Lettland, Libanon, Libysch-Arabische Dschamahrija
+A:Litauen, Malta, Marokko, Mazedonien, Moldau, Rumänien, Russische Förderation
+A:Slowenien, Syrien, Türkei, Tunesien, Ukraine
+A:Ungarn, Weißrußland, Zypern
 T:*/*=0.12/6
+Z:202 Welt 1
+A:USA, Kanada
+T:*/*=0.39/60
 Z:203 Welt 2
+A:Australien, Hongkong, Japan, Korea, Neuseeland, Singapur
+T:*/*=0.12/3.34
+Z:204 Welt 3
+A:Argentinien, Brasilien, Chile, Dominikanische Republik, Iran, Kasachstan, Kolumbien
+A:Niederländische Antillen, Philippinen, Saudi Arabien, Südafrika, Taiwan
 A:Vereinigte Arabische Emirate
 T:*/*=0.12/2.61
+Z:206 Welt 4
+A:+
+T:*/*=0.12/2.31
 #####################################################################
 #####################################################################
 #
@@ -10392,6 +10473,7 @@ T:*/*=2.79/60
 #
 P:41 HanseNet
 B:01041
+D:dtag
 C:Address:HanseNet Telekommunikation GmbH, Hammerbrookstraße 63, 20097 Hamburg
 C:Name:HanseNet
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
@@ -11747,11 +11829,12 @@ A:Sonderjylland # +4573, +4574
 T:W/08-20=0.20(60)/1 Tag
 T:W/20-08=0.15(60)/1 Nacht
 T:E,H/*=0.15(60)/1 Wochenende
-Z:201 MoinDanmark
-A:Dänemark
-T:W/08-20=0.29(60)/1 Tag
-T:W/20-08=0.20(60)/1 Nacht
-T:E,H/*=0.20(60)/1 Wochenende
+# FIXME: Dänemark ist doppelt!
+# Z:201 MoinDanmark
+# A:Dänemark
+# T:W/08-20=0.29(60)/1 Tag
+# T:W/20-08=0.20(60)/1 Nacht
+# T:E,H/*=0.20(60)/1 Wochenende
 ###### FIXME: Ausland überprüfen!
 ###### siehe dazu: http://www.komtel.de/lhome/leistungen/mleistungen/mtelefonie/mauslandNEU/mauslandneu.html
 Z:202 Welt 1
@@ -13474,6 +13557,7 @@ C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/
 #
 P:65 Rapid Link
 B:01065
+D:dtag
 C:Address:Rapid Link Telecommunications GmbH, Donaustraße 68, 68199 Mannheim
 C:Name:Rapid Link
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
@@ -15588,6 +15672,7 @@ T:*/*=2.42/60
 #
 P:89 M'net
 B:01089
+D:dtag
 C:Address:M'net Telekommunikations GmbH, Corneliusstraße 10, 80469 München
 C:Name:M'net
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
@@ -15708,6 +15793,7 @@ C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/
 #
 P:97 AT & T-Unisource
 B:01097
+D:dtag
 C:Address:Communication Services (Deutschland) GmbH, Lyoner Str. 15, 60528 Frankfurt
 C:Name:AT&T-Unisource
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>

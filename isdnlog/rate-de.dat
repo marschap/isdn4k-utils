@@ -1,4 +1,4 @@
-V:1.10-Germany [17-Dec-1999 23:02:52]
+V:1.10-Germany [19-Dec-1999 00:35:55]
 
 # Währungsformat
 U:%.3f DM
@@ -8,7 +8,7 @@ U:%.3f DM
 #
 # (C) Copyright 1999 by Andreas Kool (akool@isdn4linux.de)
 #
-# $Id: rate-de.dat,v 1.69 1999/12/17 22:51:52 akool Exp $
+# $Id: rate-de.dat,v 1.70 1999/12/19 20:24:44 akool Exp $
 #
 #
 # Das "A:" Tag muß folgendermaßen gefüllt werden:
@@ -4876,6 +4876,7 @@ A:JP,YU,KR,HR,LV,LT,MY
 A:EH,MK,MD,PL,RO,SM,SG
 A:SK,SI,CZ,TR,TN
 A:UA,CY,_CYTK
+T:*/*=0.99(60)/1 # FIXME: Tarif geraten ...
 Z:202 Gruppe C
 A:VI,AR,ASI,AZ
 A:BS,BH,BD,BM,BT,BR,CL
@@ -4932,6 +4933,7 @@ A:JP,YU,KR,HR,LV,LT,MY
 A:EH,MK,MD,PL,RO,SM,SG
 A:SK,SI,CZ,TR,TN
 A:UA,CY,_CYTK
+T:*/*=0.99(60)/1 # FIXME: Tarif geraten ...
 Z:202 Gruppe C
 A:AR,ASI,AZ,AU
 A:BS,BH,BD,BM,BT,BR,CL
@@ -5004,49 +5006,51 @@ Z:47 Telegate Auskunft
 A:11880
 T:*/*=0.96/0,0.12/7.5
 Z:60 Cityruf
-A:_DECR
+A:01640,01641,01642,01643,01644,01645,01646,01647,01648,01649
+A:01682,01683,01684,01685,01686,01687,01688,01689,01690,01691
 T:W/09-18=0.12/20 Tag
 T:W/18-09=0.12/30 Nebenzeit
 T:E,H/*=0.12/30 Wochenende
 Z:61 Cityruf Auftragsdienst
-A:_DECR
+A:016951,016952
 T:*/*=0.12/5
 Z:62 Scall IVR
-A:_DESC
+A:01680
 T:*/*=0.60/0,0/1
 Z:63 Scall DTMF
-A:_DESC
+A:01681
 T:W/09-18=1.44/0,0/1 Tag
 T:W/18-09=0.96/0,0/1 Nebenzeit
 T:E,H/*=0.96/0,0/1 Wochenende
 Z:64 Scall Operator
-A:_DESC
+A:01699
 T:*/*=2.40/0,0/1
 Z:65 Scall Modem
-A:_DESC
+A:01696
 T:*/*=0.96/0,0/1
 Z:66 TeLMI automatic
-A:_DETM
+A:01660,01665,01669
 T:*/*=0.12/5.2
 Z:67 TeLMI Operator
-A:_DETM
+A:01661
 T:*/*=0.12/1.3
 Z:68 Skyper
-A:_DESK
+A:01692,01693
 T:*/*=0.96/0,0/1
 Z:69 Skyper Operator
-A:_DESK
+A:016953
 T:*/*=2.40/0,0/1
 Z:70 Quix Service
-A:_DEQX
+A:01656
 T:W/09-18=0.12/12 Hauptzeit
 T:W/18-09=0.12/24 Nebenzeit
 T:E,H/*=0.12/24 Wochenende
 Z:71 Quix DTMF
-A:_DEQX
+A:016500,016501,016502,016503,016504
+A:016505,016506,016507,016508,01655
 T:*/*=0.24/0,0/1
 Z:72 Quix
-A:_DEQX
+A:01651,01653,01654,016591,016592,016593
 T:W/09-18=1.20/0,0/1 Hauptzeit
 T:W/18-09=0.96/0,0/1 Nebenzeit
 T:E,H/*=0.96/0,0/1 Wochenende
@@ -5177,49 +5181,51 @@ Z:47 Telegate Auskunft
 A:11880
 T:*/*=0.96/0,0.12/7.5
 Z:60 Cityruf
-A:_DECR
+A:01640,01641,01642,01643,01644,01645,01646,01647,01648,01649
+A:01682,01683,01684,01685,01686,01687,01688,01689,01690,01691
 T:W/09-18=0.12/20 Tag
 T:W/18-09=0.12/30 Nebenzeit
 T:E,H/*=0.12/30 Wochenende
 Z:61 Cityruf Auftragsdienst
-A:_DECR
+A:016951,016952
 T:*/*=0.12/5
 Z:62 Scall IVR
-A:_DESC
+A:01680
 T:*/*=0.60/0,0/1
 Z:63 Scall DTMF
-A:_DESC
+A:01681
 T:W/09-18=1.44/0,0/1 Tag
 T:W/18-09=0.96/0,0/1 Nebenzeit
 T:E,H/*=0.96/0,0/1 Wochenende
 Z:64 Scall Operator
-A:_DESC
+A:01699
 T:*/*=2.40/0,0/1
 Z:65 Scall Modem
-A:_DESC
+A:01696
 T:*/*=0.96/0,0/1
 Z:66 TeLMI automatic
-A:_DETM
+A:01660,01665,01669
 T:*/*=0.12/5.2
 Z:67 TeLMI Operator
-A:_DETM
+A:01661
 T:*/*=0.12/1.3
 Z:68 Skyper
-A:_DESK
+A:01692,01693
 T:*/*=0.96/0,0/1
 Z:69 Skyper Operator
-A:_DESK
+A:016953
 T:*/*=2.40/0,0/1
 Z:70 Quix Service
-A:_DEQX
+A:01656
 T:W/09-18=0.12/12 Hauptzeit
 T:W/18-09=0.12/24 Nebenzeit
 T:E,H/*=0.12/24 Wochenende
 Z:71 Quix DTMF
-A:_DEQX
+A:016500,016501,016502,016503,016504
+A:016505,016506,016507,016508,01655
 T:*/*=0.24/0,0/1
 Z:72 Quix
-A:_DEQX
+A:01651,01653,01654,016591,016592,016593
 T:W/09-18=1.20/0,0/1 Hauptzeit
 T:W/18-09=0.96/0,0/1 Nebenzeit
 T:E,H/*=0.96/0,0/1 Wochenende
@@ -5344,49 +5350,51 @@ Z:47 Telegate Auskunft
 A:11880
 T:*/*=0.96/0,0.12/7.5
 Z:60 Cityruf
-A:_DECR
+A:01640,01641,01642,01643,01644,01645,01646,01647,01648,01649
+A:01682,01683,01684,01685,01686,01687,01688,01689,01690,01691
 T:W/09-18=0.12/20 Tag
 T:W/18-09=0.12/30 Nebenzeit
 T:E,H/*=0.12/30 Wochenende
 Z:61 Cityruf Auftragsdienst
-A:_DECR
+A:016951,016952
 T:*/*=0.12/5
 Z:62 Scall IVR
-A:_DESC
+A:01680
 T:*/*=0.60/0,0/1
 Z:63 Scall DTMF
-A:_DESC
+A:01681
 T:W/09-18=1.44/0,0/1 Tag
 T:W/18-09=0.96/0,0/1 Nebenzeit
 T:E,H/*=0.96/0,0/1 Wochenende
 Z:64 Scall Operator
-A:_DESC
+A:01699
 T:*/*=2.40/0,0/1
 Z:65 Scall Modem
-A:_DESC
+A:01696
 T:*/*=0.96/0,0/1
 Z:66 TeLMI automatic
-A:_DETM
+A:01660,01665,01669
 T:*/*=0.12/5.2
 Z:67 TeLMI Operator
-A:_DETM
+A:01661
 T:*/*=0.12/1.3
 Z:68 Skyper
-A:_DESK
+A:01692,01693
 T:*/*=0.96/0,0/1
 Z:69 Skyper Operator
-A:_DESK
+A:016953
 T:*/*=2.40/0,0/1
 Z:70 Quix Service
-A:_DEQX
+A:01656
 T:W/09-18=0.12/12 Hauptzeit
 T:W/18-09=0.12/24 Nebenzeit
 T:E,H/*=0.12/24 Wochenende
 Z:71 Quix DTMF
-A:_DEQX
+A:016500,016501,016502,016503,016504
+A:016505,016506,016507,016508,01655
 T:*/*=0.24/0,0/1
 Z:72 Quix
-A:_DEQX
+A:01651,01653,01654,016591,016592,016593
 T:W/09-18=1.20/0,0/1 Hauptzeit
 T:W/18-09=0.96/0,0/1 Nebenzeit
 T:E,H/*=0.96/0,0/1 Wochenende
@@ -5541,7 +5549,7 @@ A:AD,BE
 A:GR,IE,IL
 A:LU,MC,NO,AT
 A:SK
-A:ES,CZ,TR
+A:CZ,TR
 T:*/*=0.65(60)/1
 Z:202 Euro 2
 A:AL,DZ,BA,BG,EE
@@ -5611,6 +5619,7 @@ T:*/*=2.75(60)/1
 #
 P:23 tesion connectClassic
 B:01023
+D:dtag # FIXME: falsch!
 C:Name:tesion connectClassic
 C:Address:Communikationsnetze Süd-West GmbH & Co. KG, Kriegsbergstr. 11, 70174 Stuttgart
 C:Homepage:http://www.tesion.de
@@ -7938,8 +7947,9 @@ T:*/*=0.34568(60)/1
 Z:223 Australien
 A:AU
 T:*/*=0.34684(60)/1
-Z:224 Dublin
-A:_UKIR
+# FIXME: Dublin / Nordirland sind z.Zt. identisch ...
+# Z:224 Dublin
+# A:Dublin
 T:*/*=0.34684(60)/1
 Z:225 Liechtenstein
 A:LI
@@ -8607,6 +8617,7 @@ T:*/*=2.57520(60)/1
 #
 P:29 Unisource
 B:01029
+D:dtag
 C:Name:Unisource
 C:Address:Unisource Carrier Services, Industriestraße 21, CH-8304 Wallisellen/Schweiz
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
@@ -8948,19 +8959,33 @@ T:W/05-09,18-21=0.12/150 Spar
 T:E,H/05-21=0.12/150 Spar
 T:*/21-05=0.12/240 Nacht
 Z:200 Euro 1
-A:DK
-T:*/*=0.12/10
+A:AD,BE,DK,FO,FI,FR,GR
+A:UK,_UKIM,IE,IS,IT,_UKIK,LI
+A:LU,MC,NL,_UKIR,NO,AT,PL,PT
+A:SM,SE,CH,SK,ES,CZ
+A:VA
+T:*/*=0.48/60
 Z:201 Euro 2
-A:UK,IE,US
-T:W/08-18=0.12/8.6
-T:W/18-08=0.12/10
-T:E,H/*=0.12/10
-Z:202 Welt 1
-A:EE
+A:EG,AL,BA,BG,EE,GI
+A:IL,JO,YU,HR,LV,LB,LY
+A:LT,MT,EH,MK,MD,RO,SU
+A:SI,SY,TR,TN,UA
+A:HU,BY,CY
 T:*/*=0.12/6
+Z:202 Welt 1
+A:US,CA
+T:*/*=0.48/60
 Z:203 Welt 2
+A:AU,HK,JP,KR,NZ,SG
+T:*/*=0.12/3.34
+Z:204 Welt 3
+A:AR,BR,CL,DO,IR,KZ,CO
+A:AN,PH,SA,ZA,TW
 A:AE
 T:*/*=0.12/2.61
+Z:206 Welt 4
+A:+
+T:*/*=0.12/2.31
 #####################################################################
 P:33,1 DTAG CityPlus
 B:01033
@@ -9183,19 +9208,33 @@ A:019102345
 T:*/05-21=0.06/90 CityPlus
 T:*/21-05=0.12/240 Nacht
 Z:200 Euro 1
-A:DK
-T:*/*=0.12/10
+A:AD,BE,DK,FO,FI,FR,GR
+A:UK,_UKIM,IE,IS,IT,_UKIK,LI
+A:LU,MC,NL,_UKIR,NO,AT,PL,PT
+A:SM,SE,CH,SK,ES,CZ
+A:VA
+T:*/*=0.48/60
 Z:201 Euro 2
-A:UK,IE,US
-T:W/08-18=0.12/8.6
-T:W/18-08=0.12/10
-T:E,H/*=0.12/10
-Z:202 Welt 1
-A:EE
+A:EG,AL,BA,BG,EE,GI
+A:IL,JO,YU,HR,LV,LB,LY
+A:LT,MT,EH,MK,MD,RO,SU
+A:SI,SY,TR,TN,UA
+A:HU,BY,CY
 T:*/*=0.12/6
+Z:202 Welt 1
+A:US,CA
+T:*/*=0.48/60
 Z:203 Welt 2
+A:AU,HK,JP,KR,NZ,SG
+T:*/*=0.12/3.34
+Z:204 Welt 3
+A:AR,BR,CL,DO,IR,KZ,CO
+A:AN,PH,SA,ZA,TW
 A:AE
 T:*/*=0.12/2.61
+Z:206 Welt 4
+A:+
+T:*/*=0.12/2.31
 #####################################################################
 P:33,2 DTAG CityWeekend
 B:01033
@@ -9417,19 +9456,33 @@ T:W/05-09,18-21=0.12/150 Spar
 T:E,H/05-21=0.12/240 CityWeekend
 T:*/21-05=0.12/240 Nacht
 Z:200 Euro 1
-A:DK
-T:*/*=0.12/10
+A:AD,BE,DK,FO,FI,FR,GR
+A:UK,_UKIM,IE,IS,IT,_UKIK,LI
+A:LU,MC,NL,_UKIR,NO,AT,PL,PT
+A:SM,SE,CH,SK,ES,CZ
+A:VA
+T:*/*=0.48/60
 Z:201 Euro 2
-A:UK,IE,US
-T:W/08-18=0.12/8.6
-T:W/18-08=0.12/10
-T:E,H/*=0.12/10
-Z:202 Welt 1
-A:EE
+A:EG,AL,BA,BG,EE,GI
+A:IL,JO,YU,HR,LV,LB,LY
+A:LT,MT,EH,MK,MD,RO,SU
+A:SI,SY,TR,TN,UA
+A:HU,BY,CY
 T:*/*=0.12/6
+Z:202 Welt 1
+A:US,CA
+T:*/*=0.48/60
 Z:203 Welt 2
+A:AU,HK,JP,KR,NZ,SG
+T:*/*=0.12/3.34
+Z:204 Welt 3
+A:AR,BR,CL,DO,IR,KZ,CO
+A:AN,PH,SA,ZA,TW
 A:AE
 T:*/*=0.12/2.61
+Z:206 Welt 4
+A:+
+T:*/*=0.12/2.31
 #####################################################################
 P:33,3 DTAG CityWeekend & CityPlus
 B:01033
@@ -9654,19 +9707,33 @@ T:W/05-21=0.06/90 CityPlus
 T:E,H/05-21=0.12/240 CityWeekend
 T:*/21-05=0.12/240 Nacht
 Z:200 Euro 1
-A:DK
-T:*/*=0.12/10
+A:AD,BE,DK,FO,FI,FR,GR
+A:UK,_UKIM,IE,IS,IT,_UKIK,LI
+A:LU,MC,NL,_UKIR,NO,AT,PL,PT
+A:SM,SE,CH,SK,ES,CZ
+A:VA
+T:*/*=0.48/60
 Z:201 Euro 2
-A:UK,IE,US
-T:W/08-18=0.12/8.6
-T:W/18-08=0.12/10
-T:E,H/*=0.12/10
-Z:202 Welt 1
-A:EE
+A:EG,AL,BA,BG,EE,GI
+A:IL,JO,YU,HR,LV,LB,LY
+A:LT,MT,EH,MK,MD,RO,SU
+A:SI,SY,TR,TN,UA
+A:HU,BY,CY
 T:*/*=0.12/6
+Z:202 Welt 1
+A:US,CA
+T:*/*=0.48/60
 Z:203 Welt 2
+A:AU,HK,JP,KR,NZ,SG
+T:*/*=0.12/3.34
+Z:204 Welt 3
+A:AR,BR,CL,DO,IR,KZ,CO
+A:AN,PH,SA,ZA,TW
 A:AE
 T:*/*=0.12/2.61
+Z:206 Welt 4
+A:+
+T:*/*=0.12/2.31
 #####################################################################
 P:33,4 DTAG AktivPlus
 B:01033
@@ -9883,19 +9950,33 @@ T:W/05-09,18-21=0.12/150 Spar
 T:E,H/05-21=0.12/150 Spar
 T:*/21-05=0.12/240 Nacht
 Z:200 Euro 1
-A:DK
-T:*/*=0.12/10
+A:AD,BE,DK,FO,FI,FR,GR
+A:UK,_UKIM,IE,IS,IT,_UKIK,LI
+A:LU,MC,NL,_UKIR,NO,AT,PL,PT
+A:SM,SE,CH,SK,ES,CZ
+A:VA
+T:*/*=0.39/60
 Z:201 Euro 2
-A:UK,IE,US
-T:W/08-18=0.12/8.6
-T:W/18-08=0.12/10
-T:E,H/*=0.12/10
-Z:202 Welt 1
-A:EE
+A:EG,AL,BA,BG,EE,GI
+A:IL,JO,YU,HR,LV,LB,LY
+A:LT,MT,EH,MK,MD,RO,SU
+A:SI,SY,TR,TN,UA
+A:HU,BY,CY
 T:*/*=0.12/6
+Z:202 Welt 1
+A:US,CA
+T:*/*=0.39/60
 Z:203 Welt 2
+A:AU,HK,JP,KR,NZ,SG
+T:*/*=0.12/3.34
+Z:204 Welt 3
+A:AR,BR,CL,DO,IR,KZ,CO
+A:AN,PH,SA,ZA,TW
 A:AE
 T:*/*=0.12/2.61
+Z:206 Welt 4
+A:+
+T:*/*=0.12/2.31
 #####################################################################
 #####################################################################
 #
@@ -10392,6 +10473,7 @@ T:*/*=2.79/60
 #
 P:41 HanseNet
 B:01041
+D:dtag
 C:Address:HanseNet Telekommunikation GmbH, Hammerbrookstraße 63, 20097 Hamburg
 C:Name:HanseNet
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
@@ -11747,11 +11829,12 @@ A:_SOEN
 T:W/08-20=0.20(60)/1 Tag
 T:W/20-08=0.15(60)/1 Nacht
 T:E,H/*=0.15(60)/1 Wochenende
-Z:201 MoinDanmark
-A:DK
-T:W/08-20=0.29(60)/1 Tag
-T:W/20-08=0.20(60)/1 Nacht
-T:E,H/*=0.20(60)/1 Wochenende
+# FIXME: Dänemark ist doppelt!
+# Z:201 MoinDanmark
+# A:Dänemark
+# T:W/08-20=0.29(60)/1 Tag
+# T:W/20-08=0.20(60)/1 Nacht
+# T:E,H/*=0.20(60)/1 Wochenende
 ###### FIXME: Ausland überprüfen!
 ###### siehe dazu: http://www.komtel.de/lhome/leistungen/mleistungen/mtelefonie/mauslandNEU/mauslandneu.html
 Z:202 Welt 1
@@ -13474,6 +13557,7 @@ C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/
 #
 P:65 Rapid Link
 B:01065
+D:dtag
 C:Address:Rapid Link Telecommunications GmbH, Donaustraße 68, 68199 Mannheim
 C:Name:Rapid Link
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
@@ -15588,6 +15672,7 @@ T:*/*=2.42/60
 #
 P:89 M'net
 B:01089
+D:dtag
 C:Address:M'net Telekommunikations GmbH, Corneliusstraße 10, 80469 München
 C:Name:M'net
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
@@ -15708,6 +15793,7 @@ C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/
 #
 P:97 AT & T-Unisource
 B:01097
+D:dtag
 C:Address:Communication Services (Deutschland) GmbH, Lyoner Str. 15, 60528 Frankfurt
 C:Name:AT&T-Unisource
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
