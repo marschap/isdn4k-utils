@@ -538,7 +538,10 @@ To quickly search for keywords, you can use
 archive to do a complete search.
 
 Messages are also saved (unsorted) at listserv.isdn4linux.de, collected by
-month. To access the archive, send Email to
+month. To access the archive, you can use
+<url url="http://www.isdn4linux.de/listarch/">.
+
+Alternatively, you can send an email to
 <tt><htmlurl url="mailto:majordomo@listserv.isdn4linux.de"
 name="majordomo@listserv.isdn4linux.de"></tt>.
 The subject doesn't matter. These commands are possible: 
@@ -1125,10 +1128,10 @@ Usenet News, answering machine, and more:
 <sect> trouble: Troubleshooting  
 <label id="trouble">
 
-<sect1> trouble_2_2_x: I can't start ISDN on my machine with kernel 2.2.x.  
+<sect1> trouble_22memory: I can't start ISDN on my machine with kernel 2.2.x.  
 I get the error messages "init_module: Device or resource busy" and  
 "isdn: Could not allocate device-struct.".  
-<label id="trouble_2_2_x">
+<label id="trouble_22memory">
 <p>
 This seems to be a memory problem. While 2.0.x kernels may work on low
 memory/slow hardware (the author's answering machine is a 386 and used to
@@ -2166,12 +2169,15 @@ before the dialout command. Otherwise the kernel will delete the route.
 <sect1> syncppp_nodefaultroute: After ipppd dials out my default route is gone.  
 <label id="syncppp_nodefaultroute">
 <p>
-It's the kernel's fault. Newer kernels (= 2.0) have some changes in the
+It's the kernel's fault. Newer kernels (= 2.0.x) have some changes in the
 routing. Workaround: install a script /etc/ppp/ip-up like this:
 <code>
 &num;!/bin/sh
 /sbin/route add default ippp*
 </code>
+Please note, that for 2.2.x kernel, you should NOT do this (routing has changed
+yet again). Instead, give the "defaultroute" option to ipppd.
+
 If you make your connections manually, can use something like this script:
 <code>
 /sbin/isdn
@@ -2191,6 +2197,9 @@ echo -e &dquot;\a Usage: 'isdn on' or 'isdn off'&dquot;
 ;;
 esac
 </code>
+Please note, that for 2.2.x kernel, you should NOT use the
+<tt>route add default</tt>, and <tt>route del default</tt> commands.
+Instead, give the "defaultroute" option to ipppd.
 
 <sect1> syncppp_packettoolarge: I often get the error message  
 <tt>hscx_empty_fifo: incoming packet too large</tt>  
@@ -2648,9 +2657,10 @@ which fails because the IP address is now different. The line is hung up,
 but the IP connections are still open, the line is dialed again, and
 so on... This can only be avoided with the RST-Revoking patch, which has found
 its way into the 2.0.x kernels, but not into 2.1/2.2/2.3. However, you can get
-an adjustment to 2.2.12 kernel from:
-<url url="//www.another.de/linux/router/linux-2.2.12-rst.diff.gz">.
-See the mailing list archives for more information on the RST-Revoking patch.
+an adjusted patch for 2.2.x kernels and some background information about it
+from: <url url="//www.another.de/linux/router/">. Make sure to use ipppd's
+"defaultroute" option rather than <tt>route add/del default</tt> in
+ip-up/ip-down with it.
 <item>Requests from your local DNS trigger a dialout: see question
 <ref id="dod_localdns" name="dod_localdns">.
 <item>Sendmail triggers the dialout: see question
