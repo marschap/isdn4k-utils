@@ -1,4 +1,4 @@
-/* $Id: processor.c,v 1.3 1997/03/29 09:24:25 akool Exp $
+/* $Id: processor.c,v 1.4 1997/03/30 15:42:10 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.4  1997/03/30 15:42:10  akool
+ * Ignore invalid time from VSt
+ *
  * Revision 1.3  1997/03/29 09:24:25  akool
  * CLIP presentation enhanced, new ILABEL/OLABEL operators
  *
@@ -1427,6 +1430,7 @@ static void decode(int chan, register char *p, int type, int version)
   auto     char      sx[10][BUFSIZ];
   auto     int       sn[10];
   auto     struct tm tm;
+  auto	   time_t    t;
   auto     double    tx, err, tack, pay = 0.0;
 
 
@@ -1864,42 +1868,54 @@ static void decode(int chan, register char *p, int type, int version)
                     tm.tm_wday  = tm.tm_yday = 0;
                     tm.tm_isdst = -1;
 
-                    call[chan].time = mktime(&tm);
+                    t = mktime(&tm);
 
-                    if (settime) {
-                      auto time_t     tn;
-                      auto struct tms tms;
+                    if (t != (time_t)-1) {
+                      call[chan].time = mktime(&tm);
 
-                      time(&tn);
+                      if (settime) {
+                        auto time_t     tn;
+                      	auto struct tms tms;
 
-                      if (labs(tn - call[chan].time) > 61) {
-                        (void)stime(&call[chan].time);
+                      	time(&tn);
 
-                        /* Nicht gerade sauber, sollte aber all zu
-                           grosse Spruenge verhindern! */
+                      	if (labs(tn - call[chan].time) > 61) {
+                          (void)stime(&call[chan].time);
 
-                        if (replay)
-                          cur_time = tt = tto = call[chan].time;
-                        else {
-                          time(&cur_time);
-                          tt = tto = times(&tms);
-                        } /* else */
+                          /* Nicht gerade sauber, sollte aber all zu
+                             grosse Spruenge verhindern! */
 
-                        set_time_str();
+                          if (replay)
+                            cur_time = tt = tto = call[chan].time;
+                          else {
+                            time(&cur_time);
+                            tt = tto = times(&tms);
+                          } /* else */
 
+                          set_time_str();
+
+                        } /* if */
+
+                        if (settime == 1)
+                          settime--;
                       } /* if */
-
-                      if (settime == 1)
-                        settime--;
                     } /* if */
 
-                    sprintf(s, "Time:%s", ctime(&call[chan].time));
+                    sprintf(s, "Time:%s", (t == (time_t)-1) ? "INVALID - ignored" : ctime(&call[chan].time));
                     if ((px = strchr(s, '\n')))
                       *px = 0;
 
 #ifdef Q931
-                    if (q931dmp)
+                    if (q931dmp) {
+                      sprintf(s1, "Y=%02d M=%02d D=%02d H=%02d M=%02d",
+                        tm.tm_year,
+                    	tm.tm_mon + 1,
+                    	tm.tm_mday,
+                    	tm.tm_hour,
+                    	tm.tm_min);
+                      Q931dump(TYPE_STRING, -2, s1, version);
                       Q931dump(TYPE_STRING, -2, s + 5, version);
+                    } /* if */
 #endif
                     info(chan, PRT_SHOWTIME, STATE_TIME, s);
                     break;
