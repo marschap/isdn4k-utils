@@ -1,8 +1,8 @@
-/* $Id: isdnbill.c,v 1.17 2002/01/26 20:43:31 akool Exp $
+/* $Id: isdnbill.c,v 1.18 2002/03/01 19:33:52 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Billing-module)
  *
- * Copyright 1995 .. 2000 by Andreas Kool (akool@isdn4linux.de)
+ * Copyright 1995 .. 2002 by Andreas Kool (akool@isdn4linux.de)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -293,8 +293,8 @@ static void total(int w)
         if (firsttime) {
           firsttime = 0;
 
-  	  printf("\n\nMSN                   calls  Duration        Charge      Computed\n");
-  	  strich('-', 65);
+  	  printf("\n\nMSN                   calls  Duration         Charge       Computed\n");
+  	  strich('-', 67);
         }
 
         printf("%6s,%d %-12s %5d %s  %s %9.4f",
@@ -334,7 +334,7 @@ static void total(int w)
   } /* for */
 
   if (!firsttime) {
-  strich('=', 65);
+  strich('=', 67);
 
   printf("                      %5d %s  %s %9.4f",
     ncalls,
@@ -362,12 +362,12 @@ static void total(int w)
       if (firsttime) {
         firsttime = 0;
 
-  	printf("\n\nProvider                       calls  Duration        Charge      Computed failures  avail\n");
-  	strich('-', 90);
+  	printf("\n\nProvider                        calls  Duration         Charge       Computed failures  avail\n");
+  	strich('-', 93);
       } /* if */
 
       if (i < 100)
-        printf(" 010%02d", i);
+        printf("  010%02d", i);
       else if (i < 200)
         printf("0100%03d", i - 100);
       else
@@ -408,10 +408,10 @@ static void total(int w)
   } /* for */
 
   if (!firsttime) {
-  strich('=', 90);
+  strich('=', 93);
 
   printf("%*s%5d %s  %s %9.4f  %s %9.4f %8d %5.1f%%\n",
-    31, "",
+    32, "",
     ncalls,
     timestr(duration),
     c.currency,
@@ -438,16 +438,16 @@ static void total(int w)
       if (firsttime) {
         firsttime = 0;
 
-  printf("\n\nZone            calls  Duration        Charge      Computed");
+  			printf("\n\nZone            calls  Duration         Charge       Computed");
 
-  if (preselect == DTAG) {
-    printf("     AktivPlus\n");
-    strich('-', 73);
-  }
-  else {
-    printf("\n");
-    strich('-', 59);
-  } /* else */
+  			if (0 /* preselect == DTAG */) {
+    		  printf("     AktivPlus\n");
+    			strich('-', 73);
+  			}
+  			else {
+    		  printf("\n");
+    			strich('-', 61);
+  			} /* else */
       } /* if */
 
       switch (i) {
@@ -469,7 +469,7 @@ static void total(int w)
         c.currency,
         zonesum[w][i].compute);
 
-      if (preselect == DTAG)
+      if (0 /* preselect == DTAG */)
         printf("  %s %9.4f\n", c.currency, zonesum[w][i].aktiv);
       else
         printf("\n");
@@ -497,7 +497,7 @@ static void total(int w)
   } /* for */
 
   if (!firsttime) {
-  strich('=', (preselect == DTAG) ? 73 : 59);
+  strich('=', (0 /* preselect == DTAG */) ? 73 : 61);
 
   printf("%*s%5d %s  %s %9.4f  %s %9.4f",
     16, "",
@@ -508,7 +508,7 @@ static void total(int w)
     c.currency,
     compute);
 
-  if (preselect == DTAG)
+  if (0 /* preselect == DTAG */)
     printf("  %s %9.4f\n", c.currency, aktiv);
   else
     printf("\n");
@@ -877,7 +877,7 @@ int main(int argc, char *argv[], char *envp[])
   auto     double   dur;
   auto     char    *version;
   auto     char    *myname = basename(argv[0]);
-  auto     int      opt, go, s0;
+  auto     int      opt, go, s0, indent;
   auto	   time_t   now;
   auto 	   struct   tm *tm;
 
@@ -1152,6 +1152,8 @@ int main(int argc, char *argv[], char *envp[])
 
           findme();
 
+          indent = 11 + strlen(c.currency);
+
           if (c.dialout) {
 
             findrate();
@@ -1166,7 +1168,7 @@ int main(int argc, char *argv[], char *envp[])
             s[PROVLEN] = 0;
 
             if (c.provider < 100)
-              sprintf(c.sprovider, " 010%02d:%-*s", c.provider, PROVLEN, s);
+              sprintf(c.sprovider, "  010%02d:%-*s", c.provider, PROVLEN, s);
             else if (c.provider < 200)
               sprintf(c.sprovider, "0100%03d:%-*s", c.provider - 100, PROVLEN, s);
             else
@@ -1174,6 +1176,9 @@ int main(int argc, char *argv[], char *envp[])
 
 
             if (c.duration) {
+
+#if 0 // Berechnung, um wieviel es mit AktivPlus der DTAG billiger waere -- stimmt irgendwie eh nicht mehr ...
+
               if ((preselect == DTAG) && ((c.zone == 1) || (c.zone == 2))) {
                 auto struct tm *tm = localtime(&c.connect);
                 auto int        takte;
@@ -1197,6 +1202,7 @@ int main(int argc, char *argv[], char *envp[])
                 provsum[SUBTOTAL][c.provider].aktiv += c.aktiv;
                 zonesum[SUBTOTAL][c.zone].aktiv += c.aktiv;
               } /* if */
+#endif
 
               if (c.pay < 0.0) { /* impossible! */
                 c.pay = c.compute;
@@ -1214,12 +1220,14 @@ int main(int argc, char *argv[], char *envp[])
               if (c.pay)
                 printf("%s%9.4f%s ", c.currency, c.pay, c.computed ? "*" : " ");
               else
-                printf("%*s", 13, "");
+                printf("%*s", indent, "");
 
               printf("%s%s%s", c.country, c.sprovider, c.error);
 
+#if 0
               if (c.aktiv)
                 printf(" AktivPlus - %s%9.4f", c.currency, c.pay - c.aktiv);
+#endif
 
               msnsum[SUBTOTAL][c.si1][c.ihome].pay += c.pay;
               msnsum[SUBTOTAL][c.si1][c.ihome].duration += c.duration;
@@ -1240,7 +1248,7 @@ int main(int argc, char *argv[], char *envp[])
               zonesum[SUBTOTAL][c.zone].obytes += c.obytes;
             }
             else {
-              printf("%*s%s%s", 13, "", c.country, c.sprovider);
+              printf("%*s%s%s", indent, "", c.country, c.sprovider);
 
               if ((c.cause != 0x1f) && /* Normal, unspecified */
                   (c.cause != 0x10))   /* Normal call clearing */
@@ -1254,7 +1262,7 @@ int main(int argc, char *argv[], char *envp[])
           }
           else { /* Dialin: */
             justify(number[CALLED].msn, c.num[CALLING], number[CALLING]);
-            printf("%*s%s%s", 13, "", c.country, c.sprovider);
+            printf("%*s%s%s", indent, "", c.country, c.sprovider);
           } /* else */
 
 

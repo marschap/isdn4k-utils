@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.199 2002/01/26 20:43:30 akool Exp $
+## $Id: Makefile.in,v 1.200 2002/03/01 19:33:52 akool Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,14 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.200  2002/03/01 19:33:52  akool
+## isdnlog-4.57:
+##  - implemented
+##      0190054 Calladin
+## 		 0190076 Telestunt
+## 		 0190082 Talk Light
+##  - current rates as of today
+##
 ## Revision 1.199  2002/01/26 20:43:30  akool
 ## isdnlog-4.56:
 ##  - dont set the Provider-field of the MySQL DB to "?*? ???" on incoming calls
@@ -1510,7 +1518,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 4.56
+VERSION     = 4.57
 
 MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 \
 	      isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 \

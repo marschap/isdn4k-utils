@@ -1,4 +1,4 @@
-V:2.01rc2 [26-Jan-2002 20:46:13]
+V:2.02 [01-Mar-2002 20:15:23]
 
 # Währungsformat
 U:%.3f EUR
@@ -8,7 +8,7 @@ U:%.3f EUR
 #
 # (C) Copyright 1999, 2001 by Andreas Kool (akool@isdn4linux.de)
 #
-# $Id: rate-de.dat,v 1.114 2002/01/26 20:43:30 akool Exp $
+# $Id: rate-de.dat,v 1.115 2002/03/01 19:33:52 akool Exp $
 #
 #
 # Das "A:" Tag muß folgendermaßen gefüllt werden:
@@ -1237,11 +1237,34 @@ C:Homepage:http://www.dtag.de
 C:Hotline:0800/33-01000, T-Online Tarifhotline: 0800/33-03333
 C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
-C:Quelle: http://www.telekom.de/untern/tarife/tisdn_tarife/index.htm
+C:Quelle:"Preisliste Telefondienst (Inlandsverbindungen)", Stand 2002-01-01
+C:Quelle:http://www.telekom.de/dtag/agb/dokument/pdf/0,1384,225,00.pdf
+C:Quelle:"Preisliste Auskunftsdienst", Stand 2001-10-04
+C:Quelle:http://www.telekom.de/dtag/agb/dokument/pdf/0,1384,378,00.pdf
+C:Quelle:"Preisliste Telefondienst (Auslandsverbindungen)", Stand 2001-12-01
+C:Quelle:http://www.telekom.de/dtag/agb/dokument/pdf/0,1384,71,00.pdf
 C:Euro
 C:Erfasste Zonen:
-C:0	-   4	Deutschland
-C:10	-  15	Mobilfunk
+C:   0 -   4 Deutschland
+C:  10 -  12 Mobilfunk
+C:  29 -  39 Satellitenfunk
+C:  40 -  41 Auskunft DTAG Inland/Ausland
+C:  60 -  67 Funkruf Cityruf, Scall, Skyper
+C:  80 -  84 Shared Cost 0180
+C:  90 -  94 Premium Rate 0190
+C: 100       T-Online
+C: 160 - 162 T-VoteCall 0137,0138
+C: 170       Persönliche Rufnummer 0700
+C: 250 - 271 Ausland Mobilfunk
+C: 280 - 295 Ausland
+# Auslandszonen 200-249 für AktivPlus in P:33,1 (vorrangig) freigehalten.
+# nicht erfasst nach Inlandspreisliste:
+#   01141, 0115, 0116, 01191, 012, 01672, 0181-0189, 0193066
+#   'Mobilfunk MobilCom'(?)
+# nach Auslandspreisliste:
+#   div. Satelliten- und ausländische Mobilfunknetze, Zonen sind auskommentiert
+#   Vis-à-Vis-Tarife in Grenzgebieten
+#
 Z:0 FreeCall
 A:08003301113
 A:08003301000
@@ -1262,26 +1285,334 @@ A:011*
 A:0800*,0801*
 A:031*
 T:*/*=0
+#
 Z:1-2 City
-T:W/07-18=0.061/90 Wochentag
-T:W/18-07=0.061/240 Abend
-T:E,H/*=0.061/240 Wochenende
+T:[-24.12.2002]W/07-18=0.061248/90 Tag	# 0.0528 +16%
+T:[-24.12.2002]W/18-07=0.061248/240 Spar	# 0.0528 +16%
+T:[-24.12.2002]E,H/*=0.061248/240 Spar	# 0.0528 +16%
+T:[24.12.2002-02.01.2003]*/*=0.061248/240 Weihnachten	# 0.0528 +16%
+T:[02.01.2003]W/07-18=0.061248/90 Tag	# 0.0528 +16%
+T:[02.01.2003]W/18-07=0.061248/240 Spar	# 0.0528 +16%
+T:[02.01.2003]E,H/*=0.061248/240 Spar	# 0.0528 +16%
 Z:3-4 Deutschland
 A:DE
-T:W/07-18=0.092/60 Wochentag
-T:W/18-07=0.0306/60 Abend
-T:E,H/*=0.0306/60 Wochenende
+T:[-24.12.2002]W/07-18=0.091988/60 Tag	# 0.0793 +16%
+T:[-24.12.2002]W/18-07=0.030624/60 Spar	# 0.0264 +16%
+T:[-24.12.2002]E,H/*=0.030624/60 Spar	# 0.0264 +16%
+T:[24.12.2002-02.01.2003]*/*=0.030624/60 Weihnachten	# 0.0264 +16%
+T:[02.01.2003]W/07-18=0.091988/60 Tag	# 0.0793 +16%
+T:[02.01.2003]W/18-07=0.030624/60 Spar	# 0.0264 +16%
+T:[02.01.2003]E,H/*=0.030624/60 Spar	# 0.0264 +16%
+#
 Z:10 Mobilfunknetz D1/D2
 A:_DEMD1
 A:_DEMD2
-T:*/*=0.2454/60
-Z:14 Mobilfunknetz E-Plus
+T:*/*=0.24534/60	# 0.2115 +16%
+Z:11 Mobilfunknetz E-Plus
 A:_DEME1
-T:*/*=0.276/60
-Z:15 Mobilfunknetz E2/Quam
+T:*/*=0.27608/60	# 0.2380 +16%
+Z:12 Mobilfunknetz E2/Quam
 A:_DEME2
 A:_DEMQ
-T:*/*=0.2914/60
+T:*/*=0.291392/60	# 0.2512 +16%
+#
+# FIXME: gem. header nur Z:31-39 für Satellitenfunk
+# FIXME: fehlt in country-de.dat [22-Nov-2001]
+# Z:29 Thuraya
+# A:+88216
+# T:*/*=4.5936(60)/0.8	# 3.9600 +16%
+# Z:30 EMSAT
+# A:+88213
+# T:*/*=3.0624(60)/1.2	# 2.6400 +16%
+Z:31 Inmarsat A
+A:_INA_
+T:*/*=5.267328(60)/0.7	# 4.5408 +16%
+Z:32 Inmarsat B HSD
+A:_INBH
+T:*/*=12.2496(60)/0.3	# 10.5600 +16%
+Z:33 Inmarsat B
+A:_INB_
+T:*/*=4.5936(60)/0.8	# 3.9600 +16%
+Z:34 Inmarsat Aero
+A:_INAE
+T:*/*=5.267328(60)/0.7	# 4.5408 +16%
+Z:35 Inmarsat M
+A:_INM_
+T:*/*=4.5936(60)/0.8	# 3.9600 +16%
+Z:36 Inmarsat Mini-M
+A:_INMM
+T:*/*=3.67488(60)/1	# 3.1680 +16%
+Z:37 Inmarsat A Daten/Fax
+A:_INDF
+T:*/*=5.267328(60)/0.7	# 4.5408 +16%
+Z:38 Iridium
+A:_IR16,_IR17
+T:*/*=4.5936(60)/0.8	# 3.9600 +16%
+# FIXME: fehlt in country-de.dat [22-Nov-2001]
+# Z:39 GeoVerse
+# A:+88210
+# T:*/*=0.119944(60)/30	# 0.1034 +16%
+#
+Z:40 Auskunft DTAG Inland
+A:11833,11836,11837
+T:*/*=0.494624/30,0.061828/3.8	# 0.4264 0.0533 +16%
+Z:41 Auskunft DTAG Ausland
+A:11834
+T:*/*=0.556452/20	# 0.4797 +16%
+#
+# Funkrufdienste analog header (S:/N:) mit nationalen Rufnummern
+# (in country als +491... definiert, fuer Tarife zu undifferenziert)
+Z:60 Cityruf
+A:0164
+A:01682,01683,01684,01685,01686,01687,01688,01689
+A:01690,01691
+T:W/09-18=0.061248/20 Standard	# 0.0528 +16%
+T:W/18-09=0.061248/30 Spar	# 0.0528 +16%
+T:E,H/*=0.061248/30 Spar	# 0.0528 +16%
+Z:61 Cityruf 01695-[12]
+A:016951,016952
+T:*/*=0.061248/5	# 0.0528 +16%
+Z:62 Scall 01680
+A:01680
+T:*/*=0.30624/0,0/60	# 0.2640 +16%
+Z:63 Scall 01681
+A:01681
+T:W/09-18=0.734976/0,0/60 Standard	# 0.6336 +16%
+T:W/18-09=0.489984/0,0/60 Spar	# 0.4224 +16%
+T:E,H/*=0.489984/0,0/60 Spar	# 0.4224 +16%
+Z:64 Scall 01696
+A:01696
+T:*/*=0.489984/0,0/60	# 0.4224 +16%
+Z:65 Scall 01699
+A:01699
+T:*/*=1.22496/0,0/60	# 1.0560 +16%
+Z:66 Skyper
+A:01692,01693
+T:*/*=0.489984/0,0/60	# 0.4224 +16%
+Z:67 Skyper 016953
+A:016953
+T:*/*=1.22496/0,0/60	# 1.0560 +16%
+#
+Z:80 Shared Cost 0180-1
+A:01801
+T:*/09-18=0.045936/60 Standard	# 0.0396 +16%
+T:*/18-09=0.02494/60 Spar	# 0.0215 +16%
+Z:81 Shared Cost 0180-2
+A:01802
+T:*/*=0.059972/0,0/60	# 0.0517 +16%
+Z:82 Shared Cost 0180-3
+A:01803
+T:*/*=0.0899/60	# 0.0775 +16%
+Z:83 Shared Cost 0180-4
+A:01804
+T:*/*=0.239888/0,0/60	# 0.2068 +16%
+Z:84 Shared Cost 0180-5
+A:01805
+T:*/*=0.119944/60	# 0.1034 +16%
+#
+Z:90 Premium Rate 0190-0
+A:01900
+T:*/*=5.00/60 variabel! 	# nach Ansage bzw. 0800-33-00900
+Z:91 Premium Rate 0190-[1235]
+A:01901,01902,01903,01905
+T:*/*=0.061828/6	# 0.0533 +16%
+Z:92 Premium Rate 0190-[46]
+A:01904,01906
+T:*/*=0.061828/9	# 0.0533 +16%
+Z:93 Premium Rate 0190-[79]
+A:01907,01909
+T:*/*=0.061828/3	# 0.0533 +16%
+Z:94 Premium Rate 0190-8
+A:01908
+T:*/*=0.061828/2	# 0.0533 +16%
+#
+Z:100 T-Online
+# nur bei Tarif 'eco' oder 'DSL-flat' richtig, für 'by call' s. u.
+A:0191011
+T:*/*=0.0148248/60 eco	# 0.01278 +16%
+# T-Online by call läuft auch über die 0191011, dann diese T-Zeile:
+# T:*/*=0.01993/60 by call 	# (Netto-DM-Preis / 1.95583 * 1.16)
+#
+Z:160 T-VoteCall 0137-1
+A:01371
+T:*/*=0.119944/0,0/60	# 0.1034 +16%
+Z:161 T-VoteCall 0137-[234], 0138
+A:01372,01373,01374,0138
+T:*/*=0.119944/30,0.059972/30	# 0.1034 0.0517 +16%
+Z:162 T-VoteCall 0137-9
+A:01379
+T:*/*=0.489984/0,0/60	# 0.4224 +16%
+#
+Z:170 Persönliche Rufnummer
+A:0700
+T:W/09-18=0.061248/30	# 0.0528 +16%
+T:W/18-09=0.061248/60	# 0.0528 +16%
+T:E,H/*=0.061248/60	# 0.0528 +16%
+#
+Z:250 Welt Mobilfunk 1
+A:_ESMF
+T:*/*=0.27086(60)/60	# 0.2335 +16%
+Z:251 Welt Mobilfunk 2
+# A:Andorra Mobilfunk
+A:_BEMF,_DKMF
+A:_FIMF,_IEMF,_ITMF
+# FIXME: Liechtenstein Mobilfunk: Alias in country falsch (=Liechtenstein)
+A:_LUMF
+# A:Malta Mobilfunk
+A:_MCMF,_NOMF,_ATMF
+# A:Vatikanstadt Mobilfunk
+T:*/*=0.342432(60)/60	# 0.2952 +16%
+Z:252 Welt Mobilfunk 3
+# A:Färöer Mobilfunk
+A:_FRMF,_UKMF
+# A:Insel Man Mobilfunk, Kanalinseln Mobilfunk
+A:_NLMF
+# A:Nordirland Mobilfunk
+A:_PTMF,_SEMF,_CHMF
+T:*/*=0.372592(60)/60	# 0.3212 +16%
+Z:253 Welt Mobilfunk 4
+A:_TRMF,_HUMF
+T:*/*=0.393588(60)/60	# 0.3393 +16%
+# Z:254 Welt Mobilfunk 5
+# A:Bosnien und Herzegowina Mobilfunk
+# T:*/*=0.454952(60)/60	# 0.3922 +16%
+Z:255 Welt Mobilfunk 6
+A:_GRMF,_ISMF
+# A: Jugoslawien Mobilfunk, Kroatien Mobilfunk
+A:_PLMF
+# A: Slowakai Mobilfunk, Slowenien Mobilfunk
+A:_CZMF,_CYMF
+T:*/*=0.46516(60)/60	# 0.4010 +16%
+# Z:256 Welt Mobilfunk 7
+# A:Albanien Mobilfunk
+# T:*/*=0.526524(60)/60	# 0.4539 +16%
+Z:257 Welt Mobilfunk 8
+A:MOW
+T:*/*=0.551232(60)/6.67	# 0.4752 +16%
+# Z:258 Welt Mobilfunk 9
+# A:Bulgarien Mobilfunk, Mazedonien (ehemalige jugoslawische Republik) Mobilfunk
+# A:Ukraine Mobilfunk, Weißrussland Mobilfunk
+# T:*/*=0.61248(60)/6	# 0.5280 +16%
+Z:259 Welt Mobilfunk 10
+A:_ILMF,_ROMF
+T:*/*=0.673728(60)/5.46	# 0.5808 +16%
+Z:260 Welt Mobilfunk 11
+A:_EEMF
+# A:Lettland Mobilfunk
+A:_LBMF
+# A:Marokko Mobilfunk, Moldau (Republik) Mobilfunk
+T:*/*=0.734976(60)/5	# 0.6336 +16%
+# Z:261 Welt Mobilfunk 12
+# A:Litauen Mobilfunk
+# T:*/*=0.796224(60)/4.62	# 0.6864 +16%
+Z:262 Welt Mobilfunk 13
+A:_AUMF,_HKMF
+T:*/*=0.91872(60)/4	# 0.7920 +16%
+Z:263 Welt Mobilfunk 14
+A:_TWMF,_JPMF,_KRMF
+T:*/*=0.979968(60)/3.75	# 0.8448 +16%
+# Z:264 Welt Mobilfunk 15
+# A:Kasachstan Mobilfunk
+# T:*/*=1.041216(60)/3.53	# 0.8976 +16%
+Z:265 Welt Mobilfunk 16
+A:_BRMF,_SGMF
+T:*/*=1.22496(60)/3	# 1.0560 +16%
+Z:266 Welt Mobilfunk 17
+A:_NZMF
+T:*/*=1.286208(60)/2.86	# 1.1088 +16%
+Z:267 Welt Mobilfunk 18
+A:_CLMF,_CNMF
+# A:Georgien Mobilfunk
+T:*/*=1.347456(60)/2.73	# 1.1616 +16%
+Z:268 Welt Mobilfunk 19
+A:_COMF,_PHMF,_ZAMF
+T:*/*=1.5312(60)/2.40	# 1.3200 +16%
+Z:269 Welt Mobilfunk 20
+A:_MYMF
+T:*/*=1.653696(60)/2.23	# 1.4256 +16%
+Z:270 Welt Mobilfunk 21
+# A:Armenien Mobilfunk, Aruba Mobilfunk, Aserbaidschan Mobilfunk
+# A:Bahrain Mobilfunk, Bolivien Mobilfunk
+# A:Brunei Darussalam Mobilfunk, Burkino Faso Mobilfunk,
+A:_ECMF
+# A:Gabun Mobilfunk, Kamerun Mobilfunk
+A:_KGMF
+# A:Kuba Mobilfunk, Myanmar Mobilfunk
+A:_PAMF
+# A:Sambia Mobilfunk, Tadschikistan Mobilfunk
+A:_THMF
+# A:Turkmenistan Mobilfunk, Uganda Mobilfunk
+# A:Uruguay Mobilfunk, Usbekistan Mobilfunk, Vietnam Mobilfunk
+T:*/*=1.714944(60)/2.15	# 1.4784 +16%
+Z:271 Welt Mobilfunk 22
+A:_SVMF,_IDMF,_PEMF
+A:_VEMF
+T:*/*=1.776192(60)/2.07	# 1.5312 +16%
+#
+Z:280 Welt 1
+A:AD,BE,DK,FO,FI,FR
+A:GI,UK,_UKIM,IE,IT
+A:CA,_UKIK,LI,LU
+A:MT,MC,NL,_UKIR,NO
+A:AT,PT,PR,SM,SE
+A:CH,ES,VA,US
+T:*/*=0.122612(60)/60	# 0.1057 +16%
+Z:281 Welt 2
+A:GR,IS,YU,HR,PL
+A:SK,SI,CZ,TR
+A:HU,CY
+T:*/*=0.24534(60)/60	# 0.2115 +16%
+Z:282 Welt 3
+A:AL,BA
+T:*/*=0.306704(60)/60	# 0.2644 +16%
+Z:283 Welt 4
+A:SU
+T:*/*=0.367488(60)/10	# 0.3168 +16%
+Z:284 Welt 5
+A:BG,BY
+T:*/*=0.428736(60)/8.6	# 0.3696 +16%
+Z:285 Welt 6
+A:IL,KP
+A:RO,UA
+T:*/*=0.489984(60)/7.5	# 0.4224 +16%
+Z:286 Welt 7
+A:EG,DZ,EE,JO,LV,LB
+A:LY,LT,EH
+A:MD,SY
+A:TN
+T:*/*=0.61248(60)/6	# 0.5280 +16%
+Z:287 Welt 8
+A:AU,TW,_HKSO
+A:JP,KR
+A:AQ,NF
+T:*/*=0.796224(60)/4.62	# 0.6864 +16%
+Z:288 Welt 9
+A:KZ
+T:*/*=0.91872(60)/4	# 0.7920 +16%
+Z:289 Welt 10
+A:BR,DO,MX
+A:AN
+T:*/*=1.041216(60)/3.55	# 0.8976 +16%
+Z:290 Welt 11
+A:NZ,SG
+T:*/*=1.102464(60)/3.34	# 0.9504 +16%
+Z:291 Welt 12
+A:AR,CL,CN,GE,LS
+T:*/*=1.22496(60)/3	# 1.0560 +16%
+Z:292 Welt 13
+A:ZA
+T:*/*=1.347456(60)/2.73	# 1.1616 +16%
+Z:293 Welt 14
+A:DO,CO,PH
+A:SA,AE
+T:*/*=1.408704(60)/2.61	# 1.2144 +16%
+Z:294 Welt 15
+A:MY
+T:*/*=1.5312/2.4	# 1.3200 +16%
+Z:295 Welt 16 (andere)
+A:+
+T:*/*=1.592448(60)/2.31	# 1.3728 +16%
+#
 #####################################################################
 P:33,1 DTAG T-ISDN 300
 # Dieser Tarif gilt auch bei AktivPlus
@@ -1294,109 +1625,234 @@ C:Homepage:http://www.dtag.de
 C:Hotline:0800/33-01000, T-Online Tarifhotline: 0800/33-03333
 C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
-C:Quelle: http://www.telekom.de/untern/tarife/aktivplus_tarif/index2.htm
-C:Quelle: Preisliste Telefondienst (Inlandsverbindungen), Stand 1. Juli 2000
-C:http://www.telekom.de/dtag/agb/produkte?nr=ISDN300c
+C:Quelle:"Preisliste T-ISDN 300", Stand 2002-01-01
+C:Quelle:http://www.telekom.de/dtag/agb/produkte?nr=ISDN300c
+# C:Quelle:http://www.telekom.de/dtag/agb/dokument/pdf/0,1384,107,00.pdf
 C:Grundgebühr zusätzlich für diesen Tarif: 9,90 DM / Monat
+C:Euro
 C:Erfasste Zonen:
-C:1	-   4	Deutschland
-C:10	-  15	Mobilfunk
-C:200	-	Ausland
-C: ** Zone 0 (Freecall) wird von P:33,0 DTAG ISDN übernommen **
-R:33,0;0
-Z:1-2 CityCall
-T:W/09-18=0.031/60 Sunshine
-T:W/18-09=0.016/60 Moonshine
-T:E,H/*=0.016/60 Spar
-Z:3-4 GermanCall
+C:   1 -   4 Deutschland
+C:  10 -  12 Mobilfunk
+C: 200 - 209 Ausland Mobilfunk AktivPlus
+C: 220 - 225 Ausland AktivPlus
+C: 254 - 271 Ausland Mobilfunk
+C: 282 - 295 Ausland
+# 250- manuell von (33,0) übernommen und um 200-225 ausgedünnt, so keine Fehler-
+# meldungen und R-Tag auf 200- bei xxl (33,2) ist moeglich
+C:Uebernommene Zonen von DTAG T-ISDN Standard (33,0):
+C:   0       Freecall
+C:  31 - 170 nationale Dienste + Satellitenfunk
+R:33,0;0,31-170
+#
+Z:1-2 City
+T:[-24.12.2002]W/09-18=0.030624/60 Tag	# 0.0264 +16%
+T:[-24.12.2002]W/18-09=0.015312/60 Spar	# 0.0132 +16%
+T:[-24.12.2002]E,H/*=0.015312/60 Spar	# 0.0132 +16%
+T:[24.12.2002-02.01.2003]*/*=0.015312/60 Weihnachten	# 0.0132 +16%
+T:[02.01.2003-]W/09-18=0.030624/60 Tag	# 0.0264 +16%
+T:[02.01.2003-]W/18-09=0.015312/60 Spar	# 0.0132 +16%
+T:[02.01.2003-]E,H/*=0.015312/60 Spar	# 0.0132 +16%
+Z:3-4 Deutschland
 A:DE
-T:W/09-18=0.046/60 Sunshine
-T:W/18-09=0.026/60 Moonshine
-T:E,H/*=0.026/60 Spar
+T:[-24.12.2002]W/09-18=0.045936/60 Tag	# 0.0396 +16%
+T:[-24.12.2002]W/18-09=0.02552/60 Spar	# 0.0220 +16%
+T:[-24.12.2002]E,H/*=0.02552/60 Spar	# 0.0220 +16%
+T:[24.12.2002-02.01.2003]*/*=0.02552/60 Weihnachten	# 0.0220 +16%
+T:[02.01.2003-]W/09-18=0.045936/60 Tag	# 0.0396 +16%
+T:[02.01.2003-]W/18-09=0.02552/60 Spar	# 0.0220 +16%
+T:[02.01.2003-]E,H/*=0.02552/60 Spar	# 0.0220 +16%
+#
 Z:10 Mobilfunknetz D1/D2
 A:_DEMD1
 A:_DEMD2
-T:*/*=0.20/60
-Z:14 Mobilfunknetz E-Plus
+T:*/*=0.199404/60	# 0.1719 +16%
+Z:11 Mobilfunknetz E-Plus
 A:_DEME1
-T:*/*=0.231/60
-Z:15 Mobilfunknetz E2/Quam
+T:*/*=0.230028/60	# 0.1983 +16%
+Z:12 Mobilfunknetz E2/Quam
 A:_DEME2
 A:_DEMQ
-T:*/*=0.246/60
-Z:70 Dienst 0137-1
-A:01371
-T:*/*=0.12/0,0/1
-Z:71 Dienst 0137-2
-A:01372
-T:*/*=0.12/0,0.06/20
-Z:72 Dienst 0137-3
-A:013723
-T:*/*=0.12/0,0.06/20
-Z:73 Dienst 0137-4
-A:01374
-T:*/*=0.12/0,0.06/20
-Z:74 Dienst 0137-8
-A:01378
-T:*/*=0.12/0,0.06/20
-Z:75 Dienst 0137-9
-A:01379
-T:*/*=0.12/0,0.06/30
-Z:76 Dienst 0138
-A:0138
-T:*/*=0.12/0,0.06/30
-Z:80 Dienst 0180-1
-A:01801
-T:W/09-18=0.046/60 Geschaeftszeit
-T:W/18-09=0.025/60 Freizeit
-T:E,H/*=0.025/60 Freizeit
-Z:81 Dienst 0180-2
-A:01802
-T:*/*=0.06/0,0/1
-Z:82 Dienst 0180-3
-A:01803
-T:*/*=0.09/60
-Z:83 Dienst 0180-4
-A:01804
-T:*/*=0.24/0,0/1
-Z:84 Dienst 0180-5
-A:01805
-T:*/*=0.12/60
-Z:90 Dienst 0190-0
-A:01900
-T:*/*=5.00/60
-Z:91 Dienst 0190-1
-A:01901
-T:*/*=0.62/60
-Z:92 Dienst 0190-2
-A:01902
-T:*/*=0.62/60
-Z:93 Dienst 0190-3
-A:01903
-T:*/*=0.62/60
-Z:94 Dienst 0190-4
-A:01904
-T:*/*=0.43/60
-Z:95 Dienst 0190-5
-A:01905
-T:*/*=0.62/60
-Z:96 Dienst 0190-6
-A:01906
-T:*/*=0.43/60
-Z:97 Dienst 0190-7
-A:01907
-T:*/*=1.24/60
-Z:98 Dienst 0190-8
-A:01908
-T:*/*=1.86/60
-Z:99 Dienst 0190-9
-A:01909
-T:*/*=1.24/60
-Z:170 Persoenliche Rufnummer
-A:0700
-T:W/09-18=0.062/30
-T:W/18-09=0.062/60
-T:E,H/*=0.062/60
+T:*/*=0.24534/60	# 0.2115 +16%
+#
+# 1.2 bedeutet in Preisliste Nr. 1 mit Fussnote ** für Mobilfunkzuschlag usw.
+Z:200 Welt Mobilfunk AktivPlus 1.1
+A:_ESMF
+T:*/*=0.194184/60	# 0.0396+0.1278 +16%
+Z:201 Welt Mobilfunk AktivPlus 1.2
+# A:Andorra Mobilfunk
+A:_BEMF,_DKMF,_FIMF
+A:_IEMF,_ITMF
+# FIXME: Liechtenstein Mobilfunk: Alias in country falsch (=Liechtenstein)
+A:_LUMF
+# A:Malta Mobilfunk
+A:_MCMF,_NOMF,_ATMF
+# A:Vatikanstadt Mobilfunk
+T:*/*=0.265756/60	# 0.0396+0.1895 +16%
+Z:202 Welt Mobilfunk AktivPlus 1.3
+# A:Färöer Mobilfunk
+A:_FRMF,_UKMF
+# A:Insel Man Mobilfunk, Kanalinseln Mobilfunk
+A:_NLMF
+# A:Nordirland Mobilfunk
+A:_SEMF,_CHMF
+T:*/*=0.295916/60	# 0.0396+0.2155 +16%
+Z:203 Welt Mobilfunk AktivPlus 2.3
+A:_PTMF
+T:*/*=0.347072/60	# 0.0837+0.2155 +16%
+Z:204 Welt Mobilfunk AktivPlus 3.2
+A:_GRMF,_ISMF,_CZMF
+T:*/*=0.368068/60	# 0.1278+0.1895 +16%
+Z:205 Welt Mobilfunk AktivPlus 4.1
+A:_TRMF,_HUMF
+T:*/*=0.347652/60	# 0.1719+0.1278 +16%
+Z:206 Welt Mobilfunk AktivPlus 4.2
+# A:Jugoslawien Mobilfunk, Kroatien Mobilfunk
+A:_PLMF
+# A:Slowakei Mobilfunk, Slowenien Mobilfunk
+A:_CYMF
+T:*/*=0.419224/60	# 0.1719+0.1895 +16%
+# Z:207 Welt Mobilfunk AktivPlus 5.1
+# A:Ukraine Mobilfunk
+# T:*/*=0.449848/60	# 0.2600+0.1278 +16%
+Z:208 Welt Mobilfunk AktivPlus 5.2
+A:MOW
+# A: Weißrussland Mobilfunk
+T:*/*=0.52142/60	# 0.2600+0.1895 +16%
+# Z:209 Welt Mobilfunk AktivPlus 6.1
+# A:Kasachstan Mobilfunk
+# T:*/*=0.6032/60	# 0.3922+0.1278 +16%
+#
+Z:220 Welt AktivPlus 1
+A:AD,BE,DK,FO,FI,FR
+A:GI,UK,_UKIM,IE,IT,CA
+A:_UKIK,LI,LU,MT,MC,NL
+A:_UKIR,NO,AT,SM
+A:SE,CH,ES,VA,US
+T:*/*=0.045936/60	# 0.0396 +16%
+Z:221 Welt AktivPlus 2
+A:PT,PR
+T:*/*=0.097092/60	# 0.0837 +16%
+Z:222 Welt AktivPlus 3
+A:GR,IS,CZ
+T:*/*=0.148248/60	# 0.1278 +16%
+Z:223 Welt AktivPlus 4
+A:YU,HR,PL,SK,SI,TR
+A:HU,CY
+T:*/*=0.199404/60	# 0.1719 +16%
+Z:224 Welt AktivPlus 5
+A:SU,UA,BY
+T:*/*=0.3016/60	# 0.2600 +16%
+Z:225 Welt AktivPlus 6
+A:KZ
+T:*/*=0.454952/60	# 0.3922 +16%
+#
+# Z:254 Welt Mobilfunk 5
+# A:Bosnien und Herzegowina Mobilfunk
+# T:*/*=0.454952(60)/60	# 0.3922 +16%
+# Z:256 Welt Mobilfunk 7
+# A:Albanien Mobilfunk
+# T:*/*=0.526524(60)/60	# 0.4539 +16%
+# Z:258 Welt Mobilfunk 9
+# A:Bulgarien Mobilfunk, Mazedonien (ehemalige jugoslawische Republik) Mobilfunk
+# T:*/*=0.61248(60)/6	# 0.5280 +16%
+Z:259 Welt Mobilfunk 10
+A:_ILMF,_ROMF
+T:*/*=0.673728(60)/5.46	# 0.5808 +16%
+Z:260 Welt Mobilfunk 11
+A:_EEMF
+# A:Lettland Mobilfunk
+A:_LBMF
+# A:Marokko Mobilfunk, Moldau (Republik) Mobilfunk
+T:*/*=0.734976(60)/5	# 0.6336 +16%
+# Z:261 Welt Mobilfunk 12
+# A:Litauen Mobilfunk
+# T:*/*=0.796224(60)/4.62	# 0.6864 +16%
+Z:262 Welt Mobilfunk 13
+A:_AUMF,_HKMF
+T:*/*=0.91872(60)/4	# 0.7920 +16%
+Z:263 Welt Mobilfunk 14
+A:_TWMF,_JPMF,_KRMF
+T:*/*=0.979968(60)/3.75	# 0.8448 +16%
+Z:265 Welt Mobilfunk 16
+A:_BRMF,_SGMF
+T:*/*=1.22496(60)/3	# 1.0560 +16%
+Z:266 Welt Mobilfunk 17
+A:_NZMF
+T:*/*=1.286208(60)/2.86	# 1.1088 +16%
+Z:267 Welt Mobilfunk 18
+A:_CLMF,_CNMF
+# A:Georgien Mobilfunk
+T:*/*=1.347456(60)/2.73	# 1.1616 +16%
+Z:268 Welt Mobilfunk 19
+A:_COMF,_PHMF,_ZAMF
+T:*/*=1.5312(60)/2.40	# 1.3200 +16%
+Z:269 Welt Mobilfunk 20
+A:_MYMF
+T:*/*=1.653696(60)/2.23	# 1.4256 +16%
+Z:270 Welt Mobilfunk 21
+# A:Armenien Mobilfunk, Aruba Mobilfunk, Aserbaidschan Mobilfunk
+# A:Bahrain Mobilfunk, Bolivien Mobilfunk
+# A:Brunei Darussalam Mobilfunk, Burkino Faso Mobilfunk,
+A:_ECMF
+# A:Gabun Mobilfunk, Kamerun Mobilfunk
+A:_KGMF
+# A:Kuba Mobilfunk, Myanmar Mobilfunk
+A:_PAMF
+# A:Sambia Mobilfunk, Tadschikistan Mobilfunk
+A:_THMF
+# A:Turkmenistan Mobilfunk, Uganda Mobilfunk
+# A:Uruguay Mobilfunk, Usbekistan Mobilfunk, Vietnam Mobilfunk
+T:*/*=1.714944(60)/2.15	# 1.4784 +16%
+Z:271 Welt Mobilfunk 22
+A:_SVMF,_IDMF,_PEMF
+A:_VEMF
+T:*/*=1.776192(60)/2.07	# 1.5312 +16%
+#
+Z:282 Welt 3
+A:AL,BA
+T:*/*=0.306704(60)/60	# 0.2644 +16%
+Z:284 Welt 5
+A:BG
+T:*/*=0.428736(60)/8.6	# 0.3696 +16%
+Z:285 Welt 6
+A:IL,KP
+A:RO
+T:*/*=0.489984(60)/7.5	# 0.4224 +16%
+Z:286 Welt 7
+A:EG,DZ,EE,JO,LV,LB
+A:LY,LT,EH
+A:MD,SY
+A:TN
+T:*/*=0.61248(60)/6	# 0.5280 +16%
+Z:287 Welt 8
+A:AU,TW,_HKSO
+A:JP,KR
+A:AQ,NF
+T:*/*=0.796224(60)/4.62	# 0.6864 +16%
+Z:289 Welt 10
+A:BR,DO,MX
+A:AN
+T:*/*=1.041216(60)/3.55	# 0.8976 +16%
+Z:290 Welt 11
+A:NZ,SG
+T:*/*=1.102464(60)/3.34	# 0.9504 +16%
+Z:291 Welt 12
+A:AR,CL,CN,GE,LS
+T:*/*=1.22496(60)/3	# 1.0560 +16%
+Z:292 Welt 13
+A:ZA
+T:*/*=1.347456(60)/2.73	# 1.1616 +16%
+Z:293 Welt 14
+A:DO,CO,PH
+A:SA,AE
+T:*/*=1.408704(60)/2.61	# 1.2144 +16%
+Z:294 Welt 15
+A:MY
+T:*/*=1.5312/2.4	# 1.3200 +16%
+Z:295 Welt 16 (andere)
+A:+
+T:*/*=1.592448(60)/2.31	# 1.3728 +16%
+#
 #####################################################################
 P:33,2 DTAG T-ISDN xxl
 B:01033
@@ -1408,27 +1864,46 @@ C:Homepage:http://www.dtag.de
 C:Hotline:0800/33-01000, T-Online Tarifhotline: 0800/33-03333
 C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
-C:Quelle:Preisliste T-ISDN xxl, 1. Juni 2000; zus. Tarif AktivPlus hier
-C:Tarif gilt nur in Verbindung mit T-ISDN xxl Anschluss fuer 59,90 DM/Monat.
+C:Quelle:"Preisliste T-ISDN xxl", Stand 2002-01-01
+C:Quelle:http://www.telekom.de/dtag/agb/dokument/pdf/0,1384,142,00.pdf
+C:Tarif gilt nur in Verbindung mit T-ISDN xxl Anschluss für min. 30,63 EUR/Monat.
+C:Euro
 C:Erfasste Zonen:
-C:1	-   4	Deutschland
-C: ** Zonen 0 (Freecall) wird von P:33,0 DTAG ISDN übernommen **
-C: ** Zonen 10-15 (Mobilfunk) werden von P:33,1 DTAG AktivPlus übernommen **
-# 1. R-Tag muss exakt sein, letztes darf nicht existente Zone (199) nennen.
-R:33,1;10-15
-R:33,1;70-170
-R:33,0;0
-Z:1-2 CityCall
-T:W/09-18=0.031/60 Sunshine
-T:W/18-09=0.016/60 Moonshine
-T:6/*=0.016/60 Spar
-T:7,H/*=0/60 xxl unentgeltlich
-Z:3-4 GermanCall
-A:+49
-T:W/09-18=0.046/60 Sunshine
-T:W/18-09=0.026/60 Moonshine
-T:6/*=0.026/60 Spar
-T:7,H/*=0/60 xxl unentgeltlich
+C:   1 -   4 Deutschland
+C:Uebernommene Zonen von DTAG T-ISDN Standard (33,0):
+C:   0       Freecall
+C:  31 - 170 nationale Dienste + Satellitenfunk
+C:Uebernommene Zonen von DTAG T-ISDN 300 (33,1):
+C:  10 -  12 Mobilfunk
+C: 200 -     Ausland
+R:33,0;0,31-170
+R:33,1;10-12,200-
+# nicht erfasst: Onlinedienst 0193066 (=City)
+#
+Z:1-2 City
+T:[-24.12.2002]W/09-18=0.030624/60 Tag	# 0.0264 +16%
+T:[-24.12.2002]W/18-09=0.015312/60 Spar	# 0.0132 +16%
+T:[-24.12.2002]6/*=0.015312/60 Spar	# 0.0132 +16%
+T:[-24.12.2002]7,H/*=0/60 xxl unentgeltlich
+T:[24.12.2002-02.01.2003]W,6/*=0.015312/60 Weihnachten	# 0.0132 +16%
+T:[24.12.2002-02.01.2003]7,H/*=0/60 xxl unentgeltlich
+T:[02.01.2003-]W/09-18=0.030624/60 Tag	# 0.0264 +16%
+T:[02.01.2003-]W/18-09=0.015312/60 Spar	# 0.0132 +16%
+T:[02.01.2003-]6/*=0.015312/60 Spar	# 0.0132 +16%
+T:[02.01.2003-]7,H/*=0/60 xxl unentgeltlich
+Z:3-4 Deutschland
+A:DE
+T:[-24.12.2002]W/09-18=0.045936/60 Tag	# 0.0396 +16%
+T:[-24.12.2002]W/18-09=0.02552/60 Spar	# 0.0220 +16%
+T:[-24.12.2002]6/*=0.02552/60 Spar	# 0.0220 +16%
+T:[-24.12.2002]7,H/*=0/60 xxl unentgeltlich
+T:[24.12.2002-02.01.2003]W,6/*=0.02552/60 Weihnachten	# 0.0220 +16%
+T:[24.12.2002-02.01.2003]7,H/*=0/60 xxl unentgeltlich
+T:[02.01.2003-]W/09-18=0.045936/60 Tag	# 0.0396 +16%
+T:[02.01.2003-]W/18-09=0.02552/60 Spar	# 0.0220 +16%
+T:[02.01.2003-]6/*=0.02552/60 Spar	# 0.0220 +16%
+T:[02.01.2003-]7,H/*=0/60 xxl unentgeltlich
+#
 #####################################################################
 #
 #
@@ -1568,7 +2043,7 @@ T:*/*=0.2147/60
 #####################################################################
 #
 #
-P:58,0 KaTel
+P:58,0 01058
 B:01058
 C:Address:KaTel Gesellschaft für Telekommunikation mbH, Mathias-Brüggen-Straße 87-89, 50829 Köln
 C:Name:KaTel
@@ -1585,7 +2060,7 @@ A:112
 T:*/*=0
 Z:2-4 Deutschland
 A:+49
-T:*/*=0.026/60
+T:*/*=0.035/60
 Z:10 Mobilfunk
 A:_DEMD1
 A:_DEMD2
@@ -2360,7 +2835,7 @@ T:*/*=1.40(60)/60
 P:229,0 Telebillig
 B:0190029
 C:Address:
-C:Name:Telebillig
+C:Name:Telebillig (01051)
 C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
@@ -2372,7 +2847,7 @@ A:112
 T:*/*=0
 Z:1-4 GermanCall
 A:+49
-T:*/*=0.015/60
+T:*/*=0.027/60
 Z:10 Mobilfunk
 A:_DEMF
 T:*/*=0.175/60
@@ -2382,7 +2857,7 @@ T:*/*=0.175/60
 P:231,0 Teledump
 B:0190031
 C:Address:
-C:Name:Teledump
+C:Name:Teledump (01051)
 C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
@@ -2404,7 +2879,7 @@ T:*/*=0.19/60
 P:235,0 TeleDiscount
 B:0190035
 C:Address:
-C:Name:TeleDiscount
+C:Name:TeleDiscount (01051)
 C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
@@ -2426,7 +2901,7 @@ T:*/*=0.185/60
 P:237,0 Fonfux
 B:0190037
 C:Address:
-C:Name:Fonfux
+C:Name:Fonfux (01058)
 C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
@@ -2438,17 +2913,90 @@ A:112
 T:*/*=0
 Z:1-4 GermanCall
 A:+49
-T:*/*=0.015/60
+T:*/*=0.026/60
 Z:10 Mobilfunk
 A:_DEMF
 T:*/*=0.179/60
 #####################################################################
 #
 #
+P:254,0 Calladin
+B:0190054
+C:Address:
+C:Name:Calladin (01058)
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+Z:1-4 GermanCall
+A:+49
+T:W/08-19=0.03/0,0.028/60
+T:W/19-08=0.03/0,0.018/60
+T:E,H/*=0.03/0,0.018/60
+Z:10 Mobilfunk
+A:_DEMF
+T:*/*=0.159/60
+#####################################################################
+#
+#
+P:276,0 Telestunt
+B:0190076
+C:Address:
+C:Name:Telestunt (01051)
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+Z:1-4 GermanCall
+A:+49
+T:*/*=0.018/60
+Z:10 Mobilfunk
+A:_DEMF
+T:*/*=0.19/60
+#####################################################################
+#
+#
+P:282,0 Talk Light
+B:0190082
+C:Address:
+C:Name:Talk Light (01058)
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+Z:1-4 GermanCall
+A:+49
+T:W/08-19=0.044(60)/1
+T:W/19-08=0.024(60)/1
+T:E,H/*=0.024(60)/1
+Z:10 Mobilfunk
+A:_DEMD1
+A:_DEMD2
+A:_DEME1
+A:_DEME2
+T:*/*=0.244(60)/1
+#####################################################################
+#
+#
 P:287,0 Phonecraft
 B:0190087
 C:Address:
-C:Name:Phonecraft
+C:Name:Phonecraft (01058)
 C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
