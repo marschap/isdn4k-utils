@@ -1,4 +1,4 @@
-/* $Id: functions.c,v 1.17 1999/01/10 15:23:07 akool Exp $
+/* $Id: functions.c,v 1.18 1999/01/24 19:01:27 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,10 @@
  * along with this program; if not, write to the Free Software
  *
  * $Log: functions.c,v $
+ * Revision 1.18  1999/01/24 19:01:27  akool
+ *  - second version of the new chargeint database
+ *  - isdnrep reanimated
+ *
  * Revision 1.17  1999/01/10 15:23:07  akool
  *  - "message = 0" bug fixed (many thanks to
  *    Sebastian Kanthak <sebastian.kanthak@muehlheim.de>)
@@ -295,14 +299,22 @@ void logger(int chan)
 			print_msg(PRT_ERR, "Can not open file `%s': %s!\n", logfile, strerror(errno));
 		else
 		{
-			fprintf(flog, "%s|%-16s|%-16s|%5d|%10d|%10d|%5d|%c|%3d|%10ld|%10ld|%s|%d|%d|%g|%s|%g|%03d|\n",
+                        /* Tarif leider nicht bekannt. Daher besser auf
+                           "kostenlos", als auf "DM 1,00 geschenkt" stellen!
+                        */
+
+                        if (call[chan].pay == -1.00)
+                          call[chan].pay = 0.0;
+
+			fprintf(flog, "%s|%-16s|%-16s|%5d|%10d|%10d|%5d|%c|%3d|%10ld|%10ld|%s|%d|%d|%g|%s|%g|%3d|%3d|\n",
 			              s + 4, call[chan].num[CALLING], call[chan].num[CALLED],
 			              (int)(call[chan].disconnect - call[chan].connect),
 			              (int)call[chan].duration, (int)call[chan].connect,
 			              call[chan].aoce, call[chan].dialin ? 'I' : 'O',
 			              call[chan].cause, call[chan].ibytes, call[chan].obytes,
 			              LOG_VERSION, call[chan].si1, call[chan].si11,
-			              currency_factor, currency, call[chan].pay, call[chan].provider);
+			              currency_factor, currency, call[chan].pay, call[chan].provider,
+			              call[chan].zone);
 
 			fclose(flog);
 		}
@@ -468,115 +480,3 @@ int ringer(int chan, int event)
 
   return ProcessStarted;
 } /* ringer */
-
-/*****************************************************************************/
-
-void initSondernummern()
-{
-  register char  *p1, *p2, *p3;
-  register int    tarif;
-  auto 	   FILE  *f = fopen("/usr/lib/isdn/sonderrufnummern.dat", "r");
-  auto	   char   s[BUFSIZ], msn[128], sinfo[256], linfo[256];
-  auto	   double grund1, grund2, takt1, takt2;
-
-
-  if (f != (FILE *)NULL) {
-    while ((p1 = fgets(s, BUFSIZ, f))) {
-      if (*p1 != '#') {
-        if ((p2 = strchr(p1, '|'))) {
-          *p2 = 0;
-
-          p3 = p2 - 1;
-          while (*p3 == ' ')
-            *p3-- = 0;
-
-          strcpy(msn, p1);
-          p1 = p2 + 1;
-          if ((p2 = strchr(p1, '|'))) {
-            *p2 = 0;
-
-            if (!strcmp(p1, "City"))
-              tarif = 1;
-            else if (!strcmp(p1, "free"))
-              tarif = 0;
-            else
-              tarif = -1;
-
-            p1 = p2 + 1;
-            if ((p2 = strchr(p1, '|'))) {
-              *p2 = 0;
-              grund1 = atof(p1);
-              p1 = p2 + 1;
-              if ((p2 = strchr(p1, '|'))) {
-                *p2 = 0;
-                grund2 = atof(p1);
-                p1 = p2 + 1;
-                if ((p2 = strchr(p1, '|'))) {
-                  *p2 = 0;
-                  takt1 = atof(p1);
-                  p1 = p2 + 1;
-                  if ((p2 = strchr(p1, '|'))) {
-                    *p2 = 0;
-              	    takt2 = atof(p1);
-              	    p1 = p2 + 1;
-              	    if ((p2 = strchr(p1, '|'))) {
-                      *p2 = 0;
-
-        	      p3 = p2 - 1;
-        	      while (*p3 == ' ')
-          	        *p3-- = 0;
-
-        	      while (*p1 == ' ')
-                        p1++;
-
-        	      strcpy(sinfo, p1);
-                      p1 = p2 + 1;
-                      if ((p2 = strchr(p1, '\n'))) {
-                        *p2 = 0;
-
-        	        p3 = p2 - 1;
-        	        while (*p3 == ' ')
-          	          *p3-- = 0;
-
-        	        while (*p1 == ' ')
-                          p1++;
-
-                        strcpy(linfo, p1);
-
-		        nSN++;
-                        SN = realloc(SN, sizeof(SonderNummern) * nSN);
-                        SN[nSN - 1].msn = strdup(msn);
-                        SN[nSN - 1].sinfo = strdup(sinfo);
-        	        SN[nSN - 1].tarif = tarif;
-                        SN[nSN - 1].grund1 = grund1;
-                        SN[nSN - 1].grund2 = grund2;
-                        SN[nSN - 1].takt1  = takt1;
-                        SN[nSN - 1].takt2  = takt2;
-                      } /* if */
-              	    } /* if */
-                  } /* if */
-                } /* if */
-              } /* if */
-            } /* if */
-          } /* if */
-        } /* if */
-      } /* if */
-    } /* while */
-
-    fclose(f);
-  } /* if */
-} /* initSondernummern */
-
-
-int is_sondernummer(char *num)
-{
-  register int i;
-
-
-  if ((strlen(num) >= interns0) && ((*num == '0') || (*num == '1')))
-    for (i = 0; i < nSN; i++)
-      if (!strncmp(num, SN[i].msn, strlen(SN[i].msn)))
-        return(i);
-
-  return(-1);
-} /* sondernummer */

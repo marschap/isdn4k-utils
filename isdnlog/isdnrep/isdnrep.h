@@ -1,8 +1,8 @@
-/* $Id: isdnrep.h,v 1.11 1998/11/24 20:52:46 akool Exp $
+/* $Id: isdnrep.h,v 1.12 1999/01/24 19:02:25 akool Exp $
  *
  * ISDN accounting for isdn4linux.
  *
- * Copyright 1995, 1998 by Andreas Kool (akool@isdn4linux.de)
+ * Copyright 1995, 1999 by Andreas Kool (akool@isdn4linux.de)
  *                     and Stefan Luethje (luethje@sl-gw.lake.de)
  *
  * This program is free software; you can redistribute it and/or modify
@@ -20,6 +20,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnrep.h,v $
+ * Revision 1.12  1999/01/24 19:02:25  akool
+ *  - second version of the new chargeint database
+ *  - isdnrep reanimated
+ *
  * Revision 1.11  1998/11/24 20:52:46  akool
  *  - changed my email-adress
  *  - new Option "-R" to supply the preselected provider (-R24 -> Telepassport)
@@ -86,19 +90,6 @@
 
 /*****************************************************************************/
 
-#ifdef _CHEAP_C_
-#define _EXTERN
-#else
-#define _EXTERN extern
-#endif
-
-_EXTERN double cheap96(time_t when, int zone, int *zeit);
-_EXTERN double cheap(time_t when, int zone);
-
-#undef _EXTERN
-
-/*****************************************************************************/
-
 #ifdef _REP_FUNC_C_
 #define _EXTERN
 #define _SET_NULL   = NULL
@@ -141,6 +132,7 @@ _EXTERN time_t  begintime       _SET_0;
 _EXTERN time_t  endtime         _SET_0;
 _EXTERN int     preselect	_SET_33;
 
+
 #undef _SET_NULL
 #undef _SET_0
 #undef _SET_1
@@ -152,6 +144,7 @@ _EXTERN int     preselect	_SET_33;
 #define LOG_VERSION_1 "1.0"
 #define LOG_VERSION_2 "2.0"
 #define LOG_VERSION_3 "3.0"
+#define LOG_VERSION_4 "3.1"
 
 /*****************************************************************************/
 
@@ -170,7 +163,7 @@ typedef struct {
   int	 connects;
   time_t connect[MAXCONNECTS];
   int    cause;
-} UNKNOWN;
+} UNKNOWNS;
 
 /*****************************************************************************/
 

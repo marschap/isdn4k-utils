@@ -1,8 +1,8 @@
-/* $Id: rep_main.c,v 1.6 1998/11/24 20:52:55 akool Exp $
+/* $Id: rep_main.c,v 1.7 1999/01/24 19:02:33 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
- * Copyright 1995, 1998 by Andreas Kool (akool@isdn4linux.de)
+ * Copyright 1995, 1999 by Andreas Kool (akool@isdn4linux.de)
  *                     and Stefan Luethje (luethje@sl-gw.lake.de)
  *
  * This program is free software; you can redistribute it and/or modify
@@ -20,6 +20,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rep_main.c,v $
+ * Revision 1.7  1999/01/24 19:02:33  akool
+ *  - second version of the new chargeint database
+ *  - isdnrep reanimated
+ *
  * Revision 1.6  1998/11/24 20:52:55  akool
  *  - changed my email-adress
  *  - new Option "-R" to supply the preselected provider (-R24 -> Telepassport)
@@ -153,6 +157,7 @@
  *
  */
 
+#define  _ISDNREP_C_
 #include "isdnrep.h"
 
 /*****************************************************************************/

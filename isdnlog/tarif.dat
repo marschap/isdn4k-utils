@@ -1,60 +1,80 @@
-# @(#)tarif.dat  08-Jan-99  21:00
+# @(#)tarif.dat  1.03  23-Jan-99  19:49
 #
 # Copyright 1995, 1999 by Andreas Kool (akool@isdn4linux.de)
 #
-V:1.00 [08-Jan-99]
+V:1.03 [23-Jan-99]
 #
 # P: Provider
 # G: tt.mm.jjjj Tarif gÅltig ab
 # C: Comment's
-# A: Takt
+# +: Verbindungsentgelt pro Gespr‰ch
+# -: kostenlose Zeit in Sekunden
 # I: Internet-Zugangsnummer
 # Z: (Zone)
-#   0=City           8=E2-Netz      G=Internet
-#   1=Region 50      9=Euro City
-#   2=Fern           A=Euro 1
-#   3=C-Netz         B=Euro 2
-#   4=C-Mobilbox     C=Welt 1
-#   5=D1-Netz        D=Welt 2
-#   6=D2-Netz        E=Welt 3
-#   7=E-plus-Netz    F=Welt 4
+#   1=City           9=E2-Netz      H=Internet
+#   2=Region 50      A=Euro City
+#   3=Fern           B=Euro 1
+#   4=C-Netz         C=Euro 2
+#   5=C-Mobilbox     D=Welt 1
+#   6=D1-Netz        E=Welt 2
+#   7=D2-Netz        G=Welt 3
+#   8=E-plus-Netz    G=Welt 4
 #
 # T: (Tag)
 #   W=Werktag
 #   E=Wochenende/Feiertag
 #   *=jeder Tag (flat rate)
 #
+################################################################
 P:11=o.tel.o
 G:01.01.1999
 C:Homepage: http://www.o-tel-o.de
 C:Hotline:  01803/1998 oder 0800/7370 (Geschaeftskunden)
 C:Adresse:  96038 Bamberg
-A:60/60
 I:010110191501
-Z:1-2
+Z:2-3,60/60
 T:W09-18=0.29
 T:W18-22=0.15
 T:W22-09=0.15
 T:E=0.15
-Z:3-8
+Z:4-9,60/60
 T:W08-21=0.89
 T:W21-08=0.49
 T:E=0.49
-Z:G
+Z:H,60/60
 T:W09-18=0.16
 T:W18-22=0.16
 T:W22-09=0.10
 T:E=0.10
 ################################################################
-P:15=RSL COM
-A:60/60
-Z:1-2
+P:13=Tele 2
+G:01.07.1998
+C:Homepage: http://www.tele2.de
+C:Hotline:  0800/24-01013
+C:Adresse:  Postfach 130840, 40558
+C:	    D¸sseldorf
+Z:2-3,1/1
+T:W09-18=0.20
+T:W18-09=0.15
+T:E=0.10
+Z:4-9,1/1
+T:W08-18=0.92
+T:W18-08=0.82
+T:E=0.82
+Z:D,1/1
+T:W08-18=0.68
+T:W18-08=0.58
+T:E=0.58
+################################################################
+P:15,0=RSL COM
+C:Clever call
+Z:2-3,60/60
 T:W08-18=0.25 # Standard
 T:W18-21=0.13 # Abend
 T:W21-08=0.07 # Nacht
 T:E08-21=0.13
 T:E21-08=0.07
-Z:3-8
+Z:4-9,60/60
 T:W08-21=0.65
 T:W21-08=0.45
 T:E=0.45
@@ -65,16 +85,38 @@ C:MobilCom AG
 C:Homepage: http://www.mobilcom.de
 C:Hotline:  01805/191919
 C:Adresse:  Postfach 1249, 24822 Schleswig
-A:60/60
 I:0101901929 # (Benutzername: mobilcom; Passwort: mobilcom)
-Z:1-2
+Z:2-3,60/60
 T:*=0.19
-Z:3-8
+Z:4-9,60/60
 T:*=0.99
-Z:9-C
+Z:A-D,60/60
 T:*=0.69
-Z:G
+Z:H,60/60
 T:*=0.19
+################################################################
+P:23=tesion ))
+G:01.08.1998
+C:Name:     tesion )) Neue
+C:          Telekommunikation
+C:Homepage: http://www.tesion.de
+C: Hotline: 0800/711 0 711
+C: Telefon: 0711/20 21-610
+C: Telefax: 0711/20 21-611
+C: Adresse: Kriegsbergstraﬂe 11,
+C:          70174 Stuttgart
++:0.06
+Z:2-3,1/1
+T:W09-19=0.44
+T:W19-09=0.24
+T:E=0.24
+Z:4-9,1/1
+T:W09-19=0.81
+T:W19-09=0.48
+Z:D,1/1
+T:*=0.81
+Z:E,1/1
+T:*=1.61
 ################################################################
 P:28=Telebridge
 G:01.01.1999
@@ -82,31 +124,36 @@ C:Hotline:  01805/335 440
 C:Adresse:  Zeppelinstraﬂe 3, 73105
 C:	    D¸rnau
 C:Reseller von COLT
-A:60/60
-Z:0
+-:5
+Z:1,60/60
 T:*=0.09
-Z:1
+Z:2,60/60
 T:*=0.14
-Z:2
+Z:3,60/60
 T:*=0.22
-Z:3-8
+Z:4-9,60/60
 T:*=0.49
 ################################################################
 P:30=TelDaFax
-A:1/1
-Z:1-2
+Z:2-3,1/1
 T:W09-18=0.17
 T:W18-09=0.09
 T:E=0.09
-Z:3-8
+Z:4-9,1/1
 T:W08-21=0.835
 T:W21-08=0.476
 T:E=0.476
 ################################################################
-P:33=DTAG
-C:Deutsche Telekom AG
-A:0.12
-Z:0
+P:33,0=DTAG
+C:Name:     Deutsche Telekom AG
+C:Homepage: http://www.dtag.de
+C:Hotline:  0800/33-01000
+C:Internet-Zugang: Citytarif zzgl. DM 0.05/Minute Nutzungsentgeld
+C:		   pro Monat 2 Stunden Nutzungsentgelt frei
+C:                 monatliche GrundgebÅhr DM 8,00
+C:ISDN-Tarif
+I:0191011
+Z:1,0.12
 T:W02-05=240  # Nacht
 T:W05-09=150  # Spar
 T:W09-18=90   # Standard
@@ -114,42 +161,72 @@ T:W18-21=150  # Spar
 T:W21-02=240  # Mondschein
 T:E05-21=150  # Spar
 T:E21-05=240  # Mondschein
-Z:1-2
+Z:2-3,0.12
 T:W02-05=120  # Nacht
 T:W05-09=60   # Spar
 T:W09-18=30   # Standard
 T:W18-21=60   # Spar
 T:W21-02=60   # Mondschein
 T:E=60        # Spar
-Z:3-8
+Z:4-9,0.12
 T:W09-18=7.5  # Standard
 T:W18-09=15   # Spar
 T:E=15        # Spar
-Z:4
-T:W09-18=5.267  # Standard
-T:W18-09=3.592  # Spar
-T:E=3.592       # Spar
-Z:7
-T:W09-18=11.333 # Standard
-T:W18-09=4.683  # Spar
-T:E=4.683       # Spar
+Z:5,60/60
+T:W09-18=0.632  # Standard
+T:W18-09=0.431  # Spar
+T:E=0.431       # Spar
+Z:8,60/60
+T:W09-18=1.36   # Standard
+T:W18-09=0.562  # Spar
+T:E=0.562       # Spar
+################################################################
+P:49=ACC
+G:01.01.1999
+C:Name:     ACC Telecom
+C:Homepage: http://www.acctelecom.de
+C:Hotline:  0800/122 55 222 bzw.
+C:	    0800/1 CALL ACC
+C:Telefax:  0800/1329 222 bzw.
+C:	    0800/1 FAX ACC
+Z:1,30/30
+T:W08-18=0.12
+T:W18-08=0.09
+T:E=0.09
+Z:2-3,30/30
+T:W08-18=0.18
+T:W18-08=0.09
+T:E=0.09
+Z:4-9,1/1
+T:W08-18=0.73
+T:W18-08=0.36
+T:E=0.36
+Z:8,1/1
+T:W08-18=0.99
+T:W18-08=0.45
+T:E=0.45
+Z:D,1/1
+T:W08-18=0.64
+T:W18-08=0.55
+T:E=0.55
+Z:E,1/1
+T:*=1.64
 ################################################################
 P:50=Talkline
 G:15.01.1999
 C:Homepage: http://www.null1050.de
 C:Hotline:  01802/2002
 C:Faxabruf: 01802/2001
-A:60/60
 I:01050/019251 # (Benutzername: talknet; Passwort: talknet; Nameserver: 195.252.128.53)
-Z:1-2
+Z:2-3,60/60
 T:W09-18=0.29
 T:W18-21=0.19
 T:W21-09=0.09
 T:E09-21=0.19
 T:E21-09=0.09
-Z:3-8
+Z:4-9,60/60
 T:*=0.99
-Z:G
+Z:H,180/180
 T:W09-18=0.16
 T:W18-21=0.09
 T:W21-09=0.09
@@ -157,29 +234,30 @@ T:E=0.09
 ################################################################
 P:70=Arcor
 C:Mannesmann Arcor
-A:60/60
 I:010700192070 # (Benutzername: arcor; Passwort: internet; Proxy: proxy.arcor-ip.de:80; Startseite: http://www.call.arcor.net)
-Z:1-2
+Z:2-3,60/60
 T:W09-18=0.18 # Standard
 T:W18-09=0.10 # Spar
 T:E=0.10      # Spar
-Z:3-5
+Z:4-6,60/60
 T:W09-18=0.96
 T:W18-09=0.48
 T:E=0.48
-Z:6
+Z:7,60/60
 T:W09-18=0.94
 T:W18-09=0.46
 T:E=0.46
-Z:7
+Z:8,60/60
 T:W09-18=1.25
 T:W18-09=0.56
 T:E=0.56
-Z:8
+Z:9,60/60
 T:W09-18=0.96
 T:W18-09=0.48
 T:E=0.48
-Z:G
+Z:G,60/60
+T:*=2.72 # FIXME
+Z:H,60/60
 T:*09-18=0.14
 T:*18-09=0.10
 ################################################################
@@ -190,95 +268,87 @@ C:Telefon:  069/94 994-0
 C:Telefax:  069/94 994-100
 C:Adresse:  Hanauer Landstraﬂe 187-189,
 C:	    60314 Frankfurt am Main
-A:30/1
-Z:1-2
+Z:2-3,30/1
 T:W09-18=0.16
 T:W18-09=0.09
 T:E=0.09
-Z:3-8
+Z:4-9,30/1
 T:W09-21=0.73
 T:W21-09=0.36
 T:E=0.36
 ################################################################
 P:90=Viag Intercom
-A:60/60
-Z:1-2
+Z:2-3,60/60
 T:W08-18=0.17
 T:W18-08=0.10
 T:E=0.10
-Z:3-8
+Z:4-9,60/60
 T:W08-21=0.99
 T:W21-08=0.59
 T:E=0.59
-Z:G
+Z:H,60/60
 T:*=0.10
 ################################################################
 P:98,0=Nikoma Minutentakt
 G:01.01.1999
 C:Nikoma Media Works GmbH
 C:Reseller von Star Telecom
-A:60/60
-Z:1-2
+Z:2-3,60/60
 T:*09-21=0.15
 T:*21-09=0.12
-Z:3-8
+Z:4-9,60/60
 T:*=0.50
 ################################################################
 P:98,1=Nikoma Sekundentakt
 G:01.01.1999
 C:Nikoma Media Works GmbH
 C:Reseller von Star Telecom
-A:1/1
-Z:1-2
+Z:2-3,1/1
 T:*09-21=0.168
 T:*21-09=0.134
-Z:3-8
+Z:4-9,1/1
 T:*=0.56
 ################################################################
 P:98,2=Nikoma Nikocity Minutentakt
 G:01.01.1999
 C:Nikoma Media Works GmbH
 C:Reseller von Star Telecom
-A:60/60
-Z:0
+Z:1,60/60
 T:W09-21=0.8
 T:W21-09=0.6
-Z:1-2
+Z:2-3,60/60
 T:*09-21=0.15
 T:*21-09=0.10
-Z:3-8
+Z:4-9,60/60
 T:*=0.50
 ################################################################
 P:98,3=Nikoma Nikocity Sekundentakt
 G:01.01.1999
 C:Nikoma Media Works GmbH
 C:Reseller von Star Telecom
-A:1/1
-Z:0
+Z:1,1/1
 T:W09-21=0.896
 T:W21-09=0.672
-Z:1-2
+Z:2-3,1/1
 T:*09-21=0.168
 T:*21-09=0.134
-Z:3-8
+Z:4-9,1/1
 T:*=0.56
 ################################################################
 P:98,4=Mox
 G:01.01.1999
 C:Mox Telecom AG
 C:Reseller von Star Telecom
-A:1/1
-Z:1-2
+Z:2-3,1/1
 T:*=0.159
-Z:3-8
+Z:4-9,1/1
 T:*=0.559
 ################################################################
 P:98,5=C@llas L
 G:01.11.1998
 C:C@llas Clever Communications
 C:Reseller von Star Telecom
-A:60/60
-Z:1-2
+Z:2-3,60/60
 T:*=0.22
-Z:3-8
+Z:4-9,60/60
 T:*=0.64

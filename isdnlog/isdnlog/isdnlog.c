@@ -1,4 +1,4 @@
-/* $Id: isdnlog.c,v 1.33 1999/01/10 15:23:13 akool Exp $
+/* $Id: isdnlog.c,v 1.34 1999/01/24 19:01:31 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,10 @@
  * along with this program; if not, write to the Free Software
  *
  * $Log: isdnlog.c,v $
+ * Revision 1.34  1999/01/24 19:01:31  akool
+ *  - second version of the new chargeint database
+ *  - isdnrep reanimated
+ *
  * Revision 1.33  1999/01/10 15:23:13  akool
  *  - "message = 0" bug fixed (many thanks to
  *    Sebastian Kanthak <sebastian.kanthak@muehlheim.de>)
@@ -1199,6 +1203,9 @@ int main(int argc, char *argv[], char *envp[])
 	    initSondernummern();
             initTarife(msg);
 
+#ifdef Q931
+      	    if (!q931dmp)
+#endif
             if (*msg)
               print_msg(PRT_NORMAL, "%s\n", msg);
 

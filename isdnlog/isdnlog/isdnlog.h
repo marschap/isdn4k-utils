@@ -1,4 +1,4 @@
-/* $Id: isdnlog.h,v 1.15 1999/01/10 15:23:16 akool Exp $
+/* $Id: isdnlog.h,v 1.16 1999/01/24 19:01:35 akool Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnlog.h,v $
+ * Revision 1.16  1999/01/24 19:01:35  akool
+ *  - second version of the new chargeint database
+ *  - isdnrep reanimated
+ *
  * Revision 1.15  1999/01/10 15:23:16  akool
  *  - "message = 0" bug fixed (many thanks to
  *    Sebastian Kanthak <sebastian.kanthak@muehlheim.de>)
@@ -357,7 +361,6 @@ _EXTERN	char    isdnctrl2[FNSIZE];
 _EXTERN	char   *outfile;
 _EXTERN	char    tmpout[PATH_MAX];
 _EXTERN int     readkeyboard;
-_EXTERN	int     interns0;
 _EXTERN	int	other;
 _EXTERN IFO     ifo[ISDN_MAX_CHANNELS];
 _EXTERN IO      io[ISDN_MAX_CHANNELS];
@@ -393,20 +396,14 @@ _EXTERN void clearchan(int chan, int total);
 #define Exit(a) _Exit(__FILE__,__LINE__,a)
 
 _EXTERN void _Exit(char *File, int Line, int RetCode);
+#ifndef  _REP_FUNC_C_
 _EXTERN int  print_msg(int Level, const char *fmt, ...);
+#endif
 _EXTERN int  Change_Channel(int old_channel, int new_channel);
 _EXTERN void set_time_str(void);
 _EXTERN void now(void);
 _EXTERN void logger(int chan);
 _EXTERN int  ringer(int chan, int event);
-_EXTERN void initSondernummern(void);
-_EXTERN int  is_sondernummer(char *num);
-_EXTERN void initTarife(char *msg);
-_EXTERN void exitTarife(void);
-_EXTERN void price(int chan, char *hint);
-_EXTERN char *realProvidername(int prefix);
-_EXTERN void preparecint(int chan, char *msg, char *hint);
-_EXTERN int  taktlaenge(int chan, char *why);
 #undef _EXTERN
 
 /****************************************************************************/

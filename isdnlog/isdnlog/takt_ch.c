@@ -1,4 +1,4 @@
-/* $Id: takt_ch.c,v 1.4 1998/11/24 20:52:14 akool Exp $
+/* $Id: takt_ch.c,v 1.5 1999/01/24 19:01:46 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -23,13 +23,9 @@
 #define _TAKT_C_
 #include "isdnlog.h"
 
-#define DTAG     0
+#define DTAGI     0
 #define MOBILCOM 1
 #define TELE	  2
-
-#define CITYCALL   0
-#define REGIOCALL  1
-#define GERMANCALL 2
 
 #define DTAG_PREIS     0.121
 #define MOBILCOM_PREIS 0.19
@@ -419,7 +415,7 @@ float taktlaenge(int chan, char *description)
     return(-1);
 
   if ((provider == 19) || (provider == 33)) {
-        takt = gebuehr[(provider == 33) ? DTAG : MOBILCOM][zeit[tm->tm_hour]][tarifzeit(tm, why)][zone];
+        takt = gebuehr[(provider == 33) ? DTAGI : MOBILCOM][zeit[tm->tm_hour]][tarifzeit(tm, why)][zone];
 	if (description) sprintf(description, "%s, %s, %s", zeiten[zeit[tm->tm_hour]], why, zonen[zone]);
         return(takt);
       }

@@ -1,4 +1,4 @@
-/*
+/* $Id:
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -18,6 +18,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
+ * $Log:
  */
 
 /*
@@ -63,43 +64,16 @@
 #include "isdnlog.h"
 #endif
 
-#ifdef 0 /* STANDALONE */
-#define TARIFE    "tarif.dat"
-#define TARIFCONF "tarif.conf"
-#define SPARBUCH  "sparbuch"
-#else
-#define TARIFE    "/usr/lib/isdn/tarif.dat"
-#define TARIFCONF "/etc/isdn/tarif.conf"
 #define SPARBUCH  "/etc/isdn/sparbuch"
-#endif
+#define DATADIR	  "/usr/lib/isdn"
 
 #define TEST        181 /* Sekunden Verbindung kostet? */
 
-#define SHIFT (double)1000.0
-#define UNKNOWN      -1
+#define SHIFT (double)1 /* 1000.0 */
 
-#define MAXZONEN     17
 #define MAXDAYS       2
 #define MAXSTUNDEN   24
 #define MAXPROVIDER 100
-
-#define CITYCALL      0
-#define REGIOCALL     1
-#define GERMANCALL    2
-#define C_NETZ        3
-#define C_MOBILBOX    4
-#define D1_NETZ	      5
-#define D2_NETZ       6
-#define E_PLUS_NETZ   7
-#define E2_NETZ       8
-#define EURO_CITY     9
-#define EURO_1       10
-#define EURO_2       11
-#define WELT_1       12
-#define WELT_2       13
-#define WELT_3       14
-#define WELT_4       15
-#define INTERNET     16
 
 #define WT            0 /* Werktag */
 #define WE            1 /* Wochenende, Feiertag */
@@ -107,6 +81,8 @@
 #define ZJ 	      3 /* Werktag 27. .. 30.12. */
 #define IMMER        99 /* Werktag, Wochenende, Feiertag */
 
+
+#ifndef STANDALONE
 #define MUTT      3
 #define KARF      4
 #define OST1      5
@@ -122,6 +98,8 @@
 
 #define A_FEI 	 17
 
+#define WAEHRUNG "DM"
+#define FAKTOR	 1.95583
 
 struct w_ftag {
   char  tag;
@@ -160,27 +138,38 @@ static struct w_ftag t_ftag[A_FEI] = {
   {  0,  0, 0, "Buss- und Bettag" }, 	      /* nur bis incl. 1994 (wg. Pflegeversicherung abgeschafft) */
   { 25, 12, 1, "1. Weihnachtsfeiertag" },
   { 26, 12, 1, "2. Weihnachtsfeiertag" }};
+#endif
 
 
 typedef struct {
   int    used;
   char  *Provider;
   char	*InternetZugang;
-  int    takt1, takt2;
-  double taktpreis;
-  int    tarif[MAXZONEN][MAXDAYS][MAXSTUNDEN];
+  double Verbindungsentgelt;
+  int    takt1[MAXZONES], takt2[MAXZONES];
+  double taktpreis[MAXZONES];
+  double tarif[MAXZONES][MAXDAYS][MAXSTUNDEN];
+  int 	 frei;
 } TARIF;
 
-static char *zonen[] = { "City", "Region 50", "Fern", "C-Netz", "C-Mobilbox",
-                         "D1-Netz", "D2-Netz", "E-plus-Netz", "E2-Netz",
-                         "Euro City", "Euro 1", "Euro 2", "Welt 1", "Welt 2",
-                         "Welt 3", "Welt 4", "Internet" };
+char *zonen[MAXZONES] = { "Intern", "CityCall", "RegioCall", "GermanCall",
+       	    	      	  "C-Netz", "C-Mobilbox", "D1-Netz", "D2-Netz",
+       	    	  	  "E-plus-Netz", "E2-Netz", "Euro City", "Euro 1",
+       	    	  	  "Euro 2", "Welt 1", "Welt 2", "Welt 3", "Welt 4",
+       	    	  	  "Internet", "GlobalCall" };
 
 
 static TARIF t[MAXPROVIDER];
 static int   line = 0;
 static int   use[MAXPROVIDER];
+#ifdef STANDALONE
+typedef struct {
+  int    prefix;
+  double tarif;
+} SORT;
 
+static SORT sort[MAXPROVIDER];
+#endif
 
 static void warning(char *s)
 {
@@ -192,6 +181,7 @@ static void warning(char *s)
 } /* warning */
 
 
+#ifndef STANDALONE
 static int schalt(register int j)
 {
   return(((j % 4 == 0) && (j % 100 != 0)) || (j % 400 == 0));
@@ -344,6 +334,7 @@ static int tarifzeit(struct tm *tm, char *why, int cwe)
   strcpy(why, "Werktag");
   return(WT);
 } /* tarifzeit */
+#endif
 
 
 static int days(register char c)
@@ -368,24 +359,24 @@ static int zones(register char c)
 
 
   switch (toupper(c)) {
-    case '0' : return( 0); /* City        (CityCall)   */
-    case '1' : return( 1); /* Region 50   (RegioCall)  */
-    case '2' : return( 2); /* Fern      (GermanCall)   */
-    case '3' : return( 3); /* C-Netz                   */
-    case '4' : return( 4); /* C-Mobilbox               */
-    case '5' : return( 5); /* D1-Netz                  */
-    case '6' : return( 6); /* D2-Netz                  */
-    case '7' : return( 7); /* E-plus-Netz              */
-    case '8' : return( 8); /* E2-Netz                  */
-    case '9' : return( 9); /* Euro City                */
-    case 'A' : return(10); /* Euro 1                   */
-    case 'B' : return(11); /* Euro 2                   */
-    case 'C' : return(12); /* Welt 1                   */
-    case 'D' : return(13); /* Welt 2                   */
-    case 'E' : return(14); /* Welt 3                   */
-    case 'F' : return(15); /* Welt 4                   */
-    case 'G' : return(16); /* Internet		       */
-     default : sprintf(sx, "Unknown zone \"%c\", please use 0 .. G", c);
+    case '1' : return(CITYCALL);
+    case '2' : return(REGIOCALL);
+    case '3' : return(GERMANCALL);
+    case '4' : return(C_NETZ);
+    case '5' : return(C_MOBILBOX);
+    case '6' : return(D1_NETZ);
+    case '7' : return(D2_NETZ);
+    case '8' : return(E_PLUS_NETZ);
+    case '9' : return(E2_NETZ);
+    case 'A' : return(EURO_CITY);
+    case 'B' : return(EURO_1);
+    case 'C' : return(EURO_2);
+    case 'D' : return(WELT_1);
+    case 'E' : return(WELT_2);
+    case 'F' : return(WELT_3);
+    case 'G' : return(WELT_4);
+    case 'H' : return(INTERNET);
+     default : sprintf(sx, "Unknown zone \"%c\", please use 1 .. H", c);
                warning(sx);
                return(UNKNOWN);
   } /* switch */
@@ -401,6 +392,20 @@ static int n0(int n)
 } /* n0 */
 
 
+static int zoneknown(int prefix, int zone)
+{
+  if (!t[prefix].used)
+    return(0);
+
+  if ((t[prefix].takt1[zone] == UNKNOWN) &&
+      (t[prefix].takt1[zone] == UNKNOWN) &&
+      (t[prefix].taktpreis[zone] == (double)UNKNOWN))
+    return(0);
+
+  return(1);
+} /* zoneknown */
+
+
 static double tpreis(int prefix, int zone, int day, int hour, int duration)
 {
   auto double tarif;
@@ -411,39 +416,42 @@ static double tpreis(int prefix, int zone, int day, int hour, int duration)
   if (!t[prefix].used)
     return(UNKNOWN);
 
-  tarif = t[prefix].tarif[zone][day][hour] / SHIFT;
+  tarif = t[prefix].tarif[zone][day][hour];
 
   if (tarif == UNKNOWN) /* Preis unbekannt oder nicht angeboten */
     return(tarif);
 
-  if (t[prefix].takt1 == UNKNOWN) {  /* Abrechnung nach Takten */
+  duration -= t[prefix].frei;
+
+  if (t[prefix].takt1[zone] == UNKNOWN) {  /* Abrechnung nach Takten */
     takte = (duration + tarif) / tarif;
-    return(takte * t[prefix].taktpreis);
+    return((takte * t[prefix].taktpreis[zone]) + t[prefix].Verbindungsentgelt);
   }
   else {                        /* Abrechnung nach Preis/Minute */
 
 #if 0 /* AK:FALSCH! So wird bei 60/60 aus z.b. 5 Sekunden immer 2 Takte! */
-    if (t[prefix].takt1 > 1) {  /* Mindestdauer pro Verbindung */
-      if (duration < t[prefix].takt1)
-        duration = t[prefix].takt1;
+    if (t[prefix].takt1[zone] > 1) {  /* Mindestdauer pro Verbindung */
+      if (duration < t[prefix].takt1[zone])
+        duration = t[prefix].takt1[zone];
     } /* if */
 #endif
 
-    if (t[prefix].takt2 == 1)   /* Abrechnung Sekundengenau */
-      return(tarif * duration / 60);
+    if (t[prefix].takt2[zone] == 1)   /* Abrechnung Sekundengenau */
+      return((tarif * duration / 60) + t[prefix].Verbindungsentgelt);
 
     /* Abrechnung in "takt2" Einheiten */
-    takte = (duration + t[prefix].takt2) / n0(t[prefix].takt2);
+    takte = (duration + t[prefix].takt2[zone]) / n0(t[prefix].takt2[zone]);
 
-    if (t[prefix].takt2 == 60)  /* Abrechnung Minutengenau */
-      return(tarif * takte);
+    if (t[prefix].takt2[zone] == 60)  /* Abrechnung Minutengenau */
+      return((tarif * takte) + t[prefix].Verbindungsentgelt);
 
-    preis1 = tarif / (60 / n0(t[prefix].takt2));
-    return(takte * preis1);
+    preis1 = tarif / (60 / n0(t[prefix].takt2[zone]));
+    return((takte * preis1) + t[prefix].Verbindungsentgelt);
   } /* else */
 } /* tpreis */
 
 
+#if 0 /* ndef STANDALONE */
 static double preisgenau(int prefix, int zone, int day, int hour, int duration, time_t dialin)
 {
   /*
@@ -454,6 +462,7 @@ static double preisgenau(int prefix, int zone, int day, int hour, int duration, 
   */
   return(UNKNOWN);
 } /* preisgenau */
+#endif
 
 
 #ifndef STANDALONE
@@ -464,7 +473,7 @@ int taktlaenge(int chan, char *why)
 
 
   if ((call[chan].sondernummer[CALLED] != UNKNOWN) &&
-      (call[chan].provider == 33) &&
+      (call[chan].provider == DTAG) &&
       ((call[chan].zone < C_NETZ) || (call[chan].zone > E2_NETZ)) &&
        !SN[call[chan].sondernummer[CALLED]].tarif) {
     strcpy(why, "FreeCall");
@@ -479,21 +488,21 @@ int taktlaenge(int chan, char *why)
   } /* if */
 
   tm = localtime(&call[chan].connect);
-  tarif = t[call[chan].provider].tarif[call[chan].zone][call[chan].tz][tm->tm_hour] / SHIFT;
+  tarif = t[call[chan].provider].tarif[call[chan].zone][call[chan].tz][tm->tm_hour];
 
   if (tarif == UNKNOWN) { /* Preis unbekannt oder nicht angeboten */
     strcpy(why, "UNKNOWN TARIF");
     return(UNKNOWN);
   } /* if */
 
-  if (t[call[chan].provider].takt1 == UNKNOWN) /* Abrechnung nach Takten */
+  if (t[call[chan].provider].takt1[call[chan].zone] == UNKNOWN) /* Abrechnung nach Takten */
     return(tarif);
-  else if (t[call[chan].provider].takt2 < 10) { /* Wenn Takt < 10 Sekunden, 1 Minute! */
-    sprintf(why, "TRUE charging is %d/%d", t[call[chan].provider].takt1, t[call[chan].provider].takt2);
+  else if (t[call[chan].provider].takt2[call[chan].zone] < 10) { /* Wenn Takt < 10 Sekunden, 1 Minute! */
+    sprintf(why, "TRUE charging is %d/%d", t[call[chan].provider].takt1[call[chan].zone], t[call[chan].provider].takt2[call[chan].zone]);
     return(60);
   }
   else
-    return(t[call[chan].provider].takt2);
+    return(t[call[chan].provider].takt2[call[chan].zone]);
 } /* taktlaenge */
 
 
@@ -514,13 +523,30 @@ void preparecint(int chan, char *msg, char *hint)
   auto	   double tarif = 0.0, tarif1, providertarif = 0.0, cheaptarif;
 
 
+  *hint = 0;
   tm = localtime(&call[chan].connect);
+
+  if (call[chan].intern[CALLED]) {
+    call[chan].zone = INTERN;
+    call[chan].tarifknown = 0;
+    sprintf(msg, "CHARGE: free of charge - internal call");
+    return;
+  } /* if */
 
   provider = ((call[chan].provider == UNKNOWN) ? preselect : call[chan].provider);
 
-  if ((call[chan].sondernummer[CALLED] != UNKNOWN) &&
-      (SN[call[chan].sondernummer[CALLED]].tarif == 1))
+  if ((call[chan].sondernummer[CALLED] != UNKNOWN) &&      /* Sonderrufnummer, Abrechnung zum CityCall-Tarif */
+      (SN[call[chan].sondernummer[CALLED]].tarif == 1) &&
+      (provider == DTAG))
     zone = CITYCALL;
+  else if ((call[chan].sondernummer[CALLED] != UNKNOWN) && /* Sonderrufnummer, kostenlos */
+      (SN[call[chan].sondernummer[CALLED]].tarif == 0) &&
+      (provider == DTAG)) {
+    call[chan].zone = CITYCALL;
+    call[chan].tarifknown = 0;
+    sprintf(msg, "CHARGE: free of charge - FreeCall");
+    return;
+  }
   else if (!memcmp(call[chan].num[CALLED], "01610", 5) ||
            !memcmp(call[chan].num[CALLED], "01617", 5) ||
            !memcmp(call[chan].num[CALLED], "01619", 5))
@@ -539,7 +565,7 @@ void preparecint(int chan, char *msg, char *hint)
   else if (!memcmp(call[chan].num[CALLED], "0176", 4) ||
            !memcmp(call[chan].num[CALLED], "0179", 4))
     zone = E2_NETZ;
-  else if ((t[provider].InternetZugang != NULL) && !strcmp(call[chan].onum[CALLED], t[provider].InternetZugang))
+  else if (t[provider].used && (t[provider].InternetZugang != NULL) && !strcmp(call[chan].onum[CALLED], t[provider].InternetZugang))
     zone = INTERNET;
   else {
     zone = area_diff(NULL, call[chan].num[CALLED]);
@@ -547,36 +573,43 @@ void preparecint(int chan, char *msg, char *hint)
     if ((zone == AREA_ERROR) || (zone == AREA_UNKNOWN))
       zone = UNKNOWN;
     else if (zone == AREA_ABROAD) /* FIXME: muss noch stark verbessert werden! */
-      zone = EURO_CITY;
-    else
-      zone--; /* area_diff() liefert relativ zu 1 */
+      zone = GLOBALCALL;
   } /* else */
 
-  provider = ((call[chan].provider == UNKNOWN) ? preselect : call[chan].provider);
-
-  tz = tarifzeit(tm, why, ((provider == 33) && CityWeekend));
+  tz = tarifzeit(tm, why, ((provider == DTAG) && CityWeekend));
 
   if ((tz == FE) || (tz == ZJ)) /* FIXME: stimmt das bei allen Providern? */
     tz = WE;
 
   if (zone != UNKNOWN)
-    tarif = t[provider].tarif[zone][tz][tm->tm_hour] / SHIFT;
+    tarif = t[provider].tarif[zone][tz][tm->tm_hour];
 
   call[chan].zone = zone;
   call[chan].provider = provider;
   call[chan].tz = tz;
 
-  if (t[provider].takt1 == UNKNOWN)
-    sprintf(s, "DM %5.3f/%7.3fs", t[provider].taktpreis, tarif);
+  if (zoneknown(provider, zone)) {
+    if (t[provider].takt1[zone] == UNKNOWN)
+      sprintf(s, "%s %s/%ss", WAEHRUNG,
+    	       	   	      double2str(t[provider].taktpreis[zone], 5, 3, DEB),
+    	       	   	      double2str(tarif, 5, 1, DEB));
   else
-    sprintf(s, "DM %5.3f/Min, Takt %d/%d", tarif, t[provider].takt1, t[provider].takt2);
+      sprintf(s, "%s %s/Min, Takt %d/%d", WAEHRUNG, double2str(tarif, 5, 3, DEB),
+    	       	   	   		  t[provider].takt1[zone], t[provider].takt2[zone]);
 
   sprintf(msg, "CHARGE: %s, %s, %s", why, ((zone == UNKNOWN) ? "Unknown zone" : zonen[zone]), s);
+    call[chan].tarifknown = 1;
+  }
+  else {
+    sprintf(msg, "CHARGE: Oppps: No charge infos for provider %d, Zone %d %s",
+      provider, zone,
+      ((call[chan].sondernummer[CALLED] != UNKNOWN) ? SN[call[chan].sondernummer[CALLED]].sinfo : ""));
 
+    call[chan].tarifknown = 0;
+  } /* else */
 
-  *hint = 0;
   cheaptarif = 99999.9;
-  call[chan].tip = UNKNOWN;
+  call[chan].hint = UNKNOWN;
 
   if (zone != UNKNOWN) {
     for (i = 0; i < MAXPROVIDER; i++) {
@@ -594,18 +627,21 @@ void preparecint(int chan, char *msg, char *hint)
       } /* if */
     } /* for */
 
-    if ((cheapest != UNKNOWN) && (cheapest != provider)) {
-      tarif = t[cheapest].tarif[zone][tz][tm->tm_hour] / SHIFT;
+    if ((cheapest != UNKNOWN) && (cheaptarif < providertarif)) {
+      tarif = t[cheapest].tarif[zone][tz][tm->tm_hour];
 
-      if (t[cheapest].takt1 == UNKNOWN)
-        sprintf(s, "DM %5.3f/%7.3fs", t[cheapest].taktpreis, tarif);
+      if (t[cheapest].takt1[zone] == UNKNOWN)
+        sprintf(s, "%s %s/%ss", WAEHRUNG, double2str(t[cheapest].taktpreis[zone], 5, 3, DEB),
+        	       		double2str(tarif, 5, 1, DEB));
       else
-        sprintf(s, "DM %5.3f/Min, Takt %d/%d", tarif, t[cheapest].takt1, t[cheapest].takt2);
+        sprintf(s, "%s %s/Min, Takt %d/%d", WAEHRUNG, double2str(tarif, 5, 3, DEB),
+        	       	       	    	    t[cheapest].takt1[zone], t[cheapest].takt2[zone]);
 
-      sprintf(hint, "HINT: Better use 010%02d:%s, %s, saves DM %5.3f/%d s",
-        cheapest, t[cheapest].Provider, s, providertarif - cheaptarif, TEST);
+      sprintf(hint, "HINT: Better use 010%02d:%s, %s, saving %s %s/%ds",
+        cheapest, t[cheapest].Provider, s, WAEHRUNG,
+        double2str(providertarif - cheaptarif, 5, 3, DEB), TEST);
 
-      call[chan].tip = cheapest;
+      call[chan].hint = cheapest;
     } /* if */
   } /* if */
 
@@ -615,22 +651,30 @@ void preparecint(int chan, char *msg, char *hint)
 void price(int chan, char *hint)
 {
   auto	   int	  duration = (int)(call[chan].disconnect - call[chan].connect);
-  auto     double pay2 = -1.0, onesec, spar = 0.0;
+  auto     double pay2 = -1.0, onesec;
   auto     char   sx[BUFSIZ], sy[BUFSIZ], sz[BUFSIZ];
   auto 	   struct tm *tm;
   register int 	  p, cheapest = UNKNOWN;
-  auto	   double payx, payy, prepreis = -1.0, tippreis = -1.0;
+  auto     double payx, payy, prepreis = -1.0, hintpreis = -1.0;
+#if DEBUG
   auto	   FILE	 *fo;
+  auto	   double spar = 0.0;
+#endif
 
 
   *hint = 0;
+
+  if (call[chan].zone == INTERN) {
+    call[chan].pay = 0.0;
+    return;
+  } /* if */
 
   if (OUTGOING && (duration > 0) && *call[chan].num[CALLED]) {
 
     tm = localtime(&call[chan].connect);
 
     if ((call[chan].sondernummer[CALLED] != UNKNOWN) &&
-        (call[chan].provider == 33) &&
+        (call[chan].provider == DTAG) &&
         ((call[chan].zone < C_NETZ) || (call[chan].zone > E2_NETZ))) {
       switch (SN[call[chan].sondernummer[CALLED]].tarif) {
         case -1 : if (!strcmp(call[chan].num[CALLED] + 3, "11833")) /* Sonderbedingung Auskunft Inland */
@@ -654,24 +698,28 @@ void price(int chan, char *hint)
 #endif
         call[chan].pay = tpreis(call[chan].provider, call[chan].zone, call[chan].tz, tm->tm_hour, duration);
 
-      if ((duration > 600) && (call[chan].zone > 1) && (call[chan].provider == 33)) {
+      if ((duration > 600) && (call[chan].zone > CITYCALL) && (call[chan].provider == DTAG)) {
         onesec = call[chan].pay / duration;
         pay2 = (duration - 600) * onesec * 0.30;
 
-        sprintf(sx, "10plus DM %s - DM %s = DM %s",
+        sprintf(sx, "10plus %s %s - %s %s = %s %s",
+          WAEHRUNG,
           double2str(call[chan].pay, 6, 2, DEB),
+          WAEHRUNG,
           double2str(pay2, 6, 2, DEB),
+          WAEHRUNG,
           double2str(call[chan].pay - pay2, 6, 2, DEB));
 
         call[chan].pay -= pay2;
 
-        print_msg(PRT_NORMAL, sx);
+        /* print_msg(PRT_NORMAL, sx); FIXME */
       } /* if */
     }
     else
       call[chan].pay = pay2;
 
 
+    if (call[chan].tarifknown) {
     cheapest = UNKNOWN;
     payx = 99999.9;
 
@@ -681,8 +729,8 @@ void price(int chan, char *hint)
       if (p == preselect)
         prepreis = payy;
 
-      if (p == call[chan].tip)
-        tippreis = payy;
+        if (p == call[chan].hint)
+          hintpreis = payy;
 
       if ((payy > 0) && (payy < payx)) {
         payx = payy;
@@ -693,24 +741,28 @@ void price(int chan, char *hint)
     *sx = *sy = *sz = 0;
 
     if ((cheapest != UNKNOWN) && (cheapest != call[chan].provider))
-      sprintf(sx, "Cheapest 010%02d:%s DM %s, more payed DM %s",
-            cheapest, t[cheapest].Provider,
-            double2str(payx, 6, 2, DEB),
-            double2str(call[chan].pay - payx, 6, 2, DEB));
+        sprintf(sx, "Cheapest 010%02d:%s %s %s, more payed %s %s",
+              cheapest, t[cheapest].Provider, WAEHRUNG,
+              double2str(payx, 6, 3, DEB),
+              WAEHRUNG,
+              double2str(call[chan].pay - payx, 6, 3, DEB));
 
     if ((call[chan].provider != preselect) && (prepreis != -1.00))
-      sprintf(sy, "saved vs. preselect (010%02d:%s) DM %s",
+        sprintf(sy, " saving vs. preselect (010%02d:%s) %s %s",
         preselect, t[preselect].Provider,
-        double2str(prepreis - call[chan].pay, 6, 2, DEB));
+          WAEHRUNG,
+          double2str(prepreis - call[chan].pay, 6, 3, DEB));
 
-    if ((call[chan].tip != UNKNOWN) && (call[chan].tip != cheapest))
-      sprintf(sz, "saved vs. tip (010%02d:%s) DM %s",
-        call[chan].tip, t[call[chan].tip].Provider,
-        double2str(tippreis - call[chan].pay, 6, 2, DEB));
+      if ((call[chan].hint != UNKNOWN) && (call[chan].hint != cheapest))
+        sprintf(sz, " saving vs. hint (010%02d:%s) %s %s",
+          call[chan].hint, t[call[chan].hint].Provider,
+          WAEHRUNG,
+          double2str(hintpreis - call[chan].pay, 6, 3, DEB));
 
     if (*sx || *sy || *sz)
-      sprintf(hint, "HINT: %s, %s, %s LCR:%s", sx, sy, sz, ((cheapest == call[chan].provider) ? "OK" : "FAILED"));
+        sprintf(hint, "HINT: %s%s%s LCR:%s", sx, sy, sz, ((cheapest == call[chan].provider) ? "OK" : "FAILED"));
 
+#if DEBUG
     if ((fo = fopen(SPARBUCH, "r")) != (FILE *)NULL) {
       fscanf(fo, "%lg", &spar);
       fclose(fo);
@@ -722,6 +774,9 @@ void price(int chan, char *hint)
       fprintf(fo, "%g", spar);
       fclose(fo);
     } /* if */
+#endif
+
+    } /* if */
   } /* if */
 } /* price */
 #endif
@@ -729,19 +784,33 @@ void price(int chan, char *hint)
 
 void initTarife(char *msg)
 {
-  register char  *p;
-  auto     char   s[BUFSIZ], sx[BUFSIZ], Version[BUFSIZ], infos[BUFSIZ];
+  register char  *p, *p1;
+  auto     char   s[BUFSIZ], sx[BUFSIZ], Version[BUFSIZ], infos[BUFSIZ], fn[BUFSIZ];
   auto     FILE  *fi;
   auto     int    prefix = UNKNOWN, zone1 = UNKNOWN, zone2 = UNKNOWN;
-  auto	   int 	  day, hour1, hour2, pay2, version = UNKNOWN, ignore = 0;
+  auto     int    day, hour1, hour2, version = UNKNOWN, ignore = 0;
   auto	   int	  d, h, z;
-  auto     double pay1;
+  auto     int    nprovider = 0;
+  auto     double pay1, pay2;
+  auto     double taktpreis = (double)UNKNOWN;
+  auto     int    takt1 = UNKNOWN, takt2 = UNKNOWN;
 
 
   *msg = *infos = 0;
   line = 0;
 
-  if ((fi = fopen(TARIFCONF, "r")) != (FILE *)NULL) {
+  for (d = 0; d < MAXPROVIDER; d++) {
+    t[d].used = 0;
+
+    for (z = 0; z < MAXZONES; z++) {
+      t[d].takt1[z] = t[d].takt1[z] = UNKNOWN;
+      t[d].taktpreis[z] = (double)UNKNOWN;
+    } /* for */
+  } /* for */
+
+  sprintf(fn, "%s/tarif.conf", I4LCONFDIR);
+
+  if ((fi = fopen(fn, "r")) != (FILE *)NULL) {
     while (fgets(s, BUFSIZ, fi)) {
       line++;
 
@@ -780,7 +849,9 @@ void initTarife(char *msg)
   line = 0;
   prefix = UNKNOWN;
 
-  if ((fi = fopen(TARIFE, "r")) != (FILE *)NULL) {
+  sprintf(fn, "%s/tarif.dat", DATADIR);
+
+  if ((fi = fopen(fn, "r")) != (FILE *)NULL) {
 
     while (fgets(s, BUFSIZ, fi)) {
       line++;
@@ -825,20 +896,20 @@ void initTarife(char *msg)
                          } /* if */
 
                          t[prefix].Provider = strdup(p);
-                         t[prefix].takt1 = t[prefix].takt2 = UNKNOWN;
-                         t[prefix].taktpreis = (double)UNKNOWN;
+                         t[prefix].Verbindungsentgelt = 0.0;
 
-                         for (z = 0; z < MAXZONEN; z++)
+                         for (z = 0; z < MAXZONES; z++)
                            for (d = 0; d < MAXDAYS; d++)
                              for (h = 0; h < MAXSTUNDEN; h++)
-                               t[prefix].tarif[z][d][h] = UNKNOWN * SHIFT;
+                               t[prefix].tarif[z][d][h] = UNKNOWN;
 
                          sprintf(sx, "%02d", prefix);
 
                          if (*infos)
-                           strcat(infos, ", ");
+                           strcat(infos, ",");
 
                          strcat(infos, sx);
+                         nprovider++;
                        }
                        else {
                          sprintf(sx, "Invalid provider-number %d", prefix);
@@ -861,22 +932,23 @@ void initTarife(char *msg)
           	     } /* if */
                      break;
 
-          case 'A' : if (!ignore) { /* A:n/n od. A:0.12 Taktpreis oder L„nge */
+          case '+' : if (!ignore) { /* +:nnn Verbindungsentgelt pro Gespraech */
                	       if (prefix == UNKNOWN) {
-                         warning("Unexpected tag 'A'");
+                         warning("Unexpected tag 'I'");
                          break;
                        } /* if */
 
-                       if ((p = strchr(s, '/'))) {
-                         *p = 0;
-                         t[prefix].takt1 = atoi(s + 2);
-                         t[prefix].takt2 = atoi(p + 1);
-                         t[prefix].taktpreis = (double)UNKNOWN;
-                       }
-                       else {
-                         t[prefix].taktpreis = atof(s + 2);
-                         t[prefix].takt1 = t[prefix].takt2 = UNKNOWN;
-                       } /* else */
+                       t[prefix].Verbindungsentgelt = atof(s + 2);
+                     } /* if */
+                     break;
+
+          case '-' : if (!ignore) { /* -:nnn kostenlose Sekunden */
+                       if (prefix == UNKNOWN) {
+                         warning("Unexpected tag 'I'");
+                         break;
+                       } /* if */
+
+                       t[prefix].frei = atoi(s + 2);
           	     } /* if */
                      break;
 
@@ -896,18 +968,35 @@ void initTarife(char *msg)
                          break;
                        } /* if */
 
-                       if (t[prefix].takt1 + t[prefix].takt2 + t[prefix].taktpreis == (double)-3.0) {
-                         warning("Unexpected tag 'Z', please specify 'A' before 'Z'");
-                         break;
-                       } /* if */
+                       p = s + 2;
 
-                       if ((zone1 = zone2 = zones(s[2])) == UNKNOWN)
+                       if ((zone1 = zone2 = zones(*p)) == UNKNOWN)
                          break;
 
-                       if (s[3] == '-') {
-                         if ((zone2 = zones(s[4])) == UNKNOWN)
+                       p++;
+
+                       if (*p == '-') {
+                         p++;
+                         if ((zone2 = zones(*p)) == UNKNOWN)
                            break;
+                         p++;
                        } /* if */
+
+                       if (*p == ',') { /* Taktung */
+                         if ((p1 = strchr(p + 1, '/'))) {
+                           *p1 = 0;
+                           takt1 = atoi(p + 1);
+                           takt2 = atoi(p1 + 1);
+                           taktpreis = (double)UNKNOWN;
+                         }
+                         else {
+                           taktpreis = atof(p + 1);
+                           takt1 = takt2 = UNKNOWN;
+                         } /* else */
+                       }
+                       else
+                         warning("Missing \",Taktung\"");
+
           	     } /* if */
                      break;
 
@@ -957,12 +1046,16 @@ void initTarife(char *msg)
                        } /* else */
 
                        if (*p == '=') {
-                         pay1 = atof(p + 1) * SHIFT;
+                         pay1 = atof(p + 1);
                          pay2 = pay1;
 
                          hour2--;
 
                          for (z = zone1; z <= zone2; z++) {
+
+                           t[prefix].takt1[z] = takt1;
+                           t[prefix].takt2[z] = takt2;
+                           t[prefix].taktpreis[z] = taktpreis;
 
                            h = hour1;
 
@@ -997,7 +1090,8 @@ void initTarife(char *msg)
     } /* while */
 
     fclose(fi);
-    sprintf(msg, "Tarife Version %s loaded [Provider %s]", Version, infos);
+    sprintf(msg, "Tarife Version %s loaded [%d Provider (%s), %d Tarife]",
+      Version, nprovider, infos, nprovider * MAXZONES * MAXDAYS * MAXSTUNDEN);
   } /* if */
 } /* initTarife */
 
@@ -1015,30 +1109,220 @@ void exitTarife()
 } /* exitTarife */
 
 
+void initSondernummern()
+{
+  register char  *p1, *p2, *p3;
+  register int    tarif;
+  auto 	   FILE  *f;
+  auto	   char   s[BUFSIZ], msn[128], sinfo[256], linfo[256], fn[BUFSIZ];
+  auto	   double grund1, grund2, takt1, takt2;
+
+
+  sprintf(fn, "%s/sonderrufnummern.dat", DATADIR);
+
+  if ((f = fopen(fn, "r")) != (FILE *)NULL) {
+    while ((p1 = fgets(s, BUFSIZ, f))) {
+      if (*p1 != '#') {
+        if ((p2 = strchr(p1, '|'))) {
+          *p2 = 0;
+
+          p3 = p2 - 1;
+          while (*p3 == ' ')
+            *p3-- = 0;
+
+          strcpy(msn, p1);
+          p1 = p2 + 1;
+          if ((p2 = strchr(p1, '|'))) {
+            *p2 = 0;
+
+            if (!strcmp(p1, "City"))
+              tarif = 1;
+            else if (!strcmp(p1, "free"))
+              tarif = 0;
+            else
+              tarif = UNKNOWN;
+
+            p1 = p2 + 1;
+            if ((p2 = strchr(p1, '|'))) {
+              *p2 = 0;
+              grund1 = atof(p1);
+              p1 = p2 + 1;
+              if ((p2 = strchr(p1, '|'))) {
+                *p2 = 0;
+                grund2 = atof(p1);
+                p1 = p2 + 1;
+                if ((p2 = strchr(p1, '|'))) {
+                  *p2 = 0;
+                  takt1 = atof(p1);
+                  p1 = p2 + 1;
+                  if ((p2 = strchr(p1, '|'))) {
+                    *p2 = 0;
+              	    takt2 = atof(p1);
+              	    p1 = p2 + 1;
+              	    if ((p2 = strchr(p1, '|'))) {
+                      *p2 = 0;
+
+        	      p3 = p2 - 1;
+        	      while (*p3 == ' ')
+          	        *p3-- = 0;
+
+        	      while (*p1 == ' ')
+                        p1++;
+
+        	      strcpy(sinfo, p1);
+                      p1 = p2 + 1;
+                      if ((p2 = strchr(p1, '\n'))) {
+                        *p2 = 0;
+
+        	        p3 = p2 - 1;
+        	        while (*p3 == ' ')
+          	          *p3-- = 0;
+
+        	        while (*p1 == ' ')
+                          p1++;
+
+                        strcpy(linfo, p1);
+
+		        nSN++;
+                        SN = realloc(SN, sizeof(SonderNummern) * nSN);
+                        SN[nSN - 1].msn = strdup(msn);
+                        SN[nSN - 1].sinfo = strdup(sinfo);
+        	        SN[nSN - 1].tarif = tarif;
+                        SN[nSN - 1].grund1 = grund1;
+                        SN[nSN - 1].grund2 = grund2;
+                        SN[nSN - 1].takt1  = takt1;
+                        SN[nSN - 1].takt2  = takt2;
+                      } /* if */
+              	    } /* if */
+                  } /* if */
+                } /* if */
+              } /* if */
+            } /* if */
+          } /* if */
+        } /* if */
+      } /* if */
+    } /* while */
+
+    fclose(f);
+  } /* if */
+} /* initSondernummern */
+
+
+int is_sondernummer(char *num)
+{
+  register int i;
+
+
+  if ((strlen(num) >= interns0) && ((*num == '0') || (*num == '1')))
+    for (i = 0; i < nSN; i++)
+      if (!strncmp(num, SN[i].msn, strlen(SN[i].msn)))
+        return(i);
+
+  return(-1);
+} /* sondernummer */
+
+
 #ifdef STANDALONE
+
+int compare(const SORT *s1, const SORT *s2)
+{
+  return(s1->tarif > s2->tarif);
+} /* compare */
+
+
 int main(int argc, char *argv[], char *envp[])
 {
-  register int    prefix, z, d, h;
-  auto	   double n;
-  auto	   char	  why[BUFSIZ];
+  register int    prefix, z, d, h, n = 0, n1, cheapest = UNKNOWN;
+  auto     char   why[BUFSIZ], s[BUFSIZ];
+  auto	   double cheaptarif, providertarif, tarif;
+
 
   printf("Initializing ...\n");
 
   initTarife(why);
 
+  if (*why)
+    printf("%s\n", why);
+
   printf("sizeof(t) = %d\n\n", sizeof(t));
+
+  if (argc > 1) {
+    cheaptarif = 99999.9;
+    z = GERMANCALL; /* CITYCALL; */
 
   for (prefix = 0; prefix < MAXPROVIDER; prefix++) {
     if (t[prefix].used) {
-      printf("PROVIDER:%s (010%02d)\n", t[prefix].Provider, prefix);
 
-      for (z = 0; z < MAXZONEN; z++) {
-        printf("\tZone:%s:\n", zonen[z]);
+        tarif = tpreis(prefix, z, WT, 12, TEST);
+
+	if (prefix == DTAG)
+          providertarif = tarif;
+
+        if ((tarif > 0.0) && (tarif < cheaptarif)) {
+          cheaptarif = tarif;
+          cheapest = prefix;
+        } /* if */
+
+	sort[n].prefix = prefix;
+    	sort[n].tarif = tarif;
+        n++;
+
+      } /* if */
+    } /* for */
+
+    if (cheapest != UNKNOWN) {
+      tarif = t[cheapest].tarif[z][WT][12];
+
+      if (t[cheapest].takt1[z] == UNKNOWN)
+        sprintf(s, "DM %5.3f/%7.3fs", t[cheapest].taktpreis[z], tarif);
+      else
+        sprintf(s, "DM %5.3f/Min, Takt %d/%d", tarif, t[cheapest].takt1[z], t[cheapest].takt2[z]);
+
+      printf("Use 010%02d:%s, %s, costs DM %7.3f, saving DM %7.3f/%ds vs. DTAG\n",
+        cheapest, t[cheapest].Provider, s,
+        cheaptarif,
+        providertarif - cheaptarif, TEST);
+
+    } /* if */
+
+    qsort(sort, n, sizeof(SORT), compare);
+
+    for (n1 = 0; n1 < n; n1++)
+      printf("010%02d:%s\t\tDM %5.3f\n", sort[n1].prefix, t[sort[n1].prefix].Provider, sort[n1].tarif);
+
+  }
+  else { /* dump */
+    for (prefix = 0; prefix < MAXPROVIDER; prefix++) {
+      if (t[prefix].used) {
+        printf("PROVIDER:%s (010%02d)", t[prefix].Provider, prefix);
+
+        if (t[prefix].Verbindungsentgelt)
+          printf(" (zzgl. DM %6.3f/Verbindung)", t[prefix].Verbindungsentgelt);
+        if (t[prefix].frei)
+          printf(" (die ersten %d Sekunden frei)", t[prefix].frei);
+
+        printf("\n");
+
+        for (z = 0; z < MAXZONES; z++) {
+          if (zoneknown(prefix, z)) {
+
+            printf("\tZone:%s:", zonen[z]);
+
+            if (t[prefix].takt1[z] == UNKNOWN)
+              printf(" [Takt DM %6.3f/x s]\n", t[prefix].taktpreis[z]);
+            else
+              printf(" [Takt %d/%d]\n", t[prefix].takt1[z], t[prefix].takt2[z]);
+
           for (d = 0; d < MAXDAYS; d++) {
             printf("\t\t%s:\n", (d ? "Wochenende" : "Wochentag"));
+
             for (h = 0; h < MAXSTUNDEN; h++)
-              printf("\t\t\t%2d Uhr: %10.3f DM\n", h, tpreis(prefix, z, d, h, TEST));
+                printf("\t\t\t%2d Uhr: %10.3f %s, %10.3f DM\n",
+                  h, t[prefix].tarif[z][d][h],
+                  ((t[prefix].takt1[z] == UNKNOWN) ? "s" : "DM"),
+                  tpreis(prefix, z, d, h, TEST));
           } /* for */
+          } /* if */
       } /* for */
     } /* if */
   } /* for */
@@ -1047,22 +1331,26 @@ int main(int argc, char *argv[], char *envp[])
 
   for (prefix = 0; prefix < MAXPROVIDER; prefix++) {
     if (t[prefix].used) {
-      printf("%s (010%02d)",
-        t[prefix].Provider, prefix);
 
-      if (t[prefix].takt1 == UNKNOWN)
-        printf(", [DM %6.3f/%6f Sekunden]\n", t[prefix].taktpreis, (t[prefix].tarif[GERMANCALL][WT][16] / SHIFT));
-      else
-        printf(", [%d/%d] (%6.3f)\n", t[prefix].takt1, t[prefix].takt2, t[prefix].tarif[GERMANCALL][WE][13] / SHIFT);
+        printf("%s (010%02d):\n", t[prefix].Provider, prefix);
 
+        if (zoneknown(prefix, CITYCALL))
       printf("\t\t\tCITY    : %6.3f DM\n", tpreis(prefix, CITYCALL, WT, 16, TEST));
 
+        if (zoneknown(prefix, REGIOCALL))
       printf("\t\t\tREGIO   : %6.3f DM\n", tpreis(prefix, REGIOCALL, WT, 16, TEST));
+
+        if (zoneknown(prefix, GERMANCALL))
       printf("\t\t\tFERN    : %6.3f DM\n", tpreis(prefix, GERMANCALL, WT, 16, TEST));
+
+        if (zoneknown(prefix, D2_NETZ))
       printf("\t\t\tD2	    : %6.3f DM\n", tpreis(prefix, D2_NETZ, WT, 16, TEST));
+
+        if (zoneknown(prefix, INTERNET))
       printf("\t\t\tINTERNET: %6.3f DM\n", tpreis(prefix, INTERNET, WT, 16, TEST));
     } /* if */
   } /* for */
+  } /* else */
 
   exitTarife();
 

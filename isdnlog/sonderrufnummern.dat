@@ -164,6 +164,8 @@
 01914   |City|       |     |      |      | Online-Dienste AOL Zugang                        | Selbstwahlverbindungen zum Zugang Online-Dienst von AOL Es gelten die Preise fÅr CityCall Verbindungen
 0191023 |City|       |     |      |      | Online-Dienste 1&1                               |
 0191501	|?   |	     |	   |	  |	 | o.tel.o Online Zugang PPP                        |
+01928	|?   |	     |	   |	  |	 | Mobilcom Online Zugang, Tomorrow-Tarif	    |
+01929	|?   |	     |	   |	  |	 | Mobilcom Online Zugang, Freenet-Tarif	    |
 02000   |?   |       |     |      |      | Expo 2000 Hotline                                | Expo 2000 Hotline. Eine T-Net-Verbindung kostet 5 TE inkl. 60 Sek. + nach 60 Sek. 1 TE je angefangene 12 Sek. 12 12
 0800    |free|       |     |      |      | freecall 0800                                    | freecall 0800. Eine T-Net-Verbindung zu dieser Rufnummer ist kostenfrei.
 110     |free|       |     |      |      | Polizei/Notruf                                   | Polizeinotruf. Eine T-Net-Verbindung zu dieser Rufnummer ist kostenfrei.
@@ -221,4 +223,4 @@
 # QUELLE: Programm "t-tarife.exe" Version: 1.16  Stand: 07.1998
 # 	  http://www.telekom.de
 #	 http://www.regtp.de
-#         sowie eigene Recherchen, Stand: 06-Jan-99
+#         sowie eigene Recherchen, Stand: 14-Jan-99

@@ -1,4 +1,4 @@
-/* $Id: tools.h,v 1.25 1999/01/10 15:24:36 akool Exp $
+/* $Id: tools.h,v 1.26 1999/01/24 19:02:51 akool Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools.h,v $
+ * Revision 1.26  1999/01/24 19:02:51  akool
+ *  - second version of the new chargeint database
+ *  - isdnrep reanimated
+ *
  * Revision 1.25  1999/01/10 15:24:36  akool
  *  - "message = 0" bug fixed (many thanks to
  *    Sebastian Kanthak <sebastian.kanthak@muehlheim.de>)
@@ -316,7 +320,7 @@
 
 /****************************************************************************/
 
-#define LOG_VERSION "3.1"
+#define LOG_VERSION "3.2"
 
 /****************************************************************************/
 
@@ -325,6 +329,9 @@
 #define max(a,b)        (((a) > (b)) ? (a) : (b))
 #define min(a,b)        (((a) < (b)) ? (a) : (b))
 #define	abs(x)		(((x) < 0) ? -(x) : (x))
+
+#define UNKNOWN		-1
+#define	UNDEFINED	-2
 
 /****************************************************************************/
 
@@ -337,11 +344,11 @@
 
 /****************************************************************************/
 
-#define NUMSIZE      20
+#define NUMSIZE      30
 #define	FNSIZE	     64
 #define RETSIZE     128
 #define MAXRET	      5
-#define MAXZONES      6
+#define MAXZONES     19
 #define MAXCHAN       7
 #define MAXCARDS      2
 
@@ -350,6 +357,30 @@
 
 #define MAXUNKNOWN   50
 #define MAXCONNECTS  50
+
+/****************************************************************************/
+
+#define INTERN	      0
+#define CITYCALL      1
+#define REGIOCALL     2
+#define GERMANCALL    3
+#define C_NETZ        4
+#define C_MOBILBOX    5
+#define D1_NETZ       6
+#define D2_NETZ       7
+#define E_PLUS_NETZ   8
+#define E2_NETZ       9
+#define EURO_CITY    10
+#define EURO_1       11
+#define EURO_2       12
+#define WELT_1       13
+#define WELT_2       14
+#define WELT_3       15
+#define WELT_4       16
+#define INTERNET     17
+#define	GLOBALCALL   18
+
+#define	DTAG	     33
 
 /****************************************************************************/
 
@@ -644,8 +675,9 @@ typedef struct {
   int	  ctakt;
   int	  zone;
   int	  uid;
-  int	  tip;
+  int	  hint;
   int	  tz;
+  int	  tarifknown;
 } CALL;
 
 /****************************************************************************/
@@ -674,7 +706,7 @@ typedef struct {
   int	  usage[2];
   double  dur[2];
   int     eh;
-  double  dm;
+  double  pay;
   double  charge;
   double  rcharge;
   double  scharge;
@@ -697,7 +729,7 @@ typedef struct {
   int    err;
   double din;
   double dout;
-  double dm;
+  double pay;
   long	 ibytes;
   long	 obytes;
 } sum_calls;
@@ -710,7 +742,6 @@ typedef struct {
   time_t t;
   int    dir;
   double duration;
-  double dm;
   char   num[2][NUMSIZE];
   char   who[2][NUMSIZE];
   long	 ibytes;
@@ -722,6 +753,7 @@ typedef struct {
   char	 currency[32];
   double pay;
   int	 provider;
+  int	 zone;
 } one_call;
 
 /****************************************************************************/
@@ -799,6 +831,7 @@ _EXTERN char    	mlabel[BUFSIZ];
 _EXTERN char    *amtsholung;
 _EXTERN SonderNummern *SN;
 _EXTERN int	      nSN;
+_EXTERN	int     interns0;
 #undef _EXTERN
 
 /****************************************************************************/
@@ -860,7 +893,15 @@ _EXTERN char  *Providername(int number);
 _EXTERN int    iprintf(char *obuf, int chan, register char *fmt, ...);
 _EXTERN char  *qmsg(int type, int version, int val);
 _EXTERN char  *Myname;
-
+_EXTERN void   initTarife(char *msg);
+_EXTERN void   exitTarife(void);
+_EXTERN void   price(int chan, char *hint);
+_EXTERN char  *realProvidername(int prefix);
+_EXTERN void   preparecint(int chan, char *msg, char *hint);
+_EXTERN int    taktlaenge(int chan, char *why);
+_EXTERN void   initSondernummern(void);
+_EXTERN int    is_sondernummer(char *num);
+_EXTERN	char  *zonen[MAXZONES];
 #undef _EXTERN
 
 /****************************************************************************/

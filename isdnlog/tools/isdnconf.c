@@ -1,8 +1,8 @@
-/* $Id: isdnconf.c,v 1.20 1998/11/24 20:53:03 akool Exp $
+/* $Id: isdnconf.c,v 1.21 1999/01/24 19:02:45 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
- * Copyright 1995, 1998 by Andreas Kool (akool@isdn4linux.de)
+ * Copyright 1995, 1999 by Andreas Kool (akool@isdn4linux.de)
  *                     and Stefan Luethje (luethje@sl-gw.lake.de)
  *
  * This program is free software; you can redistribute it and/or modify
@@ -20,6 +20,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnconf.c,v $
+ * Revision 1.21  1999/01/24 19:02:45  akool
+ *  - second version of the new chargeint database
+ *  - isdnrep reanimated
+ *
  * Revision 1.20  1998/11/24 20:53:03  akool
  *  - changed my email-adress
  *  - new Option "-R" to supply the preselected provider (-R24 -> Telepassport)
@@ -1577,7 +1581,6 @@ static int readoldconfig(char *myname)
   	      known[knowns]->dur[CALLING] = known[knowns]->dur[CALLED] = 0.0;
   	      known[knowns]->eh = 0;
   	      known[knowns]->usage[DIALOUT] = known[knowns]->usage[DIALIN] = 0;
-  	      known[knowns]->dm = 0.0;
 
       	      known[knowns]->day     = -1;
       	      known[knowns]->charge  = 0.0;
