@@ -1,4 +1,4 @@
-/* $Id: processor.c,v 1.113 2000/08/17 21:34:43 akool Exp $
+/* $Id: processor.c,v 1.114 2000/08/27 15:18:20 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,20 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.114  2000/08/27 15:18:20  akool
+ * isdnlog-4.41
+ *  - fix a fix within Change_Channel()
+ *
+ *  - isdnlog/tools/dest/CDB_File_Dump.pm ... fixed bug with duplicates like _DEMD2
+ *
+ *    After installing this, please rebuild dest.cdb by:
+ *    $ cd isdnlog/tools/dest
+ *    $ rm dest.cdb
+ *    $ make alldata
+ *    $ su -c "cp ./dest.cdb /usr/lib/isdn"
+ *
+ *  - isdnlog/isdnlog/processor.c ... fixed warning
+ *
  * Revision 1.113  2000/08/17 21:34:43  akool
  * isdnlog-4.40
  *  - README: explain possibility to open the "outfile=" in Append-Mode with "+"
@@ -1809,8 +1823,8 @@ static void decode(int chan, register char *p, int type, int version, int tei)
       } /* if */
 
       if ((l > 50) || (l < 0)) {
-      	sprintf(sx, "Invalid length %d -- complete frame ignored!", l);
-        info(chan, PRT_SHOWNUMBERS, STATE_RING, sx);
+      	sprintf(s, "Invalid length %d -- complete frame ignored!", l);
+        info(chan, PRT_SHOWNUMBERS, STATE_RING, s);
         return;
       } /* if */
 
@@ -4603,7 +4617,7 @@ static void processctrl(int card, char *s)
 
         chan = call[chan].channel - 1;
 
-        if (!chanused[chan] || interns0) {
+        if (!chanused[chan]) {
           /* nicht --channel, channel muss unveraendert bleiben! */
           memcpy((char *)&call[chan], (char *)&call[5], sizeof(CALL));
           Change_Channel(5, chan);

@@ -1,4 +1,4 @@
-V:1.10-Germany [17-Aug-2000 23:28:02]
+V:1.10-Germany [27-Aug-2000 17:03:11]
 
 # Währungsformat
 U:%.3f DM
@@ -8,7 +8,7 @@ U:%.3f DM
 #
 # (C) Copyright 1999, 2000 by Andreas Kool (akool@isdn4linux.de)
 #
-# $Id: rate-de.dat,v 1.105 2000/08/17 21:34:42 akool Exp $
+# $Id: rate-de.dat,v 1.106 2000/08/27 15:18:19 akool Exp $
 #
 #
 # Das "A:" Tag muß folgendermaßen gefüllt werden:
@@ -206,6 +206,7 @@ N:01924924  # Internet Private CbC Telepassport        # 0102401924924  (User:be
 N:019251    # Talknet (Talkline)                       # 01050019251    (User:talknet: pw:talknet)
 N:0192658   # MSN Easysurfer (Worldcom/UUnet)	       # 0192658   	(User:beliebig; pw:beliebig)
 N:0192666120# MDS-Online                               # 010750192666120(User:mds; pw:online)
+N:0192666210# T-link                                   # 010750192666210(User:gast; pw:terra)
 N:01928111  # comsign AG surfsolution                  # 0101901928111  (User:beliebig; pw:beliebig)
 N:01928120  # eXpress-Net eXpress-Dial                 # 0101901928120  (User:beliebig; pw:beliebig)
 N:01928121  # netweaver netweaver                      # 0101901928121  (User:beliebig; pw:beliebig)
@@ -8364,12 +8365,8 @@ T:E,H/08-18=0.044/60
 T:E,H/18-21=0.042/60
 T:E,H/21-08=0.033/60
 Z:10 Mobilfunk
-A:_DEMCM
-A:_DEMC
-A:_DEMD1
-A:_DEMD2
-A:_DEME1
-A:_DEME2
+A:_DEMF
+T:[19.08.2000-30.09.2000]*/*=0.389/60 Sonderangebot
 T:*/*=0.399/60
 Z:200 Australien
 A:AU
@@ -22036,6 +22033,7 @@ A:DE
 T:*/*=0.07/60
 Z:10 Mobilfunk
 A:_DEMF
+T:[19.08.2000-30.09.2000]*/*=0.39/60 Sonderangebot
 T:*/*=0.40/60
 Z:40 Telefonauskunft Inland (Austria, dial 01051004366211811)
 A:+4366211811
@@ -22981,7 +22979,7 @@ C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Bei Preselection sekundengenaue Taktung
 D:dtag
-# G:01-Apr-2000
+# G:17-Aug-2000
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -22991,18 +22989,14 @@ A:112
 T:*/*=0
 Z:1-4 National
 A:+49
-T:W/08-17=0.078/60
-T:W/17-22=0.058/60
+T:W/08-17=0.063/60
+T:W/17-18=0.058/60
+T:W/18-22=0.044/60
 T:W/22-08=0.038/60
-T:E,H/08-22=0.058/60
+T:E,H/08-22=0.044/60
 T:E,H/22-08=0.038/60
 Z:10-15 Mobil
-A:_DEMCM
-A:_DEMC
-A:_DEMD1
-A:_DEMD2
-A:_DEME1
-A:_DEME2
+A:_DEMF
 T:W/08-17=0.58(60)/1
 T:W/17-08=0.48(60)/1
 T:E,H/*=0.48(60)/1
@@ -23125,7 +23119,7 @@ T:*/*=0
 #
 P:70,0 Arcor CbC
 B:01070
-# G:01-Mar-2000
+# G:20-Aug-2000
 C:Mannesmann Arcor
 C:Address:Mannesmann AG & Co., Kölner Str. 12, 65760 Eschborn
 C:Name:Arcor CbC
@@ -23141,14 +23135,14 @@ A:112
 T:*/*=0
 Z:1-3 Regio Plus
 T:W/07-18=0.14/60
-T:W/18-21=0.044/60
+T:W/18-21=0.042/60
 T:W/21-07=0.039/60
 T:E,H/07-21=0.044/60
 T:E,H/21-07=0.039/60
 Z:4 Fern
 A:+49
 T:W/07-18=0.18/60
-T:W/18-21=0.044/60
+T:W/18-21=0.042/60
 T:W/21-07=0.039/60
 T:E,H/07-21=0.044/60
 T:E,H/21-07=0.039/60
@@ -23684,6 +23678,11 @@ T:E/*=0.045/60
 Z:104 MDS-Online
 A:0192666120
 C:Homepage: http://www.mds-online.net/
+S:Internet by Call
+T:*/*=0.025/60
+Z:105 T-link
+A:0192666210
+C:Homepage: http://www.tlink.de/
 S:Internet by Call
 T:*/*=0.025/60
 Z:200 Europa

@@ -73,12 +73,12 @@ sub TIEHASH  {
 	while (<FH>) {
 	    chomp;
 	    if(/\+\d+,\d+:(.*)->(.*)/) {
-    		$self->{$1}=$2;
+    		$self->{data}{$1}=$2;
 	    }
 	}
 	close FH;
     }
-    open(FH, ">>$file");
+    open(FH, ">$file");
     $self->{'fh'} = \*FH;
     bless $self, $class;
     $self;
@@ -86,14 +86,24 @@ sub TIEHASH  {
 
 sub STORE {
     my ($self, $key, $value) = @_;
-    $self->{$key} = $value;
-    my $fh = $self->{fh};
-    print $fh "+",length($key),",",length($value),":",$key,"->",$value,"\n";
+    $self->{data}{$key} = $value;
 }
 
-# this should be inherited but seems not to be
 sub FETCH {
-    $_[0]->{$_[1]};
+    $_[0]->{data}{$_[1]};
 }
 
+sub EXISTS {
+    exists $_[0]->{data}{$_[1]};
+}
+
+# write all on closing
+sub DESTROY {
+    my $self = $_[0];
+    my $fh = $self->{fh};
+    my ($key, $value);
+    while (($key, $value) = each(%{ $self->{data} })) {
+	print $fh "+",length($key),",",length($value),":",$key,"->",$value,"\n";
+    }
+}
 1;

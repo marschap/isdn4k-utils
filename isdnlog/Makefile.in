@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.179 2000/08/17 21:34:42 akool Exp $
+## $Id: Makefile.in,v 1.180 2000/08/27 15:18:19 akool Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,20 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.180  2000/08/27 15:18:19  akool
+## isdnlog-4.41
+##  - fix a fix within Change_Channel()
+##
+##  - isdnlog/tools/dest/CDB_File_Dump.pm ... fixed bug with duplicates like _DEMD2
+##
+##    After installing this, please rebuild dest.cdb by:
+##    $ cd isdnlog/tools/dest
+##    $ rm dest.cdb
+##    $ make alldata
+##    $ su -c "cp ./dest.cdb /usr/lib/isdn"
+##
+##  - isdnlog/isdnlog/processor.c ... fixed warning
+##
 ## Revision 1.179  2000/08/17 21:34:42  akool
 ## isdnlog-4.40
 ##  - README: explain possibility to open the "outfile=" in Append-Mode with "+"
@@ -1371,7 +1385,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 4.40
+VERSION     = 4.41
 
 MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 \
 	      isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 \
