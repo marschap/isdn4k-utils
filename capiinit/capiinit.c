@@ -1,7 +1,12 @@
 /*
- * $Id: capiinit.c,v 1.3 2000/06/29 15:17:21 calle Exp $
+ * $Id: capiinit.c,v 1.4 2000/06/30 14:08:45 calle Exp $
  *
  * $Log: capiinit.c,v $
+ * Revision 1.4  2000/06/30 14:08:45  calle
+ * - creat /dev/capi if not exist, and mount capifs if available and devfs
+ *   not availabe or not mounted on /dev.
+ * - better error messages
+ *
  * Revision 1.3  2000/06/29 15:17:21  calle
  * Mount capifs on /dev/capi if available.
  *
@@ -30,6 +35,7 @@
 #include <sys/mman.h>
 #include <sys/stat.h>
 #include <sys/ioctl.h>
+#include <signal.h>
 #include <linux/isdn.h>
 #include <linux/b1lli.h>
 #include <linux/capi.h>
@@ -63,7 +69,7 @@ static FILE *fopen_with_errmsg(const char *path, const char *mode)
 	FILE *fp;
 	if ((fp = fopen(path, mode)) == NULL) {
 		int serrno = errno;
-		fprintf(stderr, "fopen(%s,%s) failed - %s (%d)\n",
+		fprintf(stderr, "ERROR: fopen(%s,%s) failed - %s (%d)\n",
 			path, mode, strerror(serrno), serrno);
 	}
 	return fp;
@@ -179,7 +185,7 @@ static struct contrprocinfo *load_contrprocinfo(int *lastcontrp)
 		char *s, *tmp, *target;
 		line++;
 		if ((p = STRUCTALLOC(struct contrprocinfo)) == 0) {
-			fprintf(stderr, "%s:%d: malloc failed\n", fn, line);
+			fprintf(stderr, "ERROR: %s:%d: malloc failed\n", fn, line);
 			goto error;
 		}
 		memset(p, 0, sizeof(*p));
@@ -220,7 +226,7 @@ static struct contrprocinfo *load_contrprocinfo(int *lastcontrp)
 	fclose(fp);
 	return list;
 parseerror:
-	fprintf(stderr, "%s:%d: parse error\n", fn, line);
+	fprintf(stderr, "ERROR: %s:%d: parse error\n", fn, line);
 error:
 	fclose(fp);
 	free_contrprocinfo(&list);
@@ -329,6 +335,50 @@ static int unload_filesystem(char *fstype)
 }
 
 /* ---------------- /proc/mounts ------------------------------------- */
+
+/*
+/dev/root / ext2 rw 0 0
+proc /proc proc rw 0 0
+/dev/hda1 /boot ext2 rw 0 0
+/dev/hda7 /src ext2 rw 0 0
+devpts /dev/pts devpts rw 0 0
+*/
+
+static char *mounted(char *fstype)
+{
+	static char *fn = "/proc/mounts";
+	static char mpret[PATH_MAX];
+	char buf[4096];
+	FILE *fp;
+	char *mp,*ftype;
+
+	if ((fp = fopen_with_errmsg(fn, "r")) == NULL)
+		return 0;
+	while (fgets(buf,sizeof(buf),fp)) {
+		char *t, *s;
+		buf[strlen(buf)-1] = 0;
+		s = skip_whitespace(buf);
+		t = skip_nonwhitespace(s);
+		mp = skip_whitespace(t);
+		t = skip_nonwhitespace(mp);
+		if (!*t) 
+			continue;
+		*t++ = 0;
+		strncpy(mpret, mp, sizeof(mpret)-1);
+		mpret[sizeof(mpret)-1] = 0;
+		ftype = skip_whitespace(t);
+		t = skip_nonwhitespace(ftype);
+		if (!*t)
+			continue;
+		*t++ = 0;
+		if (strcmp(ftype, fstype) == 0) {
+			fclose(fp);
+			return mpret;
+		}
+	}
+	fclose(fp);
+	return 0;
+}
 
 /* ---------------- /etc/capi.conf ----------------------------------- */
 
@@ -459,7 +509,7 @@ static int parse_cardoptions(char *opts, struct patchinfo *infop)
 			continue;
 		}
 
-		fprintf(stderr, "cardoptions: unknown option \"%s\"\n", option);
+		fprintf(stderr, "ERROR: cardoptions: unknown option \"%s\"\n", option);
 		*s = save;
 		return -1;
 	}
@@ -482,7 +532,7 @@ struct capicard *load_config(char *fn)
 
 		buf[strlen(buf)-1] = 0;
 		if ((p = STRUCTALLOC(struct capicard)) == 0) {
-			fprintf(stderr, "%s:%d: malloc failed\n", fn, line);
+			fprintf(stderr, "ERROR: %s:%d: malloc failed\n", fn, line);
 			goto error;
 		}
 		memset(p, 0, sizeof(*p));
@@ -526,7 +576,7 @@ struct capicard *load_config(char *fn)
 	 		tmp = t;
 			p->ioaddr = strtol(t, &tmp, 0);
 			if (*tmp) {
-				fprintf(stderr, "%s:%d: illegal ioaddr \"%s\"\n",
+				fprintf(stderr, "ERROR: %s:%d: illegal ioaddr \"%s\"\n",
 					fn, line, t);
 				goto error;
 			}
@@ -543,7 +593,7 @@ struct capicard *load_config(char *fn)
 			tmp = t;
 			p->irq = strtol(t, &tmp, 0);
 			if (*tmp) {
-				fprintf(stderr, "%s:%d: illegal irq \"%s\"\n",
+				fprintf(stderr, "ERROR: %s:%d: illegal irq \"%s\"\n",
 					fn, line, t);
 				goto error;
 			}
@@ -560,7 +610,7 @@ struct capicard *load_config(char *fn)
 			tmp = t;
 			p->memaddr = strtoul(t, &tmp, 0);
 			if (*tmp) {
-				fprintf(stderr, "%s:%d: illegal memaddr \"%s\"\n",
+				fprintf(stderr, "ERROR: %s:%d: illegal memaddr \"%s\"\n",
 					fn, line, t);
 				goto error;
 			}
@@ -577,7 +627,7 @@ struct capicard *load_config(char *fn)
 			tmp = t;
 			p->cardnr = strtol(t, &tmp, 0);
 			if (*tmp) {
-				fprintf(stderr, "%s:%d: illegal cardnr \"%s\"\n",
+				fprintf(stderr, "ERROR: %s:%d: illegal cardnr \"%s\"\n",
 					fn, line, t);
 				goto error;
 			}
@@ -589,7 +639,7 @@ struct capicard *load_config(char *fn)
 		if (!p->optionstring) goto nomem;
 
 		if (parse_cardoptions(p->optionstring, &p->patchinfo) < 0) {
-			fprintf(stderr, "%s:%d: illegal options \"%s\"\n",
+			fprintf(stderr, "ERROR: %s:%d: illegal options \"%s\"\n",
 					fn, line, p->optionstring);
 			goto error;
 		}
@@ -601,7 +651,7 @@ struct capicard *load_config(char *fn)
 	fclose(fp);
 	return list;
 nomem:
-	fprintf(stderr, "%s:%d: no memory\n", fn, line);
+	fprintf(stderr, "ERROR: %s:%d: no memory\n", fn, line);
 error:
 	fclose(fp);
 	free_config(&list);
@@ -629,11 +679,20 @@ static struct capicard *find_config(struct capicard *cards, char *driver)
 	return card;
 }
 
+static void show_confighead(void)
+{
+	printf("%s\t%-12s\t%s", "driver", "firmware", "proto");
+	printf("\tio");
+	printf("\tirq");
+	printf("\tmem");
+	printf("\tcardnr");
+	printf("\toptions");
+	printf("\n");
+}
+
 static void show_configone(struct capicard *p)
 {
-	printf("%s\t%s\t%s(%d)",
-		p->driver, p->firmware,
-		p->protoname, p->proto);
+	printf("%s\t%-12s\t%s", p->driver, p->firmware, p->protoname);
 	if (p->ioaddr) printf("\t0x%x", p->ioaddr);
 	else printf("\t-");
 	if (p->irq) printf("\t%d", p->irq);
@@ -649,6 +708,7 @@ static void show_configone(struct capicard *p)
 static void show_config(struct capicard *cards)
 {
 	struct capicard *p;
+	show_confighead();
 	for (p = cards; p; p = p->next)
 		show_configone(p);
 }
@@ -671,9 +731,9 @@ static int add_card(struct capicard *card)
 	ioctl_s.data = &carddef;
 	if (ioctl(capifd, CAPI_MANUFACTURER_CMD, &ioctl_s) >= 0)
 		return 0;
-	fprintf(stderr, "add_card(%s) failed - %s (%d)\n",
+	fprintf(stderr, "ERROR: add_card(%s) failed - %s (%d)\n",
 				card->driver, strerror(errno), errno);
-	fprintf(stderr, "CHECK THE KERNEL MESSAGES BEFORE SENDING MAIL.\n");
+	fprintf(stderr, "\n!! CHECK THE KERNEL MESSAGES BEFORE SENDING MAIL !!\n\n");
 	return -1;
 }
 
@@ -701,7 +761,7 @@ static void addpatchvalue(char *name, char *value, int len)
 {
    int nlen = strlen(name);
    if (patchlen + nlen + len + 2 >= sizeof(patcharea)) {
-      fprintf(stderr, "addpatchvalue: patcharea overflow (%s)\n" , name);
+      fprintf(stderr, "ERROR: addpatchvalue: patcharea overflow (%s)\n" , name);
       return;
    }
    patcharea[patchlen++] = ':';
@@ -813,6 +873,13 @@ static char *locate_firmware(struct capicard *card)
 	return 0;
 }
 
+static char signalinfo[PATH_MAX+64];
+
+static void sigdummy(int sig)
+{
+	fprintf(stderr, "ERROR: %s\n", signalinfo);
+}
+
 static struct capicard *load_firmware(int contr, struct capicard *card)
 {
 	capi_manufacturer_cmd ioctl_s;
@@ -838,12 +905,12 @@ static struct capicard *load_firmware(int contr, struct capicard *card)
 	}
 
 	if ((fn = locate_firmware(card)) == 0) {
-		fprintf(stderr, "load_firmware: controller %d: firmware file %s not found\n",
+		fprintf(stderr, "ERROR: controller %d: firmware file \"%s\" not found\n",
 				contr, card->firmware);
 		return next;
 	}
 	if (stat(fn, &st)) {
-		fprintf(stderr, "load_firmware: controller %d: stat failed for firmware file %s - %s (%d)\n",
+		fprintf(stderr, "ERROR: controller %d: stat failed for firmware file %s - %s (%d)\n",
 				contr, fn, strerror(errno), errno);
 		return next;
 	}
@@ -858,13 +925,13 @@ static struct capicard *load_firmware(int contr, struct capicard *card)
 		default:       type = "unknown file type"; break;
 	}
 	if (type != 0) {
-		fprintf(stderr, "load_firmware: controller %d: firmware file %s is a %s\n",
+		fprintf(stderr, "ERROR: controller %d: firmware file \"%s\" is a %s\n",
 				contr, fn, type);
 		return next;
 	}
 
 	if ((codefd = open(fn, O_RDONLY)) < 0) {
-		fprintf(stderr, "load_firmware: controller %d: failed to open firmware file %s - %s (%d)\n",
+		fprintf(stderr, "ERROR: controller %d: failed to open firmware file \"%s\" - %s (%d)\n",
 				contr, fn, strerror(errno), errno);
 		return next;
 	}
@@ -873,7 +940,7 @@ static struct capicard *load_firmware(int contr, struct capicard *card)
 	ldef.t4file.len = st.st_size;
 	ldef.t4file.data = mmap(0, st.st_size, PROT_READ, MAP_PRIVATE, codefd, 0);
 	if (ldef.t4file.data == (unsigned char *) -1) {
-		fprintf(stderr, "load_firmware: controller %d: mmap of firmware failed - %s (%d)\n",
+		fprintf(stderr, "ERROR: controller %d: mmap of firmware failed - %s (%d)\n",
 				contr, strerror(errno), errno);
 		return next;
 	}
@@ -886,11 +953,21 @@ static struct capicard *load_firmware(int contr, struct capicard *card)
 
 	ioctl_s.cmd = AVMB1_LOAD_AND_CONFIG;
 	ioctl_s.data = &ldef;
+	snprintf(signalinfo, sizeof(signalinfo), 
+		"controller %d: timeout while loading \"%s\"", contr, fn);
+	signal(SIGALRM, sigdummy);
+	alarm(10);
 	if (ioctl(capifd, CAPI_MANUFACTURER_CMD, &ioctl_s) < 0) {
-		fprintf(stderr, "load_firmware: controller %d: load failed - %s (%d)\n", contr, strerror(errno), errno);
-		fprintf(stderr, "load_firmware: check the kernel messages.\n");
+		if (errno != EINTR) {
+			fprintf(stderr, "ERROR: controller %d: firmware load failed - %s (%d)\n", contr, strerror(errno), errno);
+			fprintf(stderr, "\n!! CHECK THE KERNEL MESSAGES BEFORE SENDING MAIL !!\n\n");
+		}
+		alarm(0);
+		signal(SIGALRM, SIG_DFL);
 		return next;
 	}
+	alarm(0);
+	signal(SIGALRM, SIG_DFL);
 	munmap(ldef.t4file.data, ldef.t4file.len);
 	close(codefd);
 	return next;
@@ -985,6 +1062,9 @@ static int check_for_capifs(void)
 {
 	if (filesystem_available("capifs"))
 		return 0;
+	load_filesystem("capifs");
+	if (filesystem_available("capifs")) 
+		return 0;
 	if (filesystem_available("devfs"))
 		return 0;
 	load_filesystem("capifs");
@@ -994,6 +1074,42 @@ static int check_for_capifs(void)
 	return -1;
 }
 
+static int checkdir(char *dir)
+{
+	struct stat st;
+	if (stat(dir, &st) < 0)
+		return -1;
+	if (S_ISDIR(st.st_mode))
+		return 0;
+	return -1;
+}
+
+static int check_for_capifs_mounted(void)
+{
+	char *mp;
+	if (filesystem_available("devfs")) {
+		if ((mp = mounted("devfs")) != 0 && strcmp(mp, "/dev/") == 0)
+			return 0;
+	}
+	if (filesystem_available("capifs")) {
+		if ((mp = mounted("capifs")) != 0 && strcmp(mp, "/dev/capi") == 0)
+			return 0;
+		if (checkdir("/dev/capi") < 0) {
+			unlink("/dev/capi");
+			if (mkdir("/dev/capi", 0755) < 0) {
+				fprintf(stderr, "ERROR: mkdir(/dev/capi) failed - %s (%d)\n",
+					strerror(errno), errno);
+				return -1;
+			}
+		}
+		system("mount -t capifs -omode=0666 capifs /dev/capi");
+		if ((mp = mounted("capifs")) != 0 && strcmp(mp, "/dev/capi") == 0)
+			return 0;
+		fprintf(stderr, "ERROR: cound't mount capifs on /dev/capi\n");
+		return -1;
+	}
+	return -1;
+}
 static int prestartcheck(void)
 {
 	if (check_superuser() < 0) return -1;
@@ -1001,7 +1117,8 @@ static int prestartcheck(void)
 	if (check_for_kernelcapi() < 0) return -1;
 	if (check_for_capi() < 0) return -1;
 	if (check_for_devcapi() < 0) return -1;
-	if (check_for_capifs() < 0) return -1;
+	if (check_for_capifs() < 0) return 0; /* only warning */
+	if (check_for_capifs_mounted() < 0) return -1;
 	return 0;
 }
 
@@ -1022,6 +1139,7 @@ int main_start(void)
 	struct capicard *cards, *card;
 	struct contrprocinfo *cpinfo, *p;
 	int contr, lastcontr;
+	int ret = 0;
 
 	if (prestartcheck() < 0)
 		return -1;
@@ -1030,7 +1148,6 @@ int main_start(void)
 	capifd = open(capidevname, O_RDWR);
 
 	cards = load_config(configfilename);
-	show_config(cards);
 	for (card = cards; card; card = card->next) {
 		if (!driver_loaded(card->driver))
 			load_driver(card->driver);
@@ -1047,6 +1164,8 @@ int main_start(void)
 		cpinfo = load_contrprocinfo(NULL);
 		p = find_contrprocinfo(cpinfo, contr);
 		thiscard = find_config(card, p->driver);
+		if (p->state ==	CARD_LOADING)
+			reset_controller(contr);
 		if (p->state == CARD_DETECTED) {
 			if (thiscard) {
 				card = load_firmware(contr, thiscard);
@@ -1054,6 +1173,21 @@ int main_start(void)
 				fprintf(stderr,"ERROR: missing config entry for controller %d driver %s name %s\n",
 					p->contr, p->driver, p->name);
 			}
+		}
+		free_contrprocinfo(&cpinfo);
+		if (thiscard) card = thiscard->next;
+	}
+	card = cards;
+	cpinfo = load_contrprocinfo(&lastcontr);
+	for (contr = 1; contr <= lastcontr; contr++) {
+		struct capicard *thiscard;
+		cpinfo = load_contrprocinfo(NULL);
+		p = find_contrprocinfo(cpinfo, contr);
+		thiscard = find_config(card, p->driver);
+		if (p->state == CARD_DETECTED && thiscard) {
+			fprintf(stderr,"ERROR: failed to load firmware for controller %d driver %s name %s\n",
+					p->contr, p->driver, p->name);
+			ret = 3;
 		}
 		free_contrprocinfo(&cpinfo);
 		if (thiscard) card = thiscard->next;
@@ -1066,11 +1200,7 @@ int main_start(void)
 	free_config(&cards);
 	close(capifd);
 
-	if (filesystem_available("capifs")) {
-		system("mount -t capifs -omode=0666 capifs /dev/capi");
-	}
-
-	return 0;
+	return ret;
 }
 
 /* ------------------------------------------------------------------- */
@@ -1080,6 +1210,7 @@ int main_stop(void)
 	struct capicard *cards, *card;
 	struct contrprocinfo *cpinfo, *p;
 	int contr, lastcontr;
+	char *mp;
 
 	if (prestopcheck() < 0)
 		return -1;
@@ -1123,11 +1254,23 @@ int main_stop(void)
 	unload_module("capidrv");
 	unload_module("kernelcapi");
 	unload_module("capiutil");
-	if (filesystem_available("capifs")) {
-		umount("/dev/capi");
+	if ((mp = mounted("capifs")) != 0 && strcmp(mp, "/dev/capi") == 0)
+		system("umount /dev/capi");
+	if (filesystem_available("capifs"))
 		unload_filesystem("capifs");
-	}
+	return 0;
+}
 
+int main_show(void)
+{
+	struct capicard *cards;
+	cards = load_config(configfilename);
+	if (cards == 0) {
+		fprintf(stderr,"ERROR: no cards configured in %s\n",
+				configfilename);
+		return -1;
+	}
+	show_config(cards);
 	return 0;
 }
 
@@ -1138,6 +1281,7 @@ static void usage(void)
     fprintf(stderr, "Usage: capiinit [OPTION]\n");
     fprintf(stderr, "   or: capiinit [OPTION] start\n");
     fprintf(stderr, "   or: capiinit [OPTION] stop\n");
+    fprintf(stderr, "   or: capiinit [OPTION] show\n");
     fprintf(stderr, "Setup or unsetup CAPI2.0 Controllers\n");
     fprintf(stderr, "   -c, --config filename  (default %s)\n", configfilename);
     fprintf(stderr, "   -d, --debug            save patchvalues for debugging\n");
@@ -1188,6 +1332,8 @@ int main(int ac, char *av[])
 			return main_start();
 		else if (strcmp(av[optind], "stop") == 0)
 			return main_stop();
+		else if (strcmp(av[optind], "show") == 0)
+			return main_show();
 	}
 	usage();
 	return 1;
