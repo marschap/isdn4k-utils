@@ -1,4 +1,4 @@
-/* $Id: isdnlog.c,v 1.69 2003/07/25 22:18:03 tobiasb Exp $
+/* $Id: isdnlog.c,v 1.70 2004/01/04 02:22:53 tobiasb Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,9 @@
  * along with this program; if not, write to the Free Software
  *
  * $Log: isdnlog.c,v $
+ * Revision 1.70  2004/01/04 02:22:53  tobiasb
+ * Show supported database(s) at startup.
+ *
  * Revision 1.69  2003/07/25 22:18:03  tobiasb
  * isdnlog-4.65:
  *  - New values for isdnlog option -2x / dual=x with enable certain
@@ -1609,6 +1612,26 @@ int main(int argc, char *argv[], char *envp[])
 #endif
 #ifdef ORACLE
 	    oracle_dbOpen();
+#endif
+
+#if defined(POSTGRES)||defined(MYSQLDB)||defined(ORACLE)
+			print_msg(PRT_NORMAL, "Supported SQL-database(s):%s%s%s\n",
+#ifdef POSTGRES
+			          " Postgres95",
+#else
+			          "",
+#endif
+#ifdef MYSQLDB
+			          " MySQL",
+#else
+			          "",
+#endif
+#ifdef ORACLE
+			          " Oracle"
+#else
+			          ""
+#endif
+			         );
 #endif
 
 	    sprintf(s, "%s%s", mycountry, myarea);
