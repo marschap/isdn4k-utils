@@ -1,4 +1,4 @@
-/* $Id: capiinfo.c,v 1.8 2003/03/11 13:36:27 paul Exp $
+/* $Id: capiinfo.c,v 1.9 2003/08/02 14:50:21 keil Exp $
  *
  * A CAPI application to get infomation about installed controllers
  *
@@ -17,6 +17,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: capiinfo.c,v $
+ * Revision 1.9  2003/08/02 14:50:21  keil
+ * fix wrong b3support bits
+ *
  * Revision 1.8  2003/03/11 13:36:27  paul
  * Fixed wrapping of GNU license (only obvious on tty > 80 columns).
  *
@@ -99,11 +102,11 @@ struct bittext b3support[] = {
 /*  0 */ { 0x0001, "Transparent" },
 /*  1 */ { 0x0002, "T.90NL, T.70NL, T.90" },
 /*  2 */ { 0x0004, "ISO 8208 (X.25 DTE-DTE)" },
-/*  3 */ { 0x0010, "X.25 DCE" },
-/*  4 */ { 0x0020, "T.30 for fax group 3" },
-/*  5 */ { 0x0040, "T.30 for fax group 3 with extensions" },
-/*  6 */ { 0x0080, "reserved" },
-/*  7 */ { 0x0100, "Modem" },
+/*  3 */ { 0x0008, "X.25 DCE" },
+/*  4 */ { 0x0010, "T.30 for fax group 3" },
+/*  5 */ { 0x0020, "T.30 for fax group 3 with extensions" },
+/*  6 */ { 0x0040, "reserved" },
+/*  7 */ { 0x0080, "Modem" },
  { 0, 0 }
 };
 
