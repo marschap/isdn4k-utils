@@ -1,4 +1,4 @@
-/* $Id: takt_de.c,v 1.10 1999/03/07 18:19:40 akool Exp $
+/* $Id: takt_de.c,v 1.11 1999/03/10 08:35:59 paul Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: takt_de.c,v $
+ * Revision 1.11  1999/03/10 08:35:59  paul
+ * use DATADIR from "make config" phase instead of hardcoded /usr/lib/isdn
+ *
  * Revision 1.10  1999/03/07 18:19:40  akool
  * - new 01805 tarif of DTAG
  * - new March 1999 tarife
@@ -113,11 +116,7 @@
 #include "isdnlog.h"
 #endif
 
-#define SPARBUCH  "/etc/isdn/sparbuch"
-
-#ifndef DATADIR
-#define DATADIR	  "/usr/lib/isdn"
-#endif
+#define SPARBUCH  I4LCONFDIR "/sparbuch"
 
 #define TEST        181 /* Sekunden Verbindung kostet? */
 

@@ -1,4 +1,4 @@
-/* $Id: sondernummern.c,v 1.2 1999/03/07 18:19:02 akool Exp $
+/* $Id: sondernummern.c,v 1.3 1999/03/10 08:35:57 paul Exp $
  *
  * Gebuehrenberechnung fuer Sonderrufnummern
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: sondernummern.c,v $
+ * Revision 1.3  1999/03/10 08:35:57  paul
+ * use DATADIR from "make config" phase instead of hardcoded /usr/lib/isdn
+ *
  * Revision 1.2  1999/03/07 18:19:02  akool
  * - new 01805 tarif of DTAG
  * - new March 1999 tarife
@@ -95,12 +98,9 @@
 #include "isdnlog.h"
 #endif
 
-#ifndef DATADIR
-#define DATADIR	  "/usr/lib/isdn"
-#endif
-
 #ifdef STANDALONE
 
+#undef DATADIR	/* already defined via -DDATADIR=... */
 #define DATADIR   ".."
 
 #define SO_FAIL      -3

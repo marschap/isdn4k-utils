@@ -1,4 +1,4 @@
-/* $Id: takt_nl.c,v 1.6 1999/01/24 19:02:09 akool Exp $
+/* $Id: takt_nl.c,v 1.7 1999/03/10 08:36:03 paul Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -240,8 +240,8 @@ static int tarifzeit(struct tm *tm, char *why)
 */
 
 static int   zeit[24] = { 4, 4, 5, 5, 5, 0, 0, 0, 0, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 3, 4, 4, 4 };
-static char *zeiten[6] = { "vrijetijd", "ochtend", "middag", "vrijetijd", "avond", "nacht" };
-static char *zonen[4] = { "CityCall", "RegioCall", "GermanCall", "GlobalCall" };
+static char *zeiten[] = { "vrijetijd", "ochtend", "middag", "vrijetijd", "avond", "nacht" };
+static char *zonen[] = { "lokaal-0", "lokaal", "interlokaal", "internationaal" };
 
 
 static float gebuehr[2][6][4][3] =
@@ -356,7 +356,7 @@ float taktlaenge(int chan, char *description)
 
     if (call[chan].sondernummer[CALLED] != -1) {
       switch (SN[call[chan].sondernummer[CALLED]].tarif) {
-        case  0 : if (description) sprintf(description, "FreeCall");  /* Free of charge */
+        case  0 : if (why) sprintf(why, "FreeCall");  /* Free of charge */
               	  return(60 * 60 * 24);              /* one day should be enough ;-) */
 
         case  1 : zone = 1;                          /* CityCall */
@@ -371,7 +371,7 @@ float taktlaenge(int chan, char *description)
     	    	  else
     	    	    takt = SN[call[chan].sondernummer[CALLED]].takt2;
 
-                  if (description) strcpy(description, SN[call[chan].sondernummer[CALLED]].sinfo);
+                  if (why) strcpy(why, SN[call[chan].sondernummer[CALLED]].sinfo);
 		  return(takt);
                   break;
 

@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.54 1999/03/07 18:18:21 akool Exp $
+## $Id: Makefile.in,v 1.55 1999/03/10 08:35:48 paul Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,9 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.55  1999/03/10 08:35:48  paul
+## use DATADIR from "make config" phase instead of hardcoded /usr/lib/isdn
+##
 ## Revision 1.54  1999/03/07 18:18:21  akool
 ## - new 01805 tarif of DTAG
 ## - new March 1999 tarife
@@ -432,7 +435,7 @@ SERVICEFILE = /etc/services
 
 VERSION     = 3.03
 
-MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 isdnlog/isdnlog.users.5 isdnrep/isdnrep.1 isdnconf/isdnconf.1
+MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 isdnlog/isdnlog.users.5 isdnrep/isdnrep.1 isdnconf/isdnconf.1
 
 ifeq ($(POSTGRES),1)
 DEFS       += -DPOSTGRES
@@ -455,6 +458,8 @@ DEFS       += \
                -DVERSION=\"$(VERSION)\"   \
                -DI4LVERSION=\"$(I4LVERSION)\"   \
 	       -D@NATION_MACRO@=1		\
+               -DDATADIR=\"$(DATADIR)\"		\
+               -DI4LCONFDIR=\"$(I4LCONFDIR)\"	\
                 $(INCLUDE)
 
 %.o: %.c

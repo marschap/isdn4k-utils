@@ -35,6 +35,7 @@ datadir=${CONFIG_DATADIR:-"/usr/lib/isdn"}
 bindir=${CONFIG_BINDIR:-"/usr/bin"}
 sbindir=${CONFIG_SBINDIR:-"/sbin"}
 mandir=${CONFIG_MANDIR:-"/usr/man"}
+datadir=${CONFIG_DATADIR:-"/usr/lib/isdn"}
 
 I4LCONFDIR=`eval echo $I4LCONFDIR`
 OLDCONFDIR=`eval echo $OLDCONFDIR`
@@ -60,7 +61,10 @@ datadir=`eval echo $datadir`
 bindir=`eval echo $bindir`
 sbindir=`eval echo $sbindir`
 mandir=`eval echo $mandir`
+datadir=`eval echo $datadir`
 MANDATE_CALLERID=`grep CHECKIN isdnlog/callerid.conf.5.in | awk '{print $4}'`
+MANDATE_ISDN_CONF=`grep CHECKIN isdnlog/isdn.conf.5.in | awk '{print $4}'`
+MANDATE_ISDNFORMAT=`grep CHECKIN isdnlog/isdnformat.5.in | awk '{print $4}'`
 MANDATE_ISDNLOG5=`grep CHECKIN isdnlog/isdnlog.5.in | awk '{print $4}'`
 MANDATE_ISDNLOG8=`grep CHECKIN isdnlog/isdnlog.8.in | awk '{print $4}'`
 MANDATE_ISDNLOG_USERS=`grep CHECKIN isdnlog/isdnlog.users.5.in | awk '{print $4}'`
@@ -220,9 +224,11 @@ AC_SUBST(NATION_MACRO)
 AC_SUBST(CONFIG_KERNELDIR)
 AC_SUBST(I4LVERSION)
 AC_SUBST(MANDATE_CALLERID)
+AC_SUBST(MANDATE_ISDN_CONF)
+AC_SUBST(MANDATE_ISDNFORMAT)
 AC_SUBST(MANDATE_ISDNLOG5)
 AC_SUBST(MANDATE_ISDNLOG8)
 AC_SUBST(MANDATE_ISDNLOG_USERS)
 AC_SUBST(MANDATE_ISDNREP)
 AC_SUBST(MANDATE_ISDNCONF)
-AC_OUTPUT(Makefile isdnlog/callerid.conf.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 isdnlog/isdnlog.users.5 isdnrep/isdnrep.1 isdnconf/isdnconf.1)
+AC_OUTPUT(Makefile isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 isdnlog/isdnformat.5 isdnlog/isdnlog.8 isdnlog/isdnlog.users.5 isdnrep/isdnrep.1 isdnconf/isdnconf.1)
