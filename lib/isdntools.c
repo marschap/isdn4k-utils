@@ -1,4 +1,4 @@
-/* $Id: isdntools.c,v 1.11 1997/04/15 00:20:17 luethje Exp $
+/* $Id: isdntools.c,v 1.12 1997/05/09 23:31:06 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -19,6 +19,11 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdntools.c,v $
+ * Revision 1.12  1997/05/09 23:31:06  luethje
+ * isdnlog: new switch -O
+ * isdnrep: new format %S
+ * bugfix in handle_runfiles()
+ *
  * Revision 1.11  1997/04/15 00:20:17  luethje
  * replace variables: some bugfixes, README comleted
  *
@@ -348,8 +353,10 @@ int handle_runfiles(const char *_progname, char **_devices, int flag)
 	static char   progname[SHORT_STRING_SIZE] = "";
   static char **devices = NULL;
   auto   char   string[PATH_MAX];
+  auto   char   string2[SHORT_STRING_SIZE];
   auto   char  *Ptr = NULL;
   auto   int    RetCode = -1;
+	auto   FILE  *fp;
 
 
 	if (progname[0] == '\0' || devices == NULL)
@@ -406,8 +413,20 @@ int handle_runfiles(const char *_progname, char **_devices, int flag)
 		while (*devices != NULL)
 		{
 			sprintf(string,"%s%c%s%s",LOCKDIR,C_SLASH,LOCKFILE,*devices);
-			if (unlink(string))
-					print_msg("Can not remove file %s (%s)!\n", *devices, strerror(errno));
+
+			if ((fp = fopen(string, "r")) != NULL)
+			{
+				if (fgets(string2,SHORT_STRING_SIZE,fp) != NULL)
+				{
+					if (atoi(string2) == (int)getpid())
+					{
+						if (unlink(string))
+							print_msg("Can not remove file %s (%s)!\n", string, strerror(errno));
+					}
+				}
+
+				fclose(fp);
+			}
 
 			devices++;
 		}

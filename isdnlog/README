@@ -2031,6 +2031,12 @@ angegeben werden.
      ACHTUNG: Andere Bedeutung als in frueheren Versionen!
      (stdout="value")
 
+ -OX Angabe einer Datei, an der der Output von Option -mx (stderr) umgelenkt
+     werden soll. Nur gueltig mit Option -m zusammen!
+     Es ist moeglich parallel die Option -C X zu setzen. Dann wird
+     sowohl auf der Console als auch in der Datei die Ausgabe ausgegeben.
+     (outfile="value")
+
  -lX Angabe der gewuenschten Meldungen, die in's syslog eingetragen
      werden sollen
      (syslog="value")
@@ -2546,6 +2552,7 @@ Die Optionen von isdnrep haben im einzelnen folgende Funktion:
                      %O: Gibt den OUTPUT-Datendurchsatz an.
                      %P: Gibt den INPUT-Datendurchsatz pro Sekunde an.
                      %p: Gibt den OUTPUT-Datendurchsatz pro Sekunde an.
+                     %S: Gibt die SI an.
 
                      Defaultmaessig ist der folgende String fuer den isdnrep
                      (nicht HTML) eingestellt:

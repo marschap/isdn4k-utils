@@ -1,4 +1,4 @@
-/* $Id: functions.c,v 1.6 1997/04/08 00:02:12 luethje Exp $
+/* $Id: functions.c,v 1.7 1997/05/09 23:30:45 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,11 @@
  * along with this program; if not, write to the Free Software
  *
  * $Log: functions.c,v $
+ * Revision 1.7  1997/05/09 23:30:45  luethje
+ * isdnlog: new switch -O
+ * isdnrep: new format %S
+ * bugfix in handle_runfiles()
+ *
  * Revision 1.6  1997/04/08 00:02:12  luethje
  * Bugfix: isdnlog is running again ;-)
  * isdnlog creates now a file like /var/lock/LCK..isdnctrl0
@@ -84,6 +89,9 @@ void _Exit(char *File, int Line, int RetCode) /* WARNING: RetCode==-9 does _not_
   } /* if */
 
   closelog();
+
+	if (fout)
+		fclose(fout);
 
 #ifdef POSTGRES
   dbClose();
@@ -267,14 +275,23 @@ int print_msg(int Level, const char *fmt, ...)
   } /* if */
 
   if (Level & message)
+  {
     if (fcons == NULL) {
       fputs(width ? s : String, stderr);
       fflush(stderr);
     }
-    else {
+    else 
+    if (!fout){
       fputs(width ? s : String, fcons);
       fflush(fcons);
     } /* else */
+
+    if (fout)
+    {
+      fputs(width ? s : String, fout);
+      fflush(fout);
+    }
+  }
 
   if (Level & xinfo)
     print_from_server(String);

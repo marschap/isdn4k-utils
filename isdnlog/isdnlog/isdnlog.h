@@ -1,4 +1,4 @@
-/* $Id: isdnlog.h,v 1.5 1997/04/08 00:02:17 luethje Exp $
+/* $Id: isdnlog.h,v 1.6 1997/05/09 23:30:50 luethje Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,11 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnlog.h,v $
+ * Revision 1.6  1997/05/09 23:30:50  luethje
+ * isdnlog: new switch -O
+ * isdnrep: new format %S
+ * bugfix in handle_runfiles()
+ *
  * Revision 1.5  1997/04/08 00:02:17  luethje
  * Bugfix: isdnlog is running again ;-)
  * isdnlog creates now a file like /var/lock/LCK..isdnctrl0
@@ -188,6 +193,7 @@ extern socket_queue *sockets;
 _EXTERN FILE   *flog;    /* /var/adm/isdn.log          */
 _EXTERN FILE   *fcons;   /* /dev/ttyX      (or stderr) */
 _EXTERN FILE   *fprot;   /* /tmp/isdnctrl0 	       */
+_EXTERN FILE   *fout;    /* outfile 	       */
 
 _EXTERN int     first_descr;
 _EXTERN int     chan;
@@ -230,6 +236,7 @@ _EXTERN int	width;
 _EXTERN	int	watchdog;
 _EXTERN char   *isdnctrl;
 _EXTERN	char    isdnctrl2[FNSIZE];
+_EXTERN	char   *outfile;
 
 _EXTERN IFO     ifo[ISDN_MAX_CHANNELS];
 _EXTERN IO      io[ISDN_MAX_CHANNELS];

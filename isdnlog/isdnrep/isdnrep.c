@@ -1,4 +1,4 @@
-/* $Id: isdnrep.c,v 1.17 1997/05/06 22:13:31 luethje Exp $
+/* $Id: isdnrep.c,v 1.18 1997/05/09 23:30:55 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -20,6 +20,11 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnrep.c,v $
+ * Revision 1.18  1997/05/09 23:30:55  luethje
+ * isdnlog: new switch -O
+ * isdnrep: new format %S
+ * bugfix in handle_runfiles()
+ *
  * Revision 1.17  1997/05/06 22:13:31  luethje
  * bugfixes in HTML-Code of the isdnrep
  *
@@ -988,6 +993,9 @@ static int print_line(int status, one_call *cur_call, int computed, char *overla
 				/* Out-Bytes per second: */
 				/* Benoetigt Range! */
 				case 'p': colsize[i] = append_string(&string,*fmtstring,set_byte_string(GET_OUT|GET_BPS,cur_call->duration?cur_call->obytes/(double)cur_call->duration:0.0));
+				          break;
+				/* SI: */
+				case 'S': colsize[i] = append_string(&string,*fmtstring,int2str(cur_call->si,2));
 				          break;
 				/* there are dummy entries */
 				case 'c': 

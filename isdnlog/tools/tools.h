@@ -1,4 +1,4 @@
-/* $Id: tools.h,v 1.12 1997/05/04 20:20:05 luethje Exp $
+/* $Id: tools.h,v 1.13 1997/05/09 23:31:00 luethje Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,11 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools.h,v $
+ * Revision 1.13  1997/05/09 23:31:00  luethje
+ * isdnlog: new switch -O
+ * isdnrep: new format %S
+ * bugfix in handle_runfiles()
+ *
  * Revision 1.12  1997/05/04 20:20:05  luethje
  * README completed
  * isdnrep finished
@@ -343,32 +348,33 @@
 
 /* Keywords for parameter file */
 
-#define CONF_SEC_OPT    "OPTIONS"
-#define CONF_ENT_DEV    "DEVICE"
-#define CONF_ENT_LOG    "LOG"
-#define CONF_ENT_FLUSH  "FLUSH"
-#define CONF_ENT_PORT   "PORT"
-#define CONF_ENT_STDOUT "STDOUT"
-#define CONF_ENT_SYSLOG "SYSLOG"
-#define CONF_ENT_XISDN  "XISDN"
-#define CONF_ENT_TIME   "TIME"
-#define CONF_ENT_CON    "CONSOLE"
-#define CONF_ENT_START  "START"
-#define CONF_ENT_THRU   "THRUPUT"
-#define CONF_ENT_DAEMON "DAEMON"
-#define CONF_ENT_PIPE   "PIPE"
-#define CONF_ENT_BI     "BILINGUAL"
-#define CONF_ENT_MON    "MONITOR"
-#define CONF_ENT_HANGUP "HANGUP"
-#define CONF_ENT_CALLS  "CALLS"
-#define CONF_ENT_XLOG   "XLOG"
-#define CONF_ENT_NL			"NEWLINE"
-#define CONF_ENT_WIDTH	"WIDTH"
-#define CONF_ENT_WD			"WATCHDOG"
-#define CONF_ENT_CW			"CITYWEEKEND"
-#define CONF_ENT_AMT		"AMT"
-#define CONF_ENT_DUAL		"DUAL"
-#define CONF_ENT_Q931		"Q931DUMP"
+#define CONF_SEC_OPT     "OPTIONS"
+#define CONF_ENT_DEV     "DEVICE"
+#define CONF_ENT_LOG     "LOG"
+#define CONF_ENT_FLUSH   "FLUSH"
+#define CONF_ENT_PORT    "PORT"
+#define CONF_ENT_STDOUT  "STDOUT"
+#define CONF_ENT_SYSLOG  "SYSLOG"
+#define CONF_ENT_XISDN   "XISDN"
+#define CONF_ENT_TIME    "TIME"
+#define CONF_ENT_CON     "CONSOLE"
+#define CONF_ENT_START   "START"
+#define CONF_ENT_THRU    "THRUPUT"
+#define CONF_ENT_DAEMON  "DAEMON"
+#define CONF_ENT_PIPE    "PIPE"
+#define CONF_ENT_BI      "BILINGUAL"
+#define CONF_ENT_MON     "MONITOR"
+#define CONF_ENT_HANGUP  "HANGUP"
+#define CONF_ENT_CALLS   "CALLS"
+#define CONF_ENT_XLOG    "XLOG"
+#define CONF_ENT_NL			 "NEWLINE"
+#define CONF_ENT_WIDTH	 "WIDTH"
+#define CONF_ENT_WD			 "WATCHDOG"
+#define CONF_ENT_CW			 "CITYWEEKEND"
+#define CONF_ENT_AMT		 "AMT"
+#define CONF_ENT_DUAL		 "DUAL"
+#define CONF_ENT_Q931		 "Q931DUMP"
+#define CONF_ENT_OUTFILE "OUTFILE"
 
 /****************************************************************************/
 

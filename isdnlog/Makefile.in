@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.20 1997/05/06 22:13:21 luethje Exp $
+## $Id: Makefile.in,v 1.21 1997/05/09 23:30:37 luethje Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,11 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.21  1997/05/09 23:30:37  luethje
+## isdnlog: new switch -O
+## isdnrep: new format %S
+## bugfix in handle_runfiles()
+##
 ## Revision 1.20  1997/05/06 22:13:21  luethje
 ## bugfixes in HTML-Code of the isdnrep
 ##
@@ -200,7 +205,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 2.99.15
+VERSION     = 2.99.16
 
 ifeq ($(POSTGRES),1)
 DEFS       += -DPOSTGRES

@@ -1,4 +1,4 @@
-/* $Id: isdnlog.c,v 1.10 1997/05/06 22:13:26 luethje Exp $
+/* $Id: isdnlog.c,v 1.11 1997/05/09 23:30:47 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,11 @@
  * along with this program; if not, write to the Free Software
  *
  * $Log: isdnlog.c,v $
+ * Revision 1.11  1997/05/09 23:30:47  luethje
+ * isdnlog: new switch -O
+ * isdnrep: new format %S
+ * bugfix in handle_runfiles()
+ *
  * Revision 1.10  1997/05/06 22:13:26  luethje
  * bugfixes in HTML-Code of the isdnrep
  *
@@ -57,7 +62,7 @@
 
 /*****************************************************************************/
 
- /* Letzte Exit-Nummer: 43 */
+ /* Letzte Exit-Nummer: 45 */
 
 /*****************************************************************************/
 
@@ -73,9 +78,9 @@ static int read_param_file(char *FileName);
 
 static char     usage[]   = "%s: usage: %s [ -%s ] file\n";
 #ifdef Q931
-static char     options[] = "av:sp:x:m:l:rt:c:C:w:SVTDPMh:nW:H:f:bL:NqFA:2:";
+static char     options[] = "av:sp:x:m:l:rt:c:C:w:SVTDPMh:nW:H:f:bL:NqFA:2:O:";
 #else
-static char     options[] = "av:sp:x:m:l:rt:c:C:w:SVTDPMh:nW:H:f:bL:NFA:2:";
+static char     options[] = "av:sp:x:m:l:rt:c:C:w:SVTDPMh:nW:H:f:bL:NFA:2:O:";
 #endif
 static char     msg1[]    = "%s: Can't open %s (%s)\n";
 static char    *ptty = NULL;
@@ -265,6 +270,7 @@ static void init_variables(int argc, char* argv[])
   fcons    = NULL;   /* /dev/ttyX      (or stderr) */
   fprot    = NULL;   /* /tmp/isdnctrl0 	 	   */
   isdnctrl = NULL;
+  fout     = NULL;
 
   first_descr = FIRST_DESCR;
   message = PRT_NORMAL | PRT_WARN | PRT_ERR | PRT_INFO;
@@ -295,6 +301,7 @@ static void init_variables(int argc, char* argv[])
   bilingual = 0;
   mcalls = MAX_CALLS_IN_QUEUE;
   xlog = MAX_PRINTS_IN_QUEUE;
+  outfile = NULL;
 
   sockets = NULL;
   known = NULL;
@@ -463,6 +470,9 @@ int set_options(int argc, char* argv[])
       case '2' : dual = strtol(optarg, NIL, 0);
       	       	 break;
 
+      case 'O' : outfile = strdup(optarg);
+      	       	 break;
+
       case '?' : printf(usage, myshortname, myshortname, options);
 	         exit(1);
     } /* switch */
@@ -622,6 +632,9 @@ static int read_param_file(char *FileName)
 				if (!strcmp(Ptr->name,CONF_ENT_WD))
 					watchdog = (int)strtol(Ptr->value, NIL, 0);
 				else
+				if (!strcmp(Ptr->name,CONF_ENT_OUTFILE))
+					outfile = Ptr->value;
+				else
 					print_msg(PRT_ERR,"Error: Invalid entry `%s'!\n",Ptr->name);
 
 				Ptr = Ptr->next;
@@ -732,6 +745,23 @@ int main(int argc, char *argv[], char *envp[])
   init_variables(argc, argv);
 
   lastarg = set_options(argc,argv);
+
+	if (outfile != NULL)
+	{
+		if (!message)
+		{
+ 	   print_msg(PRT_ERR,"Can not set outfile `%s', when -m is not set!\n",outfile);
+ 	   Exit(44);
+		}
+		else
+		{
+			if ((fout = fopen(outfile,"w")) == NULL)
+			{
+ 	 			print_msg(PRT_ERR,"Can not open file `%s': %s!\n",outfile, strerror(errno));
+ 	  		Exit(45);
+			}
+		}
+	}
 
   if (lastarg < argc)
     isdnctrl = argv[lastarg];

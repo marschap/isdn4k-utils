@@ -1,4 +1,4 @@
-/* $Id: libtools.c,v 1.5 1997/04/15 00:20:18 luethje Exp $
+/* $Id: libtools.c,v 1.6 1997/05/09 23:31:09 luethje Exp $
  * ISDN accounting for isdn4linux.
  *
  * Copyright 1996 by Stefan Luethje (luethje@sl-gw.lake.de)
@@ -18,6 +18,11 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: libtools.c,v $
+ * Revision 1.6  1997/05/09 23:31:09  luethje
+ * isdnlog: new switch -O
+ * isdnrep: new format %S
+ * bugfix in handle_runfiles()
+ *
  * Revision 1.5  1997/04/15 00:20:18  luethje
  * replace variables: some bugfixes, README comleted
  *
@@ -620,6 +625,25 @@ char *Replace_Variable(char *String)
 			Ptr++;
 		}
 	}
+
+	return RetCode;
+}
+
+/****************************************************************************/
+
+#define MAX_PREC 9
+
+char *int2str(int value, int prec)
+{
+	static char RetCode[MAX_PREC+1];
+
+	if (prec < 0 || prec > MAX_PREC)
+	{
+		print_msg("Error: precision %d is out of range (0-%d)!\n",prec,MAX_PREC);
+		*RetCode = '\0';
+	}
+	else
+		sprintf(RetCode,"%*d",prec,value);
 
 	return RetCode;
 }
