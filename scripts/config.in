@@ -36,10 +36,10 @@ comment 'Tools for monitoring activity'
 bool 'imon' CONFIG_IMON
 bool 'isdnlog' CONFIG_ISDNLOG
 if [ "$CONFIG_ISDNLOG" = "y" ]; then
-  source isdnlog/Config.in
+  source isdnlog/.Config.in
 fi
 dep_bool 'xmonisdn' CONFIG_XMONISDN CONFIG_HASX11
-if [ "$CONFIG_XMONISDN" = "y" ]; then
+if [ "$CONFIG_XMONISDN" = "y" ] && [ "$CONFIG_HASX11" = "y" ]; then
 	string 'NetUP command for xmonisdn' CONFIG_XMONISDN_UPCMD '/sbin/netup'
 	string 'NetDOWN command for xmonisdn' CONFIG_XMONISDN_DOWNCMD '/sbin/netdown'
 fi
@@ -47,7 +47,7 @@ dep_bool 'xisdnload' CONFIG_XISDNLOAD CONFIG_HASX11
 comment 'Applications'
 bool 'vbox' CONFIG_VBOX
 if [ "$CONFIG_VBOX" = "y" ]; then
-  source vbox/Config.in
+  source vbox/.Config.in
 fi
 comment 'General documentation'
 bool 'Install generic pages' CONFIG_GENMAN
