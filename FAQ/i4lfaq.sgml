@@ -4,7 +4,7 @@
 
 <title>FAQ for isdn4linux
 <author>Matthias Hessler (<tt><htmlurl url="mailto:hessler@isdn4linux.de" name="hessler@isdn4linux.de"></tt>)
-<date>v2.0.41, 4. June 2000
+<date>v2.0.42, 13. June 2000
 <abstract>
 If you are reading this FAQ online, you may consider downloading the whole
 thing, and reading it offline (much cheaper). To download the latest
@@ -705,8 +705,8 @@ Here the status from 4th September 1999 (constantly improving):
 <item>ELSA Quickstep 3000PCI
 <item>ELSA PCMCIA
 <item>ITK ix1-micro Rev.2 (also: ITK colombus card)
-<item>Eicon DIVA 2.0 ISA and PCI (S0 and U interface, no PRO version)
-<item>Eicon DIVA Piccola
+<item>Eicon.Diehl Diva 2.0 ISA and PCI (S0 and U interface, no PRO version)
+<item>Eicon.Diehl Diva Piccola
 <item>ASUSCOM NETWORK INC. ISDNLink 128K PC adapter (order code I-IN100-ST-D)
 <item>Dynalink IS64PH (OEM version of ASUSCOM NETWORK INC. ISDNLink 128K
 adapter)
@@ -741,7 +741,7 @@ Note:
 <item>Teles 16.3c is EXPERIMENTAL
 <item>Teles PCI is EXPERIMENTAL
 <item>Teles S0Box is EXPERIMENTAL
-<item>Eicon Diva U interface not tested
+<item>Eicon.Diehl Diva U interface not tested
 <item>Some cards do not work when compiled into the kernel, only when
 started as modules
 <item>To distinguish between HFC-PCI and PCI/Winbond, have a look at the
@@ -777,9 +777,7 @@ supports this one chipset.
 These active cards are currently supported by an individual driver:
 <itemize>
 <item>AVM B1
-<item>AVM C4
-<item>Eicon DIVA Server BRI PCI
-<item>Eicon DIVA Server 4BRI
+<item>Eicon.Diehl
 <item>IBM Active 2000 ISDN card
 <item>ICN
 <item>PCBIT-D
@@ -836,8 +834,7 @@ or modems you could also try 4 and 3, which works even on very exotic boards.
 <p>
 At least these S2M cards have been reported to work:
 <itemize>
-<item>AVM T1
-<item>Eicon S2M-ISA or DIVA Server PRI family (see
+<item>Eicon.Diehl: S2M-ISA or DIVA Server PRI/PCI (see
 <url url="http://www.melware.de/">)
 </itemize>
 
@@ -1989,8 +1986,8 @@ On the Linux side use modemd, which is a very short perl script
 (also see Windows-Modem-Sharing-MiniHowto):
 <code>
 &num;!/usr/bin/perl
-select((select(STDOUT), &dollar;| = 1)(&dollar;[]);
-select((select(STDIN), &dollar;| = 1)(&dollar;[]);
+select((select(STDOUT), &dollar;| = 1)[&dollar;[]);
+select((select(STDIN), &dollar;| = 1)[&dollar;[]);
 exec &dquot;cu&dquot;,&dquot;-E&dquot;,&dquot;''&dquot;, &dquot;-l&dquot;, &dquot;&dollar;ARGV[0]&dquot;;
 die &dquot;&dollar;0: Cannot exec cu: &dollar;!\n&dquot;;
 </code>
@@ -2004,6 +2001,9 @@ And this has to be added to <tt>/etc/inet.conf</tt>:
 <code>
 modemd stream tcp nowait root /usr/sbin/tcpd /usr/sbin/modemd ttyI5
 </code>
+Instead of modemd you can also use the program MServer, which has some
+additional functionality (allo, which has some
+additional functionality (e.g. rights based on ip address).
 
 Additionally, you need some software on your non-ISDN computer which emulates a
 serial port, but redirects it via telnet to the Linux ISDN computer.
@@ -2011,8 +2011,8 @@ Some telnet clients allow this functionality (e.g. some uucicos).
 If you generally want to offer all applications a kind of &dquot;remote COM
 port&dquot;, then there is COMT for Windows (95), and
 &dquot;telser.device&dquot; for Amigas. Disadvantage of COMT: it is only
-visible to 16bit applications. Another program is DialOut/IP, but it´s
-fairly expensive ($70).
+visible to ancient 16bit Win applications, and not even working in the DOS box.
+Another program is DialOut/IP, but it´s fairly expensive ($70).
 
 COMT may be found on Simtel:
 <tt><url url="http://educom.sce.fct.unl.pt/ftp/pub/shareware/win-utils/comt2.zip"></tt>
