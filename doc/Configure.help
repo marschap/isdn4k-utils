@@ -130,6 +130,11 @@ CONFIG_ISDNCTRL_CONF
   If enabled, an option to read/write configfiles is build into isdnctrl.
   The manpage is extended automatically.
 
+Enable timru-controls
+CONFIG_ISDNCTRL_TIMRU
+  If enabled, support for the TIMRU extension is enabled. Note: TIMRU
+  is NOT supported by standard-kernels (as of 2.0.36).
+
 Build iprofd
 CONFIG_IPROFD
   If enabled, iprofd, a special daemon will be built. This daemon is
@@ -211,28 +216,183 @@ CONFIG_IMON
   It is tty based and uses ncurses to produce a nice screen.
   This program is documented in imon (1).
 
+Build imontty
 CONFIG_IMONTTY
   This is a userlevel program to monitor the activity of isdn4linux.
   It is tty based does NOT use (n)curses.
   This program is documented in imontty (1).
 
+Build isdnlog
 CONFIG_ISDNLOG
   This program is mainly for monitoring activity. It has been extended
   to do a lot of more however. See isdnlog/README for more information.
+
+Buid ipppstats
+CONFIG_IPPPSTATS
+  This programs displays statistics of synchronous PPP connections. Using
+  this program only makes sense if you use ipppd.
+
+Build xisdnload
+CONFIG_XISDNLOAD
+  This is a program for displaying traffic of ISDN-connections in an
+  X11-window. It shows a similar traffic-graph like xload.
+
+Build xmonisdn
+CONFIG_XMONISDN
+  This is an X11 based ISDN monitor.
+
+NetUP command
+CONFIG_XMONISDN_UPCMD
+  Enter the path of command to execute, if an ISDN-connection is
+  established.
+
+NetDOWN command
+CONFIG_XMONISDN_DOWNCMD
+  Enter the path of command to execute, if an ISDN-connection is
+  terminated.
 
 Install generic man pages
 CONFIG_GENMAN
   If enabled, in addition to the tool's man pages, the following generic
   man pages are installed:
-  isdninfo.4 ttyI.4 cui.4 isdn_audio.4 isdn_cause.7
+  isdninfo.4 ttyI.4 cui.4 isdn_audio.4 isdnctrl.4 isdn_cause.7
 
 Generate FAQ
 CONFIG_FAQ
   If enabled, the FAQ, available as html both unpacked and packed with
   zip and gzip are generated. The FAQ is available in English and German.
 
-Wher to install the FAQ
+Where to install the FAQ
 CONFIG_FAQDIR
   Here you can tell where to put the FAQ.
+
+capifax CAPI based FAX application.
+CONFIG_CAPIFAX
+  If enabled, a CAPI based FAX system will be build. It is realized
+  using two programs: capifax, a FAX-sending application and
+  faxrcvd, a daemon for receiving incoming Faximile. Since both
+  programs use the CAPI2.0 functionality, these programs are
+  currently ONLY USABLE IF YOU HAVE an AVM-B1 installed!
+
+Remote CAPI daemon
+CONFIG_RCAPID
+  If enabled, a daemon for exporting CAPI connectivity via local
+  Network will be build. The protocol used is based on the
+  specification published by Bintec on their web-site. On
+  the same web-site, there is an example client available.
+  THIS IS ONLY USABLE, IF YOU HAVE an AVM-B1 installed!
+
+ISDN answering machine
+CONFIG_VBOX
+  If enabled, an ISDN answering machine will be build. This program
+  does NOT with some ISDN cards which don't support transparent
+  B-channels: ICN, ACT2000 and Spellcaster.
+
+Voice message spool directory
+VBOX_SPOOLDIR
+  Maintainer: edit VBOX_SPOOLDIR
+
+Vbox log directory
+VBOX_LOGDIR
+  Maintainer: edit VBOX_LOGDIR
+
+Vbox PID directory
+VBOX_PIDDIR
+  Maintainer: edit VBOX_PIDDIR
+
+Vbox lock directory
+VBOX_LOCKDIR
+  Maintainer: edit VBOX_LOCKDIR
+
+Version of Tcl library to use
+VBOX_TCL
+  Maintainer: edit VBOX_TCL
+
+PPP daemon for syncPPP support
+CONFIG_IPPPD
+  Enabling this, builds a special PPP daemon called ipppd which handles
+  synchronous PPP and MPPP (multilink PPP). This program is documented
+  in ipppd(8).
+
+Support for MS chap secrets
+CONFIG_IPPPD_MSCHAP
+  If enabled, adds support for Microsoft's implementation of CHAP
+  authentication. For compiling this, a DES-encryption library
+  libdes.a and it's include file des.h needs to be installed on
+  your system. If the configuration process fails to find these, this
+  option is automatically disabled.
+
+Support for RADIUS protocol
+CONFIG_IPPPD_RADIUS
+  Enabling this option, adds support for RADIUS authentication. You
+  need radiusclient installed on your system for enabling this.
+
+Support for RADIUS wtmp logging
+CONFIG_RADIUS_WTMP_LOGGING
+  Maintainer: edit CONFIG_RADIUS_WTMP_LOGGING
+
+radiusclient config file path
+RADIUS_CLIENT_CONFIG_FILE
+  Maintainer: edit RADIUS_CLIENT_CONFIG_FILE
+
+Support for parsing .TTY file first
+CONFIG_OPTIONS_TTY_FIRST
+  Maintainer: edit CONFIG_OPTIONS_TTY_FIRST
+
+Server listen at port
+CONFIG_ISDNLOG_SERV_PORT
+  Maintainer: edit CONFIG_ISDNLOG_SERV_PORT
+
+User file
+CONFIG_ISDNLOG_USERFILE
+  Maintainer: edit CONFIG_ISDNLOG_USERFILE
+
+Charge file
+CONFIG_ISDNLOG_CHARGEFILE
+  Maintainer: edit CONFIG_ISDNLOG_CHARGEFILE
+
+Log file
+CONFIG_ISDNLOG_LOGFILE
+  Maintainer: edit CONFIG_ISDNLOG_LOGFILE
+
+Reload command
+CONFIG_ISDNLOG_RELOADCMD
+  Maintainer: edit CONFIG_ISDNLOG_RELOADCMD
+
+Stop command
+CONFIG_ISDNLOG_RELOADCMD
+  Maintainer: edit CONFIG_ISDNLOG_RELOADCMD
+
+Reboot command
+CONFIG_ISDNLOG_REBOOTCMD
+  Maintainer: edit CONFIG_ISDNLOG_REBOOTCMD
+
+Old config directory
+CONFIG_ISDNLOG_OLDI4LCONFDIR
+  Maintainer: edit CONFIG_ISDNLOG_OLDI4LCONFDIR
+
+Old config file
+CONFIG_ISDNLOG_OLDI4LCONFFILE
+  Maintainer: edit CONFIG_ISDNLOG_OLDI4LCONFFILE
+
+Support postgres95 SQL-Database
+CONFIG_ISDNLOG_POSTGRES
+  Maintainer: edit CONFIG_ISDNLOG_POSTGRES
+
+directory of postgres95
+CONFIG_ISDNLOG_POSTGRESDIR
+  Maintainer: edit CONFIG_ISDNLOG_POSTGRESDIR
+
+Support mysql SQL-Database
+CONFIG_ISDNLOG_MYSQLDB
+  Maintainer: edit CONFIG_ISDNLOG_MYSQLDB
+
+directory of mysql
+CONFIG_ISDNLOG_MYSQLDIR
+  Maintainer: edit CONFIG_ISDNLOG_MYSQLDIR
+
+Country specific chargeinfo support
+CONFIG_ISDN_LOG_DE
+  Maintainer: edit CONFIG_ISDN_LOG_DE (Text for all country-versions)
 
 # need an empty line after last entry, for sed script in Configure.
