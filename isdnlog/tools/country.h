@@ -1,4 +1,4 @@
-/* $Id: country.h,v 1.1 1999/05/27 18:19:58 akool Exp $
+/* $Id: country.h,v 1.2 1999/06/03 18:51:19 akool Exp $
  *
  * Länderdatenbank
  *
@@ -19,6 +19,11 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: country.h,v $
+ * Revision 1.2  1999/06/03 18:51:19  akool
+ * isdnlog Version 3.30
+ *  - rate-de.dat V:1.02-Germany [03-Jun-1999 19:49:22]
+ *  - small fixes
+ *
  * Revision 1.1  1999/05/27 18:19:58  akool
  * first release of the new country decoding module
  *
@@ -38,5 +43,6 @@ typedef struct {
 
 int  initCountry(char *path, char **msg);
 void exitCountry(void);
+int  getCountry(char *name, COUNTRY **country);
 
 #endif

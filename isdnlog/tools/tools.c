@@ -1,4 +1,4 @@
-/* $Id: tools.c,v 1.27 1999/05/22 10:19:33 akool Exp $
+/* $Id: tools.c,v 1.28 1999/06/03 18:51:22 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -19,6 +19,11 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools.c,v $
+ * Revision 1.28  1999/06/03 18:51:22  akool
+ * isdnlog Version 3.30
+ *  - rate-de.dat V:1.02-Germany [03-Jun-1999 19:49:22]
+ *  - small fixes
+ *
  * Revision 1.27  1999/05/22 10:19:33  akool
  * isdnlog Version 3.29
  *
@@ -692,7 +697,11 @@ char *vnum(int chan, int who)
       } /* if */
     } /* if */
 
-    if ((ptr = get_areacode(call[chan].num[who], &ll, flag)) != 0) {
+    if (!memcmp(call[chan].num[who], "+49173", 5)) {
+      strcpy(call[chan].area[who], "D2 Mobilfunknetz");
+      l = 6;
+    }
+    else if ((ptr = get_areacode(call[chan].num[who], &ll, flag)) != 0) {
       strcpy(call[chan].area[who], ptr);
       l = ll;
       got++;

@@ -1,4 +1,4 @@
-/* $Id: processor.c,v 1.63 1999/05/22 10:18:34 akool Exp $
+/* $Id: processor.c,v 1.64 1999/06/03 18:50:33 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,11 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.64  1999/06/03 18:50:33  akool
+ * isdnlog Version 3.30
+ *  - rate-de.dat V:1.02-Germany [03-Jun-1999 19:49:22]
+ *  - small fixes
+ *
  * Revision 1.63  1999/05/22 10:18:34  akool
  * isdnlog Version 3.29
  *
@@ -1601,7 +1606,9 @@ static void decode(int chan, register char *p, int type, int version, int tei)
                             call[chan].aoce = 1;
 			  else
                             call[chan].aoce++;
-                        } /* if */
+                        }
+                        else if (currency_mode == AOC_UNITS)
+                          call[chan].aoce = n;
 
                         call[chan].aocpay = abs(n) * currency_factor;
 

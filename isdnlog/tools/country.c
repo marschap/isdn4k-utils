@@ -1,4 +1,4 @@
-/* $Id: country.c,v 1.1 1999/05/27 18:19:57 akool Exp $
+/* $Id: country.c,v 1.2 1999/06/03 18:51:11 akool Exp $
  *
  * Länderdatenbank
  *
@@ -19,6 +19,11 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: country.c,v $
+ * Revision 1.2  1999/06/03 18:51:11  akool
+ * isdnlog Version 3.30
+ *  - rate-de.dat V:1.02-Germany [03-Jun-1999 19:49:22]
+ *  - small fixes
+ *
  * Revision 1.1  1999/05/27 18:19:57  akool
  * first release of the new country decoding module
  *
@@ -45,10 +50,9 @@
 #include <ctype.h>
 #include <time.h>
 #include <unistd.h>
+#include <errno.h>
 #if 0
 extern const char *basename (const char *name);
-#else
-#include <errno.h>
 #endif
 #else
 #include "isdnlog.h"
@@ -97,7 +101,7 @@ static char *strip (char *s)
   return s;
 }
 
-static char* str2set (char **s)
+static char* str2list (char **s)
 {
   static char buffer[BUFSIZ];
   char *p=buffer;
@@ -120,14 +124,17 @@ static char *xlat (char *s)
   do {
     *p=tolower(*s);
     switch (*p) {
+    case 'Ä':
     case 'ä':
       *p++='a';
       *p  ='e';
       break;
+    case 'Ö':
     case 'ö':
       *p++='o';
       *p  ='e';
       break;
+    case 'Ü':
     case 'ü':
       *p++='u';
       *p  ='e';
@@ -137,8 +144,10 @@ static char *xlat (char *s)
       *p  ='s';
       break;
     }
-    p++;
+    if (isalnum(*p))
+      p++;
   } while (*s++);
+
   return buffer;
 }
 
@@ -279,10 +288,10 @@ int initCountry(char *path, char **msg)
       }
       s+=2;
       while(1) {
-	if (*(n=strip(str2set(&s)))) {
+	if (*(n=strip(str2list(&s)))) {
 	  x=xlat(n);
 	  if ((c=findCountry(x))!=NULL) {
-	    warning (path, "duplicate entry '%s', ignoring", n);
+	    warning (path, "Ignoring duplicate entry '%s'", n);
 	  } else {
 	    Country[Index].Alias=realloc (Country[Index].Alias, (Country[Index].nAlias+1)*sizeof(char*));
 	    Country[Index].Alias[Country[Index].nAlias]=strdup(x);
@@ -307,11 +316,11 @@ int initCountry(char *path, char **msg)
       }
       s+=2;
       while(1) {
-	if (*(n=strip(str2set(&s)))) {
+	if (*(n=strip(str2list(&s)))) {
 	  if (*n!='+') {
-	    warning (path, "code should start with '+', ignoring", n);
+	    warning (path, "Code must start with '+'", n);
 	  } else if ((c=findCountry(n))!=NULL) {
-	    warning (path, "duplicate entry '%s', ignoring", n);
+	    warning (path, "Ignoring duplicate entry '%s'", n);
 	  } else {
 	    Country[Index].Code=realloc (Country[Index].Code, (Country[Index].nCode+1)*sizeof(char*));
 	    Country[Index].Code[Country[Index].nCode]=strdup(n);
@@ -346,117 +355,63 @@ int initCountry(char *path, char **msg)
   return nCountry;
 }
 
-#if 0
-static int countrymatch(char *name, char *num)
+int getCountry (char *name, COUNTRY **country)
 {
-  register int 	 i, test = (num == NULL);
-  auto	   char	 k[BUFSIZ];
+  char *xname;
+  int   d, i, j, m;
 
-
-  strcpy(k, name);
-  down(k);
-
-  for (i = 0; i < nCountry; i++)
-    if ((test || !strncmp(Country[i].prefix, num, strlen(Country[i].prefix))) && !strncmp(Country[i].match, k, strlen(Country[i].match)))
-      return(i);
-
-  for (i = 0; i < nCountry; i++)
-    if ((test || !strncmp(Country[i].prefix, num, strlen(Country[i].prefix))) && strstr(Country[i].match, k))
-      return(i);
-
-  for (i = 0; i < nCountry; i++)
-    if ((test || !strncmp(Country[i].prefix, num, strlen(Country[i].prefix))) && strstr(Country[i].hints, k))
-      return(i);
-
-  for (i = 0; i < nCountry; i++)
-    if ((test || !strncmp(Country[i].prefix, num, strlen(Country[i].prefix))) && (wld(k, Country[i].match) <= DISTANCE))
-      return(i);
-
-  return(0);
-} /* countymatch */
-
-
-/*  INPUT: "+372"
-   OUTPUT: "Estland"
-
-    INPUT: "Estland"
-   OUTPUT: "+372"
-*/
-
-int abroad(char *key, char *result)
-{
-  register int   i;
-  auto int mode, match = 0, res = 0;
-  auto 	   char  k[BUFSIZ];
-
-
-  *result = 0;
-
-  if (!memcmp(key, countryprefix, strlen(countryprefix)))  /* +xxx */
-    mode = 1;
-  else {   	   		  			   /* "Estland" */
-    mode = 2;
-
-    strcpy(k, key);
-    down(k);
-  } /* else */
-
-  if (mode == 1) {
-    for (i = 0; i < nCountry; i++) {
-      res = strlen(Country[i].prefix);
-      match = !strncmp(Country[i].prefix, key, res);
-
-      if (match)
-        break;
-    } /* for */
+  *country=NULL;
+  if (*name=='+') {
+    for (i=0; i<nCountry; i++) {
+      for (j=0; j<Country[i].nCode; j++) {
+	if (strcmp (name, Country[i].Code[j])==0) {
+	  *country=&Country[i];
+	  return 0;
+	}
+      }
+    }
+    return UNKNOWN;
   }
-  else { /* mode == 2 */
-    res = 1;
 
-    for (i = 0; i < nCountry; i++)
-      if ((match = !strncmp(Country[i].match, k, strlen(Country[i].match))))
-        break;
+  xname=xlat(name);
 
-    if (!match)
-      for (i = 0; i < nCountry; i++)
-        if ((match = (strstr(Country[i].match, k) != NULL)))
-          break;
+  for (i=0; i<nCountry; i++) {
+    for (j=0; j<Country[i].nAlias; j++) {
+      if (strcmp(xname, Country[i].Alias[j])==0) {
+	*country=&Country[i];
+	return 0;
+      }
+    }
+  }
 
-    if (!match)
-      for (i = 0; i < nCountry; i++)
-        if ((match = (strstr(Country[i].hints, k) != NULL)))
-          break;
+  m=666; /* the number of the beast */
+  for (i=0; i<nCountry; i++) {
+    for (j=0; j<Country[i].nAlias; j++) {
+      if ((d=wld(xname, Country[i].Alias[j]))<m) {
+	m=d;
+	*country=&Country[i];
+      }
+    }
+  }
+  return m;
+}
 
-#if 0
-    if (!match)
-      for (i = 0; i < nCountry; i++)
-        if ((match = (wld(k, Country[i].match) <= DISTANCE)))
-          break;
-#endif
-
-  } /* else */
-
-  if (match) {
-    if (mode == 1)
-      strcpy(result, Country[i].name);
-    else
-      strcpy(result, Country[i].prefix);
-
-    return(res);
-  } /* if */
-
-  return(0);
-} /* abroad */
-
-#endif
-
-#ifdef STANDALONE
+#ifdef COUNTRYTEST
 void main (int argc, char *argv[])
 {
-  char *msg;
+  COUNTRY *country;
+  char    *msg;
+  int      d, i;
 
   initCountry ("../prefixes.dat", &msg);
   printf ("%s\n", msg);
 
+  for (i=1; i<argc; i++) {
+    d=getCountry(argv[i], &country);
+    if (country==NULL)
+      printf ("<%s> unknown country!\n", argv[i]);
+    else
+      printf ("<%s>=<%s> d=%d\n", argv[i], country->Name, d);
+  }
 }
 #endif

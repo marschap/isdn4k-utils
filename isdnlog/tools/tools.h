@@ -1,4 +1,4 @@
-/* $Id: tools.h,v 1.42 1999/05/22 10:19:36 akool Exp $
+/* $Id: tools.h,v 1.43 1999/06/03 18:51:25 akool Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,11 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools.h,v $
+ * Revision 1.43  1999/06/03 18:51:25  akool
+ * isdnlog Version 3.30
+ *  - rate-de.dat V:1.02-Germany [03-Jun-1999 19:49:22]
+ *  - small fixes
+ *
  * Revision 1.42  1999/05/22 10:19:36  akool
  * isdnlog Version 3.29
  *
@@ -528,22 +533,15 @@
 #define CITYCALL      2
 #define REGIOCALL     3
 #define GERMANCALL    4
-#define C_MOBILBOX    5
-#define C_NETZ        6
-#define D1_NETZ       7
-#define D2_NETZ       8
-#define E_PLUS_NETZ   9
+#define C_MOBILBOX   10
+#define C_NETZ       10
+#define D1_NETZ      10
+#define D2_NETZ      10
+#define E_PLUS_NETZ  10
 #define E2_NETZ      10
-#define EURO_CITY    11
-#define EURO_1       12
-#define EURO_2       13
-#define WELT_1       14
-#define WELT_2       15
-#define WELT_3       16
-#define WELT_4       17
-#define INTERNET     20
-#define	AUKUNFT_IN   21
-#define AUSKUNFT_AUS 22
+#define INTERNET    100
+#define	AUKUNFT_IN   40
+#define AUSKUNFT_AUS 41
 
 /* Fixme: this is specific to Germany */
 #define	DTAG	     33

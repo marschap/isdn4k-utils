@@ -4,28 +4,22 @@
 #include <string.h>
 #include <ctype.h>
 
-#define TABSTOP 40
+#define TABSTOP 35
+#define TAGSTOP 75
+
 #define COUNT(array) sizeof(array)/sizeof(array[0])
-
-typedef struct {
-  char *code;
-  char *name;
-} COUNTRY;
-
-COUNTRY *Country = NULL;
-int     nCountry = 0;
 
 char *strip (char *s)
 {
   char *p;
 
-  while (*s==' ' || *s=='\t') s++;
+  while (isblank(*s)) s++;
   for (p=s; *p; p++)
     if (*p=='#' || *p=='\n') {
       *p='\0';
       break;
     }
-  for (p--; p>s && (*p==' '||*p=='\t'); p--)
+  for (p--; p>s && isblank(*p); p--)
     *p='\0';
   return s;
 }
@@ -49,7 +43,7 @@ void rprintf (char *name, char *fmt, ...)
   }
 }
 
-static char* str2set (char **s)
+static char* str2list (char **s)
 {
   static char buffer[BUFSIZ];
   char *p=buffer;
@@ -64,179 +58,33 @@ static char* str2set (char **s)
   return buffer;
 }
 
-char *xlat (char *s)
-{
-  static char buffer[BUFSIZ];
-  char *p = buffer;
-
-  do {
-    *p=tolower(*s);
-    switch (*p) {
-    case 'ä':
-      *p++='a';
-      *p  ='e';
-      break;
-    case 'ö':
-      *p++='o';
-      *p  ='e';
-      break;
-    case 'ü':
-      *p++='u';
-      *p  ='e';
-      break;
-    case 'ß':
-      *p++='s';
-      *p  ='s';
-      break;
-    }
-    p++;
-  } while (*s++);
-  return buffer;
-}
-
-int min3(int x, int y, int z)
-{
-  if (x < y)
-    y = x;
-  if (y < z)
-    z = y;
-  return(z);
-}
-
-#define WMAX 64
-#define  P    1
-#define  Q    1
-#define  R    1
-
-int wld(char *needle, char *haystack) /* weighted Levenshtein distance */
-{
-  int i, j;
-  int l1 = strlen(needle);
-  int l2 = strlen(haystack);
-  int dw[WMAX+1][WMAX+1];
-
-  dw[0][0]=0;
-
-  for (j=1; j<=WMAX; j++)
-    dw[0][j]=dw[0][j-1]+Q;
-
-  for (i=1; i<=WMAX; i++)
-    dw[i][0]=dw[i-1][0]+R;
-
-  for (i=1; i<=l1; i++)
-    for(j=1; j<=l2; j++)
-      dw[i][j]=min3(dw[i-1][j-1]+((needle[i-1]==haystack[j-1])?0:P),dw[i][j-1]+Q,dw[i-1][j]+R);
-
-  return(dw[l1][l2]);
-}
-
-void initCountry (char *path)
-{
-  FILE *stream;
-  char  buffer[BUFSIZ];
-  char *p, *s;
-  int   n = 0;
-
-  if ((stream=fopen(path,"r"))==NULL) {
-    fprintf (stderr, "Error: could not load countries from %s: %s\n", path, strerror(errno));
-    return;
-  }
-
-  while ((s=fgets(buffer,BUFSIZ,stream))!=NULL) {
-    if (*(s=strip(s))=='\0')
-      continue;
-    p=s;
-    while (*p) {
-      if (isblank(*p))
-	break;
-      p++;
-    }
-    if (*p=='\0')
-      continue;
-
-    *p='\0';
-    p=strip(p+1);
-    if (*s=='0' && *(s+1)=='0')
-      *++s='+';
-    
-    Country=realloc (Country, (nCountry+1)*sizeof(COUNTRY));
-    Country[nCountry].name=strdup(p);
-    Country[nCountry].code=strdup(s);
-    nCountry++;
-    n++;
-  }
-  fprintf (stderr, "loaded %d countries from %s\n", n, path);
-  return;
-}
-
-char *findArea (char *country)
-{
-  char buffer[BUFSIZ];
-  int  c, i, m, w;
-
-  c=0;
-  w=0;
-  m=666;
-  strcpy (buffer, xlat(country));
-  for (i=0; i<nCountry; i++)
-    if ((w=wld (buffer, xlat(Country[i].name)))<m) {
-      m=w;
-      c=i;
-    }
-  if (m>0)
-    fprintf (stderr, "%s = %s?\n", country, Country[c].name);
-  
-  return Country[c].code;
-}
-
-static int byArea(const void *a, const void *b)
-{
-  return strcmp (((COUNTRY*)a)->code, ((COUNTRY*)b)->code);
-}
-
 void print_area(char *area) 
 {
-  int     nArea=0;
-  COUNTRY *Area=NULL;
-  char     comment[BUFSIZ];
-  char    *a, *b;
-  int      i;
+  int   col;
+  char *a;
 
   if (!*area)
     return;
-
+  
+  col = 0;
   while (1) {
-    if (*(a=strip(str2set(&area)))) {
-      Area=realloc(Area, (nArea+1)*sizeof(COUNTRY));
-      if (*a=='+') {
-	Area[nArea].code=strdup(a);
-	Area[nArea].name=*(a+1)=='\0'?strdup("alle übrigen Länder"):NULL;
-      } else if (strcmp(a,"0663")==0) {
-	Area[nArea].code=strdup("+43663");
-	Area[nArea].name=strdup("C-Netz");
-      } else if (strcmp(a,"0664")==0) {
-	Area[nArea].code=strdup("+43664");
-	Area[nArea].name=strdup("D-Netz");
-      } else if (strcmp(a,"0676")==0) {
-	Area[nArea].code=strdup("+43676");
-	Area[nArea].name=strdup("max.mobil");
-      } else if (strcmp(a,"0699")==0) {
-	Area[nArea].code=strdup("+43699");
-	Area[nArea].name=strdup("one");
-      } else if (strcmp(a,"07189")==0) {
-	Area[nArea].code=strdup("+437189");
-	Area[nArea].name=strdup("Online-Zone");
-      } else if (strcmp(a,"19430")==0) {
-	Area[nArea].code=strdup("+43*19430");
-	Area[nArea].name=strdup("Magnet");
-      } else if (strcmp(a,"19440")==0) {
-	Area[nArea].code=strdup("+43*19440");
-	Area[nArea].name=strdup("A-Online");
+    if (*(a=strip(str2list(&area)))) {
+      if (*a=='+' && *(a+1)=='\0') {
+	if (col) {
+	  printf ("\n");
+	  col=0;
+	}
+	rprintf ("alle übrigen Länder", "A:+");
       } else {
-	Area[nArea].code=strdup(findArea(a));
-	Area[nArea].name=strdup(a);
+	if (col+strlen(a) > TAGSTOP) {
+	  printf ("\n");
+	  col=0;
+	}
+	if (col)
+	  col+=printf (", %s", a);
+	else
+	  col=printf ("A:%s", a);
       }
-      nArea++;
     }
     if (*area==',') {
       area++;
@@ -244,32 +92,8 @@ void print_area(char *area)
     }
     break;
   }
-  qsort(Area, nArea, sizeof(COUNTRY), byArea);
-  a=""; b="";
-  for (i=0; i<nArea; i++) {
-    if (strcmp(a,Area[i].code)==0) {
-      sprintf (comment, "%s, %s", b, Area[i].name);
-      free (Area[i-1].code);Area[i-1].code=NULL;
-      free (Area[i-1].name);Area[i-1].name=NULL;
-      free (Area[i].name);Area[i].name=strdup(comment);
-    }
-    a=Area[i].code;
-    b=Area[i].name;
-  }  
-  
-  for (i=0; i<nArea; i++) {
-    if (Area[i].code) {
-      if (Area[i].name) {
-	sprintf (comment, "# %s", Area[i].name);
-	rprintf (comment, "A:%s", Area[i].code);
-	free (Area[i].name);
-      } else {
-	rprintf (NULL, "A:%s", Area[i].code);
-      }
-      free (Area[i].code);
-    }
-  }
-  free (Area);
+  if (col)
+    printf ("\n");
 }
 
 void rate_sample(void) {
@@ -303,12 +127,12 @@ void rate_1001(void) {
 
   double Tarif[] = { 1.116, 1.056, 0.996, 0.936, 0.816 };
 
-  char *Zone[][2] = {{"FreePhone", "+43660" },
-		     { "Regionalzone", "" }, 
+  char *Zone[][2] = {{"FreePhone", "+43800" },
+		     { "Regionalzone", "+43660" }, 
 		     { "Fernzone 1", "" },
 		     { "Fernzone 2", "Österreich" },
-		     { "Online-Tarif", "07189,19430,19440" },
-		     { "Mobilfunk", "0663,0664,0676,0699" },
+		     { "Online-Tarif", "+437189,19430,19440" },
+		     { "Mobilfunk", "+43663,+43664,+43676,+43699" },
 		     { "Ausland Zone 1", "Deutschland, Italien, Liechtenstein, Schweiz, Slowakei, Slowenien, Tschechien, Ungarn" },
 		     { "Ausland Zone 2", "Albanien, Andorra, Belarus, Belgien, Bosnien-Herzegowina, Bulgarien, Dänemark,Finnland, Frankreich, Großbritannien, Nordirland, Irland, Jugoslawien, Serbien, Montenegro, Kroatien, Luxemburg, Malta, Mazedonien, Monaco, Niederlande, Norwegen, Rumänien, San Marino, Schweden, Spanien, Ukraine, Vatikanstadt, Zypern" },
 		     { "Ausland Zone 3", "Algerien, Estland, Färöer-Inseln, Georgien, Gibraltar, Island, Israel, Lettland, Litauen, Marokko, Portugal, Russische Föderation, Tadschikistan, Turkmenistan, Usbekistan" },
@@ -412,7 +236,7 @@ void rate_1002(void) {
   char *Zone[][2] = {{ "Bundeslandzone", "" }, 
 		     { "Österreichzone", "Österreich" },
 		     { "special friends", "" },
-		     { "Mobilnetz", "0663,0664,0676,0699" },
+		     { "Mobilnetz", "+43663,+43664,+43676,+43699" },
 		     { "EasyInternet", "" },
 		     { "Nachbarländer West", "Deutschland, Italien, Liechtenstein, Schweiz" },
 		     { "Nachbarländer Ost", "Slowakei, Slowenien, Tschechien, Ungarn" },
@@ -463,7 +287,7 @@ void rate_1003(void) {
 		     { "Fernzone 1", "" },
 		     { "5 Freunde", "" },
 		     { "Fernzone 2", "Österreich" },
-		     { "Mobilfunk", "0663,0664,0676,0699" },
+		     { "Mobilfunk", "+43663,+43664,+43676,+43699" },
 		     { "Deutschland spezial", "Deutschland" },
 		     { "Europa spezial", "Belgien, Frankreich, Großbritannien" },
 		     { "Ausland Zone 1", "Czech Republic, Hungary, Italy, Slovakia, Slovenia, Switzerland" },
@@ -514,7 +338,7 @@ void rate_1003(void) {
 void rate_1005(void) {
 
   char *Zone[][2] = {{ "National", "Österreich" }, 
-		     { "Mobilfunknetz", "0663,0664,0676,0699" },
+		     { "Mobilfunknetz", "+43663,+43664,+43676,+43699" },
 		     { "Europa 1 / USA", "Belgien, Dänemark, Deutschland,  Finnland, Frankreich, Griechenland, Grossbritannien, Irland, Italien, Liechtenstein, Luxemburg, Monaco, Niederlande, Nordirland, Norwegen, Schweden, Schweiz, Slowakei, Slowenien, Spanien,  Tschechien, Ungarn" },
 		     { "Europa 2", "Albanien, Algerien, Andorra, Bosnien-Herzegowina, Bulgarien, Estland, Färöer-Inseln, Gibraltar, Island, Israel, Jugoslawien, Kroatien, Lettland, Litauen, Mazedonien, Malta, Marokko, Polen, Portugal, Rumänien, Russland, San Marino, Tunesien, Türkei, Zypern" },
 		     { "Welt 1", "Australien, Hongkong, Japan, Neuseeland, Südkorea, Singapur" },
@@ -541,7 +365,7 @@ void rate_1007(void) {
 
   char *Zone[][2] = {{ "Fernzone 1", "" },
 		     { "Fernzone 2", "Österreich" },
-		     { "Mobilfunk", "0663,0664,0676,0699" },
+		     { "Mobilfunk", "+43663,+43664,+43676,+43699" },
 		     { "Ausland Zone 1", "Deutschland, Italien, Liechtenstein, Schweiz, Slowakei, Slowenien, Tschechien, Ungarn" },
 		     { "Ausland Zone 2", "Albanien, Andorra, Belarus, Belgien, Bosnien-Herzegowina, Bulgarien, Dänemark,Finnland, Frankreich, Großbritannien, Nordirland, Irland, Jugoslawien, Serbien, Montenegro, Kroatien, Luxemburg, Malta, Mazedonien, Monaco, Niederlande, Norwegen, Rumänien, San Marino, Schweden, Spanien, Ukraine, Vatikanstadt, Zypern" },
 		     { "Ausland Zone 3", "Algerien, Estland, Färöer-Inseln, Georgien, Gibraltar, Island, Israel, Lettland, Litauen, Marokko, Portugal, Russische Föderation, Tadschikistan, Turkmenistan, Usbekistan" },
@@ -634,7 +458,7 @@ void rate_1011(void) {
   
   char *Zone[][2] = {{ "Bundesland", "" }, 
 		     { "Österreich", "Österreich" },
-		     { "Mobilfunk", "0663,0664,0676,0699" },
+		     { "Mobilfunk", "+43663,+43664,+43676,+43699" },
 		     {"Deutschland", "Deutschland"},
 		     {"Ausland 1", "Frankreich, Großbritannien, Italien, Liechtenstein, Paraguay, Schweiz, Slowakei, Slowenien, Tschechien, Ungarn, Vatikanstadt"},
 		     {"Ausland 2", "Belgien, Dänemark, Finnland, Irland, Kanada, Luxemburg, Niederlande, Norwegen, Papua-Neuguinea, San Marino, Schweden, Spanien, Vereinigte Staaten (USA)"},
@@ -699,7 +523,7 @@ void rate_1012(void) {
 
   char *Zone[][2] = {{ "Nah", "" }, 
 		     { "Fern", "Österreich" },
-		     { "Mobilfunk", "0663,0664,0676,0699" },
+		     { "Mobilfunk", "+43663,+43664,+43676,+43699" },
 		     { "Deutschland spezial", "Deutschland" },
 		     { "Nachbarn", "Frankreich, Italien, Schweiz, Liechtenstein, Slowakei, Slowenien, Tschechien, Ungarn" },
 		     { "Europa 1 + USA", "Belgien, Dänemark, Finnland, Großbritannien, Irland, Kanada, Luxemburg, Niederlande, Norwegen, Schweden, Spanien, Vereinigte Staaten (USA)" },
@@ -790,8 +614,8 @@ void rate_1029(void) {
   char *Zone[][2] = {{ "Regionalzone", "" }, 
 		     { "Fernzone 1", "" },
 		     { "Fernzone 2", "Österreich" },
-		     { "Mobilfunk A1, max", "0663,0664,0676" },
-		     { "Mobilfunk One", "0699" },
+		     { "Mobilfunk A1, max", "+43663,+43664,+43676" },
+		     { "Mobilfunk One", "+43699" },
 		     { "Deutschland", "Deutschland" },
 		     { "Schweiz", "Schweiz" },
 		     { "USA", "Vereinigte Staaten (USA)" },
@@ -859,7 +683,7 @@ void rate_1044(void) {
 
   char *Zone[][2] = {{ "Regional", "" }, 
 		     { "Österreich", "Österreich" },
-		     { "Mobilfunk", "0663,0664,0676,0699" },
+		     { "Mobilfunk", "+43663,+43664,+43676,+43699" },
 		     { "Ausland", "+" }};
   
   double Tarif[][2] = {{ 1.20, 1.20 },
@@ -892,7 +716,7 @@ void rate_1049(void) {
   char *Zone[][2] = {{ "Regionalzone", ""},
 		     { "Fernzone 1", "" },
 		     { "Fernzone 2", "Österreich" },
-		     { "Mobilfunk", "0663,0664,0676,0699" },
+		     { "Mobilfunk", "+43663,+43664,+43676,+43699" },
 		     { "Europa 1", "Deutschland, Italien, Liechtenstein, Schweiz, Slowakei, Slowenien, Tschechien, Ungarn" },
 		     { "Europa 2", "Albanien, Andorra, Belarus, Belgien, Bosnien-Herzegowina, Bulgarien, Dänemark,Finnland, Frankreich, Großbritannien, Nordirland, Irland, Jugoslawien, Serbien, Montenegro, Kroatien, Luxemburg, Malta, Mazedonien, Monaco, Niederlande, Norwegen, Rumänien, San Marino, Schweden, Spanien, Ukraine, Vatikanstadt, Zypern" },
 		     { "Global 1", "Algerien, Estland, Färöer-Inseln, Georgien, Gibraltar, Island, Israel, Lettland, Litauen, Marokko, Portugal, Russische Föderation, Tadschikistan, Turkmenistan, Usbekistan" },
@@ -949,9 +773,10 @@ void rate_1066(void) {
 
   char *Zone[][2] = {{ "Regionalzone", "" }, 
 		     { "Österreich", "Österreich" },
-		     { "Mobilfunk", "0663,0664,0676,0699" },
+		     { "Mobilfunk", "+43663,+43664,+43676,+43699" },
 		     { "Euro 1", "Deutschland, Frankreich, Großbritannien, Nordirland, Italien, Liechtenstein, Schweiz, Slowakei, Slowenien, Tschechien, Ungarn" },
 		     { "Euro 2", "Andorra, Belarus, Belgien, Bosnien-Herzegowina, Bulgarien, Dänemark, Estland, Finnland, Griechenland, Irland, Jugoslawien, Kroatien, Luxemburg, Monaco, Niederlande, Norwegen, Polen, Portugal, Rumänien, San Marino, Schweden, Spanien, Tunesien, Türkei, Ukraine, Vatikanstadt, Zypern" },
+		     /* Fixme: nur Stadt Luxemburg! (wie nennen wir's?) */
 		     { "Euro City", "Amsterdam, Brüssel, Frankfurt, London, Luxemburg, Mailand, Paris, Zürich" },
 		     { "Welt 1", "Hawaii, Amerikanische Jungferninseln, Puerto Rico, Vereinigte Staaten (USA), Kanada" },
 		     { "Welt 2", "Albanien, Antarktis, Armenien, Aserbaidschan, Australien, Bahamas, Chile, Weihnachtsinseln, Kokosinseln, Dominikanische Republik, Georgien, Gibraltar, Guadeloupe, Französisch-Guayana, Hongkong, Island, Israel, Japan, Lettland, Libyen, Litauen, Mazedonien, Malaysia, Malta, Marokko, Martinique, Mayotte, Moldau, Neuseeland, Niederländische Antillen, Philippinen, Russische Föderation, Reunion, St. Pierre und Miquelon, Singapur, Südafrika, Südkorea, Saipan" },
@@ -989,8 +814,8 @@ void rate_1066(void) {
 void rate_1069(void) {
 
   char *Zone[][2] = {{ "Festnetz", "Österreich" }, 
-		      { "ONE Mobilfunknetz", "0699" },
-		      { "andere Mobilfunknetze", "0663,0664,0676" },
+		      { "One Mobilfunknetz", "+43699" },
+		      { "andere Mobilfunknetze", "+43663,+43664,+43676" },
 		      { "EU und Nachbarländer", "Belgien, Dänemark, Deutschland, Finnland, Frankreich, Großbritannien, Irland, Italien, Liechtenstein, Luxemburg, Niederlande, Norwegen, Schweden, Schweiz, Slowakei, Slowenien, Spanien, Tschechien, Ungarn" },
 		      { "Internationale Zone 2", "Andorra, Australien, Bosnien-Herzegowina, Griechenland, Island, Japan, Jugoslawien, Kanada, Kroatien, Malta, Monaco, Neuseeland, Polen, Portugal, Puerto Rico, Mazedonien, San Marino, Vereinigte Staaten (USA), Vatikanstadt" },
 		      { "Internationale Zone 3", "Albanien, Algerien, Bulgarien, Estland, Gibraltar, Hongkong, Israel, Lettland,Litauen, Marokko, Rumänien, Rußland, Singapur, Tunesien, Türkei, Ukraine, Weißrußland, Zypern" },
@@ -1020,10 +845,6 @@ void rate_1069(void) {
 
 void main (int argc, char *argv[])
 {
-  initCountry ("../countries-at.dat");
-  initCountry ("../countries-de.dat");
-  initCountry ("../countries-us.dat");
-
   printf ("# created by rate-at.c\n\n");
   printf ("# The information herein was machine-generated,\n");
   printf ("# so do not contribute patches to this file.\n\n");
@@ -1032,7 +853,8 @@ void main (int argc, char *argv[])
   printf ("# Many thanks to Daniela Bruder <dbruder@sime.com>\n");
   printf ("# for collecting and preparing most of the call charges.\n\n\n");
 
-  printf ("V:1.22-Austria [28-Apr-1999]\n");
+  printf ("V:1.40-Austria [01-Jun-1999]\n\n");
+  printf ("F:%%.3f öS\n");
 
 #if 0
   rate_1066();

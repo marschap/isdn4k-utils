@@ -1,4 +1,4 @@
-/* $Id: functions.c,v 1.22 1999/04/19 19:24:35 akool Exp $
+/* $Id: functions.c,v 1.23 1999/06/03 18:50:27 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,11 @@
  * along with this program; if not, write to the Free Software
  *
  * $Log: functions.c,v $
+ * Revision 1.23  1999/06/03 18:50:27  akool
+ * isdnlog Version 3.30
+ *  - rate-de.dat V:1.02-Germany [03-Jun-1999 19:49:22]
+ *  - small fixes
+ *
  * Revision 1.22  1999/04/19 19:24:35  akool
  * isdnlog Version 3.18
  *
@@ -354,8 +359,12 @@ void logger(int chan)
                            "kostenlos", als auf "DM 1,00 geschenkt" stellen!
                         */
 
-                        if (call[chan].pay == -1.00)
-                          call[chan].pay = 0.0;
+                        if (call[chan].pay == -1.00) {
+                          if (call[chan].aocpay > 0.0) /* besser als nix ... */
+                            call[chan].pay = call[chan].aocpay;
+                          else
+                            call[chan].pay = 0.0;
+                        } /* if */
 
 			fprintf(flog, "%s|%-16s|%-16s|%5d|%10d|%10d|%5d|%c|%3d|%10ld|%10ld|%s|%d|%d|%g|%s|%g|%3d|%3d|\n",
 			              s + 4, call[chan].num[CALLING], call[chan].num[CALLED],

@@ -1,4 +1,4 @@
-/* $Id: isdnconf.c,v 1.28 1999/06/01 19:33:27 akool Exp $
+/* $Id: isdnconf.c,v 1.29 1999/06/03 18:50:10 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -20,6 +20,11 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnconf.c,v $
+ * Revision 1.29  1999/06/03 18:50:10  akool
+ * isdnlog Version 3.30
+ *  - rate-de.dat V:1.02-Germany [03-Jun-1999 19:49:22]
+ *  - small fixes
+ *
  * Revision 1.28  1999/06/01 19:33:27  akool
  * rate-de.dat V:1.02-Germany [01-Jun-1999 20:52:32]
  *
@@ -719,27 +724,33 @@ static void showRates(RATE Rate, char *message)
 } /* showRates */
 
 
+#define WIDTH   13
+
 static void showLCR(int duration)
 {
-  auto int   tz, hour, provider, lastprovider = UNKNOWN, lasthour = UNKNOWN, *p;
-  auto int   useds = 0, maxhour, leastprovider = UNKNOWN;
-  auto int   ignoreprovider = UNKNOWN;
-  auto RATE  Rate;
+  auto int    tz, hour, provider, lastprovider = UNKNOWN, lasthour = UNKNOWN, *p;
+  auto int    useds = 0, maxhour, leastprovider = UNKNOWN;
+  auto int    ignoreprovider = UNKNOWN;
+  auto int    z, z1, z2, z3;
+  auto double price, bestRate, lastRate;
+  auto double lastDTAG, DTAGRate;
+  auto RATE   Rate;
 #if 0
-  auto int   probe[] = { REGIOCALL, GERMANCALL, C_NETZ, D1_NETZ, D2_NETZ, E_PLUS_NETZ, E2_NETZ, INTERNET, AUKUNFT_IN, AUSKUNFT_AUS, 0 };
+  auto int    probe[] = { REGIOCALL, GERMANCALL, C_NETZ, D1_NETZ, D2_NETZ, E_PLUS_NETZ, E2_NETZ, INTERNET, AUKUNFT_IN, AUSKUNFT_AUS, 0 };
 #else
-  auto int   probe[] = { REGIOCALL, GERMANCALL, D2_NETZ, INTERNET, AUKUNFT_IN, AUSKUNFT_AUS, 0 };
+  auto int    probe[] = { REGIOCALL, GERMANCALL, D2_NETZ, INTERNET, AUKUNFT_IN, 0 };
 #endif
-  auto int   used[MAXPROVIDER];
-  auto int   hours[MAXPROVIDER];
-  auto char  lastmessage[BUFSIZ], message[BUFSIZ], *px;
+  auto int    used[MAXPROVIDER];
+  auto int    hours[MAXPROVIDER];
+  auto char   lastmessage[BUFSIZ], message[BUFSIZ], *px;
   auto struct tm *tm;
   auto time_t werktag, wochenende;
+  auto char  *msg;
 
 
   time(&werktag);
 
-  print_msg(PRT_NORMAL, "Least-Cost-Routing-Table [Verbindungsdauer:%d Sekunden], Stand: %s\n", duration, ctime(&werktag) + 4);
+  print_msg(PRT_NORMAL, "Least-Cost-Routing-Table [Verbindungsdauer:%d Sekunden], Stand: %s (C)Copyright 1999 AKsoftware - Andreas Kool\n", duration, ctime(&werktag) + 4);
 
   tm = localtime(&werktag);
 
@@ -750,19 +761,21 @@ static void showLCR(int duration)
   else
     wochenende = werktag + ((6 - tm->tm_wday) * 24 * 60 * 60);
 
-
+#if 0
 retry:
+#endif
+
   memset(used, 0, sizeof(used));
   memset(hours, 0, sizeof(hours));
 
-  for (tz = 0; tz < 2; tz++) { /* Werktag .. Wochendende */
+  for (tz = 0; tz < 2; tz++) { /* Werktag .. Wochenende */
 
     switch (tz) {
-      case 0 : print_msg(PRT_NORMAL, "Werktag:\n");
+      case 0 : print_msg(PRT_NORMAL, "\nWerktag:\n");
       	       tm = localtime(&werktag);
       	       break;
 
-      case 1 : print_msg(PRT_NORMAL, "Wochenende/Feiertag:\n");
+      case 1 : print_msg(PRT_NORMAL, "\nWochenende/Feiertag:\n");
       	       tm = localtime(&wochenende);
       	       break;
     } /* switch */
@@ -774,7 +787,7 @@ retry:
       switch (*p) {
         case REGIOCALL    : print_msg(PRT_NORMAL, "  RegioCall (im Umkreis von 50 km):\n");        break;
         case GERMANCALL   : print_msg(PRT_NORMAL, "  GermanCall (Deutschlandweit):\n");       break;
-        case D2_NETZ	  : print_msg(PRT_NORMAL, "  Mobilfunk (alle Handy's 01610,01617,01619,01618,0170,0171,0172,0173,0177,0178,0176,0179):\n"); break;
+        case D2_NETZ	  : print_msg(PRT_NORMAL, "  Mobilfunk (alle Handy's):\n"); break;
 #if 0
 	case C_NETZ       : print_msg(PRT_NORMAL, "  C Mobilfunk:\n");      break;
 	case D1_NETZ      : print_msg(PRT_NORMAL, "  D1 Mobilfunk:\n");     break;
@@ -796,19 +809,79 @@ retry:
 
         tm->tm_hour = hour;
         tm->tm_sec = tm->tm_min = 0;
-      	memset(&Rate, 0, sizeof(Rate));
-      	Rate.zone = *p;
+
+        z1 = *p;
+
+        if (z1 == D2_NETZ)
+          z2 = 30;
+        else if (z1 == INTERNET)
+          z2 = 159;
+        else if (z1 == AUKUNFT_IN)
+          z2 = 59;
+        else
+          z2 = z1;
+
+        z3 = UNKNOWN;
+
+        price = 999999.9;
+
+        for (z = z1; z <= z2; z++) {
+      	  memset(&Rate, 0, sizeof(Rate));
+      	  Rate.zone = z;
+      	  Rate.start = mktime(tm);
+      	  Rate.now  = Rate.start + duration - ZAUNPFAHL;
+
+          provider = getLeastCost(&Rate, ignoreprovider);
+
+          /* print_msg(PRT_NORMAL, "z=%d, provider=%d, Rate.Price=%g\n", z, provider, Rate.Price); */
+
+          if (provider == UNKNOWN) /* Bitte keine Lcken !! */
+            break;
+
+	  if (Rate.Price < price) {
+            price = Rate.Price;
+            z3 = z;
+	  } /* if */
+        } /* for */
+
+        if (z3 != UNKNOWN) {
+      	  memset(&Rate, 0, sizeof(Rate));
+      	  Rate.zone = z3;
+      	  Rate.start = mktime(tm);
+      	  Rate.now  = Rate.start + duration - ZAUNPFAHL;
+
+          provider = getLeastCost(&Rate, ignoreprovider);
+        }
+        else
+          print_msg(PRT_NORMAL, "OOPS: cannot find cheapest provider?\n");
+
+
+        memset(&Rate, 0, sizeof(Rate));
+        Rate.prefix = provider;
+      	Rate.zone = z3;
       	Rate.start = mktime(tm);
       	Rate.now  = Rate.start + duration - ZAUNPFAHL;
 
-        provider = getLeastCost(&Rate, ignoreprovider);
+        (void)getRate(&Rate, &msg);
+        bestRate = Rate.Charge;
 	showRates(Rate, message);
+
+        memset(&Rate, 0, sizeof(Rate));
+        Rate.prefix = DTAG;
+      	Rate.zone = z3;
+      	Rate.start = mktime(tm);
+      	Rate.now  = Rate.start + duration - ZAUNPFAHL;
+
+        (void)getRate(&Rate, &msg);
+        DTAGRate = Rate.Charge;
 
 #if 0
         print_msg(PRT_NORMAL, "DEBUG::tz=%d, zone=%d, Hour=%02d, P=%d, %s  lasthour=%d, lastprovider=%d, now=%s", tz, *p, hour, provider, getProvidername(provider), lasthour, lastprovider, ctime(&Rate.start));
 #endif
 
         if (lastprovider == UNKNOWN) {
+          lastRate = bestRate;
+          lastDTAG = DTAGRate;
           lastprovider = provider;
 	  strcpy(lastmessage, message);
         } /* if */
@@ -817,10 +890,16 @@ retry:
           lasthour = hour;
 
         if (provider != lastprovider) {
-          px = getProvidername(lastprovider);
+          if (lastprovider == UNKNOWN)
+            px = "";
+          else
+            px = getProvidername(lastprovider);
 
-          print_msg(PRT_NORMAL, "    %02d:00 .. %02d:59 %s%02d:%s%*s(%s)\n",
-            lasthour, hour - 1, vbn, lastprovider, px, 14 - strlen(px), "", lastmessage);
+          print_msg(PRT_NORMAL, "    %02d:00 .. %02d:59 %s%02d:%s%*s = %s %s (%s)   [DTAG: %s %s]\n",
+            lasthour, hour - 1, vbn, lastprovider, px,
+            max(WIDTH, strlen(px)) - strlen(px), "", currency,
+            double2str(lastRate, 5, 3, DEB),
+            lastmessage, currency, double2str(lastDTAG, 5, 3, DEB), lastDTAG / lastRate * 100.0);
 
           used[lastprovider] = 1;
 
@@ -831,6 +910,8 @@ retry:
 
           lastprovider = provider;
           lasthour = hour;
+          lastRate = bestRate;
+          lastDTAG = DTAGRate;
 	  strcpy(lastmessage, message);
         } /* if */
 
@@ -841,14 +922,19 @@ retry:
           break;
       } /* for */
 
+      if (lastprovider == UNKNOWN)
+        px = "";
+      else
       px = getProvidername(lastprovider);
 
       if ((lasthour == 7) && (hour == 7))
-        print_msg(PRT_NORMAL, "    immer          %s%02d:%s%*s(%s)\n",
-          vbn, lastprovider, px, 14 - strlen(px), "", lastmessage);
+        print_msg(PRT_NORMAL, "    immer          %s%02d:%s%*s = %s %s (%s)   [DTAG: %s %s]\n",
+          vbn, lastprovider, px, max(WIDTH, strlen(px)) - strlen(px), "",
+          currency, double2str(lastRate, 5, 3, DEB), lastmessage, currency, double2str(lastDTAG, 5, 3, DEB));
       else
-        print_msg(PRT_NORMAL, "    %02d:00 .. %02d:59 %s%02d:%s%*s(%s)\n",
-          lasthour, hour - 1, vbn, lastprovider, px, 14 - strlen(px), "", lastmessage);
+        print_msg(PRT_NORMAL, "    %02d:00 .. %02d:59 %s%02d:%s%*s = %s %s (%s)   [DTAG: %s %s]\n",
+          lasthour, hour - 1, vbn, lastprovider, px, max(WIDTH, strlen(px)) - strlen(px), "",
+            currency, double2str(lastRate, 5, 3, DEB), lastmessage, currency, double2str(lastDTAG, 5, 3, DEB));
 
       used[lastprovider] = 1;
 
@@ -868,7 +954,7 @@ retry:
 
   for (provider = 0; provider < MAXPROVIDER; provider++)
     if (used[provider]) {
-      print_msg(PRT_NORMAL, "%s%02d:%s%*s(%d hours)\n", vbn, provider, getProvidername(provider), 14 - strlen(getProvidername(provider)), "", hours[provider]);
+      print_msg(PRT_NORMAL, "%s%02d:%s%*s(%d hours)\n", vbn, provider, getProvidername(provider), max(WIDTH, strlen(getProvidername(provider))) - strlen(getProvidername(provider)), "", hours[provider]);
       useds++;
 
       if (hours[provider] < maxhour) {
@@ -877,7 +963,7 @@ retry:
       } /* if */
     } /* if */
 
-#if 1
+#if 0
   if (useds == 6) {
     if (ignoreprovider != leastprovider) {
 
