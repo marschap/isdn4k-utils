@@ -19,8 +19,9 @@
 #include <malloc.h>
 #include <string.h>
 #include <dlfcn.h>
+#include <errno.h>
 
-static char *revision = "$Revision: 1.8 $";
+static char *revision = "$Revision: 1.9 $";
 
 static capiconn_context *ctx;
 static capi_connection *conn = 0;
@@ -429,7 +430,7 @@ static void makeconnection_with_callback(void)
 				info("capiplugin: callback failed (no call)");
 		} else {
 			dodisconnect();
-			fatal("capiplugin: callback failed (no reject)");
+			fatal("capiplugin: callback failed - other side answers the call (no reject)");
 		}
 	}
 }
@@ -899,11 +900,24 @@ static void connected(capi_connection *cp, _cstruct NCPI)
 	capi_conninfo *p = capiconn_getinfo(cp);
 	char buf[PATH_MAX];
 	char *tty;
+	int retry = 0;
+	int serrno;
 
         info("capiplugin: connected: %s", conninfo(cp));
-	tty = capi20ext_get_tty_devname(p->appid, p->ncci, buf, sizeof(buf));
+
+        tty = capi20ext_get_tty_devname(p->appid, p->ncci, buf, sizeof(buf));
+        serrno = errno;
+	while (tty == 0 && serrno == ESRCH) {
+	   if (++retry > 4) 
+	      break;
+	   info("capiplugin: capitty not ready, waiting for driver ...");
+	   sleep(1);
+	   tty = capi20ext_get_tty_devname(p->appid, p->ncci, buf, sizeof(buf));
+	   serrno = errno;
+	}
 	if (tty == 0)
-	   fatal("capiplugin: failed to get tty devname");
+	   fatal("capiplugin: failed to get tty devname - %s (%d)",
+			strerror(serrno), serrno);
 	info("capiplugin: using %s: %s", tty, conninfo(cp));
 	strcpy(devnam, tty);
 	if (opt_connectdelay)
@@ -941,6 +955,7 @@ capiconn_callbacks callbacks = {
 
 void plugin_init(void)
 {
+	int serrno;
 	int err;
 
 	info("capiplugin: %s", revision);
@@ -948,12 +963,17 @@ void plugin_init(void)
 	add_options(my_options);
 
 	if ((err = capi20_register (30, 8, 2048, &applid)) != 0) {
-		fatal("capiplugin: CAPI_REGISTER failed - 0x%04x", err);
+		serrno = errno;
+		fatal("capiplugin: CAPI_REGISTER failed - %s (0x%04x) [%s (%d)]",
+				capi_info2str(err), err,
+				strerror(serrno), errno);
 		return;
         }
 	if (capi20ext_set_flags(applid, 1) < 0) {
+		serrno = errno;
 		(void)capi20_release(applid);
-		fatal("capiplugin: failed to set highjacking mode");
+		fatal("capiplugin: failed to set highjacking mode - %s (%d)",
+				strerror(serrno), serrno);
 		return;
 	}
 		
