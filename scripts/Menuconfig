@@ -1,6 +1,6 @@
 #! /bin/sh
 #
-# $Id: Menuconfig,v 1.5 1997/03/23 19:48:03 fritz Exp $
+# $Id: Menuconfig,v 1.6 1998/11/11 17:06:07 paul Exp $
 #
 # This script is borrowed from the linux Menuconfig script.
 #
@@ -1120,7 +1120,7 @@ then
 
 The isdn4k-utils package is now hopefully configured for your setup.
 You may build the package with "make". After that you may install
-the package with "make install" (Installation requires root pivileges).
+the package with "make install" (Installation requires root privileges).
 
 EOM
 else
