@@ -1,10 +1,10 @@
-ISDNLOG - Version 3.56 -  				18-Oct-1999
+ISDNLOG - Version 3.60 -  				29-Oct-1999
 
 
 isdnlog ist ein Utility zur Auswertung des D-Kanals eines
 ISDN-BRI Anschlusses.
 
-isdnlog-3.56 wurde ausgiebig mit Linux-2.0.37 getestet.
+isdnlog-3.60 wurde ausgiebig mit Linux-2.0.38 sowie Linux 2.3.24 getestet.
 
 
 Fuer alle, die es nun ueberhaupt nicht mehr abwarten koennen, hier das
@@ -12,7 +12,7 @@ Fuer alle, die es nun ueberhaupt nicht mehr abwarten koennen, hier das
 Quick-Installation-Guide
 ------------------------
 
-1. Linux-2.0.37 verwenden:
+1. Linux-2.0.38 verwenden:
      CONFIG_ISDN=m
      CONFIG_ISDN_DRV_HISAX=m
 
@@ -70,7 +70,7 @@ Quick-Installation-Guide
 
 7. Sich mittels
 
-     /usr/sbin/isdnrep
+     /usr/bin/isdnrep
 
    die Rechnung ueber das unter 6. veranstaltete ausgeben lassen.
 
@@ -550,7 +550,7 @@ COUNTRYPREFIX:
   Dieser Eintrag ist optional.
   Beispiel:
     CODELIB=avon
-]	
+]
 
 [ obsolete seit isdnlog 3.45 AREALIB:
   Enthaelt den vollen Pfad zu der Datei "areacode.dat". Diese Angabe ist
@@ -558,7 +558,7 @@ COUNTRYPREFIX:
   geaendert hat.
   Beispiel:
     AREALIB=/usr/share/lib/areacode.dat
-]	
+]
 
 [ obsolete seit isdnlog 3.45 AVONLIB:
   Enthaelt den vollen Pfad zu der Datei "avon". Diese Angabe ist
@@ -575,59 +575,59 @@ COUNTRYPREFIX:
 
 COUNTRYFILE = /usr/lib/isdn/country-de.dat
 
-  Diese Datei beinhaltet Länderbezeichnungen und Vorwahlen. Sie dient
+  Diese Datei beinhaltet Laenderbezeichnungen und Vorwahlen. Sie dient
   als Ausgangsbasis zum  Erzeugen der Destination-Datenbank dest.gdbm.
-  
+
 RATEFILE= /usr/lib/isdn/rate-de.dat
 
-  Pfad für die Gebührendatenbank. Diese Datei ist landesspezifisch.
-  s. auch 
+  Pfad fuer die Gebuehrendatenbank. Diese Datei ist landesspezifisch.
+  s. auch
     man rate-files
-	
+
 RATECONF= /etc/isdn/rate.conf
 
-  Beinhaltet den selektierten Tarif für Provider, die unterschiedliche
+  Beinhaltet den selektierten Tarif fuer Provider, die unterschiedliche
   Tarife anbieten.
-  
+
 HOLIDAYS= /usr/lib/isdn/holiday-de.dat
 
   Feiertagstabelle - landesspezifisch.
-  
+
 ZONEFILE= /usr/lib/isdn/zone-de-%s.gdbm
 
-  Verzonungsinformation für die einzelnen Provider - landesspezifisch.
+  Verzonungsinformation fuer die einzelnen Provider - landesspezifisch.
   Das '%s' im Dateinahmen wird durch den Eintrag D:xxx in rate-CC.dat
   ersetzt.
-  
-  s. auch isdnlog/samples/isdn.conf.CC für verschiedene Konfigurationen.
+
+  s. auch isdnlog/samples/isdn.conf.CC fuer verschiedene Konfigurationen.
 
 DESTFILE= /usr/lib/isdn/dest.gdbm
- 
+
   Destination Database mit Ortsnamen und Vorwahlen
-  
+
 VBN =  Verbindungsnetzbetreiberauswahlnummer
 
   Deutschland ... 010
-  Österreich  ... 10
+  Oesterreich ... 10
   Niederlande ... 16:17
-  
+
 VBNLEN = Anzahl Ziffern nach VBN
 
   Deutschland ... 2:3
-  Österreich  ... 2
+  Oesterreich ... 2
   Niederlande ... 1 ???
-    
+
 
 PRESELECTED = Providernummer
 
   Deutschland ... 33
-  Österreich  ... 1
+  Oesterreich ... 1
   Niederlande ... 999
   Frankreich  ... 0
-  
+
   s. auch die entsprechenden Kommandlineparameter von isdnlog
-  
-  
+
+
 Die ISDN-Tools erlauben es, Umgebungsvariablen zu setzen und zu verwenden.
 Es gibt Variablen, die in der isdn.conf (oder vorher) gesetzt werden sollten.
 Diese sind in der Sektion [VARIABLES] zu setzen.
@@ -2410,10 +2410,18 @@ angegeben werden.
 
  -2x Dual-Mode. isdnlog empfaengt die D-Kanal-Frames der anderen
      Geraete auf dem S0-Bus ueber eine zweite, falsch angeschlossene
-     ISDN-Karte.
+     ISDN-Karte, oder eine HFC-Karte im Echo-Modus.
      Mit x = 2 zeigt isdnlog auch jede Kleinigkeit - wie z.b. jedes
      einzelne gewaehlte Digit beim Telefonieren direkt an.
      (dual="value")
+
+ -1  Es wird eine HFC Karte mit Cologne Chip Design Chip eingesetzt,
+     die im Echo Mode laeuft. Durch diesen Schalter darf der Dual-Mode
+     (siehe: -2x) eingeschaltet werden, obwohl sich nur eine ISDN-Karte
+     im Rechner befindet. Der HFC-Treiber muá dazu durch die Befehle
+       hisaxctrl <DriverID> 10 1
+       hisaxctrl <DriverID> 12 1
+     in den Echo-Mode geschaltet werden.
 
  -K  isdnlog zeigt bei Betaetigung der Taste <l> eine Liste der letzten
      Anrufer an. (History)
@@ -3801,8 +3809,11 @@ die entsprechenden Telefonnummern leider nicht anzeigen.
 
 Mit dem Dual-Mode ist genau dies jedoch moeglich.
 
-Dazu muss der Rechner mit einer zweiten ISDN-Karte ausgestattet, und
-darauf ein HiSax-Treiber installiert werden.
+Dazu muss der Rechner entweder mit einer zweiten ISDN-Karte, oder
+einer HFC-ISDN-Karte ausgestattet sein.
+
+Werden zwei Karten eingesetzt, muessen auf beiden der HiSax-Treiber
+installiert werden,
 
 Bei mir sieht das so aus:
 
@@ -3823,10 +3834,13 @@ S  5 -- TX- 1b -- offen        ------------  Karte
    6 -- RX- 2b ---------------/
 
 
-Abschliessend muss isdnlog mit der weiteren Option "-2" gestartet werden.
+Abschliessend muss isdnlog mit der weiteren Option "-2x" gestartet werden.
 Nach heutigem Kenntnisstand ist es nicht moeglich, eine Teles-16.3c
 Karte als Echo-Karte einzusetzen. Ein Grund mehr, diese Karte nicht
 zu kaufen ...
+
+Wird hingegen eine ISDN-Karte mit HFC-Chip eingesetzt, muá isdnlog mit
+den Optionen "-1 -2x" gestartet werden.
 
 
 16. SQL-Anbindung
@@ -4052,7 +4066,7 @@ V:Versionsstring (Vorschlag: 1.0-Germany [18-Mar-1999])
 
 -> U:
 
-Damit wird das Währungsformat und die Anzahl der Dezimalstellen
+Damit wird das Waehrungsformat und die Anzahl der Dezimalstellen
 angegeben, z.B.
 U:%.3 DM
 

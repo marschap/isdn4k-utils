@@ -1,4 +1,4 @@
-/* $Id: processor.c,v 1.84 1999/10/26 18:17:13 akool Exp $
+/* $Id: processor.c,v 1.85 1999/10/29 19:46:00 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,20 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.85  1999/10/29 19:46:00  akool
+ * isdnlog-3.60
+ *  - sucessfully ported/tested to/with:
+ *      - Linux-2.3.24 SMP
+ *      - egcs-2.91.66
+ *    using -DBIG_PHONE_NUMBERS
+ *
+ *  - finally added working support for HFC-card in "echo mode"
+ *    try this:
+ *      hisaxctrl bri 10 1
+ *      hisaxctrl bri 12 1
+ *      isdnlog -21 -1
+ * -----------------^^ new option
+ *
  * Revision 1.84  1999/10/26 18:17:13  akool
  * isdnlog-3.58
  *   - big cleanup ( > 1.3 Mb removed!)
@@ -1640,7 +1654,7 @@ static void decode(int chan, register char *p, int type, int version, int tei)
                         info(chan, PRT_SHOWNUMBERS, STATE_RING, s);
                     }
                     break;
-#endif		    
+#endif
 
         case 0x2d : /* SUSPEND ACKNOWLEDGE (Parkweg) */
                     p += (l * 3);
@@ -3241,8 +3255,12 @@ static void processinfo(char *s)
 
       if (!Q931dmp) {
         print_msg(PRT_NORMAL, "(ISDN subsystem with ISDN_MAX_CHANNELS > 16 detected - %d active channels, %d MSN/SI entries)\n", chans, mymsns);
-        if (dual)
-          print_msg(PRT_NORMAL, "(watching \"%s\" and \"%s\")\n", isdnctrl, isdnctrl2);
+        if (dual) {
+          if (hfcdual)
+            print_msg(PRT_NORMAL, "(watching \"%s\" as HFC/echo mode)\n", isdnctrl);
+          else
+            print_msg(PRT_NORMAL, "(watching \"%s\" and \"%s\")\n", isdnctrl, isdnctrl2);
+        } /* if */
       } /* if */
 
       /*

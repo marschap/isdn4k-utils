@@ -1,4 +1,4 @@
-/* $Id: tools.h,v 1.48 1999/10/25 18:30:04 akool Exp $
+/* $Id: tools.h,v 1.49 1999/10/29 19:46:01 akool Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,20 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools.h,v $
+ * Revision 1.49  1999/10/29 19:46:01  akool
+ * isdnlog-3.60
+ *  - sucessfully ported/tested to/with:
+ *      - Linux-2.3.24 SMP
+ *      - egcs-2.91.66
+ *    using -DBIG_PHONE_NUMBERS
+ *
+ *  - finally added working support for HFC-card in "echo mode"
+ *    try this:
+ *      hisaxctrl bri 10 1
+ *      hisaxctrl bri 12 1
+ *      isdnlog -21 -1
+ * -----------------^^ new option
+ *
  * Revision 1.48  1999/10/25 18:30:04  akool
  * isdnlog-3.57
  *   WARNING: Experimental version!
@@ -534,7 +548,7 @@
 
 /****************************************************************************/
 
-#define NUMSIZE       30
+#define NUMSIZE    (ISDN_MSNLEN + 1)
 #define	FNSIZE	      64
 #define RETSIZE      128
 #define MAXRET	       5
@@ -1024,11 +1038,12 @@ _EXTERN CALL    	call[MAXCHAN];
 #ifdef Q931
 _EXTERN int     	q931dmp;
 #endif
-#if 0 /* Fixme: remove */				
+#if 0 /* Fixme: remove */
 _EXTERN int     	CityWeekend;
 #endif
 _EXTERN	int	 preselect;
 _EXTERN int	dual;
+_EXTERN int	hfcdual;
 _EXTERN char    	mlabel[BUFSIZ];
 _EXTERN char    *amtsholung;
 _EXTERN int	ignoreRR;

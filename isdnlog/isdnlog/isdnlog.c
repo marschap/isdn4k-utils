@@ -1,4 +1,4 @@
-/* $Id: isdnlog.c,v 1.51 1999/10/25 18:33:15 akool Exp $
+/* $Id: isdnlog.c,v 1.52 1999/10/29 19:46:00 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,20 @@
  * along with this program; if not, write to the Free Software
  *
  * $Log: isdnlog.c,v $
+ * Revision 1.52  1999/10/29 19:46:00  akool
+ * isdnlog-3.60
+ *  - sucessfully ported/tested to/with:
+ *      - Linux-2.3.24 SMP
+ *      - egcs-2.91.66
+ *    using -DBIG_PHONE_NUMBERS
+ *
+ *  - finally added working support for HFC-card in "echo mode"
+ *    try this:
+ *      hisaxctrl bri 10 1
+ *      hisaxctrl bri 12 1
+ *      isdnlog -21 -1
+ * -----------------^^ new option
+ *
  * Revision 1.51  1999/10/25 18:33:15  akool
  * isdnlog-3.57
  *   WARNING: Experimental version!
@@ -399,9 +413,9 @@ static int read_param_file(char *FileName);
 
 static char     usage[]   = "%s: usage: %s [ -%s ] file\n";
 #ifdef Q931
-static char     options[] = "av:sp:x:m:l:rt:c:C:w:SVTDPMh:nW:H:f:bL:NqFA:2:O:Ki:R:0:ou:B:U:";
+static char     options[] = "av:sp:x:m:l:rt:c:C:w:SVTDPMh:nW:H:f:bL:NqFA:2:O:Ki:R:0:ou:B:U:1";
 #else
-static char     options[] = "av:sp:x:m:l:rt:c:C:w:SVTDPMh:nW:H:f:bL:NFA:2:O:Ki:R:0:ou:B:U:";
+static char     options[] = "av:sp:x:m:l:rt:c:C:w:SVTDPMh:nW:H:f:bL:NFA:2:O:Ki:R:0:ou:B:U:1";
 #endif
 static char     msg1[]    = "%s: Can't open %s (%s)\n";
 static char    *ptty = NULL;
@@ -649,11 +663,12 @@ static void init_variables(int argc, char* argv[])
 #endif
 #if 0 /* Fixme: remove */
   CityWeekend = 0;
-#endif  
+#endif
 
   sprintf(mlabel, "%%s%s  %%s%%s", "%e.%b %T %I");
   amtsholung = NULL;
   dual = 0;
+  hfcdual = 0;
 #if 0 /* Fixme: german specific there are conf entries VBN & PRESELECTED */
   preselect = DTAG;      /* Telekomik */
   vbn = strdup("010"); 	 /* Germany */
@@ -807,9 +822,12 @@ int set_options(int argc, char* argv[])
 #if 0 /* Fixme: remove */
       case 'F' : CityWeekend++;
       	       	 break;
-#endif		 
+#endif
 
       case 'A' : amtsholung = strdup(optarg);
+      	       	 break;
+
+      case '1' : hfcdual = 1;
       	       	 break;
 
       case '2' : dual = strtol(optarg, NIL, 0);
@@ -1043,11 +1061,11 @@ static int read_param_file(char *FileName)
                                 if (!strcmp(Ptr->name,CONF_ENT_OTHER))
 				        other = toupper(*(Ptr->value)) == 'Y'?1:0;
                                 else
-#if 0 /* Fixme: remove */				
+#if 0 /* Fixme: remove */
 				if (!strcmp(Ptr->name,CONF_ENT_CW))
 				  CityWeekend++;
                                 else
-#endif				
+#endif
                                 if (!strcmp(Ptr->name,CONF_ENT_IGNORERR))
 				        ignoreRR = (int)strtol(Ptr->value, NIL, 0);
                                 else
@@ -1254,7 +1272,7 @@ int main(int argc, char *argv[], char *envp[])
       *isdnctrl2 = 0;
     }
     else {
-      if (strcmp(isdnctrl, "-") && dual) {
+      if (strcmp(isdnctrl, "-") && dual && !hfcdual) {
         strcpy(isdnctrl2, isdnctrl);
       	p = strrchr(isdnctrl2, 0) - 1;
 
@@ -1407,9 +1425,9 @@ int main(int argc, char *argv[], char *envp[])
 
 #ifdef USE_DESTINATION
 	    initDest(destfile, &version);
-#else	    
+#else
 	    initCountry(countryfile, &version);
-#endif	    
+#endif
 
 	    if (!Q931dmp && *version)
 	      print_msg(PRT_NORMAL, "%s\n", version);

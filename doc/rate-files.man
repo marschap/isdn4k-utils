@@ -170,7 +170,7 @@ is an (optional) minimum charge,
 .I Charge
 the rate per 
 .I Duration
-second or optional rate per
+seconds or optional rate per
 .I (Divider)
 seconds, 
 .I Duration

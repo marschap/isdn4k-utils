@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.114 1999/10/29 12:43:02 akool Exp $
+## $Id: Makefile.in,v 1.115 1999/10/29 19:45:59 akool Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,20 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.115  1999/10/29 19:45:59  akool
+## isdnlog-3.60
+##  - sucessfully ported/tested to/with:
+##      - Linux-2.3.24 SMP
+##      - egcs-2.91.66
+##    using -DBIG_PHONE_NUMBERS
+##
+##  - finally added working support for HFC-card in "echo mode"
+##    try this:
+##      hisaxctrl bri 10 1
+##      hisaxctrl bri 12 1
+##      isdnlog -21 -1
+## -----------------^^ new option
+##
 ## Revision 1.114  1999/10/29 12:43:02  akool
 ## fixed "make install"
 ##
@@ -805,7 +819,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 3.59
+VERSION     = 3.60
 
 MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 \
 	      isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 \
@@ -832,6 +846,7 @@ DEFS       += \
                -DVERSION=\"$(VERSION)\"   \
                -DI4LVERSION=\"$(I4LVERSION)\"   \
 	       -D@NATION_MACRO@=1		\
+	       -DBIG_PHONE_NUMBERS=1		\
                 $(INCLUDE)
 
 %.o: %.c
