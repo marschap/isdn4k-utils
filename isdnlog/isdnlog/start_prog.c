@@ -1,4 +1,4 @@
-/* $Id: start_prog.c,v 1.18 2004/01/28 14:27:46 tobiasb Exp $
+/* $Id: start_prog.c,v 1.19 2004/07/24 15:48:45 tobiasb Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,13 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: start_prog.c,v $
+ * Revision 1.19  2004/07/24 15:48:45  tobiasb
+ * Set call duration -- written \$5 in callerid.conf -- until a
+ * CONNECT occurs to 0 and not to the time elapsed since SETUP.  Now
+ * the value 0 clearly indicates an unanswered call at HANGUP.  This
+ * was reported by Rainer Dorsch on the isdn4linux mailinglist in
+ * message <200404181436.48694.rdorsch@web.de> at 2004-04-18.
+ *
  * Revision 1.18  2004/01/28 14:27:46  tobiasb
  * Second step in restricting fds at isdnlog restart and script starting.
  * The fd limit is now taken from getrlimit() instead of NR_OPEN.
@@ -1049,10 +1056,15 @@ char **Get_Opts(int chan, int event, int InOut)
 	else
 		Opts[3] = "";
 
+	/* .connect is time of SETUP before CONNECT */
 	if (call[chan].connect)
 	{
-		long Help = (long) (time(NULL) - call[chan].connect);
-		Opts[4] = ArgToChar(R_TYPE_LONG, &Help);
+		if (call[chan].dialog) {
+			long Help = (long) (time(NULL) - call[chan].connect);
+			Opts[4] = ArgToChar(R_TYPE_LONG, &Help);
+		}
+		else
+			Opts[4] = "0";
 	}
 	else
 		Opts[4] = "";

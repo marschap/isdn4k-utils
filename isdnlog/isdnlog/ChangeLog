@@ -1,0 +1,6 @@
+2004-07-24  Tobias Becker  <tobiasb@isdn4linux.de>
+
+	* start_prog.c (Get_Opts): The call duration \$5 is now 0 until
+	a CONNECT occurs.
+
+	* ChangeLog: Started this file.
