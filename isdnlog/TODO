@@ -7,12 +7,12 @@ isdnrep modulariseren und print_msg einbauen
 Fehler in start_proc lt. Mail beheben
 Vorschlaege von ak realisieren
 
- - Bedingt durch den neuen logger()-Modus muss die "/var/log/isdn.log" 
+ - Bedingt durch den neuen logger()-Modus muss die "/var/log/isdn.log"
    (sowie die "/var/log/isdn.log.rep") nun existieren,
    da isdnlog diese nicht mehr automatisch anlegt :-(
 
- - seit dem processcint() Aufruf in morectrl() h„ngt sich die Replay-
-   Funktion gerne auf!
+ - ACHTUNG: die glibc definiert BUFSIZ mit 8192 !! (an welchen Stellen
+   	    bin ich unbewuát von 512 Byte ausgegangen?
 
  - bekannte Probleme mit der Tarif-Datenbank:
 

@@ -1,4 +1,4 @@
-/* $Id: processor.c,v 1.53 1999/04/15 19:14:38 akool Exp $
+/* $Id: processor.c,v 1.54 1999/04/17 14:11:08 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,13 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.54  1999/04/17 14:11:08  akool
+ * isdnlog Version 3.17
+ *
+ * - LCR functions of "isdnconf" fixed
+ * - HINT's fixed
+ * - rate-de.dat: replaced "1-5" with "W" and "6-7" with "E"
+ *
  * Revision 1.53  1999/04/15 19:14:38  akool
  * isdnlog Version 3.15
  *
@@ -602,11 +609,6 @@
  * Initial revision
  *
  */
-
-/* Fixme: should be removed completely */
-#define prepreis	      0.0
-#define hintpreis	      0.0
-
 
 #define _PROCESSOR_C_
 #include "isdnlog.h"
@@ -4001,55 +4003,35 @@ void processRate(int chan1)
 
 static void processLCR(int chan, char *hint)
 {
-  auto   RATE bestRate, pselRate;
-  auto   char sx[BUFSIZ], sy[BUFSIZ], sz[BUFSIZ];
+  auto   RATE   bestRate, pselRate, hintRate;
+  auto   char   sx[BUFSIZ], sy[BUFSIZ], sz[BUFSIZ];
+  auto	 double prepreis = -1.0, hintpreis = -1.0;
 
 
   *hint = 0;
 
-  bestRate = pselRate = call[chan].Rate;
+  bestRate = pselRate = hintRate = call[chan].Rate;
 
   bestRate.prefix = getLeastCost(&bestRate, -1);
 
+  if (getRate(&pselRate, NULL) != UNKNOWN)
+    prepreis = pselRate.Charge;
+
+  if (getRate(&hintRate, NULL) != UNKNOWN)
+    hintpreis = hintRate.Charge;
+
   *sx = *sy = *sz = 0;
 
-  if ((bestRate.prefix != UNKNOWN) && (bestRate.prefix != call[chan].provider))
+  if ((bestRate.prefix != UNKNOWN) && (bestRate.prefix != call[chan].provider) && (call[chan].pay - bestRate.Charge))
     sprintf(sx, "Cheapest 010%02d:%s %s %s, more payed %s %s",
       bestRate.prefix, bestRate.Provider, currency,
       double2str(bestRate.Charge, 6, 3, DEB),
       currency,
       double2str(call[chan].pay - bestRate.Charge, 6, 3, DEB));
 
-#if 0
-  ^MICHI: In der folgenden Zeile l„uft was schief:
-          Beispiel:
-06.Apr 10:04:18 [1]Calling AK via Mobilcom with HDLC  1.CI DM 0,120 (now)
-06.Apr 10:04:18 [1]Calling AK via Mobilcom with HDLC  NEXT CI AFTER 01:00 (Mobilcom, GermanCall, Dienstag, )
-06.Apr 10:14:17 [1]Calling AK via Mobilcom with HDLC  Normal call clearing (User)
-06.Apr 10:14:17 [1]Calling AK via Mobilcom with HDLC  HINT: Cheapest 01051:01051 DM 0,360, more payed DM -0,240 saving vs. preselect (01033:Mobilcom) DM -0,120 LCR:FAILED
--1---------------------------------------------------------------------------------^^^^^^
--2------------------------------------------------------------------------------------------------------^^^^^^^
--3------------------------------------------------------------------------------------------------------------------------------------------^^^^^^^^
--4-------------------------------------------------------------------------------------------------------------------------------------------------------^^^^^^
-  1: Cheapest price ist falsch: 10 Minuten * DM 0.09 => DM 0,90 - nicht DM 0,36
-     (die DM 0,36 stammen wohl noch von der Verprobung mit 181 Sekunden)
-  2: More payed - DM 0,24 ergibt sich wohl, da mangels CI-Weiterschaltung
-     die Verbindung nur DM 0,12 statt in Wirklichkeit DM 1,20 gekostet hat
-  3: Ich bin zwar auf "01033" preselected, dieser Provider heiát jedoch
-     "DTAG", nicht "Mobilcom". Mobilcom ist der Provider, ueber den
-     diese Verbindung ging (01019:Mobilcom)
-  4: "saving vs. preselect" máte sein
-       Preselect: Takt: 0.12/30 :: 20 Takte * DM 0,12 => DM 2,40
-       bezahlt:	  		      	      	      	 DM 1,20
-       saving						 DM 1,20
-06.Apr 10:14:17 [1]Calling AK via Mobilcom with HDLC  HANGUP (DM 0,12  0:09:59)
---------------------------------------------------------------^^^^^^^^^^^^^^^^
-     Statt 10 Takte zu je DM 0,12 wurde nur 1 Takt berechnet
-   ~MICHI
-#endif
   if ((call[chan].provider != preselect) && (prepreis != -1.00) && (prepreis != call[chan].pay))
     sprintf(sy, " saving vs. preselect (010%02d:%s) %s %s",
-      preselect, pselRate.Provider,
+      preselect, getProvidername(preselect),
       currency,
       double2str(prepreis - call[chan].pay, 6, 3, DEB));
 
@@ -4058,29 +4040,6 @@ static void processLCR(int chan, char *hint)
       call[chan].hint, getProvidername(call[chan].hint),
       currency,
       double2str(hintpreis - call[chan].pay, 6, 3, DEB));
-
-#if 0
-  ^MICHI: Und nochwas habe ich hier zu meckern:
-  	  Die folgende Zeile darf in diesem Context aus zwei Gruenden
-          nicht kommen:
-
-          1. Da beim Verbindungsaufbau kein Vorschlag fuer einen billigeren
-             kam, darf hier auch nun kein "saving vs. hint (01000:(null))"
-             gebracht werden.
-          2. Diese Verbindung war kostenlos (antriggern einer Callback-Strecke)
-	     Da kostenlos, braucht auch kein "noch billigerer" ausgedeutet
-             werden.
-01.Apr 10:00:08   [2]Calling daffm via DTAG with HDLC  HINT:  saving vs. hint (01000:(null)) DM 0,000 LCR:FAILED
-01.Apr 10:00:08   [2]Calling daffm via DTAG with HDLC  HANGUP
-
-          Auch im folgenden Fall laesst sich darueber streiten, ob bei
-          "User busy" ein HINT kommen soll:
-06.Apr 14:44:45 * [0]Calling Mobilfunknetz D2 - 2278000 via DTAG with PPP  RING (Data)
-06.Apr 14:44:52 [1]Calling Mobilfunknetz D2 - 2278000 via DTAG with PPP  User busy (User)
-06.Apr 14:44:52 [1]Calling Mobilfunknetz D2 - 2278000 via DTAG with PPP  HINT:  saving vs. hint (01000:(null)) DM 0,000 LCR:FAILED
-06.Apr 14:44:52 [1]Calling Mobilfunknetz D2 - 2278000 via DTAG with PPP  HANGUP User busy (User)
-   ~MICHI
-#endif
 
   if (*sx || *sy || *sz)
     sprintf(hint, "HINT: %s%s%s LCR:%s", sx, sy, sz, ((bestRate.prefix == call[chan].provider) ? "OK" : "FAILED"));
@@ -4183,48 +4142,25 @@ static void prepareRate(int chan, char **msg, char **tip, int viarep)
     if (msg)
       sprintf(message, "CHARGE: Uh-oh: No charge info for provider %d, zone %d, number %s",
 	call[chan].provider, call[chan].zone, call[chan].num[CALLED]);
-
-#if 0
-  ^MICHI: Hier kann man darueber streiten, ob bei unbekanntem Tarif
-          ein HINT vorgeschlagen werden soll, aber ein "saving" resp.
-          "more payed" kann es auf keinen Fall geben!
-01.Apr 16:55:06 * [0]Calling Tom via DTAG with HDLC  RING (Data)
-01.Apr 16:55:09   [2]Calling Tom via DTAG with HDLC  Time:Thu Apr  1 16:56:00 1999
-01.Apr 16:55:09   [2]Calling Tom via DTAG with HDLC  CONNECT (Data)
-01.Apr 16:55:09   [2]Calling Tom via DTAG with HDLC  CHARGE: Uh-oh: No charge info for provider 33, zone 2, number +496419433633
-01.Apr 16:55:09   [2]Calling Tom via DTAG with HDLC  HINT: Better use 01051:01051, DM 0,090/60s = DM 0,090/Min, saving DM *****/181s
-01.Apr 16:55:38   [2]Calling Tom via DTAG with HDLC  Normal call clearing (User)
-01.Apr 16:55:38   [2]Calling Tom via DTAG with HDLC  HINT: Cheapest 01051:01051 DM 0,360, more payed DM -0,360 LCR:FAILED
-01.Apr 16:55:38   [2]Calling Tom via DTAG with HDLC  HANGUP ( 0:00:29)
-   ~MICHI
-#endif
-
   } /* else */
 
   lcRate = call[chan].Rate;
 
   if ((call[chan].hint = getLeastCost(&lcRate, -1)) != UNKNOWN) {
-    if (tip)
+    if (tip) {
+
+      /* compute charge for 181 seconds for used provider */
+      call[chan].Rate.now = call[chan].Rate.start + 181;
+      (void)getRate(&call[chan].Rate, NULL);
+
       sprintf(lcrhint, "HINT: Better use 010%02d:%s, %s %s/%ds = %s %s/Min, saving %s %s/%lds",
 	lcRate.prefix, lcRate.Provider,
 	currency, double2str(lcRate.Price, 5, 3, DEB),
 	(int)(lcRate.Duration + 0.5),
 	currency, double2str(60 * lcRate.Price / lcRate.Duration, 5, 3, DEB),
-#if 0
-  ^MICHI: call[chan].Rate.Charge enthaelt nicht den Preis fuer 181 Sekunden,
-          sondern offensichtlich den Grundpreis lt. "rate-de.dat"
-	  Daher erzeugt untige Subtraktion Bloedsinn!
-          Beispiel:
-06.Apr 10:04:13 * [0]Calling AK via Mobilcom with HDLC  RING (Data)
-06.Apr 10:04:18 [1]Calling AK via Mobilcom with HDLC  Time:Tue Apr  6 10:04:00 1999
-06.Apr 10:04:18 [1]Calling AK via Mobilcom with HDLC  CONNECT (Data)
-06.Apr 10:04:18 [1]Calling AK via Mobilcom with HDLC  CHARGE: DM 0,120/60s = DM 0,120/Min (Mobilcom, GermanCall, Dienstag, )
-06.Apr 10:04:18 [1]Calling AK via Mobilcom with HDLC  HINT: Better use 01051:01051, DM 0,090/60s = DM 0,090/Min, saving DM *****/181s
----------------------------------------------------------------------------------------------------------------------------^^^^^
- ~MICHI
-#endif
 	currency, double2str(call[chan].Rate.Charge - lcRate.Charge, 5, 3, DEB),
 	lcRate.Time);
+    } /* if */
   } /* if */
 } /* prepareRate */
 
@@ -5132,13 +5068,13 @@ void processflow()
 int morectrl(int card)
 {
   register char      *p, *p1, *p2, *p3;
-  static   char       s[MAXCARDS][BIGBUFSIZ];
+  static   char       s[MAXCARDS][BIGBUFSIZ * 2];
   static   char      *ps[MAXCARDS] = { s[0], s[1] };
   auto     int        n = 0;
   auto     struct tm *tm;
 
 
-  if ((n = read(sockets[card ? ISDNCTRL2 : ISDNCTRL].descriptor, ps[card], BUFSIZ)) > 0) {
+  if ((n = read(sockets[card ? ISDNCTRL2 : ISDNCTRL].descriptor, ps[card], BIGBUFSIZ)) > 0) {
 
     now();
     ps[card] += n;
@@ -5195,7 +5131,7 @@ retry:
           if (ignoreRR && (strlen(p3 + 8) < 13))
             ;
           else
-          processctrl(atoi(p3), p3 + 3);
+            processctrl(atoi(p3), p3 + 3);
         } /* else */
       }
       else
@@ -5341,7 +5277,7 @@ static void teardown(int chan)
 void processcint()
 {
   auto int    chan, c;
-  auto char   sx[BUFSIZ], s1[BUFSIZ], s2[BUFSIZ], s3[BUFSIZ];
+  auto char   sx[BUFSIZ], s1[BUFSIZ], s2[BUFSIZ], s3[BUFSIZ], hints[BUFSIZ];
   auto double dur;
 
 
@@ -5364,7 +5300,7 @@ void processcint()
  	  call[chan].ctakt, currency,
           double2str(call[chan].pay, 6, 3, DEB),
  	  double2clock(call[chan].Rate.Time));
-        info(chan, PRT_SHOWCONNECT, STATE_CONNECT, sx);
+        info(chan, PRT_SHOWCONNECT, (call[chan].Rate.Duration < 30) ? STATE_BYTE : STATE_CONNECT, sx);
 
         if ((c = call[chan].confentry[OTHER]) > -1) {
           if (!replay && (chargemax != 0.0)) {
@@ -5402,6 +5338,11 @@ void processcint()
  	  s2, s3);
 
  	info(chan, PRT_SHOWCONNECT, STATE_CONNECT, sx);
+
+ 	processLCR(chan, hints);
+
+        if (*hints)
+          info(chan, PRT_SHOWHANGUP, STATE_HANGUP, hints);
 
  	huptime(chan, 0);
       } /* if */

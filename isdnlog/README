@@ -1,10 +1,10 @@
-ISDNLOG - Version 3.15 -  				15-Apr-99  20:06
+ISDNLOG - Version 3.17 -  				17-Apr-99  15:00
 
 
 isdnlog ist ein Utility zur Auswertung des D-Kanals eines
 ISDN-BRI Anschlusses.
 
-isdnlog-3.15 wurde ausgiebig mit Linux-2.0.36 getestet.
+isdnlog-3.17 wurde ausgiebig mit Linux-2.0.36 getestet.
 
 
 Fuer alle, die es nun ueberhaupt nicht mehr abwarten koennen, hier das
@@ -4021,7 +4021,7 @@ T:Tag/Zeit=Kosten[,Kosten] Name
 
 wobei Tag in der Form 1-5 oder 1,2,3,4,5 stehen kann, 1=Montag, es gibt
 noch * fuer alle Tage und H fuer Holiday=Feiertag sowie
-E=Weekend (entspricht 6-7)
+W=Werktag (entspricht 1-5) sowie E=Weekend (entspricht 6-7)
 Welcher Tag ein Holiday (Tag mit verguenstigen Tarifen) ist, entnimmt
 isdnlog der Datei "holiday-xx.dat" (Mit "xx" fuer das Land, in dem sich
 isdnlog befindet). Auch diese Datei muss ueber den Eintrag
