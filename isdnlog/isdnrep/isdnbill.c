@@ -1,4 +1,4 @@
-/* $Id: isdnbill.c,v 1.8 1999/12/12 14:35:53 akool Exp $
+/* $Id: isdnbill.c,v 1.9 1999/12/16 23:08:28 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Billing-module)
  *
@@ -630,6 +630,16 @@ static void justify(char *fromnum, char *tonum, TELNUM number)
   register char *p1, *p2;
   auto     char  s[BUFSIZ], sx[BUFSIZ], sy[BUFSIZ];
 
+
+  /* AK:16-Dec-99                                                     */
+  /* Hier ist noch ein Bug in normalizeNumber(), Leo!                 */
+  /* Bei Sonderrufnummern landet die komplette Nummer in number.area, */
+  /* wobei die letzten 2 Digits abgeschnitten sind (fehlen) 	      */
+
+  if (!*number.msn) {
+    strcpy(number.msn, c.dialout ? tonum : fromnum);
+    *number.area = 0;
+  } /* if */
 
   p1 = numtonam(c.dialout ? CALLED : CALLING, 1);
 

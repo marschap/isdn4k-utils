@@ -103,11 +103,12 @@ IMG tags too.
 Running the Program
 -------------------
 
-if $use_sockets is on, start the server instance of isdnlog/bin/isdnrate with
-options -D2 [-v]
-as soon as you see "Setup sockets" and "Going background" you can point
-your browser to
+If $use_sockets is on, telrate.cgi tries to start a server instance of
+isdnlog/bin/isdnrate with the configured options for pid_file and socketname.
+If this doesn't work, you can start an isdnrate-daemon manually by:
+  isdnrate -D2 -v
 
-/telrate/index.html
+If $use_sockets is off, telrate.cgi has to start isdnrate for every detail,
+which can take quite a long time.
 
 Enjoy

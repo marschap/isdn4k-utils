@@ -12,7 +12,10 @@ bzip2 -d zneu.de9.bz2
 bzip2 -9 zneu.de9
 
 ../../redzone -zzoneall -rzred.dtag -l5 -v2 -n
+
+rm -f zred.dtag.bz2
 bzip2 -9 zred.dtag
+
 rm zoneall
 
 cd ../..

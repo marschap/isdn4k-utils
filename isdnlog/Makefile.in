@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.132 1999/12/14 21:02:36 akool Exp $
+## $Id: Makefile.in,v 1.133 1999/12/16 23:08:26 akool Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,15 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.133  1999/12/16 23:08:26  akool
+## isdnlog-3.78
+##  - isdnlog/tools/isdnrate.c ... new sOcket option
+##  - isdnlog/tools/NEWS ... new sOcket option
+##  - doc/isdnrate.man ... ditto
+##  - isdnlog/tools/telrate/config.in ... ditto
+##  - isdnlog/tools/telrate/telrate.cgi.in ... ditto
+##  - isdnlog/tools/telrate/README-telrate ditto
+##
 ## Revision 1.132  1999/12/14 21:02:36  akool
 ## isdnlog-3.77
 ##   corrected german zone file
@@ -921,7 +930,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 3.77
+VERSION     = 3.78
 
 MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 \
 	      isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 \

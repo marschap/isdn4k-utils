@@ -1,4 +1,4 @@
-V:1.10-Germany [09-Dec-1999 19:08:45]
+V:1.10-Germany [15-Dec-1999 18:56:42]
 
 # Währungsformat
 U:%.3f DM
@@ -8,7 +8,7 @@ U:%.3f DM
 #
 # (C) Copyright 1999 by Andreas Kool (akool@isdn4linux.de)
 #
-# $Id: rate-de.dat,v 1.67 1999/12/12 14:35:51 akool Exp $
+# $Id: rate-de.dat,v 1.68 1999/12/16 23:08:26 akool Exp $
 #
 #
 # Das "A:" Tag muß folgendermaßen gefüllt werden:
@@ -10276,7 +10276,7 @@ C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/
 #
 P:39 First Telecom CbC
 B:01039
-# G:16-Aug-1999
+# G:01-Dec-1999
 D:dtag
 C:Name:First Telecom
 C:Address:First Telecom GmbH, Lyoner Straße 51, 60528 Frankfurt/Main
@@ -13493,7 +13493,7 @@ C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 C:Bei Preselection sekundengenaue Taktung
 D:dtag
-# G:15-Oct-1999
+# G:16-Dec-1999
 Z:1-4 National
 T:W/08-17=0.14/60
 T:W/17-08=0.078/60
@@ -13510,75 +13510,71 @@ A:0176,0179
 T:W/08-17=0.58(60)/1
 T:W/17-08=0.48(60)/1
 T:E,H/*=0.48(60)/1
-Z:200 International (Top 12)
-A:AU,BE,DK
-A:FI,FR
-A:UK,NL
-A:NO,AT
-A:SE,CH
-A:US,CA
-T:W/08-17=0.38(60)/1
-# bei Preselection:
-# T:W/08-17=0.29(60)/1
-T:W/17-08=0.29(60)/1
-T:E,H/*=0.29(60)/1
-Z:201 International B
-A:HK,IE,IL
-A:IT,JP,LI
-A:LU,MC,ES
-T:W/08-17=0.48(60)/1
-T:W/17-08=0.38(60)/1
-T:E,H/*=0.38(60)/1
-Z:202 International C
-A:_ALAS,AL,DZ
-A:AD,BS,BM
-A:BA
-A:BR,BG,CL
-A:DO
-A:EE,FO,GI
-A:GR,_HAWA,IS
-A:YU,HR,LV
-A:LT,MT,MX
-A:MD,NZ,PL
-A:PT,PR,RU,SM
-A:YU,SG,SK
-A:SI,KR
-A:CZ,TR
-A:TN,HU,BY
-A:CY
+Z:200 International Top A Mobilfunk
+A:_DKMF,_UKMF,_SEMF
+T:W/08-17=0.32(60)/1 # dieser "Millenium-Preis" gilt *nur* vom 16Dec1999 bis 15Jan2000
+T:W/08-17=0.38(60)/1 # danach gilt wieder */*=0.38(60)/1
+Z:201 International Top A
+A:DK,UK,CA,SE,US
+T:W/08-17=0.12(60)/1 # dieser "Millenium-Preis" gilt *nur* vom 16Dec1999 bis 15Jan2000
+T:W/08-17=0.18(60)/1 # danach gilt wieder */*=0.18(60)/1
+Z:202 International A Mobilfunk
+A:_AUMF,_BEMF,_FIMF
+A:_FRMF,_HKMF,_IEMF
+A:_ITMF,_NLMF,_NOMF
+A:_ATMF,_CHMF,_ESMF
+T:*/*=0.44(60)/1
+Z:203 International A
+A:AU,BE,FI,FR,HK,IE
+A:IT,NL,NO,AT,CH,ES
+T:*/*=0.24(60)/1
+Z:204 International B Mobilfunk
+A:_ILMF
+T:*/*=0.58(60)/1
+Z:205 International B
+A:CL,IS,IL,JP,LI,LU,MC
+A:NZ,SG,KR,TW
+T:*/*=0.38(60)/1
+Z:206 International C Mobilfunk
+A:_PTMF
+T:*/*=0.68(60)/1
+Z:207 International C
+A:AD,BS,BM,BR,_MADE,MY,MT
+A:PT,PR,SM,CZ,TR
+A:HU
+T:*/*=0.48(60)/1
+Z:208 International D
+A:AL,_AZOR,DO,EE,GI
+A:GR,HR,LT,MX,PL,SU,YU
+A:SK,SI,CY
+T:*/*=0.58(60)/1
+Z:209 International E Mobilfunk
+A:_ARMF
 T:*/*=0.88(60)/1
-Z:203 International D
-A:EG,AM,_AZOR
-A:BB,BO,CR
-A:EC,SV,FK
-A:GL,JO
-A:VG,VI
-A:KY,CO
-A:LB,MY,_MADE
-A:MQ,EH
-A:MK,PH
-A:RO,SU
-A:SY
-A:SZ,TW,TH
-A:UA,VE
+Z:210 International E
+A:AR,_CHAT,CN,CR,FK
+A:FO,KY,PH,ZA,VE
+T:*/*=0.68(60)/1
+Z:211 International F
+A:DZ,BA,BG,EC,ID
+A:VI,VG
+A:CO,LV,EH
+A:MD,RO,SZ,TH,TN,UA
+A:BY
+T:*/*=0.98(60)/1
+Z:212 International G
+A:EG,AO,AM,AW,AZ,BB,BO
+A:BW,BN,NKW,SV,GF
+A:GM,GE,GH,GL,GP,_GUAB
+A:GT,HT,HN,IR,JM,JO,KZ
+A:KE,KG,CG,KP,LS,LB,LY,MO
+A:MK,MW,MQ,NA,NI,NGR,NF
+A:PA,PG,PY,PE,SA
+A:SD,SY,TJ,UG
+A:AE,UY,UZ,ZW
 T:*/*=1.48(60)/1
-Z:204 International E
-A:AO,AR
-A:AZ,BW
-A:BN,CN,GF
-A:GM,GH
-A:GP,_GUAB
-A:GT,HT,HN
-A:IR,JM,KZ
-A:KE,CG,CU,LS
-A:LY,MO,MW,NA
-A:NI,NF
-A:KP,SA
-A:ZW,SD,ZA
-A:TJ,UG,UY
-A:UZ,AE
-T:*/*=1.98(60)/1
-A:205 international f (rest der welt)
+Z:213 International H
+A:+
 T:*/*=2.48(60)/1
 #####################################################################
 #
@@ -14036,7 +14032,7 @@ C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/
 #
 P:75 Callino
 B:01075
-# G:15-Nov-99
+# G:01-Dec-99
 C:Address:ARCIS Media Com Management GmbH, Maximilianstr. 14, 80539 München
 C:Name:Callino
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
@@ -14044,8 +14040,9 @@ C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/
 D:dtag
 Z:1-4 Fern
 A:+49
-T:W/08-20=0.139/60
-T:W/20-21=0.079/60
+# T:W/08-18=0.139/60
+T:W/08-18=0.119/60 # Sonderangebot, nur bis 31Dec99 gültig
+T:W/18-21=0.079/60
 T:W/21-06=0.059/60
 T:W/06-08=0.079/60
 T:E,H/06-21=0.079/60
@@ -15357,6 +15354,12 @@ T:*/*=0.12/30,0.24(60)/1
 P:80 Telegate
 B:01080
 # G:01-Aug-1999
+#
+#                                ACHTUNG:
+#
+#	     Dieser Service (01080) läuft zum Jahresende 1999 aus!
+#
+#
 D:dtag
 C:Address:Aktiengesellschaft für telefonische Informationsdienste, Bahnhofstraße 26, 82211 Herrsching
 C:Name:Telegate
@@ -15434,6 +15437,12 @@ C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/
 P:85 GTS-WESTCom
 B:01085
 # G:01-Mai-1999
+#
+#                                ACHTUNG:
+#
+#	     Dieser Service (01085) läuft zum 27. Dezember 1999 aus!
+#
+#
 C:GmbH, Hebelstraße 22 c, 69115 Heidelberg 01085
 C:Homepage: http://www.westcom.de
 C:Hotline:  0800/937-8266

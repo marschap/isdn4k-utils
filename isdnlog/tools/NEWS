@@ -1,4 +1,11 @@
 NEWS for tools: (rate, isdnrate, isdnrep)
+1999.12.14
+  isdnrate:
+    new option -O socket-file-name
+    fixed SIGSEGV, when -P was not given with -D
+  telrate.cgi:
+    starts now automatically an isdnrate daemon, with configured options
+    (s. also telrate/configure)
 
 1999.12.01
   isdnrate:

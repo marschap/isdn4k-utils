@@ -8,10 +8,12 @@ use strict;
 my(@files) = qw( Makefile.in index.html.in info.html.in telrate.cgi.in);
 my(@progs) = qw( perl mktemp isdnrate install sh );
 my($perlp, $mktempp, $isdnratep, $installp, $shp);
-my(@vars) = qw( cgibin cc title teldir cgidir gdvers gifpng sockets);
-my($cgibin, $cc, $title, $teldir, $cgidir, $gdvers, $gifpng, $sockets);
+my(@vars) = qw( cgibin cc title teldir cgidir gdvers gifpng sockets sockname piddir);
+my($cgibin, $cc, $title, $teldir, $cgidir, $gdvers, $gifpng, $sockets, $sockname, $piddir);
 
 # defaults
+$sockname='/tmp/isdnrate'; # s. also isdnrate -O ...
+$piddir='/var/run';        # s. also isdnrate -P ...
 $cgibin='/cgi-bin';
 $cgidir='/usr/local/httpd/cgi-bin';
 $cc='de';

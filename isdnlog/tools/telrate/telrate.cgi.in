@@ -22,15 +22,16 @@ use CGI::Carp 'fatalsToBrowser';
 use strict;
 use GD @GDVERS@;
 use IO::Handle;
-use vars qw ( $use_sockets $server $MKTEMP $ISDNRATE $CODEF $LOGO $docroot $CC);
-use vars qw ($_VBNS $sortv);
+use vars qw ( $use_sockets $server $MKTEMP $ISDNRATE $CODEF $LOGO $docroot $CC $pid_dir);
+use vars qw ($sortv);
 
 # socket stuff
 $use_sockets=@SOCKETS@;
 use Socket;
 
 # path for unix socket
-$server='/tmp/isdnrate';
+$server='@SOCKNAME@';
+$pid_dir='@PIDDIR@';
 
 # Country
 $CC='@CC@';
@@ -40,7 +41,6 @@ $MKTEMP='@MKTEMP@';
 $ISDNRATE='@ISDNRATE@';
 
 $LOGO="(c) 1999 Leopold Tötsch";
-$_VBNS=0;
 
 $docroot=$ENV{'DOCUMENT_ROOT'};
 
@@ -778,33 +778,17 @@ HEIGHT="1"><IMG SRC="rreun.gif" WIDTH="1" HEIGHT="1">
     # uff
 }
 
-# prefix (501 = 10401) => 01-5
+# ext prefix => int prov num
 sub prefix2provider {
     my $n = $_[0];
-    if($_VBNS) {
-        $n =~ s/^0?10//;
-	if (length($n) == 3) {
-    	    $n=100+$n ;
-	    $n =~ s/^(\d)(\d\d)/$2_$1/;
-	}
-    }
+    $n =~ s/^0?10//;
     $n;
 }
 sub provider2prefix {
     my $n = $_[0];
-    if($_VBNS) {
-	if ($n =~ /(\d\d)_(\d)/) {
-    	    $n = "$2$1";
-	}
-    }
-    else {
-        $n =~ s/^0?10//;
-	if (length($n) == 3) {
-    	    $n=100+$n;
-	}
-    }
     $n;
 }
+
 sub del_vbn {
     my @p = split(/,/, $_[0]);
     my (@np, $ret);
@@ -830,6 +814,11 @@ sub parse_len {
 	$DEFLEN;
     }
 }
+sub try_start {
+  my $prog = $_[0];
+  system("rm $server ; $prog -D2 -P $pid_dir -O $server");
+}
+
 sub  _call_isdnrate {
     my ($lines, @args) = @_;
     unless (param('busi') || param('list')) {
@@ -845,8 +834,14 @@ sub  _call_isdnrate {
     }
     print "<pre>@args</pre>" if($debug);
     if ($use_sockets) {
-	socket(SOCK, PF_UNIX, SOCK_STREAM, 0) || die("socket: $!");
-	connect(SOCK, sockaddr_un($server)) || die("connect: $!");
+     	my $tries=5;
+	while ($tries) {
+		last if (socket(SOCK, PF_UNIX, SOCK_STREAM, 0) &&
+			connect(SOCK, sockaddr_un($server)));
+		try_start($args[0]) if ($tries < 5);
+		sleep(1);
+		$tries--;
+	}
 	SOCK->autoflush(0);
 	shift(@args);
 	foreach (@args) {
@@ -1383,7 +1378,7 @@ sub make_graf {
 	    $url{$pnum}=self_url ."&info=$pnum";
     	    $pnum = '';
 	}
-        elsif (/^\@ (\d+)/) { # start
+        elsif (/^\@ ([\d_]+)/) { # start
     	    $pnum=prefix2provider($1);
 	    if (!$daily && !$weekly && !$mix) {
     		push( @{ $pt{$pnum} }, 0); # time

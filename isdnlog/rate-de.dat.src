@@ -1,4 +1,4 @@
-V:1.10-Germany [12-Dec-1999 18:42:00]
+V:1.10-Germany [15-Dec-1999 18:56:42]
 
 # Währungsformat
 U:%.3f DM
@@ -8,7 +8,7 @@ U:%.3f DM
 #
 # (C) Copyright 1999 by Andreas Kool (akool@isdn4linux.de)
 #
-# $Id: rate-de.dat.src,v 1.18 1999/12/14 21:02:36 akool Exp $
+# $Id: rate-de.dat.src,v 1.19 1999/12/16 23:08:26 akool Exp $
 #
 #
 # Das "A:" Tag muß folgendermaßen gefüllt werden:
@@ -10276,7 +10276,7 @@ C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/
 #
 P:39 First Telecom CbC
 B:01039
-# G:16-Aug-1999
+# G:01-Dec-1999
 D:dtag
 C:Name:First Telecom
 C:Address:First Telecom GmbH, Lyoner Straße 51, 60528 Frankfurt/Main
@@ -13493,7 +13493,7 @@ C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 C:Bei Preselection sekundengenaue Taktung
 D:dtag
-# G:15-Oct-1999
+# G:16-Dec-1999
 Z:1-4 National
 T:W/08-17=0.14/60
 T:W/17-08=0.078/60
@@ -13510,75 +13510,71 @@ A:0176,0179		# E2
 T:W/08-17=0.58(60)/1
 T:W/17-08=0.48(60)/1
 T:E,H/*=0.48(60)/1
-Z:200 International (Top 12)
-A:Australien, Belgien, Dänemark
-A:Finnland, Frankreich
-A:Großbritannien, Niederlande
-A:Norwegen, Österreich
-A:Schweden, Schweiz
-A:USA, Kanada
-T:W/08-17=0.38(60)/1
-# bei Preselection:
-# T:W/08-17=0.29(60)/1
-T:W/17-08=0.29(60)/1
-T:E,H/*=0.29(60)/1
-Z:201 International B
-A:Hong Kong, Irland, Israel
-A:Italien, Japan, Liechtenstein
-A:Luxemburg, Monaco, Spanien
-T:W/08-17=0.48(60)/1
-T:W/17-08=0.38(60)/1
-T:E,H/*=0.38(60)/1
-Z:202 International C
-A:Alaska, Albanien, Algerien
-A:Andorra, Bahamas, Bermuda
-A:Bosnien-Herzegowina
-A:Brasilien, Bulgarien, Chile
-A:Dominikanische Republik
-A:Estland, Färöer, Gibraltar
-A:Griechenland, Hawaii, Island
-A:Jugoslawien, Kroatien, Lettland
-A:Litauen, Malta, Mexiko
-A:Moldavien, Neuseeland, Polen
-A:Portugal, Puerto Rico, Rußland (westl.), San Marino
-A:Serbien, Singapur, Slowakei
-A:Slowenien, Süd-Korea
-A:Tschechische Republik, Türkei
-A:Tunesien, Ungarn, Weißrußland
-A:Zypern
+Z:200 International Top A Mobilfunk
+A:Dänemark Mobilfunk, Großbritannien Mobilfunk, Schweden Mobilfunk
+T:W/08-17=0.32(60)/1 # dieser "Millenium-Preis" gilt *nur* vom 16Dec1999 bis 15Jan2000
+T:W/08-17=0.38(60)/1 # danach gilt wieder */*=0.38(60)/1
+Z:201 International Top A
+A:Dänemark, Großbritannien, Kanada, Schweden, USA
+T:W/08-17=0.12(60)/1 # dieser "Millenium-Preis" gilt *nur* vom 16Dec1999 bis 15Jan2000
+T:W/08-17=0.18(60)/1 # danach gilt wieder */*=0.18(60)/1
+Z:202 International A Mobilfunk
+A:Australien Mobilfunk, Belgien Mobilfunk, Finnland Mobilfunk
+A:Frankreich Mobilfunk, Hong Kong Mobilfunk, Irland Mobilfunk
+A:Italien Mobilfunk, Niederlande Mobilfunk, Norwegen Mobilfunk
+A:Österreich Mobilfunk, Schweiz Mobilfunk, Spanien Mobilfunk
+T:*/*=0.44(60)/1
+Z:203 International A
+A:Australien, Belgien, Finnland, Frankreich, Hong Kong, Irland
+A:Italien, Niederlande, Norwegen, Österreich, Schweiz, Spanien
+T:*/*=0.24(60)/1
+Z:204 International B Mobilfunk
+A:Israel Mobilfunk
+T:*/*=0.58(60)/1
+Z:205 International B
+A:Chile, Island, Israel, Japan, Liechtenstein, Luxemburg, Monaco
+A:Neuseeland, Singapur, Süd-Korea, Taiwan
+T:*/*=0.38(60)/1
+Z:206 International C Mobilfunk
+A:Portugal Mobilfunk
+T:*/*=0.68(60)/1
+Z:207 International C
+A:Andorra, Bahamas, Bermuda, Brasilien, Madeira, Malaysia, Malta
+A:Portugal, Puerto Rico, San Marino, Tschechische Republik, Türkei
+A:Ungarn
+T:*/*=0.48(60)/1
+Z:208 International D
+A:Albanien, Azoren, Dominikanische Republik, Estland, Gibraltar
+A:Griechenland, Kroatien, Litauen, Mexiko, Polen, Rußland, Serbien
+A:Slowakei, Slowenien, Zypern
+T:*/*=0.58(60)/1
+Z:209 International E Mobilfunk
+A:Argentinien Mobilfunk
 T:*/*=0.88(60)/1
-Z:203 International D
-A:Ägypten, Armenien, Azoren
-A:Barbados, Bolivien, Costa Rica
-A:Equador, El Salvador, Falkland Inseln
-A:Grönland, Jordanien
-A:Jungferninseln (britisch), Jungferninseln (USA)
-A:Kaimaninseln, Kolumbien
-A:Libanon, Malaysia, Madeira
-A:Martinique, Marokko
-A:Mazedonien, Philippinen
-A:Rumänien, Rußland (östl.)
-A:Syrien (Arabische Republik)
-A:Swasiland, Taiwan, Thailand
-A:Ukraine, Venezuela
+Z:210 International E
+A:Argentinien, Chatham Inseln, China, Costa Rica, Falkland Inseln
+A:Faröer, Kaimaninseln, Philippinen, Südafrika, Venezuela
+T:*/*=0.68(60)/1
+Z:211 International F
+A:Algerien, Bosnien-Herzegowina, Bulgarien, Equador, Indonesien
+A:Amerikanische Jungferninseln, Britische Jungferninseln
+A:Kolumbien, Lettland, Marokko
+A:Moldavien, Rumänien, Swasiland, Thailand, Tunesien, Ukraine
+A:Weißrußland
+T:*/*=0.98(60)/1
+Z:212 International G
+A:Ägypten, Angola, Armenien, Aruba, Aserbaidschan, Barbados, Bolivien
+A:Botswana, Brunei, Diego Garcia, El Salvador, Französisch Guyana
+A:Gambia, Georgien, Ghana, Grönland, Guadaloupe, Guatanamo Bay
+A:Guatemala, Haiti, Honduras, Iran, Jamaika, Jordanien, Kasachstan
+A:Kenia, Kirgizstan, Kongo, Nord-Korea, Lesotho, Libanon, Libyen, Macao
+A:Mazedonien, Malawi, Martinique, Namibia, Nicaragua, Niger, Norfolk Inseln
+A:Panama, Papua Neu Guinea, Paraguay, Peru, Saudi-Arabien
+A:Sudan, Syrien (Arabische Republik), Tajikistan, Uganda
+A:Vereinigte Arab. Emirate, Uruguay, Uzbekistan, Zimbabwe
 T:*/*=1.48(60)/1
-Z:204 International E
-A:Angola, Argentinien
-A:Aserbaidschan, Botswana
-A:Brunei, China, Französisch Guyana
-A:Gambia, Ghana
-A:Guadeloupe, Guatanamo Bay
-A:Guatemala, Haiti, Honduras
-A:Iran, Jamaika, Kasachstan
-A:Kenia, Kongo, Kuba, Lesotho
-A:Libyen, Macao, Malawi, Namibia
-A:Nicaragua, Norfolk Inseln
-A:Nord-Korea, Saudi-Arabien
-A:Simbabwe, Sudan, Südafrika
-A:Tajikistan, Uganda, Uruguay
-A:Uzbekistan, Vereinigte Arab. Emirate
-T:*/*=1.98(60)/1
-A:205 International F (Rest der Welt)
+Z:213 International H
+A:+
 T:*/*=2.48(60)/1
 #####################################################################
 #
@@ -14036,7 +14032,7 @@ C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/
 #
 P:75 Callino
 B:01075
-# G:15-Nov-99
+# G:01-Dec-99
 C:Address:ARCIS Media Com Management GmbH, Maximilianstr. 14, 80539 München
 C:Name:Callino
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
@@ -14044,8 +14040,9 @@ C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/
 D:dtag
 Z:1-4 Fern
 A:+49
-T:W/08-20=0.139/60
-T:W/20-21=0.079/60
+# T:W/08-18=0.139/60
+T:W/08-18=0.119/60 # Sonderangebot, nur bis 31Dec99 gültig
+T:W/18-21=0.079/60
 T:W/21-06=0.059/60
 T:W/06-08=0.079/60
 T:E,H/06-21=0.079/60
