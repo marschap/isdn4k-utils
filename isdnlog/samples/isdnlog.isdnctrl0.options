@@ -124,3 +124,35 @@ time=1
 # die neue Dauer in das entsprechende IP-Interface.
 
 hangup=5:3
+
+# -I			ciInterval="value[:value2]"
+# Print chargeint (CI) and AOC-D (EH) messages every value / value2 seconds.
+
+ciInterval=300:600
+
+# -d			abclcr="value"
+# Do active LCR for outgoing calls from your isdn card.
+#
+# Value is a bitmap:
+#	0 ... off
+#	1 ... calls to different area / country
+#	2 ... local calls too
+#	4 ... special numbers e.g. ISP
+# This needs a kernel patch to work. If the kernel patch is not found
+# a simulation is done.
+# Note: depending on your telefon provider local area calls may or may not
+# be routed to alternate providers.
+# For changing the ISP a script is called. s. next option 'providerchange'
+
+abclcr=0
+
+#			providerchange="path_top_script"
+# (There is no commandline option for this)
+# This script is called with 3 parameters, the new provider number
+# (fron rate-CC.dat) the number, which would be dialed, and the servicename.
+# The script should adjust routing, name resolution and so on to
+# connect to the ISP.
+# If the script returns non zero, LCR will not be done.
+
+# providerchange = /etc/isdn/provider
+
