@@ -34,6 +34,7 @@ from the X Consortium.
  *
  */
 
+#include <stdlib.h>
 #include <unistd.h>
 #include <stdio.h>
 #include <sys/ioctl.h>
@@ -274,18 +275,17 @@ XtPointer closure;
 XtPointer call_data;	/* pointer to (double) return value */
 {
   double *loadavg = (double *)call_data;
-  double cps;
+  double cps = 0.0;
   int idx;
-  int get_iobytes, l;
+  int get_iobytes;
   char buf[4096];
   char s[120];
   char f[80];
   time_t t;
-  struct timeval tv_now, tv;
+  struct timeval tv_now;
   struct tm *tm;
   char now[20];
   long bytes_delta;
-  fd_set fds;
   int secs_delta;
   Arg args[1];
 
@@ -446,7 +446,7 @@ int main(argc, argv)
     Widget toplevel, load, pane, load_parent;
     Arg args[1];
     Pixmap icon_pixmap = None;
-    char *label, host[256];
+    char *label;
     XrmValue namein, pixelout;
     time_t t;
     struct tm *tm;
