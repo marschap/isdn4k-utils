@@ -3,6 +3,12 @@
 #define _VBOX_CONFIG_H 1
 
 /*
+ * Define to empty if the keyword does not work:
+ */
+
+#undef const
+
+/*
  * Define if you have the ANSI C header files:
  */
 

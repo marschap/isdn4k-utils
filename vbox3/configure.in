@@ -7,6 +7,9 @@ AC_PROG_CC
 AC_PROG_RANLIB
 AM_PROG_INSTALL
 
+AC_C_CONST
+AC_C_INLINE
+
 AC_HEADER_STDC
 AC_HEADER_TIME
 AC_CHECK_HEADERS(sys/time.h)
@@ -15,19 +18,11 @@ AC_CHECK_LIB(c, siginterrupt, AC_DEFINE(HAVE_SIGINTERRUPT))
 
 ##AM_WITH_REGEX
 
-
 dnl #------------------------------------------------------------------------#
 dnl # Checks for needed external packages:                                   #
 dnl #------------------------------------------------------------------------#
 
 VBOX_PACKAGE_TCL
-
-
-
-
-
-
-
 
 dnl #---------------------------------------------------------------------#
 dnl # The place where log's should be stored                              #
