@@ -26,7 +26,7 @@
 #include <linux/if.h>
 #include <linux/in.h>
 
-static char *revision = "$Revision: 1.22 $";
+static char *revision = "$Revision: 1.23 $";
 
 /* -------------------------------------------------------------------- */
 
@@ -111,9 +111,11 @@ static STRINGLIST *inmsns;
 #define PROTO_X75		1
 #define PROTO_V42BIS		2
 #define PROTO_MODEM		3
-#define PROTO_ADSLPPPOE		4
-#define PROTO_ADSLPPPOA		5
-#define PROTO_ADSLPPPOALLC	6
+#define PROTO_V110_ASYNC	4
+#define PROTO_V120_ASYNC	5
+#define PROTO_ADSLPPPOE		6
+#define PROTO_ADSLPPPOA		7
+#define PROTO_ADSLPPPOALLC	8
 static char *opt_proto = "hdlc";
 static int proto = PROTO_HDLC;
 static int opt_vpi = -1; /* T-DSL: 1  */
@@ -368,6 +370,10 @@ static void plugin_check_options(void)
 	   proto = PROTO_V42BIS;
 	} else if (strcasecmp(opt_proto, "modem") == 0) {
 	   proto = PROTO_MODEM;
+	} else if (strcasecmp(opt_proto, "v110async") == 0) {
+	   proto = PROTO_V110_ASYNC;
+	} else if (strcasecmp(opt_proto, "v120async") == 0) {
+	   proto = PROTO_V120_ASYNC;
 	} else if (strcasecmp(opt_proto, "adslpppoe") == 0) {
 	   proto = PROTO_ADSLPPPOE;
 	   if (!opt_channels) opt_channels = "1";
@@ -1262,6 +1268,12 @@ accept:
            case PROTO_MODEM:
 	      (void) capiconn_accept(cp, 8, 1, 0, 0, 0, 0, 0);
 	      break;
+           case PROTO_V110_ASYNC:
+	      (void) capiconn_accept(cp, 2, 1, 0, 0, 0, 0, 0);
+	      break;
+           case PROTO_V120_ASYNC:
+	      (void) capiconn_accept(cp, 0, 9, 0, 0, 0, 0, 0);
+	      break;
 	}
 	conn_remember(cp, CONNTYPE_INCOMING);
 	(void) capiconn_listen(ctx, controller, 0, 0);
@@ -1420,6 +1432,26 @@ static capi_connection *setupconnection(char *num, int awaitingreject)
 				opt_channels ? 0 : number, 
 				opt_channels ? 0 : opt_msn,
 				8, 1, 0,
+				0, 0, 0,
+				opt_channels ? AdditionalInfo : 0,
+				0);
+	} else if (proto == PROTO_V110_ASYNC) {
+		cp = capiconn_connect(ctx,
+				controller, /* contr */
+				2, /* cipvalue */
+				opt_channels ? 0 : number, 
+				opt_channels ? 0 : opt_msn,
+				2, 1, 0,
+				0, 0, 0,
+				opt_channels ? AdditionalInfo : 0,
+				0);
+	} else if (proto == PROTO_V120_ASYNC) {
+		cp = capiconn_connect(ctx,
+				controller, /* contr */
+				2, /* cipvalue */
+				opt_channels ? 0 : number, 
+				opt_channels ? 0 : opt_msn,
+				0, 9, 0,
 				0, 0, 0,
 				opt_channels ? AdditionalInfo : 0,
 				0);
