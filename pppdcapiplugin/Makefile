@@ -17,6 +17,8 @@ capiplugin.so: capiplugin.o capiconn.o
 userpass.so: userpass.c
 	$(CC) -o $@ $(LDFLAGS) $(CFLAGS) -nostdlib userpass.c
 
+distclean: clean
+
 clean:
 	$(RM) *.so *.o comperr
 
