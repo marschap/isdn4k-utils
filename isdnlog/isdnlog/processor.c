@@ -1,4 +1,4 @@
-/* $Id: processor.c,v 1.50 1999/04/10 16:35:35 akool Exp $
+/* $Id: processor.c,v 1.51 1999/04/10 17:19:51 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.51  1999/04/10 17:19:51  akool
+ * fix a typo
+ *
  * Revision 1.50  1999/04/10 16:35:35  akool
  * isdnlog Version 3.13
  *
@@ -4906,10 +4909,7 @@ doppelt:break;
 	  processRate(chan);
 	  processLCR(chan, &hint);
 
-#if 0
-  ^MICHI: Hier gibt's gerne mal einen Code-dump:
-  ~MICHI
-#endif
+  /* ^MICHI: Hier gibt's gerne mal einen core-dump: ~MICHI */
           if (*hint)
             info(chan, PRT_SHOWHANGUP, STATE_HANGUP, hint);
         } /* if */
