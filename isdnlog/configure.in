@@ -80,9 +80,6 @@ fi
 if test "$CONFIG_ISDNLOG_NL" = "y" ; then
 	AC_DEFINE(ISDN_NL,1)
 fi
-if test "$CONFIG_ISDNLOG_OLD_I4L" = "y" ; then
-	AC_DEFINE(OLD_I4L,1)
-fi
 
 dnl Checks for programs.
 AC_PROG_CC

@@ -1,4 +1,4 @@
-/* $Id: processor.c,v 1.9 1997/06/22 23:03:25 luethje Exp $
+/* $Id: processor.c,v 1.10 1997/08/22 12:31:21 fritz Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.10  1997/08/22 12:31:21  fritz
+ * isdnlog now handles chargeint/non-chargeint Kernels automatically.
+ * Manually setting of CONFIG_ISDNLOG_OLD_I4L no more needed.
+ *
  * Revision 1.9  1997/06/22 23:03:25  luethje
  * In subsection FLAGS it will be checked if the section name FLAG is korrect
  * isdnlog recognize calls abroad
@@ -2906,6 +2910,9 @@ static int b2c(register int b)
 } /* b2c */
 
 
+/* NET_DV since 'chargeint' field exists */
+#define	NETDV_CHARGEINT		0x02
+
 static void huptime(int chan, int bchan)
 {
   register int                c = call[chan].confentry[OTHER];
@@ -2920,21 +2927,36 @@ static void huptime(int chan, int bchan)
     strcpy(cfg.name, known[c]->interface);
 
     if (ioctl(sockets[ISDNCTRL].descriptor, IIOCNETGCF, &cfg) >= 0) {
-#ifndef OLD_I4L
-      call[chan].chargeint = oldchargeint = cfg.chargeint;
+#if NET_DV >= NETDV_CHARGEINT
+      if (net_dv >= NETDV_CHARGEINT)
+        call[chan].chargeint = oldchargeint = cfg.chargeint;
 #endif
       call[chan].huptimeout = oldhuptimeout = cfg.onhtime;
 
       newchargeint = (int)cheap96(cur_time, known[c]->zone, &zeit);
 
-      if (hup1 && hup2)
-        newhuptimeout = (newchargeint < 20) ? hup1 : hup2;
+#if NET_DV >= NETDV_CHARGEINT
+      if (net_dv >= NETDV_CHARGEINT) {
+        if (hup1 && hup2)
+          newhuptimeout = (newchargeint < 20) ? hup1 : hup2;
+        else
+          newhuptimeout = oldhuptimeout;
+      }
       else
-        newhuptimeout = oldhuptimeout;
+#endif
+        /* for old kernels/kernel headers use old behaviour: hangup is charge
+         * time minus -h param */
+        if (hup1) {
+          newhuptimeout = newchargeint - hup1;
+          oldchargeint = newchargeint;
+        }
+        else
+          newhuptimeout = oldhuptimeout;
 
-      if (oldchargeint != newchargeint) {
-#ifndef OLD_I4L
-        call[chan].chargeint = cfg.chargeint = newchargeint;
+      if (oldchargeint != newchargeint || oldhuptimeout != newhuptimeout) {
+#if NET_DV >= NETDV_CHARGEINT
+        if (net_dv >= NETDV_CHARGEINT)
+          call[chan].chargeint = cfg.chargeint = newchargeint;
 #endif
         call[chan].huptimeout = cfg.onhtime = newhuptimeout;
 
@@ -3167,7 +3189,12 @@ static void processinfo(char *s)
 
       if (!replay)
         if ((version = ioctl(sockets[ISDNINFO].descriptor, IIOCGETDVR)) != -EINVAL) {
-
+#ifdef NET_DV
+          int my_net_dv = NET_DV;
+#else
+          int my_net_dv = 0;
+#endif
+		  
           tty_dv = version & 0xff;
           version = version >> 8;
           net_dv = version & 0xff;
@@ -3175,6 +3202,17 @@ static void processinfo(char *s)
           inf_dv = version & 0xff;
 
           print_msg(PRT_NORMAL, "(Data versions: iprofd=0x%02x  net_cfg=0x%02x  /dev/isdninfo=0x%02x)\n", tty_dv, net_dv, inf_dv);
+          if (/* Abort if kernel version is greater, since struct has probably
+               * become larger and would overwrite our stack */
+              net_dv > my_net_dv ||
+              /* version 0x03 is special, because it changed a field in the
+               * middle of the struct and thus is compatible only to itself */
+              ((my_net_dv == 0x03 || net_dv == 0x03) && my_net_dv != net_dv)) {
+            print_msg(PRT_ERR, "isdn_net_ioctl_cfg version mismatch "
+                      "(kernel 0x%02x, isdnlog 0x%02x)\n",
+                      net_dv, my_net_dv);
+            Exit(99);
+          }
         } /* if */
 
       if (chans > 2) /* coming soon ;-) */
