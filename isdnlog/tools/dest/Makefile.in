@@ -72,7 +72,7 @@ clean:
 dataclean:
 	rm -f *.{gdbm,db,cdb}
 
-distclean: clean
+distclean: clean dataclean
 	rm -f config.status config.cache config.log *.man Makefile
 
 #
