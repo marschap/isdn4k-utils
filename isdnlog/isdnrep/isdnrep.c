@@ -1,4 +1,4 @@
-/* $Id: isdnrep.c,v 1.23 1997/05/15 23:24:54 luethje Exp $
+/* $Id: isdnrep.c,v 1.24 1997/05/17 01:08:21 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -20,6 +20,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnrep.c,v $
+ * Revision 1.24  1997/05/17 01:08:21  luethje
+ * some bugfixes
+ *
  * Revision 1.23  1997/05/15 23:24:54  luethje
  * added new links on HTML
  *
@@ -219,6 +222,11 @@
 
 /*****************************************************************************/
 
+#define F_BEGIN 1
+#define F_END   2
+
+/*****************************************************************************/
+
 #define DEF_FMT "  %X %D %15.15H %T %-15.15F %7u %U %I %O"
 #define WWW_FMT "%X %D %17.17H %T %-17.17F %-20.20l SI: %S %9u %U %I %O"
 
@@ -320,7 +328,8 @@ static char *get_links(time_t filetime, char type);
 static char *append_fax(char **string, char *file, char type, int version);
 static int time_in_interval(time_t t1, time_t t2, char type);
 static char *nam2html(char *file);
-static char *get_a_day(time_t t, int d_diff, int m_diff);
+static char *get_a_day(time_t t, int d_diff, int m_diff, int flag);
+static char *get_time_string(time_t begin, time_t end, int d_diff, int m_diff);
 
 /*****************************************************************************/
 
@@ -339,6 +348,7 @@ static file_list **file_root = NULL;
 static int      file_root_size = 0;
 static int      file_root_member = 0;
 static char    *_myname;
+static time_t   _begintime;
 
 /*****************************************************************************/
 
@@ -453,6 +463,7 @@ int read_logfile(char *myname)
 
 
 	_myname = myname;
+	_begintime = begintime;
 
 	if (html & H_PRINT_HEADER)
 		html_header();
@@ -2432,16 +2443,16 @@ static int html_bottom(char *_progname, char *start, char *stop)
 	if (ptr)
 		*ptr = '\0';
 
-	if ((ptr = get_a_day(begintime,0,-1)) != NULL)
+	if ((ptr = get_time_string(_begintime,endtime,0,-1)) != NULL)
 		print_msg(PRT_NORMAL,H_LINK_DAY,_myname,ptr,"previous month");
 
-	if ((ptr = get_a_day(begintime,-1,0)) != NULL)
+	if ((ptr = get_time_string(_begintime,endtime,-1,0)) != NULL)
 		print_msg(PRT_NORMAL,H_LINK_DAY,_myname,ptr,"previous day");
 
-	if ((ptr = get_a_day(begintime,1,0)) != NULL)
+	if ((ptr = get_time_string(_begintime,endtime,1,0)) != NULL)
 		print_msg(PRT_NORMAL,H_LINK_DAY,_myname,ptr,"next day");
 
-	if ((ptr = get_a_day(begintime,0,1)) != NULL)
+	if ((ptr = get_time_string(_begintime,endtime,0,1)) != NULL)
 		print_msg(PRT_NORMAL,H_LINK_DAY,_myname,ptr,"next month");
 
 	print_msg(PRT_NORMAL,"\n</BODY>\n");
@@ -2804,38 +2815,87 @@ static char *nam2html(char *file)
 
 /*****************************************************************************/
 
-static char *get_a_day(time_t t, int d_diff, int m_diff)
+static char *get_a_day(time_t t, int d_diff, int m_diff, int flag)
 {
 	static char string[16];
 	struct tm *tm;
 	time_t cur_time;
-	time_t t2;
+	char   flag2 = 0;
+
 
 	if (t == 0)
+	{
+		if (flag & F_END)
+			return NULL;
+
 		time(&t);
+		flag2 = 1;
+	}
+
+	if (flag & F_END)
+		t++;
 
 	tm = localtime(&t);
 
 	tm->tm_mday += d_diff;
 	tm->tm_mon  += m_diff;
 	tm->tm_isdst = -1;
-	tm->tm_hour  = 0;
-	tm->tm_min   = 0;
-	tm->tm_sec   = 0;
 
-	t2 = mktime(tm);
+	if (flag2 == 1)
+	{
+		tm->tm_hour  = 0;
+		tm->tm_min   = 0;
+		tm->tm_sec   = 0;
+	}
+
+	t = mktime(tm);
+
+	if (flag & F_END)
+		t-=2;
+
 	time(&cur_time);
 
-	if (cur_time < t2)
-		return NULL;
+	if (cur_time < t)
+	{
+		if (flag & F_END)
+			t = cur_time;
+		else
+			return NULL;
+	}
 
-	tm = localtime(&t2);
-	sprintf(string,"-w%d+-t%d/%d/%d",html-1,tm->tm_mday,tm->tm_mon+1,tm->tm_year+1900);
-	/*                                   ^^---sehr gefaehrlich, da eine UND-Verknuepfung!!! */
+	tm = localtime(&t);
+	sprintf(string,"%02d%02d%02d%02d%04d.%02d",tm->tm_mon+1,tm->tm_mday,tm->tm_hour,tm->tm_min,tm->tm_year+1900,tm->tm_sec);
 
 	return string;
 }
 
+/*****************************************************************************/
+
+static char *get_time_string(time_t begin, time_t end, int d_diff, int m_diff)
+{
+	static char string[40];
+	char *ptr = NULL;
+
+
+	sprintf(string,"-w%d+",html-1);
+	/*                         ^^---sehr gefaehrlich, da eine UND-Verknuepfung!!! */
+
+	if ((ptr = get_a_day(begin,d_diff,m_diff,F_BEGIN)) != NULL)
+	{
+		strcat(string,"-t");
+		strcat(string,ptr);
+
+		if ((ptr = get_a_day(end,d_diff,m_diff,F_END)) != NULL)
+		{
+			strcat(string,"-");
+			strcat(string,ptr);
+		}
+
+		return string;
+	}
+
+	return NULL;
+}
 
 /*****************************************************************************/
 

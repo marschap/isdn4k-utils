@@ -2707,7 +2707,7 @@ erkennen und das entsprechende Programm starten.
 Wird vom isdnlog jetzt der Link zu einer Anruf, angeklickt, wird die Datei
 abgespielt.
 
-Das Format WAVE habe ich aus dem Grund ausgewaehlt, da dieses auch unter
+Das Format WAVE wurde aus dem Grund ausgewaehlt, da dieses auch unter
 Windows abspielbar ist.
 
 Anzeigen von Faxen vom mgetty
@@ -2765,7 +2765,7 @@ Dann sollte die Datei /usr/bin/g3tojpeg wie folgt aussehen:
 -----------------------------------------------------------
 #! /bin/sh
 ##
-## Kommando zum abspielen von Voicenachrichten vom vbox-1.0
+## Kommando zum anzeigen von Faxen unter einem Browser
 ##
 ## ACHTUNG! Wenn die Pfade falsch gesetzt sind oder fehlen,
 ## stuerzt netscape einfach ab!
@@ -2781,10 +2781,10 @@ g3topbm < $1 | convert pbm:- jpeg:-
 Es werden hierfuer die Pakete ImageMagick und mgetty (sollte wohl vorhanden
 sein!) benoetigt.
 
-Wenn jetzt der Link angeklicht wird, wird das Fax im Browser angezeigt.
+Wenn jetzt der Link angeklickt wird, wird das Fax im Browser angezeigt.
 
-Das Format JPEG habe ich aus dem Grund ausgewaehlt, da dieses auch unter
-Windows abspielbar ist.
+Das Format JPEG wurde aus dem Grund ausgewaehlt, da dieses auch unter
+Windows angezeigt werden kann.
 
 Ein Beipspiel fuer REPFMTWWW:
 
