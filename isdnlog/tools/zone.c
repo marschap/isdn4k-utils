@@ -1,4 +1,4 @@
-/* $Id: zone.c,v 1.20 2001/06/12 13:54:47 paul Exp $
+/* $Id: zone.c,v 1.21 2001/06/12 14:24:17 paul Exp $
  *
  * Zonenberechnung
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: zone.c,v $
+ * Revision 1.21  2001/06/12 14:24:17  paul
+ * zone.c and mkzonedb.c now understand filename "-" to mean stdin.
+ *
  * Revision 1.20  2001/06/12 13:54:47  paul
  * zone files are now created byte-order independent, so:
  * - creating the zone files works on sparc
@@ -622,10 +625,15 @@ static int checkZone(char *zf, char* df,int num1,int num2, bool verbose)
 		char line[40];
 		char *p, *q;
 		int rz, i, n;
-		if ((fp = fopen(zf, "r")) == 0) {
+		if (strcmp(zf, "-")) {	/* use stdin? */
+		    if ((fp = fopen(zf, "r")) == 0) {
 			fprintf(stderr, "Can't read %s\n", zf);
 			exitZone(1);
 			exit(1);
+		    }
+		}
+		else {
+		    fp = stdin;
 		}
 		n=0;
 		while (!feof(fp)) {
@@ -660,7 +668,8 @@ static int checkZone(char *zf, char* df,int num1,int num2, bool verbose)
 				break;
 			}
 		}
-		fclose(fp);
+		if (fp != stdin)
+		    fclose(fp);
 		if (verbose)
 			printf("'%s' verified %s.\n", df, ret==0? "Ok": "NoNo");
 	}

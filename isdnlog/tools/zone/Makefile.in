@@ -106,8 +106,8 @@ distclean: clean
 	fi
 
 test: zone mkzonedb
-	$(BZIP2) -dc at/pta/zred.pta.bz2 | ./$(PROGRAM) -d zone-at-pta$(DBEXT) -r /dev/fd/0 -v
-	$(BZIP2) -dc at/pta/zoneall.pta.bz2 | ./zone -d zone-at-pta$(RDBEXT)  -z -v
+	$(BZIP2) -dc at/pta/zred.pta.bz2 | ./$(PROGRAM) -d zone-at-pta$(DBEXT) -r - -v
+	$(BZIP2) -dc at/pta/zoneall.pta.bz2 | ./zone -d zone-at-pta$(RDBEXT)  -z -  -v
 
 #
 # ATTENTION:
@@ -125,27 +125,27 @@ AT: AT-pta AT-1002 AT-1007 AT-1012 AT-1024 AT-1066 AT-1004 AT-1001
 
 AT-pta:
 	if [ ! -e ../../zone-at-pta$(DBEXT) ] ; then \
-	$(BZIP2) -dc at/pta/zred.pta.bz2 | ./$(PROGRAM) -d ../../zone-at-pta$(DBEXT) -r /dev/fd/0 -v; \
+	$(BZIP2) -dc at/pta/zred.pta.bz2 | ./$(PROGRAM) -d ../../zone-at-pta$(DBEXT) -r - -v; \
 	fi
 
 AT-1001:
 	if [ ! -e ../../zone-at-1001$(DBEXT) ] ; then \
-	$(BZIP2) -dc at/1001/zred.bz2 | ./$(PROGRAM) -d ../../zone-at-1001$(DBEXT) -r /dev/fd/0 -v; \
+	$(BZIP2) -dc at/1001/zred.bz2 | ./$(PROGRAM) -d ../../zone-at-1001$(DBEXT) -r - -v; \
 	fi
 
 AT-1002:
 	if [ ! -e ../../zone-at-uta$(DBEXT) ] ; then \
-	$(BZIP2) -dc at/uta/zred.uta.bz2 | ./$(PROGRAM) -d ../../zone-at-uta$(DBEXT) -r /dev/fd/0 -v; \
+	$(BZIP2) -dc at/uta/zred.uta.bz2 | ./$(PROGRAM) -d ../../zone-at-uta$(DBEXT) -r - -v; \
 	fi
 
 AT-1004:
 	if [ ! -e ../../zone-at-1004$(DBEXT) ] ; then \
-	$(BZIP2) -dc at/1004/zred.bz2 | ./$(PROGRAM) -d ../../zone-at-1004$(DBEXT) -r /dev/fd/0 -v; \
+	$(BZIP2) -dc at/1004/zred.bz2 | ./$(PROGRAM) -d ../../zone-at-1004$(DBEXT) -r - -v; \
 	fi
 
 AT-1007:
 	if [ ! -e ../../zone-at-1007$(DBEXT) ] ; then \
-	$(BZIP2) -dc at/1007/zred.bz2 | ./$(PROGRAM) -d ../../zone-at-1007$(DBEXT) -r /dev/fd/0 -v; \
+	$(BZIP2) -dc at/1007/zred.bz2 | ./$(PROGRAM) -d ../../zone-at-1007$(DBEXT) -r - -v; \
 	fi
 
 AT-1012:
@@ -155,12 +155,12 @@ AT-1012:
 
 AT-1024:
 	if [ ! -e ../../zone-at-1024$(DBEXT) ] ; then \
-	$(BZIP2) -dc at/1024/zred.bz2 | ./$(PROGRAM) -d ../../zone-at-1024$(DBEXT) -r /dev/fd/0 -v -l4; \
+	$(BZIP2) -dc at/1024/zred.bz2 | ./$(PROGRAM) -d ../../zone-at-1024$(DBEXT) -r - -v -l4; \
 	fi
 
 AT-1066:
 	if [ ! -e ../../zone-at-1066$(DBEXT) ] ; then \
-	$(BZIP2) -dc at/1066/zred.bz2 | ./$(PROGRAM) -d ../../zone-at-1066$(DBEXT) -r /dev/fd/0 -v; \
+	$(BZIP2) -dc at/1066/zred.bz2 | ./$(PROGRAM) -d ../../zone-at-1066$(DBEXT) -r - -v; \
 	fi
 
 DE:	DE-dtag
@@ -168,7 +168,7 @@ DE:	DE-dtag
 
 DE-dtag:
 	if [ ! -e ../../zone-de-dtag$(DBEXT) ] ; then \
-	$(BZIP2) -dc de/01033/zred.dtag.bz2 | ./$(PROGRAM) -d ../../zone-de-dtag$(DBEXT) -r /dev/fd/0 -v; \
+	$(BZIP2) -dc de/01033/zred.dtag.bz2 | ./$(PROGRAM) -d ../../zone-de-dtag$(DBEXT) -r - -v; \
 	fi
 
 NL:	NL-kpn
@@ -176,7 +176,7 @@ NL:	NL-kpn
 
 NL-kpn:
 	if [ ! -e ../../zone-nl-kpn$(DBEXT) ] ; then \
-	$(BZIP2) -dc nl/kpn/zred.bz2 | ./$(PROGRAM) -d ../../zone-nl-kpn$(DBEXT) -r /dev/fd/0 -v -o3 -l7; \
+	$(BZIP2) -dc nl/kpn/zred.bz2 | ./$(PROGRAM) -d ../../zone-nl-kpn$(DBEXT) -r - -v -o3 -l7; \
 	fi
 
 CH:	CH-10741

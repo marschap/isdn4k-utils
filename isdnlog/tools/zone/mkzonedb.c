@@ -85,10 +85,15 @@ static void read_rzfile(char *rf) {
 	FILE *fp;
 	int from,to,z;
 
-	if ((fp=fopen(rf, "r")) == 0) {
+        if (strcmp(rf, "-")) {  /* use stdin? */
+            if ((fp=fopen(rf, "r")) == 0) {
 		fprintf(stderr, "Coudn't read '%s'\n", rf);
 		exit(EXIT_FAILURE);
+            }
 	}
+        else {
+            fp = stdin;
+        }
 	maxnum = numlen==5 ? 40000 : 10000;
 	if ((numbers = calloc(maxnum+1, sizeof(int))) == 0) {
 		fprintf(stderr, "Out of mem\n");
@@ -142,6 +147,9 @@ static void read_rzfile(char *rf) {
 		numbers[to]++;
 		n++;
 	}
+        if (fp != stdin) {
+            fclose(fp);
+        }
 	free(rf);
 	maxnum=keylen<maxnum?keylen:maxnum;
 }
