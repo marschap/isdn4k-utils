@@ -1,8 +1,8 @@
-/* $Id: isdnlog.h,v 1.23 1999/11/16 18:09:39 akool Exp $
+/* $Id: isdnlog.h,v 1.24 1999/12/31 13:30:02 akool Exp $
  *
  * ISDN accounting for isdn4linux.
  *
- * Copyright 1995, 1999 by Andreas Kool (akool@isdn4linux.de)
+ * Copyright 1995 .. 2000 by Andreas Kool (akool@isdn4linux.de)
  *                     and Stefan Luethje (luethje@sl-gw.lake.de)
  *
  * This program is free software; you can redistribute it and/or modify
@@ -20,6 +20,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnlog.h,v $
+ * Revision 1.24  1999/12/31 13:30:02  akool
+ * isdnlog-4.00 (Millenium-Edition)
+ *  - Oracle support added by Jan Bolt (Jan.Bolt@t-online.de)
+ *
  * Revision 1.23  1999/11/16 18:09:39  akool
  * isdnlog-3.67
  *   isdnlog-3.66 writes wrong provider number into it's logfile isdn.log

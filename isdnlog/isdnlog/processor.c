@@ -1,8 +1,8 @@
-/* $Id: processor.c,v 1.92 1999/12/12 14:35:53 akool Exp $
+/* $Id: processor.c,v 1.93 1999/12/31 13:30:02 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
- * Copyright 1995, 1999 by Andreas Kool (akool@isdn4linux.de)
+ * Copyright 1995 .. 2000 by Andreas Kool (akool@isdn4linux.de)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +19,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.93  1999/12/31 13:30:02  akool
+ * isdnlog-4.00 (Millenium-Edition)
+ *  - Oracle support added by Jan Bolt (Jan.Bolt@t-online.de)
+ *
  * Revision 1.92  1999/12/12 14:35:53  akool
  * isdnlog-3.75
  *  - ABC_LCR support (untested)

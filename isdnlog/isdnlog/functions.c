@@ -1,8 +1,8 @@
-/* $Id: functions.c,v 1.28 1999/11/25 22:58:39 akool Exp $
+/* $Id: functions.c,v 1.29 1999/12/31 13:30:01 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
- * Copyright 1995, 1999 by Andreas Kool (akool@isdn4linux.de)
+ * Copyright 1995 .. 2000 by Andreas Kool (akool@isdn4linux.de)
  *                     and Stefan Luethje (luethje@sl-gw.lake.de)
  *
  * This program is free software; you can redistribute it and/or modify
@@ -19,6 +19,10 @@
  * along with this program; if not, write to the Free Software
  *
  * $Log: functions.c,v $
+ * Revision 1.29  1999/12/31 13:30:01  akool
+ * isdnlog-4.00 (Millenium-Edition)
+ *  - Oracle support added by Jan Bolt (Jan.Bolt@t-online.de)
+ *
  * Revision 1.28  1999/11/25 22:58:39  akool
  * isdnlog-3.68
  *  - new utility "isdnbill" added
@@ -230,6 +234,9 @@
 #ifdef MYSQLDB
 #include "mysqldb.h"
 #endif
+#ifdef ORACLE
+#include "oracle.h"
+#endif
 
 /*****************************************************************************/
 
@@ -288,6 +295,9 @@ void _Exit_isdnlog(char *File, int Line, int RetCode) /* WARNING: RetCode==-9 do
 #endif
 #ifdef MYSQLDB
   mysql_dbClose();
+#endif
+#ifdef ORACLE
+  oracle_dbClose();
 #endif
 
   if (!replay) {
@@ -354,6 +364,9 @@ void logger(int chan)
 #endif
 #ifdef MYSQLDB
   auto     mysql_DbStrIn mysql_db_set;
+#endif
+#ifdef ORACLE
+  auto     oracle_DbStrIn oracle_db_set;
 #endif
 
 
@@ -456,6 +469,32 @@ void logger(int chan)
   mysql_db_set.pay = call[chan].pay;
   strcpy(mysql_db_set.provider, getProvider(call[chan].provider));
   mysql_dbAdd(&mysql_db_set);
+#endif
+#ifdef ORACLE
+  oracle_db_set.connect = call[chan].connect;
+  strcpy(oracle_db_set.calling, call[chan].num[CALLING]);
+  strcpy(oracle_db_set.called, call[chan].num[CALLED]);
+  oracle_db_set.duration = (int)(call[chan].disconnect - call[chan].connect);
+  oracle_db_set.hduration = (int)call[chan].duration;
+  oracle_db_set.aoce = call[chan].aoce;
+  strcpy(oracle_db_set.dialin, call[chan].dialin ? "I" : "O");
+  oracle_db_set.cause = call[chan].cause;
+  oracle_db_set.ibytes = call[chan].ibytes;
+  oracle_db_set.obytes = call[chan].obytes;
+  strncpy(oracle_db_set.version, LOG_VERSION, sizeof(oracle_db_set.version));
+  oracle_db_set.version[sizeof(oracle_db_set.version)-1] = '\0';
+  oracle_db_set.si1 = call[chan].si1;
+  oracle_db_set.si11 = call[chan].si11;
+  oracle_db_set.currency_factor = currency_factor;
+  strncpy(oracle_db_set.currency, currency, sizeof(oracle_db_set.currency));
+  oracle_db_set.currency[sizeof(oracle_db_set.currency)-1] = '\0';
+  oracle_db_set.pay = call[chan].pay;
+  oracle_db_set.provider = prefix2pnum(call[chan].provider);
+  strncpy(oracle_db_set.provider_name, getProvider(call[chan].provider),
+  	sizeof(oracle_db_set.provider_name));
+  oracle_db_set.provider_name[sizeof(oracle_db_set.provider_name)-1] = '\0';
+  oracle_db_set.zone = call[chan].zone;
+  oracle_dbAdd(&oracle_db_set);
 #endif
 } /* logger */
 

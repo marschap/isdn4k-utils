@@ -1,8 +1,8 @@
-/* $Id: isdnlog.c,v 1.55 1999/11/08 21:09:39 akool Exp $
+/* $Id: isdnlog.c,v 1.56 1999/12/31 13:30:01 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
- * Copyright 1995, 1999 by Andreas Kool (akool@isdn4linux.de)
+ * Copyright 1995 .. 2000 by Andreas Kool (akool@isdn4linux.de)
  *                     and Stefan Luethje (luethje@sl-gw.lake.de)
  *
  * This program is free software; you can redistribute it and/or modify
@@ -19,6 +19,10 @@
  * along with this program; if not, write to the Free Software
  *
  * $Log: isdnlog.c,v $
+ * Revision 1.56  1999/12/31 13:30:01  akool
+ * isdnlog-4.00 (Millenium-Edition)
+ *  - Oracle support added by Jan Bolt (Jan.Bolt@t-online.de)
+ *
  * Revision 1.55  1999/11/08 21:09:39  akool
  * isdnlog-3.65
  *   - added "B:" Tag to "rate-xx.dat"
@@ -391,6 +395,9 @@
 #endif
 #ifdef MYSQLDB
 #include "mysqldb.h"
+#endif
+#ifdef ORACLE
+#include "oracle.h"
 #endif
 
 #define FD_SET_MAX(desc, set, max) { if (desc > max) max=desc; FD_SET(desc,set); }
@@ -1420,6 +1427,9 @@ int main(int argc, char *argv[], char *envp[])
 #endif
 #ifdef MYSQLDB
 	    mysql_dbOpen();
+#endif
+#ifdef ORACLE
+	    oracle_dbOpen();
 #endif
 
 	    sprintf(s, "%s%s", mycountry, myarea);

@@ -1,8 +1,8 @@
-/* $Id: asn1.h,v 1.5 1999/10/30 13:42:36 akool Exp $
+/* $Id: asn1.h,v 1.6 1999/12/31 13:30:01 akool Exp $
  *
  * ISDN accounting for isdn4linux. (ASN.1 parser)
  *
- * Copyright 1995, 1999 by Andreas Kool (akool@isdn4linux.de)
+ * Copyright 1995 .. 2000 by Andreas Kool (akool@isdn4linux.de)
  *
  * ASN.1 parser written by Kai Germaschewski <kai@thphy.uni-duesseldorf.de>
  *
@@ -21,6 +21,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: asn1.h,v $
+ * Revision 1.6  1999/12/31 13:30:01  akool
+ * isdnlog-4.00 (Millenium-Edition)
+ *  - Oracle support added by Jan Bolt (Jan.Bolt@t-online.de)
+ *
  * Revision 1.5  1999/10/30 13:42:36  akool
  * isdnlog-3.60
  *   - many new rates
