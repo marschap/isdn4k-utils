@@ -1,6 +1,6 @@
-.\" $Id: isdnctrl.man.in,v 1.21 2001/05/23 14:59:23 kai Exp $
+.\" $Id: isdnctrl.man.in,v 1.22 2002/02/07 10:43:24 paul Exp $
 .\"
-.\" CHECKIN $Date: 2001/05/23 14:59:23 $
+.\" CHECKIN $Date: 2002/02/07 10:43:24 $
 .\"
 .\" Process this file with
 .\" groff -man -Tascii isdnctrl.8 for ASCII output, or
@@ -322,7 +322,7 @@ raw ip encapsulation (default)
 .br
 IP + typefield encapsulation
 .LP
-.B cisco_h
+.B cisco-h
 .br
 Special mode for communicating with a Cisco in HDLC-mode with
 Cisco-keepalive switched off.
@@ -342,7 +342,7 @@ Synchronous PPP over
 .br
 raw ip with additional ui-header
 .LP
-.B cisco_hk
+.B cisco-hk
 .br
 Special mode for communicating with a Cisco in HDLC-mode with
 Cisco-keepalive switched on.
