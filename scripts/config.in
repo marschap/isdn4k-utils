@@ -1,5 +1,5 @@
 #
-# $Id: config.in,v 1.19 1997/06/24 23:35:39 luethje Exp $
+# $Id: config.in,v 1.20 1997/09/25 21:38:26 fritz Exp $
 #
 # The whole configuration stuff is borrowed from the kernel
 # configuration.
@@ -39,12 +39,10 @@ string 'Your country code' CONFIG_COUNTRYCODE
 string 'Your area code' CONFIG_AREACODE
 string 'Default country prefix' CONFIG_COUNTRY_PREFIX
 string 'Default area prefix' CONFIG_AREA_PREFIX
+string 'Directory to install fixed data' CONFIG_DATADIR
 choice 'Database for area codes' \
         "Areacode CONFIG_LIB_AREACODE \
         Avon CONFIG_LIB_AVON"
-if [ "$CONFIG_LIB_AREACODE" = "y" ]; then
-	string 'Directory to install areacodes' CONFIG_AREACODE_DATA
-fi
 if [ "$CONFIG_LIB_AVON" = "y" ]; then
 	string 'Directory to install avon database' CONFIG_AVON_DATA
 fi
@@ -68,6 +66,7 @@ if [ "$CONFIG_ICNCTRL" = "y" ]; then
 fi
 bool 'pcbitctl' CONFIG_PCBITCTL
 bool 'avmcapictrl' CONFIG_AVMCAPICTRL
+bool 'actctrl' CONFIG_ACTCTRL
 if [ "$CONFIG_EXPERIMENTAL" = "y" ]; then
 	bool 'loopctrl' CONFIG_LOOPCTRL
 	if [ "$CONFIG_LOOPCTRL" = "y" ]; then

@@ -6,13 +6,13 @@ AC_DEFUN(AC_FIND_KERNEL, [
 	KERNELDIR=""
 	OLD_CPPFLAGS="$CPPFLAGS"
 	lxdir="no"
-	tst_kerneldir="$CONFIG_KERNELDIR"
+	eval tst_kerneldir=$CONFIG_KERNELDIR
 
 	AC_ARG_WITH(kernel,
 		[  --with-kernel=DIR       Set kernel source directory [/usr/src/linux]],
 		DOTEST="y"; tst_kerneldir="${withval}")
 
-	if test "$DOTEST" = "y" || test "$CONFIG_KERNELDIR" = "y" ; then
+	if test "$DOTEST" = "y" || test $CONFIG_KERNELDIR != "" ; then
 		AC_MSG_CHECKING([for linux kernel source in ${tst_kerneldir}])
 		CPPFLAGS="-nostdinc -I${tst_kerneldir}/drivers/isdn"
 		AC_TRY_CPP([#include <isdn_common.h>], lxdir=${tst_kerneldir},

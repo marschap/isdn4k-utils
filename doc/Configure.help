@@ -108,9 +108,9 @@ CONFIG_LIB_AREACODE
   The recommended library is "Areacode", however those who want to reuse
   their old datafiles, can select the old "Avon" library here.
 
-CONFIG_AREACODE_DATA
-  With this option, the directory for the areacode database can be
-  selected.
+CONFIG_DATADIR
+  With this option, the directory for the areacode database and
+  the firmware images of the various active cards can be selected.
 
 Build isdnctrl tool
 CONFIG_ISDNCTRL
@@ -152,7 +152,7 @@ CONFIG_HISAXCTRL
 
 Build icnctrl
 CONFIG_ICNCTRL
-  This program is used to configure the ICN driver. With tis tool, you
+  This program is used to configure the ICN driver. With this tool, you
   can add cards, download protocol firmware into cards and configure
   ports, memory, leased-line mode etc. 
   This program is documented in icnctrl (8).
@@ -163,6 +163,20 @@ CONFIG_ICNCTRL_DEBUG
   With this feature, icnctrl is able to dump internal data structures
   of the ICN driver. This feature may be helpful when debugging
   the ICN driver.
+
+Build actctrl
+CONFIG_ACTCTRL
+  This program is used to configure the IBM Active 2000 driver. With
+  this tool, you can add cards, download protocol firmware into cards
+  and configure ports, irq, D-channel protocol etc. 
+  This program is documented in actctrl (8).
+
+Enable debugging features of actctrl
+CONFIG_ACTCTRL_DEBUG
+  If enabled, a special feature 'debug' is available with actctrl.
+  With this feature, actctrl is able to dump internal data structures
+  of the IBM Active 2000 driver. This feature may be helpful when
+  debugging the driver.
 
 Build pcbitctl
 CONFIG_PCBITCTL

@@ -4,13 +4,9 @@
 # the original Makefile, it is called GNUmakefile.
 #
 
-#ifndef CONFIG_AREACODE_DATA
-#CONFIG_AREACODE_DATA=x
-#endif
-
 ifeq (../.config,$(wildcard ../.config))
 	include ../.config
-	DATAOPTS := DATATARGET=$(shell echo $(CONFIG_AREACODE_DATA))/areacodes
+	DATAOPTS := DATATARGET=$(shell echo $(CONFIG_DATADIR))/areacodes
 	#
 	# Install as root with numeric Id's, since these are the
 	# only ones that _really_ exist on _every_ system.
@@ -41,13 +37,9 @@ install-man:
 
 install: all
 ifeq ($(CONFIG_LIB_AREACODE),y)
-		mkdir -p $(CONFIG_AREACODE_DATA)
+		mkdir -p $(CONFIG_DATADIR)
 		$(MAKE) -f make/linux.mak $(INSTALLOPTS) install
 endif
 
-#	-@test "$(CONFIG_AREACODE_DATA)" != "x" &&         \
-#		mkdir -p $(CONFIG_AREACODE_DATA)         &&      \
-#		$(MAKE) -f make/linux.mak $(INSTALLOPTS) install
-
 uninstall:
-	rm -f $(shell echo $(CONFIG_AREACODE_DATA))/areacodes
+	rm -f $(shell echo $(CONFIG_DATADIR))/areacodes
