@@ -1,4 +1,4 @@
-/* $Id: mysqldb.c,v 1.3 2002/07/26 22:14:19 akool Exp $
+/* $Id: mysqldb.c,v 1.4 2004/02/06 16:56:20 tobiasb Exp $
  *
  * Interface for mySQL-Database for isdn4linux. (db-module)
  *
@@ -20,6 +20,12 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: mysqldb.c,v $
+ * Revision 1.4  2004/02/06 16:56:20  tobiasb
+ * mysql_dbStatus() now really reports the connection state and tries to
+ * reconnect if necessary.  Previously the database server had to be
+ * reachable at isdnlog startup.  Otherwise no database logging took place.
+ * Many thanks to Jochen Erwied for advising this change.
+ *
  * Revision 1.3  2002/07/26 22:14:19  akool
  * isdnlog-4.61:
  *   - Support for mysql-4.0alpha -- many thanks to Jochen Erwied (jochen@erwied.de)!
@@ -211,10 +217,14 @@ int mysql_dbAdd( mysql_DbStrIn *in)
 
 int mysql_dbStatus( void)
 {
-  if ( &mysql != NULL)
+#if 1
+  return mysql_ping(&mysql) ? -1 : 0;
+#else
+  if ( &mysql != NULL) /* always true (base address of struct defined above) */
     return( 0);
   else
     return( -1);
+#endif
 }
 #endif
 
