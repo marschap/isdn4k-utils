@@ -1,4 +1,4 @@
-/* $Id: isdnlog.h,v 1.27 2004/01/26 15:20:08 tobiasb Exp $
+/* $Id: isdnlog.h,v 1.28 2004/01/28 14:27:46 tobiasb Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,13 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnlog.h,v $
+ * Revision 1.28  2004/01/28 14:27:46  tobiasb
+ * Second step in restricting fds at isdnlog restart and script starting.
+ * The fd limit is now taken from getrlimit() instead of NR_OPEN.
+ * Close_Fds(first) which tries to close all possible fds is generally
+ * built in but the execution must be requested with "closefds=yes" in
+ * the parameterfile otherwise the isdnlog behaviour remains unchanged.
+ *
  * Revision 1.27  2004/01/26 15:20:08  tobiasb
  * First step to close all unnecessary open file descriptors before
  * starting a start script as reaction to a call.  The same applies to the
@@ -414,14 +421,6 @@
 
 /****************************************************************************/
 
-#ifndef FD_AT_EXEC_MODE
-#define FD_AT_EXEC_MODE    0
-#endif
-#define FD_AT_EXEC_CLOSE   (FD_AT_EXEC_MODE & 1)
-#define FD_AT_EXEC_FLAG    (FD_AT_EXEC_MODE & 2)  /* not implemented yet */
-
-/****************************************************************************/
-
 typedef struct {
 	int     current;
 	int     shift;
@@ -444,10 +443,12 @@ typedef struct _interval {
 #define _EXTERN
 socket_queue *sockets = NULL;
 _EXTERN int     ignore_unknown_IE = 0xFE;    /* codesets 7 to 1 */
+_EXTERN int     param_closefds = 0;
 #else
 #define _EXTERN extern
 extern socket_queue *sockets;
 _EXTERN int     ignore_unknown_IE;
+_EXTERN int     param_closefds;
 #endif
 
 _EXTERN FILE   *flog;    /* /var/adm/isdn.log          */
@@ -596,12 +597,7 @@ _EXTERN int Del_Interval(int chan, info_args *infoarg);
 _EXTERN struct timeval *Get_Interval(int Sec);
 _EXTERN int Change_Channel_Ring( int old_channel, int new_channel);
 _EXTERN int Start_Interval(void);
-
-#if FD_AT_EXEC_CLOSE
 _EXTERN void Close_Fds( const int first );
-#else
-#define Close_Fds(a) ; 
-#endif
 
 #undef _EXTERN
 

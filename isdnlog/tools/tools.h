@@ -1,4 +1,4 @@
-/* $Id: tools.h,v 1.59 2003/08/26 19:46:13 tobiasb Exp $
+/* $Id: tools.h,v 1.60 2004/01/28 14:27:47 tobiasb Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,13 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools.h,v $
+ * Revision 1.60  2004/01/28 14:27:47  tobiasb
+ * Second step in restricting fds at isdnlog restart and script starting.
+ * The fd limit is now taken from getrlimit() instead of NR_OPEN.
+ * Close_Fds(first) which tries to close all possible fds is generally
+ * built in but the execution must be requested with "closefds=yes" in
+ * the parameterfile otherwise the isdnlog behaviour remains unchanged.
+ *
  * Revision 1.59  2003/08/26 19:46:13  tobiasb
  * isdnlog-4.66:
  *  - Added support for AVM B1 (with layer 2 d-channel trace) in point-to-
@@ -884,6 +891,7 @@
 #define CONF_ENT_CIINTERVAL "CIINTERVAL"
 #define CONF_ENT_ABCLCR	"ABCLCR"
 #define CONF_ENT_PROVIDERCHANGE "PROVIDERCHANGE"
+#define CONF_ENT_CLOSEFDS  "CLOSEFDS"
 /****************************************************************************/
 
 /* Keywords for isdn.conf */
@@ -1133,14 +1141,17 @@ _EXTERN char     ilabel[256];
 _EXTERN char    	olabel[256];
 _EXTERN char    	idate[256];
 _EXTERN CALL    	call[MAXCHAN];
+
 #ifdef Q931
 _EXTERN int     	q931dmp;
 #else
 #define q931dmp 0
 #endif
+
 #if 0 /* Fixme: remove */
 _EXTERN int     	CityWeekend;
 #endif
+
 _EXTERN	int	 preselect;
 /* global variables specific to isdnlog (e.g. for parameterfile/commandline
  * settings) should be moved to isdnlog/isdnlog.h.  |TB| 2003-08-22 */
