@@ -1,0 +1,15 @@
+$Id: INTERWORKING.de,v 1.1 1999/06/30 16:50:58 he Exp $
+
+Bisher ist Interworking der 0.0.2-Version mit den folgenden
+Protokollimplementierungen offenbar (teilweise) erfolgreich gewesen.
+
+- mit der eigenen (Linux) EUROFile Implementierung als Gegenstelle
+- AVM/Fritz
+- TELES
+- BIANCA ISDN
+- RVS-COM Lite Version 1.22
+
+(wobei trotzdem Probleme wie unten beschrieben auftreten können,
+genaueres steht im File INTERWORKING in der Distribution)
+
+

@@ -1,0 +1,30 @@
+$Id: FAQ,v 1.1 1999/06/30 16:50:57 he Exp $
+
+QUESTION: How can I control the amount of debugging output?
+=========
+
+ANSWER: 
+
+eftd.c and eftp.c contain set a global variable tdu_stderr_mask.
+Locate this and change the comment characters (/* .. */). For only
+logging Error events, the final active statement should be
+
+        tdu_stderr_mask = TDU_LOG_ERR | TDU_LOG_IER;
+
+To remove isdnlog output to stderr, you can also comment out the
+'tdu_open_isdtlog()' statement.
+
+The eftd server now also allows to
+control the amount of debugging output via command line arguments,
+refer to the eftd(8) man page for further info.
+
+
+QUESTION: I don't want anonymous users to dial in without a MSN
+=========
+If a client without a MSN dials in, the ISDN number 0 is assumed.
+With the line "guestservers 1* 2* 3* 4* 5* 6* 7* 8* 9*" in 
+/etc/isdn/eftaccess connections with ISDN numbers beginning with 
+"0" are refused. Don't forget the option "-a" for eftd to make him
+the file /etc/isdn/eftaccess used.
+(What's about international connections then? Do they begin with "0"?
+I dont'n know, never had one...)
