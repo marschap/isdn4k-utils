@@ -174,7 +174,7 @@ enew:
 install: all
 	if [ $(TARGET_DIR) != $(GEN_DIR) ]; then \
 		$(INSTALL) -m 0755 -d $(TARGET_DIR); \
-		$(INSTALL) -m 0644 $(GEN_DIR)/* $(TARGET_DIR); \
+		$(INSTALL) -m 0644 `find $(GEN_DIR) -maxdepth 1 -type f` $(TARGET_DIR); \
 	fi
 
 # Un-install output files
