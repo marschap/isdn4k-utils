@@ -41,9 +41,9 @@ xmonisdn:
 	rm -rf X11
 
 xmonisdn.man: xmonisdn.man.in Makefile
-	MANDATE=`grep CHECKIN $< | awk '{print $4}'`
+	MANDATE=`grep CHECKIN $< | awk '{print $$4}'`; \
 	sed \
-	   -e "s#\@MANDATE\@#${MANDATE}#g" \
+	   -e "s#\@MANDATE\@#$${MANDATE}#g" \
 	   -e "s#\@I4LVERSION\@#${I4LVERSION}#g" \
            -e s,\@CONFIG_XMONISDN_UPCMD\@,${CONFIG_XMONISDN_UPCMD},g \
            -e s,\@CONFIG_XMONISDN_DOWNCMD\@,${CONFIG_XMONISDN_DOWNCMD},g \

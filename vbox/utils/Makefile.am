@@ -5,10 +5,9 @@ MAINTAINERCLEANFILES=Makefile.in
 DISTCLEANFILES=vboxmail vboxplay
 
 %: %.in
-	MANDATE=`grep CHECKIN $< | awk '{print $4}'`    
+	MANDATE=`grep CHECKIN $< | awk '{print $$4}'`; \
 	sed \
-		-e "s#\@MANDATE\@#${MANDATE}#g" \
-		-e "s#\@I4LVERSION\@#@VERSION@#g" \
+		-e "s#\@MANDATE\@#$${MANDATE}#g" \
         	-e "s#\@BINDIR\@#@CONFIG_BINDIR@#g" \
         	-e "s#\@SBINDIR\@#@CONFIG_SBINDIR@#g" \
         	-e "s#\@VERSION\@#@VERSION@#g" \
