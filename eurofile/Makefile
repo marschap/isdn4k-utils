@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.12 1999/10/11 21:22:23 he Exp $
+# $Id: Makefile,v 1.13 1999/10/15 11:12:00 keil Exp $
 
 -include Rules.make
 
@@ -62,8 +62,8 @@ endif
 ifeq ($(CONFIG_EFT_INSTALL_CONF),y)
 	cd examples  &&  $(INSTALL_DATA) eft.conf $(I4LCONFDIR)/	
 endif
-	test -e $(I4LCONFDIR)/eftaccess || test -f /etc/ftpaccess && ln -s /etc/ftpaccess $(I4LCONFDIR)/eftaccess
-	test -e $(I4LCONFDIR)/eftusers || test -f /etc/ftpusers && ln -s /etc/ftpusers $(I4LCONFDIR)/eftusers
+	@if test -f /etc/ftpaccess; then test -e $(I4LCONFDIR)/eftaccess || ln -s /etc/ftpaccess $(I4LCONFDIR)/eftaccess; fi
+	@if test -f /etc/ftpusers; then test -e $(I4LCONFDIR)/eftusers || ln -s /etc/ftpusers $(I4LCONFDIR)/eftusers; fi
 
 commit: distclean configure
 	$(CVS) commit .
