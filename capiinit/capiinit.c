@@ -1,7 +1,10 @@
 /*
- * $Id: capiinit.c,v 1.2 2000/05/18 15:20:18 calle Exp $
+ * $Id: capiinit.c,v 1.3 2000/06/29 15:17:21 calle Exp $
  *
  * $Log: capiinit.c,v $
+ * Revision 1.3  2000/06/29 15:17:21  calle
+ * Mount capifs on /dev/capi if available.
+ *
  * Revision 1.2  2000/05/18 15:20:18  calle
  * Umount capifs on "stop".
  *
@@ -1062,6 +1065,10 @@ int main_start(void)
 	free_contrprocinfo(&cpinfo);
 	free_config(&cards);
 	close(capifd);
+
+	if (filesystem_available("capifs")) {
+		system("mount -t capifs -omode=0666 capifs /dev/capi");
+	}
 
 	return 0;
 }
