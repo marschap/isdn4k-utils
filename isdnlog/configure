@@ -633,13 +633,13 @@ cat >> confdefs.h <<EOF
 #define REBOOTCMD "$REBOOTCMD"
 EOF
 
-if test "$CONFIG_ISDNLOG_CH" = "y" ; then
+if test "$CONFIG_ISDN_LOG_CH" = "y" ; then
 	cat >> confdefs.h <<\EOF
 #define ISDN_CH 1
 EOF
 
 fi
-if test "$CONFIG_ISDNLOG_NL" = "y" ; then
+if test "$CONFIG_ISDN_LOG_NL" = "y" ; then
 	cat >> confdefs.h <<\EOF
 #define ISDN_NL 1
 EOF

@@ -18,7 +18,7 @@ if [ "$CONFIG_ISDNLOG_MYSQLDB" = "y" ]; then
 	string 'directory of mysql' CONFIG_ISDNLOG_MYSQLDIR
 fi
 choice 'Country specific chargeinfo support' \
-	"DE CONFIG_ISDNLOG_DE \
-	NL CONFIG_ISDNLOG_NL \
-	CH CONFIG_ISDNLOG_CH"
+	"DE CONFIG_ISDN_LOG_DE \
+	 NL CONFIG_ISDN_LOG_NL \
+	 CH CONFIG_ISDN_LOG_CH" DE
 endmenu
