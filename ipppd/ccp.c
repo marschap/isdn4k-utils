@@ -25,7 +25,7 @@
  * OR MODIFICATIONS.
  */
 
-char ccp_rcsid[] = "$Id: ccp.c,v 1.11 1999/06/21 13:28:42 hipp Exp $";
+char ccp_rcsid[] = "$Id: ccp.c,v 1.12 1999/09/20 09:02:43 hipp Exp $";
 
 #include <string.h>
 #include <syslog.h>
@@ -42,7 +42,11 @@ char ccp_rcsid[] = "$Id: ccp.c,v 1.11 1999/06/21 13:28:42 hipp Exp $";
 
 #include "compressions.h"
 
+#if 0
 #include <linux/isdn_lzscomp.h>
+#else
+#include <../ipppcomp/isdn_lzscomp.h>
+#endif
 
 /*
  * Protocol entry points from main code.
