@@ -1,4 +1,4 @@
-/* $Id: isdnrep.c,v 1.46 1998/10/04 12:04:21 akool Exp $
+/* $Id: isdnrep.c,v 1.47 1998/10/13 21:53:17 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -24,6 +24,9 @@
  *
  *
  * $Log: isdnrep.c,v $
+ * Revision 1.47  1998/10/13 21:53:17  luethje
+ * isdnrep and lib: bugfixes
+ *
  * Revision 1.46  1998/10/04 12:04:21  akool
  *  - README
  *      New entries "CALLFILE" and "CALLFMT" documented
@@ -1150,9 +1153,10 @@ static int print_bottom(double unit, char *start, char *stop)
 		       else
                        if ((p = get_areacode(unknown[i].num, &l, flag)) != 0) {
                          if (l > 1) {
-                           strncpy(areacode, unknown[i].num, 2 + prefix);
+                           /* Sehr gefaehrlich, was ist mit Laendern, die einen dreistelligen Code haben??? */
+                           Strncpy(areacode, unknown[i].num, 3 + prefix);
                            if ((l - (2 + prefix)) > 0) {
-                           strncpy(vorwahl,  unknown[i].num + 2 + prefix, l - (2 + prefix));
+                           Strncpy(vorwahl,  unknown[i].num + 2 + prefix, l - (2 + prefix) + 1);
                             vorwahl[l - (2 + prefix)] = 0;
                            }
                            else

@@ -1,4 +1,4 @@
-/* $Id: libtools.c,v 1.6 1997/05/09 23:31:09 luethje Exp $
+/* $Id: libtools.c,v 1.7 1998/10/13 21:53:36 luethje Exp $
  * ISDN accounting for isdn4linux.
  *
  * Copyright 1996 by Stefan Luethje (luethje@sl-gw.lake.de)
@@ -18,6 +18,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: libtools.c,v $
+ * Revision 1.7  1998/10/13 21:53:36  luethje
+ * isdnrep and lib: bugfixes
+ *
  * Revision 1.6  1997/05/09 23:31:09  luethje
  * isdnlog: new switch -O
  * isdnrep: new format %S
@@ -646,6 +649,31 @@ char *int2str(int value, int prec)
 		sprintf(RetCode,"%*d",prec,value);
 
 	return RetCode;
+}
+
+/****************************************************************************/
+
+char *Strncat(char *dest, const char *src, int len)
+{
+	int destlen = strlen(dest);
+
+	return Strncpy(dest+destlen,src,len-destlen);
+}
+
+/****************************************************************************/
+
+char *Strncpy(char *dest, const char *src, int len)
+{
+	int l = strlen(src);
+
+	if (l > len - 1)
+		l = len - 1;
+
+	strncpy(dest,src,l);
+
+	dest[l] = '\0';
+
+	return dest;
 }
 
 /****************************************************************************/

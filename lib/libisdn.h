@@ -1,5 +1,5 @@
 
-/* $Id: libisdn.h,v 1.9 1998/05/11 19:43:51 luethje Exp $
+/* $Id: libisdn.h,v 1.10 1998/10/13 21:53:33 luethje Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: libisdn.h,v $
+ * Revision 1.10  1998/10/13 21:53:33  luethje
+ * isdnrep and lib: bugfixes
+ *
  * Revision 1.9  1998/05/11 19:43:51  luethje
  * Some changes for "vorwahlen.dat"
  *
@@ -66,7 +69,13 @@ extern char *basename __P((__const char *__name));
 
 /****************************************************************************/
 
-#define CONFDIR_VAR "ISDN_CONF_PATH"
+#ifndef NUMBER_SIZE
+#	define NUMBER_SIZE 40
+#endif
+
+#ifndef CONFDIR_VAR
+#	define CONFDIR_VAR "ISDN_CONF_PATH"
+#endif
 
 #define C_SLASH '/'
 /* #define C_SLASH '\\' */

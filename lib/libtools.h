@@ -1,4 +1,4 @@
-/* $Id: libtools.h,v 1.6 1997/05/09 23:31:10 luethje Exp $
+/* $Id: libtools.h,v 1.7 1998/10/13 21:53:37 luethje Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: libtools.h,v $
+ * Revision 1.7  1998/10/13 21:53:37  luethje
+ * isdnrep and lib: bugfixes
+ *
  * Revision 1.6  1997/05/09 23:31:10  luethje
  * isdnlog: new switch -O
  * isdnrep: new format %S
@@ -105,6 +108,8 @@ _EXTERN int is_double (char *string, double *value);
 _EXTERN int is_integer (char *string, long int *value);
 _EXTERN char *Replace_Variable(char *String);
 _EXTERN char *int2str(int value, int prec);
+_EXTERN char *Strncpy(char *dest, const char *src, int len);
+_EXTERN char *Strncat(char *dest, const char *src, int len);
 
 #undef _EXTERN
 

@@ -1,4 +1,4 @@
-/* $Id: isdntools.c,v 1.22 1998/09/26 18:30:30 akool Exp $
+/* $Id: isdntools.c,v 1.23 1998/10/13 21:53:26 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdntools.c,v $
+ * Revision 1.23  1998/10/13 21:53:26  luethje
+ * isdnrep and lib: bugfixes
+ *
  * Revision 1.22  1998/09/26 18:30:30  akool
  *  - quick and dirty Call-History in "-m" Mode (press "h" for more info) added
  *    - eat's one more socket, Stefan: sockets[3] now is STDIN, FIRST_DESCR=4 !!
@@ -298,9 +301,9 @@ char *expand_number(char *s)
 {
 	int all_allowed = 0;
 	char *Ptr;
-	int   Index;
-	char Help[SHORT_STRING_SIZE];
-	static char Num[SHORT_STRING_SIZE];
+	int   Index = 0;
+	char Help[NUMBER_SIZE] = "";
+	static char Num[NUMBER_SIZE];
 
 
 	Help[0] = '\0';
@@ -314,12 +317,17 @@ char *expand_number(char *s)
 
 	if (*Ptr  == '+')
 	{
-		strcpy(Help,countryprefix);
+		Strncpy(Help,countryprefix,NUMBER_SIZE);
 		Ptr++;
 	}
 
+	Index = strlen(Help);
+
 	while(*Ptr != '\0')
 	{
+		if (*Ptr == ',' || Index >= NUMBER_SIZE)
+			break;
+
 		if (isdigit(*Ptr) || *Ptr == '?' || *Ptr == '*'|| 
 		    *Ptr == '[' ||  *Ptr == ']' || all_allowed   )
 		{
@@ -329,13 +337,13 @@ char *expand_number(char *s)
 			if (*Ptr == ']')
 				all_allowed  = 0;
 
-			Index = strlen(Help);
-			Help[Index] = *Ptr;
-			Help[Index+1] = '\0';
+			Help[Index++] = *Ptr;
 		}
 
 		Ptr++;
 	}
+
+	Help[Index] = '\0';
 
 	if (Help[0] == '\0')
 		return s;
@@ -740,7 +748,7 @@ char *get_areacode(char *code, int *Len, int flag)
 	{
 		char *ptr = expand_number(code);
 
-		if ((code = alloca(strlen(ptr))) == NULL)
+		if ((code = alloca(strlen(ptr)+1)) == NULL)
 			print_msg("Can not allocate memory!\n");
 
 		strcpy(code,ptr);
@@ -1061,8 +1069,8 @@ const char* area_diff_string(char* number1, char* number2)
 int area_diff(char* _code, char *_diffcode)
 {
 	FILE *fp = NULL;
-       char code[40];
-       char diffcode[40];
+	char code[NUMBER_SIZE];
+	char diffcode[NUMBER_SIZE];
 	char value[15];
 	int index;
 	int number;
@@ -1075,11 +1083,11 @@ int area_diff(char* _code, char *_diffcode)
 
 	if (_code == NULL)
 	{
-		strcpy(code,mycountry);
-		strcat(code,myarea);
+		Strncpy(code,mycountry,NUMBER_SIZE);
+		Strncat(code,myarea,NUMBER_SIZE);
 	}
 	else
-		strcpy(code,expand_number(_code));
+		Strncpy(code,expand_number(_code),NUMBER_SIZE);
 
 	if (strncmp(mycountry,code,strlen(mycountry)))
 		return AREA_UNKNOWN;
@@ -1087,7 +1095,7 @@ int area_diff(char* _code, char *_diffcode)
 	if (_diffcode == NULL)
 		return AREA_ERROR;
 	else
-		strcpy(diffcode,expand_number(_diffcode));
+		Strncpy(diffcode,expand_number(_diffcode),NUMBER_SIZE);
 
 	if ((index = area_get_index(code)) == -1)
 		return AREA_ERROR;
