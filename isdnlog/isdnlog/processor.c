@@ -1,4 +1,4 @@
-/* $Id: processor.c,v 1.108 2000/06/29 17:38:27 akool Exp $
+/* $Id: processor.c,v 1.109 2000/07/07 19:38:30 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,20 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.109  2000/07/07 19:38:30  akool
+ * isdnlog-4.30
+ *  - isdnlog/tools/rate-at.c ... 1001 onlinetarif
+ *  - isdnlog/rate-at.dat ... 1001 onlinetarif
+ *  - isdnlog $ILABEL / $OLABEL may now contain "\t" (Tab)
+ *  - isdnlog/isdnlog/processor.c ... clearchan .pay = -1
+ *  - added
+ *     - freenet PowerTarif
+ *     - DTAG flatrate
+ *       if you really want to use a flatrate please start isdnlog with the
+ *       Option "-h86399 -I86399" to hangup after 23 hour's 59 seconds ;-)
+ *
+ *     - new Provider 01094:Startec, 010012:11883 Telecom, 010021:FITphone
+ *
  * Revision 1.108  2000/06/29 17:38:27  akool
  *  - Ported "imontty", "isdnctrl", "isdnlog", "xmonisdn" and "hisaxctrl" to
  *    Linux-2.4 "devfs" ("/dev/isdnctrl" -> "/dev/isdn/isdnctrl")
@@ -3644,6 +3658,7 @@ void clearchan(int chan, int total)
 
   call[chan].provider = -1;
   call[chan].zone = -1;
+  call[chan].pay = -1; /* lt for aocpay to work */
 
   for (i = 0; i < MAXMSNS; i++) {
     strcpy(call[chan].vnum[i], "?");

@@ -311,7 +311,7 @@ void rate_1001(void)
 		     { "Mobilfunk A1/D", "+43663,+43664"},
 		     { "Mobilfunk Max", "+43676" },
 		     { "Mobilfunk One", "+43699" },
-		     { "Online", "07189,194" },
+		     { "Online-Tarif", "07189,194" },
 		     { "AON Complete", "194040" },
 		     { "Ausland Zone 1", "Deutschland, Italien, Liechtenstein, Schweiz, Slowakei, Slowenien, Tschechien, Ungarn" },
 		     { "Ausland Zone 2", "Albanien, Andorra, Belarus, Belgien, Bosnien-Herzegowina, Bulgarien, Dänemark,Finnland, Frankreich, Großbritannien, Nordirland, Irland, Jugoslawien, Kroatien, Luxemburg, Malta, Mazedonien, Monaco, Niederlande, Norwegen, Rumänien, San Marino, Schweden, Spanien, Ukraine, Vatikanstadt, Zypern" },
@@ -349,7 +349,7 @@ void rate_1001(void)
 			 {  3.60,  3.00 },  /* Mobilfunk A1 */
 			 {  5.00,  3.75 },  /* Mobilfunk Max */
 			 {  4.80,  4.00 },  /* Mobilfunk One + Tele.Ring */
-			 {  0.60,  0.20 },  /* Online */
+			 {  0.60,  0.20 },  /* Online  - 1.7.2000 */
 			 {  0.00,  0.00 },  /* AON Complete */
 			 {  4.80,  4.00 },  /* Ausland Zone 1 */
 			 {  6.00,  5.00 },  /* Ausland Zone 2 */
@@ -386,7 +386,7 @@ void rate_1001(void)
     sprintf(s,"Telekom Austria %s",Name[t]);
     rprintf ("P: [01.09.1999] 01,%d", s , t+1);
     rprintf ("C:Maintainer:", "Michael Reinelt <reinelt@eunet.at>" );
-    rprintf ("C:TarifChanged:", "01.05.2000" );
+    rprintf ("C:TarifChanged:", "04.07.2000" );
     rprintf ("C:Zone:", "Die Regionalzone geht bis zu einer Entfernung von 50 Km, alles andere ist Österreichzone." );
     rprintf ("C:Special:", "Variable Taktung, abhängig von Zone und Tageszeit." );
     rprintf ("C:Name:", "Telekom Austria" );
@@ -408,9 +408,20 @@ void rate_1001(void)
 	if (Faktor[z][0]==Faktor[z][1]) {
 	  rprintf ("T:*/*=%.3f/%.5g", "0-24h" , Tarif[t], 72.0/Faktor[z][0]);
 	} else {
-	  rprintf ("T:W/08-18=%.3f/%.5g", "Geschäftszeit" , Tarif[t], 72.0/Faktor[z][0]);
-	  rprintf ("T:W/18-08=%.3f/%.5g", "Freizeit" , Tarif[t], 72.0/Faktor[z][1]);
-	  rprintf ("T:E,H/*=%.3f/%.5g", "Freizeit" , Tarif[t], 72.0/Faktor[z][1]);
+	  if(z == 6) {
+	    rprintf ("T:[-01.07.2000] W/08-18=%.3f/%.5g", "Geschäftszeit" , Tarif[t], 72.0/Faktor[z][0]);
+	    rprintf ("T:[-01.07.2000] W/18-08=%.3f/%.5g", "Freizeit" , Tarif[t], 72.0/Faktor[z][1]);
+	    rprintf ("T:[-01.07.2000] E,H/*=%.3f/%.5g", "Freizeit" , Tarif[t], 72.0/Faktor[z][1]);
+	    Faktor[z][0]=0.4;
+	    rprintf ("T:[01.07.2000-] W/08-18=%.3f/%.5g", "Geschäftszeit" , Tarif[t], 72.0/Faktor[z][0]);
+	    rprintf ("T:[01.07.2000-] W/18-08=%.3f/%.5g", "Freizeit" , Tarif[t], 72.0/Faktor[z][1]);
+	    rprintf ("T:[01.07.2000-] E,H/*=%.3f/%.5g", "Freizeit" , Tarif[t], 72.0/Faktor[z][1]);
+	  }
+	  else {
+	    rprintf ("T:W/08-18=%.3f/%.5g", "Geschäftszeit" , Tarif[t], 72.0/Faktor[z][0]);
+	    rprintf ("T:W/18-08=%.3f/%.5g", "Freizeit" , Tarif[t], 72.0/Faktor[z][1]);
+	    rprintf ("T:E,H/*=%.3f/%.5g", "Freizeit" , Tarif[t], 72.0/Faktor[z][1]);
+	  }
 	}
       }
       else
@@ -2544,7 +2555,7 @@ int main (int argc, char *argv[])
   printf ("# Many thanks to Daniela Bruder <dbruder@sime.com>\n");
   printf ("# for collecting and preparing most of the call charges.\n\n\n");
 
-  printf ("V:1.94-Austria [27-Mai-2000]\n\n");
+  printf ("V:1.95-Austria [04-Jul-2000]\n\n");
   printf ("U:%%.3f öS\n");
   write_services();
 

@@ -13,7 +13,7 @@
 # for collecting and preparing most of the call charges.
 
 
-V:1.94-Austria [27-Mai-2000]
+V:1.95-Austria [04-Jul-2000]
 
 U:%.3f öS
 
@@ -1023,7 +1023,7 @@ A:+43717
 P: [01.09.1999] 01,1               Telekom Austria Min.tarif
 B:1001
 C:Maintainer:                      Michael Reinelt <reinelt@eunet.at>
-C:TarifChanged:                    01.05.2000
+C:TarifChanged:                    04.07.2000
 C:Zone:                            Die Regionalzone geht bis zu einer Entfernung von 50 Km, alles andere ist Österreichzone.
 C:Special:                         Variable Taktung, abhängig von Zone und Tageszeit.
 C:Name:                            Telekom Austria
@@ -1070,10 +1070,13 @@ T:W/18-08=1.116/18                 Freizeit
 T:E,H/*=1.116/18                   Freizeit
 A:+43699
 
-Z:6                                Online
-T:W/08-18=1.116/120                Geschäftszeit
-T:W/18-08=1.116/360                Freizeit
-T:E,H/*=1.116/360                  Freizeit
+Z:6                                Online-Tarif
+T:[-01.07.2000] W/08-18=1.116/120  Geschäftszeit
+T:[-01.07.2000] W/18-08=1.116/360  Freizeit
+T:[-01.07.2000] E,H/*=1.116/360    Freizeit
+T:[01.07.2000-] W/08-18=1.116/180  Geschäftszeit
+T:[01.07.2000-] W/18-08=1.116/360  Freizeit
+T:[01.07.2000-] E,H/*=1.116/360    Freizeit
 A:07189,194
 
 Z:7                                AON Complete
@@ -1239,7 +1242,7 @@ A:+437118,+437119,+437110
 P: [01.09.1999] 01,2               Telekom Austria Std.tarif
 B:1001
 C:Maintainer:                      Michael Reinelt <reinelt@eunet.at>
-C:TarifChanged:                    01.05.2000
+C:TarifChanged:                    04.07.2000
 C:Zone:                            Die Regionalzone geht bis zu einer Entfernung von 50 Km, alles andere ist Österreichzone.
 C:Special:                         Variable Taktung, abhängig von Zone und Tageszeit.
 C:Name:                            Telekom Austria
@@ -1286,10 +1289,13 @@ T:W/18-08=1.056/18                 Freizeit
 T:E,H/*=1.056/18                   Freizeit
 A:+43699
 
-Z:6                                Online
-T:W/08-18=1.056/120                Geschäftszeit
-T:W/18-08=1.056/360                Freizeit
-T:E,H/*=1.056/360                  Freizeit
+Z:6                                Online-Tarif
+T:[-01.07.2000] W/08-18=1.056/180  Geschäftszeit
+T:[-01.07.2000] W/18-08=1.056/360  Freizeit
+T:[-01.07.2000] E,H/*=1.056/360    Freizeit
+T:[01.07.2000-] W/08-18=1.056/180  Geschäftszeit
+T:[01.07.2000-] W/18-08=1.056/360  Freizeit
+T:[01.07.2000-] E,H/*=1.056/360    Freizeit
 A:07189,194
 
 Z:7                                AON Complete
@@ -1455,7 +1461,7 @@ A:+437118,+437119,+437110
 P: [01.09.1999] 01,3               Telekom Austria Ges.tarif 1
 B:1001
 C:Maintainer:                      Michael Reinelt <reinelt@eunet.at>
-C:TarifChanged:                    01.05.2000
+C:TarifChanged:                    04.07.2000
 C:Zone:                            Die Regionalzone geht bis zu einer Entfernung von 50 Km, alles andere ist Österreichzone.
 C:Special:                         Variable Taktung, abhängig von Zone und Tageszeit.
 C:Name:                            Telekom Austria
@@ -1502,10 +1508,13 @@ T:W/18-08=0.996/18                 Freizeit
 T:E,H/*=0.996/18                   Freizeit
 A:+43699
 
-Z:6                                Online
-T:W/08-18=0.996/120                Geschäftszeit
-T:W/18-08=0.996/360                Freizeit
-T:E,H/*=0.996/360                  Freizeit
+Z:6                                Online-Tarif
+T:[-01.07.2000] W/08-18=0.996/180  Geschäftszeit
+T:[-01.07.2000] W/18-08=0.996/360  Freizeit
+T:[-01.07.2000] E,H/*=0.996/360    Freizeit
+T:[01.07.2000-] W/08-18=0.996/180  Geschäftszeit
+T:[01.07.2000-] W/18-08=0.996/360  Freizeit
+T:[01.07.2000-] E,H/*=0.996/360    Freizeit
 A:07189,194
 
 Z:7                                AON Complete
@@ -1671,7 +1680,7 @@ A:+437118,+437119,+437110
 P: [01.09.1999] 01,4               Telekom Austria Ges.tarif 2
 B:1001
 C:Maintainer:                      Michael Reinelt <reinelt@eunet.at>
-C:TarifChanged:                    01.05.2000
+C:TarifChanged:                    04.07.2000
 C:Zone:                            Die Regionalzone geht bis zu einer Entfernung von 50 Km, alles andere ist Österreichzone.
 C:Special:                         Variable Taktung, abhängig von Zone und Tageszeit.
 C:Name:                            Telekom Austria
@@ -1718,10 +1727,13 @@ T:W/18-08=0.936/18                 Freizeit
 T:E,H/*=0.936/18                   Freizeit
 A:+43699
 
-Z:6                                Online
-T:W/08-18=0.936/120                Geschäftszeit
-T:W/18-08=0.936/360                Freizeit
-T:E,H/*=0.936/360                  Freizeit
+Z:6                                Online-Tarif
+T:[-01.07.2000] W/08-18=0.936/180  Geschäftszeit
+T:[-01.07.2000] W/18-08=0.936/360  Freizeit
+T:[-01.07.2000] E,H/*=0.936/360    Freizeit
+T:[01.07.2000-] W/08-18=0.936/180  Geschäftszeit
+T:[01.07.2000-] W/18-08=0.936/360  Freizeit
+T:[01.07.2000-] E,H/*=0.936/360    Freizeit
 A:07189,194
 
 Z:7                                AON Complete
@@ -1887,7 +1899,7 @@ A:+437118,+437119,+437110
 P: [01.09.1999] 01,5               Telekom Austria Ges.tarif 3
 B:1001
 C:Maintainer:                      Michael Reinelt <reinelt@eunet.at>
-C:TarifChanged:                    01.05.2000
+C:TarifChanged:                    04.07.2000
 C:Zone:                            Die Regionalzone geht bis zu einer Entfernung von 50 Km, alles andere ist Österreichzone.
 C:Special:                         Variable Taktung, abhängig von Zone und Tageszeit.
 C:Name:                            Telekom Austria
@@ -1934,10 +1946,13 @@ T:W/18-08=0.816/18                 Freizeit
 T:E,H/*=0.816/18                   Freizeit
 A:+43699
 
-Z:6                                Online
-T:W/08-18=0.816/120                Geschäftszeit
-T:W/18-08=0.816/360                Freizeit
-T:E,H/*=0.816/360                  Freizeit
+Z:6                                Online-Tarif
+T:[-01.07.2000] W/08-18=0.816/180  Geschäftszeit
+T:[-01.07.2000] W/18-08=0.816/360  Freizeit
+T:[-01.07.2000] E,H/*=0.816/360    Freizeit
+T:[01.07.2000-] W/08-18=0.816/180  Geschäftszeit
+T:[01.07.2000-] W/18-08=0.816/360  Freizeit
+T:[01.07.2000-] E,H/*=0.816/360    Freizeit
 A:07189,194
 
 Z:7                                AON Complete

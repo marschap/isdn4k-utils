@@ -1,4 +1,4 @@
-V:1.10-Germany [20-Jun-2000 19:59:30]
+V:1.10-Germany [07-Jul-2000 21:15:49]
 
 # Währungsformat
 U:%.3f DM
@@ -8,7 +8,7 @@ U:%.3f DM
 #
 # (C) Copyright 1999, 2000 by Andreas Kool (akool@isdn4linux.de)
 #
-# $Id: rate-de.dat,v 1.95 2000/06/20 17:09:58 akool Exp $
+# $Id: rate-de.dat,v 1.96 2000/07/07 19:38:29 akool Exp $
 #
 #
 # Das "A:" Tag muß folgendermaßen gefüllt werden:
@@ -462,6 +462,25 @@ S:netzinterne Nutzung
 N:011*
 #####################################################################
 #
+# Aktuelle (24-Jun-00  18:13) Preise für Sonderrufnummern:
+# 0700:    tagsüber 24 Pf/Min
+#          abends   12 Pf/Min
+#
+# 0800:    immer kostenfrei
+# 0130:
+#
+# 0180-1:  zum Ortstarif erreichbar
+# 0180-2:  einmalig 12 Pfennig egal wie lange der Anruf dauert
+# 0180-3:  18 Pf/Min
+# 0180-4:  einmalig 48 Pfennig egal wie lange der Anruf dauert
+# 0180-5:  24 Pf/Min
+# 0190-4/6:      81 Pf/Min
+# 0190-1/2/3/5:  121 Pf/Min
+# 0190-7/9:      242 Pf/Min
+# 0190-8:        363 Pf/Min
+#
+#####################################################################
+#
 #
 P:100,0 TELELEV
 B:010000
@@ -770,10 +789,10 @@ T:*/*=0
 #####################################################################
 #
 #
-P:112,0 MEGASAT
+P:112,0 11883 Telecom GmbH
 B:010012
-C:Address:MEGASAT, Friedrich-Krupp-Str. 16-18, 45164 Kaarst
-C:Name:MEGASAT
+C:Address:Graf-Adolf-Platz 6, 40213 Düsseldorf
+C:Name:11883 Telkom GmbH
 C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
@@ -783,6 +802,20 @@ A:031*
 A:110
 A:112
 T:*/*=0
+Z:1-4 National
+A:+49
+T:*/09-18=0.16/60
+T:*/18-09=0.11/60
+Z:10 Mobilfunknetz C/D1
+A:01618
+A:01610,01611,01612,01613,01614,01615,01616,01617,01619
+A:0170,0171,0175
+T:*/*=0.51/60
+Z:11 Mobilfunknetz D2/E
+A:0172,0173,0174
+A:0177,0178
+A:0176,0179
+T:*/*=0.57/60
 #####################################################################
 #
 #
@@ -847,6 +880,58 @@ A:031*
 A:110
 A:112
 T:*/*=0
+#####################################################################
+#
+#
+P:121,0 FITphone
+B:010021
+C:Name:FITphone
+C:Address:Ernst-Gnoss-Str. 25, 40219 Düsseldorf
+C:Homepage:http://www.fitphone.de
+C:Hotline:0800/8800033
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
+# G:04-Jul-2000
+D:dtag
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+Z:1-4 National
+A:+49
+T:*/10-21=0.075/60
+T:*/21-10=0.065/60
+Z:10 Mobilfunknetz C/D
+A:01618
+A:01610,01611,01612,01613,01614,01615,01616,01617,01619
+A:0170,0171,0175
+A:0172,0173,0174
+T:*/*=0.45/60
+Z:11 Mobilfunknetz E
+A:0177,0178
+A:0176,0179
+T:*/*=0.49/60
+Z:200 Frankreich
+A:FR
+T:*/*=0.17/60
+Z:201 Großbritannien
+A:UK
+T:*/*=0.12/60
+Z:202 Italien
+A:IT
+T:*/*=0.18/60
+Z:203 ™sterreich
+A:AT
+T:*/*=0.17/60
+Z:204 USA
+A:US
+T:*/*=0.14/60
+Z:204 Schweiz
+A:CH
+T:*/*=0.15/60
 #####################################################################
 #
 #
@@ -3317,6 +3402,7 @@ T:*/*=0
 Z:1-4 National
 A:+49
 T:[11.06.2000-12.06.2000]*/*=0 Pfingstangebot
+T:[02.07.2000-03.07.2000]*/*=0 Sonderangebot
 T:W/06-18=0.06/60
 T:W/18-06=0.04/60
 T:E,H/*=0.04/60
@@ -7408,6 +7494,17 @@ A:031*
 A:110
 A:112
 T:*/*=0
+Z:1-4 National
+A:+49
+T:*/*=0.21/60
+Z:10 Mobilfunknetz
+A:01618
+A:01610,01611,01612,01613,01614,01615,01616,01617,01619
+A:0170,0171,0175
+A:0172,0173,0174
+A:0177,0178
+A:0176,0179
+T:*/*=0.59/60
 #####################################################################
 #
 #
@@ -10785,6 +10882,227 @@ A:0193033
 T:W/9-18=0.0349(60)/1
 T:W/18-9=0.0289(60)/1
 T:E/*=0.0289(60)/1
+###########################################################################
+P:28,3 TiscaliNet
+B:01028
+# G:01-Jun-2000
+C:TiscaliNet
+C:Name: TiscaliNet GmbH (früher: nikoma MediaWorks GmbH)
+C:Address: Amsinckstraße 71, 20097 Hamburg, Tel: 040-80804-0, Fax: 040-80804-1999
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Homepage: http://www.tiscalinet.de/
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+Z:3-4 Fern
+T:W/9-18=0.0989(60)/1
+T:W/18-9=0.0589(60)/1
+T:E,H/*=0.0589(60)/1
+A:+49
+Z:10-15 Mobil
+A:01618
+A:01610,01611,01612,01613,01614,01615,01616,01617,01619
+A:0170,0171,0175
+A:0172,0173,0174
+A:0177,0178
+A:0176,0179
+T:*/*=0.46(60)/1
+Z:100 Internet
+A:0193033
+T:W/9-18=0.0349(60)/1
+T:W/18-9=0.0289(60)/1
+T:E,H/*=0.0289(60)/1
+Z:200 International 1
+A:UK
+T:*/*=0.13(60)/1
+Z:201 International 2
+A:US
+T:*/*=0.14(60)/1
+Z:202 International 3
+A:SE
+T:*/*=0.15(60)/1
+Z:203 International 4
+A:FR
+T:*/*=0.16(60)/1
+Z:204 International 5
+A:CH
+T:*/*=0.17(60)/1
+Z:205 International 6
+A:NL
+T:*/*=0.18(60)/1
+Z:206 International 7
+A:AU,HK,_ALAS,_HAWA,_USTF
+T:*/*=0.19(60)/1
+Z:207 International 8
+A:BE,DK,FI,IE,CA,NO,VA
+T:*/*=0.20(60)/1
+Z:208 International 9
+A:IT,ES
+T:*/*=0.21(60)/1
+Z:209 International 10
+A:NZ,PR
+T:*/*=0.22(60)/1
+Z:210 International 11
+A:VI,MC,AT
+T:*/*=0.24(60)/1
+Z:211 International 12
+A:JP
+T:*/*=0.28(60)/1
+Z:212 International 13
+A:LI,LU,_SEMF
+T:*/*=0.29(60)/1
+Z:213 International 14
+A:KR
+T:*/*=0.33(60)/1
+Z:214 International 15
+A:AD,CL,_DKMF,_FIMF,IL
+A:_LUMF,MY,MT,_MCMF,AN
+A:PT,SG,TW,CX
+T:*/*=0.39(60)/1
+Z:215 International 16
+A:GR,PL,SK
+T:*/*=0.44(60)/1
+Z:216 International 17
+A:SI
+T:*/*=0.46(60)/1
+Z:217 International 18
+A:TR,HU
+T:*/*=0.47(60)/1
+Z:218 International 19
+A:MX
+T:*/*=0.48(60)/1
+Z:219 International 20
+A:_AUMF,BS,BM,_FRMF,GU
+A:_UKMF,IS,_NZMF,_NOMF
+A:_ATMF,SM,PM
+A:_CHMF,_CHMF,_TWMF
+T:*/*=0.49(60)/1
+Z:220 International 21
+A:AL
+T:*/*=0.53(60)/1
+Z:221 International 22
+A:FO
+T:*/*=0.54(60)/1
+Z:222 International 23
+A:EE,EE
+T:*/*=0.55(60)/1
+Z:223 International 24
+A:DO,GI,CY
+T:*/*=0.57(60)/1
+Z:224 International 25
+A:HR,SU,SU
+T:*/*=0.58(60)/1
+Z:225 International 26
+A:AS,AO,AQ,BR,KY,CR
+A:_IEMF,_ITMF,_JPMF
+A:YU,VG,CO,NA
+A:ZA,SZ,_CYTK
+T:*/*=0.59(60)/1
+Z:226 International 27
+A:DZ
+T:*/*=0.62(60)/1
+Z:227 International 28
+A:AW
+T:*/*=0.66(60)/1
+Z:228 International 29
+A:CN
+T:*/*=0.67(60)/1
+Z:229 International 30
+A:AR,_BEMF,BA,BN
+A:GF,LV,LY,LT,MO,MK
+A:_NLMF,PW,PG,PH,RE,RO
+A:VE
+T:*/*=0.69(60)/1
+Z:230 International 31
+A:TH
+T:*/*=0.71(60)/1
+Z:231 International 32
+A:SV
+T:*/*=0.77(60)/1
+Z:232 International 33
+A:BW,_BRMF,BG,BI,GA,GT,GN
+A:ID,_ILMF,_COMF,MW,MQ
+A:MD,EH,ZW,_ESMF,TN,UG,UA
+A:BY
+T:*/*=0.79(60)/1
+Z:233 International 34
+A:AI,AZ
+T:*/*=0.84(60)/1
+Z:234 International 35
+A:AG,AM,BT,NKW,EC,FK
+A:GM,GL,GP,CG,LS,LR,MH
+A:YT,MZ,ZM,KN,TM,UZ
+A:_VEMF,AE
+T:*/*=0.89(60)/1
+Z:235 International 36
+A:_ARMF,BH,_ECMF,_SVMF
+A:PF,GE,GH,_GUAB,KZ
+A:KG,KM,LB,NC,NI,NF,PA
+A:PE,VC,SD,TJ,TZ
+A:_TRMF,TC,UY,WF
+A:WS
+T:*/*=0.99(60)/1
+Z:236 International 37
+A:DM,MR,MS,NGR,LC
+T:*/*=1.09(60)/1
+Z:237 International 38
+A:BB,BO,PY
+T:*/*=1.19(60)/1
+Z:238 International 39
+A:GQ,BZ,BJ,BF,HN,JO,CM
+A:CV,CG,QA,_LBMF
+A:MG,MV,ML,FM,MN,OM,_PAMF
+A:_PEMF,LK,SH,SY,TT
+T:*/*=1.29(60)/1
+Z:239 International 40
+A:ASI,GD,GW,HT,NR,PK,RW
+A:SA,SC,SL,SO,SR,TK
+A:CF
+T:*/*=1.39(60)/1
+Z:240 International 41
+A:KP
+T:*/*=1.45(60)/1
+Z:241 International 42
+A:IR,JM,KE,KW
+T:*/*=1.47(60)/1
+Z:242 International 43
+A:SN,ST,TG
+T:*/*=1.48(60)/1
+Z:243 International 44
+A:EG,ET,CI,FJ,IN,LA,MM
+A:NP,NG,TO,TV
+T:*/*=1.49(60)/1
+Z:244 International 45
+A:BD,DJ,GY,YE,KI,CU
+T:*/*=1.59(60)/1
+Z:245 International 46
+A:ZR
+T:*/*=1.62(60)/1
+Z:246 International 47
+A:CK,NU
+T:*/*=1.69(60)/1
+Z:247 International 48
+A:MU,VU
+T:*/*=1.79(60)/1
+Z:248 International 49
+A:ER,ER
+T:*/*=1.89(60)/1
+Z:249 International 50
+A:AF,IQ,KH,VN
+T:*/*=1.99(60)/1
+Z:250 International 51
+A:_MIDW
+T:*/*=3.89(60)/1
+Z:251 International 52
+A:_IR16
+T:*/*=5.90(60)/1
+Z:252 International 53
+A:_IR17
+T:*/*=8.90(60)/1
 #####################################################################
 #
 #
@@ -12396,6 +12714,249 @@ Z:100 T-Online
 A:0191011
 C:Dies ist *kein* All-in-One Zugang, es werden zusätzliche Gebühren erhoben!
 T:*/*=0.029(60)/60 T-Online eco
+Z:120 Surf 1
+A:019107873
+T:*/*=0.045/60
+Z:121 CompuServeOffice
+A:019160
+T:*/09-18=0.019(60)/180 CompuServeOffice
+T:*/18-09=0.049(60)/180 CompuServeOffice
+Z:162 T-VoteCall
+A:01371
+T:*/*=0.24/0,0/1
+Z:163 T-VoteCall
+A:01372,01373,01374,0138
+T:*/*=0.12/20
+Z:170 Persönliche Rufnummer
+A:0700
+T:*/09-18=0.12/15
+T:*/18-09=0.12/30
+Z:172 Sonderrufnummern zum Citytarif
+A:01141
+A:0115
+A:0116
+A:01191
+A:01910
+A:01914
+A:019161
+A:019102345
+C:Dies sind *keine* All-in-One Zugänge, es werden zusätzliche Gebühren erhoben!
+T:W/09-18=0.12/90 Standard
+T:W/05-09,18-21=0.12/150 Spar
+T:E,H/05-21=0.12/150 Spar
+T:*/21-05=0.12/240 Nacht
+Z:200 Euro 1
+A:AD,BE,DK,FO,FI,FR,GR
+A:UK,_UKIM,IE,IS,IT,_UKIK,LI
+A:LU,MC,NL,_UKIR,NO,AT,PL,PT
+A:SM,SE,CH,SK,ES,CZ
+A:VA
+T:*/*=0.48/60
+Z:201 Euro 2
+A:EG,AL,BA,BG,EE,GI
+A:IL,JO,YU,HR,LV,LB,LY
+A:LT,MT,EH,MK,MD,RO,SU
+A:SI,SY,TR,TN,UA
+A:HU,BY,CY
+T:*/*=0.12/6
+Z:202 Welt 1
+A:US,CA
+T:*/*=0.48/60
+Z:203 Welt 2
+A:AU,HK,JP,KR,NZ,SG
+T:*/*=0.12/3.34
+Z:204 Welt 3
+A:AR,BR,CL,DO,IR,KZ,CO
+A:AN,PH,SA,ZA,TW
+A:AE
+T:*/*=0.12/2.61
+Z:205 Welt 4
+A:+
+T:*/*=0.12/2.31
+#####################################################################
+P:33,6 DTAG ISDN flatrate
+B:01033
+# G:01-Mar-2000
+D:dtag
+C:Name:Deutsche Telekom AG
+C:Address:Deutsche Telekom AG, Friedrich-Ebert-Allee 140, 53113 Bonn
+C:Homepage:http://www.dtag.de
+C:Hotline:0800/33-01000, T-Online Tarifhotline: 0800/33-03333
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
+C:Quelle: http://www.telekom.de/untern/tarife/tisdn_tarife/index.htm
+C:Erfasste Zonen:
+C:0	-   4	Deutschland
+C:10	-  15	Mobilfunk
+C:31	-  39	Satelitenfunk
+C:40		Auskunft DTAG Inland
+C:41		Auskunft DTAG Ausland
+C:42		Auskunft Arcor
+C:43		Auskunft debitel
+C:44		Auskunft Frag Fred
+C:45		Auskunft o.tel.o
+C:46		Auskunft Talkline
+C:47		Auskunft Telegate
+C:48		Auskunft Telegate Ausland
+C:49		Auskunft Viag Interkom
+C:60		Cityruf
+C:81	-  85	Service 0180-x
+C:91	-  94	Service 0190-x
+C:100		T-Online
+C:162	- 166	DTAG Service Nummern
+C:170		Persönliche Rufnummer
+C:171		Info Expo 2000
+C:172		Sonderrufnummern zum Citytarif
+C:200	-	Ausland
+Z:0 FreeCall
+A:08003301113
+A:08003301000
+A:08003301115
+A:08003301136
+A:08003302000
+A:08003301172
+A:08003301174
+A:08003302050
+A:01300190
+A:0130190190
+A:01136
+A:110
+A:112
+# A:+10         # Operator Service
+A:0130
+A:0800
+A:_NLFF,_CHFF
+A:_F800
+A:011*
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
+Z:1-2 City
+T:W/07-18=0.12/90 Wochentag
+T:W/18-07=0.12/240 Abend
+T:E,H/*=0.12/240 Wochenende
+Z:3-4 Deutschland
+A:DE
+T:W/07-18=0.18/60 Wochentag
+T:W/18-07=0.06/60 Abend
+T:E,H/*=0.06/60 Wochenende
+Z:10 C- und D1-Netz
+A:_DEMCM,_DEMC,_DEMD1
+T:*/*=0.48/60
+Z:13 Mobilfunknetz D2
+A:_DEMD2
+T:W/09-18=0.12/7.5 Standard
+T:W/18-09=0.12/15 Nacht
+T:E,H/*=0.12/15 Wochenende
+Z:14 Mobilfunknetz E-Plus
+A:_DEME1
+T:W/09-18=0.12/5.3 Standard
+T:W/18-09=0.12/12.8 Nacht
+T:E,H/*=0.12/12.8 Wochenende
+Z:15 Mobilfunknetz Viag Interkom
+A:_DEME2
+T:W/09-18=0.12/7.5 Standard
+T:W/18-09=0.12/15 Nacht
+T:E,H/*=0.12/15 Wochenende
+Z:31 Iridium GSM
+A:_IR17
+T:*/*=0.12/0.509
+Z:32 Iridium
+A:_IR16
+T:*/*=0.12/0.938
+Z:33 Inmarsat A
+A:_INA_,_INDF
+T:*/*=0.12/0.7
+Z:35 Inmarsat Aero
+A:_INAE
+T:*/*=0.12/0.7
+Z:36 Inmarsat B
+A:_INB_
+T:*/*=0.12/0.8
+Z:37 Inmarsat B HSD
+T:*/*=0.12/0.3 # = 23,99 DM / Minute :-)
+Z:38 Inmarsat M
+A:_INM_
+T:*/*=0.12/0.8
+Z:39 Inmarsat Phone (Mini-M)
+A:_INMM
+T:*/*=0.12/1
+Z:40 Auskunft Inland
+A:11833
+T:*/*=0.968/30,0.121/3.8
+Z:41 Auskunft Ausland
+A:11834
+T:*/*=0.968/30,0.121/3.8
+Z:42 Arcor Auskunft
+A:11870
+T:*/*=0.968/30
+Z:43 debitel Auskunft
+A:11818
+T:*/*=0.968/0,0.121/7.5
+Z:44 Frag Fred Auskunft
+A:11811
+T:*/*=0.847/0,0.121/6.7
+Z:45 o.tel.o Auskunft
+A:11888
+T:*/*=1.59/0,0.49(60)/1
+Z:46 Talkline Auskunft
+A:11850
+T:*/*=0.968/0,0.12/7.5
+Z:47 Telegate Auskunft
+A:11880
+T:*/*=0.968/0,0.121/7.5
+Z:48 Telegate Auslands-Auskunft
+A:11890
+T:*/*=3.51/60
+Z:49 Viag Interkom Auskunft
+A:11881
+#T:*/*=1.59/0,0.036666666666666666/10	# FIXME: ,0.22(60)/10
+T:*/*=1.59/0,0.22(60)/10
+Z:50 GTS Auskunft
+A:11822
+T:*/*=1.44/0,0.12/20
+Z:60 Cityruf
+A:+491640
+A:+491641,+491642,+491643,+491644,+491645
+A:+491646,+491647,+491648,+491649
+T:W/09-18=0.12/20 Standard
+T:W/18-09=0.12/30 Nacht
+T:E,H/*=0.12/30 Wochenende
+Z:81 Shared Cost Service 0180-1
+A:01801
+T:W/09-18=0.12/90 Standard
+T:W/05-09,18-21=0.12/150 Spar
+T:E,H/05-21=0.12/150 Spar
+T:*/21-05=0.12/240 Nacht
+Z:82 Shared Cost Service 0180-2
+A:01802
+T:*/*=0.12/0,0/1
+Z:83 Shared Cost Service 0180-3
+A:01803
+T:*/*=0.12/40
+Z:84 Shared Cost Service 0180-4
+A:01804
+T:*/*=0.48/0,0/1
+Z:85 Shared Cost Service 0180-5
+A:01805
+T:*/*=0.12/30
+Z:91 Premium Rate Service 0190-1, -2, -3, -5
+A:01901,01902,01903,01905
+T:*/*=0.12/6
+Z:92 Premium Rate Service 0190-4, -6
+A:01904,01906
+T:*/*=0.12/9
+Z:93 Premium Rate Service 0190-7, -9
+A:01907,01909
+T:*/*=0.12/3
+Z:94 Premium Rate Service 0190-8
+A:01908
+T:*/*=0.12/2
+Z:100 T-Online
+A:0191011
+C:Dies ist *kein* All-in-One Zugang, es werden zusätzliche Gebühren erhoben!
+C:Hier im Falle der Flatrate DM 79,00
+T:*/*=0 T-Online flatrate
 Z:120 Surf 1
 A:019107873
 T:*/*=0.045/60
@@ -24801,6 +25362,11 @@ T:E,H/*=0.49/60 Traumzeit
 Z:21 Telefonauskunft
 A:11881
 T:*/*=1.59/0,0.22(60)/10
+Z:100 Internet planet-interkom
+A:0191799
+T:W/08-18=0.032(60)/1
+T:W/18-08=0.025(60)/1
+T:E,H/*=0.025(60)/1
 Z:200 EuroNah
 A:AD,BE,DK,FO,FI,FR,GI
 A:GR,UK,IE,IS,IT,LI
@@ -24877,7 +25443,7 @@ T:*/*=0
 #####################################################################
 #
 #
-P:94,0 Global Communications
+P:94,0 Startec
 B:01094
 C:Address:Global Communications GmbH, Eupener Straße 57 - 59, 50933 Köln
 C:Name:Global Communications
@@ -24890,6 +25456,17 @@ A:031*
 A:110
 A:112
 T:*/*=0
+Z:1-4 National
+A:+49
+T:*/*=0.12/60
+Z:10 Mobilfunknetz
+A:01618
+A:01610,01611,01612,01613,01614,01615,01616,01617,01619
+A:0170,0171,0175
+A:0172,0173,0174
+A:0177,0178
+A:0176,0179
+T:*/*=0.43/60
 #####################################################################
 #
 #
@@ -24945,7 +25522,7 @@ T:*/*=0
 # P:98 STAR
 # B:01098
 # C:Telecommunications Deutschland GmbH, Voltastraße 1a, 60486 Frankfurt 01098
-# C:Reseller von STAR : C@llas, Mox, Nikoma
+# C:Reseller von STAR : C@llas, Mox
 #####################################################################
 P:98,0 Mox
 B:01098
