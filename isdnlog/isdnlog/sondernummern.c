@@ -1,4 +1,4 @@
-/* $Id: sondernummern.c,v 1.4 1999/03/14 14:26:51 akool Exp $
+/* $Id: sondernummern.c,v 1.5 1999/03/20 14:33:36 akool Exp $
  *
  * Gebuehrenberechnung fuer Sonderrufnummern
  *
@@ -19,6 +19,18 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: sondernummern.c,v $
+ * Revision 1.5  1999/03/20 14:33:36  akool
+ * - isdnlog Version 3.08
+ * - more tesion)) Tarife from Michael Graw <Michael.Graw@bartlmae.de>
+ * - use "bunzip -f" from Franz Elsner <Elsner@zrz.TU-Berlin.DE>
+ * - show another "cheapest" hint if provider is overloaded ("OVERLOAD")
+ * - "make install" now makes the required entry
+ *     [GLOBAL]
+ *     AREADIFF = /usr/lib/isdn/vorwahl.dat
+ * - README: Syntax description of the new "rate-at.dat"
+ * - better integration of "sondernummern.c" from mario.joussen@post.rwth-aachen.de
+ * - server.c: buffer overrun fix from Michael.Weber@Post.RWTH-Aachen.DE (Michael Weber)
+ *
  * Revision 1.4  1999/03/14 14:26:51  akool
  * - isdnlog Version 3.05
  * - new Option "-u1" (or "ignoreRR=1")
@@ -60,10 +72,9 @@
 /*
  * Schnittstelle:
  *
- * int initSondernummern(char *info)
- *   initialisiert die Sonderrufnummerndatenbank, liefert die Anzahl der
- *   eingelesenen Datensaetze zurueck oder im Fehlerfall -1
- *   liefert Versionsinfo in `info' zurueck
+ * void initSondernummern(char *msg)
+ *   initialisiert die Sonderrufnummerndatenbank, liefert Versionsinfo bzw.
+ *   in Fehlermeldung in msg zurueck
  *
  * void exitSondernummern()
  *   deinitialisiert die Sonderrufnummerndatenbank
@@ -72,11 +83,19 @@
  *   liefert die Nummer des ersten passenden Datensatzes zurueck oder -1 im
  *   Fehlerfall
  *
- * char *sondernummername(char *number, int provider)
- *   liefert die Beschreibung des ersten passenden Datensatzes zurueck oder
- *   NULL im Fehlerfall
+ * char *sondernummername(int index)
+ *   liefert die Beschreibung des entsprecheden Datensatzes zurueck oder NULL
+ *   im Fehlerfall
  *
- * double sonderpreis(time_t connect, int duration, char *number, int provider)
+ * char *sondernum(int index)
+ *   liefert die Sondernummer des entsprechenden Datensatzes zurueck oder NULL
+ *   im Fehlerfall
+ *
+ * int sondertarif(int index)
+ *   liefert den Tarif des entsprechenden Datensatzes zurueck oder SO_FAIL
+ *   im Fehlerfall
+ *
+ * double sonderpreis(time_t connect, int duration, int index)
  *   liefert folgendes zurueck:
  *   -3 -> Fehler
  *   -2 -> Preis nicht bekannt
@@ -84,7 +103,7 @@
  *    0 -> FreeCall
  *   >0 -> für das angegebene Gespraech angefallene Kosten
  *
- * double sondertaktlaenge(time_t connect, char *number, int provider, int *next)
+ * double sondertaktlaenge(time_t connect, int index, int *next)
  *   liefert folgendes zurueck:
  *   -3 -> Fehler
  *   -2 -> Taktlaenge nicht bekannt
@@ -102,13 +121,14 @@
 #include <string.h>
 #include <time.h>
 #include <math.h>
+#include <errno.h>
 #else
 #include "isdnlog.h"
 #endif
 
 #ifdef STANDALONE
 
-#undef DATADIR	/* already defined via -DDATADIR=... */
+#undef DATADIR	/* already defined via policy.h */
 #define DATADIR   ".."
 
 #define SO_FAIL      -3
@@ -132,6 +152,7 @@ typedef struct {
 SonderNummern *SN;
 int nSN;
 int interns0 = 0;
+double currency_factor = 0.12;
 #endif
 
 #define WA         0
@@ -151,7 +172,7 @@ char *strip(char *s)
   return s;
 }
 
-int initSondernummern(char *msg)
+void initSondernummern(char *msg)
 {
   char   *s, *t, *pos, *number, *info, fn[BUFSIZ], version[BUFSIZ];
   int     provider, tarif, tday, tbegin, tend;
@@ -160,7 +181,7 @@ int initSondernummern(char *msg)
   double  grund, takt;
 
 
-  SN = NULL; nSN = 0;
+  SN = NULL; nSN = 0; strcpy(version, "unknown");
 
   sprintf(fn, "%s/sonderrufnummern.dat", DATADIR);
   f = fopen(fn, "r");
@@ -231,13 +252,12 @@ int initSondernummern(char *msg)
         }
       }
     fclose(f);
-    sprintf(msg, "Sonderrufnummern Version %s loaded [%d entries]", version, nSN);
-    return(nSN);
+    sprintf(msg, "Sonderrufnummern Version %s loaded [%d entries]", version,
+            nSN);
   }
-  else {
-    sprintf(msg, "*** Cannot load Sonderrufnummern (%s : %d)", fn, errno);
-    return(-1);
-  }
+  else
+    sprintf(msg, "*** Cannot load Sonderrufnummern (%s : %s)", fn,
+            strerror(errno));
 }
 
 void exitSondernummern()
@@ -251,7 +271,8 @@ int is_sondernummer(char *number, int provider)
 {
   int i;
 
-  if ((strlen(number) >= interns0) && ((*number == '0') || (*number == '1')))
+  if ((strlen(number) >= interns0) && ((*number == '0') || (*number == '1') ||
+                                       (*number == '2')))
     for (i = 0; i < nSN; i++)
       if ((strncmp(number, SN[i].number, strlen(SN[i].number)) == 0) &&
           (provider == SN[i].provider))
@@ -260,46 +281,63 @@ int is_sondernummer(char *number, int provider)
   return(-1);
 }
 
-char *sondernummername(char *number, int provider)
+char *sondernummername(int index)
 {
-  int i;
-
-  if ((i = is_sondernummer(number, provider)) != -1)
-    return(SN[i].info);
+  if ((index > -1) && (index < nSN))
+    return(SN[index].info);
   else
     return(NULL);
 }
 
-int searchentry(time_t connect, char *number, int provider)
+char *sondernum(int index)
 {
-  int        i;
-  struct tm *t;
-
-  if ((i = is_sondernummer(number, provider)) != -1) {
-      t = localtime(&connect);
-      while ((strncmp(number, SN[i].number, strlen(SN[i].number)) == 0) &&
-             (provider == SN[i].provider) &&
-             !(((SN[i].tday == WA) ||
-                ((SN[i].tday == WE) && ((t->tm_wday == 0) || (t->tm_wday == 6))) ||
-                ((SN[i].tday == WT) && (t->tm_wday >= 1) && (t->tm_wday <= 5))) &&
-               ((SN[i].tbegin == -1) ||
-                ((t->tm_hour >= SN[i].tbegin) && (t->tm_hour < SN[i].tend)))))
-        i++;
-  }
-  return(i);
+  if ((index > -1) && (index < nSN))
+    return(SN[index].number);
+  else
+    return(NULL);
 }
 
-double sonderpreis(time_t connect, int duration, char *number, int provider)
+int sondertarif(int index)
+{
+  if ((index > -1) && (index < nSN))
+    return(SN[index].tarif);
+  else
+    return(SO_FAIL);
+}
+
+int searchentry(time_t connect, int index)
+{
+  int        provider;
+  char      *number;
+  struct tm *t;
+
+  if (index != -1) {
+    number = SN[index].number;
+    provider = SN[index].provider;
+      t = localtime(&connect);
+    while ((strncmp(number, SN[index].number, strlen(SN[index].number)) == 0)
+           && (provider == SN[index].provider) &&
+           !(((SN[index].tday == WA) ||
+              ((SN[index].tday == WE) && ((t->tm_wday == 0) || (t->tm_wday == 6))) ||
+              ((SN[index].tday == WT) && (t->tm_wday >= 1) && (t->tm_wday <= 5))) &&
+             ((SN[index].tbegin == -1) ||
+              ((t->tm_hour >= SN[index].tbegin) && (t->tm_hour < SN[index].tend)))))
+      index++;
+  }
+  return(index);
+}
+
+double sonderpreis(time_t connect, int duration, int index)
 {
   int       i;
   double    preis;
 
-  if ((i = searchentry(connect, number, provider)) != -1)
+  if ((i = searchentry(connect, index)) != -1)
     if (SN[i].tarif == SO_CALCULATE) {
       if (SN[i].takt == 0)
-        preis = SN[i].grund * 0.12;
+        preis = SN[i].grund * currency_factor;
       else
-        preis = (ceil(duration / SN[i].takt) + SN[i].grund) * 0.12;
+        preis = (ceil(duration / SN[i].takt) + SN[i].grund) * currency_factor;
       return(preis);
     }
     else
@@ -308,12 +346,12 @@ double sonderpreis(time_t connect, int duration, char *number, int provider)
     return(SO_FAIL);
 }
 
-double sondertaktlaenge(time_t connect, char *number, int provider, int *next)
+double sondertaktlaenge(time_t connect, int index, int *next)
 {
   int        i;
   double     taktlen;
 
-  if ((i = searchentry(connect, number, provider)) != -1)
+  if ((i = searchentry(connect, index)) != -1)
     if (SN[i].tarif == SO_CALCULATE) {
       taktlen = SN[i].takt;
       return(taktlen);
@@ -330,11 +368,23 @@ double sondertaktlaenge(time_t connect, char *number, int provider, int *next)
 int main(int argc, char *argv[])
 {
   struct tm t;
+  time_t    time;
   double    preis;
+  char      msg[BUFSIZ];
+  int       index;
 
   if (argc > 6) {
-    fprintf(stdout, "%d Einträge aus \"%s/sonderrufnummern.dat\" eingelesen.\n",
-            initSondernummern(), DATADIR);
+    initSondernummern(msg);
+    fprintf(stdout, "%s\n", msg);
+
+    t.tm_sec = t.tm_min = 0;
+    t.tm_hour = strtol(argv[3], (char **)NULL, 10);
+    t.tm_mday = strtol(argv[4], (char **)NULL, 10);
+    t.tm_mon = strtol(argv[5], (char **)NULL, 10) - 1;
+    t.tm_year = 99;
+    t.tm_isdst = -1;
+    time = mktime(&t);
+
     /*
       fprintf(stdout, "Testausgabe für Eintrag: %d\n", TEST);
       fprintf(stdout, "Provider:                %d\n", SN[TEST].provider);
@@ -348,18 +398,12 @@ int main(int argc, char *argv[])
       fprintf(stdout, "Kurzbeschreibung:        \"%s\"\n", SN[TEST].info);
       exit(0);
     */
-    if (is_sondernummer(argv[2], strtol(argv[1], (char **)NULL, 10)) != -1) {
-      t.tm_sec = t.tm_min = 0;
-      t.tm_hour = strtol(argv[3], (char **)NULL, 10);
-      t.tm_mday = strtol(argv[4], (char **)NULL, 10);
-      t.tm_mon = strtol(argv[5], (char **)NULL, 10) - 1;
-      t.tm_year = 99;
-      t.tm_isdst = -1;
+
+    if ((index = is_sondernummer(argv[2],
+                                 strtol(argv[1], (char **)NULL, 10))) != -1) {
       fprintf(stdout, "Sonderrufnummer: %s\n", argv[2]);
-      fprintf(stdout, "Beschreibung   : %s\n",
-              sondernummername(argv[2], strtol(argv[1], (char **)NULL, 10)));
-      preis = sonderpreis(mktime(&t), strtol(argv[6], (char **)NULL, 10),
-                          argv[2], strtol(argv[1], (char **)NULL, 10));
+      fprintf(stdout, "Beschreibung   : %s\n", sondernummername(index));
+      preis = sonderpreis(time, strtol(argv[6], (char **)NULL, 10), index);
       if (preis == SO_CITYCALL)
         fprintf(stdout, "Kosten         : CityCall\n");
       else if (preis == SO_FREE)
@@ -369,11 +413,10 @@ int main(int argc, char *argv[])
       else
         fprintf(stdout, "Kosten         : %f\n", preis);
       fprintf(stdout, "Taktlänge      : %f\n",
-              sondertaktlaenge(mktime(&t), argv[2],
-                               strtol(argv[1], (char **)NULL, 10), NULL));
+              sondertaktlaenge(time, index, NULL));
     }
     else
-      fprintf(stdout, "Die Nummer %s ist keine Sonderrufnummer.\n", argv[1]);
+      fprintf(stdout, "Die Nummer %s ist keine Sonderrufnummer.\n", argv[2]);
   }
   else
     fprintf(stdout, "Usage: %s Provider Rufnummer Stunde Tag Monat Länge\n",

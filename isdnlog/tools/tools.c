@@ -1,4 +1,4 @@
-/* $Id: tools.c,v 1.19 1999/03/14 12:16:44 akool Exp $
+/* $Id: tools.c,v 1.20 1999/03/20 14:34:10 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -19,6 +19,18 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools.c,v $
+ * Revision 1.20  1999/03/20 14:34:10  akool
+ * - isdnlog Version 3.08
+ * - more tesion)) Tarife from Michael Graw <Michael.Graw@bartlmae.de>
+ * - use "bunzip -f" from Franz Elsner <Elsner@zrz.TU-Berlin.DE>
+ * - show another "cheapest" hint if provider is overloaded ("OVERLOAD")
+ * - "make install" now makes the required entry
+ *     [GLOBAL]
+ *     AREADIFF = /usr/lib/isdn/vorwahl.dat
+ * - README: Syntax description of the new "rate-at.dat"
+ * - better integration of "sondernummern.c" from mario.joussen@post.rwth-aachen.de
+ * - server.c: buffer overrun fix from Michael.Weber@Post.RWTH-Aachen.DE (Michael Weber)
+ *
  * Revision 1.19  1999/03/14 12:16:44  akool
  * - isdnlog Version 3.04
  * - general cleanup
@@ -563,10 +575,10 @@ char *vnum(int chan, int who)
     if (cnf > -1)
       strcpy(retstr[retnum], call[chan].alias[who]);
     else if (call[chan].sondernummer[who] != -1) {
-      if ((l1 = strlen(SN[call[chan].sondernummer[who]].number)) < l)
-        sprintf(retstr[retnum], "%s - %s", SN[call[chan].sondernummer[who]].info, call[chan].num[who] + l1);
+      if ((l1 = strlen(sondernum(call[chan].sondernummer[who]))) < l)
+        sprintf(retstr[retnum], "%s - %s", sondernummername(call[chan].sondernummer[who]), call[chan].num[who] + l1);
       else
-      strcpy(retstr[retnum], SN[call[chan].sondernummer[who]].info);
+      strcpy(retstr[retnum], sondernummername(call[chan].sondernummer[who]));
     }
     else
       sprintf(retstr[retnum], "TN %s", call[chan].num[who]);

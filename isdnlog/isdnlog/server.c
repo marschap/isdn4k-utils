@@ -1,8 +1,9 @@
-/* $Id: server.c,v 1.4 1998/09/22 20:59:22 luethje Exp $
+/* $Id: server.c,v 1.5 1999/03/20 14:33:15 akool Exp $
  *
  * ISDN accounting for isdn4linux.
  *
- * Copyright 1996 by Stefan Luethje (luethje@sl-gw.lake.de)
+ * Copyright 1996, 1999 by Stefan Luethje (luethje@sl-gw.lake.de)
+ * 	     	       and Andreas Kool (akool@isdn4linux.de)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +20,18 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: server.c,v $
+ * Revision 1.5  1999/03/20 14:33:15  akool
+ * - isdnlog Version 3.08
+ * - more tesion)) Tarife from Michael Graw <Michael.Graw@bartlmae.de>
+ * - use "bunzip -f" from Franz Elsner <Elsner@zrz.TU-Berlin.DE>
+ * - show another "cheapest" hint if provider is overloaded ("OVERLOAD")
+ * - "make install" now makes the required entry
+ *     [GLOBAL]
+ *     AREADIFF = /usr/lib/isdn/vorwahl.dat
+ * - README: Syntax description of the new "rate-at.dat"
+ * - better integration of "sondernummern.c" from mario.joussen@post.rwth-aachen.de
+ * - server.c: buffer overrun fix from Michael.Weber@Post.RWTH-Aachen.DE (Michael Weber)
+ *
  * Revision 1.4  1998/09/22 20:59:22  luethje
  * isdnrep:  -fixed wrong provider report
  *           -fixed wrong html output for provider report
@@ -364,7 +377,7 @@ int print_from_server(char *String)
 	tm_time->tm_isdst = 0;
 
 	strftime(NewString,LONG_STRING_SIZE,"%b %d %X ",tm_time);
-	strcat(NewString,String);
+	strncat(NewString, String, sizeof(NewString) - strlen(NewString) - 1);
 
 	if ((RetCode = String_For_Output(NewString)) < 0)
 		return RetCode;

@@ -1,10 +1,10 @@
-ISDNLOG - Version 3.06 -  				15-Mar-99  22:05
+ISDNLOG - Version 3.08 -  				18-Mar-99  22:27
 
 
 isdnlog ist ein Utility zur Auswertung des D-Kanals eines
 ISDN-BRI Anschlusses.
 
-isdnlog-3.05 wurde ausgiebig mit Linux-2.0.36 getestet.
+isdnlog-3.08 wurde ausgiebig mit Linux-2.0.36 getestet.
 
 
 Fuer alle, die es nun ueberhaupt nicht mehr abwarten koennen, hier das
@@ -53,11 +53,6 @@ Quick-Installation-Guide
      SI = <Dienstkennung>
      ALIAS = <Alias>
      ZONE = 1
-
-
-3.1
-   [GLOBAL]
-   AREADIFF = /usr/lib/isdn/vorwahl.dat
 
 
 4. isdn4linux das D-Kanal-Protokoll entlocken:
@@ -1217,7 +1212,7 @@ ZONE = 5
 
 
 Dieser Eintrag kann seit der Version 3.0 ersatzlos entfallen, da isdnlog
-seitdem eine eigene Verzonungstabelle enthÑlt, d.h. selbststaendig in der
+seitdem eine eigene Verzonungstabelle enthaelt, d.h. selbststaendig in der
 Lage ist, die Zone des Gegners zu ermitteln.
 
 
@@ -2354,7 +2349,7 @@ angegeben werden.
      (keyboard={yes|no})
 
  -ix isdnlog laeuft an einem internen S0-Bus
-     Mit x wird dabei die Mindestanzahl Ziffern fÅr eine externe
+     Mit x wird dabei die Mindestanzahl Ziffern fuer eine externe
      Telefonnummer angegeben. Arbeitet die Anlage also z.b. mit 2-stelligen
      internen Teilnehmernummern. sollte hier 3 angegeben werden.
      (interns0="value")
@@ -2380,10 +2375,10 @@ angegeben werden.
 
        Meine TK-Anlage signalisiert bei einem reinkommenden Gespraech
        aus Hamburg diese Nummer als "00040..." Bei einem rausgehenden
-       GesprÑch nach Hamburg wird die Nummer als "0040..." signalisiert.
+       Gespraech nach Hamburg wird die Nummer als "0040..." signalisiert.
 
        Da eine Nummer innerhalb Deutschlands ohne fuehrende "0"
-       weiterverarbeitet wird (bei einer Nummer im Ausland mu· eine
+       weiterverarbeitet wird (bei einer Nummer im Ausland muss eine
        fuehrende "0" uebrigbleiben), muessen dementsprechend bei
        reinkommenden Gespaechen 3, bei rausgehenden Gespraechen 2
        vorlaufende "0" entfernt werden, um die Normalform zu erreichen.
@@ -3962,6 +3957,44 @@ die Kennzahl "98" den Tarif der Fa. Mox Telecom AG meint.
 :  - Sonderbehandlung von 24. Dezember bis 31. Dezember (Telekom)
 
 
+Z.Zt. ist eine neue, verbesserte/erweiterte Version der "tarif.dat" Names
+"rate-xx.dat" (xx == Laenderkennung: de, at usw.) in Arbeit.
+
+Im folgenden eine vorlaeufige Syntaxbeschreibung:
+
+V:Versionsstring (Vorschlag: 1.0-Germany [18-Mar-1999])
+P:Nummer[,variante] Name (zwischen Nummer und Name kann auch ein '='
+stehen, aber mir gefaellts mit Blanks und Tabs besser)
+Z:Nummer Name (ebenfalls wahlweise '=', die Reihenfolge ist egal, es
+muessen auch nicht alle Zonen vorkommen, es gibt auch ein Zone.used)
+T:Tag/Zeit=Kosten[,Kosten] Name
+wobei Tag in der Form 1-5 oder 1,2,3,4,5 stehen kann, 1=Montag, es gibt
+noch * fuer alle Tage und H f¸r Holiday=Feiertag (die anderen
+Bezeichnungen E=Weekend (5-7 oder 6-7?) und F fuer Feiertag (Freitag?)
+sind miﬂverst‰ndlich und wuerde ich nicht verwenden)
+die Zeit sieht aehnlich aus, 8-12 oder 8,9,10,11 oder 8-12,13-17 ACHTUNG:
+8-12 bedeutet 8:00 bis 11:59!!! Ich hatte das vorher anders, aber das
+sieht komisch aus: einmal 8-11, naechste Zeile 12-12 usw.
+Kosten: Kosten einer Einheit/Dauer der Einheit z.B. 0.56/30; Kosten und
+Dauer sind doubles; bei mehreren Kosten kann/soll die Verzoegerung, nach
+der auf den naechsten Kostenwert gewechselt werden soll, mit ':'getrennt
+angegeben werden
+z.B. 0.56/30:600,0.56/60 heisst: zuerst alle 30 sekunden, nach 10 min
+alle 60 sekunden
+Wenn das delay nicht angegeben wird, wird die Taktdauer als delay
+verwendet (d.h. die Kosten gelten nur fuer eine Einheit)
+Der letzte Kosteneintrag darf kein delay haben!
+Sonderfaelle:
+Grundkosten pro Gespraech:
+1.0/0,0.40/30: 1 DM pro Verbindung, danach alle 30 Sekunden eine Einheit
+zu 40 Pfennig
+Freie Gespraechszeit:
+0/10,0.50/30: 10 Sekunden mit 0 DM, dann alle 30 sekunden 50 Pf
+Vergiss nicht den Namen des Tarifs!
+z.B.
+1-5/6-8=0.10/600 Morgenstund hat Kopfweh
+
+
 18. LCR (Least cost router)
 ---------------------------
 
@@ -3982,7 +4015,7 @@ in den USA gelaeufiger Begriff auf: das LCR, Least cost routing, d.h. die
 Auswahl des guenstigsten Providers fuer eine gleich entstehende Verbindung.
 
 
-Dazu mu· folgenderma·en gewaehlt werden:
+Dazu muss folgendermassen gewaehlt werden:
 
 
   010 xxx 49 69 123456
@@ -4020,7 +4053,7 @@ D.h. die schoenen "Leistungsmerkmale" AOCD sowie AOCE funktionieren _nicht_
 mehr.
 
 Daher macht es per heute (1999) wirklich absolut keinen Sinn mehr, einen
-ISDN-Komfort-Anschlu· zu beantragen! Das dort enthaltene "Leitungsmerkmal"
+ISDN-Komfort-Anschluss zu beantragen! Das dort enthaltene "Leitungsmerkmal"
 Gebuehreninformationen waehrend der Verbindung wird sowieso nur noch bei
 Verbindungen ueber die DTAG erbracht (da die DTAG meistens die teuerste
 Gesellschaft ist, kommt das also praktisch nie mehr vor ...)
@@ -4055,7 +4088,7 @@ Was kann nun isdnlog (ab der Version 3.x) mit dieser neuen Situation anstellen?
 
      - diverse Telefongesellschaften arbeiten mittlerweile mit sog.
        Resellern - Firmen, die unter derselben Verbindungsnetzbetreiberauswahl
-       zu unterschiedlichen Tarifen Telefondienste anbieten. Hierzu mu· man
+       zu unterschiedlichen Tarifen Telefondienste anbieten. Hierzu muss man
        sich bei einem der Reseller zuerst anmelden - meistens kostenlos.
 
        Zum Beispiel hat die Firma Star Telecom die
@@ -4067,13 +4100,13 @@ Was kann nun isdnlog (ab der Version 3.x) mit dieser neuen Situation anstellen?
          Nikoma, Mox sowie C@llas
 
        Ist man gewillt, ueber eine dieser drei Firmen zu telefonieren,
-       mu· man sich zuerst dort anmelden. Erschwerend kommt hinzu, dass alle
+       muss man sich zuerst dort anmelden. Erschwerend kommt hinzu, dass alle
        diese Firmen noch unterschiedliche Tarif-Varianten anbieten:
 
          - Abrechnung im Minutentakt
          - Abrechnung im Sekundentakt, dafuer etwas teurer
          - besondere Abrechnung, wenn man in einer sog. Superregion, d.h.
-           einer Gro·stadt wie Frankfurt, Muenchen, Hamburg, Stuttgart usw.
+           einer Grossstadt wie Frankfurt, Muenchen, Hamburg, Stuttgart usw.
            wohnt.
 
        Da jedoch alles oben genannte ueber ein und dieselbe
@@ -4085,7 +4118,7 @@ Was kann nun isdnlog (ab der Version 3.x) mit dieser neuen Situation anstellen?
        Daher sieht isdnlog in der Datei "/etc/isdn/tarif.conf" nach,
        welcher konkrete Provider sowie welche konkrete Tarifvariante
        gemeint ist, wenn z.b. die Nummer 01098 auftaucht.
-       Diese Datei mu· dementspechend jeder entsprechend seiner eigenen
+       Diese Datei muss dementspechend jeder entsprechend seiner eigenen
        Situation fuellen.
 
 2. Anhand des ermittelten Providers kann isdnlog nun berechnen, was dieser

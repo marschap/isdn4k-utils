@@ -1,4 +1,4 @@
-/* $Id: processor.c,v 1.44 1999/03/16 17:37:18 akool Exp $
+/* $Id: processor.c,v 1.45 1999/03/20 14:33:07 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,18 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.45  1999/03/20 14:33:07  akool
+ * - isdnlog Version 3.08
+ * - more tesion)) Tarife from Michael Graw <Michael.Graw@bartlmae.de>
+ * - use "bunzip -f" from Franz Elsner <Elsner@zrz.TU-Berlin.DE>
+ * - show another "cheapest" hint if provider is overloaded ("OVERLOAD")
+ * - "make install" now makes the required entry
+ *     [GLOBAL]
+ *     AREADIFF = /usr/lib/isdn/vorwahl.dat
+ * - README: Syntax description of the new "rate-at.dat"
+ * - better integration of "sondernummern.c" from mario.joussen@post.rwth-aachen.de
+ * - server.c: buffer overrun fix from Michael.Weber@Post.RWTH-Aachen.DE (Michael Weber)
+ *
  * Revision 1.44  1999/03/16 17:37:18  akool
  * - isdnlog Version 3.07
  * - Michael Reinelt's patch as of 16Mar99 06:58:58
@@ -758,15 +770,20 @@ static void buildnumber(char *num, int oc3, int oc3a, char *result, int version,
 #endif
 
   if (!dir && (who == CALLED)) {
-    *sondernummer = is_sondernummer(num, DTAG); /* try with DTAG, these provider must support them all (i think) */
+    *sondernummer = is_sondernummer(num, *provider);
 
     if (*sondernummer == UNKNOWN)
-      *sondernummer = is_sondernummer(num, *provider);
+      *sondernummer = is_sondernummer(num, DTAG); /* try with DTAG, these provider must support them all (i think) */
 
+#ifdef 0
+    /* Das ist doch totaler Bloedsinn, oder?
+     * Schliesslich ist in *sondernummer doch der Index des Tabelleneintrags
+     * gespeichert. Den kann man doch nicht einfach auf 1 setzten. */
     if (*sondernummer == UNKNOWN) {
       if (!memcmp(num, "019", 3)) /* anything like 019xx is a Sondernummer! */
         *sondernummer = 1;
     } /* if */
+#endif
 
   } /* if */
 
@@ -777,7 +794,8 @@ static void buildnumber(char *num, int oc3, int oc3a, char *result, int version,
     if (*sondernummer != UNKNOWN) {
       auto char s[256];
 
-      sprintf(s, "(Sonderrufnummer %s : %s)", num, sondernummername(num, DTAG));
+      sprintf(s, "(Sonderrufnummer %s : %s)", num,
+              sondernummername(*sondernummer));
       Q931dump(TYPE_STRING, -1, s, version);
     } /* if */
 
@@ -4712,9 +4730,22 @@ doppelt:break;
               strcat(sx, location(call[chan].loc));
               strcat(sx, ")");
             } /* if */
+
           } /* if */
 
           info(chan, PRT_SHOWHANGUP, STATE_HANGUP, sx);
+
+          if ((call[chan].cause == 0x22) && /* No circuit/channel available */
+	      ((call[chan].loc == 2) ||     /* Public network serving local user */
+               (call[chan].loc == 3))) {    /* Transit network */
+            auto char s[BUFSIZ], s1[BUFSIZ];
+
+            showcheapest(call[chan].zone, 181, call[chan].provider, s1);
+
+            sprintf(s, "OVERLOAD %s", s1);
+
+            info(chan, PRT_SHOWHANGUP, STATE_HANGUP, s);
+          } /* if */
 
           if (OUTGOING && ((c = call[chan].confentry[OTHER]) > -1)) {
 	    if (chargemax != 0.0) {

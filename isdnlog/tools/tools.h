@@ -1,4 +1,4 @@
-/* $Id: tools.h,v 1.30 1999/03/15 21:28:54 akool Exp $
+/* $Id: tools.h,v 1.31 1999/03/20 14:34:17 akool Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,18 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools.h,v $
+ * Revision 1.31  1999/03/20 14:34:17  akool
+ * - isdnlog Version 3.08
+ * - more tesion)) Tarife from Michael Graw <Michael.Graw@bartlmae.de>
+ * - use "bunzip -f" from Franz Elsner <Elsner@zrz.TU-Berlin.DE>
+ * - show another "cheapest" hint if provider is overloaded ("OVERLOAD")
+ * - "make install" now makes the required entry
+ *     [GLOBAL]
+ *     AREADIFF = /usr/lib/isdn/vorwahl.dat
+ * - README: Syntax description of the new "rate-at.dat"
+ * - better integration of "sondernummern.c" from mario.joussen@post.rwth-aachen.de
+ * - server.c: buffer overrun fix from Michael.Weber@Post.RWTH-Aachen.DE (Michael Weber)
+ *
  * Revision 1.30  1999/03/15 21:28:54  akool
  * - isdnlog Version 3.06
  * - README: explain some terms about LCR, corrected "-c" Option of "isdnconf"
@@ -954,14 +966,19 @@ _EXTERN char  *qmsg(int type, int version, int val);
 _EXTERN char  *Myname;
 _EXTERN void   initTarife(char *msg);
 _EXTERN void   exitTarife(void);
-_EXTERN void   showcheapest(int zone, int duration);
+_EXTERN void   showcheapest(int zone, int duration, int ignoreprovider, char *info);
 _EXTERN void   price(int chan, char *hint, int viarep);
 _EXTERN char  *realProvidername(int prefix);
 _EXTERN void   preparecint(int chan, char *msg, char *hint, int viarep);
 _EXTERN int    taktlaenge(int chan, char *why);
-_EXTERN int    initSondernummern(char *msg);
-_EXTERN int    is_sondernummer(char *num, int provider);
-_EXTERN char  *sondernummername(char *number, int provider);
+_EXTERN void   initSondernummern(char *msg);
+_EXTERN int    is_sondernummer(char *number, int provider);
+_EXTERN char  *sondernummername(int index);
+_EXTERN char  *sondernum(int index);
+_EXTERN int    sondertarif(int index);
+_EXTERN double sonderpreis(time_t connect, int duration, int index);
+_EXTERN double sondertaktlaenge(time_t connect, int index, int *next);
+_EXTERN void   exitSondernummern();
 _EXTERN	char  *zonen[MAXZONES];
 #undef _EXTERN
 

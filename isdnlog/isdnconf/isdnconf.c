@@ -1,4 +1,4 @@
-/* $Id: isdnconf.c,v 1.14 1999/03/15 21:27:48 akool Exp $
+/* $Id: isdnconf.c,v 1.15 1999/03/20 14:32:56 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -20,6 +20,18 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnconf.c,v $
+ * Revision 1.15  1999/03/20 14:32:56  akool
+ * - isdnlog Version 3.08
+ * - more tesion)) Tarife from Michael Graw <Michael.Graw@bartlmae.de>
+ * - use "bunzip -f" from Franz Elsner <Elsner@zrz.TU-Berlin.DE>
+ * - show another "cheapest" hint if provider is overloaded ("OVERLOAD")
+ * - "make install" now makes the required entry
+ *     [GLOBAL]
+ *     AREADIFF = /usr/lib/isdn/vorwahl.dat
+ * - README: Syntax description of the new "rate-at.dat"
+ * - better integration of "sondernummern.c" from mario.joussen@post.rwth-aachen.de
+ * - server.c: buffer overrun fix from Michael.Weber@Post.RWTH-Aachen.DE (Michael Weber)
+ *
  * Revision 1.14  1999/03/15 21:27:48  akool
  * - isdnlog Version 3.06
  * - README: explain some terms about LCR, corrected "-c" Option of "isdnconf"
@@ -681,7 +693,7 @@ int main(int argc, char *argv[], char *envp[])
 		int len, i, zone;
 
 
-	    	(void)initSondernummern(msg);
+	    	initSondernummern(msg);
 	    	/* print_msg(PRT_NORMAL, "%s\n", msg); */
             	initTarife(msg);
 	    	/* print_msg(PRT_NORMAL, "%s\n", msg); */
@@ -691,10 +703,11 @@ int main(int argc, char *argv[], char *envp[])
 			if (!isdnmon)
 			{
 				const char *area;
+                                auto  char  info[BUFSIZ];
 
 
 				if ((i = is_sondernummer(areacode, DTAG)) > -1) {
-				  print_msg(PRT_NORMAL, "%s\n", SN[i].info);
+				  print_msg(PRT_NORMAL, "%s\n", sondernummername(i));
 
   				  if (!memcmp(areacode, "01610", 5) ||
            			      !memcmp(areacode, "01617", 5) ||
@@ -724,7 +737,7 @@ int main(int argc, char *argv[], char *envp[])
 				  print_msg(PRT_NORMAL,"%s%s%s\n",ptr,area[0] != '\0'?" / ":"", area[0] != '\0'?area:"");
                                 } /* else */
 
-                                showcheapest(zone, 181);
+                                showcheapest(zone, 181, -1, info);
 
 				exit(0);
 			}

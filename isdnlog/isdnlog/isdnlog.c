@@ -1,4 +1,4 @@
-/* $Id: isdnlog.c,v 1.36 1999/03/14 14:26:28 akool Exp $
+/* $Id: isdnlog.c,v 1.37 1999/03/20 14:33:02 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,18 @@
  * along with this program; if not, write to the Free Software
  *
  * $Log: isdnlog.c,v $
+ * Revision 1.37  1999/03/20 14:33:02  akool
+ * - isdnlog Version 3.08
+ * - more tesion)) Tarife from Michael Graw <Michael.Graw@bartlmae.de>
+ * - use "bunzip -f" from Franz Elsner <Elsner@zrz.TU-Berlin.DE>
+ * - show another "cheapest" hint if provider is overloaded ("OVERLOAD")
+ * - "make install" now makes the required entry
+ *     [GLOBAL]
+ *     AREADIFF = /usr/lib/isdn/vorwahl.dat
+ * - README: Syntax description of the new "rate-at.dat"
+ * - better integration of "sondernummern.c" from mario.joussen@post.rwth-aachen.de
+ * - server.c: buffer overrun fix from Michael.Weber@Post.RWTH-Aachen.DE (Michael Weber)
+ *
  * Revision 1.36  1999/03/14 14:26:28  akool
  * - isdnlog Version 3.05
  * - new Option "-u1" (or "ignoreRR=1")
@@ -1181,12 +1193,12 @@ int main(int argc, char *argv[], char *envp[])
 #endif
     	      print_msg(PRT_NORMAL, "%s Version %s starting\n", myshortname, VERSION);
 
-	    if ((i = initSondernummern(msg)) > -1) {
+	    initSondernummern(msg);
+
 #ifdef Q931
       	      if (!q931dmp)
 #endif
               	  print_msg(PRT_NORMAL, "%s\n", msg);
-            } /* if */
 
             if (readconfig(myshortname) < 0)
               Exit(30);

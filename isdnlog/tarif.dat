@@ -1,8 +1,8 @@
-# @(#)tarif.dat  1.09  15-Mar-99  20:00
+# @(#)tarif.dat  1.10  17-Mar-99  22:09
 #
 # Copyright 1995, 1999 by Andreas Kool (akool@isdn4linux.de)
 #
-V:1.09 [15-Mar-99]
+V:1.10 [17-Mar-99]
 #
 # P: Provider
 # G: tt.mm.jjjj Tarif gÅltig ab
@@ -19,6 +19,8 @@ V:1.09 [15-Mar-99]
 #   6=D1-Netz        E=Welt 2
 #   7=D2-Netz        F=Welt 3
 #   8=E-plus-Netz    G=Welt 4
+#
+# Euro 1 = Schweiz und Frankreich
 #
 # T: (Tag)
 #   W=Werktag
@@ -123,6 +125,11 @@ T:E=0.11
 Z:4-9,1/1
 T:W09-19=0.81
 T:W19-09=0.48
+T:E=0.48
+Z:A-D,1/1
+T:W09-19=0.44
+T:W19-09=0.30
+T:E=0.30
 Z:D,1/1
 T:*=0.59
 Z:E,1/1
