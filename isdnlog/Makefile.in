@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.164 2000/05/27 14:55:29 akool Exp $
+## $Id: Makefile.in,v 1.165 2000/05/27 22:13:05 akool Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,11 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.165  2000/05/27 22:13:05  akool
+## isdnlog-4.26
+##  - isdnlog support for Switzerland added
+##    *MANY* thanks to gandalf <gandalf@szene.ch>
+##
 ## Revision 1.164  2000/05/27 14:55:29  akool
 ## isdnlog-4.25
 ##  - isdnlog/isdnrep/isdnrep.c ... bugfix for wrong providers and duration
@@ -1223,7 +1228,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 4.25
+VERSION     = 4.26
 
 MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 \
 	      isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 \
