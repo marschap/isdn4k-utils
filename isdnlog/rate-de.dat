@@ -1,4 +1,4 @@
-V:1.10-Germany [01-Dec-1999 18:41:57]
+V:1.10-Germany [07-Dec-1999 20:39:05]
 
 # Währungsformat
 U:%.3f DM
@@ -8,7 +8,7 @@ U:%.3f DM
 #
 # (C) Copyright 1999 by Andreas Kool (akool@isdn4linux.de)
 #
-# $Id: rate-de.dat,v 1.65 1999/12/01 21:47:23 akool Exp $
+# $Id: rate-de.dat,v 1.66 1999/12/07 20:07:20 akool Exp $
 #
 #
 # Das "A:" Tag muß folgendermaßen gefüllt werden:
@@ -289,6 +289,7 @@ N:112
 S:Auskunft
 N:11811 # DTV
 N:11818 # Debitel
+N:11822 # GTS
 N:11833 # DTAG Inland
 N:11834 # DTAG Ausland
 N:11850 # Talkline
@@ -8752,6 +8753,9 @@ T:*/*=3.51/60
 Z:49 Viag Interkom Auskunft
 A:11881
 T:*/*=1.59/0,0.036666666666666666/10	# FIXME: ,0.22(60)/10
+Z:50 GTS Auskunft
+A:11822
+T:*/*=1.44/0,0.12/20
 Z:60 Cityruf
 A:+491640
 A:+491641,+491642,+491643,+491644,+491645
