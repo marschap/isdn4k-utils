@@ -1,4 +1,4 @@
-#
+# 
 # This Makefile is used for compatibility to the
 # isdn4k-utils package. In order to superseede
 # the original Makefile, it is called GNUmakefile.
