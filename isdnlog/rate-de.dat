@@ -1,4 +1,4 @@
-V:1.10-Germany [24-Aug-1999 20:50:42]
+V:1.10-Germany [29-Aug-1999 12:11:51]
 
 # Währungsformat
 U:%.3f DM
@@ -8,7 +8,7 @@ U:%.3f DM
 #
 # (C) Copyright 1999 by Andreas Kool (akool@isdn4linux.de)
 #
-# $Id: rate-de.dat,v 1.40 1999/08/25 17:06:13 akool Exp $
+# $Id: rate-de.dat,v 1.41 1999/08/29 10:28:22 akool Exp $
 #
 #
 # Das "A:" Tag muß folgendermaßen gefüllt werden:
@@ -8350,7 +8350,6 @@ D:dtag
 C:Telefon-, Daten- und Fax-Transfer GmbH & Co. KG, Schuppertsgasse 30, 35083 Wetter (Hessen) 01030
 C:Name:	    TeDaFax Telefon-, Daten- und Faxtransfer AG
 C:Homepage: http://www.teldafax.de
-C:Hotline:  0800/01030-00
 C:Hotline:  0800/01030-23
 C:Hotfax:   0800/01030-35
 C:Adresse:  Postfach 2206
@@ -8478,6 +8477,7 @@ A:08003301172 # Störungsannahme GK
 A:08003301174 # Störungsannahme Kabelfernsehen
 A:08003302050 # Beratung Telefonkarten
 A:01300190    # Hotline Online-Dienste
+A:0130190190  # Info zu 0190 Nummern
 A:01136       # Telegrammaufnahme per Telefax
 A:110         # Polizei / Notruf
 A:112         # Feuerwehr / Rettungsleitstelle
@@ -8720,6 +8720,7 @@ A:08003301172 # Störungsannahme GK
 A:08003301174 # Störungsannahme Kabelfernsehen
 A:08003302050 # Beratung Telefonkarten
 A:01300190    # Hotline Online-Dienste
+A:0130190190  # Info zu 0190 Nummern
 A:01136       # Telegrammaufnahme per Telefax
 A:110         # Polizei / Notruf
 A:112         # Feuerwehr / Rettungsleitstelle
@@ -8946,6 +8947,7 @@ A:08003301172 # Störungsannahme GK
 A:08003301174 # Störungsannahme Kabelfernsehen
 A:08003302050 # Beratung Telefonkarten
 A:01300190    # Hotline Online-Dienste
+A:0130190190  # Info zu 0190 Nummern
 A:01136       # Telegrammaufnahme per Telefax
 A:110         # Polizei / Notruf
 A:112         # Feuerwehr / Rettungsleitstelle
@@ -9181,6 +9183,7 @@ A:08003301172 # Störungsannahme GK
 A:08003301174 # Störungsannahme Kabelfernsehen
 A:08003302050 # Beratung Telefonkarten
 A:01300190    # Hotline Online-Dienste
+A:0130190190  # Info zu 0190 Nummern
 A:01136       # Telegrammaufnahme per Telefax
 A:110         # Polizei / Notruf
 A:112         # Feuerwehr / Rettungsleitstelle
@@ -9409,6 +9412,7 @@ A:08003301172 # Störungsannahme GK
 A:08003301174 # Störungsannahme Kabelfernsehen
 A:08003302050 # Beratung Telefonkarten
 A:01300190    # Hotline Online-Dienste
+A:0130190190  # Info zu 0190 Nummern
 A:01136       # Telegrammaufnahme per Telefax
 A:110         # Polizei / Notruf
 A:112         # Feuerwehr / Rettungsleitstelle
@@ -9959,7 +9963,7 @@ Z:103 CALL POP
 #     01.05.99: 06/07/08/09
 #     01.06.99: 02/052/054/056/057/059
 A:0192343 # (Benutzername: Call, Passwort: POP)
-S:Internet by call
+# S:Internet by call <- FIXME: Mehrere gleiche S: pro Provider moeglich machen!
 T:*/*=0.058/60
 Z:200 Euro 1/Welt 1
 A:Belgien, Dänemark, Finnland, Frankreich
@@ -10461,7 +10465,7 @@ C:Telephone Deutschland, Grosser Plan 8, 29221 Celle 01045
 #####################################################################
 #
 #
-P:46 KomTel Deutschland-Tarif
+P:46 KomTel
 G:???
 D:dtag
 C:Gesellschaft für Kommunikation und Informationsdienste GmbH, Batteriestraße 48, 24937 Flensburg 01046
@@ -10768,7 +10772,7 @@ Z:426 Welt 22
 A:Äquatorialguinea, Cookinseln, Eritrea, Sao Tome und Principe
 T:*/*=1.99(60)/1
 #####################################################################
-P:46,1 KomTel MoinMoin-Region
+P:46,1 KomTel MoinMoin
 C:Gesellschaft für Kommunikation und Informationsdienste GmbH, Batteriestraße 48, 24937 Flensburg 01046
 C:Spezialtarif 5 "Nord-Ostsee": gilt für Verbindungen mit Niedersachsen,
 C:Bremen, Mecklenburg-Vorpommern, Schleswig-Holstein und Hamburg
@@ -11744,12 +11748,6 @@ A:Österreich Mobilfunk
 A:Schweden Mobilfunk
 A:Schweiz Mobilfunk
 A:Spanien Mobilfunk
-A:+491618	# T-C-Tel Voice Mail
-A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
-A:+49170,+49171		# D1
-A:+49172,+49173		# D2
-A:+49177,+49178		# Eplus
-A:+49176,+49179		# E2
 T:*/*=99.99/60
 #####################################################################
 #
@@ -14039,6 +14037,7 @@ C:Vielmehr handelt es sich hier nur um die Tarife fuer den
 C:UUnet Ortstarif-Zugang!
 C:Dies ist *kein* All-in-One Zugang, es werden zusätzliche Gebühren erhoben!
 Z:100 Internet
+A:+49 # FIXME: Verzonung per heute (29-Aug-99) nicht bekannt!
 A:0191999 # UUnet
 A:0192333 # NDH
 T:W/05-09=0.048(60)/1 UUnet
@@ -14276,7 +14275,7 @@ T:*/9-21=0.049(60)/1
 T:*/21-9=0.0389(60)/1
 #####################################################################
 P:98,5 Nikocity
-G:01-Aug-1999
+G:01.08.99
 C:Nikoma, Reseller von Star Telekom
 C:Homepage: http://www.nikoma.de/
 C:Nikocity gilt nur in den Städten Augsburg, Berlin, Bremen, Bielefeld,
@@ -14768,6 +14767,7 @@ C:Energieversorgung Südsachsen Telekommunikationsgesellschaft mbH, Postfach 2 38
 #
 P:201 Frag Fred
 Z:21 Telefonauskunft
+A:+49 # FIXME: es gibt keine Verzonung, da nur Auskunftsdienste angeboten werden
 A:11811
 T:*/*=0.847/0,0.121/6.7
 #####################################################################

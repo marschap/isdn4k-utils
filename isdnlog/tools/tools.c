@@ -1,4 +1,4 @@
-/* $Id: tools.c,v 1.33 1999/08/20 19:29:12 akool Exp $
+/* $Id: tools.c,v 1.34 1999/08/29 10:29:15 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -19,6 +19,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools.c,v $
+ * Revision 1.34  1999/08/29 10:29:15  akool
+ * isdnlog-3.48
+ *   cosmetics
+ *
  * Revision 1.33  1999/08/20 19:29:12  akool
  * isdnlog-3.45
  *  - removed about 1 Mb of (now unused) data files
@@ -646,15 +650,7 @@ char *vnum(int chan, int who)
 {
   register int    l = strlen(call[chan].num[who]);
   register char  *p1, *p2;
-#if 0 /* DELETE_ME AK:18-Aug-99 */
-  register int	  got = 0;
-#endif
-  register int    flag = C_NO_WARN | C_NO_EXPAND;
-#if 0 /* DELETE_ME AK:18-Aug-99 */
-  auto     char  *ptr;
-  auto	   int    ll;
-#endif
-  auto	   int	  lx, l1, mobil = 0;
+  auto	   int	  lx, l1;
   auto	   int 	  prefix = strlen(countryprefix);
   auto	   int 	  cc_len = 2;   /* country code length defaults to 2 */
   auto	   TELNUM number;
@@ -681,11 +677,6 @@ char *vnum(int chan, int who)
     call[chan].confentry[who] = cnf;
     strcpy(retstr[retnum], call[chan].alias[who]);
   } /* if */
-
-#ifdef Q931
-  if (q931dmp)
-    flag |= C_NO_ERROR;
-#endif
 
   if ((call[chan].sondernummer[who] != UNKNOWN) || call[chan].intern[who]) {
     strcpy(call[chan].rufnummer[who], call[chan].num[who]);
@@ -738,58 +729,6 @@ char *vnum(int chan, int who)
       } /* if */
     } /* if */
 
-#if 0 /* DELETE_ME AK:18-Aug-99 */
-    if ((ptr = get_areacode(call[chan].num[who], &ll, flag)) != 0) {
-      strcpy(call[chan].area[who], ptr);
-      l = ll;
-      got++;
-    } /* if */
-#else
-#if 1
-    if (!memcmp(call[chan].num[who], "+49170", 6))
-      mobil = 1;
-    else if (!memcmp(call[chan].num[who], "+49171", 6))
-      mobil = 1;
-    else if (!memcmp(call[chan].num[who], "+49172", 6))
-      mobil = 2;
-    else if (!memcmp(call[chan].num[who], "+49173", 6))
-      mobil = 2;
-    else if (!memcmp(call[chan].num[who], "+49177", 6))
-      mobil = 3;
-    else if (!memcmp(call[chan].num[who], "+49178", 6))
-      mobil = 3;
-    else if (!memcmp(call[chan].num[who], "+49176", 6))
-      mobil = 4;
-    else if (!memcmp(call[chan].num[who], "+49179", 6))
-      mobil = 4;
-    else if (!memcmp(call[chan].num[who], "+491", 4))
-      mobil = 5;
-
-    if (mobil) {
-      Strncpy(call[chan].areacode[who], call[chan].num[who], 4);
-      Strncpy(call[chan].vorwahl[who], call[chan].num[who] + 3, 4);
-      strcpy(call[chan].rufnummer[who], call[chan].num[who] + 6);
-
-      switch (mobil) {
-        case 1 : strcpy(call[chan].area[who], "Mobilfunknetz D1");    break;
-        case 2 : strcpy(call[chan].area[who], "Mobilfunknetz D2");    break;
-        case 3 : strcpy(call[chan].area[who], "Mobilfunknetz Eplus"); break;
-        case 4 : strcpy(call[chan].area[who], "Mobilfunknetz E2");    break;
-        case 5 : strcpy(call[chan].area[who], "Sonderrufnummer");     break;
-      } /* switch */
-
-      if (cnf > -1)
-        strcpy(retstr[retnum], call[chan].alias[who]);
-      else
-        sprintf(retstr[retnum], "%s %s/%s, %s",
-      	  call[chan].areacode[who],
-      	  call[chan].vorwahl[who],
-      	  call[chan].rufnummer[who],
-      	  call[chan].area[who]);
-
-      return(retstr[retnum]);
-    } /* if */
-
     normalizeNumber(call[chan].num[who], &number, TN_ALL);
     strcpy(s, formatNumber("%F", &number));
 
@@ -821,8 +760,6 @@ char *vnum(int chan, int who)
       strcpy(retstr[retnum], s);
 
     return(retstr[retnum]);
-#endif
-#endif
   } /* else */
 
   if (l > 1) {
