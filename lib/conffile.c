@@ -1,4 +1,4 @@
-/* $Id: conffile.c,v 1.12 1997/04/10 23:32:33 luethje Exp $
+/* $Id: conffile.c,v 1.13 1997/04/10 23:41:26 luethje Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -19,8 +19,8 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: conffile.c,v $
- * Revision 1.12  1997/04/10 23:32:33  luethje
- * Added the feature, that environment variables are allowed in the config files.
+ * Revision 1.13  1997/04/10 23:41:26  luethje
+ * some bug fixes
  *
  * Revision 1.11  1997/04/03 22:39:11  luethje
  * bug fixes: environ variables are working again, no seg. 11 :-)
@@ -498,7 +498,7 @@ entry *Set_Entry(section *Section, char *Sectionname, char *Variable, char *Valu
 
 entry* Get_Entry(entry* Entry, char *Variable)
 {
-	while (Entry != NULL && strcmp(Entry->name,Variable))
+	while (Entry != NULL && strcasecmp(Entry->name,Variable))
 		Entry = Entry->next;
 
 	return Entry;
@@ -508,7 +508,7 @@ entry* Get_Entry(entry* Entry, char *Variable)
 
 section* Get_Section(section* Section, char *Sectionname)
 {
-	while (Section != NULL && strcmp(Section->name,Sectionname))
+	while (Section != NULL && strcasecmp(Section->name,Sectionname))
 		Section = Section->next;
 
 	return Section;
