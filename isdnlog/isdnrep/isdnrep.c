@@ -1,4 +1,4 @@
-/* $Id: isdnrep.c,v 1.24 1997/05/17 01:08:21 luethje Exp $
+/* $Id: isdnrep.c,v 1.25 1997/05/17 14:58:28 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -20,6 +20,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnrep.c,v $
+ * Revision 1.25  1997/05/17 14:58:28  luethje
+ * bug fix in HTML-Link
+ *
  * Revision 1.24  1997/05/17 01:08:21  luethje
  * some bugfixes
  *
@@ -27,7 +30,7 @@
  * added new links on HTML
  *
  * Revision 1.22  1997/05/15 22:21:35  luethje
- * New feature: isdnrep can transmit via HTTP fax files and vbox files.
+ * New feature: isdnrep can transmit via HTML fax files and vbox files.
  *
  * Revision 1.21  1997/05/11 22:59:19  luethje
  * new version
@@ -262,7 +265,7 @@
 #define H_CENTER       "<TD align=center><TT>%s</TT></TD>"
 #define H_RIGHT        "<TD align=right><TT>%s</TT></TD>"
 #define H_LINK         "<A HREF=\"%s?-M+%c%d%s\">%s</A>"
-#define H_LINK_DAY     "<A HREF=\"%s?%s\">%s</A>      "
+#define H_LINK_DAY     "<A HREF=\"%s?%s\">%s</A> "
 
 #define H_EMPTY        "&nbsp;"
 
@@ -2857,10 +2860,14 @@ static char *get_a_day(time_t t, int d_diff, int m_diff, int flag)
 
 	if (cur_time < t)
 	{
+		if (!(flag & F_END))
+			return NULL;
+	/*
 		if (flag & F_END)
 			t = cur_time;
 		else
 			return NULL;
+	*/
 	}
 
 	tm = localtime(&t);
