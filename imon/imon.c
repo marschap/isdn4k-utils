@@ -1,4 +1,4 @@
-/* $Id: imon.c,v 1.5 2001/08/22 11:12:00 paul Exp $
+/* $Id: imon.c,v 1.6 2002/07/15 11:58:32 paul Exp $
  *
  * iMON , extended version.
  * original iMON source (c) Michael Knigge
@@ -19,6 +19,16 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: imon.c,v $
+ * Revision 1.6  2002/07/15 11:58:32  paul
+ * Explicitly set stdio buffer for /dev/isdninfo to 2048, as it has
+ * happened that stdio used 1024, and /dev/isdninfo doesn't support
+ * partial reads (0 bytes are returned). Usually not a problem, but
+ * with more than one channel connected, a line of > 1024 bytes is
+ * returned.
+ * Also optimized the curses usage a bit, explicitly writing spaces
+ * so that background colours are set correctly everywhere.
+ * Bumped displayed version to 2.2.
+ *
  * Revision 1.5  2001/08/22 11:12:00  paul
  * imon wasn't devfs-compliant yet.
  *
@@ -90,12 +100,12 @@ static FILE *isdninfo;
 static int  color;
 static char *phonebook;
 static struct phone_entry *phones;
-static char idmap_line[4096];
-static char chmap_line[4096];
-static char drmap_line[4096];
-static char usage_line[4096];
-static char flags_line[4096];
-static char phone_line[4096];
+static char idmap_line[2048];
+static char chmap_line[2048];
+static char drmap_line[2048];
+static char usage_line[2048];
+static char flags_line[2048];
+static char phone_line[2048];
 
 WINDOW *statwin;
 WINDOW *stathdr;
@@ -198,14 +208,14 @@ static void readphonebook() {
  */
 char *find_name(char *num) {
   struct phone_entry *p = phones;
-  static char tmp[100];
+  static char tmp[30];
 
-  sprintf(tmp, "%-28s", num);
+  sprintf(tmp, "%-28.28s", num);
   if (!show_names)
 	return(tmp);
   while (p) {
     if (wildmat(num, p->phone)) {
-      sprintf(tmp, "%-28s", p->name);
+      sprintf(tmp, "%-28.28s", p->name);
       break;
     }
     p = p->next;
@@ -229,7 +239,7 @@ void cleanup(int dummy) {
 
 void usage(void) {
   fprintf(stderr,"usage: imon [-q][-p PhoneBookFile]\n");
-  exit(-1);
+  exit(1);
 }
 
 /*
@@ -279,7 +289,7 @@ int imon_draw_mask(int color) {
     move(line, 0);
     addch(ACS_VLINE);
     for(col=2; col<COLS; col++)
-      addch(32);
+      addch(' ');
     addch(ACS_VLINE);
   }
   move(LINES-4, 0);
@@ -306,11 +316,14 @@ int imon_draw_mask(int color) {
     wattroff(stathdr, COLOR_PAIR(WHITE_ON_BLACK));
     wattron(stathdr, COLOR_PAIR(YELLOW_ON_BLUE));
   }
-  mvaddstr(1, 2, "iMON 2.1");
-  mvaddstr(1, COLS-23 , "Last Update: ");
-  mvwaddstr(stathdr, 0, 0, "Nr. LineID       Status    Phone Number                Usage       Type                     ");
+  for(line=0; line<3; line++) {
+      mvwprintw(stathdr, line, 0, "%100s", "");
+  }
+  mvaddstr(1, 2, "iMON 2.2");
+  mvaddstr(1, COLS-34 , "Last Update: ");
+  mvwaddstr(stathdr, 0, 0, "Nr. LineID       Status    Phone Number                Usage       Type");
   wmove(stathdr, 1, 0);
-  for(col=1; col<100; col++)
+  for(col=0; col<100; col++)
     waddch(stathdr, ACS_HLINE);
   if(color == TRUE) {
     attroff(COLOR_PAIR(YELLOW_ON_BLUE));
@@ -323,19 +336,19 @@ static void imon_read_status() {
   /*
    * read the 6 important lines
    */   
-  fgets(idmap_line, 4095, isdninfo);
-  fgets(chmap_line, 4095, isdninfo);
-  fgets(drmap_line, 4095, isdninfo);
-  fgets(usage_line, 4095, isdninfo);
-  fgets(flags_line, 4095, isdninfo);
-  fgets(phone_line, 4095, isdninfo);
+  fgets(idmap_line, sizeof idmap_line, isdninfo);
+  fgets(chmap_line, sizeof chmap_line, isdninfo);
+  fgets(drmap_line, sizeof drmap_line, isdninfo);
+  fgets(usage_line, sizeof usage_line, isdninfo);
+  fgets(flags_line, sizeof flags_line, isdninfo);
+  fgets(phone_line, sizeof phone_line, isdninfo);
 #ifdef TEST_IMON
-  sprintf(idmap_line, "idmap: TA250034 - - - - - - - - - - - - - - -");
-  sprintf(chmap_line, "chmap: 0 1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1");
-  sprintf(drmap_line, "drmap: 0 0 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1");   
-  sprintf(usage_line, "usage: 1 2 0 3 4 0 5 0 129 0 130 131 132 0 0 133");
-  sprintf(flags_line, "flags: 0 ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?");
-  sprintf(phone_line, "phone: 05114711 0815 ??? 5555 666666666 ??? 4711 ??? 875257 ??? 77848 7890 2345467 ??? ??? 88888");
+  strcpy(idmap_line, "idmap: TA250034 - - - - - - - - - - - - - - -");
+  strcpy(chmap_line, "chmap: 0 1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1");
+  strcpy(drmap_line, "drmap: 0 0 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1");   
+  strcpy(usage_line, "usage: 1 2 0 3 4 0 5 0 129 0 130 131 132 0 0 133");
+  strcpy(flags_line, "flags: 0 ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?");
+  strcpy(phone_line, "phone: 05114711 0815 ??? 5555 666666666 ??? 4711 ??? 875257 ??? 77848 7890 2345467 ??? ??? 88888");
 #endif
 }
 
@@ -355,11 +368,10 @@ int imon_draw_status(int color, time_t *current_time) {
 
   char drvid[15];
   char s_drvid[15];
-  char status[15];
+  char *status;
   char phone[30];
-  char s_usage[15];
-  char inout[10];
-  char temp[30];
+  char *s_usage;
+  char *inout;
 
   int  usage;
   int  chanum;
@@ -401,12 +413,11 @@ int imon_draw_status(int color, time_t *current_time) {
 
     /* A channel-number of -1 indicates an nonexistent channel */     
     if (chanum==-1) {
-      sprintf(temp,"%2d  ", line);
       if (color) {
 	wattroff(statwin, A_BOLD);
 	wattron(statwin, COLOR_PAIR(WHITE_ON_BLUE));
       }
-      mvwaddstr(statwin, line, 0, temp);
+      mvwprintw(statwin, line, 0, "%2d%98s", line, "");
       continue;
     }
     /*
@@ -419,12 +430,12 @@ int imon_draw_status(int color, time_t *current_time) {
     if (!(usage & 7)) {
       if (color)
 	wattron(statwin, COLOR_PAIR(GREEN_ON_BLUE));
-      sprintf(status, "%s",(usage&64)?"Exclusive ":"Offline   ");
-      sprintf(phone, "                            ");
-      s_phone = phone;
-      sprintf(s_usage, "            ");
-      sprintf(inout, "         ");
-    } else {
+      status = (usage&64) ? "Exclusive" : "Offline";
+      s_phone = "";
+      s_usage = "";
+      inout = "";
+    }
+    else {
       int online = (flags[drvnum] & (1<<chanum));
       if (color) {
 	if (online)
@@ -434,43 +445,36 @@ int imon_draw_status(int color, time_t *current_time) {
 	  wattron(statwin, COLOR_PAIR(YELLOW_ON_BLUE));
 	}
       }
-      sprintf(status, online?"Online    ":"Calling   ");
-      sprintf(inout, (usage&ISDN_USAGE_OUTGOING)?"Outgoing ":"Incoming ");
+      status = online ? "Online" : "Calling";
+      inout = (usage&ISDN_USAGE_OUTGOING)?"Outgoing":"Incoming";
       switch (usage & 7) {
 	case ISDN_USAGE_RAW:
-	  sprintf(s_usage, "Raw         ");
+	  s_usage = "Raw";
 	  break;
 	case ISDN_USAGE_MODEM:
-	  sprintf(s_usage, "Modem       ");
+	  s_usage = "Modem";
 	  break;
 	case ISDN_USAGE_NET:
-	  sprintf(s_usage, "Net         ");
+	  s_usage = "Net";
 	  break;
 	case ISDN_USAGE_VOICE:
-	  sprintf(s_usage, "Voice       ");
+	  s_usage = "Voice";
 	  break;
 	case ISDN_USAGE_FAX:
-	  sprintf(s_usage, "Fax         ");
+	  s_usage = "Fax";
 	  break;
 	default:
-	  sprintf(s_usage, "-----       ");
+	  s_usage = "-----";
 	  break;
       }
       s_phone = find_name(phone);
     }
-    sprintf(temp,"%2d  ", line);
-    mvwaddstr(statwin, line, 0, temp);
-    mvwaddstr(statwin, line, 4, s_drvid);
-    mvwaddstr(statwin, line, 17, status);
-    mvwaddstr(statwin, line, 27, s_phone);
-    mvwaddstr(statwin, line, 55, s_usage);
-    mvwaddstr(statwin, line, 67, inout);
+    mvwprintw(statwin, line, 0, "%2d  %-13s%-10s%-28s%-10s%-9s%26s", line, s_drvid, status, s_phone, s_usage, inout, "");
   }
-  now = localtime(current_time);
-  sprintf(temp, "%02d:%02d:%02d", now->tm_hour,now->tm_min,now->tm_sec);
   if (color == TRUE)
     attron(COLOR_PAIR(YELLOW_ON_BLUE));
-  mvaddstr(1, COLS-10, temp);
+  now = localtime(current_time);
+  mvprintw(1, COLS-21, "%04d-%02d-%02d %02d:%02d:%02d", now->tm_year+1900, now->tm_mon+1, now->tm_mday, now->tm_hour,now->tm_min,now->tm_sec);
   prefresh(stathdr, 0,      stat_x, 3, 2, 5, COLS-3);
   prefresh(statwin, stat_y, stat_x, 5, 2, LINES-5, COLS-3);
   return(TRUE);
@@ -489,6 +493,7 @@ int main(int argc, char **argv) {
   int   quit , i;
   fd_set fdset;
   struct timeval timeout;
+  static char  fbuf[2048];
   
   /*
    * check parameters
@@ -519,6 +524,8 @@ int main(int argc, char **argv) {
     return 1;
    }
   }
+  setvbuf(isdninfo, fbuf, _IOFBF, sizeof(fbuf));       /* up to 2048 needed */
+
   if (phonebook)
     readphonebook();
   
