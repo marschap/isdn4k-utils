@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.194 2001/04/03 19:15:28 akool Exp $
+## $Id: Makefile.in,v 1.195 2001/06/12 13:56:47 paul Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,12 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.195  2001/06/12 13:56:47  paul
+## zone files are now created byte-order independent, so:
+## - creating the zone files works on sparc
+## - CDB files created on e.g. intel can be used without problem om sparc
+## Our copy of CDB has also been modified for this.
+##
 ## Revision 1.194  2001/04/03 19:15:28  akool
 ## isdnlog-4.52
 ##  - small bugfix within "isdnbill" (segfault ...)
@@ -1530,7 +1536,7 @@ ISDNLOG_OBJS =  isdnlog/isdnlog.o isdnlog/processor.o isdnlog/functions.o \
                 connect/connect.o connect/socket.o tools/tools.o      	  \
                 connect/conv_address.o isdnlog/user_access.o 		  \
                 tools/isdnconf.o tools/telnum.o tools/dest.o		  \
-		tools/rate.o tools/zone.o tools/holiday.o \
+		tools/rate.o tools/zone.o tools/holiday.o tools/zone/upack.o \
 		isdnlog/asn1.o isdnlog/asn1_generic.o isdnlog/asn1_aoc.o  \
 		isdnlog/asn1_address.o isdnlog/asn1_diversion.o           \
 		isdnlog/asn1_basic_service.o isdnlog/asn1_comp.o          \
@@ -1561,24 +1567,24 @@ endif
 ISDNREP_OBJS =  isdnrep/rep_main.o tools/tools.o tools/isdnconf.o         \
                 isdnlog/messages.o isdnrep/isdnrep.o     		  \
 		tools/rate.o tools/zone.o tools/holiday.o tools/dest.o \
-		tools/telnum.o						  \
+		tools/telnum.o tools/zone/upack.o		  \
                 $(LIBISDNDIR)/libisdn.a $(CDBEXTRALIBS)
 
 ISDNBILL_OBJS = isdnrep/isdnbill.o tools/tools.o tools/isdnconf.o         \
                 isdnlog/messages.o					  \
 		tools/rate.o tools/zone.o tools/holiday.o tools/dest.o	  \
-		tools/telnum.o						  \
+		tools/telnum.o tools/zone/upack.o			  \
                 $(LIBISDNDIR)/libisdn.a $(CDBEXTRALIBS)
 
 ISDNCONF_OBJS=  isdnconf/isdnconf.o tools/tools.o tools/isdnconf.o        \
 		tools/rate.o tools/zone.o tools/holiday.o \
-		tools/telnum.o	tools/dest.o				  \
+		tools/telnum.o	tools/dest.o tools/zone/upack.o		  \
                 $(LIBISDNDIR)/libisdn.a $(CDBEXTRALIBS)
 
 ISDNRATE_OBJS=  tools/isdnrate.o tools/isdnconf.o tools/tools.o           \
 		tools/rate.o tools/zone.o tools/dest.o \
 		tools/holiday.o \
-		tools/telnum.o						  \
+		tools/telnum.o tools/zone/upack.o			  \
                 $(LIBISDNDIR)/libisdn.a $(CDBEXTRALIBS)
 
 

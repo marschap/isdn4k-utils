@@ -67,7 +67,7 @@ static char packbuf[8];
 
 int cdb_make_start(struct cdb_make *c,int fd) {
     int i;
-    int b = ' ';    
+    char b = ' ';    
     
     cdbmake_init(&c->cdbm);
     c->fd = fd;
@@ -102,12 +102,12 @@ int cdb_make_add(struct cdb_make *c,char *key,unsigned int keylen,char *data,uns
     for (i = 0;i < keylen;++i) {
       ch = key[i];
       h = cdbmake_hashadd(h,ch);
-      if (write(c->fd, &ch, 1) != 1)
+      if (write(c->fd, &key[i], 1) != 1)
           return -1;
     }
     for (i = 0;i < datalen;++i) {
       ch = data[i];
-      if (write(c->fd, &ch, 1) != 1)
+      if (write(c->fd, &data[i], 1) != 1)
           return -1;
     }
     if (!cdbmake_add(&c->cdbm,h,pos,malloc))

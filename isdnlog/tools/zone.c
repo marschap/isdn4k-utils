@@ -1,4 +1,4 @@
-/* $Id: zone.c,v 1.19 1999/11/07 13:29:29 akool Exp $
+/* $Id: zone.c,v 1.20 2001/06/12 13:54:47 paul Exp $
  *
  * Zonenberechnung
  *
@@ -19,6 +19,12 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: zone.c,v $
+ * Revision 1.20  2001/06/12 13:54:47  paul
+ * zone files are now created byte-order independent, so:
+ * - creating the zone files works on sparc
+ * - CDB files created on e.g. intel can be used without problem om sparc
+ * Our copy of CDB has also been modified for this.
+ *
  * Revision 1.19  1999/11/07 13:29:29  akool
  * isdnlog-3.64
  *  - new "Sonderrufnummern" handling
@@ -139,6 +145,7 @@ extern const char *basename (const char *name);
 /* this config (from config.in) could go in global policy */
 #include "zone/config.h"
 #include "zone/common.h"
+#include "zone/upack.h"
 #include <dirent.h>
 
 struct sth {
@@ -161,7 +168,7 @@ struct sth {
 
 static struct sth *sthp;
 static int count;
-static char version[] = "1.24";
+static char version[] = "1.25";
 
 #define LINK 127
 #define INFO_LEN 80
@@ -442,10 +449,23 @@ static int _initZone(int provider, char *path, char **msg, bool area_only)
 			return -1;
 		}
 		for (p = value.dptr, i=0; i< (csize > 256 ? 256 : csize); i++)
+/*
 			sthp[ocount].table[i] =
 				sthp[ocount].pack_table == 1 ? (int)(UC)*((UC*)p)++ :
 				sthp[ocount].pack_table == 2 ? (int)(US)*((US*)p)++ :
 				(int)(UL)*((UL*)p)++;
+ */
+	    		switch(sthp[ocount].pack_table) {
+			 case 1: sthp[ocount].table[i] = (int)(UC) *p;
+			  	p++;
+			  	break;
+			 case 2: sthp[ocount].table[i] = (int)tools_unpack16(p);
+			  	p += 2;
+			  	break;
+			 case 4: sthp[ocount].table[i] = (int)tools_unpack32(p);
+			  	p += 4;
+			  	break;
+			}
 		if (*dbv == 'G')
 			free(value.dptr);
 		if (msg) {
@@ -507,7 +527,8 @@ static int _getZ(struct sth *sthp, char *from, char *sto) {
 			if (sthp->cc) /* if areacodes */
 				/* here is since 1.00 a zero-terminated strring */
 				while (*p++);
-			count = *((US*)p)++;
+			// count = *((US*)p)++;
+			count = tools_unpack16(p); p+=2;
 			while (count--) {
 				bool ind = true;
 				int len=1;
@@ -517,8 +538,24 @@ static int _getZ(struct sth *sthp, char *from, char *sto) {
 					ind = false;
 					len = sthp->pack_key;
 				}
+			  /*
 				ito = len==1 ? (int)*((UC*)p)++ :
 					  len==2 ? (int)*((US*)p)++ : (int)*((UL*)p)++;
+			   */
+			  	switch(len) {
+				 case 1:
+				  ito = (int)(UC) *p;
+				  p++;
+				  break;
+				 case 2:
+				  ito = (int)tools_unpack16(p);
+				  p += 2;
+				  break;
+				 case 4:
+				  ito = (int)tools_unpack32(p);
+				  p += 4;
+				  break;
+				}
 				if (ind)
 					ito = sthp->table[ito];
 				if (z == LINK) {
