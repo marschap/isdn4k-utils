@@ -1,4 +1,4 @@
-V:2.00b2-Germany [30-Dez-2001 18:09:30]
+V:2.00b2-Germany [30-Dez-2001 19:16:09]
 
 # Währungsformat
 U:%.3f EUR
@@ -8,7 +8,7 @@ U:%.3f EUR
 #
 # (C) Copyright 1999, 2001 by Andreas Kool (akool@isdn4linux.de)
 #
-# $Id: rate-de.dat,v 1.112 2001/12/30 17:17:40 akool Exp $
+# $Id: rate-de.dat,v 1.113 2001/12/30 18:22:02 akool Exp $
 #
 #
 # Das "A:" Tag muß folgendermaßen gefüllt werden:
@@ -518,6 +518,52 @@ T:*/*=0.29/60
 #####################################################################
 #
 #
+# NEU
+P:11,0 o.tel.o CbC
+B:01011
+# G:21-Nov-2001
+D:dtag
+C:Name:o.tel.o CbC
+C:Address:Mannesmann Zwölfte Verwaltungsgesellschaft mbH, Mannesmannufer 2, 40213 Düsseldorf
+C:Homepage:http://www.o-tel-o.de
+C:Hotline:01803/1998 oder 0800/7370 (Geschaeftskunden)
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
+C:Erfasste Zonen:
+C:0, 2	-   4	Deutschland
+C:10	-  11	Mobilfunk
+C:45		Auskunft o.tel.o
+C:102		o.tel.o online
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+A:_F800
+T:*/*=0
+Z:2-4 Inlandsverbindungen
+A:DE
+T:W/07-18=0.092/60 Sunshine
+T:W/18-07=0.022/60 Moonshine 
+T:E,H/*=0.022/60 Moonshine
+Z:10 Mobilfunk D1
+A:_DEMD1
+T:*/*=0.2454/60 Standard
+Z:11 Mobilfunk D1
+A:_DEMD2
+T:W/07-18=0.2454/60 Standard
+T:W/18-07=0.2352/60 Spar
+T:E,H/*=0.2352/60 Spar
+Z:12 Mobilfunk E-plus
+A:_DEME1
+T:*/*=0.2761/60
+Z:13 Mobilfunk E2
+A:_DEME2
+T:*/*=0.2914/60 Spar
+#####################################################################
+#
+#
 P:13,0 Tele2 Privat CbC
 B:01013
 C:Name:Tele2 CbC
@@ -581,7 +627,7 @@ T:*/*=0.04/0,0.23(60)/1
 #####################################################################
 #
 #
-P:33,0 T-ISDN Standard
+P:33,0 DTAG T-ISDN Standard
 B:01033
 # G:26-Dez-2001
 D:dtag
@@ -637,7 +683,7 @@ A:_DEME2
 A:_DEMQ
 T:*/*=0.2914/60
 #####################################################################
-P:33,1 T-ISDN 300
+P:33,1 DTAG T-ISDN 300
 # Dieser Tarif gilt auch bei AktivPlus
 B:01033
 # G:26-Dec-2001
@@ -679,7 +725,7 @@ A:_DEME2
 A:_DEMQ
 T:*/*=0.246/60
 #####################################################################
-P:33,2 T-ISDN xxl
+P:33,2 DTAG T-ISDN xxl
 B:01033
 # G:01-Jun-2000
 D:dtag
@@ -709,6 +755,36 @@ T:W/09-18=0.046/60 Sunshine
 T:W/18-09=0.026/60 Moonshine
 T:6/*=0.026/60 Spar
 T:7,H/*=0/60 xxl unentgeltlich
+#####################################################################
+#
+#
+P:40,0 Ventelo
+B:01040
+# G:14-Feb-2000
+D:dtag
+C:Ventelo Deutschland GmbH, Am Seestern 3, 40547 Düsseldorf
+C:Euro
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+Z:2-4 Deutschland
+A:+49
+T:W/07-19=0.08/60 Hauptzeit
+T:W/19-21=0.05/60 Freizeit
+T:W/21-07=0.021/60 Nebenzeit
+T:E,H/*=0.041/60 Wochenende
+Z:10 Mobilfunk
+A:_DEMD1
+A:_DEMD2
+A:_DEME1
+A:_DEME2
+T:W/07-19=0.33/60
+T:W/19-07=0.25/60
+T:E,H/*=0.25/60
 #####################################################################
 #
 #
@@ -1311,4 +1387,73 @@ Z:12 Mobilfunk E2
 A:_DEME2
 T:*/*=0.2505/60
 
+#####################################################################
+#
+#
+P:90,0 BT Ignite CbC
+B:01090
+# G:21-Dec-2001
+C:Address:BT Ignite Deutschland, c/o nexnet, Postfach 270247, 12472 Berlin
+C:Name:BT Ignite
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
+D:dtag
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+Z:1-4 Fern
+A:+49
+T:W/08-18=0.07/60 Hauptzeit
+T:W/18-08=0.029/60 Freizeit
+T:E,H/*=0.029/60 Freizeit
+Z:10 Mobil
+A:_DEMF
+T:W/08-18=0.40/60 Hauptzeit
+T:W/18-08=0.25/60 Freizeit
+T:E,H/*=0.25/60 Freizeit
+Z:11 Mobil E2
+A:_DEME2
+T:*/*=0.23/60 Standard
+Z:21 Telefonauskunft
+A:11881
+T:*/*=1.59/0,0.22(60)/10
+Z:100 Internet planet-interkom
+A:0191799
+T:W/08-18=0.032(60)/1
+T:W/18-08=0.025(60)/1
+T:E,H/*=0.025(60)/1
+Z:170 Persönliche Rufnummer
+A:0700
+T:W/09-18=0.24/60 Hauptzeit
+T:W/18-08=0.12/60 Nebenzeit
+T:E,H/*=0.12/60 Nebenzeit
+Z:200 EuroNah
+A:AD,BE,DK,FO,FI,FR,GI
+A:GR,UK,IE,IS,IT,LI
+A:LU,MC
+A:NL,NO,AT,PL,PT,_AZOR,_MADE
+A:SM,SE,CH,SK,ES,CZ
+A:HU,VA,CY
+T:*/*=0.39/60
+Z:201 EuroFern
+A:AL,BA,BG,EE,YU
+A:YU,YU,HR,LV,LT,MT,MK
+A:MD
+A:RO,MOW,SI,TR,UA
+A:BY
+T:*/*=0.99/60
+Z:202 Nordamerika
+A:CA,US,_ALAS
+T:*/*=0.39/60
+Z:203 Asien Pazifik
+A:AU,HK,JP,KR,MY
+A:NZ,SG
+T:*/*=1.49/60
+#Z:204 Sonstige Länder
+#A:+
+#T:*/*=1.99/60
 #####################################################################
