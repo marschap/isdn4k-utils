@@ -1,7 +1,10 @@
 /*
- * $Id: capi20.c,v 1.16 2000/05/18 15:02:26 calle Exp $
+ * $Id: capi20.c,v 1.17 2000/06/26 15:00:43 calle Exp $
  * 
  * $Log: capi20.c,v $
+ * Revision 1.17  2000/06/26 15:00:43  calle
+ * - Will also compile with 2.0 Kernelheaders.
+ *
  * Revision 1.16  2000/05/18 15:02:26  calle
  * Updated _cmsg handling added new functions need by "capiconn".
  *
@@ -69,6 +72,22 @@
 #include <stdio.h>
 #include <linux/capi.h>
 #include "capi20.h"
+
+#ifndef CAPI_GET_FLAGS
+#define CAPI_GET_FLAGS		_IOR('C',0x23, unsigned)
+#endif
+#ifndef CAPI_SET_FLAGS
+#define CAPI_SET_FLAGS		_IOR('C',0x24, unsigned)
+#endif
+#ifndef CAPI_CLR_FLAGS
+#define CAPI_CLR_FLAGS		_IOR('C',0x25, unsigned)
+#endif
+#ifndef CAPI_NCCI_OPENCOUNT
+#define CAPI_NCCI_OPENCOUNT	_IOR('C',0x26, unsigned)
+#endif
+#ifndef CAPI_NCCI_GETUNIT
+#define CAPI_NCCI_GETUNIT	_IOR('C',0x27, unsigned)
+#endif
 
 static char capidevname[] = "/dev/capi20";
 static char capidevnamenew[] = "/dev/isdn/capi20";
