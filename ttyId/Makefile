@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.1 2000/08/30 18:27:01 armin Exp $
+# $Id: Makefile,v 1.2 2000/09/14 19:31:52 paul Exp $
 
 VERSION = 0.1
 
@@ -31,5 +31,8 @@ ttyId:			$(MAINOBJS)
 
 clean:			ignore	
 			@find . -name '*.o' -exec $(RM) {} ';'
+
+distclean:		clean
+			rm -f ttyId
 
 ignore:
