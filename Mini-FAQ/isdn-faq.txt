@@ -416,8 +416,8 @@ englishtoc
 Corrections and suggestions welcome, please send them directly to me,
 Erik Corry, <erik@arbat.com>.
 
-Thanks to Andreas Barth, Klaus Franken, Jürgen Lennefer, Eyal Lotem, Christian
-Otto-Lange, Wolfgang Schetter and Gerhard Sittig.
+Thanks to Andreas Barth, Klaus Franken, Florian Groß, Jürgen Lennefer,
+Eyal Lotem, Christian Otto-Lange, Wolfgang Schetter and Gerhard Sittig.
 
 -- 
 Erik Corry
