@@ -1,0 +1,161 @@
+#! @PERL@
+#
+@EFT_AUTOCONF_WARNING@
+#
+# generated from $Id: eftp_setup.in,v 1.1 1999/06/30 17:02:16 he Exp $
+#
+# Helper script for eftp that sets up x.25 network interfaces connectable
+# to a dedicated remote isdn number.
+#
+# (derived fron eftp.sh. Not yet finished and therefor neither  usable
+# nor used yet)
+#
+# This must run suid root, thus it is written in perl for security reasons.
+# You might want to restrict usage of this script to a selected group
+# of people by setting appropriate group execute permissions when installing
+# this file.
+#
+# External programmes are referenced by absolute pathnames for
+# security reasons. 
+#
+# Usage: eftp_setup PHONE_NUMBER FILE_DESCRIPTOR
+#
+# PHONE_NUMBER can also be "localhost" in which case a local loopback
+# connection on top of the isdnloop driver will be used.
+#
+# FILE_DESCRIPTOR should be associated with a bidirectional pipe which
+# will be used to syncronize this script with its parent process.
+#
+#
+# There must be no x25 route set up before this script is called.
+#
+# For this script to work, the basic setup for the isdn and x25
+# drivers must be done. The following three modules must be loaded
+# (or compiled into the kernel) before calling this script:
+#
+#     "x25"       (insmod x25)  
+#     "isdn"      (insmod isdn)
+#     An isdn HL driver which supports l2_prot x75i (i.e. insmod hisax ...)
+#
+#******************************
+#
+# Security Consideration:
+# perl does its best to detect any hidden gotchas that might compromise
+# security. However, as perl does not know about the security of external
+# programmes, it cannot protect from security traps hidden inside external
+# programmes. We kill the whole environment (killing MODPATH is essential).
+#
+foreach $key (keys %ENV) {
+    delete $ENV{$key};
+}
+#system "printenv";
+
+#
+#Scan configuration file for own msn (used for outgoing eft
+# connection and MSN of local server (used as destination when the
+# symolic remote address "localhost" is specified).
+sub my_system { 
+#	print @_,"\n";
+	system @_;
+}
+
+setpgrp 0, 0;
+
+open MSN, "@I4LCONFDIR@/eft.conf"
+	or die "Can't open: $!\n";
+while(<MSN>){
+  SWITCH: {
+      if (/^EFT_CLIENT_MSN=([0-9]*)/) { $EFT_CLIENT_MSN = $1;
+				last SWITCH; }
+      if (/^EFT_SERVER_MSN=([0-9]*)/) { $EFT_SERVER_MSN = $1;
+				last SWITCH; }
+  };
+};
+$DIALOUT=$ARGV[0];
+$sfd=$ARGV[1];
+$sfdw=$ARGV[2];
+print "client=", $EFT_CLIENT_MSN, "\n";
+print "server=", $EFT_SERVER_MSN, "\n";
+print "dial=", $DIALOUT, "\n";
+print "pipe=", $sfd, "\n";
+print "wpipe=", $sfdw, "\n";
+
+
+#
+# pipe used to syncronize this helper script with the calling process
+#
+open syncpipe, "<&=$sfd";
+open wsyncpipe, ">&=$sfdw";
+
+$_=$DIALOUT;
+
+if(/^localhost$/){
+    # for local testing of x.25 connections we load the isdnloop driver
+    # beware: User settable MODPATH compromises security
+    my_system "@INSMOD@ isdnloop isdnloop_id=isdnfake";
+#    my_system "@INSMOD@ -m isdnloop isdnloop_id=isdnfake > /var/modules/isdnloop.map";
+    my_system "@LOOPCTRL@ -d isdnfake start dss1 00000 $EFT_CLIENT_MSN $EFT_SERVER_MSN";
+    sleep 1;
+    # A local outgoing interface operating on top of (and bound to) the
+    # isdnloop driver. X.25 call requests to arbitray X.25 addresses will be
+    # routet to the outgoing interface isdnxlo1. That call request will be
+    # looped back to our own machine (and received at the incoming
+    # interface created for the eft daemon).
+
+    my_system "@ISDNCTRL@ addif isdnxout";
+    my_system "@ISDNCTRL@", "eaz", "isdnxout", $EFT_CLIENT_MSN;
+    my_system "@ISDNCTRL@", "addphone", "isdnxout", "out", $EFT_SERVER_MSN;
+    my_system "@ISDNCTRL@ l2_prot isdnxout x75i";
+    my_system "@ISDNCTRL@ encap isdnxout x25iface";
+    my_system "@ISDNCTRL@ huptimeout isdnxout 1800";
+    my_system "@ISDNCTRL@ status isdnxout on";
+    my_system "@ISDNCTRL@ bind isdnxout isdnfake,0";
+} elsif(/[0-9]/) {
+    # outgoing interface operating on top of real HL driver (i.e. HiSax).
+    # A HL driver must already be loaded and support l2_prot x75i.
+    # This will set up a real isdn connection and therefore might leave
+    # traces on your phone bill.
+
+    # Outgoing Interface on top of  HiSax  to  remote  server
+
+    my_system "@ISDNCTRL@ addif isdnxout"; 
+    my_system "@ISDNCTRL@ eaz isdnxout", $EFT_CLIENT_MSN;
+    my_system "@ISDNCTRL@ addphone isdnxout out ",  $DIALOUT;
+    my_system "@ISDNCTRL@ l2_prot isdnxout x75i";
+    my_system "@ISDNCTRL@ encap isdnxout  x25iface";
+    my_system "@ISDNCTRL@ huptimeout isdnxout 110";
+    my_system "@ISDNCTRL@ secure isdnxout on";
+    my_system "@ISDNCTRL@ status isdnxout on";
+} else {
+    print "incorrect remote number: \"$DIALOUT\"\n";
+    exit 1;
+}
+
+#~kernel/eftp4linux-work/scripts/oops.sh
+my_system "@IFCONFIG@ isdnxout up";
+
+my_system "@X25ROUTE@ add 0/0 isdnxout";
+
+#tell parent process that we are ready by writing an x25_addr
+# (currently the empty address/empty string) to the pipe
+
+syswrite wsyncpipe, "\0", 1;
+close wsyncpipe;
+
+#wait for parent process to finish or to close the connection
+#(block by reading from the pipe until parent process closes it).
+
+sysread syncpipe, $dummy, 1;
+
+print "parent sent ", $dummy, "\n";
+
+my_system "@ISDNCTRL@ hangup isdnxout";
+my_system "@X25ROUTE@ del 0/0 isdnxout";
+my_system "@IFCONFIG@ isdnxout down";
+my_system "@ISDNCTRL@ delif isdnxout";
+
+$_=$DIALOUT;
+if(/^localhost$/){
+    sleep 2;
+    my_system "@RMMOD@ isdnloop";
+}
