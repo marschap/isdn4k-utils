@@ -1,4 +1,4 @@
-/* $Id: isdnrep.c,v 1.77 1999/09/09 11:21:05 akool Exp $
+/* $Id: isdnrep.c,v 1.78 1999/09/11 22:28:25 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -24,6 +24,12 @@
  *
  *
  * $Log: isdnrep.c,v $
+ * Revision 1.78  1999/09/11 22:28:25  akool
+ * isdnlog-3.50
+ *   added 3. parameter to "-h" Option: Controls CHARGEHUP for providers like
+ *   DTAG (T-Online) or AOL.
+ *   Many thanks to Martin Lesser <m-lesser@lesser-com.de>
+ *
  * Revision 1.77  1999/09/09 11:21:05  akool
  * isdnlog-3.49
  *
@@ -1266,7 +1272,7 @@ static int print_bottom(double unit, char *start, char *stop)
 
 	if (!incomingonly)
 	{
-#if 0
+#if 1
 		h_percent = 60.0;
 		h_table_color = H_TABLE_COLOR3;
 		get_format("%-21.21s %4d call(s) %10.10s  %12s");
@@ -1274,36 +1280,21 @@ static int print_bottom(double unit, char *start, char *stop)
 		print_line2(F_BODY_HEADERL,"Outgoing calls ordered by Zone");
 		strich(1);
 
-                for (i = 0; i < MAXZONES + 1; i++)
+                for (i = 0; i < 5; i++)
                   if (zones_usage[i]) {
                     register char *p;
                     auto     char  s[BUFSIZ];
 
 
                     switch (i) {
-		      case  0 : p = "Internal/FreeCall"; break;
-		      case  1 : p = "Ortszone";		 break;
-		      case  2 : p = "Cityzone";		 break;
-		      case  3 : p = "Region 50";	 break;
-		      case  4 : p = "Fernzone";		 break;
-		      case  5 : p = "C-Mobilbox";	 break;
-		      case  6 : p = "C-Netz"; 		 break;
-		      case  7 : p = "D1-Netz"; 		 break;
-		      case  8 : p = "D2-Netz"; 		 break;
-		      case  9 : p = "E-plus-Netz"; 	 break;
-		      case 10 : p = "E2-Netz"; 		 break;
-		      case 11 : p = "Euro City"; 	 break;
-		      case 12 : p = "Euro 1"; 		 break;
-		      case 13 : p = "Euro 2"; 		 break;
-		      case 14 : p = "Welt 1"; 		 break;
-		      case 15 : p = "Welt 2"; 		 break;
-		      case 16 : p = "Welt 3"; 		 break;
-		      case 17 : p = "Welt 4"; 		 break;
-		      case 20 : p = "Internet"; 	 break;
-		      default : p = S_UNKNOWN; 		 break;
+		      case  0 : p = "FreeCall";            break;
+		      case  1 : p = "Ortszone";		   break;
+		      case  2 : p = "CityCall (< 20 km)";  break;
+		      case  3 : p = "RegioCall (< 50 km)"; break;
+		      case  4 : p = "Fernzone";		   break;
                     } /* case */
 
-                    sprintf(s, "Zone %3d:%s", i, p);
+                    sprintf(s, "Zone %1d:%s", i, p);
 
                     print_line3(NULL, s, zones_usage[i],
                       double2clock(zones_dur[i]),
@@ -1808,10 +1799,23 @@ static int print_line(int status, one_call *cur_call, int computed, char *overla
 				          	if (!numbers)
 				          	{
                                                         register char *p;
+							auto	 char  s[BUFSIZ];
 
-                                                        p = (cur_call->provider > 0) ? getProvider(cur_call->provider) : "";
 
-                                                        if (cur_call->dir == DIALIN)
+                                                        if ((cur_call->dir == DIALOUT) && (cur_call->provider > 0)) {
+                                                          p = getProvider(cur_call->provider);
+
+                                                          if (p == NULL) {
+      		   					    if (cur_call->provider < 100)
+      	       	     					      sprintf(s, "%s%02d", vbn, cur_call->provider);
+      		   					    else
+		     					      sprintf(s, "%s%03d", vbn, cur_call->provider - 100);
+
+      		   					    p = s;
+
+                                                          } /* if */
+                                                        }
+                                                        else
                                                           p = "";
 
                                                         colsize[i] = append_string(&string,*fmtstring, p);

@@ -1,4 +1,4 @@
-/* $Id: isdnlog.c,v 1.48 1999/08/20 19:28:12 akool Exp $
+/* $Id: isdnlog.c,v 1.49 1999/09/11 22:28:23 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,12 @@
  * along with this program; if not, write to the Free Software
  *
  * $Log: isdnlog.c,v $
+ * Revision 1.49  1999/09/11 22:28:23  akool
+ * isdnlog-3.50
+ *   added 3. parameter to "-h" Option: Controls CHARGEHUP for providers like
+ *   DTAG (T-Online) or AOL.
+ *   Many thanks to Martin Lesser <m-lesser@lesser-com.de>
+ *
  * Revision 1.48  1999/08/20 19:28:12  akool
  * isdnlog-3.45
  *  - removed about 1 Mb of (now unused) data files
@@ -635,6 +641,8 @@ static void init_variables(int argc, char* argv[])
   preselect = DTAG;      /* Telekomik */
   vbn = strdup("010"); 	 /* Germany */
 
+  hup3 = 240;
+
   myname = argv[0];
   myshortname = basename(myname);
 } /* init_variables */
@@ -740,11 +748,15 @@ int set_options(int argc, char* argv[])
 
       	       	 if ((p = strchr(optarg, ':'))) {
                    *p = 0;
+
                    hup1 = atoi(optarg);
                    hup2 = atoi(p + 1);
+
+                   if ((p = strchr(p + 1, ':')))
+                     hup3 = atoi(p + 1);
       	       	 }
                  else
-                   printf("%s: WARNING: \"-h\" Option requires two Arguments\n", myshortname);
+                   printf("%s: WARNING: \"-h\" Option requires 2 .. 3 arguments\n", myshortname);
       	       	 break;
 
       case 'b' : bilingual++;

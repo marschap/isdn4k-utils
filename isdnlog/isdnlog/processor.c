@@ -1,4 +1,4 @@
-/* $Id: processor.c,v 1.81 1999/08/21 12:59:51 akool Exp $
+/* $Id: processor.c,v 1.82 1999/09/11 22:28:24 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,12 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.82  1999/09/11 22:28:24  akool
+ * isdnlog-3.50
+ *   added 3. parameter to "-h" Option: Controls CHARGEHUP for providers like
+ *   DTAG (T-Online) or AOL.
+ *   Many thanks to Martin Lesser <m-lesser@lesser-com.de>
+ *
  * Revision 1.81  1999/08/21 12:59:51  akool
  * small fixes
  *
@@ -2975,7 +2981,7 @@ static void huptime(int chan, int setup)
         /* der erste Versuch, dem einmaligen Verbindungsentgelt
            (DM 0,06/Anwahl) zu entkommen ... */
         if (call[chan].Rate.Basic) /* wenn es eine Grundgebuehr gibt (z.b. T-Online eco) */
-          newhuptimeout = 240;
+          newhuptimeout = hup3;
       }
       else
 #endif

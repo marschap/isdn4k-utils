@@ -1,4 +1,4 @@
-V:1.10-Germany [09-Sep-1999 13:17:12]
+V:1.10-Germany [12-Sep-1999 00:21:57]
 
 # Währungsformat
 U:%.3f DM
@@ -8,7 +8,7 @@ U:%.3f DM
 #
 # (C) Copyright 1999 by Andreas Kool (akool@isdn4linux.de)
 #
-# $Id: rate-de.dat,v 1.43 1999/09/09 11:21:04 akool Exp $
+# $Id: rate-de.dat,v 1.44 1999/09/11 22:28:23 akool Exp $
 #
 #
 # Das "A:" Tag muß folgendermaßen gefüllt werden:
@@ -177,7 +177,7 @@ C:GmbH, Gutleutstraße 85, 60329 Frankfurt 01010
 #
 #
 P:11 o.tel.o CbC
-G:01-Aug-1999
+# G:01-Aug-1999
 C:Mannesmann Zwölfte Verwaltungsgesellschaft mbH, Mannesmannufer 2, 40213 Düsseldorf
 C:Homepage: http://www.o-tel-o.de
 C:Hotline:  01803/1998 oder 0800/7370 (Geschaeftskunden)
@@ -435,7 +435,7 @@ C:160	- 164	DTAG Service Nummern
 C:171		Info Expo 2000
 C:172		IVBB
 C:201	-	Ausland
-G:13.05.1999
+# G:13.05.1999
 D:dtag
 Z:0 Freephone
 A:0130,0800,International Freephone
@@ -678,7 +678,7 @@ C:Erfasste Zonen:
 C:2	-   4	Deutschland
 C:10		Mobilfunk
 C:200	-	Ausland
-G:03-May-1999
+# G:03-May-1999
 D:dtag
 Z:1-4 National
 A:+49
@@ -973,7 +973,7 @@ T:*/*=2.99(60)/1
 #####################################################################
 #
 #
-P:15 RSL clever call
+P:15,1 RSL clever call
 ##
 ## macht *keinen* Tarifwechsel in laufender Verbindung!
 ##
@@ -990,7 +990,7 @@ C:160, 164	DTAG Service Nummern
 C:170		Persönliche Rufnummer
 C:171		Info Expo 2000
 C:200	-	Ausland
-G:15-Aug-1999
+# G:15-Aug-1999
 D:dtag
 Z:0 Freecall
 A:01171,01172,01174	# DTAG Störungsannahme
@@ -1836,7 +1836,7 @@ Z:441
 A:Zypern (Türkisch)
 T:*/*=0.89/60
 #####################################################################
-P:15,1 RSL CleverLine global
+P:15,2 RSL CleverLine global
 C:RSL COM Deutschland GmbH, Lyoner Straße 36, 60528 Frankfurt/Main 01015
 C:Erfasste Zonen:
 C:0, 2	-   4	Deutschland
@@ -1850,7 +1850,7 @@ C:160, 164	DTAG Service Nummern
 C:170		Persönliche Rufnummer
 C:171		Info Expo 2000
 C:200	-	Ausland
-G:01.04.1999
+# G:01.04.1999
 Z:0 Freecall
 A:01171,01172,01174	# DTAG Störungsannahme
 A:0130,0800,International Freephone
@@ -1863,6 +1863,7 @@ T:W/08-21=0.14(60)/1
 T:E,H/08-21=0.14(60)/1
 T:*/21-08=0.07(60)/1
 Z:4 RSL COM - fern
+A:+49
 T:W/08-21=0.18(60)/1
 T:E,H/08-21=0.14(60)/1
 T:*/21-08=0.07(60)/1
@@ -2702,7 +2703,7 @@ Z:441
 A:Zypern (Türkisch)
 T:*/*=0.89(60)/1
 #####################################################################
-P:15,2 RSL CleverLine metropolitan
+P:15,3 RSL CleverLine metropolitan
 C:RSL COM Deutschland GmbH, Lyoner Straße 36, 60528 Frankfurt/Main 01015
 C:Erfasste Zonen:
 C:0, 2	-   4	Deutschland
@@ -2716,7 +2717,7 @@ C:160, 164	DTAG Service Nummern
 C:170		Persönliche Rufnummer
 C:171		Info Expo 2000
 C:200	-	Ausland
-G:01.04.1999
+# G:01.04.1999
 Z:0 Freecall
 A:01171,01172,01174	# DTAG Störungsannahme
 A:0130,0800,International Freephone
@@ -2729,6 +2730,7 @@ T:W/08-21=0.14(60)/1
 T:E,H/08-21=0.14(60)/1
 T:*/21-08=0.07(60)/1
 Z:4 RSL COM - fern
+A:+49
 T:W/08-21=0.18(60)/1
 T:E,H/08-21=0.14(60)/1
 T:*/21-08=0.07(60)/1
@@ -3567,28 +3569,6 @@ T:*/*=0.75(60)/1
 Z:441
 A:Zypern (Türkisch)
 T:*/*=0.89(60)/1
-#####################################################################
-P:15,3 Debitel Direct Call
-C:Man kann sich entweder bei Debitel einwählen, oder bei RSL
-C:Beides geht nicht.
-C:homepage: http://www.debitel.de/willkommen/index.html
-C:Preise:   http://www.debitel.de/popups/pop_festnetz_tarife_directcall_free.html
-C:Erfasste Zonen:
-C:2	-   4	Deutschland
-C:10		Mobilfunk
-G:07-Jun-1999
-Z:1-4 Inland
-A:+49
-T:*/06-20=0.15/60 Hauptzeit
-T:*/20-06=0.15/120 Nebenzeit
-Z:10 Mobilfunknetze
-A:+491618		# T-C-Tel Voice Mail
-A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
-A:+49170,+49171		# D1
-A:+49172,+49173		# D2
-A:+49177,+49178		# Eplus
-A:+49176,+49179		# E2
-T:*/*=0.45/60
 #####################################################################
 #
 #
@@ -3610,7 +3590,7 @@ C:2	-   4	Deutschland
 C:10		Mobilfunk
 C:43		Auskunft debitel
 C:200	-	Ausland
-G:01.06.1999
+# G:01.06.1999
 D:dtag
 Z:1-4 Fern
 A:+49
@@ -3665,7 +3645,7 @@ C:2	-   4	Deutschland
 C:10		Mobilfunk
 C:43		Auskunft debitel
 C:200	-	Ausland
-G:01.06.1999
+# G:01.06.1999
 Z:1-4 Fern
 T:*/*=0.15/30
 Z:10 Mobilfunknetze
@@ -3716,7 +3696,7 @@ C:2	-   4	Deutschland
 C:10		Mobilfunk
 C:43		Auskunft debitel
 C:200	-	Ausland
-G:01.06.1999
+# G:01.06.1999
 Z:1-4 Fern
 T:W/09-18=0.05/0,0.17/60 Hauptzeit
 T:*/06-09,18-21=0.05/0,0.10/60 Nebenzeit
@@ -3764,7 +3744,7 @@ T:*/*=0.05/0,2.49/60
 #####################################################################
 P:18,3 debitel DirectLine Profi-Tarif Sekunden Takt
 C:Kommunikationstechnik GmbH & Co KG, Schelmenwasenstr. 37 - 39, 70567 Stuttgart 01018
-G:01.06.1999
+# G:01.06.1999
 C:Erfasste Zonen:
 C:2	-   4	Deutschland
 C:10		Mobilfunk
@@ -3827,7 +3807,7 @@ C:2	-   4	Deutschland
 C:10		Mobilfunk
 C:102		01019freenet
 C:200		Ausland Gruppe A
-G:06-Apr-1999
+# G:06-Apr-1999
 D:dtag
 Z:1-4 Ferngespräche bundesweit
 A:+49
@@ -3862,7 +3842,7 @@ C:2	-   4	Deutschland
 C:10		Mobilfunk
 C:102		01019freenet
 C:200	-	Ausland
-G:13.05.1999
+# G:13.05.1999
 C:MobilCom AG
 C:Homepage: http://www.mobilcom.de
 C:Hotline:  01805/191919
@@ -3921,7 +3901,7 @@ C:2	-   4	Deutschland
 C:10		Mobilfunk
 C:102		01019freenet
 C:200	-	Ausland
-G:13.05.1999
+# G:13.05.1999
 Z:1-4 Ferngespräche bundesweit
 T:*/07-19=0.12(60)/1 Standard
 T:*/19-22=0.08(60)/1 Spar
@@ -3986,7 +3966,7 @@ C:91	-  94	Service 0190-x
 C:100		T-Online
 C:102		isiFONLINE
 C:200	-	Ausland
-G:01.04.1999
+# G:01.04.1999
 Z:0 0800 Nulltarif
 A:0130,0800
 Z:1-2 lokal
@@ -4153,7 +4133,7 @@ C:91	-  94	Service 0190-x
 C:100		T-Online
 C:102		isiFONLINE
 C:200	-	Ausland
-G:01.04.1999
+# G:01.04.1999
 C:Homepage: http://www.isis.de
 C:Telefon:  0800/809 0100
 C:Telefax:  0211/85 27 610
@@ -4325,7 +4305,7 @@ C:91	-  94	Service 0190-x
 C:100		T-Online
 C:102		isiFONLINE
 C:200	-	Ausland
-G:01.04.1999
+# G:01.04.1999
 C:Homepage: http://www.isis.de
 C:Telefon:  0800/809 0100
 C:Telefax:  0211/85 27 610
@@ -4594,7 +4574,7 @@ C:Erfasste Zonen:
 C:1	-   4	Deutschland
 C:10		Mobilfunk
 C:200	-	Ausland
-G:01.06.1999
+# G:01.06.1999
 Z:1-2 Nah
 T:W/09-19=0.10(60)/1
 T:W/06-09,19-21=0.08(60)/1
@@ -4662,7 +4642,7 @@ C:Erfasste Zonen:
 C:1	-   4	Deutschland
 C:10		Mobilfunk
 C:200	-	Ausland
-G:01.06.1999
+# G:01.06.1999
 Z:1-2 Nah
 T:W/09-19=0.09(60)/1
 T:W/19-09=0.08(60)/1
@@ -4727,7 +4707,7 @@ C:Erfasste Zonen:
 C:1	-   4	Deutschland
 C:10		Mobilfunk
 C:200	-	Ausland
-G:01.06.1999
+# G:01.06.1999
 Z:1-2 Nah
 T:W/09-19=0.06/0,0.10(60)/1
 T:W/06-09,19-21=0.06/0,0.08(60)/1
@@ -4781,7 +4761,7 @@ C:2	-   4	Deutschland
 C:10		Mobilfunk
 C:102		TelePassport-Online
 C:200	-	Ausland
-G:15-Jul-1999
+# G:15-Jul-1999
 D:dtag
 Z:1-2 Lokal
 T:W/08-18=0.12/60 Geschäftszeit
@@ -4833,7 +4813,7 @@ A:+
 T:*/*=1.96/60
 #####################################################################
 P:24,1 Telepassport Plus
-G:15-Jul-1999
+# G:15-Jul-1999
 C:GmbH, Schwindstraße 3, 60325 Frankfurt
 C:Name:     TelePassport Service GmbH
 C:Homepage: http://www.telepassport.de
@@ -4889,7 +4869,7 @@ A:+
 T:*/*=1.96/60
 #####################################################################
 P:24,2 Telepassport CbC
-G:15-Jul-1999
+# G:15-Jul-1999
 C:GmbH, Schwindstraße 3, 60325 Frankfurt
 C:Name:     TelePassport Service GmbH
 C:Homepage: http://www.telepassport.de
@@ -4904,6 +4884,7 @@ C:10		Mobilfunk
 C:102		TelePassport-Online
 C:200	-	Ausland
 Z:1-4 Inland
+A:+49
 T:*/07-21=0.14/60 Geschäftszeit
 T:*/21-07=0.10/60 Freizeit
 Z:10 Mobilfunk
@@ -4943,7 +4924,7 @@ A:+
 T:*/*=1.96/60
 #####################################################################
 P:24,3 Telepassport RegionalTarif Plus
-G:01.05.1999
+# G:01.05.1999
 C:GmbH, Schwindstraße 3, 60325 Frankfurt
 C:Name:     TelePassport Service GmbH
 C:Homepage: http://www.telepassport.de
@@ -4962,6 +4943,7 @@ C:200	-	Ausland
 Z:1-2 Lokal
 T:*/*=0.10/60
 Z:3-4 Fern
+A:+49
 T:*/*=0.16/60
 Z:5 Bundesland/Region
 T:*/*=0.14/60
@@ -4996,7 +4978,7 @@ A:+
 T:*/*=1.96/60
 #####################################################################
 P:24,4 Telepassport SüdOst-Tarif
-G:01.05.1999
+# G:01.05.1999
 C:GmbH, Schwindstraße 3, 60325 Frankfurt
 C:Name:     TelePassport Service GmbH
 C:Homepage: http://www.telepassport.de
@@ -5017,6 +4999,7 @@ T:W/08-18=0.16/60 Geschäftszeit
 T:W/18-08=0.12/60 Freizeit
 T:E,H/*=0.12/60 Wochenende
 Z:4 Fern
+A:+49
 T:W/08-18=0.18/60 Geschäftszeit
 T:W/18-08=0.12/60 Freizeit
 T:E,H/*=0.12/60 Wochenende
@@ -5059,7 +5042,7 @@ A:+
 T:*/*=1.98/60
 #####################################################################
 P:24,5 Telepassport SüdOst
-G:01.05.1999
+# G:01.05.1999
 C:GmbH, Schwindstraße 3, 60325 Frankfurt
 C:Name:     TelePassport Service GmbH
 C:Homepage: http://www.telepassport.de
@@ -5069,6 +5052,7 @@ C:Telefax:  0800/808 808 9
 C:Adresse:  Juri-Gagarin-Ring 88, 99084
 C:	    Erfurt
 Z:1-4 Inland
+A:+49
 T:W/08-18=0.18/60 Geschäftszeit
 T:W/18-08=0.12/60 Freizeit
 T:E,H/*=0.12/60 Wochenende
@@ -5107,7 +5091,7 @@ A:+
 T:*/*=1.98/60
 #####################################################################
 P:24,6 Telepassport StudentenTarif
-G:01.05.1999
+# G:01.05.1999
 C:GmbH, Schwindstraße 3, 60325 Frankfurt
 C:Name:     TelePassport Service GmbH
 C:Homepage: http://www.telepassport.de
@@ -5123,6 +5107,7 @@ T:W/08-18=0.12/60 Geschäftszeit
 T:W/18-08=0.10/60 Freizeit
 T:E,H/*=0.10/60 Wochenende
 Z:4 Fern
+A:+49
 T:W/08-18=0.14/60 Geschäftszeit
 T:W/18-08=0.10/60 Freizeit
 T:E,H/*=0.10/60 Wochenende
@@ -5170,8 +5155,9 @@ C:2	-   4	Deutschland
 C:10		Mobilfunk
 C:102		SUPER24 Internet
 C:200	-	Ausland
-G:05.05.1999
+# G:05.05.1999
 Z:1-4 SUPER24 Phone
+A:+49
 T:*/*=0.11/60
 Z:10 SUPER24 Mobile
 A:+491618		# T-C-Tel Voice Mail
@@ -5220,7 +5206,7 @@ C:5		Sondertarif
 C:10		Mobilfunk
 C:102		CITYMS-Internet
 C:200	-	Ausland
-G:01.02.1999
+# G:01.02.1999
 Z:1-2 CITYMS-Münsterland
 T:W/09-18=0.07/60 Hauptzeit
 T:*/18-21=0.07/106 Nebenzeit
@@ -5742,7 +5728,7 @@ C:1	-   4	Deutschland
 C:10		Mobilfunk
 C:102		CITYMS-Internet
 C:200	-	Ausland
-G:01.02.1999
+# G:01.02.1999
 Z:1-2 CITYMS-Münsterland
 T:W/09-18=0.07/60 Hauptzeit
 T:*/18-21=0.07/106 Nebenzeit
@@ -8345,7 +8331,7 @@ C:Carrier Services, Industriestraße 21, CH-8304 Wallisellen/Schweiz 01029
 #
 #
 P:30 TelDaFax
-G:01-Aug-1999
+# G:01-Aug-1999
 D:dtag
 C:Telefon-, Daten- und Fax-Transfer GmbH & Co. KG, Schuppertsgasse 30, 35083 Wetter (Hessen) 01030
 C:Name:	    TeDaFax Telefon-, Daten- und Faxtransfer AG
@@ -8433,7 +8419,7 @@ C:Deutschland GmbH, Immermannstraße 45, 40210 Düsseldorf 01032
 #
 #
 P:33 DTAG
-G:01-Jun-1999
+# G:01-Jun-1999
 D:dtag
 C:Deutsche Telekom AG, Friedrich-Ebert-Allee 140, 53113 Bonn 01033
 C:Name:     Deutsche Telekom AG
@@ -8708,7 +8694,7 @@ C:170		Persönliche Rufnummer
 C:171		Info Expo 2000
 C:172		Sonderrufnummern zum Citytarif
 C:200	-	Ausland
-G:01.04.1999
+# G:01.04.1999
 D:dtag
 Z:0 FreeCall
 A:08003301113 # Telekom Direkt
@@ -8935,7 +8921,7 @@ C:170		Persönliche Rufnummer
 C:171		Info Expo 2000
 C:172		Sonderrufnummern zum Citytarif
 C:200	-	Ausland
-G:01.04.1999
+# G:01.04.1999
 D:dtag
 Z:0 FreeCall
 A:08003301113 # Telekom Direkt
@@ -9171,7 +9157,7 @@ C:170		Persönliche Rufnummer
 C:171		Info Expo 2000
 C:172		Sonderrufnummern zum Citytarif
 C:200	-	Ausland
-G:01.04.1999
+# G:01.04.1999
 D:dtag
 Z:0 FreeCall
 A:08003301113 # Telekom Direkt
@@ -9368,7 +9354,7 @@ A:Vereinigte Arabische Emirate
 T:*/*=0.12/2.61
 #####################################################################
 P:33,4 DTAG AktivPlus
-G:01-Jun-1999
+# G:01-Jun-1999
 D:dtag
 C:Deutsche Telekom AG, Friedrich-Ebert-Allee 140, 53113 Bonn 01033
 C:Name:     Deutsche Telekom AG
@@ -9607,7 +9593,6 @@ C:GmbH, Hauptstraße 52a, 28876 Oyten 01035
 #
 #
 P:36 Hutchison fairfon
-G:???
 D:dtag
 C:Münsterstraße 109, 48155 Münster 01036
 C:Sondertarif 11 "Hutchison Mobilfunk-Kunde": Vergünstigte Gespräche zu
@@ -9886,7 +9871,7 @@ C:GmbH, An der Autobahn, 33311 Gütersloh 01038
 #
 #
 P:39 First Telecom CbC
-G:16-Aug-1999
+# G:16-Aug-1999
 D:dtag
 C:GmbH, Lyoner Straße 51, 60528 Frankfurt/Main 01039
 C:Erfasste Zonen:
@@ -9915,12 +9900,12 @@ T:*/*=0.02/0,0.17/60
 #####################################################################
 #
 #
-P:40 Esprit
+P:40 GTS Esprit
 # Call by Night
 C:beim RegTP eingetragen als:
 C:PLUSNET
 C:Gesellschaft für Netzwerk Services mbH, August-Thyssen-Straße 1, 40211 Düsseldorf 01040
-G:16-Jun-1999
+# G:16-Jun-1999
 D:dtag
 C:Telecom Deutschland GmbH, Kaistraße 16 A, 40221 Düsseldorf 01055
 C:Name:  Esprit Telecom
@@ -10125,7 +10110,7 @@ C:nur Direct Access in der Region um Wuppertal
 C:Grundgebühr: ISDN 36,- DM, Analog 22,- DM
 C:Internetzugang: Grundgebühr im Anschluß enthalten
 C:Sondertarif "Unter Uns": Gespräche zwischen TeleBeL Kunden, 0.02(60)/1 !
-G:01.05.1999
+# G:01.05.1999
 C:Erfasste Zonen:
 C:0	-   4	Deutschland
 C:5		Sondertarif
@@ -10466,7 +10451,6 @@ C:Telephone Deutschland, Grosser Plan 8, 29221 Celle 01045
 #
 #
 P:46 KomTel
-G:???
 D:dtag
 C:Gesellschaft für Kommunikation und Informationsdienste GmbH, Batteriestraße 48, 24937 Flensburg 01046
 C:Spezialtarif 5 "Nord-Ostsee": gilt für Verbindungen mit Niedersachsen,
@@ -11274,7 +11258,7 @@ C:Erfasste Zonen:
 C:2	-   4	Deutschland
 C:10		Mobilfunk
 C:200	- 211	Ausland
-G:01.06.1999
+# G:01.06.1999
 Z:1-2 Nah
 T:W/08-18=0.12(60)/1
 T:W/18-08=0.09(60)/1
@@ -11456,7 +11440,7 @@ T:*/*=0.09/2.3
 P:49,4 ACC ACCess 01049 Minutentarif Call-By-Call
 C:Telekommunikation GmbH, Heinrich-Heine-Allee 53, 40213 Düsseldorf 01049
 C:Homepage: http://www.acctelecom.de
-G:01.06.1999
+# G:01.06.1999
 C:Erfasste Zonen:
 C:2	-   4	Deutschland
 C:10		Mobilfunk
@@ -11542,7 +11526,7 @@ T:*/*=2.35(60)/1
 #
 #
 P:50 Talkline
-G:12-Aug-1999
+# G:12-Aug-1999
 C:PS PhoneServices GmbH, Adenauer Damm 1, 25337 Elmshorn 01050
 C:Homepage: http://www.null1050.de
 C:Hotline:  01802/2002
@@ -11629,7 +11613,7 @@ A:+49176,+49179		# E2
 #
 P:51 01051
 C:ID-Switch GmbH, Graf-Adolf-Straße, 40210 Düsseldorf 01051
-G:24-Aug-1999
+# G:02-Sep-1999
 C:Homepage: http://www.01051.com
 C:Adresse:  Koenigsallee 60f
 C:	    40210 Duesseldorf
@@ -11776,7 +11760,7 @@ A:Schweden Mobilfunk
 A:Schweiz Mobilfunk
 A:Spanien Mobilfunk
 A:Israel Mobilfunk
-A:Moskau Mobilfunk
+# A:Moskau Mobilfunk
 T:*/*=99.99/60
 #####################################################################
 #
@@ -11787,7 +11771,7 @@ C:International Ltd., 5 Duke's Gate Acton, London W 4 5 DX, GB 01052
 #
 #
 P:53 WOBCOM
-G:01.04.1999
+# G:01.04.1999
 C:GmbH Wolfsburg, Heßlinger Str. 1-5, 38440 Wolfsburg 01053
 C:Homepage http://www.wobkom.de
 C:Quelle http://www.wobkom.de/telefonie/tarife.htm
@@ -12085,7 +12069,7 @@ P:66 Interoute
 C:Telecom Deutschland GmbH, Lyoner Str. 15, 60528 Frankfurt 01066
 C:Bei Preselection sekundengenaue Taktung
 D:dtag
-G:01-Jun-1999
+# G:01-Jun-1999
 Z:1-4 National
 T:W/08-17=0.14/60
 T:W/17-08=0.08/60
@@ -12192,7 +12176,7 @@ C:Telecommunications Ltd. 01069
 #
 #
 P:70,1 Arcor CbC
-G:15-Jul-1999
+# G:15-Jul-1999
 C:Mannesmann Arcor
 C:Mannesmann AG & Co., Kölner Str. 12, 65760 Eschborn 01070
 D:dtag
@@ -12508,7 +12492,7 @@ A:01805
 T:*/*=0.12/30
 #####################################################################
 P:70,2 Arcor Town to Town
-G:01.04.99
+# G:01.04.99
 C:Mannesmann Arcor
 C:Mannesmann AG & Co., Kölner Str. 12, 65760 Eschborn 01070
 D:dtag
@@ -12536,7 +12520,7 @@ T:E,H/21-06=0.06(60)/30 Nebenzeit
 A:+49
 #####################################################################
 P:70,3 Arcor Town to Town Sekunde
-G:01.04.99
+# G:01.04.99
 C:Mannesmann Arcor
 C:Mannesmann AG & Co., Kölner Str. 12, 65760 Eschborn 01070
 D:dtag
@@ -12586,7 +12570,7 @@ C:Telecom GmbH, Beethovenstraße 1-3, 60325 Frankfurt/Main 01074
 #
 #
 P:75 Callino
-G:01-Jul-99
+# G:01-Jul-99
 C:ARCIS Media Com Management GmbH, Maximilianstr. 14, 80539 München 01075
 D:dtag
 Z:1-4 Fern
@@ -12617,7 +12601,7 @@ C:Mobilfunk GmbH, E-Plus-Platz 1, 40468 Düsseldorf 01077
 #
 #
 P:78 3U
-G:28-Jun-1999
+# G:28-Jun-1999
 C:Telekommunikation GmbH, Äußere Zittauer Straße 51, 02708 Löbau 01078
 C:3U Telekommunikation GmbH
 C:Homepage: http://www.uuu.de
@@ -12634,8 +12618,8 @@ A:+49
 Z:10-15
 A:+491610,+491617,+491619,+491618 # C
 A:+49170,+49171  		  # D1
-A:+49172,+49173		  # D2
-A:+49177,+49178		  # Eplus
+A:+49172,+49173		  	  # D2
+A:+49177,+49178		  	  # Eplus
 A:+49176,+49179  		  # E2
 T:*/*=0.499(60)/1
 Z:40 Telefonauskunft Inland (Austria, dial 01078004366211811)
@@ -13733,7 +13717,7 @@ P:79 Viatel
 ##
 ## macht *keinen* Tarifwechsel in laufender Verbindung!
 ##
-G:01-Aug-1999
+# G:01-Aug-1999
 C:VIAPHONE GmbH, Hanauer Landstraße 187, 60314 Frankfurt 01079
 C:Homepage: http://www.viatel.de
 C:Hotline:  0800/79-01079
@@ -13934,7 +13918,7 @@ T:*/*=0.12/30,0.24(60)/1
 #
 #
 P:80 Telegate
-G:04-Aug-1999
+# G:01-Aug-1999
 D:dtag
 C:Aktiengesellschaft für telefonische Informationsdienste, Bahnhofstraße 26, 82211 Herrsching 01080
 # Bislang kann dieses Angebot nur in den folgenden Städten genutzt werden:
@@ -13992,7 +13976,7 @@ C:Network Services GmbH, Grossenbaumer Weg 6, 40472 Düsseldorf 01084
 #
 #
 P:85 GTS-WESTCom
-G:01-Mai-1999
+# G:01-Mai-1999
 C:GmbH, Hebelstraße 22 c, 69115 Heidelberg 01085
 C:Homepage: http://www.westcom.de
 C:Hotline:  0800/937-8266
@@ -14058,7 +14042,7 @@ C:GmbH Telekommunikation, Südring 1-3, 59065 Hamm 01087
 #
 #
 P:88 WorldCom
-G:15-Aug-1999
+# G:15-Aug-1999
 C:Telecommunication Services GmbH, Brönnerstr. 15, 60313 Frankfurt 01088
 C:Dies sind *nicht* die korrekten Tarife von WorldCom, da WorldCom
 C:keine Tarifdaten veroeffentlicht!
@@ -14087,7 +14071,7 @@ C:Telekommunikations GmbH, Corneliusstraße 10, 80469 München 01089
 #
 #
 P:90 Viag Interkom
-G:01-May-1999
+# G:01-May-1999
 C:GmbH & Co. KG, Elsenheimer Straße 11, 81927 München 01090
 D:dtag
 Z:1-4 Fern
@@ -14179,7 +14163,7 @@ C:Telecommunications Deutschland GmbH, Voltastraße 1a, 60486 Frankfurt 01098
 C:Reseller von STAR : C@llas, Mox, Nikoma
 #####################################################################
 P:98,1 Mox
-G:01.05.1999
+# G:01.05.1999
 C:Mox Telecom AG
 C:Reseller von Star Telecom
 D:dtag
@@ -14272,7 +14256,7 @@ A:+
 T:*/*=1.759(60)/1
 #####################################################################
 P:98,4 Nikocity Study&Surf
-G:01-Sep-1999
+# G:01-Sep-1999
 C:Nikoma, Reseller von Star Telekom
 C:Homepage: http://www.nikoma.de/
 C:Nikocity gilt nur in den Städten Augsburg, Berlin, Bremen, Bielefeld,
@@ -14304,7 +14288,7 @@ T:*/21-1=0.0389(60)/1
 T:*/1-8=0.0299(60)/1
 #####################################################################
 P:98,5 Nikocity
-G:01-Sep-1999
+# G:01-Sep-1999
 C:Nikoma, Reseller von Star Telekom
 C:Homepage: http://www.nikoma.de/
 C:Nikocity gilt nur in den Städten Augsburg, Berlin, Bremen, Bielefeld,
@@ -14336,7 +14320,7 @@ T:*/1-8=0.0299(60)/1
 #
 #
 P:99 ECONOPHONE
-G:17.05.1999
+# G:17.05.1999
 C:GmbH, Flughafenstraße 54b, 22335 Hamburg 01099
 C:CallByCall nur in den Bereichen 03, 04, 06 (Stand: 14.06.99)
 C:bei Preselection bundesweit, Anmeldung kostenfrei
@@ -14685,14 +14669,17 @@ C:AG, Militärstraße 36, CH-8004 Zürich 010044
 #
 #
 P:150 Drillisch
-G:05-Aug-1999
+# G:02-Sep-1999
 D:dtag
 C:AG, Horbeller Straße 33, 50858 Köln 010050
 Z:1-4 Deutschland
 A:+49
 T:W/08-21=0.11/60,0.11(60)/15
-T:W/21-08=0.07/60,0.07(60)/15
-T:E/*=0.07/60,0.07(60)/15
+T:W/21-22=0.07/60,0.07(60)/15
+T:W/22-06=0.1185/180,0.06/60
+T:W/06-08=0.07/60,0.07(60)/15
+T:E/06-22=0.07/60,0.07(60)/15
+T:E/22-06=0.1185/180,0.06/60
 Z:10 Mobilfunk
 A:+491618	# T-C-Tel Voice Mail
 A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C

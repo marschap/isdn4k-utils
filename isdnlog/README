@@ -1,10 +1,10 @@
-ISDNLOG - Version 3.48 -  				29-Aug-99  12:27
+ISDNLOG - Version 3.50 -  				11-Sep-99  00:15
 
 
 isdnlog ist ein Utility zur Auswertung des D-Kanals eines
 ISDN-BRI Anschlusses.
 
-isdnlog-3.48 wurde ausgiebig mit Linux-2.0.37 getestet.
+isdnlog-3.50 wurde ausgiebig mit Linux-2.0.37 getestet.
 
 
 Fuer alle, die es nun ueberhaupt nicht mehr abwarten koennen, hier das
@@ -2249,12 +2249,13 @@ angegeben werden.
      (Achtung: -m2048 muss dann zusaetzlich angegeben werden!)
      (monitor={yes|no})
 
- -hX Zeitabhaengige Hangup-Timeout Steuerung
+ -hx:y:z Zeitabhaengige Hangup-Timeout Steuerung
      Der normale Hangup einer aufgebauten Verbindung erfolgt, wenn
      eine bestimmte Anzahl Sekunden kein Traffic auf der Leitung
-     stattfand. (Der Parameter dafuer ist "huptimeout").
-     Viele Telefonanbieter rechnen aber in variablen (Deutsche
-     Telekom) oder anderen Zeitintervallen (Minuten) ab. In diesen
+     stattfand. (Der "isdnctrl" Parameter dafuer ist "huptimeout").
+
+     Viele Telefonanbieter rechnen aber in variablen (DTAG)
+     oder anderen Zeitintervallen (z.b. Minuten) ab. In diesen
      Faellen ist es sinnvoller, die angefangene Einheit oder Minute
      voll auszuschoepfen. Diese Moeglichkeit wird mit dem
      "chargeint" (Gebuehrenintervall)-Parameter von isdnctrl
@@ -2283,16 +2284,27 @@ angegeben werden.
          isdnctrl huptimeout isdn0 X
          isdnctrl chargeint isdn0 Y
      ab. Das Gebuehrenintervall ("Y") wird automatisch berechnet.
+
      Mit X ist gemeint, wie lange vor Ablauf des aktuellen Taktes
      kein Traffic auf der Leitung gewesen sein darf, damit
      aufgelegt wird. Je niedriger dieser Wert ist, desto eher wird bei
-     kurzen Pausen aufgelegt. Der -h Parameter laesst sich mit zwei Werten
-     angeben: Einem fuer Taktzeiten unter 20 Sekunden, einem fuer
-     Taktzeiten ueber 20 Sekunden.
+     kurzen Pausen aufgelegt. Der -h Parameter laesst sich mit drei
+     Werten angeben: Einem fuer Taktzeiten unter 20 Sekunden, einem fuer
+     Taktzeiten ueber 20 Sekunden und schliesslich einem dritten,
+     optionalen Wert fuer Verbindungen zu (Internet-) Providern, die
+     zusaetzlich zu den Gebuehren ein einmaliges Verbindungsentgelt
+     verlangen (z.B. T-Online, AOL). Wenn dieser dritte Wert nicht
+     angegeben wird, stellt isdnlog automatisch 240 Sekunden ein.
 
      Dauert z.b. eine aktuelle Gebuehreneinheit 12 Sekunden, und wurde
      isdnlog mit "-h5:3" gestartet, wird also der ChargeInt-Counter auf
-     12 Sekunden, und der huptimeout-Counter auf 5 Sekunden gestellt.
+     12 Sekunden, und der huptimeout-Counter auf 5 Sekunden gestellt
+     (erster -h Wert fuer Taktzeiten unter 20 Sekunden).
+     Wird isdnlog z.B. mit "-h5:3:30" gestartet und eine Verbindung
+     zu z.B. T-Online aufgebaut, erfolgt automatisch ein Verbindungs-
+     abbau, wenn 30 Sekunden vor Ablauf eines Taktes (bei T-Online
+     1 Minute) kein Traffic mehr vorhanden war. Ohne Angabe dieses
+     dritten Wertes wird 240 Sekunden als default eingestellt.
 
      Das Nachjustieren des Hangup-Timers geschieht sowohl bei jedem
      Verbindungsaufbau, als auch bei jedem Uebergang in einen anderen

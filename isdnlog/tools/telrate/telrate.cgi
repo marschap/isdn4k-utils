@@ -774,7 +774,7 @@ sub call_isdnrate {
 }
 
 sub round {
-    $_[0] == 0 ? '<tt>--.--</tt>': sprintf("%.02f", $_[0]);
+    $_[0] == 0 ? '<tt>--.--</tt>': sprintf("%.03f", $_[0]);
 }    
 
 sub eval_cost {
