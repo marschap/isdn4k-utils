@@ -1,4 +1,4 @@
-V:1.10-Germany [21-Jul-2000 20:37:16]
+V:1.10-Germany [24-Jul-2000 17:55:09]
 
 # Währungsformat
 U:%.3f DM
@@ -8,7 +8,7 @@ U:%.3f DM
 #
 # (C) Copyright 1999, 2000 by Andreas Kool (akool@isdn4linux.de)
 #
-# $Id: rate-de.dat,v 1.101 2000/07/21 18:46:24 akool Exp $
+# $Id: rate-de.dat,v 1.102 2000/07/24 17:02:56 akool Exp $
 #
 #
 # Das "A:" Tag muß folgendermaßen gefüllt werden:
@@ -6457,10 +6457,15 @@ T:*/*=0
 #####################################################################
 #
 #
-P:17,0 SEC
+P:17,0 01017
 B:01017
-C:Name:SEC
-C:Address:SEC Service AG, Dieskaustraße 246, 04249 Leipzig
+C:Name:01017.com
+C:Address:
+C:Homepage:http://www.01017.com
+C:Hotline:01017@telefonag.de
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
+D:dtag
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -6468,6 +6473,14 @@ A:031*
 A:110
 A:112
 T:*/*=0
+Z:1-4 National
+A:+49
+T:W/09-18=0.09/60
+T:W/18-09=0.07/60
+T:E,H/*=0.07/60
+Z:200 Türkei
+A:TR
+T:*/*=0.33/60
 #####################################################################
 #
 #
