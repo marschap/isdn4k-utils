@@ -1,6 +1,6 @@
 .\" manual page [] for ipppd 2.0
-.\" $Id: ipppd.man.in,v 1.6 1999/11/10 08:01:32 werner Exp $
-.\" CHECKIN $Date: 1999/11/10 08:01:32 $
+.\" $Id: ipppd.man.in,v 1.7 2000/01/10 21:27:55 kai Exp $
+.\" CHECKIN $Date: 2000/01/10 21:27:55 $
 .\" SH section heading
 .\" SS subsection heading
 .\" LP paragraph
@@ -320,10 +320,13 @@ to a server that implements RFC1877 such as one intended to be used
 with Microsoft Windows clients, this option allows pppd to obtain one
 or two DNS (Domain Name Server) addresses from the server.  It does
 not do anything with these addresses except put them in the
-environment (MS_DNS1 MS_DNS2) that is passed to scripts.  The /etc/ppp/ip-up
-script should use this information to perform whatever adjustment is
-necessary.  Note: RFC1877 is a horrible protocol layering violation,
-the correct approach would be to use DHCP after the IPCP phase.
+environment (MS_DNS1 MS_DNS2) that is passed to scripts.  For 
+compatibility with the async pppd, DNS1 DNS2 environment variables are 
+also set. A sample resolv.conf is created in /etc/ppp/resolv.conf.
+The /etc/ppp/ip-up script should use this information to perform 
+whatever adjustment is necessary.  Note: RFC1877 is a horrible protocol 
+layering violation, the correct approach would be to use DHCP after 
+the IPCP phase.
 .TP
 .B ms-get-wins
 As ms-get-dns but for WINS (Windows Internet Name Services) server
@@ -616,7 +619,12 @@ authentication purposes (overrides the
 .B name
 option).
 .TP
-.B user \fI<u>
+..B usepeerdns
+Same as 
+.B ms-get-dns
+for compatibility with async pppd
+.TP
+B user \fI<u>
 Set the user name to use for authenticating this machine with the peer
 using PAP to <u>.
 .TP
