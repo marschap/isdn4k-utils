@@ -1,4 +1,4 @@
-/* $Id: tools.c,v 1.7 1997/04/16 22:23:04 luethje Exp $
+/* $Id: tools.c,v 1.8 1997/05/11 22:41:43 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -19,6 +19,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools.c,v $
+ * Revision 1.8  1997/05/11 22:41:43  luethje
+ * README completed
+ * changed the E-mail address for the switch -V
+ *
  * Revision 1.7  1997/04/16 22:23:04  luethje
  * some bugfixes, README completed
  *
@@ -779,8 +783,12 @@ go:   	         if (!ndigit)
 int print_version(char *myname)
 {
 	_print_msg("%s Version %s, Copyright (C) 1995, 1996, 1997\n",myname,VERSION);
+	/*
 	_print_msg("                                   Andreas Kool (akool@Kool.f.EUnet.de)\n");
 	_print_msg("                               and Stefan Luethje (luethje@sl-gw.lake.de)\n\n");
+	*/
+	_print_msg("                                   Andreas Kool and Stefan Luethje\n");
+	_print_msg("                                   (i4l-isdnlog@franken.de)\n\n");
 	_print_msg("%s comes with ABSOLUTELY NO WARRANTY; for details see COPYING.\n", myname);
 	_print_msg("This is free software, and you are welcome to redistribute it\n");
 	_print_msg("under certain conditions; see COPYING for details.\n");

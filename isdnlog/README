@@ -2344,7 +2344,7 @@ Wobei in den einzelnen Spalten folgendes steht:
 
 Gestartet wird isdnrep mittels:
 
-         isdnrep [ -anvt:f:d: ]
+         isdnrep [ -ac:d:f:hinop:s:t:uvw:NVF: ]
 
 Der isdnrep kann seit der Version 3.0 die Ausgabe im HTML-Format erzeugen.
 Dieses kann ueber zwei Wege erreicht werden:
@@ -2352,9 +2352,17 @@ Dieses kann ueber zwei Wege erreicht werden:
 - Der Name des isdnrep hat die Endung ".cgi" (z.B. isdnrep.cgi). Diese
   entspricht der Option -w1. Man kann also z.B. einen Link auf
   den isdnrep machen: ln -s isdnrep isdnrep.cgi
-Wenn das Programm mit der Extension ".cgi" gestartet wird, kann ihm keine
-Parameter mit der URL ueberreicht werden (!?!). Dann kann man aber 
-ein Shelscript schreiben mit der Endung ".cgi", wo der isdnrep gestartet wird:
+
+Wenn das Programm mit der Extension ".cgi" gestartet wird, koennen ihm 
+Parameter mit der URL ueberreicht werden:
+
+http://localhost/isdnrep.cgi?-t8+-v
+                                ^--- representiert ein Blank zwischen Parametern
+                            ^------- representiert ein Blank zwischen dem
+                                     Prorammnamen und dem ersten Parameter
+
+Alternativ kann man auch ein Shelscript schreiben mit der Endung ".cgi",
+wo der isdnrep gestartet wird:
 
 Beispiel:
 
