@@ -1,6 +1,6 @@
-.\" $Id: isdnctrl.man.in,v 1.13 1998/10/28 16:12:20 paul Exp $
+.\" $Id: isdnctrl.man.in,v 1.14 1998/12/01 13:13:30 paul Exp $
 .\"
-.\" CHECKIN $Date: 1998/10/28 16:12:20 $
+.\" CHECKIN $Date: 1998/12/01 13:13:30 $
 .\"
 .\" Process this file with
 .\" groff -man -Tascii isdnctrl.8 for ASCII output, or
@@ -93,10 +93,11 @@ manual dialing / hangup;
 a connection will only be made after
 .B isdnctrl dial
 .I name
-and only an explicit
+but the line will be disconnected after the huptimeout value set if using
+kernel drivers updated since 1 Nov 1998; otherwise an explicit
 .B isdnctrl hangup
 .I name
-will cause the connection to be dropped.
+will be needed to cause the connection to be dropped.
 .br
 Incoming connections are possible; however, if this interface is configured in
 .BR "callback in"
