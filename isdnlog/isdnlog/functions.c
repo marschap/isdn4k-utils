@@ -1,4 +1,4 @@
-/* $Id: functions.c,v 1.2 1997/03/23 23:11:53 luethje Exp $
+/* $Id: functions.c,v 1.3 1997/03/31 20:50:55 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -192,11 +192,12 @@ void logger(int chan)
   db_set.cause = call[chan].cause;
   db_set.ibytes = call[chan].ibytes;
   db_set.obytes = call[chan].obytes;
-  db_set.version = LOG_MAJOR_VERSION * 100 + LOG_MINOR_VERSION;
+  db_set.version = atoi(LOG_VERSION);
   db_set.si1 = call[chan].si1;
   db_set.si11 = call[chan].si11;
   db_set.currency_factor = currency_factor;
   strcpy(db_set.currency, currency);
+  db_set.pay = call[chan].pay;
 
   dbAdd(&db_set);
 #endif

@@ -1,4 +1,4 @@
-/* $Id: postgres.h,v 1.1 1997/03/16 20:58:46 luethje Exp $
+/* $Id: postgres.h,v 1.2 1997/03/31 20:50:56 akool Exp $
  *
  * Interface for Postgres95-Database for isdn4linux.
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: postgres.h,v $
+ * Revision 1.2  1997/03/31 20:50:56  akool
+ * fixed the postgres95 part of isdnlog
+ *
  * Revision 1.1  1997/03/16 20:58:46  luethje
  * Added the source code isdnlog. isdnlog is not working yet.
  * A workaround for that problem:
@@ -83,11 +86,12 @@ struct _DbStrIn
   int     cause;              /* Kam eine Verbindung nicht zustande ist hier der Grund */
   long    ibytes;             /* Summe der uebertragenen Byte _von_ draussen (incoming) */
   long    obytes;             /* Summe der uebertragenen Byte _nach_ draussen (outgoing) */
-  int     version;            /* Versionsnummer (LOG_MAJOR_VERSION*100 + LOG_MINOR_VERSION) */
+  int     version;            /* Versionsnummer (LOG_VERSION) dieses Eintrages */
   int     si1;                /* Dienstkennung fuer diese Verbindung (1=Speech, 7=Data usw.) */
   int     si11;               /* Bei Dienstkennung 1=Speech -> analog oder digital ? */
   double  currency_factor;    /* Der Currency Factor fuer diese Verbinung (hier z.Zt. 0,12) */
   char    currency[32];       /* (16) Die Waehrung fuer diese Verbindung (in Deutschland "DM") */
+  double  pay;		      /* Der Endbetrag i.d. jeweiligen Landeswaehrung fuer diese Verbindung */
 };
 
 typedef struct _DbStrIn DbStrIn;

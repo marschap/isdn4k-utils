@@ -1,4 +1,4 @@
-ISDNLOG - Version 3.0 -  				28-Mar-97  20:49
+ISDNLOG - Version 3.0 -  				31-Mar-97  22:09
 
 
 isdnlog ist ein Tool zur Auswertung der Info's vom ISDN-S0-Bus sowie
@@ -2675,7 +2675,8 @@ create table isdn2 (
   source    int4,
   vrsion    int4,
   factor    real,
-  currency  varchar(30)
+  currency  varchar(30),
+  pay	    real
 );
 \q
 -------------------------
