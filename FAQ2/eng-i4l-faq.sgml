@@ -5,7 +5,7 @@
 <title>FAQ for isdn4linux
 <author>Matthias Hessler,
 <tt><htmlurl url="mailto:hessler@isdn4linux.de" name="hessler@isdn4linux.de"></tt>
-<date>v2.0.6, 20. July 1999
+<date>v2.0.7, 26. August 1999
 <abstract>
 This FAQ answers questions that were frequently asked in the newsgroup
 de.alt.comm.isdn4linux. It contains questions any user should
@@ -1826,8 +1826,8 @@ since it has no telephone number to dial.
 extensions!  
 <label id="syncppp_leadingzero">
 <p>
-The first zero is not dialed. It only shows which channel is used for
-dialing.
+The first zero is not dialed. It only shows the retry counter, which is related
+to the ``isdnctrl dialmax'' parameter.
 
 <sect1> syncppp_ethfake: My ISDN device is shown with HWaddr and IRQ=0 and  
 base address = 0 when I list it with ifconfig  
@@ -1903,6 +1903,12 @@ COMT may be found on Simtel or one of its mirror:
 
 <sect> isdnlog: Isdnlog  
 <label id="isdnlog">
+
+<sect1> isdnlog_rates: Where do I get the latest rate information?
+<label id="isdnlog_rates">
+<p>
+You get the latest rate files (which change very frequently) on
+<tt><url url="http://www.digitalprojects.com/rates"></tt>.
 
 <sect1> isdnlog_servicetype: Can I see the service type from an incoming call  
 in the output from isdnrep?  
@@ -2222,9 +2228,16 @@ send out routing updates only when they are received through this interface.
 <sect1> dialin_config: How can I enable others to login via ISDN?  
 <label id="dialin_config">
 <p>
-The same way as via a normal serial port. Start a getty (mgetty from Gert
-Doering is highly recommended) on one of the ISDN devices with modem 
-emulation (/dev/ttyI*). The entry in /etc/inittab looks like this:
+There are several ways, depending on how you want others to dial in.
+<itemize>
+<item>Set up networking devices for dialin via syncppp, or rawip. Set option
+``secure on'' to only allow dialin by isdn numbers you know.
+<item>Use the ttyI* devices for asyncppp or X.75.
+</itemize>
+Here some more details for setting up the ttyI* devices. The setup is like for
+a serial port.  Start a getty (mgetty from Gert Doering is highly recommended)
+on one of the ISDN devices (/dev/ttyI*). The entry in /etc/inittab looks like
+this:
 <code>
 I0:56:respawn:/usr/local/sbin/mgetty ttyI0
 I1:56:respawn:/usr/local/sbin/mgetty ttyI1
