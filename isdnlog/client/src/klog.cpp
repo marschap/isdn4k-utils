@@ -1,4 +1,4 @@
-/* $Id: klog.cpp,v 1.1 1998/05/10 23:33:05 luethje Exp $
+/* $Id: klog.cpp,v 1.2 1998/05/10 23:40:07 luethje Exp $
  *
  * kisdnog for ISDN accounting for isdn4linux. (Report-module)
  *
@@ -19,7 +19,10 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
- * $Log:
+ * $Log: klog.cpp,v $
+ * Revision 1.2  1998/05/10 23:40:07  luethje
+ * some changes
+ *
  */
 
 #include <errno.h>

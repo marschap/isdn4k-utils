@@ -1,4 +1,4 @@
-/* $Id: mkisdnlog.cpp,v 1.1 1998/05/10 23:33:13 luethje Exp $
+/* $Id: mkisdnlog.cpp,v 1.2 1998/05/10 23:40:14 luethje Exp $
  *
  * kisdnog for ISDN accounting for isdn4linux. (Report-module)
  *
@@ -19,14 +19,17 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
- * $Log:
+ * $Log: mkisdnlog.cpp,v $
+ * Revision 1.2  1998/05/10 23:40:14  luethje
+ * some changes
+ *
  */
 
 /****************************************************************************
 ** KLogo meta object code from reading C++ file 'kisdnlog.h'
 **
 ** Created: Thu May 7 01:04:04 1998
-**      by: The Qt Meta Object Compiler ($Revision: 1.1 $)
+**      by: The Qt Meta Object Compiler ($Revision: 1.2 $)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
