@@ -1,4 +1,4 @@
-/* $Id: isdnconf.c,v 1.2 1997/04/03 22:40:19 luethje Exp $
+/* $Id: isdnconf.c,v 1.3 1997/04/03 22:58:39 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -1144,7 +1144,7 @@ static int Set_Numbers(section *SPtr, char *Section, int msn)
 		num = CEPtr->value;
 	else
 	{
-		_print_msg("%s: ERROR: There is no variable `%s' in section '%s'!\n", Myname, CONF_ENT_NUM, Section);
+		_print_msg("%s: ERROR: There is no variable `%s' in section `%s'!\n", Myname, CONF_ENT_NUM, Section);
 		num = S_UNKNOWN;
 	}
 
@@ -1152,7 +1152,7 @@ static int Set_Numbers(section *SPtr, char *Section, int msn)
 		who = CEPtr->value;
 	else
 	{
-		_print_msg("%s: ERROR: There is no variable `%s' in section '%s'!\n", Myname, CONF_ENT_ALIAS, Section);
+		_print_msg("%s: ERROR: There is no variable `%s' in section `%s'!\n", Myname, CONF_ENT_ALIAS, Section);
 		who = S_UNKNOWN;
 	}
 
@@ -1180,7 +1180,7 @@ static int Set_Numbers(section *SPtr, char *Section, int msn)
 			{
 				if (msn < 0)
 				{
-					_print_msg("%s: WARNING: There is no variable `%s' for number '%s'!\n", Myname, CONF_ENT_ZONE, num);
+					_print_msg("%s: WARNING: There is no variable `%s' for number `%s'!\n", Myname, CONF_ENT_ZONE, num);
 					known[Index]->zone = 4;
 				}
 				else

@@ -1,4 +1,4 @@
-/* $Id: start_prog.c,v 1.1 1997/03/16 20:58:55 luethje Exp $
+/* $Id: start_prog.c,v 1.2 1997/04/03 22:58:34 luethje Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: start_prog.c,v $
+ * Revision 1.2  1997/04/03 22:58:34  luethje
+ * some primitve changes.
+ *
  * Revision 1.1  1997/03/16 20:58:55  luethje
  * Added the source code isdnlog. isdnlog is not working yet.
  * A workaround for that problem:
@@ -120,7 +123,7 @@ int Ring(info_args *Cmd, char *Opts[], int Die, int Async)
 	pid_t pid;
 	FILE *fp;
 
-	print_msg(PRT_DEBUG_EXEC, "Ring: Cmd: '%s' Die: %d Async: %d\n", (Cmd&&Cmd->infoarg)?Cmd->infoarg:"NO COMMAND", Die, Async);
+	print_msg(PRT_DEBUG_EXEC, "Ring: Cmd: `%s' Die: %d Async: %d\n", (Cmd&&Cmd->infoarg)?Cmd->infoarg:"NO COMMAND", Die, Async);
 
 	if (Die <= 0)
 	{
