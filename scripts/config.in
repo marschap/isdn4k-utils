@@ -1,5 +1,5 @@
 #
-# $Id: config.in,v 1.28 1999/07/01 18:00:02 he Exp $
+# $Id: config.in,v 1.29 1999/07/11 17:19:12 armin Exp $
 #
 # The whole configuration stuff is borrowed from the kernel
 # configuration.
@@ -71,11 +71,9 @@ bool 'avmcapictrl' CONFIG_AVMCAPICTRL
 if [ -f $CONFIG_KERNELDIR/drivers/isdn/act2000/act2000.h ] ; then
 	bool 'actctrl' CONFIG_ACTCTRL
 fi
-if [ "$CONFIG_EXPERIMENTAL" = "y" ]; then
-	bool 'eiconctrl' CONFIG_EICONCTRL
-	if [ "$CONFIG_EICONCTRL" = "y" ]; then
-		bool 'Enable eiconctrl debug-option' CONFIG_EICONCTRL_DEBUG
-	fi
+bool 'eiconctrl' CONFIG_EICONCTRL
+if [ "$CONFIG_EICONCTRL" = "y" ]; then
+	bool 'Enable eiconctrl debug-option' CONFIG_EICONCTRL_DEBUG
 fi
 if [ "$CONFIG_EXPERIMENTAL" = "y" ]; then
 	bool 'loopctrl' CONFIG_LOOPCTRL
