@@ -108,6 +108,8 @@ Inhalt:
 14.4    BYTEMAX
 15.     Dual-Mode
 16.     SQL-Anbindung
+16.1.   Postgres95
+16.2.   MySQL
 17.    	Probleme?
 18.     Verwendete Dateien
 19.     Verwendete Environment-Variablen
@@ -3583,6 +3585,9 @@ Abschliessend muss isdnlog mit der weiteren Option "-2" gestartet werden.
 16. SQL-Anbindung
 -----------------
 
+16.1. Postgres
+--------------
+
 Wird isdnlog mit "POSTGRES=1" erstellt, traegt isdnlog alle
 Verbindungsinformationen zusaetzlich in eine Postgres95 SQL-Datenbank ein.
 (Datenbank "isdn", Tabelle "isdn2")
@@ -3632,6 +3637,68 @@ sowie
   $PGPORT
 auch ein postmaster auf einem anderen Host angesprochen werden.
 
+16.2. MySQL
+-----------
+
+Wenn im Konfigurationmenue mysql ausgewaehlt wird, werden alle
+Verbindungsdaten zusaetzlich zur Datei isdn.log in eine Tabelle in der 
+Datenbank geschrieben.
+
+Der Name der Datenbank, die Tabelle, der SQL-Host, der Username und
+das Passwort werden in der Datei ./isdnlog/mysqldb.h definiert. 
+Standardmaessig enthalten sie folgende Werte.
+
+DB_HOST = localhost
+DB_NAME = isdn
+DB_USER = isdn
+DB_PASSWD = isdn
+DB_TABLE = isdnlog
+
+Zur Erstellung der Datenbank sind folgende Schritte notwendig.
+
+# mysqladmin create isdn
+# mysql mysql < grants.txt  (Inhalt wird spaeter erlaeutert)
+# mysqladmin reload
+# mysql isdn < table.txt    (Inhalt wird spaeter erlaeutert)
+
+Inhalt der Datei grants.txt:
+
+--
+
+INSERT INTO user VALUES ('localhost','isdn',password('isdn'),'N','N','N','N','N','N','N','N','N','N');
+INSERT INTO db VALUES ('localhost','isdn','isdn','N','Y','N','N','N','N');
+
+--
+
+Inhalt der Datei table.txt:
+
+--
+
+CREATE TABLE isdnlog (
+  sdate date NOT NULL,
+  stime time NOT NULL,
+  calling varchar(30) NOT NULL,
+  called varchar(30) NOT NULL,
+  charge int(4) NOT NULL,
+  dir char(1) NOT NULL,
+  in_bytes int(4) NOT NULL,
+  out_bytes int(4) NOT NULL,
+  msec int(4) NOT NULL,
+  sec int(4) NOT NULL,
+  status int(4) NOT NULL,
+  service int(4) NOT NULL,
+  source int(4) NOT NULL,
+  vrsion int(4) NOT NULL,
+  factor double(16,4) NOT NULL,
+  currency varchar(30) NOT NULL,
+  pay double(16,4) NOT NULL,
+  provider varchar(30) NOT NULL,
+  KEY (sdate,stime),
+  KEY (calling,called),
+  KEY (pay,provider)
+);
+
+--
 
 17. Probleme?
 -------------

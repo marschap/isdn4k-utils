@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.36 1998/03/29 19:54:04 luethje Exp $
+## $Id: Makefile.in,v 1.37 1998/03/29 23:17:47 luethje Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,9 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.37  1998/03/29 23:17:47  luethje
+## mySQL-Patch of Sascha Matzke
+##
 ## Revision 1.36  1998/03/29 19:54:04  luethje
 ## idnrep: added html feature (incoming/outgoing calls)
 ##
@@ -210,7 +213,9 @@ LIBAREA				:= @LIBAREA@
 RUNDIR				:= @RUNDIR@
 DBMLIB				:= @DBMLIB@
 POSTGRES			:= @POSTGRES@
-POSTGRESDIR		:= @POSTGRESDIR@
+POSTGRESDIR			:= @POSTGRESDIR@
+MYSQLDB 			:= @MYSQLDB@
+MYSQLDIR 			:= @MYSQLDIR@
 SERV_PORT			:= @SERV_PORT@
 USERFILE			:= @USERFILE@
 DEFS          :=
@@ -262,12 +267,18 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 2.99.26
+VERSION     = 2.99.27
 
 ifeq ($(POSTGRES),1)
 DEFS       += -DPOSTGRES
 INCLUDE    += -I$(POSTGRESDIR)/include
 LIB        += -L$(POSTGRESDIR)/lib -lpq
+endif
+
+ifeq ($(MYSQLDB),1)
+DEFS 	   += -DMYSQLDB
+INCLUDE    += -I$(MYSQLDIR)/include
+LIB        += -L$(MYSQLDIR)/lib -lmysqlclient -lm
 endif
 
 ifdef DBMALLOC
@@ -292,6 +303,10 @@ ISDNLOG_OBJS =  isdnlog/isdnlog.o isdnlog/processor.o isdnlog/functions.o \
 
 ifeq ($(POSTGRES),1)
 ISDNLOG_OBJS += isdnlog/postgres.o
+endif
+
+ifeq ($(MYSQLDB),1)
+ISDNLOG_OBJS += isdnlog/mysqldb.o
 endif
 
 ifdef TESTCENTER

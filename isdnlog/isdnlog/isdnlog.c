@@ -1,4 +1,4 @@
-/* $Id: isdnlog.c,v 1.16 1998/03/08 12:13:38 luethje Exp $
+/* $Id: isdnlog.c,v 1.17 1998/03/29 23:18:07 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,9 @@
  * along with this program; if not, write to the Free Software
  *
  * $Log: isdnlog.c,v $
+ * Revision 1.17  1998/03/29 23:18:07  luethje
+ * mySQL-Patch of Sascha Matzke
+ *
  * Revision 1.16  1998/03/08 12:13:38  luethje
  * Patches by Paul Slootman
  *
@@ -76,6 +79,9 @@
 #include "isdnlog.h"
 #ifdef POSTGRES
 #include "postgres.h"
+#endif
+#ifdef MYSQLDB
+#include "mysqldb.h"
 #endif
 
 #define FD_SET_MAX(desc, set, max) { if (desc > max) max=desc; FD_SET(desc,set); }
@@ -930,6 +936,9 @@ int main(int argc, char *argv[], char *envp[])
 
 #ifdef POSTGRES
             dbOpen();
+#endif
+#ifdef MYSQLDB
+	    mysql_dbOpen();
 #endif
             loop();
 

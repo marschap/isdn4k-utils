@@ -15,6 +15,8 @@ ac_default_prefix=/usr
 ac_help="$ac_help
   --with-postgres=DIR     Set postgres directory []"
 ac_help="$ac_help
+  --with-mysql=DIR        Set mysql directory []"
+ac_help="$ac_help
   --with-kernel=DIR       Set kernel source directory [/usr/src/linux]"
 ac_help="$ac_help
   --with-isdnlib=DIR      Set isdn library [../lib]"
@@ -560,6 +562,7 @@ AREACODE=${CONFIG_AREACODE:-""}
 AREAPREFIX=${CONFIG_AREA_PREFIX:-"0"}
 CONFIG_LIB_AREACODE=${CONFIG_LIB_AREACODE:-"y"}
 CONFIG_ISDNLOG_POSTGRESDIR=${CONFIG_ISDNLOG_POSTGRESDIR:-""}
+CONFIG_ISDNLOG_MYSQLDIR=${CONFIG_ISDNLOG_MYSQLDIR:-""}
 CONFIG_KERNELDIR=${CONFIG_KERNELDIR:-"/usr/src/linux"}
 LIBISDNDIR="../lib"
 bindir=${CONFIG_BINDIR:-"/usr/bin"}
@@ -584,6 +587,7 @@ AREACODE=`eval echo $AREACODE`
 AREAPREFIX=`eval echo $AREAPREFIX`
 CONFIG_LIB_AREACODE=`eval echo $CONFIG_LIB_AREACODE`
 CONFIG_ISDNLOG_POSTGRESDIR=`eval echo $CONFIG_ISDNLOG_POSTGRESDIR`
+CONFIG_ISDNLOG_MYSQLDIR=`eval echo $CONFIG_ISDNLOG_MYSQLDIR`
 CONFIG_KERNELDIR=`eval echo $CONFIG_KERNELDIR`
 bindir=`eval echo $bindir`
 sbindir=`eval echo $sbindir`
@@ -1151,7 +1155,7 @@ rm -f conftest*
 			echo $ac_n "checking for postgres in /usr/local/lib/postgres95""... $ac_c" 1>&6
 echo "configure:1153: checking for postgres in /usr/local/lib/postgres95" >&5
 			cat > conftest.$ac_ext <<EOF
-#line 1155 "configure"
+#line 1158 "configure"
 #include "confdefs.h"
 #include </usr/lib/local/lib/postgre95/include/libpq-fe.h>
 EOF
@@ -1180,8 +1184,121 @@ EOF
 #define POSTGRESDIR "$pqdir"
 EOF
 
-	
-	
+
+
+	MYSQLDIR=""
+	mydir="no"
+	tst_mysqldir="$CONFIG_ISDNLOG_MYSQLDIR"
+
+	# Check whether --with-mysql or --without-mysql was given.
+if test "${with_mysql+set}" = set; then
+  withval="$with_mysql"
+  tst_mysqldir="${withval}"
+fi
+
+
+	if test "$tst_mysqldir" != "" || test "$CONFIG_ISDNLOG_MYSQLDB" = "y" ; then
+		echo $ac_n "checking for mysql in ${tst_mysqldir}""... $ac_c" 1>&6
+echo "configure:1201: checking for mysql in ${tst_mysqldir}" >&5
+		if test "${tst_mysqldir}" != "" ; then
+			cat > conftest.$ac_ext <<EOF
+#line 1204 "configure"
+#include "confdefs.h"
+#include <${tst_mysqldir}/include/mysql.h>
+EOF
+if (eval "$ac_cpp conftest.$ac_ext") 2>&5 |
+  egrep "MYSQL" >/dev/null 2>&1; then
+  rm -rf conftest*
+  mydir=${tst_mysqldir}
+fi
+rm -f conftest*
+
+		fi
+		if test "$mydir" = "no" ; then
+			echo "$ac_t"""$mydir"" 1>&6
+			echo $ac_n "checking for mysql in /lib/mysql""... $ac_c" 1>&6
+echo "configure:1219: checking for mysql in /lib/mysql" >&5
+			cat > conftest.$ac_ext <<EOF
+#line 1221 "configure"
+#include "confdefs.h"
+#include </lib/mysql/include/mysql.h>
+EOF
+if (eval "$ac_cpp conftest.$ac_ext") 2>&5 |
+  egrep "MYSQL" >/dev/null 2>&1; then
+  rm -rf conftest*
+  mydir=/lib/mysql
+fi
+rm -f conftest*
+
+		fi
+		if test "$mydir" = "no" ; then
+			echo "$ac_t"""$mydir"" 1>&6
+			echo $ac_n "checking for mysql in /usr/lib/mysql""... $ac_c" 1>&6
+echo "configure:1236: checking for mysql in /usr/lib/mysql" >&5
+			cat > conftest.$ac_ext <<EOF
+#line 1238 "configure"
+#include "confdefs.h"
+#include </usr/lib/mysql/include/mysql.h>
+EOF
+if (eval "$ac_cpp conftest.$ac_ext") 2>&5 |
+  egrep "MYSQL" >/dev/null 2>&1; then
+  rm -rf conftest*
+  mydir=/usr/lib/mysql
+fi
+rm -f conftest*
+
+		fi
+		if test "$mydir" = "no" ; then
+			echo "$ac_t"""$mydir"" 1>&6
+			echo $ac_n "checking for mysql in /usr/local/mysql""... $ac_c" 1>&6
+echo "configure:1253: checking for mysql in /usr/local/mysql" >&5
+			cat > conftest.$ac_ext <<EOF
+#line 1255 "configure"
+#include "confdefs.h"
+#include </usr/local/mysql/include/mysql.h>
+EOF
+if (eval "$ac_cpp conftest.$ac_ext") 2>&5 |
+  egrep "MYSQL" >/dev/null 2>&1; then
+  rm -rf conftest*
+  mydir=/usr/local/mysql
+fi
+rm -f conftest*
+
+		fi
+		if test "$mydir" = "no" ; then
+			echo "$ac_t"""$mydir"" 1>&6
+			echo $ac_n "checking for mysql in /usr/local/lib/mysql""... $ac_c" 1>&6
+echo "configure:1270: checking for mysql in /usr/local/lib/mysql" >&5
+			cat > conftest.$ac_ext <<EOF
+#line 1272 "configure"
+#include "confdefs.h"
+#include </usr/local/lib/mysql/include/mysql.h>
+EOF
+if (eval "$ac_cpp conftest.$ac_ext") 2>&5 |
+  egrep "MYSQL" >/dev/null 2>&1; then
+  rm -rf conftest*
+  mydir=/usr/local/lib/mysql
+fi
+rm -f conftest*
+
+		fi
+	fi
+	if test "$mydir" != "no" ; then
+		echo "$ac_t"""yes"" 1>&6
+		MYSQLDB=1
+		cat >> confdefs.h <<EOF
+#define MYSQLDB 1
+EOF
+
+	else
+		echo "$ac_t"""no MYSQL DISABLED"" 1>&6
+		mydir=""
+	fi
+	MYSQLDIR="$mydir"
+	cat >> confdefs.h <<EOF
+#define MYSQLDIR "$mydir"
+EOF
+
 
 
 #AC_CHECK_LIB(dbmalloc, main)
@@ -2231,6 +2348,8 @@ s%@SET_MAKE@%$SET_MAKE%g
 s%@CPP@%$CPP%g
 s%@POSTGRES@%$POSTGRES%g
 s%@POSTGRESDIR@%$POSTGRESDIR%g
+s%@MYSQLDB@%$MYSQLDB%g
+s%@MYSQLDIR@%$MYSQLDIR%g
 s%@CONFIG_KERNELDIR@%$CONFIG_KERNELDIR%g
 s%@LIBOBJS@%$LIBOBJS%g
 s%@LIBISDNDIR@%$LIBISDNDIR%g

@@ -56,6 +56,63 @@ AC_DEFUN(AC_CHECK_POSTGRES, [
 	AC_SUBST(POSTGRESDIR)
 ])
 dnl
+dnl Check for mysql
+dnl
+
+AC_DEFUN(AC_CHECK_MYSQLDB, [
+	MYSQLDIR=""
+	mydir="no"
+	tst_mysqldir="$CONFIG_ISDNLOG_MYSQLDIR"
+
+	AC_ARG_WITH(mysql,
+		[  --with-mysql=DIR     Set mysql directory []],
+		tst_mysqldir="${withval}")
+
+	if test "$tst_mysqldir" != "" || test "$CONFIG_ISDNLOG_MYSQLDB" = "y" ; then
+		AC_MSG_CHECKING([for mysql in ${tst_mysqldir}])
+		if test "${tst_mysqldir}" != "" ; then
+			AC_EGREP_HEADER(MYSQL,${tst_mysqldir}/include/mysql.h,
+			mydir=${tst_mysqldir})
+		fi
+		if test "$mydir" = "no" ; then
+			AC_MSG_RESULT("$mydir")
+			AC_MSG_CHECKING([for mysql in /lib/mysql])
+			AC_EGREP_HEADER(MYSQL,/lib/mysql/include/mysql.h,
+			mydir=/lib/mysql)
+		fi
+		if test "$mydir" = "no" ; then
+			AC_MSG_RESULT("$mydir")
+			AC_MSG_CHECKING([for mysql in /usr/lib/mysql])
+			AC_EGREP_HEADER(MYSQL,/usr/lib/mysql/include/mysql.h,
+			mydir=/usr/lib/mysql)
+		fi
+		if test "$mydir" = "no" ; then
+			AC_MSG_RESULT("$mydir")
+			AC_MSG_CHECKING([for mysql in /usr/local/mysql])
+			AC_EGREP_HEADER(MYSQL,/usr/local/postgre95/include/mysql.h,
+			mydir=/usr/local/mysql)
+		fi
+		if test "$mydir" = "no" ; then
+			AC_MSG_RESULT("$mydir")
+			AC_MSG_CHECKING([for mysql in /usr/local/lib/mysql])
+			AC_EGREP_HEADER(MYSQL,/usr/local/lib/mysql/include/mysql.h,
+			mydir=/usr/local/lib/mysql)
+		fi
+	fi
+	if test "$mydir" != "no" ; then
+		AC_MSG_RESULT("yes")
+		MYSQLDB=1
+		AC_DEFINE_UNQUOTED(MYSQLDB,1)
+	else
+		AC_MSG_RESULT("no MYSQL DISABLED")
+		mydir=""
+	fi
+	MYSQLDIR="$mydir"
+	AC_DEFINE_UNQUOTED(MYSQLDIR,"$mydir")
+	AC_SUBST(MYSQLDB)
+	AC_SUBST(MYSQLDIR)
+])
+dnl
 dnl Try finding linux sourcetree
 dnl
 

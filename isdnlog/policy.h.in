@@ -102,6 +102,9 @@
 /* Define if postgres should be used */
 #undef POSTGRES
 
+/* Define if mysql should be used */
+#undef MYSQLDB
+
 /* Define if server port */
 #undef SERV_PORT
 
