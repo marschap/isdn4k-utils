@@ -18,5 +18,7 @@ libcapi20dyn_a_CFLAGS = -fPIC
 
 $(OBJECTS): libtool
 
+export SED
+
 libtool: $(LIBTOOL_DEPS)
 	$(SHELL) ./config.status --recheck

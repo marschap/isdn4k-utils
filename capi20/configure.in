@@ -9,6 +9,8 @@ AC_PROG_CC
 AC_PROG_INSTALL
 AM_PROG_LIBTOOL
 AC_SUBST(LIBTOOL_DEPS)
+AC_OBJEXT
+AC_PATH_PROG(SED,sed)
 
 dnl Checks for header files.
 AC_HEADER_STDC
@@ -18,6 +20,7 @@ AC_CHECK_HEADERS(linux/capi.h)
 dnl Checks for library functions.
 AC_CHECK_FUNCS(select)
 
+export SED
 dnl Read the libtool configuration
 rm -f conftest
 ./libtool --config > conftest
