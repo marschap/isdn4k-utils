@@ -1,6 +1,6 @@
-.\" $Id: divertctrl.man,v 1.1 1999/11/12 20:09:29 werner Exp $
+.\" $Id: divertctrl.man.in,v 1.1 2000/01/27 14:26:22 kai Exp $
 .\"
-.\" CHECKIN $Date: 1999/11/12 20:09:29 $
+.\" CHECKIN $Date: 2000/01/27 14:26:22 $
 .\"
 .\" Process this file with
 .\" groff -man -Tascii divertctrl.8 for ASCII output, or
