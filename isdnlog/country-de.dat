@@ -1,4 +1,4 @@
-V:1.02-Germany [10-Jul-1999 23:32:36]
+V:1.02-Germany [12-Jul-1999 20:54:06]
 
 
 N:Usbekistan
@@ -762,12 +762,14 @@ C:+358
 N:Finnland Mobilfunk
 C:+358 /* fixme */
 
-# fixme: Zypern muß aufgesplittet werden!
 N:Zypern
 A:Cyprus
-A:Zypern (Türkisch),Zypern (Griechisch),Zypern (griech.)
-A:Zypern (Nordzypern)
+A:Zypern (Griechisch),Zypern (griech.)
 C:+357
+
+N:Zypern (Türkisch)
+A:Zypern (Nord), Zypern (Nordzypern)
+C:+90392
 
 N:Malta
 C:+356

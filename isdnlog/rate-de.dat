@@ -1,4 +1,4 @@
-V:1.02-Germany [10-Jul-1999 23:32:27]
+V:1.02-Germany [12-Jul-1999 20:53:57]
 
 # Währungsformat
 U:%.3f DM
@@ -8,7 +8,7 @@ U:%.3f DM
 #
 # (C) Copyright 1999 by Andreas Kool (akool@isdn4linux.de)
 #
-# $Id: rate-de.dat,v 1.30 1999/07/10 21:37:42 akool Exp $
+# $Id: rate-de.dat,v 1.31 1999/07/12 18:49:47 akool Exp $
 #
 # Zonenzuordnung für Deutschland
 #
@@ -11519,7 +11519,6 @@ C:Hotline:  01802/2002
 C:Faxabruf: 01802/2001
 P:50,1 Talkline CbC
 D:dtag
-F:E
 Z:2-4 Fern
 A:+49
 T:W/07-19=0.15/60
@@ -11652,7 +11651,6 @@ A:Monaco Mobilfunk
 A:Neuseeland Mobilfunk
 A:Niederlande Mobilfunk
 A:Norwegen Mobilfunk
-A:Österreich Mobilfunk
 A:Schweden Mobilfunk
 A:Schweiz Mobilfunk
 A:Spanien Mobilfunk
