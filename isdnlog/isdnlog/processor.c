@@ -1,4 +1,4 @@
-/* $Id: processor.c,v 1.20 1998/06/14 15:33:51 akool Exp $
+/* $Id: processor.c,v 1.21 1998/06/16 15:05:31 paul Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.21  1998/06/16 15:05:31  paul
+ * isdnlog crashed with 1TR6 and "Unknown Codeset 7 attribute 3 size 5",
+ * i.e. IE 03 which is not Date/Time
+ *
  * Revision 1.20  1998/06/14 15:33:51  akool
  * AVM B1 support (Layer 3)
  * Telekom's new currency DEM 0,121 supported
@@ -2091,6 +2095,9 @@ static void decode(int chan, register char *p, int type, int version)
 	case 0x03 : /* Date/Time 1TR6   */
         case 0x29 : /* Date/Time E-DSS1 */
                     if ((element == 0x03) && (version == VERSION_1TR6)) {
+			if (l != 17)	/* 1TR6 date/time is always 17? */
+  				/* "Unknown Codeset 7 attribute 3 size 5" */
+				goto UNKNOWN_ELEMENT;
 			tm.tm_mday  = (strtol(p+=3,NIL,16)-'0') * 10;
 			tm.tm_mday +=  strtol(p+=3,NIL,16)-'0';
 			p += 3;	/* skip '.' */
