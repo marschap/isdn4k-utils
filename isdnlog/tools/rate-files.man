@@ -1,12 +1,12 @@
 '\" t
 '\" ** above should format a table **
-.\" CHECKIN $Date: 2000/09/01 12:35:44 $
+.\" CHECKIN $Date: 2000/09/04 15:07:04 $
 .TH rate-files 5 "@MANDATE@" -lt-
 .SH NAME
 rate-files \- Format of rate-files
 .SH DESCRIPTION
 The rate-files used by isdnlog(8) and by isdnrate(1) are textfiles
-defining the telefon fees for different destinations at certain dates/times
+defining the telephone fees for different destinations at certain dates/times
 for all providers of one country.
 .br
 The rate-files have the following overall layout:
@@ -17,7 +17,7 @@ The rate-files have the following overall layout:
 .P
 Comments starting with a hash-sign '#'
 and empty lines are ignored. The first letter (tag) followed by a colon
-discerns the entries. Additional white space may be used after the tags
+separates the entries. Additional white space may be used after the tags
 to group content more readably.
 .SS Special entries
 .P
@@ -28,14 +28,14 @@ to group content more readably.
 .IP
 .I includefile
 get's substituted at the current position. There are two possibilities. In
-the rate source file (which get prepared by
+the rate source file (which is prepared by
 .IR pp_rate )
 a small
 .I 'i'
 puts the contents of the include file in the outputfile.
 An
 .IR 'I' -Tag
-means, for the preprozessor, write a new output file (the includefile) and
+means, for the preprocessor, write a new output file (the includefile) and
 leave the tag in the rate-files. This is for real include files.
 .br
 Includes may be nested twice. The filename should not contain any paths
@@ -52,17 +52,17 @@ V:1.0-Germany [18-Mar-1999]
 .P
 .B N:Servicenumber[,Servicenumber...]
 .IP
-This defines Services with special numbers. Special numbers are numbers which
+This defines telephone services with special numbers. Special numbers are numbers which
 a) start with no '0' or b) can not be dialed with every provider. A number
 with a variable length should have the wildcard '*' at the end, eg.
 .I 07189*
-which matches all numbers startig with
+which matches all numbers starting with
 .IR 07189 .
 Numbers with wildcards should be placed after numbers which would match the
 wildcard, because matching is done straight top down.
 There may be multiple
 .B N:
-tags for one Service.
+tags for one telephone service.
 .IP
 e.g.
 .br
@@ -171,7 +171,7 @@ and
 .B T:
 tags.
 .P
-A zone is a region of areas, for which the same rates apply. Interior and
+A zone is a region of areas, for which the same rates apply. Domestic and
 foreign zones should not be mixed and all foreign zones should follow
 domestic zones.
 .P
@@ -212,8 +212,8 @@ Z:1-2,4 Interior
 .BR A:area [ ,area... ]
 .P
 .I area
-may be a telefonnumber (including +countrycode for numbers which may
-be reached from everywhere, a telefonnumber without +countrycode for numbers only reachable
+may be a telephone number (including +countrycode for numbers which may
+be reached from everywhere, a telephone number without +countrycode for numbers only reachable
 in the own country) or an area name or alias as defined in country.dat.
 Country names have to be translated to their code by the rate-preprocessor
 .IR pp_rate .
@@ -289,9 +289,9 @@ seconds or optional rate per
 .I (Divider)
 seconds,
 .I Duration
-is the length of one charge impuls in seconds. After
+is the length of one charge unit in seconds. After
 .I Delay
-the next duration is taken. If delay ist not given it equals to the duration.
+the next duration is taken. If delay is not given it equals to the duration.
 The last duration may not have a delay and may not be zero.
 .IP
 EXAMPLES
