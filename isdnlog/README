@@ -2110,7 +2110,9 @@ Befehle:
 
 ACHTUNG:
 
-Dieses Programm besitzt zwar die Faehigkeit, die Config-Datei zu veraendern.
+Dieses Programm besitzt zwar die Faehigkeit, die Nummerndateien zu veraendern.
+Defaultmaessig wird die Datei ~/.isdn editiert. Es kann auch mit den Schaltern
+-f und -g eine andere Datei verwendet werden.
 Es wird aber dringend davon abgeraten die Schalter -A und -D zu verwenden!!
 Hierbei wird die gesamte Struktur der Datei zerstoert (include), so wie alle
 Kommentare werden geloescht.
@@ -2252,6 +2254,10 @@ Kommentare werden geloescht.
                         andere benutzt werden soll, dann muss sie mit dieser
                         Option angegeben werden. Gilt nur fuer die
                         Optionen -A und -D
+
+  -g          "global"  Hat nur Auswrikungen bei den Befehlen -A und -D. Es
+                        wird dann anstatt der ~/.isdn die Datei
+                        /etc/isdn/callerid.conf genommen zum editieren.
 
 
 12. Der X-Client xisdn
