@@ -1,9 +1,12 @@
 /*
-** $Id: vboxgetty.c,v 1.1 1998/06/10 13:31:58 michael Exp $
+** $Id: vboxgetty.c,v 1.2 1998/06/17 12:20:37 michael Exp $
 **
 ** Copyright 1997-1998 by Michael Herold <michael@abadonna.mayn.de>
 **
 ** $Log: vboxgetty.c,v $
+** Revision 1.2  1998/06/17 12:20:37  michael
+** - Changes for automake/autoconf added.
+**
 ** Revision 1.1  1998/06/10 13:31:58  michael
 ** Source added.
 **
@@ -23,6 +26,7 @@
 #include "modem.h"
 #include "rc.h"
 #include "voice.h"
+#include "stringutils.h"
 #include "tclscript.h"
 #include "vboxgetty.h"
 
@@ -64,9 +68,11 @@ static int	parse_getty_rc(unsigned char *);
 static void show_usage(int, int);
 static int	process_incoming_call(void);
 static int  run_modem_init(void);
+static int	parse_user_rc(struct vboxincomingcall *);
+
 
 /*************************************************************************/
-/** **/
+/** The magic main...																	**/
 /*************************************************************************/
 
 void main(int argc, char **argv)
@@ -103,12 +109,12 @@ void main(int argc, char **argv)
 				break;
 
 			case 'v':
-				show_usage(1, 0);
+				show_usage(200, 0);
 				break;
 
 			case 'h':
 			default:
-				show_usage(1, 1);
+				show_usage(200, 1);
 				break;
 		}
 	}
@@ -161,14 +167,14 @@ void main(int argc, char **argv)
 		{
 			fprintf(stderr, "\n%s: error: \"%s\" doesn't exist or is not accessable!\n\n", progbasename, temppathname);
 
-			quit_program(10);
+			quit_program(100);
 		}
 	}
 	else
 	{
 		fprintf(stderr, "\n%s: error: isdn tty name is required!\n", progbasename);
 
-		show_usage(10, 1);
+		show_usage(100, 1);
 	}
 
 		/* Check if we start with root privilegs. The permissions will be	*/
@@ -179,7 +185,7 @@ void main(int argc, char **argv)
 	{
 		fprintf(stderr, "\n%s: error: need root privilegs to start!\n\n", progbasename);
 
-		quit_program(10);
+		quit_program(100);
 	}
 
 		/* Now its time to open the log. The name of the current tty will	*/
@@ -196,7 +202,7 @@ void main(int argc, char **argv)
 	{
 		log_line(LOG_E, "Can't create/initialize the tcl interpreter!\n");
 		
-		quit_program(10);
+		quit_program(100);
 	}
 
 	log_line(LOG_I, "Running vbox version %s (with tcl version %s).\n", VERSION, scr_tcl_version());
@@ -208,8 +214,11 @@ void main(int argc, char **argv)
 	{
 		log_line(LOG_E, "Unable to read/parse configuration!\n");
 	
-		quit_program(10);
+		quit_program(100);
 	}
+
+		/* Open modem device and do the main loop (initialize, wait,	*/
+		/* answer and alive check).												*/
 
 	printstring(temppathname, "/dev/%s", isdnttyname);
 
@@ -219,7 +228,7 @@ void main(int argc, char **argv)
 	{
 		log_line(LOG_E, "Can't open/setup modem device (%s).\n", vboxmodem_error());
 
-		quit_program(20);
+		quit_program(100);
 	}
 
 signal(SIGINT , quit_program);
@@ -236,7 +245,7 @@ signal(SIGTERM, quit_program);
 
 				if (run_modem_init() == -1)
 				{
-					if ((i = (int)vbox_strtol(rc_get_entry(rc_getty_c, "badinitsexit"), 10)) > 0)
+					if ((i = (int)xstrtol(rc_get_entry(rc_getty_c, "badinitsexit"), 10)) > 0)
 					{
 						modeminits++;
 						
@@ -306,6 +315,12 @@ signal(SIGTERM, quit_program);
 	quit_program(0);
 }
 
+/*************************************************************************/
+/** quit_program():	Frees all used resources and exist.						**/
+/*************************************************************************/
+/** => rc				Exit return code (1-99 reserved for signals)			**/
+/*************************************************************************/
+
 void quit_program(int rc)
 {
 	modem_hangup(&vboxmodem);
@@ -320,37 +335,11 @@ void quit_program(int rc)
 	exit(rc);
 }
 
-long vbox_strtol(char *string, long number)
-{
-	long  back;
-	char *stop;
-
-	if (string)
-	{
-		back = strtol(string, &stop, 10);
-		
-		if (*stop == '\0') return(back);
-
-		log_line(LOG_W, "Can't convert \"%s\" to number (illegal)!\n", string);
-	}
-	else log_line(LOG_W, "Can't convert string to number (string empty)!\n");
-
-	return(number);
-}
-
-
-
-
-
-
-
-
-
-
-
-
 /*************************************************************************/
-/** **/
+/** show_usage():	Shows usage/version message.									**/
+/*************************************************************************/
+/** => rc			Exit return level (1-99 reserved for signals)			**/
+/** => help			1 shows help message, 0 version string						**/
 /*************************************************************************/
 
 static void show_usage(int rc, int help)
@@ -374,6 +363,32 @@ static void show_usage(int rc, int help)
 	exit(rc);
 }
 
+/*************************************************************************/
+/** run_modem_init():	Starts the tcl script to initialize the modem.	**/
+/*************************************************************************/
+/** <=						0 on success or -1 on error							**/
+/*************************************************************************/
+
+static int run_modem_init(void)
+{
+	struct vbox_tcl_variable vars[] = 
+	{
+		{ "vbxv_init"			, rc_get_entry(rc_getty_c, "init"		) },
+		{ "vbxv_initnumber"	, rc_get_entry(rc_getty_c, "initnumber") },
+		{ NULL					, NULL											  }
+	};
+
+	log_line(LOG_A, "Initializing modem...\n");
+
+	if (scr_init_variables(vars) == 0)
+	{
+		if (scr_execute("initmodem.tcl", NULL) == 0) return(0);
+	}
+
+	log_line(LOG_E, "Can't initialize modem!\n");
+
+	return(-1);
+}
 
 
 
@@ -435,29 +450,68 @@ static int parse_getty_rc(unsigned char *tty)
 	return(0);
 }
 
+
 /*************************************************************************/
-/** run_modem_init():	Starts the tcl script to initialize the modem.	**/
-/*************************************************************************/
-/** <=						0 on success or -1 on error							**/
+/** **/
 /*************************************************************************/
 
-static int run_modem_init(void)
+static int process_incoming_call(void)
 {
-	struct vbox_tcl_variable vars[] = 
-	{
-		{ "vbxv_init"			, rc_get_entry(rc_getty_c, "init"		) },
-		{ "vbxv_initnumber"	, rc_get_entry(rc_getty_c, "initnumber") },
-		{ NULL					, NULL											  }
-	};
+	struct vboxuser vboxuser;
 
-	log_line(LOG_A, "Initializing modem...\n");
+	char	line[VBOXMODEM_BUFFER_SIZE + 1];
+	int	haverings;
+	int	waitrings;
+	int	havesetup;
 
-	if (scr_init_variables(vars) == 0)
+	haverings = 0;
+	waitrings = 0;
+	havesetup = 0;
+
+	while (modem_read(&vboxmodem, line, (int)xstrtol(rc_get_entry(rc_getty_c, "ringtimeout"), 6)) == 0)
 	{
-		if (scr_execute("initmodem.tcl", NULL) == 0) return(0);
+		if ((strncmp(line, "CALLER NUMBER: ", 15) == 0) && (!havesetup))
+		{
+			xstrncpy(vboxuser.incomingid, &line[15], VBOX_CALL_ID);
+			xstrncpy(vboxuser.localphone, "9317840513", VBOX_CALL_NUMBER);
+
+			if (parse_user_rc(&vboxuser) == 0)
+			{
+				if ((vboxuser.uid == 0) || (vboxuser.gid == 0))
+				{
+					log_line(LOG_W, "No user for ID %s found - call will be ignored!\n", vboxcall.callerid);
+
+
+
+
+
+
+
+
+				}
+
+				havesetup = 1;
+			}
+
+			continue;
+		}
+
+		if (strcmp(line, "RING") == 0)
+		{
+			haverings++;
+			
+			if (havesetup)
+				log_line(LOG_A, "RING #%03d (%s)...\n", haverings, incomingid);
+			else
+				log_line(LOG_A, "RING #%03d...\n", haverings);
+		}
+		else
+		{
+			log_line(LOG_D, "Got junk line \"");
+			log_code(LOG_D, line);
+			log_text(LOG_D, "\"...\n");
+		}
 	}
-
-	log_line(LOG_E, "Can't initialize modem!\n");
 
 	return(-1);
 }
@@ -466,8 +520,57 @@ static int run_modem_init(void)
 /** **/
 /*************************************************************************/
 
-static int process_incoming_call(void)
+static int parse_user_rc(struct vboxuser *vboxuser)
 {
+	char  line[VBOX_RCLINE_SIZE + 1];
+	FILE *rc;
+	char *stop;
+	int	linenr;
+
+	log_line(LOG_D, "Searching local user for ID %s...\n", vboxuser->incomingid);
+
+	vboxuser->uid		= 0;
+	vboxuser->gid		= 0;
+	vboxuser->home[0]	= 0
+	vboxuser->umask	= -1;
+	vboxuser->space	= -1;
+
+	printstring(temppathname, "%s/vboxgetty.user", VBOX_ETCDIR);
+
+	if ((rc = fopen(temppathname, "r")))
+	{
+		linenr = 0;
+
+		while (fgets(line, VBOX_RCLINE_SIZE, rc))
+		{
+			linenr++;
+
+			line[strlen(line) - 1] = '\0';
+			
+			if ((stop = rindex(line, '#'))) *stop = '\0';
+
+			while (strlen(line) > 0)
+			{
+				if ((line[strlen(line) - 1] != ' ') && (line[strlen(line) - 1] != '\t')) break;
+				
+				line[strlen(line) - 1] = '\0';
+			}
+			
+			if (*line == '\0') continue;
+
+			pattern	= strtok(line, ":");
+			name		= strtok(NULL, ":");
+			group		= strtok(NULL, ":");
+			mask		= strtok(NULL, ":");
+			space		= strtok(NULL, ":");
+
+			if ((!pattern) || (!name) || (!group) || (!mask) || (!space))
+			{
+				log_line(LOG_E, "Error in \"%s\" line %d.\n", temppathname, linenr);
+
+				fclose(rc);
+				return(-1);
+			}
 
 
 
@@ -476,21 +579,30 @@ static int process_incoming_call(void)
 
 
 
+		}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+		fclose(rc);
+	}
+	else
+	{
+		log_line(LOG_W, "Can't open \"%s\".\n", temppathname);
+		
+		return(-1);
+	}
 
 	return(0);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+

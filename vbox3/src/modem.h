@@ -1,5 +1,5 @@
 /*
-** $Id: modem.h,v 1.1 1998/06/10 13:31:54 michael Exp $
+** $Id: modem.h,v 1.2 1998/06/17 12:20:37 michael Exp $
 **
 ** Copyright 1997-1998 by Michael 'Ghandi' Herold
 */
@@ -23,6 +23,7 @@ struct modemsetup
 {
 	int echotimeout;
 	int commandtimeout;
+	int ringtimeout;
 	int alivetimeout;
 	int toggle_dtr_time;
 
@@ -44,5 +45,6 @@ extern int	modem_hangup(struct vboxmodem *);
 extern int	modem_wait(struct vboxmodem *);
 extern void modem_set_nocarrier(struct vboxmodem *, int);
 extern int	modem_get_nocarrier(struct vboxmodem *);
+extern int	modem_read(struct vboxmodem *, char *, int);
 
 #endif /* _VBOX_MODEM_H */

@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.1 1998/06/10 13:31:48 michael Exp $
+# $Id: Makefile,v 1.2 1998/06/17 12:20:35 michael Exp $
 
 
 
@@ -34,6 +34,9 @@ voice.o:		voice.h voice.c
 tclscript.o:		tclscript.h tclscript.c
 			$(CC) $(CFLAGS) -c tclscript.c
 
+stringutils.o:		stringutils.h stringutils.c
+			$(CC) $(CFLAGS) -c stringutils.c
+
 #-- Modem library -------------------------------------------------------#
 
 LIBVBOXMODEMOBJ	= libvboxmodem.o
@@ -49,7 +52,8 @@ VBOXGETTYOBJ	=	vboxgetty.o \
 			rc.o \
 			modem.o \
 			voice.o \
-			tclscript.o
+			tclscript.o \
+			stringutils.o
 
 vboxgetty:		$(VBOXGETTYOBJ)
 			$(CC) $(CFLAGS) $(VBOXGETTYOBJ) -o vboxgetty -L. -lvboxmodem -ldl -lm -ltcl
