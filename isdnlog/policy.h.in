@@ -134,3 +134,7 @@
 
 /* Command for rebooting */
 #undef REBOOTCMD
+
+/* Use CDB instead of g?dbm? */
+/* rename tools/cdb/i4l_cdb.c, if you want to use gdbm */
+#undef USE_CDB

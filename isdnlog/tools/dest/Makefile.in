@@ -11,6 +11,7 @@ INCLUDES		=
 LDFLAGS			= @DBMLIB@
 DBEXT			= @DBEXT@
 RDBEXT			= @RDBEXT@
+CDBEXTRALIBS		= @CDBEXTRALIBS@
 PROGRAM			= dest
 MODULES			= $(PROGRAM).o
 MANPAGE			= $(PROGRAM).8
@@ -52,8 +53,8 @@ Makefile: Makefile.in config.status
 config.status: configure
 	./config.status --recheck
 
-dest: ../dest.c $(HEADERS) Makefile
-	$(CC) -DSTANDALONE -DDESTTEST $(DEFS) $(CFLAGS) ../dest.c $(LDFLAGS) -o $@
+dest: ../dest.c $(HEADERS) Makefile $(CDBEXTRALIBS)
+	$(CC) -DSTANDALONE -DDESTTEST $(DEFS) $(CFLAGS) ../dest.c $(LDFLAGS) -o $@  $(CDBEXTRALIBS)
 
 #install-man: $(PROGRAM).man
 #	mkdir -p $(DESTDIR)$(MAN8DIR)
@@ -69,7 +70,7 @@ clean:
 	rm -f *.o *~ $(PROGRAM)
 
 dataclean:
-	rm -f *.{gdbm,db}
+	rm -f *.{gdbm,db,cdb}
 
 distclean: clean
 	rm -f config.status config.cache config.log *.man Makefile
@@ -81,6 +82,11 @@ DEST_LANG= -en
 endif
 
 data:
+ifeq ($(DBEXT),.cdb)
+	@if [ -e dest.cdb.dump ] ; then \
+	    rm dest.cdb.dump ; \
+	fi
+endif
 	@if [ ! -e dest$(DBEXT) ] ; then \
 	./makedest -v $(DEST_LANG) ; \
 	./makedest -v -gcities.dat -a $(DEST_LANG) ; \
@@ -97,8 +103,21 @@ data:
 		./makedest -v -a ch || true; \
 	fi ; \
 	fi
+ifeq ($(DBEXT),.cdb)
+	@if [ ! -e dest.cdb ] ; then \
+	    echo "" >> dest.cdb.dump ; \
+	    echo Running cdbmake ; \
+	    ../cdb/cdbmake < dest.cdb.dump dest.cdb dest.temp ; \
+	    rm dest.cdb.dump ;\
+	fi
+endif
 
 alldata:
+ifeq ($(DBEXT),.cdb)
+	if [ -e dest.cdb.dump ] ; then \
+	    rm dest.cdb.dump ; \
+	fi
+endif
 	./makedest -v $(DEST_LANG)
 	./makedest -v -gcities.dat -a $(DEST_LANG)
 	@cd ../zone ; all=`ls -d ??` ; cd ../dest ; \
@@ -107,3 +126,11 @@ alldata:
 			./makedest -v -a $$cc ; \
 		fi ; \
 	done
+ifeq ($(DBEXT),.cdb)
+	@if [ ! -e dest.cdb ] ; then \
+	    echo "" >> dest.cdb.dump ; \
+	    echo Running cdbmake ; \
+	    ../cdb/cdbmake < dest.cdb.dump dest.cdb dest.temp ; \
+	    rm dest.cdb.dump ;\
+	fi
+endif

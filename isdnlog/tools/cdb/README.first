@@ -1,0 +1,20 @@
+This is an implementation of the Constant Data Base (cdb),
+s. more in README
+
+The main interface to i4l-tools is the file i4l_cdb.c, which
+simulates a DB-interface.
+
+Changes to the original cdb-0.75:
+
+A target for i4l_cdb was added to the Makefile, the struct buffer
+is renamed to cdb_buffer because of a conflict and cdbmake has improved
+diagnostics. 
+This are the only changes to the original files 
+(s. i4l_cdb.diff for details)
+
+Currently only the utility cdbmake is used, but you don't have to
+install the cdb package.
+
+- lt <lt@toetsch.at>
+
+

@@ -13,6 +13,13 @@ if test "$BZIP2" = "bzip2_not_found_or_installed" ; then
 	AC_MSG_ERROR(bzip2 not found please install it.)
 fi
 
+if test -e ../cdb/i4l_cdb.c  ; then
+    AC_DEFINE(USE_CDB)
+    CDBEXTRALIBS="../cdb/i4l_cdb.a ../cdb/cdb.a ../cdb/buffer.a ../cdb/unix.a ../cdb/byte.a ../cdb/alloc.a"
+    DBEXT=".cdb"
+    RDBEXT=".cdb"
+    AC_MSG_RESULT(Using 'cdb' as database)
+else
 dnl Checks for libraries.
 dnl Berkeley DB appends RDBEXT
 AC_CHECK_LIB(gdbm, gdbm_open, DBMLIB=-lgdbm;DBEXT=".gdbm";RDBEXT=".gdbm"; AC_DEFINE(HAVE_LIBGDBM),
@@ -21,6 +28,7 @@ AC_CHECK_LIB(gdbm, gdbm_open, DBMLIB=-lgdbm;DBEXT=".gdbm";RDBEXT=".gdbm"; AC_DEF
 			AC_MSG_ERROR('No db found'))))
 
 dnl Checks for header files.
+fi
 AC_HEADER_STDC
 AC_CHECK_HEADERS(unistd.h)
 
@@ -33,6 +41,7 @@ AC_CHECK_FUNCS(strdup strtoul)
 AC_SUBST(DBMLIB)
 AC_SUBST(DBEXT)
 AC_SUBST(RDBEXT)
+AC_SUBST(CDBEXTRALIBS)
 AC_SUBST(CC)
 AC_SUBST(INSTALL)
 AC_SUBST(CONFIG_SBINDIR)

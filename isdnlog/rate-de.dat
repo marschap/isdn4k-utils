@@ -1,4 +1,4 @@
-V:1.10-Germany [24-Jul-2000 17:55:09]
+V:1.10-Germany [01-Aug-2000 21:46:58]
 
 # W‰hrungsformat
 U:%.3f DM
@@ -8,7 +8,7 @@ U:%.3f DM
 #
 # (C) Copyright 1999, 2000 by Andreas Kool (akool@isdn4linux.de)
 #
-# $Id: rate-de.dat,v 1.102 2000/07/24 17:02:56 akool Exp $
+# $Id: rate-de.dat,v 1.103 2000/08/01 20:31:29 akool Exp $
 #
 #
 # Das "A:" Tag muﬂ folgendermaﬂen gef¸llt werden:
@@ -6478,6 +6478,9 @@ A:+49
 T:W/09-18=0.09/60
 T:W/18-09=0.07/60
 T:E,H/*=0.07/60
+Z:10 Mobilfunk
+A:_DEMF
+T:*/*=99.99/1
 Z:200 T¸rkei
 A:TR
 T:*/*=0.33/60
@@ -12295,7 +12298,7 @@ T:*/*=0.12/2.31
 P:33,4 DTAG AktivPlus
 # Dieser Tarif gilt auch bei T-ISDN 300
 B:01033
-# G:01-Jul-2000
+# G:01-Aug-2000
 D:dtag
 C:Name:Deutsche Telekom AG AktivPlus
 C:Address:Deutsche Telekom AG, Friedrich-Ebert-Allee 140, 53113 Bonn
@@ -12359,9 +12362,9 @@ T:W/18-09=0.03/60 Moonshine
 T:E,H/*=0.03/60 Spar
 Z:3-4 GermanCall
 A:DE
-T:W/09-18=0.12/60 Sunshine
-T:W/18-09=0.06/60 Moonshine
-T:E,H/*=0.06/60 Spar
+T:W/09-18=0.09/60 Sunshine
+T:W/18-09=0.05/60 Moonshine
+T:E,H/*=0.05/60 Spar
 Z:10 C-Mobilboxen
 A:_DEMCM
 T:*/*=0.12/16.7
@@ -22056,12 +22059,7 @@ Z:2-4 Ferngespr‰che
 A:DE
 T:*/*=0.07/60
 Z:10 Mobilfunk
-A:_DEMC
-A:_DEMCM
-A:_DEMD1
-A:_DEMD2
-A:_DEME1
-A:_DEME2
+A:_DEMF
 T:*/*=0.40/60
 Z:40 Telefonauskunft Inland (Austria, dial 01051004366211811)
 A:+4366211811
@@ -22318,6 +22316,7 @@ A:_BMMF
 A:_PRMF
 A:_DZMF
 A:_AEMF
+T:*/*=99.99/1
 #####################################################################
 #
 #
@@ -22925,6 +22924,44 @@ Z:209 Welt IV
 A:+
 T:*/*=2.19(60)/1
 #####################################################################
+P:63,2 KDD-Conos CbC
+B:01063
+C:Corporate Network & Services Aktiengesellschaft Lievelingsweg 125 52119 Bonn 01063
+C:Address:Corporate Network & Services Aktiengesellschaft, Lievelingsweg 125, 5
+C:URL: http://www.kdd-conos.de
+C:Name:KDD-Conos PrivateCall genau
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com
+C:Special:Preselection
+C:Special:Sondertarif f¸r Gespr‰che zu KDD-Conos Mobilfunkteilnehmern vorhanden
+C:Preselection
+C:Erfasste Zonen:
+C:0	-   4	Deutschland
+C:5		Sondertarif
+C:10		Mobilfunk
+C:200	- 209	Ausland
+C:Sondertarif 5: Gespr‰che zu KDD-Conos Mobilfunkteilnehmern
+# G: 19-Jul-2000
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+Z:10 Mobilfunk
+A:_DEMF
+T:*/*=0.49(60)/30
+Z:200 Frankreich
+A:FR
+T:*/*=0.11(60)/30
+Z:201 Frankreich Mobilfunk
+A:_FRMF
+T:*/*=0.49(60)/30
+Z:202 USA
+A:US
+T:*/*=0.119(60)/30
+#####################################################################
 #
 #
 P:64,0 Hannoversche
@@ -23127,47 +23164,37 @@ A:110
 A:112
 T:*/*=0
 Z:1-3 Regio Plus
-T:[-29.02.2000]W/06-09=0.07/60
-T:[-29.02.2000]W/09-18=0.14/60
-T:[-29.02.2000]W/18-21=0.07/60
-T:[-29.02.2000]W/21-06=0.04/60
-T:[-29.02.2000]E,H/06-21=0.07/60
-T:[-29.02.2000]E,H/21-06=0.04/60
-T:[01.03.2000-]W/07-18=0.14/60
-T:[01.03.2000-]W/18-21=0.05/60
-T:[01.03.2000-]W/21-07=0.04/60
-T:[01.03.2000-]E/07-21=0.05/60
-T:[01.03.2000-]E/21-07=0.04/60
+T:W/07-18=0.14/60
+T:W/18-21=0.044/60
+T:W/21-07=0.039/60
+T:E,H/07-21=0.044/60
+T:E,H/21-07=0.039/60
 Z:4 Fern
 A:+49
-T:[-29.02.2000]W/06-09=0.08/60
-T:[-29.02.2000]W/09-18=0.18/60
-T:[-29.02.2000]W/18-21=0.08/60
-T:[-29.02.2000]W/21-06=0.06/60
-T:[-29.02.2000]E,H/06-21=0.08/60
-T:[-29.02.2000]E,H/21-06=0.06/60
-T:[01.03.2000-]W/07-18=0.18/60
-T:[01.03.2000-]W/18-21=0.05/60
-T:[01.03.2000-]W/21-07=0.04/60
-T:[01.03.2000-]E/07-21=0.05/60
-T:[01.03.2000-]E/21-07=0.04/60
-Z:10-12,15 D1,C,E2-Netz
-A:_DEMD1
+T:W/07-18=0.18/60
+T:W/18-21=0.044/60
+T:W/21-07=0.039/60
+T:E,H/07-21=0.044/60
+T:E,H/21-07=0.039/60
+Z:10 C Netz
 A:_DEMC,_DEMCM
-A:_DEME2
-T:W/09-18=0.96/60 Hauptzeit
-T:W/18-09=0.48/60 Nebenzeit
+T:W/07-18=0.96/60 Hauptzeit
+T:W/18-07=0.48/60 Nebenzeit
 T:E,H/*=0.48/60 Freizeit
-Z:13 D2
+Z:11 D1 Netz
+A:_DEMD1
+T:*/*=0.48/60
+Z:12 D2 Netz
 A:_DEMD2
-T:W/09-18=0.94/60 Hauptzeit
-T:W/18-09=0.46/60 Nebenzeit
+T:W/07-18=0.48/60 Hauptzeit
+T:W/18-07=0.46/60 Nebenzeit
 T:E,H/*=0.46/60 Freizeit
-Z:14 E-Plus
+Z:14 E-Plus Netz
 A:_DEME1
-T:W/09-18=1.25/60 Hauptzeit
-T:W/18-09=0.56/60 Nebenzeit
-T:E,H/*=0.56/60 Freizeit
+T:*/*=0.54/60
+Z:15 E2 Netz
+A:_DEME2
+T:*/*=0.57/60
 Z:200 Euro
 A:NL
 A:BE
@@ -23179,7 +23206,7 @@ A:IE
 A:FI
 A:IT
 A:AT
-T:*/*=0.46/60
+T:*/*=0.24/60
 Z:201 Euro Plus
 A:FO
 A:GR
@@ -23599,7 +23626,7 @@ T:*/*=0
 #
 P:75,0 Callino
 B:01075
-# G:01-Feb-2000
+# G:01-Aug-2000
 C:Address:ARCIS Media Com Management GmbH, Maximilianstr. 14, 80539 M¸nchen
 C:Name:Callino
 C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
@@ -23614,19 +23641,12 @@ A:112
 T:*/*=0
 Z:1-4 Fern
 A:+49
-T:W/08-18=0.119/60
-T:W/18-21=0.079/60
-T:W/21-06=0.059/60
-T:W/06-08=0.079/60
-T:E,H/06-21=0.079/60
-T:E,H/21-06=0.059/60
-Z:10-12,15 D1,D2,C,E2-Netz
-A:_DEMD1
-A:_DEMD2
-A:_DEMC,_DEMCM
-A:_DEME2
-A:_DEME1
-T:*/*=0.89/60
+T:W/08-16=0.099/60
+T:W/16-08=0.047/60
+T:E,H/*=0.047/60
+Z:10-12,15 Deutschland Mobilfunk
+A:_DEMF
+T:*/*=0.59/60
 Z:60-66,68-75 Funkruf
 A:0164,01682,01683,01684,01685,01687,01688,01689 cityruf automatic
 A:016951,016952 cityruf operator
@@ -25231,9 +25251,11 @@ A:112
 T:*/*=0
 Z:1-4 National
 A:+49
-T:W/06-20=0.063/60
-T:W/20-06=0.033/60
-T:E,H/*=0.003/60
+T:*/06-20=0.063/60
+T:*/20-06=0.033/60
+Z:10 Mobilfunknetz
+A:_DEMF
+T:*/*=0.60/60
 Z:200 Euro 1 / USA, Kanada # gilt *NICHT* f¸r Mobilfunknetze in diese L‰nder!
 A:DK,FR,UK,CA,NL,SE
 A:CH,US
@@ -25427,20 +25449,18 @@ A:112
 T:*/*=0
 Z:1-4 Fern
 A:+49
-T:W/06-08=0.10/60 Sparzeit
-T:W/08-18=0.15/60 Hauptzeit
-T:W/18-21=0.10/60 Freizeit
-T:W/21-06=0.05/60 Traumzeit
-T:E,H/06-21=0.10/60 Freizeit
-T:E,H/21-06=0.05/60 Nacht
 T:[01.03.2000-31.03.2000]7/*=0.029/60 Maerz-Spezial
+T:[15.07.2000-28.08.2000]*/21-06=0.033/60 Sonderangebot
+T:W/06-08=0.08/60 Sparzeit
+T:W/08-18=0.12/60 Hauptzeit
+T:W/18-21=0.08/60 Freizeit
+# T:W/21-06=0.05/60 Traumzeit
+T:W/21-06=0.033/60 Sonderangebot # gÅltig vom 15.7.2000 bis 27.8.2000
+T:E,H/06-21=0.08/60 Freizeit
+# T:E,H/21-06=0.05/60 Nacht
+T:E,H/21-06=0.033/60 Sonderangebot # gÅltig vom 15.7.2000 bis 27.8.2000
 Z:10-15 Mobil
-A:_DEMCM
-A:_DEMC
-A:_DEMD1
-A:_DEMD2
-A:_DEME1
-A:_DEME2
+A:_DEMF
 T:W/08-18=0.89/60
 T:W/18-08=0.49/60 Freizeit
 T:E,H/*=0.49/60 Traumzeit

@@ -1,9 +1,11 @@
 #! /bin/sh
 
-# This job fully generates a new "zone-de-dtag.gdbm"
+# This job fully generates a new "zone-de-dtag.cdb"
 #
 # Be warned: This job runs several hours, and requires more than
 # 300 Mb of free disk space!
+# (But my nice SMP host does this in 34 minutes :-) Try to beat me!)
+# ./mk  2027.48s user 87.48s system 100% cpu 35:10.32 total
 
 #cd /usr/src/isdn4k-utils/isdnlog/tools/zone/de/01033
 
@@ -26,10 +28,10 @@ bzip2 -9 zred.dtag
 
 
 cd ../..
-rm ../../zone-de-dtag.gdbm
+rm ../../zone-de-dtag.cdb
 make DE
 
 # verify it
-./zone -d ../../zone-de-dtag.gdbm -z de/01033/zoneall -v
+./zone -d ../../zone-de-dtag.cdb -z de/01033/zoneall -v
 
 rm de/01033/zoneall

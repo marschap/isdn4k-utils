@@ -1,4 +1,4 @@
-ISDNLOG - Version 4.25 -  				27-May-2000
+ISDNLOG - Version 4.37 -  				27-July-2000
 
 
 isdnlog ist ein Utility zur Auswertung des D-Kanals eines
@@ -17,9 +17,9 @@ Quick-Installation-Guide
      CONFIG_ISDN=m
      CONFIG_ISDN_DRV_HISAX=m
 
-2. isdn4k-utils-3.0.tar.gz auspacken, erstellen und installieren:
+2. isdn4k-utils-3.1.tar.gz auspacken, erstellen und installieren:
      cd /usr/src
-     tar xzf isdn4k-utils-3.0.tar.gz
+     tar xzf isdn4k-utils-3.1.tar.gz
      cd isdn4k-utils
      make config
      make
@@ -35,25 +35,21 @@ Quick-Installation-Guide
    NUMBER = 4711
    SI     = 1
    ALIAS  = My Phone
-   ZONE   = 1
 
    [MSN]
    NUMBER = 4712
    SI     = 1
    ALIAS  = FAX
-   ZONE   = 1
 
    [MSN]
    NUMBER = 4713
    SI     = 1
    ALIAS  = X.75
-   ZONE   = 1
    -----------------------------------------------------
 
      NUMBER = <eigene_Telefonnumer_ohne_Vorwahl>
      SI = <Dienstkennung>
      ALIAS = <Alias>
-     ZONE = 1
 
 
 4. isdn4linux das D-Kanal-Protokoll entlocken:
@@ -118,6 +114,7 @@ Inhalt:
 18.	LCR (Least cost router)
 19.    	Probleme?
 20.     Verwendete Dateien
+20.a    Datenbanken
 21.     Verwendete Environment-Variablen
 22.     Verwendete Abkuerzungen
 23.     Danksagung
@@ -128,68 +125,6 @@ Vorwort
 
 Die Logdatei "isdn.log" ist nicht mehr im Verzeichnis "/var/adm/,
 sondern im Verzeichnis "/var/log" zu Hause.
-
-Fuer die isdn4linux-Version ("ISDN subsystem Rev: 1.5/1.5/1.5/1.5")
-respektive Linux-1.3.93 _muss_ isdnlog mit "-DSELECT_FIX"
-erstellt werden. Dadurch wird ein kleiner Bug in dieser Version umgangen.
-Dadurch entfaellt leider auch die Durchsatz-Raten-Ermittlung!
-
-Anmerkung:
-  Der X11-Version (isdnlog-X11-2.43.tar.gz) liegen einige Sound-Dateien
-  als Samples bei.
-  Diese Datei unterliegen _nicht_ dem GPL. Diese sind nur als Beigaben
-  der Autoren zu Betrachten und stehen in keinem Zusammenhang mit den
-  Sourcen.
-
-Es wurden folgende Dinge geaendert, die vor dem ersten Start
-dieser neuen Version unbedingt angepasst werden muessen!
-
-Aenderungen seit Version 2.60:
-
-    - Unterstuetzung fuer die seit 1.1.1998 moeglichen privaten
-      Telefongesellschaften
-
-Aenderungen seit Version 2.50:
-
-    - Konfigurationsdateien heissen jetzt isdn.conf, callerid.conf und
-      ~/.isdn statt isdnlog.conf
-    - Neue Syntax der Konfigurationsdateien
-    - Watchdog-Funktion (isdnlog ueberwacht isdn4linux)
-    - HTML-Ausgabe des isdnrep
-
-Aenderungen seit Version 2.41:
-
-    - Das neue Feature "Rueckruf bei Besetzt" der Telekom wird erkannt,
-      und ignoriert
-
-Aenderungen seit Version 2.30:
-
-    - Die "isdnlog.conf" hat fuer die Flags eine komplett neue
-      Syntax erhalten.
-
-    - Die Optionen -c und -i sind entfallen. Diese wurden durch die
-      ueberarbeitete Option -S ersetzt.
-
-    - Die -C x Option wurde geaendert. Es muss jetzt dort der gesamte
-      Pfad angegeben werden:
-        Vorher "-C p7 -> /dev/ttyp7",
-        jetzt  "-C /dev/ttyp7"
-
-Aenderungen seit Version 2.01:
-
-    - Die "isdnlog.conf" gehoert nun in das Verzeichnis
-      "/etc/isdn" ... anstelle von "/etc"
-
-    - Die "isdnlog.conf" hat neue Spalten erhalten, die _unbedingt_
-      in bestehende Dateien einzutragen sind
-
-    - Alle Telefonnummern in der "isdnlog.conf" muessen nun -
-      ausser den eigenen MSN's - mit der korrekten Anzahl vorlaufender
-      Nullen eingetragen werden
-
-    - Diverse Command-Line-Argumente von isdnlog haben erweiterte
-      oder geaenderte Funktionen erhalten.
-
 
 Ein Bitte noch:
 ===============
@@ -321,8 +256,8 @@ isdnlog sammelt all diese Informationen, und gestattet damit folgendes:
 --------------------------
 
 Z.Zt. arbeitet isdnlog _nur_ mit dem HiSax-Treiber (d.h. allen passiven
-Karten) sowie der AVM-B1 zusammen, die ICN-Karte wird leider noch nicht
-unterstuetzt.
+Karten) sowie der AVM-B1 und der Eicon DIVA Server 4?BRI zusammen,
+die ICN-Karte wird leider noch nicht unterstuetzt.
 
 Weiterhin kann isdnlog bei allen rausgehenden Verbindungen, die nicht
 mit der ISDN-Karte entstanden sind (ISDN-Telefon, Modem/Fax etc. am
@@ -542,6 +477,7 @@ COUNTRYFILE = /usr/lib/isdn/country-de.dat
 
   Diese Datei beinhaltet Laenderbezeichnungen und Vorwahlen. Sie dient
   als Ausgangsbasis zum  Erzeugen der Destination-Datenbank dest.gdbm.
+  s. [20.a] Datenbanken
 
 RATEFILE= /usr/lib/isdn/rate-de.dat
 
@@ -565,10 +501,12 @@ ZONEFILE= /usr/lib/isdn/zone-de-%s.gdbm
   ersetzt.
 
   s. auch isdnlog/samples/isdn.conf.CC fuer verschiedene Konfigurationen.
+  s. [20.a] Datenbanken
 
 DESTFILE= /usr/lib/isdn/dest.gdbm
 
   Destination Database mit Ortsnamen und Vorwahlen
+  s. [20.a] Datenbanken
 
 VBN =  Verbindungsnetzbetreiberauswahlnummer
 
@@ -4589,6 +4527,29 @@ Folgende Files werden von diesem System verwendet:
   /dev/isdninfo		     - Interne Meldungen von isdn4linux
   /tmp/isdnctrl0	     - Protokoll obiger Devices als ASCII-Datei
   /usr/X11R6/lib/X11/app-defaults/Isdn - Resourcefile fuer xisdn
+
+  s. [20.a] Datenbanken
+
+20.a Datenbanken
+----------------
+
+In alle den vorhergehenden Beispielen wurde '.gdbm' als Endung der
+Zonen- oder Destination-Datenbank genannt. Das haengt aber von der
+vorhandenen Konfiguration ab, welche Datenbank-Bibliotheken auf dem
+Rechner unterstuetzt sind.
+Ueber die Erkennung und das Verwenden verschiedenr DB-Systeme gibt
+es in der exim-Dokumentation (www.exim.org, [.tgz..] doc/dbm.discuss.txt)
+eine sehr ausfuehrliche Zusammenfassung.
+
+Isdnlog/rep/rate verwendeten bis dato (27.7.2000) den Gnu Database Manager
+(gdbm) als Standard, Konfigurationsoptionen fuer ndbm und db sind zwar
+vorhanden, ich weiss aber nicht, ob sie funktionieren.
+
+Nun verwendet isdnlog standardmaessig die Constant DataBase von
+D. J. Bernstein <http://cr.yp.to/cdb.html>.
+
+In tools/NEWS ist u.a. auch eine Prozedur zum Switchen zwischen gdbm und
+cdb beschrieben.
 
 
 21. Verwendete Environment-Variablen

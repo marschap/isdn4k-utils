@@ -1,5 +1,38 @@
 NEWS for tools: (rate, isdnrate, isdnrep)
 
+2000.07.27
+
+  The isdnlog/rep/rate have now a new default database. It is cdb
+  (Constant DataBase from D. J. Bernstein <http://cr.yp.to/cdb.html>)
+
+  If for some reason you don't want to use it, rename or remove
+  the file /cdb/i4l_cdb.c, and run the procedure below.
+
+  To use the new (or switch) datafiles do in subdir isdnlog:
+
+    make clean
+    cd ..
+    make subconfig
+    cd isdnlog
+    make
+    su -c "make install"
+
+    Note: sometimes (after a small chhange in cdb) after leaving cdb,
+          make shows an error
+          "undefined reference to 'main'"
+	  because $(PROGRAM) is lost in zone/Makefile, restarting make
+	  then works. I don't know, what's goin on here - anyone?
+
+    After installing them change the two .gdbm entries in
+    /etc/isdn/isdn.conf to .cdb. You could also remove the *.gdbm in
+    /usr/lib/isdn.
+
+  The cdb data files are a lot smaller then the default gdbm we used,
+  The database seems to be much faster too.
+
+  -lt <lt@toetsch.at>
+
+
 2000.07.17
   all tools and rate-files
 

@@ -128,9 +128,20 @@ AC_PROG_MAKE_SET
 AC_PATH_PROGS(BZIP2, bzip2, /usr/bin/bzip2, $PATH:/bin:/usr/bin:/usr/local/bin)
 
 dnl Checks for libraries.
+if test -e tools/cdb/i4l_cdb.c  ; then
+    AC_DEFINE(USE_CDB)
+    CDBEXTRALIBS="tools/cdb/i4l_cdb.a tools/cdb/cdb.a tools/cdb/buffer.a tools/cdb/unix.a tools/cdb/byte.a tools/cdb/alloc.a"
+    DBEXT=".cdb"
+    RDBEXT=".cdb"
+    AC_MSG_RESULT(Using 'cdb' as database)
+else
 AC_CHECK_LIB(gdbm, gdbm_open, DBMLIB=-lgdbm; AC_DEFINE(HAVE_LIBGDBM),
 	AC_CHECK_LIB(dbm, dbm_open, DBMLIB=-ldbm; AC_DEFINE(HAVE_LIBDBM),
 		AC_CHECK_LIB(db, dbm_open, DBMLIB=-ldb; AC_DEFINE(HAVE_LIBDB))))
+fi
+AC_DEFINE_UNQUOTED(RDBEXT,"$RDBEXT")
+
+dnl log database support
 AC_CHECK_POSTGRES
 AC_CHECK_MYSQLDB
 AC_CHECK_ORACLE
@@ -247,4 +258,5 @@ AC_SUBST(MANDATE_ISDNLOG8)
 AC_SUBST(MANDATE_ISDNLOG_USERS)
 AC_SUBST(MANDATE_ISDNREP)
 AC_SUBST(MANDATE_ISDNCONF)
+AC_SUBST(CDBEXTRALIBS)
 AC_OUTPUT(Makefile isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 isdnlog/isdnlog.users.5 isdnrep/isdnrep.1 isdnconf/isdnconf.1)

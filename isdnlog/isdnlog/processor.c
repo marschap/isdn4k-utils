@@ -1,4 +1,4 @@
-/* $Id: processor.c,v 1.109 2000/07/07 19:38:30 akool Exp $
+/* $Id: processor.c,v 1.110 2000/08/01 20:31:30 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,44 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.110  2000/08/01 20:31:30  akool
+ * isdnlog-4.37
+ * - removed "09978 Schoenthal Oberpfalz" from "zone-de.dtag.cdb". Entry was
+ *   totally buggy.
+ *
+ * - isdnlog/isdnlog/processor.c ... added err msg for failing IIOCGETCPS
+ *
+ * - isdnlog/tools/cdb       ... (NEW DIR) cdb Constant Data Base
+ * - isdnlog/Makefile.in     ... cdb Constant Data Base
+ * - isdnlog/configure{,.in}
+ * - isdnlog/policy.h.in
+ * - isdnlog/FAQ                 sic!
+ * - isdnlog/NEWS
+ * - isdnlog/README
+ * - isdnlog/tools/NEWS
+ * - isdnlog/tools/dest.c
+ * - isdnlog/tools/isdnrate.man
+ * - isdnlog/tools/zone/Makefile.in
+ * - isdnlog/tools/zone/configure{,.in}
+ * - isdnlog/tools/zone/config.h.in
+ * - isdnlog/tools/zone/common.h
+ * - isdnlog/tools/dest/Makefile.in
+ * - isdnlog/tools/dest/configure{,.in}
+ * - isdnlog/tools/dest/makedest
+ * - isdnlog/tools/dest/CDB_File_Dump.{pm,3pm} ... (NEW) writes cdb dump files
+ * - isdnlog/tools/dest/mcdb ... (NEW) convert testdest dumps to cdb dumps
+ *
+ * - isdnlog/tools/Makefile ... clean:-target fixed
+ * - isdnlog/tools/telnum{.c,.h} ... TELNUM.vbn was not always initialized
+ * - isdnlog/tools/rate.c ... fixed bug with R:tag and isdnlog not always
+ *                            calculating correct rates (isdnrate worked)
+ *
+ *  s. isdnlog/tools/NEWS on details for using cdb. and
+ *     isdnlog/README 20.a Datenbanken for a note about databases (in German).
+ *
+ *  As this is the first version with cdb and a major patch there could be
+ *  still some problems. If you find something let me know. <lt@toetsch.at>
+ *
  * Revision 1.109  2000/07/07 19:38:30  akool
  * isdnlog-4.30
  *  - isdnlog/tools/rate-at.c ... 1001 onlinetarif
@@ -4956,9 +4994,10 @@ void processflow()
   register int    j;
   auto     char   sx[BUFSIZ];
   auto     double s;
+  int      ret;
+  static   int tries = 3;
 
-
-  if (!ioctl(sockets[ISDNINFO].descriptor, IIOCGETCPS, &io)) {
+  if (!(ret=ioctl(sockets[ISDNINFO].descriptor, IIOCGETCPS, &io))) {
 
     if (verbose & VERBOSE_FLOW) {
       p = sx;
@@ -4986,6 +5025,10 @@ void processflow()
 
     processbytes();
   } /* if */
+  else if (tries) {
+    tries--;
+    print_msg(PRT_ERR, "Can't read iobytes: ioctl IIOCGETCPS returned %d\n", ret);
+  }
 } /* processflow */
 
 

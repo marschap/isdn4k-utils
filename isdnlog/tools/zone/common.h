@@ -1,7 +1,15 @@
 /* mkzonedb.c, zone.c needs this */
 #define READ 0
 #define WRITE 1
-#if HAVE_LIBGDBM
+#if USE_CDB
+	#include "../cdb/i4l_cdb.h"
+	static char dbv[]="CDB";	/* don't change */
+	#define OPEN(name,wr) i4l_cdb_open(name,wr)
+	#define CLOSE(db) i4l_cdb_close(db)
+	#define GET_ERR "unknown"
+	#define STORE(db, key, value) i4l_cdb_store(db, key, value)
+	#define FETCH(db, key) i4l_cdb_fetch(db, key)
+#elif HAVE_LIBGDBM
 	#include <gdbm.h>
 	static char dbv[]="GDBM";	/* don't change */
 	#define OPEN(name,wr) gdbm_open(name,0,wr?GDBM_NEWDB:GDBM_READER,0644,0)
@@ -40,6 +48,9 @@
 	Sorry, no database found in configure
 #endif
 
+#ifndef _DEST_C_
+/* dest.c doesn't need this */
+
 /* if the following doesn't - how can we find datatypes with len 1,2,4 ? */
 #if SIZEOF_CHAR != 1
 	Something is wrong sizeof(char) != 1
@@ -60,5 +71,5 @@
 #else
 	typedef unsigned long  UL; /* len 4 */
 #endif
-
+#endif /* _DEST_C_ */
 typedef enum {false,true} bool;

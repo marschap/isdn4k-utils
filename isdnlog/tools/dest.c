@@ -20,6 +20,7 @@
  * Changes:
  *
  * 1.00 08.10.1999 lt Initial Version
+ * 1.01 26.07.2000 lt Added cdb support
  */
 
 /* #define DEBUG */
@@ -68,7 +69,7 @@ char   *Strncat(char *dest, const char *src, int len);
 #define min(x,y) (x)<(y)?(x):(y)
 #endif
 
-static char version[] = "1.00";
+static char version[] = "1.01";
 static _DB db;		/* our dest.db */
 static int init_ok=0;
 
@@ -162,8 +163,9 @@ int     initDest(char *path, char **msg)
   if ((db = OPEN(path, READ)) == 0) {
     if (msg)
       snprintf(message, LENGTH,
-	       "Dest V%s: Error: gdbm_open '%s': '%s'",
+	       "Dest V%s: Error: open '%s': '%s'",
 	       version, path, GET_ERR);
+    return -1;
   }
   /* read info */
   key.dptr = vinfo;
@@ -422,13 +424,13 @@ int     main(int argc, char *argv[])
   TELNUM  num;
   int     i = 1, res;
 
-  if (initDest("./dest.gdbm", &msg)) {
+  if (initDest("./dest" RDBEXT, &msg)) {
     fprintf(stderr, "%s\n", msg);
     exit(EXIT_FAILURE);
   }
   fprintf(stderr, "%s\n", msg);
   if (argc == 1) {
-    fprintf(stderr, "Usage:\n\t%s number|name ...", basename(argv[0]));
+    fprintf(stderr, "Usage:\n\t%s number|name ...\n", basename(argv[0]));
     exit(EXIT_FAILURE);
   }
   memset(&num, 0, sizeof(num));

@@ -1,0 +1,384 @@
+diff -ur /home/lt/src/cdb-0.75/Makefile cdb/Makefile
+--- /home/lt/src/cdb-0.75/Makefile	Sat Feb 19 21:42:05 2000
++++ cdb/Makefile	Thu Jul 27 15:25:49 2000
+@@ -2,8 +2,21 @@
+ 
+ SHELL=/bin/sh
+ 
+-default: it
++default: cdbmake i4l_cdb.a
+ 
++i4l_cdb.o: compile i4l_cdb.c i4l_cdb.h
++	./compile i4l_cdb.c
++
++i4l_cdb.a: makelib cdb_make.o i4l_cdb.o
++	./makelib i4l_cdb.a i4l_cdb.o cdb_make.o 
++	
++clean:
++	-rm *.o *.a cdbdump cdbget cdbmake{,-12,-sv} cdbstats \
++	cdbtest compile install instcheck load makelib rts testzero 2> /dev/null
++	
++distclean: clean
++	-rm autostr auto_home.c systype uint32.h 2> /dev/null
++	
+ alloc.a: \
+ makelib alloc.o
+ 	./makelib alloc.a alloc.o
+@@ -166,10 +179,11 @@
+ 
+ compile: \
+ warn-auto.sh conf-cc
+-	( cat warn-auto.sh; \
++	@( cat warn-auto.sh; \
+ 	echo exec "`head -1 conf-cc`" '-c $${1+"$$@"}' \
+ 	) > compile
+-	chmod 755 compile
++	@echo Making with `cat compile`
++	@chmod 755 compile
+ 
+ error.o: \
+ compile error.c error.h
+Only in cdb: README.first
+diff -ur /home/lt/src/cdb-0.75/buffer.c cdb/buffer.c
+--- /home/lt/src/cdb-0.75/buffer.c	Sat Feb 19 21:42:05 2000
++++ cdb/buffer.c	Wed Jul 26 11:20:10 2000
+@@ -1,6 +1,6 @@
+ #include "buffer.h"
+ 
+-void buffer_init(buffer *s,int (*op)(),int fd,char *buf,unsigned int len)
++void buffer_init(cdb_buffer *s,int (*op)(),int fd,char *buf,unsigned int len)
+ {
+   s->x = buf;
+   s->fd = fd;
+diff -ur /home/lt/src/cdb-0.75/buffer.h cdb/buffer.h
+--- /home/lt/src/cdb-0.75/buffer.h	Sat Feb 19 21:42:05 2000
++++ cdb/buffer.h	Wed Jul 26 11:20:27 2000
+@@ -1,27 +1,27 @@
+ #ifndef BUFFER_H
+ #define BUFFER_H
+ 
+-typedef struct buffer {
++typedef struct cdb_buffer {
+   char *x;
+   unsigned int p;
+   unsigned int n;
+   int fd;
+   int (*op)();
+-} buffer;
++} cdb_buffer;
+ 
+ #define BUFFER_INIT(op,fd,buf,len) { (buf), 0, (len), (fd), (op) }
+ #define BUFFER_INSIZE 8192
+ #define BUFFER_OUTSIZE 8192
+ 
+-extern void buffer_init(buffer *,int (*)(),int,char *,unsigned int);
++extern void buffer_init(cdb_buffer *,int (*)(),int,char *,unsigned int);
+ 
+-extern int buffer_flush(buffer *);
+-extern int buffer_put(buffer *,char *,unsigned int);
+-extern int buffer_putalign(buffer *,char *,unsigned int);
+-extern int buffer_putflush(buffer *,char *,unsigned int);
+-extern int buffer_puts(buffer *,char *);
+-extern int buffer_putsalign(buffer *,char *);
+-extern int buffer_putsflush(buffer *,char *);
++extern int buffer_flush(cdb_buffer *);
++extern int buffer_put(cdb_buffer *,char *,unsigned int);
++extern int buffer_putalign(cdb_buffer *,char *,unsigned int);
++extern int buffer_putflush(cdb_buffer *,char *,unsigned int);
++extern int buffer_puts(cdb_buffer *,char *);
++extern int buffer_putsalign(cdb_buffer *,char *);
++extern int buffer_putsflush(cdb_buffer *,char *);
+ 
+ #define buffer_PUTC(s,c) \
+   ( ((s)->n != (s)->p) \
+@@ -29,12 +29,12 @@
+     : buffer_put((s),&(c),1) \
+   )
+ 
+-extern int buffer_get(buffer *,char *,unsigned int);
+-extern int buffer_bget(buffer *,char *,unsigned int);
+-extern int buffer_feed(buffer *);
++extern int buffer_get(cdb_buffer *,char *,unsigned int);
++extern int buffer_bget(cdb_buffer *,char *,unsigned int);
++extern int buffer_feed(cdb_buffer *);
+ 
+-extern char *buffer_peek(buffer *);
+-extern void buffer_seek(buffer *,unsigned int);
++extern char *buffer_peek(cdb_buffer *);
++extern void buffer_seek(cdb_buffer *,unsigned int);
+ 
+ #define buffer_PEEK(s) ( (s)->x + (s)->n )
+ #define buffer_SEEK(s,len) ( ( (s)->p -= (len) ) , ( (s)->n += (len) ) )
+@@ -45,12 +45,12 @@
+     : buffer_get((s),(c),1) \
+   )
+ 
+-extern int buffer_copy(buffer *,buffer *);
++extern int buffer_copy(cdb_buffer *,cdb_buffer *);
+ 
+-extern buffer *buffer_0;
+-extern buffer *buffer_0small;
+-extern buffer *buffer_1;
+-extern buffer *buffer_1small;
+-extern buffer *buffer_2;
++extern cdb_buffer *buffer_0;
++extern cdb_buffer *buffer_0small;
++extern cdb_buffer *buffer_1;
++extern cdb_buffer *buffer_1small;
++extern cdb_buffer *buffer_2;
+ 
+ #endif
+diff -ur /home/lt/src/cdb-0.75/buffer_0.c cdb/buffer_0.c
+--- /home/lt/src/cdb-0.75/buffer_0.c	Sat Feb 19 21:42:05 2000
++++ cdb/buffer_0.c	Wed Jul 26 11:20:35 2000
+@@ -8,5 +8,5 @@
+ }
+ 
+ char buffer_0_space[BUFFER_INSIZE];
+-static buffer it = BUFFER_INIT(buffer_0_read,0,buffer_0_space,sizeof buffer_0_space);
+-buffer *buffer_0 = &it;
++static cdb_buffer it = BUFFER_INIT(buffer_0_read,0,buffer_0_space,sizeof buffer_0_space);
++cdb_buffer *buffer_0 = &it;
+diff -ur /home/lt/src/cdb-0.75/buffer_1.c cdb/buffer_1.c
+--- /home/lt/src/cdb-0.75/buffer_1.c	Sat Feb 19 21:42:05 2000
++++ cdb/buffer_1.c	Wed Jul 26 11:20:42 2000
+@@ -2,5 +2,5 @@
+ #include "buffer.h"
+ 
+ char buffer_1_space[BUFFER_OUTSIZE];
+-static buffer it = BUFFER_INIT(write,1,buffer_1_space,sizeof buffer_1_space);
+-buffer *buffer_1 = &it;
++static cdb_buffer it = BUFFER_INIT(write,1,buffer_1_space,sizeof buffer_1_space);
++cdb_buffer *buffer_1 = &it;
+diff -ur /home/lt/src/cdb-0.75/buffer_1s.c cdb/buffer_1s.c
+--- /home/lt/src/cdb-0.75/buffer_1s.c	Sat Feb 19 21:42:05 2000
++++ cdb/buffer_1s.c	Wed Jul 26 11:20:49 2000
+@@ -2,5 +2,5 @@
+ #include "buffer.h"
+ 
+ char buffer_1small_space[256];
+-static buffer it = BUFFER_INIT(write,1,buffer_1small_space,sizeof buffer_1small_space);
+-buffer *buffer_1small = &it;
++static cdb_buffer it = BUFFER_INIT(write,1,buffer_1small_space,sizeof buffer_1small_space);
++cdb_buffer *buffer_1small = &it;
+diff -ur /home/lt/src/cdb-0.75/buffer_2.c cdb/buffer_2.c
+--- /home/lt/src/cdb-0.75/buffer_2.c	Sat Feb 19 21:42:05 2000
++++ cdb/buffer_2.c	Wed Jul 26 11:20:56 2000
+@@ -2,5 +2,5 @@
+ #include "buffer.h"
+ 
+ char buffer_2_space[256];
+-static buffer it = BUFFER_INIT(write,2,buffer_2_space,sizeof buffer_2_space);
+-buffer *buffer_2 = &it;
++static cdb_buffer it = BUFFER_INIT(write,2,buffer_2_space,sizeof buffer_2_space);
++cdb_buffer *buffer_2 = &it;
+diff -ur /home/lt/src/cdb-0.75/buffer_copy.c cdb/buffer_copy.c
+--- /home/lt/src/cdb-0.75/buffer_copy.c	Sat Feb 19 21:42:05 2000
++++ cdb/buffer_copy.c	Wed Jul 26 11:21:04 2000
+@@ -1,6 +1,6 @@
+ #include "buffer.h"
+ 
+-int buffer_copy(buffer *bout,buffer *bin)
++int buffer_copy(cdb_buffer *bout,cdb_buffer *bin)
+ {
+   int n;
+   char *x;
+diff -ur /home/lt/src/cdb-0.75/buffer_get.c cdb/buffer_get.c
+--- /home/lt/src/cdb-0.75/buffer_get.c	Sat Feb 19 21:42:05 2000
++++ cdb/buffer_get.c	Wed Jul 26 11:21:13 2000
+@@ -13,7 +13,7 @@
+   }
+ }
+ 
+-static int getthis(buffer *s,char *buf,unsigned int len)
++static int getthis(cdb_buffer *s,char *buf,unsigned int len)
+ {
+   if (len > s->p) len = s->p;
+   s->p -= len;
+@@ -22,7 +22,7 @@
+   return len;
+ }
+ 
+-int buffer_feed(buffer *s)
++int buffer_feed(cdb_buffer *s)
+ {
+   int r;
+ 
+@@ -35,7 +35,7 @@
+   return r;
+ }
+ 
+-int buffer_bget(buffer *s,char *buf,unsigned int len)
++int buffer_bget(cdb_buffer *s,char *buf,unsigned int len)
+ {
+   int r;
+  
+@@ -45,7 +45,7 @@
+   return getthis(s,buf,len);
+ }
+ 
+-int buffer_get(buffer *s,char *buf,unsigned int len)
++int buffer_get(cdb_buffer *s,char *buf,unsigned int len)
+ {
+   int r;
+  
+@@ -55,12 +55,12 @@
+   return getthis(s,buf,len);
+ }
+ 
+-char *buffer_peek(buffer *s)
++char *buffer_peek(cdb_buffer *s)
+ {
+   return s->x + s->n;
+ }
+ 
+-void buffer_seek(buffer *s,unsigned int len)
++void buffer_seek(cdb_buffer *s,unsigned int len)
+ {
+   s->n += len;
+   s->p -= len;
+diff -ur /home/lt/src/cdb-0.75/buffer_put.c cdb/buffer_put.c
+--- /home/lt/src/cdb-0.75/buffer_put.c	Sat Feb 19 21:42:05 2000
++++ cdb/buffer_put.c	Wed Jul 26 11:21:22 2000
+@@ -20,7 +20,7 @@
+   return 0;
+ }
+ 
+-int buffer_flush(buffer *s)
++int buffer_flush(cdb_buffer *s)
+ {
+   int p;
+  
+@@ -30,7 +30,7 @@
+   return allwrite(s->op,s->fd,s->x,p);
+ }
+ 
+-int buffer_putalign(buffer *s,char *buf,unsigned int len)
++int buffer_putalign(cdb_buffer *s,char *buf,unsigned int len)
+ {
+   unsigned int n;
+  
+@@ -44,7 +44,7 @@
+   return 0;
+ }
+ 
+-int buffer_put(buffer *s,char *buf,unsigned int len)
++int buffer_put(cdb_buffer *s,char *buf,unsigned int len)
+ {
+   unsigned int n;
+  
+@@ -66,23 +66,23 @@
+   return 0;
+ }
+ 
+-int buffer_putflush(buffer *s,char *buf,unsigned int len)
++int buffer_putflush(cdb_buffer *s,char *buf,unsigned int len)
+ {
+   if (buffer_flush(s) == -1) return -1;
+   return allwrite(s->op,s->fd,buf,len);
+ }
+ 
+-int buffer_putsalign(buffer *s,char *buf)
++int buffer_putsalign(cdb_buffer *s,char *buf)
+ {
+   return buffer_putalign(s,buf,str_len(buf));
+ }
+ 
+-int buffer_puts(buffer *s,char *buf)
++int buffer_puts(cdb_buffer *s,char *buf)
+ {
+   return buffer_put(s,buf,str_len(buf));
+ }
+ 
+-int buffer_putsflush(buffer *s,char *buf)
++int buffer_putsflush(cdb_buffer *s,char *buf)
+ {
+   return buffer_putflush(s,buf,str_len(buf));
+ }
+diff -ur /home/lt/src/cdb-0.75/cdb_make.h cdb/cdb_make.h
+--- /home/lt/src/cdb-0.75/cdb_make.h	Sat Feb 19 21:42:05 2000
++++ cdb/cdb_make.h	Wed Jul 26 11:22:25 2000
+@@ -25,7 +25,7 @@
+   struct cdb_hp *split; /* includes space for hash */
+   struct cdb_hp *hash;
+   uint32 numentries;
+-  buffer b;
++  cdb_buffer b;
+   uint32 pos;
+   int fd;
+ } ;
+diff -ur /home/lt/src/cdb-0.75/cdbmake.c cdb/cdbmake.c
+--- /home/lt/src/cdb-0.75/cdbmake.c	Sat Feb 19 21:42:05 2000
++++ cdb/cdbmake.c	Wed Jul 26 09:58:29 2000
+@@ -21,15 +21,18 @@
+ {
+   strerr_die2sys(111,FATAL,"unable to read input: ");
+ }
+-void die_readformat(void)
++void die_readformat(char *s, int l)
+ {
+-  strerr_die2x(111,FATAL,"unable to read input: bad format");
++  char b[256];
++  sprintf(b, "unable to read input: bad format in %d, '%s", l, s);
++  strerr_die2x(111,FATAL,b);
+ }
++  int line = 0;
+ 
+ inline void get(char *ch)
+ {
+   switch(buffer_GETC(buffer_0,ch)) {
+-    case 0: die_readformat();
++    case 0: die_readformat("null",line);
+     case -1: die_read();
+   }
+ }
+@@ -59,14 +62,15 @@
+   if (cdb_make_start(&c,fd) == -1) die_write();
+ 
+   for (;;) {
++    line++;
+     get(&ch);
+     if (ch == '\n') break;
+-    if (ch != '+') die_readformat();
++    if (ch != '+') die_readformat("+", line);
+     klen = 0;
+     for (;;) {
+       get(&ch);
+       if (ch == ',') break;
+-      if ((ch < '0') || (ch > '9')) die_readformat();
++      if ((ch < '0') || (ch > '9')) die_readformat("klen",line);
+       if (klen > 429496720) { errno = error_nomem; die_write(); }
+       klen = klen * 10 + (ch - '0');
+     }
+@@ -74,7 +78,7 @@
+     for (;;) {
+       get(&ch);
+       if (ch == ':') break;
+-      if ((ch < '0') || (ch > '9')) die_readformat();
++      if ((ch < '0') || (ch > '9')) die_readformat("dlen",line);
+       if (dlen > 429496720) { errno = error_nomem; die_write(); }
+       dlen = dlen * 10 + (ch - '0');
+     }
+@@ -87,9 +91,9 @@
+       h = cdb_hashadd(h,ch);
+     }
+     get(&ch);
+-    if (ch != '-') die_readformat();
++    if (ch != '-') die_readformat("-", line);
+     get(&ch);
+-    if (ch != '>') die_readformat();
++    if (ch != '>') die_readformat(">", line);
+     for (i = 0;i < dlen;++i) {
+       get(&ch);
+       if (buffer_PUTC(&c.b,ch) == -1) die_write();
+@@ -97,7 +101,7 @@
+     if (cdb_make_addend(&c,klen,dlen,h) == -1) die_write();
+ 
+     get(&ch);
+-    if (ch != '\n') die_readformat();
++    if (ch != '\n') die_readformat("nl",line);
+   }
+ 
+   if (cdb_make_finish(&c) == -1) die_write();
+Only in cdb: i4l_cdb.c
+Only in cdb: i4l_cdb.h

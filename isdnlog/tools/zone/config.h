@@ -1,9 +1,12 @@
 /* config.h.  Generated automatically by configure.  */
 /* configure sets these don't change */
 
-#define HAVE_LIBGDBM 1
+/* #undef HAVE_LIBGDBM */
 /* #undef HAVE_LIBDBM */
 /* #undef HAVE_LIBDB */
+#define USE_CDB 1
+
+#define RDBEXT ".cdb"
 
 #define SIZEOF_CHAR 1
 #define SIZEOF_SHORT 2

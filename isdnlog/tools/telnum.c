@@ -37,11 +37,11 @@
  *      ret UNKNOWN .. not found
  *
  *      Input number e.g.
- *      10055 0049 89 1234567
- *      100550049891234567
- *      1033 Deutschland 89 1234567
- *      +49 89 1234567
- *      089 1234567
+ *      10055 0049 30 1234567
+ *      100550049301234567
+ *      1033 Deutschland 30 1234567
+ *      +49 30 1234567
+ *      030 1234567
  *      1234567
  *
  * char * formatNumber(char* format, TELNUM* num)
@@ -51,14 +51,14 @@
  *      %Nc .. country +49
  *      %NC .. countryname
  *      %Nt .. tld = 2 char isdcode for country
- *      %Na .. area 89 or 089 if no country/Provider
+ *      %Na .. area 30 or 030 if no country/Provider
  *      %NA .. areaname
  *      %Nm .. msn
- *      %f .. full +49 89 12356 (Deutschland, Berlin)
- *      %F .. full +49 89/12345, Berlin
- *      %s .. short +48 89 123456
- *      %l .. long +49 89 12356 - Berlin (DE)
- *      %n .. number 004889123456
+ *      %f .. full +49 30 12356 (Deutschland, Berlin)
+ *      %F .. full +49 30/12345, Berlin
+ *      %s .. short +49 30 123456
+ *      %l .. long +49 30 12356 - Berlin (DE)
+ *      %n .. number 004930123456
  *
  *  N is number of chars to skip in format if part is not present
  *  e.g. "%1c %1a %m"
@@ -164,6 +164,7 @@ int     normalizeNumber(char *target, TELNUM * num, int flag)
   int     res = 0;
   char   *q;
 
+  if ((flag & TN_NOCLEAR) == 0)
   clearNum(num);
 #if DEBUG
   print_msg(PRT_V, "NN %s (Prov %d)=> ", target, num->nprovider);

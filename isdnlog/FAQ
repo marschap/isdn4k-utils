@@ -1,3 +1,40 @@
+isdnlog-4.xx (SuSE 6.4)
+
+ Q: isdnlog logged nichts mehr, isdnrep zeigt keine Gespraeche,
+    seit einem Update auf SuSE 6.4.
+
+ A: Schau in die SuSE-Supportdatenbank, in den Startupfiles ist ein
+    kleiner Typo.
+
+-----------------------------------------------------------------------
+
+isdnlog-4.xx
+
+ Q: Insdlog bring immer Fehler "HINT: LCR:FAILED."
+
+ A: Das sind keine Fehler, sondern Meldungen, dass bei dem Telefonat
+    nicht der billigste konfigurierte Provider (s. rate.conf) Verwendung
+    fand.
+    (Hinweis: HINT heisst Hinweis ;-)
+
+-----------------------------------------------------------------------
+
+isdnlog-4.16
+
+  Q: Ich habe einen Provider mit sekundengenauer Abrechnung. Isdnlog
+     muellt mir das Log mit CI-Meldungen voll.
+
+  S: $ man isdnlog
+     /ciinterval
+
+     oder lese tools/NEWS
+
+-----------------------------------------------------------------------
+
+[ Sorry fuer die kleine zeitliche Pause ]
+
+-----------------------------------------------------------------------
+
 isdnlog-2.60:
 
  Q: nach jedem Reboot der Maschine (Strg-Alt-Entf) sind alle Daten

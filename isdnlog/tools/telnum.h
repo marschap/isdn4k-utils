@@ -47,6 +47,7 @@ typedef struct {
 #define TN_MSN 		8
 #define TN_ALL 		15
 #define TN_NO_PROVIDER 14
+#define TN_NOCLEAR 0x80
 
 /* functions */
 void initTelNum(void);

@@ -1,5 +1,11 @@
 isdnlog news
 
+lt 2000.06.27
+
+  isdnlog/rate/rep use not cdb as default database.
+  s. tools/NEWS for details.
+
+
 lt 2000.03.08-09
 changed/new isdnlog options / parameters
 

@@ -8,6 +8,7 @@ SHELL			= /bin/sh
 CFLAGS			= -Wall -g
 INCLUDES		=
 LDFLAGS			= @DBMLIB@
+CDBEXTRALIBS		= @CDBEXTRALIBS@
 DBEXT			= @DBEXT@
 RDBEXT			= @RDBEXT@
 BIGENDIAN		= @WORDS_BIGENDIAN@
@@ -37,7 +38,12 @@ endif
 %.o: %.c Makefile
 	$(CC) $(CFLAGS) $(DEFS) $(INCLUDES) -c -o $@ $<
 
-all: $(PROGRAM) country
+all: cdb $(PROGRAM) country
+
+cdb:
+	@if [ -e ../cdb/i4l_cdb.c ] ; then \
+	    $(MAKE) -C ../cdb ;\
+	fi
 
 country:
 ifeq ($(CONFIG_ISDN_LOG_AT),y)
@@ -65,11 +71,11 @@ config.status: configure
 
 $(MODULES): $(HEADERS)
 
-$(PROGRAM):	$(MODULES)
-	$(CC) $(CFLAGS) $? $(LDFLAGS) -o $@
+$(PROGRAM):	$(MODULES) $(CDBEXTRALIBS)
+	$(CC) $(CFLAGS) $? $(LDFLAGS) -o $@ $(CDBEXTRALIBS)
 
-zone: ../zone.c $(HEADERS) Makefile
-	$(CC) -DSTANDALONE -DZONETEST $(CFLAGS) ../zone.c $(LDFLAGS) -o $@
+zone: ../zone.c $(HEADERS) Makefile $(CDBEXTRALIBS)
+	$(CC) -DSTANDALONE -DZONETEST $(CFLAGS) ../zone.c $(LDFLAGS) -o $@ $(CDBEXTRALIBS)
 
 install-man: $(PROGRAM).man
 	mkdir -p $(DESTDIR)$(MAN8DIR)
@@ -86,19 +92,24 @@ uninstall:
 
 clean:
 	rm -f *.o *~ $(PROGRAM) zone
+	@if [ -e ../cdb/i4l_cdb.c ] ; then \
+	    $(MAKE) -C ../cdb clean ; \
+	fi
 
 dataclean: clean
-	rm -f *.db *.gdbm ../../zone*.{gdbm,db}
+	rm -f *.db *.gdbm ../../zone*.{gdbm,db,cdb}
 
 distclean: clean
 	rm -f config.h config.status config.cache config.log *.man Makefile
+	@if [ -e ../cdb/i4l_cdb.c ] ; then \
+	    $(MAKE) -C ../cdb distclean ; \
+	fi
 
 test:
 	$(BZIP2) -d at/pta/zred.pta.bz2
 	$(BZIP2) -d at/pta/zoneall.pta.bz2
-	./$(PROGRAM) -d zone-at-pta$(DBEXT) -r at/pta/zred.pta -c at/code -a43 -v
+	./$(PROGRAM) -d zone-at-pta$(DBEXT) -r at/pta/zred.pta -v
 	./zone -d zone-at-pta$(RDBEXT)  -z at/pta/zoneall.pta -v
-	./zone -d zone-at-pta$(RDBEXT)  -c at/code -v
 	$(BZIP2) -9 at/pta/zred.pta
 	$(BZIP2) -9 at/pta/zoneall.pta
 

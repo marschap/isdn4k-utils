@@ -9,10 +9,11 @@ rate: rate.u zone.u country.u holiday.u dest.u telnum.u
 telnum: rate.u zone.u country.u holiday.u dest.u telnum.o1
 	${CC} -lgdbm -o rate rate.u zone.u dest.u holiday.u telnum.o1
 
-AT:	rate-at
+AT:	rate-at country
 	./rate-at > rate-at.dat
 	(cd dest;./pp_rate ../rate-at.dat  ../../rate-at.dat)
 	rm rate-at.dat
+
 AT-leo:	rate-at
 	./rate-at -leo > rate-at.dat
 	(cd dest;./pp_rate ../rate-at.dat  ../../rate-at.dat)
@@ -54,4 +55,4 @@ holiday.u: holiday.c holiday.h
 	${CC} -c -o holiday.u holiday.c
 
 clean:
-	rm -f rate holiday *.u *~ rate-at
+	rm -f rate holiday *.{u,o} *~ rate-at
