@@ -1,4 +1,4 @@
-/* $Id: assoc.c,v 1.1 1999/06/30 17:18:09 he Exp $ */
+/* $Id: assoc.c,v 1.2 1999/07/25 21:55:47 he Exp $ */
 /*
   Copyright 1997 by Henner Eisen
 
@@ -345,7 +345,9 @@ void tdu_assoc_set_idle(struct tdu_fsm * fsm)
 static void tdu_release_received(struct tdu_fsm * fsm)
 {
 	tdu_printf(TDU_LOG_TRC, "tdu_release_received()\n");
-
+#if 0
+	tdu_printf(TDU_LOG_AP3, "tdu_release_received()\n");
+#endif	
 	if( fsm->regime_handler == & fsm->assoc.handler ){
 		tdu_send_response_pos(fsm, TDU_CI_T_RELEASE);
 		fsm->idle.handler = tdu_released;

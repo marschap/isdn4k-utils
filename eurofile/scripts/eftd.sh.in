@@ -1,7 +1,7 @@
 #!/bin/sh
 @EFT_AUTOCONF_WARNING@
 #
-# generated from $Id: eftd.sh.in,v 1.1 1999/06/30 17:02:14 he Exp $
+# generated from $Id: eftd.sh.in,v 1.2 1999/07/25 21:55:35 he Exp $
 #
 #  Henner Eisen 1998
 #
@@ -162,6 +162,31 @@ case "$1" in
 
     set -- $EFT_SERVER_MSN
 
+    if [ x$EFTD_WITH_LOOP != x ]; then
+      # for local testing of x.25 connections we load the isdnloop driver
+      $INSMOD -m isdnloop isdnloop_id=eft_loop -o eft_loop> /var/modules/isdnloop.map
+      $LOOPCTRL -d eft_loop start dss1 00000 $EFT_CLIENT_MSN $EFT_SERVER_MSN
+      sleep 1
+      # A local outgoing interface operating on top of (bound to) the
+      # isdnloop driver. X.25 call requests the X.25 address "1"
+      # will be routed through the outgoing interface eft_lout. That call
+      # request will be looped back to our own machine (and received at the
+      # incoming interface created for the eft daemon).
+
+      $ISDNCTRL addif eft_lout
+      $ISDNCTRL eaz eft_lout $EFT_CLIENT_MSN
+      $ISDNCTRL addphone eft_lout out $1
+      $ISDNCTRL l2_prot eft_lout x75i
+      $ISDNCTRL encap eft_lout  x25iface
+      $ISDNCTRL huptimeout eft_lout 200
+      # $ISDNCTRL huptimeout eft_lout 30
+      $ISDNCTRL dialmode eft_lout auto
+      $ISDNCTRL bind eft_lout eft_loop,0
+
+      ifconfig eft_lout up
+      $X25ROUTE add 1/1 eft_lout
+    fi
+
     for i in $ISDNIF_IN; do
       # interface alreay defined?
       if { cat /proc/net/dev | grep $i > /dev/null; } ; then
@@ -225,31 +250,6 @@ case "$1" in
 
     if [ ! -z "$EFTD_LOG_FILENAME" ]; then
       EFTD_OPTIONS="$EFTD_OPTIONS -b $EFTD_LOG_FILENAME"
-    fi
-
-    if [ x$EFTD_WITH_LOOP != x ]; then
-      # for local testing of x.25 connections we load the isdnloop driver
-      $INSMOD -m isdnloop isdnloop_id=eft_loop -o eft_loop> /var/modules/isdnloop.map
-      $LOOPCTRL -d eft_loop start dss1 00000 $EFT_CLIENT_MSN $EFT_SERVER_MSN
-      sleep 1
-      # A local outgoing interface operating on top of (bound to) the
-      # isdnloop driver. X.25 call requests the X.25 address "1"
-      # will be routed through the outgoing interface eft_lout. That call
-      # request will be looped back to our own machine (and received at the
-      # incoming interface created for the eft daemon).
-
-      $ISDNCTRL addif eft_lout
-      $ISDNCTRL eaz eft_lout $EFT_CLIENT_MSN
-      $ISDNCTRL addphone eft_lout out $EFT_SERVER_MSN
-      $ISDNCTRL l2_prot eft_lout x75i
-      $ISDNCTRL encap eft_lout  x25iface
-      $ISDNCTRL huptimeout eft_lout 200
-      # $ISDNCTRL huptimeout eft_lout 30
-      $ISDNCTRL dialmode eft_lout auto
-      $ISDNCTRL bind eft_lout eft_loop,0
-
-      ifconfig eft_lout up
-      $X25ROUTE add 1/1 eft_lout
     fi
 
     if [ x"$EFTD_DEBUG" = "x1" ] ; then

@@ -1,4 +1,4 @@
-$Id: TODO,v 1.2 1999/06/29 18:37:14 he Exp $
+$Id: TODO,v 1.3 1999/07/25 21:55:28 he Exp $
 
 
 Important:
@@ -11,20 +11,21 @@ Important:
    X.25 routes are needed to be set up before the isdn connection
    can be set up, which is currently done by the eftp.sh shell script
    which needs to be run from root. The latter is not acceptable for a
-   general purpose release.
+   general purpose release. (in progress)
 
 
 Not showstoppers, but should be done before a possible stable release:
 
+	- remove old execve()/script rleated stuff from setup/autoconf
 	- more casefix testing with new mangeling method
 	- selectivly and automatically (for filesystems not supporting
 	  symlinks) disallow symlink-based transfer name database
 	  lookup   
 	- certain disconnect scenarios result in error/warning
           messages which are harmless, but might confuse novice users.
+	  (in particualar, release/wait for release seems to be buggy)
 	- improve autoconf readline support (support non-default 
           locations of libreadline and lib[n]curses).
-	- integrate source tree to isdn4k-utils CVS repository. 
 	- 'make install', with reasonable default config files.
 	- make eftp command input working when stdin is a pipe.
 	- autoconf is somewhat ugly as several configuration variable

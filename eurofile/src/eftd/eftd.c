@@ -1,4 +1,4 @@
-/* $Id: eftd.c,v 1.1 1999/06/30 17:19:02 he Exp $ */
+/* $Id: eftd.c,v 1.2 1999/07/25 21:55:58 he Exp $ */
 /*
   Copyright 1998 by Henner Eisen
 
@@ -737,8 +737,9 @@ int main(int argc, char** argv)
 		 */
  		if( sigprocmask(SIG_BLOCK, &sig_pipe, NULL) )
 			perror("sigprocmask()");
+		#if 1
 		setsockopt(ns,SOL_SOCKET,SO_LINGER,&ling,sizeof(ling));
-	
+		#endif
 		/*
 		 * attach authentication methods to the protocol state machine
 		 */

@@ -1,6 +1,6 @@
-/* $Id: eft_i4l.c,v 1.1 1999/06/30 17:18:16 he Exp $ */
+/* $Id: eft_i4l.c,v 1.2 1999/07/25 21:55:48 he Exp $ */
 /*
- * isdn4linux implementation specific functions
+ * isdn4linux implementation dependent functions
  */
 
 #include <string.h>
@@ -12,14 +12,16 @@
 #include <sys/wait.h>
 #include <sys/socket.h>
 #include <sys/param.h>
+#include <net/if.h>
 #include <linux/x25.h>
 #include <linux/isdn.h>
+#include <linux/isdnif.h>
 #include <errno.h>
 #include "../config.h"
 #include <eft.h>
 
 /* 
- * get the remote phone number corresponding to the connected socket.
+ * Get the remote phone number corresponding to the connected socket.
  * isdn_no must be an array of at least 21 chacters
  */
 int eft_get_peer_phone(unsigned char * isdn_no, int sk)
@@ -32,17 +34,17 @@ int eft_get_peer_phone(unsigned char * isdn_no, int sk)
 
 	isdn_no[0] = 0;
 
-#ifdef IIOCNETGPN  
-/*
- * If this experimental IOCTL is supported, the peer number is really
- * determined
- * from the network interface
- */
 	fd = open("/dev/isdninfo",O_RDONLY);
 	if ( fd < 0 ){
 		perror("eft_get_peer_phone:open(/dev/isdninfo)");
 		return -1;
 	}
+
+#ifdef IIOCNETGPN  
+/*
+ * This IOCTL is supported in recent i4l-cvs version and in kernel 2.3.6.
+ * The peer number is really determined from the network interface
+ */
 	d = eft_get_device(dev, EFT_DEV_NAME_LEN, sk);
 	if ( ! d ){
 		fprintf(stderr,"eft_get_peer_phone: unable to figure out "
@@ -111,119 +113,254 @@ if( ! try_first_channel ) return 0;
 }
 
 /* 
- * configure isdn network devices for outgoing eft connection
+ * Configure isdn network devices for outgoing eft connection
  */
 static int sync_pipe_r=-1;
 static int sync_pipe_w=-1;
-
-int eft_get_x25route(struct sockaddr_x25 * x25addr, char * isdn_no)
+int eft_get_x25route(struct sockaddr_x25 * x25addr,
+		     struct x25_route_struct *x25_route, char * isdn_no)
 {
-	int filedes_r[2], filedes_w[2], err;
-#define FD_STR_SIZE 25
-	char *args[5], fd_str_r[FD_STR_SIZE],
-		fd_str_w[FD_STR_SIZE], *env[1];
-	pid_t pid;
+        int s=-1, ifd=-1, filedes[2], err;
+	char * addr = "", if_name[255]="eftpout0";
+
+	isdn_net_ioctl_phone phone;
+        isdn_net_ioctl_cfg cfg;
+	struct ifreq ifr;
 
 	/*
 	 * By convention, the symbolic isdn address "localhost" is
-	 * mapped to x25 address "1" and the eftd.sh setup script
-	 * may already have configured a corresponding interface and an
+	 * mapped to x25 address "1" and we assume that an external setup
+	 * script has already configured a corresponding interface and an
 	 * x25 route.
 	 */
 	if( strcmp(isdn_no, "localhost") == 0 ) {
 		strcpy(x25addr->sx25_addr.x25_addr, "1");
+		/* don't set proper device name such that this magic route is
+		   not accessible from caller */
+		x25_route->device[0] = 0;
 		return 0;
 	}
 
+	/* pipe for later telling the waiting parent to release the route */ 
+	if(pipe(filedes)){
+		perror("eft_get_x25route():pipe()");
+		return -1;
+	}
+	sync_pipe_r=filedes[0];
+	sync_pipe_w=filedes[1];
 
-	if(pipe(filedes_r)){
-		perror("eft_setup_route():pipe()");
-		return -1;
-	}
-	sync_pipe_r=filedes_r[0];
-	if(pipe(filedes_w)){
-		perror("eft_setup_route():pipe()");
-		return -1;
-	}
-	sync_pipe_w=filedes_w[1];
-	pid = fork();
-	if( pid<0 ){
-		perror("eft_setup_route():fork()");
-		return -1;
-	} else if( pid > 0 ) {
-		/* parent process */
-		printf("waiting for set up\n");
-		close(filedes_w[0]);
-		close(filedes_r[1]);
-		err=read(sync_pipe_r,x25addr->sx25_addr.x25_addr,
-			 sizeof(x25_address));
-		if( err < 1 ){
-			perror("eft_setup_route():parent read sync_pipe");
-			return -1;
-		} else {
-			x25addr->sx25_addr.x25_addr[err-1]=0;
-			printf("set up successful, address \"%s\", len=%d\n",
-			       x25addr->sx25_addr.x25_addr, err-1);
-                        /*FIXME: we should read the x25address from the pipe*/
-                        strcpy(x25addr->sx25_addr.x25_addr, "");
-			return 0;
-		}
+        if ((s = socket(PF_X25, SOCK_SEQPACKET, 0)) < 0 ) {
+                perror("eft_get_x25route: socket");
+                return 1;
+        }
+
+	memset(&cfg,0,sizeof(cfg));
+	strcpy(cfg.name, if_name);
+
+	if( (ifd=open("/dev/isdnctrl",O_RDWR)) < 0){
+		perror("open isdnctrl");
+		err = -1;
+		goto error;
+	};
+
+	if( ioctl(ifd, IIOCNETAIF, if_name) ){
+		perror("addif");
+		err = -1;
 	} else {
-		/* child process */
-	  /* FIXME: locate this script outside of eftp4linux source tree */
-		args[0] = CONFIG_EFT_TOPDIR "/scripts/eftp_setup";
-		args[1] = isdn_no;
-		err = snprintf(fd_str_w,FD_STR_SIZE,"%d",filedes_w[0]);
-		args[2] = fd_str_w;
-		err = snprintf(fd_str_r,FD_STR_SIZE,"%d",filedes_r[1]);
-		args[3] = fd_str_r;
-		args[4] = NULL;
-		env[0] = NULL;
-		close(filedes_w[1]);
-		close(filedes_r[0]);
-		execve(args[0],args,env);
-		perror("execve");
-		exit(1);		
+		if ( ioctl(ifd, IIOCNETGCF, &cfg) ){
+			perror("get_cfg");
+			err = -1;
+			goto error_delif;
+		}
+		/* FIXME: hard coded MSN, should be read from config file */
+		strncpy(cfg.eaz, "3904300", sizeof(cfg.eaz));
+		cfg.eaz[sizeof(cfg.eaz)-1] = 0;
+		cfg.l2_proto = ISDN_PROTO_L2_X75I;
+		cfg.dialmax = 1;
+		cfg.secure = 1;
+		cfg.onhtime = 200;
+		cfg.p_encap = ISDN_NET_ENCAP_X25IFACE;
+#ifdef ISDN_NET_DM_AUTO
+		cfg.dialmode = ISDN_NET_DM_AUTO;
+#endif
+		if ( ioctl(ifd, IIOCNETSCF, &cfg) ){
+			perror("set_cfg");
+			err = -1;
+			ioctl(ifd, IIOCNETDIF, if_name);
+			goto error_delif;
+		}
+		
+		strcpy(phone.name, if_name);
+		phone.outgoing = 1;
+		strncpy(phone.phone, isdn_no, ISDN_MSNLEN);
+		phone.phone[ISDN_MSNLEN-1] = 0;
+		if( ioctl(ifd, IIOCNETANM, &phone) ){
+			perror("add_phone");
+			err = -1;
+			goto error_delif;
+		}
+
+		/* ifconfig up */
+		strcpy(ifr.ifr_name, if_name);
+		if (ioctl(s, SIOCGIFFLAGS, &ifr) ) {
+			perror("SIOCAGIFFLAGS");
+			err = -1;
+			goto error_delif;
+		} 
+		ifr.ifr_flags |= IFF_UP;
+		if (ioctl(s, SIOCGIFFLAGS, &ifr) ) {
+			perror("SIOCAGIFFLAGS");
+			err = -1;
+			goto error_delif;
+		} else {
+			ifr.ifr_flags |= IFF_UP;
+			if (ioctl(s, SIOCSIFFLAGS, &ifr) ) {
+				perror("SIOCASIFFLAGS");
+				err = -1;
+				goto error_ifdown;
+			}
+			strcpy(x25_route->address.x25_addr, addr);
+			x25_route->sigdigits = strlen(addr);
+			strcpy(x25_route->device, if_name);
+			printf( "adding route %s, sig=%d\n",addr,x25_route->sigdigits);
+			if (ioctl(s, SIOCADDRT, x25_route) ) {
+				perror("SIOCADDRT");
+				err = -1;
+				goto error_ifdown;
+			}
+			strcpy(x25addr->sx25_addr.x25_addr, addr);
+			err = 0;
+		error_ifdown:
+			if( err ) {
+				ifr.ifr_flags &= ~IFF_UP;
+				ioctl(s, SIOCSIFFLAGS, &ifr);
+			}
+		}
+	error_delif:
+		if(err) ioctl(ifd, IIOCNETDIF, if_name);
 	}
-	return -1;
+error:
+	close(ifd);
+	close(s);
+	return err;
+}
+
+/* 
+ * wait for request from child to release x25 route
+ */
+int eft_wait_release_route()
+{
+	char dummy[1];
+
+	close(sync_pipe_w);
+	sync_pipe_w = -1;
+	/* printf("waiting for release route\n"); */
+	read(sync_pipe_r,dummy,1);
+	/* printf("end waiting\n"); */
+	return 0;
 }
 
 /* 
  * release isdn network devices
  */
-int eft_release_route(struct sockaddr_x25 * x25addr, char * isdn_no)
+int eft_signal_release_route()
 {
+	/* signal release route request to possible parent process */
+	/* printf("signalling release route\n"); */
+	close(sync_pipe_r);
+	sync_pipe_r = -1;
 	close(sync_pipe_w);
+	sync_pipe_w = -1;
+	return 0;
+}
+
+int eft_release_route(struct x25_route_struct * x25_route)
+{
+	int s;
+
+	/* try closing the route ourselves */
+        if ((s = socket(PF_X25, SOCK_SEQPACKET, 0)) < 0) {
+                perror("eft_release_route: socket");
+                return 1;
+        }
+
+	/* printf("releasing route\n"); */
+        if (ioctl(s, SIOCDELRT, x25_route) == -1) {
+                perror("SIOCDELRT");
+                close(s);
+		return -1;
+        }
+	/* printf("route released\n"); */
+	close(s);
 	return 0;
 }
 
 /* 
- * hangup physical connection of isdn network interface.
+ * hang up physical connection of isdn network interface.
  */
-void eft_dl_disconnect(unsigned char * iif)
+void eft_dl_disconnect(unsigned char * if_name)
 {
-	pid_t pid;
-	char buf[80];
-	sprintf(buf,EFT_ISDNCTRL_PATH " hangup %s",iif);
-	/* printf(buf);printf("\n"); */
-	/* system(buf) */
-	pid=fork();
-	if(pid==0){ 
-	  /* FIXME: isdnctrl path should not be hardcoded here */
-		printf("%s %s %s %s\n",EFT_ISDNCTRL_PATH,"isdnctrl", "hangup", iif);
-		execl(EFT_ISDNCTRL_PATH,"isdnctrl", "hangup", iif, NULL);
-		perror("execl()");
-	} else if(pid>0) {
-		int status;
-		if( wait(&status) != pid ){
-			perror("eft_dl_disconnect: wait failed");
-		}
-		wait(&status);
+	int ifd;
+
+	if( (ifd=open("/dev/isdnctrl",O_RDWR)) < 0){
+		perror("open isdnctrl");
+		goto error;
+	};
+	if( ioctl(ifd, IIOCNETHUP, if_name) < 0 ){
+		perror("hangup");
+		goto error;
 	}
+error:
+	close(ifd);
+}
+/* 
+ * release (possibly remove) isdn network interface.
+ */
+int eft_release_device(unsigned char * if_name)
+{
+	int err=0, s=-1, ifd=-1;
+	struct ifreq ifr;
+
+        if ((s = socket(PF_X25, SOCK_SEQPACKET, 0)) < 0) {
+                perror("eft_release_device: socket");
+                goto error_delif;
+        }
+
+	/* ifconfig down */
+	ifr.ifr_flags = 0;
+	strcpy(ifr.ifr_name, if_name);
+	if (ioctl(s, SIOCGIFFLAGS, &ifr) ) {
+		perror("SIOCGIFFLAGS");
+		err = -1;
+		goto error_delif;
+	} 
+	ifr.ifr_flags &= ~IFF_UP;
+	if (ioctl(s, SIOCSIFFLAGS, &ifr) ) {
+		perror("SIOCSIFFLAGS");
+		err = -1;
+		goto error_delif;
+	}
+
+error_delif:
+	if( (ifd=open("/dev/isdnctrl",O_RDWR)) < 0){
+		perror("open isdnctrl");
+		err = -1;
+		goto error;
+	};
+	if( ioctl(ifd, IIOCNETDIF, if_name) ){
+		perror("delif");
+		err = -1;
+	}
+	ioctl(ifd, IIOCNETDIF, if_name);
+
+error:
+	close(ifd);
+	close(s);
+	return err;
 }
 
 /*
- * return the name of the network interface which is used by 
+ * Return the name of the network interface which is used by 
  * a connected X.25 socket.
  *
  * This is a hack as it uses /proc file system contents like kernel internal
@@ -239,7 +376,7 @@ char * eft_get_device(char * dev, int len, int sock_fd)
 	static char dummy[]="dummy";
 	int i, inod_col, dev_col;
 
-	/* first, the socket's inode number is exctracted from the
+	/* first, the socket's inode number is extracted from the
 	 * socket file descriptors /proc/self/fd/# symbolic link contents 
 	 */
 	snprintf(path_buf,MAXPATHLEN+1,"/proc/self/fd/%d",sock_fd);

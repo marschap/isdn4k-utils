@@ -1,10 +1,10 @@
-# $Id: Makefile,v 1.8 1999/07/12 10:35:29 keil Exp $
+# $Id: Makefile,v 1.9 1999/07/25 21:55:27 he Exp $
 
 SHELL = /bin/sh
 
 CVS = cvs -z 4
 
-SCRIPTS = scripts/eftd.sh scripts/eftp.sh scripts/eftp_setup
+SCRIPTS = scripts/eftd.sh scripts/eftp.sh
 
 #
 #additions to the CHANGES file shall automatically increase the compiled-in
@@ -13,9 +13,9 @@ SCRIPTS = scripts/eftd.sh scripts/eftp.sh scripts/eftp_setup
 E4L_EXTRA_VERSION_DEP := $(shell pwd)/CHANGES
 export E4L_EXTRA_VERSION_DEP
 
-CONF_DEPS = ./configure scripts/eftd.sh scripts/eftp.sh scripts/eftp_setup src/config.h Rules.make
+CONF_DEPS = ./configure scripts/eftd.sh scripts/eftp.sh src/config.h Rules.make
 
-#this target is requested from isdn4k-utils default target
+#this target is required by the isdn4k-utils root makefile's default target
 all: $(CONF_DEPS)
 	make -C src
 
@@ -24,14 +24,12 @@ really_all:	$(CONF_DEPS)
 
 config src/config.h  Rules.make $(SCRIPTS): configure 
 	./configure
-	chmod a+x scripts/eftd.sh scripts/eftp.sh scripts/eftp_setup
+	chmod a+x scripts/eftd.sh scripts/eftp.sh
 
 configure: configure.in
 	autoconf
 
-permissions: scripts/eftd.sh scripts/eftp.sh scripts/eftp_setup
-	chown root scripts/eftp_setup
-	chmod u+s  scripts/eftp_setup
+permissions: scripts/eftd.sh scripts/eftp.sh
 	chmod a+x $(SCRIPTS)
 
 clean:
@@ -48,9 +46,12 @@ distclean: clean
 
 configureclean: distclean
 	rm -f configure
-
+#
+# This (dummy) target is required by the isdn4k-utils
+# root makefile but not implemented yet. 
+#
 install:
-	echo "dummy install"
+	@echo "NOTE: eurofile install not yet implemented. Install by hand for now!"
 
 commit: distclean
 	$(CVS) commit .

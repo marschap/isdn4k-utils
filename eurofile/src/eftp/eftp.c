@@ -1,4 +1,4 @@
-/* $Id: eftp.c,v 1.1 1999/06/30 17:19:08 he Exp $ */
+/* $Id: eftp.c,v 1.2 1999/07/25 21:56:04 he Exp $ */
 /*
   Copyright 1997 by Henner Eisen
 
@@ -117,6 +117,7 @@
 #include <signal.h>
 #include <sys/socket.h>
 #include <sys/ioctl.h>
+#include <sys/wait.h>
 #include <linux/x25.h>
 /* for error mask setting */
 #include <tdu_user.h>
@@ -469,6 +470,7 @@ static void show_help(char *cmd)
 int main(int argc, char **argv)
 {
 	struct sockaddr_x25 x25bind, x25connect;
+	struct x25_route_struct x25_route;
 	int s, count, on=1, selval, prompt_for_pw = 1;
 	unsigned char called[TDU_PLEN_ADDR+1], udata[TDU_PLEN_UDATA+1];
 
@@ -523,6 +525,83 @@ int main(int argc, char **argv)
 		}
 	}
 
+	if( isdn_no ){
+		/* 
+		 * If the destinatioin is given by means of an isdn number,
+		 * we will try to dynamically create an isdn X.25 network
+		 * interface and an x.25 route through it. In order to
+		 * reliably hang up the connection later -- even if this
+		 * programm crashes -- we will fork a child process in charge
+		 * of the real work and ourselves will only wait for that
+		 * child to exit such that we can clean up the low layer
+		 * connection afterwards.
+		 *
+		 * In order to dynamically create isdn network interfaces
+		 * and to set them up, we need certain priviliges (write
+		 * access to /dev/isdnctrl and netadmin capability). However,
+		 * we don't want to grant those priviliges to the executing
+		 * eftp program. Forking also allows us to run the child
+		 * process with fewer priviliges than ourselves.
+		 */  
+		pid_t pid;
+
+		fprintf(stderr, "Setting up isdn x25 network interface\n");
+		if( eft_get_x25route(&x25connect,&x25_route,isdn_no) ){
+			perror("eftp: unable to get an X.25 route for isdn number");
+			exit(1);
+		}
+		pid = fork();
+		if( pid<0 ){
+			perror("eftp: fork()");
+			exit(1);
+		} else if( pid > 0 ) {
+			/* 
+			 * parent process
+			 *
+			 * We first wait until the child no longer needs the
+			 * x25 route and clear the route (needs netadmin
+			 * capability)
+			 */
+			int status, err=0;
+
+			close(s);
+			eft_wait_release_route();
+			eft_release_route(&x25_route);
+			/*
+			 * Finally, wait for the child to exit and clear
+			 * the low layer isdn connection and remove
+			 * dynamically created interfaces (needs netadmin
+			 * capability and write access to /dev/isdnctrl)
+			 */
+			if( wait(&status) != pid ){
+				perror("eftp supervisor: wait failed");
+				err = 1;
+			} else {
+				if(WIFSIGNALED(status)){
+					tdu_printf(TDU_LOG_ERR,
+						   "internal error in eftp[%d]: %s\n\tyou might try to debug eftp using gdb\n",
+						   pid, strsignal(WTERMSIG(status)));
+					err = 2;
+				}
+			}
+			eft_dl_disconnect( x25_route.device );
+			eft_release_device( x25_route.device );
+			exit(err);
+		} else {
+			/* Child process
+			 *
+			 * Just contiunue processing the protocol
+			 */
+			;
+		}
+	} else if( x25_no ){  
+		strncpy(x25connect.sx25_addr.x25_addr, x25_no, 15);
+	} else {
+		fprintf(stderr, "Neither isdn nor X.25 address specified.\n"
+			" Assuming route to empty X.25 address\n");
+		strcpy(x25connect.sx25_addr.x25_addr, "");
+	}
+
 	/* build ident string [uid/password] from various input sources */
 	ident = NULL;
 	if( user ) {
@@ -565,7 +644,6 @@ int main(int argc, char **argv)
 	strcpy(x25bind.sx25_addr.x25_addr, "" );
 
 	x25connect.sx25_family = AF_X25;
-	strcpy(x25connect.sx25_addr.x25_addr, "");
 
 	s = socket(AF_X25, SOCK_SEQPACKET, 0);
 	if (s < 0) {
@@ -648,16 +726,6 @@ int main(int argc, char **argv)
 		exit(1);
 	}
 
-	if( isdn_no ){
-		fprintf(stderr, "Setting up isdn x25 network interface\n");
-		if( eft_get_x25route(&x25connect,isdn_no) ){
-			perror("eftp: unable get an x25route for isdn number");
-			exit(1);
-		}
-	} else if( x25_no ){  
-		strncpy(x25connect.sx25_addr.x25_addr, x25_no, 15);
-	}
-
 	fprintf(stderr, "Trying to establish X.25 DTE-DTE connection to "
 		"x25 address \"%s\" ...\n", x25connect.sx25_addr.x25_addr);
 	if (connect(s, (struct sockaddr *)&x25connect, sizeof (x25connect)) < 0) {
@@ -665,6 +733,18 @@ int main(int argc, char **argv)
 		return 1;
 	}
 	fprintf(stderr,"eftp: X.25 connection established.\n");
+
+	if(isdn_no){
+		/* Now we are connected and don't need the X.25 route
+		 * any longer. We tell our parent to release it. Thus,
+		 * the route is free for re-use by other eftp clients.
+		 * Relasing it also disables other users to play dirty
+		 * tricks on us by piggybacking other X.25 connection
+		 * throug our isdn connection.
+		 */
+		eft_signal_release_route(&x25_route);
+	}
+
 	if( ioctl( s, SIOCX25GFACILITIES, &facilities ) != 0 ){
 		perror("eftp: SIOCX25GFACILITIES failed");
 		return 1;
@@ -686,8 +766,8 @@ int main(int argc, char **argv)
 
 	/* This specifies the amount of (debugging) output printed to stderr*/
 	/* tdu_stderr_mask = TDU_LOG_FH | TDU_LOG_REW | TDU_LOG_ERR; */
-	tdu_stderr_mask = TDU_LOG_ERR | TDU_LOG_IER | TDU_LOG_OER /*| TDU_LOG_DBG
-	  | TDU_LOG_HASH  | TDU_LOG_TMP */ ;
+	tdu_stderr_mask = TDU_LOG_ERR | TDU_LOG_IER | TDU_LOG_OER /* | TDU_LOG_DBG
+		| TDU_LOG_HASH  | TDU_LOG_TMP */ ;
 #if 0
 	/* for maximum amount of debugging output use */
 	   tdu_stderr_mask = -1 /* ^ TDU_LOG_TMP ^ TDU_LOG_TRC  */; 
@@ -702,8 +782,9 @@ int main(int argc, char **argv)
 	 */
 	if( sigprocmask(SIG_BLOCK, &sig_pipe, NULL) )
 		perror("sigprocmask()");
+	#if 1
 	setsockopt(s,SOL_SOCKET,SO_LINGER,&ling,sizeof(ling));
-		
+	#endif	
 	/* and finally establish logical eft connection */
 	if( eft_connect( eft, ident) < 0 ) {
 		fprintf(stderr, "eftp: connection failed\n");
@@ -777,8 +858,13 @@ int main(int argc, char **argv)
 disconnect:
 	printf("eftp: requesting eft_disconnect()\n");
 	eft_disconnect( eft );
+	/* XXX why this? Without sleep, disconnect processing does not
+	 * complete properly on the server side.
+	 * this is probably caused by unclean termination of association regime
+	 * (wait criteron for end of association falsly claimed to early) 
+	 */ 
+	sleep(1);
 	close(s);
-	if( isdn_no ) eft_release_route( &x25connect, isdn_no );
 
 Ende:	pid = getpid();
 

@@ -1,4 +1,4 @@
-/* $Id: CHANGES,v 1.3 1999/06/30 22:00:27 he Exp $
+/* $Id: CHANGES,v 1.4 1999/07/25 21:55:25 he Exp $
 #  Change log for eftp4Linux
 #
 # [new] means 'new feature added'
@@ -18,7 +18,23 @@
 #
 
 $Log: CHANGES,v $
+Revision 1.4  1999/07/25 21:55:25  he
+Changes for eftp supervisor based call control
+
+- [chg] eft_i4l.c: Replaced calls to external programmes (isdnctrl,x25_route,
+	ifconfig, scripts) by directly calling ioctl()'s.
+- [new] eft_i4l.c: Support for supervisor based isdn call control.
+- [chg] eftp.c: Supporting above supervisor based isdn call control.
+	(prepares eftp for use by non-root users).
+- [chg] eftp_setup: Removed, no longer needed with above changes.
+- [fix] eftd.sh: Moved isdnloop setup before iface setup such that script
+	will also work if no other HL drivers are present.
+- [chg] Makefile: Dummy "install" target to keep isdn4k-utils root makefile
+	happy.
+
+ 
 Revision 1.3  1999/06/30 22:00:27  he
+
 Version 0.0.11
 
 ===============
