@@ -1,4 +1,4 @@
-/* $Id: isdnconf.c,v 1.23 1999/03/15 21:28:44 akool Exp $
+/* $Id: isdnconf.c,v 1.24 1999/03/24 19:38:57 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -20,6 +20,13 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnconf.c,v $
+ * Revision 1.24  1999/03/24 19:38:57  akool
+ * - isdnlog Version 3.10
+ * - moved "sondernnummern.c" from isdnlog/ to tools/
+ * - "holiday.c" and "rate.c" integrated
+ * - NetCologne rates from Oliver Flimm <flimm@ph-cip.uni-koeln.de>
+ * - corrected UUnet and T-Online rates
+ *
  * Revision 1.23  1999/03/15 21:28:44  akool
  * - isdnlog Version 3.06
  * - README: explain some terms about LCR, corrected "-c" Option of "isdnconf"
@@ -139,6 +146,7 @@
 /****************************************************************************/
 
 #include "tools.h"
+#include "sondernummern.h"
 
 /****************************************************************************/
 
@@ -905,7 +913,6 @@ void setDefaults()
   } /* if */
 
   currency_mode = AOC_UNITS;
-
 } /* setDefaults */
 
 /****************************************************************************/
@@ -1032,6 +1039,11 @@ static int _readconfig(char *_myname)
   logfile        = LOGFILE;
   callfile       = NULL;
   callfmt        = NULL;
+  snfile         = NULL;
+  holifile       = NULL;
+  rateconf       = NULL;
+  ratefile       = NULL;
+  lcdfile        = NULL;
   start_procs.infoargs = NULL;
   start_procs.flags    = 0;
   conf_dat       = NULL;
@@ -1170,6 +1182,21 @@ static int Set_Globals(section *SPtr)
 
 		if ((CEPtr = Get_Entry(Ptr->entries,CONF_ENT_CALLFMT)) != NULL)
 			callfmt = CEPtr->value;
+
+		if ((CEPtr = Get_Entry(Ptr->entries,CONF_ENT_SNFILE)) != NULL)
+			snfile = CEPtr->value;
+
+		if ((CEPtr = Get_Entry(Ptr->entries,CONF_ENT_HOLIFILE)) != NULL)
+			holifile = CEPtr->value;
+
+		if ((CEPtr = Get_Entry(Ptr->entries,CONF_ENT_RATECONF)) != NULL)
+			rateconf = CEPtr->value;
+
+		if ((CEPtr = Get_Entry(Ptr->entries,CONF_ENT_RATEFILE)) != NULL)
+			ratefile = CEPtr->value;
+
+		if ((CEPtr = Get_Entry(Ptr->entries,CONF_ENT_LCDFILE)) != NULL)
+			lcdfile = CEPtr->value;
 
 		if ((CEPtr = Get_Entry(Ptr->entries,CONF_ENT_CW)) != NULL)
 			CityWeekend = toupper(*(CEPtr->value)) == 'Y'?1:0;

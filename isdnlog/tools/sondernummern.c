@@ -1,4 +1,4 @@
-/* $Id: sondernummern.c,v 1.5 1999/03/20 14:33:36 akool Exp $
+/* $Id: sondernummern.c,v 1.1 1999/03/24 19:39:04 akool Exp $
  *
  * Gebuehrenberechnung fuer Sonderrufnummern
  *
@@ -19,6 +19,13 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: sondernummern.c,v $
+ * Revision 1.1  1999/03/24 19:39:04  akool
+ * - isdnlog Version 3.10
+ * - moved "sondernnummern.c" from isdnlog/ to tools/
+ * - "holiday.c" and "rate.c" integrated
+ * - NetCologne rates from Oliver Flimm <flimm@ph-cip.uni-koeln.de>
+ * - corrected UUnet and T-Online rates
+ *
  * Revision 1.5  1999/03/20 14:33:36  akool
  * - isdnlog Version 3.08
  * - more tesion)) Tarife from Michael Graw <Michael.Graw@bartlmae.de>
@@ -72,9 +79,9 @@
 /*
  * Schnittstelle:
  *
- * void initSondernummern(char *msg)
+ * int initSondernummern(char *fn, char **msg)
  *   initialisiert die Sonderrufnummerndatenbank, liefert Versionsinfo bzw.
- *   in Fehlermeldung in msg zurueck
+ *   Fehlermeldung in msg zurueck
  *
  * void exitSondernummern()
  *   deinitialisiert die Sonderrufnummerndatenbank
@@ -115,51 +122,24 @@
 
 #define _SONDERNUMMERN_C_
 
-#ifdef STANDALONE
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
 #include <math.h>
 #include <errno.h>
-#else
-#include "isdnlog.h"
-#endif
-
-#ifdef STANDALONE
-
-#undef DATADIR	/* already defined via policy.h */
-#define DATADIR   ".."
-
-#define SO_FAIL      -3
-#define SO_UNKNOWN   -2
-#define SO_CITYCALL  -1
-#define SO_FREE       0
-#define SO_CALCULATE  1
-
-typedef struct {
-  int    provider; /* Provider */
-  char  *number;   /* Telefonnummer */
-  int    tarif;    /* 0 = free, -1 = CityCall, -2 = unknown, 1 = calculate */
-  int    tday;     /* 0 = alle Tage, 1 = Wochentag, 2 = Wochenende */
-  int    tbegin;   /* Tarifanfang */
-  int    tend;     /* Tarifende */
-  double grund;    /* Grundtarif */
-  double takt;     /* Zeittakt */
-  char  *info;     /* Kurzbeschreibung */
-} SonderNummern;
+#include "sondernummern.h"
 
 SonderNummern *SN;
 int nSN;
 int interns0 = 0;
 double currency_factor = 0.12;
-#endif
 
 #define WA         0
 #define WT         1
 #define WE         2
 
-char *strip(char *s)
+static char *strip(char *s)
 {
   char   *p;
 
@@ -172,18 +152,37 @@ char *strip(char *s)
   return s;
 }
 
-void initSondernummern(char *msg)
+void exitSondernummern()
 {
-  char   *s, *t, *pos, *number, *info, fn[BUFSIZ], version[BUFSIZ];
+  int i;
+
+  for (i=0; i< nSN; i++) {
+    if (SN[i].number)
+      free (SN[i].number);
+    if (SN[i].info)
+      free (SN[i].info);
+  }
+
+  if (SN)
+    free(SN);
+
+  nSN = 0;
+  SN = NULL;
+}
+
+int initSondernummern(char *fn, char **msg)
+{
+  char   *s, *t, *pos, *number, *info, version[BUFSIZ], buf[BUFSIZ];
+  static char message[BUFSIZ];
   int     provider, tarif, tday, tbegin, tend;
   FILE   *f;
-  char    buf[BUFSIZ];
   double  grund, takt;
 
 
-  SN = NULL; nSN = 0; strcpy(version, "unknown");
+  SN = NULL;
+  nSN = 0;
+  strcpy(version, "unknown");
 
-  sprintf(fn, "%s/sonderrufnummern.dat", DATADIR);
   f = fopen(fn, "r");
 
   if (f != (FILE *)NULL) {
@@ -231,17 +230,17 @@ void initSondernummern(char *msg)
                       if ((s = strsep(&pos, "\n"))) {
                         info = s;
 
+                        SN = (SonderNummern *)realloc(SN, (nSN+1)*sizeof(SonderNummern));
+                        SN[nSN].provider = provider;
+                        SN[nSN].number = strdup(number);
+                        SN[nSN].tarif = tarif;
+                        SN[nSN].tday = tday;
+                        SN[nSN].tbegin = tbegin;
+                        SN[nSN].tend = tend;
+                        SN[nSN].grund = grund;
+                        SN[nSN].takt = takt;
+                        SN[nSN].info = strdup(info);
                         nSN++;
-                        SN = (SonderNummern *)realloc(SN, sizeof(SonderNummern) * nSN);
-                        SN[nSN - 1].provider = provider;
-                        SN[nSN - 1].number = strdup(number);
-                        SN[nSN - 1].tarif = tarif;
-                        SN[nSN - 1].tday = tday;
-                        SN[nSN - 1].tbegin = tbegin;
-                        SN[nSN - 1].tend = tend;
-                        SN[nSN - 1].grund = grund;
-                        SN[nSN - 1].takt = takt;
-                        SN[nSN - 1].info = strdup(info);
                       }
                     }
                   }
@@ -252,19 +251,13 @@ void initSondernummern(char *msg)
         }
       }
     fclose(f);
-    sprintf(msg, "Sonderrufnummern Version %s loaded [%d entries]", version,
-            nSN);
+    if (msg) sprintf(*msg=message, "Sonderrufnummern Version %s loaded [%d entries from %s]", version, nSN, fn);
+    return nSN;
   }
-  else
-    sprintf(msg, "*** Cannot load Sonderrufnummern (%s : %s)", fn,
-            strerror(errno));
+  else {
+    if (msg) sprintf(*msg=message, "*** Cannot load Sonderrufnummern (%s : %s)", fn, strerror(errno));
+    return -1;
 }
-
-void exitSondernummern()
-{
-  nSN = 0;
-  free(SN);
-  SN = NULL;
 }
 
 int is_sondernummer(char *number, int provider)
@@ -305,7 +298,7 @@ int sondertarif(int index)
     return(SO_FAIL);
 }
 
-int searchentry(time_t connect, int index)
+static int searchentry(time_t connect, int index)
 {
   int        provider;
   char      *number;
@@ -370,11 +363,11 @@ int main(int argc, char *argv[])
   struct tm t;
   time_t    time;
   double    preis;
-  char      msg[BUFSIZ];
+  char     *msg;
   int       index;
 
   if (argc > 6) {
-    initSondernummern(msg);
+    initSondernummern("../sonderrufnummern.dat", &msg);
     fprintf(stdout, "%s\n", msg);
 
     t.tm_sec = t.tm_min = 0;

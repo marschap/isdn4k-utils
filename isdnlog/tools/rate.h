@@ -1,4 +1,4 @@
-/* $Id: rate.h,v 1.2 1999/03/16 17:38:10 akool Exp $
+/* $Id: rate.h,v 1.3 1999/03/24 19:39:03 akool Exp $
  *
  * Tarifdatenbank
  *
@@ -19,6 +19,13 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rate.h,v $
+ * Revision 1.3  1999/03/24 19:39:03  akool
+ * - isdnlog Version 3.10
+ * - moved "sondernnummern.c" from isdnlog/ to tools/
+ * - "holiday.c" and "rate.c" integrated
+ * - NetCologne rates from Oliver Flimm <flimm@ph-cip.uni-koeln.de>
+ * - corrected UUnet and T-Online rates
+ *
  * Revision 1.2  1999/03/16 17:38:10  akool
  * - isdnlog Version 3.07
  * - Michael Reinelt's patch as of 16Mar99 06:58:58
@@ -63,6 +70,6 @@ typedef struct {
 void  exitRate(void);
 int   initRate(char *conf, char *dat, char **msg);
 int   getRate(RATE *Rate, char **msg);
-int   getLeastCost(RATE *Rate);
+int   getLeastCost(RATE *Rate, RATE *LC);
 
 #endif

@@ -1,4 +1,4 @@
-/* $Id: processor.c,v 1.46 1999/03/20 16:54:45 akool Exp $
+/* $Id: processor.c,v 1.47 1999/03/24 19:37:55 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,13 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.47  1999/03/24 19:37:55  akool
+ * - isdnlog Version 3.10
+ * - moved "sondernnummern.c" from isdnlog/ to tools/
+ * - "holiday.c" and "rate.c" integrated
+ * - NetCologne rates from Oliver Flimm <flimm@ph-cip.uni-koeln.de>
+ * - corrected UUnet and T-Online rates
+ *
  * Revision 1.46  1999/03/20 16:54:45  akool
  * isdnlog 3.09 : support for all Internet-by-call numbers
  *
@@ -5095,3 +5102,20 @@ void processcint()
     } /* if */
   } /* for */
 } /* processcint */
+
+void lcd4linux (void)
+{
+  static int lcd = -1;
+
+  if (lcdfile == NULL)
+    return;
+
+  if (lcd == -1) {
+    if ((lcd = open (lcdfile, O_WRONLY | O_NDELAY)) == -1) {
+      print_msg (PRT_ERR,"fopen(%s) failed: %s\n", lcdfile, strerror(errno));
+      lcdfile = NULL;
+      return;
+    }
+
+  }
+}

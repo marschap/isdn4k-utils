@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.62 1999/03/20 16:54:37 akool Exp $
+## $Id: Makefile.in,v 1.63 1999/03/24 19:37:29 akool Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,13 +19,20 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.63  1999/03/24 19:37:29  akool
+## - isdnlog Version 3.10
+## - moved "sondernnummern.c" from isdnlog/ to tools/
+## - "holiday.c" and "rate.c" integrated
+## - NetCologne rates from Oliver Flimm <flimm@ph-cip.uni-koeln.de>
+## - corrected UUnet and T-Online rates
+##
 ## Revision 1.62  1999/03/20 16:54:37  akool
 ## isdnlog 3.09 : support for all Internet-by-call numbers
 ##
 ## Revision 1.61  1999/03/20 14:32:29  akool
 ## - isdnlog Version 3.08
 ## - more tesion)) Tarife from Michael Graw <Michael.Graw@bartlmae.de>
-## - use "bunzip -f" from Franz Elsner <Elsner@zrz.TU-Berlin.DE>
+## - use "bunzip -f" from Frank Elsner <Elsner@zrz.TU-Berlin.DE>
 ## - show another "cheapest" hint if provider is overloaded ("OVERLOAD")
 ## - "make install" now makes the required entry
 ##     [GLOBAL]
@@ -487,7 +494,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 3.09
+VERSION     = 3.10
 
 MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 isdnlog/isdnlog.users.5 isdnrep/isdnrep.1 isdnconf/isdnconf.1
 
@@ -522,7 +529,8 @@ ISDNLOG_OBJS =  isdnlog/isdnlog.o isdnlog/processor.o isdnlog/functions.o \
                 connect/connect.o connect/socket.o tools/tools.o      	  \
                 connect/conv_address.o isdnlog/user_access.o 		  \
                 tools/isdnconf.o tools/tools_$(NATION).o		  \
-		isdnlog/takt_$(NATION).o isdnlog/sondernummern.o	  \
+		isdnlog/takt_$(NATION).o 				  \
+		tools/sondernummern.o tools/rate.o tools/holiday.o	  \
 		$(LIBISDNDIR)/libisdn.a
 
 
@@ -541,12 +549,12 @@ endif
 ISDNREP_OBJS =  isdnrep/rep_main.o tools/tools.o tools/isdnconf.o         \
                 isdnlog/messages.o isdnrep/isdnrep.o     		  \
 		tools/tools_$(NATION).o isdnlog/takt_$(NATION).o          \
-		isdnlog/sondernummern.o					  \
+		tools/sondernummern.o tools/rate.o tools/holiday.o	  \
                 $(LIBISDNDIR)/libisdn.a
 
 ISDNCONF_OBJS=  isdnconf/isdnconf.o tools/tools.o tools/isdnconf.o        \
 		tools/tools_$(NATION).o isdnlog/takt_$(NATION).o          \
-		isdnlog/sondernummern.o					  \
+		tools/sondernummern.o tools/rate.o tools/holiday.o	  \
                 $(LIBISDNDIR)/libisdn.a
 
 ISDNLOG      =  bin/isdnlog

@@ -1,4 +1,4 @@
-/* $Id: takt_de.c,v 1.16 1999/03/20 16:54:54 akool Exp $
+/* $Id: takt_de.c,v 1.17 1999/03/24 19:38:03 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,13 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: takt_de.c,v $
+ * Revision 1.17  1999/03/24 19:38:03  akool
+ * - isdnlog Version 3.10
+ * - moved "sondernnummern.c" from isdnlog/ to tools/
+ * - "holiday.c" and "rate.c" integrated
+ * - NetCologne rates from Oliver Flimm <flimm@ph-cip.uni-koeln.de>
+ * - corrected UUnet and T-Online rates
+ *
  * Revision 1.16  1999/03/20 16:54:54  akool
  * isdnlog 3.09 : support for all Internet-by-call numbers
  *
@@ -1252,7 +1259,7 @@ void showcheapest(int zone, int duration, int ignoreprovider, char *info)
 {
   register int        prefix, n = 0, n1, tz, cheapest = UNKNOWN;
   auto     char       why[BUFSIZ], s[BUFSIZ];
-  auto	   double     cheaptarif, providertarif, tarif;
+  auto	   double     cheaptarif, providertarif = 0.0, tarif;
   auto	   time_t     cur_time;
   auto 	   struct tm *tm;
 
@@ -1337,7 +1344,7 @@ int main(int argc, char *argv[], char *envp[])
 {
   register int    prefix, z, d, h, n = 0, n1, cheapest = UNKNOWN;
   auto     char   why[BUFSIZ], s[BUFSIZ];
-  auto	   double cheaptarif, providertarif, tarif;
+  auto	   double cheaptarif, providertarif = 0.0, tarif;
 
 
   printf("Initializing ...\n");

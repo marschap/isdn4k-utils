@@ -1,4 +1,4 @@
-/* $Id: isdnlog.h,v 1.17 1999/03/07 18:18:51 akool Exp $
+/* $Id: isdnlog.h,v 1.18 1999/03/24 19:37:49 akool Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,13 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnlog.h,v $
+ * Revision 1.18  1999/03/24 19:37:49  akool
+ * - isdnlog Version 3.10
+ * - moved "sondernnummern.c" from isdnlog/ to tools/
+ * - "holiday.c" and "rate.c" integrated
+ * - NetCologne rates from Oliver Flimm <flimm@ph-cip.uni-koeln.de>
+ * - corrected UUnet and T-Online rates
+ *
  * Revision 1.17  1999/03/07 18:18:51  akool
  * - new 01805 tarif of DTAG
  * - new March 1999 tarife
@@ -221,6 +228,9 @@
 /****************************************************************************/
 
 #include <tools.h>
+#include <sondernummern.h>
+#include <holiday.h>
+#include <rate.h>
 #include "socket.h"
 
 /****************************************************************************/

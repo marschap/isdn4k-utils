@@ -1,4 +1,4 @@
-/* $Id: isdnrep.c,v 1.59 1999/03/20 14:33:53 akool Exp $
+/* $Id: isdnrep.c,v 1.60 1999/03/24 19:38:33 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -24,6 +24,13 @@
  *
  *
  * $Log: isdnrep.c,v $
+ * Revision 1.60  1999/03/24 19:38:33  akool
+ * - isdnlog Version 3.10
+ * - moved "sondernnummern.c" from isdnlog/ to tools/
+ * - "holiday.c" and "rate.c" integrated
+ * - NetCologne rates from Oliver Flimm <flimm@ph-cip.uni-koeln.de>
+ * - corrected UUnet and T-Online rates
+ *
  * Revision 1.59  1999/03/20 14:33:53  akool
  * - isdnlog Version 3.08
  * - more tesion)) Tarife from Michael Graw <Michael.Graw@bartlmae.de>
@@ -835,8 +842,10 @@ int read_logfile(char *myname)
   auto     char       msg[BUFSIZ];
 
 
+  initSondernummern(snfile, NULL);
+  initHoliday(holifile, NULL);
+  initRate(rateconf, ratefile, NULL);
   initTarife(msg);
-  initSondernummern(msg);
   interns0 = 3; /* FIXME */
 
   msn_sum = calloc(mymsns + 1, sizeof(double));

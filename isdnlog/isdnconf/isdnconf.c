@@ -1,4 +1,4 @@
-/* $Id: isdnconf.c,v 1.15 1999/03/20 14:32:56 akool Exp $
+/* $Id: isdnconf.c,v 1.16 1999/03/24 19:37:38 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -20,6 +20,13 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnconf.c,v $
+ * Revision 1.16  1999/03/24 19:37:38  akool
+ * - isdnlog Version 3.10
+ * - moved "sondernnummern.c" from isdnlog/ to tools/
+ * - "holiday.c" and "rate.c" integrated
+ * - NetCologne rates from Oliver Flimm <flimm@ph-cip.uni-koeln.de>
+ * - corrected UUnet and T-Online rates
+ *
  * Revision 1.15  1999/03/20 14:32:56  akool
  * - isdnlog Version 3.08
  * - more tesion)) Tarife from Michael Graw <Michael.Graw@bartlmae.de>
@@ -693,8 +700,7 @@ int main(int argc, char *argv[], char *envp[])
 		int len, i, zone;
 
 
-	    	initSondernummern(msg);
-	    	/* print_msg(PRT_NORMAL, "%s\n", msg); */
+	    	initSondernummern(snfile, NULL);
             	initTarife(msg);
 	    	/* print_msg(PRT_NORMAL, "%s\n", msg); */
 

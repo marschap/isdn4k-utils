@@ -1,4 +1,4 @@
-/* $Id: tools.h,v 1.32 1999/03/20 16:55:27 akool Exp $
+/* $Id: tools.h,v 1.33 1999/03/24 19:39:06 akool Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,13 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools.h,v $
+ * Revision 1.33  1999/03/24 19:39:06  akool
+ * - isdnlog Version 3.10
+ * - moved "sondernnummern.c" from isdnlog/ to tools/
+ * - "holiday.c" and "rate.c" integrated
+ * - NetCologne rates from Oliver Flimm <flimm@ph-cip.uni-koeln.de>
+ * - corrected UUnet and T-Online rates
+ *
  * Revision 1.32  1999/03/20 16:55:27  akool
  * isdnlog 3.09 : support for all Internet-by-call numbers
  *
@@ -349,6 +356,7 @@
 
 #include "policy.h"
 #include "libisdn.h"
+#include "sondernummern.h"
 
 /****************************************************************************/
 
@@ -434,12 +442,6 @@
 #define WELT_4       16
 #define INTERNET     17
 #define	GLOBALCALL   18
-
-#define SO_FAIL      -3
-#define SO_UNKNOWN   -2
-#define SO_CITYCALL  -1
-#define SO_FREE       0
-#define SO_CALCULATE  1
 
 #define	DTAG	     33
 
@@ -631,6 +633,13 @@
 
 #define CONF_ENT_CALLFILE "CALLFILE"
 #define CONF_ENT_CALLFMT  "CALLFMT"
+
+#define CONF_ENT_SNFILE   "SPECIALNUMBERS"
+#define CONF_ENT_HOLIFILE "HOLIDAYS"
+#define CONF_ENT_RATECONF "RATECONF"
+#define CONF_ENT_RATEFILE "RATEFILE"
+
+#define CONF_ENT_LCDFILE  "LCDFILE"
 
 #define CONF_ENT_VBOXVER  "VBOXVERSION"
 #define CONF_ENT_VBOXPATH "VBOXPATH"
@@ -839,29 +848,6 @@ typedef struct {
 
 /****************************************************************************/
 
-typedef struct {
-#if V1
-  char  *msn;      /* Telefonnummer */
-  char  *sinfo;    /* Kurzbeschreibung */
-  int    tarif;    /* 0 = free, 1 = CityCall, -1 = see grund1 .. takt2 */
-  double grund1;   /* Grundtarif Werktage 9-18 Uhr */
-  double grund2;   /* Grundtarif uebrige Zeit */
-  double takt1;	   /* Zeittakt Werktage 9-18 Uhr */
-  double takt2;	   /* Zeittakt uebrige Zeit */
-#endif
-  int    provider; /* Provider */
-  char  *number;   /* Telefonnummer */
-  int    tarif;    /* 0 = free, -1 = CityCall, -2 = unknown, 1 = calculate*/
-  int    tday;     /* 0 = alle Tage, 1 = Wochentag, 2 = Wochenende */
-  int    tbegin;   /* Tarifanfang */
-  int    tend;     /* Tarifende */
-  double grund;    /* Grundtarif */
-  double takt;     /* Zeittakt */
-  char  *info;     /* Kurzbeschreibung */
-} SonderNummern;
-
-/****************************************************************************/
-
 #ifdef _TOOLS_C_
 #define _EXTERN
 #else
@@ -903,9 +889,6 @@ _EXTERN	int	 preselect;
 _EXTERN int	dual;
 _EXTERN char    	mlabel[BUFSIZ];
 _EXTERN char    *amtsholung;
-_EXTERN SonderNummern *SN;
-_EXTERN int	      nSN;
-_EXTERN	int     interns0;
 _EXTERN int	ignoreRR;
 #undef _EXTERN
 
@@ -925,6 +908,11 @@ _EXTERN char* rebootcmd = REBOOTCMD;
 _EXTERN char* logfile   = LOGFILE;
 _EXTERN char* callfile  = NULL;
 _EXTERN char* callfmt   = NULL;
+_EXTERN char* snfile    = NULL;
+_EXTERN char* holifile  = NULL;
+_EXTERN char* rateconf  = NULL;
+_EXTERN char* ratefile  = NULL;
+_EXTERN char* lcdfile   = NULL;
 _EXTERN int  (*_print_msg)(const char *, ...) = printf;
 _EXTERN int   use_new_config = 1;
 _EXTERN char ***lineformats = NULL;
@@ -943,6 +931,11 @@ _EXTERN char* rebootcmd;
 _EXTERN char* logfile;
 _EXTERN char* callfile;
 _EXTERN char* callfmt;
+_EXTERN char* snfile;
+_EXTERN char* holifile;
+_EXTERN char* rateconf;
+_EXTERN char* ratefile;
+_EXTERN char* lcdfile;
 _EXTERN int  (*_print_msg)(const char *, ...);
 _EXTERN int   use_new_config;
 _EXTERN char ***lineformats;
@@ -976,14 +969,6 @@ _EXTERN char  *realProvidername(int prefix);
 _EXTERN void   preparecint(int chan, char *msg, char *hint, int viarep);
 _EXTERN	int    isInternetAccess(int provider, char *number);
 _EXTERN int    taktlaenge(int chan, char *why);
-_EXTERN void   initSondernummern(char *msg);
-_EXTERN int    is_sondernummer(char *number, int provider);
-_EXTERN char  *sondernummername(int index);
-_EXTERN char  *sondernum(int index);
-_EXTERN int    sondertarif(int index);
-_EXTERN double sonderpreis(time_t connect, int duration, int index);
-_EXTERN double sondertaktlaenge(time_t connect, int index, int *next);
-_EXTERN void   exitSondernummern();
 _EXTERN	char  *zonen[MAXZONES];
 #undef _EXTERN
 

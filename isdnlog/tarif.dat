@@ -1,8 +1,8 @@
-# @(#)tarif.dat  1.11  20-Mar-99  17:51
+# @(#)tarif.dat  1.14  24-Mar-99  20:43
 #
 # Copyright 1995, 1999 by Andreas Kool (akool@isdn4linux.de)
 #
-V:1.11 [20-Mar-99]
+V:1.14 [24-Mar-99]
 #
 # P: Provider
 # G: tt.mm.jjjj Tarif gÅltig ab
@@ -42,6 +42,7 @@ Z:4-9,60/60
 T:W08-18=0.94
 T:W18-08=0.47
 T:E=0.47
+# W22-09 sowie E* sinkt der Tarif ab der 31. Minute auf DM 0.03
 Z:H,60/60
 T:*=0.059
 ################################################################
@@ -102,6 +103,39 @@ Z:A-D,60/60
 T:*=0.49
 Z:H,60/60
 T:*=0.05
+################################################################
+P:22,0=NetCologne
+G:01.01.1999
+C:NetCologne GmbH
+C:Homepage: http://www.netcologne.de/
+C:Hotline : 0221/2222-800
+C:Fax     : 0221/2222-390
+C:Adresse : Maarweg 163, 50825 Koeln
+C:Internet-Telefonkosten: Pauschaltarif 35DM/Monat bzw. Zeittakt H
+C:Reine Internetkosten  : 39DM/Monat inkl. 60 Std., danach 5Pf/Min.
+C                         5DM/Monat + 5Pf/Min.
+Z:1,6/1
+T:W08-18=0.06
+T:W18-08=0.035
+T:E=0.035
+Z:2-3,6/1
+T:W08-18=0.19
+T:W18-08=0.09
+T:E=0.09
+Z:4-9,6/1
+T:W08-18=0.94
+T:W18-08=0.49
+T:E=0.49
+Z:B,6/1
+T:*=0.68
+Z:D,6/1
+T:*=0.68
+# Der Internettarif H bezieht sich nur auf die Einwahl per Telefon und
+# nicht auf die dazukommenden Internetkosten.
+Z:H,6/1
+T:W08-18=0.04
+T:W18-08=0.02
+T:E=0.02
 ################################################################
 P:23=tesion ))
 G:01.02.1999
@@ -205,6 +239,16 @@ Z:8,60/60
 T:W09-18=1.44  	# Standard
 T:W18-09=0.60  	# Spar
 T:E=0.60       	# Spar
+Z:H,10/10
+T:W05-09=0.098
+T:W09-18=0.13
+T:W18-21=0.098
+T:W21-05=0.08
+T:E05-21=0.098
+T:E21-05=0.08
+# ab 1.4.1999
+# Z:H,60/60
+# T:*=0.06
 ################################################################
 P:49=ACC
 G:01.01.1999
@@ -335,14 +379,13 @@ C:keine Tarifdaten veroeffentlicht!
 C:Vielmehr handelt es sich hier nur um die Tarife fuer den
 C:UUnet Ortstarif-Zugang!
 I:0191999
-Z:H,0.12
-T:W02-05=240  # Nacht
-T:W05-09=150  # Spar
-T:W09-18=90   # Standard
-T:W18-21=150  # Spar
-T:W21-02=240  # Mondschein
-T:E05-21=150  # Spar
-T:E21-05=240  # Mondschein
+Z:H,1/1
+T:W05-09=0.048
+T:W09-18=0.08
+T:W18-21=0.048
+T:W21-05=0.03
+T:E05-21=0.048
+T:E21-05=0.03
 ################################################################
 P:90=Viag Intercom
 G:01.01.1999
