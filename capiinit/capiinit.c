@@ -1,7 +1,11 @@
 /*
- * $Id: capiinit.c,v 1.10 2002/10/25 13:50:44 calle Exp $
+ * $Id: capiinit.c,v 1.11 2003/01/14 13:47:15 calle Exp $
  *
  * $Log: capiinit.c,v $
+ * Revision 1.11  2003/01/14 13:47:15  calle
+ * New Commands to only load modules, only initialize cards,
+ * only reset cards, inititialize a single card or reset a single card.
+ *
  * Revision 1.10  2002/10/25 13:50:44  calle
  * The protocol value was not tranfered to the patchinfo. Because of
  * this for example NI1 did not work ...
@@ -78,6 +82,7 @@ static char *firmwarepath[] = {
 static int capifd = -1;
 
 static int patchdebug = 0;	/* -d || -debug */
+static int silent = 0;		/* -s || -silent */
 char *configfilename = "/etc/capi.conf";
 
 /* ---------------- utils -------------------------------------------- */
@@ -263,10 +268,12 @@ find_contrprocinfo(struct contrprocinfo *cpinfo, int contr)
 	return p;
 }
 
-static void show_contrprocinfo(struct contrprocinfo *cpinfo)
+static void show_contrprocinfo(struct contrprocinfo *cpinfo, char *cardname)
 {
 	struct contrprocinfo *p;
 	for (p = cpinfo; p; p = p->next) {
+		if (cardname && strcmp(cardname, p->name) != 0)
+			continue;
 		printf("%d %-10s %-8s %-16s %s\n", 
 			p->contr, p->driver, cardstate2str(p->state),
 			p->name, p->driverinfo);
@@ -1224,15 +1231,18 @@ static int card_exists(const char * driver, int ioaddr)
 }
 
 
-int main_start(void)
+int main_start(int activate, char *cardname, int number)
 {
 	struct capicard *cards, *card;
 	struct contrprocinfo *cpinfo, *p;
 	int contr, lastcontr;
 	int ret = 0;
+	char cname[32];
 
 	if (prestartcheck() < 0)
 		return -1;
+
+	cname[0] = 0;
 
 	/* could not fail, tested by check_for_capi() */
 	capifd = open(capidevname, O_RDWR);
@@ -1251,43 +1261,78 @@ int main_start(void)
 	}
 
 	mark_unfound(cards); 
-	cpinfo = load_contrprocinfo(&lastcontr);
-	for (contr = 1; contr <= lastcontr; contr++) {
-		struct capicard *thiscard;
-		cpinfo = load_contrprocinfo(0);
-		p = find_contrprocinfo(cpinfo, contr);
-		thiscard = find_config(cards, p->driver);
-		if (p->state ==	CARD_LOADING)
-			reset_controller(contr);
-		if (p->state == CARD_DETECTED) {
-			if (thiscard) {
-				card = load_firmware(contr, thiscard);
-			} else {
-				fprintf(stderr,"ERROR: missing config entry for controller %d driver %s name %s\n",
-					p->contr, p->driver, p->name);
+	if (activate) {
+		int act;
+		act = 0;
+		cpinfo = load_contrprocinfo(&lastcontr);
+		for (contr = 1; contr <= lastcontr; contr++) {
+			struct capicard *thiscard;
+			cpinfo = load_contrprocinfo(0);
+			p = find_contrprocinfo(cpinfo, contr);
+			thiscard = find_config(cards, p->driver);
+			if (cardname) {
+				if (number == 0) {
+					if (strcmp(cardname, p->name) != 0) {
+						free_contrprocinfo(&cpinfo);
+						continue;
+				   	}
+				} else if (strcmp(cardname, p->driver) == 0) {
+					if (++act != number) {
+			        		free_contrprocinfo(&cpinfo);
+			           		continue;
+					}
+				} else {
+					free_contrprocinfo(&cpinfo);
+					continue;
+				}
+				strncpy(cname, p->name, sizeof(cname));
 			}
+			if (p->state ==	CARD_LOADING)
+				reset_controller(contr);
+			if (p->state == CARD_DETECTED) {
+				if (thiscard) {
+					card = load_firmware(contr, thiscard);
+				} else {
+					fprintf(stderr,"ERROR: missing config entry for controller %d driver %s name %s\n",
+						p->contr, p->driver, p->name);
+				}
+			}
+			free_contrprocinfo(&cpinfo);
 		}
-		free_contrprocinfo(&cpinfo);
+		mark_unfound(cards); 
+		act = 0;
+		cpinfo = load_contrprocinfo(&lastcontr);
+		for (contr = 1; contr <= lastcontr; contr++) {
+			struct capicard *thiscard;
+			cpinfo = load_contrprocinfo(0);
+			p = find_contrprocinfo(cpinfo, contr);
+			thiscard = find_config(cards, p->driver);
+			if (cardname && cname[0]) {
+				if (strcmp(cname, p->name) != 0) {
+					free_contrprocinfo(&cpinfo);
+					continue;
+				}
+			}
+			if (p->state == CARD_DETECTED && thiscard) {
+				fprintf(stderr,"ERROR: failed to load firmware for controller %d driver %s name %s\n",
+						p->contr, p->driver, p->name);
+				ret = 3;
+			}
+			free_contrprocinfo(&cpinfo);
+		}
 	}
-	mark_unfound(cards); 
-	cpinfo = load_contrprocinfo(&lastcontr);
-	for (contr = 1; contr <= lastcontr; contr++) {
-		struct capicard *thiscard;
+
+	if (cardname && cname[0] == 0) {
+		fprintf(stderr,"ERROR: card \"%s\"  not found\n", cardname);
+		ret = 4;
+	}
+
+	if (!silent) {
 		cpinfo = load_contrprocinfo(0);
-		p = find_contrprocinfo(cpinfo, contr);
-		thiscard = find_config(cards, p->driver);
-		if (p->state == CARD_DETECTED && thiscard) {
-			fprintf(stderr,"ERROR: failed to load firmware for controller %d driver %s name %s\n",
-					p->contr, p->driver, p->name);
-			ret = 3;
-		}
+		show_contrprocinfo(cpinfo, cardname ? cname: "");
 		free_contrprocinfo(&cpinfo);
 	}
 
-	cpinfo = load_contrprocinfo(0);
-	show_contrprocinfo(cpinfo);
-
-	free_contrprocinfo(&cpinfo);
 	free_config(&cards);
 	close(capifd);
 
@@ -1296,59 +1341,98 @@ int main_start(void)
 
 /* ------------------------------------------------------------------- */
 
-int main_stop(void)
+int main_stop(int unload, char *cardname, int number)
 {
 	struct capicard *cards, *card;
 	struct contrprocinfo *cpinfo, *p;
 	int contr, lastcontr;
 	char *mp;
+	int act;
+	char cname[32];
 
 	if (prestopcheck() < 0)
 		return -1;
 
+	cname[0] = 0;
+
 	/* could not fail, tested by check_for_capi() */
 	capifd = open(capidevname, O_RDWR);
 
+	act = 0;
 	cpinfo = load_contrprocinfo(&lastcontr);
-	for (contr = lastcontr; contr > 0; contr--) {
+	if (cardname) {
+		for (contr = 1; contr <= lastcontr; contr++) {
+			cpinfo = load_contrprocinfo(0);
+			p = find_contrprocinfo(cpinfo, contr);
+			if (number == 0) {
+				if (strcmp(cardname, p->name) != 0) {
+					free_contrprocinfo(&cpinfo);
+					continue;
+				}
+			} else if (strcmp(cardname, p->driver) == 0) {
+				if (++act != number) {
+					free_contrprocinfo(&cpinfo);
+					continue;
+				}
+			} else {
+				free_contrprocinfo(&cpinfo);
+				continue;
+			}
+			strncpy(cname, p->name, sizeof(cname));
+			if (p && p->state != CARD_DETECTED)
+				reset_controller(contr);
+			free_contrprocinfo(&cpinfo);
+		}
+	} else {
+		for (contr = lastcontr; contr > 0; contr--) {
+			cpinfo = load_contrprocinfo(0);
+			p = find_contrprocinfo(cpinfo, contr);
+			if (p && p->state != CARD_DETECTED)
+				reset_controller(contr);
+			free_contrprocinfo(&cpinfo);
+		}
+	}
+	if (unload) {
+		cpinfo = load_contrprocinfo(&lastcontr);
+		for (contr = lastcontr; contr > 0; contr--) {
+			cpinfo = load_contrprocinfo(0);
+			p = find_contrprocinfo(cpinfo, contr);
+			if (p)
+				remove_controller(contr);
+			free_contrprocinfo(&cpinfo);
+		}
+	}
+	if (!silent) {
 		cpinfo = load_contrprocinfo(0);
-		p = find_contrprocinfo(cpinfo, contr);
-		if (p && p->state == CARD_RUNNING)
-			reset_controller(contr);
+		show_contrprocinfo(cpinfo, cardname ? cname: 0);
 		free_contrprocinfo(&cpinfo);
 	}
-	cpinfo = load_contrprocinfo(&lastcontr);
-	for (contr = lastcontr; contr > 0; contr--) {
-		cpinfo = load_contrprocinfo(0);
-		p = find_contrprocinfo(cpinfo, contr);
-		if (p)
-			remove_controller(contr);
-		free_contrprocinfo(&cpinfo);
-	}
-
-	cpinfo = load_contrprocinfo(0);
-	show_contrprocinfo(cpinfo);
-	free_contrprocinfo(&cpinfo);
 	close(capifd);
 
-	cards = load_config(configfilename);
-	for (card = cards; card; card = card->next) {
-		if (driver_loaded(card->driver))
-			unload_driver(card->driver);
-	}
-	for (card = cards; card; card = card->next) {
-		if (driver_loaded(card->driver))
-			unload_driver(card->driver);
-	}
+	if (unload && !cardname) {
+		cards = load_config(configfilename);
+		for (card = cards; card; card = card->next) {
+			if (driver_loaded(card->driver))
+				unload_driver(card->driver);
+		}
+		for (card = cards; card; card = card->next) {
+			if (driver_loaded(card->driver))
+				unload_driver(card->driver);
+		}
 
-	unload_module("capi");
-	unload_module("capidrv");
-	unload_module("kernelcapi");
-	unload_module("capiutil");
-	if ((mp = mounted("capifs")) != 0 && strcmp(mp, "/dev/capi") == 0)
-		system("umount /dev/capi");
-	if (filesystem_available("capifs"))
-		unload_filesystem("capifs");
+		unload_module("capi");
+		unload_module("capidrv");
+		unload_module("kernelcapi");
+		unload_module("capiutil");
+		if ((mp = mounted("capifs")) != 0 && strcmp(mp, "/dev/capi") == 0)
+			system("umount /dev/capi");
+		if (filesystem_available("capifs"))
+			unload_filesystem("capifs");
+	}
+	if (cardname && cname[0] == 0) {
+		fprintf(stderr,"ERROR: card \"%s\"  not found\n", cardname);
+		return 4;
+	}
 	return 0;
 }
 
@@ -1367,15 +1451,49 @@ int main_show(void)
 
 /* ------------------------------------------------------------------- */
 
+int main_status(void)
+{
+	struct contrprocinfo *cpinfo;
+
+	cpinfo = load_contrprocinfo(0);
+	show_contrprocinfo(cpinfo, 0);
+	free_contrprocinfo(&cpinfo);
+	return 0;
+}
+
+/* ------------------------------------------------------------------- */
+
 static void usage(void)
 {
     fprintf(stderr, "Usage: capiinit [OPTION]\n");
     fprintf(stderr, "   or: capiinit [OPTION] start\n");
+    fprintf(stderr, "       - load all modules and inititialize all cards\n");
     fprintf(stderr, "   or: capiinit [OPTION] stop\n");
+    fprintf(stderr, "       - reset all cards and unload modules\n");
     fprintf(stderr, "   or: capiinit [OPTION] show\n");
+    fprintf(stderr, "       - show current config\n");
+    fprintf(stderr, "   or: capiinit [OPTION] status\n");
+    fprintf(stderr, "       - show current status\n");
+    fprintf(stderr, "   or: capiinit [OPTION] prepare\n");
+    fprintf(stderr, "       - load all modules\n");
+    fprintf(stderr, "   or: capiinit [OPTION] activate\n");
+    fprintf(stderr, "       - inititialize all cards \n");
+    fprintf(stderr, "   or: capiinit [OPTION] activate cardname\n");
+    fprintf(stderr, "       - inititialize one cards (i.e.: c4-ec00) \n");
+    fprintf(stderr, "   or: capiinit [OPTION] activate driver [cardnumber]\n");
+    fprintf(stderr, "       - inititialize one card \n");
+    fprintf(stderr, "   or: capiinit [OPTION] deactivate\n");
+    fprintf(stderr, "       - reset all cards \n");
+    fprintf(stderr, "   or: capiinit [OPTION] deactivate cardname\n");
+    fprintf(stderr, "       - reset one card (i.e.: c4-ec00) \n");
+    fprintf(stderr, "   or: capiinit [OPTION] deactivate driver [cardnumber]\n");
+    fprintf(stderr, "       - reset one cards \n");
+    fprintf(stderr, "   or: capiinit [OPTION] reload\n");
+    fprintf(stderr, "       - reset all cards and initialize them again\n");
     fprintf(stderr, "Setup or unsetup CAPI2.0 Controllers\n");
     fprintf(stderr, "   -c, --config filename  (default %s)\n", configfilename);
     fprintf(stderr, "   -d, --debug            save patchvalues for debugging\n");
+    fprintf(stderr, "   -s, --silent           don't show status\n");
 }
 
 int main(int ac, char *av[])
@@ -1387,10 +1505,11 @@ int main(int ac, char *av[])
 		static struct option long_options[] = {
 			{"config", 1, 0, 'c'},
 			{"debug", 1, 0, 'd'},
+			{"silent", 1, 0, 's'},
 			{0, 0, 0, 0}
 		};
 
-		c = getopt_long (ac, av, "c:d",
+		c = getopt_long (ac, av, "c:ds",
 				long_options, &option_index);
              	if (c == -1)
             		break;
@@ -1410,6 +1529,9 @@ int main(int ac, char *av[])
 			case 'd':
  				patchdebug = 1;
  				break;
+			case 's':
+ 				silent = 1;
+ 				break;
 			case '?':
 				usage();
 				return 1;
@@ -1417,14 +1539,37 @@ int main(int ac, char *av[])
 	}
 
  	if (optind == ac) {
-		return main_start();
+		return main_start(1, 0, 0);
 	} else if (optind+1 == ac) {
-		if (strcmp(av[optind], "start") == 0)
-			return main_start();
-		else if (strcmp(av[optind], "stop") == 0)
-			return main_stop();
-		else if (strcmp(av[optind], "show") == 0)
+		if (strcmp(av[optind], "start") == 0) {
+			return main_start(1, 0, 0);
+		} else if (strcmp(av[optind], "activate") == 0) {
+			return main_start(1, 0, 0);
+		} else if (strcmp(av[optind], "prepare") == 0) {
+			return main_start(0, 0, 0);
+		} else if (strcmp(av[optind], "stop") == 0) {
+			return main_stop(1, 0, 0);
+		} else if (strcmp(av[optind], "deactivate") == 0) {
+			return main_stop(0, 0, 0);
+		} else if (strcmp(av[optind], "show") == 0) {
 			return main_show();
+		} else if (strcmp(av[optind], "status") == 0) {
+			return main_status();
+		} else if (strcmp(av[optind], "reload") == 0) {
+			if (main_stop(0, 0, 0) == 0)
+			   return main_start(1, 0, 0);
+		}
+	} else if (optind+2 == ac) {
+		int number = strchr(av[optind+1], '-') == 0 ? 1 : 0;
+		if (strcmp(av[optind], "activate") == 0)
+			return main_start(1, av[optind+1], number);
+		else if (strcmp(av[optind], "deactivate") == 0)
+			return main_stop(0, av[optind+1], number);
+	} else if (optind+3 == ac) {
+		if (strcmp(av[optind], "activate") == 0)
+			return main_start(1, av[optind+1], atoi(av[optind+2]));
+		else if (strcmp(av[optind], "deactivate") == 0)
+			return main_stop(0, av[optind+1], atoi(av[optind+2]));
 	}
 	usage();
 	return 1;
