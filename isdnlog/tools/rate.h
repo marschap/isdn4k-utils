@@ -1,4 +1,4 @@
-/* $Id: rate.h,v 1.19 1999/12/31 13:57:20 akool Exp $
+/* $Id: rate.h,v 1.20 2000/01/16 12:36:59 akool Exp $
  *
  * Tarifdatenbank
  *
@@ -19,6 +19,13 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rate.h,v $
+ * Revision 1.20  2000/01/16 12:36:59  akool
+ * isdnlog-4.03
+ *  - Patch from Gerrit Pape <pape@innominate.de>
+ *    fixes html-output if "-t" option of isdnrep is omitted
+ *  - Patch from Roland Rosenfeld <roland@spinnaker.de>
+ *    fixes "%p" in ILABEL and OLABEL
+ *
  * Revision 1.19  1999/12/31 13:57:20  akool
  * isdnlog-4.00 (Millenium-Edition)
  *  - Oracle support added by Jan Bolt (Jan.Bolt@t-online.de)
@@ -239,6 +246,7 @@ typedef struct {
 void  exitRate(void);
 int   initRate(char *conf, char *dat, char *dom, char **msg);
 char *getProvider(int prefix);
+char *getProviderVBN(int prefix);
 int   getSpecial(char *number);
 char* getSpecialName(char *number);
 char *getServiceNum(char *name);

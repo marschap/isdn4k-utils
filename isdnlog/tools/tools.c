@@ -1,4 +1,4 @@
-/* $Id: tools.c,v 1.45 2000/01/12 23:22:54 akool Exp $
+/* $Id: tools.c,v 1.46 2000/01/16 12:36:59 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -19,6 +19,13 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools.c,v $
+ * Revision 1.46  2000/01/16 12:36:59  akool
+ * isdnlog-4.03
+ *  - Patch from Gerrit Pape <pape@innominate.de>
+ *    fixes html-output if "-t" option of isdnrep is omitted
+ *  - Patch from Roland Rosenfeld <roland@spinnaker.de>
+ *    fixes "%p" in ILABEL and OLABEL
+ *
  * Revision 1.45  2000/01/12 23:22:54  akool
  * - isdnlog/tools/holiday.c ... returns ERVERYDAY for '*'
  * - FAQ/configure{,.in} ...  test '==' => '='
@@ -1173,11 +1180,7 @@ go:   	         if (!ndigit)
 
       case 'p' : s = sx;
       	         if (call[chan].provider != UNKNOWN) {
-
-      		   if (call[chan].provider < 100)
-      	       	     sprintf(sx, "%s%02d", vbn, call[chan].provider);
-      		   else
-		     sprintf(sx, "%s%03d", vbn, call[chan].provider - 100);
+		   sprintf(sx, "%s", getProviderVBN(call[chan].provider));
       	         }
       		 else
                    *sx = 0;

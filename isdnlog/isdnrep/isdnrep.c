@@ -1,4 +1,4 @@
-/* $Id: isdnrep.c,v 1.86 1999/12/31 13:57:18 akool Exp $
+/* $Id: isdnrep.c,v 1.87 2000/01/16 12:36:58 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -24,6 +24,13 @@
  *
  *
  * $Log: isdnrep.c,v $
+ * Revision 1.87  2000/01/16 12:36:58  akool
+ * isdnlog-4.03
+ *  - Patch from Gerrit Pape <pape@innominate.de>
+ *    fixes html-output if "-t" option of isdnrep is omitted
+ *  - Patch from Roland Rosenfeld <roland@spinnaker.de>
+ *    fixes "%p" in ILABEL and OLABEL
+ *
  * Revision 1.86  1999/12/31 13:57:18  akool
  * isdnlog-4.00 (Millenium-Edition)
  *  - Oracle support added by Jan Bolt (Jan.Bolt@t-online.de)
@@ -1177,16 +1184,18 @@ int read_logfile(char *myname)
 		if (begintime == 0)
 			begintime = time(NULL);
 
-		if (endtime == 0)
-			endtime = time(NULL);
-
 		get_time_value(begintime,&lday,SET_TIME);
 		sprintf(start, "%s %s", get_time_value(0,NULL,GET_DATE),
 		                        get_time_value(0,NULL,GET_YEAR));
 
+		if (endtime) {
 		get_time_value(endtime,&lday,SET_TIME);
 		sprintf(stop, "%s %s", get_time_value(0,NULL,GET_DATE),
 		                       get_time_value(0,NULL,GET_YEAR));
+		}
+		else {
+		  strcpy(stop, start);
+		}
 
 		print_line2(F_1ST_LINE,"I S D N  Connection Report");
 		print_line2(F_TEXT_LINE,"");

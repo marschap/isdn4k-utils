@@ -1,4 +1,4 @@
-/* $Id: rate.c,v 1.70 1999/12/31 13:57:20 akool Exp $
+/* $Id: rate.c,v 1.71 2000/01/16 12:36:58 akool Exp $
  *
  * Tarifdatenbank
  *
@@ -19,6 +19,13 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rate.c,v $
+ * Revision 1.71  2000/01/16 12:36:58  akool
+ * isdnlog-4.03
+ *  - Patch from Gerrit Pape <pape@innominate.de>
+ *    fixes html-output if "-t" option of isdnrep is omitted
+ *  - Patch from Roland Rosenfeld <roland@spinnaker.de>
+ *    fixes "%p" in ILABEL and OLABEL
+ *
  * Revision 1.70  1999/12/31 13:57:20  akool
  * isdnlog-4.00 (Millenium-Edition)
  *  - Oracle support added by Jan Bolt (Jan.Bolt@t-online.de)
@@ -1708,6 +1715,11 @@ char *getProvider (int prefix)
     return s;
   }
   return Provider[prefix].Name;
+}
+
+char *getProviderVBN (int prefix)
+{
+  return Provider[prefix].Vbn;
 }
 
 char *getComment (int prefix, char *key)
