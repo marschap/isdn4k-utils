@@ -89,9 +89,9 @@ VERSION = @VERSION@
 
 AUTOMAKE_OPTIONS=foreign no-dependencies
 SUBDIRS=de
-man_MANS=autovbox.1 rmdtovbox.1 vbox.5 vbox.conf.5 vboxbeep.1 vboxconvert.1 vboxd.8 vboxd.conf.5 vboxgetty.8 vboxgetty.conf.5 vboxmode.1 vboxrc.5 vboxtcl.5 vboxtoau.1 vboxctrl.1 vboxmail.8 vboxplay.1
+man_MANS=autovbox.1 rmdtovbox.1 vbox.5 vbox.conf.5 vboxbeep.1 vboxconvert.1 vboxd.8 vboxd.conf.5 vboxgetty.8 vboxgetty.conf.5 vboxmode.1 vboxrc.5 vboxtcl.5 vboxtoau.1 vboxctrl.1 vboxmail.8 vboxplay.1 vboxputty.8
 DISTCLEANFILES=${man_MANS}
-EXTRA_DIST=autovbox.man rmdtovbox.man vbox.conf.man vbox.man vboxbeep.man vboxconvert.man vboxd.conf.man vboxd.man vboxgetty.conf.man vboxgetty.man vboxmode.man vboxrc.man vboxtcl.man vboxtoau.man vboxctrl.man vboxmail.man vboxplay.man
+EXTRA_DIST=autovbox.man rmdtovbox.man vbox.conf.man vbox.man vboxbeep.man vboxconvert.man vboxd.conf.man vboxd.man vboxgetty.conf.man vboxgetty.man vboxmode.man vboxrc.man vboxtcl.man vboxtoau.man vboxctrl.man vboxmail.man vboxplay.man vboxputty.man
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_HEADER = ../src/config.h
 CONFIG_CLEAN_FILES = 

@@ -1,5 +1,5 @@
 /*
-** $Id: init.c,v 1.7 1997/05/10 10:58:41 michael Exp $
+** $Id: init.c,v 1.8 2000/11/30 15:35:20 paul Exp $
 **
 ** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
 */
@@ -234,4 +234,22 @@ void exit_program(int s)
 	log_exit();
 
 	exit(0);
+}
+
+void exit_program_code(int s)
+{
+	block_all_signals();
+
+	log(L_INFO, "Exit program with value %d...\n", s);
+
+	modem_close_port();
+	streamio_close(setup.vboxrc);
+	lock_type_unlock(LCK_PID);
+	lock_type_unlock(LCK_MODEM);
+
+	log(L_INFO, "------------------------[End session]-----------------------\n");
+
+	log_exit();
+
+	exit(s);
 }

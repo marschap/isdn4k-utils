@@ -1,5 +1,5 @@
 /*
-** $Id: script.h,v 1.5 1997/10/22 20:47:14 fritz Exp $
+** $Id: script.h,v 1.6 2000/11/30 15:35:20 paul Exp $
 **
 ** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
 */
@@ -22,6 +22,7 @@ struct vbox_tcl_function
 /** Prototypes ***********************************************************/
 
 extern int script_run(char *);
+extern int script_run_call(char *, char *, int);
 extern int script_check_interpreter(void);
 
 #endif /* _VBOX_SCRIPT_H */

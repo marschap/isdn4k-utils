@@ -1,5 +1,5 @@
 /*
-** $Id: lists.c,v 1.4 1997/04/28 16:51:58 michael Exp $
+** $Id: lists.c,v 1.5 2000/11/30 15:35:20 paul Exp $
 **
 ** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
 */
@@ -105,6 +105,7 @@ int breaklist_search(char *line)
 			if (breaklist[i])
 			{
 				if (strcasecmp(breaklist[i], line) == 0) returnok();
+				if ((strcmp(breaklist[i], "ALL") == 0) && (strlen(line) > 3)) returnok();
 			}
 		}
 	}

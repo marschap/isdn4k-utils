@@ -1,5 +1,5 @@
 #
-# $Id: Makefile.in,v 1.22 2000/06/08 10:06:03 keil Exp $
+# $Id: Makefile.in,v 1.23 2000/11/30 15:35:19 paul Exp $
 
 #----------------------------------------------------------------------------#
 # Things you can change to personalize the Makefile for your own site. Some  #
@@ -172,6 +172,9 @@ programs-d:	  ignore
 programs-i:	  ignore
 		  @echo "Installing '$(DESTDIR)$(sbindir)/vboxgetty'..."
 		  @$(INSTALL_SBIN) $(TOPDIR)/src/vboxgetty $(DESTDIR)$(sbindir)/vboxgetty
+		  @echo "Installing '$(DESTDIR)$(sbindir)/vboxputty'..."
+		  @cd $(DESTDIR)$(sbindir); \
+		  $(LN) -f vboxgetty vboxputty
 		  @echo "Installing '$(DESTDIR)$(sbindir)/vboxd'..."
 		  @$(INSTALL_SBIN) $(TOPDIR)/src/vboxd $(DESTDIR)$(sbindir)/vboxd
 		  @echo "Installing '$(DESTDIR)$(bindir)/vboxcnvt'..."

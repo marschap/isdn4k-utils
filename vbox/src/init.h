@@ -1,5 +1,5 @@
 /*
-** $Id: init.h,v 1.4 1997/03/18 12:36:45 michael Exp $
+** $Id: init.h,v 1.5 2000/11/30 15:35:20 paul Exp $
 **
 ** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
 */
@@ -58,5 +58,5 @@ extern setup_t setup;											  /* Global setup	*/
 
 extern int	init_program(char *, char *);
 extern void	exit_program(int);
-
+extern void     exit_program_code(int);
 #endif /* _VBOX_INIT_H */

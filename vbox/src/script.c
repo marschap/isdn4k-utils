@@ -1,5 +1,5 @@
 /*
-** $Id: script.c,v 1.10 1998/04/28 08:34:47 paul Exp $
+** $Id: script.c,v 1.11 2000/11/30 15:35:20 paul Exp $
 **
 ** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
 */
@@ -143,6 +143,68 @@ int script_run(char *script)
 	}
 
 	return(result);
+}
+int script_run_call(char *script, char *call, int wait) {
+  /* returns 99 on temporary failure. */
+
+  Tcl_Interp *interpreter;
+  int		   result;
+  int         rcdelete;
+
+  log(L_DEBUG, "Initializing tcl script \"%s\"...\n", script);
+  breaklist_init();
+  result = 1;
+  if ((interpreter = Tcl_CreateInterp())) {
+    if (Tcl_Init(interpreter) == TCL_OK) {
+      if (init_tcl_functions(interpreter)) {
+	if (init_tcl_variables(interpreter)) {
+	  char cmnd[PATH_MAX +1 ];
+	  int mcrc;
+	  xstrncpy(cmnd, "ATD", PATH_MAX);
+	  xstrncat(cmnd, call, PATH_MAX);
+	  log(L_DEBUG, "vboxputty: Triggering call...\n");
+	  if ((mcrc =modem_command(cmnd, "VCON|CONNECT|BUSY")) > 0) {
+	    if (mcrc == 3) {
+	      return(99);
+	    }
+	    sleep(wait);
+	    log(L_INFO, "vboxputty: Running tcl script \"%s\"...\n", script);
+	    if (Tcl_EvalFile(interpreter, script) != TCL_OK) {
+	      log(L_ERROR, "In \"%s\": %s (line %d).\n", script, interpreter->result, interpreter->errorLine);
+	    }
+	    else {
+	      log(L_DEBUG, "vboxputty: Back from tcl script...\n");
+	      result = 0;
+	    }
+	  }
+	  else {
+	    log(L_FATAL, "vboxputty: Can't trigger call: no VCON|CONNECT.\n");
+	    result = 99;
+	  }
+	}
+	else log(L_ERROR, "In \"%s\": %s (line %d).\n", script, interpreter->result, interpreter->errorLine);
+      }
+      else log(L_FATAL, "Can't create all new tcl commands.\n");
+      if ((rcdelete = Tcl_InterpDeleted(interpreter)) == 0) {
+	log(L_DEBUG, "Freeing tcl interpreter...\n");
+	Tcl_DeleteInterp(interpreter);
+      }
+      else {
+	log(L_ERROR, "Can't free tcl interpreter - Tcl_InterpDeleted() returns %d!\n", rcdelete);
+	result = 1;
+      }
+    }
+    else log(L_FATAL, "Can't initialize tcl interpreter.\n");
+  }
+  else log(L_FATAL, "Can't create tcl interpreter.\n");
+  
+  breaklist_exit();
+  
+  if (result != 0) {
+    log(L_ERROR, "General tcl problem - setting flag to quit program...\n");
+  }
+
+  return(result);
 }
 
 /**************************************************************************/
