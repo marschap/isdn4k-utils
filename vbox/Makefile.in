@@ -1,5 +1,5 @@
 #
-# $Id: Makefile.in,v 1.19 1998/11/18 16:33:57 paul Exp $
+# $Id: Makefile.in,v 1.20 1998/11/23 09:17:59 fritz Exp $
 
 #----------------------------------------------------------------------------#
 # Things you can change to personalize the Makefile for your own site. Some  #
@@ -78,6 +78,7 @@ RANLIB		= @VBOX_RANLIB@
 
 prefix		= @prefix@
 exec_prefix	= @exec_prefix@
+mandir		= @CONFIG_MANDIR@
 bindir		= @CONFIG_BINDIR@
 sbindir		= @CONFIG_SBINDIR@
 sysconfdir	= @CONFIG_I4LCONFDIR@
@@ -238,7 +239,7 @@ manuals-d:	  ignore
 		  @cd doc && $(MAKE) distclean
 
 manuals-i:	  ignore
-		  @cd doc && $(MAKE) install
+		  @cd doc && $(MAKE) mandir=$(mandir) install
 
 manuals-v:	  ignore
 		  @set -e; for i in `echo $(MANUALS_V)`; do \

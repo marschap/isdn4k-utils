@@ -2355,6 +2355,7 @@ fi
 
 
 
+
 trap '' 1 2 15
 cat > confcache <<\EOF
 # This file is a shell script that caches the results of configure
@@ -2519,6 +2520,7 @@ s%@VBOX_PIDDIR@%$VBOX_PIDDIR%g
 s%@VBOX_LCKDIR@%$VBOX_LCKDIR%g
 s%@ISDN_GLOBAL_CONFIG@%$ISDN_GLOBAL_CONFIG%g
 s%@CONFIG_BINDIR@%$CONFIG_BINDIR%g
+s%@CONFIG_MANDIR@%$CONFIG_MANDIR%g
 s%@CONFIG_SBINDIR@%$CONFIG_SBINDIR%g
 s%@CONFIG_I4LCONFDIR@%$CONFIG_I4LCONFDIR%g
 s%@VBOX_LOCKDIR@%$VBOX_LOCKDIR%g
@@ -2736,7 +2738,7 @@ cat >> $CONFIG_STATUS <<EOF
 
 EOF
 cat >> $CONFIG_STATUS <<\EOF
-test -z "$CONFIG_HEADERS" || echo timestamp > src/stamp-h
+test -z "$CONFIG_HEADERS" || echo timestamp > stamp-h
 
 exit 0
 EOF
