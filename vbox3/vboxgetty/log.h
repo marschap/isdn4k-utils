@@ -1,5 +1,5 @@
 /*
-** $Id: log.h,v 1.2 1998/07/06 09:05:26 michael Exp $
+** $Id: log.h,v 1.3 1998/08/28 13:06:14 michael Exp $
 **
 ** Copyright 1996-1998 Michael 'Ghandi' Herold <michael@abadonna.mayn.de>
 */
@@ -15,6 +15,8 @@
 #define LOG_A	(4)														  /* Action	*/
 #define LOG_D	(128)															/* Debug	*/
 #define LOG_X	(255)													 /* Full debug	*/
+
+#define log log_line										 /* It looks better :-)	*/
 
 /** Structures ***********************************************************/
 

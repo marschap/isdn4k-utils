@@ -1,9 +1,24 @@
 /*
-** $Id: vboxgetty.c,v 1.4 1998/07/06 09:05:35 michael Exp $
+** $Id: vboxgetty.c,v 1.5 1998/08/28 13:06:16 michael Exp $
 **
 ** Copyright 1996-1998 Michael 'Ghandi' Herold <michael@abadonna.mayn.de>
 **
 ** $Log: vboxgetty.c,v $
+** Revision 1.5  1998/08/28 13:06:16  michael
+** - Removed audio full duplex mode. Sorry, my soundcard doesn't support
+**   this :-)
+** - Added Fritz's /dev/audio setup. Pipe to /dev/audio now works great
+**   (little echo but a clear sound :-)
+** - Added better control support. The control now has the ttyname appended
+**   (but there are some global controls without this) for controlling
+**   more than one vboxgetty for a user.
+** - Added support for "vboxcall" in the user spool directory. The file
+**   stores information about the current answered call (needed by vbox,
+**   vboxctrl or some other programs to create the right controls).
+** - Added support for Karsten's suspend mode (support for giving a line
+**   number is included also, but currently not used since hisax don't use
+**   it).
+**
 ** Revision 1.4  1998/07/06 09:05:35  michael
 ** - New control file code added. The controls are not longer only empty
 **   files - they can contain additional informations.
@@ -53,6 +68,7 @@ static char *progbasename;
 static char *isdnttyname;
 
 char temppathname[PATH_MAX + 1];
+char savettydname[NAME_MAX + 1];
 
 /** Structures ***********************************************************/
 
@@ -183,6 +199,7 @@ void main(int argc, char **argv)
 	{
 		if ((stop = rindex(isdnttyname, '/'))) isdnttyname = ++stop;
 
+		printstring(savettydname, "%s"     , isdnttyname);
 		printstring(temppathname, "/dev/%s", isdnttyname);
 		
 		if (access(temppathname, F_OK|R_OK|W_OK) != 0)
@@ -535,6 +552,7 @@ static int process_incoming_call(void)
 	int					 ringsetup;
 	int					 inputisok;
 	char					*stop;
+	char					*todo;
 
 	memset(&vboxuser, 0, sizeof(vboxuser));
 	memset(&vboxcall, 0, sizeof(vboxcall));
@@ -556,9 +574,18 @@ static int process_incoming_call(void)
 		{
 			if (waitrings >= 0)
 			{
-				if ((stop = ctrl_exists(vboxuser.home, "answer")))
+				todo = savettydname;
+				stop = ctrl_exists(vboxuser.home, "answer", todo);
+
+				if (!stop)
 				{
-					log_line(LOG_D, "Control \"vboxctrl-answer:%s\" found...\n", stop);
+					todo = NULL;
+					stop = ctrl_exists(vboxuser.home, "answer", todo);
+				}
+
+				if (stop)
+				{
+					log_line(LOG_D, "Control \"vboxctrl-answer\" detected: %s (%s)...\n", stop, todo ? todo : "global");
 
 					if ((strcasecmp(stop, "no") == 0) || (strcasecmp(stop, "hangup") == 0) || (strcasecmp(stop, "reject") == 0))
 					{
@@ -630,15 +657,8 @@ static int process_incoming_call(void)
 							/* ein Benutzer gefunden wurde, werden einige der	*/
 							/* Kontrolldateien gelöscht.								*/
 
-						ctrl_remove(vboxuser.home, "suspend");
-
-						if ((stop = ctrl_exists(vboxuser.home, "answer")))
-						{
-							if ((strcasecmp(stop, "no") == 0) || (strcasecmp(stop, "hangup") == 0) || (strcasecmp(stop, "reject") == 0))
-							{
-								ctrl_remove(vboxuser.home, "answer");
-							}
-						}
+						ctrl_remove(vboxuser.home, "suspend", savettydname);
+						ctrl_remove(vboxuser.home, "suspend", NULL        );
 
 							/* Die "effective Permissions" des Prozesses auf	*/
 							/* die des Benutzers setzen und dessen Konfigurat-	*/

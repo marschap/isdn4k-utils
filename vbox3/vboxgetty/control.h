@@ -1,5 +1,5 @@
 /*
-** $Id: control.h,v 1.1 1998/07/06 09:05:20 michael Exp $
+** $Id: control.h,v 1.2 1998/08/28 13:06:13 michael Exp $
 **
 ** Copyright 1996-1998 Michael 'Ghandi' Herold <michael@abadonna.mayn.de>
 */
@@ -13,8 +13,8 @@
 
 /** Prototypes ***********************************************************/
 
-extern char *ctrl_exists(char *, char *);
-extern int	 ctrl_create(char *, char *, char *);
-extern int	 ctrl_remove(char *, char *);
+extern char *ctrl_exists(char *, char *, char *);
+extern int	 ctrl_create(char *, char *, char *, char *);
+extern int	 ctrl_remove(char *, char *, char *);
 
 #endif /* _VBOX_CONTROL_H */

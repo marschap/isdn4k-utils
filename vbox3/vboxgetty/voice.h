@@ -1,5 +1,5 @@
 /*
-** $Id: voice.h,v 1.2 1998/07/06 09:05:40 michael Exp $
+** $Id: voice.h,v 1.3 1998/08/28 13:06:19 michael Exp $
 **
 ** Copyright 1996-1998 Michael 'Ghandi' Herold <michael@abadonna.mayn.de>
 */
@@ -27,7 +27,10 @@
 
 /** Defines **************************************************************/
 
-#define VBOXVOICE_BUFFER_SIZE		32
+#define VBOXVOICE_BUFEXP   5
+#define VBOXVOICE_NUMFRAGS 4
+#define VBOXVOICE_FRAGFACT 5
+#define VBOXVOICE_BUFSIZE  ((1 << VBOXVOICE_BUFEXP) * VBOXVOICE_FRAGFACT)
 
 #define VBOXVOICE_STAT_OK			0
 #define VBOXVOICE_STAT_TIMEOUT	1
