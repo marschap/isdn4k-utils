@@ -22,7 +22,7 @@
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-char sys_rcsid[] = "$Id: sys-linux.c,v 1.17 1999/01/25 14:09:30 paul Exp $";
+char sys_rcsid[] = "$Id: sys-linux.c,v 1.18 1999/06/01 13:02:20 paul Exp $";
 
 #define _LINUX_STRING_H_
 
@@ -65,6 +65,9 @@ char sys_rcsid[] = "$Id: sys-linux.c,v 1.17 1999/01/25 14:09:30 paul Exp $";
 #endif
 
 #include <linux/isdn_ppp.h>
+#if __GLIBC__ >= 2 && __GLIBC_MINOR__ >= 1
+# include <netipx/ipx.h>
+#endif
 
 #include "fsm.h"
 #include "ipppd.h"
@@ -1547,7 +1550,11 @@ void setifip(int ipcp_unit)
 # define _LINUX_SOCKET_H
 #endif
 
-#include <linux/ipx.h>
+#if (__GLIBC__ > 2) || (__GLIBC__ == 2 && __GLIBC_MINOR__ >= 1)
+  /* glibc-2.1 includes all the stuff via /usr/include/netipx/ipx.h */
+#else
+# include <linux/ipx.h>
+#endif
 
 /*
  * sipxfaddr - Config the interface IPX networknumber
