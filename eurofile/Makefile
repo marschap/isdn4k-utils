@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.11 1999/10/08 00:31:04 he Exp $
+# $Id: Makefile,v 1.12 1999/10/11 21:22:23 he Exp $
 
 -include Rules.make
 
@@ -7,7 +7,8 @@ SHELL = /bin/sh
 
 CVS = cvs -z 4
 
-SCRIPTS = scripts/eftd.sh scripts/eftp.sh
+SCRIPTS = scripts/eftd.sh scripts/eftp.sh scripts/check_system
+AUTO_CONFIGURED_FILES = Rules.make scripts/eftd.sh scripts/eftp.sh examples/eft.conf 
 
 #
 #additions to the CHANGES file shall automatically increase the compiled-in
@@ -16,7 +17,7 @@ SCRIPTS = scripts/eftd.sh scripts/eftp.sh
 E4L_EXTRA_VERSION_DEP := $(shell pwd)/CHANGES
 export E4L_EXTRA_VERSION_DEP
 
-CONF_DEPS = ./configure scripts/eftd.sh scripts/eftp.sh src/config.h Rules.make
+CONF_DEPS = ./configure $(AUTO_CONFIGURED_FILES) 
 
 #this target is required by the isdn4k-utils root makefile's default target
 all: $(CONF_DEPS)
@@ -25,14 +26,14 @@ all: $(CONF_DEPS)
 really_all:	$(CONF_DEPS)
 	make -C src all
 
-config src/config.h  Rules.make $(SCRIPTS): configure 
+config src/config.h $(AUTO_CONFIGURES_FILES): configure 
 	./configure
 	chmod a+x scripts/eftd.sh scripts/eftp.sh
 
 configure: configure.in
 	autoconf
 
-permissions: scripts/eftd.sh scripts/eftp.sh
+permissions: $(SCRIPTS)
 	chmod a+x $(SCRIPTS)
 
 clean:
@@ -40,7 +41,7 @@ clean:
 	make -C src clean
 
 distclean: clean
-	rm -f config.* *~ '#'*'#' $(SCRIPTS)
+	rm -f config.* *~ '#'*'#' $(AUTO_CONFIGURED_FILES)
 	make -C src distclean
 	rm -f  Rules.make eftp4linux*.tar.gz
 	rm -f `find . \( -name core -o -name '*.orig' -o -name '*.rej' -o \
@@ -56,11 +57,13 @@ configureclean: distclean
 install: 
 	make -C src install
 ifeq ($(CONFIG_EFT_INSTALL_EFTD_SH),y)
-	cd scripts; $(INSTALL_SCRIPT) eftd.sh $(SYSVINIT_RC_DIR)/
+	cd scripts  &&  $(INSTALL_SCRIPT) eftd.sh $(SYSVINIT_RC_DIR)/
 endif
 ifeq ($(CONFIG_EFT_INSTALL_CONF),y)
-	cd examples; $(INSTALL_DATA) eft.conf $(I4LCONFDIR)/	
+	cd examples  &&  $(INSTALL_DATA) eft.conf $(I4LCONFDIR)/	
 endif
+	test -e $(I4LCONFDIR)/eftaccess || test -f /etc/ftpaccess && ln -s /etc/ftpaccess $(I4LCONFDIR)/eftaccess
+	test -e $(I4LCONFDIR)/eftusers || test -f /etc/ftpusers && ln -s /etc/ftpusers $(I4LCONFDIR)/eftusers
 
 commit: distclean configure
 	$(CVS) commit .
@@ -92,4 +95,3 @@ release: new_version commit
 	tar -czf ../eftp4linux-$(NEW_VERSION).tar.gz .
 
 .PHONY: all config permissions clean distclean release configureclean commit update default
-

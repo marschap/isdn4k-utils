@@ -13,6 +13,10 @@ case $kversion
 	;;
 esac
 
+if test `id --user` != 0; then
+    echo 'This scripts needs to be run by root in order to perform all checks'
+    exit 1
+fi
 #
 # Test if the kernel supports X.25
 # This only works if the /proc file system is mounted.
@@ -61,4 +65,3 @@ else
     echo "is not loaded or not set up correctly. Further checks aborted."
     exit 1
 fi
-

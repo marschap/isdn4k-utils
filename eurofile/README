@@ -1,4 +1,4 @@
-$Id: README,v 1.4 1999/08/28 16:34:53 he Exp $
+$Id: README,v 1.5 1999/10/11 21:22:23 he Exp $
 
 README file for eftp4linux
 ==========================
@@ -8,10 +8,11 @@ EUROFILE Transfer Protocol as standardised by a set of ETSI norms
 (in particular ETS 300-383 and ETS 300-075). It is freqently used
 to transfer files over ISDN.
 
-Currently, the only target OS is Linux > 2.2.x. However, the design
+Currently, the only target OS is Linux >= 2.2.x. However, the design
 should allow for porting it to other POSIX operating systems
 that provide a select() system call and a socket interface to
-the X.25/ISO-8208 network layer protocol.
+the X.25/ISO-8208 network layer protocol. (Some minor non-POSIX
+features are currently used as well for convenience).
 
 DISCLAIMER
 ==========
@@ -39,7 +40,7 @@ on top of this library:
   line editing is supported by means of the GNU readline library.
 
 - An EUROFILE server which can serve multiple connections
-  simulatneously and suupports navigation (i.e. changing directories).
+  simulatneously and supports navigation (i.e. changing directories).
   User authentification is provided by a seperate
   authentification library derived from wu-ftpd which allows for fine
   grained access control based on user-id, password, and remote isdn
@@ -111,7 +112,8 @@ In addition to the files contained in this distribution, you will need
   therein is the x25_route utility. (x25-utils-2.1.20 is still the
   most current release). Don't confuse the x25-utils with the ax25-utils.
   The latter is for amateur radio networking and not related to 
-  eftp4linux at all.
+  eftp4linux at all. (You can use eftp4linux without this packages,
+  but local testing without isdn connection won't be possible then)
  
 - some of the recent isdn4k-utils, in particular isdnctrl (and
   loopctrl, if you want to test locally by means of the isdnloop driver).
@@ -131,7 +133,7 @@ How to build:
 See the INSTALL file.
 
 After having typed "make" in the top directory, there will
-(hopefully -:) be two important user level programs inside src/:
+(hopefully :-) be two important user level programs inside src/*/:
 
 - eftp is a simple EUROFILE client that allows for transferring files
   between a remote machine and your linux box by means of the EUROFILE
@@ -140,7 +142,8 @@ After having typed "make" in the top directory, there will
 
 - eftd is an EUROFILE server.
 
-Some older programmes, which are of less importance now, will also build:  
+Some older programmes, which are of less importance now, will also
+build if you type `make really_all':  
 
 - x25.echod listens on an x25 socket and echoes back every packet
   received. Access to the x25 Q-bit is enabled to demonstrate this
@@ -180,7 +183,7 @@ because the ~ftp directory usually contains no downloadable stuff).
 The authentication library can even evaluate the peer's
 isdn number for its decisions. For this to work reliably, 
 you need to use the cvs version of isdn4linux as of 1998-08-31 or
-newer or a kernel >= 2.3.4.
+newer or a kernel >= 2.2.12 or 2.3.4. 
 
 
 Other sources of information:
@@ -305,4 +308,3 @@ EUROfile project and I'd like to mention them explicitly:
  the University of California, Berkeley and its contributors.
 
 - Henner
-
