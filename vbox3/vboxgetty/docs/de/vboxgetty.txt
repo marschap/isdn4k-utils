@@ -9,13 +9,12 @@
 
   Inhaltsverzeichnis
 
-
   1. Copyright
 
   2. Vorwort
 
-     2.1 Was kann vbox?
-     2.2 Was kann vbox nicht?
+     2.1 Was kann vboxgetty?
+     2.2 Was kann vboxgetty nicht?
      2.3 Was wird zum Betrieb benötigt?
 
   3. Neuerungen
@@ -24,13 +23,21 @@
      3.2 Full Duplex Modus
      3.3 Touchtones
      3.4 Mehrere Nummern überwachen
+     3.5 Suspend
 
   4. Installation
 
-  5. Konfigurationsdateien
+     4.1 Anpassung an das lokale System
+     4.2 Erzeugen der Programme
+     4.3 Installieren der Programme
+     4.4 Konfiguration von vboxgetty
 
-     5.1 vboxgetty.user
+  5. Konfiguration
 
+     5.1 vboxgetty.conf
+     5.2 vboxgetty.user
+
+  6. vboxgetty
 
   ______________________________________________________________________
 
@@ -40,19 +47,54 @@
 
   22..  VVoorrwwoorrtt
 
-  xxx
+  Das _v_b_o_x-Paket ist eine Erweiterung zu _i_s_d_n_4_l_i_n_u_x und ermöglicht den
+  Betrieb eines _i_s_d_n-Anrufbeantworters.
 
-  22..11..  WWaass kkaannnn vvbbooxx??
+  Das Hauptprogramm des Paketes ist das Programm _v_b_o_x_g_e_t_t_y, das die
+  Anrufe entgegennimmt, die Ansagen abspielt und die Nachrichten
+  aufzeichnet.
 
-  xxx
+  22..11..  WWaass kkaannnn vvbbooxxggeettttyy??
 
-  22..22..  WWaass kkaannnn vvbbooxx nniicchhtt??
+  Was _v_b_o_x_g_e_t_t_y kann:
 
-  xxx
+  ·  Sprachanrufe entgegennehmen.
+
+  ·  Ansagetexte abspielen und/oder Nachrichten aufzeichnen.
+
+  ·  Touchtones auswerten - mit der eingebauten _T_c_l-Unterstützung sind
+     auch komplexe Voicemailboxen möglich.
+
+  Eben alles was ein normaler Anrufbeantworter auch kann - und noch
+  einiges mehr...
+
+  22..22..  WWaass kkaannnn vvbbooxxggeettttyy nniicchhtt??
+
+  Was _v_b_o_x_g_e_t_t_y nicht kann:
+
+  ·  Ohne _i_s_d_n_4_l_i_n_u_x betrieben werden. Das _v_b_o_x-Paket ist eine
+     Erweiterung zu _i_s_d_n_4_l_i_n_u_x!
+
+  ·  Mit einem Voice-Modem betrieben werden.
+
+  ·  Fax- oder Datenanrufe entgegennehmen. Dazu sind immer noch eigene
+     Programme nötig. _v_b_o_x ist ein reiner Anrufbeantworter!
 
   22..33..  WWaass wwiirrdd zzuumm BBeettrriieebb bbeennööttiiggtt??
 
-  xxx
+  Damit _v_b_o_x_g_e_t_t_y richtig funktioniert, wird folgendes benötigt:
+
+  ·  Eine funktionierende und von _L_i_n_u_x unterstützte _i_s_d_n-Karte.
+
+  ·  Die neuste Version von _i_s_d_n_4_l_i_n_u_x.
+
+  ·  _L_i_n_u_x Kernel ab Version 2.1.103 mit eingeschaltetem _i_s_d_n_4_l_i_n_u_x und
+     Isdn-Audio-Support.
+
+  ·  _T_c_l ab Version 8.0.
+
+  Vor der Installation von _v_b_o_x_g_e_t_t_y sollte sichergestellt werden das
+  alle benötigten Komponenten installiert sind und auch funktionieren!
 
   33..  NNeeuueerruunnggeenn
 
@@ -61,8 +103,6 @@
 
   Bitte lesen Sie sich die folgenden Abschnitte vor der Installation
   aufmerksam durch, um Unklarheiten und Fehler zu vermeiden!
-
-
 
   33..11..  FFoorrmmaatt ddeerr AAuuddiiooddaatteeiieenn
 
@@ -136,29 +176,44 @@
   Das in früheren Versionen verwendete Kommando AT&E funktioniert auch
   weiterhin, es kann aber nur eine Nummer angegeben werden!
 
+  33..55..  SSuussppeenndd
+
+  Bereits von _v_b_o_x_g_e_t_t_y angenommene Anrufe können wieder zurück auf die
+  Leitung gelegt (Parken) und vom Telefon angenommen werden.
+
+  BBeemmeerrkkuunngg:: Im Moment ist die Nummer zum Parken noch nicht frei
+  wählbar, es wird immer 1 benutzt!
+
   44..  IInnssttaallllaattiioonn
 
-  Vor der Installation müssen die zu installierenden Programme zuerst
-  übersetzt und einige Skripte vorbereitet werden.
+  Die Installation von _v_b_o_x_g_e_t_t_y unterteilt sich in 4 Schritte:
 
-  Dazu starten Sie als erstes im Hauptverzeichnis das Skript
-  ``_c_o_n_f_i_g_u_r_e'', welches Ihr System untersucht und überprüft ob alle
-  nötigen Teile zur Übersetzung vorhanden sind.
+  ·  Anpassung an das lokale System
+
+  ·  Erzeugen der Programme
+
+  ·  Installieren der Programme
+
+  ·  Konfiguration von _v_b_o_x_g_e_t_t_y
+
+  44..11..  AAnnppaassssuunngg aann ddaass llookkaallee SSyysstteemm
+
+  Bevor irgend eines der Programme von _v_b_o_x compiliert oder installiert
+  werden kann, muß ``_c_o_n_f_i_g_u_r_e'' aus dem Hauptverzeichnis gestartet
+  werden. Das Skript untersucht Ihr System, prüft ob alle benötigten
+  Komponenten installiert sind und erzeugt einige Dateien die zur
+  Weiterarbeit benötigt werden.
+
+  Das Skript muß nur eeiinnmmaall zu Beginn gestartet werden! Die dort
+  gemachten Einstellungen gelten für aallllee Programme des _v_b_o_x-Pakets!
 
   Über verschiedene Parameter können Sie Voreinstellungen dieses Skripts
   ändern. Eine genaue Auflistung aller möglichen Parameter erhalten Sie,
   wenn Sie in der Shell folgenden Befehl eingeben:
 
-
-
        ./configure --help
 
-
-
-
   Hier eine Beschreibung der wichtigsten Parameter:
-
-
 
      ----ssbbiinnddiirr==DDIIRR
         DIR legt das Verzeichnis fest, in das _v_b_o_x_g_e_t_t_y (und alle
@@ -167,22 +222,19 @@
         ``/usr/local/sbin''. Dieses Verzeichnis wird in der weiteren
         Dokumentation mit <<ssbbiinnddiirr>> beschrieben.
 
-
      ----bbiinnddiirr==DDIIRR
         DIR legt das Verzeichnis fest, in das _v_b_o_x (und alle weiteren
-        Proframme die von jedem Benutzer gestartet werden können)
+        Programme die von jedem Benutzer gestartet werden können)
         installiert werden soll. Voreinstellung ist ``/usr/local/bin''.
         Dieses Verzeichnis wird in der weiteren Dokumentation mit
         <<bbiinnddiirr>> beschrieben.
 
-
      ----ddaattaaddiirr==DDIIRR
-        DIR gibt das Verzeichnis an, in dem die Tcl-Skripte von
+        DIR gibt das Verzeichnis an, in das die Tcl-Skripte von
         _v_b_o_x_g_e_t_t_y installiert werden sollen. Dort wird automatisch das
         Unterverzeichnis ``vbox'' erzeugt. Voreinstellung ist
         ``/usr/local/share''.  Dieses Verzeichnis wird in der weiteren
         Dokumentation mit <<ppkkggddaattaaddiirr>> beschrieben.
-
 
      ----ssyyssccoonnffddiirr==DDIIRR
         DIR legt das Verzeichnis fest, in welches die
@@ -190,18 +242,17 @@
         ist ``/usr/local/etc''.  Dieses Verzeichnis wird in der weiteren
         Dokumentation mit <<ssyyssccoonnffddiirr>> beschrieben.
 
-
      ----wwiitthh--llooggddiirr==DDIIRR
         DIR gibt das Verzeichnis an, in welches die Logdateien der
         Programme geschrieben werden sollen. Voreinstellung ist
         ``/var/log''. Dieses Verzeichnis wird in der weiteren
         Dokumentation mit <<llooggddiirr>> beschrieben.
+
      ----wwiitthh--lloocckkddiirr==DDIIRR
         DIR gibt das Verzeichnis an, in welches die Lockdateien der
         Programme erzeugt werden sollen. Voreinstellung ist
         ``/var/lock''. Dieses Verzeichnis wird in der weiteren
         Dokumentation mit <<lloocckkddiirr>> beschrieben.
-
 
      ----wwiitthh--ppiiddddiirr==DDIIRR
         DIR gibt das Verzeichnis an, in welches die Prozeßdateien der
@@ -209,53 +260,77 @@
         ``/var/run''. Dieses Verzeichnis wird in der weiteren
         Dokumentation mit <<ppiiddddiirr>> beschrieben.
 
+  44..22..  EErrzzeeuuggeenn ddeerr PPrrooggrraammmmee
 
-  Nachdem ``_c_o_n_f_i_g_u_r_e'' Ihr System untersucht und einige Dateien
-  angepaßt hat, können Sie die Programme mit
-
-
+  Alle Programme des _v_b_o_x-Pakets können mit
 
        make
 
+  aus dem Hauptverzeichnis erzeugt werden. Um nur einzelne Programme zu
+  erzeugen muß ``_m_a_k_e'' im jeweiligen Verzeichnis aufgerufen werden.
 
+  Wenn Sie z.B. nur _v_b_o_x_g_e_t_t_y erzeugen möchten, wechseln Sie in das
+  Verzeichnis von _v_b_o_x_g_e_t_t_y und startet dort ``_m_a_k_e''.
 
+  44..33..  IInnssttaalllliieerreenn ddeerr PPrrooggrraammmmee
 
-  übersetzen. Nach einer fehlerfreien Übersetzung installiert ein
-
-
+  Alle Programme des _v_b_o_x-Pakets können mit
 
        make install
 
+  aus dem Hauptverzeichnis installiert werden. Um nur einzelne Programme
+  zu installieren muß ``_m_a_k_e _i_n_s_t_a_l_l'' im jeweiligen Verzeichnis
+  aufgerufen werden.
 
+  Wenn Sie z.B. nur _v_b_o_x_g_e_t_t_y installieren möchten, wechseln Sie in das
+  Verzeichnis von _v_b_o_x_g_e_t_t_y und startet dort ``_m_a_k_e _i_n_s_t_a_l_l''.
 
+  Bevor die Programme installiert werden können, müssen sie mit ``_m_a_k_e''
+  (siehe ``Erzeugen der Programme'') erzeugt werden. Ein ``_m_a_k_e
+  _i_n_s_t_a_l_l'' erzeugt nniicchhtt aallllee Programme!
 
-  alle Programme in die dafür vorgesehenen Verzeichnisse.
+  Wenn eine Datei die installiert werden soll bereits existiert, wird
+  die alte Datei nniicchhtt überschrieben! Die neue Datei wird stattdessen
+  mit der Endung ``.new'' installiert!
 
-  Wenn nicht alle Programe installiert werden sollen, können Sie die
-  letzten beiden Schritte auch in einem der Programmunterverzeichnisse
-  ausführen - es wird dann nur das jeweilige Programm übersetzt und
-  installiert.
+  44..44..  KKoonnffiigguurraattiioonn vvoonn vvbbooxxggeettttyy
 
-  AAcchhttuunngg:: Bei der Installation können frühere _v_b_o_x Installationen
-  überschrieben werden! Sichern Sie sich also zuvor alle älteren
-  Versionen, falls Sie diese evtl. weiterverwenden möchten!
+  Bevor Sie _v_b_o_x_g_e_t_t_y zum erstenmal nutzen können, müssen erst einige
+  Einstellungen gemacht werden.
 
+  Es werden drei Konfigurationsdateien benutzt:
 
+     vvbbooxxggeettttyy..ccoonnff
+        Mit dieser Datei wird der getty selbst konfiguriert. Hier kann
+        u.A. eingestellt werden welches Device benutzt werden soll und
+        wie es initialisiert wird.
 
+     vvbbooxxggeettttyy..uusseerr
+        Mit dieser Datei wird festgelegt, welche lokale Telefonnummer
+        welchem Benutzer zugewiesen wird.
 
+     vvbbooxxrrcc
+        Diese Datei enthält Einstellungen des jeweiligen Benutzers. Hier
+        wird festgelegt welche Anrufe wann und wie entgegengenommen
+        werden sollen.
 
+  Die jeweils möglichen Einstellungen können Sie unter ``Konfiguration''
+  nachlesen.
 
+  Wie _v_b_o_x_g_e_t_t_y selbst gestartet werden kann, lesen Sie bitte unter
+  ``vboxgetty'' nach.
 
+  55..  KKoonnffiigguurraattiioonn
 
-  55..  KKoonnffiigguurraattiioonnssddaatteeiieenn
+  55..11..  vvbbooxxggeettttyy..ccoonnff
 
-  55..11..  vvbbooxxggeettttyy..uusseerr
+  55..22..  vvbbooxxggeettttyy..uusseerr
 
+  Ab Version 3 von _v_b_o_x kann ein _v_b_o_x_g_e_t_t_y mittels des Kommandos AT&L
+  mehrere Nummern überwachen (siehe auch ``vboxgetty.conf'').
 
-  Ab Version 3 von _v_b_o_x kann ein _v_b_o_x_g_e_t_t_y mehrere Nummern überwachen.
-  Über die Datei ``_v_b_o_x_g_e_t_t_y_._u_s_e_r'' wird festgelegt, welche
-  Telefonnummer welchem lokalen Benutzer zugeordnet ist. Voreingestellt
-  liegt diese Datei in ``_/_u_s_r_/_l_o_c_a_l_/_e_t_c_/''.
+  Über die Datei ``_<_s_y_s_c_o_n_f_d_i_r_>_/_v_b_o_x_g_e_t_t_y_._u_s_e_r'' wird festgelegt, welche
+  Telefonnummer welchem lokalen Benutzer zugeordnet ist.
 
   Bei einem eingehenden Anruf wird die angerufene Nummer in dieser Datei
   gesucht und der Anruf einem lokalen Benutzer zugeordnet. Danach werden
@@ -264,58 +339,41 @@
 
   Jede Zuordnung beginnt in einer neuen Zeile und hat folgendes Format:
 
-
-
        number:user:group:umask:space
 
-
-
-
-  Kommentare (mit dem Zeichen ``#'' eingeleitet) und leere Zeilen werden
-  überlesen. Eine einzelne Zeile darf nicht länger als 200 Zeichen
-  werden!
-
-
+  Kommentare (mit dem Zeichen ``#'' am Zeilenanfang eingeleitet) und
+  leere Zeilen werden überlesen. Eine einzelne Zeile darf nicht länger
+  als 200 Zeichen werden!
 
      nnuummbbeerr
         Hier wird die Telefonnummer definiert, die einem Benutzer
-        zugeordnet werden soll. Wenn _r_e_g_e_x auf dem System installiert
-        ist, können hier die üblichen Muster angegeben werden. Eine
-        Angabe von ``*'' gilt für aallllee Nummern. Das Feld mmuußß angegeben
-        werden!
-
+        zugeordnet werden soll. Es können einfache Muster angegeben
+        werden (siehe _f_n_m_a_t_c_h_(_3_)).  Eine Angabe von ``*'' gilt für aallllee
+        Nummern. Das Feld mmuußß angegeben werden!
 
      uusseerr
         Lokaler Benutzer dem die Nummer zugeordnet werden soll. Der
         Benutzer kann namentlich oder als UID (eingeleitet mit einem
-        ``#'') angegeben werden.  Bei einer namentlichen Angabe muß der
-        entsprechende Benutzer in ``_/_e_t_c_/_p_a_s_s_w_d'' eingetragen sein! Das
-        Feld mmuußß angegeben werden!
-
+        ``#'') angegeben werden.  Das Feld mmuußß angegeben werden!
 
      ggrroouupp
         Gruppe die für den Benutzer gesetzt werden soll. Die Gruppe kann
         namentlich oder als GID (eingeleitet mit einem ``#'') angegeben
-        werden. Bei einer namentlichen Angabe muß die entsprechende
-        Gruppe in ``_/_e_t_c_/_g_r_o_u_p_s'' eingetragen sein! Bei einem leeren
-        Feld oder ``-'' wird keine Gruppe gesetzt. Das Feld ist optional
-        und muß nicht angegeben werden.
-
+        werden.  Bei einem leeren Feld wird keine Gruppe gesetzt. Das
+        Feld ist optional und muß nicht angegeben werden.
 
      uummaasskk
         Die Maske die zum anlegen von neuen Dateien oder Verzeichnissen
-        benutzt werden soll. Bei einem leeren Feld oder ``-'' wird die
-        Maske (umask) nicht gesetzt. Das Feld ist optional und muß nicht
+        benutzt werden soll. Bei einem leeren Feld wird die Maske
+        (umask) nicht gesetzt. Das Feld ist optional und muß nicht
         angegeben werden.
-
 
      ssppaaccee
         Freier Platz in Bytes, der auf der Partition auf der sich das
-        Spoolverzeichnis des Benutzers befindet frei sein muß, damit der
-        Anruf angenommen wird. Bei einem leeren Feld, ``0'' oder ``-''
-        wird keine Überprüfung des freien Platzes gemacht. Das Feld ist
-        optional und muß nicht angegeben werden.
-
+        _<_s_p_o_o_l_d_i_r_> (siehe ``vboxgetty.conf'') des Benutzers befindet
+        frei sein muß, damit der Anruf angenommen wird. Bei einem leeren
+        Feld oder ``0'' wird keine Überprüfung des freien Platzes
+        gemacht. Das Feld ist optional und muß nicht angegeben werden.
 
   Ein eingehender Anruf wird nniicchhtt angenommen, wenn die Datei nicht
   existiert oder der angerufenen Nummer kein Benutzer zugeordnet werden
@@ -323,74 +381,19 @@
 
   BBeeiissppiieell ddeerr DDaatteeii ````_v_b_o_x_g_e_t_t_y_._u_s_e_r''''::
 
+       # Number to user mapping. Please read the documentation to learn how this
+       # configuration file work!
+       #
+       # The fields "number" and "user" *must* be set - all others are optional!
+       #
+       # Format: number:user:group:umask:freespace
 
+       784711:peter::0077:2000000
+       784712:willy:firma:0007:2000000
+       78471?:firma:firma:0007:4000000
+       *:#100:#500:0077:
 
+  66..  vvbbooxxggeettttyy
 
-
-
-  # Number to user mapping. Please read the documentation to learn how this
-  # configuration file work!
-  #
-  # The fields "number" and "user" *must* be set - all others are optional!
-  #
-  # Format: number:user:group:umask:freespace
-
-  7850012:nicole::077:2000000
-  *:#100:#500:077:
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  xxx
 

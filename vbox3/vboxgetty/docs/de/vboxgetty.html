@@ -19,18 +19,48 @@ Anrufbeantworter f&uuml;r <EM>
 <H2><A NAME="s1">1. Copyright</A></H2>
 
 <P>xxx
-<H2><A NAME="s2">2. Vorwort</A></H2>
+<H2><A NAME="id-preface"></A> <A NAME="s2">2. Vorwort</A></H2>
 
-<P>xxx
-<H2>2.1 Was kann vbox?</H2>
+<P>Das <EM>vbox</EM>-Paket ist eine Erweiterung zu <EM>
+<A HREF="http://www.isdn4linux.de">isdn4linux</A></EM> und erm&ouml;glicht
+den Betrieb eines <EM>isdn</EM>-Anrufbeantworters.
+<P>Das Hauptprogramm des Paketes ist das Programm <EM>vboxgetty</EM>, das die
+Anrufe entgegennimmt, die Ansagen abspielt und die Nachrichten
+aufzeichnet.
+<H2><A NAME="id-preface-whatgettydo"></A> 2.1 Was kann vboxgetty?</H2>
 
-<P>xxx
-<H2>2.2 Was kann vbox nicht?</H2>
+<P>Was <EM>vboxgetty</EM> kann:
+<UL>
+<LI>Sprachanrufe entgegennehmen.</LI>
+<LI>Ansagetexte abspielen und/oder Nachrichten aufzeichnen.</LI>
+<LI>Touchtones auswerten - mit der eingebauten <EM>Tcl</EM>-Unterst&uuml;tzung sind
+auch komplexe Voicemailboxen m&ouml;glich.</LI>
+</UL>
+<P>Eben alles was ein normaler Anrufbeantworter auch kann - und noch
+einiges mehr...
+<H2><A NAME="id-preface-whatgettynotdo"></A> 2.2 Was kann vboxgetty nicht?</H2>
 
-<P>xxx
-<H2>2.3 Was wird zum Betrieb ben&ouml;tigt?</H2>
+<P>Was <EM>vboxgetty</EM> nicht kann:
+<UL>
+<LI>Ohne <EM>isdn4linux</EM> betrieben werden. Das <EM>vbox</EM>-Paket ist eine
+Erweiterung zu <EM>isdn4linux</EM>!</LI>
+<LI>Mit einem Voice-Modem betrieben werden.</LI>
+<LI>Fax- oder Datenanrufe entgegennehmen. Dazu sind immer noch eigene
+Programme n&ouml;tig. <EM>vbox</EM> ist ein reiner Anrufbeantworter!</LI>
+</UL>
+<H2><A NAME="id-preface-whatgettyneed"></A> 2.3 Was wird zum Betrieb ben&ouml;tigt?</H2>
 
-<P>xxx
+<P>Damit <EM>vboxgetty</EM> richtig funktioniert, wird folgendes ben&ouml;tigt:
+<UL>
+<LI>Eine funktionierende und von <EM>Linux</EM> unterst&uuml;tzte <EM>isdn</EM>-Karte.</LI>
+<LI>Die neuste Version von <EM>isdn4linux</EM>.</LI>
+<LI><EM>Linux</EM> Kernel ab Version 2.1.103 mit eingeschaltetem
+<EM>isdn4linux</EM> und Isdn-Audio-Support.</LI>
+<LI><EM>Tcl</EM> ab Version 8.0.</LI>
+</UL>
+<P>Vor der Installation von <EM>vboxgetty</EM> sollte sichergestellt werden
+das alle ben&ouml;tigten Komponenten installiert sind und auch
+funktionieren!
 <H2><A NAME="id-news"></A> <A NAME="s3">3. Neuerungen</A></H2>
 
 <P>Hier eine kurze Aufstellung der Neuerungen und &Auml;nderungen seit der
@@ -99,6 +129,12 @@ Verzeichnissen des entsprechenden Benutzers gepeichert.
 <P>Das in fr&uuml;heren Versionen verwendete Kommando <CODE>AT&amp;E</CODE>
 funktioniert auch weiterhin, es kann aber nur eine Nummer angegeben
 werden!
+<H2><A NAME="id-news-suspend"></A> 3.5 Suspend</H2>
+
+<P>Bereits von <EM>vboxgetty</EM> angenommene Anrufe k&ouml;nnen wieder zur&uuml;ck auf
+die Leitung gelegt (Parken) und vom Telefon angenommen werden.
+<P><B>Bemerkung:</B> Im Moment ist die Nummer zum Parken noch nicht frei
+w&auml;hlbar, es wird immer <CODE>1</CODE> benutzt!
 <H2><A NAME="id-install"></A> <A NAME="s4">4. Installation</A></H2>
 
 <P>Vor der Installation m&uuml;ssen die zu installierenden Programme zuerst
