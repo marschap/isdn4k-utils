@@ -21,7 +21,7 @@
  */
 
 #ifdef USE_MSCHAP
-char chap_ms_rcsid[] = "$Id: chap_ms.c,v 1.3 1997/05/19 10:15:41 hipp Exp $";
+char chap_ms_rcsid[] = "$Id: chap_ms.c,v 1.4 2004/08/30 14:56:36 keil Exp $";
 
 #include <stdio.h>
 #include <string.h>
@@ -34,7 +34,11 @@ char chap_ms_rcsid[] = "$Id: chap_ms.c,v 1.3 1997/05/19 10:15:41 hipp Exp $";
 #include "chap_ms.h"
 #include "md4.h"
 
+#ifdef USE_SSLDES
+#include <ssl/des.h>
+#else
 #include <des.h>
+#endif
 
 typedef struct {
     u_char LANManResp[24];

@@ -95,4 +95,7 @@
 /* Define if you have the des library (-ldes).  */
 #undef HAVE_LIBDES
 
+/* Define if you have the ssl library (-lssl).  */
+#undef HAVE_LIBSSL
+
 #endif

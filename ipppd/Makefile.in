@@ -1,8 +1,9 @@
 #
 # ipppd makefile for Linux
-# $Id: Makefile.in,v 1.18 2004/02/12 10:50:20 keil Exp $
+# $Id: Makefile.in,v 1.19 2004/08/30 14:56:36 keil Exp $
 #
 
+HAVE_LIBSSL   := @HAVE_LIBSSL@
 HAVE_LIBDES   := @HAVE_LIBDES@
 HAVE_LIBCRYPT := @HAVE_LIBCRYPT@
 HAVE_SHADOW_H := @HAVE_SHADOW_H@
@@ -89,14 +90,22 @@ SOURCE = RELNOTES configure *.in $(PPPDSRCS) $(HEADERS) $(MANPAGES)
 
 MSG    = ''
 ifdef USE_MSCHAP
-	ifeq ($(HAVE_LIBDES),1)
+	ifeq ($(HAVE_LIBSSL),1)
 		PPPDSRCS += md4.c chap_ms.c
 		PPPDOBJS += md4.o chap_ms.o
 		HEADERS  += md4.h chap_ms.h
-		COPTS    += -DUSE_MSCHAP
-		LIBS     += -ldes
+		COPTS    += -DUSE_MSCHAP -DUSE_SSLDES
+		LIBS     += -lssl
 	else
-		MSG = '\n\nLibrary libdes not found, USE_MSCHAP disabled\n\n'
+		ifeq ($(HAVE_LIBDES),1)
+			PPPDSRCS += md4.c chap_ms.c
+			PPPDOBJS += md4.o chap_ms.o
+			HEADERS  += md4.h chap_ms.h
+			COPTS    += -DUSE_MSCHAP
+			LIBS     += -ldes
+		else
+			MSG = '\n\nLibrary libdes not found, USE_MSCHAP disabled\n\n'
+		endif
 	endif
 endif
 
