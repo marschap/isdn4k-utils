@@ -1,5 +1,5 @@
-.\" $Id: isdnrep.1.in,v 1.9 2004/12/16 21:30:50 tobiasb Exp $
-.\" CHECKIN $Date: 2004/12/16 21:30:50 $
+.\" $Id: isdnrep.1.in,v 1.10 2005/01/22 18:47:16 tobiasb Exp $
+.\" CHECKIN $Date: 2005/01/22 18:47:16 $
 .TH isdnrep 1 "@MANDATE_ISDNREP@" "ISDN 4 Linux @I4LVERSION@" "Linux System Commands"
 
 .PD 0
@@ -858,6 +858,18 @@ error: neither 'i' nor '--' given
 2003-1-4
 error: leading zeros (at month and day) must not omitted
 .RE
+
+.TP
+"y"
+yesterday,
+.TP
+"yy"
+the day before yesterday,
+.TP
+"yyy"
+three days ago and so on.
+For time spans these can also be used in conjunction
+with the notations explained above.
 .in -7
 
 .SH "FILES"

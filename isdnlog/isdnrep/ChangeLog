@@ -1,3 +1,17 @@
+2005-01-22  Tobias Becker  <tobiasb@isdn4linux.de>
+
+	* opt_time.c (get_ytime): New function for setting time relative
+	to current date, e.g. yyy = 3 days ago from now.
+	* opt_time.c (get_term): Added test for y[y[...]] notation.
+
+	* opt_time.c (get_month, get_time, get_gertime, get_itime):
+	Added test for return value of localtime, may be NULL.
+
+	* rep_main.c (parse_options): Truncate long -t command line options
+	to fit in timestring.
+	* opt_time.c (get_term): Mind the length of DateStr also when only
+	one time instead of a time span is given.
+
 2004-12-16  Tobias Becker  <tobiasb@isdn4linux.de>
 
 	* rep_main.c (parse_options, main): New option `-U', sets default

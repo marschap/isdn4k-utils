@@ -1,4 +1,4 @@
-/* $Id: rep_main.c,v 1.20 2004/12/16 21:30:50 tobiasb Exp $
+/* $Id: rep_main.c,v 1.21 2005/01/22 18:47:16 tobiasb Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -20,6 +20,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rep_main.c,v $
+ * Revision 1.21  2005/01/22 18:47:16  tobiasb
+ * New: "isdnrep -t y" for calls of yesterday.
+ * Added some more verifications in the processing of isdnrep's  -t option.
+ *
  * Revision 1.20  2004/12/16 21:30:50  tobiasb
  * New option -U: default source number for outgoing calls.
  *
@@ -487,7 +491,7 @@ static int parse_options(int argc, char *argv[], char *myname)
 
       case 'd' : delentries++;
 
-      case 't' : strcpy(timestring, optarg);
+      case 't' : Strncpy(timestring, optarg, sizeof timestring);
                  if (!get_term(timestring,&begintime,&endtime,delentries))
                  {
                    printf(wrongdate, timestring);

@@ -1,4 +1,4 @@
-/* $Id: opt_time.c,v 1.1 2003/10/29 17:41:35 tobiasb Exp $
+/* $Id: opt_time.c,v 1.2 2005/01/22 18:47:16 tobiasb Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  * Time options parsing.  (Seperated from isdnrep.c 1.96)
@@ -24,6 +24,10 @@
  *
  *
  * $Log: opt_time.c,v $
+ * Revision 1.2  2005/01/22 18:47:16  tobiasb
+ * New: "isdnrep -t y" for calls of yesterday.
+ * Added some more verifications in the processing of isdnrep's  -t option.
+ *
  * Revision 1.1  2003/10/29 17:41:35  tobiasb
  * isdnlog-4.67:
  *  - Enhancements for isdnrep:
@@ -78,12 +82,14 @@ char *Strncpy(char *dest, const char *src, int len);
 #endif
 
 #define END_TIME    1
+#define S_YESTERDAY "y" /* character(s) for the yesterday time specification */
 			
 /*****************************************************************************/
 
 static time_t get_month(char *String, int TimeStatus);
 static time_t get_time(char *String, int TimeStatus);
 static time_t get_gertime(char *s, int TimeStatus);
+static time_t get_ytime(time_t *base, int back, int TimeStatus);
 static time_t get_itime(char *s, int TimeStatus);
 
 /*****************************************************************************/
@@ -117,16 +123,20 @@ int get_term (char *String, time_t *Begin, time_t *End,int delentries)
 	}
 	else
 	{
-		strcpy(DateStr[0],String);
-		strcpy(DateStr[1],String);
+		Strncpy(DateStr[0], String, 256);
+		Strncpy(DateStr[1], String, 256);
 	}
 
 	for (Cnt = 0; Cnt < 2; Cnt++)
 	{
-		if ( strspn(DateStr[Cnt], idate ? "01234567890T:-" : "01234567890/.")
-				!= strlen(DateStr[Cnt]) )
+		int DateLen = strlen(DateStr[Cnt]);
+
+		if (strspn(DateStr[Cnt], S_YESTERDAY) == DateLen)
+			Date[Cnt] = get_ytime(&now, DateLen, delentries?0:Cnt);
+		else if ( strspn(DateStr[Cnt], idate ? "01234567890T:-" : "01234567890/.")
+				     != DateLen )
 			return 0;		
-		if (idate)
+		else if (idate)
 			Date[Cnt] = get_itime(DateStr[Cnt],delentries?0:Cnt);
 		else if ( (p=strchr(DateStr[Cnt],'.')) && strchr(p+1,'.') )
 			Date[Cnt] = get_gertime(DateStr[Cnt],delentries?0:Cnt);
@@ -157,7 +167,8 @@ static time_t get_month(char *String, int TimeStatus)
 
 
 	time(&now);
-	TimeStruct = localtime(&now);
+	if ( !(TimeStruct = localtime(&now)) )
+		return 0;
 	TimeStruct->tm_sec = 0;
 	TimeStruct->tm_min = 0;
 	TimeStruct->tm_hour= 0;
@@ -213,7 +224,8 @@ static time_t get_time(char *String, int TimeStatus)
 
 
 	time(&now);
-	TimeStruct = localtime(&now);
+	if ( !(TimeStruct = localtime(&now)) )
+		return 0;
 	TimeStruct->tm_sec = 0;
 	TimeStruct->tm_min = 0;
 	TimeStruct->tm_hour= 0;
@@ -297,7 +309,8 @@ static time_t get_gertime(char *s, int TimeStatus)
 		time_t now;
 		struct tm *tm;
 		time(&now);
-		tm = localtime(&now);
+		if ( !(tm = localtime(&now)) )
+			return 0;
 		year = tm->tm_year+1900;
 	}
 
@@ -306,8 +319,25 @@ static time_t get_gertime(char *s, int TimeStatus)
 	if (year>9999 || month>12 || day>31)
 		return 0;
 
+	/* expansion of two digit year value takes place in get_itime */
 	sprintf(t, "%02d-%02d-%02d", year, month, day);
 
+	return get_itime(t, TimeStatus);
+}
+
+/*****************************************************************************/
+/* parse a date like y[y[y...]] where each y(esterday) goes back one day. */
+static time_t get_ytime(time_t *base, int back, int TimeStatus) {
+	struct tm *tm;
+	time_t yesterday = *base - 24*60*60 * back;
+	char t[10+1];
+
+	tm = localtime(&yesterday);	
+	if (tm == NULL || tm->tm_year > 9999 - 1900 || tm->tm_mon > 12 - 1
+	    || tm->tm_mday > 31)
+		return 0;
+
+	sprintf(t, "%04d-%02d-%02d", 1900 + tm->tm_year, 1 + tm->tm_mon, tm->tm_mday);
 	return get_itime(t, TimeStatus);
 }
 
@@ -323,7 +353,8 @@ static time_t get_itime(char *s, int TimeStatus)
 	int n;
 
 	time(&now);
-	t = localtime(&now);
+	if ( !(t = localtime(&now)) )
+		return 0;
 	t->tm_isdst = UNKNOWN;
 	
 	p = s;
