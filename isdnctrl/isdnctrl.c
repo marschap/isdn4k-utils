@@ -1,4 +1,4 @@
-/* $Id: isdnctrl.c,v 1.17 1998/03/19 15:39:02 detabc Exp $
+/* $Id: isdnctrl.c,v 1.18 1998/03/21 17:10:36 detabc Exp $
  * ISDN driver for Linux. (Control-Utility)
  *
  * Copyright 1994,95 by Fritz Elfert (fritz@wuemaus.franken.de)
@@ -21,6 +21,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnctrl.c,v $
+ * Revision 1.18  1998/03/21 17:10:36  detabc
+ * change to use the abc-ext-options -TU on all encapsulations
+ * the option -A (abc-router) will only works with rawip
+ *
  * Revision 1.17  1998/03/19 15:39:02  detabc
  * change define CONFIG_ISDN_WITH_ABC to HAVE_ABCEXT.
  * HAVE_ABCEXT will be set with the configure utility.
@@ -1142,8 +1146,11 @@ int exec_args(int fd, int argc, char **argv)
 								(*xx == 'A' || *xx == 'T' || *xx == 'U');xx++) {
 
 								switch(*xx) {
+								case 'a':
 								case 'A':   abc_encap |= 1;     break;
+								case 'u':
 								case 'U':   abc_encap |= 2;     break;
+								case 't':
 								case 'T':   abc_encap |= 4;     break;
 								}
 							}
@@ -1163,8 +1170,13 @@ int exec_args(int fd, int argc, char **argv)
 			        		return -1;
 			        	}
 #ifdef HAVE_ABCEXT
-						if(i != ISDN_NET_ENCAP_RAWIP)
-							abc_encap &= ~(15);
+						if(i != ISDN_NET_ENCAP_RAWIP && !!(abc_encap)) {
+
+							fprintf(stderr,
+ "ABC-Router (-A Option) works only with rawip Encaksulation (sorry) !\n");
+
+							return(-1);
+						}
 
 						i += abc_encap * 1000;
 #endif
