@@ -26,7 +26,7 @@
 #include <linux/if.h>
 #include <linux/in.h>
 
-static char *revision = "$Revision: 1.15 $";
+static char *revision = "$Revision: 1.16 $";
 
 /* -------------------------------------------------------------------- */
 
@@ -36,6 +36,8 @@ char pppd_version[] = VERSION;
 #endif
 
 #define PPPVersion(v1,v2,v3,v4) ((v1)*1000000+(v2)*10000+(v3)*100+(v4))
+
+/* -------------------------------------------------------------------- */
 
 #if PPPVER >= PPPVersion(2,4,1,0)
 #define _timeout(a,b,c) timeout(a, b, c, 0);
@@ -50,7 +52,20 @@ char pppd_version[] = VERSION;
 
 /* -------------------------------------------------------------------- */
 
+typedef struct stringlist {
+    struct stringlist *next;
+	char              *s;
+} STRINGLIST;
+
+/* -------------------------------------------------------------------- */
+
 static void handlemessages(void) ;
+
+static void stringlist_free(STRINGLIST **pp);
+static int stringlist_append_string(STRINGLIST **pp, char *s);
+static STRINGLIST *stringlist_split(char *tosplit, char *seps);
+
+static void makecallback(void);
 
 /* -------------------------------------------------------------------- */
 
@@ -64,47 +79,67 @@ static unsigned long cipmask = CIPMASK_ALL;
 static int controller = 1;
 static capi_contrinfo cinfo = { 0 , 0, 0 };
 
+/* -------------------------------------------------------------------- */
+
 static char *opt_controller = "1";
+/*
+ * numbers
+ */
 static char *opt_numberprefix = 0;
 static char *opt_number = 0;
 static char *opt_callbacknumber = 0;
 static char *opt_msn = 0;
 static char *opt_inmsn = 0;
-static char *opt_proto = 0;
-static int proto = 0;
+static char *opt_cli = 0;
+static STRINGLIST *numbers;
+static STRINGLIST *callbacknumbers;
+static STRINGLIST *clis;
+static STRINGLIST *inmsns;
+/*
+ * protocol
+ */
 #define PROTO_HDLC	0
 #define PROTO_X75	1
 #define PROTO_V42BIS	2
 #define PROTO_MODEM	3
+static char *opt_proto = "hdlc";
+static int proto = PROTO_HDLC;
+/*
+ * leased line
+ */
 static char *opt_channels = 0;
 static unsigned char AdditionalInfo[1+2+2+31];
+/*
+ * redialing
+ */
 static int opt_dialtimeout = 60;
 static int opt_dialmax = 4;
 static int opt_redialdelay = 5;
+/*
+ * callback & COSO
+ */
 static int opt_cbdelay = 2;
-static int opt_connectdelay = 0;
-
-static char *opt_cli = 0;
 static int opt_cbflag  = 0;
 static int opt_cbwait = 60;
-static int opt_acceptdelayflag  = 0;
-static int opt_voicecallwakeup  = 0;
-static char *opt_coso;
-static int coso;
 #define COSO_CALLER	0
 #define COSO_LOCAL	1
 #define COSO_REMOTE	2
+static char *opt_coso = 0;
+static int coso = COSO_CALLER;
+/*
+ * connect delay
+ */
+static int opt_connectdelay = 0;
+/*
+ * accept delay
+ */
+static int opt_acceptdelayflag  = 0;
+/*
+ * demand wakeup by phone call
+ */
+static int opt_voicecallwakeup  = 0;
 
-typedef struct stringlist {
-    struct stringlist *next;
-	char              *s;
-} STRINGLIST;
-
-static STRINGLIST *numbers;
-static STRINGLIST *callbacknumbers;
-static STRINGLIST *clis;
-static STRINGLIST *parsed_controller;
-static STRINGLIST *inmsns;
+/* -------------------------------------------------------------------- */
 
 static int optcb(void) { return opt_cbflag = 1; }
 static int optacceptdelay(void) { return opt_acceptdelayflag = 1; }
@@ -192,6 +227,258 @@ static option_t my_options[] = {
 };
 
 /* -------------------------------------------------------------------- */
+/* -------- Handle leased lines (CAPI-Bundling) ----------------------- */
+/* -------------------------------------------------------------------- */
+
+static int decodechannels(char *teln, unsigned long *bmaskp, int *activep)
+{
+	unsigned long bmask = 0;
+	int active = !0;
+	char *s;
+	int channel;
+	int i;
+
+	s = teln;
+	while (*s && *s == ' ') s++;
+	if (!*s)
+		fatal("capiplugin; option channels: list empty");
+	if (*s == 'p' || *s == 'P') {
+		active = 0;
+		s++;
+	}
+	if (*s == 'a' || *s == 'A') {
+		active = !0;
+		s++;
+	}
+	while (*s) {
+		int digit1 = 0;
+		int digit2 = 0;
+		if (!isdigit(*s))
+			goto illegal;
+		while (isdigit(*s)) { digit1 = digit1*10 + (*s - '0'); s++; }
+		channel = digit1;
+		if (channel <= 0 && channel > 30)
+			goto rangeerror;
+		if (*s == 0 || *s == ',' || *s == ' ') {
+			bmask |= (1 << digit1);
+			digit1 = 0;
+			if (*s) s++;
+			continue;
+		}
+		if (*s != '-') 
+			goto illegal;
+		s++;
+		if (!isdigit(*s)) return -3;
+		while (isdigit(*s)) { digit2 = digit2*10 + (*s - '0'); s++; }
+		channel = digit2;
+		if (channel <= 0 && channel > 30)
+			goto rangeerror;
+		if (*s == 0 || *s == ',' || *s == ' ') {
+			if (digit1 > digit2)
+				for (i = digit2; i <= digit1 ; i++)
+					bmask |= (1 << i);
+			else 
+				for (i = digit1; i <= digit2 ; i++)
+					bmask |= (1 << i);
+			digit1 = digit2 = 0;
+			if (*s) s++;
+			continue;
+		}
+		goto illegal;
+	}
+	if (activep) *activep = active;
+	if (bmaskp) *bmaskp = bmask;
+	return 0;
+illegal:
+	fatal("capiplugin: option channels: illegal octet '%c'", *s);
+	return -1;
+rangeerror:
+	fatal("capiplugin: option channels: channel %d out of range", channel);
+	return -1;
+}
+
+static int channels2capi20(char *teln, unsigned char *AdditionalInfo)
+{
+	unsigned long bmask;
+	int active;
+	int i;
+   
+	decodechannels(teln, &bmask, &active);
+	/* info("capiplugin: \"%s\" 0x%lx %d\n", teln, bmask, active); */
+	/* Length */
+	AdditionalInfo[0] = 2+2+31;
+        /* Channel: 3 => use channel allocation */
+        AdditionalInfo[1] = 3; AdditionalInfo[2] = 0;
+	/* Operation: 0 => DTE mode, 1 => DCE mode */
+        if (active) {
+   		AdditionalInfo[3] = 0; AdditionalInfo[4] = 0;
+   	} else {
+   		AdditionalInfo[3] = 1; AdditionalInfo[4] = 0;
+	}
+	/* Channel mask array */
+	AdditionalInfo[5] = 0; /* no D-Channel */
+	for (i=1; i <= 30; i++)
+		AdditionalInfo[5+i] = (bmask & (1 << i)) ? 0xff : 0;
+	return 0;
+}
+
+
+
+/* -------------------------------------------------------------------- */
+
+static void plugin_check_options(void)
+{
+	static int init = 0;
+
+	if (init)
+		return;
+	init = 1;
+
+	/*
+	 * protocol
+	 */
+	if (strcasecmp(opt_proto, "hdlc") == 0) {
+	   proto = PROTO_HDLC;
+	} else if (strcasecmp(opt_proto, "x75") == 0) {
+	   proto = PROTO_X75;
+	} else if (strcasecmp(opt_proto, "v42bis") == 0) {
+	   proto = PROTO_V42BIS;
+	} else if (strcasecmp(opt_proto, "modem") == 0) {
+	   proto = PROTO_V42BIS;
+	} else {
+	   option_error("capiplugin: unknown protocol \"%s\"", opt_proto);
+	   die(1);
+	}
+        if (strcasecmp(opt_proto, "modem") == 0)
+		cipmask = CIPMASK_VOICE;
+	else cipmask = CIPMASK_DATA;
+
+	/*
+	 * coso
+	 */
+	if (opt_coso == 0) {
+	   if (opt_cbflag) coso = COSO_LOCAL;
+	   else coso = COSO_CALLER;
+	} else if (strcasecmp(opt_coso, "caller") == 0) {
+	   coso = COSO_CALLER;
+	} else if (strcasecmp(opt_coso, "local") == 0) {
+	   coso = COSO_LOCAL;
+	} else if (strcasecmp(opt_coso, "remote") == 0) {
+	   coso = COSO_REMOTE;
+	} else {
+	    option_error("capiplugin: wrong value for option coso");
+	    die(1);
+	}
+	if (opt_cbflag && coso != COSO_LOCAL)
+	   option_error("capiplugin: option cbflag ignored");
+
+	/*
+	 * leased line
+	 */
+	if (opt_channels) {
+		channels2capi20(opt_channels, AdditionalInfo);
+		if (opt_number)
+			option_error("capiplugin: option number ignored");
+		if (opt_numberprefix)
+			option_error("capiplugin: option numberprefix ignored");
+		if (opt_callbacknumber)
+			option_error("capiplugin: option callbacknumber ignored");
+		if (opt_msn)
+			option_error("capiplugin: option msn ignored");
+		if (opt_inmsn)
+			option_error("capiplugin: option inmsn ignored");
+	/*
+	 * dialout
+	 */
+	} else if (opt_number) {
+		stringlist_free(&numbers);
+		numbers = stringlist_split(opt_number, " \t,");
+	/*
+	 * dialin
+	 */
+	} else {
+	   if (coso == COSO_LOCAL) {
+	      if (opt_callbacknumber == 0) {
+		 option_error("capiplugin: option callbacknumber missing");
+		 die(1);
+	       }
+	   }
+	}
+
+	if (opt_callbacknumber) {
+	   stringlist_free(&callbacknumbers);
+	   callbacknumbers = stringlist_split(opt_callbacknumber, " \t,");
+	}
+
+	/*
+	 * controller
+	 */
+	if (opt_controller) {
+                STRINGLIST *parsed_controller = 0;
+		STRINGLIST *sl;
+		char *tmp;
+		memset(&cinfo, 0, sizeof(cinfo));
+	   	parsed_controller = stringlist_split(opt_controller, " \t,");
+		sl = parsed_controller;
+		if (!sl) goto illcontr;
+		tmp = sl->s;
+		controller = strtol(sl->s, &tmp, 10);
+		if (tmp == sl->s || *tmp) goto illcontr;
+		if (sl->next) {
+			sl = sl->next;
+			cinfo.ddi = sl->s;
+			if (sl->next && sl->next->s) {
+			        sl = sl->next;
+				cinfo.ndigits = strtol(sl->s, &tmp, 10);
+				if (tmp == sl->s || *tmp) {
+		                   stringlist_free(&parsed_controller);
+				   goto illcontr;
+			        }
+			}
+		}
+		stringlist_free(&parsed_controller);
+	} else {
+		memset(&cinfo, 0, sizeof(cinfo));
+		controller = 1;
+	}
+
+	/*
+	 * cli & inmsn
+	 */
+	if (opt_cli) {
+		stringlist_free(&clis);
+		clis = stringlist_split(opt_cli, " \t,");
+	}
+	if (opt_inmsn) {
+		stringlist_free(&inmsns);
+		inmsns = stringlist_split(opt_inmsn, " \t,");
+	}
+
+	/*
+	 * dial on demand
+	 */
+	if (demand) {
+	   if (!opt_number && !opt_channels) {
+	       option_error("capiplugin: number or channels missing for demand");
+	       die(1);
+	   }
+	   if (opt_voicecallwakeup)
+	      cipmask |= CIPMASK_VOICE;
+	} else if (opt_voicecallwakeup) {
+	   option_error("capiplugin: option voicecallwakeup ignored");
+	   opt_voicecallwakeup = 0;
+	}
+	return;
+
+illcontr:
+	option_error("capiplugin: illegal controller specification \"%s\"",
+				opt_controller);
+	die(1);
+}
+
+/* -------------------------------------------------------------------- */
+/* -------- STRINGLIST for parsing ------------------------------------ */
+/* -------------------------------------------------------------------- */
 
 static void stringlist_free(STRINGLIST **pp)
 {
@@ -242,7 +529,7 @@ static STRINGLIST *stringlist_split(char *tosplit, char *seps)
 }
 
 /* -------------------------------------------------------------------- */
-/* -------------------------------------------------------------------- */
+/* -------- connection management ------------------------------------- */
 /* -------------------------------------------------------------------- */
 
 typedef struct conn {
@@ -389,6 +676,9 @@ static int conn_isconnected(capi_connection *cp)
     }
     return 0;
 }
+
+/* -------------------------------------------------------------------- */
+/* -------------------------------------------------------------------- */
 /* -------------------------------------------------------------------- */
 
 static void disconnectall(void)
@@ -413,7 +703,7 @@ static void disconnectall(void)
 }
 
 /* -------------------------------------------------------------------- */
-/* -------------------------------------------------------------------- */
+/* -------- Handle CAPI messages every second ------------------------- */
 /* -------------------------------------------------------------------- */
 
 static int timeoutrunning = 0;
@@ -444,6 +734,8 @@ static void unsetup_timeout(void)
 	timeoutrunning = 0;
 }
 
+/* -------------------------------------------------------------------- */
+/* -------- demand & wakeup pppd -------------------------------------- */
 /* -------------------------------------------------------------------- */
 
 static u_int32_t ouripaddr;
@@ -540,6 +832,36 @@ static void wakeupdemand(void)
 }
 
 /* -------------------------------------------------------------------- */
+/* -------- CAPI setup & handling ------------------------------------- */
+/* -------------------------------------------------------------------- */
+
+static void init_capiconn(void)
+{
+	static int init = 0;
+
+	if (init)
+		return;
+	init = 1;
+
+	if (capiconn_addcontr(ctx, controller, &cinfo) != CAPICONN_OK) {
+		(void)capiconn_freecontext(ctx);
+		(void)capi20_release(applid);
+		fatal("capiplugin: add controller %d failed", controller);
+		return;
+	}
+	if (cinfo.ddi) 
+		dbglog("capiplugin: contr=%d ddi=\"%s\" n=%d",
+			controller, cinfo.ddi, cinfo.ndigits);
+	else
+		dbglog("capiplugin: contr=%d", controller);
+
+	(void) capiconn_listen(ctx, controller, 0, 0);
+	handlemessages();
+	add_fd(capi20_fileno(applid));
+	setup_timeout();
+}
+
+/* -------------------------------------------------------------------- */
 
 static void handlemessages(void) 
 {
@@ -574,277 +896,8 @@ static void dodisconnect(capi_connection *cp)
 		fatal("capiplugin: timeout while waiting for disconnect");
 }
 
-static void init_capiconn(void)
-{
-	static int init = 0;
 
-	if (init)
-		return;
-	init = 1;
-
-	if (capiconn_addcontr(ctx, controller, &cinfo) != CAPICONN_OK) {
-		(void)capiconn_freecontext(ctx);
-		(void)capi20_release(applid);
-		fatal("capiplugin: add controller %d failed", controller);
-		return;
-	}
-	if (cinfo.ddi) 
-		dbglog("capiplugin: contr=%d ddi=\"%s\" n=%d",
-			controller, cinfo.ddi, cinfo.ndigits);
-	else
-		dbglog("capiplugin: contr=%d", controller);
-
-	(void) capiconn_listen(ctx, controller, 0, 0);
-	handlemessages();
-	add_fd(capi20_fileno(applid));
-	setup_timeout();
-}
-
-/*
- * Handle leased lines (CAPI-Bundling)
- */
-
-static int decodechannels(char *teln, unsigned long *bmaskp, int *activep)
-{
-	unsigned long bmask = 0;
-	int active = !0;
-	char *s;
-	int channel;
-	int i;
-
-	s = teln;
-	while (*s && *s == ' ') s++;
-	if (!*s)
-		fatal("capiplugin; option channels: list empty");
-	if (*s == 'p' || *s == 'P') {
-		active = 0;
-		s++;
-	}
-	if (*s == 'a' || *s == 'A') {
-		active = !0;
-		s++;
-	}
-	while (*s) {
-		int digit1 = 0;
-		int digit2 = 0;
-		if (!isdigit(*s))
-			goto illegal;
-		while (isdigit(*s)) { digit1 = digit1*10 + (*s - '0'); s++; }
-		channel = digit1;
-		if (channel <= 0 && channel > 30)
-			goto rangeerror;
-		if (*s == 0 || *s == ',' || *s == ' ') {
-			bmask |= (1 << digit1);
-			digit1 = 0;
-			if (*s) s++;
-			continue;
-		}
-		if (*s != '-') 
-			goto illegal;
-		s++;
-		if (!isdigit(*s)) return -3;
-		while (isdigit(*s)) { digit2 = digit2*10 + (*s - '0'); s++; }
-		channel = digit2;
-		if (channel <= 0 && channel > 30)
-			goto rangeerror;
-		if (*s == 0 || *s == ',' || *s == ' ') {
-			if (digit1 > digit2)
-				for (i = digit2; i <= digit1 ; i++)
-					bmask |= (1 << i);
-			else 
-				for (i = digit1; i <= digit2 ; i++)
-					bmask |= (1 << i);
-			digit1 = digit2 = 0;
-			if (*s) s++;
-			continue;
-		}
-		goto illegal;
-	}
-	if (activep) *activep = active;
-	if (bmaskp) *bmaskp = bmask;
-	return 0;
-illegal:
-	fatal("capiplugin: option channels: illegal octet '%c'", *s);
-	return -1;
-rangeerror:
-	fatal("capiplugin: option channels: channel %d out of range", channel);
-	return -1;
-}
-
-static int channels2capi20(char *teln, unsigned char *AdditionalInfo)
-{
-	unsigned long bmask;
-	int active;
-	int i;
-   
-	decodechannels(teln, &bmask, &active);
-	/* info("capiplugin: \"%s\" 0x%lx %d\n", teln, bmask, active); */
-	/* Length */
-	AdditionalInfo[0] = 2+2+31;
-        /* Channel: 3 => use channel allocation */
-        AdditionalInfo[1] = 3; AdditionalInfo[2] = 0;
-	/* Operation: 0 => DTE mode, 1 => DCE mode */
-        if (active) {
-   		AdditionalInfo[3] = 0; AdditionalInfo[4] = 0;
-   	} else {
-   		AdditionalInfo[3] = 1; AdditionalInfo[4] = 0;
-	}
-	/* Channel mask array */
-	AdditionalInfo[5] = 0; /* no D-Channel */
-	for (i=1; i <= 30; i++)
-		AdditionalInfo[5+i] = (bmask & (1 << i)) ? 0xff : 0;
-	return 0;
-}
-
-static void plugin_check_options(void)
-{
-	static int init = 0;
-
-	if (init)
-		return;
-	init = 1;
-
-	/*
-	 * protocol
-	 */
-	if (opt_proto == 0) {
-	   proto = PROTO_HDLC;
-	} else if (strcasecmp(opt_proto, "hdlc") == 0) {
-	   proto = PROTO_HDLC;
-	} else if (strcasecmp(opt_proto, "x75") == 0) {
-	   proto = PROTO_X75;
-	} else if (strcasecmp(opt_proto, "v42bis") == 0) {
-	   proto = PROTO_V42BIS;
-	} else if (strcasecmp(opt_proto, "modem") == 0) {
-	   proto = PROTO_V42BIS;
-	} else {
-	   option_error("capiplugin: unknown protocol \"%s\"", opt_proto);
-	   die(1);
-	}
-        if (strcasecmp(opt_proto, "modem") == 0)
-		cipmask = CIPMASK_VOICE;
-	else cipmask = CIPMASK_DATA;
-
-	/*
-	 * coso
-	 */
-	if (opt_coso == 0) {
-	   if (opt_cbflag) coso = COSO_LOCAL;
-	   else coso = COSO_CALLER;
-	} else if (strcasecmp(opt_coso, "caller") == 0) {
-	   coso = COSO_CALLER;
-	} else if (strcasecmp(opt_coso, "local") == 0) {
-	   coso = COSO_LOCAL;
-	} else if (strcasecmp(opt_coso, "remote") == 0) {
-	   coso = COSO_REMOTE;
-	} else {
-	    option_error("capiplugin: wrong value for option coso");
-	    die(1);
-	}
-	if (opt_cbflag || coso != COSO_LOCAL)
-	   option_error("capiplugin: option cbflag ignore");
-
-	/*
-	 * leased line
-	 */
-	if (opt_channels) {
-		channels2capi20(opt_channels, AdditionalInfo);
-		if (opt_number)
-			option_error("capiplugin: option number ignored");
-		if (opt_numberprefix)
-			option_error("capiplugin: option numberprefix ignored");
-		if (opt_callbacknumber)
-			option_error("capiplugin: option callbacknumber ignored");
-		if (opt_msn)
-			option_error("capiplugin: option msn ignored");
-		if (opt_inmsn)
-			option_error("capiplugin: option inmsn ignored");
-	/*
-	 * dialout
-	 */
-	} else if (opt_number) {
-		stringlist_free(&numbers);
-		numbers = stringlist_split(opt_number, " \t,");
-	/*
-	 * dialin
-	 */
-	} else {
-	   if (coso == COSO_LOCAL) {
-	      if (opt_callbacknumber == 0) {
-		 option_error("capiplugin: option callbacknumber missing");
-		 die(1);
-	       }
-	   }
-	}
-
-	if (opt_callbacknumber) {
-	   stringlist_free(&callbacknumbers);
-	   callbacknumbers = stringlist_split(opt_callbacknumber, " \t,");
-	}
-
-	/*
-	 * controller
-	 */
-	if (opt_controller) {
-		STRINGLIST *sl;
-		char *tmp;
-		stringlist_free(&parsed_controller);
-		memset(&cinfo, 0, sizeof(cinfo));
-	   	parsed_controller = stringlist_split(opt_controller, " \t,");
-		sl = parsed_controller;
-		if (!sl) goto illcontr;
-		tmp = sl->s;
-		controller = strtol(sl->s, &tmp, 10);
-		if (tmp == sl->s || *tmp) goto illcontr;
-		if (sl->next) {
-			sl = sl->next;
-			cinfo.ddi = sl->s;
-			if (sl->next && sl->next->s) {
-			        sl = sl->next;
-				cinfo.ndigits = strtol(sl->s, &tmp, 10);
-				if (tmp == sl->s || *tmp) goto illcontr;
-			}
-		}
-	} else {
-		memset(&cinfo, 0, sizeof(cinfo));
-		controller = 1;
-	}
-
-	/*
-	 * cli & inmsn
-	 */
-	if (opt_cli) {
-		stringlist_free(&clis);
-		clis = stringlist_split(opt_cli, " \t,");
-	}
-	if (opt_inmsn) {
-		stringlist_free(&inmsns);
-		inmsns = stringlist_split(opt_inmsn, " \t,");
-	}
-
-	/*
-	 * dial on demand
-	 */
-	if (demand) {
-	   if (!opt_number && !opt_channels) {
-	       option_error("capiplugin: number or channels missing for demand");
-	       die(1);
-	   }
-	   if (opt_voicecallwakeup)
-	      cipmask |= CIPMASK_VOICE;
-	} else if (opt_voicecallwakeup) {
-	   option_error("capiplugin: option voicecallwakeup ignored");
-	   opt_voicecallwakeup = 0;
-	}
-	return;
-
-illcontr:
-	option_error("capiplugin: illegal controller specification \"%s\"",
-				opt_controller);
-	die(1);
-}
-
-
+/* -------------------------------------------------------------------- */
 /* -------------------------------------------------------------------- */
 
 static char *conninfo(capi_connection *p)
@@ -876,6 +929,10 @@ static char *conninfo(capi_connection *p)
 	return buf;
 }
 
+/* -------------------------------------------------------------------- */
+/* -------- reject reason handling (wuerg) ---------------------------- */
+/* -------------------------------------------------------------------- */
+
 static unsigned dreason = 0;
 
 static int was_no_reject(void)
@@ -889,6 +946,9 @@ static int was_no_reject(void)
       return 0;
 }
 
+/* -------------------------------------------------------------------- */
+/* -------- disconnect handler ---------------------------------------- */
+/* -------------------------------------------------------------------- */
 
 static void disconnected(capi_connection *cp,
 				int localdisconnect,
@@ -919,7 +979,9 @@ static void disconnected(capi_connection *cp,
 			reason, reason_b3, capi_info2str(reason));
 }
 
-static void makecallback(void);
+/* -------------------------------------------------------------------- */
+/* -------- incoming call handler ------------------------------------- */
+/* -------------------------------------------------------------------- */
 
 static void incoming(capi_connection *cp,
 				unsigned contr,
@@ -1073,23 +1135,29 @@ wakeupmatch:
 	   goto wakeupdemand;
 
 accept:
-        if (!opt_proto) { /* hdlc */
-	   (void) capiconn_accept(cp, 0, 1, 0, 0, 0, 0, 0);
-	} else if (strcasecmp(opt_proto, "hdlc") == 0) {
-	   (void) capiconn_accept(cp, 0, 1, 0, 0, 0, 0, 0);
-	} else if (strcasecmp(opt_proto, "x75") == 0) {
-	   (void) capiconn_accept(cp, 0, 0, 0, 0, 0, 0, 0);
-	} else if (strcasecmp(opt_proto, "v42bis") == 0) {
-	   (void) capiconn_accept(cp, 0, 8, 0, 0, 0, 0, 0);
-	} else if (strcasecmp(opt_proto, "modem") == 0) {
-	   (void) capiconn_accept(cp, 8, 1, 0, 0, 0, 0, 0);
-	} else { /* hdlc */
-	   (void) capiconn_accept(cp, 0, 1, 0, 0, 0, 0, 0);
+	switch (proto) {
+	   default:
+	   case PROTO_HDLC:
+	      (void) capiconn_accept(cp, 0, 1, 0, 0, 0, 0, 0);
+	      break;
+	   case PROTO_X75:
+	      (void) capiconn_accept(cp, 0, 0, 0, 0, 0, 0, 0);
+	      break;
+           case PROTO_V42BIS:
+	      (void) capiconn_accept(cp, 0, 8, 0, 0, 0, 0, 0);
+	      break;
+           case PROTO_MODEM:
+	      (void) capiconn_accept(cp, 8, 1, 0, 0, 0, 0, 0);
+	      break;
 	}
 	conn_remember(cp, CONNTYPE_INCOMING);
 	(void) capiconn_listen(ctx, controller, 0, 0);
 	return;
 }
+
+/* -------------------------------------------------------------------- */
+/* -------- connection established handler ---------------------------- */
+/* -------------------------------------------------------------------- */
 
 static void connected(capi_connection *cp, _cstruct NCPI)
 {
@@ -1142,6 +1210,10 @@ static void connected(capi_connection *cp, _cstruct NCPI)
            wakeupdemand();
 }
 
+/* -------------------------------------------------------------------- */
+/* -------- charge information ---------------------------------------- */
+/* -------------------------------------------------------------------- */
+
 void chargeinfo(capi_connection *cp, unsigned long charge, int inunits)
 {
 	if (inunits) {
@@ -1151,6 +1223,10 @@ void chargeinfo(capi_connection *cp, unsigned long charge, int inunits)
 	}
 }
 
+/* -------------------------------------------------------------------- */
+/* -------- tranfer capi message to CAPI ------------------------------ */
+/* -------------------------------------------------------------------- */
+
 void put_message(unsigned appid, unsigned char *msg)
 {
 	unsigned err;
@@ -1159,6 +1235,8 @@ void put_message(unsigned appid, unsigned char *msg)
 		fatal("capiplugin: putmessage(appid=%d) = 0x%x", appid, err);
 }
 
+/* -------------------------------------------------------------------- */
+/* -------- capiconn module setup ------------------------------------- */
 /* -------------------------------------------------------------------- */
 
 capiconn_callbacks callbacks = {
@@ -1179,6 +1257,8 @@ capiconn_callbacks callbacks = {
 	errmsg: error
 };
 
+/* -------------------------------------------------------------------- */
+/* -------- create a connection --------------------------------------- */
 /* -------------------------------------------------------------------- */
 
 static capi_connection *setupconnection(char *num, int awaitingreject)
@@ -1234,13 +1314,11 @@ static capi_connection *setupconnection(char *num, int awaitingreject)
 		return 0;
 	}
 	if (opt_channels) {
-		info("capiplugin: leased line (%s)",
-				opt_proto ? opt_proto : "hdlc");
+		info("capiplugin: leased line (%s)", opt_proto);
 	} else if (awaitingreject) {
 		info("capiplugin: dialing %s (awaiting reject)", number);
 	} else {
-		info("capiplugin: dialing %s (%s)",
-				number, opt_proto ? opt_proto : "hdlc");
+		info("capiplugin: dialing %s (%s)", number, opt_proto);
 	}
         if (awaitingreject)
            conn_remember(cp, CONNTYPE_FOR_CALLBACK);
@@ -1248,6 +1326,10 @@ static capi_connection *setupconnection(char *num, int awaitingreject)
            conn_remember(cp, CONNTYPE_OUTGOING);
         return cp;
 }
+
+/* -------------------------------------------------------------------- */
+/* -------- connect leased line --------------------------------------- */
+/* -------------------------------------------------------------------- */
 
 static void makeleasedline(void)
 {
@@ -1279,6 +1361,10 @@ static void makeleasedline(void)
         if (!conn_isconnected(cp))
 	   fatal("capiplugin: couldn't make connection");
 }
+
+/* -------------------------------------------------------------------- */
+/* -------- connect a dislup connection ------------------------------- */
+/* -------------------------------------------------------------------- */
 
 static void makeconnection(STRINGLIST *numbers)
 {
@@ -1327,6 +1413,10 @@ connected:
 	   fatal("capiplugin: couldn't make connection after %d retries",
 			retry);
 }
+
+/* -------------------------------------------------------------------- */
+/* -------- dial and wait for callback -------------------------------- */
+/* -------------------------------------------------------------------- */
 
 static void makeconnection_with_callback(void)
 {
@@ -1390,6 +1480,10 @@ again:
 	fatal("capiplugin: callback failed (no call)");
 }
 
+/* -------------------------------------------------------------------- */
+/* -------- execute a callback ---------------------------------------- */
+/* -------------------------------------------------------------------- */
+
 static void makecallback(void)
 {
 	time_t t;
@@ -1405,6 +1499,10 @@ static void makecallback(void)
 	   makeconnection(callbacknumbers);
 	else makeconnection(numbers);
 }
+
+/* -------------------------------------------------------------------- */
+/* -------- wait for an incoming call --------------------------------- */
+/* -------------------------------------------------------------------- */
 
 static void waitforcall(void)
 {
@@ -1439,6 +1537,8 @@ static void waitforcall(void)
 }
 
 /* -------------------------------------------------------------------- */
+/* -------- PPPD state change hook ------------------------------------ */
+/* -------------------------------------------------------------------- */
 
 static int capi_new_phase_hook(int phase)
 {
@@ -1464,8 +1564,7 @@ static int capi_new_phase_hook(int phase)
 			   setupincoming_for_demand();
 			break;
 		case PHASE_SERIALCONN:
-			info("capiplugin: phase serialconn%s",
-					opt_cbflag ? " (callback)" : "");
+		        info("capiplugin: phase serialconn");
 	                if (conn_isconnected(0))
 			   break;
 			plugin_check_options();
@@ -1510,6 +1609,8 @@ static int capi_new_phase_hook(int phase)
 	return 0;
 }
 
+/* -------------------------------------------------------------------- */
+/* -------- init function --------------------------------------------- */
 /* -------------------------------------------------------------------- */
 
 void plugin_init(void)
