@@ -1200,7 +1200,6 @@ MANDATE=`grep CHECKIN ipppd.man.in | awk '{print $4}'`
 CONFIG_MANDIR=`eval echo ${CONFIG_MANDIR:-"/usr/man"}`
 CONFIG_SBINDIR=`eval echo ${CONFIG_SBINDIR:-"/sbin"}`
 CONFIG_RUNDIR=`eval echo ${CONFIG_RUNDIR:-"/var/run"}`
-CONFIG_KERNELDIR=`eval echo ${CONFIG_KERNELDIR:-"/usr/src/linux"}`
 CONFIG_IPPPD_MSCHAP=${CONFIG_IPPPD_MSCHAP:-"n"}
 CONFIG_IPPPD_RADIUS=${CONFIG_IPPPD_RADIUS:-"n"}
 CONFIG_RADIUS_WTMP_LOGGING=${CONFIG_RADIUS_WTMP_LOGGING:-"n"}
@@ -2065,8 +2064,6 @@ ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
 ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
 ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
-
-AC_FIND_KERNEL
 
 
 echo "$as_me:$LINENO: checking for daemon in -lbsd" >&5

@@ -1,4 +1,4 @@
-# $Id: Makefile.in,v 1.4 1998/09/26 18:28:21 akool Exp $
+# $Id: Makefile.in,v 1.5 2002/07/19 21:23:53 keil Exp $
 #
 # Makefile for iprofd
 # (C) 1997 Fritz Elfert
@@ -6,7 +6,7 @@
 #
 SHELL			= /bin/sh
 CFLAGS			= -Wall -O2
-INCLUDES		= -I. -I@CONFIG_KERNELDIR@/include
+INCLUDES		= -I.
 LDFLAGS			= -L../lib @LIBS@
 PROGRAM			= iprofd
 MODULES			= iprofd.o

@@ -12,7 +12,6 @@ ifeq (../.config,$(wildcard ../.config))
 	MAN5DIROPT = FILEMANDIR=$(CONFIG_MANDIR)/man5
 	MANDIROPTS = $(MAN1DIROPT) $(MAN3DIROPT) $(MAN5DIROPT)
 	BINDIROPT = BINDIR=$(CONFIG_BINDIR)
-	EDEF += -I$(CONFIG_KERNELDIR)/include
 endif
 
 all: xisdnload

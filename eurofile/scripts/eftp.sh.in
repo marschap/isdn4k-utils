@@ -4,7 +4,7 @@
 #
 @EFT_AUTOCONF_WARNING@
 #
-# generated from $Id: eftp.sh.in,v 1.3 1999/07/26 22:04:46 he Exp $
+# generated from $Id: eftp.sh.in,v 1.4 2002/07/19 21:23:53 keil Exp $
 #
 # This opens an eurofile session to a remote eurofile server
 #
@@ -46,7 +46,6 @@ KHOME=/home/kernel
 # "x25-on-top-of-isdn"-extensions is located. (To override the default
 # location set the environment variable KERNEL before calling this script)
 #
-KERNEL=${KERNEL:-linux-ix25}
 #
 #Where the x25 utility package is located
 #

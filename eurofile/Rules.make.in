@@ -1,5 +1,5 @@
 # @configure_input@
-# generated from $Id: Rules.make.in,v 1.4 1999/10/08 00:31:04 he Exp $ 
+# generated from $Id: Rules.make.in,v 1.5 2002/07/19 21:23:52 keil Exp $ 
 CRYPTLIB = @LIBCRYPT@
 CONFIG_EFTD = @CONFIG_EFTD@
 CONFIG_EFTD_WUAUTH = @CONFIG_EFTD_WUAUTH@
@@ -25,7 +25,6 @@ SBINDIR = @SBINDIR@
 BINDIR = @BINDIR@
 RUNDIR = @RUNDIR@
 SYSVINIT_RC_DIR = @SYSVINIT_RC_DIR@
-KERNELDIR = @KERNELDIR@
 I4LCONFDIR = @I4LCONFDIR@
 
 

@@ -50,7 +50,6 @@ NORMAL_UNINSTALL = true
 PRE_UNINSTALL = true
 POST_UNINSTALL = true
 CC = gcc
-CONFIG_KERNELDIR = /usr/src/linux
 CONFIG_MANDIR = /usr/man
 CONFIG_SBINDIR = /sbin
 I4LCONFDIR = /etc/isdn

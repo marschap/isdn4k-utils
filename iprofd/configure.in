@@ -5,7 +5,6 @@ AC_PREFIX_DEFAULT(/usr)
 I4LVERSION=${I4LVERSION:-"?.?"}
 CONFIG_SBINDIR=${CONFIG_SBINDIR:-"/sbin"}
 CONFIG_MANDIR=${CONFIG_MANDIR:-"/usr/man"}
-CONFIG_KERNELDIR=`eval echo ${CONFIG_KERNELDIR:-"/usr/src/linux"}`
 MANDATE=`grep CHECKIN iprofd.man.in | awk '{print $4}'`
 
 dnl Checks for programs.
@@ -17,12 +16,6 @@ dnl Checks for libraries.
 dnl Checks for header files.
 AC_HEADER_STDC
 AC_CHECK_HEADERS(sys/ioctl.h unistd.h)
-
-dnl Find current kernel source
-dnl AC_FIND_KERNEL
-dnl AC_CHECK_FILE($CONFIG_KERNELDIR/include/linux/isdn.h,,
-dnl	AC_MSG_ERROR("$CONFIG_KERNELDIR/include/linux/isdn.h missing. Kernel installed?")
-dnl)
 
 dnl Checks for typedefs, structures, and compiler characteristics.
 
@@ -48,5 +41,4 @@ AC_SUBST(MANDATE)
 AC_SUBST(I4LVERSION)
 AC_SUBST(CONFIG_SBINDIR)
 AC_SUBST(CONFIG_MANDIR)
-AC_SUBST(CONFIG_KERNELDIR)
 AC_OUTPUT(Makefile iprofd.man)

@@ -1,4 +1,4 @@
-# $Id: Makefile.in,v 1.19 2002/01/31 19:49:57 paul Exp $
+# $Id: Makefile.in,v 1.20 2002/07/19 21:23:54 keil Exp $
 #
 # Makefile for isdnctrl
 # (C) 1997 Fritz Elfert
@@ -6,7 +6,7 @@
 #
 SHELL			  = /bin/sh
 CFLAGS			= -Wall -O2
-INCLUDES		= -I. -I@CONFIG_KERNELDIR@/include
+INCLUDES		= -I.
 LDFLAGS			= @LIBS@ 
 PROGRAM			= isdnctrl
 MODULES			= isdnctrl.o
