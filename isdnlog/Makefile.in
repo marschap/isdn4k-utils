@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.138 2000/01/01 15:05:22 akool Exp $
+## $Id: Makefile.in,v 1.139 2000/01/12 23:22:50 akool Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,20 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.139  2000/01/12 23:22:50  akool
+## - isdnlog/tools/holiday.c ... returns ERVERYDAY for '*'
+## - FAQ/configure{,.in} ...  test '==' => '='
+## - isdnlog/tools/dest/configure{,.in} ...  test '==' => '='
+## - isdnlog/tools/dest/Makefile.in ...  test '==' => '='
+## - isdnlog/tools/zone/configure{,.in} ...  test '==' => '='
+##
+## - isdnlog/tools/rate-at.c ... P:1069
+## - isdnlog/rate-at.dat ... P:1069
+## - isdnlog/country-de.dat ... _DEMF
+##
+## - many new rates
+## - more EURACOM sequences decoded
+##
 ## Revision 1.138  2000/01/01 15:05:22  akool
 ## isdnlog-4.01
 ##  - first Y2K-Bug fixed
@@ -982,7 +996,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 4.01
+VERSION     = 4.02
 
 MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 \
 	      isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 \

@@ -1,4 +1,4 @@
- /* $Id: holiday.c,v 1.17 1999/12/31 13:57:19 akool Exp $
+ /* $Id: holiday.c,v 1.18 2000/01/12 23:22:53 akool Exp $
  *
  * Feiertagsberechnung
  *
@@ -19,6 +19,20 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: holiday.c,v $
+ * Revision 1.18  2000/01/12 23:22:53  akool
+ * - isdnlog/tools/holiday.c ... returns ERVERYDAY for '*'
+ * - FAQ/configure{,.in} ...  test '==' => '='
+ * - isdnlog/tools/dest/configure{,.in} ...  test '==' => '='
+ * - isdnlog/tools/dest/Makefile.in ...  test '==' => '='
+ * - isdnlog/tools/zone/configure{,.in} ...  test '==' => '='
+ *
+ * - isdnlog/tools/rate-at.c ... P:1069
+ * - isdnlog/rate-at.dat ... P:1069
+ * - isdnlog/country-de.dat ... _DEMF
+ *
+ * - many new rates
+ * - more EURACOM sequences decoded
+ *
  * Revision 1.17  1999/12/31 13:57:19  akool
  * isdnlog-4.00 (Millenium-Edition)
  *  - Oracle support added by Jan Bolt (Jan.Bolt@t-online.de)
@@ -500,7 +514,7 @@ int isDay(struct tm *tm, bitfield mask, char **name)
 
   if (mask & (1<<EVERYDAY)) {
     if (name) *name=staticString("%s", Weekday[EVERYDAY]);
-    return day;
+    return EVERYDAY;
   }
 
   return 0;

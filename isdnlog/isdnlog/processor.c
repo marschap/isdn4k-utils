@@ -1,4 +1,4 @@
-/* $Id: processor.c,v 1.94 2000/01/01 15:05:23 akool Exp $
+/* $Id: processor.c,v 1.95 2000/01/12 23:22:52 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,20 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.95  2000/01/12 23:22:52  akool
+ * - isdnlog/tools/holiday.c ... returns ERVERYDAY for '*'
+ * - FAQ/configure{,.in} ...  test '==' => '='
+ * - isdnlog/tools/dest/configure{,.in} ...  test '==' => '='
+ * - isdnlog/tools/dest/Makefile.in ...  test '==' => '='
+ * - isdnlog/tools/zone/configure{,.in} ...  test '==' => '='
+ *
+ * - isdnlog/tools/rate-at.c ... P:1069
+ * - isdnlog/rate-at.dat ... P:1069
+ * - isdnlog/country-de.dat ... _DEMF
+ *
+ * - many new rates
+ * - more EURACOM sequences decoded
+ *
  * Revision 1.94  2000/01/01 15:05:23  akool
  * isdnlog-4.01
  *  - first Y2K-Bug fixed
@@ -2974,13 +2988,6 @@ static void huptime(int chan, int setup)
   auto     int                oldchargeint = 0, newchargeint = 0;
   auto     int                oldhuptimeout, newhuptimeout;
   auto     char               sx[BUFSIZ], why[BUFSIZ];
-#if LCRtest
-  auto	   char		      n[1024], n1[1024];
-  auto	   union 	      p {
-                	        isdn_net_ioctl_phone phone;
-                		char n[1024];
-  			      } ph;
-#endif
 
 
   if (replay)
@@ -2997,54 +3004,6 @@ static void huptime(int chan, int setup)
         call[chan].chargeint = oldchargeint = cfg.chargeint;
 #endif
       call[chan].huptimeout = oldhuptimeout = cfg.onhtime;
-
-#if LCRtest
-      if (setup) {
-        strcpy(ph.phone.name, known[c]->interface);
-        ph.phone.outgoing = 1;
-
-        if (ioctl(sockets[ISDNCTRL].descriptor, IIOCNETGNM, &ph.phone) >= 0) {
-          strcpy(n, ph.n);
-          sprintf(sx, "@LCR: SETUP to %s detected", n);
-          info(chan, PRT_SHOWNUMBERS, STATE_HUPTIMEOUT, sx);
-
-          if (memcmp(n, vbn, strlen(vbn)) {
-            sprintf(sx, "@LCR: HANGUP %s", known[c]->interface);
-            info(chan, PRT_SHOWNUMBERS, STATE_HUPTIMEOUT, sx);
-
-            if (ioctl(sockets[ISDNCTRL].descriptor, IIOCNETHUP, known[c]->interface) >= 0) { /* HANGUP */
-	      ph.phone.outgoing = 1;
-	      strcpy(ph.phone.name, known[c]->interface);
-	      strcpy(ph.phone.phone, n);
-
-              sprintf(sx, "@LCR: DELPHONE %s", n);
-              info(chan, PRT_SHOWNUMBERS, STATE_HUPTIMEOUT, sx);
-
-	      if (ioctl(sockets[ISDNCTRL].descriptor, IIOCNETDNM, &ph.phone) >= 0) { /* DELPHONE */
-                sprintf(n1, "%s19%s", vbn, n);
-	        ph.phone.outgoing = 1;
-	        strcpy(ph.phone.name, known[c]->interface);
-	        strcpy(ph.phone.phone, n1);
-
-                sprintf(sx, "@LCR: ADDPHONE %s", n1);
-                info(chan, PRT_SHOWNUMBERS, STATE_HUPTIMEOUT, sx);
-
-	        if (ioctl(sockets[ISDNCTRL].descriptor, IIOCNETANM, &ph.phone) >= 0) { /* ADDPHONE */
-
-                  sprintf(sx, "@LCR: DIAL");
-            	  info(chan, PRT_SHOWNUMBERS, STATE_HUPTIMEOUT, sx);
-
-		  if (ioctl(sockets[ISDNCTRL].descriptor, IIOCNETDIL, known[c]->interface) >= 0) { /* DIAL */
-                    sprintf(sx, "@LCR: DONE!");
-            	    info(chan, PRT_SHOWNUMBERS, STATE_HUPTIMEOUT, sx);
-                  } /* if */
-	        } /* if */
-	      } /* if */
-	    } /* if */
-          } /* if */
-        } /* if */
-      } /* if */
-#endif
 
       if (!oldhuptimeout && !replay) {
         sprintf(sx, "HUPTIMEOUT %s is *disabled* - unchanged", known[c]->interface);

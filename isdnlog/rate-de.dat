@@ -1,4 +1,4 @@
-V:1.10-Germany [31-Dec-1999 12:35:20]
+V:1.10-Germany [13-Jan-2000 00:13:25]
 
 # Währungsformat
 U:%.3f DM
@@ -8,7 +8,7 @@ U:%.3f DM
 #
 # (C) Copyright 1999 by Andreas Kool (akool@isdn4linux.de)
 #
-# $Id: rate-de.dat,v 1.72 1999/12/31 13:57:17 akool Exp $
+# $Id: rate-de.dat,v 1.73 2000/01/12 23:22:50 akool Exp $
 #
 #
 # Das "A:" Tag muß folgendermaßen gefüllt werden:
@@ -382,13 +382,13 @@ N:0179*, 0176*
 S:Shared Cost
 N:0180*
 
-S:Internationale Virtuelle Private Netze (IVPN) (0181xxx, 0181xxxx)
+S:IVPN # Internationale Virtuelle Private Netze (0181xxx, 0181xxxx)
 N:0181*
 
 S:geschlossene Nutzergruppen # Ausnahme: 018xyyy, 018xyyyy, 018xyyyyy, 018xyyyyyy mit x = 2 ... 9 und y = 0 ... 9)
 N:018*
 
-S:UPT DTAG # (auslaufend)
+S:UPT # DTAG, auslaufend
 N:0182*
 
 S:Premium Rate # (Planung: Verlagerung nach 0900; danach: Reserve)
@@ -397,7 +397,7 @@ N:0190*
 S:Online-Dienste # (019xz, 019yzzz mit x = 1 ... 3, y = 1 ... 4 und z = 0 ... 9) (Planung: Verlagerung nach 0905; danach: Reserve)
 N:019*
 
-S:Zugänge zu Datennetzen der DTAG (auslaufend)
+S:Zugänge zu Datennetzen der DTAG # (auslaufend)
 N:0195*, 0197*
 
 S:Routingnummern für Auskunftsdienste
@@ -5064,7 +5064,7 @@ Z:1-3 Ferngespräche innerhalb Regio 50
 T:*/*=0.08(60)/1
 Z:4 Ferngespräche außerhalb Regio 50
 A:+49
-T:*/*=0.012(60)/1
+T:*/*=0.12(60)/1
 Z:10 Mobilfunk
 A:01618
 A:01610,01611,01612,01613,01614,01615,01616,01617,01619
@@ -9172,6 +9172,7 @@ T:W/18-09=0.12/15 Nacht
 T:E,H/*=0.12/15 Wochenende
 Z:12 Mobilfunknetz D1
 A:0170,0171,0175
+T:[01.02.2000-]*/*=0.48/60
 T:W/09-18=0.12/7.5 Standard
 T:W/18-09=0.12/15 Nacht
 T:E,H/*=0.12/15 Wochenende
@@ -9435,6 +9436,7 @@ T:W/18-09=0.12/15 Nacht
 T:E,H/*=0.12/15 Wochenende
 Z:12 Mobilfunknetz D1
 A:0170,0171
+T:[01.02.2000-]*/*=0.48/60
 T:W/09-18=0.12/7.5 Standard
 T:W/18-09=0.12/15 Nacht
 T:E,H/*=0.12/15 Wochenende
@@ -9685,6 +9687,7 @@ T:W/18-09=0.12/15 Nacht
 T:E,H/*=0.12/15 Wochenende
 Z:12 Mobilfunknetz D1
 A:0170,0171
+T:[01.02.2000-]*/*=0.48/60
 T:W/09-18=0.12/7.5 Standard
 T:W/18-09=0.12/15 Nacht
 T:E,H/*=0.12/15 Wochenende
@@ -9941,6 +9944,7 @@ T:W/18-09=0.12/15 Nacht
 T:E,H/*=0.12/15 Wochenende
 Z:12 Mobilfunknetz D1
 A:0170,0171
+T:[01.02.2000-]*/*=0.48/60
 T:W/09-18=0.12/7.5 Standard
 T:W/18-09=0.12/15 Nacht
 T:E,H/*=0.12/15 Wochenende
@@ -10185,6 +10189,7 @@ T:W/18-09=0.12/15 Nacht
 T:E,H/*=0.12/15 Wochenende
 Z:12 Mobilfunknetz D1
 A:0170,0171
+T:[01.02.2000-]*/*=0.39/60
 T:W/09-18=0.12/7.5 Standard
 T:W/18-09=0.12/15 Nacht
 T:E,H/*=0.12/15 Wochenende
@@ -13428,7 +13433,7 @@ A:CL
 T:*/*=0.35/60
 Z:207 China
 A:CN
-T:*/*=0.67/60
+T:*/*=0.66/60
 Z:208 Dänemark
 A:DK
 T:*/*=0.17/60
@@ -13443,7 +13448,7 @@ A:UK
 T:*/*=0.13/60
 Z:212 Hongkong
 A:HK
-T:*/*=0.19/60
+T:*/*=0.18/60
 Z:213 Italien
 A:IT
 T:*/*=0.21/60
@@ -13480,9 +13485,9 @@ T:*/*=0.45/60
 Z:225 Monaco
 A:MC
 T:*/*=0.29/60
-Z:226 Moskau
+Z:226 Moskau (Festnetz:007095)
 A:MOW
-T:*/*=0.35/60
+T:*/*=0.34/60
 Z:227 Neuseeland (Festnetz)
 A:NZ
 T:*/*=0.19/60
@@ -13537,12 +13542,12 @@ T:*/*=0.15/60
 Z:244 Venezuela
 A:VE
 T:*/*=0.66/60
-Z:245 St. Petersburg
+Z:245 St. Petersburg (Festnetz:007812)
 A:LED
-T:*/*=0.35/60
+T:*/*=0.34/60
 Z:246 Polen
 A:PL
-T:*/*=0.38/60
+T:*/*=0.43/60
 Z:247 Russische Förderation
 A:RU,SU
 T:*/*=0.55/60
@@ -13569,13 +13574,13 @@ A:MD
 T:*/*=0.79/60
 Z:255 Philippinen
 A:PH
-T:*/*=0.61/60
+T:*/*=0.60/60
 Z:256 Thailand
 A:TH
 T:*/*=0.75/60
-Z:257 Ukraine
+Z:257 Ukraine (Festnetz)
 A:UA
-T:*/*=0.75/60
+T:*/*=0.74/60
 Z:258 Estland (Festnetz)
 A:EE
 T:*/*=0.52/60

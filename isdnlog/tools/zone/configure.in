@@ -10,7 +10,7 @@ dnl Checks for programs.
 AC_PROG_CC
 AC_PROG_INSTALL
 AC_CHECK_PROGS(BZIP2, bzip2, bzip2_not_found_or_installed)
-if test "$BZIP2" == "bzip2_not_found_or_installed"  ; then
+if test "$BZIP2" = "bzip2_not_found_or_installed" ; then
 	AC_MSG_ERROR(bzip2 not found please install it.)
 fi
 

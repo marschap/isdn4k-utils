@@ -30,6 +30,7 @@ void  write_services(void) {
   sv_printf("Xxxx","142");
   sv_printf("Arbö","123");
   sv_printf("Öamtc","120");
+  /* fixme 194* ??? z.b. spardat 19431 */
   sv_printf("Internet","07189*,19411,19430,19440,019088333,194040");
   sv_printf("Störung","111*");
   sv_printf("Auskuft AT,DE","11811");
@@ -1856,7 +1857,7 @@ void rate_1067(void) {
 }
 
 
-void rate_1069(void) {
+void rate_1069_old(void) {
 
   char *Zone[][2] = {{ "Festnetz", "Österreich" },
 		     { "One Mobilfunknetz", "+43699" },
@@ -1878,7 +1879,47 @@ void rate_1069(void) {
 
   int z;
 
-  rprintf ("P:69", "ONE" );
+  rprintf ("P:[-01.12.1999] 69", "ONE" );
+
+  rprintf ("C:Name:", "Connect Austria Gesellschaft für Telekommunikation GmbH" );
+  rprintf ("C:Address:", "Brünner Straße 52, A-1210 Wien " );
+  rprintf ("C:Homepage:", "http://www.one.at" );
+  rprintf ("C:Telefon:", "0800 1069 3000" );
+  /*  rprintf ("","C:Zone:");
+      rprintf ("C:Special:", "" ); */
+
+  for (z=0; z<COUNT(Zone); z++) {
+    rprintf ("Z:%d", Zone[z][0] , z+1);
+    rprintf ("T:*/*=%.2f(60)/30", "0-24h" , Tarif[z]);
+    print_area(Zone[z][1]);
+  }
+}
+
+void rate_1069(void) {
+
+  char *Zone[][2] = {{ "Festnetz", "Österreich" },
+		     { "One Mobilfunknetz", "+43699" },
+		     { "andere Mobilfunknetze", "+43663,+43664,+43676" },
+		     { "Internationale Zone 1", "Deutschland, Schweiz" },
+		     { "Internationale Zone 2", "Belgien, Dänemark, Finnland, Frankreich, Großbritannien, Irland, Italien, Liechtenstein, Luxemburg, Niederlande, Norwegen, Schweden, Slowakei, Slowenien, Spanien, Tschechien, Ungarn" },
+		     { "Internationale Zone 3", "Andorra, Australien, Bosnien-Herzegowina, Griechenland, Island, Japan, Jugoslawien, Kanada, Kroatien, Malta, Monaco, Neuseeland, Polen, Portugal, Puerto Rico, Mazedonien, San Marino, Vereinigte Staaten (USA), Vatikanstadt" },
+		     { "Internationale Zone 4", "Albanien, Algerien, Bulgarien, Estland, Gibraltar, Hongkong, Israel, Lettland,Litauen, Marokko, Rumänien, Rußland, Singapur, Tunesien, Türkei, Ukraine, Weißrußland, Zypern" },
+		     { "Internationale Zone 5", "Aserbaidschan, Amerikanisch-Samoa, Armenien, Bahamas, Bermuda, Brasilien, Brunei, Chile, Dominikanische Republik, Falklandinseln, Georgien, Ghana, Grönland, Jamaika, Kasachstan, Kokosinseln, Libyen, Macao, Mexico, Malaysia, Moldau, Oman, Südkorea, Südafrika, Tadschikistan,Taiwan, Usbekistan, Venezuela, Vereinigte Arabische Emirate, Weihnachtsinseln" },
+		     { "Internationale Zone 6", "Antigua und Barbuda,St. Lucia,Dominica,Britische Jungferninseln,Turks- und Caicosinseln,Anguilla,St. Vincent und Grenadinen,Montserrat,St. Kitts und Nevis,Grenada,Trinidad und Tobago,Hawaii,Marianen (SaipanNord-),Kaimaninseln,Amerikanische Jungferninseln,Barbados,+" }};
+
+  double Tarif[] = { 0.88,
+		     02.00,
+		     03.90,
+		     02.50,
+		     03.30,
+		     05.30,
+		     08.00,
+		     15.00,
+		     22.00 };
+
+  int z;
+
+  rprintf ("P:[01.12.1999] 69", "ONE" );
 
   rprintf ("C:Name:", "Connect Austria Gesellschaft für Telekommunikation GmbH" );
   rprintf ("C:Address:", "Brünner Straße 52, A-1210 Wien " );
@@ -2384,6 +2425,7 @@ int main (int argc, char *argv[])
   rate_1049();
   rate_1066();
   rate_1067();
+  rate_1069_old();
   rate_1069();
   if(0) {
     rate_priority_class();

@@ -4647,7 +4647,7 @@ T:*/*=62.00(60)/30                 0-24h
 A:_IR17
 
 ###########################
-P:69                               ONE
+P:[-01.12.1999] 69                 ONE
 B:1069
 C:Name:                            Connect Austria Gesellschaft für Telekommunikation GmbH
 C:Address:                         Brünner Straße 52, A-1210 Wien
@@ -4693,6 +4693,65 @@ A:MD,OM,KR,ZA,TJ,TW,UZ
 A:VE,AE,CX
 
 Z:8                                Internationale Zone 5
+T:*/*=22.00(60)/30                 0-24h
+A:AG,LC,DM,VG
+A:TC,AI,VC,MS
+A:KN,GD,TT,_HAWA
+A:MP,KY,VI
+A:BB
+A:+
+
+###########################
+P:[01.12.1999] 69                  ONE
+B:1069
+C:Name:                            Connect Austria Gesellschaft für Telekommunikation GmbH
+C:Address:                         Brünner Straße 52, A-1210 Wien
+C:Homepage:                        http://www.one.at
+C:Telefon:                         0800 1069 3000
+
+Z:1                                Festnetz
+T:*/*=0.88(60)/30                  0-24h
+A:AT
+
+Z:2                                One Mobilfunknetz
+T:*/*=2.00(60)/30                  0-24h
+A:+43699
+
+Z:3                                andere Mobilfunknetze
+T:*/*=3.90(60)/30                  0-24h
+A:+43663,+43664,+43676
+
+Z:4                                Internationale Zone 1
+T:*/*=2.50(60)/30                  0-24h
+A:DE,CH
+
+Z:5                                Internationale Zone 2
+T:*/*=3.30(60)/30                  0-24h
+A:BE,DK,FI,FR,UK,IE,IT
+A:LI,LU,NL,NO,SE,SK
+A:SI,ES,CZ,HU
+
+Z:6                                Internationale Zone 3
+T:*/*=5.30(60)/30                  0-24h
+A:AD,AU,BA,GR,IS,JP
+A:YU,CA,HR,MT,MC,NZ,PL,PT
+A:PR,MK,SM,US,VA
+
+Z:7                                Internationale Zone 4
+T:*/*=8.00(60)/30                  0-24h
+A:AL,DZ,BG,EE,GI,HK,IL
+A:LV,LT,EH,RO,SU,SG,TN,TR
+A:UA,BY,CY
+
+Z:8                                Internationale Zone 5
+T:*/*=15.00(60)/30                 0-24h
+A:AZ,AS,AM,BS,BM,BR
+A:BN,CL,DO,FK,GE,GH
+A:GL,JM,KZ,CC,LY,MO,MX,MY
+A:MD,OM,KR,ZA,TJ,TW,UZ
+A:VE,AE,CX
+
+Z:9                                Internationale Zone 6
 T:*/*=22.00(60)/30                 0-24h
 A:AG,LC,DM,VG
 A:TC,AI,VC,MS

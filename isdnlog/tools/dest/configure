@@ -807,7 +807,7 @@ test -n "$BZIP2" && break
 done
 test -n "$BZIP2" || BZIP2="bzip2_not_found_or_installed"
 
-if test "$BZIP2" == "bzip2_not_found_or_installed"  ; then
+if test "$BZIP2" = "bzip2_not_found_or_installed" ; then
 	{ echo "configure: error: bzip2 not found please install it." 1>&2; exit 1; }
 fi
 

@@ -83,16 +83,16 @@ data:
 	@if [ ! -e dest$(DBEXT) ] ; then \
 	./makedest -v $(LANG) ; \
 	./makedest -v -gcities.dat -a $(LANG) ; \
-	if [ x$(CONFIG_ISDN_LOG_DEST_AT) == xy ] ; then \
+	if [ x$(CONFIG_ISDN_LOG_DEST_AT) = xy ] ; then \
 		./makedest -v -a at ; \
 	fi ; \
-	if [ x$(CONFIG_ISDN_LOG_DEST_DE) == xy ] ; then \
+	if [ x$(CONFIG_ISDN_LOG_DEST_DE) = xy ] ; then \
 		./makedest -v -a de ; \
 	fi ; \
-	if [ x$(CONFIG_ISDN_LOG_DEST_NL) == xy ] ; then \
+	if [ x$(CONFIG_ISDN_LOG_DEST_NL) = xy ] ; then \
 		./makedest -v -a nl ; \
 	fi ; \
-	if [ x$(CONFIG_ISDN_LOG_DEST_CH) == xy ] ; then \
+	if [ x$(CONFIG_ISDN_LOG_DEST_CH) = xy ] ; then \
 		./makedest -v -a ch || true; \
 	fi ; \
 	fi
