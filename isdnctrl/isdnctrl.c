@@ -1,4 +1,4 @@
-/* $Id: isdnctrl.c,v 1.29 1998/11/17 18:29:31 paul Exp $
+/* $Id: isdnctrl.c,v 1.30 1998/11/18 13:20:07 fritz Exp $
  * ISDN driver for Linux. (Control-Utility)
  *
  * Copyright 1994,95 by Fritz Elfert (fritz@wuemaus.franken.de)
@@ -21,6 +21,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnctrl.c,v $
+ * Revision 1.30  1998/11/18 13:20:07  fritz
+ * Fixed display of dialmode.
+ *
  * Revision 1.29  1998/11/17 18:29:31  paul
  * isdnctrl.c now compiles with kernel sources without dialmode stuff.
  *
@@ -444,7 +447,7 @@ static void listif(int isdnctrl, char *name, int errexit)
 	else if (cfg.dialmode == ISDN_NET_DM_AUTO)
 		puts("auto");
 	else
-		puts("on");
+		puts("manual");
 #else
 #warning ISDN_NET_DM_OFF not defined? Old isdn4kernel?
         printf("Dial mode:              not available at compilation\n");
