@@ -1,4 +1,4 @@
-/* $Id: rate.c,v 1.55 1999/11/02 21:01:58 akool Exp $
+/* $Id: rate.c,v 1.56 1999/11/03 16:02:33 paul Exp $
  *
  * Tarifdatenbank
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rate.c,v $
+ * Revision 1.56  1999/11/03 16:02:33  paul
+ * snprintf call had too many arguments for the format string.
+ *
  * Revision 1.55  1999/11/02 21:01:58  akool
  * isdnlog-3.62
  *  - many new rates
@@ -759,8 +762,8 @@ int initRate(char *conf, char *dat, char *dom, char **msg)
   }
 
   if (!dat || !*dat) {
-    if (msg) snprintf (message, LENGTH, "Warning: no rate database specified!",
-		       conf, strerror(errno));
+    if (msg) snprintf (message, LENGTH, "Warning: no rate database specified in %s!",
+		       conf);
     return 0;
   }
 
