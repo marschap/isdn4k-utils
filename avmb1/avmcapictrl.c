@@ -1,14 +1,14 @@
 /*
- * $Id: avmcapictrl.c,v 1.4 1998/01/16 13:58:35 calle Exp $
+ * $Id: avmcapictrl.c,v 1.5 1998/01/16 14:02:08 calle Exp $
  * 
  * AVM-B1-ISDN driver for Linux. (Control-Utility)
  * 
  * Copyright 1996 by Carsten Paeth (calle@calle.in-berlin.de)
  * 
  * $Log: avmcapictrl.c,v $
- * Revision 1.4  1998/01/16 13:58:35  calle
- * now patchvalues are working, means support for leased lines
- * and protocols like CT1,AUSTEL ... working now.
+ * Revision 1.5  1998/01/16 14:02:08  calle
+ * patchvalues working now, leased lines and dchannel protocols like
+ * CT1,VN3 und AUSTEL support okay, point to point also patchable.
  *
  * Revision 1.3  1997/12/07 20:02:22  calle
  * prepared support for cardtype and different protocols
@@ -205,13 +205,6 @@ int set_configuration(avmb1_t4file *t4config, int protocol, int p2p)
    }
    t4config->len = patchlen+1;
    t4config->data = patcharea;
-#if 1
-   {
-      FILE *fp = fopen("patchvalue", "w");
-      fwrite( t4config->data, t4config->len, 1, fp);
-      fclose(fp);
-   }
-#endif
    return 0;
 }
 
