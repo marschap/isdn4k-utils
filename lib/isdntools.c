@@ -1,4 +1,4 @@
-/* $Id: isdntools.c,v 1.28 2001/08/18 11:59:01 paul Exp $
+/* $Id: isdntools.c,v 1.29 2003/07/23 20:55:39 tobiasb Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -19,6 +19,40 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdntools.c,v $
+ * Revision 1.29  2003/07/23 20:55:39  tobiasb
+ * The modifications remove a bug which occurs when dealing with special
+ * numbers and the callerid.conf file.  Regular numbers such as +4940555
+ * can be noted in the following way in a NUMBER line:
+ * NUMBER=+49-40-555, +49-69-555
+ *
+ * For special numbers prior to this modifications there are strong
+ * unmentioned limitations.  Only one number per NUMBER line is allowed
+ * without any of the options shown above.
+ * Allowed: NUMBER=01802555
+ * Not allowed/not working: NUMBER=01802-555
+ * also not working: NUMBER=0180255, 0700555
+ *
+ * This modification brings the later two examples in function.  About the
+ * background of the problem:  isdnlog/isdnrep and other know a sort of
+ * telephone numbers called `special numbers', which are noted with S: and
+ * N: Tags in the rate-file. These numbers are per definition only available
+ * within the country.  In order to emphasize this and for other more
+ * practical reasons, the normalized format for this numbers is not the
+ * usual +<countrycode><areacode><local number> but the national format
+ * like 01802555.
+ *
+ * While the logged numbers in /var/log/isdn.log or so follow this convention,
+ * such entries in callerid.conf got internally converted to the normalized
+ * format (+49180255 in case of the last mentioned number) so that the
+ * comparison executed by isdnlog or isdnrep did not show the expected
+ * result.
+ *
+ * The modification activates the advanced feature in the notation of normal
+ * numbers for special numbers.
+ *
+ * IMPORTANT NOTE:  As the resulting library is located outside the isdnlog
+ * subdirectory, this changes may influence other parts of the isdn4k-utils.
+ *
  * Revision 1.28  2001/08/18 11:59:01  paul
  * Added missing endpwent() call that meant /etc/passwd was being kept open;
  * reorganized num_match() a bit; made the arrays in expand_number() one byte
@@ -238,6 +272,8 @@ static long int area_read_value(FILE *fp, int size);
 static int area_read_file(void);
 static int area_get_index(char *code);
 #endif
+static char *expand_number_all (char *s, int add_prefix);
+static char *expand_number_pure (char *s);
 
 /****************************************************************************/
 
@@ -313,8 +349,13 @@ int num_match(char* Pattern, char *number)
 	if (!strcmp(Pattern, number)) /* match */
 		return 0;
 
-	if (!strchr(Pattern,C_NUM_DELIM))
-    return match(expand_number(Pattern), number, 0);
+	if (!strchr(Pattern,C_NUM_DELIM)) /* Pattern is a single number, not a list */
+	{
+    RetCode = match(expand_number(Pattern), number, 0);
+		if (RetCode != 0) /* try Pattern without additional prefix */
+			RetCode = match(expand_number_pure(Pattern), number, 0);
+    return RetCode;
+	}
 
 	Ptr = Array = String_to_Array(Pattern,C_NUM_DELIM);
 
@@ -324,6 +365,16 @@ int num_match(char* Pattern, char *number)
 		Ptr++;
 	}
 
+	if (RetCode != 0)	/* second try in case of number list */
+	{
+		Ptr = Array;
+		while (*Ptr != NULL && RetCode != 0)
+		{
+			RetCode = match(expand_number_pure(*Ptr), number, 0);
+			Ptr++;
+		}
+	}
+
 	del_Array(Array);
 
 	return RetCode;
@@ -331,7 +382,21 @@ int num_match(char* Pattern, char *number)
 
 /****************************************************************************/
 
-char *expand_number(char *s)
+/* Introducing expand_number_pure as a variant of expand_number without
+ * adding countrycode or countrycode and areacode to numbers.  This is
+ * needed for isdnlog/isdnrep where national special numbers such as
+ * 01805 in Germany are intentionally stored as 01805 and not as +491805.
+ * The orginal expand_number which remains unchanged has no idea about
+ * special numbers and adds the countrycode to all numbers without, so
+ * that a correct entry from callerid.conf for a special number gets
+ * falsified and does not match as intended.
+ * The work is done by expand_number_all, which is the slighty extented
+ * former expand_number.  The aliasing for expand_number and
+ * expand_number_all might be done in a more efficient way.
+ * Tobias Becker, 2003-02-11.
+ */
+
+static char *expand_number_all(char *s, int add_prefix)
 {
 	int all_allowed = 0;
 	char *Ptr;
@@ -382,7 +447,7 @@ char *expand_number(char *s)
 	if (Help[0] == '\0')
 		return s;
 
-	if (Help[0] == '*' || !strncmp(Help,countryprefix,strlen(countryprefix)))
+	if (Help[0] == '*' || !strncmp(Help,countryprefix,strlen(countryprefix)) || !add_prefix)
 	{
 		strcpy(Num,Help);
 	}
@@ -400,6 +465,16 @@ char *expand_number(char *s)
 	}
 
 	return Num;
+}
+
+char *expand_number(char *s)
+{
+	return expand_number_all(s, 1);
+}
+
+static char *expand_number_pure(char *s)
+{
+	return expand_number_all(s, 0);
 }
 
 /****************************************************************************/
