@@ -1,4 +1,4 @@
-# $Id: Makefile.in,v 1.16 2000/08/01 20:23:46 akool Exp $
+# $Id: Makefile.in,v 1.17 2000/08/04 11:07:56 paul Exp $
 #
 # Makefile for isdnctrl
 # (C) 1997 Fritz Elfert
@@ -96,10 +96,10 @@ install: $(PROGRAM) install-man
 	$(INSTALL) -d $(DESTDIR)$(SBINDIR)
 	$(INSTALL_PROGRAM) $(PROGRAM) $(DESTDIR)$(SBINDIR)/$(PROGRAM)
 ifeq (@CONFIG_ISDNCTRL_DWABC_UDP_INFO@,y)
-	$(INSTALL) -d $(ABCLIBDIR)
-	$(INSTALL) -d $(ABCICLDIR)
-	$(INSTALL_MAN) libisdnudp.a $(ABCLIBDIR)/libisdnudp.a
-	$(INSTALL_MAN) isdn_dwabclib.h $(ABCICLDIR)/isdn_dwabclib.h 
+	$(INSTALL) -d $(DESTDIR)$(ABCLIBDIR)
+	$(INSTALL) -d $(DESTDIR)$(ABCICLDIR)
+	$(INSTALL_MAN) libisdnudp.a $(DESTDIR)$(ABCLIBDIR)/libisdnudp.a
+	$(INSTALL_MAN) isdn_dwabclib.h $(DESTDIR)$(ABCICLDIR)/isdn_dwabclib.h 
 endif
 
 install-strip: $(PROGRAM)
@@ -110,11 +110,11 @@ uninstall:
 	rm -f $(DESTDIR)$(SBINDIR)/$(PROGRAM)
 	for i in $(MANPAGES) ; do rm $(DESTDIR)$(MAN8DIR)/$$i ; done
 ifeq (@CONFIG_ISDNCTRL_DWABC_UDP_INFO@,y)
-	rm -f $(ABCLIBDIR)/libisdnudp.a $(ABCICLDIR)/isdn_dwabclib.h
+	rm -f $(DESTDIR)$(ABCLIBDIR)/libisdnudp.a $(DESTDIR)$(ABCICLDIR)/isdn_dwabclib.h
 endif
 
 clean:
-	rm -f *.o *~ $(PROGRAM) *.man *.8 .*.man .*.8
+	rm -f *.o *.a *~ $(PROGRAM) *.man *.8 .*.man .*.8
 
 distclean: clean
 	rm -f config.status config.cache config.log config.h Makefile
