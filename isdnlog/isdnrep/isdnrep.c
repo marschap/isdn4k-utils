@@ -1,4 +1,4 @@
-/* $Id: isdnrep.c,v 1.71 1999/07/18 08:40:17 akool Exp $
+/* $Id: isdnrep.c,v 1.72 1999/07/23 09:09:38 calle Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -24,6 +24,9 @@
  *
  *
  * $Log: isdnrep.c,v $
+ * Revision 1.72  1999/07/23 09:09:38  calle
+ * Bugfix: getProvider sometimes returns NULL and isdnrep crashed ...
+ *
  * Revision 1.71  1999/07/18 08:40:17  akool
  * fix from Michael
  *
@@ -1304,7 +1307,8 @@ static int print_bottom(double unit, char *start, char *stop)
                     else
                       *sx = 0;
 
-		    print_line3(NULL, "Provider", string, getProvider(i),
+		    print_line3(NULL, "Provider", string,
+		      getProvider(i) ? getProvider(i) : "",
 		      usage_provider[i],
 		      double2clock(duration_provider[i]),
                       print_currency(pay_provider[i], 0), sx);
@@ -1933,7 +1937,7 @@ static void bprint(one_call *call)
   if (call->duration) {
     print_msg(PRT_NORMAL, "%s %-15s",
       print_currency(call->pay, 0),
-      getProvider(call->provider));
+      getProvider(call->provider) ? getProvider(call->provider) : "");
     numsplit(call->num[CALLED]);
     print_msg(PRT_NORMAL, "\n");
   }
