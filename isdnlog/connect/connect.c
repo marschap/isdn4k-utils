@@ -66,7 +66,10 @@ int client_connect(char *name, int port)
 	int    sock;
 	struct sockaddr_in server;
 	struct servent   *sp;
-	struct hostent   *hp = gethostbyname (name);
+	struct hostent   *hp;
+
+	if ((hp = gethostbyname (name)) == NULL)
+		return NO_HOST;
 
 	if((sock = socket (AF_INET, SOCK_STREAM, 0)) < 0)
 		return NO_SOCKET;

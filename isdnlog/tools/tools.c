@@ -1,8 +1,8 @@
-/* $Id: tools.c,v 1.8 1997/05/11 22:41:43 luethje Exp $
+/* $Id: tools.c,v 1.9 1998/03/08 11:43:16 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
- * Copyright 1995, 1997 by Andreas Kool (akool@Kool.f.EUnet.de)
+ * Copyright 1995, 1998 by Andreas Kool (akool@Kool.f.EUnet.de)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools.c,v $
+ * Revision 1.9  1998/03/08 11:43:16  luethje
+ * I4L-Meeting Wuerzburg final Edition, golden code - Service Pack number One
+ *
  * Revision 1.8  1997/05/11 22:41:43  luethje
  * README completed
  * changed the E-mail address for the switch -V
@@ -94,8 +97,6 @@
 
 /****************************************************************************/
 
-
-#define  PUBLIC /**/
 #define  _TOOLS_C_
 
 /****************************************************************************/
@@ -569,6 +570,42 @@ static char *ltoa(register unsigned long num, register char *p, register int rad
 
 /****************************************************************************/
 
+char *Providername(char *number)
+{      
+  if (!memcmp(number + 3, "70", 2))
+    return("Arcor");
+  else if (!memcmp(number + 3, "66", 2))
+    return("Interroute");
+  else if (!memcmp(number + 3, "20", 2))
+    return("Isis");
+  else if (!memcmp(number + 3, "19", 2))
+    return("Mobilcom");
+  else if (!memcmp(number + 3, "22", 2))
+    return("NetCologne");
+  else if (!memcmp(number + 3, "11", 2))
+    return("o.tel.o");
+  else if (!memcmp(number + 3, "50", 2))
+    return("Talkline");
+  else if (!memcmp(number + 3, "30", 2))
+    return("TelDaFax");
+  else if (!memcmp(number + 3, "33", 2))
+    return("Telekom");
+  else if (!memcmp(number + 3, "24", 2))
+    return("TelePassport");
+  else if (!memcmp(number + 3, "90", 2))	
+    return("Viag Interkom");
+  else if (!memcmp(number + 3, "85", 2))
+    return("WESTCom");
+  else if (!memcmp(number + 3, "88", 2))
+    return("WorldCom");
+  else if (!memcmp(number + 3, "25", 2))
+    return("Citykom Muenster");
+  else
+    return("UNKNOWN PROVIDER");
+} /* Providername */
+
+/****************************************************************************/
+
 int iprintf(char *obuf, int chan, register char *fmt, ...)
 {
   register char     *p, *s;
@@ -743,6 +780,22 @@ go:   	         if (!ndigit)
       		 s = sx;
       	       	 p = s + strlen(s);
 		 break;
+
+      case 'p' : s = sx;
+      	         if (*call[chan].provider)
+      	       	   sprintf(sx, "%s", call[chan].provider);
+      		 else
+                   *sx = 0;
+                 p = s + strlen(s);
+                 break;
+
+      case 'P' : s = sx;
+      	         if (*call[chan].provider)
+      	       	   sprintf(sx, " via %s", Providername(call[chan].provider));
+      		 else
+                   *sx = 0;
+                 p = s + strlen(s);
+                 break;
 
       default  : *p++ = c;
 	         break;

@@ -38,6 +38,7 @@
 #define MAX_CLIENTS_LISTEN    5
 
 #define PROT_VERSION					"V0.2"
+#define PROT_ELEMENTS					20
 
 #ifndef SERV_PORT
 #	define SERV_PORT 20011
@@ -97,6 +98,7 @@
 #define NO_LISTEN		-4
 #define NO_CONNECT	-5
 #define NO_MEMORY  	-6
+#define NO_HOST  	  -7
 
 /****************************************************************************/
 

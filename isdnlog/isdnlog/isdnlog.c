@@ -1,8 +1,8 @@
-/* $Id: isdnlog.c,v 1.14 1998/02/08 09:36:51 calle Exp $
+/* $Id: isdnlog.c,v 1.15 1998/03/08 11:42:50 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
- * Copyright 1995, 1997 by Andreas Kool (akool@Kool.f.EUnet.de)
+ * Copyright 1995, 1998 by Andreas Kool (akool@Kool.f.EUnet.de)
  *                     and Stefan Luethje (luethje@sl-gw.lake.de)
  *
  * This program is free software; you can redistribute it and/or modify
@@ -19,6 +19,9 @@
  * along with this program; if not, write to the Free Software
  *
  * $Log: isdnlog.c,v $
+ * Revision 1.15  1998/03/08 11:42:50  luethje
+ * I4L-Meeting Wuerzburg final Edition, golden code - Service Pack number One
+ *
  * Revision 1.14  1998/02/08 09:36:51  calle
  * fixed problems with FD_ISSET and glibc, if descriptor is not open.
  *

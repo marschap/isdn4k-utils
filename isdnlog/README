@@ -753,6 +753,8 @@ koennen folgende Platzhalter angegeben werden:
  %T   Uhrzeit (-> "13:17:11")
  %B   B-Kanal (0, oder 1)
  %k   Nummer der ISDN-Karte, von der die Meldung kam (0 = 1. Karte)
+ %p   Nummer des Provider's
+ %P   "via <Providerbezeichnung>" 
 
  %/
  %

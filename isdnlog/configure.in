@@ -33,6 +33,29 @@ bindir=${CONFIG_BINDIR:-"/usr/bin"}
 sbindir=${CONFIG_SBINDIR:-"/sbin"}
 mandir=${CONFIG_MANDIR:-"/usr/man"}
 
+I4LCONFDIR=`eval echo $I4LCONFDIR`
+OLDCONFDIR=`eval echo $OLDCONFDIR`
+OLDCONFFILE=`eval echo $OLDCONFFILE`
+CONFFILE=`eval echo $CONFFILE`
+CALLERIDFILE=`eval echo $CALLERIDFILE`
+RUNDIR=`eval echo $RUNDIR`
+USERFILE=`eval echo $USERFILE`
+LOGFILE=`eval echo $LOGFILE`
+CHARGEFILE=`eval echo $CHARGEFILE`
+RELOADCMD=`eval echo $RELOADCMD`
+STOPCMD=`eval echo $STOPCMD`
+REBOOTCMD=`eval echo $REBOOTCMD`
+COUNTRYCODE=`eval echo $COUNTRYCODE`
+COUNTRYPREFIX=`eval echo $COUNTRYPREFIX`
+AREACODE=`eval echo $AREACODE`
+AREAPREFIX=`eval echo $AREAPREFIX`
+CONFIG_LIB_AREACODE=`eval echo $CONFIG_LIB_AREACODE`
+CONFIG_ISDNLOG_POSTGRESDIR=`eval echo $CONFIG_ISDNLOG_POSTGRESDIR`
+CONFIG_KERNELDIR=`eval echo $CONFIG_KERNELDIR`
+bindir=`eval echo $bindir`
+sbindir=`eval echo $sbindir`
+mandir=`eval echo $mandir`
+
 if test "$CONFIG_LIB_AREACODE" = "y" ; then
 	ALIB=area
 fi

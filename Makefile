@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.18 1997/09/25 21:37:46 fritz Exp $
+# $Id: Makefile,v 1.19 1998/03/08 11:42:23 luethje Exp $
 #
 # Toplevel Makefile for isdn4k-utils
 #
@@ -25,11 +25,14 @@ do-it-all:      config
 endif
 
 SUBDIRS :=
+ifeq ($(CONFIG_LIB_AREACODE),y)
+	SUBDIRS := $(SUBDIRS) areacode
+endif
 ifeq ($(CONFIG_ISDNLOG),y)
-	SUBDIRS := $(SUBDIRS) lib
+	SUBDIRS := $(SUBDIRS) areacode lib
 else
 	ifeq ($(CONFIG_CTRL_CONF),y)
-		SUBDIRS := $(SUBDIRS) lib
+		SUBDIRS := $(SUBDIRS) areacode lib
 	endif
 endif
 ifeq ($(CONFIG_ISDNCTRL),y)
@@ -67,11 +70,7 @@ ifeq ($(CONFIG_IMONTTY),y)
 	SUBDIRS := $(SUBDIRS) imontty
 endif
 ifeq ($(CONFIG_ISDNLOG),y)
-	SUBDIRS := $(SUBDIRS) areacode isdnlog
-else
-	ifeq ($(CONFIG_LIB_AREACODE),y)
-		SUBDIRS := $(SUBDIRS) areacode
-	endif
+	SUBDIRS := $(SUBDIRS) isdnlog
 endif
 ifeq ($(CONFIG_IPPPSTATS),y)
 	SUBDIRS := $(SUBDIRS) ipppstats

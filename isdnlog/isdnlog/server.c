@@ -1,4 +1,4 @@
-/* $Id: server.c,v 1.2 1997/04/03 22:34:51 luethje Exp $
+/* $Id: server.c,v 1.3 1998/03/08 11:42:58 luethje Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: server.c,v $
+ * Revision 1.3  1998/03/08 11:42:58  luethje
+ * I4L-Meeting Wuerzburg final Edition, golden code - Service Pack number One
+ *
  * Revision 1.2  1997/04/03 22:34:51  luethje
  * splitt the files callerid.conf and ~/.isdn.
  *
@@ -549,6 +552,9 @@ int append_Old_Prints(char *String)
 {
 	int Cnt = 0;
 
+	if (xlog < 1)
+		return 0;
+
 	if (Old_Prints == NULL)
 		if ((Old_Prints = (char**) calloc(xlog,sizeof(char*))) == NULL)
 			return NO_MEMORY;
@@ -587,6 +593,9 @@ int append_Old_Info(char *String)
 {
 	int Cnt = 0;
 
+
+	if (mcalls < 1)
+		return 0;
 
 	if (Old_Info == NULL)
 		if ((Old_Info = (char**) calloc(mcalls,sizeof(char*))) == NULL)

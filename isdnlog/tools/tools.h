@@ -1,8 +1,8 @@
-/* $Id: tools.h,v 1.16 1997/05/29 17:07:30 akool Exp $
+/* $Id: tools.h,v 1.17 1998/03/08 11:43:18 luethje Exp $
  *
  * ISDN accounting for isdn4linux.
  *
- * Copyright 1995, 1997 by Andreas Kool (akool@Kool.f.EUnet.de)
+ * Copyright 1995, 1998 by Andreas Kool (akool@Kool.f.EUnet.de)
  *                     and Stefan Luethje (luethje@sl-gw.lake.de)
  *
  * This program is free software; you can redistribute it and/or modify
@@ -20,6 +20,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools.h,v $
+ * Revision 1.17  1998/03/08 11:43:18  luethje
+ * I4L-Meeting Wuerzburg final Edition, golden code - Service Pack number One
+ *
  * Revision 1.16  1997/05/29 17:07:30  akool
  * 1TR6 fix
  * suppress some noisy messages (Bearer, Channel, Progress) - can be reenabled with log-level 0x1000
@@ -207,7 +210,7 @@
 
 /****************************************************************************/
 
-#define LOG_VERSION "3.0"
+#define LOG_VERSION "3.1"
 
 /****************************************************************************/
 
@@ -479,6 +482,7 @@ typedef struct {
   int	  screening;
   char    num[4][NUMSIZE];
   char    vnum[4][256];
+  char	  provider[NUMSIZE]; 
   char    id[32];
   char	  usage[16];
   int	  confentry[4];
@@ -591,6 +595,7 @@ typedef struct {
   double currency_factor;
   char	 currency[32];
   double pay;
+  char	 provider[NUMSIZE];
 } one_call;
 
 /****************************************************************************/
@@ -613,37 +618,47 @@ typedef struct {
 
 /****************************************************************************/
 
-PUBLIC KNOWN    start_procs;
-PUBLIC KNOWN  **known;
-PUBLIC int      mymsns;
-PUBLIC int      knowns;
-PUBLIC int	currency_mode;
-PUBLIC double   currency_factor;
-PUBLIC double   chargemax;
-PUBLIC double   connectmax;
-PUBLIC double   bytemax;
-PUBLIC int   	connectmaxmode;
-PUBLIC int   	bytemaxmode;
-PUBLIC char    *currency;
-PUBLIC int      day;
-PUBLIC int      month;
-PUBLIC int      retnum;
-PUBLIC int      ln;
-PUBLIC char     retstr[MAXRET + 1][RETSIZE];
-PUBLIC char     Months[][4];
-PUBLIC time_t   cur_time;
-PUBLIC section *conf_dat;
-PUBLIC char     ilabel[256];
-PUBLIC char    	olabel[256];
-PUBLIC char    	idate[256];
-PUBLIC CALL    	call[MAXCHAN];
+#ifdef _TOOLS_C_
+#define _EXTERN
+#else
+#define _EXTERN extern
+
+_EXTERN char     Months[][4];
+
+#endif /* _TOOLS_C_ */
+
+_EXTERN KNOWN    start_procs;
+_EXTERN KNOWN  **known;
+_EXTERN int      mymsns;
+_EXTERN int      knowns;
+_EXTERN int	currency_mode;
+_EXTERN double   currency_factor;
+_EXTERN double   chargemax;
+_EXTERN double   connectmax;
+_EXTERN double   bytemax;
+_EXTERN int   	connectmaxmode;
+_EXTERN int   	bytemaxmode;
+_EXTERN char    *currency;
+_EXTERN int      day;
+_EXTERN int      month;
+_EXTERN int      retnum;
+_EXTERN int      ln;
+_EXTERN char     retstr[MAXRET + 1][RETSIZE];
+_EXTERN time_t   cur_time;
+_EXTERN section *conf_dat;
+_EXTERN char     ilabel[256];
+_EXTERN char    	olabel[256];
+_EXTERN char    	idate[256];
+_EXTERN CALL    	call[MAXCHAN];
 #ifdef Q931
-PUBLIC int     	q931dmp;
+_EXTERN int     	q931dmp;
 #endif
-PUBLIC int     	CityWeekend;
-PUBLIC int	dual;
-PUBLIC char    	mlabel[BUFSIZ];
-PUBLIC char    *amtsholung;
+_EXTERN int     	CityWeekend;
+_EXTERN int	dual;
+_EXTERN char    	mlabel[BUFSIZ];
+_EXTERN char    *amtsholung;
+
+#undef _EXTERN
 
 /****************************************************************************/
 
@@ -653,7 +668,6 @@ extern char *optarg;
 /****************************************************************************/
 
 #ifdef _TOOLS_C_
-#define _EXTERN
 #define _EXTERN
 
 _EXTERN char* reloadcmd = RELOADCMD;
@@ -697,6 +711,7 @@ _EXTERN char  *time2str(time_t sec);
 _EXTERN char  *double2clock(double n);
 _EXTERN char  *vnum(int chan, int who);
 _EXTERN char  *i2a(int n, int l, int base);
+_EXTERN char  *Providername(char *number);
 _EXTERN int    iprintf(char *obuf, int chan, register char *fmt, ...);
 _EXTERN char  *qmsg(int type, int version, int val);
 _EXTERN char  *Myname;

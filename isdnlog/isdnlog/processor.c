@@ -1,8 +1,8 @@
-/* $Id: processor.c,v 1.13 1998/02/05 08:23:24 calle Exp $
+/* $Id: processor.c,v 1.14 1998/03/08 11:42:55 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
- * Copyright 1995, 1997 by Andreas Kool (akool@Kool.f.EUnet.de)
+ * Copyright 1995, 1998 by Andreas Kool (akool@Kool.f.EUnet.de)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.14  1998/03/08 11:42:55  luethje
+ * I4L-Meeting Wuerzburg final Edition, golden code - Service Pack number One
+ *
  * Revision 1.13  1998/02/05 08:23:24  calle
  * decode also seconds in date_time if available, for the dutch.
  *
@@ -1152,7 +1155,7 @@ static int AOC_1TR6(int l, char *p)
 } /* AOC_1TR6 */
 
 
-static void buildnumber(char *num, int oc3, int oc3a, char *result, int version)
+static void buildnumber(char *num, int oc3, int oc3a, char *result, int version, char *provider)
 {
   auto char n[BUFSIZ];
 
@@ -1223,6 +1226,21 @@ static void buildnumber(char *num, int oc3, int oc3a, char *result, int version)
 
   strcpy(n, num);
   strcpy(result, "");
+
+  if (!memcmp(num, "010", 3)) { /* Provider */
+    strncpy(provider, num, 5);
+    num += 5;
+    provider[5] = 0; 
+  
+#ifdef Q931
+    if (q931dmp) {
+      auto char s[BUFSIZ];
+    
+      sprintf(s, "Via provider \"%s\", %s", provider, Providername(provider));
+      Q931dump(TYPE_STRING, -1, s, version);
+    } /* if */
+#endif
+  } /* if */
 
   switch (oc3 & 0x70) { /* Calling party number Information element, Octet 3 - Table 4-11/Q.931 */
     case 0x00 : if (*num) {                  /* 000 Unknown */
@@ -1378,6 +1396,11 @@ static void chargemaxAction(int chan, double charge_overflow)
       sprintf(msg, "CHARGEMAX exhausted: result = %d", cc);
       info(chan, PRT_ERR, STATE_AOCD, msg);
     } /* if */
+    else
+    {
+      sprintf(msg, "CHARGEMAX exhausted: stop script `%s' doesn't exist! - NO ACTION!", cmd);
+      info(chan, PRT_ERR, STATE_AOCD, msg);
+    }
   }
   else {
     sprintf(msg, "CHARGEMAX exhausted - NO ACTION!! - %s exists!", cmd);
@@ -1706,6 +1729,31 @@ static void decode(int chan, register char *p, int type, int version)
 
                       if (n == AOC_OTHER)
                         ; /* info(chan, PRT_SHOWAOCD, STATE_AOCD, asnm); */
+                      else if (!memcmp(call[chan].provider, "01019", 5) ||
+                      	       !memcmp(call[chan].provider, "01070", 5)) { 
+		        
+		        if (type != FACILITY) { /* "AOC-E" Meldung */
+			  if (!memcmp(call[chan].provider, "01019", 5)) { /* Mobilcom */
+                            tx = cur_time - call[chan].connect;
+                            
+                            call[chan].aoc = 1;
+                            call[chan].aoce = (int)((tx + 59) / 60);
+                            call[chan].pay = call[chan].aoce * 0.19;
+                              
+                            if (tx)
+                              sprintf(s, "%s %s (%s)",
+                                currency,
+                                double2str(call[chan].pay, 6, 2, DEB),
+                                double2clock(tx));
+                            else
+                              sprintf(s, "%s %s",
+                                currency,
+                                double2str(call[chan].pay, 6, 2, DEB));
+                          
+                            info(chan, PRT_SHOWAOCD, STATE_AOCD, s);
+                          } /* if */
+                        } /* if */
+                      }
                       else {
 
                         call[chan].aoc = 1;
@@ -1993,7 +2041,7 @@ static void decode(int chan, register char *p, int type, int version)
                     *pd = 0;
 
                     strcpy(call[chan].onum[CALLED], s);
-                    buildnumber(s, oc3, oc3a, call[chan].num[CALLED], version);
+                    buildnumber(s, oc3, oc3a, call[chan].num[CALLED], version, call[chan].provider);
                     strcpy(call[chan].vnum[CALLED], vnum(chan, CALLED));
 #ifdef Q931
                     if (q931dmp && (*call[chan].vnum[CALLED] != '?') && *call[chan].vorwahl[CALLED] && oc3 && ((oc3 & 0x70) != 0x40)) {
@@ -2046,7 +2094,7 @@ static void decode(int chan, register char *p, int type, int version)
                       if (strcmp(call[chan].onum[CALLING], s)) /* different! */
                         if ((call[chan].screening == 3) && ((oc3a & 3) < 3)) { /* we believe the first one! */
                           strcpy(call[chan].onum[CLIP], s);
-                          buildnumber(s, oc3, oc3a, call[chan].num[CLIP], version);
+                          buildnumber(s, oc3, oc3a, call[chan].num[CLIP], version, call[chan].provider);
                           strcpy(call[chan].vnum[CLIP], vnum(6, CLIP));
 #ifdef Q931
                           if (q931dmp && (*call[chan].vnum[CLIP] != '?') && *call[chan].vorwahl[CLIP] && oc3 && ((oc3 & 0x70) != 0x40)) {
@@ -2086,7 +2134,7 @@ static void decode(int chan, register char *p, int type, int version)
                     call[chan].screening = (oc3a & 3);
 
                     strcpy(call[chan].onum[CALLING], s);
-                    buildnumber(s, oc3, oc3a, call[chan].num[CALLING], version);
+                    buildnumber(s, oc3, oc3a, call[chan].num[CALLING], version, call[chan].provider);
 
                     strcpy(call[chan].vnum[CALLING], vnum(chan, CALLING));
 #ifdef Q931
@@ -2126,13 +2174,13 @@ static void decode(int chan, register char *p, int type, int version)
                       call[chan].oc3 = oc3;
 #ifdef Q931
                       if (q931dmp)
-                        buildnumber(s, oc3, -1, call[chan].num[CALLED], version);
+                        buildnumber(s, oc3, -1, call[chan].num[CALLED], version, call[chan].provider);
 #endif
                       if (dual > 1) {
                         auto char sx[BUFSIZ];
 
 
-                      	buildnumber(call[chan].digits, oc3, -1, call[chan].num[CALLED], version);
+                      	buildnumber(call[chan].digits, oc3, -1, call[chan].num[CALLED], version, call[chan].provider);
 
                       	strcpy(call[chan].vnum[CALLED], vnum(chan, CALLED));
 
@@ -2151,7 +2199,7 @@ static void decode(int chan, register char *p, int type, int version)
 		    }
                     else {
                       strcpy(call[chan].onum[CALLED], s);
-                      buildnumber(s, oc3, -1, call[chan].num[CALLED], version);
+                      buildnumber(s, oc3, -1, call[chan].num[CALLED], version, call[chan].provider);
 
                       strcpy(call[chan].vnum[CALLED], vnum(chan, CALLED));
 #ifdef Q931
@@ -2206,7 +2254,7 @@ static void decode(int chan, register char *p, int type, int version)
                     *pd = 0;
 
                     strcpy(call[chan].onum[REDIR], s);
-                    buildnumber(s, oc3, -1, call[chan].num[REDIR], version);
+                    buildnumber(s, oc3, -1, call[chan].num[REDIR], version, call[chan].provider);
 
                     strcpy(call[chan].vnum[REDIR], vnum(chan, REDIR));
 #ifdef Q931
@@ -2934,7 +2982,7 @@ static void huptime(int chan, int bchan)
   auto     isdn_net_ioctl_cfg cfg;
   auto     int                oldchargeint = 0, newchargeint = 0;
   auto     int                oldhuptimeout, newhuptimeout, zeit;
-  auto     char               sx[BUFSIZ];
+  auto     char               sx[BUFSIZ], why[BUFSIZ];
 
 
   if (hupctrl && (c > -1) && (*known[c]->interface > '@') && expensive(bchan)) {
@@ -2949,6 +2997,17 @@ static void huptime(int chan, int bchan)
       call[chan].huptimeout = oldhuptimeout = cfg.onhtime;
 
       newchargeint = (int)cheap96(cur_time, known[c]->zone, &zeit);
+      
+      sprintf(why, "%s, %s", z2s(known[c]->zone), t2tz(zeit));
+
+      if (!memcmp(call[chan].provider, "01019", 5)) { /* Mobilcom 60/60 Takt */
+        newchargeint = 60;
+      	sprintf(why, "via Mobilcom");
+      }
+      else if (!memcmp(call[chan].provider, "01070", 5)) { /* Arcor 1/1 Takt */
+        newchargeint = 1;
+      	sprintf(why, "via Arcor");
+      } /* else */
 
 #if NET_DV >= NETDV_CHARGEINT
       if (net_dv >= NETDV_CHARGEINT) {
@@ -2976,9 +3035,8 @@ static void huptime(int chan, int bchan)
         call[chan].huptimeout = cfg.onhtime = newhuptimeout;
 
         if (ioctl(sockets[ISDNCTRL].descriptor, IIOCNETSCF, &cfg) >= 0) {
-          sprintf(sx, "CHARGEINT %s %d (was %d) - %s, %s",
-            known[c]->interface, newchargeint, oldchargeint,
-            z2s(known[c]->zone), t2tz(zeit));
+          sprintf(sx, "CHARGEINT %s %d (was %d) - %s",
+            known[c]->interface, newchargeint, oldchargeint, why);
 
           info(chan, PRT_INFO, STATE_HUPTIMEOUT, sx);
 
@@ -2991,8 +3049,8 @@ static void huptime(int chan, int bchan)
         } /* if */
       }
       else {
-        sprintf(sx, "CHARGEINT %s still %d - %s, %s", known[c]->interface,
-          oldchargeint, z2s(known[c]->zone), t2tz(zeit));
+        sprintf(sx, "CHARGEINT %s still %d - %s", known[c]->interface,
+          oldchargeint, why);
         info(chan, PRT_SHOWNUMBERS, STATE_HUPTIMEOUT, sx);
 
         sprintf(sx, "HUPTIMEOUT %s still %d", known[c]->interface, oldhuptimeout);
@@ -3381,7 +3439,8 @@ void clearchan(int chan, int total)
     *call[chan].onum[0] =
     *call[chan].onum[1] =
     *call[chan].num[0] =
-    *call[chan].num[1] = 0;
+    *call[chan].num[1] = 
+    *call[chan].provider = 0;
 
   strcpy(call[chan].vnum[0], "?");
   strcpy(call[chan].vnum[1], "?");
@@ -3839,7 +3898,7 @@ static void processctrl(int card, char *s)
 #endif
       	   		         if (dual && *call[chan].digits) {
                       	       	   strcpy(call[chan].onum[CALLED], call[chan].digits);
-                      		   buildnumber(call[chan].digits, call[chan].oc3, -1, call[chan].num[CALLED], version);
+                      		   buildnumber(call[chan].digits, call[chan].oc3, -1, call[chan].num[CALLED], version, call[chan].provider);
 
                       		   strcpy(call[chan].vnum[CALLED], vnum(chan, CALLED));
       	   		       	 } /* if */

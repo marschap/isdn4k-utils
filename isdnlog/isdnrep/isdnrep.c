@@ -1,8 +1,8 @@
-/* $Id: isdnrep.c,v 1.32 1998/02/13 07:01:49 calle Exp $
+/* $Id: isdnrep.c,v 1.33 1998/03/08 11:43:04 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
- * Copyright 1995, 1997 by Andreas Kool (akool@Kool.f.EUnet.de)
+ * Copyright 1995, 1998 by Andreas Kool (akool@Kool.f.EUnet.de)
  *                     and Stefan Luethje (luethje@sl-gw.lake.de)
  *
  * This program is free software; you can redistribute it and/or modify
@@ -20,6 +20,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnrep.c,v $
+ * Revision 1.33  1998/03/08 11:43:04  luethje
+ * I4L-Meeting Wuerzburg final Edition, golden code - Service Pack number One
+ *
  * Revision 1.32  1998/02/13 07:01:49  calle
  * small fix inside ISDN_NL.
  *
@@ -875,9 +878,41 @@ static int print_bottom(double unit, char *start, char *stop)
 		strich(3);
 
 		for (i = 0; i < unknowns; i++) {
-
+#if 0
 			print_msg(PRT_NORMAL,"%s %-14s ", unknown[i].called ? "called by" : "  calling", unknown[i].num);
+#else
+                  if (unknown[i].cause != 1) { /* Unallocated (unassigned) number */
+                        auto     char *p;
+                        auto     int   l;
+                       register int   flag = C_NO_WARN | C_NO_EXPAND;
+                       auto     int   prefix = strlen(countryprefix);
+                        auto    char  areacode[64], vorwahl[64], rufnummer[64], iam[64];
 
+
+                       print_msg(PRT_NORMAL,"%s ", unknown[i].called ? "Called by" : "  Calling");
+
+                       if ((p = get_areacode(unknown[i].num, &l, flag)) != 0) {
+                         if (l > 1) {
+                           strncpy(areacode, unknown[i].num, 2 + prefix);
+                           strncpy(vorwahl,  unknown[i].num + 2 + prefix, l - (2 + prefix));
+                            vorwahl[l - (2 + prefix)] = 0;
+                           strcpy(rufnummer, unknown[i].num + l);
+
+                           strcpy(iam, num2nam(unknown[i].mynum, unknown[i].si1));
+
+                            print_msg(PRT_NORMAL,"%s %s/%s, %s %s %s (%s %s %s,%d):%s\n\t\t\t ",
+                              areacode, vorwahl, rufnummer, p, (unknown[i].called ?  "on" : "with"),
+                              iam, unknown[i].num, (unknown[i].called ? "->" : "<-"),
+                              unknown[i].mynum, unknown[i].si1, qmsg(TYPE_CAUSE, VERSION_EDSS1, unknown[i].cause));
+                         }
+                          else
+                            print_msg(PRT_NORMAL,"??? %s\n\t\t\t ", unknown[i].num);
+                        }
+                        else {
+                          print_msg(PRT_NORMAL,"??? %s\n\t\t\t ", unknown[i].num);
+                        }
+                  } /* if */
+#endif
 			for (k = 0; k < unknown[i].connects; k++) {
 				strcpy(string, ctime(&unknown[i].connect[k]));
 
@@ -1104,7 +1139,7 @@ static int print_line(int status, one_call *cur_call, int computed, char *overla
 				          break;
 				/* The other (if possible the name): */
 				/* Benoetigt Range! */
-				case 'F': if (status == F_BODY_LINE)
+			 	case 'F': if (status == F_BODY_LINE)
 				          {
 				            dir = cur_call->dir?CALLING:CALLED;
 				          	if (!numbers)
@@ -1230,6 +1265,17 @@ static int print_line(int status, one_call *cur_call, int computed, char *overla
 				          else
 				          	colsize[i] = append_string(&string,*fmtstring,"  ");
 				          break;
+			 	
+			 	case 'j': if (status == F_BODY_LINE)
+				          {
+				          	if (!numbers)
+				          	{
+				          		colsize[i] = append_string(&string,*fmtstring, cur_call->provider);
+				          		break;
+				          	}
+				          }
+                                          break;
+				
 				/* Link for answering machine! */
 				case 'C': if (html)
 				          {
@@ -1939,7 +1985,8 @@ static int set_alias(one_call *cur_call, int *nx, char *myname)
 					if (cur_call->version[0] != '\0')
 					{
 						if (!strcmp(cur_call->version,LOG_VERSION_2) ||
-						    !strcmp(cur_call->version,LOG_VERSION_3)   )
+						    !strcmp(cur_call->version,LOG_VERSION_3) ||  
+						    !strcmp(cur_call->version,LOG_VERSION) )
 							cc = ((known[i]->si == cur_call->si) || j) &&
 							     !n_match(known[i]->num, cur_call->num[n], cur_call->version);
 					}
@@ -1980,8 +2027,11 @@ static int set_alias(one_call *cur_call, int *nx, char *myname)
 				} /* if */
 
 				strcpy(unknown[i].num, cur_call->num[n]);
+                                strcpy(unknown[i].mynum, cur_call->num[1 - n]);
+                                unknown[i].si1 = cur_call->si1;
 				unknown[i].called = !n;
 				unknown[i].connect[unknown[i].connects] = cur_call->t;
+                                unknown[i].cause = cur_call->cause;
 
 				/* ACHTUNG: MAXCONNECTS und MAXUNKNOWN sollten unbedingt groesser sein ! */
 				if (unknown[i].connects + 1 < MAXCONNECTS)
@@ -2006,7 +2056,7 @@ static int set_alias(one_call *cur_call, int *nx, char *myname)
 
 static int set_caller_infos(one_call *cur_call, char *string, time_t from)
 {
-  register int    i = 0;
+  register int    i = 0, adapt = 0;
   auto     char **array;
 
 
@@ -2034,6 +2084,7 @@ static int set_caller_infos(one_call *cur_call, char *string, time_t from)
 	cur_call->dir = DIALOUT;
 	cur_call->who[0][0] = '\0';
 	cur_call->who[1][0] = '\0';
+	*cur_call->provider = 0;
 
 	for (i = 1; array[i] != NULL; i++)
 	{
@@ -2044,6 +2095,27 @@ static int set_caller_infos(one_call *cur_call, char *string, time_t from)
 			case  1 : strcpy(cur_call->num[0], Kill_Blanks(array[i]));
 			          break;
 			case  2 : strcpy(cur_call->num[1], Kill_Blanks(array[i]));
+
+                              	  /* Korrektur der falschen Eintraege aus den ersten Januar-Tagen 1998 */
+                              	  if (!memcmp(cur_call->num[1], "+491019", 7)) {
+                                    strcpy(cur_call->provider, "01019");
+                                    memmove(cur_call->num[1] + 3, cur_call->num[1] + 8, strlen(cur_call->num[1]) - 7);
+                              	    adapt++; 
+				  }
+				  else if (!memcmp(cur_call->num[1], "+491033", 7)) {
+                                    strcpy(cur_call->provider, "01033");
+                                    memmove(cur_call->num[1] + 3, cur_call->num[1] + 8, strlen(cur_call->num[1]) - 7);
+                              	    adapt++; 
+			          }
+				  else if (!memcmp(cur_call->num[1], "+491070", 7)) {
+                                    strcpy(cur_call->provider, "01070");
+                                    memmove(cur_call->num[1] + 3, cur_call->num[1] + 8, strlen(cur_call->num[1]) - 7);
+                              	    adapt++; 
+			          } /* else */
+                                  
+                                  if (adapt)
+                                    strcpy(cur_call->version, LOG_VERSION);
+
 			          break;
 			case  3 : cur_call->duration = (double)atoi(array[i]);
 			          break;
@@ -2061,7 +2133,8 @@ static int set_caller_infos(one_call *cur_call, char *string, time_t from)
 			          break;
 			case  10: cur_call->obytes = atol(array[i]);
 			          break;
-			case  11: strcpy(cur_call->version,array[i]);
+			case  11: if (!adapt)
+			            strcpy(cur_call->version,array[i]);
 			          break;
 			case  12: cur_call->si = atoi(array[i]);
 			          break;
@@ -2073,6 +2146,11 @@ static int set_caller_infos(one_call *cur_call, char *string, time_t from)
 			          break;
 			case  16: cur_call->pay = atof(array[i]);
 			          break;
+
+			case  17: if (!adapt)
+			      	    strcpy(cur_call->provider, Kill_Blanks(array[i]));
+			      	  break;
+
 			default : print_msg(PRT_ERR,"Unknown element found `%s'!\n",array[i]); 
 			          break;
 		}
@@ -2503,7 +2581,7 @@ static int n_match(char *Pattern, char* Number, char* version)
 	int RetCode = -1;
 	char s[SHORT_STRING_SIZE];
 
-	if (!strcmp(version,LOG_VERSION_3))
+	if (!strcmp(version,LOG_VERSION_3) || !strcmp(version,LOG_VERSION))
 	{
 		RetCode = num_match(Pattern,Number);
 	}

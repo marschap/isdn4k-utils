@@ -405,10 +405,10 @@ int Set_Info_Struct(CALL **Info, char *String)
 
 	while(Array[Cnt++]);
 
-	if (Cnt != 21)
+	if (Cnt-1 != PROT_ELEMENTS)
 	{
 		del_Array(Array);
-		fprintf(stderr,"Internal error: wrong structure (%d elements)\n",Cnt);
+		fprintf(stderr,"Internal error: wrong structure (%d elements), %d expected!\n",Cnt, PROT_ELEMENTS);
 		return -1;
 	}
 

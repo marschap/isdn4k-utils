@@ -1,4 +1,4 @@
-/* $Id: isdnconf.c,v 1.14 1998/03/01 20:36:22 keil Exp $
+/* $Id: isdnconf.c,v 1.15 1998/03/08 11:43:13 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -20,6 +20,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnconf.c,v $
+ * Revision 1.15  1998/03/08 11:43:13  luethje
+ * I4L-Meeting Wuerzburg final Edition, golden code - Service Pack number One
+ *
  * Revision 1.14  1998/03/01 20:36:22  keil
  * bugfixes from Florian La Roche
  *
@@ -62,8 +65,6 @@
 
 /****************************************************************************/
 
-
-#define  PUBLIC extern
 #define  _ISDNCONF_C_
 
 /****************************************************************************/
