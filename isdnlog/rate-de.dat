@@ -1,4 +1,4 @@
-V:1.10-Germany [26-Sep-1999 20:07:30]
+V:1.10-Germany [06-Oct-1999 22:03:43]
 
 # Währungsformat
 U:%.3f DM
@@ -8,7 +8,7 @@ U:%.3f DM
 #
 # (C) Copyright 1999 by Andreas Kool (akool@isdn4linux.de)
 #
-# $Id: rate-de.dat,v 1.48 1999/09/26 18:12:28 akool Exp $
+# $Id: rate-de.dat,v 1.49 1999/10/06 20:10:00 akool Exp $
 #
 #
 # Das "A:" Tag muß folgendermaßen gefüllt werden:
@@ -209,8 +209,8 @@ T:E,H/21-07=0.04/60 Wochenende
 Z:10 Mobilfunk
 A:+491618	# T-C-Tel Voice Mail
 A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
-A:+49170,+49171		# D1
-A:+49172,+49173		# D2
+A:+49170,+49171,+49175	# D1
+A:+49172,+49173,+49174	# D2
 A:+49177,+49178		# Eplus
 A:+49176,+49179		# E2
 T:W/08-18=0.94/60 Geschaeftszeit
@@ -365,7 +365,7 @@ T:W/18-08=0.049996/60
 T:E,H/*=0.049996/60 Wochenende
 Z:171 Expo 2000
 A:02000
-T:*/*=0.5999984/0
+T:*/*=0.5999984/0,0/1
 Z:172 Informationsverband Berlin-Bonn
 A:01888
 T:W/08-18=0.230028/60 Geschaeftszeit
@@ -678,7 +678,7 @@ C:Erfasste Zonen:
 C:2	-   4	Deutschland
 C:10		Mobilfunk
 C:200	-	Ausland
-# G:03-May-1999
+# G:20-Sep-1999
 D:dtag
 Z:1-4 National
 A:+49
@@ -688,11 +688,11 @@ T:*/22-07=0.05/60
 Z:10 Mobilfunknetz
 A:+491618		# T-C-Tel Voice Mail
 A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
-A:+49170,+49171		# D1
-A:+49172,+49173		# D2
+A:+49170,+49171,+49175	# D1
+A:+49172,+49173,+49174	# D2
 A:+49177,+49178		# Eplus
 A:+49176,+49179		# E2
-T:*/*=0.79/60
+T:*/*=0.59/60
 Z:200 Euro 1 / USA, Kanada
 A:Vereinigte Staaten (USA), Kanada, Niederlande, Belgien, Frankreich, Spanien
 A:Luxemburg, Finnland, Italien, Schweiz, Österreich
@@ -1003,8 +1003,8 @@ T:*/21-08=0.06/60
 Z:10 Mobilnetze
 A:+491618		# T-C-Tel Voice Mail
 A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
-A:+49170,+49171		# D1
-A:+49172,+49173		# D2
+A:+49170,+49171,+49175	# D1
+A:+49172,+49173,+49174	# D2
 A:+49177,+49178		# Eplus
 A:+49176,+49179		# E2
 T:W/08-21=0.69/60
@@ -3817,8 +3817,8 @@ T:*/22-07=0.04/60 Nacht
 Z:10 Mobilfunk
 A:+491618		# T-C-Tel Voice Mail
 A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
-A:+49170,+49171		# D1
-A:+49172,+49173		# D2
+A:+49170,+49171,+49175	# D1
+A:+49172,+49173,+49174	# D2
 A:+49177,+49178		# Eplus
 A:+49176,+49179		# E2
 T:*/*=0.49/60
@@ -4114,7 +4114,7 @@ A:Iran, Jordanien, Kasachstan, Kolumbien, Libanon, Niederländische Antillen
 A:Philippinen, Rußland (westl.), Saudi-Arabien, Südafrika
 A:Syrien (Arabische Republik), Taiwan, Vereinigte Arabische Emirate
 T:*/*=0.1044/3
-Z:204 WeltMix
+Z:205 WeltMix
 A:+
 T:*/*=0.1044/2.4
 #####################################################################
@@ -4287,7 +4287,7 @@ A:Iran, Jordanien, Kasachstan, Kolumbien, Libanon, Niederländische Antillen
 A:Philippinen, Rußland (westl.), Saudi-Arabien, Südafrika
 A:Syrien (Arabische Republik), Taiwan, Vereinigte Arabische Emirate
 T:*/*=0.1044/3
-Z:204 WeltMix
+Z:205 WeltMix
 A:+
 T:*/*=0.1044/2.4
 #####################################################################
@@ -4453,7 +4453,7 @@ A:Iran, Jordanien, Kasachstan, Kolumbien, Libanon, Niederländische Antillen
 A:Philippinen, Rußland (westl.), Saudi-Arabien, Südafrika
 A:Syrien (Arabische Republik), Taiwan, Vereinigte Arabische Emirate
 T:*/*=0.1044/3
-Z:204 WeltMix
+Z:205 WeltMix
 A:+
 T:*/*=0.1044/2.4
 #####################################################################
@@ -4779,8 +4779,8 @@ T:E,H/*=0.12/60 Wochenende
 Z:10 Mobilfunk
 A:+491618		# T-C-Tel Voice Mail
 A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
-A:+49170,+49171		# D1
-A:+49172,+49173		# D2
+A:+49170,+49171,+49175	# D1
+A:+49172,+49173,+49174	# D2
 A:+49177,+49178		# Eplus
 A:+49176,+49179		# E2
 T:W/08-18=0.56/60 Geschäftszeit
@@ -4835,8 +4835,8 @@ T:E,H/*=0.12/60 Wochenende
 Z:10 Mobilfunk
 A:+491618		# T-C-Tel Voice Mail
 A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
-A:+49170,+49171		# D1
-A:+49172,+49173		# D2
+A:+49170,+49171,+49175	# D1
+A:+49172,+49173,+49174	# D2
 A:+49177,+49178		# Eplus
 A:+49176,+49179		# E2
 T:*/*=0.56/60
@@ -4890,8 +4890,8 @@ T:*/21-07=0.10/60 Freizeit
 Z:10 Mobilfunk
 A:+491618		# T-C-Tel Voice Mail
 A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
-A:+49170,+49171		# D1
-A:+49172,+49173		# D2
+A:+49170,+49171,+49175	# D1
+A:+49172,+49173,+49174	# D2
 A:+49177,+49178		# Eplus
 A:+49176,+49179		# E2
 T:*/*=0.56/60
@@ -4950,8 +4950,8 @@ T:*/*=0.14/60
 Z:10 Mobilfunk
 A:+491618		# T-C-Tel Voice Mail
 A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
-A:+49170,+49171		# D1
-A:+49172,+49173		# D2
+A:+49170,+49171,+49175	# D1
+A:+49172,+49173,+49174	# D2
 A:+49177,+49178		# Eplus
 A:+49176,+49179		# E2
 T:*/*=0.56/60
@@ -5006,8 +5006,8 @@ T:E,H/*=0.12/60 Wochenende
 Z:10 Mobilfunk
 A:+491618		# T-C-Tel Voice Mail
 A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
-A:+49170,+49171		# D1
-A:+49172,+49173		# D2
+A:+49170,+49171,+49175	# D1
+A:+49172,+49173,+49174	# D2
 A:+49177,+49178		# Eplus
 A:+49176,+49179		# E2
 T:W/08-18=0.58/60 Geschäftszeit
@@ -5059,8 +5059,8 @@ T:E,H/*=0.12/60 Wochenende
 Z:10 Mobilfunk
 A:+491618		# T-C-Tel Voice Mail
 A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
-A:+49170,+49171		# D1
-A:+49172,+49173		# D2
+A:+49170,+49171,+49175	# D1
+A:+49172,+49173,+49174	# D2
 A:+49177,+49178		# Eplus
 A:+49176,+49179		# E2
 T:*/*=0.56/60
@@ -5114,8 +5114,8 @@ T:E,H/*=0.10/60 Wochenende
 Z:10 Mobilfunk
 A:+491618		# T-C-Tel Voice Mail
 A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
-A:+49170,+49171		# D1
-A:+49172,+49173		# D2
+A:+49170,+49171,+49175	# D1
+A:+49172,+49173,+49174	# D2
 A:+49177,+49178		# Eplus
 A:+49176,+49179		# E2
 T:W/08-18=0.58/60 Geschäftszeit
@@ -5162,8 +5162,8 @@ T:*/*=0.11/60
 Z:10 SUPER24 Mobile
 A:+491618		# T-C-Tel Voice Mail
 A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
-A:+49170,+49171		# D1
-A:+49172,+49173		# D2
+A:+49170,+49171,+49175	# D1
+A:+49172,+49173,+49174	# D2
 A:+49177,+49178		# Eplus
 A:+49176,+49179		# E2
 T:*/*=0.45/60
@@ -5207,12 +5207,6 @@ C:10		Mobilfunk
 C:102		CITYMS-Internet
 C:200	-	Ausland
 # G:01.02.1999
-Z:1-2 CITYMS-Münsterland
-T:W/09-18=0.07/60 Hauptzeit
-T:*/18-21=0.07/106 Nebenzeit
-T:*/05-09=0.07/106 Nebenzeit
-T:E,H/09-18=0.07/106 Nebenzeit
-T:*/21-05=0.07/145 Nachtzeit
 Z:1-2 CITYMS-Münsterland
 A:+492382	# Ahlen/Westfalen
 A:+492387	# Drensteinfurt-Walstedde
@@ -8365,8 +8359,8 @@ T:E,H/*=0.09(60)/1
 Z:10 C/D/E-Netz
 A:+491618		# T-C-Tel Voice Mail
 A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
-A:+49170,+49171		# D1
-A:+49172,+49173		# D2
+A:+49170,+49171,+49175	# D1
+A:+49172,+49173,+49174	# D2
 A:+49177,+49178		# Eplus
 A:+49176,+49179		# E2
 T:*/*=0.48(60)/1
@@ -8504,12 +8498,12 @@ T:W/09-18=0.12/7.5 Standard
 T:W/18-09=0.12/15 Nacht
 T:E,H/*=0.12/15 Wochenende
 Z:12 Mobilfunknetz D1
-A:+49170,+49171
+A:+49170,+49171,+49175
 T:W/09-18=0.12/7.5 Standard
 T:W/18-09=0.12/15 Nacht
 T:E,H/*=0.12/15 Wochenende
 Z:13 Mobilfunknetz D2
-A:+49172,+49173
+A:+49172,+49173,+49174
 T:W/09-18=0.12/7.5 Standard
 T:W/18-09=0.12/15 Nacht
 T:E,H/*=0.12/15 Wochenende
@@ -9888,8 +9882,8 @@ T:*/21-08=0.02/0,0.07/60 Nacht
 Z:10 Mobilfunk
 A:+491618		# T-C-Tel Voice Mail
 A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
-A:+49170,+49171		# D1
-A:+49172,+49173		# D2
+A:+49170,+49171,+49175	# D1
+A:+49172,+49173,+49174	# D2
 A:+49177,+49178		# Eplus
 A:+49176,+49179		# E2
 T:*/*=0.02/0,0.48/60
@@ -9933,8 +9927,8 @@ T:E,H/21-08=0.05/60 Nacht
 Z:10 Mobilfunk
 A:+491618		# T-C-Tel Voice Mail
 A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
-A:+49170,+49171		# D1
-A:+49172,+49173		# D2
+A:+49170,+49171,+49175	# D1
+A:+49172,+49173,+49174	# D2
 A:+49177,+49178		# Eplus
 A:+49176,+49179		# E2
 T:*/*=0.48/60
@@ -11543,8 +11537,8 @@ T:E,H/22-07=0.039/60
 Z:10-15 Mobil
 A:+491618		# T-C-Tel Voice Mail
 A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
-A:+49170,+49171		# D1
-A:+49172,+49173		# D2
+A:+49170,+49171,+49175	# D1
+A:+49172,+49173,+49174	# D2
 A:+49177,+49178		# Eplus
 A:+49176,+49179		# E2
 T:*/*=0.69/60
@@ -11613,7 +11607,7 @@ A:+49176,+49179		# E2
 #
 P:51 01051
 C:ID-Switch GmbH, Graf-Adolf-Straße, 40210 Düsseldorf 01051
-# G:02-Sep-1999
+# G:18-Sep-1999
 C:Homepage: http://www.01051.com
 C:Adresse:  Koenigsallee 60f
 C:	    40210 Duesseldorf
@@ -11624,8 +11618,8 @@ T:*/*=0.09/60
 Z:10 Mobilfunk
 A:+491618		# T-C-Tel Voice Mail
 A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
-A:+49170,+49171		# D1
-A:+49172,+49173		# D2
+A:+49170,+49171,+49175	# D1
+A:+49172,+49173,+49174	# D2
 A:+49177,+49178		# Eplus
 A:+49176,+49179		# E2
 T:*/*=0.40/60
@@ -11804,24 +11798,7 @@ A:+49511,+49531,+495341,+49561,+4937604,+49371,+494921,+497132,+49841
 T:W/8-18=0.06/22.5
 T:W/18-8=0.06/36
 T:E,H/*=0.06/36 Wochenende
-# Internet-Zugang
-Z:30 WOBCOM-Internet
-A:+49536113998,+495362509998,+495363819998,+495365979998,+495366989998
-A:+495367919998
-T:W/8-18=0.06/90 Normal
-T:W/18-8=0.06/180 Freizeit
-T:E,H/*=0.06/180 Wochenende
-# Internet-Anbieter
-Z:31 T-Online
-A:01910
-T:W/8-18=0.06/60
-T:W/18-8=0.06/90
-T:E,H/*=0.06/90
-Z:32 AOL
-A:01914
-T:W/8-18=0.06/60
-T:W/18-8=0.06/90
-T:E,H/*=0.06/90
+
 # Mobilfunk
 Z:10-11 C-Netz
 A:+49161
@@ -11833,7 +11810,7 @@ A:+49170,+49171
 T:W/8-18=0.06/4.04
 T:W/18-8=0.06/7.5
 T:E,H/*=0.06/7.5 Wochenende
-Z:13-14 D2
+Z:13 D2
 A:+49172,+49173
 T:W/8-18=0.06/4.04
 T:W/18-8=0.06/7.5
@@ -11922,10 +11899,10 @@ T:*/*=0.96/0,0/1
 Z:64 Scall 4
 A:+491699
 T:*/*=2.40/0,0/1
-Z:72 Skyper 1
+Z:68 Skyper 1
 A:+491692, +491693
 T:*/*=0.96/0,0/1
-Z:73 Skyper 2
+Z:69 Skyper 2
 A:+4916953
 T:*/*=2.40/0,0/1
 # Sonderrufnummern
@@ -11955,7 +11932,24 @@ T:*/*=0.06/1.5
 Z:94 T1908
 A:01908
 T:*/*=0.06/1.0
-Z:160 TeleVotum
+# Internet-Zugang
+Z:100 WOBCOM-Internet
+A:+49536113998,+495362509998,+495363819998,+495365979998,+495366989998
+A:+495367919998
+T:W/8-18=0.06/90 Normal
+T:W/18-8=0.06/180 Freizeit
+T:E,H/*=0.06/180 Wochenende
+# Internet-Anbieter
+Z:101 T-Online
+A:01910
+T:W/8-18=0.06/60
+T:W/18-8=0.06/90
+T:E,H/*=0.06/90
+Z:102 AOL
+A:01914
+T:W/8-18=0.06/60
+T:W/18-8=0.06/90
+T:E,H/*=0.06/90Z:160 TeleVotum
 A:01370,01373
 T:*/*=0.24/20,0.06/7.5
 Z:162 TVoteCall1
@@ -12079,8 +12073,8 @@ A:+49
 Z:10-15 Mobil
 A:+491618	# T-C-Tel Voice Mail
 A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
-A:+49170,+49171		# D1
-A:+49172,+49173		# D2
+A:+49170,+49171,+49175	# D1
+A:+49172,+49173,+49174	# D2
 A:+49177,+49178		# Eplus
 A:+49176,+49179		# E2
 T:W/08-17=0.58(60)/1
@@ -12176,7 +12170,7 @@ C:Telecommunications Ltd. 01069
 #
 #
 P:70,1 Arcor CbC
-# G:15-Jul-1999
+# G:01-Oct-1999
 C:Mannesmann Arcor
 C:Mannesmann AG & Co., Kölner Str. 12, 65760 Eschborn 01070
 D:dtag
@@ -12196,14 +12190,14 @@ T:E,H/06-21=0.08/60
 T:E,H/21-06=0.06/60
 A:+49
 Z:10-12,15 D1,C,E2-Netz
-A:+49170,+49171               # D1
+A:+49170,+49171,+49175            # D1
 A:+491610,+491617,+491619,+491618 # C
-A:+49176,+49179		  # E2
+A:+49176,+49179		  	  # E2
 T:W/09-18=0.96/60 Hauptzeit
 T:W/18-09=0.48/60 Nebenzeit
 T:E,H/*=0.48/60 Freizeit
 Z:13 D2
-A:+49172,+49173
+A:+49172,+49173,+49174
 T:W/09-18=0.94/60 Hauptzeit
 T:W/18-09=0.46/60 Nebenzeit
 T:E,H/*=0.46/60 Freizeit
@@ -12570,19 +12564,22 @@ C:Telecom GmbH, Beethovenstraße 1-3, 60325 Frankfurt/Main 01074
 #
 #
 P:75 Callino
-# G:01-Jul-99
+# G:01-Oct-99
 C:ARCIS Media Com Management GmbH, Maximilianstr. 14, 80539 München 01075
 D:dtag
 Z:1-4 Fern
 A:+49
-T:W/08-20=0.14/60
-T:W/20-08=0.08/60
-T:E,H/*=0.08/60
+T:W/08-20=0.139/60
+T:W/20-21=0.079/60
+T:W/21-06=0.059/60
+T:W/06-08=0.079/60
+T:E,H/06-21=0.079/60
+T:E,H/21-06=0.059/60
 Z:10-12,15 D1,D2,C,E2-Netz
-A:+49170,+49171               # D1
-A:+49172,+49173		      # D2
-A:+491610,+491617,+491619,+491618 # C
-A:+49176,+49179		  # E2
+A:+49170,+49171,+49175               # D1
+A:+49172,+49173,+49174	      	     # D2
+A:+491610,+491617,+491619,+491618    # C
+A:+49176,+49179		  	     # E2
 T:*/*=0.99/60
 Z:14 E-Plus
 A:+49177,+49178
@@ -12679,8 +12676,8 @@ T:E,H/20-08=0.059(60)/1
 A:+49
 Z:10-15
 A:+491610,+491617,+491619,+491618 # C
-A:+49170,+49171  		  # D1
-A:+49172,+49173		  	  # D2
+A:+49170,+49171,+49175 		  # D1
+A:+49172,+49173,+49174	  	  # D2
 A:+49177,+49178		  	  # Eplus
 A:+49176,+49179  		  # E2
 T:*/*=0.499(60)/1
@@ -13779,7 +13776,7 @@ P:79 Viatel
 ##
 ## macht *keinen* Tarifwechsel in laufender Verbindung!
 ##
-# G:01-Aug-1999
+# G:22-Sep-1999
 C:VIAPHONE GmbH, Hanauer Landstraße 187, 60314 Frankfurt 01079
 C:Homepage: http://www.viatel.de
 C:Hotline:  0800/79-01079
@@ -13798,13 +13795,11 @@ A:+49
 Z:10-15 Mobilfunk
 A:+491618	# T-C-Tel Voice Mail
 A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
-A:+49170,+49171		# D1
-A:+49172,+49173		# D2
+A:+49170,+49171,+49175	# D1
+A:+49172,+49173,+49174	# D2
 A:+49177,+49178		# Eplus
 A:+49176,+49179		# E2
-T:W/09-18=0.57/60 Hauptzeit
-T:W/18-09=0.365/60 Nebenzeit
-T:E/*=0.365/60
+T:*/*=0.513/60 Hauptzeit
 # Auslandstarife
 Z:200
 A:Afganistan,Amerikanisch Samoa,Angola,Antigua,Aquatorial Guinea,Anguilla
@@ -14003,8 +13998,8 @@ T:E,H/07-08=0.049/60
 T:E,H/08-09=0.054/60
 Z:11 Mobilfunk
 A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
-A:+49170,+49171		# D1
-A:+49172,+49173		# D2
+A:+49170,+49171,+49175	# D1
+A:+49172,+49173,+49174	# D2
 A:+49177,+49178		# Eplus
 A:+49176,+49179		# E2
 T:*/*=0.44/60
@@ -14055,8 +14050,8 @@ A:+49
 Z:10-15 Mobil
 A:+491618	# T-C-Tel Voice Mail
 A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
-A:+49170,+49171		# D1
-A:+49172,+49173		# D2
+A:+49170,+49171,+49175	# D1
+A:+49172,+49173,+49174	# D2
 A:+49177,+49178		# Eplus
 A:+49176,+49179		# E2
 T:*/*=9.99/1
@@ -14147,8 +14142,8 @@ A:+49
 Z:10-15 Mobil
 A:+491618	# T-C-Tel Voice Mail
 A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
-A:+49170,+49171		# D1
-A:+49172,+49173		# D2
+A:+49170,+49171,+49175	# D1
+A:+49172,+49173,+49174	# D2
 A:+49177,+49178		# Eplus
 A:+49176,+49179		# E2
 T:W/08-18=0.89/60
@@ -14617,6 +14612,157 @@ A:Zypern
 #
 P:100 TELELEV
 C:Telekommunikation GmbH, Dönhoffstraße 39, 51373 Leverkusen 010000
+P:100,1 Meocom
+C:Mail: service@meocom.de
+C:Anschrift: MEOCOM Telekommunikation, Burgstr. 1, 45467 Mülheim a. d. Ruhr
+C:Telefon: 08000/636636
+C:Homepage: http://www.meocom.de
+C:Meocom spontan ist Call-by-Call (60 Sekunden Takt)
+C:Meocom abo isd Preselection (sekundengenaue Abrechnung)
+C:Surftarif ist ebenfalls vorhanden, Rufnummer und Tarife fehlen noch
+Z:1-2 Meocom lokal
+T:W/9-21=0.08/60
+T:W/21-9=0.04/60
+T:E,H/*=0.04/60
+Z:3-4 Meocom fern
+T:W/9-21=0.14/60
+T:W/21-9=0.07/60
+T:E,H/*=0.07/60
+Z:10-15 Mobilfunk
+T:*/*=0.59/60
+Z:201
+A:Afghanistan,Bangladesh,Dschibuti,Senegal,Seychellen,Vietnam
+T:*/*=2.49/60
+Z:202
+A:Ägypten,Burundi,Französisch Polynesien,Honduras,Jamaika,Kongo,Libanon
+A:St. Lucia,Irak,Surinam
+T:*/*=2.69/60
+Z:203
+A:Alaska,Hawaii,Malaysia,Malta,Polen,Portugal,Slowakei,Slowenien
+A:Tschechien,Ungarn,Griechenland
+T:*/*=0.59/60
+Z:204
+A:Albanien,Amerikanisch-Samoa,Aruba,Costa Rica,Faröer Inseln,Litauen
+A:Mazedonien,San Marino,Swasiland,Lettland
+T:*/*=0.79/60
+Z:205
+A:Algerien,Cayman-Inseln,Gibraltar,Grönland,Guatemala,Namibia,Rumänien
+A:St. Pierre & Miquelon,Turks und Caicos Inseln,Ukraine,Moldawien
+T:*/*=0.89/60
+Z:206
+A:Amerikanische Jungferninseln,Guyana,Mauritius,Nauru,Nigeria,Oman,Ruanda
+A:Sierra Leone,Sri Lanka,Fidschi,Mali
+T:*/*=2.29/60
+Z:207
+A:Andorra
+T:*/*=0.48/60
+Z:208
+A:Angola,Anguilla,Antigua und Barbuda,Bhutan,Ghana,Peru,Reunion,Mosambik
+A:St. Vincent & Grenadinen,Thailand,Vereinigt Arabische Emirate
+T:*/*=1.29/60
+Z:209
+A:Äquatorial Guinea,Äthiopien,Cote d'Ivoire,Guinea-Bissau,Jemen,Katar
+A:Myanmar,Tonga,Zentralafrikanische Republik
+T:*/*=2.59/60
+Z:210
+A:Argentinien,Brunei Daressalam,China,Kolumbien,Martinique,Mayotte
+A:Papua-Neuguinea,Simbabwe,Südafrika,Tadschikistan,Trinidad und Tobago
+A:Tunesien,Falklandinseln
+T:*/*=1.09/60
+Z:211
+A:Armenien,Bahrain,Belize,Bolivien,Kapverdische Inseln,Kenia
+A:Neukaledonien,Niger,Sambia,Samoa
+T:*/*=1.79/60
+Z:212
+A:Ascension
+T:*/*=2.20/60
+Z:213
+A:Aserbeidschan,El Salvador,Französisch Guyana,Guadeloupe,Guinea,Lesotho
+A:Malawi,Marokko,Marshall Inseln,St. Kitts und Nevis,Sudan,Uganda
+T:*/*=1.19/60
+Z:214
+A:Australien,Belgien,Dänemark,Finnland,Frankreich,Irland,Neuseeland
+A:Niederlande,Norwegen,Österreich,Schweden,Schweiz
+T:*/*=0.23/60
+Z:215
+A:Bahamas,Bermuda
+T:*/*=0.44/60
+Z:216
+A:Barbados,Benin,Gambia,Haiti,Panama,Uruguay,Usbekistan
+T:*/*=1.59/60
+Z:217
+A:Bosnien-Herzegowina
+T:*/*=0.88/60
+Z:218
+A:Botsuana,Brasilien,Bulgarien,Ecuador,Korea,Lybien,Macau,Phillipinen 
+A:Russische Föderation,Venezuela,Weißrußland
+T:*/*=0.99/60
+Z:219
+A:Britische Jungferninseln,Jugoslawien,Türkei,Zypern
+T:*/*=0.69/60
+Z:220
+A:Burkina Faso,Gabun,Indien,Montserrat,Paraguay,Syrien,Zaire,St. Helena
+T:*/*=1.99/60
+Z:221
+A:Chile,Island,Israel,Kanalinseln (GB),Taiwan,Vatikanstadt
+T:*/*=0.49/60
+Z:222
+A:Cook-Inseln,Tschad
+T:*/*=2.89/60
+Z:223
+A:Dominica,Indonesien,Nicaragua
+T:*/*=1.39/60
+Z:224
+A:Tansania,Turkmenistan,Grenada,Kasachstan,Kirgisistan
+T:*/*=1.49/60
+Z:225
+A:Togo,Vanuatu,Iran,Kambodscha,Kiribati,Kuba,Laos,Mongolei,Nepal,Pakistan
+T:*/*=2.39/60
+Z:226
+A:USA,Großbritannien,Nordirland,Hong Kong,Kanada
+T:*/*=0.19/60
+Z:227
+A:Dominikanische Republik,Singapur
+T:*/*=0.55/60
+Z:228
+A:Eritrea
+T:*/*=2.99/60
+Z:229
+A:Estland
+T:*/*=2.10/60
+Z:230
+A:Georgien
+T:*/*=1.66/60
+Z:231
+A:Guam,Spanien
+T:*/*=0.39/60
+Z:232
+A:Italien
+T:*/*=0.33/60
+Z:233
+A:Japan,Luxemburg
+T:*/*=0.36/60
+Z:234
+A:Kamerun,Kuwait,Madagaskar,Malediven,Saudi Arabien,Kamerun
+T:*/*=2.19/60
+Z:235
+A:Mexiko
+T:*/*=0.66/60
+Z:236
+A:Kroatien,Niederländische Antillen
+T:*/*=0.63/60
+Z:237
+A:Liberia,Palau,Somalia
+T:*/*=2.09/60
+Z:238
+A:Liechtenstein,Monaco,Puerto Rico
+T:*/*=0.29/60
+Z:239
+A:Marianen (Nördliche)
+T:*/*=3.00/60
+Z:240
+A:Mauretanien,Mikronesien,Salomonen
+T:*/*=1.89/60
 #####################################################################
 #
 #
@@ -14731,26 +14877,26 @@ C:AG, Militärstraße 36, CH-8004 Zürich 010044
 #
 #
 P:150 Drillisch
-# G:02-Sep-1999
+# G:01-Oct-1999
 D:dtag
 C:AG, Horbeller Straße 33, 50858 Köln 010050
 Z:1-4 Deutschland
 A:+49
-T:W/08-21=0.11/60,0.11(60)/15
-T:W/21-22=0.07/60,0.07(60)/15
-T:W/22-06=0.1185/180,0.06/60
-T:W/06-08=0.07/60,0.07(60)/15
-T:E/06-22=0.07/60,0.07(60)/15
-T:E/22-06=0.1185/180,0.06/60
+T:W/08-21=0.098/60
+T:W/21-22=0.0695/60
+T:W/22-06=0.1185/180,0.0595/60
+T:W/06-08=0.0695/60
+T:E/06-22=0.0695/60
+T:E/22-06=0.1185/180,0.0595/60
 Z:10 Mobilfunk
 A:+491618	# T-C-Tel Voice Mail
 A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
-A:+49170,+49171		# D1
-A:+49172,+49173		# D2
+A:+49170,+49171,+49175	# D1
+A:+49172,+49173,+49174	# D2
 A:+49177,+49178		# Eplus
 A:+49176,+49179		# E2
-T:W/08-21=0.69/60,0.69(60)/15
-T:W/21-08=0.59/60,0.59(60)/15
+T:W/08-21=0.69/60
+T:W/21-08=0.59/60
 #####################################################################
 P:154 Osnatel
 C:Osnatel GmbH, Luisenstraße 16, 49074 Osnabrück
@@ -14895,6 +15041,7 @@ T:*/*=0.847/0,0.121/6.7
 #    42:TeleBeL			06.05.1999 as
 #    44:VEW TELNET		29.05.1999 as
 #    48:DOKOM			30.05.1999 as
+#   100:Meocom                  27.09.1999 je
 #
 #
 # Für die Mithilfe möchten wir uns bedanken bei:

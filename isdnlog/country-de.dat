@@ -1,4 +1,4 @@
-V:0.90 Int based on 1.03-Germany [26-Sep-1999 12:41:00]
+V:0.91 Int based on 1.03-Germany [04-Oct-1999 18:00:00]
 # ISO 3166 Countrycodes ( ftp://sunsite.unc.edu/pub/Linux/apps/misc/
 #	countrycodes.1.0.2.tar.gz
 # Airportcodes: http://www.TravelDesk.com/airports.html
@@ -7,7 +7,7 @@ V:0.90 Int based on 1.03-Germany [26-Sep-1999 12:41:00]
 # Towns have a 3 letter airportcode or
 #  a _XXXX code, where XXXX is a (uniq) abbrev of town
 #
-# Country Mobilunk : _ccMF
+# Country Mobilfunk : _ccMF
 # Freephone : _ccFF
 # Auskunft :  _ccAK
 
@@ -338,8 +338,9 @@ N:international freephone
 C:+800
 T:_F800
 
-N:Russische Foderat. (westl.)
-A:Rußland (westl.), GUS (Russische Föderation)
+N:Russische Föderat. (westl.)
+A:Russische Foderat. (westl.)
+A:Rußland (westl.), GUS (Russische Föderation), GUS
 C:+7902, +7901, +7863, +7862, +7861, +7820, +7817, +7816, +7815, +7814
 C:+7811, +7543, +7517, +75112, +75110, +7510, +7505, +7503, +7501, +709246
 C:+709245, +709244, +709243, +709237, +7091, +7087, +7086, +7085, +7084
@@ -428,7 +429,7 @@ C:+686
 T:KI
 
 N:West-Samoa
-A:Samoa (West), Western Samoa, Samoa W., Samoa
+A:Samoa (West), Western Samoa, Samoa W., Samoa, Westl. Samoa
 C:+685
 T:WS
 
@@ -451,7 +452,7 @@ T:CK
 
 N:Wallis und Futuna
 A:Wallis- und Futuna-Inseln, Wallis & Fortuna Islands
-A:Wallis & Futuna
+A:Wallis & Futuna, Wallis
 E:Wallis and Futuna Islands
 C:+681
 T:WF
@@ -505,8 +506,8 @@ R:AU
 T:CX
 
 N:Norfolkinseln
-A:Norfolkinseln (Australien)
-E:Norfolk Island
+A:Norfolkinseln (Australien), Norfolk Island
+E:Norfolk Islands
 A:Norfolk, Norfolk Island (Antarctica)
 C:+6723
 R:AU
@@ -855,16 +856,28 @@ T:EDI
 
 N:Großbritannien
 A:Großbritannien Insel Man Kanalinseln, Great Britain,Großbritanien
-A:Großbritannien und Nordirland,Insel Man (Großbritannien)
-A:Kanalinseln (Großbritannien),Insel Man,Kanalinseln
+A:Großbritannien und Nordirland
 E:United Kingdom
 C:+44
 T:UK
 
-N:Nordirland
-C:+44 /* Fixme */
+N:Insel Man (Großbritannien)
+A:Insel Man
+E:Isle of Man
 R:UK
-T:_NIRE
+C:+44999 # Fixme
+T:_UKIM
+
+N:Kanalinseln (Großbritannien)
+A:Kanalinseln
+R:UK
+C:+44998 # Fixme
+T:_UKIK
+
+N:Nordirland
+C:+441232 # Fixme, this is Belfast only
+R:UK
+T:_UKIR
 
 N:Österreich Mobilfunk
 C:+43699, +43676, +43664, +43663
@@ -993,7 +1006,7 @@ T:HR
 
 N:Jugoslawien
 A:Jugoslawien (Serbien/Montenegro), Serbien, Montenegro, Yugoslavia (Servia & Montenegro)
-A:Jugoslawien Montenegro
+A:Jugoslawien Montenegro, Jugoslawien Serbien und Montenegro
 E:Yugoslavia
 C:+381
 T:YU
@@ -1011,7 +1024,7 @@ C:+377
 T:MC
 
 N:Monaco Mobilfunk
-C:+377 /*fixme*/
+C:+377 # fixme
 R:MC
 T:_MCMF
 
@@ -1069,7 +1082,7 @@ C:+358
 T:FI
 
 N:Finnland Mobilfunk
-C:+358 /* fixme */
+C:+358 # fixme
 R:FI
 T:_FIMF
 
@@ -1236,7 +1249,8 @@ C:+323
 R:BE
 T:ANR
 
-N:Brussel
+N:Brüssel
+A:Brussel
 C:+322
 R:BE
 T:BRU
@@ -1319,7 +1333,8 @@ C:+2897
 R:SH
 T:_TRIS
 
-N:Sudafrika
+N:Südafrika
+A:Sudafrika
 E:South Africa
 C:+27
 T:ZA
@@ -1341,7 +1356,7 @@ C:+268
 T:SZ
 
 N:Botsuana
-A:Botswana Republic
+A:Botswana Republic, Botsuana (Botswana)
 E:Botswana
 C:+267
 T:BW
@@ -1475,7 +1490,7 @@ C:+240
 T:GQ
 
 N:Sao Tome und Principe
-A:Sao Tome et Principe, Sao Tome and Principa, Sao Tome
+A:Sao Tome et Principe, Sao Tome and Principa, Sao Tome, Sao Tomé
 E:Sao Tome and Principe
 C:+239
 T:ST
@@ -1659,7 +1674,7 @@ T:VG
 
 N:St. Vincent und Grenadinen
 A:St. Vincent and the Grenadines, Saint Vincent und die Grenadinen, St. Vincent and Grenadines, St. Vincent und die Grenadien, St. Vincent Und Die Grenadinen
-A:St. Vincent & Greens.,St. Vincent
+A:St. Vincent & Greens.,St. Vincent,St. Vincent & Grenadinen
 E:Saint Vincent and the Grenadines
 C:+1809493, +1809490, +1809485, +1809458, +1809457, +1809456, +1784
 T:VC
