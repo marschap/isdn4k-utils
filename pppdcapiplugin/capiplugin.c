@@ -21,7 +21,7 @@
 #include <dlfcn.h>
 #include <errno.h>
 
-static char *revision = "$Revision: 1.10 $";
+static char *revision = "$Revision: 1.11 $";
 
 static capiconn_context *ctx;
 static capi_connection *conn = 0;
@@ -917,7 +917,7 @@ static void connected(capi_connection *cp, _cstruct NCPI)
 
         tty = capi20ext_get_tty_devname(p->appid, p->ncci, buf, sizeof(buf));
         serrno = errno;
-	while ((tty == 0 && serrno == ESRCH) || (tty && access(tty,0))) {
+	while (tty == 0 && serrno == ESRCH) {
 	   if (++retry > 4) 
 	      break;
 	   info("capiplugin: capitty not ready, waiting for driver ...");
@@ -925,14 +925,30 @@ static void connected(capi_connection *cp, _cstruct NCPI)
 	   tty = capi20ext_get_tty_devname(p->appid, p->ncci, buf, sizeof(buf));
 	   serrno = errno;
 	}
-	if (tty == 0)
+	if (tty == 0) {
+	   if (serrno == EINVAL) {
+	      fatal("capiplugin: failed to get tty devname - CAPI Middleware Support not enabled in kernel ?");
+	   }
 	   fatal("capiplugin: failed to get tty devname - %s (%d)",
 			strerror(serrno), serrno);
+	}
+	if (access(tty, 0) != 0 && errno == ENOENT) {
+	      fatal("capiplugin: tty %s doesn't exist - CAPI Filesystem Support not enabled in kernel or not mounted ?", tty);
+	}
 	info("capiplugin: using %s: %s", tty, conninfo(cp));
 	strcpy(devnam, tty);
 	if (opt_connectdelay)
 		sleep(opt_connectdelay);
 	isconnected = 1;
+}
+
+void chargeinfo(capi_connection *cp, unsigned long charge, int inunits)
+{
+	if (inunits) {
+        	info("capiplugin: %s: charge in units: %d", conninfo(cp), charge);
+	} else {
+        	info("capiplugin: %s: charge in currency: %d", conninfo(cp), charge);
+	}
 }
 
 void put_message(unsigned appid, unsigned char *msg)
@@ -954,7 +970,7 @@ capiconn_callbacks callbacks = {
 	connected: connected,
 	received: 0, 
 	datasent: 0, 
-	chargeinfo: 0,
+	chargeinfo: chargeinfo,
 
 	capi_put_message: put_message,
 
