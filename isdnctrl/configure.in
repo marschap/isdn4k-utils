@@ -24,31 +24,6 @@ dnl Checks for header files.
 AC_HEADER_STDC
 AC_CHECK_HEADERS(sys/ioctl.h unistd.h)
 
-dnl Find current kernel source
-AC_FIND_KERNEL
-
-dnl
-dnl AC_CHECK_FILE is not defined in my autoconf 2.12.
-dnl If my autoconf is too old, let me know -lt <lt@toetsch.at>
-dnl but AC_CHECK_HEADERS is known so I take this
-dnl
-dnl AC_CHECK_FILE($CONFIG_KERNELDIR/include/linux/isdn.h,,
-dnl 	AC_MSG_ERROR("$CONFIG_KERNELDIR/include/linux/isdn.h missing. Kernel installed?")
-dnl )
-dnl AC_CHECK_FILE($CONFIG_KERNELDIR/include/linux/isdnif.h,,
-dnl 	AC_MSG_ERROR("$CONFIG_KERNELDIR/include/linux/isdnif.h missing. Kernel installed?")
-dnl )
-dnl
-dnl Check for triggercps and ciscok depend on CONFIG_KERNELDIR,
-dnl so AC_FIND_KERNEL must be called before.
-dnl
-
-AC_CHECK_HEADERS($CONFIG_KERNELDIR/include/linux/isdn.h $CONFIG_KERNELDIR/include/linux/isdnif.h,
-		 ,
-	         AC_MSG_ERROR(Isdn header files not found. Kernel installed?))
-
-AC_CHECK_TRIGGERCPS
-AC_CHECK_CISCOK
 AC_CHECK_TIMRU
 
 dnl Checks for typedefs, structures, and compiler characteristics.

@@ -30,7 +30,6 @@
 #include <linux/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
-#include <linux/isdn.h>
 #include <netdb.h>
 #include "config.h"
 #ifdef HAVE_TIMRU

@@ -1,4 +1,4 @@
-/* $Id: isdnctrl.h,v 1.17 1999/11/20 22:23:53 detabc Exp $
+/* $Id: isdnctrl.h,v 1.18 2001/05/23 14:48:23 kai Exp $
  * ISDN driver for Linux. (Control-Utility)
  *
  * Copyright 1994,95 by Fritz Elfert (fritz@isdn4linux.de)
@@ -21,6 +21,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnctrl.h,v $
+ * Revision 1.18  2001/05/23 14:48:23  kai
+ * make isdnctrl independent of the version of installed kernel headers,
+ * we have our own copy now.
+ *
  * Revision 1.17  1999/11/20 22:23:53  detabc
  * added netinterface abc-secure-counter reset (clear) support.
  *
@@ -98,6 +102,9 @@
  *
  *
  */
+
+#include "isdn.h"
+#include "isdnif.h"
 
 /*****************************************************************************/
 
@@ -208,30 +215,18 @@ cmd_struct cmds[] =
 
 char *l2protostr[] = {
 	"x75i", "x75ui", "x75bui", "hdlc", 
-#ifdef ISDN_PROTO_L2_X25DTE
 	"x25dte", "x25dce",
-#endif
-#ifdef ISDN_PROTO_L2_V11096
 	"v110_9600", "v110_19200", "v110_38400",
-#endif
-#ifdef ISDN_PROTO_L2_MODEM
 	"modem",
-#endif
 	"\0"
 };
 
 int l2protoval[] = {
         ISDN_PROTO_L2_X75I, ISDN_PROTO_L2_X75UI,
         ISDN_PROTO_L2_X75BUI, ISDN_PROTO_L2_HDLC,
-#ifdef ISDN_PROTO_L2_X25DTE
 	ISDN_PROTO_L2_X25DTE, ISDN_PROTO_L2_X25DCE,
-#endif
-#ifdef ISDN_PROTO_L2_V11096
 	ISDN_PROTO_L2_V11096, ISDN_PROTO_L2_V11019, ISDN_PROTO_L2_V11038,
-#endif
-#ifdef ISDN_PROTO_L2_MODEM
 	ISDN_PROTO_L2_MODEM,
-#endif
 	-1
 };
 
@@ -250,12 +245,8 @@ char *pencapstr[] = {
 	"cisco-h",
 	"syncppp",
 	"uihdlc",
-#if HAVE_CISCOKEEPALIVE
 	"cisco-hk",
-#endif
-#ifdef ISDN_NET_ENCAP_X25IFACE
 	"x25iface",
-#endif
 	"\0"
 };
 
@@ -266,12 +257,8 @@ int pencapval[] = {
 	ISDN_NET_ENCAP_CISCOHDLC,
 	ISDN_NET_ENCAP_SYNCPPP,
 	ISDN_NET_ENCAP_UIHDLC,
-#if HAVE_CISCOKEEPALIVE
 	ISDN_NET_ENCAP_CISCOHDLCK,
-#endif
-#ifdef ISDN_NET_ENCAP_X25IFACE  
 	ISDN_NET_ENCAP_X25IFACE,
-#endif
 	-1
 };
 
@@ -306,24 +293,19 @@ _EXTERN char * defs_basic(char *id);
 _EXTERN int MSNLEN_COMPATIBILITY;
 
 /*
- * do_phonenumber handle back/forward compatibility between
- * version 5 and version 6 of isdn_net_ioctl_phone
+ * set_isdn_net_ioctl_phone handles back/forward compatibility between
+ * version 4, 5 and 6 of isdn_net_ioctl_phone
  *
  */
  
-typedef struct {
-  char name[10];
-  char phone[20];
-  int  outgoing;
-} isdn_net_ioctl_phone_old;
+typedef union {
+		isdn_net_ioctl_phone_6 phone_6;
+		isdn_net_ioctl_phone_5 phone_5;
+} isdn_net_ioctl_phone;
 
-typedef struct {
-  char name[10];
-  char phone[32];
-  int  outgoing;
-} isdn_net_ioctl_phone_new;
+extern int set_isdn_net_ioctl_phone(isdn_net_ioctl_phone *ph, char *name, 
+				    char *phone, int outflag);
 
-_EXTERN int do_phonenumber(void *p, char *number, int outflag);
 
 #undef _EXTERN
 
