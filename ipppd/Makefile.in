@@ -1,6 +1,6 @@
 #
 # ipppd makefile for Linux
-# $Id: Makefile.in,v 1.5 1997/10/26 23:06:06 fritz Exp $
+# $Id: Makefile.in,v 1.6 1998/03/08 13:01:27 hipp Exp $
 #
 
 HAVE_LIBDES   := @HAVE_LIBDES@
@@ -18,6 +18,10 @@ INSTALL_DATA  := $(INSTALL) -m 0644 -o 0 -g 0
 ifeq (@CONFIG_IPPPD_MSCHAP@,y)
 USE_MSCHAP    := 1
 endif
+ifeq ($(CONFIG_IPPPD_RADIUS),y)
+RADIUS :=1
+endif
+
 
 PPPDSRCS = main.c magic.c fsm.c lcp.c ipcp.c upap.c chap.c md5.c ccp.c \
 	   ipxcp.c auth.c options.c sys-linux.c cbcp.c
@@ -26,6 +30,10 @@ HEADERS =  callout.h pathnames.h patchlevel.h chap.h md5.h \
 MANPAGES = ipppd.8
 PPPDOBJS = main.o magic.o fsm.o lcp.o ipcp.o upap.o chap.o md5.o ccp.o \
 		auth.o options.o sys-linux.o cbcp.o ipxcp.o
+
+ifdef CONFIG_RADIUS_WTMP_LOGGING
+CFLAGS  += -DRADIUS_WTMP_LOGGING
+endif
 
 all: ipppd
 
@@ -82,6 +90,21 @@ ifdef USE_MSCHAP
 	else
 		MSG = '\n\nLibrary libdes not found, USE_MSCHAP disabled\n\n'
 	endif
+endif
+
+ifdef RADIUS
+       CFLAGS   += -DRADIUS -I/usr/local/radius/src
+       CFLAGS   += -D_PATH_ETC_RADIUSCLIENT_CONF=\"/usr/local/radius\"
+       LIBS     += -L/usr/local/lib -lradclient
+       PPPDOBJS += radius.o
+endif
+
+ifdef RADIUS_WTMP_LOGGING
+       CFLAGS   += -DRADIUS_WTMP_LOGGING
+endif
+
+ifdef OPTIONS_TTY_FIRST
+       CFLAGS   += -DOPTIONS_TTY_FIRST
 endif
 
 ifeq ($(HAVE_SHADOW_H),1)

@@ -1,6 +1,6 @@
 #
 # pppd makefile for Linux
-# $Id: Makefile.ORIG,v 1.1 1997/03/24 01:17:55 fritz Exp $
+# $Id: Makefile.ORIG,v 1.2 1998/03/08 13:01:26 hipp Exp $
 #
 
 # These are set from the main Makefile
@@ -29,6 +29,7 @@ endif
 DEBUG_FLAGS = -DDEBUGALL
 # USE_MSCHAP = 1
 # HAS_SHADOW = 1
+# RADIUS = 1
 
 COMPILE_FLAGS = -D_linux_=1 -DHAVE_PATHS_H -Wall -Dlint # -DDEBUGALL  
 COPTS = -O2  -fomit-frame-pointer -m486 # -g
@@ -46,6 +47,12 @@ CFLAGS   += -DUSE_MSCHAP
 LIBS     += -ldes
 endif
 
+ifdef RADIUS
+CFLAGS   += -DRADIUS -I/usr/local/include
+CFLAGS   += -D_PATH_ETC_RADIUSCLIENT_CONF=\"/usr/local/etc/radclient/radiusclient.conf\"
+LIBS     += -L/usr/local/lib -lradclient
+PPPDOBJS += radius.o
+endif
 
 ifdef USE_MS_DNS
 CFLAGS   += -DUSE_MS_DNS=1

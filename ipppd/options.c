@@ -17,7 +17,7 @@
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-char options_rcsid[] = "$Id: options.c,v 1.5 1997/05/28 10:07:36 hipp Exp $";
+char options_rcsid[] = "$Id: options.c,v 1.6 1998/03/08 13:01:41 hipp Exp $";
 
 #include <stdio.h>
 #include <errno.h>
@@ -87,6 +87,7 @@ int	auth_required = 0;	/* Peer is required to authenticate */
 int	defaultroute = 0;	/* assign default route through interface */
 int hostroute = 1;
 int	uselogin = 0;		/* Use /etc/passwd for checking PAP */
+int     useradius = 0;          /* Use RADIUS server checking PAP */
 int	lcp_echo_interval = 0; 	/* Interval between LCP echo-requests */
 int	lcp_echo_fails = 0;	/* Tolerance to unanswered echo-requests */
 char our_name[MAXNAMELEN];	/* Our name for authentication purposes */
@@ -173,6 +174,9 @@ static int setnodefaultroute __P((int));
 static int setproxyarp __P((int));
 static int setnoproxyarp __P((int));
 static int setdologin __P((int));
+#ifdef RADIUS
+static int setdoradius __P((void));
+#endif
 static int setusehostname __P((int));
 static int setnoipdflt __P((int));
 static int setlcptimeout __P((int,char **));
@@ -314,6 +318,9 @@ static struct cmd {
     {"noproxyarp", 0, setnoproxyarp}, /* disable proxyarp option */
     {"-proxyarp", 0, setnoproxyarp}, /* disable proxyarp option */
     {"login", 0, setdologin},	/* Use system password database for UPAP */
+#ifdef RADIUS
+    {"radius", 0, setdoradius},   /* Use RADIUS server for UPAP */
+#endif
     {"noipdefault", 0, setnoipdflt}, /* Don't use name for default IP adrs */
     {"lcp-echo-failure", 1, setlcpechofails}, /* consecutive echo failures */
     {"lcp-echo-interval", 1, setlcpechointv}, /* time for lcp echo events */
@@ -708,11 +715,7 @@ readable(int lfd)
  * \<newline> is ignored.
  */
 
-int getword(f, word, newlinep, filename)
-    FILE *f;
-    char *word;
-    int *newlinep;
-    char *filename;
+int getword(FILE *f,char *word,int *newlinep,char *filename)
 {
     int c, len, escape;
     int quoted, comment;
@@ -1808,6 +1811,16 @@ static int setdologin(int slot)
     uselogin = 1;
     return 1;
 }
+
+
+#ifdef RADIUS
+static int setdoradius()
+{
+    useradius = 1;
+    fprintf(stderr,"@mla@: useradius called\n");
+    return 1;
+}
+#endif
 
 /*
  * Functions to set the echo interval for modem-less monitors

@@ -101,8 +101,8 @@ static unsigned char PADDING[64] = {
 /* The routine MD5Init initializes the message-digest context
    mdContext. All fields are set to zero.
  */
-void MD5Init (mdContext)
-MD5_CTX *mdContext;
+static void MD5Init_ppp (mdContext)
+MD5_CTX_ppp *mdContext;
 {
   mdContext->i[0] = mdContext->i[1] = (UINT4)0;
 
@@ -118,8 +118,8 @@ MD5_CTX *mdContext;
    account for the presence of each of the characters inBuf[0..inLen-1]
    in the message whose digest is being computed.
  */
-void MD5Update (mdContext, inBuf, inLen)
-MD5_CTX *mdContext;
+static void MD5Update_ppp (mdContext, inBuf, inLen)
+MD5_CTX_ppp *mdContext;
 unsigned char *inBuf;
 unsigned int inLen;
 {
@@ -156,8 +156,8 @@ unsigned int inLen;
 /* The routine MD5Final terminates the message-digest computation and
    ends with the desired message digest in mdContext->digest[0...15].
  */
-void MD5Final (mdContext)
-MD5_CTX *mdContext;
+static void MD5Final_ppp (mdContext)
+MD5_CTX_ppp *mdContext;
 {
   UINT4 in[16];
   int mdi;
@@ -173,7 +173,7 @@ MD5_CTX *mdContext;
 
   /* pad out to 56 mod 64 */
   padLen = (mdi < 56) ? (56 - mdi) : (120 - mdi);
-  MD5Update (mdContext, PADDING, padLen);
+  MD5Update_ppp (mdContext, PADDING, padLen);
 
   /* append length in bits and transform */
   for (i = 0, ii = 0; i < 14; i++, ii += 4)

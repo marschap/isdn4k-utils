@@ -17,7 +17,7 @@
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-char fsm_rcsid[] = "$Id: fsm.c,v 1.3 1997/05/19 10:15:43 hipp Exp $";
+char fsm_rcsid[] = "$Id: fsm.c,v 1.4 1998/03/08 13:01:32 hipp Exp $";
 
 /*
  * TODO:
@@ -734,7 +734,7 @@ void fsm_sdata(fsm *f,int code,int id,u_char *data,int datalen)
     PUTCHAR(code, outp);
     PUTCHAR(id, outp);
     PUTSHORT(outlen, outp);
-    output(f->unit, outpacket_buf, outlen + PPP_HDRLEN);
+    output_ppp(f->unit, outpacket_buf, outlen + PPP_HDRLEN);
 
     FSMDEBUG((LOG_INFO, "fsm_sdata(%s): Sent code %d, id %d.",
 	      PROTO_NAME(f), code, id));

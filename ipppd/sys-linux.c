@@ -22,7 +22,7 @@
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-char sys_rcsid[] = "$Id: sys-linux.c,v 1.7 1997/10/26 23:06:26 fritz Exp $";
+char sys_rcsid[] = "$Id: sys-linux.c,v 1.8 1998/03/08 13:01:43 hipp Exp $";
 
 #define _LINUX_STRING_H_
 
@@ -57,6 +57,7 @@ char sys_rcsid[] = "$Id: sys-linux.c,v 1.7 1997/10/26 23:06:26 fritz Exp $";
 # include </usr/include/net/ppp_defs.h>
 # include </usr/include/net/if_ppp.h>
 # include </usr/include/net/ethernet.h>
+# include "route.h"
 #else
 # include <linux/ppp_defs.h>
 # include <linux/if_ppp.h>
@@ -238,6 +239,7 @@ void establish_ppp (int linkunit)
 		lns[linkunit].ifunit = -1;
 		return;
 	}
+	lns[linkunit].master = -1;
 	sprintf(lns[linkunit].ifname,"%s%d","ippp",lns[linkunit].ifunit);
 
 	if( ioctl(lns[linkunit].fd, PPPIOCGCALLINFO, &lns[linkunit].pci) == 0) {
@@ -266,7 +268,7 @@ void establish_ppp (int linkunit)
 /*
  * output - Output PPP packet.
  */
-void output (int linkunit, unsigned char *p, int len)
+void output_ppp (int linkunit, unsigned char *p, int len)
 {
 	if (debug)
 		log_packet(p, len, "sent ",linkunit);
@@ -313,12 +315,14 @@ void ppp_send_config (int unit,int mtu,u_int32_t asyncmap,int pcomp,int accomp)
 		/*
 		 * Set the MTU and other parameters for the ppp device
 		 */
-		memset (&ifr, '\0', sizeof (ifr));
-		strncpy(ifr.ifr_name, lns[unit].ifname, sizeof (ifr.ifr_name));
-		ifr.ifr_mtu = mtu;
+		if(lns[unit].master < 0) {
+			memset (&ifr, '\0', sizeof (ifr));
+			strncpy(ifr.ifr_name, lns[unit].ifname, sizeof (ifr.ifr_name));
+			ifr.ifr_mtu = mtu;
 	
-		if (ioctl(sockfd, SIOCSIFMTU, (caddr_t) &ifr) < 0) {
-			syslog(LOG_ERR, "ioctl(SIOCSIFMTU): %m, %d %s %d.",sockfd,ifr.ifr_name,ifr.ifr_mtu);
+			if (ioctl(sockfd, SIOCSIFMTU, (caddr_t) &ifr) < 0) {
+				syslog(LOG_ERR, "ioctl(SIOCSIFMTU): %m, %d %s %d.",sockfd,ifr.ifr_name,ifr.ifr_mtu);
+			}
 		}
 	
 		x = get_flags(unit,&err);
@@ -1505,6 +1509,12 @@ void setifip(int ipcp_unit)
 
 
 /************************ IPX SUPPORT *********************************/
+#if !defined(__GLIBC__) 
+/* <linux/ipx.h> includes <linux/socket.h>, which
+                           breaks glibc 2.x support. Prevent that...   */
+# define _LINUX_SOCKET_H
+#endif
+
 #include <linux/ipx.h>
 
 /*

@@ -14,4 +14,6 @@ some of the following values must be changed to fields:
   hungup
   (baud_rate isn't necessary)
 
+MPmrru and mru handling
+
 

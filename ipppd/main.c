@@ -25,7 +25,7 @@
  * PATCHLEVEL 9
  */
 
-char main_rcsid[] = "$Id: main.c,v 1.9 1997/10/26 23:06:19 fritz Exp $";
+char main_rcsid[] = "$Id: main.c,v 1.10 1998/03/08 13:01:38 hipp Exp $";
 
 #include <stdio.h>
 #include <stdarg.h>
@@ -108,6 +108,7 @@ static int init_unit(int);
 static int exit_unit(int);
 
 void remote_sys_options __P((void));
+void reload_config(void);
 
 extern	char	*ttyname __P((int));
 extern	char	*getlogin __P((void));
@@ -147,7 +148,12 @@ void main(int argc,char **argv)
 	struct protent *protp;
 
 	if(argc > 1 && !strcmp(argv[1],"-version")) {
+#ifndef RADIUS	  
 		fprintf(stderr,"ipppd %s.%d (isdn4linux version of pppd by MH) started\n", VERSION, PATCHLEVEL);
+#else
+		fprintf(stderr,"ipppd %s.%d (isdn4linux version of pppd with RADIUS extension by mla) started\n", VERSION, PATCHLEVEL);
+#endif		
+		
 		fprintf(stderr,"%s\n%s\n%s\n%s\n%s\n",lcp_rcsid,ipcp_rcsid,ipxcp_rcsid,ccp_rcsid,magic_rcsid);
 		fprintf(stderr,"%s\n%s\n%s\n%s\n",chap_rcsid,upap_rcsid,main_rcsid,options_rcsid);
 		fprintf(stderr,"%s\n%s\n%s\n",fsm_rcsid,cbcp_rcsid,sys_rcsid);
@@ -164,7 +170,9 @@ void main(int argc,char **argv)
 		lns[i].bundle_next = &lns[i];
 		lns[i].ifname[0] = 0;
 		lns[i].ifunit = -1;
+#if 0
 		lns[i].open_ccp_flag = 0;
+#endif
 		lns[i].phase = PHASE_WAIT;
 		lns[i].fd = -1;
 		lns[i].logged_in = 0;
@@ -183,7 +191,7 @@ void main(int argc,char **argv)
 	}
 	hostname[MAXNAMELEN-1] = 0;
 
-    pidfilename[0] = 0;
+	pidfilename[0] = 0;
 	uid = getuid();
 
     /*
@@ -197,8 +205,14 @@ void main(int argc,char **argv)
 		for(j=0;j<NUM_PPP;j++)
 			(*protp->init)(j); /* modifies our options .. !!!! */
 
+#ifdef OPTIONS_TTY_FIRST
+	if (!options_from_file(_PATH_SYSOPTIONS, REQ_SYSOPTIONS, 0) ||
+	    !options_for_tty() ||
+	    !parse_args(argc-1, argv+1))
+#else
 	if (!options_from_file(_PATH_SYSOPTIONS, REQ_SYSOPTIONS, 0 , 0) ||
 			!parse_args(argc-1, argv+1) || !options_for_tty() )
+#endif	  
 		die(1);
 
     /*
@@ -225,11 +239,12 @@ void main(int argc,char **argv)
     else
     {
       char devstr[1024];
-      sprintf(devstr,"Found %d devices: ",numdev);
+      sprintf(devstr,"Found %d device%s: ",numdev, numdev==1?"":"s");
       for(i=0;i<numdev;i++)
       {
         strcat(devstr,lns[i].devnam);
-        strcat(devstr,", ");
+        if (i < numdev - 1)
+          strcat(devstr,", ");
       }
       syslog(LOG_NOTICE,devstr);
     }
@@ -270,7 +285,11 @@ void main(int argc,char **argv)
 
 	/* write pid to file */
 	if(!strlen(pidfilename))
+#if 1
 		sprintf(pidfilename, "%s%s.pid", _PATH_VARRUN, "ipppd" );
+#else
+		sprintf(pidfilename, "%s%s.%s.pid", _PATH_VARRUN, "ipppd", lns[0].devnam);
+#endif
 	
 	if ((pidfile = fopen(pidfilename, "w")) != NULL) {
 		fprintf(pidfile, "%d\n", pid);
@@ -395,7 +414,7 @@ void main(int argc,char **argv)
                 lns[i].hungup = 0;
                 establish_ppp(i);
                 if(maxconnect > 0)
-                  timeout(connect_time_expired, (void *)i, maxconnect);
+                  timeout(connect_time_expired, (void *)(long)i, maxconnect);
                
                 syslog(LOG_NOTICE,"PHASE_WAIT -> PHASE_ESTABLISHED, ifunit: %d, linkunit: %d, fd: %d",lns[i].ifunit,i,lns[i].fd);
                 lcp_open(lns[i].lcp_unit);
@@ -403,8 +422,8 @@ void main(int argc,char **argv)
               }
               get_input(i);
             }
-            if (lns[i].open_ccp_flag) /* ugly: set by SIGUSR2 signal for all units */
-            {
+#if 0
+            if (lns[i].open_ccp_flag) { /* ugly: set by SIGUSR2 signal for all units */
               if (lns[i].phase == PHASE_NETWORK) 
               {
                 ccp_fsm[lns[i].ccp_unit].flags = OPT_RESTART; /* clears OPT_SILENT */
@@ -412,6 +431,7 @@ void main(int argc,char **argv)
               }
 	      lns[i].open_ccp_flag = 0;
 	    }
+#endif
           }
 	  reap_kids();	/* Don't leave dead kids lying around */
           for(i=0;i<numdev;i++)
@@ -419,7 +439,7 @@ void main(int argc,char **argv)
             {
 			  if(!kill_link)
                 syslog(LOG_NOTICE,"taking down PHASE_DEAD link %d, linkunit: %d",i,lns[i].unit);
-              untimeout(connect_time_expired,(void *) i);
+              untimeout(connect_time_expired,(void *) (long)i);
               lcp_close(lns[i].lcp_unit,"link closed");
               lcp_lowerdown(lns[i].lcp_unit);
               lcp_freeunit(lns[i].lcp_unit);
@@ -882,9 +902,7 @@ static void toggle_debug(int sig)
 /*ARGSUSED*/
 static void open_ccp(int sig)
 {
-	int i;
-	for(i=0;i<NUM_PPP;i++)
-		lns[i].open_ccp_flag = 1;
+	reload_config();
 }
 
 
@@ -1233,7 +1251,11 @@ int vfmtmsg(char *buf,int buflen,char *fmt,va_list args)
          * what gets passed for a va_list is like a void * in some sense.
          */
         a = va_arg(args, void *);
-        n = vfmtmsg(buf, buflen + 1, f, a);
+#ifdef __alpha__       /* always do this? */
+	n = fmtmsg(buf, buflen + 1, f, a);
+#else
+	n = vfmtmsg(buf, buflen + 1, f, a);
+#endif
         buf += n;
         buflen -= n;
         continue;
@@ -1339,4 +1361,9 @@ int vfmtmsg(char *buf,int buflen,char *fmt,va_list args)
     return buf - buf0;
 }
  
+void reload_config(void)
+{
+  auth_reload_upap_pw();
+}
+
 

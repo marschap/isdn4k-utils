@@ -60,6 +60,10 @@ CHANGELOG:
  - added remote number as parameter for auth script
  - found (hopefully) the 'bad filenumber ..' problem
  - fixed pidfile problem
+08.03.98:
+ - started to add radius patch .. not tested
+ - SIGUSR2 should reload user password (untested)
+ - minor bug with corrupted MPdiscr fixed
 
 
 -----------------------------------------------------------------

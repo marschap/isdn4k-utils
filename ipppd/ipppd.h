@@ -16,7 +16,7 @@
  * IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Id: ipppd.h,v 1.8 1997/06/10 14:39:22 hipp Exp $
+ * $Id: ipppd.h,v 1.9 1998/03/08 13:01:34 hipp Exp $
  */
 
 /*
@@ -46,12 +46,15 @@
 # include <utmp.h>
 #endif
 
-#define NUM_PPP	16		/* 16 PPP interface supported (per process) */
+#define NUM_PPP	64		/* 64 PPP interface supported (per process) */
 
 struct wordlist {
   struct wordlist *next;
   char word[1];
 };
+
+#define MAXUSERNAME 255
+#define MAXSESSIONID 32
 
 struct link_struct {
   struct link_struct *bundle_next;
@@ -61,6 +64,7 @@ struct link_struct {
   int auth_pending;
   struct wordlist *addresses;
   int unit;     /* link unit */
+  int master;   /* 'master' link unit */
   int lcp_unit;
   int ipcp_unit;
   int ccp_unit;
@@ -82,6 +86,11 @@ struct link_struct {
   struct pppcallinfo pci;
   int has_proxy_arp;
   int attempts;
+  int rx_bytes;
+  int tx_bytes;
+  char session_id[MAXSESSIONID+1];
+  char username[MAXUSERNAME+1];
+  time_t start_time;
 };
 
 extern struct link_struct lns[NUM_PPP];
@@ -99,6 +108,7 @@ extern struct link_struct lns[NUM_PPP];
  * Global variables.
  */
 
+extern int      useradius;      /* Use RADIUS server for checking PAP */
 extern char	hostname[];	/* Our hostname */
 extern u_char	outpacket_buf[]; /* Buffer for outgoing packets */
 extern int	baud_rate;	/* Current link speed in bits/sec */
@@ -218,7 +228,7 @@ void timeout __P((void (*)(), caddr_t, int));
 				/* Look-alike of kernel's timeout() */
 void untimeout __P((void (*)(), caddr_t));
 				/* Look-alike of kernel's untimeout() */
-void output __P((int, u_char *, int));
+void output_ppp __P((int, u_char *, int));
 				/* Output a PPP packet */
 void demuxprotrej __P((int,u_short));
 				/* Demultiplex a Protocol-Reject */
@@ -398,7 +408,7 @@ extern struct option_info devnam_info;
 #define DEBUGUPAP	1
 #define DEBUGCHAP	1
 #endif
-
+#define DEBUGCHAP       1
 #ifndef LOG_PPP			/* we use LOG_LOCAL2 for syslog by default */
 #if defined(DEBUGMAIN)  || defined(DEBUGFSM)  || defined(DEBUG) \
   || defined(DEBUGLCP)  || defined(DEBUGIPCP) || defined(DEBUGUPAP) \

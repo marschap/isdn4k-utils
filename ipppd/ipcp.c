@@ -17,7 +17,7 @@
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-char ipcp_rcsid[] = "$Id: ipcp.c,v 1.3 1997/05/19 10:15:46 hipp Exp $";
+char ipcp_rcsid[] = "$Id: ipcp.c,v 1.4 1998/03/08 13:01:33 hipp Exp $";
 
 /*
  * TODO:
@@ -1199,7 +1199,7 @@ static void ipcp_script(fsm *f,char *script)
     argv[5] = strremote;
     argv[6] = ipparam;
     argv[7] = NULL;
-    run_program(script, argv, 0,f->unit);
+    run_program(script, argv, debug,f->unit);
 }
 
 /*

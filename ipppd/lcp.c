@@ -21,7 +21,7 @@
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-char lcp_rcsid[] = "$Id: lcp.c,v 1.5 1997/10/26 23:06:16 fritz Exp $";
+char lcp_rcsid[] = "$Id: lcp.c,v 1.6 1998/03/08 13:01:36 hipp Exp $";
 
 /*
  * TODO:
@@ -221,6 +221,7 @@ static void lcp_init(int unit)
     wo->mp_mrru = DEFMRU;
     wo->mp_class = our_discr_class;
     wo->mp_alen = sizeof(our_discr_addr);
+    wo->numloops = 0;
     memcpy(wo->mp_addr,our_discr_addr,wo->mp_alen);
 
     ao->neg_mru = 1;
@@ -371,16 +372,14 @@ void lcp_lowerup(int unit)
 {
   fsm *f = &lcp_fsm[unit];
   struct link_struct *tlns = &lns[f->unit];
-#ifndef ISDN4LINUX_PATCH
-    sifdown(f->unit);
-#endif
-    ppp_set_xaccm(f->unit, xmit_accm[unit]);
-    ppp_send_config(f->unit, PPP_MRU, 0xffffffff, 0, 0);
-    ppp_recv_config(f->unit, PPP_MRU, 0x00000000, 0, 0);
-    tlns->peer_mru = PPP_MRU;
-    lcp_allowoptions[tlns->lcp_unit].asyncmap = xmit_accm[unit][0];
 
-	fsm_lowerup(&lcp_fsm[unit]);
+  ppp_set_xaccm(f->unit, xmit_accm[unit]);
+  ppp_send_config(f->unit, PPP_MRU, 0xffffffff, 0, 0);
+  ppp_recv_config(f->unit, PPP_MRU, 0x00000000, 0, 0);
+
+  tlns->peer_mru = PPP_MRU;
+  lcp_allowoptions[tlns->lcp_unit].asyncmap = xmit_accm[unit][0];
+  fsm_lowerup(&lcp_fsm[unit]);
 }
 
 
@@ -538,7 +537,9 @@ static void lcp_resetci(fsm *f)
   struct link_struct *tlns = &lns[f->unit];
 
     lcp_wantoptions[tlns->lcp_unit].magicnumber = magic();
+#if 0
     lcp_wantoptions[tlns->lcp_unit].numloops = 0;
+#endif
     lcp_gotoptions[tlns->lcp_unit] = lcp_wantoptions[tlns->lcp_unit];
     tlns->peer_mru = PPP_MRU;
 }
@@ -1601,8 +1602,7 @@ static int lcp_reqci(fsm *f,u_char *inp,int *lenp,int reject_if_disagree)
 	    break;
 	case CI_MPDISCRIMINATOR:
           LCPDEBUG((LOG_INFO, "lcp_reqci: rcvd MP Discriminator"));
-          if(!ao->neg_mpdiscr)
-          {
+          if(!ao->neg_mpdiscr || cilen < 3) {
             orc = CONFREJ;
             break; 
           }
@@ -1618,8 +1618,7 @@ static int lcp_reqci(fsm *f,u_char *inp,int *lenp,int reject_if_disagree)
           ho->mp_alen = cilen-3;
           break;
 	case CI_MPMRRU:
-          if(!ao->neg_mpmrru || cilen != CILEN_SHORT)
-          {
+          if(!ao->neg_mpmrru || cilen != CILEN_SHORT) {
             orc = CONFREJ;
             break;
           }

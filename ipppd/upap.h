@@ -16,7 +16,7 @@
  * IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Id: upap.h,v 1.1 1997/03/07 16:01:42 hipp Exp $
+ * $Id: upap.h,v 1.2 1998/03/08 13:01:45 hipp Exp $
  */
 
 /*
@@ -87,6 +87,7 @@ typedef struct upap_state {
 extern upap_state upap[];
 extern struct protent pap_protent;
 
-void upap_authwithpeer __P((int, char *, char *));
-void upap_authpeer __P((int));
+void upap_authwithpeer(int, char *, char *);
+void upap_authpeer(int);
+void auth_reload_upap_pw(void);
 
