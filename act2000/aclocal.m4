@@ -3,7 +3,6 @@ dnl Try finding linux sourcetree
 dnl
 
 AC_DEFUN(AC_FIND_KERNEL, [
-	KERNELDIR=""
 	OLD_CPPFLAGS="$CPPFLAGS"
 	lxdir="no"
 	eval tst_kerneldir=$CONFIG_KERNELDIR
@@ -12,7 +11,7 @@ AC_DEFUN(AC_FIND_KERNEL, [
 		[  --with-kernel=DIR       Set kernel source directory [/usr/src/linux]],
 		DOTEST="y"; tst_kerneldir="${withval}")
 
-	if test "$DOTEST" = "y" || test $CONFIG_KERNELDIR != "" ; then
+	if test "$DOTEST" = "y" || test "$CONFIG_KERNELDIR" != "" ; then
 		AC_MSG_CHECKING([for linux kernel source in ${tst_kerneldir}])
 		CPPFLAGS="-nostdinc -I${tst_kerneldir}/drivers/isdn"
 		AC_TRY_CPP([#include <isdn_common.h>], lxdir=${tst_kerneldir},
@@ -35,8 +34,8 @@ AC_DEFUN(AC_FIND_KERNEL, [
 		lxdir=""
 		AC_MSG_ERROR("Kernel source not found. You MUST specify a correct path to the linux source in the configuration.")
 	fi
-	KERNELDIR="$lxdir"
+	CONFIG_KERNELDIR="$lxdir"
 	CPPFLAGS="$OLD_CPPFLAGS"
-	AC_DEFINE_UNQUOTED(KERNELDIR,"$lxdir")
-	AC_SUBST(KERNELDIR)
+	AC_DEFINE_UNQUOTED(CONFIG_KERNELDIR,"$lxdir")
+	AC_SUBST(CONFIG_KERNELDIR)
 ])

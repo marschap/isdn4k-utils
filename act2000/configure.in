@@ -3,8 +3,11 @@ AC_INIT(actctrl.c)
 AC_PREFIX_DEFAULT(/usr)
 
 I4LCONFDIR=${I4LCONFDIR:-"/etc/isdn"}
-CONFIG_DATADIR=${CONFIG_DATADIR:-"/usr/lib/isdn"}
 I4LVERSION=${I4LVERSION:-"?.?"}
+CONFIG_DATADIR=${CONFIG_DATADIR:-"/usr/lib/isdn"}
+CONFIG_MANDIR=`eval echo ${CONFIG_MANDIR:-"/usr/man"}`
+CONFIG_SBINDIR=`eval echo ${CONFIG_SBINDIR:-"/sbin"}`
+CONFIG_KERNELDIR=`eval echo ${CONFIG_KERNELDIR:-"/usr/src/linux"}`
 MANDATE=`grep CHECKIN actctrl.man.in | awk '{print $4}'`
 
 dnl Checks for programs.
@@ -17,9 +20,11 @@ dnl Checks for header files.
 AC_HEADER_STDC
 AC_CHECK_HEADERS(fcntl.h sys/ioctl.h unistd.h)
 
-AC_CHECK_HEADERS(linux/isdn.h)
 dnl Find current kernel source
 AC_FIND_KERNEL
+AC_CHECK_HEADERS($CONFIG_KERNELDIR/drivers/isdn/act2000/act2000.h,,
+	AC_MSG_ERROR("Not found. You MUST specify a correct path to linux source!")
+)
 
 dnl Checks for typedefs, structures, and compiler characteristics.
 
@@ -27,14 +32,32 @@ dnl Checks for library functions.
 AC_PROG_GCC_TRADITIONAL
 AC_FUNC_MMAP
 
-dnl Check, if user wants dump option for debugging
-AC_ARG_ENABLE(dump,[  --enable-dump           Enable dump feature for debugging],\
-	DEBUGVAR=-D__DEBUGVAR__)
+dnl Optional firmware directory
+AC_ARG_WITH(firmware,
+	[  --with-firmware=DIR     Set dir where firmware istalled. [/usr/lib/isdn]],
+	CONFIG_DATADIR="${withval}"
+	AC_DEFINE(CONFIG_DATADIR,"${withval}"),
+)
+
+dnl Optional sbin directory
+AC_ARG_WITH(sbin,
+	[  --with-sbin=DIR         Set dir where binary is istalled. [/sbin]],
+	CONFIG_SBINDIR="${withval}"
+	AC_DEFINE(CONFIG_SBINDIR,"${withval}"),
+)
+
+dnl Optional man directory
+AC_ARG_WITH(man,
+	[  --with-man=DIR          Set manpage dir. [/usr/man]],
+	CONFIG_MANDIR="${withval}"
+	AC_DEFINE(CONFIG_MANDIR,"${withval}"),
+)
 
 AC_SUBST(INSTALL)
-AC_SUBST(DEBUGVAR)
 AC_SUBST(MANDATE)
 AC_SUBST(CONFIG_DATADIR)
+AC_SUBST(CONFIG_SBINDIR)
+AC_SUBST(CONFIG_MANDIR)
 AC_SUBST(I4LCONFDIR)
 AC_SUBST(I4LVERSION)
 AC_OUTPUT(Makefile actctrl.man)
