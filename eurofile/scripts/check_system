@@ -51,7 +51,7 @@ if isdnctrl addif x25_test > /dev/null; then
 	    break
 	done
 	if [ "$result_first" = "Encapsulation" ] ; then
-	    echo "The isdn subsystem of your kernel does not support x25iface encapsualtion."
+	    echo "The isdn subsystem of your kernel does not support x25iface encapsulation."
 	    echo "You need to recompile your kernel with CONFIG_ISDN_X25 enabled."
 	else
 	    echo "Your version of isdnctrl does not support x25iface encapsulation" 
