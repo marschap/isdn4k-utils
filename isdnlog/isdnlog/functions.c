@@ -1,4 +1,4 @@
-/* $Id: functions.c,v 1.26 1999/11/12 20:50:49 akool Exp $
+/* $Id: functions.c,v 1.27 1999/11/16 18:09:39 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,12 @@
  * along with this program; if not, write to the Free Software
  *
  * $Log: functions.c,v $
+ * Revision 1.27  1999/11/16 18:09:39  akool
+ * isdnlog-3.67
+ *   isdnlog-3.66 writes wrong provider number into it's logfile isdn.log
+ *   there is a patch and a repair program available at
+ *   http://www.toetsch.at/linux/i4l/i4l-3_66.htm
+ *
  * Revision 1.26  1999/11/12 20:50:49  akool
  * isdnlog-3.66
  *   - Patch from Jochen Erwied <mack@joker.e.ruhr.de>
@@ -396,7 +402,8 @@ void logger(int chan)
 			              call[chan].aoce, call[chan].dialin ? 'I' : 'O',
 			              call[chan].cause, call[chan].ibytes, call[chan].obytes,
 			              LOG_VERSION, call[chan].si1, call[chan].si11,
-			              currency_factor, currency, call[chan].pay, call[chan].provider,
+			              currency_factor, currency, call[chan].pay, 
+				      prefix2pnum(call[chan].provider),
 			              call[chan].zone);
 
 			fclose(flog);

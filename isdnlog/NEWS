@@ -1,5 +1,10 @@
 isdnlog news
 
+lt 1999.11.16
+  isdnlog-3.66 writes wrong provider number into it's logfile isdn.log
+  there is a patch and a repair program available at
+  http://www.toetsch.at/linux/i4l/i4l-3_66.htm
+
 lt 1999.11.08
 
   all utils:

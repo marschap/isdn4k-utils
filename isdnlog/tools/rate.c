@@ -1,4 +1,4 @@
-/* $Id: rate.c,v 1.60 1999/11/12 20:50:50 akool Exp $
+/* $Id: rate.c,v 1.61 1999/11/16 18:09:39 akool Exp $
  *
  * Tarifdatenbank
  *
@@ -19,6 +19,12 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rate.c,v $
+ * Revision 1.61  1999/11/16 18:09:39  akool
+ * isdnlog-3.67
+ *   isdnlog-3.66 writes wrong provider number into it's logfile isdn.log
+ *   there is a patch and a repair program available at
+ *   http://www.toetsch.at/linux/i4l/i4l-3_66.htm
+ *
  * Revision 1.60  1999/11/12 20:50:50  akool
  * isdnlog-3.66
  *   - Patch from Jochen Erwied <mack@joker.e.ruhr.de>
@@ -375,7 +381,7 @@
  *   überprüft, ob die Nummer einem N:-Tag = Service entspricht
  *   wird für die Sondernummern benötigt
  *
- * char *getSpecialName(char *number) 
+ * char *getSpecialName(char *number)
  *   get the Service Name of a special number
  *
  * void clearRate (RATE *Rate)
@@ -407,15 +413,18 @@
  * inline int getNProvider( void )
  *   returns count of providers
  *
- * int pnum2prefix(int pnum, time_t when) 
+ * int pnum2prefix(int pnum, time_t when)
  *   converts the external provider number to the internal prefix at
  *   the given date/time when, or know if when is 0
  *
- * int pnum2prefix_variant(char* pnum, time_t when) 
+ * inline int prefix2pnum(int prefix)
+ *    returns the external provider number
+ *
+ * int pnum2prefix_variant(char* pnum, time_t when)
  *   same with a provider string pp_vv
  *
  * int isProviderValid(int prefix, time_t when)
- *   returns true, if the G:tag entries match when 
+ *   returns true, if the G:tag entries match when
  *
  */
 
@@ -507,7 +516,7 @@ typedef struct {
 typedef struct {
   int _prefix;
   int _variant;
-} BOOKED;  
+} BOOKED;
 
 typedef struct {
   int      booked;
@@ -547,8 +556,8 @@ static void notice (char *fmt, ...)
   va_end (ap);
 #ifdef STANDALONE
   fprintf(stderr, "%s\n", msg);
-#else
-  print_msg(PRT_INFO, "%s\n", msg);
+// #else
+//   print_msg(PRT_INFO, "%s\n", msg);
 #endif
 }
 
@@ -562,8 +571,8 @@ static void warning (char *file, char *fmt, ...)
   va_end (ap);
 #ifdef STANDALONE
   fprintf(stderr, "%s\n", msg);
-#else
-  print_msg(PRT_WARN, "%s\n", msg);
+// #else
+//   print_msg(PRT_WARN, "%s @%d\n", msg, line);
 #endif
 }
 
@@ -577,8 +586,8 @@ static void error (char *file, char *fmt, ...)
   va_end (ap);
 #ifdef STANDALONE
   fprintf(stderr, "%s\n", msg);
-#else
-  print_msg(PRT_ERR, "%s\n", msg);
+// #else
+//   print_msg(PRT_ERR, "%s\n", msg);
 #endif
 }
 
@@ -724,7 +733,7 @@ void exitRate(void)
   int i, j;
 
   for (i=0; i<nProvider; i++) {
-    free_provider(i); 
+    free_provider(i);
   }
   free(Provider);
   Provider=0;
@@ -733,7 +742,7 @@ void exitRate(void)
     free(Booked);
   nBooked=0;
   for (i=0; i<nService; i++) {
-    for(j=0; j<Service[i].nCode; j++) 
+    for(j=0; j<Service[i].nCode; j++)
       free(Service[i].Codes[j]);
     if(Service[i].Codes) free(Service[i].Codes);
     if(Service[i].Name) free(Service[i].Name);
@@ -757,14 +766,14 @@ char   *prefix2provider_variant(int prefix, char *s)
     return "?*?";
   if(Provider[prefix]._provider._variant != UNKNOWN)
     sprintf(s,"%s_%d",Provider[prefix].Vbn,Provider[prefix]._provider._variant);
-  else  
+  else
     strcpy(s,Provider[prefix].Vbn);
   return s;
 }
 
 inline int getNProvider( void ) {
   return nProvider;
-}  
+}
 
 int isProviderValid(int i, time_t when)
 {
@@ -781,15 +790,19 @@ int pnum2prefix(int pnum, time_t when) {
   if(when==0) {
     time(&now);
     when=now;
-  }  
-  for(i=0;i<nProvider;i++) 
+  }
+  for(i=0;i<nProvider;i++)
    if( (Provider[i]._provider._prefix == pnum &&
        ( Provider[i]._provider._variant == UNKNOWN ||
          Provider[i].booked==1) ) &&
 	 isProviderValid(i, when) )
      return i;
-  return UNKNOWN;   
-}      	
+  return UNKNOWN;
+}
+
+inline int prefix2pnum(int prefix) {
+  return Provider[prefix]._provider._prefix;
+}
 
 int pnum2prefix_variant(char * pnum, time_t when) {
   int p,v;
@@ -804,18 +817,18 @@ int pnum2prefix_variant(char * pnum, time_t when) {
   if(when==0) {
     time(&now);
     when=now;
-  }  
-  for(i=0;i<nProvider;i++) 
+  }
+  for(i=0;i<nProvider;i++)
    if( Provider[i]._provider._prefix == p &&
        Provider[i]._provider._variant == v &&
        isProviderValid(i, when) )
      return i;
-  return UNKNOWN;   
+  return UNKNOWN;
 }
 
-int vbn2prefix(char *vbn, int *len) {	 
+int vbn2prefix(char *vbn, int *len) {
   int i;
-  for(i=0;i<nProvider;i++) 
+  for(i=0;i<nProvider;i++)
     if(Provider[i].Vbn && *Provider[i].Vbn) {
       if(strncmp(Provider[i].Vbn, vbn, strlen(Provider[i].Vbn))==0 &&
           (Provider[i]._provider._variant == UNKNOWN ||
@@ -823,21 +836,21 @@ int vbn2prefix(char *vbn, int *len) {
 	*len = strlen(Provider[i].Vbn);
 	return i;
       }
-    }	 
+    }
   return UNKNOWN;
 }
-  
+
 static int parseDate(char **s, time_t *t) {
   struct tm tm;
   tm.tm_hour=tm.tm_min=tm.tm_sec=0;
   tm.tm_mday = strtoul(*s, s, 10);
-  if(**s != '.') 
+  if(**s != '.')
     return 0;
-  (*s)++;  
+  (*s)++;
   tm.tm_mon = strtoul(*s, s, 10)-1;
-  if(**s != '.') 
+  if(**s != '.')
     return 0;
-  (*s)++;  
+  (*s)++;
   tm.tm_year = strtoul(*s, s, 10)-1900;
   *t = mktime(&tm);
   return 1;
@@ -976,14 +989,14 @@ int initRate(char *conf, char *dat, char *dom, char **msg)
       else if(nProvider) { /* silently ignore empty providers */
 	free_provider(prefix);
 	nProvider--;
-      }  
+      }
       if(nProvider) {
 	if(!Provider[prefix].Vbn || !*Provider[prefix].Vbn) {
 	  error(dat, "Provider %s has no valid B:-Tag - ignored", getProvider(prefix));
 	  free_provider(prefix);
 	  nProvider--;
-	}  
-      } 	
+	}
+      }
       v = UNKNOWN;
       zone = UNKNOWN;
       where = DOMESTIC;
@@ -1019,7 +1032,7 @@ int initRate(char *conf, char *dat, char *dom, char **msg)
 	    Booked[i]._prefix==Provider[prefix]._provider._prefix) {
           Provider[prefix].booked=1;
 	  break;
-        }	  
+        }
       break;
 
     case 'B':  /* B: VBN */
@@ -1180,7 +1193,7 @@ int initRate(char *conf, char *dat, char *dom, char **msg)
 /* S:Service
    N:nn[,nn]
    ...
-*/   
+*/
       if (nProvider) continue;
       s+=2;
       s=strip(s);
@@ -1202,7 +1215,7 @@ int initRate(char *conf, char *dat, char *dom, char **msg)
 	  Service[nService-1].Codes=realloc(Service[nService-1].Codes,
 	  	++Service[nService-1].nCode * sizeof(char*));
 	  Service[nService-1].Codes[Service[nService-1].nCode-1]=strdup(c);
-	}  
+	}
 	if (*s==',') {
 	  s++;
 	  continue;
@@ -1213,7 +1226,7 @@ int initRate(char *conf, char *dat, char *dom, char **msg)
 
     case 'F': /* F:Flags */
       break;
-#if 0      
+#if 0
       if (zone==UNKNOWN) {
 	warning (dat, "Unexpected tag '%c'", *s);
 	break;
@@ -1223,7 +1236,7 @@ int initRate(char *conf, char *dat, char *dom, char **msg)
 	free (Provider[prefix].Zone[zone].Flag);
       }
       Provider[prefix].Zone[zone].Flag=strdup(strip(s+2));
-#endif      
+#endif
       break;
 
     case 'T':  /* T:d-d/h-h=p/s:t[=]Bezeichnung */
@@ -1469,7 +1482,7 @@ int initRate(char *conf, char *dat, char *dom, char **msg)
           if(!parseDate(&s, &Provider[prefix].ToDate))
             warning (dat, "Invalid date '%s'", s);
         }
-      }	
+      }
       break;
 
     default:
@@ -1493,13 +1506,13 @@ int initRate(char *conf, char *dat, char *dom, char **msg)
   else if(nProvider) { /* silently ignore empty providers */
     free_provider(prefix);
     nProvider--;
-  } 
-  if(nProvider) 
+  }
+  if(nProvider)
     if(!Provider[prefix].Vbn || !*Provider[prefix].Vbn) {
       error(dat, "Provider %s has no valid B:-Tag - ignored", getProvider(prefix));
       free_provider(prefix);
       nProvider--;
-    }  
+    }
 
   if (!*Version) {
     warning (dat, "Database version could not be identified");
@@ -1548,22 +1561,22 @@ char *getComment (int prefix, char *key)
 int getSpecial (char *number) {
   int i,j,l;
   l=strlen(number);
-  for (i=0; i<nService; i++) 
-    for(j=0; j<Service[i].nCode; j++) 
+  for (i=0; i<nService; i++)
+    for(j=0; j<Service[i].nCode; j++)
       if(strmatch(Service[i].Codes[j], number)>=l)
         return 1;
-  return 0;  
-}  
+  return 0;
+}
 
 char *getSpecialName(char *number) {
   int i,j,l;
   l=strlen(number);
-  for (i=0; i<nService; i++) 
-    for(j=0; j<Service[i].nCode; j++) 
+  for (i=0; i<nService; i++)
+    for(j=0; j<Service[i].nCode; j++)
       if(strmatch(Service[i].Codes[j], number)>=l)
         return Service[i].Name;
-  return 0;  
-}  
+  return 0;
+}
 
 void clearRate (RATE *Rate)
 {
@@ -1807,22 +1820,22 @@ int getLeastCost (RATE *Current, RATE *Cheapest, int booked, int skip)
     if (!*Skel.dst[0] && !*Skel.dst[2] && getSpecial(number)) { /* try other numbers for this service */
       if(serv==-1) {
         l=strlen(number);
-        for (i=0; i<nService && serv==-1; i++) 
-          for(j=0; j<Service[i].nCode; j++) 
+        for (i=0; i<nService && serv==-1; i++)
+          for(j=0; j<Service[i].nCode; j++)
             if(strmatch(Service[i].Codes[j], number)>=l) {
 	      serv=i;
 	      break;
 	    }
 	if(serv==-1) /* not found - shouldn't be */
-	  break;    
-	cod=0;  
-      }	
+	  break;
+	cod=0;
+      }
       if (cod < Service[serv].nCode) {
         Skel.dst[1] = Service[serv].Codes[cod];
 	cod++;
       }
       else
-        break;	
+        break;
     }
     else
       break;

@@ -1,4 +1,4 @@
-V:1.10-Germany [12-Nov-1999 21:19:20]
+V:1.10-Germany [15-Nov-1999 20:29:56]
 
 # W‰hrungsformat
 U:%.3f DM
@@ -8,7 +8,7 @@ U:%.3f DM
 #
 # (C) Copyright 1999 by Andreas Kool (akool@isdn4linux.de)
 #
-# $Id: rate-de.dat,v 1.61 1999/11/12 20:50:48 akool Exp $
+# $Id: rate-de.dat,v 1.62 1999/11/16 18:09:36 akool Exp $
 #
 #
 # Das "A:" Tag muﬂ folgendermaﬂen gef¸llt werden:
@@ -12446,17 +12446,17 @@ C:Adresse:  Koenigsallee 60f
 C:	    40210 Duesseldorf
 D:dtag
 Z:2-4 Ferngespr‰che
-A:+49
+A:DE
 T:*/*=0.09/60
 Z:10 Mobilfunk
 A:_DEMCM,_DEMC,_DEMD1,_DEMD2,_DEME1,_DEME2
 T:*/*=0.40/60
 Z:40 Telefonauskunft Inland (Austria, dial 01051004366211811)
 A:+4366211811
-T:*/*=0.19/60
+T:*/*=0.18/60
 Z:41 Telefonauskunft Ausland (Austria, dial 01051004366211812)
 A:+4366211812
-T:*/*=0.19/60
+T:*/*=0.18/60
 Z:200 Albanien
 A:AL
 T:*/*=0.55/60
@@ -12490,12 +12490,12 @@ T:*/*=0.18/60
 Z:210 Frankreich
 A:FR
 T:*/*=0.16/60
-Z:211 Groﬂbritannien
+Z:211 Groﬂbritannien (Festnetz)
 A:UK
-T:*/*=0.14/60
+T:*/*=0.13/60
 Z:212 Hongkong
 A:HK
-T:*/*=0.21/60
+T:*/*=0.19/60
 Z:213 Italien
 A:IT
 T:*/*=0.23/60
@@ -12508,9 +12508,9 @@ T:*/*=0.27/60
 Z:216 Israel
 A:IL
 T:*/*=0.31/60
-Z:217 Japan
+Z:217 Japan (Festnetz)
 A:JP
-T:*/*=0.29/60
+T:*/*=0.24/60
 Z:218 Jugoslawien
 A:YU
 T:*/*=0.62/60
@@ -12535,9 +12535,9 @@ T:*/*=0.29/60
 Z:226 Moskau
 A:MOW
 T:*/*=0.35/60
-Z:227 Neuseeland
+Z:227 Neuseeland (Festnetz)
 A:NZ
-T:*/*=0.21/60
+T:*/*=0.19/60
 Z:228 Niederlande
 A:NL
 T:*/*=0.13/60
@@ -12547,9 +12547,9 @@ T:*/*=0.40/60
 Z:230 Norwegen
 A:NO
 T:*/*=0.18/60
-Z:231 ÷sterreich
+Z:231 ÷sterreich (Festnetz)
 A:AT
-T:*/*=0.19/60
+T:*/*=0.18/60
 Z:232 Portugal
 A:PT
 T:*/*=0.37/60
@@ -12559,9 +12559,9 @@ T:*/*=0.65/60
 Z:234 Schweden
 A:SE
 T:*/*=0.17/60
-Z:235 Schweiz
+Z:235 Schweiz (Festnetz)
 A:CH
-T:*/*=0.18/60
+T:*/*=0.17/60
 Z:236 Singapore
 A:SG
 T:*/*=0.37/60
@@ -13026,7 +13026,7 @@ Z:5 KDD-Conos Mobilfunk
 # A:C-Tel Voice Mail, C-Netz, D1, D2, E1, E2
 T:W/08-18=0.54(60)/1
 T:W/18-08=0.39(60)/1
-T:E,H/0.35(60)/1
+T:E,H/*=0.35(60)/1
 Z:10 Mobilfunk
 A:_DEMCM,_DEMC,_DEMD1,_DEMD2,_DEME1,_DEME2
 T:W/08-18=0.59(60)/1

@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.121 1999/11/12 20:50:48 akool Exp $
+## $Id: Makefile.in,v 1.122 1999/11/16 18:09:36 akool Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,12 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.122  1999/11/16 18:09:36  akool
+## isdnlog-3.67
+##   isdnlog-3.66 writes wrong provider number into it's logfile isdn.log
+##   there is a patch and a repair program available at
+##   http://www.toetsch.at/linux/i4l/i4l-3_66.htm
+##
 ## Revision 1.121  1999/11/12 20:50:48  akool
 ## isdnlog-3.66
 ##   - Patch from Jochen Erwied <mack@joker.e.ruhr.de>
@@ -844,7 +850,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 3.66
+VERSION     = 3.67
 
 MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 \
 	      isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 \
