@@ -1,4 +1,4 @@
-V:1.10-Germany [02-Jun-2000 14:09:56]
+V:1.10-Germany [20-Jun-2000 19:59:30]
 
 # Währungsformat
 U:%.3f DM
@@ -8,15 +8,15 @@ U:%.3f DM
 #
 # (C) Copyright 1999, 2000 by Andreas Kool (akool@isdn4linux.de)
 #
-# $Id: rate-de.dat,v 1.94 2000/06/02 12:14:26 akool Exp $
+# $Id: rate-de.dat,v 1.95 2000/06/20 17:09:58 akool Exp $
 #
 #
 # Das "A:" Tag muß folgendermaßen gefüllt werden:
 #
 #   A:0191011     Sonderrufnummer (nur innerhalb eines Landes gültig,
-#    		  und daher _ohne_ Landesvorwahl!
-#   A:+496171	  Normale Telefonnummer _immer_ mit Landesvorwahl, und
-#   		  ohne führende "0"
+#                 und daher _ohne_ Landesvorwahl!
+#   A:+496171     Normale Telefonnummer _immer_ mit Landesvorwahl, und
+#                 ohne führende "0"
 #
 #   Handy-Rufnummern werden _mit_ Landesvorwahl eingetragen!
 #
@@ -29,26 +29,26 @@ U:%.3f DM
 # sich zum Vergleich weiter unten.  Aktualisiert werden aber nur noch
 # die Zonen nach der nun folgenden, neuen Zuordnung !
 #
-#   0 -   9	: Inland
-#  10 -  30	: Handies (D-Netze, E-Netze)
-#  31 -  39	: Satelitenfunk (Inmarsat, Iridium)
-#  40 -  59	: Telefonauskünfte
-#  60 -  79	: Cityruf, Scall, Quix etc.
-#  80 -  89	: Shared Cost (0180)
-#  90 -  99	: Premium Rate (0190)
-# 100 - 159	: Internet Tarife
-# 160 - 169	: Televotum, etc.
-# 170		: Persönliche Rufnummer (0700)
-# 171 - 199	: Sonstiges
-# 200 - xxx	: Auslandstarife
+#   0 -   9     : Inland
+#  10 -  30     : Handies (D-Netze, E-Netze)
+#  31 -  39     : Satelitenfunk (Inmarsat, Iridium)
+#  40 -  59     : Telefonauskünfte
+#  60 -  79     : Cityruf, Scall, Quix etc.
+#  80 -  89     : Shared Cost (0180)
+#  90 -  99     : Premium Rate (0190)
+# 100 - 159     : Internet Tarife
+# 160 - 169     : Televotum, etc.
+# 170           : Persönliche Rufnummer (0700)
+# 171 - 199     : Sonstiges
+# 200 - xxx     : Auslandstarife
 #
 # Beschreibung einzelner Zonen
 #
 #    0 -   9 : Inland
 #    0 : Verbindungen an der eigenen Tk-Anlage (zwangsläufig kostenlos)
-#     	 sowie alle "FreeCall" (kostenlos) Nummern des jeweiligen Providers
+#        sowie alle "FreeCall" (kostenlos) Nummern des jeweiligen Providers
 #    1 : Ortszone (alle Nummern, die ohne Vorwahl erreichbar sind.
-#     		   Z.Zt. nur über den preselected Provider erreichbar)
+#                  Z.Zt. nur über den preselected Provider erreichbar)
 #    2 : Cityzone (Nummern im Umkreis von max. 20 km)
 #    3 : Region 50 (Nummern im Umkreis von max. 50 km)
 #    4 : Fernzone (Deutschlandweit)
@@ -76,22 +76,22 @@ U:%.3f DM
 #   40 -  59 : Auskunftstarife
 #
 #   60 -  79 : Pieper
-#   60 : Cityruf automatic	(0164,01682-9)
-#   61 : Cityruf Operator	(016951-2)
-#   62 : Scall IVR		(01680)
-#   63 : Scall DTMF		(01681)
-#   64 : Scall Operator		(01699)
-#   65 : Scall Modem		(01696)
-#   66 : TeLMI automatic	(01660,5,9)
-#   67 : TeLMI Operator		(01661)
-#   68 : Skyper			(01692-3)
-#   69 : Skyper Operator	(016953)
-#   70 : Quix Service		(01650,01655)
-#   71 : Quix DTMF		(01651)
-#   72 : Quix Modem		(016591-3)
-#   73 : Quix Operator 1	(01653)
-#   74 : Quix IVR		(01654)
-#   75 : Quix Operator 2	(01656)
+#   60 : Cityruf automatic      (0164,01682-9)
+#   61 : Cityruf Operator       (016951-2)
+#   62 : Scall IVR              (01680)
+#   63 : Scall DTMF             (01681)
+#   64 : Scall Operator         (01699)
+#   65 : Scall Modem            (01696)
+#   66 : TeLMI automatic        (01660,5,9)
+#   67 : TeLMI Operator         (01661)
+#   68 : Skyper                 (01692-3)
+#   69 : Skyper Operator        (016953)
+#   70 : Quix Service           (01650,01655)
+#   71 : Quix DTMF              (01651)
+#   72 : Quix Modem             (016591-3)
+#   73 : Quix Operator 1        (01653)
+#   74 : Quix IVR               (01654)
+#   75 : Quix Operator 2        (01656)
 #
 #   80 -  89 : Shared Cost Service 0180
 #   81 : Service 0180-1
@@ -112,16 +112,16 @@ U:%.3f DM
 #  102 - 159 : bei Bedarf, weitere Internettarife
 #
 #  160 - 169 : Televotum
-#  160 : Televotum		(0137)
-#  161 : Teledialog	 	(0138)
-#  162 : T-VoteCall 1		(01371)
-#  163 : T-VoteCall 2		(01372)
+#  160 : Televotum              (0137)
+#  161 : Teledialog             (0138)
+#  162 : T-VoteCall 1           (01371)
+#  163 : T-VoteCall 2           (01372)
 #  164 : DTAG Ansagedienste
 #
-#  170 : Persönliche Rufnummer	(0700)
+#  170 : Persönliche Rufnummer  (0700)
 #
 #  171 - 199 : Sonstiges
-#  171 : Expo 2000		(02000)
+#  171 : Expo 2000              (02000)
 #
 #  ab 200    : Auslandstarife
 #
@@ -129,9 +129,9 @@ U:%.3f DM
 # sollten an diesen Zonen nicht mehr vorgenommen werden.
 #
 #   0 : Verbindungen an der eigenen Tk-Anlage (zwangsläufig kostenlos)
-#     	sowie alle "FreeCall" (kostenlos) Nummern des jeweiligen Providers
+#       sowie alle "FreeCall" (kostenlos) Nummern des jeweiligen Providers
 #   1 : Ortszone (alle Nummern, die ohne Vorwahl erreichbar sind.
-#     		  Z.Zt. nur über den preselected Provider erreichbar)
+#                 Z.Zt. nur über den preselected Provider erreichbar)
 #   2 : Cityzone (Nummern im Umkreis von max. 20 km)
 #   3 : Region 50 (Nummern im Umkreis von max. 50 km)
 #   4 : Fernzone (Deutschlandweit)
@@ -185,22 +185,32 @@ S:T-Online
 N:0191011
 S:AOL
 N:01914, 019161
+S:CompuServe PPP Access
+N:0191919  # 010880191919
 #
 S:Internet by call
-N:0191501  # o.tel.o Online
-N:01929    # Freenet (Mobilcom)
-N:01928120 # eXpress Net (Mobilcom)
-N:01924924 # Telepassport Online
-N:0192340  # net@home (GTS Esprit)
-N:0192343  # Call.POP/Imagecom (GTS Esprit)
-N:019251   # Talknet (Talkline)
-N:0192070  # Arcor Online
-N:0192020  # Arcor Online
-N:0192300  # Call.Callino
-N:0191955  # knuut (Worldcom/UUnet)
-N:0192658  # MSN Easysurfer (Worldcom/UUnet)
-N:0192361  # Lübecker Nachrichten
-N:019160   # CompuServeOffice
+N:0191501   # o.tel.o Online                           # 010110191501   (User:otelo; pw:online)
+N:019160    # CompuServeOffice			       # 019160
+N:0191799   # Planet-Interkom Internet-by-Call         # 010900191799   (User:internet@planetbycall.de; pw:internet)
+N:0191955   # knuut-by-call (Worldcom/UUnet)           # 010880191955   (User:knuut; pw:knuut)
+N:0192020   # Yahoo! Online (Arcor)                    # 010700192020   (User:yahoo; pw:yahoo)
+N:0192070   # Arcor Internet-by-Call                   # 010700192070   (User:arcor; pw:internet)
+N:0192134   # Drillisch online Standard                # 0100500192134  (User:Drillisch@internet; pw:beliebig)
+N:0192300   # surf callino                             # 010750192300   (User:callino; pw:internet)
+N:0192340   # net@home (GTS Esprit) Call by Call 01040 # 010400192340   (User:esprit; pw:telecom oder User:gts; pw:internet)
+N:0192343   # Call.POP/Imagecom (GTS Esprit)           # 010400192343   (User:call; pw:pop)
+N:0192361   # Lübecker Nachrichten LN-Online           # 010880192361   (User:LN; pw:online)
+N:01924924  # Internet Private CbC Telepassport        # 0102401924924  (User:beliebig: pw:beliebig)
+N:019251    # Talknet (Talkline)                       # 01050019251    (User:talknet: pw:talknet)
+N:0192658   # MSN Easysurfer (Worldcom/UUnet)	       # 0192658   	(User:beliebig; pw:beliebig)
+N:01928111  # comsign AG surfsolution                  # 0101901928111  (User:beliebig; pw:beliebig)
+N:01928120  # eXpress-Net eXpress-Dial                 # 0101901928120  (User:beliebig; pw:beliebig)
+N:01928121  # netweaver netweaver                      # 0101901928121  (User:beliebig; pw:beliebig)
+N:01928128  # Argonsoft goOnline                       # 0101901928128  (User:goOnline; bundesweit)
+N:01928150  # Corax Coraxline                          # 0101901928150  (User:beliebig; pw:beliebig)
+N:019282200 # X9MEDIA Internet by Call                 # 01019019282200 (User:beliebig; pw:beliebig)
+N:019282500 # surflos Internet by Call                 # 01019019282500 (User:beliebig; pw:beliebig)
+N:01929     # 01019Freenet (Mobilcom)                  # 0101901929     (User:beliebig; pw:beliebig)
 #
 # S:T-VoteCall
 # N:01371, 01372, 01373, 01374, 0138
@@ -3295,7 +3305,7 @@ C:Erfasste Zonen:
 C:2	-   4	Deutschland
 C:10		Mobilfunk
 C:200	-	Ausland
-# G:08-May-2000
+# G:15-Jun-2000
 D:dtag
 Z:0 FreeCall
 A:011*
@@ -3306,8 +3316,10 @@ A:112
 T:*/*=0
 Z:1-4 National
 A:+49
-T:*/07-19=0.07/60
-T:*/19-07=0.04/60
+T:[11.06.2000-12.06.2000]*/*=0 Pfingstangebot
+T:W/06-18=0.06/60
+T:W/18-06=0.04/60
+T:E,H/*=0.04/60
 Z:10 Mobilfunknetz
 A:01618
 A:01610,01611,01612,01613,01614,01615,01616,01617,01619
@@ -3315,7 +3327,7 @@ A:0170,0171,0175
 A:0172,0173,0174
 A:0177,0178
 A:0176,0179
-T:*/*=0.59/60
+T:*/*=0.38/60
 Z:200 Euro 1 / USA, Kanada # gilt *NICHT* für Mobilfunknetze in diese Länder!
 A:US,CA,NL,BE,FR,ES
 A:LU,FI,IT,CH,AT,VA
@@ -3365,7 +3377,7 @@ A:QA,BT,MN,NP,IR,TM,AZ
 A:GE,KG,UZ
 T:*/*=2.44/60
 #####################################################################
-P:13,1 Tele 2 Geschaeftskunden
+P:13,1 Tele 2 Preselection
 B:01013
 C:Name:Tele 2 Geschaeftskunden
 C:Address:Telecommunications Services GmbH, Postfach 130840, 40558 Düsseldorf
@@ -3377,7 +3389,7 @@ C:Erfasste Zonen:
 C:2	-   4	Deutschland
 C:10		Mobilfunk
 C:200	-	Ausland
-# G:20-Sep-1999
+# G:15-Jun-2000
 D:dtag
 Z:0 FreeCall
 A:011*
@@ -3388,9 +3400,9 @@ A:112
 T:*/*=0
 Z:1-4 National
 A:+49
-T:*/07-19=0.09/60
-T:*/19-22=0.06/60
-T:*/22-07=0.04/60
+T:W/06-18=0.06(60)/1
+T:W/18-06=0.04(60)/1
+T:E,H/*=0.04(60)/1
 Z:10 Mobilfunknetz
 A:01618
 A:01610,01611,01612,01613,01614,01615,01616,01617,01619
@@ -3398,12 +3410,12 @@ A:0170,0171,0175
 A:0172,0173,0174
 A:0177,0178
 A:0176,0179
-T:*/*=0.49/60
+T:*/*=0.38(60)/1
 Z:200 Euro 1 / USA, Kanada
 A:US,CA,NL,BE,FR,ES
 A:LU,FI,IT,CH,AT,VA
 A:UK,DK,SE,NO
-T:*/*=0.32/60
+T:*/*=0.10(60)/1
 Z:201 Euro 2
 A:AD,FO,IE,IS,LI,MC
 A:PL,SM,CZ,TR
@@ -8217,7 +8229,7 @@ C:2	-   4	Deutschland
 C:10		Mobilfunk
 C:102		SUPER24 Internet
 C:200	-	Ausland
-# G:01.04.2000
+# G:13.06.2000
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -8229,9 +8241,10 @@ Z:1-4 SUPER24
 A:+49
 T:W/08-09=0.044/60
 T:W/09-18=0.066/60
-T:W/18-21=0.044/60
+T:W/18-21=0.042/60
 T:W/21-08=0.033/60
-T:E,H/08-21=0.044/60
+T:E,H/08-18=0.044/60
+T:E,H/18-21=0.042/60
 T:E,H/21-08=0.033/60
 Z:10 Mobilfunk
 A:01618
@@ -10738,6 +10751,40 @@ T:*/*=2.29332(60)/1
 Z:444 China
 A:CN
 T:*/*=2.57520(60)/1
+###########################################################################
+P:28,3 Nikoma by Call
+B:01028
+# G:01-Apr-2000
+C:Nikoma
+C:Name: nikoma MediaWorks GmbH
+C:Address: Amsinckstraße 71, 20097 Hamburg, Tel: 040-80804-0, Fax: 040-80804-1998
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Homepage: http://www.nikoma.de/
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+Z:3-4 Fern
+T:W/9-18=0.0989(60)/1
+T:W/18-9=0.0589(60)/1
+T:E/*=0.0589(60)/1
+A:+49
+Z:10-15 Mobil
+A:01618
+A:01610,01611,01612,01613,01614,01615,01616,01617,01619
+A:0170,0171,0175
+A:0172,0173,0174
+A:0177,0178
+A:0176,0179
+T:*/*=0.46(60)/1
+Z:100 Internet
+A:0193033
+T:W/9-18=0.0349(60)/1
+T:W/18-9=0.0289(60)/1
+T:E/*=0.0289(60)/1
 #####################################################################
 #
 #
@@ -11060,7 +11107,7 @@ T:*/*=0.12/2
 Z:100 T-Online
 A:0191011
 C:Dies ist *kein* All-in-One Zugang, es werden zusätzliche Gebühren erhoben!
-T:*/*=0.05(60)/60 T-Online eco
+T:*/*=0.029(60)/60 T-Online eco
 Z:120 Surf 1
 A:019107873
 T:*/*=0.045/60
@@ -11324,7 +11371,7 @@ A:01908
 T:*/*=0.12/2
 Z:100 T-Online
 A:0191011
-T:*/*=0.05(60)/60 T-Online eco
+T:*/*=0.029(60)/60 T-Online eco
 Z:121 CompuServeOffice
 A:019160
 T:*/09-18=0.019(60)/180 CompuServeOffice
@@ -11581,7 +11628,7 @@ A:01908
 T:*/*=0.12/2
 Z:100 T-Online
 A:0191011
-T:*/*=0.05(60)/60 T-Online eco
+T:*/*=0.029(60)/60 T-Online eco
 Z:121 CompuServeOffice
 A:019160
 T:*/09-18=0.019(60)/180 CompuServeOffice
@@ -11844,7 +11891,7 @@ A:01908
 T:*/*=0.12/2
 Z:100 T-Online
 A:0191011
-T:*/*=0.05(60)/60 T-Online eco
+T:*/*=0.029(60)/60 T-Online eco
 Z:121 CompuServeOffice
 A:019160
 T:*/09-18=0.019(60)/180 CompuServeOffice
@@ -12082,7 +12129,7 @@ T:*/*=0.12/2
 Z:100 T-Online
 A:0191011
 C:Dies ist *kein* All-in-One Zugang, es werden zusätzliche Gebühren erhoben!
-T:*/*=0.05(60)/60 T-Online eco
+T:*/*=0.029(60)/60 T-Online eco
 Z:121 CompuServeOffice
 A:019160
 T:*/09-18=0.019(60)/180 CompuServeOffice
@@ -12348,7 +12395,7 @@ T:*/*=0.12/2
 Z:100 T-Online
 A:0191011
 C:Dies ist *kein* All-in-One Zugang, es werden zusätzliche Gebühren erhoben!
-T:*/*=0.05(60)/60 T-Online eco
+T:*/*=0.029(60)/60 T-Online eco
 Z:120 Surf 1
 A:019107873
 T:*/*=0.045/60
@@ -24596,9 +24643,9 @@ T:*/*=0.033(60)/1 MSN Easysurfer
 Z:103 Lübecker Nachrichten
 A:0192361
 C:Homepage:http://www.ln-online.de/service/internet
-T:W/18-09=0.0444(60)/1
-T:W/09-18=0.0488(60)/1
-T:E,H/*=0.0444(60)/1
+T:W/18-09=0.0399(60)/1
+T:W/09-18=0.0444(60)/1
+T:E,H/*=0.0399(60)/1
 #####################################################################
 P:[-01.11.1999]88,0 WorldCom
 B:01088
@@ -25005,130 +25052,6 @@ T:*/*=1.159(60)/1
 Z:206
 A:+
 T:*/*=1.759(60)/1
-#####################################################################
-P:98,1 Nikocity Study&Surf
-B:01098
-# G:01-Mar-2000
-C:Nikoma, Reseller von Star Telekom
-C:Name:Nikocity Study&Surf
-C:Address:Nikoma
-C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
-C:Special:Reseller von Star Telecom (01098)
-C:Homepage: http://www.nikoma.de/
-C:Nikocity gilt nur in den Städten Augsburg, Berlin, Bremen, Bielefeld,
-C:Düsseldorf, Dortmund, Frankfurt, Hamburg, Hannover, München, Nürnberg,
-C:Stuttgart, Köln, Karlsruhe, Leipzig oder Mannheim und den jeweiligen
-C:Orten in der City-Zone
-C:Study&Surf gilt nur für Studenten, die sich dafür angemeldet haben.
-Z:0 FreeCall
-A:011*
-A:0130*,0800*,0801*
-A:031*
-A:110
-A:112
-T:*/*=0
-Z:1-2 Nikocity
-# Entspricht nicht der DTAG-City-Zone!
-T:*/9-21=0.08(60)/1 Hauptzeit
-T:*/21-9=0.06(60)/1 Nebenzeit
-Z:3-4 Fern
-T:*/9-21=0.12(60)/1 Hauptzeit
-T:*/21-9=0.07(60)/1 Nebenzeit
-A:+49
-Z:10-15 Mobil
-# Tarife werden zum 1.11.1999 erhöht!
-A:01618
-A:01610,01611,01612,01613,01614,01615,01616,01617,01619
-A:0170,0171,0175
-A:0172,0173,0174
-A:0177,0178
-A:0176,0179
-T:*/*=0.46(60)/1
-Z:100 Internet
-A:0193434
-T:W/9-18=0.0349(60)/1
-T:E/18-9=0.0289(60)/1
-T:E/*=0.0289(60)/1
-#####################################################################
-P:98,2 Nikocity
-B:01098
-# G:01-Mar-1999
-C:Name:Nikocity
-C:Address:Nikoma
-C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
-C:Special:Reseller von Star Telecom (01098)
-C:Nikoma, Reseller von Star Telekom
-C:Homepage: http://www.nikoma.de/
-C:Nikocity gilt nur in den Städten Augsburg, Berlin, Bremen, Bielefeld,
-C:Düsseldorf, Dortmund, Frankfurt, Hamburg, Hannover, München, Nürnberg,
-C:Stuttgart, Köln, Karlsruhe, Leipzig oder Mannheim und den jeweiligen
-C:Orten in der City-Zone
-Z:0 FreeCall
-A:011*
-A:0130*,0800*,0801*
-A:031*
-A:110
-A:112
-T:*/*=0
-Z:1-2 Nikocity
-# Entspricht nicht der DTAG-City-Zone!
-T:*/9-21=0.08(60)/1 Hauptzeit
-T:*/21-9=0.06(60)/1 Nebenzeit
-Z:3-4 Fern
-T:*/9-21=0.12(60)/1 Hauptzeit
-T:*/21-9=0.07(60)/1 Nebenzeit
-A:+49
-Z:10-15 Mobil
-# Tarife werden zum 1.11.1999 erhöht!
-A:01618
-A:01610,01611,01612,01613,01614,01615,01616,01617,01619
-A:0170,0171,0175
-A:0172,0173,0174
-A:0177,0178
-A:0176,0179
-T:*/*=0.46(60)/1
-Z:100 Internet
-A:0193434
-T:*/8-1=0.0479(60)/1
-T:*/1-8=0.0289(60)/1
-#####################################################################
-P:98,3 Nikoma by Call
-B:01098
-# G:01-Mar-1999
-C:Name:Nikoma by Call
-C:Address:Nikoma
-C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
-C:Special:Reseller von Star Telecom (01098)
-C:Nikoma, Reseller von Star Telekom
-C:Homepage: http://www.nikoma.de/
-C:Nikoma Internet By Call
-Z:0 FreeCall
-A:011*
-A:0130*,0800*,0801*
-A:031*
-A:110
-A:112
-T:*/*=0
-Z:1-4 Deutschlandweit
-T:*/9-21=0.12(60)/1 Hauptzeit
-T:*/21-9=0.07(60)/1 Nebenzeit
-A:+49
-Z:10-15 Mobil
-# Tarife werden zum 1.11.1999 erhöht!
-A:01618
-A:01610,01611,01612,01613,01614,01615,01616,01617,01619
-A:0170,0171
-A:0172,0173
-A:0177,0178
-A:0176,0179
-T:*/*=0.46(60)/1
-Z:100 Internet
-A:0193434
-T:*/8-1=0.0479(60)/1
-T:*/1-8=0.0289(60)/1
 #####################################################################
 #
 #

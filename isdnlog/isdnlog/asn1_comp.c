@@ -1,4 +1,4 @@
-/* $Id: asn1_comp.c,v 1.4 2000/01/20 07:30:09 kai Exp $
+/* $Id: asn1_comp.c,v 1.5 2000/06/20 17:09:59 akool Exp $
  *
  * ISDN accounting for isdn4linux. (ASN.1 parser)
  *
@@ -21,6 +21,12 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: asn1_comp.c,v $
+ * Revision 1.5  2000/06/20 17:09:59  akool
+ * isdnlog-4.29
+ *  - better ASN.1 display
+ *  - many new rates
+ *  - new Option "isdnlog -Q" dump's "/etc/isdn/isdn.conf" into a SQL database
+ *
  * Revision 1.4  2000/01/20 07:30:09  kai
  * rewrote the ASN.1 parsing stuff. No known problems so far, apart from the
  * following:
@@ -128,7 +134,7 @@ ParseReturnResultComponentSequence(struct Aoc *chanp, u_char *p, u_char *end, in
  	case 17: XSEQUENCE(ParseRESInterrogateServedUserNumbers, ASN1_TAG_SET, ASN1_NOT_TAGGED); break;
 	default: return -1;
 	}
-		
+
 	return p - beg;
 }
 
@@ -174,7 +180,7 @@ ParseReturnErrorComponent(struct Aoc *chanp, u_char *p, u_char *end, int dummy)
 	case 48: sprintf(error, "request already accepted"); break;
 	default: sprintf(error, "(%d)", errorValue); break;
 	}
-	print_msg(PRT_SHOWNUMBERS, "ReturnError: %s\n", error);
+	showmsg("ReturnError: %s\n", error);
 
 	return p - beg;
 }

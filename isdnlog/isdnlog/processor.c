@@ -1,4 +1,4 @@
-/* $Id: processor.c,v 1.106 2000/06/02 12:14:27 akool Exp $
+/* $Id: processor.c,v 1.107 2000/06/20 17:09:59 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,12 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.107  2000/06/20 17:09:59  akool
+ * isdnlog-4.29
+ *  - better ASN.1 display
+ *  - many new rates
+ *  - new Option "isdnlog -Q" dump's "/etc/isdn/isdn.conf" into a SQL database
+ *
  * Revision 1.106  2000/06/02 12:14:27  akool
  * isdnlog-4.28
  *  - isdnlog/tools/rate.c ... patch by Hans Klein, unknown provider
@@ -1325,6 +1331,19 @@ void buildnumber(char *num, int oc3, int oc3a, char *result, int version,
   print_msg(PRT_DEBUG_DECODE, " DEBUG> %s: num=\"%s\", oc3=%s(%02x), result=\"%s\", sonder=%d, intern=%d, local=%d, partner=%d\n",
     st + 4, n, i2a(oc3, 8, 2), oc3 & 0x70, result, *sondernummer, *intern, *local, partner);
 } /* buildnumber */
+
+
+char *ns(char *num)
+{
+  auto int i1 = 0, i2 = UNKNOWN, i3 = 0, i4 = 0;
+
+
+  if (++retnum == MAXRET)
+    retnum = 0;
+
+  buildnumber(num, 0, 0, retstr[retnum], VERSION_EDSS1, &i1, &i2, &i3, &i4, 0, 1);
+  return(num /* retstr[retnum] */);
+} /* ns */
 
 
 void aoc_debug(int val, char *s)

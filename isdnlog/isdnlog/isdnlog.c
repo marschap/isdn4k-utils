@@ -1,4 +1,4 @@
-/* $Id: isdnlog.c,v 1.61 2000/04/02 17:35:07 akool Exp $
+/* $Id: isdnlog.c,v 1.62 2000/06/20 17:09:59 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,12 @@
  * along with this program; if not, write to the Free Software
  *
  * $Log: isdnlog.c,v $
+ * Revision 1.62  2000/06/20 17:09:59  akool
+ * isdnlog-4.29
+ *  - better ASN.1 display
+ *  - many new rates
+ *  - new Option "isdnlog -Q" dump's "/etc/isdn/isdn.conf" into a SQL database
+ *
  * Revision 1.61  2000/04/02 17:35:07  akool
  * isdnlog-4.18
  *  - isdnlog/isdnlog/isdnlog.8.in  ... documented hup3
@@ -469,14 +475,16 @@ static int read_param_file(char *FileName);
 
 static char     usage[]   = "%s: usage: %s [ -%s ] file\n";
 #ifdef Q931
-static char     options[] = "av:sp:x:m:l:rt:c:C:w:SVTDPMh:nW:H:f:bL:NFA:2:O:Ki:R:0:ou:B:U:1d:qI:";
+static char     options[] = "qav:sp:x:m:l:rt:c:C:w:SVTDPMh:nW:H:f:bL:NFA:2:O:Ki:R:0:ou:B:U:1d:I:Q";
 #else
-static char     options[] = "av:sp:x:m:l:rt:c:C:w:SVTDPMh:nW:H:f:bL:NFA:2:O:Ki:R:0:ou:B:U:1d:I:";
+static char     options[] =  "av:sp:x:m:l:rt:c:C:w:SVTDPMh:nW:H:f:bL:NFA:2:O:Ki:R:0:ou:B:U:1d:I:Q";
 #endif
 static char     msg1[]    = "%s: Can't open %s (%s)\n";
 static char    *ptty = NULL;
 static section *opt_dat = NULL;
 static char	**hup_argv;	/* args to restart with */
+
+static int      sqldump = 0;
 
 /*****************************************************************************/
 
@@ -935,6 +943,9 @@ int set_options(int argc, char* argv[])
       	       	 }
                  else
                    ciInterval = ehInterval = atoi(optarg);
+      	       	 break;
+
+      case 'Q' : sqldump++;
       	       	 break;
 
       case '?' : printf(usage, myshortname, myshortname, options);
@@ -1526,8 +1537,7 @@ int main(int argc, char *argv[], char *envp[])
 	      print_msg(PRT_NORMAL, "%s\n", version);
 	    } /* if */
 
-#if 0 /* AK: Ausgabe der gesamten "/etc/isdn/isdn.conf" als SQL-Import-File */
-      	    {
+	    if (sqldump) {
 	      auto     FILE *fo = fopen("/tmp/isdn.conf.sql", "w");
               register int   i;
 	      register char *p1, *p2;
@@ -1535,6 +1545,13 @@ int main(int argc, char *argv[], char *envp[])
 
               if (fo != (FILE *)NULL) {
                 fprintf(fo, "USE isdn;\n");
+                fprintf(fo, "DROP TABLE IF EXISTS conf;\n");
+                fprintf(fo, "CREATE TABLE conf (\n");
+                fprintf(fo, "   MSN char(32) NOT NULL,\n");
+                fprintf(fo, "   SI tinyint(1) DEFAULT '1' NOT NULL,\n");
+                fprintf(fo, "   ALIAS char(64) NOT NULL,\n");
+                fprintf(fo, "   KEY MSN (MSN)\n");
+                fprintf(fo, ");\n");
 
       	        for (i = 0; i < knowns; i++) {
                   p1 = known[i]->num;
@@ -1554,8 +1571,7 @@ int main(int argc, char *argv[], char *envp[])
 
               fclose(fo);
               exit(0);
-      	    }
-#endif
+      	    } /* if */
 
             loop();
 
