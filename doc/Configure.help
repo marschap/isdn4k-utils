@@ -125,6 +125,11 @@ CONFIG_ISDNCTRL_DEBUG
   of the linklevel part. This feature may be helpful when debugging
   drivers or the linklevel itself.
 
+Enable config file option isdnctrl
+CONFIG_ISDNCTRL_CONF
+  If enabled, an option to read/write configfiles is build into isdnctrl.
+  The manpage is extended automatically.
+
 Build iprofd
 CONFIG_IPROFD
   If enabled, iprofd, a special daemon will be built. This daemon is

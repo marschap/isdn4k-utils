@@ -1,4 +1,4 @@
-# $Id: Makefile.in,v 1.6 1997/03/03 04:00:44 fritz Exp $
+# $Id: Makefile.in,v 1.7 1997/10/26 22:58:46 fritz Exp $
 #
 # Makefile for ISDN manpages
 # (C) 1997 Fritz Elfert
@@ -7,15 +7,10 @@
 SHELL			= /bin/sh
 AWK				= @AWK@
 SED				= @SED@
+MANDIR			= @CONFIG_MANDIR@
 MANPAGES		= ttyI.4 isdninfo.4 isdn_audio.4 isdn_cause.7
 INSTALL_MAN		= @INSTALL@ -o 0 -g 0 -m 0644
 prefix			= @prefix@
-ifeq (../.config,$(wildcard ../.config))
-	include ../.config
-	mandir			= $(CONFIG_MANDIR)
-else
-	mandir			= @mandir@
-endif
 
 %.4: %.man
 	MANDATE=`grep CHECKIN $< | $(AWK) '{print $$4}'`; \
@@ -34,19 +29,25 @@ all: $(MANPAGES)
 config:
 	@./configure
 
-install:
+Makefile: Makefile.in config.status
+	./config.status
+
+config.status: configure
+	./config.status --recheck
+
+install: $(MANPAGES) Makefile
 	@for i in $(MANPAGES) ; do \
 		MANSECT=`echo $$i | cut -d. -f2` ;\
-		MANDIR=$(mandir)/man$$MANSECT ;\
-		mkdir -p $$MANDIR ;\
-		$(INSTALL_MAN) $$i $$MANDIR/$$i ;\
+		DEST=$(MANDIR)/man$$MANSECT ;\
+		mkdir -p $$DEST ;\
+		$(INSTALL_MAN) $$i $$DEST/$$i ;\
 	done
 
-uninstall:
+uninstall: Makefile
 	for i in $(MANPAGES) ; do \
 		MANSECT=`echo $$i | cut -d. -f2` ;\
-		MANDIR=$(mandir)/man$$MANSECT ;\
-		rm -f $$MANDIR/$$i ;\
+		DEST=$(MANDIR)/man$$MANSECT ;\
+		rm -f $$DEST/$$i ;\
 	done
 
 clean:
