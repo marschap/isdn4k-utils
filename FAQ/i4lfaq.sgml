@@ -4,7 +4,7 @@
 
 <title>FAQ for isdn4linux
 <author>Matthias Hessler (<tt><htmlurl url="mailto:hessler@isdn4linux.de" name="hessler@isdn4linux.de"></tt>)
-<date>v2.0.64, 1. September 2001
+<date>v2.0.65, 6. December 2001
 <abstract>
 If you are reading this FAQ online, you may consider downloading the whole
 thing, and reading it offline (much cheaper). To download the latest
@@ -1702,7 +1702,7 @@ and <url url="http://www.linux-france.org/prj/inetdoc/guides/rnis/">
 <url url="http://sdb.suse.de/sdb/en/html/index.html">; there is also an ISDN
 howto (isdn.html) and a ISDN quick-install guide (isdnquick.html).
 <item>Tips to configure Suse (and about offline reading):
-<url url="http://www.schlenn.de/linux.html">
+<url url="http://www.schlenn.de/isdn4linux/">
 <item>Tips to configure Red Hat:
 <url url="http://www.webideal.de/rh-isdn/">
 <item>Tips to configure Mandrake:
@@ -5021,9 +5021,9 @@ sub-address 02, then configure the local phone number of the HiSax driver as
 <label id="country_italy">
 <p>
 isdn4linux also works in Italy (ICN card). The MSN must be the phone number
-with the Italian area code but without the leading 0. For example, if my phone
-number is 72004681 and my area code is 045, my MSN is 4572004681.
-Now with the setting AT&amp;E4572004681 isdn4linux works fine.
+with the Italian area code, and since middle of 2001 includes the leading 0.
+For example, if my phone number is 72004681 and my area code is 045, my MSN
+is 04572004681.  Now with the setting AT&amp;E04572004681 isdn4linux works fine.
 
 <sect1> country_netherlands: Netherlands: What does our MSN look like?  
 <label id="country_netherlands">
