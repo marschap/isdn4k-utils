@@ -4,7 +4,7 @@
 
 <title>FAQ for isdn4linux
 <author>Matthias Hessler (<tt><htmlurl url="mailto:hessler@isdn4linux.de" name="hessler@isdn4linux.de"></tt>)
-<date>v2.0.31, 16. January 2000
+<date>v2.0.33, 26. January 2000
 <abstract>
 If you are reading this FAQ online, you may consider downloading the whole
 thing, and reading it offline (much cheaper). To download the latest
@@ -276,6 +276,10 @@ which is made especially for isdn4linux.
 The latter can be found at:
 <tt><url url="ftp://ftp.franken.de/pub/isdn4linux/contributions/"></tt>
 
+Full duplex voice was supported at some point in time, but at some point
+in time the implementation got broken since not too many people used it.
+If you find some bugs - please let us know so that we can fix it.
+
 <sect1> feature_fax: Can I fax with isdn4linux?  
 <label id="feature_fax">
 <p>
@@ -367,7 +371,8 @@ Also look at the dialmode description (see question
 You should definitely be very interested in the large section of this FAQ that
 talks about the dangers of unwanted dialouts: (<ref id="dod" name="dod">).
 
-<sect1> feature_sms: Can I send SMS (short messages) to my handy via ISDN?  
+<sect1> feature_sms: Can I send SMS (short messages) to my mobile phone  
+via ISDN?  
 <label id="feature_sms">
 <p>
 Yes, you can use the program <tt/yaps/ to do this. However, due to some
@@ -450,9 +455,9 @@ on your ISDN provider.
 Additionally, please note that if you are connected through a PBX, it will
 most likely filter out all the subaddressing stuff.
 
-<sect1> feature_gmsv110: Can I connect from my PDA via GMS cellular phone  
+<sect1> feature_gsmv110: Can I connect from my PDA via GMS cellular phone  
 to isdn4linux?  
-<label id="feature_gmsv110">
+<label id="feature_gsmv110">
 <p>
 Yes, if the provider of the cellular phone has a GSM to ISDN/V.110 gateway.
 This has been reported to work from a PalmPilot to isdn4linux with V.110.
@@ -476,7 +481,7 @@ See question <ref id="config_gsmv110" name="config_gsmv110"> for details on how 
 Actually, most features have been implemented and are now being improved.
 The only new feature that may be coming is Least-Cost Routing, though that
 seems to be very tricky, as well as being timing and hardware dependent.
-We'll see...
+Watch out for new isdnlog features. We'll see...
 
 
 <!-- Helpful docu, links, mailing list, config examples, howto's -->
@@ -1074,9 +1079,9 @@ Last, remember that you may have to configure your PBX to 'route' incoming
 calls onto the internal ISDN bus.
 
 If you have a point-to-point configuration ('Anlagenanschluss') then
-you cannot connect your card directly to the S0 bus (otherwise nothing will
-work). You have to connect to an internal ISDN bus. Your MSN is usually
-the extension at the end of your telefon number.
+you cannot connect your card directly to the S0 bus in parallel to the PBX
+(otherwise nothing will work). You have to connect to an internal ISDN bus.
+Your MSN is usually the extension at the end of your telefon number.
 
 <sect1> hardware_telestrouble: The PNP tools done work with my Teles 16.3 PNP 
 card!  
@@ -1232,6 +1237,15 @@ The rate should be set to 9600 with <tt/AT&amp;R9600/. pppd needs to be
 called with <tt/noccp/ and <tt/require-pap/. For a mini-howto see:
 <url url="http://www.oltom.com/Linux/Docs/GSM%20over%20V.110%20Mini-HOWTO.txt">
 
+<sect1> config_point2point: How do I configure a point-to-point connection?  
+<label id="config_point2point">
+<p>
+First of all, the point-to-point connection will only work for one single
+device connected to it - therefore nothing else but your ISDN card may
+be attached to it. You can switch HiSax into point-to-point mode:
+<code>
+hisaxctrl &lt;driver_id&gt; 7 1
+</code>
 
 <sect1> config_links: What helpful links are there about isdn4linux?  
 <label id="config_links">
@@ -1301,6 +1315,7 @@ and recompile kernel.
 <item> Reduce ISDN_MAX_DRIVERS, ISDN_MAX_CHANNELS in
 <tt>include/linux/isdn.h</tt>, then recompile kernel.
 </itemize>
+
 <sect1> trouble_strategy: My isdn4linux doesn't work! How do I best go about  
 finding the problem?  
 <label id="trouble_strategy">
@@ -1396,6 +1411,27 @@ similar)?
 <label id="trouble_isdncause">
 <p>
 Just have a look at <tt>man isdn_cause</tt> to find out what the problem is.
+For the very popular cause "E001B" see question
+<ref id="trouble_e001b" name="trouble_e001b">.
+
+<sect1> trouble_e001b: I get an error message with "cause: E001B"?  
+<label id="trouble_e001b">
+<p>
+This is a very popular error and means (see <tt>man isdn_cause</tt>):
+euro ISDN (E), location user (00), and out of order (1b).
+Taken together means that the driver either can't get a layer 1 connect
+(cable problem, hardware error, hidden hardware conflict - see section
+<ref id="hardware" name="hardware">), or it can't get a layer 2 connect (wrong
+configuration: no Euro ISDN, no automatic TEI supported, point-to-point
+BRI instead of multi-device - see section <ref id="config" name="config">).
+
+<sect1> trouble_euronotsupported: upon startup of HiSax I get the error  
+"kernel hisax: protocol euro not supported"?  
+<label id="trouble_euronotsupported">
+<p>
+This means that you did not select the Euro Protocol ISDN DSS1 option when
+compiling your kernel. You have to switch this on and recompile your
+kernel to be able to use it.
 
 <sect1> trouble_notelrings: Neither my telephone nor my fax machine ring 
 when I call them with isdn4linux?  
@@ -2513,7 +2549,7 @@ If you have a SuSE distribution, this workaround can also be configured by
 setting <tt/IP_DYNIP=&dquot;yes&dquot;/ in <tt>/etc/rc.config</tt>.
 <item>Increase the number of retries on your Windows machine for setting
 up the connection. Change the registry entry
-<tt>Hkey_Local_Machine\System\CurrentControlSet\Services\VxD\MSTCP\MaxConnectRetries</tt>
+<tt>Hkey_Local_Machine\\System\\CurrentControlSet\\Services\\VxD\\MSTCP\\MaxConnectRetries</tt>
 from 3 to a larger value (e.g. 5 or 7).
 </itemize>
 
@@ -2545,6 +2581,13 @@ base address = 0 when I list it with ifconfig
 The ISDN device fakes an Ethernet device. It ignores IRQ and baseaddr and
 just needs the HWaddr for the Ethernet encapsulation.
 
+<sect1> syncppp_lzsproblem: I get an error message like <tt>kernel check for  
+lzs failed</tt>?  
+<label id="syncppp_lzsproblem">
+<p>
+This means that ipppd tries to use lzs compression, but can't find a
+compiled module which contains the code. Either disable lzs compression by
+using a command line option for ipppd, or compile and load the lzs module.
 
 <!-- Config Async PPP
 -->
@@ -3095,7 +3138,6 @@ could happen.
 
 <!-- Chargeint  
 -->  
-
 <sect> chargeint: Chargeint  
 <label id="chargeint">
 
@@ -4316,6 +4358,19 @@ cannot be directly connected to an ISDN network. The PBX can also make
 an internal digital S0 bus available, on which ISDN devices can be
 connected. This allows for local calls without using the switching
 station (thereby avoiding the charges from your telephone company).
+
+<tag/point-to-point mode/
+Your interface can be configured either in a multi-device mode
+(in German: Mehrgeraeteanschluss), or in a point-to-point mode (in German:
+Anlagenanschluss). In the multi-device mode, several ISDN devices can
+be attached to the ISDN bus at the same time. Usually a few (if any)
+numbers are related to this bus, and the devices can pick the call that
+they want to receive. In contrast, the point-to-point mode allows only
+one device to be connected which handles all calls. This is usually
+meant for at least small companies that want to attach their PBX and
+be able to handle the last digits of their telephone numbers by themselves,
+under their own control. The setup usually allows for additional features,
+but is also more expensive.
 
 <tag/PRI/
 PRI means primary rate interface and is the used when a single or multiple
