@@ -9,6 +9,7 @@ CONFIG_SBINDIR=`eval echo ${CONFIG_SBINDIR:-"/sbin"}`
 dnl Checks for programs.
 AC_PROG_CC
 AC_PROG_INSTALL
+AC_CHECK_PROGS(BZIP2, bzip2)
 
 dnl Checks for libraries.
 dnl Berkeley DB appends RDBEXT

@@ -4,7 +4,7 @@
  * Copyright 1999 by Leopold Toetsch <lt@toetsch.at>
  *
  * SYNOPSIS
- * mkzonedb -r Zonefile -d database [ -f ] [ -v ] [ - V ]
+ * mkzonedb -r Zonefile -d database -c Codef [-f] [-v] [-V] [-o Oz] [-l L]
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,7 +22,7 @@
  *
  */
 
-static char progversion[] = "1.00";
+static char progversion[] = "1.01";
 /* first char must match dataversion */
 
 
@@ -75,7 +75,6 @@ static int numlen;
 
 static void read_codefile(char *cf) {
 	FILE *fp;
-	int l, llen = 0;
 	char *p;
         auto char line[BUFSIZ];
 
@@ -87,14 +86,13 @@ static void read_codefile(char *cf) {
 		exit(EXIT_FAILURE);
 	}
 	maxnum = 0;
-	while (!feof(fp)) {
+	while (fgets(line, BUFSIZ, fp)) {
 		if (verbose && (nc % 1000) == 0) {
 			printf("%d\r", nc);
 			fflush(stdout);
 		}
-		fgets(line, BUFSIZ, fp);
 		if (!isdigit(*line))
-			continue;
+			break;
 		line[strlen(line)-1] = '\0';
 		if ((codes=realloc(codes, (nc+1)*sizeof(code_t))) == 0) {
 			fprintf(stderr, "Out of mem\n");
@@ -118,7 +116,7 @@ static void read_codefile(char *cf) {
 		fflush(stdout);
 	}
 	fclose(fp);
-	/* we append a dumm for not defined nums */
+	/* we append a dummy for not defined nums */
 	if ((codes=realloc(codes, (nc+1)*sizeof(code_t))) == 0) {
 		fprintf(stderr, "Out of mem\n");
 		exit(EXIT_FAILURE);
@@ -131,8 +129,6 @@ static void read_codefile(char *cf) {
 static void read_rzfile(char *rf) {
 	int i;
 	char line[BUFSIZ], *p, *op;
-
-	size_t llen, l;
 	FILE *fp;
 	int from,to,z;
 
@@ -140,30 +136,24 @@ static void read_rzfile(char *rf) {
 		fprintf(stderr, "Coudn't read '%s'\n", rf);
 		exit(EXIT_FAILURE);
 	}
-	llen=40;
-	n=0;
-	zones = 0;
 	if ((numbers = calloc(maxnum+1, sizeof(int))) == 0) {
 		fprintf(stderr, "Out of mem\n");
 		exit(EXIT_FAILURE);
 	}
-	i=keylen=keydigs=0;
+	n=i=keylen=keydigs=0;
 	if (verbose)
 		printf("Reading %s\n", rf);
 
-	while (!feof(fp)) {
+	while (fgets(line, BUFSIZ, fp)) {
 		if (verbose && (n % 1000) == 0) {
 			printf("%d\r", n);
 			fflush(stdout);
 		}
-		fgets(line, BUFSIZ, fp);
-                l = strlen(line);
-		if (!l || l == -1 || !*line)
+		if (!*line)
 			break;
-		if (l>40)
+		if (strlen(line)>40)
 			fprintf(stderr, "Possible junk in line %d", n);
-		p = line;
-		from = strtoul(p, &p, 10);
+		from = strtoul(line, &p, 10);
 		if (p-line > keydigs)
 			keydigs=p-line;
 		p++;
@@ -194,6 +184,7 @@ static void read_rzfile(char *rf) {
 	free(rf);
 }
 
+/* get the 256 top used nums in table */
 static void make_table() {
 	int i, j, k;
 	tablelen = 0;
@@ -253,8 +244,16 @@ static void write_remaining_codes(_DB db) {
 	US kus;
 	datum key, value;
 	char *val;
+	if (verbose)
+		printf("Writing remaining\n");
+	
 	for (i=0 ; i< nc; i++)
 		if (codes[i].num > 0 && *codes[i].code) {
+			if (verbose && (i % 1000) == 0) {
+				printf("%d\r", i);
+				fflush(stdout);
+			}
+			
 			if (keylen == 4) {
 				kul = (UL)codes[i].num;
 				key.dptr = (char*)&kul;
@@ -271,7 +270,7 @@ static void write_remaining_codes(_DB db) {
 			value.dsize = l;
 			if(STORE(db, key, value)) {
 				fprintf(stderr, "Error storing key '%d' - %s\n",codes[i].num,GET_ERR);
-/*				exit(EXIT_FAILURE); */
+				exit(EXIT_FAILURE); 
 			}
 			free(val);
 		}
@@ -309,7 +308,10 @@ static void write_db(char * df) {
 		nn,n, ortszone, numlen?numlen:keydigs);
 	value.dptr = version;
 	value.dsize = strlen(version)+1;
-	STORE(db, key, value);
+	if(STORE(db, key, value)) {
+		fprintf(stderr, "Error storing version key - %s\n", GET_ERR);
+		exit(EXIT_FAILURE);
+	}
 
 	if ((p = val = calloc(nn, tablelen)) == 0) {
 		fprintf(stderr, "Out of mem\n");
@@ -326,11 +328,14 @@ static void write_db(char * df) {
 			*((UL*)p)++ = (UL)table[i];
 	value.dptr = val;
 	value.dsize = nn*tablelen;
-	STORE(db, key, value);
+	if(STORE(db, key, value)) {
+		fprintf(stderr, "Error storing table key - %s\n", GET_ERR);
+		exit(EXIT_FAILURE);
+	}
 	free(val);
 
 	/* and write data */
-	val = malloc(2); /* size */
+	val = malloc(2); /* size of count */
 	vlen = 2;
 	ofrom = -1;
 	count = 0;
@@ -351,7 +356,7 @@ static void write_db(char * df) {
 				fprintf(stderr, "Error storing key '%d' - %s\n",ofrom,GET_ERR);
 				exit(EXIT_FAILURE);
 			}
-			free(val);
+			free(value.dptr); /* the realloced val */
 		}
 		if (ofrom != zones[i][0]) {
 			count = 0;
@@ -404,7 +409,7 @@ static void write_db(char * df) {
 	value.dsize = vlen;
 	insert_code(&value, ofrom);
 	STORE(db, key, value);
-	free(val);
+	free(value.dptr);
 	write_remaining_codes(db);
 	CLOSE(db);
 	free(zones);
@@ -437,11 +442,8 @@ int main (int argc, char *argv[])
 	}
 	read_codefile(cf);
 	read_rzfile(rf);
-	/* make table of 256 maxused to's */
 	make_table();
-
 	write_db(df);
-
 
 	/* Uff this got longer as I thought,
 	   C is a real low level language -

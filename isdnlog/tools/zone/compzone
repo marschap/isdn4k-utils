@@ -86,7 +86,7 @@ sub min {
  return $_[0] < $_[1] ? $_[0] : $_[1];
 } 
 sub read_compact {
-    my ($from,$to,$z,$n);
+    my ($from,$to,$z,$n, $cc);
     print "Reading $reducedf...\n" if($verbose);
     if (!$dbm) {
 		open(IN, $reducedf) || die("Can't read $reducedf");
@@ -112,6 +112,7 @@ sub read_compact {
 			$pack_table = $1 if(/C(\w)/);
 			$n = $1 if(/N(\d+)/);
 			$t = $1 if(/T(\d+)/);
+			$cc = $1 if(/A(\d+)/);
 		}
 		my($bnum) =	 $db{"_tAbLe\x0"};
 		my %len = ('C' => 1, 'S' => 2, 'L' => 4);
@@ -124,9 +125,11 @@ sub read_compact {
 		    next if ($key eq "_tAbLe\x0" || $key eq "vErSiO\x0");
 		    my($temp) = unpack($pack_key, $key);
 		    next if( $temp !~ /\d/);
+			if ($cc) {
 			my($ind);
 			my($ort) = substr($value,0, $ind=index($value, "\x0"));
 			$value = substr($value, $ind+1);
+			}	
 		    my($count) = unpack('S', $value);
 		    $value=substr($value, 2); # past count
 		    while ($count--) {

@@ -1,4 +1,4 @@
-V:1.02-Germany [16-Jun-1999 21:08:01]
+V:1.02-Germany [20-Jun-1999 22:27:34]
 
 # Währungsformat
 U:%.3f DM
@@ -8,7 +8,7 @@ U:%.3f DM
 #
 # (C) Copyright 1999 by Andreas Kool (akool@isdn4linux.de)
 #
-# $Id: rate-de.dat,v 1.22 1999/06/16 19:12:01 akool Exp $
+# $Id: rate-de.dat,v 1.23 1999/06/21 19:32:14 akool Exp $
 #
 # Zonenzuordnung für Deutschland
 #
@@ -11295,7 +11295,9 @@ T:*/8-18=0.07(60)/90
 T:*/18-8=0.035(60)/90
 Z:3,4
 T:*/8-18=0.12(60)/1
-T:*/18-8=0.09(60)/1
+T:*/18-2,6-8=0.09(60)/1
+T:*/2-6=0.065(60)/1 Data
+A:+49
 Z:10-15
 T:*/8-18=0.59(60)/1
 T:*/18-8=0.49(60)/1
@@ -13268,7 +13270,7 @@ Z:457 Ägypten
 A:Ägypten # +20
 T:*/08-20=1.199(60)/1
 T:*/20-08=1.179(60)/1
-Z:358 Alaska
+Z:458 Alaska
 A:Alaska # +1907
 T:*/08-20=0.319(60)/1
 T:*/20-08=0.299(60)/1
@@ -13375,7 +13377,7 @@ P:79 Viatel
 ##
 ## macht *keinen* Tarifwechsel in laufender Verbindung!
 ##
-G:01.05.1999
+G:15.06.1999
 C:VIAPHONE GmbH, Hanauer Landstraße 187, 60314 Frankfurt 01079
 C:Homepage: http://www.viatel.de
 C:Hotline:  0800/79-01079
@@ -13384,20 +13386,188 @@ C:Telefax:  069/94 994-100
 C:Adresse:  Hanauer Landstrasse 187-189
 C:	    60314 Frankfurt am Main
 D:dtag
-Z:2-4 Fern
-T:W/09-18=0.08/30,0.16(60)/1 Standard
-T:W/18-09=0.045/30,0.09(60)/1 Spar
-T:E/*=0.045/30,0.09(60)/1 Nacht
+Z:2-4 National
+T:W/09-18=0.064/30,0.128(60)/1 Hauptzeit
+T:W/18-21=0.085(60)/60 Nebenzeit
+T:W/21-9=0.055(60)/60 Nacht
+T:E/9-21=0.085(60)/60 Hauptzeit
+T:E/21-9=0.055(60)/60 Nacht
 A:+49
-Z:5-10 Deutschland GSM
-A:01610,01617,01619,01618 # C
-A:0170,0171  		  # D1
-A:0172,0173		  # D2
-A:0177,0178		  # Eplus
-A:0176,0179  		  # E2
-T:W/09-18=0.365/30,0.73(60)/1 Standard
-T:W/18-09=0.18/30,0.36(60)/1 Spar
-T:E/*=0.18/30,0.36(60)/1 Spar
+Z:10-15 Mobilfunk
+T:W/09-18=0.365/30,0.730(60)/1 Hauptzeit
+T:W/18-09=0.01825/30,0.365(60)/1 Nebenzeit
+T:E/*=0.365(60)/60 
+# Auslandstarife
+Z:200
+A:Afganistan,Amerikanisch Samoa,Angola,Antigua,Aquatorial Guinea,Anguilla
+A:Armenien,Aruba,Ascension,Aserbaidschan,Athiopien,Bahamas,Bahrain
+A:Bangladesch,Barbados,Belize,Benin,Bermuda,Bhutan,Botswana
+A:Britisch Jungferninseln,Brunei,Burkina Faso,Burma,Burundi,Cap Verde
+A:Cayman Inseln,Christmas & Cocos Inseln,Cook Inseln,Diego Garcia
+A:Dominica,Dschibuti,Elfenbeinküste,Eritrea,Falkland Inseln,Fidschi Inseln
+A:Franz. Antillen,Guadeloup,Franz. Guinea,Franz. Polynesion,Gabun
+A:Gambia,Ghana,Grenada,Carriacou,Grönland,Guam,Guantanamo Bay,Guinea
+A:Guinea Bissau,Guayana,Haiti,Indien,Irak,Iran,Jamaika,Jemen,Kambodscha
+A:Kamerun,Kasachstan,Katar,Kenia,Kirgisien,Kiribati,Kommoren,Kongo
+A:Korea Nord,Kuba,Kuwait,Laos,Lesotho,Liberia,Macao,Madagaskar
+A:Madeira,Malawi,Malediven,Mali,Marshall Inseln,Mauretanien,Mauritius
+A:Mayotte Inseln,Mikronesien,Mongolei,Montserrat,Mozambik,Namibia
+A:Nauru,Nepal,Neu Kaledonien,Nevis,Niederl. Antillen,Niger,Nigeria
+A:Niue,Norfolk Inseln,Oman,Pakistan,Palau,Papua Neu Guinea,Puerto Rico
+A:Reunion,Ruanda,Salomon Inseln,Sambia,Sao Tome,Saudi-Arabien,Senegal
+A:Seychellen,Somalia,Sri Lanka,St. Helena,St. Lucia,St. Kitts
+A:St. Pierre & Miquelon,St. Vincent & Greens.,Sudan,Surinam,Swaziland
+A:Tadschikistan,Tansania,Togo,Tonga,Trinidad & Tobago,Tschad,Turkmenistan
+A:Turks and Caicos Inseln,Tuvalu,US Jungferninseln,Uganda,Usbekistan
+A:Vanuatu,Vereinte Arabische Emirate,Vienam,Wallis & Futuna, Westl. Marianen
+A:Westl. Samoa,Zaire,Zentral. Afrika. Rep.,Zimbabwe
+T:W/9-18=1.065/30,2.13(60)/1
+T:W/18-9=0.937/30,1.874(60)/1
+T:E/*=0.937/30,1.874(60)/1
+Z:201
+A:Agypten,Jordanien,Syrien,Libanon
+T:*/*=0.5475/30,1.095(60)/1
+Z:202
+A:Albanien,Litauen,Mazedonien,Moldavien,Bosnien-Herzegovina,Bulgarien
+A:Estland,Rumänien,Rußland,Slowenien,Jugoslawien,Ukraine,Lettland
+T:W/9-18=0.5125/30,1.025(60)/1
+T:W/18-9=0.451/30,0.902(60)/1
+T:E/*=0.451/30,0.902(60)/1
+Z:203
+A:Algerien,Marokko,Gibraltar,Israel,Tunesien,Weißrußland,Libyen
+T:W/9-18=0.483/30,0.966(60)/1
+T:W/18-9=0.425/30,0.850(60)/1
+T:E/*=0.425/30,0.850(60)/1
+Z:204
+A:Andorra,Belgien Mobilfunk,Liechtenstein,Luxemburg,Monaco,Dänemark
+A:Niederlande Mobilfunk,San Marino,Irland,Spanien
+T:W/9-18=0.480/30,0.960(60)/1
+T:W/18-9=0.297/30,0.594(60)/1
+T:E/*=0.297/30,0.594(60)/1
+Z:205
+A:Argentinien,Mexiko,Dominikanische Republik,Brasilien,Kolumbien,Südafrika
+T:W/9-18=1.065/30,2.13(60)/1
+T:W/18-9=0.6605/30,1.321(60)/1
+T:E/*=0.6605/30,1.321(60)/1
+Z:206
+A:Australien,Japan
+T:W/9-18=0.631/30,1.262(60)/1
+T:W/18-9=0.4355/30,0.871(60)/1
+T:E/*=0.4355/30,0.871(60)/1
+Z:207
+A:Malaysia,Bolivien,China,Ecuador,El Salvador,Panama,Paraguay,Peru
+A:Guatemala,Honduras,Indonesien,Kosta Rica,Thailand,Uruguay,Venezuela
+A:Nicaragua
+T:W/9-18=1.065/30,2.13(60)/1
+T:W/18-9=0.788/30,1.576(60)/1
+T:E/*=0.788/30,1.576(60)/1
+Z:208
+A:Malta
+T:W/9-18=0.498/30,0.996(60)/1
+T:W/18-9=0.438/30,0.876(60)/1
+T:E/*=0.438/30,0.876(60)/1
+Z:209 
+A:Belgien,Frankreich,Niederlande,Schweiz,Großbritannien,Schweiz Mobilfunk
+T:1-5/9-18=0.185/30,0.37(60)/1
+T:2-5/18-9=0.165/30,0.33(60)/1
+T:1/18-0=0.165/30,0.33(60)/1
+T:6/0-9=0.165/30,0.33(60)/1
+T:6/9-0=0.241/60 Weekend Special
+T:7/*=0.241/60 Weekend Special
+T:1/0-9=0.241/60 Weekend Special
+Z:210
+A:Osterreich
+T:W/9-18=0.185/30,0.37(60)/1
+T:W/18-9=0.165/30,0.33(60)/1
+T:E/*=0.165/30,0.33(60)/1
+Z:211
+A:Chile
+T:W/9-18=0.9665/30,1.933(60)/1
+T:W/18-9=0.483/30,0.966(60)/1
+T:E/*=0.483/30,0.966(60)/1
+Z:212
+A:Faroer Inseln
+T:W/9-18=0.338/30,0.676(60)/1
+T:W/18-9=0.3045/30,0.609(60)/1
+T:E/*=0.3045/30,0.609(60)/1
+Z:213
+A:Finnland,Norwegen,Portugal,Schweden,Island
+T:W/9-18=0.3985/30,0.797(60)/1
+T:W/18-9=0.299/30,0.598(60)/1
+T:E/*=0.299/30,0.598(60)/1
+Z:214
+A:Frankreich Mobilfunk
+T:*/*=0.2635/30,0.527(60)/1
+Z:215
+A:Georgien
+T:W/9-18=1.331/30,2.662(60)/1
+T:W/18-9=1.025/30,2.05(60)/1
+T:E/*=1.025/30,2.05(60)/1
+Z:216
+A:Griechenland
+T:W/9-18=0.345/30,0.690(60)/1
+T:W/18-9=0.328/30,0.656(60)/1
+T:E/*=0.328/30,0.656(60)/1
+Z:217
+A:Neuseeland,Singapur,Hongkong
+T:W/9-18=0.8185/30,1.637(60)/1
+T:W/18-9=0.434/30,0.868(60)/1
+T:E/*=0.434/30,0.868(60)/1
+Z:218
+A:Philippinen
+T:W/9-18=1.045/30,2.09(60)/1
+T:W/18-9=0.690/30,1.38(60)/1
+T:E/*=0.690/30,1.38(60)/1
+Z:219
+A:Polen
+T:W/9-18=0.337/30,0.674(60)/1
+T:W/18-9=0.3035/30,0.607(60)/1
+T:E/*=0.3035/30,0.607(60)/1
+Z:220
+A:Slowakei,Tschechien
+T:W/9-18=0.409/30,0.818(60)/1
+T:W/18-9=0.307/30,0.614(60)/1
+T:E/*=0.307/30,0.614(60)/1
+Z:221
+A:Großbritannien Mobilfunk
+T:*/*=0.2365/30,0.473(60)/1
+Z:222
+A:Italien,Italien POPs
+T:W/9-18=0.3215/30,0.643(60)/1
+T:W/18-9=0.2895/30,0.579(60)/1
+T:E/*=0.2895/30,0.579(60)/1
+Z:223
+A:Italien - Mailand,Italien - Rom
+T:*/*=0.273/30,0.546(60)/1
+Z:224
+A:Korea Süd
+T:W/9-18=0.8185/30,1.637(60)/1
+T:W/18-9=0.54/30,1.08(60)/1
+T:E/*=0.54/30,1.08(60)/1
+Z:225
+A:Kroatien,Ungarn.Zypern
+T:W/9-18=0.4635/30,0.927(60)/1
+T:W/18-9=0.4125/30,0.825(60)/1
+T:E/*=0.4125/30,0.825(60)/1
+Z:226
+A:Spanien - Barcelona,Spanien - Bilbao,Spanien - Gerona,Spanien - Madrid
+A:Spanien - Mallorca,Spanien - Tarragona,Spanien - Valencia
+T:W/9-18=0.3155/30,0.631(60)/1
+T:W/18-9=0.284/30,0.568(60)/1
+T:E/*=0.284/30,0.568(60)/1
+Z:227
+A:Taiwan
+T:W/9-18=0.789/30,1.578(60)/1
+T:W/18-9=0.5445/30,1.089(60)/1
+T:E/*=0.5445/30,1.089(60)/1
+Z:228
+A:Türkei
+T:W/9-18=0.3995/30,0.799(60)/1
+T:W/18-9=0.3795/30,0.759(60)/1
+T:E/*=0.3795/30,0.759(60)/1
+Z:229
+A:USA
+T:*/*=0.12/30,0.24(60)/1
 #####################################################################
 #
 #
@@ -14142,7 +14312,7 @@ T:*/*=0.847/0,0.121/6.7
 #    51:01051 Telecom		04.06.1999 je
 #    70:Arcor			01.05.1999 ak
 #    78:3U			01.05.1999 ak
-#    79:Viatel			01.05.1999 ak
+#    79:Viatel			20.06.1999 je
 #    85:GTS-WESTCom		01.05.1999 ak
 #    90:Viag Interkom		29.05.1999 je
 #
