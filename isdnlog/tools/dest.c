@@ -27,22 +27,26 @@
 #define _DEST_C_
 
 #ifdef STANDALONE
-#include <stdlib.h>
-#include <stddef.h>
-#include <stdio.h>
-#include <string.h>
-#include <ctype.h>
-#include <stdarg.h>
-#include <time.h>
-#include <unistd.h>
-#include <errno.h>
-#ifndef __GLIBC__
-extern const char *basename(const char *name);
+# include <stdlib.h>
+# include <stddef.h>
+# include <stdio.h>
+# ifdef __GLIBC__
+#  define __USE_GNU  /* for declaration of basename() */
+# endif
+# include <string.h>
+# include <ctype.h>
+# include <stdarg.h>
+# include <time.h>
+# include <unistd.h>
+# include <errno.h>
 
-#endif
+# if !defined(__GLIBC__) && !defined(basename)
+extern const char *basename(const char *name);
+# endif
+
 #else
-#include "isdnlog.h"
-#include "tools.h"
+# include "isdnlog.h"
+# include "tools.h"
 #endif
 
 #include "dest.h"

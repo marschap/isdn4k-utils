@@ -48,23 +48,22 @@ static char progversion[] = "1.11";
 #define _MKZONEDB_C_
 
 #include <limits.h>
-#ifdef STANDALONE
+
 #include <stdlib.h>
 #include <stdio.h>
-#define __USE_GNU   /* needed for declaration of basename() */
+#ifdef __GLIBC__
+# define __USE_GNU  /* for declaration of basename() */
+#endif
 #include <string.h>
 #include <ctype.h>
 #include <stdarg.h>
 #include <time.h>
 #include <unistd.h>
 #include <errno.h>
-#ifndef __USE_MISC
+#if !defined(__GLIBC__) && !defined(basename)
 extern const char *basename (const char *name);
 #endif
-#else
-#include "isdnlog.h"
-#include "tools.h"
-#endif
+
 #include "config.h"
 #include "common.h"
 
