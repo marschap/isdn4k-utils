@@ -1,4 +1,4 @@
-/* $Id: rate.c,v 1.27 1999/06/28 19:16:49 akool Exp $
+/* $Id: rate.c,v 1.28 1999/06/29 20:11:43 akool Exp $
  *
  * Tarifdatenbank
  *
@@ -19,6 +19,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rate.c,v $
+ * Revision 1.28  1999/06/29 20:11:43  akool
+ * now compiles with ndbm
+ * (many thanks to Nima <nima_ghasseminejad@public.uni-hamburg.de>)
+ *
  * Revision 1.27  1999/06/28 19:16:49  akool
  * isdnlog Version 3.38
  *   - new utility "isdnrate" started
@@ -363,7 +367,7 @@ static void notice (char *fmt, ...)
 #ifdef STANDALONE
   fprintf(stderr, "%s\n", msg);
 #else
-  print_msg(PRT_NORMAL, "%s\n", msg);
+  print_msg(PRT_ERR, "%s\n", msg);
 #endif
 }
 
@@ -449,7 +453,7 @@ static char* strcat3 (char **s)
 static int appendArea (int prefix, char *code, char *name, int zone, int *domestic, char *msg)
 {
   int i;
-  
+
   for (i=0; i<Provider[prefix].nArea; i++) {
     if (strcmp (Provider[prefix].Area[i].Code,code)==0) {
       if (msg)
@@ -688,7 +692,7 @@ int initRate(char *conf, char *dat, char *dom, char **msg)
       s+=2; while (isblank(*s)) s++;
       snprintf (path, LENGTH, dom, s);
       if (initZone(prefix, path, &c)==0) {
-	notice ("%s", c);
+	if (msg) notice ("%s", c);
       } else {
 	warning (dat, c);
       }
@@ -1264,7 +1268,7 @@ int getRate(RATE *Rate, char **msg)
 
   if (run>0.0)
     Rate->Rest=run-Rate->Time;
-  
+
   return 0;
 }
 
@@ -1397,7 +1401,7 @@ void main (int argc, char *argv[])
     else
       getNumber (strdup("+43-1-4711"), Rate.dst);
   }
-     
+
   time(&Rate.start);
   Rate.now=Rate.start+153;
 
@@ -1408,19 +1412,19 @@ void main (int argc, char *argv[])
 
   printf ("domestic=%d _area=%d _zone=%d zone=%d Country=%s Zone=%s Service=%s Flags=%s\n"
 	  "current=%s\n\n",
-	  Rate.domestic, Rate._area, Rate._zone, Rate.zone, Rate.Country, Rate.Zone, 
+	  Rate.domestic, Rate._area, Rate._zone, Rate.zone, Rate.Country, Rate.Zone,
 	  Rate.Service, Rate.Flags, explainRate(&Rate));
 
   getLeastCost (&Rate, &LCR, 1, UNKNOWN);
   printf ("domestic=%d _area=%d _zone=%d zone=%d Country=%s Zone=%s Service=%s Flags=%s\n"
 	  "booked cheapest=%s\n\n",
-	  LCR.domestic, LCR._area, LCR._zone, LCR.zone, LCR.Country, LCR.Zone, 
+	  LCR.domestic, LCR._area, LCR._zone, LCR.zone, LCR.Country, LCR.Zone,
 	  LCR.Service, LCR.Flags, explainRate(&LCR));
 
   getLeastCost (&Rate, &LCR, 0, UNKNOWN);
   printf ("domestic=%d _area=%d _zone=%d zone=%d Country=%s Zone=%s Service=%s Flags=%s\n"
 	  "all cheapest=%s\n\n",
-	  LCR.domestic, LCR._area, LCR._zone, LCR.zone, LCR.Country, LCR.Zone, 
+	  LCR.domestic, LCR._area, LCR._zone, LCR.zone, LCR.Country, LCR.Zone,
 	  LCR.Service, LCR.Flags, explainRate(&LCR));
 
 
@@ -1438,7 +1442,7 @@ void main (int argc, char *argv[])
 	      explainRate(&Rate));
     }
   }
-  
+
   exit (0);
 
   printf ("---Date--- --Time--  --Charge-- ( Basic  Price)  Unit   Dur  Time  Rest\n");

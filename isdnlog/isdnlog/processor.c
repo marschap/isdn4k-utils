@@ -1,4 +1,4 @@
-/* $Id: processor.c,v 1.72 1999/06/28 19:16:10 akool Exp $
+/* $Id: processor.c,v 1.73 1999/06/29 20:11:10 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.73  1999/06/29 20:11:10  akool
+ * now compiles with ndbm
+ * (many thanks to Nima <nima_ghasseminejad@public.uni-hamburg.de>)
+ *
  * Revision 1.72  1999/06/28 19:16:10  akool
  * isdnlog Version 3.38
  *   - new utility "isdnrate" started
@@ -3589,23 +3593,13 @@ static void prepareRate(int chan, char **msg, char **tip, int viarep)
     call[chan].Rate.src[0] = "";
     call[chan].Rate.src[1] = "";
     call[chan].Rate.src[2] = mynum;
-  }
-  else {
+  } else {
 #if 0
-    static char src[BUFSIZ];
+    static char src[BUFSIZ], *text;
     auto   int	l;
 
-
-#if 0
-    auto char *text;
-
-    l = getAreacode(myicountry, call[chan].num[CALLING] + 3, &text);
-
-    print_msg(PRT_NORMAL, "getAreacode(%d,%s,\"%s\")=%d\n", myicountry, call[chan].num[CALLING] + 3, text, l);
-
-    if (text)
-      free(text);
-#endif
+    l = getAreacode(49, call[chan].num[CALLING] + 3, &text);
+    print_msg(PRT_NORMAL, "getAreacode(49,%s,\"%s\")=%d\n", call[chan].num[CALLING] + 3, text, l);
 
     if ((get_areacode(call[chan].num[CALLING], &l, C_NO_WARN | C_NO_EXPAND | C_NO_ERROR)))
       Strncpy(src, call[chan].num[CALLING], l + 1);

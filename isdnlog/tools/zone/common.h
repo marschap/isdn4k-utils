@@ -6,18 +6,17 @@
 	static char dbv[]="GDBM";	/* don't change */
 	#define OPEN(name,wr) gdbm_open(name,0,wr?GDBM_NEWDB:GDBM_READER,0644,0)
 	#define CLOSE(db) gdbm_close(db)
-	#define GET_ERR gdbm_strerror(gdbm_errno) 
+	#define GET_ERR gdbm_strerror(gdbm_errno)
 	#define STORE(db, key, value) gdbm_store(db, key, value, GDBM_INSERT)
 	#define FETCH(db, key) gdbm_fetch(db, key)
 	#define _DB GDBM_FILE
 #elif HAVE_LIBDBM
-/* this is not tested, I don't have libdbm installed */
-	#include <ndbm.h> /* Fixme: which include? */
+	#include <db1/ndbm.h>
 	#include <fcntl.h>
-	static char dbv[]="DBM";	
-	#define OPEN(name,wr) dbm_open(name,wr?O_RDWR|O_CREAT:O_RONLY,0644)
+	static char dbv[]="DBM";
+	#define OPEN(name,wr) dbm_open(name,wr?O_RDWR|O_CREAT:O_RDONLY,0644)
 	#define CLOSE(db) dbm_close(db)
-	#define GET_ERR "unknown" 
+	#define GET_ERR "unknown"
 	#define STORE(db, key, value) dbm_store(db, key, value, DBM_INSERT)
 	#define FETCH(db, key) dbm_fetch(db, key)
 	#define _DB DBM *
@@ -26,14 +25,14 @@
  /* there are too mny libdb out there */
 	#define DB_DBM_HSEARCH
 	#include <db.h>
-#else	
-	#include <ndbm.h>
-#endif	
+#else
+	#include <db1/ndbm.h>
+#endif
 	#include <fcntl.h>
-	static char dbv[]="DB";	
-	#define OPEN(name,wr) dbm_open(name,wr?O_RDWR|O_CREAT:O_RONLY,0644)
+	static char dbv[]="DB";
+	#define OPEN(name,wr) dbm_open(name,wr?O_RDWR|O_CREAT:O_RDONLY,0644)
 	#define CLOSE(db) dbm_close(db)
-	#define GET_ERR "unknown" 
+	#define GET_ERR "unknown"
 	#define STORE(db, key, value) dbm_store(db, key, value, DBM_INSERT)
 	#define FETCH(db, key) dbm_fetch(db, key)
 	#define _DB DB *

@@ -1,4 +1,4 @@
-/* $Id: zone.c,v 1.9 1999/06/26 12:25:54 akool Exp $
+/* $Id: zone.c,v 1.10 1999/06/29 20:11:45 akool Exp $
  *
  * Zonenberechnung
  *
@@ -19,6 +19,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: zone.c,v $
+ * Revision 1.10  1999/06/29 20:11:45  akool
+ * now compiles with ndbm
+ * (many thanks to Nima <nima_ghasseminejad@public.uni-hamburg.de>)
+ *
  * Revision 1.9  1999/06/26 12:25:54  akool
  * isdnlog Version 3.37
  *   fixed some warnings
@@ -477,7 +481,7 @@ static int _initZone(int provider, char *path, char **msg, bool area_only)
 }
 
 static int _getZ(struct sth *sthp, char *from, char *sto) {
-	GDBM_FILE fh = sthp->fh;
+	_DB fh = sthp->fh;
 	datum key, value;
 	static char newfrom[LENGTH];
 	bool found = false;
