@@ -1,4 +1,4 @@
-.\" CHECKIN $Date: 2003/10/29 17:41:35 $
+.\" CHECKIN $Date: 2004/01/10 16:43:24 $
 .TH ISDNRATE 1 "@MANDATE@" -lt-
 .SH NAME
 isdnrate \- Print telefon rates and various info from rate\-files(5).
@@ -60,6 +60,10 @@ Note also, spaces in country- or service names may be given as underscores.
 .BI \-b best
 Print only \fIbest\fP providers. Default is all.
 .P
+.BI \-c rateconf
+Use \fIrateconf\fP as provider selection file and ignore setting in
+.IR isdn.conf .
+.P
 .BI \-d day
 Calc rates for \fIday\fP. \fIday\fP can be one of
 .IP
@@ -91,6 +95,11 @@ Callers location. Default ist from
 Time
 .IR hh [ :mm [ :ss ]]
 of call. Default is now.
+.P
+.BI \-i ratefile
+Use \fIratefile\fP (usually rate-CC.dat) as source for telephone fees and
+ignore setting in
+.IR isdn.conf .
 .P
 .BI \-l len
 Length of call in second. Default value is 153 secs.
