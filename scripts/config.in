@@ -1,5 +1,5 @@
 #
-# $Id: config.in,v 1.12 1997/03/24 23:38:52 fritz Exp $
+# $Id: config.in,v 1.13 1997/03/25 02:04:05 fritz Exp $
 #
 # The whole configuration stuff is borrowed from the kernel
 # configuration.
@@ -61,10 +61,12 @@ if [ "$CONFIG_ICNCTRL" = "y" ]; then
 fi
 bool 'pcbitctl' CONFIG_PCBITCTL
 bool 'avmcapictrl' CONFIG_AVMCAPICTRL
-bool 'loopctrl' CONFIG_LOOPCTRL
-if [ "$CONFIG_LOOPCTRL" = "y" ]; then
-	string 'Sourcedir of isdnloop module' CONFIG_LOOPCTRL_LOOPDIR '\~/isdn/drivers/isdn/isdnloop'
-	bool 'Enable loopctrl debug-option' CONFIG_LOOPCTRL_DEBUG
+if [ "$CONFIG_EXPERIMENTAL" = "y" ]; then
+	bool 'loopctrl' CONFIG_LOOPCTRL
+	if [ "$CONFIG_LOOPCTRL" = "y" ]; then
+		string 'Sourcedir of isdnloop module' CONFIG_LOOPCTRL_LOOPDIR '\~/isdn/drivers/isdn/isdnloop'
+		bool 'Enable loopctrl debug-option' CONFIG_LOOPCTRL_DEBUG
+	fi
 fi
 endmenu
 mainmenu_option nextcomment
