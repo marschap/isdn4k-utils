@@ -1,4 +1,4 @@
-/* $Id: ctrlconf.h,v 1.2 1997/06/26 21:25:15 luethje Exp $
+/* $Id: ctrlconf.h,v 1.3 1998/11/21 14:03:34 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: ctrlconf.h,v $
+ * Revision 1.3  1998/11/21 14:03:34  luethje
+ * isdnctrl: added dialmode into the config file
+ *
  * Revision 1.2  1997/06/26 21:25:15  luethje
  * Added the trigger function to the config file.
  *
@@ -57,6 +60,7 @@
 #define CONF_ENT_TRIGGERCPS       "TRIGGER"
 #define CONF_ENT_BIND             "BIND"
 #define CONF_ENT_PPPBIND          "PPPBIND"
+#define CONF_ENT_DIALMODE         "DIALMODE"
 
 /*****************************************************************************/
 
