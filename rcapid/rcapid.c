@@ -26,15 +26,14 @@
 #include	<fcntl.h>
 #include	<stdlib.h>
 #include	<ctype.h>
+#include        <string.h>
 #include	"capicmd.h"
 #include	"rcapicmd.h"
 #include	"capi20.h"
 
-#define	RCAPID_MANUFACTURER		"ISDN4Linux, Christian A. Lademann <cal@zls.de>"
-#define	RCAPID_SERIAL_NUMBER	"0000 (we don't need that ;-)"
-#define	RCAPID_VERSION_INFO		"CAPI 2.0"
+#define	RCAPID_VERSION_INFO	"CAPI 2.0 / RCAPID by Christian A. Lademann"
 
-#define	MAX_CAPIMSGLEN	64 * 1024
+#define	MAX_CAPIMSGLEN	3072 + 128 + 10 // 64 * 1024 does not seem to be necessary -- KG
 
 #define LOGFILE_PATH_TEMPL	"/tmp/rcapid.log"
 char	logfile_path [64];
@@ -381,9 +380,10 @@ hdl_RCAPI_REGISTER_REQ(struct capi_message *msg) {
 	
 	p = retstr;
 	if(capiVersion == 2) {
-		if((capi_fd = CAPI20_REGISTER(maxLogicalConnections, maxBDataBlocks, maxBDataLen, &err)) < 0)
+		if((capi_fd = CAPI20_REGISTER(maxLogicalConnections, maxBDataBlocks, maxBDataLen, &err)) < 0) {
 			capierr = err;
-		else {
+			log(5, "registration not successful\n");
+		} else {
 			local_ApplID = capi_fd;
 			log(5, "registration successful: appl_id = %d\n", capi_fd);
 			capi_fd = capi20_fileno(capi_fd);
@@ -412,12 +412,11 @@ hdl_RCAPI_GET_SERIAL_NUMBER_REQ(struct capi_message *msg) {
 
 	log(5, "RCAPI_GET_SERIAL_NUMBER_REQ\n");
 	
-	memset(serial_number, 0, sizeof(serial_number));
-	sprintf(serial_number, "%s", RCAPID_SERIAL_NUMBER);
+	CAPI20_GET_SERIAL_NUMBER(0, serial_number);
 	memset(serial_number + strlen(serial_number), 0, sizeof(serial_number) - strlen(serial_number));
 
 	p = retval;
-	put_struct(&p, /* strlen(serial_number) + 1 */ 64, serial_number);
+	put_struct(&p, 64, serial_number);
 
 	retstruct.len = p - retval;
 	retstruct.data = (char *)&retval;
@@ -432,17 +431,15 @@ hdl_RCAPI_GET_MANUFACTURER_REQ(struct capi_message *msg) {
 
 	structure	retstruct;
 	char		retval [80];
-	char		manufacturer [64];
+	char		manufacturer [64] = {0,};
 
 
 	log(5, "RCAPI_GET_MANUFACTURER_REQ\n");
-	
-	memset(manufacturer, 0, sizeof(manufacturer));
-	sprintf(manufacturer, "%s", RCAPID_MANUFACTURER);
-	memset(manufacturer + strlen(manufacturer), 0, sizeof(manufacturer) - strlen(manufacturer));
+
+	CAPI20_GET_MANUFACTURER(0, manufacturer);
 
 	p = retval;
-	put_struct(&p, /* strlen(manufacturer) + 1 */ 64, manufacturer);
+	put_struct(&p, 64, manufacturer);
 
 	retstruct.len = p - retval;
 	retstruct.data = (char *)&retval;
@@ -467,9 +464,11 @@ hdl_RCAPI_GET_VERSION_REQ(struct capi_message *msg) {
 	memset(info + strlen(info), 0, sizeof(info) - strlen(info));
 
 	p = retval;
-	put_word(&p, /* 2 */ 0x64);
-	put_word(&p, /* 1 */ 0);
-	put_struct(&p, /* strlen(info) + 1 */ 64, info);
+	put_byte(&p, 2);
+	put_byte(&p, 0);
+	put_byte(&p, 0);
+	put_byte(&p, 0);
+	put_struct(&p, 64, info);
 
 	retstruct.len = p - retval;
 	retstruct.data = (char *)&retval;
@@ -482,7 +481,6 @@ int
 hdl_RCAPI_GET_PROFILE_REQ(struct capi_message *msg) {
 	word	CtrlNr;
 	char	*p;
-	int		i;
 
 	structure	retstruct;
 	char		retval [80];
@@ -498,24 +496,49 @@ hdl_RCAPI_GET_PROFILE_REQ(struct capi_message *msg) {
 	CtrlNr = get_dword(&p);
 	log(5, "\tCtrlNr: %d\n", CtrlNr);
 
-	p = retval;
-	put_word(&p, 0);	/* Info */
-	put_word(&p, 1);	/* CtrlNr */
-	put_word(&p, 2);	/* nChannel */
-	put_dword(&p, 1);	/* options */
-	put_dword(&p, 31);	/* b1protocols */
-	put_dword(&p, 51);	/* b2protocols */
-	put_dword(&p, 19);	/* b3protocols */
-
-	for(i = 0; i < 11; i++)
-		put_dword(&p, 0);
-
-	retstruct.len = p - retval;
-	retstruct.data = (char *)&retval;
+	memset(retval, 0, sizeof(retval));
+	*(unsigned short *)retval = CAPI20_GET_PROFILE(CtrlNr, retval+2); 
+	retstruct.len = 66;
+	retstruct.data = retval;
 
 	return(snd_message(msg, RCAPI_GET_PROFILE_CONF, &retstruct, NULL));
 }
 
+
+int
+hdl_RCAPI_UNKNOWN_REQ(struct capi_message *msg) 
+{
+	word	w1,w2,b1;
+	char	*p;
+	
+	structure	retstruct;
+	char		retval [80];
+
+	
+	log(5, "RCAPI_UNKNOWN_REQ\n");
+	
+	if(! (p = msg->Parameters.data)) {
+		log(5, "RCAPI_UNKNOWN_REQ: parameters missing.\n");
+		return(-1);
+	}
+
+	
+	w1 = get_word(&p);
+	w2 = get_word(&p);
+	b1 = get_byte(&p);
+	log(5, "w1 0x%4x w2 0x%4x b1 0x%2x", w1,w2,b1);
+
+	p = retval;
+	put_word(&p, w1);
+	put_word(&p, w2);
+	put_byte(&p, b1);
+	put_byte(&p, 0);
+
+	retstruct.len = p - retval;
+	retstruct.data = (char *)&retval;
+
+	return(snd_message(msg, RCAPI_UNKNOWN_CONF, &retstruct, NULL));
+}
 
 int
 hdl_raw(struct capi_message *msg) {
@@ -528,6 +551,7 @@ hdl_raw(struct capi_message *msg) {
 	p = msg->raw.data + 2;
 	put_word(&p, local_ApplID);
 
+	log(5, "CAPICMD = %x\n", (int)CAPICMD(msg->Command, msg->Subcommand));
 	switch(CAPICMD(msg->Command, msg->Subcommand)) {
 	case CAPI_DATA_B3_RESP:
 		if(getDataHandle(msg->MessageNumber, &dhdl) == 0) {
@@ -576,6 +600,10 @@ hdl_message(struct capi_message *msg) {
 		return(hdl_RCAPI_GET_PROFILE_REQ(msg));
 		break;
 
+	case RCAPI_UNKNOWN_REQ:
+	        return(hdl_RCAPI_UNKNOWN_REQ(msg));
+		break;
+
 	default:
 		msg->ApplID = local_ApplID;
 		return(hdl_raw(msg));
@@ -589,6 +617,7 @@ int main(int argc, char *argv []) {
 	extern int	optind;
 	extern char	*optarg;
 	char		c;
+	//	int		i;
 
 	loglevel = 0;
 
