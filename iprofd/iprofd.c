@@ -1,4 +1,4 @@
-/* $Id: iprofd.c,v 1.4 1998/04/28 08:34:23 paul Exp $
+/* $Id: iprofd.c,v 1.5 1998/06/26 15:20:13 fritz Exp $
 
  * Daemon for saving ttyIx-profiles to a file.
  *
@@ -22,6 +22,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: iprofd.c,v $
+ * Revision 1.5  1998/06/26 15:20:13  fritz
+ * Added capability to save listener string.
+ *
  * Revision 1.4  1998/04/28 08:34:23  paul
  * Fixed compiler warnings from egcs.
  *
@@ -55,7 +58,7 @@ typedef unsigned char uchar;
 int isdnctrl_fd;
 char *modemsettings;
 
-#define BUFSZ ((ISDN_MODEM_ANZREG+ISDN_MSNLEN)*ISDN_MAX_CHANNELS)
+#define BUFSZ ((ISDN_MODEM_ANZREG+ISDN_MSNLEN+ISDN_LMSNLEN)*ISDN_MAX_CHANNELS)
 
 void
 dumpModem(int dummy)
