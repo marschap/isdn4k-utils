@@ -1,4 +1,4 @@
-/* $Id: isdnconf.c,v 1.32 2000/02/20 19:03:08 akool Exp $
+/* $Id: isdnconf.c,v 1.33 2000/09/01 06:30:20 paul Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -20,6 +20,12 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnconf.c,v $
+ * Revision 1.33  2000/09/01 06:30:20  paul
+ * Now install country-de.dat as country.dat; renaming the source can be done by
+ * someone who is more experienced with CVS.
+ * Default value for country.dat changed in isdnconf.c; also default zonefile
+ * etc. changed from .gdbm to .cdb
+ *
  * Revision 1.32  2000/02/20 19:03:08  akool
  * isdnlog-4.12
  *  - ABC_LCR enhanced
@@ -1101,11 +1107,11 @@ static int _readconfig(char *_myname)
   callfile       = NULL;
   callfmt        = NULL;
   holifile       = CONFIG_DATADIR"/holiday-"NATION".dat";
-  countryfile	 = CONFIG_DATADIR"/country-de.dat";
+  countryfile	 = CONFIG_DATADIR"/country.dat";
   rateconf       = CONFIG_I4LCONFDIR"/rate.conf";
   ratefile       = CONFIG_DATADIR"/rate-"NATION".dat";
-  zonefile	 = CONFIG_DATADIR"/zone-"NATION"-%s.gdbm";
-  destfile	 = CONFIG_DATADIR"/dest.gdbm";
+  zonefile	 = CONFIG_DATADIR"/zone-"NATION"-%s.cdb";
+  destfile	 = CONFIG_DATADIR"/dest.cdb";
   lcdfile        = NULL;
   start_procs.infoargs = NULL;
   start_procs.flags    = 0;

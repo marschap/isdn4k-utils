@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.180 2000/08/27 15:18:19 akool Exp $
+## $Id: Makefile.in,v 1.181 2000/09/01 06:30:20 paul Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,12 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.181  2000/09/01 06:30:20  paul
+## Now install country-de.dat as country.dat; renaming the source can be done by
+## someone who is more experienced with CVS.
+## Default value for country.dat changed in isdnconf.c; also default zonefile
+## etc. changed from .gdbm to .cdb
+##
 ## Revision 1.180  2000/08/27 15:18:19  akool
 ## isdnlog-4.41
 ##  - fix a fix within Change_Channel()
@@ -1661,7 +1667,7 @@ install-data:
 		$(INSTALL_DATA) isdnlog/isdnformat.5 $(DESTDIR)$(MAN5DIR)/isdnformat$(MAN5EXT)
 		$(INSTALL_DATA) tools/isdnrate.1     $(DESTDIR)$(MAN1DIR)/isdnrate$(MAN1EXT)
 		$(INSTALL_DATA) tools/rate-files.5     $(DESTDIR)$(MAN5DIR)/rate-files$(MAN5EXT)
-		$(INSTALL_DATA) country-de.dat	$(DESTDIR)$(DATADIR)
+		$(INSTALL_DATA) country-de.dat	$(DESTDIR)$(DATADIR)/country.dat
 		$(INSTALL_DATA) rate-$(NATION).dat      $(DESTDIR)$(DATADIR)
 		$(INSTALL_DATA) holiday-$(NATION).dat   $(DESTDIR)$(DATADIR)
 		@for f in `ls zone-$(NATION)-*.{gdbm,db,cdb} tools/dest/dest.{gdbm,db,cdb} 2>/dev/null` ; do \
