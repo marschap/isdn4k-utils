@@ -1,4 +1,4 @@
-# $Id: Makefile.in,v 1.6 1997/10/23 22:46:05 fritz Exp $
+# $Id: Makefile.in,v 1.7 1997/10/26 23:00:24 fritz Exp $
 #
 # Makefile for icnctrl
 # (C) 1997 Fritz Elfert
@@ -6,38 +6,32 @@
 #
 SHELL			= /bin/sh
 CFLAGS			= -Wall -O2
-INCLUDES		= -I. @DEBUGVAR@ -I@KERNELDIR@/include -I@KERNELDIR@/drivers/isdn/icn
+INCLUDES		= -I. -I@CONFIG_KERNELDIR@/include -I@CONFIG_KERNELDIR@/drivers/isdn/icn
 DEFS			=
 LDFLAGS			= -L../lib @LIBS@
 PROGRAM			= icnctrl
 MODULES			= icnctrl.o
 MANPAGE			= icnctrl.8
 INSTALL			= @INSTALL@
+SBINDIR			= @CONFIG_SBINDIR@
+DATADIR			= @CONFIG_DATADIR@
+MANDIR			= @CONFIG_MANDIR@
+MAN8DIR			= $(MANDIR)/man8
 INSTALL_PROGRAM	= $(INSTALL) -o 0 -g 0 -m 0750
-INSTALL_DATA    = $(INSTALL) -o 0 -g 0 -m 0644
+INSTALL_DATA	= $(INSTALL) -o 0 -g 0 -m 0644
 INSTALL_MAN		= $(INSTALL) -o 0 -g 0 -m 0644
-prefix			= @prefix@
-exec_prefix		= @exec_prefix@
-DATADIR         = @DATADIR@
-ifeq (../.config,$(wildcard ../.config))
-	include ../.config
-	ifeq ($(CONFIG_ICNCTRL_DEBUG),y)
-		DEFS += -DDEBUGVAR
-	endif
-	SBINDIR			= $(CONFIG_SBINDIR)
-	mandir			= $(CONFIG_MANDIR)
-else
-	SBINDIR			= /sbin
-	mandir			= @mandir@
-endif
-MAN8DIR			= $(mandir)/man8
 CC				= @CC@
+COPTS			=
+
+ifeq ("@CONFIG_ICNCTRL_DEBUG@","y")
+	COPTS		+= -D__DEBUGVAR__
+endif
 
 .SUFFIXES:
 .SUFFIXES: .c .o
 
-%.o: %.c
-	$(CC) $(CFLAGS) $(INCLUDES) $(DEFS) -c -o $@ $<
+%.o: %.c Makefile
+	$(CC) $(CFLAGS) $(INCLUDES) $(DEFS) $(COPTS) -c -o $@ $<
 
 all: $(PROGRAM)
 
