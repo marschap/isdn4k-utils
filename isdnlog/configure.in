@@ -34,6 +34,7 @@ bindir=${CONFIG_BINDIR:-"/usr/bin"}
 sbindir=${CONFIG_SBINDIR:-"/sbin"}
 mandir=${CONFIG_MANDIR:-"/usr/man"}
 datadir=${CONFIG_DATADIR:-"/usr/lib/isdn"}
+DOCDIR=${CONFIG_ISDNLOG_DOCDIR:-"/usr/doc/packages/i4l/isdnlog"}
 
 I4LCONFDIR=`eval echo $I4LCONFDIR`
 OLDCONFDIR=`eval echo $OLDCONFDIR`
@@ -59,6 +60,7 @@ sbindir=`eval echo $sbindir`
 mandir=`eval echo $mandir`
 datadir=`eval echo $datadir`
 DATADIR=`eval echo $datadir`
+DOCDIR=`eval echo $DOCDIR`
 MANDATE_CALLERID=`grep CHECKIN isdnlog/callerid.conf.5.in | awk '{print $4}'`
 MANDATE_ISDN_CONF=`grep CHECKIN isdnlog/isdn.conf.5.in | awk '{print $4}'`
 MANDATE_ISDNFORMAT=`grep CHECKIN isdnlog/isdnformat.5.in | awk '{print $4}'`
@@ -235,11 +237,11 @@ AC_SUBST(COUNTRYCODE)
 AC_SUBST(COUNTRYPREFIX)
 AC_SUBST(AREACODE)
 AC_SUBST(AREAPREFIX)
-AC_SUBST(AREACODE)
 AC_SUBST(NATION)
 AC_SUBST(NATION_MACRO)
 AC_SUBST(I4LVERSION)
 AC_SUBST(DATADIR)
+AC_SUBST(DOCDIR)
 AC_SUBST(RELOADCMD)
 AC_SUBST(STOPCMD)
 AC_SUBST(REBOOTCMD)
@@ -253,4 +255,4 @@ AC_SUBST(MANDATE_ISDNREP)
 AC_SUBST(MANDATE_ISDNBILL)
 AC_SUBST(MANDATE_ISDNCONF)
 AC_SUBST(CDBEXTRALIBS)
-AC_OUTPUT(Makefile isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 isdnlog/isdnlog.users.5 isdnrep/isdnrep.1 isdnrep/isdnbill.1 isdnconf/isdnconf.1)
+AC_OUTPUT(Makefile isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 isdnlog/isdnlog.users.5 isdnrep/isdnrep.1 isdnrep/isdnbill.1 isdnconf/isdnconf.1 samples/isdn.conf samples/isdn.conf.at samples/isdn.conf.de samples/isdn.conf.lu samples/isdn.conf.nl samples/isdn.conf.no samples/isdn.conf.pl)

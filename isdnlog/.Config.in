@@ -7,6 +7,7 @@ string 'Log file' CONFIG_ISDNLOG_LOGFILE
 string 'Reload command' CONFIG_ISDNLOG_RELOADCMD
 string 'Stop command' CONFIG_ISDNLOG_STOPCMD
 string 'Reboot command' CONFIG_ISDNLOG_REBOOTCMD
+string 'Documentation directory' CONFIG_ISDNLOG_DOCDIR
 string 'Old config directory' CONFIG_ISDNLOG_OLDI4LCONFDIR
 string 'Old config file' CONFIG_ISDNLOG_OLDI4LCONFFILE
 bool 'Support postgres95 SQL-Database' CONFIG_ISDNLOG_POSTGRES
@@ -48,4 +49,5 @@ bool 'Include Austrian cities in destination database' CONFIG_ISDN_LOG_DEST_AT y
 bool 'Include Dutch cities in destination database' CONFIG_ISDN_LOG_DEST_NL y
 bool 'Include Swiss cities in destination database' CONFIG_ISDN_LOG_DEST_CH y
 bool 'Include Belgian cities in destination database' CONFIG_ISDN_LOG_DEST_BE y
+bool 'Include Chinese cities in destination database' CONFIG_ISDN_LOG_DEST_CN y
 endmenu

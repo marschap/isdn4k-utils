@@ -397,6 +397,13 @@ CONFIG_ISDNLOG_REBOOTCMD
   Enter the full path of a shell-script which reboots Linux
   in case of a failure.
 
+Location of isdnlog documentation
+CONFIG_ISDNLOG_DOCDIR
+  Enter the directory for documentation of isdnlog,
+  usually something like /usr/share/doc/isdnlog.
+  Currently no files are installed to this directory, but it
+  appears as reference in sample config files.
+
 Old config directory
 CONFIG_ISDNLOG_OLDI4LCONFDIR
   Enter the directory of your old (pre 3.0) isdnlog config-stuff.
@@ -454,6 +461,16 @@ CONFIG_ISDN_LOG_DEST_AT
 
 National support for cities
 CONFIG_ISDN_LOG_DEST_NL
+  S. above text for German cities.
+
+National support for cities
+CONFIG_ISDN_LOG_DEST_BE
+  Belgian area codes.
+  S. above text for German cities.
+
+National support for cities
+CONFIG_ISDN_LOG_DEST_CN
+  Chinese area codes.
   S. above text for German cities.
 
 Diversion services support

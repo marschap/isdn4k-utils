@@ -102,6 +102,9 @@ endif
 ifeq ($(CONFIG_ISDN_LOG_DEST_BE),y)
 DEST_SRC_NATIONAL	+= ../zone/be/code
 endif
+ifeq ($(CONFIG_ISDN_LOG_DEST_CN),y)
+DEST_SRC_NATIONAL	+= ../zone/cn/code
+endif
 
 ifeq ($(DBEXT),.cdb)
 data: dest.cdb
@@ -130,6 +133,9 @@ data: $(DEST_SRC_GLOBAL) $(DEST_SRC_NATIONAL)
 	if [ x$(CONFIG_ISDN_LOG_DEST_BE) = xy ] ; then \
 		./makedest -v -a be || true; \
 	fi ; \
+	if [ x$(CONFIG_ISDN_LOG_DEST_CN) = xy ] ; then \
+		./makedest -v -a cn || true; \
+	fi ; \
 	fi
 endif
 
@@ -157,6 +163,9 @@ ifeq ($(CONFIG_ISDN_LOG_DEST_CH),y)
 endif
 ifeq ($(CONFIG_ISDN_LOG_DEST_BE),y)
 	./makedest -v -a be || true
+endif
+ifeq ($(CONFIG_ISDN_LOG_DEST_CN),y)
+	./makedest -v -a cn || true
 endif
 	@echo "" >> dest.cdb.dump
 	../cdb/cdbmake < dest.cdb.dump dest.cdb dest.temp

@@ -1221,6 +1221,7 @@ bindir=${CONFIG_BINDIR:-"/usr/bin"}
 sbindir=${CONFIG_SBINDIR:-"/sbin"}
 mandir=${CONFIG_MANDIR:-"/usr/man"}
 datadir=${CONFIG_DATADIR:-"/usr/lib/isdn"}
+DOCDIR=${CONFIG_ISDNLOG_DOCDIR:-"/usr/doc/packages/i4l/isdnlog"}
 
 I4LCONFDIR=`eval echo $I4LCONFDIR`
 OLDCONFDIR=`eval echo $OLDCONFDIR`
@@ -1246,6 +1247,7 @@ sbindir=`eval echo $sbindir`
 mandir=`eval echo $mandir`
 datadir=`eval echo $datadir`
 DATADIR=`eval echo $datadir`
+DOCDIR=`eval echo $DOCDIR`
 MANDATE_CALLERID=`grep CHECKIN isdnlog/callerid.conf.5.in | awk '{print $4}'`
 MANDATE_ISDN_CONF=`grep CHECKIN isdnlog/isdn.conf.5.in | awk '{print $4}'`
 MANDATE_ISDNFORMAT=`grep CHECKIN isdnlog/isdnformat.5.in | awk '{print $4}'`
@@ -4334,7 +4336,8 @@ esac
 
 
 
-ac_config_files="$ac_config_files Makefile isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 isdnlog/isdnlog.users.5 isdnrep/isdnrep.1 isdnrep/isdnbill.1 isdnconf/isdnconf.1"
+
+ac_config_files="$ac_config_files Makefile isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 isdnlog/isdnlog.users.5 isdnrep/isdnrep.1 isdnrep/isdnbill.1 isdnconf/isdnconf.1 samples/isdn.conf samples/isdn.conf.at samples/isdn.conf.de samples/isdn.conf.lu samples/isdn.conf.nl samples/isdn.conf.no samples/isdn.conf.pl"
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
 # tests run on this system so they can be shared between configure
@@ -4816,6 +4819,13 @@ do
   "isdnrep/isdnrep.1" ) CONFIG_FILES="$CONFIG_FILES isdnrep/isdnrep.1" ;;
   "isdnrep/isdnbill.1" ) CONFIG_FILES="$CONFIG_FILES isdnrep/isdnbill.1" ;;
   "isdnconf/isdnconf.1" ) CONFIG_FILES="$CONFIG_FILES isdnconf/isdnconf.1" ;;
+  "samples/isdn.conf" ) CONFIG_FILES="$CONFIG_FILES samples/isdn.conf" ;;
+  "samples/isdn.conf.at" ) CONFIG_FILES="$CONFIG_FILES samples/isdn.conf.at" ;;
+  "samples/isdn.conf.de" ) CONFIG_FILES="$CONFIG_FILES samples/isdn.conf.de" ;;
+  "samples/isdn.conf.lu" ) CONFIG_FILES="$CONFIG_FILES samples/isdn.conf.lu" ;;
+  "samples/isdn.conf.nl" ) CONFIG_FILES="$CONFIG_FILES samples/isdn.conf.nl" ;;
+  "samples/isdn.conf.no" ) CONFIG_FILES="$CONFIG_FILES samples/isdn.conf.no" ;;
+  "samples/isdn.conf.pl" ) CONFIG_FILES="$CONFIG_FILES samples/isdn.conf.pl" ;;
   "policy.h" ) CONFIG_HEADERS="$CONFIG_HEADERS policy.h" ;;
   *) { { echo "$as_me:$LINENO: error: invalid argument: $ac_config_target" >&5
 echo "$as_me: error: invalid argument: $ac_config_target" >&2;}
@@ -4939,6 +4949,7 @@ s,@NATION@,$NATION,;t t
 s,@NATION_MACRO@,$NATION_MACRO,;t t
 s,@I4LVERSION@,$I4LVERSION,;t t
 s,@DATADIR@,$DATADIR,;t t
+s,@DOCDIR@,$DOCDIR,;t t
 s,@RELOADCMD@,$RELOADCMD,;t t
 s,@STOPCMD@,$STOPCMD,;t t
 s,@REBOOTCMD@,$REBOOTCMD,;t t

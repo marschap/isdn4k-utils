@@ -1,6 +1,6 @@
-# example of /etc/isdn/isdn.conf 
+# example of @I4LCONFDIR@/@CONFFILE@
 #
-# More information: See the isdnlog documentation
+# More information: @DOCDIR@/*
 
 [GLOBAL]
 COUNTRYPREFIX   = +
@@ -11,7 +11,7 @@ AREACODE        = 04321 # dummy, change this!
 [VARIABLES]
 
 [ISDNLOG]
-LOGFILE = /var/log/isdn/isdnlog
+LOGFILE = @LOGFILE@
 ILABEL  = %b %e %T %ICall to tei %t from %N2 on %n2
 OLABEL  = %b %e %T %Itei %t calling %N2 with '%n0'
 REPFMTWWW       = "%X %D %17.17H %T %-17.17F %-20.20l SI: %S %9u %U %I %O"
@@ -21,13 +21,13 @@ REPFMT  = "  %X %D %16.16H %T %-16.16F %7u %U %I %O"
 CHARGEMAX       = 50.00
 CURRENCY = 0.062,EUR
 
-COUNTRYFILE = /usr/lib/isdn/country.dat
-RATECONF= /etc/isdn/rate.conf
+COUNTRYFILE = @DATADIR@/country.dat
+RATECONF= @I4LCONFDIR@/rate.conf
 # replace the xx in the next 3 lines with your country's letters!
-RATEFILE= /usr/lib/isdn/rate-xx.dat
-HOLIDAYS= /usr/lib/isdn/holiday-xx.dat
-ZONEFILE= /usr/lib/isdn/zone-xx-%s.cdb
-DESTFILE= /usr/lib/isdn/dest.cdb
+RATEFILE= @DATADIR@/rate-xx.dat
+HOLIDAYS= @DATADIR@/holiday-xx.dat
+ZONEFILE= @DATADIR@/zone-xx-%s.cdb
+DESTFILE= @DATADIR@/dest.cdb
 
 # providerselect
 VBN = 10	# change this, depends on your country
