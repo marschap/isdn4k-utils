@@ -1,4 +1,4 @@
-/* $Id: isdnrate.c,v 1.42 2004/09/07 23:48:48 tobiasb Exp $
+/* $Id: isdnrate.c,v 1.43 2004/09/27 18:00:23 tobiasb Exp $
 
  * ISDN accounting for isdn4linux. (rate evaluation)
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnrate.c,v $
+ * Revision 1.43  2004/09/27 18:00:23  tobiasb
+ * Check provider and price (new) when comparing provider rankings.
+ *
  * Revision 1.42  2004/09/07 23:48:48  tobiasb
  * Improved isdnrate -T ..., see ChangeLog for details.
  *
@@ -1306,7 +1309,8 @@ static void printTable(char *num)
       /* compare current result against stored */
       print_last = 0;
       for (i = 0; i < min(n, MAXLAST); i++)
-	if (sort[i].prefix != last[i].prefix) {
+	if (sort[i].prefix != last[i].prefix ||
+	    sort[i].rate   != last[i].rate      ) {
 	  print_last = 1;
 	  break;
 	} /* if */

@@ -1,3 +1,8 @@
+2004-09-27  Tobias Becker  <tobiasb@isdn4linux.de>
+
+	* isdnrate.c (printTable): Check provider and price (new) when
+	comparing provider rankings.
+
 2004-09-07  Tobias Becker  <tobiasb@isdn4linux.de>
 
 	* isdnrate.c (Provider): Rewrote function, returned string has
