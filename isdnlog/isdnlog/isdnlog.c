@@ -1,4 +1,4 @@
-/* $Id: isdnlog.c,v 1.65 2000/07/19 19:41:32 akool Exp $
+/* $Id: isdnlog.c,v 1.66 2000/09/05 08:05:02 paul Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,16 @@
  * along with this program; if not, write to the Free Software
  *
  * $Log: isdnlog.c,v $
+ * Revision 1.66  2000/09/05 08:05:02  paul
+ * Now isdnlog doesn't use any more ISDN_XX defines to determine the way it works.
+ * It now uses the value of "COUNTRYCODE = 999" to determine the country, and sets
+ * a variable mycountrynum to that value. That is then used in the code to set the
+ * way isdnlog works.
+ * It works for me, please check it! No configure.in / doc changes yet until
+ * it has been checked to work.
+ * So finally a version of isdnlog that can be compiled and distributed
+ * internationally.
+ *
  * Revision 1.65  2000/07/19 19:41:32  akool
  * isdnlog-4.34
  *   - since around Linux-2.2.16 signals are *not* reset to their default
@@ -1477,6 +1487,7 @@ int main(int argc, char *argv[], char *envp[])
           if (q931dmp) {
   	    mymsns         = 3;
   	    mycountry      = "+49";
+  	    mycountrynum   = 49;
   	    myarea   	   = "6171";
             currency   	   = NULL;
             dual	   = 1;

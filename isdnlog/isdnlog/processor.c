@@ -1,4 +1,4 @@
-/* $Id: processor.c,v 1.114 2000/08/27 15:18:20 akool Exp $
+/* $Id: processor.c,v 1.115 2000/09/05 08:05:02 paul Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,33 +19,15 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
- * Revision 1.114  2000/08/27 15:18:20  akool
- * isdnlog-4.41
- *  - fix a fix within Change_Channel()
- *
- *  - isdnlog/tools/dest/CDB_File_Dump.pm ... fixed bug with duplicates like _DEMD2
- *
- *    After installing this, please rebuild dest.cdb by:
- *    $ cd isdnlog/tools/dest
- *    $ rm dest.cdb
- *    $ make alldata
- *    $ su -c "cp ./dest.cdb /usr/lib/isdn"
- *
- *  - isdnlog/isdnlog/processor.c ... fixed warning
- *
- * Revision 1.113  2000/08/17 21:34:43  akool
- * isdnlog-4.40
- *  - README: explain possibility to open the "outfile=" in Append-Mode with "+"
- *  - Fixed 2 typos in isdnlog/tools/zone/de - many thanks to
- *      Tobias Becker <tobias@talypso.de>
- *  - detect interface (via IIOCNETGPN) _before_ setting CHARGEINT/HUPTIMEOUT
- *  - isdnlog/isdnlog/processor.c ... fixed wrong init of IIOCNETGPNavailable
- *  - isdnlog/isdnrep/isdnrep.c ... new option -S summary
- *  - isdnlog/isdnrep/rep_main.c
- *  - isdnlog/isdnrep/isdnrep.1.in
- *  - isdnlog/tools/NEWS
- *  - isdnlog/tools/cdb/debian ... (NEW dir) copyright and such from orig
- *  - new "rate-de.dat" from sourceforge (hi and welcome: Who is "roro"?)
+ * Revision 1.115  2000/09/05 08:05:02  paul
+ * Now isdnlog doesn't use any more ISDN_XX defines to determine the way it works.
+ * It now uses the value of "COUNTRYCODE = 999" to determine the country, and sets
+ * a variable mycountrynum to that value. That is then used in the code to set the
+ * way isdnlog works.
+ * It works for me, please check it! No configure.in / doc changes yet until
+ * it has been checked to work.
+ * So finally a version of isdnlog that can be compiled and distributed
+ * internationally.
  *
  * Revision 1.112  2000/08/14 18:41:43  akool
  * isdnlog-4.39
@@ -1113,8 +1095,7 @@ static int    IIOCNETGPNavailable = -1; /* -1 = unknown, 0 = no, 1 = yes */
 #endif
 
 
-// #define INTERFACE ((IIOCNETGPNavailable == 1) ? call[chan].interface : known[call[chan].confentry[OTHER]]->interface)
-#define INTERFACE call[chan].interface
+#define INTERFACE ((IIOCNETGPNavailable == 1) ? call[chan].interface : known[call[chan].confentry[OTHER]]->interface)
 
 
 static void Q931dump(int mode, int val, char *msg, int version)
@@ -1564,22 +1545,24 @@ static int facility(int l, char* p)
 
 static int AOC_1TR6(int l, char *p)
 {
-  auto   int  EH = 0;
+  auto   int  Units = 0;
   auto   int  digit = 0;
 
 
-#ifdef ISDN_NL /* Fixme: do this at runtime */
+if (mycountrynum == CCODE_NL) {
   /*
-   *  NL ISDN: N40*<Einheiten>#, mit Einheiten ASCII kodiert.
-   *  Beispiel 30 Einheiten: N40*30#
-   *  Ich weiss nicht, fuer was 'N40' steht... Skip it.
-   *  Einheit ist NLG 0.15, uebrigens.
+   *  NL ISDN: N40*<Units>#, with Units coded in ASCII.
+   *  e.g. 30 units: N40*30#
+   *  We don't know what the 'N40' stands for... skip it.
+   *  Unit happens to be NLG 0.15, even though the charging is per NLG 0.01
+   *  therefore this is always only an indication.
    */
 
   p += 9;
   l -= 3;
   aoc_debug(-1, "AOC_INITIAL_NL");
-#elif defined(ISDN_CH) /* Fixme: do this at runtime */
+}
+else if (mycountrynum == CCODE_CH) {
   /*
    * "FR. 0.10"
    *
@@ -1588,21 +1571,22 @@ static int AOC_1TR6(int l, char *p)
   p += 9;
   l -= 3; /* Thanks to Markus Maeder (mmaeder@cyberlink.ch) */
   aoc_debug(-1, "AOC_INITIAL_CH");
-#else
+}
+else if (mycountrynum == CCODE_DE) {
   aoc_debug(-1, "AOC_INITIAL_1TR6");
-#endif
+}
 
   while (l--) {
     digit = strtol(p += 3, NIL, 16) ;
 
     if ((digit >= '0') && (digit <= '9')) {
-      EH = EH * 10;
-      EH += (digit - '0'); /* Einheiten sind in ASCII */
+      Units = Units * 10;
+      Units += (digit - '0'); /* Units are in ASCII */
     } /* if */
   } /* while */
 
   currency_mode = AOC_AMOUNT;
-  return(EH);
+  return(Units);
 } /* AOC_1TR6 */
 
 
@@ -1822,12 +1806,6 @@ static void decode(int chan, register char *p, int type, int version, int tei)
         Q931dump(TYPE_STRING, l, s, version);
       } /* if */
 
-      if ((l > 50) || (l < 0)) {
-      	sprintf(s, "Invalid length %d -- complete frame ignored!", l);
-        info(chan, PRT_SHOWNUMBERS, STATE_RING, s);
-        return;
-      } /* if */
-
       pd = qmsg(TYPE_ELEMENT, version, element);
 
       if (strncmp(pd, "UNKNOWN", 7) == 0) {
@@ -1850,12 +1828,16 @@ static void decode(int chan, register char *p, int type, int version, int tei)
           p2 += sprintf(p2, "%c", isgraph(c) ? c : ' ');
         } /* for */
 
-        p2 += sprintf(p2, "], length=%d -- complete frame ignored!", l);
+        p2 += sprintf(p2, "], length=%d", l);
         info(chan, PRT_SHOWNUMBERS, STATE_RING, s);
-        return;
       }
       else
         print_msg(PRT_DEBUG_DECODE, " DEBUG> %s: ELEMENT %02x:%s (length=%d)\n", st + 4, element, pd, l);
+
+      /* changing 0x28 to 0x2800 for special case prevents much complication */
+      /* later; 0x28 means / does different things in different countries    */
+      if (element == 0x28 && mycountrynum!=CCODE_NL && mycountrynum!=CCODE_CH)
+	element = 0x2800;
 
       switch (element) {
         case 0x08 : /* Cause */
@@ -1980,26 +1962,6 @@ static void decode(int chan, register char *p, int type, int version, int tei)
 
                     break;
 
-#if !defined(ISDN_NL) && !defined(ISDN_CH) /* -lt- else it will not compile */
-        case 0x28 : /* DISPLAY ... z.b. Makelweg, AOC-E ... */
-                    {
-                      auto     char  s[BUFSIZ];
-                      register char *ps = s;
-
-
-                      while (l--)
-                        *ps++ = strtol(p += 3, NIL, 16);
-
-                      *ps = 0;
-
-                      if (Q931dmp)
-                      Q931dump(TYPE_STRING, -2, s, version);
-                    else
-                        info(chan, PRT_SHOWNUMBERS, STATE_RING, s);
-                    }
-                    break;
-#endif
-
         case 0x2d : /* SUSPEND ACKNOWLEDGE (Parkweg) */
                     p += (l * 3);
                     break;
@@ -2014,11 +1976,26 @@ static void decode(int chan, register char *p, int type, int version, int tei)
                     /* ggf. neuer Channel kommt gleich mit */
                     break;
 
+	case 0x2800: /* DISPLAY ... z.b. Makelweg, AOC-E ... */
+                    {
+                      auto     char  s[BUFSIZ];
+                      register char *ps = s;
+
+                      while (l--)
+                        *ps++ = strtol(p += 3, NIL, 16);
+                      *ps = 0;
+
+                      if (Q931dmp)
+			Q931dump(TYPE_STRING, -2, s, version);
+		      else
+                        info(chan, PRT_SHOWNUMBERS, STATE_RING, s);
+                    }
+                    break;
+
         case 0x02 : /* Facility AOC-E on 1TR6 */
         case 0x1c : /* Facility AOC-D/AOC-E on E-DSS1 */
-#if defined(ISDN_NL) || defined(ISDN_CH) /* Fixme: do this at runtime */
         case 0x28 : /* DISPLAY: Facility AOC-E on E-DSS1 in NL, CH */
-#endif
+		    /* 0x28 for non-NL, non-CH is changed to 0x2800 above */
                     if ((element == 0x02) && (version == VERSION_1TR6)) {
                       n = AOC_1TR6(l, p);           /* Wieviele Einheiten? */
 
@@ -2029,11 +2006,13 @@ static void decode(int chan, register char *p, int type, int version, int tei)
                       } /* if */
                     }
                     else {
-#if defined(ISDN_NL) || defined(ISDN_CH) /* Fixme: do this at runtime */
-                      n = AOC_1TR6(l, p);
-#else
-                      n = facility(l, p);
-#endif
+		      /* maybe better to check for element == 0x28 */
+		      if (mycountrynum==CCODE_NL || mycountrynum==CCODE_CH) {
+				n = AOC_1TR6(l, p);
+		      }
+		      else {
+				n = facility(l, p);
+		      }
                       if (n == AOC_OTHER) {
                         if (asnm && *asnm) {
                           (void)iprintf(s1, -1, mlabel, "", asnm, "\n");
@@ -2098,13 +2077,11 @@ static void decode(int chan, register char *p, int type, int version, int tei)
                         aoc_debug(-1, s);
 
                         if (!n) {
-#if 0
  			  /* Fixme: DTAG is specific to Germany */
-                          if (call[chan].provider == DTAG) /* Only DTAG send's AOCD */
+			  /* Only DTAG sends AOCD */
+                          if (mycountrynum == CCODE_DE &&
+			      call[chan].provider == DTAG)
                             info(chan, PRT_SHOWAOCD, STATE_AOCD, "Free of charge");
-#else
-			  ;
-#endif
                         }
                         else if (n < 0) {
                           tx = cur_time - call[chan].connect;
@@ -3620,7 +3597,7 @@ static void processinfo(char *s)
 
       if (!Q931dmp) {
         print_msg(PRT_NORMAL, "(ISDN subsystem with ISDN_MAX_CHANNELS > 16 detected, ioctl(IIOCNETGPN) is %savailable)\n",
-          (IIOCNETGPNavailable = findinterface()) ? "" : "un");
+          IIOCNETGPNavailable = findinterface() ? "" : "un");
         print_msg(PRT_NORMAL, "isdn.conf:%d active channels, %d MSN/SI entries\n", chans, mymsns);
 
         if (dual) {
@@ -4725,9 +4702,6 @@ static void processctrl(int card, char *s)
         else
           info(chan, PRT_SHOWCONNECT, STATE_CONNECT, "CONNECT");
 
-        if (IIOCNETGPNavailable)
-	  IIOCNETGPNavailable = findinterface();
-
         if (OUTGOING && *call[chan].num[CALLED]) {
 
  	  prepareRate(chan, &why, &hint, 0);
@@ -4799,6 +4773,9 @@ static void processctrl(int card, char *s)
             } /* if */
           } /* if */
         } /* if */
+
+        if (IIOCNETGPNavailable)
+	  IIOCNETGPNavailable = findinterface();
 
         if (sound)
           ringer(chan, RING_CONNECT);

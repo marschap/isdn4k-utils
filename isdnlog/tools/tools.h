@@ -1,4 +1,4 @@
-/* $Id: tools.h,v 1.56 2000/08/06 13:06:53 akool Exp $
+/* $Id: tools.h,v 1.57 2000/09/05 08:05:03 paul Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,16 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools.h,v $
+ * Revision 1.57  2000/09/05 08:05:03  paul
+ * Now isdnlog doesn't use any more ISDN_XX defines to determine the way it works.
+ * It now uses the value of "COUNTRYCODE = 999" to determine the country, and sets
+ * a variable mycountrynum to that value. That is then used in the code to set the
+ * way isdnlog works.
+ * It works for me, please check it! No configure.in / doc changes yet until
+ * it has been checked to work.
+ * So finally a version of isdnlog that can be compiled and distributed
+ * internationally.
+ *
  * Revision 1.56  2000/08/06 13:06:53  akool
  * isdnlog-4.38
  *  - isdnlog now uses ioctl(IIOCNETGPN) to associate phone numbers, interfaces
@@ -654,10 +664,10 @@
 #define INTERNET    100
 #define	AUKUNFT_IN   40
 #define AUSKUNFT_AUS 41
-
-/* Fixme: this is specific to Germany */
-#define	DTAG	     33
 #endif
+
+/* this is specific to Germany */
+#define	DTAG	     33
 
 #define	LCR_DURATION 153
 
@@ -1096,6 +1106,7 @@ _EXTERN	char    *vbn;
 _EXTERN	char    *vbnlen;
 _EXTERN char	*mynum;
 _EXTERN int	myicountry;
+_EXTERN int	conf_country;	/* replaces the ISDN_xx defines */
 #undef _EXTERN
 
 /****************************************************************************/

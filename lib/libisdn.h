@@ -1,5 +1,5 @@
 
-/* $Id: libisdn.h,v 1.12 1999/10/26 18:17:17 akool Exp $
+/* $Id: libisdn.h,v 1.13 2000/09/05 08:05:03 paul Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,16 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: libisdn.h,v $
+ * Revision 1.13  2000/09/05 08:05:03  paul
+ * Now isdnlog doesn't use any more ISDN_XX defines to determine the way it works.
+ * It now uses the value of "COUNTRYCODE = 999" to determine the country, and sets
+ * a variable mycountrynum to that value. That is then used in the code to set the
+ * way isdnlog works.
+ * It works for me, please check it! No configure.in / doc changes yet until
+ * it has been checked to work.
+ * So finally a version of isdnlog that can be compiled and distributed
+ * internationally.
+ *
  * Revision 1.12  1999/10/26 18:17:17  akool
  * isdnlog-3.58
  *   - big cleanup ( > 1.3 Mb removed!)
@@ -189,6 +199,15 @@ extern char *basename __P((__const char *__name));
 
 /****************************************************************************/
 
+/* some country codes to change behaviour of isdnlog in different countries */
+#define	CCODE_NL	 31
+#define	CCODE_CH	 41
+#define	CCODE_AT	 43
+#define	CCODE_DE	 49
+#define	CCODE_LU	352
+
+/****************************************************************************/
+
 #if 0 /* DELETE_ME AK:18-Aug-99 */
 #define AREA_ERROR   -1
 #define AREA_UNKNOWN  0
@@ -215,6 +234,7 @@ extern char *basename __P((__const char *__name));
 #endif
 
 _EXTERN char    *mycountry     SET_NULL;
+_EXTERN int	mycountrynum;
 _EXTERN char    *myarea        SET_NULL;
 _EXTERN char    *areaprefix    SET_AREA_PREFIX;
 _EXTERN char    *countryprefix SET_COUNTRY_PREFIX;

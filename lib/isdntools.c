@@ -1,4 +1,4 @@
-/* $Id: isdntools.c,v 1.26 1999/08/20 19:43:46 akool Exp $
+/* $Id: isdntools.c,v 1.27 2000/09/05 08:05:03 paul Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -19,6 +19,16 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdntools.c,v $
+ * Revision 1.27  2000/09/05 08:05:03  paul
+ * Now isdnlog doesn't use any more ISDN_XX defines to determine the way it works.
+ * It now uses the value of "COUNTRYCODE = 999" to determine the country, and sets
+ * a variable mycountrynum to that value. That is then used in the code to set the
+ * way isdnlog works.
+ * It works for me, please check it! No configure.in / doc changes yet until
+ * it has been checked to work.
+ * So finally a version of isdnlog that can be compiled and distributed
+ * internationally.
+ *
  * Revision 1.26  1999/08/20 19:43:46  akool
  * removed avon-, vorwahl- and areacodes-support
  *
@@ -622,11 +632,37 @@ static int create_runfile(const char *file, const char *format)
 	return RetCode;
 } /* create_runfile */
 
-/****************************************************************************/
 
-/* Setzt die Laendercodes, die fuer die Lib gebraucht werden. Diese Funktion
-   muss von jedem Programm aufgerufen werden!!!
-*/
+/*****************************************************************************/
+/*
+ * set_country_behaviour() - different countries have small differences in
+ * ISDN implementations. Use the COUNTRYCODE setting to select the behaviour
+ */
+
+static void set_country_behaviour(char *mycountry)
+{
+	/* amazing, strtol will also accept "+0049" */
+	mycountrynum = strtol(mycountry, (char **)0, 10);
+	switch (mycountrynum) {
+		case CCODE_NL:
+		case CCODE_CH:
+		case CCODE_AT:
+		case CCODE_DE:
+		case CCODE_LU:
+		/* any more special cases ? */
+			/* these only need to have mycountrynum set correctly */
+			break;
+		default:
+			mycountrynum = 49; /* use Germany as default for now */
+	}
+}
+
+
+/****************************************************************************/
+/*
+ * Sets the country codes that are used for the lib. This function must
+ * be called by each program!
+ */
 
 #define _MAX_VARS 8
 
@@ -703,8 +739,10 @@ int Set_Codes(section* Section)
 			ptr2 = s;
 		}
 			
-		if ((ptr[6] = mycountry = strdup(ptr2)) != NULL)
+		if ((ptr[6] = mycountry = strdup(ptr2)) != NULL) {
 			RetCode++;
+			set_country_behaviour(mycountry);
+		}
 		else
 			print_msg("Error: Variable `%s' are not set!\n",CONF_ENT_COUNTRY);
 	}
