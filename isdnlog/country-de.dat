@@ -1,4 +1,4 @@
-V:0.92 Int based on 1.03-Germany [07-Feb-2000 12:19:00]
+V:1.04 Int [16-Feb-2000 10:11:00]
 # ISO 3166 Countrycodes ( ftp://sunsite.unc.edu/pub/Linux/apps/misc/
 #	countrycodes.1.0.2.tar.gz
 # Airportcodes: http://www.TravelDesk.com/airports.html
@@ -291,7 +291,7 @@ R:CN
 T:_CNMF
 
 N:China
-A:China (Volksrepublik), China (People's Republic),V.R. China
+A:China (Volksrepublik), China (People's Republic),V.R. China, China VR
 C:+86
 T:CN
 
@@ -469,7 +469,7 @@ C:+685
 T:WS
 
 N:Amerikanisch-Samoa
-A:Samoa (Ost), Samoa (US), Samoa O.
+A:Samoa (Ost), Samoa (US), Samoa O., Amerikanisches Samoa
 E:American Samoa
 C:+684
 T:AS
@@ -550,7 +550,7 @@ T:NF
 
 N:Kokosinseln
 A:Kokosinseln (Australien), Cocos Island, Cocos Island (Antarctica)
-A:Cocos Inseln
+A:Cocos Inseln, Kokos-InselnKeeling-Inseln
 E:Cocos Islands
 A:Cocos (Keeling) Islands,Keeling Islands
 C:+6722, +6189162
@@ -789,7 +789,7 @@ T:HT
 
 N:St. Pierre und Miquelon
 A:Saint Pierre und Miquelon, St. Pierre and Miquelon, Saint Pierre et Miquelon
-A:St. Pierre & Miquelon,St. Pierre
+A:St. Pierre & Miquelon,St. Pierre, St. Pierre & Miquel.
 E:Saint Pierre and Miquelon
 C:+508
 R:FR
@@ -1185,7 +1185,7 @@ T:HR
 
 N:Jugoslawien
 A:Jugoslawien (Serbien/Montenegro), Serbien, Montenegro, Yugoslavia (Servia & Montenegro)
-A:Jugoslawien Montenegro, Jugoslawien Serbien und Montenegro
+A:Jugoslawien Montenegro, Jugoslawien Serbien und Montenegro, Jugoslawien-Serbien
 E:Yugoslavia
 C:+381
 T:YU
@@ -1854,6 +1854,7 @@ T:JM
 
 N:St. Kitts und Nevis
 A:St. Kitts & Nevis, Saint Kitts and Nevis, St Kitts, Nevis Islands
+A:Nevis/St.Kitts
 A:Nevis,Nevis Is.
 E:Saint Kitts und Nevis
 C:+1869
@@ -1878,14 +1879,14 @@ T:DO
 
 N:Turks- und Caicosinseln
 E:Turks and Caicos Islands
-A:Turks & Caicos Islands
+A:Turks & Caicos Islands, Turks- & Caicosins.
 A:Turks und Caicos,Turks and Caicos Inseln
 C:+1809946, +1809941, +1649
 T:TC
 
 N:Amerikanische Jungferninseln
 A:Jungferninseln (USA), Amerikan. Jungferninseln, American Virgin Isles
-A:US Jungferninseln
+A:US Jungferninseln, Amer. Jungferninseln
 E:Virgin Islands (US)
 C:+180977, +1809719, +1809715, +1809714, +1809713, +1809712, +1809693, +1809692, +1809690, +1809611, +1809513, +1340
 T:VI

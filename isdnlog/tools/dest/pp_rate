@@ -4,7 +4,7 @@ use wld;
 use strict;
 $|=1;
 use vars qw( %names $COUNTRY %myalias );
-$COUNTRY = '/usr/src/isdn4k-utils/isdnlog/tools/country';
+$COUNTRY = '~/isdn4k-utils/isdnlog/tools/country';
 
 &get_country;
 &get_alias;
@@ -21,7 +21,7 @@ sub get_country {
 	foreach $a (@all) {
 	    $na++;
 	    $names{lc $a}=$key;
-	}	
+	}
     }
     my $co_dat = '/usr/lib/isdn/country-de.dat';
     open(IN,$co_dat) || die("Cant read $co_dat");
@@ -33,18 +33,18 @@ sub get_country {
 	    &add1;
 	    $alias='';
 	    $name=$1;
-	}	
+	}
 	elsif (/^[AE]:(.*)/) {
 	    $alias = $alias ne '' ? "$alias,$1" : $1;
 	}
 	elsif (/^T:(.*)/) {
 	    $key=$1;
-	}	
+	}
     }
     &add1;
     close IN;
     print "$nn Countrys $na Aliases loaded\n";
-}    
+}
 
 sub get_alias {
     `cp ~/.country-alias .country-alias`;
@@ -53,7 +53,7 @@ sub get_alias {
     	chomp;
 	my($c,$a) = split(/\t/);
 	$myalias{$c}=$a;
-    }		
+    }
     close(IN);
 }
 
@@ -76,19 +76,19 @@ sub prep_rate {
 	    foreach $c (@a) {
 		next if ($c eq '');
 		$c = lc $c;
-ok:		
+ok:
 	    	if ($c =~ /^\+?\d+/ || $c eq '+') {
 		    push(@keys,$c);
-		}		    
+		}
 		elsif ($d=$names{$c}) {
 		    push(@keys,$d);
 		}
 		elsif ($d=$names{$myalias{$c}}) {
 		    push(@keys,$d);
 		}
-		else {    
+		else {
 		    $oc = $c;
-again:	
+again:
 		    print "'$c'";
 		    $m=99; $tf='';
 		    if ($COUNTRY) {
@@ -96,15 +96,15 @@ again:
 			($tf, $m) = $cc =~ /<.*?>=<(.*?)>\sd=(\d+)/;
 			$m=99 if ($cc =~/unknown/);
 			$tf = lc $tf;
-		    }			
+		    }
 		    else {
 		    	foreach $name (keys(%names)) {
 				if (($r=wld($name,$c)) < $m) {
 			    	$m=$r; $tf=$name;
 			    	last if($m==0);
-			    }		
-			}	
-		    }	    
+			    }
+			}
+		    }
 		    if ($tf && $m<=1) {
 			push(@keys,$names{$tf});
 			$names{$oc}=$names{$tf};
@@ -119,17 +119,17 @@ again:
 			if ($x =~ /^=(.*)/) {
 			    $c = $1 if($1 ne '');
 			    goto again;
-			}	
+			}
 			elsif ($x =~ /^\+(.*)/) {
 			    $c = $oc . $1;
 			    goto again;
-			}	
+			}
 			elsif ($x =~ /^\/(.*)/) {
 			    print `grep -3 -i $1 /usr/lib/isdn/country-de.dat`;
 			    goto again;
-			}	
+			}
 			if ($x eq 'j') {
-			    $c = $tf;	
+			    $c = $tf;
 			    $myalias{$oc}=$tf;
 			    $names{$oc}=$names{$tf};
 			    goto ok;
@@ -144,18 +144,18 @@ again:
 			    print "xx	=> xx ausprobieren";
 			    goto again;
 			}
-			else {	
+			else {
 			    $c = $x;
-			}			    
+			}
 			goto again;
-		    }	
-		}   # else found 
-	    } # foreach		
+		    }
+		}   # else found
+	    } # foreach
 	    print OUT "A:", join(',',@keys),"\n";
-	} # if A		
+	} # if A
 	else {
 	    print OUT $_;
-	}	    
+	}
     } # while IN
     close(IN);
     close(OUT);
@@ -163,7 +163,7 @@ again:
     foreach my $c (sort(keys(%myalias))) {
     	print OUT "$c\t",$myalias{$c},"\n";
     }
-    close(OUT);		
+    close(OUT);
     `mv .country-alias ~/.country-alias`;
     print "\nOk.\n";
 } # prep_rate

@@ -1,4 +1,4 @@
-V:1.10-Germany [12-Feb-2000 17:35:37]
+V:1.10-Germany [20-Feb-2000 19:45:01]
 
 # Währungsformat
 U:%.3f DM
@@ -8,7 +8,7 @@ U:%.3f DM
 #
 # (C) Copyright 1999, 2000 by Andreas Kool (akool@isdn4linux.de)
 #
-# $Id: rate-de.dat,v 1.80 2000/02/12 16:40:21 akool Exp $
+# $Id: rate-de.dat,v 1.81 2000/02/20 19:03:07 akool Exp $
 #
 #
 # Das "A:" Tag muß folgendermaßen gefüllt werden:
@@ -187,8 +187,18 @@ U:%.3f DM
 # N:01914, 019161
 #
 # S:Internet by call
-# N:0191501, 01929, 01924924, 0192340, 0192343, 0192070, 0192340, 0191501, 01924924
-# N:019251, 01928120
+# N:0191501  # o.tel.o Online
+# N:01929    # Freenet (Mobilcom)
+# N:01928120 # eXpress Net (Mobilcom)
+# N:01924924 # Telepassport Online
+# N:0192340  # net@home (GTS Esprit)
+# N:0192343  # Call.POP/Imagecom (GTS Esprit)
+# N:019251   # Talknet (Talkline)
+# N:0192070  # Arcor Online
+# N:0192020  # Arcor Online
+# N:0192300  # Call.Callino
+# N:0191955  # knuut (Worldcom/UUnet)
+# N:0192658  # MSN Easysurfer (Worldcom/UUnet)
 #
 # S:T-VoteCall
 # N:01371, 01372, 01373, 01374, 0138
@@ -1990,6 +2000,7 @@ T:*/*=0
 #####################################################################
 #
 #
+# NEU
 P:11,0 o.tel.o CbC
 B:01011
 # G:01-Jan-2000
@@ -12144,54 +12155,2991 @@ A:110
 A:112
 T:*/*=0
 Z:1-3 regional
-T:W/08-18=0.14(60)/15 Geschäftszeit
-T:E,H/08-18=0.12(60)/15 Wochenende
-T:*/18-08=0.12(60)/15 Freizeit
+T:W/08-18=0.129(60)/15 Geschäftszeit
+T:E,H/08-18=0.119(60)/15 Wochenende
+T:*/18-08=0.119(60)/15 Freizeit
 Z:4 national
 A:DE
-T:W/08-18=0.22(60)/15 Geschäftszeit
-T:E,H/08-18=0.12(60)/15 Wochenende
-T:*/18-08=0.12(60)/15 Freizeit
+T:W/08-18=0.149(60)/15 Geschäftszeit
+T:E,H/08-18=0.119(60)/15 Wochenende
+T:*/18-08=0.119(60)/15 Freizeit
 Z:10 Mobilfunk
 A:_DEMCM,_DEMC,_DEMD1,_DEMD2,_DEME1,_DEME2
-T:W/08-18=0.77(60)/15 Geschäftszeit
-T:E,H/08-18=0.65(60)/15 Wochenende
-T:*/18-08=0.65(60)/15 Freizeit
+T:*/*=0.559/60
 Z:11 Hutchison Mobilfunk-Kunde
-T:*/*=0.59(60)/15
-Z:200 Europe 1
-A:BE,DK,FO,FI,FR,UK,IE,IT
-A:LU,MC,NL,_UKIR,NO,AT,PL,PT,SE
-A:CH,ES,CZ
-T:*/*=0.68(60)/15
-Z:201 Europe 2
-A:AD,BA,BG,EE,GI,GR,YU
-A:HR,LI,MT,SM,YU,SK,TR,UA,HU
-A:VA,BY,CY
-T:*/*=0.99(60)/15
-Z:202 World 1
-A:AU,JP,NZ,US,CA
-T:*/*=0.68(60)/15
-Z:203 World 2
-A:EG,AL,DZ,HK,IS,IL,JO,KR
-A:LV,LB,LY,LT,EH,MK,RO,SU,SG
-A:SI,TN
-T:*/*=1.84(60)/15
-Z:204 World 3
-A:AR,BR,CL,CN,KZ,CO,MD,AN
-A:PH,SA,ZA,SY,TW,AE
-T:*/*=2.16(60)/15
-Z:205 World 4
+T:W/08-18=0.499/60 Geschäftszeit
+T:E,H/08-18=0.449/60 Wochenende
+T:*/18-08=0.449/60 Freizeit
+Z:200 Afghanistan
+A:AF
+T:*/*=2.569/60
+Z:201 Ägypten
+A:EG
+T:*/*=1.669/60
+Z:202 Albanien
+A:AL
+T:*/*=0.869/60
+Z:203 Algerien
+A:DZ
+T:*/*=0.899/60
+Z:204 Andorra
+A:AD
+T:*/*=0.569/60
+Z:205 Angola
+A:AO
+T:*/*=1.209/60
+Z:206 Anguilla
+A:AI
+T:*/*=1.279/60
+Z:207 Antarctica
+A:AQ
+T:*/*=0.949/60
+Z:208 Antigua
+A:AG
+T:*/*=1.219/60
+Z:209 Äquatorialguinea
+A:GQ
+T:*/*=2.249/60
+Z:210 Argentinien
+A:AR
+T:*/*=1.239/60
+Z:211 Armenien
+A:AM
+T:*/*=1.469/60
+Z:212 Aruba
+A:AW
+T:*/*=1.049/60
+Z:213 Ascension
+A:ASI
+T:*/*=2.249/60
+Z:214 Aserbaidschan
+A:AZ
+T:*/*=1.159/60
+Z:215 Äthiopien
+A:ET
+T:*/*=2.309/60
+Z:216 Australien
+A:AU
+T:*/*=0.449/60
+Z:217 Azoren
+A:_AZOR
+T:*/*=1.279/60
+Z:218 Bahamas
+A:BS
+T:*/*=0.639/60
+Z:219 Bahrain
+A:BH
+T:*/*=1.689/60
+Z:220 Bangladesch
+A:BD
+T:*/*=2.019/60
+Z:221 Barbados
+A:BB
+T:*/*=1.399/60
+Z:222 Belarus
+A:BY
+T:*/*=0.929/60
+Z:223 Belgien
+A:BE
+T:*/*=0.319/60
+Z:224 Belize
+A:BZ
+T:*/*=1.539/60
+Z:225 Benin
+A:BJ
+T:*/*=1.409/60
+Z:226 Bermuda
+A:BM
+T:*/*=0.659/60
+Z:227 Bhutan
+A:BT
+T:*/*=1.289/60
+Z:228 Bolivien
+A:BO
+T:*/*=1.559/60
+Z:229 Bosnien-Herzegowina
+A:BA
+T:*/*=0.979/60
+Z:230 Botsuana
+A:BW
+T:*/*=1.059/60
+Z:231 Brasilien
+A:BR
+T:*/*=0.999/60
+Z:232 Brunei
+A:BN
+T:*/*=1.129/60
+Z:233 Bulgarien
+A:BG
+T:*/*=0.889/60
+Z:234 Burkina Faso
+A:BF
+T:*/*=1.989/60
+Z:235 Burundi
+A:BI
+T:*/*=1.609/60
+Z:236 Chatham Island
+A:_CHAT
+T:*/*=1.379/60
+Z:237 Chile
+A:CL
+T:*/*=0.669/60
+Z:238 China
+A:CN
+T:*/*=1.449/60
+Z:239 Christmas Islands
+A:CX
+T:*/*=0.829/60
+Z:240 Cocos Inseln
+A:CC
+T:*/*=0.729/60
+Z:241 Cook Inseln
+A:CK
+T:*/*=2.899/60
+Z:242 Costa Rica
+A:CR
+T:*/*=0.959/60
+Z:243 Cote d´Ivory
+A:CI
+T:*/*=2.469/60
+Z:244 Dänemark
+A:DK
+T:*/*=0.299/60
+Z:245 Diego Garcia
+A:NKW
+T:*/*=1.539/60
+Z:246 Dominica
+A:DM
+T:*/*=1.049/60
+Z:247 Dominikanische Republik
+A:DO
+T:*/*=0.709/60
+Z:248 Dschibuti
+A:DJ
+T:*/*=2.119/60
+Z:249 Ecuador
+A:EC
+T:*/*=1.089/60
+Z:250 El Salvador
+A:SV
+T:*/*=1.279/60
+Z:251 Eritrea
+A:ER
+T:*/*=2.479/60
+Z:252 Estland
+A:EE
+T:*/*=0.659/60
+Z:253 Falklandinseln
+A:FK
+T:*/*=1.079/60
+Z:254 Faröer
+A:FO
+T:*/*=1.049/60
+Z:255 Fidschi
+A:FJ
+T:*/*=2.059/60
+Z:256 Finnland
+A:FI
+T:*/*=0.349/60
+Z:257 Frankreich
+A:FR
+T:*/*=0.289/60
+Z:258 Französisch Guayana
+A:GF
+T:*/*=1.019/60
+Z:259 Französisch-Polynesien
+A:PF
+T:*/*=1.629/60
+Z:260 Gabun
+A:GA
+T:*/*=1.439/60
+Z:261 Gambia
+A:GM
+T:*/*=1.469/60
+Z:262 Georgien
+A:GE
+T:*/*=1.479/60
+Z:263 Ghana
+A:GH
+T:*/*=1.319/60
+Z:264 Gibraltar
+A:GI
+T:*/*=0.999/60
+Z:265 Grenada
+A:GD
+T:*/*=1.349/60
+Z:266 Griechenland
+A:GR
+T:*/*=0.659/60
+Z:267 Grönland
+A:GL
+T:*/*=1.119/60
+Z:268 Großbritannien
+A:UK
+T:*/*=0.199/60
+Z:269 Guadeloupe
+A:GP
+T:*/*=1.059/60
+Z:270 Guam
+A:GU
+T:*/*=0.509/60
+Z:271 Guantanamo
+A:_GUAN
+T:*/*=1.159/60
+Z:272 Guatemala
+A:GT
+T:*/*=0.929/60
+Z:273 Guinea
+A:GN
+T:*/*=1.289/60
+Z:274 Guinea-Bissau
+A:GW
+T:*/*=2.369/60
+Z:275 Guyana
+A:GY
+T:*/*=1.709/60
+Z:276 Haiti
+A:HT
+T:*/*=1.609/60
+Z:277 Honduras
+A:HN
+T:*/*=1.509/60
+Z:278 Hongkong
+A:HK
+T:*/*=0.539/60
+Z:279 Indien
+A:IN
+T:*/*=2.119/60
+Z:280 Indonesien
+A:ID
+T:*/*=1.279/60
+Z:281 Irak
+A:IQ
+T:*/*=2.569/60
+Z:282 Iran
+A:IR
+T:*/*=2.149/60
+Z:283 Irland
+A:IE
+T:*/*=0.469/60
+Z:284 Island
+A:IS
+T:*/*=0.739/60
+Z:285 Israel
+A:IL
+T:*/*=0.709/60
+Z:286 Italien 
+A:IT
+T:*/*=0.539/60
+Z:287 Jamaika
+A:JM
+T:*/*=1.799/60
+Z:288 Japan
+A:JP
+T:*/*=0.529/60
+Z:289 Jemen Arab. Republik
+A:YE
+T:*/*=2.469/60
+Z:290 Jordanien
+A:JO
+T:*/*=1.579/60
+Z:291 Jugoslawien
+A:YU
+T:*/*=1.049/60
+Z:292 Kaiman Inseln
+A:KY
+T:*/*=0.839/60
+Z:293 Kambodscha
+A:KH
+T:*/*=2.539/60
+Z:294 Kamerun
+A:CM
+T:*/*=1.799/60
+Z:295 Kanada
+A:CA
+T:*/*=0.369/60
+Z:296 Kanarische Inseln
+A:PLP
+T:*/*=0.759/60
+Z:297 Kap Verde Inseln
+A:FO
+T:*/*=1.759/60
+Z:298 Kasachstan
+A:KZ
+T:*/*=1.669/60
+Z:299 Katar
+A:QA
+T:*/*=1.759/60
+Z:300 Kenia
+A:KE
+T:*/*=1.669/60
+Z:301 Kirgistan
+A:KG
+T:*/*=1.629/60
+Z:302 Kiribati
+A:KI
+T:*/*=2.179/60
+Z:303 Kolumbien
+A:CO
+T:*/*=1.209/60
+Z:304 Komoren
+A:KM
+T:*/*=1.919/60
+Z:305 Kongo
+A:CG
+T:*/*=1.739/60
+Z:306 Korea Dem. Volksrepublik
+A:KP
+T:*/*=2.119/60
+Z:307 Korea Republik (Süd)
+A:KR
+T:*/*=0.759/60
+Z:308 Kroatien
+A:HR
+T:*/*=0.899/60
+Z:309 Kuba
+A:CU
+T:*/*=1.859/60
+Z:310 Kuwait
+A:KW
+T:*/*=2.119/60
+Z:311 Laos
+A:LA
+T:*/*=2.119/60
+Z:312 Lesotho
+A:LS
+T:*/*=1.149/60
+Z:313 Lettland
+A:LV
+T:*/*=0.869/60
+Z:314 Libanon
+A:LB
+T:*/*=1.729/60
+Z:315 Liberia
+A:LR
+T:*/*=1.269/60
+Z:316 Libyen
+A:LY
+T:*/*=0.999/60
+Z:317 Liechtenstein
+A:LI
+T:*/*=0.419/60
+Z:318 Litauen
+A:LT
+T:*/*=0.959/60
+Z:319 Luxemburg
+A:LU
+T:*/*=0.409/60
+Z:320 Macau
+A:MO
+T:*/*=1.059/60
+Z:321 Madagaskar
+A:MG
+T:*/*=1.639/60
+Z:322 Madeira
+A:_MADE
+T:*/*=0.929/60
+Z:323 Malawi
+A:MW
+T:*/*=1.399/60
+Z:324 Malaysia
+A:MY
+T:*/*=0.739/60
+Z:325 Malediven
+A:MV
+T:*/*=2.049/60
+Z:326 Mali
+A:ML
+T:*/*=2.319/60
+Z:327 Malta
+A:MT
+T:*/*=0.689/60
+Z:328 Marianen, Nördliche
+A:MP,KP
+T:*/*=1.049/60
+Z:329 Marokko
+A:EH
+T:*/*=1.159/60
+Z:330 Marshallinseln
+A:MH
+T:*/*=1.409/60
+Z:331 Martinique
+A:MQ
+T:*/*=1.119/60
+Z:332 Mauretanien
+A:MR
+T:*/*=1.899/60
+Z:333 Mauritius
+A:MU
+T:*/*=1.789/60
+Z:334 Mayotte
+A:YT
+T:*/*=1.289/60
+Z:335 Mazedonien
+A:MK
+T:*/*=1.019/60
+Z:336 Mexiko
+A:MX
+T:*/*=0.829/60
+Z:337 Midway Islands
+A:_MIDW
+T:*/*=4.019/60
+Z:338 Mikronesien
+A:FM
+T:*/*=1.499/60
+Z:339 Moldawien
+A:MD
+T:*/*=1.209/60
+Z:340 Monaco
+A:MC
+T:*/*=0.479/60
+Z:341 Mongolei
+A:MN
+T:*/*=2.479/60
+Z:342 Montserrat
+A:MS
+T:*/*=1.659/60
+Z:343 Mosambik
+A:MZ
+T:*/*=1.339/60
+Z:344 Myanmar
+A:MM
+T:*/*=2.609/60
+Z:345 Namibia
+A:NA
+T:*/*=1.149/60
+Z:346 Nauru
+A:NR
+T:*/*=2.089/60
+Z:347 Nepal
+A:NP
+T:*/*=2.059/60
+Z:348 Neukaledonien
+A:NC
+T:*/*=1.799/60
+Z:349 Neuseeland
+A:NZ
+T:*/*=0.509/60
+Z:350 Nicaragua
+A:NI
+T:*/*=1.479/60
+Z:351 Niederlande
+A:NL
+T:*/*=0.279/60
+Z:352 Niederländische Antillen
+A:AN
+T:*/*=1.209/60
+Z:353 Niger
+A:NGR
+T:*/*=1.899/60
+Z:354 Nigeria
+A:NG
+T:*/*=1.989/60
+Z:355 Niue
+A:NU
+T:*/*=2.609/60
+Z:356 Norfolk Inseln
+A:NF
+T:*/*=1.279/60
+Z:357 Norwegen
+A:NO
+T:*/*=0.369/60
+Z:358 Oman
+A:OM
+T:*/*=1.989/60
+Z:359 Österreich
+A:AT
+T:*/*=0.509/60
+Z:360 Pakistan
+A:PK
+T:*/*=2.139/60
+Z:361 Palau
+A:PW
+T:*/*=2.379/60
+Z:362 Panama
+A:PA
+T:*/*=1.559/60
+Z:363 Papua-Neuguinea
+A:PG
+T:*/*=1.119/60
+Z:364 Paraguay
+A:PY
+T:*/*=1.829/60
+Z:365 Peru
+A:PE
+T:*/*=1.349/60
+Z:366 Philippinen
+A:PH
+T:*/*=1.089/60
+Z:367 Polen
+A:PL
+T:*/*=0.819/60
+Z:368 Portugal
+A:PT
+T:*/*=0.709/60
+Z:369 Puerto Rico
+A:PR
+T:*/*=0.409/60
+Z:370 Reunion
+A:RE
+T:*/*=1.209/60
+Z:371 Ruanda
+A:RW
+T:*/*=1.669/60
+Z:372 Rumänien
+A:RO
+T:*/*=1.019/60
+Z:373 Russische Föderation
+A:SU
+T:*/*=1.189/60
+Z:374 Salomenen
+A:SB
+T:*/*=1.989/60
+Z:375 Sambia
+A:ZM
+T:*/*=1.829/60
+Z:376 Samoa US
+A:AS
+T:*/*=0.959/60
+Z:377 San Marino
+A:SM
+T:*/*=0.829/60
+Z:378 Sao Tome und Principe
+A:ST
+T:*/*=2.719/60
+Z:379 Saudi Arabien
+A:SA
+T:*/*=2.249/60
+Z:380 Schweden
+A:SE
+T:*/*=0.259/60
+Z:381 Schweiz
+A:CH
+T:*/*=0.319/60
+Z:382 Senegal
+A:SN
+T:*/*=1.989/60
+Z:383 Serbien
+A:YU
+T:*/*=1.049/60
+Z:384 Seychellen
+A:SC
+T:*/*=2.279/60
+Z:385 Sierra Leone
+A:SL
+T:*/*=2.079/60
+Z:386 Simbabwe
+A:ZW
+T:*/*=1.209/60
+Z:387 Singapur
+A:SG
+T:*/*=0.739/60
+Z:388 Slowakei
+A:SK
+T:*/*=0.819/60
+Z:389 Slowenien
+A:SI
+T:*/*=0.709/60
+Z:390 Somalia
+A:SO
+T:*/*=2.219/60
+Z:391 Spanien
+A:ES
+T:*/*=0.439/60
+Z:392 Sri Lanka
+A:LK
+T:*/*=1.759/60
+Z:393 St. Kitts und Navis
+A:KN
+T:*/*=1.109/60
+Z:394 St. Helena
+A:SH
+T:*/*=1.829/60
+Z:395 St. Lucia
+A:LC
+T:*/*=1.399/60
+Z:396 St. Pierre und Miquelon
+A:PM
+T:*/*=0.999/60
+Z:397 St. Vincent und Grenada
+A:VC
+T:*/*=1.509/60
+Z:398 Südafrika
+A:ZA
+T:*/*=1.449/60
+Z:399 Sudan
+A:SD
+T:*/*=1.319/60
+Z:400 Suriname
+A:SR
+T:*/*=2.689/60
+Z:401 Swasiland
+A:SZ
+T:*/*=0.919/60
+Z:402 Syrien
+A:SY
+T:*/*=1.669/60
+Z:403 Tadschikistan
+A:TJ
+T:*/*=1.309/60
+Z:404 Taiwan
+A:TW
+T:*/*=0.929/60
+Z:405 Tansania
+A:TZ
+T:*/*=1.729/60
+Z:406 Thailand
+A:TH
+T:*/*=1.419/60
+Z:407 Togo
+A:TG
+T:*/*=2.089/60
+Z:408 Tonga
+A:TO
+T:*/*=2.609/60
+Z:409 Trinidad und Tobago
+A:TT
+T:*/*=1.559/60
+Z:410 Tschad
+A:TD
+T:*/*=2.499/60
+Z:411 Tschechische Republik
+A:CZ
+T:*/*=0.729/60
+Z:412 Tunesien
+A:TN
+T:*/*=1.079/60
+Z:413 Türkei
+A:TR
+T:*/*=0.989/60
+Z:414 Turks u. Caicosinseln
+A:TC
+T:*/*=1.349/60
+Z:415 Turmenistan
+A:TM
+T:*/*=1.439/60
+Z:416 Tuvalu
+A:TV
+T:*/*=2.309/60
+Z:417 Uganda
+A:UG
+T:*/*=1.219/60
+Z:418 Ukraine
+A:UA
+T:*/*=1.049/60
+Z:419 Ungarn
+A:HU
+T:*/*=0.669/60
+Z:420 Uruguay
+A:UY
+T:*/*=1.449/60
+Z:421 USA
+A:US
+T:*/*=0.199/60
+Z:422 Usbekistan
+A:UZ
+T:*/*=1.739/60
+Z:423 Vanuatu
+A:VU
+T:*/*=2.319/60
+Z:424 Vatikanstadt
+A:VA
+T:*/*=0.789/60
+Z:425 Venezuela
+A:VE
+T:*/*=1.089/60
+Z:426 V. Arabische Emirate
+A:AE
+T:*/*=1.159/60
+Z:427 Vietnam
+A:VN
+T:*/*=2.469/60
+Z:428 Virgin Islands UK
+A:VI
+T:*/*=1.089/60
+Z:429 Virgin Island US
+A:VI
+T:*/*=0.379/60
+Z:430 Wake Island
+A:_WAKE
+T:*/*=4.759/60
+Z:431 Wallis und Futuna
+A:WF
+T:*/*=1.579/60
+Z:432 Western Samoa
+A:WS
+T:*/*=2.349/60
+Z:433 Zaire
+A:ZR
+T:*/*=1.579/60
+Z:434 Zentralafrika
+A:CF
+T:*/*=2.219/60
+Z:435 Zypern Nord
+A:_CYTK
+T:*/*=0.899/60
+Z:436 Zypern Süd
+A:_CYTK
+T:*/*=1.119/60
+Z:Rest
 A:+
-T:*/*=2.42(60)/15
+T:*/*=99.99/1 Rest
 #####################################################################
-P:36,1 Hutchison easyfon
+P:36,1 Hutchison fairfon Sekundentakt
+B:01036
+C:Name:Hutchison fairfon Sekundentakt
+C:Address:Hutchison, Münsterstraße 109, 48155 Münster
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Sondertarif 11 "Hutchison Mobilfunk-Kunde": Vergünstigte Gespräche zu
+C:Hutchison Mobilfunk Teilnehmern
+C:Grundgebühr: 9,95 DM, oder Abschluß eines 12 Monatsvertrages
+C:Erfasste Zonen:
+C:2	-   4	Deutschland
+C:10		Mobilfunk
+C:11		Sondertarif
+C:200	-	Ausland
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+Z:1-3 regional
+T:W/08-18=0.129(60)/1 Geschäftszeit
+T:E,H/08-18=0.119(60)/1 Wochenende
+T:*/18-08=0.119(60)/1 Freizeit
+Z:4 national
+A:DE
+T:W/08-18=0.149(60)/1 Geschäftszeit
+T:E,H/08-18=0.119(60)/1 Wochenende
+T:*/18-08=0.119(60)/1 Freizeit
+Z:10 Mobilfunk
+A:_DEMCM,_DEMC,_DEMD1,_DEMD2,_DEME1,_DEME2
+T:*/*=0.559/60
+Z:11 Hutchison Mobilfunk-Kunde
+T:W/08-18=0.499(60)/1 Geschäftszeit
+T:E,H/08-18=0.449(60)/1 Wochenende
+T:*/18-08=0.449(60)/1 Freizeit
+Z:200 Afghanistan
+A:AF
+T:*/*=2.569(60)/1
+Z:201 Ägypten
+A:EG
+T:*/*=1.669(60)/1
+Z:202 Albanien
+A:AL
+T:*/*=0.869(60)/1
+Z:203 Algerien
+A:DZ
+T:*/*=0.899(60)/1
+Z:204 Andorra
+A:AD
+T:*/*=0.569(60)/1
+Z:205 Angola
+A:AO
+T:*/*=1.209(60)/1
+Z:206 Anguilla
+A:AI
+T:*/*=1.279(60)/1
+Z:207 Antarctica
+A:AQ
+T:*/*=0.949(60)/1
+Z:208 Antigua
+A:AG
+T:*/*=1.219(60)/1
+Z:209 Äquatorialguinea
+A:GQ
+T:*/*=2.249(60)/1
+Z:210 Argentinien
+A:AR
+T:*/*=1.239(60)/1
+Z:211 Armenien
+A:AM
+T:*/*=1.469(60)/1
+Z:212 Aruba
+A:AW
+T:*/*=1.049(60)/1
+Z:213 Ascension
+A:ASI
+T:*/*=2.249(60)/1
+Z:214 Aserbaidschan
+A:AZ
+T:*/*=1.159(60)/1
+Z:215 Äthiopien
+A:ET
+T:*/*=2.309(60)/1
+Z:216 Australien
+A:AU
+T:*/*=0.449(60)/1
+Z:217 Azoren
+A:_AZOR
+T:*/*=1.279(60)/1
+Z:218 Bahamas
+A:BS
+T:*/*=0.639(60)/1
+Z:219 Bahrain
+A:BH
+T:*/*=1.689(60)/1
+Z:220 Bangladesch
+A:BD
+T:*/*=2.019(60)/1
+Z:221 Barbados
+A:BB
+T:*/*=1.399(60)/1
+Z:222 Belarus
+A:BY
+T:*/*=0.929(60)/1
+Z:223 Belgien
+A:BE
+T:*/*=0.319(60)/1
+Z:224 Belize
+A:BZ
+T:*/*=1.539(60)/1
+Z:225 Benin
+A:BJ
+T:*/*=1.409(60)/1
+Z:226 Bermuda
+A:BM
+T:*/*=0.659(60)/1
+Z:227 Bhutan
+A:BT
+T:*/*=1.289(60)/1
+Z:228 Bolivien
+A:BO
+T:*/*=1.559(60)/1
+Z:229 Bosnien-Herzegowina
+A:BA
+T:*/*=0.979(60)/1
+Z:230 Botsuana
+A:BW
+T:*/*=1.059(60)/1
+Z:231 Brasilien
+A:BR
+T:*/*=0.999(60)/1
+Z:232 Brunei
+A:BN
+T:*/*=1.129(60)/1
+Z:233 Bulgarien
+A:BG
+T:*/*=0.889(60)/1
+Z:234 Burkina Faso
+A:BF
+T:*/*=1.989(60)/1
+Z:235 Burundi
+A:BI
+T:*/*=1.609(60)/1
+Z:236 Chatham Island
+A:_CHAT
+T:*/*=1.379(60)/1
+Z:237 Chile
+A:CL
+T:*/*=0.669(60)/1
+Z:238 China
+A:CN
+T:*/*=1.449(60)/1
+Z:239 Christmas Islands
+A:CX
+T:*/*=0.829(60)/1
+Z:240 Cocos Inseln
+A:CC
+T:*/*=0.729(60)/1
+Z:241 Cook Inseln
+A:CK
+T:*/*=2.899(60)/1
+Z:242 Costa Rica
+A:CR
+T:*/*=0.959(60)/1
+Z:243 Cote d´Ivory
+A:CI
+T:*/*=2.469(60)/1
+Z:244 Dänemark
+A:DK
+T:*/*=0.299(60)/1
+Z:245 Diego Garcia
+A:NKW
+T:*/*=1.539(60)/1
+Z:246 Dominica
+A:DM
+T:*/*=1.049(60)/1
+Z:247 Dominikanische Republik
+A:DO
+T:*/*=0.709(60)/1
+Z:248 Dschibuti
+A:DJ
+T:*/*=2.119(60)/1
+Z:249 Ecuador
+A:EC
+T:*/*=1.089(60)/1
+Z:250 El Salvador
+A:SV
+T:*/*=1.279(60)/1
+Z:251 Eritrea
+A:ER
+T:*/*=2.479(60)/1
+Z:252 Estland
+A:EE
+T:*/*=0.659(60)/1
+Z:253 Falklandinseln
+A:FK
+T:*/*=1.079(60)/1
+Z:254 Faröer
+A:FO
+T:*/*=1.049(60)/1
+Z:255 Fidschi
+A:FJ
+T:*/*=2.059(60)/1
+Z:256 Finnland
+A:FI
+T:*/*=0.349(60)/1
+Z:257 Frankreich
+A:FR
+T:*/*=0.289(60)/1
+Z:258 Französisch Guayana
+A:GF
+T:*/*=1.019(60)/1
+Z:259 Französisch-Polynesien
+A:PF
+T:*/*=1.629(60)/1
+Z:260 Gabun
+A:GA
+T:*/*=1.439(60)/1
+Z:261 Gambia
+A:GM
+T:*/*=1.469(60)/1
+Z:262 Georgien
+A:GE
+T:*/*=1.479(60)/1
+Z:263 Ghana
+A:GH
+T:*/*=1.319(60)/1
+Z:264 Gibraltar
+A:GI
+T:*/*=0.999(60)/1
+Z:265 Grenada
+A:GD
+T:*/*=1.349(60)/1
+Z:266 Griechenland
+A:GR
+T:*/*=0.659(60)/1
+Z:267 Grönland
+A:GL
+T:*/*=1.119(60)/1
+Z:268 Großbritannien
+A:UK
+T:*/*=0.199(60)/1
+Z:269 Guadeloupe
+A:GP
+T:*/*=1.059(60)/1
+Z:270 Guam
+A:GU
+T:*/*=0.509(60)/1
+Z:271 Guantanamo
+A:_GUAN
+T:*/*=1.159(60)/1
+Z:272 Guatemala
+A:GT
+T:*/*=0.929(60)/1
+Z:273 Guinea
+A:GN
+T:*/*=1.289(60)/1
+Z:274 Guinea-Bissau
+A:GW
+T:*/*=2.369(60)/1
+Z:275 Guyana
+A:GY
+T:*/*=1.709(60)/1
+Z:276 Haiti
+A:HT
+T:*/*=1.609(60)/1
+Z:277 Honduras
+A:HN
+T:*/*=1.509(60)/1
+Z:278 Hongkong
+A:HK
+T:*/*=0.539(60)/1
+Z:279 Indien
+A:IN
+T:*/*=2.119(60)/1
+Z:280 Indonesien
+A:ID
+T:*/*=1.279(60)/1
+Z:281 Irak
+A:IQ
+T:*/*=2.569(60)/1
+Z:282 Iran
+A:IR
+T:*/*=2.149(60)/1
+Z:283 Irland
+A:IE
+T:*/*=0.469(60)/1
+Z:284 Island
+A:IS
+T:*/*=0.739(60)/1
+Z:285 Israel
+A:IL
+T:*/*=0.709(60)/1
+Z:286 Italien 
+A:IT
+T:*/*=0.539(60)/1
+Z:287 Jamaika
+A:JM
+T:*/*=1.799(60)/1
+Z:288 Japan
+A:JP
+T:*/*=0.529(60)/1
+Z:289 Jemen Arab. Republik
+A:YE
+T:*/*=2.469(60)/1
+Z:290 Jordanien
+A:JO
+T:*/*=1.579(60)/1
+Z:291 Jugoslawien
+A:YU
+T:*/*=1.049(60)/1
+Z:292 Kaiman Inseln
+A:KY
+T:*/*=0.839(60)/1
+Z:293 Kambodscha
+A:KH
+T:*/*=2.539(60)/1
+Z:294 Kamerun
+A:CM
+T:*/*=1.799(60)/1
+Z:295 Kanada
+A:CA
+T:*/*=0.369(60)/1
+Z:296 Kanarische Inseln
+A:PLP
+T:*/*=0.759(60)/1
+Z:297 Kap Verde Inseln
+A:FO
+T:*/*=1.759(60)/1
+Z:298 Kasachstan
+A:KZ
+T:*/*=1.669(60)/1
+Z:299 Katar
+A:QA
+T:*/*=1.759(60)/1
+Z:300 Kenia
+A:KE
+T:*/*=1.669(60)/1
+Z:301 Kirgistan
+A:KG
+T:*/*=1.629(60)/1
+Z:302 Kiribati
+A:KI
+T:*/*=2.179(60)/1
+Z:303 Kolumbien
+A:CO
+T:*/*=1.209(60)/1
+Z:304 Komoren
+A:KM
+T:*/*=1.919(60)/1
+Z:305 Kongo
+A:CG
+T:*/*=1.739(60)/1
+Z:306 Korea Dem. Volksrepublik
+A:KP
+T:*/*=2.119(60)/1
+Z:307 Korea Republik (Süd)
+A:KR
+T:*/*=0.759(60)/1
+Z:308 Kroatien
+A:HR
+T:*/*=0.899(60)/1
+Z:309 Kuba
+A:CU
+T:*/*=1.859(60)/1
+Z:310 Kuwait
+A:KW
+T:*/*=2.119(60)/1
+Z:311 Laos
+A:LA
+T:*/*=2.119(60)/1
+Z:312 Lesotho
+A:LS
+T:*/*=1.149(60)/1
+Z:313 Lettland
+A:LV
+T:*/*=0.869(60)/1
+Z:314 Libanon
+A:LB
+T:*/*=1.729(60)/1
+Z:315 Liberia
+A:LR
+T:*/*=1.269(60)/1
+Z:316 Libyen
+A:LY
+T:*/*=0.999(60)/1
+Z:317 Liechtenstein
+A:LI
+T:*/*=0.419(60)/1
+Z:318 Litauen
+A:LT
+T:*/*=0.959(60)/1
+Z:319 Luxemburg
+A:LU
+T:*/*=0.409(60)/1
+Z:320 Macau
+A:MO
+T:*/*=1.059(60)/1
+Z:321 Madagaskar
+A:MG
+T:*/*=1.639(60)/1
+Z:322 Madeira
+A:_MADE
+T:*/*=0.929(60)/1
+Z:323 Malawi
+A:MW
+T:*/*=1.399(60)/1
+Z:324 Malaysia
+A:MY
+T:*/*=0.739(60)/1
+Z:325 Malediven
+A:MV
+T:*/*=2.049(60)/1
+Z:326 Mali
+A:ML
+T:*/*=2.319(60)/1
+Z:327 Malta
+A:MT
+T:*/*=0.689(60)/1
+Z:328 Marianen, Nördliche
+A:MP,KP
+T:*/*=1.049(60)/1
+Z:329 Marokko
+A:EH
+T:*/*=1.159(60)/1
+Z:330 Marshallinseln
+A:MH
+T:*/*=1.409(60)/1
+Z:331 Martinique
+A:MQ
+T:*/*=1.119(60)/1
+Z:332 Mauretanien
+A:MR
+T:*/*=1.899(60)/1
+Z:333 Mauritius
+A:MU
+T:*/*=1.789(60)/1
+Z:334 Mayotte
+A:YT
+T:*/*=1.289(60)/1
+Z:335 Mazedonien
+A:MK
+T:*/*=1.019(60)/1
+Z:336 Mexiko
+A:MX
+T:*/*=0.829(60)/1
+Z:337 Midway Islands
+A:_MIDW
+T:*/*=4.019(60)/1
+Z:338 Mikronesien
+A:FM
+T:*/*=1.499(60)/1
+Z:339 Moldawien
+A:MD
+T:*/*=1.209(60)/1
+Z:340 Monaco
+A:MC
+T:*/*=0.479(60)/1
+Z:341 Mongolei
+A:MN
+T:*/*=2.479(60)/1
+Z:342 Montserrat
+A:MS
+T:*/*=1.659(60)/1
+Z:343 Mosambik
+A:MZ
+T:*/*=1.339(60)/1
+Z:344 Myanmar
+A:MM
+T:*/*=2.609(60)/1
+Z:345 Namibia
+A:NA
+T:*/*=1.149(60)/1
+Z:346 Nauru
+A:NR
+T:*/*=2.089(60)/1
+Z:347 Nepal
+A:NP
+T:*/*=2.059(60)/1
+Z:348 Neukaledonien
+A:NC
+T:*/*=1.799(60)/1
+Z:349 Neuseeland
+A:NZ
+T:*/*=0.509(60)/1
+Z:350 Nicaragua
+A:NI
+T:*/*=1.479(60)/1
+Z:351 Niederlande
+A:NL
+T:*/*=0.279(60)/1
+Z:352 Niederländische Antillen
+A:AN
+T:*/*=1.209(60)/1
+Z:353 Niger
+A:NGR
+T:*/*=1.899(60)/1
+Z:354 Nigeria
+A:NG
+T:*/*=1.989(60)/1
+Z:355 Niue
+A:NU
+T:*/*=2.609(60)/1
+Z:356 Norfolk Inseln
+A:NF
+T:*/*=1.279(60)/1
+Z:357 Norwegen
+A:NO
+T:*/*=0.369(60)/1
+Z:358 Oman
+A:OM
+T:*/*=1.989(60)/1
+Z:359 Österreich
+A:AT
+T:*/*=0.509(60)/1
+Z:360 Pakistan
+A:PK
+T:*/*=2.139(60)/1
+Z:361 Palau
+A:PW
+T:*/*=2.379(60)/1
+Z:362 Panama
+A:PA
+T:*/*=1.559(60)/1
+Z:363 Papua-Neuguinea
+A:PG
+T:*/*=1.119(60)/1
+Z:364 Paraguay
+A:PY
+T:*/*=1.829(60)/1
+Z:365 Peru
+A:PE
+T:*/*=1.349(60)/1
+Z:366 Philippinen
+A:PH
+T:*/*=1.089(60)/1
+Z:367 Polen
+A:PL
+T:*/*=0.819(60)/1
+Z:368 Portugal
+A:PT
+T:*/*=0.709(60)/1
+Z:369 Puerto Rico
+A:PR
+T:*/*=0.409(60)/1
+Z:370 Reunion
+A:RE
+T:*/*=1.209(60)/1
+Z:371 Ruanda
+A:RW
+T:*/*=1.669(60)/1
+Z:372 Rumänien
+A:RO
+T:*/*=1.019(60)/1
+Z:373 Russische Föderation
+A:SU
+T:*/*=1.189(60)/1
+Z:374 Salomenen
+A:SB
+T:*/*=1.989(60)/1
+Z:375 Sambia
+A:ZM
+T:*/*=1.829(60)/1
+Z:376 Samoa US
+A:AS
+T:*/*=0.959(60)/1
+Z:377 San Marino
+A:SM
+T:*/*=0.829(60)/1
+Z:378 Sao Tome und Principe
+A:ST
+T:*/*=2.719(60)/1
+Z:379 Saudi Arabien
+A:SA
+T:*/*=2.249(60)/1
+Z:380 Schweden
+A:SE
+T:*/*=0.259(60)/1
+Z:381 Schweiz
+A:CH
+T:*/*=0.319(60)/1
+Z:382 Senegal
+A:SN
+T:*/*=1.989(60)/1
+Z:383 Serbien
+A:YU
+T:*/*=1.049(60)/1
+Z:384 Seychellen
+A:SC
+T:*/*=2.279(60)/1
+Z:385 Sierra Leone
+A:SL
+T:*/*=2.079(60)/1
+Z:386 Simbabwe
+A:ZW
+T:*/*=1.209(60)/1
+Z:387 Singapur
+A:SG
+T:*/*=0.739(60)/1
+Z:388 Slowakei
+A:SK
+T:*/*=0.819(60)/1
+Z:389 Slowenien
+A:SI
+T:*/*=0.709(60)/1
+Z:390 Somalia
+A:SO
+T:*/*=2.219(60)/1
+Z:391 Spanien
+A:ES
+T:*/*=0.439(60)/1
+Z:392 Sri Lanka
+A:LK
+T:*/*=1.759(60)/1
+Z:393 St. Kitts und Navis
+A:KN
+T:*/*=1.109(60)/1
+Z:394 St. Helena
+A:SH
+T:*/*=1.829(60)/1
+Z:395 St. Lucia
+A:LC
+T:*/*=1.399(60)/1
+Z:396 St. Pierre und Miquelon
+A:PM
+T:*/*=0.999(60)/1
+Z:397 St. Vincent und Grenada
+A:VC
+T:*/*=1.509(60)/1
+Z:398 Südafrika
+A:ZA
+T:*/*=1.449(60)/1
+Z:399 Sudan
+A:SD
+T:*/*=1.319(60)/1
+Z:400 Suriname
+A:SR
+T:*/*=2.689(60)/1
+Z:401 Swasiland
+A:SZ
+T:*/*=0.919(60)/1
+Z:402 Syrien
+A:SY
+T:*/*=1.669(60)/1
+Z:403 Tadschikistan
+A:TJ
+T:*/*=1.309(60)/1
+Z:404 Taiwan
+A:TW
+T:*/*=0.929(60)/1
+Z:405 Tansania
+A:TZ
+T:*/*=1.729(60)/1
+Z:406 Thailand
+A:TH
+T:*/*=1.419(60)/1
+Z:407 Togo
+A:TG
+T:*/*=2.089(60)/1
+Z:408 Tonga
+A:TO
+T:*/*=2.609(60)/1
+Z:409 Trinidad und Tobago
+A:TT
+T:*/*=1.559(60)/1
+Z:410 Tschad
+A:TD
+T:*/*=2.499(60)/1
+Z:411 Tschechische Republik
+A:CZ
+T:*/*=0.729(60)/1
+Z:412 Tunesien
+A:TN
+T:*/*=1.079(60)/1
+Z:413 Türkei
+A:TR
+T:*/*=0.989(60)/1
+Z:414 Turks u. Caicosinseln
+A:TC
+T:*/*=1.349(60)/1
+Z:415 Turmenistan
+A:TM
+T:*/*=1.439(60)/1
+Z:416 Tuvalu
+A:TV
+T:*/*=2.309(60)/1
+Z:417 Uganda
+A:UG
+T:*/*=1.219(60)/1
+Z:418 Ukraine
+A:UA
+T:*/*=1.049(60)/1
+Z:419 Ungarn
+A:HU
+T:*/*=0.669(60)/1
+Z:420 Uruguay
+A:UY
+T:*/*=1.449(60)/1
+Z:421 USA
+A:US
+T:*/*=0.199(60)/1
+Z:422 Usbekistan
+A:UZ
+T:*/*=1.739(60)/1
+Z:423 Vanuatu
+A:VU
+T:*/*=2.319(60)/1
+Z:424 Vatikanstadt
+A:VA
+T:*/*=0.789(60)/1
+Z:425 Venezuela
+A:VE
+T:*/*=1.089(60)/1
+Z:426 V. Arabische Emirate
+A:AE
+T:*/*=1.159(60)/1
+Z:427 Vietnam
+A:VN
+T:*/*=2.469(60)/1
+Z:428 Virgin Islands UK
+A:VI
+T:*/*=1.089(60)/1
+Z:429 Virgin Island US
+A:VI
+T:*/*=0.379(60)/1
+Z:430 Wake Island
+A:_WAKE
+T:*/*=4.759(60)/1
+Z:431 Wallis und Futuna
+A:WF
+T:*/*=1.579(60)/1
+Z:432 Western Samoa
+A:WS
+T:*/*=2.349(60)/1
+Z:433 Zaire
+A:ZR
+T:*/*=1.579(60)/1
+Z:434 Zentralafrika
+A:CF
+T:*/*=2.219(60)/1
+Z:435 Zypern Nord
+A:_CYTK
+T:*/*=0.899(60)/1
+Z:436 Zypern Süd
+A:_CYTK
+T:*/*=1.119(60)/1
+Z:500 Rest
+A:+
+T:*/*=99.99/1 Rest
+#####################################################################
+P:36,2 Hutchison fairfon city
+B:01036
+C:Name:Hutchison fairfon city
+C:Address:Hutchison, Münsterstraße 109, 48155 Münster
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Sondertarif 11 "Hutchison Mobilfunk-Kunde": Vergünstigte Gespräche zu
+C:Hutchison Mobilfunk Teilnehmern
+C:Special:Nicht national verfügbar.  Siehe http://www.hutchison.de/html/festnetz/tarifberatung/vorwahlen.htm
+C:Erfasste Zonen:
+C:2	-   4	Deutschland
+C:10		Mobilfunk
+C:11		Sondertarif
+C:200	-	Ausland
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+Z:1-3 regional
+T:*/*=0.099(60)/15
+Z:4 national
+A:DE
+T:W/08-18=0.139(60)/15 Geschaeftszeit
+T:W/18-08=0.099(60)/15 Freizeit
+T:E,H/*=0.099(60)/15 Freizeit
+Z:10 Mobilfunk
+A:_DEMCM,_DEMC,_DEMD1,_DEMD2,_DEME1,_DEME2
+T:*/*=0.559/60
+Z:11 Hutchison Mobilfunk-Kunde
+T:*/*=0.499/60
+Z:200 Afghanistan
+A:AF
+T:*/*=2.569/60
+Z:201 Ägypten
+A:EG
+T:*/*=1.669/60
+Z:202 Albanien
+A:AL
+T:*/*=0.869/60
+Z:203 Algerien
+A:DZ
+T:*/*=0.899/60
+Z:204 Andorra
+A:AD
+T:*/*=0.569/60
+Z:205 Angola
+A:AO
+T:*/*=1.209/60
+Z:206 Anguilla
+A:AI
+T:*/*=1.279/60
+Z:207 Antarctica
+A:AQ
+T:*/*=0.949/60
+Z:208 Antigua
+A:AG
+T:*/*=1.219/60
+Z:209 Äquatorialguinea
+A:GQ
+T:*/*=2.249/60
+Z:210 Argentinien
+A:AR
+T:*/*=1.239/60
+Z:211 Armenien
+A:AM
+T:*/*=1.469/60
+Z:212 Aruba
+A:AW
+T:*/*=1.049/60
+Z:213 Ascension
+A:ASI
+T:*/*=2.249/60
+Z:214 Aserbaidschan
+A:AZ
+T:*/*=1.159/60
+Z:215 Äthiopien
+A:ET
+T:*/*=2.309/60
+Z:216 Australien
+A:AU
+T:*/*=0.449/60
+Z:217 Azoren
+A:_AZOR
+T:*/*=1.279/60
+Z:218 Bahamas
+A:BS
+T:*/*=0.639/60
+Z:219 Bahrain
+A:BH
+T:*/*=1.689/60
+Z:220 Bangladesch
+A:BD
+T:*/*=2.019/60
+Z:221 Barbados
+A:BB
+T:*/*=1.399/60
+Z:222 Belarus
+A:BY
+T:*/*=0.929/60
+Z:223 Belgien
+A:BE
+T:*/*=0.319/60
+Z:224 Belize
+A:BZ
+T:*/*=1.539/60
+Z:225 Benin
+A:BJ
+T:*/*=1.409/60
+Z:226 Bermuda
+A:BM
+T:*/*=0.659/60
+Z:227 Bhutan
+A:BT
+T:*/*=1.289/60
+Z:228 Bolivien
+A:BO
+T:*/*=1.559/60
+Z:229 Bosnien-Herzegowina
+A:BA
+T:*/*=0.979/60
+Z:230 Botsuana
+A:BW
+T:*/*=1.059/60
+Z:231 Brasilien
+A:BR
+T:*/*=0.999/60
+Z:232 Brunei
+A:BN
+T:*/*=1.129/60
+Z:233 Bulgarien
+A:BG
+T:*/*=0.889/60
+Z:234 Burkina Faso
+A:BF
+T:*/*=1.989/60
+Z:235 Burundi
+A:BI
+T:*/*=1.609/60
+Z:236 Chatham Island
+A:_CHAT
+T:*/*=1.379/60
+Z:237 Chile
+A:CL
+T:*/*=0.669/60
+Z:238 China
+A:CN
+T:*/*=1.449/60
+Z:239 Christmas Islands
+A:CX
+T:*/*=0.829/60
+Z:240 Cocos Inseln
+A:CC
+T:*/*=0.729/60
+Z:241 Cook Inseln
+A:CK
+T:*/*=2.899/60
+Z:242 Costa Rica
+A:CR
+T:*/*=0.959/60
+Z:243 Cote d´Ivory
+A:CI
+T:*/*=2.469/60
+Z:244 Dänemark
+A:DK
+T:*/*=0.299/60
+Z:245 Diego Garcia
+A:NKW
+T:*/*=1.539/60
+Z:246 Dominica
+A:DM
+T:*/*=1.049/60
+Z:247 Dominikanische Republik
+A:DO
+T:*/*=0.709/60
+Z:248 Dschibuti
+A:DJ
+T:*/*=2.119/60
+Z:249 Ecuador
+A:EC
+T:*/*=1.089/60
+Z:250 El Salvador
+A:SV
+T:*/*=1.279/60
+Z:251 Eritrea
+A:ER
+T:*/*=2.479/60
+Z:252 Estland
+A:EE
+T:*/*=0.659/60
+Z:253 Falklandinseln
+A:FK
+T:*/*=1.079/60
+Z:254 Faröer
+A:FO
+T:*/*=1.049/60
+Z:255 Fidschi
+A:FJ
+T:*/*=2.059/60
+Z:256 Finnland
+A:FI
+T:*/*=0.349/60
+Z:257 Frankreich
+A:FR
+T:*/*=0.289/60
+Z:258 Französisch Guayana
+A:GF
+T:*/*=1.019/60
+Z:259 Französisch-Polynesien
+A:PF
+T:*/*=1.629/60
+Z:260 Gabun
+A:GA
+T:*/*=1.439/60
+Z:261 Gambia
+A:GM
+T:*/*=1.469/60
+Z:262 Georgien
+A:GE
+T:*/*=1.479/60
+Z:263 Ghana
+A:GH
+T:*/*=1.319/60
+Z:264 Gibraltar
+A:GI
+T:*/*=0.999/60
+Z:265 Grenada
+A:GD
+T:*/*=1.349/60
+Z:266 Griechenland
+A:GR
+T:*/*=0.659/60
+Z:267 Grönland
+A:GL
+T:*/*=1.119/60
+Z:268 Großbritannien
+A:UK
+T:*/*=0.199/60
+Z:269 Guadeloupe
+A:GP
+T:*/*=1.059/60
+Z:270 Guam
+A:GU
+T:*/*=0.509/60
+Z:271 Guantanamo
+A:_GUAN
+T:*/*=1.159/60
+Z:272 Guatemala
+A:GT
+T:*/*=0.929/60
+Z:273 Guinea
+A:GN
+T:*/*=1.289/60
+Z:274 Guinea-Bissau
+A:GW
+T:*/*=2.369/60
+Z:275 Guyana
+A:GY
+T:*/*=1.709/60
+Z:276 Haiti
+A:HT
+T:*/*=1.609/60
+Z:277 Honduras
+A:HN
+T:*/*=1.509/60
+Z:278 Hongkong
+A:HK
+T:*/*=0.539/60
+Z:279 Indien
+A:IN
+T:*/*=2.119/60
+Z:280 Indonesien
+A:ID
+T:*/*=1.279/60
+Z:281 Irak
+A:IQ
+T:*/*=2.569/60
+Z:282 Iran
+A:IR
+T:*/*=2.149/60
+Z:283 Irland
+A:IE
+T:*/*=0.469/60
+Z:284 Island
+A:IS
+T:*/*=0.739/60
+Z:285 Israel
+A:IL
+T:*/*=0.709/60
+Z:286 Italien 
+A:IT
+T:*/*=0.539/60
+Z:287 Jamaika
+A:JM
+T:*/*=1.799/60
+Z:288 Japan
+A:JP
+T:*/*=0.529/60
+Z:289 Jemen Arab. Republik
+A:YE
+T:*/*=2.469/60
+Z:290 Jordanien
+A:JO
+T:*/*=1.579/60
+Z:291 Jugoslawien
+A:YU
+T:*/*=1.049/60
+Z:292 Kaiman Inseln
+A:KY
+T:*/*=0.839/60
+Z:293 Kambodscha
+A:KH
+T:*/*=2.539/60
+Z:294 Kamerun
+A:CM
+T:*/*=1.799/60
+Z:295 Kanada
+A:CA
+T:*/*=0.369/60
+Z:296 Kanarische Inseln
+A:PLP
+T:*/*=0.759/60
+Z:297 Kap Verde Inseln
+A:FO
+T:*/*=1.759/60
+Z:298 Kasachstan
+A:KZ
+T:*/*=1.669/60
+Z:299 Katar
+A:QA
+T:*/*=1.759/60
+Z:300 Kenia
+A:KE
+T:*/*=1.669/60
+Z:301 Kirgistan
+A:KG
+T:*/*=1.629/60
+Z:302 Kiribati
+A:KI
+T:*/*=2.179/60
+Z:303 Kolumbien
+A:CO
+T:*/*=1.209/60
+Z:304 Komoren
+A:KM
+T:*/*=1.919/60
+Z:305 Kongo
+A:CG
+T:*/*=1.739/60
+Z:306 Korea Dem. Volksrepublik
+A:KP
+T:*/*=2.119/60
+Z:307 Korea Republik (Süd)
+A:KR
+T:*/*=0.759/60
+Z:308 Kroatien
+A:HR
+T:*/*=0.899/60
+Z:309 Kuba
+A:CU
+T:*/*=1.859/60
+Z:310 Kuwait
+A:KW
+T:*/*=2.119/60
+Z:311 Laos
+A:LA
+T:*/*=2.119/60
+Z:312 Lesotho
+A:LS
+T:*/*=1.149/60
+Z:313 Lettland
+A:LV
+T:*/*=0.869/60
+Z:314 Libanon
+A:LB
+T:*/*=1.729/60
+Z:315 Liberia
+A:LR
+T:*/*=1.269/60
+Z:316 Libyen
+A:LY
+T:*/*=0.999/60
+Z:317 Liechtenstein
+A:LI
+T:*/*=0.419/60
+Z:318 Litauen
+A:LT
+T:*/*=0.959/60
+Z:319 Luxemburg
+A:LU
+T:*/*=0.409/60
+Z:320 Macau
+A:MO
+T:*/*=1.059/60
+Z:321 Madagaskar
+A:MG
+T:*/*=1.639/60
+Z:322 Madeira
+A:_MADE
+T:*/*=0.929/60
+Z:323 Malawi
+A:MW
+T:*/*=1.399/60
+Z:324 Malaysia
+A:MY
+T:*/*=0.739/60
+Z:325 Malediven
+A:MV
+T:*/*=2.049/60
+Z:326 Mali
+A:ML
+T:*/*=2.319/60
+Z:327 Malta
+A:MT
+T:*/*=0.689/60
+Z:328 Marianen, Nördliche
+A:MP,KP
+T:*/*=1.049/60
+Z:329 Marokko
+A:EH
+T:*/*=1.159/60
+Z:330 Marshallinseln
+A:MH
+T:*/*=1.409/60
+Z:331 Martinique
+A:MQ
+T:*/*=1.119/60
+Z:332 Mauretanien
+A:MR
+T:*/*=1.899/60
+Z:333 Mauritius
+A:MU
+T:*/*=1.789/60
+Z:334 Mayotte
+A:YT
+T:*/*=1.289/60
+Z:335 Mazedonien
+A:MK
+T:*/*=1.019/60
+Z:336 Mexiko
+A:MX
+T:*/*=0.829/60
+Z:337 Midway Islands
+A:_MIDW
+T:*/*=4.019/60
+Z:338 Mikronesien
+A:FM
+T:*/*=1.499/60
+Z:339 Moldawien
+A:MD
+T:*/*=1.209/60
+Z:340 Monaco
+A:MC
+T:*/*=0.479/60
+Z:341 Mongolei
+A:MN
+T:*/*=2.479/60
+Z:342 Montserrat
+A:MS
+T:*/*=1.659/60
+Z:343 Mosambik
+A:MZ
+T:*/*=1.339/60
+Z:344 Myanmar
+A:MM
+T:*/*=2.609/60
+Z:345 Namibia
+A:NA
+T:*/*=1.149/60
+Z:346 Nauru
+A:NR
+T:*/*=2.089/60
+Z:347 Nepal
+A:NP
+T:*/*=2.059/60
+Z:348 Neukaledonien
+A:NC
+T:*/*=1.799/60
+Z:349 Neuseeland
+A:NZ
+T:*/*=0.509/60
+Z:350 Nicaragua
+A:NI
+T:*/*=1.479/60
+Z:351 Niederlande
+A:NL
+T:*/*=0.279/60
+Z:352 Niederländische Antillen
+A:AN
+T:*/*=1.209/60
+Z:353 Niger
+A:NGR
+T:*/*=1.899/60
+Z:354 Nigeria
+A:NG
+T:*/*=1.989/60
+Z:355 Niue
+A:NU
+T:*/*=2.609/60
+Z:356 Norfolk Inseln
+A:NF
+T:*/*=1.279/60
+Z:357 Norwegen
+A:NO
+T:*/*=0.369/60
+Z:358 Oman
+A:OM
+T:*/*=1.989/60
+Z:359 Österreich
+A:AT
+T:*/*=0.509/60
+Z:360 Pakistan
+A:PK
+T:*/*=2.139/60
+Z:361 Palau
+A:PW
+T:*/*=2.379/60
+Z:362 Panama
+A:PA
+T:*/*=1.559/60
+Z:363 Papua-Neuguinea
+A:PG
+T:*/*=1.119/60
+Z:364 Paraguay
+A:PY
+T:*/*=1.829/60
+Z:365 Peru
+A:PE
+T:*/*=1.349/60
+Z:366 Philippinen
+A:PH
+T:*/*=1.089/60
+Z:367 Polen
+A:PL
+T:*/*=0.819/60
+Z:368 Portugal
+A:PT
+T:*/*=0.709/60
+Z:369 Puerto Rico
+A:PR
+T:*/*=0.409/60
+Z:370 Reunion
+A:RE
+T:*/*=1.209/60
+Z:371 Ruanda
+A:RW
+T:*/*=1.669/60
+Z:372 Rumänien
+A:RO
+T:*/*=1.019/60
+Z:373 Russische Föderation
+A:SU
+T:*/*=1.189/60
+Z:374 Salomenen
+A:SB
+T:*/*=1.989/60
+Z:375 Sambia
+A:ZM
+T:*/*=1.829/60
+Z:376 Samoa US
+A:AS
+T:*/*=0.959/60
+Z:377 San Marino
+A:SM
+T:*/*=0.829/60
+Z:378 Sao Tome und Principe
+A:ST
+T:*/*=2.719/60
+Z:379 Saudi Arabien
+A:SA
+T:*/*=2.249/60
+Z:380 Schweden
+A:SE
+T:*/*=0.259/60
+Z:381 Schweiz
+A:CH
+T:*/*=0.319/60
+Z:382 Senegal
+A:SN
+T:*/*=1.989/60
+Z:383 Serbien
+A:YU
+T:*/*=1.049/60
+Z:384 Seychellen
+A:SC
+T:*/*=2.279/60
+Z:385 Sierra Leone
+A:SL
+T:*/*=2.079/60
+Z:386 Simbabwe
+A:ZW
+T:*/*=1.209/60
+Z:387 Singapur
+A:SG
+T:*/*=0.739/60
+Z:388 Slowakei
+A:SK
+T:*/*=0.819/60
+Z:389 Slowenien
+A:SI
+T:*/*=0.709/60
+Z:390 Somalia
+A:SO
+T:*/*=2.219/60
+Z:391 Spanien
+A:ES
+T:*/*=0.439/60
+Z:392 Sri Lanka
+A:LK
+T:*/*=1.759/60
+Z:393 St. Kitts und Navis
+A:KN
+T:*/*=1.109/60
+Z:394 St. Helena
+A:SH
+T:*/*=1.829/60
+Z:395 St. Lucia
+A:LC
+T:*/*=1.399/60
+Z:396 St. Pierre und Miquelon
+A:PM
+T:*/*=0.999/60
+Z:397 St. Vincent und Grenada
+A:VC
+T:*/*=1.509/60
+Z:398 Südafrika
+A:ZA
+T:*/*=1.449/60
+Z:399 Sudan
+A:SD
+T:*/*=1.319/60
+Z:400 Suriname
+A:SR
+T:*/*=2.689/60
+Z:401 Swasiland
+A:SZ
+T:*/*=0.919/60
+Z:402 Syrien
+A:SY
+T:*/*=1.669/60
+Z:403 Tadschikistan
+A:TJ
+T:*/*=1.309/60
+Z:404 Taiwan
+A:TW
+T:*/*=0.929/60
+Z:405 Tansania
+A:TZ
+T:*/*=1.729/60
+Z:406 Thailand
+A:TH
+T:*/*=1.419/60
+Z:407 Togo
+A:TG
+T:*/*=2.089/60
+Z:408 Tonga
+A:TO
+T:*/*=2.609/60
+Z:409 Trinidad und Tobago
+A:TT
+T:*/*=1.559/60
+Z:410 Tschad
+A:TD
+T:*/*=2.499/60
+Z:411 Tschechische Republik
+A:CZ
+T:*/*=0.729/60
+Z:412 Tunesien
+A:TN
+T:*/*=1.079/60
+Z:413 Türkei
+A:TR
+T:*/*=0.989/60
+Z:414 Turks u. Caicosinseln
+A:TC
+T:*/*=1.349/60
+Z:415 Turmenistan
+A:TM
+T:*/*=1.439/60
+Z:416 Tuvalu
+A:TV
+T:*/*=2.309/60
+Z:417 Uganda
+A:UG
+T:*/*=1.219/60
+Z:418 Ukraine
+A:UA
+T:*/*=1.049/60
+Z:419 Ungarn
+A:HU
+T:*/*=0.669/60
+Z:420 Uruguay
+A:UY
+T:*/*=1.449/60
+Z:421 USA
+A:US
+T:*/*=0.199/60
+Z:422 Usbekistan
+A:UZ
+T:*/*=1.739/60
+Z:423 Vanuatu
+A:VU
+T:*/*=2.319/60
+Z:424 Vatikanstadt
+A:VA
+T:*/*=0.789/60
+Z:425 Venezuela
+A:VE
+T:*/*=1.089/60
+Z:426 V. Arabische Emirate
+A:AE
+T:*/*=1.159/60
+Z:427 Vietnam
+A:VN
+T:*/*=2.469/60
+Z:428 Virgin Islands UK
+A:VI
+T:*/*=1.089/60
+Z:429 Virgin Island US
+A:VI
+T:*/*=0.379/60
+Z:430 Wake Island
+A:_WAKE
+T:*/*=4.759/60
+Z:431 Wallis und Futuna
+A:WF
+T:*/*=1.579/60
+Z:432 Western Samoa
+A:WS
+T:*/*=2.349/60
+Z:433 Zaire
+A:ZR
+T:*/*=1.579/60
+Z:434 Zentralafrika
+A:CF
+T:*/*=2.219/60
+Z:435 Zypern Nord
+A:_CYTK
+T:*/*=0.899/60
+Z:436 Zypern Süd
+A:_CYTK
+T:*/*=1.119/60
+Z:500 Rest
+A:+
+T:*/*=99.99/1 Rest
+#####################################################################
+P:36,3 Hutchison fairfon city sekundentakt
+B:01036
+C:Name:Hutchison fairfon city sekundentakt
+C:Address:Hutchison, Münsterstraße 109, 48155 Münster
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Special:Nicht national verfügbar.  Siehe http://www.hutchison.de/html/festnetz/tarifberatung/vorwahlen.htm
+C:Grundgebühr: 9,95 DM oder Abschluß eines 12 Monatsvertrages
+C:Sondertarif 11 "Hutchison Mobilfunk-Kunde": Vergünstigte Gespräche zu
+C:Hutchison Mobilfunk Teilnehmern
+C:Erfasste Zonen:
+C:2	-   4	Deutschland
+C:10		Mobilfunk
+C:11		Sondertarif
+C:200	-	Ausland
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+Z:1-3 regional
+T:*/*=0.099(60)/1
+Z:4 national
+A:DE
+T:W/08-18=0.139(60)/1 Geschaeftszeit
+T:W/18-08=0.099(60)/1 Freizeit
+T:E,H/*=0.099(60)/1 Freizeit
+Z:10 Mobilfunk
+A:_DEMCM,_DEMC,_DEMD1,_DEMD2,_DEME1,_DEME2
+T:*/*=0.559(60)/1
+Z:11 Hutchison Mobilfunk-Kunde
+T:*/*=0.499(60)/1
+Z:200 Afghanistan
+A:AF
+T:*/*=2.569(60)/1
+Z:201 Ägypten
+A:EG
+T:*/*=1.669(60)/1
+Z:202 Albanien
+A:AL
+T:*/*=0.869(60)/1
+Z:203 Algerien
+A:DZ
+T:*/*=0.899(60)/1
+Z:204 Andorra
+A:AD
+T:*/*=0.569(60)/1
+Z:205 Angola
+A:AO
+T:*/*=1.209(60)/1
+Z:206 Anguilla
+A:AI
+T:*/*=1.279(60)/1
+Z:207 Antarctica
+A:AQ
+T:*/*=0.949(60)/1
+Z:208 Antigua
+A:AG
+T:*/*=1.219(60)/1
+Z:209 Äquatorialguinea
+A:GQ
+T:*/*=2.249(60)/1
+Z:210 Argentinien
+A:AR
+T:*/*=1.239(60)/1
+Z:211 Armenien
+A:AM
+T:*/*=1.469(60)/1
+Z:212 Aruba
+A:AW
+T:*/*=1.049(60)/1
+Z:213 Ascension
+A:ASI
+T:*/*=2.249(60)/1
+Z:214 Aserbaidschan
+A:AZ
+T:*/*=1.159(60)/1
+Z:215 Äthiopien
+A:ET
+T:*/*=2.309(60)/1
+Z:216 Australien
+A:AU
+T:*/*=0.449(60)/1
+Z:217 Azoren
+A:_AZOR
+T:*/*=1.279(60)/1
+Z:218 Bahamas
+A:BS
+T:*/*=0.639(60)/1
+Z:219 Bahrain
+A:BH
+T:*/*=1.689(60)/1
+Z:220 Bangladesch
+A:BD
+T:*/*=2.019(60)/1
+Z:221 Barbados
+A:BB
+T:*/*=1.399(60)/1
+Z:222 Belarus
+A:BY
+T:*/*=0.929(60)/1
+Z:223 Belgien
+A:BE
+T:*/*=0.319(60)/1
+Z:224 Belize
+A:BZ
+T:*/*=1.539(60)/1
+Z:225 Benin
+A:BJ
+T:*/*=1.409(60)/1
+Z:226 Bermuda
+A:BM
+T:*/*=0.659(60)/1
+Z:227 Bhutan
+A:BT
+T:*/*=1.289(60)/1
+Z:228 Bolivien
+A:BO
+T:*/*=1.559(60)/1
+Z:229 Bosnien-Herzegowina
+A:BA
+T:*/*=0.979(60)/1
+Z:230 Botsuana
+A:BW
+T:*/*=1.059(60)/1
+Z:231 Brasilien
+A:BR
+T:*/*=0.999(60)/1
+Z:232 Brunei
+A:BN
+T:*/*=1.129(60)/1
+Z:233 Bulgarien
+A:BG
+T:*/*=0.889(60)/1
+Z:234 Burkina Faso
+A:BF
+T:*/*=1.989(60)/1
+Z:235 Burundi
+A:BI
+T:*/*=1.609(60)/1
+Z:236 Chatham Island
+A:_CHAT
+T:*/*=1.379(60)/1
+Z:237 Chile
+A:CL
+T:*/*=0.669(60)/1
+Z:238 China
+A:CN
+T:*/*=1.449(60)/1
+Z:239 Christmas Islands
+A:CX
+T:*/*=0.829(60)/1
+Z:240 Cocos Inseln
+A:CC
+T:*/*=0.729(60)/1
+Z:241 Cook Inseln
+A:CK
+T:*/*=2.899(60)/1
+Z:242 Costa Rica
+A:CR
+T:*/*=0.959(60)/1
+Z:243 Cote d´Ivory
+A:CI
+T:*/*=2.469(60)/1
+Z:244 Dänemark
+A:DK
+T:*/*=0.299(60)/1
+Z:245 Diego Garcia
+A:NKW
+T:*/*=1.539(60)/1
+Z:246 Dominica
+A:DM
+T:*/*=1.049(60)/1
+Z:247 Dominikanische Republik
+A:DO
+T:*/*=0.709(60)/1
+Z:248 Dschibuti
+A:DJ
+T:*/*=2.119(60)/1
+Z:249 Ecuador
+A:EC
+T:*/*=1.089(60)/1
+Z:250 El Salvador
+A:SV
+T:*/*=1.279(60)/1
+Z:251 Eritrea
+A:ER
+T:*/*=2.479(60)/1
+Z:252 Estland
+A:EE
+T:*/*=0.659(60)/1
+Z:253 Falklandinseln
+A:FK
+T:*/*=1.079(60)/1
+Z:254 Faröer
+A:FO
+T:*/*=1.049(60)/1
+Z:255 Fidschi
+A:FJ
+T:*/*=2.059(60)/1
+Z:256 Finnland
+A:FI
+T:*/*=0.349(60)/1
+Z:257 Frankreich
+A:FR
+T:*/*=0.289(60)/1
+Z:258 Französisch Guayana
+A:GF
+T:*/*=1.019(60)/1
+Z:259 Französisch-Polynesien
+A:PF
+T:*/*=1.629(60)/1
+Z:260 Gabun
+A:GA
+T:*/*=1.439(60)/1
+Z:261 Gambia
+A:GM
+T:*/*=1.469(60)/1
+Z:262 Georgien
+A:GE
+T:*/*=1.479(60)/1
+Z:263 Ghana
+A:GH
+T:*/*=1.319(60)/1
+Z:264 Gibraltar
+A:GI
+T:*/*=0.999(60)/1
+Z:265 Grenada
+A:GD
+T:*/*=1.349(60)/1
+Z:266 Griechenland
+A:GR
+T:*/*=0.659(60)/1
+Z:267 Grönland
+A:GL
+T:*/*=1.119(60)/1
+Z:268 Großbritannien
+A:UK
+T:*/*=0.199(60)/1
+Z:269 Guadeloupe
+A:GP
+T:*/*=1.059(60)/1
+Z:270 Guam
+A:GU
+T:*/*=0.509(60)/1
+Z:271 Guantanamo
+A:_GUAN
+T:*/*=1.159(60)/1
+Z:272 Guatemala
+A:GT
+T:*/*=0.929(60)/1
+Z:273 Guinea
+A:GN
+T:*/*=1.289(60)/1
+Z:274 Guinea-Bissau
+A:GW
+T:*/*=2.369(60)/1
+Z:275 Guyana
+A:GY
+T:*/*=1.709(60)/1
+Z:276 Haiti
+A:HT
+T:*/*=1.609(60)/1
+Z:277 Honduras
+A:HN
+T:*/*=1.509(60)/1
+Z:278 Hongkong
+A:HK
+T:*/*=0.539(60)/1
+Z:279 Indien
+A:IN
+T:*/*=2.119(60)/1
+Z:280 Indonesien
+A:ID
+T:*/*=1.279(60)/1
+Z:281 Irak
+A:IQ
+T:*/*=2.569(60)/1
+Z:282 Iran
+A:IR
+T:*/*=2.149(60)/1
+Z:283 Irland
+A:IE
+T:*/*=0.469(60)/1
+Z:284 Island
+A:IS
+T:*/*=0.739(60)/1
+Z:285 Israel
+A:IL
+T:*/*=0.709(60)/1
+Z:286 Italien 
+A:IT
+T:*/*=0.539(60)/1
+Z:287 Jamaika
+A:JM
+T:*/*=1.799(60)/1
+Z:288 Japan
+A:JP
+T:*/*=0.529(60)/1
+Z:289 Jemen Arab. Republik
+A:YE
+T:*/*=2.469(60)/1
+Z:290 Jordanien
+A:JO
+T:*/*=1.579(60)/1
+Z:291 Jugoslawien
+A:YU
+T:*/*=1.049(60)/1
+Z:292 Kaiman Inseln
+A:KY
+T:*/*=0.839(60)/1
+Z:293 Kambodscha
+A:KH
+T:*/*=2.539(60)/1
+Z:294 Kamerun
+A:CM
+T:*/*=1.799(60)/1
+Z:295 Kanada
+A:CA
+T:*/*=0.369(60)/1
+Z:296 Kanarische Inseln
+A:PLP
+T:*/*=0.759(60)/1
+Z:297 Kap Verde Inseln
+A:FO
+T:*/*=1.759(60)/1
+Z:298 Kasachstan
+A:KZ
+T:*/*=1.669(60)/1
+Z:299 Katar
+A:QA
+T:*/*=1.759(60)/1
+Z:300 Kenia
+A:KE
+T:*/*=1.669(60)/1
+Z:301 Kirgistan
+A:KG
+T:*/*=1.629(60)/1
+Z:302 Kiribati
+A:KI
+T:*/*=2.179(60)/1
+Z:303 Kolumbien
+A:CO
+T:*/*=1.209(60)/1
+Z:304 Komoren
+A:KM
+T:*/*=1.919(60)/1
+Z:305 Kongo
+A:CG
+T:*/*=1.739(60)/1
+Z:306 Korea Dem. Volksrepublik
+A:KP
+T:*/*=2.119(60)/1
+Z:307 Korea Republik (Süd)
+A:KR
+T:*/*=0.759(60)/1
+Z:308 Kroatien
+A:HR
+T:*/*=0.899(60)/1
+Z:309 Kuba
+A:CU
+T:*/*=1.859(60)/1
+Z:310 Kuwait
+A:KW
+T:*/*=2.119(60)/1
+Z:311 Laos
+A:LA
+T:*/*=2.119(60)/1
+Z:312 Lesotho
+A:LS
+T:*/*=1.149(60)/1
+Z:313 Lettland
+A:LV
+T:*/*=0.869(60)/1
+Z:314 Libanon
+A:LB
+T:*/*=1.729(60)/1
+Z:315 Liberia
+A:LR
+T:*/*=1.269(60)/1
+Z:316 Libyen
+A:LY
+T:*/*=0.999(60)/1
+Z:317 Liechtenstein
+A:LI
+T:*/*=0.419(60)/1
+Z:318 Litauen
+A:LT
+T:*/*=0.959(60)/1
+Z:319 Luxemburg
+A:LU
+T:*/*=0.409(60)/1
+Z:320 Macau
+A:MO
+T:*/*=1.059(60)/1
+Z:321 Madagaskar
+A:MG
+T:*/*=1.639(60)/1
+Z:322 Madeira
+A:_MADE
+T:*/*=0.929(60)/1
+Z:323 Malawi
+A:MW
+T:*/*=1.399(60)/1
+Z:324 Malaysia
+A:MY
+T:*/*=0.739(60)/1
+Z:325 Malediven
+A:MV
+T:*/*=2.049(60)/1
+Z:326 Mali
+A:ML
+T:*/*=2.319(60)/1
+Z:327 Malta
+A:MT
+T:*/*=0.689(60)/1
+Z:328 Marianen, Nördliche
+A:MP,KP
+T:*/*=1.049(60)/1
+Z:329 Marokko
+A:EH
+T:*/*=1.159(60)/1
+Z:330 Marshallinseln
+A:MH
+T:*/*=1.409(60)/1
+Z:331 Martinique
+A:MQ
+T:*/*=1.119(60)/1
+Z:332 Mauretanien
+A:MR
+T:*/*=1.899(60)/1
+Z:333 Mauritius
+A:MU
+T:*/*=1.789(60)/1
+Z:334 Mayotte
+A:YT
+T:*/*=1.289(60)/1
+Z:335 Mazedonien
+A:MK
+T:*/*=1.019(60)/1
+Z:336 Mexiko
+A:MX
+T:*/*=0.829(60)/1
+Z:337 Midway Islands
+A:_MIDW
+T:*/*=4.019(60)/1
+Z:338 Mikronesien
+A:FM
+T:*/*=1.499(60)/1
+Z:339 Moldawien
+A:MD
+T:*/*=1.209(60)/1
+Z:340 Monaco
+A:MC
+T:*/*=0.479(60)/1
+Z:341 Mongolei
+A:MN
+T:*/*=2.479(60)/1
+Z:342 Montserrat
+A:MS
+T:*/*=1.659(60)/1
+Z:343 Mosambik
+A:MZ
+T:*/*=1.339(60)/1
+Z:344 Myanmar
+A:MM
+T:*/*=2.609(60)/1
+Z:345 Namibia
+A:NA
+T:*/*=1.149(60)/1
+Z:346 Nauru
+A:NR
+T:*/*=2.089(60)/1
+Z:347 Nepal
+A:NP
+T:*/*=2.059(60)/1
+Z:348 Neukaledonien
+A:NC
+T:*/*=1.799(60)/1
+Z:349 Neuseeland
+A:NZ
+T:*/*=0.509(60)/1
+Z:350 Nicaragua
+A:NI
+T:*/*=1.479(60)/1
+Z:351 Niederlande
+A:NL
+T:*/*=0.279(60)/1
+Z:352 Niederländische Antillen
+A:AN
+T:*/*=1.209(60)/1
+Z:353 Niger
+A:NGR
+T:*/*=1.899(60)/1
+Z:354 Nigeria
+A:NG
+T:*/*=1.989(60)/1
+Z:355 Niue
+A:NU
+T:*/*=2.609(60)/1
+Z:356 Norfolk Inseln
+A:NF
+T:*/*=1.279(60)/1
+Z:357 Norwegen
+A:NO
+T:*/*=0.369(60)/1
+Z:358 Oman
+A:OM
+T:*/*=1.989(60)/1
+Z:359 Österreich
+A:AT
+T:*/*=0.509(60)/1
+Z:360 Pakistan
+A:PK
+T:*/*=2.139(60)/1
+Z:361 Palau
+A:PW
+T:*/*=2.379(60)/1
+Z:362 Panama
+A:PA
+T:*/*=1.559(60)/1
+Z:363 Papua-Neuguinea
+A:PG
+T:*/*=1.119(60)/1
+Z:364 Paraguay
+A:PY
+T:*/*=1.829(60)/1
+Z:365 Peru
+A:PE
+T:*/*=1.349(60)/1
+Z:366 Philippinen
+A:PH
+T:*/*=1.089(60)/1
+Z:367 Polen
+A:PL
+T:*/*=0.819(60)/1
+Z:368 Portugal
+A:PT
+T:*/*=0.709(60)/1
+Z:369 Puerto Rico
+A:PR
+T:*/*=0.409(60)/1
+Z:370 Reunion
+A:RE
+T:*/*=1.209(60)/1
+Z:371 Ruanda
+A:RW
+T:*/*=1.669(60)/1
+Z:372 Rumänien
+A:RO
+T:*/*=1.019(60)/1
+Z:373 Russische Föderation
+A:SU
+T:*/*=1.189(60)/1
+Z:374 Salomenen
+A:SB
+T:*/*=1.989(60)/1
+Z:375 Sambia
+A:ZM
+T:*/*=1.829(60)/1
+Z:376 Samoa US
+A:AS
+T:*/*=0.959(60)/1
+Z:377 San Marino
+A:SM
+T:*/*=0.829(60)/1
+Z:378 Sao Tome und Principe
+A:ST
+T:*/*=2.719(60)/1
+Z:379 Saudi Arabien
+A:SA
+T:*/*=2.249(60)/1
+Z:380 Schweden
+A:SE
+T:*/*=0.259(60)/1
+Z:381 Schweiz
+A:CH
+T:*/*=0.319(60)/1
+Z:382 Senegal
+A:SN
+T:*/*=1.989(60)/1
+Z:383 Serbien
+A:YU
+T:*/*=1.049(60)/1
+Z:384 Seychellen
+A:SC
+T:*/*=2.279(60)/1
+Z:385 Sierra Leone
+A:SL
+T:*/*=2.079(60)/1
+Z:386 Simbabwe
+A:ZW
+T:*/*=1.209(60)/1
+Z:387 Singapur
+A:SG
+T:*/*=0.739(60)/1
+Z:388 Slowakei
+A:SK
+T:*/*=0.819(60)/1
+Z:389 Slowenien
+A:SI
+T:*/*=0.709(60)/1
+Z:390 Somalia
+A:SO
+T:*/*=2.219(60)/1
+Z:391 Spanien
+A:ES
+T:*/*=0.439(60)/1
+Z:392 Sri Lanka
+A:LK
+T:*/*=1.759(60)/1
+Z:393 St. Kitts und Navis
+A:KN
+T:*/*=1.109(60)/1
+Z:394 St. Helena
+A:SH
+T:*/*=1.829(60)/1
+Z:395 St. Lucia
+A:LC
+T:*/*=1.399(60)/1
+Z:396 St. Pierre und Miquelon
+A:PM
+T:*/*=0.999(60)/1
+Z:397 St. Vincent und Grenada
+A:VC
+T:*/*=1.509(60)/1
+Z:398 Südafrika
+A:ZA
+T:*/*=1.449(60)/1
+Z:399 Sudan
+A:SD
+T:*/*=1.319(60)/1
+Z:400 Suriname
+A:SR
+T:*/*=2.689(60)/1
+Z:401 Swasiland
+A:SZ
+T:*/*=0.919(60)/1
+Z:402 Syrien
+A:SY
+T:*/*=1.669(60)/1
+Z:403 Tadschikistan
+A:TJ
+T:*/*=1.309(60)/1
+Z:404 Taiwan
+A:TW
+T:*/*=0.929(60)/1
+Z:405 Tansania
+A:TZ
+T:*/*=1.729(60)/1
+Z:406 Thailand
+A:TH
+T:*/*=1.419(60)/1
+Z:407 Togo
+A:TG
+T:*/*=2.089(60)/1
+Z:408 Tonga
+A:TO
+T:*/*=2.609(60)/1
+Z:409 Trinidad und Tobago
+A:TT
+T:*/*=1.559(60)/1
+Z:410 Tschad
+A:TD
+T:*/*=2.499(60)/1
+Z:411 Tschechische Republik
+A:CZ
+T:*/*=0.729(60)/1
+Z:412 Tunesien
+A:TN
+T:*/*=1.079(60)/1
+Z:413 Türkei
+A:TR
+T:*/*=0.989(60)/1
+Z:414 Turks u. Caicosinseln
+A:TC
+T:*/*=1.349(60)/1
+Z:415 Turmenistan
+A:TM
+T:*/*=1.439(60)/1
+Z:416 Tuvalu
+A:TV
+T:*/*=2.309(60)/1
+Z:417 Uganda
+A:UG
+T:*/*=1.219(60)/1
+Z:418 Ukraine
+A:UA
+T:*/*=1.049(60)/1
+Z:419 Ungarn
+A:HU
+T:*/*=0.669(60)/1
+Z:420 Uruguay
+A:UY
+T:*/*=1.449(60)/1
+Z:421 USA
+A:US
+T:*/*=0.199(60)/1
+Z:422 Usbekistan
+A:UZ
+T:*/*=1.739(60)/1
+Z:423 Vanuatu
+A:VU
+T:*/*=2.319(60)/1
+Z:424 Vatikanstadt
+A:VA
+T:*/*=0.789(60)/1
+Z:425 Venezuela
+A:VE
+T:*/*=1.089(60)/1
+Z:426 V. Arabische Emirate
+A:AE
+T:*/*=1.159(60)/1
+Z:427 Vietnam
+A:VN
+T:*/*=2.469(60)/1
+Z:428 Virgin Islands UK
+A:VI
+T:*/*=1.089(60)/1
+Z:429 Virgin Island US
+A:VI
+T:*/*=0.379(60)/1
+Z:430 Wake Island
+A:_WAKE
+T:*/*=4.759(60)/1
+Z:431 Wallis und Futuna
+A:WF
+T:*/*=1.579(60)/1
+Z:432 Western Samoa
+A:WS
+T:*/*=2.349(60)/1
+Z:433 Zaire
+A:ZR
+T:*/*=1.579(60)/1
+Z:434 Zentralafrika
+A:CF
+T:*/*=2.219(60)/1
+Z:435 Zypern Nord
+A:_CYTK
+T:*/*=0.899(60)/1
+Z:436 Zypern Süd
+A:_CYTK
+T:*/*=1.119(60)/1
+Z:500 Rest
+A:+
+T:*/*=99.99/1 Rest
+#####################################################################
+P:36,4 Hutchison easyfon
 B:01036
 C:Name:Hutchison easyfon
 C:Address:Hutchison, Münsterstraße 109, 48155 Münster
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
-C:Mindestumsatz: 69,- DM
 C:Sondertarif 11 "Hutchison Mobilfunk-Kunde": Vergünstigte Gespräche zu
 C:Hutchison Mobilfunk Teilnehmern
 C:Erfasste Zonen:
@@ -12208,39 +15156,2972 @@ A:112
 T:*/*=0
 Z:1-4 Inland
 A:DE
-T:*/*=0.17(60)/15
+T:W/08-18=0.139(60)/15 Geschaeftszeit
+T:W/18-08=0.119(60)/15 Freizeit
+T:E,H/*=0.119(60)/15 Freizeit
 Z:10 Mobilfunk
 A:_DEMCM,_DEMC,_DEMD1,_DEMD2,_DEME1,_DEME2
-T:*/*=0.73(60)/15
+T:*/*=0.559/60
 Z:11 Hutchison Mobilfunk-Kunde
-T:*/*=0.59(60)/15
-Z:200 Europe 1
-A:BE,DK,FO,FI,FR,UK,IE,IT
-A:LU,MC,NL,_UKIR,NO,AT,PL,PT,SE
-A:CH,ES,CZ
-T:*/*=0.68(60)/15
-Z:201 Europe 2
-A:AD,BA,BG,EE,GI,GR,YU
-A:HR,LI,MT,SM,YU,SK,TR,UA,HU
-A:VA,BY,CY
-T:*/*=0.99(60)/15
-Z:202 World 1
-A:AU,JP,NZ,US,CA
-T:*/*=0.68(60)/15
-Z:203 World 2
-A:EG,AL,DZ,HK,IS,IL,JO,KR
-A:LV,LB,LY,LT,EH,MK,RO,SU,SG
-A:SI,TN
-T:*/*=1.84(60)/15
-Z:204 World 3
-A:AR,BR,CL,CN,KZ,CO,MD,AN
-A:PH,SA,ZA,SY,TW,AE
-T:*/*=2.16(60)/15
-Z:205 World 4
+T:*/*=0.499/60
+Z:200 Afghanistan
+A:AF
+T:*/*=2.569/60
+Z:201 Ägypten
+A:EG
+T:*/*=1.669/60
+Z:202 Albanien
+A:AL
+T:*/*=0.869/60
+Z:203 Algerien
+A:DZ
+T:*/*=0.899/60
+Z:204 Andorra
+A:AD
+T:*/*=0.569/60
+Z:205 Angola
+A:AO
+T:*/*=1.209/60
+Z:206 Anguilla
+A:AI
+T:*/*=1.279/60
+Z:207 Antarctica
+A:AQ
+T:*/*=0.949/60
+Z:208 Antigua
+A:AG
+T:*/*=1.219/60
+Z:209 Äquatorialguinea
+A:GQ
+T:*/*=2.249/60
+Z:210 Argentinien
+A:AR
+T:*/*=1.239/60
+Z:211 Armenien
+A:AM
+T:*/*=1.469/60
+Z:212 Aruba
+A:AW
+T:*/*=1.049/60
+Z:213 Ascension
+A:ASI
+T:*/*=2.249/60
+Z:214 Aserbaidschan
+A:AZ
+T:*/*=1.159/60
+Z:215 Äthiopien
+A:ET
+T:*/*=2.309/60
+Z:216 Australien
+A:AU
+T:*/*=0.449/60
+Z:217 Azoren
+A:_AZOR
+T:*/*=1.279/60
+Z:218 Bahamas
+A:BS
+T:*/*=0.639/60
+Z:219 Bahrain
+A:BH
+T:*/*=1.689/60
+Z:220 Bangladesch
+A:BD
+T:*/*=2.019/60
+Z:221 Barbados
+A:BB
+T:*/*=1.399/60
+Z:222 Belarus
+A:BY
+T:*/*=0.929/60
+Z:223 Belgien
+A:BE
+T:*/*=0.319/60
+Z:224 Belize
+A:BZ
+T:*/*=1.539/60
+Z:225 Benin
+A:BJ
+T:*/*=1.409/60
+Z:226 Bermuda
+A:BM
+T:*/*=0.659/60
+Z:227 Bhutan
+A:BT
+T:*/*=1.289/60
+Z:228 Bolivien
+A:BO
+T:*/*=1.559/60
+Z:229 Bosnien-Herzegowina
+A:BA
+T:*/*=0.979/60
+Z:230 Botsuana
+A:BW
+T:*/*=1.059/60
+Z:231 Brasilien
+A:BR
+T:*/*=0.999/60
+Z:232 Brunei
+A:BN
+T:*/*=1.129/60
+Z:233 Bulgarien
+A:BG
+T:*/*=0.889/60
+Z:234 Burkina Faso
+A:BF
+T:*/*=1.989/60
+Z:235 Burundi
+A:BI
+T:*/*=1.609/60
+Z:236 Chatham Island
+A:_CHAT
+T:*/*=1.379/60
+Z:237 Chile
+A:CL
+T:*/*=0.669/60
+Z:238 China
+A:CN
+T:*/*=1.449/60
+Z:239 Christmas Islands
+A:CX
+T:*/*=0.829/60
+Z:240 Cocos Inseln
+A:CC
+T:*/*=0.729/60
+Z:241 Cook Inseln
+A:CK
+T:*/*=2.899/60
+Z:242 Costa Rica
+A:CR
+T:*/*=0.959/60
+Z:243 Cote d´Ivory
+A:CI
+T:*/*=2.469/60
+Z:244 Dänemark
+A:DK
+T:*/*=0.299/60
+Z:245 Diego Garcia
+A:NKW
+T:*/*=1.539/60
+Z:246 Dominica
+A:DM
+T:*/*=1.049/60
+Z:247 Dominikanische Republik
+A:DO
+T:*/*=0.709/60
+Z:248 Dschibuti
+A:DJ
+T:*/*=2.119/60
+Z:249 Ecuador
+A:EC
+T:*/*=1.089/60
+Z:250 El Salvador
+A:SV
+T:*/*=1.279/60
+Z:251 Eritrea
+A:ER
+T:*/*=2.479/60
+Z:252 Estland
+A:EE
+T:*/*=0.659/60
+Z:253 Falklandinseln
+A:FK
+T:*/*=1.079/60
+Z:254 Faröer
+A:FO
+T:*/*=1.049/60
+Z:255 Fidschi
+A:FJ
+T:*/*=2.059/60
+Z:256 Finnland
+A:FI
+T:*/*=0.349/60
+Z:257 Frankreich
+A:FR
+T:*/*=0.289/60
+Z:258 Französisch Guayana
+A:GF
+T:*/*=1.019/60
+Z:259 Französisch-Polynesien
+A:PF
+T:*/*=1.629/60
+Z:260 Gabun
+A:GA
+T:*/*=1.439/60
+Z:261 Gambia
+A:GM
+T:*/*=1.469/60
+Z:262 Georgien
+A:GE
+T:*/*=1.479/60
+Z:263 Ghana
+A:GH
+T:*/*=1.319/60
+Z:264 Gibraltar
+A:GI
+T:*/*=0.999/60
+Z:265 Grenada
+A:GD
+T:*/*=1.349/60
+Z:266 Griechenland
+A:GR
+T:*/*=0.659/60
+Z:267 Grönland
+A:GL
+T:*/*=1.119/60
+Z:268 Großbritannien
+A:UK
+T:*/*=0.199/60
+Z:269 Guadeloupe
+A:GP
+T:*/*=1.059/60
+Z:270 Guam
+A:GU
+T:*/*=0.509/60
+Z:271 Guantanamo
+A:_GUAN
+T:*/*=1.159/60
+Z:272 Guatemala
+A:GT
+T:*/*=0.929/60
+Z:273 Guinea
+A:GN
+T:*/*=1.289/60
+Z:274 Guinea-Bissau
+A:GW
+T:*/*=2.369/60
+Z:275 Guyana
+A:GY
+T:*/*=1.709/60
+Z:276 Haiti
+A:HT
+T:*/*=1.609/60
+Z:277 Honduras
+A:HN
+T:*/*=1.509/60
+Z:278 Hongkong
+A:HK
+T:*/*=0.539/60
+Z:279 Indien
+A:IN
+T:*/*=2.119/60
+Z:280 Indonesien
+A:ID
+T:*/*=1.279/60
+Z:281 Irak
+A:IQ
+T:*/*=2.569/60
+Z:282 Iran
+A:IR
+T:*/*=2.149/60
+Z:283 Irland
+A:IE
+T:*/*=0.469/60
+Z:284 Island
+A:IS
+T:*/*=0.739/60
+Z:285 Israel
+A:IL
+T:*/*=0.709/60
+Z:286 Italien 
+A:IT
+T:*/*=0.539/60
+Z:287 Jamaika
+A:JM
+T:*/*=1.799/60
+Z:288 Japan
+A:JP
+T:*/*=0.529/60
+Z:289 Jemen Arab. Republik
+A:YE
+T:*/*=2.469/60
+Z:290 Jordanien
+A:JO
+T:*/*=1.579/60
+Z:291 Jugoslawien
+A:YU
+T:*/*=1.049/60
+Z:292 Kaiman Inseln
+A:KY
+T:*/*=0.839/60
+Z:293 Kambodscha
+A:KH
+T:*/*=2.539/60
+Z:294 Kamerun
+A:CM
+T:*/*=1.799/60
+Z:295 Kanada
+A:CA
+T:*/*=0.369/60
+Z:296 Kanarische Inseln
+A:PLP
+T:*/*=0.759/60
+Z:297 Kap Verde Inseln
+A:FO
+T:*/*=1.759/60
+Z:298 Kasachstan
+A:KZ
+T:*/*=1.669/60
+Z:299 Katar
+A:QA
+T:*/*=1.759/60
+Z:300 Kenia
+A:KE
+T:*/*=1.669/60
+Z:301 Kirgistan
+A:KG
+T:*/*=1.629/60
+Z:302 Kiribati
+A:KI
+T:*/*=2.179/60
+Z:303 Kolumbien
+A:CO
+T:*/*=1.209/60
+Z:304 Komoren
+A:KM
+T:*/*=1.919/60
+Z:305 Kongo
+A:CG
+T:*/*=1.739/60
+Z:306 Korea Dem. Volksrepublik
+A:KP
+T:*/*=2.119/60
+Z:307 Korea Republik (Süd)
+A:KR
+T:*/*=0.759/60
+Z:308 Kroatien
+A:HR
+T:*/*=0.899/60
+Z:309 Kuba
+A:CU
+T:*/*=1.859/60
+Z:310 Kuwait
+A:KW
+T:*/*=2.119/60
+Z:311 Laos
+A:LA
+T:*/*=2.119/60
+Z:312 Lesotho
+A:LS
+T:*/*=1.149/60
+Z:313 Lettland
+A:LV
+T:*/*=0.869/60
+Z:314 Libanon
+A:LB
+T:*/*=1.729/60
+Z:315 Liberia
+A:LR
+T:*/*=1.269/60
+Z:316 Libyen
+A:LY
+T:*/*=0.999/60
+Z:317 Liechtenstein
+A:LI
+T:*/*=0.419/60
+Z:318 Litauen
+A:LT
+T:*/*=0.959/60
+Z:319 Luxemburg
+A:LU
+T:*/*=0.409/60
+Z:320 Macau
+A:MO
+T:*/*=1.059/60
+Z:321 Madagaskar
+A:MG
+T:*/*=1.639/60
+Z:322 Madeira
+A:_MADE
+T:*/*=0.929/60
+Z:323 Malawi
+A:MW
+T:*/*=1.399/60
+Z:324 Malaysia
+A:MY
+T:*/*=0.739/60
+Z:325 Malediven
+A:MV
+T:*/*=2.049/60
+Z:326 Mali
+A:ML
+T:*/*=2.319/60
+Z:327 Malta
+A:MT
+T:*/*=0.689/60
+Z:328 Marianen, Nördliche
+A:MP,KP
+T:*/*=1.049/60
+Z:329 Marokko
+A:EH
+T:*/*=1.159/60
+Z:330 Marshallinseln
+A:MH
+T:*/*=1.409/60
+Z:331 Martinique
+A:MQ
+T:*/*=1.119/60
+Z:332 Mauretanien
+A:MR
+T:*/*=1.899/60
+Z:333 Mauritius
+A:MU
+T:*/*=1.789/60
+Z:334 Mayotte
+A:YT
+T:*/*=1.289/60
+Z:335 Mazedonien
+A:MK
+T:*/*=1.019/60
+Z:336 Mexiko
+A:MX
+T:*/*=0.829/60
+Z:337 Midway Islands
+A:_MIDW
+T:*/*=4.019/60
+Z:338 Mikronesien
+A:FM
+T:*/*=1.499/60
+Z:339 Moldawien
+A:MD
+T:*/*=1.209/60
+Z:340 Monaco
+A:MC
+T:*/*=0.479/60
+Z:341 Mongolei
+A:MN
+T:*/*=2.479/60
+Z:342 Montserrat
+A:MS
+T:*/*=1.659/60
+Z:343 Mosambik
+A:MZ
+T:*/*=1.339/60
+Z:344 Myanmar
+A:MM
+T:*/*=2.609/60
+Z:345 Namibia
+A:NA
+T:*/*=1.149/60
+Z:346 Nauru
+A:NR
+T:*/*=2.089/60
+Z:347 Nepal
+A:NP
+T:*/*=2.059/60
+Z:348 Neukaledonien
+A:NC
+T:*/*=1.799/60
+Z:349 Neuseeland
+A:NZ
+T:*/*=0.509/60
+Z:350 Nicaragua
+A:NI
+T:*/*=1.479/60
+Z:351 Niederlande
+A:NL
+T:*/*=0.279/60
+Z:352 Niederländische Antillen
+A:AN
+T:*/*=1.209/60
+Z:353 Niger
+A:NGR
+T:*/*=1.899/60
+Z:354 Nigeria
+A:NG
+T:*/*=1.989/60
+Z:355 Niue
+A:NU
+T:*/*=2.609/60
+Z:356 Norfolk Inseln
+A:NF
+T:*/*=1.279/60
+Z:357 Norwegen
+A:NO
+T:*/*=0.369/60
+Z:358 Oman
+A:OM
+T:*/*=1.989/60
+Z:359 Österreich
+A:AT
+T:*/*=0.509/60
+Z:360 Pakistan
+A:PK
+T:*/*=2.139/60
+Z:361 Palau
+A:PW
+T:*/*=2.379/60
+Z:362 Panama
+A:PA
+T:*/*=1.559/60
+Z:363 Papua-Neuguinea
+A:PG
+T:*/*=1.119/60
+Z:364 Paraguay
+A:PY
+T:*/*=1.829/60
+Z:365 Peru
+A:PE
+T:*/*=1.349/60
+Z:366 Philippinen
+A:PH
+T:*/*=1.089/60
+Z:367 Polen
+A:PL
+T:*/*=0.819/60
+Z:368 Portugal
+A:PT
+T:*/*=0.709/60
+Z:369 Puerto Rico
+A:PR
+T:*/*=0.409/60
+Z:370 Reunion
+A:RE
+T:*/*=1.209/60
+Z:371 Ruanda
+A:RW
+T:*/*=1.669/60
+Z:372 Rumänien
+A:RO
+T:*/*=1.019/60
+Z:373 Russische Föderation
+A:SU
+T:*/*=1.189/60
+Z:374 Salomenen
+A:SB
+T:*/*=1.989/60
+Z:375 Sambia
+A:ZM
+T:*/*=1.829/60
+Z:376 Samoa US
+A:AS
+T:*/*=0.959/60
+Z:377 San Marino
+A:SM
+T:*/*=0.829/60
+Z:378 Sao Tome und Principe
+A:ST
+T:*/*=2.719/60
+Z:379 Saudi Arabien
+A:SA
+T:*/*=2.249/60
+Z:380 Schweden
+A:SE
+T:*/*=0.259/60
+Z:381 Schweiz
+A:CH
+T:*/*=0.319/60
+Z:382 Senegal
+A:SN
+T:*/*=1.989/60
+Z:383 Serbien
+A:YU
+T:*/*=1.049/60
+Z:384 Seychellen
+A:SC
+T:*/*=2.279/60
+Z:385 Sierra Leone
+A:SL
+T:*/*=2.079/60
+Z:386 Simbabwe
+A:ZW
+T:*/*=1.209/60
+Z:387 Singapur
+A:SG
+T:*/*=0.739/60
+Z:388 Slowakei
+A:SK
+T:*/*=0.819/60
+Z:389 Slowenien
+A:SI
+T:*/*=0.709/60
+Z:390 Somalia
+A:SO
+T:*/*=2.219/60
+Z:391 Spanien
+A:ES
+T:*/*=0.439/60
+Z:392 Sri Lanka
+A:LK
+T:*/*=1.759/60
+Z:393 St. Kitts und Navis
+A:KN
+T:*/*=1.109/60
+Z:394 St. Helena
+A:SH
+T:*/*=1.829/60
+Z:395 St. Lucia
+A:LC
+T:*/*=1.399/60
+Z:396 St. Pierre und Miquelon
+A:PM
+T:*/*=0.999/60
+Z:397 St. Vincent und Grenada
+A:VC
+T:*/*=1.509/60
+Z:398 Südafrika
+A:ZA
+T:*/*=1.449/60
+Z:399 Sudan
+A:SD
+T:*/*=1.319/60
+Z:400 Suriname
+A:SR
+T:*/*=2.689/60
+Z:401 Swasiland
+A:SZ
+T:*/*=0.919/60
+Z:402 Syrien
+A:SY
+T:*/*=1.669/60
+Z:403 Tadschikistan
+A:TJ
+T:*/*=1.309/60
+Z:404 Taiwan
+A:TW
+T:*/*=0.929/60
+Z:405 Tansania
+A:TZ
+T:*/*=1.729/60
+Z:406 Thailand
+A:TH
+T:*/*=1.419/60
+Z:407 Togo
+A:TG
+T:*/*=2.089/60
+Z:408 Tonga
+A:TO
+T:*/*=2.609/60
+Z:409 Trinidad und Tobago
+A:TT
+T:*/*=1.559/60
+Z:410 Tschad
+A:TD
+T:*/*=2.499/60
+Z:411 Tschechische Republik
+A:CZ
+T:*/*=0.729/60
+Z:412 Tunesien
+A:TN
+T:*/*=1.079/60
+Z:413 Türkei
+A:TR
+T:*/*=0.989/60
+Z:414 Turks u. Caicosinseln
+A:TC
+T:*/*=1.349/60
+Z:415 Turmenistan
+A:TM
+T:*/*=1.439/60
+Z:416 Tuvalu
+A:TV
+T:*/*=2.309/60
+Z:417 Uganda
+A:UG
+T:*/*=1.219/60
+Z:418 Ukraine
+A:UA
+T:*/*=1.049/60
+Z:419 Ungarn
+A:HU
+T:*/*=0.669/60
+Z:420 Uruguay
+A:UY
+T:*/*=1.449/60
+Z:421 USA
+A:US
+T:*/*=0.199/60
+Z:422 Usbekistan
+A:UZ
+T:*/*=1.739/60
+Z:423 Vanuatu
+A:VU
+T:*/*=2.319/60
+Z:424 Vatikanstadt
+A:VA
+T:*/*=0.789/60
+Z:425 Venezuela
+A:VE
+T:*/*=1.089/60
+Z:426 V. Arabische Emirate
+A:AE
+T:*/*=1.159/60
+Z:427 Vietnam
+A:VN
+T:*/*=2.469/60
+Z:428 Virgin Islands UK
+A:VI
+T:*/*=1.089/60
+Z:429 Virgin Island US
+A:VI
+T:*/*=0.379/60
+Z:430 Wake Island
+A:_WAKE
+T:*/*=4.759/60
+Z:431 Wallis und Futuna
+A:WF
+T:*/*=1.579/60
+Z:432 Western Samoa
+A:WS
+T:*/*=2.349/60
+Z:433 Zaire
+A:ZR
+T:*/*=1.579/60
+Z:434 Zentralafrika
+A:CF
+T:*/*=2.219/60
+Z:435 Zypern Nord
+A:_CYTK
+T:*/*=0.899/60
+Z:436 Zypern Süd
+A:_CYTK
+T:*/*=1.119/60
+Z:500 Rest
 A:+
-T:*/*=2.42(60)/15
+T:*/*=99.99/1 Rest
 #####################################################################
-P:36,2 Hutchison o.tel.o private
+P:36,5 Hutchison easyfon Sekundentakt
+B:01036
+C:Name:Hutchison easyfon Sekundentakt
+C:Address:Hutchison, Münsterstraße 109, 48155 Münster 01036
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Grundgebühr: 9,95 DM oder Abschluß eines 12 Monatsvertrages
+C:Sondertarif 11 "Hutchison Mobilfunk-Kunde": Vergünstigte Gespräche zu
+C:Hutchison Mobilfunk Teilnehmern
+C:Grundgebühr: 11,- DM, oder Abschluß eines 12 Monatsvertrages
+C:Erfasste Zonen:
+C:2	-   4	Deutschland
+C:10		Mobilfunk
+C:11		Sondertarif
+C:200	-	Ausland
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+Z:1-4 Inland
+A:DE
+T:W/08-18=0.139(60)/1 Geschaeftszeit
+T:W/18-08=0.119(60)/1 Freizeit
+T:E,H/*=0.119(60)/1 Freizeit
+Z:10 Mobilfunk
+A:_DEMCM,_DEMC,_DEMD1,_DEMD2,_DEME1,_DEME2
+T:*/*=0.559(60)/1
+Z:11 Hutchison Mobilfunk-Kunde
+T:*/*=0.499(60)/1
+Z:200 Afghanistan
+A:AF
+T:*/*=2.569(60)/1
+Z:201 Ägypten
+A:EG
+T:*/*=1.669(60)/1
+Z:202 Albanien
+A:AL
+T:*/*=0.869(60)/1
+Z:203 Algerien
+A:DZ
+T:*/*=0.899(60)/1
+Z:204 Andorra
+A:AD
+T:*/*=0.569(60)/1
+Z:205 Angola
+A:AO
+T:*/*=1.209(60)/1
+Z:206 Anguilla
+A:AI
+T:*/*=1.279(60)/1
+Z:207 Antarctica
+A:AQ
+T:*/*=0.949(60)/1
+Z:208 Antigua
+A:AG
+T:*/*=1.219(60)/1
+Z:209 Äquatorialguinea
+A:GQ
+T:*/*=2.249(60)/1
+Z:210 Argentinien
+A:AR
+T:*/*=1.239(60)/1
+Z:211 Armenien
+A:AM
+T:*/*=1.469(60)/1
+Z:212 Aruba
+A:AW
+T:*/*=1.049(60)/1
+Z:213 Ascension
+A:ASI
+T:*/*=2.249(60)/1
+Z:214 Aserbaidschan
+A:AZ
+T:*/*=1.159(60)/1
+Z:215 Äthiopien
+A:ET
+T:*/*=2.309(60)/1
+Z:216 Australien
+A:AU
+T:*/*=0.449(60)/1
+Z:217 Azoren
+A:_AZOR
+T:*/*=1.279(60)/1
+Z:218 Bahamas
+A:BS
+T:*/*=0.639(60)/1
+Z:219 Bahrain
+A:BH
+T:*/*=1.689(60)/1
+Z:220 Bangladesch
+A:BD
+T:*/*=2.019(60)/1
+Z:221 Barbados
+A:BB
+T:*/*=1.399(60)/1
+Z:222 Belarus
+A:BY
+T:*/*=0.929(60)/1
+Z:223 Belgien
+A:BE
+T:*/*=0.319(60)/1
+Z:224 Belize
+A:BZ
+T:*/*=1.539(60)/1
+Z:225 Benin
+A:BJ
+T:*/*=1.409(60)/1
+Z:226 Bermuda
+A:BM
+T:*/*=0.659(60)/1
+Z:227 Bhutan
+A:BT
+T:*/*=1.289(60)/1
+Z:228 Bolivien
+A:BO
+T:*/*=1.559(60)/1
+Z:229 Bosnien-Herzegowina
+A:BA
+T:*/*=0.979(60)/1
+Z:230 Botsuana
+A:BW
+T:*/*=1.059(60)/1
+Z:231 Brasilien
+A:BR
+T:*/*=0.999(60)/1
+Z:232 Brunei
+A:BN
+T:*/*=1.129(60)/1
+Z:233 Bulgarien
+A:BG
+T:*/*=0.889(60)/1
+Z:234 Burkina Faso
+A:BF
+T:*/*=1.989(60)/1
+Z:235 Burundi
+A:BI
+T:*/*=1.609(60)/1
+Z:236 Chatham Island
+A:_CHAT
+T:*/*=1.379(60)/1
+Z:237 Chile
+A:CL
+T:*/*=0.669(60)/1
+Z:238 China
+A:CN
+T:*/*=1.449(60)/1
+Z:239 Christmas Islands
+A:CX
+T:*/*=0.829(60)/1
+Z:240 Cocos Inseln
+A:CC
+T:*/*=0.729(60)/1
+Z:241 Cook Inseln
+A:CK
+T:*/*=2.899(60)/1
+Z:242 Costa Rica
+A:CR
+T:*/*=0.959(60)/1
+Z:243 Cote d´Ivory
+A:CI
+T:*/*=2.469(60)/1
+Z:244 Dänemark
+A:DK
+T:*/*=0.299(60)/1
+Z:245 Diego Garcia
+A:NKW
+T:*/*=1.539(60)/1
+Z:246 Dominica
+A:DM
+T:*/*=1.049(60)/1
+Z:247 Dominikanische Republik
+A:DO
+T:*/*=0.709(60)/1
+Z:248 Dschibuti
+A:DJ
+T:*/*=2.119(60)/1
+Z:249 Ecuador
+A:EC
+T:*/*=1.089(60)/1
+Z:250 El Salvador
+A:SV
+T:*/*=1.279(60)/1
+Z:251 Eritrea
+A:ER
+T:*/*=2.479(60)/1
+Z:252 Estland
+A:EE
+T:*/*=0.659(60)/1
+Z:253 Falklandinseln
+A:FK
+T:*/*=1.079(60)/1
+Z:254 Faröer
+A:FO
+T:*/*=1.049(60)/1
+Z:255 Fidschi
+A:FJ
+T:*/*=2.059(60)/1
+Z:256 Finnland
+A:FI
+T:*/*=0.349(60)/1
+Z:257 Frankreich
+A:FR
+T:*/*=0.289(60)/1
+Z:258 Französisch Guayana
+A:GF
+T:*/*=1.019(60)/1
+Z:259 Französisch-Polynesien
+A:PF
+T:*/*=1.629(60)/1
+Z:260 Gabun
+A:GA
+T:*/*=1.439(60)/1
+Z:261 Gambia
+A:GM
+T:*/*=1.469(60)/1
+Z:262 Georgien
+A:GE
+T:*/*=1.479(60)/1
+Z:263 Ghana
+A:GH
+T:*/*=1.319(60)/1
+Z:264 Gibraltar
+A:GI
+T:*/*=0.999(60)/1
+Z:265 Grenada
+A:GD
+T:*/*=1.349(60)/1
+Z:266 Griechenland
+A:GR
+T:*/*=0.659(60)/1
+Z:267 Grönland
+A:GL
+T:*/*=1.119(60)/1
+Z:268 Großbritannien
+A:UK
+T:*/*=0.199(60)/1
+Z:269 Guadeloupe
+A:GP
+T:*/*=1.059(60)/1
+Z:270 Guam
+A:GU
+T:*/*=0.509(60)/1
+Z:271 Guantanamo
+A:_GUAN
+T:*/*=1.159(60)/1
+Z:272 Guatemala
+A:GT
+T:*/*=0.929(60)/1
+Z:273 Guinea
+A:GN
+T:*/*=1.289(60)/1
+Z:274 Guinea-Bissau
+A:GW
+T:*/*=2.369(60)/1
+Z:275 Guyana
+A:GY
+T:*/*=1.709(60)/1
+Z:276 Haiti
+A:HT
+T:*/*=1.609(60)/1
+Z:277 Honduras
+A:HN
+T:*/*=1.509(60)/1
+Z:278 Hongkong
+A:HK
+T:*/*=0.539(60)/1
+Z:279 Indien
+A:IN
+T:*/*=2.119(60)/1
+Z:280 Indonesien
+A:ID
+T:*/*=1.279(60)/1
+Z:281 Irak
+A:IQ
+T:*/*=2.569(60)/1
+Z:282 Iran
+A:IR
+T:*/*=2.149(60)/1
+Z:283 Irland
+A:IE
+T:*/*=0.469(60)/1
+Z:284 Island
+A:IS
+T:*/*=0.739(60)/1
+Z:285 Israel
+A:IL
+T:*/*=0.709(60)/1
+Z:286 Italien 
+A:IT
+T:*/*=0.539(60)/1
+Z:287 Jamaika
+A:JM
+T:*/*=1.799(60)/1
+Z:288 Japan
+A:JP
+T:*/*=0.529(60)/1
+Z:289 Jemen Arab. Republik
+A:YE
+T:*/*=2.469(60)/1
+Z:290 Jordanien
+A:JO
+T:*/*=1.579(60)/1
+Z:291 Jugoslawien
+A:YU
+T:*/*=1.049(60)/1
+Z:292 Kaiman Inseln
+A:KY
+T:*/*=0.839(60)/1
+Z:293 Kambodscha
+A:KH
+T:*/*=2.539(60)/1
+Z:294 Kamerun
+A:CM
+T:*/*=1.799(60)/1
+Z:295 Kanada
+A:CA
+T:*/*=0.369(60)/1
+Z:296 Kanarische Inseln
+A:PLP
+T:*/*=0.759(60)/1
+Z:297 Kap Verde Inseln
+A:FO
+T:*/*=1.759(60)/1
+Z:298 Kasachstan
+A:KZ
+T:*/*=1.669(60)/1
+Z:299 Katar
+A:QA
+T:*/*=1.759(60)/1
+Z:300 Kenia
+A:KE
+T:*/*=1.669(60)/1
+Z:301 Kirgistan
+A:KG
+T:*/*=1.629(60)/1
+Z:302 Kiribati
+A:KI
+T:*/*=2.179(60)/1
+Z:303 Kolumbien
+A:CO
+T:*/*=1.209(60)/1
+Z:304 Komoren
+A:KM
+T:*/*=1.919(60)/1
+Z:305 Kongo
+A:CG
+T:*/*=1.739(60)/1
+Z:306 Korea Dem. Volksrepublik
+A:KP
+T:*/*=2.119(60)/1
+Z:307 Korea Republik (Süd)
+A:KR
+T:*/*=0.759(60)/1
+Z:308 Kroatien
+A:HR
+T:*/*=0.899(60)/1
+Z:309 Kuba
+A:CU
+T:*/*=1.859(60)/1
+Z:310 Kuwait
+A:KW
+T:*/*=2.119(60)/1
+Z:311 Laos
+A:LA
+T:*/*=2.119(60)/1
+Z:312 Lesotho
+A:LS
+T:*/*=1.149(60)/1
+Z:313 Lettland
+A:LV
+T:*/*=0.869(60)/1
+Z:314 Libanon
+A:LB
+T:*/*=1.729(60)/1
+Z:315 Liberia
+A:LR
+T:*/*=1.269(60)/1
+Z:316 Libyen
+A:LY
+T:*/*=0.999(60)/1
+Z:317 Liechtenstein
+A:LI
+T:*/*=0.419(60)/1
+Z:318 Litauen
+A:LT
+T:*/*=0.959(60)/1
+Z:319 Luxemburg
+A:LU
+T:*/*=0.409(60)/1
+Z:320 Macau
+A:MO
+T:*/*=1.059(60)/1
+Z:321 Madagaskar
+A:MG
+T:*/*=1.639(60)/1
+Z:322 Madeira
+A:_MADE
+T:*/*=0.929(60)/1
+Z:323 Malawi
+A:MW
+T:*/*=1.399(60)/1
+Z:324 Malaysia
+A:MY
+T:*/*=0.739(60)/1
+Z:325 Malediven
+A:MV
+T:*/*=2.049(60)/1
+Z:326 Mali
+A:ML
+T:*/*=2.319(60)/1
+Z:327 Malta
+A:MT
+T:*/*=0.689(60)/1
+Z:328 Marianen, Nördliche
+A:MP,KP
+T:*/*=1.049(60)/1
+Z:329 Marokko
+A:EH
+T:*/*=1.159(60)/1
+Z:330 Marshallinseln
+A:MH
+T:*/*=1.409(60)/1
+Z:331 Martinique
+A:MQ
+T:*/*=1.119(60)/1
+Z:332 Mauretanien
+A:MR
+T:*/*=1.899(60)/1
+Z:333 Mauritius
+A:MU
+T:*/*=1.789(60)/1
+Z:334 Mayotte
+A:YT
+T:*/*=1.289(60)/1
+Z:335 Mazedonien
+A:MK
+T:*/*=1.019(60)/1
+Z:336 Mexiko
+A:MX
+T:*/*=0.829(60)/1
+Z:337 Midway Islands
+A:_MIDW
+T:*/*=4.019(60)/1
+Z:338 Mikronesien
+A:FM
+T:*/*=1.499(60)/1
+Z:339 Moldawien
+A:MD
+T:*/*=1.209(60)/1
+Z:340 Monaco
+A:MC
+T:*/*=0.479(60)/1
+Z:341 Mongolei
+A:MN
+T:*/*=2.479(60)/1
+Z:342 Montserrat
+A:MS
+T:*/*=1.659(60)/1
+Z:343 Mosambik
+A:MZ
+T:*/*=1.339(60)/1
+Z:344 Myanmar
+A:MM
+T:*/*=2.609(60)/1
+Z:345 Namibia
+A:NA
+T:*/*=1.149(60)/1
+Z:346 Nauru
+A:NR
+T:*/*=2.089(60)/1
+Z:347 Nepal
+A:NP
+T:*/*=2.059(60)/1
+Z:348 Neukaledonien
+A:NC
+T:*/*=1.799(60)/1
+Z:349 Neuseeland
+A:NZ
+T:*/*=0.509(60)/1
+Z:350 Nicaragua
+A:NI
+T:*/*=1.479(60)/1
+Z:351 Niederlande
+A:NL
+T:*/*=0.279(60)/1
+Z:352 Niederländische Antillen
+A:AN
+T:*/*=1.209(60)/1
+Z:353 Niger
+A:NGR
+T:*/*=1.899(60)/1
+Z:354 Nigeria
+A:NG
+T:*/*=1.989(60)/1
+Z:355 Niue
+A:NU
+T:*/*=2.609(60)/1
+Z:356 Norfolk Inseln
+A:NF
+T:*/*=1.279(60)/1
+Z:357 Norwegen
+A:NO
+T:*/*=0.369(60)/1
+Z:358 Oman
+A:OM
+T:*/*=1.989(60)/1
+Z:359 Österreich
+A:AT
+T:*/*=0.509(60)/1
+Z:360 Pakistan
+A:PK
+T:*/*=2.139(60)/1
+Z:361 Palau
+A:PW
+T:*/*=2.379(60)/1
+Z:362 Panama
+A:PA
+T:*/*=1.559(60)/1
+Z:363 Papua-Neuguinea
+A:PG
+T:*/*=1.119(60)/1
+Z:364 Paraguay
+A:PY
+T:*/*=1.829(60)/1
+Z:365 Peru
+A:PE
+T:*/*=1.349(60)/1
+Z:366 Philippinen
+A:PH
+T:*/*=1.089(60)/1
+Z:367 Polen
+A:PL
+T:*/*=0.819(60)/1
+Z:368 Portugal
+A:PT
+T:*/*=0.709(60)/1
+Z:369 Puerto Rico
+A:PR
+T:*/*=0.409(60)/1
+Z:370 Reunion
+A:RE
+T:*/*=1.209(60)/1
+Z:371 Ruanda
+A:RW
+T:*/*=1.669(60)/1
+Z:372 Rumänien
+A:RO
+T:*/*=1.019(60)/1
+Z:373 Russische Föderation
+A:SU
+T:*/*=1.189(60)/1
+Z:374 Salomenen
+A:SB
+T:*/*=1.989(60)/1
+Z:375 Sambia
+A:ZM
+T:*/*=1.829(60)/1
+Z:376 Samoa US
+A:AS
+T:*/*=0.959(60)/1
+Z:377 San Marino
+A:SM
+T:*/*=0.829(60)/1
+Z:378 Sao Tome und Principe
+A:ST
+T:*/*=2.719(60)/1
+Z:379 Saudi Arabien
+A:SA
+T:*/*=2.249(60)/1
+Z:380 Schweden
+A:SE
+T:*/*=0.259(60)/1
+Z:381 Schweiz
+A:CH
+T:*/*=0.319(60)/1
+Z:382 Senegal
+A:SN
+T:*/*=1.989(60)/1
+Z:383 Serbien
+A:YU
+T:*/*=1.049(60)/1
+Z:384 Seychellen
+A:SC
+T:*/*=2.279(60)/1
+Z:385 Sierra Leone
+A:SL
+T:*/*=2.079(60)/1
+Z:386 Simbabwe
+A:ZW
+T:*/*=1.209(60)/1
+Z:387 Singapur
+A:SG
+T:*/*=0.739(60)/1
+Z:388 Slowakei
+A:SK
+T:*/*=0.819(60)/1
+Z:389 Slowenien
+A:SI
+T:*/*=0.709(60)/1
+Z:390 Somalia
+A:SO
+T:*/*=2.219(60)/1
+Z:391 Spanien
+A:ES
+T:*/*=0.439(60)/1
+Z:392 Sri Lanka
+A:LK
+T:*/*=1.759(60)/1
+Z:393 St. Kitts und Navis
+A:KN
+T:*/*=1.109(60)/1
+Z:394 St. Helena
+A:SH
+T:*/*=1.829(60)/1
+Z:395 St. Lucia
+A:LC
+T:*/*=1.399(60)/1
+Z:396 St. Pierre und Miquelon
+A:PM
+T:*/*=0.999(60)/1
+Z:397 St. Vincent und Grenada
+A:VC
+T:*/*=1.509(60)/1
+Z:398 Südafrika
+A:ZA
+T:*/*=1.449(60)/1
+Z:399 Sudan
+A:SD
+T:*/*=1.319(60)/1
+Z:400 Suriname
+A:SR
+T:*/*=2.689(60)/1
+Z:401 Swasiland
+A:SZ
+T:*/*=0.919(60)/1
+Z:402 Syrien
+A:SY
+T:*/*=1.669(60)/1
+Z:403 Tadschikistan
+A:TJ
+T:*/*=1.309(60)/1
+Z:404 Taiwan
+A:TW
+T:*/*=0.929(60)/1
+Z:405 Tansania
+A:TZ
+T:*/*=1.729(60)/1
+Z:406 Thailand
+A:TH
+T:*/*=1.419(60)/1
+Z:407 Togo
+A:TG
+T:*/*=2.089(60)/1
+Z:408 Tonga
+A:TO
+T:*/*=2.609(60)/1
+Z:409 Trinidad und Tobago
+A:TT
+T:*/*=1.559(60)/1
+Z:410 Tschad
+A:TD
+T:*/*=2.499(60)/1
+Z:411 Tschechische Republik
+A:CZ
+T:*/*=0.729(60)/1
+Z:412 Tunesien
+A:TN
+T:*/*=1.079(60)/1
+Z:413 Türkei
+A:TR
+T:*/*=0.989(60)/1
+Z:414 Turks u. Caicosinseln
+A:TC
+T:*/*=1.349(60)/1
+Z:415 Turmenistan
+A:TM
+T:*/*=1.439(60)/1
+Z:416 Tuvalu
+A:TV
+T:*/*=2.309(60)/1
+Z:417 Uganda
+A:UG
+T:*/*=1.219(60)/1
+Z:418 Ukraine
+A:UA
+T:*/*=1.049(60)/1
+Z:419 Ungarn
+A:HU
+T:*/*=0.669(60)/1
+Z:420 Uruguay
+A:UY
+T:*/*=1.449(60)/1
+Z:421 USA
+A:US
+T:*/*=0.199(60)/1
+Z:422 Usbekistan
+A:UZ
+T:*/*=1.739(60)/1
+Z:423 Vanuatu
+A:VU
+T:*/*=2.319(60)/1
+Z:424 Vatikanstadt
+A:VA
+T:*/*=0.789(60)/1
+Z:425 Venezuela
+A:VE
+T:*/*=1.089(60)/1
+Z:426 V. Arabische Emirate
+A:AE
+T:*/*=1.159(60)/1
+Z:427 Vietnam
+A:VN
+T:*/*=2.469(60)/1
+Z:428 Virgin Islands UK
+A:VI
+T:*/*=1.089(60)/1
+Z:429 Virgin Island US
+A:VI
+T:*/*=0.379(60)/1
+Z:430 Wake Island
+A:_WAKE
+T:*/*=4.759(60)/1
+Z:431 Wallis und Futuna
+A:WF
+T:*/*=1.579(60)/1
+Z:432 Western Samoa
+A:WS
+T:*/*=2.349(60)/1
+Z:433 Zaire
+A:ZR
+T:*/*=1.579(60)/1
+Z:434 Zentralafrika
+A:CF
+T:*/*=2.219(60)/1
+Z:435 Zypern Nord
+A:_CYTK
+T:*/*=0.899(60)/1
+Z:436 Zypern Süd
+A:_CYTK
+T:*/*=1.119(60)/1
+Z:500 Rest
+A:+
+T:*/*=99.99/1 Rest
+#####################################################################
+P:36,6 Hutchison easyfon city
+B:01036
+C:Name:Hutchison easyfon city
+C:Address:Hutchison, Münsterstraße 109, 48155 Münster 01036
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Special:Nicht national verfügbar.  Siehe http://www.hutchison.de/html/festnetz/tarifberatung/vorwahlen.htm
+C:Sondertarif 11 "Hutchison Mobilfunk-Kunde": Vergünstigte Gespräche zu
+C:Hutchison Mobilfunk Teilnehmern
+C:Grundgebühr: 11,- DM, oder Abschluß eines 12 Monatsvertrages
+C:Erfasste Zonen:
+C:2	-   4	Deutschland
+C:10		Mobilfunk
+C:11		Sondertarif
+C:200	-	Ausland
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+Z:1-4 Inland
+A:DE
+T:W/08-18=0.119(60)/15 Geschaeftszeit
+T:E,H/08-18=0.099(60)/15 Wochenende
+T:*/18-08=0.099(60)/15 Freizeit
+Z:10 Mobilfunk
+A:_DEMCM,_DEMC,_DEMD1,_DEMD2,_DEME1,_DEME2
+T:*/*=0.559/60
+Z:11 Hutchison Mobilfunk-Kunde
+T:*/*=0.499/60
+Z:200 Afghanistan
+A:AF
+T:*/*=2.569/60
+Z:201 Ägypten
+A:EG
+T:*/*=1.669/60
+Z:202 Albanien
+A:AL
+T:*/*=0.869/60
+Z:203 Algerien
+A:DZ
+T:*/*=0.899/60
+Z:204 Andorra
+A:AD
+T:*/*=0.569/60
+Z:205 Angola
+A:AO
+T:*/*=1.209/60
+Z:206 Anguilla
+A:AI
+T:*/*=1.279/60
+Z:207 Antarctica
+A:AQ
+T:*/*=0.949/60
+Z:208 Antigua
+A:AG
+T:*/*=1.219/60
+Z:209 Äquatorialguinea
+A:GQ
+T:*/*=2.249/60
+Z:210 Argentinien
+A:AR
+T:*/*=1.239/60
+Z:211 Armenien
+A:AM
+T:*/*=1.469/60
+Z:212 Aruba
+A:AW
+T:*/*=1.049/60
+Z:213 Ascension
+A:ASI
+T:*/*=2.249/60
+Z:214 Aserbaidschan
+A:AZ
+T:*/*=1.159/60
+Z:215 Äthiopien
+A:ET
+T:*/*=2.309/60
+Z:216 Australien
+A:AU
+T:*/*=0.449/60
+Z:217 Azoren
+A:_AZOR
+T:*/*=1.279/60
+Z:218 Bahamas
+A:BS
+T:*/*=0.639/60
+Z:219 Bahrain
+A:BH
+T:*/*=1.689/60
+Z:220 Bangladesch
+A:BD
+T:*/*=2.019/60
+Z:221 Barbados
+A:BB
+T:*/*=1.399/60
+Z:222 Belarus
+A:BY
+T:*/*=0.929/60
+Z:223 Belgien
+A:BE
+T:*/*=0.319/60
+Z:224 Belize
+A:BZ
+T:*/*=1.539/60
+Z:225 Benin
+A:BJ
+T:*/*=1.409/60
+Z:226 Bermuda
+A:BM
+T:*/*=0.659/60
+Z:227 Bhutan
+A:BT
+T:*/*=1.289/60
+Z:228 Bolivien
+A:BO
+T:*/*=1.559/60
+Z:229 Bosnien-Herzegowina
+A:BA
+T:*/*=0.979/60
+Z:230 Botsuana
+A:BW
+T:*/*=1.059/60
+Z:231 Brasilien
+A:BR
+T:*/*=0.999/60
+Z:232 Brunei
+A:BN
+T:*/*=1.129/60
+Z:233 Bulgarien
+A:BG
+T:*/*=0.889/60
+Z:234 Burkina Faso
+A:BF
+T:*/*=1.989/60
+Z:235 Burundi
+A:BI
+T:*/*=1.609/60
+Z:236 Chatham Island
+A:_CHAT
+T:*/*=1.379/60
+Z:237 Chile
+A:CL
+T:*/*=0.669/60
+Z:238 China
+A:CN
+T:*/*=1.449/60
+Z:239 Christmas Islands
+A:CX
+T:*/*=0.829/60
+Z:240 Cocos Inseln
+A:CC
+T:*/*=0.729/60
+Z:241 Cook Inseln
+A:CK
+T:*/*=2.899/60
+Z:242 Costa Rica
+A:CR
+T:*/*=0.959/60
+Z:243 Cote d´Ivory
+A:CI
+T:*/*=2.469/60
+Z:244 Dänemark
+A:DK
+T:*/*=0.299/60
+Z:245 Diego Garcia
+A:NKW
+T:*/*=1.539/60
+Z:246 Dominica
+A:DM
+T:*/*=1.049/60
+Z:247 Dominikanische Republik
+A:DO
+T:*/*=0.709/60
+Z:248 Dschibuti
+A:DJ
+T:*/*=2.119/60
+Z:249 Ecuador
+A:EC
+T:*/*=1.089/60
+Z:250 El Salvador
+A:SV
+T:*/*=1.279/60
+Z:251 Eritrea
+A:ER
+T:*/*=2.479/60
+Z:252 Estland
+A:EE
+T:*/*=0.659/60
+Z:253 Falklandinseln
+A:FK
+T:*/*=1.079/60
+Z:254 Faröer
+A:FO
+T:*/*=1.049/60
+Z:255 Fidschi
+A:FJ
+T:*/*=2.059/60
+Z:256 Finnland
+A:FI
+T:*/*=0.349/60
+Z:257 Frankreich
+A:FR
+T:*/*=0.289/60
+Z:258 Französisch Guayana
+A:GF
+T:*/*=1.019/60
+Z:259 Französisch-Polynesien
+A:PF
+T:*/*=1.629/60
+Z:260 Gabun
+A:GA
+T:*/*=1.439/60
+Z:261 Gambia
+A:GM
+T:*/*=1.469/60
+Z:262 Georgien
+A:GE
+T:*/*=1.479/60
+Z:263 Ghana
+A:GH
+T:*/*=1.319/60
+Z:264 Gibraltar
+A:GI
+T:*/*=0.999/60
+Z:265 Grenada
+A:GD
+T:*/*=1.349/60
+Z:266 Griechenland
+A:GR
+T:*/*=0.659/60
+Z:267 Grönland
+A:GL
+T:*/*=1.119/60
+Z:268 Großbritannien
+A:UK
+T:*/*=0.199/60
+Z:269 Guadeloupe
+A:GP
+T:*/*=1.059/60
+Z:270 Guam
+A:GU
+T:*/*=0.509/60
+Z:271 Guantanamo
+A:_GUAN
+T:*/*=1.159/60
+Z:272 Guatemala
+A:GT
+T:*/*=0.929/60
+Z:273 Guinea
+A:GN
+T:*/*=1.289/60
+Z:274 Guinea-Bissau
+A:GW
+T:*/*=2.369/60
+Z:275 Guyana
+A:GY
+T:*/*=1.709/60
+Z:276 Haiti
+A:HT
+T:*/*=1.609/60
+Z:277 Honduras
+A:HN
+T:*/*=1.509/60
+Z:278 Hongkong
+A:HK
+T:*/*=0.539/60
+Z:279 Indien
+A:IN
+T:*/*=2.119/60
+Z:280 Indonesien
+A:ID
+T:*/*=1.279/60
+Z:281 Irak
+A:IQ
+T:*/*=2.569/60
+Z:282 Iran
+A:IR
+T:*/*=2.149/60
+Z:283 Irland
+A:IE
+T:*/*=0.469/60
+Z:284 Island
+A:IS
+T:*/*=0.739/60
+Z:285 Israel
+A:IL
+T:*/*=0.709/60
+Z:286 Italien 
+A:IT
+T:*/*=0.539/60
+Z:287 Jamaika
+A:JM
+T:*/*=1.799/60
+Z:288 Japan
+A:JP
+T:*/*=0.529/60
+Z:289 Jemen Arab. Republik
+A:YE
+T:*/*=2.469/60
+Z:290 Jordanien
+A:JO
+T:*/*=1.579/60
+Z:291 Jugoslawien
+A:YU
+T:*/*=1.049/60
+Z:292 Kaiman Inseln
+A:KY
+T:*/*=0.839/60
+Z:293 Kambodscha
+A:KH
+T:*/*=2.539/60
+Z:294 Kamerun
+A:CM
+T:*/*=1.799/60
+Z:295 Kanada
+A:CA
+T:*/*=0.369/60
+Z:296 Kanarische Inseln
+A:PLP
+T:*/*=0.759/60
+Z:297 Kap Verde Inseln
+A:FO
+T:*/*=1.759/60
+Z:298 Kasachstan
+A:KZ
+T:*/*=1.669/60
+Z:299 Katar
+A:QA
+T:*/*=1.759/60
+Z:300 Kenia
+A:KE
+T:*/*=1.669/60
+Z:301 Kirgistan
+A:KG
+T:*/*=1.629/60
+Z:302 Kiribati
+A:KI
+T:*/*=2.179/60
+Z:303 Kolumbien
+A:CO
+T:*/*=1.209/60
+Z:304 Komoren
+A:KM
+T:*/*=1.919/60
+Z:305 Kongo
+A:CG
+T:*/*=1.739/60
+Z:306 Korea Dem. Volksrepublik
+A:KP
+T:*/*=2.119/60
+Z:307 Korea Republik (Süd)
+A:KR
+T:*/*=0.759/60
+Z:308 Kroatien
+A:HR
+T:*/*=0.899/60
+Z:309 Kuba
+A:CU
+T:*/*=1.859/60
+Z:310 Kuwait
+A:KW
+T:*/*=2.119/60
+Z:311 Laos
+A:LA
+T:*/*=2.119/60
+Z:312 Lesotho
+A:LS
+T:*/*=1.149/60
+Z:313 Lettland
+A:LV
+T:*/*=0.869/60
+Z:314 Libanon
+A:LB
+T:*/*=1.729/60
+Z:315 Liberia
+A:LR
+T:*/*=1.269/60
+Z:316 Libyen
+A:LY
+T:*/*=0.999/60
+Z:317 Liechtenstein
+A:LI
+T:*/*=0.419/60
+Z:318 Litauen
+A:LT
+T:*/*=0.959/60
+Z:319 Luxemburg
+A:LU
+T:*/*=0.409/60
+Z:320 Macau
+A:MO
+T:*/*=1.059/60
+Z:321 Madagaskar
+A:MG
+T:*/*=1.639/60
+Z:322 Madeira
+A:_MADE
+T:*/*=0.929/60
+Z:323 Malawi
+A:MW
+T:*/*=1.399/60
+Z:324 Malaysia
+A:MY
+T:*/*=0.739/60
+Z:325 Malediven
+A:MV
+T:*/*=2.049/60
+Z:326 Mali
+A:ML
+T:*/*=2.319/60
+Z:327 Malta
+A:MT
+T:*/*=0.689/60
+Z:328 Marianen, Nördliche
+A:MP,KP
+T:*/*=1.049/60
+Z:329 Marokko
+A:EH
+T:*/*=1.159/60
+Z:330 Marshallinseln
+A:MH
+T:*/*=1.409/60
+Z:331 Martinique
+A:MQ
+T:*/*=1.119/60
+Z:332 Mauretanien
+A:MR
+T:*/*=1.899/60
+Z:333 Mauritius
+A:MU
+T:*/*=1.789/60
+Z:334 Mayotte
+A:YT
+T:*/*=1.289/60
+Z:335 Mazedonien
+A:MK
+T:*/*=1.019/60
+Z:336 Mexiko
+A:MX
+T:*/*=0.829/60
+Z:337 Midway Islands
+A:_MIDW
+T:*/*=4.019/60
+Z:338 Mikronesien
+A:FM
+T:*/*=1.499/60
+Z:339 Moldawien
+A:MD
+T:*/*=1.209/60
+Z:340 Monaco
+A:MC
+T:*/*=0.479/60
+Z:341 Mongolei
+A:MN
+T:*/*=2.479/60
+Z:342 Montserrat
+A:MS
+T:*/*=1.659/60
+Z:343 Mosambik
+A:MZ
+T:*/*=1.339/60
+Z:344 Myanmar
+A:MM
+T:*/*=2.609/60
+Z:345 Namibia
+A:NA
+T:*/*=1.149/60
+Z:346 Nauru
+A:NR
+T:*/*=2.089/60
+Z:347 Nepal
+A:NP
+T:*/*=2.059/60
+Z:348 Neukaledonien
+A:NC
+T:*/*=1.799/60
+Z:349 Neuseeland
+A:NZ
+T:*/*=0.509/60
+Z:350 Nicaragua
+A:NI
+T:*/*=1.479/60
+Z:351 Niederlande
+A:NL
+T:*/*=0.279/60
+Z:352 Niederländische Antillen
+A:AN
+T:*/*=1.209/60
+Z:353 Niger
+A:NGR
+T:*/*=1.899/60
+Z:354 Nigeria
+A:NG
+T:*/*=1.989/60
+Z:355 Niue
+A:NU
+T:*/*=2.609/60
+Z:356 Norfolk Inseln
+A:NF
+T:*/*=1.279/60
+Z:357 Norwegen
+A:NO
+T:*/*=0.369/60
+Z:358 Oman
+A:OM
+T:*/*=1.989/60
+Z:359 Österreich
+A:AT
+T:*/*=0.509/60
+Z:360 Pakistan
+A:PK
+T:*/*=2.139/60
+Z:361 Palau
+A:PW
+T:*/*=2.379/60
+Z:362 Panama
+A:PA
+T:*/*=1.559/60
+Z:363 Papua-Neuguinea
+A:PG
+T:*/*=1.119/60
+Z:364 Paraguay
+A:PY
+T:*/*=1.829/60
+Z:365 Peru
+A:PE
+T:*/*=1.349/60
+Z:366 Philippinen
+A:PH
+T:*/*=1.089/60
+Z:367 Polen
+A:PL
+T:*/*=0.819/60
+Z:368 Portugal
+A:PT
+T:*/*=0.709/60
+Z:369 Puerto Rico
+A:PR
+T:*/*=0.409/60
+Z:370 Reunion
+A:RE
+T:*/*=1.209/60
+Z:371 Ruanda
+A:RW
+T:*/*=1.669/60
+Z:372 Rumänien
+A:RO
+T:*/*=1.019/60
+Z:373 Russische Föderation
+A:SU
+T:*/*=1.189/60
+Z:374 Salomenen
+A:SB
+T:*/*=1.989/60
+Z:375 Sambia
+A:ZM
+T:*/*=1.829/60
+Z:376 Samoa US
+A:AS
+T:*/*=0.959/60
+Z:377 San Marino
+A:SM
+T:*/*=0.829/60
+Z:378 Sao Tome und Principe
+A:ST
+T:*/*=2.719/60
+Z:379 Saudi Arabien
+A:SA
+T:*/*=2.249/60
+Z:380 Schweden
+A:SE
+T:*/*=0.259/60
+Z:381 Schweiz
+A:CH
+T:*/*=0.319/60
+Z:382 Senegal
+A:SN
+T:*/*=1.989/60
+Z:383 Serbien
+A:YU
+T:*/*=1.049/60
+Z:384 Seychellen
+A:SC
+T:*/*=2.279/60
+Z:385 Sierra Leone
+A:SL
+T:*/*=2.079/60
+Z:386 Simbabwe
+A:ZW
+T:*/*=1.209/60
+Z:387 Singapur
+A:SG
+T:*/*=0.739/60
+Z:388 Slowakei
+A:SK
+T:*/*=0.819/60
+Z:389 Slowenien
+A:SI
+T:*/*=0.709/60
+Z:390 Somalia
+A:SO
+T:*/*=2.219/60
+Z:391 Spanien
+A:ES
+T:*/*=0.439/60
+Z:392 Sri Lanka
+A:LK
+T:*/*=1.759/60
+Z:393 St. Kitts und Navis
+A:KN
+T:*/*=1.109/60
+Z:394 St. Helena
+A:SH
+T:*/*=1.829/60
+Z:395 St. Lucia
+A:LC
+T:*/*=1.399/60
+Z:396 St. Pierre und Miquelon
+A:PM
+T:*/*=0.999/60
+Z:397 St. Vincent und Grenada
+A:VC
+T:*/*=1.509/60
+Z:398 Südafrika
+A:ZA
+T:*/*=1.449/60
+Z:399 Sudan
+A:SD
+T:*/*=1.319/60
+Z:400 Suriname
+A:SR
+T:*/*=2.689/60
+Z:401 Swasiland
+A:SZ
+T:*/*=0.919/60
+Z:402 Syrien
+A:SY
+T:*/*=1.669/60
+Z:403 Tadschikistan
+A:TJ
+T:*/*=1.309/60
+Z:404 Taiwan
+A:TW
+T:*/*=0.929/60
+Z:405 Tansania
+A:TZ
+T:*/*=1.729/60
+Z:406 Thailand
+A:TH
+T:*/*=1.419/60
+Z:407 Togo
+A:TG
+T:*/*=2.089/60
+Z:408 Tonga
+A:TO
+T:*/*=2.609/60
+Z:409 Trinidad und Tobago
+A:TT
+T:*/*=1.559/60
+Z:410 Tschad
+A:TD
+T:*/*=2.499/60
+Z:411 Tschechische Republik
+A:CZ
+T:*/*=0.729/60
+Z:412 Tunesien
+A:TN
+T:*/*=1.079/60
+Z:413 Türkei
+A:TR
+T:*/*=0.989/60
+Z:414 Turks u. Caicosinseln
+A:TC
+T:*/*=1.349/60
+Z:415 Turmenistan
+A:TM
+T:*/*=1.439/60
+Z:416 Tuvalu
+A:TV
+T:*/*=2.309/60
+Z:417 Uganda
+A:UG
+T:*/*=1.219/60
+Z:418 Ukraine
+A:UA
+T:*/*=1.049/60
+Z:419 Ungarn
+A:HU
+T:*/*=0.669/60
+Z:420 Uruguay
+A:UY
+T:*/*=1.449/60
+Z:421 USA
+A:US
+T:*/*=0.199/60
+Z:422 Usbekistan
+A:UZ
+T:*/*=1.739/60
+Z:423 Vanuatu
+A:VU
+T:*/*=2.319/60
+Z:424 Vatikanstadt
+A:VA
+T:*/*=0.789/60
+Z:425 Venezuela
+A:VE
+T:*/*=1.089/60
+Z:426 V. Arabische Emirate
+A:AE
+T:*/*=1.159/60
+Z:427 Vietnam
+A:VN
+T:*/*=2.469/60
+Z:428 Virgin Islands UK
+A:VI
+T:*/*=1.089/60
+Z:429 Virgin Island US
+A:VI
+T:*/*=0.379/60
+Z:430 Wake Island
+A:_WAKE
+T:*/*=4.759/60
+Z:431 Wallis und Futuna
+A:WF
+T:*/*=1.579/60
+Z:432 Western Samoa
+A:WS
+T:*/*=2.349/60
+Z:433 Zaire
+A:ZR
+T:*/*=1.579/60
+Z:434 Zentralafrika
+A:CF
+T:*/*=2.219/60
+Z:435 Zypern Nord
+A:_CYTK
+T:*/*=0.899/60
+Z:436 Zypern Süd
+A:_CYTK
+T:*/*=1.119/60
+Z:500 Rest
+A:+
+T:*/*=99.99/1 Rest
+#####################################################################
+P:36,7 Hutchison easyfon city Sekundentakt
+B:01036
+C:Name:Hutchison easyfon city Sekundentakt
+C:Address:Hutchison, Münsterstraße 109, 48155 Münster 01036
+C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Special:Nicht national verfügbar.  Siehe http://www.hutchison.de/html/festnetz/tarifberatung/vorwahlen.htm
+C:Grundgebühr: 9,95 DM oder Abschluß eines 12 Monatsvertrages
+C:Sondertarif 11 "Hutchison Mobilfunk-Kunde": Vergünstigte Gespräche zu
+C:Hutchison Mobilfunk Teilnehmern
+C:Grundgebühr: 11,- DM, oder Abschluß eines 12 Monatsvertrages
+C:Erfasste Zonen:
+C:2	-   4	Deutschland
+C:10		Mobilfunk
+C:11		Sondertarif
+C:200	-	Ausland
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+Z:1-4 Inland
+A:DE
+T:W/08-18=0.119(60)/1 Geschaeftszeit
+T:E,H/08-18=0.099(60)/1 Wochenende
+T:*/18-08=0.099(60)/1 Freizeit
+Z:10 Mobilfunk
+A:_DEMCM,_DEMC,_DEMD1,_DEMD2,_DEME1,_DEME2
+T:*/*=0.559(60)/1
+Z:11 Hutchison Mobilfunk-Kunde
+T:*/*=0.499(60)/1
+Z:200 Afghanistan
+A:AF
+T:*/*=2.569(60)/1
+Z:201 Ägypten
+A:EG
+T:*/*=1.669(60)/1
+Z:202 Albanien
+A:AL
+T:*/*=0.869(60)/1
+Z:203 Algerien
+A:DZ
+T:*/*=0.899(60)/1
+Z:204 Andorra
+A:AD
+T:*/*=0.569(60)/1
+Z:205 Angola
+A:AO
+T:*/*=1.209(60)/1
+Z:206 Anguilla
+A:AI
+T:*/*=1.279(60)/1
+Z:207 Antarctica
+A:AQ
+T:*/*=0.949(60)/1
+Z:208 Antigua
+A:AG
+T:*/*=1.219(60)/1
+Z:209 Äquatorialguinea
+A:GQ
+T:*/*=2.249(60)/1
+Z:210 Argentinien
+A:AR
+T:*/*=1.239(60)/1
+Z:211 Armenien
+A:AM
+T:*/*=1.469(60)/1
+Z:212 Aruba
+A:AW
+T:*/*=1.049(60)/1
+Z:213 Ascension
+A:ASI
+T:*/*=2.249(60)/1
+Z:214 Aserbaidschan
+A:AZ
+T:*/*=1.159(60)/1
+Z:215 Äthiopien
+A:ET
+T:*/*=2.309(60)/1
+Z:216 Australien
+A:AU
+T:*/*=0.449(60)/1
+Z:217 Azoren
+A:_AZOR
+T:*/*=1.279(60)/1
+Z:218 Bahamas
+A:BS
+T:*/*=0.639(60)/1
+Z:219 Bahrain
+A:BH
+T:*/*=1.689(60)/1
+Z:220 Bangladesch
+A:BD
+T:*/*=2.019(60)/1
+Z:221 Barbados
+A:BB
+T:*/*=1.399(60)/1
+Z:222 Belarus
+A:BY
+T:*/*=0.929(60)/1
+Z:223 Belgien
+A:BE
+T:*/*=0.319(60)/1
+Z:224 Belize
+A:BZ
+T:*/*=1.539(60)/1
+Z:225 Benin
+A:BJ
+T:*/*=1.409(60)/1
+Z:226 Bermuda
+A:BM
+T:*/*=0.659(60)/1
+Z:227 Bhutan
+A:BT
+T:*/*=1.289(60)/1
+Z:228 Bolivien
+A:BO
+T:*/*=1.559(60)/1
+Z:229 Bosnien-Herzegowina
+A:BA
+T:*/*=0.979(60)/1
+Z:230 Botsuana
+A:BW
+T:*/*=1.059(60)/1
+Z:231 Brasilien
+A:BR
+T:*/*=0.999(60)/1
+Z:232 Brunei
+A:BN
+T:*/*=1.129(60)/1
+Z:233 Bulgarien
+A:BG
+T:*/*=0.889(60)/1
+Z:234 Burkina Faso
+A:BF
+T:*/*=1.989(60)/1
+Z:235 Burundi
+A:BI
+T:*/*=1.609(60)/1
+Z:236 Chatham Island
+A:_CHAT
+T:*/*=1.379(60)/1
+Z:237 Chile
+A:CL
+T:*/*=0.669(60)/1
+Z:238 China
+A:CN
+T:*/*=1.449(60)/1
+Z:239 Christmas Islands
+A:CX
+T:*/*=0.829(60)/1
+Z:240 Cocos Inseln
+A:CC
+T:*/*=0.729(60)/1
+Z:241 Cook Inseln
+A:CK
+T:*/*=2.899(60)/1
+Z:242 Costa Rica
+A:CR
+T:*/*=0.959(60)/1
+Z:243 Cote d´Ivory
+A:CI
+T:*/*=2.469(60)/1
+Z:244 Dänemark
+A:DK
+T:*/*=0.299(60)/1
+Z:245 Diego Garcia
+A:NKW
+T:*/*=1.539(60)/1
+Z:246 Dominica
+A:DM
+T:*/*=1.049(60)/1
+Z:247 Dominikanische Republik
+A:DO
+T:*/*=0.709(60)/1
+Z:248 Dschibuti
+A:DJ
+T:*/*=2.119(60)/1
+Z:249 Ecuador
+A:EC
+T:*/*=1.089(60)/1
+Z:250 El Salvador
+A:SV
+T:*/*=1.279(60)/1
+Z:251 Eritrea
+A:ER
+T:*/*=2.479(60)/1
+Z:252 Estland
+A:EE
+T:*/*=0.659(60)/1
+Z:253 Falklandinseln
+A:FK
+T:*/*=1.079(60)/1
+Z:254 Faröer
+A:FO
+T:*/*=1.049(60)/1
+Z:255 Fidschi
+A:FJ
+T:*/*=2.059(60)/1
+Z:256 Finnland
+A:FI
+T:*/*=0.349(60)/1
+Z:257 Frankreich
+A:FR
+T:*/*=0.289(60)/1
+Z:258 Französisch Guayana
+A:GF
+T:*/*=1.019(60)/1
+Z:259 Französisch-Polynesien
+A:PF
+T:*/*=1.629(60)/1
+Z:260 Gabun
+A:GA
+T:*/*=1.439(60)/1
+Z:261 Gambia
+A:GM
+T:*/*=1.469(60)/1
+Z:262 Georgien
+A:GE
+T:*/*=1.479(60)/1
+Z:263 Ghana
+A:GH
+T:*/*=1.319(60)/1
+Z:264 Gibraltar
+A:GI
+T:*/*=0.999(60)/1
+Z:265 Grenada
+A:GD
+T:*/*=1.349(60)/1
+Z:266 Griechenland
+A:GR
+T:*/*=0.659(60)/1
+Z:267 Grönland
+A:GL
+T:*/*=1.119(60)/1
+Z:268 Großbritannien
+A:UK
+T:*/*=0.199(60)/1
+Z:269 Guadeloupe
+A:GP
+T:*/*=1.059(60)/1
+Z:270 Guam
+A:GU
+T:*/*=0.509(60)/1
+Z:271 Guantanamo
+A:_GUAN
+T:*/*=1.159(60)/1
+Z:272 Guatemala
+A:GT
+T:*/*=0.929(60)/1
+Z:273 Guinea
+A:GN
+T:*/*=1.289(60)/1
+Z:274 Guinea-Bissau
+A:GW
+T:*/*=2.369(60)/1
+Z:275 Guyana
+A:GY
+T:*/*=1.709(60)/1
+Z:276 Haiti
+A:HT
+T:*/*=1.609(60)/1
+Z:277 Honduras
+A:HN
+T:*/*=1.509(60)/1
+Z:278 Hongkong
+A:HK
+T:*/*=0.539(60)/1
+Z:279 Indien
+A:IN
+T:*/*=2.119(60)/1
+Z:280 Indonesien
+A:ID
+T:*/*=1.279(60)/1
+Z:281 Irak
+A:IQ
+T:*/*=2.569(60)/1
+Z:282 Iran
+A:IR
+T:*/*=2.149(60)/1
+Z:283 Irland
+A:IE
+T:*/*=0.469(60)/1
+Z:284 Island
+A:IS
+T:*/*=0.739(60)/1
+Z:285 Israel
+A:IL
+T:*/*=0.709(60)/1
+Z:286 Italien 
+A:IT
+T:*/*=0.539(60)/1
+Z:287 Jamaika
+A:JM
+T:*/*=1.799(60)/1
+Z:288 Japan
+A:JP
+T:*/*=0.529(60)/1
+Z:289 Jemen Arab. Republik
+A:YE
+T:*/*=2.469(60)/1
+Z:290 Jordanien
+A:JO
+T:*/*=1.579(60)/1
+Z:291 Jugoslawien
+A:YU
+T:*/*=1.049(60)/1
+Z:292 Kaiman Inseln
+A:KY
+T:*/*=0.839(60)/1
+Z:293 Kambodscha
+A:KH
+T:*/*=2.539(60)/1
+Z:294 Kamerun
+A:CM
+T:*/*=1.799(60)/1
+Z:295 Kanada
+A:CA
+T:*/*=0.369(60)/1
+Z:296 Kanarische Inseln
+A:PLP
+T:*/*=0.759(60)/1
+Z:297 Kap Verde Inseln
+A:FO
+T:*/*=1.759(60)/1
+Z:298 Kasachstan
+A:KZ
+T:*/*=1.669(60)/1
+Z:299 Katar
+A:QA
+T:*/*=1.759(60)/1
+Z:300 Kenia
+A:KE
+T:*/*=1.669(60)/1
+Z:301 Kirgistan
+A:KG
+T:*/*=1.629(60)/1
+Z:302 Kiribati
+A:KI
+T:*/*=2.179(60)/1
+Z:303 Kolumbien
+A:CO
+T:*/*=1.209(60)/1
+Z:304 Komoren
+A:KM
+T:*/*=1.919(60)/1
+Z:305 Kongo
+A:CG
+T:*/*=1.739(60)/1
+Z:306 Korea Dem. Volksrepublik
+A:KP
+T:*/*=2.119(60)/1
+Z:307 Korea Republik (Süd)
+A:KR
+T:*/*=0.759(60)/1
+Z:308 Kroatien
+A:HR
+T:*/*=0.899(60)/1
+Z:309 Kuba
+A:CU
+T:*/*=1.859(60)/1
+Z:310 Kuwait
+A:KW
+T:*/*=2.119(60)/1
+Z:311 Laos
+A:LA
+T:*/*=2.119(60)/1
+Z:312 Lesotho
+A:LS
+T:*/*=1.149(60)/1
+Z:313 Lettland
+A:LV
+T:*/*=0.869(60)/1
+Z:314 Libanon
+A:LB
+T:*/*=1.729(60)/1
+Z:315 Liberia
+A:LR
+T:*/*=1.269(60)/1
+Z:316 Libyen
+A:LY
+T:*/*=0.999(60)/1
+Z:317 Liechtenstein
+A:LI
+T:*/*=0.419(60)/1
+Z:318 Litauen
+A:LT
+T:*/*=0.959(60)/1
+Z:319 Luxemburg
+A:LU
+T:*/*=0.409(60)/1
+Z:320 Macau
+A:MO
+T:*/*=1.059(60)/1
+Z:321 Madagaskar
+A:MG
+T:*/*=1.639(60)/1
+Z:322 Madeira
+A:_MADE
+T:*/*=0.929(60)/1
+Z:323 Malawi
+A:MW
+T:*/*=1.399(60)/1
+Z:324 Malaysia
+A:MY
+T:*/*=0.739(60)/1
+Z:325 Malediven
+A:MV
+T:*/*=2.049(60)/1
+Z:326 Mali
+A:ML
+T:*/*=2.319(60)/1
+Z:327 Malta
+A:MT
+T:*/*=0.689(60)/1
+Z:328 Marianen, Nördliche
+A:MP,KP
+T:*/*=1.049(60)/1
+Z:329 Marokko
+A:EH
+T:*/*=1.159(60)/1
+Z:330 Marshallinseln
+A:MH
+T:*/*=1.409(60)/1
+Z:331 Martinique
+A:MQ
+T:*/*=1.119(60)/1
+Z:332 Mauretanien
+A:MR
+T:*/*=1.899(60)/1
+Z:333 Mauritius
+A:MU
+T:*/*=1.789(60)/1
+Z:334 Mayotte
+A:YT
+T:*/*=1.289(60)/1
+Z:335 Mazedonien
+A:MK
+T:*/*=1.019(60)/1
+Z:336 Mexiko
+A:MX
+T:*/*=0.829(60)/1
+Z:337 Midway Islands
+A:_MIDW
+T:*/*=4.019(60)/1
+Z:338 Mikronesien
+A:FM
+T:*/*=1.499(60)/1
+Z:339 Moldawien
+A:MD
+T:*/*=1.209(60)/1
+Z:340 Monaco
+A:MC
+T:*/*=0.479(60)/1
+Z:341 Mongolei
+A:MN
+T:*/*=2.479(60)/1
+Z:342 Montserrat
+A:MS
+T:*/*=1.659(60)/1
+Z:343 Mosambik
+A:MZ
+T:*/*=1.339(60)/1
+Z:344 Myanmar
+A:MM
+T:*/*=2.609(60)/1
+Z:345 Namibia
+A:NA
+T:*/*=1.149(60)/1
+Z:346 Nauru
+A:NR
+T:*/*=2.089(60)/1
+Z:347 Nepal
+A:NP
+T:*/*=2.059(60)/1
+Z:348 Neukaledonien
+A:NC
+T:*/*=1.799(60)/1
+Z:349 Neuseeland
+A:NZ
+T:*/*=0.509(60)/1
+Z:350 Nicaragua
+A:NI
+T:*/*=1.479(60)/1
+Z:351 Niederlande
+A:NL
+T:*/*=0.279(60)/1
+Z:352 Niederländische Antillen
+A:AN
+T:*/*=1.209(60)/1
+Z:353 Niger
+A:NGR
+T:*/*=1.899(60)/1
+Z:354 Nigeria
+A:NG
+T:*/*=1.989(60)/1
+Z:355 Niue
+A:NU
+T:*/*=2.609(60)/1
+Z:356 Norfolk Inseln
+A:NF
+T:*/*=1.279(60)/1
+Z:357 Norwegen
+A:NO
+T:*/*=0.369(60)/1
+Z:358 Oman
+A:OM
+T:*/*=1.989(60)/1
+Z:359 Österreich
+A:AT
+T:*/*=0.509(60)/1
+Z:360 Pakistan
+A:PK
+T:*/*=2.139(60)/1
+Z:361 Palau
+A:PW
+T:*/*=2.379(60)/1
+Z:362 Panama
+A:PA
+T:*/*=1.559(60)/1
+Z:363 Papua-Neuguinea
+A:PG
+T:*/*=1.119(60)/1
+Z:364 Paraguay
+A:PY
+T:*/*=1.829(60)/1
+Z:365 Peru
+A:PE
+T:*/*=1.349(60)/1
+Z:366 Philippinen
+A:PH
+T:*/*=1.089(60)/1
+Z:367 Polen
+A:PL
+T:*/*=0.819(60)/1
+Z:368 Portugal
+A:PT
+T:*/*=0.709(60)/1
+Z:369 Puerto Rico
+A:PR
+T:*/*=0.409(60)/1
+Z:370 Reunion
+A:RE
+T:*/*=1.209(60)/1
+Z:371 Ruanda
+A:RW
+T:*/*=1.669(60)/1
+Z:372 Rumänien
+A:RO
+T:*/*=1.019(60)/1
+Z:373 Russische Föderation
+A:SU
+T:*/*=1.189(60)/1
+Z:374 Salomenen
+A:SB
+T:*/*=1.989(60)/1
+Z:375 Sambia
+A:ZM
+T:*/*=1.829(60)/1
+Z:376 Samoa US
+A:AS
+T:*/*=0.959(60)/1
+Z:377 San Marino
+A:SM
+T:*/*=0.829(60)/1
+Z:378 Sao Tome und Principe
+A:ST
+T:*/*=2.719(60)/1
+Z:379 Saudi Arabien
+A:SA
+T:*/*=2.249(60)/1
+Z:380 Schweden
+A:SE
+T:*/*=0.259(60)/1
+Z:381 Schweiz
+A:CH
+T:*/*=0.319(60)/1
+Z:382 Senegal
+A:SN
+T:*/*=1.989(60)/1
+Z:383 Serbien
+A:YU
+T:*/*=1.049(60)/1
+Z:384 Seychellen
+A:SC
+T:*/*=2.279(60)/1
+Z:385 Sierra Leone
+A:SL
+T:*/*=2.079(60)/1
+Z:386 Simbabwe
+A:ZW
+T:*/*=1.209(60)/1
+Z:387 Singapur
+A:SG
+T:*/*=0.739(60)/1
+Z:388 Slowakei
+A:SK
+T:*/*=0.819(60)/1
+Z:389 Slowenien
+A:SI
+T:*/*=0.709(60)/1
+Z:390 Somalia
+A:SO
+T:*/*=2.219(60)/1
+Z:391 Spanien
+A:ES
+T:*/*=0.439(60)/1
+Z:392 Sri Lanka
+A:LK
+T:*/*=1.759(60)/1
+Z:393 St. Kitts und Navis
+A:KN
+T:*/*=1.109(60)/1
+Z:394 St. Helena
+A:SH
+T:*/*=1.829(60)/1
+Z:395 St. Lucia
+A:LC
+T:*/*=1.399(60)/1
+Z:396 St. Pierre und Miquelon
+A:PM
+T:*/*=0.999(60)/1
+Z:397 St. Vincent und Grenada
+A:VC
+T:*/*=1.509(60)/1
+Z:398 Südafrika
+A:ZA
+T:*/*=1.449(60)/1
+Z:399 Sudan
+A:SD
+T:*/*=1.319(60)/1
+Z:400 Suriname
+A:SR
+T:*/*=2.689(60)/1
+Z:401 Swasiland
+A:SZ
+T:*/*=0.919(60)/1
+Z:402 Syrien
+A:SY
+T:*/*=1.669(60)/1
+Z:403 Tadschikistan
+A:TJ
+T:*/*=1.309(60)/1
+Z:404 Taiwan
+A:TW
+T:*/*=0.929(60)/1
+Z:405 Tansania
+A:TZ
+T:*/*=1.729(60)/1
+Z:406 Thailand
+A:TH
+T:*/*=1.419(60)/1
+Z:407 Togo
+A:TG
+T:*/*=2.089(60)/1
+Z:408 Tonga
+A:TO
+T:*/*=2.609(60)/1
+Z:409 Trinidad und Tobago
+A:TT
+T:*/*=1.559(60)/1
+Z:410 Tschad
+A:TD
+T:*/*=2.499(60)/1
+Z:411 Tschechische Republik
+A:CZ
+T:*/*=0.729(60)/1
+Z:412 Tunesien
+A:TN
+T:*/*=1.079(60)/1
+Z:413 Türkei
+A:TR
+T:*/*=0.989(60)/1
+Z:414 Turks u. Caicosinseln
+A:TC
+T:*/*=1.349(60)/1
+Z:415 Turmenistan
+A:TM
+T:*/*=1.439(60)/1
+Z:416 Tuvalu
+A:TV
+T:*/*=2.309(60)/1
+Z:417 Uganda
+A:UG
+T:*/*=1.219(60)/1
+Z:418 Ukraine
+A:UA
+T:*/*=1.049(60)/1
+Z:419 Ungarn
+A:HU
+T:*/*=0.669(60)/1
+Z:420 Uruguay
+A:UY
+T:*/*=1.449(60)/1
+Z:421 USA
+A:US
+T:*/*=0.199(60)/1
+Z:422 Usbekistan
+A:UZ
+T:*/*=1.739(60)/1
+Z:423 Vanuatu
+A:VU
+T:*/*=2.319(60)/1
+Z:424 Vatikanstadt
+A:VA
+T:*/*=0.789(60)/1
+Z:425 Venezuela
+A:VE
+T:*/*=1.089(60)/1
+Z:426 V. Arabische Emirate
+A:AE
+T:*/*=1.159(60)/1
+Z:427 Vietnam
+A:VN
+T:*/*=2.469(60)/1
+Z:428 Virgin Islands UK
+A:VI
+T:*/*=1.089(60)/1
+Z:429 Virgin Island US
+A:VI
+T:*/*=0.379(60)/1
+Z:430 Wake Island
+A:_WAKE
+T:*/*=4.759(60)/1
+Z:431 Wallis und Futuna
+A:WF
+T:*/*=1.579(60)/1
+Z:432 Western Samoa
+A:WS
+T:*/*=2.349(60)/1
+Z:433 Zaire
+A:ZR
+T:*/*=1.579(60)/1
+Z:434 Zentralafrika
+A:CF
+T:*/*=2.219(60)/1
+Z:435 Zypern Nord
+A:_CYTK
+T:*/*=0.899(60)/1
+Z:436 Zypern Süd
+A:_CYTK
+T:*/*=1.119(60)/1
+Z:500 Rest
+A:+
+T:*/*=99.99/1 Rest
+#####################################################################
+P:36,8 Hutchison o.tel.o private
 B:01036
 C:Name:Hutchison o.tel.o private
 C:Address:Hutchison, Münsterstraße 109, 48155 Münster
@@ -12264,15 +18145,27 @@ T:E,H/08-18=0.05/0,0.05(60)/1 Wochenende
 T:*/18-08=0.05/0,0.05(60)/1 Freizeit
 Z:4 National
 A:DE
-T:W/08-18=0.05/0,0.20(60)/1 Geschäftszeit
-T:W/18-21=0.05/0,0.10(60)/1 Freizeit
-T:E,H/08-21=0.05/0,0.095(60)/1 Wochenende
-T:*/21-08=0.05/0,0.06(60)/1 Nacht
-Z:10 Mobilfunk
-A:_DEMCM,_DEMC,_DEMD1,_DEMD2,_DEME1,_DEME2
+T:W/08-18=0.05/0,0.18(60)/1 Geschäftszeit
+T:W/18-21=0.05/0,0.08(60)/1 Freizeit
+T:W/05-08=0.05/0,0.08(60)/1 Freizeit
+T:E,H/05-21=0.05/0,0.08(60)/1 Wochenende
+T:*/21-05=0.05/0,0.05(60)/1 Nacht
+Z:10 Mobilfunk D1
+A:_DEMD1
+T:W/08-18=0.05/0,0.69(60)/1 Geschäftszeit
+T:E,H/08-18=0.05/0,0.43(60)/1 Wochenende
+T:*/18-08=0.05/0,0.43(60)/1 Freizeit
+Z:10 Mobilfunk D2
+A:_DEMD2
+T:W/08-18=0.05/0,0.67(60)/1 Geschäftszeit
+T:E,H/08-18=0.05/0,0.43(60)/1 Wochenende
+T:*/18-08=0.05/0,0.43(60)/1 Freizeit
+Z:10 Mobilfunk E und C
+A:_DEMCM,_DEMC,_DEME1,_DEME2
 T:W/08-18=0.05/0,0.94(60)/1 Geschäftszeit
-T:E,H/08-18=0.05/0,0.47(60)/1 Wochenende
-T:*/18-08=0.05/0,0.47(60)/1 Freizeit
+T:E,H/08-18=0.05/0,0.43(60)/1 Wochenende
+T:*/18-08=0.05/0,0.43(60)/1 Freizeit
+# Stimmt Auslandsverzonung? -> http://www.hutchison.de/html/festnetz/tarifberatung/landverzotelo.htm
 Z:200 Europa 1
 A:AD,BE,DK,FO,FI
 A:FR,GR,UK,IE,IT,YU
@@ -12303,125 +18196,6 @@ T:*/*=0.05/0,2.39(60)/1
 Z:205 International 4
 A:+
 T:*/*=0.05/0,2.79(60)/1
-#####################################################################
-P:36,3 Hutchison fairfon Sekundentakt
-B:01036
-C:Name:Hutchison fairfon Sekundentakt
-C:Address:Hutchison, Münsterstraße 109, 48155 Münster
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
-C:Sondertarif 11 "Hutchison Mobilfunk-Kunde": Vergünstigte Gespräche zu
-C:Hutchison Mobilfunk Teilnehmern
-C:Grundgebühr: 11,- DM, oder Abschluß eines 12 Monatsvertrages
-C:Erfasste Zonen:
-C:2	-   4	Deutschland
-C:10		Mobilfunk
-C:11		Sondertarif
-C:200	-	Ausland
-Z:0 FreeCall
-A:011*
-A:0130*,0800*,0801*
-A:031*
-A:110
-A:112
-T:*/*=0
-Z:1-3 regional
-T:W/08-18=0.14(60)/1 Geschäftszeit
-T:E,H/08-18=0.12(60)/1 Wochenende
-T:*/18-08=0.12(60)/1 Freizeit
-Z:4 national
-A:DE
-T:W/08-18=0.22(60)/1 Geschäftszeit
-T:E,H/08-18=0.12(60)/1 Wochenende
-T:*/18-08=0.12(60)/1 Freizeit
-Z:10 Mobilfunk
-A:_DEMCM,_DEMC,_DEMD1,_DEMD2,_DEME1,_DEME2
-T:W/08-18=0.77(60)/1 Geschäftszeit
-T:E,H/08-18=0.65(60)/1 Wochenende
-T:*/18-08=0.65(60)/1 Freizeit
-Z:11 Hutchison Mobilfunk-Kunde
-T:*/*=0.59(60)/1
-Z:200 Europe 1
-A:BE,DK,FO,FI,FR,UK,IE,IT
-A:LU,MC,NL,_UKIR,NO,AT,PL,PT,SE
-A:CH,ES,CZ
-T:*/*=0.68(60)/1
-Z:201 Europe 2
-A:AD,BA,BG,EE,GI,GR,YU
-A:HR,LI,MT,SM,YU,SK,TR,UA,HU
-A:VA,BY,CY
-T:*/*=0.99(60)/1
-Z:202 World 1
-A:AU,JP,NZ,US,CA
-T:*/*=0.68(60)/1
-Z:203 World 2
-A:EG,AL,DZ,HK,IS,IL,JO,KR
-A:LV,LB,LY,LT,EH,MK,RO,SU,SG
-A:SI,TN
-T:*/*=1.84(60)/1
-Z:204 World 3
-A:AR,BR,CL,CN,KZ,CO,MD,AN
-A:PH,SA,ZA,SY,TW,AE
-T:*/*=2.16(60)/1
-Z:205 World 4
-A:+
-T:*/*=2.42(60)/1
-#####################################################################
-P:36,4 Hutchison easyfon Sekundentakt
-B:01036
-C:Name:Hutchison easyfon Sekundentakt
-C:Address:Hutchison, Münsterstraße 109, 48155 Münster 01036
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
-C:Mindestumsatz: 69,- DM
-C:Sondertarif 11 "Hutchison Mobilfunk-Kunde": Vergünstigte Gespräche zu
-C:Hutchison Mobilfunk Teilnehmern
-C:Grundgebühr: 11,- DM, oder Abschluß eines 12 Monatsvertrages
-C:Erfasste Zonen:
-C:2	-   4	Deutschland
-C:10		Mobilfunk
-C:11		Sondertarif
-C:200	-	Ausland
-Z:0 FreeCall
-A:011*
-A:0130*,0800*,0801*
-A:031*
-A:110
-A:112
-T:*/*=0
-Z:1-4 Inland
-A:DE
-T:*/*=0.17(60)/1
-Z:10 Mobilfunk
-A:_DEMCM,_DEMC,_DEMD1,_DEMD2,_DEME1,_DEME2
-T:*/*=0.73(60)/1
-Z:11 Hutchison Mobilfunk-Kunde
-T:*/*=0.59(60)/1
-Z:200 Europe 1
-A:BE,DK,FO,FI,FR,UK,IE,IT
-A:LU,MC,NL,_UKIR,NO,AT,PL,PT,SE
-A:CH,ES,CZ
-T:*/*=0.68(60)/1
-Z:201 Europe 2
-A:AD,BA,BG,EE,GI,GR,YU
-A:HR,LI,MT,SM,YU,SK,TR,UA,HU
-A:VA,BY,CY
-T:*/*=0.99(60)/1
-Z:202 World 1
-A:AU,JP,NZ,US,CA
-T:*/*=0.68(60)/1
-Z:203 World 2
-A:EG,AL,DZ,HK,IS,IL,JO,KR
-A:LV,LB,LY,LT,EH,MK,RO,SU,SG
-A:SI,TN
-T:*/*=1.84(60)/1
-Z:204 World 3
-A:AR,BR,CL,CN,KZ,CO,MD,AN
-A:PH,SA,ZA,SY,TW,AE
-T:*/*=2.16(60)/1
-Z:205 World 4
-A:+
-T:*/*=2.42(60)/1
 #####################################################################
 #
 #
@@ -12457,7 +18231,7 @@ T:*/*=0
 #####################################################################
 #
 #
-P:39,0 First Telecom CbC
+P:39,0 First Telecom First Choice CbC
 B:01039
 # G:08-Jan-2000
 D:dtag
@@ -12468,7 +18242,7 @@ C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/
 C:Erfasste Zonen:
 C:2	-   4	Deutschland
 C:10		Mobilfunk
-C:203		Ausland (Kanada & USA)
+C:200	-	Ausland
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -12476,14 +18250,14 @@ A:031*
 A:110
 A:112
 T:*/*=0
-Z:1-4 Inland
+Z:1-4 Festnetz zu Festnetz
 A:+49
 T:W/08-18=0.02/0,0.15/60 Standard
 T:W/18-21=0.02/0,0.10/60 Abend
 T:W/21-08=0.02/0,0.07/60 Nacht
 T:E,H/08-21=0.02/0,0.10/60 Wochenende
 T:*/21-08=0.02/0,0.07/60 Nacht
-Z:10 Mobilfunk
+Z:10 Festnetz zu Mobilfunk
 A:01618
 A:01610,01611,01612,01613,01614,01615,01616,01617,01619
 A:0170,0171,0175
@@ -12491,10 +18265,134 @@ A:0172,0173,0174
 A:0177,0178
 A:0176,0179
 T:*/*=0.02/0,0.48/60
-# FIXME: Ausland erfassen
-Z:203 Welt 1
-A:CA,US
-T:*/*=0.02/0,0.17/60
+# FIXME: Ausland erfassen -> http://www.first-telecom.com/germany/firstchoice/auslandstarife/index.htm
+Z:201 Argentinien
+A:AR
+T:*/*=0.02/0,0.79/60
+Z:202 AUstralien
+A:AU
+T:*/*=0.02/0,0.21/60
+Z:203 Belgien
+A:BE
+T:*/*=0.02/0,0.18/60
+Z:204 Bosnien-Herzegowina
+A:BA
+T:*/*=0.02/0,0.79/60
+Z:205 Brasilien
+A:BR
+T:*/*=0.02/0,0.59/60
+Z:206 Chile
+A:CL
+T:*/*=0.02/0,0.49/60
+Z:207 China
+A:CN
+T:*/*=0.02/0,0.99/60
+Z:208 Dänemark
+A:DK
+T:*/*=0.02/0,0.21/60
+Z:209 Dom. Rep.
+A:DO
+T:*/*=0.02/0,0.40/60
+Z:210 UK
+A:UK
+T:*/*=0.02/0,0.13/60
+Z:211 Frankreich
+A:FR
+T:*/*=0.02/0,0.18/60
+Z:212 Griechenland
+A:GR
+T:*/*=0.02/0,0.41/60
+Z:213 Hawaii
+A:_HAWA
+T:*/*=0.02/0,0.15/60
+Z:214 Indien
+A:IN
+T:*/*=0.02/0,1.29/60
+Z:215 Israel
+A:IL
+T:*/*=0.02/0,0.29/60
+Z:216 Italien
+A:IT
+T:*/*=0.02/0,0.20/60
+Z:217 Japan
+A:JP
+T:*/*=0.02/0,0.25/60
+Z:218 Jugoslawien
+A:YU
+T:*/*=0.02/0,0.79/60
+Z:219 Kanada
+A:CA
+T:*/*=0.02/0,0.15/60
+Z:220 Kuba
+A:CU
+T:*/*=0.02/0,1.29/60
+Z:221 Liechtenstein
+A:LI
+T:*/*=0.02/0,0.35/60
+Z:222 Luxemburg
+A:LU
+T:*/*=0.02/0,0.35/60
+Z:223 Malaysia
+A:MY
+T:*/*=0.02/0,0.49/60
+Z:224 Mexiko
+A:MX
+T:*/*=0.02/0,0.55/60
+Z:270 Monaco
+A:MC
+T:*/*=0.02/0,0.49/60
+Z:225 Niederlande
+A:NL
+T:*/*=0.02/0,0.15/60
+Z:226 Österreich
+A:AT
+T:*/*=0.02/0,0.18/60
+Z:227 Peru
+A:PE
+T:*/*=0.02/0,0.89/60
+Z:228 Polen
+A:PL
+T:*/*=0.02/0,0.44/60
+Z:229 Russland
+A:SU
+T:*/*=0.02/0,0.59/60
+Z:230 Schweden
+A:SE
+T:*/*=0.02/0,0.19/60
+Z:231 Schweiz
+A:CH
+T:*/*=0.02/0,0.21/60
+Z:232 Slowenien
+A:SI
+T:*/*=0.02/0,0.59/60
+Z:233 Spanien
+A:ES
+T:*/*=0.02/0,0.27/60
+Z:234 Südafrika
+A:ZA
+T:*/*=0.02/0,0.79/60
+Z:235 Thailand
+A:TH
+T:*/*=0.02/0,1.09/60
+Z:236 Tschechische Republik
+A:CZ
+T:*/*=0.02/0,0.42/60
+Z:237 Türkei
+A:TR
+T:*/*=0.02/0,0.49/60
+Z:238 Ungarn
+A:HU
+T:*/*=0.02/0,0.49/60
+Z:239 Venezuela
+A:VE
+T:*/*=0.02/0,0.79/60
+Z:240 Zypern
+A:CY
+T:*/*=0.02/0,0.69/60
+Z:241 USA
+A:US
+T:*/*=0.02/0,0.14/60
+# Those are *NOT* all countries!
 #####################################################################
 #
 #
@@ -12504,7 +18402,7 @@ B:01040
 C:beim RegTP eingetragen als:
 C:PLUSNET
 C:Address:Gesellschaft für Netzwerk Services mbH, August-Thyssen-Straße 1, 40211 Düsseldorf
-# G:18-Jan-2000
+# G:14-Feb-2000
 D:dtag
 C:Telecom Deutschland GmbH, Kaistraße 16 A, 40221 Düsseldorf 01055
 C:Name:  Esprit Telecom
@@ -12531,12 +18429,12 @@ A:112
 T:*/*=0
 Z:1-4 Deutschland
 A:+49
-T:[12.02.2000-14.02.2000]*/*=0.039/60 Sonderangebot
+T:[12.02.2000-14.02.2000] 1-7/*=0.039/60 Sonderangebot
 T:W/07-19=0.15/60 Standard
-T:W/19-22=0.09/60 Abend
-T:W/22-07=0.05/60 Nacht
-T:E,H/07-22=0.09/60 Abend
-T:E,H/22-07=0.05/60 Nacht
+T:W/19-21=0.09/60 Abend
+T:W/21-07=0.039/60 Nacht
+T:E,H/07-21=0.09/60 Abend
+T:E,H/21-07=0.039/60 Nacht
 Z:10 Mobilfunk
 A:01618
 A:01610,01611,01612,01613,01614,01615,01616,01617,01619
@@ -12547,10 +18445,12 @@ A:0176,0179
 T:W/07-19=0.64/60
 T:W/19-07=0.48/60
 T:E,H/*=0.48/60
-Z:102 net@home
+Z:102 Internet
 A:0192340
+A:0192343
 S:Internet by call
-T:*/*=0.058/60 Internet
+T:*/09-18=0.053/60 Internet
+T:*/18-09=0.048/60 Internet
 Z:103 CALL POP
 # Verfügbarkeit nach Vorwahlbereichen:
 #     01.04.99: 03/04/050/051/053/055/058
@@ -15079,7 +20979,7 @@ T:*/*=2.3084(60)/1
 P:51,0 01051
 B:01051
 C:ID-Switch GmbH, Graf-Adolf-Straße, 40210 Düsseldorf
-# G:09-Feb-2000
+# G:18-Feb-2000
 C:Homepage: http://www.01051.com
 C:Adresse:  ID-Switch GmbH, Koenigsallee 60f, 40210 Duesseldorf
 C:Name:01051
@@ -15095,7 +20995,7 @@ A:112
 T:*/*=0
 Z:2-4 Ferngespräche
 A:DE
-T:*/*=0.09/60
+T:*/*=0.08/60
 Z:10 Mobilfunk
 # A:C-Tel Voice Mail, C-Netz, D1, D2, E1, E2
 A:01610,01611,01612,01613,01614,01615,01616,01617,01619
@@ -15182,7 +21082,7 @@ A:LU
 T:*/*=0.27/60
 Z:224 Mexico
 A:MX
-T:*/*=0.45/60
+T:*/*=0.41/60
 Z:225 Monaco
 A:MC
 T:*/*=0.29/60
@@ -15294,6 +21194,18 @@ T:*/*=0.68/60
 Z:261 Tunesien (Festnetz)
 A:TN
 T:*/*=0.72/60
+Z:262 Dominikanische Republik (Festnetz)
+A:DO
+T:*/*=0.37/60
+Z:263 Kolumbien (Festnetz)
+A:CO
+T:*/*=0.53/60
+Z:264 Bermuda (Festnetz)
+A:BM
+T:*/*=0.42/60
+Z:265 Puerto Rico (Festnetz)
+A:PR
+T:*/*=0.17/60
 Z:262 impossible
 A:_ARMF
 A:_AUMF
@@ -15336,6 +21248,10 @@ A:_EEMF
 # A:Indonesien Mobilfunk
 # A:Mazedonien Mobilfunk
 # A:Tunesien Mobilfunk
+A:_DOMF
+A:_COMF
+A:_PEMF
+A:_TKMF
 T:*/*=99.99/60
 #####################################################################
 #
@@ -18220,7 +24136,7 @@ T:*/*=0
 #
 P:[01.11.1999-]88,0 WorldCom
 B:01088
-# G:01-Nov-1999
+# G:17-Feb-2000
 C:Telecommunication Services GmbH, Brönnerstr. 15, 60313 Frankfurt 01088
 C:Dies sind *nicht* die korrekten Tarife von WorldCom, da WorldCom
 C:keine Tarifdaten veroeffentlicht!
@@ -18244,6 +24160,9 @@ Z:101 knUUT
 A:0191955
 T:*/09-21=0.055/60
 T:*/21-09=0.049/60
+Z:102 MSN Easysurfer
+A:0192658
+T:*/*=0.033(60)/1 msn
 #####################################################################
 P:[-01.11.1999]88,0 WorldCom
 B:01088
@@ -18274,7 +24193,7 @@ Z:101 knUUT
 A:0191955
 T:*/09-21=0.055/60
 T:*/21-09=0.049/60
-Z:102 
+Z:102
 C:Homepage:http://service.rhein-main.net/info.html
 C:Kosten: 13.99 DM/Monat für Abonnenten der RMN, 19.99/Monat ohne Abo
 A:0192353 rhein-main-net
@@ -18652,7 +24571,7 @@ T:*/*=1.759(60)/1
 #####################################################################
 P:98,1 Nikocity Study&Surf
 B:01098
-# G:01-Sep-1999
+# G:01-Mar-2000
 C:Nikoma, Reseller von Star Telekom
 C:Name:Nikocity Study&Surf
 C:Address:Nikoma
@@ -18691,13 +24610,13 @@ A:0176,0179
 T:*/*=0.46(60)/1
 Z:100 Internet
 A:0193434
-T:*/8-21=0.0479(60)/1
-T:*/21-1=0.0389(60)/1
-T:*/1-8=0.0299(60)/1
+T:W/9-18=0.0349(60)/1
+T:E/18-9=0.0289(60)/1
+T:E/*=0.0289(60)/1
 #####################################################################
 P:98,2 Nikocity
 B:01098
-# G:01-Sep-1999
+# G:01-Mar-1999
 C:Name:Nikocity
 C:Address:Nikoma
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
@@ -18736,11 +24655,11 @@ T:*/*=0.46(60)/1
 Z:100 Internet
 A:0193434
 T:*/8-1=0.0479(60)/1
-T:*/1-8=0.0299(60)/1
+T:*/1-8=0.0289(60)/1
 #####################################################################
 P:98,3 Nikoma by Call
 B:01098
-# G:01-Sep-1999
+# G:01-Mar-1999
 C:Name:Nikoma by Call
 C:Address:Nikoma
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
@@ -18772,7 +24691,7 @@ T:*/*=0.46(60)/1
 Z:100 Internet
 A:0193434
 T:*/8-1=0.0479(60)/1
-T:*/1-8=0.0299(60)/1
+T:*/1-8=0.0289(60)/1
 #####################################################################
 #
 #

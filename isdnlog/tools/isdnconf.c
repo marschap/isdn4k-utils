@@ -1,4 +1,4 @@
-/* $Id: isdnconf.c,v 1.31 1999/12/31 13:57:19 akool Exp $
+/* $Id: isdnconf.c,v 1.32 2000/02/20 19:03:08 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -20,6 +20,15 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnconf.c,v $
+ * Revision 1.32  2000/02/20 19:03:08  akool
+ * isdnlog-4.12
+ *  - ABC_LCR enhanced
+ *  - country-de.dat more aliases
+ *  - new rates
+ *  - isdnlog/Makefile.in ... defined NATION
+ *  - isdnlog/isdnlog/processor.c ... msn patch for NL
+ *  - isdnlog/tools/isdnconf.c ... default config
+ *
  * Revision 1.31  1999/12/31 13:57:19  akool
  * isdnlog-4.00 (Millenium-Edition)
  *  - Oracle support added by Jan Bolt (Jan.Bolt@t-online.de)
@@ -741,7 +750,7 @@ static section* writeglobal(section *SPtr)
 		}
 	}
 
-#if 0 /* Fixme: remove */				
+#if 0 /* Fixme: remove */
 	if (CityWeekend != 0)
 	{
 		strcpy(s, CONF_ENT_CW);
@@ -1075,9 +1084,9 @@ static int _readconfig(char *_myname)
   mycountry      = "";
   myarea         = "";
   currency       = NULL;
-#if 0 /* Fixme: remove */				
+#if 0 /* Fixme: remove */
   CityWeekend    = 0;
-#endif  
+#endif
   chargemax      = 0.0;
   connectmax     = 0;
   connectmaxmode = 0;
@@ -1091,10 +1100,12 @@ static int _readconfig(char *_myname)
   logfile        = LOGFILE;
   callfile       = NULL;
   callfmt        = NULL;
-  holifile       = NULL;
-  countryfile	 = NULL;
-  rateconf       = NULL;
-  ratefile       = NULL;
+  holifile       = CONFIG_DATADIR"/holiday-"NATION".dat";
+  countryfile	 = CONFIG_DATADIR"/country-de.dat";
+  rateconf       = CONFIG_I4LCONFDIR"/rate.conf";
+  ratefile       = CONFIG_DATADIR"/rate-"NATION".dat";
+  zonefile	 = CONFIG_DATADIR"/zone-"NATION"-%s.gdbm";
+  destfile	 = CONFIG_DATADIR"/dest.gdbm";
   lcdfile        = NULL;
   start_procs.infoargs = NULL;
   start_procs.flags    = 0;
@@ -1264,7 +1275,7 @@ static int Set_Globals(section *SPtr)
 		if ((CEPtr = Get_Entry(Ptr->entries,CONF_ENT_LCDFILE)) != NULL)
 			lcdfile = CEPtr->value;
 
-#if 0 /* Fixme: remove */				
+#if 0 /* Fixme: remove */
 		if ((CEPtr = Get_Entry(Ptr->entries,CONF_ENT_CW)) != NULL)
 			CityWeekend = toupper(*(CEPtr->value)) == 'Y'?1:0;
 #endif

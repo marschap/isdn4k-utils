@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.149 2000/02/12 23:50:12 keil Exp $
+## $Id: Makefile.in,v 1.150 2000/02/20 19:03:07 akool Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,15 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.150  2000/02/20 19:03:07  akool
+## isdnlog-4.12
+##  - ABC_LCR enhanced
+##  - country-de.dat more aliases
+##  - new rates
+##  - isdnlog/Makefile.in ... defined NATION
+##  - isdnlog/isdnlog/processor.c ... msn patch for NL
+##  - isdnlog/tools/isdnconf.c ... default config
+##
 ## Revision 1.149  2000/02/12 23:50:12  keil
 ## Fix some syntax error in install
 ##
@@ -1086,7 +1095,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 4.11
+VERSION     = 4.12
 
 MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 \
 	      isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 \
@@ -1134,6 +1143,7 @@ DEFS       += \
                -DVERSION=\"$(VERSION)\"   \
                -DI4LVERSION=\"$(I4LVERSION)\"   \
 	       -D@NATION_MACRO@=1		\
+ 	       -DNATION=\"$(NATION)\"		\
 	       -DBIG_PHONE_NUMBERS=1		\
                 $(INCLUDE)
 
