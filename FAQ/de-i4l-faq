@@ -9,11 +9,11 @@ Summary: This posting describes what every reader of de.alt.comm.isdn4linux
          i4l-faq.
 Archive-name: de-i4l-faq
 Posting-frequency: monthly
-Last-modified: 16-Mar-97
+Last-modified: 18-Mar-97
 URL: http://www.lrz-muenchen.de/~ui161ab/www/isdn/
 
 
-!1FAQ für isdn4linux - Version 1.3.1
+!1FAQ für isdn4linux - Version 1.3.2
 
 Diese FAQ genießt den Schutz der GNU General Public License (GPL) Version 2;
 (C) 1996 Volker Götz, Bernhard Hailer, Matthias Heßler, Michael Hipp sowie 
@@ -241,6 +241,7 @@ A: Wir wissen derzeit von folgenden Ländern:
         Deutschland
         Finnland
         Frankreich
+        Italien
         Niederlande
         Norwegen
         Österreich
@@ -619,8 +620,17 @@ A: Nils Rennebarth <nils@nus.de> schrieb dazu am 10. Dez 1996:
         verschieden.
 !verboff
 
-Q: Was heisst eigentlich CLIR, COLP, CVS, HDLC, HSCX, ISAC, TEI...?
+Q: Was heisst eigentlich AOC-x, CLIR, COLP, CVS, HDLC, HSCX, ISAC, TEI...?
 A: Hier ein kleines Glossar:!br
+!b1AOC-D!b0
+!verbon
+        AOC-D ist die "Gebühreninformation während der Verbindung".
+!verboff
+!b1AOC-E!b0
+!verbon
+        AOC-D ist die "Gebühreninformation nach der Verbindung". Dieses 
+        Dienstemerkmal ist in Deutschland im "Komfort-Anschluß" enthalten.
+!verboff
 !b1CLIR!b0
 !verbon
         CLIR ist ein Angebot des ISDN-Anbieters: man kann fallweise
@@ -1552,6 +1562,20 @@ A: Es gibt eine entsprechende Mailingliste an der Uni Hannover.
 !verbon
        subscribe ascend-users-de
 !verboff
+   Thomas Stinner <Thomas.Stinner@pop-siegen.de> schrieb uns zusaetzlich:
+!verbon
+        Es gibt auch eine weitaus besser besuchte Mailingliste zum Ascend. 
+        Diese ist allerdings in englisch (dafuer schreiben und lesen dort 
+        auch Ascend-Techniker mit).
+        Anmelden kann man sich unter  
+
+           majordomo@bungi.com
+
+        Im Body dann:
+
+           subscribe  ascend-users
+!verboff
+
 
 Q: Wie schalte ich Raw-IP auf der Ascend Max mit Radius ein?
 A: "Framed-Protocol" muß auf "EURAW" eingestellt werden. Für die Autorisierung
@@ -5069,6 +5093,13 @@ A: Wahrscheinlich wurde in den Einstellungen eine Homepage eingetragen, die
    komplette Rechnername eingetragen ist. Lediglich bei der Neueintragung
    versucht Netscape, die IP-Adresse einmalig via DNS abzufragen (und kann in
    diesem Sonderfall eine Herauswahl verursachen).
+   Am 17.Mar.97 schrieb uns Steffan Henke <henker@Informatik.Uni-Bremen.DE>
+   hierzu aber:
+!verbon
+        Leider hat uns die Realität überholt - soweit ich gehört habe,
+        baut Netscape z.B. jetzt in der Version 4.02 tatsächlich eine 
+        Verbindung auf...
+!verboff
 
 
 !3Chargeint
@@ -5362,12 +5393,31 @@ A: Karsten Keil <keil@temic-ech.spacenet.de> hat das inzwischen in seinem
    Siehe auch Frage Allgemeines|HiSax und Abschnitt HiSax-Treiber.
 
 
+!3Italien
+
+Q: Wie sieht unsere MSN aus?
+A: In den Niederlanden umfaßt die MSN (im Gegensatz zur deutschen
+   Telekom) !u1auch die Vorwahl!u0 - allerdings ohne führende Null. 
+   Wäre die eigene Telefonnummer etwa 01234-56789, dann müßte diese 
+   folgendermaßen konfiguriert werden:
+!verbon
+        * Modememulation:
+          "AT&e123456789" (ohne Null am Anfang)
+        * Netzinterfaces:
+          "isdnctrl eaz <interface> 123456789" (ohne Null am Anfang)
+          Für Testanrufe an sich selbst:
+          "isdnctrl addphone <interface> in 123456789" (ohne Null am Anfang)
+          "isdnctrl addphone <interface> out 0123456789" (mit Null am Anfang)
+!verboff
+
+
 !3Niederlande
 
 Q: Wie sieht unsere MSN aus?
 A: In den Niederlanden umfaßt die MSN (im Gegensatz zur deutschen
-   Telekom) !u1auch die Vorwahl!u0. Wäre die eigene Telefonnummer etwa
-   01234-56789, dann müßte diese folgendermaßen konfiguriert werden:
+   Telekom) !u1auch die Vorwahl!u0 - allerdings ohne führende Null. 
+   Wäre die eigene Telefonnummer etwa 01234-56789, dann müßte diese 
+   folgendermaßen konfiguriert werden:
 !verbon
         * Modememulation:
           "AT&e123456789" (ohne Null am Anfang)
@@ -5574,3 +5624,4 @@ A: Dietmar <dietmar@highway.bertelsmann.de> schrieb am 8. Okt 1996:
         !link http://www.ora.com/catalog/sendmail/noframes.html;
         !link http://www.lob.de/;
 !verboff
+
