@@ -1,0 +1,830 @@
+<!doctype linuxdoc system>
+
+<article>
+
+<!-- *********************************************************************
+     **									**
+     **	                          T I T E L				**
+     **									**
+     ********************************************************************* -->
+
+<title>V B O X
+<author>Michael 'Ghandi' Herold, <tt>michael@abadonna.franken.de</tt>
+<date>Version @VBOX_VERSION@, @VBOX_VERDATE@
+<abstract>
+Diese Dokumentation beschreibt die Konfiguration von <em>vbox
+v@VBOX_VERSION@</em>, einem Softwarepaket zum Betrieb eines
+Anrufbeantworters unter <em>Linux</em>.
+</abstract>
+
+<!-- *********************************************************************
+     **									**
+     **	            I N H A L T S V E R Z E I C H N I S			**
+     **									**
+     ********************************************************************* -->
+
+<toc>
+<p>
+
+Testpassagen die mit ***NEW*** versehen sind, wurden geändert oder der
+Dokumentation neu hinzugefügt. Es ist ratsam, diese Abschnitte nochmals zu
+lesen!
+
+<!-- *********************************************************************
+     **									**
+     **	                       C O P Y R I G H T			**
+     **									**
+     ********************************************************************* -->
+
+<sect>Copyright<label id="id-copyright">
+<p>
+
+Copyright &copy; 1996,1997 Michael 'Ghandi' Herold
+
+Das Paket <em>vbox</em> ist freie Software und kann unter den Bedingungen
+der <em>GNU General Public License</em> veröffentlicht oder verändert
+werden.
+
+Die Dokumentation sowie alle Programme von <em>vbox</em> wurden mit großer
+Sorgfalt erstellt. Dennoch sind Fehler nicht ganz auszuschließen. Aus diesem
+Grund sind die in der vorliegenden Dokumentation enthaltenen Angaben mit
+keiner Verpflichtung oder Garantie irgendeiner Art verbunden. Sowohl Michael
+Herold als auch die in Kapitel <ref id="id-danksagungen"
+name="Danksagungen"> genannten Personen übernehmen keine Verantwortung oder
+sonstige Haftung für Schäden, die auf irgendeine Art aus der Benutzung der
+Dokumentation oder den darin beschriebenen Programmen entstehen oder
+entstanden sind.
+
+<!-- *********************************************************************
+     **									**
+     **	                        V O R W O R T				**
+     **									**
+     ********************************************************************* -->
+
+<sect>Vorwort<label id="id-vorwort">
+<p>
+
+<!-- *********************************************************************
+     ** Vorwort: Was ist vbox?						**
+     ********************************************************************* -->
+
+<sect1>Was ist vbox?<label id="id-vorwort-wasistvbox">
+<p>
+
+<em>vbox</em> ist ein Softwarepaket zum Betrieb eines Anrufbeantworters
+unter Linux.
+
+Es wurde speziell für <em>isdn4linux</em> geschrieben und ist nicht für
+normale Modems geeignet. Mit <em>vbox</em> können keine Fax- oder
+Datenanrufe erkannt, entgegengenommen oder umgeleitet werden. Wer so etwas
+benötigt, dem kann ich nur <em>mgetty</em>, bzw. <em>vgetty</em> ans Herz
+legen.
+
+<!-- *********************************************************************
+     ** Vorwort: Was brauche ich für vbox?				**
+     ********************************************************************* -->
+
+<sect1>Was brauche ich für vbox?<label id="id-vorwort-wasbraucheich">
+<p>
+
+Zum kompilieren von <em>vbox</em> werden folgende Dinge benötigt:
+
+<itemize>
+<item>Einen Kernel mit <tt>ISDN</tt> und <tt>AUDIO</tt> Unterstützung,
+<item><em>gcc</em> 2.7.0 (oder höher),
+<item><em>ncurses</em> 1.9.9e (oder höher),
+<item><em>tcl</em> 7.6b1 (oder höher),
+<item>und optional die <em>pvftools</em> aus dem <em>mgetty</em> Paket.
+</itemize>
+
+Entwickelt wurde <em>vbox</em> mit:
+
+<itemize>
+<item>Kernel 2.0.23,
+<item><em>gcc</em> 2.7.2.1,
+<item><em>ncurses</em> 1.9.9g,
+<item><em>tcl</em> 7.6b1.
+</itemize>
+
+Die mit <em>vbox</em> aufgezeichneten Sprachdateien können mit den in
+<em>mgetty</em> enthaltenen <em>pvftools</em> abgespielt oder konvertiert
+werden. Für die Aufzeichnungsformate <tt>ULAW</tt> und <tt>ALAW</tt> liegen
+Programme zum Abspielen nach '<tt>/dev/audio</tt>' bei.
+
+Die <em>pfvtools</em> sind <bf>nicht</bf> im Paket von <em>vbox</em>
+enthalten; sie sind Bestandteil von <em>mgetty</em> und können unter <url
+url="ftp://ftp.leo.org/pub/comp/networking/communication/modem/mgetty/">
+bezogen werden.
+
+<!-- *********************************************************************
+     ** Vorwort: Anregungen und Fehlermeldungen				**
+     ********************************************************************* -->
+
+<sect1>Anregungen und Fehlermeldungen<label id="id-vorwort-report">
+<p>
+
+Für Fragen, Probleme oder Anregungen zu <bf><em>vbox</em></bf> wurde eine
+eigene Mailingliste eingerichtet.
+
+Um in die Mailingliste aufgenommen zu werden, muß eine E-Mail an
+
+<verb>
+     majordomo@abadonna.franken.de
+</verb>
+
+geschrieben werden. Der Nachrichtentext muß die Zeile
+
+<verb>
+     subscribe vbox &lt;die eigene email adresse&gt;
+</verb>
+
+enthalten.
+
+Bei einer Mitteilung über einen Fehler bitte <bf>immer</bf> eine möglichst
+genaue Beschreibung (am besten reproduzierbar) <bf>und</bf> den
+entsprechenden Auszug aus den Logdateien beifügen.
+
+<!-- *********************************************************************
+     **									**
+     **                   K O N F I G U R A T I O N			**
+     **									**
+     ********************************************************************* -->
+
+<sect>Konfiguration<label id="id-setup">
+<p>
+
+<!-- *********************************************************************
+     ** Konfiguration: Einrichten eines neuen Anrufbeantworters		**
+     ********************************************************************* -->
+
+<sect1>Einrichten eines neuen Anrufbeantworters<label id="id-setup-new">
+<p>
+
+Für jeden Benutzer dem ein Anrufbeantworter installiert werden soll, muß im
+<tt>SPOOLVERZEICHNIS</tt> ein Unterverzeichnis mit seinem Namen angelegt
+werden.
+
+<bf>Beispiel eines <tt>SPOOLVERZEICHNISSES</tt>:</bf>
+
+<verb>
+/var/spool/vbox:
+
+drwx------   4 michael  users        1024 Jan  2 18:46 michael/
+drwx------   2 nicole   users        1024 Jan  4 13:14 nicole/
+</verb>
+
+In diesem Verzeichnis <bf>muß</bf> sich die Konfigurationsdatei vboxrc
+befinden. Ein Beispiel dieser Datei befindet sich im Verzeichnis
+'<tt>examples</tt>' unter dem Namen '<tt>vboxrc.example</tt>'.
+
+Ab Version 2.0.0 benötigt <em>vbox</em> ein Tcl-Skript, das angibt wo, wann
+und wie ein- und ausgehende Nachrichten gespielt bzw. gespeichert werden
+sollen. Auch hierzu befinden sich im Verzeichnis '<tt>examples</tt>' unter
+dem Namen '<tt>standard.tcl.example</tt>' ein Beispiel.
+
+<bf>Beispiel eines fertigen Verzeichnisses für einen Benutzer:</bf>
+
+<verb>
+/var/spool/vbox/michael:
+
+michael/
+|-- incoming/
+|-- messages/
+|   |-- beep.msg
+|   |-- standard.msg
+|   +-- timeout.msg
+|-- standard.tcl
++-- vboxrc
+</verb>
+
+Alle Datei- und Verzeichnisrechte sollten so angepasst werden, daß der
+jeweilige Benutzer (bzw. die Gruppe) auf diese zugreifen kann! Die Datei
+'<tt>vboxrc</tt>' sollte vor dem ersten Start noch vom Benutzer an seine
+eigenen Bedürfnisse angepasst werden!
+
+Zum Schluß muß nur noch der <em>vboxgetty</em> eingestellt und gestartet
+werden...
+
+<!-- *********************************************************************
+     ** Konfiguration: Die Datei 'vboxgetty.conf'			**
+     ********************************************************************* -->
+
+<sect1>Die Datei 'vboxgetty.conf'<label id="id-setup-vboxgettyconf">
+<p>
+
+Mit dieser Datei kann der <em>vboxgetty</em> eingestellt und konfiguriert
+werden. Die Datei <bf>muß</bf> existieren!
+
+Leere Zeilen und solche die mit einem '<tt>#</tt>' beginnen werden
+überlesen. Text nach einem '<tt>#</tt>' wird entfernt (incl. '<tt>#</tt>'
+und allen vorangegangenen Whitespaces). Die Datei wird ständig im Speicher
+gehalten und automatisch neu geladen, wenn etwas an ihr geändert wurde!
+
+Alles vor dem ersten <tt>PORT</tt> Kommando zählt als globale Einstellung
+und gilt für alle Ports. Alle Argumente müssen durch ein Leerzeichen oder
+einen Tabulator vom Kommando getrennt werden.
+
+Folgende Kommandos können angegeben werden:
+
+<descrip>
+
+<tag/<tt>PORT [DEVICENAME]</tt>/
+<p>
+
+   Name des Modemdevices für welches die nachfolgenden Einstellungen gelten
+   sollen. Es muß der komplette Pfad zum Device angegeben werden!
+
+   <bf>Beispiel:</bf> <tt>PORT /dev/ttyI7</tt> 
+
+<tag/<tt>DROPDTRONHANGUP [YES|NO]</tt>/
+<p>
+
+   Gibt an ob die <tt>DATA TERMINAL READY</tt> Leitung beim Auflegen auf
+   <tt>LOW</tt> gesetzt werden soll. Voreinstellung ist <tt>YES</tt>.
+
+   <bf>Beispiel:</bf> <tt>DROPDTRONHANGUP YES</tt> 
+
+<tag/<tt>DROPDTRTIME [MS]</tt>/
+<p>
+
+   Gibt an wieviele Millisekunden die <tt>DATA TERMINAL READY</tt> Leitung
+   beim Auflegen auf <tt>LOW</tt> gehalten werden soll. Voreinstellung ist
+   <tt>800</tt>ms.
+
+   <bf>Beispiel:</bf> <tt>DROPDTRTIME 800</tt> 
+
+<tag/<tt>ALIVETIMEOUT [SEKUNDEN]</tt>/
+<p>
+
+   Gibt an nach wievielen Sekunden 'nichtstun' überprüft werden soll ob das
+   Modem noch auf Kommandos reagiert. Voreinstellung ist <tt>1800</tt>
+   Sekunden.
+
+   <bf>Beispiel:</bf> <tt>ALIVETIMEOUT 1800</tt> 
+
+<tag/<tt>RINGTIMEOUT [SEKUNDEN]</tt>/
+<p>
+
+   Gibt an wieviele Sekunden auf einen <bf>einzelnen</bf> <tt>RING</tt>
+   gewartet werden soll. Konnte in dieser Zeit kein <tt>RING</tt> vom Modem
+   gelesen werden, wird die Verbindung beendet. Voreinstellung ist
+   <tt>5</tt> Sekunden.
+
+   <bf>Beispiel:</bf> <tt>RINGTIMEOUT 5</tt> 
+
+<tag/<tt>ECHOTIMEOUT [SEKUNDEN]</tt>/
+<p>
+
+   Gibt an wieviele Sekunden auf das Echo eines Modemkommandos gewartet
+   werden soll, bevor dieses als Fehler gewertet wird. Voreinstellung ist
+   <tt>2</tt> Sekunden.
+
+   <bf>Beispiel:</bf> <tt>ECHOTIMEOUT 2</tt> 
+
+<tag/<tt>COMMANDTIMEOUT [SEKUNDEN]</tt>/
+<p>
+
+   Gibt an wieviele Sekunden auf die Antwort eines Modemkommandos gewartet
+   werden soll, bevor dieses als Fehler gewertet wird. Voreinstellung ist
+   <tt>2</tt> Sekunden.
+
+   <bf>Beispiel:</bf> <tt>COMMANDTIMEOUT 2</tt> 
+
+<tag/<tt>BADINITSEXIT [SEKUNDEN]</tt>/
+<p>
+
+   Gibt an nach wievielen Fehlerhaften Initialisierungen des Modems der
+   <em>vboxgetty</em> beendet werden soll. Eine Angabe von 0 schaltet dieses
+   Feature aus. Voreinstellung ist <tt>0</tt>.
+
+   <bf>Beispiel:</bf> <tt>BADINITSEXIST 0</tt> 
+
+<tag/<tt>USER [BENUTZERNAME]</tt>/
+<p>
+
+   Name des Benutzers für den der <em>vboxgetty</em> laufen soll. Der
+   Benutzer muß existieren und in der '<tt>/etc/passwd</tt>' eingetragen
+   sein. Zudem muß im <tt>SPOOLVERZEICHNIS</tt> ein Unterverzeichnis mit dem
+   Namen des Benutzers existieren, in dem sich auch die Datei 'vboxrc'
+   befinden muß! Der Name des Benutzers mit der <tt>UID</tt> 0 darf
+   <bf>nicht</bf> angegeben werden! Voreinstellung ist der Name des
+   Benutzers mit der <tt>UID</tt> 0
+   :-)
+
+   <bf>Beispiel:</bf> <tt>USER MICHAEL</tt> 
+
+<tag/<tt>GROUP [GRUPPENNAME]</tt>/
+<p>
+
+   Name der Gruppe unter der <em>vboxgetty</em> laufen soll. Wird dieses
+   Kommando nicht angegeben, benutzt <em>vboxgetty</em> die <tt>GID</tt> des
+   jeweiligen Benutzers. Die Schreib-/Leserechte werden dann nur für
+   <em>user</em> (u+rw oder u+rwx) gesetzt. Wenn hingegen die Gruppe auch
+   angegeben wurde, werde zusätzlich noch die Schreib-/Leserechte für die
+   <em>group</em> gesetzt (g+rw oder g+rwx). In der Voreinstellung ist
+   <tt>GROUP</tt> nicht angegeben.
+
+   <bf>Beispiel:</bf> <tt>GROUP VBOXES</tt> 
+
+<tag/<tt>MODEMSPEED [GESCHWINDIGKEIT]</tt>/
+<p>
+
+   Geschwindigkeit mit der das Modem angesprochen werden soll. Der hier
+   angegebene Wert hat keinen Einfluß! Voreinstellung ist <tt>38400</tt>.
+
+   <bf>Beispiel:</bf> <tt>MODEMSPEED 38400</tt> 
+
+<tag/<tt>INITPAUSE [MS]</tt>/
+<p>
+
+   Gibt an wieviele Millisekunden vor der Initialisierung des Modems
+   gewartet werden soll. Das Modem meldet beim Auflegen erst mit einer
+   kleinen Zeitverzögerung ein <tt>NO CARRIER</tt>. Damit dieses nicht als
+   neue Modemdaten gewertet wird, kann vor dem initialisieren mit diesem
+   Kommando eine kleine Pause eingelegt werden. Voreinstellung ist
+   <tt>1500</tt>ms.
+
+   <bf>Beispiel:</bf> <tt>INITPAUSE 1500</tt> 
+
+<tag/<tt>MODEMINIT [KOMMANDO]</tt>/
+<p>
+
+   Kommando mit dem das Modem initialisiert wird. Hier <bf>muß</bf> mit
+   <tt>&amp;E</tt> die <tt>MSN</tt> angegeben werden, auf die der
+   <em>vboxgetty</em> reagieren soll. Das Kommando muß den String
+   <tt>OK</tt> zurückgeben. Voreinstellung ist <tt>ATZ</tt>.
+
+   <bf>Beispiel:</bf> <tt>MODEMINIT ATZ&amp;B512&amp;E332332</tt> 
+
+<tag/<tt>MODEMHANGUP [KOMMANDO]</tt>/
+<p>
+
+   Kommando mit dem das Modem aufgelegt werden soll. Das Kommando muß den
+   String <tt>OK</tt> zurückgeben. Voreinstellung ist
+   <tt>&tilde;&tilde;+++&tilde;&tilde;ATH0</tt>.
+
+   <bf>Beispiel:</bf> <tt>MODEMINIT &tilde;&tilde;+++&tilde;&tilde;ATH0</tt> 
+
+<tag/<tt>COMPRESSION [KOMPRESSION]</tt>/
+<p>
+
+   Kompression mit der neue Nachrichten aufgezeichnet werden sollen. Folgende Werte
+   können angegeben werden:
+
+   <itemize>
+   <item><tt>ADPCM-2</tt>
+   <item><tt>ADPCM-3</tt>
+   <item><tt>ADPCM-4</tt>
+   <item><tt>ALAW</tt>
+   <item><tt>ULAW</tt>
+   </itemize>
+
+   Voreinstellung ist <tt>ADPCM-4</tt>.
+
+   <bf>Beispiel:</bf> <tt>COMPRESSION ADPCM-4</tt> 
+
+</descrip>
+
+Beim Start öffnet <em>vboxgetty</em> den Modemport, erzeugt die Log- und
+Lockdateien und setzte dann sofort die Rechte auf die in <tt>USER</tt> und
+<tt>GROUP</tt> angegebenen Werte. Aus diesem Grund können Lockdateien nach
+dem Beenden <bf>nicht</bf> mehr gelöscht werden! Alle weiteren Programme und
+Skripts werden unter den Rechten des jeweiligen Benutzers ausgeführt!
+
+<bf>Beispiel '<tt>/usr/local/vbox/etc/vboxgetty.conf</tt>':</bf>
+
+<verb>
+#--------------------------------------------------------------------------
+# This is a example for 'vboxgetty.conf'. Please read the documentation for
+# a complete description of the commands!
+#--------------------------------------------------------------------------
+
+# Global settings
+
+dropdtronhangup	no
+modemspeed	19200
+compression	6
+
+# Settings for port ttyI5
+
+port /dev/ttyI5
+  dropdtronhangup	no
+  dropdtrtime		1000
+  initpause		2500
+  modeminit		ATZ&amp;B512&amp;E0190332332
+  modemhangup		&tilde;&tilde;+++&tilde;&tilde;ATH
+  modemspeed		57600
+  user			peter
+  group			lustig
+  badinitsexit		999
+  commandtimeout	5
+  echotimeout		10
+  ringtimeout		15
+  alivetimeout		3000
+  compression		blub
+
+# Settings for port ttyI7
+
+port /dev/ttyI7
+  dropdtronhangup	yes
+  dropdtrtime		400
+  initpause		2500
+  modeminit		ATZ&amp;B512&amp;E7850414
+  modemhangup		&tilde;&tilde;+++&tilde;&tilde;ATH
+  modemspeed		38400
+  user			michael
+  badinitsexit		10
+  commandtimeout	2
+  echotimeout		2
+  ringtimeout		5
+  alivetimeout		300
+  compression		adpcm-4
+</verb>
+
+<!-- *********************************************************************
+     ** Konfiguration: Die Datei 'vboxrc'				**
+     ********************************************************************* -->
+
+<sect1>Die Datei 'vboxrc'<label id="id-setup-vboxrc">
+<p>
+
+In jedem Benutzerverzeichnis (Unterverzeichnis im <tt>SPOOLVERZEICHNIS</tt>)
+<bf>muß</bf> sich die Datei '<tt>vboxrc</tt>' befinden, in welcher der
+Benutzer seine eigenen Einstellungen vornehmen kann.
+
+Leere Zeilen und solche die mit einem '<tt>#</tt>' beginnen werden
+überlesen. Text nach einem '<tt>#</tt>' wird entfernt (incl. '<tt>#</tt>'
+und allen vorangegangenen Whitespaces). Die Datei wird ständig im Speicher
+gehalten und automatisch neu geladen, wenn etwas an ihr geändert wurde!
+
+Die Datei ist in verschiedene Sektionen aufgeteilt. Eine Sektion beginnt mit
+dem Sektionsnamen und Endet beim nächsten Sektionsnamen oder dem Ende der
+Datei. Jeder Sektionsname beginnt mit einem '<tt>[</tt>' und endet mit einem
+'<tt>]</tt>'. Die Groß- und Kleinschreibung zwischen den Sektionskennungen
+'<tt>[</tt>' und '<tt>]</tt>' wird ignoriert.
+
+Folgende Sektionen existieren:
+
+<descrip>
+
+<tag/<tt>[CALLERIDS]</tt>/
+<p>
+
+   <bf>Format:</bf> <tt>CALLERID-PATTERN USERSECTION REALNAME</tt>
+
+   In dieser Sektion werden die <tt>CALLERID</tt>'s ihren Besitzern
+   zugeordnet. Die <tt>CALLERID</tt> wird bei ISDN-Geräten - sofern nicht
+   abgeschaltet - mit übermittelt und dient zum Idendifizieren des Anrufers.
+
+   <descrip>
+
+   <tag/<tt>CALLERID-PATTERN</tt>/
+   <p>
+
+      <tt>CALLERID</tt> für die ein Zuordnung definiert werden soll (ohne
+      führende Nullen). Es können hier die üblichen UN*X-Pattern angegeben
+      werden. Bei der ersten Übereinstimmung eines Musters mit der
+      <tt>CALLERID</tt> wird abgebrochen. Konnte der <tt>CALLERID</tt> kein
+      Name zugeordnet werden, wird als <tt>USERSECTION</tt>
+      <tt>STANDARD</tt> benutzt! In der <tt>CALLERID</tt> dürfen
+      <bf>keine</bf> Leerzeichen oder Tabulatoren (Whitespaces) enthalten
+      sein!
+
+   <tag/<tt>USERSECTION</tt>/
+   <p>
+
+      Hier kann angegeben werden, welche <tt>USERSECTION</tt> als
+      Einstellung für den Anrufer benutzt werden soll. Ein '<tt>*</tt>' gibt
+      an, daß der <tt>REALNAME</tt> als Sektionsname verwendet werden soll.
+      Bei einem '<tt>-</tt>' wird <tt>STANDARD</tt> als Sektionsname
+      benutzt. Im Namen der <tt>USERSECTION</tt> dürfen keine Leerzeichen
+      oder Tabulatoren (Whitespaces) enthalten sein!
+
+   <tag/<tt>REALNAME</tt>/
+   <p>
+
+      Name, der dieser <tt>CALLERID</tt> zugeordnet werden soll. Der
+      <tt>REALNAME</tt> darf Leerzeichen enthalten. Er wird z.B. von
+      <em>vbox</em> benutzt, um anzuzeigen, wer angerufen hat.
+
+   </descrip>
+
+   Als letzter Eintrag sollte immer '<tt>* - *** Unknown ***</tt>' angegeben
+   werden.
+
+   <bf>Beispiel:</bf>
+
+   <verb>
+   [CALLERIDS]
+
+   931785041[3-4]  HE_I_KNOW_YOU           Michael Herold
+   9317851144      HE_I_KNOW_YOU           Nicole Sauvage
+   *               -                       *** Unknown ***
+   </verb>
+
+   
+<tag/<tt>[DEBUG]</tt>/
+<p>
+
+   <bf>Format:</bf> <tt>FLAG + FLAG + FLAG ...</tt>
+
+   In dieser Sektion können Flag's angegeben werden, die bestimmen, welche
+   Informationen in die Logdatei von <em>vboxgetty</em> aufgenommen werden
+   sollen.
+
+   Folgende Flag's können angegeben werden:
+
+   <itemize>
+
+   <item><tt>FATAL</tt>
+   <p>
+      Fatale Fehler
+
+   <item><tt>ERRORS</tt>
+   <p>
+      Normal Fehler
+
+   <item><tt>WARNINGS</tt>
+   <p>
+      Warnungen
+
+   <item><tt>INFOS</tt>
+   <p>
+      Informationen
+
+   <item><tt>DEBUG</tt>
+   <p>
+      Informationen zum Debuggen
+
+   <item><tt>JUNK</tt>
+   <p>
+      Erweiterte Informationen zum Debuggen
+
+   </itemize>
+
+   <bf>Beispiel:</bf> <tt>FATAL + ERRORS + WARNINGS + INFOS</tt>
+
+
+<tag/<tt>[RINGS]</tt>/
+<p>
+
+   <bf>Format:</bf> <tt>ZEIT WOCHENTAG RINGS</tt>
+
+   Hier kann angegeben werden, zu welcher Zeit an welchem Tag nach wievielen
+   <tt>RING</tt>'s ein eingehender Anruf entgegengenommen werden soll.
+
+   <descrip>
+
+   <tag/<tt>ZEIT</tt>/
+   <p>
+
+      Eine oder mehrere Zeitzonen; Die Zeitangaben können durch Kommata
+      voneinander getrennt werden. Bei einer Zeitzone von
+      '<tt>STARTZEIT</tt>-<tt>ENDZEIT</tt>' ist die letzte Zahl inklusiv
+      (z.B. <tt>18-22</tt> heißt von 18 bis einschließlich 22 Uhr).
+
+   <tag/<tt>WOCHENTAG</tt>/
+   <p>
+
+      Ein oder mehrere Wochentage; Die Tage können durch Kommata voneinander
+      getrennt werden. Tageszonen (<tt>STARTZEIT</tt>-<tt>ENDZEIT</tt>)
+      können hier <bf>nicht</bf> angegeben werden. Jeder Wochentag an dem
+      ein Anruf entgegengenommen werden soll muß einzeln aufgeführt werden.
+
+      Folgende Wochentagsangaben sind möglich:
+
+      <itemize>
+
+      <item><tt>SO</tt>, <tt>SUN</tt> - Sonntag
+      <item><tt>MO</tt>, <tt>MON</tt> - Montag
+      <item><tt>DI</tt>, <tt>TUE</tt> - Dienstag
+      <item><tt>MI</tt>, <tt>WED</tt> - Mittwoch
+      <item><tt>DO</tt>, <tt>THU</tt> - Donnerstag
+      <item><tt>FR</tt>, <tt>FRI</tt> - Freitag
+      <item><tt>SA</tt>, <tt>SAT</tt> - Samstag
+
+      </itemize>
+
+   <tag/<tt>RINGS</tt>/
+   <p>
+
+      Anzahl der <tt>RING</tt>'s bis ein Anruf entgegengenommen wird. Eine
+      Anzahl von 0 <tt>RING</tt>'s heißt, daß der Anruf nicht
+      entgegengenommen werden soll.
+
+   </descrip>
+
+   <bf>Beispiel:</bf>
+
+   <verb>
+      0-8     MO,DI,MI,DO,FR       5 
+      0-11    SA,SO                5
+      *       *                    30
+   </verb>
+
+   Im oben angegebenen Beispiel würde <em>vboxgetty</em> von Montag bis
+   Freitag zwischen 0 und 8 Uhr und von Samstag bis Sontag zwischen 0 und 11
+   Uhr Anrufe nach 5 <tt>RING</tt>'s entgegennehmen. An allen anderen Tagen
+   erst nach 30 <tt>RING</tt>'s.
+
+   Die <bf>erste</bf> Übereinstimming wird benutzt.
+
+
+<tag/<tt>Benutzersektionen</tt>/
+<p>
+
+   <bf>Format:</bf> <tt>ZEIT WOCHENTAG ANSAGE AUFNAHMEZEIT [FLAGS]</tt>
+
+   Eine Benutzersektion (<tt>USERSECTION</tt>) kann frei benannt werden;
+   einzige Ausnahme sind Namen von bereits existierenden Sektionen.
+
+   Mit diesen Sektionen können für bestimmte Anrufer, die in der Sektion
+   <tt>[CALLERIDS]</tt> definiert wurden, eigene Einstellungen gemacht
+   werden. Es sollte immer eine Sektion <tt>[STANDARD]</tt> existieren, da
+   diese als Voreinstellung bei Fehlern benutzt wird!
+
+   <descrip>
+
+   <tag/<tt>ZEIT</tt>/
+   <p>
+
+      Eine oder mehrere Zeitzonen; Die Zeitangaben können durch Kommata
+      voneinander getrennt werden. Bei einer Zeitzone von
+      '<tt>STARTZEIT</tt>-<tt>ENDZEIT</tt>' ist die letzte Zahl inklusiv
+      (z.B. <tt>18-22</tt> heißt von 18 bis einschließlich 22 Uhr).
+
+   <tag/<tt>WOCHENTAG</tt>/
+   <p>
+
+      Ein oder mehrere Wochentage; Die Tage können durch Kommata voneinander
+      getrennt werden. Tageszonen (<tt>STARTZEIT</tt>-<tt>ENDZEIT</tt>)
+      können hier <bf>nicht</bf> angegeben werden. Jeder Wochentag an dem
+      ein Anruf entgegengenommen werden soll muß einzeln aufgeführt werden.
+
+      Folgende Wochentagsangaben sind möglich:
+
+      <itemize>
+      <item><tt>SO</tt>, <tt>SUN</tt> - Sonntag
+      <item><tt>MO</tt>, <tt>MON</tt> - Montag
+      <item><tt>DI</tt>, <tt>TUE</tt> - Dienstag
+      <item><tt>MI</tt>, <tt>WED</tt> - Mittwoch
+      <item><tt>DO</tt>, <tt>THU</tt> - Donnerstag
+      <item><tt>FR</tt>, <tt>FRI</tt> - Freitag
+      <item><tt>SA</tt>, <tt>SAT</tt> - Samstag
+      </itemize>
+
+   <tag/<tt>ANSAGE</tt>/
+   <p>
+
+      Ansagetext der gespielt werden soll. Wenn kein Verzeichnispfad mit
+      angegeben wurde, wird '<tt>BENUTZERVERZEICHNIS/messages/</tt>'
+      benutzt.
+
+   <tag/<tt>AUFNAHMEZEIT</tt>/
+   <p>
+
+      Maximale Aufzeichnungszeit in Sekunden.
+
+   <tag/<tt>FLAGS</tt>/
+   <p>
+
+      <descrip>
+
+      <tag/<tt>NOANSWER</tt>/
+      <p>
+
+         Der Anruf wird nicht beantwortet.
+
+      <tag/<tt>NORECORD</tt>/
+      <p>
+
+         Es wird keine Nachricht aufgezeichnet.
+
+      <tag/<tt>NOTIMEOUTMSG</tt>/
+      <p>
+
+         Bei einem Timeout wird die entsprechende Nachricht nicht gespielt.
+
+      <tag/<tt>NOBEEPMSG</tt>/
+      <p>
+
+         Der BEEP wird nicht gespielt.
+
+      <tag/<tt>NOSTDMSG</tt>/
+      <p>
+
+         Die normale Ansage wird nicht gespielt.
+
+      <tag/<tt>RINGS=NUMMER</tt>/
+      <p>
+
+         Der Anruf wird nach <tt>NUMMER</tt> <tt>RING</tt>'s entgegengenommen.
+
+      <tag/<tt>SCRIPT=NAME</tt>/
+      <p>
+
+         Hier kann das Tcl-Skript angegeben werden das benutzt werden soll.
+         Wird diese Option nicht angegeben, wird das Skript
+         '<tt>SPOOLVERZEICHNIS/standard.tcl</tt>' verwendet. Wenn kein
+         kompletter Pfad angegeben wurde, wird das Skript aus dem
+         Verzeichnis '<tt>SPOOLVERZEICHNIS</tt>' geladen.
+
+      </descrip>
+
+   </descrip>
+
+   <bf>Beispiel:</bf>
+
+   <verb>
+   [STANDARD]
+
+   20   DO   aktex.msg      90   SCRIPT=standard.tcl
+   *    *    standard.msg   90   SCRIPT=standard.tcl
+
+   [HE_I_KNOW_YOU]
+
+   *   *     iknowyou.msg   90   SCRIPT=iknowyou.tcl RINGS=40
+   </verb>
+</descrip>
+
+<bf>Beispiel '<tt>/var/spool/vbox/michael/vboxrc</tt>':</bf>
+
+<verb>
+# CALLERIDS
+#
+# Format: PATTERN SECTION REALNAME
+
+[CALLERIDS]
+
+931785051[3-4]	HE_I_KNOW_YOU		Michael Herold
+9317851144	HE_I_KNOW_YOU		Nicole Sauvage
+*		-			*** Unknown ***
+
+# RINGS
+#
+# Format: TIME DAYS RINGS
+
+[RINGS]
+
+0-8		MO,DI,MI,DO,FR,SA,SO	5
+*		*			30
+
+# [USERSECTIONS]
+#
+# Format: TIME DAYS STANDARD RECTIME [FLAG] [...]
+
+[STANDARD]
+
+20   DO   aktex.msg      90   SCRIPT=standard.tcl RINGS=20
+*    *	  standard.msg   90   SCRIPT=standard.tcl RINGS=30
+
+[HE_I_KNOW_YOU]
+
+*   *   standard.msg	 90
+</verb>
+
+<!-- *********************************************************************
+     **									**
+     **              S K R I P T U N T E R S T Ü T Z U N G		**
+     **									**
+     ********************************************************************* -->
+
+<sect>Skriptunterstützung<label id="id-scripts">
+<p>
+
+Ab Version 2.0.0 unterstützt <em>vbox</em> die Skriptsprache <em>Tcl</em>.
+Nach dem Beantworten eines Anrufs (<tt>CONNECT</tt>) wird das Skript von
+<em>vboxgetty</em> geladen und abgearbeitet.
+
+<!-- *********************************************************************
+     ** Konfiguration: Die Datei 'vboxrc'				**
+     ********************************************************************* -->
+
+<sect1>Die Datei 'vboxrc'<label id="id-setup-vboxrc">
+<p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>

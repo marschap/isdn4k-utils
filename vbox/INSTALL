@@ -1,0 +1,75 @@
+
+                                    VBOX
+
+                 Copyright 1996,1997 Michael 'Ghandi' Herold
+
+
+
+Vor der Installation von vbox werden folgende Dinge benötigt:
+
+- ncurses 1.9.9g (oder höher),
+- tcl 7.6b1 (oder höher),
+- kernel 2.0 (oder höher),
+- isdn4linux.
+
+Die hier angegebenen Versionsnummern beziehen sich auf die Versionen, mit
+denen vbox entwickelt wurde.
+
+
+Danach kann das Archiv z.B. mit 'tar -xvzf vbox-x.y.z.tgz' ausgepackt und
+mit 'cd vbox-x.y.z' (x.y.z. bezieht sich auf die Versionsnummer von vbox) in
+das erzeugte Verzeichnis gewechselt werden.
+
+Vor dem kompilieren muß vbox mit './configure' an das lokale System angepaßt
+werden. './configure --help' zeigt die Optionen an, die geändert werden
+können. Folgende sind für vbox relevant:
+
+--prefix=<verzeichnis>          Verzeichnis in dem der Verzeichnisbaum von
+                                vbox erzeugt werden soll. Die Voreinstellung
+                                ist '/usr/local'.
+
+--with-spooldir=<verzeichnis>   Verzeichnis in dem die Nachrichten und Ein-
+                                stellungen der einzelnen Benutzer abgelegt
+                                werden. Die Voreinstellung ist das Verzeich-
+                                nis '/var/spool/vbox'. In diesem Verzeichnis
+                                wird für jeden Benutzer ein eigenes
+                                Unterverzeichnis angelegt.
+
+--with-logdir=<verzeichnis>     Verzeichnis in dem die Log-Dateien abgelegt
+                                werden. Voreinstellung ist das Verzeichnis
+                                '/var/log'.
+
+--with-piddir=<verzeichnis>     Verzeichnis in dem die PID's der einzelnen
+                                vboxgetty's vermerkt werden. Voreinstellung
+                                ist das Verzeichnis '/var/run'.
+
+--with-lockdir=<verzeichnis>    Verzeichnis in dem die Dateien zum locken
+                                der einzelnen vboxgetty's erzeugt werden.
+                                Voreinstellung ist hier '/var/lock'.
+
+Nach einem erfolgreichen './configure' kann evtl. noch das Makefile angepaßt
+werden. In den meisten Fällen werden die Voreinstellungen ausreichen.
+
+Mit 'make' können jetzt die Programme kompiliert werden. Mit 'make install'
+werden die Verzeichnisse erzeugt und die Programme sowie die Konfigurationen
+installiert. Bereits existierende Dateien werden umbenannt und mit der End-
+ung '.old' versehen.
+
+Jetzt kann mit der Konfiguration und dem Einrichten des Anrufbeantworters
+für die einzelnen Benutzer begonnen werden. Die genaue vorgehensweise kann
+in der Dokumentation nachgelesen werden!
+
+
+Für Fragen, Probleme oder Anregungen zu *vbox* wurde eine eigene Mailing-
+liste eingerichtet.
+
+Um in die Mailingliste aufgenommen zu werden, muß eine E-Mail an
+
+   majordomo@abadonna.franken.de
+
+geschrieben werden. Der Nachrichtentext muß die Zeile
+
+   subscribe vbox <your_email_address>
+
+enthalten.
+
