@@ -21,8 +21,11 @@ AC_HEADER_STDC
 AC_CHECK_HEADERS(fcntl.h sys/ioctl.h unistd.h)
 dnl Check for kernel stuff
 AC_FIND_KERNEL
-AC_CHECK_FILES($CONFIG_KERNELDIR/include/linux/isdn.h $CONFIG_KERNELDIR/include/linux/b1lli.h $CONFIG_KERNELDIR/include/linux/capi.h $CONFIG_KERNELDIR/include/linux/kernelcapi.h,,
+OLD_CPPFLAGS="$CPPFLAGS"
+CPPFLAGS="-I$CONFIG_KERNELDIR/include $CPPFLAGS"
+AC_CHECK_FILES(linux/isdn.h linux/b1lli.h linux/capi.h linux/kernelcapi.h,,
 	AC_MSG_ERROR("Missing $ac_hdr. Kernel source installed?"))
+CPPFLAGS="$OLD_CPPFLAGS"
 
 dnl Checks for typedefs, structures, and compiler characteristics.
 

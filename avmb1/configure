@@ -1166,12 +1166,14 @@ EOF
 
 	
 
-for ac_file in $CONFIG_KERNELDIR/include/linux/isdn.h $CONFIG_KERNELDIR/include/linux/b1lli.h $CONFIG_KERNELDIR/include/linux/capi.h $CONFIG_KERNELDIR/include/linux/kernelcapi.h
+OLD_CPPFLAGS="$CPPFLAGS"
+CPPFLAGS="-I$CONFIG_KERNELDIR/include $CPPFLAGS"
+for ac_file in linux/isdn.h linux/b1lli.h linux/capi.h linux/kernelcapi.h
 do
 
 ac_safe=`echo "$ac_file" | sed 'y%./+-%__p_%'`
 echo $ac_n "checking for $ac_file""... $ac_c" 1>&6
-echo "configure:1175: checking for $ac_file" >&5
+echo "configure:1177: checking for $ac_file" >&5
 if eval "test \"`echo '$''{'ac_cv_file_$ac_safe'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
@@ -1198,17 +1200,18 @@ else
 fi
 done
 
+CPPFLAGS="$OLD_CPPFLAGS"
 
 
 if test $ac_cv_prog_gcc = yes; then
     echo $ac_n "checking whether ${CC-cc} needs -traditional""... $ac_c" 1>&6
-echo "configure:1206: checking whether ${CC-cc} needs -traditional" >&5
+echo "configure:1209: checking whether ${CC-cc} needs -traditional" >&5
 if eval "test \"`echo '$''{'ac_cv_prog_gcc_traditional'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
     ac_pattern="Autoconf.*'x'"
   cat > conftest.$ac_ext <<EOF
-#line 1212 "configure"
+#line 1215 "configure"
 #include "confdefs.h"
 #include <sgtty.h>
 Autoconf TIOCGETP
@@ -1226,7 +1229,7 @@ rm -f conftest*
 
   if test $ac_cv_prog_gcc_traditional = no; then
     cat > conftest.$ac_ext <<EOF
-#line 1230 "configure"
+#line 1233 "configure"
 #include "confdefs.h"
 #include <termio.h>
 Autoconf TCGETA
@@ -1250,12 +1253,12 @@ fi
 for ac_func in mmap
 do
 echo $ac_n "checking for $ac_func""... $ac_c" 1>&6
-echo "configure:1254: checking for $ac_func" >&5
+echo "configure:1257: checking for $ac_func" >&5
 if eval "test \"`echo '$''{'ac_cv_func_$ac_func'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
   cat > conftest.$ac_ext <<EOF
-#line 1259 "configure"
+#line 1262 "configure"
 #include "confdefs.h"
 /* System header to define __stub macros and hopefully few prototypes,
     which can conflict with char $ac_func(); below.  */
@@ -1278,7 +1281,7 @@ $ac_func();
 
 ; return 0; }
 EOF
-if { (eval echo configure:1282: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
+if { (eval echo configure:1285: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
   rm -rf conftest*
   eval "ac_cv_func_$ac_func=yes"
 else

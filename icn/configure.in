@@ -22,9 +22,10 @@ AC_CHECK_HEADERS(fcntl.h sys/ioctl.h unistd.h)
 
 dnl Find current kernel source
 AC_FIND_KERNEL
-AC_CHECK_HEADERS($CONFIG_KERNELDIR/include/linux/isdn.h,,
+AC_CHECK_FILE($CONFIG_KERNELDIR/include/linux/isdn.h,,
 	AC_MSG_ERROR("$CONFIG_KERNELDIR/include/linux/isdn.h missing. Kernel installed?")
 )
+
 AC_CHECK_HEADERS($CONFIG_KERNELDIR/drivers/isdn/icn/icn.h,,
 	AC_MSG_ERROR("$CONFIG_KERNELDIR/drivers/isdn/icn/icn.h missing. Kernel installed?")
 )
