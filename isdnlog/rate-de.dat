@@ -1,4 +1,4 @@
-V:1.10-Germany [30-Apr-2000 19:07:33]
+V:1.10-Germany [03-May-2000 21:42:28]
 
 # Währungsformat
 U:%.3f DM
@@ -8,7 +8,7 @@ U:%.3f DM
 #
 # (C) Copyright 1999, 2000 by Andreas Kool (akool@isdn4linux.de)
 #
-# $Id: rate-de.dat,v 1.88 2000/04/30 17:31:24 akool Exp $
+# $Id: rate-de.dat,v 1.89 2000/05/03 19:50:01 akool Exp $
 #
 #
 # Das "A:" Tag muß folgendermaßen gefüllt werden:
@@ -1603,7 +1603,7 @@ Z:392 Türkei
 A:TR
 T:*/*=0.45/60
 Z:393 Türkei Mobilfunk
-A:_TKMF
+A:_TRMF
 T:*/*=0.55/60
 Z:394 Turks- & Caicosins.
 A:TC
@@ -8178,12 +8178,20 @@ A:112
 T:*/*=0
 Z:1-4 SUPER24
 A:+49
-T:W/07-09=0.044/60
+T:W/08-09=0.044/60
 T:W/09-18=0.066/60
 T:W/18-21=0.044/60
-T:W/21-07=0.033/60
-T:E,H/07-21=0.044/60
-T:E,H/21-07=0.033/60
+T:W/21-08=0.033/60
+T:E,H/08-21=0.044/60
+T:E,H/21-08=0.033/60
+Z:10 Mobilfunk
+A:01618
+A:01610,01611,01612,01613,01614,01615,01616,01617,01619
+A:0170,0171,0175
+A:0172,0173,0174
+A:0177,0178
+A:0176,0179
+T:*/*=0.399/60
 Z:200 Belgien
 A:BE
 T:*/*=0.111/60
@@ -21522,7 +21530,7 @@ A:_EEMF
 A:_DOMF
 A:_COMF
 A:_PEMF
-A:_TKMF
+A:_TRMF
 A:_BEMF
 A:AE
 #####################################################################
@@ -23522,7 +23530,7 @@ Z:370 Malediven
 A:MV
 T:*/*=1.35(60)/1
 Z:371 Mali Rep.
-A:ML
+A:MV
 T:*/*=1.49(60)/1
 Z:372 Malta
 A:MT
@@ -23873,7 +23881,7 @@ Z:487 Türkei
 A:TR
 T:*/*=0.479(60)/1
 Z:488 Türkei Mobilfunk
-A:_TKMF
+A:_TRMF
 T:*/*=0.519(60)/1
 Z:489 USA
 A:US
