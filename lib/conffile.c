@@ -1,4 +1,5 @@
-/* $Id: conffile.c,v 1.10 1997/03/24 03:56:30 fritz Exp $
+/* $Id: conffile.c,v 1.11 1997/04/03 22:39:11 luethje Exp $
+ *
  * ISDN accounting for isdn4linux.
  *
  * Copyright 1996 by Stefan Luethje (luethje@sl-gw.lake.de)
@@ -18,6 +19,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: conffile.c,v $
+ * Revision 1.11  1997/04/03 22:39:11  luethje
+ * bug fixes: environ variables are working again, no seg. 11 :-)
+ * improved performance for reading the config files.
+ *
  * Revision 1.10  1997/03/24 03:56:30  fritz
  * Fixed 2 typos
  *
@@ -68,6 +73,7 @@ static const char *Pre_String(int Level);
 static int Compare_Sections(section* sec1, section *sec2, char **variables);
 static section *Insert_Section(section **main_sec, section **ins_sec, char **variables, int flags);
 static int Merge_Sections(section **main_sec, section **ins_sec, char **variables, int flags);
+static int Append_Sections(section **main_sec, section *app_sec);
 static int Find_Include(section **Section, char* String, const char *FileName, int Flags);
 static section* _Get_Section_From_Path(char **array, section* Section, section **RetSection, entry **RetEntry, int flags);
 static entry* _Get_Entry_From_Path(char **array, entry* Entry, section **RetSection, entry **RetEntry, int flags);
@@ -199,8 +205,11 @@ static section *Read_Lines(section *Section, FILE *fp, const char *FileName, int
 	char  String[BUFSIZ];
 	char *Sectionname, *Variable, *Value;
 	int   Res;
+	int   InInclude = 0;
 	section *Ptr = Section;
 
+	if (Section != NULL)
+		InInclude = 1;
 
 	while (FGets(String, BUFSIZ, fp, Line) != NULL)
 	{
@@ -264,7 +273,7 @@ static section *Read_Lines(section *Section, FILE *fp, const char *FileName, int
 			print_msg("Error in file `%s', line %d: there is no valid token!\n",FileName,*Line);
 	}
 
-	if (InSubSection != 0)
+	if (InInclude == 0 && InSubSection != 0)
 	{
 		print_msg("Error in file `%s': Missing a `%c'!\n",FileName,C_END_SUBSECTION);
 		free_section(Section);
@@ -879,6 +888,17 @@ static char** Compare_Section_Get_Path(char **array, int *retsize, int *retdepth
 
 /****************************************************************************/
 
+static int Append_Sections(section **main_sec, section *app_sec)
+{
+	while(*main_sec != NULL)
+		main_sec = &((*main_sec)->next);
+
+	*main_sec = app_sec;
+	return 0;
+}
+
+/****************************************************************************/
+
 static int Merge_Sections(section **main_sec, section **ins_sec, char **variables, int flags)
 {
 	if (main_sec == NULL)
@@ -937,27 +957,13 @@ static void free_cfile(cfile **cfiles)
 
 /****************************************************************************/
 
-/* filenum gibt an, aus wievielen Dateien gelesen werden soll. Die Dateinamen
-   sind dann in files zu finden. Wenn filnum == -1, dann muss der letzte Eintrag
-   von files[x] == NULL sein.
-   variable wird benoetigt, um eine Section eindeutig zu identifizieren zu
-   koennen. Da viele Sections in der Regel den gleichen Namen verwenden
-   (z. B. [NUMBER], [MSN]), muessen die einzelnen Eintraege ja eindeutig
-   erkannt werden koennen, wie es ein Key bei einer Datenbank kann. Dieses
-   kann dann ueber die Eintraege gemacht werden koennen (z.B. NUMBER=0815).
-   Wenn man in variables nun z.B. "NUMBER" uebergibt, wird sichergestellt,
-   das nur einmal ein Eintrag NUMBER=1234 unter allen Sectionen [NUMBER]
-   existiert. Dieses wird benoetigt, wenn es mehrere Config-Dateien gibt, die
-   durchsucht/eingelesen werden muessen. Z.B. /etc/isdn/isdn.conf, ~/.isdn.
-   In dieser Reihenfolge sollte auch die Variable files belegt sein (von
-   globalen runter zu lokalen Configdateien.
-   Die Variable flags sollte _immer_ auf 'C_OVERWRITE|C_NOT_UNIQUE' gesetzt
+/* Die Variable flags sollte _immer_ auf 'C_OVERWRITE|C_NOT_UNIQUE' gesetzt
    werden, anderes macht hier zur Zeit keinen Sinn.
    main_sec darf _NIE_ unintilisiert sein und muss beim ersten mal NULL
    enthlten!!!!
 */
 
-int read_files(section **main_sec, char** files, char **variables, int flags)
+int read_files(section **main_sec, char** files, int *fileflag, char **variables, int flags)
 {
 	int newread = 0;
 	static cfile **cfiles = NULL;
@@ -994,6 +1000,7 @@ int read_files(section **main_sec, char** files, char **variables, int flags)
 				return -1;
 			}
 
+			cfiles[i]->flag = fileflag[i];
 			cfiles[i]->name = strdup(files[i]);
 			cfiles[i]->modtime = FileStat.st_mtime;
 		}
@@ -1045,7 +1052,14 @@ int read_files(section **main_sec, char** files, char **variables, int flags)
 			else
 			{
 				if ((ins_sec = read_file(NULL,cfiles[i]->name,flags)) != NULL)
-					Merge_Sections(main_sec,&ins_sec,variables,flags);
+					switch(cfiles[i]->flag)
+					{
+						case APPEND_FILE: Append_Sections(main_sec,ins_sec);
+						                  break;
+						case MERGE_FILE :
+						default         : Merge_Sections(main_sec,&ins_sec,variables,flags);
+						                  break;
+					}
 			}
 		}
 	}
@@ -1469,7 +1483,10 @@ int _Get_Type_Value(section *Section, char *Path, int Type, void **Pointer)
 
 
 	while (RetCode == -1 && (Ptr = Get_Value(Section,Path)) != NULL)
+	{
 		RetCode = Set_Ret_Code(Ptr,Type,Pointer);
+		Section = NULL;
+	}
 
 	return RetCode;
 }

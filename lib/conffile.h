@@ -1,9 +1,9 @@
 
-/* $Id: conffile.h,v 1.4 1997/03/20 00:28:01 luethje Exp $
+/* $Id: conffile.h,v 1.5 1997/04/03 22:39:12 luethje Exp $
  *
  * ISDN accounting for isdn4linux.
  *
- * Copyright 1995, 1996 by Andreas Kool (akool@Kool.f.EUnet.de)
+ * Copyright 1995, 1996 Stefan Luethje (luethje@sl-gw.lake.de)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,6 +20,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: conffile.h,v $
+ * Revision 1.5  1997/04/03 22:39:12  luethje
+ * bug fixes: environ variables are working again, no seg. 11 :-)
+ * improved performance for reading the config files.
+ *
  * Revision 1.4  1997/03/20 00:28:01  luethje
  * Inserted lines into the files for the revision tool.
  *
@@ -76,6 +80,11 @@
 
 /****************************************************************************/
 
+#define MERGE_FILE  0
+#define APPEND_FILE 1
+
+/****************************************************************************/
+
 #define Get_Type_Match(a,b,c,d,e,f) _Get_Type_Match(a,b,c,d,e,(void**)f)
 #define Get_Type_Value(a,b,c,d)     _Get_Type_Value(a,b,c,(void**)d)
 
@@ -101,6 +110,7 @@ typedef struct _section {
 typedef struct _cfiles {
 	char* name;
 	int   modtime;
+	int   flag;
 } cfile;
 
 /****************************************************************************/
@@ -122,7 +132,7 @@ _EXTERN section *Del_Section(section **Section, char *Sectionname);
 _EXTERN section *Set_SubSection(section *Section, char *Variable, section *SubSection, int Flag);
 _EXTERN void set_print_fct_for_conffile(int (*new_print_msg)(const char *, ...));
 _EXTERN void free_section(section *Ptr);
-_EXTERN int read_files(section **main_sec, char** files, char **variables, int flags);
+_EXTERN int read_files(section **main_sec, char** files, int *fileflag, char **variables, int flags);
 _EXTERN int Filter_Sections(section **sec, char** path);
 _EXTERN section* Get_Section_Match(section* Section, char *Path, char* Value, int  (*_match)(char*, char*), entry **RetEntry);
 _EXTERN char *Get_Value(section *Section, char *Path);

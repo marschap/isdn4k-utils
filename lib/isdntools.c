@@ -1,8 +1,8 @@
-/* $Id: isdntools.c,v 1.7 1997/03/20 00:19:27 luethje Exp $
+/* $Id: isdntools.c,v 1.8 1997/04/03 22:39:13 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
- * Copyright 1995, 1997 by Andreas Kool (akool@Kool.f.EUnet.de)
+ * Copyright 1995, 1997 and Stefan Luethje (luethje@sl-gw.lake.de)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +19,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdntools.c,v $
+ * Revision 1.8  1997/04/03 22:39:13  luethje
+ * bug fixes: environ variables are working again, no seg. 11 :-)
+ * improved performance for reading the config files.
+ *
  * Revision 1.7  1997/03/20 00:19:27  luethje
  * inserted the line #include <errno.h> in avmb1/avmcapictrl.c and imon/imon.c,
  * some bugfixes, new structure in isdnlog/isdnrep/isdnrep.c.
@@ -306,7 +310,7 @@ char *expand_file(char *s)
 		strcat(file,strchr(s,C_SLASH));
 	}
 
-	return file;
+	return (file[0] == '\0'?s:file);
 }
 
 /****************************************************************************/
@@ -413,20 +417,21 @@ int Set_Codes(section* Section)
 	entry *Entry;
 	char *ptr2;
 	char s[SHORT_STRING_SIZE];
+	section *SPtr;
 
 	for (i=0; i < _MAX_VARS; i++)
 		if (ptr[i] != NULL)
 			free(ptr[i]);
 
-	if ((Section = Get_Section(Section,CONF_SEC_GLOBAL)) == NULL)
+	if ((SPtr = Get_Section(Section,CONF_SEC_GLOBAL)) == NULL)
 		return -1;
 
 #ifdef LIBAREA
-	if ((Entry = Get_Entry(Section->entries,CONF_ENT_AREALIB)) != NULL &&
+	if ((Entry = Get_Entry(SPtr->entries,CONF_ENT_AREALIB)) != NULL &&
 	    Entry->value != NULL                                             )
 		ptr[0] = acFileName = strdup(Entry->value);
 #else
-	if ((Entry = Get_Entry(Section->entries,CONF_ENT_AVONLIB)) != NULL &&
+	if ((Entry = Get_Entry(SPtr->entries,CONF_ENT_AVONLIB)) != NULL &&
 	    Entry->value != NULL                                             )
 		ptr[0] = avonlib = strdup(Entry->value);
 	else
@@ -436,7 +441,7 @@ int Set_Codes(section* Section)
 	}
 #endif
 
-	if ((Entry = Get_Entry(Section->entries,CONF_ENT_AREA)) != NULL &&
+	if ((Entry = Get_Entry(SPtr->entries,CONF_ENT_AREA)) != NULL &&
 	    Entry->value != NULL                                          )
 	{
 		ptr2 = Entry->value;
@@ -452,7 +457,7 @@ int Set_Codes(section* Section)
 			print_msg("Error: Variable `%s' are not set!\n",CONF_ENT_AREA);
 	}
 
-	if ((Entry = Get_Entry(Section->entries,CONF_ENT_COUNTRY)) != NULL &&
+	if ((Entry = Get_Entry(SPtr->entries,CONF_ENT_COUNTRY)) != NULL &&
 	    Entry->value != NULL                                             )
 	{
 		ptr2 = Entry->value;
@@ -470,9 +475,9 @@ int Set_Codes(section* Section)
 			print_msg("Error: Variable `%s' are not set!\n",CONF_ENT_COUNTRY);
 	}
 
-	if ((Section = Get_Section(Section,CONF_SEC_VAR)) != NULL)
+	if ((SPtr = Get_Section(Section,CONF_SEC_VAR)) != NULL)
 	{
-		Entry = Section->entries;
+		Entry = SPtr->entries;
 
 		while(Entry != NULL)
 		{
@@ -667,6 +672,8 @@ int read_conffiles(section **Section, char *groupfile)
 	auto char    s[6][BUFSIZ];
 	auto char **vars  = NULL;
 	auto char **files = NULL;
+	auto int    fileflag[6];
+	auto int    i = 0;
 	auto int      RetCode = -1;
 
 	*Section = NULL;
@@ -683,16 +690,20 @@ int read_conffiles(section **Section, char *groupfile)
 			return -1;
 
 	  append_element(&files,s[0]);
+	  fileflag[i++] = MERGE_FILE;
 	  append_element(&files,s[1]);
+	  fileflag[i++] = APPEND_FILE;
 
 	  if (groupfile != NULL)
 	  {
 		  strcpy(s[2],groupfile);
 			append_element(&files,s[2]);
+	  	fileflag[i++] = MERGE_FILE;
 		}
 
 	  strcpy(s[3],expand_file(USERCONFFILE));
 		append_element(&files,s[3]);
+	  fileflag[i++] = MERGE_FILE;
 	}
 
 	sprintf(s[4],"%s|%s/%s|!%s",CONF_SEC_MSN,CONF_SEC_NUM,CONF_ENT_NUM,CONF_ENT_SI);
@@ -703,7 +714,7 @@ int read_conffiles(section **Section, char *groupfile)
 	append_element(&vars,s[5]);
 */
 
-	if ((RetCode = read_files(&conf_dat, files, vars, C_OVERWRITE|C_NOT_UNIQUE|C_NO_WARN_FILE)) > 0)
+	if ((RetCode = read_files(&conf_dat, files, fileflag, vars, C_OVERWRITE|C_NOT_UNIQUE|C_NO_WARN_FILE)) > 0)
 	{
 		*Section = conf_dat;
 
