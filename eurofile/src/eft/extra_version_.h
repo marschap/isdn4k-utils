@@ -1,2 +1,0 @@
-#define E4L_EXTRA_VERSION_REV "+"
-#define E4L_EXTRA_VERSION_CHANGED ""
