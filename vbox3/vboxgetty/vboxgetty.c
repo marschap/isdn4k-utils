@@ -1,9 +1,13 @@
 /*
-** $Id: vboxgetty.c,v 1.5 1998/08/28 13:06:16 michael Exp $
+** $Id: vboxgetty.c,v 1.6 1998/08/30 16:55:50 michael Exp $
 **
 ** Copyright 1996-1998 Michael 'Ghandi' Herold <michael@abadonna.mayn.de>
 **
 ** $Log: vboxgetty.c,v $
+** Revision 1.6  1998/08/30 16:55:50  michael
+** - Added initgroups() to the permission switch function. Since Kernel 2.1.x
+**   (or 1.3.x?) setgid() don't reset the grouplist.
+**
 ** Revision 1.5  1998/08/28 13:06:16  michael
 ** - Removed audio full duplex mode. Sorry, my soundcard doesn't support
 **   this :-)
@@ -37,7 +41,9 @@
 **
 */
 
-#include "../config.h"
+#ifdef HAVE_CONFIG_H
+#  include "../config.h"
+#endif
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -48,6 +54,7 @@
 #include <limits.h>
 #include <errno.h>
 #include <fnmatch.h>
+#include <pwd.h>
 
 #include "log.h"
 #include "tcl.h"
@@ -107,9 +114,9 @@ static void	 pid_create(char *);
 static void	 pid_remove(char *);
 static void	 show_usage(int, int);
 
-/*************************************************************************/
-/** The magic main...																	**/
-/*************************************************************************/
+/************************************************************************* 
+ ** The magic main...																	**
+ *************************************************************************/
 
 void main(int argc, char **argv)
 {
@@ -286,6 +293,7 @@ void main(int argc, char **argv)
 
 	signal(SIGINT , quit_program);
 	signal(SIGTERM, quit_program);
+	signal(SIGHUP , quit_program);
 
 		/* Hauptloop: Der Loop wird nur verlassen, wenn während der	*/
 		/* Abarbeitung ein Fehler aufgetreten ist. Das Programm be-	*/
@@ -375,15 +383,18 @@ void main(int argc, char **argv)
 	quit_program(0);
 }
 
-/*************************************************************************/
-/** quit_program():	Gibt alle belegten Resourcen frei und beendet das	**/
-/**						Programm.														**/
-/*************************************************************************/
-/** => rc				Rückgabewert des Programms (1-99 ist reserviert).	**/
-/*************************************************************************/
+
+/*************************************************************************
+ ** quit_program():	Gibt alle belegten Resourcen frei und beendet das	**
+ **						Programm.														**
+ *************************************************************************
+ ** => rc				Rückgabewert des Programms (1-99 ist reserviert).	**
+ *************************************************************************/
 
 void quit_program(int rc)
 {
+	set_process_permissions(0, 0, xstrtoo(VBOX_ROOT_UMASK, 0));
+
 	modem_hangup(&vboxmodem);
 
 	log_line(LOG_D, "Closing modem device (%d)...\n", vboxmodem.fd);
@@ -413,14 +424,14 @@ void quit_program(int rc)
 	exit(rc);
 }
 
-/*************************************************************************/
-/** show_usage():	Zeigt Benutzermeldung/Version an und beendet dann das	**/
-/**					Programm.															**/
-/*************************************************************************/
-/** => rc			Rückgabewert des Programms (1-99 ist reserviert).		**/
-/** => help			1 wenn die Benutzermeldung oder 0 wenn die Version 	**/
-/**					angezeigt werden soll.											**/
-/*************************************************************************/
+/*************************************************************************
+ ** show_usage():	Zeigt Benutzermeldung/Version an und beendet dann das	**
+ **					Programm.															**
+ *************************************************************************
+ ** => rc			Rückgabewert des Programms (1-99 ist reserviert).		**
+ ** => help			1 wenn die Benutzermeldung oder 0 wenn die Version 	**
+ **					angezeigt werden soll.											**
+ *************************************************************************/
 
 static void show_usage(int rc, int help)
 {
@@ -434,22 +445,28 @@ static void show_usage(int rc, int help)
 		fprintf(stdout, "--version      Display version and exit.\n");
 		fprintf(stdout, "--help         Display this help and exit.\n");
 		fprintf(stdout, "\n");
+		fprintf(stdout, "Debugging codes:\n");
+		fprintf(stdout, "\n");
+		fprintf(stdout, "E    - Error messages\n");
+		fprintf(stdout, "W    - Warnings\n");
+		fprintf(stdout, "I    - Informations\n");
+		fprintf(stdout, "A    - Action messages (main routines)\n");
+		fprintf(stdout, "D    - Debugging messages (long output)\n");
+		fprintf(stdout, "FULL - Full debugging\n");
+		fprintf(stdout, "\n");
 	}
-	else
-	{
-		fprintf(stdout, "%s version %s\n", progbasename, VERSION);
-	}
+	else fprintf(stdout, "%s version %s\n", progbasename, VERSION);
 
 	exit(rc);
 }
 
-/*************************************************************************/
-/** run_modem_init():	Startet das Tcl-Skript zum initislisieren des	**/
-/**							Modems.														**/
-/*************************************************************************/
-/** <=						0 wenn die Initialisierung geklappt hat, -1 bei	**/
-/**							einem Fehler.												**/
-/*************************************************************************/
+/*************************************************************************
+ ** run_modem_init():	Startet das Tcl-Skript zum initislisieren des	**
+ **							Modems.														**
+ *************************************************************************
+ ** <=						0 wenn die Initialisierung geklappt hat, -1 bei	**
+ **							einem Fehler.												**
+ *************************************************************************/
 
 static int run_modem_init(void)
 {
@@ -472,16 +489,16 @@ static int run_modem_init(void)
 	return(-1);
 }
 
-/*************************************************************************/
-/** vboxgettyrc_parse():	Liest die Konfiguration des gettys ein. Zu-	**/
-/**								erst wird die globale und dann die des je-	**/
-/**								weiligen tty's eingelesen.							**/
-/*************************************************************************/
-/** => tty						Name des benutzten tty's.							**/
-/**																							**/
-/** <=							0 wenn alles eingelesen werden konnte oder	**/
-/**								-1 bei einem Fehler.									**/
-/*************************************************************************/
+/*************************************************************************
+ ** vboxgettyrc_parse():	Liest die Konfiguration des gettys ein. Zu-	**
+ **								erst wird die globale und dann die des je-	**
+ **								weiligen tty's eingelesen.							**
+ *************************************************************************
+ ** => tty						Name des benutzten tty's.							**
+ **																							**
+ ** <=							0 wenn alles eingelesen werden konnte oder	**
+ **								-1 bei einem Fehler.									**
+ *************************************************************************/
 
 static int vboxgettyrc_parse(unsigned char *tty)
 {
@@ -537,9 +554,9 @@ static int vboxgettyrc_parse(unsigned char *tty)
 	return(0);
 }
 
-/*************************************************************************/
-/** process_incoming_call():	Bearbeitet einen eingehenden Anruf.			**/
-/*************************************************************************/
+/*************************************************************************
+ ** process_incoming_call():	Bearbeitet einen eingehenden Anruf.			**
+ *************************************************************************/
 
 static int process_incoming_call(void)
 {
@@ -678,6 +695,7 @@ static int process_incoming_call(void)
 							}
 							else log_line(LOG_D, "Call will be answered after %d ring(s).\n", waitrings);
 						}
+						else return(-1);
 					}
 					else log_line(LOG_W, "Useing uid/gid 0 is not allowed - call will be ignored!\n", vboxuser.incomingid);
 				}
@@ -697,35 +715,67 @@ static int process_incoming_call(void)
 
 	return(-1);
 }
-/*************************************************************************/
-/** set_process_permissions():	Setzt die effektive uid/gid des Pro-	**/
-/**										zesses und die umask.						**/
-/*************************************************************************/
+/*************************************************************************
+ ** set_process_permissions():	Setzt die effektive uid/gid des Pro-	**
+ **										zesses und die umask.						**
+ *************************************************************************/
 
 int set_process_permissions(uid_t uid, gid_t gid, int mask)
 {
+	struct passwd *pwd;
+	int            groupsset;
+
 	log_line(LOG_D, "Setting effective permissions to %d.%d [%04o]...\n", uid, gid, mask);
 
-	if (setegid(gid) == 0)
+	errno     = 0;
+	groupsset = 0;
+
+		/* Eintrag des zu setzenden Benutzers aus der passwd lesen. Mit	*/
+		/* initgroups() werden dann die realen Gruppen des Benutzers ein-	*/
+		/* gestellt. Ab Kernel 2.1.x scheint das nicht mehr von setgid()	*/
+		/* gemacht zu werden!															*/
+
+	if ((pwd = getpwuid(uid)))
 	{
-		if (seteuid(uid) == 0)
+		if (uid != 0)
 		{
-			if (mask != 0) umask(mask);
-			
-			return(0);
+			if (initgroups(pwd->pw_name, gid) == 0) groupsset = 1;
 		}
-		else log_line(LOG_E, "Can't set effective uid to %d!\n", uid);
+
+		if (setegid(gid) == 0)
+		{
+			if (seteuid(uid) == 0)
+			{
+				if (mask != 0) umask(mask);
+
+				if ((uid == 0) || (!groupsset))
+				{
+					if (initgroups(pwd->pw_name, gid) == 0) groupsset = 1;
+				}
+
+				if (!groupsset)
+				{
+					log(LOG_E, "Can't run initgroups(\"%s\", %d) (%s).\n", pwd->pw_name, gid, strerror(errno));
+
+					return(-1);
+				}
+			
+				return(0);
+			}
+			else log_line(LOG_E, "Can't set effective uid to %d (%s).\n", uid, strerror(errno));
+		}
+		else log_line(LOG_E, "Can't set effective gid to %d (%s).\n", gid, strerror(errno));
 	}
-	else log_line(LOG_E, "Can't set effective gid to %d!\n", gid);
+	else log(LOG_E, "Can't get uid %d passwd entry (%s).", strerror(errno));
 
 	return(-1);
 }
 
-/*************************************************************************/
-/** pid_create():	Erzeugt die PID Datei für den getty.						**/
-/*************************************************************************/
-/** => name			Name der Datei.													**/
-/*************************************************************************/
+/*************************************************************************
+ ** pid_create():	Erzeugt die PID Datei für den getty.						**
+ *************************************************************************
+ ** => name			Name der Datei.													**
+ *************************************************************************/
 
 static void pid_create(char *name)
 {
@@ -740,11 +790,11 @@ static void pid_create(char *name)
 	}
 }
 
-/*************************************************************************/
-/** pid_remove():	Löscht die PID Datei des getty.								**/
-/*************************************************************************/
-/** => name			Name der Datei.													**/
-/*************************************************************************/
+/*************************************************************************
+ ** pid_remove():	Löscht die PID Datei des getty.								**
+ *************************************************************************
+ ** => name			Name der Datei.													**
+ *************************************************************************/
 
 static void pid_remove(char *name)
 {
