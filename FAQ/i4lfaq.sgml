@@ -4,7 +4,7 @@
 
 <title>FAQ for isdn4linux
 <author>Matthias Hessler (<tt><htmlurl url="mailto:hessler@isdn4linux.de" name="hessler@isdn4linux.de"></tt>)
-<date>v2.0.12, 17. September 1999
+<date>v2.0.13, 27. September 1999
 <abstract>
 If you are reading this FAQ online, you may consider downloading the whole
 thing, and reading it offline (much cheaper). To download the latest
@@ -84,7 +84,7 @@ make use of ISDN specific features.
 <sect1> general_hardware: What hardware is supported by isdn4linux?  
 <label id="general_hardware">
 <p>
-Generally, isdn4linux can control ISDN cards that are connected to the pc's
+Generally, isdn4linux can control ISDN cards that are connected to the PC's
 ISA or PCI bus. Also a few PCMCIA cards are supported. However, isdn4linux can
 <bf/not/ make use of any devices connected via a serial or parallel
 interface (which are called 'terminal adaptors'). For more details on which
@@ -145,22 +145,39 @@ website. Have a look at <url url="http://www.isdn4linux.de/contacts">.
 <sect1> distrib_getlatest: How can I get the latest isdn4linux?  
 <label id="distrib_getlatest">
 <p>
-You can find the kernel source it in any kernel, however it may be outdated. To
-get a newer version, as well as the utility package you have several options.
-<enum>
-<item><bf>Via CVS:</bf>
-See question about access to CVS, which the developers use to merge their
-latest code: <ref id="distrib_cvs" name="distrib_cvs">.
-<item><bf>Via FTP:</bf>
-There is a list of mirrors of the cvs tree; check:
-<tt><url url="http://www.isdn4linux.de/download.php3"></tt>.
-</enum>
+There are different ways, depending on your kernel. Unless you are an
+experienced user of Linux, you should use a recent kernel (=first option).
+<itemize>
+<item>You have a recent kernel (at least 2.0.36/2.2.11/2.3.14):
+Great choice, you have already the current kernel ISDN stuff.
+Additionally, you just need to get the current isdn4k-utils package from
+<url url="ftp://ftp.isdn4linux.de/pub/isdn4linux/"> - unless it's already
+included in your distribution.
+
+<item>You have an older kernels (before 2.0.36/2.2.11/2.3.14):
+An upgrade to a recent kernel is HIGHLY recommended. And it is MUCH easier
+to do a kernel upgrade than to get ISDN to work with your older kernel.
+Ok, now if you still want to keep your old kernel, here is how to do it:
+First you have to identify the correct CVS extract for your kernel version
+(CVS is the version control system the ISDN developers use to develop
+ISDN4LINUX). Take a CVS snapshot that is dated with about the date when your
+kernel came out. You find the kernel patches and the old isdn4k-utils packages
+on <url url="ftp://ftp.isdn4linux.de/pub/isdn4linux/">
+or on one of its mirrors
+(see <url url="http://www.isdn4linux.de/download.php3"> on how to find
+mirrors).
+
+<item>As a developer:
+If you want to participate in the development of i4l, you can get the very
+latest stuff via CVS. For this, see the question about access to CVS:
+<ref id="distrib_cvs" name="distrib_cvs">.
+</itemize>
 
 <sect1> distrib_cvs: How can I access the source from the current  
 development/what is the CVS tree all about?  
 <label id="distrib_cvs">
 <p>
-CVS - Concurrent Version System
+CVS - Concurrent Version System:
 
 This is a multiuser/server extension to RCS (Revision Control System).
 The I4L drivers are developed under CVS, and there exists on server
@@ -237,9 +254,10 @@ These encapsulations are possible:
 <item>rawip
 <item>ethernet
 <item>Sync PPP
-<item>X.25 (requires 2.1)
+<item>X.25 (requires 2.1 or newer) 
 <item>cisco and cisco-h
-<item>plus a few specialities.
+<item>cisco-hk (=cisco with keepalive; requires 2.1 or newer)
+<item>plus a few specialities: have a look at the man pages.
 </itemize>
 
 <sect1> feature_voice: Can I use isdn4linux as an answering machine?  
@@ -383,12 +401,12 @@ Advantages:
 Disadvantages:
 <itemize>
 <item> No handshaking 
-= Configuration must occur beforehand (IP addresses,...)
-= sensible to use for only for one provider at a time 
+=&gt; Configuration must occur beforehand (IP addresses,...)
+=&gt; sensible to use for only for one provider at a time 
 <item> Authorization only by Caller ID
-= Dialin only possible from one's own number
+=&gt; Dialin only possible from one's own number
 <item> Fixed IP address
-= must be known ahead of time, more IP addresses required, no dynamic
+=&gt; must be known ahead of time, more IP addresses required, no dynamic
 assignment of addresses possible.
 </itemize>
 From this summary it should be clear under what conditions it makes sense
@@ -519,7 +537,20 @@ isdn4linux &lt;email address&gt;/, where &lt;email address&gt; is the
 address to which mail from the list should be sent. To unsubscribe send a
 message with the body <tt/unsubscribe isdn4linux &lt;email address&gt;/ at the
 same address. Please note: there are about 20-50 messages per day on this
-mailing list.
+mailing list. To receive only one message per day, containing all postings,
+have a look at question
+<ref id="docu_maillistdigest" name="docu_maillistdigest">.
+
+<sect1> docu_maillistdigest: How can I get a digest of the mailing list for 
+isdn4linux (only one message per day)?  
+<label id="docu_maillistdigest">
+<p>
+Subscribe to the mailing list as described in question
+<ref id="docu_mailinglist" name="docu_mailinglist">, but as mailing list name
+use <tt/isdn4linux-digest/ rather than <tt/isdn4linux/. So your message body
+should read <tt/subscribe isdn4linux-digest &lt;email address&gt;/ for
+subscription, and <tt/unsubscribe isdn4linux-digest &lt;email address&gt;/
+for unsubscription.
 
 <sect1> docu_mailarchive: Is there an archive of the isdn4linux mailing list?  
 <label id="docu_mailarchive">
@@ -599,6 +630,8 @@ Here the status from 4th September 1999 (constantly improving):
 <item>ASUSCOM NETWORK INC. ISDNLink 128K PC adapter (order code I-IN100-ST-D)
 <item>Dynalink IS64PH (OEM version of ASUSCOM NETWORK INC. ISDNLink 128K
 adapter)
+<item>All other ASUSCOM/Dynalink cards (includes OEM versions; in total more
+than 50 card versions)
 <item>PCBIT-DP (OEM version of ASUSCOM NETWORK INC. ISDNLink)
 <item>HFC-2BS0 based cards (TeleInt SA1)
 <item>Sedlbauer Speed Card (Speed Win, Teledat 100, PCI, Fax+)
@@ -616,7 +649,7 @@ adapter)
 <item>Scitel Quadro
 <item>Gazel ISDN cards
 <item>HFC-PCI based cards
-<item>Winbond W6692 based cards
+<item>PCI/Winbond W6692 based cards
 </itemize>
 Note:
 <itemize>
@@ -627,6 +660,8 @@ Note:
 <item>Teles PCI is EXPERIMENTAL
 <item>Teles S0Box is EXPERIMENTAL
 <item>Eicon.Diehl Diva U interface not tested
+<item>No voice mode for all cards from CCD yet: HFC (Teleint) and HFC-S
+based cards (exception: HFC-S PCI works in voice mode)
 </itemize>
 
 The following cards are definitly not supported and will probably never,
@@ -727,12 +762,8 @@ needed. Therefore, one can use as many cards are there are slots.
 If you really need a lot of ports, then eventuelly, a S2M card might be
 interesting for you, see question <ref id="hardware_s2m" name="hardware_s2m">.
 
-Note that by default, i4l treats all available cards as a pool, first using all 
-channels on the first card, then all on the second card, and so on. To change
-this, use the <tt/isdnctrl bind/ (not pppbind) command.
-
-Also note, that you'll have to use modules for more than two cards, to pass
-all arguments.
+See question <ref id="config_manycards" name="config_manycards"> about
+the specialities for the configuration of more than one card.
 
 <sect1> hardware_teles: What should I know about before buying an ISDN card 
 from Teles?  
@@ -846,13 +877,18 @@ plug off, and new plug (in the right direction) on.
 <p>
 Many PBX run non-standard ISDN protocolls on their internal bus. This may cause
 i4l to print warnings when it encounters unexpected frames (some old versions
-even crash). Also, they may run 1TR6 protocoll by default, instead of Euro ISDN
-on their internal bus. You have to configure i4l (or the PBX) accordingly, best
-is you try both on the same or similar protocolls.
+even crash). This can increase your message file by as much as 1 MB in 3 days
+(the German PBX <tt/Ackermann Euracom 181/ seems to be notorious for this).
+Also, a PBX may run 1TR6 protocoll on the internal bus by default, rather
+than Euro ISDN. You have to configure i4l (or the PBX) accordingly, best
+is you try to configure both on the same or similar protocolls.
 
-Also the MSN may be different than you expect. Check several versions, one
-digit, or two digits, or whole MSN. Best is you call some device (e.g. ISDN
+Also the MSN may be different than you expect. Check several versions, no
+digit (then use <tt/0/, which i4l will require in such a case), one digit, or
+two digits, or the whole MSN. Best is you call some device (e.g. ISDN
 telephone) on the internal bus and check what i4l writes into the log file.
+Last, be reminded that you may have to configure your PBX to 'route' incoming
+calls onto the internal ISDN bus.
 
 <sect1> hardware_telestrouble: The PNP tools done work with my Teles 16.3 PNP 
 card!  
@@ -909,7 +945,7 @@ Euro ISDN. Get a newer kernel if the desired type is not yet supported.
 
 <sect1> config_dialmode: When an IP packet should go over the link (which  
 usually triggers a dialout), all I see in the log is: &dquot;dial rejected:  
-interface not in dialmode `auto'&dquot;?  
+interface not in dialmode <tt/auto/&dquot;?  
 <label id="config_dialmode">
 <p>
 The new ISDN drivers in 2.0.36 defaults to manual dialmode, not
@@ -1031,7 +1067,6 @@ modules can not store their status, and could miss important messages on the
 D channel. Newer versions of i4l ensure that they won't be unloaded by
 kerneld, but you should not try to use kerneld with any version of i4l.
 
-
 <sect1> config_runlevel: How can I boot Linux sometimes with  
 ISDN, and sometimes without?  
 <label id="config_runlevel">
@@ -1039,6 +1074,24 @@ ISDN, and sometimes without?
 Yes, you can define two different run level for this (under SysVInit) in
 <tt>/etc/inittab</tt>. One run level includes the ISDN processes, where the
 other one does not.
+
+<sect1> config_manycards: How do I configure more than 1 ISDN card?  
+<label id="config_manycards">
+<p>
+There are some specialities for configuration of more than 1 card:
+<itemize>
+<item>You have to start a driver for every type of card you have, with the
+correct configuration arguments.
+<item>To handle more than 1 card with the same driver (e.g. HiSax should
+handle an ELSA and an ASUS card), you have to pass the configuration arguments
+for all cards to this driver. Please note, that you'll have to use modules
+for more than two cards, to pass all arguments.
+<item>Dialin of many people at the same time: have a look at question
+<ref id="dialin_manyparallel" name="dialin_manyparallel">.
+<item>Dialout through several cards: have a look at question
+<ref id="dialout_manycards" name="dialout_manycards">.
+</itemize>
+
 
 <sect1> config_manychannels: How can I increase i4l's maximum number of  
 channels?  
@@ -1976,7 +2029,7 @@ extensions!
 <label id="syncppp_leadingzero">
 <p>
 The first zero is not dialed. It only shows the retry counter, which is related
-to the ``isdnctrl dialmax'' parameter.
+to the <tt/isdnctrl dialmax/ parameter.
 
 <sect1> syncppp_ethfake: My ISDN device is shown with HWaddr and IRQ=0 and  
 base address = 0 when I list it with ifconfig  
@@ -2367,12 +2420,41 @@ updates can only be switched off on the Cisco. You can configure
 send out routing updates only when they are received through this interface.
 
 
+<sect> dialout: Configuration of Dial-Out  
+<label id="dialout">
+
+<sect1> dialout_manycards: How do I configure dialout with more than 1 ISDN 
+card?  
+<label id="dialout_manycards">
+<p>
+There are several possibilities to configure dialout.
+<itemize>
+<item>Dialout anywhere (default: all available cards are a pool):
+just configure your cards in the order in which you want them to be dialed out.
+First all channels on the first card are used, then all on the second card,
+and so on.
+<item>Dialout on one specific channel: Use the <tt/isdnctrl bind/
+(not pppbind) command to specify which channel should be used.
+<item>Dialout on one specific card: you can configure this by using the
+<tt/isdnctrl mappping/ functionality. Just map MSNs on the letters 0 to 9, like
+this:
+<code>
+isdnctrl mapping &lt;carddriver1&gt; 111,222,333,,
+isdnctrl mapping &lt;carddriver2&gt; 999,888,,777
+</code>
+Now, just configure for telephone number 0 when you really want to use MSN
+111 on &lt;carddriver1&gt; or 999 on &lt;carddriver2&gt;. Configure to use
+number 1 when you really want to use MSN 222 on &lt;carddriver1&gt; or 888
+on &lt;carddriver2&gt;. Configure to use telephone number 2 when you really
+want to use only MSN 333 on &lt;carddriver1&gt; (&lt;carddriver2&gt; will
+never be used). Configure to use telephone number 3 when you really want to
+use only MSN 777 on &lt;carddriver2&gt; (&lt;carddriver1&gt; will never
+be used).
+</itemize>
+
 
 <sect> dialin: Configuration of a Dial-In Server  
 <label id="dialin">
-
-<!-- Config Dialin Server  
--->  
 
 <sect1> dialin_config: How can I enable others to login via ISDN?  
 <label id="dialin_config">
@@ -2405,23 +2487,23 @@ init-chat &dquot;&dquot; ATZ OK AT&amp;E123456 OK AT&amp;B512 OK
 </code>
 For X.75 the block size was set to 512 bytes.
 Alternatively you can enter the entire configuration onto a single line
-in /etc/inittab (here printed on two lines!):
+in <tt>/etc/inittab</tt> (here printed on two lines!):
 <code>
 i0:45:respawn:/sbin/mgetty -D -m '&dquot;&dquot; ATZ OK AT&amp;E123456 OK
 AT&amp;B512 OK' -s 38400 ttyI0
 </code>
 The most elegant way is to use iprofd. This daemon takes advantage of
 the <tt>AT&amp;W0</tt> command in the i4l modem emulation. You start iprofd
-with a path as parameter, e.g. &dquot;iprofd /etc/i4lprofile&dquot;
+with a path as parameter, e.g. <tt>&dquot;iprofd /etc/i4lprofile&dquot;</tt>
 Then with minicom or another terminal program, open an ISDN tty
-device and enter the necessary AT commander by hand. 
-When finished, enter the command AT&amp;W0, then the kernel notifies iprofd 
-to write the current configuration to the file. From now on it is enough
+device and enter the necessary AT command by hand. 
+When finished, enter the command <tt>AT&amp;W0</tt>, then the kernel notifies
+iprofd to write the current configuration to the file. From now on it is enough
 to start iprofd in you isdn init script, and to initialize the appropriate
 ISDN tty devices with <tt>ATZ</tt>.
 
-<sect1> dialin_manyparallel: How can I allow several people to call in to me at  
-the same time?  
+<sect1> dialin_manyparallel: How can I allow several people to call in 
+to me at the same time?  
 <label id="dialin_manyparallel">
 <p>
 You have to configure exactly as many gettys or network interfaces as the
@@ -2461,6 +2543,24 @@ To allow all users simply:
 </code>
 The latter can also be achieved when the file pap-secrets does not
 exist.
+
+<sect1> dialin_ignored: I keep getting the message &dquot;isdn_tty: call from  
+XXX - YYY ignored&dquot;. Why does isdn4linux (syncPPP) ignore this dialin  
+attempt?  
+<label id="dialin_ignored">
+<p>
+There are two possible explanations. Either your own MSN (here: YYY)
+is not correctly set with &dquot;isdnctrl eaz interface YYY&dquot;. Or 
+&dquot;isdnctrl secure interface on&dquot; was set, without allowing calls from
+the incoming number (here: XXX) with &dquot;isdnctrl addphone interface in
+XXX&dquot;.
+
+<sect1> dialin_async: A SunISDN tries to dial into my i4l system.  
+<label id="dialin_async">
+<p>
+The Sun tries to communicate with asyncPPP. ipppd can't handle
+this, you have to use the ttyI* devices and the standard pppd.
+
 
 
 <sect> leased: Leased lines 
@@ -2615,8 +2715,13 @@ be added and removed. However, there is the program <tt>ibod</tt> available,
 which can do this automatically. Have a look at:
 <url url="http://www.compound.se/ibod.html">
 
-In the file etc/rc.isdn.syncppp.MPPP in the isdn4k-utils package you
-may find a sample script (unfortunately missing in some i4l version).
+In the file <tt>etc/rc.isdn.syncppp.MPPP</tt> in the isdn4k-utils package you
+can find a sample script (unfortunately missing in some i4l version).
+
+Please note that your Internet Provider has to allow you to make use of these
+features. Also, there may be a limit on how many channels you are allowed to
+open at the same time. It could be that all links are dropped when you exceed
+this limit.
 
 <sect1> 2channel_mpppgoodbad: What are the advantages and disadvantages of MPPP?  
 <label id="2channel_mpppgoodbad">
@@ -3083,17 +3188,63 @@ Example: You open a browser with no or a local homepage. Nothing happens. You
 enter some url to connect to, this will send ip packages to the network
 interface - thereby triggering a dialout.
 
+<sect1> dod_disaster: What is a charge unit disaster?  
+<label id="dod_disaster">
+<p>
+The charge unit disaster can happen for many reasons (see question
+<ref id="dod_causes" name="dod_causes"> for more details). However the results are identical:
+your computer dials out to your Internet Provider more often than you want,
+thereby increasing your telephone bill by a large amount (especially when
+you are not only charged for time online, but also a minimum amount/charge unit
+for every dialin). The term 'large amount' is rather flexible. Anything is
+possible:
+<itemize>
+<item>'Cheap': any DNS request opens the line, causing several dialouts per
+day (depending on your programs). If this happens 10 times a day, this makes
+up about 300 unneeded dialouts per month.
+<item>'Not so cheap': Some Windows 95 computer in your LAN triggers a dialout
+every 15 minutes for one of its silly broadcasts (see question
+<ref id="dod_win95" name="dod_win95">). Makes up 96 dialouts per day, or 2880 per month.
+<item>'Medium': Your email client is configured to check every 5 minutes
+whether you have new emails at your Internet Service Provider. Makes up
+288 dialouts per day, 8640 per month.
+<item>'Expensive': Keep alive packets prevent that your line ever hangs up.
+Your line is always on. Note: THIS IS NOT THE WORST CASE!
+<item>'More Expensive': Something goes wrong with dynamic addresses,
+leaving sockets open when hanging up. The sockets trigger another dialout
+when they try to resolve this, but since now you have a new ip address, the
+issue can't be resolved. The line will eventually hang up (when depends on
+your timeouts), but then re-open - since the sockets trigger another dialout.
+If you are unlucky, you never get the same ip address back, so this repeats
+continuously. Your line is almost always on, but on top of it you have to pay
+for many dialouts: if your timeout is 30 seconds, this makes up 2880 dialouts
+per day, 86400 per month.
+<item>'Most Expensive - Worst Case': You misconfigure dialout/callback, so
+that when your (the initiating) computer dials out to your Internet Provider,
+who then hangs up on you (e.g. authorization failed - maybe he also has some
+misconfiguration or unhooks despite being down), and your computer
+immediately dials out again. This is only limited by the amount of time
+needed to dial out. If we assume 2 seconds for each attempt (conservative
+estimate), this makes up 43200 dialouts per day, or 1296000 per month!
+</itemize>
+
+This is no joke, and all these thing have actually happened, even to real
+isdn4linux experts! See question <ref id="dod_off" name="dod_off"> on how to avoid any
+risk of this happening to you.
+
 <sect1> dod_causes: What can cause a charge unit disaster?  
 <label id="dod_causes">
 <p>
-There are many possibilities.
+There are many possibilities. See question <ref id="dod_strategy" name="dod_strategy"> on how
+to track down what is happening to you. See question <ref id="dod_disaster" name="dod_disaster">
+on how expensive that could be. Here a non-comprehensive list of causes:
 <enum>
-<item>You compiled your kernel with the option Bridging by mistake
+<item>You compiled your kernel with the option Bridging by mistake.
 <item>ARP requests or broadcasts? You should run ifconfig with the options
 <tt>-arp</tt> and <tt>-broadcast</tt> to keep from opening connections in this
 way. You can recognize this one when you have a dialout, but <em/no/ data is
 transferred.
-<item>Other Broadcasts from the interfaces were being forwarded by ISDN
+<item>Other Broadcasts from the interfaces were being forwarded by ISDN.
 <item>If IP connections are still open with the line is disconnected and
 IP addresses are dynamically assigned, then the disaster is inevitable.
 Then a new connection is started to bring down the open IP connections,
@@ -3102,6 +3253,21 @@ but the IP connections are still open, the line is dialed again, and
 so on... This can only be avoided with the RST-Revoking patch, which has found
 its way into the 2.0.x kernels, but not into 2.1/2.2/2.3 (see the appropriate
 question below).
+<item>Requests from your local DNS trigger a dialout: see question
+<ref id="dod_localdns" name="dod_localdns">.
+<item>Sendmail triggers the dialout: see question
+<ref id="dod_sendmail" name="dod_sendmail">.
+<item>Windows 95 clients trigger the dialout: see questions
+<ref id="dod_win95" name="dod_win95">,
+<ref id="dod_localdns" name="dod_localdns">,
+and <ref id="dod_win95b" name="dod_win95b">.
+<item>Samba triggers the dialout: see question <ref id="dod_samba" name="dod_samba">.
+<item>Netscape triggers a dialout when started: see question
+<ref id="dod_netscape" name="dod_netscape">.
+<item>Manually close IP connections which are still open when the line
+goes down: see question <ref id="dod_closeipconnect" name="dod_closeipconnect">.
+<item>Your computer is crashed, but still processes interrupts: see
+question <ref id="dod_onlineoncrash" name="dod_onlineoncrash">.
 </enum>
 
 <sect1> dod_off: How can I safely turn off dialout on demand?  
@@ -3306,47 +3472,18 @@ telephone number, then &dquot;no outgoing number...&dquot; appears in the
 syslog, and as soon as the interface is &dquot;up&dquot;, all connections will
 be closed.
 
-<sect1> dod_openlineoncrash: Is it possible that even with a crashed computer a  
-ISDN connection remains open (and the charge units accumulate)?  
-<label id="dod_openlineoncrash">
+<sect1> dod_onlineoncrash: Is it possible that even with a crashed computer  
+a ISDN connection remains open (and the charge units accumulate)?  
+<label id="dod_onlineoncrash">
 <p>
-Karsten Keil <tt><htmlurl url="mailto:keil@temic-ech.spacenet.de"
-name="keil@temic-ech.spacenet.de"></tt> wrote on 11 Feb 1997:
-I'm guessing, that with the status enquiry (in Switzerland - Ed.) you
-simply want to make sure that when the user side has crashed, the connection
-is broken. This is in addition to the Layer 2 monitoring and is not
-totally senseless, since with many cards/end devices the ISAC is run in 
-auto mode and therefore a crash would keep the connection open.
-
-However, i4l runs the ISAC in nonauto mode, meaning that when interrupts
-are no longer being process, the connection is broken after a maximum
-of about 1/2 a minute. This is not the reason for using nonauto mode, but
-this is a safety feature ;-), but doesn't mean that the charge unit 
-disaster is impossible.
-
-
-<!-- Dialin Server
--->
-
-<sect> Dialin
-
-<sect1> dialin_ignored: I keep getting the message &dquot;isdn_tty: call from  
-XXX - YYY ignored&dquot;. Why does isdn4linux (syncPPP) ignore this dialin  
-attempt?  
-<label id="dialin_ignored">
-<p>
-There are two possible explanations. Either your own MSN (here: YYY)
-is not correctly set with &dquot;isdnctrl eaz interface YYY&dquot;. Or 
-&dquot;isdnctrl secure interface on&dquot; was set, without allowing calls from
-the incoming number (here: XXX) with &dquot;isdnctrl addphone interface in
-XXX&dquot;.
-
-<sect1> dialin_async: A SunISDN tries to dial into my i4l system.  
-<label id="dialin_async">
-<p>
-The Sun tries to communicate with asyncPPP. ipppd can't handle
-this, you have to use the ttyI* devices and the standard pppd.
-
+The ISAC chipset, which is in use on many ISDN cards, can be run in either
+auto mode, or in non-auto mode. When run in auto mode, the connection could
+be up when the computer is crashed (the card keeps it up and running).
+Since the HiSax driver uses nonauto mode, this should not happen with
+ISDN4LINUX. Once no interrupt is processed on your machine, the connection
+will stop at maximum half a minute later. Only in the unlikely event that
+your machine is crashed, while interrupts are still processed normally, this
+could happen.
 
 
 <!-- Callback
@@ -3504,7 +3641,7 @@ isdn4linux.
 <item>Eicon Diva 2.01 PCI
 </itemize>
 
-<sect> 1tr6: German Pecularities (1TR6)  
+<sect> 1tr6: German Pecularities for 1TR6 
 <label id="1tr6">
 
 <sect1> 1tr6_eaz: Which EAZ should I use for i4l?  
@@ -3596,8 +3733,8 @@ sub-addressing. If your phone number is 01 41 33 67 87, and you want to use
 sub-address 02, then configure the local phone number of the HiSax driver as
 6787.02 .
 
-<sect1> countr_italy: Italy: What does our MSN look like?  
-<label id="countr_italy">
+<sect1> country_italy: Italy: What does our MSN look like?  
+<label id="country_italy">
 <p>
 isdn4linux also works in Italy (ICN card). The MSN must be the phone number
 with the Italian area code  but without the leading 0. For example, if my phone
