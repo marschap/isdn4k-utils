@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.6 1997/04/03 08:56:58 fritz Exp $
+## $Id: Makefile.in,v 1.7 1997/04/03 22:32:36 luethje Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,9 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.7  1997/04/03 22:32:36  luethje
+## copy the old config files into the new dirctory and create the new config files.
+##
 ## Revision 1.6  1997/04/03 08:56:58  fritz
 ## Bugfix: Changes for bash-2.00.0:
 ##         workaround for empty list in for-loops.
@@ -129,7 +132,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 2.99.2
+VERSION     = 2.99.3
 
 ifeq ($(POSTGRES),1)
 DEFS       += -DPOSTGRES
@@ -219,6 +222,8 @@ installdirs: rootperm
 
 install: depend all rootperm installdirs
 		if ps -x | fgrep $(ISDNLOG) >/dev/null; then kill `cat $(RUNDIR)/isdnlog.pid`; fi
+		-test ! -d $(OLDCONFDIR) || cp -auv $(OLDCONFDIR)/* $(I4LCONFDIR) \
+		 && isdnlog/bin/isdnlog /dev/null 1>/dev/null 2>&1)
 		$(INSTALL_BIN) $(ISDNLOG)  $(SBINDIR)
 		$(INSTALL_BIN) $(ISDNREP)  $(BINDIR)
 		$(INSTALL_BIN) $(ISDNCONF) $(BINDIR)
