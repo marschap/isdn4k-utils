@@ -4,7 +4,7 @@
 
 <title>FAQ for isdn4linux
 <author>Matthias Hessler (<tt><htmlurl url="mailto:hessler@isdn4linux.de" name="hessler@isdn4linux.de"></tt>)
-<date>v2.0.27, 8. December 1999
+<date>v2.0.28, 18. December 1999
 <abstract>
 If you are reading this FAQ online, you may consider downloading the whole
 thing, and reading it offline (much cheaper). To download the latest
@@ -87,7 +87,8 @@ make use of ISDN specific features.
 Generally, isdn4linux can control ISDN cards that are connected to the PC's
 ISA or PCI bus. Also a few PCMCIA cards are supported. However, isdn4linux can
 <bf/not/ make use of any devices connected via a serial or parallel
-interface (which are called 'terminal adaptors'). For more details on which
+interface (which are called 'terminal adaptors'), with only one exception:
+the Creatix/Teles S0 box for the parallel port. For more details on which
 cards are supported see section <ref id="hardware" name="hardware">.
 
 <sect1> general_features: What features are supported by isdn4linux?  
@@ -284,10 +285,20 @@ fax as one of its features). Get the newest stuff from:
 <item><bf>For the active Eicon Diva Server cards (except Diva 2.0Pro):
 Yes</bf>. Have a look at README.fax and README.eicon in the
 <tt>isdn/Documentation/isdn</tt> directory, as well as:
-<tt><url url="http://www.melware.de/"></tt>.
+<tt><url url="http://www.melware.de/"></tt>. The Eicon Diva Server cards
+allow faxing with class 2 commands.
 <item><bf>For semiactive cards Sedlbauer Speedfax+ and Siemens ISURF 1.0: Yes</bf>
 But currently this requires some manual work. Check the mailing list on how
-to do it (special patch needed).
+to do it (special patch needed). Only class 1 fax commands are supported.
+You can obtain the patch from:
+<tt><url url="//ftp.isdn4linux.de/pub/isdn4linux/kernel/v2.2/testing/i4l_isar_fclass1.tar.gz"></tt>
+Then initialize the ttyI* interface with:
+<code>
+ATZ&amp;E&lt;your_msn&gt;S0=1S13=1+FCLASS=1
+</code>
+and use a normal Hylafax class 1 config file, where you've replaced
+non-supported commands (flow control,...) by dummies.
+
 </itemize>
 If you do want to fax now, your best choice is to install an analog fax modem
 along with your ISDN card.
@@ -600,7 +611,6 @@ Other archives are:
 <itemize>
 <item><tt><url
 url="ftp://ftp.uni-oldenburg.de/pub/unix/linux/isdn/isdn4linux/Mailing-List"></tt>
-<item><tt><url url="http://wws.mathematik.hu-berlin.de/ldr/ISDN/isdn4linux/"></tt>
 </itemize>
 
 
@@ -1220,6 +1230,8 @@ howto (isdn.html) and a ISDN quick-install guide (isdnquick.html).
 <tt><url url="http://www-ti.informatik.uni-tuebingen.de/~hippm/isdn.html"></tt>
 <item>Chargeint tips:
 <tt><url url="http://www.provi.de/&tilde;gvz/chargeint.html"></tt>
+<item>Homepage of kisdn (only works with Qt/KDE):
+<tt><url url="http://www.millenniumx.de/kisdn.html"></tt>
 </itemize>
 
 
@@ -1694,7 +1706,7 @@ to choose between both will have to use different outgoing MSNs to call you.
 
 In Germany, this is not an issue any more since you can get the first 10
 MSN for free with Deutsche Telekom
-(<url url="http://www.telekom.de/english/index.html">),
+(<url url="http://www.dtag.de/english/">),
 other phone providers may offer more or less MSN for free. In general,
 you can get at least 3 MSN. However, minimizing MSN usage may still be
 very interesting for other countries.
@@ -2004,7 +2016,9 @@ should ideally look like this:
 <code>
 XXX YYY ZZZ *
 </code>
-If that doesn't work, you can use wild cards, something like:
+If you have special characters in XXX, YYY, or ZZZ, try to use quotes
+around them. If that doesn't work for getting XXX or YYY correct, you can
+use wild cards, something like:
 <code>
 * * ZZZ *
 </code>
@@ -3809,7 +3823,7 @@ name="dl4mhk@lrz.uni-muenchen.de"></tt>; you can get the manual at:
 <tt><url url="http://www.lrz-muenchen.de/&tilde;ui161ab/www/isdn/"></tt>
 
 - click on &dquot;Audio!&dquot; (still in German we're afraid - sorry...)
-They are currently outdated, but may give you a few hints?
+They are currently very outdated, but may give you a few hints?
 
 <sect1> audio_format: What is the format of the audio messages (.msg) vbox  
 plays when it answers a call?  
@@ -3872,6 +3886,13 @@ be able to hear something.
 
 <!-- Audio Troubleshooting
 -->
+
+<sect1> audio_e0265: My vboxgetty gets a modem timeout, and reports error  
+E0265.  
+<label id="audio_e0265">
+<p>
+Probably you need a patch that has been posted recently (8th December 1999)
+on the mailing list.
 
 <sect1> audio_noanswer: My vboxgetty does not answer any incoming calls.  
 <label id="audio_noanswer">
@@ -3994,19 +4015,6 @@ things when it's not needed, the SPV is cheaper than a leased line.
 
 This SPV is not to be confused with the Austrian understanding of SPV. The
 Austrian `SPV' has one channel leased line, and one channel for dialing.
-
-<sect1> 1tr6_spvavailable: How long will there still be SPVs?  
-<label id="1tr6_spvavailable">
-<p>
-Steffen Sledz <tt><htmlurl url="mailto:sledz@dgroup.de"
-name="sledz@dgroup.de"></tt> wrote on 5 Dec 1996:
-<quote>
-Due to a couple of lawsuits against the Telekom before the 
-European Court of Justice, most likely until the end of
-1997. This will be posted in the appropriate newsgroups
-and probably also at
-</quote>
-<tt><url url="http://www.birch.de"></tt> (who is suing).
 
 <sect1> 1tr6_spv: Does isdn4linux support SPVs? How?  
 <label id="1tr6_spv">
