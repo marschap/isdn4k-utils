@@ -138,7 +138,7 @@ See below for English!
      Siehe 'man isdn_cause'
 
 16.  Kann ich meinen externen Terminal-Adapter mit ISDN4Linux verwenden?
-   
+
      Nein, nicht mit ISDN4Linux aber schon mit Linux,  Sie werden wie Modems
      behandelt.  Du brauchst also pppd und vielleicht diald.  Fragen 6, 7, 8
      und 14 sind auch für dich relevant.
