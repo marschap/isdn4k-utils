@@ -1,4 +1,4 @@
-/* $Id: processor.c,v 1.60 1999/05/04 19:32:45 akool Exp $
+/* $Id: processor.c,v 1.61 1999/05/10 20:37:27 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,13 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.61  1999/05/10 20:37:27  akool
+ * isdnlog Version 3.26
+ *
+ *  - fixed the "0800" -> free of charge problem
+ *  - *many* additions to "ausland.dat"
+ *  - first relase of "rate-de.dat" from the CVS-Server of the I4L-Tarif-Crew
+ *
  * Revision 1.60  1999/05/04 19:32:45  akool
  * isdnlog Version 3.24
  *
@@ -902,10 +909,26 @@ void buildnumber(char *num, int oc3, int oc3a, char *result, int version,
   if (!dir && (who == CALLED) && !*intern) {
     register int i;
 
-      /* Fixme: DTAG is specific to Germany */
+    /* Fixme: DTAG is specific to Germany */
+    /* the following is *totally* strange, but correct for
+       germany: We are trying to detect a "sonderrufnummernummer".
+       Eine Rufnummer, die nur innerhalb eines Landes funktioniert.
+       Daher schlagen wir die Nummer unter der Deutschen Telekom nach.
+       Alle Nummern in den Zonen
+          0 -> Internal call/FreeCall
+   	  5 -> C-Mobilbox
+   	  6 -> C-Netz
+   	  7 -> D1-Netz
+   	  8 -> D2-Netz
+   	  9 -> E-plus-Netz
+  	 10 -> E2-Netz
+         20 .. 99 -> Internet, Auskunft, ...
+       sind solche Sondernummern.
+    */
     i = getZone(DTAG, num);
 
-    if (((i >  4) && (i < 11)) ||
+    if (!i ||
+        ((i >  4) && (i < 11)) ||
         ((i > 19) && (i < 100)))
       *sondernummer = 1;
   } /* if */

@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.78 1999/05/09 18:23:42 akool Exp $
+## $Id: Makefile.in,v 1.79 1999/05/10 20:37:11 akool Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,13 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.79  1999/05/10 20:37:11  akool
+## isdnlog Version 3.26
+##
+##  - fixed the "0800" -> free of charge problem
+##  - *many* additions to "ausland.dat"
+##  - first relase of "rate-de.dat" from the CVS-Server of the I4L-Tarif-Crew
+##
 ## Revision 1.78  1999/05/09 18:23:42  akool
 ## isdnlog Version 3.25
 ##
@@ -622,7 +629,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 3.25
+VERSION     = 3.26
 
 MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 \
 	      isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 \

@@ -5,6 +5,8 @@ V:1.02-Germany [09-May-1999]
 #
 # (C) Copyright 1999 by Andreas Kool (akool@isdn4linux.de)
 #
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 # Zonenzuordnung für Deutschland:
 #
 #   0 : Verbindungen an der eigenen Tk-Anlage (zwangsläufig kostenlos)
@@ -48,9 +50,15 @@ V:1.02-Germany [09-May-1999]
 #  Inmarsat
 # werden z.Zt. nicht unterstützt
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:10 Teleglobe
 C:GmbH, Gutleutstraße 85, 60329 Frankfurt 01010
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:11 o.tel.o CbC
 G:01.04.1999
 C:o.tel.o communications GmbH, Am Bonneshof 35, 40474 Düsseldorf 01011
@@ -59,8 +67,11 @@ C:Hotline:  01803/1998 oder 0800/7370 (Geschaeftskunden)
 C:Adresse:  96038 Bamberg
 Z:2-4 National
 T:W/08-18=0.15/60
-T:W/18-08=0.10/60
-T:E,H/*=0.095/60
+T:W/18-21=0.10/60
+T:W/21-24=0.04/60 Happy Hour
+T:W/24-08=0.10/60
+T:E,H/21-24=0.04/60 Happy Hour
+T:E,H/24-21=0.095/60
 Z:5-10 Mobil
 A:01610,01617,01619,01618 # C
 A:0170,0171  		  # D1
@@ -79,9 +90,15 @@ Z:21 Telefonauskunft
 A:11888
 T:*/*=1.59/0,0.49(60)/1
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:12 Tele Danmark
 C:Internetz GmbH, Süderstraße 75, 20097 Hamburg 01012
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:13 Tele 2
 G:15.04.1999
 C:Tele 2 Kinnevik Telecommunciations International S.A., 75, route de Longwy, L-8080 Bertrange, Luxembourg 01013
@@ -101,240 +118,246 @@ A:0177,0178		  # Eplus
 A:0176,0179  		  # E2
 T:*/*=0.79/60
 Z:12 Euro 1 / USA, Kanada
-A:+1     # Vereinigte Staaten (USA), Kanada
-A:+31    # Niederlande
-A:+32    # Belgien
-A:+33    # Frankreich
-A:+34    # Spanien
-A:+352   # Luxemburg
-A:+358   # Finnland
-A:+39    # Italien
-A:+41    # Schweiz
-A:+43    # Österreich
-A:+44    # Großbritannien und Nordirland
+A:Vereinigte Staaten (USA), Kanada
+A:Niederlande
+A:Belgien
+A:Frankreich
+A:Spanien
+A:Luxemburg
+A:Finnland
+A:Italien
+A:Schweiz
+A:Österreich
+A:Großbritannien und Nordirland
 A:Dänemark
-A:+46    # Schweden
-A:+47    # Norwegen
+A:Schweden
+A:Norwegen
 T:*/*=0.39/60
 Z:13 Euro 2
-A:+298   # Färöer
-A:+353   # Irland
-A:+354   # Island
-A:+376   # Andorra
-A:+377   # Monaco
-A:+378   # San Marino
-A:+4175  # Liechtenstein
-A:+420   # Tschechien
-A:+48    # Polen
-A:+90    # Türkei
+A:Färöer
+A:Irland
+A:Island
+A:Andorra
+A:Monaco
+A:San Marino
+A:Liechtenstein
+A:Tschechien
+A:Polen
+A:Türkei
 T:*/*=0.68/60
 Z:14 Welt 1
-A:+212   # Marokko
-A:+213   # Algerien
-A:+216   # Tunesien
-A:+218   # Libyen
-A:+30    # Griechenland
-A:+350   # Gibraltar
-A:+351   # Portugal
-A:+355   # Albanien
-A:+356   # Malta
-A:+357   # Zypern
-A:+359   # Bulgarien
-A:+36    # Ungarn
-A:+370   # Litauen
-A:+371   # Lettland
+A:Marokko
+A:Algerien
+A:Tunesien
+A:Libyen
+A:Griechenland
+A:Gibraltar
+A:Portugal
+A:Albanien
+A:Malta
+A:Zypern
+A:Bulgarien
+A:Ungarn
+A:Litauen
+A:Lettland
 A:Estland
-A:+373   # Moldau Republik
-A:+375   # Weißrußland (Belarus)
-A:+380   # Ukraine
-A:+381   # Jugoslawien Montenegro
-A:+385   # Kroatien
-A:+386   # Slowenien
-A:+387   # Bosnien-Herzegowina
-A:+389   # Mazedonien
-A:+40    # Rumänien
-A:+421   # Slowakei
-A:+61    # Australien
-A:+64    # Neuseeland
-A:+65    # Singapur
-A:+81    # Japan
-A:+852   # Hongkong
-A:+972   # Israel
+A:Moldau Republik
+A:Weißrußland (Belarus)
+A:Ukraine
+A:Jugoslawien Montenegro
+A:Kroatien
+A:Slowenien
+A:Bosnien-Herzegowina
+A:Mazedonien
+A:Rumänien
+A:Slowakei
+A:Australien
+A:Neuseeland
+A:Singapur
+A:Japan
+A:Hongkong
+A:Israel
 T:*/*=0.97/60
 Z:15 Welt 2
-A:+246   # Diego Garcia
-A:+5321  # Guantanamo
-# UNKNOWN: Solomon Inseln
-A:+681   # Wallis und Futuna Inseln
-A:+1242  # Bahamas
-A:+1246  # Barbados
-A:+1264  # Anguilla
-A:+1268  # Antigua und Barbuda
-A:+1284  # Britische Jungferninseln
-A:+1340  # Amerikanische Jungferninseln
-A:+1345  # Caymaninseln (FUZZ 2:``Kayman Inseln'' ~ ``Caymaninseln'')
-A:+1441  # Bermuda
-A:+1473  # Grenada
-A:+1664  # Montserrat
-A:+1758  # Saint Lucia
-A:+1767  # Dominica
-A:+1784  # Saint Vincent und die Grenadinen
-A:+1787  # Puerto Rico
-A:+1809  # Dominikanische Republik
-A:+1868  # Trinidad und Tobago
-A:+1869  # Saint Kitts and Nevis (FUZZ 1:``Saint Kitts und Nevis'' ~ ``Saint Kitts and Nevis'')
-A:+1876  # Jamaika
-A:+20    # Ägypten
-A:+220   # Gambia
-A:+221   # Senegal
-A:+222   # Mauretanien
-A:+223   # Mali
-A:+224   # Guinea
-A:+225   # Cote d'Ivoire (Elfenbeinküste)
-A:+226   # Burkina Faso (Obervolta)
-A:+227   # Niger
-A:+683	 # Niue-Inseln
-A:+228   # Togo
-A:+229   # Benin
-A:+230   # Mauritius
-A:+231   # Liberia
-A:+232   # Sierra Leone
-A:+233   # Ghana
-A:+234   # Nigeria
-A:+235   # Tschad
-A:+236   # Zentralafrikanische Republik
-A:+237   # Kamerun
-A:+238   # Kap Verde
-A:+239   # Sao Tome und Principe (FUZZ 2:``Sao Tomé und Pricipe'' ~ ``Sao Tome und Principe'')
-A:+240   # Äquatorial-Guinea (FUZZ 1:``Äquatorial Guinea'' ~ ``Äquatorial-Guinea'')
-A:+241   # Gabun
-A:+242   # Kongo
-A:+243   # Zaire
-A:+244   # Angola
-A:+245   # Guinea-Bissau
-A:+247   # Ascension
-A:+248   # Seyschellen (FUZZ 1:``Seychellen'' ~ ``Seyschellen'')
-A:+249   # Sudan
-A:+250   # Ruanda
-A:+251   # Äthiopien
-A:+252   # Somalia
-A:+253   # Dschibuti
-A:+254   # Kenia
-A:+255   # Tansania
-A:+256   # Uganda
-A:+257   # Burundi
-A:+258   # Mosambik
-A:+260   # Sambia
-A:+261   # Madagaskar
-A:+262   # Reunion
-A:+263   # Simbabwe
-A:+264   # Namibia
-A:+265   # Malawi
-A:+266   # Lesotho
-A:+267   # Botsuana (Botswana)
-A:+268   # Swasiland
-A:+269   # Mayotte
-A:+27    # Südafrika
-A:+290   # Saint Helena
-A:+291   # Eritrea
-A:+297   # Aruba
-A:+299   # Grönland
-A:+374   # Armenien
-A:+396   # Vatikanstadt
-# FIXME A:+44    # Insel Man (Großbritannien)
-# FIXME A:+44    # Kanalinseln (Großbritannien)
-A:+500   # Falklandinseln
-A:+501   # Belize
-A:+502   # Guatemala
-A:+503   # El Salvador
-A:+504   # Honduras
-A:+505   # Nicaragua
-A:+506   # Costa Rica
-A:+507   # Panama
-A:+508   # Saint Pierre und Miquelon
-A:+509   # Haiti
-A:+51    # Peru
-A:+52    # Mexiko
-A:+53    # Kuba
-A:+54    # Argentinien
-A:+55    # Brasilien
-A:+56    # Chile
-A:+57    # Kolumbien
-A:+58    # Venezuela
-A:+590   # Guadeloupe (FUZZ 1:``Guadelope'' ~ ``Guadeloupe'')
-A:+591   # Bolivien
-A:+592   # Guyana
-A:+593   # Ecuador
-A:+595   # Paraguay
-A:+596   # Martinique
-A:+597   # Suriname
-A:+598   # Uruguay
-A:+599   # Niederländische Antillen
-A:+60    # Malaysia
-A:+62    # Indonesien
-A:+63    # Philippinen
-A:+66    # Thailand
-A:+670   # Marianen
-A:+671   # Guam
-A:+67210 # Davis (Antarktis)
-A:+6723  # Norfolkinseln (Australien)
-A:+673   # Brunei Darussalam
-A:+674   # Nauru
-A:+675   # Papua-Neuguinea
-A:+676   # Tonga
-A:+677   # Salomonen
-A:+678   # Vanuatu
-A:+679   # Fidschi
-A:+680   # Palau
-A:+682   # Cook-Inseln (FUZZ 1:``Cookinseln'' ~ ``Cook-Inseln'')
-A:+684   # Amerikanisch-Samoa
-A:+686   # Kiribati
-A:+687   # Neukaledonien
-A:+688   # Tuvalu
-A:+689   # Französisch-Polynesien
-A:+691   # Mikronesien
-A:+692   # Marshallinseln
-A:+7     # Kasachstan
-# FIXME A:+7     # Tadschikistan
-A:+84    # Vietnam
-A:+850   # Korea (Demokratische Republik)
-A:+853   # Macao
-A:+855   # Kambodscha
-A:+856   # Laos
-A:+86    # China (Volksrepublik)
-A:+880   # Bangladesch
-A:+886   # China (Taiwan)
-A:+91    # Indien
-A:+92    # Pakistan
-A:+93    # Afghanistan
-A:+94    # Sri Lanka
-A:+95    # Myanmar (Birma)
-A:+960   # Malediven
-A:+961   # Libanon
-A:+962   # Jordanien
-A:+963   # Syrien
-A:+964   # Irak
-A:+965   # Kuwait
-A:+966   # Saudi-Arabien
-A:+967   # Jemen (Arabische Republik)
-A:+968   # Oman
-A:+971   # Vereinigte Arabische Emirate
-A:+973   # Bahrain
-A:+974   # Katar
-A:+975   # Bhutan
-A:+976   # Mongolei
-A:+977   # Nepal
-A:+98    # Iran
-A:+993   # Turkmenistan
-A:+994   # Aserbaidschan
-A:+995   # Georgien
-A:+996   # Kirgisistan
+A:Diego Garcia
+A:Guantanamo
+A:Solomon Inseln
+A:Wallis und Futuna Inseln
+A:Bahamas
+A:Barbados
+A:Anguilla
+A:Antigua und Barbuda
+A:Britische Jungferninseln
+A:Amerikanische Jungferninseln
+A:Caymaninseln
+A:Bermuda
+A:Grenada
+A:Montserrat
+A:Saint Lucia
+A:Dominica
+A:Saint Vincent und die Grenadinen
+A:Puerto Rico
+A:Dominikanische Republik
+A:Trinidad und Tobago
+A:Saint Kitts and Nevis
+A:Jamaika
+A:Ägypten
+A:Gambia
+A:Senegal
+A:Mauretanien
+A:Mali
+A:Guinea
+A:Cote d'Ivoire (Elfenbeinküste)
+A:Burkina Faso (Obervolta)
+A:Niger
+A:Niue-Inseln
+A:Togo
+A:Benin
+A:Mauritius
+A:Liberia
+A:Sierra Leone
+A:Ghana
+A:Nigeria
+A:Tschad
+A:Zentralafrikanische Republik
+A:Kamerun
+A:Kap Verde
+A:Sao Tome und Principe
+A:Äquatorial-Guinea
+A:Gabun
+A:Kongo
+A:Zaire
+A:Angola
+A:Guinea-Bissau
+A:Ascension
+A:Seyschellen
+A:Sudan
+A:Ruanda
+A:Äthiopien
+A:Somalia
+A:Dschibuti
+A:Kenia
+A:Tansania
+A:Uganda
+A:Burundi
+A:Mosambik
+A:Sambia
+A:Madagaskar
+A:Reunion
+A:Simbabwe
+A:Namibia
+A:Malawi
+A:Lesotho
+A:Botsuana (Botswana)
+A:Swasiland
+A:Mayotte
+A:Südafrika
+A:Saint Helena
+A:Eritrea
+A:Aruba
+A:Grönland
+A:Armenien
+A:Vatikanstadt
+A:Insel Man (Großbritannien)
+A:Kanalinseln (Großbritannien)
+A:Falklandinseln
+A:Belize
+A:Guatemala
+A:El Salvador
+A:Honduras
+A:Nicaragua
+A:Costa Rica
+A:Panama
+A:Saint Pierre und Miquelon
+A:Haiti
+A:Peru
+A:Mexiko
+A:Kuba
+A:Argentinien
+A:Brasilien
+A:Chile
+A:Kolumbien
+A:Venezuela
+A:Guadeloupe
+A:Bolivien
+A:Guyana
+A:Ecuador
+A:Paraguay
+A:Martinique
+A:Suriname
+A:Uruguay
+A:Niederländische Antillen
+A:Malaysia
+A:Indonesien
+A:Philippinen
+A:Thailand
+A:Marianen
+A:Guam
+A:Davis (Antarktis)
+A:Norfolkinseln (Australien)
+A:Brunei Darussalam
+A:Nauru
+A:Papua-Neuguinea
+A:Tonga
+A:Salomonen
+A:Vanuatu
+A:Fidschi
+A:Palau
+A:Cook-Inseln
+A:Amerikanisch-Samoa
+A:Kiribati
+A:Neukaledonien
+A:Tuvalu
+A:Französisch-Polynesien
+A:Mikronesien
+A:Marshallinseln
+A:Kasachstan
+A:Tadschikistan
+A:Vietnam
+A:Korea (Demokratische Republik)
+A:Macao
+A:Kambodscha
+A:Laos
+A:China (Volksrepublik)
+A:Bangladesch
+A:China (Taiwan)
+A:Indien
+A:Pakistan
+A:Afghanistan
+A:Sri Lanka
+A:Myanmar (Birma)
+A:Malediven
+A:Libanon
+A:Jordanien
+A:Syrien
+A:Irak
+A:Kuwait
+A:Saudi-Arabien
+A:Jemen (Arabische Republik)
+A:Oman
+A:Vereinigte Arabische Emirate
+A:Bahrain
+A:Katar
+A:Bhutan
+A:Mongolei
+A:Nepal
+A:Iran
+A:Turkmenistan
+A:Aserbaidschan
+A:Georgien
+A:Kirgisistan
 A:Usbekistan
 T:*/*=2.44/60
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:14 EWE TEL
 C:GmbH, Donnerschweer Straße 22-26, 26123 Oldenburg 01014
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:15 RSL clever call
 C:RSL COM Deutschland GmbH, Lyoner Straße 36, 60528 Frankfurt/Main 01015
 G:01.04.1999
@@ -366,7 +389,7 @@ A:Niederländische Antillen, Polen, Portugal, Rumänien, Russland, San Marino, Ser
 A:Türkei, Ukraine
 T:*/*=0.91/60
 Z:13 Welt 1
-A:Kanada, USA (inkl. Alaska, Hawaii), Jungferninseln (USA)
+A:Kanada, USA, Alaska, Hawaii, Jungferninseln (USA)
 T:*/*=0.40/60
 Z:14 Welt 2
 A:Australien, Hongkong, Japan, Korea (Süd), Neuseeland, Singapur
@@ -384,12 +407,21 @@ Z:16 Welt 4
 A:+
 T:*/*=2.51/60
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:16 LausitzNet
 C:Telekommunikationsgesellschaft mbH, Lausitzer Straße 1-7, 03046 Cottbus 01016
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:17 SEC
 C:Service AG, Dieskaustraße 246, 04249 Leipzig 01017
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:18 debitel
 C:Kommunikationstechnik GmbH & Co KG, Schelmenwasenstr. 37 - 39, 70567 Stuttgart 01018
 Z:2-4 Fern
@@ -399,6 +431,9 @@ Z:21 Telefonauskunft
 A:11818
 T:*/*=0.968/0,0.121/7.5
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:19 Mobilcom CbC
 C:CityLine Telefondienste GmbH, Schwarzer Weg 13, 24837 Schleswig 01019
 G:06.04.1999
@@ -419,32 +454,35 @@ A:0177,0178		  # Eplus
 A:0176,0179  		  # E2
 T:*/*=0.49/60
 Z:14 Gruppe A
-A:+1     # Vereinigte Staaten (USA)
-A:+30    # Griechenland
-A:+31    # Niederlande
-A:+32    # Belgien
-A:+33    # Frankreich
-A:+34    # Spanien
-A:+350   # Gibraltar
-A:+351   # Portugal
-A:+352   # Luxemburg
-A:+353   # Irland
-A:+356   # Malta
-A:+358   # Finnland
-A:+376   # Andorra
-A:+377   # Monaco
-A:+39    # Italien
-A:+41    # Schweiz
-A:+43    # Österreich
-A:+44    # Großbritannien und Nordirland
+A:Vereinigte Staaten (USA)
+A:Griechenland
+A:Niederlande
+A:Belgien
+A:Frankreich
+A:Spanien
+A:Gibraltar
+A:Portugal
+A:Luxemburg
+A:Irland
+A:Malta
+A:Finnland
+A:Andorra
+A:Monaco
+A:Italien
+A:Schweiz
+A:Österreich
+A:Großbritannien und Nordirland
 A:Dänemark
-A:+46    # Schweden
-A:+47    # Norwegen
+A:Schweden
+A:Norwegen
 T:*/*=0.49/60
 Z:20 Internet
 A:01929 # (Benutzername: mobilcom; Passwort: mobilcom)
 T:*/*=0.05/60 FreeNet
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:20 ISIS isiFON classic
 C:ISIS Multimedia Net GmbH, Kaistraße 6, 40221 Düsseldorf 01020
 G:01.04.1999
@@ -482,15 +520,27 @@ T:W/09-18=0.1044/300
 T:W/18-09=0.1044/600
 T:E,H/*=0.1044/300
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:21 QS
 C:Communication Service GmbH, Oberländer Ufer 180-182, 50968 Köln 01021
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:22 NetCologne
 C:GmbH, Maarweg 163, 50825 Köln 01022
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:23 tesion
 C:Communikationsnetze Süd-West GmbH & Co. KG, Kriegsbergstr. 11, 70174 Stuttgart 01023
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:24 Telepassport
 G:01.05.1999
 C:GmbH, Schwindstraße 3, 60325 Frankfurt 01024
@@ -511,6 +561,9 @@ T:W/08-18=0.08/60 Standard
 T:W/18-08=0.06/60 Spar
 T:E/*=0.06/60 Spar
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:25 CityKom
 C:Münster, Haferlandweg 8, 48155 Münster 01025
 C:homepage:	http://www.citykom.de
@@ -1088,19 +1141,34 @@ T:*/05-09=0.056/106 Nebenzeit
 T:E,H/09-18=0.056/106 Nebenzeit
 T:*/21-05=0.056/145 Nachtzeit
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:26 ECN
 C:Telekommunikation GmbH, Schmickstraße 38-40, 60314 Frankfurt 01026
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:27 Communications Netzmanagement
 C:Bremen GmbH, Theodor-Heuss-Allee 20, 28215 Bremen 01027
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:28 Colt
 C:Telecom GmbH, Gervinusstraße 18-22, 60323 Frankfurt 01028
 C:Reseller von COLT : Telebridge, Global Communications, Nikoma
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:29 Unisource
 C:Carrier Services, Industriestraße 21, CH-8304 Wallisellen/Schweiz 01029
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:30 TelDaFax
 G:19.04.1999
 C:Telefon-, Daten- und Fax-Transfer GmbH & Co. KG, Schuppertsgasse 30, 35083 Wetter (Hessen) 01030
@@ -1123,12 +1191,21 @@ A:0177,0178		  # Eplus
 A:0176,0179  		  # E2
 T:*/*=0.48(60)/1
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:31 HEAG
 C:MediaNet GmbH, Luisenplatz 6, 64283 Darmstadt 01031
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:32 KDD
 C:Deutschland GmbH, Immermannstraße 45, 40210 Düsseldorf 01032
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:33 DTAG
 G:01.04.1999
 C:Deutsche Telekom AG, Friedrich-Ebert-Allee 140, 53113 Bonn 01033
@@ -1290,30 +1367,57 @@ A:0700
 T:*/09-18=0.12/15
 T:*/18-09=0.12/30
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:34 NEFkom
 C:Telekommunikation GmbH & Co. KG, Bärenschanzstraße 4, 90429 Nürnberg 01034
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:35 interCOM
 C:GmbH, Hauptstraße 52a, 28876 Oyten 01035
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:36 Hutchison
 C:Münsterstraße 109, 48155 Münster 01036
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:37 ETS
 C:Verwaltung für Sprach- und Datennetze GmbH, Brunnenstraße 4, 61191 Rosbach 01037
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:38 MediaWays
 C:GmbH, An der Autobahn, 33311 Gütersloh 01038
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:39 First Telecom
 C:GmbH, Lyoner Straße 51, 60528 Frankfurt/Main 01039
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:40 PLUSNET
 C:Gesellschaft für Netzwerk Services mbH, August-Thyssen-Straße 1, 40211 Düsseldorf 01040
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:41 HanseNet
 C:Telekommunikation GmbH, Hammerbrookstraße 63, 20097 Hamburg 01041
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:42 TeleBeL
 C:Telekommunikation Bergisches Land GmbH, Johannisberg 7, 42103 Wuppertal 01042
 C:Hotline:	01802 / 244 544
@@ -1356,24 +1460,45 @@ T:*/*=0.05(60)/1
 Z:21 Unter Uns
 T:*/*=0.02(60)/1
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:43 KielNet
 C:GmbH, Postfach 41 60, 24100 Kiel 01043
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:44 VEW TELNET
 C:Gesellschaft für Telekommunikation und Netzdienste mbH, Unterste-Wilms-Straße 29, 44143 Dortmund 01044
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:45 Global Network
 C:Telephone Deutschland, Grosser Plan 8, 29221 Celle 01045
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:46 KomTel
 C:Gesellschaft für Kommunikation und Informationsdienste GmbH, Batteriestraße 48, 24937 Flensburg 01046
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:47 PrimeTec
 C:International Europe Ltd. 01047
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:48 DOKOM
 C:GmbH, Im Defdahl 5, 44141 Dortmund 01048
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:49,1 ACC ACCess Direkt Pre-Selection Einheitentarif
 C:Telekommunikation GmbH, Heinrich-Heine-Allee 53, 40213 Düsseldorf 01049
 C:Homepage: http://www.acctelecom.de
@@ -1510,6 +1635,9 @@ T:*/*=0.09/2.4
 Z:23 Welt7
 T:*/*=0.09/2.3
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:49,2 ACC ACCess Direkt Pre-Selection Minutentarif
 C:Telekommunikation GmbH, Heinrich-Heine-Allee 53, 40213 Düsseldorf 01049
 C:Homepage: http://www.acctelecom.de
@@ -1646,6 +1774,9 @@ T:*/*=2.27(60)/1
 Z:23 Welt7
 T:*/*=2.35(60)/1
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:49,3 ACC ACCess 01049 Einheitentarif Call-By-Call
 C:Telekommunikation GmbH, Heinrich-Heine-Allee 53, 40213 Düsseldorf 01049
 C:Homepage: http://www.acctelecom.de
@@ -1820,6 +1951,9 @@ T:*/*=0.09/2.4
 Z:23 Welt7
 T:*/*=0.09/2.3
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:49,4 ACC ACCess 01049 Minutentarif Call-By-Call
 C:Telekommunikation GmbH, Heinrich-Heine-Allee 53, 40213 Düsseldorf 01049
 C:Homepage: http://www.acctelecom.de
@@ -1967,6 +2101,9 @@ T:*/*=2.27(60)/1
 Z:23 Welt7
 T:*/*=2.35(60)/1
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:50 Talkline
 G:01.05.1999
 C:PS PhoneServices GmbH, Adenauer Damm 1, 25337 Elmshorn 01050
@@ -1974,12 +2111,12 @@ C:Homepage: http://www.null1050.de
 C:Hotline:  01802/2002
 C:Faxabruf: 01802/2001
 Z:2-4 Fern
-T:W/07-08=0.09/60
-T:W/08-19=0.18/60
-T:W/19-21=0.18/60
-T:W/21-22=0.09/60
-T:W/22-07=0.09/60
-T:E/*=0.09/60
+T:W/07-19=0.15/60
+T:W/19-22=0.08/60
+T:W/22-07=0.039/60
+T:E,H/07-22=0.08/60
+T:E,H/22-07=0.039/60
+T:E,H/*=0.09/60
 Z:20 Talknet by call
 A:019251 # (Benutzername: talknet; Passwort: talknet; DNS-Server: 195.252.128.53)
 T:W/07-08=0.09(60)/180
@@ -1987,11 +2124,14 @@ T:W/08-19=0.09(60)/180
 T:W/19-21=0.08(60)/180
 T:W/21-22=0.07(60)/180
 T:W/22-07=0.05(60)/180
-T:E/*=0.06(60)/180
+T:E,H/*=0.06(60)/180
 Z:21 Telefonauskunft
 A:11850
 T:*/*=0.968/0,0.12/7.5
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:51 01051
 C:ID-Switch GmbH, Graf-Adolf-Straße, 40210 Düsseldorf 01051
 G:17.02.1999
@@ -2003,7 +2143,9 @@ T:*/*=0.09/60
 Z:12 Euro 1
 A:Österreich
 T:*/*=0.25/60
-# FIXME: Österreich Mobilfunk */*=0.75/60
+Z:13 Österreich Mobilfunk
+A:Österreich Mobilfunk
+T:*/*=0.75/60
 Z:21 Telefonauskunft Inland (Austria)
 A:+4366211811
 T:*/*=0.25/60
@@ -2011,15 +2153,27 @@ Z:22 Telefonauskunft Ausland (Austria)
 A:+4366211812
 T:*/*=0.25/60
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:52 Long Distance
 C:International Ltd., 5 Duke's Gate Acton, London W 4 5 DX, GB 01052
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:53 WOBCOM
 C:GmbH Wolfsburg, Heßlinger Str. 1-5, 38440 Wolfsburg 01053
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:54 USFI
 C:Global Network Services Germany GmbH, Kindsbacherstraße 41, 66877 Ramstein 01054
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:55 Esprit
 G:01.04.99
 C:Telecom Deutschland GmbH, Kaistraße 16 A, 40221 Düsseldorf 01055
@@ -2049,48 +2203,93 @@ T:E/08-18=0.08/60 Geschäftszeit
 T:E/18-21=0.06/60 Early night
 T:E/21-08=0.06/60 Late night
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:56 BITel
 C:Gesellschaft für kommunale Telekommunikation mbh, Schildescher Straße 16, 33611 Bielefeld 01056
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:57 Mox
 C:Telecom GmbH, Industriestraße 3a, 40878 Ratingen 01057
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:58 KaTel
 C:Gesellschaft für Telekommunikation mbH, Mathias-Brüggen-Straße 87-89, 50829 Köln 01058
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:59 Pacific Gateway Exchange
 C:Inc., 533 Airport Boulevard, Suite 505, Burlingame, CA 94010, USA 01059
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:60 Telecom-InfoService
 C:GmbH, Postfach 174, A-1000 Wien (A) 01060
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:61 TelSA
 C:Telekommunikationsgesellschaft mbH, Magdeburger Str. 51, 06112 Halle 01061
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:62 DENTEL
 C:GmbH i.G. Grimmstraße 4 80336 München 01062
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:63 Conos
 C:Corporate Network & Services Aktiengesellschaft Lievelingsweg 125 52119 Bonn 01063
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:64 Hannoversche
 C:Telekommunikations- und Netzgesellschaft mbH, Glockseestraße 33, 30161 Hannover 01064
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:65 Rapid Link
 C:Telecommunications GmbH, Donaustraße 68, 68199 Mannheim 01065
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:66 Interoute
 C:Telecom Deutschland GmbH, Lyoner Str. 15, 60528 Frankfurt 01066
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:67 RegioCom
 C:GmbH, Steinfeldstraße 3, 39179 Barleben 01067
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:68 Tele Media
 C:International, Wilhelm-Leuschner-Strasse 23-25, 60329 Frankfurt/Main 01068
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:69 Primus
 C:Telecommunications Ltd. 01069
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:70,1 Arcor CbC
 G:01.04.99
 C:Mannesmann Arcor
@@ -2127,255 +2326,254 @@ T:W/09-18=1.25/60 Hauptzeit
 T:W/18-09=0.56/60 Nebenzeit
 T:E,H/*=0.56/60 Freizeit
 Z:11 Euro
-A:+31    # Niederlande
-A:+32    # Belgien
-A:+33    # Frankreich
-A:+34    # Spanien
-A:+351   # Portugal
-A:+352   # Luxemburg
-A:+353   # Irland
-A:+358   # Finnland
-A:+39    # Italien
-A:+43    # Österreich
+A:Niederlande
+A:Belgien
+A:Frankreich
+A:Spanien
+A:Portugal
+A:Luxemburg
+A:Irland
+A:Finnland
+A:Italien
+A:Österreich
 T:*/*=0.46/60
 Z:12 Euro Plus
-A:+298   # Färöer
-A:+30    # Griechenland
-# FIXME A:+353   # Irland
-A:+354   # Island
-A:+36    # Ungarn
-A:+376   # Andorra
-A:+377   # Monaco
-A:+378   # San Marino
-A:+396   # Vatikanstadt
-A:+41    # Schweiz
-A:+4175  # Liechtenstein
-A:+420   # Tschechien
-A:+421   # Slowakei
-A:+44    # Großbritannien und Nordirland
-# FIXME A:+44    # Insel Man (Großbritannien)
-# FIXME A:+44    # Kanalinseln (Großbritannien)
+A:Färöer
+A:Griechenland
+A:Island
+A:Ungarn
+A:Andorra
+A:Monaco
+A:San Marino
+A:Vatikanstadt
+A:Schweiz
+A:Liechtenstein
+A:Tschechien
+A:Slowakei
+A:Großbritannien und Nordirland
+A:Insel Man (Großbritannien)
+A:Kanalinseln (Großbritannien)
 A:Dänemark
-A:+46    # Schweden
-A:+47    # Norwegen
-A:+48    # Polen
+A:Schweden
+A:Norwegen
+A:Polen
 T:*/*=0.68/60
 Z:13 Übriges Europa
-A:+212   # Marokko
-A:+213   # Algerien
-A:+216   # Tunesien
-A:+218   # Libyen
-A:+350   # Gibraltar
-A:+355   # Albanien
-A:+356   # Malta
-A:+357   # Zypern
-A:+359   # Bulgarien
-A:+370   # Litauen
-A:+371   # Lettland
+A:Marokko
+A:Algerien
+A:Tunesien
+A:Libyen
+A:Gibraltar
+A:Albanien
+A:Malta
+A:Zypern
+A:Bulgarien
+A:Litauen
+A:Lettland
 A:Estland
-A:+373   # Moldau Republik (FUZZ 2:``Moldau (Republik)'' ~ ``Moldau Republik'')
-A:+375   # Belarus (Weißrußland)
-A:+380   # Ukraine
-A:+381   # Jugoslawien Montenegro
-A:+385   # Kroatien
-A:+386   # Slowenien
-A:+387   # Bosnien-Herzegowina
-A:+389   # Mazedonien
-A:+40    # Rumänien
-A:+7     # GUS (Russische Föderation)
-A:+90    # Türkei
-A:+972   # Israel
+A:Moldau Republik
+A:Belarus (Weißrußland)
+A:Ukraine
+A:Jugoslawien Montenegro
+A:Kroatien
+A:Slowenien
+A:Bosnien-Herzegowina
+A:Mazedonien
+A:Rumänien
+A:GUS (Russische Föderation)
+A:Türkei
+A:Israel
 T:*/*=0.96/60
 Z:14 Nordamerika
-A:+1     # Kanada
-# FIXME A:+1     # Vereinigte Staaten (USA)
+A:Kanada
+A:Vereinigte Staaten (USA)
 T:*/*=0.48/60
 Z:15 Asien / Pazifik
-A:+61    # Australien
-A:+64    # Neuseeland
-A:+65    # Singapur
-A:+81    # Japan
-A:+82    # Korea (Republik)
-A:+852   # Hongkong
+A:Australien
+A:Neuseeland
+A:Singapur
+A:Japan
+A:Korea (Republik)
+A:Hongkong
 T:*/*=1.69/60
 Z:16 Übrige Welt 1
-A:+1809  # Dominikanische Republik
-A:+20    # Ägypten
-A:+27    # Südafrika
-A:+54    # Argentinien
-A:+55    # Brasilien
-A:+56    # Chile
-A:+57    # Kolumbien
-A:+599   # Niederländische Antillen
-A:+63    # Philippinen
-# FIXME A:+7     # Kasachstan
-A:+886   # China (Taiwan)
-A:+961   # Libanon
-A:+962   # Jordanien
-A:+963   # Syrien
-A:+966   # Saudi-Arabien (FUZZ 1:``Saudi Arabien'' ~ ``Saudi-Arabien'')
-A:+971   # Vereinigte Arabische Emirate
-A:+98    # Iran
+A:Dominikanische Republik
+A:Ägypten
+A:Südafrika
+A:Argentinien
+A:Brasilien
+A:Chile
+A:Kolumbien
+A:Niederländische Antillen
+A:Philippinen
+A:Kasachstan
+A:China (Taiwan)
+A:Libanon
+A:Jordanien
+A:Syrien
+A:Saudi-Arabien
+A:Vereinigte Arabische Emirate
+A:Iran
 T:*/*=2.59/60
 Z:17 Übrige Welt 2
-A:+1242  # Bahamas
-A:+1246  # Barbados
-A:+1264  # Anguilla
-A:+1268  # Antigua und Barbuda
-A:+1284  # Britische Jungferninseln
-A:+1340  # Amerikanische Jungferninseln
-A:+1345  # Caymaninseln
-A:+1441  # Bermuda
-A:+1473  # Grenada
-A:+1649  # Turks- und Caicos-Inseln
-A:+1664  # Montserrat
-A:+1758  # Saint Lucia
-A:+1767  # Dominica
-A:+1784  # Saint Vincent und die Grenadinen
-A:+1787  # Puerto Rico
-A:+1868  # Trinidad und Tobago
-A:+1869  # Saint Kitts and Nevis
-A:+1876  # Jamaika
-A:+220   # Gambia
-A:+221   # Senegal
-A:+222   # Mauretanien
-A:+223   # Mali
-A:+224   # Guinea
-A:+225   # Cote d'Ivoire (Elfenbeinküste)
-A:+226   # Burkina Faso (Obervolta)
-A:+227   # Niger
-A:+228   # Togo
-A:+229   # Benin
-A:+230   # Mauritius
-A:+231   # Liberia
-A:+232   # Sierra Leone
-A:+233   # Ghana
-A:+234   # Nigeria
-A:+235   # Tschad
-A:+236   # Zentralafrikanische Republik
-A:+237   # Kamerun
-A:+238   # Kap Verde
-A:+239   # Sao Tome und Principe
-A:+240   # Äquatorial-Guinea
-A:+241   # Gabun
-A:+242   # Kongo
-A:+243   # Zaire
-A:+244   # Angola
-A:+245   # Guinea-Bissau
-A:+247   # Ascension
-A:+248   # Seyschellen
-A:+249   # Sudan
-A:+250   # Ruanda
-A:+251   # Äthiopien
-A:+252   # Somalia
-A:+253   # Dschibuti
-A:+254   # Kenia
-A:+255   # Tansania
-A:+256   # Uganda
-A:+257   # Burundi
-A:+258   # Mosambik
-A:+260   # Sambia
-A:+261   # Madagaskar
-A:+262   # Reunion
-A:+263   # Simbabwe
-A:+264   # Namibia
-A:+265   # Malawi
-A:+266   # Lesotho
-A:+267   # Botsuana (Botswana)
-A:+268   # Swasiland
-A:+269   # Komoren
-# FIXME A:+269   # Mayotte
-A:+290   # Saint Helena
-A:+291   # Eritrea
-A:+297   # Aruba
-A:+299   # Grönland
-A:+374   # Armenien
-# FIXME A:+375   # Weißrußland (Belarus)
-A:+500   # Falklandinseln
-A:+501   # Belize
-A:+502   # Guatemala
-A:+503   # El Salvador
-A:+504   # Honduras
-A:+505   # Nicaragua
-A:+506   # Costa Rica
-A:+507   # Panama
-A:+508   # Saint Pierre und Miquelon
-A:+509   # Haiti
-A:+51    # Peru
-A:+52    # Mexiko
-A:+53    # Kuba
-A:+58    # Venezuela
-A:+590   # Guadeloupe
-A:+591   # Bolivien
-A:+592   # Guyana
-A:+593   # Ecuador
-A:+594   # Französisch-Guayana
-A:+595   # Paraguay
-A:+596   # Martinique
-A:+597   # Suriname
-A:+598   # Uruguay
-A:+60    # Malaysia
-A:+62    # Indonesien
-A:+66    # Thailand
-A:+670   # Marianen
-A:+671   # Guam
-A:+67210 # Davis (Antarktis)
-A:+67211 # Mawson (Antarktis)
-A:+67212 # Casey (Antarktis)
-A:+67213 # Macquarrie Island (Antarktis)
-A:+6722  # Kokosinseln (Australien)
-A:+6723  # Norfolkinseln (Australien)
-A:+6724  # Weihnachtsinsel (Australien)
-A:+673   # Brunei Darussalam
-A:+674   # Nauru
-A:+675   # Papua-Neuguinea
-A:+676   # Tonga
-A:+677   # Salomonen
-A:+678   # Vanuatu
-A:+679   # Fidschi
-A:+680   # Palau
-A:+682   # Cook-Inseln
-A:+684   # Amerikanisch-Samoa
-A:+685   # Samoa
-A:+686   # Kiribati
-A:+687   # Neukaledonien
-A:+688   # Tuvalu
-A:+689   # Französisch-Polynesien
-A:+691   # Mikronesien
-A:+692   # Marshallinseln
-# FIXME A:+7     # Tadschikistan
-A:+84    # Vietnam
-A:+850   # Korea (Demokratische Republik)
-A:+853   # Macao
-A:+855   # Kambodscha
-A:+856   # Laos
-A:+86    # China (Volksrepublik)
-A:+871   # Atlantischer Ozean (Ost)
-A:+872   # Pazifischer Ozean
-A:+873   # Indischer Ozean
-A:+874   # Atlantischer Ozean (West)
-A:+880   # Bangladesch
-# FIXME A:+886   # Taiwan
-# FIXME A:+90    # Zypern (Nordzypern)
-A:+91    # Indien
-A:+92    # Pakistan
-A:+93    # Afghanistan
-A:+94    # Sri Lanka
-A:+95    # Myanmar (Birma)
-A:+960   # Malediven
-A:+964   # Irak
-A:+965   # Kuwait
-A:+967   # Jemen (Arabische Republik)
-A:+968   # Oman
-A:+973   # Bahrain
-A:+974   # Katar
-A:+975   # Bhutan
-A:+976   # Mongolei
-A:+977   # Nepal
-A:+993   # Turkmenistan
-A:+994   # Aserbaidschan
-A:+995   # Georgien
-A:+996   # Kirgisistan
+A:Bahamas
+A:Barbados
+A:Anguilla
+A:Antigua und Barbuda
+A:Britische Jungferninseln
+A:Amerikanische Jungferninseln
+A:Caymaninseln
+A:Bermuda
+A:Grenada
+A:Turks- und Caicos-Inseln
+A:Montserrat
+A:Saint Lucia
+A:Dominica
+A:Saint Vincent und die Grenadinen
+A:Puerto Rico
+A:Trinidad und Tobago
+A:Saint Kitts and Nevis
+A:Jamaika
+A:Gambia
+A:Senegal
+A:Mauretanien
+A:Mali
+A:Guinea
+A:Cote d'Ivoire (Elfenbeinküste)
+A:Burkina Faso (Obervolta)
+A:Niger
+A:Togo
+A:Benin
+A:Mauritius
+A:Liberia
+A:Sierra Leone
+A:Ghana
+A:Nigeria
+A:Tschad
+A:Zentralafrikanische Republik
+A:Kamerun
+A:Kap Verde
+A:Sao Tome und Principe
+A:Äquatorial-Guinea
+A:Gabun
+A:Kongo
+A:Zaire
+A:Angola
+A:Guinea-Bissau
+A:Ascension
+A:Seyschellen
+A:Sudan
+A:Ruanda
+A:Äthiopien
+A:Somalia
+A:Dschibuti
+A:Kenia
+A:Tansania
+A:Uganda
+A:Burundi
+A:Mosambik
+A:Sambia
+A:Madagaskar
+A:Reunion
+A:Simbabwe
+A:Namibia
+A:Malawi
+A:Lesotho
+A:Botsuana (Botswana)
+A:Swasiland
+A:Komoren
+A:Mayotte
+A:Saint Helena
+A:Eritrea
+A:Aruba
+A:Grönland
+A:Armenien
+A:Weißrußland (Belarus)
+A:Falklandinseln
+A:Belize
+A:Guatemala
+A:El Salvador
+A:Honduras
+A:Nicaragua
+A:Costa Rica
+A:Panama
+A:Saint Pierre und Miquelon
+A:Haiti
+A:Peru
+A:Mexiko
+A:Kuba
+A:Venezuela
+A:Guadeloupe
+A:Bolivien
+A:Guyana
+A:Ecuador
+A:Französisch-Guayana
+A:Paraguay
+A:Martinique
+A:Suriname
+A:Uruguay
+A:Malaysia
+A:Indonesien
+A:Thailand
+A:Marianen
+A:Guam
+A:Davis (Antarktis)
+A:Mawson (Antarktis)
+A:Casey (Antarktis)
+A:Macquarrie Island (Antarktis)
+A:Kokosinseln (Australien)
+A:Norfolkinseln (Australien)
+A:Weihnachtsinsel (Australien)
+A:Brunei Darussalam
+A:Nauru
+A:Papua-Neuguinea
+A:Tonga
+A:Salomonen
+A:Vanuatu
+A:Fidschi
+A:Palau
+A:Cook-Inseln
+A:Amerikanisch-Samoa
+A:Samoa
+A:Kiribati
+A:Neukaledonien
+A:Tuvalu
+A:Französisch-Polynesien
+A:Mikronesien
+A:Marshallinseln
+A:Tadschikistan
+A:Vietnam
+A:Korea (Demokratische Republik)
+A:Macao
+A:Kambodscha
+A:Laos
+A:China (Volksrepublik)
+A:Atlantischer Ozean (Ost)
+A:Pazifischer Ozean
+A:Indischer Ozean
+A:Atlantischer Ozean (West)
+A:Bangladesch
+A:Taiwan
+A:Zypern (Nordzypern)
+A:Indien
+A:Pakistan
+A:Afghanistan
+A:Sri Lanka
+A:Myanmar (Birma)
+A:Malediven
+A:Irak
+A:Kuwait
+A:Jemen (Arabische Republik)
+A:Oman
+A:Bahrain
+A:Katar
+A:Bhutan
+A:Mongolei
+A:Nepal
+A:Turkmenistan
+A:Aserbaidschan
+A:Georgien
+A:Kirgisistan
 A:Usbekistan
 T:*/*=2.72/60
 Z:20 Internet
@@ -2405,6 +2603,9 @@ Z:37 Serviceruf 01805
 A:01805
 T:*/*=0.12/30
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:70,2 Arcor Town to Town
 G:01.04.99
 C:Mannesmann Arcor
@@ -2431,6 +2632,9 @@ T:W/21-06=0.06(60)/30 Nebenzeit
 T:E,H/06-21=0.095(60)/30 Freizeit
 T:E,H/21-06=0.06(60)/30 Nebenzeit
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:70,3 Arcor Town to Town Sekunde
 G:01.04.99
 C:Mannesmann Arcor
@@ -2457,27 +2661,51 @@ T:W/21-06=0.058/0,0.06(60)/1 Nebenzeit
 T:E,H/06-21=0.058/0,0.095(60)/1 Freizeit
 T:E,H/21-06=0.058/0,0.06(60)/1 Nebenzeit
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:71 DeTeMobil
 C:Deutsche Telekom MobilNet GmbH, Landgrabenweg 151, 53227 Bonn 01071
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:72 Mannesmann
 C:Mobilfunk GmbH, Am Seestern 1, 40547 Düsseldorf 01072
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:73 AXXON
 C:Telecom GmbH, Am Seestern 24, 40547 Düsseldorf 01073
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:74 Alpha
 C:Telecom GmbH, Beethovenstraße 1-3, 60325 Frankfurt/Main 01074
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:75 ARCIS
 C:Media Com Management GmbH, Maximilianstr. 14, 80539 München 01075
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:76 QuickNet
 C:Telenetworks & Service AG, Else-Lasker-Schüler-Straße 47, 42107 Wuppertal 01076
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:77 E-Plus
 C:Mobilfunk GmbH, E-Plus-Platz 1, 40468 Düsseldorf 01077
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:78 3U
 G:01.04.1999
 C:Telekommunikation GmbH, Äußere Zittauer Straße 51, 02708 Löbau 01078
@@ -2590,27 +2818,10 @@ A:+7812  # Rußland St. Petersburg
 T:*/08-20=0.429(60)/1
 T:*/20-08=0.409(60)/1
 Z:116
-A:+4520  # Dänemark Mobilfunk
-A:+4521  # Dänemark Mobilfunk
-A:+4522  # Dänemark Mobilfunk
-A:+4526  # Dänemark Mobilfunk
-A:+4528  # Dänemark Mobilfunk
-A:+4530  # Dänemark Mobilfunk
-A:+4540  # Dänemark Mobilfunk
-A:+442   # Großbritannien Mobilfunk
-A:+443   # Großbritannien Mobilfunk
-A:+444   # Großbritannien Mobilfunk
-A:+445   # Großbritannien Mobilfunk
-A:+446   # Großbritannien Mobilfunk
-A:+447   # Großbritannien Mobilfunk
-A:+448   # Großbritannien Mobilfunk
-A:+449   # Großbritannien Mobilfunk
-A:+4790  # Norwegen Mobilfunk
-A:+4792  # Norwegen Mobilfunk
-A:+4794  # Norwegen Mobilfunk
-A:+4610  # Schweden Mobilfunk
-A:+4670  # Schweden Mobilfunk
-A:+4673  # Schweden Mobilfunk
+A:Dänemark Mobilfunk
+A:Großbritannien Mobilfunk
+A:Norwegen Mobilfunk
+A:Schweden Mobilfunk
 T:*/08-20=0.469(60)/1
 T:*/20-08=0.449(60)/1
 Z:117
@@ -2625,23 +2836,12 @@ A:+82    # Korea Rep. (South)
 T:*/08-20=0.499(60)/1
 T:*/20-08=0.479(60)/1
 Z:119
-A:+336   # Frankreich Mobilfunk
+A:Frankreich Mobilfunk
 A:+386   # Slowenien
 T:*/08-20=0.509(60)/1
 T:*/20-08=0.489(60)/1
 Z:120
-A:+3217  # Belgien Mobilfunk
-A:+3218  # Belgien Mobilfunk
-A:+3245  # Belgien Mobilfunk
-A:+3247  # Belgien Mobilfunk
-A:+3249  # Belgien Mobilfunk
-A:+3270  # Belgien Mobilfunk
-A:+3272  # Belgien Mobilfunk
-A:+3273  # Belgien Mobilfunk
-A:+3275  # Belgien Mobilfunk
-A:+3277  # Belgien Mobilfunk
-A:+3290  # Belgien Mobilfunk
-A:+3295  # Belgien Mobilfunk
+A:Belgien Mobilfunk
 A:+60    # Malaysia
 A:+36    # Ungarn
 T:*/08-20=0.519(60)/1
@@ -2657,7 +2857,7 @@ T:*/20-08=0.519(60)/1
 Z:123
 A:+354   # Island
 A:+618   # Kokos-Inseln
-A:+3165  # Niederlande Mobilfunk
+A:Niederlande Mobilfunk
 T:*/08-20=0.549(60)/1
 T:*/20-08=0.529(60)/1
 Z:124
@@ -2699,15 +2899,7 @@ T:*/08-20=0.629(60)/1
 T:*/20-08=0.609(60)/1
 Z:132
 A:+355   # Albanien
-A:+39330 # Italien Mobilfunk
-A:+39335 # Italien Mobilfunk
-A:+39336 # Italien Mobilfunk
-A:+39337 # Italien Mobilfunk
-A:+39338 # Italien Mobilfunk
-A:+39347 # Italien Mobilfunk
-A:+39348 # Italien Mobilfunk
-A:+39360 # Italien Mobilfunk
-A:+39368 # Italien Mobilfunk
+A:Italien Mobilfunk
 A:+599   # Niederländische Antillen
 T:*/08-20=0.649(60)/1
 T:*/20-08=0.629(60)/1
@@ -2733,14 +2925,7 @@ Z:137
 A:+387   # Bosnien-Herzegowina
 A:+359   # Bulgarien
 A:+299   # Grönland
-A:+8110  # Japan Mobilfunk
-A:+8120  # Japan Mobilfunk
-A:+8140  # Japan Mobilfunk
-A:+8150  # Japan Mobilfunk
-A:+8160  # Japan Mobilfunk
-A:+8170  # Japan Mobilfunk
-A:+8180  # Japan Mobilfunk
-A:+8190  # Japan Mobilfunk
+A:Japan Mobilfunk
 T:*/08-20=0.689(60)/1
 T:*/20-08=0.669(60)/1
 Z:138
@@ -2797,7 +2982,7 @@ T:*/08-20=0.789(60)/1
 T:*/20-08=0.769(60)/1
 Z:147
 A:+267   # Botswana Republic
-A:+9725  # Israel Mobilfunk
+A:Israel Mobilfunk
 T:*/08-20=0.799(60)/1
 T:*/20-08=0.779(60)/1
 Z:148
@@ -2816,7 +3001,7 @@ A:+62    # Indonesien
 T:*/08-20=0.819(60)/1
 T:*/20-08=0.799(60)/1
 Z:151
-A:+5939  # Ecuador Mobilfunk
+A:Ecuador Mobilfunk
 A:+692   # Marshallinseln
 A:+380   # Ukraine
 T:*/08-20=0.829(60)/1
@@ -2905,8 +3090,7 @@ T:*/20-08=0.999(60)/1
 Z:168
 A:+504   # Honduras
 A:+507   # Panama
-A:+4177  # Schweiz Mobilfunk
-A:+4179  # Schweiz Mobilfunk
+A:Schweiz Mobilfunk
 T:*/08-20=1.029(60)/1
 T:*/20-08=1.009(60)/1
 Z:169
@@ -2976,7 +3160,7 @@ A:+1784  # St. Vincent and Grenadines
 T:*/08-20=1.179(60)/1
 T:*/20-08=1.159(60)/1
 Z:183
-A:+573   # Kolumbien Mobilfunk
+A:Kolumbien Mobilfunk
 T:*/08-20=1.189(60)/1
 T:*/20-08=1.169(60)/1
 Z:184
@@ -3040,7 +3224,7 @@ A:+98    # Iran
 T:*/08-20=1.339(60)/1
 T:*/20-08=1.319(60)/1
 Z:195
-A:+8613  # China Mobilfunk
+A:China Mobilfunk
 A:+850   # Korea (North)
 T:*/08-20=1.349(60)/1
 T:*/20-08=1.329(60)/1
@@ -3225,6 +3409,9 @@ A:+8741  # Inmarsat A (W.Atlantic)
 T:*/08-20=9.969(60)/1
 T:*/20-08=9.949(60)/1
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:79 Viatel
 G:01.05.1999
 C:VIAPHONE GmbH, Hanauer Landstraße 187, 60314 Frankfurt 01079
@@ -3248,6 +3435,9 @@ T:W/09-18=0.365/30,0.73(60)/1 Standard
 T:W/18-09=0.18/30,0.36(60)/1 Spar
 T:E/*=0.18/30,0.36(60)/1 Spar
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:80 Telegate
 C:Aktiengesellschaft für telefonische Informationsdienste, Bahnhofstraße 26, 82211 Herrsching 01080
 Z:21 Telefonauskunft Inland
@@ -3257,18 +3447,33 @@ Z:22 Telefonauskunft Ausland
 A:11890
 T:*/*=3.51/60
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:81 Infotel
 C:bV, Onderlangs 120, 6812 CJ Arnhem, Niederlande 01081
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:82 AugustaKom
 C:Telekommunikation GmbH & Co.KG Hoher Weg 1 86152 Augsburg 01082
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:83 Wuerzburger
 C:Telekommunikationsgesellschaft mbH, Bahnhofstraße 12-18, 97070 Würzburg 01083
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:84 Telegroup
 C:Network Services GmbH, Grossenbaumer Weg 6, 40472 Düsseldorf 01084
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:85 GTS-WESTCom
 G:01.02.1999
 C:GmbH, Hebelstraße 22 c, 69115 Heidelberg 01085
@@ -3281,12 +3486,21 @@ T:W/08-18=0.16(60)/1 Standard
 T:W/18-08=0.09(60)/1 Spar
 T:E/*=0.09(60)/1 Spar
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:86 ONE.TEL
 C:Limited (UK), Clements House, 14-18 Gresham Street, London, EC2V 7JE, England 01086
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:87 HAMCOM
 C:GmbH Telekommunikation, Südring 1-3, 59065 Hamm 01087
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:88 WorldCom
 C:Telecommunication Services GmbH, Brönnerstr. 15, 60313 Frankfurt 01088
 C:Dies sind *nicht* die korrekten Tarife von WorldCom, da WorldCom
@@ -3302,9 +3516,15 @@ T:W/21-05=0.03(60)/1 UUnet
 T:E,H/05-21=0.048(60)/1 UUnet
 T:E,H/21-05=0.03(60)/1 UUnet
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:89 M'net
 C:Telekommunikations GmbH, Corneliusstraße 10, 80469 München 01089
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:90 Viag Interkom
 G:01.04.1999
 C:GmbH & Co. KG, Elsenheimer Straße 11, 81927 München 01090
@@ -3320,31 +3540,58 @@ Z:21 Telefonauskunft
 A:11881
 T:*/*=1.59/0,0.22(60)/10
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:91 IDT
 C:Global Limited, London, United Kingdom 01091
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:92 Hallo Telefon Service
 C:GmbH Dinkelbergstraße 6 76684 Östringen 01092
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:93 Kray
 C:Informationssysteme, Brüder-Grimm-Allee 73 A, 37085 Göttingen 01093
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:94 Global Communications
 C:GmbH, Eupener Straße 57 - 59, 50933 Köln 01094
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:95 Teleos
 C:GmbH, Bielefelder Straße 3, 32051 Herford 01095
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:96 GELSEN-NET
 C:Kommunikationsgesellschaft mbH, Munscheidstraße 14, 45886 Gelsenkirchen 01096
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:97 AT & T-Unisource
 C:Communication Services (Deutschland) GmbH, Lyoner Str. 15, 60528 Frankfurt 01097
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:98 STAR
 C:Telecommunications Deutschland GmbH, Voltastraße 1a, 60486 Frankfurt 01098
 C:Reseller von STAR : C@llas, Mox, Nikoma
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:98,1 Mox
 G:01.05.1999
 C:Mox Telecom AG
@@ -3431,64 +3678,124 @@ Z:17
 A:+
 T:*/*=1.759(60)/1
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:99 ECONOPHONE
 C:GmbH, Flughafenstraße 54b, 22335 Hamburg 01099
 C:Reseller von ECONOPHONE : Telco
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:100 TELELEV
 C:Telekommunikation GmbH, Dönhoffstraße 39, 51373 Leverkusen 010000
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:101 Netnet
 C:International AB, P.O. Box 6708, S-11385 Stockholm 010001
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:102 EncoTel
 C:GmbH & Co.KG, Leibnitzstraße 73, 07548 Gera 010002
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:103 mevacom
 C:Telekommunikationsdienstleistungen GmbH, Posthofstraße 16, 14467 Potsdam 010003
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:107 KPN
 C:Telecom BV, Prinses Beatrixlaan 23, 2595 AK's Gravenhage, Niederlande 010007
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:108 USA Global Link
 C:Deutschland GmbH, Theaterstraße 90, 52062 Aachen 010008
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:110 Bertelsmann mediaSystems
 C:GmbH, An der Autobahn, 33311 Gütersloh 010010
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:111 RED LINE
 C:Telekommunikationsgesellschaft mbH, Brückenstraße 17, 63897 Miltenberg 010011
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:114 NordKom
 C:Weser-Elbe Telekommunikation GmbH, Stresemannstraße 48, 28207 Bremen 010014
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:115 Delta Three
 C:Inc., 430 Park Ave, New York 010015
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:119 E.T.H.
 C:Telefondienste GmbH, Bettinastraße 25a, 60325 Frankfurt 010019
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:120 Komm Consult
 C:Oberweg 15, 82024 Taufkirchen bei München 010020
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:122 Motorola
 C:Electronic GmbH, Hagenauer Straße 47, 65203 Wiesbaden 010022
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:130 tnp telenet
 C:potsdam, kommunikationsgesellschaft mbH, Erich-Weinert-Straße 100, 14478 Potsdam 010030
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:131 accom
 C:Gesellschaft für Telekommunikationsnetze und -dienstleistungen GmbH & Co.KG, Borngasse 34, 52064 Aachen 010031
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:133 Level 3
 C:Communications GmbH, Oberlindau 54 - 56, 60323 Frankfurt/Main 010033
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:142 connection 42
 C:Ernst-Abbe-Straße 10, 25451 Quickborn 010042
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:144 Carrier 1
 C:AG, Militärstraße 36, CH-8004 Zürich 010044
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:150 Drillisch
 C:AG, Horbeller Straße 33, 50858 Köln 010050
 Z:2 City
@@ -3500,49 +3807,94 @@ T:W/08-21=0.14/60,0.14(60)/1
 T:W/21-08=0.07/60,0.07(60)/1
 T:E/*=0.07/60,0.07(60)/1
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:155 Telia
 C:Telekommunikation GmbH, Herrengraben 3, 20459 Hamburg 010055
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:156 NETCOM
 C:Kassel GmbH, Königstor 3 - 13, 34117 Kassel 010056
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:160 JelloCom
 C:GmbH & Co.KG, Prüssingstraße 41, 07745 Jena 010060
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:166 InterCard
 C:GmbH, POS-Service, Mehlbeerenstraße 4, 82024 Taufkirchen bei München 010066
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:170 Deutsche Telefon- und Marketing Services
 C:GmbH, Isaac-Fulda-Allee 16, 55124 Mainz 010070
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:173 TFN COM SA
 C:World Of Communication, Via Greina 2 CP 2950, CH-6901 Lugano 010073
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:177 WorldxChange
 C:Communications GmbH, Am Seedamm 44, 60489 Frankfurt 010077
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:180 FaciliCom
 C:Telekommunikation GmbH; Windmühlstraße 1, 60329 Frankfurt/Main 010080
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:184 Startec
 C:Global Communications (Germany) GmbH, Broßstraße 6, 60487 Frankfurt 010084
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:188 jk-tel
 C:GmbH i.G., Hopfenplatz 5, 39120 Magdeburg 010088
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:190 CNE
 C:Corporate Network Essen Gesellschaft für Telekommunikation mbH, Kruppstraße 82 - 100, 45145 Essen 010090
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:195 TeleNec
 C:Telekommunikation Neustadt GmbH & Co.KG, Postfach 14 40, 96459 Neustadt 010095
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:199 ESTel
 C:Energieversorgung Südsachsen Telekommunikationsgesellschaft mbH, Postfach 2 38, 09002 Chemnitz 010099
 #####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
+#
 P:201 Frag Fred
 Z:21 Telefonauskunft
 A:11811
 T:*/*=0.847/0,0.121/6.7
+#####################################################################
+#
+# $Id: rate-de.dat,v 1.12 1999/05/10 20:37:15 akool Exp $
 #
 # Wichtige Provider:
 # 1. Echtes Call-by-call (per 1-Mai-99):

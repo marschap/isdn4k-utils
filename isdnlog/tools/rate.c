@@ -1,4 +1,4 @@
-/* $Id: rate.c,v 1.14 1999/05/09 18:24:24 akool Exp $
+/* $Id: rate.c,v 1.15 1999/05/10 20:37:42 akool Exp $
  *
  * Tarifdatenbank
  *
@@ -19,6 +19,13 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rate.c,v $
+ * Revision 1.15  1999/05/10 20:37:42  akool
+ * isdnlog Version 3.26
+ *
+ *  - fixed the "0800" -> free of charge problem
+ *  - *many* additions to "ausland.dat"
+ *  - first relase of "rate-de.dat" from the CVS-Server of the I4L-Tarif-Crew
+ *
  * Revision 1.14  1999/05/09 18:24:24  akool
  * isdnlog Version 3.25
  *
@@ -256,6 +263,7 @@ typedef struct {
   char *prefix;
   char *name;
   char *match;
+  char *hints;
 } COUNTRY;
 
 static PROVIDER *Provider=NULL;
@@ -280,35 +288,54 @@ static void warning (char *file, char *fmt, ...)
 }
 
 
+static void down(register char *p)
+{
+  while (*p) {
+    *p = tolower(*p);
+
+    if ((*p < 'a') || (*p > 'z'))
+      *p = ' ';
+
+    p++;
+  } /* while */
+} /* down */
+
+
 static void initCountry(char *fn)
 {
-  register char *p1, *p2;
+  register char *p1, *p2, *p3;
   auto     char  s[BUFSIZ];
   auto     FILE *f;
 
 
   if ((f = fopen(fn, "r")) != (FILE *)NULL) {
     while (fgets(s, BUFSIZ, f)) {
-      if ((p1 = strchr(s, ':'))) {
+      if ((p1 = strchr(s, '#')))
         *p1 = 0;
 
-        if ((p2 = strchr(p1 + 1, '\n')))
+      if (*s && (p1 = strchr(s, ':'))) {
+        *p1 = 0;
+
+        if ((p2 = strchr(p1 + 1, ':')))
           *p2 = 0;
+
+        if ((p3 = strchr(((p2 == NULL) ? p1 + 1 : p2 + 1), '\n')))
+          *p3 = 0;
 
         Country = realloc(Country, (nCountry + 1) * sizeof(COUNTRY));
         Country[nCountry].prefix = strdup(s);
         Country[nCountry].name = strdup(p1 + 1);
-        p2 = Country[nCountry].match = strdup(p1 + 1);
+        Country[nCountry].match = strdup(p1 + 1);
+        down(Country[nCountry].match);
+
+        if (p2 != NULL) {
+	  Country[nCountry].hints = strdup(p2 + 1);
+          down(Country[nCountry].hints);
+        }
+        else
+	  Country[nCountry].hints = strdup("");
+
         nCountry++;
-
-        while (*p2) {
-          *p2 = tolower(*p2);
-
-    	  if ((*p2 < 'a') || (*p2 > 'z'))
-      	    *p2 = ' ';
-
-          p2++;
-        } /* while */
       } /* if */
     } /* while */
 
@@ -355,25 +382,23 @@ static int wld(register char *nadel, register char *heuhaufen) /* weighted Leven
 
 static int countrymatch(char *name, char *num)
 {
-  register char *p;
   register int 	 i, test = (num == NULL);
   auto	   char	 k[BUFSIZ];
 
 
   strcpy(k, name);
-  p = k;
-
-  while (*p) {
-    *p = tolower(*p);
-
-    if ((*p < 'a') || (*p > 'z'))
-      *p = ' ';
-
-    p++;
-  } /* while */
+  down(k);
 
   for (i = 0; i < nCountry; i++)
     if (strstr(Country[i].match, k) && (test || !strncmp(Country[i].prefix, num, strlen(Country[i].prefix))))
+      return(nCountry);
+
+  for (i = 0; i < nCountry; i++)
+    if (strstr(Country[i].hints, k) && (test || !strncmp(Country[i].prefix, num, strlen(Country[i].prefix))))
+      return(nCountry);
+
+  for (i = 0; i < nCountry; i++)
+    if (strstr(k, Country[i].hints) && (test || !strncmp(Country[i].prefix, num, strlen(Country[i].prefix))))
       return(nCountry);
 
   for (i = 0; i < nCountry; i++)
@@ -393,9 +418,9 @@ static int countrymatch(char *name, char *num)
 
 int abroad(char *key, char *result)
 {
-  register char *p;
   register int   i;
   auto int mode, match = 0, res = 0;
+  auto 	   char  k[BUFSIZ];
 
 
   *result = 0;
@@ -405,17 +430,8 @@ int abroad(char *key, char *result)
   else {   	   		  			   /* "Estland" */
     mode = 2;
 
-    p = key;
-
-    while (*p) {
-      *p = tolower(*p);
-
-      if ((*p < 'a') || (*p > 'z'))
-        *p = ' ';
-
-      p++;
-    } /* while */
-
+    strcpy(k, key);
+    down(k);
   } /* else */
 
   for (i = 0; i < nCountry; i++) {
@@ -425,10 +441,17 @@ int abroad(char *key, char *result)
     }
     else {
       res = 1;
-      match = (strstr(Country[i].match, key) != NULL);
+      match = (strstr(Country[i].match, k) != NULL);
 
       if (!match)
-        match = (wld(key, Country[i].match) <= DISTANCE);
+        match = (strstr(Country[i].hints, k) != NULL);
+
+      if (!match)
+        match = (strstr(k, Country[i].hints) != NULL);
+
+      if (!match)
+        match = (wld(k, Country[i].match) <= DISTANCE);
+
     } /* else */
 
     if (match) {
