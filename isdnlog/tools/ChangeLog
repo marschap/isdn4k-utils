@@ -1,3 +1,8 @@
+2004-12-18  TObias Becker  <tobiasb@isdn4linux.de>
+
+	* isdnrate.c (printTable): If verbose (-v) is specified, show used
+	date with type of day in table mode (-T).
+
 2004-11-09  Tobias Becker  <tobiasb@isdn4linux.de>
 
 	* telnum.h (TN_MAX_AREA_LEN): Increased length of area code from 10

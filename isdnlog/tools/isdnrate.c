@@ -1,4 +1,4 @@
-/* $Id: isdnrate.c,v 1.43 2004/09/27 18:00:23 tobiasb Exp $
+/* $Id: isdnrate.c,v 1.44 2004/12/18 15:10:50 tobiasb Exp $
 
  * ISDN accounting for isdn4linux. (rate evaluation)
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnrate.c,v $
+ * Revision 1.44  2004/12/18 15:10:50  tobiasb
+ * Show date with type of day for isdnrate -vT ...
+ *
  * Revision 1.43  2004/09/27 18:00:23  tobiasb
  * Check provider and price (new) when comparing provider rankings.
  *
@@ -1279,10 +1282,13 @@ static void printTable(char *num)
 
       if (header && first) {
         switch (d) {
-          case 0 : printf("\nWerktag:\n"); break;
-          case 1 : printf("\nSamstag:\n"); break;
-          case 2 : printf("\nSonntag:\n"); break;
+          case 0 : printf("\nWerktag"); break;
+          case 1 : printf("\nSamstag"); break;
+          case 2 : printf("\nSonntag"); break;
         } /* switch */
+        if (verbose)
+          printf(" (%02d.%02d.%04d)", day, month, year);
+	printf(":\n");
 
         first = 0;
       } /* if */
