@@ -4,7 +4,7 @@
 
 <title>FAQ for isdn4linux
 <author>Matthias Hessler (<tt><htmlurl url="mailto:hessler@isdn4linux.de" name="hessler@isdn4linux.de"></tt>)
-<date>v2.0.52, 30. December 2000
+<date>v2.0.53, 10. February 2001
 <abstract>
 If you are reading this FAQ online, you may consider downloading the whole
 thing, and reading it offline (much cheaper). To download the latest
@@ -1108,6 +1108,10 @@ of cards that are officially certified for use in Germany, and therefore
 in EC (see question <ref id="country_certified" name="country_certified">
 for more information on certification).
 
+Regarding the Elsa Microlink ISDN USB: it works like a serial terminal
+adapter with the USB communication class driver. Therefore, no special
+driver is required (see question <ref id="hardware_external").
+
 However, there is a speciality with some non-PCI-conformal mainboards and
 the ELSA Quickstep 1000pro-PCI. These mainboards set the IO address to
 incorrect values (they need to be on 0x100 boundaries, and in a higher
@@ -1144,9 +1148,16 @@ string for the card to allow modem dialin is <tt>AT&percnt;C0&bsol;N0</tt>.
 from Teles?  
 <label id="hardware_teles">
 <p>
-First the latest news: The Teles card 16.3c has a crippled FIFO, therefore
-it is required to use <tt/AT&amp;B1024/ when using the ttyI* devices (if the
-remote side still send packets with more than 1024 bytes it will not work
+First the latest news: according to the German magazine ct 02/2001, Teles has
+closed down its business activities in the ISDN area. Therefore, this
+FAQ does not really apply any more. However, I'll keep this FAQ for now
+to document Teles' attitude towards their customers. The author has had
+personal experience with Teles since 1994.
+
+One of the most frequently asked questions for Teles cards: The Teles card
+16.3c has a crippled FIFO, therefore it is required to use
+<tt/AT&amp;B1024/ when using the ttyI* devices (if the remote side still
+send packets with more than 1024 bytes it will not work
 - unfortunately many CAPIs use 2048 bytes as default).
 The latest Teles PCI card needs the <tt/netjet/ driver, the teles driver
 will NOT work (that card identifies itself as 'TigerJet Tiger300' when doing a 
@@ -2310,7 +2321,8 @@ the ISDN card(s) in my Linux PC (like a modem server)?
 <label id="lan_modemserver">
 <p>
 On the Linux side use modemd, which is a very short perl script
-(also see Windows-Modem-Sharing-MiniHowto):
+(also see Linux Modem sharing mini-HOWTO at
+<tt><url url="http://www.linuxdoc.org/HOWTO/mini/Linux-Modem-Sharing.html"></tt>):
 <code>
 &num;!/usr/bin/perl
 select((select(STDOUT), &dollar;| = 1)[&dollar;[]);
@@ -2328,9 +2340,9 @@ And this has to be added to <tt>/etc/inet.conf</tt>:
 <code>
 modemd stream tcp nowait root /usr/sbin/tcpd /usr/sbin/modemd ttyI5
 </code>
-Instead of modemd you can also use the program MServer, which has some
-additional functionality (allo, which has some
-additional functionality (e.g. rights based on ip address).
+Instead of modemd you can also use the program mserver, which has some
+additional functionality (e.g. rights based on ip address):
+<tt><url url="ftp://ftp.innet.be/pub/staff/carl/"></tt>
 
 Additionally, you need some software on your non-ISDN computer which emulates a
 serial port, but redirects it via telnet to the Linux ISDN computer.
@@ -2348,8 +2360,8 @@ DialOut/IP can be found on:
 <tt><url url="http://tacticalsoftware.com"></tt>
 
 Those who just want to save their CrossPoint installation should be aware that
-there are plans to have telnet support added, such that it will run without
-additional software. Watch out for news on:
+it now offers tcp modem support, such that it will run without additional
+software. Check out:
 <tt><url url="http://www.openxp.de"></tt>
 
 
@@ -2920,23 +2932,24 @@ PPP options.
 </verb>
 
 <sect1> syncppp_nopppsupport: Starting ipppd I get the error message  
-&dquot;this systems lacks ppp support&dquot;.  
+&dquot;this systems lacks ppp support&dquot; or &dquot;isdn driver is out  
+of date. maybe ippp0 has no syncppp0 encapsulation&dquot;.  
 <label id="syncppp_nopppsupport">
 <p>
 Check whether the device &dquot;ippp0&dquot; exists (i.e. with the program
-&dquot;ifconfig&dquot;). See question <ref id="syncppp_netinterface" name="syncppp_netinterface">
+&dquot;ifconfig&dquot;). See question
+<ref id="syncppp_netinterface" name="syncppp_netinterface">
 for details on the naming conventions for net interfaces.
-The ipppd *needs* this device with exactly *that* name. If it doesn't exist
-one has to define it:
+The ipppd *needs* this device with exactly *that* name and *syncppp*
+encapsulation. If it doesn't exist then you have to define it:
 <code>
 isdnctrl addif ippp0
 isdnctrl encap ippp0 syncppp
-(see i4l documentation for more information...)
+(see i4l documentation or question
+<ref id="syncppp_config" name="syncppp_config"> for more information...)
 </code>
 Maybe you compiled ipppd with the source of another kernel that you are not
 using...
-See also the question &dquot;How should I name my network interface?&dquot;
-under &dquot;Sync PPP&dquot; in the &dquot;Configuration&dquot; section.
 
 <sect1> syncppp_nousabledevice: When I try to start ipppd it says &dquot;Can't  
 find usable ippp device&dquot;  
