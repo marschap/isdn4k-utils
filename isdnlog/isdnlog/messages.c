@@ -1,4 +1,4 @@
-/* $Id: messages.c,v 1.3 1998/11/24 20:51:41 akool Exp $
+/* $Id: messages.c,v 1.4 2003/08/26 19:46:12 tobiasb Exp $
  *
  * ISDN accounting for isdn4linux. (Q.931-Messages)
  *
@@ -103,35 +103,43 @@ static char *MessageType1TR6[] = {
   "\x63 STATus",
   NULL };
 
-
-static char *InformationElement[] = {
+/* Overview with references in ETSI EG 201 189 V1.4.1 (2000-09) */
+static char *InformationElement[] = {              /* DSS1 Codeset 0 */
   "\x00 Segmented message",
   "\x04 bearer service indication",                /* Bearer capability */
+  "\x05 VPN indicator",
   "\x08 Cause",
-  "\x0c Connected address (obsolete)",
+  "\x0c Connected address (obsolete)",             /* 2) */
   "\x0d Extended facility information element identifier",
   "\x10 Call identity",
   "\x14 Call state",
   "\x18 Channel identification",
-  "\x19 Data link connection identifier",
+  "\x19 Data link connection identifier",          /* 2) */
   "\x1c Facility information element identifier",  /* Facility */
   "\x1e Progress indicator",
   "\x20 Network-specific facilities",
-  "\x24 Terminal capabilities (obsolete)",
+  "\x24 Terminal capabilities (obsolete)",         /* 2) */
   "\x27 Notification indicator",
   "\x28 Display",
   "\x29 Date/Time",
   "\x2c Keypad facility",
-  "\x34 Signal",
-  "\x40 Information rate",
-  "\x42 End-to-end transit delay",
-  "\x43 Transit delay selection and indication",
-  "\x44 Packet layer binary parameters",
-  "\x45 Packet layer window size",
-  "\x46 Packet size",
-  "\x47 Closed user group",
-  "\x4a Reverse charge indication",
-  "\x4c COLP",
+  "\x32 Information request",                      /* 1), 2) */ 
+  "\x34 Signal",                                   /* 1) */
+  "\x36 Switch hook",                              /* 1) */
+  "\x38 Feature activation",                       /* 1) */
+  "\x39 Feature indication",                       /* 1) */
+  "\x3a Service profile indication",               /* 1), 2) */
+  "\x3b Enpoint identifier",                       /* 1), 2) */
+  "\x40 Information rate",                         /* 1) */
+  "\x42 End-to-end transit delay",                 /* 1) */
+  "\x43 Transit delay selection and indication",   /* 1) */
+  "\x44 Packet layer binary parameters",           /* 1) */
+  "\x45 Packet layer window size",                 /* 1) */
+  "\x46 Packet size",                              /* 1) */
+  "\x47 Closed user group",                        /* 1) */
+  "\x4a Reverse charge indication",                /* 1) */
+  "\x4c COLP",                                     /* Connected number */ 
+  "\x4d Connected subaddress",
   "\x6c Calling party number",
   "\x6d Calling party subaddress",
   "\x70 Called party number",
@@ -145,6 +153,8 @@ static char *InformationElement[] = {
   "\x7e User-user",
   "\x7f Escape for extension",
   NULL };
+/* Note 1): not definied for Euro-ISDN (EDSS1) by ETSI but for DSS1 by ITU */
+/* Note 2): not listened in mentioned ETSI masterlist */
 
 static char *InformationElement1TR6[] = {
   "\x08 Cause",

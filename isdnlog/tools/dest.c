@@ -223,7 +223,8 @@ int     getDest(char *onumber, TELNUM * num)
   int     arealen, countrylen, prefixlen;
   char   *number = strdup(onumber);
   char    dummy[100]; /* V2.7.2.3 kills stack */
-  char    tld[4];
+  char    tld[TN_MAX_TLD_LEN];
+  char    cc_ndc[TN_MAX_COUNTRY_LEN+TN_MAX_AREA_LEN];
   char    dummy2[100]; /* V2.7.2.3 kills stack */
 
 #ifdef DEBUG
@@ -231,6 +232,7 @@ int     getDest(char *onumber, TELNUM * num)
 #endif
   *dummy = *dummy2 = '\0'; /* for keeping gcc happy */
   *tld='\0';
+  *cc_ndc='\0';
   if (get_cache(number, num)) {
 #ifdef DEBUG
     printf("getD (cache). %s %s\n", number, formatNumber("%f",num));
@@ -240,7 +242,7 @@ int     getDest(char *onumber, TELNUM * num)
   }
   len = strlen(number);
   if (len==2 && isalpha(*number) && isupper(*number))
-    Strncpy(tld,number,3);
+    Strncpy(tld,number,TN_MAX_TLD_LEN);
 
   if (isdigit(*number)) {
     warning("getDest called with local number '%s'", number);
@@ -282,7 +284,7 @@ again2:
       }
       else {
 	append(num->keys, value.dptr + 1);
-        Strncpy(tld,value.dptr+1,3);
+        Strncpy(tld,value.dptr+1,TN_MAX_TLD_LEN);
       }
       key.dptr = value.dptr + 1;
       key.dsize = value.dsize - 2;	/* w/o : and \x0 */
@@ -324,19 +326,16 @@ again2:
 #endif
     if (p && *p) {
       q = strtok(p, ",");	/* we could have multiple codes */
-      if(*number!='+') {
-        if (arealen == 0) {	/* first one must be city */
-	  arealen = strlen(q);
-	  Strncpy(num->area, q, TN_MAX_AREA_LEN);
-        }
+      if (arealen == 0) {       /* first, longest, best matching area code */
+        char *n;
+        /* for number as input get area code from this number, which is already
+         * shortened if necessary (full number in onumber), for name as input
+         * use the first number from the dest.DB lookup for this name */
+        n = (*number == '+') ? number : q;
+        arealen = strlen(n);
+        Strncpy(cc_ndc, n, TN_MAX_COUNTRY_LEN+TN_MAX_AREA_LEN);
       }
-      else {
-        if (arealen == 0) {	/* we take the orig number */
-	  arealen = strlen(number);
-	  Strncpy(num->area, number, TN_MAX_AREA_LEN);
-        }
-      }
-      if (strstr(num->area, q))	/* only if new number has same prefix */
+      if (strstr(cc_ndc, q))	/* only if new number has same prefix */
         countrylen = strlen(q);	/* last one must be country */
       else
         r = strtok(NULL, ";"); /* save remaining number codes if any */
@@ -354,20 +353,24 @@ again2:
       if (!countrylen)         /* countrylen missing */
         while (r) {            /* test remaining number codes */
           q = strsep(&r, ",");
-          if (strstr(num->area, q)) {
+          if (strstr(cc_ndc, q)) {
             countrylen = strlen(q);
             break;
           }
         }
       if (countrylen && (arealen || prefixlen)) {
 	append(num->sarea, city);
-	Strncpy(num->country, num->area, countrylen+1);
+	/* if country or area are too long, the exceeding digits will be
+	 * stored in area or msn. */
+	countrylen = min(countrylen, TN_MAX_COUNTRY_LEN-1);
+	Strncpy(num->country, cc_ndc, countrylen+1);
 	num->ncountry = atoi(num->country+1);
 	strcpy(num->tld,tld);
-	p = num->area + countrylen;
+	p = cc_ndc + countrylen;
 	arealen -= countrylen;
 	if(prefixlen)
 	  arealen=prefixlen;
+	arealen = min(arealen, TN_MAX_AREA_LEN-1);
 	Strncpy(num->area, p, 1 + arealen);
 	num->narea = atoi(num->area);
 	if (*onumber == '+' && strlen(onumber) > arealen + countrylen)
@@ -379,7 +382,7 @@ again2:
       /* do we have a  code */
       append(num->sarea, name);
       append(num->keys, p + 1);
-      Strncpy(tld,p+1,3);
+      Strncpy(tld,p+1,TN_MAX_TLD_LEN);
       key.dptr = p + 1;
       key.dsize = strlen(p + 1);
       nvalue = FETCH(db, key);
@@ -432,7 +435,7 @@ int     main(int argc, char *argv[])
 {
   char   *msg;
   TELNUM  num;
-  int     i = 1, res;
+  int     i = 1, res, verbose = 0;
 
   if (initDest("./dest" RDBEXT, &msg)) {
     fprintf(stderr, "%s\n", msg);
@@ -440,8 +443,13 @@ int     main(int argc, char *argv[])
   }
   fprintf(stderr, "%s\n", msg);
   if (argc == 1) {
-    fprintf(stderr, "Usage:\n\t%s number|name ...\n", basename(argv[0]));
+    fprintf(stderr, "Usage:\n\t%s [-v] number|name ...\n", basename(argv[0]));
     exit(EXIT_FAILURE);
+  }
+  if (!strcmp(argv[i],"-v")) {   /* handle verbose option in a pragmatic way */
+    verbose++;
+    i++;
+    argc--;
   }
   memset(&num, 0, sizeof(num));
   while (--argc) {
@@ -450,6 +458,31 @@ int     main(int argc, char *argv[])
 	   res == 0 ? "Ok." : "Err", num.country, num.ncountry, num.scountry,
 	   num.sarea, num.area,
 	   num.msn, num.keys);
+
+    if (verbose) {               /* show TELNUM structure in detail */
+      printf("\nThe struct TELNUM for it:\n");
+      printf("   .vbn       (%2d of %2d): %s\n",
+             strlen(num.vbn), TN_MAX_VBN_LEN-1, num.vbn);
+      printf("   .provider  (%2d of %2d): %s\n",
+             strlen(num.provider), TN_MAX_PROVIDER_LEN-1, num.provider);
+      printf("   .nprovider           : %i\n", num.nprovider);
+      printf("   .scountry  (%2d of %2d): %s\n",
+             strlen(num.scountry), TN_MAX_SCOUNTRY_LEN-1, num.scountry);
+      printf("   .country   (%2d of %2d): %s\n",
+             strlen(num.country), TN_MAX_COUNTRY_LEN-1, num.country);
+      printf("   .keys      (%2d of %2d): %s\n",
+             strlen(num.keys), TN_MAX_SCOUNTRY_LEN-1, num.keys);
+      printf("   .tld       (%2d of %2d): %s\n",
+             strlen(num.tld), TN_MAX_TLD_LEN-1, num.tld);
+      printf("   .ncountry            : %i\n", num.ncountry);
+      printf("   .area      (%2d of %2d): %s\n",
+             strlen(num.area), TN_MAX_AREA_LEN-1, num.area);
+      printf("   .narea               : %i\n", num.narea);
+      printf("   .sarea     (%2d of %2d): %s\n",
+             strlen(num.sarea), TN_MAX_SAREA_LEN-1, num.sarea);
+      printf("   .msn       (%2d of %2d): %s\n\n",
+             strlen(num.msn), TN_MAX_MSN_LEN-1, num.msn);
+    }
   }
   exitDest();
   return (EXIT_SUCCESS);

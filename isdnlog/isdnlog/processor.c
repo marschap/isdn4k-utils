@@ -1,4 +1,4 @@
-/* $Id: processor.c,v 1.125 2003/08/14 12:18:57 tobiasb Exp $
+/* $Id: processor.c,v 1.126 2003/08/26 19:46:12 tobiasb Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,31 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.126  2003/08/26 19:46:12  tobiasb
+ * isdnlog-4.66:
+ *  - Added support for AVM B1 (with layer 2 d-channel trace) in point-to-
+ *    point mode, where only TEI 0 is used ("Anlagenanschluss" in German).
+ *    Many thanks to Klaus Heske for his testing efforts.
+ *  - The source number "0" in outgoing calls is now expanded to
+ *    +<country><area>0.  This may be useful for point-to-point setups,
+ *    when <area> contains area code and local number without extension.
+ *  - Basic support for different codesets in (E)DSS1 messages.  Except
+ *    for codeset 0, unknown information elements are now silently
+ *    ignored (controlled by ignore_unknown_IE in isdnlog/isdnlog.h).
+ *  - Added some information elements to isdnlog/messages.c.
+ *  - Increased the length of msn (local number) in struct telnum.
+ *  - Fixed seperation of country and area code for long numbers
+ *    in getDest, tools/dest.c.
+ *  - Changed broken (with gcc 2.95.2) generation of .depend.  The old
+ *    output did not consider the location of objectfiles in subdirs.
+ *    Remove this file before compiling this upgraded isdnlog.
+ *  - Moved DUALFIX... defines from tools/tools.h to isdnlog/isdnlog.h.
+ *  - Added missing R:-Links for cellphone entries in country-de.dat.
+ *  - Different entry for each city "Neustadt" in tools/zone/de/code.
+ *  - Earlier changes since isdnlog-4.65:
+ *     - Allow dualmode workaround 0x100 (DUALFIX_DESTNUM) to work also with
+ *       CALL_PROCEEDING messages for cleaning up unanswered incoming calls.
+ *
  * Revision 1.125  2003/08/14 12:18:57  tobiasb
  * Allow dualmode workaround 0x100 aka DUALFIX_DESTNUM to work also with
  *   CALL_PROCEEDING messages for cleaning up unanswered incoming calls.
@@ -1378,9 +1403,9 @@ void buildnumber(char *num, int oc3, int oc3a, char *result, int version,
   *intern = ((strlen(num) < interns0) || !isdigit(*num));
 
   if (trim && !*intern) {
-    if (dir && (who == CALLING))
+    if (dir && (who == CALLING))         /* source number of incoming call */
       num += min(trimi, strlen(num));
-    else if (!dir && (who == CALLED))
+    else if (!dir && (who == CALLED))    /* dest. number of outgoing call */
       num += min(trimo, strlen(num));
 
     print_msg(PRT_DEBUG_DECODE, " TRIM> \"%s\" -> \"%s\" (trimi=%d, trimo=%d, %s, %s, %s)\n",
@@ -1493,7 +1518,10 @@ void buildnumber(char *num, int oc3, int oc3a, char *result, int version,
   if ((*sondernummer == UNKNOWN) && !*intern) {
     switch (oc3 & 0x70) { /* Calling party number Information element, Octet 3 - Table 4-11/Q.931 */
       case 0x00 : if (*num) {                  /* 000 Unknown */
-                    if (*num != '0') {
+                    /* Let own number 0 lead to +CC_Area_0, useful with PABX */
+                    if (*num=='0' && !*(num+1) && !partner)
+                      strcpy(result, mynum); 
+                    else if (*num != '0') {
 		      /* in NL the MSN contains myarea w/o leading zero
 		         so myarea get's prepended again */
 		      if (memcmp(myarea, num, strlen(myarea)) == 0)
@@ -1511,7 +1539,7 @@ void buildnumber(char *num, int oc3, int oc3a, char *result, int version,
                       while (*num == '0')
                         num++;
                     } /* else */
-                  } /* if */
+                  } /* if (*num) */
                   break;
 
       case 0x10 : if (version != VERSION_1TR6)
@@ -1905,7 +1933,9 @@ static int expensive(int bchan)
          ((ifo[bchan].u & ISDN_USAGE_MASK) == ISDN_USAGE_MODEM)));
 } /* expensive */
 
-
+/* decode parses the information elements (IE) of a layer 3 D-channel message
+ * and stores the retrieved information in call[chan].
+ * p points to "tt ee ll .." where tt is the message type as hex number */
 static void decode(int chan, register char *p, int type, int version, int tei)
 {
   register char     *pd, *px, *py;
@@ -1917,12 +1947,24 @@ static void decode(int chan, register char *p, int type, int version, int tei)
   auto     struct tm tm;
   auto	   time_t    t;
   auto     double    tx, err, tack;
+  auto     CODESET   codeset;
 
+  codeset.current = codeset.locked = 0;  /* every message starts in codeset 0 */
+  codeset.shift = -1;
 
   while (1) {
 
+    /* *p should be the first digit (O) of the last already processed byte, */
+    /* like: "oo Oo nn nn" or "oo Oo" */
     if (!*(p - 1) || !*(p + 2))
-      break;
+      break;                             /* regular exit point of decode */
+
+    if (codeset.shift >= 0) {            /* previous IE was non-locked shift */ 
+      codeset.current = codeset.shift;
+      codeset.shift = -1;
+    }
+    else
+      codeset.current = codeset.locked;
 
     element = strtol(p += 3, NIL, 16);
 
@@ -1932,7 +1974,7 @@ static void decode(int chan, register char *p, int type, int version, int tei)
 
       l1 = strlen(p+2); /* *(p+2) is ' ' before first digit of first contents byte */
       if (l1 < 3*l) { /* not enouph input to for l bytes of element contents */
-	sprintf(s, "Not enough raw input from isdnctrl? for contents of element 0x%X: %d raw bytes (length=%d) needed but only %d raw bytes present --  ignoring this element!", element, 3*l, l, l1);
+	sprintf(s, "Not enough raw input from isdnctrl? for contents of element 0x%X in codeset %d: %d raw bytes (length=%d) needed but only %d raw bytes present --  ignoring this element!", element, codeset.current, 3*l, l, l1);
         info(chan, PRT_SHOWNUMBERS, STATE_RING, s);
         return;
       }
@@ -1946,40 +1988,62 @@ static void decode(int chan, register char *p, int type, int version, int tei)
         Q931dump(TYPE_STRING, l, s, version);
       } /* if */
 
-      if ((l > 50) || (l < 0)) {
-	sprintf(s, "Invalid length %d -- complete frame ignored!", l);
+      /* An information element can be up to 256 octets long, that makes
+       * 254 octets for its contents.  The old limit of 50 octets turned
+       * out to be to strict in case of the ISDN card connected to a PABX
+       * and violated the standards ETSI ... and ITU Q.931.
+       * |TB| 2003-08-17 */
+      if ((l > 254) || (l < 0)) {
+	sprintf(s, "Invalid length %d of information element %02x in codeset %d"
+                " -- complete frame ignored!", l, element, codeset.current);
         info(chan, PRT_SHOWNUMBERS, STATE_RING, s);
         return;
       } /* if */
 
-      pd = qmsg(TYPE_ELEMENT, version, element);
+      /* FIXME: qmsg is not aware of codesets */
+      pd = (codeset.current) ? NULL : qmsg(TYPE_ELEMENT, version, element);
 
-      if (strncmp(pd, "UNKNOWN", 7) == 0) {
+      if (codeset.current || strncmp(pd, "UNKNOWN", 7) == 0) {
         register char *p1 = p, *p2;
         register int   i, c;
         auto     char  s[LONG_STRING_SIZE];
+        auto     int   full_l = l; 
 
+        if (4*l > LONG_STRING_SIZE-400)   /* handle very long unknown IE */
+          l = (LONG_STRING_SIZE-400)/4;
 
         p2 = s;
-        p2 += sprintf(p2, "UNKNOWN ELEMENT %02x:", element);
+        p2 += sprintf(p2, "UNKNOWN ELEMENT %02x in codeset %d:",
+                      element, codeset.current);
 
         for (i = 0; i < l; i++)
           p2 += sprintf(p2, " %02x", (int)strtol(p1 += 3, NIL, 16));
 
-        p2 += sprintf(p2, " [");
+        p2 += sprintf(p2, "%s  [", (full_l>l)?" ...":"");
         p1 = p;
 
         for (i = 0; i < l; i++) {
           c = (int)strtol(p1 += 3, NIL, 16);
           p2 += sprintf(p2, "%c", isgraph(c) ? c : ' ');
         } /* for */
+        l = full_l;
 
-        p2 += sprintf(p2, "], length=%d -- complete frame ignored!", l);
-        info(chan, PRT_SHOWNUMBERS, STATE_RING, s);
-        return;
-      }
+        if ( version==VERSION_EDSS1 &&
+             (ignore_unknown_IE>>codeset.current)&1 ) {
+          p2 += sprintf(p2, "], length=%d -- ignored", l);
+          print_msg(PRT_DEBUG_DECODE, " DEBUG> %s: %s\n", st+4, s);
+          p += 3*l;   /* skip the content of the unknown IE */
+          continue;   /* and next IE */
+        }
+        else {   /* do not ignore unknown IE */
+          p2 += sprintf(p2, "], length=%d -- complete frame ignored!", l);
+          info(chan, PRT_SHOWNUMBERS, STATE_RING, s);
+          return;
+        }
+      }   /* if IE unknown */
       else
-        print_msg(PRT_DEBUG_DECODE, " DEBUG> %s: ELEMENT %02x:%s (length=%d)\n", st + 4, element, pd, l);
+        print_msg(PRT_DEBUG_DECODE, " DEBUG> %s: ELEMENT %02x:%s "
+          "(length=%d, codeset=%d)\n", st + 4, element, pd, l, codeset.current);
 
       /* changing 0x28 to 0x2800 for special case prevents much complication */
       /* later; 0x28 means / does different things in different countries    */
@@ -2552,8 +2616,8 @@ static void decode(int chan, register char *p, int type, int version, int tei)
 
                           /* fall thru, and overwrite ... */
                         } /* else */
-                      } /* else */
-		    } /* else */
+                      } /* if current calling party number different */
+		    } /* if calling party number already present */
 
                     call[chan].screening = (oc3a & 3);
 
@@ -3061,8 +3125,9 @@ escape:             for (c = 0; c <= sxp; c++)
                       if (!Q931dmp)
                         px += sprintf(px, "PROGRESS: ");
 
-                      c = strtol(p + 6, NIL, 16);
-                      sn[sxp] = c;
+                      /* save coding standard (1=ISO,0=ETSI) with description */
+                      c = ((c&0x60)<<3) + strtol(p + 6, NIL, 16);
+                      sn[sxp] = c&0xff;
 
                       switch (c) {
 #ifdef LANG_DE
@@ -3078,6 +3143,17 @@ escape:             for (c = 0; c <= sxp; c++)
                         case 0x84 : px += sprintf(px, "call has returned to the ISDN");                         break;
                         case 0x88 : px += sprintf(px, "inband information available");                            break;
 #endif
+                        /* EN 301 060-1 and ECMA-143 table ZB.1 define: */
+                        case 0x190: px += sprintf(px, "interworking with a public network");
+                                  break;
+                        case 0x191: px += sprintf(px, "interworking with a network unable to supply a release signal");
+                                  break;
+                        case 0x192: px += sprintf(px, "interworking with a network unable to supply a release signal before answer");
+                                  break;
+                        case 0x193: px += sprintf(px, "interworking with a network unable to supply a release signal after answer");
+                                  break;
+                        default:    px += sprintf(px, "unknown description");
+                                  break;
                       } /* switch */
                     } /* if */
 
@@ -3228,7 +3304,7 @@ escape:             for (c = 0; c <= sxp; c++)
         default   : {
                       register char *p1, *p2;
                       register int  i;
-UNKNOWN_ELEMENT:      p1 = p; p2 = s;
+UNKNOWN_ELEMENT:      p1 = p; p2 = s;   /* s has length of BUFSIZ=8192 */
 
                       for (i = 0; i < l; i++)
                         p2 += sprintf(p2, "%02x ", (int)strtol(p1 += 3, NIL, 16));
@@ -3253,55 +3329,71 @@ UNKNOWN_ELEMENT:      p1 = p; p2 = s;
                     break;
       } /* switch */
 
-    }
-    else if (Q931dmp) {
-      if (version == VERSION_1TR6) {
-        switch ((element >> 4) & 7) {
-          case 1 : sprintf(s, "%02x ---> Shift %d (cs=%d, cs_fest=%d)", element, element & 0xf, element & 7, element & 8);
-                   break;
+    } /* if (element < 128) -- variable length information elements */
+    else {
 
-          case 3 : sprintf(s, "%02x ---> Congestion level %d", element, element & 0xf);
-                   break;
+      if (version == VERSION_EDSS1 && (element & 0x70) == 0x10) {   /* shift IE */
+        if (element & 0x08) {   /* non locking shift */
+          codeset.shift = element & 0x07;
+          print_msg(PRT_DEBUG_DECODE, " DEBUG> %s: non locking shift from"
+            "codeset %d to codeset %d\n", st+4, codeset.current, codeset.shift);
+        }
+        else {
+          codeset.locked = element & 0x07;
+          print_msg(PRT_DEBUG_DECODE, " DEBUG> %s: locking shift from codeset"
+            " %d to codeset %d\n", st+4, codeset.current, codeset.locked);
+        }
+      } 
 
-          case 2 : if (element == 0xa0)
-                     sprintf(s, "%02x ---> More data", element);
-                   else if (element == 0xa1)
-                     sprintf(s, "%02x ---> Sending complete", element);
-                   break;
+      if (Q931dmp) {
+        if (version == VERSION_1TR6) {
+          switch ((element >> 4) & 7) {
+            case 1 : sprintf(s, "%02x ---> Shift %d (cs=%d, cs_fest=%d)", element, element & 0xf, element & 7, element & 8);
+                     break;
 
-         default : sprintf(s, "%02x ---> Reserved %d", element, element);
-                   break;
-        } /* switch */
+            case 3 : sprintf(s, "%02x ---> Congestion level %d", element, element & 0xf);
+                     break;
 
-        Q931dump(TYPE_STRING, -3, s, version);
-      }
-      else if (version == VERSION_EDSS1) {
-        switch ((element >> 4) & 7) {
-          case 1 : sprintf(s, "%02x ---> Shift %d", element, element & 0xf);
-                   break;
+            case 2 : if (element == 0xa0)
+                       sprintf(s, "%02x ---> More data", element);
+                     else if (element == 0xa1)
+                       sprintf(s, "%02x ---> Sending complete", element);
+                     break;
 
-          case 3 : sprintf(s, "%02x ---> Congestion level %d", element, element & 0xf);
-                   break;
+           default : sprintf(s, "%02x ---> Reserved %d", element, element);
+                     break;
+          } /* switch */
 
-          case 5 : sprintf(s, "%02x ---> Repeat indicator %d", element, element & 0xf);
-                   break;
+          Q931dump(TYPE_STRING, -3, s, version);
+        }
+        else if (version == VERSION_EDSS1) {
+          switch ((element >> 4) & 7) {
+            case 1 : sprintf(s, "%02x ---> Shift %d", element, element & 0xf);
+                     break;
 
-          case 2 : if (element == 0x90)
-                     sprintf(s, "%02x ---> Umschaltung in eine andere Codegruppe %d\n", element, element);
-                   if (element == 0xa0)
-                     sprintf(s, "%02x ---> More data", element);
-                   else if (element == 0xa1)
-                     sprintf(s, "%02x ---> Sending complete", element);
-                   break;
+            case 3 : sprintf(s, "%02x ---> Congestion level %d", element, element & 0xf);
+                     break;
 
-         default : sprintf(s, "%02x ---> Reserved %d\n", element, element);
-                   break;
-        } /* switch */
+            case 5 : sprintf(s, "%02x ---> Repeat indicator %d", element, element & 0xf);
+                     break;
 
-        Q931dump(TYPE_STRING, -3, s, version);
-      } /* else */
-    } /* else */
-  } /* while */
+            case 2 : if (element == 0x90)
+                       sprintf(s, "%02x ---> Umschaltung in eine andere Codegruppe %d\n", element, element);
+                     if (element == 0xa0)
+                       sprintf(s, "%02x ---> More data", element);
+                     else if (element == 0xa1)
+                       sprintf(s, "%02x ---> Sending complete", element);
+                     break;
+
+           default : sprintf(s, "%02x ---> Reserved %d\n", element, element);
+                     break;
+          } /* switch */
+
+          Q931dump(TYPE_STRING, -3, s, version);
+        } /* else */
+      } /* if Q931dmp */
+    } /* if (element<128) ... else */
+  } /* while (1) -- loop over all present information elements */
 } /* decode */
 
 /* --------------------------------------------------------------------------
@@ -4405,7 +4497,7 @@ static void processctrl(int card, char *s)
   auto	   char       *why, *hint;
   auto	   char	       hints[BUFSIZ];
   static   char        last[BUFSIZ];
-  auto     int         isAVMB1 = 0;
+  auto     int         isAVMB1 = 0,  isAVMB1_D2 = 0;   /*,  D2_net = -1; */
   auto     double      tx;
   auto     int         origchan = -1; /* sourcechan for RELEASE in chan 4 */
 
@@ -4438,6 +4530,8 @@ static void processctrl(int card, char *s)
       firsttime = 0;
       print_msg (PRT_NORMAL, "(AVM B1 driver detected (D2))\n");
     } /* if */
+    isAVMB1_D2 = 1;
+    /* D2_net = ( *(ps+2) == '<' ) ? 0 : 1; */
     memcpy(ps, "HEX: ", 5);
   } /* if */
 
@@ -4719,12 +4813,20 @@ static void processctrl(int card, char *s)
 
     type = strtol(ps += 3, NIL, 16);
 
-    if (!isAVMB1)
-      dialin = (tei == BROADCAST); /* dialin (Broadcast), alle anderen haben schon eine Tei! */
-    else
+    if (isAVMB1)
       dialin = (cref & 0x80);  /* first (SETUP) tells us who initiates the connection */
+    else if (isAVMB1_D2 && tei==0) /* AVMB1 with D2 D-channel trace connected */
+      dialin = (cref>>7)!=net;  /* point to point (PtP) to NT or PABX */
+    else
+      dialin = (tei == BROADCAST); /* dialin (Broadcast), alle anderen haben schon eine Tei! */
+
+    /* cref&0x80 will be 0 if current message comes from the side (NET or USR)
+     * that has initially used this cref.  It will be 0x80 if the message is
+     * from the opposite side.  Consequently just (cref&0x80) should not work.
+     * |TB| 2003-08-17 */     
 
     /* dialin = (cref & 0x7f) < 64; */
+    /* ^-- line was commented out before rev. 1.1 dating from 1997-03-16 */
 
     cref = (net) ? cref : cref ^ 0x80; /* cref immer aus Sicht des Amts */
 
@@ -4733,6 +4835,12 @@ static void processctrl(int card, char *s)
 
     if (allflags & PRT_DEBUG_DIAG)
       diag(cref, tei, sapi, dialin, net, type, version);
+
+#if 0
+    if (isAVMB1_D2)
+      print_msg(PRT_DEBUG_BUGS, " DEBUG> %s: AVMB1(D2): net=%d, D2_net=%d, %s\n"
+                , st+4, net, D2_net, (net==D2_net) ? "OK" : "ERROR");
+#endif
 
     /* leider laesst sich kein switch nehmen, da decode
        innerhalb von SETUP/A_ACK aufgerufen werden muss, sonst
@@ -5688,14 +5796,14 @@ retry:
           processinfo(p3);
         else if (!memcmp(p3, "HEX: ", 5) ||
                  !memcmp(p3, "hex: ", 5) ||
-/*               !memcmp(p3, "D2<: ", 5) ||   Layer 2 not yet evaluated */
-/*               !memcmp(p3, "D2>: ", 5) ||   Layer 2 not yet evaluated */
+                 !memcmp(p3, "D2<: ", 5) ||   /* AVMB1 with layer 2 d-channel */
+                 !memcmp(p3, "D2>: ", 5) ||   /* info works in replaymode |TB|*/
                  !memcmp(p3, "D3<: ", 5) ||
                  !memcmp(p3, "D3>: ", 5))
           processctrl(0, p3);
         else if (!memcmp(p3 + 3, "HEX: ", 5))
           processctrl(atoi(p3), p3 + 3);
-      }
+      } /* if (replay) */
       else {
 #ifdef CONFIG_ISDN_WITH_ABC_LCR_SUPPORT
         if (!memcmp(p1 + 9, "DW_ABC_LCR", 10))
@@ -5723,7 +5831,7 @@ retry:
             } /* else */
           } /* else */
         } /* else */
-      } /* else */
+      } /* if (replay) ... else */
 
       p1 = p2 + 1;
     } /* while */

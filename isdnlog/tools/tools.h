@@ -1,4 +1,4 @@
-/* $Id: tools.h,v 1.58 2003/07/25 22:18:04 tobiasb Exp $
+/* $Id: tools.h,v 1.59 2003/08/26 19:46:13 tobiasb Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,31 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools.h,v $
+ * Revision 1.59  2003/08/26 19:46:13  tobiasb
+ * isdnlog-4.66:
+ *  - Added support for AVM B1 (with layer 2 d-channel trace) in point-to-
+ *    point mode, where only TEI 0 is used ("Anlagenanschluss" in German).
+ *    Many thanks to Klaus Heske for his testing efforts.
+ *  - The source number "0" in outgoing calls is now expanded to
+ *    +<country><area>0.  This may be useful for point-to-point setups,
+ *    when <area> contains area code and local number without extension.
+ *  - Basic support for different codesets in (E)DSS1 messages.  Except
+ *    for codeset 0, unknown information elements are now silently
+ *    ignored (controlled by ignore_unknown_IE in isdnlog/isdnlog.h).
+ *  - Added some information elements to isdnlog/messages.c.
+ *  - Increased the length of msn (local number) in struct telnum.
+ *  - Fixed seperation of country and area code for long numbers
+ *    in getDest, tools/dest.c.
+ *  - Changed broken (with gcc 2.95.2) generation of .depend.  The old
+ *    output did not consider the location of objectfiles in subdirs.
+ *    Remove this file before compiling this upgraded isdnlog.
+ *  - Moved DUALFIX... defines from tools/tools.h to isdnlog/isdnlog.h.
+ *  - Added missing R:-Links for cellphone entries in country-de.dat.
+ *  - Different entry for each city "Neustadt" in tools/zone/de/code.
+ *  - Earlier changes since isdnlog-4.65:
+ *     - Allow dualmode workaround 0x100 (DUALFIX_DESTNUM) to work also with
+ *       CALL_PROCEEDING messages for cleaning up unanswered incoming calls.
+ *
  * Revision 1.58  2003/07/25 22:18:04  tobiasb
  * isdnlog-4.65:
  *  - New values for isdnlog option -2x / dual=x with enable certain
@@ -939,12 +964,6 @@
 
 /****************************************************************************/
 
-#define DUALFIX_DESTNUM    0x100
-#define DUALFIX_SRCNUM     0x200
-#define DUALFIX_MULTLOG    0x400
-
-/****************************************************************************/
-
 typedef struct {
   int	  state;
   int     cref;
@@ -1123,6 +1142,8 @@ _EXTERN int     	q931dmp;
 _EXTERN int     	CityWeekend;
 #endif
 _EXTERN	int	 preselect;
+/* global variables specific to isdnlog (e.g. for parameterfile/commandline
+ * settings) should be moved to isdnlog/isdnlog.h.  |TB| 2003-08-22 */
 _EXTERN int	dual;
 /* Bitvalues 0x100 and greater in dual are used for activation of workarounds
  * in isdnlog/processor.c.  The input value for -2 (commandline) or dual

@@ -1,7 +1,7 @@
-V:1.53 Int [12-Aug-2003 01:00:00]
+V:1.54 Int [21-Aug-2003 01:00:00]
 #
 # This version of country.dat originates from rates4linux:
-# $Id: country-de.dat,v 1.42 2003/08/14 12:18:57 tobiasb Exp $
+# $Id: country-de.dat,v 1.43 2003/08/26 19:46:12 tobiasb Exp $
 # The rates4linux homepage: http://www.sourceforge.net/projects/rates4linux/
 # It bases on Rev. 1.39 of isdn4k-utils/isdnlog/country-de.dat 
 # in the CVS at http://www.isdn4linux.de.
@@ -41,6 +41,7 @@ N:Kirgisien Mobilfunk
 E:Kyrgyzstan cellphone
 A:Kirgisistan Mobilfunk
 C:+99631, +99632, +99634, +99635, +99636, +99637, +99639
+R:KG
 T:_KGMF
 
 N:Kirgisien
@@ -196,6 +197,7 @@ T:SY
 N:Jordanien Mobilfunk
 E:Jordan cellphone
 C:+96279
+R:JO
 T:_JOMF
 
 N:Jordanien
@@ -257,6 +259,7 @@ T:PK
 N:Indien Mobilfunk
 E:India cellphone
 C:+9198
+R:IN
 T:_INMF
 
 # Codes _IN* also in use for Inmarsat.
@@ -324,6 +327,7 @@ T:_IR16
 N:Bangladesh Mobilfunk
 E:Bangladesh cellphone
 C:+8801
+R:BD
 T:_BDMF
 
 N:Bangladesch
@@ -611,10 +615,13 @@ N:international freephone
 C:+800
 T:_F800
 
+# international numbering space +7... needs cleanup
+
 N:Rußland Mobilfunk
 E:Russia cellphone
 A:Russische Föderation Mobilfunk
 C:+7901, +7902
+R:SU
 T:_RUMF
 
 N:Russische Föderat. (westl.)
@@ -907,6 +914,7 @@ T:_NZMF
 N:Philippinen Mobilfunk
 E:Phillipines cellphone
 C:+63241, +63242, +6327, +63275, +63291, +6385, +6390, +63912, +63915, +63917, +63918, +63973
+R:PH
 T:_PHMF
 
 N:Philippinen
@@ -1083,6 +1091,7 @@ T:CO
 N:Chile Mobilfunk
 E:Chile cellphone
 C:+561, +56568, +56569, +56600, +569
+R:CL
 T:_CLMF
 
 N:Chile
@@ -1163,6 +1172,7 @@ T:PE
 N:Haiti Mobilfunk
 E:Haiti cellphone
 C:+509251
+R:HT
 T:_HTMF
 
 N:Haiti
@@ -1190,6 +1200,7 @@ T:PA
 N:Costa Rica Mobilfunk
 E:Costa Rica cellphone
 C:+506238, +506283, +506284, +5063
+R:CR
 T:_CRMF
 
 N:Costa Rica
@@ -1200,6 +1211,7 @@ T:CR
 N:Nicaragua Mobilfunk
 E:Nicaragua cellphone
 C:+505800, +505830, +50583, +505832, +5059
+R:NI
 T:_NIMF
 
 N:Nicaragua
@@ -1223,6 +1235,7 @@ T:SV
 N:Guatemala Mobilfunk
 E:Guatemala cellphone
 C:+50220
+R:GT
 T:_GTMF
 
 N:Guatemala
@@ -1248,8 +1261,9 @@ C:+500
 T:FK
 R:UK
 
-# Source (2002-05-23):
+# Source (2003-03-55):
 # http://www.regtp.de/reg_tele/start/in_05-06-01-01-00_m/index.html
+# http://www.regtp.de/reg_tele/start/in_05-06-01-00-00_m/index.html
 N:Deutschland
 E:Germany
 C:+49
@@ -1313,6 +1327,14 @@ C:+491672
 R:DE
 T:_DEBD
 
+N:Deutschland Premium Rate
+E:Germany premium rate
+A:Deutschland Mehrwertdienste, Deutschland Premium Rate Dienste
+C:+49190 		# will be out of service after 2005-12-31
+C:+49900
+R:DE
+T:_DESO
+
 N:Deutschland Persönliche Rufnummer
 E:Germany personal number
 C:+49700		# reserved (2002-05-23): +49701
@@ -1322,11 +1344,15 @@ T:_DEPR
 N:Deutschland Freephone
 E:Germany Freephone
 A:Deutschland Freecall
-C:+4911		 # ? netzinterne Nutzung
-C:+4931 	 # ? Testrufnummern
-C:+49800, +49801 # Freephone
+C:+49800, +49801 # Freephone, +49801 is reserved
 R:DE
 T:_DEFF
+
+N:Deutschland Testrufnummern
+E:Germany test numbers
+C:+4931
+R:DE
+T:_DETE
 
 N:Deutschland Cityruf
 A:Cityruf, Cityruf Voicebox, Cityruf automatic, Cityruf Operator
@@ -1406,6 +1432,7 @@ T:STO
 N:Schweden Mobilfunk
 E:Sweden cellphone
 C:+4673, +46709, +46708, +46707, +46706, +46705, +46704, +46703, +46702, +4610
+R:SE
 T:_SEMF
 
 N:Schweden
@@ -1595,6 +1622,7 @@ E:Czech Republic cellphone
 C:+420602, +420603, +420604	# temporary assignment (2002-09-22) 
 C:+42072, +42073, +42077
 C:+420963		# ? voice mail 
+R:CZ
 T:_CZMF
 
 N:Freephone Tschechische Rep.
@@ -1830,6 +1858,7 @@ T:MD
 N:Estland Mobilfunk
 E:Estonia cellphone
 C:+37250, +37251, +37252, +37253, +37254, +37255, +37256
+R:EE
 T:_EEMF
 
 N:Estland
@@ -1869,6 +1898,7 @@ T:_LTMF
 N:Ungarn Mobilfunk
 E:Hungary cellphone
 C:+3620, +3630, +3660
+R:HU
 T:_HUMF
 
 N:Ungarn
@@ -1905,6 +1935,7 @@ N:Zypern(griech) Mobilfunk
 A:Zypern-Mobilfunk, Zypern Mobilfunk
 E:Cyprus cellphone
 C:+3579992, +357994, +357995, +357996, +357998
+R:CY
 T:_CYMF
 
 # Quelle (2003-05-04):
@@ -2007,6 +2038,7 @@ T:_MADE
 N:Portugal Mobilfunk
 E:Portugal cellphone
 C:+35193
+R:PT
 T:_PTMF
 
 N:Portugal
@@ -2171,6 +2203,7 @@ T:NL
 N:Griechenland Mobilfunk
 E:Greece cellphone
 C:+309
+R:GR
 T:_GRMF
 
 N:Griechenland
@@ -2189,7 +2222,7 @@ R:DK
 N:Grönland Mobilfunk
 E:Greenland cellphone
 C:+29949, +29952, +29953, +29954, +29955, +29956, +29957, +29958, +29959
-R;GL
+R:GL
 T:_GLMF
 
 N:Färöer-Inseln Mobilfunk
@@ -2246,6 +2279,7 @@ T:_TRIS
 N:Südafrika Mobilfunk
 E:South Africa cellphone
 C:+2782, +2783
+R:ZA
 T:_ZAMF
 
 N:Südafrika
@@ -2490,6 +2524,7 @@ N:Kongo (Demokratische Republik) Mobilfunk
 E:Congo (Democratic Republik of the) cellphone
 A:Zaire Mobilfunk, Zaire cellphone
 C:+24388
+R:ZR
 T:_ZRMF
 
 N:Kongo (Republik)
@@ -2751,6 +2786,7 @@ T:EH
 N:Ägypten Mobilfunk
 E:Egypt cellphone
 C:+2012
+R:EG
 T:_EGMF
 
 N:Ägypten

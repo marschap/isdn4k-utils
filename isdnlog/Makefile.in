@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.209 2003/07/25 22:18:02 tobiasb Exp $
+## $Id: Makefile.in,v 1.210 2003/08/26 19:46:11 tobiasb Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,31 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.210  2003/08/26 19:46:11  tobiasb
+## isdnlog-4.66:
+##  - Added support for AVM B1 (with layer 2 d-channel trace) in point-to-
+##    point mode, where only TEI 0 is used ("Anlagenanschluss" in German).
+##    Many thanks to Klaus Heske for his testing efforts.
+##  - The source number "0" in outgoing calls is now expanded to
+##    +<country><area>0.  This may be useful for point-to-point setups,
+##    when <area> contains area code and local number without extension.
+##  - Basic support for different codesets in (E)DSS1 messages.  Except
+##    for codeset 0, unknown information elements are now silently
+##    ignored (controlled by ignore_unknown_IE in isdnlog/isdnlog.h).
+##  - Added some information elements to isdnlog/messages.c.
+##  - Increased the length of msn (local number) in struct telnum.
+##  - Fixed seperation of country and area code for long numbers
+##    in getDest, tools/dest.c.
+##  - Changed broken (with gcc 2.95.2) generation of .depend.  The old
+##    output did not consider the location of objectfiles in subdirs.
+##    Remove this file before compiling this upgraded isdnlog.
+##  - Moved DUALFIX... defines from tools/tools.h to isdnlog/isdnlog.h.
+##  - Added missing R:-Links for cellphone entries in country-de.dat.
+##  - Different entry for each city "Neustadt" in tools/zone/de/code.
+##  - Earlier changes since isdnlog-4.65:
+##     - Allow dualmode workaround 0x100 (DUALFIX_DESTNUM) to work also with
+##       CALL_PROCEEDING messages for cleaning up unanswered incoming calls.
+##
 ## Revision 1.209  2003/07/25 22:18:02  tobiasb
 ## isdnlog-4.65:
 ##  - New values for isdnlog option -2x / dual=x with enable certain
@@ -1553,6 +1578,11 @@ export COUNTRYCODE	:= @COUNTRYCODE@
 export COUNTRYPREFIX	:= @COUNTRYPREFIX@
 export AREAPREFIX	:= @AREAPREFIX@
 
+# store I4L-Version for make commands issued in the isdnlog subdirectory.
+# In this case the export of I4L-Version by the global makefile does not take
+# place because this makefile is not evaluted.
+STORED_I4LVERSION       := @I4LVERSION@
+
 export ILABEL        := %b %e %T %ICall to tei %t from %N2 on %n2
 export OLABEL        := %b %e %T %Itei %t calling %N2 with %n2
 export CHARGEMAX     := 1000.00
@@ -1590,7 +1620,12 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 4.65
+VERSION     = 4.66
+
+# fallback to I4L-Version as set at configure time
+ifndef (I4LVERSION)
+I4LVERSION := $(STORED_I4LVERSION)
+endif
 
 MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 \
 	      isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 \
@@ -1663,7 +1698,14 @@ PCFLAGS = mode=oracle ireclen=160 lines=yes
 	MANDATE=`grep CHECKIN $< | $(AWK) '{print $$4}'`; \
 	$(SED) -e s%@MANDATE@%$$MANDATE%g $< > $@
 
+%.1: %.1.in config.status
+	./config.status $@
 
+%.5: %.5.in config.status
+	./config.status $@
+
+%.8: %.8.in config.status
+	./config.status $@
 
 ISDNLOG_OBJS =  isdnlog/isdnlog.o isdnlog/processor.o isdnlog/functions.o \
                 isdnlog/server.o isdnlog/start_prog.o isdnlog/messages.o  \
@@ -1882,9 +1924,11 @@ install-progs:
 		$(INSTALL_BIN) $(ISDNBILL) $(DESTDIR)$(BINDIR)
 		-@if (ps x | fgrep $(ISDNLOG) | grep -v grep) >/dev/null; then \
 			kill -HUP `cat $(RUNDIR)/isdnlog.isdnctrl0.pid 2>/dev/null`; \
-			echo "Restarting running isdnlog!" ; \
+			echo "Restarting (the first) running isdnlog!" ; \
 		fi
 
+# FIXME: "Installing /usr/local/lib/isdn/tools/dest/dest.cdb" is confusing
+# because "/tools/dest" is only right for the source location of that file.
 install-data:
 		$(INSTALL_DATA) isdnlog/isdnlog.8       $(DESTDIR)$(MAN8DIR)/isdnlog$(MAN8EXT)
 		$(INSTALL_DATA) isdnrep/isdnrep.1       $(DESTDIR)$(MAN1DIR)/isdnrep$(MAN1EXT)
@@ -1963,8 +2007,12 @@ tools/tools.h: $(LIBISDNDIR)/libisdn.h $(PREFIXDIR)/policy.h
 
 depend: .depend
 
+# sed transforms "tools.o: tools/tools.c ..." to "tools/tools.o: ..."
 .depend:
-		$(CPP) -M $(CFLAGS) $(DEFS) $(INCLUDE) */*.c >.depend
+		$(CPP) -M $(CFLAGS) $(DEFS) $(INCLUDE) */*.c >.depend.tmp
+		cat .depend.tmp | \
+		sed -e"s%^\([A-Za-z0-9_]\+\)\.o: \([A-Za-z0-9_]\+\)/\1\.c %\2/\1.o: \2/\1.c %" > .depend
+		rm -f .depend.tmp
 ifeq ($(ORACLE),1)
 		$(CPP) -M $(CFLAGS) $(DEFS) $(INCLUDE) - < isdnlog/oracle.pc | \
 		sed s/-:/oracle.o:/ >>.depend

@@ -19,6 +19,7 @@
 1803	Shared Cost 0180-3	3
 1804	Shared Cost 0180-4	3
 1805	Shared Cost 0180-5	3
+1900	Premium Rate 0190-0 (freie Tarifierung)
 1901	Premium Rate 0190-1	3
 1902	Premium Rate 0190-2	3
 1903	Premium Rate 0190-3	3
@@ -42,7 +43,7 @@
 190051	Junior Telecom
 190054	Calladin
 190071	RapidCall
-190073	Tele2 Ortstarif
+1900732	Tele2 iHear
 190076	Telestunt
 190079	smart79
 190082	lightTalk
@@ -574,6 +575,8 @@
 2993	Marsberg-Canstein
 2994	Marsberg-Westheim
 30	Berlin
+310	Testrufnummer Ferngespräche	2
+311	Testrufnummer Ortsgespräche	2
 3301	Oranienburg
 3302	Henningsdorf
 3303	Birkenwerdr
@@ -800,7 +803,7 @@
 33967	Freyenstein
 33968	Meyenburg
 33969	Stepenitz
-33970	Neustadt
+33970	Neustadt Dosse
 33971	Kyritz
 33972	Breddin
 33973	Zernitz
@@ -1191,7 +1194,7 @@
 35953	Burkau
 35954	Großharthau
 35955	Pulsnitz
-3596	Neustadt
+3596	Neustadt i Sa
 35971	Sebnitz
 35973	Stolpen
 35974	Hinterhermsdorf
@@ -2253,7 +2256,7 @@
 4407	Wardenburg
 4408	Hude
 4409	Westerstede-Ocholt
-441	Oldenburg
+441	Oldenburg (Oldb)
 4421	Wilhelmshaven
 4422	Sande
 4423	Fedderwarden
@@ -2357,7 +2360,7 @@
 4557	Blunk
 4558	Todesfelde
 4559	Wensin
-4561	Neustadt
+4561	Neustadt in Holstein
 4562	Grömitz
 4563	Scharbeutz-Haffkrug
 4564	Schashagen
@@ -3378,7 +3381,7 @@
 6307	Schopp
 6308	Olsbrücken
 631	Kaiserslautern
-6321	Neustadt
+6321	Neustadt a d Weinstr
 6322	Bad Dürkheim
 6323	Edenkoben
 6324	Haßloch
@@ -3637,7 +3640,7 @@
 6683	Ehrenberg
 6684	Hofbier Schwarzbach
 6691	Schwalmstadt
-6692	Neustadt
+6692	Neustadt Hessen
 6693	Neuental
 6694	Neukirchen
 6695	Jeseberg
@@ -4445,7 +4448,7 @@
 8326	Fischen
 8327	Rettenberg
 8328	Baderschwang
-8329	Riezlern
+8329	Riezlern Kleinwalsertal (+43 5517 ab 2003-07)
 8330	Legau
 8331	Memmingen
 8332	Ottobeuren
@@ -4470,6 +4473,7 @@
 8363	Pfronten
 8364	Seeg
 8365	Wertach
+83658	Jungholz Tirol (+43 5676 ab 2003-07)
 8366	Oy-Mittelberg
 8367	Roßhaupten
 8368	Halblech
@@ -4716,6 +4720,10 @@
 9001	Premium Rate - Information
 9003	Premium Rate - Unterhaltung
 9005	Premium Rate - Sonstige (Erotik)
+9005000	Centalk	5
+9005001	Centalk	5
+9005310	Centel
+9009	Premium Rate - Dialer
 906	Donauwörth
 9070	Tapfheim
 9071	Dillingen
@@ -5070,7 +5078,7 @@
 9574	Marktzeuln
 9575	Weismain
 9576	Lichtenfels-Isling
-9602	Neustadt
+9602	Neustadt a d Waldnaab
 9603	Floß
 9604	Wernberg-Köblitz
 9605	Weiherhammer
@@ -5162,7 +5170,7 @@
 9764	Hoechheim
 9765	Trappstadt
 9766	Grosswenkheim
-9771	Bad Neustadt
+9771	Bad Neustadt a d Saale
 9772	Bischofsheim a.d.Rhoen
 9773	Unsleben
 9774	Oberelsbach

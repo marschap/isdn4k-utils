@@ -13,15 +13,19 @@
 #define PRT_A PRT_ERR /* always on stderr */
 
 /* string lens */
+/* Support international numbers with 15 digits for almost any combinations
+ * of the lengths of country, area, and msn.
+ * Top level entries in the destination database may have a code like _INTN
+ * instead of CC in case of orbital services.  |TB| 2003-08-18 */
 
 #define TN_MAX_VBN_LEN 4
 #define TN_MAX_PROVIDER_LEN 12
-#define TN_MAX_COUNTRY_LEN 8
 #define TN_MAX_SCOUNTRY_LEN 40
 #define TN_MAX_COUNTRY_LEN 8
+#define TN_MAX_TLD_LEN (5+1)
 #define TN_MAX_AREA_LEN 10
 #define TN_MAX_SAREA_LEN 40
-#define TN_MAX_MSN_LEN 10
+#define TN_MAX_MSN_LEN (12+1)
 #define TN_MAX_NUM_LEN (TN_MAX_PROVIDER_LEN+TN_MAX_COUNTRY_LEN+TN_MAX_AREA_LEN+TN_MAX_MSN_LEN+4)
 
 /* for number 1002 0043 1 2345 or 1002 01 2345 it gives */
@@ -32,7 +36,7 @@ typedef struct {
   char scountry[TN_MAX_SCOUNTRY_LEN];	/* "Austria" */
   char country[TN_MAX_COUNTRY_LEN];	/* "+43" */
   char keys[TN_MAX_SCOUNTRY_LEN];	/* "VIA/AT" */
-  char tld[3];				/* "AT" */
+  char tld[TN_MAX_TLD_LEN];		/* "AT" */
   int ncountry;				/* 43 */
   char area[TN_MAX_AREA_LEN];		/* "1" */
   int narea;				/* 1 */
