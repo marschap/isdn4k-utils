@@ -436,4 +436,129 @@ CONFIG_DIVERTCTRL
   CD should work in all countries if this service has been sub-
   scribed.
 
+Eurofile Transfer Support
+CONFIG_EUROFILE
+  The Eurofile Transfer Protocol is a protocol standardized by ETSI
+  that allows computers to exchange files over the ISDN. ISDN
+  adapter boards for PCs are usually bundled with a file transfer
+  software that implements the above protocol. Typing 'y'
+  here will build the eftp4linux package, which will allow your
+  linux box to exchange files over isdn with such PCs.
+. 
+  The package actually consists of a core library 'libeft' (which
+  mainly implements the protocols ETS 300-383 and ETS 300-075) and
+  some applications which use that library.
+.
+  Eurofile requires a 2.2.x kernel or newer to work. You can quickly
+  check if your Linux system is Eurofile-ready by running the
+  `check_system' script present in the eurofile/scripts/ directory.
+
+Build Eurofile server
+CONFIG_EFTD
+  This will build an eurofile server 'eftd' which allows to connect
+  from another computer to your linux computer via isdn and to
+  download or upload files.
+
+Use user authetication derived from wu-ftp
+CONFIG_EFTD_WUAUTH
+  Eurofile connections to your computer are granted on a
+  user name / password based authentication scheme. If you say 'y'
+  here, an authentication library derived from the Washinghton
+  University ftp server is used which allows you to configure fine
+  grained access control.
+.
+  The main reason why this is a config option is that wuftpd comes
+  with another license (Berkley style with advertising clause) which
+  is incompatible with the GPL (the eftp4linux code itsself is coverd
+  by the LGPL). Thus, the only reason to turn this off is probably if
+  you want to generate an eftd binary which can be distributed
+  under the TERMS terms of the GPL.
+
+MSN used to provide Eurofile service
+CONFIG_EFTD_SERVER_MSN
+  This is the MSN (ususally the telephone number without area code),
+  that another computer must call if it wants to connect to your
+  eftp4linux eurofile server. This only sets the default entry in
+  the example eft.conf file and you can always change this number
+  later by editing /etc/isdn/eft.conf.
+.
+  If you also use ISDN for connecting your computer to your internet
+  provider, it is recommended to use a different MSN than for
+  ippp/rawip (or whatever) network interfaces (in particular if 
+  you use isdn network interfaces that accept incoming connections).
+
+Install eftd boot time script
+CONFIG_EFT_INSTALL_EFTD_SH
+  If this is enabled, a sysv compatible init rc script for starting
+  eftd during boot time will be installed when you do a `make install'.
+.
+  Actually, `make install' only  copies the script file to the sysv
+  init directory (currently hardcoded /sbin/init.d). It does not
+  configure the runlevels which still remains your own task. Please
+  refer to the doc of your Linux distribution on how to do this. 
+.  
+  You might want to say 'n' here if you already have an own costumized
+  version of the script installed which should not be overwritten when
+  doing `make install'
+
+Build Eurofile client
+CONFIG_EFTP
+  This will build an eurofile client 'eftp' which allows you to
+  connect to other computers from your linux computer via ISDN and
+  to download or upload files. eftp provides a command line user
+  interface somewhat similar to ftp (thus, the name). 
+
+Command line editing for eftp
+CONFIG_EFTP_READLINE
+  This enables command line editing for eftp by means of the GNU
+  readline library. For this to work, your system needs a sufficiently
+  recent version of the GNU readline library installed which supports
+  the so called `alternate interface'. (If such a library is not fond,
+  readline support will be turned off automatically, thus you only
+  need to say 'n' here if you really don't want GNU readline support).
+
+Install eftp suid root
+CONFIG_EFTP_SETUID
+  For initiating outgoing connections, eftp needs to dynamically
+  configure isdn network interfaces and X.25 routes. This task
+  requires netadmin priviliges and access to /dev/isdnctrl files.
+  Thus, only root can dynamically initiate outgoing eurofile connections.
+.
+  If you say 'y' here, a `make install' will install eftp suid root.
+  This will allow normal users to initiate Eurofile connections.
+  suid eftp only initiates outgoing eurofile connections if the
+  user hase write permissions to /dev/ttyI0. Thus, even if you install
+  eftp suid root, only those user who can initiate outgoing isdn
+  calls anyway can do so by means of eftp.
+.
+  eftp will only perform the network setup (and cleanup) with super
+  user privileges, the whole other stuff is performed by a forked
+  child process that runs with real and effective user id of the
+  calling users. Thus, potential security holes are minimized.
+
+MSN used by outgoing Eurofile calls
+CONFIG_EFTP_CLIENT_MSN
+  This is the MSN used to identify your isdn access line
+  (used be the ISDN network to generate the called party number
+  in the isdn connect request message) when making outgoing calls
+  to other Eurofile servers.
+.
+  Some Eurofile servers base access control on the called party
+  number. Thus, when connecting to such a server, the success of
+  your connection attempt might depend on the proper setting of this.
+.
+  This only sets the default entry in the example eft.conf file and
+  you can always change this number later by editing /etc/isdn/eft.conf.
+
+Install default eft.conf file
+CONFIG_EFT_INSTALL_CONF
+  If this is enabled, the example eft.conf file will be installed
+  (usually as /etc/isdn/eft.conf). You might want to turn this off if
+  you already have an own costumized version of eft.conf installed
+  which should not be overwritten when doing `make install'
+
 # need an empty line after last entry, for sed script in Configure.
+
+
+
+
