@@ -53,6 +53,36 @@ static option_t my_options[] = {
 
 /* -------------------------------------------------------------------- */
 
+static int timeoutrunning = 0;
+static int timeoutshouldrun = 0;
+
+static void timeoutfunc(void *arg)
+{
+	unsigned char *msg = 0;
+	/* info("capiplugin: checking for capi messages"); */
+	while (capi20_get_message (applid, &msg) == 0)
+		capiconn_inject(applid, msg);
+	if (timeoutshouldrun)
+		timeout (timeoutfunc, 0, 1);
+}
+
+static void setup_timeout(void)
+{
+	timeoutshouldrun = 1;
+	if (!timeoutrunning)
+		timeout (timeoutfunc, 0, 1);
+}
+
+static void unsetup_timeout(void)
+{
+	timeoutshouldrun = 0;
+	if (timeoutrunning)
+		untimeout (timeoutfunc, 0);
+	timeoutrunning = 0;
+}
+
+/* -------------------------------------------------------------------- */
+
 static void dodisconnect(void)
 {
 	if (!conn)
@@ -139,6 +169,9 @@ static void init_capiconn(void)
 		fatal("capiplugin: add controller %d failed", opt_contr);
 		return;
 	}
+
+	add_fd(capi20_fileno(applid));
+	setup_timeout();
 }
 
 static int capi_new_phase_hook(int phase)
@@ -176,6 +209,10 @@ static int capi_new_phase_hook(int phase)
 			break;
 		case PHASE_TERMINATE:
 			info("capiplugin: phase terminate");
+			remove_fd(capi20_fileno(applid));
+			unsetup_timeout();
+			(void)capiconn_freecontext(ctx);
+			(void)capi20_release(applid);
 			break;
 		case PHASE_DISCONNECT:
 			info("capiplugin: phase disconnect");
