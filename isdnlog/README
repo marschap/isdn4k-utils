@@ -2801,6 +2801,12 @@ Als Browser wurden von mir der netscape 3.0 gold und arena verwedet. Beide
 arbeiten mit der Ausgabe vom isdnrep. Allerdings, war die Ausgabe vom arena
 nicht so farbenpraechtig, wie die vom netscape.
 
+Bekannte und unloesbare Probleme sind die Zuordnung von einem Anruf zu einem
+Fax oder vbox-Call. Leider sind die Zeiten des Anrufsbeginn unterschiedlich
+zwischen isdnrep, mgetty und vbox. Daher versucht der isdnrep die beste 
+Annaeherung zu erreichen. Es kann aber immer passieren, dass z.B. ein Fax
+dem falschen Anruf zugeordnet wurde.
+
 Anzeige der isdnrep
 -------------------
 
