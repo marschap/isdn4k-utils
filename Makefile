@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.40 2000/03/17 16:15:31 calle Exp $
+# $Id: Makefile,v 1.41 2000/04/13 10:38:58 paul Exp $
 #
 # Toplevel Makefile for isdn4k-utils
 #
@@ -158,7 +158,7 @@ clean:
 		$(MAKE) -i -C `dirname $$i` clean; \
 	done;
 	for i in `echo $(EXTRADIRS)`; do \
-		$(MAKE) -i -C $$i clean; \
+		if [ -f $$i/Makefile ]; then $(MAKE) -i -C $$i clean; fi; \
 	done;
 	-rm -f *~ *.o
 
@@ -175,7 +175,7 @@ distclean: clean
 		fi ; \
 	done;
 	for i in `echo $(EXTRADIRS)`; do \
-		$(MAKE) -i -C $$i distclean; \
+		if [ -f $$i/Makefile ]; then $(MAKE) -i -C $$i distclean; fi; \
 	done;
 	-rm -f *~ .config .config.old scripts/autoconf.h .menuconfig \
 		Makefile.tmp .menuconfig.log scripts/defconfig.old
