@@ -1,6 +1,9 @@
 Recent changes made to the isdn4k-utils archive are listed here,
 most recent on top.
 ------------------
+1999/08/18 armin (Armin Schindler <mac@melware.de>)
+	eiconctrl - XLOG retrieve function for all supported active cards added.
+
 1999/08/03 paul (Paul Slootman <paul@isdn4linux.de>)
 	xmonisdn - possible security problems
 		   See manpage 'SECURITY ISSUES' section for details. In short,
