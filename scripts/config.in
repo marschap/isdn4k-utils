@@ -1,5 +1,5 @@
 #
-# $Id: config.in,v 1.20 1997/09/25 21:38:26 fritz Exp $
+# $Id: config.in,v 1.21 1997/10/26 23:19:19 fritz Exp $
 #
 # The whole configuration stuff is borrowed from the kernel
 # configuration.
@@ -51,8 +51,8 @@ mainmenu_option nextcomment
 comment 'Runtime configuration tools'
 bool 'isdnctrl' CONFIG_ISDNCTRL
 if [ "$CONFIG_ISDNCTRL" = "y" ]; then
-	bool 'Enable isdnctrl debug-option' CONFIG_ISDNCTRL_DEBUG
-	bool 'Enable configfile-option (uses dbm lib)' CONFIG_CTRL_CONF
+#	bool 'Enable isdnctrl debug-option' CONFIG_ISDNCTRL_DEBUG
+	bool 'Enable configfile-option (uses dbm lib)' CONFIG_ISDNCTRL_CONF
 fi
 bool 'iprofd' CONFIG_IPROFD
 endmenu
@@ -66,7 +66,9 @@ if [ "$CONFIG_ICNCTRL" = "y" ]; then
 fi
 bool 'pcbitctl' CONFIG_PCBITCTL
 bool 'avmcapictrl' CONFIG_AVMCAPICTRL
-bool 'actctrl' CONFIG_ACTCTRL
+if [ -f $CONFIG_KERNELDIR/drivers/isdn/act2000/act2000.h ] ; then
+	bool 'actctrl' CONFIG_ACTCTRL
+fi
 if [ "$CONFIG_EXPERIMENTAL" = "y" ]; then
 	bool 'loopctrl' CONFIG_LOOPCTRL
 	if [ "$CONFIG_LOOPCTRL" = "y" ]; then
