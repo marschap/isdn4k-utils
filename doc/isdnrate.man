@@ -4,7 +4,7 @@ isdnrate \- Print telefon rates and various info from rate\-files(5).
 .SH SYNOPSIS
 .BI "isdnrate \-b" best " \-d" day " \-f" from " \-h" hour " \-l" len
 .BI " \-p" provs " \-t" takt " \-v" verbose " \-x" exclude
-.BI " \-C \-D" det " -\G" data " \-H \-L \-S" sort " \-T \-U \-V \-X" explain
+.BI " \-C \-D" det " -\G" data " \-H \-L \-N \-S" sort " \-T \-U \-V \-X" explain
 .B NUMBER
 .P
 All options are optional.
@@ -115,6 +115,10 @@ Print a semicolon separated list of
 .IP
 vbn ; providername ; zone ; day ; time ; currency ; charge ; basicprice ; price ;
 duration ; charge/min ; takt ; minimum price
+.P
+.B \-N
+Show info about following numbers. If no provider is given, the preselected
+provider is used.
 .P
 .B \-S sort
 Sort output by \fIsort\fP, which may be 

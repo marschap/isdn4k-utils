@@ -1,4 +1,4 @@
-/* $Id: isdnlog.c,v 1.50 1999/09/26 10:55:20 akool Exp $
+/* $Id: isdnlog.c,v 1.51 1999/10/25 18:33:15 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,11 @@
  * along with this program; if not, write to the Free Software
  *
  * $Log: isdnlog.c,v $
+ * Revision 1.51  1999/10/25 18:33:15  akool
+ * isdnlog-3.57
+ *   WARNING: Experimental version!
+ *   	   Please use isdnlog-3.56 for production systems!
+ *
  * Revision 1.50  1999/09/26 10:55:20  akool
  * isdnlog-3.55
  *   - Patch from Oliver Lauer <Oliver.Lauer@coburg.baynet.de>
@@ -354,7 +359,11 @@
 #include <termios.h>
 
 #include "isdnlog.h"
+#ifdef USE_DESTINATION
+#include "dest.h"
+#else
 #include "telnum.h"
+#endif
 #ifdef POSTGRES
 #include "postgres.h"
 #endif
@@ -638,15 +647,17 @@ static void init_variables(int argc, char* argv[])
 #ifdef Q931
   q931dmp = 0;
 #endif
+#if 0 /* Fixme: remove */
   CityWeekend = 0;
+#endif  
 
   sprintf(mlabel, "%%s%s  %%s%%s", "%e.%b %T %I");
   amtsholung = NULL;
   dual = 0;
-
+#if 0 /* Fixme: german specific there are conf entries VBN & PRESELECTED */
   preselect = DTAG;      /* Telekomik */
   vbn = strdup("010"); 	 /* Germany */
-
+#endif
   hup3 = 240;
 
   myname = argv[0];
@@ -793,9 +804,10 @@ int set_options(int argc, char* argv[])
       case 'q' : traceoptions();
       	       	 break;
 #endif
-
+#if 0 /* Fixme: remove */
       case 'F' : CityWeekend++;
       	       	 break;
+#endif		 
 
       case 'A' : amtsholung = strdup(optarg);
       	       	 break;
@@ -1031,9 +1043,11 @@ static int read_param_file(char *FileName)
                                 if (!strcmp(Ptr->name,CONF_ENT_OTHER))
 				        other = toupper(*(Ptr->value)) == 'Y'?1:0;
                                 else
+#if 0 /* Fixme: remove */				
 				if (!strcmp(Ptr->name,CONF_ENT_CW))
 				  CityWeekend++;
                                 else
+#endif				
                                 if (!strcmp(Ptr->name,CONF_ENT_IGNORERR))
 				        ignoreRR = (int)strtol(Ptr->value, NIL, 0);
                                 else
@@ -1043,6 +1057,11 @@ static int read_param_file(char *FileName)
                                 if (!strcmp(Ptr->name,CONF_ENT_VBN)) {
                                         free(vbn);
 				        vbn = strdup(Ptr->value);
+                                }
+                                else
+                                if (!strcmp(Ptr->name,CONF_ENT_VBNLEN)) {
+                                        free(vbnlen);
+				        vbnlen = strdup(Ptr->value);
                                 }
                                 else
 					print_msg(PRT_ERR,"Error: Invalid entry `%s'!\n",Ptr->name);
@@ -1386,7 +1405,11 @@ int main(int argc, char *argv[], char *envp[])
 	    if (!Q931dmp && *version)
 	      print_msg(PRT_NORMAL, "%s\n", version);
 
+#ifdef USE_DESTINATION
+	    initDest(destfile, &version);
+#else	    
 	    initCountry(countryfile, &version);
+#endif	    
 
 	    if (!Q931dmp && *version)
 	      print_msg(PRT_NORMAL, "%s\n", version);

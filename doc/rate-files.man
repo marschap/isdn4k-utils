@@ -168,11 +168,13 @@ where
 .I MinCharge|
 is an (optional) minimum charge,
 .I Charge
-the rate per second or optional rate per
+the rate per 
+.I Duration
+second or optional rate per
 .I (Divider)
 seconds, 
 .I Duration
-is the length of one charge impuls. After
+is the length of one charge impuls in seconds. After
 .I Delay
 the next duration is taken. If delay ist not given it equals to the duration.
 The last duration may not have a delay and may not be zero.

@@ -51,12 +51,14 @@
  *	%Np .. Provider
  *	%Nc .. country +49
  *	%NC .. countryname
+ *	%Nt .. tld = 2 char isdcode for country
  *	%Na .. area 89 or 089 if no country/Provider
  *	%NA .. areaname
  *	%Nm .. msn
- *  %f .. full +49 89 12356 (Deutschland, Berlin)
+ *      %f .. full +49 89 12356 (Deutschland, Berlin)
  *	%F .. full +49 89/12345, Berlin
  *	%s .. short +48 89 123456
+ *	%l .. long +49 89 12356 - Berlin (DE)
  * 	%n .. number 004889123456
  *
  *  N is number of chars to skip in format if part is not present
@@ -65,11 +67,11 @@
  *  123 => "123" not "  123"
  *
  *
- * char* prefix2provider(int prefix, char* provider, TELNUM *num)
+ * char* prefix2provider(int prefix, char* provider)
  * --------------------------------------------------------------
  *  returns formatted provider for prefix
  *
- * int provider2prefix(char* provider, int*prefix, TELNUM *num)
+ * int provider2prefix(char* provider, int*prefix)
  * ------------------------------------------------------------
  *	ret len of provider
  *
@@ -84,60 +86,46 @@
  *
  */
 
+#ifdef USE_DESTINATION
+#include "dest.h"
+#else
 #include "telnum.h"
+#endif
 
 #define DEFAULT (UNKNOWN-1)
 
-#undef DEBUG
+/* #define DEBUG 1 */
 
 static TELNUM defnum;
 
+static void error (char *fmt, ...)
+{
+  va_list ap;
+  char msg[BUFSIZ];
+
+  va_start (ap, fmt);
+  vsnprintf (msg, BUFSIZ, fmt, ap);
+  va_end (ap);
+#ifdef STANDALONE
+  fprintf(stderr, "%s\n", msg);
+#else
+  print_msg(PRT_ERR, "%s\n", msg);
+#endif
+}
+
+
 static void _init(void);
 
-#ifdef TESTde
-#undef ISDN_AT
-#define ISDN_DE
-#endif
-#ifdef TESTnl
-#undef ISDN_AT
-#define ISDN_NL
-#endif
-
-/* --------------------- ADJUST here ----------------*/
-#ifdef ISDN_AT
 void initTelNum(void)
 {
-  vbn = strdup("10");  /* Fixme: VBN is defined in isdn.conf but not read yet */
-  preselect=1;
-#define VBN_LEN 2  /* len of digits following vbn */
-#define VBN_GERMANY 0
+  if(!vbn)
+    vbn="";
+  if (!vbnlen || !*vbnlen) {
+    error("VBNLEN not defined.\n\tPlease read isdnlog/README\n");
+    exit(1);
+  }  
   _init();
 } /* pre_init */
-#endif
-
-#ifdef ISDN_DE
-void initTelNum(void)
-{
-  vbn = strdup("010"); 	/* Fixme: VBN is defined in isdn.conf but not read yet */
-  preselect=33;
-#define VBN_LEN 2  
-#define VBN_GERMANY 1 /* vbn[3] == '0' =>  3 stellig folgt */
-  _init();
-} /* pre_init */
-#endif
-
-#ifdef ISDN_NL
-void initTelNum()
-{
-  vbn = strdup("16:17"); /* Fixme: VBN is defined in isdn.conf but not read yet */
-  preselect=999;
-#define VBN_LEN 2  /* Paul: ? is this correct */
-#define VBN_GERMANY 0
-  _init();
-} /* pre_init */
-#endif
-
-/* ----------------- end ADJUST here ----------------*/
 
 static inline int Isspace(c) {
   return isspace(c) || c == '_';
@@ -146,26 +134,26 @@ static inline int Isspace(c) {
 static int split_vbn(char **p, TELNUM *num) {
   int l;
 
-#if DEBUG
-  print_msg(PRT_V, "vbn: p(%d) '%s' ", num->nprovider,*p);
-#endif
-  if ((l = provider2prefix(*p, &num->nprovider, num))) {
+  if ((l = provider2prefix(*p, &num->nprovider))) {
 	Strncpy(num->provider, *p, l+1);
 	*p += l;
-#if DEBUG
-    print_msg(PRT_V, "Provider \"%s\" %d\n", num->provider, num->nprovider);
-#endif
 	return l;
   }
-#if DEBUG
-  print_msg(PRT_V, "No Provider\n");
-#endif
   return 0;	  
 }
+
+static void clearArea(TELNUM *num, int a) {
+  strcpy(num->area,a==DEFAULT?defnum.area:"");
+  strcpy(num->sarea,a==DEFAULT?defnum.sarea:"?");
+  num->narea= a==DEFAULT?defnum.narea:a; 
+}
+
+#ifndef USE_DESTINATION
 static inline void clearCountry(TELNUM *num, int c) {
   num->country=0;
   num->ncountry=c;
 }
+
 static inline void setCountry(TELNUM *num) {
   num->country=defnum.country;
   num->ncountry=defnum.ncountry;
@@ -269,11 +257,6 @@ static int split_country(char **p, TELNUM *num) {
   return res+len;
 }  
 
-static void clearArea(TELNUM *num, int a) {
-  strcpy(num->area,a==DEFAULT?defnum.area:"");
-  strcpy(num->sarea,a==DEFAULT?defnum.sarea:"?");
-  num->narea= a==DEFAULT?defnum.narea:a; 
-}
 
 static int split_area(char **p, TELNUM *num, int first) {
   int res=0;
@@ -315,6 +298,84 @@ static int split_area(char **p, TELNUM *num, int first) {
   return res+len;
 }  
 
+#endif
+
+#ifdef USE_DESTINATION
+
+static inline void clearCountry(TELNUM *num, int c) {
+  *num->scountry='\0';
+  *num->country='\0';
+  num->ncountry=c;
+}
+
+int normalizeNumber(char *target, TELNUM *num, int flag) {
+  char *origp=strdup(target);
+  char *p=origp;
+  int res=0;
+  char *q;
+  
+  clearNum(num);
+#if DEBUG
+  print_msg(PRT_V,"NN %s (Prov %d)=> ",target, num->nprovider);
+#endif    
+  if (flag & TN_PROVIDER)
+    if (!split_vbn(&p, num)) {
+      num->nprovider=preselect;
+      Strncpy(num->provider, getProvider(preselect),TN_MAX_PROVIDER_LEN);
+    }  
+  if (flag & TN_COUNTRY) {
+    /* subst '00' => '+' */
+    if (p[0]=='0' && p[1]=='0')
+      *++p='+';
+    if(!isdigit(*p)) {
+      res=getDest(p, num);
+      /* isdnrate is coming with +4319430 but this is a sondernummer */
+      if (atoi(mycountry+1) == num->ncountry) {
+        q = malloc(strlen(num->area)+strlen(num->msn)+1);
+	strcpy(q, num->area);
+	strcat(q, num->msn);
+        if(getArea(num->nprovider, q)) { /* sondernummer */
+  	  clearCountry(num, 0); 
+	  *num->sarea='\0';
+	  Strncpy(num->area, q, TN_MAX_AREA_LEN);
+	  num->narea=atoi(num->area);
+	  *num->msn = '\0';
+	}
+	free(q);
+      }	
+    }  
+    else {  
+      if(getArea(num->nprovider, p)) { /* sondernummer */
+  	clearCountry(num, 0); 
+	*num->sarea='\0';
+	Strncpy(num->area, p, TN_MAX_AREA_LEN);
+	num->narea=atoi(num->area);
+	*num->msn = '\0';
+      }		
+      else {
+        clearArea(num,DEFAULT);
+	if (*p == '0') { /* must be distant call in country */
+	  q = malloc(strlen(mycountry)+strlen(p));
+	  strcpy(q, mycountry);
+	  strcat(q, p+1);
+	  free(origp);
+	  origp=p=q;
+          res=getDest(p, num);
+	} 
+	else 
+	  Strncpy(num->msn, p, TN_MAX_MSN_LEN);
+      }	
+    }	
+  }	
+  free(origp);      
+#if DEBUG
+  print_msg(PRT_V,"(%d) %s\n",res,formatNumber("%l Prov %p",num));
+#endif    
+  return(res);	
+}
+
+#else
+
 int normalizeNumber(char *target, TELNUM *num, int flag) {
   int res=0;
   int first=0;
@@ -343,16 +404,18 @@ int normalizeNumber(char *target, TELNUM *num, int flag) {
 	return 1;
   return(0);	
 }
+#endif
 
-char *prefix2provider(int prefix, char*s, TELNUM *num) {
+#define VBN_LEN (*vbnlen-'0')
+char *prefix2provider(int prefix, char*s) {
   if (prefix < 100)
-    sprintf(s, "%s%0*d", num->vbn, VBN_LEN, prefix);
+    sprintf(s, "%s%0*d", defnum.vbn, VBN_LEN, prefix);
   else
-    sprintf(s, "%s%03d", num->vbn, prefix - 100);
+    sprintf(s, "%s%03d", defnum.vbn, prefix - 100);
   return s;
 }
 
-int provider2prefix(char *p, int *prefix, TELNUM *num) {
+int provider2prefix(char *p, int *prefix) {
   char prov[TN_MAX_PROVIDER_LEN];
   int l1, l2=0;
   char *q;
@@ -361,11 +424,11 @@ int provider2prefix(char *p, int *prefix, TELNUM *num) {
   while (q) {
 	l1=strlen(vbns);
 	if (!memcmp(p, q, l1)) {
-	  Strncpy(num->vbn, q, TN_MAX_VBN_LEN);
+/*	  Strncpy(num->vbn, q, TN_MAX_VBN_LEN); */
 #if DEBUG
       print_msg(PRT_V, "VBN \"%s\"\n", q);
 #endif
-  	  if (p[l1] == '0' && VBN_GERMANY) /* dreistellige Verbindungsnetzbetreiberkennzahl? */
+  	  if (p[l1] == '0' && strchr(vbnlen,':')) /* dreistellige Verbindungsnetzbetreiberkennzahl? */
     	l2 = l1 + 3;	/* 1002 is provider UTA in AT */
   	  else
     	l2 = l1 + VBN_LEN;
@@ -383,8 +446,18 @@ void initNum(TELNUM *num) {
   char *s;
   if(!*num->area)
 	Strncpy(num->area, myarea, TN_MAX_AREA_LEN);
-  num->country=defnum.country;
   num->ncountry=defnum.ncountry;
+#ifdef USE_DESTINATION  
+  strcpy(num->scountry,defnum.scountry);
+  strcpy(num->country,defnum.country);
+  num->narea=atoi(num->area); /* 1.01 */
+  s=malloc(strlen(mycountry)+strlen(num->area)+1);
+  strcpy(s,mycountry);
+  strcat(s,num->area);
+  getDest(s, num);  
+  free(s);
+#else  
+  num->country=defnum.country;
   num->narea=atoi(num->area);
   if (getAreacode(num->ncountry, num->area, &s) != UNKNOWN) {
     Strncpy(num->sarea, s, TN_MAX_SAREA_LEN); 
@@ -392,6 +465,7 @@ void initNum(TELNUM *num) {
   }	
   else 
       clearArea(num, UNKNOWN);
+#endif      
   strcpy(num->vbn, defnum.vbn);
 }
 
@@ -399,6 +473,12 @@ static void _init(void) {
   char *s;
   clearNum(&defnum);
   Strncpy(defnum.area, myarea, TN_MAX_AREA_LEN);
+#ifdef USE_DESTINATION
+  s=malloc(strlen(mycountry)+strlen(myarea)+1);
+  strcpy(s,mycountry);
+  strcat(s,myarea);
+  getDest(s, &defnum);  
+#else
   if (getCountry(mycountry, &defnum.country) != UNKNOWN) {
 	defnum.ncountry=atoi(defnum.country->Code[0]+1);
 	if (getAreacode(defnum.ncountry, defnum.area, &s) != UNKNOWN) {
@@ -406,12 +486,13 @@ static void _init(void) {
 	  free(s);
 	}	
   }	
+#endif  
   Strncpy(defnum.vbn, vbn, TN_MAX_VBN_LEN);
 }
 
 void clearNum(TELNUM *num) {  
-  strcpy(num->provider,"");
-/*  num->nprovider=preselect; */
+/*  num->nprovider=UNKNOWN;
+  strcpy(num->provider,""); */
   strcpy(num->area,"");
   initNum(num);
   strcpy(num->msn,"");
@@ -428,7 +509,7 @@ void clearNum(TELNUM *num) {
  * 	%n .. number 004889123456
  *  N is number of chars to skip in format if part is not present
  *  e.g. "%1c %1a %m"
- *	+4930123 => "+49 39 123"
+ *	+4930123 => "+49 30 123"
  *  123 => "123" not "  123"
  */
 #define SKIP if(skip>0)	\
@@ -458,28 +539,43 @@ again:
 		  break;
 		case 'c': 
 		  if(num->ncountry>0 && num->country) {
+#ifdef USE_DESTINATION
+		q=stpcpy(q,num->country); 
+#else			
 			q=stpcpy(q, num->country->Code[0]); 
+#endif			
 			first=0;
 		  }
 		  else 
 			SKIP;
 		  break;
 		case 'C': 
+#ifdef USE_DESTINATION
+		  if(num->ncountry>0) 
+			q=stpcpy(q, num->scountry);
+#else			
 		  if(num->ncountry>0 && num->country) 
 			q=stpcpy(q, num->country->Name);
+#endif			
 		  else 
 			SKIP;
 		  break;
+		case 't': /* tld */
+		  if(*num->tld)
+		    q=stpcpy(q, num->tld);  
+		  else
+		    SKIP;
+		  break;    
 		case 'a': 
 		  if(num->narea>0) {
-			if(first) *q++ = '0'; /* areaprefix ?? */
+/*			if(first) *q++ = '0'; / sondernummber - no country */
 			q=stpcpy(q,num->area);
 		  }	
 		  else 
 			SKIP;
 		  break;
 		case 'A': 
-		  if(num->narea>0) 
+		  if(*num->sarea) 
 			q=stpcpy(q,num->sarea);
 		  else 
 			SKIP;
@@ -499,8 +595,9 @@ again:
                           break;
 
 		case 's': q=stpcpy(q,formatNumber("%1c %1a %m", num)); break;
+		case 'l': q=stpcpy(q,formatNumber("%1c %1a %1m - %1A (%t)", num)); break;
 		case 'n': 
-		  if(num->ncountry>0 && num->country) {
+		  if(num->ncountry>0) {
 			q=stpcpy(r=++q,formatNumber("%c%a%m", num));
 			r[0]=r[1]='0'; 
 		  }	
@@ -522,3 +619,68 @@ again:
   return s;
 }
 
+#ifdef TEST_TELNUM
+int verbose=0;
+static char *myshortname;
+
+static void init()
+{
+  auto char *version, **message;
+
+  if (readconfig(myshortname) < 0)
+    exit(1);
+
+  if (verbose)
+    message = &version;
+  else
+    message = NULL;
+
+  initHoliday(holifile, message);
+
+  if (verbose && *version)
+    print_msg(PRT_V, "%s\n", version);
+#ifdef USE_DESTINATION
+  initDest("/usr/lib/isdn/dest.gdbm", message); /* Fixme: */
+#else  
+  initCountry(countryfile, message);
+#endif
+  if (verbose && *version)
+    print_msg(PRT_V, "%s\n", version);
+
+  initRate(rateconf, ratefile, zonefile, message);
+
+  if (verbose && *version)
+    print_msg(PRT_V, "%s\n", version);
+
+  initTelNum();
+}				/* init */
+
+static void deinit(void)
+{
+  exitRate();
+#ifdef USE_DESTINATION
+  exitDest();
+#else  
+  exitCountry();
+#endif  
+  exitHoliday();
+}
+int     main(int argc, char *argv[], char *envp[])
+{
+  register int i;
+  TELNUM num;
+  myname = argv[0];
+  myshortname = basename(myname);
+
+  if(argc>1) {
+    init();
+    i = argc-1;
+    argc++;
+    while (i--) {
+      normalizeNumber(argv[argc], &num);
+      printf("%s => %s\n",argv[argc++], formatNumber("%l", &num);
+    }
+  }
+  return EXIT_SUCCESS;
+}      
+#endif

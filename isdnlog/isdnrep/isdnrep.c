@@ -1,4 +1,4 @@
-/* $Id: isdnrep.c,v 1.79 1999/09/13 09:09:43 akool Exp $
+/* $Id: isdnrep.c,v 1.80 1999/10/25 18:33:16 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -24,6 +24,11 @@
  *
  *
  * $Log: isdnrep.c,v $
+ * Revision 1.80  1999/10/25 18:33:16  akool
+ * isdnlog-3.57
+ *   WARNING: Experimental version!
+ *   	   Please use isdnlog-3.56 for production systems!
+ *
  * Revision 1.79  1999/09/13 09:09:43  akool
  * isdnlog-3.51
  *   - changed getProvider() to not return NULL on unknown providers
@@ -596,7 +601,12 @@
 #include "isdnrep.h"
 #include "../../vbox/src/libvbox.h"
 #include "libisdn.h"
+#ifdef USE_DESTINATION
+#include "dest.h"
+#else
 #include "telnum.h"
+#endif
+
 
 
 #define END_TIME    1
@@ -783,6 +793,7 @@ static int      unknowns = 0;
 static UNKNOWNS unknown[MAXUNKNOWN];
 static int      zones[MAXZONES + 1];
 static int      zones_usage[MAXZONES + 1];
+static char *   zones_names[MAXZONES + 1];
 static double   zones_dm[MAXZONES + 1];
 static double   zones_dur[MAXZONES + 1];
 static char**   ShowMSN = NULL;
@@ -963,14 +974,16 @@ int read_logfile(char *myname)
   one_call            cur_call;
 
 
-  /* FIXME: */
   initHoliday(holifile, NULL);
+#ifdef USE_DESTINATION  
+  initDest(destfile, NULL);
+#else  
   initCountry(countryfile, NULL);
+#endif  
   initRate(rateconf, ratefile, zonefile, NULL);
   initTelNum();
-  currency = strdup("DM");
-  vbn = strdup("010");
-  interns0 = 3;
+  
+  interns0 = 3; /* Fixme: */
 
   msn_sum = calloc(mymsns + 1, sizeof(double));
   usage_sum = calloc(mymsns + 1, sizeof(int));
@@ -1073,11 +1086,12 @@ int read_logfile(char *myname)
 
 		if (timearea)
 		{
-			if (delentries)
+			if (delentries) {
 				if (cur_call.t > endtime)
 					fputs(string,ftmp);
 				else
 					continue;
+			}		
 		}
 
 		if (!verbose && cur_call.duration == 0)
@@ -1278,29 +1292,20 @@ static int print_bottom(double unit, char *start, char *stop)
 
 	if (!incomingonly)
 	{
-#if 1
 		h_percent = 60.0;
 		h_table_color = H_TABLE_COLOR3;
 		get_format("%-21.21s %4d call(s) %10.10s  %12s");
 		print_line2(F_BODY_HEADER,"");
+		/* Fixme: zones are provider-specific
+		   we are summing up zones for all provides here */
 		print_line2(F_BODY_HEADERL,"Outgoing calls ordered by Zone");
 		strich(1);
 
-                for (i = 0; i < 5; i++)
+                for (i = 0; i < MAXZONES + 1; i++)
                   if (zones_usage[i]) {
-                    register char *p;
                     auto     char  s[BUFSIZ];
 
-
-                    switch (i) {
-		      case  0 : p = "Internal-/FreeCall";  break;
-		      case  1 : p = "Ortszone";	           break;
-		      case  2 : p = "CityCall (< 20 km)";  break;
-		      case  3 : p = "RegioCall (< 50 km)"; break;
-		      case  4 : p = "GermanCall";     	   break;
-                    } /* case */
-
-                    sprintf(s, "%1d:%s", i, p);
+                    sprintf(s, "Zone %3d:%s", i, zones_names[i]);
 
                     print_line3(NULL, s, zones_usage[i],
                       double2clock(zones_dur[i]),
@@ -1313,7 +1318,6 @@ static int print_bottom(double unit, char *start, char *stop)
 #endif
 
 		print_line2(F_BODY_BOTTOM2,"");
-#endif
 
 		h_percent = 60.0;
 		h_table_color = H_TABLE_COLOR4;
@@ -1323,19 +1327,18 @@ static int print_bottom(double unit, char *start, char *stop)
 		strich(1);
 
 		for (i = 1; i < MAXPROVIDER; i++) {
-                  if (i < 100)
-		    sprintf(string, "%s%02d ", vbn, i);
-                  else
-		    sprintf(string, "%s%03d", vbn, i - 100);
-
+                  prefix2provider(i, string);
 		  if (usage_provider[i]) {
                     if (duration_provider[i])
                       sprintf(sx, "%5.1f%% avail.",
                         100.0 * (usage_provider[i] - provider_failed[i]) / usage_provider[i]);
                     else
                       *sx = 0;
+    		   p = getProvider(i);
+    		   if (!p || p[strlen(p) - 1] == '?') /* UNKNOWN Provider */
+                      p = "UNKNOWN";
 
-		    print_line3(NULL, "Provider", string, getProvider(i),
+		    print_line3(NULL, "Provider", string, p,
 		      usage_provider[i],
 		      double2clock(duration_provider[i]),
                       print_currency(pay_provider[i], 0), sx);
@@ -1386,50 +1389,10 @@ static int print_bottom(double unit, char *start, char *stop)
                   if ((unknown[i].cause != 1) &&  /* Unallocated (unassigned) number */
                       (unknown[i].cause != 3) &&  /* No route to destination */
                       (unknown[i].cause != 28)) { /* Invalid number format (address incomplete) */
-#if 0 /* DELETE_ME AK:18-Aug-99 */
-                        auto     char *p;
-                        auto     int   l;
-                       register int   flag = C_NO_WARN | C_NO_EXPAND;
-                       auto     int   prefix = strlen(countryprefix);
-                        auto    char  areacode[64], vorwahl[64], rufnummer[64], iam[64];
-#endif
 
                        print_msg(PRT_NORMAL,"%s ", unknown[i].called ? "Called by" : "  Calling");
 
-#if 0 /* FIXME */
-                       if (is_sondernummer(unknown[i].num, DTAG) > 0) /* Fixme: DTAG is specific to Germany */
-                         ;
-		       else
-#endif
-#if 0 /* DELETE_ME AK:18-Aug-99 */
-                       if ((p = get_areacode(unknown[i].num, &l, flag)) != 0) {
-                         if (l > 1) {
-                           /* Sehr gefaehrlich, was ist mit Laendern, die einen dreistelligen Code haben??? */
-                           Strncpy(areacode, unknown[i].num, 3 + prefix);
-                           if ((l - (2 + prefix)) > 0) {
-                           Strncpy(vorwahl,  unknown[i].num + 2 + prefix, l - (2 + prefix) + 1);
-                            vorwahl[l - (2 + prefix)] = 0;
-                           }
-                           else
-                             *vorwahl = 0;
-                           strcpy(rufnummer, unknown[i].num + l);
-
-                           strcpy(iam, num2nam(unknown[i].mynum, unknown[i].si1));
-
-                            print_msg(PRT_NORMAL,"%s %s/%s, %s %s %s (%s %s %s,%d):%s\n\t\t\t ",
-                              areacode, vorwahl, rufnummer, p, (unknown[i].called ?  "on" : "with"),
-                              iam, unknown[i].num, (unknown[i].called ? "->" : "<-"),
-                              unknown[i].mynum, unknown[i].si1, qmsg(TYPE_CAUSE, VERSION_EDSS1, unknown[i].cause));
-                         }
-                          else
-                            print_msg(PRT_NORMAL,"??? %s\n\t\t\t ", unknown[i].num);
-                        }
-                        else {
-#endif
-                          print_msg(PRT_NORMAL,"??? %s\n\t\t\t ", unknown[i].num);
-#if 0 /* DELETE_ME AK:18-Aug-99 */
-                        }
-#endif
+                       print_msg(PRT_NORMAL,"??? %s\n\t\t\t ", unknown[i].num);
                   } /* if */
 #endif
 			for (k = 0; k < unknown[i].connects; k++) {
@@ -1557,9 +1520,6 @@ static int print_line2(int status, const char *fmt, ...)
 static int print_line(int status, one_call *cur_call, int computed, char *overlap)
 {
 	char *string = NULL;
-#if 0 /* DELETE_ME AK:18-Aug-99 */
-	char *Ptr;
-#endif
 	char  help[32];
 	prt_fmt **fmtstring = get_format(NULL);
 	int dir;
@@ -1690,14 +1650,7 @@ static int print_line(int status, one_call *cur_call, int computed, char *overla
 				case 'L': if (status == F_BODY_LINE)
 				          {
 				            dir = cur_call->dir?CALLED:CALLING;
-#if 0 /* DELETE_ME AK:18-Aug-99 */
-				          	if (cur_call->num[dir][0] != C_UNKNOWN &&
-				          	    cur_call->num[dir][0] != '\0'      &&
-				          	    (Ptr = get_areacode(cur_call->num[dir],NULL,C_NO_WARN | C_NO_ERROR)) != NULL)
-				          		colsize[i] = append_string(&string,*fmtstring, Ptr);
-				          	else
-#endif
-				          		colsize[i] = append_string(&string,*fmtstring, "");
+		          		colsize[i] = append_string(&string,*fmtstring, "");
 				          }
 				          else
 				          {
@@ -1711,14 +1664,7 @@ static int print_line(int status, one_call *cur_call, int computed, char *overla
 				case 'l': if (status == F_BODY_LINE)
 				          {
 				            dir = cur_call->dir?CALLING:CALLED;
-#if 0 /* DELETE_ME AK:18-Aug-99 */
-				          	if (cur_call->num[dir][0] != C_UNKNOWN &&
-				          	    cur_call->num[dir][0] != '\0'      &&
-				          	    (Ptr = get_areacode(cur_call->num[dir],NULL,C_NO_WARN | C_NO_ERROR)) != NULL)
-				          		colsize[i] = append_string(&string,*fmtstring, Ptr);
-				          	else
-#endif
-				          		colsize[i] = append_string(&string,*fmtstring, "");
+			          		colsize[i] = append_string(&string,*fmtstring, "");
 				          }
 				          else
 				          {
@@ -1803,10 +1749,9 @@ static int print_line(int status, one_call *cur_call, int computed, char *overla
 				          	{
                                                         register char *p;
 
+                                                        p = (cur_call->provider > 0) ? getProvider(cur_call->provider) : "";
 
-                                                        if ((cur_call->dir == DIALOUT) && (cur_call->provider > 0))
-                                                          p = getProvider(cur_call->provider);
-                                                        else
+                                                        if (cur_call->dir == DIALIN)
                                                           p = "";
 
                                                         colsize[i] = append_string(&string,*fmtstring, p);
@@ -1905,15 +1850,10 @@ static void bprint(one_call *call)
   auto	   char	  target[BUFSIZ], s[BUFSIZ];
   auto	   TELNUM number;
 
-
   if (call->duration) {
-    if (*p == '+') {
-      if (!memcmp(call->num[CALLED], mycountry, strlen(mycountry))) { /* eigenes Land */
-        p += strlen(mycountry);
-        sprintf(target, "0%s", p);
-      }
-      else
-        sprintf(target, "00%s", p + 1);
+    if (!memcmp(call->num[CALLED], mycountry, strlen(mycountry))) { /* eigenes Land */
+      p += strlen(mycountry);
+      sprintf(target, "0%s", p);
     }
     else
       sprintf(target, "%s", p);
@@ -1929,12 +1869,8 @@ static void bprint(one_call *call)
 
       strcpy(s, call->num[CALLED]);
 
-      if (!memcmp(s, "+491", 4)) {
-        sprintf(s, "0%s", call->num[CALLED] + 3);
-//      print_msg(PRT_NORMAL, "\nREPAIR: %s -> %s\n", call->num[CALLED], s);
-      } /* if */
-
-      normalizeNumber(s, &number, TN_ALL);
+      number.nprovider=call->provider;
+      normalizeNumber(s, &number, TN_NO_PROVIDER);
       print_msg(PRT_NORMAL, "%s\n", formatNumber("%A", &number));
     }
     else
@@ -2629,58 +2565,51 @@ static int set_alias(one_call *cur_call, int *nx, char *myname)
 	return 0;
 }
 
-#if 0 /* FIXME */
 static void repair(one_call *cur_call)
 {
-#if 0 /* FIXME */
-  auto char why[BUFSIZ], hint[BUFSIZ];
-#endif
-
-
-#if 0 /* FIXME */
-  if (cur_call->provider == DTAG)  /* Fixme: DTAG is specific to Germany */
-    return;
-#endif
+  RATE Rate;
+  TELNUM srcnum, destnum;
 
   call[0].connect = cur_call->t;
   call[0].disconnect = cur_call->t + cur_call->duration;
   call[0].intern[CALLED] = strlen(cur_call->num[CALLED]) < interns0;
   call[0].provider = cur_call->provider;
-  call[0].sondernummer[CALLED] = is_sondernummer(cur_call->num[CALLED], DTAG); /* Fixme: DTAG is specific to Germany */
   call[0].aoce = cur_call->eh;
   call[0].dialin = 0;
   strcpy(call[0].num[CALLED], cur_call->num[CALLED]);
   strcpy(call[0].onum[CALLED], cur_call->num[CALLED]);
 
-#if 0 /* Fixme: use RATE */
-  preparecint(0, why, hint, 1);
-#endif
+  normalizeNumber("4321",&srcnum,TN_ALL); /* this is a local number */
+  destnum.nprovider = cur_call->provider;
+  Strncpy(destnum.provider,getProvider(cur_call->provider),TN_MAX_PROVIDER_LEN);
+  normalizeNumber(cur_call->num[CALLED], &destnum, TN_NO_PROVIDER);
+  call[0].sondernummer[CALLED] = destnum.ncountry==0;
 
-  if (call[0].zone == UNKNOWN) {
-#if DEBUG
-    print_msg(PRT_NORMAL, "Ooops: GlobalCall %s -- assuming \"Welt 4\"",
-      cur_call->num[CALLED]);
-#endif
-    call[0].zone = WELT_4;
-  } /* if */
-
-#if 0 /* Fixme: use RATE */
-  price(0, why, 1);
-#endif
-
-#if DEBUG
-  if (fabs(cur_call->pay - call[0].pay) > 0.01)
-    print_msg(PRT_NORMAL, "\ncur_call->pay=%f, call[0].pay=%f, diff=%f\n",
-      cur_call->pay, call[0].pay, cur_call->pay - call[0].pay);
-#endif
-
-  if (call[0].pay < 0.0) /* dirty, but ... */
-    call[0].pay = 0.0;
-
-  cur_call->pay = call[0].pay;
-  cur_call->zone = call[0].zone;
+  clearRate(&Rate);
+#ifdef USE_DESTINATION    
+  Rate.src[0] = srcnum.country;
+#else    
+  Rate.src[0] = srcnum.country ? srcnum.country->Code[0] : "";
+#endif    
+  Rate.src[1] = srcnum.area;
+  Rate.src[2] = "";
+#ifdef USE_DESTINATION    
+  Rate.dst[0] = destnum.country;
+#else    
+  Rate.dst[0] = destnum.country ? destnum.country->Code[0] : "";
+#endif    
+  Rate.dst[1] = destnum.area;
+  Rate.dst[2] = destnum.msn;
+  Rate.start = cur_call->t;
+  Rate.now = call[0].disconnect;
+  Rate.prefix = cur_call->provider;
+  if (!getRate(&Rate,0)) {
+    if(strcmp(cur_call->version, LOG_VERSION))
+       cur_call->pay = Rate.Charge; /* Fixme: is that ok, propably rates have changed */
+    cur_call->zone = Rate._zone;
+    zones_names[Rate._zone] = Rate.Zone ? strdup(Rate.Zone) : strdup("??");
+  }  
 } /* repair */
-#endif
 
 /*****************************************************************************/
 
@@ -2823,13 +2752,11 @@ static int set_caller_infos(one_call *cur_call, char *string, time_t from)
 
   }
 
-#if 0 /* FIXME */
   if ((cur_call->dir == DIALOUT) &&
       (cur_call->duration > 0) &&
-      *cur_call->num[1] &&
-      strcmp(cur_call->version, LOG_VERSION))
+      *cur_call->num[1]
+     ) 
     repair(cur_call);
-#endif
 
   return(0);
 }
@@ -3003,35 +2930,38 @@ static time_t get_time(char *String, int TimeStatus)
           &(TimeStruct->tm_mday),
           &(TimeStruct->tm_hour),
           &(TimeStruct->tm_min),
-          &Year		) 		> 4)
+          &Year		) 		> 4) {
         /* if (Year > 99) */
 	if (Year >= 1900)
           TimeStruct->tm_year = ((Year / 100) - 19) * 100 + (Year%100);
-        else
+        else {
 	  if (Year < 70)
 	    TimeStruct->tm_year = Year + 100;
 	  else
 	    TimeStruct->tm_year = Year;
-
+        }
+      }		
       TimeStruct->tm_mon--;
       break;
   }
 
-  if (TimeStatus == END_TIME)
+  if (TimeStatus == END_TIME) {
     if (TimeStruct->tm_sec == 0 &&
         TimeStruct->tm_min == 0 &&
         TimeStruct->tm_hour== 0   )
       TimeStruct->tm_mday++;
-    else
-    if (TimeStruct->tm_sec == 0 &&
+    else {
+      if (TimeStruct->tm_sec == 0 &&
         TimeStruct->tm_min == 0   )
-      TimeStruct->tm_hour++;
-    else
-    if (TimeStruct->tm_sec == 0   )
-      TimeStruct->tm_min++;
-    else
-      TimeStruct->tm_sec++;
-
+        TimeStruct->tm_hour++;
+      else {
+        if (TimeStruct->tm_sec == 0   ) 
+          TimeStruct->tm_min++;
+        else
+          TimeStruct->tm_sec++;
+      }
+    }  
+  }  
   return mktime(TimeStruct);
 }
 
@@ -3183,10 +3113,6 @@ static int add_one_call(sum_calls *s1, one_call *s2, double units)
 
   s1->ibytes += s2->ibytes;
   s1->obytes += s2->obytes;
-#ifdef ISDN_NL /* Fixme: never defined! */
-  s1->pay    += 0.0825; /* add call setup charge */
-  s2->pay    += 0.0825;
-#endif
   return 0;
 }
 

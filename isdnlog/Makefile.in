@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.110 1999/10/22 19:57:58 akool Exp $
+## $Id: Makefile.in,v 1.111 1999/10/25 18:33:13 akool Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,11 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.111  1999/10/25 18:33:13  akool
+## isdnlog-3.57
+##   WARNING: Experimental version!
+##   	   Please use isdnlog-3.56 for production systems!
+##
 ## Revision 1.110  1999/10/22 19:57:58  akool
 ## isdnlog-3.56 (for Karsten)
 ##
@@ -745,6 +750,8 @@ export ILABEL        := %b %e %T %ICall to tei %t from %N2 on %n2
 export OLABEL        := %b %e %T %Itei %t calling %N2 with %n2
 export CHARGEMAX     := 1000.00
 
+USE_DESTINATION =1
+
 
 ifndef ROOTDIR
 export ROOTDIR=$(shell pwd)
@@ -760,8 +767,8 @@ SUBDIRS     += $(LIBISDNDIR)
 endif
 
 # export CFLAGS  = -Wall -pipe -O6 -fomit-frame-pointer -fforce-mem -fforce-addr -funroll-loops -fstrength-reduce
-export CFLAGS  = -Wall -pipe
 
+export CFLAGS  = -Wall -pipe
 ifndef _CC
 export _CC  = gcc
 endif
@@ -772,8 +779,9 @@ INCLUDE     = -I./isdnlog -I./connect -I./tools -I$(PREFIXDIR) -I$(LIBISDNDIR) -
 
 LIB         = $(DBMLIB) -lm
 
-
-
+ifeq ($(USE_DESTINATION),1)
+DEFS +=  -DUSE_DESTINATION
+endif
 
 SERVICEFILE = /etc/services
 
@@ -782,7 +790,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 3.56
+VERSION     = 3.57
 
 MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 \
 	      isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 \
@@ -812,14 +820,15 @@ DEFS       += \
                 $(INCLUDE)
 
 %.o: %.c
-	$(CC) $(CFLAGS) $(DEFS) $(INCLUDE) -c -o $@ $<
+	@$(CC) $(CFLAGS) $(DEFS) $(INCLUDE) -c -o $@ $<
+	@echo Compiling $<
 
 ISDNLOG_OBJS =  isdnlog/isdnlog.o isdnlog/processor.o isdnlog/functions.o \
                 isdnlog/server.o isdnlog/start_prog.o isdnlog/messages.o  \
                 connect/connect.o connect/socket.o tools/tools.o      	  \
                 connect/conv_address.o isdnlog/user_access.o 		  \
                 tools/isdnconf.o tools/telnum.o				  \
-		tools/rate.o tools/zone.o tools/country.o tools/holiday.o \
+		tools/rate.o tools/zone.o tools/holiday.o \
 		isdnlog/asn1.o isdnlog/asn1_generic.o isdnlog/asn1_aoc.o  \
 		isdnlog/asn1_address.o isdnlog/asn1_diversion.o           \
 		isdnlog/asn1_basic_service.o isdnlog/asn1_comp.o          \
@@ -840,19 +849,32 @@ endif
 
 ISDNREP_OBJS =  isdnrep/rep_main.o tools/tools.o tools/isdnconf.o         \
                 isdnlog/messages.o isdnrep/isdnrep.o     		  \
-		tools/rate.o tools/zone.o tools/country.o tools/holiday.o \
+		tools/rate.o tools/zone.o tools/holiday.o \
 		tools/telnum.o						  \
                 $(LIBISDNDIR)/libisdn.a
 
 ISDNCONF_OBJS=  isdnconf/isdnconf.o tools/tools.o tools/isdnconf.o        \
-		tools/rate.o tools/zone.o tools/country.o tools/holiday.o \
+		tools/rate.o tools/zone.o tools/holiday.o \
 		tools/telnum.o						  \
                 $(LIBISDNDIR)/libisdn.a
 
 ISDNRATE_OBJS=  tools/isdnrate.o tools/isdnconf.o tools/tools.o           \
-		tools/rate.o tools/zone.o tools/country.o tools/holiday.o \
+		tools/rate.o tools/zone.o \
+		tools/holiday.o \
 		tools/telnum.o						  \
                 $(LIBISDNDIR)/libisdn.a
+		
+ifeq ($(USE_DESTINATION),1)
+ISDNRATE_OBJS += tools/dest.o
+ISDNCONF_OBJS += tools/dest.o
+ISDNLOG_OBJS += tools/dest.o
+ISDNREP_OBJS += tools/dest.o
+else				
+ISDNRATE_OBJS += tools/country.o 
+ISDNCONF_OBJS += tools/country.o 
+ISDNLOG_OBJS += tools/country.o 
+ISDNREP_OBJS += tools/country.o 
+endif		
 
 ISDNLOG      =  bin/isdnlog
 ISDNCONF     =  bin/isdnconf
@@ -863,7 +885,13 @@ MODS         =  *.o */*.o
 
 PROGS        =  $(ISDNLOG) $(ISDNREP) $(ISDNCONF) $(ISDNRATE)
 
-all:            depend libs mybin $(PROGS) $(MANPAGES)
+all:            depend libs mybin progs $(MANPAGES)
+
+options:
+	@echo Making $< with
+	@echo $(CC) $(CFLAGS) $(DEFS) $(INCLUDE)
+
+progs:		options $(PROGS)
 
 mybin:
 		-mkdir -p bin
@@ -905,6 +933,8 @@ uninstall: rootperm
 			$(DESTDIR)$(MAN5DIR)/isdnlog.users$(MAN5EXT)    \
 			$(DESTDIR)$(DATADIR)/country-$(NATION).dat	\
 			$(DESTDIR)$(DATADIR)/rate-$(NATION).dat         \
+			$(DESTDIR)$(DATADIR)/dest.gdbm
+
 
 installdirs: rootperm
 		$(INSTALL_DIR) $(DESTDIR)$(I4LCONFDIR)
@@ -916,6 +946,10 @@ installdirs: rootperm
 		$(INSTALL_DIR) $(DESTDIR)$(DATADIR)
 
 install: all rootperm installdirs
+	install-progs
+	install-data
+
+install-progs:	
 		@echo "Killing running isdnlog!"
 		-@if ps x | fgrep $(ISDNLOG) >/dev/null; then kill `cat $(RUNDIR)/isdnlog.isdnctrl0.pid 2>/dev/null`; fi
 		-@test ! -d $(DESTDIR)$(OLDCONFDIR) || cp -auv $(DESTDIR)$(OLDCONFDIR)/$(USERFILE) $(DESTDIR)$(I4LCONFDIR)
@@ -933,16 +967,21 @@ install: all rootperm installdirs
 		$(INSTALL_BIN) $(ISDNREP)  $(DESTDIR)$(BINDIR)
 		$(INSTALL_BIN) $(ISDNCONF) $(DESTDIR)$(BINDIR)
 		$(INSTALL_BIN) $(ISDNRATE) $(DESTDIR)$(BINDIR)
+
+install-data:		
 		$(INSTALL_DATA) isdnlog/isdnlog.8       $(DESTDIR)$(MAN8DIR)/isdnlog$(MAN8EXT)
 		$(INSTALL_DATA) isdnrep/isdnrep.1       $(DESTDIR)$(MAN1DIR)/isdnrep$(MAN1EXT)
 		$(INSTALL_DATA) isdnconf/isdnconf.1     $(DESTDIR)$(MAN1DIR)/isdnconf$(MAN1EXT)
 		$(INSTALL_DATA) isdnlog/callerid.conf.5 $(DESTDIR)$(MAN5DIR)/callerid.conf$(MAN5EXT)
 		$(INSTALL_DATA) isdnlog/isdnlog.5       $(DESTDIR)$(MAN5DIR)/isdnlog$(MAN5EXT)
 		$(INSTALL_DATA) isdnlog/isdnlog.users.5 $(DESTDIR)$(MAN5DIR)/isdnlog.users$(MAN5EXT)
-		$(INSTALL_DATA) country-$(NATION).dat	$(DESTDIR)$(DATADIR)
+		$(INSTALL_DATA) country-de.dat	$(DESTDIR)$(DATADIR)
 		$(INSTALL_DATA) rate-$(NATION).dat      $(DESTDIR)$(DATADIR)
 		$(INSTALL_DATA) holiday-$(NATION).dat   $(DESTDIR)$(DATADIR)
-		$(INSTALL_DATA) zone-$(NATION)-dtag.gdbm $(DESTDIR)$(DATADIR)
+		@for f in `ls zone-$(NATION)-*.{gdbm,db} tools/dest/dest.{gdbm,db}` ; do \
+		  $(INSTALL_DATA) $$f $(DESTDIR)$(DATADIR); \
+		  echo Installing $(DESTDIR)$(DATADIR)/$$f; \
+		done  
 		@if [ ! -f "$(DESTDIR)$(I4LCONFDIR)/rate.conf" ]; then \
 			$(INSTALL_DATA) samples/rate.conf.$(NATION) $(DESTDIR)$(I4LCONFDIR)/rate.conf ; \
 		else \

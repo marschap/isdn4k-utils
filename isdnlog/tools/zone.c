@@ -1,4 +1,4 @@
-/* $Id: zone.c,v 1.17 1999/10/22 19:57:59 akool Exp $
+/* $Id: zone.c,v 1.18 1999/10/25 18:30:04 akool Exp $
  *
  * Zonenberechnung
  *
@@ -19,6 +19,11 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: zone.c,v $
+ * Revision 1.18  1999/10/25 18:30:04  akool
+ * isdnlog-3.57
+ *   WARNING: Experimental version!
+ *   	   Please use isdnlog-3.56 for production systems!
+ *
  * Revision 1.17  1999/10/22 19:57:59  akool
  * isdnlog-3.56 (for Karsten)
  *
@@ -152,8 +157,10 @@ struct sth {
 
 static struct sth *sthp;
 static int count;
-static char version[] = "1.22";
+static char version[] = "1.23";
+#ifndef USE_DESTINATION				
 static bool area_read = false;
+#endif
 
 #define LINK 127
 #define INFO_LEN 80
@@ -233,19 +240,20 @@ int initZone(int provider, char *path, char **msg)
 {
 	static char message[LENGTH];
 	int res;
+#ifndef USE_DESTINATION	
 	char * dir;
 	char * file;
 	char *p;
 	DIR *dp;
 	struct dirent *ep;
 	int len, i;
-
+#endif
 	if (msg)
     	*(*msg=message)='\0';
 	res = _initZone(provider, path, msg, ZONES);
+#ifndef USE_DESTINATION	
 	if (area_read || res)
 		return res;
-
 	area_read = true;
 	if ((p = strrchr(path, '/')) == 0) {
 		dir = "./";
@@ -297,6 +305,7 @@ int initZone(int provider, char *path, char **msg)
 			if(sthp[i].provider>=10000 && sthp[i].cc && strlen(message) < LENGTH-5)
 				sprintf(message+strlen(message),"%d ",sthp[i].cc);
 	}
+#endif	
 	return res;
 }
 
@@ -443,12 +452,15 @@ static int _initZone(int provider, char *path, char **msg, bool area_only)
 			case 'L' :
 				p++;
 				sthp[ocount].numlen = strtol(p, &p, 10);
+				p--; /* get's incr after, so we miss 0x0*/
 				break;
+#ifndef USE_DESTINATION				
 			case 'A' :	/* this provider has the areacodes for county A */
 				p++;
 				sthp[ocount].cc = strtol(p, &p, 10);
 				p--; /* get's incr after, so we miss 0x0*/
 				break;
+#endif				
 			}
 		} /* for */
 		if (*dbv == 'G')
@@ -506,12 +518,21 @@ static int _initZone(int provider, char *path, char **msg, bool area_only)
 		if (*dbv == 'G')
 			free(value.dptr);
 		if (msg) {
+#ifdef USE_DESTINATION				
+			snprintf (message, LENGTH,
+				"Zone V%s: Provider %d File '%s' opened fine - "
+				"V%s K%d C%d N%d T%d O%d L%d",
+				version, provider, path,
+				dversion, sthp[ocount].pack_key, sthp[ocount].pack_table,
+				csize, tsize, sthp[ocount].oz, sthp[ocount].numlen);
+#else				
 			snprintf (message, LENGTH,
 				"Zone V%s: Provider %d File '%s' opened fine - "
 				"V%s K%d C%d N%d T%d O%d L%d A%d",
 				version, provider, path,
 				dversion, sthp[ocount].pack_key, sthp[ocount].pack_table,
 				csize, tsize, sthp[ocount].oz, sthp[ocount].numlen, sthp[ocount].cc);
+#endif				
 		}
 	}
 	else {
@@ -614,6 +635,8 @@ int getZone(int provider, char *from, char *to)
 	return UNKNOWN;
 }
 
+#ifndef USE_DESTINATION				
+
 static int _getAreacode(struct sth *sthp, char *from, char **text) {
 	_DB fh = sthp->fh;
 	datum key, value;
@@ -690,6 +713,8 @@ int getAreacode(int country, char *from, char **text)
 	return UNKNOWN;
 }
 
+#endif
+
 #ifdef ZONETEST
 
 static int checkZone(char *zf, char* df,int num1,int num2, bool verbose)
@@ -707,10 +732,13 @@ static int checkZone(char *zf, char* df,int num1,int num2, bool verbose)
 	if(verbose)
 		printf("%s\n", msg);
 	if (num1 && num2) {
+#ifndef USE_DESTINATION				
 		char *ort1, *ort2;
+#endif		
 		snprintf(from, 9, "%d",num1);
 		snprintf(to, 9, "%d",num2);
 		ret = getZone(1, from, to);
+#ifndef USE_DESTINATION				
 		if (cc) {
 			if (getAreacode(cc, from, &ort1) >0 &&
 				getAreacode(cc, to, &ort2) >0) {
@@ -723,6 +751,7 @@ static int checkZone(char *zf, char* df,int num1,int num2, bool verbose)
 		}
 		else
 no_ort:
+#endif
 			printf("%s %s = %d\n", from, to, ret);
 	}
 	else {
@@ -775,6 +804,8 @@ no_ort:
 	exitZone(1);
 	return ret;
 }
+
+#ifndef USE_DESTINATION				
 
 static int checkArea(char *df, int cc, char *from, int verbose) {
 	char *msg, *text;
@@ -871,24 +902,34 @@ static int checkAllArea(char *df, char *cf, int cc, int verbose) {
 	return ret;
 }
 
+#endif
+
 int main (int argc, char *argv[])
 {
 	int verbose=false;
 	char *df=0;
 	char *zf=0;
+#ifndef USE_DESTINATION				
+	int cc=0;
 	char *cf=0;
+#endif
 	int c;
 	int num1=0, num2=0;
-	int cc=0;
 	char snum1[LENGTH];
+#ifdef USE_DESTINATION				
+	while ( (c=getopt(argc, argv, "vVd:z:")) != EOF) {
+#else	
 	while ( (c=getopt(argc, argv, "vVd:z:a:c:")) != EOF) {
+#endif	
 		switch (c) {
 			case 'v' : verbose = true; break;
 			case 'V' : printf("%s: V%s\n", basename(argv[0]), version); exit(1);
 			case 'd' : df = strdup(optarg); break;
 			case 'z' : zf = strdup(optarg); break;
+#ifndef USE_DESTINATION				
 			case 'a' : cc = atoi(optarg); break;
 			case 'c' : cf = strdup(optarg); break;
+#endif			
 		}
 	}
 	while (optind < argc) {
@@ -907,13 +948,19 @@ int main (int argc, char *argv[])
 	}
 	if (df && (zf || (num1 && num2)))
 		return checkZone(zf, df, num1, num2, verbose);
+#ifndef USE_DESTINATION				
 	if (df && num1 && cc)
 		return checkArea(df, cc, snum1, verbose);
 	if (df && cf && cc)
 		return checkAllArea(df, cf, cc, verbose);
+#endif		
+#ifdef USE_DESTINATION				
+	fprintf(stderr, "Usage:\n%s -d DBfile -v -V { -z Zonefile | num1 num2 }\n", basename(argv[0]));
+#else	
 	fprintf(stderr, "Usage:\n%s -d DBfile -v -V { -z Zonefile | num1 num2 | -a cc num}\n", basename(argv[0]));
 	fprintf(stderr, "\t-d DBfile -v -V -a CC num1 \n");
 	fprintf(stderr, "\t-d DBfile -c Codefile -a CC -v -V\n");
+#endif	
 	return 0;
 }
 #endif

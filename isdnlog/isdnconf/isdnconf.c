@@ -1,4 +1,4 @@
-/* $Id: isdnconf.c,v 1.39 1999/10/22 19:57:59 akool Exp $
+/* $Id: isdnconf.c,v 1.40 1999/10/25 18:33:15 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -20,6 +20,11 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnconf.c,v $
+ * Revision 1.40  1999/10/25 18:33:15  akool
+ * isdnlog-3.57
+ *   WARNING: Experimental version!
+ *   	   Please use isdnlog-3.56 for production systems!
+ *
  * Revision 1.39  1999/10/22 19:57:59  akool
  * isdnlog-3.56 (for Karsten)
  *
@@ -561,24 +566,27 @@ int look_data(section **conf_dat)
 			_number = _alias = NULL;
 			_si[0] = '\0';
 
-			if ((CEPtr = Get_Entry((*conf_dat)->entries,CONF_ENT_NUM)) != NULL)
+			if ((CEPtr = Get_Entry((*conf_dat)->entries,CONF_ENT_NUM)) != NULL) {
 				if (del)
 					_number = strdup(Replace_Variable(CEPtr->value));
 				else
 					_number = strdup(CEPtr->value);
+			}		
 
-			if ((CEPtr = Get_Entry((*conf_dat)->entries,CONF_ENT_ALIAS)) != NULL)
+			if ((CEPtr = Get_Entry((*conf_dat)->entries,CONF_ENT_ALIAS)) != NULL) {
 				if (del)
 					_alias = strdup(Replace_Variable(CEPtr->value));
 				else
 					_alias = strdup(CEPtr->value);
+			}		
 
-			if ((CEPtr = Get_Entry((*conf_dat)->entries,CONF_ENT_SI)) != NULL &&
-			    CEPtr->value != NULL)
+			if ((CEPtr = Get_Entry((*conf_dat)->entries,CONF_ENT_SI)) != NULL && 
+			    CEPtr->value != NULL) {
 				if (del)
 					sprintf(_si,"%ld",strtol(Replace_Variable(CEPtr->value), NIL, 0));
 				else
 					sprintf(_si,"%ld",strtol(CEPtr->value, NIL, 0));
+			}		
 
 			if (and)
 				Ret = 1;

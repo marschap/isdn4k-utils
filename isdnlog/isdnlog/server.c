@@ -1,4 +1,4 @@
-/* $Id: server.c,v 1.5 1999/03/20 14:33:15 akool Exp $
+/* $Id: server.c,v 1.6 1999/10/25 18:33:15 akool Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,11 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: server.c,v $
+ * Revision 1.6  1999/10/25 18:33:15  akool
+ * isdnlog-3.57
+ *   WARNING: Experimental version!
+ *   	   Please use isdnlog-3.56 for production systems!
+ *
  * Revision 1.5  1999/03/20 14:33:15  akool
  * - isdnlog Version 3.08
  * - more tesion)) Tarife from Michael Graw <Michael.Graw@bartlmae.de>
@@ -220,7 +225,7 @@ int new_client(int sock)
 				}
 			}
 
-	if (Old_Prints != NULL && User_Get_Message(sockets[sock].f_username,sockets[sock].f_hostname,NULL,T_PROTOCOL) == 0)
+	if (Old_Prints != NULL && User_Get_Message(sockets[sock].f_username,sockets[sock].f_hostname,NULL,T_PROTOCOL) == 0) {
 		for (Cnt = 0; Cnt < xlog; Cnt++)
 			if (Old_Prints[Cnt] != NULL)
 			{
@@ -235,7 +240,7 @@ int new_client(int sock)
 			}
 			else
 				break;
-
+	}
 
 	return 0;
 }

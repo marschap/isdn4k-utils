@@ -2084,7 +2084,7 @@ sub det {
     }	
 nix:        
     if ($what == 0) {
-	$help=3;
+	$help=1;
 	print(p,hrg,p 
 	    a({-href=>'javascript:history.back()'},'[ Zurück ]'));
 	footer($pnum);	

@@ -1,4 +1,4 @@
-/* $Id: isdnconf.c,v 1.29 1999/06/15 20:05:08 akool Exp $
+/* $Id: isdnconf.c,v 1.30 1999/10/25 18:30:03 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -20,6 +20,11 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnconf.c,v $
+ * Revision 1.30  1999/10/25 18:30:03  akool
+ * isdnlog-3.57
+ *   WARNING: Experimental version!
+ *   	   Please use isdnlog-3.56 for production systems!
+ *
  * Revision 1.29  1999/06/15 20:05:08  akool
  * isdnlog Version 3.33
  *   - big step in using the new zone files
@@ -729,6 +734,7 @@ static section* writeglobal(section *SPtr)
 		}
 	}
 
+#if 0 /* Fixme: remove */				
 	if (CityWeekend != 0)
 	{
 		strcpy(s, CONF_ENT_CW);
@@ -739,7 +745,7 @@ static section* writeglobal(section *SPtr)
 			return NULL;
 		}
 	}
-
+#endif
 	if (chargemax != 0)
 	{
 		strcpy(s, CONF_ENT_CHARGE);
@@ -1062,7 +1068,9 @@ static int _readconfig(char *_myname)
   mycountry      = "";
   myarea         = "";
   currency       = NULL;
+#if 0 /* Fixme: remove */				
   CityWeekend    = 0;
+#endif  
   chargemax      = 0.0;
   connectmax     = 0;
   connectmaxmode = 0;
@@ -1235,12 +1243,24 @@ static int Set_Globals(section *SPtr)
 		if ((CEPtr = Get_Entry(Ptr->entries,CONF_ENT_RATEFILE)) != NULL)
 			ratefile = CEPtr->value;
 
+		if ((CEPtr = Get_Entry(Ptr->entries,CONF_ENT_DESTFILE)) != NULL)
+			destfile = CEPtr->value;
+
+		if ((CEPtr = Get_Entry(Ptr->entries,CONF_ENT_PRESELECT)) != NULL)
+			preselect = atoi(CEPtr->value);
+
+		if ((CEPtr = Get_Entry(Ptr->entries,CONF_ENT_VBN)) != NULL)
+			vbn = CEPtr->value;
+		if ((CEPtr = Get_Entry(Ptr->entries,CONF_ENT_VBNLEN)) != NULL)
+			vbnlen = CEPtr->value;
+
 		if ((CEPtr = Get_Entry(Ptr->entries,CONF_ENT_LCDFILE)) != NULL)
 			lcdfile = CEPtr->value;
 
+#if 0 /* Fixme: remove */				
 		if ((CEPtr = Get_Entry(Ptr->entries,CONF_ENT_CW)) != NULL)
 			CityWeekend = toupper(*(CEPtr->value)) == 'Y'?1:0;
-
+#endif
 		if ((CEPtr = Get_Entry(Ptr->entries,CONF_ENT_CHARGE)) != NULL)
 			chargemax = strtod(CEPtr->value,NULL);
 

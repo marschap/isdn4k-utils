@@ -1,10 +1,10 @@
-ISDNLOG - Version 3.50 -  				11-Sep-99  00:15
+ISDNLOG - Version 3.56 -  				18-Oct-1999
 
 
 isdnlog ist ein Utility zur Auswertung des D-Kanals eines
 ISDN-BRI Anschlusses.
 
-isdnlog-3.50 wurde ausgiebig mit Linux-2.0.37 getestet.
+isdnlog-3.56 wurde ausgiebig mit Linux-2.0.37 getestet.
 
 
 Fuer alle, die es nun ueberhaupt nicht mehr abwarten koennen, hier das
@@ -541,7 +541,7 @@ COUNTRYPREFIX:
   Es enthaelt den Prefix zur Laenderkennung. Beim Kompilieren ist dieser
   Wert defaultmaessig auf "+" gesetzt. Dieser Eintrag ist optional.
 
-CODELIB:
+[ obsolete seit isdnlog 3.45 CODELIB:
   Es kann nach dem Kompilieren eingestellt werden, welche Library verwendet
   werden soll. Fuer AVON wird dort "AVON" eingetragen und fuer areacode
   wird dort "AREACODE" eingetragen. Andere Werte sind dort zur Zeit nicht
@@ -550,15 +550,17 @@ CODELIB:
   Dieser Eintrag ist optional.
   Beispiel:
     CODELIB=avon
+]	
 
-AREALIB:
+[ obsolete seit isdnlog 3.45 AREALIB:
   Enthaelt den vollen Pfad zu der Datei "areacode.dat". Diese Angabe ist
   optional und nur notwendig, wenn sich der Pfad nach der Compilation
   geaendert hat.
   Beispiel:
     AREALIB=/usr/share/lib/areacode.dat
+]	
 
-AVONLIB:
+[ obsolete seit isdnlog 3.45 AVONLIB:
   Enthaelt den vollen Pfad zu der Datei "avon". Diese Angabe ist
   optional und nur notwendig, wenn sich der Pfad nach der Compilation
   geaendert hat.
@@ -567,8 +569,65 @@ AVONLIB:
 
   Da aber defaultmaessig die Arealib verwendet wird, ist die Datei
   avon obsolete.
+]
 
+[ISDNLOG]
 
+COUNTRYFILE = /usr/lib/isdn/country-de.dat
+
+  Diese Datei beinhaltet Länderbezeichnungen und Vorwahlen. Sie dient
+  als Ausgangsbasis zum  Erzeugen der Destination-Datenbank dest.gdbm.
+  
+RATEFILE= /usr/lib/isdn/rate-de.dat
+
+  Pfad für die Gebührendatenbank. Diese Datei ist landesspezifisch.
+  s. auch 
+    man rate-files
+	
+RATECONF= /etc/isdn/rate.conf
+
+  Beinhaltet den selektierten Tarif für Provider, die unterschiedliche
+  Tarife anbieten.
+  
+HOLIDAYS= /usr/lib/isdn/holiday-de.dat
+
+  Feiertagstabelle - landesspezifisch.
+  
+ZONEFILE= /usr/lib/isdn/zone-de-%s.gdbm
+
+  Verzonungsinformation für die einzelnen Provider - landesspezifisch.
+  Das '%s' im Dateinahmen wird durch den Eintrag D:xxx in rate-CC.dat
+  ersetzt.
+  
+  s. auch isdnlog/samples/isdn.conf.CC für verschiedene Konfigurationen.
+
+DESTFILE= /usr/lib/isdn/dest.gdbm
+ 
+  Destination Database mit Ortsnamen und Vorwahlen
+  
+VBN =  Verbindungsnetzbetreiberauswahlnummer
+
+  Deutschland ... 010
+  Österreich  ... 10
+  Niederlande ... 16:17
+  
+VBNLEN = Anzahl Ziffern nach VBN
+
+  Deutschland ... 2:3
+  Österreich  ... 2
+  Niederlande ... 1 ???
+    
+
+PRESELECTED = Providernummer
+
+  Deutschland ... 33
+  Österreich  ... 1
+  Niederlande ... 999
+  Frankreich  ... 0
+  
+  s. auch die entsprechenden Kommandlineparameter von isdnlog
+  
+  
 Die ISDN-Tools erlauben es, Umgebungsvariablen zu setzen und zu verwenden.
 Es gibt Variablen, die in der isdn.conf (oder vorher) gesetzt werden sollten.
 Diese sind in der Sektion [VARIABLES] zu setzen.

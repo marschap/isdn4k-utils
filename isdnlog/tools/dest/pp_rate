@@ -1,0 +1,169 @@
+#! /usr/bin/perl
+
+use wld;
+use strict;
+$|=1;
+use vars qw( %names $COUNTRY %myalias );
+$COUNTRY = '/usr/src/isdn4k-utils/isdnlog/tools/country';
+
+&get_country;
+&get_alias;
+&prep_rate;
+1;
+
+sub get_country {
+    my ($name, $alias, $key, $nn, $na);
+    sub add1 {
+	my (@all, $a);
+	$names{lc $name}=$key;
+	$nn++;
+	@all=split(/\s*,\s*/, $alias);
+	foreach $a (@all) {
+	    $na++;
+	    $names{lc $a}=$key;
+	}	
+    }
+    my $co_dat = '/usr/lib/isdn/country-de.dat';
+    open(IN,$co_dat) || die("Cant read $co_dat");
+    while (<IN>) {
+	chomp;
+	s/\s*#.*$//;
+	s/\s+$//;
+	if (/^N:(.*)/) {
+	    &add1;
+	    $alias='';
+	    $name=$1;
+	}	
+	elsif (/^[AE]:(.*)/) {
+	    $alias = $alias ne '' ? "$alias,$1" : $1;
+	}
+	elsif (/^T:(.*)/) {
+	    $key=$1;
+	}	
+    }
+    &add1;
+    close IN;
+    print "$nn Countrys $na Aliases loaded\n";
+}    
+
+sub get_alias {
+    `cp ~/.country-alias .country-alias`;
+    open(IN, ".country-alias");
+    while (<IN>) {
+    	chomp;
+	my($c,$a) = split(/\t/);
+	$myalias{$c}=$a;
+    }		
+    close(IN);
+}
+
+sub prep_rate {
+    my ($l, $infile, $outfile);
+    $infile = $ARGV[0] || '/usr/lib/isdn/rate-at.dat';
+    $outfile = $ARGV[1] || "$infile.new";
+    open(IN,$infile) || die("Can't read $infile");
+    open(OUT,">$outfile") || die("Cant write $outfile");
+    $l=0;
+    while (<IN>) {
+	my($a,@a, $c, $oc, $r, $d, @keys, $name, $m, $tf);
+	$l++;
+	print "\r$l" if $l % 10 == 0;
+	if (/^A:(.*)/) {
+	    $a=$1;
+	    $a =~ s/\s*#.*$//;
+	    $a =~ s/[,\s]+$//;
+	    @a=split(/\s*,\s*/, $a);
+	    foreach $c (@a) {
+		next if ($c eq '');
+		$c = lc $c;
+ok:		
+	    	if ($c =~ /^\+?\d+/ || $c eq '+') {
+		    push(@keys,$c);
+		}		    
+		elsif ($d=$names{$c}) {
+		    push(@keys,$d);
+		}
+		elsif ($d=$names{$myalias{$c}}) {
+		    push(@keys,$d);
+		}
+		else {    
+		    $oc = $c;
+again:	
+		    print "'$c'";
+		    $m=99; $tf='';
+		    if ($COUNTRY) {
+			my $cc = `$COUNTRY "$c"`;
+			($tf, $m) = $cc =~ /<.*?>=<(.*?)>\sd=(\d+)/;
+			$m=99 if ($cc =~/unknown/);
+			$tf = lc $tf;
+		    }			
+		    else {
+		    	foreach $name (keys(%names)) {
+				if (($r=wld($name,$c)) < $m) {
+			    	$m=$r; $tf=$name;
+			    	last if($m==0);
+			    }		
+			}	
+		    }	    
+		    if ($tf && $m<=1) {
+			push(@keys,$names{$tf});
+			$names{$oc}=$names{$tf};
+			$myalias{$oc}=$tf;
+			print " -> $tf\n";
+		    }
+		    else {
+			my($x);
+			print "\nLine $l: $c => $tf  ($m)\n ? [j,[+|=]...,/] : ";
+			$x = <STDIN>;
+			chomp($x);
+			if ($x =~ /^=(.*)/) {
+			    $c = $1 if($1 ne '');
+			    goto again;
+			}	
+			elsif ($x =~ /^\+(.*)/) {
+			    $c = $oc . $1;
+			    goto again;
+			}	
+			elsif ($x =~ /^\/(.*)/) {
+			    print `grep -3 -i $1 /usr/lib/isdn/country-de.dat`;
+			    goto again;
+			}	
+			if ($x eq 'j') {
+			    $c = $tf;	
+			    $myalias{$oc}=$tf;
+			    $names{$oc}=$names{$tf};
+			    goto ok;
+			}
+			elsif ($x eq 'h') {
+			    print "j	=> Vorschlag annehmen";
+			    print "n	=> unbekannt ignorieren (gilt dann fuer die gesamte Datei)";
+			    print "+xx	=> xx an unbekannt anhaengen";
+			    print "= SO => SO uebernehmen";
+			    print "=	=> unbekannt uebernehmen";
+			    print "/xx	=> in country-de.dat nach xx greppen";
+			    print "xx	=> xx ausprobieren";
+			    goto again;
+			}
+			else {	
+			    $c = $x;
+			}			    
+			goto again;
+		    }	
+		}   # else found 
+	    } # foreach		
+	    print OUT "A:", join(',',@keys),"\n";
+	} # if A		
+	else {
+	    print OUT $_;
+	}	    
+    } # while IN
+    close(IN);
+    close(OUT);
+    open(OUT, ">.country-alias") || die("Can't write .country-alias");
+    foreach my $c (sort(keys(%myalias))) {
+    	print OUT "$c\t",$myalias{$c},"\n";
+    }
+    close(OUT);		
+    `mv .country-alias ~/.country-alias`;
+    print "\nOk.\n";
+} # prep_rate

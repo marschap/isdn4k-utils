@@ -1,5 +1,29 @@
 NEWS betreffend tools, (rate, isdnrate)
 
+1999.10.21
+  Destination DB runs with isdnrate / isdnlog
+  Removed a lot of country-specific stuff in various files
+  
+  all
+    new entries in isdn.conf section 
+      [ISDNLOG]
+      DESTFILE=/usr/lib/isdn/dest.gdbm
+      VBN=Providerselection-Prefix (DE 010, AT 10, NL 16:17)
+      VBNLEN=Number of digits following VBN (DE 2:3, AT 2, NL 1 ??, FR 1)
+      PRESELECTED=provider# (DE 33, AT 1, NL 999)
+      s. isdnlog/samples or isdnlog/README
+  
+  isdnrep.c    
+     shows now zone names from rate-CC.dat
+      
+  isdnrate.c
+    new option -N
+      show info about number parsing
+      e.g. isdnrate -N 1234 01234 001234 Dubai
+
+1999.10.08
+  started with tools/dest
+
 1999.09.15
   isdnrate.c
       neue Varianten

@@ -1,4 +1,4 @@
-/* $Id: isdnrate.c,v 1.20 1999/09/19 14:16:27 akool Exp $
+/* $Id: isdnrate.c,v 1.21 1999/10/25 18:30:03 akool Exp $
 
  * ISDN accounting for isdn4linux. (rate evaluation)
  *
@@ -19,6 +19,11 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnrate.c,v $
+ * Revision 1.21  1999/10/25 18:30:03  akool
+ * isdnlog-3.57
+ *   WARNING: Experimental version!
+ *   	   Please use isdnlog-3.56 for production systems!
+ *
  * Revision 1.20  1999/09/19 14:16:27  akool
  * isdnlog-3.53
  *
@@ -95,7 +100,11 @@
 #include "isdnlog.h"
 #include "tools/zone.h"
 #include <unistd.h>
+#ifdef USE_DESTINATION
+#include "dest.h"
+#else
 #include "telnum.h"
+#endif
 
 #define WIDTH   19
 #define _MAXLAST 20		/* the real max */
@@ -105,7 +114,7 @@
 static void print_header(void);
 
 static char *myname, *myshortname;
-static char options[] = "b:d:f:h:l:p:t:v::x:CD::G:HLS:TUVX::";
+static char options[] = "b:d:f:h:l:p:t:v::x:CD::G:HLNS:TUVX::";
 static char usage[] = "%s: usage: %s [ -%s ] Destination ...\n";
 
 static int header = 0, best = MAXPROVIDER, table = 0,
@@ -190,9 +199,11 @@ static void init()
 
   if (verbose && *version)
     print_msg(PRT_V, "%s\n", version);
-
+#ifdef USE_DESTINATION
+  initDest(destfile, message);
+#else  
   initCountry(countryfile, message);
-
+#endif
   if (verbose && *version)
     print_msg(PRT_V, "%s\n", version);
 
@@ -207,7 +218,11 @@ static void init()
 static void deinit(void)
 {
   exitRate();
+#ifdef USE_DESTINATION
+  exitDest();
+#else  
   exitCountry();
+#endif  
   exitHoliday();
 }
 /* calc a day/time W | E | H */
@@ -404,6 +419,9 @@ static int opts(int argc, char *argv[])
       list++;
       explain = 9;
       break;
+    case 'N':
+      explain = 55;
+      break;
     case 'S':
       sortby = *optarg;
       break;  
@@ -579,7 +597,7 @@ static char *Provider(int prefix)
 
   l = max(WIDTH, strlen(p)) - strlen(p);
 
-  p1 = prefix2provider(prefix, prov, &destnum);
+  p1 = prefix2provider(prefix, prov);
 
   l += (6 - strlen(p1));
 
@@ -618,7 +636,6 @@ static int compute(char *num)
   auto char s[BUFSIZ];
   struct tm *tm;
   char    prov[TN_MAX_PROVIDER_LEN];
-  int     oldprov;
   int     first = 1;
   static char BUSINESS[] = "Business"; /* in C:GT:Tag */
 
@@ -688,20 +705,25 @@ static int compute(char *num)
 	continue;
     }
     clearRate(&Rate);
+#ifdef USE_DESTINATION    
+    Rate.src[0] = srcnum.country;
+#else    
     Rate.src[0] = srcnum.country ? srcnum.country->Code[0] : "";
+#endif    
     Rate.src[1] = srcnum.area;
     Rate.src[2] = "";
 
-    oldprov = destnum.nprovider;
-    if (destnum.nprovider == UNKNOWN)
-      destnum.nprovider = i;
-    if (normalizeNumber(num, &destnum, TN_ALL) == UNKNOWN) {
-      destnum.nprovider = oldprov;
+    destnum.nprovider = i;
+    Strncpy(destnum.provider,getProvider(i),TN_MAX_PROVIDER_LEN);
+    if (normalizeNumber(num, &destnum, TN_NO_PROVIDER) == UNKNOWN) {
       continue;
     }
-    destnum.nprovider = oldprov;
 
+#ifdef USE_DESTINATION    
+    Rate.dst[0] = destnum.country;
+#else    
     Rate.dst[0] = destnum.country ? destnum.country->Code[0] : "";
+#endif    
     Rate.dst[1] = destnum.area;
     Rate.dst[2] = destnum.msn;
     print_msg(PRT_V, "Rate dst0='%s' dst1='%s' dst2='%s'\n", Rate.dst[0], Rate.dst[1], Rate.dst[2]);
@@ -718,7 +740,7 @@ static int compute(char *num)
       if (first && header)
 	print_header();
       first = 0;
-      printf("@ %s\n", prefix2provider(Rate.prefix, prov, &destnum));
+      printf("@ %s\n", prefix2provider(Rate.prefix, prov));
       Rate.now = start + 1;
       for (j = 1; j < duration; j++) {
 	if (!getRate(&Rate, NULL) && (Rate.Price != 99.99)) {
@@ -741,7 +763,7 @@ static int compute(char *num)
       if (first && header)
 	print_header();
       first = 0;
-      printf("@ %s\n", prefix2provider(Rate.prefix, prov, &destnum));
+      printf("@ %s\n", prefix2provider(Rate.prefix, prov));
       for (j = 0; j < (explain == 98 ? 7 * 24 : 24); j++) {
 	if (!getRate(&Rate, NULL) && (Rate.Price != 99.99)) {
 	  printf("%d %.4f\n", j, Rate.Charge);
@@ -760,7 +782,7 @@ static int compute(char *num)
 	double  cpm = Rate.Duration > 0 ? 60 * Rate.Price / Rate.Duration : 99.99;
         fi=0;
 	if (Rate.Price != 99.99)
-	  printf("%s%c%s%c%s%c%.2f%c%.2f%c%s\n", prefix2provider(Rate.prefix, prov, &destnum), DEL,
+	  printf("%s%c%s%c%s%c%.2f%c%.2f%c%s\n", prefix2provider(Rate.prefix, prov), DEL,
 	    Rate.Provider,DEL,currency,DEL,Rate.Charge,DEL,cpm,DEL,
 	    P_EMPTY(Rate.Country));
 	free(Rate.Country);
@@ -795,7 +817,7 @@ static int compute(char *num)
 		    "%s%c"
 		    "%.3f%c%.4f%c%.4f%c%.2f%c%.3f%c"
 		    "%s%c%.2f",
-		    prefix2provider(Rate.prefix, prov, &destnum), DEL,
+		    prefix2provider(Rate.prefix, prov), DEL,
 		    Rate.Provider, DEL, P_EMPTY(Rate.Zone), DEL, P_EMPTY(Rate.Day), DEL, P_EMPTY(Rate.Hour), DEL,
 		    currency, DEL,	/* Fixme: global or per
 					   Provider?? wg. EURO */
@@ -1136,7 +1158,8 @@ static void viacode(char *target, TELNUM *destnum)
 static void doit(int i, int argc, char *argv[])
 {
   int     n;
-
+  int prefix;
+  
   post_init();
   memset(ignore, 0, sizeof(ignore));
   if (!need_dest && i==0) {
@@ -1144,8 +1167,21 @@ static void doit(int i, int argc, char *argv[])
     argv[0]="2345";
   }    
   while (i < argc) {
+    if (explain == 55) {
+      if(n_providers) {
+        destnum.nprovider=providers[0];
+        Strncpy(destnum.provider,getProvider(providers[0]),TN_MAX_PROVIDER_LEN);
+        normalizeNumber(argv[i], &destnum, TN_NO_PROVIDER);
+      }
+      else		
+        normalizeNumber(argv[i], &destnum, TN_ALL);
+      printf("%s => %s \n",argv[i],formatNumber("%l - %p",&destnum));
+      i++;
+      continue;
+    }  
     destnum.nprovider = UNKNOWN;
-    normalizeNumber(argv[i], &destnum, TN_PROVIDER);
+    if(provider2prefix(argv[i], &prefix)) /* set provider if it is in number */
+      normalizeNumber(argv[i], &destnum, TN_PROVIDER);
 #if 0
     if (isalpha(*destnum.msn))
       viacode(argv[i], &destnum);
@@ -1450,6 +1486,7 @@ int     main(int argc, char *argv[], char *envp[])
     print_msg(PRT_A, "\t-G which\tshow raw data\n");
     print_msg(PRT_A, "\t-H\tshow a header\n");
     print_msg(PRT_A, "\t-L\tshow a detailed list\n");
+    print_msg(PRT_A, "\t-N\tparse the given telefon numbers\n");
     print_msg(PRT_A, "\t-S[v|n]\tsort by v=VBN, n=Name, default=Charge\n");
     print_msg(PRT_A, "\t-T\tshow a table of day/night week/weekend\n");
     print_msg(PRT_A, "\t-U\tshow usage stats for table\n");

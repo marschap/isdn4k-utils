@@ -428,6 +428,26 @@ CONFIG_ISDN_LOG_DE
   Check exactly one box to integrate country specific support into
   isdnlog. 
 
+Primary language for country names
+CONFIG_ISDN_LOG_CC_DE
+  The destination database can be built with german or english
+  country names.
+  
+National support for cities
+CONFIG_ISDN_LOG_DEST_DE
+  Select this, if you want to have German cities in the destination 
+  database.
+  So isdnlog can show a city name instead of a number prefix.
+  In isdnrate you can type in known city names and countries.
+   
+National support for cities
+CONFIG_ISDN_LOG_DEST_AT
+  S. above text for German cities.
+
+National support for cities
+CONFIG_ISDN_LOG_DEST_NL
+  S. above text for German cities.
+  
 Diversion services support 
 CONFIG_DIVERTCTRL
   This program is needed to configure the supplementary diversion
