@@ -1,4 +1,4 @@
-V:1.10-Germany [13-May-2000 16:19:23]
+V:1.10-Germany [25-May-2000 22:48:09]
 
 # Währungsformat
 U:%.3f DM
@@ -8,7 +8,7 @@ U:%.3f DM
 #
 # (C) Copyright 1999, 2000 by Andreas Kool (akool@isdn4linux.de)
 #
-# $Id: rate-de.dat,v 1.91 2000/05/13 14:22:15 akool Exp $
+# $Id: rate-de.dat,v 1.92 2000/05/27 14:55:29 akool Exp $
 #
 #
 # Das "A:" Tag muß folgendermaßen gefüllt werden:
@@ -8192,57 +8192,87 @@ A:0172,0173,0174
 A:0177,0178
 A:0176,0179
 T:*/*=0.399/60
-Z:200 Belgien
+Z:200 Australien
+A:AU
+T:*/*=0.149/60
+Z:201 Belgien
 A:BE
 T:*/*=0.111/60
-Z:201 Dänemark
+Z:202 Dänemark
 A:DK
 T:*/*=0.111/60
-Z:202 Finnland
+Z:203 Finnland
 A:FI
 T:*/*=0.111/60
-Z:203 Frankreich
+Z:204 Frankreich
 A:FR
 T:*/*=0.111/60
-Z:204 Griechenland
+Z:205 Griechenland
 A:GR
 T:*/*=0.111/60
-Z:205 Großbritannien
+Z:206 Großbritannien
 A:UK
-T:*/*=0.111/60
-Z:206 Irland
+T:*/*=0.099/60
+Z:207 Hongkong
+A:HK
+T:*/*=0.133/60
+Z:208 Irland
 A:IE
 T:*/*=0.111/60
-Z:207 Italien
+Z:209 Italien
 A:IT
 T:*/*=0.111/60
-Z:208 Luxemburg
+Z:210 Kanada
+A:CA
+T:*/*=0.111/60
+Z:211 Kroatien
+A:HR
+T:*/*=0.35/60
+Z:212 Liechtenstein
+A:LI
+T:*/*=0.188/60
+Z:213 Luxemburg
 A:LU
 T:*/*=0.111/60
-Z:209 Niederlande
+Z:214 Niederlande
 A:NL
-T:*/*=0.111/60
-Z:210 Norwegen
+T:*/*=0.099/60
+Z:215 Norwegen
 A:NO
 T:*/*=0.111/60
-Z:211 Österreich
+Z:216 Österreich
 A:AT
 T:*/*=0.111/60
-Z:212 Portugal
+Z:217 Polen
+A:PL
+T:*/*=0.35/60
+Z:218 Portugal
 A:PT
 T:*/*=0.111/60
-Z:213 Schweden
+Z:219 Schweden
 A:SE
 T:*/*=0.111/60
-Z:214 Schweiz
+Z:220 Schweiz
 A:CH
 T:*/*=0.111/60
-Z:215 Spanien
+Z:221 Slowenien
+A:SI
+T:*/*=0.35/60
+Z:222 Spanien
 A:ES
 T:*/*=0.111/60
-Z:216 USA
+Z:223 Tschechische Republik
+A:CZ
+T:*/*=0.33/60
+Z:224 Türkei
+A:TR
+T:*/*=0.35/60
+Z:225 Ungarn
+A:HU
+T:*/*=0.35/60
+Z:226 USA
 A:US
-T:*/*=0.111/60
+T:*/*=0.099/60
 #####################################################################
 #
 #
@@ -23023,8 +23053,8 @@ Z:1-4 Fern
 T:[-29.02.2000]*/08-21=0.089(60)/1
 T:[-29.02.2000]*/21-08=0.059(60)/1
 T:[01.03.2000-]W/08-18=0.089(60)/1
-T:[01.03.2000-]W/18-08=0.059(60)/1
-T:[01.03.2000-]E/*=0.059(60)/1
+T:[01.03.2000-]W/18-08=0.048(60)/1
+T:[01.03.2000-]E/*=0.048(60)/1
 A:+49
 Z:10-15
 A:01610,01617,01619,01618

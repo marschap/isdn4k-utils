@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.163 2000/05/16 16:24:02 akool Exp $
+## $Id: Makefile.in,v 1.164 2000/05/27 14:55:29 akool Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,15 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.164  2000/05/27 14:55:29  akool
+## isdnlog-4.25
+##  - isdnlog/isdnrep/isdnrep.c ... bugfix for wrong providers and duration
+##                                  by Hans Klein on d.a.c.i
+##
+##  - isdnlog/tools/rate-at.c ... 1046 Neu, 1002 ab 1.6., 1024
+##  - isdnlog/rate-at.dat ... 1046 Neu, 1002 ab 1.6., 1024
+##  - new rates 01078:3U and 01024:Super_24
+##
 ## Revision 1.163  2000/05/16 16:24:02  akool
 ## isdnlog-4.24
 ## - isdnlog/tools/rate.c ... bugfix for eXceptions w/o z-entry
@@ -1214,7 +1223,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 4.24
+VERSION     = 4.25
 
 MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 \
 	      isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 \

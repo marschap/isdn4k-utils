@@ -1,4 +1,4 @@
-/* $Id: isdnrep.c,v 1.90 2000/03/06 07:03:20 akool Exp $
+/* $Id: isdnrep.c,v 1.91 2000/05/27 14:55:30 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -24,6 +24,15 @@
  *
  *
  * $Log: isdnrep.c,v $
+ * Revision 1.91  2000/05/27 14:55:30  akool
+ * isdnlog-4.25
+ *  - isdnlog/isdnrep/isdnrep.c ... bugfix for wrong providers and duration
+ *                                  by Hans Klein on d.a.c.i
+ *
+ *  - isdnlog/tools/rate-at.c ... 1046 Neu, 1002 ab 1.6., 1024
+ *  - isdnlog/rate-at.dat ... 1046 Neu, 1002 ab 1.6., 1024
+ *  - new rates 01078:3U and 01024:Super_24
+ *
  * Revision 1.90  2000/03/06 07:03:20  akool
  * isdnlog-4.15
  *   - isdnlog/tools/tools.h ... moved one_call, sum_calls to isdnrep.h
@@ -2175,6 +2184,8 @@ static int set_caller_infos(one_call *cur_call, char *string, time_t from)
 
 			          break;
                         case  3 : dur1 = cur_call->duration = strtod(array[i],NULL);
+				  if (dur1 < 0)  /* wrong entry on some incoming voice calls */
+				    dur1 = cur_call->duration = 0;
 			          break;
                         case  4 : dur2 = cur_call->duration = strtod(array[i],NULL)/HZ;
 			          break;
@@ -2211,7 +2222,7 @@ static int set_caller_infos(one_call *cur_call, char *string, time_t from)
 			      	    cur_call->provider = atoi(array[i]);
 
                                     /* Korrektur der falschen Eintrage bis zum 16-Jan-99 */
-                                    if (cur_call->provider == UNKNOWN)
+                                    if (cur_call->provider <= UNKNOWN || cur_call->provider >= MAXPROVIDER)
                                       cur_call->provider = preselect;
 				    /* -lt- provider-# may change during time */
 				    cur_call->provider = pnum2prefix(cur_call->provider,cur_call->t);

@@ -13,7 +13,7 @@
 # for collecting and preparing most of the call charges.
 
 
-V:1.92-Austria [28-Feb-2000]
+V:1.94-Austria [27-Mai-2000]
 
 U:%.3f öS
 
@@ -2100,7 +2100,98 @@ T:*/*=0.816/15                     0-24h
 A:+437118,+437119,+437110
 
 ###########################
-P:02                               UTA
+P:[01.06.2000-] 02                 UTA
+B:1002
+C:Maintainer:                      Leopold Toetsch <lt@toetsch.at>
+C:TarifChanged:                    27.05.2000
+C:Homepage:                        http://www.uta.at
+C:TarifURL:                        http://www.uta.at
+C:Name:                            UTA Telekom AG
+C:Address:                         Rooseveltplatz 2, A-1090 Wien
+C:Telefon:                         0800 882 882, 0800 800 800
+C:Telefax:                         0800 882 329
+
+Z:1                                Österreich
+T:W/8-18=0.77(60)/1                Geschäftszeit
+T:W/18-8=0.33(60)/1                Freizeit
+T:E,H/*=0.33(60)/1                 Freizeit
+A:AT
+
+Z:2                                Mobilnetz A1
+T:W/8-18=3.00(60)/1                Geschäftszeit
+T:W/18-8=2.88(60)/1                Freizeit
+T:E,H/*=2.88(60)/1                 Freizeit
+A:+43663,+43664
+
+Z:3                                Mobilnetz andere
+T:W/8-18=3.60(60)/1                Geschäftszeit
+T:W/18-8=2.88(60)/1                Freizeit
+T:E,H/*=2.88(60)/1                 Freizeit
+A:+43676,+43699
+
+Z:4                                EasyInternet
+T:W/8-18=0.53(60)/1                Geschäftszeit
+T:W/18-8=0.18(60)/1                Freizeit
+T:E,H/*=0.18(60)/1                 Freizeit
+A:019088333
+
+Z:5                                Preiszone 1
+T:*/*=1.90(60)/1                   0-24h
+A:DE,FR,UK,IT,LI,CH
+A:CA,VI,PR,US
+
+Z:6                                Preiszone 2
+T:*/*=3.00(60)/1                   0-24h
+A:BE,DK,FI,IE,LU,NL,NO
+A:SE,ES,HU
+
+Z:7                                Preiszone 3
+T:*/*=3.50(60)/1                   0-24h
+A:GR,PT,SK,SI,CZ,_BEMF
+A:_DKMF,_DEMF,_FIMF,_FRMF
+A:_UKMF,_IEMF,_ITMF,_NLMF
+A:_CHMF
+
+Z:8                                Preiszone 4
+T:*/*=5.40(60)/1                   0-24h
+A:AD,BA,HR,MC,PL,SM,VA
+A:AL,BY,BG,EE,LV,MT,MK
+A:RO,YU,YU,TN,TR,UA
+A:CY
+
+Z:9                                Preiszone 5
+T:*/*=7.80(60)/1                   0-24h
+A:DZ,FO,GE,GI,IS,IL,LT
+A:EH,SU,TJ,TM,UZ,AU
+A:HK,JP,CC,NZ,SG,ZA,KR
+A:CX
+
+Z:10                               Preiszone 6
+T:*/*=10.00(60)/1                  0-24h
+A:AM,AZ,CL,GF,GP,LY
+A:MQ,RE
+
+Z:11                               Preiszone 7
+T:*/*=14.00(60)/1                  0-24h
+A:AO,AQ,BM,BT,BR,CN,EC,IR,KW
+A:MO,MY,MX,MD,AN,PH
+A:MP,SA,PM,VE
+
+Z:12                               Preiszone 8
+T:*/*=18.00(60)/1                  0-24h
+A:EG,GQ,AW,BS,BH,BB,BZ
+A:BW,BN,BI,DM,DO
+A:CI,GA,GH,GD,GL,GN,GW
+A:GY,JO,VG,KZ,QA
+A:KG,CO,KM,LA,LS,LB,LR,MW
+A:YT,NA,NR,NP,NC,KN,NG
+A:NF,PA,PE,ZM,ST,ZW,SH
+A:KN,LC,VC,SD,SZ,SY,TZ
+A:TO,TT,TC
+A:AE,WS
+
+###########################
+P:[-01.06.2000] 02                 UTA
 B:1002
 C:Maintainer:                      Leopold Toetsch <lt@toetsch.at>
 C:TarifChanged:                    07.09.1999
@@ -3197,81 +3288,61 @@ C:Name:                            TelePassport Telekommunikationsdiensleitungen
 C:Address:                         Prinz-Eugen-Str. 10, A 1040 Wien
 C:Homepage:                        http://www.telepassport.at
 C:Hotline:                         0800 80 1024
+C:TarifChanged:                    27.05.2000
 C:EMail:                           info@telepassport.at
 C:Telefon:                         01 506 44-100
 C:Telefax:                         01 506 44-199
-C:Zone:                            Vorwahlen 1XXX und 2XXX, sind in der Zone RundUm-Wien, andere Vorwahlen mit gleicher Anfangsziffer liegen in der Zone RundUm-Regional, der Rest ist Ganzland.
-D:1024                             # Verzonung
 
-Z:1                                RundUm-Wien
+Z:1                                Österreich
 T:W/8-18=0.98(60)/1                Tag
 T:W/18-8=0.88(60)/1                Nacht
 T:E,H/*=0.88(60)/1                 Weekend
-
-Z:2                                RundUm-Regional
-T:W/8-18=1.28(60)/1                Tag
-T:W/18-8=1.18(60)/1                Nacht
-T:E,H/*=1.18(60)/1                 Weekend
-
-Z:3                                Ganzland
-T:W/8-18=1.98(60)/1                Tag
-T:W/18-8=1.18(60)/1                Nacht
-T:E,H/*=1.18(60)/1                 Weekend
 A:AT
 
-Z:4                                Mobilfunk
-T:*/*=3.98(60)/1                   0-24h
+Z:2                                Mobilfunk
+T:*/*=3.58(60)/1                   0-24h
 A:+43663,+43664,+43676,+43699
 
-Z:5                                WeltWeit 1
-T:*/*=2.98(60)/1                   0-24h
-A:DE,CH
+Z:3                                Euro Spezial
+T:*/*=2.48(60)/1                   0-24h
+A:DE,IT,LI,CH
 
-Z:6                                WeltWeit 2
-T:*/*=3.98(60)/1                   0-24h
-A:BE,DK,FI,FR,UK,IE,IT
-A:LI,LU,MC,NL,NO,SE
-A:SI,SK,ES,CZ,HU,VA
-A:US,PR,_ALAS,_HAWA,CA
+Z:4                                Euro 1
+T:*/*=3.48(60)/1                   0-24h
+A:BE,DK,FI,FR,UK,IE,LU
+A:MC,NL,NO,SE,SI,SK,ES
+A:CZ,HU,VA,US,PR,_ALAS
+A:_HAWA,CA
 
-Z:7                                WeltWeit 3
+Z:5                                Euro 2
 T:*/*=5.98(60)/1                   0-24h
-A:AD,BA,BG,EE,GR,IS
-A:HR,LV,LT,MT,MK,PL,PT,RO
-A:YU,CY,AU,FO,IL,NZ
-A:VI
+A:AD,BA,BG,SM,TR,EE
+A:GR,IS,HR,LV,LT,MT,MK,PL
+A:PT,RO,SU,YU,CY,AU,FO,IL
+A:NZ,VI
 
-Z:8                                WeltWeit 4
+Z:6                                Euro 3
 T:*/*=7.38(60)/1                   0-24h
-A:AL,CX,GI,CC,SU,SM
-A:TR,TN,UA,BY,DZ,HK,JP,KR
-A:EH,PH,SG
+A:+7505,AL,GI,TN,UA,BY,DZ
+A:HK,JP,KR,EH,PH,SG
 
-Z:9                                WeltWeit 5
+Z:7                                Welt 1
 T:*/*=12.98(60)/1                  0-24h
 A:EG,ZA,AZ,AM,CN,GE,LY
-A:MY,MD,TJ,TW,TM,UZ
-A:AR,BR,CL,CR,DO,EC
-A:SV,GT,CO,MX,NI,PA,PE
-A:VE
+A:MY,MD,TW,TM,UZ,AR
+A:BR,CL,CR,DO,EC,SV
+A:GT,CO,MX,NI,PA,PE,VE
 
-Z:10                               WeltWeit 6
+Z:8                                Welt 2
 T:*/*=14.98(60)/1                  0-24h
-A:AO,AW,BS,BH,BB,BM,BT,BO
-A:BW,BN,BI,GH,GL,GP,GU,GN
-A:MQ,GF,HN,IN,ID,IR
-A:JO,KZ,KG,CU,KW,LS,LB,LR
-A:MO,MW,YT,NA,AN,NG
-A:PY,RE,MP,SA,LC
-A:PM,VC,SD,SY
-A:SZ,TZ,TH,TT,UY
-A:AE
+A:AO,BO,BN,GP,GF,HN,IN
+A:ID,IR,JO,KZ,CU,KW,LS,LB
+A:LR,MO,NA,AN,NG,SA
+A:SD,SY,TJ,TZ,TH,UY
+A:AE,CX
 
-Z:11                               WeltWeit 7
+Z:9                                Welt 3
 T:*/*=19.98(60)/1                  0-24h
-A:AG,DM,VG
-A:TC,AI,JM,MS,KN
-A:GD,KY
 A:+
 
 ###########################
@@ -4317,6 +4388,73 @@ A:TR
 
 Z:11                               Alle übrigen Länder
 T:*/*=22.00(60)/60/1               0-24h
+A:+
+
+###########################
+P:46                               Mobilkom Austria
+B:1046
+C:TarifChanged:                    27.05.2000
+C:Name:                            Mobilkom Austria
+C:Homepage:                        http://www.mobilkom.at
+C:TarifURL:                        http://www.mobilkom.at/deutsch/frames/fset_we4n3/fset.html
+C:Telefon:                         0800
+C:Special:                         Nur für Kunden von A1-Mobil
+
+Z:1                                Inland
+T:*/*=0.88(60)/30                  0-24h
+A:AT
+
+Z:2                                A1 Mobil
+T:*/*=2.70(60)/30                  0-24h
+A:+43664
+
+Z:3                                andere Mobilnetze
+T:*/*=3.90(60)/30                  0-24h
+A:+43676,+43699
+
+Z:4                                Deutschland
+T:*/*=2.50(60)/30                  0-24h
+A:DE
+
+Z:5                                Auslandszone 1
+T:*/*=3.90(60)/30                  0-24h
+A:BE,DK,_DEMF,FI,FR
+A:GR,UK,IE,IT,LI,LU
+A:NL,PT,SE,CH,SI,SK,ES
+A:CZ,HU,VA
+
+Z:6                                Auslandszone 2
+T:*/*=6.00(60)/30                  0-24h
+A:AD,AU,FO,GI,IS,JP,YU
+A:CA,HR,MT,MK,MC,NO,PL,SM
+A:US
+
+Z:7                                Auslandszone 3
+T:*/*=8.90(60)/30                  0-24h
+A:AL,DZ,AR,BS,BY,BG,EE
+A:HK,IL,LV,LT,EH,MX,NZ
+A:PR,RO,SU,SG,TN,TR,UA,CY
+
+Z:8                                Auslandszone 4
+T:*/*=15.00(60)/30                 0-24h
+A:AM,AZ,BB,BM,BR,CL,GE
+A:JM,LY,MY,MQ,PH,ZA,KR
+A:TJ,TW,UZ,VE
+
+Z:9                                Immarsat A
+T:*/*=85.00(60)/30                 0-24h
+A:_INA_
+
+Z:10                               Immarsat B,M
+T:*/*=65.00(60)/30                 0-24h
+A:_INB_,_INM_
+
+Z:11                               Immarsat Mini-M
+T:*/*=45.00(60)/30                 0-24h
+A:_INMM
+
+Z:12                               Auslandszone 5
+T:*/*=22.00(60)/30                 0-24h
 A:+
 
 ###########################

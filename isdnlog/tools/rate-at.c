@@ -420,8 +420,63 @@ void rate_1001(void)
   }
 }
 
-
+/* ab 1.6.2000 */
 void rate_1002(void) {
+
+  char *Zone[][2] = {
+    { "Österreich", "Österreich" },
+    { "Mobilnetz A1", "+43663,+43664" },
+    { "Mobilnetz andere", "+43676,+43699" },
+    { "EasyInternet", "019088333" },
+    { "Preiszone 1", "Deutschland, Frankreich, Großbritannien, Italien, Liechtenstein, Schweiz,Kanada, Jungferninseln (USA), Puerto Rico, USA"},
+    { "Preiszone 2", "Belgien, Dänemark, Finnland, Irland, Luxemburg, Niederlande, Norwegen, Schweden, Spanien, Ungarn"},
+    { "Preiszone 3", "Griechenland, Portugal, Slowakei, Slowenien, Tschechien, Belgien mobil, Dänemark mobil, Deutschland mobil, Finnland mobil, Frankreich mobil, Großbritannien mobil, Irland mobil, Italien mobil,  Niederlande mobil, Schweiz mobil" },
+    { "Preiszone 4", "Andorra, Bosnien-Herzeg., Kroatien, Monaco, Polen, San Marino, Vatikan, Albanien, Belarus, Bulgarien, Estland, Lettland, Malta, Mazedonien, Rumänien, Jugoslawien (Serbien, Montenegro), Tunesien, Türkei, Ukraine, Zypern"},
+    { "Preiszone 5", "Algerien, Färöer-Inseln, Georgien,Gibraltar, Island, Israel, Litauen, Marokko, Russland, Tadschikistan, Turkmenistan, Usbekistan, Australien, Hong Kong, Japan, Kokos-Inseln, Neuseeland, Singapur, Südafrika, Südkorea, Weihnachtsinseln"},
+    { "Preiszone 6", "Armenien, Aserbaidschan, Chile, Französisch Guayana, Guadeloupe, Libyen, Martinique, Reunion"},
+    { "Preiszone 7", "Angola, Antarktis, Bermuda, Bhutan, Brasilien, China, Ecuador, Iran, Kuwait, Macao, Malaysia, Mexiko, Moldau, Niederländische Antillen, Philippinen, Saipan, Saudiarabien, St.Pierre u. Miquelon, Venezuela"},
+    { "Preiszone 8", "Ägypten, Äquatorial Guinea, Aruba, Bahamas, Bahrain, Barbados, Belize, Botswana, Brunei, Burundi,Dominica, Dominikanische Republik, Elfenbeinküste, Gabun, Ghana,Grenada, Grönland, Guinea, Guinea-Bissau, Guyana, Jordanien, Jungferninseln (Britisch), Kasachstan, Katar, Kirgisistan, Kolumbien, Komoren, Laos, Lesotho, Libanon, Liberia, Malawi, Mayotte, Namibia, Nauru, Nepal, Neukaledonien, Nevis, Nigeria, Norfolk Inseln, Panama, Peru, Sambia, Sao Tome, Simbabwe, St. Helena, St. Kitts, St. Lucia, St. Vincent, Sudan, Swasiland, Syrien, Tansania, Tonga, Trinidad u. Tobago, Turks u. Caicos Inseln, Vereinigte Arabische Emirate, West-Samoa"},
+    };
+  double Tarif[][2] = {
+    {  0.77,  0.33 }, /* AT */
+    {  3.00,  2.88 },            /* A1 */
+    {  3.60,  2.88 },            /* andere */
+    {  0.53,  0.18 }, /* internet = TA-Online */
+    {  1.90,  1.90 }, /* Z1 */
+    {  3.00,  3.00 }, /* Z2 */
+    {  3.50,  3.50 }, /* Z3 */
+    {  5.40,  5.40 }, /* Z4 */
+    {  7.80,  7.80 }, /* Z5 */
+    { 10.00, 10.00 }, /* Z6 */
+    { 14.00, 14.00 }, /* Z7 */
+    { 18.00, 18.00 }, /* Z6 */
+};
+  int z;
+
+  rprintf ("P:[01.06.2000-] 02", "UTA" );
+  rprintf ("C:Maintainer:", "Leopold Toetsch <lt@toetsch.at>" );
+  rprintf ("C:TarifChanged:", "27.05.2000" );
+  rprintf ("C:Homepage:", "http://www.uta.at" );
+  rprintf ("C:TarifURL:", "http://www.uta.at" );
+  rprintf ("C:Name:", "UTA Telekom AG" );
+  rprintf ("C:Address:", "Rooseveltplatz 2, A-1090 Wien" );
+  rprintf ("C:Telefon:", "0800 882 882, 0800 800 800" );
+  rprintf ("C:Telefax:", "0800 882 329" );
+
+  for (z=0; z<COUNT(Zone); z++) {
+    rprintf ("Z:%d", Zone[z][0] , z+1);
+    if (Tarif[z][0]==Tarif[z][1])
+      rprintf ("T:*/*=%.2f(60)/1", "0-24h" , Tarif[z][0]);
+    else {
+      rprintf ("T:W/8-18=%.2f(60)/1", "Geschäftszeit" , Tarif[z][0]);
+      rprintf ("T:W/18-8=%.2f(60)/1", "Freizeit" , Tarif[z][1]);
+      rprintf ("T:E,H/*=%.2f(60)/1", "Freizeit" , Tarif[z][1]);
+    }
+    print_area(Zone[z][1]);
+  }
+}
+
+void rate_1002_old(void) {
 
   char *Zone[][2] = {
     { "Österreich", "Österreich" },
@@ -441,8 +496,8 @@ void rate_1002(void) {
     { "Welt 5 (Z12)", "Afghanistan, Amerikanisch-Samoa, Antigua & Barbuda, Ascension, Bangladesch, Burkina Faso, Cook-Inseln, Diego Garcia, El Salvador, Eritrea, Falklandinseln, Guam, Guantanamo, Guatemala, Haiti, Kamerun, Kongo, Madagaskar, Honduras, Jemen, Kambodscha, Kap Verde, Mali, Marshallinseln, Midway-Inseln, Mikronesien, Montserrat, Pakistan, Palau, Salomonen, Senegal, Seychellen, Somalia, Tokelau, Tschad, Tuvalu, Vietnam, Wake-Inseln, Wallis- und Futuna-Inseln, Zaire" }};
 
   double Tarif[][2] = {
-    {  0.88,  0.88 }, /* 1.9. rundum die Uhr */
-    {  3.90,  2.88 },
+    {  0.88,  0.88 }, /* 1.9. rundum die Uhr 0.77, 0.33 */
+    {  3.90,  2.88 },            /* A1 3.00 2.88 / 3.60 2.88 */
     {  0.53,  0.18 }, /* internet = TA-Online */
     {  2.50,  2.30 }, /* Nachb west */
     {  3.70,  3.50 },
@@ -459,7 +514,7 @@ void rate_1002(void) {
 
   int z;
 
-  rprintf ("P:02", "UTA" );
+  rprintf ("P:[-01.06.2000] 02", "UTA" );
   rprintf ("C:Maintainer:", "Leopold Toetsch <lt@toetsch.at>" );
   rprintf ("C:TarifChanged:", "07.09.1999" );
   rprintf ("C:Homepage:", "http://www.utanet.at" );
@@ -1260,24 +1315,23 @@ void rate_1014(void) {
 
 void rate_1024(void) {
 
-  char *Zone[][2] = {{ "RundUm-Wien", "" },
-		     { "RundUm-Regional", "" },
-		     { "Ganzland", "Österreich" },
+  char *Zone[][2] = {
+		     { "Österreich", "Österreich" },
 		     { "Mobilfunk", "+43663,+43664,+43676,+43699" },
-		     { "WeltWeit 1", "Deutschland, Schweiz" },
-		     { "WeltWeit 2", "Belgien, Dänemark, Finnland, Frankreich, Großbritannien, Irland, Italien, Liechtenstein, Luxemburg, Monaco, Niederlande, Norwegen, Schweden, Slowenien, Slowakei, Spanien, Tschechien, Ungarn, Vatikan, Vereinigte Staaten (USA), Puerto Rico, Alaska, Hawaii, Kanada" },
-		     { "WeltWeit 3", "Andorra, Bosnien-Herzegowina, Bulgarien, Estland, Griechenland, Island, Kroatien, Lettland, Litauen, Malta, Mazedonien, Polen, Portugal, Rumänien, Serbien, Zypern, Australien, Färöer, Israel, Neuseeland, Amerikanische Jungferninseln" },
-		     { "WeltWeit 4", "Albanien, Weihnachtsinseln, Gibraltar, Kokosinseln, Rußland, San Marino, Türkei, Tunesien, Ukraine, Weißrußland, Algerien, Hongkong, Japan, Südkorea, Marokko, Philippinen, Singapur" },
-		     { "WeltWeit 5", "Ägypten, Südafrika, Aserbaidschan, Armenien, China, Georgien, Libyen, Malaysia, Moldau, Tadschikistan, Taiwan, Turkmenistan, Usbekistan, Argentinien, Brasilien, Chile, Costa Rica, Dominikanische Republik, Ecuador, El Salvador, Guatemala, Kolumbien, Mexiko, Nicaragua, Panama, Peru, Venezuela" },
-		     { "WeltWeit 6", "Angola, Aruba, Bahamas, Bahrain, Barbados, Bermuda, Bhutan, Bolivien, Botswana, Brunei, Burundi, Ghana, Grönland, Guadeloupe, Guam, Guinea, Martinique, Französisch-Guayana, Honduras, Indien, Indonesien, Iran, Jordanien, Kasachstan, Kirgisistan, Kuba, Kuwait, Lesotho, Libanon, Liberia, Macao, Malawi, Mayotte, Namibia, Niederländische Antillen, Nigeria, Paraguay, Reunion, Saipan, Saudi-Arabien, St. Lucia, St. Pierre und Miquelon, Saint Vincent und die Grenadinen, Sudan, Syrien, Swasiland, Tansania, Thailand, Trinidad und Tobago, Uruguay, Vereinigte Arabische Emirate" },
-		     { "WeltWeit 7", "Antigua und Barbuda,Dominica,Britische Jungferninseln,Turks- und Caicosinseln,Anguilla,Jamaika,Montserrat,St. Kitts und Nevis,Grenada,Kaimaninseln,+" }};
+// Online
+		     { "Euro Spezial", "Deutschland, Italien, Liechtenstein, Schweiz" },
+		     { "Euro 1", "Belgien, Dänemark, Finnland, Frankreich, Großbritannien, Irland, Luxemburg, Monaco, Niederlande, Norwegen, Schweden, Slowenien, Slowakei, Spanien, Tschechien, Ungarn, Vatikan, Vereinigte Staaten (USA), Puerto Rico, Alaska, Hawaii, Kanada" },
+		     { "Euro 2", "Andorra, Bosnien-Herzegowina, Bulgarien, San Marino, Türkei, Estland, Griechenland, Island, Kroatien, Lettland, Litauen, Malta, Mazedonien, Polen, Portugal, Rumänien, Rußland, Serbien, Zypern, Australien, Färöer, Israel, Neuseeland, Amerikanische Jungferninseln" },
+		     { "Euro 3", "+7505, Albanien, Gibraltar, Tunesien, Ukraine, Weißrußland, Algerien, Hongkong, Japan, Südkorea, Marokko, Philippinen, Singapur" },
+		     { "Welt 1", "Ägypten, Südafrika, Aserbaidschan, Armenien, China, Georgien, Libyen, Malaysia, Moldawien, Taiwan, Turkmenistan, Usbekistan, Argentinien, Brasilien, Chile, Costa Rica, Dominikanische Republik, Ecuador, El Salvador, Guatemala, Kolumbien, Mexiko, Nicaragua, Panama, Peru, Venezuela" },
+		     { "Welt 2", "Angola, Bolivien,Brunei,  Guadeloupe,  Französisch-Guayana, Honduras, Indien, Indonesien, Iran, Jordanien, Kasachstan,Kuba, Kuwait, Lesotho, Libanon, Liberia, Macao,  Namibia, Niederländische Antillen, Nigeria, Saudi-Arabien, Sudan, Syrien, Tadschikistan, Tansania, Thailand, Uruguay, Vereinigte Arabische Emirate, Weihnachtsinseln" },
+		     { "Welt 3", "+" }};
 
   double Tarif[][2] = {{ 0.98, 0.88},
-		       { 1.28, 1.18},
-		       { 1.98, 1.18},
-		       { 3.98, 3.98},
-		       { 2.98, 2.98}, /* W1 */
-		       { 3.98, 3.98},
+		       { 3.58, 3.58},
+// { 0.60, 0.60 },
+		       { 2.48, 2.48}, /* Euro Spez */
+		       { 3.48, 3.48}, /* Euro 1 */
 		       { 5.98, 5.98},
 		       { 7.38, 7.38},
 		       {12.98,12.98},
@@ -1292,13 +1346,11 @@ void rate_1024(void) {
   rprintf ("C:Address:", "Prinz-Eugen-Str. 10, A 1040 Wien" );
   rprintf ("C:Homepage:", "http://www.telepassport.at" );
   rprintf ("C:Hotline:", "0800 80 1024" );
+  rprintf ("C:TarifChanged:", "27.05.2000" );
   rprintf ("C:EMail:", "info@telepassport.at" );
   rprintf ("C:Telefon:", "01 506 44-100" );
   rprintf ("C:Telefax:", "01 506 44-199" );
-  rprintf ("C:Zone:", "Vorwahlen 1XXX und 2XXX, sind in der Zone RundUm-Wien, andere Vorwahlen "
-	   "mit gleicher Anfangsziffer liegen in der Zone RundUm-Regional, der Rest ist "
-	   "Ganzland.");
-  rprintf ("D:1024", "# Verzonung" );
+
   for (z=0; z<COUNT(Zone); z++) {
     rprintf ("Z:%d", Zone[z][0] , z+1);
     if (Tarif[z][0]==Tarif[z][1]) {
@@ -1623,6 +1675,52 @@ void rate_1044_old(void) {
 	rprintf ("T:E,H/*=%.2f(60)/1", "Weekend" , Tarif[z][1]);
       }
     }
+    print_area(Zone[z][1]);
+  }
+}
+
+void rate_1046(void) {
+ char *Zone[][2] = {
+     { "Inland", "Österreich"},
+     { "A1 Mobil","+43664" },
+     { "andere Mobilnetze","+43676,+43699" },
+     { "Deutschland","Deutschland"},
+     { "Auslandszone 1","Belgien,Dänemark,Deutschland Mobilfunk,Finnland,Frankreich,Griechenland,britannien,Irland,Italien,Liechtenstein,Luxemburg,Niederlande,Portugal,Schweden,Schweiz,Slovenien,Slowakei,Spanien,Tschechien,Ungarn,Vatikan"},
+     { "Auslandszone 2","Andorra,Australien,Feröer Inseln,Gibraltar,Island,Japan,Jugoslawien,Kanada,Kroatien,Malta,Mazedonien,Monaco,Norwegen,Polen,San Marino,USA"},
+     { "Auslandszone 3","Albanien,Algerien,Argentinien,Bahamas,Belarus,Bulgarien,Estland,Hong Kong,Israel,Lettland,Litauen,Marokko,Mexiko,Neuseeland,Porto Rico,Rumänien,land,Singapur,Tunesien,Türkei,Ukraine,Zypern"},
+     { "Auslandszone 4","Armenien,Aserbaidschan,Barbados,Bermuda,Brasilien,Chile,Georgien,Jamaica,Libyen,Malaysien,Martinique,Philippinen,Süd Afrika,Süd Korea,Tadjikistan,Tawain,Usbekistan,Venezuela"},
+     { "Immarsat A", "Immarsat A" },
+     { "Immarsat B,M", "Immarsat B,Immarsat M" },
+     { "Immarsat Mini-M", "Immarsat Mini-M" },
+     { "Auslandszone 5","+"}
+     };
+  double Tarif[] = {
+    0.88,
+    2.70,
+    3.90,
+    2.50,	/* DE */
+    3.90,
+    6.00,
+    8.90,
+    15.00,	/* 4. A */
+    85.00,
+    65.00,
+    45.00,
+    22.00,   /* 5. A */
+    };
+  int z;
+
+  rprintf ("P:46", "Mobilkom Austria" );
+  rprintf ("C:TarifChanged:", "27.05.2000" );
+  rprintf ("C:Name:", "Mobilkom Austria" );
+//  rprintf ("C:Address:", "" );
+  rprintf ("C:Homepage:", "http://www.mobilkom.at" );
+  rprintf ("C:TarifURL:", "http://www.mobilkom.at/deutsch/frames/fset_we4n3/fset.html" );
+  rprintf ("C:Telefon:", "0800 ");
+  rprintf ("C:Special:","Nur für Kunden von A1-Mobil");
+  for (z=0; z<COUNT(Zone); z++) {
+    rprintf ("Z:%d", Zone[z][0] , z+1);
+    rprintf ("T:*/*=%.2f(60)/30", "0-24h" , Tarif[z]);
     print_area(Zone[z][1]);
   }
 }
@@ -2446,7 +2544,7 @@ int main (int argc, char *argv[])
   printf ("# Many thanks to Daniela Bruder <dbruder@sime.com>\n");
   printf ("# for collecting and preparing most of the call charges.\n\n\n");
 
-  printf ("V:1.93-Austria [15-Mai-2000]\n\n");
+  printf ("V:1.94-Austria [27-Mai-2000]\n\n");
   printf ("U:%%.3f öS\n");
   write_services();
 
@@ -2456,6 +2554,7 @@ int main (int argc, char *argv[])
   rate_1001_old();
   rate_1001();
   rate_1002();
+  rate_1002_old();
   rate_1003();
   rate_1004_1();
   rate_1004_2();
@@ -2475,6 +2574,7 @@ int main (int argc, char *argv[])
   rate_librotel();
   /*  rate_1044_old(); */
   rate_1012(1044);
+  rate_1046();
   rate_1049();
 /* rate_1056();  // Fixme: Netway ab 1.5.00 */
   rate_1066();
