@@ -1,4 +1,4 @@
-/* $Id: isdnctrl.h,v 1.19 2001/05/23 14:59:23 kai Exp $
+/* $Id: isdnctrl.h,v 1.20 2002/02/07 10:44:12 paul Exp $
  * ISDN driver for Linux. (Control-Utility)
  *
  * Copyright 1994,95 by Fritz Elfert (fritz@isdn4linux.de)
@@ -21,6 +21,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnctrl.h,v $
+ * Revision 1.20  2002/02/07 10:44:12  paul
+ * Added cisco_h and cisco_hk as aliases for cisco-h and cisco-hk
+ * because the manpage used to have this wrong.
+ *
  * Revision 1.19  2001/05/23 14:59:23  kai
  * removed traces of TIMRU. I hope it's been dead for a long enough time now.
  *
@@ -227,9 +231,11 @@ char *pencapstr[] = {
 	"rawip",
 	"ip",
 	"cisco-h",
+	"cisco_h",
 	"syncppp",
 	"uihdlc",
 	"cisco-hk",
+	"cisco_hk",
 	"x25iface",
 	"\0"
 };
@@ -239,8 +245,10 @@ int pencapval[] = {
 	ISDN_NET_ENCAP_RAWIP,
 	ISDN_NET_ENCAP_IPTYP,
 	ISDN_NET_ENCAP_CISCOHDLC,
+	ISDN_NET_ENCAP_CISCOHDLC,
 	ISDN_NET_ENCAP_SYNCPPP,
 	ISDN_NET_ENCAP_UIHDLC,
+	ISDN_NET_ENCAP_CISCOHDLCK,
 	ISDN_NET_ENCAP_CISCOHDLCK,
 	ISDN_NET_ENCAP_X25IFACE,
 	-1
