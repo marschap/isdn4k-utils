@@ -1,4 +1,4 @@
-V:1.10-Germany [02-Feb-2000 23:36:40]
+V:1.10-Germany [03-Feb-2000 19:08:15]
 
 # Währungsformat
 U:%.3f DM
@@ -8,7 +8,7 @@ U:%.3f DM
 #
 # (C) Copyright 1999 by Andreas Kool (akool@isdn4linux.de)
 #
-# $Id: rate-de.dat,v 1.75 2000/02/02 22:43:08 akool Exp $
+# $Id: rate-de.dat,v 1.76 2000/02/03 18:24:49 akool Exp $
 #
 #
 # Das "A:" Tag muß folgendermaßen gefüllt werden:
@@ -9524,7 +9524,7 @@ C:170		Persönliche Rufnummer
 C:171		Info Expo 2000
 C:172		Sonderrufnummern zum Citytarif
 C:200	-	Ausland
-# G:01.04.1999
+# G:01-Feb-2000
 D:dtag
 Z:0 FreeCall
 A:08003301113
@@ -9773,7 +9773,7 @@ C:170		Persönliche Rufnummer
 C:171		Info Expo 2000
 C:172		Sonderrufnummern zum Citytarif
 C:200	-	Ausland
-# G:01.04.1999
+# G:01-Feb-2000
 D:dtag
 Z:0 FreeCall
 A:08003301113
@@ -10031,7 +10031,7 @@ C:170		Persönliche Rufnummer
 C:171		Info Expo 2000
 C:172		Sonderrufnummern zum Citytarif
 C:200	-	Ausland
-# G:01.04.1999
+# G:01-Feb-2000
 D:dtag
 Z:0 FreeCall
 A:08003301113
@@ -10247,8 +10247,9 @@ A:+
 T:*/*=0.12/2.31
 #####################################################################
 P:33,4 DTAG AktivPlus
+# Dieser Tarif gilt auch bei T-ISDN 300
 B:01033
-# G:01-Jun-1999
+# G:01-Feb-2000
 D:dtag
 C:Name:Deutsche Telekom AG AktivPlus
 C:Address:Deutsche Telekom AG, Friedrich-Ebert-Allee 140, 53113 Bonn
@@ -10318,35 +10319,28 @@ T:W/18-09=0.06/60 Spar
 T:E,H/*=0.06/60 Spar
 Z:10 C-Mobilboxen
 A:01618
-T:W/09-18=0.12/11.4 Standard
-T:W/18-09=0.12/16.7 Nacht
-T:E,H/*=0.12/16.7 Wochenende
+T:*/*=0.39/60 Standard
 Z:11 Mobilfunk C
 A:01610,01617,01619
-T:W/09-18=0.12/7.5 Standard
-T:W/18-09=0.12/15 Nacht
-T:E,H/*=0.12/15 Wochenende
+T:*/*=0.39/60 Standard
 Z:12 Mobilfunknetz D1
 A:0170,0171
-T:[01.02.2000-]*/*=0.39/60
-T:W/09-18=0.12/7.5 Standard
-T:W/18-09=0.12/15 Nacht
-T:E,H/*=0.12/15 Wochenende
+T:*/*=0.39/60
 Z:13 Mobilfunknetz D2
 A:0172,0173
-T:W/09-18=0.12/7.5 Standard
-T:W/18-09=0.12/15 Nacht
-T:E,H/*=0.12/15 Wochenende
+T:W/09-18=0.96/60 Standard
+T:W/18-09=0.48/60 Nacht
+T:E,H/*=0.48/60 Wochenende
 Z:14 Mobilfunknetz E-Plus
 A:0177,0178
-T:W/09-18=0.12/5.3 Standard
-T:W/18-09=0.12/12.8 Nacht
-T:E,H/*=0.12/12.8 Wochenende
+T:W/09-18=1.36/60 Standard
+T:W/18-09=0.562/60 Nacht
+T:E,H/*=0.562/60 Wochenende
 Z:15 Mobilfunknetz Viag Interkom
 A:0176,0179
-T:W/09-18=0.12/7.5 Standard
-T:W/18-09=0.12/15 Nacht
-T:E,H/*=0.12/15 Wochenende
+T:W/09-18=0.96/60 Standard
+T:W/18-09=0.48/60 Nacht
+T:E,H/*=0.48/60 Wochenende
 Z:31 Iridium GSM
 A:_IR17
 T:*/*=0.12/0.509

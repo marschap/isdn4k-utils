@@ -1,4 +1,4 @@
-/* $Id: isdnbill.c,v 1.13 1999/12/31 13:57:18 akool Exp $
+/* $Id: isdnbill.c,v 1.14 2000/02/03 18:24:50 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Billing-module)
  *
@@ -277,17 +277,24 @@ static void strich(char c, int len)
 
 static void total(int w)
 {
-  register int i, j;
+  register int i, j, firsttime = 1;
   auto     int ncalls = 0, failed = 0;
   auto     double duration = 0.0, pay = 0.0, compute = 0.0, aktiv = 0.0;
 
 
-  printf("\n\nMSN                   calls  Duration        Charge      Computed\n");
-  strich('-', 65);
+  firsttime = 1;
 
   for (i = 0; i < nhome; i++) {
     for (j = 0; j < MAXSI; j++) {
       if (msnsum[w][j][i].ncalls) {
+
+        if (firsttime) {
+          firsttime = 0;
+
+  	  printf("\n\nMSN                   calls  Duration        Charge      Computed\n");
+  	  strich('-', 65);
+        }
+
         printf("%6s,%d %-12s %5d %s  %s %9.4f",
           msnsum[w][j][i].msn,
           j,
@@ -324,6 +331,7 @@ static void total(int w)
     } /* for */
   } /* for */
 
+  if (!firsttime) {
   strich('=', 65);
 
   printf("                      %5d %s  %s %9.4f",
@@ -336,6 +344,7 @@ static void total(int w)
     printf("\n");
   else
     printf("  %s %9.4f\n", c.currency, compute);
+  } /* if */
 
   ncalls = 0;
   failed = 0;
@@ -343,11 +352,18 @@ static void total(int w)
   pay = 0.0;
   compute = 0.0;
 
-  printf("\n\nProvider                       calls  Duration        Charge      Computed failures  avail\n");
-  strich('-', 90);
+  firsttime = 1;
+
 
   for (i = 0; i < MAXPROVIDER; i++) {
     if (provsum[w][i].ncalls) {
+      if (firsttime) {
+        firsttime = 0;
+
+  	printf("\n\nProvider                       calls  Duration        Charge      Computed failures  avail\n");
+  	strich('-', 90);
+      } /* if */
+
       if (i < 100)
         printf(" %s%02d", vbn, i);
       else
@@ -387,6 +403,7 @@ static void total(int w)
     } /* if */
   } /* for */
 
+  if (!firsttime) {
   strich('=', 90);
 
   printf("%*s%5d %s  %s %9.4f  %s %9.4f %8d %5.1f%%\n",
@@ -399,6 +416,7 @@ static void total(int w)
     compute,
     failed,
     100.0 * (ncalls - failed) / ncalls);
+  } /* if */
 
 
   ncalls = 0;
@@ -406,6 +424,15 @@ static void total(int w)
   pay = 0.0;
   compute = 0.0;
   aktiv = 0;
+
+  firsttime = 1;
+
+
+  for (i = 0; i < MAXZONE; i++) {
+    if (zonesum[w][i].ncalls) {
+
+      if (firsttime) {
+        firsttime = 0;
 
   printf("\n\nZone            calls  Duration        Charge      Computed");
 
@@ -417,9 +444,8 @@ static void total(int w)
     printf("\n");
     strich('-', 59);
   } /* else */
+      } /* if */
 
-  for (i = 0; i < MAXZONE; i++) {
-    if (zonesum[w][i].ncalls) {
       switch (i) {
         case 0 : printf("FreeCall        "); break;
         case 1 : printf("Ortszone        "); break;
@@ -466,6 +492,7 @@ static void total(int w)
     } /* if */
   } /* for */
 
+  if (!firsttime) {
   strich('=', (preselect == DTAG) ? 73 : 59);
 
   printf("%*s%5d %s  %s %9.4f  %s %9.4f",
@@ -483,6 +510,7 @@ static void total(int w)
     printf("\n");
 
   printf("\n\n");
+  } /* if */
 } /* total */
 
 
@@ -575,7 +603,7 @@ static void showpartner()
             } /* if */
 
             printf("%-25s %5d   %s %9.4f %s   %s %9.4f\n",
-              clip(onlynumbers ? partner[k][i].num[CALLED] : known[i]->who, 25),
+              clip(onlynumbers ? partner[k][i].num : known[i]->who, 25),
               partner[k][i].ncalls,
               c.currency,
               partner[k][i].pay,
@@ -592,7 +620,7 @@ static void showpartner()
             } /* if */
 
             printf("%-25s %5d %s\n",
-              clip(onlynumbers ? partner[k][i].num[CALLING] : known[i]->who, 25),
+              clip(onlynumbers ? partner[k][i].num : known[i]->who, 25),
               partner[k][i].ncalls,
               timestr(partner[k][i].duration));
           } /* else */
@@ -843,7 +871,7 @@ int main(int argc, char *argv[], char *envp[])
   auto     double   dur;
   auto     char    *version;
   auto     char    *myname = basename(argv[0]);
-  auto     int      opt;
+  auto     int      opt, go;
   auto	   time_t   now;
   auto 	   struct   tm *tm;
 
@@ -1038,11 +1066,26 @@ int main(int argc, char *argv[], char *envp[])
           } /* if */
         } /* if */
 
-        if (((c.dialout && showoutgoing) || (!c.dialout && showincoming)) &&
-            (c.duration || showerrors) &&
-            (!onlythis || strstr(c.num[CALLING], onlythis) || strstr(c.num[CALLED], onlythis)) &&
-            (!onlytoday || (c.connect >= now))) {
 
+        go = 0;
+
+        if (showoutgoing && c.dialout && c.duration)
+          go++;
+
+        if (showincoming && !c.dialout && c.duration)
+          go++;
+
+        if (showerrors && !c.duration)
+          go++;
+
+        if (*onlythis && strstr(c.num[CALLING], onlythis) == NULL &&
+           	      	 strstr(c.num[CALLED], onlythis) == NULL)
+          go = 0;
+
+        if (onlytoday && c.connect < now)
+          go = 0;
+
+        if (go) {
           when(s, &day, &month);
 
           if (lmonth == UNKNOWN)

@@ -1,4 +1,4 @@
-/* $Id: rate.c,v 1.72 2000/02/02 22:43:10 akool Exp $
+/* $Id: rate.c,v 1.73 2000/02/03 18:24:51 akool Exp $
  *
  * Tarifdatenbank
  *
@@ -19,6 +19,13 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rate.c,v $
+ * Revision 1.73  2000/02/03 18:24:51  akool
+ * isdnlog-4.08
+ *   isdnlog/tools/rate.c ... LCR patch again
+ *   isdnlog/tools/isdnrate.c ... LCR patch again
+ *   isdnbill enhanced/fixed
+ *   DTAG AktivPlus fixed
+ *
  * Revision 1.72  2000/02/02 22:43:10  akool
  * isdnlog-4.07
  *  - many new rates per 1.2.2000
@@ -484,7 +491,7 @@
  *
  * int getSpecial (char *number)
  *   überprüft, ob die Nummer einem N:-Tag = Service entspricht
- *   wird für die Sondernummern benötigt
+ *   wird für die Sondernummern benötigt, retouniert service# oder 0
  *
  * char *getSpecialName(char *number)
  *   get the Service Name of a special number
@@ -1747,7 +1754,7 @@ int getSpecial (char *number) {
   for (i=0; i<nService; i++)
     for(j=0; j<Service[i].nCode; j++)
       if(strmatch(Service[i].Codes[j], number)>=l)
-        return 1;
+        return i;
   return 0;
 }
 
@@ -1837,6 +1844,11 @@ int getRate(RATE *Rate, char **msg)
     return UNKNOWN;
 
   prefix=Rate->prefix;
+#if 0
+  print_msg(PRT_V, "P:%d,%d Rate dst0='%s' dst1='%s' dst2='%s'\n",
+  	Provider[prefix]._provider._prefix, Provider[prefix]._provider._variant,
+	Rate->dst[0], Rate->dst[1], Rate->dst[2]);
+#endif
   if (prefix<0 || prefix>=nProvider) {
     if (msg) snprintf(message, LENGTH, "Unknown provider %d", prefix);
     return UNKNOWN;
@@ -2011,7 +2023,7 @@ int getLeastCost (RATE *Current, RATE *Cheapest, int booked, int skip)
   int i, cheapest;
   RATE Skel, Rate;
   char *number;
-  int serv=-1, j, cod, l;
+  int serv, j, cod, l, zone, prevzone;
 
   clearRate (&Skel);
   memcpy (Skel.src, Current->src, sizeof (Skel.src));
@@ -2025,41 +2037,54 @@ int getLeastCost (RATE *Current, RATE *Cheapest, int booked, int skip)
   *Cheapest=*Current;
   Cheapest->Charge=1e9;
   cheapest=UNKNOWN;
-  do {
+  /* 1. try number for all providers */
+  for (i=0; i<nProvider; i++) {
+    if (i==skip || (booked && !Provider[i].booked))
+      continue;
+    Rate=Skel;
+    Rate.prefix=i;
+    if (getRate(&Rate, NULL)!=UNKNOWN && Rate.Charge<Cheapest->Charge) {
+      *Cheapest=Rate;
+      cheapest=i;
+    }
+  }
+  number = strcat3(Skel.dst);
+  if (*Skel.dst[0] || *Skel.dst[2] || !(serv=getSpecial(number)))
+    return (Cheapest->prefix==Current->prefix ? UNKNOWN : cheapest); /* no serv */
+
+  /* we have a service: try other numbers for this service */
+  l=strlen(number);
+   /* try all numbers for the service */
+  for(cod=0; cod<Service[serv].nCode; cod++) {
+    /* try all providers */
     for (i=0; i<nProvider; i++) {
       if (i==skip || (booked && !Provider[i].booked))
-        continue;
-      Rate=Skel;
-      Rate.prefix=i;
-      if (getRate(&Rate, NULL)!=UNKNOWN && Rate.Charge<Cheapest->Charge) {
-        *Cheapest=Rate;
-        cheapest=i;
-      }
-    }
-    number = strcat3(Skel.dst);
-    if (!*Skel.dst[0] && !*Skel.dst[2] && getSpecial(number)) { /* try other numbers for this service */
-      if(serv==-1) {
+        continue; /* next provider */
+      /* search providers areas for a matching number */
+      prevzone=-2;
+      for (j=0; j<Provider[i].nArea; j++) {
+        zone=Provider[i].Area[j].Zone;
+	if(zone==prevzone) /* no nedd to check more numbers in same zone */
+	  continue;
+	prevzone=zone;
+        number=Provider[i].Area[j].Code;
+        if (strcmp(Current->dst[1], number) == 0)
+          continue; /* but not the orig number */
         l=strlen(number);
-        for (i=0; i<nService && serv==-1; i++)
-          for(j=0; j<Service[i].nCode; j++)
-            if(strmatch(Service[i].Codes[j], number)>=l) {
-	      serv=i;
-	      break;
-	    }
-	if(serv==-1) /* not found - shouldn't be */
-	  break;
-	cod=0;
-      }
-      if (cod < Service[serv].nCode) {
-        Skel.dst[1] = Service[serv].Codes[cod];
-	cod++;
-      }
-      else
-        break;
-    }
-    else
-      break;
-  } while(1);
+        if(strmatch(Service[serv].Codes[cod], number)>=l) {
+          Skel.dst[1] = number;
+          Rate=Skel;
+          Rate._area=j;
+          Rate._zone=zone;
+          Rate.prefix=i;
+          if (getRate(&Rate, NULL)!=UNKNOWN && Rate.Charge<Cheapest->Charge) {
+            *Cheapest=Rate;
+            cheapest=i;
+          }
+	}  /* if match */
+      } /* for j */
+    } /* for i */
+  } /* for cod */
   return (Cheapest->prefix==Current->prefix ? UNKNOWN : cheapest);
 }
 

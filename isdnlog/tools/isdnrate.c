@@ -1,4 +1,4 @@
-/* $Id: isdnrate.c,v 1.31 1999/12/31 13:57:20 akool Exp $
+/* $Id: isdnrate.c,v 1.32 2000/02/03 18:24:51 akool Exp $
 
  * ISDN accounting for isdn4linux. (rate evaluation)
  *
@@ -19,6 +19,13 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnrate.c,v $
+ * Revision 1.32  2000/02/03 18:24:51  akool
+ * isdnlog-4.08
+ *   isdnlog/tools/rate.c ... LCR patch again
+ *   isdnlog/tools/isdnrate.c ... LCR patch again
+ *   isdnbill enhanced/fixed
+ *   DTAG AktivPlus fixed
+ *
  * Revision 1.31  1999/12/31 13:57:20  akool
  * isdnlog-4.00 (Millenium-Edition)
  *  - Oracle support added by Jan Bolt (Jan.Bolt@t-online.de)
@@ -854,14 +861,13 @@ static int compute(char *num)
 
       destnum.nprovider = i;
       Strncpy(destnum.provider, getProvider(i), TN_MAX_PROVIDER_LEN);
-      if (normalizeNumber(num, &destnum, TN_NO_PROVIDER) == UNKNOWN) {
+      if (normalizeNumber(num, &destnum, TN_ALL) == UNKNOWN) {
 	continue;
       }
 
       Rate.dst[0] = destnum.country;
       Rate.dst[1] = destnum.area;
       Rate.dst[2] = destnum.msn;
-      print_msg(PRT_V, "Rate dst0='%s' dst1='%s' dst2='%s'\n", Rate.dst[0], Rate.dst[1], Rate.dst[2]);
       /* Rate.Service = "Internet by call"; */
 
       Rate.prefix = i;
@@ -988,15 +994,15 @@ static int compute(char *num)
   } while (num && *num);
   if (explain < 10) {
     qsort((void *) sort, n, sizeof(SORT), compare_func);
-    if (lcr) {
+    if (lcr && n) {
       RATE    Cheap;
-      int     res = getLeastCost(&Rate, &Cheap, 0, -1);
+      int     res = getLeastCost(&Rate, &Cheap, booked, -1);
 
       if (res != UNKNOWN) {
 	sort[n].prefix = Cheap.prefix;
 	sort[n].rate = Cheap.Charge;
 	sort[n].name = Cheap.Provider;
-	sprintf(s, "(Cheapest: %s)", Cheap.dst[1]);
+	sprintf(s, "(Cheapest: %s %s %s %s)", Cheap.dst[0], Cheap.dst[1], Cheap.dst[2], P_EMPTY(Cheap.Zone));
 	sort[n].explain = strdup(s);
 	n++;
       }				/* res */
