@@ -200,7 +200,7 @@ Unbinds a the previously bound interface "name".
 Binds the current interface to a ippp device (/dev/ipppX).
 This works only for syncronous ppp.
 The value must be a number.
-If no number is omitted, it shows the the current binding.
+If no number is omitted, it shows the current binding.
 .TP 5
 .B busreject driverId [on|off]
 If switched on, isdn4linux replies a REJECT to incoming calls, it
