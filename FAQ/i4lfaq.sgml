@@ -4,7 +4,7 @@
 
 <title>FAQ for isdn4linux
 <author>Matthias Hessler (<tt><htmlurl url="mailto:hessler@isdn4linux.de" name="hessler@isdn4linux.de"></tt>)
-<date>v2.0.21, 1. November 1999
+<date>v2.0.22, 2. November 1999
 <abstract>
 If you are reading this FAQ online, you may consider downloading the whole
 thing, and reading it offline (much cheaper). To download the latest
@@ -1123,38 +1123,12 @@ isdn4linux:
 howto (isdn.html) and a ISDN quick-install guide (isdnquick.html).
 <item>Tips to configure Red Hat:
 <url url="http://www.webideal.de/rh-isdn/">
-</itemize>
-
-Please note: the following link list may be outdated, they have not been
-checked for a long while.
-<itemize>
 <item>Scripts and installation tips from several people:
 <tt><url url="http://www.rosat.mpe-garching.mpg.de/&tilde;web/ISDN.html"></tt>
-<item>I4l, syncPPP, email, Usenet, Voicebox, this FAQ and more:
-<tt><url url="http://www.lrz-muenchen.de/&tilde;ui161ab/www/isdn/"></tt>
 <item>Michael Hipp's page (general informations):
-<tt><url url="http://www.sfs.nphil.uni-tuebingen.de/&tilde;hipp/isdn/"></tt>
-<item>Chargeint instructions:
+<tt><url url="http://www-ti.informatik.uni-tuebingen.de/~hippm/isdn.html"></tt>
+<item>Chargeint tips:
 <tt><url url="http://www.provi.de/&tilde;gvz/chargeint.html"></tt>
-<item>Stefan Nehlsen's instructions for syncPPP:
-<tt><url url="http://www.techfak.uni-kiel.de/&tilde;stn/i4l/"></tt>
-<item>xled (formerly xvboxled) is at:
-<tt><url url="http://fb4-1112.uni-muenster.de/pub/ffwd/"></tt>
-<item>Example configurations for isdn4linux are said to be at:
-<tt><url url="http://www.datenhighway.com/isdn4linux.html"></tt>
-<item>This FAQ along with isdn4linux is at:
-<tt><url url="ftp://ftp.franken.de/pub/isdn4linux/"></tt>
-<item>This FAQ is also so:
-<tt><url url="ftp://ftp.pop.de/pub2/linux/isdn4linux/FAQ"></tt>
-<item>Configuration examples and scripts: 
-<tt><url url="http://www.rosat.mpe-garching.mpg.de/&tilde;web/ISDN.html"></tt>
-<item>Many HowTo's on basic installation, syncPPP, Email setup, 
-Usenet News, answering machine, and more:
-<tt><url url="http://www.lrz-muenchen.de/&tilde;ui161ab/www/isdn/"></tt>
-<item>Further FAQs with example scripts:
-<tt><url url="http://www.fzi.de/sim/people/trautw/i4l/index.html"></tt>
-<item>Eurofile client + server software (alpha):
-<tt><url url="ftp://ftp.hamburg.pop.de/pap/LOCAL/linux/i4l-eft/"></tt>
 </itemize>
 
 
