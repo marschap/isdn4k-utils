@@ -4,7 +4,7 @@
 
 <title>FAQ for isdn4linux
 <author>Matthias Hessler (<tt><htmlurl url="mailto:hessler@isdn4linux.de" name="hessler@isdn4linux.de"></tt>)
-<date>v2.0.45, 23. July 2000
+<date>v2.0.46, 31. July 2000
 <abstract>
 If you are reading this FAQ online, you may consider downloading the whole
 thing, and reading it offline (much cheaper). To download the latest
@@ -308,6 +308,12 @@ But currently this requires some manual work. Check the mailing list on how
 to do it (special patch needed). Only class 1 fax commands are supported.
 You can obtain the patch from:
 <tt><url url="//ftp.isdn4linux.de/pub/isdn4linux/kernel/v2.2/testing/i4l_isar_fclass1.tar.gz"></tt>
+The patch is not needed if your kernel is 2.2.15 or later.
+You have to enable the kernel option for FCLASS2 (CONFIG_ISDN_TTY_FAX=Y).
+Also, you need to load the firmware of the card (part of the isdn4k-utils) with
+<code>
+hisaxctrl &lt;driver_id&gt; 9 ISAR.BIN
+</code>
 Then initialize the ttyI* interface with:
 <code>
 ATZ&amp;E&lt;your_msn&gt;S0=1S13=1+FCLASS=1
@@ -513,11 +519,14 @@ See question <ref id="config_gsmv110" name="config_gsmv110"> for details on how 
 Yes, this feature is now being supported by isdnlog. What it does is that
 it allows isdnlog to choose your telephone provider when placing a call
 through your ISDN card, depending on the time of day and the current rate
-information.
-Please note, that it does not make much sense to choose a call-by-call
-Internet Provider this way, since more things would have to be adjusted
-to make it work (e.g. DNS lookup, proxy setup,...). Also, isdnlog should
-always be running (otherwise your dialout may be delayed by 3 seconds).
+information. Since isdnlog 4.16 an external script is called (if configured)
+to change various ISP settings (e.g. DNS lookup, proxy setup,...). 
+
+Note: the ABC-extensions (s. <ref id="docu_abc" name="docu_abc">) must be
+installed. Also, isdnlog should always be running (otherwise your dialout
+will be delayed by 3 seconds). If the ABC-extensions are not installed,
+isdnlog prints hints to the log file, which provider would have been chosen.
+
 
 <sect1> feature_future: Which features are planned for the future?  
 <label id="feature_future">
@@ -768,6 +777,10 @@ specifications for their very proprietary hardware/protocols:
 <item>Fritz!X
 <item>Eumex 404
 </itemize>
+
+As for the Eumex 404, there seems to be an unofficial binary driver for
+isdn4linux in Suse 6.3 floating around, which may or may not help you.
+Use it at your own risk.
 
 <sect1> hardware_activepassive: What is the difference between an active and a 
 passive ISDN card?  
@@ -2287,7 +2300,9 @@ use wild cards, something like:
 </code>
 Then <em>every</em> partner has the password ZZZ. If chap is required
 for authorization, then /etc/ppp/chap-secrets must be set up correctly.
-Important : the format is different from that of pap-secrets!
+Important: the format is different from that of pap-secrets!
+One important point is to use only the tabulator instead of space to
+separate username, computer, password.
 Make sure to consult the README's, or check out:
 <tt><url url="http://www.lrz-muenchen.de/&tilde;ui161ab/www/isdn/"></tt>
 Also have a look at the next question: <ref id="pap_passwd" name="pap_passwd">.
@@ -2350,7 +2365,9 @@ be side effects.)
 The name of the network interface should <em>always</em> begin with
 &dquot;ippp&dquot;, <em>not</em> with &dquot;syncppp&dquot; or
 &dquot;isdn&dquot;; otherwise the communication with ipppd will not work
-correctly.
+correctly. Please note that at least one of the interfaces has to be
+&dquot;ippp0&dquot;, otherwise ipppd will not start. Check your
+interfaces with the command <tt>ifconfig</tt>.
 
 <sect1> syncppp_config: How do I configure isdn4linux with syncPPP?  
 <label id="syncppp_config">
@@ -2363,7 +2380,9 @@ configure the link level device ippp0:
 /sbin/isdnctrl encap ippp0 syncppp
 </code>
 Please note that syncppp is very peculiar about the names of the device.
-Only devices starting with &dquot;ippp&dquot; will work.
+Only devices starting with &dquot;ippp&dquot; will work, at least one
+interface has to be named ippp0 (see question <ref id="syncppp_netinterface" name="syncppp_netinterface">
+for details).
 All ippp* devices in use must be configured separately. Each ippp* device
 should be assigned to its own IP address (routing!). Several ippp* devices can
 be assigned to a single MSN. Several callers can then simultaneously use
@@ -2581,7 +2600,8 @@ PPP options.
 <label id="syncppp_nopppsupport">
 <p>
 Check whether the device &dquot;ippp0&dquot; exists (i.e. with the program
-&dquot;ifconfig&dquot;).
+&dquot;ifconfig&dquot;). See question <ref id="syncppp_netinterface" name="syncppp_netinterface">
+for details on the naming conventions for net interfaces.
 The ipppd *needs* this device with exactly *that* name. If it doesn't exist
 one has to define it:
 <code>
