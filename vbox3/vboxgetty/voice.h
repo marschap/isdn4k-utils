@@ -1,5 +1,5 @@
 /*
-** $Id: voice.h,v 1.7 1998/08/31 15:30:47 michael Exp $
+** $Id: voice.h,v 1.8 1998/09/18 15:09:12 michael Exp $
 **
 ** Copyright 1996-1998 Michael 'Ghandi' Herold <michael@abadonna.mayn.de>
 */
@@ -22,7 +22,7 @@
 #   endif
 #endif
 
-#include "userrc.h"
+#include "vboxgetty.h"
 #include "vboxrc.h"
 
 /** Defines **************************************************************/

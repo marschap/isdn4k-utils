@@ -1,21 +1,7 @@
 /*
-** $Id: lock.c,v 1.2 1998/08/31 10:43:04 michael Exp $
+** $Id: lock.c,v 1.3 1998/09/18 15:08:59 michael Exp $
 **
 ** Copyright 1996-1998 Michael 'Ghandi' Herold <michael@abadonna.mayn.de>
-**
-** $Log: lock.c,v $
-** Revision 1.2  1998/08/31 10:43:04  michael
-** - Changed "char" to "unsigned char".
-**
-** Revision 1.1  1998/07/06 09:05:23  michael
-** - New control file code added. The controls are not longer only empty
-**   files - they can contain additional informations.
-** - Control "vboxctrl-answer" added.
-** - Control "vboxctrl-suspend" added.
-** - Locking mechanism added.
-** - Configuration parsing added.
-** - Some code cleanups.
-**
 */
 
 #ifdef HAVE_CONFIG_H

@@ -1,66 +1,7 @@
 /*
-** $Id: tclscript.c,v 1.9 1998/08/31 15:30:41 michael Exp $
+** $Id: tclscript.c,v 1.10 1998/09/18 15:09:04 michael Exp $
 **
 ** Copyright 1996-1998 Michael 'Ghandi' Herold <michael@abadonna.mayn.de>
-**
-** $Log: tclscript.c,v $
-** Revision 1.9  1998/08/31 15:30:41  michael
-** - Added touchtone support.
-** - Added new tcl command "vbox_breaklist" to clear/set the touchtone
-**   breaklist.
-** - Removed the audio fragment size setting again. I don't know why this
-**   crash my machine. The fragment size setting can be enabled in audio.h
-**   with a define.
-**
-** Revision 1.8  1998/08/31 10:43:12  michael
-** - Changed "char" to "unsigned char".
-**
-** Revision 1.7  1998/08/30 17:32:07  michael
-** - Total new audio setup - now it works correct and don't crash the
-**   machine.
-** - Example answercall.tcl added.
-** - Reduced in-/outgoing data logging. Now only around all 8000 bytes a
-**   line ist logged.
-** - Added control file check to play and record function.
-**
-** Revision 1.6  1998/08/29 15:35:09  michael
-** - Removed audio setup - it will crash my machine. Kernel mailing list says
-**   there are many bugs in the sound ioctl's :-( But audio will work correct
-**   without the settings.
-** - Added voice play function. Played messages are *not* recorded or piped to
-**   the audio device.
-**
-** Revision 1.5  1998/08/28 13:06:15  michael
-** - Removed audio full duplex mode. Sorry, my soundcard doesn't support
-**   this :-)
-** - Added Fritz's /dev/audio setup. Pipe to /dev/audio now works great
-**   (little echo but a clear sound :-)
-** - Added better control support. The control now has the ttyname appended
-**   (but there are some global controls without this) for controlling
-**   more than one vboxgetty for a user.
-** - Added support for "vboxcall" in the user spool directory. The file
-**   stores information about the current answered call (needed by vbox,
-**   vboxctrl or some other programs to create the right controls).
-** - Added support for Karsten's suspend mode (support for giving a line
-**   number is included also, but currently not used since hisax don't use
-**   it).
-**
-** Revision 1.4  1998/07/06 09:05:31  michael
-** - New control file code added. The controls are not longer only empty
-**   files - they can contain additional informations.
-** - Control "vboxctrl-answer" added.
-** - Control "vboxctrl-suspend" added.
-** - Locking mechanism added.
-** - Configuration parsing added.
-** - Some code cleanups.
-**
-** Revision 1.3  1998/06/18 12:38:17  michael
-** - 2nd part of the automake/autoconf implementation (now compiles again).
-**
-** Revision 1.2  1998/06/17 17:01:24  michael
-** - First part of the automake/autoconf implementation. Currently vbox will
-**   *not* compile!
-**
 */
 
 #ifdef HAVE_CONFIG_H

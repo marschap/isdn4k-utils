@@ -1,28 +1,7 @@
 /*
-** $Id: audio.c,v 1.3 1998/08/31 15:30:38 michael Exp $
+** $Id: audio.c,v 1.4 1998/09/18 15:08:56 michael Exp $
 **
 ** Copyright 1996-1998 Michael 'Ghandi' Herold <michael@abadonna.mayn.de>
-**
-** $Log: audio.c,v $
-** Revision 1.3  1998/08/31 15:30:38  michael
-** - Added touchtone support.
-** - Added new tcl command "vbox_breaklist" to clear/set the touchtone
-**   breaklist.
-** - Removed the audio fragment size setting again. I don't know why this
-**   crash my machine. The fragment size setting can be enabled in audio.h
-**   with a define.
-**
-** Revision 1.2  1998/08/31 10:43:00  michael
-** - Changed "char" to "unsigned char".
-**
-** Revision 1.1  1998/08/30 17:32:05  michael
-** - Total new audio setup - now it works correct and don't crash the
-**   machine.
-** - Example answercall.tcl added.
-** - Reduced in-/outgoing data logging. Now only around all 8000 bytes a
-**   line ist logged.
-** - Added control file check to play and record function.
-**
 */
 
 #include <stdio.h>

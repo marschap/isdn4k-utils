@@ -1,5 +1,5 @@
 /*
-** $Id: tclscript.h,v 1.5 1998/08/31 15:44:33 michael Exp $
+** $Id: tclscript.h,v 1.6 1998/09/18 15:09:05 michael Exp $
 **
 ** Copyright 1996-1998 Michael 'Ghandi' Herold <michael@abadonna.mayn.de>
 */
@@ -8,7 +8,8 @@
 #define _VBOX_TCLSCRIPT_H 1
 
 #include <tcl.h>
-#include "userrc.h"
+
+#include "vboxgetty.h"
 
 /** Structures ***********************************************************/
 

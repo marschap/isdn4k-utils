@@ -1,55 +1,7 @@
 /*
-** $Id: vboxgetty.c,v 1.8 1998/08/31 15:30:43 michael Exp $
+** $Id: vboxgetty.c,v 1.9 1998/09/18 15:09:06 michael Exp $
 **
 ** Copyright 1996-1998 Michael 'Ghandi' Herold <michael@abadonna.mayn.de>
-**
-** $Log: vboxgetty.c,v $
-** Revision 1.8  1998/08/31 15:30:43  michael
-** - Added touchtone support.
-** - Added new tcl command "vbox_breaklist" to clear/set the touchtone
-**   breaklist.
-** - Removed the audio fragment size setting again. I don't know why this
-**   crash my machine. The fragment size setting can be enabled in audio.h
-**   with a define.
-**
-** Revision 1.7  1998/08/31 10:43:16  michael
-** - Changed "char" to "unsigned char".
-**
-** Revision 1.6  1998/08/30 16:55:50  michael
-** - Added initgroups() to the permission switch function. Since Kernel 2.1.x
-**   (or 1.3.x?) setgid() don't reset the grouplist.
-**
-** Revision 1.5  1998/08/28 13:06:16  michael
-** - Removed audio full duplex mode. Sorry, my soundcard doesn't support
-**   this :-)
-** - Added Fritz's /dev/audio setup. Pipe to /dev/audio now works great
-**   (little echo but a clear sound :-)
-** - Added better control support. The control now has the ttyname appended
-**   (but there are some global controls without this) for controlling
-**   more than one vboxgetty for a user.
-** - Added support for "vboxcall" in the user spool directory. The file
-**   stores information about the current answered call (needed by vbox,
-**   vboxctrl or some other programs to create the right controls).
-** - Added support for Karsten's suspend mode (support for giving a line
-**   number is included also, but currently not used since hisax don't use
-**   it).
-**
-** Revision 1.4  1998/07/06 09:05:35  michael
-** - New control file code added. The controls are not longer only empty
-**   files - they can contain additional informations.
-** - Control "vboxctrl-answer" added.
-** - Control "vboxctrl-suspend" added.
-** - Locking mechanism added.
-** - Configuration parsing added.
-** - Some code cleanups.
-**
-** Revision 1.3  1998/06/18 12:38:18  michael
-** - 2nd part of the automake/autoconf implementation (now compiles again).
-**
-** Revision 1.2  1998/06/17 17:01:24  michael
-** - First part of the automake/autoconf implementation. Currently vbox will
-**   *not* compile!
-**
 */
 
 #ifdef HAVE_CONFIG_H
@@ -66,13 +18,15 @@
 #include <errno.h>
 #include <fnmatch.h>
 #include <pwd.h>
+#include <grp.h>
+#include <sys/stat.h>
+
 
 #include "log.h"
 #include "tcl.h"
 #include "modem.h"
 #include "rc.h"
 #include "vboxrc.h"
-#include "userrc.h"
 #include "voice.h"
 #include "stringutils.h"
 #include "tclscript.h"
@@ -120,6 +74,7 @@ struct vboxmodem vboxmodem;
 /** Prototypes ***********************************************************/
 
 static int	 vboxgettyrc_parse(unsigned char *);
+static int	 userrc_parse(struct vboxuser *, unsigned char *);
 static int	 process_incoming_call(void);
 static int 	 run_modem_init(void);
 static void	 pid_create(unsigned char *);
@@ -515,29 +470,17 @@ static int run_modem_init(void)
 
 static int vboxgettyrc_parse(unsigned char *tty)
 {
+	unsigned char tempsectname[VBOX_MAX_RCLINE_SIZE + 1];
+
 	printstring(temppathname, "%s/vboxgetty.conf", SYSCONFDIR);
 
-	if (rc_read(rc_getty_c, temppathname, NULL) < 0)
-	{
-		if (errno != ENOENT)
-		{
-			log_line(LOG_E, "Can't open \"%s\" (%s)!\n", temppathname, strerror(errno));
-		
-			return(-1);
-		}
-	}
+	printstring(tempsectname, "vboxgetty-tty");
 
-	printstring(temppathname, "%s/vboxgetty.conf.%s", SYSCONFDIR, tty);
+	if (rc_read(rc_getty_c, temppathname, tempsectname) == -1) return(-1);
 
-	if (rc_read(rc_getty_c, temppathname, NULL) < 0)
-	{
-		if (errno != ENOENT)
-		{
-			log_line(LOG_E, "Can't open \"%s\" (%s)!\n", temppathname, strerror(errno));
-		
-			return(-1);
-		}
-	}
+	printstring(tempsectname, "vboxgetty-%s", tty);
+
+	if (rc_read(rc_getty_c, temppathname, tempsectname) == -1) return(-1);
 
 	log_line(LOG_D, "Filling unset configuration variables with defaults...\n");
 
@@ -566,6 +509,139 @@ static int vboxgettyrc_parse(unsigned char *tty)
 
 	return(0);
 }
+
+/************************************************************************* 
+ **
+ *************************************************************************/
+
+static int userrc_parse(struct vboxuser *vboxuser, unsigned char *home)
+{
+	unsigned char   tempsectname[VBOX_MAX_RCLINE_SIZE + 1];
+	struct passwd	*pwdent;
+	struct group	*grpent;
+	unsigned char  *varusr;
+	unsigned char  *vargrp;
+	unsigned char  *varspc;
+	unsigned char  *varmsk;
+	int				 havegroup;
+
+	static struct vboxrc rc_user_c[] =
+	{
+		{ "user"		, NULL },
+		{ "group"	, NULL },
+		{ "umask"	, NULL },
+		{ "hdspace"	, NULL },
+		{ NULL		, NULL }
+	};
+
+	printstring(temppathname, "%s/vboxgetty.conf", SYSCONFDIR			 );
+	printstring(tempsectname, "vboxgetty-%s"		, vboxuser->localphone);
+
+	if (rc_read(rc_user_c, temppathname, tempsectname) < 0) return(-1);
+
+	varusr = rc_get_entry(rc_user_c, "user"	);
+	vargrp = rc_get_entry(rc_user_c, "group"	);
+	varspc = rc_get_entry(rc_user_c, "hdspace");
+	varmsk = rc_get_entry(rc_user_c, "umask"  );
+
+	if ((!varusr) || (!*varusr))
+	{
+		log_line(LOG_E, "You *must* specify a user name or a user id!\n");
+
+		rc_free(rc_user_c);
+
+		return(-1);
+	}
+
+	if (*varusr == '#')
+		pwdent = getpwuid((uid_t)xstrtol(&varusr[1], 0));
+	else
+		pwdent = getpwnam(varusr);
+
+	if (!pwdent)
+	{
+		log_line(LOG_E, "Unable to locate \"%s\" in systems passwd list.\n", varusr);
+
+		rc_free(rc_user_c);
+
+		return(-1);
+	}
+
+	vboxuser->uid = pwdent->pw_uid;
+	vboxuser->gid = pwdent->pw_gid;
+
+	if ((strlen(home) + strlen(pwdent->pw_name) + 2) < (PATH_MAX - 100))
+	{
+		xstrncpy(vboxuser->name, pwdent->pw_name, VBOXUSER_USERNAME);
+
+		printstring(vboxuser->home, "%s/%s", home, pwdent->pw_name);
+	}
+	else
+	{
+		log_line(LOG_E, "Oops! Spool directory name and user name too long!\n");
+
+		rc_free(rc_user_c);
+
+		return(-1);
+	}
+
+	if ((vargrp) && (*vargrp))
+	{
+		havegroup = 0;
+
+		setgrent();
+					
+		while ((grpent = getgrent()))
+		{
+			if (*vargrp == '#')
+			{
+				if (grpent->gr_gid == (gid_t)xstrtol(&vargrp[1], 0))
+				{
+					vboxuser->gid = grpent->gr_gid;
+					havegroup	  = 1;
+								
+					break;
+				}
+			}
+			else
+			{
+				if (strcmp(grpent->gr_name, vargrp) == 0)
+				{
+					vboxuser->gid = grpent->gr_gid;
+					havegroup	  = 1;
+								
+					break;
+				}
+			}
+		}
+					
+		endgrent();
+
+		if (!havegroup)
+		{
+			log_line(LOG_E, "Unable to locate \"%s\" in systems group list.\n", vargrp);
+
+			rc_free(rc_user_c);
+
+			return(-1);
+		}
+	}
+
+	if (varspc) vboxuser->space = xstrtol(varspc, 0);
+	if (varmsk) vboxuser->umask = xstrtoo(varmsk, 0);
+
+	log_line(LOG_D, "User \"%s\" (%d.%d) will be used...\n", vboxuser->name, vboxuser->uid, vboxuser->gid);
+
+	rc_free(rc_user_c);
+
+	return(0);
+}
+
+
+
+
+
+
 
 /*************************************************************************
  ** process_incoming_call():	Bearbeitet einen eingehenden Anruf.			**
@@ -679,7 +755,7 @@ static int process_incoming_call(void)
 			{
 				xstrncpy(vboxuser.incomingid, &line[15], VBOXUSER_CALLID);
 
-				if (userrc_parse(&vboxuser, rc_get_entry(rc_getty_c, "spooldir"), vboxuser.localphone) == 0)
+				if (userrc_parse(&vboxuser, rc_get_entry(rc_getty_c, "spooldir")) == 0)
 				{
 					if ((vboxuser.uid != 0) && (vboxuser.gid != 0))
 					{
@@ -798,7 +874,7 @@ static void pid_create(unsigned char *name)
 	
 	if ((pptr = fopen(name, "w")))
 	{
-		fprintf(pptr, "%ld\n", getpid());
+		fprintf(pptr, "%d\n", getpid());
 		fclose(pptr);
 	}
 }

@@ -1,5 +1,5 @@
 ##
-## $Id: Makefile.am,v 1.5 1998/08/31 15:30:37 michael Exp $
+## $Id: Makefile.am,v 1.6 1998/09/18 15:08:55 michael Exp $
 ##
 
 ## system admin executables to install ####################################
@@ -32,7 +32,6 @@ vboxgetty_SOURCES	= log.c log.h \
 			  modem.c modem.h \
 			  rc.c rc.h \
 			  vboxrc.c vboxrc.h \
-			  userrc.c userrc.h \
 			  stringutils.c stringutils.h \
 			  tclscript.c tclscript.h \
 			  vboxgetty.c vboxgetty.h \

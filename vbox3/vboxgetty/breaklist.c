@@ -1,12 +1,7 @@
 /*
-** $Id: breaklist.c,v 1.1 1998/08/31 15:33:35 michael Exp $
+** $Id: breaklist.c,v 1.2 1998/09/18 15:08:56 michael Exp $
 **
 ** Copyright 1996-1998 Michael 'Ghandi' Herold <michael@abadonna.mayn.de>
-**
-** $Log: breaklist.c,v $
-** Revision 1.1  1998/08/31 15:33:35  michael
-** - Added missing breaklist source.
-**
 */
 
 #ifdef HAVE_CONFIG_H
