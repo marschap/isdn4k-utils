@@ -1,4 +1,4 @@
-/* $Id: iprofd.c,v 1.2 1997/02/21 13:18:27 fritz Exp $
+/* $Id: iprofd.c,v 1.3 1998/04/24 09:19:23 paul Exp $
 
  * Daemon for saving ttyIx-profiles to a file.
  *
@@ -22,6 +22,11 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: iprofd.c,v $
+ * Revision 1.3  1998/04/24 09:19:23  paul
+ * Ignore empty file when starting up instead of generating error message
+ * about wrong signature, there is _no_ signature! iprofd writes new data
+ * anyway in that case.
+ *
  * Revision 1.2  1997/02/21 13:18:27  fritz
  * Reformatted, changed some error-messages.
  *
@@ -90,6 +95,10 @@ readModem(void)
 		perror(modemsettings);
 		exit(-1);
 	}
+    if (len == 0) {     /* empty file, ignore it */
+        close(fd);
+        return;
+    }
 	if (strcmp(buffer, signature)) {
 		fprintf(stderr, "Version of iprofd (%d) does NOT match\n", TTY_DV);
 		fprintf(stderr, "signature of saved data!\n");
