@@ -1,5 +1,5 @@
-V:1.31-Netherlands [19 April 2000] G.A.deVree@ITS.TUDelft.NL
-# $Id: rate-nl.dat,v 1.4 2000/04/27 17:02:35 paul Exp $
+V:1.50-Netherlands [13 Juni 2000] G.A.deVree@ITS.TUDelft.NL
+# $Id: rate-nl.dat,v 1.5 2000/06/15 13:51:54 paul Exp $
 
 # display format
 U:%.2f NLG
@@ -15,37 +15,40 @@ U:%.2f NLG
 #   2 : Servicenummer 1.50 per oproep	(vastgelegd in rate-nl.dat)
 #   3 : lokaal		(vastgelegd in zone-nl-kpn.gdbm)
 #   4 : interlokaal	(vastgelegd in zone-nl-kpn.gdbm)
-#   5 : mobiel		(vastgelegd in rate-nl.dat)
-#   9 : Overige binnenlandse nrs, geen tarieven (06 niet-mobiel, 090x, semafoon)
-#			(vastgelegd in rate-nl.dat)
-#
+#   5 : mobiel KPN	(vastgelegd in rate-nl.dat)
+#   6 : mobiel Libertel	(vastgelegd in rate-nl.dat)
+#   7 : mobiel Telfort	(vastgelegd in rate-nl.dat)
+#   8 : mobiel Dutchtone (vastgelegd in rate-nl.dat)
+#   9 : mobiel Ben	(vastgelegd in rate-nl.dat)
 #  >9 : Buitenland	(vastgelegd in rate-nl.dat)
 #
-# Slechts beperkt aantal Carrier-Select-Aanbieders (16xx) tarieven opgenomen
-# Alleen degene die in het overzicht op http://www.telefoon.nu staan
-# en ook alleen particuliere tarivieven.
+# Alleen particuliere Carrier-Select (16xx) tarieven opgenomen.
+# Hierbij is gebruik gemaakt van http://www.telefoon.nu
 #
-# Ook nauwelijks buitenlandse tarieven.
+# Nauwelijks buitenlandse tarieven.
 #
 # Voor de buitenlandse tarieven geldt dat ze zeer waarschijnlijk NIET JUIST 
-# zijn indien je naar een buitenlands MOBIEL toestel belt!!
+# zijn indien je naar een buitenlands MOBIEL toestel belt!
 # (Nederlands toestel in het buitenland gaat wel goed)
-# Ook naar Semafoon of andere niet-GSM 06-nr. wordt niet juist berekend, 
+#
+# Ook naar niet-GSM 06-nrs. wordt niet juist berekend, 
 # omdat dit gezien wordt als normaal interlokaal gesprek!
-#
-# Niet mobiel 06-5 nummers worden gerekend als Interlokaal/Binnenland.
 # Dit zijn bijvoorbeeld buzzers en semafoons.
-# De tarieven hiervoor kloppen dus niet
 #
-# Isdnrate heeft (op dit moment) geen omdersteuning voor VOORDEELNUMMERS
-# zoals KPN ze hanteert. Als je naar een voordeelnummer via KPN belt moet
-# je dus zelf het tarief -10% doen.
+# Isdnrate heeft (op dit moment) geen ondersteuning voor VOORDEELNUMMERS
+# zoals bijv. KPN ze hanteert. Als je naar een voordeelnummer via KPN belt 
+# moet je dus zelf het tarief -10% doen.
+#
+# KPN rekent verschillende tarieven voor bellen van vast naar mobiel nummer.
+# Het tarief hangt af van naar welke mobiele provider je belt. Aan het nummer
+# is niet altijd te zien naar welke provider je belt, dit i.v.m. 
+# nummerportabiliteit. 
+# Door bovenstaande reden is de berekening van gesprekskosten naar een mobiel
+# nummer niet altijd juist!
 #
 # Sorry voor al het bovenstaande...
 #
-# Tarieven veranderen geregeld, een nieuwere versie van rate-nl.dat 
-# (dit bestand) kan je downloaden vanuit de CVS-directorie van isdn4linux.
-# Elke wijziging in de telecomwereld wordt echter NIET automatisch doorgevoerd
+# Elke wijziging in de telecomwereld wordt NIET automatisch doorgevoerd
 # in dit bestand!
 # Zie ook de C:TarifChanged regel bij elke provider om te zien hoe recent 
 # de tarieven zijn.
@@ -56,7 +59,7 @@ U:%.2f NLG
 #
 # Verbeteringen, aanvullingen, opmerkingen sturen aan G.A.deVree@ITS.TUDelft.NL
 #
-#######################################################################
+#####################################################################
 S:Alarmnummer
 N:112
 
@@ -67,7 +70,23 @@ N:09008008
 S:Servicenummer
 N:08*
 N:09*
-##########################################################################
+
+# Lokale nummers, mits niet inclusief kengetal toetst, worden altijd door KPN
+# afgehandeld, ook als er een andere provider is voorgeselecteerd met 
+# Carrier PreSelect (CPS).
+#
+#???? Nog geen mogelijkheid voor in isdnlog/isdnrate!!!! 
+# Dus dan maar: alle nummers die beginnen met eigen kengetal via KPN (gaat
+# dus niet altijd goed)
+#
+X:[1-9]*=55
+#
+# Hetzelfde geldt voor 0800/0900 nrs, Semafoonoproepen, videotext, datadiensten 
+# en Alarmnummer 112:
+# Deze gaan altijd via KPN.
+#
+X:08*=55,090*=55, 0656*=55, 0657*=55, 0658*=55, 0659*=55, 066*=55, 067*=55, 112=55
+######################################################################
 P:00 Bel
 B:1600
 C:Name:Bel
@@ -105,11 +124,11 @@ T:1-5/20-08=0.10/0,0.04(60)/1 dal
 T:6-7/*=0.10/0,0.04(60)/1 weekend
 
 ###########################################
-P:03 Vocalis
+P:03,0 Vocalis
 B:1603
 C:Name:Vocalis
 C:Maintainer:
-C:TarifChanged:19-04-2000
+C:TarifChanged:17-05-2000
 
 Z:5 Mobiel
 A:+3161,+3162,+31651,+31652,+31653,+31654,+31655
@@ -117,26 +136,45 @@ T:*/*=0.10/0,0.45(60)/1
 
 Z:4 Binnenland
 A:+31
-T:1-5/08-20=0.10/0,0.089(60)/1 piek
-T:1-5/20-08=0.10/0,0.049(60)/1 dal
-T:6-7/*=0.10/0,0.049(60)/1 weekend
+T:1-5/08-20=0.10/0,0.0894(60)/1 piek
+T:1-5/20-08=0.10/0,0.0494(60)/1 dal
+T:6-7/*=0.10/0,0.0494(60)/1 weekend
+
+###########################################
+P:03,1 Vocalis CPS
+B:1603
+C:Name:Vocalis
+C:Maintainer:
+C:Homepage:http://www.vocalis.nl
+C:TarifChanged:17-05-2000
+C:Alleen via Carrier PRE-SELECT
+
+Z:5 Mobiel
+A:+3161,+3162,+31651,+31652,+31653,+31654,+31655
+T:*/*=0.10/0,0.43(60)/1
+
+Z:4 Binnenland
+A:+31
+T:1-5/08-20=0.10/0,0.0813(60)/1 piek
+T:1-5/20-08=0.10/0,0.0449(60)/1 dal
+T:6-7/*=0.10/0,0.0449(60)/1 weekend
 
 ###########################################
 P:06 Talkline
 B:1606
 C:Name:Talkline
 C:Maintainer:
-C:TarifChanged:10-04-2000
+C:TarifChanged:05-05-2000
 
 Z:5 Mobiel
 A:+3161,+3162,+31651,+31652,+31653,+31654,+31655
-T:1-5/08-20=0.10/0,0.729(60)/1 piek
-T:1-5/20-08=0.10/0,0.505(60)/1 dal
-T:6-7/*=0.10/0,0.505(60)/1 weekend
+T:1-5/08-20=0.10/0,0.576(60)/1 piek
+T:1-5/20-08=0.10/0,0.494(60)/1 dal
+T:6-7/*=0.10/0,0.495(60)/1 weekend
 
 Z:4 Binnenland
 A:+31
-T:1-5/08-20=0.10/0,0.106(60)/1 piek
+T:1-5/08-20=0.10/0,0.088(60)/1 piek
 T:1-5/20-08=0.10/0,0.059(60)/1 dal
 T:6-7/*=0.10/0,0.059(60)/1 weekend
 
@@ -166,17 +204,27 @@ P:16 Telfort
 B:1616
 C:Name:Telfort
 C:Maintainer:
-C:TarifChanged:10-04-2000
+C:TarifChanged:13-06-2000
 C:Homepage:http://www.telfort.nl
-C:Afwijkende piektijden
+C:Afwijkende piek- en daltijden
 
-Z:5 Mobiel
+Z:7 Mobiel Telfort
+A:+31616,+31626
+T:*/*=0.10/0,0.25(60)/1
+
+Z:5 Mobiel niet Telfort
 A:+3161,+3162,+31651,+31652,+31653,+31654,+31655
 T:*/*=0.10/0,0.50(60)/1
 
-Z:4 Binnenland
+Z:3 Lokaal
+T:1-5/08-19=0.10/0,0.056(60)/1 piek
+T:1-5/19-24=0.10/0,0.03(60)/1 dal
+T:1-5/00-08=0.10/0,0.02(60)/1 speciaal
+T:6-7/*=0.10/0,0.02(60)/1 speciaal
+
+Z:4 Interlokaal
 A:+31
-T:1-5/08-19=0.10/0,0.11(60)/1 piek
+T:1-5/08-19=0.10/0,0.10(60)/1 piek
 T:1-5/19-08=0.10/0,0.06(60)/1 dal
 T:6-7/*=0.10/0,0.06(60)/1 weekend
 
@@ -260,7 +308,7 @@ P:23,1 TransNet
 B:1623
 C:Name:Viatel
 C:Maintainer:
-C:TarifChanged:10-04-2000
+C:TarifChanged:15-05-2000
 
 Z:5 Mobiel
 A:+3161,+3162,+31651,+31652,+31653,+31654,+31655
@@ -268,9 +316,9 @@ T:*/*=0.10/0,0.47(60)/1
 
 Z:4 Binnenland
 A:+31
-T:1-5/08-18=0.10/0,0.099(60)/1 piek
-T:1-5/18-08=0.10/0,0.059(60)/1 dal
-T:6-7/*=0.10/0,0.059(60)/1 weekend
+T:1-5/08-18=0.10/0,0.08(60)/1 piek
+T:1-5/18-08=0.10/0,0.04(60)/1 dal
+T:6-7/*=0.10/0,0.04(60)/1 weekend
 
 ###########################################
 P:28 Dutchtone
@@ -294,7 +342,7 @@ P:31 Tritone
 B:1631
 C:Name:Tritone
 C:Maintainer:
-C:TarifChanged:10-04-2000
+C:TarifChanged:05-05-2000
 
 Z:5 Mobiel
 A:+3161,+3162,+31651,+31652,+31653,+31654,+31655
@@ -302,22 +350,37 @@ T:*/*=0.10/0,0.494(60)/1
 
 Z:4 Binnenland
 A:+31
-T:1-5/08-20=0.10/0,0.09(60)/1 piek
-T:1-5/20-08=0.10/0,0.06(60)/1 dal
+T:1-5/08-20=0.10/0,0.088(60)/1 piek
+T:1-5/20-08=0.10/0,0.053(60)/1 dal
 T:6-7/*=0.10/0,0.06(60)/1 weekend
 
 ###########################################
-P:33 Primus
+P:33,0 Primus
 B:1633
 C:Name:Primus
 C:Maintainer:
-C:TarifChanged:10-04-2000
+C:TarifChanged:28-04-2000
 
 Z:5 Mobiel
 A:+3161,+3162,+31651,+31652,+31653,+31654,+31655
-T:1-5/08-20=0.10/0,0.50(60)/1 piek
-T:1-5/20-08=0.10/0,0.50(60)/1 dal
-T:6-7/*=0.10/0,0.40(60)/1 weekend
+T:*/*=0.10/0,0.482(60)/1 weekend
+
+Z:4 Binnenland
+A:+31
+T:1-5/08-20=0.10/0,0.094(60)/1 piek
+T:1-5/20-08=0.10/0,0.047(60)/1 dal
+T:6-7/*=0.10/0,0.047(60)/1 weekend
+
+###########################################
+P:33,1 Primus CPS
+B:1633
+C:Name:Primus
+C:Maintainer:
+C:TarifChanged:09-05-2000
+
+Z:5 Mobiel
+A:+3161,+3162,+31651,+31652,+31653,+31654,+31655
+T:*/*=0.10/0,0.42(60)/1 weekend
 
 Z:4 Binnenland
 A:+31
@@ -384,38 +447,38 @@ P:46 Ocean
 B:1646
 C:Name:Ocean
 C:Maintainer:
-C:TarifChanged:10-04-2000
+C:TarifChanged:28-04-2000
 
 Z:5 Mobiel
 A:+3161,+3162,+31651,+31652,+31653,+31654,+31655
-T:1-5/08-20=0.10/0,0.588(60)/1 piek
-T:1-5/20-08=0.10/0,0.501(60)/1 dal
-T:6-7/*=0.10/0,0.501(60)/1 weekend
+T:1-5/08-20=0.10/0,0.68(60)/1 piek
+T:1-5/20-08=0.10/0,0.58(60)/1 dal
+T:6-7/*=0.10/0,0.58(60)/1 weekend
 
 Z:4 Binnenland
 A:+31
-T:1-5/08-20=0.10/0,0.11(60)/1 piek
-T:1-5/20-08=0.10/0,0.063(60)/1 dal
-T:6-7/*=0.10/0,0.063(60)/1 weekend
+T:1-5/08-20=0.10/0,0.095(60)/1 piek
+T:1-5/20-08=0.10/0,0.06(60)/1 dal
+T:6-7/*=0.10/0,0.06(60)/1 weekend
 
 ###########################################
 P:50 Scarlet
 B:1650
 C:Name:Scarlet Telecom
 C:Maintainer:
-C:TarifChanged:10-04-2000
+C:TarifChanged:28-04-2000
 
 Z:5 Mobiel
 A:+3161,+3162,+31651,+31652,+31653,+31654,+31655
-T:1-5/08-20=0.10/0,0.588(60)/1 piek
-T:1-5/20-08=0.10/0,0.50(60)/1 dal
-T:6-7/*=0.10/0,0.50(60)/1 weekend
+T:1-5/08-20=0.10/0,0.68(60)/1 piek
+T:1-5/20-08=0.10/0,0.49(60)/1 dal
+T:6-7/*=0.10/0,0.49(60)/1 weekend
 
 Z:4 Binnenland
 A:+31
-T:1-5/08-20=0.10/0,0.11(60)/1 piek
-T:1-5/20-08=0.10/0,0.06(60)/1 dal
-T:6-7/*=0.10/0,0.06(60)/1 weekend
+T:1-5/08-20=0.10/0,0.094(60)/1 piek
+T:1-5/20-08=0.10/0,0.05(60)/1 dal
+T:6-7/*=0.10/0,0.05(60)/1 weekend
 
 ###########################################
 P:54 Axxon
@@ -458,11 +521,55 @@ Z:2 Servicenummers 1.50 per oproep
 A:09008008
 T:*/*=1.50/0,0/1
 
-Z:5 Mobiel
-A:+3161,+3162,+31651,+31652,+31653,+31654,+31655
-T:1-5/08-20=0.10/0,0.75(60)/1 piek
-T:1-5/20-08=0.10/0,0.50(60)/1 dal
-T:6-7/*=0.10/0,0.50(60)/1 weekend
+Z:5 Mobiel KPN
+A:+31610,+31622,+31623,+31627,+31651,+31652,+31653
+T:[-14.06.2000]1-5/08-20=0.10/0,0.75(60)/1 piek
+T:[-14.06.2000]1-5/20-08=0.10/0,0.50(60)/1 dal
+T:[-14.06.2000]6-7/*=0.10/0,0.50(60)/1 weekend
+
+T:[15.06.2000-]1-5/08-20=0.10/0,0.49(60)/1 piek
+T:[15.06.2000-]1-5/20-08=0.10/0,0.49(60)/1 dal
+T:[15.06.2000-]6-7/*=0.10/0,0.25(60)/1 weekend
+
+Z:6 Mobiel Libertel
+A:+31615,+31621,+31625,+31629,+31650,+31654,+31655
+T:[-14.06.2000]1-5/08-20=0.10/0,0.75(60)/1 piek
+T:[-14.06.2000]1-5/20-08=0.10/0,0.50(60)/1 dal
+T:[-14.06.2000]6-7/*=0.10/0,0.50(60)/1 weekend
+
+T:[15.06.2000-]1-5/08-20=0.10/0,0.6717(60)/1 piek
+T:[15.06.2000-]1-5/20-08=0.10/0,0.4532(60)/1 dal
+T:[15.06.2000-]6-7/*=0.10/0,0.4532(60)/1 weekend
+
+Z:7 Mobiel Telfort
+A:+31616,+31626
+T:[-14.06.2000]1-5/08-20=0.10/0,0.75(60)/1 piek
+T:[-14.06.2000]1-5/20-08=0.10/0,0.50(60)/1 dal
+T:[-14.06.2000]6-7/*=0.10/0,0.50(60)/1 weekend
+
+T:[15.06.2000-]1-5/08-20=0.10/0,0.6395(60)/1 piek
+T:[15.06.2000-]1-5/20-08=0.10/0,0.4395(60)/1 dal
+T:[15.06.2000-]6-7/*=0.10/0,0.4395(60)/1 weekend
+
+Z:8 Mobiel Dutchtone
+A:+31628
+T:[-14.06.2000]1-5/08-20=0.10/0,0.75(60)/1 piek
+T:[-14.06.2000]1-5/20-08=0.10/0,0.50(60)/1 dal
+T:[-14.06.2000]6-7/*=0.10/0,0.50(60)/1 weekend
+
+T:[15.06.2000-]1-5/08-20=0.10/0,0.6621(60)/1 piek
+T:[15.06.2000-]1-5/20-08=0.10/0,0.4587(60)/1 dal
+T:[15.06.2000-]6-7/*=0.10/0,0.4587(60)/1 weekend
+
+Z:9 Mobiel Ben
+A:+31624
+T:[-14.06.2000]1-5/08-20=0.10/0,0.75(60)/1 piek
+T:[-14.06.2000]1-5/20-08=0.10/0,0.50(60)/1 dal
+T:[-14.06.2000]6-7/*=0.10/0,0.50(60)/1 weekend
+
+T:[15.06.2000-]1-5/08-20=0.10/0,0.6677(60)/1 piek
+T:[15.06.2000-]1-5/20-08=0.10/0,0.4587(60)/1 dal
+T:[15.06.2000-]6-7/*=0.10/0,0.4587(60)/1 weekend
 
 Z:3 Lokaal
 T:1-5/08-20=0.10/0,0.056(60)/1 piek
@@ -522,18 +629,61 @@ Z:2 Servicenummers 1.50 per oproep
 A:09008008
 T:*/*=1.50/0,0/1
 
-Z:5 Mobiel
-A:+3161,+3162,+31651,+31652,+31653,+31654,+31655
-T:1-5/08-20=0.10/0,0.75(60)/1 piek
-T:1-5/20-08=0.10/0,0.50(60)/1 dal
-T:6-7/*=0.10/0,0.50(60)/1 weekend
+Z:5 Mobiel KPN
+A:+31610,+31622,+31623,+31627,+31651,+31652,+31653
+T:[-14.06.2000]1-5/08-20=0.10/0,0.75(60)/1 piek
+T:[-14.06.2000]1-5/20-08=0.10/0,0.50(60)/1 dal
+T:[-14.06.2000]6-7/*=0.10/0,0.50(60)/1 weekend
+
+T:[15.06.2000-]1-5/08-20=0.10/0,0.49(60)/1 piek
+T:[15.06.2000-]1-5/20-08=0.10/0,0.49(60)/1 dal
+T:[15.06.2000-]6-7/*=0.10/0,0.25(60)/1 weekend
+
+Z:6 Mobiel Libertel
+A:+31615,+31621,+31625,+31629,+31650,+31654,+31655
+T:[-14.06.2000]1-5/08-20=0.10/0,0.75(60)/1 piek
+T:[-14.06.2000]1-5/20-08=0.10/0,0.50(60)/1 dal
+T:[-14.06.2000]6-7/*=0.10/0,0.50(60)/1 weekend
+
+T:[15.06.2000-]1-5/08-20=0.10/0,0.6717(60)/1 piek
+T:[15.06.2000-]1-5/20-08=0.10/0,0.4532(60)/1 dal
+T:[15.06.2000-]6-7/*=0.10/0,0.4532(60)/1 weekend
+
+Z:7 Mobiel Telfort
+A:+31616,+31626
+T:[-14.06.2000]1-5/08-20=0.10/0,0.75(60)/1 piek
+T:[-14.06.2000]1-5/20-08=0.10/0,0.50(60)/1 dal
+T:[-14.06.2000]6-7/*=0.10/0,0.50(60)/1 weekend
+
+T:[15.06.2000-]1-5/08-20=0.10/0,0.6395(60)/1 piek
+T:[15.06.2000-]1-5/20-08=0.10/0,0.4395(60)/1 dal
+T:[15.06.2000-]6-7/*=0.10/0,0.4395(60)/1 weekend
+
+Z:8 Mobiel Dutchtone
+A:+31628
+T:[-14.06.2000]1-5/08-20=0.10/0,0.75(60)/1 piek
+T:[-14.06.2000]1-5/20-08=0.10/0,0.50(60)/1 dal
+T:[-14.06.2000]6-7/*=0.10/0,0.50(60)/1 weekend
+
+T:[15.06.2000-]1-5/08-20=0.10/0,0.6621(60)/1 piek
+T:[15.06.2000-]1-5/20-08=0.10/0,0.4587(60)/1 dal
+T:[15.06.2000-]6-7/*=0.10/0,0.4587(60)/1 weekend
+
+Z:9 Mobiel Ben
+A:+31624
+T:[-14.06.2000]1-5/08-20=0.10/0,0.75(60)/1 piek
+T:[-14.06.2000]1-5/20-08=0.10/0,0.50(60)/1 dal
+T:[-14.06.2000]6-7/*=0.10/0,0.50(60)/1 weekend
+
+T:[15.06.2000-]1-5/08-20=0.10/0,0.6677(60)/1 piek
+T:[15.06.2000-]1-5/20-08=0.10/0,0.4587(60)/1 dal
+T:[15.06.2000-]6-7/*=0.10/0,0.4587(60)/1 weekend
 
 Z:3 Lokaal
 T:1-5/08-20=0.10/0,0.056(60)/1 piek
 T:1-5/20-24=0.10/0,0.025(60)/1 dal
 T:1-5/00-08=0.10/0,0.02(60)/1 nacht
-T:6/*=0.10/0,0.02(60)/1 zaterdag
-T:7/*=0.10/0,0.02(60)/1 zondag
+T:6-7/*=0.10/0,0.02(60)/1 weekend
 
 Z:4 Interlokaal
 A:+31
@@ -565,11 +715,11 @@ A:+49
 T:*/*=0.10/0,0.23(60)/1
 
 ###########################################
-P:56 NetSource
+P:56,0 NetSource
 B:1656
 C:Name:NetSource Beltegoed
 C:Maintainer:
-C:TarifChanged:10-04-2000
+C:TarifChanged:05-05-2000
 C:Betalen vooraf
 
 Z:5 Mobiel
@@ -580,7 +730,28 @@ T:6-7/*=0.10/0,0.47(60)/1 weekend
 
 Z:4 Binnenland
 A:+31
-T:1-5/08-20=0.10/0,0.094(60)/1 piek
+T:1-5/08-20=0.10/0,0.089(60)/1 piek
+T:1-5/20-08=0.10/0,0.049(60)/1 dal
+T:6-7/*=0.10/0,0.049(60)/1 weekend
+
+###########################################
+P:56,1 NetSource CPS
+B:1656
+C:Name:NetSource Beltegoed
+C:Maintainer:
+C:TarifChanged:09-05-2000
+C:Betalen vooraf
+C:Alleen bij Carrier-Pre-Select (CPS)
+
+Z:5 Mobiel
+A:+3161,+3162,+31651,+31652,+31653,+31654,+31655
+T:1-5/08-20=0.10/0,0.68(60)/1 piek
+T:1-5/20-08=0.10/0,0.47(60)/1 dal
+T:6-7/*=0.10/0,0.47(60)/1 weekend
+
+Z:4 Binnenland
+A:+31
+T:1-5/08-20=0.10/0,0.089(60)/1 piek
 T:1-5/20-08=0.10/0,0.049(60)/1 dal
 T:6-7/*=0.10/0,0.049(60)/1 weekend
 
@@ -623,7 +794,7 @@ A:+33
 T:*/*=0.10/0,0.15(60)/1
 
 ###########################################
-P:58,1 One.Tel Spaar
+P:58,1 One.Tel Sp
 B:1658
 D:kpn
 C:Name:One.Tel B.V.
@@ -631,10 +802,6 @@ C:Maintainer:Gerralt de Vree <G.A.deVree@ITS.TUDelft.NL>
 C:TarifChanged:13-04-2000
 C:Homepage:http://www.onetel.nl
 C:Alleen als je One.Tel gekozen hebt via Carrier PreSelect
-
-Z:0 Gratis
-A:112,0800
-T:*/*=0/1
 
 Z:5 Mobiel
 A:+3161,+3162,+31651,+31652,+31653,+31654,+31655
@@ -677,16 +844,16 @@ P:61 I.A.S.
 B:1664
 C:Name:I.A.S. Inc.
 C:Maintainer:
-C:TarifChanged:10-04-2000
+C:TarifChanged:28-04-2000
 C:Betalen per 6 sec. min. 30 sec
 
 Z:5 Mobiel
 A:+3161,+3162,+31651,+31652,+31653,+31654,+31655
-T:*/*=0.10/0,0.494(60)/30/6
+T:*/*=0.10/0,0.646(60)/30/6
 
 Z:4 Binnenland
 A:+31
-T:1-5/08-20=0.10/0,0.106(60)/30/6 piek
+T:1-5/08-20=0.10/0,0.10(60)/30/6 piek
 T:1-5/20-08=0.10/0,0.059(60)/30/6 dal
 T:6-7/*=0.10/0,0.059(60)/30/6 weekend
 
