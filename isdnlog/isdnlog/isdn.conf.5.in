@@ -1,0 +1,270 @@
+.\" $Id: isdn.conf.5.in,v 1.1 1999/03/10 08:33:14 paul Exp $
+.\" CHECKIN $Date: 1999/03/10 08:33:14 $
+.TH isdn.conf 5 "@MANDATE_ISDN_CONF@" "ISDN 4 Linux @I4LVERSION@" "Linux System Administration"
+.PD 0
+
+.SH NAME
+/etc/isdn/isdn.conf \- config file for isdnlog
+@I4LCONFDIR@/@CONFFILE@ \- config file for isdnlog
+
+.SH FORMAT
+The config file has the format described in isdnformat(5). I recommend
+starting isdnlog with -f@I4LCONFDIR@/@CONFFILE@, and storing all options in
+this file in section [options]. Read the man page for more details.
+
+Isdnlog will always read the @I4LCONFDIR@/@CONFFILE@ config file for the
+sections [global] [variables] and [isdnlog]; it will ignore other sections. 
+To make isdnlog process the [options] section you must pass it with the -f
+option!
+
+.SH GLOBAL SECTION
+This section holds common information for all isdn programs. All settings are
+for EuroISDN (DSS1).
+
+.TP
+.B AREACODE
+Telephone area code of your city. With 1TR6 ISDN protocol you must
+specify your whole telephone number (without MSN). Required.
+
+.TP
+.B AREAPREFIX
+Prefix for area code. Default is "0". Your area code may start with this
+prefix (e.g. "0721" and "721" is the same area code). Optional.
+
+.TP 
+.B COUNTRYCODE
+Telephone country code (e.g. 49 for Germany). Required.
+
+.TP 
+.B COUNTRYPREFIX
+Prefix for country code. Default is "+". Your country code may start with
+this prefix (e.g. "+49" and "49" is the same country code). Optional.
+
+.TP
+.B CODELIB
+Set which library is used to map city code to city name. Avon is the
+old and obsolete library, arealib is the new and improved library.
+Default is arealib. Optional.
+
+.TP
+.B AREALIB
+Full path to the arealib data file. Default is /etc/isdn/areacodes.
+
+.TP
+.B AVON
+Full path to the avon data file. Default is to use arealib, so you must
+set this, if you want to use avon (e.g. /etc/isdn/avon).
+
+.SH VARIABLES
+The ISDN tools allow to set variables and use them later. All variables
+must be uppercase. Example : "MYPATH = /home/foo".
+
+.SH ISDNLOG
+Settings for isdnlog.
+
+.TP
+.B LOGFILE
+Isdnlog will store a list of all calls in this file, and isdnrep will
+read this file to calculate isdn telephone costs. Default value is
+"/var/lib/isdn/calls". Optional.
+
+.TP
+.B RELOADCMD
+Isdnlog can use this command to reactivate the isdn subsystem.
+Default value is "reload". Optional.
+
+.TP
+.B STOPCMD
+Isdnlog can use this command to stop the isdn subsystem.
+Default value is "stop". Optional.
+
+.TP
+.B REBOOTCMD
+Isdnlog can use this command to reboot linux (when all else fails).
+Default value is "/sbin/reboot". Optional.
+
+.TP
+.B CURRENCY
+Cost per charge unit. Default is "0.12,DM" (in Germany every telephone
+unit costs 12 Pfennig, that's 0.12 DM). Warning: you have to set this
+once here, and once with isdnrep. Optional.
+
+.TP
+.B CHARGEMAX
+Isdnlog can manage your isdn costs and prevent you from spending more
+than a maximum
+per day. Unit is national currency. Example: In Germany you want to set
+CURRENCY to "0.12,DM" and CHARGEMAX to "15.00", so you will spend max.
+15 DM per day.  Required.
+
+.TP
+.B CONNECTMAX
+Isdnlog can also limit your online time in seconds per month.
+Example: "CONNECTMAX=18000,0" will allow you to be 5 hours online per
+month. Optional.
+
+.TP
+.B BYTEMAX
+Isdnlog can also limit your transfer in bytes.
+Example: "BYTEMAX=67108864" will limit your transfer to 64 MB per
+month. Optional.
+
+.TP
+.B VBOXPATH
+Isdnrep can include information from the voice box system vbox in its
+report. To do this, you must specify the vbox spooldir (e.g.
+VBOXPATH=/var/spool/vbox/foo/incoming). Optional.
+
+.TP
+.B VBOXCMD1 VBOXCMD2
+Isdnrep can convert vbox messages. To do this, you should supply a
+command. VBOXCMD1 is used with old vbox files (<2.0), VBOXCMD2 is used
+with new vbox files (>=2.0). Example: "VBOXCMD1=/usr/bin/zyxeltowav".
+Optional.
+
+.TP
+.B MGETTYPATH
+Isdnrep can include information from the mgetty fax system in its
+report. To do this, you must specify the mgetty spooldir (e.g.
+MGETTYPATH=/var/spool/fax/incoming). Optional.
+
+.TP
+.B MGETTYCMD
+Isdnrep can convert mgetty fax files. To do this, you should supply a command.
+Example: "MGETTYCMD=/usr/bin/g3tojpg". Optional.
+
+.TP
+.B START = { ... }
+This option is ignored without -S flag or start=yes. Here you can
+instruct isdnlog to act on any event by starting a command. However,
+isdnlog can not react on outgoing connections from other isdn devices
+(e.g. an isdn telephone). Any start commands listed here are used for all
+connections, including connections from unknown telephone numbers.
+For more information, please read callerid.conf(5). 
+
+.SH FORMAT OPTIONS
+You can specify different format strings for the way isdnlog reports incoming
+messages, outgoing messages, isdnrep, and the WWW mode of isdnrep.
+
+.TP
+.B REPFMT
+Format for isdnrep (normal mode). Default is 
+"  %X %D %15.15H %T %-15.15F %7u %U %I %O". 
+
+.TP
+.B REPFMTWWW
+Format for isdnrep (WWW mode). Default is 
+"%X %D %17.17H %T %-17.17F -20.20l SI: %S %9u %U %I %O". 
+
+.TP
+.B REPFMTxxx
+Additional format strings for isdnrep.
+
+.TP
+.B ILABEL
+Format for isdnlog (incoming connections). 
+Isdnlog will add the additional information such as RING, TIME, CONNECT ...
+
+.TP
+.B OLABEL
+Format for isdnlog (outgoing connections).
+Isdnlog will add the additional information such as RING, TIME, CONNECT ...
+
+.TP
+.B FORMAT MACROS
+You can build the format string for any combination of normal chars,
+digits and these special cookies:
+
+.TP
+%t
+tei
+
+.TP
+%C
+Call reference
+
+.TP
+%Nx
+Remote site's telephone number: %N0 exact number, %N1 isdnlog adds country
+and area prefix to number, %N2 isdnlog beautifies number and adds
+location, %N3 area code, %N4 number without area code, %N5 alias name,
+%N6 location, %N7 country code 
+
+.TP
+%nx
+Local site's telephone number (encoding like %N).
+
+.TP
+%cx
+Telephone number as given by CLIP (encoding like %N).
+
+.TP
+%A
+the text " alias <MSN>" if CLIP message, otherwise empty.
+
+.TP
+%I
+Magic tab : empty if first active B-Channel, two blanks if second
+B-Channel, "* " if new connection (B-Channel not yet assigned).
+
+.TP
+%a
+Day of week (e.g. "Fri")
+
+.TP
+%b
+Month (e.g. "Aug")
+
+.TP
+%e
+Day of month (e.g. " 8")
+
+.TP
+%T
+time of day (e.g. "13:17:11")
+
+.TP
+%B
+B-channel (0 or 1)
+
+.TP
+%k
+Number of isdn card.
+
+.TP 
+%( %/ %)
+if the number of the remote side is known: this char; a blank otherwise.
+
+.SH EXAMPLE
+.nf
+[GLOBAL]
+COUNTRYPREFIX=+
+AREAPREFIX=0
+
+COUNTRYCODE=49  # Germany
+AREACODE=721    # Karlsruhe
+
+CODELIB=areacode
+AREALIB=/etc/isdn/areacodes # This is where to find the arealib
+
+[VARIABLES]
+
+[ISDNLOG]
+CHARGEMAX = 0
+
+ILABEL = %b %e %T %ICall to tei %t from %N2 on %n2
+OLABEL = %b %e %T %Itei %t calling %N2 with %n2
+.fi
+
+.SH FILES
+.TP
+.B @I4LCONFDIR@/@CONFFILE@
+This file.                                                       
+
+.SH SEE ALSO
+.B isdnlog(1) isdnformat(5) callerid.conf(5)
+
+.SH AUTHOR
+This manual page was written by Andreas Jellinghaus <aj@debian.org>,
+for Debian GNU/Linux and isdn4linux.
+Now maintained by Paul Slootman <paul@isdn4linux.de>.
