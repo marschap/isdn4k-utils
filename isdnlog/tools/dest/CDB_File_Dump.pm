@@ -59,6 +59,8 @@ use vars qw(@ISA);
 require Tie::Hash;
 
 BEGIN {
+    # perl 5.8.0 could use UTF-8 as default encoding, which has to be prevented.
+    eval q( use open ':encoding(iso-8859-1)' );
     @ISA=qw(Tie::StdHash);
 }
 

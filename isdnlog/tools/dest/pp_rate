@@ -1,7 +1,7 @@
 #! /usr/bin/perl
 
 # This version of pp_rate originates from rates4linux:
-# $Id: pp_rate,v 1.8 2003/10/29 17:41:36 tobiasb Exp $
+# $Id: pp_rate,v 1.9 2003/11/22 17:25:50 tobiasb Exp $
 # The rates4linux homepage: http://www.sourceforge.net/projects/rates4linux/
 # It bases on Rev. 1.5 of isdn4k-utils/isdnlog/tools/dest/pp_rate
 # in the CVS at http://www.isdn4linux.de.
@@ -11,6 +11,8 @@ use wld;
 use strict;
 use IO::File;
 $|=1;
+# perl 5.8.0 could use UTF-8 as default encoding, which has to be prevented.
+eval q( use open ':encoding(iso-8859-1)' );
 use vars qw( %names $COUNTRY %myalias $co_dat );
 use vars qw( $rtags_filename @rtags );
 $COUNTRY = '../country';
