@@ -1,4 +1,4 @@
-/* $Id: takt_de.c,v 1.4 1998/11/24 20:52:16 akool Exp $
+/* $Id: takt_de.c,v 1.5 1998/12/16 20:57:24 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -328,16 +328,50 @@ float taktlaenge(int chan, char *description)
 {
   register int        c, cwe, tz, z;
   auto     struct tm *tm;
-  auto	   char	      why[BUFSIZ];
+  auto	   char	      why[BUFSIZ], zt[BUFSIZ];
   auto	   int	      provider = call[chan].provider;
   auto	   time_t     connect = call[chan].connect;
   auto	   int	      zone = -1, zone2 = -1;
   auto	   float      takt;
 
 
-  if (description) *description = 0;
+  if (description)
+    *description = 0;
 
   if (!call[chan].dialin && *call[chan].num[CALLED]) {
+
+    tm = localtime(&connect);
+
+    if ((provider == 33) && (tm->tm_year + 1900 > 1998)) { /* neue 1999 Tarife Dt. Telekom */
+      cwe = CityWeekend;
+      tz = tarifzeit(tm, why, cwe);
+
+      if (tz == WT) {
+        z = zeit[tm->tm_hour];
+
+        if (z == 5) {
+	  strcpy(zt, "Nacht");
+          takt = 120;
+        }
+        else if ((z == 0) || (z == 3) || (z == 4)) {
+          strcpy(zt, "Freizeit");
+          takt = 60;
+        }
+        else if ((z == 1) || (z == 2)) {
+          strcpy(zt, "Tag");
+          takt = 30;
+        } /* else */
+      }
+      else {
+        strcpy(zt, "");
+        takt = 60;
+      } /* else */
+
+      if (description)
+        sprintf(description, "%s, %s", zt, why);
+
+      return(takt);
+    } /* if */
 
     if ((provider == 11) || /* o.tel.o */
         (provider == 13) || /* Tele2 */
@@ -369,8 +403,6 @@ float taktlaenge(int chan, char *description)
 
     if (provider == 9)	    /* ECONOphone - mindestens jedoch 30 Sekunden! */
       return(6);
-
-  tm = localtime(&connect);
 
     if (call[chan].sondernummer[CALLED] != -1) {
       switch (SN[call[chan].sondernummer[CALLED]].tarif) {
@@ -430,7 +462,9 @@ float taktlaenge(int chan, char *description)
 
         takt = gebuehr[(provider == 33) ? DTAG : MOBILCOM][z][tz][zone];
 
-	if (description) sprintf(description, "%s, %s, %s", zeiten[zeit[tm->tm_hour]], why, zonen[zone]);
+	if (description)
+	  sprintf(description, "%s, %s, %s", zeiten[zeit[tm->tm_hour]], why, zonen[zone]);
+
         return(takt);
       }
       else
@@ -446,14 +480,26 @@ float taktlaenge(int chan, char *description)
 
 float preis(int chan)
 {
-  auto int        duration;
-  auto float 	  pay, minpr;
+  auto int        duration, takte;
+  auto float 	  pay, minpr, takt;
   auto char  	  why[BUFSIZ];
   auto int        tz;
   auto struct tm *tm;
+  auto time_t     connect = call[chan].connect;
 
 
-  if (call[chan].provider == 13) { /* Tele 2 */
+  tm = localtime(&connect);
+
+  if ((call[chan].provider == 33) && (tm->tm_year + 1900 > 1998)) { /* neue 1999 Tarife Dt. Telekom */
+    takt = taktlaenge(chan, NULL);
+
+    duration = call[chan].disconnect - call[chan].connect;
+    takte = (int)(duration + (takt - 1) / takt);
+
+    pay = takt * 0.12;
+    return(pay);
+  }
+  else if (call[chan].provider == 13) { /* Tele 2 */
 
     if (call[chan].zone == CITYCALL) /* not possible with Tele 2 */
       return(-1.0);
