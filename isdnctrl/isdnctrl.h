@@ -1,4 +1,4 @@
-/* $Id: isdnctrl.h,v 1.16 1999/11/02 20:41:21 keil Exp $
+/* $Id: isdnctrl.h,v 1.17 1999/11/20 22:23:53 detabc Exp $
  * ISDN driver for Linux. (Control-Utility)
  *
  * Copyright 1994,95 by Fritz Elfert (fritz@isdn4linux.de)
@@ -21,6 +21,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnctrl.h,v $
+ * Revision 1.17  1999/11/20 22:23:53  detabc
+ * added netinterface abc-secure-counter reset (clear) support.
+ *
  * Revision 1.16  1999/11/02 20:41:21  keil
  * make phonenumber ioctl compatible for ctrlconf too
  *
@@ -122,6 +125,9 @@ enum {
 #ifdef I4L_CTRL_CONF
         WRITECONF, READCONF,
 #endif /* I4L_CTRL_CONF */
+#ifdef I4L_DWABC_UDPINFO
+		ABCCLEAR,
+#endif
 	STATUS,
 		IFDEFAULTS
 };
@@ -192,6 +198,9 @@ cmd_struct cmds[] =
         {"writeconf", "01"},
         {"readconf", "01"},
 #endif /* I4L_CTRL_CONF */
+#ifdef I4L_DWABC_UDPINFO
+		{"abcclear","1"},
+#endif
         {"status", "1"},
         {"ifdefaults", "01"},
         {NULL,}

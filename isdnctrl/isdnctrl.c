@@ -1,4 +1,4 @@
-/* $Id: isdnctrl.c,v 1.37 1999/11/07 22:04:05 detabc Exp $
+/* $Id: isdnctrl.c,v 1.38 1999/11/20 22:23:53 detabc Exp $
  * ISDN driver for Linux. (Control-Utility)
  *
  * Copyright 1994,95 by Fritz Elfert (fritz@isdn4linux.de)
@@ -21,6 +21,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnctrl.c,v $
+ * Revision 1.38  1999/11/20 22:23:53  detabc
+ * added netinterface abc-secure-counter reset (clear) support.
+ *
  * Revision 1.37  1999/11/07 22:04:05  detabc
  * add dwabc-udpinfo-utilitys in isdnctrl
  *
@@ -381,6 +384,9 @@ void usage(void)
         fprintf(stderr, "    readconf [file]            read the settings from file\n");
 #endif /* I4L_CTRL_CONF */
         fprintf(stderr, "    status name                show interface status (connected or not)\n");
+#ifdef I4L_DWABC_UDPINFO
+        fprintf(stderr, "    abcclear  name             reset (clear) abc-secure-counter\n");
+#endif
 #ifdef I4L_CTRL_TIMRU
 		fprintf(stderr,"Note: TIMRU Ctrl   Extension-Support enabled\n");
 #else
@@ -396,6 +402,7 @@ void usage(void)
 		fprintf(stderr,"    -udponline   destination-host or ip-number\n");
 		fprintf(stderr,"    -udphangup   destination-host or ip-number\n");
 		fprintf(stderr,"    -udpdial     destination-host or ip-number\n");
+		fprintf(stderr,"    -udpclear    destination-host-or ip-number\n");
 #endif
         exit(-2);
 }
@@ -778,6 +785,15 @@ int exec_args(int fd, int argc, char **argv)
 
 		memset(&cfg, 0, sizeof cfg);	/* clear in case of older kernel */
 		switch (i) {
+#ifdef I4L_DWABC_UDPINFO
+			case ABCCLEAR:
+			        if ((result = ioctl(fd, IIOCNETDWRSET, id)) < 0) {
+			        	perror(id);
+			        	return -1;
+			        }
+			        printf("ABC secure-counter for %s now clear\n", id);
+					break;
+#endif
 			case ADDIF:
 			        strcpy(s, args?id:"");
 			        if ((result = ioctl(fd, IIOCNETAIF, s)) < 0) {
@@ -1772,6 +1788,8 @@ int main(int argc, char **argv)
 			art = 3;
 		} else if(!strcmp(p,"-udpdial")) {
 			art = 4;
+		} else if(!strcmp(p,"-udpclear")) {
+			art = 5;
 		}
 
 		if(art) {
@@ -1791,6 +1809,7 @@ int main(int argc, char **argv)
 			case 2:	retw = isdn_udp_online(p,&err);		break;
 			case 3:	retw = isdn_udp_hangup(p,&err);		break;
 			case 4:	retw = isdn_udp_dial(p,&err);		break;
+			case 5:	retw = isdn_udp_clear_ggau(p,&err);	break;
 			}
 
 			if(err != NULL) {
@@ -1815,6 +1834,8 @@ int main(int argc, char **argv)
 				case 4:
 					printf("destination %s CANNOT dialing\n",p);
 					break;
+				case 5:
+					printf("CANNOT reset (clear) abc-secure-counter's for destination %s\n",p);
 				}
 
 			} else {
@@ -1832,6 +1853,8 @@ int main(int argc, char **argv)
 				case 4:
 					printf("destination %s trigger dialing\n",p);
 					break;
+				case 5:
+					printf("reset (clear) abc-secure-counter's for destination %s\n",p);
 				}
 			}
 
