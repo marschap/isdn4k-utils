@@ -241,7 +241,7 @@ unsigned capi_cmsg2message(_cmsg *cmsg, unsigned char *msg);
  *  capi20_message2cmsg disassembles a CAPI message an writes the parameter
  *  into _cmsg for easy access
  */
-#define capi20_message2cmsg	capi20_message2cmsg
+#define capi20_message2cmsg	capi_message2cmsg
 unsigned capi_message2cmsg (_cmsg *cmsg, unsigned char *msg);
 
 /*
@@ -273,7 +273,7 @@ static inline void capi_cmsg_answer(_cmsg * cmsg)
  */
 
 #define CAPI_GET_CMSG	capi_get_cmsg
-#define capi_get_cmsg	capi_get_cmsg
+#define capi20_get_cmsg	capi_get_cmsg
 unsigned capi_get_cmsg(_cmsg *cmsg, unsigned applid);
 
 /*
