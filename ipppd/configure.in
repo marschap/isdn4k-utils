@@ -29,6 +29,9 @@ AC_HEADER_SYS_WAIT
 AC_CHECK_HEADERS(fcntl.h limits.h paths.h sys/file.h sys/ioctl.h sys/time.h syslog.h unistd.h)
 AC_CHECK_HEADER(shadow.h, HAVE_SHADOW_H=1; AC_DEFINE(HAVE_SHADOW_H))
 AC_CHECK_HEADER(linux/isdn_lzscomp.h, HAVE_LZSCOMP_H=1; AC_DEFINE(HAVE_LZSCOMP_H))
+AC_CHECK_HEADER(pcap-bpf.h, [HAVE_PCAP_BPF_H=1; AC_DEFINE(HAVE_PCAP_BPF_H)],
+	[AC_CHECK_HEADER(net/bpf.h, [HAVE_NET_BPF_H=1; AC_DEFINE(HAVE_NET_BPF_H)],
+		[AC_MSG_ERROR(Could not find pcap header file)])])
 
 dnl Checks for typedefs, structures, and compiler characteristics.
 AC_C_CONST
@@ -112,6 +115,8 @@ AC_SUBST(HAVE_LIBCRYPT)
 AC_SUBST(HAVE_LIBBSD)
 AC_SUBST(HAVE_SHADOW_H)
 AC_SUBST(HAVE_LZSCOMP_H)
+AC_SUBST(HAVE_PCAP_BPF_H)
+AC_SUBST(HAVE_NET_BPF_H)
 AC_SUBST(CONFIG_RUNDIR)
 AC_SUBST(CONFIG_SBINDIR)
 AC_SUBST(CONFIG_MANDIR)

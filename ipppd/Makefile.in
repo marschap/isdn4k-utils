@@ -1,12 +1,14 @@
 #
 # ipppd makefile for Linux
-# $Id: Makefile.in,v 1.17 2003/06/30 22:30:57 keil Exp $
+# $Id: Makefile.in,v 1.18 2004/02/12 10:50:20 keil Exp $
 #
 
 HAVE_LIBDES   := @HAVE_LIBDES@
 HAVE_LIBCRYPT := @HAVE_LIBCRYPT@
 HAVE_SHADOW_H := @HAVE_SHADOW_H@
 HAVE_LZSCOMP_H:= @HAVE_LZSCOMP_H@
+HAVE_PCAP_BPF_H := @HAVE_PCAP_BPF_H@
+HAVE_NET_BPF_H:= @HAVE_NET_BPF_H@
 IPPP_FILTER   := @CONFIG_IPPP_FILTER@
 SBINDIR       := @CONFIG_SBINDIR@
 MANDIR        := @CONFIG_MANDIR@
@@ -116,6 +118,14 @@ endif
 
 ifeq ($(HAVE_LZSCOMP_H),1)
 	CFLAGS += -DHAVE_LZSCOMP_H
+endif
+
+ifeq ($(HAVE_PCAP_BPF_H),1)
+	CFLAGS += -DHAVE_PCAP_BPF_H
+endif
+
+ifeq ($(HAVE_NET_BPF_H),1)
+	CFLAGS += -DHAVE_NET_BPF_H
 endif
 
 %.8: %.man

@@ -22,7 +22,7 @@
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-char sys_rcsid[] = "$Id: sys-linux.c,v 1.26 2003/06/30 22:30:57 keil Exp $";
+char sys_rcsid[] = "$Id: sys-linux.c,v 1.27 2004/02/12 10:50:21 keil Exp $";
 
 #define _LINUX_STRING_H_
 
@@ -71,13 +71,13 @@ char sys_rcsid[] = "$Id: sys-linux.c,v 1.26 2003/06/30 22:30:57 keil Exp $";
 # include <netipx/ipx.h>
 #endif
 
+#include "fsm.h"
+#include "ipppd.h"
+
 #ifdef IPPP_FILTER
-#include <net/bpf.h>
 #include <linux/filter.h>
 #endif /* IPPP_FILTER */
 
-#include "fsm.h"
-#include "ipppd.h"
 #include "ipcp.h"
 #include "ipxcp.h"
 #include "ccp.h"

@@ -18,7 +18,7 @@
  * IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Id: ipppd.h,v 1.23 2003/06/30 22:30:57 keil Exp $
+ * $Id: ipppd.h,v 1.24 2004/02/12 10:50:21 keil Exp $
  */
 
 /*
@@ -216,7 +216,17 @@ extern int	cryptpap;	/* Others' PAP passwords are encrypted */
 extern int      hostroute;      /* Add a route to the host at the other end? */
 #endif
 #ifdef IPPP_FILTER
-#include <net/bpf.h>
+
+#  ifdef HAVE_NET_BPF_H
+#    include <net/bpf.h>
+#  else
+#    ifdef HAVE_PCAP_BPF_H
+#      include <pcap-bpf.h>
+#    else
+#      error no BPF include defined
+#    endif
+#  endif
+
 extern struct   bpf_program pass_filter;   /* Filter for pkts to pass */
 extern struct   bpf_program active_filter; /* Filter for link-active pkts */
 #endif /* IPPP_FILTER */
