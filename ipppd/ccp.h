@@ -24,7 +24,7 @@
  * OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS,
  * OR MODIFICATIONS.
  *
- * $Id: ccp.h,v 1.1 1997/03/07 16:01:11 hipp Exp $
+ * $Id: ccp.h,v 1.2 1998/03/22 18:52:30 hipp Exp $
  */
 
 typedef struct ccp_options {
@@ -35,6 +35,7 @@ typedef struct ccp_options {
     u_short bsd_bits;		/* # bits/code for BSD Compress */
     u_short deflate_size;	/* lg(window size) for Deflate */
 	short method;			/* code for chosen compression method */
+    unsigned long protos;
 } ccp_options;
 
 extern fsm ccp_fsm[];

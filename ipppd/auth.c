@@ -36,7 +36,7 @@
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-char auth_rcsid[] = "$Id: auth.c,v 1.9 1998/03/08 13:01:28 hipp Exp $";
+char auth_rcsid[] = "$Id: auth.c,v 1.10 1998/03/22 18:52:28 hipp Exp $";
 
 #include <stdio.h>
 #include <stddef.h>
@@ -403,6 +403,7 @@ static void network_phase(int linkunit)
 				(*ipxcp_protent.open)(lns[linkunit].ipxcp_unit);
 		}
 		if(ccp_protent.enabled_flag) {
+				syslog(LOG_NOTICE,"CCP enabled! Trying CCP.\n");
 				lns[linkunit].ccp_unit = ccp_getunit(linkunit);
 				(*ccp_protent.lowerup)(lns[linkunit].ccp_unit);
 				(*ccp_protent.open)(lns[linkunit].ccp_unit);

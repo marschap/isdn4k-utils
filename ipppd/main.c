@@ -25,7 +25,7 @@
  * PATCHLEVEL 9
  */
 
-char main_rcsid[] = "$Id: main.c,v 1.10 1998/03/08 13:01:38 hipp Exp $";
+char main_rcsid[] = "$Id: main.c,v 1.11 1998/03/22 18:52:32 hipp Exp $";
 
 #include <stdio.h>
 #include <stdarg.h>
@@ -231,13 +231,11 @@ void main(int argc,char **argv)
 
     sys_init(); /* init log stuff and open socket for ioctl commands */
 
-    if(!numdev)
-    {
+    if(!numdev) {
       fprintf(stderr,"ipppd: No devices found.\n");
       die(1);
     }
-    else
-    {
+    else {
       char devstr[1024];
       sprintf(devstr,"Found %d device%s: ",numdev, numdev==1?"":"s");
       for(i=0;i<numdev;i++)
@@ -369,10 +367,8 @@ void main(int argc,char **argv)
     SIGNAL(SIGXFSZ, bad_signal);
 #endif
 
-        for(i=0;i<numdev;i++)
-        {
-          if(lns[i].fd == -1)
-          {
+        for(i=0;i<numdev;i++) {
+          if(lns[i].fd == -1) {
             syslog(LOG_NOTICE,"init_unit: %d\n",i);
             if(init_unit(i) < 0) {
 				/* Error */
@@ -380,36 +376,30 @@ void main(int argc,char **argv)
           }
         }
 
-        for(;!kill_link;)
-        {
+        for(;!kill_link;) {
           fd_set ready;
           int n,i,max=-1;
     
           FD_ZERO(&ready);
           for(i=0;i<numdev;i++)
-            if(lns[i].fd >= 0)
-            {
+            if(lns[i].fd >= 0) {
               if(lns[i].fd > max)
                 max = lns[i].fd;
               FD_SET(lns[i].fd, &ready);
             }
 
           n = select(max+1, &ready, NULL, NULL, timeleft(&timo) );
-          if (n < 0 && errno != EINTR)
-          {
+          if (n < 0 && errno != EINTR) {
 	    syslog(LOG_ERR, "select: %m");
 	    die(1);
           }
 
           calltimeout();
           
-          for(i=0;i<numdev && n>0;i++)
-          {
-            if(lns[i].fd >= 0 && FD_ISSET(lns[i].fd,&ready))
-            {
+          for(i=0;i<numdev && n>0;i++) {
+            if(lns[i].fd >= 0 && FD_ISSET(lns[i].fd,&ready)) {
             /*  n--; */
-              if(lns[i].phase == PHASE_WAIT)
-              {
+              if(lns[i].phase == PHASE_WAIT) {
                 /* ok, now we (usually) have a unit */
                 lns[i].hungup = 0;
                 establish_ppp(i);
@@ -424,8 +414,7 @@ void main(int argc,char **argv)
             }
 #if 0
             if (lns[i].open_ccp_flag) { /* ugly: set by SIGUSR2 signal for all units */
-              if (lns[i].phase == PHASE_NETWORK) 
-              {
+              if (lns[i].phase == PHASE_NETWORK) {
                 ccp_fsm[lns[i].ccp_unit].flags = OPT_RESTART; /* clears OPT_SILENT */
                 (*ccp_protent.open)(lns[i].ccp_unit);
               }
@@ -435,8 +424,7 @@ void main(int argc,char **argv)
           }
 	  reap_kids();	/* Don't leave dead kids lying around */
           for(i=0;i<numdev;i++)
-            if(kill_link || lns[i].phase == PHASE_DEAD)
-            {
+            if(kill_link || lns[i].phase == PHASE_DEAD) {
 			  if(!kill_link)
                 syslog(LOG_NOTICE,"taking down PHASE_DEAD link %d, linkunit: %d",i,lns[i].unit);
               untimeout(connect_time_expired,(void *) (long)i);
@@ -451,8 +439,7 @@ void main(int argc,char **argv)
             }
           if(!kill_link) {
             for(i=0;i<numdev;i++)
-              if(lns[i].fd == -1)
-              {
+              if(lns[i].fd == -1) {
                 syslog(LOG_NOTICE,"reinit_unit: %d\n",i);
                 if(init_unit(i) < 0) { /* protokolle hier neu initialisieren?? */
 					/* error */
@@ -509,6 +496,8 @@ static int init_unit(int linkunit)
 		return -1;
 	}
 	syslog(LOG_NOTICE, "Connect[%d]: %s, fd: %d",linkunit, lns[linkunit].devnam,lns[linkunit].fd);
+
+	set_kdebugflag (kdebugflag,linkunit);
 
 	lns[linkunit].openfails = 0;
 	lns[linkunit].auth_up_script = 0;
@@ -639,7 +628,7 @@ static void get_input(int linkunit)
 		char *s;
 		s = protocol2name(protocol);
 		if(!s)
-    		syslog(LOG_WARNING, "Unknown protocol (0x%x) received", protocol);
+    			syslog(LOG_WARNING, "Unknown protocol (0x%x) received", protocol);
 		else
 			syslog(LOG_WARNING, "Unsupported protocol '%s' (0x%x) received", s,protocol);
 	}
@@ -720,6 +709,7 @@ void close_fd(int tu)
 	if (lns[tu].initfdflags != -1 && fcntl(lns[tu].fd, F_SETFL, lns[tu].initfdflags) < 0)
 		syslog(LOG_WARNING, "Couldn't restore device fd flags: %m");
 	lns[tu].initfdflags = -1;
+    syslog(LOG_INFO, "closing fd %d from unit %d",lns[tu].fd,tu);
     close(lns[tu].fd);
     lns[tu].fd = -1;
 }

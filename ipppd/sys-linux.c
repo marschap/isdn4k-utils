@@ -22,7 +22,7 @@
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-char sys_rcsid[] = "$Id: sys-linux.c,v 1.9 1998/03/12 15:07:19 hipp Exp $";
+char sys_rcsid[] = "$Id: sys-linux.c,v 1.10 1998/03/22 18:52:36 hipp Exp $";
 
 #define _LINUX_STRING_H_
 
@@ -212,7 +212,7 @@ void note_debug_level (void)
 /*
  * set_kdebugflag - Define the debugging level for the kernel
  */
-static int set_kdebugflag (int requested_level,int tu)
+int set_kdebugflag (int requested_level,int tu)
 {
 	if (ioctl(lns[tu].fd, PPPIOCGDEBUG, &prev_kdebugflag) < 0) {
 		syslog(LOG_ERR, "ioctl(PPPIOCGDEBUG): %m");
@@ -258,8 +258,10 @@ void establish_ppp (int linkunit)
 		else
 			lcp_allowoptions[lns[linkunit].lcp_unit].mru = ifr.ifr_mtu;
 	}
- 
+
+#if 0
 	set_kdebugflag (kdebugflag,linkunit);
+#endif
 
 	MAINDEBUG ((LOG_NOTICE, "Using version %d.%d.%d of PPP driver",
 		driver_version, driver_modification, driver_patch));
@@ -400,19 +402,34 @@ void ppp_recv_config (int unit,int mru,u_int32_t asyncmap,int pcomp,int accomp)
  */
 int ccp_test (int ccp_unit, u_char *opt_ptr, int opt_len, int for_transmit)
 {
-	struct ppp_option_data data;
+	struct isdn_ppp_comp_data data;
 	int linkunit = ccp_fsm[ccp_unit].unit;
 
 	memset (&data, '\0', sizeof (data));
-	data.ptr      = opt_ptr;
-	data.length   = opt_len;
-	data.transmit = for_transmit;
+	data.num = opt_ptr[0];
+	data.optlen = opt_len - 2;
+	if(data.optlen > ISDN_PPP_COMP_MAX_OPTIONS) {
+		syslog(LOG_NOTICE, "ccp_test: options field too long!\n");
+		return -1;
+	}
+	memcpy(data.options,opt_ptr+2,data.optlen);
+	data.xmit = for_transmit;
 
-	if (ioctl(lns[linkunit].fd, PPPIOCSCOMPRESS, (caddr_t) &data) >= 0)
+	if (ioctl(lns[linkunit].fd, PPPIOCSCOMPRESSOR, (caddr_t) &data) >= 0)
 		return 1;
 
 	return (errno == ENOBUFS)? 0: -1;
 }
+
+int ccp_get_compressors(int ccp_unit,unsigned long *protos)
+{
+  int linkunit = ccp_fsm[ccp_unit].unit;
+
+  if (ioctl(lns[linkunit].fd, PPPIOCGCOMPRESSORS, protos) >= 0)
+	return 0;
+  return -1;
+}
+
 
 /*
  * ccp_flags_set - inform kernel about the current state of CCP.

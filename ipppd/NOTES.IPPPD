@@ -1,6 +1,6 @@
 ipppd, based on pppd 2.2.0g with a few changes from 2.3
 ============================================================
-copyright (c) 1995,1996,1997 of all changes by Michael Hipp
+copyright (c) 1995-1998 of all changes by Michael Hipp
 All changes are under GPL license. See "COPYING" file for more.
 (You can find this file in the root directory of the i4l utility package)
 Report bugs, problems etc. to: i4l-ippp@franken.de
@@ -9,8 +9,8 @@ Report bugs, problems etc. to: i4l-ippp@franken.de
 ATTENTION .. NEW NEW NEW NEW NEW
 ********************************
 
-You NEED at least the 2.0.29 base patch (for 2.0.29 kernels)
-or the 2.0.30A patch (for 2.0.30 kernels) because of a new ioctl!! 
+You also NEED the latest isdn4linux kernel version, because
+of a new struct!!!!
 
 changed default pathname for options to:
   /etc/ppp/ioptions
@@ -64,6 +64,8 @@ CHANGELOG:
  - started to add radius patch .. not tested
  - SIGUSR2 should reload user password (untested)
  - minor bug with corrupted MPdiscr fixed
+22.03.98:
+ - more CCP changes
 
 
 -----------------------------------------------------------------

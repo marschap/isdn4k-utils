@@ -17,7 +17,7 @@
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-char options_rcsid[] = "$Id: options.c,v 1.6 1998/03/08 13:01:41 hipp Exp $";
+char options_rcsid[] = "$Id: options.c,v 1.7 1998/03/22 18:52:33 hipp Exp $";
 
 #include <stdio.h>
 #include <errno.h>
@@ -1938,6 +1938,9 @@ static int setbsdcomp(int slot,char **argv)
 		progname, BSD_MIN_BITS, BSD_MAX_BITS);
 	return 0;
     }
+
+    fprintf(stderr,"BsdComp: %d %d\n",rbits,abits);
+
     if (rbits > 0) {
 	ccp_wantoptions[slot].bsd_compress = 1;
 	ccp_wantoptions[slot].bsd_bits = rbits;

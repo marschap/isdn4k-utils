@@ -25,7 +25,7 @@
  * OR MODIFICATIONS.
  */
 
-char ccp_rcsid[] = "$Id: ccp.c,v 1.4 1997/10/26 23:06:07 fritz Exp $";
+char ccp_rcsid[] = "$Id: ccp.c,v 1.5 1998/03/22 18:52:29 hipp Exp $";
 
 #include <string.h>
 #include <syslog.h>
@@ -39,6 +39,8 @@ char ccp_rcsid[] = "$Id: ccp.c,v 1.4 1997/10/26 23:06:07 fritz Exp $";
 #include "fsm.h"
 #include "ipppd.h"
 #include "ccp.h"
+
+#include "compressions.h"
 
 /*
  * Protocol entry points from main code.
@@ -174,6 +176,7 @@ int ccp_getunit(int linkunit)
       ccp_fsm[i].flags = 0;
       ccp_fsm[i].id = 0;
       ccp_fsm[i].unit = linkunit;
+      syslog(LOG_NOTICE,"CCP: got ccp-unit %d for link %d",i,linkunit);
       return i;
     }
   syslog(LOG_ERR,"No more ccp_units available");
@@ -304,8 +307,21 @@ static void ccp_resetci(fsm *f)
 {
     ccp_options *go = &ccp_gotoptions[lns[f->unit].ccp_unit];
     u_char opt_buf[16];
+    unsigned long protos[8] = {0,};
+    int i,j;
 
+    ccp_get_compressors(lns[f->unit].ccp_unit,protos);
+    syslog(LOG_NOTICE,"ccp_resetci!\n");
+    for(j=0;j<8;j++) 
+      for(i=0;i<32;i++) {
+        if( protos[j] & (1<<i) )
+           syslog(LOG_NOTICE,"Compressor %s loaded!\n",
+             compression_names[j*32+i]?compression_names[j*32+i]:"UNKNWOWN");
+      }
+
+	/* copy config */
     *go = ccp_wantoptions[lns[f->unit].ccp_unit];
+
     all_rejected[lns[f->unit].ccp_unit] = 0;
 
     /*
@@ -820,19 +836,19 @@ static void ccp_up(fsm *f)
     if (ANY_COMPRESS(*go)) {
        if (ANY_COMPRESS(*ho)) {
            if (go->method == ho->method) {
-               syslog(LOG_NOTICE, "%s compression enabled",
+               syslog(LOG_NOTICE, "[%d] %s compression enabled",f->unit,
                       method_name(go, ho));
            } else {
                strcpy(method1, method_name(go, NULL));
-               syslog(LOG_NOTICE, "%s / %s compression enabled",
+               syslog(LOG_NOTICE, "[%d] %s / %s compression enabled",f->unit,
                       method1, method_name(ho, NULL));
            }
        } else
-           syslog(LOG_NOTICE, "%s receive compression enabled",
+           syslog(LOG_NOTICE, "[%d] %s receive compression enabled",f->unit,
                   method_name(go, NULL));
     } else if (ANY_COMPRESS(*ho))
-       syslog(LOG_NOTICE, "%s transmit compression enabled",
-              method_name(ho, NULL));
+       syslog(LOG_NOTICE, "[%d] %s transmit compression enabled",f->unit,
+	 method_name(ho, NULL));
 }
 
 /*

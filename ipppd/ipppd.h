@@ -16,7 +16,7 @@
  * IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Id: ipppd.h,v 1.10 1998/03/12 15:07:17 hipp Exp $
+ * $Id: ipppd.h,v 1.11 1998/03/22 18:52:31 hipp Exp $
  */
 
 /*
@@ -44,6 +44,17 @@
 
 #if defined __GLIBC__ && __GLIBC__ >= 2
 # include <utmp.h>
+#endif
+
+#include <linux/version.h>
+#if (LINUX_VERSION_CODE < ((0x020100)+88))
+#define ISDN_PPP_COMP_MAX_OPTIONS 16
+struct isdn_ppp_comp_data {
+        int num;
+        unsigned char options[ISDN_PPP_COMP_MAX_OPTIONS];
+        int optlen;
+        int xmit;
+};
 #endif
 
 #define NUM_PPP	64		/* 64 PPP interface supported (per process) */
@@ -256,6 +267,7 @@ void close_fd (int);
 void die (int);
 void novm (char *);
 void log_packet (u_char *, int, char *,int);
+int set_kdebugflag (int requested_level,int tu);
 void sys_init(void);
 void note_debug_level (void);
 void output_ppp (int unit, unsigned char *p, int len);
@@ -265,6 +277,7 @@ void ppp_send_config (int unit,int mtu,u_int32_t asyncmap,int pcomp,int accomp);
 void ppp_set_xaccm (int unit, ext_accm accm);
 void ppp_recv_config (int unit,int mru,u_int32_t asyncmap,int pcomp,int accomp);
 int ccp_test (int unit, u_char *opt_ptr, int opt_len, int for_transmit);
+int ccp_get_compressors(int ccp_unit,unsigned long *);
 void ccp_flags_set (int unit, int isopen, int isup);
 int ccp_fatal_error (int unit);
 int sifvjcomp (int unit, int vjcomp, int cidcomp, int maxcid);
