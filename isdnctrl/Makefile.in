@@ -1,4 +1,4 @@
-# $Id: Makefile.in,v 1.15 1999/11/07 22:04:05 detabc Exp $
+# $Id: Makefile.in,v 1.16 2000/08/01 20:23:46 akool Exp $
 #
 # Makefile for isdnctrl
 # (C) 1997 Fritz Elfert
@@ -8,7 +8,6 @@ SHELL			  = /bin/sh
 CFLAGS			= -Wall -O2
 INCLUDES		= -I. -I@CONFIG_KERNELDIR@/include
 LDFLAGS			= @LIBS@ 
-DBMLIB 			= @DBMLIB@
 PROGRAM			= isdnctrl
 MODULES			= isdnctrl.o
 MANPAGES		= isdnctrl.8
@@ -24,7 +23,7 @@ exec_prefix		= @exec_prefix@
 
 ifeq (@CONFIG_ISDNCTRL_CONF@,y)
 COPTS		+= -DI4L_CTRL_CONF
-LDFLAGS		+= -L../lib -lisdn $(DBMLIB) 
+LDFLAGS		+= -L../lib -lisdn
 MODULES		+= ctrlconf.o
 MANPAGES    += .isdnctrl_conf.8
 endif
