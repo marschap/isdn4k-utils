@@ -1,6 +1,6 @@
 #! /bin/sh
 #
-# $Id: Menuconfig,v 1.7 1999/09/06 08:03:27 fritz Exp $
+# $Id: Menuconfig,v 1.8 2002/07/04 10:52:18 paul Exp $
 #
 # This script is borrowed from the linux Menuconfig script.
 #
@@ -57,7 +57,7 @@ load_functions () {
 #
 function comment () {
 	comment_ctr=$[ comment_ctr + 1 ]
-	echo -ne "': $comment_ctr' '--- $1' " >>MCmenu
+	/bin/echo -ne "': $comment_ctr' '--- $1' " >>MCmenu
 }
 
 #
@@ -88,9 +88,9 @@ function bool () {
 	n)	flag=" " ;;
 	esac
 
-	echo -ne "'$2' '[$flag] $1' " >>MCmenu
+	/bin/echo -ne "'$2' '[$flag] $1' " >>MCmenu
 
-	echo -e "function $2 () { l_bool '$2' \"\$1\" ;}\n" >>MCradiolists
+	/bin/echo -e "function $2 () { l_bool '$2' \"\$1\" ;}\n" >>MCradiolists
 }
 
 #
@@ -113,9 +113,9 @@ function dep_bool () {
 function int () {
 	eval $2=\${$2:-"$3"} x=\$$2
 
-	echo -ne "'$2' '($x) $1' " >>MCmenu
+	/bin/echo -ne "'$2' '($x) $1' " >>MCmenu
 
-	echo -e "function $2 () { l_int '$1' '$2' '$3' '$x' ;}" >>MCradiolists
+	/bin/echo -e "function $2 () { l_int '$1' '$2' '$3' '$x' ;}" >>MCradiolists
 }
 
 #
@@ -124,9 +124,9 @@ function int () {
 function hex () {
 	eval $2=\${$2:-"$3"} x=\${$2##*[x,X]}
 
-	echo -ne "'$2' '($x) $1' " >>MCmenu
+	/bin/echo -ne "'$2' '($x) $1' " >>MCmenu
 
-	echo -e "function $2 () { l_hex '$1' '$2' '$3' '$x' ;}" >>MCradiolists
+	/bin/echo -e "function $2 () { l_hex '$1' '$2' '$3' '$x' ;}" >>MCradiolists
 }
 
 #
@@ -135,9 +135,9 @@ function hex () {
 function string () {
 	eval $2=\${"$2":-"$3"} x=\$"$2"
 
-	echo -ne "'$2' '\"$x\" $1' " >>MCmenu
+	/bin/echo -ne "'$2' '\"$x\" $1' " >>MCmenu
 
-	echo -e "function $2 () { l_string '$1' '$2' '$3' '$x' ;}" >>MCradiolists
+	/bin/echo -e "function $2 () { l_string '$1' '$2' '$3' '$x' ;}" >>MCradiolists
 }
 
 #
@@ -171,9 +171,9 @@ function choice () {
 
 	: ${current:=$default}
 
-	echo -ne "'$firstchoice' '($current) $title' " >>MCmenu
+	/bin/echo -ne "'$firstchoice' '($current) $title' " >>MCmenu
 
-	echo -e "
+	/bin/echo -e "
 	function $firstchoice () \
 		{ l_choice '$title' \"$choices\" $current ;}" >>MCradiolists
 }
@@ -249,7 +249,7 @@ function show_readme () {
 # Radiolist function file.
 #
 function menu_name () {
-	echo -ne "$DIALOG --title '$1'\
+	/bin/echo -ne "$DIALOG --title '$1'\
 			--backtitle '$backtitle' \
 			--menu '$menu_instructions' \
 			$ROWS $COLS $((ROWS-10)) \
@@ -261,7 +261,7 @@ function menu_name () {
 # Add a submenu option to the menu currently under construction.
 #
 function submenu () {
-	echo -ne "'activate_menu $2' '$1  --->' " >>MCmenu
+	/bin/echo -ne "'activate_menu $2' '$1  --->' " >>MCmenu
 }
 
 #
@@ -280,7 +280,7 @@ function l_bool () {
 		*)	eval $1=n ;;
 		esac
 	else
-		echo -ne "\007"
+		/bin/echo -ne "\007"
 	fi
 }
 
@@ -294,9 +294,9 @@ function disabled () {
         *)   flag=' ' ;;
         esac
 
-        echo -ne "'$2' '<$flag> $1' " >>MCmenu
+        /bin/echo -ne "'$2' '<$flag> $1' " >>MCmenu
 
-        echo -e "function $2 () { l_disabled '$2' \"\$1\" ;}" >>MCradiolists
+        /bin/echo -e "function $2 () { l_disabled '$2' \"\$1\" ;}" >>MCradiolists
 }
 
 #
@@ -307,7 +307,7 @@ function l_disabled() {
         then
                 case "$2" in
                 n)      ;;
-                *)      echo -en "\007"
+                *)      /bin/echo -en "\007"
                         ${DIALOG} --backtitle "$backtitle" \
                                   --msgbox "\
 This feature depends on another which has been disabled.  \
@@ -315,7 +315,7 @@ As a result, this feature will be disabled also." 6 70
                         ;;
                 esac
         else
-                echo -ne "\007"
+                /bin/echo -ne "\007"
         fi
 }
 
@@ -338,7 +338,7 @@ function l_int () {
 				eval $2="$answer"
 			else
 				eval $2="$3"
-				echo -en "\007"
+				/bin/echo -en "\007"
 				${DIALOG} --backtitle "$backtitle" \
 					--msgbox "You have made an invalid entry." 5 43
 			fi
@@ -370,7 +370,7 @@ function l_hex () {
 				eval $2="$answer"
 			else
 				eval $2="$3"
-				echo -en "\007"
+				/bin/echo -en "\007"
 				${DIALOG} --backtitle "$backtitle" \
 					--msgbox "You have made an invalid entry." 3 43
 			fi
@@ -714,7 +714,7 @@ last retrieved.  Leave blank to abort."\
 				eval load_config_file "$ALT_CONFIG"
 				break
 			else
-				echo -ne "\007"
+				/bin/echo -ne "\007"
 				$DIALOG	--backtitle "$backtitle" \
 					--msgbox "File does not exist!"  3 38
 			fi
@@ -777,7 +777,7 @@ as an alternate.  Leave blank to abort."\
 				load_functions  ## RELOAD
 				break
 			else
-				echo -ne "\007"
+				/bin/echo -ne "\007"
 				$DIALOG	--backtitle "$backtitle" \
 					--msgbox "Can't create file!  Probably a nonexistent directory." 3 60
 			fi
@@ -1009,7 +1009,7 @@ set_geometry () {
 
 	if [ $ROWS -lt 19 -o $COLS -lt 80 ]
 	then
-		echo -e "\n\007Your display is too small to run Menuconfig!"
+		/bin/echo -e "\n\007Your display is too small to run Menuconfig!"
 		echo "It must be at least 19 lines by 80 columns."
 		exit 0
 	fi 
@@ -1125,7 +1125,7 @@ the package with "make install" (Installation requires root privileges).
 EOM
 else
 	clear
-	echo -e "Your configuration changes were NOT saved.\n"
+	/bin/echo -e "Your configuration changes were NOT saved.\n"
 fi
 
 
