@@ -279,7 +279,7 @@ static void NetUp (gw, event, params, nparams)
     NetstatWidget w = (NetstatWidget) gw;
 
     
-    if ((w->netstat.state <= 1) && (!updownwait)) {
+    if ((w->netstat.state <= 2) && (!updownwait)) {
       w->netstat.state = 5;
       updownwait = 150 / w->netstat.update;
       if (updownwait < 2)
