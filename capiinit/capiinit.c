@@ -1,7 +1,10 @@
 /*
- * $Id: capiinit.c,v 1.11 2003/01/14 13:47:15 calle Exp $
+ * $Id: capiinit.c,v 1.12 2003/03/11 13:39:07 paul Exp $
  *
  * $Log: capiinit.c,v $
+ * Revision 1.12  2003/03/11 13:39:07  paul
+ * Also search for firmware in /usr/share/isdn, which is more in line with LSB
+ *
  * Revision 1.11  2003/01/14 13:47:15  calle
  * New Commands to only load modules, only initialize cards,
  * only reset cards, inititialize a single card or reset a single card.
@@ -72,6 +75,7 @@ static char capidevnamenew[] = "/dev/isdn/capi20";
 static char *capidevname = capidevnameold;
 
 static char *firmwarepath[] = {
+	"/usr/share/isdn",
 	"/usr/lib/isdn",
 	"/lib/isdn",
 	0
