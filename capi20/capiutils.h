@@ -1214,7 +1214,11 @@ static inline void capi_fill_DISCONNECT_REQ(_cmsg * cmsg, _cword ApplId, _cword 
 					    _cstruct BChannelinformation,
 					    _cstruct Keypadfacility,
 					    _cstruct Useruserdata,
-					    _cstruct Facilitydataarray)
+					    _cstruct Facilitydataarray
+#ifndef CAPI_LIBRARY_V2
+				       ,_cstruct SendingComplete
+#endif
+					    )
 {
 
 	capi_cmsg_header(cmsg, ApplId, 0x04, 0x80, Messagenumber, adr);
@@ -1222,6 +1226,9 @@ static inline void capi_fill_DISCONNECT_REQ(_cmsg * cmsg, _cword ApplId, _cword 
 	cmsg->Keypadfacility = Keypadfacility;
 	cmsg->Useruserdata = Useruserdata;
 	cmsg->Facilitydataarray = Facilitydataarray;
+#ifndef CAPI_LIBRARY_V2
+	cmsg->SendingComplete = SendingComplete;
+#endif
 }
 
 static inline void capi_fill_DISCONNECT_B3_REQ(_cmsg * cmsg, _cword ApplId, _cword Messagenumber,
