@@ -415,4 +415,18 @@ CONFIG_ISDN_LOG_DE
   Check exactly one box to integrate country specific support into
   isdnlog. 
 
+Diversion services support 
+CONFIG_DIVERTCTRL
+  This program is needed to configure the supplementary diversion
+  services in conjunction with the HiSax driver on an EURO/DSS1
+  line. Supported options are CD (call deflection), CFU (Call 
+  forward unconditional), CFB (Call forward when busy) and CFNR 
+  (call forward not reachable).
+  Additionally the actual CFU, CFB and CFNR state may be 
+  interrogated. The use of CFU, CFB, CFNR and interrogation may
+  be limited to some countries. The keypad protocol is still not
+  implemented.
+  CD should work in all countries if this service has been sub-
+  scribed.
+
 # need an empty line after last entry, for sed script in Configure.
