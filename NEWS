@@ -1,8 +1,13 @@
 Recent changes made to the isdn4k-utils archive are listed here,
 most recent on top.
 ------------------
+1999/10/08 he   (Henner Eisen <eis@baty.hanse.de)
+	eurofile  - further integration in isdn4k-utils config/built,
+		    removed entry from distexclude file. 
+
 1999/09/06 hessler (Matthias Hessler <hessler@isdn4linux.de>
     New FAQ is now moved from FAQ2 to FAQ.
+
 1999/08/18 armin (Armin Schindler <mac@melware.de>)
 	eiconctrl - XLOG retrieve function for all supported active cards added.
 

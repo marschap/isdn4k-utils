@@ -1,5 +1,5 @@
 # @configure_input@
-# from $Id: eft.conf.in,v 1.1 1999/10/08 00:31:05 he Exp $
+# from $Id: eft.conf.in,v 1.2 1999/10/08 16:25:35 he Exp $
 #
 # MSNs to be used be eurofile server and client.
 #
@@ -30,6 +30,15 @@ EFT_CLIENT_USERID=xxxx
 # define this if you want x25trace debugging output
 # EFTD_X25TRACE=1
 #
+# If this is set then you can test eurofile client and server locallay
+# on top of the isdnloop HL driver (no external isdn connection
+# required). To do so, just type `eftp -x 1 -u USER' (where USER is
+# your login name)
+#
+# EFTD_WITH_LOOP=y
+#
 # other variables which are set in eftd.sh before this file is
 # included, might also be (re-)set here
 #
+
+

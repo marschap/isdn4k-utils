@@ -1,4 +1,4 @@
-/* $Id: eftd.c,v 1.4 1999/10/06 18:16:23 he Exp $ */
+/* $Id: eftd.c,v 1.5 1999/10/08 16:25:36 he Exp $ */
 /*
   Copyright 1998 by Henner Eisen
 
@@ -110,11 +110,11 @@ static int eft_check_user( struct eft *eft, char* user, char* pass, char *isdn_n
 	printf("user check: ruid=%d, euid=%d\n",getuid(),geteuid());
 	/* 
 	 * Be paranoid about buggy authentification functions that claim
-	 * success but are still runnung as root.
+	 * success but are still running with super user priviliges.
 	 */
 	if (verified && !geteuid()){
 		tdu_printf(TDU_LOG_ERR, "eftd: BUG in authentification procedure.\n (claims success, but process runs still with root priviliges).\nRejecting login for security reasons.\n");
-		/* verified=0; */
+		verified=0;
 	}
 
 	if( ! verified ){
@@ -495,7 +495,7 @@ int main(int argc, char** argv)
 	tdu_stderr_mask  |= level2mask(dlevel);   
 	tdu_logfile_mask |= level2mask(llevel);
 	/* FIXME: make default location an autoconf option*/
-	if( ! logfile_name ) logfile_name = "/var/log/eftd.log";
+	if( ! logfile_name ) logfile_name = "/var/log" "/eftd.log";
 	if(llevel) tdu_open_log(logfile_name);
 	/* tdu_printf(TDU_LOG_DBG, "LogBook level %d, mask %d, Stderr level %d, mask %d\n",llevel,tdu_logfile_mask,dlevel,tdu_stderr_mask); */
 	if( tdu_stderr_mask & TDU_LOG_ISDNLOG ){

@@ -1,5 +1,5 @@
 #
-# $Id: config.in,v 1.29 1999/07/11 17:19:12 armin Exp $
+# $Id: config.in,v 1.30 1999/10/08 16:25:37 he Exp $
 #
 # The whole configuration stuff is borrowed from the kernel
 # configuration.
@@ -118,18 +118,8 @@ if [ "$CONFIG_EXPERIMENTAL" = "y" ]; then
 	bool 'rcapid' CONFIG_RCAPID
 fi
 if [ "$CONFIG_EXPERIMENTAL" = "y" ]; then
-#	we need to check for the presence of the eurofile subdirectory
-#	as long as it is listed in the distexclude file
-	if [ -d eurofile ]; then
-		bool 'eurofile' CONFIG_EUROFILE
-#		The source command fails and causes an error in the
-#		configure script when eurofile directory is not
-#		present -- even inside this if branch.
-#		Thus, it is left commented out until eurofile is
-#		removed from the distexclude file.
-#		Uncomment the next line for trying the eurofile sub menu
-#		source eurofile/.Config.in
-	fi
+	bool 'eurofile' CONFIG_EUROFILE
+		source eurofile/.Config.in
 fi
 endmenu
 mainmenu_option nextcomment
