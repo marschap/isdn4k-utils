@@ -1,5 +1,5 @@
-.\" $Id: isdnlog.8.in,v 1.15 2004/09/29 21:02:01 tobiasb Exp $
-.\" CHECKIN $Date: 2004/09/29 21:02:01 $
+.\" $Id: isdnlog.8.in,v 1.16 2004/12/16 22:40:30 tobiasb Exp $
+.\" CHECKIN $Date: 2004/12/16 22:40:30 $
 .TH isdnlog 8 "@MANDATE_ISDNLOG8@" "ISDN 4 Linux @I4LVERSION@" "Linux System Administration"
 .PD 0
 .SH NAME
@@ -53,6 +53,13 @@ recorded events. In that case use "-" instead of a device.
 Set digits necessary to get an outside line, when connected through a PABX.
 You can
 give several codes padded with a ":" (e.g. -A0:80:81:82).
+
+.TP
+.B	 areacode="value"
+(There is no commandline option for this.)
+Overwrite area code from @CONFFILE@.  A machine connected to subscriber lines
+with different area codes and thus several isdnlogs running requires this
+non global setting.
 
 .TP
 .B \-B\fIvbn\fB	vbn="value"
@@ -537,7 +544,7 @@ Isdnlog quits gracefully on receiving these termination signals.
 
 .TP
 .B SIGSEGV (-11)
-If the log level contains 0x8000 (and your ulimits permit this) isdlog will
+If the log level contains 0x8000 (and your ulimits permit this) isdnlog will
 generate a
 .I core
 file before terminating.

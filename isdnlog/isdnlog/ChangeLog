@@ -1,3 +1,27 @@
+2004-12-16  Tobias Becker  <tobiasb@isdn4linux.de>
+
+	* isdnlog.c (read_param_file, main): An area code entry in the
+	parameterfile replaces the area code entry in the global conffile.
+	As the parameter is read before the gobal conffile, param_myarea
+	is used as interim storage for the new area code.  Thanks to Per
+	Jessen from Zurich for explaining this issue and testing.
+
+	* processor.c (processctrl): Backup and restore call[5] in case of
+	two successive SETUP messages, where the second contains a B channel
+	specification, so that the information of the first SETUP is not lost.
+	This occured with a call originating and terminating at the watched
+	ISDN adapter, where SETUP_ACK for the outgoing side showed up after
+	the SETUP of the incoming side.  Thanks to Wolfgang Klein from
+	Paderborn for providing adequate test data for this and the following
+	issue. 
+
+	* processor.c (prepareRate): Use country and area code from configfile
+	for rate computation, if the source number is entirely unknown.  This
+	is necessary with outgoing calls from other devices, where isdnlog
+	only gets the data sent back from the switch.  Without a correct
+	source area code, a zonefile is not used and local calls are treated
+	as nationwide.
+
 2004-09-29  Tobias Becker  <tobiasb@isdn4linux.de>
 
 	* isdnlog.c (init_variables): Set ignoreCLIP to 0.

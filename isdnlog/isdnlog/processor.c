@@ -1,4 +1,4 @@
-/* $Id: processor.c,v 1.130 2004/09/29 21:02:01 tobiasb Exp $
+/* $Id: processor.c,v 1.131 2004/12/16 22:40:30 tobiasb Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,11 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.131  2004/12/16 22:40:30  tobiasb
+ * Fix for rate computation of outgoing calls from other devices and for logging
+ * of calls from and to the observed card (simultaneous SETUP messages).
+ * Area code setting also in parameterfile.
+ *
  * Revision 1.130  2004/09/29 21:02:01  tobiasb
  * Changed handling of multiple "calling party number" information elements.
  * The network provided number is now preferred in any case.  The other
@@ -4439,6 +4444,13 @@ static void prepareRate(int chan, char **msg, char **tip, int viarep)
     call[chan].Rate.src[1] = myarea;
     call[chan].Rate.src[2] = "";
   }
+  else if (!*call[chan].areacode[CALLING] && !*call[chan].vorwahl[CALLING]
+           && !*call[chan].rufnummer[CALLING]) {
+    /* unknown source number, normal for outgoing call of other device */
+    call[chan].Rate.src[0] = mycountry;
+    call[chan].Rate.src[1] = myarea;
+    call[chan].Rate.src[2] = ""; /* TODO: default_msn */
+  }
   else {
     call[chan].Rate.src[0] = call[chan].areacode[CALLING];
     call[chan].Rate.src[1] = call[chan].vorwahl[CALLING];
@@ -4940,8 +4952,16 @@ static void processctrl(int card, char *s)
        Work-around: decode SETUP in chan 0/1 when cref match
        This workaround requires the value of DUALFIX_SRCNUM in dualfix,
        which is set with -2.. or dual=.. at command line or parameter file. 
+
+       Tobias Becker, 2004-12-11:
+       A second SETUP can occur before the channel of the first SETUP is
+       known.  If the first is outgoing and the second is incoming (e.g.
+       a call from and to the ISDN adapter), it is sufficient to backup
+       the data of the first SETUP while the second is decoded, because
+       the incoming SETUP defines a b-channel.  There may be other cases ...
     */
     if (type == SETUP) { /* neuen Kanal, ev. dummy, wenn keiner da ist */
+      CALL *backup = NULL;
       chan = 5; /* den nehmen wir _nur_ dafuer! */
       if (dualfix & DUALFIX_SRCNUM) {
         for (i=0; i<2; i++) /* look for already allocated chan 0 or 1 */
@@ -4952,8 +4972,12 @@ static void processctrl(int card, char *s)
 	    break;
 	  }
       }  
-      if (chan == 5) /* do not clear other chans */
+      if (chan == 5) { /* do not clear other chans */
+        if ((backup = malloc(sizeof(CALL))) != NULL)
+          memcpy(backup, &call[chan], sizeof(CALL));
         clearchan(chan, 1);
+      }
+
       call[chan].dialin = dialin;
       call[chan].tei = tei;
       call[chan].card = card;
@@ -4982,6 +5006,12 @@ static void processctrl(int card, char *s)
         memcpy((char *)&call[chan], (char *)&call[5], sizeof(CALL));
         Change_Channel(5, chan);
         clearchan(5, 1);
+        if (backup) {
+          memcpy(&call[5], backup, sizeof(CALL));
+          print_msg(PRT_DEBUG_BUGS,
+                    " DEBUG> %s: restored chan 5 (%s, cref %d, tei %d)\n", st+4,
+                    call[5].dialin ? "IN" : "OUT", call[5].cref, call[5].tei);
+        }
       } /* if */
 
       call[chan].cref = (dialin) ? cref : (cref | 0x80); /* immer die cref, die _vom_ Amt kommt/kommen sollte */
@@ -4999,6 +5029,10 @@ static void processctrl(int card, char *s)
 
       addlist(chan, type, 0);
 
+      if (backup) {
+        free(backup);
+        backup = NULL;
+      }
       goto endhex;
     } /* if SETUP */
 

@@ -1,4 +1,4 @@
-/* $Id: isdnlog.c,v 1.74 2004/09/29 21:02:01 tobiasb Exp $
+/* $Id: isdnlog.c,v 1.75 2004/12/16 22:40:30 tobiasb Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,11 @@
  * along with this program; if not, write to the Free Software
  *
  * $Log: isdnlog.c,v $
+ * Revision 1.75  2004/12/16 22:40:30  tobiasb
+ * Fix for rate computation of outgoing calls from other devices and for logging
+ * of calls from and to the observed card (simultaneous SETUP messages).
+ * Area code setting also in parameterfile.
+ *
  * Revision 1.74  2004/09/29 21:02:01  tobiasb
  * Changed handling of multiple "calling party number" information elements.
  * The network provided number is now preferred in any case.  The other
@@ -584,6 +589,8 @@ static section *opt_dat = NULL;
 static char	**hup_argv;	/* args to restart with */
 
 static int      sqldump = 0;
+
+static char    *param_myarea = NULL;
 
 /*****************************************************************************/
 
@@ -1308,6 +1315,18 @@ static int read_param_file(char *FileName)
 				if (!strcmp(Ptr->name,CONF_ENT_IGNOREUPD))
 					ignore_unknown_PD = toupper(*(Ptr->value)) == 'Y'?1:0;
 				else
+				if (!strcmp(Ptr->name,CONF_ENT_AREA)) {
+					/* set area code like in Set_Codes, file ../../lib/isdnconf.c */
+					char *p;
+					if (strlen(Ptr->value) > strlen(areaprefix) &&
+					    !strncmp(Ptr->value, areaprefix, strlen(areaprefix)))
+						p = strdup(Ptr->value + strlen(areaprefix));
+					else
+						p = strdup(Ptr->value);
+					if (p && *p) 
+						param_myarea = p;
+				}
+				else
 					print_msg(PRT_ERR,"Error: Invalid entry `%s'!\n",Ptr->name);
 
 				Ptr = Ptr->next;
@@ -1617,6 +1636,13 @@ int main(int argc, char *argv[], char *envp[])
 
             if (readconfig(myshortname) < 0)
               Exit(30);
+
+			if (param_myarea) {
+				print_msg(PRT_INFO, "(new area code: %s, old: %s)\n",
+				          param_myarea, myarea);
+				myarea = param_myarea;
+			}
+
 	    if (checkconfig() < 0)
 	      Exit(30);
 
