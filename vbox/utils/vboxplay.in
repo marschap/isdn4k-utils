@@ -8,11 +8,16 @@
 
 SAMPLE=$1
 VOLUME=$2
+if [ "$VOLUME" == "" ]; then
+   VOLUME=5;
+fi
+
 
    # Replace this with your own play command. You also can use the pvftools
    # (or some other) to convert and play the messages.
 
-DOPLAY="/usr/local/bin/auplay -audio localhost:0 -volume $VOLUME"
+# DOPLAY="/usr/local/bin/auplay -audio localhost:0 -volume $VOLUME"
+DOPLAY="/usr/bin/play -t au -v $VOLUME -"
 
 @BINDIR@/vboxmode $SAMPLE
 
