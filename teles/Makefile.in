@@ -1,4 +1,4 @@
-# $Id: Makefile.in,v 1.7 1998/09/26 18:30:58 akool Exp $
+# $Id: Makefile.in,v 1.8 1999/10/16 12:38:29 keil Exp $
 #
 # Makefile for telesctrl
 # (C) 1997 Fritz Elfert
@@ -12,9 +12,11 @@ MODULES			= telesctrl.o
 MANPAGES		=
 INSTALL			= @INSTALL@
 SBINDIR			= @CONFIG_SBINDIR@
+DATADIR			= @CONFIG_DATADIR@
 MANDIR			= @CONFIG_MANDIR@
 MAN8DIR			= $(MANDIR)/man8
 INSTALL_PROGRAM	= $(INSTALL) -o 0 -g 0 -m 0750
+INSTALL_DATA	= $(INSTALL) -o 0 -g 0 -m 0644
 INSTALL_MAN		= $(INSTALL) -o 0 -g 0 -m 0644
 prefix			= @prefix@
 exec_prefix		= @exec_prefix@
@@ -48,6 +50,8 @@ hisaxctrl:	$(MODULES)
 install: $(PROGRAMS) $(MANPAGES)
 	mkdir -p $(DESTDIR)$(SBINDIR)
 	$(INSTALL_PROGRAM) $(PROGRAMS) $(DESTDIR)$(SBINDIR)
+	mkdir -p $(DESTDIR)$(DATADIR)
+	$(INSTALL_DATA) ISAR.BIN $(DESTDIR)$(DATADIR)/ISAR.BIN
 	mkdir -p $(DESTDIR)$(MAN8DIR)
 	$(INSTALL_MAN) $(MANPAGES) $(DESTDIR)$(MAN8DIR)
 
