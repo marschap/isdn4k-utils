@@ -1,6 +1,6 @@
-.\" $Id: ttyI.man.in,v 1.6 1998/12/02 16:53:31 paul Exp $
+.\" $Id: ttyI.man.in,v 1.7 1999/03/03 08:55:59 armin Exp $
 .\"
-.\" CHECKIN $Date: 1998/12/02 16:53:31 $
+.\" CHECKIN $Date: 1999/03/03 08:55:59 $
 .\"
 .\" Process this file with
 .\" groff -man -Tascii ttyI.4 for ASCII output, or
@@ -229,7 +229,7 @@ ASCII code of Backspace.
 Duration, in number of seconds, modem waits before dialling.
 .TP
 .BR 7 " (default 60)"
-Wait time for carrier in seconds (ignored).
+Wait time for carrier in seconds.
 .TP
 .BR 8 " (default 2)"
 Pause time for comma (',') in dial command in seconds (ignored).
@@ -326,15 +326,17 @@ Bit	Description
 .BR 14 " (default 0)
 Layer-2 protocol.
 .br
-0 = X75/LAPB with I-frames.
+ 0 = X75/LAPB with I-frames.
 .br
-1 = X75/LAPB with UI-frames.
+ 1 = X75/LAPB with UI-frames.
 .br
-2 = X75/LAPB with BUI-frames.
+ 2 = X75/LAPB with BUI-frames.
 .br
-3 = HDLC.
+ 3 = HDLC.
 .br
-4 = TRANSPARENT.
+ 4 = TRANSPARENT.
+.br
+10 = Analog Modem. (only if hardware supports this)
 .TP
 .BR 15 " (default 0)"
 Layer-3 protocol.
