@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.42 1998/09/27 11:47:21 akool Exp $
+## $Id: Makefile.in,v 1.43 1998/10/03 18:05:48 akool Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,12 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.43  1998/10/03 18:05:48  akool
+##  - processor.c, takt_at.c : Patch from Michael Reinelt <reinelt@eunet.at>
+##    try to guess the zone of the calling/called party
+##
+##  - isdnrep.c : cosmetics (i hope, you like it, Stefan!)
+##
 ## Revision 1.42  1998/09/27 11:47:21  akool
 ## fix segfault of isdnlog after each RELASE
 ##
@@ -339,7 +345,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 2.99.32
+VERSION     = 2.99.33
 
 ifeq ($(POSTGRES),1)
 DEFS       += -DPOSTGRES

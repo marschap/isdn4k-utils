@@ -1,4 +1,4 @@
-/* $Id: takt_at.c,v 1.1 1998/09/26 18:29:22 akool Exp $
+/* $Id: takt_at.c,v 1.2 1998/10/03 18:06:03 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,12 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: takt_at.c,v $
+ * Revision 1.2  1998/10/03 18:06:03  akool
+ *  - processor.c, takt_at.c : Patch from Michael Reinelt <reinelt@eunet.at>
+ *    try to guess the zone of the calling/called party
+ *
+ *  - isdnrep.c : cosmetics (i hope, you like it, Stefan!)
+ *
  * Revision 1.1  1998/09/26 18:29:22  akool
  *  - quick and dirty Call-History in "-m" Mode (press "h" for more info) added
  *    - eat's one more socket, Stefan: sockets[3] now is STDIN, FIRST_DESCR=4 !!
@@ -291,7 +297,6 @@ double taktlaenge(int chan, char *description)
   time_t      connect;
   double      takt;
   
-  zone = -1;
   if (description) description[0] = '\0';
   provider = call[chan].provider;
   connect = call[chan].connect;
@@ -303,16 +308,26 @@ double taktlaenge(int chan, char *description)
   if (*call[chan].num[1] == '\0')
     return -1;
  
-  if ((c = call[chan].confentry[OTHER]) > -1)
+  if ((zone = call[chan].zone) == 0) {
+    zone = -1;
+    if ((c = call[chan].confentry[OTHER]) > -1) {
     zone = known[c]->zone;
-  
   if (zone < 1 || zone > 30) 
-    return -1;
-  
+	zone=-1;
+    }
   call[chan].zone = zone;
+  }
+  
+  if (zone < 0)
+    return -1;
  
   fenster = zeitzone[tarifzeit(tm, why)][tm->tm_hour];
+  
+  if (faktor[zone-1][fenster] == 0.0)
+    return -1;
+  
   takt = 72.0/faktor[zone-1][fenster];
+  
   if (description) sprintf(description, "%s, %s, %s", z2s(zone), why, t2tz(fenster));
   
   return (takt);

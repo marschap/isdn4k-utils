@@ -1,4 +1,4 @@
-/* $Id: isdnrep.c,v 1.44 1998/10/03 15:21:48 luethje Exp $
+/* $Id: isdnrep.c,v 1.45 1998/10/03 18:06:35 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -24,6 +24,12 @@
  *
  *
  * $Log: isdnrep.c,v $
+ * Revision 1.45  1998/10/03 18:06:35  akool
+ *  - processor.c, takt_at.c : Patch from Michael Reinelt <reinelt@eunet.at>
+ *    try to guess the zone of the calling/called party
+ *
+ *  - isdnrep.c : cosmetics (i hope, you like it, Stefan!)
+ *
  * Revision 1.44  1998/10/03 15:21:48  luethje
  * isdnrep: some bugfixes in output functions
  *
@@ -983,7 +989,7 @@ static int print_bottom(double unit, char *start, char *stop)
 	{
 		if ((j == DIALOUT && !incomingonly) || (!outgoingonly && j == DIALIN))
 		{
-			sprintf(string,"%s Summary for %s",j==DIALOUT?"DIALOUT":"DIALIN",
+			sprintf(string, "%s Summary for %s", (j == DIALOUT) ? "Outgoing calls (calling:)" : "Incoming calls (called by:)",
 			              print_diff_date(start,stop));
 
 			h_percent = 80.0;

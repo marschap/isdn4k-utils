@@ -1,4 +1,4 @@
-/* $Id: processor.c,v 1.26 1998/09/27 11:47:28 akool Exp $
+/* $Id: processor.c,v 1.27 1998/10/03 18:05:55 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,12 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.27  1998/10/03 18:05:55  akool
+ *  - processor.c, takt_at.c : Patch from Michael Reinelt <reinelt@eunet.at>
+ *    try to guess the zone of the calling/called party
+ *
+ *  - isdnrep.c : cosmetics (i hope, you like it, Stefan!)
+ *
  * Revision 1.26  1998/09/27 11:47:28  akool
  * fix segfault of isdnlog after each RELASE
  *
@@ -642,7 +648,7 @@ static void buildnumber(char *num, int oc3, int oc3a, char *result, int version,
                 break;
 
     case 0x10 : if (version != VERSION_1TR6)
-                  strcpy(result, "00");      /* 001 International */
+                  strcpy(result, countryprefix);  /* 001 International */
                 break;
 
     case 0x20 : if (version != VERSION_1TR6)
@@ -1976,7 +1982,8 @@ static void decode(int chan, register char *p, int type, int version)
                           tx = cur_time - call[chan].connect;
 
                           if ((c = call[chan].confentry[OTHER]) > -1) {
-                            tack = cheap96(cur_time, known[c]->zone, &zeit);
+                            /* tack = cheap96(cur_time, known[c]->zone, &zeit); */
+			    tack = taktlaenge (chan, NULL);
                             err  = call[chan].tick - tx;
                             call[chan].tick += tack;
 
@@ -2046,6 +2053,20 @@ static void decode(int chan, register char *p, int type, int version)
                             } /* if */
                           }
                           else if (-n > 1) { /* try to guess Gebuehrenzone */
+#ifdef ISDN_AT
+			    px="";
+			    err=60*60*24*365; /* sehr gross */
+			    for (c = 1; c < 31; c++) {
+			      call[chan].zone=c;
+			      tack = (-n-1) * taktlaenge (chan, NULL);
+			      if ((tack > 0) && (abs(tack - tx)<err)) {
+				call[chan].tick = tack;
+				err = abs(tack) - tx;
+				px = z2s(c);
+			      }
+			    }
+			    call[chan].zone=-1;
+#else
                             tack = 0;
                             err = 0;
                             px = "";
@@ -2071,7 +2092,7 @@ static void decode(int chan, register char *p, int type, int version)
                                 break;
                               } /* if */
                             } /* for */
-
+#endif
                             if (message & PRT_SHOWTICKS)
                               sprintf(s, "%d.EH %s %s (%s %d %s?) C=%s",
                                 abs(call[chan].aoce),
@@ -2347,13 +2368,6 @@ static void decode(int chan, register char *p, int type, int version)
 
                     call[chan].screening = (oc3a & 3);
 
-#ifdef ISDN_AT
-		    /* in Österreich wird + als 00 signalisiert */
-		    if ((oc3 & 0x10) && s[0]=='0' && s[1]=='0') {
-		      s[0]='+';
-		      memmove (s+1, s+2, strlen(s+1));
-		    }
-#endif
                     strcpy(call[chan].onum[CALLING], s);
                     buildnumber(s, oc3, oc3a, call[chan].num[CALLING], version, &call[chan].provider, &call[chan].sondernummer);
 

@@ -1,4 +1,4 @@
-/* $Id: takt_nl.c,v 1.1 1998/09/26 18:29:44 akool Exp $
+/* $Id: takt_nl.c,v 1.2 1998/10/03 18:06:27 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -357,7 +357,7 @@ float taktlaenge(int chan, char *description)
   auto	   float      takt;
 
 
-  *description = 0;
+  if (description) *description = 0;
 
   if (!call[chan].dialin && *call[chan].num[1]) {
 
@@ -396,7 +396,7 @@ float taktlaenge(int chan, char *description)
 
     if (call[chan].sondernummer != -1) {
       switch (SN[call[chan].sondernummer].tarif) {
-        case  0 : sprintf(description, "FreeCall");  /* Free of charge */
+        case  0 : if (description) sprintf(description, "FreeCall");  /* Free of charge */
               	  return(60 * 60 * 24);              /* one day should be enough ;-) */
 
         case  1 : zone = 1;                          /* CityCall */
@@ -411,7 +411,7 @@ float taktlaenge(int chan, char *description)
     	    	  else
     	    	    takt = SN[call[chan].sondernummer].takt2;
 
-                  strcpy(description, SN[call[chan].sondernummer].sinfo);
+                  if (description) strcpy(description, SN[call[chan].sondernummer].sinfo);
 		  return(takt);
                   break;
 
@@ -442,7 +442,7 @@ float taktlaenge(int chan, char *description)
 
   if ((provider == 19) || (provider == 33)) {
         takt = gebuehr[(provider == 33) ? DTAG : MOBILCOM][zeit[tm->tm_hour]][tarifzeit(tm, why)][zone];
-    sprintf(description, "%s, %s, %s", zeiten[zeit[tm->tm_hour]], why, zonen[zone]);
+	if (description) sprintf(description, "%s, %s, %s", zeiten[zeit[tm->tm_hour]], why, zonen[zone]);
         return(takt);
       }
       else
