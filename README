@@ -1,5 +1,5 @@
 #
-# $Id: README,v 1.6 1997/05/25 23:36:24 fritz Exp $
+# $Id: README,v 1.7 1997/10/26 23:23:00 fritz Exp $
 #
 This is the README file for the "isdn4k-utils" package from "The i4l-crew".
 
@@ -13,6 +13,7 @@ This package contains the following stuff:
   hisaxctrl,  setup utility for the HiSax driver.
   pcbitctl,   setup utility for the pcbit driver.
   avmcapictrl setup utility for the avmb1 driver.
+  actctrl     setup utility for the act2000 driver.
 
 2. Tools for monitoring activity:
   imon,       a ncurses based utility for monitoring ISDN-activities.
@@ -31,9 +32,9 @@ This package contains the following stuff:
   A very detailed FAQ and the generic manpages ttyI.4, isdninfo.4,
   isdn_audio.4 and isdn_cause.7.
   Manpages for the above utilities:
-  avmcapictrl.8, hisaxctrl.8 icnctrl.8, imon.8, ipppd.8, ipppstats.8,
-  iprofd.8, isdnctrl.8, isdnlog.8, isdnrep.1, telesctrl.8, xisdnload.1x
-  and xmonisdn.1x
+  actctrl.8 avmcapictrl.8, hisaxctrl.8 icnctrl.8, imon.8, ipppd.8,
+  ipppstats.8, iprofd.8, isdnctrl.8, isdnlog.8, isdnrep.1, telesctrl.8,
+  xisdnload.1x and xmonisdn.1x
 
 COPYRIGHT/COPYING:
 
@@ -55,15 +56,15 @@ COPYRIGHT/COPYING:
 System prerequisites:
 
   To use this package, you need a kernel with an ISDN-subsystem configured.
-  To get a such a kernel, take a clean standard-kernel (> Version 2.0.29 or
-  > 2.1.26 resp.) enable the isdn-related features you want and build the
+  To get a such a kernel, take a clean standard-kernel (Version 2.0.31 or
+  > 2.1.57 resp.) enable the isdn-related features you want and build the
   kernel as usual. If applicable some patches may be needed
 
   isdn-patches are available at
 
      ftp.franken.de:/pub/isdn4linux
 
-  For using modularised parts of the ISDN-subsystem, newest modutils
+  For using modularized parts of the ISDN-subsystem, newest modutils
   are strongly recommended.
 
 3. Configuration, Compilation.
