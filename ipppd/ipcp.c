@@ -17,7 +17,7 @@
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-char ipcp_rcsid[] = "$Id: ipcp.c,v 1.6 1999/06/21 13:28:45 hipp Exp $";
+char ipcp_rcsid[] = "$Id: ipcp.c,v 1.7 2000/01/10 21:22:56 kai Exp $";
 
 /*
  * TODO:
@@ -91,6 +91,8 @@ static void ipcp_input __P((int, u_char *, int));
 static void ipcp_protrej __P((int));
 static int  ipcp_printpkt __P((u_char *, int,
                    void (*) __P((void *, char *, ...)), void *));
+
+static void create_resolv __P((u_int32_t, u_int32_t));
 
 struct protent ipcp_protent = {
     PPP_IPCP,
@@ -1127,19 +1129,25 @@ static void ipcp_up(fsm *f)
 	}
 
 	script_unsetenv_prefix("MS_DNS");
-
-    if ( go->dnsaddr[0] )
-		script_setenv("MS_DNS1", ip_ntoa(go->dnsaddr[0]));
-
-    if ( go->dnsaddr[1] )
-		script_setenv("MS_DNS2", ip_ntoa(go->dnsaddr[1]));
+	if (go->dnsaddr[0] || go->dnsaddr[1]) {
+		script_setenv("USEPEERDNS", "1");
+		if (go->dnsaddr[0]) {
+			script_setenv("DNS1", ip_ntoa(go->dnsaddr[0]));
+			script_setenv("MS_DNS1", ip_ntoa(go->dnsaddr[0]));
+		}
+		if (go->dnsaddr[1]) {
+			script_setenv("DNS2", ip_ntoa(go->dnsaddr[1]));
+			script_setenv("MS_DNS2", ip_ntoa(go->dnsaddr[1]));
+		}
+		create_resolv(go->dnsaddr[0], go->dnsaddr[1]);
+	}
 
 	script_unsetenv_prefix("MS_WINS");
 
-    if ( go->winsaddr[0] )
+	if ( go->winsaddr[0] )
 		script_setenv("MS_WINS1", ip_ntoa(go->winsaddr[0]));
 
-    if ( go->winsaddr[1] )
+	if ( go->winsaddr[1] )
 		script_setenv("MS_WINS2", ip_ntoa(go->winsaddr[1]));
 
     /*
@@ -1408,3 +1416,29 @@ int ipcp_printpkt(u_char *p,int plen,void (*printer) __P((void *, char *, ...)),
 }
 
 
+/*
+ * create_resolv - create the replacement resolv.conf file
+ */
+static void
+create_resolv(peerdns1, peerdns2)
+    u_int32_t peerdns1, peerdns2;
+{
+    FILE *f;
+
+    f = fopen(_PATH_RESOLV, "w");
+    if (f == NULL) {
+	syslog(LOG_ERR, "Failed to create %s: %m", _PATH_RESOLV);
+        return;
+    }
+
+    if (peerdns1)
+        fprintf(f, "nameserver %s\n", ip_ntoa(peerdns1));
+
+    if (peerdns2)
+        fprintf(f, "nameserver %s\n", ip_ntoa(peerdns2));
+
+    if (ferror(f))
+        syslog(LOG_ERR, "Write failed to %s: %m", _PATH_RESOLV);
+
+    fclose(f);
+}
