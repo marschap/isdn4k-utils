@@ -84,6 +84,7 @@ struct protos protonames[] = {
  { 0xc025,"Link Quality Report" },
  { 0xc027,"Shiva Password Authentication Protocol" },
  { 0xc029,"CallBack Control Protocol (CBCP)" },
+ { 0xc02b,"BACP Bandwidth Allocation Control Protocol" },
  { 0xc081,"Container Control Protocol" },
  { 0xc223,"Challenge Handshake Authentication Protocol" },
  { 0xc225,"RSA Authentication Protocol" },
