@@ -9,7 +9,7 @@ SHELL			= /bin/sh
 CFLAGS			= -Wall -g
 INCLUDES		=
 LDFLAGS			= @DBMLIB@
-DBEXT			= @DBEXT@
+export DBEXT		= @DBEXT@
 RDBEXT			= @RDBEXT@
 CDBEXTRALIBS		= @CDBEXTRALIBS@
 PROGRAM			= dest
@@ -70,7 +70,7 @@ clean:
 	rm -f *.o *~ $(PROGRAM)
 
 dataclean:
-	rm -f *.gdbm *.db *.cdb
+	rm -f *.gdbm *.db *.cdb *.cdb.dump
 
 distclean: clean dataclean
 	rm -f config.status config.cache config.log *.man Makefile
@@ -81,12 +81,34 @@ ifeq ($(CONFIG_ISDN_LOG_CC_EN),y)
 DEST_LANG= -en
 endif
 
-data:
-ifeq ($(DBEXT),.cdb)
-	@if [ -e dest.cdb.dump ] ; then \
-	    rm dest.cdb.dump ; \
-	fi
+# set source dependencies for destination database
+#  works only for data when $(DBEXT) = .cdb, otherwhise existing destination
+#  database blocks rebuilding and requires a manual make dataclean before.
+DEST_SRC_GLOBAL		:= ../../country-de.dat cities.dat
+DEST_SRC_ALLNATIONAL	:= $(shell ls ../zone/??/code)
+DEST_SRC_NATIONAL	:=
+ifeq ($(CONFIG_ISDN_LOG_DEST_AT),y)
+DEST_SRC_NATIONAL	+= ../zone/at/code
 endif
+ifeq ($(CONFIG_ISDN_LOG_DEST_DE),y)
+DEST_SRC_NATIONAL	+= ../zone/de/code
+endif
+ifeq ($(CONFIG_ISDN_LOG_DEST_NL),y)
+DEST_SRC_NATIONAL	+= ../zone/nl/code
+endif
+ifeq ($(CONFIG_ISDN_LOG_DEST_CH),y)
+DEST_SRC_NATIONAL	+= ../zone/ch/code
+endif
+
+ifeq ($(DBEXT),.cdb)
+data: dest.cdb
+
+# allow explicit request for dest.gbdm with configured DBEXT=".cdb"
+dest.gdbm: $(DEST_SRC_GLOBAL) $(DEST_SRC_NATIONAL)
+	$(MAKE) DBEXT=".gdbm" data
+
+else
+data: $(DEST_SRC_GLOBAL) $(DEST_SRC_NATIONAL)
 	@if [ ! -e dest$(DBEXT) ] ; then \
 	./makedest -v $(DEST_LANG) ; \
 	./makedest -v -gcities.dat -a $(DEST_LANG) ; \
@@ -103,16 +125,36 @@ endif
 		./makedest -v -a ch || true; \
 	fi ; \
 	fi
-ifeq ($(DBEXT),.cdb)
-	@if [ ! -e dest.cdb ] ; then \
-	    echo "" >> dest.cdb.dump ; \
-	    echo Running cdbmake ; \
-	    ../cdb/cdbmake < dest.cdb.dump dest.cdb dest.temp ; \
-	    rm dest.cdb.dump ;\
-	fi
 endif
 
-alldata:
+dest.cdb: $(DEST_SRC_GLOBAL) $(DEST_SRC_NATIONAL)
+	@echo "Building destination database $@ ..."
+	@if [ -e dest.cdb.dump ] ; then \
+		rm dest.cdb.dump ; \
+	fi;
+	@if [ -e dest.cdb ] ; then \
+		rm dest.cdb ; \
+	fi;
+	./makedest -v $(DEST_LANG)
+	./makedest -v -gcities.dat -a $(DEST_LANG)
+ifeq ($(CONFIG_ISDN_LOG_DEST_AT),y)
+	./makedest -v -a at
+endif
+ifeq ($(CONFIG_ISDN_LOG_DEST_DE),y)
+	./makedest -v -a de
+endif
+ifeq ($(CONFIG_ISDN_LOG_DEST_NL),y)
+	./makedest -v -a nl
+endif
+ifeq ($(CONFIG_ISDN_LOG_DEST_CH),y)
+	./makedest -v -a ch || true
+endif
+	@echo "" >> dest.cdb.dump
+	../cdb/cdbmake < dest.cdb.dump dest.cdb dest.temp
+	@rm dest.cdb.dump
+	@echo "$@ complete."
+
+alldata: $(DEST_SRC_GLOBAL) $(DEST_SRC_ALLNATIONAL)
 ifeq ($(DBEXT),.cdb)
 	if [ -e dest.cdb.dump ] ; then \
 	    rm dest.cdb.dump ; \

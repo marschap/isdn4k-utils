@@ -1,11 +1,26 @@
 #! /usr/bin/perl
 
+# This version of pp_rate originates from rates4linux:
+# $Id: pp_rate,v 1.6 2003/07/25 21:23:15 tobiasb Exp $
+# The rates4linux homepage: http://www.sourceforge.net/projects/rates4linux/
+# It bases on Rev. 1.5 of isdn4k-utils/isdnlog/tools/dest/pp_rate
+# in the CVS at http://www.isdn4linux.de.
+#
+
 use wld;
 use strict;
 use IO::File;
 $|=1;
-use vars qw( %names $COUNTRY %myalias );
+use vars qw( %names $COUNTRY %myalias $co_dat );
 $COUNTRY = '../country';
+$COUNTRY = '' unless (-x $COUNTRY); 	# disable country query if not available
+# unique global determination of countryfile to use:
+# The guessed filename country.dat works used within rates4linux.
+$co_dat = '';
+eval 'use i4lconf; $co_dat = locate_countryfile(\'country.dat\');';
+unless ($co_dat) {		# old behaviour as last ressort
+    $co_dat = '/usr/lib/isdn/country-de.dat';
+}	
 
 &get_country;
 &get_alias;
@@ -24,7 +39,6 @@ sub get_country {
 	    $names{lc $a}=$key;
 	}
     }
-    my $co_dat = '/usr/lib/isdn/country-de.dat';
     open(IN,$co_dat) || die("Cant read $co_dat");
     while (<IN>) {
 	chomp;
@@ -44,7 +58,7 @@ sub get_country {
     }
     &add1;
     close IN;
-    print "$nn Countrys $na Aliases loaded\n";
+    print "$nn Countrys $na Aliases loaded from $co_dat\n";
 }
 
 sub get_alias {
@@ -126,7 +140,11 @@ ragain:
 	}
 	elsif (/^A:(.*)/) {
 	    $a=$1;
-	    $a =~ s/\s*#.*$//;
+	    my $acmt = '';
+	    if ( $a =~ s/(\s*#.*$)// ) { 	# preserve comments in A: lines
+		$acmt = $1;
+		$acmt = '' unless ( $acmt =~/#\s*\S/ ); 	# only non-empty
+	    }
 	    $a =~ s/[,\s]+$//;
 	    @a=split(/\s*,\s*/, $a);
 	    foreach $c (@a) {
@@ -155,11 +173,13 @@ again:
 		    }
 		    else {
 		    	foreach $name (keys(%names)) {
-				if (($r=wld($name,$c)) < $m) {
+			    if (($r=wld($name,$c,$m)) < $m) {
 			    	$m=$r; $tf=$name;
+				print "\r'$c' searching (d<$m) ..";
 			    	last if($m==0);
 			    }
 			}
+			print "\r'$c'";
 		    }
 		    if ($tf && $m<=1) {
 			push(@keys,$names{$tf});
@@ -168,8 +188,9 @@ again:
 			print " -> $tf\n";
 		    }
 		    else {
+choice:
 			my($x);
-			print "\nLine $l: $c => $tf  ($m)\n ? [j,q,[+|=]...,/] : ";
+			print "\nLine $l: $c => $tf  ($m)\n ? [j,q,i,[+|=]...,/] : ";
 			$x = <STDIN>;
 			chomp($x);
 			if ($x =~ /^=(.*)/) {
@@ -181,8 +202,8 @@ again:
 			    goto again;
 			}
 			elsif ($x =~ /^\/(.*)/) {
-			    print `grep -3 -i $1 /usr/lib/isdn/country-de.dat`;
-			    goto again;
+			    print `grep -3 -i $1 $co_dat`;
+			    goto choice;
 			}
 			if ($x eq 'j') {
 			    $c = $tf;
@@ -193,16 +214,21 @@ again:
 			elsif ($x eq 'h') {
 			    print "j	=> Vorschlag annehmen\n";
 			    print "q	=> abbrechen\n";
-			    print "n	=> unbekannt ignorieren (gilt dann fuer die gesamte Datei)\n";
+			    print "n	=> [ohne Funktion] unbekannt ignorieren (gilt dann fuer die gesamte Datei)\n";
+			    print "i	=> Eintrag ignorieren\n";
 			    print "+xx	=> xx an unbekannt anhaengen\n";
 			    print "= SO => SO uebernehmen\n";
 			    print "=	=> unbekannt uebernehmen\n";
-			    print "/xx	=> in country-de.dat nach xx greppen\n";
+			    $co_dat =~ m{/([^/]*)$};
+			    print "/xx	=> in $1 nach xx greppen\n";
 			    print "xx	=> xx ausprobieren\n";
-			    goto again;
+			    goto choice;
 			}
 			elsif ($x eq 'q') {
 			    exit;
+			}
+			elsif ($x eq 'i') {
+			    next;
 			}
 			else {
 			    $c = $x;
@@ -211,7 +237,7 @@ again:
 		    }
 		}   # else found
 	    } # foreach
-	    $outf[$wrinclude]->print ("A:", join(',',@keys),"\n") || die("can' write");
+	    $outf[$wrinclude]->print ("A:", join(',',@keys),"$acmt\n") || die("can' write");
 	} # if A
 	else {
 	    $outf[$wrinclude]->print( $_);
