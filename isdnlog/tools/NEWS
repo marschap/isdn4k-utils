@@ -1,5 +1,16 @@
 NEWS for tools: (rate, isdnrate, isdnrep)
 
+
+1999.11.30
+  isdnrate:
+    new option -s shows services
+    e.g.
+     isdnrate -s Internet
+
+1999.11.28
+  isdnrate:
+    new option -o shows only booked providers
+
 1999.11.08
   all utils:
   initRate reads now all provider-variants.
@@ -14,28 +25,28 @@ NEWS for tools: (rate, isdnrate, isdnrep)
     e.g.
 
       isdnrate -ZX 19430
-      
+
   rate.c / getLeastCost
     if number is  a special number, this function looks at the service
     and performs LCR for all numbers listet in this service.
-    So its possible now to find the cheapest online number / provider. 
+    So its possible now to find the cheapest online number / provider.
 
 1999.10.21
   Destination DB runs with isdnrate / isdnlog
   Removed a lot of country-specific stuff in various files
-  
+
   all
-    new entries in isdn.conf section 
+    new entries in isdn.conf section
       [ISDNLOG]
       DESTFILE=/usr/lib/isdn/dest.gdbm
       VBN=Providerselection-Prefix (DE 010, AT 10, NL 16:17)
       VBNLEN=Number of digits following VBN (DE 2:3, AT 2, NL 1 ??, FR 1)
       PRESELECTED=provider# (DE 33, AT 1, NL 999)
       s. isdnlog/samples or isdnlog/README
-  
-  isdnrep.c    
+
+  isdnrep.c
      shows now zone names from rate-CC.dat
-      
+
   isdnrate.c
     new option -N
       show info about number parsing
@@ -52,7 +63,7 @@ NEWS for tools: (rate, isdnrate, isdnrep)
 
 1999.09.07
   rate-CC.dat: Syntaxerweiterung im C:Tag
-  
+
       C:TarifChanged:dd.mm.yyyy
           (Datum der letzten Tarifwartung)
 
@@ -61,16 +72,16 @@ NEWS for tools: (rate, isdnrate, isdnrep)
     telrate.cgi:
       uses now gd 1.6.3, GD 1.21  with PNG instead of GIF
       (smaller, no licence troubles)
-      
+
       requires
         gd 1.6.3 which
            requires
 	      libz, libpng
-	        (e.g. ln -s /usr/X11R6/lib/libz.so /usr/lib/libz.so 
+	        (e.g. ln -s /usr/X11R6/lib/libz.so /usr/lib/libz.so
 		    ln -s /usr/X11R6/lib/libpng.so /usr/lib/libpng.so
 		    ln -s /usr/X11R6/include/png.h /usr/local/include/png.h
 		    ln -s /usr/X11R6/include/pngconf.h /usr/local/include/pngconf.h
-		)    
+		)
     or from GD README
     Make sure you have downloaded and installed the following packages:
 
@@ -82,7 +93,7 @@ NEWS for tools: (rate, isdnrate, isdnrep)
 		http://www.cdrom.com/pub/png/
 	d. The zlib compression library:
 		http://www.cdrom.com/pub/infozip/zlib/
-		
+
     dann noch ein kleiner Patch in GD.c, weiss der Geier warum
 
 --- GD.c	Sat Sep  4 19:06:37 1999
@@ -100,18 +111,18 @@ NEWS for tools: (rate, isdnrate, isdnrep)
 @@ -2039,7 +2040,7 @@
      XSRETURN_YES;
  }
- 
+
 -
 +#if 0
  #define XSCAPI(name) void name(CV* cv, void* pPerl)
- 
+
  #ifdef __cplusplus
 @@ -2051,3 +2052,4 @@
      boot__CAPI_entry(cv);
  }
- 
+
 +#endif
-    
+
 
 1999.09.04
 
@@ -119,10 +130,10 @@ NEWS for tools: (rate, isdnrate, isdnrep)
       -p, -x take now an additional argument 'B'
       -pB ... show only business providers
       -xB ... don't show
-      
+
       The provider is considered as a business-provider if the
       C:GT:-Tag contains the string "Business" (uppercase)
-      
+
 
 1999.09.03
 
@@ -130,49 +141,49 @@ NEWS for tools: (rate, isdnrate, isdnrep)
     ...
       W:H	Feiertag
       W:*	Immer 		# APPEND THIS
-      
+
     Hat ein Provider jeden Tag den gleichen Tarif (T:*/...) wird nun statt
     dem Wochentag 'Immer' ausgegeben. Damit ist eine klarere Unterscheidung
-    zu Providern mit tagesabhaengigen Tarifen gegeben.  
-    
+    zu Providern mit tagesabhaengigen Tarifen gegeben.
 
-1999.09.01  
+
+1999.09.01
 
   Neues Feld in struct RATE
       double Sales; (Mindestgesprächsgebühr)
-  
+
   rate-CC.dat: Syntaxerweiterung im T:Tag
- 
+
       T:*.*=0.30|2.20(60)/1
-          Mindestens 0.30, sonst 2.20 per Minute 
-      
+          Mindestens 0.30, sonst 2.20 per Minute
+
       aber:
-      
+
       T:*.*=0.30/0,2.20(60/1
           0.30 + 2.20/Min (0.30 = Herstellungsgebühr)
-  
+
   rate-CC.dat: Syntaxerweiterung im C:Tag
- 
+
       gleichlautende C:Tags werden per '\n' appended
-      
+
   telnum.c:
-      Dirty hack fuer +1, +7  (s. _getCountry...)    
-      
+      Dirty hack fuer +1, +7  (s. _getCountry...)
+
   isdnrate.c:
       Neue Option -S[v|n] (sort VBN oder Name statt Preis)
-      
+
       z.B.
-          isdnrate -C -Sv -XHomepage      
+          isdnrate -C -Sv -XHomepage
 	  (sortierte Proiderliste mit Homepage)
 
-  
-  
+
+
 1999.08.24
 
   rate-CC.dat: Syntaxerweiterung im C:Tag
-  
+
     folgende C:-Tags sind dzt. in Verwendung:
-    
+
     C:Name:Provider-Firmenbezeichnung
     C:Address:Provider-Adresse
     C:Homepage:http://www.provider.CC
@@ -190,37 +201,37 @@ NEWS for tools: (rate, isdnrate, isdnrep)
 	z.B.
 	C:GT:99 Mindestumsatz (per Monat)
 	C:GF:Cost = Ch > 99 ? 0 : 99
-	
+
 	C:GT:Businesskunden ab 5000 Umsatz
 	C:GF:Ch >= 5000 ? 1 : -1
-	
+
 	C:GT:Freischaltgebühr einmalig 480
 	C:GF:Cost = 480/12
-	
-    Vom telrate.cgi sind dzt. die Variablen 
+
+    Vom telrate.cgi sind dzt. die Variablen
 	'Ch' ... Kosten pro Mix
 	'MaxCh' ... Teuerste Spalte im Mix
 	'Cost' ... Angefallenen Kosten
     definiert.
-    
-    Ist der Rückgabewert (i.e. die letzte Expression) -1, wird der 
-    Provider verworfen (z.B. Mindestumsatz nicht erreicht).
-    
-    
-  isdnrate:    
 
-      isdnrate -D2 
+    Ist der Rückgabewert (i.e. die letzte Expression) -1, wird der
+    Provider verworfen (z.B. Mindestumsatz nicht erreicht).
+
+
+  isdnrate:
+
+      isdnrate -D2
           begibt sich nach dem Starten in den Hintergund
-      isdnrate -CX9 Argentinien  
+      isdnrate -CX9 Argentinien
           verbindet ich mit dem oben gestarteten Daemon und wirft die
           Tarifliste aus.
       isdnrate -CD3
-      killed den Daemon wieder      
+      killed den Daemon wieder
 
 
 1999.08.24
 
   Neues Feld in struct RATE
       double Rhythm[2]; (Takt z.B. 60,1)
-  
+
 -lt-

@@ -1,4 +1,4 @@
-/* $Id: rate.h,v 1.16 1999/11/25 22:58:40 akool Exp $
+/* $Id: rate.h,v 1.17 1999/12/01 21:47:25 akool Exp $
  *
  * Tarifdatenbank
  *
@@ -19,6 +19,31 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rate.h,v $
+ * Revision 1.17  1999/12/01 21:47:25  akool
+ * isdnlog-3.72
+ *   - new rates for 01051
+ *   - next version of isdnbill
+ *
+ *   - isdnlog/tools/telnum.c ... cleanup
+ *   - isdnlog/tools/isdnrate.c ... -s Service
+ *   - isdnlog/tools/rate.{c,h} ... -s
+ *   - isdnlog/tools/NEWS ... -s
+ *   - doc/isdnrate.man .. updated -o, -s
+ *   - doc/rate-files.man ... updated
+ *   - isdnlog/tools/dest/README.makedest ... updt.
+ *   - isdnlog/isdnlog/isdnlog.8.in .. updt.
+ *
+ *   Telrate
+ *   - isdnlog/tools/telrate/README-telrate
+ *   - isdnlog/tools/telrate/config.in 	NEW
+ *   - isdnlog/tools/telrate/configure 	NEW
+ *   - isdnlog/tools/telrate/Makefile.in 	NEW
+ *   - isdnlog/tools/telrate/index.html.in 	was index.html
+ *   - isdnlog/tools/telrate/info.html.in 	was info.html
+ *   - isdnlog/tools/telrate/telrate.cgi.in 	was telrate.cgi
+ *   - isdnlog/tools/telrate/leo.sample 	NEW sample config
+ *   - isdnlog/tools/telrate/alex.sample 	NEW sample config
+ *
  * Revision 1.16  1999/11/25 22:58:40  akool
  * isdnlog-3.68
  *  - new utility "isdnbill" added
@@ -187,6 +212,7 @@ int   initRate(char *conf, char *dat, char *dom, char **msg);
 char *getProvider(int prefix);
 int   getSpecial(char *number);
 char* getSpecialName(char *number);
+char *getServiceNum(char *name);
 char *getComment(int prefix, char *key);
 void  clearRate (RATE *Rate);
 int   getRate(RATE *Rate, char **msg);
@@ -202,4 +228,5 @@ inline int getNProvider( void );
 /* char   *prefix2provider(int prefix, char *s) is defined in telnum.h */
 char   *prefix2provider_variant(int prefix, char *s);
 int isProviderValid(int prefix, time_t when);
+inline int isProviderBooked( int i);
 #endif

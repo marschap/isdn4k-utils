@@ -1,10 +1,10 @@
 <!DOCTYPE HTML PUBLIC "-//SoftQuad Software//DTD HoTMetaL PRO 5.0::19981217::extensions to HTML 4.0//EN" "hmpro5.dtd">
- 
+
 <HTML>
 <!-- -*-html_mode-*- -->
- 
+
 <HEAD>
-<TITLE>Tel-R.at - Info</TITLE>
+<TITLE>@TITLE@ - Info</TITLE>
 <script language="JavaScript">
 <!--
 NS4 = document.layers ? 1 : 0;
@@ -43,7 +43,7 @@ h2,h3,h4,p,td,th,body { font-family:Sans Serif,Arial }
 </HEAD>
 
 <BODY BGCOLOR="#ffffe0">
-<H1 ALIGN="center">Tel-R.at - Info</H1>
+<H1 ALIGN="center">@TITLE@ - Info</H1>
 <UL>
 <LI><A HREF="#allg">Allgemein</A> </LI>
 <LI><A HREF="#help">Hilfe</A> </LI>
@@ -76,7 +76,7 @@ gew&uuml;nschten Zieles, alle anderen Felder haben eine Standardeinstellung.<BR>
 Sollten Sie weitere Information ben&ouml;tigen, klicken Sie einfach auf das<IMG SRC="help.gif" HSPACE="4"
 ALIGN="middle" ALT="Fragezeichen" WIDTH="24" HEIGHT="24"> neben dem fraglichen Feld.</P>
 <P><span class="in">E</span>ine &Uuml;bersicht &uuml;ber alle Eingabem&ouml;glichkeiten erhalten Sie <A
-HREF="/perl/telrate.cgi?help=3">hier</A>. <IMG SRC="hr.gif" WIDTH="600" HEIGHT="4" ALT="-----"> </P>
+HREF="/@CGIBIN@/telrate.cgi?help=3">hier</A>. <center><IMG SRC="hr.gif" WIDTH="600" HEIGHT="4" ALT="-----"></center> </P>
 
 <H2><A NAME="calc">Berechnungsmethode</A></H2>
 <P><span class="in">D</span>ie Berechnung der gew&uuml;nschten Verbindung erfolgt nach dem selben Takt- und Zonenmodell, wie es der jeweilige
@@ -89,7 +89,7 @@ besonders die Zonentabellen sind h&auml;ufig ein Geheimnis der Firmen.
 <BR>Wenn Sie also eine Ungenauigkeit feststellen sollten, teilen Sie <A HREF="#autor">uns</A> das bitte mit. Wir sind
 bem&uuml;ht, die Daten immer auf dem letzten Stand zu halten, was nebenbei bemerkt durch die Dynamik des Marktes nicht
 ganz einfach ist.</P>
-<P> <IMG SRC="hr.gif" WIDTH="600" HEIGHT="4" ALT="-----"> </P>
+<P> <center><IMG SRC="hr.gif" WIDTH="600" HEIGHT="4" ALT="-----"></center> </P>
 <H2><A NAME="gloss">Glossar</A></H2>
 <DL>
 <DT><span class="in">D</span>urchschnittlicher Minutenpreis</DT>
@@ -104,7 +104,7 @@ Gespr&auml;chsl&auml;nge. </DD>
 wirklichen Kosten &uuml;berein, wenn 60 durch den Takt ohne Rest teilbar ist. </DD>
 <DT><span class="in">S</span>chwund</DT>
 <DD>Die durch die Taktung oder Mindestentgelte verursachte Gespr&auml;chsgeb&uuml;hr.
-<br>Tip: versuchen Sie mal eine <a href ="/perl/telrate.cgi?tel=usa&len=5&now=on&tab=GO&_3D=on">5 Sekunden lange Verbindung in die USA</a> (z.B. es
+<br>Tip: versuchen Sie mal eine <a href ="/@CGIBIN@/telrate.cgi?tel=usa&len=5&now=on&tab=GO&_3D=on">5 Sekunden lange Verbindung in die USA</a> (z.B. es
 meldet sich der Anrufbeantworter und Sie legen auf), ob Sie 30g oder 4 Schilling zahlen,
 ist ein sch&ouml;ner Unterschied, besonders wenn das h&auml;ufiger passiert.
 <DT><span class="in">T</span>ag / Zeit</DT>
@@ -114,12 +114,12 @@ ist ein sch&ouml;ner Unterschied, besonders wenn das h&auml;ufiger passiert.
 umso genauer die Abrechnung. <BR>
 Bei einem Takt von 60 Sekunden und einer durchschnittlichen Gespr&auml;chszeit von einer Minute sind die
 Gespr&auml;chskosten im Schnitt um 50 % h&ouml;her, als bei sekundengenauer Abrechnung. </DD>
-<br>Tip: versuchen Sie folgenden <a href ="/perl/telrate.cgi?from=01&tel0=01&len0=72&oft0=50&dday0=W&tel1=01&len1=%7E72&oft1=50&dday1=W&tab=Tabelle&mix=10&best=30&takt=9999&_3D=on">Gespr&auml;chsmix</a>.
+<br>Tip: versuchen Sie folgenden <a href ="/@CGIBIN@/telrate.cgi?from=01&tel0=01&len0=72&oft0=50&dday0=W&tel1=01&len1=%7E72&oft1=50&dday1=W&tab=Tabelle&mix=10&best=30&takt=9999&_3D=on">Gespr&auml;chsmix</a>.
 <DT>Takt 60/1</DT>
 <DD>Sie zahlen auf jeden Fall die erste Minute, auch wenn sie k&uuml;rzer telefonieren, nach der ersten Minute wird
 sekundengenau abgerechnet. </DD>
 <DT>Takt <I>n</I>/<I>m</I></DT>
-<DD>Allgemein, sie zahlen zumindest <I>n</I> Sekunden, am Ende des Gespr&auml;chs ist der Takt dann <I>m</I> Sekunden. 
+<DD>Allgemein, sie zahlen zumindest <I>n</I> Sekunden, am Ende des Gespr&auml;chs ist der Takt dann <I>m</I> Sekunden.
 </DD>
 <DT><span class="in">V</span>ariabler Takt</DT>
 <DD>Die Taktl&auml;nge ist nicht konstant, sondern &auml;ndert sich mit der Tageszeit. </DD>
@@ -127,7 +127,7 @@ sekundengenau abgerechnet. </DD>
 <DD>Gebiet mit gleichen Geb&uuml;hren, von Provider zu Provider unterschiedlich. Im Inland verzichten immer mehr
 Provider auf eine Unterteilung in Zonen. </DD>
 </DL>
-<IMG SRC="hr.gif" WIDTH="600" HEIGHT="4" ALT="-----"> <H2><A NAME="autor">Pfleger der Tarifdaten</A></H2>
+<center><IMG SRC="hr.gif" WIDTH="600" HEIGHT="4" ALT="-----"></center> <H2><A NAME="autor">Pfleger der Tarifdaten</A></H2>
 <H3>&Ouml;sterreich</H3>
 <UL>
 <LI><A HREF="mailto:reinelt@eurnet.at">Michael Reinelt</A> </LI>
@@ -138,7 +138,7 @@ Provider auf eine Unterteilung in Zonen. </DD>
 <UL>
 <LI><A HREF="mailto:joe@mbs.gtn.com">Jochen Erwied</A> </LI>
 <LI><A HREF="mailto:akool@isdn4linux.de">Andreas Kool</A> </LI>
-<LI><A HREF="mailto:awkwar@digitalprojects.com">Alexander Skwar</A> </LI>
+<LI><A HREF="mailto:ASkwar@DigitalProjects.com">Alexander Skwar</A> </LI>
 </UL>
 <H3>Niederlande</H3>
 <UL>
@@ -150,16 +150,37 @@ Provider auf eine Unterteilung in Zonen. </DD>
 <LI><A HREF="mailto:reinelt@eurnet.at">Michael Reinelt</A> </LI>
 <LI><A HREF="mailto:lt@toetsch.at">Leopold T&ouml;tsch</A> </LI>
 </UL>
-<IMG SRC="hr.gif" WIDTH="600" HEIGHT="4" ALT="-----"> 
-<P> 
-<A HREF="/telrate/index.html" onmouseover="swap('start',1)" onmouseout="swap('start',0)">Startseite
-<IMG WIDTH="80" HSPACE="4" HEIGHT="40" BORDER="0" NAME="start" SRC="/telrate/start0.jpg" ALT="Startseite"></A> &nbsp;
-<A HREF="/perl/telrate.cgi" onmouseover="swap('eg',1)" onmouseout="swap('eg',0)">Einzelgespr&auml;ch
-<IMG WIDTH="80" HSPACE="4" HEIGHT="40" BORDER="0" NAME="eg" SRC="/telrate/eg0.jpg" ALT="Einzelgespr&auml;ch"></A> &nbsp;
-<A HREF="/perl/telrate.cgi?mix=10" onmouseover="swap('gm',1)" onmouseout="swap('gm',0)">Gespr&auml;chsmix
-<IMG WIDTH="80" HSPACE="4" HEIGHT="40" BORDER="0" NAME="gm" SRC="/telrate/gm0.jpg" ALT="Gespr&auml;chsmix"></A> &nbsp;
-<A HREF="/perl/telrate.cgi?list=1" onmouseover="swap('list',1)" onmouseout="swap('list',0)">Providerliste
-<IMG WIDTH="80" HSPACE="4" HEIGHT="40" BORDER="0" NAME="list" SRC="/telrate/list0.jpg" ALT="Providerliste"></A> </P>
+<center><IMG SRC="hr.gif" WIDTH="600" HEIGHT="4" ALT="-----"> </center>
+    <P>
+    <table width="100%" border=0>
+      <tr align="center">
+	<td>
+	  <A HREF="/telrate/index.html" onmouseover="swap('start',1)" onmouseout="swap('start',0)">
+	    <IMG WIDTH="80" HSPACE="4" HEIGHT="40" BORDER="0" NAME="start" SRC="/telrate/start0.jpg" ALT="Startseite"><br>
+	    <font size="-2">Startseite</font>
+	  </A>
+	</td>
+	<td>
+	  <A HREF="/@CGIBIN@/telrate.cgi" onmouseover="swap('eg',1)" onmouseout="swap('eg',0)">
+	    <IMG WIDTH="80" HSPACE="4" HEIGHT="40" BORDER="0" NAME="eg" SRC="/telrate/eg0.jpg" ALT="Einzelgespr&auml;ch"><br>
+	    <font size="-2">Einzelgespr&auml;ch</font>
+	  </a>
+	</td>
+	<td>
+	  <A HREF="/@CGIBIN@/telrate.cgi?mix=10" onmouseover="swap('gm',1)" onmouseout="swap('gm',0)">
+	    <IMG WIDTH="80" HSPACE="4" HEIGHT="40" BORDER="0" NAME="gm" SRC="/telrate/gm0.jpg" ALT="Gespr&auml;chsmix"><br>
+	    <font size="-2">Gespr&auml;chsmix</font>
+	  </a>
+	</td>
+	<td>
+	  <A HREF="/@CGIBIN@/telrate.cgi?list=1" onmouseover="swap('list',1)" onmouseout="swap('list',0)">
+	    <IMG WIDTH="80" HSPACE="4" HEIGHT="40" BORDER="0" NAME="list" SRC="/telrate/list0.jpg" ALT="Providerliste"><br>
+	    <font size="-2">Providerliste</font>
+	  </a>
+	</td>
+      </tr>
+    </table>
+    </P>
 </BODY>
 </HTML>
 

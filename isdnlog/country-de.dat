@@ -368,7 +368,7 @@ T:_RUMF
 
 N:Russische Föderat. (westl.)
 A:Russische Foderat. (westl.)
-A:Rußland (westl.), GUS (Russische Föderation), GUS
+A:Rußland (westl.), GUS (Russische Föderation), GUS, Russische Förderation West
 C:+7863, +7862, +7861, +7820, +7817, +7816, +7815, +7814
 C:+7811, +7543, +7517, +75112, +75110, +7510, +7505, +7503, +7501, +709246
 C:+709245, +709244, +709243, +709237, +7091, +7087, +7086, +7085, +7084
@@ -396,7 +396,7 @@ R:RU
 T:MOW
 
 N:Russische Forderation (ostl.)
-A:Rußland, Rußland (östl.), Russische Föderation, Russian Federation
+A:Rußland, Rußland (östl.), Russische Föderation, Russian Federation, Russische Förderation Ost
 C:+7
 T:SU
 
@@ -835,15 +835,15 @@ E:Germany
 C:+49
 T:DE
 
-N:Deutschland Mobilfunk
-C:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
-C:+491618		# T-C-Tel Voice Mail
-C:+49170,+49171,+49175	# D1
-C:+49172,+49173,+49174	# D2
-C:+49177,+49178		# Eplus
-C:+49176,+49179		# E2
-R:DE
-T:_DEMF
+# N:Deutschland Mobilfunk
+# C:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
+# C:+491618		# T-C-Tel Voice Mail
+# C:+49170,+49171,+49175	# D1
+# C:+49172,+49173,+49174	# D2
+# C:+49177,+49178		# Eplus
+# C:+49176,+49179		# E2
+# R:DE
+# T:_DEMF
 
 N:Deutschland Mobilfunk C-Tel Voice Mail
 A:C-Tel Voice Mail
@@ -854,7 +854,7 @@ T:_DEMCM
 N:Deutschland Mobilfunk C-Netz
 A:C-Netz
 C:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619
-R:_DEMF
+R:DE
 T:_DEMC
 
 N:Deutschland Mobilfunk D1

@@ -1,4 +1,4 @@
-/* $Id: rate.c,v 1.64 1999/11/28 19:32:42 akool Exp $
+/* $Id: rate.c,v 1.65 1999/12/01 21:47:25 akool Exp $
  *
  * Tarifdatenbank
  *
@@ -19,6 +19,31 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rate.c,v $
+ * Revision 1.65  1999/12/01 21:47:25  akool
+ * isdnlog-3.72
+ *   - new rates for 01051
+ *   - next version of isdnbill
+ *
+ *   - isdnlog/tools/telnum.c ... cleanup
+ *   - isdnlog/tools/isdnrate.c ... -s Service
+ *   - isdnlog/tools/rate.{c,h} ... -s
+ *   - isdnlog/tools/NEWS ... -s
+ *   - doc/isdnrate.man .. updated -o, -s
+ *   - doc/rate-files.man ... updated
+ *   - isdnlog/tools/dest/README.makedest ... updt.
+ *   - isdnlog/isdnlog/isdnlog.8.in .. updt.
+ *
+ *   Telrate
+ *   - isdnlog/tools/telrate/README-telrate
+ *   - isdnlog/tools/telrate/config.in 	NEW
+ *   - isdnlog/tools/telrate/configure 	NEW
+ *   - isdnlog/tools/telrate/Makefile.in 	NEW
+ *   - isdnlog/tools/telrate/index.html.in 	was index.html
+ *   - isdnlog/tools/telrate/info.html.in 	was info.html
+ *   - isdnlog/tools/telrate/telrate.cgi.in 	was telrate.cgi
+ *   - isdnlog/tools/telrate/leo.sample 	NEW sample config
+ *   - isdnlog/tools/telrate/alex.sample 	NEW sample config
+ *
  * Revision 1.64  1999/11/28 19:32:42  akool
  * isdnlog-3.71
  *
@@ -398,6 +423,11 @@
  * char *getSpecialName(char *number)
  *   get the Service Name of a special number
  *
+ * char *getServiceNum(char *name)
+ *   returns the first Tel-Number for Service 'name',
+ *   call it with name=NULL to get the next number
+ *   returns NULL if no mor numbers
+ *
  * void clearRate (RATE *Rate)
  *   setzt alle Felder von *Rate zurück
  *
@@ -439,6 +469,9 @@
  *
  * int isProviderValid(int prefix, time_t when)
  *   returns true, if the G:tag entries match when
+ *
+ * inline int isProviderBooked( int prefix)
+ *   returns true if Provider is booked (i.e. listed int rate.conf)
  *
  */
 
@@ -786,6 +819,10 @@ char   *prefix2provider_variant(int prefix, char *s)
 
 inline int getNProvider( void ) {
   return nProvider;
+}
+
+inline int isProviderBooked( int i) {
+  return Provider[i].booked;
 }
 
 int isProviderValid(int i, time_t when)
@@ -1590,6 +1627,24 @@ char *getSpecialName(char *number) {
       if(strmatch(Service[i].Codes[j], number)>=l)
         return Service[i].Name;
   return 0;
+}
+
+char *getServiceNum(char *name) {
+  static int serv, cod;
+  int i;
+
+  if(name && *name) {
+    for (i=0; i<nService; i++)
+      if(strcmp(name, Service[i].Name) == 0) {
+        serv=i;
+	cod=0;
+	return Service[i].Codes[0];
+     }
+     return NULL; /* Unknown Service */
+  }
+  if(++cod < Service[serv].nCode)
+    return Service[serv].Codes[cod];
+  return NULL;
 }
 
 void clearRate (RATE *Rate)

@@ -21,7 +21,7 @@
  *
  *
  * Interface
- * 
+ *
  * void initTelNum(void)
  * ---------------------
  * init the package, call this once on startup
@@ -131,13 +131,6 @@ void    initTelNum(void)
   _init();
 }				/* pre_init */
 
-#ifndef STANDALONE
-static inline int Isspace(c)
-{
-  return isspace(c) || c == '_';
-}
-#endif
-
 static int split_vbn(char **p, TELNUM * num)
 {
   int     l;
@@ -177,8 +170,8 @@ int     normalizeNumber(char *target, TELNUM * num, int flag)
 #endif
   if (flag & TN_PROVIDER)
     if (!split_vbn(&p, num)) {
-      num->nprovider = preselect;
-      Strncpy(num->provider, getProvider(preselect), TN_MAX_PROVIDER_LEN);
+      num->nprovider = pnum2prefix(preselect,0);
+      Strncpy(num->provider, getProvider(num->nprovider), TN_MAX_PROVIDER_LEN);
     }
   if (flag & TN_COUNTRY) {
     /* subst '00' => '+' */
@@ -288,23 +281,20 @@ static void _init(void)
 {
   char   *s;
 
-  clearNum(&defnum);
+  //clearNum(&defnum);
   Strncpy(defnum.area, myarea, TN_MAX_AREA_LEN);
   s = malloc(strlen(mycountry) + strlen(myarea) + 1);
   strcpy(s, mycountry);
   strcat(s, myarea);
   getDest(s, &defnum);
   Strncpy(defnum.vbn, vbn, TN_MAX_VBN_LEN);
+  defnum.nprovider=pnum2prefix(preselect,0);
+  Strncpy(defnum.provider, getProvider(defnum.nprovider), TN_MAX_PROVIDER_LEN);
 }
 
 void    clearNum(TELNUM * num)
 {
-/*  num->nprovider=UNKNOWN;
-   strcpy(num->provider,""); */
-  strcpy(num->area, "");
-  initNum(num);
-  strcpy(num->msn, "");
-  Strncpy(num->vbn, vbn, TN_MAX_VBN_LEN);
+  memcpy(num, &defnum,	sizeof(TELNUM));
 }
 
 /*     %Np .. Provider

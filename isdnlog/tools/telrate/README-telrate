@@ -1,4 +1,4 @@
-Telrate CGI 
+Telrate CGI
 ------------
 
 Telrate.cgi is a web interface to isdnrate for displaying tables & graphics of
@@ -11,8 +11,11 @@ Installation
 
  $ ./configure
  # make install
-(Sorry n/y) 
- 
+
+ run ./configure to get a list  of default options, you may override them, as
+ ./configure --cc ch --gifpng png ...
+ or look at the sample config's alex & leo.
+
 
 - Manually
 
@@ -23,7 +26,7 @@ extract index.html,info.html,pics to /usr/local/httpd/htdocs/somedir
 # tar -xzf telrate.tgz
 
 make it readable for your webserver
- 
+
 
 edit telrate.cgi:
 --------------
@@ -32,12 +35,12 @@ edit telrate.cgi:
      ( this file is actually ./tools/zone/CC/code )
  location of isdnrate (only if pipe's are used not sockets)
  location of mktemp (should be ok)
- 
+
  location of index.html, info.html, pic, (default /telrate/ under htdocs)
- 
- if your /tmp ist not writable by all users, turn of $use_sockets
+
+ if your /tmp ist not writable by all users, turn off $use_sockets
  or change the location of the unix socket in both isdnrate.c and telrate.cgi.
- 
+
  make a tmp dir below htdocs
  # mkdir /usr/local/httpd/htdocs/tmp
  # chmod 700 /usr/local/httpd/htdocs/tmp
@@ -76,24 +79,24 @@ Options +ExecCGI
 -----------------
 End Apache config
 
-  
+
  # cp telrate.cgi /usr/local/httpd/cgi-bin
  # chmod 755 /usr/local/httpd/cgi-bin/telrate.cgi
- # chmod 644 /etc/isdn/isdn.conf  
- 
+ # chmod 644 /etc/isdn/isdn.conf
+
 
 NB: telrate.cgi uses the following perl modules:
  CGI, GD, IO::Handle und Socket
- if you don't have these, point your browser to www.perl.com, 
+ if you don't have these, point your browser to www.perl.com,
  and look for CPAN mirrors near your location.
- 
- 
+
+
  index.html, info.html
  ---------------------
- 
+
 If your script-url ist not /perl/ change it to /cgi-bin in both files or
 configure apache to use /perl for your /cgi-bin.
-If you expanded to a different dir then /telrate/ you have to adjust 
+If you expanded to a different dir then /telrate/ you have to adjust
 IMG tags too.
 
 
@@ -102,8 +105,8 @@ Running the Program
 
 if $use_sockets is on, start the server instance of isdnlog/bin/isdnrate with
 options -D2 [-v]
-as soon as you see "Setup sockets" and "Going background" you can point 
-your browser to 
+as soon as you see "Setup sockets" and "Going background" you can point
+your browser to
 
 /telrate/index.html
 
