@@ -1,4 +1,4 @@
-/* $Id: isdnrep.c,v 1.6 1997/03/31 22:43:15 luethje Exp $
+/* $Id: isdnrep.c,v 1.7 1997/04/03 22:30:02 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -20,6 +20,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnrep.c,v $
+ * Revision 1.7  1997/04/03 22:30:02  luethje
+ * improved performance
+ *
  * Revision 1.6  1997/03/31 22:43:15  luethje
  * Improved performance of the isdnrep, made some changes of README
  *
@@ -184,7 +187,7 @@ int main(int argc, char *argv[], char *envp[])
       	       	 break;
 
       case 'f' : strcpy(fnbuff, optarg);
-                 lfnam = fnbuff;
+                 logfile = fnbuff;
                  break;
 
       case 'p' : if (!phonenumberonly) set_msnlist(optarg);

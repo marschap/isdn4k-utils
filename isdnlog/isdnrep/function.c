@@ -1,4 +1,4 @@
-/* $Id: function.c,v 1.2 1997/03/31 22:43:11 luethje Exp $
+/* $Id: function.c,v 1.3 1997/04/03 22:30:00 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -20,6 +20,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: function.c,v $
+ * Revision 1.3  1997/04/03 22:30:00  luethje
+ * improved performance
+ *
  * Revision 1.2  1997/03/31 22:43:11  luethje
  * Improved performance of the isdnrep, made some changes of README
  *
@@ -142,12 +145,12 @@ static int clear_sum(sum_calls *s1);
 static char *print_currency(int units, double money, int Format);
 static void strich(int type);
 static int n_match(char *Pattern, char* Number, char* version);
-static int set_caller_infos(one_call *cur_call, char *string);
+static int set_caller_infos(one_call *cur_call, char *string, time_t from);
 static int set_alias(one_call *cur_call, int *nx, char *myname);
-static int print_header(int lday, sum_calls *day_sum, sum_calls *day_com_sum, sum_calls *all_sum, sum_calls *all_com_sum);
-static int print_entries(one_call *cur_call, sum_calls *day_sum, sum_calls *day_com_sum, double unit, int Tarif96, int *nx, char *myname);
-static int print_bottom(sum_calls *all_sum, sum_calls *all_com_sum, sum_calls *day_sum, sum_calls *day_com_sum, double unit, char *start, char *stop);
-static char *get_time_value(time_t t, int *day, int *Tarif96, int *Tarif962, int flag);
+static int print_header(int lday);
+static int print_entries(one_call *cur_call, double unit, int *nx, char *myname);
+static int print_bottom(double unit, char *start, char *stop);
+static char *get_time_value(time_t t, int *day, int flag);
 static char **string_to_array(char *string);
 
 /*****************************************************************************/
@@ -176,23 +179,14 @@ static int	  restiusage = 0;
 static int	  restusage  = 0;
 static int 	  resteh     = 0;
 
-/*****************************************************************************/
+static int Tarif96 = 0;
+static int Tarif962 = 0;
 
-/*
-char *lfnam = LOGFILE;
-int        (*print_msg)(int Level, const char *, ...) = NULL;
-int        incomingonly = 0;
-int        outgoingonly = 0;
-int        verbose = 0;
-int        timearea = 0, phonenumberonly = 0;
-int        compute = 0;
-time_t     begintime, endtime;
-int        delentries = 0;
-int        numbers = 0;
-int        header = 1;
-char	      timestring[256] = "";
-*/
-
+static sum_calls day_sum;
+static sum_calls day_com_sum;
+static sum_calls all_sum;
+static sum_calls all_com_sum;
+  
 /*****************************************************************************/
 
 void set_print_fct_for_isdnrep(int (*new_print_msg)(int Level, const char *, ...))
@@ -204,7 +198,6 @@ void set_print_fct_for_isdnrep(int (*new_print_msg)(int Level, const char *, ...
 
 int read_logfile(char *myname)
 {
-  auto	   int 	      Tarif96 = 0, Tarif962 = 0;
   auto	   double     einheit = 0.23;
   auto	   int	      nx[2];
   auto	   time_t     now, from = 0;
@@ -215,7 +208,6 @@ int read_logfile(char *myname)
   auto     FILE      *fi, *ftmp = NULL;
   auto     char       string[BUFSIZ], s[BUFSIZ];
   one_call            cur_call;
-  sum_calls           day_sum, day_com_sum, all_sum, all_com_sum;
 
 
   clear_sum(&day_sum);
@@ -254,8 +246,8 @@ int read_logfile(char *myname)
     	/* from hat den aktuellen Tag 0.00 Uhr */
   } /* if */
 
-  if ((fi = fopen(lfnam, "r")) == (FILE *)NULL){
-  	print_msg(PRT_ERR,"Can not open file `%s': %s!\n",lfnam,strerror(errno));
+  if ((fi = fopen(logfile, "r")) == (FILE *)NULL){
+  	print_msg(PRT_ERR,"Can not open file `%s': %s!\n",logfile,strerror(errno));
   	return -1;
   }
 
@@ -267,12 +259,11 @@ int read_logfile(char *myname)
 		if (*s == '#')
 			continue;
 
-		if (set_caller_infos(&cur_call,s) != 0)
+		if (set_caller_infos(&cur_call,s,from) != 0)
 			continue;
 
 		if (!begintime)
 			begintime = cur_call.t;
-
 
 		if (timearea)
 		{
@@ -281,13 +272,7 @@ int read_logfile(char *myname)
 					fputs(string,ftmp);
 				else
 					continue;
-
-				if (cur_call.t < begintime || cur_call.t > endtime)
-					continue;
 		}
-		else
-			if (cur_call.t < from)
-				continue; /* Einlesen des naechsten Telefonats */
 
 		if (!verbose && cur_call.duration == 0)
 			continue;
@@ -302,7 +287,7 @@ int read_logfile(char *myname)
 		if (outgoingonly && cur_call.dir == DIALIN)
 			continue;
 
-		get_time_value(cur_call.t,&day,&Tarif96,&Tarif962,SET_TIME);
+		get_time_value(cur_call.t,&day,SET_TIME);
 
 		/* Andreas, warum ist diese Abfrage hier drin, warum soll das nicht moeglich
 		   sein? */
@@ -313,20 +298,20 @@ int read_logfile(char *myname)
 
 		if (day != lday) {
 			if (header)
-				print_header(lday,&day_sum,&day_com_sum,&all_sum,&day_com_sum);
+				print_header(lday);
 
 			lday = day;
 
 			if (!*start)
 			{
-				sprintf(start, "%s %s", get_time_value(0,NULL,NULL,NULL,GET_DATE),
-				                        get_time_value(0,NULL,NULL,NULL,GET_YEAR));
-				sprintf(stop, "%s %s", get_time_value(0,NULL,NULL,NULL,GET_DATE),
-				                       get_time_value(0,NULL,NULL,NULL,GET_YEAR));
+				sprintf(start, "%s %s", get_time_value(0,NULL,GET_DATE),
+				                        get_time_value(0,NULL,GET_YEAR));
+				sprintf(stop, "%s %s", get_time_value(0,NULL,GET_DATE),
+				                       get_time_value(0,NULL,GET_YEAR));
 			}
 			else
-				sprintf(stop, "%s %s", get_time_value(0,NULL,NULL,NULL,GET_DATE),
-				                       get_time_value(0,NULL,NULL,NULL,GET_YEAR));
+				sprintf(stop, "%s %s", get_time_value(0,NULL,GET_DATE),
+				                       get_time_value(0,NULL,GET_YEAR));
 		} /* if */
 
 		if (!currency_factor)
@@ -340,7 +325,7 @@ int read_logfile(char *myname)
 			else
 				einheit = currency_factor;
 
-		print_entries(&cur_call,&day_sum,&day_com_sum,einheit,Tarif96,nx,myname);
+		print_entries(&cur_call,einheit,nx,myname);
 
 	} /* while */
 
@@ -350,7 +335,7 @@ int read_logfile(char *myname)
 		lday = -1;
 
 	if (lday != -1 && header)
-		print_bottom(&all_sum, &all_com_sum, &day_sum, &day_com_sum, einheit, start, stop);
+		print_bottom(einheit, start, stop);
 
 	if (delentries) /* Erzeugt neue verkuerzte Datei */
 	{
@@ -361,9 +346,9 @@ int read_logfile(char *myname)
 			print_msg(PRT_ERR, msg1, tmpfile, strerror(errno));
 			return -1;
 		}
-		if ((fi = fopen(lfnam, "w")) == (FILE *)NULL)
+		if ((fi = fopen(logfile, "w")) == (FILE *)NULL)
 		{
-			print_msg(PRT_ERR, msg1, lfnam, strerror(errno));
+			print_msg(PRT_ERR, msg1, logfile, strerror(errno));
 			return -1;
 		}
 
@@ -381,7 +366,7 @@ int read_logfile(char *myname)
 
 /*****************************************************************************/
 
-static int print_bottom(sum_calls *all_sum, sum_calls *all_com_sum, sum_calls *day_sum, sum_calls *day_com_sum, double unit, char *start, char *stop)
+static int print_bottom(double unit, char *start, char *stop)
 {
   auto     char       string[BUFSIZ];
   register int	      i, k;
@@ -390,15 +375,15 @@ static int print_bottom(sum_calls *all_sum, sum_calls *all_com_sum, sum_calls *d
 
 	if (timearea) {
 		strich(1);
-		print_sum_calls(day_sum,0);
+		print_sum_calls(&day_sum,0);
 
-		if (day_com_sum->eh)
+		if (day_com_sum.eh)
 		{
-			print_sum_calls(day_com_sum,1);
+			print_sum_calls(&day_com_sum,1);
 
 			clear_sum(&tmp_sum);
-			add_sum_calls(&tmp_sum,day_sum);
-			add_sum_calls(&tmp_sum,day_com_sum);
+			add_sum_calls(&tmp_sum,&day_sum);
+			add_sum_calls(&tmp_sum,&day_com_sum);
 			strich(1);
 			print_sum_calls(&tmp_sum,0);
 		}
@@ -406,19 +391,19 @@ static int print_bottom(sum_calls *all_sum, sum_calls *all_com_sum, sum_calls *d
 			print_msg(PRT_NORMAL,"\n");
 	} /* if */
 
-	add_sum_calls(all_sum,day_sum);
-	add_sum_calls(all_com_sum,day_com_sum);
+	add_sum_calls(&all_sum,&day_sum);
+	add_sum_calls(&all_com_sum,&day_com_sum);
 
 	strich(2);
-	print_sum_calls(all_sum,0);
+	print_sum_calls(&all_sum,0);
 
-	if (all_com_sum->eh)
+	if (all_com_sum.eh)
 	{
-		print_sum_calls(all_com_sum,1);
+		print_sum_calls(&all_com_sum,1);
 
 		clear_sum(&tmp_sum);
-		add_sum_calls(&tmp_sum,all_sum);
-		add_sum_calls(&tmp_sum,all_com_sum);
+		add_sum_calls(&tmp_sum,&all_sum);
+		add_sum_calls(&tmp_sum,&all_com_sum);
 		strich(2);
 		print_sum_calls(&tmp_sum,0);
 	}
@@ -539,13 +524,13 @@ static int print_bottom(sum_calls *all_sum, sum_calls *all_com_sum, sum_calls *d
 
 /*****************************************************************************/
 
-static int print_entries(one_call *cur_call, sum_calls *day_sum, sum_calls *day_com_sum, double unit, int Tarif96, int *nx, char *myname)
+static int print_entries(one_call *cur_call, double unit, int *nx, char *myname)
 {
 	auto time_t  t1, t2;
 	auto double  takt;
   auto int     computed = 0, go, zone = 1, zeit = -1;
 
-	print_msg(PRT_NORMAL,"  %s %s", get_time_value(0,NULL,NULL,NULL,GET_TIME),
+	print_msg(PRT_NORMAL,"  %s %s", get_time_value(0,NULL,GET_TIME),
 	                                double2clock(cur_call->duration));
 
 	if (cur_call->dir)
@@ -614,7 +599,7 @@ static int print_entries(one_call *cur_call, sum_calls *day_sum, sum_calls *day_
 
 	if (cur_call->duration || (cur_call->eh > 0))
 	{
-		add_one_call(computed?day_com_sum:day_sum,cur_call,unit);
+		add_one_call(computed?&day_com_sum:&day_sum,cur_call,unit);
 
 		if (cur_call->dir) {
 			if (nx[CALLING] == -1) {
@@ -657,7 +642,7 @@ static int print_entries(one_call *cur_call, sum_calls *day_sum, sum_calls *day_
 		if (cur_call->cause != -1)
 		{
 			print_msg(PRT_NORMAL," %s", qmsg(TYPE_CAUSE, VERSION_EDSS1, cur_call->cause));
-			day_sum->err++;
+			day_sum.err++;
 		}
 	} /* else */
 
@@ -675,8 +660,7 @@ static int print_entries(one_call *cur_call, sum_calls *day_sum, sum_calls *day_
 
 /*****************************************************************************/
 
-static int print_header(int lday, sum_calls *day_sum, sum_calls *day_com_sum,
-                        sum_calls *all_sum, sum_calls *all_com_sum           )
+static int print_header(int lday) 
 {
   sum_calls tmp_sum;
 	time_t now;
@@ -689,37 +673,37 @@ static int print_header(int lday, sum_calls *day_sum, sum_calls *day_com_sum,
 	else
 	{
 		strich(1);
-		print_sum_calls(day_sum,0);
+		print_sum_calls(&day_sum,0);
 
-		if (day_com_sum->eh)
+		if (day_com_sum.eh)
 		{
-			print_sum_calls(day_com_sum,1);
+			print_sum_calls(&day_com_sum,1);
 
 			clear_sum(&tmp_sum);
-			add_sum_calls(&tmp_sum,day_sum);
-			add_sum_calls(&tmp_sum,day_com_sum);
+			add_sum_calls(&tmp_sum,&day_sum);
+			add_sum_calls(&tmp_sum,&day_com_sum);
 			strich(1);
 			print_sum_calls(&tmp_sum,0);
 		}
 		else
 			print_msg(PRT_NORMAL,"\n");
 
-		add_sum_calls(all_sum,day_sum);
-		clear_sum(day_sum);
+		add_sum_calls(&all_sum,&day_sum);
+		clear_sum(&day_sum);
 
-		add_sum_calls(all_com_sum,day_com_sum);
-		clear_sum(day_com_sum);
+		add_sum_calls(&all_com_sum,&day_com_sum);
+		clear_sum(&day_com_sum);
 	} /* if */
 
-	print_msg(PRT_NORMAL,"\n\n%s %s\n", get_time_value(0,NULL,NULL,NULL,GET_DATE),
-	                                    get_time_value(0,NULL,NULL,NULL,GET_YEAR));
+	print_msg(PRT_NORMAL,"\n\n%s %s\n", get_time_value(0,NULL,GET_DATE),
+	                                    get_time_value(0,NULL,GET_YEAR));
 
 	return 0;
 }
 
 /*****************************************************************************/
 
-static char *get_time_value(time_t t, int *day, int *Tarif96, int *Tarif962, int flag)
+static char *get_time_value(time_t t, int *day, int flag)
 {
 	static char time_string[3][18] = {"","",""};
 	static int  oldday = -1;
@@ -738,12 +722,12 @@ static char *get_time_value(time_t t, int *day, int *Tarif96, int *Tarif962, int
 		{
 	 		*day = tm->tm_mday;
 
-			*Tarif96 = tm->tm_year > 95;
+			Tarif96 = tm->tm_year > 95;
 
 		/* Ab Juli '96 gibt's noch mal eine Senkung in den Zonen 3 und 4
 		   genaue Preise sind jedoch noch nicht bekannt. FIX-ME */
 
-			*Tarif962 = (Tarif96 && (tm->tm_mon > 5)) || (tm->tm_year > 96);
+			Tarif962 = (Tarif96 && (tm->tm_mon > 5)) || (tm->tm_year > 96);
 
 			strftime(time_string[1],17,"%a %b %d",tm);
 			/*strftime(time_string[1],17,"%x",tm);*/
@@ -873,7 +857,7 @@ static int set_alias(one_call *cur_call, int *nx, char *myname)
 
 /*****************************************************************************/
 
-static int set_caller_infos(one_call *cur_call, char *string)
+static int set_caller_infos(one_call *cur_call, char *string, time_t from)
 {
   register int    i = 0;
   auto     char **array;
@@ -881,8 +865,16 @@ static int set_caller_infos(one_call *cur_call, char *string)
 
 	array = string_to_array(string);
 
-	if (array[0] == NULL)
+	if (array[5] == NULL)
 		return -1;
+
+	cur_call->t = atol(array[5]);
+
+	if (timearea && (cur_call->t < begintime || cur_call->t > endtime))
+		return -1;
+	else
+		if (cur_call->t < from)
+			return -1;
 
 	cur_call->eh = 0;
 	cur_call->dir = -1;
@@ -908,7 +900,7 @@ static int set_caller_infos(one_call *cur_call, char *string)
 			          break;
 			case  4 : cur_call->duration = atoi(array[i]) / 100.0;
 			          break;
-			case  5 : cur_call->t = atol(array[i]);
+			case  5 : /*cur_call->t = atol(array[i]);*/
 			          break;
 			case  6 : cur_call->eh = atoi(array[i]);
 			          break;
@@ -954,6 +946,7 @@ static char **string_to_array(char *string)
 	if ((ptr = strrchr(string,C_DELIM)) != NULL)
 		*ptr = '\0';
 
+	array[5] = NULL;
 	array[0] = string;
 
 	while((string = strchr(string,C_DELIM)) != NULL)

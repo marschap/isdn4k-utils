@@ -1,9 +1,8 @@
-/* $Id: cheap.c,v 1.2 1997/03/24 22:52:08 luethje Exp $
+/* $Id: cheap.c,v 1.3 1997/04/03 22:29:59 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (Feiertagsberechnung)
  *
  * Copyright 1995, 1997 by Andreas Kool (akool@Kool.f.EUnet.de)
- *                     and Stefan Luethje (luethje@sl-gw.lake.de)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: cheap.c,v $
+ * Revision 1.3  1997/04/03 22:29:59  luethje
+ * improved performance
+ *
  * Revision 1.2  1997/03/24 22:52:08  luethje
  * isdnrep completed.
  *
