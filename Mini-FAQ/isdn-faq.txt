@@ -136,7 +136,8 @@ germantoc
 
      Nein, nicht mit ISDN4Linux aber schon mit Linux,  Sie werden wie Modems
      behandelt.  Du brauchst also pppd und vielleicht diald.  Fragen 6, 7, 8
-     und 13 sind auch für dich relevant.
+     und 13 sind auch für dich relevant.  Bedingung: AT-Befehlssatz zur
+     Steuerung: Fritz!X-PC und Eumex 404 werden nicht unterstützt.
 
 16.  Ich habe diverse Debug-Options in ipppd und isdnctrl eingeschaltet, aber
      es erscheint nichts in der Datei /var/log/messages.
@@ -338,7 +339,9 @@ englishtoc
 
      No, they don't work with ISDN4Linux, but they do work with Linux.  You
      treat these like a modem, so you need pppd and perhaps diald.  Questions
-     6, 7, 8 and 13 still apply, using pppd instead of ipppd.
+     6, 7, 8 and 13 still apply, using pppd instead of ipppd.  Note:  AT-
+     commands must be understood by the device.  External 'winmodems' like
+     Fritz!X-PC and Eumex 404 are not supported.
 
 16.  I activated various debug options in ipppd and isdnctrl, but I don't see
      anything in /var/log/messages.
@@ -400,9 +403,9 @@ englishtoc
 Corrections and suggestions welcome, please send them directly to me,
 Erik Corry, <erik@arbat.com>.
 
-Thanks to Andreas Barth, Wolfgang Bornath, Klaus Franken, Florian Groß,
-Andre Grueneberg, Jürgen Lennefer, Eyal Lotem, Christian Otto-Lange,
-Wolfgang Schetter and Gerhard Sittig.
+Thanks to Andreas Barth, Wolfgang Bornath, Frank Derichsweiler, Klaus Franken,
+Florian Groß, Andre Grueneberg, Jürgen Lennefer, Eyal Lotem, Christian
+Otto-Lange, Wolfgang Schetter and Gerhard Sittig.
 
 -- 
 Erik Corry
