@@ -223,6 +223,24 @@ void print_area(char *area)
       } else if (strcmp(a,"0699")==0) {
 	Area[nArea].code=strdup("+43699");
 	Area[nArea].name=strdup("one");
+      } else if (strcmp(a,"07189")==0) {
+	Area[nArea].code=strdup("+437189");
+	Area[nArea].name=strdup("Online-Zone");
+      } else if (strcmp(a,"19430")==0) {
+	Area[nArea].code=strdup("+43*19430");
+	Area[nArea].name=strdup("Magnet");
+      } else if (strcmp(a,"19440")==0) {
+	Area[nArea].code=strdup("+43*19440");
+	Area[nArea].name=strdup("A-Online");
+      } else if (strcmp(a,"07189")==0) {
+	Area[nArea].code=strdup("+437189");
+	Area[nArea].name=strdup("Online-Zone");
+      } else if (strcmp(a,"19430")==0) {
+	Area[nArea].code=strdup("+43*19430");
+	Area[nArea].name=strdup("Magnet");
+      } else if (strcmp(a,"19440")==0) {
+	Area[nArea].code=strdup("+43*19440");
+	Area[nArea].name=strdup("A-Online");
       } else {
 	Area[nArea].code=strdup(findArea(a));
 	Area[nArea].name=strdup(a);
@@ -298,7 +316,7 @@ void rate_1001(void) {
 		     { "Regionalzone", "" }, 
 		     { "Fernzone 1", "" },
 		     { "Fernzone 2", "÷sterreich" },
-		     { "Online-Tarif", "+437189" },
+		     { "Online-Tarif", "07189,19430,19440" },
 		     { "Mobilfunk", "0663,0664,0676,0699" },
 		     { "Ausland Zone 1", "Deutschland, Italien, Liechtenstein, Schweiz, Slowakei, Slowenien, Tschechien, Ungarn" },
 		     { "Ausland Zone 2", "Albanien, Andorra, Belarus, Belgien, Bosnien-Herzegowina, Bulgarien, D‰nemark,Finnland, Frankreich, Groﬂbritannien, Nordirland, Irland, Jugoslawien, Serbien, Montenegro, Kroatien, Luxemburg, Malta, Mazedonien, Monaco, Niederlande, Norwegen, Rum‰nien, San Marino, Schweden, Spanien, Ukraine, Vatikanstadt, Zypern" },
@@ -1024,7 +1042,7 @@ void main (int argc, char *argv[])
   printf ("# Many thanks to Daniela Bruder <dbruder@sime.com>\n");
   printf ("# for collecting and preparing most of the call charges.\n\n\n");
 
-  printf ("V:1.21-Austria [25-Apr-1999]\n");
+  printf ("V:1.22-Austria [28-Apr-1999]\n");
 
 #if 0
   rate_1066();

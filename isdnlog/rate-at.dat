@@ -10,7 +10,7 @@
 # for collecting and preparing most of the call charges.
 
 
-V:1.21-Austria [25-Apr-1999]
+V:1.22-Austria [28-Apr-1999]
 
 P:01,1                                  Telekom Austria
 C:Tarif:                                Minimumtarif (ATS 1.116 / Impuls)
@@ -51,7 +51,9 @@ Z:4                                     Online-Tarif
 T:1-5/08-18=1.116/120                   Tageszeit
 T:1-5/18-8=1.116/360                    Sparzeit
 T:E,H/*=1.116/360                       Sparzeit
-A:+437189
+A:+43*19430                             # Magnet
+A:+43*19440                             # A-Online
+A:+437189                               # Online-Zone
 
 Z:5                                     Mobilfunk
 T:1-5/08-18=1.116/12                    Tageszeit
@@ -463,7 +465,9 @@ Z:4                                     Online-Tarif
 T:1-5/08-18=1.056/120                   Tageszeit
 T:1-5/18-8=1.056/360                    Sparzeit
 T:E,H/*=1.056/360                       Sparzeit
-A:+437189
+A:+43*19430                             # Magnet
+A:+43*19440                             # A-Online
+A:+437189                               # Online-Zone
 
 Z:5                                     Mobilfunk
 T:1-5/08-18=1.056/12                    Tageszeit
@@ -875,7 +879,9 @@ Z:4                                     Online-Tarif
 T:1-5/08-18=0.996/120                   Tageszeit
 T:1-5/18-8=0.996/360                    Sparzeit
 T:E,H/*=0.996/360                       Sparzeit
-A:+437189
+A:+43*19430                             # Magnet
+A:+43*19440                             # A-Online
+A:+437189                               # Online-Zone
 
 Z:5                                     Mobilfunk
 T:1-5/08-18=0.996/12                    Tageszeit
@@ -1287,7 +1293,9 @@ Z:4                                     Online-Tarif
 T:1-5/08-18=0.936/120                   Tageszeit
 T:1-5/18-8=0.936/360                    Sparzeit
 T:E,H/*=0.936/360                       Sparzeit
-A:+437189
+A:+43*19430                             # Magnet
+A:+43*19440                             # A-Online
+A:+437189                               # Online-Zone
 
 Z:5                                     Mobilfunk
 T:1-5/08-18=0.936/12                    Tageszeit

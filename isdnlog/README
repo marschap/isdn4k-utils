@@ -1,10 +1,10 @@
-ISDNLOG - Version 3.17 -  				17-Apr-99  15:00
+ISDNLOG - Version 3.22 -  				29-Apr-99  09:24
 
 
 isdnlog ist ein Utility zur Auswertung des D-Kanals eines
 ISDN-BRI Anschlusses.
 
-isdnlog-3.17 wurde ausgiebig mit Linux-2.0.36 getestet.
+isdnlog-3.22 wurde ausgiebig mit Linux-2.0.36 getestet.
 
 
 Fuer alle, die es nun ueberhaupt nicht mehr abwarten koennen, hier das
@@ -1151,6 +1151,7 @@ die Verneinung, also [!6])
 Es ist auch moeglich, mehrere Telefonnummern unter einem Eintrag zu setzen.
 Die einzelnen Nummern werden dann durch ein Komma getrennt.
 
+
 4.2.2 2. Eintrag: Alias [ALIAS]
 -------------------------------
 
@@ -1158,6 +1159,8 @@ In diesem Entrag steht eine beliebige Symbolische Beschreibung fuer
 diese Nummer ("Mausi", "UUnet" usw.). Diese darf Blanks enthalten!
 Wenn hier das Zeichen '#' verwendet werden soll, muss dieses gequotet
 werden mit "\#".
+Das Zeichen "|" darf auf keinen Fall verwandt werden, da es fuer interne
+Zwecke benoetigt wird!
 
 ALIAS = MSN #1
 ist falsch, dieses fuehrt zu dem Ergebnis:
@@ -2747,6 +2750,8 @@ Die Optionen von isdnrep haben im einzelnen folgende Funktion:
                      %Y: Das Jahr, vierstellig (z.B. 1997)
 
                      %D: Gespraechsdauer (z.B. 00:03:34)
+                     %j: Der Name des Providers, ueber den diese Verbindung
+                     	 gelaufen ist (der Telefon-Carrier)
                      %H: Die eigene MSN, wenn ein Eintrag in der callerid.conf
                          gefunden wurde wird dort das Alias angezeigt.
                          Es sollte die Precision angegeben werden!

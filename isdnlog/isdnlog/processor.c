@@ -1,4 +1,4 @@
-/* $Id: processor.c,v 1.57 1999/04/26 22:12:00 akool Exp $
+/* $Id: processor.c,v 1.58 1999/04/29 19:03:24 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,12 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.58  1999/04/29 19:03:24  akool
+ * isdnlog Version 3.22
+ *
+ *  - T-Online corrected
+ *  - more online rates for rate-at.dat (Thanks to Leopold Toetsch <lt@toetsch.at>)
+ *
  * Revision 1.57  1999/04/26 22:12:00  akool
  * isdnlog Version 3.21
  *
@@ -1303,7 +1309,7 @@ static void decode(int chan, register char *p, int type, int version, int tei)
 
   while (1) {
 
-    if (!*(p + 2))
+    if (!*(p - 1) || !*(p + 2))
       break;
 
     element = strtol(p += 3, NIL, 16);
@@ -1926,6 +1932,7 @@ static void decode(int chan, register char *p, int type, int version, int tei)
 
                       Q931dump(TYPE_STRING, -2, s, version);
                     } /* if */
+
 		    if (callfile && call[chan].dialin) {
 		      FILE *cl = fopen(callfile, "a");
 
@@ -2086,6 +2093,7 @@ static void decode(int chan, register char *p, int type, int version, int tei)
                         Q931dump(TYPE_STRING, c, s1, version);
                       } /* if */
                     } /* if */
+
                     px += sprintf(px, ")");
                     info(chan, PRT_SHOWNUMBERS, STATE_RING, s);
 
@@ -2328,8 +2336,8 @@ escape:             for (c = 0; c <= sxp; c++)
                       if (Q931dmp)
                         Q931dump(TYPE_STRING, sn[c], sx[c], version);
                       else
-                      if (*sx[c])
-                        info(chan, PRT_SHOWBEARER, STATE_RING, sx[c]);
+                        if (*sx[c])
+                          info(chan, PRT_SHOWBEARER, STATE_RING, sx[c]);
 
                     p = pd;
 
@@ -3446,7 +3454,7 @@ static void showRates(char *message)
   if (call[chan].Rate.Basic > 0)
     sprintf(message, "CHARGE: %s %s + %s/%ds = %s %s + %s/Min (%s)",
       currency, double2str(call[chan].Rate.Basic, 5, 3, DEB),
-      double2str(call[chan].Rate.Price - call[chan].Rate.Basic, 5, 3, DEB),
+      double2str(call[chan].Rate.Price, 5, 3, DEB),
       (int)(call[chan].Rate.Duration + 0.5),
       currency, double2str(call[chan].Rate.Basic, 5, 3, DEB),
       double2str(60 * call[chan].Rate.Price / call[chan].Rate.Duration, 5, 3, DEB),
@@ -3538,11 +3546,11 @@ static void prepareRate(int chan, char **msg, char **tip, int viarep)
     if (call[chan].tarifknown)
       showRates(message);
     else {
-      if (call[chan].Rate.zone == UNKNOWN)
-	sprintf(message, "CHARGE: Uh-oh: No zone info for provider %d, number %s",
+      if (call[chan].zone == UNKNOWN)
+	sprintf(message, "CHARGE: Uh-oh: No zone info for provider %02d, number %s",
 		call[chan].provider, call[chan].num[CALLED]);
       else
-	sprintf(message, "CHARGE: Uh-oh: No charge info for provider %d, zone %d, number %s",
+	sprintf(message, "CHARGE: Uh-oh: No charge info for provider %02d, zone %d, number %s",
 		call[chan].provider, call[chan].zone, call[chan].num[CALLED]);
     } /* else */
   } /* if */
@@ -3562,6 +3570,7 @@ static void prepareRate(int chan, char **msg, char **tip, int viarep)
 	currency, double2str(lcRate.Price, 5, 3, DEB),
 	(int)(lcRate.Duration + 0.5),
 	currency, double2str(60 * lcRate.Price / lcRate.Duration, 5, 3, DEB),
+	      /* Fixme: rückrechnen von 181 Sekunden auf 1 Minute? */
 	currency, double2str(ckRate.Charge - lcRate.Charge, 5, 3, DEB),
 	lcRate.Time);
     } /* if */

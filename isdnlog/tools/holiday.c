@@ -1,4 +1,4 @@
- /* $Id: holiday.c,v 1.9 1999/04/26 22:12:14 akool Exp $
+ /* $Id: holiday.c,v 1.10 1999/04/29 19:03:37 akool Exp $
  *
  * Feiertagsberechnung
  *
@@ -19,6 +19,12 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: holiday.c,v $
+ * Revision 1.10  1999/04/29 19:03:37  akool
+ * isdnlog Version 3.22
+ *
+ *  - T-Online corrected
+ *  - more online rates for rate-at.dat (Thanks to Leopold Toetsch <lt@toetsch.at>)
+ *
  * Revision 1.9  1999/04/26 22:12:14  akool
  * isdnlog Version 3.21
  *
@@ -242,7 +248,7 @@ static char *strip (char *s)
       *p='\0';
       break;
     }
-  for (p--; p>s && isblank(*s); p--)
+  for (p--; p>s && isblank(*p); p--)
     *p='\0';
   return s;
 }
@@ -397,26 +403,20 @@ int isDay(struct tm *tm, bitfield mask, char **name)
   char *s;
   static char buffer[BUFSIZ];
 
-  if (name)
-    *(*name=buffer)='\0';
-  
-  if (mask & (1<<EVERYDAY))
-    return EVERYDAY;
-  
   if ((mask & (1<<HOLIDAY)) && isHoliday(tm, &s)) {
-    sprintf (buffer, "%s (%s)", Weekday[HOLIDAY], s); 
+    if (name) sprintf (*name=buffer, "%s (%s)", Weekday[HOLIDAY], s); 
     return HOLIDAY;
   }
 
   day=(date2julian(tm->tm_year+1900,tm->tm_mon+1,tm->tm_mday)-6)%7+1;
 
   if ((mask & (1<<WEEKEND)) && day>5) {
-    sprintf (buffer, "%s (%s)", Weekday[WEEKEND], Weekday[day]);
+    if (name) sprintf (*name=buffer, "%s (%s)", Weekday[WEEKEND], Weekday[day]);
     return WEEKEND;
   }
   
   if ((mask & (1<<WORKDAY)) && day<6) {
-    sprintf (buffer, "%s (%s)", Weekday[WORKDAY], Weekday[day]);
+    if (name) sprintf (*name=buffer, "%s (%s)", Weekday[WORKDAY], Weekday[day]);
     return WORKDAY;
   }
   
@@ -425,7 +425,7 @@ int isDay(struct tm *tm, bitfield mask, char **name)
   }
 
   if (mask & (1<<day)) {
-    sprintf (buffer, "%s", Weekday[day]);
+    if (name) sprintf (*name=buffer, "%s", Weekday[day]);
     return day;
   }
   

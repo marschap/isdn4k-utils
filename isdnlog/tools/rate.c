@@ -1,4 +1,4 @@
-/* $Id: rate.c,v 1.10 1999/04/26 22:12:34 akool Exp $
+/* $Id: rate.c,v 1.11 1999/04/29 19:03:56 akool Exp $
  *
  * Tarifdatenbank
  *
@@ -19,6 +19,12 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rate.c,v $
+ * Revision 1.11  1999/04/29 19:03:56  akool
+ * isdnlog Version 3.22
+ *
+ *  - T-Online corrected
+ *  - more online rates for rate-at.dat (Thanks to Leopold Toetsch <lt@toetsch.at>)
+ *
  * Revision 1.10  1999/04/26 22:12:34  akool
  * isdnlog Version 3.21
  *
@@ -247,7 +253,7 @@ static char *strip (char *s)
       *p='\0';
       break;
     }
-  for (p--; p>s && isblank(*s); p--)
+  for (p--; p>s && isblank(*p); p--)
     *p='\0';
   return s;
 }
@@ -269,9 +275,22 @@ static char* str2set (char **s)
 
 static int strmatch (const char *pattern, const char *string)
 {
-  int length=0;
+  int l, length=0;
   while (*pattern) {
-    if ((*pattern!=*string && *pattern!='?') || !*string)
+    if (*pattern=='*') {
+      pattern+=strlen(pattern)-1;
+      l=strlen(string);
+      string+=l-1;
+      length+=l;
+      while (*pattern!='*') {
+	if (*pattern!=*string && *pattern!='?')
+	  return 0;
+	pattern--;
+	string--;
+      }
+      return length;
+    }
+    if ((*pattern!=*string && *pattern!='?') || *string=='\0')
       return 0;
     pattern++;
     string++;
@@ -364,7 +383,7 @@ int initRate(char *conf, char *dat, char **msg)
     booked[i]=0;
     variant[i]=UNKNOWN;
   }
-  
+
   if (conf && *conf) {
     if ((stream=fopen(conf,"r"))==NULL) {
       if (msg) snprintf (message, LENGTH, "Error: could not load rate configuration from %s: %s",
@@ -413,26 +432,26 @@ int initRate(char *conf, char *dat, char **msg)
 	  warning (conf, "trailing junk '%s' ignored.", s);
 	}
 	break;
-	
+
       default:
 	warning(conf, "Unknown tag '%c'", *s);
       }
     }
     fclose (stream);
   }
-  
+
   if (!dat || !*dat) {
     if (msg) snprintf (message, LENGTH, "Warning: no rate database specified!",
 		       conf, strerror(errno));
     return 0;
   }
-  
+
   if ((stream=fopen(dat,"r"))==NULL) {
     if (msg) snprintf (message, LENGTH, "Error: could not load rate database from %s: %s",
 		       dat, strerror(errno));
     return -1;
   }
-  
+
   line=0;
   prefix=UNKNOWN;
   while ((s=fgets(buffer,LENGTH,stream))!=NULL) {
@@ -786,8 +805,7 @@ int initRate(char *conf, char *dat, char **msg)
 	    warning(dat, "last rate must not have a delay, will be ignored!");
 	    delay=UNKNOWN;
 	  }
-	  if (divider==0.0)
-	    divider=duration;
+
 	  zp=zones;
 	  while (zp) {
 	    z=pop(&zp);
@@ -796,19 +814,22 @@ int initRate(char *conf, char *dat, char **msg)
 	    Provider[prefix].Zone[z].Hour[t].Unit=realloc(Provider[prefix].Zone[z].Hour[t].Unit, (u+1)*sizeof(UNIT));
 	    Provider[prefix].Zone[z].Hour[t].Unit[u].Duration=duration;
 	    Provider[prefix].Zone[z].Hour[t].Unit[u].Delay=delay;
-	    Provider[prefix].Zone[z].Hour[t].Unit[u].Price=price*duration/divider;
+	    if (duration!=0.0 && divider!=0.0)
+	      Provider[prefix].Zone[z].Hour[t].Unit[u].Price=price*duration/divider;
+	    else
+	      Provider[prefix].Zone[z].Hour[t].Unit[u].Price=price;
 	  }
-	  Hours++;
 	  if (*s=='/') {
 	    continue;
 	  }
+	Hours++;
 	  break;
 	}
-	  if (*s==',') {
-	    s++;
-	    continue;
-	  }
-	  break;
+	if (*s==',') {
+	  s++;
+	  continue;
+	}
+	break;
       }
       while (isblank(*s)) s++;
       zp=zones;
@@ -816,6 +837,7 @@ int initRate(char *conf, char *dat, char **msg)
 	z=pop(&zp);
 	t=Provider[prefix].Zone[z].nHour-1;
 	Provider[prefix].Zone[z].Hour[t].Name=*s?strdup(s):NULL;
+	Hours++;
       }
       break;
 
@@ -858,7 +880,7 @@ int getZone (int prefix, char *number)
   if (prefix<0 || prefix>=nProvider || !Provider[prefix].used) {
     return UNKNOWN;
   }
-  
+
   l=0;
   max=0;
   z=UNKNOWN;
@@ -867,12 +889,11 @@ int getZone (int prefix, char *number)
     if (m>max) {
       z=Provider[prefix].Area[a].Zone;
       max=m;
-    } else if (m<l)
-      return z;
+    }
     l=m;
   }
-	
-  return UNKNOWN;
+
+  return z;
 }
 
 int getRate(RATE *Rate, char **msg)
@@ -941,14 +962,15 @@ int getRate(RATE *Rate, char **msg)
       Unit=Hour->Unit;
     }
 
-    Rate->Price=Unit->Price;
-    Rate->Duration=Unit->Duration;
     Rate->Charge+=Unit->Price;
+    Rate->Duration=Unit->Duration;
     Rate->Rest+=Unit->Duration;
     now+=Unit->Duration;
     run+=Unit->Duration;
     if (run==0 && Unit->Duration==0)
       Rate->Basic=Unit->Price;
+    else
+      Rate->Price=Unit->Price;
     if (Unit->Duration>0)
       Rate->Units++;
     if (Unit->Delay!=UNKNOWN && Unit->Delay<=run)
@@ -1048,12 +1070,16 @@ void main (int argc, char *argv[])
   initRate ("/etc/isdn/rate.conf", "../rate-at.dat", &msg);
   printf ("%s\n", msg);
 
-  Rate.prefix = 66;
-  Rate.zone = 1;
+  Rate.prefix = 1;
+  Rate.zone = 4;
 
-  if (argc>1) {
+  if (argc==2) {
     z=getZone(01, argv[1]);
     printf("number <%s> is Zone <%d>\n", argv[1], z);
+    exit (0);
+  }
+  if (argc==3) {
+    printf ("strmatch(%s, %s)=%d\n", argv[1], argv[2], strmatch(argv[1], argv[2]));
     exit (0);
   }
 
@@ -1064,18 +1090,20 @@ void main (int argc, char *argv[])
       printf ("Ooops: %s\n", msg);
     else {
       now=*localtime(&Rate.now);
-      printf ("%02d.%02d.%04d %02d:%02d:%02d  %s %6.2f %7.3f %3d %6.2f %3ld %3ld\n",
+      printf ("%02d.%02d.%04d %02d:%02d:%02d  %s %6.2f sec  %7.3f + %7.3f öS  %3d EH  %6.2f öS  %3ld sec  %3ld sec\n",
 	      now.tm_mday, now.tm_mon+1, now.tm_year+1900,
 	      now.tm_hour, now.tm_min, now.tm_sec,
 	      explainRate(&Rate),
-	      Rate.Duration, Rate.Price, Rate.Units, Rate.Charge, Rate.Time, Rate.Rest);
+	      Rate.Duration, Rate.Basic, Rate.Price, Rate.Units, Rate.Charge, Rate.Time, Rate.Rest);
 
       LCR=Rate;
+#if 0
       if (getLeastCost(&LCR,-1)!=UNKNOWN) {
-      printf ("least cost would be: %s %6.2f %7.3f %3d %6.2f %3ld %3ld\n",
-	      explainRate(&LCR),
-	      LCR.Duration, LCR.Price, LCR.Units, LCR.Charge, LCR.Time, LCR.Rest);
-    }
+	printf ("least cost would be: %s %6.2f %7.3f %3d %6.2f %3ld %3ld\n",
+		explainRate(&LCR),
+		LCR.Duration, LCR.Price, LCR.Units, LCR.Charge, LCR.Time, LCR.Rest);
+      }
+#endif
     }
     sleep(1);
   }

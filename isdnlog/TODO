@@ -14,6 +14,10 @@ Vorschlaege von ak realisieren
  - ACHTUNG: die glibc definiert BUFSIZ mit 8192 !! (an welchen Stellen
    	    bin ich unbewu·t von 512 Byte ausgegangen?
 
+ - decode() schie·t bei B1-Frames Åber das Ziel hinaus ...
+   Am Anfang von decode() ist nach einer "Calling party number"
+   p bereits auf dem nÑchsten Byte, nicht auf dem letzten!
+
  - bekannte Probleme mit der Tarif-Datenbank:
 
   - die erste Minute kostenlos, wenn Gespraechsdauer < 1 Minute
