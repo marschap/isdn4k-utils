@@ -1,3 +1,9 @@
+2004-11-09  Tobias Becker  <tobiasb@isdn4linux.de>
+
+	* telnum.h (TN_MAX_AREA_LEN): Increased length of area code from 10
+	to 16.  This allows correct processing of long special numbers, which
+	are stored entirely in .area of a TELNUM.
+
 2004-10-04  Tobias Becker  <tobiasb@isdn4linux.de>
 
 	* holiday.c (isDay): Removed restriction that workday (W) must not be

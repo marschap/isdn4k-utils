@@ -16,14 +16,16 @@
 /* Support international numbers with 15 digits for almost any combinations
  * of the lengths of country, area, and msn.
  * Top level entries in the destination database may have a code like _INTN
- * instead of CC in case of orbital services.  |TB| 2003-08-18 */
+ * instead of CC in case of orbital services.  |TB| 2003-08-18
+ * In case of a special number .area stores the whole number.
+ */
 
 #define TN_MAX_VBN_LEN 4
 #define TN_MAX_PROVIDER_LEN 12
 #define TN_MAX_SCOUNTRY_LEN 40
 #define TN_MAX_COUNTRY_LEN 8
 #define TN_MAX_TLD_LEN (5+1)
-#define TN_MAX_AREA_LEN 10
+#define TN_MAX_AREA_LEN (1+14+1)
 #define TN_MAX_SAREA_LEN 40
 #define TN_MAX_MSN_LEN (12+1)
 #define TN_MAX_NUM_LEN (TN_MAX_PROVIDER_LEN+TN_MAX_COUNTRY_LEN+TN_MAX_AREA_LEN+TN_MAX_MSN_LEN+4)
