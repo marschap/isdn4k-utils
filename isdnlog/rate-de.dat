@@ -1,4 +1,4 @@
-V:1.10-Germany [07-Mar-2000 23:45:30]
+V:1.10-Germany [17-Mar-2000 22:42:53]
 
 # W‰hrungsformat
 U:%.3f DM
@@ -8,7 +8,7 @@ U:%.3f DM
 #
 # (C) Copyright 1999, 2000 by Andreas Kool (akool@isdn4linux.de)
 #
-# $Id: rate-de.dat,v 1.85 2000/03/09 18:50:01 akool Exp $
+# $Id: rate-de.dat,v 1.86 2000/03/19 20:26:56 akool Exp $
 #
 #
 # Das "A:" Tag muﬂ folgendermaﬂen gef¸llt werden:
@@ -8181,24 +8181,57 @@ T:*/07-09=0.044/60
 T:*/09-18=0.066/60
 T:*/18-21=0.044/60
 T:*/21-07=0.033/60
-Z:102 SUPER24 Internet
-T:*/*=0.055/60
-Z:200 SUPER24 International A
-A:AD,BE,DK,FO,FI,FR,GR
-A:UK,_UKIM,IE,IS,IT,CA,_UKIK
-A:LI,LU,MC,NL,_UKIR,NO
-A:AT,PL,PT,SM,SE,CH,SK
-A:ES,CZ,US,VA
-T:*/*=0.45/60
-Z:201 SUPER24 International B
-A:AL,AU,BA,BG,EE,GI
-A:HK,IL,JP,YU,KR,HR,LV,LT
-A:MT,MK,MD,NZ,RO,SU,SG
-A:SI,TR,UA,HU,BY,CY
-T:*/*=0.95/60
-Z:202 SUPER24 International C
-A:+
-T:*/*=1.85/60
+Z:200 Belgien
+A:BE
+T:*/*=0.111/60
+Z:201 D‰nemark
+A:DK
+T:*/*=0.111/60
+Z:202 Finnland
+A:FI
+T:*/*=0.111/60
+Z:203 Frankreich
+A:FR
+T:*/*=0.111/60
+Z:204 Griechenland
+A:GR
+T:*/*=0.111/60
+Z:205 Groﬂbritannien
+A:UK
+T:*/*=0.111/60
+Z:206 Irland
+A:IE
+T:*/*=0.111/60
+Z:207 Italien
+A:IT
+T:*/*=0.111/60
+Z:208 Luxemburg
+A:LU
+T:*/*=0.111/60
+Z:209 Niederlande
+A:NL
+T:*/*=0.111/60
+Z:210 Norwegen
+A:NO
+T:*/*=0.111/60
+Z:211 ÷sterreich
+A:AT
+T:*/*=0.111/60
+Z:212 Portugal
+A:PT
+T:*/*=0.111/60
+Z:213 Schweden
+A:SE
+T:*/*=0.111/60
+Z:214 Schweiz
+A:CH
+T:*/*=0.111/60
+Z:215 Spanien
+A:ES
+T:*/*=0.111/60
+Z:216 USA
+A:US
+T:*/*=0.111/60
 #####################################################################
 #
 #
@@ -21436,7 +21469,13 @@ T:*/*=0.42/60
 Z:265 Puerto Rico (Festnetz)
 A:PR
 T:*/*=0.17/60
-Z:266 impossible
+Z:266 Algerien (Festnetz)
+A:DZ
+T:*/*=0.63/60
+Z:267 Vereinigte Arabische Emirate (Festnetz)
+A:AE
+T:*/*=0.79/60
+Z:268 impossible
 A:_ARMF
 A:_AUMF
 A:_BEMF
@@ -21482,7 +21521,8 @@ A:_DOMF
 A:_COMF
 A:_PEMF
 A:_TKMF
-T:*/*=99.99/60
+A:_BEMF
+A:AE
 #####################################################################
 #
 #
@@ -22594,8 +22634,9 @@ C:Yahoo! Online
 A:0192020
 S:Internet by call
 T:[-30.11.1999]*/*=0.06/60
-T:[01.12.1999-]*/09-21=0.054/60 Hauptzeit
-T:[01.12.1999-]*/21-09=0.049/60 Nebenzeit
+T:[01.12.1999-23.02.2000]*/09-21=0.054/60 Hauptzeit
+T:[01.12.1999-23.02.2000]*/21-09=0.049/60 Nebenzeit
+T:[24.02.2000-]*/*=0.049/60
 Z:40 Telefonauskunft
 A:11870
 T:*/*=0.968/30

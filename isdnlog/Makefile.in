@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.154 2000/03/09 18:50:01 akool Exp $
+## $Id: Makefile.in,v 1.155 2000/03/19 20:26:56 akool Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,13 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.155  2000/03/19 20:26:56  akool
+## isdnlog-4.17
+##  - new rates
+##  - Provider 01080:Telegate aus "samples/rate.conf.de" entfernt, Dienst wurde
+##    eingestellt
+##  - isdnlog/tools/tools.c  ... fixed sarea ($17, $18)
+##
 ## Revision 1.154  2000/03/09 18:50:01  akool
 ## isdnlog-4.16
 ##  - isdnlog/samples/isdn.conf.no ... changed VBN
@@ -1159,7 +1166,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 4.16
+VERSION     = 4.17
 
 MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 \
 	      isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 \

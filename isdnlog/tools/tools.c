@@ -1,4 +1,4 @@
-/* $Id: tools.c,v 1.46 2000/01/16 12:36:59 akool Exp $
+/* $Id: tools.c,v 1.47 2000/03/19 20:26:57 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -19,6 +19,13 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools.c,v $
+ * Revision 1.47  2000/03/19 20:26:57  akool
+ * isdnlog-4.17
+ *  - new rates
+ *  - Provider 01080:Telegate aus "samples/rate.conf.de" entfernt, Dienst wurde
+ *    eingestellt
+ *  - isdnlog/tools/tools.c  ... fixed sarea ($17, $18)
+ *
  * Revision 1.46  2000/01/16 12:36:59  akool
  * isdnlog-4.03
  *  - Patch from Gerrit Pape <pape@innominate.de>
@@ -827,6 +834,7 @@ char *vnum(int chan, int who)
 
       strcpy(call[chan].areacode[who], number.country);
       strcpy(call[chan].vorwahl[who], number.area);
+      strcpy(call[chan].area[who], number.sarea);
       strcpy(call[chan].rufnummer[who], number.msn);
 
       strcpy(s, formatNumber("%F", &number));
