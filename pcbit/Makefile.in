@@ -1,4 +1,4 @@
-# $Id: Makefile.in,v 1.4 1997/03/29 15:05:27 fritz Exp $
+# $Id: Makefile.in,v 1.5 1997/05/28 16:57:50 fritz Exp $
 #
 # Makefile for pcbitctl
 # (C) 1997 Fritz Elfert
@@ -16,7 +16,7 @@ INSTALL_PROGRAM	= $(INSTALL) -o 0 -g 0 -m 0750
 INSTALL_MAN		= $(INSTALL) -o 0 -g 0 -m 0644
 prefix			= @prefix@
 exec_prefix		= @exec_prefix@
-ifeq (../.config,$(widcard ../.config))
+ifeq (../.config,$(wildcard ../.config))
 	SBINDIR			= $(CONFIG_SBINDIR)
 	mandir			= $(CONFIG_MANDIR)
 else
