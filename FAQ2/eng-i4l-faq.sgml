@@ -4,7 +4,7 @@
 
 <title>FAQ for isdn4linux
 <author>Matthias Hessler, <tt><htmlurl url="mailto:hessler@isdn4linux.de" name="hessler@isdn4linux.de"></tt>
-<date>v2.0.4, 22. June 1999
+<date>v2.0.5, 1. July 1999
 <abstract>
 This FAQ answers questions that were frequently asked in the newsgroup
 de.alt.comm.isdn4linux. It contains questions any user should
@@ -102,18 +102,25 @@ pecularities apply. To find more about your country, check section
 &amp; tricks?
 <p>
 Besides this FAQ have a look at the various man pages and Readme's that come
-with the isdn4linux package. There is also a news group and a mailing list on
-isdn4linux which will give you the most up to date information. To find out
-more about these great information sources, see section
-<ref id="docu">.
+with the isdn4linux package. Then there is the isdn4linux website:
+<url url="http://www.isdn4linux.de">. And there is also a news group and a
+mailing list on isdn4linux which will give you the most up to date
+information. To find out more about these great information sources, see
+section <ref id="docu">.
 
 <sect1> general_getlatest: Where do I get the latest version of isdn4linux?
-<p> The latest version of the kernel drivers should be found in the Linux
+<p>
+The latest version of the kernel drivers should be found in the Linux
 kernel. However, sometimes the Linux kernel does not have the latest version or
 does not yet support your ISDN card. Additionally, you may need to use the
 isdn4k-util package. In those cases you could try to get the very latest
 version that is currently in development. See the section
 <ref id="distrib">.
+
+<sect1> general_contacts: How can I get in contact with the developers?
+<p>
+You can contact the isdn4linux developers through the www.isdn4linux.de
+website. Have a look at <url url="http://www.isdn4linux.de/contacts">.
 
 
 <!-- Development & Distribution -->
@@ -225,11 +232,13 @@ The latter can be found at:
 
 <sect1> feature_fax: Can I fax with isdn4linux?
 <p>
-<bf>NO, for all passive cards</bf>. However, there is a project working on this
-rather complicated problem. For more info on its status have a look at:
+<itemize>
+<item><bf>For all passive cards: NO</bf>. However, there is a project working
+on this rather complicated problem. For more info on its status have a look at:
 <tt><url url="http://home.telia.no/Morten.Rolland/linux/i4lfax/index.html"></tt>
-<bf>Yes, for the active card AVM B1</bf> (its firmware has implemented fax as one
-of its features).
+<item><bf>For the active card AVM B1: Yes</bf> (its firmware has implemented
+fax as one of its features).
+</itemize>
 If you do want to fax now, your best choice is to install an analog fax modem
 along with your ISDN card.
 
@@ -275,7 +284,7 @@ up when no data was been transferred over the interface for &dquot;time&dquot;
 seconds. However, with syncPPP there are problems (see the syncPPP section).
 Also look at the dialmode description (see question <ref id="config_dialmode">).
 You may also be very interested in the big part of this FAQ that handles
-unwanted dialouts...
+unwanted dialouts... (<ref id="dod">)
 
 <sect1> feature_btx: Is the German videotex/Btx/Datex-J possible with isdn4linux?  
 <p>
@@ -339,6 +348,12 @@ assignment of addresses possible.
 From this summary it should be clear under what conditions it makes sense
 to use raw IP.
 
+<sect1> feature_capi: Is there a CAPI interface available?
+<p>
+Currently, there is a CAPI 2.0 interface for the active card AVM B1, but not
+for any other card. However, there are plans to make this a general interface,
+also for other cards. There are no plans to implement a CAPI 1.0 interface.
+
 <!-- Feature reversed card -->
 
 <!-- Chargeint -->
@@ -381,6 +396,11 @@ In a Suse distribution the following information might also be helpful:
 <item>Email configuration:  /usr/doc/howto/mini/Mail-Queue.gz
 </itemize>
 
+<sect1> docu_newsgroup: Where is the official website for isdn4linux? 
+<p>
+The offical website can be found at:
+<url url="http://www.isdn4linux.de">.
+
 <sect1> docu_newsgroup: Where is the newsgroup for isdn4linux? 
 <p>
 The newsgroup is <tt/de.alt.comm.isdn4linux/. Most isdn4linux developers are
@@ -409,7 +429,7 @@ To quickly search for keywords, you can make use of
 <tt><url url="http://www.deja.com"></tt>. Make sure to also select older
 archive to do a complete search.
 
-Messages are also saved (unsorted) at hub-wue.franken.de, collected by
+Messages are also saved (unsorted) at listserv.isdn4linux.de, collected by
 month. To access the archive, send Email to
 <tt><htmlurl url="mailto:majordomo@listserv.isdn4linux.de"
 name="majordomo@listserv.isdn4linux.de"></tt>.
@@ -734,7 +754,48 @@ this off:
 To end the connection, use:
 <code>isdnctrl hangup ippp0</code>
 </descrip>
+To allow a normal user to initiate a dialout, have a look at question
+<ref id="config_permission">.
 
+<sect1> config_permission: How can I allow a normal user to initiate dialouts?
+<label id="config_permission">
+<p>
+ISDN usage depends on the permissions to the devices <tt>/dev/ttyI*</tt> and
+<tt>/dev/cui*</tt>. You have several choices to selectively allow users to do
+ISDN transactions.
+<enum>
+<item>You can establish the group `isdn' in <tt>/etc/group</tt>, and do:
+<code>
+chgrp isdn /dev/ttyI* /dev/cui*
+chmod o-rw /dev/ttyI* /dev/cui*
+</code>
+Then all users not in the group 'isdn' have no reading or writing 
+privileges for the ISDN ttys. Those allowed to use ISDN have to be
+explicitly added to the group 'isdn'.
+<item>You can allow only root to log out, but set up exceptions for other users
+with the su1 functionality (see man su1). As root edit
+<tt>/etc/su1.priv</tt>. Add these lines if they (or similar ones) are not yet
+there, to allow users XXXX and YYYY to initiate dialups/hangups:
+<code>
+# log all dialouts in syslog
+syslog all
+define PPPUSER XXXX YYYY
+alias dial /sbin/isdnctrl dial ippp0
+alias hangup /sbin/isdnctrl hangup ippp0
+ask never
+allow PPPUSER prefix dial
+allow PPPUSER prefix hangup
+</code>
+Then create two links for dial and hangup:
+<code>
+ln -s /usr/bin/su1 /usr/local/bin/dial
+ln -s /usr/bin/su1 /usr/local/bin/hangup
+</code>
+Now the users XXXX and YYYY can dial out by typing <tt/dial/, and hangup with
+<tt/hangup/.
+<item>If you only have one user that you use for ISDN interactions, you can
+make him owner of the ISDN interface.
+</enum>
 
 <sect1> config_pnp: How do I configure a PNP (Plug and Play) card?
 <label id="config_pnp">
@@ -769,22 +830,6 @@ hand. Set the following values:
 <code>modprobe hisax io=4,2,INT,IO0,IO1</code>
 (Replace INT, IO0, and IO1 with the your values in isapnp.conf.)
 </enum>
-
-<sect1> config_permission: How can I set up user permissions for the use
-of ISDN?
-<label id="config_permission">
-<p>
-ISDN usage depends on the permissions to the devices <tt>/dev/ttyI*</tt> and
-<tt>/dev/cui*</tt>. To restrict dialout permissions you can establish the
-group `isdn' in <tt>/etc/group</tt>, and then do
-<code>
-chgrp isdn /dev/ttyI* /dev/cui*
-chmod o-rw /dev/ttyI* /dev/cui*
-</code>
-Then all users not in the group 'isdn' have no reading or writing 
-privileges for the ISDN ttys. Those allowed to use ISDN have to be
-explicitly added to the group 'isdn'.
-
 
 <sect1> config_kerneld: Why shouldn´t I use <em>kerneld</em> to load the ISDN
 modules in the kernel as needed?
@@ -905,11 +950,13 @@ Then tcpdump will also recognize syncPPP. At least it does for me.
 <sect> msn: Configuration/MSNs
 <label id="msn">
 
-<sect1> msn_my1: What is my MSN?
+<sect1> msn_my1: What is my MSN? What if I don´t have any?
 <p>
 Your telephone company will tell you your MSN. It is your own telephone
-number. If you don't know your MSN, then check section <ref id="countries">,
-together with the following questions.
+number. Please note that you <bf/have/ to provide i4l with at least one MSN. If
+you don´t have any you can use `0', which is assumed if no MSN is transmitted
+from your telephone company. Check section <ref id="countries">, together with
+the following questions, on how to configure your MSN(s).
 
 <sect1> msn_my2: How can I find out how my telephone number is transmitted
 to the calling party?
@@ -951,6 +998,10 @@ to choose between both will have to use different outgoing MSNs to call you.
 
 <sect1> msn_onlyone: How can I use one MSN for everything?
 <p>
+In Germany, this is not an issue any more since you can get the first 10 MSN
+for free, however minimizing MSN usage may still be very interesting for other
+countries.
+
 Digital data dialin can easily be distinguished from voice/analog modem
 dialin by the 'Service Recognition' code (&dquot;digital, data&dquot;).
 
@@ -1285,13 +1336,15 @@ be assigned to a single MSN. Several callers can then simultaneously use this MS
 
 To use these devices you need the program <tt/ipppd/, which you have to
 configure. You have to start ipppd once after the modules are installed. ipppd
-communicates with the isdn4linux link level devices through <tt>/dev/ippp0</tt>
-to <tt>/dev/ippp63</tt>. A single ipppd can handle all devices at once. If you
-want two PPP connections at the same time, you need to bind ipppd to two devices,
-etc. As a result, <tt/ipppd/ provides the network device <tt>ippp0</tt>,
-which can be checked with ifconfig (even so it has the same name, the network
-device <tt/ippp0/ is not to be confused with <tt>/dev/ippp0</tt> which is used
-for communication between ipppd and link level.
+needs to be constantly running to allow dialout/dialin. It communicates with
+the isdn4linux link level devices through <tt>/dev/ippp0</tt> to
+<tt>/dev/ippp63</tt>. A single ipppd can handle all devices at once. If you
+want two PPP connections at the same time, you need to bind ipppd to two
+devices, etc. As a result, <tt/ipppd/ provides the network device
+<tt>ippp0</tt>, which can be checked with ifconfig (even so it has the same
+name, the network device <tt/ippp0/ is not to be confused with
+<tt>/dev/ippp0</tt> which is used for communication between ipppd and link
+level.
 
 ipppd has an additional option: &dquot;useifip&dquot; uses the IP address
 of the connected network interface (if it is not 0.0.0.0). (Even then, ipppd
@@ -2278,6 +2331,40 @@ Isdn4linux sets &dquot;digital data&dquot; as it's own service when it calls out
 The switching station will not route such calls to analog devices like
 a telephone or a fax machine.
 
+
+<sect1> trouble_boot: How can I tell whether my ISDN card has been corrected
+recognized?
+<p>
+<enum>
+<item>Check for error messages in the boot messages (you can review them at any
+time with the command <tt/dmesg/.
+
+<item>For the HiSax driver: During booting a message <tt>kernel: HSCX version
+A:5 B:5</tt> and <tt>kernel: channels 2</tt> should appear. <tt>A:4 B:4</tt> is
+also okay. Other values (in particular <tt>A:??? B:???</tt>) mean the card is not
+recognized correctly.
+HiSax is only loaded if the hardware can be found and the appropriate
+interrupts can be generated. This means the card is installed correctly in the
+computer, and there are no hardware conflicts. It does not mean that everything
+will work (e.g. twisted cables, broken cables, terminators).
+
+<item>Check that the interrupts are registered correctly. Check with
+<code>
+cat /proc/interrupts
+</code>
+The following entry indicates that the card is configured on interrupt 11, and
+so far has received 3 interrupts:
+<verb>
+11:        3 + hisax
+</verb>
+When you call yourself, the number of received interrupts should increase.
+
+<item>Check the io ports with
+<code>
+cat /proc/ioports
+</code>
+</enum>
+
 <sect1> trouble_guestaccess: Are there sites that offer guest access where I
 can test my isdn4linux setup?
 <label id="trouble_guestaccess">
@@ -2315,109 +2402,6 @@ needs a target to call can use it. At ...81 03 there's a getty with
 HDLC. As guest you enter a kind of BBS and can read some news.
 </quote>
 </itemize>
-
-
-<!-- Trouble Authentication
--->
-<sect> pap: Authentication Problems (especially with PAP)
-<label id="pap">
-
-<sect1> pap_optionauth: When dialing out, I get the message &dquot;pppd: peer
-authentication required but no authentication files accessible.&dquot;
-What does this mean?
-<p>
-Most likely the option &dquot;auth&dquot; was set by mistake. Then the
-<em>other</em> side is required to be authorized.
-
-<sect1> pap_requestauth: I cannot establish a connection -  it's rejected by the
-other side. In the log file I find a message that's something like: &dquot;sent (0)
-(LCP ConfReq id=0x1 mru 1500 auth pap magic 0xcd12e9c4&dquot;
-<p>
-Like in the last question, an option was been set that requires the
-<em>other</em> side to be authorized. These options shouldn't be set.
-Possible candidates are: &dquot;+pap&dquot; as well as &dquot;+chap&dquot;.
-
-<sect1> pap_rejectauth: I cannot establish a connection -  it's rejected by the
-other side. In the log file I find a message that's something like:
-&dquot;sent (0) (LCP ConfRej id=0x1 auth pap&dquot;
-<label id="pap_rejectauth">
-<p>
-Your computer is refusing to identify itself with user name (e.g. XXX) 
-and password (e.g. YYY). That only works with the authorization options
-&dquot;user XXX&dquot; and &dquot;remotename YYY&dquot; together with a correct (!)
-/etc/ppp/pap-secrets. With a password of ZZZ it should ideally look
-like this:
-<code>
-XXX YYY ZZZ *
-</code>
-If that doesn't work, you can use wild cards, something like:
-<code>
-* * ZZZ *
-</code>
-Then <em>every</em> partner has the password ZZZ. If chap is required
-for authorization, then /etc/ppp/chap-secrets must be set up correctly.
-Important : the format is different from that of pap-secrets!
-Make sure to consult the README's, or check out:
-<tt><url url="http://www.lrz-muenchen.de/&tilde;ui161ab/www/isdn/"></tt>
-Also have a look at the next question: <ref id="pap_passwd">.
-
-<sect1> pap_passwd: I have problems with PAP or CHAP authentication. It does not
-work although I'm sure I entered passwords etc. correctly.
-<label id="pap_passwd">
-<p>
-Stefan A. Muehlenweg <tt><htmlurl url="mailto:Stefan.A.Muehlenweg@samhh.Hanse.DE"
-name="Stefan.A.Muehlenweg@samhh.Hanse.DE"></tt> wrote on
-4 Oct 1996:
-<quote>
-I had exactly the same problem/the same error message. The cause for it
-was that I had three entries in chap-secrets/pap-secrets (for client,
-server, secret), but not a fourth one (IP addresses). BUT: after the third
-entry were some BLANKs. After removing the trailing BLANKs and/or TABs
-(i)pppd is now very satisfied with my auth-files.
-</quote>
-A further source of problems can be the password itself. If it contains
-the &dquot;&num;&dquot; character, then everything after than is understood as a
-comment. Spaces or tabs can cause similar problems. Solution: put
-the password in quotes!
-
-<!-- Trouble Boot
--->
-
-<sect1> trouble_boot: How can I tell whether my ISDN card has been corrected
-recognized?
-<p>
-<enum>
-<item>Check for error messages in the boot messages (you can review them at any
-time with the command <tt/dmesg/.
-
-<item>For the HiSax driver: During booting a message <tt>kernel: HSCX version
-A:5 B:5</tt> and <tt>kernel: channels 2</tt> should appear. <tt>A:4 B:4</tt> is
-also okay. Other values (in particular <tt>A:??? B:???</tt>) mean the card is not
-recognized correctly.
-HiSax is only loaded if the hardware can be found and the appropriate
-interrupts can be generated. This means the card is installed correctly in the
-computer, and there are no hardware conflicts. It does not mean that everything
-will work (e.g. twisted cables, broken cables, terminators).
-
-<item>Check that the interrupts are registered correctly. Check with
-<code>
-cat /proc/interrupts
-</code>
-The following entry indicates that the card is configured on interrupt 11, and
-so far has received 3 interrupts:
-<verb>
-11:        3 + hisax
-</verb>
-When you call yourself, the number of received interrupts should increase.
-
-<item>Check the io ports with
-<code>
-cat /proc/ioports
-</code>
-</enum>
-
-<!-- Trouble Unload
--->
 
 <sect1> trouble_unload: I can't unload my ISDN modules (&dquot;isdn: Device or
 resource busy&dquot;), even so I closed all ISDN applications?
@@ -2562,6 +2546,70 @@ anyway.
 </quote>
 
 
+<!-- Trouble Authentication
+-->
+<sect> pap: Authentication Problems (especially with PAP)
+<label id="pap">
+
+<sect1> pap_optionauth: When dialing out, I get the message &dquot;pppd: peer
+authentication required but no authentication files accessible.&dquot;
+What does this mean?
+<p>
+Most likely the option &dquot;auth&dquot; was set by mistake. Then the
+<em>other</em> side is required to be authorized.
+
+<sect1> pap_requestauth: I cannot establish a connection -  it's rejected by the
+other side. In the log file I find a message that's something like: &dquot;sent (0)
+(LCP ConfReq id=0x1 mru 1500 auth pap magic 0xcd12e9c4&dquot;
+<p>
+Like in the last question, an option was been set that requires the
+<em>other</em> side to be authorized. These options shouldn't be set.
+Possible candidates are: &dquot;+pap&dquot; as well as &dquot;+chap&dquot;.
+
+<sect1> pap_rejectauth: I cannot establish a connection -  it's rejected by the
+other side. In the log file I find a message that's something like:
+&dquot;sent (0) (LCP ConfRej id=0x1 auth pap&dquot;
+<label id="pap_rejectauth">
+<p>
+Your computer is refusing to identify itself with user name (e.g. XXX) 
+and password (e.g. YYY). That only works with the authorization options
+&dquot;user XXX&dquot; and &dquot;remotename YYY&dquot; together with a correct (!)
+/etc/ppp/pap-secrets. With a password of ZZZ it should ideally look
+like this:
+<code>
+XXX YYY ZZZ *
+</code>
+If that doesn't work, you can use wild cards, something like:
+<code>
+* * ZZZ *
+</code>
+Then <em>every</em> partner has the password ZZZ. If chap is required
+for authorization, then /etc/ppp/chap-secrets must be set up correctly.
+Important : the format is different from that of pap-secrets!
+Make sure to consult the README's, or check out:
+<tt><url url="http://www.lrz-muenchen.de/&tilde;ui161ab/www/isdn/"></tt>
+Also have a look at the next question: <ref id="pap_passwd">.
+
+<sect1> pap_passwd: I have problems with PAP or CHAP authentication. It does not
+work although I'm sure I entered passwords etc. correctly.
+<label id="pap_passwd">
+<p>
+Stefan A. Muehlenweg <tt><htmlurl url="mailto:Stefan.A.Muehlenweg@samhh.Hanse.DE"
+name="Stefan.A.Muehlenweg@samhh.Hanse.DE"></tt> wrote on
+4 Oct 1996:
+<quote>
+I had exactly the same problem/the same error message. The cause for it
+was that I had three entries in chap-secrets/pap-secrets (for client,
+server, secret), but not a fourth one (IP addresses). BUT: after the third
+entry were some BLANKs. After removing the trailing BLANKs and/or TABs
+(i)pppd is now very satisfied with my auth-files.
+</quote>
+A further source of problems can be the password itself. If it contains
+the &dquot;&num;&dquot; character, then everything after than is understood as a
+comment. Spaces or tabs can cause similar problems. Solution: put
+the password in quotes!
+
+
 <!-- Isdnlog
 -->
 
@@ -2620,6 +2668,14 @@ passed, which causes a short blackout of the screen.
 <sect> dod: Unwanted dialout on demand
 <label id="dod">
 
+<sect1> dod_how: How does dialout on demand work?
+<p>
+After you habe set up a network interface, and defined a route to it, then all
+ip packages will be routed to this interface. If the <tt/autodial/ mode has
+been enabled (see question <ref id="config_dialmode"> on the dialmodes) then
+the interface will automatically trigger a dialout when it receives ip
+packages.
+
 <sect1> dod_causes: What can cause a charge unit disaster?
 <p>
 There are many possibilities.
@@ -2643,6 +2699,9 @@ question below).
 <sect1> dod_off: How can I safely turn off dialout on demand?
 <p>
 <enum>
+<item>Set your dialmode properly (see question <ref id="config_dialmode">).
+Alternatively you can use the dialmode feature (see question
+<ref id="config_dialmode">.
 <item>Delete the telephone number of the interface, or set an invalid one. Then you
 can see from the complaints in the syslog whether a process wants to send
 packets out to the world.
@@ -2663,9 +2722,6 @@ To get things running again:
 </code>
 The latter method has the disadvantage that dialin is then no longer 
 possible.
-<item>Set your dialmode properly (see question <ref id="config_dialmode">).
-Alternatively you can use the dialmode feature (see question
-<ref id="config_dialmode">.
 </enum>
 
 <sect1> dod_strategy: How can I track down unexplainable dialouts?
