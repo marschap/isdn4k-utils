@@ -4,7 +4,7 @@
 
 <title>FAQ for isdn4linux
 <author>Matthias Hessler (<tt><htmlurl url="mailto:hessler@isdn4linux.de" name="hessler@isdn4linux.de"></tt>)
-<date>v2.0.76, 14. March 2003
+<date>v2.0.77, 19. March 2003
 <abstract>
 If you are reading this FAQ online, you may consider downloading the whole
 thing, and reading it offline (much cheaper). To download the latest
@@ -903,6 +903,8 @@ saying "Master capable" for your card.
 but you can use it like an active external ISDN terminal adapter
 (requires the xircom and serial driver).
 <item>Gazel 128 USB from BeWAN Systems is supported as hisax_st5481 module.
+For configuration hints have a look at:
+<url url="http://www.posern.org/my-prjs/isdn/">.
 </itemize>
 
 In Germany: every ISDN card which German Telekom distributed in the past is
@@ -987,7 +989,8 @@ For example, have a look at the dialout program wvdial.
 
 However, there is (at least) one exception. The Gazel 128 USB from BeWAN
 System in France <url url="http://www.bewan.com"> has been reported to
-work fine with the hisax_st5481 module.
+work fine with the hisax_st5481 module. For configuration hints
+have a look at: <url url="http://www.posern.org/my-prjs/isdn/">.
 
 <sect1> hardware_cabeling: How should I wire my ISDN cables?  
 <label id="hardware_cabeling">
