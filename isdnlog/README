@@ -1,10 +1,10 @@
-ISDNLOG - Version 4.46 -  				12-Dec-2000
+ISDNLOG - Version 4.50  -  				26-Feb-2001
 
 
 isdnlog ist ein Utility zur Auswertung des D-Kanals eines
 ISDN-BRI Anschlusses.
 
-isdnlog-4.25 wurde ausgiebig mit Linux-2.0.38, Linux-2.2.16-SMP sowie
+isdnlog wurde ausgiebig mit Linux-2.0.38, Linux-2.2.16-SMP sowie
 Linux-2.3.35 getestet.
 
 
@@ -1142,41 +1142,7 @@ ALIAS = helmut kohl
 4.2.3 3. Eintrag: Tarifzone
 ---------------------------
 
-Ein weiterer Eintrag ist die Tarifzone, in der sich von uns aus gesehen
-diese Nummer befindet:
-
- 0 = Verbindung am internen S0-Bus (eigene TK-Anlage)
- 1 = CityCall (bis 31.12.1997 City, bis 31.12.1995 "Ortszone/Nahzone", bis 20 km)
- 2 = RegioCall (bis 31.12.1997 Region 50, bis 31.12.1995 "Regionalzone", bis 50 km)
- 3 = GermanCall (bis 31.12.1998 Region 200, bis 31.12.1995 "Weitzone", dann bis 200 km)
- 4 = C-Netz
- 5 = C-Mobilbox
- 6 = D1-Netz
- 7 = D2-Netz
- 8 = E-plus-Netz
- 9 = E2-Netz
-10 = Euro City
-11 = Euro 1
-12 = Euro 2
-13 = Welt 1
-14 = Welt 2
-15 = Welt 3
-16 = Welt 4
-17 = Internet (Internet-Zugang des jeweiligen Carriers)
-
-
-Dieser Eintrag wird wie folgt dargestellt:
-
-ZONE = 1
-
-oder
-
-ZONE = 5
-
-
-Dieser Eintrag kann seit der Version 3.0 ersatzlos entfallen, da isdnlog
-seitdem eine eigene Verzonungstabelle enthaelt, d.h. selbststaendig in der
-Lage ist, die Zone des Gegners zu ermitteln.
+ZONE = x wird nicht mehr verwendet.
 
 
 4.2.4 4. Eintrag: IP-Interface
@@ -2436,7 +2402,7 @@ angegeben werden.
    Diese Feature ist EXPERIMENTELL.
 
 
-Bei den Optionen -mX, -lX -xX sind folgende Flags moeglich:
+Bei den Optionen -mX, -lX -xX sind folgende Werte moeglich:
 
    1  Errors
       Fehlermeldungen vom isdnlog. Diese ist eine Defaultausgabe, die auf
@@ -2459,8 +2425,6 @@ Bei den Optionen -mX, -lX -xX sind folgende Flags moeglich:
 
        Feb 17 19:10:11 * tei 123 calling UUnet with ISDN  Digital
 
-      ACHTUNG: fruehere Versionen: -m1
-
   32  Show AOCD
       Bei jedem Gebuehrenimpuls wird die Anzahl der bislang
       aufgelaufenen Gebuehreneinheiten fuer die aktuelle Verbindung
@@ -2479,15 +2443,11 @@ Bei den Optionen -mX, -lX -xX sind folgende Flags moeglich:
       mehr, um aufzuzeigen, wie _ungenau_ die Uhr der VSt eigentlich
       laeuft!
 
-      ACHTUNG: fruehere Versionen: -m2
-
   64  Show Connect
       Kommt eine Verbindung zustande (Telefon wird abgenommen,
       ISDN-Karte akzeptiert den Call etc.) wird dies angezeigt:
 
        Feb 17 19:11:11 tei 123 calling UUnet with ISDN  CONNECTED
-
-      ACHTUNG: fruehere Versionen: -m4
 
 
  128  Show Hangup
@@ -2498,22 +2458,16 @@ Bei den Optionen -mX, -lX -xX sind folgende Flags moeglich:
 
        Feb 17 19:14:13 tei 123 calling UUnet with ISDN  HANGUP (15 EH = DM 1,80 = 148 s)
 
-      ACHTUNG: fruehere Versionen: -m8
-
  256  Show Cause
       Der Grund fuer einen Verbindungsabbau/das nicht zustande
       kommen einer Verbindung wird angezeigt
 
        Feb 17 19:14:24 tei 123 calling bun with Phone  No user responding
 
-      ACHTUNG: fruehere Versionen: -m16
-
  512  Show Time
       Die von der VSt uebermittelte Uhrzeit wird angezeigt
 
        Feb 17 19:11:11 tei 123 calling UUnet with ISDN  Time:Sat Feb 17 19:09:00 1996
-
-      ACHTUNG: fruehere Versionen: -m32
 
 1024  Show Byte
       Der Durchsatz in Byte/s wird im Rythmus von "-w x" Sekunden angezeigt
@@ -2529,20 +2483,22 @@ Bei den Optionen -mX, -lX -xX sind folgende Flags moeglich:
       liegt.
 
 
-Alle weiteren Flags (16.384 .. 4.194.304) sind Debug-Flags
+Alle höheren Angaben (16.384 .. 4.194.304) sind Debug-Flags.
 
-Werden mehrere Optionen gewuenscht, muss bei -mX bzw -lX, -xX  die Summe der
-Optionen angegeben werden, d.h. falls alle obigen Optionen auf stderr
-gewuenscht werden, muss "isdnlog" nun mit "-m1015" gestartet werden.
-
-Das in aelteren Version verwendete "-m63" entspricht jetzt also "-m1015",
-da die ersten drei Flags auch gesetzt sein sollten.
-Alle z.Zt. moeglichen Informationen von isdnlog koennen mit "-m4087"
-angefordert werden.
+D.h. die einzelnen Log-Optionen sind bitkodiert, die Summe der angegebenen
+Zahlen ergibt die gewünschte Ausgabe.
 
 Wenn man die Schalter -mX, -lX oder -xX verwendet, sollte man darauf achten,
 dass die Meldungen (1: Errors, 2: Warnings und 4: Meldungen) auf jeden Fall
 irgendwo ausgegeben werden, da dies grundlegende Meldungen vom isdnlog sind.
+
+Der Loglevel kann auch hexadezimal angegeben werden:
+syslog=0x3ff7 entspricht daher allen oben definierten Flags mit Ausnahme
+der Debugflags (i.e. 16383 - 8).
+
+Hinweis: die man-Page führt die Werte in Hex auf.
+$ man isdnlog
+/LOG MOD
 
 
 9. Die Protokoll-Datei "/var/log/isdn.log"
