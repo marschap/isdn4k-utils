@@ -1,4 +1,4 @@
-/* $Id: zone.c,v 1.16 1999/07/31 09:25:49 akool Exp $
+/* $Id: zone.c,v 1.17 1999/10/22 19:57:59 akool Exp $
  *
  * Zonenberechnung
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: zone.c,v $
+ * Revision 1.17  1999/10/22 19:57:59  akool
+ * isdnlog-3.56 (for Karsten)
+ *
  * Revision 1.16  1999/07/31 09:25:49  akool
  * getRate() speedup
  *
@@ -513,9 +516,13 @@ static int _initZone(int provider, char *path, char **msg, bool area_only)
 	}
 	else {
 		if (msg)
+#if 1
+			*message = 0;
+#else
 			snprintf (message, LENGTH,
 				"Zone V%s: Provider %d is open as '%s' for provider %d",
 				version, provider, path, sthp[sthp[ocount].real].provider);
+#endif
 	}
 	return 0;
 }

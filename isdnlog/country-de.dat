@@ -82,7 +82,7 @@ T:IL
 N:Palestina
 A:Palästina, Palestinensisches Autonomiegebiet
 C:+972777
-T:PP # Fixme: no iso3166 code defined yet
+T:PS # since 11.10.1999
 
 N:Ver. Arabische Emirate
 A:Vereinigte Arabische Emirate, Ver.Arab. Emirate, Vereinigte Arab. Emirate
@@ -562,7 +562,7 @@ N:Philippinen
 E:Phillipines
 A:Phillippinen
 C:+63
-R:PH
+T:PH
 
 N:Indonesien
 E:Indonesia
@@ -582,7 +582,7 @@ T:AU
 N:Malaysia
 A:Malaysien
 C:+60
-R:MY
+T:MY
 
 N:Niederl. Antillen
 A:Niederländische Antillen, Antillen (Niederlande)
@@ -629,7 +629,7 @@ T:EC
 N:Guyana
 A:Guayana
 C:+592
-R:GY
+T:GY
 
 N:Bolivien
 E:Bolivia
@@ -726,6 +726,7 @@ A:St. Pierre & Miquelon,St. Pierre
 E:Saint Pierre and Miquelon
 C:+508
 R:FR
+T:PM
 
 N:Panama Mobilfunk
 C:+5076
@@ -973,7 +974,7 @@ E:Rome
 A:Italien - Rom
 C:+396
 R:IT
-R:ROM
+T:ROM
 
 N:Vatikan
 A:Vatikanstadt / Rom, Vatikanstadt, Vatican City
@@ -1023,10 +1024,10 @@ N:Monaco
 C:+377
 T:MC
 
-N:Monaco Mobilfunk
-C:+377 # fixme
-R:MC
-T:_MCMF
+# N:Monaco Mobilfunk
+# C:+377 # fixme
+# R:MC
+# T:_MCMF
 
 N:Andorra
 C:+376
@@ -1082,7 +1083,7 @@ C:+358
 T:FI
 
 N:Finnland Mobilfunk
-C:+358 # fixme
+C:+35840, +358400, +35841, +35842, +35843, +35849, +35850, +358500
 R:FI
 T:_FIMF
 
@@ -1097,6 +1098,7 @@ A:Zypern (Nord), Zypern (Nordzypern), Cyprus (north), Cyprus (turk)
 E:Turk Cyprus
 C:+90392
 R:TK
+T:_CYTK
 
 N:Malta
 C:+356
@@ -1468,12 +1470,12 @@ C:+244
 T:AO
 
 N:Zaire
-A:Kongo (Demokratische Republik), Kongo (DR)
 A:Kongo (Republik),Kongo (Rebublik)
 C:+243
 T:ZR
 
 N:Kongo
+A:Kongo (Demokratische Republik), Kongo (DR)
 E:Congo
 C:+242
 T:CG
