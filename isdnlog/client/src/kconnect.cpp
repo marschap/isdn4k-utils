@@ -1,4 +1,4 @@
-/* $Id: kconnect.cpp,v 1.3 1998/09/22 20:58:53 luethje Exp $
+/* $Id: kconnect.cpp,v 1.4 1999/05/23 14:34:37 luethje Exp $
  *
  * kisdnog for ISDN accounting for isdn4linux. (Report-module)
  *
@@ -20,6 +20,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: kconnect.cpp,v $
+ * Revision 1.4  1999/05/23 14:34:37  luethje
+ * kisdnlog is ready for isdnlog 3.x and kde 1.1.1
+ *
  * Revision 1.3  1998/09/22 20:58:53  luethje
  * isdnrep:  -fixed wrong provider report
  *           -fixed wrong html output for provider report
@@ -164,7 +167,7 @@ bool KConnection::NewConnect()
 bool KConnection::WinConnect()
 {
 	int sock;
-	KHost hostwin = KHost(this);
+	KHost hostwin(this);
 
 	if (socket != NULL)
 		return FALSE;
@@ -790,6 +793,7 @@ bool KConnection::eval_message()
 					case MSG_CALLER:
 						/* Eingabe eines Neuen Benutzers socket->msgbuf */
 						/*if (socket->servtyp & T_ADDRESSBOOK)*/
+printf("MSG_CALLER:%s\n",socket->msgbuf.buf);
 						break;
 				
 					case MSG_WHO_IS:

@@ -1,4 +1,4 @@
-/* $Id: klogo.cpp,v 1.2 1998/05/10 23:40:07 luethje Exp $
+/* $Id: klogo.cpp,v 1.3 1999/05/23 14:34:41 luethje Exp $
  *
  * kisdnog for ISDN accounting for isdn4linux. (Report-module)
  *
@@ -20,6 +20,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: klogo.cpp,v $
+ * Revision 1.3  1999/05/23 14:34:41  luethje
+ * kisdnlog is ready for isdnlog 3.x and kde 1.1.1
+ *
  * Revision 1.2  1998/05/10 23:40:07  luethje
  * some changes
  *
@@ -35,7 +38,7 @@
 
 KLogo::KLogo(QWidget *mainwin, const char *newpixmap) : QFrame(mainwin)
 {
-	KIconLoader Icon = KIconLoader();
+	KIconLoader Icon;
 
 Icon.insertDirectory(6,"../pixmaps");
 

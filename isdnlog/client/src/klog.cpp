@@ -1,4 +1,4 @@
-/* $Id: klog.cpp,v 1.2 1998/05/10 23:40:07 luethje Exp $
+/* $Id: klog.cpp,v 1.3 1999/05/23 14:34:40 luethje Exp $
  *
  * kisdnog for ISDN accounting for isdn4linux. (Report-module)
  *
@@ -20,6 +20,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: klog.cpp,v $
+ * Revision 1.3  1999/05/23 14:34:40  luethje
+ * kisdnlog is ready for isdnlog 3.x and kde 1.1.1
+ *
  * Revision 1.2  1998/05/10 23:40:07  luethje
  * some changes
  *
@@ -128,12 +131,12 @@ bool KLog::SaveToFile(const char *Name)
 		        klocale->translate("file `%s' exists.\nDo you want to overwrite, or append it?\n"),
 		        (const char*) FileName);
 		
-		KMsgBox MsgBox = KMsgBox(mainwin,klocale->translate("Warning"),
-		                         MsgTxt,
-		                         KMsgBox::EXCLAMATION,
-		                         klocale->translate("Overwrite"),
-		                         klocale->translate("Append"),
-		                         klocale->translate("Cancel"));
+		KMsgBox MsgBox(mainwin,klocale->translate("Warning"),
+		               MsgTxt,
+		               KMsgBox::EXCLAMATION,
+		               klocale->translate("Overwrite"),
+		               klocale->translate("Append"),
+		               klocale->translate("Cancel"));
 
 		switch(MsgBox.exec())
 		{

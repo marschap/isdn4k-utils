@@ -1,4 +1,4 @@
-/* $Id: kcurcalls.cpp,v 1.2 1998/05/10 23:40:05 luethje Exp $
+/* $Id: kcurcalls.cpp,v 1.3 1999/05/23 14:34:39 luethje Exp $
  *
  * kisdnog for ISDN accounting for isdn4linux. (Report-module)
  *
@@ -20,6 +20,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: kcurcalls.cpp,v $
+ * Revision 1.3  1999/05/23 14:34:39  luethje
+ * kisdnlog is ready for isdnlog 3.x and kde 1.1.1
+ *
  * Revision 1.2  1998/05/10 23:40:05  luethje
  * some changes
  *
@@ -87,7 +90,7 @@ int KCurCalls::new_chan(int chan)
 		return NO_CHAN;
 	}
 
-	memmove(((void*) channr)+sizeof(chan_struct),
+	memmove((void*) (channr+1),
 	        (void*) channr,
 	        numRows()*sizeof(chan_struct));
 	insertItem("",0);
@@ -141,8 +144,8 @@ int KCurCalls::del_chan(int delchan)
 		{
 			if (i+1 < numRows())
 			{
-				memmove(((void*) channr)+(sizeof(chan_struct)*i),
-				        ((void*) channr)+(sizeof(chan_struct)*(i+1)),
+				memmove((void*) (channr+i),
+				        (void*) (channr+i+1),
 				        (numRows()-i-1)*sizeof(chan_struct));
 			}
 

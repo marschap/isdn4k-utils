@@ -27,7 +27,7 @@
 /* Define if the C++ compiler supports BOOL */
 #define HAVE_BOOL 1
 
-#define VERSION "0.1.1"
+#define VERSION "0.1"
 
 #define PACKAGE "kisdnlog"
 

@@ -55,16 +55,16 @@ host_triplet = i586-pc-linux-gnu
 target_alias = i586-pc-linux-gnu
 target_triplet = i586-pc-linux-gnu
 CC = gcc
-CFLAGS = -O2 -Wall
+CFLAGS = -g -Wall -DDEBUG
 CPP = gcc -E
 CXX = c++
-CXXFLAGS = -O2 -Wall
+CXXFLAGS = -g -Wall -DDEBUG
 GLINC = @GLINC@
 GLLIB = @GLLIB@
 GMSGFMT = /usr/bin/msgfmt
 KDE_INCLUDES = -I/opt/kde/include
 KDE_LDFLAGS = -L/opt/kde/lib
-LDFLAGS = -s
+LDFLAGS = 
 LIBCOMPAT = 
 LIBJPEG = -L${topdir} -ljpegkde
 LIBOBJS = @LIBOBJS@
@@ -81,7 +81,7 @@ QT_INCLUDES = -I/usr/lib/qt/include
 QT_LDFLAGS = -L/usr/lib
 RANLIB = @RANLIB@
 USE_NLS = yes
-VERSION = 0.1.2
+VERSION = 0.1
 XGETTEXT = /usr/bin/xgettext
 XPMINC = @XPMINC@
 XPMLIB = @XPMLIB@
@@ -190,7 +190,7 @@ all: Makefile $(DATA)
 install-strip:
 	$(MAKE) INSTALL_PROGRAM='$(INSTALL_PROGRAM) -s' INSTALL_SCRIPT='$(INSTALL_PROGRAM)' install
 installdirs:
-	$(mkinstalldirs)  $(datadir)
+	$(mkinstalldirs)  $(DESTDIR)$(datadir)
 
 
 mostlyclean-generic:
@@ -225,13 +225,13 @@ maintainer-clean-generic clean mostlyclean distclean maintainer-clean
 
 
 install-data-local:
-	$(mkinstalldirs) $(DESTDIR)$(appsdir)
-	$(INSTALL_DATA) kisdnlog.xpm $(DESTDIR)$(kde_icondir)/kisdnlog.xpm
-	$(INSTALL_DATA) isdnlog.xpm $(DESTDIR)$(kde_datadir)/kisdnlog/isdnlog.xpm
+	$(mkinstalldirs) $(appsdir)
+	$(INSTALL_DATA) kisdnlog.xpm $(kde_icondir)/kisdnlog.xpm
+	$(INSTALL_DATA) isdnlog.xpm $(kde_datadir)/kisdnlog/isdnlog.xpm
 
 uninstall-local:
-	rm -f $(DESTDIR)$(kde_icondir)/kisdnlog.xpm
-	rm -f $(DESTDIR)$(kde_datadir)/kisdnlog/isdnlog.xpm
+	rm -f $(kde_icondir)/kisdnlog.xpm
+	rm -f $(kde_datadir)/kisdnlog/isdnlog.xpm
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

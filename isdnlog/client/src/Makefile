@@ -71,16 +71,16 @@ host_triplet = i586-pc-linux-gnu
 target_alias = i586-pc-linux-gnu
 target_triplet = i586-pc-linux-gnu
 CC = gcc
-CFLAGS = -g -Wall
+CFLAGS = -g -Wall -DDEBUG
 CPP = gcc -E
 CXX = c++
-CXXFLAGS = -g -Wall
+CXXFLAGS = -g -Wall -DDEBUG
 GLINC = @GLINC@
 GLLIB = @GLLIB@
 GMSGFMT = /usr/bin/msgfmt
 KDE_INCLUDES = -I/opt/kde/include
 KDE_LDFLAGS = -L/opt/kde/lib
-LDFLAGS = -s
+LDFLAGS = 
 LIBCOMPAT = 
 LIBJPEG = -L${topdir} -ljpegkde
 LIBOBJS = @LIBOBJS@
@@ -97,7 +97,7 @@ QT_INCLUDES = -I/usr/lib/qt/include
 QT_LDFLAGS = -L/usr/lib
 RANLIB = @RANLIB@
 USE_NLS = yes
-VERSION = 0.1.2
+VERSION = 0.1
 XGETTEXT = /usr/bin/xgettext
 XPMINC = @XPMINC@
 XPMLIB = @XPMLIB@
@@ -204,18 +204,18 @@ maintainer-clean-binPROGRAMS:
 
 install-binPROGRAMS: $(bin_PROGRAMS)
 	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(bindir)
+	$(mkinstalldirs) $(DESTDIR)$(bindir)
 	@list='$(bin_PROGRAMS)'; for p in $$list; do \
 	  if test -f $$p; then \
-	    echo "  $(INSTALL_PROGRAM) $$p $(bindir)/`echo $$p|sed '$(transform)'`"; \
-	     $(INSTALL_PROGRAM) $$p $(bindir)/`echo $$p|sed '$(transform)'`; \
+	    echo "  $(INSTALL_PROGRAM) $$p $(DESTDIR)$(bindir)/`echo $$p|sed '$(transform)'`"; \
+	     $(INSTALL_PROGRAM) $$p $(DESTDIR)$(bindir)/`echo $$p|sed '$(transform)'`; \
 	  else :; fi; \
 	done
 
 uninstall-binPROGRAMS:
 	$(NORMAL_UNINSTALL)
 	list='$(bin_PROGRAMS)'; for p in $$list; do \
-	  rm -f $(bindir)/`echo $$p|sed '$(transform)'`; \
+	  rm -f $(DESTDIR)$(bindir)/`echo $$p|sed '$(transform)'`; \
 	done
 
 .c.o:
@@ -380,12 +380,12 @@ messages:
 # don't install a list of file. Just one file per install.
 # if you have more of them, create a subdirectory with an extra Makefile 
 install-data-local: 
-	$(mkinstalldirs) $(DESTDIR)$(APPSDIR)
-	$(INSTALL_DATA) Kisdnlog.kdelnk $(DESTDIR)$(APPSDIR)
+	$(mkinstalldirs) $(APPSDIR)
+	$(INSTALL_DATA) Kisdnlog.kdelnk $(APPSDIR)
 
 # remove ALL you have installed in install-data-local or install-exec-local
 uninstall-local:
-	-rm -f $(DESTDIR)$(APPSDIR)/Kisdnlog.kdelnk
+	-rm -f $(APPSDIR)/Kisdnlog.kdelnk
 
 # add a dependency for every moc file to be full portable
 # I've added a key binding to emacs for this. 
