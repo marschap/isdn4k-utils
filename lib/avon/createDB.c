@@ -1,4 +1,4 @@
-/* $Id: createDB.c,v 1.3 1997/05/19 22:58:34 luethje Exp $
+/* $Id: createDB.c,v 1.4 1999/06/11 15:47:01 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: createDB.c,v $
+ * Revision 1.4  1999/06/11 15:47:01  akool
+ * not required references to libndbm removed
+ *
  * Revision 1.3  1997/05/19 22:58:34  luethje
  * - bugfix: it is possible to install isdnlog now
  * - improved performance for read files for vbox files and mgetty files.
@@ -52,7 +55,9 @@
 
 /****************************************************************************/
 
+#ifndef LIBAREA
 static int      ln = 0;
+#endif
 
 /****************************************************************************/
 
@@ -67,6 +72,7 @@ void set_print_fct_for_avon(int (*new_print_msg)(const char *, ...))
 
 /****************************************************************************/
 
+#ifndef LIBAREA
 int createDB(char *fn, int force)
 {
   register int         f;
@@ -230,6 +236,5 @@ void readAVON(char *fn)
     print_msg( "\n");
   } /* if */
 } /* readAVON */
-
+#endif
 /******************************************************************************/
-

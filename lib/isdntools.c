@@ -1,4 +1,4 @@
-/* $Id: isdntools.c,v 1.24 1998/12/16 20:57:30 akool Exp $
+/* $Id: isdntools.c,v 1.25 1999/06/11 15:46:54 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdntools.c,v $
+ * Revision 1.25  1999/06/11 15:46:54  akool
+ * not required references to libndbm removed
+ *
  * Revision 1.24  1998/12/16 20:57:30  akool
  *  - first try to add the 1999 tarif of the German Telekom
  *  - fix the areacode 2.0 support
@@ -204,8 +207,11 @@ typedef struct {
 /****************************************************************************/
 
 static int (*print_msg)(const char *, ...) = printf;
-static char *_get_avon(char *code, int *Len, int flag);
+#ifdef LIBAREA
 static char *_get_areacode(char *code, int *Len, int flag);
+#else
+static char *_get_avon(char *code, int *Len, int flag);
+#endif
 static int create_runfile(const char *file, const char *format);
 static long int area_read_value(FILE *fp, int size);
 static int area_read_file(void);
@@ -771,11 +777,13 @@ char *get_areacode(char *code, int *Len, int flag)
 		i++;
 	}
 
-	if (codelib != NULL && !strcasecmp(codelib,"AVON"))
-		Ptr = _get_avon(code,Len,flag);
-	else
+#ifdef LIBAREA
 	if (codelib != NULL && !strcasecmp(codelib,"AREACODE"))
 		Ptr = _get_areacode(code,Len,flag);
+#else
+	if (codelib != NULL && !strcasecmp(codelib,"AVON"))
+		Ptr = _get_avon(code,Len,flag);
+#endif
 	else
 #ifdef LIBAREA
 		Ptr = _get_areacode(code,Len,flag);
@@ -809,6 +817,7 @@ char *get_areacode(char *code, int *Len, int flag)
 
 /****************************************************************************/
 
+#ifndef LIBAREA
 static char *_get_avon(char *code, int *Len, int flag)
 {
 	static int opened = 0;
@@ -865,6 +874,7 @@ static char *_get_avon(char *code, int *Len, int flag)
 
 	return (s[0]?s:NULL);
 }
+#endif
 
 /****************************************************************************/
 
