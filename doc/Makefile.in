@@ -1,4 +1,4 @@
-# $Id: Makefile.in,v 1.8 1998/09/26 18:27:50 akool Exp $
+# $Id: Makefile.in,v 1.9 1998/10/23 13:12:49 fritz Exp $
 #
 # Makefile for ISDN manpages
 # (C) 1997 Fritz Elfert
@@ -8,7 +8,7 @@ SHELL			= /bin/sh
 AWK				= @AWK@
 SED				= @SED@
 MANDIR			= @CONFIG_MANDIR@
-MANPAGES		= ttyI.4 isdninfo.4 isdn_audio.4 isdn_cause.7
+MANPAGES		= ttyI.4 isdninfo.4 isdn_audio.4 isdnctrl.4 isdn_cause.7
 INSTALL_MAN		= @INSTALL@ -o 0 -g 0 -m 0644
 prefix			= @prefix@
 
