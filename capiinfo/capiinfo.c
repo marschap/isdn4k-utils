@@ -1,4 +1,4 @@
-/* $Id: capiinfo.c,v 1.9 2003/08/02 14:50:21 keil Exp $
+/* $Id: capiinfo.c,v 1.10 2003/08/16 16:56:02 keil Exp $
  *
  * A CAPI application to get infomation about installed controllers
  *
@@ -17,6 +17,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: capiinfo.c,v $
+ * Revision 1.10  2003/08/16 16:56:02  keil
+ * fix some typos
+ *
  * Revision 1.9  2003/08/02 14:50:21  keil
  * fix wrong b3support bits
  *
@@ -87,9 +90,9 @@ struct bittext b2support[] = {
 /*  1 */ { 0x0002, "Transparent" },
 /*  2 */ { 0x0004, "SDLC" },
 /*  3 */ { 0x0008, "LAPD with Q.921 for D channel X.25 (SAPI 16)" },
-/*  4 */ { 0x0010, "T.30 fro fax group 3" },
+/*  4 */ { 0x0010, "T.30 for fax group 3" },
 /*  5 */ { 0x0020, "Point-to-Point Protocol (PPP)" },
-/*  6 */ { 0x0040, "Tranparent (ignoring framing errors of B1 protocol)" },
+/*  6 */ { 0x0040, "Transparent (ignoring framing errors of B1 protocol)" },
 /*  7 */ { 0x0080, "Modem error correction and compression (V.42bis or MNP5)" },
 /*  8 */ { 0x0100, "ISO 7776 (X.75 SLP) with V.42bis compression" },
 /*  9 */ { 0x0200, "V.120 asyncronous mode" },
