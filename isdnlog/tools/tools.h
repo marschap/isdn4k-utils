@@ -1,4 +1,4 @@
-/* $Id: tools.h,v 1.53 2000/03/06 07:03:21 akool Exp $
+/* $Id: tools.h,v 1.54 2000/03/09 18:50:03 akool Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,23 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools.h,v $
+ * Revision 1.54  2000/03/09 18:50:03  akool
+ * isdnlog-4.16
+ *  - isdnlog/samples/isdn.conf.no ... changed VBN
+ *  - isdnlog/isdnlog/isdnlog.c .. ciInterval
+ *  - isdnlog/isdnlog/processor.c .. ciInterval
+ *  - isdnlog/tools/tools.h .. ciInterval, abclcr conf option
+ *  - isdnlog/tools/isdnconf.c .. ciInterval, abclcr conf option
+ *  - isdnlog/tools/isdnrate.c .. removed a warning
+ *  - isdnlog/NEWS ... updated
+ *  - isdnlog/README ... updated
+ *  - isdnlog/isdnlog/isdnlog.8.in ... updated
+ *  - isdnlog/isdnlog/isdnlog.5.in ... updated
+ *  - isdnlog/samples/provider ... NEW
+ *
+ *    ==> Please run a make clean, and be sure to read isdnlog/NEWS for changes
+ *    ==> and new features.
+ *
  * Revision 1.53  2000/03/06 07:03:21  akool
  * isdnlog-4.15
  *   - isdnlog/tools/tools.h ... moved one_call, sum_calls to isdnrep.h
@@ -773,7 +790,6 @@
 #define CONF_ENT_NL			 "NEWLINE"
 #define CONF_ENT_WIDTH	 "WIDTH"
 #define CONF_ENT_WD			 "WATCHDOG"
-#define CONF_ENT_CW			 "CITYWEEKEND"
 #define CONF_ENT_AMT		 "AMT"
 #define CONF_ENT_DUAL		 "DUAL"
 #define CONF_ENT_Q931		 "Q931DUMP"
@@ -787,7 +803,9 @@
 #define CONF_ENT_IGNORECOLP "IGNORECOLP"
 #define	CONF_ENT_VBN	   "VBN"
 #define	CONF_ENT_VBNLEN	   "VBNLEN"
-
+#define CONF_ENT_CIINTERVAL "CIINTERVAL"
+#define CONF_ENT_ABCLCR	"ABCLCR"
+#define CONF_ENT_PROVIDERCHANGE "PROVIDERCHANGE"
 /****************************************************************************/
 
 /* Keywords for isdn.conf */
@@ -927,7 +945,8 @@ typedef struct {
   int	  takteChargeInt;
   int 	  card;
   int	  knock;
-  time_t  nextcint;
+  time_t  lastcint;
+  time_t  lasteh;
   float	  cint;
   int     cinth;
   int	  ctakt;
@@ -1045,6 +1064,9 @@ _EXTERN	int	 preselect;
 _EXTERN int	dual;
 _EXTERN int	hfcdual;
 _EXTERN int	abclcr;
+_EXTERN char  * providerchange;
+_EXTERN int	ciInterval;
+_EXTERN int	ehInterval;
 _EXTERN char    mlabel[BUFSIZ];
 _EXTERN char    *amtsholung;
 _EXTERN int	ignoreRR;

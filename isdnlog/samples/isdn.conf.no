@@ -22,18 +22,16 @@ CALLFMT  = %b %e %T  %N7 %N3 %N4 %N5 %N6
 CURRENCY = 0.22,NOK
 
 # How to select provider:
-# For Tele2 Free2Connect you must have:
-#	PRESELECTED=10
-#
-# For Telenor you must have
-#	PRESELECTED=1
-#
-VBN=1502
-PRESELECTED=10
-VBNLEN=0
+#	edit /etc/isdn/rate.conf
+
+VBN=15
+PRESELECTED=1
+VBNLEN=2
 
 CALLFILE = /var/log/caller.log
 LOGFILE	= /var/log/isdn.log
 HOLIDAYS = /usr/lib/isdn/holiday-no.dat
 RATEFILE = /usr/lib/isdn/rate-no.dat
 COUNTRYFILE=/usr/lib/isdn/country-de.dat
+DESTFILE= /usr/lib/isdn/dest.gdbm
+

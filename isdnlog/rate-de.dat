@@ -1,4 +1,4 @@
-V:1.10-Germany [02-Mar-2000 19:29:56]
+V:1.10-Germany [07-Mar-2000 23:45:30]
 
 # Währungsformat
 U:%.3f DM
@@ -8,7 +8,7 @@ U:%.3f DM
 #
 # (C) Copyright 1999, 2000 by Andreas Kool (akool@isdn4linux.de)
 #
-# $Id: rate-de.dat,v 1.84 2000/03/06 07:03:19 akool Exp $
+# $Id: rate-de.dat,v 1.85 2000/03/09 18:50:01 akool Exp $
 #
 #
 # Das "A:" Tag muß folgendermaßen gefüllt werden:
@@ -455,8 +455,8 @@ P:100,0 TELELEV
 B:010000
 C:Name:TELELEV
 C:Address:Telekommunikation GmbH, Dönhoffstraße 39, 51373 Leverkusen
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -472,8 +472,8 @@ C:Address: MEOCOM Telekommunikation, Burgstr. 1, 45467 Mülheim a. d. Ruhr
 C:Telefon: 0800/0-636-636
 C:Homepage: http://www.meocom.de
 C:Name:Meocom spontan
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Meocom spontan ist Call-by-Call (60 Sekunden Takt)
 C:Meocom abo isd Preselection (sekundengenaue Abrechnung)
 C:Surftarif ist ebenfalls vorhanden, Rufnummer und Tarife fehlen noch
@@ -634,8 +634,8 @@ P:101,0 Netnet
 B:010001
 C:Name:Netnet
 C:Address:Netnet International AB, P.O. Box 6708, S-11385 Stockholm
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -650,8 +650,8 @@ P:102,0 EncoTel
 B:010002
 C:Name:EncoTel
 C:Address:EncoTel GmbH & Co.KG, Leibnitzstraße 73, 07548 Gera
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -666,8 +666,8 @@ P:103,0 mevacom
 B:010003
 C:Name:mevacom
 C:Address:mevacom Telekommunikationsdienstleistungen GmbH, Posthofstraße 16, 14467 Potsdam
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -682,8 +682,8 @@ P:107,0 KPN
 B:010007
 C:Name:KPN
 C:Address:Telecom BV, Prinses Beatrixlaan 23, 2595 AK's Gravenhage, Niederlande 010007
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -698,8 +698,8 @@ P:108,0 USA Global Link
 B:010008
 C:Address:USA Global Link Deutschland GmbH, Theaterstraße 90, 52062 Aachen
 C:Name:USA Global Link
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -714,8 +714,8 @@ P:109,0 ChemTel
 B:010009
 C:Name:ChemTel
 C:Address:Telekommunikations GmbH Chemnitz, Postfach 510, 09031 Chemnitz
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -730,8 +730,8 @@ P:110,0 Bertelsmann mediaSystems
 B:010010
 C:Address:Bertelsmann mediaSystems GmbH, An der Autobahn, 33311 Gütersloh
 C:Name:Bertelsmann mediaSystems
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -746,8 +746,8 @@ P:111,0 RED LINE
 B:010011
 C:Telekommunikationsgesellschaft mbH, Brückenstraße 17, 63897 Miltenberg 010011
 C:Name:RED LINE
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -762,8 +762,8 @@ P:112,0 MEGASAT
 B:010012
 C:Address:MEGASAT, Friedrich-Krupp-Str. 16-18, 45164 Kaarst
 C:Name:MEGASAT
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -778,8 +778,8 @@ P:115,0 Delta Three
 B:010015
 C:Inc., 430 Park Ave, New York 010015
 C:Name:Delta Three
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -794,8 +794,8 @@ P:118,0 MFS
 B:010018
 C:Address:MFS Communications GmbH, Postfach 190409, 60091 Frankfurt am Main
 C:Name:MFS
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -810,8 +810,8 @@ P:119,0 E.T.H.
 B:010019
 C:Telefondienste GmbH, Bettinastraße 25a, 60325 Frankfurt 010019
 C:Name:E.T.H.
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -826,8 +826,8 @@ P:120,0 Komm Consult
 B:010020
 C:Address:Komm Consult, Oberweg 15, 82024 Taufkirchen bei München
 C:Name:Komm Consult
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -842,8 +842,8 @@ P:122,0 Motorola
 B:010022
 C:Electronic GmbH, Hagenauer Straße 47, 65203 Wiesbaden 010022
 C:Name:Motorola
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -858,8 +858,8 @@ P:125,0 Mediascape
 B:010025
 C:Address:Mediascape Communications GmbH, Usedomstraße 19, 22047 Hamburg
 C:Name:Mediascape
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -874,8 +874,8 @@ P:130,0 tnp telenet
 B:010030
 C:potsdam, kommunikationsgesellschaft mbH, Erich-Weinert-Straße 100, 14478 Potsdam 010030
 C:Name:tnp telenet
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -890,8 +890,8 @@ P:131,0 accom
 B:010031
 C:Address:accom Gesellschaft für Telekommunikationsnetze und -dienstleistungen GmbH & Co.KG, Borngasse 34, 52064 Aachen
 C:Name:accom
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -906,8 +906,8 @@ P:132,0 SD
 B:010032
 C:Name:SD Telecom
 C:Address:SD Telecom Telekommunikations GmbH, Heinersdorfer Damm 55-57, 16303 Schwedt
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -922,8 +922,8 @@ P:133,0 Level 3
 B:010033
 C:Address:Level 3 Communications GmbH, Oberlindau 54 - 56, 60323 Frankfurt/Main
 C:Name:Level 3
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -938,8 +938,8 @@ P:140,0 VossNet
 B:010040
 C:Name:VossNet
 C:Address:VossNet Communications GmbH, 28199 Bremen
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -954,8 +954,8 @@ P:142,0 connection 42
 B:010042
 C:Address:connection 42, Ernst-Abbe-Straße 10, 25451 Quickborn
 C:Name:connection 42
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -970,8 +970,8 @@ P:144,0 Carrier 1
 B:010044
 C:AG, Militärstraße 36, CH-8004 Zürich 010044
 C:Name:Carrier 1
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -991,8 +991,8 @@ B:010050
 D:dtag
 C:Address:Drillisch AG, Horbeller Straße 33, 50858 Köln
 C:Name:Drillisch Superregionen
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -1662,8 +1662,8 @@ B:010050
 D:dtag
 C:Address:Drillisch AG, Horbeller Straße 33, 50858 Köln
 C:Name:Drillisch
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -1700,8 +1700,8 @@ P:154,0 Osnatel
 B:010054
 C:Name:Osnatel
 C:Address:Osnatel GmbH, Luisenstraße 16, 49074 Osnabrück
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -1716,8 +1716,8 @@ P:155,0 Telia
 B:010055
 C:Address:Telia Telekommunikation GmbH, Herrengraben 3, 20459 Hamburg
 C:Name:Telia
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -1732,8 +1732,8 @@ P:156,0 NETCOM
 B:010056
 C:Kassel GmbH, Königstor 3 - 13, 34117 Kassel 010056
 C:Name:NETCOM
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -1748,8 +1748,8 @@ P:160,0 JelloCom
 B:010060
 C:Address:JelloCom GmbH & Co.KG, Prüssingstraße 41, 07745 Jena
 C:Name:JelloCom
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -1764,8 +1764,8 @@ P:168,0 VSE
 B:010068
 C:Address:VSE Net GmbH, Postfach, 103232, 66032 Saarbrücken
 C:Name:VSE
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -1780,8 +1780,8 @@ P:170,0 Deutsche Telefon- und Marketing Services
 B:010070
 C:Address:Deutsche Telefon-und Marketing Services GmbH, Isaac-Fulda-Allee 16, 55124 Mainz
 C:Name:Deutsche Telefon- und Marketing Services
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -1796,8 +1796,8 @@ P:173,0 TFN COM SA
 B:010073
 C:TFN COM SA World Of Communication, Via Greina 2 CP 2950, CH-6901 Lugano
 C:Name:TFN COM SA
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -1812,8 +1812,8 @@ P:175,0 Gigabell
 B:010075
 C:Address:Gigabell AG, 60325 Frankfurt am Main
 C:Name:Gigabell
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -1828,8 +1828,8 @@ P:177,0 WorldxChange
 B:010077
 C:Address:WorldxChange Communications GmbH, Am Seedamm 44, 60489 Frankfurt
 C:Name:WorldxChange
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -1844,8 +1844,8 @@ P:178,0 Cybernet
 B:010078
 C:Cybernet Internet-Dienstleistungen AG, Stefan-George-Ring 19-23, 81929 München
 C:Name:Cybernet
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -1860,8 +1860,8 @@ P:180,0 FaciliCom
 B:010080
 C:Address:FaciliCom Telekommunikation GmbH, Windmühlstraße 1, 60329 Frankfurt/Main
 C:Name:FaciliCom
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -1876,8 +1876,8 @@ P:181,0 Daten- und Telekommunikations-GmbH Dessau
 B:010081
 C:Daten- und Telekommunikations-GmbH Dessau, Willy-Lohmann-Straße 6a, 06844 Dessau
 C:Name:Daten- und Telekommunikations-GmbH
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -1892,8 +1892,8 @@ P:184,0 Startec
 B:010084
 C:Address:Startec Global Communications (Germany) GmbH, Broßstraße 6, 60487 Frankfurt
 C:Name:Startec
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -1908,8 +1908,8 @@ P:185,0 FirstMark
 B:010085
 C:FirstMark Communications Deutschland GmbH, Am Opernplatz 2, 60313 Frankfurt am Main
 C:Name:FirstMark
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -1924,8 +1924,8 @@ P:188,0 jk-tel
 B:010088
 C:jk-tel GmbH i.G., Hopfenplatz 5, 39120 Magdeburg
 C:Name:jk-tel
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -1940,8 +1940,8 @@ P:190,0 CNE
 B:010090
 C:Corporate Network Essen Gesellschaft für Telekommunikation mbH, Kruppstraße 82 - 100, 45145 Essen
 C:Name:CNE
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -1956,8 +1956,8 @@ P:195,0 TeleNec
 B:010095
 C:Address:Telenec Telekommunikation Neustadt GmbH & Co.KG, Postfach 14 40, 96459 Neustadt
 C:Name:TeleNec
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -1972,8 +1972,8 @@ P:199,0 ESTel
 B:010099
 C:Energieversorgung Südsachsen Telekommunikationsgesellschaft mbH, Postfach 2 38, 09002 Chemnitz
 C:Name:ESTel
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -1988,8 +1988,8 @@ P:10,0 Teleglobe
 B:01010
 C:Name:Teleglobe
 C:Address:Teleglobe GmbH, Gutleutstraße 85, 60329 Frankfurt
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -2009,8 +2009,8 @@ C:Name:o.tel.o CbC
 C:Address:Mannesmann Zwölfte Verwaltungsgesellschaft mbH, Mannesmannufer 2, 40213 Düsseldorf
 C:Homepage:http://www.o-tel-o.de
 C:Hotline:01803/1998 oder 0800/7370 (Geschaeftskunden)
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Erfasste Zonen:
 C:0, 2	-   4	Deutschland
 C:10	-  11	Mobilfunk
@@ -2259,8 +2259,8 @@ C:Name:o.tel.o private Preselection
 C:Address:Mannesmann Zwölfte Verwaltungsgesellschaft mbH, Mannesmannufer 2, 40213 Düsseldorf
 C:Homepage:http://www.o-tel-o.de
 C:Hotline:01803/1998 oder 0800/7370 (Geschaeftskunden)
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Erfasste Zonen:
 C:0, 2	-   4	Deutschland
 C:10	-  11	Mobilfunk
@@ -2515,8 +2515,8 @@ C:Name:o.tel.o private plus Preselection
 C:Address:Mannesmann Zwölfte Verwaltungsgesellschaft mbH, Mannesmannufer 2, 40213 Düsseldorf
 C:Homepage:http://www.o-tel-o.de
 C:Hotline:01803/1998 oder 0800/7370 (Geschaeftskunden)
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:DM 8,90 Grundgebühr / Monat
 C:Erfasste Zonen:
 C:0, 2	-   4	Deutschland
@@ -2773,8 +2773,8 @@ C:Name:o.tel.o professional plus Preselection
 C:Address:Mannesmann Zwölfte Verwaltungsgesellschaft mbH, Mannesmannufer 2, 40213 Düsseldorf
 C:Homepage:http://www.o-tel-o.de
 C:Hotline:01803/1998 oder 0800/7370 (Geschaeftskunden)
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:DM 8,90 Grundgebühr / Monat
 C:Erfasste Zonen:
 C:0, 2	-   4	Deutschland
@@ -3027,8 +3027,8 @@ C:Name:o.tel.o international plus Preselection
 C:Address:Mannesmann Zwölfte Verwaltungsgesellschaft mbH, Mannesmannufer 2, 40213 Düsseldorf
 C:Homepage:http://www.o-tel-o.de
 C:Hotline:01803/1998 oder 0800/7370 (Geschaeftskunden)
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:DM 8,90 Grundgebühr / Monat
 C:Erfasste Zonen:
 C:0, 2	-   4	Deutschland
@@ -3269,8 +3269,8 @@ P:12,0 Tele Danmark
 B:01012
 C:Name:Tele Danmark
 C:Address:Tele Danmark Internetz GmbH, Süderstraße 75, 20097 Hamburg
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -3287,8 +3287,8 @@ C:Name:Tele 2 Privatkunden
 C:Address:Telecommunications Services GmbH, Postfach 130840, 40558 Düsseldorf
 C:Homepage:http://www.tele2.de
 C:Hotline:0800/24-01013
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Erfasste Zonen:
 C:2	-   4	Deutschland
 C:10		Mobilfunk
@@ -3370,8 +3370,8 @@ C:Name:Tele 2 Geschaeftskunden
 C:Address:Telecommunications Services GmbH, Postfach 130840, 40558 Düsseldorf
 C:Homepage:http://www.tele2.de
 C:Hotline:0800/24-01013
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Erfasste Zonen:
 C:2	-   4	Deutschland
 C:10		Mobilfunk
@@ -3455,8 +3455,8 @@ C:Name:EWE TEL CbC national
 C:Address:EWE TEL, Cloppenburger Str. 300, 26133 Oldenburg
 C:Homepage:http://www.ewetel.de
 C:Hotline:(07-22h) 01803/25 24 23
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Regionaltarif gilt nur in bestimmten Orten in der Nähe von Oldenburg
 C:Erfasste Zonen:
 C:0	-   4	Deutschland
@@ -3535,8 +3535,8 @@ C:Name:EWE TEL CbC/pre-select regional
 C:Address:EWE TEL, Cloppenburger Str. 300, 26133 Oldenburg
 C:Homepage:http://www.ewetel.de
 C:Hotline:(07-22h) 01803/25 24 23
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Regionaltarif gilt nur in bestimmten Orten in der Nähe von Oldenburg
 C:Erfasste Zonen:
 C:0	-   4	Deutschland
@@ -3625,8 +3625,8 @@ C:Name:EWE TEL direct
 C:Address:EWE TEL, Cloppenburger Str. 300, 26133 Oldenburg
 C:Homepage:http://www.ewetel.de
 C:Hotline:(07-22h) 01803/25 24 23
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Regionaltarif gilt nur in bestimmten Orten in der Nähe von Oldenburg
 C:Erfasste Zonen:
 C:0	-   4	Deutschland
@@ -3718,8 +3718,8 @@ B:01015
 ##
 C:Name:RSL clever call
 C:Address:RSL COM Deutschland GmbH, Lyoner Straße 36, 60528 Frankfurt/Main
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Special:Macht keinen Tarifwechsel in laufender Verbindung!
 C:Erfasste Zonen:
 C:0, 2	-   4	Deutschland
@@ -4589,8 +4589,8 @@ P:15,1 RSL CleverLine global
 B:01015
 C:Name:RSL CleverLine global
 C:Address:RSL COM Deutschland GmbH, Lyoner Straße 36, 60528 Frankfurt/Main
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Special:Macht keinen Tarifwechsel in laufender Verbindung!
 C:Erfasste Zonen:
 C:0, 2	-   4	Deutschland
@@ -5466,8 +5466,8 @@ P:15,2 RSL CleverLine metropolitan
 B:01015
 C:Name:RSL CleverLine metropolitan
 C:Address:RSL COM Deutschland GmbH, Lyoner Straße 36, 60528 Frankfurt/Main
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Special:Macht keinen Tarifwechsel in laufender Verbindung!
 C:Erfasste Zonen:
 C:0, 2	-   4	Deutschland
@@ -6345,8 +6345,8 @@ P:16,0 LausitzNet
 B:01016
 C:Name:LausitzNet
 C:Address:LausitzNet Telekommunikationsgesellschaft mbH, Lausitzer Straße 1-7, 03046 Cottbus
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -6376,8 +6376,8 @@ B:01018
 # DirectLine Privat-Tarif Minuten
 C:Name:debitel DirectLine Privat-Tarif Minuten
 C:Address:debitel Kommunikationstechnik GmbH & Co KG, Schelmenwasenstr. 37 - 39, 70567 Stuttgart
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Erfasste Zonen:
 C:2	-   4	Deutschland
 C:10		Mobilfunk
@@ -6437,8 +6437,8 @@ P:18,1 debitel DirectLine Profi-Tarif 30 Sekunden
 B:01018
 C:Name:debitel DirectLine Profi-Tarif 30 Sekunden
 C:Address:debitel Kommunikationstechnik GmbH & Co KG, Schelmenwasenstr. 37 - 39, 70567 Stuttgart
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Erfasste Zonen:
 C:2	-   4	Deutschland
 C:10		Mobilfunk
@@ -6495,8 +6495,8 @@ P:18,2 debitel DirectLine Privat-Tarif Sekunden Takt
 B:01018
 C:Name:debitel DirectLine Privat-Tarif Sekunden Takt
 C:Address:debitel Kommunikationstechnik GmbH & Co KG, Schelmenwasenstr. 37 - 39, 70567 Stuttgart
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Erfasste Zonen:
 C:2	-   4	Deutschland
 C:10		Mobilfunk
@@ -6555,8 +6555,8 @@ P:18,3 debitel DirectLine Profi-Tarif Sekunden Takt
 B:01018
 C:Name:debitel DirectLine Profi-Tarif Sekunden Takt
 C:Address:debitel Kommunikationstechnik GmbH & Co KG, Schelmenwasenstr. 37 - 39, 70567 Stuttgart
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 # G:01.06.1999
 C:Erfasste Zonen:
 C:2	-   4	Deutschland
@@ -6617,8 +6617,8 @@ C:Name:MobilCom CbC
 C:Address:City LINE GmbH, Holler Str. 126, 24782 Büdelsdorf
 C:Homepage:http://www.mobilcom.de
 C:Hotline:01805/191919
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Erfasste Zonen:
 C:2	-   4	Deutschland
 C:10		Mobilfunk
@@ -6665,8 +6665,8 @@ C:Name:MobilCom Preselection/Business
 C:Address:City LINE GmbH, Holler Str. 126, 24782 Büdelsdorf
 C:Homepage:http://www.mobilcom.de
 C:Hotline:01805/191919
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Erfasste Zonen:
 C:2	-   4	Deutschland
 C:10		Mobilfunk
@@ -6734,8 +6734,8 @@ C:Name:MobilCom Preselection/Privat
 C:Address:City LINE GmbH, Holler Str. 126, 24782 Büdelsdorf
 C:Homepage:http://www.mobilcom.de
 C:Hotline:01805/191919
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Erfasste Zonen:
 C:2	-   4	Deutschland
 C:10		Mobilfunk
@@ -6802,8 +6802,8 @@ C:Homepage:http://www.isis.de
 C:Telefon:0800/809 0100
 C:Telefax:0211/85 27 610
 C:Faxabruf:0800/809 0111
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Spezialtarif "isiFON-zu-isiFON": Gilt innerhalb des gleichen Ortsnetzes,
 C:wenn beide Teilnehmer einen ISIS-Telefonanschluß haben.
 C:Erfasste Zonen:
@@ -6985,8 +6985,8 @@ C:Homepage:http://www.isis.de
 C:Telefon:0800/809 0100
 C:Telefax:0211/85 27 610
 C:Faxabruf:0800/809 0111
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Spezialtarif "isiFON-zu-isiFON": Gilt innerhalb des gleichen Ortsnetzes,
 C:wenn beide Teilnehmer einen ISIS-Telefonanschluß haben.
 C:Erfasste Zonen:
@@ -7165,8 +7165,8 @@ C:Homepage:http://www.isis.de
 C:Telefon:0800/809 0100
 C:Telefax:0211/85 27 610
 C:Faxabruf:0800/809 0111
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Erfasste Zonen:
 C:0	-   4	Deutschland
 C:10		Mobilfunk
@@ -7337,8 +7337,8 @@ P:21,0 QS
 B:01021
 C:Name:QS
 C:Address:QS Communication Service GmbH, Oberländer Ufer 180-182, 50968 Köln
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -7355,8 +7355,8 @@ C:Name:NetCologne
 C:Address:NetCologne GmbH, Maarweg 163, 50825 Köln
 C:Homepage:http://www.netcologne.de
 C:TarifURL:http://www.netcologne.de/tarife/tarif1.html
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Erfasste Zonen:
 C:1	-   4	Deutschland
 C:10		Mobilfunk
@@ -7498,8 +7498,8 @@ D:dtag # FIXME: falsch!
 C:Name:tesion connectClassic
 C:Address:Communikationsnetze Süd-West GmbH & Co. KG, Kriegsbergstr. 11, 70174 Stuttgart
 C:Homepage:http://www.tesion.de
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Erfasste Zonen:
 C:1	-   4	Deutschland
 C:10		Mobilfunk
@@ -7572,7 +7572,7 @@ B:01023
 C:Name:tesion connectProfi
 C:Address:Communikationsnetze Süd-West GmbH & Co. KG, Kriegsbergstr. 11, 70174
 C:Homepage:http://www.tesion.de
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com
 C:Erfasste Zonen:
 C:1	-   4	Deutschland
@@ -7644,7 +7644,7 @@ B:01023
 C:Name:tesion CbC
 C:Address:Communikationsnetze Süd-West GmbH & Co. KG, Kriegsbergstr. 11, 70174
 C:Homepage:http://www.tesion.de
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com
 C:Erfasste Zonen:
 C:1	-   4	Deutschland
@@ -7701,8 +7701,8 @@ C:Homepage:http://www.telepassport.de
 C:Hotline:0800/808 808 8
 C:Telefon:0361/594 2500
 C:Telefax:0800/808 808 9
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Erfasste Zonen:
 C:2	-   4	Deutschland
 C:10		Mobilfunk
@@ -7776,8 +7776,8 @@ C:Homepage:http://www.telepassport.de
 C:Hotline:0800/808 808 8
 C:Telefon:0361/594 2500
 C:Telefax:0800/808 808 9
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Erfasste Zonen:
 C:2	-   4	Deutschland
 C:10		Mobilfunk
@@ -7841,8 +7841,8 @@ C:Homepage:http://www.telepassport.de
 C:Hotline:0800/808 808 8
 C:Telefon:0361/594 2500
 C:Telefax:0800/808 808 9
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Erfasste Zonen:
 C:2	-   4	Deutschland
 C:10		Mobilfunk
@@ -7905,8 +7905,8 @@ C:Homepage:http://www.telepassport.de
 C:Hotline:0800/808 808 8
 C:Telefon:0361/594 2500
 C:Telefax:0800/808 808 9
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Sondertarif 5 "Bundesland/Region":Gespräche innerhalb des Bundeslandes/Region
 C:Erfasste Zonen:
 C:2	-   4	Deutschland
@@ -7968,8 +7968,8 @@ C:Homepage:http://www.telepassport.de
 C:Hotline:0800/808 808 8
 C:Telefon:0361/594 2500
 C:Telefax:0800/808 808 9
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Erfasste Zonen:
 C:2	-   4	Deutschland
 C:10		Mobilfunk
@@ -8041,8 +8041,8 @@ C:Homepage:http://www.telepassport.de
 C:Hotline:0800/808 808 8
 C:Telefon:0361/594 2500
 C:Telefax:0800/808 808 9
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -8099,8 +8099,8 @@ C:Homepage:http://www.telepassport.de
 C:Hotline:0800/808 808 8
 C:Telefon:0361/594 2500
 C:Telefax:0800/808 808 9
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -8160,8 +8160,8 @@ B:01024
 C:Name:Super 24
 C:Hotline:0800/24-01024
 C:Homepage:http://www.super24.com
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Erfasste Zonen:
 C:2	-   4	Deutschland
 C:10		Mobilfunk
@@ -8207,8 +8207,8 @@ B:01025
 C:Name:CityKom
 C:Address:CityKom Münster, Haferlandweg 8, 48155 Münster
 C:Homepage:http://www.citykom.de
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 ##
 C:nur Preselection oder Direct Access in der Gegend von Münster!
 C:Achtung!
@@ -8736,7 +8736,7 @@ B:01025
 C:Name:CityKom Preselection
 C:Address:CityKom Münster, Haferlandweg 8, 48155 Münster
 C:Homepage:http://www.citykom.de
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com
 ##
 C:nur Preselection oder Direct Access in der Gegend von Münster!
@@ -9251,8 +9251,8 @@ P:26,0 ECN
 B:01026
 C:Name:ECN
 C:Address:ECN Telekommunikation GmbH, Schmickstraße 38-40, 60314 Frankfurt
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -9268,8 +9268,8 @@ B:01027
 C:Name:Nordcom Butensurf
 C:Address:Communications Netzmanagement Bremen GmbH, Theodor-Heuss-Allee 20, 28215 Bremen
 C:Homepage:http://www.nordcom.net
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Sondertarif 5 "Nordcom-Nordcom": Netzinterne Gespräche zwischen Nordcom Kunden
 C:Erfasste Zonen:
 C:1	-   4	Deutschland
@@ -9370,8 +9370,8 @@ P:27,1 Nordcom Butensurf Plus
 B:01027
 C:Name:Nordcom Butensurf Plus
 C:Address:Communications Netzmanagement Bremen GmbH, Theodor-Heuss-Allee 20, 28215 Bremen
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Sondertarif 5 "Nordcom-Nordcom": Netzinterne Gespräche zwischen Nordcom
 C:Kunden
 C:Erfasste Zonen:
@@ -9481,8 +9481,8 @@ B:01028
 C:Name:TeleBridge CbC
 C:Homepage:http://www.telebridge.de
 C:Special:TeleBridge ist Reseller von COLT
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Erfasste Zonen:
 C:2	-   4	Deutschland
 C:10		Mobilfunk
@@ -9667,8 +9667,8 @@ C:Name:TeleBridge EasyBridge (Preselection)
 C:Homepage:http://www.telebridge.de
 C:Special:TeleBridge ist Reseller von COLT.
 C:Special:Mindestumsatz: 39,- DM bei 12 Monaten Bindung, 19,- DM bei 24 Monaten
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Erfasste Zonen:
 C:2	-   4	Deutschland
 C:10		Mobilfunk
@@ -9856,8 +9856,8 @@ B:01028
 C:Name:UPX Super 8 (Preselection)
 C:Homepage:http://www.upx.de
 C:Special:UPX Super 8 ist Reseller von COLT
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Erfasste Zonen:
 C:2	-   4	Deutschland
 C:10		Mobilfunk
@@ -10623,8 +10623,8 @@ B:01029
 D:dtag
 C:Name:Unisource
 C:Address:Unisource Carrier Services, Industriestraße 21, CH-8304 Wallisellen/Schweiz
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -10645,8 +10645,8 @@ C:Address:TeDaFax, Telefon-, Daten- und Faxtransfer AG, Postfach 2206, 35010 Mar
 C:Homepage:http://www.teldafax.de
 C:Hotline:0800/01030-23
 C:Hotfax:0800/01030-33
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 ##
 C:Erfasste Zonen:
 C:2	-   4	Deutschland
@@ -10684,7 +10684,8 @@ A:0172,0173,0174
 A:0177,0178
 A:0176,0179
 T:*/*=0.48(60)/1
-Z:102 TelDa.net
+# I:TelDa.Net.i
+Z:110 TelDa.net
 A:08000103021
 T:*/*=0.06/60
 Z:200 Europa 1
@@ -10727,8 +10728,8 @@ P:31,0 HEAG
 B:01031
 C:Name:HEAG
 C:Address:HEAG MediaNet GmbH, Luisenplatz 6, 64283 Darmstadt
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -10743,8 +10744,8 @@ P:32,0 KDD
 B:01032
 C:Name:KDD
 C:Address:KDD Deutschland GmbH, Immermannstraße 45, 40210 Düsseldorf 01032
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Ist das KDD-Conos? Wenn ja, Tarife bei 01063
 Z:0 FreeCall
 A:011*
@@ -10756,7 +10757,7 @@ T:*/*=0
 #####################################################################
 #
 #
-P:33,0 DTAG
+P:33,0 DTAG ISDN
 B:01033
 # G:01-Mar-2000
 D:dtag
@@ -10764,13 +10765,9 @@ C:Name:Deutsche Telekom AG
 C:Address:Deutsche Telekom AG, Friedrich-Ebert-Allee 140, 53113 Bonn
 C:Homepage:http://www.dtag.de
 C:Hotline:0800/33-01000, T-Online Tarifhotline: 0800/33-03333
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
-C:Internet-Zugang: monatliche Grundgebühr DM 8,00 enthalten 2 Freistunden
-C:		   dort ist nur das Verbindungsentgeld faellig
-C:ISDN-Tarif
-C:FORMEL: 7,2 / Minutenpreis => Taktlaenge
-C:Quelle: http://www.telekom.de/untern/tarife/mobil/index.htm
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
+C:Quelle: http://www.telekom.de/untern/tarife/tisdn_tarife/index.htm
 C:Erfasste Zonen:
 C:0	-   4	Deutschland
 C:10	-  15	Mobilfunk
@@ -10817,55 +10814,30 @@ A:011*
 A:0130*,0800*,0801*
 A:031*
 T:*/*=0
-Z:1 Ortszone
-T:W/09-18=0.12/90 Standard
-T:W/05-09,18-21=0.12/150 Spar
-T:E,H/05-21=0.12/150 Spar
-T:*/21-05=0.12/240 Nacht
-Z:2 CityCall
-T:W/09-18=0.12/90 Standard
-T:W/05-09,18-21=0.12/150 Spar
-T:E,H/05-21=0.12/150 Spar
-T:*/21-05=0.12/240 Nacht
-Z:3 RegioCall
-T:W/09-18=0.12/30:600,0.1084/30 Standard
-T:W/06-09,18-21=0.12/60:600,0.1084/60 Spar
-T:E,H/06-21=0.12/60:600,0.1084/60 Spar
-T:*/21-06=0.06/60 Nacht
-Z:4 GermanCall
-T:W/09-18=0.12/30:600,0.1084/30 Standard
-T:W/06-09,18-21=0.12/60:600,0.1084/60 Spar
-T:E,H/06-21=0.12/60:600,0.1084/60 Spar
-T:*/21-06=0.06/60 Nacht
-A:+49
-Z:10 C-Mobilboxen
-A:01618
-T:W/09-18=0.12/11.4 Standard
-T:W/18-09=0.12/16.7 Nacht
-T:E,H/*=0.12/16.7 Wochenende
-Z:11 Mobilfunk C
-A:01610,01617,01619
-T:W/09-18=0.12/7.5 Standard
-T:W/18-09=0.12/15 Nacht
-T:E,H/*=0.12/15 Wochenende
-Z:12 Mobilfunknetz D1
-A:0170,0171,0175
-T:[01.02.2000-]*/*=0.48/60
-T:W/09-18=0.12/7.5 Standard
-T:W/18-09=0.12/15 Nacht
-T:E,H/*=0.12/15 Wochenende
+Z:1-2 City
+T:W/07-18=0.12/90 Wochentag
+T:W/18-07=0.12/240 Abend
+T:E,H/*=0.12/240 Wochenende
+Z:3-4 Deutschland
+A:DE
+T:W/07-18=0.18/60 Wochentag
+T:W/18-07=0.06/60 Abend
+T:E,H/*=0.06/60 Wochenende
+Z:10 C- und D1-Netz
+A:_DEMCM,_DEMC,_DEMD1
+T:*/*=0.48/60
 Z:13 Mobilfunknetz D2
-A:0172,0173,0174
+A:_DEMD2
 T:W/09-18=0.12/7.5 Standard
 T:W/18-09=0.12/15 Nacht
 T:E,H/*=0.12/15 Wochenende
 Z:14 Mobilfunknetz E-Plus
-A:0177,0178
+A:_DEME1
 T:W/09-18=0.12/5.3 Standard
 T:W/18-09=0.12/12.8 Nacht
 T:E,H/*=0.12/12.8 Wochenende
 Z:15 Mobilfunknetz Viag Interkom
-A:0176,0179
+A:_DEME2
 T:W/09-18=0.12/7.5 Standard
 T:W/18-09=0.12/15 Nacht
 T:E,H/*=0.12/15 Wochenende
@@ -10921,7 +10893,8 @@ A:11890
 T:*/*=3.51/60
 Z:49 Viag Interkom Auskunft
 A:11881
-T:*/*=1.59/0,0.036666666666666666/10	# FIXME: ,0.22(60)/10
+#T:*/*=1.59/0,0.036666666666666666/10	# FIXME: ,0.22(60)/10
+T:*/*=1.59/0,0.22(60)/10
 Z:50 GTS Auskunft
 A:11822
 T:*/*=1.44/0,0.12/20
@@ -10968,7 +10941,7 @@ C:Dies ist *kein* All-in-One Zugang, es werden zusätzliche Gebühren erhoben!
 T:*/*=0.05(60)/60 T-Online eco
 Z:120 Surf 1
 A:019107873
-T:*/*=0.045(60)/1
+T:*/*=0.045/60
 Z:162 T-VoteCall
 A:01371
 T:*/*=0.24/0,0/1
@@ -11024,6 +10997,8 @@ T:*/*=0.12/2.31
 #####################################################################
 P:33,1 DTAG CityPlus
 B:01033
+C:Tarif soll laut Auskunft der DTAG "auslaufen", bleibt aber für Bestandskunden erhalten
+C:TARIF WIRD NICHT MEHR WEITERGEPFLEGT!
 C:Anmerkung zum Tarif "CityPlus":
 C:Ist das CityPlus-Budget überschritten, ist die Gebührenberechnung
 C:zwischen 05-09 und 18-21 Uhr inkorrekt. Ebenso werden Ortsverbindungen
@@ -11033,10 +11008,8 @@ C:Name:Deutsche Telekom AG CityPlus
 C:Address:Deutsche Telekom AG, Friedrich-Ebert-Allee 140, 53113 Bonn
 C:Homepage: http://www.dtag.de
 C:Hotline:0800/33-01000, T-Online Tarifhotline: 0800/33-03333
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
-C:Internet-Zugang: monatliche Grundgebühr DM 8,00 enthalten 2 Freistunden
-C:		   dort ist nur das Verbindungsentgeld faellig
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:ISDN-Tarif
 C:FORMEL: 7,2 / Minutenpreis => Taktlaenge
 C:Quelle: http://www.telekom.de/untern/tarife/mobil/index.htm
@@ -11278,12 +11251,14 @@ T:*/*=0.12/2.31
 #####################################################################
 P:33,2 DTAG CityWeekend
 B:01033
+C:Wie CityPlus soll auch dieser Tarif "auslaufen", bleibt aber vorerst noch bestehen!
+C:TARIF WIRD NICHT MEHR GEPFLEGT!
 C:Name:Deutsche Telekom AG CityWeekend
 C:Address:Deutsche Telekom AG, Friedrich-Ebert-Allee 140, 53113 Bonn
 C:Homepage:http://www.dtag.de
 C:Hotline:0800/33-01000, T-Online Tarifhotline: 0800/33-03333
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Internet-Zugang: monatliche Grundgebühr DM 8,00 enthalten 2 Freistunden
 C:		   dort ist nur das Verbindungsentgeld faellig
 C:ISDN-Tarif
@@ -11531,6 +11506,8 @@ T:*/*=0.12/2.31
 #####################################################################
 P:33,3 DTAG CityWeekend & CityPlus
 B:01033
+C:Siehe Bemerkungen zu P:33,1 und P:33,2
+C:TARIF WIRD NICHT MEHR GEPFLEGT!
 C:Anmerkung zum Tarif "CityPlus":
 C:Ist das CityPlus-Budget überschritten, ist die Gebührenberechnung
 C:zwischen 05-09 und 18-21 Uhr inkorrekt. Ebenso werden Ortsverbindungen
@@ -11542,8 +11519,8 @@ C:Homepage:http://www.dtag.de
 C:Hotline:0800/33-01000, T-Online Tarifhotline: 0800/33-03333
 C:Internet-Zugang: monatliche Grundgebühr DM 8,00 enthalten 2 Freistunden
 C:		   dort ist nur das Verbindungsentgeld faellig
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:ISDN-Tarif
 C:FORMEL: 7,2 / Minutenpreis => Taktlaenge
 C:Quelle: http://www.telekom.de/untern/tarife/mobil/index.htm
@@ -11794,13 +11771,10 @@ C:Name:Deutsche Telekom AG AktivPlus
 C:Address:Deutsche Telekom AG, Friedrich-Ebert-Allee 140, 53113 Bonn
 C:Homepage:http://www.dtag.de
 C:Hotline:0800/33-01000, T-Online Tarifhotline: 0800/33-03333
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
-C:Internet-Zugang: monatliche Grundgebühr DM 8,00 enthalten 2 Freistunden
-C:		   dort ist nur das Verbindungsentgeld faellig
-C:ISDN-Tarif
-C:FORMEL: 7,2 / Minutenpreis => Taktlaenge
-C:Quelle: http://www.telekom.de/untern/tarife/mobil/index.htm
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
+C:Quelle: http://www.telekom.de/untern/tarife/aktivplus_tarif/index2.htm
+C:Grundgebühr zusätzlich für diesen Tarif: 9,90 DM / Monat
 C:Erfasste Zonen:
 C:0	-   4	Deutschland
 C:10	-  15	Mobilfunk
@@ -11852,34 +11826,31 @@ T:W/09-18=0.06/60 Sunshine
 T:W/18-09=0.03/60 Moonshine
 T:E,H/*=0.03/60 Spar
 Z:3-4 GermanCall
-A:+49
+A:DE
 T:W/09-18=0.12/60 Sunshine
 T:W/18-09=0.06/60 Moonshine
 T:E,H/*=0.06/60 Spar
-Z:10 C-Mobilboxen
-A:01618
-T:*/*=0.431/60 Standard
-Z:11 Mobilfunk C
-A:01610,01617,01619
+Z:10 Mobilfunknetz C
+A:_DEMCM,_DEMC
 T:*/*=0.39/60 Standard
 Z:12 Mobilfunknetz D1
-A:0170,0171
+A:_DEMD1
 T:*/*=0.39/60
 Z:13 Mobilfunknetz D2
-A:0172,0173
-T:W/09-18=0.96/60 Standard
-T:W/18-09=0.48/60 Nacht
-T:E,H/*=0.48/60 Wochenende
+A:_DEMD2
+T:W/09-18=0.12/7.5 Standard
+T:W/18-09=0.12/15 Nacht
+T:E,H/*=0.12/15 Wochenende
 Z:14 Mobilfunknetz E-Plus
-A:0177,0178
-T:W/09-18=1.36/60 Standard
-T:W/18-09=0.562/60 Nacht
-T:E,H/*=0.562/60 Wochenende
+A:_DEME1
+T:W/09-18=0.12/5.3 Standard
+T:W/18-09=0.12/12.8 Nacht
+T:E,H/*=0.12/12.8 Wochenende
 Z:15 Mobilfunknetz Viag Interkom
-A:0176,0179
-T:W/09-18=0.96/60 Standard
-T:W/18-09=0.48/60 Nacht
-T:E,H/*=0.48/60 Wochenende
+A:_DEME2
+T:W/09-18=0.12/7.5 Standard
+T:W/18-09=0.12/15 Nacht
+T:E,H/*=0.12/15 Wochenende
 Z:31 Iridium GSM
 A:_IR17
 T:*/*=0.12/0.509
@@ -11932,7 +11903,7 @@ A:11890
 T:*/*=3.51/60
 Z:49 Viag Interkom Auskunft
 A:11881
-T:*/*=1.59/0,0.036666666666666666/10	# FIXME: ,0.22(60)/10
+T:*/*=1.59/0,0.22(60)/10
 Z:60 Cityruf
 A:+491640
 A:+491641,+491642,+491643,+491644,+491645
@@ -11998,23 +11969,25 @@ T:W/09-18=0.12/90 Standard
 T:W/05-09,18-21=0.12/150 Spar
 T:E,H/05-21=0.12/150 Spar
 T:*/21-05=0.12/240 Nacht
-Z:200 Euro 1
-A:AD,BE,DK,FO,FI,FR,GR
-A:UK,_UKIM,IE,IS,IT,_UKIK,LI
-A:LU,MC,NL,_UKIR,NO,AT,PL,PT
-A:SM,SE,CH,SK,ES,CZ
-A:VA
+Z:200 AktivPlus Ausland 1
+A:AD,BE,DK,FR,UK,IT,CA
+A:LI,LU,MC,NL,AT,CH
+A:ES,US,VA
+T:*/*=0.19/60
+Z:201 AktivPlus Ausland 2
+A:CZ,HU,TR
 T:*/*=0.39/60
-Z:201 Euro 2
+Z:202 Euro 1
+A:FO,FI,GR,IE,IS
+A:NO,AT,PL,PT,SM,SK
+T:*/*=0.39/60
+Z:203 Euro 2
 A:EG,AL,BA,BG,EE,GI
 A:IL,JO,YU,HR,LV,LB,LY
 A:LT,MT,EH,MK,MD,RO,SU
 A:SI,SY,TR,TN,UA
 A:HU,BY,CY
 T:*/*=0.12/6
-Z:202 Welt 1
-A:US,CA
-T:*/*=0.39/60
 Z:203 Welt 2
 A:AU,HK,JP,KR,NZ,SG
 T:*/*=0.12/3.34
@@ -12027,6 +12000,268 @@ Z:206 Welt 4
 A:+
 T:*/*=0.12/2.31
 #####################################################################
+P:33,5 DTAG Select 5/30
+B:01033
+# G:01-Mar-2000
+D:dtag
+C:Name:Deutsche Telekom AG
+C:Address:Deutsche Telekom AG, Friedrich-Ebert-Allee 140, 53113 Bonn
+C:Homepage:http://www.dtag.de
+C:Hotline:0800/33-01000, T-Online Tarifhotline: 0800/33-03333
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
+C:Quelle: http://www.telekom.de/untern/tarife/tisdn_tarife/index.htm
+C:Quelle: http://www.telekom.de/untern/tarife/select_tarife/index2.htm
+C:Grundgebühr für diesen Tarif: 5,- DM / Monat
+C:max. 5 Rufnummern können vergünstigt angerufen werden.
+C:Dazu unter Tarif 5 (Select City), Tarif 6 (Select Deutschland) oder
+C:Tarif 7 (Select Ausland) die Rufnummer(n) eintragen.  Bei Tarif 7 zusätzlich noch
+C:die Kosten angeben!
+C:Erfasste Zonen:
+C:0	-   4	Deutschland
+C:5		Select 5/30 City
+C:6		Select 5/30 Deutschland
+C:7		Select 5/30 Ausland
+C:10	-  15	Mobilfunk
+C:31	-  39	Satelitenfunk
+C:40		Auskunft DTAG Inland
+C:41		Auskunft DTAG Ausland
+C:42		Auskunft Arcor
+C:43		Auskunft debitel
+C:44		Auskunft Frag Fred
+C:45		Auskunft o.tel.o
+C:46		Auskunft Talkline
+C:47		Auskunft Telegate
+C:48		Auskunft Telegate Ausland
+C:49		Auskunft Viag Interkom
+C:60		Cityruf
+C:81	-  85	Service 0180-x
+C:91	-  94	Service 0190-x
+C:100		T-Online
+C:162	- 166	DTAG Service Nummern
+C:170		Persönliche Rufnummer
+C:171		Info Expo 2000
+C:172		Sonderrufnummern zum Citytarif
+C:200	-	Ausland
+Z:0 FreeCall
+A:08003301113
+A:08003301000
+A:08003301115
+A:08003301136
+A:08003302000
+A:08003301172
+A:08003301174
+A:08003302050
+A:01300190
+A:0130190190
+A:01136
+A:110
+A:112
+# A:+10         # Operator Service
+A:0130
+A:0800
+A:_NLFF,_CHFF
+A:_F800
+A:011*
+A:0130*,0800*,0801*
+A:031*
+T:*/*=0
+Z:1-2 City
+T:W/07-18=0.12/90 Wochentag
+T:W/18-07=0.12/240 Abend
+T:E,H/*=0.12/240 Wochenende
+Z:3-4 Deutschland
+A:DE
+T:W/07-18=0.18/60 Wochentag
+T:W/18-07=0.06/60 Abend
+T:E,H/*=0.06/60 Wochenende
+Z:5 Select 5/30 City
+#A:
+#Hinter A: die Rufnummer(n) eintragen und das »#« vor A: entfernen!
+T:W/07-18=0.084/90 Wochentag
+T:W/18-07=0.084/240 Abend
+T:E,H/*=0.085/240 Wochenende
+Z:6 Select 5/30 Deutschland
+#A:
+#Hinter A: die Rufnummer(n) eintragen und das »#« vor A: entfernen!
+T:W/07-18=0.126/60 Wochentag
+T:W/18-07=0.06/60 Abend
+T:E,H/*=0.06/60 Wochenende
+Z:7 Select 5/30 Ausland
+#A:
+#Hinter A: die Rufnummer(n) eintragen und das »#« vor A: entfernen!
+#T:E,H/*=DM/ZEITEINHEIT
+#DM durch den Betrag ersetzen, der in einer ZEITEINHEIT zu bezahlen ist
+Z:10 C- und D1-Netz
+A:_DEMCM,_DEMC,_DEMD1
+T:*/*=0.48/60
+Z:13 Mobilfunknetz D2
+A:_DEMD2
+T:W/09-18=0.12/7.5 Standard
+T:W/18-09=0.12/15 Nacht
+T:E,H/*=0.12/15 Wochenende
+Z:14 Mobilfunknetz E-Plus
+A:_DEME1
+T:W/09-18=0.12/5.3 Standard
+T:W/18-09=0.12/12.8 Nacht
+T:E,H/*=0.12/12.8 Wochenende
+Z:15 Mobilfunknetz Viag Interkom
+A:_DEME2
+T:W/09-18=0.12/7.5 Standard
+T:W/18-09=0.12/15 Nacht
+T:E,H/*=0.12/15 Wochenende
+Z:31 Iridium GSM
+A:_IR17
+T:*/*=0.12/0.509
+Z:32 Iridium
+A:_IR16
+T:*/*=0.12/0.938
+Z:33 Inmarsat A
+A:_INA_,_INDF
+T:*/*=0.12/0.7
+Z:35 Inmarsat Aero
+A:_INAE
+T:*/*=0.12/0.7
+Z:36 Inmarsat B
+A:_INB_
+T:*/*=0.12/0.8
+Z:37 Inmarsat B HSD
+T:*/*=0.12/0.3
+Z:38 Inmarsat M
+A:_INM_
+T:*/*=0.12/0.8
+Z:39 Inmarsat Phone (Mini-M)
+A:_INMM
+T:*/*=0.12/1
+Z:40 Auskunft Inland
+A:11833
+T:*/*=0.968/30,0.121/3.8
+Z:41 Auskunft Ausland
+A:11834
+T:*/*=0.968/30,0.121/3.8
+Z:42 Arcor Auskunft
+A:11870
+T:*/*=0.968/30
+Z:43 debitel Auskunft
+A:11818
+T:*/*=0.968/0,0.121/7.5
+Z:44 Frag Fred Auskunft
+A:11811
+T:*/*=0.847/0,0.121/6.7
+Z:45 o.tel.o Auskunft
+A:11888
+T:*/*=1.59/0,0.49(60)/1
+Z:46 Talkline Auskunft
+A:11850
+T:*/*=0.968/0,0.12/7.5
+Z:47 Telegate Auskunft
+A:11880
+T:*/*=0.968/0,0.121/7.5
+Z:48 Telegate Auslands-Auskunft
+A:11890
+T:*/*=3.51/60
+Z:49 Viag Interkom Auskunft
+A:11881
+T:*/*=1.59/0,0.22(60)/10
+Z:50 GTS Auskunft
+A:11822
+T:*/*=1.44/0,0.12/20
+Z:60 Cityruf
+A:+491640
+A:+491641,+491642,+491643,+491644,+491645
+A:+491646,+491647,+491648,+491649
+T:W/09-18=0.12/20 Standard
+T:W/18-09=0.12/30 Nacht
+T:E,H/*=0.12/30 Wochenende
+Z:81 Shared Cost Service 0180-1
+A:01801
+T:W/09-18=0.12/90 Standard
+T:W/05-09,18-21=0.12/150 Spar
+T:E,H/05-21=0.12/150 Spar
+T:*/21-05=0.12/240 Nacht
+Z:82 Shared Cost Service 0180-2
+A:01802
+T:*/*=0.12/0,0/1
+Z:83 Shared Cost Service 0180-3
+A:01803
+T:*/*=0.12/40
+Z:84 Shared Cost Service 0180-4
+A:01804
+T:*/*=0.48/0,0/1
+Z:85 Shared Cost Service 0180-5
+A:01805
+T:*/*=0.12/30
+Z:91 Premium Rate Service 0190-1, -2, -3, -5
+A:01901,01902,01903,01905
+T:*/*=0.12/6
+Z:92 Premium Rate Service 0190-4, -6
+A:01904,01906
+T:*/*=0.12/9
+Z:93 Premium Rate Service 0190-7, -9
+A:01907,01909
+T:*/*=0.12/3
+Z:94 Premium Rate Service 0190-8
+A:01908
+T:*/*=0.12/2
+Z:100 T-Online
+A:0191011
+C:Dies ist *kein* All-in-One Zugang, es werden zusätzliche Gebühren erhoben!
+T:*/*=0.05(60)/60 T-Online eco
+Z:120 Surf 1
+A:019107873
+T:*/*=0.045/60
+Z:162 T-VoteCall
+A:01371
+T:*/*=0.24/0,0/1
+Z:163 T-VoteCall
+A:01372,01373,01374,0138
+T:*/*=0.12/20
+Z:170 Persönliche Rufnummer
+A:0700
+T:*/09-18=0.12/15
+T:*/18-09=0.12/30
+Z:172 Sonderrufnummern zum Citytarif
+A:01141
+A:0115
+A:0116
+A:01191
+A:01910
+A:01914
+A:019161
+A:019102345
+C:Dies sind *keine* All-in-One Zugänge, es werden zusätzliche Gebühren erhoben!
+T:W/09-18=0.12/90 Standard
+T:W/05-09,18-21=0.12/150 Spar
+T:E,H/05-21=0.12/150 Spar
+T:*/21-05=0.12/240 Nacht
+Z:200 Euro 1
+A:AD,BE,DK,FO,FI,FR,GR
+A:UK,_UKIM,IE,IS,IT,_UKIK,LI
+A:LU,MC,NL,_UKIR,NO,AT,PL,PT
+A:SM,SE,CH,SK,ES,CZ
+A:VA
+T:*/*=0.48/60
+Z:201 Euro 2
+A:EG,AL,BA,BG,EE,GI
+A:IL,JO,YU,HR,LV,LB,LY
+A:LT,MT,EH,MK,MD,RO,SU
+A:SI,SY,TR,TN,UA
+A:HU,BY,CY
+T:*/*=0.12/6
+Z:202 Welt 1
+A:US,CA
+T:*/*=0.48/60
+Z:203 Welt 2
+A:AU,HK,JP,KR,NZ,SG
+T:*/*=0.12/3.34
+Z:204 Welt 3
+A:AR,BR,CL,DO,IR,KZ,CO
+A:AN,PH,SA,ZA,TW
+A:AE
+T:*/*=0.12/2.61
+Z:205 Welt 4
+A:+
+T:*/*=0.12/2.31
 #####################################################################
 #
 #
@@ -12034,8 +12269,8 @@ P:34,0 NEFkom
 B:01034
 C:Name:NEFkom
 C:Address:NEFkom Telekommunikation GmbH & Co. KG, Bärenschanzstraße 4, 90429 Nürnberg
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Nur Direkt Anschluß in folgenden Vorwahlgebieten:
 C:0911 Nürnberg/Fürth
 C:09131 Erlangen
@@ -12115,8 +12350,8 @@ P:35,0 interCOM
 B:01035
 C:Name:interCOM
 C:Address:interCOM GmbH, Hauptstraße 52a, 28876 Oyten
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -12132,8 +12367,8 @@ B:01036
 D:dtag
 C:Name:Hutchison fairfon
 C:Address:Hutchison, Münsterstraße 109, 48155 Münster
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Sondertarif 11 "Hutchison Mobilfunk-Kunde": Vergünstigte Gespräche zu
 C:Hutchison Mobilfunk Teilnehmern
 C:Call By Call (nur für Mobilfunk Kunden!) siehe 01088
@@ -12884,8 +13119,8 @@ P:36,1 Hutchison fairfon Sekundentakt
 B:01036
 C:Name:Hutchison fairfon Sekundentakt
 C:Address:Hutchison, Münsterstraße 109, 48155 Münster
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Sondertarif 11 "Hutchison Mobilfunk-Kunde": Vergünstigte Gespräche zu
 C:Hutchison Mobilfunk Teilnehmern
 C:Grundgebühr: 9,95 DM, oder Abschluß eines 12 Monatsvertrages
@@ -13636,8 +13871,8 @@ P:36,2 Hutchison fairfon city
 B:01036
 C:Name:Hutchison fairfon city
 C:Address:Hutchison, Münsterstraße 109, 48155 Münster
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Sondertarif 11 "Hutchison Mobilfunk-Kunde": Vergünstigte Gespräche zu
 C:Hutchison Mobilfunk Teilnehmern
 C:Special:Nicht national verfügbar.  Siehe http://www.hutchison.de/html/festnetz/tarifberatung/vorwahlen.htm
@@ -14384,8 +14619,8 @@ P:36,3 Hutchison fairfon city sekundentakt
 B:01036
 C:Name:Hutchison fairfon city sekundentakt
 C:Address:Hutchison, Münsterstraße 109, 48155 Münster
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Special:Nicht national verfügbar.  Siehe http://www.hutchison.de/html/festnetz/tarifberatung/vorwahlen.htm
 C:Grundgebühr: 9,95 DM oder Abschluß eines 12 Monatsvertrages
 C:Sondertarif 11 "Hutchison Mobilfunk-Kunde": Vergünstigte Gespräche zu
@@ -15133,8 +15368,8 @@ P:36,4 Hutchison easyfon
 B:01036
 C:Name:Hutchison easyfon
 C:Address:Hutchison, Münsterstraße 109, 48155 Münster
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Sondertarif 11 "Hutchison Mobilfunk-Kunde": Vergünstigte Gespräche zu
 C:Hutchison Mobilfunk Teilnehmern
 C:Erfasste Zonen:
@@ -15878,8 +16113,8 @@ P:36,5 Hutchison easyfon Sekundentakt
 B:01036
 C:Name:Hutchison easyfon Sekundentakt
 C:Address:Hutchison, Münsterstraße 109, 48155 Münster 01036
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Grundgebühr: 9,95 DM oder Abschluß eines 12 Monatsvertrages
 C:Sondertarif 11 "Hutchison Mobilfunk-Kunde": Vergünstigte Gespräche zu
 C:Hutchison Mobilfunk Teilnehmern
@@ -16625,8 +16860,8 @@ P:36,6 Hutchison easyfon city
 B:01036
 C:Name:Hutchison easyfon city
 C:Address:Hutchison, Münsterstraße 109, 48155 Münster 01036
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Special:Nicht national verfügbar.  Siehe http://www.hutchison.de/html/festnetz/tarifberatung/vorwahlen.htm
 C:Sondertarif 11 "Hutchison Mobilfunk-Kunde": Vergünstigte Gespräche zu
 C:Hutchison Mobilfunk Teilnehmern
@@ -17372,8 +17607,8 @@ P:36,7 Hutchison easyfon city Sekundentakt
 B:01036
 C:Name:Hutchison easyfon city Sekundentakt
 C:Address:Hutchison, Münsterstraße 109, 48155 Münster 01036
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Special:Nicht national verfügbar.  Siehe http://www.hutchison.de/html/festnetz/tarifberatung/vorwahlen.htm
 C:Grundgebühr: 9,95 DM oder Abschluß eines 12 Monatsvertrages
 C:Sondertarif 11 "Hutchison Mobilfunk-Kunde": Vergünstigte Gespräche zu
@@ -18120,8 +18355,8 @@ P:36,8 Hutchison o.tel.o private
 B:01036
 C:Name:Hutchison o.tel.o private
 C:Address:Hutchison, Münsterstraße 109, 48155 Münster
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Erfasste Zonen:
 C:2	-   4	Deutschland
 C:10		Mobilfunk
@@ -18198,8 +18433,8 @@ P:37,0 ETS
 B:01037
 C:Name:ETS
 C:Address:Verwaltung für Sprach- und Datennetze GmbH, Brunnenstraße 4, 61191 Rosbach
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -18214,8 +18449,8 @@ P:38,0 MediaWays
 B:01038
 C:Name:MediaWays
 C:Address:MediaWays GmbH, An der Autobahn, 33311 Gütersloh 01038
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -18232,8 +18467,8 @@ B:01039
 D:dtag
 C:Name:First Telecom
 C:Address:First Telecom GmbH, Lyoner Straße 51, 60528 Frankfurt/Main
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Erfasste Zonen:
 C:2	-   4	Deutschland
 C:10		Mobilfunk
@@ -18492,8 +18727,8 @@ B:01041
 D:dtag
 C:Address:HanseNet Telekommunikation GmbH, Hammerbrookstraße 63, 20097 Hamburg
 C:Name:HanseNet
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Erfasste Zonen:
 C:2	-   4	Deutschland
 C:10		Mobilfunk
@@ -18556,7 +18791,7 @@ P:41,1 HanseNet Preselection
 B:01041
 C:Address:HanseNet Telekommunikation GmbH, Hammerbrookstraße 63, 20097 Hamburg
 C:Name:HanseNet Preselection
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com
 C:Erfasste Zonen:
 C:2	-   4	Deutschland
@@ -18634,8 +18869,8 @@ P:42,0 TeleBeL ISDN Plus
 B:01042
 C:Address:Telekommunikation Bergisches Land GmbH, Johannisberg 7, 42103 Wuppertal
 C:Name:TeleBeL ISDN Plus
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Hotline:	01802 / 244 544
 C:Homepage:	http://www.telebel.de
 C:nur Direct Access in der Region um Wuppertal
@@ -18793,8 +19028,8 @@ P:42,1 TeleBeL ISDN XL
 B:01042
 C:Address:Telekommunikation Bergisches Land GmbH, Johannisberg 7, 42103 Wuppertal 01042
 C:Name:TeleBeL ISDN XL
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Hotline:	01802 / 244 544
 C:Homepage:	http://www.telebel.de
 C:nur Direct Access in der Region um Wuppertal
@@ -18955,8 +19190,8 @@ B:01043
 C:Address:KielNet GmbH, Postfach 41 60, 24100 Kiel
 C:Homepage: http://www.kielnet.de
 C:Name:KielNet CbC
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Erfasste Zonene
 C:   1 -    4	Deutschland
 C:   5		Sondertarif
@@ -19019,7 +19254,7 @@ C:GmbH, Postfach 41 60, 24100 Kiel 01043
 C:Address:KielNet GmbH, Postfach 41 60, 24100 Kiel
 C:Homepage: http://www.kielnet.de
 C:Name:KielNet Preselection
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com
 C:Erfasste Zonene
 C:   1 -    4	Deutschland
@@ -19102,7 +19337,7 @@ C:GmbH, Postfach 41 60, 24100 Kiel 01043
 C:Address:KielNet GmbH, Postfach 41 60, 24100 Kiel
 C:Homepage: http://www.kielnet.de
 C:Name:KielNet Telefonanschluß
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com
 C:Special:Gespräche zwischen KielNet Kunden sind kostenfrei!
 C:Erfasste Zonene
@@ -19194,8 +19429,8 @@ P:44,0 VEW TELNET
 B:01044
 C:Address:VEW TELNET, Gesellschaft für Telekommunikation und Netzdienste mbH, Unterste-Wilms-Straße 29, 44143 Dortmund
 C:Name:VEW TELNET
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Erfasste Zonen:
 C:0	-   4	Deutschland
 C:10		Mobilfunk
@@ -19375,8 +19610,8 @@ P:45,0 Global Network
 B:01045
 C:Address:Global Network Telephone Deutschland, Grosser Plan 8, 29221 Celle
 C:Name:Global Network
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -19392,8 +19627,8 @@ B:01046
 D:dtag
 C:Address:Gesellschaft für Kommunikation und Informationsdienste GmbH, Batteriestraße 48, 24937 Flensburg
 C:Name:KomTel
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Homepage: http://www.komtel.de
 C:Spezialtarif 5 "Nord-Ostsee": gilt für Verbindungen mit Niedersachsen,
 C:Bremen, Mecklenburg-Vorpommern, Schleswig-Holstein und Hamburg
@@ -19704,8 +19939,8 @@ P:46,1 KomTel MoinMoin
 B:01046
 C:Address:Gesellschaft für Kommunikation und Informationsdienste GmbH, Batteriestraße 48, 24937 Flensburg
 C:Name:KomTel MoinMoin
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Spezialtarif 5 "Nord-Ostsee": gilt für Verbindungen mit Niedersachsen,
 C:Bremen, Mecklenburg-Vorpommern, Schleswig-Holstein und Hamburg
 C:Erfasste Zonen:
@@ -20037,8 +20272,8 @@ P:47,0 PrimeTec
 B:01047
 C:Address:PrimeTec International Europe Ltd.
 C:Name:PrimeTec
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -20053,8 +20288,8 @@ P:48,0 DOKOM
 B:01048
 C:Address:DOKOM GmbH, Im Defdahl 5, 44141 Dortmund
 C:Name:DOKOM
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Sondertarif 5 "Surf-Tarif": "Der günstige Surf-Tarif für DOKOM-Kunden,
 C:die auch einen Internetanschluss bei uns haben." ?  Gilt der Tarif nur
 C:für´s Surfen, oder allgemein im Stadtgebiet ?
@@ -20142,8 +20377,8 @@ P:49,0 ACC ACCess Direkt Pre-Selection Einheitentarif
 B:01049
 C:Address:ACC Telekommunikation GmbH, Heinrich-Heine-Allee 53, 40213 Düsseldorf
 C:Name:ACCess Direkt Pre-Selection Einheitentarif
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Homepage: http://www.acctelecom.de
 C:Erfasste Zonen:
 C:2	-   4	Deutschland
@@ -20236,7 +20471,7 @@ B:01049
 C:Telekommunikation GmbH, Heinrich-Heine-Allee 53, 40213 Düsseldorf 01049
 C:Address:ACC Telekommunikation GmbH, Heinrich-Heine-Allee 53, 40213 Düsseldorf
 C:Name:ACCess Direkt Pre-Selection Minutentarif
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com
 C:Homepage: http://www.acctelecom.de
 C:Erfasste Zonen:
@@ -20328,7 +20563,7 @@ B:01049
 C:Telekommunikation GmbH, Heinrich-Heine-Allee 53, 40213 Düsseldorf 01049
 C:Address:ACC Telekommunikation GmbH, Heinrich-Heine-Allee 53, 40213 Düsseldorf
 C:Name:ACCess Einheitentarif CbC
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com
 C:Homepage: http://www.acctelecom.de
 C:Erfasste Zonen:
@@ -20443,7 +20678,7 @@ B:01049
 C:Telekommunikation GmbH, Heinrich-Heine-Allee 53, 40213 Düsseldorf 01049
 C:Address:ACC Telekommunikation GmbH, Heinrich-Heine-Allee 53, 40213 Düsseldorf
 C:Name:ACCess Minutentarif CbC
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com
 C:Homepage: http://www.acctelecom.de
 # G:01.06.1999
@@ -20555,8 +20790,8 @@ C:Address:PS PhoneServices GmbH, Adenauer Damm 1, 25337 Elmshorn
 C:Homepage:http://www.talkline.de
 C:Telefon:01802 / 2002
 C:Telefax:01802 / 2001
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Erfasste Zonen:
 C:   1 -   4	Deutschland
 C:  10 -  15	Mobilfunk
@@ -20632,7 +20867,7 @@ C:Address:PS PhoneServices GmbH, Adenauer Damm 1, 25337 Elmshorn
 C:Homepage:http://www.talkline.de
 C:Telefon:01802 / 2002
 C:Telefax:01802 / 2001
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com
 C:Preselection
 C:Erfasste Zonen:
@@ -20715,7 +20950,7 @@ C:Address:PS PhoneServices GmbH, Adenauer Damm 1, 25337 Elmshorn
 C:Homepage:http://www.talkline.de
 C:Telefon:01802 / 2002
 C:Telefax:01802 / 2001
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com
 C:Preselection
 C:Erfasste Zonen:
@@ -20792,7 +21027,7 @@ C:Address:PS PhoneServices GmbH, Adenauer Damm 1, 25337 Elmshorn
 C:Homepage:http://www.talkline.de
 C:Telefon:01802 / 2002
 C:Telefax:01802 / 2001
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com
 C:Preselection
 C:Mindestumsatz: DM 100,- / Monat zzgl. MWSt.
@@ -20881,7 +21116,7 @@ C:Address:PS PhoneServices GmbH, Adenauer Damm 1, 25337 Elmshorn
 C:Homepage:http://www.talkline.de
 C:Telefon:01802 / 2002
 C:Telefax:01802 / 2001
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com
 C:Preselection
 C:Mindestumsatz: DM 116,- / Monat
@@ -20978,8 +21213,8 @@ C:ID-Switch GmbH, Graf-Adolf-Straße, 40210 Düsseldorf
 C:Homepage: http://www.01051.com
 C:Adresse:  ID-Switch GmbH, Koenigsallee 60f, 40210 Duesseldorf
 C:Name:01051
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 D:dtag
 Z:0 FreeCall
 A:011*
@@ -21255,8 +21490,8 @@ P:52,0 Long Distance
 B:01052
 C:Address:Long Distance International Ltd., 5 Duke's Gate Acton, London W 4 5 DX, GB
 C:Name:Long Distance
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -21273,8 +21508,8 @@ B:01053
 C:Address:WOBCOM GmbH Wolfsburg, Heßlinger Str. 1-5, 38440 Wolfsburg
 C:Homepage http://www.wobkom.de
 C:Name:WOBCOM
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:TarifURL:http://www.wobkom.de/telefonie/tarife.htm
 # Eigene Verzonung - TODO
 D:dtag # 53
@@ -21514,8 +21749,8 @@ P:54,0 USFI
 B:01054
 C:Address:USFI Global Network Services Germany GmbH, Kindsbacherstraße 41, 66877 Ramstein
 C:Name:USFI
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -21526,12 +21761,13 @@ T:*/*=0
 #####################################################################
 #
 #
-P:55,0 ESPRIT
+P:55,0 prompt
 B:01055
-C:Address:ESPRIT Telecom Deutschland GmbH, August-Thyssen-Str. 1, 40211 Düsseldorf
-C:Name:ESPRIT
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+# G:29-Feb-2000
+C:Address:prompt GmbH & C0. KG
+C:Name:prompt
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -21539,6 +21775,26 @@ A:031*
 A:110
 A:112
 T:*/*=0
+Z:1-4 Fern
+A:+49
+T:W/09-18=0.10/60 Standard
+T:W/18-09=0.05/60 Standard
+T:E,H/*=0.05/60 Spar
+Z:10
+A:01610,01617,01619,01618
+T:*/*=0.55/60
+Z:11
+A:0170,0171,0175
+T:*/*=0.55/60
+Z:12
+A:0172,0173,0174
+T:*/*=0.88/60
+Z:13
+A:0177,0178
+T:*/*=1.11/60
+Z:14
+A:0176,0179
+T:*/*=0.88/60
 #####################################################################
 #
 #
@@ -21546,8 +21802,8 @@ P:56,0 BITel
 B:01056
 C:Address:BITel Gesellschaft für kommunale Telekommunikation mbh, Schildescher Straße 16, 33611 Bielefeld
 C:Name:BITel
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -21562,8 +21818,8 @@ P:57,0 Mox
 B:01057
 C:Mox Telecom GmbH, Industriestraße 3a, 40878 Ratingen
 C:Name:Mox
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -21578,8 +21834,8 @@ P:58,0 KaTel
 B:01058
 C:Address:KaTel Gesellschaft für Telekommunikation mbH, Mathias-Brüggen-Straße 87-89, 50829 Köln
 C:Name:KaTel
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -21594,8 +21850,8 @@ P:59,0 Pacific Gateway Exchange
 B:01059
 C:Address:Pacific Gateway Exchange Inc., 533 Airport Boulevard, Suite 505, Burlingame, CA 94010, USA
 C:Name:Pacific Gateway Exchange
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -21610,8 +21866,8 @@ P:60,0 Telecom-InfoService
 B:01060
 C:Address:Telecom-InfoService GmbH, Postfach 174, A-1000 Wien (A)
 C:Name:Telecom-InfoService
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -21626,8 +21882,8 @@ P:61,0 TelSA
 B:01061
 C:Address:TelSA Telekommunikationsgesellschaft mbH, Magdeburger Str. 51, 06112 Halle
 C:Name:TelSA
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -21642,8 +21898,8 @@ P:62,0 DENTEL
 B:01062
 C:Address:DENTEL GmbH i.G. Grimmstraße 4 80336 München
 C:Name:DENTEL
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -21659,8 +21915,8 @@ B:01063
 C:Address:Corporate Network & Services Aktiengesellschaft, Lievelingsweg 125, 52119 Bonn
 C:URL: http://www.kdd-conos.de
 C:Name:KDD-Conos PrivateCall easy
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Special:Preselection
 C:Special:Sondertarif für Gespräche zu KDD-Conos Mobilfunkteilnehmern vorhanden
 C:Preselection
@@ -21749,7 +22005,7 @@ C:Corporate Network & Services Aktiengesellschaft Lievelingsweg 125 52119 Bonn 0
 C:Address:Corporate Network & Services Aktiengesellschaft, Lievelingsweg 125, 5
 C:URL: http://www.kdd-conos.de
 C:Name:KDD-Conos PrivateCall genau
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com
 C:Special:Preselection
 C:Special:Sondertarif für Gespräche zu KDD-Conos Mobilfunkteilnehmern vorhanden
@@ -21840,8 +22096,8 @@ P:64,0 Hannoversche
 B:01064
 C:Address:Hannoversche Telekommunikations- und Netzgesellschaft mbH, Glockseestraße 33, 30161 Hannover
 C:Name:Hannoversche
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -21857,8 +22113,8 @@ B:01065
 D:dtag
 C:Address:Rapid Link Telecommunications GmbH, Donaustraße 68, 68199 Mannheim
 C:Name:Rapid Link
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -21873,8 +22129,8 @@ P:66,0 Interoute
 B:01066
 C:Address:Interoute Telecom Deutschland GmbH, Lyoner Str. 15, 60528 Frankfurt
 C:Name:Interoute
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Bei Preselection sekundengenaue Taktung
 D:dtag
 # G:01-Mar-2000
@@ -21981,8 +22237,8 @@ P:67,0 RegioCom
 B:01067
 C:RegioCom GmbH, Steinfeldstraße 3, 39179 Barleben
 C:Name:RegioCom
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -21997,8 +22253,8 @@ P:68,0 Tele Media
 B:01068
 C:Address:Tele Media International, Wilhelm-Leuschner-Strasse 23-25, 60329 Frankfurt/Main
 C:Name:Tele Media
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -22013,8 +22269,8 @@ P:69,0 Primus
 B:01069
 C:Address:Primus Telecommunications Ltd.
 C:Name:Primus
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -22031,8 +22287,8 @@ B:01070
 C:Mannesmann Arcor
 C:Address:Mannesmann AG & Co., Kölner Str. 12, 65760 Eschborn
 C:Name:Arcor CbC
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 D:dtag
 Z:0 FreeCall
 A:011*
@@ -22371,7 +22627,7 @@ C:Mannesmann Arcor
 C:Mannesmann AG & Co., Kölner Str. 12, 65760 Eschborn 01070
 C:Address:Mannesmann AG & Co., Kölner Str. 12, 65760 Eschborn
 C:Name:Arcor Town to Town
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com
 D:dtag
 Z:0 FreeCall
@@ -22411,7 +22667,7 @@ C:Mannesmann Arcor
 C:Mannesmann AG & Co., Kölner Str. 12, 65760 Eschborn 01070
 C:Address:Mannesmann AG & Co., Kölner Str. 12, 65760 Eschborn
 C:Name:Arcor Town to Town Sekunde
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com
 D:dtag
 Z:0 FreeCall
@@ -22450,8 +22706,8 @@ P:71,0 DeTeMobil
 B:01071
 C:Address:Deutsche Telekom MobilNet GmbH, Landgrabenweg 151, 53227 Bonn
 C:Name:DeTeMobil
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -22466,8 +22722,8 @@ P:72,0 Mannesmann
 B:01072
 C:Address:Mannesmann Mobilfunk GmbH, Am Seestern 1, 40547 Düsseldorf
 C:Name:Mannesmann
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -22482,8 +22738,8 @@ P:73,0 AXXON
 B:01073
 C:AXXON Telecom GmbH, Am Seestern 24, 40547 Düsseldorf
 C:Name:AXXON
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -22498,8 +22754,8 @@ P:74,0 Alpha
 B:01074
 C:Address:Alpha Telecom GmbH, Beethovenstraße 1-3, 60325 Frankfurt/Main
 C:Name:Alpha
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -22515,8 +22771,8 @@ B:01075
 # G:01-Feb-2000
 C:Address:ARCIS Media Com Management GmbH, Maximilianstr. 14, 80539 München
 C:Name:Callino
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 D:dtag
 Z:0 FreeCall
 A:011*
@@ -22646,8 +22902,8 @@ P:76,0 QuickNet
 B:01076
 C:Address:QuickNet Telenetworks & Service AG, Else-Lasker-Schüler-Straße 47, 42107 Wuppertal
 C:Name:QuickNet
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -22662,8 +22918,8 @@ P:77,0 E-Plus
 B:01077
 C:Address:E-Plus Mobilfunk GmbH, E-Plus-Platz 1, 40468 Düsseldorf
 C:Name:E-Plus
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -22679,8 +22935,8 @@ B:01078
 # G:01-Feb-2000
 C:Address:3U Telekommunikation GmbH, Äußere Zittauer Straße 51, 02708 Löbau
 C:Name:3U
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:3U Telekommunikation GmbH
 C:Homepage: http://www.uuu.de
 C:Hotline:  01805/01078-0
@@ -23687,8 +23943,8 @@ C:Telefon:  069/94 994-0
 C:Telefax:  069/94 994-100
 C:Adresse:  VIAPHONE GmbH, Hanauer Landstrasse 187-189, 60314 Frankfurt am Main
 C:Name:Viatel
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Special:Macht keinen Tarifwechsel in laufender Verbindung!
 D:dtag
 Z:0 FreeCall
@@ -23899,8 +24155,8 @@ B:01080
 D:dtag
 C:Address:Aktiengesellschaft für telefonische Informationsdienste, Bahnhofstraße 26, 82211 Herrsching
 C:Name:Telegate
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 # Bislang kann dieses Angebot nicht im Vorwahlgebiet 02 (NRW)
 # genutzt werden.
 Z:0 FreeCall
@@ -23945,8 +24201,8 @@ B:01080
 D:dtag
 C:Address:Aktiengesellschaft für telefonische Informationsdienste, Bahnhofstraße 26, 82211 Herrsching
 C:Name:Telegate
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 # Bislang kann dieses Angebot nicht im Vorwahlgebiet 02 (NRW)
 # genutzt werden.
 Z:0 FreeCall
@@ -23985,8 +24241,8 @@ P:81,0 Infotel
 B:01081
 C:Infotel bV, Onderlangs 120, 6812 CJ Arnhem, Niederlande
 C:Name:Infotel
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -24001,8 +24257,8 @@ P:82,0 AugustaKom
 B:01082
 C:Address:AugustaKom Telekommunikation GmbH & Co.KG Hoher Weg 1 86152 Augsburg
 C:Name:AugustaKom
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -24017,8 +24273,8 @@ P:83,0 Wuerzburger
 B:01083
 C:Address:Wuerzburger Telekommunikationsgesellschaft mbH, Bahnhofstraße 12-18, 97070 Würzburg
 C:Name:Wuerzburger
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -24033,8 +24289,8 @@ P:84,0 Telegroup
 B:01084
 C:Telegroup Network Services GmbH, Grossenbaumer Weg 6, 40472 Düsseldorf
 C:Name:Telegroup
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -24059,8 +24315,8 @@ C:Homepage: http://www.westcom.de
 C:Hotline:  0800/937-8266
 C:Adresse:  GTS-WESTCom, Hebelstrasse 22c, 69115 Heidelberg
 C:Name:GTS-WESTCom privat
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:
 C:Tarif: Westcom privat
 D:dtag
@@ -24121,8 +24377,8 @@ P:86,0 ONE.TEL
 B:01086
 C:Address:ONE.TEL Limited (UK), Clements House, 14-18 Gresham Street, London, EC2V 7JE, England
 C:Name:ONE.TEL
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -24137,8 +24393,8 @@ P:87,0 HAMCOM
 B:01087
 C:HAMCOM GmbH Telekommunikation, Südring 1-3, 59065 Hamm
 C:Name:HAMCOM
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -24223,8 +24479,8 @@ P:88,1 Hutchison CbC
 B:01088
 C:Name:Hutchison CbC
 C:Homepage:http://www.hutchison.de
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Special:Nur für Mobilfunkkunden von Hutchison!
 C:Erfasste Zonen:
 C:2	-   4	Deutschland
@@ -24284,8 +24540,8 @@ B:01089
 D:dtag
 C:Address:M'net Telekommunikations GmbH, Corneliusstraße 10, 80469 München
 C:Name:M'net
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -24301,8 +24557,8 @@ B:01090
 # G:01-May-1999
 C:Address:Viag Interkom GmbH & Co. KG, Elsenheimer Straße 11, 81927 München
 C:Name:Viag Interkom
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 D:dtag
 Z:0 FreeCall
 A:011*
@@ -24365,8 +24621,8 @@ P:91,0 IDT
 B:01091
 C:Address:IDT Global Limited, London, United Kingdom
 C:Name:IDT
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -24381,8 +24637,8 @@ P:92,0 Hallo Telefon Service
 B:01092
 C:Address:Hallo Telefon Service GmbH Dinkelbergstraße 6 76684 Östringen
 C:Name:Hallo Telefon Service
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -24397,8 +24653,8 @@ P:93,0 Kray
 B:01093
 C:Address:Informationssysteme, Brüder-Grimm-Allee 73 A, 37085 Göttingen
 C:Name:Kray
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -24413,8 +24669,8 @@ P:94,0 Global Communications
 B:01094
 C:Address:Global Communications GmbH, Eupener Straße 57 - 59, 50933 Köln
 C:Name:Global Communications
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -24429,8 +24685,8 @@ P:95,0 Teleos
 B:01095
 C:Address:Teleos GmbH, Bielefelder Straße 3, 32051 Herford
 C:Name:TeleOs
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -24445,8 +24701,8 @@ P:96,0 GELSEN-NET
 B:01096
 C:Address:GELSEN-NET, Kommunikationsgesellschaft mbH, Munscheidstraße 14, 45886 Gelsenkirchen
 C:Name:GELSEN-NET
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -24462,8 +24718,8 @@ B:01097
 D:dtag
 C:Address:Communication Services (Deutschland) GmbH, Lyoner Str. 15, 60528 Frankfurt
 C:Name:AT&T-Unisource
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -24485,8 +24741,8 @@ B:01098
 C:Mox Telecom AG
 C:Name:Mox
 C:Address:Mox Telecom AG
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Special:Reseller von Star Telecom (01098)
 C:Reseller von Star Telecom
 D:dtag
@@ -24591,8 +24847,8 @@ B:01098
 C:Nikoma, Reseller von Star Telekom
 C:Name:Nikocity Study&Surf
 C:Address:Nikoma
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Special:Reseller von Star Telecom (01098)
 C:Homepage: http://www.nikoma.de/
 C:Nikocity gilt nur in den Städten Augsburg, Berlin, Bremen, Bielefeld,
@@ -24635,8 +24891,8 @@ B:01098
 # G:01-Mar-1999
 C:Name:Nikocity
 C:Address:Nikoma
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Special:Reseller von Star Telecom (01098)
 C:Nikoma, Reseller von Star Telekom
 C:Homepage: http://www.nikoma.de/
@@ -24678,8 +24934,8 @@ B:01098
 # G:01-Mar-1999
 C:Name:Nikoma by Call
 C:Address:Nikoma
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Special:Reseller von Star Telecom (01098)
 C:Nikoma, Reseller von Star Telekom
 C:Homepage: http://www.nikoma.de/
@@ -24715,8 +24971,8 @@ P:99,0 ECONOPHONE
 B:01099
 # G:17.05.1999
 C:Name:EconoPhone
-C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
-C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Address:EconoPhone GmbH, Flughafenstraße 54b, 22335 Hamburg
 C:Special:CallByCall nur in den Bereichen 03, 04, 06 (Stand: 14.06.99)
 C:Special:bei Preselection bundesweit, Anmeldung kostenfrei

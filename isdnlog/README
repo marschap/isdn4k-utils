@@ -1,10 +1,10 @@
-ISDNLOG - Version 4.10 -  				11-Feb-2000
+ISDNLOG - Version 4.16 -  				09-Mar-2000
 
 
 isdnlog ist ein Utility zur Auswertung des D-Kanals eines
 ISDN-BRI Anschlusses.
 
-isdnlog-4.10 wurde ausgiebig mit Linux-2.0.38, Linux-2.2.13 sowie
+isdnlog-4.16 wurde ausgiebig mit Linux-2.0.38, Linux-2.2.13 sowie
 Linux-2.3.35 getestet.
 
 
@@ -96,7 +96,7 @@ Inhalt:
  4.2.6  Konkretes Beispiel fuer die "-S" Option
  5.     Die Konfigurationsdatei "isdnlog.users"
  5.1    Aufbau
- 6.     Das AVON-Verzeichnis
+ 6.     [obsolet]
  7.     Betriebsmodi
  8.     Start von isdnlog
  9.     Die Protokoll-Datei "/var/log/isdn.log"
@@ -378,11 +378,6 @@ man es lassen, andernfalls muss eine manuelle Nacheditierung stattfinden.
 Auch die Datei "isdnlog.users" wird uebernommen. Allerdings finden hier keine
 Aenderungen statt.
 
-Das Vornummernverzeichnis AVON wird nicht uebernommen. Da sich die Syntax
-etwas geaendert hat, muss die alte Datei von Hand an die neue angefuegt werden.
-Aber normalerweise wird bei der Installation von isdnlog empfohlen die
-neue areacode-Library zu verwenden.
-
 Hier sind nochmal alle Eintraege aufgefuehrt, die isdnlog im Makefile enthaelt,
 und die ueber das Menue konfiguriert werden:
 
@@ -400,7 +395,7 @@ und die ueber das Menue konfiguriert werden:
       -DISDN_AT     - Gebuehrenauswertung Oesterreich (anstelle Deutschland)
 
   I4LCONFDIR  (/etc/isdn)
-    Wo liegen die "isdn.conf" sowie die "avon" (falls verwendet!)
+    Wo liegen die "isdn.conf".
 
     Mit der Environment-Variablen "ISDN_CONF_PATH" kann auch zur Laufzeit das
     Verzeichnis festgelegt werden.
@@ -448,8 +443,6 @@ Folgende Programme und Dateien werden durch den "make install" erstellt:
 
   /sbin/isdnlog
   /usr/sbin/isdnrep
-  /etc/isdn/avon (wenn LIBAREA nicht definiert ist!)
-  /usr/lib/areacode.dat (wenn LIBAREA definiert ist!)
 
 
 ACHTUNG: Durch die Syntaxaenderung und den Erweiterungen muessen folgende
@@ -542,36 +535,6 @@ AREAPREFIX:
 COUNTRYPREFIX:
   Es enthaelt den Prefix zur Laenderkennung. Beim Kompilieren ist dieser
   Wert defaultmaessig auf "+" gesetzt. Dieser Eintrag ist optional.
-
-[ obsolete seit isdnlog 3.45 CODELIB:
-  Es kann nach dem Kompilieren eingestellt werden, welche Library verwendet
-  werden soll. Fuer AVON wird dort "AVON" eingetragen und fuer areacode
-  wird dort "AREACODE" eingetragen. Andere Werte sind dort zur Zeit nicht
-  erlaubt. Es sollte dann aber zusaetzlich AREALIB bzw. AVONLIB eingetragen
-  werden.
-  Dieser Eintrag ist optional.
-  Beispiel:
-    CODELIB=avon
-]
-
-[ obsolete seit isdnlog 3.45 AREALIB:
-  Enthaelt den vollen Pfad zu der Datei "areacode.dat". Diese Angabe ist
-  optional und nur notwendig, wenn sich der Pfad nach der Compilation
-  geaendert hat.
-  Beispiel:
-    AREALIB=/usr/share/lib/areacode.dat
-]
-
-[ obsolete seit isdnlog 3.45 AVONLIB:
-  Enthaelt den vollen Pfad zu der Datei "avon". Diese Angabe ist
-  optional und nur notwendig, wenn sich der Pfad nach der Compilation
-  geaendert hat.
-  Beispiel:
-    AREALIB=/usr/share/lib/avon
-
-  Da aber defaultmaessig die Arealib verwendet wird, ist die Datei
-  avon obsolete.
-]
 
 [ISDNLOG]
 
@@ -2045,32 +2008,7 @@ den isdnlog neu zu starten.
 Eine Ueberarbeitung in die neue Syntax ist geplant.
 
 
-6. Das AVON-Verzeichnis
------------------------
-
-Ein "make install" installiert im isdnlog-Verzeichnis "/etc/isdn"
-eine ASCII-Datei "avon". Diese enthaelt ein Verzeichnis aller
-Vorwahlnummern fuer Deutschland in der Form <Vorwahl> : <Ortsnetzbezeichnung>
-
-Beim ersten Start liest isdnlog diese ASCII-Datei ein, und erstellt
-daraus eine ISAM-Datei ("avon.dir" / "avon.pag").
-
-Sobald die VSt isdnlog eine Telefonnummer meldet, die noch unbekannt ist
-(d.h. nicht in der "isdn.conf" angegeben ist), sucht isdnlog diese
-Telefonnummer im AVON-Verzeichnis, und zeigt die Telefonnummer in der
-Form: "<Vorwahl> / Rufnummer, Ortsnetz" an.
-
-Falls das AVON-Verzeichnis korrigiert oder erweitert wird, muessen danach
-die Dateien "/etc/isdn/avon.dir" sowie "/etc/isdn/avon.pag"
-von Hand geloescht, und isdnlog neu gestartet werden, damit das
-neue Verzeichnis aufgebaut werden kann.
-
-Beim Einlesen der ASCII-Datei kann moeglicherweise die Fehlermeldung
-
-  isdnlog: WARNING: Duplicate Entry ``<Ort2>'' in AVON in Line xx, ignored
-  isdnlog: WARNING: Can't be ``<Ort1>'' and ``<Ort2>''!
-
-erscheinen. Dies deutet an, das eine Vorwahl zwei mal eingetragen wurde.
+6. [obsolete]
 
 
 7. Betriebsmodi
@@ -2500,6 +2438,13 @@ angegeben werden.
  -Ux Ignorieren der COLP/CLIP Frames.
      (ignoreCOLP="value")
 
+ -Ix[:y] Intervall f¸r CI und EH-Meldungen setzen.
+     Die berechneten Chargeint- und die AOC-D-Ausgaben werden nur alle
+     "x" bzw "y" Sekunden ausgegeben. Ist "y" nicht angegeben, gelten f¸r
+     beide Werte dasselbe Interval. Diese Option empfiehlt sich bei Providern
+     mit sekundengenauer Abrechnung.
+     (ciInterval="value[:value2]")
+
  -dx Aktives LCR durchfuehren.
      Bei jedem Rausruf mit der eigenen ISDN-Karte berechnet isdnlog den
      guenstigsten Provider (Telefondienst-, *nicht* Internet-Provider!)
@@ -2510,24 +2455,38 @@ angegeben werden.
        CONFIG_ISDN_WITH_ABC_LCR_SUPPORT=y
      erstellt worden sein!
 
-     Mit "x" kînnen folgende Manipulationen vorgenommen werden:
+     Mit "x" kˆnnen folgende Manipulationen vorgenommen werden:
+       (Der Parameter "x" wird bitweise ausgewertet).
+       ACHTUNG: ƒnderung des Parameters ab isdnlog 4.16
 
        -d0 = LCR abschalten, isdnlog fuehrt _kein_ LCR durch
-       -d1 = LCR einschalten, aber nicht bei Sonderrufnummern
-       -d2 = LCR einschalten, aber nicht bei Ortsrufnummern
+       -d1 = LCR einschalten f¸r Ferngespr‰che
+       -d2 = LCR einschalten, auch f¸r Ortsrufnummern
+       -d4 = LCR einschalten f¸r Sonderrufnummern
+       -d5 = LCR f¸r Fern- und Sondernummern
+       ...
+       -d7 = LCR ein, alle Nummern
 
-     Wie immer wirkt dieser Schalter additiv, d.h. mit
+      Hinweis:
+      - Call-by-Call im Ortsnetz ist in Deutschland (noch) nicht moeglich.
 
-       -d3 wird LCR aktiviert, aber weder bei Sonder-, noch bei
-       	   Ortsrufnummern.
+   Um nun f¸r aktives LCR zu verschiedenen IS-Provider das Routing und die
+   Namensauflˆscung anzupassen, kann isdnlog eine Script aufrufen.
 
-     Zur Zeit (isdnlog-4.10 vom 11-Feb-2000) ist "-d3" auch die einzig
-     sinnvolle Einstellung, da
+   (providerchange="path_top_script")
 
-      - isdnlog mangels Informationen noch nicht wirklich fÅr eine
-      	Sonderrufnummer den guenstigsten Provider ermitteln kann
+   Die Script erh‰lt 3 Parameter:
+    - Providernummer (wie in rate-CC.dat)
+    - Telefonnummer
+    - Servicename
+    Retouniert die Skript ungleich '0', wird kein LCR durchgef¸hrt.
 
-      - Call-by-Call im Ortsnetz (in Deutschland) noch nicht moeglich ist.
+   z.B.
+   providerchange = /etc/isdn/provider
+
+   Ein Beispiel findet sich als isdnlog/samples/provider.
+
+   Diese Feature ist EXPERIMENTELL.
 
 
 Bei den Optionen -mX, -lX -xX sind folgende Flags moeglich:
@@ -2673,7 +2632,9 @@ Wobei in den einzelnen Spalten folgendes steht:
      ISDN, und 0, falls der Gegner aus der analogen Welt kommt
 (15) Der Currency Factor fuer diese Verbinung (in Deutschland z.Zt. 0,12)
 (16) Die Waehrung fuer diese Verbindung (in Deutschland "DM")
-
+(17) Gesamtkosten der Verbindung
+(18) Providernummer
+(19) Zone
 
 10. Das Report-Modul isdnrep
 ----------------------------
@@ -2722,16 +2683,6 @@ Die Optionen von isdnrep haben im einzelnen folgende Funktion:
 
   -n        "numbers" isdnrep druckt anstelle der Symbolischen Namen die
                       Telefonnummern an
-
-  -c Zone   "compute" Falls man kein AOC-E (Gebuehreninfo am Ende einer Verbindung)
-     	    	      bestellt hat, und isdnlog der angerufene Gegner unbekannt
-                      ist ("calling ?"), kann hiermit angegeben werden, in
-                      welcher Gebuehrenzone isdnrep den Gegner "vermuten" soll:
-                       -c 0 : nicht's berechnen, sondern mit DM 0,00 abrechnen
-                       -c 1 : als CityCall vermuten
-                       -c 2 : als RegioCall vermuten
-                       -c 3 : als GermanCall vermuten
-                       -c 4 : in der Fernzone vermuten
 
   -f file   "file"    Es kann ein anderes Logfile anstelle von /var/log/isdn.log
 	              angegeben werden.
@@ -2951,6 +2902,7 @@ Die Optionen von isdnrep haben im einzelnen folgende Funktion:
      		     bei Arcor ist -R70 anzugeben.
      		     Fehlt diese Angabe, wird 33, d.h. die Deutsche Telekom
      		     angenommen.
+		     s. auch PRESELECTED.
 
 
 Abspielen von Anrufen vom vbox und Anzeigen von Faxen vom mgetty im HTML-Format
@@ -3282,100 +3234,6 @@ Es wird aber dringend davon abgeraten die Schalter -A und -D zu verwenden!!
 Hierbei wird die gesamte Struktur der Datei zerstoert (include), so wie alle
 Kommentare werden geloescht.
 
-Das Utility "isdnconf" kann weiterhin zur gezielten Befragung der
-Tarifdatenbank eingesetzt werden. Dazu gilt folgende Syntax:
-
-  isdnconf -c <Ziel>[,Dauer]
-
-Wird keine Dauer (LÑnge der Verbindung) angegeben, nimmt isdnconf
-153 Sekunden an.
-
-"isdnconf" blickt immer von "hier", d.h. dem Ort, in dem man sich
-aktuell befindet (oder genauer, dem Ort, der durch die Eintraege
-COUNTRYCODE sowie AREACODE in der Config-Datei angegeben wurden).
-
-
-Als Ziel darf entweder ein ".", eine Telefonnummer oder eine
-Landesbezeichnung angegeben werden.
-
-Bei einem "." gibt isdnconf eine 7 Tage/24-Stunden LCR-Tabelle aus, die man
-sich z.b. neben das Telefon legen kann:
-
-$ isdnconf -c .
-Least-Cost-Routing-Table [Verbindungsdauer:153 Sekunden]:
-
-Werktag:
-        RegioCall:
-                07:00 .. 07:59 01055:Esprit        (DEM 0.050/60.0s = DEM 0.050/Min (Esprit, Region 50, Workday (Thursday), Late night))
-                08:00 .. 08:59 01070:Arcor CbC     (DEM 0.075/60.0s = DEM 0.075/Min (Arcor CbC, Regio Plus, Workday (Thursday)))
-                09:00 .. 17:59 01051:01051         (DEM 0.090/60.0s = DEM 0.090/Min (01051, Ferngespr‰che, Workday (Thursday)))
-                18:00 .. 18:59 01070:Arcor CbC     (DEM 0.075/60.0s = DEM 0.075/Min (Arcor CbC, Regio Plus, Workday (Thursday)))
-                19:00 .. 19:59 01013:Tele 2        (DEM 0.070/60.0s = DEM 0.070/Min (Tele 2, National, Workday (Thursday)))
-                20:00 .. 20:59 01078:3U            (DEM 0.001/1.0s = DEM 0.059/Min (3U, Fern, Workday (Thursday)))
-                21:00 .. 21:59 01070:Arcor CbC     (DEM 0.040/60.0s = DEM 0.040/Min (Arcor CbC, Regio Plus, Workday (Thursday)))
-                22:00 .. 06:59 01019:Mobilcom CbC  (DEM 0.040/60.0s = DEM 0.040/Min (Mobilcom CbC, Ferngespr‰che bundesweit, Workday (Thursday), Nacht))
-...
-
-D.h. es wird ausgegeben, ueber welchen Provider um welche Uhrzeit eine
-Verbindung am guestigsten ist.
-
-Daneben kann eine Telefonnummer angegeben werden, woraufhin isdnconf
-die Tarife der einzelnen Provider fuer eine Verbindung "jetzt gerade"
-ausgibt:
-
-$ isdnconf -c +4989
-Ein 153 Sekunden langes Gespraech nach Muenchen (Zone 4) kostet am Thu May  6 21:52:24 1999
-01055 DEM    0.150 (DEM 0.050/60.0s = DEM 0.050/Min (Esprit, Fern, Workday (Thursday), Late night))
-01078 DEM    0.150 (DEM 0.001/1.0s = DEM 0.059/Min (3U, Fern, Workday (Thursday)))
-01030 DEM    0.153 (DEM 0.001/1.0s = DEM 0.060/Min (TelDaFax, Deutschland, Workday (Thursday)))
-
-$ isdnconf -c +45
-Ein 153 Sekunden langes Gespraech nach Daenemark (+45) kostet am Thu May  6 21:54:21 1999
-01078 DEM    0.660 (DEM 0.004/1.0s = DEM 0.259/Min (3U, Daenemark,Finnland,Frankreich,Schweiz))
-01013 DEM    1.170 (DEM 0.390/60.0s = DEM 0.390/Min (Tele 2, Euro 1 / USA, Kanada))
-01019 DEM    1.470 (DEM 0.490/60.0s = DEM 0.490/Min (Mobilcom CbC, Gruppe A))
-01033 DEM    1.920 (DEM 0.120/10.0s = DEM 0.720/Min (DTAG, Euro 1))
-
-Last but not least kann anstelle einer Telefonnummer eine Landesbezeichnung
-angegeben werden:
-
-$ isdnconf -c Italien
-Ein 153 Sekunden langes Gespraech nach Italien (+39) kostet am Thu May  6 21:56:17 1999
-01078 DEM    0.915 (DEM 0.006/1.0s = DEM 0.359/Min (3U, Zone 110))
-01013 DEM    1.170 (DEM 0.390/60.0s = DEM 0.390/Min (Tele 2, Euro 1 / USA, Kanada))
-01019 DEM    1.470 (DEM 0.490/60.0s = DEM 0.490/Min (Mobilcom CbC, Gruppe A))
-
-Anstelle einer Telefonnummer kann auch direkt eine Zone angegeben werden:
-
-$ isdnconf -c .<Zone>
-
-Ein 153 Sekunden langes Gespraech in Zone 8 kostet am Tue May 11 09:07:58 1999
-01078 DEM    1.068 (DEM 0.007/1.0s = DEM 0.419/Min (3U, Zone 8, Workday (Thuesday)))
-01098 DEM    1.170 (DEM 0.008/1.0s = DEM 0.459/Min (Mox, Fest-zu-Mobil))
-01030 DEM    1.224 (DEM 0.008/1.0s = DEM 0.480/Min (TelDaFax, C/D/E-Netz))
-01019 DEM    1.470 (DEM 0.490/60.0s = DEM 0.490/Min (Mobilcom CbC, Mobilfunk))
-01079 DEM    1.861 (DEM 0.012/1.0s = DEM 0.730/Min (Viatel, Deutschland GSM, Workday (Thuesday), Standard))
-
-Hier sind bislang folgende einheitliche Zonen moeglich:
-
-   0 : Verbindungen an der eigenen Tk-Anlage (zwangslaeufig kostenlos)
-       sowie alle "FreeCall" (kostenlos) Nummern des jeweiligen Providers
-   1 : Ortszone (alle Nummern, die ohne Vorwahl erreichbar sind.
-       Z.Zt. nur ueber den preselected Provider erreichbar)
-   2 : Cityzone (Nummern im Umkreis von max. 20 km)
-   3 : Region 50 (Nummern im Umkreis von max. 50 km)
-   4 : Fernzone (Deutschlandweit)
-   5 : C-Mobilbox
-   6 : C-Netz
-   7 : D1-Netz
-   8 : D2-Netz
-   9 : E-plus-Netz
-  10 : E2-Netz
-  20 : Internet
-  21 : Auskunft Inland
-  22 : Auskunft Ausland
-
-
 Hier nun die Optionen des Programmes:
 
 Befehle:
@@ -3456,20 +3314,6 @@ Befehle:
   -t 'SI'               Zeigt alle Eintraege mit Service-Indicator 'SI' an.
                         Gilt nicht fuer den Befehl -A.
 
-  -c 'Code'   "code"    Ermittelt die Ortsbezeichnung sowie die Gebuehrenzone
-     	      		(relativ zum eigenen Standort, d.h. dem Eintrag
-     	      		AREACODE in der "callerid.conf") zu der Telefonnummer
-                        "code".
-                        Daneben wird ausgegeben, ueber welchen Provider
-                        jetzt gerade eine (153 Sekunden lange) Verbindung
-                        zu dieser Nummer am guenstigsten waere.
-                        Gilt nicht fuer -A und -D.
-                        (153 Sekunden als gedachte Dauer der Verbindung
-                         wurde gewaehlt, da es sich um den statistischen
-                         Durchschnitt eines typischen Telefonats handelt,
-                         und durch diese "krumme" Zahl alle Provider,
-                         die im Sekunden-Takt abrechnen massiv im Vorteil
-                         sind - was gewuenscht ist!)
 
   -i          "ignore"  Es wird dann bei den Optionen -n und -a die
                         Gross/Kleinschreibung ignoriert.
@@ -4085,6 +3929,7 @@ und muss folgenden Aufbau (als Beispiel hier nun Mobilcom) haben:
 
 #######################################################################
 P:19 Mobilcom CbC
+B:01019
 C:CityLine Telefondienste GmbH, Schwarzer Weg 13, 24837 Schleswig 01019
 G:06.04.1999
 C:MobilCom AG
@@ -4096,6 +3941,7 @@ Z:2-4 Ferngespraeche bundesweit
 T:*/07-19=0.12/60 Standard
 T:*/19-22=0.08/60 Spar
 T:*/22-07=0.04/60 Nacht
+A:+49
 Z:5-10 Mobilfunk
 A:01610,01617,01619,01618 # C
 A:0170,0171  		  # D1
@@ -4104,27 +3950,9 @@ A:0177,0178		  # Eplus
 A:0176,0179  		  # E2
 T:*/*=0.49/60
 Z:14 Gruppe A
-A:+1     # Vereinigte Staaten (USA)
-A:+30    # Griechenland
-A:+31    # Niederlande
-A:+32    # Belgien
-A:+33    # Frankreich
-A:+34    # Spanien
-A:+350   # Gibraltar
-A:+351   # Portugal
-A:+352   # Luxemburg
-A:+353   # Irland
-A:+356   # Malta
-A:+358   # Finnland
-A:+376   # Andorra
-A:+377   # Monaco
-A:+39    # Italien
-A:+41    # Schweiz
-A:+43    # Oesterreich
-A:+44    # Grossbritannien und Nordirland
-A:+45    # Daenemark
-A:+46    # Schweden
-A:+47    # Norwegen
+A:US     # Vereinigte Staaten (USA)
+A:AT    # Oesterreich
+...
 T:*/*=0.49/60
 Z:20 Internet
 A:01929 # (Benutzername: mobilcom; Passwort: mobilcom)
@@ -4152,6 +3980,10 @@ Damit wird das Waehrungsformat und die Anzahl der Dezimalstellen
 angegeben, z.B.
 U:%.3 DM
 
+-> B:
+
+Verbindungsbetreibernummer
+
 -> P:
 
 Hiermit beginnt die Definition des (naechsten) Providers.
@@ -4175,13 +4007,8 @@ Gibt es fuer eine Kennzahl mehrere Alternativen (wie verschiedene Provider
 oder verschiedene Tarife), werden diese hierueber auseinander gehalten.
 Der erste Tarif bekommt "P:xx,0", der naechste "P:xx,1" usw.
 Gibt es keine Alternativen, darf das ",0" entfallen.
+Dieser Eintrag muss mit rate.conf ¸bereinstimmen.
 
--> G:
-
-Hier wird (im Format tt.mm.jjjj) angegeben, ab wann dieser Tarif gueltig ist.
-Beispiel:
-
-G:01.01.1999
 
 -> C:
 
@@ -4191,10 +4018,10 @@ C:Homepage: http://www.mobilcom.de
 C:Hotline:  01805/191919
 C:Adresse:  Postfach 1249, 24822 Schleswig
 
-Im Gegensatz zu den "#" Kommentaren koennten diese in spaeteren Versionen
-von isdnlog noch gesondert verwendet werden, und sollten daher zumindest
-genug Informationen enthalten, um eine Kontaktaufnahme mit der jeweiligen
-Telefongesellschaft zu ermoeglichen.
+Im Gegensatz zu den "#" Kommentaren werden diese Kommentare von isdnlog
+gespeichert und sollten daher zumindest genug Informationen enthalten,
+um eine Kontaktaufnahme mit der jeweiligen Telefongesellschaft zu
+ermoeglichen.
 
 -> D:
 
@@ -4226,28 +4053,13 @@ Fuer Deutschland habe ich folgende Zonenzuordnung getroffen:
   2 : Cityzone (Nummern im Umkreis von max. 20 km)
   3 : Region 50 (Nummern im Umkreis von max. 50 km)
   4 : Fernzone (Deutschlandweit)
-  5 : C-Mobilbox
-  6 : C-Netz
-  7 : D1-Netz
-  8 : D2-Netz
-  9 : E-plus-Netz
- 10 : E2-Netz
- 11 : Euro City
- 12 : Euro 1
- 13 : Euro 2
- 14 : Welt 1
- 15 : Welt 2
- 16 : Welt 3
- 17 : Welt 4
-
- 20 : Internet
+ 100 : Internet
+ 200 : Ausland
 
 Diese Zuordnung mu· erhalten bleiben, da isdnlog fuer Deutschland bereits
 eine Verzonungstabelle (der DTAG) enthaelt. In dieser Verzonungstabelle
 kann isdnlog nachschlagen, welche der obigen Zonen zwischen zwei
 gegebenen Telefonnummern liegt.
-Weiterhin kann ueber den Eintrag "ZONE = x" in der "callerid.conf" fuer
-jede Nummer wieder explizit die errechnete Zone uebersteuert werden.
 
 
 Falls ein Provider in mehreren Zonen denselben Tarif anbietet, kann das
@@ -4272,6 +4084,8 @@ Die Zonen
 kann isdnlog automatisch (mittels der Verzonungstabelle) erkennen. Daher
 muessen fuer diese Zonne in Deutschland keine "A:" Eintraege vorgenommen
 werden (das waere auch eine lange Liste ;-)
+Die Fernzone bzw. letzte Inlandszone muﬂ einen Eintrag A:+49 (bzw. A:DE, bzw
+eigener Country-Code) enthalten.
 Von allen anderen Zonen weiss isdnlog intern nichts.
 
 Durch einen Eintrag
@@ -4282,20 +4096,8 @@ A:0172,0173
 wird isdnlog bekannt gemacht, das alle Telefonnummern, die mit "0172" oder
 "0173" beginnen, in die Zone 8 gehoeren.
 
-Ein Eintrag
-
-Z:12 USA
-A:+1 # Vereinigte Staaten (USA)
-
-gibt an, das alle Nummern, die mit "+1" beginnen, in der Zone 12 liegen.
-Es muss hier stets die Normalform einer Telefonnummer angegeben werden,
-d.h. obwohl man in die USA "001" vorwÑhlt, verarbeitet isdnlog dies intern
-mit "+1". Die Normalform einer Telefonnummer lautet:
-
- <Landesvorwahl><Vorwahl><Rufnummer>
-
-D.h. eine evtl. Provider-Vorwahl, oder vorlaufende Nullen fuer die
-Amtsholung an einer Tk-Anlage haben hier nichts zu suchen!
+Auslandsnummern werden ¸ber ihren Landescode eingegeben.
+Die Umsetzung von z.b A:+1 in A:US erledigt der Rate-Preprozessor pp_rate.
 
 Ueber diesen "A:" Tag werden isdnlog auch alle "Sonderrufnummern" bekannt
 gemacht. Durch den Eintrag
@@ -4593,7 +4395,7 @@ Was kann nun isdnlog (ab der Version 3.x) mit dieser neuen Situation anstellen?
    wird z.Zt. von der Rate-Crew in einem CVS gepflegt, und taeglich
    aktuell unter folgender Adresse zur Verfuegung gestellt:
 
-      http://www.digitalprojects.com/rates
+      http://rates4linux.sourceforge.net/
 
 
    Wer Fehler in der Tarifdatenbank findet, oder gar Verbesserungen oder

@@ -1,5 +1,5 @@
-.\" $Id: isdnlog.5.in,v 1.1 1998/12/01 16:48:25 paul Exp $
-.\" CHECKIN $Date: 1998/12/01 16:48:25 $
+.\" $Id: isdnlog.5.in,v 1.2 2000/03/09 18:50:02 akool Exp $
+.\" CHECKIN $Date: 2000/03/09 18:50:02 $
 .TH isdnlog 5 "@MANDATE_ISDNLOG5@" "ISDN 4 Linux @I4LVERSION@" "Linux System Administration"
 .SH NAME
 @LOGFILE@ \- isdn log file
@@ -37,7 +37,7 @@ Number of charge signals received (-1 if you don't get charge signals)
 I = Incoming or O = Outgoing
 .TP
  9
-Cause Code if connection was not established 
+Cause Code if connection was not established
 .TP
 10
 Number of bytes transferred (incoming)
@@ -62,6 +62,12 @@ Currency of charge unit (e.g. DM in Germany)
 .TP
 17
 Total cost of connection
+.TP
+18
+Provider
+.TP
+19
+Zone
 
 .SH FILES
 .TP
@@ -69,7 +75,7 @@ Total cost of connection
 This file: isdnlog log file.
 
 .SH SEE ALSO
-.B isdnlog(8) 
+.B isdnlog(8)
 
 .SH AUTHOR
 This manual page was written by Andreas Jellinghaus <aj@debian.org>,

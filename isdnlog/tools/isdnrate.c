@@ -1,4 +1,4 @@
-/* $Id: isdnrate.c,v 1.35 2000/03/06 07:03:21 akool Exp $
+/* $Id: isdnrate.c,v 1.36 2000/03/09 18:50:03 akool Exp $
 
  * ISDN accounting for isdn4linux. (rate evaluation)
  *
@@ -19,6 +19,23 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnrate.c,v $
+ * Revision 1.36  2000/03/09 18:50:03  akool
+ * isdnlog-4.16
+ *  - isdnlog/samples/isdn.conf.no ... changed VBN
+ *  - isdnlog/isdnlog/isdnlog.c .. ciInterval
+ *  - isdnlog/isdnlog/processor.c .. ciInterval
+ *  - isdnlog/tools/tools.h .. ciInterval, abclcr conf option
+ *  - isdnlog/tools/isdnconf.c .. ciInterval, abclcr conf option
+ *  - isdnlog/tools/isdnrate.c .. removed a warning
+ *  - isdnlog/NEWS ... updated
+ *  - isdnlog/README ... updated
+ *  - isdnlog/isdnlog/isdnlog.8.in ... updated
+ *  - isdnlog/isdnlog/isdnlog.5.in ... updated
+ *  - isdnlog/samples/provider ... NEW
+ *
+ *    ==> Please run a make clean, and be sure to read isdnlog/NEWS for changes
+ *    ==> and new features.
+ *
  * Revision 1.35  2000/03/06 07:03:21  akool
  * isdnlog-4.15
  *   - isdnlog/tools/tools.h ... moved one_call, sum_calls to isdnrep.h
@@ -375,12 +392,14 @@ static void init()
 
 }				/* init */
 
+#if 0
 static void deinit(void)
 {
   exitRate();
   exitDest();
   exitHoliday();
 }
+#endif
 
 /* calc a day/time W | E | H */
 static void get_day(char d)

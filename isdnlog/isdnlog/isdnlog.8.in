@@ -1,5 +1,5 @@
-.\" $Id: isdnlog.8.in,v 1.5 2000/02/07 20:32:40 akool Exp $
-.\" CHECKIN $Date: 2000/02/07 20:32:40 $
+.\" $Id: isdnlog.8.in,v 1.6 2000/03/09 18:50:02 akool Exp $
+.\" CHECKIN $Date: 2000/03/09 18:50:02 $
 .TH isdnlog 8 "@MANDATE_ISDNLOG8@" "ISDN 4 Linux @I4LVERSION@" "Linux System Administration"
 .PD 0
 .SH NAME
@@ -67,7 +67,7 @@ Set the preselected (i.e the provider choosen, if no prefix is dialed)
 provider to value. Value should be without \fIvbn\fR.
 
 .TP
-.B \-0\fIx:y\fB	trim="value:value"
+.B \-0\fIx:y\fB	trim="value[:value]"
 Suppress leading digits. If isdnlog is connected through a PABX, it is
 sometimes not possible to let isdnlog distinguish between a national and an
 international call, even with help of the
@@ -89,6 +89,12 @@ outgoing calls two zeroes must be removed (the number must be normalized to
 be without any leading zeroes in the case of a national number; international
 numbers must have one leading zero). So, in this case, the option \fB-03:2\fR
 would be correct.
+
+.TP
+.B \-i\fIx\fB	internS0="value"
+Telefon number shorter then
+.I value
+are considered to be internal numbers one your PABX
 
 .TP
 .B \-o	other={yes|no}
@@ -336,6 +342,44 @@ x11 client. Default value is 500.
 .B \-w\fIX\fB	thruput="value"
 If you enabled throughput logging (0x400), isdnlog will log the throughput
 every \fIX\fR seconds.
+
+.TP
+.B \-I\fIx:y\fB	ciinterval="value[:value]"
+Interval for printing of charge messages (0x20).
+.br
+The first value is the interval for the calculated CI, the second value
+for the EH (AOC-D) messages. If only one value is given, both intervals are
+set to this value.
+
+.SH LCR
+.TP
+.B \-d\fIx\fB	abclcr="value"
+Value is a bitmap:
+.br
+0 ... off
+.br
+1 ... calls to different area / country
+.br
+2 ... local calls too
+.br
+4 ... special numbers e.g. ISP
+.br
+This needs a kernel patch to work. If the kernel patch is not found
+a simulation is done.
+.br
+Note: depending on your telefon provider local area calls may or may not
+be routed to alternate providers.
+For changing the ISP a script is called. s. next option 'providerchange'
+
+.TP
+.B	providerchange="path_top_script"
+(There is no commandline option for this)
+This script is called with 3 parameters, the new provider number
+(fron rate-CC.dat) the number, which would be dialed, and the servicename.
+The script should adjust routing, name resolution and so on to
+connect to the ISP.
+If the script returns non zero, LCR will not be done.
+
 
 .SH "TIME MODULE"
 
