@@ -1,4 +1,4 @@
-# $Id: Makefile.in,v 1.1 1997/02/17 00:08:49 fritz Exp $
+# $Id: Makefile.in,v 1.2 1997/02/22 14:14:43 fritz Exp $
 #
 # Makefile for icnctrl
 # (C) 1997 Fritz Elfert
@@ -54,4 +54,4 @@ clean:
 	rm -f *.o *~ $(PROGRAM)
 
 distclean: clean
-	rm -f config.status config.cache config.log Makefile
+	rm -f config.status config.cache config.log Makefile icnctrl.man
