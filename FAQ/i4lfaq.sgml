@@ -4,7 +4,7 @@
 
 <title>FAQ for isdn4linux
 <author>Matthias Hessler (<tt><htmlurl url="mailto:hessler@isdn4linux.de" name="hessler@isdn4linux.de"></tt>)
-<date>v2.0.86, 4. July 2004
+<date>v2.0.87, 10. July 2004
 <abstract>
 If you are reading this FAQ online, you may consider downloading the whole
 thing, and reading it offline (much cheaper). To download the latest
@@ -118,13 +118,14 @@ pecularities apply. To find more about your country, check the section
 <p>
 Besides this FAQ, take a look at the various man pages and Readme's that come
 with the isdn4linux package. Then there is the isdn4linux website:
-<url url="http://www.isdn4linux.de">. There is also a news group and a
-mailing list on isdn4linux which will give you the most up to date
-information. To find out more about these great information sources, see
-section <ref id="docu" name="docu">.
+<url url="http://www.isdn4linux.de">. There is also a mailing list on
+isdn4linux which will give you the most up to date information. To find out
+more about these great information sources, see section <ref id="docu"
+name="docu">.
 And: check out all the great links listed in question
-<ref id="config_links" name="config_links">! You find information in your language,
-or information specific to your linux distribution.
+<ref id="config_links" name="config_links">!
+You may find information in your language, or information specific to your
+linux distribution.
 
 <sect1> general_getlatest: Where do I get the latest version of isdn4linux?  
 <label id="general_getlatest">
@@ -292,10 +293,14 @@ the other way around. For configuration see question
 <label id="feature_fax">
 <p>
 <itemize>
-<item><bf>For all passive cards (except from AVM): NO</bf>. However, there
-is a project working on this rather complicated problem. For more info on
+<item><bf>For all passive cards (except from AVM): NO</bf>. There
+was a project working on this rather complicated problem. For more info on
 its status have a look at:
-<tt><url url="http://home.enitel.no/mortenro/linux/i4lfax/index.html"></tt>
+<tt><url url="http://user.cs.tu-berlin.de/~ulfi/osvisions/i4lsoftfax/i4lfax/"></tt>
+Also, an idea exists to extend the new modular mISDN with layer 2 and layer 3
+protocols for fax. Once this works (e.g. with the Sedlbauer Speedfax card)
+then the layer 1 protocol (modulation/demodulation) could be implemented via
+the spandsp library which is part of the Asterisk project.
 <item><bf>For passive cards from AVM: Yes</bf>. AVM recently released a
 binary CAPI 2.0 driver which supports faxing. However, the setup is rather
 complicated. Get a start on:
@@ -442,7 +447,7 @@ you have additional information on this.
 A useful sample config for yaps you might find on:
 <url url="http://www.tnt-computer.de/linux/yaps-suite1-1.tgz">
 
-Another program to send SMS is <tt>asterix</tt>. Have a look at:
+Another program to send SMS is <tt>asterisk</tt>. Have a look at:
 <url url="http://www.asterisk.org"> and
 <url url="http://www.voip-info.org/wiki-Asterisk+cmd+Sms">.
 One advantage over yaps is that it can also receive SMS, for Germany
@@ -695,6 +700,11 @@ E.g.: /usr/src/linux/Documentation/isdn/README.HiSax
 </itemize>
 Many of the utilities also have man pages!
 
+To get a good technical overview over isdn4linux have a look at the
+great whitepaper 'ISDN4Linux, CAPI4Linux, CPI4Hisax and other cute acronyms:
+The ISDN subsystem in the Linux kernel', which can be found at:
+<tt><url url="http://www.linux-kongress.org/2002/papers/lk2002-germaschewski.pdf"></tt>
+
 For a Suse distribution the following information might be helpful:
 <itemize>
 <item><tt>/usr/doc/packages/i4l*</tt> (for i4l in general)
@@ -718,8 +728,9 @@ HSCSD aussch&ouml;pfen</tt>
 <item>ct 15/2002, page 204: <tt>Bei Anruf Internet: Handy-Anruf l&ouml;st
 Internet-Einwahl aus</tt>
 <item>ct 3/2004, page 182: <tt>Heimserver im Eigenbau - Teil 4: ISDN-Grundlagen
-f&uuml;r Linux</tt>
-(also contains information about the new mISDN driver)
+f&uuml;r Linux</tt>(also contains information about the new mISDN driver).
+An online version is available on:
+<tt><url url="http://www.heise.de/ct/04/03/182/"></tt>
 <item>ct 9/2004, page 100: <tt>Tux vermittelt - Linux als Telefonanlage mit
 VoIP</tt>(refers to software PBX4Linux)
 </itemize>
@@ -1161,6 +1172,9 @@ mode like a leased line.
 However, some special software named PBX4Linux has been written for this.
 You may want to have a look at the German article in ct 9/2004 on how to use
 PBX4Linux.
+
+Another alternative for emulation of a PBX is Asterisk, to be found on:
+<tt><url url="www.asterisk.org"></tt>
 
 Also, it is possible to give up one B-channel in exchange for reading the
 complete D-channel protocol, which is great for isdnlog. The later can
@@ -1824,6 +1838,8 @@ howto (isdn.html) and a ISDN quick-install guide (isdnquick.html).
 <tt><url url="http://linecontrol.sourceforge.net"></tt>
 <item>(German) Homepage of ISDN Sniffer (read ISDN bus, e.g. via reversed
 card): <tt><url url="http://krypt.cs.uni-sb.de/~osk/isdnosk.html"></tt>
+<item>Homepage of Asterisk (Open Source Linux PBX):
+<tt><url url="http://www.asterisk.org"></tt>
 <item>Configuration software maKs for Ackermann Euracom (not isdn4linux related):
 <tt><url url="http://www.ganzfix.de"></tt>
 </itemize>
@@ -1858,7 +1874,8 @@ For more information on how to configure it have a look at the following
 website: <tt><url url="http://rcum.uni-mb.si/~uvp00845b/"></tt>
 
 For a more general description on the mISDN driver and the future of isdn4linux
-you may also read the German article published in ct 3/2004.
+you may also read the German article published in ct 3/2004. An online
+version is available at: <tt><url url="http://www.heise.de/ct/04/03/182/"></tt>
 
 Please note that the current FAQ applies to old isdn drivers.
 mISDN may work differently than described in this FAQ.
