@@ -1,7 +1,10 @@
 /*
- * $Id: capiconn.c,v 1.1 2000/05/18 14:58:35 calle Exp $
+ * $Id: capiconn.c,v 1.2 2000/10/20 17:16:27 calle Exp $
  *
  * $Log: capiconn.c,v $
+ * Revision 1.2  2000/10/20 17:16:27  calle
+ * phone numbers in connection info where wrong on incoming calls.
+ *
  * Revision 1.1  2000/05/18 14:58:35  calle
  * Plugin for pppd to support PPP over CAPI2.0.
  *
@@ -11,7 +14,7 @@
 #include <string.h>
 #include "capiconn.h"
 
-static char *revision = "$Revision: 1.1 $";
+static char *revision = "$Revision: 1.2 $";
 
 /* xxxxxxxxxxxxxxxxxx */
 static _cmsg cmdcmsg;
@@ -380,10 +383,12 @@ static int set_conninfo1a(capiconn_context *ctx,
 		if (callednumber[0] & 0x80) {
 			memcpy(p->callednumber+1, callednumber, len);
 			p->callednumber[0] = len;
+	                p->callednumber[len+1] = 0;
 		} else {
 			memcpy(p->callednumber+2, callednumber, len);
 			p->callednumber[0] = len+1;
 			p->callednumber[1] = 0x81;
+	                p->callednumber[len+2] = 0;
 		}
 	} else {
 			p->callednumber[0] = 0;
@@ -395,10 +400,11 @@ static int set_conninfo1a(capiconn_context *ctx,
 		memcpy(p->callingnumber+3, callingnumber, len);
 		p->callingnumber[0] = len+2;
 		p->callingnumber[1] = 0x00;
+	        p->callingnumber[2] = 0x80;
+		p->callingnumber[len+3] = 0;
 	} else {
 		p->callingnumber[0] = 0;
 	}
-	p->callingnumber[2] = 0x80;
 	return 0;
 fail:
 	clr_conninfo1(ctx, p);
@@ -419,13 +425,13 @@ static int set_conninfo1b(capiconn_context *ctx,
 	if ((p->callednumber = (*cb->malloc)(128)) == 0)
 		goto fail;
 	len = callednumber[0];
-	memcpy(p->callednumber, callednumber, len);
+	memcpy(p->callednumber, callednumber, len+1);
 	p->callednumber[len+1] = 0;
 
 	if ((p->callingnumber = (*cb->malloc)(128)) == 0)
 		goto fail;
 	len = callingnumber[0];
-	memcpy(p->callingnumber, callingnumber, len);
+	memcpy(p->callingnumber, callingnumber, len+1);
 	p->callingnumber[len+1] = 0;
 	return 0;
 fail:
@@ -693,8 +699,8 @@ static void plci_change_state(capi_contr * card, capi_connection * plci, int eve
 	struct plcistatechange *p = plcitable;
 	while (p->event) {
 		if (plci->state == p->actstate && p->event == event) {
-			(cb->debugmsg)("plci_change_state:0x%x %d -> %d",
-				  plci->plci, plci->state, p->nextstate);
+			(cb->debugmsg)("plci_change_state:0x%x %d -> %d event=%d",
+				  plci->plci, plci->state, p->nextstate, event);
 			plci->state = p->nextstate;
 			if (p->changefunc)
 				p->changefunc(card, plci);
@@ -776,8 +782,8 @@ static void ncci_change_state(capi_contr * card, capi_ncci * ncci, int event)
 	struct nccistatechange *p = nccitable;
 	while (p->event) {
 		if (ncci->state == p->actstate && p->event == event) {
-			(*cb->debugmsg)("ncci_change_state:0x%x %d -> %d",
-				  ncci->ncci, ncci->state, p->nextstate);
+			(*cb->debugmsg)("ncci_change_state:0x%x %d -> %d event=%d",
+				  ncci->ncci, ncci->state, p->nextstate, event);
 			if (p->nextstate == ST_NCCI_PREVIOUS) {
 				ncci->state = ncci->oldstate;
 				ncci->oldstate = p->actstate;
@@ -961,7 +967,7 @@ static void handle_incoming_call(capi_contr * card, _cmsg * cmsg)
 	}
 	plci_change_state(card, plcip, EV_PLCI_CONNECT_IND);
 
-	(*cb->infomsg)("incoming call contr=%d cip=%d %s -> %s", 
+	(*cb->debugmsg)("incoming call contr=%d cip=%d %s -> %s", 
 			card->contrnr,
 			cmsg->CIPValue,
 			plcip->conninfo.callingnumber + 3,
@@ -1232,7 +1238,7 @@ static void handle_ncci(capiconn_context *ctx, _cmsg * cmsg)
 		ncci_change_state(card, nccip, EV_NCCI_CONNECT_B3_ACTIVE_IND);
 
 
-		(*cb->infomsg)("ncci 0x%x up", nccip->ncci);
+		(*cb->debugmsg)("ncci 0x%x up", nccip->ncci);
 
 		(*cb->connected)(nccip->plcip, cmsg->NCPI);
 		break;
@@ -1533,11 +1539,11 @@ int capiconn_accept(
 		return CAPICONN_NO_MEMORY;
 	}
 
-	(*cb->debugmsg)("accept plci 0x%04x %u,%u,%u",
+	(*cb->debugmsg)("accept plci 0x%04x %d,%d,%d",
 			plcip->plci,
-			plcip->conninfo.b1proto,
-			plcip->conninfo.b2proto,
-			plcip->conninfo.b3proto);
+			(int)plcip->conninfo.b1proto,
+			(int)plcip->conninfo.b2proto,
+			(int)plcip->conninfo.b3proto);
 
 	capi_fill_CONNECT_RESP(&cmdcmsg,
 			       ctx->appid,
