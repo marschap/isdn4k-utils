@@ -419,7 +419,7 @@ t_dsp_combifile_directory_entry *display_combifile_details(char *details)
 	download_count = BYTE_SWAP_WORD(file_header->download_count);
 	directory_size = BYTE_SWAP_WORD(file_header->directory_size);
 
-	return_ptr = (t_dsp_combifile_directory_entry *) (unsigned int)file_header ;
+	return_ptr = (t_dsp_combifile_directory_entry *) (unsigned long)file_header ;
 	offset 	+= (BYTE_SWAP_WORD((file_header->header_size)));
 	offset	+= (BYTE_SWAP_WORD((file_header->combifile_description_size)));
 	offset += (dword)return_ptr;
