@@ -1,4 +1,4 @@
-/* $Id: processor.c,v 1.6 1997/04/20 22:52:14 luethje Exp $
+/* $Id: processor.c,v 1.7 1997/05/28 21:22:53 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,11 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.7  1997/05/28 21:22:53  luethje
+ * isdnlog option -b is working again ;-)
+ * isdnlog has new \$x variables
+ * README completed
+ *
  * Revision 1.6  1997/04/20 22:52:14  luethje
  * isdnrep has new features:
  *   -variable format string
@@ -3523,12 +3528,10 @@ static void processctrl(int card, char *s)
     } /* if */
 #endif
 
-#ifdef SL
-    if (version == VERSION_1TR6) {
+    if (bilingual && version == VERSION_1TR6) {
       print_msg(PRT_DEBUG_BUGS, " DEBUG> %s: OOPS! 1TR6 Frame? Ignored!\n", st + 4);
       goto endhex;
     } /* if */
-#endif
 
     creflen = strtol(ps += 3, NIL, 16);
 

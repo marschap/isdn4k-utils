@@ -1,5 +1,5 @@
 #!/bin/sh
-## $Id: genconf,v 1.6 1997/05/19 22:58:13 luethje Exp $
+## $Id: genconf,v 1.7 1997/05/28 21:22:47 luethje Exp $
 ##
 ## installation script for the config file of isdnlog
 ##
@@ -20,6 +20,11 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: genconf,v $
+## Revision 1.7  1997/05/28 21:22:47  luethje
+## isdnlog option -b is working again ;-)
+## isdnlog has new \$x variables
+## README completed
+##
 ## Revision 1.6  1997/05/19 22:58:13  luethje
 ## - bugfix: it is possible to install isdnlog now
 ## - improved performance for read files for vbox files and mgetty files.
@@ -116,7 +121,7 @@ cp $RESFILE $CONFFILE
 
 echo "  Ready."
 
-if [ -f $USERFILE ]
+if [ -f $CALLERIDFILE ]
 then
 	# Change the variables $1 to \$1 and so one.
 	echo -n "Adding some entries to the config file \"$CALLERIDFILE\"..."

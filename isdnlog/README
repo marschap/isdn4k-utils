@@ -1450,7 +1450,7 @@ Das zu startende Programm
 Hier wird das Info-Argument angegeben. Es steht dort der gesamte zu
 startende Befehl
 
-Es gibt aber drei zusaetzliche Variablen, die verwendet werden duerfen:
+Es gibt aber 10 zusaetzliche Variablen, die verwendet werden duerfen:
 
 \$1   : Sind die Flags, die den Programmstart ausgeloest haben.
         z.B. "IR", "OC", "IH"
@@ -1458,12 +1458,24 @@ Es gibt aber drei zusaetzliche Variablen, die verwendet werden duerfen:
         der Verbindung. Es kommen immer _genau_ zwei Zeichen.
 \$2   : Gibt als String die Telefonnummer (mit Vorwahl) des Anrufenden an.
 \$3   : Gibt als String die Telefonnummer (mit Vorwahl) des Angerufenden an.
+\$4   : Enthaelt die Zeit des Gespraechsbeginns. Beipiel:
+        "Wed May 28 23:07:44 1997"
+\$5   : Enthaelt die Zeit die Gespraechsdauer bis zum aktuellen Zeitpunkt in
+        Sekunden.
+\$6   : Enthaelt die Zeit des Gespraechsendes. Beipiel:
+        "Wed May 28 23:07:49 1997"
+\$7   : Die Input-Bytes. 
+\$8   : Die Output-Bytes. 
+\$9   : Die Input-Bytes pro Sekunde. 
+\$10  : Die Output-Bytes pro Sekunde.  Diese Variable erhaelt man in
+        einem Shell-Skript erst nach einem "shift", da die Shell nur
+        die Variablen 0 - 9 kennt!
 
 Es ist zu beachten, dass hier das Zeichen "$" gequotet werden muss,
 da dieses sonst zu einem Warning fuehrt!
 
-Wenn bei "\$2" und "\$3" die Telefonnummer nicht bekannt ist, dann wird dort
-ein "?" eingesetzt.
+Wenn eine Variable keinen gueltigen Wert hat, dann wird sie durch ein "?"
+ersetzt.
 
 Folgende Punkte sind zu beachten:
 
@@ -1898,6 +1910,8 @@ Die Datei "isdnlog.users" wird _vor_ jedem Verbindungsaufbau zu einem neuen
 Client ueberprueft, ob sie noch aktuell ist, ansonsten wird sie neu eingelesen.
 Dadurch hat man die Moeglichkeit, die Datei zu editieren, ohne anschliessend
 den isdnlog neu zu starten.
+
+Eine Ueberarbeitung in die neue Syntax ist geplant.
 
 
 6. Das AVON-Verzeichnis
@@ -2585,7 +2599,7 @@ Die Optionen von isdnrep haben im einzelnen folgende Funktion:
                      dieses wird mit der Option -w erreicht. Es gibt dort zwei
                      Modi:
                      0  Es wird der HTML-Header unterdrueckt. Dieses ist
-                        sinnvoll, wenn die Ausgabe der isdnrep in eine
+                        sinnvoll, wenn die Ausgabe des isdnrep in eine
                         bestehende Seite eingebettet werden soll.
                      1  Es wird eine eigenstaendige Seite im HTML-Format
                         erzeugt.
@@ -2683,8 +2697,7 @@ Anrufbeantworter abspielen
 --------------------------
 Wenn dieses im Formatstring mit %C eingetragen wurde unter REPFMTWWW= ... %C ...
 Dann wird isdnrep die entsprechenden Gespraeche mit einem Link hinterlegen,
-die dann abgerufen werden koennen. Zur Zeit funktioniert das nur mit Dateien
-vom Typ vbox-1.x und vbox-0.x.
+die dann abgerufen werden koennen.
 
 Dazu wird in der isdn.conf unter Sektion [ISDNLOG] folgender Eintrag benoetigt:
 
@@ -2757,7 +2770,7 @@ Fuer Version 2.x:
 -----------------------------------------------------------
 #! /bin/sh
 ##
-## Kommando zum abspielen von Voicenachrichten vom vbox-1.0
+## Kommando zum abspielen von Voicenachrichten vom vbox-2.0
 ##
 ## ACHTUNG! Wenn die Pfade falsch gesetzt sind oder fehlen,
 ## stuerzt netscape einfach ab!

@@ -1,4 +1,4 @@
-/* $Id: start_prog.c,v 1.6 1997/05/04 20:19:50 luethje Exp $
+/* $Id: start_prog.c,v 1.7 1997/05/28 21:22:58 luethje Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,11 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: start_prog.c,v $
+ * Revision 1.7  1997/05/28 21:22:58  luethje
+ * isdnlog option -b is working again ;-)
+ * isdnlog has new \$x variables
+ * README completed
+ *
  * Revision 1.6  1997/05/04 20:19:50  luethje
  * README completed
  * isdnrep finished
@@ -83,6 +88,8 @@ static int set_user(char *User);
 static int set_group(char *Group);
 static char *StrToArg(char* string);
 static char *Replace_Opts(char *String, char *Opts[], int MaxOpts);
+static char *ArgToChar(int type, void* Ptr);
+char **Get_Opts(int chan, int event, int InOut);
 
 /****************************************************************************/
 
@@ -898,18 +905,13 @@ int New_Interval(int chan, info_args *infoarg, int event)
 
 int Start_Process(int chan, info_args *infoarg, int event)
 {
-	char *Opts[4];
 	int   InOut = call[chan].dialin?RING_INCOMING:RING_OUTGOING;
 	int   sock = -1;
 
-	Opts[0] = (char*) Set_Ringer_Flags(event,InOut);
-	Opts[1] = call[chan].num[CALLING];
-	Opts[2] = call[chan].num[CALLED];
-	Opts[3] = NULL;
 
 	if ((infoarg->flag & event) && (infoarg->flag & InOut)                       &&
 			CheckTime(infoarg->time)                          &&     /* wenn die angegebene Zeit passt */
-			(sock = Ring(infoarg, Opts, 0, 0)) != -1   )
+			(sock = Ring(infoarg, Get_Opts(chan,event,InOut), 0, 0)) != -1   )
 	{
 		sockets[sock].info_arg   = infoarg;
 		sockets[sock].chan       = chan;
@@ -921,18 +923,95 @@ int Start_Process(int chan, info_args *infoarg, int event)
 
 /****************************************************************************/
 
-int Start_Ring(int chan, info_args *infoarg, int event, int intervalflag)
+static char *ArgToChar(int type, void* Ptr)
 {
-	int   ProcessStarted = 0;
-	char *Opts[4];
-	int   InOut = call[chan].dialin?RING_INCOMING:RING_OUTGOING;
-	int f    = infoarg->flag; /* die Flags zu diesem Eintrag */
-	int sock = 0;
+	static char RetCode[10][20];
+	static int Cnt = 0;
+
+	Cnt = Cnt%10;
+
+	switch(type)
+	{
+		case R_TYPE_LONG   : sprintf(RetCode[Cnt],"%ld",*((long*) Ptr));
+		                     break;
+		case R_TYPE_DOUBLE : strcpy(RetCode[Cnt],double2str(*((double*) Ptr),8,2,0));
+		                     break;
+		default            : RetCode[Cnt][0] = '\0';
+		                     break;
+	}
+
+	return RetCode[Cnt];
+}
+
+/****************************************************************************/
+
+char **Get_Opts(int chan, int event, int InOut)
+{
+	static char *Opts[11];
+	static char Strings[2][30];
 
 	Opts[0] = (char*) Set_Ringer_Flags(event,InOut);
 	Opts[1] = call[chan].num[CALLING];
 	Opts[2] = call[chan].num[CALLED];
-	Opts[3] = NULL;
+
+	if (call[chan].connect)
+	{
+		Opts[3] = strcpy(Strings[0],ctime(&(call[chan].connect)));
+		Opts[3][strlen(Opts[3])-1] = '\0';
+	}
+	else
+		Opts[3] = "";
+
+	if (call[chan].connect)
+	{
+		long Help = (long) (time(NULL) - call[chan].connect);
+		Opts[4] = ArgToChar(R_TYPE_LONG, &Help);
+	}
+	else
+		Opts[4] = "";
+
+	if (call[chan].disconnect)
+	{
+		Opts[5] = strcpy(Strings[1],ctime(&(call[chan].disconnect)));
+		Opts[5][strlen(Opts[5])-1] = '\0';
+	}
+	else
+		Opts[5] = "";
+
+	if (call[chan].ibytes)
+		Opts[6] = ArgToChar(R_TYPE_LONG, &(call[chan].ibytes));
+	else
+		Opts[6] = "";
+
+	if (call[chan].obytes)
+		Opts[7] = ArgToChar(R_TYPE_LONG, &(call[chan].obytes));
+	else
+		Opts[7] = "";
+
+	if (call[chan].ibps)
+		Opts[8] = ArgToChar(R_TYPE_DOUBLE, &(call[chan].ibps));
+	else
+		Opts[8] = "";
+
+	if (call[chan].obps)
+		Opts[9] = ArgToChar(R_TYPE_DOUBLE, &(call[chan].obps));
+	else
+		Opts[9] = "";
+
+	Opts[10] = NULL;
+	
+	return Opts;
+}
+
+/****************************************************************************/
+
+int Start_Ring(int chan, info_args *infoarg, int event, int intervalflag)
+{
+	int   ProcessStarted = 0;
+	int   InOut = call[chan].dialin?RING_INCOMING:RING_OUTGOING;
+	int f    = infoarg->flag; /* die Flags zu diesem Eintrag */
+	int sock = 0;
+
 
 	if (intervalflag & RING_INTERVAL)
 	{
@@ -965,7 +1044,7 @@ int Start_Ring(int chan, info_args *infoarg, int event, int intervalflag)
 	{
 		if ((f & event) && (f & InOut)                       &&
 				CheckTime(infoarg->time)                         &&     /* wenn die angegebene Zeit passt */
-				(sock = Ring(infoarg, Opts, 0, 0)) != -1  )
+				(sock = Ring(infoarg, Get_Opts(chan,event,InOut), 0, 0)) != -1  )
 		{
 			sockets[sock].info_arg   = infoarg;
 			sockets[sock].chan       = chan;
