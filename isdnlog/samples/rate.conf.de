@@ -1,34 +1,34 @@
-# rate.conf  1.10  12-Dec-99  18:31
+# rate.conf  1.10  26-Jan-00  19:06
 
 # P:10=0 # Teleglobe
-P:11 # o.tel.o CbC
+P:11=0 # o.tel.o CbC
 # P:11=1 # o.tel.o private Preselection
 # P:11=2 # o.tel.o private plus Preselection
 # P:11=3 # o.tel.o professional plus Preselection
 # P:11=4 # o.tel.o international plus Preselection
 # P:12=0 # Tele Danmark
-P:13 # Tele 2 Privatkunden          # ACHTUNG: Kein CbC ... AK-spezifisch!
+P:13=0 # Tele 2 Privatkunden          # ACHTUNG: Kein CbC ... AK-spezifisch!
 # P:13=1 # Tele 2 Geschaeftskunden
-# P:14 # EWE TEL CbC national
+# P:14=0 # EWE TEL CbC national
 # P:14=1 # EWE TEL CbC/pre-select regional
 # P:14=2 # EWE TEL direct
-P:15 # RSL clever call
+P:15=0 # RSL clever call
 # P:15=1 # RSL CleverLine global
 # P:15=2 # RSL CleverLine metropolitan
 # P:16=0 # LausitzNet
 # P:17=0 # SEC
-# P:18 # debitel
+# P:18=0 # debitel
 # P:18=1 # debitel DirectLine Profi-Tarif 30 Sekunden
 # P:18=2 # debitel DirectLine Privat-Tarif Sekunden Takt
 # P:18=3 # debitel DirectLine Profi-Tarif Sekunden Takt
-P:19 # Mobilcom CbC
+P:19=0 # Mobilcom CbC
 # P:19=1 # Mobilcom Preselection/Business
 # P:19=2 # Mobilcom Preselection/Privat
-# P:20 # ISIS isiFON classic
+# P:20=0 # ISIS isiFON classic
 # P:20=1 # ISIS isiFON plus
 # P:20=2 # ISIS Preselection
 # P:21=0 # QS
-# P:22 # NetCologne
+# P:22=0 # NetCologne
 # P:23=0 # tesion connectClassic
 # P:23=1 # tesion connectProfi
 # P:23=2 # tesion CbC
@@ -40,61 +40,61 @@ P:24=2 # Telepassport CbC
 # P:24=5 # Telepassport SüdOst
 # P:24=6 # Telepassport StudentenTarif
 # P:24=7 # Super 24
-# P:25 # CityKom
+# P:25=0 # CityKom
 # P:25=1 # CityKom Preselection
 # P:26=0 # ECN
-# P:27 # Nordcom Butensurf
+# P:27=0 # Nordcom Butensurf
 # P:27=1 # Nordcom Butensurf Plus
-# P:28 # TeleBridge CbC
+# P:28=0 # TeleBridge CbC
 # P:28=1 # TeleBridge EasyBridge
 # P:28=2 # UPX Super 8
 # P:29=0 # Unisource
-P:30 # TelDaFax
+P:30=0 # TelDaFax
 # P:31=0 # HEAG
 # P:32=0 # KDD
-P:33 # DTAG
+P:33=0 # DTAG
 # P:33=1 # DTAG CityPlus
 # P:33=2 # DTAG CityWeekend
 # P:33=3 # DTAG CityWeekend & CityPlus
 # P:33=4 # DTAG AktivPlus
-# P:34 # NEFkom
+# P:34=0 # NEFkom
 # P:35=0 # interCOM
-# P:36 # Hutchison fairfon
+# P:36=0 # Hutchison fairfon
 # P:36=1 # Hutchison easyfon
 # P:36=2 # Hutchison o.tel.o private
 # P:36=3 # Hutchison fairfon Sekundentakt
 # P:36=4 # Hutchison easyfon Sekundentakt
 # P:37=0 # ETS
 # P:38=0 # MediaWays
-P:39 # First Telecom CbC
-P:40 # GTS Esprit
-# P:41 # HanseNet
+P:39=0 # First Telecom CbC
+P:40=0 # GTS Esprit
+# P:41=0 # HanseNet
 # P:41=1 # HanseNet Preselection
-# P:42 # TeleBeL ISDN Plus
+# P:42=0 # TeleBeL ISDN Plus
 # P:42=1 # TeleBeL ISDN XL
-# P:43 # KielNet CbC
+# P:43=0 # KielNet CbC
 # P:43=1 # KielNet Preselection
 # P:43=2 # KielNet Telefonanschluß
-# P:44 # VEW TELNET
+# P:44=0 # VEW TELNET
 # P:45=0 # Global Network
-# P:46 # KomTel
+# P:46=0 # KomTel
 # P:46=1 # KomTel MoinMoin
 # P:47=0 # PrimeTec
-# P:48 # DOKOM
+# P:48=0 # DOKOM
 # P:49=0 # ACC ACCess Direkt Pre-Selection Einheitentarif
 # P:49=1 # ACC ACCess Direkt Pre-Selection Minutentarif
 # P:49=2 # ACC ACCess Einheitentarif CbC
 # P:49=3 # ACC ACCess Minutentarif CbC
-P:50 # Talkline CbC
+P:50=0 # Talkline CbC
 # P:50=1 # Talkline EasyLine
 # P:50=2 # Talkline talkmax
 # P:50=3 # Talkline BusinessLine Classic
 # P:50=4 # Talkline BusinessLine Local
-P:51 # 01051
+P:51=0 # 01051
 # P:52=0 # Long Distance
-# P:53 # WOBCOM
+# P:53=0 # WOBCOM
 # P:54=0 # USFI
-# P:55=0 # ESPRIT Telecom Deutschland GmbH, August-Thyssen-Str. 1
+# P:55=0 # ESPRIT Telecom
 # P:56=0 # BITel
 # P:57=0 # Mox
 # P:58=0 # KaTel
@@ -102,38 +102,38 @@ P:51 # 01051
 # P:60=0 # Telecom-InfoService
 # P:61=0 # TelSA
 # P:62=0 # DENTEL
-# P:63 # KDD-Conos PrivateCall easy
+# P:63=0 # KDD-Conos PrivateCall easy
 # P:63=1 # KDD-Conos PrivateCall genau
 # P:64=0 # Hannoversche
 # P:65=0 # Rapid Link
-P:66 # Interoute
+P:66=0 # Interoute
 # P:67=0 # RegioCom
 # P:68=0 # Tele Media
 # P:69=0 # Primus
-P:70 # Arcor CbC
+P:70=0 # Arcor CbC
 # P:70=1 # Arcor Town to Town
 # P:70=2 # Arcor Town to Town Sekunde
 # P:71=0 # DeTeMobil
 # P:72=0 # Mannesmann
 # P:73=0 # AXXON
 # P:74=0 # Alpha
-P:75 # Callino
+P:75=0 # Callino
 # P:76=0 # QuickNet
 # P:77=0 # E-Plus
-P:78 # 3U
-P:79 # Viatel
-P:80 # Telegate                     # nur noch bis zum Jahresende 1999!
+P:78=0 # 3U
+P:79=0 # Viatel
+P:80=0 # Telegate                     # nur noch bis M„rz 2000!
 # P:81=0 # Infotel
 # P:82=0 # AugustaKom
 # P:83=0 # Wuerzburger
 # P:84=0 # Telegroup
-P:85 # GTS-WESTCom     		    # nur noch bis zum 27.Dezember 1999!
+# P:85=0 # GTS-WESTCom     	      # Diese Firma gibt es nicht mehr!
 # P:86=0 # ONE.TEL
 # P:87=0 # HAMCOM
-P:88 # WorldCom	                    # ACHTUNG: Kein CbC ... AK-spezifisch!
+P:88=0 # WorldCom	              # ACHTUNG: Kein CbC ... AK-spezifisch!
 # P:88=1 # Hutchison CbC
 # P:89=0 # M'net
-P:90 # Viag Interkom
+P:90=0 # Viag Interkom
 # P:91=0 # IDT
 # P:92=0 # Hallo Telefon Service
 # P:93=0 # Kray
@@ -141,11 +141,11 @@ P:90 # Viag Interkom
 # P:95=0 # Teleos
 # P:96=0 # GELSEN-NET
 # P:97=0 # AT & T-Unisource
-# P:98 # Mox
+# P:98=0 # Mox
 # P:98=1 # Nikocity Study&Surf
 # P:98=2 # Nikocity
-# P:99 # ECONOPHONE
-# P:100 # TELELEV
+# P:99=0 # ECONOPHONE
+# P:100=0 # TELELEV
 # P:100=1 # Meocom
 # P:101=0 # Netnet
 # P:102=0 # EncoTel
@@ -169,7 +169,7 @@ P:90 # Viag Interkom
 # P:140=0 # VossNet
 # P:142=0 # connection 42
 # P:144=0 # Carrier 1
-P:150 # Drillisch Superregionen
+P:150=0 # Drillisch Superregionen
 # P:150=1 # Drillisch
 # P:154=0 # Osnatel
 # P:155=0 # Telia

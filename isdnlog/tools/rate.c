@@ -1,4 +1,4 @@
-/* $Id: rate.c,v 1.71 2000/01/16 12:36:58 akool Exp $
+/* $Id: rate.c,v 1.72 2000/02/02 22:43:10 akool Exp $
  *
  * Tarifdatenbank
  *
@@ -19,6 +19,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rate.c,v $
+ * Revision 1.72  2000/02/02 22:43:10  akool
+ * isdnlog-4.07
+ *  - many new rates per 1.2.2000
+ *
  * Revision 1.71  2000/01/16 12:36:58  akool
  * isdnlog-4.03
  *  - Patch from Gerrit Pape <pape@innominate.de>
@@ -869,16 +873,17 @@ void exitRate(void)
 char   *prefix2provider(int prefix, char *s)
 {
   if (prefix<0 || prefix>=nProvider)
-    return "?*?";
-  strcpy(s,Provider[prefix].Vbn);
-  return Provider[prefix].Vbn;
+    strcpy(s, "?*?");
+  else
+    strcpy(s,Provider[prefix].Vbn);
+  return(s);
 }
 
 char   *prefix2provider_variant(int prefix, char *s)
 {
   if (prefix<0 || prefix>=nProvider)
-    return "?*?";
-  if(Provider[prefix]._provider._variant != UNKNOWN)
+    strcpy(s, "?*?");
+  else if(Provider[prefix]._provider._variant != UNKNOWN)
     sprintf(s,"%s_%d",Provider[prefix].Vbn,Provider[prefix]._provider._variant);
   else
     strcpy(s,Provider[prefix].Vbn);

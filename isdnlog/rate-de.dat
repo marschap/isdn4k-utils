@@ -1,4 +1,4 @@
-V:1.10-Germany [26-Jan-2000 21:37:08]
+V:1.10-Germany [02-Feb-2000 23:36:40]
 
 # Währungsformat
 U:%.3f DM
@@ -8,7 +8,7 @@ U:%.3f DM
 #
 # (C) Copyright 1999 by Andreas Kool (akool@isdn4linux.de)
 #
-# $Id: rate-de.dat,v 1.74 2000/01/26 20:19:38 akool Exp $
+# $Id: rate-de.dat,v 1.75 2000/02/02 22:43:08 akool Exp $
 #
 #
 # Das "A:" Tag muß folgendermaßen gefüllt werden:
@@ -496,16 +496,24 @@ T:W/07-19=0.15/60 Geschaeftszeit
 T:W/19-21=0.08/60 Freizeit
 T:*/21-07=0.04/60 Nacht
 T:E,H/07-21=0.08/60 Wochenende
-Z:10 Mobilfunk
+Z:10 Mobilfunk C/E
 A:01618
 A:01610,01611,01612,01613,01614,01615,01616,01617,01619
-A:0170,0171,0175
-A:0172,0173,0174
 A:0177,0178
 A:0176,0179
 T:W/07-19=0.94/60 Geschaeftszeit
 T:W/19-07=0.47/60 Freizeit
 T:E,H/*=0.47/60 Wochenende
+Z:10 Mobilfunk D1
+A:0170,0171,0175
+T:W/07-19=0.69/60 Geschaeftszeit
+T:W/19-07=0.43/60 Freizeit
+T:E,H/*=0.43/60 Wochenende
+Z:10 Mobilfunk D2
+A:0172,0173,0174
+T:W/07-19=0.67/60 Geschaeftszeit
+T:W/19-07=0.43/60 Freizeit
+T:E,H/*=0.43/60 Wochenende
 Z:31 Iridium A GSM-homed
 A:_IR16
 T:*/*=14.259996/60
@@ -2181,7 +2189,7 @@ C:160, 164	DTAG Service Nummern
 C:170		Persönliche Rufnummer
 C:171		Info Expo 2000
 C:200	-	Ausland
-# G:15-Aug-1999
+# G:01-Feb-2000
 D:dtag
 Z:0 FreeCall
 A:011*
@@ -2193,19 +2201,20 @@ A:_F800
 T:*/*=0
 Z:1-4 National
 A:+49
-T:W/08-21=0.12/60
-T:E,H/08-21=0.12/60
+T:*/08-21=0.12/60
 T:*/21-08=0.06/60
 Z:10 Mobilnetze
-A:01618
-A:01610,01611,01612,01613,01614,01615,01616,01617,01619
-A:0170,0171,0175
 A:0172,0173,0174
 A:0177,0178
 A:0176,0179
 T:W/08-21=0.69/60
 T:W/21-08=0.49/60
 T:E,H/*=0.49/60
+Z:11 Mobilnetze C/D1
+A:01618
+A:01610,01611,01612,01613,01614,01615,01616,01617,01619
+A:0170,0171,0175
+T:*/*=0.48/60
 Z:33 Inmarsat A und B
 A:_INA_,_INB_
 T:*/*=13.39/60
@@ -9210,7 +9219,7 @@ T:*/*=0
 #
 P:33,0 DTAG
 B:01033
-# G:01-Jun-1999
+# G:01-Feb-2000
 D:dtag
 C:Name:Deutsche Telekom AG
 C:Address:Deutsche Telekom AG, Friedrich-Ebert-Allee 140, 53113 Bonn
@@ -10923,7 +10932,7 @@ T:*/*=0
 #
 P:39,0 First Telecom CbC
 B:01039
-# G:01-Dec-1999
+# G:08-Jan-2000
 D:dtag
 C:Name:First Telecom
 C:Address:First Telecom GmbH, Lyoner Straße 51, 60528 Frankfurt/Main
@@ -10968,7 +10977,7 @@ B:01040
 C:beim RegTP eingetragen als:
 C:PLUSNET
 C:Address:Gesellschaft für Netzwerk Services mbH, August-Thyssen-Straße 1, 40211 Düsseldorf
-# G:01-Oct-1999
+# G:18-Jan-2000
 D:dtag
 C:Telecom Deutschland GmbH, Kaistraße 16 A, 40221 Düsseldorf 01055
 C:Name:  Esprit Telecom
@@ -10995,11 +11004,11 @@ A:112
 T:*/*=0
 Z:1-4 Deutschland
 A:+49
-T:W/08-18=0.15/60 Standard
-T:W/18-21=0.09/60 Abend
-T:W/21-08=0.05/60 Nacht
-T:E,H/08-21=0.09/60 Abend
-T:E,H/21-08=0.05/60 Nacht
+T:W/07-19=0.15/60 Standard
+T:W/19-22=0.09/60 Abend
+T:W/22-07=0.05/60 Nacht
+T:E,H/07-22=0.09/60 Abend
+T:E,H/22-07=0.05/60 Nacht
 Z:10 Mobilfunk
 A:01618
 A:01610,01611,01612,01613,01614,01615,01616,01617,01619
@@ -13109,7 +13118,7 @@ T:*/*=2.35(60)/1
 #
 # P:50 Talkline
 # B:01050
-# G:12-Aug-1999
+# G:17-Jan-2000
 # C:PS PhoneServices GmbH, Adenauer Damm 1, 25337 Elmshorn 01050
 # C:Homepage:	http://www.null1050.de (??)
 # C:oder:  	http://www.talkline.de
@@ -13141,14 +13150,15 @@ A:112
 T:*/*=0
 Z:1-4 Fern
 A:+49
-T:W/07-19=0.15/60
-T:W/19-22=0.08/60
+T:W/07-18=0.15/60
+T:W/18-22=0.069/60
 T:W/22-07=0.039/60
-T:E,H/07-22=0.11/60
+T:E,H/07-18=0.11/60
+T:E,H/18-22=0.069/60
 T:E,H/22-07=0.039/60
 Z:10-15 Mobil
 A:_DEMCM,_DEMC,_DEMD1,_DEMD2,_DEME1,_DEME2
-T:*/*=0.69/60
+T:*/*=0.59/60
 Z:40 Telefonauskunft
 A:11850
 T:*/*=0.968/0,0.12/7.5
@@ -13541,7 +13551,7 @@ T:*/*=2.3084(60)/1
 P:51,0 01051
 B:01051
 C:ID-Switch GmbH, Graf-Adolf-Straße, 40210 Düsseldorf
-# G:24-Dec-1999
+# G:13-Jan-2000
 C:Homepage: http://www.01051.com
 C:Adresse:  ID-Switch GmbH, Koenigsallee 60f, 40210 Duesseldorf
 C:Name:01051
@@ -14420,7 +14430,7 @@ C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://www.digitalprojects.com/rates
 C:Bei Preselection sekundengenaue Taktung
 D:dtag
-# G:16-Dec-1999
+# G:15-Oct-1999
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -15038,7 +15048,7 @@ T:*/*=0
 #
 P:75,0 Callino
 B:01075
-# G:01-Dec-99
+# G:01-Feb-2000
 C:Address:ARCIS Media Com Management GmbH, Maximilianstr. 14, 80539 München
 C:Name:Callino
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
@@ -15053,8 +15063,8 @@ A:112
 T:*/*=0
 Z:1-4 Fern
 A:+49
-T:W/08-20=0.119/60
-T:W/20-21=0.079/60
+T:W/08-18=0.119/60
+T:W/18-21=0.079/60
 T:W/21-06=0.059/60
 T:W/06-08=0.079/60
 T:E,H/06-21=0.079/60
@@ -15064,10 +15074,8 @@ A:0170,0171,0175
 A:0172,0173,0174
 A:01610,01617,01619,01618
 A:0176,0179
-T:*/*=0.99/60
-Z:14 E-Plus
 A:0177,0178
-T:*/*=1.49/60
+T:*/*=0.89/60
 Z:60-66,68-75 Funkruf
 A:0164,01682,01683,01684,01685,01687,01688,01689 cityruf automatic
 A:016951,016952 cityruf operator
@@ -15204,7 +15212,7 @@ T:*/*=0
 #
 P:78,0 3U
 B:01078
-# G:27-Oct-1999
+# G:01-Feb-2000
 C:Address:3U Telekommunikation GmbH, Äußere Zittauer Straße 51, 02708 Löbau
 C:Name:3U
 C:Maintainer:Tarif Datenbank Crew <rates@gmx.de>
@@ -15223,7 +15231,7 @@ A:110
 A:112
 T:*/*=0
 Z:1-4 Fern
-T:*/08-21=0.099(60)/1
+T:*/08-21=0.089(60)/1
 T:*/21-08=0.059(60)/1
 A:+49
 Z:10-15
@@ -15232,7 +15240,7 @@ A:0170,0171,0175
 A:0172,0173,0174
 A:0177,0178
 A:0176,0179
-T:*/*=0.499(60)/1
+T:*/*=0.479(60)/1
 Z:40 Telefonauskunft Inland (Austria, dial 01078004366211811)
 A:+4366211811
 T:*/*=0.189(60)/1
@@ -18029,7 +18037,7 @@ P:150,0 Drillisch Superregionen
 # Essen, Frankfurt/Main, Hamburg, Hannover, Köln, Leipzig, Mannheim,
 # Nürnberg, Stuttgart!
 B:010050
-# G:05-Nov-1999
+# G:01-Feb-2000
 D:dtag
 C:Address:Drillisch AG, Horbeller Straße 33, 50858 Köln
 C:Name:Drillisch Superregionen
@@ -18044,21 +18052,26 @@ A:112
 T:*/*=0
 Z:1-4 Deutschland
 A:+49
-T:W/08-21=0.098/60
-T:W/21-22=0.0695/60
-T:W/22-06=0.1185/180,0.0595/60
-T:W/06-08=0.0695/60
-T:E/06-22=0.0695/60
-T:E/22-06=0.1185/180,0.0595/60
-Z:10 Mobilfunk
+T:W/08-19=0.098/60
+T:W/19-22=0.078/60
+T:W/22-06=0.0595/60
+T:W/06-08=0.078/60
+T:E/06-22=0.0785/60
+T:E/22-06=0.0595/60
+Z:10 Mobilfunk C/D-Netze
 A:01618
 A:01610,01611,01612,01613,01614,01615,01616,01617,01619
 A:0170,0171,0175
 A:0172,0173,0174
+T:W/08-19=0.59/60
+T:W/19-08=0.49/60
+T:E/*=0.49/60
+Z:11 Mobilfunk E-Netze
 A:0177,0178
 A:0176,0179
-T:W/08-21=0.69/60
-T:W/21-08=0.59/60
+T:W/08-19=0.69/60
+T:W/19-08=0.49/60
+T:E/*=0.49/60
 #####################################################################
 P:150,1 Drillisch
 B:010050
@@ -18077,21 +18090,26 @@ A:112
 T:*/*=0
 Z:1-4 Deutschland
 A:+49
-T:W/08-21=0.119/60
-T:W/21-22=0.0695/60
+T:W/08-19=0.098/60
+T:W/19-22=0.078/60
 T:W/22-06=0.0595/60
-T:W/06-08=0.0695/60
-T:E/06-22=0.119/60
+T:W/06-08=0.078/60
+T:E/06-22=0.0785/60
 T:E/22-06=0.0595/60
-Z:10 Mobilfunk
+Z:10 Mobilfunk C/D-Netze
 A:01618
 A:01610,01611,01612,01613,01614,01615,01616,01617,01619
 A:0170,0171,0175
 A:0172,0173,0174
+T:W/08-19=0.59/60
+T:W/19-08=0.49/60
+T:E/*=0.49/60
+Z:11 Mobilfunk E-Netze
 A:0177,0178
 A:0176,0179
-T:W/08-21=0.69/60
-T:W/21-08=0.59/60
+T:W/08-19=0.69/60
+T:W/19-08=0.49/60
+T:E/*=0.49/60
 #####################################################################
 #
 #
