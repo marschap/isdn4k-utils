@@ -1,4 +1,4 @@
-/* $Id: takt_de.c,v 1.13 1999/03/15 21:28:04 akool Exp $
+/* $Id: takt_de.c,v 1.14 1999/03/16 17:37:27 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,13 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: takt_de.c,v $
+ * Revision 1.14  1999/03/16 17:37:27  akool
+ * - isdnlog Version 3.07
+ * - Michael Reinelt's patch as of 16Mar99 06:58:58
+ * - fix a fix from yesterday with sondernummern
+ * - ignore "" COLP/CLIP messages
+ * - dont show a LCR-Hint, if same price
+ *
  * Revision 1.13  1999/03/15 21:28:04  akool
  * - isdnlog Version 3.06
  * - README: explain some terms about LCR, corrected "-c" Option of "isdnconf"
@@ -800,7 +807,7 @@ void price(int chan, char *hint, int viarep)
 
     if (call[chan].tarifknown && !viarep) {
     cheapest = UNKNOWN;
-    payx = 99999.9;
+    payx = call[chan].pay;
 
     for (p = 0; p < MAXPROVIDER; p++) {
       payy = tpreis(p, call[chan].zone, call[chan].tz, tm->tm_hour, duration);
@@ -826,17 +833,17 @@ void price(int chan, char *hint, int viarep)
               WAEHRUNG,
               double2str(call[chan].pay - payx, 6, 3, DEB));
 
-    if ((call[chan].provider != preselect) && (prepreis != -1.00))
+    if ((call[chan].provider != preselect) && (prepreis != -1.00) && (prepreis != call[chan].pay))
         sprintf(sy, " saving vs. preselect (010%02d:%s) %s %s",
         preselect, t[preselect].Provider,
           WAEHRUNG,
           double2str(prepreis - call[chan].pay, 6, 3, DEB));
 
-      if ((call[chan].hint != UNKNOWN) && (call[chan].hint != cheapest))
-        sprintf(sz, " saving vs. hint (010%02d:%s) %s %s",
-          call[chan].hint, t[call[chan].hint].Provider,
-          WAEHRUNG,
-          double2str(hintpreis - call[chan].pay, 6, 3, DEB));
+    if ((call[chan].hint != UNKNOWN) && (call[chan].hint != cheapest))
+      sprintf(sz, " saving vs. hint (010%02d:%s) %s %s",
+        call[chan].hint, t[call[chan].hint].Provider,
+        WAEHRUNG,
+        double2str(hintpreis - call[chan].pay, 6, 3, DEB));
 
     if (*sx || *sy || *sz)
         sprintf(hint, "HINT: %s%s%s LCR:%s", sx, sy, sz, ((cheapest == call[chan].provider) ? "OK" : "FAILED"));

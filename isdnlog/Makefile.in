@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.59 1999/03/15 21:27:30 akool Exp $
+## $Id: Makefile.in,v 1.60 1999/03/16 17:37:08 akool Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,13 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.60  1999/03/16 17:37:08  akool
+## - isdnlog Version 3.07
+## - Michael Reinelt's patch as of 16Mar99 06:58:58
+## - fix a fix from yesterday with sondernummern
+## - ignore "" COLP/CLIP messages
+## - dont show a LCR-Hint, if same price
+##
 ## Revision 1.59  1999/03/15 21:27:30  akool
 ## - isdnlog Version 3.06
 ## - README: explain some terms about LCR, corrected "-c" Option of "isdnconf"
@@ -464,7 +471,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 3.06
+VERSION     = 3.07
 
 MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 isdnlog/isdnlog.users.5 isdnrep/isdnrep.1 isdnconf/isdnconf.1
 

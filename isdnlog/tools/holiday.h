@@ -1,4 +1,4 @@
-/* $Id: holiday.h,v 1.1 1999/03/14 12:16:41 akool Exp $
+/* $Id: holiday.h,v 1.2 1999/03/16 17:38:07 akool Exp $
  *
  * Feiertagsberechnung
  *
@@ -19,6 +19,13 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: holiday.h,v $
+ * Revision 1.2  1999/03/16 17:38:07  akool
+ * - isdnlog Version 3.07
+ * - Michael Reinelt's patch as of 16Mar99 06:58:58
+ * - fix a fix from yesterday with sondernummern
+ * - ignore "" COLP/CLIP messages
+ * - dont show a LCR-Hint, if same price
+ *
  * Revision 1.1  1999/03/14 12:16:41  akool
  * - isdnlog Version 3.04
  * - general cleanup
@@ -45,7 +52,7 @@
 #define SUNDAY    7
 #define HOLIDAY   8
 
-int  initHoliday(char *path);
+int  initHoliday(char *path, char **msg);
 void exitHoliday(void);
 int  isHoliday(struct tm *tm, char **name);
 int  getDay(struct tm *tm, char **name);

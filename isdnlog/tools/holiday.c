@@ -1,4 +1,4 @@
- /* $Id: holiday.c,v 1.1 1999/03/14 12:16:23 akool Exp $
+ /* $Id: holiday.c,v 1.2 1999/03/16 17:38:03 akool Exp $
  *
  * Feiertagsberechnung
  *
@@ -19,6 +19,13 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: holiday.c,v $
+ * Revision 1.2  1999/03/16 17:38:03  akool
+ * - isdnlog Version 3.07
+ * - Michael Reinelt's patch as of 16Mar99 06:58:58
+ * - fix a fix from yesterday with sondernummern
+ * - ignore "" COLP/CLIP messages
+ * - dont show a LCR-Hint, if same price
+ *
  * Revision 1.1  1999/03/14 12:16:23  akool
  * - isdnlog Version 3.04
  * - general cleanup
@@ -63,7 +70,7 @@
 #include <time.h>
 #include "holiday.h"
 
-#define LENGTH 80  /* max length of lines in data file */
+#define LENGTH 120  /* max length of lines in data file */
 
 typedef unsigned int julian;
 
@@ -113,7 +120,7 @@ static void julian2date(julian jd, int *yp, int *mp, int *dp)
 {
   julian j,c,y,m,d;
 
-  j=d*4-1;
+  j=jd*4-1;
   c=(j/146097)*100;
   d=(j%146097)/4;
   y=(4*d+3)/1461;
@@ -179,12 +186,14 @@ void exitHoliday(void)
   Holiday=NULL;
 }
 
-int initHoliday(char *path)
+int initHoliday(char *path, char **msg)
 {
   FILE *stream;
+  int   i,m,d;
   char *s, *date, *name;
   char  buffer[LENGTH];
-  int   i,m,d;
+  char  version[LENGTH]="";
+  static char message[LENGTH];
 
   exitHoliday();
 
@@ -241,12 +250,19 @@ int initHoliday(char *path)
       nHoliday++;
       break;
 
+    case 'V': /* V:xxx Version der Datenbank */
+      strcpy(version, s+2);
+      break;
+
     default:
       warning("Unknown tag '%c'", *s);
     }
   }
   fclose(stream);
   
+  if (msg) snprintf (*msg=message, LENGTH, "Holiday Version %s loaded [%d entries from %s]",
+	   version, nHoliday, path);
+
   return nHoliday;
 }
 
@@ -255,12 +271,12 @@ int isHoliday(struct tm *tm, char **name)
   int i;
   julian easter, day;
   
-  day=date2julian(tm->tm_year,tm->tm_mon,tm->tm_mday);
-  easter=getEaster(tm->tm_year);
+  day=date2julian(tm->tm_year+1900,tm->tm_mon+1,tm->tm_mday);
+  easter=getEaster(tm->tm_year+1900);
 
   for (i=0; i<nHoliday; i++) {
     if ((Holiday[i].month==-1 && Holiday[i].day==day-easter) ||
-	(Holiday[i].month==tm->tm_mon  && Holiday[i].day==tm->tm_mday)) {
+	(Holiday[i].month==tm->tm_mon+1  && Holiday[i].day==tm->tm_mday)) {
       if(name) 
 	*name=Holiday[i].name;
       return 1;
@@ -276,29 +292,31 @@ int getDay(struct tm *tm, char **name)
   if (isHoliday(tm, name))
     return HOLIDAY;
   
-  day=(date2julian(tm->tm_year,tm->tm_mon,tm->tm_mday)-6)%7+1;
+  day=(date2julian(tm->tm_year+1900,tm->tm_mon+1,tm->tm_mday)-6)%7+1;
   if (name)
     *name=Weekday[day-1];
 
   return day;
 }
 
-#ifdef STANDALONE
+#ifdef HOLITEST
 void main (int argc, char *argv[])
 {
   int i, d;
-  char *name;
+  char *msg, *name;
   struct tm tm;
 
-  printf ("%d Feiertage\n", initHoliday("../holiday-de.dat"));
+  
+  initHoliday("../holiday-at.dat", &msg);
+  printf ("%s\n", msg);
 
   for (i=1; i < argc; i++) {
     tm.tm_mday=atoi(strsep(argv+i,"."));
-    tm.tm_mon=atoi(strsep(argv+i,"."));
-    tm.tm_year=atoi(strsep(argv+i,"."));
+    tm.tm_mon=atoi(strsep(argv+i,"."))-1;
+    tm.tm_year=atoi(strsep(argv+i,"."))-1900;
     
     d=getDay(&tm,&name);
-    printf ("%d.%d.%d\t%d=%s\n", tm.tm_mday,tm.tm_mon, tm.tm_year,d,name);
+    printf ("%02d.%02d.%04d\t%d=%s\n", tm.tm_mday,tm.tm_mon+1,tm.tm_year+1900,d,name);
   }
 }
 #endif

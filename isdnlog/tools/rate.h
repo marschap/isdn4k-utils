@@ -1,4 +1,4 @@
-/* $Id: rate.h,v 1.1 1999/03/14 12:16:43 akool Exp $
+/* $Id: rate.h,v 1.2 1999/03/16 17:38:10 akool Exp $
  *
  * Tarifdatenbank
  *
@@ -19,6 +19,13 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rate.h,v $
+ * Revision 1.2  1999/03/16 17:38:10  akool
+ * - isdnlog Version 3.07
+ * - Michael Reinelt's patch as of 16Mar99 06:58:58
+ * - fix a fix from yesterday with sondernummern
+ * - ignore "" COLP/CLIP messages
+ * - dont show a LCR-Hint, if same price
+ *
  * Revision 1.1  1999/03/14 12:16:43  akool
  * - isdnlog Version 3.04
  * - general cleanup
@@ -36,9 +43,26 @@
 #ifndef _RATE_H_
 #define _RATE_H_
 
+typedef struct {
+  int        prefix;
+  int        zone;
+  struct tm  start;
+  struct tm  now;
+  char      *Provider; /* Name des Providers */
+  char      *Zone;     /* Name der Zone */
+  char      *Day;      /* Wochen- oder Feiertag */
+  char      *Hour;     /* Bezeichnung des Tarifs */
+  double     Duration; /* Länge eines Tarifimpulses */
+  double     Price;    /* Preis eines Tarifimpulses */
+  int        Units;    /* verbrauchte Tarifimpulse */
+  double     Charge;   /* gesamte Verbindungskosten */
+  time_t     Time;     /* gesamte Verbindungszeit */
+  time_t     Rest;     /* bezahlte, aber noch nicht verbrauchte Zeit */
+} RATE;
+
 void  exitRate(void);
-int   initRate(char *conf, char *dat, char *msg);
-char *Providername(int prefix);
-char *Zonename(int prefix, int zone);
+int   initRate(char *conf, char *dat, char **msg);
+int   getRate(RATE *Rate, char **msg);
+int   getLeastCost(RATE *Rate);
 
 #endif
