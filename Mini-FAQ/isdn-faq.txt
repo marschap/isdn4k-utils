@@ -20,7 +20,7 @@ germantoc
      http://www.franken.de/users/klaus/  Wenn du lieber Niederländisch oder
      Englisch liest, kann http://www.wurtel.demon.nl/ nützlich sein.   Es gibt
      auch eine französische Mini-HOWTO unter
-     http://perso.wanadoo.fr/philippe.latu
+     http://www.linux-france.org/article/connex/ISDN
 
 3.   Wo gibt es die SuSE Support-Datenbank, wo viele Fragen zu ISDN4Linux
      beantwortet werden?
@@ -229,8 +229,9 @@ englishtoc
 2.   Where can I find a simple guide to using ISDN4Linux?
 
      See http://www.wurtel.demon.nl/ (also available in Dutch).  There is
-     a different HOWTO in German on http://www.franken.de/users/klaus/  There
-     is also a French Mini-HOWTO under http://perso.wanadoo.fr/philippe.latu
+     a different HOWTO in German on http://www.franken.de/users/klaus/
+     You will also find a French Mini-HOWTO under
+     http://www.linux-france.org/article/connex/ISDN
 
 3.   Where is the SuSE Support Database, where many of my questions are
      answered?
