@@ -39,7 +39,7 @@ if { "$vbox_flag_beep" == "TRUE" } {
 
 if { "$vbox_flag_record" == "TRUE" } {
 
-   set VBOX_NEW_MESSAGE "$vbox_var_spooldir/incoming/$vbox_var_savename"
+   set VBOX_NEW_MESSAGE "$vbox_var_spooldir/incoming/$vbox_var_savename.vmsg"
 
    set RC [ vbox_get_message $VBOX_NEW_MESSAGE $vbox_var_rectime ]
 
