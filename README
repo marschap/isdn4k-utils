@@ -1,5 +1,5 @@
 #
-# $Id: README,v 1.8 1998/08/01 19:59:12 paul Exp $
+# $Id: README,v 1.9 1998/10/13 12:54:43 paul Exp $
 #
 This is the README file for the "isdn4k-utils" package from "The i4l-crew".
 
@@ -28,7 +28,10 @@ This package contains the following stuff:
   vbox,       an answering machine/voice mailbox.
   ipppd,      daemon need for syncPPP and MPP.
 
-4. Documentation:
+4. Miscellaneous:
+  scripts/makedev.sh   for creating the ISDN device files under /dev .
+
+5. Documentation:
   A very detailed FAQ and the generic manpages ttyI.4, isdninfo.4,
   isdn_audio.4 and isdn_cause.7.
   Manpages for the above utilities:
@@ -97,6 +100,11 @@ System prerequisites:
    The config files usually are installed in /etc/isdn if not
    specified otherwise during configuration.
 
+   If no existing ISDN devices in /dev are detected (via an admittedly
+   simple test), script/makedev.sh is run during "make install". Check
+   that the permissions / groups are suitable for your needs.
+   You can run the makedev.sh script again if necessary.
+
 5. Application
 
    The directory ./etc contains an example startup-script which gets
@@ -110,6 +118,6 @@ System prerequisites:
    For the utilities refer to the man pages or look into their
    subdirectories for Documentation.
 
-   For tips, troubleshooting etc. look into the FAQ subdirectory
+   For tips, troubleshooting etc. look into the FAQ subdirectory.
 
  -Fritz

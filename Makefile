@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.24 1998/08/25 16:33:09 calle Exp $
+# $Id: Makefile,v 1.25 1998/10/13 12:54:44 paul Exp $
 #
 # Toplevel Makefile for isdn4k-utils
 #
@@ -126,6 +126,12 @@ rootperm:
 
 install: rootperm
 	set -e; for i in `echo $(SUBDIRS)`; do $(MAKE) -C $$i install; done
+	@if [ -c /dev/isdnctrl0 ] && ls -l /dev/isdnctrl0 | egrep "[[:space:]]45,[[:space:]]+64[[:space:]]" > /dev/null; \
+	then \
+		echo -e '(some) ISDN devices already exist, not creating them.\nUse scripts/makedev.sh manually if necessary.'; \
+	else \
+		sh scripts/makedev.sh; \
+	fi
 
 uninstall: rootperm
 	set -e; for i in `echo $(SUBDIRS)`; do $(MAKE) -C $$i uninstall; done
