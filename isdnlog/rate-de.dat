@@ -1,4 +1,4 @@
-V:1.10-Germany [25-May-2000 22:48:09]
+V:1.10-Germany [27-May-2000 20:11:07]
 
 # Währungsformat
 U:%.3f DM
@@ -8,7 +8,7 @@ U:%.3f DM
 #
 # (C) Copyright 1999, 2000 by Andreas Kool (akool@isdn4linux.de)
 #
-# $Id: rate-de.dat,v 1.92 2000/05/27 14:55:29 akool Exp $
+# $Id: rate-de.dat,v 1.93 2000/05/27 18:15:30 akool Exp $
 #
 #
 # Das "A:" Tag muß folgendermaßen gefüllt werden:
@@ -24533,6 +24533,12 @@ T:*/21-09=0.049/60
 Z:102 MSN Easysurfer
 A:0192658
 T:*/*=0.033(60)/1 MSN Easysurfer
+Z:103 Lübecker Nachrichten
+A:0192361
+C:Homepage:http://www.ln-online.de/service/internet
+T:W/18-09=0.0444(60)/1
+T:W/09-18=0.0488(60)/1
+T:E,H/*=0.0444(60)/1
 #####################################################################
 P:[-01.11.1999]88,0 WorldCom
 B:01088
@@ -24573,12 +24579,6 @@ T:W/21-05=0.03(60)/1
 T:W/05-09=0.04(60)/1
 T:E,H/05-21=0.04(60)/1
 T:E,H/21-05=0.03(60)/1
-Z:103 Lübecker Nachrichten
-A:0192361
-C:Homepage:http://www.ln-online.de/service/internet
-T:W/18-09=0.0444(60)/1
-T:W/09-18=0.0488(60)/1
-T:E,H/*=0.0444(60)/1
 #####################################################################
 P:88,1 Hutchison CbC
 B:01088
