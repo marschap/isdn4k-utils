@@ -1,3 +1,4 @@
+amerik. jungferninseln	amerikanische jungferninseln
 amerikan. jungeferninseln	amerikanische jungferninseln
 amerikanisch samoa	amerikanisch-samoa
 amerikanische jungeferninseln	amerikanische jungferninseln
@@ -11,7 +12,9 @@ aserbeidschan	aserbaidschan
 bahrein	bahrain
 bangla desh	bangladesch
 belarus (weißrussland)	weissrussland
+bosnien mobilfunk	bosnien-herzegowina mobilfunk
 bosnien und herzegowina	bosnien-herzegowina
+bosnien-herzegovina mobilfunk	bosnien-herzegowina mobilfunk
 botsuana botswana	botsuana
 brunei daressalam	brunei
 brunei darussalam	brunei
@@ -24,17 +27,20 @@ chatham inseln	chatham-inseln
 chil	chile
 chile-mobilfunk	chile mobilfunk
 china (taiwan) mobilfunk	taiwan mobilfunk
+china vr mobilfunk	china mobilfunk
 china-mobilfunk	china mobilfunk
 cokos islands	kokosinseln
 cook inseln	cookinseln
 cook-inseln	cookinseln
 costa-rica mobilfunk	costa rica mobilfunk
 cote d´ivory	elfenbeinküste cote de ivoire
+deutschland bündelfunk dolphin	deutschland bündelfunk dolphin telecom
 deutschland mobil	deutschland mobilfunk
 dominikanische republi	dominikanische republik
 dublin	nordirland
 ecuador guinea	Äquatorial-guinea
 elfenbeinkÜste	elfenbeinküste cote de ivoire
+elfenbeinküste / cote de ivoire	elfenbeinküste cote de ivoire
 england	großbritannien
 eritea	eritrea
 faeroer	färöer-inseln
@@ -47,8 +53,13 @@ französisch guayana	französisch-guayana
 französisch polynesien	französisch-polynesien
 fäeroer	färöer-inseln
 fäeröer	färöer-inseln
+fäeröer mobilfunk	färöer-inseln mobilfunk
 färoer	färöer-inseln
 färöer inseln	färöer-inseln
+färöerinseln	färöer-inseln
+färöerinseln mobilfunk	färöer-inseln mobilfunk
+färör inseln	färöer-inseln
+färör inseln mobilfunk	färöer-inseln mobilfunk
 färörer	färöer-inseln
 griechenland-mobilfunk	griechenland mobilfunk
 groenland	grönland
@@ -94,6 +105,7 @@ iran (islamische republik)	iran
 iridium-8816	iridium 008816
 iridium-8817	iridium 008817
 island mobilfunk	irland mobilfunk
+jemen arab. rep. mobilfunk	jemen mobilfunk
 jemen arab. republik	jemen (arab. republik)
 jugoslawien (serbien und montenegro)	jugoslawien
 jungfern inseln britisch	britische jungferninseln
@@ -103,14 +115,18 @@ kanalinseln (gb)	kanalinseln (großbritannien)
 kapverdische inseln	cape verde
 kazachstan	kasachstan
 kirgisistan mobilfunk	kirgisien mobilfunk
+kirgistan mobilfunk	kirgisien mobilfunk
 kirgizstan	kirgisien
 kokos inseln	kokosinseln
 kokos-inseln	kokosinseln
 korea	südkorea
 korea (republik) mobilfunk	korea (süd) mobilfunk
 korea nord	nordkorea
+korea rep. (süd)	südkorea
+korea rep. (süd) mobilfunk	korea (süd) mobilfunk
 korea rep.(south) mobilfunk	korea rep. (south) mobilfunk
 korea süd	südkorea
+korea süd mobilfunk	korea (süd) mobilfunk
 kuwait-mobilfunk	kuwait mobilfunk
 libyien	libyen
 libysch-arabische dschamahrija	libyen
@@ -127,11 +143,12 @@ marshall-inseln	marshallinseln
 mauritanien	mauretanien
 mayotte island	mayotte
 mazedonien (ehemalige jugoslawische republik)	mazedonien
+mazedonien (ehemalige jugoslawische republik) mobilfunk	mazedonien mobilfunk
 midway inseln	midway-inseln
 midway island	midway-inseln
 midway islands	midway-inseln
-moldau (republik)	moldavien moldau (republik)
-moldau-republik	moldavien moldau (republik)
+moldau-republik	moldau (republik)
+myanmar (=burma)	myanmar burma
 myanmar (burma)	myanmar burma
 myanmar/burma	myanmar burma
 neu kaledonien	neukaledonien
@@ -163,12 +180,14 @@ portugal madeira	portugal
 portugal-mobilfunk	portugal mobilfunk
 rumänien-mobilfunk	rumänien mobilfunk
 russische föderation (westl.)	russische föderat. (westl.)
+russische föderation mobilfunk	rußland mobilfunk
 russische förderation	russische forderation (ostl.)
 russische förderation (östl.)	russische forderation (ostl.)
 russische förderation mobilfunk	rußland mobilfunk
 russland	russische forderation (ostl.)
 russland (westlich)	russische föderat. (westl.)
 russland (östlich)	russische forderation (ostl.)
+russland mobilfunk	rußland mobilfunk
 rußland moskau overlay	moskau
 rußland overlay	russische forderation (ostl.)
 rußland-mobilfunk	rußland mobilfunk
@@ -181,24 +200,36 @@ samoa us	amerikanisch-samoa
 samoa west	west-samoa
 san mario	san marino
 sansibar	tansania
+sao tome & principe	sao tome und principe
 saudi - arabien	saudi arabien
 saudi-arabien	saudi arabien
 saudiarabien	saudi arabien
+slowak. republik	slowakische republik
+slowak. republik mobilfunk	slowakische republik mobilfunk
 slowakai	slowakische republik
 slowake	slowakische republik
 sonderjylland	sønderjylland
 spanien (einschließlich kanar. inseln)	spanien
 spanien balearen	mallorca
 spanien kanarische inseln	kanarische inseln
+st . vincent und grenadin	st. vincent und grenadinen
 st kitts und nevis	st. kitts und nevis
+st pierre und miquelon	st. pierre und miquelon
 st. kitts	st. kitts und nevis
 st. kitts und navis	st. kitts und nevis
+st. kitts und necis	st. kitts und nevis
 st. vincent und grenadien	st. vincent und grenadinen
+surinam mobilfunk	suriname mobilfunk
 syrien (arabische repubik)	syrien
 süd-korea	südkorea
 südafrika-mobilfunk	südafrika mobilfunk
+südkorea mobilfunk	korea (süd) mobilfunk
 tansani	tansania
 trinidad/tobago	trinidad und tobago
+tschagosinseln (diego garcia)	diego garcia
+tschech. republik	tschechische republik
+tschech. republik mobilfunk	tschechische rep. mobilfunk
+tschechien mobilfunk	tschechische rep. mobilfunk
 tschechische rep.-mobilfunk	tschechische rep. mobilfunk
 tschechische republik mobilfunk	tschechische rep. mobilfunk
 turks und caicos inseln	turks- und caicosinseln
@@ -208,20 +239,27 @@ turmenistan	turkmenistan
 urugay	uruguay
 v.r. korea.	nordkorea
 vanuat	vanuatu
+vatikanstaat	vatikan
 venezuele mobilfunk	venezuela mobilfunk
 venuzuela-mobilfunk	venezuela mobilfunk
 ver. arab. emirate	ver. arabische emirate
+ver. arab. emirate mobilfunk	vereinigte arabische emirate mobilfunk
 vereinigt arabische emirate	ver. arabische emirate
 virgin island us	amerikanische jungferninseln
 virgin islands uk	britische jungferninseln
 wake-inseln	wake inseln
 wallis und futuna inseln	wallis und futuna
+wallis/futuna	wallis und futuna
 weißrussland	weissrussland
 weißrußland	weissrussland
 weißrußland (belarus)	weissrussland
 weißrußland/belarus	weissrussland
+west samoa	west-samoa
 western samoa (independent state of)	west-samoa
+zaire/kongo dem. rep	kongo (demokratische republik)
+zaire/kongo dem. rep mobilfunk	zaire mobilfunk
 zentral. afrika. rep.	zentralafrikanische republik
+zentralafrik. rep.	zentralafrikanische republik
 zypern (türk.)	zypern (türkisch)
 zypern mobilfunk	zypern(griech) mobilfunk
 zypern nord	zypern (türkisch)

@@ -818,15 +818,15 @@ T:ESS
 C:+49201
 R:DE	# Deutschland
 
-#N:Frankfurt am Main
-#T:
-#C:+4969
-#R:DE	# Deutschland
-
-N:Frankfurt		#Frankfurt, Oder
+N:Frankfurt am Main
 T:FRA
-C:+49335
+C:+4969
 R:DE	# Deutschland
+
+#N:Frankfurt		#Frankfurt, Oder
+#T:FRA
+#C:+49335
+#R:DE	# Deutschland
 
 #N:Freiburg im Breisgau
 #T:

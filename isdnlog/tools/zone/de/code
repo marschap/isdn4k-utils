@@ -28,13 +28,16 @@
 1907	Premium Rate 0190-7	3
 1908	Premium Rate 0190-8	3
 1909	Premium Rate 0190-9	3
+190023	HugoTel
 190024	Pennyphone
+190025	clever25
 190028	maxTEL
 190029	Telebillig
 190031	Teledump
 190032	Phonedump
 190035	TeleDiscount
 190037	Fonfux
+190047	Surprise Telecom
 190049	Germanphone
 190051	Junior Telecom
 190054	Calladin
@@ -576,7 +579,6 @@
 3303	Birkenwerdr
 3304	Velten
 33051	Nassenheide
-33052	Leegebruch
 33053	Zehlendorf
 33054	Liebenwalde
 33055	Kremmen
@@ -783,7 +785,6 @@
 33924	Rägelin
 33925	Wustrau-Altfriesack
 33926	Herzberg
-33927	Linum
 33928	Wildberg
 33929	Gühlen-Glienicke
 33931	Reinsberg
@@ -4712,15 +4713,11 @@
 8868	Schwabsoien
 8869	Kinsau
 89	München
-9002	Rain Lech
-9003	Harburg
-9004	Tapfheim
-9005	Bissingen
-9006	Mertingen
-9007	Marxheim
-9008	Bissingen-Unterringingen
-9009	Kaisheim
+9001	Premium Rate - Information
+9003	Premium Rate - Unterhaltung
+9005	Premium Rate - Sonstige (Erotik)
 906	Donauwörth
+9070	Tapfheim
 9071	Dillingen
 9072	Lauingen
 9073	Gundelfingen
@@ -4728,17 +4725,24 @@
 9075	Glött
 9076	Wittislingen
 9077	Bachhagel
+9078	Mertingen
+9080	Harburg Schwaben
 9081	Nördlingen
 9082	Oettingen
 9083	Möttingen
+9084	Bissingen
 9085	Alerheim
 9086	Fremdingen
 9087	Marktoffingen
 9088	Mönchsdeggingen
+9089	Bissingen-Unterringingen
+9090	Rain Lech
 9091	Monheim
 9092	Wemding
 9093	Polsingen
 9094	Tagmersheim
+9097	Marxheim
+9099	Kaisheim
 9101	Langenzenn
 9102	Wilhermsdorf
 9103	Cadolzburg

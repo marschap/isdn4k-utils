@@ -1,4 +1,11 @@
-V:1.50 Int [01-Sep-2002 16:00:00]
+V:1.52 Int [04-May-2003 16:00:00]
+#
+# This version of country.dat originates from rates4linux:
+# $Id: country-de.dat,v 1.41 2003/07/25 21:33:02 tobiasb Exp $
+# The rates4linux homepage: http://www.sourceforge.net/projects/rates4linux/
+# It bases on Rev. 1.39 of isdn4k-utils/isdnlog/country-de.dat 
+# in the CVS at http://www.isdn4linux.de.
+#
 # ISO 3166 Countrycodes ( ftp://sunsite.unc.edu/pub/Linux/apps/misc/
 #	countrycodes.1.0.2.tar.gz
 # Airportcodes: http://www.TravelDesk.com/airports.html
@@ -717,11 +724,23 @@ A:Samoa (Western), Western Samoa (Independent State of)
 C:+685
 T:WS
 
+# Source (2003-04-23): http://www.nanpa.com/pdf/PL_330.pdf
+# Will become +1-684 at 2004-10-02,
+# +684 is be to returned to ITU after 2007-04-02.
 N:Amerikanisch-Samoa
 A:Samoa (Ost), Samoa (US), Samoa O., Amerikanisches Samoa
+A:U. S. Territory of American Samoa
 E:American Samoa
 C:+684
+C:+1684
 T:AS
+
+N:Amerikanisch-Samoa Mobilfunk
+E:American Samoa cellphone
+C:+684733
+C:+1684733
+T:_ASMF
+R:AS
 
 N:Niue-Inseln
 A:Niue Islands
@@ -828,6 +847,22 @@ N:Antarktis
 A:Antarctica, Antarktis-Casey Base
 C:+6721
 T:AQ
+
+# Source (2001-08-09):
+# http://www.itu.int/itudoc/itu-t/number/e/etm/73477_ww9.doc
+# independent (international recognition) since 2002-05-20
+N:Ost Timor
+E:East Timor
+A:Timor-Leste, Demokratische Republik Timor-Leste
+A:Democratic Republic of East Timor
+C:+670
+T:TP
+
+N:Ost Timor Mobilfunk
+E:East Timor cellphone
+C:+67072, +67073, +67074, +67075
+R:TP
+T:_TPMF
 
 N:Thailand Mobilfunk
 E:Thailand cellphone
@@ -1233,7 +1268,7 @@ T:_DEMF
 
 N:Deutschland Mobilfunk D1
 E:Germany cellphone D1
-A:D1
+A:D1, Deutschland Mobilfunk T-Mobile
 C:+491511,+49160,+49170,+49171,+49175	# reserved (2002-07-12): +49151
 R:_DEMF
 T:_DEMD1
@@ -1512,7 +1547,6 @@ T:AT
 # http://www.ak.li/en/cc423NumberingPlan.asp
 N:Liechtenstein
 A:Lichtenstein, Fürstentum Liechtenstein
-A:Liechtenstein Mobilfunk
 C:+423			# since 1999-04-05
 C:+4175			# until 2003(?), portion of CH=+41 
 T:LI
@@ -1600,6 +1634,7 @@ T:CH
 N:Rumänien Mobilfunk
 E:Romania cellphone
 C:+4092, +4094
+R:RO
 T:_ROMF
 
 N:Rumänien
@@ -1696,12 +1731,25 @@ C:+38591, +38598, +38599
 R:HR
 T:_HRMF
 
-N:Jugoslawien
+# Source (2002-12-05):
+# http://www.itu.int/itudoc/itu-t/number/y/yug/82105_ww2.doc
+N:Serbien und Montenegro
+A:Jugoslawien
 A:Jugoslawien (Serbien/Montenegro), Serbien, Montenegro, Yugoslavia (Servia & Montenegro)
 A:Jugoslawien Montenegro, Jugoslawien Serbien und Montenegro, Jugoslawien-Serbien
-E:Yugoslavia
+E:Serbia and Montenegro
+A:Yugoslavia
 C:+381
 T:YU
+
+N:Serbien und Montenegro Mobilfunk
+A:Jugoslawien Mobilfunk
+E:Serbia and Montenegro cellphone
+A:Yugoslavia cellphone
+C:+38161, +38163, +38164, +38165, +38167, +38169
+C:+381663, +381664, +381665, +381666, +381667
+R:YU
+T:_YUMF
 
 # Source (2002-03-14):
 # http://www.itu.int/itudoc/itu-t/number/u/ukr/78457.html
@@ -1761,8 +1809,8 @@ C:+3747, +374940, +374941
 R:AM
 T:_AMMF
 
-N:Moldavien Moldau (Republik)
-A:Moldau Republik, Moldavien, Moldawien, Moldau
+N:Moldau (Republik)
+A:Moldau Republik, Moldavien, Moldawien, Moldau, Republik Moldau
 E:Moldova
 C:+373
 T:MD
@@ -1777,14 +1825,24 @@ E:Estonia
 C:+372
 T:EE
 
+# Source (2002-10-21):
+# http://www.itu.int/itudoc/itu-t/number/l/ltu/81903_ww2.doc
 N:Lettland
 E:Latvia
 A:Lettland (Latvia)
 C:+371
 T:LV
 
-# Source (2002-08-23):
-# http://www.radio.lt/english/numbering.htm
+N:Lettland Mobilfunk
+E:Latvia cellphone
+C:+37116, +37161 			# reserved
+C:+37162, +37162, +37163, +37165
+C:+37191, +37192, +37193, +37194
+R:LV
+T:_LVMF
+
+# Source (2003-05-04):
+# http://www.rrt.lt/numeracija/en/index.htm
 N:Litauen
 E:Lithuania
 C:+370
@@ -1792,7 +1850,7 @@ T:LT
 
 N:Litauen Mobilfunk
 E:Lithuania cellphone
-C:+3716		# old numbers closed 2002-09-01
+C:+3706		# old numbers closed 2002-09-01
 R:LT
 T:_LTMF
 
@@ -1806,10 +1864,19 @@ E:Hungary
 C:+36
 T:HU
 
+# Source (2003-05-04)
+# http://www.crc.bg/v2/files/en/585.htm
 N:Bulgarien
 E:Bulgaria
 C:+359
 T:BG
+
+N:Bulgarien Mobilfunk
+E:Bulgaria cellpone
+C:+35948, +35987, +35988 		# assigned
+C:+35949, +35989, +35998, +35999 	# reserved
+R:BG
+T:_BGMF
 
 N:Finnland
 E:Finland
@@ -1823,11 +1890,13 @@ R:FI
 T:_FIMF
 
 N:Zypern(griech) Mobilfunk
-A:Zypern-Mobilfunk
+A:Zypern-Mobilfunk, Zypern Mobilfunk
 E:Cyprus cellphone
-C:+3579, +3576
+C:+3579992, +357994, +357995, +357996, +357998
 T:_CYMF
 
+# Quelle (2003-05-04):
+# http://www.cyta.com.cy/tesa/uk/ti.htm
 N:Zypern
 E:Cyprus
 A:Zypern (Griechisch), Zypern (griech.), Zypern Süd
@@ -2097,11 +2166,19 @@ E:Greece
 C:+30
 T:GR
 
+# Source (2000-09-18):
+# http://www.itu.int/itudoc/itu-t/number/g/gre/82117_ww2.doc
 N:Grönland
 E:Greenland
 C:+299
 T:GL
 R:DK
+
+N:Grönland Mobilfunk
+E:Greenland cellphone
+C:+29949, +29952, +29953, +29954, +29955, +29956, +29957, +29958, +29959
+R;GL
+T:_GLMF
 
 N:Färöer-Inseln Mobilfunk
 E:Faeroe Islands cellphone
@@ -2211,9 +2288,17 @@ E:Botswana
 C:+267
 T:BW
 
+# Source (2003-02-23)
+# http://www.lta.org.ls/
 N:Lesotho
 C:+266
 T:LS
+
+N:Lesotho Mobilfunk
+E:Lesotho cellphone
+C:+2665, +2666
+R:LS
+T:_LSMF
 
 # Source (2002-01-09):
 # http://www.itu.int/itudoc/itu-t/number/m/mwi/76657.html
@@ -2389,21 +2474,24 @@ C:+24491, +24492
 R:AO
 T:_AOMF
 
-N:Zaire Mobilfunk
-E:Zaire cellphone
+N:Kongo (Demokratische Republik) Mobilfunk
+E:Congo (Democratic Republik of the) cellphone
+A:Zaire Mobilfunk, Zaire cellphone
 C:+24388
 T:_ZRMF
 
-N:Zaire
-A:Kongo (Republik),Kongo (Rebublik)
-C:+243
-T:ZR
-
-N:Kongo
-A:Kongo (Demokratische Republik), Kongo (DR)
-E:Congo
+N:Kongo (Republik)
+A:Kongo, Kongo (Rebublik), Republik Kongo, Republic of the Congo, Congo
+E:Congo (Republic of the)
 C:+242
 T:CG
+
+N:Kongo (Demokratische Republik)
+A:Kongo (DR), Demokratische Republik Kongo, Democratic Republic of the Congo
+A:Zaire 	# till 1997
+E:Congo (Democratic Republic of the)
+C:+243
+T:ZR 	# internet cc-TLD may be .cd
 
 N:Gabun
 E:Gabon
@@ -2667,6 +2755,7 @@ E:Canada
 C:+1204, +1250, +1289, +1306, +1403, +1416, +1418, +1450, +1506, +1514, +1519
 C:+1604, +1613, +1647, +1705, +1709, +1778, +1780, +1807, +1819, +1867
 C:+1902, +1905
+C:+1438 	# from 2003-03-17 for test, in service 2004-02-14
 C:+1600		# nationwide (SAC)
 T:CA
 
@@ -3122,6 +3211,8 @@ N:Texas (USA state)
 C:+1210, +1214, +1254, +1281, +1361, +1409, +1469, +1512, +1682, +1713
 C:+1806, +1817, +1830, +1832, +1903, +1915, +1936, +1940, +1956, +1972
 C:+1979
+C:+1325, +1432 	# since 2003-04-05
+C:+1430 	# since 2003-02-15
 R:US
 T:_USTX
 
