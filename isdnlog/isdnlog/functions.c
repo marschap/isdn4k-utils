@@ -1,4 +1,4 @@
-/* $Id: functions.c,v 1.21 1999/04/10 16:35:22 akool Exp $
+/* $Id: functions.c,v 1.22 1999/04/19 19:24:35 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,15 @@
  * along with this program; if not, write to the Free Software
  *
  * $Log: functions.c,v $
+ * Revision 1.22  1999/04/19 19:24:35  akool
+ * isdnlog Version 3.18
+ *
+ * - countries-at.dat added
+ * - spelling corrections in "countries-de.dat" and "countries-us.dat"
+ * - LCR-function of isdnconf now accepts a duration (isdnconf -c .,duration)
+ * - "rate-at.dat" and "rate-de.dat" extended/fixed
+ * - holiday.c and rate.c fixed (many thanks to reinelt@eunet.at)
+ *
  * Revision 1.21  1999/04/10 16:35:22  akool
  * isdnlog Version 3.13
  *
@@ -485,6 +494,7 @@ void info(int chan, int reason, int state, char *msg)
   static int    lstate = 0, lchan = -1;
 
 
+#if 0
   if (!newline) {
 
     if (state == STATE_BYTE) {
@@ -510,6 +520,22 @@ void info(int chan, int reason, int state, char *msg)
     lstate = state;
     lchan = chan;
   } /* if */
+#else
+  if (!newline) {
+    left = "";
+    right = "\r";
+
+    if ((lchan != chan) || (lstate != state) || (state != STATE_BYTE))
+      left = "\n";
+
+    lstate = state;
+    lchan = chan;
+  }
+  else {
+    left = "";
+    right = "\n";
+  } /* else */
+#endif
 
   if (allflags & PRT_DEBUG_GENERAL)
     if (allflags & PRT_DEBUG_INFO)

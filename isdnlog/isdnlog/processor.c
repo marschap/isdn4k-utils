@@ -1,4 +1,4 @@
-/* $Id: processor.c,v 1.54 1999/04/17 14:11:08 akool Exp $
+/* $Id: processor.c,v 1.55 1999/04/19 19:24:45 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,15 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.55  1999/04/19 19:24:45  akool
+ * isdnlog Version 3.18
+ *
+ * - countries-at.dat added
+ * - spelling corrections in "countries-de.dat" and "countries-us.dat"
+ * - LCR-function of isdnconf now accepts a duration (isdnconf -c .,duration)
+ * - "rate-at.dat" and "rate-de.dat" extended/fixed
+ * - holiday.c and rate.c fixed (many thanks to reinelt@eunet.at)
+ *
  * Revision 1.54  1999/04/17 14:11:08  akool
  * isdnlog Version 3.17
  *
@@ -4935,8 +4944,10 @@ doppelt:break;
  	    auto char s[BUFSIZ];
 
 
+            memset(&Rate, 0, sizeof(Rate));
  	    Rate.zone = call[chan].zone;
  	    Rate.start = Rate.now = cur_time;
+            Rate.now = Rate.start + 181;
  	    Rate.Charge = 1e9; /* should be enough */
 
  	    if (getLeastCost(&Rate, call[chan].provider) != UNKNOWN) {
@@ -5263,7 +5274,7 @@ static void teardown(int chan)
 
   addlist(chan, SETUP, 2);
 
-  sprintf(sx, "HANGUP (%s)", qmsg(TYPE_CAUSE, VERSION_EDSS1, call[chan].cause));
+  sprintf(sx, "HANGUP (Timeout)" /*, qmsg(TYPE_CAUSE, VERSION_EDSS1, call[chan].cause) */);
   info(chan, PRT_SHOWHANGUP, STATE_HANGUP, sx);
 
   if (sound)

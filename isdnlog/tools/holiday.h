@@ -1,4 +1,4 @@
-/* $Id: holiday.h,v 1.4 1999/04/14 13:17:21 akool Exp $
+/* $Id: holiday.h,v 1.5 1999/04/19 19:25:33 akool Exp $
  *
  * Feiertagsberechnung
  *
@@ -19,6 +19,15 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: holiday.h,v $
+ * Revision 1.5  1999/04/19 19:25:33  akool
+ * isdnlog Version 3.18
+ *
+ * - countries-at.dat added
+ * - spelling corrections in "countries-de.dat" and "countries-us.dat"
+ * - LCR-function of isdnconf now accepts a duration (isdnconf -c .,duration)
+ * - "rate-at.dat" and "rate-de.dat" extended/fixed
+ * - holiday.c and rate.c fixed (many thanks to reinelt@eunet.at)
+ *
  * Revision 1.4  1999/04/14 13:17:21  akool
  * isdnlog Version 3.14
  *
@@ -75,7 +84,7 @@
 #define _HOLIDAY_H_
 
 #define MONDAY    1
-#define THUESDAY  2
+#define TUESDAY   2
 #define WEDNESDAY 3
 #define THURSDAY  4
 #define FRIDAY    5

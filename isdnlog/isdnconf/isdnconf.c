@@ -1,4 +1,4 @@
-/* $Id: isdnconf.c,v 1.21 1999/04/17 14:10:56 akool Exp $
+/* $Id: isdnconf.c,v 1.22 1999/04/19 19:24:02 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -20,6 +20,15 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnconf.c,v $
+ * Revision 1.22  1999/04/19 19:24:02  akool
+ * isdnlog Version 3.18
+ *
+ * - countries-at.dat added
+ * - spelling corrections in "countries-de.dat" and "countries-us.dat"
+ * - LCR-function of isdnconf now accepts a duration (isdnconf -c .,duration)
+ * - "rate-at.dat" and "rate-de.dat" extended/fixed
+ * - holiday.c and rate.c fixed (many thanks to reinelt@eunet.at)
+ *
  * Revision 1.21  1999/04/17 14:10:56  akool
  * isdnlog Version 3.17
  *
@@ -638,13 +647,12 @@ static int compare(const SORT *s1, const SORT *s2)
 } /* compare */
 
 
-static void showLCR()
+static void showLCR(int duration)
 {
   auto int   tz, hour, provider, lastprovider = UNKNOWN, lasthour = UNKNOWN, *p;
   auto int   useds = 0, maxhour, leastprovider = UNKNOWN;
   auto int   ignoreprovider = UNKNOWN;
   auto RATE  Rate;
-  auto int   duration = 181;
   auto int   probe[] = { REGIOCALL, GERMANCALL, D2_NETZ, 0 };
   auto int   used[MAXPROVIDER];
   auto int   hours[MAXPROVIDER];
@@ -652,7 +660,7 @@ static void showLCR()
   auto time_t werktag, wochenende;
 
 
-  print_msg(PRT_NORMAL, "Least-Cost-Routing-Table:\n\n");
+  print_msg(PRT_NORMAL, "Least-Cost-Routing-Table [Verbindungsdauer:%d Sekunden]:\n\n", duration);
 
   time(&werktag);
   tm = localtime(&werktag);
@@ -954,7 +962,7 @@ int main(int argc, char *argv[], char *envp[])
  		initRate("/etc/isdn/rate.conf", "/usr/lib/isdn/rate-de.dat", NULL);
 		currency = strdup("DEM");
 
-		if ((strlen(areacode) < 3) || (ptr = get_areacode(areacode,&len,quiet?C_NO_ERROR|C_NO_WARN:0)) != NULL)
+		if ((*areacode == '.') || (ptr = get_areacode(areacode,&len,quiet?C_NO_ERROR|C_NO_WARN:0)) != NULL)
 		{
 			if (!isdnmon)
 			{
@@ -970,10 +978,10 @@ int main(int argc, char *argv[], char *envp[])
                                   if (strlen(areacode) > 1) {
                                     zone = atoi(areacode + 1);
                                     ptr = "";
-				}
+				  }
                                   else {
-                                    showLCR();
-               				       exit(0);
+                                    showLCR(duration);
+               			    exit(0);
                                   } /* else */
                                 }
 				else {

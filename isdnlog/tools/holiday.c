@@ -1,4 +1,4 @@
- /* $Id: holiday.c,v 1.6 1999/04/16 14:39:58 akool Exp $
+ /* $Id: holiday.c,v 1.7 1999/04/19 19:25:07 akool Exp $
  *
  * Feiertagsberechnung
  *
@@ -19,6 +19,15 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: holiday.c,v $
+ * Revision 1.7  1999/04/19 19:25:07  akool
+ * isdnlog Version 3.18
+ *
+ * - countries-at.dat added
+ * - spelling corrections in "countries-de.dat" and "countries-us.dat"
+ * - LCR-function of isdnconf now accepts a duration (isdnconf -c .,duration)
+ * - "rate-at.dat" and "rate-de.dat" extended/fixed
+ * - holiday.c and rate.c fixed (many thanks to reinelt@eunet.at)
+ *
  * Revision 1.6  1999/04/16 14:39:58  akool
  * isdnlog Version 3.16
  *
@@ -109,6 +118,7 @@
 #include <stdarg.h>
 #include <time.h>
 #include <unistd.h>
+#include <errno.h>
 extern const char *basename (const char *name);
 #else
 #include "isdnlog.h"
@@ -117,7 +127,7 @@ extern const char *basename (const char *name);
 
 #include "holiday.h"
 
-#define SOMEDAY (1<<MONDAY | 1<<THUESDAY | 1<<WEDNESDAY | 1<<THURSDAY | 1<<FRIDAY | 1<<SATURDAY | 1<<SUNDAY)
+#define SOMEDAY (1<<MONDAY | 1<<TUESDAY | 1<<WEDNESDAY | 1<<THURSDAY | 1<<FRIDAY | 1<<SATURDAY | 1<<SUNDAY)
 #define LENGTH 120  /* max length of lines in data file */
 #define COUNT(array) sizeof(array)/sizeof(array[0])
 
@@ -396,7 +406,11 @@ int isDay(struct tm *tm, bitfield mask, char **name)
     return WORKDAY;
   }
   
-  if (mask & SOMEDAY) {
+  if (mask & (1<<EVERYDAY)) {
+    return day;
+  }
+
+  if (mask & (1<<day)) {
     sprintf (buffer, "%s", Weekday[day]);
   return day;
 }

@@ -1,5 +1,10 @@
-V:1.0-Germany [17-Apr-1999]
+V:1.0-Germany [19-Apr-1999]
 
+# Diese Tariftabelle ist ein Service der I4L-Tarifdatenbank-Crew.
+# Alle Angaben erfolgen ohne Gewähr
+#
+# (C) Copyright 1999 by Andreas Kool (akool@isdn4linux.de)
+#
 # Zonenvergabe:
 #
 #   0 : Verbindungen an der eigenen Tk-Anlage (zwangsläufig kostenlos)
@@ -232,8 +237,8 @@ A:+297   # Aruba
 A:+299   # Grönland
 A:+374   # Armenien
 A:+396   # Vatikanstadt
-A:+44    # Insel Man (Großbritannien)
-A:+44    # Kanalinseln (Großbritannien)
+# FIXME A:+44    # Insel Man (Großbritannien)
+# FIXME A:+44    # Kanalinseln (Großbritannien)
 A:+500   # Falklandinseln
 A:+501   # Belize
 A:+502   # Guatemala
@@ -286,7 +291,7 @@ A:+689   # Französisch-Polynesien
 A:+691   # Mikronesien
 A:+692   # Marshallinseln
 A:+7     # Kasachstan
-A:+7     # Tadschikistan
+# FIXME A:+7     # Tadschikistan
 A:+84    # Vietnam
 A:+850   # Korea (Demokratische Republik)
 A:+853   # Macao
@@ -335,6 +340,11 @@ T:W/21-08=0.07/60
 T:E,H/08-21=0.14/60
 T:E,H/21-08=0.07/60
 Z:5-10 Mobilnetze
+A:01610,01617,01619,01618 # C
+A:0170,0171  		  # D1
+A:0172,0173		  # D2
+A:0177,0178		  # Eplus
+A:0176,0179  		  # E2
 T:W/08-21=0.69/60
 T:W/21-08=0.49/60
 T:E,H/*=0.49/60
@@ -394,8 +404,42 @@ Z:20 Internet
 A:01929 # (Benutzername: mobilcom; Passwort: mobilcom)
 T:*/*=0.05/60 FreeNet
 #####################################################################
-P:20 ISIS
-C:Multimedia Net GmbH, Kaistraße 6, 40221 Düsseldorf 01020
+P:20 ISIS isiFON classic
+C:ISIS Multimedia Net GmbH, Kaistraße 6, 40221 Düsseldorf 01020
+G:01.04.1999
+C:Homepage: http://www.isis.de
+C:Telefon:  0800/809 0100
+C:Telefax:  0211/85 27 610
+C:Faxabruf: 0800/809 0111
+Z:1 isiFON-zu-isiFON
+T:W/09-18=0.1044/300
+T:W/18-09=0.1044/600
+T:E,H/*=0.1044/600
+Z:2 lokal
+T:W/09-18=0.1044/120
+T:W/18-09=0.1044/240
+T:E,H/*=0.1044/240
+Z:3 Regio
+T:W/09-18=0.1044/30
+T:W/18-09=0.1044/60
+T:E,H/*=0.1044/60
+Z:4 Distanz
+T:W/09-18=0.1044/15
+T:W/18-09=0.1044/30
+T:E,H/*=0.1044/15
+Z:5-10 Mobilfunk
+A:01610,01617,01619,01618 # C
+A:0170,0171               # D1
+A:0172,0173               # D2
+A:0177,0178               # Eplus
+A:0176,0179               # E2
+T:W/09-18=0.1044/8
+T:W/18-09=0.1044/12
+T:E,H/*=0.1044/12
+Z:20 isiFONLINE
+T:W/09-18=0.1044/300
+T:W/18-09=0.1044/600
+T:E,H/*=0.1044/300
 #####################################################################
 P:21 QS
 C:Communication Service GmbH, Oberländer Ufer 180-182, 50968 Köln 01021
@@ -440,6 +484,11 @@ T:W/18-21=0.09(60)/1
 T:W/21-07=0.06(60)/1
 T:E,H/*=0.09(60)/1
 Z:5-10 C/D/E-Netz
+A:01610,01617,01619,01618 # C
+A:0170,0171  		  # D1
+A:0172,0173		  # D2
+A:0177,0178		  # Eplus
+A:0176,0179  		  # E2
 T:*/*=0.48(60)/1
 #####################################################################
 P:31 HEAG
@@ -644,14 +693,9 @@ T:W/21-06=0.06/60
 T:E,H/06-21=0.095/60
 T:E,H/21-06=0.06/60
 Z:5-7,10 D1,C,E2-Netz
-A:0170
-A:0171
-A:01610
-A:01617
-A:01619
-A:01618
-A:0176
-A:0179
+A:0170,0171               # D1
+A:01610,01617,01619,01618 # C
+A:0176,0179		  # E2
 T:W/09-18=0.96/60 Hauptzeit
 T:W/18-09=0.48/60 Nebenzeit
 T:E,H/*=0.48/60 Freizeit
@@ -661,8 +705,7 @@ T:W/09-18=0.94/60 Hauptzeit
 T:W/18-09=0.46/60 Nebenzeit
 T:E,H/*=0.46/60 Freizeit
 Z:9 E-Plus
-A:0177
-A:0178
+A:0177,0178
 T:W/09-18=1.25/60 Hauptzeit
 T:W/18-09=0.56/60 Nebenzeit
 T:E,H/*=0.56/60 Freizeit
@@ -681,7 +724,7 @@ T:*/*=0.46/60
 Z:12 Euro Plus
 A:+298   # Färöer
 A:+30    # Griechenland
-A:+353   # Irland
+# FIXME A:+353   # Irland
 A:+354   # Island
 A:+36    # Ungarn
 A:+376   # Andorra
@@ -693,8 +736,8 @@ A:+4175  # Liechtenstein
 A:+420   # Tschechien
 A:+421   # Slowakei
 A:+44    # Großbritannien und Nordirland
-A:+44    # Insel Man (Großbritannien)
-A:+44    # Kanalinseln (Großbritannien)
+# FIXME A:+44    # Insel Man (Großbritannien)
+# FIXME A:+44    # Kanalinseln (Großbritannien)
 A:+45    # Dänemark
 A:+46    # Schweden
 A:+47    # Norwegen
@@ -728,7 +771,7 @@ A:+972   # Israel
 T:*/*=0.96/60
 Z:14 Nordamerika
 A:+1     # Kanada
-A:+1     # Vereinigte Staaten (USA)
+# FIXME A:+1     # Vereinigte Staaten (USA)
 T:*/*=0.48/60
 Z:15 Asien / Pazifik
 A:+61    # Australien
@@ -748,7 +791,7 @@ A:+56    # Chile
 A:+57    # Kolumbien
 A:+599   # Niederländische Antillen
 A:+63    # Philippinen
-A:+7     # Kasachstan
+# FIXME A:+7     # Kasachstan
 A:+886   # China (Taiwan)
 A:+961   # Libanon
 A:+962   # Jordanien
@@ -765,7 +808,6 @@ A:+1268  # Antigua und Barbuda
 A:+1284  # Britische Jungferninseln
 A:+1340  # Amerikanische Jungferninseln
 A:+1345  # Caymaninseln
-A:+1345  # Kaimaninseln
 A:+1441  # Bermuda
 A:+1473  # Grenada
 A:+1649  # Turks- und Caicos-Inseln
@@ -783,7 +825,6 @@ A:+222   # Mauretanien
 A:+223   # Mali
 A:+224   # Guinea
 A:+225   # Cote d'Ivoire (Elfenbeinküste)
-A:+225   # Elfenbeinküste (Cote d'Ivoire)
 A:+226   # Burkina Faso (Obervolta)
 A:+227   # Niger
 A:+228   # Togo
@@ -820,20 +861,19 @@ A:+260   # Sambia
 A:+261   # Madagaskar
 A:+262   # Reunion
 A:+263   # Simbabwe
-A:+263   # Zimbabwe
 A:+264   # Namibia
 A:+265   # Malawi
 A:+266   # Lesotho
 A:+267   # Botsuana (Botswana)
 A:+268   # Swasiland
 A:+269   # Komoren
-A:+269   # Mayotte
+# FIXME A:+269   # Mayotte
 A:+290   # Saint Helena
 A:+291   # Eritrea
 A:+297   # Aruba
 A:+299   # Grönland
 A:+374   # Armenien
-A:+375   # Weißrußland (Belarus)
+# FIXME A:+375   # Weißrußland (Belarus)
 A:+500   # Falklandinseln
 A:+501   # Belize
 A:+502   # Guatemala
@@ -886,7 +926,7 @@ A:+688   # Tuvalu
 A:+689   # Französisch-Polynesien
 A:+691   # Mikronesien
 A:+692   # Marshallinseln
-A:+7     # Tadschikistan
+# FIXME A:+7     # Tadschikistan
 A:+84    # Vietnam
 A:+850   # Korea (Demokratische Republik)
 A:+853   # Macao
@@ -898,8 +938,8 @@ A:+872   # Pazifischer Ozean
 A:+873   # Indischer Ozean
 A:+874   # Atlantischer Ozean (West)
 A:+880   # Bangladesch
-A:+886   # Taiwan
-A:+90    # Zypern (Nordzypern)
+# FIXME A:+886   # Taiwan
+# FIXME A:+90    # Zypern (Nordzypern)
 A:+91    # Indien
 A:+92    # Pakistan
 A:+93    # Afghanistan
@@ -1042,7 +1082,7 @@ A:+41    # Schweiz
 T:*/08-20=0.279(60)/1
 T:*/20-08=0.259(60)/1
 Z:15
-A:+1     # Kanada
+# FIXME A:+1     # Kanada
 A:+47    # Norwegen
 T:*/08-20=0.289(60)/1
 T:*/20-08=0.269(60)/1
@@ -1225,8 +1265,7 @@ T:*/08-20=0.649(60)/1
 T:*/20-08=0.629(60)/1
 Z:44
 A:+298   # Färöer
-A:+670   # Marianen
-A:+670   # Saipan
+A:+670   # Marianen and Saipan
 T:*/08-20=0.659(60)/1
 T:*/20-08=0.639(60)/1
 Z:45
@@ -1391,8 +1430,7 @@ A:+2696  # Mayotte
 T:*/08-20=0.949(60)/1
 T:*/20-08=0.929(60)/1
 Z:73
-A:+1869  # Nevis Islands
-A:+1869  # St Kitts
+A:+1869  # Nevis Islands and St Kitts
 T:*/08-20=0.959(60)/1
 T:*/20-08=0.939(60)/1
 Z:74
@@ -1751,7 +1789,12 @@ Z:2-4 Fern
 T:W/09-18=0.08/30,0.16(60)/1 Standard
 T:W/18-09=0.045/30,0.09(60)/1 Spar
 T:E/*=0.045/30,0.09(60)/1 Nacht
-Z:6-10 Deutschland GSM
+Z:5-10 Deutschland GSM
+A:01610,01617,01619,01618 # C
+A:0170,0171  		  # D1
+A:0172,0173		  # D2
+A:0177,0178		  # Eplus
+A:0176,0179  		  # E2
 T:W/09-18=0.365/30,0.73(60)/1 Standard
 T:W/18-09=0.18/30,0.36(60)/1 Spar
 T:E/*=0.18/30,0.36(60)/1 Spar

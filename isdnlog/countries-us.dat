@@ -4,6 +4,7 @@
 001264  Anguilla
 001268  Antigua & Barbuda
 001284  British Virgin Isles
+001340  American Virgin Isles
 001345  Cayman Islands
 001441  Bermuda
 001473  Grenada
@@ -18,7 +19,7 @@
 001869  St. Kitts & Nevis
 001876  Jamaica
 0020    Egypt
-00212   Morocco
+00212   Marocco
 00213   Algeria
 00216   Tunesia
 00218   Libya
@@ -53,7 +54,7 @@
 00248   Seychelles Islands
 00249   Sudan
 00250   Rwanda
-00251   Ethopia
+00251   Ethiopia
 00252   Somalia
 00253   Djibouti
 00254   Kenya
@@ -85,7 +86,7 @@
 0034    Spain
 00350   Gibraltar
 00351   Portugal
-00352   Luxemburg
+00352   Luxembourg
 00353   Ireland
 00354   Iceland
 00355   Albania
@@ -108,7 +109,7 @@
 00381   Yugoslavia (Servia & Montenegro)
 00385   Croatia
 00386   Slovenia
-00387   Bosnia and Herzegovina
+00387   Bosnia and Hercegovina
 00389   Macedonia
 0039    Italy
 00396   Vatican City
@@ -144,7 +145,7 @@
 0057    Colombia
 0058    Venezuela
 00590   Guadaloupe
-00591   Boliva
+00591   Bolivia
 00592   Guyana
 00593   Ecuador
 00594   French Guyana

@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.70 1999/04/17 14:10:36 akool Exp $
+## $Id: Makefile.in,v 1.71 1999/04/19 19:23:14 akool Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,15 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.71  1999/04/19 19:23:14  akool
+## isdnlog Version 3.18
+##
+## - countries-at.dat added
+## - spelling corrections in "countries-de.dat" and "countries-us.dat"
+## - LCR-function of isdnconf now accepts a duration (isdnconf -c .,duration)
+## - "rate-at.dat" and "rate-de.dat" extended/fixed
+## - holiday.c and rate.c fixed (many thanks to reinelt@eunet.at)
+##
 ## Revision 1.70  1999/04/17 14:10:36  akool
 ## isdnlog Version 3.17
 ##
@@ -565,7 +574,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 3.17
+VERSION     = 3.18
 
 MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 \
 	      isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 \
