@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.49 2002/02/25 01:02:43 keil Exp $
+# $Id: Makefile,v 1.50 2002/07/04 10:20:06 paul Exp $
 #
 # Toplevel Makefile for isdn4k-utils
 #
@@ -24,7 +24,7 @@ CONFIGURATION = config
 do-it-all:      config
 endif
 
-EXTRADIRS = isdnlog/tools/zone isdnlog/tools/dest isdnlog/tools/cdb
+EXTRADIRS = isdnlog/tools/cdb isdnlog/tools/zone isdnlog/tools/dest
 
 SUBDIRS :=
 ifeq ($(CONFIG_ISDNLOG),y)
@@ -124,7 +124,7 @@ subtargets: $(CONFIGURATION)
 rootperm:
 	@echo 'main(int argc,char**argv){unlink(argv[0]);return(getuid()==0);}'>g
 	@if gcc -x c -o G g && rm -f g && ./G ; then \
-		echo -e "\n\n      Need root permission for (de)installation!\n\n"; \
+		/bin/echo -e "\n\n      Need root permission for (de)installation!\n\n"; \
 		exit 1; \
 	fi
 
@@ -132,7 +132,7 @@ install: rootperm
 	set -e; for i in `echo $(SUBDIRS)`; do $(MAKE) -C $$i install; done
 	@if [ -c $(DESTDIR)/dev/isdnctrl0 ] && ls -l $(DESTDIR)/dev/isdnctrl0 | egrep "[[:space:]]45,[[:space:]]+64[[:space:]]" > /dev/null; \
 	then \
-		echo -e '(some) ISDN devices already exist, not creating them.\nUse scripts/makedev.sh manually if necessary.'; \
+		/bin/echo -e '(some) ISDN devices already exist, not creating them.\nUse scripts/makedev.sh manually if necessary.'; \
 	else \
 		sh scripts/makedev.sh $(DESTDIR) ; \
 	fi
@@ -199,13 +199,13 @@ subconfig: scripts/autoconf.h
 	@echo Selected subdirs: $(SUBDIRS)
 	@set -e; for i in `echo $(SUBDIRS)`; do \
 		if [ -x $$i/configure ] ; then \
-			echo -e "\nRunning configure in $$i ...\n"; sleep 1; \
+			/bin/echo -e "\nRunning configure in $$i ...\n"; sleep 1; \
 			(cd $$i; ./configure --sbindir=$(CONFIG_SBINDIR) --bindir=$(CONFIG_BINDIR) --mandir=$(CONFIG_MANDIR) --datadir=$(CONFIG_DATADIR) || $(MAKE) -C ../ ERRDIR=$$i cfgerror); \
 		elif [ -f $$i/Makefile.in ] ; then \
-			echo -e "\nRunning make -f Makefile.in config in $$i ...\n"; sleep 1; \
+			/bin/echo -e "\nRunning make -f Makefile.in config in $$i ...\n"; sleep 1; \
 			$(MAKE) -C $$i -f Makefile.in config; \
 		elif [ -f $$i/Makefile ] ; then \
-			echo -e "\nRunning make config in $$i ...\n"; sleep 1; \
+			/bin/echo -e "\nRunning make config in $$i ...\n"; sleep 1; \
 			$(MAKE) -C $$i config; \
 		fi; \
 	done
