@@ -1,4 +1,4 @@
-/* $Id: eiconctrl.c,v 1.8 1999/10/12 18:01:52 armin Exp $
+/* $Id: eiconctrl.c,v 1.9 1999/11/21 12:41:25 armin Exp $
  *
  * Eicon-ISDN driver for Linux. (Control-Utility)
  *
@@ -21,6 +21,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA. 
  *
  * $Log: eiconctrl.c,v $
+ * Revision 1.9  1999/11/21 12:41:25  armin
+ * Added further check for future driver changes.
+ *
  * Revision 1.8  1999/10/12 18:01:52  armin
  * Backward compatible to older driver versions.
  *
@@ -104,7 +107,9 @@ int directory_size;
 unsigned int no_of_downloads = 0;
 int total_bytes_in_download = 0;
 __u32 download_pos;
+#ifdef HAVE_NPCI
 t_dsp_download_desc p_download_table[35];
+#endif
 
 int usage_bit;
 int usage_byte;
@@ -138,6 +143,7 @@ char *spid_state[] =
 };
 
 
+#ifdef HAVE_NPCI
 #ifdef HAVE_XLOG
 /*********** XLOG stuff **********/
 
@@ -1164,7 +1170,8 @@ void spid_event(FILE * stream, struct msg_s * message, word code)
 }
 
 /*********** XLOG stuff end **********/
-#endif
+#endif /* XLOG */
+#endif /* NPCI */
 
 void usage() {
   fprintf(stderr,"usage: %s add <DriverID> <membase> <irq>              (add card)\n",cmd);
@@ -1173,8 +1180,10 @@ void usage() {
   fprintf(stderr,"   or: %s [-d <DriverID>] [-v] load <protocol> [options]\n",cmd);
   fprintf(stderr,"   or: %s [-d <DriverID>] debug [<debug value>]\n",cmd);
   fprintf(stderr,"   or: %s [-d <DriverID>] manage [read|exec <path>]   (management-tool)\n",cmd);
+#ifdef HAVE_NPCI
 #ifdef HAVE_XLOG
   fprintf(stderr,"   or: %s [-d <DriverID>] xlog [cont]                 (request XLOG)\n",cmd);
+#endif
 #endif
   fprintf(stderr,"load firmware:\n");
   fprintf(stderr," basics  : -d <DriverID> ID defined when eicon module was loaded/card added\n");
@@ -1192,6 +1201,7 @@ void usage() {
 }
 
 
+#ifdef HAVE_NPCI
 /*--------------------------------------------------------------
  * display_combifile_details()
  *
@@ -1668,6 +1678,7 @@ eicon_codebuf *load_combifile(int card_type, u_char *protobuf, int *plen)
  free(combifile_start);
  return (cb);
 }
+#endif /* NPCI */
 
 void beep2(void)
 {
@@ -2216,7 +2227,7 @@ int main(int argc, char **argv) {
                 char protoname[1024];
                 char filename[1024];
                 u_char protobuf[0x100000];
-                eicon_codebuf *cb;
+                eicon_codebuf *cb = NULL;
 
 		if (argc <= (arg_ofs + 1))
                        	strcpy(protoname,"etsi");
@@ -2234,16 +2245,30 @@ int main(int argc, char **argv) {
 		switch (ctype) {
 			case EICON_CTYPE_MAESTRAP:
 				printf("Adapter-type is Diva Server PRI/PCI\n");
-				strcpy(fileext, ".pm");
 				card_type = 23;
+#ifdef HAVE_NPCI
+				strcpy(fileext, ".pm");
 				tei = 1;
 				break;
+#else
+				fprintf(stderr, "Adapter-type not supported for load !\n");
+				fprintf(stderr, "Update of util package is necessary, ");
+				fprintf(stderr, "because of major changes in driver code.\n");
+                          	exit(-1);
+#endif
 			case EICON_CTYPE_MAESTRA:
 				printf("Adapter-type is Diva Server BRI/PCI\n");
-				strcpy(fileext, ".sm");
 				card_type = 21;
+#ifdef HAVE_NPCI
+				strcpy(fileext, ".sm");
 				tei = 0;
 				break;
+#else
+				fprintf(stderr, "Adapter-type not supported for load !\n");
+				fprintf(stderr, "Update of util package is necessary, ");
+				fprintf(stderr, "because of major changes in driver code.\n");
+                          	exit(-1);
+#endif
 			case EICON_CTYPE_S:
 			case EICON_CTYPE_SX:
 			case EICON_CTYPE_SCOM:
@@ -2300,10 +2325,12 @@ int main(int argc, char **argv) {
 			memcpy(&cb->isa.code, protobuf, plen);
 			cb->isa.firmware_len = plen;
 		} else {
+#ifdef HAVE_NPCI
 			if (!(cb = load_combifile(card_type, protobuf, &plen))) {
         	                fprintf(stderr, "Error loading Combifile\n");
        	        	        exit(-1);
 			}
+#endif
 		}
 
 		if (isabus) {
@@ -2320,6 +2347,7 @@ int main(int argc, char **argv) {
 			cb->isa.Crc4 = 0;
 			cb->isa.Loopback = 0;
 		} else {
+#ifdef HAVE_NPCI
 			cb->pci.tei = tei;
 			cb->pci.nt2 = 0;
 			cb->pci.WatchDog = 0;
@@ -2333,6 +2361,7 @@ int main(int argc, char **argv) {
 			cb->pci.Crc4 = 0;
 			cb->pci.Loopback = 0;
 			cb->pci.NoHscx30Mode = 0;
+#endif /* NPCI */
 		}
 
 		/* parse extented options */
@@ -2343,8 +2372,10 @@ int main(int argc, char **argv) {
 					cb->isa.LowChannel = atoi(argv[arg_ofs] + 2);
 					if (!cb->isa.LowChannel) cb->isa.LowChannel = 1;
 				} else {
+#ifdef HAVE_NPCI
 					cb->pci.LowChannel = atoi(argv[arg_ofs] + 2);
 					if (!cb->pci.LowChannel) cb->pci.LowChannel = 1;
+#endif /* NPCI */
 				}
                                 continue;
                         }
@@ -2354,98 +2385,126 @@ int main(int argc, char **argv) {
 	                                cb->isa.tei <<= 1;
         	                        cb->isa.tei |= 0x01;
 				} else {
+#ifdef HAVE_NPCI
                                 	cb->pci.tei = atoi(argv[arg_ofs] + 2);
 	                                cb->pci.tei <<= 1;
         	                        cb->pci.tei |= 0x01;
+#endif
 				}
                                 continue;
                         }
                         if (!strcmp(argv[arg_ofs], "-z")) {
 				if (isabus) 
 	                                cb->isa.Loopback = 1;
+#ifdef HAVE_NPCI
 				else
 	                                cb->pci.Loopback = 1;
+#endif
                                 continue;
                         }
                         if (!strcmp(argv[arg_ofs], "-p")) {
 				if (isabus) 
                                 	cb->isa.Permanent = 1;
+#ifdef HAVE_NPCI
 				else
                                 	cb->pci.Permanent = 1;
+#endif
                                 continue;
                         }
                         if (!strcmp(argv[arg_ofs], "-w")) {
 				if (isabus) 
                         	        cb->isa.WatchDog = 1;
+#ifdef HAVE_NPCI
 				else
                         	        cb->pci.WatchDog = 1;
+#endif
                                 continue;
                         }
                         if (!strcmp(argv[arg_ofs], "-c")) {
 				if (isabus) 
                 	                cb->isa.Crc4 = 1;
+#ifdef HAVE_NPCI
 				else
                 	                cb->pci.Crc4 = 1;
+#endif
                                 continue;
                         }
                         if (!strcmp(argv[arg_ofs], "-c1")) {
 				if (isabus) 
         	                        cb->isa.Crc4 = 1;
+#ifdef HAVE_NPCI
 				else
         	                        cb->pci.Crc4 = 1;
+#endif
                                 continue;
                         }
                         if (!strcmp(argv[arg_ofs], "-c2")) {
 				if (isabus) 
 	                                cb->isa.Crc4 = 2;
+#ifdef HAVE_NPCI
 				else
 	                                cb->pci.Crc4 = 2;
+#endif
                                 continue;
                         }
                         if (!strcmp(argv[arg_ofs], "-n")) {
 				if (isabus) 
                                 	cb->isa.nt2 = 1;
+#ifdef HAVE_NPCI
 				else
                                 	cb->pci.nt2 = 1;
+#endif
                                 continue;
                         }
                         if (!strcmp(argv[arg_ofs], "-p")) {
 				if (isabus) 
                         	        cb->isa.Permanent = 1;
+#ifdef HAVE_NPCI
 				else
                         	        cb->pci.Permanent = 1;
+#endif
                                 continue;
                         }
                         if (!strcmp(argv[arg_ofs], "-h")) {
+#ifdef HAVE_NPCI
                                 if (!isabus) cb->pci.NoHscx30Mode = 1;
+#endif
                                 continue;
                         }
                         if (!strcmp(argv[arg_ofs], "-o")) {
 				if (isabus) 
                 	                cb->isa.NoOrderCheck = 1;
+#ifdef HAVE_NPCI
 				else
                 	                cb->pci.NoOrderCheck = 1;
+#endif
                                 continue;
                         }
                         if (!strcmp(argv[arg_ofs], "-s")) {
 				if (isabus) 
         	                        cb->isa.StableL2 = 1;
+#ifdef HAVE_NPCI
 				else
         	                        cb->pci.StableL2 = 1;
+#endif
                                 continue;
                         }
                         if (!strcmp(argv[arg_ofs], "-s1")) {
 				if (isabus) 
 	                                cb->isa.StableL2 = 1;
+#ifdef HAVE_NPCI
 				else
 	                                cb->pci.StableL2 = 1;
+#endif
                                 continue;
                         }
                         if (!strcmp(argv[arg_ofs], "-s2")) {
 				if (isabus) 
                                 	cb->isa.StableL2 = 2;
+#ifdef HAVE_NPCI
 				else
                                 	cb->pci.StableL2 = 2;
+#endif
                                 continue;
                         }
 		}
@@ -2482,6 +2541,7 @@ int main(int argc, char **argv) {
 		return 0;
 	}
 
+#ifdef HAVE_NPCI
 #ifdef HAVE_XLOG
         if (!strcmp(argv[arg_ofs], "xlog")) {
 		int cont = 0;
@@ -2602,7 +2662,8 @@ int main(int argc, char **argv) {
                 close(fd); 
 		return 0;
 	}
-#endif
+#endif /* XLOG */
+#endif /* NPCI */
 
         if (!strcmp(argv[arg_ofs], "manage")) {
 		mb = malloc(sizeof(eicon_manifbuf));
