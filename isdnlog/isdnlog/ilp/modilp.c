@@ -23,6 +23,7 @@
  * 0.12 05.04.2002 lt adapted for 2.4.x
  * 0.13 05.04.2002 lt 2. try, thanks Achim Steinmetz
  * 0.14 08.04.2002 lt fixed module unload
+ * 0.15 11.04.2002 lt make it pager compatible for 2.4.x
  */
 
 /* based on code found in lkmpg/node17.html, which is: */
@@ -38,7 +39,7 @@
 #include <linux/proc_fs.h>
 #include <linux/time.h>	/* get time */
 
-#define MODULE_VERSION "0.14"
+#define MODULE_VERSION "0.15"
 #define MODULE_NAME "modilp"
 
 /* In 2.2.3 /usr/include/linux/version.h includes a 
@@ -117,6 +118,17 @@ static void calc_diff(ulong d, char *p) {
  * use a standard read function, which is this function */
 
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(2,4,0)
+static int proc_calc_metrics(char *page, char **start, off_t off,
+				 int count, int *eof, int len)
+{
+	if (len <= off+count) *eof = 1;
+	*start = page + off;
+	len -= off;
+	if (len>count) len = count;
+	if (len<0) len = 0;
+	return len;
+}
+
 /* new proc-fs interface */
 static int 
 read_func(
@@ -142,9 +154,13 @@ read_func(
 			"Ch State   Msn - Number                    Alias              Duration Cost\n%s%s",
 			message[0].text, message[1].text);
 
-	*eof = 1;
 	/* BUG_ON(len > count); ? */
+#if 1
+	return proc_calc_metrics(page, start, off, count, eof, len);
+#else
+	*eof = 1;
 	return len;
+#endif
 }
 
 #else	
