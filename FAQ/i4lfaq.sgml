@@ -4,7 +4,7 @@
 
 <title>FAQ for isdn4linux
 <author>Matthias Hessler (<tt><htmlurl url="mailto:hessler@isdn4linux.de" name="hessler@isdn4linux.de"></tt>)
-<date>v2.0.89, 16. August 2004
+<date>v2.0.90, 24. October 2004
 <abstract>
 If you are reading this FAQ online, you may consider downloading the whole
 thing, and reading it offline (much cheaper). To download the latest
@@ -518,6 +518,8 @@ Here is a German website which has some nice installation instructions:
 <tt><url url="http://ixi.thepenguin.de"></tt> or
 <tt><url url="http://capi4linux.thepenguin.de"></tt> or
 <tt><url url="http://www.thepenguin.de"></tt>
+Please note that due to its binary nature, this driver will not work
+if your distribution is incompatible with it (e.g. based on 64 bit).
 </itemize>
 
 This interface follows the official CAPI 2.0 standard that was established
@@ -1081,6 +1083,16 @@ hardware, and does not support the developers (see question
 Yes, this works nicely. However, make sure to compile the kernel and all
 modules with option <tt/SMP/. If you run into problems when both CPUs try to
 handle the same IRQ, try to boot with <tt/noapic/.
+
+<sect1> hardware_64bit: Can I run isdn4linux on 64bit hardware with Linux?  
+<label id="hardware_64bit">
+<p>
+In principle yes, however your hardware choice is currently limited to
+active cards and external devices. Most desired are external devices using
+standard interfaces (network, USB) which do not require isdn4linux at all.
+The drivers for passive cards are currently not working under 64bit.
+Obviously you can also not make use of binary drivers, unless you find a
+binary compiled for 64bit.
 
 <sect1> hardware_alpha: Can I run isdn4linux on a DEC Alpha with Linux?  
 <label id="hardware_alpha">
