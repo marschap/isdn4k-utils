@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.8 1997/03/23 19:21:26 fritz Exp $
+# $Id: Makefile,v 1.9 1997/03/24 01:27:03 fritz Exp $
 #
 # Toplevel Makefile for isdn4k-utils
 #
@@ -58,6 +58,9 @@ ifeq ($(CONFIG_XMONISDN),y)
 endif
 ifeq ($(CONFIG_XISDNLOAD),y)
 	SUBDIRS := $(SUBDIRS) xisdnload
+endif
+ifeq ($(CONFIG_IPPPD),y)
+	SUBDIRS := $(SUBDIRS) ipppd
 endif
 ifeq ($(CONFIG_VBOX),y)
 	SUBDIRS := $(SUBDIRS) vbox
