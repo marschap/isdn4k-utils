@@ -1,7 +1,7 @@
                  English-German mini-FAQ for ISDN4Linux
                Englisch-Deutsche mini-FAQ für ISDN4Linux
 
-    Mini-FAQ online: http://www.franken.de/users/klaus/
+    Mini-FAQ online: http://home.worldonline.dk/~ehcorry/linux/mini-faq.html
 
 See below for English!
 
@@ -57,9 +57,10 @@ germantoc
      Starte den RST-Provoking-Mode.  Zum Aktivieren siehe Frage 6 und siehe
      auch http://sdb.suse.de/sdb/de/html/katlist.ISDN.html  Wenn du Kernel
      2.2 verwendest, siehe auch
-     http://www-users.rwth-aachen.de/Michael.Mueller4/dynip.html  Dieser Patch
-     geht mit neueren Kernels nicht mehr sauber rein, und ist deshalb nicht
-     nutzbar, wenn du kein C-Programmierer bist.
+     http://www-users.rwth-aachen.de/Michael.Mueller4/dynip.html  Mit neueren
+     Kernels (2.2.14) musst du stattdessen diese Version nehmen:
+     http://www.grueneberg.de/linux/linux-2.2.14-rst.patch  Für die 2.3er
+     Kernels ist der Patch noch nicht verfügbar.
 
 8.   Nur die erste ISDN-Verbindung funktioniert, wegen Routing-Problemen.
        oder
@@ -268,9 +269,10 @@ englishtoc
      This can be alleviated with RST-provoking.  Activate this as in question
      6 and see also http://sdb.suse.de/sdb/en/html/katlist.ISDN.html  If you
      use kernel 2.2 see also
-     http://www-users.rwth-aachen.de/Michael.Mueller4/dynip.html  This patch
-     does not go cleanly into newer 2.2 kernels, so it is only usable by C
-     programmers.
+     http://www-users.rwth-aachen.de/Michael.Mueller4/dynip.html  For newer
+     2.2 kernels (2.2.14) that patch will not go in cleanly, use instead this:
+     http://www.grueneberg.de/linux/linux-2.2.14-rst.patch  The patch has not
+     yet been ported to the 2.3 kernels.
 
 8.   Only the first ISDN connection works because of routing problems.
        or
