@@ -37,12 +37,11 @@
  */
 
 #if 0
-static char rcsid[] = "$Id: ipppstats.c,v 1.2 1997/05/19 10:18:12 hipp Exp $";
+static char rcsid[] = "$Id: ipppstats.c,v 1.3 1997/05/30 12:37:38 hipp Exp $";
 #endif
 
 #include <ctype.h>
 #include <errno.h>
-#include <nlist.h>
 #include <stdio.h>
 #include <signal.h>
 #include <fcntl.h>
@@ -54,14 +53,22 @@ static char rcsid[] = "$Id: ipppstats.c,v 1.2 1997/05/19 10:18:12 hipp Exp $";
 #include <sys/types.h>
 #include <sys/ioctl.h>
 
-#include <linux/ppp_defs.h>
+#if defined __GLIBC__ && __GLIBC__ >= 2
+# include <net/ppp_defs.h>
+# include <net/if.h>
+#else
+# include <linux/ppp_defs.h>
+# include <linux/if.h>
+#endif
 
 #include <sys/socket.h>
-#include <linux/if.h>
 
 #ifndef STREAMS
-#include <linux/if_ppp.h>		/* BSD, Linux, NeXT, etc. */
-
+# if defined __GLIBC__ && __GLIBC__ >= 2
+#  include <net/if_ppp.h>
+# else
+#  include <linux/if_ppp.h>		/* BSD, Linux, NeXT, etc. */
+# endif
 #else				/* SunOS 4, AIX 4, OSF/1, etc. */
 #define PPP_STATS	1	/* should be defined iff it is in ppp_if.c */
 #include <sys/stream.h>
