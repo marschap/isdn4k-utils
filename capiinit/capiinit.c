@@ -1,7 +1,10 @@
 /*
- * $Id: capiinit.c,v 1.15 2004/01/16 15:27:12 calle Exp $
+ * $Id: capiinit.c,v 1.16 2004/01/19 09:15:57 calle Exp $
  *
  * $Log: capiinit.c,v $
+ * Revision 1.16  2004/01/19 09:15:57  calle
+ * Always use capifs, don't trust devfs.
+ *
  * Revision 1.15  2004/01/16 15:27:12  calle
  * remove several warnings.
  *
@@ -1188,8 +1191,10 @@ static int check_for_capifs(void)
 	load_filesystem("capifs");
 	if (filesystem_available("capifs")) 
 		return 0;
+#ifdef WITH_DEVFS
 	if (filesystem_available("devfs"))
 		return 0;
+#endif
 	load_filesystem("capifs");
 	if (filesystem_available("capifs")) 
 		return 0;
@@ -1210,10 +1215,12 @@ static int checkdir(char *dir)
 static int check_for_capifs_mounted(void)
 {
 	char *mp;
+#ifdef WITH_DEVFS
 	if (filesystem_available("devfs")) {
 		if ((mp = mounted("devfs")) != 0 && strcmp(mp, "/dev") == 0)
 			return 0;
 	}
+#endif
 	if (filesystem_available("capifs")) {
 		if ((mp = mounted("capifs")) != 0 && strcmp(mp, "/dev/capi") == 0)
 			return 0;
