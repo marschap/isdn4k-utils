@@ -9,7 +9,7 @@
 #  - executed commands must be owned by root
 #    and only writable by owner.
 #
-I4LU_DEFINES := -DPARANOIA_CHECK
+I4LU_DEFINES := $(CFLAGS) -DPARANOIA_CHECK -I.
 ifeq (../.config,$(wildcard ../.config))
 	include ../.config
 	ifneq ($(CONFIG_XMONISDN_UPCMD),"")
@@ -37,7 +37,7 @@ xmonisdn:
 	mkdir -p X11/bitmaps
 	cp netinactive netwaiting netactive \
 		netactiveout netstart netstop X11/bitmaps
-	$(MAKE) -f Makefile EXTRA_DEFINES="$(I4LU_DEFINES) -I."
+	CFLAGS= ; MAKEFLAGS= ; $(MAKE) -f Makefile EXTRA_DEFINES="$(I4LU_DEFINES)"
 	rm -rf X11
 
 config:

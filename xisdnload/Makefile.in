@@ -4,6 +4,7 @@
 # the original Makefile, it is called GNUmakefile.
 #
 
+EDEF=$(CFLAGS)
 ifeq (../.config,$(wildcard ../.config))
 	include ../.config
 	MAN1DIROPT = MANDIR=$(CONFIG_MANDIR)/man1
@@ -16,7 +17,7 @@ endif
 all: xisdnload
 
 xisdnload:
-	$(MAKE) -f Makefile
+	CFLAGS= ; MAKEFLAGS= ; $(MAKE) -f Makefile EXTRA_DEFINES="$(EDEF)"
 
 config:
 	@cp Makefile.in GNUmakefile

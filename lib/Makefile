@@ -28,10 +28,12 @@ endif
 # USER CONFIGURATION AREA
 ######################################################################
 
+CFLAGS      = -Wall -pipe -O6
+DEFS        =
 ifndef _CC
-export _CC = gcc -g #-Wall -pipe -O6
+export _CC  = gcc
 endif
-CC         = $(_CC)
+CC          = $(_CC)
 
 export AVON = avon
 
@@ -42,16 +44,19 @@ export AVON = avon
 ifdef LIBAREA
 LIBDIR   = areacode
 LIB_AREA = $(LIBDIR)/areacode.o
-CFLAGS  += -DLIBAREA
+DEFS    += -DLIBAREA
 else
 LIBDIR   = avon
 LIB_AREA = $(LIBDIR)/createDB.o
-CFLAGS  += -DAVON=\"$(AVON)\"
+DEFS    += -DAVON=\"$(AVON)\"
 endif
 
 SUBDIRS  = $(LIBDIR)
 
-CFLAGS  += -I$(PREFIXDIR)
+DEFS    += -I$(PREFIXDIR)
+
+%.o: %.c
+	$(CC) $(CFLAGS) $(DEFS) -c -o $@ $<
 
 all: libs libisdn.a
 
@@ -61,7 +66,7 @@ libs:
 depend dep: .depend
 
 .depend:
-		$(CPP) -M $(CFLAGS) *.c >.depend
+		$(CPP) -M $(CFLAGS) $(DEFS) *.c >.depend
 		set -e; for i in $(SUBDIRS); do $(MAKE) -C $$i depend; done
 
 clean:
