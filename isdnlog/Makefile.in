@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.16 1997/04/20 22:55:14 luethje Exp $
+## $Id: Makefile.in,v 1.17 1997/04/20 23:44:46 luethje Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,11 +19,14 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.17  1997/04/20 23:44:46  luethje
+## some primitve changes
+##
 ## Revision 1.16  1997/04/20 22:55:14  luethje
 ## isdnrep has new features (Documentation will follow ;-)):
 ##   -variable format string
 ##   -can create html output (option -w1 or ln -s isdnrep isdnrep.cgi)
-##    idea and design from Dirk Staneker (dirk.staneker@student.uni-tuebingen.de * bugfix of processor.c from akool
+##    idea and design by Dirk Staneker (dirk.staneker@student.uni-tuebingen.de
 ## bugfix of processor.c from akool
 ##
 ## Revision 1.15  1997/04/17 23:29:39  luethje

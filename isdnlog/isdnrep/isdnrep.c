@@ -1,4 +1,4 @@
-/* $Id: isdnrep.c,v 1.12 1997/04/20 22:52:25 luethje Exp $
+/* $Id: isdnrep.c,v 1.13 1997/04/20 23:44:49 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -20,11 +20,14 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnrep.c,v $
+ * Revision 1.13  1997/04/20 23:44:49  luethje
+ * some primitve changes
+ *
  * Revision 1.12  1997/04/20 22:52:25  luethje
  * isdnrep has new features:
  *   -variable format string
  *   -can create html output (option -w1 or ln -s isdnrep isdnrep.cgi)
- *    idea and design from Dirk Staneker (dirk.staneker@student.uni-tuebingen.de)
+ *    idea and design by Dirk Staneker (dirk.staneker@student.uni-tuebingen.de)
  * bugfix of processor.c from akool
  *
  * Revision 1.11  1997/04/17 23:29:45  luethje
@@ -1134,7 +1137,7 @@ static char *set_byte_string(char Direction, double Bytes)
 		sprintf(string[num],"%c=%s kB",Direction,double2str(Bytes/1024,7,2,0));
 	else
 	if (Bytes < 9999)
-		sprintf(string[num],"%c=%7ld  B",Direction,(long int) Bytes);
+		sprintf(string[num],"%c=%4ld,00  B",Direction,(long int) Bytes);
 
 	return string[num];
 }
@@ -1515,7 +1518,7 @@ static int print_header(int lday)
 	h_percent = 100.0;
 	h_table_color = H_TABLE_COLOR1;
 	print_line2(F_BODY_HEADER,"");
-	print_line2(F_BODY_HEADERL,"\n%s %s\n", get_time_value(0,NULL,GET_DATE),
+	print_line2(F_BODY_HEADERL,"%s %s", get_time_value(0,NULL,GET_DATE),
 	                                       get_time_value(0,NULL,GET_YEAR));
 
 	return 0;
