@@ -1,5 +1,5 @@
 .\" manual page [] for capiplugin 2.3
-.\" $Id: capiplugin.8,v 1.6 2001/07/27 15:34:05 calle Exp $
+.\" $Id: capiplugin.8,v 1.7 2002/02/28 17:18:52 calle Exp $
 .\" SH section heading
 .\" SS subsection heading
 .\" LP paragraph
@@ -320,12 +320,14 @@ See option \fIdialmax\fR.
 phone number to dial to access an outside line. For example, \fInumberprefix 0\fR.
 
 .TP
-.B protocol \fIhdlc\fR | \fIx75\fR | \fIv42bis\fR | \fImodem\fR
-ISDN protocol to use. With \fIhdlc\fR, the \fIsync\fR option
-must be added to the pppd.
+.B protocol \fIhdlc\fR | \fIx75\fR | \fIv42bis\fR | \fImodem\fR | \fIadslpppoe\fR
+ISDN protocol to use. With \fIhdlc\fR and \fIadskpppoe\fR,
+the \fIsync\fR option must be added to the pppd.
 With \fIx75\fR, \fIv42bis\fR and \fImodem\fR, the \fIsync\fR option
 MUST NOT be enabled. Default value is \fIhdlc\fR.
 Not all controllers support \fIv42bis\fR and \fImodem\fR.
+\fIadslpppoe\fR is currently only supported by the second
+controller of the FRITZ!Card DSL.
 Use capiinfo(8) to view which features your controller supports.
 
 .TP

@@ -26,7 +26,7 @@
 #include <linux/if.h>
 #include <linux/in.h>
 
-static char *revision = "$Revision: 1.20 $";
+static char *revision = "$Revision: 1.21 $";
 
 /* -------------------------------------------------------------------- */
 
@@ -111,6 +111,7 @@ static STRINGLIST *inmsns;
 #define PROTO_X75	1
 #define PROTO_V42BIS	2
 #define PROTO_MODEM	3
+#define PROTO_ADSLPPPOE	4
 static char *opt_proto = "hdlc";
 static int proto = PROTO_HDLC;
 /*
@@ -173,7 +174,7 @@ static option_t my_options[] = {
         },
 	{
 		"protocol", o_string, &opt_proto,
-		"protocol x75, hdlc or modem"
+		"protocol x75, hdlc, modem, adslpppoe"
         },
 	{
 		"inmsn", o_string, &opt_inmsn,
@@ -353,7 +354,10 @@ static void plugin_check_options(void)
 	} else if (strcasecmp(opt_proto, "v42bis") == 0) {
 	   proto = PROTO_V42BIS;
 	} else if (strcasecmp(opt_proto, "modem") == 0) {
-	   proto = PROTO_V42BIS;
+	   proto = PROTO_MODEM;
+	} else if (strcasecmp(opt_proto, "adslpppoe") == 0) {
+	   proto = PROTO_ADSLPPPOE;
+	   if (!opt_channels) opt_channels = "1";
 	} else {
 	   option_error("capiplugin: unknown protocol \"%s\"", opt_proto);
 	   die(1);
@@ -490,6 +494,34 @@ static void plugin_check_options(void)
 	   option_error("capiplugin: option voicecallwakeup ignored");
 	   opt_voicecallwakeup = 0;
 	}
+
+	if (proto == PROTO_ADSLPPPOE) {
+	   if (opt_cbflag) {
+	      option_error("capiplugin: option cbflag not alloed with protocol adslpppoe");
+	      die(1);
+	   }
+	   if (opt_coso) {
+	      option_error("capiplugin: option coso not alloed with protocol adslpppoe");
+	      die(1);
+	   }
+           if (opt_number) {
+	      option_error("capiplugin: option number not alloed with protocol adslpppoe");
+	      die(1);
+	   }
+           if (opt_callbacknumber) {
+	      option_error("capiplugin: option cbnumber not alloed with protocol adslpppoe");
+	      die(1);
+	   }
+           if (opt_inmsn) {
+	      option_error("capiplugin: option inmsn ignored");
+	      opt_inmsn = 0;
+	   }
+           if (opt_cli) {
+	      option_error("capiplugin: option cli ignored");
+	      opt_cli = 0;
+	   }
+	}
+
 	return;
 
 illcontr:
@@ -1342,6 +1374,16 @@ static capi_connection *setupconnection(char *num, int awaitingreject)
 				opt_channels ? 0 : number, 
 				opt_channels ? 0 : opt_msn,
 				8, 1, 0,
+				0, 0, 0,
+				opt_channels ? AdditionalInfo : 0,
+				0);
+	} else if (proto == PROTO_ADSLPPPOE) {
+		cp = capiconn_connect(ctx,
+				controller, /* contr */
+				2, /* cipvalue */
+				0,
+				0,
+				28, 30, 30,
 				0, 0, 0,
 				opt_channels ? AdditionalInfo : 0,
 				0);
