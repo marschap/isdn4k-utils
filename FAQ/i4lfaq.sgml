@@ -4,7 +4,7 @@
 
 <title>FAQ for isdn4linux
 <author>Matthias Hessler (<tt><htmlurl url="mailto:hessler@isdn4linux.de" name="hessler@isdn4linux.de"></tt>)
-<date>v2.0.59, 7. May 2001
+<date>v2.0.60, 7. May 2001
 <abstract>
 If you are reading this FAQ online, you may consider downloading the whole
 thing, and reading it offline (much cheaper). To download the latest
@@ -1221,6 +1221,10 @@ The Fritz! card comes in different variations. Since the PCI card and the
 ISA/PNP card have the same type (27), hisax will assume an ISA/PNP card
 if you pass an io address, and a PCI card if you do NOT pass an io address.
 Make sure to give the parameters properly.
+
+Unfortunately, the newest Fritz! PCI card seems to have a different hardware
+chipset, which is not yet supported by isdn4linux. This card can be
+identified by lspci returning 0e00 as the card id.
 
 If the interrupt for the card is shared with other devices and your card does
 not work, then there could be an issue with the motherboard. See question
