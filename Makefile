@@ -1,11 +1,11 @@
-# $Id: Makefile,v 1.48 2000/09/08 09:52:59 paul Exp $
+# $Id: Makefile,v 1.49 2002/02/25 01:02:43 keil Exp $
 #
 # Toplevel Makefile for isdn4k-utils
 #
 
 .EXPORT_ALL_VARIABLES:
 
-export I4LVERSION = 3.1pre1
+export I4LVERSION = 3.1pre4
 
 all:	do-it-all
 
