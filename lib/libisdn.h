@@ -1,5 +1,5 @@
 
-/* $Id: libisdn.h,v 1.13 2000/09/05 08:05:03 paul Exp $
+/* $Id: libisdn.h,v 1.14 2002/01/31 20:03:59 paul Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: libisdn.h,v $
+ * Revision 1.14  2002/01/31 20:03:59  paul
+ * Add "#define CCODE_OTHER 9999" for defining behaviour in
+ * non-specified countries.
+ *
  * Revision 1.13  2000/09/05 08:05:03  paul
  * Now isdnlog doesn't use any more ISDN_XX defines to determine the way it works.
  * It now uses the value of "COUNTRYCODE = 999" to determine the country, and sets
@@ -205,6 +209,7 @@ extern char *basename __P((__const char *__name));
 #define	CCODE_AT	 43
 #define	CCODE_DE	 49
 #define	CCODE_LU	352
+#define	CCODE_OTHER    9999
 
 /****************************************************************************/
 
