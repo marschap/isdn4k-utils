@@ -1,4 +1,4 @@
-/* $Id: processor.c,v 1.117 2000/12/07 12:48:00 paul Exp $
+/* $Id: processor.c,v 1.118 2000/12/13 14:43:16 paul Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.118  2000/12/13 14:43:16  paul
+ * Translated progress messages;
+ * german language version still available with #define LANG_DE
+ *
  * Revision 1.117  2000/12/07 12:48:00  paul
  * Add support for both 2.2 and 2.4 kernels so that recompile is not necessary
  * (seems to work in debian version already).
@@ -2971,11 +2975,19 @@ escape:             for (c = 0; c <= sxp; c++)
                       sn[sxp] = c;
 
                       switch (c) {
+#ifdef LANG_DE
                         case 0x81 : px += sprintf(px, "Der Ruf verlaeuft nicht vom Anfang bis zum Ende im ISDN"); break;
                         case 0x82 : px += sprintf(px, "Zieladresse ist kein ISDN-Anschluss");                     break;
                         case 0x83 : px += sprintf(px, "(Ab)Sendeadresse ist kein ISDN-Anschluss");                break;
                         case 0x84 : px += sprintf(px, "Ruf ist zum ISDN zurueckgekehrt");                         break;
                         case 0x88 : px += sprintf(px, "Inband Information available");                            break;
+#else
+                        case 0x81 : px += sprintf(px, "call is not end-to-end ISDN"); break;
+                        case 0x82 : px += sprintf(px, "destination address is non ISDN");                     break;
+                        case 0x83 : px += sprintf(px, "origination address is not an ISDN connection"); break;
+                        case 0x84 : px += sprintf(px, "call has returned to the ISDN");                         break;
+                        case 0x88 : px += sprintf(px, "inband information available");                            break;
+#endif
                       } /* switch */
                     } /* if */
 
