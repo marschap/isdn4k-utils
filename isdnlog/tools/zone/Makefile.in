@@ -72,10 +72,10 @@ config.status: configure
 $(MODULES): $(HEADERS)
 
 $(PROGRAM):	$(MODULES) $(CDBEXTRALIBS)
-	$(CC) $(CFLAGS) $(MODULES) $(LDFLAGS) -o $@ $(CDBEXTRALIBS)
+	$(CC) $(CFLAGS) $(MODULES) $(CDBEXTRALIBS) $(LDFLAGS) -o $@
 
 zone: ../zone.c $(HEADERS) Makefile $(CDBEXTRALIBS)
-	$(CC) -DSTANDALONE -DZONETEST $(CFLAGS) ../zone.c $(LDFLAGS) -o $@ $(CDBEXTRALIBS)
+	$(CC) -DSTANDALONE -DZONETEST $(CFLAGS) ../zone.c $(CDBEXTRALIBS) $(LDFLAGS) -o $@
 
 install-man: $(PROGRAM).man
 	mkdir -p $(DESTDIR)$(MAN8DIR)
