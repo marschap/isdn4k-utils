@@ -1,8 +1,10 @@
 /*
-** $Id: perms.c,v 1.4 1997/02/27 15:43:51 michael Exp $
+** $Id: perms.c,v 1.5 1997/03/18 12:36:48 michael Exp $
 **
 ** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
 */
+
+#include "config.h"
 
 #include <sys/stat.h>
 #include <sys/types.h>
@@ -15,26 +17,26 @@
 #include "perms.h"
 #include "libvbox.h"
 
-/*************************************************************************
- ** permissions_set():	Sets file permissions.									**
- *************************************************************************/
+/*************************************************************************/
+/** permissions_set(): Sets file permissions.									**/
+/*************************************************************************/
 
 int permissions_set(char *name, uid_t uid, gid_t gid, mode_t mode, mode_t mask)
 {
 	mode_t realmode = (mode & ~mask);
 
-	log(L_DEBUG, "Setting \"%s\" to %d.%d (%04o)...\n", name, uid, gid, realmode);
+	log(L_DEBUG, gettext("Setting \"%s\" to %d.%d (%04o)...\n"), name, uid, gid, realmode);
 
 	if (chown(name, uid, gid) == -1)
 	{
-		log(L_ERROR, "Can't set owner of \"%s\" (%s).\n", name, strerror(errno));
+		log(L_ERROR, gettext("Can't set owner of \"%s\" (%s).\n"), name, strerror(errno));
 		
 		returnerror();
 	}
 
 	if (chmod(name, realmode) == -1)
 	{
-		log(L_ERROR, "Can't set mode of \"%s\" (%s).\n", name, strerror(errno));
+		log(L_ERROR, gettext("Can't set mode of \"%s\" (%s).\n"), name, strerror(errno));
 		
 		returnerror();
 	}
@@ -42,14 +44,14 @@ int permissions_set(char *name, uid_t uid, gid_t gid, mode_t mode, mode_t mask)
 	returnok();
 }
 
-/*************************************************************************
- ** permissions_drop():	Drops user privilegs and sets some environments	**
- **							for the external commands.								**
- *************************************************************************/
+/*************************************************************************/
+/** permissions_drop():	Drops user privilegs and sets some environments	**/
+/**							for the external commands.								**/
+/*************************************************************************/
 
 int permissions_drop(uid_t uid, gid_t gid, char *name, char *home)
 {
-	log(L_INFO, "Drop permissions to userid %d; groupid %d...\n", uid, gid);
+	log(L_INFO, gettext("Drop permissions to userid %d; groupid %d...\n"), uid, gid);
 
 	if (setregid(gid, gid) == 0)
 	{
@@ -62,11 +64,11 @@ int permissions_drop(uid_t uid, gid_t gid, char *name, char *home)
 
 				returnok();
 			}
-			else log(L_FATAL, "Can't set working directory to \"%s\" (%s).\n", home, strerror(errno));
+			else log(L_FATAL, gettext("Can't set working directory to \"%s\" (%s).\n"), home, strerror(errno));
 		}
-		else log(L_FATAL, "Can't setreuid() to %d, %d (%s).\n", uid, uid, strerror(errno));
+		else log(L_FATAL, gettext("Can't setreuid() to %d, %d (%s).\n"), uid, uid, strerror(errno));
 	}
-	else log(L_FATAL, "Can't setregid() to %d, %d (%s).\n", gid, gid, strerror(errno));
+	else log(L_FATAL, gettext("Can't setregid() to %d, %d (%s).\n"), gid, gid, strerror(errno));
 
 	returnerror();
 }

@@ -1,0 +1,45 @@
+#! /bin/sh
+##
+## Script to create the misc message catalogs. This is only for development!
+
+    # Get all sources (*.c) to a variable #
+
+GETTEXT_SOURCE_FILES=""
+
+for i in ${TOPDIR}/src/*.c
+do
+    GETTEXT_SOURCE_FILES="${GETTEXT_SOURCE_FILES} ${i}"
+done
+
+    # Process each existing catalog #
+
+for i in ${CATALOGS}
+do
+    OLD_PO_FILE="${TOPDIR}/messages/tmp-o-${i}"
+    NEW_PO_FILE="${TOPDIR}/messages/tmp-n-${i}"
+
+    echo "Creating '${TOPDIR}/messages/${i}.po'..."
+
+    if (test -f ${TOPDIR}/messages/${i}.po)
+    then
+	cp ${TOPDIR}/messages/${i}.po ${TOPDIR}/messages/backup-${i}.po
+	mv ${TOPDIR}/messages/${i}.po ${OLD_PO_FILE}.po
+    fi
+
+    xgettext --default-domain=${NEW_PO_FILE} \
+	     --sort-output \
+	     ${GETTEXT_SOURCE_FILES}
+
+    if (test -f ${OLD_PO_FILE}.po)
+    then
+	tupdate ${NEW_PO_FILE}.po ${OLD_PO_FILE}.po >${TOPDIR}/messages/${i}.po 2>/dev/null
+
+	rm ${OLD_PO_FILE}.po ${NEW_PO_FILE}.po
+    else
+	mv ${NEW_PO_FILE}.po ${TOPDIR}/messages/${i}.po
+    fi
+
+    echo "Creating '${TOPDIR}/messages/${i}.mo'..."
+
+    msgfmt --output-file=${TOPDIR}/messages/${i}.mo ${TOPDIR}/messages/${i}.po
+done

@@ -1,5 +1,5 @@
 /*
-** $Id: init.h,v 1.3 1997/02/26 13:10:37 michael Exp $
+** $Id: init.h,v 1.4 1997/03/18 12:36:45 michael Exp $
 **
 ** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
 */
@@ -46,7 +46,7 @@ typedef struct
 	char				vboxrcname[SETUP_MAX_VBOXRC + 1];
 	char				vboxctrl[SETUP_MAX_VBOXCTRL + 1];
 	char				spool[SETUP_MAX_SPOOLNAME + 1];
-	char				logname[SETUP_MAX_LOGNAME + 1];
+	char				*logname;
 	int				freespace;
 } setup_t;
 

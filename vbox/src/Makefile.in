@@ -1,5 +1,5 @@
 #
-# $Id: Makefile.in,v 1.5 1997/03/08 19:56:49 michael Exp $
+# $Id: Makefile.in,v 1.6 1997/03/18 12:36:41 michael Exp $
 
 #----------------------------------------------------------------------------#
 # The information below is modified by the configure script when Makefile is #
@@ -7,7 +7,12 @@
 # stuff by hand.                                                             #
 #----------------------------------------------------------------------------#
 
-GOT_LIB_NCURSES	= @VBOX_LIB_NCURSES@
+HAVE_NCURSES	= @HAVE_NCURSES_LIBS@
+LIBS_NCURSES	= @LINK_NCURSES_LIBS@
+HAVE_TCL	= @HAVE_TCL_LIBS@
+LIBS_TCL	= @LINK_TCL_LIBS@
+HAVE_INTL	= @HAVE_INTL_LIBS@
+LIBS_INTL	= @LINK_INTL_LIBS@
 
 #----------------------------------------------------------------------------#
 # Headers                                                                    #
@@ -34,7 +39,7 @@ lists.o:	$(HEADERS) lists.c
 		$(CC) $(CFLAGS) -c lists.c
 
 script.o:	$(HEADERS) script.c
-		$(CC) $(CFLAGS) -c script.c
+		$(CC) $(CFLAGS) -DBINDIR='"$(VBINDIR)"' -c script.c
 
 voice.o:	$(HEADERS) voice.c
 		$(CC) $(CFLAGS) -c voice.c
@@ -55,7 +60,7 @@ rcvbox.o:	$(HEADERS) rcvbox.c
 		$(CC) $(CFLAGS) -c rcvbox.c
 
 vboxgetty.o:	$(HEADERS) vboxgetty.c
-		$(CC) $(CFLAGS) -c vboxgetty.c
+		$(CC) $(CFLAGS) -DGETTYRC='"$(GETTYRC)"' -c vboxgetty.c
 
 vboxconvert.o:	$(HEADERS) vboxconvert.c
 		$(CC) $(CFLAGS) -c vboxconvert.c
@@ -69,7 +74,6 @@ vboxctrl.o:	$(HEADERS) vboxctrl.c
 vboxbeep.o:	$(HEADERS) vboxbeep.c
 		$(CC) $(CFLAGS) -c vboxbeep.c
 
-
 #----------------------------------------------------------------------------#
 
 all:		  vboxlib vboxgetty vboxconvert vboxctrl vboxbeep vbox
@@ -81,20 +85,18 @@ all:		  vboxlib vboxgetty vboxconvert vboxctrl vboxbeep vbox
 VBOXLIBOBJS	= libvbox.o
 
 vboxlib:	  $(VBOXLIBOBJS)
-		  @$(AR) rc libvbox.a $(VBOXLIBOBJS)
-		 -@$(RANLIB) libvbox.a
+		  $(AR) cru libvbox.a $(VBOXLIBOBJS)
+		 -$(RANLIB) libvbox.a
 
 #----------------------------------------------------------------------------#
 # Compiling vboxgetty                                                        #
 #----------------------------------------------------------------------------#
 
-VBOXGETTYLIBS   = @VBOX_GETTY_LIBS@
-
 VBOXGETTYOBJS	= vboxgetty.o init.o log.o perms.o lock.o streamio.o modem.o \
 		  script.o voice.o lists.o rcvbox.o rcgetty.o \
 
 vboxgetty:	  $(VBOXGETTYOBJS)
-		  $(CC) $(VBOXGETTYOBJS) $(VBOXGETTYLIBS) -L. -lvbox -o vboxgetty
+		  $(CC) $(CFLAGS) $(VBOXGETTYOBJS) -o vboxgetty -L. $(LIBS_TCL) $(LIBS_INTL) -lvbox
 
 #----------------------------------------------------------------------------#
 # Compiling vbox                                                             #
@@ -118,10 +120,10 @@ vbox:
 # Compiling vboxconvert                                                      #
 #----------------------------------------------------------------------------#
 
-CONVOBJS	= vboxconvert.o
+VBOXCONVOBJS	= vboxconvert.o
 
-vboxconvert:	  $(CONVOBJS)
-		  $(CC) $(CONVOBJS) -L. -lvbox -o vboxconvert
+vboxconvert:	  $(VBOXCONVOBJS)
+		  $(CC) $(CFLAGS) $(VBOXCONVOBJS) -o vboxconvert -L. $(LIBS_INTL) -lvbox
 
 #----------------------------------------------------------------------------#
 # Compiling vboxctrl                                                         #
@@ -130,7 +132,7 @@ vboxconvert:	  $(CONVOBJS)
 VBOXCTRLOBJS	= vboxctrl.o
 
 vboxctrl:	  $(VBOXCTRLOBJS)
-		  $(CC) $(VBOXCTRLOBJS) -L. -lvbox -o vboxctrl
+		  $(CC) $(CFLAGS) $(VBOXCTRLOBJS) -o vboxctrl -L. $(LIBS_INTL) -lvbox
 
 #----------------------------------------------------------------------------#
 # Compiling vboxleds                                                         #
@@ -139,7 +141,7 @@ vboxctrl:	  $(VBOXCTRLOBJS)
 VBOXBEEPOBJS	= vboxbeep.o
 
 vboxbeep:	  $(VBOXBEEPOBJS)
-		  $(CC) $(VBOXBEEPOBJS) -L. -lvbox -o vboxbeep
+		  $(CC) $(CFLAGS) $(VBOXBEEPOBJS) -o vboxbeep -L. $(LIBS_INTL) -lvbox
 
 #----------------------------------------------------------------------------#
 # Misc                                                                       #
@@ -147,3 +149,41 @@ vboxbeep:	  $(VBOXBEEPOBJS)
 
 clean:
 		  @rm -f *~
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

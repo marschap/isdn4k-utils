@@ -1,8 +1,10 @@
 /*
-** $Id: rcgetty.c,v 1.4 1997/03/08 19:56:54 michael Exp $
+** $Id: rcgetty.c,v 1.5 1997/03/18 12:36:49 michael Exp $
 **
 ** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
 */
+
+#include "config.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -66,9 +68,9 @@ static struct rctable rct[] =
 	{ NULL, NULL, 0, 0, NULL}
 };
 
-/*************************************************************************
- ** getty_get_settings():	Reads and parse vboxgetty's settings.			**
- *************************************************************************/
+/*************************************************************************/
+/** getty_get_settings(): Reads and parse vboxgetty's settings.			**/
+/*************************************************************************/
 
 int getty_get_settings(char *rcname)
 {
@@ -80,7 +82,7 @@ int getty_get_settings(char *rcname)
 	int			 result;
 	int			 i;
 
-	log(L_DEBUG, "Parsing settings in '%s' for port '%s'...\n", rcname, setup.modem.device);
+	log(L_DEBUG, gettext("Parsing settings in \"%s\" for port \"%s\"...\n"), rcname, setup.modem.device);
 
 	xstrncpy(setup.modem.interninita	, "AT+FCLASS=8"				, MODEM_MAX_INITSTRING);
 	xstrncpy(setup.modem.interninitb	, "ATS18=1S13.2=1S13.4=1"	, MODEM_MAX_INITSTRING);
@@ -102,8 +104,10 @@ int getty_get_settings(char *rcname)
 	setup.users.gid		= 0;
 	setup.users.umask		= S_IRWXG|S_IRWXO;
 
-		/* Parse the configuration and put all correct values into the	*/
-		/* global structure.															*/
+		/*
+		 * Parse the configuration and put all correct values into the
+		 * global structure.
+		 */
 
 	if ((rc = streamio_open(rcname)))
 	{
@@ -115,7 +119,7 @@ int getty_get_settings(char *rcname)
 			{
 				xstrncpy(parsedevice, arg, MODEM_MAX_TTYNAME);
 
-				log(L_DEBUG, "Found command '%s = %s'...\n", cmd, arg);
+				log(L_DEBUG, gettext("Found command '%s = %s'...\n"), cmd, arg);
 
 				continue;
 			}
@@ -130,12 +134,12 @@ int getty_get_settings(char *rcname)
 					{
 						if (!(msg = rct[i].parsefunction(cmd, arg, rct[i].ptr, rct[i].min, rct[i].max)))
 						{
-							log(L_DEBUG, "Found command '%s = %s' (%s)...\n", cmd, arg, parsedevice);
+							log(L_DEBUG, gettext("Found command '%s = %s' (%s)...\n"), cmd, arg, parsedevice);
 						}
 						else
 						{
-							log(L_ERROR, "Bad value '%s' for command '%s' ignored (%s)...\n", arg, cmd, parsedevice);
-							log(L_ERROR, "Parser returns \"%s\" (min %d; max %d).\n", msg, rct[i].min, rct[i].max);
+							log(L_ERROR, gettext("Bad value \"%s\" for command \"%s\" ignored (%s)...\n"), arg, cmd, parsedevice);
+							log(L_ERROR, gettext("Parser returns \"%s\" (min %d; max %d).\n"), msg, rct[i].min, rct[i].max);
 						}
 
 						break;
@@ -146,7 +150,7 @@ int getty_get_settings(char *rcname)
 
 				if (!rct[i].name)
 				{
-					log(L_WARN, "Unknown command '%s' ignored (%s)...\n", cmd, parsedevice);
+					log(L_WARN, gettext("Unknown command \"%s\" ignored (%s)...\n"), cmd, parsedevice);
 				}
 			}
 		}
@@ -155,15 +159,15 @@ int getty_get_settings(char *rcname)
 
 		if (!result)
 		{
-			if (!*cmd) log(L_ERROR, "Error in '%s': Missing command.\n", rcname);
-			if (!*arg) log(L_ERROR, "Error in '%s': Missing argument (%s).\n", rcname, cmd);
+			if (!*cmd) log(L_ERROR, gettext("Error in \"%s\": Missing command.\n"), rcname);
+			if (!*arg) log(L_ERROR, gettext("Error in \"%s\": Missing argument (%s).\n"), rcname, cmd);
 
 			returnerror();
 		}
 	}
 	else
 	{
-		log(L_ERROR, "Can't open '%s'.\n", rcname);
+		log(L_ERROR, gettext("Can't open \"%s\".\n"), rcname);
 		
 		returnerror();
 	}
@@ -171,9 +175,9 @@ int getty_get_settings(char *rcname)
 	returnok();
 }
 
-/*************************************************************************
- ** parse_line():	Splits a line into command and argument.					**
- *************************************************************************/
+/*************************************************************************/
+/** parse_line():	Splits a line into command and argument.					**/
+/*************************************************************************/
 
 static int parse_line(streamio_t *rc, char *cmd, int maxcmd, char *arg, int maxarg)
 {
@@ -212,9 +216,9 @@ static int parse_line(streamio_t *rc, char *cmd, int maxcmd, char *arg, int maxa
 	return(-1);
 }
 
-/*************************************************************************
- ** parse_cmp():	Converts string into compression mode.						**
- *************************************************************************/
+/*************************************************************************/
+/** parse_cmp(): Converts string into compression mode.						**/
+/*************************************************************************/
 
 static char *parse_cmp(char *cmd, char *arg, void *ptr, int min, int max)
 {
@@ -226,18 +230,18 @@ static char *parse_cmp(char *cmd, char *arg, void *ptr, int min, int max)
 	if (strcasecmp(arg, "alaw"   ) == 0) cmp = 5;
 	if (strcasecmp(arg, "ulaw"   ) == 0) cmp = 6;
 
-	if ((cmp < min) || (cmp > max)) return("unknown compression");
+	if ((cmp < min) || (cmp > max)) return(gettext("unknown compression"));
 
-	if (cmp == 5) return("alaw not longer supported");
+	if (cmp == 5) return(gettext("alaw not longer supported"));
 
 	(*(int *)ptr) = cmp;
 
 	return(NULL);
 }
 
-/*************************************************************************
- ** parse_int():	Converts string into integer number.						**
- *************************************************************************/
+/*************************************************************************/
+/** parse_int(): Converts string into integer number.						   **/
+/*************************************************************************/
 
 static char *parse_int(char *cmd, char *arg, void *ptr, int min, int max)
 {
@@ -253,15 +257,15 @@ static char *parse_int(char *cmd, char *arg, void *ptr, int min, int max)
 		return(NULL);
 	}
 
-	if (nr < min) return("value too small");
-	if (nr > max) return("value too big");
+	if (nr < min) return(gettext("value too small"));
+	if (nr > max) return(gettext("value too big"));
 
-	return("can't convert value to integer");
+	return(gettext("can't convert value to integer"));
 }
 
-/*************************************************************************
- ** parse_gid():	Converts string into groupid.									**
- *************************************************************************/
+/*************************************************************************/
+/** parse_gid(): Converts string into groupid.									**/
+/*************************************************************************/
 
 static char *parse_gid(char *cmd, char *arg, void *ptr, int min, int max)
 {
@@ -274,12 +278,12 @@ static char *parse_gid(char *cmd, char *arg, void *ptr, int min, int max)
 		return(NULL);
 	}
 
-	return("unknown groupname");
+	return(gettext("unknown groupname"));
 }
 
-/*************************************************************************
- ** parse_uid():	Converts string into userid.									**
- *************************************************************************/
+/*************************************************************************/
+/** parse_uid(): Converts string into userid.									**/
+/*************************************************************************/
 
 static char *parse_uid(char *cmd, char *arg, void *ptr, int min, int max)
 {
@@ -292,12 +296,12 @@ static char *parse_uid(char *cmd, char *arg, void *ptr, int min, int max)
 		return(NULL);
 	}
 	
-	return("unknown username");
+	return(gettext("unknown username"));
 }
 
-/*************************************************************************
- ** parse_str():	Converts string to string (that's magic :-).				**
- *************************************************************************/
+/*************************************************************************/
+/** parse_str(): Converts string to string (that's magic :-).				**/
+/*************************************************************************/
 
 static char *parse_str(char *cmd, char *arg, void *ptr, int min, int max)
 {
@@ -306,9 +310,9 @@ static char *parse_str(char *cmd, char *arg, void *ptr, int min, int max)
 	return(NULL);
 }
 
-/*************************************************************************
- ** parse_msk():	Converts string into umask (octal).							**
- *************************************************************************/
+/*************************************************************************/
+/** parse_msk(): Converts string into umask (octal).							**/
+/*************************************************************************/
 
 static char *parse_msk(char *cmd, char *arg, void *ptr, int min, int max)
 {
@@ -324,5 +328,5 @@ static char *parse_msk(char *cmd, char *arg, void *ptr, int min, int max)
 		return(NULL);
 	}
 
-	return("unknown umask");
+	return(gettext("unknown umask"));
 }

@@ -1,182 +1,154 @@
 #
-# $Id: Makefile.in,v 1.8 1997/03/08 19:56:42 michael Exp $
+# $Id: Makefile.in,v 1.9 1997/03/18 12:36:26 michael Exp $
 
 #----------------------------------------------------------------------------#
-# Things you can change to personalize the Makefile for your own site.       #
-# Please do not change any path values here (the values are stored in some   #
-# other files too) - instead use "configure" to change!                      #
+# Things you can change to personalize the Makefile for your own site. Some  #
+# values (eg the directory pathes) are used in some other files too, so do   #
+# not change the values by hand - use the options to the configure-script    #
+# insteed. Options you can change without configure are marked with [*].     #
 #                                                                            #
 # Changes to Makefile will get lost if you re-run the configuration script!  #
 #----------------------------------------------------------------------------#
 
 #----------------------------------------------------------------------------#
-# Default directory tree in which to install the vbox specific files. The    #
-# value specified here *MUST* be overridden at configure-time with the       #
-# "--prefix" and "--exec-prefix" options to the "configure" script           #
-# [/usr/local/vbox]:                                                         #
-#----------------------------------------------------------------------------#
-
-prefix		= @prefix@
-exec_prefix	= @exec_prefix@
-
-#----------------------------------------------------------------------------#
-# Directory in which normal binaries should be installed. The value          #
-# specified here *MUST* be overridden at configure-time with the "--bindir"  #
-# option to the "configure" script [/usr/local/vbox/bin]:                    #
-#----------------------------------------------------------------------------#
-
-bindir		= @bindir@
-
-#----------------------------------------------------------------------------#
-# Directory in which system binaries (only started by system or root) should #
-# be installed. The value specified here *MUST* be overridden at configure-  #
-# time with the "--sbindir" option to the "configure" script                 #
-# [/usr/local/vbox/sbin]:                                                    #
-#----------------------------------------------------------------------------#
-
-sbindir		= @sbindir@
-
-#----------------------------------------------------------------------------#
-# Directory in which configurations should be installed. The value specified #
-# here *MUST* be overridden at configure-time with the "--sysconfdir" option #
-# to the "configure" script [/usr/local/vbox/etc]:                           #
-#----------------------------------------------------------------------------#
-
-sysconfdir	= @sysconfdir@
-
-#----------------------------------------------------------------------------#
-# Directory in which the user messages are stored. The value specified here  #
-# *MUST* be overridden at configure-time with the "--with-spooldir" option   #
-# to the "configure" script [/var/spool/vbox]:                               #
-#----------------------------------------------------------------------------#
-
-SPOOLDIR	= @VBOX_SPOOLDIR@
-
-#----------------------------------------------------------------------------#
-# Name of the logfile each vboxgetty writes to. The placeholder '%s' is      #
-# replaced at runtime by the name of the used tty device. The directory      #
-# *MUST* be overridden at configure-time with the "--with-logdir" option to  #
-# the "configure" script [/var/log/vbox]:                                    #
-#----------------------------------------------------------------------------#
-
-LOGFDIR		= @VBOX_LOGDIR@
-LOGFILE		= @VBOX_LOGDIR@/vboxgetty-%s.log
-
-#----------------------------------------------------------------------------#
-# Name of the file each vboxgetty save his PID. The placeholder '%s' is      #
-# replaced at runtime by the name of the used tty device. The directory      #
-# *MUST* be overridden at configure-time with the "--with-piddir" option to  #
-# the "configure" script [/var/run]:                                         #
-#----------------------------------------------------------------------------#
-
-PIDFDIR		= @VBOX_PIDDIR@
-PIDFILE		= @VBOX_PIDDIR@/vboxgetty-%s.pid
-
-#----------------------------------------------------------------------------#
-# Name of the file each vboxgetty lock the used tty. The placeholder '%s' is #
-# replaced at runtime by the name of the used tty device. The directory      #
-# *MUST* be overridden at configure-time with the "--with-lockdir" option to #
-# the "configure" script [/var/run]:                                         #
-#----------------------------------------------------------------------------#
-
-LOCKFILE	= @VBOX_LOCKDIR@/LCK..%s
-
-#----------------------------------------------------------------------------#
-# Directory in which vbox looks for the global isdn configuration. The value #
-# specified here *MUST* be overridden at configure-time with the             #
-# "--with-i4lconfdir" option to the "configure" script [$I4LCONFDIR]:        #
-#----------------------------------------------------------------------------#
-
-ISDN_GLOB_CONF	= @ISDN_GLOBAL_CONFIG@
-
-#----------------------------------------------------------------------------#
-# Program to install binaries to the sbin directory:                         #
+# [*] Program to install binaries to the sbin directory (eg vboxgetty):      #
 #----------------------------------------------------------------------------#
 
 INSTALL_SBIN	= @INSTALL@ -m 750 -o root -g root -s
 
 #----------------------------------------------------------------------------#
-# Program to install binaries to the bin directory:                          #
+# [*] Program to install binaries to the bin directory (eg vboxconvert):     #
 #----------------------------------------------------------------------------#
 
 INSTALL_BIN	= @INSTALL@ -m 755 -o root -g root -s
 
 #----------------------------------------------------------------------------#
-# Program to install bash scripts to the bin directory:                      #
+# [*] Program to install bash scripts to the bin directory (eg vboxplay):    #
 #----------------------------------------------------------------------------#
 
 INSTALL_SHBIN	= @INSTALL@ -m 755 -o root -g root
 
 #----------------------------------------------------------------------------#
-# Program to install binaries to the bin directory and set the suid bit:     #
+# [*] Program to install binaries to the bin directory and set the suid bit  #
+#     (eg vboxbeep):                                                         #
 #----------------------------------------------------------------------------#
 
 INSTALL_UBIN	= @INSTALL@ -m 4755 -o root -g root -s
 
 #----------------------------------------------------------------------------#
-# Program to install configurations to sysconf directory:                    #
+# [*] Program to install configurations to sysconf directory                 #
+#     (eg vboxgetty.conf):                                                   #
 #----------------------------------------------------------------------------#
 
 INSTALL_SYSCONF	= @INSTALL@ -m 644 -o root -g root
 
 #----------------------------------------------------------------------------#
-# Program to create missing directories:                                     #
+# [*] Program to install locales to the locale directory:                    #
+#----------------------------------------------------------------------------#
+
+INSTALL_LOCALE	= @INSTALL@ -m 644 -o root -g root
+
+#----------------------------------------------------------------------------#
+# [*] Program to create missing directories:                                 #
 #----------------------------------------------------------------------------#
 
 INSTALL_DIRS	= @INSTALL@ -d
 
 #----------------------------------------------------------------------------#
-# Path and names for some needed programs:                                   #
+# [*] Message catalogs to create. The catalogs must be seperated with space  #
+#     (eg: de en fr):                                                        #
+#                                                                            #
+#     Available catalogs are: de                                             #
 #----------------------------------------------------------------------------#
 
-MAKE		= @VBOX_MAKE@
-ECHO		= @VBOX_ECHO@
-MV		= @VBOX_MV@
-RM		= @VBOX_RM@
-SED		= @VBOX_SED@
-LN		= @LN_S@
-MAILCMD		= @VBOX_MAIL@
-AR		= @VBOX_AR@
-RANLIB		= @VBOX_RANLIB@
+CATALOGS	= @CATALOGS_TO_INSTALL@
 
 #----------------------------------------------------------------------------#
-# The information below is modified by the configure script when Makefile is #
-# generated from Makefile.in. You shouldn't normally modify any of this      #
-# stuff by hand.                                                             #
+# [*] Compiler to use and flags for the compiler & linker:                   #
 #----------------------------------------------------------------------------#
 
 CC		= @CC@
 CFLAGS		= @CFLAGS@
-TOPDIR		= @srcdir@
-SRCDIR		= $(TOPDIR)/src
-RUNTIMEFILE	= $(SRCDIR)/runtime.h
-VERSION		= @VBOX_VERSION@
-VERDATE		= @VBOX_VERDATE@
-GOT_LIB_NCURSES = @VBOX_LIB_NCURSES@
+LDFLAGS		= @LDFLAGS@
+
+#----------------------------------------------------------------------------#
+# [*] Some needed programs:                                                  #
+#----------------------------------------------------------------------------#
+
+LN		= @LN_S@
+ECHO		= @VBOX_ECHO@
+MV		= @VBOX_MV@
+RM		= @VBOX_RM@
+SED		= @VBOX_SED@
+MAILCMD		= @VBOX_MAIL@
+AR		= @VBOX_AR@
+RANLIB		= @VBOX_RANLIB@
+
+@SET_MAKE@
+
+#----------------------------------------------------------------------------#
+# The information below is modified by the configure script when Makefile is #
+# generated from Makefile.in. Some of this values are stored in other files  #
+# too, so don't change it by hand!                                           #
+#----------------------------------------------------------------------------#
+
+prefix		= @prefix@
+exec_prefix	= @exec_prefix@
+bindir		= @bindir@
+sbindir		= @sbindir@
+sysconfdir	= @sysconfdir@
+
+LOGFILEDIR	= @VBOX_LOGDIR@
+PIDFILEDIR	= @VBOX_PIDDIR@
+LCKFILEDIR	= @VBOX_LCKDIR@
+SPOOLDIR	= @VBOX_SPOOLDIR@
+LOCALEDIR	= @VBOX_LOCALE_DIR@
 
 #----------------------------------------------------------------------------#
 # The information below should be usable as is. The configure script won't   #
 # modify it and you shouldn't need to modify it either.                      #
 #----------------------------------------------------------------------------#
 
-.EXPORT_ALL_VARIABLES:
+TOPDIR		= @srcdir@
+VPATH		= @srcdir@
+
+HAVE_NCURSES	= @HAVE_NCURSES_LIBS@
+HAVE_TCL        = @HAVE_TCL_LIBS@
+HAVE_INTL	= @HAVE_INTL_LIBS@
+
+GETTYRC		= $(sysconfdir)/vboxgetty.conf
+VBINDIR		= $(bindir)
+PACKAGE		= @PACKAGE@
+VERSION		= @VERSION@
+VERDATE		= @VERDATE@
+
+#----------------------------------------------------------------------------#
+# Export variables needed by the other utilities...                          #
+#----------------------------------------------------------------------------#
+
+export CC
+export CFLAGS
+export LDFLAGS
+export AR
+export RANLIB
+export SED
+export GETTYRC
+export VBINDIR
+export TOPDIR
+export CATALOGS
+export PACKAGE
+
+#----------------------------------------------------------------------------#
+# All action we must do...                                                   #
+#----------------------------------------------------------------------------#
 
 all:		  vbox sedconvert
-
-#
-# For isdn4k-utils package compatibility
-#
-config:
-	@./configure
 
 #----------------------------------------------------------------------------#
 # vbox                                                                       #
 #----------------------------------------------------------------------------#
 
-vbox:		  createconfig
-		  @$(ECHO) ""
-		  @$(ECHO) "Compiling vbox & utilities..."
-		  @$(ECHO) ""
+vbox:		  ignore
 		  @$(MAKE) -C $(TOPDIR)/src all
 
 #----------------------------------------------------------------------------#
@@ -184,9 +156,6 @@ vbox:		  createconfig
 #----------------------------------------------------------------------------#
 
 sedconvert:	  ignore
-		  @$(ECHO) ""
-		  @$(ECHO) "Creating scripts & documentations..."
-		  @$(ECHO) ""
 		  @$(TOPDIR)/utils/mksed <$(TOPDIR)/utils/vboxmail.in >$(TOPDIR)/utils/vboxmail
 		  @$(TOPDIR)/utils/mksed <$(TOPDIR)/utils/vboxplay.in >$(TOPDIR)/utils/vboxplay
 
@@ -196,20 +165,11 @@ sedconvert:	  ignore
 
 install:	  install-dirs
 
-		  @$(ECHO) ""
-		  @$(ECHO) "Installing programs & configurations..."
-		  @$(ECHO) ""
-
 		  @$(ECHO) "Installing '$(sbindir)/vboxgetty'..."
 		  @$(INSTALL_SBIN) $(TOPDIR)/src/vboxgetty $(sbindir)/vboxgetty
 
 		  @$(ECHO) "Installing '$(sysconfdir)/vboxgetty.conf.example'..."
 		  @$(INSTALL_SYSCONF) $(TOPDIR)/examples/vboxgetty.conf.example $(sysconfdir)
-
-ifeq ($(GOT_LIB_NCURSES),y)
-		  @$(ECHO) "Installing '$(bindir)/vbox'..."
-		  @$(INSTALL_BIN) $(TOPDIR)/src/vbox $(bindir)
-endif
 
 		  @$(ECHO) "Installing '$(bindir)/vboxconvert'..."
 		  @$(INSTALL_BIN) $(TOPDIR)/src/vboxconvert $(bindir)
@@ -230,20 +190,31 @@ endif
 		  @$(ECHO) "Installing '$(bindir)/vboxplay'..."
 		  @$(INSTALL_SHBIN) $(TOPDIR)/utils/vboxplay $(bindir)
 
+ifeq ($(ACTION_ON_VBOX),y)
+		  @$(ECHO) "Installing '$(bindir)/vbox'..."
+		  @$(INSTALL_BIN) $(TOPDIR)/src/vbox $(bindir)
+endif
+
+		  @set -e; for i in $(CATALOGS); do \
+		     $(ECHO) "Installing '$(LOCALEDIR)/$$i/LC_MESSAGES/$(PACKAGE).mo'..."; \
+		     $(INSTALL_LOCALE) $(TOPDIR)/messages/$$i.mo $(LOCALEDIR)/$$i/LC_MESSAGES/$(PACKAGE).mo; \
+		  done
 
 #----------------------------------------------------------------------------#
-# install directories...                                                     #
+# Uninstall...                                                               #
+#----------------------------------------------------------------------------#
+
+uninstall:	  ignore
+
+#----------------------------------------------------------------------------#
+# Install directories...                                                     #
 #----------------------------------------------------------------------------#
 
 MAKETHISDIRS	= $(prefix) $(exec_prefix) $(sbindir) $(bindir) \
-		  $(sysconfdir) $(SPOOLDIR) $(LOGFDIR)
+		  $(sysconfdir) $(SPOOLDIR) $(LOGFILEDIR) $(PIDFILEDIR) \
+		  $(LCKFILEDIR)
 
 install-dirs:	  ignore
-
-		  @$(ECHO) ""
-		  @$(ECHO) "Creating directories..."
-		  @$(ECHO) ""
-
 		  @set -e; for i in $(MAKETHISDIRS); do \
 		     $(ECHO) -n "Checking '$$i'... "; \
 		     if [ -d $$i ]; then \
@@ -253,55 +224,55 @@ install-dirs:	  ignore
 		        $(INSTALL_DIRS) $$i; \
 		     fi; \
 		  done
+		  @set -e; for i in $(CATALOGS); do \
+		     $(ECHO) -n "Checking '$(LOCALEDIR)/$$i/LC_MESSAGES'... "; \
+		     if [ -d $(LOCALEDIR)/$$i/LC_MESSAGES ]; then \
+		        $(ECHO) "it's here."; \
+		     else \
+		        $(ECHO) "creating..."; \
+		        $(INSTALL_DIRS) $(LOCALEDIR)/$$i/LC_MESSAGES; \
+		     fi; \
+		  done
 
 #----------------------------------------------------------------------------#
-# create runtime configuration...                                            #
+# Create po und mo messages (only for development)...                        #
 #----------------------------------------------------------------------------#
 
-createconfig:	ignore
-		@$(ECHO) "/* Generated at runtime */" >$(RUNTIMEFILE)
-		@$(ECHO) "#define VERSION \"$(VERSION)\"" >>$(RUNTIMEFILE)
-		@$(ECHO) "#define VERDATE \"$(VERDATE)\"" >>$(RUNTIMEFILE)
-		@$(ECHO) "#define SPOOLDIR \"$(SPOOLDIR)\"" >>$(RUNTIMEFILE)
-		@$(ECHO) "#define LOGFILE \"$(LOGFILE)\"" >>$(RUNTIMEFILE)
-		@$(ECHO) "#define PIDFDIR \"$(PIDFDIR)\"" >>$(RUNTIMEFILE)
-		@$(ECHO) "#define PIDFILE \"$(PIDFILE)\"" >>$(RUNTIMEFILE)
-		@$(ECHO) "#define LOCKFILE \"$(LOCKFILE)\"" >>$(RUNTIMEFILE)
-		@$(ECHO) "#define BINDIR  \"$(bindir)\"" >>$(RUNTIMEFILE)
-		@$(ECHO) "#define GETTYRC \"$(sysconfdir)/vboxgetty.conf\"" >>$(RUNTIMEFILE)
-		@$(ECHO) "#define I4LCONFDIR \"$(ISDN_GLOB_CONF)\"" >>$(RUNTIMEFILE)
+messages:	  ignore
+		  @$(TOPDIR)/utils/mkpos
 
 #----------------------------------------------------------------------------#
-# misc                                                                       #
+# Create release version...                                                  #
+#----------------------------------------------------------------------------#
+
+release:	  distclean messages
+
+#----------------------------------------------------------------------------#
+# Cleaning...                                                                #
 #----------------------------------------------------------------------------#
 
 distclean:	  clean
-		  @$(RM) -f $(TOPDIR)/Makefile
-		  @$(RM) -f $(TOPDIR)/src/Makefile
-		  @$(RM) -f $(TOPDIR)/doc/Makefile
-		  @$(RM) -f $(TOPDIR)/utils/vboxmail
-		  @$(RM) -f $(TOPDIR)/utils/vboxplay
-		  @$(RM) -f config.cache config.log config.status
-		  @$(RM) -f .config
+		  @$(RM) -f $(TOPDIR)/Makefile $(TOPDIR)/src/Makefile \
+			    $(TOPDIR)/src/config.h $(TOPDIR)/utils/vboxmail \
+			    $(TOPDIR)/utils/vboxplay $(TOPDIR)/.config \
+			    $(TOPDIR)/config.cache $(TOPDIR)/config.log \
+			    $(TOPDIR)/config.status
 
 clean:		  ignore
-		  @$(ECHO) ""
-		  @$(ECHO) "Cleaning source tree..."
-		  @$(ECHO) ""
-		  @$(RM) -f $(TOPDIR)/*~
-		  @$(RM) -f $(TOPDIR)/src/*~
-		  @$(RM) -f $(TOPDIR)/doc/*~
-		  @$(RM) -f $(TOPDIR)/examples/*~
-		  @$(RM) -f $(TOPDIR)/utils/*~
-		  @$(RM) -f $(TOPDIR)/src/*.[oas]
-		  @$(RM) -f $(TOPDIR)/src/vboxgetty
-		  @$(RM) -f $(TOPDIR)/src/vbox
-		  @$(RM) -f $(TOPDIR)/src/vboxconvert
-		  @$(RM) -f $(TOPDIR)/src/vboxctrl
-		  @$(RM) -f $(TOPDIR)/src/vboxbeep
-		  @$(RM) -f $(TOPDIR)/doc/*.html
-		  @$(RM) -f $(TOPDIR)/doc/*.sgml
-		  @$(RM) -f $(TOPDIR)/doc/*.txt
-		  @$(RM) -f $(RUNTIMEFILE)
+		  @$(RM) -f $(TOPDIR)/*~ $(TOPDIR)/src/*~ $(TOPDIR)/doc/*~ \
+			    $(TOPDIR)/examples/*~ $(TOPDIR)/utils/*~ \
+			    $(TOPDIR)/messages/*~ $(TOPDIR)/messages/backup-* \
+			    $(TOPDIR)/src/*.[oas] $(TOPDIR)/src/vboxgetty \
+			    $(TOPDIR)/src/vbox $(TOPDIR)/src/vboxconvert \
+			    $(TOPDIR)/src/vboxctrl $(TOPDIR)/src/vboxbeep \
+			    $(TOPDIR)/doc/*.html $(TOPDIR)/doc/*.sgml \
+			    $(TOPDIR)/doc/*.txt
+
+#----------------------------------------------------------------------------#
+# For isdn4k-utils package compatibility...                                  #
+#----------------------------------------------------------------------------#
+
+config:		  ignore
+		  @./configure
 
 ignore:

@@ -1,17 +1,19 @@
 /*
-** $Id: lock.c,v 1.3 1997/02/26 13:10:40 michael Exp $
+** $Id: lock.c,v 1.4 1997/03/18 12:36:46 michael Exp $
 **
 ** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
 */
 
+#include "config.h"
+
+#include <stdio.h>
+#include <stdlib.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/file.h>
 #include <fcntl.h>
-#include <stdio.h>
 #include <string.h>
 
-#include "runtime.h"
 #include "lock.h"
 #include "log.h"
 #include "init.h"
@@ -25,32 +27,45 @@ static int gettyfd = -1;
 
 static struct locks locks[] =
 {
-	{ LCK_MODEM, &modemfd, LOCKFILE, "modem port" },
-	{ LCK_PID  , &gettyfd, PIDFILE , "vbox"       },
-	{ 0        , NULL    , NULL    , NULL         }
+	{ LCK_MODEM, &modemfd, LCKFILEDIR "/LCK..%s"          , "?"  },
+	{ LCK_PID  , &gettyfd, PIDFILEDIR "/vboxgetty-%s.pid" , "?"  },
+	{ 0        , NULL    , NULL                           , NULL }
 };
 
 /** Prototypes ***********************************************************/
 
-static int lock_locking(int, int);
-static int lock_unlocking(int, int);
+static int  lock_locking(int, int);
+static int  lock_unlocking(int, int);
+static void lock_init_locknames(void);
 
-/*************************************************************************
- ** lock_type_lock():	Create vbox lock.											**
- *************************************************************************/
+/**************************************************************************/
+/** lock_init_locknames(): Sets locknames.                               **/
+/**************************************************************************/
+
+static void lock_init_locknames(void)
+{
+	locks[0].desc = gettext("modem port");
+	locks[1].desc = gettext("vboxgetty");
+}
+
+/*************************************************************************/
+/** lock_type_lock(): Create vbox lock.											**/
+/*************************************************************************/
 
 int lock_type_lock(int type)
 {
-	char  name[LOCK_MAX_LOCKNAME + 1];
-	char	temp[14];
+	char *name;
+	char	temp[32];
 	char *device;
 	int	i;
+	int   size;
+
+	lock_init_locknames();
 
 	if (!(device = rindex(setup.modem.device, '/')))
-	{
 		device = setup.modem.device;
-	}
-	else device++;
+	else
+		device++;
 	
 	i = 0;
 	
@@ -58,9 +73,9 @@ int lock_type_lock(int type)
 	{
 		if (locks[i].file == NULL)
 		{
-			log(L_WARN, "Lock setup for type %d not found.\n", type);
+			log(L_WARN, gettext("Lock setup for type %d not found.\n"), type);
 
-			returnok();
+			returnerror();
 		}
 
 		if (locks[i].type == type) break;
@@ -68,11 +83,13 @@ int lock_type_lock(int type)
 		i++;
 	}
 
-	if ((strlen(locks[i].file) + strlen(device)) < LOCK_MAX_LOCKNAME)
+	size = (strlen(locks[i].file) + strlen(device) + 2);
+	
+	if ((name = (char *)malloc(size)))
 	{
-		sprintf(name, locks[i].file, device);
+		printstring(name, locks[i].file, device);
 
-		log(L_DEBUG, "Locking %s '%s'...\n", locks[i].desc, name);
+		log(L_DEBUG, gettext("Locking %s (%s)...\n"), locks[i].desc, name);
 
 		if (*(locks[i].fd) == -1)
 		{
@@ -80,48 +97,54 @@ int lock_type_lock(int type)
 			{
 				if (lock_locking(*(locks[i].fd), 5))
 				{
-					sprintf(temp, "%10d\n", getpid());
+					printstring(temp, "%d\n", getpid());
 
 					write(*(locks[i].fd), temp, strlen(temp));
 
-						/* Set permissions but make the locks readable to	*/
-						/* all (overrides umask).									*/
+						/*
+						 * Set permissions but make the locks readable to
+						 * all (overrides umask).
+						 */
 
 					permissions_set(name, setup.users.uid, setup.users.gid, S_IRUSR|S_IWUSR|S_IRGRP|S_IWGRP|S_IROTH|S_IWOTH, (setup.users.umask & ~(S_IRUSR|S_IRGRP|S_IROTH)));
 
+					free(name);
 					returnok();
 				}
-				else log(L_FATAL, "Can't lock '%s'.\n", name);
+				else log(L_FATAL, gettext("Can't lock \"%s\".\n"), name);
 			}
-			else log(L_FATAL, "Can't create '%s'.\n", name);
+			else log(L_FATAL, gettext("Can't create \"%s\".\n"), name);
 		}
 		else
 		{
-			log(L_WARN, "Use existing lock for '%s' (%d).\n", name, *(locks[i].fd));
+			log(L_WARN, gettext("Use existing lock for \"%s\" (%d).\n"), name, *(locks[i].fd));
 					
+			free(name);
 			returnok();
 		}
 	}
-	else log(L_FATAL, "Lockname too long. Set 'LOCK_MAX_LOCKNAME' in 'lock.h' to a higher value.\n");
+	else log(L_FATAL, gettext("Not enough memory to allocate lockname.\n"));
 				
 	returnerror();
 }
 
-/*************************************************************************
- ** lock_type_unlock():	Deletes vbox lock.										**
- *************************************************************************/
+/*************************************************************************/
+/** lock_type_unlock():	Deletes vbox lock.										**/
+/*************************************************************************/
 
 int lock_type_unlock(int type)
 {
-	char  name[LOCK_MAX_LOCKNAME + 1];
+	char *name;
 	char *device;
 	int	i;
+	int   size;
+
+	lock_init_locknames();
 
 	if (!(device = rindex(setup.modem.device, '/')))
-	{
 		device = setup.modem.device;
-	}
-	else device++;
+	else
+		device++;
 	
 	i = 0;
 	
@@ -129,9 +152,9 @@ int lock_type_unlock(int type)
 	{
 		if (locks[i].file == NULL)
 		{
-			log(L_WARN, "Lock setup for type %d not found.\n", type);
+			log(L_WARN, gettext("Lock setup for type %d not found.\n"), type);
 
-			returnok();
+			returnerror();
 		}
 
 		if (locks[i].type == type) break;
@@ -139,11 +162,13 @@ int lock_type_unlock(int type)
 		i++;
 	}
 
-	if ((strlen(locks[i].file) + strlen(device)) < LOCK_MAX_LOCKNAME)
+	size = (strlen(locks[i].file) + strlen(device) + 2);
+	
+	if ((name = (char *)malloc(size)))
 	{
-		sprintf(name, locks[i].file, device);
+		printstring(name, locks[i].file, device);
 
-		log(L_DEBUG, "Unlocking %s '%s'...\n", locks[i].desc, name);
+		log(L_DEBUG, gettext("Unlocking %s (%s)...\n"), locks[i].desc, name);
 
 		if (*(locks[i].fd) != -1)
 		{
@@ -154,17 +179,23 @@ int lock_type_unlock(int type)
 			*(locks[i].fd) = -1;
 		}
 
-		unlink(name);
-		unlink(name);
+		if (unlink(name) != 0)
+		{
+			log(L_WARN, gettext("Can't remove lock \"%s\".\n"), name);
+		}
+
+		free(name);
+
+		returnok();
 	}
-	else log(L_FATAL, "Lockname too long. Set 'LOCK_MAX_LOCKNAME' in 'lock.h' to a higher value.\n");
+	else log(L_FATAL, gettext("Not enough memory to allocate lockname.\n"));
 				
 	returnerror();
 }
 
-/*************************************************************************
- ** lock_locking():	Locks a file descriptor with delay.						**
- *************************************************************************/
+/*************************************************************************/
+/** lock_locking(): Locks a file descriptor with delay.						**/
+/*************************************************************************/
 
 static int lock_locking(int fd, int trys)
 {
@@ -180,9 +211,9 @@ static int lock_locking(int fd, int trys)
 	returnerror();
 }
 
-/*************************************************************************
- ** lock_unlocking():	Unlocks a file descriptor with delay.				**
- *************************************************************************/
+/*************************************************************************/
+/** lock_unlocking(): Unlocks a file descriptor with delay.				   **/
+/*************************************************************************/
 
 static int lock_unlocking(int fd, int trys)
 {
@@ -197,4 +228,3 @@ static int lock_unlocking(int fd, int trys)
 
 	returnerror();
 }
-

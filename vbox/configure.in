@@ -3,25 +3,39 @@ dnl     generate the file "configure", which is run during vbox installation
 dnl     to configure the system for the local environment.
 
 AC_INIT(src/vboxgetty.h)
+AC_CONFIG_HEADER(src/config.h)
 
-#--------------------------------------------------------------------------
-# Version of the vbox package. Theres no need to change this ;-)
-#--------------------------------------------------------------------------
+dnl #------------------------------------------------------------------------#
+dnl # Set of available languages:                                            #
+dnl #------------------------------------------------------------------------#
 
-VBOX_VERSION="2.0.0"
-VBOX_VERDATE="4. Januar 1997"
+ALL_LINGUAS="de"
 
-#--------------------------------------------------------------------------
-# Some defaults...
-#--------------------------------------------------------------------------
+dnl #------------------------------------------------------------------------#
+dnl # Some defaults:                                                         #
+dnl #------------------------------------------------------------------------#
 
 AC_PREFIX_DEFAULT(/usr/local/vbox)
 
-CFLAGS="-i486 -O2 -Wall"
+dnl #------------------------------------------------------------------------#
+dnl # Version of the vbox package. Theres no need to change this ;-)         #
+dnl #------------------------------------------------------------------------#
 
-#--------------------------------------------------------------------------
-# Search for some programs needed by the makefiles.
-#--------------------------------------------------------------------------
+PACKAGE="vbox"
+VERSION="2.0.0"
+VERDATE="12-Mar-97"
+
+AC_DEFINE_UNQUOTED(PACKAGE, "${PACKAGE}")
+AC_DEFINE_UNQUOTED(VERSION, "${VERSION}")
+AC_DEFINE_UNQUOTED(VERDATE, "${VERDATE}")
+
+AC_SUBST(PACKAGE)
+AC_SUBST(VERSION)
+AC_SUBST(VERDATE)
+
+dnl #------------------------------------------------------------------------#
+dnl # Checks for programs:                                                   #
+dnl #------------------------------------------------------------------------#
 
 AC_PROG_CC
 AC_PROG_INSTALL
@@ -29,7 +43,6 @@ AC_PROG_MAKE_SET
 AC_PROG_LN_S
 
 AC_PATH_PROG(VBOX_ECHO, echo, "echo")
-AC_PATH_PROG(VBOX_MAKE, make, "make")
 AC_PATH_PROG(VBOX_RM, rm, "rm")
 AC_PATH_PROG(VBOX_MV, mv, "mv")
 AC_PATH_PROG(VBOX_SED, sed, "sed")
@@ -37,25 +50,60 @@ AC_PATH_PROG(VBOX_MAIL, mail, "mail")
 AC_PATH_PROG(VBOX_AR, ar, "ar")
 AC_PATH_PROG(VBOX_RANLIB, ranlib, "ranlib")
 
+AC_SUBST(VBOX_ECHO)
+AC_SUBST(VBOX_RM)
+AC_SUBST(VBOX_MV)
+AC_SUBST(VBOX_SED)
+AC_SUBST(VBOX_MAIL)
+AC_SUBST(VBOX_AR)
+AC_SUBST(VBOX_RANLIB)
 
-#--------------------------------------------------------------------------
-# Get the top-level install tree for the package.
-#--------------------------------------------------------------------------
+dnl #------------------------------------------------------------------------#
+dnl # Checks for header files:                                               #
+dnl #------------------------------------------------------------------------#
+
+AC_HEADER_TIME
+AC_CHECK_HEADERS(sys/time.h)
+
+dnl #------------------------------------------------------------------------#
+dnl # Checks for typedefs, structures, and compiler characteristics:         #
+dnl #------------------------------------------------------------------------#
+
+AC_C_CONST
+AC_C_INLINE
+
+dnl #------------------------------------------------------------------------#
+dnl # Checks for needed external packages:                                   #
+dnl #------------------------------------------------------------------------#
+
+GND_PACKAGE_GETTEXT
+GND_PACKAGE_NCURSES
+GND_PACKAGE_TCL
+
+dnl #------------------------------------------------------------------------#
+dnl # Checks for the configure options (--prefix, --with-*, etc.):           #
+dnl #------------------------------------------------------------------------#
+
+   dnl #==========#
+   dnl # --prefix #
+   dnl #==========#
 
 AC_MSG_CHECKING(for prefix)
 
-if test "$prefix" = "NONE"
+if (test "${prefix}" = "NONE")
 then
-	VBOX_PREFIX="$ac_default_prefix"
+   VBOX_PREFIX="${ac_default_prefix}"
 else
-	VBOX_PREFIX="$prefix"
+   VBOX_PREFIX="${prefix}"
 fi
 
-AC_MSG_RESULT($VBOX_PREFIX)
+AC_MSG_RESULT(${VBOX_PREFIX})
 
-#--------------------------------------------------------------------------
-# Test where vbox stores the message tree.
-#--------------------------------------------------------------------------
+AC_SUBST(VBOX_PREFIX)
+
+   dnl #=================#
+   dnl # --with-spooldir #
+   dnl #=================#
 
 AC_MSG_CHECKING(where the messages are stored)
 
@@ -68,9 +116,12 @@ AC_ARG_WITH(spooldir,
 
 AC_MSG_RESULT(${VBOX_SPOOLDIR})
 
-#--------------------------------------------------------------------------
-# Test where vbox writes the logs.
-#--------------------------------------------------------------------------
+AC_DEFINE_UNQUOTED(SPOOLDIR, "${VBOX_SPOOLDIR}")
+AC_SUBST(VBOX_SPOOLDIR)
+
+   dnl #===============#
+   dnl # --with-logdir #
+   dnl #===============#
 
 AC_MSG_CHECKING(where the logs are stored)
 
@@ -81,11 +132,14 @@ AC_ARG_WITH(logdir,
 	VBOX_LOGDIR=${withval}
 )
 
-AC_MSG_RESULT($VBOX_LOGDIR)
+AC_MSG_RESULT(${VBOX_LOGDIR})
 
-#--------------------------------------------------------------------------
-# Test where vbox stores the process ids.
-#--------------------------------------------------------------------------
+AC_DEFINE_UNQUOTED(LOGFILEDIR, "${VBOX_LOGDIR}")
+AC_SUBST(VBOX_LOGDIR)
+
+   dnl #===============#
+   dnl # --with-piddir #
+   dnl #===============#
 
 AC_MSG_CHECKING(where the pids are stored)
 
@@ -96,47 +150,40 @@ AC_ARG_WITH(piddir,
 	VBOX_PIDDIR=${withval}
 )
 
-AC_MSG_RESULT($VBOX_PIDDIR)
+AC_MSG_RESULT(${VBOX_PIDDIR})
 
-#--------------------------------------------------------------------------
-# Test where vbox made the locks.
-#--------------------------------------------------------------------------
+AC_DEFINE_UNQUOTED(PIDFILEDIR, "${VBOX_PIDDIR}")
+AC_SUBST(VBOX_PIDDIR)
+
+   dnl #================#
+   dnl # --with-lockdir #
+   dnl #================#
 
 AC_MSG_CHECKING(where the locks are made)
 
-VBOX_LOCKDIR="/var/lock"
+VBOX_LCKDIR="/var/lock"
 
 AC_ARG_WITH(lockdir,
 	[  --with-lockdir=DIR      locks are made in DIR [/var/lock]],
-	VBOX_LOCKDIR=${withval}
+	VBOX_LCKDIR=${withval}
 )
 
-AC_MSG_RESULT($VBOX_LOCKDIR)
+AC_MSG_RESULT(${VBOX_LCKDIR})
 
-#--------------------------------------------------------------------------
-# Test where vbox made the locks.
-#--------------------------------------------------------------------------
+AC_DEFINE_UNQUOTED(LCKFILEDIR, "${VBOX_LCKDIR}")
+AC_SUBST(VBOX_LCKDIR)
 
-VBOX_TCL=""
-
-AC_ARG_WITH(tcllib,
-	[  --with-tcllib=LIB       use tcl library LIB [tcl]],
-	VBOX_TCL=${withval}
-)
-
-
-
-#--------------------------------------------------------------------------
-# Test where the global isdn configuration is stored...
-#--------------------------------------------------------------------------
+   dnl #===================#
+   dnl # --with-i4lconfdir #
+   dnl #===================#
 
 AC_MSG_CHECKING(where the isdn configuration is stored)
 
-if test "$I4LCONFDIR" = ""
+if (test "$I4LCONFDIR" = "")
 then
-	ISDN_GLOBAL_CONFIG="/etc/isdn"
+   ISDN_GLOBAL_CONFIG="/etc/isdn"
 else
-	ISDN_GLOBAL_CONFIG="$I4LCONFDIR"
+   ISDN_GLOBAL_CONFIG="${I4LCONFDIR}"
 fi
 
 AC_ARG_WITH(confdir,
@@ -144,87 +191,41 @@ AC_ARG_WITH(confdir,
 	ISDN_GLOBAL_CONFIG=${withval}
 )
 
-AC_MSG_RESULT($ISDN_GLOBAL_CONFIG)
+AC_MSG_RESULT(${ISDN_GLOBAL_CONFIG})
 
-#--------------------------------------------------------------------------
-# Test if the complete ncurses package is installed. This means the lib's
-# ncurses and panel must exist. If not some tools from the package will not
-# compile!
-#--------------------------------------------------------------------------
+AC_DEFINE_UNQUOTED(I4LCONFDIR, "${ISDN_GLOBAL_CONFIG}")
 
-VBOX_LIB_NCURSES="n"
+   dnl #==================#
+   dnl # --with-localedir #
+   dnl #==================#
 
-AC_CHECK_LIB(ncurses, initscr,
-   AC_CHECK_LIB(panel, update_panels,
-      VBOX_LIB_NCURSES="y",
-      [AC_MSG_WARN(vbox needs ncurses (1.9.9g or higher) to compile!)],
-      -lncurses
-   ),
-   [AC_MSG_WARN(vbox needs ncurses (1.9.9g or higher) to compile!)]
+AC_MSG_CHECKING(where the message catalogs are stored)
+
+VBOX_LOCALE_DIR="/usr/share/locale"
+
+AC_ARG_WITH(modir,
+	[  --with-localedir=DIR     directory to install catalogs [/usr/share/locale] ],
+	VBOX_LOCALE_DIR=${withval}
 )
 
-#--------------------------------------------------------------------------
-# Test if all needed libraries for vboxgetty are installed. We will end the
-# configure script if one is missing!
-#--------------------------------------------------------------------------
+AC_MSG_RESULT(${VBOX_LOCALE_DIR})
 
-if test "${VBOX_TCL}" = ""
+AC_SUBST(VBOX_LOCALE_DIR)
+
+dnl #------------------------------------------------------------------------#
+dnl # Creates output files:                                                  #
+dnl #------------------------------------------------------------------------#
+
+if (test "${ac_cv_prog_CC}" = "gcc")
 then
-   TST1_TCL_LIB="tcl8.0"
-   TST2_TCL_LIB="tcl7.6"
-   TST3_TCL_LIB="tcl"
-else
-   TST1_TCL_LIB="${VBOX_TCL}"
-   TST2_TCL_LIB="tcl8.0"
-   TST3_TCL_LIB="tcl7.6"
+   if (test "${CFLAGS}" = "")
+   then
+      CFLAGS="-Wall -O2"
+   fi
 fi
 
-AC_CHECK_LIB(m, cos,
-   AC_CHECK_LIB(dl, dlerror,
-      AC_CHECK_LIB(${TST1_TCL_LIB}, Tcl_CreateInterp,
-         VBOX_GETTY_LIBS="-l${TST1_TCL_LIB} -lm -ldl",
-         AC_CHECK_LIB(${TST2_TCL_LIB}, Tcl_CreateInterp,
-            VBOX_GETTY_LIBS="-l${TST2_TCL_LIB} -lm -ldl",
-            AC_CHECK_LIB(${TST3_TCL_LIB}, Tcl_CreateInterp,
-               VBOX_GETTY_LIBS="-l${TST3_TCL_LIB} -lm -ldl",
-               [AC_MSG_ERROR(vboxgetty needs the tcl package (7.6 or higher) to compile!                     Use --with-tcllib to specify your tcl library!)],
-               -lm -ldl
-            ),
-            -lm -ldl
-         ),
-         -lm -ldl
-      ),
-      [AC_MSG_ERROR(vboxgetty needs the dynamic link library to compile!)]
-   ),
-   [AC_MSG_ERROR(vboxgetty needs the math library to compile!)]
-)
-
-#--------------------------------------------------------------------------
-# Subst the variables...
-#--------------------------------------------------------------------------
-
-AC_SUBST(VBOX_PREFIX)
-AC_SUBST(VBOX_VERSION)
-AC_SUBST(VBOX_VERDATE)
-AC_SUBST(VBOX_SPOOLDIR)
-AC_SUBST(VBOX_LOGDIR)
-AC_SUBST(VBOX_PIDDIR)
-AC_SUBST(VBOX_LOCKDIR)
-AC_SUBST(VBOX_GETTY_LIBS)
-AC_SUBST(VBOX_LIBS)
-AC_SUBST(VBOX_ECHO)
-AC_SUBST(VBOX_MAKE)
-AC_SUBST(VBOX_RM)
-AC_SUBST(VBOX_MV)
-AC_SUBST(VBOX_SED)
-AC_SUBST(VBOX_MAIL)
-AC_SUBST(VBOX_AR)
-AC_SUBST(VBOX_RANLIB)
-AC_SUBST(VBOX_LIB_NCURSES)
-AC_SUBST(ISDN_GLOBAL_CONFIG)
-
-#--------------------------------------------------------------------------
-# ...and create the files from *.in...
-#--------------------------------------------------------------------------
-
 AC_OUTPUT(Makefile src/Makefile)
+
+
+
+

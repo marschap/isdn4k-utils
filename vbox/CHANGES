@@ -1,7 +1,59 @@
-# $Id: CHANGES,v 1.8 1997/03/08 19:56:41 michael Exp $
+# $Id: CHANGES,v 1.9 1997/03/18 12:36:25 michael Exp $
 #
 # To describe the news & fixes better (my english is not the best :-) the
 # changelog is only available in german.
+
+15-Mär-97
+=========
+
+o [Neu] Option '--with-localedir' ins Konfigurationsskripts einge-
+	baut. Damit kann festgelegt werden, in welches Verzeichnis die
+	Kataloge kopiert werden sollen (die verschiedenen libc's haben
+	verschiedene Pfade aus denen sie lesen).
+
+o [Neu] Option '--disable-nls' ins Konfigurationsskripts eingebaut um
+	den 'native language support' auszuschalten (es würde auch
+	reichen die Kataloge nicht zu kopieren :-)
+
+o [Neu]	Programm 'vboxbeep' beendet und lokalisiert.
+
+o [Neu] Konfigurationsskripts und Makefiles angepasst. Es sollte immer
+	mit der Option -O2 (oder höher) compiliert werden, da der
+	Compiler sonst bei den Includes von *linux* meckert!
+
+
+14-Mär-97
+=========
+
+o [Neu] Signalhändler in 'vboxtoau' und 'autovbox' eingebaut, damit
+	die temporären Dateien bei einem Abbruch ordentlich gelöscht
+	werden.
+
+o [Neu] Programm 'vboxconvert' lokalisiert.
+
+
+13-Mär-97
+=========
+
+o [Neu] Programm 'vboxctrl' lokalisiert.
+
+o [Neu] Unterstützung für gnu's gettext Paket eingebaut. Entweder wird
+	die glibc ab Version 2 (libc.so.6) oder ein installiertes
+	gettext Paket benötigt. Das Konfigurationsskript sucht sich
+	selbst die beste Möglichkeit aus.
+
+o [Neu] Funktion lock_type_lock() belegt Speicher für den Namen jetzt
+	selbst.
+
+o [Neu]	Funktion log_init() belegt Speicher für den Namen jetzt selbst.
+
+12-Mär-97
+=========
+
+o [Neu] Konfigurationsskripts und Makefiles komplett überarbeitet.
+	Angefangen Unterstützung für Katalogdateien zu implementieren
+	(gnu's gettext).
+
 
 08-Mär-97
 =========

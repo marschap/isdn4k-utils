@@ -1,17 +1,28 @@
 /*
-** $Id: script.c,v 1.5 1997/03/08 19:56:55 michael Exp $
+** $Id: script.c,v 1.6 1997/03/18 12:36:50 michael Exp $
 **
 ** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
 */
+
+#include "config.h"
+
+#if TIME_WITH_SYS_TIME
+#   include <sys/time.h>
+#   include <time.h>
+#else
+#   if HAVE_SYS_TIME_H
+#      include <sys/time.h>
+#   else
+#      include <time.h>
+#   endif
+#endif
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <tcl.h>
 #include <unistd.h>
 #include <string.h>
-#include <time.h>
 
-#include "runtime.h"
 #include "script.h"
 #include "log.h"
 #include "voice.h"
@@ -37,9 +48,9 @@ int vbox_get_nr_all_messages(ClientData, Tcl_Interp *, int, char *[]);
 
 struct minlist breaklist;
 
-/*************************************************************************
- ** script_run():	Starts a external tcl script.									**
- *************************************************************************/
+/*************************************************************************/
+/** script_run():	Starts a external tcl script.									**/
+/*************************************************************************/
 
 int script_run(char *script)
 {
@@ -51,7 +62,7 @@ int script_run(char *script)
 	int		havecreated;
 	int		result;
 
-	log(L_INFO, "Running tcl script \"%s\"...\n", script);
+	log(L_INFO, gettext("Running tcl script \"%s\"...\n"), script);
 
 	list_init(&breaklist);
 
@@ -111,47 +122,47 @@ int script_run(char *script)
 
 					if (Tcl_EvalFile(interpreter, script) != TCL_OK)
 					{
-						log(L_ERROR, "In \"%s\": %s (line %d).\n", script, interpreter->result, interpreter->errorLine);
+						log(L_ERROR, gettext("In \"%s\": %s (line %d).\n"), script, interpreter->result, interpreter->errorLine);
 					}
 					else
 					{
-						log(L_DEBUG, "Back from tcl script...\n");
+						log(L_DEBUG, gettext("Back from tcl script...\n"));
 
 						result = TRUE;
 					}
 				}
-				else log(L_ERROR, "In \"%s\": %s (line %d).\n", script, interpreter->result, interpreter->errorLine);
+				else log(L_ERROR, gettext("In \"%s\": %s (line %d).\n"), script, interpreter->result, interpreter->errorLine);
 			}
-			else log(L_FATAL, "Can't create all new tcl commands.\n");
+			else log(L_FATAL, gettext("Can't create all new tcl commands.\n"));
 
 			if (Tcl_InterpDeleted(interpreter) == 0)
 			{
 				Tcl_DeleteInterp(interpreter);
 			}
 		}
-		else log(L_FATAL, "Can't initialize tcl interpreter.\n");
+		else log(L_FATAL, gettext("Can't initialize tcl interpreter.\n"));
 	}
-	else log(L_FATAL, "Can't create tcl interpreter.\n");
+	else log(L_FATAL, gettext("Can't create tcl interpreter.\n"));
 
 	list_exit(&breaklist);
 
 	return(result);
 }
 
-/*************************************************************************
- ** script_check_interpreter():	Checks tcl interpreter versions.			**
- *************************************************************************/
+/*************************************************************************/
+/** script_check_interpreter(): Checks tcl interpreter versions.			**/
+/*************************************************************************/
 
 int script_check_interpreter(void)
 {
-	log(L_INFO, "Tcl interpreter version %s...\n", TCL_VERSION);
+	log(L_INFO, gettext("Tcl interpreter version %s...\n"), TCL_VERSION);
 
 	returnok();
 }
 
-/*************************************************************************
- ** vbox_breaklist():	DTMF sequence support.									**
- *************************************************************************/
+/*************************************************************************/
+/** vbox_breaklist(): DTMF sequence support.									   **/
+/*************************************************************************/
 
 int vbox_breaklist(ClientData cd, Tcl_Interp *ip, int argc, char *argv[])
 {
@@ -182,7 +193,7 @@ int vbox_breaklist(ClientData cd, Tcl_Interp *ip, int argc, char *argv[])
 				return(TCL_OK);
 			}
 		}
-		else log(L_ERROR, "[vbox_breaklist] unsupported argument \"%s\"", argv[1]);
+		else log(L_ERROR, gettext("[vbox_breaklist] unsupported argument \"%s\"."), argv[1]);
 	}
 	else
 	{
@@ -194,24 +205,24 @@ int vbox_breaklist(ClientData cd, Tcl_Interp *ip, int argc, char *argv[])
 
 				while (node)
 				{
-					log(L_INFO, "[vbox_breaklist] %s\n", node->ln_name);
+					log(L_INFO, gettext("[vbox_breaklist] %s\n"), node->ln_name);
 			
 					node = node->ln_next;
 				}
 
 				return(TCL_OK);
 			}
-			else log(L_ERROR, "[vbox_breaklist] unsupported argument \"%s\"", argv[1]);
+			else log(L_ERROR, gettext("[vbox_breaklist] unsupported argument \"%s\"."), argv[1]);
 		}
-		else log(L_ERROR, "[vbox_breaklist] usage: vbox_breaklist <rem|add> <sequence>");
+		else log(L_ERROR, gettext("[vbox_breaklist] usage: vbox_breaklist <rem|add> <sequence>\n"));
 	}
 
 	return(TCL_OK);
 }
 
-/*************************************************************************
- ** vbox_put_message():	Plays a voice message.									**
- *************************************************************************/
+/*************************************************************************/
+/** vbox_put_message():	Plays a voice message.									**/
+/*************************************************************************/
 
 int vbox_put_message(ClientData cd, Tcl_Interp *ip, int argc, char *argv[])
 {
@@ -219,7 +230,7 @@ int vbox_put_message(ClientData cd, Tcl_Interp *ip, int argc, char *argv[])
 
 	if (argc != 2)
 	{
-		log(L_ERROR, "[vbox_put_message] usage: vbox_put_message <messagename>\n");
+		log(L_ERROR, gettext("[vbox_put_message] usage: vbox_put_message <messagename>\n"));
 
 		printstring(ip->result, "ERROR");
 	}
@@ -248,15 +259,15 @@ int vbox_put_message(ClientData cd, Tcl_Interp *ip, int argc, char *argv[])
 				break;
 		}
 
-		log(L_DEBUG, "[vbox_put_message] result \"%s\".\n", ip->result);
+		log(L_DEBUG, gettext("[vbox_put_message] result \"%s\".\n"), ip->result);
 	}
 
 	return(TCL_OK);
 }
 
-/*************************************************************************
- ** vbox_get_message():	Records a voice message.								**
- *************************************************************************/
+/*************************************************************************/
+/** vbox_get_message():	Records a voice message.								**/
+/*************************************************************************/
 
 int vbox_get_message(ClientData cd, Tcl_Interp *ip, int argc, char *argv[])
 {
@@ -264,7 +275,7 @@ int vbox_get_message(ClientData cd, Tcl_Interp *ip, int argc, char *argv[])
 
 	if (argc != 3)
 	{
-		log(L_ERROR, "[vbox_get_message] vbox_get_message <messagename> <recordtime>\n");
+		log(L_ERROR, gettext("[vbox_get_message] usage: vbox_get_message <messagename> <recordtime>\n"));
 
 		printstring(ip->result, "ERROR");
 	}
@@ -297,15 +308,15 @@ int vbox_get_message(ClientData cd, Tcl_Interp *ip, int argc, char *argv[])
 				break;
 		}
 
-		log(L_DEBUG, "[vbox_get_message] result \"%s\".\n", ip->result);
+		log(L_DEBUG, gettext("[vbox_get_message] result \"%s\".\n"), ip->result);
 	}
 
 	return(TCL_OK);
 }
 
-/*************************************************************************
- ** vbox_wait():	Waits for DTMF input.											**
- *************************************************************************/
+/*************************************************************************/
+/** vbox_wait(): Waits for DTMF input.											   **/
+/*************************************************************************/
 
 int vbox_wait(ClientData cd, Tcl_Interp *ip, int argc, char *argv[])
 {
@@ -313,7 +324,7 @@ int vbox_wait(ClientData cd, Tcl_Interp *ip, int argc, char *argv[])
 
 	if (argc != 2)
 	{
-		log(L_ERROR, "[vbox_wait] usage: vbox_wait <seconds>\n");
+		log(L_ERROR, gettext("[vbox_wait] usage: vbox_wait <seconds>\n"));
 
 		printstring(ip->result, "ERROR");
 	}
@@ -346,15 +357,15 @@ int vbox_wait(ClientData cd, Tcl_Interp *ip, int argc, char *argv[])
 				break;
 		}
 
-		log(L_DEBUG, "[vbox_wait] result \"%s\".\n", ip->result);
+		log(L_DEBUG, gettext("[vbox_wait] result \"%s\".\n"), ip->result);
 	}
 
 	return(TCL_OK);
 }
 
-/*************************************************************************
- ** vbox_pause():	Sleeps some milliseconds.										**
- *************************************************************************/
+/*************************************************************************/
+/** vbox_pause():	Sleeps some milliseconds.										**/
+/*************************************************************************/
 
 int vbox_pause(ClientData cd, Tcl_Interp *ip, int argc, char *argv[])
 {
@@ -362,7 +373,7 @@ int vbox_pause(ClientData cd, Tcl_Interp *ip, int argc, char *argv[])
 
 	if (argc != 2)
 	{
-		log(L_ERROR, "[vbox_pause] usage: vbox_pause <ms>\n");
+		log(L_ERROR, gettext("[vbox_pause] usage: vbox_pause <ms>\n"));
 
 		printstring(ip->result, "ERROR");
 	}
@@ -370,7 +381,7 @@ int vbox_pause(ClientData cd, Tcl_Interp *ip, int argc, char *argv[])
 	{
 		p = xstrtol(argv[1], 800);
 
-		log(L_JUNK, "[vbox_pause] waiting %lu ms...\n", p);
+		log(L_JUNK, gettext("[vbox_pause] waiting %lu ms...\n"), p);
 
 		xpause(p);
 
@@ -380,9 +391,9 @@ int vbox_pause(ClientData cd, Tcl_Interp *ip, int argc, char *argv[])
 	return(TCL_OK);
 }
 
-/*************************************************************************
- ** vbox_init_touchtones():	Initialize touchtone sequence.				**
- *************************************************************************/
+/*************************************************************************/
+/** vbox_init_touchtones(): Initialize touchtone sequence.				   **/
+/*************************************************************************/
 
 int vbox_init_touchtones(ClientData cd, Tcl_Interp *ip, int argc, char *argv[])
 {
@@ -393,9 +404,9 @@ int vbox_init_touchtones(ClientData cd, Tcl_Interp *ip, int argc, char *argv[])
 	return(TCL_OK);
 }
 
-/*************************************************************************
- ** 
- *************************************************************************/
+/*************************************************************************/
+/** vbox_get_nr_new_messages(): Returns the number of new messages.     **/
+/*************************************************************************/
 
 int vbox_get_nr_new_messages(ClientData cd, Tcl_Interp *ip, int argc, char *argv[])
 {
@@ -403,15 +414,17 @@ int vbox_get_nr_new_messages(ClientData cd, Tcl_Interp *ip, int argc, char *argv
 
 	if (argc != 2)
 	{
-		log(L_ERROR, "[vbox_get_nr_new_messages] usage: vbox_get_nr_new_messages <path>\n");
+		log(L_ERROR, gettext("[vbox_get_nr_new_messages] usage: vbox_get_nr_new_messages <path>\n"));
 
 		printstring(ip->result, "0");
 	}
 	else
 	{
-		log(L_JUNK, "[vbox_get_nr_new_messages] counting new messages in \"%s\"...\n", argv[1]);
+		log(L_JUNK, gettext("[vbox_get_nr_new_messages] counting new messages in \"%s\"...\n"), argv[1]);
 
 		n = get_nr_messages(argv[1], TRUE);
+
+		log(L_DEBUG, gettext("[vbox_get_nr_new_messages] result \"%d\".\n"), n);
 
 		printstring(ip->result, "%d", n);
 	}
@@ -419,9 +432,9 @@ int vbox_get_nr_new_messages(ClientData cd, Tcl_Interp *ip, int argc, char *argv
 	return(TCL_OK);
 }
 
-/*************************************************************************
- ** 
- *************************************************************************/
+/*************************************************************************/
+/** vbox_get_nr_all_messages(): Returns the number of messages.         **/
+/*************************************************************************/
 
 int vbox_get_nr_all_messages(ClientData cd, Tcl_Interp *ip, int argc, char *argv[])
 {
@@ -429,15 +442,17 @@ int vbox_get_nr_all_messages(ClientData cd, Tcl_Interp *ip, int argc, char *argv
 
 	if (argc != 2)
 	{
-		log(L_ERROR, "[vbox_get_nr_all_messages] usage: vbox_get_nr_all_messages <path>\n");
+		log(L_ERROR, gettext("[vbox_get_nr_all_messages] usage: vbox_get_nr_all_messages <path>\n"));
 
 		printstring(ip->result, "0");
 	}
 	else
 	{
-		log(L_JUNK, "[vbox_get_nr_all_messages] counting new messages in \"%s\"...\n", argv[1]);
+		log(L_JUNK, gettext("[vbox_get_nr_all_messages] counting all messages in \"%s\"...\n"), argv[1]);
 
 		n = get_nr_messages(argv[1], FALSE);
+
+		log(L_DEBUG, gettext("[vbox_get_nr_all_messages] result \"%d\".\n"), n);
 
 		printstring(ip->result, "%d", n);
 	}

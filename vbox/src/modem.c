@@ -1,11 +1,22 @@
 /*
-** $Id: modem.c,v 1.7 1997/03/08 19:56:53 michael Exp $
+** $Id: modem.c,v 1.8 1997/03/18 12:36:47 michael Exp $
 **
 ** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
 */
 
-#include <sys/types.h>
-#include <sys/stat.h>
+#include "config.h"
+
+#if TIME_WITH_SYS_TIME
+#   include <sys/time.h>
+#   include <time.h>
+#else
+#   if HAVE_SYS_TIME_H
+#      include <sys/time.h>
+#   else
+#      include <time.h>
+#   endif
+#endif
+
 #include <termio.h>
 #include <unistd.h>
 #include <stdio.h>
@@ -13,7 +24,8 @@
 #include <string.h>
 #include <fcntl.h>
 #include <signal.h>
-#include <time.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 
 #include "modem.h"
 #include "log.h"
@@ -58,50 +70,50 @@ static void		modem_set_flowcontrol(TIO *);
 static int		modem_get_echo(char *);
 static int		modem_get_rawsequence(char *, int);
 
-/*************************************************************************
- ** modem_open_port():	Opens the modem port.									**
- *************************************************************************/
+/*************************************************************************/
+/** modem_open_port(): Opens the modem port.									   **/
+/*************************************************************************/
 
 int modem_open_port(void)
 {
-	log(L_DEBUG, "Opening modem port '%s'...\n", setup.modem.device);
+	log(L_DEBUG, gettext("Opening modem port \"%s\"...\n"), setup.modem.device);
 
 	if (setup.modem.fd == -1)
 	{
 		if ((setup.modem.fd = open(setup.modem.device, O_RDWR|O_NDELAY)) == -1)
 		{
-			log(L_FATAL, "Can't open modem port \"%s\".\n", setup.modem.device);
+			log(L_FATAL, gettext("Can't open modem port \"%s\".\n"), setup.modem.device);
 
 			returnerror();
 		}
 
 		if (fcntl(setup.modem.fd, F_SETFL, O_RDWR) == -1)
 		{
-			log(L_FATAL, "Can't call fcntl() to setup modem port.\n");
+			log(L_FATAL, gettext("Can't call fcntl() to setup modem port.\n"));
 			
 			returnerror();
 		}
 	}
-	else log(L_WARN, "Found open modem port (%d).\n", setup.modem.fd);
+	else log(L_WARN, gettext("Found open modem port (%d).\n"), setup.modem.fd);
 
 	returnok();
 }
 
-/*************************************************************************
- ** modem_set_speed():	Sets the modemport speed to 57600.					**
- *************************************************************************/
+/*************************************************************************/
+/** modem_set_speed(): Sets the modemport speed to 57600.					**/
+/*************************************************************************/
 
 static void modem_set_speed(TIO *modemtio)
 {
-	log(L_JUNK, "Setting modem speed to 57600...\n");
+	log(L_JUNK, gettext("Setting modem speed to 57600...\n"));
 
 	cfsetospeed(modemtio, B57600);
 	cfsetispeed(modemtio, B57600);
 }
 
-/*************************************************************************
- ** modem_set_termio():	Sets the modem terminal IO.							**
- *************************************************************************/
+/*************************************************************************/
+/** modem_set_termio():	Sets the modem terminal IO.							**/
+/*************************************************************************/
 
 int modem_set_termio(TIO *modemtio)
 {
@@ -110,9 +122,9 @@ int modem_set_termio(TIO *modemtio)
 	returnerror();
 }
 
-/*************************************************************************
- ** modem_get_termio():	Gets the modem terminal IO.							**
- *************************************************************************/
+/*************************************************************************/
+/** modem_get_termio():	Gets the modem terminal IO.							**/
+/*************************************************************************/
 
 int modem_get_termio(TIO *modemtio)
 {
@@ -121,31 +133,31 @@ int modem_get_termio(TIO *modemtio)
 	returnerror();
 }
 
-/*************************************************************************
- ** modem_set_flowcontrol():	Sets modem flowcontrol to hardware hand-	**
- **									shake.												**
- *************************************************************************/
+/*************************************************************************/
+/** modem_set_flowcontrol(): Sets modem flowcontrol to hardware hand-	**/
+/**								  shake.												   **/
+/*************************************************************************/
 
 static void modem_set_flowcontrol(TIO *modemtio)
 {
-	log(L_JUNK, "Setting modem flow control (HARD)...\n");
+	log(L_JUNK, gettext("Setting modem flow control (HARD)...\n"));
 
 	modemtio->c_cflag &= ~(CRTSCTS);
 	modemtio->c_iflag &= ~(IXON|IXOFF|IXANY);
 	modemtio->c_cflag |=  (CRTSCTS);
 }
   
-/*************************************************************************
- ** modem_hangup():	Toggles the data terminal ready line to hangup the	**
- **						modem.															**
- *************************************************************************/
+/*************************************************************************/
+/** modem_hangup(): Toggles the data terminal ready line to hangup the	**/
+/**					  modem.															   **/
+/*************************************************************************/
 
 int modem_hangup(void)
 {
 	TIO porttio;
 	TIO savetio;
 
-	log(L_DEBUG, "Hangup modem (drop dtr %d ms)...\n", setup.modem.toggle_dtr_time);
+	log(L_DEBUG, gettext("Hangup modem (drop dtr %d ms)...\n"), setup.modem.toggle_dtr_time);
 
 	modem_flush(1);
 
@@ -162,9 +174,9 @@ int modem_hangup(void)
 	return(modem_set_termio(&savetio));
 }
 
-/*************************************************************************
- ** modem_set_sane_mode():	Sets modem terminal IO to sane mode.			**
- *************************************************************************/
+/*************************************************************************/
+/** modem_set_sane_mode():	Sets modem terminal IO to sane mode.			**/
+/*************************************************************************/
 
 static void	modem_set_sane_mode(TIO *modemtio, int local)
 {
@@ -175,9 +187,9 @@ static void	modem_set_sane_mode(TIO *modemtio, int local)
 	modemtio->c_lflag  =  (ECHOK|ECHOE|ECHO|ISIG|ICANON);
 }
 
-/*************************************************************************
- ** modem_set_raw_mode():	Sets modem terminal IO to raw mode.				**
- *************************************************************************/
+/*************************************************************************/
+/** modem_set_raw_mode(): Sets modem terminal IO to raw mode.				**/
+/*************************************************************************/
 
 static void modem_set_raw_mode(TIO *modemtio)
 {
@@ -188,23 +200,23 @@ static void modem_set_raw_mode(TIO *modemtio)
 	modemtio->c_cc[VTIME]  = 0;
 }
 
-/*************************************************************************
- ** modem_initialize():	Initialize the modem.									**
- *************************************************************************/
+/*************************************************************************/
+/** modem_initialize():	Initialize the modem.									**/
+/*************************************************************************/
 
 int modem_initialize(void)
 {
 	TIO porttio;
 
-	log(L_INFO, "Initializing modem port (voice mode; %d ms)...\n", setup.modem.initpause);
+	log(L_INFO, gettext("Initializing modem port (voice mode; %d ms)...\n"), setup.modem.initpause);
 
 	xpause(setup.modem.initpause);
 
-	if (!modem_hangup()) log(L_WARN, "Can't hangup modem!\n");
+	if (!modem_hangup()) log(L_WARN, gettext("Can't hangup modem!\n"));
 
 	if (!modem_get_termio(&porttio))
 	{
-		log(L_ERROR, "Can't get modem terminal IO settings (not initialized).\n");
+		log(L_ERROR, gettext("Can't get modem terminal IO settings (not initialized).\n"));
 		
 		returnerror();
 	}
@@ -216,7 +228,7 @@ int modem_initialize(void)
 
 	if (!modem_set_termio(&porttio))
 	{
-		log(L_ERROR, "Can't set modem terminal IO settings (not initialized).\n");
+		log(L_ERROR, gettext("Can't set modem terminal IO settings (not initialized).\n"));
 		
 		returnerror();
 	}
@@ -229,34 +241,34 @@ int modem_initialize(void)
 	returnok();
 }
 
-/*************************************************************************
- ** modem_close_port():	Close modem port.											**
- *************************************************************************/
+/*************************************************************************/
+/** modem_close_port():	Close modem port.											**/
+/*************************************************************************/
 
 void modem_close_port(void)
 {
-	if (!modem_hangup()) log(L_WARN, "Can't hangup modem!\n");
+	if (!modem_hangup()) log(L_WARN, gettext("Can't hangup modem!\n"));
 
-	log(L_DEBUG, "Closing modem port (%d)...\n", setup.modem.fd);
+	log(L_DEBUG, gettext("Closing modem port (%d)...\n"), setup.modem.fd);
 
 	close(setup.modem.fd);
 
 	setup.modem.fd = -1;
 }
 
-/*************************************************************************
- ** modem_get_last_result():	Returns the last modem result.				**
- *************************************************************************/
+/*************************************************************************/
+/** modem_get_last_result(): Returns the last modem result.				   **/
+/*************************************************************************/
 
 char *modem_get_last_result(void)
 {
 	return(modem_store_result);
 }
 
-/*************************************************************************
- ** modem_command():	Sends a command to the modem and waits for one or	**
- **						more results.													**
- *************************************************************************/
+/*************************************************************************/
+/** modem_command():	Sends a command to the modem and waits for one or	**/
+/**						more results.													**/
+/*************************************************************************/
 
 int modem_command(char *command, char *result)
 {
@@ -273,15 +285,15 @@ int modem_command(char *command, char *result)
 	{
 		modem_flush(0);
 
-		log_line(L_DEBUG, "Sending \"");
+		log_line(L_DEBUG, gettext("Sending \""));
 		log_code(L_DEBUG, command);
-		log_text(L_DEBUG, "\"...\n");		
+		log_text(L_DEBUG, gettext("\"...\n"));
 
 		if (strcmp(command, commandsuffix) != 0)
 		{
 			if ((!modem_write(command)) || (!modem_write(commandsuffix)))
 			{
-				log(L_ERROR, "Can't send modem command.\n");
+				log(L_ERROR, gettext("Can't send modem command.\n"));
 
 				modem_flush(1);
 
@@ -290,7 +302,7 @@ int modem_command(char *command, char *result)
 
 			if (!modem_get_echo(command))
 			{
-				log(L_ERROR, "Can't read modem command echo.\n");
+				log(L_ERROR, gettext("Can't read modem command echo.\n"));
 
 				modem_flush(1);
 
@@ -301,7 +313,7 @@ int modem_command(char *command, char *result)
 		{
 			if (!modem_write(command))
 			{
-				log(L_ERROR, "Can't send modem command.\n");
+				log(L_ERROR, gettext("Can't send modem command.\n"));
 
 				modem_flush(1);
 				
@@ -316,7 +328,7 @@ int modem_command(char *command, char *result)
 		{
 			if ((command) && (*command))
 			{
-				log(L_ERROR, "Can't read modem command result.\n");
+				log(L_ERROR, gettext("Can't read modem command result.\n"));
 			}
 
 			modem_flush(1);
@@ -330,9 +342,9 @@ int modem_command(char *command, char *result)
 
 		if ((back = modem_check_result(line, result)) < 1)
 		{
-			log_line(L_ERROR, "Modem returns unneeded command \"");
+			log_line(L_ERROR, gettext("Modem returns unneeded command \""));
 			log_code(L_ERROR, line);
-			log_text(L_ERROR, "\".\n");
+			log_text(L_ERROR, gettext("\".\n"));
 
 			modem_flush(1);
 			
@@ -344,9 +356,9 @@ int modem_command(char *command, char *result)
 	returnok();
 }
 
-/*************************************************************************
- ** modem_get_s_register():	Returns a s-register value.					**
- *************************************************************************/
+/*************************************************************************/
+/** modem_get_s_register(): Returns a s-register value.					   **/
+/*************************************************************************/
 
 char *modem_get_s_register(int r)
 {
@@ -359,7 +371,7 @@ char *modem_get_s_register(int r)
 
 		if (modem_command(command, "?") == 1)
 		{
-			log(L_DEBUG, "Got s-register value '%s'.\n", modem_get_last_result());
+			log(L_DEBUG, gettext("Got s-register value \"%s\".\n"), modem_get_last_result());
 
 			modem_raw_read(temp, 4);
 
@@ -370,9 +382,9 @@ char *modem_get_s_register(int r)
 	return("ERROR");
 }
 
-/*************************************************************************
- ** modem_check_result():	Checks for a string in the modem result.		**
- *************************************************************************/
+/*************************************************************************/
+/** modem_check_result(): Checks for a string in the modem result.		**/
+/*************************************************************************/
 
 static int modem_check_result(char *have, char *need)
 {
@@ -381,9 +393,9 @@ static int modem_check_result(char *have, char *need)
 	char *more;
 	int	nr;
 
-	log_line(L_DEBUG, "Waiting for \"");
+	log_line(L_DEBUG, gettext("Waiting for \""));
 	log_code(L_DEBUG, need);
-	log_text(L_DEBUG, "\"... ");
+	log_text(L_DEBUG, gettext("\"... "));
 
 	xstrncpy(line, need, MODEM_BUFFER_LEN);
 
@@ -399,11 +411,11 @@ static int modem_check_result(char *have, char *need)
 		{
 			if (more)
 			{
-				log_text(L_DEBUG, "Got \"");
+				log_text(L_DEBUG, gettext("Got \""));
 				log_code(L_DEBUG, word);
-				log_text(L_DEBUG, "\" (%d).\n", nr);
+				log_text(L_DEBUG, gettext("\" (%d).\n"), nr);
 			}
-			else log_text(L_DEBUG, "Got it.\n");
+			else log_text(L_DEBUG, gettext("Got it.\n"));
 			
 			return(nr);
 		}
@@ -411,14 +423,14 @@ static int modem_check_result(char *have, char *need)
 		word = strtok(NULL, "|");
 	}
 
-	log_text(L_DEBUG, "Oops!\n");
+	log_text(L_DEBUG, gettext("Oops!\n"));
 
 	return(0);
 }
 
-/*************************************************************************
- ** modem_write():	Sends a null terminated string to the modem.			**
- *************************************************************************/
+/*************************************************************************/
+/** modem_write(): Sends a null terminated string to the modem.			**/
+/*************************************************************************/
 
 static int modem_write(char *s)
 {
@@ -427,38 +439,38 @@ static int modem_write(char *s)
 	returnerror();
 }
 
-/*************************************************************************
- ** modem_raw_write():	Sends a string to the modem.							**
- *************************************************************************/
+/*************************************************************************/
+/** modem_raw_write(): Sends a string to the modem.							**/
+/*************************************************************************/
 
 size_t modem_raw_write(char *string, int len)
 {
 	return(write(setup.modem.fd, string, len));
 }
 
-/*************************************************************************
- ** modem_get_echo():	Reads modem echo.											**
- *************************************************************************/
+/*************************************************************************/
+/** modem_get_echo(): Reads modem echo.											**/
+/*************************************************************************/
 
 static int modem_get_echo(char *echo)
 {
 	return(modem_get_rawsequence(echo, TRUE));
 }
 
-/*************************************************************************
- ** modem_get_sequence():	Reads a specified sequence from the modem.	**
- *************************************************************************/
+/*************************************************************************/
+/** modem_get_sequence(): Reads a specified sequence from the modem.	   **/
+/*************************************************************************/
 
 int modem_get_sequence(char *seq)
 {
 	return(modem_get_rawsequence(seq, FALSE));
 }
 
-/*************************************************************************
- ** modem_get_rawsequence():	Reads a raw sequence from modem. This is	**
- **									ab subroutine for modem_get_sequence() &	**
- **									modem_get_echo().									**
- *************************************************************************/
+/*************************************************************************/
+/** modem_get_rawsequence():	Reads a raw sequence from modem. This is	**/
+/**									a subroutine for modem_get_sequence() &	**/
+/**									modem_get_echo().									**/
+/*************************************************************************/
 
 static int modem_get_rawsequence(char *line, int echo)
 {
@@ -468,7 +480,7 @@ static int modem_get_rawsequence(char *line, int echo)
 	
 	timeout = (echo ? setup.modem.timeout_echo : setup.modem.timeout_cmd);
 
-	log(L_JUNK, "Reading modem %s (%d secs timeout)...\n", (echo ? "echo" : "sequence"), timeout);
+	log(L_JUNK, gettext("Reading modem %s (%d secs timeout)...\n"), (echo ? gettext("echo") : gettext("sequence")), timeout);
 
 	modem_set_timeout(timeout);
 
@@ -477,12 +489,14 @@ static int modem_get_rawsequence(char *line, int echo)
 		if ((modem_raw_read(&c, 1) != 1) || (modem_get_timeout()))
 		{
 			modem_set_timeout(0);
+
 			returnerror();
 		}
 
 		if (line[i] != c)
 		{
 			modem_set_timeout(0);
+
 			returnerror();
 		}
 	}
@@ -492,6 +506,7 @@ static int modem_get_rawsequence(char *line, int echo)
 		if ((modem_raw_read(&c, 1) != 1) || (modem_get_timeout()))
 		{
 			modem_set_timeout(0);
+
 			returnerror();
 		}
 	}
@@ -506,9 +521,9 @@ static int modem_get_rawsequence(char *line, int echo)
 	returnok();
 }
 
-/*************************************************************************
- ** modem_read():	Reads a terminated string from the modem.					**
- *************************************************************************/
+/*************************************************************************/
+/** modem_read():	Reads a terminated string from the modem.					**/
+/*************************************************************************/
 
 static int modem_read(char *line, int readtimeout)
 {
@@ -518,7 +533,7 @@ static int modem_read(char *line, int readtimeout)
 	int	havetxt = FALSE;
 	int	timeout;
 
-	log(L_JUNK, "Reading modem input (%d secs timeout)...\n", readtimeout);
+	log(L_JUNK, gettext("Reading modem input (%d secs timeout)...\n"), readtimeout);
 
 	modem_set_timeout(readtimeout);
 
@@ -547,7 +562,7 @@ static int modem_read(char *line, int readtimeout)
 
 	if ((r != 1) || (timeout) || (linelen >= (MODEM_BUFFER_LEN - 1)) )
 	{
-		log(L_JUNK, "Can't read from modem [%d]%s.\n", r, (timeout ? " (timeout)" : ""));
+		log(L_JUNK, gettext("Can't read from modem [%d]%s.\n"), r, (timeout ? gettext(" (timeout)") : ""));
 
 		returnerror();
 	}
@@ -555,9 +570,9 @@ static int modem_read(char *line, int readtimeout)
 	returnok();
 }
 
-/*************************************************************************
- ** modem_raw_read():	Reads a raw string from modem.						**
- *************************************************************************/
+/*************************************************************************/
+/** modem_raw_read(): Reads a raw string from modem.						   **/
+/*************************************************************************/
 
 int modem_raw_read(char *line, int len)
 {
@@ -567,12 +582,12 @@ int modem_raw_read(char *line, int len)
 	int i;
 
 #ifdef DBG_NEW_MODEM_READER
-	log(L_JUNK, "[READ] Function request %d byte(s) (now pos %d; len %d).\n", len, modem_input_pos, modem_input_len);
+	log(L_JUNK, gettext("[READ] Function request %d byte(s) (now pos %d; len %d).\n"), len, modem_input_pos, modem_input_len);
 #endif
 
 	if (len > MODEM_INPUT_LEN)
 	{
-		log(L_FATAL, "Internal modem buffer overflow (size %d; request %d)!\n", MODEM_INPUT_LEN, len);
+		log(L_FATAL, gettext("Internal modem buffer overflow (size %d; request %d)!\n"), MODEM_INPUT_LEN, len);
 		
 		return(-1);
 	}
@@ -585,7 +600,7 @@ int modem_raw_read(char *line, int len)
 		modem_input_pos += len;
 
 #ifdef DBG_NEW_MODEM_READER
-		log(L_JUNK, "[READ] Return all %d bytes (now pos %d; len %d).\n", len, modem_input_pos, modem_input_len);
+		log(L_JUNK, gettext("[READ] Return all %d bytes (now pos %d; len %d).\n"), len, modem_input_pos, modem_input_len);
 #endif
 
 		return(len);
@@ -596,11 +611,11 @@ int modem_raw_read(char *line, int len)
 		memcpy(line, &modem_input[modem_input_pos], modem_input_len);
 
 #ifdef DBG_NEW_MODEM_READER
-		log(L_JUNK, "[READ] Store %d of %d bytes (now pos 0; len 0).\n", modem_input_len, len);
+		log(L_JUNK, gettext("[READ] Store %d of %d bytes (now pos 0; len 0).\n"), modem_input_len, len);
 #endif
 	}
 #ifdef DBG_NEW_MODEM_READER
-	else log(L_JUNK, "[READ] Store nothing (pos 0; len 0).\n");
+	else log(L_JUNK, gettext("[READ] Store nothing (pos 0; len 0).\n"));
 #endif
 	
 	len -= modem_input_len;
@@ -615,22 +630,22 @@ int modem_raw_read(char *line, int len)
 		modem_input_len = 0;
 
 #ifdef DBG_NEW_MODEM_READER
-		log(L_JUNK, "[READ] Return only %d bytes (now pos %d; len %d).\n", use, modem_input_pos, modem_input_len);
+		log(L_JUNK, gettext("[READ] Return only %d bytes (now pos %d; len %d).\n"), use, modem_input_pos, modem_input_len);
 #endif
 
 		return(use);
 	}
 
 #ifdef DBG_NEW_MODEM_READER
-	log(L_JUNK, "[READ] Read %d bytes (now pos %d; len %d).\n", modem_input_len, modem_input_pos, modem_input_len);
+	log(L_JUNK, gettext("[READ] Read %d bytes (now pos %d; len %d).\n"), modem_input_len, modem_input_pos, modem_input_len);
 #endif
 
 	for (i = 0; i < modem_input_len; i++)
 	{
 #ifdef DBG_NEW_MODEM_READER
-		log_line(L_JUNK, "[READ] ");
+		log_line(L_JUNK, gettext("[READ] "));
 		log_char(L_JUNK, modem_input[i]);
-		log_text(L_JUNK, "\n");
+		log_text(L_JUNK, gettext("\n"));
 #endif
 
 		modem_check_nocarrier(modem_input[i]);
@@ -644,7 +659,7 @@ int modem_raw_read(char *line, int len)
 	modem_input_pos += len;
 
 #ifdef DBG_NEW_MODEM_READER
-	log(L_JUNK, "[READ] Return %d bytes (now pos %d; len %d.\n", use + len, modem_input_pos, modem_input_len);
+	log(L_JUNK, gettext("[READ] Return %d bytes (now pos %d; len %d.\n"), use + len, modem_input_pos, modem_input_len);
 #endif
 
 	return(use + len);
@@ -659,9 +674,9 @@ int modem_raw_read(char *line, int len)
 		for (i = 0; i < r; i++)
 		{
 #ifdef DBG_OLD_MODEM_READER
-			log_line(L_JUNK, "[OLDREAD] ");
+			log_line(L_JUNK, gettext("[OLDREAD] "));
 			log_char(L_JUNK, line[i]);
-			log_text(L_JUNK, "\n");
+			log_text(L_JUNK, gettext("\n"));
 #endif
 
 			modem_check_nocarrier(line[i]);
@@ -673,23 +688,23 @@ int modem_raw_read(char *line, int len)
 #endif
 }
 
-/*************************************************************************
- ** modem_timeout_function():															**
- *************************************************************************/
+/*************************************************************************/
+/** modem_timeout_function():															**/
+/*************************************************************************/
 
 static void modem_timeout_function(int s)
 {
 	alarm(0);
 	signal(SIGALRM, SIG_IGN);
 
-	log(L_JUNK, "Timeout function called.\n");
+	log(L_JUNK, gettext("Timeout function called.\n"));
 
 	timeoutstatus = TRUE;
 }
 
-/*************************************************************************
- ** modem_set_timeout():	Sets the timeout for the modem functions.		**
- *************************************************************************/
+/*************************************************************************/
+/** modem_set_timeout(): Sets the timeout for the modem functions.		**/
+/*************************************************************************/
 
 void modem_set_timeout(int timeout)
 {
@@ -707,18 +722,18 @@ void modem_set_timeout(int timeout)
 	}
 }
 
-/*************************************************************************
- ** modem_get_timeout():	Returns the timeout status.						**
- *************************************************************************/
+/*************************************************************************/
+/** modem_get_timeout(): Returns the timeout status.						   **/
+/*************************************************************************/
 
 int modem_get_timeout(void)
 {
 	return(timeoutstatus);
 }
 
-/*************************************************************************
- ** modem_check_nocarrier():	Watchs the modem input for NO CARRIER.		**
- *************************************************************************/
+/*************************************************************************/
+/** modem_check_nocarrier():	Watchs the modem input for NO CARRIER.		**/
+/*************************************************************************/
 
 static void modem_check_nocarrier(char c)
 {
@@ -728,7 +743,7 @@ static void modem_check_nocarrier(char c)
 
 		if (nocarrierpos >= strlen(nocarriertxt))
 		{
-			log(L_JUNK, "*** NO CARRIER ***\n");
+			log(L_JUNK, gettext("*** NO CARRIER ***\n"));
 
 			nocarrier		= TRUE;
 			nocarrierpos	= 0;
@@ -742,9 +757,9 @@ static void modem_check_nocarrier(char c)
 	}
 }
 
-/*************************************************************************
- ** modem_flush():	Flushs modem input/output.									**
- *************************************************************************/
+/*************************************************************************/
+/** modem_flush(): Flushs modem input/output.									**/
+/*************************************************************************/
 
 void modem_flush(int timeout)
 {
@@ -753,7 +768,7 @@ void modem_flush(int timeout)
 	long	gotjunk		= 0;
 	char	onebyte		= 0;
 
-	log(L_DEBUG, "Flushing modem%s...\n", (timeout ? " (timeout)" : ""));
+	log(L_DEBUG, gettext("Flushing modem%s...\n"), (timeout ? gettext(" (timeout)") : ""));
 
 	if (modem_get_termio(&porttio))
 	{
@@ -769,15 +784,15 @@ void modem_flush(int timeout)
 			{
 				if (gotjunk++ < 20)
 				{
-					log_line(L_JUNK, "Junk: ");
+					log_line(L_JUNK, gettext("Junk: "));
 					log_char(L_JUNK, onebyte);
-					log_text(L_JUNK, "\n");
+					log_text(L_JUNK, gettext("\n"));
 				}
 			}
 
 			if (gotjunk > 20)
 			{
-				log(L_DEBUG, "Flush has junked %d bytes...\n", gotjunk);
+				log(L_DEBUG, gettext("Flush has junked %d bytes...\n"), gotjunk);
 			}
 
 			modem_set_termio(&savetio);
@@ -788,9 +803,9 @@ void modem_flush(int timeout)
 	tcflush(setup.modem.fd, TCIOFLUSH);
 }
 
-/*************************************************************************
- ** modem_wait():	Waits for modem activity.										**
- *************************************************************************/
+/*************************************************************************/
+/** modem_wait():	Waits for modem activity.										**/
+/*************************************************************************/
 
 int modem_wait(void)
 {
@@ -800,7 +815,7 @@ int modem_wait(void)
 	fd_set	fd;
 	int		back;
 
-	log(L_INFO, "Waiting...\n");
+	log(L_INFO, gettext("Waiting...\n"));
 
 	FD_ZERO(&fd);
 	FD_SET(setup.modem.fd, &fd);
@@ -820,21 +835,21 @@ int modem_wait(void)
 	{
 		if (back < 0)
 		{
-			log(L_ERROR, "Select returns with error (%d)...\n", back);
+			log(L_ERROR, gettext("Select returns with error (%d)...\n"), back);
 		}
-		else log(L_JUNK, "Select returns with timeout...\n");
+		else log(L_JUNK, gettext("Select returns with timeout...\n"));
 
 		returnerror();
 	}
 
-	log(L_INFO, "Wakeup!\n");
+	log(L_INFO, gettext("Wakeup!\n"));
 
 	returnok();
 }
 
-/*************************************************************************
- ** modem_count_rings():
- *************************************************************************/
+/*************************************************************************/
+/** modem_count_rings(): Counts incoming rings.                         **/
+/*************************************************************************/
 
 /* FIXME */
 
@@ -857,7 +872,7 @@ int modem_count_rings(int needrings)
 	{
 		if (ctrl_ishere(setup.spool, CTRL_NAME_STOP))
 		{
-			log(L_INFO, "Control file '%s' exists - killing me now...\n", CTRL_NAME_STOP);
+			log(L_INFO, gettext("Control file \"%s\" exists - killing me now...\n"), CTRL_NAME_STOP);
 		
 			kill(getpid(), SIGTERM);
 		}
@@ -866,11 +881,11 @@ int modem_count_rings(int needrings)
 		{
 			if (ctrl_ishere(setup.spool, CTRL_NAME_REJECT))
 			{
-				log(L_INFO, "Control file '%s' exists - rejecting call...\n", CTRL_NAME_REJECT);
+				log(L_INFO, gettext("Control file \"%s\" exists - rejecting call...\n"), CTRL_NAME_REJECT);
 
 				if (!ctrl_remove(setup.spool, CTRL_NAME_REJECT))
 				{
-					log(L_WARN, "Can't remove control file '%s'!\n", CTRL_NAME_REJECT);
+					log(L_WARN, gettext("Can't remove control file \"%s\"!\n"), CTRL_NAME_REJECT);
 				}
 		
 				returnerror();
@@ -878,11 +893,11 @@ int modem_count_rings(int needrings)
 
 			if (ctrl_ishere(setup.spool, CTRL_NAME_ANSWERNOW))
 			{
-				log(L_INFO, "Control file '%s' exists - answering now...\n", CTRL_NAME_ANSWERNOW);
+				log(L_INFO, gettext("Control file \"%s\" exists - answering now...\n"), CTRL_NAME_ANSWERNOW);
 
 				if (!ctrl_remove(setup.spool, CTRL_NAME_ANSWERNOW))
 				{
-					log(L_WARN, "Can't remove control file '%s'!\n", CTRL_NAME_ANSWERNOW);
+					log(L_WARN, gettext("Can't remove control file \"%s\"!\n"), CTRL_NAME_ANSWERNOW);
 				}
 		
 				returnok();
@@ -890,21 +905,21 @@ int modem_count_rings(int needrings)
 
 			if (ctrl_ishere(setup.spool, CTRL_NAME_ANSWERALL))
 			{
-				log(L_INFO, "Control file '%s' exists - answering now...\n", CTRL_NAME_ANSWERALL);
+				log(L_INFO, gettext("Control file \"%s\" exists - answering now...\n"), CTRL_NAME_ANSWERALL);
 		
 				returnok();
 			}
 
 			if (!setup.voice.doanswer)
 			{
-				log(L_INFO, "Call will not be answered - disabled in \"vboxrc\"...\n");
+				log(L_INFO, gettext("Call will not be answered - disabled in \"vboxrc\"...\n"));
 				
 				returnerror();
 			}
 
 			if (needrings <= 0)
 			{
-				log(L_INFO, "Call will not be answered - no rings are set...\n");
+				log(L_INFO, gettext("Call will not be answered - no rings are set...\n"));
 
 				returnerror();
 			}
@@ -916,35 +931,35 @@ int modem_count_rings(int needrings)
 			{
 				if (strcmp(sreg, "1") != 0)
 				{
-					log(L_INFO, "Incoming call is not voice - hanging up...\n");
+					log(L_INFO, gettext("Incoming call is not voice - hanging up...\n"));
 				
 					returnerror();
 				}
 			}
-			else log(L_WARN, "Can't get incoming call type - I think it's voice...\n");
+			else log(L_WARN, gettext("Can't get incoming call type - I think it's voice...\n"));
 
 			voice_init_section();
 
 			xstrncpy(setup.voice.callerid, &line[15], VOICE_MAX_CALLERID);
 
-			log(L_INFO, "[%2d/%2d] CALLER NUMBER: %s...\n", haverings, needrings, setup.voice.callerid);
-
 			voice_user_section(setup.voice.callerid);
+
+			log(L_INFO, gettext("[%2d/%2d] CALLER NUMBER: %s (%s)...\n"), haverings, needrings, setup.voice.callerid, setup.voice.name);
 
 			if ((setup.voice.rings >= 0) && (setup.voice.rings != needrings))
 			{
-				log(L_DEBUG, "New number of rings from \"vboxrc\" are %d...\n", setup.voice.rings);
+				log(L_DEBUG, gettext("New number of rings from \"vboxrc\" are %d...\n"), setup.voice.rings);
 
 				needrings = setup.voice.rings;
 			}
 
 			if ((setup.voice.ringsonnew >= 0) && (setup.voice.ringsonnew != needrings))
 			{
-				log(L_DEBUG, "Checking for new messages in \"%s\"...\n", setup.voice.checknewpath);
+				log(L_DEBUG, gettext("Checking for new messages in \"%s\"...\n"), setup.voice.checknewpath);
 
 				if ((n = get_nr_messages(setup.voice.checknewpath, TRUE)) > 0)
 				{
- 					log(L_DEBUG, "Found %d new messages; new number of rings are %d...\n", n, setup.voice.ringsonnew);
+ 					log(L_DEBUG, gettext("Found %d new messages; new number of rings are %d...\n"), n, setup.voice.ringsonnew);
 
 					needrings = setup.voice.ringsonnew;
 				}
@@ -961,13 +976,13 @@ int modem_count_rings(int needrings)
 		{
 			haverings++;
 
-			log(L_INFO, "[%2d/%2d] RING...\n", haverings, needrings);
+			log(L_INFO, gettext("[%2d/%2d] RING...\n"), haverings, needrings);
 		}
 		else
 		{
-			log_line(L_JUNK, "Got junk line \"");
+			log_line(L_JUNK, gettext("Got junk line \""));
 			log_code(L_JUNK, line);
-			log_text(L_JUNK, "\"...\n");
+			log_text(L_JUNK, gettext("\"...\n"));
 		}
 
 		if ((haverings >= needrings) && (havesetup)) returnok();
@@ -976,27 +991,27 @@ int modem_count_rings(int needrings)
 	returnerror();
 }
 
-/*************************************************************************
- ** modem_set_nocarrier_state():	Sets NO CARRIER state.						**
- *************************************************************************/
+/*************************************************************************/
+/** modem_set_nocarrier_state():	Sets NO CARRIER state.						**/
+/*************************************************************************/
 
 void modem_set_nocarrier_state(int state)
 {
 	nocarrier = state;
 }
 
-/*************************************************************************
- ** modem_get_nocarrier_state():	Returns NO CARRIER state.					**
- *************************************************************************/
+/*************************************************************************/
+/** modem_get_nocarrier_state():	Returns NO CARRIER state.					**/
+/*************************************************************************/
 
 int modem_get_nocarrier_state(void)
 {
 	return(nocarrier);
 }
 
-/*************************************************************************
- ** modem_check_input():	Checks for modem input.								**
- *************************************************************************/
+/*************************************************************************/
+/** modem_check_input(): Checks for modem input.								**/
+/*************************************************************************/
 
 int modem_check_input(void)
 {

@@ -1,0 +1,123 @@
+
+#ifndef _VBOX_CONFIG_H
+#define _VBOX_CONFIG_H 1
+
+/*
+ * Define to include both, <time.h> *and* <sys/time.h>:
+ */
+
+#undef TIME_WITH_SYS_TIME
+
+/*
+ * Define if you have the <sys/time.h> header file:
+ */
+
+#undef HAVE_SYS_TIME_H
+
+/*
+ * Define if you have the <libintl.h> header file:
+ */
+
+#undef HAVE_LIBINTL_H
+
+/*
+ * Define if you have the <locale.h> header file:
+ */
+
+#undef HAVE_LOCALE_H
+
+/*
+ * Define if your <locale.h> file contains LC_MESSAGES:
+ */
+
+#undef HAVE_LC_MESSAGES
+
+/*
+ * Define if you have the gettext() function:
+ */
+
+#undef HAVE_GETTEXT
+
+/*
+ * Define if you have the dcgettext() function:
+ */
+
+#undef HAVE_DCGETTEXT
+
+/*
+ * Define if you want native language support (this needs the library libintl,
+ * external or build into lib C).
+ */
+
+#undef ENABLE_NLS
+
+/*
+ * Define as __inline if that's what the C compiler calls it:
+ */
+
+
+/*
+ * Define to empty if the keyword does not work:
+ */
+
+#undef const
+
+/*
+ * Do not change any of the options below by hand - use the configure script
+ * insteed! The directory pathes are stored in other files too!
+ */
+
+#undef SPOOLDIR
+#undef LOGFILEDIR
+#undef PIDFILEDIR
+#undef LCKFILEDIR
+#undef I4LCONFDIR
+
+/*
+ * No need to change anything below this line!
+ */
+
+#undef VERSION
+#undef VERDATE
+#undef PACKAGE
+
+/*
+ * If we can't include <locale.h> or <libintl.h> or the function gettext()
+ * doesn't exist, we disable native language support!
+ */
+
+#if !HAVE_LOCALE_H || !HAVE_LIBINTL_H || !HAVE_GETTEXT
+#   undef ENABLE_NLS
+#endif
+
+#if ENABLE_NLS
+#   include <locale.h>
+#   include <libintl.h>
+#else
+#   if HAVE_LOCALE_H
+#     include <locale.h>
+#   endif
+#   if !HAVE_GETTEXT
+#     define gettext(s) (s)
+#   endif
+#endif
+
+#endif /* _VBOX_CONFIG_H */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

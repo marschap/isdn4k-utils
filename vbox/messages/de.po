@@ -1,0 +1,1440 @@
+msgid ""
+msgstr ""
+"Date: 1997-03-13 17:46:23+0100\n"
+"From: Michael 'Ghandi' Herold <michael@abadonna.franken.de>\n"
+"Content-Type: text/plain; charset=\n"
+"Xgettext-Options: --default-domain=./messages/de --sort-output\n"
+"Files: ./src/init.c ./src/libvbox.c ./src/lists.c ./src/lock.c ./src/log.c ./src/modem.c ./src/perms.c ./src/rcgetty.c ./src/rcvbox.c ./src/script.c ./src/streamio.c ./src/vbox.c ./src/vboxbeep.c ./src/vboxconvert.c ./src/vboxctrl.c ./src/vboxgetty.c ./src/voice.c\n"
+
+#: src/modem.c:648 src/modem.c:679 src/modem.c:789 src/vboxbeep.c:271 src/vboxbeep.c:273 src/vboxbeep.c:285 src/vboxbeep.c:287 src/vboxbeep.c:293 src/vboxbeep.c:295 src/vboxconvert.c:338 src/vboxconvert.c:340 src/vboxconvert.c:344 src/vboxconvert.c:447 src/vboxconvert.c:449 src/vboxconvert.c:456 src/vboxconvert.c:458 src/vboxconvert.c:492 src/vboxconvert.c:494 src/vboxconvert.c:498 src/vboxconvert.c:500 src/vboxconvert.c:504 src/vboxconvert.c:613 src/vboxconvert.c:615 src/vboxconvert.c:625 src/vboxconvert.c:1134 src/vboxconvert.c:1142 src/vboxconvert.c:1195 src/vboxconvert.c:1201 src/vboxconvert.c:1213 src/vboxconvert.c:1215 src/vboxctrl.c:190 src/vboxctrl.c:192 src/vboxctrl.c:203 src/vboxctrl.c:205 src/vboxctrl.c:215 src/vboxctrl.c:217 src/vboxctrl.c:221 src/vboxgetty.c:153 src/vboxgetty.c:155 src/vboxgetty.c:174 src/vboxgetty.c:176 src/vboxgetty.c:182
+msgid "\n"
+msgstr "\n"
+
+#: src/vboxctrl.c:218
+msgid "   1) The default (buildin) value (%s).\n"
+msgstr "   1) Der im Programm eingebundene Wert (%s).\n"
+
+#: src/vboxctrl.c:219
+msgid "   2) The value of the environment variable VBOXSPOOL (if set).\n"
+msgstr "   2) Der Wert der Environment Variable VBOXSPOOL (wenn gesetzt).\n"
+
+#: src/vboxctrl.c:220
+msgid "   3) The directory of the command line option \"--spooldir\".\n"
+msgstr "   3) Das Argument der Option \"--spooldir\".\n"
+
+#: src/modem.c:565 src/modem.c:771
+msgid " (timeout)"
+msgstr " (Zeitbegrenzung)"
+
+#: src/modem.c:416
+msgid "\" (%d).\n"
+msgstr "\" (%d).\n"
+
+#: src/voice.c:266 src/voice.c:624
+msgid "\" (ignored)...\n"
+msgstr ""
+
+#: src/voice.c:287
+msgid "\" (need a \"<DLE>\").\n"
+msgstr ""
+
+#: src/modem.c:347
+msgid "\".\n"
+msgstr "\".\n"
+
+#: src/modem.c:290 src/modem.c:985
+msgid "\"...\n"
+msgstr "\"...\n"
+
+#: src/modem.c:398
+msgid "\"... "
+msgstr "\"... "
+
+#: src/vboxgetty.c:336
+msgid "%ld bytes available; %ld bytes needed... "
+msgstr "%ld Byte's sind verfügbar; %ld Byte's werden benötigt...\n"
+
+#: src/vboxbeep.c:272 src/vboxconvert.c:1214 src/vboxctrl.c:191 src/vboxgetty.c:154
+msgid "%s version %s (%s)\n"
+msgstr "%s Version %s (%s)\n"
+
+#: src/vboxgetty.c:124
+msgid "%s: Setup \"%s\" doesn't exist.\n"
+msgstr "%s: Konfigurationsdatei \"%s\" existiert nicht.\n"
+
+#: src/vboxconvert.c:376 src/vboxconvert.c:535
+msgid "%s: can't create \"%s\".\n"
+msgstr "%s: kann \"%s\" nicht erzeugen.\n"
+
+#: src/vboxconvert.c:369 src/vboxconvert.c:528
+msgid "%s: can't create a temporary file.\n"
+msgstr "%s: kann temporäre Datei nicht erzeugen.\n"
+
+#: src/vboxctrl.c:148
+msgid "%s: can't create control file \"%s\".\n"
+msgstr "%s: kann die Kontrolldatei \"%s\" nicht erzeugen.\n"
+
+#: src/vboxbeep.c:205
+msgid "%s: can't find running %s process.\n"
+msgstr "%s: kann keinen laufenden Prozeß von %s finden.\n"
+
+#: src/vboxctrl.c:73
+msgid "%s: can't get passwd entry for uid %d.\n"
+msgstr "%s: kann den Passworteintrag der Benutzer-ID %d nicht finden.\n"
+
+#: src/vboxconvert.c:1166
+msgid "%s: can't open \"%s\" (au sample test).\n"
+msgstr "%s: kann \"%s\" nicht öffnen (au-Sample-Test).\n"
+
+#: src/vboxconvert.c:1149
+msgid "%s: can't open \"%s\" (vbox sample test).\n"
+msgstr "%s: kann \"%s\" nicht öffnen (vbox-Sample-Test).\n"
+
+#: src/vboxconvert.c:1228
+msgid "%s: can't read input.\n"
+msgstr "%s: kann nicht vom Eingabekanal (stdin) lesen.\n"
+
+#: src/vboxconvert.c:383
+msgid "%s: can't read vbox audio header.\n"
+msgstr "%s: kann den \"vbox audio header\" nicht lesen.\n"
+
+#: src/vboxctrl.c:169
+msgid "%s: can't remove control file \"%s\".\n"
+msgstr "%s: kann die Kontrolldatei \"%s\" nicht entfernen.\n"
+
+#: src/vboxconvert.c:1235
+msgid "%s: can't write output.\n"
+msgstr "%s: kann nicht zum Ausgabekanal (stdout) schreiben.\n"
+
+#: src/vboxconvert.c:553
+msgid "%s: can't write vbox audio header.\n"
+msgstr "%s: kann \"vbox audio header\" nicht schreiben.\n"
+
+#: src/vboxctrl.c:141
+msgid "%s: control file \"%s\" allready exists.\n"
+msgstr "%s: die Kontrolldatei \"%s\" exixtiert bereits.\n"
+
+#: src/vboxctrl.c:153
+msgid "%s: control file \"%s\" created.\n"
+msgstr "%s: die Kontrolldatei \"%s\" wurde erzeugt.\n"
+
+#: src/vboxctrl.c:162
+msgid "%s: control file \"%s\" doesn't exist.\n"
+msgstr "%s: die Kontrolldatei \"%s\" existiert nicht.\n"
+
+#: src/vboxctrl.c:174
+msgid "%s: control file \"%s\" removed.\n"
+msgstr "%s: die Kontrolldatei \"%s\" wurde entfernt.\n"
+
+#: src/vboxgetty.c:117
+msgid "%s: device \"%s\" is not accessable.\n"
+msgstr "%s: Gerätetreiber \"%s\" ist nicht ansprechbar.\n"
+
+#: src/vboxbeep.c:178 src/vboxbeep.c:189
+msgid "%s: error sending signal (%s).\n"
+msgstr "%s: Fehler beim senden des Signals (%s).\n"
+
+#: src/vboxconvert.c:766
+msgid "%s: illegal magic number for an au file.\n"
+msgstr "%s: Illegale \"magic number\" für eine au-Datei.\n"
+
+#: src/vboxgetty.c:110
+msgid "%s: must be run by root!\n"
+msgstr "%s: muß vom Benutzer root gestartet werden!\n"
+
+#: src/vboxconvert.c:773
+msgid "%s: number of channels != 1 (only mono supported).\n"
+msgstr "%s: Mehr als ein Kanal wird benutzt (z.Z. wird nur Mono unterstützt).\n"
+
+#: src/vboxctrl.c:179
+msgid "%s: oops - don't know what I should do!\n"
+msgstr "%s: ich weiß nicht was ich machen soll!\n"
+
+#: src/vboxconvert.c:390
+msgid "%s: sample contains no vbox audio header.\n"
+msgstr "%s: die Datei enthält keinen \"vbox audio header\".\n"
+
+#: src/vboxconvert.c:480
+msgid "%s: sample contains no vbox or sun au header.\n"
+msgstr "%s: die Datei enthält weder einen \"vbox audio header\" noch einen \"au header\".\n"
+
+#: src/vboxbeep.c:174
+msgid "%s: sending signal to stop beep's to process %d...\n"
+msgstr "%s: sende Signal zum stoppen der Beep's an Prozeß %d...\n"
+
+#: src/vboxbeep.c:185
+msgid "%s: sending terminate signal to process %d...\n"
+msgstr "%s: sende Signal zum terminieren an Prozeß %d...\n"
+
+#: src/vboxconvert.c:782
+msgid "%s: unexpected EOF.\n"
+msgstr "%s: unerwartetes Dateiende.\n"
+
+#: src/vboxconvert.c:412
+msgid "%s: unknown/unsupported compression %d.\n"
+msgstr "%s: unbekannte oder nicht unterstützte Kompression.\n"
+
+#: src/vboxconvert.c:577
+msgid "%s: unsupported compression type.\n"
+msgstr "%s: nicht unterstützte Kompression.\n"
+
+#: src/vboxconvert.c:819
+msgid "%s: unsupported or illegal sound encoding.\n"
+msgstr "%s: nicht unterstütztes oder falsches Musikformat.\n"
+
+#: src/vboxbeep.c:194
+msgid "%s: you must be *root* to kill a running %s.\n"
+msgstr "%s: nur *root* kann einen laufendes %s beenden.\n"
+
+#: src/vboxbeep.c:214
+msgid "%s: you must be *root* to start %s.\n"
+msgstr "%s: nur *root* kann %s starten.\n"
+
+#: src/vboxctrl.c:132
+msgid "%s: you must specify a control name to create/remove.\n"
+msgstr "%s: es muß der Name einer Kontrolldatei angegeben werden.\n"
+
+#: src/modem.c:746
+msgid "*** NO CARRIER ***\n"
+msgstr "*** NO CARRIER ***\n"
+
+#: src/vboxconvert.c:501
+msgid "- For au samples it returns %d-%d,\n"
+msgstr "- Für au-Dateien wird %d-%d zurückgegeben,\n"
+
+#: src/vboxconvert.c:503
+msgid "- For unknown formats or on errors it returns 255.\n"
+msgstr "- Für unbekannte Formate oder bei einem Fehler wird 255 zurückgegeben.\n"
+
+#: src/vboxconvert.c:502
+msgid "- For vbox messages it returns 2-6,\n"
+msgstr "- Für vbox-Nachrichten wird 2-6 zurückgegeben,\n"
+
+#: src/init.c:230
+msgid "------------------------[End session]-----------------------\n"
+msgstr "-----------------------[Programmende]-----------------------\n"
+
+#: src/init.c:55
+msgid "-----------------------[Begin session]----------------------\n"
+msgstr "-----------------------[Programmstart]----------------------\n"
+
+#: src/vboxconvert.c:452
+msgid "-1, --linear8           Use 8-bit linear output.\n"
+msgstr "-1, --linear8           8-Bit Linear Ausgabe benutzen.\n"
+
+#: src/vboxconvert.c:616
+msgid "-2, --adpcm-2             Converts sample to adpcm-2.\n"
+msgstr "-2, --adpcm-2             Konvertiert Datei nach \"adpcm-2\".\n"
+
+#: src/vboxconvert.c:453
+msgid "-2, --linear16          Use 16-Bit linear output (default).\n"
+msgstr "-2, --linear16          16-Bit Linear Ausgabe benutzen (Voreinstellung).\n"
+
+#: src/vboxconvert.c:617
+msgid "-3, --adpcm-3             Converts sample to adpcm-3.\n"
+msgstr "-3, --adpcm-3             Konvertiert Datei nach \"adpcm-3\".\n"
+
+#: src/vboxconvert.c:618
+msgid "-4, --adpcm-4             Converts sample to adpcm-4 (default).\n"
+msgstr "-4, --adpcm-4             Konvertiert Datei nach \"adpcm-4\" (Voreinstellung).\n"
+
+#: src/vboxctrl.c:209
+msgid "-a, --answerall   Control file \"vboxctrl-answerall\".\n"
+msgstr "-a, --answerall   Kontrolldatei \"vboxctrl-answerall\".\n"
+
+#: src/vboxctrl.c:206
+msgid "-c, --create      Removes a control file (default).\n"
+msgstr "-c, --create      Entfernt eine Kontrolldatei (Voreinstellung).\n"
+
+#: src/vboxgetty.c:178
+msgid "-d, --device TTY   Use device TTY for modem operations [required].\n"
+msgstr "-d, --device TTY   Benutze Gerätetreiber TTY für Modem-Operationen [benötigt].\n"
+
+#: src/vboxgetty.c:177
+msgid "-f, --file FILE    Overwrites \"%s\".\n"
+msgstr "-f, --file FILE    Überschreibt \"%s\".\n"
+
+#: src/vboxconvert.c:623
+msgid "-h, --help                Prints this usage message.\n"
+msgstr "-h, --help                Zeigt diesen Hilfstext an.\n"
+
+#: src/vboxconvert.c:454 src/vboxconvert.c:496
+msgid "-h, --help              Prints this usage message.\n"
+msgstr "-h, --help              Zeigt diesen Hilfstext an.\n"
+
+#: src/vboxbeep.c:291
+msgid "-h, --help             Displays this help text.\n"
+msgstr "-h, --help             Zeigt diesen Hilfstext an.\n"
+
+#: src/vboxgetty.c:180
+msgid "-h, --help         Displays this short help.\n"
+msgstr "-h, --help         Zeigt diesen Hilfstext an.\n"
+
+#: src/vboxctrl.c:214
+msgid "-h, --help        Displays this usage message.\n"
+msgstr "-h, --help        Zeigt diesen Hilfstext an.\n"
+
+#: src/vboxctrl.c:211
+msgid "-j, --reject      Control file \"vboxctrl-reject\".\n"
+msgstr "-j, --reject      Kontrolldatei \"vboxctrl-reject\".\n"
+
+#: src/vboxgetty.c:179
+msgid "-l, --language     Overwrites environment LANG.\n"
+msgstr "-l, --language     Überschreibt die Environment-Variable LANG.\n"
+
+#: src/vboxconvert.c:622
+msgid "-l, --location LOCATION   Sets header information.\n"
+msgstr "-l, --location LOCATION   Setzt Information im \"audio header\".\n"
+
+#: src/vboxbeep.c:289
+msgid "-m, --messagebox DIR   Watch directory DIR for new messages.\n"
+msgstr "-m, --messagebox DIR   Verzeichnis DIR auf neue Nachrichten überwachen.\n"
+
+#: src/vboxctrl.c:208
+msgid "-n, --answernow   Control file \"vboxctrl-answernow\".\n"
+msgstr "-n, --answernow   Kontrolldatei \"vboxctrl-answernow\".\n"
+
+#: src/vboxconvert.c:620
+msgid "-n, --name NAME           Sets header information.\n"
+msgstr "-n, --name NAME           Setzt Information im \"audio header\".\n"
+
+#: src/vboxbeep.c:290
+msgid "-p, --pause SECONDS    Pause in seconds to sleep between checks (default: 5).\n"
+msgstr "-p, --pause SECONDS    Pause in Sekunden zwischen Check's (Voreinstellung: 5).\n"
+
+#: src/vboxconvert.c:621
+msgid "-p, --phone PHONE         Sets header information.\n"
+msgstr "-p, --phone PHONE         Setzt Information im \"audio header\".\n"
+
+#: src/vboxctrl.c:210
+msgid "-p, --stop        Control file \"vboxctrl-stop\".\n"
+msgstr "-p, --stop        Kontrolldatei \"vboxctrl-stop\".\n"
+
+#: src/vboxconvert.c:495
+msgid "-q, --quiet             Returns only the errorcode (no descriptions).\n"
+msgstr "-q, --quiet             Nur Fehlernummer zurückgegeben (keine Beschreibung).\n"
+
+#: src/vboxctrl.c:207
+msgid "-r, --remove      Creates a control file.\n"
+msgstr "-r, --remove      Erzeugt eine Kontrolldatei.\n"
+
+#: src/vboxconvert.c:450
+msgid "-r, --samplerate RATE   Header sampling rate (default 8000).\n"
+msgstr "-r, --samplerate RATE   Samplerate im \"audio header\" (Voreinstellung 8000).\n"
+
+#: src/vboxbeep.c:288
+msgid "-s, --sound HOURS      Hours to signal with sound (default: no time)\n"
+msgstr "-s, --sound HOURS      Stunden in denen Sound gespielt wird (Voreinst.: keine).\n"
+
+#: src/vboxctrl.c:212
+msgid "-s, --spooldir    Spooldirectory to create/remove control files.\n"
+msgstr "-s, --spooldir    Spoolverzeichnis zum erzeugen/löschen der Kontrolldateien.\n"
+
+#: src/vboxconvert.c:619
+msgid "-u, --ulaw                Converts sample to ulaw.\n"
+msgstr "-u, --ulaw                Konvertiert Datei nach \"ulaw\".\n"
+
+#: src/vboxconvert.c:451
+msgid "-u, --ulaw              Use 8-bit uLaw output.\n"
+msgstr "-u, --ulaw              8-Bit ulaw Ausgabe benutzen.\n"
+
+#: src/vboxconvert.c:624
+msgid "-v, --version             Prints the package version.\n"
+msgstr "-v, --version             Zeigt die Version des Programms an.\n"
+
+#: src/vboxconvert.c:455 src/vboxconvert.c:497
+msgid "-v, --version           Prints the package version.\n"
+msgstr "-v, --version           Zeigt die Version des Programms an.\n"
+
+#: src/vboxbeep.c:292
+msgid "-v, --version          Displays program version.\n"
+msgstr "-v, --version          Zeigt die Version des Programms an.\n"
+
+#: src/vboxgetty.c:181
+msgid "-v, --version      Displays the package version.\n"
+msgstr "-v, --version      Zeigt die Version des Programms an.\n"
+
+#: src/vboxctrl.c:213
+msgid "-v, --version     Displays package version.\n"
+msgstr "-v, --version     Zeigt Version des Programms an.\n"
+
+#: src/rcvbox.c:590
+msgid "Answer call"
+msgstr "Anruf wird beantwortet"
+
+#: src/vboxgetty.c:294
+msgid "Answering call...\n"
+msgstr "Beantworte Anruf...\n"
+
+#: src/script.c:129
+msgid "Back from tcl script...\n"
+msgstr "Zurück vom Tcl-Skript...\n"
+
+#: src/rcvbox.c:508
+msgid "Bad flag RINGS in line #%ld (ignored).\n"
+msgstr "Falsches Flag RINGS in Zeile #%ld (ignoriert).\n"
+
+#: src/rcvbox.c:525
+msgid "Bad flag TOLLRINGS in line #%ld (ignored).\n"
+msgstr "Falsches Flag TOLLRINGS in Zeile #%ld (ignoriert).\n"
+
+#: src/vboxgetty.c:217
+msgid "Bad initialization - Program will exist on %d trys!\n"
+msgstr "Falsche Initialisierung - Programm beendet sich nach %d weiteren Versuchen!\n"
+
+#: src/rcvbox.c:342
+msgid "Bad number of rings in line #%ld (ignored).\n"
+msgstr "Falsche Anzahl Ring's in Zeile #%ld (ignoriert).\n"
+
+#: src/rcvbox.c:475
+msgid "Bad record time in line #%ld (using defaults).\n"
+msgstr "Falsche Aufnahmezeit in Zeile #%ld (benutze Voreinstellung).\n"
+
+#: src/rcvbox.c:183
+msgid "Bad time; can't convert timestring (%s-%s) - ignored...\n"
+msgstr "Falsche Zeit; kann Zeitangabe (%s-%s) nicht konvertieren - ignoriert...\n"
+
+#: src/rcvbox.c:181
+msgid "Bad time; start greater than end (%s-%s) - ignored...\n"
+msgstr "Falsche Zeit; Startzeit ist größer als die Endzeit (%s-%s) - ignoriert...\n"
+
+#: src/rcgetty.c:141
+msgid "Bad value \"%s\" for command \"%s\" ignored (%s)...\n"
+msgstr "Falscher Wert \"%s\" für Kommando \"%s\" ignoriert (%s)...\n"
+
+#: src/vboxgetty.c:360
+msgid "Blocking all signals (0-%d)...\n"
+msgstr "Blockiere alle Signale (0-%d)...\n"
+
+#: src/rcvbox.c:357
+msgid "Call will be answered after %ld rings (default)...\n"
+msgstr "Anruf wird nach %ld Ring's beantwortet (Voreinstellung)...\n"
+
+#: src/rcvbox.c:348
+msgid "Call will be answered after %ld rings...\n"
+msgstr "Anruf wird nach %ld Ring's beantwortet...\n"
+
+#: src/modem.c:915
+msgid "Call will not be answered - disabled in \"vboxrc\"...\n"
+msgstr "Anruf wird nicht beantwortet - Gesperrt in \"vboxrc\"...\n"
+
+#: src/modem.c:922
+msgid "Call will not be answered - no rings are set...\n"
+msgstr "Anruf wird nicht beantwortet - Keine Ring's gesetzt...\n"
+
+#: src/rcvbox.c:418
+msgid "Caller number match user \"%s\"...\n"
+msgstr "Anrufernummer entspricht \"%s\"...\n"
+
+#: src/vboxgetty.c:298
+msgid "Can't answer call -- hanging up...\n"
+msgstr "Kann Anruf nicht beantworten - Lege auf...\n"
+
+#: src/modem.c:92
+msgid "Can't call fcntl() to setup modem port.\n"
+msgstr "Kann Modem nicht mit der Funktion 'fcntl()' einstellen.\n"
+
+#: src/init.c:126
+msgid "Can't create \"%s\" (%s).\n"
+msgstr "Kann \"%s\" nicht erzeugen (%s).\n"
+
+#: src/lock.c:116 src/voice.c:403
+msgid "Can't create \"%s\".\n"
+msgstr "Kann \"%s\" nicht erzeugen.\n"
+
+#: src/script.c:136
+msgid "Can't create all new tcl commands.\n"
+msgstr "Kann nicht alle der neuen Tcl-Kommandos erzeugen.\n"
+
+#: src/script.c:145
+msgid "Can't create tcl interpreter.\n"
+msgstr "Kann den Tcl-Interpreter nicht erzeugen.\n"
+
+#: src/modem.c:939
+msgid "Can't get incoming call type - I think it's voice...\n"
+msgstr "Kann den Typ des eingehenden Anrufs nicht ermitteln - Sprache wird angenommen...\n"
+
+#: src/rcvbox.c:230
+msgid "Can't get local time (don't match)...\n"
+msgstr "Kann die lokale Zeit nicht ermitteln (keine Übereinstimmung)...\n"
+
+#: src/modem.c:219
+msgid "Can't get modem terminal IO settings (not initialized).\n"
+msgstr "Kann die Modem-Terminal-Einstellungen nicht lesen (nicht initialisiert).\n"
+
+#: src/init.c:91
+msgid "Can't get passwd entry for userid %d.\n"
+msgstr "Kann keinen Paßworteintrag für die Benutzer-ID %d finden.\n"
+
+#: src/vboxgetty.c:347
+msgid "Can't get statistic about disc space!"
+msgstr "Kann Statistik über die freie Plattenkapazität nicht ermitteln!\n"
+
+#: src/modem.c:215 src/modem.c:250
+msgid "Can't hangup modem!\n"
+msgstr "Kann Modem nicht auflegen!\n"
+
+#: src/script.c:143
+msgid "Can't initialize tcl interpreter.\n"
+msgstr "Kann den Tcl-Interpreter nicht initialisieren.\n"
+
+#: src/lock.c:114
+msgid "Can't lock \"%s\".\n"
+msgstr "Kann \"%s\" nicht sperren.\n"
+
+#: src/init.c:200 src/rcgetty.c:170 src/voice.c:156
+msgid "Can't open \"%s\".\n"
+msgstr "Kann \"%s\" nicht öffnen.\n"
+
+#: src/modem.c:85
+msgid "Can't open modem port \"%s\".\n"
+msgstr "Kann Modemport \"%s\" nicht öffnen.\n"
+
+#: src/modem.c:565
+msgid "Can't read from modem [%d]%s.\n"
+msgstr "Kann nicht vom Modem lesen [%d]%s.\n"
+
+#: src/voice.c:504
+msgid "Can't read incoming data (%s).\n"
+msgstr ""
+
+#: src/voice.c:313
+msgid "Can't read input from modem.\n"
+msgstr ""
+
+#: src/modem.c:305
+msgid "Can't read modem command echo.\n"
+msgstr "Kann das Echo vom Modemkommando nicht lesen.\n"
+
+#: src/modem.c:331
+msgid "Can't read modem command result.\n"
+msgstr "Kann die Antwort vom Modemkommando nicht lesen.\n"
+
+#: src/voice.c:163
+msgid "Can't read vbox audio header from message.\n"
+msgstr ""
+
+#: src/init.c:156 src/init.c:164 src/modem.c:888 src/modem.c:900
+msgid "Can't remove control file \"%s\"!\n"
+msgstr "Kann die Kontrolldatei \"%s\" nicht löschen!\n"
+
+#: src/lock.c:184
+msgid "Can't remove lock \"%s\".\n"
+msgstr "Kann Sperrung von \"%s\" nicht entfernen.\n"
+
+#: src/modem.c:296 src/modem.c:316
+msgid "Can't send modem command.\n"
+msgstr "Kann Modemkommando nicht senden.\n"
+
+#: src/perms.c:39
+msgid "Can't set mode of \"%s\" (%s).\n"
+msgstr "Kann Rechte von \"%s\" nicht setzen (%s).\n"
+
+#: src/modem.c:231
+msgid "Can't set modem terminal IO settings (not initialized).\n"
+msgstr "Kann Modem-Terminal-Einstellungen nicht setzen (nicht initialisiert).\n"
+
+#: src/perms.c:32
+msgid "Can't set owner of \"%s\" (%s).\n"
+msgstr "Kann Besitzer von \"%s\" nicht setzen (%s).\n"
+
+#: src/voice.c:394
+msgid "Can't set voice audio compressen.\n"
+msgstr ""
+
+#: src/voice.c:174
+msgid "Can't set voice audio compression or line mode.\n"
+msgstr ""
+
+#: src/perms.c:67
+msgid "Can't set working directory to \"%s\" (%s).\n"
+msgstr "Kann nicht nach \"%s\" wechseln (%s).\n"
+
+#: src/perms.c:71
+msgid "Can't setregid() to %d, %d (%s).\n"
+msgstr "Kann ID nicht zu %d, %d ändern [setregid] (%s).\n"
+
+#: src/perms.c:69
+msgid "Can't setreuid() to %d, %d (%s).\n"
+msgstr "Kann ID nicht zu %d, %d ändern [setreuid] (%s).\n"
+
+#: src/voice.c:432
+msgid "Can't start record mode.\n"
+msgstr ""
+
+#: src/voice.c:190
+msgid "Can't start voice play mode.\n"
+msgstr ""
+
+#: src/voice.c:414
+msgid "Can't write raw voice audio header.\n"
+msgstr ""
+
+#: src/vboxconvert.c:1198
+msgid "Channels........: %d\n"
+msgstr "Kanäle..........: %d\n"
+
+#: src/modem.c:958
+msgid "Checking for new messages in \"%s\"...\n"
+msgstr "Suche nach neuen Nachrichten in \"%s\"...\n"
+
+#: src/vboxgetty.c:323
+msgid "Checking free space on \"%s\"...\n"
+msgstr "Überprüfe freie Kapazität auf \"%s\"...\n"
+
+#: src/vboxgetty.c:243
+msgid "Checking if modem is still alive...\n"
+msgstr "Überprüfe ob Modem noch antwortet...\n"
+
+#: src/modem.c:252
+msgid "Closing modem port (%d)...\n"
+msgstr "Schließe Modemport (%d)...\n"
+
+#: src/vboxconvert.c:1136
+msgid "Compression.............: %s\n"
+msgstr "Kompression.............: %s\n"
+
+#: src/modem.c:896 src/modem.c:908
+msgid "Control file \"%s\" exists - answering now...\n"
+msgstr "Kontrolldatei \"%s\" existiert - Anruf wird gleich beantwortet...\n"
+
+#: src/modem.c:875
+msgid "Control file \"%s\" exists - killing me now...\n"
+msgstr "Kontrolldatei \"%s\" existiert - Programm wird beendet...\n"
+
+#: src/vboxgetty.c:256
+msgid "Control file \"%s\" exists - program will quit...\n"
+msgstr "Kontrolldatei \"%s\" existiert - Programm wird beendet...\n"
+
+#: src/modem.c:884
+msgid "Control file \"%s\" exists - rejecting call...\n"
+msgstr "Kontrolldatei \"%s\" existiert - Anruf wird verworfen...\n"
+
+#: src/init.c:140 src/init.c:144
+msgid "Control file \"%s\" exists - waiting...\n"
+msgstr "Kontrolldatei \"%s\" existiert - Warte...\n"
+
+#: src/init.c:149
+msgid "Control file deleted - back in business...\n"
+msgstr "Kontrolldatei wurde gelöscht - Back in business...\n"
+
+#: src/voice.c:240
+msgid "Could only write %d of %d bytes (%s).\n"
+msgstr ""
+
+#: src/vboxconvert.c:1135
+msgid "Creation time...........: %s"
+msgstr "Erzeugungsdatum.........: %s"
+
+#: src/vboxconvert.c:1200
+msgid "Data location...: %d\n"
+msgstr "Datenbereich....: %d\n"
+
+#: src/rcvbox.c:590
+msgid "Don't answer call"
+msgstr "Anruf wird nicht beantwortet"
+
+#: src/rcvbox.c:593
+msgid "Don't play beep message"
+msgstr "Beep-Nachricht wird nicht gespielt"
+
+#: src/rcvbox.c:592
+msgid "Don't play standard message"
+msgstr "Ansage-Nachricht wird nicht gespielt"
+
+#: src/rcvbox.c:594
+msgid "Don't play timeout message"
+msgstr "Zeitbegrenzungs-Nachricht wird nicht gespielt"
+
+#: src/rcvbox.c:591
+msgid "Don't record a message"
+msgstr "Es wird keine Nachricht aufgezeichnet"
+
+#: src/perms.c:54
+msgid "Drop permissions to userid %d; groupid %d...\n"
+msgstr "Setze Prozeßrechte auf Benutzer-ID %d; Gruppen-ID %d...\n"
+
+#: src/voice.c:208
+msgid "End of audio data (%s).\n"
+msgstr ""
+
+#: src/rcgetty.c:163
+msgid "Error in \"%s\": Missing argument (%s).\n"
+msgstr "Fehler in \"%s\": Vermisse Argument (%s).\n"
+
+#: src/rcgetty.c:162
+msgid "Error in \"%s\": Missing command.\n"
+msgstr "Fehler in \"%s\": Vermisse Kommando.\n"
+
+#: src/rcvbox.c:239
+msgid "Error in day string \"%s\" in line #%ld (don't match).\n"
+msgstr "Fehler in Tagesangabe \"%s\" in Zeile #%ld (keine Übereinstimmung).\n"
+
+#: src/rcvbox.c:331 src/rcvbox.c:402 src/rcvbox.c:464
+msgid "Error in vboxrc line #%ld (ignored).\n"
+msgstr "Fehler in vboxrc Zeile #%ld (ignoriert).\n"
+
+#: src/init.c:223
+msgid "Exit program on signal %d...\n"
+msgstr "Signal %d erhalten - Beende Programm...\n"
+
+#: src/vboxgetty.c:215
+msgid "Exit program while bad init limit are reached.\n"
+msgstr "Programm wird beendet weil das Modem mehrmals nicht initialisiert werden konnte.\n"
+
+#: src/modem.c:795
+msgid "Flush has junked %d bytes...\n"
+msgstr "Es wurden %d Zeichen Datenmüll überlesen...\n"
+
+#: src/modem.c:771
+msgid "Flushing modem%s...\n"
+msgstr "Entleere Modemport%s...\n"
+
+#: src/vboxconvert.c:1196
+msgid "Format..........: %s\n"
+msgstr "Format..........: %s\n"
+
+#: src/modem.c:962
+msgid "Found %d new messages; new number of rings are %d...\n"
+msgstr "%d neue Nachricht(en) gefunden; Neue Anzahl Ring's ist %d...\n"
+
+#: src/rcvbox.c:490
+msgid "Found Flag \"%s\"...\n"
+msgstr "Gefundenes Flag: \"%s\"...\n"
+
+#: src/rcgetty.c:137
+msgid "Found command '%s = %s' (%s)...\n"
+msgstr "Gefundenes Kommando: '%s = %s' (%s)...\n"
+
+#: src/rcgetty.c:122
+msgid "Found command '%s = %s'...\n"
+msgstr "Gefundenes Kommando: '%s = %s'...\n"
+
+#: src/modem.c:97
+msgid "Found open modem port (%d).\n"
+msgstr "Bereits geöffneter Modemport gefunden (%d).\n"
+
+#: src/voice.c:264
+msgid "Found sequence \"<DLE>"
+msgstr ""
+
+#: src/voice.c:270
+msgid "Found sequence \"<DLE><DC4>\" (remote hangup)...\n"
+msgstr ""
+
+#: src/voice.c:466
+msgid "Found sequence \"<DLE><ETX>\" (remote hangup)...\n"
+msgstr ""
+
+#: src/voice.c:637
+msgid "Found touchtone \"%c\"...\n"
+msgstr ""
+
+#: src/vboxgetty.c:327
+msgid "Free disc space check disabled!\n"
+msgstr "Die Überprüfung der freien Plattenkapazität wurde abgeschaltet!\n"
+
+#: src/voice.c:324
+msgid "Function play %d secs (kernel needs %d secs)...\n"
+msgstr ""
+
+#: src/rcvbox.c:315
+msgid "Getting number of rings to wait before answer call...\n"
+msgstr "Ermittle Anzahl Ring's um Anruf zu beantworten...\n"
+
+#: src/modem.c:414
+msgid "Got \""
+msgstr "Erhalte \""
+
+#: src/modem.c:418
+msgid "Got it.\n"
+msgstr "Erhalten.\n"
+
+#: src/modem.c:983
+msgid "Got junk line \""
+msgstr "Erhalte Müllzeile \""
+
+#: src/modem.c:374
+msgid "Got s-register value \"%s\".\n"
+msgstr "Der Inhalt des S-Registers ist \"%s\".\n"
+
+#: src/voice.c:285
+msgid "Got unneeded character \""
+msgstr ""
+
+#: src/modem.c:160
+msgid "Hangup modem (drop dtr %d ms)...\n"
+msgstr "Lege Modem auf (drop dtr %d ms)...\n"
+
+#: src/voice.c:249
+msgid "Have input...\n"
+msgstr ""
+
+#: src/vboxbeep.c:294
+msgid ""
+"Hours to play sound with the pc speaker must be specified in 24-hour-format.\n"
+"you can use ',' or '-' to seperate hours or specify time ranges (eg 9,17-22).\n"
+"A '--sound=\"*\"' means at every time and '--sound=\"-\"' means at no time.\n"
+"\n"
+"The option '--messagebox' can be used more than one time, so you can watch\n"
+"max. %d seperate directories.\n"
+msgstr ""
+"Die Stunden in denen Sound mit dem PC-Lautsprecher gespielt werden darf, müssen\n"
+"im 24-Stunden-Format angegeben werden. Die Zeichen ',' und '-' können benutzt\n"
+"werden um mehrere Zeiten zu trennen oder um Zeitzonen (beispiel: 9,17-22) anzu-\n"
+"geben. Ein '--sound=\"*\"' heißt immer, ein '--sound=\"-\"' zu keiner Zeit.\n"
+"\n"
+"Die Option '--messagebox' kann mehrmals angegeben werden. Es können maximal %d\n"
+"Verzeichnisse gleichzeitig überwacht werden.\n"
+
+#: src/voice.c:622
+msgid "Illeagal \"<DLE>\" shielded code \""
+msgstr ""
+
+#: src/script.c:125 src/script.c:134
+msgid "In \"%s\": %s (line %d).\n"
+msgstr "In \"%s\": %s (Zeile %d).\n"
+
+#: src/modem.c:934
+msgid "Incoming call is not voice - hanging up...\n"
+msgstr "Eingehender Anruf ist nicht vom Typ Sprache - Lege auf...\n"
+
+#: src/modem.c:211
+msgid "Initializing modem port (voice mode; %d ms)...\n"
+msgstr "Initialisiere Modem (Sprachmodus; %d ms)...\n"
+
+#: src/modem.c:590
+msgid "Internal modem buffer overflow (size %d; request %d)!\n"
+msgstr "Interner Modembuffer ist übergelaufen (Größe %d; Anforderung %d)!\n"
+
+#: src/rcvbox.c:289
+msgid "Jumping to section \"%s\"...\n"
+msgstr "Springe zur Sektion \"%s\"...\n"
+
+#: src/modem.c:787
+msgid "Junk: "
+msgstr "Müll: "
+
+#: src/vboxconvert.c:1137
+msgid "Length..................: %d seconds\n"
+msgstr "Länge...................: %d Sekunden\n"
+
+#: src/lock.c:76 src/lock.c:155
+msgid "Lock setup for type %d not found.\n"
+msgstr "Sperrungs-Einstellungen für Typ %d nicht gefunden.\n"
+
+#: src/lock.c:92
+msgid "Locking %s (%s)...\n"
+msgstr "Sperre %s (%s)...\n"
+
+#: src/modem.c:345
+msgid "Modem returns unneeded command \""
+msgstr "Modem liefert falsche Rückgabe \""
+
+#: src/modem.c:951
+msgid "New number of rings from \"vboxrc\" are %d...\n"
+msgstr "Neue Anzahl der Ring's von \"vboxrc\" ist %d...\n"
+
+#: src/rcvbox.c:569
+msgid "No (or not all) settings found (using defaults)...\n"
+msgstr "Keine (oder nicht alle) Einstellungen gefunden (benutze Voreinstellungen)...\n"
+
+#: src/lock.c:126 src/lock.c:191
+msgid "Not enough memory to allocate lockname.\n"
+msgstr "Nicht genug Speicher um Sperrname zu erzeugen.\n"
+
+#: src/vboxconvert.c:457
+msgid ""
+"Note: The sampling rate is written into the file header only, it\n"
+"      doesn't do any sampling rate conversion!\n"
+msgstr ""
+"Bemerkung: Die Samplerate wird nur in den \"audio header\" geschrieben. Es wird\n"
+"           keine Konvertierung vorgenommen!\n"
+
+#: src/voice.c:333
+msgid "Oops - can't calculate time to wait!\n"
+msgstr ""
+
+#: src/modem.c:426
+msgid "Oops!\n"
+msgstr "Huch!\n"
+
+#: src/modem.c:79
+msgid "Opening modem port \"%s\"...\n"
+msgstr "Öffne Modemport \"%s\"...\n"
+
+#: src/rcgetty.c:142
+msgid "Parser returns \"%s\" (min %d; max %d).\n"
+msgstr "Übersetzer hat \"%s\" zurückgegeben (Min %d; Max %d).\n"
+
+#: src/rcvbox.c:210
+msgid "Parsing day(s) \"%s\"...\n"
+msgstr "Untersuche Tag(e) \"%s\"...\n"
+
+#: src/rcvbox.c:447
+msgid "Parsing settings from section \"%s\"...\n"
+msgstr "Übersetze Einstellungen der Sektion \"%s\"...\n"
+
+#: src/rcgetty.c:85
+msgid "Parsing settings in \"%s\" for port \"%s\"...\n"
+msgstr "Übersetze Einstellungen in \"%s\" für Port \"%s\"...\n"
+
+#: src/rcvbox.c:123
+msgid "Parsing time(s) \"%s\"...\n"
+msgstr "Untersuche Zeit(en) \"%s\"...\n"
+
+#: src/rcvbox.c:593
+msgid "Play beep message"
+msgstr "Beep-Nachricht wird gespielt"
+
+#: src/rcvbox.c:592
+msgid "Play standard message"
+msgstr "Ansage-Nachricht wird gespielt"
+
+#: src/rcvbox.c:594
+msgid "Play timeout message"
+msgstr "Zeitbegrenzungs-Nachricht wird gespielt"
+
+#: src/voice.c:224
+msgid "Play: <DATA %d incoming; %d outgoing>\n"
+msgstr ""
+
+#: src/voice.c:152
+msgid "Playing \"%s\"...\n"
+msgstr ""
+
+#: src/rcvbox.c:171
+msgid "Range %s - %s (%s): "
+msgstr "Bereich %s - %s: keine Übereinstimmung.\n"
+
+#: src/rcvbox.c:264
+msgid "Range %s: don't match.\n"
+msgstr "Bereich %s: keine Übereinstimmung.\n"
+
+#: src/rcvbox.c:260
+msgid "Range %s: match.\n"
+msgstr "Bereich %s: Übereinstimmung.\n"
+
+#: src/rcvbox.c:134
+msgid "Range **:**:** - **:**:** (%s): match.\n"
+msgstr "Bereich **:**:** - **:**:** (%s): Übereinstimmung.\n"
+
+#: src/rcvbox.c:214
+msgid "Range *: match.\n"
+msgstr "Bereich *: Übereinstimmung.\n"
+
+#: src/rcvbox.c:141
+msgid "Range --:--:-- - --:--:-- (%s): don't match.\n"
+msgstr "Bereich Range --:--:-- - --:--:-- (%s): keine Übereinstimmung.\n"
+
+#: src/rcvbox.c:221
+msgid "Range -: don't match.\n"
+msgstr "Bereich -: keine Übereinstimmung.\n"
+
+#: src/modem.c:483
+msgid "Reading modem %s (%d secs timeout)...\n"
+msgstr "Lese Modem-%s (%d Sekunden Zeitbegrenzung)...\n"
+
+#: src/modem.c:536
+msgid "Reading modem input (%d secs timeout)...\n"
+msgstr "Lese Modem-Eingabe (%d Sekunden Zeitbegrenzung)...\n"
+
+#: src/rcvbox.c:591
+msgid "Record a message"
+msgstr "Eine Nachricht wird aufgezeichnet"
+
+#: src/voice.c:493
+msgid "Record: <DATA %d incoming; %d outgoing>\n"
+msgstr ""
+
+#: src/voice.c:388
+msgid "Recording \"%s\" (%d secs)...\n"
+msgstr ""
+
+#: src/script.c:65
+msgid "Running tcl script \"%s\"...\n"
+msgstr "Starte Tcl-Skript \"%s\"...\n"
+
+#: src/init.c:56
+msgid "Running vbox version %s...\n"
+msgstr "Programmversion vbox: %s...\n"
+
+#: src/vboxconvert.c:1197
+msgid "Sampling rate...: %d\n"
+msgstr "Samplerate......: %d\n"
+
+#: src/rcvbox.c:375
+msgid "Searching user with caller number \"%s\"...\n"
+msgstr "Suche Name für Anrufernummer \"%s\"...\n"
+
+#: src/rcvbox.c:427
+msgid "Section \"[%s]\" will be used (default)...\n"
+msgstr "Sektion \"[%s]\" wird benutzt (Voreinstellung)...\n"
+
+#: src/rcvbox.c:419
+msgid "Section \"[%s]\" will be used...\n"
+msgstr "Sektion \"[%s]\" wird benutzt...\n"
+
+#: src/modem.c:838
+msgid "Select returns with error (%d)...\n"
+msgstr "Warten auf Modemdaten endet mit einem Fehler (%d)...\n"
+
+#: src/modem.c:840
+msgid "Select returns with timeout...\n"
+msgstr "Zeitbegrenzung beim warten auf Modemdaten ist abgelaufen...\n"
+
+#: src/modem.c:288
+msgid "Sending \""
+msgstr "Sende \""
+
+#: src/voice.c:561
+msgid "Sending \"<DLE><DC4>\"...\n"
+msgstr ""
+
+#: src/voice.c:353
+msgid "Sending \"<DLE><ETX>\"...\n"
+msgstr ""
+
+#: src/voice.c:300 src/voice.c:519
+msgid "Sequence \"%s\" found in breaklist...\n"
+msgstr ""
+
+#: src/voice.c:306 src/voice.c:525
+msgid "Sequence \"%s\" not in breaklist (ignored)...\n"
+msgstr ""
+
+#: src/perms.c:28
+msgid "Setting \"%s\" to %d.%d (%04o)...\n"
+msgstr "Setze Rechte von \"%s\" auf %d.%d (%04o)...\n"
+
+#: src/modem.c:143
+msgid "Setting modem flow control (HARD)...\n"
+msgstr "Setze Modem-Flußkontrolle (HARD)...\n"
+
+#: src/modem.c:108
+msgid "Setting modem speed to 57600...\n"
+msgstr "Setze Modem-Geschwindigkeit auf 57600...\n"
+
+#: src/voice.c:109
+msgid "Setting voice compression \"%s\"...\n"
+msgstr ""
+
+#: src/rcvbox.c:589
+msgid "Settings: %d secs record time.\n"
+msgstr "Einstellung: %d Sekunden Aufzeichnungszeit.\n"
+
+#: src/rcvbox.c:590 src/rcvbox.c:591 src/rcvbox.c:592 src/rcvbox.c:593 src/rcvbox.c:594
+msgid "Settings: %s.\n"
+msgstr "Einstellung: %s.\n"
+
+#: src/rcvbox.c:573
+msgid "Settings: Beep \"%s\".\n"
+msgstr "Einstellung: Beep \"%s\".\n"
+
+#: src/rcvbox.c:586
+msgid "Settings: Check for new messages in \"%s\".\n"
+msgstr "Einstellung: Suche nach neuen Nachrichten in \"%s\".\n"
+
+#: src/rcvbox.c:572
+msgid "Settings: Message \"%s\".\n"
+msgstr "Einstellung: Ansage \"%s\".\n"
+
+#: src/rcvbox.c:585
+msgid "Settings: Rings changed to %d if new message exist.\n"
+msgstr "Einstellung: Ring's werden in %d geändert wenn neue Nachrichten existieren.\n"
+
+#: src/rcvbox.c:579
+msgid "Settings: Rings changed to %d.\n"
+msgstr "Einstellung: Anzahl der Ring's geändert in %d.\n"
+
+#: src/rcvbox.c:581
+msgid "Settings: Rings not changed.\n"
+msgstr "Einstellung: Anzahl der Ring's nicht geändert.\n"
+
+#: src/rcvbox.c:575
+msgid "Settings: Script \"%s\".\n"
+msgstr "Einstellung: Tcl-Skript \"%s\".\n"
+
+#: src/rcvbox.c:574
+msgid "Settings: Timeout \"%s\".\n"
+msgstr "Einstellung: Zeitbegrenzung \"%s\".\n"
+
+#: src/vboxconvert.c:1199
+msgid "Size............: %d %s\n"
+msgstr "Größe...........: %d %s\n"
+
+#: src/vboxconvert.c:1139
+msgid "Speaker caller number...: %s\n"
+msgstr "Kennung des Anrufers....: %s\n"
+
+#: src/vboxconvert.c:1141
+msgid "Speaker location........: %s\n"
+msgstr "Wohnort des Anrufers....: %s\n"
+
+#: src/vboxconvert.c:1138
+msgid "Speaker name............: %s\n"
+msgstr "Name des Anrufers.......: %s\n"
+
+#: src/vboxconvert.c:1140
+msgid "Speaker phone number....: %s\n"
+msgstr "Nummer des Anrufers.....: %s\n"
+
+#: src/rcvbox.c:276
+msgid "String contains no matching day!\n"
+msgstr "Tagesangaben enthielten keine Übereinstimmung!\n"
+
+#: src/rcvbox.c:188
+msgid "String contains no matching time!\n"
+msgstr "Zeitangaben enthielten keine Übereinstimmung!\n"
+
+#: src/script.c:158
+msgid "Tcl interpreter version %s...\n"
+msgstr "Programmversion tcl: %s...\n"
+
+#: src/vboxconvert.c:499
+msgid "The program returns the sample format as errorcode:\n"
+msgstr "Das Programm gibt das Dateiformat als Fehlernummer zurück:\n"
+
+#: src/vboxctrl.c:216
+msgid "The spool directory is taken from one of the following:\n"
+msgstr "Das Spoolverzeichnis wird wie folgt berechnet:\n"
+
+#: src/vboxconvert.c:339
+msgid "The vbox converter can be called as:\n"
+msgstr "Das Konvertierungsprogramm kann unter folgenden Namen gestartet werden:\n"
+
+#: src/modem.c:700
+msgid "Timeout function called.\n"
+msgstr "Zeitbegrenzungs-Funktion wurde aufgerufen!\n"
+
+#: src/voice.c:296 src/voice.c:515
+msgid "Touchtone sequence \"%s\" found.\n"
+msgstr ""
+
+#: src/rcvbox.c:565
+msgid "Unable to locate section \"%s\" (useing defaults)...\n"
+msgstr "Kann die Sektion \"%s\" nicht finden (benutze Voreinstellungen)...\n"
+
+#: src/rcvbox.c:425
+msgid "Unable to locate section \"[CALLERIDS]\" (useing defaults)...\n"
+msgstr "Kann die Sektion \"[CALLERIDS]\" nicht finden (benutze Voreinstellungen)...\n"
+
+#: src/rcvbox.c:355
+msgid "Unable to locate section \"[RINGS]\" (useing defaults)...\n"
+msgstr "Kann die Sektion \"[RINGS]\" nicht finden (benutze Voreinstellungen)...\n"
+
+#: src/rcgetty.c:153
+msgid "Unknown command \"%s\" ignored (%s)...\n"
+msgstr "Unbekanntes Kommando \"%s\" ignoriert (%s)...\n"
+
+#: src/voice.c:114
+msgid "Unknown compression %d - can't set.\n"
+msgstr ""
+
+#: src/lock.c:171
+msgid "Unlocking %s (%s)...\n"
+msgstr "Entsperre %s (%s)...\n"
+
+#: src/vboxbeep.c:286 src/vboxctrl.c:204 src/vboxgetty.c:175
+msgid "Usage: %s OPTION [ OPTION ] [ ... ]\n"
+msgstr "Benutzung: %s OPTION [ OPTION ] [ ...]\n"
+
+#: src/vboxconvert.c:448 src/vboxconvert.c:614
+msgid "Usage: %s OPTION [ OPTION ] [ ... ] <INFILE >OUTFILE\n"
+msgstr "Benutzung: %s OPTION [ OPTION ] [ ... ] <QUELLDATEI >ZIELDATEI\n"
+
+#: src/vboxconvert.c:493
+msgid "Usage: %s OPTION [ OPTION ] [ ... ] SAMPLENAME\n"
+msgstr "Benutzung: %s OPTION [ OPTION ] [ ... ] DATEINAME\n"
+
+#: src/lock.c:120
+msgid "Use existing lock for \"%s\" (%d).\n"
+msgstr "Benutze existierende Sperrung für \"%s\" (%d).\n"
+
+#: src/init.c:118
+msgid "User %s's messagebox is \"%s\"...\n"
+msgstr "Benutzer %s's Nachrichtenfach ist \"%s\"...\n"
+
+#: src/init.c:119
+msgid "User %s's vboxrc is \"%s\"...\n"
+msgstr "Benutzer %s's vboxrc ist unter \"%s\"...\n"
+
+#: src/voice.c:497
+msgid "Wait: <DATA %d incoming>\n"
+msgstr ""
+
+#: src/voice.c:390
+msgid "Waiting %d secs for input...\n"
+msgstr ""
+
+#: src/voice.c:328
+msgid "Waiting %d secs to complete playing...\n"
+msgstr ""
+
+#: src/modem.c:396
+msgid "Waiting for \""
+msgstr "Erwarte \""
+
+#: src/modem.c:818
+msgid "Waiting...\n"
+msgstr "Warte...\n"
+
+#: src/modem.c:845
+msgid "Wakeup!\n"
+msgstr "Erhalte eingehenden Anruf...\n"
+
+#: src/init.c:79
+msgid "You *must* set a user/group (not root)!\n"
+msgstr "Es *muß* ein(e) Benutzer/Gruppe gesetzt werden (nicht root)!\n"
+
+#: src/modem.c:947
+msgid "[%2d/%2d] CALLER NUMBER: %s (%s)...\n"
+msgstr "[%2d/%2d] CALLER NUMBER: %s (%s)...\n"
+
+#: src/modem.c:979
+msgid "[%2d/%2d] RING...\n"
+msgstr "[%2d/%2d] RING...\n"
+
+#: src/modem.c:677
+msgid "[OLDREAD] "
+msgstr "[OLDREAD] "
+
+#: src/modem.c:646
+msgid "[READ] "
+msgstr "[READ] "
+
+#: src/modem.c:585
+msgid "[READ] Function request %d byte(s) (now pos %d; len %d).\n"
+msgstr "[READ] Funktion fordert %d Zeichen an (Position %d; Länge %d).\n"
+
+#: src/modem.c:640
+msgid "[READ] Read %d bytes (now pos %d; len %d).\n"
+msgstr "[READ] %d Zeichen gelesen (Position %d; Länge %d).\n"
+
+#: src/modem.c:662
+msgid "[READ] Return %d bytes (now pos %d; len %d.\n"
+msgstr "[READ] Rückgabe %d Zeichen (Position %d; Länge %d).\n"
+
+#: src/modem.c:603
+msgid "[READ] Return all %d bytes (now pos %d; len %d).\n"
+msgstr "[READ] Rückgabe aller %d Zeichen (Position %d; Länge %d).\n"
+
+#: src/modem.c:633
+msgid "[READ] Return only %d bytes (now pos %d; len %d).\n"
+msgstr "[READ] Rückgabe von nur %d Zeichen (Position %d; Länge %d).\n"
+
+#: src/modem.c:614
+msgid "[READ] Store %d of %d bytes (now pos 0; len 0).\n"
+msgstr "[READ] %d von %d Zeichen gemerkt (Position 0; Länge 0).\n"
+
+#: src/modem.c:618
+msgid "[READ] Store nothing (pos 0; len 0).\n"
+msgstr "[READ] Keine Zeichen gemerkt (Position 0; Länge 0).\n"
+
+#: src/script.c:208
+msgid "[vbox_breaklist] %s\n"
+msgstr "[vbox_breaklist] %s\n"
+
+#: src/script.c:196 src/script.c:215
+msgid "[vbox_breaklist] unsupported argument \"%s\"."
+msgstr "[vbox_breaklist] Unbekanntes Argument \"%s\".\n"
+
+#: src/script.c:217
+msgid "[vbox_breaklist] usage: vbox_breaklist <rem|add> <sequence>\n"
+msgstr "[vbox_breaklist] Benutzung: vbox_breaklist <rem|add> <sequence>\n"
+
+#: src/script.c:311
+msgid "[vbox_get_message] result \"%s\".\n"
+msgstr "[vbox_get_message] Ergebnis \"%s\".\n"
+
+#: src/script.c:278
+msgid "[vbox_get_message] usage: vbox_get_message <messagename> <recordtime>\n"
+msgstr "[vbox_get_message] Benutzung: vbox_get_message <messagename> <recordtime>\n"
+
+#: src/script.c:451
+msgid "[vbox_get_nr_all_messages] counting all messages in \"%s\"...\n"
+msgstr "[vbox_get_nr_all_messages] Zähle alle Nachrichten in \"%s\"...\n"
+
+#: src/script.c:455
+msgid "[vbox_get_nr_all_messages] result \"%d\".\n"
+msgstr "[vbox_get_nr_all_messages] Ergebnis \"%d\".\n"
+
+#: src/script.c:445
+msgid "[vbox_get_nr_all_messages] usage: vbox_get_nr_all_messages <path>\n"
+msgstr "[vbox_get_nr_all_messages] Benutzung: vbox_get_nr_all_messages <path>\n"
+
+#: src/script.c:423
+msgid "[vbox_get_nr_new_messages] counting new messages in \"%s\"...\n"
+msgstr "[vbox_get_nr_new_messages] Zähle neue Nachrichten in \"%s\"...\n"
+
+#: src/script.c:427
+msgid "[vbox_get_nr_new_messages] result \"%d\".\n"
+msgstr "[vbox_get_nr_new_messages] Ergebnis \"%d\".\n"
+
+#: src/script.c:417
+msgid "[vbox_get_nr_new_messages] usage: vbox_get_nr_new_messages <path>\n"
+msgstr "[vbox_get_nr_new_messages] Benutzung: vbox_get_nr_new_messages <path>\n"
+
+#: src/script.c:376
+msgid "[vbox_pause] usage: vbox_pause <ms>\n"
+msgstr "[vbox_pause] Benutzung: vbox_pause <ms>\n"
+
+#: src/script.c:384
+msgid "[vbox_pause] waiting %lu ms...\n"
+msgstr "[vbox_pause] Warte %lu ms...\n"
+
+#: src/script.c:262
+msgid "[vbox_put_message] result \"%s\".\n"
+msgstr "[vbox_put_message] Ergebnis \"%s\".\n"
+
+#: src/script.c:233
+msgid "[vbox_put_message] usage: vbox_put_message <messagename>\n"
+msgstr "[vbox_put_message] Benutzung: vbox_put_message <messagename>\n"
+
+#: src/script.c:360
+msgid "[vbox_wait] result \"%s\".\n"
+msgstr "[vbox_wait] Ergebnis \"%s\".\n"
+
+#: src/script.c:327
+msgid "[vbox_wait] usage: vbox_wait <seconds>\n"
+msgstr "[vbox_wait] Benutzung: vbox_wait <seconds>\n"
+
+#: src/vboxbeep.c:437
+msgid "add directory \"%s\" to watchlist..."
+msgstr "füge Verzeichnis \"%s\" zur Überwachungsliste hinzu...\n"
+
+#: src/rcgetty.c:235
+msgid "alaw not longer supported"
+msgstr "alaw wird nicht länger unterstützt"
+
+#: src/vboxconvert.c:342
+msgid "autovbox - to convert au format samples to vbox messages.\n"
+msgstr "autovbox - um eine au-Datei in eine vbox-Nachricht zu konvertieren.\n"
+
+#: src/vboxbeep.c:383
+msgid "bad hour in local time structure (%d)."
+msgstr "falsche Stunde in der lokalen Zeitstruktur (%d).\n"
+
+#: src/vboxbeep.c:444
+msgid "can't add \"%s\" to watchlist."
+msgstr "kann \"%s\" nicht zur Überwachungsliste hinzufügen.\n"
+
+#: src/vboxbeep.c:497
+msgid "can't change to \"%s\" (%s)."
+msgstr "kann nicht nach \"%s\" wechseln (%s).\n"
+
+#: src/rcgetty.c:263
+msgid "can't convert value to integer"
+msgstr "kann den Wert nicht in Zahl konvertieren"
+
+#: src/vboxbeep.c:376
+msgid "can't get current local time (%s)."
+msgstr "kann die lokale Zeit nicht ermitteln (%s).\n"
+
+#: src/vboxbeep.c:495
+msgid "can't open \"%s\" (%s)."
+msgstr "kann \"%s\" nicht öffnen (%s).\n"
+
+#: src/vboxbeep.c:392
+msgid "can't open \"/dev/console\" (%s)."
+msgstr "kann \"/dev/console\" nicht öffnen (%s).\n"
+
+#: src/vboxbeep.c:530
+msgid "can't remove PID file \"%s\" (%s)."
+msgstr "kann die PID-Datei \"%s\" nicht entfernen (%s).\n"
+
+#: src/vboxbeep.c:512
+msgid "could not create PID file \"%s\" (%s)."
+msgstr "kann die PID-Datei \"%s\" nicht erzeugen (%s).\n"
+
+#: src/rcvbox.c:179
+msgid "don't match.\n"
+msgstr "keine Übereinstimmung.\n"
+
+#: src/modem.c:483
+msgid "echo"
+msgstr "Echo"
+
+#: src/vboxgetty.c:340
+msgid "enough.\n"
+msgstr "genug.\n"
+
+#: src/rcvbox.c:175
+msgid "match.\n"
+msgstr "Übereinstimmung.\n"
+
+#: src/lock.c:47
+msgid "modem port"
+msgstr "Modemport"
+
+#: src/vboxbeep.c:359
+msgid "new starttime is %ld."
+msgstr "die neue Startzeit ist %ld.\n"
+
+#: src/vboxbeep.c:118
+msgid "not enough memory to create pid name.\n"
+msgstr "nicht genug Speicher um den Namen der PID zu erzeugen.\n"
+
+#: src/vboxgetty.c:345
+msgid "not enough!\n"
+msgstr "nicht genug!\n"
+
+#: src/modem.c:483
+msgid "sequence"
+msgstr "Sequenz"
+
+#: src/vboxbeep.c:615
+msgid "start- or endtime out of range."
+msgstr "die Start- oder Endzeit ist ausßerhalb der gültigen Werte.\n"
+
+#: src/vboxbeep.c:613
+msgid "starttime must be lower than endtime."
+msgstr "die Startzeit muß kleiner als die Endzeit sein.\n"
+
+#: src/vboxbeep.c:344
+msgid "terminate..."
+msgstr "beendet sich...\n"
+
+#: src/vboxbeep.c:223
+msgid "there are no directories to watch."
+msgstr "es sind keine Verzeichnisse zum überwachen angegeben.\n"
+
+#: src/vboxbeep.c:239
+msgid "time range \"%s\"."
+msgstr "Zeiten \"%s\".\n"
+
+#: src/rcgetty.c:233
+msgid "unknown compression"
+msgstr "unbekannte Kompression"
+
+#: src/rcgetty.c:281
+msgid "unknown groupname"
+msgstr "unbekannter Gruppenname"
+
+#: src/rcgetty.c:331
+msgid "unknown umask"
+msgstr "unbekannte umask"
+
+#: src/rcgetty.c:299
+msgid "unknown username"
+msgstr "unbekannter Benutzername"
+
+#: src/rcgetty.c:261
+msgid "value too big"
+msgstr "Wert zu groß"
+
+#: src/rcgetty.c:260
+msgid "value too small"
+msgstr "Wert zu klein"
+
+#: src/lock.c:48
+msgid "vboxgetty"
+msgstr "vboxgetty"
+
+#: src/vboxconvert.c:343
+msgid "vboxmode - to display message information (works also with au).\n"
+msgstr "vboxmode - um Informationen über au- oder vbox-Dateien anzuzeigen.\n"
+
+#: src/vboxconvert.c:341
+msgid "vboxtoau - to convert vbox messages to au format.\n"
+msgstr "vboxtoau - um eine vbox-Nachricht in eine au-Datei zu konvertieren.\n"
