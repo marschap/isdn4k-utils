@@ -4,7 +4,7 @@
 
 <title>FAQ for isdn4linux
 <author>Matthias Hessler (<tt><htmlurl url="mailto:hessler@isdn4linux.de" name="hessler@isdn4linux.de"></tt>)
-<date>v2.0.75, 1. February 2003
+<date>v2.0.76, 14. March 2003
 <abstract>
 If you are reading this FAQ online, you may consider downloading the whole
 thing, and reading it offline (much cheaper). To download the latest
@@ -90,9 +90,10 @@ make use of ISDN specific features.
 Generally, isdn4linux can control ISDN cards that are connected to the PC's
 ISA or PCI bus. Also a few PCMCIA cards are supported. However, isdn4linux can
 <bf/not/ make use of any devices connected via a serial or parallel
-interface (which are called 'terminal adaptors'), with only one exception:
-the Creatix/Teles S0 box for the parallel port. For more details on which
-cards are supported see section <ref id="hardware" name="hardware">.
+interface (which are called 'terminal adaptors'), with only a few exceptions:
+the Creatix/Teles S0 box for the parallel port, and the Gazel 128 USB.
+For more details on which cards are supported see section
+<ref id="hardware" name="hardware">.
 
 <sect1> general_features: What features are supported by isdn4linux?  
 <label id="general_features">
@@ -901,6 +902,7 @@ saying "Master capable" for your card.
 <item>Xircom Cardbus Eth10/100+ (PCMCIA) is not supported by isdn4linux,
 but you can use it like an active external ISDN terminal adapter
 (requires the xircom and serial driver).
+<item>Gazel 128 USB from BeWAN Systems is supported as hisax_st5481 module.
 </itemize>
 
 In Germany: every ISDN card which German Telekom distributed in the past is
@@ -970,14 +972,22 @@ If faxing is important for you, but you don't want to spent the money for an
 active card, then a card with ISAR chipset may work well for you, e.g.
 Sedlbauer Speedfax+ (in Germany you may be able to buy it at Conrads).
 
+And if you want to buy a USB terminal adapter, then the Gazel 128 USB from
+BeWAN Systems <url url="http://www.bewan.com"> has been reported to work fine
+with the hisax_st5481 module.
+
 <sect1> hardware_external: Does isdn4linux support external terminal adapters?  
 <label id="hardware_external">
 <p>
-No, but it doesn't need to. Terminal adapters are designed to behave
+Generally not, but it doesn't need to. Terminal adapters are designed to behave
 either like a modem or like a network card. Linux already supports both
 modems and network cards without isdn4linux - so no special ISDN driver
 is necessary (which usually greatly simplifies the configuration).
 For example, have a look at the dialout program wvdial.
+
+However, there is (at least) one exception. The Gazel 128 USB from BeWAN
+System in France <url url="http://www.bewan.com"> has been reported to
+work fine with the hisax_st5481 module.
 
 <sect1> hardware_cabeling: How should I wire my ISDN cables?  
 <label id="hardware_cabeling">
