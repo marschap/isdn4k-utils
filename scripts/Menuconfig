@@ -1,6 +1,6 @@
 #! /bin/sh
 #
-# $Id: Menuconfig,v 1.3 1997/03/03 12:59:11 fritz Exp $
+# $Id: Menuconfig,v 1.4 1997/03/23 00:22:09 fritz Exp $
 #
 # This script is borrowed from the linux Menuconfig script.
 #
@@ -98,13 +98,12 @@ function bool () {
 # another configuration option.
 #
 function dep_bool () {
-	eval $2=\${$2:-'n'}  x=\$$3
 
-	if [ "$x" != "y" ]
+	if eval [ "_$3" != "_n" ]
 	then
-		disabled "$1" "$2"
-	else
 		bool "$1" "$2"
+	else
+		disabled "$1" "$2"
 	fi
 }
 
@@ -272,7 +271,7 @@ function l_bool () {
 	if [ -n "$2" ]
 	then
 		case "$2" in
-		y|m)	eval $1=y ;;
+		y)	eval $1=y ;;
 		c)	eval x=\$$1
 		   	case $x in
 		   	y) eval $1=n ;;
@@ -307,19 +306,13 @@ function l_disabled() {
         if [ -n "$2" ]
         then
                 case "$2" in
-                y)      echo -en "\007"
+                n)      ;;
+                *)      echo -en "\007"
                         ${DIALOG} --backtitle "$backtitle" \
                                   --msgbox "\
 This feature depends on another which has been disabled.  \
 As a result, this feature will be disabled also." 6 70
-                        eval $1=n;;
-                m)      eval $1=n ;;
-                c)      eval x=\$$1
-                        case $x in
-                        m) eval $1=n ;;
-                        n) eval $1=n ;;
-                        esac ;;
-                *)      eval $1=n ;;
+                        ;;
                 esac
         else
                 echo -ne "\007"
@@ -853,7 +846,7 @@ save_configuration () {
 			fi
 		fi
 
-		define_bool "$2" "$x"
+		eval define_bool "$2" "$x"
 	}
 
 	function int () {
