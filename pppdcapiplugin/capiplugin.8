@@ -1,5 +1,5 @@
 .\" manual page [] for capiplugin 2.3
-.\" $Id: capiplugin.8,v 1.1 2000/10/20 17:19:20 calle Exp $
+.\" $Id: capiplugin.8,v 1.2 2000/10/23 09:42:53 calle Exp $
 .\" SH section heading
 .\" SS subsection heading
 .\" LP paragraph
@@ -276,18 +276,16 @@ have the ip numbers starting at 192.168.0.2 and the hostname of the
 server is \"dialinserver\".
 Add this two lines to the file /etc/inittab:
 .IP
-p0:23:respawn:/usr/sbin/pppd call incoming
+p0:23:respawn:/usr/sbin/pppd call incoming-noncli
 .br
-p1:23:respawn:/usr/sbin/pppd call incoming
+p1:23:respawn:/usr/sbin/pppd call incoming-noncli
 .LP
-where the /etc/ppp/peers/incoming file is set up
+where the /etc/ppp/peers/incoming-noncli file is set up
 to contain something like this:
 .IP
 sync
 .br
 auth
-.br
-persist
 .br
 plugin /etc/ppp/plugins/capiplugin.so
 .br
@@ -301,7 +299,7 @@ to contain something like this:
 .IP
 user1 dialinserver PASSWORD1 192.168.0.2
 .br
-user2 dialinserver PASSWORD2 192.168.0.2
+user2 dialinserver PASSWORD2 192.168.0.3
 
 .SH EXAMPLE FOR WAIT FOR DIAL IN WITH CLI AUTHENTICATION
 .LP
@@ -313,21 +311,19 @@ Let's assume the server has ip number 192.168.0.1 and the clients should
 have the ip numbers starting at 192.168.0.2.
 Add this three lines to file /etc/inittab:
 .IP
-p0:23:respawn:/usr/sbin/pppd call incoming cli 04711 192.168.0.1:192.168.0.2
+p0:23:respawn:/usr/sbin/pppd call incoming-cli cli 04711 192.168.0.1:192.168.0.2
 .br
-p1:23:respawn:/usr/sbin/pppd call incoming cli 04712 192.168.0.1:192.168.0.3
+p1:23:respawn:/usr/sbin/pppd call incoming-cli cli 04712 192.168.0.1:192.168.0.3
 .br
-p2:23:respawn:/usr/sbin/pppd call incoming cli 04713 192.168.0.1:192.168.0.4
+p2:23:respawn:/usr/sbin/pppd call incoming-cli cli 04713 192.168.0.1:192.168.0.4
 
 .LP
-where the /etc/ppp/peers/incoming file is set up
+where the /etc/ppp/peers/incoming-cli file is set up
 to contain something like this:
 .IP
 sync
 .br
-auth
-.br
-persist
+noauth
 .br
 plugin /etc/ppp/plugins/capiplugin.so
 .br
@@ -346,21 +342,19 @@ Let assume the server has ip numbers 192.168.0.1 and the clients should
 have the ip numbers starting at 192.168.0.2.
 Add this three lines to the file /etc/inittab.
 .IP
-p0:23:respawn:/usr/sbin/pppd call incoming cli 04711 cbnumber 4711 192.168.0.1:192.168.0.2
+p0:23:respawn:/usr/sbin/pppd call incoming-cli cli 04711 cbnumber 4711 192.168.0.1:192.168.0.2
 .br
-p1:23:respawn:/usr/sbin/pppd call incoming cli 04712 cbnumber 4712 192.168.0.1:192.168.0.3
+p1:23:respawn:/usr/sbin/pppd call incoming-cli cli 04712 cbnumber 4712 192.168.0.1:192.168.0.3
 .br
-p2:23:respawn:/usr/sbin/pppd call incoming cli 04713 cbnumber 4713 192.168.0.1:192.168.0.4
+p2:23:respawn:/usr/sbin/pppd call incoming-cli cli 04713 cbnumber 4713 192.168.0.1:192.168.0.4
 
 .LP
-where the /etc/ppp/peers/incoming file is set up
+where the /etc/ppp/peers/incoming-cli file is set up
 to contain something like this:
 .IP
 sync
 .br
-auth
-.br
-persist
+noauth
 .br
 plugin /etc/ppp/plugins/capiplugin.so
 .br
