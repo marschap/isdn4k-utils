@@ -1,6 +1,6 @@
-.\" $Id: eiconctrl.man.in,v 1.2 1999/03/02 11:35:58 armin Exp $
+.\" $Id: eiconctrl.man.in,v 1.3 1999/03/29 11:05:25 armin Exp $
 .\"
-.\" CHECKIN $Date: 1999/03/02 11:35:58 $
+.\" CHECKIN $Date: 1999/03/29 11:05:25 $
 .\"
 .\" Process this file with
 .\" groff -man -Tascii eiconctrl.1 for ASCII output, or
@@ -69,42 +69,7 @@ may be given to
 sets the irq number to use (only ISA).
 If the interrupt value is omitted, the current setting will be printed.
 .TP
-.BI "load " boot-code " " firmware
-Only
-.B ISA-Bus-type
-cards.
-Downloads the firmware into the card and starts operation. The firmware
-name
-.B must
-be given
-.B without
-extension, since the card-type is determined automatically and according
-to this, the appropriate extension is appended by the program. The
-following extensions are used for various card-types:
-Diehl-S:
-.B .bin
-Diehl-SX:
-.B .sx
-Diehl-SCOM:
-.B .sy
-Diehl-Quadro:
-.B .sq
-Diehl-PRI
-.B .p
-Using this command, after loading the diehl-module into kernel-space the
-first real access to the hardware is done. Therefore the
-.B irq
-action above, should be used before, if the hardware settings are different
-from the default settings.
-Usually the images are located in
-.IR @DATADIR@ .
-The boot-code is named
-.IR prload.bin .
-.TP
-.BI "loadpci " protocol " " [options]
-Only
-.B PCI-Bus-type
-cards.
+.BI "load " protocol " " [options]
 Downloads the protocol- and dsp-code into the card and starts operation.
 .LP
 .RS
@@ -140,16 +105,16 @@ Downloads the protocol- and dsp-code into the card and starts operation.
 .RE
 .LP
 .TP
-.I manage
-Starts Management-Tool.
+.BI "manage " [read | exec " " <path>]
+Starts Management-Interface.
 .LP
 .SH EXAMPLE 
 .TP
-.BI eiconctrl " loadpci etsi"
-loads and starts S0 type PCI adapter with protocol E-DSS1.
+.BI eiconctrl " load etsi"
+loads and starts S0 type adapter with protocol E-DSS1.
 .TP
-.BI eiconctrl " loadpci etsi -s2 -n"
-loads and starts S2M type PCI adapter with protocol E-DSS1.
+.BI eiconctrl " load etsi -s2 -n"
+loads and starts S2M type adapter with protocol E-DSS1.
 .LP
 .SH BUGS
 No bugs so far.

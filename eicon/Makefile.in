@@ -1,8 +1,9 @@
-# $Id: Makefile.in,v 1.1 1999/01/01 17:27:54 armin Exp $
+# $Id: Makefile.in,v 1.2 1999/03/29 11:05:23 armin Exp $
 #
 # Makefile for eiconctrl
 # (C) 1997 Fritz Elfert
 # (C) 1998,99 Armin Schindler
+# (C) 1999 Cytronics & Melware
 #
 #
 SHELL			= /bin/sh
@@ -22,7 +23,7 @@ INSTALL_PROGRAM	= $(INSTALL) -o 0 -g 0 -m 0750
 INSTALL_DATA	= $(INSTALL) -o 0 -g 0 -m 0644
 INSTALL_MAN		= $(INSTALL) -o 0 -g 0 -m 0644
 CC				= @CC@
-COPTS			=
+COPTS			= -D__DATADIR__=\"$(shell echo $(DESTDIR)$(CONFIG_DATADIR))\"
 
 ifeq ("@CONFIG_EICONCTRL_DEBUG@","y")
 	COPTS		+= -D__DEBUGVAR__
@@ -50,11 +51,7 @@ $(PROGRAM):	$(MODULES)
 
 install-data:
 	mkdir -p $(DESTDIR)$(DATADIR)
-	$(INSTALL_DATA) firmware/dspdload.bin $(DESTDIR)$(DATADIR)/dspdload.bin
-	$(INSTALL_DATA) firmware/te_etsi.sm $(DESTDIR)$(DATADIR)/te_etsi.sm
-	$(INSTALL_DATA) firmware/te_etsi.pm $(DESTDIR)$(DATADIR)/te_etsi.pm
-	$(INSTALL_DATA) firmware/te_1tr6.sm $(DESTDIR)$(DATADIR)/te_1tr6.sm
-	$(INSTALL_DATA) firmware/te_1tr6.pm $(DESTDIR)$(DATADIR)/te_1tr6.pm
+	tar xpvCfz $(DESTDIR)$(DATADIR) firmware/eicon_firm.tgz
 
 install-man: $(PROGRAM).man
 	mkdir -p $(DESTDIR)$(MAN8DIR)

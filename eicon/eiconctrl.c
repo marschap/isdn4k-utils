@@ -1,4 +1,4 @@
-/* $Id: eiconctrl.c,v 1.4 1999/03/02 11:35:57 armin Exp $
+/* $Id: eiconctrl.c,v 1.5 1999/03/29 11:05:23 armin Exp $
  *
  * Eicon-ISDN driver for Linux. (Control-Utility)
  *
@@ -21,6 +21,11 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA. 
  *
  * $Log: eiconctrl.c,v $
+ * Revision 1.5  1999/03/29 11:05:23  armin
+ * Installing and Loading the old type Eicon ISA-cards.
+ * New firmware in one tgz-file.
+ * Commandline Management Interface.
+ *
  * Revision 1.4  1999/03/02 11:35:57  armin
  * Change of email address.
  *
@@ -46,6 +51,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <malloc.h>
+#include <signal.h>
 #include <ncurses.h>
 
 
@@ -54,13 +60,20 @@
 #include <eicon.h>
 
 
-#define COMBIFILE "/usr/lib/isdn/dspdload.bin"
+#define COMBIFILE "dspdload.bin"
 
 #define MIN(a,b) ((a)>(b) ? (b) : (a))
+
+#define EICON_CTRL_VERSION 1
 
 char *cmd;
 int verbose = 0;
 eicon_manifbuf *mb;
+
+WINDOW *statwin;
+WINDOW *headwin;
+static int h_line;
+static int stat_y;
 
 int num_directory_entries;
 int usage_mask_size;
@@ -105,13 +118,14 @@ char *spid_state[] =
 
 
 void usage() {
-  fprintf(stderr,"usage: %s [-d <DriverID>] shmem [shmem-addr]          (get/set memaddr)\n",cmd);
+  fprintf(stderr,"usage: %s add <DriverID> <membase> <irq>              (add card)\n",cmd);
+  fprintf(stderr,"   or: %s [-d <DriverID>] membase [membase-addr]      (get/set memaddr)\n",cmd);
   fprintf(stderr,"   or: %s [-d <DriverID>] irq   [irq-nr]              (get/set irq)\n",cmd);
-  fprintf(stderr,"   or: %s [-d <DriverID>] load  <bootcode> <protocol> (load firmware)\n",cmd);
-  fprintf(stderr,"   or: %s [-d <DriverID>] [-v] loadpci <protocol> [options]\n",cmd);
+  fprintf(stderr,"   or: %s [-d <DriverID>] [-v] load <protocol> [options]\n",cmd);
   fprintf(stderr,"   or: %s [-d <DriverID>] debug [<debug value>]\n",cmd);
-  fprintf(stderr,"load firmware for PCI cards:\n");
-  fprintf(stderr," basics  : -d <DriverID> ID defined when eicon module was loaded\n");
+  fprintf(stderr,"   or: %s [-d <DriverID>] manage [read|exec <path>]   (management-tool)\n",cmd);
+  fprintf(stderr,"load firmware:\n");
+  fprintf(stderr," basics  : -d <DriverID> ID defined when eicon module was loaded/card added\n");
   fprintf(stderr,"         : -v            verbose\n");
   fprintf(stderr," options : -l[channel#]  channel allocation policy\n");
   fprintf(stderr,"         : -c[1|2]       CRC4 Multiframe usage [off|on]\n");
@@ -418,10 +432,11 @@ __u32 get_download(char *download_block, char *download_area)
 }
 
 
-diehl_codebuf *load_combifile(int card_type, u_char *protobuf, int *plen)
+eicon_codebuf *load_combifile(int card_type, u_char *protobuf, int *plen)
 {
         int fd;
 	int tmp[9];
+	char combifilename[100];
         int count, j;
         int file_set_number = 0;
         struct stat file_info;
@@ -431,9 +446,10 @@ diehl_codebuf *load_combifile(int card_type, u_char *protobuf, int *plen)
         t_dsp_combifile_directory_entry *directory;
         t_dsp_combifile_directory_entry *tmp_directory;
         __u32 download_size;
-	diehl_codebuf *cb;
+	eicon_codebuf *cb;
 
-        if ((fd = open(COMBIFILE, O_RDONLY, 0)) == -1)
+	sprintf(combifilename, "%s/%s", __DATADIR__, COMBIFILE);
+        if ((fd = open(combifilename, O_RDONLY, 0)) == -1)
         {
                 perror("Error opening Eicon combifile");
                 return(0);
@@ -586,8 +602,8 @@ diehl_codebuf *load_combifile(int card_type, u_char *protobuf, int *plen)
 	tmp[3] = sizeof(p_download_table);
 	*plen +=  sizeof(p_download_table);
 
-	cb = malloc(sizeof(diehl_codebuf) + *plen);
-	memset(cb, 0, sizeof(diehl_codebuf));
+	cb = malloc(sizeof(eicon_codebuf) + *plen);
+	memset(cb, 0, sizeof(eicon_codebuf));
         memcpy(&cb->pci.code, protobuf, *plen);
     	for (j=0; j < 4; j++) {
 		if (j==0) cb->pci.protocol_len = tmp[0];
@@ -608,18 +624,18 @@ void beep2(void)
  refresh();
 }
 
-int get_manage_element(char *m_dir)
+int get_manage_element(char *m_dir, int request)
 {
 	int i,j,o,k,tmp;
 	int len, vlen = 0;
-	__u32 duint;
+	long unsigned duint;
 	u_char buf[100];
 
 	if (strlen(m_dir)) {
 		if (m_dir[0] == '\\') m_dir++;
 	}
 	len = strlen(m_dir);
-        mb->count = 0;
+        mb->count = request;
         mb->pos = 0;
         mb->length[0] = len + 5;
         memset(&mb->data, 0, 690);
@@ -629,9 +645,10 @@ int get_manage_element(char *m_dir)
         mb->data[4] = len;
 
         ioctl_s.arg = (ulong)mb;
-        if (ioctl(fd, DIEHL_IOCTL_MANIF + IIOCDRVCTL, &ioctl_s) < 0) {
+        if (ioctl(fd, EICON_IOCTL_MANIF + IIOCDRVCTL, &ioctl_s) < 0) {
 		return(-1);
         }
+	if (request == 0x04) return 0;
 
 	mb->pos = 0;
 	man_ent_count = mb->count;
@@ -689,19 +706,22 @@ int get_manage_element(char *m_dir)
 					sprintf(man_ent[i].Var,"%ld",(long)duint);
 					break;
 				case 0x82:
-					for (j=0,duint=0; j<vlen; j++) duint += (__u32)man_ent[i].Var[j]<<(8*j);
-					sprintf(man_ent[i].Var,"%lu",(long unsigned)duint);
+					for (j=0,duint=0; j<vlen; j++) 
+						duint += ((unsigned char)man_ent[i].Var[j]) << (8 * j);
+					sprintf(man_ent[i].Var,"%lu", duint);
 					break;
 				case 0x83:
-					for (j=0,duint=0; j<vlen; j++) duint += (__u32)man_ent[i].Var[j]<<(8*j);
-					sprintf(man_ent[i].Var,"%lx",(long unsigned)duint);
+					for (j=0,duint=0; j<vlen; j++)
+						duint += ((unsigned char)man_ent[i].Var[j]) << (8 * j);
+					sprintf(man_ent[i].Var,"%lx", duint);
 					break;
 				case 0x84:
 					for (j=0; j<vlen; j++) o+=sprintf(&buf[o], "%02x", man_ent[i].Var[j]);
 					strcpy(man_ent[i].Var, buf);
 					break;
 				case 0x85:
-					for (j=0,duint=0; j<vlen; j++) duint += (__u32)man_ent[i].Var[j]<<(8*j);
+					for (j=0,duint=0; j<vlen; j++)
+						duint += ((unsigned char) man_ent[i].Var[j]) << (8 * j);
 					if (duint) sprintf(man_ent[i].Var,"TRUE");
 					else sprintf(man_ent[i].Var,"FALSE");
 					break;
@@ -714,7 +734,8 @@ int get_manage_element(char *m_dir)
 					strcpy(man_ent[i].Var, buf);
 					break;
 				case 0x87:
-					for (j=0,duint=0; j<vlen; j++) duint += (__u32)man_ent[i].Var[j]<<(8*j);
+					for (j=0,duint=0; j<vlen; j++)
+						duint += ((unsigned char) man_ent[i].Var[j]) << (8 * j);
 					for (j=0; j<vlen; j++)
 					{
 						if (j) o+=sprintf(&buf[o], " ");
@@ -738,97 +759,148 @@ int get_manage_element(char *m_dir)
   return(0);
 }
 
-void eicon_management(void)
+void eicon_manage_head(void)
 {
-	int i, Key, ctype;
+	int ctype;
+        mvwaddstr(headwin, 0,0,"Management for Eicon DIVA Server cards                      Cytronics & Melware");
+        if ((ctype = ioctl(fd, EICON_IOCTL_GETTYPE + IIOCDRVCTL, &ioctl_s)) < 0) {
+                return;
+        }
+        switch (ctype) {
+                case EICON_CTYPE_MAESTRAP:
+                        mvwaddstr(headwin, 1,0,"Adapter-type is Diva Server PRI/PCI");
+                        break;
+                case EICON_CTYPE_MAESTRA:
+                        mvwaddstr(headwin, 1,0,"Adapter-type is Diva Server BRI/PCI");
+                        break;
+                default:
+                        mvwaddstr(headwin, 1,0,"Adapter-type is unknown");
+                        return;
+        }
+}
+
+void eicon_manage_init_ncurses(void)
+{
+        initscr();
+        noecho();
+        nonl();
+        refresh();
+        cbreak();
+        keypad(stdscr,TRUE);
+	curs_set(0);
+	statwin = newpad(50,80);
+	headwin = newpad(5,80);
+        start_color();
+	
+}
+
+void show_man_entries(void)
+{
+	int i;
 	char MLine[80];
 	char AttSt[7];
-	int hline = 0;
-	int gpos = 0;
-	int page = 0;
+
+        for(i = 0; i < man_ent_count; i++) {
+                if (man_ent[i].type == 0x01) {
+                        sprintf(AttSt, "<DIR>");
+                } else {
+                        sprintf(AttSt,"%c%c%c%c%c",
+                                (man_ent[i].attribute &0x01) ? 'w' : '-',
+                                (man_ent[i].attribute &0x02) ? 'e' : '-',
+                                (man_ent[i].status &0x01) ? 'l' : '-',
+                                (man_ent[i].status &0x02) ? 'e' : '-',
+                                (man_ent[i].status &0x04) ? 'p' : '-');
+                }
+                sprintf(MLine, "%-17s %s %s\n",
+                        man_ent[i].Name,
+                        AttSt,
+                        man_ent[i].Var);
+                printf(MLine);
+        }
+}
+
+void eicon_manage_draw(void)
+{
+	int i;
 	int max_line = 0;
+	char MLine[80];
+	char AttSt[7];
 
-	initscr();
-	noecho();
-	nonl(); 
+	mvwaddstr(headwin, 2, 0, "                                                                                ");
+        mvwaddstr(headwin, 3,0,"Name              Flags Variable");
+        mvwaddstr(headwin, 4,0,"-------------------------------------------------------------------------------");
+
+        max_line =  man_ent_count;
+        for(i = 0; i < max_line; i++) {
+                if (man_ent[i].type == 0x01) {
+                        sprintf(AttSt, "<DIR>");
+                } else {
+                        sprintf(AttSt,"%c%c%c%c%c",
+                                (man_ent[i].attribute &0x01) ? 'w' : '-',
+                                (man_ent[i].attribute &0x02) ? 'e' : '-',
+                                (man_ent[i].status &0x01) ? 'l' : '-',
+                                (man_ent[i].status &0x02) ? 'e' : '-',
+                                (man_ent[i].status &0x04) ? 'p' : '-');
+                }
+                sprintf(MLine, "%-17s %s %-55s",
+                        man_ent[i].Name,
+                        AttSt,
+                        man_ent[i].Var);
+                if (i == h_line) wattron(statwin, A_REVERSE);
+                mvwaddstr(statwin, i, 0, MLine);
+                wattroff(statwin, A_REVERSE);
+        }
+        for(i = max_line; i < 50; i++) {
+		mvwaddstr(statwin, i, 0, "                                                                                ");
+	}
+        prefresh(statwin, stat_y, 0, 5, 0, LINES-4, COLS);
+        mvwaddstr(headwin, 2,0,"Directory : ");
+        waddstr(headwin, Man_Path);
+        prefresh(headwin, 0, 0, 0, 0, 5, COLS);
 	refresh();
-	cbreak();
-	keypad(stdscr,TRUE);
-	start_color();
+}
 
-	clear();
-	mvaddstr(0,0,"Management for Eicon.Diehl DIVA Server                      Cytronics & Melware");
-	if ((ctype = ioctl(fd,DIEHL_IOCTL_GETTYPE + IIOCDRVCTL, &ioctl_s)) < 0) {
-		return;
-	}
-	switch (ctype) {
-		case DIEHL_CTYPE_MAESTRAP:
-			mvaddstr(1,0,"Adapter-type is Diva Server PRI/PCI");
-			break;
-		case DIEHL_CTYPE_MAESTRA:
-			mvaddstr(1,0,"Adapter-type is Diva Server BRI/PCI");
-			break;
-		default:
-			mvaddstr(1,0,"Adapter-type is unknown");
-			return;
-	}
+void do_manage_resize(int dummy) {
+        endwin();
+	eicon_manage_init_ncurses();
+	eicon_manage_head();
+	eicon_manage_draw();
+	eicon_manage_draw();
+	refresh();
+	signal(SIGWINCH, do_manage_resize);
+}
+
+void eicon_management(void)
+{
+	int Key;
+	int i;
+	h_line = 0;
+	stat_y = 0;
+
+	signal(SIGWINCH, do_manage_resize);
+
+	eicon_manage_init_ncurses();
+	eicon_manage_head();
+	eicon_manage_draw();
 	redraw1:
-	for(i = 2; i < 23; i++) 
-		mvaddstr(i,0,"                                                                               ");
-	mvaddstr(2,0,"Directory : ");
-	addstr(Man_Path);
-	mvaddstr(3,0,"Name              Flags Variable");
-	mvaddstr(4,0,"-------------------------------------------------------------------------------");
-	max_line = (((page+1)*15) < man_ent_count) ? 15 : (man_ent_count - (page * 15));
-	for(i = 0; i < max_line; i++) {
-		gpos = page * 15 + i;
-		if (man_ent[gpos].type == 0x01) {
-			sprintf(AttSt, "<DIR>");
-		} else {
-			sprintf(AttSt,"%c%c%c%c%c", 
-				(man_ent[gpos].attribute &0x01) ? 'w' : '-',
-				(man_ent[gpos].attribute &0x02) ? 'e' : '-',
-				(man_ent[gpos].status &0x01) ? 'l' : '-',
-				(man_ent[gpos].status &0x02) ? 'e' : '-',
-				(man_ent[gpos].status &0x04) ? 'p' : '-');
-		}
-		sprintf(MLine, "%-17s %s %-55s",
-			man_ent[gpos].Name,
-			AttSt,
-			man_ent[gpos].Var);
-		if (i == hline) attron(A_REVERSE);
-		mvaddstr(5+i,0,MLine);
-		attroff(A_REVERSE);
-	}
-	move(hline + 5,0);
-	refresh();
+	eicon_manage_draw();
 	Keyboard:
 	Key = getch();
 	switch(Key) {
 		case 27:
 		case 'q':
 			break;
-		case KEY_PPAGE:
-			if (page) {
-				page--;
-				hline = 0;
-				goto redraw1;
-			}
-			beep2();
-			goto Keyboard;
-		case KEY_NPAGE:
-			if (page < man_ent_count / 15) {
-				page++;
-				hline = 0;
-				goto redraw1;
-			}
-			beep2();
-			goto Keyboard;
 		case KEY_UP:
-			if (hline) hline--;
+			if (h_line) {
+				h_line--;
+				if (stat_y > h_line) stat_y--;
+			}
 			goto redraw1;
 		case KEY_DOWN:
-			if (hline < max_line - 1) hline++;
+			if (h_line < man_ent_count - 1) {
+				h_line++;
+				if ((stat_y + LINES - 9) < h_line) stat_y++;
+			}
 			goto redraw1;
 		case KEY_LEFT:
 			if ((strcmp(Man_Path,"\\")) && (strlen(Man_Path) > 1)) {
@@ -839,14 +911,14 @@ void eicon_management(void)
 					}
 				}
 				if (strlen(Man_Path) == 0) strcpy(Man_Path,"\\");
-				if (get_manage_element(Man_Path) < 0) {
+				if (get_manage_element(Man_Path, 0x02) < 0) {
 					clear();
 		       	                mvaddstr(0,0, "Error ioctl Management-interface");
 					refresh();
                			        return;
 				}
-				hline = 0;
-				page = 0;
+				h_line = 0;
+				stat_y = 0;
 				goto redraw1;
 			}
 			beep2();
@@ -854,23 +926,46 @@ void eicon_management(void)
 		case 10:
 		case 13:
 		case KEY_RIGHT:
-			if (man_ent[page * 15 + hline].type == 0x01) {
+			if (man_ent[h_line].type == 0x01) { /* Directory */
 				if (Man_Path[strlen(Man_Path)-1] != '\\') strcat(Man_Path, "\\");
-				strcat(Man_Path, man_ent[page * 15 + hline].Name);
-				if (get_manage_element(Man_Path) < 0) {
+				strcat(Man_Path, man_ent[h_line].Name);
+				if (get_manage_element(Man_Path, 0x02) < 0) {
 					clear();
 		       	                mvaddstr(0,0, "Error ioctl Management-interface");
 					refresh();
                			        return;
 				}
-				hline = 0;
-				page = 0;
+				h_line = 0;
+				stat_y = 0;
 				goto redraw1;
+			}
+			if (man_ent[h_line].type == 0x02) { /* Executable function */
+				i = strlen(Man_Path);
+				if (Man_Path[strlen(Man_Path)-1] != '\\') strcat(Man_Path, "\\");
+				strcat(Man_Path, man_ent[h_line].Name);
+				if (get_manage_element(Man_Path, 0x04) < 0) {
+					clear();
+		       	                mvaddstr(0,0, "Error ioctl Management-interface");
+					refresh();
+               			        return;
+				}
+				sleep(1);
+				Man_Path[i] = 0;
+				if (get_manage_element(Man_Path, 0x02) < 0) {
+					clear();
+		       	                mvaddstr(0,0, "Error ioctl Management-interface");
+					refresh();
+               			        return;
+				}
+				h_line = 0;
+				stat_y = 0;
+				goto redraw1;
+
 			}
 			beep2();
 			goto Keyboard;
 		case 'r':
-			if (get_manage_element(Man_Path) < 0) {
+			if (get_manage_element(Man_Path, 0x02) < 0) {
 				clear();
 	       	                mvaddstr(0,0, "Error ioctl Management-interface");
 				refresh();
@@ -883,6 +978,75 @@ void eicon_management(void)
 	}
 
 }
+
+void filter_slash(char *s)
+{
+	int i;
+	for (i=0; i < strlen(s); i++)
+		if (s[i] == '/') s[i] = '\\';
+}
+
+void load_startup_code(char *startupcode, char *fileext)
+{
+	FILE *code;
+	u_char bootbuf[0x1000];
+	char filename[100];
+	int tmp;
+	eicon_codebuf *cb;
+
+	sprintf(filename, "%s/%s", __DATADIR__, startupcode);
+
+	if (!(code = fopen(filename,"r"))) {
+		perror(filename);
+		exit(-1);
+	}
+	if ((tmp = fread(bootbuf, 1, sizeof(bootbuf), code))<1) {
+		fprintf(stderr, "Read error on %s\n", filename);
+		exit(-1);
+	}
+	fclose(code);
+	cb = malloc(sizeof(eicon_codebuf) + tmp);
+	memset(cb, 0, sizeof(eicon_codebuf));
+	memcpy(&cb->isa.code, bootbuf, tmp);
+	cb->isa.bootstrap_len = tmp;
+	cb->isa.boot_opt = EICON_ISA_BOOT_NORMAL;
+	printf("Loading Startup Code (%s %d bytes)...\n", startupcode, tmp);
+	ioctl_s.arg = (ulong)cb;
+	if (ioctl(fd, EICON_IOCTL_LOADBOOT + IIOCDRVCTL, &ioctl_s) < 0) {
+		perror("ioctl LOADBOOT");
+		exit(-1);
+	}
+	if ((tmp = ioctl(fd, EICON_IOCTL_GETTYPE + IIOCDRVCTL, &ioctl_s)) < 1) {
+		perror("ioctl GETTYPE");
+		exit(-1);
+	}
+	switch (tmp) {
+		case EICON_CTYPE_S:
+			strcpy(fileext,".bin");
+			printf("Adapter-type is Eicon-S\n");
+			break;
+		case EICON_CTYPE_SX:
+			strcpy(fileext,".sx");
+			printf("Adapter-type is Eicon-SX\n");
+			break;
+		case EICON_CTYPE_SCOM:
+			strcpy(fileext,".sy");
+			printf("Adapter-type is Eicon-SCOM\n");
+			break;
+		case EICON_CTYPE_QUADRO:
+			strcpy(fileext,".sq");
+			printf("Adapter-type is Eicon-QUADRO\n");
+			break;
+		case EICON_CTYPE_S2M:
+			strcpy(fileext,".p");
+			printf("Adapter-type is Eicon-S2M\n");
+			break;
+		default:
+			fprintf(stderr, "Unknown Adapter type %d for ISA-load\n", tmp);
+			exit(-1);
+	}
+}
+
 
 int main(int argc, char **argv) {
 	int tmp;
@@ -915,21 +1079,59 @@ int main(int argc, char **argv) {
 		perror("/dev/isdnctrl");
 		exit(-1);
 	}
-	if (!strcmp(argv[arg_ofs], "shmem")) {
+
+	if ((tmp = ioctl(fd, EICON_IOCTL_GETVER + IIOCDRVCTL, &ioctl_s)) < 0) {
+		fprintf(stderr, "Driver ID %s not found or\n", ioctl_s.drvid);
+		fprintf(stderr, "Eicon kernel driver is too old !\n"); 
+		exit(-1);
+	}
+	if (tmp < EICON_CTRL_VERSION) {
+		fprintf(stderr, "Eicon kernel driver is older than eiconctrl !\n"); 
+		fprintf(stderr, "You need newer version !\n");
+		exit(-1);
+	}
+	if (tmp > EICON_CTRL_VERSION) {
+		fprintf(stderr, "Eicon kernel driver is newer than eiconctrl !\n"); 
+		fprintf(stderr, "You need newer version !\n");
+		exit(-1);
+	}
+
+	if (!strcmp(argv[arg_ofs], "add")) {
+		eicon_cdef *cdef;
+		if (ac != 5) 
+			usage();
+		cdef = malloc(sizeof(eicon_cdef));
+		strcpy(cdef->id, argv[arg_ofs + 1]);
+		if (strlen(cdef->id) < 1)
+			usage();
+		if (sscanf(argv[arg_ofs + 2], "%i", &cdef->membase) !=1 )
+			usage();
+		if (sscanf(argv[arg_ofs + 3], "%i", &cdef->irq) !=1 )
+			usage();
+		ioctl_s.arg = (ulong)cdef;
+		if (ioctl(fd, EICON_IOCTL_ADDCARD + IIOCDRVCTL, &ioctl_s) < 0) {
+			perror("ioctl ADDCARD");
+			exit(-1);
+		}
+		printf("Card added.\n");
+		close(fd);
+		return 0;
+	}
+	if (!strcmp(argv[arg_ofs], "membase")) {
 		if (ac == 3) {
 			if (sscanf(argv[arg_ofs + 1], "%i", &tmp) !=1 )
 				usage();
 			ioctl_s.arg = tmp;
-			if (ioctl(fd, DIEHL_IOCTL_SETMMIO + IIOCDRVCTL, &ioctl_s) < 0) {
+			if (ioctl(fd, EICON_IOCTL_SETMMIO + IIOCDRVCTL, &ioctl_s) < 0) {
 				perror("ioctl SETMMIO");
 				exit(-1);
 			}
 		}
-		if ((tmp = ioctl(fd, DIEHL_IOCTL_GETMMIO + IIOCDRVCTL, &ioctl_s)) < 0) {
+		if ((tmp = ioctl(fd, EICON_IOCTL_GETMMIO + IIOCDRVCTL, &ioctl_s)) < 0) {
 			perror("ioctl GETMMIO");
 			exit(-1);
 		}
-		printf("Shared memory at 0x%08lx\n", (unsigned long)tmp);
+		printf("Shared memory at 0x%x\n", tmp);
 		close(fd);
 		return 0;
 	}
@@ -938,12 +1140,12 @@ int main(int argc, char **argv) {
 			if (sscanf(argv[arg_ofs + 1], "%i", &tmp) != 1)
 				usage();
 			ioctl_s.arg = tmp;
-			if (ioctl(fd, DIEHL_IOCTL_SETIRQ + IIOCDRVCTL, &ioctl_s) < 0) {
+			if (ioctl(fd, EICON_IOCTL_SETIRQ + IIOCDRVCTL, &ioctl_s) < 0) {
 				perror("ioctl SETIRQ");
 				exit(-1);
 			}
 		}
-		if ((tmp = ioctl(fd, DIEHL_IOCTL_GETIRQ + IIOCDRVCTL, &ioctl_s)) < 0) {
+		if ((tmp = ioctl(fd, EICON_IOCTL_GETIRQ + IIOCDRVCTL, &ioctl_s)) < 0) {
 			perror("ioctl GETIRQ");
 			exit(-1);
 		}
@@ -951,87 +1153,10 @@ int main(int argc, char **argv) {
 		close(fd);
 		return 0;
 	}
-	if (!strcmp(argv[arg_ofs], "load")) {
-		FILE *code;
-		int plen;
-		char protoname[1024];
-		char bootname[1024];
-		u_char protobuf[0x100000];
-		u_char bootbuf[0x1000];
-		diehl_codebuf *cb;
 
-		if (ac == 4) {
-			strcpy(bootname, argv[arg_ofs + 1]);
-			strcpy(protoname,argv[arg_ofs + 2]);
-			if ((tmp = ioctl(fd,DIEHL_IOCTL_GETTYPE + IIOCDRVCTL, &ioctl_s)) < 1) {
-				perror("ioctl GETTYPE");
-				exit(-1);
-			}
-			switch (tmp) {
-				case DIEHL_CTYPE_S:
-					strcat(bootname,".bin");
-					printf("Adapter-type is Diehl-S\n");
-					break;
-				case DIEHL_CTYPE_SX:
-					strcat(protoname,".sx");
-					printf("Adapter-type is Diehl-SX\n");
-					break;
-				case DIEHL_CTYPE_SCOM:
-					strcat(protoname,".sy");
-					printf("Adapter-type is Diehl-SCOM\n");
-					break;
-				case DIEHL_CTYPE_QUADRO:
-					strcat(protoname,".sq");
-					printf("Adapter-type is Diehl-QUADRO\n");
-					break;
-				case DIEHL_CTYPE_PRI:
-					strcat(protoname,".p");
-					printf("Adapter-type is Diehl-PRI\n");
-					break;
-				default:
-					fprintf(stderr, "Unknown Adapter type %d\n", tmp);
-					exit(-1);
-			}
-			if (!(code = fopen(protoname,"r"))) {
-				perror(protoname);
-				exit(-1);
-			}
-			if ((plen = fread(protobuf, 1, sizeof(protobuf), code))<1) {
-				fprintf(stderr, "Read error on %s\n", protoname);
-				exit(-1);
-			}
-			plen = (plen % 256)?((plen/256)+1)*256:plen;
-			fclose(code);
-			if (!(code = fopen(bootname,"r"))) {
-				perror(bootname);
-				exit(-1);
-			}
-			if ((tmp = fread(bootbuf, 1, sizeof(bootbuf), code))<1) {
-				fprintf(stderr, "Read error on %s\n", bootname);
-				exit(-1);
-			}
-			fclose(code);
-			cb = malloc(sizeof(diehl_codebuf) + tmp + plen );
-			memset(cb, 0, sizeof(diehl_codebuf));
-			memcpy(&cb->isa.code, bootbuf, tmp);
-			memcpy(&cb->isa.code[tmp], protobuf, plen);
-			cb->isa.bootstrap_len = tmp;
-			cb->isa.firmware_len = plen;
-			cb->isa.boot_opt = DIEHL_ISA_BOOT_MEMCHK;
-			printf("Loading Protocol %s ...\n", &protobuf[4]);
-			ioctl_s.arg = (ulong)cb;
-			if (ioctl(fd, DIEHL_IOCTL_LOADBOOT + IIOCDRVCTL, &ioctl_s) < 0) {
-				perror("ioctl LOADBOOT");
-				exit(-1);
-			}
-			close(fd);
-			return 0;
-		}
-		usage();
-	}
-
-        if (!strcmp(argv[arg_ofs], "loadpci")) {
+        if ((!strcmp(argv[arg_ofs], "load")) || (!strcmp(argv[arg_ofs], "loadpci"))) {
                 FILE *code;
+		int isabus = 0;
                 int plen = 0;
 		int ctype = 0;
 		int card_type = 0;
@@ -1041,68 +1166,111 @@ int main(int argc, char **argv) {
                 char protoname[1024];
                 char filename[1024];
                 u_char protobuf[0x100000];
-                diehl_codebuf *cb;
+                eicon_codebuf *cb;
 
-			if (argc <= (arg_ofs + 1))
-                        	strcpy(protoname,"etsi");
-			else {
-				if (argv[arg_ofs + 1][0] == '-')
-                        		strcpy(protoname,"etsi");
-				else	
-		                        strcpy(protoname,argv[++arg_ofs]);
-			}
+		if (argc <= (arg_ofs + 1))
+                       	strcpy(protoname,"etsi");
+		else {
+			if (argv[arg_ofs + 1][0] == '-')
+                       		strcpy(protoname,"etsi");
+			else	
+	                        strcpy(protoname,argv[++arg_ofs]);
+		}
 
-                        if ((ctype = ioctl(fd,DIEHL_IOCTL_GETTYPE + IIOCDRVCTL, &ioctl_s)) < 1) {
-                                perror("ioctl GETTYPE");
-                                exit(-1);
-                        }
-                        switch (ctype) {
-                                case DIEHL_CTYPE_MAESTRAP:
-                                        printf("Adapter-type is Diva Server PRI/PCI\n");
-					strcpy(fileext, ".pm");
-					card_type = 23;
-					tei = 1;
-					break;
-                                case DIEHL_CTYPE_MAESTRA:
-                                        printf("Adapter-type is Diva Server BRI/PCI\n");
-					strcpy(fileext, ".sm");
-					card_type = 21;
-					tei = 0;
-					break;
-                                default:
-                                        fprintf(stderr, "Adapter type %d not supported\n", ctype);
-                                	exit(-1);
-			}
+		if ((ctype = ioctl(fd, EICON_IOCTL_GETTYPE + IIOCDRVCTL, &ioctl_s)) < 1) {
+			perror("ioctl GETTYPE");
+			exit(-1);
+		}
+		switch (ctype) {
+			case EICON_CTYPE_MAESTRAP:
+				printf("Adapter-type is Diva Server PRI/PCI\n");
+				strcpy(fileext, ".pm");
+				card_type = 23;
+				tei = 1;
+				break;
+			case EICON_CTYPE_MAESTRA:
+				printf("Adapter-type is Diva Server BRI/PCI\n");
+				strcpy(fileext, ".sm");
+				card_type = 21;
+				tei = 0;
+				break;
+			case EICON_CTYPE_S:
+			case EICON_CTYPE_SX:
+			case EICON_CTYPE_SCOM:
+			case EICON_CTYPE_QUADRO:
+			case EICON_CTYPE_ISABRI:
+				isabus = 1;
+				tei = 0;
+				load_startup_code("dnload.bin", fileext);
+				break;
+			case EICON_CTYPE_S2M:
+			case EICON_CTYPE_ISAPRI:
+				isabus = 1;
+				tei = 1;
+				load_startup_code("prload.bin", fileext);
+				break;
+			default:
+				fprintf(stderr, "Adapter type %d not supported\n", ctype);
+                          	exit(-1);
+		}
 
-		  	sprintf(filename, "/usr/lib/isdn/te_%s%s", protoname, fileext);
-                       	if (!(code = fopen(filename,"r"))) {
-                                	perror(filename);
-                                	exit(-1);
-                       	}
-			printf("Protocol File : %s ", filename);
-			if ((tmp = fread(protobuf, 1, (sizeof(protobuf)-plen), code))<1) {
-				fclose(code);
-				fprintf(stderr, "Read error on %s\n", filename);
-           	                exit(-1);
-                        }
-                       	fclose(code);
-                       	printf("(%d bytes)\n", tmp);
-			plen += tmp;
+	  	sprintf(filename, "%s/te_%s%s", __DATADIR__, protoname, fileext);
+               	if (!(code = fopen(filename,"r"))) {
+                               	perror(filename);
+                               	exit(-1);
+               	}
+		printf("Protocol File : %s ", filename);
+		if ((tmp = fread(protobuf, 1, sizeof(protobuf), code))<1) {
+			fclose(code);
+			fprintf(stderr, "Read error on %s\n", filename);
+       	                exit(-1);
+		}
+               	fclose(code);
+               	printf("(%d bytes)\n", tmp);
+		plen += tmp;
 			
-			if (verbose) {
+		if (verbose) {
+			if (isabus) {
+				printf("Protocol: %s\n", &protobuf[4]);
+				plen = (plen % 256)?((plen/256)+1)*256:plen;
+			} else {
 				strncpy(filename, &protobuf[0x80], 100);
 				for (i=0; filename[i] && filename[i]!='\r' && filename[i]!='\n'; i++);
 				filename[i] = 0;
 				printf("%s\n", filename);
 			}
+		}
 
-			if (!(cb = load_combifile(card_type, protobuf, &plen))) {
-       	                        fprintf(stderr, "Error loading Combifile\n");
-               	                exit(-1);
+		if (isabus) {
+			if(!(cb = malloc(sizeof(eicon_codebuf) + plen ))) {
+        	                fprintf(stderr, "Out of Memory\n");
+       	        	        exit(-1);
 			}
+			memset(cb, 0, sizeof(eicon_codebuf));
+			memcpy(&cb->isa.code, protobuf, plen);
+			cb->isa.firmware_len = plen;
+		} else {
+			if (!(cb = load_combifile(card_type, protobuf, &plen))) {
+        	                fprintf(stderr, "Error loading Combifile\n");
+       	        	        exit(-1);
+			}
+		}
 
+		if (isabus) {
+			cb->isa.tei = tei;
+			cb->isa.nt2 = 0;
+			cb->isa.WatchDog = 0;
+			cb->isa.Permanent = 0;
+			cb->isa.XInterface = 0;
+			cb->isa.StableL2 = 0;
+			cb->isa.NoOrderCheck = 0;
+			cb->isa.HandsetType = 0;
+			cb->isa.LowChannel = 0;
+			cb->isa.ProtVersion = 0;
+			cb->isa.Crc4 = 0;
+			cb->isa.Loopback = 0;
+		} else {
 			cb->pci.tei = tei;
-
 			cb->pci.nt2 = 0;
 			cb->pci.WatchDog = 0;
 			cb->pci.Permanent = 0;
@@ -1115,84 +1283,133 @@ int main(int argc, char **argv) {
 			cb->pci.Crc4 = 0;
 			cb->pci.Loopback = 0;
 			cb->pci.NoHscx30Mode = 0;
+		}
 
-                        /* parse extented options */
-                        while(ac > (arg_ofs + 1)) {
-                                arg_ofs++;
-                                if (!strncmp(argv[arg_ofs], "-l", 2)) {
-                                        cb->pci.LowChannel = atoi(argv[arg_ofs] + 2);
+		/* parse extented options */
+		while(ac > (arg_ofs + 1)) {
+			arg_ofs++;
+			if (!strncmp(argv[arg_ofs], "-l", 2)) {
+				if (isabus) {
+					cb->isa.LowChannel = atoi(argv[arg_ofs] + 2);
+					if (!cb->isa.LowChannel) cb->isa.LowChannel = 1;
+				} else {
+					cb->pci.LowChannel = atoi(argv[arg_ofs] + 2);
 					if (!cb->pci.LowChannel) cb->pci.LowChannel = 1;
-                                        continue;
-                                }
-                                if (!strncmp(argv[arg_ofs], "-t", 2)) {
-                                        cb->pci.tei = atoi(argv[arg_ofs] + 2);
-                                        cb->pci.tei <<= 1;
-                                        cb->pci.tei |= 0x01;
-                                        continue;
-                                }
-                                if (!strcmp(argv[arg_ofs], "-z")) {
-                                        cb->pci.Loopback = 1;
-                                        continue;
-                                }
-                                if (!strcmp(argv[arg_ofs], "-p")) {
-                                        cb->pci.Permanent = 1;
-                                        continue;
-                                }
-                                if (!strcmp(argv[arg_ofs], "-w")) {
-                                        cb->pci.WatchDog = 1;
-                                        continue;
-                                }
-                                if (!strcmp(argv[arg_ofs], "-c")) {
-                                        cb->pci.Crc4 = 1;
-                                        continue;
-                                }
-                                if (!strcmp(argv[arg_ofs], "-c1")) {
-                                        cb->pci.Crc4 = 1;
-                                        continue;
-                                }
-                                if (!strcmp(argv[arg_ofs], "-c2")) {
-                                        cb->pci.Crc4 = 2;
-                                        continue;
-                                }
-                                if (!strcmp(argv[arg_ofs], "-n")) {
-                                        cb->pci.nt2 = 1;
-                                        continue;
-                                }
-                                if (!strcmp(argv[arg_ofs], "-p")) {
-                                        cb->pci.Permanent = 1;
-                                        continue;
-                                }
-                                if (!strcmp(argv[arg_ofs], "-h")) {
-                                        cb->pci.NoHscx30Mode = 1;
-                                        continue;
-                                }
-                                if (!strcmp(argv[arg_ofs], "-o")) {
-                                        cb->pci.NoOrderCheck = 1;
-                                        continue;
-                                }
-                                if (!strcmp(argv[arg_ofs], "-s")) {
-                                        cb->pci.StableL2 = 1;
-                                        continue;
-                                }
-                                if (!strcmp(argv[arg_ofs], "-s1")) {
-                                        cb->pci.StableL2 = 1;
-                                        continue;
-                                }
-                                if (!strcmp(argv[arg_ofs], "-s2")) {
-                                        cb->pci.StableL2 = 2;
-                                        continue;
-                                }
+				}
+                                continue;
                         }
-                        printf("Downloading Code (%d bytes)...\n", plen);
-                        ioctl_s.arg = (ulong)cb;
-                        if (ioctl(fd, DIEHL_IOCTL_LOADPCI + IIOCDRVCTL, &ioctl_s) < 0) {
-				printf("\n");
-                                perror("ioctl LOADPCI");
-                                exit(-1);
+                        if (!strncmp(argv[arg_ofs], "-t", 2)) {
+				if (isabus) {
+                                	cb->isa.tei = atoi(argv[arg_ofs] + 2);
+	                                cb->isa.tei <<= 1;
+        	                        cb->isa.tei |= 0x01;
+				} else {
+                                	cb->pci.tei = atoi(argv[arg_ofs] + 2);
+	                                cb->pci.tei <<= 1;
+        	                        cb->pci.tei |= 0x01;
+				}
+                                continue;
                         }
-			printf("completed.\n");
-                        close(fd);
-                        return 0;
+                        if (!strcmp(argv[arg_ofs], "-z")) {
+				if (isabus) 
+	                                cb->isa.Loopback = 1;
+				else
+	                                cb->pci.Loopback = 1;
+                                continue;
+                        }
+                        if (!strcmp(argv[arg_ofs], "-p")) {
+				if (isabus) 
+                                	cb->isa.Permanent = 1;
+				else
+                                	cb->pci.Permanent = 1;
+                                continue;
+                        }
+                        if (!strcmp(argv[arg_ofs], "-w")) {
+				if (isabus) 
+                        	        cb->isa.WatchDog = 1;
+				else
+                        	        cb->pci.WatchDog = 1;
+                                continue;
+                        }
+                        if (!strcmp(argv[arg_ofs], "-c")) {
+				if (isabus) 
+                	                cb->isa.Crc4 = 1;
+				else
+                	                cb->pci.Crc4 = 1;
+                                continue;
+                        }
+                        if (!strcmp(argv[arg_ofs], "-c1")) {
+				if (isabus) 
+        	                        cb->isa.Crc4 = 1;
+				else
+        	                        cb->pci.Crc4 = 1;
+                                continue;
+                        }
+                        if (!strcmp(argv[arg_ofs], "-c2")) {
+				if (isabus) 
+	                                cb->isa.Crc4 = 2;
+				else
+	                                cb->pci.Crc4 = 2;
+                                continue;
+                        }
+                        if (!strcmp(argv[arg_ofs], "-n")) {
+				if (isabus) 
+                                	cb->isa.nt2 = 1;
+				else
+                                	cb->pci.nt2 = 1;
+                                continue;
+                        }
+                        if (!strcmp(argv[arg_ofs], "-p")) {
+				if (isabus) 
+                        	        cb->isa.Permanent = 1;
+				else
+                        	        cb->pci.Permanent = 1;
+                                continue;
+                        }
+                        if (!strcmp(argv[arg_ofs], "-h")) {
+                                if (!isabus) cb->pci.NoHscx30Mode = 1;
+                                continue;
+                        }
+                        if (!strcmp(argv[arg_ofs], "-o")) {
+				if (isabus) 
+                	                cb->isa.NoOrderCheck = 1;
+				else
+                	                cb->pci.NoOrderCheck = 1;
+                                continue;
+                        }
+                        if (!strcmp(argv[arg_ofs], "-s")) {
+				if (isabus) 
+        	                        cb->isa.StableL2 = 1;
+				else
+        	                        cb->pci.StableL2 = 1;
+                                continue;
+                        }
+                        if (!strcmp(argv[arg_ofs], "-s1")) {
+				if (isabus) 
+	                                cb->isa.StableL2 = 1;
+				else
+	                                cb->pci.StableL2 = 1;
+                                continue;
+                        }
+                        if (!strcmp(argv[arg_ofs], "-s2")) {
+				if (isabus) 
+                                	cb->isa.StableL2 = 2;
+				else
+                                	cb->pci.StableL2 = 2;
+                                continue;
+                        }
+		}
+		printf("Downloading Code (%d bytes)...\n", plen);
+		ioctl_s.arg = (ulong)cb;
+		tmp = (isabus) ? EICON_IOCTL_LOADISA : EICON_IOCTL_LOADPCI;
+		if (ioctl(fd, tmp + IIOCDRVCTL, &ioctl_s) < 0) {
+			printf("\n");
+			perror("ioctl LOAD");
+			exit(-1);
+		}
+		printf("completed.\n");
+		close(fd);
+		return 0;
         }
 
         if (!strcmp(argv[arg_ofs], "debug")) {
@@ -1200,7 +1417,7 @@ int main(int argc, char **argv) {
 			ioctl_s.arg = 1;
 		else	
 			ioctl_s.arg = atol(argv[arg_ofs + 1]);
-		if (ioctl(fd, DIEHL_IOCTL_DEBUGVAR + IIOCDRVCTL, &ioctl_s) < 0) {
+		if (ioctl(fd, EICON_IOCTL_DEBUGVAR + IIOCDRVCTL, &ioctl_s) < 0) {
 			perror("ioctl DEBUG VALUE");
 			exit(-1);
 		}
@@ -1208,11 +1425,7 @@ int main(int argc, char **argv) {
 	}
 
         if (!strcmp(argv[arg_ofs], "freeit")) {
-		if (argc <= (arg_ofs + 1))
-			ioctl_s.arg = 0;
-		else	
-			ioctl_s.arg = atol(argv[arg_ofs + 1]);
-		if (ioctl(fd, DIEHL_IOCTL_FREEIT + IIOCDRVCTL, &ioctl_s) < 0) {
+		if (ioctl(fd, EICON_IOCTL_FREEIT + IIOCDRVCTL, &ioctl_s) < 0) {
 			perror("ioctl FREEIT");
 			exit(-1);
 		}
@@ -1222,9 +1435,43 @@ int main(int argc, char **argv) {
         if (!strcmp(argv[arg_ofs], "manage")) {
 		mb = malloc(sizeof(eicon_manifbuf));
 
+		if (argc > (++arg_ofs)) {
+			if (!strcmp(argv[arg_ofs], "read")) {
+				if (argc <= (arg_ofs + 1)) {
+					fprintf(stderr, "Path to be read is missing\n");
+					exit(-1);
+				}
+				strcpy(Man_Path, argv[arg_ofs + 1]);
+				filter_slash(Man_Path);
+				if (get_manage_element(Man_Path, 0x02) < 0) {
+		       	                fprintf(stderr, "Error ioctl Management-interface\n");
+               			        exit(-1);
+				}
+				show_man_entries();
+				close(fd);
+				return 0;
+			}
+			if (!strcmp(argv[arg_ofs], "exec")) {
+				if (argc <= (arg_ofs + 1)) {
+					fprintf(stderr, "Path to be executed is missing\n");
+					exit(-1);
+				}
+				strcpy(Man_Path, argv[arg_ofs + 1]);
+				filter_slash(Man_Path);
+				if (get_manage_element(Man_Path, 0x04) < 0) {
+		       	                fprintf(stderr, "Error ioctl Management-interface\n");
+               			        exit(-1);
+				}
+				close(fd);
+				return 0;
+			}
+			fprintf(stderr, "Unknown command for Management-interface\n");
+			exit(-1);
+		}
+
 		strcpy (Man_Path, "\\");
 
-		if (get_manage_element(Man_Path) < 0) {
+		if (get_manage_element(Man_Path, 0x02) < 0) {
        	                fprintf(stderr, "Error ioctl Management-interface\n");
                	        exit(-1);
 		}
