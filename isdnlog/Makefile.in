@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.30 1997/06/21 13:48:55 fritz Exp $
+## $Id: Makefile.in,v 1.31 1997/09/07 00:43:06 luethje Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,9 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.31  1997/09/07 00:43:06  luethje
+## create new error messages for isdnrep
+##
 ## Revision 1.30  1997/06/21 13:48:55  fritz
 ## Create ./bin if necessary
 ##
@@ -240,7 +243,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 2.99.23
+VERSION     = 2.99.24
 
 ifeq ($(POSTGRES),1)
 DEFS       += -DPOSTGRES

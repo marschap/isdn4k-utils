@@ -1,4 +1,4 @@
-/* $Id: processor.c,v 1.10 1997/08/22 12:31:21 fritz Exp $
+/* $Id: processor.c,v 1.11 1997/09/07 00:43:12 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.11  1997/09/07 00:43:12  luethje
+ * create new error messages for isdnrep
+ *
  * Revision 1.10  1997/08/22 12:31:21  fritz
  * isdnlog now handles chargeint/non-chargeint Kernels automatically.
  * Manually setting of CONFIG_ISDNLOG_OLD_I4L no more needed.
@@ -3383,7 +3386,7 @@ static void processctrl(int card, char *s)
   register char       *ps = s;
   register int         i, c;
   register int         wegchan; /* fuer gemakelte */
-  auto     int         dialin, type, cref = -1, creflen, version;
+  auto     int         dialin, type = 0, cref = -1, creflen, version;
   static   int         tei = BROADCAST, sapi = 0, net = 1, firsttime = 1;
   auto     char        sx[BUFSIZ], s2[BUFSIZ];
   static   char        last[BUFSIZ];
