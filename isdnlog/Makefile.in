@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.7 1997/04/03 22:32:36 luethje Exp $
+## $Id: Makefile.in,v 1.8 1997/04/06 21:07:25 luethje Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,9 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.8  1997/04/06 21:07:25  luethje
+## renamed file isdnrep.c to rep_main.c and function.c to isdnrep.c
+##
 ## Revision 1.7  1997/04/03 22:32:36  luethje
 ## copy the old config files into the new dirctory and create the new config files.
 ##
@@ -132,7 +135,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 2.99.3
+VERSION     = 2.99.4
 
 ifeq ($(POSTGRES),1)
 DEFS       += -DPOSTGRES
@@ -168,8 +171,8 @@ ifdef TESTCENTER
 ISDNLOG_OBJS += isdnlog/test_center.o
 endif
 
-ISDNREP_OBJS =  isdnrep/isdnrep.o isdnrep/cheap.o tools/tools.o           \
-                tools/isdnconf.o isdnlog/messages.o isdnrep/function.o    \
+ISDNREP_OBJS =  isdnrep/rep_main.o isdnrep/cheap.o tools/tools.o          \
+                tools/isdnconf.o isdnlog/messages.o isdnrep/isdnrep.o     \
                 $(LIBISDNDIR)/libisdn.a
 
 ISDNCONF_OBJS=  isdnconf/isdnconf.o tools/tools.o tools/isdnconf.o        \
@@ -294,7 +297,7 @@ tools/tools.o:             tools/tools.c     tools/tools.h
 
 tools/isdnconf.o:          tools/isdnconf.c  tools/tools.h
 
-isdnrep/isdnrep.o:         isdnrep/isdnrep.c isdnrep/isdnrep.h tools/tools.h
+isdnrep/rep_main.o:        isdnrep/rep_main.c isdnrep/isdnrep.h tools/tools.h
 
 isdnconf/isdnconf.o:       isdnconf/isdnconf.c isdnconf/isdnconf.h tools/tools.h
 
