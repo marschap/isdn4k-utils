@@ -7,4 +7,4 @@ MAINTAINERCLEANFILES    = Makefile.in
 
 ## The tcl scripts to install
 
-pkglib_DATA		= initmodem.tcl
+pkgdata_DATA		= initmodem.tcl

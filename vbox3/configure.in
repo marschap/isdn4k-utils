@@ -1,15 +1,76 @@
 AC_INIT(vboxgetty/vboxgetty.c)
 
 AM_INIT_AUTOMAKE(vbox, 2.1.1)
-
-AC_PROG_CC
-
 AM_CONFIG_HEADER(config.h)
 
-
-AM_WITH_REGEX
+AC_PROG_CC
 AC_PROG_RANLIB
 AM_PROG_INSTALL
 
+AC_HEADER_STDC
+AC_HEADER_TIME
+AC_CHECK_HEADERS(sys/time.h)
 
-AC_OUTPUT(Makefile vboxgetty/Makefile)
+AC_CHECK_LIB(c, siginterrupt, AC_DEFINE(HAVE_SIGINTERRUPT))
+
+##AM_WITH_REGEX
+
+
+dnl #------------------------------------------------------------------------#
+dnl # Checks for needed external packages:                                   #
+dnl #------------------------------------------------------------------------#
+
+VBOX_PACKAGE_TCL
+
+
+
+
+
+
+
+
+dnl #---------------------------------------------------------------------#
+dnl # The place where log's should be stored                              #
+dnl #---------------------------------------------------------------------#
+
+packagelogdir="`eval echo ${packagelogdir:-"/var/log"}`"
+
+AC_ARG_WITH(packagelogdir,
+        [  --with-logdir=DIR       where logs should be stored [/var/log]],
+        packagelogdir=${withval}
+)
+
+AC_SUBST(packagelogdir)
+
+dnl #---------------------------------------------------------------------#
+dnl # The place where lock's should be stored                             #
+dnl #---------------------------------------------------------------------#
+
+packagelockdir="`eval echo ${packagelockdir:-"/var/lock"}`"
+
+AC_ARG_WITH(packagelockdir,
+        [  --with-lockdir=DIR      where locks should be stored [/var/lock]],
+        packagelockdir=${withval}
+)
+
+AC_SUBST(packagelockdir)
+
+dnl #---------------------------------------------------------------------#
+dnl # The place where pid's should be stored                              #
+dnl #---------------------------------------------------------------------#
+
+packagepiddir="`eval echo ${packagepiddir:-"/var/run"}`"
+
+AC_ARG_WITH(packagepiddir,
+        [  --with-piddir=DIR       where PID's should be stored [/var/run]],
+        packagepiddir=${withval}
+)
+
+AC_SUBST(packagepiddir)
+
+
+
+
+
+
+AC_OUTPUT(Makefile vboxgetty/Makefile vboxgetty/examples/Makefile vboxgetty/examples/scripts/Makefile)

@@ -1,9 +1,12 @@
 /*
-** $Id: vboxgetty.c,v 1.2 1998/06/17 17:01:24 michael Exp $
+** $Id: vboxgetty.c,v 1.3 1998/06/18 12:38:18 michael Exp $
 **
 ** Copyright 1997-1998 by Michael Herold <michael@abadonna.mayn.de>
 **
 ** $Log: vboxgetty.c,v $
+** Revision 1.3  1998/06/18 12:38:18  michael
+** - 2nd part of the automake/autoconf implementation (now compiles again).
+**
 ** Revision 1.2  1998/06/17 17:01:24  michael
 ** - First part of the automake/autoconf implementation. Currently vbox will
 **   *not* compile!
@@ -18,7 +21,8 @@
 #include <signal.h>
 #include <limits.h>
 
-#include "config.h"
+#include "../config.h"
+
 #include "log.h"
 #include "tcl.h"
 #include "modem.h"
@@ -66,7 +70,7 @@ static int	parse_getty_rc(unsigned char *);
 static void show_usage(int, int);
 static int	process_incoming_call(void);
 static int  run_modem_init(void);
-static int	parse_user_rc(struct vboxincomingcall *);
+static int	parse_user_rc(struct vboxuser *);
 
 
 /*************************************************************************/
@@ -189,7 +193,7 @@ void main(int argc, char **argv)
 		/* Now its time to open the log. The name of the current tty will	*/
 		/* be appended to the name.													*/
 
-	printstring(temppathname, "%s/vboxgetty-%s.log", VBOX_LOGDIR, isdnttyname);
+	printstring(temppathname, "%s/vboxgetty-%s.log", LOGDIR, isdnttyname);
 
 	log_open(temppathname);
 
@@ -470,14 +474,14 @@ static int process_incoming_call(void)
 	{
 		if ((strncmp(line, "CALLER NUMBER: ", 15) == 0) && (!havesetup))
 		{
-			xstrncpy(vboxuser.incomingid, &line[15], VBOX_CALL_ID);
-			xstrncpy(vboxuser.localphone, "9317840513", VBOX_CALL_NUMBER);
+			xstrncpy(vboxuser.incomingid, &line[15]   , VBOXUSER_CALLID);
+			xstrncpy(vboxuser.localphone, "9317840513", VBOXUSER_NUMBER);
 
 			if (parse_user_rc(&vboxuser) == 0)
 			{
 				if ((vboxuser.uid == 0) || (vboxuser.gid == 0))
 				{
-					log_line(LOG_W, "No user for ID %s found - call will be ignored!\n", vboxcall.callerid);
+					log_line(LOG_W, "No user for ID %s found - call will be ignored!\n", vboxuser.incomingid);
 
 
 
@@ -499,7 +503,7 @@ static int process_incoming_call(void)
 			haverings++;
 			
 			if (havesetup)
-				log_line(LOG_A, "RING #%03d (%s)...\n", haverings, incomingid);
+				log_line(LOG_A, "RING #%03d (%s)...\n", haverings, vboxuser.incomingid);
 			else
 				log_line(LOG_A, "RING #%03d...\n", haverings);
 		}
@@ -523,17 +527,22 @@ static int parse_user_rc(struct vboxuser *vboxuser)
 	char  line[VBOX_RCLINE_SIZE + 1];
 	FILE *rc;
 	char *stop;
+	char *pattern;
+	char *group;
+	char *name;
+	char *space;
+	char *mask;
 	int	linenr;
 
 	log_line(LOG_D, "Searching local user for ID %s...\n", vboxuser->incomingid);
 
 	vboxuser->uid		= 0;
 	vboxuser->gid		= 0;
-	vboxuser->home[0]	= 0
+	vboxuser->home[0]	= 0;
 	vboxuser->umask	= -1;
 	vboxuser->space	= -1;
 
-	printstring(temppathname, "%s/vboxgetty.user", VBOX_ETCDIR);
+	printstring(temppathname, "%s/vboxgetty.user", SYSCONFDIR);
 
 	if ((rc = fopen(temppathname, "r")))
 	{
