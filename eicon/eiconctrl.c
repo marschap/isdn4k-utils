@@ -1,4 +1,4 @@
-/* $Id: eiconctrl.c,v 1.12 2000/01/26 18:35:05 armin Exp $
+/* $Id: eiconctrl.c,v 1.13 2000/02/12 14:01:32 armin Exp $
  *
  * Eicon-ISDN driver for Linux. (Control-Utility)
  *
@@ -21,6 +21,11 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA. 
  *
  * $Log: eiconctrl.c,v $
+ * Revision 1.13  2000/02/12 14:01:32  armin
+ * Version 1.2
+ * Added write function to management interface.
+ * Fixed too small log buffer for isdnlog.
+ *
  * Revision 1.12  2000/01/26 18:35:05  armin
  * New version of control utility.
  * Added activate-function for isdnlog trace information.
@@ -129,7 +134,7 @@ __u32 table_count = 0;
 int fd;
 isdn_ioctl_struct ioctl_s;
 
-char Man_Path[80];
+char Man_Path[160];
 int  man_ent_count;
 
 struct man_s {
@@ -1183,6 +1188,7 @@ void spid_event(FILE * stream, struct msg_s * message, word code)
 #endif /* XLOG */
 
 void usage() {
+  fprintf(stderr,"Eiconctrl Utility Version 1.2                      (c) 2000 Cytronics & Melware\n");
   fprintf(stderr,"usage: %s add <DriverID> <membase> <irq>              (add card)\n",cmd);
   fprintf(stderr,"   or: %s [-d <DriverID>] membase [membase-addr]      (get/set memaddr)\n",cmd);
   fprintf(stderr,"   or: %s [-d <DriverID>] irq   [irq-nr]              (get/set irq)\n",cmd);
@@ -1699,6 +1705,67 @@ void beep2(void)
  refresh();
 }
 
+int write_manage_element(char *m_dir, int request, char *bval, int vlen, int type)
+{
+	int len, ret, i, j;
+	long lval;
+	byte *buf;
+
+	if (strlen(m_dir)) {
+		if (m_dir[0] == '\\') m_dir++;
+	}
+	len = strlen(m_dir);
+        mb->count = request;
+        mb->pos = 0;
+        mb->length[0] = len + vlen + 5;
+        memset(&mb->data, 0, 690);
+
+	if (len)
+	        strncpy(&mb->data[5], m_dir, len);
+        mb->data[4] = len;
+        mb->data[3] = vlen;
+	buf = &mb->data[5 + len];
+	switch(type) {
+		case 0x81:
+			if (1 != sscanf(bval, "%ld", &lval))
+				return(-1);
+			for (i=0; i<vlen; i++) buf[i] = (byte)(lval >> (8*i));
+			break;
+		case 0x82:
+			if (1 != sscanf(bval, "%lu", &lval))
+				return(-1);
+			for (i=0; i<vlen; i++) buf[i] = (byte)(lval >> (8*i));
+			break;
+		case 0x83:
+			if (1 != sscanf(bval, "%lx", &lval))
+				return(-1);
+			for (i=0; i<vlen; i++) buf[i] = (byte)(lval >> (8*i));
+			break;
+		case 0x85:
+			if (1 != sscanf(bval, "%lu", &lval))
+				return(-1);
+			if ((lval < 0) || (lval > 1))
+				return(-1);
+			for (i=0; i<(vlen-1); i++) buf[i] = 0;
+			buf[i] = (byte)lval;
+			break;
+		case 0x87:
+			for(i=0; i<vlen; i++) {
+				buf[vlen-i-1] = 0;
+				for(j=0; j<8; j++) {
+					buf[vlen-i-1] |= (bval[i*9+j] - '0') << (7-j);
+				}
+			}
+			break;
+		default:
+			return(-1);
+	}
+        mb->data[0] = type;
+        ioctl_s.arg = (ulong)mb;
+        ret = ioctl(fd, EICON_IOCTL_MANIF + IIOCDRVCTL, &ioctl_s);
+	return(ret);
+}
+
 int get_manage_element(char *m_dir, int request)
 {
 	int i,j,o,k,tmp;
@@ -1945,6 +2012,84 @@ void do_manage_resize(int dummy) {
 	signal(SIGWINCH, do_manage_resize);
 }
 
+void rmws(char *text)
+{
+	int c;
+	for (c=strlen(text)-1;c>=0;c--)
+	{
+		if (text[c]!=' ') return;
+		text[c]='\0';
+	}
+	return;
+}
+
+int l_edit(char *buevar, char *uevar, int length)
+{
+	int ca,yq,xq,x,y;
+	int ilen=0;
+	int bilen=0;
+	getyx(statwin,yq,xq);
+	for(ca = 0; ca < length; ca++) uevar[ca]=32;
+	uevar[ca]='\0';
+	strcpy(uevar,buevar);
+	ilen=strlen(buevar);
+	uevar[ilen]=32;
+	uevar[length]='\0';
+	waddstr(statwin,uevar);
+	wmove(statwin,yq,xq);
+	laby01:
+        prefresh(statwin, stat_y, 0, 5, 0, LINES-4, COLS);
+	ca=getch();
+	switch(ca)
+	{
+		case KEY_LEFT:
+			if (bilen<=0) goto laby02;
+			getyx(statwin,y,x);
+			x--;
+			bilen--;
+			wmove(statwin,y,x);
+			goto laby01;
+		case KEY_RIGHT:
+			if (bilen>=length) goto laby02;
+			getyx(statwin,y,x);
+			x++;
+			bilen++;
+			wmove(statwin,y,x);
+			goto laby01;
+		case KEY_BACKSPACE:
+		case 8:
+			if (bilen<1) goto laby02;
+			getyx(statwin,y,x);
+			x--; bilen--;
+			for (ca=bilen;ca<(length-1);ca++) uevar[ca]=uevar[ca+1];
+			uevar[length-1]=32;
+			mvwaddstr(statwin,yq,xq,uevar);
+			wmove(statwin,y,x);
+			goto laby01;
+		case 10:
+		case 13:
+			rmws(uevar);
+			return(1);
+		case 27:
+			rmws(uevar);
+			return(2);
+	}
+	if ((ca > 31) && (ca < 123))
+	{
+		if (length <= bilen) goto laby02;
+		uevar[bilen]=ca;
+		bilen++;
+		getyx(statwin,y,x);
+		x++;
+		mvwaddstr(statwin,yq,xq,uevar);
+		wmove(statwin,y,x);
+		goto laby01;
+	}
+	laby02:
+	beep2();
+	goto laby01;
+}
+
 void eicon_management(void)
 {
 	int Key;
@@ -1964,6 +2109,7 @@ void eicon_management(void)
 	switch(Key) {
 		case 27:
 		case 'q':
+		case 'Q':
 			break;
 		case KEY_UP:
 			if (h_line) {
@@ -2024,7 +2170,6 @@ void eicon_management(void)
 					refresh();
                			        return;
 				}
-				sleep(1);
 				Man_Path[i] = 0;
 				if (get_manage_element(Man_Path, 0x02) < 0) {
 					clear();
@@ -2032,8 +2177,6 @@ void eicon_management(void)
 					refresh();
                			        return;
 				}
-				h_line = 0;
-				stat_y = 0;
 				goto redraw1;
 
 			}
@@ -2049,7 +2192,6 @@ void eicon_management(void)
                                         refresh();
                                         return;
                                 }
-                                sleep(1);
                                 Man_Path[i] = 0;
                                 if (get_manage_element(Man_Path, 0x02) < 0) {
                                         clear();
@@ -2057,11 +2199,44 @@ void eicon_management(void)
                                         refresh();
                                         return;
                                 }
-                                h_line = 0;
-                                stat_y = 0;
                                 goto redraw1;
 
                         }
+			if (man_ent[h_line].attribute & 0x01) { /* Writetable function */
+				unsigned char eline[200];
+				int ltmp;
+                		sprintf(eline, "%-17s ", man_ent[h_line].Name);
+                		wattron(statwin, A_BLINK|A_REVERSE);
+                		mvwaddstr(statwin, h_line, 0, eline);
+                		wattroff(statwin, A_BLINK|A_REVERSE);
+				curs_set(1);
+				wmove(statwin,h_line,24);
+                		wattron(statwin, A_REVERSE);
+				ltmp = l_edit(man_ent[h_line].Var, eline, 40);
+				if ((strlen(eline) < 1) || (ltmp != 1)) {
+                			wattroff(statwin, A_REVERSE);
+					curs_set(0);
+					goto redraw1;
+				}
+                		wattroff(statwin, A_REVERSE);
+				curs_set(0);
+				i = strlen(Man_Path);
+				if (Man_Path[strlen(Man_Path)-1] != '\\') strcat(Man_Path, "\\");
+				strcat(Man_Path, man_ent[h_line].Name);
+				if (write_manage_element(Man_Path, 0x03, eline,
+					man_ent[h_line].var_length, man_ent[h_line].type) < 0) {
+					beep2();
+				}
+				Man_Path[i] = 0;
+				if (get_manage_element(Man_Path, 0x02) < 0) {
+					clear();
+		       	                mvaddstr(0,0, "Error ioctl Management-interface");
+					refresh();
+               			        return;
+				}
+				goto redraw1;
+
+			}
 			beep2();
 			goto Keyboard;
 		case 'r':
@@ -2786,6 +2961,11 @@ int main(int argc, char **argv) {
 		int tcmd = 0x05;
 		int dval = 513;
 		int ctype = -1;
+		char LogLength[10];
+		char EventEnable[50];
+
+		strcpy(LogLength, "80");
+		strcpy(EventEnable, "00000000 00000001");
 
 		if ((ctype = ioctl(fd, EICON_IOCTL_GETTYPE + IIOCDRVCTL, &ioctl_s)) < 1) {
 			perror("ioctl GETTYPE");
@@ -2805,6 +2985,8 @@ int main(int argc, char **argv) {
 		if (!strcmp(argv[arg_ofs++], "off")) {
 				tcmd = 0x06;
 				dval = 1;
+				strcpy(LogLength, "30");
+				strcpy(EventEnable, "00000000 11111111");
 			}
 		}
 		ioctl_s.arg = dval;
@@ -2815,6 +2997,16 @@ int main(int argc, char **argv) {
 		strcpy (Man_Path, "\\Trace\\Log Buffer");
 		if (get_manage_element(Man_Path, tcmd) < 0) {
 			fprintf(stderr, "Error or already in that state.\n");
+			exit(-1);
+		}
+		strcpy (Man_Path, "\\Trace\\Max Log Length");
+		if (write_manage_element(Man_Path, 0x03, LogLength, 2, 0x82) < 0) {
+			fprintf(stderr, "Error changing Log Length.\n");
+			exit(-1);
+		}
+		strcpy (Man_Path, "\\Trace\\Event Enable");
+		if (write_manage_element(Man_Path, 0x03, EventEnable, 2, 0x87) < 0) {
+			fprintf(stderr, "Error changing Event Enable.\n");
 			exit(-1);
 		}
 		close(fd);
