@@ -1,4 +1,4 @@
-/* $Id: isdntools.c,v 1.6 1997/03/19 00:08:43 luethje Exp $
+/* $Id: isdntools.c,v 1.7 1997/03/20 00:19:27 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -19,6 +19,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdntools.c,v $
+ * Revision 1.7  1997/03/20 00:19:27  luethje
+ * inserted the line #include <errno.h> in avmb1/avmcapictrl.c and imon/imon.c,
+ * some bugfixes, new structure in isdnlog/isdnrep/isdnrep.c.
+ *
  * Revision 1.6  1997/03/19 00:08:43  luethje
  * README and function expand_number() completed.
  *
@@ -86,6 +90,7 @@
 
 /****************************************************************************/
 
+#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -711,7 +716,7 @@ int read_conffiles(section **Section, char *groupfile)
 	if (!read_again)
 		delete_element(&files,0);
 
-	delete_element(&vars,1);
+	delete_element(&vars,0);
 
 	read_again = 1;
 	return RetCode;
@@ -728,6 +733,9 @@ int paranoia_check(char *cmd)
 	{
 		if (stat(cmd, &stbuf))
 		{
+			if (errno == ENOENT)
+				return 0;
+
 			print_msg("stat() failed for file `%s', stay on the safe side!\n", cmd);
 			return -1;
 		}

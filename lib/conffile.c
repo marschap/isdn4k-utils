@@ -1,5 +1,4 @@
-
-/*
+/* $Id: conffile.c,v 1.7 1997/03/20 00:19:24 luethje Exp $
  * ISDN accounting for isdn4linux.
  *
  * Copyright 1996 by Stefan Luethje (luethje@sl-gw.lake.de)
@@ -22,6 +21,8 @@
 
 #define _CONFFILE_C_
 
+#define _GNU_SOURCE
+#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -184,17 +185,15 @@ section *read_file(section *Section, const char *FileName, int Flags)
 
 static section *Read_Lines(section *Section, FILE *fp, const char *FileName, int *Line, int Flags)
 {
+	static int   InSubSection = 0;
 	char  String[BUFSIZ];
 	char *Sectionname, *Variable, *Value;
 	int   Res;
-	int   InSubSection = 0;
 	section *Ptr = Section;
 
 
 	while (FGets(String, BUFSIZ, fp, Line) != NULL)
 	{
-		InSubSection = 0;
-
 		if ((Sectionname = Find_Section(String)) != NULL)
 		{
 			if ((Ptr = Set_Section(&Section,Sectionname,C_OVERWRITE | C_WARN | Flags)) == NULL)
@@ -226,12 +225,15 @@ static section *Read_Lines(section *Section, FILE *fp, const char *FileName, int
 			{
 				if (*Value == C_BEGIN_SUBSECTION && Not_Space(Value+1) == NULL)
 				{
-					InSubSection = 1;
+					InSubSection++;
+					Set_SubSection(Ptr,Variable,Read_Lines(NULL,fp,FileName,Line,Flags),C_OVERWRITE | C_WARN);
+					/*
 					if (Set_SubSection(Ptr,Variable,Read_Lines(NULL,fp,FileName,Line,Flags),C_OVERWRITE | C_WARN) == NULL)
 					{
 						free_section(Section);
 						return NULL;
 					}
+					*/
 				}
 				else
 					if (Set_Entry(Ptr,NULL,Variable,Value,C_OVERWRITE | C_WARN) == NULL)
@@ -243,15 +245,19 @@ static section *Read_Lines(section *Section, FILE *fp, const char *FileName, int
 		}
 		else
 		if (Res == -1 && *(Kill_Blanks(String)) == C_END_SUBSECTION)
+		{
+			InSubSection--;
 			return Section;
+		}
 		else
 		if (Res == -1)
 			print_msg("Error in file `%s', line %d: there is no valid token!\n",FileName,*Line);
 	}
 
-	if (InSubSection == 1)
+	if (InSubSection != 0)
 	{
 		print_msg("Error in file `%s': Missing a `%c'!\n",FileName,C_END_SUBSECTION);
+		free_section(Section);
 		return NULL;
 	}
 

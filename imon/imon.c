@@ -1,14 +1,20 @@
-/* $Id: imon.c,v 1.1 1997/02/17 00:09:03 fritz Exp $
+/* $Id: imon.c,v 1.2 1997/03/20 00:19:01 luethje Exp $
  *
  * iMON , extended version.
  * original iMON source (c) Michael Knigge
  * heavily modified and extended by Fritz Elfert
  *
  * $Log: imon.c,v $
+ * Revision 1.2  1997/03/20 00:19:01  luethje
+ * inserted the line #include <errno.h> in avmb1/avmcapictrl.c and imon/imon.c,
+ * some bugfixes, new structure in isdnlog/isdnrep/isdnrep.c.
+ *
  * Revision 1.1  1997/02/17 00:09:03  fritz
  * New CVS tree
  *
  */
+
+#include <errno.h>
 #include <config.h>
 #include <stdio.h>
 #include <string.h>

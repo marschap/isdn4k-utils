@@ -74,7 +74,7 @@ entry2 = blabla2
 #                 sein.
   Entry3 = {
 #          ^----- Dieses Zeichen besagt, das dieser Eintrag ein oder mehrere
-#                 Untersectionen beinhaltet. Es MUSS in der gleichen Zeile
+#                 Untersektionen beinhaltet. Es MUSS in der gleichen Zeile
 #                 stehen, wie der Eintragsnamen und das Gleichheitszeichen.
 # ^^^^^^--------- "Entry3", "entry3" und "ENTRY3" sind equivalent!
   [SUBSECTION1]
@@ -118,5 +118,6 @@ Dann wird nach der Datei /etc/myinclude gesucht. Es ist voellig
 unabhaengig davon, in welchem Verzeichnis das Programm gestartet wurde,
 das die Konfigurationsdatei lesen soll.
 
+ACHTUNG:
 Wenn Dateien rekursiv eingebunden werden, fuehrt dieses mit Sicherheit
 zum Absturz des Programmes. Dieses wird von der Library nicht verhindert.

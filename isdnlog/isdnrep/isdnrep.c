@@ -1,4 +1,4 @@
-/* $Id: isdnrep.c,v 1.1 1997/03/16 20:59:05 luethje Exp $
+/* $Id: isdnrep.c,v 1.2 1997/03/20 00:19:13 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -19,6 +19,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnrep.c,v $
+ * Revision 1.2  1997/03/20 00:19:13  luethje
+ * inserted the line #include <errno.h> in avmb1/avmcapictrl.c and imon/imon.c,
+ * some bugfixes, new structure in isdnlog/isdnrep/isdnrep.c.
+ *
  * Revision 1.1  1997/03/16 20:59:05  luethje
  * Added the source code isdnlog. isdnlog is not working yet.
  * A workaround for that problem:
@@ -116,6 +120,15 @@
 
 /*****************************************************************************/
 
+#define C_DELIM '|'
+
+/*****************************************************************************/
+
+#define print_msg(a,b) print_string(b,a)
+
+/*****************************************************************************/
+
+static int read_logfile(char *myname);
 static time_t get_month(char *String, int TimeStatus);
 static time_t get_time(char *String, int TimeStatus);
 static int get_term (char *String, time_t *Begin, time_t *End,int delentries);
@@ -165,46 +178,27 @@ static char *lfnam = LOGFILE;
 
 /*****************************************************************************/
 
+static int        incomingonly = 0;
+static int        outgoingonly = 0;
+static int        verbose = 0;
+static int        timearea = 0, phonenumberonly = 0;
+static int        compute = 0;
+static time_t     begintime, endtime;
+static int        delentries = 0;
+static int        numbers = 0;
+static char	      timestring[256] = "";
+
+/*****************************************************************************/
+
 int main(int argc, char *argv[], char *envp[])
 {
-  register char      *p, *p1, *p2;
-  register int	      i, j, k, n, cc;
-  auto     FILE      *fi, *ftmp = NULL;
-  auto     char       string[BUFSIZ], s[BUFSIZ], s1[BUFSIZ];
-  auto	   char	      start[20], stop[20], timestring[256] = "";
-  auto     char       tmp_string[256];
-  auto	   char	      tmpfile[256];
-  auto	   int	      hit, lday = -1;
-  auto	   double     restdm = 0.0;
-  auto	   int	      computed, go, zone = 1;
-  auto	   int	      compute = 0, zeit;
-  extern   int        errno;
-  auto	   time_t     now, from = (time_t)0;
-  auto	   time_t     begintime, endtime;
-  auto	   double     t1, t2, takt;
-  auto 	   struct tm *tm;
-  auto	   double     einheit = 0.23;
-  auto	   int	      nx[2];
-  auto	   int 	      Tarif96 = 0, Tarif962 = 0, c, notforus, resteh = 0;
-  auto	   double     restdur = 0.0, restidur = 0.0;
-  auto	   int	      numbers = 0, restusage = 0;
-  auto	   int	      restiusage = 0;
-  auto	   int        verbose = 0;
-  auto     int        timearea = 0, phonenumberonly = 0;
-  auto     int        delentries = 0;
-  auto     int        incomingonly = 0;
-  auto     int        outgoingonly = 0;
-  one_call            cur_call;
-  sum_calls           day_sum, day_com_sum, all_sum, all_com_sum, tmp_sum;
-  char    *myname = basename(argv[0]);
+  auto     char  tmp_string[256];
+  auto	   int   c;
+	auto     char *myname = basename(argv[0]);
 
 
 	set_print_fct_for_tools(printf);
 
-  clear_sum(&day_sum);
-  clear_sum(&day_com_sum);
-  clear_sum(&all_sum);
-  clear_sum(&all_com_sum);
 
 	use_new_config = 1;
 
@@ -215,7 +209,7 @@ int main(int argc, char *argv[], char *envp[])
     switch (c) {
       case 'a' : timearea++;
                  begintime = 0;
-		 time(&endtime);
+			           time(&endtime);
       	       	 break;
 
       case 'c' : compute = strtol(optarg, NIL, 0);
@@ -267,22 +261,60 @@ int main(int argc, char *argv[], char *envp[])
   if (readconfig(myname) != 0)
   	return 1;
 
+	return (read_logfile(myname) == 0?1:0);
+}
+
+/*****************************************************************************/
+
+static int read_logfile(char *myname)
+{
+  auto	   int 	      Tarif96 = 0, Tarif962 = 0, notforus, resteh = 0;
+  auto	   double     restdur = 0.0, restidur = 0.0;
+  auto	   int	      restiusage = 0;
+  auto	   double     einheit = 0.23;
+  auto	   int	      nx[2];
+  auto	   time_t     now, from = (time_t)0;
+  auto	   double     t1, t2, takt;
+  auto 	   struct tm *tm;
+  auto	   int	      computed, go, zone = 1;
+  auto	   double     restdm = 0.0;
+  auto	   int	      hit, lday = -1;
+  auto     char       tmp_string[256];
+  auto	   char	      start[20], stop[20];
+  auto	   char*      tmpfile = NULL;
+  auto     FILE      *fi, *ftmp = NULL;
+  auto     char       string[BUFSIZ], s[BUFSIZ], s1[BUFSIZ];
+  register char      *p = NULL, *p1, *p2;
+  register int	      i, j, k, n, cc;
+  auto	   int	      zeit;
+  auto	   int	      restusage = 0;
+  auto	   char**	    array;
+  one_call            cur_call;
+  sum_calls           day_sum, day_com_sum, all_sum, all_com_sum, tmp_sum;
+
+
+  clear_sum(&day_sum);
+  clear_sum(&day_com_sum);
+  clear_sum(&all_sum);
+  clear_sum(&all_com_sum);
+
   if (delentries)
     if(begintime)
     {
       sprintf(tmp_string, wrongdate2, timestring);
       print_string(tmp_string,ERROUT);
-      return 1;
+      return -1;
     }
     else
     {
-      sprintf(tmpfile,"/tmp/isdnrep%d",getpid());
+      if ((tmpfile = tmpnam(NULL)) == NULL)
+      	return -1;
 
   		if ((ftmp = fopen(tmpfile, "w")) == (FILE *)NULL)
       {
         sprintf(tmp_string, msg1, tmpfile, strerror(errno));
         print_string(tmp_string,ERROUT);
-        return(1);
+        return -1;
       }
     }
 
@@ -306,6 +338,33 @@ int main(int argc, char *argv[], char *envp[])
     while (fgets(s, BUFSIZ, fi)) {
       strcpy(string,s);
 
+/*
+			if (*s == '#')
+				continue;
+
+			if ((array = String_to_Array(p,C_DELIM)) == NULL)
+			{
+				print_msg(ERROUT,"Can not allocate memory!\n");
+				return -1;
+			}
+
+			if (array[0] == NULL)
+				continue;
+
+			cur_call.eh = notforus = 0;
+			cur_call.dir = -1;
+			cur_call.cause = -1;
+			cur_call.ibytes = cur_call.obytes = 0L;
+			cur_call.version = 0.0;
+			cur_call.si = cur_call.si1 = 0;
+
+			if (array[1] == NULL || array[2] == NULL)
+				continue;
+
+			strcpy(cur_call.num[0], Kill_Blanks(array[1]));
+			strcpy(cur_call.num[1], Kill_Blanks(array[2]));
+*/
+
       if ((*s != '#') && (p = strchr(s, '|'))) {
       /* hier wird das erste Trennzeichen gesucht */
 
@@ -314,7 +373,7 @@ int main(int argc, char *argv[], char *envp[])
         cur_call.cause = -1;
         	/* Zeigt die Gespraechsrichtung an: rein oder raus */
         cur_call.ibytes = cur_call.obytes = 0L;
-	cur_call.version = 0.0;
+       	cur_call.version = 0.0;
         cur_call.si = cur_call.si1 = 0;
 
      	if ((p1 = p2 = strchr(p + 1, '|'))) {
@@ -398,7 +457,7 @@ int main(int argc, char *argv[], char *envp[])
                                 } /* if */
                               } /* if */
                             } /* if */
-			  } /* if */
+			                    } /* if */
                         } /* if */
               	      } /* if */
                     } /* if */
@@ -560,7 +619,7 @@ int main(int argc, char *argv[], char *envp[])
                     unknown[i].connects++;
                   else
                   {
-                    sprintf(tmp_string, "%s: WARNING: Too many unknown connection's from %s\n", argv[0], unknown[i].num);
+                    sprintf(tmp_string, "%s: WARNING: Too many unknown connection's from %s\n", myname, unknown[i].num);
                     print_string(tmp_string,ERROUT);
                   }
 
@@ -569,7 +628,7 @@ int main(int argc, char *argv[], char *envp[])
                       unknowns++;
                     else
                     {
-                      sprintf(tmp_string, "%s: WARNING: Too many unknown number's\n", argv[0]);
+                      sprintf(tmp_string, "%s: WARNING: Too many unknown number's\n", myname);
                       print_string(tmp_string,ERROUT);
                     }
                   } /* if */
@@ -691,7 +750,7 @@ int main(int argc, char *argv[], char *envp[])
                   takt = cheap((time_t)t1, zone);
 
                 if (!takt) {
-                  sprintf(tmp_string, "%s: OOPS! Abbruch: Zeittakt==0 ???\n", argv[0]);
+                  sprintf(tmp_string, "%s: OOPS! Abbruch: Zeittakt==0 ???\n", myname);
                   print_string(tmp_string,ERROUT);
                   break;
                 } /* if */
@@ -953,9 +1012,9 @@ int main(int argc, char *argv[], char *envp[])
     } /* if */
   }
   else {
-    sprintf(tmp_string, msg1, argv[0], lfnam, strerror(errno));
+    sprintf(tmp_string, msg1, myname, lfnam, strerror(errno));
     print_string(tmp_string,ERROUT);
-    return(1);
+    return -1;
   } /* else */
 
 
@@ -967,13 +1026,13 @@ int main(int argc, char *argv[], char *envp[])
     {
       sprintf(tmp_string, msg1, tmpfile, strerror(errno));
       print_string(tmp_string,ERROUT);
-      return(1);
+      return -1;
     }
  		if ((fi = fopen(lfnam, "w")) == (FILE *)NULL)
     {
       sprintf(tmp_string, msg1, lfnam, strerror(errno));
       print_string(tmp_string,ERROUT);
-      return(1);
+      return -1;
     }
 
     while (fgets(s, BUFSIZ, ftmp))
@@ -985,8 +1044,8 @@ int main(int argc, char *argv[], char *envp[])
     unlink(tmpfile);
   }
 
-  return(0);
-} /* main */
+	return 0;
+} /* read_logfile */
 
 /*****************************************************************************/
 

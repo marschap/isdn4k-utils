@@ -756,6 +756,7 @@ folgen. Das gleiche gilt fuer die Sektionen innerhalb einer Datei.
 Im folgenden werden nun die einzelnen Eintraege unter den Sektionen MSN
 und NUMBER erwaehnt:
 
+******** Was ist das? *************
 MSN    Alias Zone Interface Info-Args
 -----------------------------------------------------------
 4711,1 Phone 1    -	    IORA=auplay dingdong.au,,18-21;

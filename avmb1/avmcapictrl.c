@@ -1,11 +1,15 @@
 /*
- * $Id: avmcapictrl.c,v 1.1 1997/03/04 22:46:32 calle Exp $
+ * $Id: avmcapictrl.c,v 1.2 1997/03/20 00:18:57 luethje Exp $
  * 
  * AVM-B1-ISDN driver for Linux. (Control-Utility)
  * 
  * Copyright 1996 by Carsten Paeth (calle@calle.in-berlin.de)
  * 
  * $Log: avmcapictrl.c,v $
+ * Revision 1.2  1997/03/20 00:18:57  luethje
+ * inserted the line #include <errno.h> in avmb1/avmcapictrl.c and imon/imon.c,
+ * some bugfixes, new structure in isdnlog/isdnrep/isdnrep.c.
+ *
  * Revision 1.1  1997/03/04 22:46:32  calle
  * Added program to add and download firmware to AVM-B1 card
  *
@@ -18,6 +22,7 @@
  * 
  */
 
+#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <fcntl.h>
