@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.142 2000/01/24 23:06:20 akool Exp $
+## $Id: Makefile.in,v 1.143 2000/01/26 20:19:38 akool Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,13 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.143  2000/01/26 20:19:38  akool
+## isdnlog-4.06
+##
+##  - isdnlog/Makefile.in ... make install copied / to /etc/isdn sometimes
+##  - new "rate-de.dat" - the first one
+##      from our new cvs-Server at sourceforge.net!
+##
 ## Revision 1.142  2000/01/24 23:06:20  akool
 ## isdnlog-4.05
 ##  - ABC_LCR tested and fixed. It's really working now, Detlef!
@@ -1032,7 +1039,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 4.05
+VERSION     = 4.06
 
 MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 \
 	      isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 \
@@ -1245,10 +1252,12 @@ install: all rootperm installdirs
 # install-progs:
 		@echo "Killing running isdnlog!"
 		-@if ps x | fgrep $(ISDNLOG) >/dev/null; then kill `cat $(RUNDIR)/isdnlog.isdnctrl0.pid 2>/dev/null`; fi
-		-@test ! -d $(DESTDIR)$(OLDCONFDIR) || cp -auv $(DESTDIR)$(OLDCONFDIR)/$(USERFILE) $(DESTDIR)$(I4LCONFDIR)
-		-@test ! -d $(DESTDIR)$(OLDCONFDIR) || (cp -auv $(DESTDIR)$(OLDCONFDIR)/$(OLDCONFFILE) $(DESTDIR)$(I4LCONFDIR) \
-		 && $(ISDNREP) 1>/dev/null 2>&1) \
-		 && mv $(DESTDIR)$(I4LCONFDIR)/$(OLDCONFFILE) $(DESTDIR)$(I4LCONFDIR)/$(OLDCONFFILE).old
+		@if [ -n $(DESTDIR)$(OLDCONFDIR) -a $(DESTDIR)$(OLDCONFDIR) != '/' ] ; then \
+			-@test ! -d $(DESTDIR)$(OLDCONFDIR) || cp -auv $(DESTDIR)$(OLDCONFDIR)/$(USERFILE) $(DESTDIR)$(I4LCONFDIR) ; \
+			-@test ! -d $(DESTDIR)$(OLDCONFDIR) || (cp -auv $(DESTDIR)$(OLDCONFDIR)/$(OLDCONFFILE) $(DESTDIR)$(I4LCONFDIR) \
+		 	&& $(ISDNREP) 1>/dev/null 2>&1) \
+		 	&& mv $(DESTDIR)$(I4LCONFDIR)/$(OLDCONFFILE) $(DESTDIR)$(I4LCONFDIR)/$(OLDCONFFILE).old ; \
+		fi
 		@if [ -n "$(DESTDIR)" ]; then \
 			$(GENCONF) $(DESTDIR)$(I4LCONFDIR)/$(CONFFILE).new $(DESTDIR)$(I4LCONFDIR)/$(CALLERIDFILE).new ; \
 		else \
