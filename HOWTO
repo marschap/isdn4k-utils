@@ -1,4 +1,4 @@
-isdn4k-utils - HOWTO - Andreas Kool - 17-Mar-97 - 22:24
+isdn4k-utils - HOWTO - Andreas Kool - 31-Mar-97 - 23:53
 
 ***************************************************************************
 ** Dieses Dokument wendet sich z.Zt. vor allem an all diejenigen, die es **
@@ -22,13 +22,13 @@ so einfach wie irgend moeglich zu machen, haben wir versucht, alle
 Tools ineinander zu verzahnen, und ueber eine einzige, gemeinsame
 Konfigurationsdatei steuerbar zu machen.
 
-Mit folgenden Schritten kommt man in den Genuss von isdnlog-2.99:
+Mit folgenden Schritten kommt man in den Genuss von isdnlog-2.99.2:
 
 
-1. Es sollten als Vorbedingung Linux-2.0.29 nebst isdn4kernel-2.0.29.4
-   installiert werden. isdnlog-2.99 arbeitet zwar auch mit aelteren
+1. Es sollten als Vorbedingung Linux-2.0.29 nebst isdn4kernel-2.0.29.5
+   installiert werden. isdnlog-2.99.2 arbeitet zwar auch mit aelteren
    Versionen von isdn4linux zusammen, jedoch entgehen einem dadurch
-   viele neue Features, und ausserdem wurde isdnlog-2.99 primaer
+   viele neue Features, und ausserdem wurde isdnlog-2.99.2 primaer
    in dieser Umgebung getestet - daher koennen Probleme mit
    frueheren Versionen nicht ausgeschlossen werden.
 
@@ -41,7 +41,7 @@ Mit folgenden Schritten kommt man in den Genuss von isdnlog-2.99:
 3. Die grundsaetzlichen Betriebsmodi einstellen:
 
      $ cd isdn4k-utils 
-     $ make
+     $ make config
 
    Es erscheint nun ein interaktives Konfigurationsmenue, in dem die
    gewuenschten Programme/Optionen angewaehlt werden koennen.
@@ -93,12 +93,6 @@ Mit folgenden Schritten kommt man in den Genuss von isdnlog-2.99:
          umgeschaltet. Dieser Schalter muss also in der Schweiz
          eingeschaltet werden.
 
-   Nachdem alle gewuenschten Einstellungen vorgenommen, und abgespeichert 
-   wurden, muss nun (im aktuellen Stadium) ein
-     
-     $ cp lib/policy.h .
-
-   durchgefuehrt werden.
 
 4. Nun kann alles kompiliert und installiert werden:
 
@@ -128,9 +122,9 @@ Mit folgenden Schritten kommt man in den Genuss von isdnlog-2.99:
 
    Der neue isdnlog arbeitet mit einer vollstaendig anderen 
    Konfigurationsdatei. 
-   isdnlog-2.99 versucht daher beim ersten Start, die alte 
+   isdnlog-2.99.2 versucht daher beim ersten Start, die alte 
    Konfigurationsdatei "isdnlog.conf" in die neue Syntax umzuwandeln.
-   Damit isdnlog-2.99 die alte Konfigurationsdatei finden kann, muss diese
+   Damit isdnlog-2.99.2 die alte Konfigurationsdatei finden kann, muss diese
    evtl. in das in "policy.h" unter "I4LCONFDIR" angegebene Verzeichnis
    kopiert werden:
      
@@ -139,7 +133,7 @@ Mit folgenden Schritten kommt man in den Genuss von isdnlog-2.99:
 
 6. Erster Start des neuen isdnlog:
 
-   Nach diesen Vorbereitungen kann isdnlog-2.99 nun endlich gestartet
+   Nach diesen Vorbereitungen kann isdnlog-2.99.2 nun endlich gestartet
    werden. 
    
    Im folgenden unterstelle ich mal, das isdnlog folgendermassen
@@ -150,7 +144,7 @@ Mit folgenden Schritten kommt man in den Genuss von isdnlog-2.99:
    isdnlog sollte sich - je nach eingestelltem Ausgabekanal - auf
    der Konsole oder dem syslog in etwa folgendermassen melden:
 
-     isdnlog Version 2.99 loaded
+     isdnlog Version 2.99.2 loaded
      (ISDN subsystem with ISDN_MAX_CHANNELS > 16 detected - x active channels
      (Data versions: iprofd=0x04  net_cfg=0x02  /dev/isdninfo=0x01)
 
@@ -184,14 +178,14 @@ Mit folgenden Schritten kommt man in den Genuss von isdnlog-2.99:
    aber irgend etwas in dieser Art muss auftauchen - sonst stimmt
    etwas grundlegendes nicht!
 
-   Neben diesen direkten Meldungen muss isdnlog-2.99 sowohl einen
+   Neben diesen direkten Meldungen muss isdnlog-2.99.2 sowohl einen
    Eintrag in der "/var/log/isdn.log" vorgenommen, als auch
    die Protokolldatei "/tmp/isdnctrl0" fortgeschrieben haben.
 
 
 7. Nachbearbeitung der neuen Konfigurationsdatei
 
-   Nachdem isdnlog-2.99 nun offensichtlich arbeitet, ist es an der Zeit,
+   Nachdem isdnlog-2.99.2 nun offensichtlich arbeitet, ist es an der Zeit,
    die gerade automatisch neu erstellte Konfigurationsdatei zu ueberarbeiten.
 
    Die Syntax erschliesst sich einem eigentlich von alleine, eine naehere
@@ -216,6 +210,14 @@ Mit folgenden Schritten kommt man in den Genuss von isdnlog-2.99:
 
    Wer bis hier gekommen ist, kann ein lautes "puuuh, geschafft!"
    ausstossen! Nun ist es endlich an der Zeit, 
+
+
+7.1 Es gibt nun zwei neue Konfigurationsdateien:
+      /etc/isdn/isdn.conf 
+      /etc/isdn/callerid.conf
+    Wobei sich in der "isdn.conf" nur noch die rein auf isdnlog beziehenden
+    Eintraege befinden, und in der "callerid.conf" die von isdnlog und
+    vbox gemeinsam verwendeten Eintraege!
 
 
 8. Die neuen Features von isdnlog erkunden
@@ -258,12 +260,12 @@ Mit folgenden Schritten kommt man in den Genuss von isdnlog-2.99:
       aus dem "Patch" Stadium heraus. Die Steuerung durch isdnlog
       wurde verfeinert - siehe dazu den "-h" Schalter
 
-    - isdnlog-2.99 bietet 4 verschiedene Moeglichkeiten, die Kosten 
+    - isdnlog-2.99.2 bietet 4 verschiedene Moeglichkeiten, die Kosten 
       gegenueber der .T... sowie dem jeweiligen Internet-Provider 
       zu begrenzen:
 
        - Watchdog:
-       	   isdnlog-2.99 erkennt Fehlverhalten von isdn4linux, und
+       	   isdnlog-2.99.2 erkennt Fehlverhalten von isdn4linux, und
    	   terminiert es rechtzeitig.
    	   (Neuer Schalter "-Hx" -> wenn seit mehr als "x"
    	   Gebuehreneinheiten kein Datentransfer mehr feststellbar ist,
@@ -290,12 +292,12 @@ Mit folgenden Schritten kommt man in den Genuss von isdnlog-2.99:
            Wird diese Grenze ueberschritten, wird isdn4linux
            abgewuergt (neuer Eintrag BYTEMAX in der "isdn.conf")
 
-    - isdnlog-2.99 besitzt eine Anbindung an die SQL-Datenbank postgres95.
-      Wird diese freigeschaltet, traegt isdnlog-2.99 jede Verbindung nicht
+    - isdnlog-2.99.2 besitzt eine Anbindung an die SQL-Datenbank postgres95.
+      Wird diese freigeschaltet, traegt isdnlog-2.99.2 jede Verbindung nicht
       nur in die "/var/log/isdn.log", sondern auch in eine SQL-Relation ein.
       Beschreibung dazu siehe "isdnlog/README"
 
-    - isdnlog-2.99 unterstuetzt nun den neuen "City Weekend Tarif"
+    - isdnlog-2.99.2 unterstuetzt nun den neuen "City Weekend Tarif"
       Wer das bei der .T... beantragt hat, muss isdnlog mit der neuen
       Option "-F" starten
 
@@ -311,7 +313,7 @@ Mit folgenden Schritten kommt man in den Genuss von isdnlog-2.99:
       eingesetzt werden, da Ad Aerts (ad@aasup.nl) isdnlog _vollstaendig_
       an die Niederlande angepasst hat.
 
-    - isdnlog-2.99 versteht eine Menge neuer D-Kanal-Frames, von denen einige
+    - isdnlog-2.99.2 versteht eine Menge neuer D-Kanal-Frames, von denen einige
       in den vergangenen Monaten Bestandteil manchmal heftiger Diskussionen
       waren:
 
@@ -319,15 +321,15 @@ Mit folgenden Schritten kommt man in den Genuss von isdnlog-2.99:
       	- CLIP
       	- Rufumleitung
 
-      Wie mir leider erst in den letzten Tagen bekannt wurde, kann isdnlog-2.99
+      Wie mir leider erst in den letzten Tagen bekannt wurde, kann isdnlog-2.99.2
       mit dem neuen Feature "Rueckruf bei besetzt" noch _nicht_ umgehen.
       Hierzu werde ich einen Patch nachliefern, sofern mir die VSt Giessen
       dieses Feature *endlich* freischaltet!
 
-      Entgegen frueheren Versionen verbucht isdnlog-2.99 jedoch ihm unbekannte
+      Entgegen frueheren Versionen verbucht isdnlog-2.99.2 jedoch ihm unbekannte
       FACILITY-Frames nicht mehr mit teilweise astronomischen Gebuehren.
 
-      Daneben dekodiert isdnlog-2.99 nun vollstaendig die Elemente
+      Daneben dekodiert isdnlog-2.99.2 nun vollstaendig die Elemente
         - Bearer capability
      	- Channel identification
      	- Progress indicator
@@ -335,7 +337,7 @@ Mit folgenden Schritten kommt man in den Genuss von isdnlog-2.99:
      	- High layer compatibility
       aus, und kann die zahlreichen neuen Informationen bei Bedarf anzeigen.
 
-    - isdnlog-2.99 zeigt nun die exakte Dauer (in Sekunden) bis zum naechsten
+    - isdnlog-2.99.2 zeigt nun die exakte Dauer (in Sekunden) bis zum naechsten
       berechneten (also genauen - fuer chargeint verwendeten) Gebuehrenimpuls
       an:
 
@@ -345,7 +347,7 @@ Mit folgenden Schritten kommt man in den Genuss von isdnlog-2.99:
       Bedeutet: Wir befinden uns gerade in dem 7. Gebuehrentakt, noch exakt
       12 Sekunden bis zum faellig werden der naechsten DM 0,12
 
-    - isdnlog-2.99 bietet nun den neuen Schalter "-Axxx" an. Hiermit
+    - isdnlog-2.99.2 bietet nun den neuen Schalter "-Axxx" an. Hiermit
       kann angegeben werden, welche Ziffern oder Zahlen man an einer 
       Telefonanlage vorwaehlen muss, um "ein Amt" zu bekommen.
       Dadurch wird isdnlog in die Lage versetzt, diese wieder 
@@ -378,14 +380,14 @@ Mit folgenden Schritten kommt man in den Genuss von isdnlog-2.99:
          werden (pro Basis-Anschluss einer), da sich die einzelnen
          isdnlog's nun nicht mehr gegenseitig in's Gehege kommen.
     
-    - isdnlog-2.99 haelt die Log-Datei "/var/log/isdn.log" nun nicht
+    - isdnlog-2.99.2 haelt die Log-Datei "/var/log/isdn.log" nun nicht
       mehr staendig offen. Daher kann diese nun zu einem beliebigen 
       Zeitpunkt verschoben oder geloescht werden. Danach _muss_ diese
       Datei jedoch wieder leer angelegt werden 
       (cp /dev/null /var/log/isdn.log) !
 
 
-So, nun wuensche ich allen viel Spass mit dem neuen isdnlog-2.99 - nicht
+So, nun wuensche ich allen viel Spass mit dem neuen isdnlog-2.99.2 - nicht
 ohne mich bei den Leuten zu bedanken, die viele freie Stunden in die
 Weiterentwicklung von isdnlog gesteckt haben:
   Stefan Luethje (luethje@sl-gw.lake.de)
@@ -398,7 +400,7 @@ Weiterentwicklung von isdnlog gesteckt haben:
 und ganz besonders bei Dr.-Ing. Joachim Goeller, der mich beim
 Verstehen des ISDN-D-Kanal's unzaehlige Male beraten hat!
 
-Abschliessend nochmals die Bitte: Wer Probleme mit isdnlog-2.99
+Abschliessend nochmals die Bitte: Wer Probleme mit isdnlog-2.99.2
 hat, sollte zu allererst dieses HOWTO, das "isdnlog/README"
 sowie die einschlaegigen FAQ's zu isdn4linux studieren.
 

@@ -1,4 +1,4 @@
-/* $Id: tools.c,v 1.2 1997/03/29 09:24:33 akool Exp $
+/* $Id: tools.c,v 1.3 1997/03/31 22:15:32 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -19,6 +19,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools.c,v $
+ * Revision 1.3  1997/03/31 22:15:32  akool
+ * added support for the new glibc 2.0.x (aka libc 6.0)
+ * changed "HOWTO" to reflect the current stage of development
+ *
  * Revision 1.2  1997/03/29 09:24:33  akool
  * CLIP presentation enhanced, new ILABEL/OLABEL operators
  *
@@ -91,7 +95,6 @@ char Months[][4] = { "Jan", "Feb", "Mar", "Apr", "May", "Jun",
 
 /****************************************************************************/
 
-static char proto[] = "                   0,000000000";
 static int  cnf;
 
 /****************************************************************************/
@@ -192,7 +195,7 @@ char *num2nam(char *num, int si)
 
 /****************************************************************************/
 
-#ifdef GLIBC /* _GNU_SOURCE */
+#if defined __GLIBC__ && __GLIBC__ > 2
 char *double2str(double n, int l, int d, int flags)
 {
   if (++retnum == MAXRET)
@@ -207,6 +210,7 @@ char *double2str(double n, int l, int d, int flags)
   register char *p, *ps, *pd, *px;
   auto     int   decpt, sign, dec, dp;
   auto     char  buf[BUFSIZ];
+  static   char  proto[] = "                   0,000000000";
 
 
   if (++retnum == MAXRET)
