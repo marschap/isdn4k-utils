@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.46 1998/11/01 08:49:22 akool Exp $
+## $Id: Makefile.in,v 1.47 1998/11/05 19:09:42 akool Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,15 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.47  1998/11/05 19:09:42  akool
+##  - Support for all the new L2 frames from HiSax 3.0d (RR, UA, SABME and
+##    tei management)
+##  - CityWeekend reimplemented
+##    Many thanks to Rainer Gallersdoerfer <gallersd@informatik.rwth-aachen.de>
+##    for the tip
+##  - more providers
+##  - general clean-up
+##
 ## Revision 1.46  1998/11/01 08:49:22  akool
 ##  - fixed "configure.in" problem with NATION_*
 ##  - DESTDIR fixes (many thanks to Michael Reinelt <reinelt@eunet.at>)
@@ -361,7 +370,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 2.99.35
+VERSION     = 2.99.36
 
 ifeq ($(POSTGRES),1)
 DEFS       += -DPOSTGRES

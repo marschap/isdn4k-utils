@@ -1,4 +1,4 @@
-/* $Id: tools_de.c,v 1.2 1998/11/01 08:50:41 akool Exp $
+/* $Id: tools_de.c,v 1.3 1998/11/05 19:10:27 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -21,6 +21,15 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools_de.c,v $
+ * Revision 1.3  1998/11/05 19:10:27  akool
+ *  - Support for all the new L2 frames from HiSax 3.0d (RR, UA, SABME and
+ *    tei management)
+ *  - CityWeekend reimplemented
+ *    Many thanks to Rainer Gallersdoerfer <gallersd@informatik.rwth-aachen.de>
+ *    for the tip
+ *  - more providers
+ *  - general clean-up
+ *
  * Revision 1.2  1998/11/01 08:50:41  akool
  *  - fixed "configure.in" problem with NATION_*
  *  - DESTDIR fixes (many thanks to Michael Reinelt <reinelt@eunet.at>)
@@ -97,7 +106,7 @@ char *Providername(int number)
     case 87 : return("HamCom");
     case 88 : return("WorldCom");
     case 90 : return("VIAG Interkom");
-    case 98 : return("STAR Telecom");
+    case 98 : return("STAR Telecom/C@llas");
     case 99 : return("ECONOphone/Telco");
     default : return("UNKNOWN Provider");
   } /* switch */

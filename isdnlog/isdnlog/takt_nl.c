@@ -1,4 +1,4 @@
-/* $Id: takt_nl.c,v 1.2 1998/10/03 18:06:27 akool Exp $
+/* $Id: takt_nl.c,v 1.3 1998/11/05 19:10:21 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -75,7 +75,6 @@ static char tab_tage[2][12] = {{ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 
 	                       { 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 }};
 
 static struct w_ftag t_ftag[A_FEI] = {
-#ifdef ISDN_NL
   {  1,  1, 0, "Neujahr" },
   {  6,  1, 0, "Erscheinungsfest" },          /* nur Baden-Wuerttemberg und Bayern */
   {  1,  5, 0, "Maifeiertag" },
@@ -93,25 +92,6 @@ static struct w_ftag t_ftag[A_FEI] = {
   {  0,  0, 0, "Buss- und Bettag" }, 	      /* nur bis incl. 1994 (wg. Pflegeversicherung abgeschafft) */
   { 25, 12, 0, "1. Weihnachtsfeiertag" },
   { 26, 12, 0, "2. Weihnachtsfeiertag" }};
-#else
-  {  1,  1, 1, "Neujahr" },
-  {  6,  1, 0, "Erscheinungsfest" },   	      /* nur Baden-Wuerttemberg und Bayern */
-  {  1,  5, 1, "Maifeiertag" },
-  {  0,  0, 1, "Muttertag" },
-  {  0,  0, 1, "Karfreitag" },
-  {  0,  0, 1, "Ostersonntag" },
-  {  0,  0, 1, "Ostermontag" },
-  {  0,  0, 1, "Christi Himmelfahrt" },
-  {  0,  0, 1, "Pfingstsonntag" },
-  {  0,  0, 1, "Pfingstmontag" },
-  {  0,  0, 0, "Fronleichnam" },     	      /* nur in Baden-Wuerttemberg, Bayern, Hessen, Nordrhein-Westfalen, Rheinland-Pfalz und im Saarland */
-  {  3, 10, 1, "Tag der deutschen Einheit" }, /* vor 1990 am 17.6. */
-  { 15,  8, 0, "Maria Himmelfahrt" }, 	      /* nur Saarland und ueberwiegend katholischen Gemeinden Bayerns */
-  {  1, 11, 0, "Allerheiligen" },  	      /* nur Baden-Wuerttemberg, Bayern, Nordrhein-Westfalen, Rheinland-Pfalz und im Saarland */
-  {  0,  0, 0, "Buss- und Bettag" }, 	      /* nur bis incl. 1994 (wg. Pflegeversicherung abgeschafft) */
-  { 25, 12, 1, "1. Weihnachtsfeiertag" },
-  { 26, 12, 1, "2. Weihnachtsfeiertag" }};
-#endif
 
 
 static int schalt(register int j)
@@ -227,33 +207,6 @@ static int tarifzeit(struct tm *tm, char *why)
 {
   register int i;
 
-
-#ifndef ISDN_NL
-  if ((tm->tm_mday == 24) && (tm->tm_mon == 11)) {
-    strcpy(why, "Feiertag (Heilig-Abend)");
-    return(FE);
-  } /* if */
-
-  if ((tm->tm_mday == 31) && (tm->tm_mon == 11)) {
-    strcpy(why, "Feiertag (Sylvester)");
-    return(FE);
-  } /* if */
-
-  if ((tm->tm_mday > 26) && (tm->tm_mon == 11)) {
-    strcpy(why, "Jahresende (27. .. 30.12.)");
-    return(ZJ);
-  } /* if */
-
-  comp_feier_tage(tm->tm_year + 1900);
-
-  for (i = 0; i < A_FEI; i++)
-    if ((t_ftag[i].monat == tm->tm_mon + 1) &&
-        (t_ftag[i].tag == tm->tm_mday) &&
-         t_ftag[i].telekom) {
-      sprintf(why, "Feiertag (%s)", t_ftag[i].bez);
-      return(FE);
-    } /* if */
-#endif
 
   if (tm->tm_wday == 6) {
     strcpy(why, "Wochenende (Samstag)");
