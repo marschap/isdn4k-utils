@@ -1,4 +1,4 @@
-/* $Id: isdnctrl.c,v 1.28 1998/11/11 23:53:02 fritz Exp $
+/* $Id: isdnctrl.c,v 1.29 1998/11/17 18:29:31 paul Exp $
  * ISDN driver for Linux. (Control-Utility)
  *
  * Copyright 1994,95 by Fritz Elfert (fritz@wuemaus.franken.de)
@@ -21,6 +21,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnctrl.c,v $
+ * Revision 1.29  1998/11/17 18:29:31  paul
+ * isdnctrl.c now compiles with kernel sources without dialmode stuff.
+ *
  * Revision 1.28  1998/11/11 23:53:02  fritz
  * Make isdnctrl compile without TIMRU in kernel (2.0.36-pre20/21)
  *
@@ -507,6 +510,7 @@ int findcmd(char *str)
 }
 
 
+#ifdef ISDN_NET_DM_OFF
 /*
  * do_dialmode() - handle dialmode settings
  *		   parameters:
@@ -552,7 +556,6 @@ do_dialmode(int args, int dialmode, int fd, char *id, int errexit)
 
 	printf("Dial mode for %s: ", id);
 	/* no args specified, so show dialmode */
-#ifdef ISDN_NET_DM_OFF
 	if      (cfg.dialmode == ISDN_NET_DM_OFF)
 		puts("off");
 	else if (cfg.dialmode == ISDN_NET_DM_AUTO)
@@ -561,11 +564,8 @@ do_dialmode(int args, int dialmode, int fd, char *id, int errexit)
 		puts("manual");
 	else
 		puts("illegal value (wrong kernel version?)");
-#else	/* not in kernel include file */
-	fprintf(stderr, "No 'dialmode' field in kernel source when compiled, old isdn4kernel?\n");
-	exit(-1);
-#endif
 }
+#endif /* dialmode in kernel source */
 
 
 int exec_args(int fd, int argc, char **argv)
