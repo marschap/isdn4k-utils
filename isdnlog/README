@@ -398,7 +398,9 @@ und die ueber das Menue konfiguriert werden:
     Wie hiess die _alte_ Konfigurations-Datei
 
   LOGFILE  (/var/log/isdn.log)
-    Wie soll das Logbuch heissen
+    Wie soll das Logbuch heissen.
+    Wenn der Name der Datei mit '+' anfangt, wird der Datei nicht neu
+    geschrieben, sondern neue Infos wirden am Ende zugefuegt.
     (Diese Einstellung laesst sich spaeter noch zur Laufzeit in der isdn.conf
     aendern)
 

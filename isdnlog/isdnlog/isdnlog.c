@@ -1,4 +1,4 @@
-/* $Id: isdnlog.c,v 1.17 1998/03/29 23:18:07 luethje Exp $
+/* $Id: isdnlog.c,v 1.18 1998/05/19 15:47:03 paul Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,10 @@
  * along with this program; if not, write to the Free Software
  *
  * $Log: isdnlog.c,v $
+ * Revision 1.18  1998/05/19 15:47:03  paul
+ * If logfile name is specified with leading '+', the logfile is not truncated
+ * when isdnlog starts; instead, new messages are appended.
+ *
  * Revision 1.17  1998/03/29 23:18:07  luethje
  * mySQL-Patch of Sascha Matzke
  *
@@ -787,7 +791,17 @@ int main(int argc, char *argv[], char *envp[])
 		}
 		else
 		{
-			if ((fout = fopen(outfile,"w")) == NULL)
+			char *openmode;
+			if (*outfile == '+')
+			{
+				outfile++;
+				openmode = "a";
+			}
+			else
+			{
+				openmode = "w";
+			}
+			if ((fout = fopen(outfile, openmode)) == NULL)
 			{
  	 			print_msg(PRT_ERR,"Can not open file `%s': %s!\n",outfile, strerror(errno));
  	  		Exit(45);
