@@ -26,7 +26,11 @@
 #include <linux/if.h>
 #include <linux/in.h>
 
-static char *revision = "$Revision: 1.23 $";
+static char *revision = "$Revision: 1.24 $";
+
+/* -------------------------------------------------------------------- */
+
+#define AVMADSLPARAMFILE "/etc/drdsl/adsl.conf"
 
 /* -------------------------------------------------------------------- */
 
@@ -90,7 +94,7 @@ static capi_contrinfo cinfo = { 0 , 0, 0 };
 
 /* -------------------------------------------------------------------- */
 
-static char *opt_controller = "1";
+static char *opt_controller;
 /*
  * numbers
  */
@@ -118,6 +122,7 @@ static STRINGLIST *inmsns;
 #define PROTO_ADSLPPPOALLC	8
 static char *opt_proto = "hdlc";
 static int proto = PROTO_HDLC;
+static int opt_avmadsl = 0;
 static int opt_vpi = -1; /* T-DSL: 1  */
 static int opt_vci = -1; /* T-DSL: 32 */
 /*
@@ -161,6 +166,7 @@ static int opt_voicecallwakeup  = 0;
 static int optcb(void) { return opt_cbflag = 1; }
 static int optacceptdelay(void) { return opt_acceptdelayflag = 1; }
 static int optvoicecallwakeup(void) { return opt_voicecallwakeup = 1; }
+static int optavmadsl(void) { return opt_avmadsl = 1; }
 
 static option_t my_options[] = {
 	{
@@ -247,6 +253,10 @@ static option_t my_options[] = {
 	{
 		"vci", o_int, &opt_vci,
 		"VCI for Fritz!Card DSL"
+	},
+	{
+		"avmadsl", o_special_noarg, &optavmadsl,
+		"read DSL parameters from /etc/drdsl/adsl.conf"
 	},
 	{ NULL }
 };
@@ -358,6 +368,18 @@ static void plugin_check_options(void)
 	if (init)
 		return;
 	init = 1;
+
+	if (opt_avmadsl) {
+	   if (access(AVMADSLPARAMFILE, R_OK) == 0) {
+	      dbglog("loading adsl parameters from %s ...", AVMADSLPARAMFILE);
+              if (options_from_file (AVMADSLPARAMFILE, 0, 0, 0) == 0)
+	         die(1);
+	   } else {
+	       dbglog("using default adsl parameters");
+	       if (!opt_controller) opt_controller = "2";
+	       opt_proto = "adslpppoe";
+	   }
+	}
 
 	/*
 	 * protocol

@@ -27,7 +27,6 @@ password 00000000
 linkname t-dsl
 ipparam internet
 plugin capiplugin.so
-controller 2
-protocol adslpppoe
+avmadsl
 :
 /dev/null
