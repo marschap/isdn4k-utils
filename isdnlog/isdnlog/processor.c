@@ -1,4 +1,4 @@
-/* $Id: processor.c,v 1.129 2004/09/05 22:04:56 tobiasb Exp $
+/* $Id: processor.c,v 1.130 2004/09/29 21:02:01 tobiasb Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,14 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.130  2004/09/29 21:02:01  tobiasb
+ * Changed handling of multiple "calling party number" information elements.
+ * The network provided number is now preferred in any case.  The other
+ * number (typical set by originating user) can be ignored using the
+ * ignoreCOLP or -U setting, which allows different values for COLP and CLIP
+ * now.  (The old behaviour was to use the first number if ignoreCOLP was set
+ * and the network provided number regardless of order otherwise.)
+ *
  * Revision 1.129  2004/09/05 22:04:56  tobiasb
  * New parameter file entry "ignoreUPD" for suppressing "Unexpected
  * discrimator (...)" messages, demanded by Günther J. Niederwimmer
@@ -1435,7 +1443,7 @@ void buildnumber(char *num, int oc3, int oc3a, char *result, int version,
 
     sprintf(s, "\"%s\"", num);
     Q931dump(TYPE_STRING, -2, s, version);
-  } /* if */
+  } /* if -q */
 
   strcpy(n, num);
   strcpy(result, "");
@@ -1612,7 +1620,7 @@ void buildnumber(char *num, int oc3, int oc3a, char *result, int version,
 
       case 0x70 : break;                       /* 111 Reserved for extension */
     } /* switch */
-  } /* if */
+  } /* if neither special number nor internal */
 
   if (*num)
     strcat(result, num);
@@ -2616,13 +2624,13 @@ static void decode(int chan, register char *p, int type, int version, int tei)
                     if (*call[chan].onum[CALLING]) { /* another Calling-party? */
                       if (strcmp(call[chan].onum[CALLING], s)) { /* different! */
 
-                        if (ignoreCOLP && !Q931dmp) /* FIXME */
-                          break;
-
                         if ((call[chan].screening == 3) && ((oc3a & 3) < 3)) { /* we believe the first one! */
-                          strcpy(call[chan].onum[CLIP], s);
-                          buildnumber(s, oc3, oc3a, call[chan].num[CLIP], version, &call[chan].provider, &call[chan].sondernummer[CLIP], &call[chan].intern[CLIP], &call[chan].local[CLIP], 0, 0);
-                          strcpy(call[chan].vnum[CLIP], vnum(6, CLIP));
+                          /* first number was network provided, this is not */
+                          if (!ignoreCLIP || Q931dmp) {
+                            strcpy(call[chan].onum[CLIP], s);
+                            buildnumber(s, oc3, oc3a, call[chan].num[CLIP], version, &call[chan].provider, &call[chan].sondernummer[CLIP], &call[chan].intern[CLIP], &call[chan].local[CLIP], call[chan].dialin, CALLING);
+                            strcpy(call[chan].vnum[CLIP], vnum(chan, CLIP));
+                          }
                           if (Q931dmp && (*call[chan].vnum[CLIP] != '?') && *call[chan].vorwahl[CLIP]
 			      && oc3 && ((oc3 & 0x70) != 0x40)) {
                             auto char s[BUFSIZ];
@@ -2634,14 +2642,34 @@ static void decode(int chan, register char *p, int type, int version, int tei)
                               call[chan].area[CLIP]);
 
                             Q931dump(TYPE_STRING, -2, s, version);
-                          } /* if */
+                          } /* if -q */
 
-                          sprintf(s1, "CLIP %s", call[chan].vnum[CLIP]);
-                          info(chan, PRT_SHOWNUMBERS, STATE_RING, s1);
+                          if (!ignoreCLIP) {
+                            if (call[chan].confentry[CLIP] != UNKNOWN)
+                              snprintf(s1, BUFSIZ, "CLIP: %s (%s)", call[chan].vnum[CLIP], call[chan].num[CLIP]);
+                            else
+                              snprintf(s1, BUFSIZ, "CLIP: %s", call[chan].vnum[CLIP]);
+                            info(chan, PRT_SHOWNUMBERS, STATE_RING, s1);
+                          }
+                          else if (ignoreCLIP & 0x2) {
+                            snprintf(s1, BUFSIZ, "CLIP %s -- ignored", s);
+                            info(chan, PRT_SHOWNUMBERS, STATE_RING, s1);
+                          }
 
-                          break;
+                          break; /* [CALLING] remain unchanged */
+                        }
+                        else if (ignoreCLIP && !Q931dmp) {
+                          /* same as below, but first number gets ignored */
+                          if (ignoreCLIP & 0x2) { 
+                            snprintf(s1, BUFSIZ, "CLIP %s -- ignored", call[chan].onum[CALLING]);
+                            info(chan, PRT_SHOWNUMBERS, STATE_RING, s1);
+                          }
                         }
                         else {
+                          /* first number was not network provided, this may be
+                           * first number was network provided, this is too
+                           * --> consider first number as CLIP, this number
+                                 as the default source number */
                           warn = 1;
 
 			  strcpy(call[chan].onum[CLIP],      call[chan].onum[CALLING]);
@@ -2676,7 +2704,7 @@ static void decode(int chan, register char *p, int type, int version, int tei)
                         call[chan].area[CALLING]);
 
                       Q931dump(TYPE_STRING, -2, s, version);
-                    } /* if */
+                    } /* if -q */
 
 		    if (callfile && call[chan].dialin) {
 		      FILE *cl = fopen(callfile, "a");
@@ -2693,7 +2721,10 @@ static void decode(int chan, register char *p, int type, int version, int tei)
 		    } /* if */
 
                     if (warn) {
-                      sprintf(s1, "CLIP %s", call[chan].vnum[CLIP]);
+                      if (call[chan].confentry[CLIP] != UNKNOWN)
+                        snprintf(s1, BUFSIZ, "CLIP: %s (%s)", call[chan].vnum[CLIP], call[chan].num[CLIP]);
+                      else
+                        snprintf(s1, BUFSIZ, "CLIP: %s", call[chan].vnum[CLIP]);
                       info(chan, PRT_SHOWNUMBERS, STATE_RING, s1);
                     } /* if */
 

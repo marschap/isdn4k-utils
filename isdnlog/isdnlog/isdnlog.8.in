@@ -1,5 +1,5 @@
-.\" $Id: isdnlog.8.in,v 1.14 2004/09/05 22:04:55 tobiasb Exp $
-.\" CHECKIN $Date: 2004/09/05 22:04:55 $
+.\" $Id: isdnlog.8.in,v 1.15 2004/09/29 21:02:01 tobiasb Exp $
+.\" CHECKIN $Date: 2004/09/29 21:02:01 $
 .TH isdnlog 8 "@MANDATE_ISDNLOG8@" "ISDN 4 Linux @I4LVERSION@" "Linux System Administration"
 .PD 0
 .SH NAME
@@ -110,14 +110,17 @@ Ignore "housekeeping" frames.
 may be 1 (ignore RR=Receiver ready) or 2 (ignore EMP=Euracom Management Protokoll) frames.
 
 .TP
-.B \-U\fIx\fB	ignoreCOLP="value"
+.B \-U\fIx[:y]\fB	ignoreCOLP="value[:value]"
 Ignore COLP/CLIP frames when value is 1 or greater.
 Value 0 is default, and tells isdnlog to not ignore COLP/CLIP frames.
+With value 2 the ignored COLP/CLIP number is displayed.
+.br
+The first value applies to COLP the second to CLIP. If only one value is given,
+it applies to COLP and CLIP.
 .br
 Sometimes the COLP number is a number in a different areacode to the
 number that was dialled, and then the cost calculation would be wrong.
 .br
-With value 2 the ignored COLP number is displayed.
 
 .TP
 .B	 ignoreUPD={yes|no}

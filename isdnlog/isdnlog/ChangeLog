@@ -1,3 +1,23 @@
+2004-09-29  Tobias Becker  <tobiasb@isdn4linux.de>
+
+	* isdnlog.c (init_variables): Set ignoreCLIP to 0.
+	* isdnlog.c (set_options): Set ignoreCLIP from -Ux[:y] option.
+	* isdnlog.c (read_param_file): Set ignoreCLIP from "ignoreCOLP=x[:y]",
+	use y value if present, x otherwise.
+	* processor.c (decode): Use ignoreCLIP instead of ignoreCOLP for
+	control of IE 0x6c (calling party number) handling.
+
+	* processor.c (decode): Changes for IE 0x6c when IE is given twice,
+	e.g. source number from user and from network on an incoming call
+	(ETS 300 092-1 Annex B).  Use network provided number as source
+	number (index [CALLING] for .onum and other in call[chan]) regardless
+	ignoreCLIP setting.  ignoreCLIP now only controls the storage of the
+	user provided number to [CLIP].  The old effect of ignoreCLIP was to
+	look at the first IE only.  Changed the calls of buildnumber and vnum
+	in case of number order network/user, so that [CLIP] is set right.
+	If there is an alias for the CLIP number, show alias and number in
+	parentheses (new) in "CLIP ..." notice.
+
 2004-09-05  Tobias Becker  <tobiasb@isdn4linux.de>
 
 	* isdnlog.h (ignore_unknown_PD): New global variable.

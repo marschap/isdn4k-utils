@@ -1,3 +1,7 @@
+2004-09-29  Tobias Becker  <tobiasb@isdn4linux.de>
+
+        * tools.h (ignoreCLIP): New global variable, similiar ignoreCOLP.
+
 2004-09-27  Tobias Becker  <tobiasb@isdn4linux.de>
 
 	* isdnrate.c (printTable): Check provider and price (new) when
