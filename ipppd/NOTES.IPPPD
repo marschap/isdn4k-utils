@@ -1,7 +1,9 @@
 ipppd, based on pppd 2.2.0g with a few changes from 2.3
 ============================================================
 copyright (c) 1995,1996,1997 of all changes by Michael Hipp
-(report bugs, problems etc. to ippp@franken.de)
+All changes are under GPL license. See "COPYING" file for more.
+(You can find this file in the root directory of the i4l utility package)
+Report bugs, problems etc. to: i4l-ippp@franken.de
 
 
 ATTENTION .. NEW NEW NEW NEW NEW
