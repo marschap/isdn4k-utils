@@ -1,0 +1,78 @@
+<!DOCTYPE HTML PUBLIC "-//SoftQuad Software//DTD HoTMetaL PRO 5.0::19981217::extensions to HTML 4.0//EN" "hmpro5.dtd">
+
+<HTML>
+
+<HEAD>
+<TITLE>Telefonkosten</TITLE>
+<SCRIPT LANGUAGE="JavaScript">
+<!--
+NS4 = document.layers ? 1 : 0;
+IE4 = document.all ? 1 : 0;
+ver4 = (NS4 || IE4) ? 1 : 0;
+function pl(img)
+{if(!ver4) return 0;
+  var a=new Image(); a.src='./'+img+'.jpg'; return a;
+}
+eg0=pl("eg0");
+eg1=pl("eg1");
+gm0=pl("gm0");
+gm1=pl("gm1");
+info0=pl("info0");
+info1=pl("info1");
+function swap(what,on) {
+if(!ver4) return;
+var i=on?"1":"0";
+document[what].src=eval(what+i+'.src');
+}
+//-->
+</SCRIPT>
+
+<STYLE TYPE="text/css">
+<!--
+.t {font-family:Sans Serif;font-size:10pt}
+.sm {font-family:Sans Serif;font-size:9pt}
+i {color:#000080}
+//h1 {font-family:Courier New,Courier}
+h1,h2,h3,h4,p,td,th,body { font-family:Sans Serif,Arial }
+-->
+</STYLE>
+
+</HEAD>
+
+<BODY BGCOLOR="#ffffe0">
+<H1 align="center">Telefonkosten</H1>
+<P><I>Wieviel</I> kostet ein <I>wie</I> langes Telefongespr&auml;ch von <I>wo</I> <I>wohin</I> um <I>welche</I> Zeit
+mit <I>welchem</I> Telefonprovider und <I>warum</I> eigentlich? <I>Wie</I> teuer kommt mir ein bestimmter Gespr&auml;chsmix zu
+verschiedenen Zielen?</P>
+<P>Und vorallem: &quot;<I>Wer</I> ist dabei der billigste?&quot;</P>
+<P>Das und vieles mehr erfahren Sie hier &uuml;bersichtlich aufbereitet in Tabellen und Grafiken.</P>
+<BLOCKQUOTE><table><tr><td>
+<P><A HREF="/cgi-bin/isdnrate" ONMOUSEOVER="swap('eg',1)"
+ONMOUSEOUT="swap('eg',0)"><b>Einzelgespr&auml;che</b></A><A HREF="/cgi-bin/isdnrate" ONMOUSEOVER="swap('eg',1)"
+ONMOUSEOUT="swap('eg',0)"><IMG SRC="eg0.jpg" ALT="Einzelgespr&auml;ch" BORDER="0" WIDTH="60" HEIGHT="39" NAME="eg"
+HSPACE="10"></A></P>
+<P><A HREF="/cgi-bin/isdnrate?mix=10" ONMOUSEOUT="swap('gm',false)"
+ONMOUSEOVER="swap('gm',true)"><b>Gespr&auml;chsmix</b></A><A HREF="/cgi-bin/isdnrate?mix=10" ONMOUSEOUT="swap('gm',false)"
+ONMOUSEOVER="swap('gm',true)"><IMG SRC="gm0.jpg" ALT="Gespr&auml;chsmix" BORDER="0" WIDTH="80" HEIGHT="39"
+NAME="gm" HSPACE="10"></A></P>
+<TD><A HREF="/cgi-bin/isdnrate" ONMOUSEOVER="swap('eg',1)" ONMOUSEOUT="swap('eg',0)"><IMG SRC="graf.gif"
+BORDER="0" HSPACE=40 ALT="Grafik Einzelgespr&auml;chskosten"></A>
+</td>
+<td>
+<P><A HREF="info.html" ONMOUSEOVER="swap('info',1)"
+ONMOUSEOUT="swap('info',0)"><IMG SRC="info0.jpg" ALT="Info" BORDER="0" WIDTH="60" HEIGHT="39" NAME="info"
+HSPACE="10"></A><A HREF="info.html" ONMOUSEOVER="swap('info',1)"
+ONMOUSEOUT="swap('info',0)"><b>Info</b></A></P>
+</td>
+</tr></table>
+</BLOCKQUOTE>
+<P></P>
+<img src="hr.gif" width="600" height=4>
+<DIV ALIGN="RIGHT">
+<P CLASS="sm">This calculationengine is powered by <IMG SRC="tux.gif" ALT="Linux" BORDER="0">
+ , created by the <A HREF="http://www.isdn4linux.de">Isdn-Crew</A>.<BR>
+ HTML page and CGI program created by <A HREF="http://www.toetsch.at">Leopold T&ouml;tsch</A>,
+ (c) 1999 by <A HREF="mailto:lt@toetsch.at">-lt-</A>.</P></DIV>
+</BODY>
+</HTML>
+
