@@ -63,6 +63,7 @@ MANDATE_ISDNLOG5=`grep CHECKIN isdnlog/isdnlog.5.in | awk '{print $4}'`
 MANDATE_ISDNLOG8=`grep CHECKIN isdnlog/isdnlog.8.in | awk '{print $4}'`
 MANDATE_ISDNLOG_USERS=`grep CHECKIN isdnlog/isdnlog.users.5.in | awk '{print $4}'`
 MANDATE_ISDNREP=`grep CHECKIN isdnrep/isdnrep.1.in | awk '{print $4}'`
+MANDATE_ISDNCONF=`grep CHECKIN isdnconf/isdnconf.1.in | awk '{print $4}'`
 
 if test "$CONFIG_LIB_AREACODE" = "y" ; then
 	ALIB=area
@@ -216,4 +217,5 @@ AC_SUBST(MANDATE_ISDNLOG5)
 AC_SUBST(MANDATE_ISDNLOG8)
 AC_SUBST(MANDATE_ISDNLOG_USERS)
 AC_SUBST(MANDATE_ISDNREP)
-AC_OUTPUT(Makefile isdnlog/callerid.conf.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 isdnlog/isdnlog.users.5 isdnrep/isdnrep.1)
+AC_SUBST(MANDATE_ISDNCONF)
+AC_OUTPUT(Makefile isdnlog/callerid.conf.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 isdnlog/isdnlog.users.5 isdnrep/isdnrep.1 isdnconf/isdnconf.1)

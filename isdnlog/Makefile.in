@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.50 1998/12/01 16:57:09 paul Exp $
+## $Id: Makefile.in,v 1.51 1998/12/29 14:51:37 paul Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,9 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.51  1998/12/29 14:51:37  paul
+## added isdnconf manpage
+##
 ## Revision 1.50  1998/12/01 16:57:09  paul
 ## support for .in manpages
 ##
@@ -391,7 +394,7 @@ SERVICEFILE = /etc/services
 
 VERSION     = 3.00
 
-MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 isdnlog/isdnlog.users.5 isdnrep/isdnrep.1
+MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 isdnlog/isdnlog.users.5 isdnrep/isdnrep.1 isdnconf/isdnconf.1
 
 ifeq ($(POSTGRES),1)
 DEFS       += -DPOSTGRES
@@ -494,6 +497,7 @@ uninstall: rootperm
 			$(DESTDIR)$(BINDIR)/$(ISDNCONF)
 		rm -f	$(DESTDIR)$(MAN8DIR)/isdnlog$(MAN8EXT)		\
 			$(DESTDIR)$(MAN1DIR)/isdnrep$(MAN1EXT)		\
+			$(DESTDIR)$(MAN1DIR)/isdnconf$(MAN1EXT)		\
 			$(DESTDIR)$(MAN5DIR)/callerid.conf$(MAN5EXT)	\
 			$(DESTDIR)$(MAN5DIR)/isdnlog$(MAN5EXT)		\
 			$(DESTDIR)$(MAN5DIR)/isdnlog.users$(MAN5EXT)
@@ -525,6 +529,7 @@ install: all rootperm installdirs
 		$(INSTALL_BIN) $(ISDNCONF) $(DESTDIR)$(BINDIR)
 		$(INSTALL_DATA) isdnlog/isdnlog.8       $(DESTDIR)$(MAN8DIR)/isdnlog$(MAN8EXT)
 		$(INSTALL_DATA) isdnrep/isdnrep.1       $(DESTDIR)$(MAN1DIR)/isdnrep$(MAN1EXT)
+		$(INSTALL_DATA) isdnconf/isdnconf.1     $(DESTDIR)$(MAN1DIR)/isdnconf$(MAN1EXT)
 		$(INSTALL_DATA) isdnlog/callerid.conf.5 $(DESTDIR)$(MAN5DIR)/callerid.conf$(MAN5EXT)
 		$(INSTALL_DATA) isdnlog/isdnlog.5       $(DESTDIR)$(MAN5DIR)/isdnlog$(MAN5EXT)
 		$(INSTALL_DATA) isdnlog/isdnlog.users.5 $(DESTDIR)$(MAN5DIR)/isdnlog.users$(MAN5EXT)
