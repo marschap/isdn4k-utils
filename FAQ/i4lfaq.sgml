@@ -4,7 +4,7 @@
 
 <title>FAQ for isdn4linux
 <author>Matthias Hessler (<tt><htmlurl url="mailto:hessler@isdn4linux.de" name="hessler@isdn4linux.de"></tt>)
-<date>v2.0.43, 25. June 2000
+<date>v2.0.44, 2. July 2000
 <abstract>
 If you are reading this FAQ online, you may consider downloading the whole
 thing, and reading it offline (much cheaper). To download the latest
@@ -393,6 +393,9 @@ Yes, you can use the program <tt/yaps/ to do this. However, due to some
 pecularities in the SMS-callcenter's ISDN connection, you have to compile the
 kernel with the options <tt/Disable send complete/ and
 <tt/Disable sending llc/.
+
+Another program to send SMS is <tt/smsclient/. You can find it on:
+<url url="http://www.styx.demon.co.uk">.
 
 <sect1> feature_btx: Is the German videotex/Btx/Datex-J possible with  
 isdn4linux?  
@@ -926,7 +929,9 @@ the specialities for the configuration of more than one card.
 Cards with an HFC-PCI chip allow some specialities that are not possible with
 other ISDN cards. So it is possible to run the card in NT mode (requires
 crossing the ISDN connection and change by software) - this means you can
-simulate to another ISDN card that your card is an NTBA.
+simulate to another ISDN card that your card is an NTBA (however, since
+isdn4linux does not implement the level 3 protocol used by the exchange,
+you can only use this mode like a leased line).
 Also, it is possible to give up one B-channel in exchange for reading the
 complete D-channel protocol, which is great for isdnlog. The later can
 also be done with a reversed card (see question
@@ -1152,7 +1157,10 @@ The PBX <tt/Ackermann Euracom 181/ (discriminator 0xaa) as well as
 <tt/Ascom/ (discriminator 0x44/0x47) seem to be notorious for this.
 You can avoid the warning by adjusting the switch/case code for isdnlog in
 function <tt>processctrl(...)</tt> in <tt>processor.c</tt> and recompiling
-isdnlog.
+isdnlog. Please note that isdnlog will not be able to log any incoming
+data packages, since the PBX has to forward the packages. To see everything,
+you have to bypass the PBX.
+
 Please be aware, that the PBX may hang if the ISDN card does not respond to
 the PBX requests - bypass the PBX in such a case.
 
@@ -1164,6 +1172,10 @@ Also the MSN may be different than you expect. Check several versions, no
 digit (then use <tt/0/, which i4l will require in such a case), one digit, or
 two digits, or the whole MSN. Best is you call some device (e.g. ISDN
 telephone) on the internal bus and check what i4l writes into the log file.
+
+When you can not dial out, the most common problem is that you have not
+set the MSN properly for outgoing calls, which causes the PBX to refuse
+your request.
 
 Last, remember that you may have to configure your PBX to 'route' incoming
 calls onto the internal ISDN bus.
@@ -1356,6 +1368,9 @@ be attached to it. You can switch HiSax into point-to-point mode:
 <code>
 hisaxctrl &lt;driver_id&gt; 7 1
 </code>
+Additionally, you can use the &dquot;AT&amp;Lxxx$dquot; command to
+configure the range of telephone numbers isdn4linux should be listening
+to on the ttyI* devices.
 
 <sect1> config_links: What helpful links are there about isdn4linux?  
 <label id="config_links">
@@ -1558,6 +1573,14 @@ line you don't need to specify any D-channel protocol.
 This means that you did not select the Euro Protocol ISDN DSS1 option when
 compiling your kernel. You have to switch this on and recompile your
 kernel to be able to use it.
+
+<sect1> trouble_unknownprimitive: upon connection attempt I get the error  
+"lldata_handler unknown primitive"?  
+<label id="trouble_unknownprimitive">
+<p>
+This means that the link level protocols do not match (e.g. you tried to
+connect with X.75, whereas your provider answers with HDLC). Check and
+fix your connection parameters.
 
 <sect1> trouble_notelrings: Neither my telephone nor my fax machine ring 
 when I call them with isdn4linux?  
@@ -4240,6 +4263,7 @@ We are aware of at least the following countries:
 <itemize>
 <item>Austria (see question <ref id="country_austria" name="country_austria">)
 <item>Australia
+<item>Brazil (see question <ref id="country_brazil" name="country_brazil">)
 <item>Belgium
 <item>Denmark
 <item>Finland
@@ -4356,6 +4380,15 @@ for *additional* MSN). The same applies to the setup of your getty.
 On the other hand you should set the outgoing MSN correctly (without area
 code) -- however, a wrong MSN will be replaced with the correct one by your
 telecommunications provider.
+
+<sect1> country_brazil: Brazil: How does our MSN look like?  
+<label id="country_brazil">
+<p>
+For use with Telemar you have to configure your MSN as your phone number
+without the leading area code.
+Brazil is using EuroISDN. The ISDN service DVI which was launched by Telemar
+is based on a hardware solution from Teles (BRI PCI card), which has to be
+configured as NETjet card.
 
 <sect1> country_france: France: How does our MSN look like?  
 <label id="country_france">
