@@ -37,7 +37,7 @@
  */
 
 #if 0
-static char rcsid[] = "$Id: ipppstats.c,v 1.3 1997/05/30 12:37:38 hipp Exp $";
+static char rcsid[] = "$Id: ipppstats.c,v 1.4 1997/10/26 23:08:41 fritz Exp $";
 #endif
 
 #include <ctype.h>
@@ -54,8 +54,8 @@ static char rcsid[] = "$Id: ipppstats.c,v 1.3 1997/05/30 12:37:38 hipp Exp $";
 #include <sys/ioctl.h>
 
 #if defined __GLIBC__ && __GLIBC__ >= 2
-# include <net/ppp_defs.h>
-# include <net/if.h>
+# include </usr/include/net/ppp_defs.h>
+# include </usr/include/net/if.h>
 #else
 # include <linux/ppp_defs.h>
 # include <linux/if.h>
@@ -65,7 +65,7 @@ static char rcsid[] = "$Id: ipppstats.c,v 1.3 1997/05/30 12:37:38 hipp Exp $";
 
 #ifndef STREAMS
 # if defined __GLIBC__ && __GLIBC__ >= 2
-#  include <net/if_ppp.h>
+#  include </usr/include/net/if_ppp.h>
 # else
 #  include <linux/if_ppp.h>		/* BSD, Linux, NeXT, etc. */
 # endif

@@ -1,38 +1,42 @@
-# $Id: Makefile.in,v 1.2 1997/03/02 19:42:16 fritz Exp $
+# $Id: Makefile.in,v 1.3 1997/10/26 23:10:42 fritz Exp $
 #
 # Makefile for iprofd
 # (C) 1997 Fritz Elfert
 #
 #
 SHELL			= /bin/sh
-CFLAGS			= -Wall -O2 -I. $(ISDN_INCLUDE)
+CFLAGS			= -Wall -O2
+INCLUDES		= -I. -I@CONFIG_KERNELDIR@/include
 LDFLAGS			= -L../lib @LIBS@
 PROGRAM			= iprofd
 MODULES			= iprofd.o
 MANPAGE			= iprofd.8
+SBINDIR			= @CONFIG_SBINDIR@
+MANDIR			= @CONFIG_MANDIR@
+MAN8DIR			= $(MANDIR)/man8
 INSTALL			= @INSTALL@
 INSTALL_PROGRAM	= $(INSTALL) -o 0 -g 0 -m 0750
 INSTALL_MAN		= $(INSTALL) -o 0 -g 0 -m 0644
 prefix			= @prefix@
 exec_prefix		= @exec_prefix@
-ifeq (../.config,$(wildcard ../.config))
-	include ../.config
-	SBINDIR			= $(CONFIG_SBINDIR)
-	mandir			= $(CONFIG_MANDIR)
-else
-	SBINDIR			= /sbin
-	mandir			= @mandir@
-endif
-MAN8DIR			= $(mandir)/man8
 CC				= @CC@
 
 .SUFFIXES:
 .SUFFIXES: .c .o
 
+%.o: %.c Makefile
+	$(CC) $(CFLAGS) $(INCLUDES) -c -o $@ $<
+
 all: $(PROGRAM)
 
 config:
 	@./configure
+
+Makefile: Makefile.in config.status
+	./config.status
+
+config.status: configure
+	./config.status --recheck
 
 $(PROGRAM):	$(MODULES)
 	$(CC) $(CFLAGS) $? $(LDFLAGS) -o $@
@@ -54,4 +58,4 @@ clean:
 	rm -f *.o *~ $(PROGRAM)
 
 distclean: clean
-	rm -f config.status config.cache config.log Makefile
+	rm -f config.status config.cache config.log *.man Makefile
