@@ -1,6 +1,6 @@
-.\" $Id: xmonisdn.man.in,v 1.1 1998/12/02 11:36:37 paul Exp $
+.\" $Id: xmonisdn.man.in,v 1.2 1998/12/02 11:58:51 paul Exp $
 .\"
-.\" CHECKIN $Date: 1998/12/02 11:36:37 $
+.\" CHECKIN $Date: 1998/12/02 11:58:51 $
 .\"
 .TH XMONISDN 1 "@MANDATE@" isdn4k-utils-@I4LVERSION@ "X Tools"   
 .SH NAME
@@ -12,14 +12,14 @@ xmonisdn \- monitor for ISDN network
 The
 .I xmonisdn
 program displays the status of the ISDN network connection and allows
-to start and stop the ISDN subsystem. If the ISDN subsystem is not
+the starting and stopping of the ISDN subsystem. If the ISDN subsystem is not
 active, a window showing a terminal in the foreground and a dashed
 terminal in the backgorund is displayed. If the ISDN system is active,
 but there is no network connection established, two terminals with
 dashed arrows between them is displayed. If there is a incoming
 connection or there is dialing in progress, the arrows become more
 solid. An outgoing network connection is signaled by solid arrows
-between the terminals and the window is inverted. 
+between the terminals and the window is displayed in reverse video.
 If the ISDN subsystem dials out or hangs up, the program beeps to signal
 the state change (this can be changed using the 
 .I volume 
@@ -48,10 +48,10 @@ additional options listed below:
 This option indicates that a brief summary of the allowed options should be
 printed on the standard error.
 .TP 8
-.B \-update \fIthenth of a second\fP
+.B \-update \fItenth of a second\fP
 This option specifies the frequency in 1/10 of a second at which \fIxmonisdn\fP
 should update its display.  If the window is obscured and then exposed,
-it will be updated immediately.  The default is 0.5 seconds.
+it will be updated immediately.  The default is 0.5 seconds (i.e. -update 5).
 .TP 8
 .B \-file \fIfilename\fP
 This option specifies the name of the file which should be monitored.  By
@@ -115,7 +115,7 @@ Specifies the height of the icon.
 .TP 8
 .B update (\fPclass\fB Interval)
 Specifies the frequency in 1/10 of a second at which the isdninfo file should be checked.
-The default is 10.
+The default is 5.
 .TP 8
 .B volume (\fPclass\fB Volume)
 Specifies how loud the bell should be rung.  The default is 33 percent.
