@@ -34,7 +34,7 @@
 #define RCAPI_GET_VERSION_CONF			CAPICMD(0xfd, 0xff)
 #define RCAPI_GET_PROFILE_REQ			CAPICMD(0xe0, 0xff)
 #define RCAPI_GET_PROFILE_CONF			CAPICMD(0xe1, 0xff)
-#define RCAPI_UNKNOWN_REQ			CAPICMD(0xff, 0x00)
-#define RCAPI_UNKNOWN_CONF			CAPICMD(0xff, 0x01)
+#define RCAPI_AUTH_USER_REQ                     CAPICMD(0xff, 0x00)
+#define RCAPI_AUTH_USER_CONF                    CAPICMD(0xff, 0x01)
 
 #endif /* __RCAPICMD_H__ */

@@ -506,7 +506,7 @@ hdl_RCAPI_GET_PROFILE_REQ(struct capi_message *msg) {
 
 
 int
-hdl_RCAPI_UNKNOWN_REQ(struct capi_message *msg) 
+hdl_RCAPI_AUTH_USER_REQ(struct capi_message *msg) 
 {
 	word	w1,w2,b1;
 	char	*p;
@@ -515,10 +515,10 @@ hdl_RCAPI_UNKNOWN_REQ(struct capi_message *msg)
 	char		retval [80];
 
 	
-	log(5, "RCAPI_UNKNOWN_REQ\n");
+	log(5, "RCAPI_AUTH_USER_REQ\n");
 	
 	if(! (p = msg->Parameters.data)) {
-		log(5, "RCAPI_UNKNOWN_REQ: parameters missing.\n");
+		log(5, "RCAPI_AUTH_USER_REQ: parameters missing.\n");
 		return(-1);
 	}
 
@@ -529,15 +529,20 @@ hdl_RCAPI_UNKNOWN_REQ(struct capi_message *msg)
 	log(5, "w1 0x%4x w2 0x%4x b1 0x%2x", w1,w2,b1);
 
 	p = retval;
+#if 0
 	put_word(&p, w1);
 	put_word(&p, w2);
 	put_byte(&p, b1);
 	put_byte(&p, 0);
-
+#endif
+	put_word(&p, 0);
+	put_word(&p, 0x19);
+	put_word(&p, 0);
+	
 	retstruct.len = p - retval;
 	retstruct.data = (char *)&retval;
 
-	return(snd_message(msg, RCAPI_UNKNOWN_CONF, &retstruct, NULL));
+	return(snd_message(msg, RCAPI_AUTH_USER_CONF, &retstruct, NULL));
 }
 
 int
@@ -600,8 +605,8 @@ hdl_message(struct capi_message *msg) {
 		return(hdl_RCAPI_GET_PROFILE_REQ(msg));
 		break;
 
-	case RCAPI_UNKNOWN_REQ:
-	        return(hdl_RCAPI_UNKNOWN_REQ(msg));
+	case RCAPI_AUTH_USER_REQ:
+	        return(hdl_RCAPI_AUTH_USER_REQ(msg));
 		break;
 
 	default:
