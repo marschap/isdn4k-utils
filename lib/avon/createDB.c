@@ -1,4 +1,4 @@
-/* $Id: createDB.c,v 1.1 1997/03/03 04:25:45 fritz Exp $
+/* $Id: createDB.c,v 1.2 1997/04/17 23:29:50 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -17,6 +17,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ *
+ * $Log: createDB.c,v $
+ * Revision 1.2  1997/04/17 23:29:50  luethje
+ * new structure of isdnrep completed.
  *
  */
 

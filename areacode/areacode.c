@@ -1,5 +1,9 @@
-/* $Id: areacode.c,v 1.2 1997/04/17 19:41:41 luethje Exp $
+/* $Id: areacode.c,v 1.3 1997/04/17 23:29:35 luethje Exp $
+ *
  * $Log: areacode.c,v $
+ * Revision 1.3  1997/04/17 23:29:35  luethje
+ * new structure of isdnrep completed.
+ *
  * Revision 1.2  1997/04/17 19:41:41  luethje
  * patch of Ullrich von Bassewitz
  *
