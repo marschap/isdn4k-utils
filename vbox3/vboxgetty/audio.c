@@ -1,9 +1,17 @@
 /*
-** $Id: audio.c,v 1.2 1998/08/31 10:43:00 michael Exp $
+** $Id: audio.c,v 1.3 1998/08/31 15:30:38 michael Exp $
 **
 ** Copyright 1996-1998 Michael 'Ghandi' Herold <michael@abadonna.mayn.de>
 **
 ** $Log: audio.c,v $
+** Revision 1.3  1998/08/31 15:30:38  michael
+** - Added touchtone support.
+** - Added new tcl command "vbox_breaklist" to clear/set the touchtone
+**   breaklist.
+** - Removed the audio fragment size setting again. I don't know why this
+**   crash my machine. The fragment size setting can be enabled in audio.h
+**   with a define.
+**
 ** Revision 1.2  1998/08/31 10:43:00  michael
 ** - Changed "char" to "unsigned char".
 **
@@ -49,14 +57,16 @@ int audio_open_dev(unsigned char *name)
 		return(audio_close_dev(desc));
 	}
 
+#ifdef VBOXAUDIO_SET_FRAGEMENTSIZE
+
 		/* Fragmentgröße und Anzahl der Fragmente einstellen. Die	*/
 		/* höheren 16 Bit sind die Anzahl der Fragmente, die nied-	*/
-		/* eren die Fragmentgröße. Hier 5 Fragmente und 32 Byte		*/
-		/* Fragmentgröße (Bit 4). Es darf nur *ein* Bit für die		*/
+		/* eren die Fragmentgröße. Hier 5 Fragmente und 64 Byte		*/
+		/* Fragmentgröße (Bit 5). Es darf nur *ein* Bit für die		*/
 		/* Größe verwendet werden, sonst schmiert der Rechner eis-	*/
 		/* kalt ab!																	*/
 
-	mask = 0x00050004;
+	mask = 0x00050005;
 
 	if (ioctl(desc, SNDCTL_DSP_SETFRAGMENT, &mask) == -1)
 	{
@@ -64,6 +74,10 @@ int audio_open_dev(unsigned char *name)
 
 		return(audio_close_dev(desc));
 	}
+
+#else
+	log(LOG_D, "Setting audio fragment size disabled at compile time!\n");
+#endif
 
 		/* OSS ab 3.6 gibt muLaw nur zurück, wenn die Audiohardware	*/
 		/* das Format unterstützt. Ansonsten wird muLaw durch eine	*/
@@ -143,12 +157,18 @@ int audio_open_dev(unsigned char *name)
 		return(audio_close_dev(desc));
 	}
 
+	log(LOG_D, "Audio fragment size is %d; voice buffer size is %d.\n", mask, VBOXVOICE_BUFSIZE);
+
+#ifdef VBOXAUDIO_SET_FRAGEMENTSIZE
+
 	if (mask != VBOXVOICE_BUFSIZE)
 	{
 		log(LOG_E, "Audio fragment size is not %d (audio disabled).\n", VBOXVOICE_BUFSIZE);
 
 		return(audio_close_dev(desc));
 	}
+
+#endif
 
 	return(desc);
 }

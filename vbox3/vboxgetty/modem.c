@@ -1,9 +1,17 @@
 /*
-** $Id: modem.c,v 1.4 1998/08/31 10:43:07 michael Exp $
+** $Id: modem.c,v 1.5 1998/08/31 15:30:39 michael Exp $
 **
 ** Copyright 1996-1998 Michael 'Ghandi' Herold <michael@abadonna.mayn.de>
 **
 ** $Log: modem.c,v $
+** Revision 1.5  1998/08/31 15:30:39  michael
+** - Added touchtone support.
+** - Added new tcl command "vbox_breaklist" to clear/set the touchtone
+**   breaklist.
+** - Removed the audio fragment size setting again. I don't know why this
+**   crash my machine. The fragment size setting can be enabled in audio.h
+**   with a define.
+**
 ** Revision 1.4  1998/08/31 10:43:07  michael
 ** - Changed "char" to "unsigned char".
 **
@@ -445,7 +453,7 @@ static void modem_timeout_function(int s)
 	alarm(0);
 	signal(SIGALRM, SIG_IGN);
 
-	log_line(LOG_D, "*** Timeout function called (%d) ***\n", s);
+	log_line(LOG_D, "*** Timeout [%d] ***\n", s);
 
 	timeoutstatus = 1;
 }

@@ -1,4 +1,4 @@
-# $Id: answercall.tcl,v 1.1 1998/08/30 17:32:16 michael Exp $
+# $Id: answercall.tcl,v 1.2 1998/08/31 15:30:54 michael Exp $
 
 #----------------------------------------------------------------------#
 # This script is called after the call is answered. Here you can do    #
@@ -23,7 +23,9 @@
    # you want touchtone support, create a new answer script in the #
    # users spool directory and add the touchtone functions!        #
 
-#vbox_breaklist c
+vbox_breaklist c
+vbox_breaklist a "5"
+vbox_breaklist a "*123#"
 
    # Start voice recording and stop audio playback. If you want a #
    # permanent audio playback, you can start it here. If not, use #
@@ -42,6 +44,8 @@ if {("$result" != "HANGUP") && ("$result" != "SUSPEND")} {
 
         # Now the message will be recorded. The script will stop if the #
         # remote caller hangup or if the call should be suspended.      #
+
+vbox_breaklist r "5"
 
     set result [vbox_voice w $vbxv_savetime]
 }

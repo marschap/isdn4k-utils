@@ -1,9 +1,17 @@
 /*
-** $Id: voice.c,v 1.8 1998/08/31 10:43:21 michael Exp $
+** $Id: voice.c,v 1.9 1998/08/31 15:30:45 michael Exp $
 **
 ** Copyright 1996-1998 Michael 'Ghandi' Herold <michael@abadonna.mayn.de>
 **
 ** $Log: voice.c,v $
+** Revision 1.9  1998/08/31 15:30:45  michael
+** - Added touchtone support.
+** - Added new tcl command "vbox_breaklist" to clear/set the touchtone
+**   breaklist.
+** - Removed the audio fragment size setting again. I don't know why this
+**   crash my machine. The fragment size setting can be enabled in audio.h
+**   with a define.
+**
 ** Revision 1.8  1998/08/31 10:43:21  michael
 ** - Changed "char" to "unsigned char".
 **
@@ -87,6 +95,7 @@
 #include "tclscript.h"
 #include "control.h"
 #include "audio.h"
+#include "breaklist.h"
 
 /** Variables ************************************************************/
 
@@ -110,7 +119,7 @@ static void voice_stop_vtxrtx(void);
 static void voice_create_vboxcall(void);
 static void voice_remove_vboxcall(void);
 static void voice_mkdir(unsigned char *);
-static int voice_check_touchtone(int);
+static int  voice_check_touchtone(int);
 
 /************************************************************************* 
  ** voice_init():	Beantwortet den Anruf und startet das Tcl-Skript.		**
@@ -270,6 +279,8 @@ int voice_wait(int timeout)
 	int            result;
 	char          *stop;
 
+	total_byte_i = 0;
+	total_byte_o = 0;
 	last_was_dle = 0;
 	voicestat	 = VBOXVOICE_STAT_OK;
 
@@ -283,7 +294,7 @@ int voice_wait(int timeout)
 		modem_byte_o = 0;
 		result       = 0;
 
-		while ((modem_byte_o < VBOXVOICE_BUFSIZE) && (voicestat == VBOXVOICE_STAT_OK))
+		while ((modem_byte_o < (VBOXVOICE_BUFSIZE - 2)) && (voicestat == VBOXVOICE_STAT_OK))
 		{
 			if ((result = vboxmodem_raw_read(&vboxmodem, modem_line_i, 1)) == 1)
 			{
@@ -293,6 +304,10 @@ int voice_wait(int timeout)
 				{
 					switch (*modem_line_i)
 					{
+						case DLE:
+							modem_line_o[modem_byte_o++] = DLE;
+							break;
+
 						case ETX:
 							voicestat |= VBOXVOICE_STAT_HANGUP;
 							break;
@@ -459,7 +474,7 @@ int voice_play(unsigned char *name)
 
 		modem_set_timeout(5);
 
-		while ((modem_byte_o < VBOXVOICE_BUFSIZE) && (voicestat == VBOXVOICE_STAT_OK))
+		while ((modem_byte_o < (VBOXVOICE_BUFSIZE - 2)) && (voicestat == VBOXVOICE_STAT_OK))
 		{
 			if ((i = read(desc, modem_line_i, 1)) != 1)
 			{
@@ -477,6 +492,10 @@ int voice_play(unsigned char *name)
 				{
 					switch (*modem_line_i)
 					{
+						case DLE:
+							modem_line_o[modem_byte_o++] = DLE;
+							break;
+
 						case ETX:
 							voicestat |= VBOXVOICE_STAT_HANGUP;
 							break;
@@ -834,6 +853,10 @@ static void voice_mkdir(unsigned char *name)
 
 static int voice_check_touchtone(int c)
 {
+	unsigned char  tone[2];
+	unsigned char *stop;
+	int				i;
+
 	switch (c)
 	{
 		case '0':
@@ -852,6 +875,67 @@ static int voice_check_touchtone(int c)
 		case 'D':
 		case '#':
 		case '*':
+		{
+			if (c != '*')
+			{
+				tone[0] = c;
+				tone[1] = 0;
+
+				if (*voice_touchtone_sequence == '*')
+				{
+						/* Wenn das erste Zeichen in der Sequenz ein '*'	*/
+						/* ist (Sequenzstart) wird der neue Touchtone am	*/
+						/* Ende angehängt - es sei denn die Sequenz ent-	*/
+						/* hält ein '#' (Sequenzende).							*/
+
+					if (!(stop = rindex(voice_touchtone_sequence, '#')))
+					{
+						if (strlen(voice_touchtone_sequence) >= VBOXVOICE_SEQUENCE)
+						{
+								/* Die Sequenz ist bereits voll; der neue	*/
+								/* Touchtone wird nicht angehängt!			*/
+
+							log(LOG_E, "Internal touchtone sequence is full (touchtone ignored).\n");
+						}
+						else strcat(voice_touchtone_sequence, tone);
+					}
+					else strcpy(voice_touchtone_sequence, tone);
+				}
+				else
+				{
+						/* Erstes Zeichen in der Sequenz ist kein '*', der	*/
+						/* Touchtone ersetzt die alte Sequenz.					*/
+
+					strcpy(voice_touchtone_sequence, tone);
+				}
+			}
+			else strcpy(voice_touchtone_sequence, "*");
+
+			log(LOG_I, "Touchtone \"%c\" entered (%s).\n", c, voice_touchtone_sequence);
+
+				/* Prüfen ob die eingegebene Sequenz in der Breakliste	*/
+				/* vorkommt.															*/
+
+			for (i = 0; i < VBOXBREAK_MAX_ENTRIES; i++)
+			{
+				if (breaklist[i])
+				{
+					if (strcmp(breaklist[i], voice_touchtone_sequence) == 0) return(0);
+				}
+			}
+		}
+		break;
+
+		case 'q':	/* Quiet					*/
+		case 's':	/* Silence				*/
+		case 'c':	/* Fax calling tone	*/
+		case 'b':	/* Busy tone			*/
+			break;
+
+		default:
+         log_line(LOG_W, "Illegal \"<DLE>\" shielded code \"");
+         log_char(LOG_W, c);
+         log_text(LOG_W, "\" (ignored)...\n");
 			break;
 	}
 

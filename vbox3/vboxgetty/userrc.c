@@ -1,9 +1,17 @@
 /*
-** $Id: userrc.c,v 1.2 1998/08/31 10:43:14 michael Exp $
+** $Id: userrc.c,v 1.3 1998/08/31 15:30:42 michael Exp $
 **
 ** Copyright 1996-1998 Michael 'Ghandi' Herold <michael@abadonna.mayn.de>
 **
 ** $Log: userrc.c,v $
+** Revision 1.3  1998/08/31 15:30:42  michael
+** - Added touchtone support.
+** - Added new tcl command "vbox_breaklist" to clear/set the touchtone
+**   breaklist.
+** - Removed the audio fragment size setting again. I don't know why this
+**   crash my machine. The fragment size setting can be enabled in audio.h
+**   with a define.
+**
 ** Revision 1.2  1998/08/31 10:43:14  michael
 ** - Changed "char" to "unsigned char".
 **
@@ -172,7 +180,7 @@ int userrc_parse(struct vboxuser *vboxuser, unsigned char *home, unsigned char *
 				}
 
 				vboxuser->space = xstrtol(space, 0);
-				vboxuser->umask = (mode_t)strtol(mask, &stop, 8);
+				vboxuser->umask = (mode_t)strtol(mask, (char **)&stop, 8);
 
 				if (*stop != '\0')
 				{

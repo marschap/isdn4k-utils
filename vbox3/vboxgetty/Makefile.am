@@ -1,5 +1,5 @@
 ##
-## $Id: Makefile.am,v 1.4 1998/08/30 17:32:05 michael Exp $
+## $Id: Makefile.am,v 1.5 1998/08/31 15:30:37 michael Exp $
 ##
 
 ## system admin executables to install ####################################
@@ -39,7 +39,8 @@ vboxgetty_SOURCES	= log.c log.h \
 			  voice.c voice.h \
 			  control.c control.h \
 			  lock.c lock.h \
-			  audio.c audio.h
+			  audio.c audio.h \
+			  breaklist.c breaklist.h
 
 ## other directories to process ###########################################
 

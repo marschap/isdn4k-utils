@@ -1,5 +1,5 @@
 /*
-** $Id: voice.h,v 1.6 1998/08/31 10:43:22 michael Exp $
+** $Id: voice.h,v 1.7 1998/08/31 15:30:47 michael Exp $
 **
 ** Copyright 1996-1998 Michael 'Ghandi' Herold <michael@abadonna.mayn.de>
 */
@@ -27,7 +27,7 @@
 
 /** Defines **************************************************************/
 
-#define VBOXVOICE_BUFSIZE  		32			  /* Voice/Audio Buffer Größe	*/
+#define VBOXVOICE_BUFSIZE  		64			  /* Voice/Audio Buffer Größe	*/
 #define VBOXVOICE_SAMPLERATE		8000		/* Samplerate (nur zum Check)	*/
 #define VBOXVOICE_SEQUENCE			64				 /* Touchtone Buffer Größe	*/
 

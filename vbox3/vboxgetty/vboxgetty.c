@@ -1,9 +1,17 @@
 /*
-** $Id: vboxgetty.c,v 1.7 1998/08/31 10:43:16 michael Exp $
+** $Id: vboxgetty.c,v 1.8 1998/08/31 15:30:43 michael Exp $
 **
 ** Copyright 1996-1998 Michael 'Ghandi' Herold <michael@abadonna.mayn.de>
 **
 ** $Log: vboxgetty.c,v $
+** Revision 1.8  1998/08/31 15:30:43  michael
+** - Added touchtone support.
+** - Added new tcl command "vbox_breaklist" to clear/set the touchtone
+**   breaklist.
+** - Removed the audio fragment size setting again. I don't know why this
+**   crash my machine. The fragment size setting can be enabled in audio.h
+**   with a define.
+**
 ** Revision 1.7  1998/08/31 10:43:16  michael
 ** - Changed "char" to "unsigned char".
 **
@@ -71,6 +79,7 @@
 #include "vboxgetty.h"
 #include "control.h"
 #include "lock.h"
+#include "breaklist.h"
 
 /** Variables ************************************************************/
 
@@ -130,6 +139,8 @@ void main(int argc, char **argv)
 	int	i;
 	int	modemstate;
 	int	modeminits;
+
+	breaklist_init();
 
 	progbasename = argv[0];
 
@@ -419,9 +430,8 @@ void quit_program(int rc)
 	}
 
 	scr_remove_interpreter();
-
 	rc_free(rc_getty_c);
-
+	breaklist_clear();
 	log_close();
 
 	exit(rc);
