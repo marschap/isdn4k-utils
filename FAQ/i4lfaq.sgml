@@ -4,7 +4,7 @@
 
 <title>FAQ for isdn4linux
 <author>Matthias Hessler (<tt><htmlurl url="mailto:hessler@isdn4linux.de" name="hessler@isdn4linux.de"></tt>)
-<date>v2.0.83, 4. December 2003
+<date>v2.0.84, 1. May 2004
 <abstract>
 If you are reading this FAQ online, you may consider downloading the whole
 thing, and reading it offline (much cheaper). To download the latest
@@ -717,13 +717,11 @@ You can find it on:
 <sect1> docu_newsgroup: Where is the newsgroup for isdn4linux? 
 <label id="docu_newsgroup">
 <p>
-The newsgroup is <tt/de.alt.comm.isdn4linux/.
-You can read what is going on, or send a message yourself (before please
-make sure it is not answered in this FAQ).
-Most isdn4linux developers are present, and many other knowledgeable
-people. Don't be confused by the many German messages on it.
-<bf>English postings are very welcome, and will be
-answered in English!</bf>
+The newsgroup was <tt>de.alt.comm.isdn4linux</tt>, however had been
+closed down some time ago due to spam issues. To get in contact with
+the developers your best choice is to use the mailing list
+<ref id="docu_mailinglist" name="docu_mailinglist">. Alternatively, you find some interesting
+stuff in <tt>de.comp.os.unix.linux.isdn</tt>.
 
 <sect1> docu_mailinglist: Where is the mailing list for isdn4linux?  
 <label id="docu_mailinglist">
@@ -5117,7 +5115,7 @@ We are aware of at least the following countries:
 <item>Singapore
 <item>Spain
 <item>Sweden
-<item>Switzerland (see question <ref id="country_switherland" name="country_switherland">)
+<item>Switzerland (see question <ref id="country_switzerland" name="country_switzerland">)
 <item>The Netherlands (see question <ref id="country_netherlands" name="country_netherlands">)
 <item>United Arab Emirates
 <item>United Kingdom (see question <ref id="country_uk" name="country_uk">)
@@ -5306,13 +5304,15 @@ As long as only one telephone number or MSN was applied for, the telephone
 company sends no caller ID. Therefore the MSN should be set to &dquot;0&dquot;.
 If more than one MSNs was applied for, then these should be set as usual.
 
-<sect1> country_switherland: Switzerland: We have neither an MSN nor an EAZ,  
+<sect1> country_switzerland: Switzerland: We have neither an MSN nor an EAZ,  
 just a plain telephone number. What do we have to use for i4l?  
-<label id="country_switherland">
+<label id="country_switzerland">
 <p>
-In Switzerland you have to use the <em>last digit</em> of your telephone
-number as your MSN/EAZ (&dquot;6&dquot; if you have the telephone number
-&dquot;123456&dquot;).
+In Switzerland usually you have to use the telephone number without area
+code. For old ISDN numbers where you have been assigned ten numbers in a
+row this may be different; in that case use the <em>last digit</em> of your
+telephone number as your MSN/EAZ (&dquot;6&dquot; if you have the telephone
+number &dquot;123456&dquot;).
 
 <sect1> country_uk: UK: What should we use as MSN?  
 <label id="country_uk">
@@ -5354,7 +5354,7 @@ NTE boxes come with a built in USB terminal adapter. This terminal adapter is
 based on the ST-5481 chipset. Load the module st5481 for this device, then
 set up your isdn configuration with isdnctrl.
 
-Also, check out <url url="http://www.wurtel.demon.nl/i4l-howto-uk.html">.
+Also, check out <url url="http://www.wurtel.cistron.nl/i4l-howto-uk.html">.
 
 <sect> misc: Miscellaneous  
 <label id="misc">
