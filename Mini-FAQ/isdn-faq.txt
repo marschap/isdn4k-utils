@@ -10,10 +10,8 @@ germantoc
 1.   Wo gibt es die FAQ?
 
      http://www.mhessler.de/i4lfaq.html (View + Download)
-     Die FAQ wird in Englisch gewartet, und ist leider noch nicht ins
-     Deutsche übersetzt. Die alte deutsche FAQ ist nicht mehr aktuell
-     (Stand 02/97), aber es gibt sie noch unter
-     http://www.isdn4linux.de/leafsite/
+     Die FAQ wird in Englisch gewartet, eine Deutsche Übersetzung findet sich
+     unter http://www.wolf-b.de/i4l/i4lfaq-de.html
 
 2.   Wo gibt es eine einfache Anleitung für ISDN4Linux?
 
@@ -119,18 +117,10 @@ germantoc
      Wenn den Sprung auf 2.2.13 machst, musst du deine isdn4kutils neu
      übersetzen, oder ein neues, für 2.2.13 geeignetes, Package installieren.
 
-13.  Kann ich mit ISDN4Linux faxen?
-
-     Nur mit Aktiven Karten.  Für Eicon DIVA Server Karten (BRI und
-     PRI) siehe http://www.melware.de/  Für die AVM B1, siehe 
-     ftp://ftp.aeccom.com/pub/fax4i4l/howto/current
-     Es wird an Software für passive Karten gearbeitet.  Siehe
-     http://w1.2667.telia.com/~u266700740/linux/i4lfax/index.html
-
-14.  Es wird gewählt, aber die Verbindung klappt nicht.
+13.  Es wird gewählt, aber die Verbindung klappt nicht.
 
      Du musst in ipppd debug einschalten, und dann in /var/log/messages
-     nachschauen (siehe auch Frage 17).  Dabei heisst:
+     nachschauen (siehe auch Frage 16).  Dabei heisst:
 
      sent ConfReq ... Dein Rechner wollte etwas
      sent ConfRej ... Dein Recher weigerte sich etwas zu tun
@@ -138,17 +128,17 @@ germantoc
      sent ConfAck ... Dein Rechner stimmte etwas zu
      rcvd ...         Was die Gegenseite dazu gesagt hat
 
-15.  Was bedeuten diese komischen 'Cause'-Nummern?
+14.  Was bedeuten diese komischen 'Cause'-Nummern?
 
      Siehe 'man isdn_cause'
 
-16.  Kann ich meinen externen Terminal-Adapter mit ISDN4Linux verwenden?
+15.  Kann ich meinen externen Terminal-Adapter mit ISDN4Linux verwenden?
 
      Nein, nicht mit ISDN4Linux aber schon mit Linux,  Sie werden wie Modems
      behandelt.  Du brauchst also pppd und vielleicht diald.  Fragen 6, 7, 8
-     und 14 sind auch für dich relevant.
+     und 13 sind auch für dich relevant.
 
-17.  Ich habe diverse Debug-Options in ipppd und isdnctrl eingeschaltet, aber
+16.  Ich habe diverse Debug-Options in ipppd und isdnctrl eingeschaltet, aber
      es erscheint nichts in der Datei /var/log/messages.
 
      Es kann sein, daß du dein Syslog anders konfigurieren musst.  Siehe z.B.
@@ -164,12 +154,12 @@ germantoc
        mv -f /etc/syslog.conf.new /etc/syslog.conf
        killall -HUP syslogd
 
-18.  Welche Pakete installiere ich, oder Man-Seiten lese ich, oder
+17.  Welche Pakete installiere ich, oder Man-Seiten lese ich, oder
      Such-Stichwörter in Deja News verwende ich für:
 
      Alles:                          ISDN4Linux Kernel-Modul und isdn4kutils
      Ein Telefonbeantworter:         vbox oder vgetty
-     Eine Fax-Maschine:              Siehe Frage 13
+     Eine Fax-Maschine:              Siehe FAQ (Frage 1)
      Sync-PPP (Internet):            isdnctrl und ipppd
      Async-PPP oder externer ISDN:   pppd und diald
      ISDN Terminal-Programm:         minicom und /dev/ttyI0 (man ttyI)
@@ -180,25 +170,25 @@ germantoc
                                      squid/sendmail.  Siehe auch Frage 2.
      Plug-n-Play ISA-Karten:         isapnptools.
 
-19.  Die ISDN-Verbindung läuft, und ich kann numerischen Adressen pingen, z.B.
+18.  Die ISDN-Verbindung läuft, und ich kann numerischen Adressen pingen, z.B.
      mit 'ping -c 20 198.41.0.4' aber Netscape etc. funktioniert nicht.
 
      Du hast Probleme mit Nameserver-Einstellungen.  Siehe Frage 2.
 
-20.  Die ISDN-Verbindung läuft, aber ich kann nicht mal numerischen Adressen
+19.  Die ISDN-Verbindung läuft, aber ich kann nicht mal numerischen Adressen
      pingen, z.B.  mit 'ping -c 20 198.41.0.4' und Netscape etc. funktioniert
      nicht.
 
      Du hast Probleme mit Routing.  Siehe Fragen 8 und 2.
 
-21.  Manchmal wird meine Internetverbindung sehr sehr langsam.  Ping zeiten
+20.  Manchmal wird meine Internetverbindung sehr sehr langsam.  Ping zeiten
      verzögern sich tausende von millisekunden.
 
      Entweder Kernel 2.2.13 oder neuer verwenden, oder den Patch aus
      http://x45.deja.com/=dnc/getdoc.xp?AN=529129151 installieren.  Siehe auch
      Frage 12.
 
-22.  Es will einfach nicht klappen!
+21.  Es will einfach nicht klappen!
 
      Frag mal hier in der Newsgruppe/Mailingliste.  Wir versuchen hilfreich zu
      sein, aber es geht leichter, wenn wir ein Paar Infos haben:
@@ -328,18 +318,10 @@ englishtoc
      If you upgrade to 2.2.13 you will need to recompile your isdn4kutils or
      download a new package that is suitable for 2.2.13.
 
-13.  Can I fax with ISDN4Linux?
-
-     Only with active cards.  For Eicon DIVA Server cards (BRI and PRI)
-     see http://www.melware.de/  For the AVM B1 see
-     ftp://ftp.aeccom.com/pub/fax4i4l/howto/current (German only,
-     unfortunately).  Software for passive cards is being worked on.  See
-     http://w1.2667.telia.com/~u266700740/linux/i4lfax/index.html
-
-14.  ISDN4Linux dials, but the connection isn't set up.
+13.  ISDN4Linux dials, but the connection isn't set up.
 
      You have to switch on debug in ipppd, and then take a look at
-     /var/log/messages (see also question 17).  Here are some explantions
+     /var/log/messages (see also question 16).  Here are some explantions
      to help you see what is going on:
 
      sent ConfReq ... What your machine wanted
@@ -348,17 +330,17 @@ englishtoc
      sent ConfAck ... Your machine agreed to something
      rcvd ...         What the remote server said
 
-15.  What do these funny 'cause' codes mean?
+14.  What do these funny 'cause' codes mean?
 
      See 'man isdn_cause'
 
-16.  Can I use ISDN4Linux with my external ISDN Terminal Adapter?
+15.  Can I use ISDN4Linux with my external ISDN Terminal Adapter?
 
      No, they don't work with ISDN4Linux, but they do work with Linux.  You
      treat these like a modem, so you need pppd and perhaps diald.  Questions
-     6, 7, 8 and 14 still apply, using pppd instead of ipppd.
+     6, 7, 8 and 13 still apply, using pppd instead of ipppd.
 
-17.  I activated various debug options in ipppd and isdnctrl, but I don't see
+16.  I activated various debug options in ipppd and isdnctrl, but I don't see
      anything in /var/log/messages.
 
      You may need to reconfigure syslog.  See eg. 'man syslogd' and 'man
@@ -373,12 +355,12 @@ englishtoc
        mv -f /etc/syslog.conf.new /etc/syslog.conf
        killall -HUP syslogd
 
-18.  Which packages should I install, or man pages/HOWTOs should I read, or
+17.  Which packages should I install, or man pages/HOWTOs should I read, or
      keywords should I use in Deja News for:
 
      Everything:                     ISDN4Linux kernel module and isdn4kutils
      A telephone answering machine   vbox or vgetty
-     A fax machine:                  See question 13
+     A fax machine:                  See FAQ (question 1).
      Sync-PPP (Internet):            isdnctrl and ipppd
      Async-PPP or external ISDN:     pppd and diald
      ISDN terminal programm:         minicom and /dev/ttyI0 (man ttyI)
@@ -389,23 +371,23 @@ englishtoc
                                      with squid/sendmail.  See also question 2
      Plug-n-Play ISA cards:          isapnptools.
 
-19.  The ISDN connection is working, and I can ping numeric addresses eg with
+18.  The ISDN connection is working, and I can ping numeric addresses eg with
      'ping -c 20 198.41.0.4' but Netscape etc. don't work.
 
      You have a problem with your nameserver.  See question 2.
 
-20.  The ISDN connection is working, but I can't even ping numeric addresses
+19.  The ISDN connection is working, but I can't even ping numeric addresses
      eg. with 'ping -c 20 198.41.0.4' and Netscape etc. don't work.
 
      You have a problem with your routing.  See questions 8 and 2.
 
-21.  Sometimes my ISDN connection becomes very slow.  I get ping times of
+20.  Sometimes my ISDN connection becomes very slow.  I get ping times of
      several thousand milliseconds.
 
      Apply the patch from http://x45.deja.com/=dnc/getdoc.xp?AN=529129151 or
      upgrade to 2.2.13.  See also question 12.
 
-22.  It just doesn't work!
+21.  It just doesn't work!
 
      Ask us in the news group/mailing list.  We try to be helpful, but it is
      simpler if we have a few facts:
@@ -418,9 +400,9 @@ englishtoc
 Corrections and suggestions welcome, please send them directly to me,
 Erik Corry, <erik@arbat.com>.
 
-Thanks to Andreas Barth, Klaus Franken, Florian Groß, Andre Grueneberg,
-Jürgen Lennefer, Eyal Lotem, Christian Otto-Lange, Wolfgang Schetter and
-Gerhard Sittig.
+Thanks to Andreas Barth, Wolfgang Bornath, Klaus Franken, Florian Groß,
+Andre Grueneberg, Jürgen Lennefer, Eyal Lotem, Christian Otto-Lange,
+Wolfgang Schetter and Gerhard Sittig.
 
 -- 
 Erik Corry
