@@ -1,4 +1,4 @@
-V:1.10-Germany [12-Dec-2000 21:39:05]
+V:1.10-Germany [14-Jan-2001 13:06:42]
 
 # Währungsformat
 U:%.3f DM
@@ -8,7 +8,7 @@ U:%.3f DM
 #
 # (C) Copyright 1999, 2000 by Andreas Kool (akool@isdn4linux.de)
 #
-# $Id: rate-de.dat,v 1.108 2000/12/12 21:07:33 akool Exp $
+# $Id: rate-de.dat,v 1.109 2001/01/14 12:13:49 akool Exp $
 #
 #
 # Das "A:" Tag muß folgendermaßen gefüllt werden:
@@ -511,7 +511,7 @@ C:Name:Meocom spontan
 C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Meocom spontan ist Call-by-Call (60 Sekunden Takt)
-C:Meocom abo isd Preselection (sekundengenaue Abrechnung)
+C:Meocom abo ist Preselection (sekundengenaue Abrechnung)
 C:Surftarif ist ebenfalls vorhanden, Rufnummer und Tarife fehlen noch
 Z:0 FreeCall
 A:011*
@@ -11219,18 +11219,15 @@ A:08003302000
 A:08003301172
 A:08003301174
 A:08003302050
-A:01300190
-A:0130190190
 A:01136
 A:110
 A:112
 # A:+10         # Operator Service
-A:0130
 A:0800
 A:_NLFF,_CHFF
 A:_F800
 A:011*
-A:0130*,0800*,0801*
+A:0800*,0801*
 A:031*
 T:*/*=0
 Z:1-2 City
@@ -11242,8 +11239,7 @@ A:DE
 T:W/07-18=0.18/60 Wochentag
 T:W/18-07=0.06/60 Abend
 T:E,H/*=0.06/60 Wochenende
-Z:10 C- und D1-Netz
-A:_DEMCM,_DEMC
+Z:10 D1-Netz
 A:_DEMD1
 T:*/*=0.48/60
 Z:13 Mobilfunknetz D2
@@ -11362,6 +11358,10 @@ T:*/*=0.029(60)/60 T-Online eco
 Z:101 T-Online by call
 A:019104981
 T:*/*=0.039(60)/60 T-Online by call
+Z:102 T-Online 1.x
+C:Ersatz für 01910 bis vorauss. 31.12.2001
+A:01943131
+T:*/*=0.14/60
 Z:120 Surf 1
 A:019107873
 T:*/*=0.045/60
@@ -11474,18 +11474,15 @@ A:08003302000
 A:08003301172
 A:08003301174
 A:08003302050
-A:01300190
-A:0130190190
 A:01136
 A:110
 A:112
 A:+10
-A:0130
 A:0800
 A:_NLFF,_CHFF
 A:_F800
 A:011*
-A:0130*,0800*,0801*
+A:0800*,0801*
 A:031*
 T:*/*=0
 Z:1-2 CityPlus
@@ -11502,17 +11499,7 @@ T:W/06-09,18-21=0.12/60:600,0.1084/60 Spar
 T:E,H/06-21=0.12/60:600,0.1084/60 Spar
 T:*/21-06=0.06/60 Nacht
 A:+49
-Z:10 C-Mobilboxen
-A:_DEMCM
-T:W/09-18=0.12/11.4 Standard
-T:W/18-09=0.12/16.7 Nacht
-T:E,H/*=0.12/16.7 Wochenende
-Z:11 Mobilfunk C
-A:_DEMC
-T:W/09-18=0.12/7.5 Standard
-T:W/18-09=0.12/15 Nacht
-T:E,H/*=0.12/15 Wochenende
-Z:12 Mobilfunknetz D1
+Z:10 Mobilfunknetz D1
 A:_DEMD1
 T:[01.02.2000-]*/*=0.48/60
 T:W/09-18=0.12/7.5 Standard
@@ -11732,18 +11719,15 @@ A:08003302000
 A:08003301172
 A:08003301174
 A:08003302050
-A:01300190
-A:0130190190
 A:01136
 A:110
 A:112
 A:+10
-A:0130
 A:0800
 A:_NLFF,_CHFF
 A:_F800
 A:011*
-A:0130*,0800*,0801*
+A:0800*,0801*
 A:031*
 T:*/*=0
 Z:1-2 CityWeekend
@@ -11762,17 +11746,7 @@ T:W/06-09,18-21=0.12/60:600,0.1084/60 Spar
 T:E,H/06-21=0.12/60:600,0.1084/60 Spar
 T:*/21-06=0.06/60 Nacht
 A:+49
-Z:10 C-Mobilboxen
-A:_DEMCM
-T:W/09-18=0.12/11.4 Standard
-T:W/18-09=0.12/16.7 Nacht
-T:E,H/*=0.12/16.7 Wochenende
-Z:11 Mobilfunk C
-A:_DEMC
-T:W/09-18=0.12/7.5 Standard
-T:W/18-09=0.12/15 Nacht
-T:E,H/*=0.12/15 Wochenende
-Z:12 Mobilfunknetz D1
+Z:10 Mobilfunknetz D1
 A:_DEMD1
 T:[01.02.2000-]*/*=0.48/60
 T:W/09-18=0.12/7.5 Standard
@@ -11999,18 +11973,15 @@ A:08003302000
 A:08003301172
 A:08003301174
 A:08003302050
-A:01300190
-A:0130190190
 A:01136
 A:110
 A:112
 A:+10
-A:0130
 A:0800
 A:_NLFF,_CHFF
 A:_F800
 A:011*
-A:0130*,0800*,0801*
+A:0800*,0801*
 A:031*
 T:*/*=0
 Z:1-2 CityPlus & CityWeekend
@@ -12028,17 +11999,7 @@ T:W/06-09,18-21=0.12/60:600,0.1084/60 Spar
 T:E,H/06-21=0.12/60:600,0.1084/60 Spar
 T:*/21-06=0.06/60 Nacht
 A:+49
-Z:10 C-Mobilboxen
-A:_DEMCM
-T:W/09-18=0.12/11.4 Standard
-T:W/18-09=0.12/16.7 Nacht
-T:E,H/*=0.12/16.7 Wochenende
-Z:11 Mobilfunk C
-A:_DEMC
-T:W/09-18=0.12/7.5 Standard
-T:W/18-09=0.12/15 Nacht
-T:E,H/*=0.12/15 Wochenende
-Z:12 Mobilfunknetz D1
+Z:10 Mobilfunknetz D1
 A:_DEMD1
 T:[01.02.2000-]*/*=0.48/60
 T:W/09-18=0.12/7.5 Standard
@@ -12226,51 +12187,11 @@ C:Quelle: Preisliste Telefondienst (Inlandsverbindungen), Stand 1. Juli 2000
 C:http://www.telekom.de/dtag/agb/produkte?nr=ISDN300c
 C:Grundgebühr zusätzlich für diesen Tarif: 9,90 DM / Monat
 C:Erfasste Zonen:
-C:0	-   4	Deutschland
+C:1	-   4	Deutschland
 C:10	-  15	Mobilfunk
-C:31	-  39	Satelitenfunk
-C:40		Auskunft DTAG Inland
-C:41		Auskunft DTAG Ausland
-C:42		Auskunft Arcor
-C:43		Auskunft debitel
-C:44		Auskunft Frag Fred
-C:45		Auskunft o.tel.o
-C:46		Auskunft Talkline
-C:47		Auskunft Telegate
-C:48		Auskunft Telegate Ausland
-C:49		Auskunft Viag Interkom
-C:60		Cityruf
-C:81	-  85	Service 0180-x
-C:91	-  94	Service 0190-x
-C:100		T-Online
-C:162	- 166	DTAG Service Nummern
-C:170		Persönliche Rufnummer
-C:171		Info Expo 2000
-C:172		Sonderrufnummern zum Citytarif
 C:200	-	Ausland
-Z:0 FreeCall
-A:08003301113
-A:08003301000
-A:08003301115
-A:08003301136
-A:08003302000
-A:08003301172
-A:08003301174
-A:08003302050
-A:01300190
-A:0130190190
-A:01136
-A:110
-A:112
-A:+10
-A:0130
-A:0800
-A:_NLFF,_CHFF
-A:_F800
-A:011*
-A:0130*,0800*,0801*
-A:031*
-T:*/*=0
+C: ** Zonen 0 (Freecall) und 30-199 (Sat., 01..) werden von P:33,0 DTAG ISDN übernommen **
+R:33,0;0,31-172
 Z:1-2 CityCall
 T:W/09-18=0.06/60 Sunshine
 T:W/18-09=0.03/60 Moonshine
@@ -12280,13 +12201,7 @@ A:DE
 T:W/09-18=0.09/60 Sunshine
 T:W/18-09=0.05/60 Moonshine
 T:E,H/*=0.05/60 Spar
-Z:10 C-Mobilboxen
-A:_DEMCM
-T:*/*=0.12/16.7
-Z:11 Mobilfunknetz C
-A:_DEMC
-T:*/*=0.39/60 Standard
-Z:12 Mobilfunknetz D1
+Z:10 Mobilfunknetz D1
 A:_DEMD1
 T:*/*=0.39/60
 Z:13 Mobilfunknetz D2
@@ -12298,131 +12213,6 @@ T:*/*=0.45/60
 Z:15 Mobilfunknetz Viag Interkom
 A:_DEME2
 T:*/*=0.48/60
-Z:31 Iridium GSM
-A:_IR17
-T:*/*=0.12/0.509
-Z:32 Iridium
-A:_IR16
-T:*/*=0.12/0.938
-Z:33 Inmarsat A
-A:_INA_,_INDF
-T:*/*=0.12/0.7
-Z:35 Inmarsat Aero
-A:_INAE
-T:*/*=0.12/0.7
-Z:36 Inmarsat B
-A:_INB_
-T:*/*=0.12/0.8
-Z:37 Inmarsat B HSD
-T:*/*=0.12/0.3 # = 23,99 DM / Minute :-)
-Z:38 Inmarsat M
-A:_INM_
-T:*/*=0.12/0.8
-Z:39 Inmarsat Phone (Mini-M)
-A:_INMM
-T:*/*=0.12/1
-Z:40 Auskunft Inland
-A:11833
-T:*/*=0.968/30,0.121/3.8
-Z:41 Auskunft Ausland
-A:11834
-T:*/*=0.968/30,0.121/3.8
-Z:42 Arcor Auskunft
-A:11870
-T:*/*=0.968/30
-Z:43 debitel Auskunft
-A:11818
-T:*/*=0.968/0,0.121/7.5
-Z:44 Frag Fred Auskunft
-A:11811
-T:*/*=0.847/0,0.121/6.7
-Z:45 o.tel.o Auskunft
-A:11888
-T:*/*=1.59/0,0.49(60)/1
-Z:46 Talkline Auskunft
-A:11850
-T:*/*=0.968/0,0.12/7.5
-Z:47 Telegate Auskunft
-A:11880
-T:*/*=0.968/0,0.121/7.5
-Z:48 Telegate Auslands-Auskunft
-A:11890
-T:*/*=3.51/60
-Z:49 Viag Interkom Auskunft
-A:11881
-T:*/*=1.59/0,0.22(60)/10
-Z:60 Cityruf
-A:+491640
-A:+491641,+491642,+491643,+491644,+491645
-A:+491646,+491647,+491648,+491649
-T:W/09-18=0.12/20 Standard
-T:W/18-09=0.12/30 Nacht
-T:E,H/*=0.12/30 Wochenende
-Z:81 Shared Cost Service 0180-1
-A:01801
-T:W/09-18=0.12/90 Standard
-T:W/05-09,18-21=0.12/150 Spar
-T:E,H/05-21=0.12/150 Spar
-T:*/21-05=0.12/240 Nacht
-Z:82 Shared Cost Service 0180-2
-A:01802
-T:*/*=0.12/0,0/1
-Z:83 Shared Cost Service 0180-3
-A:01803
-T:*/*=0.12/40
-Z:84 Shared Cost Service 0180-4
-A:01804
-T:*/*=0.48/0,0/1
-Z:85 Shared Cost Service 0180-5
-A:01805
-T:*/*=0.12/30
-Z:91 Premium Rate Service 0190-1, -2, -3, -5
-A:01901,01902,01903,01905
-T:*/*=0.12/6
-Z:92 Premium Rate Service 0190-4, -6
-A:01904,01906
-T:*/*=0.12/9
-Z:93 Premium Rate Service 0190-7, -9
-A:01907,01909
-T:*/*=0.12/3
-Z:94 Premium Rate Service 0190-8
-A:01908
-T:*/*=0.12/2
-Z:100 T-Online
-A:0191011
-C:Dies ist *kein* All-in-One Zugang, es werden zusätzliche Gebühren erhoben!
-T:*/*=0.029(60)/60 T-Online eco
-Z:101 T-Online by call
-A:019104981
-T:*/*=0.039(60)/60 T-Online by call
-Z:121 CompuServeOffice
-A:019160
-T:*/09-18=0.019(60)/180 CompuServeOffice
-T:*/18-09=0.049(60)/180 CompuServeOffice
-Z:162 T-VoteCall
-A:01371
-T:*/*=0.24/0,0/1
-Z:163 T-VoteCall
-A:01372,01373,01374,0138
-T:*/*=0.12/20
-Z:170 Persönliche Rufnummer
-A:0700
-T:*/09-18=0.12/15
-T:*/18-09=0.12/30
-Z:172 Sonderrufnummern zum Citytarif
-A:01141
-A:0115
-A:0116
-A:01191
-A:01910
-A:01914
-A:019161
-A:019102345
-C:Dies sind *keine* All-in-One Zugänge, es werden zusätzliche Gebühren erhoben!
-T:W/09-18=0.12/90 Standard
-T:W/05-09,18-21=0.12/150 Spar
-T:E,H/05-21=0.12/150 Spar
-T:*/21-05=0.12/240 Nacht
 Z:200 AktivPlus Ausland 1
 A:AD,BE,DK,FR,UK,IT,CA
 A:LI,LU,MC,NL,AT,CH
@@ -12506,18 +12296,15 @@ A:08003302000
 A:08003301172
 A:08003301174
 A:08003302050
-A:01300190
-A:0130190190
 A:01136
 A:110
 A:112
 # A:+10         # Operator Service
-A:0130
 A:0800
 A:_NLFF,_CHFF
 A:_F800
 A:011*
-A:0130*,0800*,0801*
+A:0800*,0801*
 A:031*
 T:*/*=0
 Z:1-2 City
@@ -12546,8 +12333,7 @@ Z:7 Select 5/30 Ausland
 #Hinter A: die Rufnummer(n) eintragen und das »#« vor A: entfernen!
 #T:E,H/*=DM/ZEITEINHEIT
 #DM durch den Betrag ersetzen, der in einer ZEITEINHEIT zu bezahlen ist
-Z:10 C- und D1-Netz
-A:_DEMCM,_DEMC
+Z:10 D1-Netz
 A:_DEMD1
 T:*/*=0.48/60
 Z:13 Mobilfunknetz D2
@@ -12737,240 +12523,14 @@ C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Quelle: http://www.telekom.de/untern/tarife/tisdn_tarife/index.htm
 C:Erfasste Zonen:
-C:0	-   4	Deutschland
-C:10	-  15	Mobilfunk
-C:31	-  39	Satelitenfunk
-C:40		Auskunft DTAG Inland
-C:41		Auskunft DTAG Ausland
-C:42		Auskunft Arcor
-C:43		Auskunft debitel
-C:44		Auskunft Frag Fred
-C:45		Auskunft o.tel.o
-C:46		Auskunft Talkline
-C:47		Auskunft Telegate
-C:48		Auskunft Telegate Ausland
-C:49		Auskunft Viag Interkom
-C:60		Cityruf
-C:81	-  85	Service 0180-x
-C:91	-  94	Service 0190-x
 C:100		T-Online
-C:162	- 166	DTAG Service Nummern
-C:170		Persönliche Rufnummer
-C:171		Info Expo 2000
-C:172		Sonderrufnummern zum Citytarif
-C:200	-	Ausland
-Z:0 FreeCall
-A:08003301113
-A:08003301000
-A:08003301115
-A:08003301136
-A:08003302000
-A:08003301172
-A:08003301174
-A:08003302050
-A:01300190
-A:0130190190
-A:01136
-A:110
-A:112
-# A:+10         # Operator Service
-A:0130
-A:0800
-A:_NLFF,_CHFF
-A:_F800
-A:011*
-A:0130*,0800*,0801*
-A:031*
-T:*/*=0
-Z:1-2 City
-T:W/07-18=0.12/90 Wochentag
-T:W/18-07=0.12/240 Abend
-T:E,H/*=0.12/240 Wochenende
-Z:3-4 Deutschland
-A:DE
-T:W/07-18=0.18/60 Wochentag
-T:W/18-07=0.06/60 Abend
-T:E,H/*=0.06/60 Wochenende
-Z:10 C- und D1-Netz
-A:_DEMCM,_DEMC
-A:_DEMD1
-T:*/*=0.48/60
-Z:13 Mobilfunknetz D2
-A:_DEMD2
-T:W/09-18=0.12/7.5 Standard
-T:W/18-09=0.12/15 Nacht
-T:E,H/*=0.12/15 Wochenende
-Z:14 Mobilfunknetz E-Plus
-A:_DEME1
-T:W/09-18=0.12/5.3 Standard
-T:W/18-09=0.12/12.8 Nacht
-T:E,H/*=0.12/12.8 Wochenende
-Z:15 Mobilfunknetz Viag Interkom
-A:_DEME2
-T:W/09-18=0.12/7.5 Standard
-T:W/18-09=0.12/15 Nacht
-T:E,H/*=0.12/15 Wochenende
-Z:31 Iridium GSM
-A:_IR17
-T:*/*=0.12/0.509
-Z:32 Iridium
-A:_IR16
-T:*/*=0.12/0.938
-Z:33 Inmarsat A
-A:_INA_,_INDF
-T:*/*=0.12/0.7
-Z:35 Inmarsat Aero
-A:_INAE
-T:*/*=0.12/0.7
-Z:36 Inmarsat B
-A:_INB_
-T:*/*=0.12/0.8
-Z:37 Inmarsat B HSD
-T:*/*=0.12/0.3 # = 23,99 DM / Minute :-)
-Z:38 Inmarsat M
-A:_INM_
-T:*/*=0.12/0.8
-Z:39 Inmarsat Phone (Mini-M)
-A:_INMM
-T:*/*=0.12/1
-Z:40 Auskunft Inland
-A:11833
-T:*/*=0.968/30,0.121/3.8
-Z:41 Auskunft Ausland
-A:11834
-T:*/*=0.968/30,0.121/3.8
-Z:42 Arcor Auskunft
-A:11870
-T:*/*=0.968/30
-Z:43 debitel Auskunft
-A:11818
-T:*/*=0.968/0,0.121/7.5
-Z:44 Frag Fred Auskunft
-A:11811
-T:*/*=0.847/0,0.121/6.7
-Z:45 o.tel.o Auskunft
-A:11888
-T:*/*=1.59/0,0.49(60)/1
-Z:46 Talkline Auskunft
-A:11850
-T:*/*=0.968/0,0.12/7.5
-Z:47 Telegate Auskunft
-A:11880
-T:*/*=0.968/0,0.121/7.5
-Z:48 Telegate Auslands-Auskunft
-A:11890
-T:*/*=3.51/60
-Z:49 Viag Interkom Auskunft
-A:11881
-#T:*/*=1.59/0,0.036666666666666666/10	# FIXME: ,0.22(60)/10
-T:*/*=1.59/0,0.22(60)/10
-Z:50 GTS Auskunft
-A:11822
-T:*/*=1.44/0,0.12/20
-Z:60 Cityruf
-A:+491640
-A:+491641,+491642,+491643,+491644,+491645
-A:+491646,+491647,+491648,+491649
-T:W/09-18=0.12/20 Standard
-T:W/18-09=0.12/30 Nacht
-T:E,H/*=0.12/30 Wochenende
-Z:81 Shared Cost Service 0180-1
-A:01801
-T:W/09-18=0.12/90 Standard
-T:W/05-09,18-21=0.12/150 Spar
-T:E,H/05-21=0.12/150 Spar
-T:*/21-05=0.12/240 Nacht
-Z:82 Shared Cost Service 0180-2
-A:01802
-T:*/*=0.12/0,0/1
-Z:83 Shared Cost Service 0180-3
-A:01803
-T:*/*=0.12/40
-Z:84 Shared Cost Service 0180-4
-A:01804
-T:*/*=0.48/0,0/1
-Z:85 Shared Cost Service 0180-5
-A:01805
-T:*/*=0.12/30
-Z:91 Premium Rate Service 0190-1, -2, -3, -5
-A:01901,01902,01903,01905
-T:*/*=0.12/6
-Z:92 Premium Rate Service 0190-4, -6
-A:01904,01906
-T:*/*=0.12/9
-Z:93 Premium Rate Service 0190-7, -9
-A:01907,01909
-T:*/*=0.12/3
-Z:94 Premium Rate Service 0190-8
-A:01908
-T:*/*=0.12/2
+C: ** Zonen 0-99 und 101- identisch mit P:33,0 DTAG ISDN **
+R:33,0;0-94,101-
 Z:100 T-Online
 A:0191011
 C:Dies ist *kein* All-in-One Zugang, es werden zusätzliche Gebühren erhoben!
 C:Hier im Falle der Flatrate DM 79,00
 T:*/*=0 T-Online flatrate
-Z:101 T-Online by call
-A:019104981
-T:*/*=0.039(60)/60 T-Online by call
-Z:120 Surf 1
-A:019107873
-T:*/*=0.045/60
-Z:121 CompuServeOffice
-A:019160
-T:*/09-18=0.019(60)/180 CompuServeOffice
-T:*/18-09=0.049(60)/180 CompuServeOffice
-Z:162 T-VoteCall
-A:01371
-T:*/*=0.24/0,0/1
-Z:163 T-VoteCall
-A:01372,01373,01374,0138
-T:*/*=0.12/20
-Z:170 Persönliche Rufnummer
-A:0700
-T:*/09-18=0.12/15
-T:*/18-09=0.12/30
-Z:172 Sonderrufnummern zum Citytarif
-A:01141
-A:0115
-A:0116
-A:01191
-A:01910
-A:01914
-A:019161
-A:019102345
-C:Dies sind *keine* All-in-One Zugänge, es werden zusätzliche Gebühren erhoben!
-T:W/09-18=0.12/90 Standard
-T:W/05-09,18-21=0.12/150 Spar
-T:E,H/05-21=0.12/150 Spar
-T:*/21-05=0.12/240 Nacht
-Z:200 Euro 1
-A:AD,BE,DK,FO,FI,FR,GR
-A:UK,_UKIM,IE,IS,IT,_UKIK,LI
-A:LU,MC,NL,_UKIR,NO,AT,PL,PT
-A:SM,SE,CH,SK,ES,CZ
-A:VA
-T:*/*=0.48/60
-Z:201 Euro 2
-A:EG,AL,BA,BG,EE,GI
-A:IL,JO,YU,HR,LV,LB,LY
-A:LT,MT,EH,MK,MD,RO,SU
-A:SI,SY,TR,TN,UA
-A:HU,BY,CY
-T:*/*=0.12/6
-Z:202 Welt 1
-A:US,CA
-T:*/*=0.48/60
-Z:203 Welt 2
-A:AU,HK,JP,KR,NZ,SG
-T:*/*=0.12/3.34
-Z:204 Welt 3
-A:AR,BR,CL,DO,IR,KZ,CO
-A:AN,PH,SA,ZA,TW
-A:AE
-T:*/*=0.12/2.61
-Z:205 Welt 4
-A:+
-T:*/*=0.12/2.31
 #####################################################################
 P:33,7 DTAG AktivPlus xxl
 B:01033
@@ -12986,8 +12546,11 @@ C:Quelle:Preisliste T-ISDN xxl, 1. Juni 2000; zus. Tarif AktivPlus hier
 C:Tarif gilt nur in Verbindung mit T-ISDN xxl Anschluss fuer 59,90 DM/Monat.
 C:Erfasste Zonen:
 C:1	-   4	Deutschland
-C: ** Zonen 0 und 10- werden von P:33,4 DTAG AktivPlus ?bernommen **
-R:33,4;0,10-
+C: ** Zonen 0 (Freecall) und 30-199 (Sat., 01..) werden von P:33,0 DTAG ISDN übernommen **
+C: ** Zonen 10-19 (Mobilfunk) und 200- (Ausland) werden von P:33,4 DTAG AktivPlus übernommen **
+# 1. R-Tag muss exakt sein, letztes darf nicht existente Zone (199) nennen.
+R:33,4;10-15,200-
+R:33,0;0,31-172
 Z:1-2 CityCall
 T:W/09-18=0.06/60 Sunshine
 T:W/18-09=0.03/60 Moonshine
@@ -12995,8 +12558,8 @@ T:6/*=0.03/60 Spar
 T:7,H/*=0 xxl unentgeltlich
 Z:3-4 GermanCall
 A:+49
-T:W/09-18=0.12/60 Sunshine
-T:W/18-09=0.06/60 Moonshine
+T:W/09-18=0.09/60 Sunshine
+T:W/18-09=0.05/60 Moonshine
 T:6/*=0.06/60 Spar
 T:7,H/*=0 xxl unentgeltlich
 #####################################################################

@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.190 2000/12/23 10:36:29 leo Exp $
+## $Id: Makefile.in,v 1.191 2001/01/14 12:13:49 akool Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,18 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.191  2001/01/14 12:13:49  akool
+## isdnlog-4.49
+##  - added more Euracom decodings
+##
+##  - added new prefixes
+##      0151 - Germany cellphone D1
+##      0152 - Germany cellphone D2
+##      0163 - Germany cellphone Eplus
+##    to "country-de.dat"
+##
+##  - removed Freecall "0130" and "Germany cellphone C"
+##
 ## Revision 1.190  2000/12/23 10:36:29  leo
 ## Fixed makeing with ILP
 ##
@@ -1427,7 +1439,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 4.48
+VERSION     = 4.49
 
 MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 \
 	      isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 \
