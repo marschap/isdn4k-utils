@@ -736,6 +736,9 @@ question has not been answered numerous times in the past (search
 isdn4linux,...). People on the mailing list get really annoyed when
 the question "can I fax with my card xxx" is asked yet another time
 (see question <ref id="feature_fax" name="feature_fax"> for the answer).
+To reduce spam, as of 25. Aug. 2003 the mailing list has been changed
+to permit posts from subscribed members only. To write, you must be
+subscribed first.
 
 When writing on the mailing list, please always provide:
 <itemize>
@@ -753,28 +756,33 @@ The mailing list contains the same messages as the newsgroup (see question
 responses to your question with your news reader. A bidirectional
 gateway ensures that mailing list and news are in sync.
 
-To subscribe constantly to the mailing list, send an email message to 
-<tt><htmlurl url="mailto:majordomo@listserv.isdn4linux.de"
-name="majordomo@listserv.isdn4linux.de"></tt>.
-The subject doesn't matter. The message body should read <tt/subscribe
-isdn4linux &lt;email address&gt;/, where &lt;email address&gt; is the
-address to which mail from the list should be sent. To unsubscribe send a
-message with the body <tt/unsubscribe isdn4linux &lt;email address&gt;/ at the
-same address. Please note: there are about 20-50 messages per day on this
-mailing list. To receive only one message per day, containing all postings,
-have a look at question
-<ref id="docu_maillistdigest" name="docu_maillistdigest">.
+To subscribe to the mailing list, go to the web frontend at
+<tt><htmlurl url="https://www.isdn4linux.de/mailman/listinfo/isdn4linux"
+name="https://www.isdn4linux.de/mailman/listinfo/isdn4linux"></tt> and
+submit the filled form. After that, you will <bf>not</bf> be subscribed yet.
+Instead, you will receive a confirmation at the mail address you entered
+in the above form. This is a security precaution to prevent subscription
+by other persons or subscription of mistyped mail addresses. When you
+receive the confirmation, just follow the instructions in that mail.
+(I.e.: simply reply). After having replied, you will be subscribed and
+receive a welcome mail. The welcome mail will contain your password, so
+you should probably keep it just in case you want to unsubscribe or change
+some options at the web frontend.
+To unsubscribe, go to the web frontend again, use your password to login
+and then unsubscribe.
+Please note: there are about 20-50 messages per day on this mailing list.
+To receive only one message per day, containing all postings, have a look
+at question <ref id="docu_maillistdigest" name="docu_maillistdigest">.
 
 <sect1> docu_maillistdigest: How can I get a digest of the mailing list for 
 isdn4linux (only one message per day)?  
 <label id="docu_maillistdigest">
 <p>
-Subscribe to the mailing list as described in question
-<ref id="docu_mailinglist" name="docu_mailinglist">, but as mailing list name
-use <tt/isdn4linux-digest/ rather than <tt/isdn4linux/. So your message body
-should read <tt/subscribe isdn4linux-digest &lt;email address&gt;/ for
-subscription, and <tt/unsubscribe isdn4linux-digest &lt;email address&gt;/
-for unsubscription.
+While filling the form as described in question
+<ref id="docu_mailinglist" name="docu_mailinglist">, simply click "Yes"
+at the radio-button, named "Would you like to receive list mail batched
+in a daily digest". You can change this option later when logging in
+the web frontend.
 
 <sect1> docu_mailarchive: Is there an archive of the isdn4linux mailing list?  
 <label id="docu_mailarchive">
@@ -786,17 +794,6 @@ archive to do a complete search.
 Messages are also saved (unsorted) at listserv.isdn4linux.de, collected by
 month. To access the archive, you can use
 <url url="http://www.isdn4linux.de/listarch/">.
-
-Alternatively, you can send an email to
-<tt><htmlurl url="mailto:majordomo@listserv.isdn4linux.de"
-name="majordomo@listserv.isdn4linux.de"></tt>.
-The subject doesn't matter. These commands are possible: 
-<itemize>
-<item>index isdn4linux - list which archive files are available
-<item>get isdn4linux filename - retrieves the file filename
-</itemize>
-The archives are named &dquot;archiv.yearmonth&dquot;, so
-&dquot;archiv.9610&dquot; is the archive for October 1996.
 
 Other archives are:
 <itemize>
