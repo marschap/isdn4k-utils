@@ -25,14 +25,14 @@
  * OR MODIFICATIONS.
  */
 
-char ccp_rcsid[] = "$Id: ccp.c,v 1.3 1997/05/19 10:15:34 hipp Exp $";
+char ccp_rcsid[] = "$Id: ccp.c,v 1.4 1997/10/26 23:06:07 fritz Exp $";
 
 #include <string.h>
 #include <syslog.h>
 #include <sys/ioctl.h>
 #include <sys/types.h>
 #if 0
-#include <net/ppp_defs.h>
+#include </usr/include/net/ppp_defs.h>
 #endif
 #include <linux/ppp-comp.h>
 

@@ -25,7 +25,7 @@
  * PATCHLEVEL 9
  */
 
-char main_rcsid[] = "$Id: main.c,v 1.8 1997/06/10 14:39:23 hipp Exp $";
+char main_rcsid[] = "$Id: main.c,v 1.9 1997/10/26 23:06:19 fritz Exp $";
 
 #include <stdio.h>
 #include <stdarg.h>
@@ -47,7 +47,7 @@ char main_rcsid[] = "$Id: main.c,v 1.8 1997/06/10 14:39:23 hipp Exp $";
 #include <sys/resource.h>
 #include <sys/stat.h>
 #include <sys/socket.h>
-#include <net/if.h>
+#include </usr/include/net/if.h>
 
 #include "fsm.h"
 #include "ipppd.h"

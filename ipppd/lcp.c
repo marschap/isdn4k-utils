@@ -21,7 +21,7 @@
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-char lcp_rcsid[] = "$Id: lcp.c,v 1.4 1997/05/28 10:07:30 hipp Exp $";
+char lcp_rcsid[] = "$Id: lcp.c,v 1.5 1997/10/26 23:06:16 fritz Exp $";
 
 /*
  * TODO:
@@ -49,10 +49,10 @@ char lcp_rcsid[] = "$Id: lcp.c,v 1.4 1997/05/28 10:07:30 hipp Exp $";
 
 #ifdef __linux__		/* Needs ppp ioctls */
 #if defined __GLIBC__ && __GLIBC__ >= 2
-# include <net/if.h>
-# include <net/if_ppp.h>
+# include </usr/include/net/if.h>
+# include </usr/include/net/if_ppp.h>
 #else
-# include <net/if.h>
+# include </usr/include/net/if.h>
 # include <linux/if_ppp.h>
 #endif
 #endif

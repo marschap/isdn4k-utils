@@ -1,5 +1,5 @@
 .\" manual page [] for ipppd 2.0
-.\" $Id: ipppd.8,v 1.4 1997/06/10 15:21:10 hipp Exp $
+.\" $Id: ipppd.man.in,v 1.1 1997/10/26 23:06:14 fritz Exp $
 .\" SH section heading
 .\" SS subsection heading
 .\" LP paragraph
@@ -9,7 +9,7 @@
 .SH NAME
 ipppd \- (ISDN) Point to Point Protocol daemon (Version i2.2.9)
 .SH SYNOPSIS
-.B /sbin/ipppd
+.B @CONFIG_SBINDIR@/ipppd
 [
 .I tty_name
 ] [
@@ -39,8 +39,9 @@ NCP for establishing and configuring the Internet Protocol (IP)
 (called the IP Control Protocol, IPCP).
 .SH NOTES for (ISDN) IPPPD
 This special PPP daemon provides synchron PPP for ISDN connections.
-If you you need asynchron PPP over ISDN lines use the normal pppd
-instead with the ISDN character devices, see ttyI(4).
+If you need asynchron PPP over ISDN lines use the normal pppd
+instead with the ISDN character devices, see
+.BR ttyI (4).
 .PP
 The ipppd can handle multiple devices. This is necessary to
 link several connections together to one bundle.
@@ -90,7 +91,7 @@ from the interface.  'usefirstip' is UNTESTED!
 .TP
 .B pidfile <filename>
 Use <filename> instead of 
-.I /var/run/ipppd.pid
+.I @CONFIG_RUNDIR@/ipppd.pid
 .TP
 .B set_userip
 You may define valid IPs in 
@@ -805,7 +806,7 @@ SIGUSR1 to the
 process.  This signal acts as a toggle.
 .SH FILES
 .TP
-.B /var/run/ipppd.pid \fR
+.B @CONFIG_RUNDIR@/ipppd.pid \fR
 Process-ID for \fIipppd\fR process on ppp interface unit \fIn\fR.
 .TP
 .B /etc/ppp/ip-up
