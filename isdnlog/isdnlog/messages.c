@@ -1,4 +1,4 @@
-/* $Id: messages.c,v 1.1 1997/03/16 20:58:44 luethje Exp $
+/* $Id: messages.c,v 1.2 1997/05/29 17:07:20 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Q.931-Messages)
  *
@@ -137,6 +137,7 @@ static char *InformationElement[] = {
   "\x70 Called party number",
   "\x71 Called party subaddress",
   "\x74 Redirecting number",
+  "\x76 Redirection number",
   "\x78 Transit network selection",
   "\x79 Restart indicator",
   "\x7c Low layer compatibility",

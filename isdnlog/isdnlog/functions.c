@@ -1,4 +1,4 @@
-/* $Id: functions.c,v 1.7 1997/05/09 23:30:45 luethje Exp $
+/* $Id: functions.c,v 1.8 1997/05/29 17:07:19 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,13 @@
  * along with this program; if not, write to the Free Software
  *
  * $Log: functions.c,v $
+ * Revision 1.8  1997/05/29 17:07:19  akool
+ * 1TR6 fix
+ * suppress some noisy messages (Bearer, Channel, Progress) - can be reenabled with log-level 0x1000
+ * fix from Bodo Bellut (bodo@garfield.ping.de)
+ * fix from Ingo Schneider (schneidi@informatik.tu-muenchen.de)
+ * limited support for Info-Element 0x76 (Redirection number)
+ *
  * Revision 1.7  1997/05/09 23:30:45  luethje
  * isdnlog: new switch -O
  * isdnrep: new format %S
@@ -296,7 +303,7 @@ int print_msg(int Level, const char *fmt, ...)
   if (Level & xinfo)
     print_from_server(String);
 
-  if (Level & PRT_LOG) {
+  if (verbose && (Level & PRT_LOG)) {
     fprintf(fprot, "%s  %s", stl, String);
 
     if (synclog)
