@@ -36,8 +36,8 @@
  *	- Initial distribution.
  */
 
-#ifndef lint
-static char rcsid[] = "$Id: ipppstats.c,v 1.1 1997/03/07 15:57:05 hipp Exp $";
+#if 0
+static char rcsid[] = "$Id: ipppstats.c,v 1.2 1997/05/19 10:18:12 hipp Exp $";
 #endif
 
 #include <ctype.h>
@@ -46,6 +46,10 @@ static char rcsid[] = "$Id: ipppstats.c,v 1.1 1997/03/07 15:57:05 hipp Exp $";
 #include <stdio.h>
 #include <signal.h>
 #include <fcntl.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+
 #include <sys/param.h>
 #include <sys/types.h>
 #include <sys/ioctl.h>
@@ -70,12 +74,14 @@ int	unit;
 int	s;			/* socket file descriptor */
 int	signalled;		/* set if alarm goes off "early" */
 
-extern	char *malloc();
 void catchalarm __P((int));
 
-main(argc, argv)
-    int argc;
-    char *argv[];
+void usage(void);
+void intpr(void);
+void get_ppp_stats(struct ppp_stats *curp);
+void get_ppp_cstats(struct ppp_comp_stats *csp);
+
+void main(int argc,char **argv)
 {
     --argc; ++argv;
     while (argc > 0) {
@@ -127,7 +133,7 @@ main(argc, argv)
     exit(0);
 }
 
-usage()
+void usage(void)
 {
     fprintf(stderr, "Usage: ipppstats [-v] [-r] [-c] [-i interval] [unit]\n");
     exit(1);
@@ -145,7 +151,7 @@ usage()
  * collected over that interval.  Assumes that interval is non-zero.
  * First line printed at top of screen is always cumulative.
  */
-intpr()
+void intpr(void)
 {
     register int line = 0;
     sigset_t oldmask, mask;
@@ -276,8 +282,7 @@ void catchalarm(arg)
     signalled = 1;
 }
 
-get_ppp_stats(curp)
-    struct ppp_stats *curp;
+void get_ppp_stats(struct ppp_stats *curp)
 {
     struct ifpppstatsreq req;
 
@@ -298,8 +303,7 @@ get_ppp_stats(curp)
     *curp = req.stats;
 }
 
-get_ppp_cstats(csp)
-    struct ppp_comp_stats *csp;
+void get_ppp_cstats(struct ppp_comp_stats *csp)
 {
     struct ifpppcstatsreq creq;
 
