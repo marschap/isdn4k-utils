@@ -1,8 +1,8 @@
-# @(#)tarif.dat  1.06  05-Mar-99  11:16
+# @(#)tarif.dat  1.08  14-Mar-99  11:35
 #
 # Copyright 1995, 1999 by Andreas Kool (akool@isdn4linux.de)
 #
-V:1.07 [05-Mar-99]
+V:1.08 [14-Mar-99]
 #
 # P: Provider
 # G: tt.mm.jjjj Tarif gltig ab
@@ -168,6 +168,7 @@ C:		   pro Monat 2 Stunden Nutzungsentgelt frei
 C:                 monatliche Grundgebhr DM 8,00
 C:ISDN-Tarif
 C:FIXME: Tarife überprüfen! 04-Mar-99
+C:Quelle: http://www.telekom.de/untern/tarife/mobil/index.htm
 I:0191011
 Z:1,0.12
 T:W02-05=240  # Nacht
@@ -192,10 +193,14 @@ Z:5,60/60
 T:W09-18=0.632  # Standard
 T:W18-09=0.431  # Spar
 T:E=0.431       # Spar
+Z:7-9,60/60
+T:W09-18=0.96  	# Standard
+T:W18-09=0.48  	# Spar
+T:E=0.60       	# Spar
 Z:8,60/60
-T:W09-18=1.36   # Standard
-T:W18-09=0.562  # Spar
-T:E=0.562       # Spar
+T:W09-18=1.44  	# Standard
+T:W18-09=0.60  	# Spar
+T:E=0.60       	# Spar
 ################################################################
 P:49=ACC
 G:01.01.1999

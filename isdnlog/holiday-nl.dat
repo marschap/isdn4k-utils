@@ -1,0 +1,19 @@
+W:1		Mondag
+W:2		Thuesdag
+W:3		Wednesdag
+W:4		Thursdag
+W:5		Fridag
+W:6		Saturdag
+W:7		Sundag
+
+D:1.1		nieuwjaarsdag
+D:easter-2	Goede Vrijdag
+D:easter		Pasen
+D:easter+1	tweede Paasdag
+D:30.4		Koninginnedag
+D:5.5		Bevrijdingsdag
+D:easter+39	Hemelvaart
+D:easter+49	Pinksteren
+D:easter+50	tweede Pinksterdag
+D:25.12		Kerstmis
+D:26.12		tweede Kerstdag
