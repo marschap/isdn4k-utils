@@ -1,4 +1,4 @@
-/* $Id: rate.c,v 1.58 1999/11/07 13:29:29 akool Exp $
+/* $Id: rate.c,v 1.59 1999/11/08 21:09:41 akool Exp $
  *
  * Tarifdatenbank
  *
@@ -19,6 +19,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rate.c,v $
+ * Revision 1.59  1999/11/08 21:09:41  akool
+ * isdnlog-3.65
+ *   - added "B:" Tag to "rate-xx.dat"
+ *
  * Revision 1.58  1999/11/07 13:29:29  akool
  * isdnlog-3.64
  *  - new "Sonderrufnummern" handling
@@ -370,11 +374,13 @@
  *   liefert die Tarifberechnung in *Rate, UNKNOWN im
  *   Fehlerfall, *msg enthält die Fehlerbeschreibung
  *
- * int getLeastCost (RATE *Rate, int skip)
+ * int getLeastCost (RATE *Current, RATE *Cheapest, int booked, int skip)
  *   berechnet den billigsten Provider zu *Rate, Rückgabewert
  *   ist der Prefix des billigsten Providers oder UNKNOWN wenn
  *   *Rate bereits den billigsten Tarif enthält. Der Provider
  *   'skip' wird übersprungen (falls überlastet).
+ *   Ist 'booked' true, wernden nur Provider die in rate.conf gelistet sind
+ *   verglichen.
  *
  * int guessZone (RATE *Rate, int aoc_units)
  *   versucht die Zone zu erraten, wenn mit den Daten in Rate
@@ -386,6 +392,19 @@
  *
  * char *printRate (double value)
  *   liefert eine formatierte Zahl mit Währung gemäß dem U:-Tag
+ *
+ * inline int getNProvider( void )
+ *   returns count of providers
+ *
+ * int pnum2prefix(int pnum, time_t when) 
+ *   converts the external provider number to the internal prefix at
+ *   the given date/time when, or know if when is 0
+ *
+ * int pnum2prefix_variant(char* pnum, time_t when) 
+ *   same with a provider string pp_vv
+ *
+ * int isProviderValid(int prefix, time_t when)
+ *   returns true, if the G:tag entries match when 
  *
  */
 
@@ -430,7 +449,6 @@ extern const char *basename (const char *name);
 
 #define FEDERAL  1
 #define DOMESTIC 2
-#define ABROAD   4
 
 typedef struct {
   double Duration;
@@ -476,8 +494,17 @@ typedef struct {
 } COMMENT;
 
 typedef struct {
+  int _prefix;
+  int _variant;
+} BOOKED;  
+
+typedef struct {
   int      booked;
-  int      used;
+//  int      used;
+  BOOKED _provider;
+  char    *Vbn; /* B:-Tag */
+  time_t  FromDate; /* N/Y */
+  time_t  ToDate;   /* N/Y */
   char    *Name;
   int      nZone;
   ZONE    *Zone;
@@ -488,13 +515,16 @@ typedef struct {
 } PROVIDER;
 
 
+
 static char      Format[STRINGL]="";
 static PROVIDER *Provider=NULL;
 static int      nProvider=0;
+static BOOKED *Booked=NULL;
+static int      nBooked=0;
 static int      line=0;
-
 static SERVICE * Service=NULL;
 static int nService=0;
+static char * mytld=0;
 
 static void notice (char *fmt, ...)
 {
@@ -636,12 +666,12 @@ static int appendArea (int prefix, char *code, char *name, int zone, int *where,
     }
   }
 
-  if (*code!='+' || strncmp(code,mycountry,strlen(mycountry))==0) {
-    *where |= DOMESTIC;
-    if (strcmp(code, mycountry)==0)
+  if (isdigit(*code) || strncmp(code,mycountry,strlen(mycountry))==0 ||
+      strcmp(code, mytld) == 0) {
+    if (strcmp(code, mycountry)==0 || strcmp(code, mytld) == 0)
       *where |= FEDERAL;
-  } else
-    *where |= ABROAD;;
+  } else if(strlen(code)==2 && strcmp(code,mytld) )
+    *where &= ~DOMESTIC;
 
   Provider[prefix].Area=realloc(Provider[prefix].Area, (Provider[prefix].nArea+1)*sizeof(AREA));
   Provider[prefix].Area[Provider[prefix].nArea].Code=strdup(code);
@@ -651,37 +681,46 @@ static int appendArea (int prefix, char *code, char *name, int zone, int *where,
   return 1;
 }
 
+static void free_provider(i) {
+  int j,k;
+  for (j=0; j<Provider[i].nZone; j++) {
+    if (Provider[i].Zone[j].Number) free (Provider[i].Zone[j].Number);
+    if (Provider[i].Zone[j].Name) free (Provider[i].Zone[j].Name);
+    if (Provider[i].Zone[j].Flag) free (Provider[i].Zone[j].Flag);
+    for (k=0; k<Provider[i].Zone[j].nHour; k++) {
+      if (Provider[i].Zone[j].Hour[k].Name) free (Provider[i].Zone[j].Hour[k].Name);
+      if (Provider[i].Zone[j].Hour[k].Unit) free (Provider[i].Zone[j].Hour[k].Unit);
+    }
+    if (Provider[i].Zone[j].Hour) free (Provider[i].Zone[j].Hour);
+  }
+  if(Provider[i].Zone) free (Provider[i].Zone);
+  for (j=0; j<Provider[i].nArea; j++) {
+    if (Provider[i].Area[j].Code) free (Provider[i].Area[j].Code);
+    if (Provider[i].Area[j].Name) free (Provider[i].Area[j].Name);
+  } /* for */
+  if(Provider[i].Area) free (Provider[i].Area);
+  for (j=0; j<Provider[i].nComment; j++) {
+    if (Provider[i].Comment[j].Key) free (Provider[i].Comment[j].Key);
+    if (Provider[i].Comment[j].Value) free (Provider[i].Comment[j].Value);
+  }
+  if(Provider[i].Comment) free (Provider[i].Comment);
+  if (Provider[i].Name) free (Provider[i].Name);
+  if (Provider[i].Vbn) free (Provider[i].Vbn);
+}
+
 void exitRate(void)
 {
-  int i, j, k;
+  int i, j;
 
   for (i=0; i<nProvider; i++) {
-    if (Provider[i].used) {
-      for (j=0; j<Provider[i].nZone; j++) {
-	if (Provider[i].Zone[j].Number) free (Provider[i].Zone[j].Number);
-	if (Provider[i].Zone[j].Name) free (Provider[i].Zone[j].Name);
-	if (Provider[i].Zone[j].Flag) free (Provider[i].Zone[j].Flag);
-	for (k=0; k<Provider[i].Zone[j].nHour; k++) {
-	  if (Provider[i].Zone[j].Hour[k].Name) free (Provider[i].Zone[j].Hour[k].Name);
-	  if (Provider[i].Zone[j].Hour[k].Unit) free (Provider[i].Zone[j].Hour[k].Unit);
-	}
-	if (Provider[i].Zone[j].Hour) free (Provider[i].Zone[j].Hour);
-      }
-      if(Provider[i].Zone) free (Provider[i].Zone);
-      for (j=0; j<Provider[i].nArea; j++) {
-	if (Provider[i].Area[j].Code) free (Provider[i].Area[j].Code);
-        if (Provider[i].Area[j].Name) free (Provider[i].Area[j].Name);
-      } /* for */
-      if(Provider[i].Area) free (Provider[i].Area);
-      for (j=0; j<Provider[i].nComment; j++) {
-	if (Provider[i].Comment[j].Key) free (Provider[i].Comment[j].Key);
-	if (Provider[i].Comment[j].Value) free (Provider[i].Comment[j].Value);
-      }
-      if(Provider[i].Comment) free (Provider[i].Comment);
-      if (Provider[i].Name) free (Provider[i].Name);
-      Provider[i].used=0;
-    }
+    free_provider(i); 
   }
+  free(Provider);
+  Provider=0;
+  nProvider=0;
+  if(Booked)
+    free(Booked);
+  nBooked=0;
   for (i=0; i<nService; i++) {
     for(j=0; j<Service[i].nCode; j++) 
       free(Service[i].Codes[j]);
@@ -693,6 +732,105 @@ void exitRate(void)
   nService=0;
 }
 
+char   *prefix2provider(int prefix, char *s)
+{
+  if (prefix<0 || prefix>=nProvider)
+    return "?*?";
+  strcpy(s,Provider[prefix].Vbn);
+  return Provider[prefix].Vbn;
+}
+
+char   *prefix2provider_variant(int prefix, char *s)
+{
+  if (prefix<0 || prefix>=nProvider)
+    return "?*?";
+  if(Provider[prefix]._provider._variant != UNKNOWN)
+    sprintf(s,"%s_%d",Provider[prefix].Vbn,Provider[prefix]._provider._variant);
+  else  
+    strcpy(s,Provider[prefix].Vbn);
+  return s;
+}
+
+inline int getNProvider( void ) {
+  return nProvider;
+}  
+
+int isProviderValid(int i, time_t when)
+{
+  return
+       ( (Provider[i].FromDate == 0 && Provider[i].ToDate == 0) ||
+         (Provider[i].FromDate == 0 && Provider[i].ToDate >= when) ||
+         (Provider[i].FromDate < when && Provider[i].ToDate == 0) ||
+	 (Provider[i].FromDate < when && Provider[i].ToDate >= when) ) ;
+}
+
+int pnum2prefix(int pnum, time_t when) {
+  int i;
+  time_t now;
+  if(when==0) {
+    time(&now);
+    when=now;
+  }  
+  for(i=0;i<nProvider;i++) 
+   if( (Provider[i]._provider._prefix == pnum &&
+       ( Provider[i]._provider._variant == UNKNOWN ||
+         Provider[i].booked==1) ) &&
+	 isProviderValid(i, when) )
+     return i;
+  return UNKNOWN;   
+}      	
+
+int pnum2prefix_variant(char * pnum, time_t when) {
+  int p,v;
+  char *s;
+  int i;
+  time_t now;
+
+  p=atoi(pnum);
+  v=UNKNOWN;
+  if ((s=strchr(pnum, '_')) != 0)
+    v=atoi(s+1);
+  if(when==0) {
+    time(&now);
+    when=now;
+  }  
+  for(i=0;i<nProvider;i++) 
+   if( Provider[i]._provider._prefix == p &&
+       Provider[i]._provider._variant == v &&
+       isProviderValid(i, when) )
+     return i;
+  return UNKNOWN;   
+}
+
+int vbn2prefix(char *vbn, int *len) {	 
+  int i;
+  for(i=0;i<nProvider;i++) 
+    if(Provider[i].Vbn && *Provider[i].Vbn) {
+      if(strncmp(Provider[i].Vbn, vbn, strlen(Provider[i].Vbn))==0 &&
+          (Provider[i]._provider._variant == UNKNOWN ||
+           Provider[i].booked==1) ) {
+	*len = strlen(Provider[i].Vbn);
+	return i;
+      }
+    }	 
+  return UNKNOWN;
+}
+  
+static int parseDate(char **s, time_t *t) {
+  struct tm tm;
+  tm.tm_hour=tm.tm_min=tm.tm_sec=0;
+  tm.tm_mday = strtoul(*s, s, 10);
+  if(**s != '.') 
+    return 0;
+  (*s)++;  
+  tm.tm_mon = strtoul(*s, s, 10)-1;
+  if(**s != '.') 
+    return 0;
+  (*s)++;  
+  tm.tm_year = strtoul(*s, s, 10)-1900;
+  *t = mktime(&tm);
+  return 1;
+}
 int initRate(char *conf, char *dat, char *dom, char **msg)
 {
   static char message[LENGTH];
@@ -701,22 +839,20 @@ int initRate(char *conf, char *dat, char *dom, char **msg)
   double   price, divider, duration;
   char     buffer[LENGTH], path[LENGTH], Version[LENGTH]="";
   char     *c, *s;
-  int      booked[MAXPROVIDER], variant[MAXPROVIDER];
-  int      Providers=0, Comments=0;
+  int      Comments=0;
   int      Areas=0, Specials=0, Zones=0, Hours=0;
-  int      ignore=0, where=0, prefix=UNKNOWN;
+  int      where=DOMESTIC, prefix=UNKNOWN;
   int      zone, zone1, zone2, day1, day2, hour1, hour2, freeze, delay;
   int     *number, numbers;
   int      i, n, t, u, v, z;
 
+  initTelNum(); /* we need defnum */
+  mytld = getMynum()->tld;
+  if(!*mytld || strlen(mytld) != 2)
+    error( dat, "Defaultnumber not set, did you configure 'mycountry'?");
 
   if (msg)
     *(*msg=message)='\0';
-
-  for (i=0; i<MAXPROVIDER; i++) {
-    booked[i]=0;
-    variant[i]=UNKNOWN;
-  }
 
   if (conf && *conf) {
     if ((stream=fopen(conf,"r"))==NULL) {
@@ -742,11 +878,10 @@ int initRate(char *conf, char *dat, char *dom, char **msg)
 	  continue;
 	}
 	prefix = strtol(s, &s ,10);
-	if (prefix >= MAXPROVIDER) {
-	  warning (conf, "Invalid provider-number %d", prefix);
-	  continue;
-	}
-	booked[prefix]=1;
+	Booked = realloc(Booked, (nBooked+1)*sizeof(BOOKED));
+	Booked[nBooked]._prefix=prefix;
+	Booked[nBooked]._variant=UNKNOWN;
+	nBooked++;
 	while (isblank(*s)) s++;
 	if (*s == '=') {
 	  s++;
@@ -759,7 +894,7 @@ int initRate(char *conf, char *dat, char *dom, char **msg)
 	    warning (conf, "Invalid variant %s", s);
 	    continue;
 	  }
-	  variant[prefix]=v;
+	  Booked[nBooked-1]._variant=v;
 	  while (isblank(*s)) s++;
 	}
 	if (*s) {
@@ -816,23 +951,27 @@ int initRate(char *conf, char *dat, char *dom, char **msg)
       break;
 
     case 'P': /* P:nn[,v] Bezeichnung */
-      if (zone!=UNKNOWN && !ignore) {
-	Provider[prefix].Zone[zone].Domestic = !(where & ABROAD);
+      if (zone!=UNKNOWN) {
+	Provider[prefix].Zone[zone].Domestic = (where & DOMESTIC) == DOMESTIC;
 	line--;
 	if (Provider[prefix].Zone[zone].nHour==0)
 	  whimper (dat, "Zone has no 'T:' Entries", zone);
-	if ((where & DOMESTIC) && (where & ABROAD))
-	  whimper (dat, "Zone contains domestic and abroad areas");
-#if 0 /* AK:28Oct99 */
+#if 1 /* AK:28Oct99 - lt 6.nov 99 turn off PRT_INFO if you want see it */
 	if (!(where & FEDERAL))
 	  whimper (dat, "Provider %d has no default domestic zone (missing 'A:%s')", prefix, mycountry);
 #endif
 	line++;
       }
+      if(nProvider) {
+	if(!Provider[prefix].Vbn || !*Provider[prefix].Vbn) {
+	  error(dat, "Provider %s has no valid B:-Tag - ignored", getProvider(prefix));
+	  free_provider(prefix);
+	  nProvider--;
+	}  
+      } 	
       v = UNKNOWN;
       zone = UNKNOWN;
-      ignore = 1;
-      where = 0;
+      where = DOMESTIC;
 
       s+=2; while (isblank(*s)) s++;
       if (!isdigit(*s)) {
@@ -841,11 +980,12 @@ int initRate(char *conf, char *dat, char *dom, char **msg)
 	continue;
       }
       prefix = strtol(s, &s ,10);
-      if (prefix >= MAXPROVIDER) {
-	warning (dat, "Invalid provider-number %d", prefix);
-	prefix=UNKNOWN;
-	continue;
-      }
+      Provider=realloc(Provider, (nProvider+1)*sizeof(PROVIDER));
+      memset(&Provider[nProvider], 0, sizeof(PROVIDER));
+      Provider[nProvider]._provider._prefix=prefix;
+      prefix=nProvider; /* the internal prefix */
+      nProvider++;
+      Provider[prefix]._provider._variant=UNKNOWN;
       while (isblank(*s)) s++;
       if (*s == ',') {
 	s++; while (isblank(*s)) s++;
@@ -855,41 +995,24 @@ int initRate(char *conf, char *dat, char *dom, char **msg)
 	  continue;
 	}
 	v=strtol(s, &s, 10);
-      }
-      if (variant[prefix]==v) {
-	ignore = 0;
-      } else {
-	v = UNKNOWN;
-	continue;
-      }
-      if (prefix>=nProvider) {
-	Provider=realloc(Provider, (prefix+1)*sizeof(PROVIDER));
-	for (i=nProvider; i<=prefix; i++)
-	  Provider[i].used=0;
-	nProvider=prefix+1;
-      }
-      if (Provider[prefix].used++) {
-	warning (dat, "Duplicate entry for provider %d (%s)", prefix, Provider[prefix].Name);
-	if (Provider[prefix].Name) free(Provider[prefix].Name);
+	Provider[prefix]._provider._variant=v;
       }
       while (isblank(*s)) s++;
       Provider[prefix].Name=*s?strdup(s):NULL;
-      Provider[prefix].booked=booked[prefix];
-      Provider[prefix].nZone=0;
-      Provider[prefix].Zone=NULL;
-      Provider[prefix].nArea=0;
-      Provider[prefix].Area=NULL;
-      Provider[prefix].nComment=0;
-      Provider[prefix].Comment=NULL;
-      Providers++;
+      for (i = 0; i < nBooked; i++)
+        if (Booked[i]._variant==Provider[prefix]._provider._variant &&
+	    Booked[i]._prefix==Provider[prefix]._provider._prefix) {
+          Provider[prefix].booked=1;
+	  break;
+        }	  
       break;
 
     case 'B':  /* B: VBN */
-      if (ignore) continue;
+      s += 2;
+      Provider[prefix].Vbn = strdup(strip(s));
       break;
 
     case 'C':  /* C:Comment */
-      if (ignore) continue;
       s+=2; while (isblank(*s)) s++;
       if ((c=strchr(s,':'))!=NULL) {
 	*c='\0';
@@ -915,7 +1038,6 @@ int initRate(char *conf, char *dat, char *dom, char **msg)
       break;
 
     case 'D':  /* D:Verzonung */
-      if (ignore) continue;
       if (prefix == UNKNOWN || zone != UNKNOWN) {
 	warning (dat, "Unexpected tag '%c'", *s);
 	break;
@@ -923,31 +1045,27 @@ int initRate(char *conf, char *dat, char *dom, char **msg)
       s+=2; while (isblank(*s)) s++;
       snprintf (path, LENGTH, dom, s);
       if (initZone(prefix, path, &c)==0) {
-	if (msg && *c) notice ("%s", c);
+	if (msg && *c) whimper ("%s", c);
       } else {
 	error (dat, c);
       }
       break;
 
     case 'Z': /* Z:n[-n][,n] Bezeichnung */
-      if (ignore) continue;
       if (prefix == UNKNOWN) {
 	warning (dat, "Unexpected tag '%c'", *s);
 	break;
       }
       if (zone != UNKNOWN) {
-	Provider[prefix].Zone[zone].Domestic = !(where & ABROAD);
+	Provider[prefix].Zone[zone].Domestic = (where & DOMESTIC) == DOMESTIC;
 	line--;
 	if (Provider[prefix].Zone[zone].nHour==0)
 	  whimper (dat, "Zone has no 'T:' Entries", zone);
-	if ((where & DOMESTIC) && (where & ABROAD))
-	  whimper (dat, "Zone contains domestic and abroad areas");
 	line++;
       }
       s+=2;
       number=NULL;
       numbers=0;
-      where &= ~(DOMESTIC | ABROAD);
       while (1) {
 	while (isblank(*s)) s++;
 	if (*s=='*') {
@@ -1022,7 +1140,6 @@ int initRate(char *conf, char *dat, char *dom, char **msg)
       break;
 
     case 'A': /* A:areacode[,areacode...] */
-      if (ignore) continue;
       if (zone==UNKNOWN) {
 	warning (dat, "Unexpected tag '%c'", *s);
 	break;
@@ -1045,12 +1162,11 @@ int initRate(char *conf, char *dat, char *dom, char **msg)
       break;
 
     case 'S': /* S:service */
-      if (ignore) continue;
 /* S:Service
    N:nn[,nn]
    ...
 */   
-      if (Providers) continue;
+      if (nProvider) continue;
       s+=2;
       s=strip(s);
       Service=realloc(Service, (++nService)*sizeof(SERVICE));
@@ -1060,8 +1176,7 @@ int initRate(char *conf, char *dat, char *dom, char **msg)
       break;
 
     case 'N': /* N:serviceNum[,serviceNum...] */
-      if (ignore) continue;
-      if (Providers) continue;
+      if (nProvider) continue;
       if (Service==NULL) {
 	warning (dat, "Unexpected tag '%c'", *s);
 	break;
@@ -1082,7 +1197,8 @@ int initRate(char *conf, char *dat, char *dom, char **msg)
       break;
 
     case 'F': /* F:Flags */
-      if (ignore) continue;
+      break;
+#if 0      
       if (zone==UNKNOWN) {
 	warning (dat, "Unexpected tag '%c'", *s);
 	break;
@@ -1092,10 +1208,10 @@ int initRate(char *conf, char *dat, char *dom, char **msg)
 	free (Provider[prefix].Zone[zone].Flag);
       }
       Provider[prefix].Zone[zone].Flag=strdup(strip(s+2));
+#endif      
       break;
 
     case 'T':  /* T:d-d/h-h=p/s:t[=]Bezeichnung */
-      if (ignore) continue;
       if (zone==UNKNOWN) {
 	warning (dat, "Unexpected tag '%c'", *s);
 	break;
@@ -1323,9 +1439,22 @@ int initRate(char *conf, char *dat, char *dom, char **msg)
       Hours++;
       break;
 
-    case 'G':
-      if (ignore) continue;
-      whimper (dat, "Obsolete tag '%s'", s);
+    case 'G': /* G:[dd.mm.yyyy][-dd.mm.yyyy] */
+      s+=2;
+      while (isblank(*s)) s++;
+      if(isdigit(*s)) {
+        if(!parseDate(&s, &Provider[prefix].FromDate))
+          warning (dat, "Invalid date '%s'", s);
+      }
+      while (isblank(*s)) s++;
+      if (*s == '-') {
+        s++;
+        while (isblank(*s)) s++;
+        if(isdigit(*s)) {
+          if(!parseDate(&s, &Provider[prefix].ToDate))
+            warning (dat, "Invalid date '%s'", s);
+        }
+      }	
       break;
 
     default:
@@ -1335,19 +1464,22 @@ int initRate(char *conf, char *dat, char *dom, char **msg)
   }
   fclose(stream);
 
-  if (zone!=UNKNOWN && !ignore) {
-    Provider[prefix].Zone[zone].Domestic = !(where & ABROAD);
+  if (zone!=UNKNOWN) {
+    Provider[prefix].Zone[zone].Domestic = (where & DOMESTIC) == DOMESTIC;
     line--;
     if (Provider[prefix].Zone[zone].nHour==0)
       whimper (dat, "Zone has no 'T:' Entries", zone);
-    if ((where & DOMESTIC) && (where & ABROAD))
-      whimper (dat, "Zone contains domestic and abroad areas");
-#if 0 /* AK:28Oct99 */
+#if 1 /* AK:28Oct99 - lt 6.nov 99 turn off PRT_INFO if you want see it */
     if (!(where & FEDERAL))
       whimper (dat, "Provider %d has no default domestic zone (missing 'A:%s')", prefix, mycountry);
 #endif
     line++;
   }
+  if(!Provider[prefix].Vbn || !*Provider[prefix].Vbn) {
+    error(dat, "Provider %s has no valid B:-Tag - ignored", getProvider(prefix));
+    free_provider(prefix);
+    nProvider--;
+  }  
 
   if (!*Version) {
     warning (dat, "Database version could not be identified");
@@ -1361,7 +1493,7 @@ int initRate(char *conf, char *dat, char *dom, char **msg)
 
   if (msg) snprintf (message, LENGTH,
 		     "Rates   Version %s loaded [%d Providers, %d Zones, %d Areas, %d Specials, %d Services, %d Comments, %d Rates from %s]",
-		     Version, Providers, Zones, Areas, Specials, nService, Comments, Hours, dat);
+		     Version, nProvider, Zones, Areas, Specials, nService, Comments, Hours, dat);
 
   return 0;
 }
@@ -1370,7 +1502,7 @@ char *getProvider (int prefix)
 {
   static char s[BUFSIZ];
 
-  if (prefix<0 || prefix>=nProvider || !Provider[prefix].used ||
+  if (prefix<0 || prefix>=nProvider ||
   	!Provider[prefix].Name || !*Provider[prefix].Name) {
     prefix2provider(prefix, s);
     strcat(s," ???");
@@ -1383,7 +1515,7 @@ char *getComment (int prefix, char *key)
 {
   int i;
 
-  if (prefix<0 || prefix>=nProvider || !Provider[prefix].used)
+  if (prefix<0 || prefix>=nProvider)
     return NULL;
 
   for (i=0; i<Provider[prefix].nComment; i++) {
@@ -1455,7 +1587,7 @@ int getRate(RATE *Rate, char **msg)
     return UNKNOWN;
 
   prefix=Rate->prefix;
-  if (prefix<0 || prefix>=nProvider || !Provider[prefix].used) {
+  if (prefix<0 || prefix>=nProvider) {
     if (msg) snprintf(message, LENGTH, "Unknown provider %d", prefix);
     return UNKNOWN;
   }
@@ -1625,6 +1757,8 @@ int getLeastCost (RATE *Current, RATE *Cheapest, int booked, int skip)
 {
   int i, cheapest;
   RATE Skel, Rate;
+  char *number;
+  int serv=-1, j, cod, l;
 
   clearRate (&Skel);
   memcpy (Skel.src, Current->src, sizeof (Skel.src));
@@ -1638,17 +1772,41 @@ int getLeastCost (RATE *Current, RATE *Cheapest, int booked, int skip)
   *Cheapest=*Current;
   Cheapest->Charge=1e9;
   cheapest=UNKNOWN;
-
-  for (i=0; i<nProvider; i++) {
-    if (!Provider[i].used || i==skip || (booked && !Provider[i].booked))
-      continue;
-    Rate=Skel;
-    Rate.prefix=i;
-    if (getRate(&Rate, NULL)!=UNKNOWN && Rate.Charge<Cheapest->Charge) {
-      *Cheapest=Rate;
-      cheapest=i;
+  do {
+    for (i=0; i<nProvider; i++) {
+      if (i==skip || (booked && !Provider[i].booked))
+        continue;
+      Rate=Skel;
+      Rate.prefix=i;
+      if (getRate(&Rate, NULL)!=UNKNOWN && Rate.Charge<Cheapest->Charge) {
+        *Cheapest=Rate;
+        cheapest=i;
+      }
     }
-  }
+    number = strcat3(Skel.dst);
+    if (!*Skel.dst[0] && !*Skel.dst[2] && getSpecial(number)) { /* try other numbers for this service */
+      if(serv==-1) {
+        l=strlen(number);
+        for (i=0; i<nService && serv==-1; i++) 
+          for(j=0; j<Service[i].nCode; j++) 
+            if(strmatch(Service[i].Codes[j], number)>=l) {
+	      serv=i;
+	      break;
+	    }
+	if(serv==-1) /* not found - shouldn't be */
+	  break;    
+	cod=0;  
+      }	
+      if (cod < Service[serv].nCode) {
+        Skel.dst[1] = Service[serv].Codes[cod];
+	cod++;
+      }
+      else
+        break;	
+    }
+    else
+      break;
+  } while(1);
   return (Cheapest->prefix==Current->prefix ? UNKNOWN : cheapest);
 }
 
@@ -1656,10 +1814,11 @@ int getZoneRate(RATE* Rate, int domestic, int first)
 {
   static int z;
   static int lasta;
-  int prefix,i,a,isdom;
+  int prefix,i,a;
   char * countries = 0;
   char *area, *olda;
-  int zone, found;
+  int zone, found, res;
+  TELNUM Num;
 
   if (first)
     lasta=z=0;
@@ -1675,10 +1834,6 @@ int getZoneRate(RATE* Rate, int domestic, int first)
     }
     for (a=lasta; a<Provider[prefix].nArea; a++)  {
       if (Provider[prefix].Area[a].Zone == z) {
-        isdom = strncmp(Provider[prefix].Area[a].Code, mycountry, strlen(mycountry))==0 ||
-	  *(Provider[prefix].Area[a].Code)!='+';
-        if (isdom != domestic)
-          continue;
         found++;
         break;
       }
@@ -1707,8 +1862,11 @@ int getZoneRate(RATE* Rate, int domestic, int first)
     countries=strdup("");
     for (i=a; i<Provider[prefix].nArea; i++) {
       zone=Provider[prefix].Area[i].Zone;
-      area=Provider[prefix].Area[i].Name;
-      if (zone==z && area && *area && strcmp(area, olda)) {
+      area=Provider[prefix].Area[i].Code;
+      res=getDest(area, &Num);
+      if(res!=UNKNOWN)
+        area=Num.scountry;
+      if (res!=UNKNOWN && zone==z && area && *area) {
 	countries = realloc(countries,strlen(countries)+strlen(area)+2);
 	if(*countries)
           strcat(countries, ",");
@@ -1730,26 +1888,6 @@ int getZoneRate(RATE* Rate, int domestic, int first)
     Rate->Country=countries;
   z++;
   return 0;
-}
-
-int guessZone (RATE *Rate, int aoc_units)
-{
-#if 0
-  px="";
-  err=60*60*24*365; /* sehr gross */
-  for (c = 1; c < 31; c++) {
-    call[chan].zone=c;
-    tack = (-n -1) * (double)taktlaenge(chan, why);
-    if ((tack > 0) && (abs(tack - tx)<err)) {
-      call[chan].tick = tack;
-      err = abs(tack) - tx;
-      px = z2s(c);
-    }
-  }
-  call[chan].zone=-1;
-#else
-  return UNKNOWN;
-#endif
 }
 
 char *explainRate (RATE *Rate)

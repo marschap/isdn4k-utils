@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.119 1999/11/07 13:29:25 akool Exp $
+## $Id: Makefile.in,v 1.120 1999/11/08 21:09:36 akool Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,10 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.120  1999/11/08 21:09:36  akool
+## isdnlog-3.65
+##   - added "B:" Tag to "rate-xx.dat"
+##
 ## Revision 1.119  1999/11/07 13:29:25  akool
 ## isdnlog-3.64
 ##  - new "Sonderrufnummern" handling
@@ -829,7 +833,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 3.64
+VERSION     = 3.65
 
 MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 \
 	      isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 \

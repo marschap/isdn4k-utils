@@ -1,4 +1,24 @@
-NEWS betreffend tools, (rate, isdnrate)
+NEWS for tools: (rate, isdnrate, isdnrep)
+
+1999.11.08
+  all utils:
+  initRate reads now all provider-variants.
+  Providers _must_ have a B:-Tag now in rate-CC.dat
+  e.g.
+    P:33
+    B:01033
+
+1999.11.07
+  isdnrate
+    new option Z (add LCR info)
+    e.g.
+
+      isdnrate -ZX 19430
+      
+  rate.c / getLeastCost
+    if number is  a special number, this function looks at the service
+    and performs LCR for all numbers listet in this service.
+    So its possible now to find the cheapest online number / provider. 
 
 1999.10.21
   Destination DB runs with isdnrate / isdnlog

@@ -9,8 +9,8 @@
 #endif
 
 /* print_msg */
-#define PRT_V 17 /* verbose */
-#define PRT_A 18 /* always on stderr */
+#define PRT_V PRT_INFO /* verbose */
+#define PRT_A PRT_ERR /* always on stderr */
 
 /* string lens */
 
@@ -56,5 +56,5 @@ char *prefix2provider(int prefix, char*prov);
 int provider2prefix(char *p, int *prefix); 
 void clearNum(TELNUM *num);
 void initNum(TELNUM *num);
-
+TELNUM * getMynum(void);
 #endif

@@ -1,4 +1,4 @@
-/* $Id: isdnlog.c,v 1.54 1999/11/07 13:29:27 akool Exp $
+/* $Id: isdnlog.c,v 1.55 1999/11/08 21:09:39 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,10 @@
  * along with this program; if not, write to the Free Software
  *
  * $Log: isdnlog.c,v $
+ * Revision 1.55  1999/11/08 21:09:39  akool
+ * isdnlog-3.65
+ *   - added "B:" Tag to "rate-xx.dat"
+ *
  * Revision 1.54  1999/11/07 13:29:27  akool
  * isdnlog-3.64
  *  - new "Sonderrufnummern" handling
@@ -1437,9 +1441,6 @@ int main(int argc, char *argv[], char *envp[])
 	    if (!Q931dmp && *version)
 	      print_msg(PRT_NORMAL, "%s\n", version);
 
-#ifndef Q931
-            initTelNum();
-#endif
             loop();
 
             if (sockets[ISDNINFO].descriptor >= 0)

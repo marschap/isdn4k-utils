@@ -41,7 +41,7 @@ $MKTEMP= '/bin/mktemp';
 $ISDNRATE='/usr/bin/isdnrate';
 
 $LOGO="(c) 1999 www.Tel-R.at";
-$_VBNS=$CC eq 'at' ? '1':'0';
+$_VBNS=0;
 
 $docroot=$ENV{'DOCUMENT_ROOT'};
 

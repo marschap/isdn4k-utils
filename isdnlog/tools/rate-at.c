@@ -12,7 +12,6 @@
 /*
   Adressen-URL: http://telecom.bmv.gv.at/deutch/contacts/konzess.html
 */
-static int leo=0;
 
 void sv_printf(char *s, char *n) {
   printf("S:%s\nN:%s\n\n",s,n);
@@ -78,15 +77,7 @@ void rprintf (char *fmt, char *name, ...)
       while (isblank(*s)) s++;
       printf("\n###########################\n");
       v=0;
-      if (leo && *s == ',') {
-	s++;
-	while (isblank(*s)) s++;
-	v=strtol(s, &s, 10);
-	sprintf(buf, "P:%d%s ", prefix+100*v,s);
-	printf ("%s%s\n", buf, name);
-      }
-      else
-	printf ("%s%s\n", buf, name);
+      printf ("%s%s\n", buf, name);
       sprintf(buf,"%4d",1000+prefix);
       printf("B:%s\n",prefix<95?buf:"Kabel");
       printf("C:NR:%s\n",prefix<95?buf:"Kabel");
@@ -96,8 +87,6 @@ void rprintf (char *fmt, char *name, ...)
       break;
     }	  
     printf ("%s%s\n", buf, name);
-    if (0 && (strcmp(name, "Online") == 0 || strcmp(name, "Internet") == 0))
-      printf("S:Internet by call\n");
   } else {
     printf ("%s\n", buf);
   }
@@ -260,7 +249,8 @@ void rate_1001_old(void)
   char s[BUFSIZ];
   
   for (t=0; t<4; t++) {
-    rprintf ("P:01,%d", "Telekom Austria" , t+1);
+    rprintf ("P:01,%d", "Telekom Austria Alt" , t+1);
+    rprintf ("G:-01.09.1999","#Valid til 00:00");
     rprintf ("C:Maintainer:", "Michael Reinelt <reinelt@eunet.at>" );
     rprintf ("C:Zone:", "Die Regionalzone geht bis zu einer Entfernung von 50 Km, " );
     rprintf ("C:Zone:", "Fernzone 1 bis 200 Km, Fernzone 2 darüber." );
@@ -387,6 +377,7 @@ void rate_1001(void)
   for (t=0; t<5; t++) {
     sprintf(s,"Telekom Austria %s",Name[t]);
     rprintf ("P:01,%d", s , t+1);
+    rprintf ("G:01.09.1999","#Valid from");
     rprintf ("C:Maintainer:", "Michael Reinelt <reinelt@eunet.at>" );
     rprintf ("C:TarifChanged:", "01.09.1999" );
     rprintf ("C:Zone:", "Die Regionalzone geht bis zu einer Entfernung von 50 Km, alles andere ist Österreichzone." );
@@ -2339,9 +2330,6 @@ void rate_priority_busi(void) {
 
 int main (int argc, char *argv[])
 {
-  if (argc > 1 && strcmp(argv[1], "-leo") == 0)
-    leo++;
-  
   printf ("# created by rate-at.c\n\n");
   printf ("# The information herein was machine-generated,\n");
   printf ("# so do not contribute patches to this file.\n\n");
@@ -2358,6 +2346,7 @@ int main (int argc, char *argv[])
 #if 0
   rate_1066();
 #else
+  rate_1001_old();
   rate_1001();
   rate_1002();
   rate_1003();
@@ -2383,11 +2372,11 @@ int main (int argc, char *argv[])
   rate_1066();
   rate_1067();
   rate_1069();
-  if(leo) {
+  if(0) {
     rate_priority_class();
     rate_priority_stand();
     rate_priority_busi();
-  }
+  }  
 #endif
   return(EXIT_SUCCESS);	
 }

@@ -70,9 +70,966 @@ N:02290*	# Wildcard after special
 
 
 ###########################
+P:01,1                             Telekom Austria Alt
+B:1001
+C:NR:1001
+G:-01.09.1999                      #Valid til 00:00
+C:Maintainer:                      Michael Reinelt <reinelt@eunet.at>
+C:Zone:                            Die Regionalzone geht bis zu einer Entfernung von 50 Km, 
+C:Zone:                            Fernzone 1 bis 200 Km, Fernzone 2 darüber.
+C:Special:                         Variable Taktung, abhängig von Zone und Tageszeit.
+C:Name:                            Telekom Austria
+C:Address:                         Postgasse 8, A-1010 Wien
+C:Homepage:                        http://www.telekom.at
+C:TarifURL:                        http://www.telekom.at/tarife/
+C:Telefon:                         0800 100 100
+# Tarif:                           Minimumtarif (ATS 1.116 pro Einheit)
+D:pta                              # Verzonung
+
+Z:0                                FreePhone
+T:*/*=0/72
+A:122,133,144,+43800
+
+Z:1                                Regionalzone
+T:W/08-12=1.116/57.6               Tageszeit 1
+T:1-4/13-16=1.116/57.6             Tageszeit 1
+T:1-4/12-13,16-18=1.116/72         Tageszeit 2
+T:5/12-18=1.116/72                 Tageszeit 2
+T:W/06-08,18-20=1.116/109.09       Sparzeit
+T:E,H/06-20=1.116/109.09           Sparzeit
+T:*/20-06=1.116/160                Supersparzeit
+A:+43660
+
+Z:2                                Fernzone 1
+T:W/08-12=1.116/20                 Tageszeit 1
+T:1-4/13-16=1.116/20               Tageszeit 1
+T:1-4/12-13,16-18=1.116/25         Tageszeit 2
+T:5/12-18=1.116/25                 Tageszeit 2
+T:W/06-08,18-20=1.116/50           Sparzeit
+T:E,H/06-20=1.116/50               Sparzeit
+T:*/20-06=1.116/72                 Supersparzeit
+
+Z:3                                Fernzone 2
+T:W/08-12=1.116/15                 Tageszeit 1
+T:1-4/13-16=1.116/15               Tageszeit 1
+T:1-4/12-13,16-18=1.116/19.2       Tageszeit 2
+T:5/12-18=1.116/19.2               Tageszeit 2
+T:W/06-08,18-20=1.116/40           Sparzeit
+T:E,H/06-20=1.116/40               Sparzeit
+T:*/20-06=1.116/50                 Supersparzeit
+A:AT
+
+Z:4                                Online-Tarif
+T:W/08-18=1.116/120                Tageszeit
+T:W/18-8=1.116/360                 Sparzeit
+T:E,H/*=1.116/360                  Sparzeit
+A:+437189,19411,19430,19440
+
+Z:5                                Mobilfunk
+T:W/08-18=1.116/12                 Tageszeit
+T:W/18-8=1.116/19.2                Sparzeit
+T:E,H/*=1.116/19.2                 Sparzeit
+A:+43663,+43664,+43676,+43699
+
+Z:6                                Ausland Zone 1
+T:W/08-18=1.116/12                 Tageszeit
+T:W/18-8=1.116/14.4                Sparzeit
+T:E,H/*=1.116/14.4                 Sparzeit
+A:DE,IT,LI,CH,SK,SI
+A:CZ,HU
+
+Z:7                                Ausland Zone 2
+T:W/08-18=1.116/9                  Tageszeit
+T:W/18-8=1.116/12                  Sparzeit
+T:E,H/*=1.116/12                   Sparzeit
+A:AL,AD,BY,BE,BA,BG
+A:DK,FI,FR,UK,_UKIR,IE
+A:YU,YU,YU,HR,LU,MT,MK
+A:MC,NL,NO,RO,SM,SE,ES
+A:UA,VA,CY
+
+Z:8                                Ausland Zone 3
+T:W/08-18=1.116/6.5455             Tageszeit
+T:W/18-8=1.116/8                   Sparzeit
+T:E,H/*=1.116/8                    Sparzeit
+A:DZ,EE,FO,GE,GI,IS,IL
+A:LV,LT,EH,PT,SU,TJ
+A:TM,UZ
+
+Z:9                                Ausland Zone 4
+T:W/08-18=1.116/5.1429             Tageszeit
+T:W/18-8=1.116/6                   Sparzeit
+T:E,H/*=1.116/6                    Sparzeit
+A:AQ,AM,AU,AZ,CX
+A:CC
+
+Z:10                               Ausland Zone 5
+T:W/08-18=1.116/4.2353             Tageszeit
+T:W/18-8=1.116/4.8                 Sparzeit
+T:E,H/*=1.116/4.8                  Sparzeit
+A:CL,GF,GP,HK,LY,MQ
+A:YT,MD,NZ,RE,PM,ZA
+
+Z:11                               Ausland Zone 6
+T:W/08-18=1.116/3.6                Tageszeit
+T:W/18-8=1.116/4.2353              Sparzeit
+T:E,H/*=1.116/4.2353               Sparzeit
+A:JP,KR,MY,AN,PH,MP
+
+Z:12                               Ausland Zone 7
+T:W/08-18=1.116/3.1304             Tageszeit
+T:W/18-8=1.116/3.6                 Sparzeit
+T:E,H/*=1.116/3.6                  Sparzeit
+A:AO,BM,BT,BR,CN,EC,IR,MO,MX
+A:SA,VE
+
+Z:13                               Ausland Zone 8
+T:W/08-18=1.116/2.7692             Tageszeit
+T:W/18-8=1.116/3                   Sparzeit
+T:E,H/*=1.116/3                    Sparzeit
+A:EG,GQ,AW,BS,BB,BZ,BW
+A:BN,BI,DO,GA,GH,GL
+A:GW,GY,JO,KG,CO,KW,LB
+A:PA,SG,ST,VC
+A:TT,AE
+
+Z:14                               Ausland Zone 9
+T:W/08-18=1.116/2.4                Tageszeit
+T:W/18-8=1.116/2.5714              Sparzeit
+T:E,H/*=1.116/2.5714               Sparzeit
+A:BH,CI,GN,KZ,QA,LA,LS,LR
+A:MW,NA,NR,NP,NC,NG,NF,PE
+A:SH,LC,WS,SD,SZ,SY,TZ,TO
+A:TC,ZM,ZW
+
+Z:15                               Ausland Zone 10
+T:W/08-18=1.116/2.1176             Tageszeit
+T:W/18-8=1.116/2.25                Sparzeit
+T:E,H/*=1.116/2.25                 Sparzeit
+A:AR,ET,BJ,CR,FJ,PF
+A:GM,IQ,JM,KE,KI,KM,MV,MR
+A:MN,MZ,MM,NI,NU,OM,RW,SR
+A:TW,TH,TG,UG,VU,CF
+
+Z:16                               Ausland Zone 11
+T:W/08-18=1.116/1.8462             Tageszeit
+T:W/18-8=1.116/2                   Sparzeit
+T:E,H/*=1.116/2                    Sparzeit
+A:BO,KY,DJ,IN,ID
+A:VG,KP,CU,MU,NGR
+A:PG,PY,SL,LK,UY
+
+Z:17                               Ausland Zone 12
+T:W/08-18=1.116/1.6364             Tageszeit
+T:W/18-8=1.116/1.8                 Sparzeit
+T:E,H/*=1.116/1.8                  Sparzeit
+A:AI,AG,ASI,BD,BF
+A:DM,SV,ER,FK,GD,GU,GT
+A:HT,HN,YE,CM,CV,KH,CG,ML
+A:MS,PK,KN,SN,SC,SB
+A:SO,TD,VN,ZR
+
+Z:18                               Ausland Zone 13
+T:W/08-18=1.116/1.2203             Tageszeit
+T:W/18-8=1.116/1.3585              Sparzeit
+T:E,H/*=1.116/1.3585               Sparzeit
+A:CK,MG
+
+Z:19                               Ausland Zone 14
+T:W/08-18=1.116/8                  Tageszeit
+T:W/18-8=1.116/9                   Sparzeit
+T:E,H/*=1.116/9                    Sparzeit
+A:VI,CA,PR,US
+
+Z:20                               Ausland Zone 15
+T:W/08-18=1.116/9                  Tageszeit
+T:W/18-8=1.116/7.2                 Sparzeit
+T:E,H/*=1.116/7.2                  Sparzeit
+A:GR,PL,TN,TR
+
+Z:21                               Handvermittelter Verkehr
+A:AF,AS,_GUAN,MH,_MIDW
+A:FM,PW,PN,TV,_WAKE
+
+Z:22                               Grenznahverkehr
+T:W/08-18=1.116/18                 Tageszeit
+T:W/18-8=1.116/24                  Sparzeit
+T:E,H/*=1.116/24                   Sparzeit
+
+Z:23                               Teleinfo 04570
+T:W/08-18=1.116/10.795             Tageszeit
+T:W/18-8=1.116/10.795              Sparzeit
+T:E,H/*=1.116/10.795               Sparzeit
+A:+434570
+
+Z:24                               Teleinfo 04500 
+T:W/08-18=1.116/7.2                Tageszeit
+T:W/18-8=1.116/7.2                 Sparzeit
+T:E,H/*=1.116/7.2                  Sparzeit
+A:+434500
+
+Z:25                               Telebusiness 04590
+T:W/08-18=1.116/4.5                Tageszeit
+T:W/18-8=1.116/4.5                 Sparzeit
+T:E,H/*=1.116/4.5                  Sparzeit
+A:+434590
+
+Z:26                               Teleinfo 04580
+T:W/08-18=1.116/2.6997             Tageszeit
+T:W/18-8=1.116/2.6997              Sparzeit
+T:E,H/*=1.116/2.6997               Sparzeit
+A:+434580
+
+Z:27                               Businessline 0711x
+T:W/08-12=1.116/57.6               Tageszeit 1
+T:1-4/13-16=1.116/57.6             Tageszeit 1
+T:1-4/12-13,16-18=1.116/72         Tageszeit 2
+T:5/12-18=1.116/72                 Tageszeit 2
+T:W/06-08,18-20=1.116/109.09       Sparzeit
+T:E,H/06-20=1.116/109.09           Sparzeit
+T:*/20-06=1.116/160                Supersparzeit
+A:+43711
+
+Z:28                               Businessline 0713x
+T:W/08-18=1.116/32                 Tageszeit
+T:W/18-8=1.116/32                  Sparzeit
+T:E,H/*=1.116/32                   Sparzeit
+A:+43713
+
+Z:29                               Businessline 0714x
+T:W/08-18=1.116/15                 Tageszeit
+T:W/18-8=1.116/15                  Sparzeit
+T:E,H/*=1.116/15                   Sparzeit
+A:+43714
+
+Z:30                               Votingline 0717x
+T:W/08-18=1.116/15                 Tageszeit
+T:W/18-8=1.116/15                  Sparzeit
+T:E,H/*=1.116/15                   Sparzeit
+A:+43717
+
+###########################
+P:01,2                             Telekom Austria Alt
+B:1001
+C:NR:1001
+G:-01.09.1999                      #Valid til 00:00
+C:Maintainer:                      Michael Reinelt <reinelt@eunet.at>
+C:Zone:                            Die Regionalzone geht bis zu einer Entfernung von 50 Km, 
+C:Zone:                            Fernzone 1 bis 200 Km, Fernzone 2 darüber.
+C:Special:                         Variable Taktung, abhängig von Zone und Tageszeit.
+C:Name:                            Telekom Austria
+C:Address:                         Postgasse 8, A-1010 Wien
+C:Homepage:                        http://www.telekom.at
+C:TarifURL:                        http://www.telekom.at/tarife/
+C:Telefon:                         0800 100 100
+# Tarif:                           Standardtarif (ATS 1.056 pro Einheit)
+D:pta                              # Verzonung
+
+Z:0                                FreePhone
+T:*/*=0/72
+A:122,133,144,+43800
+
+Z:1                                Regionalzone
+T:W/08-12=1.056/57.6               Tageszeit 1
+T:1-4/13-16=1.056/57.6             Tageszeit 1
+T:1-4/12-13,16-18=1.056/72         Tageszeit 2
+T:5/12-18=1.056/72                 Tageszeit 2
+T:W/06-08,18-20=1.056/109.09       Sparzeit
+T:E,H/06-20=1.056/109.09           Sparzeit
+T:*/20-06=1.056/160                Supersparzeit
+A:+43660
+
+Z:2                                Fernzone 1
+T:W/08-12=1.056/20                 Tageszeit 1
+T:1-4/13-16=1.056/20               Tageszeit 1
+T:1-4/12-13,16-18=1.056/25         Tageszeit 2
+T:5/12-18=1.056/25                 Tageszeit 2
+T:W/06-08,18-20=1.056/50           Sparzeit
+T:E,H/06-20=1.056/50               Sparzeit
+T:*/20-06=1.056/72                 Supersparzeit
+
+Z:3                                Fernzone 2
+T:W/08-12=1.056/15                 Tageszeit 1
+T:1-4/13-16=1.056/15               Tageszeit 1
+T:1-4/12-13,16-18=1.056/19.2       Tageszeit 2
+T:5/12-18=1.056/19.2               Tageszeit 2
+T:W/06-08,18-20=1.056/40           Sparzeit
+T:E,H/06-20=1.056/40               Sparzeit
+T:*/20-06=1.056/50                 Supersparzeit
+A:AT
+
+Z:4                                Online-Tarif
+T:W/08-18=1.056/120                Tageszeit
+T:W/18-8=1.056/360                 Sparzeit
+T:E,H/*=1.056/360                  Sparzeit
+A:+437189,19411,19430,19440
+
+Z:5                                Mobilfunk
+T:W/08-18=1.056/12                 Tageszeit
+T:W/18-8=1.056/19.2                Sparzeit
+T:E,H/*=1.056/19.2                 Sparzeit
+A:+43663,+43664,+43676,+43699
+
+Z:6                                Ausland Zone 1
+T:W/08-18=1.056/12                 Tageszeit
+T:W/18-8=1.056/14.4                Sparzeit
+T:E,H/*=1.056/14.4                 Sparzeit
+A:DE,IT,LI,CH,SK,SI
+A:CZ,HU
+
+Z:7                                Ausland Zone 2
+T:W/08-18=1.056/9                  Tageszeit
+T:W/18-8=1.056/12                  Sparzeit
+T:E,H/*=1.056/12                   Sparzeit
+A:AL,AD,BY,BE,BA,BG
+A:DK,FI,FR,UK,_UKIR,IE
+A:YU,YU,YU,HR,LU,MT,MK
+A:MC,NL,NO,RO,SM,SE,ES
+A:UA,VA,CY
+
+Z:8                                Ausland Zone 3
+T:W/08-18=1.056/6.5455             Tageszeit
+T:W/18-8=1.056/8                   Sparzeit
+T:E,H/*=1.056/8                    Sparzeit
+A:DZ,EE,FO,GE,GI,IS,IL
+A:LV,LT,EH,PT,SU,TJ
+A:TM,UZ
+
+Z:9                                Ausland Zone 4
+T:W/08-18=1.056/5.1429             Tageszeit
+T:W/18-8=1.056/6                   Sparzeit
+T:E,H/*=1.056/6                    Sparzeit
+A:AQ,AM,AU,AZ,CX
+A:CC
+
+Z:10                               Ausland Zone 5
+T:W/08-18=1.056/4.2353             Tageszeit
+T:W/18-8=1.056/4.8                 Sparzeit
+T:E,H/*=1.056/4.8                  Sparzeit
+A:CL,GF,GP,HK,LY,MQ
+A:YT,MD,NZ,RE,PM,ZA
+
+Z:11                               Ausland Zone 6
+T:W/08-18=1.056/3.6                Tageszeit
+T:W/18-8=1.056/4.2353              Sparzeit
+T:E,H/*=1.056/4.2353               Sparzeit
+A:JP,KR,MY,AN,PH,MP
+
+Z:12                               Ausland Zone 7
+T:W/08-18=1.056/3.1304             Tageszeit
+T:W/18-8=1.056/3.6                 Sparzeit
+T:E,H/*=1.056/3.6                  Sparzeit
+A:AO,BM,BT,BR,CN,EC,IR,MO,MX
+A:SA,VE
+
+Z:13                               Ausland Zone 8
+T:W/08-18=1.056/2.7692             Tageszeit
+T:W/18-8=1.056/3                   Sparzeit
+T:E,H/*=1.056/3                    Sparzeit
+A:EG,GQ,AW,BS,BB,BZ,BW
+A:BN,BI,DO,GA,GH,GL
+A:GW,GY,JO,KG,CO,KW,LB
+A:PA,SG,ST,VC
+A:TT,AE
+
+Z:14                               Ausland Zone 9
+T:W/08-18=1.056/2.4                Tageszeit
+T:W/18-8=1.056/2.5714              Sparzeit
+T:E,H/*=1.056/2.5714               Sparzeit
+A:BH,CI,GN,KZ,QA,LA,LS,LR
+A:MW,NA,NR,NP,NC,NG,NF,PE
+A:SH,LC,WS,SD,SZ,SY,TZ,TO
+A:TC,ZM,ZW
+
+Z:15                               Ausland Zone 10
+T:W/08-18=1.056/2.1176             Tageszeit
+T:W/18-8=1.056/2.25                Sparzeit
+T:E,H/*=1.056/2.25                 Sparzeit
+A:AR,ET,BJ,CR,FJ,PF
+A:GM,IQ,JM,KE,KI,KM,MV,MR
+A:MN,MZ,MM,NI,NU,OM,RW,SR
+A:TW,TH,TG,UG,VU,CF
+
+Z:16                               Ausland Zone 11
+T:W/08-18=1.056/1.8462             Tageszeit
+T:W/18-8=1.056/2                   Sparzeit
+T:E,H/*=1.056/2                    Sparzeit
+A:BO,KY,DJ,IN,ID
+A:VG,KP,CU,MU,NGR
+A:PG,PY,SL,LK,UY
+
+Z:17                               Ausland Zone 12
+T:W/08-18=1.056/1.6364             Tageszeit
+T:W/18-8=1.056/1.8                 Sparzeit
+T:E,H/*=1.056/1.8                  Sparzeit
+A:AI,AG,ASI,BD,BF
+A:DM,SV,ER,FK,GD,GU,GT
+A:HT,HN,YE,CM,CV,KH,CG,ML
+A:MS,PK,KN,SN,SC,SB
+A:SO,TD,VN,ZR
+
+Z:18                               Ausland Zone 13
+T:W/08-18=1.056/1.2203             Tageszeit
+T:W/18-8=1.056/1.3585              Sparzeit
+T:E,H/*=1.056/1.3585               Sparzeit
+A:CK,MG
+
+Z:19                               Ausland Zone 14
+T:W/08-18=1.056/8                  Tageszeit
+T:W/18-8=1.056/9                   Sparzeit
+T:E,H/*=1.056/9                    Sparzeit
+A:VI,CA,PR,US
+
+Z:20                               Ausland Zone 15
+T:W/08-18=1.056/9                  Tageszeit
+T:W/18-8=1.056/7.2                 Sparzeit
+T:E,H/*=1.056/7.2                  Sparzeit
+A:GR,PL,TN,TR
+
+Z:21                               Handvermittelter Verkehr
+A:AF,AS,_GUAN,MH,_MIDW
+A:FM,PW,PN,TV,_WAKE
+
+Z:22                               Grenznahverkehr
+T:W/08-18=1.056/18                 Tageszeit
+T:W/18-8=1.056/24                  Sparzeit
+T:E,H/*=1.056/24                   Sparzeit
+
+Z:23                               Teleinfo 04570
+T:W/08-18=1.056/10.795             Tageszeit
+T:W/18-8=1.056/10.795              Sparzeit
+T:E,H/*=1.056/10.795               Sparzeit
+A:+434570
+
+Z:24                               Teleinfo 04500 
+T:W/08-18=1.056/7.2                Tageszeit
+T:W/18-8=1.056/7.2                 Sparzeit
+T:E,H/*=1.056/7.2                  Sparzeit
+A:+434500
+
+Z:25                               Telebusiness 04590
+T:W/08-18=1.056/4.5                Tageszeit
+T:W/18-8=1.056/4.5                 Sparzeit
+T:E,H/*=1.056/4.5                  Sparzeit
+A:+434590
+
+Z:26                               Teleinfo 04580
+T:W/08-18=1.056/2.6997             Tageszeit
+T:W/18-8=1.056/2.6997              Sparzeit
+T:E,H/*=1.056/2.6997               Sparzeit
+A:+434580
+
+Z:27                               Businessline 0711x
+T:W/08-12=1.056/57.6               Tageszeit 1
+T:1-4/13-16=1.056/57.6             Tageszeit 1
+T:1-4/12-13,16-18=1.056/72         Tageszeit 2
+T:5/12-18=1.056/72                 Tageszeit 2
+T:W/06-08,18-20=1.056/109.09       Sparzeit
+T:E,H/06-20=1.056/109.09           Sparzeit
+T:*/20-06=1.056/160                Supersparzeit
+A:+43711
+
+Z:28                               Businessline 0713x
+T:W/08-18=1.056/32                 Tageszeit
+T:W/18-8=1.056/32                  Sparzeit
+T:E,H/*=1.056/32                   Sparzeit
+A:+43713
+
+Z:29                               Businessline 0714x
+T:W/08-18=1.056/15                 Tageszeit
+T:W/18-8=1.056/15                  Sparzeit
+T:E,H/*=1.056/15                   Sparzeit
+A:+43714
+
+Z:30                               Votingline 0717x
+T:W/08-18=1.056/15                 Tageszeit
+T:W/18-8=1.056/15                  Sparzeit
+T:E,H/*=1.056/15                   Sparzeit
+A:+43717
+
+###########################
+P:01,3                             Telekom Austria Alt
+B:1001
+C:NR:1001
+G:-01.09.1999                      #Valid til 00:00
+C:Maintainer:                      Michael Reinelt <reinelt@eunet.at>
+C:Zone:                            Die Regionalzone geht bis zu einer Entfernung von 50 Km, 
+C:Zone:                            Fernzone 1 bis 200 Km, Fernzone 2 darüber.
+C:Special:                         Variable Taktung, abhängig von Zone und Tageszeit.
+C:Name:                            Telekom Austria
+C:Address:                         Postgasse 8, A-1010 Wien
+C:Homepage:                        http://www.telekom.at
+C:TarifURL:                        http://www.telekom.at/tarife/
+C:Telefon:                         0800 100 100
+# Tarif:                           Geschäftstarif 1 (ATS 0.996 pro Einheit)
+D:pta                              # Verzonung
+
+Z:0                                FreePhone
+T:*/*=0/72
+A:122,133,144,+43800
+
+Z:1                                Regionalzone
+T:W/08-12=0.996/57.6               Tageszeit 1
+T:1-4/13-16=0.996/57.6             Tageszeit 1
+T:1-4/12-13,16-18=0.996/72         Tageszeit 2
+T:5/12-18=0.996/72                 Tageszeit 2
+T:W/06-08,18-20=0.996/109.09       Sparzeit
+T:E,H/06-20=0.996/109.09           Sparzeit
+T:*/20-06=0.996/160                Supersparzeit
+A:+43660
+
+Z:2                                Fernzone 1
+T:W/08-12=0.996/20                 Tageszeit 1
+T:1-4/13-16=0.996/20               Tageszeit 1
+T:1-4/12-13,16-18=0.996/25         Tageszeit 2
+T:5/12-18=0.996/25                 Tageszeit 2
+T:W/06-08,18-20=0.996/50           Sparzeit
+T:E,H/06-20=0.996/50               Sparzeit
+T:*/20-06=0.996/72                 Supersparzeit
+
+Z:3                                Fernzone 2
+T:W/08-12=0.996/15                 Tageszeit 1
+T:1-4/13-16=0.996/15               Tageszeit 1
+T:1-4/12-13,16-18=0.996/19.2       Tageszeit 2
+T:5/12-18=0.996/19.2               Tageszeit 2
+T:W/06-08,18-20=0.996/40           Sparzeit
+T:E,H/06-20=0.996/40               Sparzeit
+T:*/20-06=0.996/50                 Supersparzeit
+A:AT
+
+Z:4                                Online-Tarif
+T:W/08-18=0.996/120                Tageszeit
+T:W/18-8=0.996/360                 Sparzeit
+T:E,H/*=0.996/360                  Sparzeit
+A:+437189,19411,19430,19440
+
+Z:5                                Mobilfunk
+T:W/08-18=0.996/12                 Tageszeit
+T:W/18-8=0.996/19.2                Sparzeit
+T:E,H/*=0.996/19.2                 Sparzeit
+A:+43663,+43664,+43676,+43699
+
+Z:6                                Ausland Zone 1
+T:W/08-18=0.996/12                 Tageszeit
+T:W/18-8=0.996/14.4                Sparzeit
+T:E,H/*=0.996/14.4                 Sparzeit
+A:DE,IT,LI,CH,SK,SI
+A:CZ,HU
+
+Z:7                                Ausland Zone 2
+T:W/08-18=0.996/9                  Tageszeit
+T:W/18-8=0.996/12                  Sparzeit
+T:E,H/*=0.996/12                   Sparzeit
+A:AL,AD,BY,BE,BA,BG
+A:DK,FI,FR,UK,_UKIR,IE
+A:YU,YU,YU,HR,LU,MT,MK
+A:MC,NL,NO,RO,SM,SE,ES
+A:UA,VA,CY
+
+Z:8                                Ausland Zone 3
+T:W/08-18=0.996/6.5455             Tageszeit
+T:W/18-8=0.996/8                   Sparzeit
+T:E,H/*=0.996/8                    Sparzeit
+A:DZ,EE,FO,GE,GI,IS,IL
+A:LV,LT,EH,PT,SU,TJ
+A:TM,UZ
+
+Z:9                                Ausland Zone 4
+T:W/08-18=0.996/5.1429             Tageszeit
+T:W/18-8=0.996/6                   Sparzeit
+T:E,H/*=0.996/6                    Sparzeit
+A:AQ,AM,AU,AZ,CX
+A:CC
+
+Z:10                               Ausland Zone 5
+T:W/08-18=0.996/4.2353             Tageszeit
+T:W/18-8=0.996/4.8                 Sparzeit
+T:E,H/*=0.996/4.8                  Sparzeit
+A:CL,GF,GP,HK,LY,MQ
+A:YT,MD,NZ,RE,PM,ZA
+
+Z:11                               Ausland Zone 6
+T:W/08-18=0.996/3.6                Tageszeit
+T:W/18-8=0.996/4.2353              Sparzeit
+T:E,H/*=0.996/4.2353               Sparzeit
+A:JP,KR,MY,AN,PH,MP
+
+Z:12                               Ausland Zone 7
+T:W/08-18=0.996/3.1304             Tageszeit
+T:W/18-8=0.996/3.6                 Sparzeit
+T:E,H/*=0.996/3.6                  Sparzeit
+A:AO,BM,BT,BR,CN,EC,IR,MO,MX
+A:SA,VE
+
+Z:13                               Ausland Zone 8
+T:W/08-18=0.996/2.7692             Tageszeit
+T:W/18-8=0.996/3                   Sparzeit
+T:E,H/*=0.996/3                    Sparzeit
+A:EG,GQ,AW,BS,BB,BZ,BW
+A:BN,BI,DO,GA,GH,GL
+A:GW,GY,JO,KG,CO,KW,LB
+A:PA,SG,ST,VC
+A:TT,AE
+
+Z:14                               Ausland Zone 9
+T:W/08-18=0.996/2.4                Tageszeit
+T:W/18-8=0.996/2.5714              Sparzeit
+T:E,H/*=0.996/2.5714               Sparzeit
+A:BH,CI,GN,KZ,QA,LA,LS,LR
+A:MW,NA,NR,NP,NC,NG,NF,PE
+A:SH,LC,WS,SD,SZ,SY,TZ,TO
+A:TC,ZM,ZW
+
+Z:15                               Ausland Zone 10
+T:W/08-18=0.996/2.1176             Tageszeit
+T:W/18-8=0.996/2.25                Sparzeit
+T:E,H/*=0.996/2.25                 Sparzeit
+A:AR,ET,BJ,CR,FJ,PF
+A:GM,IQ,JM,KE,KI,KM,MV,MR
+A:MN,MZ,MM,NI,NU,OM,RW,SR
+A:TW,TH,TG,UG,VU,CF
+
+Z:16                               Ausland Zone 11
+T:W/08-18=0.996/1.8462             Tageszeit
+T:W/18-8=0.996/2                   Sparzeit
+T:E,H/*=0.996/2                    Sparzeit
+A:BO,KY,DJ,IN,ID
+A:VG,KP,CU,MU,NGR
+A:PG,PY,SL,LK,UY
+
+Z:17                               Ausland Zone 12
+T:W/08-18=0.996/1.6364             Tageszeit
+T:W/18-8=0.996/1.8                 Sparzeit
+T:E,H/*=0.996/1.8                  Sparzeit
+A:AI,AG,ASI,BD,BF
+A:DM,SV,ER,FK,GD,GU,GT
+A:HT,HN,YE,CM,CV,KH,CG,ML
+A:MS,PK,KN,SN,SC,SB
+A:SO,TD,VN,ZR
+
+Z:18                               Ausland Zone 13
+T:W/08-18=0.996/1.2203             Tageszeit
+T:W/18-8=0.996/1.3585              Sparzeit
+T:E,H/*=0.996/1.3585               Sparzeit
+A:CK,MG
+
+Z:19                               Ausland Zone 14
+T:W/08-18=0.996/8                  Tageszeit
+T:W/18-8=0.996/9                   Sparzeit
+T:E,H/*=0.996/9                    Sparzeit
+A:VI,CA,PR,US
+
+Z:20                               Ausland Zone 15
+T:W/08-18=0.996/9                  Tageszeit
+T:W/18-8=0.996/7.2                 Sparzeit
+T:E,H/*=0.996/7.2                  Sparzeit
+A:GR,PL,TN,TR
+
+Z:21                               Handvermittelter Verkehr
+A:AF,AS,_GUAN,MH,_MIDW
+A:FM,PW,PN,TV,_WAKE
+
+Z:22                               Grenznahverkehr
+T:W/08-18=0.996/18                 Tageszeit
+T:W/18-8=0.996/24                  Sparzeit
+T:E,H/*=0.996/24                   Sparzeit
+
+Z:23                               Teleinfo 04570
+T:W/08-18=0.996/10.795             Tageszeit
+T:W/18-8=0.996/10.795              Sparzeit
+T:E,H/*=0.996/10.795               Sparzeit
+A:+434570
+
+Z:24                               Teleinfo 04500 
+T:W/08-18=0.996/7.2                Tageszeit
+T:W/18-8=0.996/7.2                 Sparzeit
+T:E,H/*=0.996/7.2                  Sparzeit
+A:+434500
+
+Z:25                               Telebusiness 04590
+T:W/08-18=0.996/4.5                Tageszeit
+T:W/18-8=0.996/4.5                 Sparzeit
+T:E,H/*=0.996/4.5                  Sparzeit
+A:+434590
+
+Z:26                               Teleinfo 04580
+T:W/08-18=0.996/2.6997             Tageszeit
+T:W/18-8=0.996/2.6997              Sparzeit
+T:E,H/*=0.996/2.6997               Sparzeit
+A:+434580
+
+Z:27                               Businessline 0711x
+T:W/08-12=0.996/57.6               Tageszeit 1
+T:1-4/13-16=0.996/57.6             Tageszeit 1
+T:1-4/12-13,16-18=0.996/72         Tageszeit 2
+T:5/12-18=0.996/72                 Tageszeit 2
+T:W/06-08,18-20=0.996/109.09       Sparzeit
+T:E,H/06-20=0.996/109.09           Sparzeit
+T:*/20-06=0.996/160                Supersparzeit
+A:+43711
+
+Z:28                               Businessline 0713x
+T:W/08-18=0.996/32                 Tageszeit
+T:W/18-8=0.996/32                  Sparzeit
+T:E,H/*=0.996/32                   Sparzeit
+A:+43713
+
+Z:29                               Businessline 0714x
+T:W/08-18=0.996/15                 Tageszeit
+T:W/18-8=0.996/15                  Sparzeit
+T:E,H/*=0.996/15                   Sparzeit
+A:+43714
+
+Z:30                               Votingline 0717x
+T:W/08-18=0.996/15                 Tageszeit
+T:W/18-8=0.996/15                  Sparzeit
+T:E,H/*=0.996/15                   Sparzeit
+A:+43717
+
+###########################
+P:01,4                             Telekom Austria Alt
+B:1001
+C:NR:1001
+G:-01.09.1999                      #Valid til 00:00
+C:Maintainer:                      Michael Reinelt <reinelt@eunet.at>
+C:Zone:                            Die Regionalzone geht bis zu einer Entfernung von 50 Km, 
+C:Zone:                            Fernzone 1 bis 200 Km, Fernzone 2 darüber.
+C:Special:                         Variable Taktung, abhängig von Zone und Tageszeit.
+C:Name:                            Telekom Austria
+C:Address:                         Postgasse 8, A-1010 Wien
+C:Homepage:                        http://www.telekom.at
+C:TarifURL:                        http://www.telekom.at/tarife/
+C:Telefon:                         0800 100 100
+# Tarif:                           Geschäftstarif 2 (ATS 0.936 pro Einheit)
+D:pta                              # Verzonung
+
+Z:0                                FreePhone
+T:*/*=0/72
+A:122,133,144,+43800
+
+Z:1                                Regionalzone
+T:W/08-12=0.936/57.6               Tageszeit 1
+T:1-4/13-16=0.936/57.6             Tageszeit 1
+T:1-4/12-13,16-18=0.936/72         Tageszeit 2
+T:5/12-18=0.936/72                 Tageszeit 2
+T:W/06-08,18-20=0.936/109.09       Sparzeit
+T:E,H/06-20=0.936/109.09           Sparzeit
+T:*/20-06=0.936/160                Supersparzeit
+A:+43660
+
+Z:2                                Fernzone 1
+T:W/08-12=0.936/20                 Tageszeit 1
+T:1-4/13-16=0.936/20               Tageszeit 1
+T:1-4/12-13,16-18=0.936/25         Tageszeit 2
+T:5/12-18=0.936/25                 Tageszeit 2
+T:W/06-08,18-20=0.936/50           Sparzeit
+T:E,H/06-20=0.936/50               Sparzeit
+T:*/20-06=0.936/72                 Supersparzeit
+
+Z:3                                Fernzone 2
+T:W/08-12=0.936/15                 Tageszeit 1
+T:1-4/13-16=0.936/15               Tageszeit 1
+T:1-4/12-13,16-18=0.936/19.2       Tageszeit 2
+T:5/12-18=0.936/19.2               Tageszeit 2
+T:W/06-08,18-20=0.936/40           Sparzeit
+T:E,H/06-20=0.936/40               Sparzeit
+T:*/20-06=0.936/50                 Supersparzeit
+A:AT
+
+Z:4                                Online-Tarif
+T:W/08-18=0.936/120                Tageszeit
+T:W/18-8=0.936/360                 Sparzeit
+T:E,H/*=0.936/360                  Sparzeit
+A:+437189,19411,19430,19440
+
+Z:5                                Mobilfunk
+T:W/08-18=0.936/12                 Tageszeit
+T:W/18-8=0.936/19.2                Sparzeit
+T:E,H/*=0.936/19.2                 Sparzeit
+A:+43663,+43664,+43676,+43699
+
+Z:6                                Ausland Zone 1
+T:W/08-18=0.936/12                 Tageszeit
+T:W/18-8=0.936/14.4                Sparzeit
+T:E,H/*=0.936/14.4                 Sparzeit
+A:DE,IT,LI,CH,SK,SI
+A:CZ,HU
+
+Z:7                                Ausland Zone 2
+T:W/08-18=0.936/9                  Tageszeit
+T:W/18-8=0.936/12                  Sparzeit
+T:E,H/*=0.936/12                   Sparzeit
+A:AL,AD,BY,BE,BA,BG
+A:DK,FI,FR,UK,_UKIR,IE
+A:YU,YU,YU,HR,LU,MT,MK
+A:MC,NL,NO,RO,SM,SE,ES
+A:UA,VA,CY
+
+Z:8                                Ausland Zone 3
+T:W/08-18=0.936/6.5455             Tageszeit
+T:W/18-8=0.936/8                   Sparzeit
+T:E,H/*=0.936/8                    Sparzeit
+A:DZ,EE,FO,GE,GI,IS,IL
+A:LV,LT,EH,PT,SU,TJ
+A:TM,UZ
+
+Z:9                                Ausland Zone 4
+T:W/08-18=0.936/5.1429             Tageszeit
+T:W/18-8=0.936/6                   Sparzeit
+T:E,H/*=0.936/6                    Sparzeit
+A:AQ,AM,AU,AZ,CX
+A:CC
+
+Z:10                               Ausland Zone 5
+T:W/08-18=0.936/4.2353             Tageszeit
+T:W/18-8=0.936/4.8                 Sparzeit
+T:E,H/*=0.936/4.8                  Sparzeit
+A:CL,GF,GP,HK,LY,MQ
+A:YT,MD,NZ,RE,PM,ZA
+
+Z:11                               Ausland Zone 6
+T:W/08-18=0.936/3.6                Tageszeit
+T:W/18-8=0.936/4.2353              Sparzeit
+T:E,H/*=0.936/4.2353               Sparzeit
+A:JP,KR,MY,AN,PH,MP
+
+Z:12                               Ausland Zone 7
+T:W/08-18=0.936/3.1304             Tageszeit
+T:W/18-8=0.936/3.6                 Sparzeit
+T:E,H/*=0.936/3.6                  Sparzeit
+A:AO,BM,BT,BR,CN,EC,IR,MO,MX
+A:SA,VE
+
+Z:13                               Ausland Zone 8
+T:W/08-18=0.936/2.7692             Tageszeit
+T:W/18-8=0.936/3                   Sparzeit
+T:E,H/*=0.936/3                    Sparzeit
+A:EG,GQ,AW,BS,BB,BZ,BW
+A:BN,BI,DO,GA,GH,GL
+A:GW,GY,JO,KG,CO,KW,LB
+A:PA,SG,ST,VC
+A:TT,AE
+
+Z:14                               Ausland Zone 9
+T:W/08-18=0.936/2.4                Tageszeit
+T:W/18-8=0.936/2.5714              Sparzeit
+T:E,H/*=0.936/2.5714               Sparzeit
+A:BH,CI,GN,KZ,QA,LA,LS,LR
+A:MW,NA,NR,NP,NC,NG,NF,PE
+A:SH,LC,WS,SD,SZ,SY,TZ,TO
+A:TC,ZM,ZW
+
+Z:15                               Ausland Zone 10
+T:W/08-18=0.936/2.1176             Tageszeit
+T:W/18-8=0.936/2.25                Sparzeit
+T:E,H/*=0.936/2.25                 Sparzeit
+A:AR,ET,BJ,CR,FJ,PF
+A:GM,IQ,JM,KE,KI,KM,MV,MR
+A:MN,MZ,MM,NI,NU,OM,RW,SR
+A:TW,TH,TG,UG,VU,CF
+
+Z:16                               Ausland Zone 11
+T:W/08-18=0.936/1.8462             Tageszeit
+T:W/18-8=0.936/2                   Sparzeit
+T:E,H/*=0.936/2                    Sparzeit
+A:BO,KY,DJ,IN,ID
+A:VG,KP,CU,MU,NGR
+A:PG,PY,SL,LK,UY
+
+Z:17                               Ausland Zone 12
+T:W/08-18=0.936/1.6364             Tageszeit
+T:W/18-8=0.936/1.8                 Sparzeit
+T:E,H/*=0.936/1.8                  Sparzeit
+A:AI,AG,ASI,BD,BF
+A:DM,SV,ER,FK,GD,GU,GT
+A:HT,HN,YE,CM,CV,KH,CG,ML
+A:MS,PK,KN,SN,SC,SB
+A:SO,TD,VN,ZR
+
+Z:18                               Ausland Zone 13
+T:W/08-18=0.936/1.2203             Tageszeit
+T:W/18-8=0.936/1.3585              Sparzeit
+T:E,H/*=0.936/1.3585               Sparzeit
+A:CK,MG
+
+Z:19                               Ausland Zone 14
+T:W/08-18=0.936/8                  Tageszeit
+T:W/18-8=0.936/9                   Sparzeit
+T:E,H/*=0.936/9                    Sparzeit
+A:VI,CA,PR,US
+
+Z:20                               Ausland Zone 15
+T:W/08-18=0.936/9                  Tageszeit
+T:W/18-8=0.936/7.2                 Sparzeit
+T:E,H/*=0.936/7.2                  Sparzeit
+A:GR,PL,TN,TR
+
+Z:21                               Handvermittelter Verkehr
+A:AF,AS,_GUAN,MH,_MIDW
+A:FM,PW,PN,TV,_WAKE
+
+Z:22                               Grenznahverkehr
+T:W/08-18=0.936/18                 Tageszeit
+T:W/18-8=0.936/24                  Sparzeit
+T:E,H/*=0.936/24                   Sparzeit
+
+Z:23                               Teleinfo 04570
+T:W/08-18=0.936/10.795             Tageszeit
+T:W/18-8=0.936/10.795              Sparzeit
+T:E,H/*=0.936/10.795               Sparzeit
+A:+434570
+
+Z:24                               Teleinfo 04500 
+T:W/08-18=0.936/7.2                Tageszeit
+T:W/18-8=0.936/7.2                 Sparzeit
+T:E,H/*=0.936/7.2                  Sparzeit
+A:+434500
+
+Z:25                               Telebusiness 04590
+T:W/08-18=0.936/4.5                Tageszeit
+T:W/18-8=0.936/4.5                 Sparzeit
+T:E,H/*=0.936/4.5                  Sparzeit
+A:+434590
+
+Z:26                               Teleinfo 04580
+T:W/08-18=0.936/2.6997             Tageszeit
+T:W/18-8=0.936/2.6997              Sparzeit
+T:E,H/*=0.936/2.6997               Sparzeit
+A:+434580
+
+Z:27                               Businessline 0711x
+T:W/08-12=0.936/57.6               Tageszeit 1
+T:1-4/13-16=0.936/57.6             Tageszeit 1
+T:1-4/12-13,16-18=0.936/72         Tageszeit 2
+T:5/12-18=0.936/72                 Tageszeit 2
+T:W/06-08,18-20=0.936/109.09       Sparzeit
+T:E,H/06-20=0.936/109.09           Sparzeit
+T:*/20-06=0.936/160                Supersparzeit
+A:+43711
+
+Z:28                               Businessline 0713x
+T:W/08-18=0.936/32                 Tageszeit
+T:W/18-8=0.936/32                  Sparzeit
+T:E,H/*=0.936/32                   Sparzeit
+A:+43713
+
+Z:29                               Businessline 0714x
+T:W/08-18=0.936/15                 Tageszeit
+T:W/18-8=0.936/15                  Sparzeit
+T:E,H/*=0.936/15                   Sparzeit
+A:+43714
+
+Z:30                               Votingline 0717x
+T:W/08-18=0.936/15                 Tageszeit
+T:W/18-8=0.936/15                  Sparzeit
+T:E,H/*=0.936/15                   Sparzeit
+A:+43717
+
+###########################
 P:01,1                             Telekom Austria Minimumtarif
 B:1001
 C:NR:1001
+G:01.09.1999                       #Valid from
 C:Maintainer:                      Michael Reinelt <reinelt@eunet.at>
 C:TarifChanged:                    01.09.1999
 C:Zone:                            Die Regionalzone geht bis zu einer Entfernung von 50 Km, alles andere ist Österreichzone.
@@ -279,6 +1236,7 @@ A:+437118,+437119,+437110
 P:01,2                             Telekom Austria Standardtarif
 B:1001
 C:NR:1001
+G:01.09.1999                       #Valid from
 C:Maintainer:                      Michael Reinelt <reinelt@eunet.at>
 C:TarifChanged:                    01.09.1999
 C:Zone:                            Die Regionalzone geht bis zu einer Entfernung von 50 Km, alles andere ist Österreichzone.
@@ -485,6 +1443,7 @@ A:+437118,+437119,+437110
 P:01,3                             Telekom Austria Geschäftstarif 1
 B:1001
 C:NR:1001
+G:01.09.1999                       #Valid from
 C:Maintainer:                      Michael Reinelt <reinelt@eunet.at>
 C:TarifChanged:                    01.09.1999
 C:Zone:                            Die Regionalzone geht bis zu einer Entfernung von 50 Km, alles andere ist Österreichzone.
@@ -691,6 +1650,7 @@ A:+437118,+437119,+437110
 P:01,4                             Telekom Austria Geschäftstarif 2
 B:1001
 C:NR:1001
+G:01.09.1999                       #Valid from
 C:Maintainer:                      Michael Reinelt <reinelt@eunet.at>
 C:TarifChanged:                    01.09.1999
 C:Zone:                            Die Regionalzone geht bis zu einer Entfernung von 50 Km, alles andere ist Österreichzone.
@@ -897,6 +1857,7 @@ A:+437118,+437119,+437110
 P:01,5                             Telekom Austria Geschäftstarif 3
 B:1001
 C:NR:1001
+G:01.09.1999                       #Valid from
 C:Maintainer:                      Michael Reinelt <reinelt@eunet.at>
 C:TarifChanged:                    01.09.1999
 C:Zone:                            Die Regionalzone geht bis zu einer Entfernung von 50 Km, alles andere ist Österreichzone.

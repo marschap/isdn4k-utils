@@ -1,0 +1,10 @@
+isdnlog news
+
+lt 1999.11.08
+
+  all utils:
+  initRate reads now all provider-variants.
+  Providers _must_ have a B:-Tag now in rate-CC.dat
+  e.g.
+    P:33
+    B:01033

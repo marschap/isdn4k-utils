@@ -220,14 +220,14 @@ int     getDest(char *onumber, TELNUM * num)
   int     arealen, countrylen, prefixlen;
   char   *number = strdup(onumber);
   char    dummy[100]; /* V2.7.2.3 kills stack */
-  char   *tld;
+  char    tld[4];
   char    dummy2[100]; /* V2.7.2.3 kills stack */
   
 #ifdef DEBUG
   printf("getD. %s\n", number);
 #endif
   *dummy = *dummy2 = '\0'; /* for keeping gcc happy */
-  tld = malloc(4);
+  *tld='\0';
   if (get_cache(number, num)) {
 #ifdef DEBUG
     printf("getD (cache). %s %s\n", number, formatNumber("%f",num));
@@ -236,6 +236,9 @@ int     getDest(char *onumber, TELNUM * num)
     return 0;  	
   }
   len = strlen(number);
+  if (len==2 && isalpha(*number) && isupper(*number))
+    Strncpy(tld,number,3);
+
   if (isdigit(*number)) {
     warning("getDest called with local number '%s'", number);
     add_cache(number, num);  
@@ -293,7 +296,6 @@ again2:
       free(number);
       if (city)
 	free(city);
-      free(tld);		
       return 0;
     }
     /* now we must have a name or city */
@@ -374,7 +376,6 @@ again2:
     if (*dbv == 'G')
       free(value.dptr);
     free(number);
-    free(tld);		
     if (city)
       free(city);
     return 0;
@@ -430,8 +431,9 @@ int     main(int argc, char *argv[])
   memset(&num, 0, sizeof(num));
   while (--argc) {
     res = getDest(argv[i++], &num);
-    printf("%s %s(%d) %s(%s) %s - %s\n",
-	   res == 0 ? "Ok." : "Err", num.country, num.ncountry, num.sarea, num.area,
+    printf("%s %s(%d)=%s %s(%s) %s - %s\n",
+	   res == 0 ? "Ok." : "Err", num.country, num.ncountry, num.scountry, 
+	   num.sarea, num.area,
 	   num.msn, num.keys);
   }
   exitDest();
