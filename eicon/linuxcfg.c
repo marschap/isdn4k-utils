@@ -1,4 +1,4 @@
-/* $Id: linuxcfg.c,v 1.2 2000/06/08 20:56:42 armin Exp $
+/* $Id: linuxcfg.c,v 1.3 2002/01/31 18:52:40 paul Exp $
  *
  * Eicon-ISDN driver for Linux. (Config)
  *
@@ -20,6 +20,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: linuxcfg.c,v $
+ * Revision 1.3  2002/01/31 18:52:40  paul
+ * #include <string.h> for prototypes against warnings.
+ *
  * Revision 1.2  2000/06/08 20:56:42  armin
  * added checking for card id.
  *
@@ -38,6 +41,7 @@
 #include <stdlib.h>
 #include <sys/ioctl.h>
 #include <unistd.h>
+#include <string.h>
 
 #include <linux/types.h>
 #include <linux/isdn.h>
