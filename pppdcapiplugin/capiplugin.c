@@ -16,6 +16,8 @@
 #include <string.h>
 #include <dlfcn.h>
 
+static char *revision = "$Revision: 1.5 $";
+
 static capiconn_context *ctx;
 static capi_connection *conn = 0;
 static int isconnected = 0;
@@ -297,7 +299,7 @@ void plugin_init(void)
 {
 	int err;
 
-	info("plugin_init: capiconnect");
+	info("plugin_init: capiconnect (%s)", revision);
 
 	add_options(my_options);
 
